@@ -1,0 +1,2528 @@
+actor Nazi
+{
+	States
+	{
+	Death.Fire:
+		TNT1 A 0 A_SetScale(1.0)
+		BURN ABC 5 BRIGHT
+		BURN D 5 BRIGHT A_PlaySound("death/burning")
+		BURN EFGHIJKLMN 5 BRIGHT
+		BURN O 5 BRIGHT A_NoBlocking
+		BURN PQRSTU 5 BRIGHT
+		BURN V -1
+		Stop
+	}
+}
+
+actor Guard : Nazi 12001
+{
+//$Category Monsters (Wolf3D)
+//$Title SA Guard
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was shot by a pistol soldier."
+  health 20
+  radius 20
+  height 56
+  mass 100
+  speed 8
+  painchance 200
+  seesound "Nazi1/Sighted"
+  painsound "Nazi1/Pain"
+  deathsound "Nazi1/Death"
+  activesound ""
+  dropitem "MPClipSmall" 256
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  states
+  {
+  Spawn:
+    GARD N 10 A_Look
+    loop
+  See:
+    GARD AABBCCDD 4 A_Chase
+    loop
+  Missile:
+    GARD EF 5 A_FaceTarget
+	GARD G 0 A_PlayWeaponSound("nazi/pistol")
+    GARD G 8 BRIGHT A_CustomMissile("EnemyPistolTracer",32,0,random(-8,8))
+    GARD F 8
+    goto See
+  Pain:
+    GARD H 3
+    GARD H 3 A_Pain
+    goto See
+  Death:
+    GARD I 5
+    GARD J 5 A_Scream
+    GARD K 5 A_NoBlocking
+    GARD L 5
+    GARD M -1
+    stop
+  Raise:
+    GARD MLKJI 5
+    goto See
+  Idle:
+    GARD AA 4 A_Wander
+    GARD A 0 A_Look
+    GARD BB 4 A_Wander
+    GARD A 0 A_Look
+    GARD CC 4 A_Wander
+    GARD A 0 A_Look
+    GARD DD 4 A_Wander
+    GARD A 0 A_Look
+    loop
+  }
+}
+
+actor SSGuard : Nazi 12002
+{
+//$Category Monsters (Wolf3D)
+//$Title SS Guard
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was killed by an SS guard."
+  health 40
+  radius 20
+  height 56
+  mass 100
+  speed 8
+  painchance 200
+  seesound "Nazi1/Sighted"
+  painsound "Nazi1/Pain"
+  deathsound "Nazi1/Death"
+  activesound ""
+  dropitem "MPClipSmall" 256
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  states
+  {
+  Spawn:
+    SSPG N 10 A_Look
+    loop
+  See:
+    SSPG AABBCCDD 3 A_Chase
+    loop
+  Missile:
+    SSPG EF 5 A_FaceTarget
+    SSPG G 0 A_PlayWeaponSound("nazi/pistol")
+    SSPG G 8 BRIGHT A_CustomMissile("EnemyPistolTracer",32,0,random(-8,8))
+    SSPG F 8
+    goto See
+  Pain:
+    SSPG H 3
+    SSPG H 3 A_Pain
+    goto See
+  Death:
+    SSPG I 5
+    SSPG J 5 A_Scream
+    SSPG K 5 A_NoBlocking
+    SSPG L 5
+    SSPG M -1
+    stop
+  Raise:
+    SSPG MLKJI 5
+    goto See
+  Idle:
+    SSPG AA 4 A_Wander
+    SSPG A 0 A_Look
+    SSPG BB 4 A_Wander
+    SSPG A 0 A_Look
+    SSPG CC 4 A_Wander
+    SSPG A 0 A_Look
+    SSPG DD 4 A_Wander
+    SSPG A 0 A_Look
+    loop
+  }
+}
+
+actor WGuard : Nazi 12003
+{
+//$Category Monsters (Wolf3D)
+//$Title Wehrmacht Guard
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was shot by a Wehrmacht soldier."
+  health 30
+  radius 20
+  height 56
+  mass 100
+  speed 10
+  painchance 185
+  seesound "Nazi1/Sighted"
+  painsound "Nazi1/Pain"
+  deathsound "Nazi1/Death"
+  activesound ""
+  dropitem "MPClipSmall" 256
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +MISSILEMORE
+  +MISSILEEVENMORE
+  states
+  {
+  Spawn:
+    GRD2 N 10 A_Look
+    loop
+  See:
+    GRD2 AABBCCDD 4 A_Chase
+    loop
+  Missile:
+    GRD2 EF 2 A_FaceTarget
+	GRD2 G 0 A_PlayWeaponSound("nazi/pistol")
+    GRD2 G 4 BRIGHT A_CustomMissile("EnemyPistolTracer",32,0,random(-6,6))
+    GRD2 F 4
+	GRD2 G 0 A_PlayWeaponSound("nazi/pistol")
+    GRD2 G 8 BRIGHT A_CustomMissile("EnemyPistolTracer",32,0,random(-10,10))
+    GRD2 F 8
+    goto See
+  Pain:
+    GRD2 H 3
+    GRD2 H 3 A_Pain
+    goto See
+  Death:
+    GRD2 I 5
+    GRD2 J 5 A_Scream
+    GRD2 K 5 A_NoBlocking
+    GRD2 L 5
+    GRD2 M -1
+    stop
+  Raise:
+    GRD2 MLKJI 5
+    goto See
+  Idle:
+    GRD2 AA 4 A_Wander
+    GRD2 A 0 A_Look
+    GRD2 BB 4 A_Wander
+    GRD2 A 0 A_Look
+    GRD2 CC 4 A_Wander
+    GRD2 A 0 A_Look
+    GRD2 DD 4 A_Wander
+    GRD2 A 0 A_Look
+    loop
+  }
+}
+
+actor MP40Guard : Nazi 12004
+{
+//$Category Monsters (Wolf3D)
+//$Title SA Guard (MP40)
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was plugged by a soldier with an MP40."
+  health 20
+  radius 20
+  height 56
+  mass 100
+  speed 8
+  painchance 200
+  seesound "Nazi2/Sighted"
+  attacksound "weapons/assaultgun"
+  painsound "Nazi2/Pain"
+  deathsound "Nazi2/Death"
+  activesound ""
+  dropitem "MP40" 256
+  dropitem "GrenadePickup" 16
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  states
+  {
+  Spawn:
+    MGRD N 10 A_Look
+    loop
+  See:
+    MGRD AABBCCDD 4 A_Chase
+    loop
+  Missile:
+    MGRD EF 5 A_FaceTarget
+	MGRD G 0 A_PlayWeaponSound("weapons/assaultgun")
+    MGRD G 2 BRIGHT A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
+	MGRD F 2 A_FaceTarget
+	MGRD G 0 A_PlayWeaponSound("weapons/assaultgun")
+    MGRD G 2 BRIGHT A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
+	MGRD F 2 A_FaceTarget
+	MGRD G 0 A_PlayWeaponSound("weapons/assaultgun")
+    MGRD G 2 BRIGHT A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
+	MGRD F 2 A_FaceTarget
+	MGRD G 0 A_PlayWeaponSound("weapons/assaultgun")
+    MGRD G 2 BRIGHT A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
+	MGRD F 2 A_FaceTarget
+	MGRD G 0 A_PlayWeaponSound("weapons/assaultgun")
+    MGRD G 2 BRIGHT A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
+    MGRD F 2
+    goto See
+  Pain:
+    MGRD H 3
+    MGRD H 3 A_Pain
+    goto See
+  Death:
+    MGRD I 5
+    MGRD J 5 A_Scream
+    MGRD K 5 A_NoBlocking
+    MGRD L 5
+    MGRD M -1
+    stop
+  Raise:
+    MGRD MLKJI 5
+    goto See
+  Idle:
+    MGRD AA 4 A_Wander
+    MGRD A 0 A_Look
+    MGRD BB 4 A_Wander
+    MGRD A 0 A_Look
+    MGRD CC 4 A_Wander
+    MGRD A 0 A_Look
+    MGRD DD 4 A_Wander
+    MGRD A 0 A_Look
+    loop
+  }
+}
+
+actor WMP40Guard : Nazi 12005
+{
+//$Category Monsters (Wolf3D)
+//$Title Wehrmacht Guard (MP40)
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was plugged by a trigger-happy Wehrmacht."
+  health 30
+  radius 20
+  height 56
+  mass 100
+  speed 10
+  painchance 200
+  seesound "Nazi2/Sighted"
+  attacksound "weapons/assaultgun"
+  painsound "Nazi2/Pain"
+  deathsound "Nazi2/Death"
+  activesound ""
+  dropitem "MPClipSmall" 256
+  dropitem "GrenadePickup" 16
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +MISSILEMORE
+  +MISSILEEVENMORE
+  states
+  {
+  Spawn:
+    MGR2 N 10 A_Look
+    loop
+  See:
+    MGR2 AABBCCDD 4 A_Chase
+    loop
+  Missile:
+    MGR2 EF 2 A_FaceTarget
+	MGR2 G 0 A_PlayWeaponSound("weapons/assaultgun")
+    MGR2 G 2 BRIGHT A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
+    MGR2 F 1
+	MGR2 G 0 A_PlayWeaponSound("weapons/assaultgun")
+    MGR2 G 2 BRIGHT A_CustomMissile("EnemySMGTracer",32,0,random(-12,12))
+    MGR2 F 2 A_SentinelRefire
+    goto Missile+2
+  Pain:
+    MGR2 H 3
+    MGR2 H 3 A_Pain
+    goto See
+  Death:
+    MGR2 I 5
+    MGR2 J 5 A_Scream
+    MGR2 K 5 A_NoBlocking
+    MGR2 L 5
+    MGR2 M -1
+    stop
+  Raise:
+    MGR2 MLKJI 5
+    goto See
+  Idle:
+    MGR2 AA 4 A_Wander
+    MGR2 A 0 A_Look
+    MGR2 BB 4 A_Wander
+    MGR2 A 0 A_Look
+    MGR2 CC 4 A_Wander
+    MGR2 A 0 A_Look
+    MGR2 DD 4 A_Wander
+    MGR2 A 0 A_Look
+    loop
+  }
+}
+
+actor SSMP40Guard : Nazi 12006
+{
+//$Category Monsters (Wolf3D)
+//$Title SS Guard (MP40)
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was plugged by an SS with an MP40."
+  health 40
+  radius 20
+  height 56
+  mass 100
+  speed 8
+  painchance 200
+  seesound "Nazi2/Sighted"
+  attacksound "weapons/assaultgun"
+  painsound "Nazi2/Pain"
+  deathsound "Nazi2/Death"
+  activesound ""
+  dropitem "MPClipSmall" 256
+  dropitem "GrenadePickup" 16
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  states
+  {
+  Spawn:
+    SSMG N 10 A_Look
+    loop
+  See:
+    SSMG AABBCCDD 3 A_Chase
+    loop
+  Missile:
+    SSMG EF 5 A_FaceTarget
+	SSMG G 0 A_PlayWeaponSound("weapons/assaultgun")
+    SSMG G 2 BRIGHT A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
+    SSMG F 2 A_SentinelRefire
+    goto Missile+2
+  Pain:
+    SSMG H 3
+    SSMG H 3 A_Pain
+    goto See
+  Death:
+    SSMG I 5
+    SSMG J 5 A_Scream
+    SSMG K 5 A_NoBlocking
+    SSMG L 5
+    SSMG M -1
+    stop
+  Raise:
+    SSMG MLKJI 5
+    goto See
+  Idle:
+    SSMG AA 4 A_Wander
+    SSMG A 0 A_Look
+    SSMG BB 4 A_Wander
+    SSMG A 0 A_Look
+    SSMG CC 4 A_Wander
+    SSMG A 0 A_Look
+    SSMG DD 4 A_Wander
+    SSMG A 0 A_Look
+    loop
+  }
+}
+
+actor RifleGuard : Nazi 12007
+{
+//$Category Monsters (Wolf3D)
+//$Title SA Guard (Rifle)
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was plinked by a rifle soldier."
+  health 20
+  radius 20
+  height 56
+  mass 100
+  speed 8
+  painchance 200
+  seesound "Nazi3/Sighted"
+  attacksound "weapons/mauser"
+  painsound "Nazi2/Pain"
+  deathsound "Nazi2/Death"
+  activesound ""
+  dropitem "G41" 256
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  states
+  {
+  Spawn:
+    RGRD N 10 A_Look
+    loop
+  See:
+    RGRD AABBCCDD 4 A_Chase
+    loop
+  Missile:
+    RGRD EF 10 A_FaceTarget
+	RGRD G 0 A_PlayWeaponSound("garand/fire")
+    RGRD G 8 BRIGHT A_CustomMissile("EnemyRifleTracer",32,0,random(-1,1))
+    RGRD F 8
+    goto See
+  Pain:
+    RGRD H 3
+    RGRD H 3 A_Pain
+    goto See
+  Death:
+    RGRD I 5
+    RGRD J 5 A_Scream
+    RGRD K 5 A_NoBlocking
+    RGRD L 5
+    RGRD M -1
+    stop
+  Raise:
+    RGRD MLKJI 5
+    goto See
+  Idle:
+    RGRD AA 4 A_Wander
+    RGRD A 0 A_Look
+    RGRD BB 4 A_Wander
+    RGRD A 0 A_Look
+    RGRD CC 4 A_Wander
+    RGRD A 0 A_Look
+    RGRD DD 4 A_Wander
+    RGRD A 0 A_Look
+    loop
+  }
+}
+
+actor WRifleGuard : Nazi 12008
+{
+//$Category Monsters (Wolf3D)
+//$Title Wehrmacht Guard (Rifle)
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was snap-shot by a rifle soldier."
+  health 30
+  radius 20
+  height 56
+  mass 100
+  speed 10
+  painchance 200
+  seesound "Nazi3/Sighted"
+  attacksound "weapons/mauser"
+  painsound "Nazi2/Pain"
+  deathsound "Nazi2/Death"
+  activesound ""
+  dropitem "MauserAmmoSmall" 256
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +MISSILEMORE
+  +MISSILEEVENMORE
+  states
+  {
+  Spawn:
+    RGR2 N 10 A_Look
+    loop
+  See:
+    RGR2 AABBCCDD 4 A_Chase
+    loop
+  Missile:
+    RGR2 EF 10 A_FaceTarget
+	RGR2 G 0 A_PlayWeaponSound("garand/fire")
+    RGR2 G 8 BRIGHT A_CustomMissile("EnemyRifleTracer",32,0,random(-1,1))
+    RGR2 F 4
+	RGR2 G 0 A_PlayWeaponSound("garand/fire")
+    RGR2 G 8 BRIGHT A_CustomMissile("EnemyRifleTracer",32,0,random(-5,5))
+    RGR2 F 8
+    goto See
+  Pain:
+    RGR2 H 3
+    RGR2 H 3 A_Pain
+    goto See
+  Death:
+    RGR2 I 5
+    RGR2 J 5 A_Scream
+    RGR2 K 5 A_NoBlocking
+    RGR2 L 5
+    RGR2 M -1
+    stop
+  Raise:
+    RGR2 MLKJI 5
+    goto See
+  Idle:
+    RGR2 AA 4 A_Wander
+    RGR2 A 0 A_Look
+    RGR2 BB 4 A_Wander
+    RGR2 A 0 A_Look
+    RGR2 CC 4 A_Wander
+    RGR2 A 0 A_Look
+    RGR2 DD 4 A_Wander
+    RGR2 A 0 A_Look
+    loop
+  }
+}
+
+actor WaffenSS : Nazi 12009
+{
+//$Category Monsters (Wolf3D)
+//$Title Waffen SS
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was shot to pieces by a Waffen-SS."
+  health 80
+  radius 20
+  height 56
+  mass 100
+  speed 8
+  painchance 200
+  seesound "Nazi3/Sighted"
+  attacksound "weapons/stg44"
+  painsound "Nazi2/Pain"
+  deathsound "Nazi2/Death"
+  activesound ""
+  dropitem "MPClipSmall" 256
+  dropitem "GrenadePickup" 32
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  states
+  {
+  Spawn:
+    WAFF N 10 A_Look
+    loop
+  See:
+    WAFF AABBCCDD 3 A_Chase
+    loop
+  Missile:
+    WAFF EF 5 A_FaceTarget
+	WAFF G 0 A_PlayWeaponSound("weapons/stg44")
+    WAFF G 2 BRIGHT A_CustomMissile("EnemyStGTracer",32,0,random(-4,4))
+    WAFF F 4 A_SentinelRefire
+    goto Missile+2
+  Pain:
+    WAFF H 3
+    WAFF H 3 A_Pain
+    goto See
+  Death:
+    WAFF I 5
+    WAFF J 5 A_Scream
+    WAFF K 5 A_NoBlocking
+    WAFF L 5
+    WAFF M -1
+    stop
+  Raise:
+    WAFF MLKJI 5
+    goto See
+  Idle:
+    WAFF AA 4 A_Wander
+    WAFF A 0 A_Look
+    WAFF BB 4 A_Wander
+    WAFF A 0 A_Look
+    WAFF CC 4 A_Wander
+    WAFF A 0 A_Look
+    WAFF DD 4 A_Wander
+    WAFF A 0 A_Look
+    loop
+  }
+}
+
+actor Paratrooper : Nazi 12109
+{
+//$Category Monsters (Wolf3D)
+//$Title Paratrooper
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was slaughtered by a Fallschirmjaeger."
+  health 90
+  radius 20
+  height 56
+  mass 100
+  speed 8
+  painchance 200
+  seesound "Nazi3/Sighted"
+  attacksound "weapons/stg44"
+  painsound "Nazi2/Pain"
+  deathsound "Nazi2/Death"
+  activesound ""
+  dropitem "MPClipSmall" 128
+  dropitem "MauserAmmoSmall" 128
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  states
+  {
+  Spawn:
+    PARA N 10 A_Look
+    loop
+  See:
+    PARA AABBCCDD 3 A_Chase
+    loop
+  Missile:
+    PARA EF 5 A_FaceTarget
+	PARA G 0 A_PlayWeaponSound("weapons/stg44")
+    PARA G 2 BRIGHT A_CustomMissile("EnemyStGTracer",32,0,random(-4,4))
+    PARA F 4 A_SentinelRefire
+    goto Missile+2
+  Pain:
+    PARA H 3
+    PARA H 3 A_Pain
+    goto See
+  Death:
+    PARA I 5
+    PARA J 5 A_Scream
+    PARA K 5 A_NoBlocking
+    PARA L 5
+    PARA M -1
+    stop
+  Raise:
+    PARA MLKJI 5
+    goto See
+  Idle:
+    PARA AA 4 A_Wander
+    PARA A 0 A_Look
+    PARA BB 4 A_Wander
+    PARA A 0 A_Look
+    PARA CC 4 A_Wander
+    PARA A 0 A_Look
+    PARA DD 4 A_Wander
+    PARA A 0 A_Look
+    loop
+  }
+}
+
+actor Mutant 12010
+{
+//$Category Monsters (Wolf3D)
+//$Title Mutant (projectile)
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o did the dance of doom with a Mutant."
+  health 90
+  radius 20
+  height 56
+  mass 100
+  speed 6
+  painchance 200
+  seesound ""
+  deathsound "mutant/Death"
+  activesound ""
+  dropitem "MPClipSmall" 128
+  DamageFactor "Enemy", 0.0
+  BloodColor "Green"
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +MISSILEMORE
+  +MISSILEEVENMORE
+  states
+  {
+  Spawn:
+    MTNT A 10 A_Look
+    loop
+  See:
+    MTNT BBCCDDEE 2 A_Chase
+    loop
+  Missile:
+    MTNT F 6 A_FaceTarget
+    MTNT G 0 A_PlayWeaponSound("weapons/Walther")
+    MTNT G 5 BRIGHT A_CustomMissile("EnemyPistolTracer",32,0,random(-1,1))
+    MTNT F 6
+    MTNT H 0 A_PlayWeaponSound("weapons/Walther")
+    MTNT H 5 BRIGHT A_CustomMissile("EnemyPistolTracer",32,0,random(-1,1))
+    MTNT F 6 A_SentinelRefire
+    goto Missile+2
+  Pain:
+    MTNT I 3
+    MTNT I 3 A_Pain
+    goto See
+  Death:
+    MTNT I 3
+    MTNT J 3 A_Scream
+    MTNT K 3 A_NoBlocking
+    MTNT L 3
+    MTNT M 3
+	MTNT N -1
+    stop
+  Raise:
+    MTNT MLKJI 5
+    goto See
+  Idle:
+    MTNT AA 4 A_Wander
+    MTNT A 0 A_Look
+    MTNT BB 4 A_Wander
+    MTNT A 0 A_Look
+    MTNT CC 4 A_Wander
+    MTNT A 0 A_Look
+    MTNT DD 4 A_Wander
+    MTNT A 0 A_Look
+    loop
+  }
+}
+
+actor MutantMelee : Nazi 12011
+{
+//$Category Monsters (Wolf3D)
+//$Title Mutant (Melee)
+//$Color 4
+  scale 1.1
+  obituary "%o did the dance of doom with a Mutant."
+  health 60
+  radius 20
+  height 56
+  mass 100
+  speed 6
+  painchance 200
+  Meleedamage 5
+  seesound ""
+  deathsound "mutant/Death"
+  activesound ""
+  DamageFactor "Enemy", 0.0
+  BloodColor "Green"
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +MISSILEMORE
+  +MISSILEEVENMORE
+  obituary "%o did the dance of doom with a Mutant."
+  states
+  {
+  Spawn:
+    MLMT A 10 A_Look
+    loop
+  See:
+    MLMT BBCCDDEE 2 A_Chase
+    loop
+  Pain:
+    MLMT I 3
+    MLMT I 3 A_Pain
+    goto See
+  Melee:
+    MLMT F 4 A_FaceTarget
+    MLMT G 5 A_MeleeAttack
+    MLMT F 4 A_FaceTarget
+    MLMT H 5 A_MeleeAttack
+    goto See
+  Death:
+    MLMT I 3
+    MLMT J 3 A_Scream
+    MLMT K 3 A_NoBlocking
+    MLMT L 3
+    MLMT M 3
+    MLMT O -1
+    stop
+  Raise:
+    MLMT MLKJI 5
+    goto See
+  Idle:
+    MLMT AA 4 A_Wander
+    MLMT A 0 A_Look
+    MLMT BB 4 A_Wander
+    MLMT A 0 A_Look
+    MLMT CC 4 A_Wander
+    MLMT A 0 A_Look
+    MLMT DD 4 A_Wander
+    MLMT A 0 A_Look
+    loop
+  }
+}
+
+actor Officer : Nazi 12012
+{
+//$Category Monsters (Wolf3D)
+//$Title SA Officer
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was executed by an officer."
+  health 20
+  radius 20
+  height 56
+  mass 100
+  speed 8
+  painchance 200
+  seesound "Nazi4/Sighted"
+  attacksound "nazi/pistol"
+  painsound "Nazi4/Pain"
+  deathsound "Nazi4/Death"
+  activesound ""
+  dropitem "Luger9mm" 256
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  states
+  {
+  Spawn:
+    OFFI N 10 A_Look
+    loop
+  See:
+    OFFI AABBCCDD 2 A_Chase
+    loop
+  Missile:
+    OFFI EF 2 A_FaceTarget
+	OFFI G 0 A_PlayWeaponSound("nazi/pistol")
+    OFFI G 5 BRIGHT A_CustomMissile("EnemyPistolTracer",32,0,random(-4,4))
+    OFFI F 4
+    goto See
+  Pain:
+    OFFI H 3
+    OFFI H 3 A_Pain
+    goto See
+  Death:
+    OFFI I 5
+    OFFI J 5 A_Scream
+    OFFI K 5 A_NoBlocking
+    OFFI L 5
+    OFFI M -1
+    stop
+  Raise:
+    OFFI MLKJI 5
+    goto See
+  Idle:
+    OFFI AA 4 A_Wander
+    OFFI A 0 A_Look
+    OFFI BB 4 A_Wander
+    OFFI A 0 A_Look
+    OFFI CC 4 A_Wander
+    OFFI A 0 A_Look
+    OFFI DD 4 A_Wander
+    OFFI A 0 A_Look
+    loop
+  }
+}
+
+actor WOfficer : Nazi 12013
+{
+//$Category Monsters (Wolf3D)
+//$Title Wehrmacht Officer
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was quickly executed by an Officer."
+  health 30
+  radius 20
+  height 56
+  mass 100
+  speed 10
+  painchance 180
+  seesound "Nazi4/Sighted"
+  attacksound "nazi/pistol"
+  painsound "Nazi4/Pain"
+  deathsound "Nazi4/Death"
+  activesound ""
+  dropitem "MPClipSmall" 256
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +MISSILEMORE
+  +MISSILEEVENMORE
+  states
+  {
+  Spawn:
+    OFR2 N 10 A_Look
+    loop
+  See:
+    OFR2 AABBCCDD 2 A_Chase
+    loop
+  Missile:
+    OFR2 EF 2 A_FaceTarget
+	OFR2 G 0 A_PlayWeaponSound("nazi/pistol")
+    OFR2 G 4 BRIGHT A_CustomMissile("EnemyPistolTracer",32,0,random(-4,4))
+    OFR2 F 3
+	OFR2 G 0 A_PlayWeaponSound("nazi/pistol")
+    OFR2 G 5 BRIGHT A_CustomMissile("EnemyPistolTracer",32,0,random(-6,6))
+    OFR2 F 3
+	OFR2 G 0 A_PlayWeaponSound("nazi/pistol")
+    OFR2 G 5 BRIGHT A_CustomMissile("EnemyPistolTracer",32,0,random(-8,8))
+    OFR2 F 3
+	OFR2 G 0 A_PlayWeaponSound("nazi/pistol")
+    OFR2 G 5 BRIGHT A_CustomMissile("EnemyPistolTracer",32,0,random(-8,8))
+    OFR2 F 4
+    goto See
+  Pain:
+    OFR2 H 3
+    OFR2 H 3 A_Pain
+    goto See
+  Death:
+    OFR2 I 5
+    OFR2 J 5 A_Scream
+    OFR2 K 5 A_NoBlocking
+    OFR2 L 5
+    OFR2 M -1
+    stop
+  Raise:
+    OFR2 MLKJI 5
+    goto See
+  Idle:
+    OFR2 AA 4 A_Wander
+    OFR2 A 0 A_Look
+    OFR2 BB 4 A_Wander
+    OFR2 A 0 A_Look
+    OFR2 CC 4 A_Wander
+    OFR2 A 0 A_Look
+    OFR2 DD 4 A_Wander
+    OFR2 A 0 A_Look
+    loop
+  }
+}
+
+actor SSOfficer : Nazi 12015
+{
+//$Category Monsters (Wolf3D)
+//$Title SS Officer
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was viciously executed by an SS officer."
+  health 40
+  radius 20
+  height 56
+  mass 100
+  speed 8
+  painchance 200
+  seesound "Nazi4/Sighted"
+  attacksound "nazi/pistol"
+  painsound "Nazi4/Pain"
+  deathsound "Nazi4/Death"
+  activesound ""
+  dropitem "MPClipSmall" 256
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  states
+  {
+  Spawn:
+    SSOF N 10 A_Look
+    loop
+  See:
+    SSOF AABBCCDD 2 A_Chase
+    loop
+  Missile:
+    SSOF EF 2 A_FaceTarget
+	SSOF G 0 A_PlayWeaponSound("nazi/pistol")
+    SSOF G 5 BRIGHT A_CustomMissile("EnemyPistolTracer",32,0,random(-4,4))
+    SSOF F 4
+    goto See
+  Pain:
+    SSOF H 3
+    SSOF H 3 A_Pain
+    goto See
+  Death:
+    SSOF I 5
+    SSOF J 5 A_Scream
+    SSOF K 5 A_NoBlocking
+    SSOF L 5
+    SSOF M -1
+    stop
+  Raise:
+    SSOF MLKJI 5
+    goto See
+  Idle:
+    SSOF AA 4 A_Wander
+    SSOF A 0 A_Look
+    SSOF BB 4 A_Wander
+    SSOF A 0 A_Look
+    SSOF CC 4 A_Wander
+    SSOF A 0 A_Look
+    SSOF DD 4 A_Wander
+    SSOF A 0 A_Look
+    loop
+  }
+}
+
+
+actor Doberman 12016
+{
+//$Category Monsters (Wolf3D)
+//$Title Dog (Doberman)
+//$Color 4
+  spawnid 8
+  hitobituary "%o was bitten by a guard dog."
+  health 25
+  painchance 180
+  speed 16
+  radius 20
+  height 48
+  mass 70
+  Meleedamage 5
+  seesound "dog/sight"
+  attacksound "dog/attack"
+  painsound "dog/pain"
+  deathsound "dog/death"
+  activesound "dog/active"
+  MONSTER
+  +FLOORCLIP
+  +FASTMELEE
+  -CANUSEWALLS
+  states
+  {
+  Spawn:
+       DOGY AA 2 A_Wander
+       DOGY A 0 A_Look
+       DOGY BB 2 A_Wander
+       DOGY B 0 A_Look
+       DOGY CC 2 A_Wander
+       DOGY C 0 A_Look
+       DOGY DD 2 A_Wander
+       DOGY D 0 A_Look
+       Loop
+  See:
+	DOGY AABBCCDD 2 A_Chase
+	loop
+  Melee:
+    DOGY EF 2 A_FaceTarget
+    DOGY G 8 A_MeleeAttack
+	DOGY FE 4
+    goto See
+  Pain:
+    DOGY H 2
+    DOGY H 2 A_Pain
+    goto See
+  Death:
+    DOGY H 8
+    DOGY I 8 A_Scream
+    DOGY J 6
+    DOGY K -1 A_NoBlocking
+    stop
+  Raise:
+    DOGY KJIH 6
+    Goto See
+  }
+}
+
+actor Doberman2 12036
+{
+//$Category Monsters (Wolf3D)
+//$Title Dog (Doberman 2)
+//$Color 4
+  spawnid 8
+  hitobituary "%o was bitten by a guard dog."
+  health 25
+  painchance 180
+  speed 16
+  radius 20
+  height 48
+  mass 70
+  Meleedamage 5
+  seesound "dog/sight"
+  attacksound "dog/attack"
+  painsound "dog/pain"
+  deathsound "dog/death"
+  activesound "dog/active"
+  MONSTER
+  +FLOORCLIP
+  +FASTMELEE
+  -CANUSEWALLS
+  states
+  {
+  Spawn:
+       DOG1 AA 2 A_Wander
+       DOG1 A 0 A_Look
+       DOG1 BB 2 A_Wander
+       DOG1 B 0 A_Look
+       DOG1 CC 2 A_Wander
+       DOG1 C 0 A_Look
+       DOG1 DD 2 A_Wander
+       DOG1 D 0 A_Look
+       Loop
+  See:
+	DOG1 AABBCCDD 2 A_Chase
+	loop
+  Melee:
+    DOG1 EF 2 A_FaceTarget
+    DOG1 G 8 A_MeleeAttack
+	DOG1 FE 4
+    goto See
+  Pain:
+    DOG1 H 2
+    DOG1 H 2 A_Pain
+    goto See
+  Death:
+    DOG1 H 8
+    DOG1 I 8 A_Scream
+    DOG1 J 6
+    DOG1 K -1 A_NoBlocking
+    stop
+  Raise:
+    DOG1 KJIH 6
+    Goto See
+  }
+}
+
+actor GermanShepherd 12017
+{
+//$Category Monsters (Wolf3D)
+//$Title Dog (Shepherd)
+//$Color 4
+  spawnid 8
+  hitobituary "%o was bitten by a guard dog."
+  health 25
+  painchance 180
+  speed 16
+  radius 20
+  height 48
+  mass 70
+  Meleedamage 5
+  seesound "dog/sight"
+  attacksound "dog/attack"
+  painsound "dog/pain"
+  deathsound "dog/death"
+  activesound "dog/active"
+  MONSTER
+  +FLOORCLIP
+  +FASTMELEE
+  -CANUSEWALLS
+  states
+  {
+  Spawn:
+       DOG2 AA 2 A_Wander
+       DOG2 A 0 A_Look
+       DOG2 BB 2 A_Wander
+       DOG2 B 0 A_Look
+       DOG2 CC 2 A_Wander
+       DOG2 C 0 A_Look
+       DOG2 DD 2 A_Wander
+       DOG2 D 0 A_Look
+       Loop
+  See:
+	DOG2 AABBCCDD 2 A_Chase
+	loop
+  Melee:
+    DOG2 EF 2 A_FaceTarget
+    DOG2 G 8 A_MeleeAttack
+	DOG2 FE 4
+    goto See
+  Pain:
+    DOG2 H 2
+    DOG2 H 2 A_Pain
+    goto See
+  Death:
+    DOG2 H 8
+    DOG2 I 8 A_Scream
+    DOG2 J 6
+    DOG2 K -1 A_NoBlocking
+    stop
+  Raise:
+    DOG2 KJIH 6
+    Goto See
+  }
+}
+
+actor RocketMan 12018
+{
+//$Category Monsters (Wolf3D)
+//$Title Otto Giftmacher (Boss)
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was splattered by Otto Giftmacher."
+  health 300
+  radius 20
+  height 56
+  mass 200
+  speed 8
+  painchance 110
+  seesound "Boss2/Sighted"
+  attacksound "nazi/pistol"
+  painsound "boss/pain"
+  deathsound "Boss2/Death"
+  activesound " "
+  dropitem "NebAmmoSmall" 128
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +LOOKALLAROUND
+  states
+  {
+  Spawn:
+    OTTO A 10 A_Look
+    loop
+  See:
+    OTTO AABBCCDD 4 A_Chase
+    loop
+  Missile:
+    OTTO E 10 A_FaceTarget
+    OTTO F 8 BRIGHT A_CustomMissile("MiniRocket",32,12,0)
+    OTTO E 8
+    goto See
+  Pain:
+    OTTO A 3
+    OTTO A 3 A_Pain
+    goto See
+  Death:
+    OTTO G 5
+    OTTO H 5 A_Scream
+    OTTO I 5
+    OTTO J -1 A_NoBlocking
+    stop
+  Raise:
+    OTTO JIHG 5
+    goto See
+  Idle:
+    OTTO AA 4 A_Wander
+    OTTO A 0 A_Look
+    OTTO BB 4 A_Wander
+    OTTO A 0 A_Look
+    OTTO CC 4 A_Wander
+    OTTO A 0 A_Look
+    OTTO DD 4 A_Wander
+    OTTO A 0 A_Look
+    loop
+  }
+}
+
+actor MadDoctor 12019
+{
+//$Category Monsters (Wolf3D)
+//$Title Dr Schabbs (Boss)
+//$Color 4
+	scale 1.1
+	spawnid 4
+	obituary "%o was used as an unwitting test subject by Dr. Schabbs."
+	health 300
+	radius 20
+	height 56
+	mass 200
+	speed 8
+	painchance 110
+	seesound "Boss2/Sighted"
+	attacksound "nazi/pistol"
+	painsound "boss/pain"
+	deathsound "Boss2/Death"
+	activesound " "
+	DamageFactor "Enemy", 0.0
+	MONSTER
+	+FLOORCLIP
+	+NOTARGET
+	+NOINFIGHTING
+	+LOOKALLAROUND
+	states
+	{
+	Spawn:
+		SCHB A 10 A_Look
+		loop
+	See:
+		SCHB AABBCCDD 4 A_Chase
+		loop
+	Missile:
+		SCHB E 10 A_FaceTarget
+		SCHB F 8 A_CustomMissile("FlyingNeedle",32,12,0)
+		SCHB A 8
+		goto See
+	Pain:
+		SCHB G 3
+		SCHB A 3 A_Pain
+		goto See
+	Death:
+		SCHB G 5
+		SCHB H 5 A_Scream
+		SCHB I 5
+		SCHB J -1 A_NoBlocking
+		stop
+	Raise:
+		SCHB JIHG 5
+		goto See
+	Idle:
+		SCHB AA 4 A_Wander
+		SCHB A 0 A_Look
+		SCHB BB 4 A_Wander
+		SCHB A 0 A_Look
+		SCHB CC 4 A_Wander
+		SCHB A 0 A_Look
+		SCHB DD 4 A_Wander
+		SCHB A 0 A_Look
+		loop
+	}
+}
+
+actor FlyingNeedle
+{
+  Game Doom
+  Radius 11
+  Height 8
+  Speed 20
+  Damage 8
+  Gravity 0.2
+  Projectile
+  +RANDOMIZE
+  +STRIFEDAMAGE
+  DamageType "Enemy"
+  Obituary "$OB_MPROCKET" // "%o rode %k's rocket."
+  States
+  {
+  Spawn:
+    NEDL ABCD 3
+    loop
+  Death:
+    TNT1 A 1
+    stop
+  }
+}
+
+actor SuperSoldier 12020
+{
+//$Category Monsters (Wolf3D)
+//$Title Hans Grosse (Boss)
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was terminated by an ubersoldat."
+  health 500
+  radius 24
+  height 64
+  mass 500
+  speed 8
+  painchance 150
+  seesound "Boss1/Sighted"
+  attacksound "weapons/chaingun"
+  painsound "boss/pain"
+  deathsound "Boss1/Death"
+  activesound " "
+  DropItem "UMG43" 8
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +LOOKALLAROUND
+  +NOBLOOD
+  states
+  {
+  Spawn:
+    HANS A 10 A_Look
+    loop
+  See:
+    HANS AABBCCDD 4 A_Chase
+    loop
+  Missile:
+    HANS E 20 A_FaceTarget
+	HANS F 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
+    HANS F 1 BRIGHT A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
+	HANS F 1 BRIGHT A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
+	HANS G 2
+	HANS F 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
+    HANS F 1 BRIGHT A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
+	HANS F 1 BRIGHT A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
+	HANS G 2
+	HANS F 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
+    HANS F 1 BRIGHT A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
+	HANS F 1 BRIGHT A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
+	HANS G 2 BRIGHT A_SentinelRefire
+    goto Missile+1
+  Pain:
+    HANS H 3
+    HANS H 3 A_Pain
+    goto See
+  Death:
+    HANS I 5
+    HANS J 5 A_Scream
+    HANS K 5
+    HANS L -1 A_NoBlocking
+    stop
+  Raise:
+    HANS LKJI 5
+    goto See
+  Idle:
+    HANS AA 4 A_Wander
+    HANS A 0 A_Look
+    HANS BB 4 A_Wander
+    HANS A 0 A_Look
+    HANS CC 4 A_Wander
+    HANS A 0 A_Look
+    HANS DD 4 A_Wander
+    HANS A 0 A_Look
+    loop
+  }
+}
+
+actor SuperSoldierGirl 12021
+{
+//$Category Monsters (Wolf3D)
+//$Title Gretel Grosse (Boss)
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was terminated by a female ubersoldat."
+  health 500
+  radius 24
+  height 64
+  mass 500
+  speed 8
+  painchance 150
+  seesound "BossGirl/Sighted"
+  attacksound "weapons/chaingun"
+  painsound "bossGirl/pain"
+  deathsound "BossGirl/Death"
+  activesound ""
+  DropItem "MClip" 128
+  DropItem "MClipSmall" 128
+  DropItem "MClipSmall" 128
+  DropItem "MClipSmall" 128
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +LOOKALLAROUND
+  +MISSILEMORE
+  +MISSILEEVENMORE
+  +NOBLOOD
+  states
+  {
+  Spawn:
+    WBO4 A 10 A_Look
+    loop
+  See:
+    WBO4 AABBCCDD 4 A_Chase
+    loop
+  Missile:
+    WBO4 E 20 A_FaceTarget
+	WBO4 F 0 BRIGHT A_PlayWeaponSound("weapons/ba5fire")
+    WBO4 FFFF 0 BRIGHT A_CustomMissile("EnemyPistolTracer",32,16,frandom(-6,6))
+	WBO4 FFF 0 BRIGHT A_CustomMissile("EnemyPistolTracer",32,-16,frandom(-6,6))
+	WBO4 F 2 BRIGHT A_CustomMissile("EnemyPistolTracer",32,-16,frandom(-6,6))
+	WBO4 E 2 BRIGHT
+	WBO4 F 0 BRIGHT A_PlayWeaponSound("weapons/ba5fire")
+    WBO4 FFFF 0 BRIGHT A_CustomMissile("EnemyPistolTracer",32,16,frandom(-6,6))
+	WBO4 FFF 0 BRIGHT A_CustomMissile("EnemyPistolTracer",32,-16,frandom(-6,6))
+	WBO4 F 2 BRIGHT A_CustomMissile("EnemyPistolTracer",32,-16,frandom(-6,6))
+	WBO4 E 2 BRIGHT
+	WBO4 F 0 BRIGHT A_PlayWeaponSound("weapons/ba5fire")
+    WBO4 FFFF 0 BRIGHT A_CustomMissile("EnemyPistolTracer",32,16,frandom(-6,6))
+	WBO4 FFF 0 BRIGHT A_CustomMissile("EnemyPistolTracer",32,-16,frandom(-6,6))
+	WBO4 F 2 BRIGHT A_CustomMissile("EnemyPistolTracer",32,-16,frandom(-6,6))
+    WBO4 E 2 BRIGHT
+	Goto See
+  Pain:
+    WBO4 H 3
+    WBO4 H 3 A_Pain
+    goto See
+  Death:
+	WBO4 H 5
+    WBO4 I 5
+    WBO4 J 5 A_Scream
+    WBO4 K -1 A_NoBlocking
+    stop
+  Raise:
+    WBO4 KJI 5
+    goto See
+  Idle:
+    WBO4 AA 4 A_Wander
+    WBO4 A 0 A_Look
+    WBO4 BB 4 A_Wander
+    WBO4 A 0 A_Look
+    WBO4 CC 4 A_Wander
+    WBO4 A 0 A_Look
+    WBO4 DD 4 A_Wander
+    WBO4 A 0 A_Look
+    loop
+  }
+}
+
+actor SuperSoldierElite replaces BaronOfHell 12022
+{
+//$Category Monsters (Wolf3D)
+//$Title Ubersoldat
+//$Color 4
+  scale 1.1
+  spawnid 3
+  obituary "%o was pulverized by an elite ubersoldat."
+  health 850
+  radius 24
+  height 64
+  mass 500
+  speed 8
+  painchance 150
+  seesound "Boss1/Sighted"
+  attacksound "weapons/chaingun"
+  painsound "boss/pain"
+  deathsound "Boss1/Death"
+  activesound " "
+  DropItem "MClip" 128
+  DropItem "MClipSmall" 128
+  DropItem "NebAmmoSmall" 256
+  DropItem "MClipSmall" 128
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +LOOKALLAROUND
+  +BOSSDEATH
+  +NOBLOOD
+  states
+  {
+  Spawn:
+    TRAN A 10 A_Look
+    loop
+  See:
+    TRAN AABBCCDD 4 A_Chase
+    loop
+  Missile:
+    TRAN E 20 A_FaceTarget
+	TRAN F 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
+    TRAN F 1 BRIGHT A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
+	TRAN F 1 BRIGHT A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
+	TRAN G 2
+	TRAN F 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
+    TRAN F 1 BRIGHT A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
+	TRAN F 1 BRIGHT A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
+	TRAN G 2
+	TRAN F 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
+    TRAN F 1 BRIGHT A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
+	TRAN F 1 BRIGHT A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
+	TRAN G 2
+	TRAN F 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
+    TRAN F 1 BRIGHT A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
+	TRAN F 1 BRIGHT A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
+	TRAN G 2 BRIGHT A_SentinelRefire
+    goto Missile+1
+  Pain:
+    TRAN H 3
+    TRAN H 3 A_Pain
+    goto See
+  Death:
+    TRAN I 5
+    TRAN J 5 A_Scream
+    TRAN K 5 A_BossDeath
+    TRAN L -1 A_NoBlocking
+    stop
+  Raise:
+    TRAN LKJI 5
+    goto See
+  Idle:
+    TRAN AA 4 A_Wander
+    TRAN A 0 A_Look
+    TRAN BB 4 A_Wander
+    TRAN A 0 A_Look
+    TRAN CC 4 A_Wander
+    TRAN A 0 A_Look
+    TRAN DD 4 A_Wander
+    TRAN A 0 A_Look
+    loop
+  }
+}
+
+actor MiniRocket
+{
+  Game Doom
+  SpawnID 127
+  Radius 11
+  Height 8
+  Speed 15
+  Damage 5
+  Projectile
+  +RANDOMIZE
+  DamageType "Enemy"
+  SeeSound "weapons/rocklf"
+  DeathSound "weapons/rocklx"
+  Obituary "$OB_MPROCKET" // "%o rode %k's rocket."
+  States
+  {
+  Spawn:
+    MISL A 1 bright A_CustomMissile("RocketFlameSpawner",0,0,0,5)
+    loop
+  Death:
+    FRME A 1 bright A_Explode(20,40)
+	FRME BCDEFGHIHJKLMNOPQRS 1 bright
+    stop
+  }
+}
+
+actor MiniMiniRocket : MiniRocket
+{
+	Scale 0.8
+	Damage 4
+	+STRIFEDAMAGE
+	DeathSound "weapons/nebxpl"
+}
+
+actor General replaces Archvile 12023
+{
+//$Category Monsters (Wolf3D)
+//$Title General Fettgesicht (Boss)
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was eliminated by a Nazi general."
+  health 800
+  radius 20
+  height 56
+  mass 1000
+  speed 8
+  painchance 110
+  seesound "Boss3/Sighted"
+  attacksound "weapons/chaingun"
+  painsound "boss/pain"
+  deathsound "Boss3/Death"
+  activesound " "
+  DamageFactor "Enemy", 0.0
+  DropItem "NebAmmoSmall" 128
+  DropItem "NebAmmoSmall" 128
+  DropItem "NebAmmoSmall" 128
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +LOOKALLAROUND
+  +MISSILEEVENMORE
+  states
+  {
+  Spawn:
+    FETT A 10 A_Look
+    loop
+  See:
+    FETT AABBCCDD 4 A_Chase
+    loop
+  Missile:
+    FETT E 10 A_FaceTarget
+	FETT E 0 A_Jump(128,"Chaingun")
+    FETT F 8 BRIGHT A_CustomMissile("MiniRocket",32,15,0)
+    FETT E 8
+	FETT F 8 BRIGHT A_CustomMissile("MiniRocket",32,15,0)
+	FETT E 8
+	FETT F 8 BRIGHT A_CustomMissile("MiniRocket",32,15,0)
+	FETT E 8
+    goto See
+  Chaingun:
+	FETT G 0 A_FaceTarget
+	FETT H 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
+    FETT H 2 BRIGHT A_CustomMissile("EnemyChaingunTracer",40,12,random(-11,11))
+    FETT G 2 BRIGHT A_SentinelRefire
+    goto Chaingun+1
+  Pain:
+    FETT D 3
+    FETT D 3 A_Pain
+    goto See
+  Death:
+    FETT I 5
+    FETT J 5 A_Scream
+    FETT K 5
+    FETT L -1 A_NoBlocking
+    stop
+  Raise:
+    FETT LKJI 5
+    goto See
+  Idle:
+    FETT AA 4 A_Wander
+    FETT A 0 A_Look
+    FETT BB 4 A_Wander
+    FETT A 0 A_Look
+    FETT CC 4 A_Wander
+    FETT A 0 A_Look
+    FETT DD 4 A_Wander
+    FETT A 0 A_Look
+    loop
+  }
+}
+
+actor FlamerMan replaces Arachnotron 12024
+{
+//$Category Monsters (Wolf3D)
+//$Title Flamer (Boss)
+//$Color 4
+  scale 1.1
+  spawnid 6
+  obituary "%o was roasted by a Nazi with a flamethrower."
+  health 500
+  radius 20
+  height 56
+  mass 200
+  speed 8
+  painchance 110
+  seesound "Boss1/Sighted"
+  attacksound "nazi/pistol"
+  painsound "boss/pain"
+  deathsound "Boss1/Death"
+  activesound " "
+  dropitem "FlameAmmo"
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +LOOKALLAROUND
+  states
+  {
+  Spawn:
+    FLAM A 10 A_Look
+    loop
+  See:
+    FLAM AABBCCDD 3 A_Chase
+    loop
+  Missile:
+    FLAM E 10 A_FaceTarget
+	FLAM E 0 A_JumpIfCloser(384,"ProperMissile")
+	FLAM F 4 BRIGHT A_CustomMissile("EnemyFlamebolt",32,12,0)
+	FLAM E 6
+	Goto See
+  ProperMissile:
+    FLAM FFFFFFFF 1 BRIGHT A_CustomMissile("EnemyFlamerShot",32,12,0)
+    FLAM E 6 A_SpidRefire
+    goto Missile
+  Pain:
+    FLAM A 3
+    FLAM A 3 A_Pain
+    goto See
+  Death:
+    FLAM G 5
+    FLAM H 5 A_Scream
+    FLAM I 5 A_BossDeath
+    FLAM J -1 A_NoBlocking
+    stop
+  Raise:
+    FLAM JIHG 5
+    goto See
+  Idle:
+    FLAM AA 4 A_Wander
+    FLAM A 0 A_Look
+    FLAM BB 4 A_Wander
+    FLAM A 0 A_Look
+    FLAM CC 4 A_Wander
+    FLAM A 0 A_Look
+    FLAM DD 4 A_Wander
+    FLAM A 0 A_Look
+    loop
+  }
+}
+
+actor ChairGuy 12025
+{
+//$Category Monsters (Wolf3D)
+//$Title Chairman (Boss)
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was given the chair."
+  health 600
+  radius 20
+  height 56
+  mass 2000
+  speed 8
+  painchance 110
+  seesound "krist/sight"
+  attacksound "nazi/pistol"
+  painsound "boss/pain"
+  deathsound "krist/death"
+  activesound " "
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOAT
+  +NOGRAVITY
+  +NOTARGET
+  +NOINFIGHTING
+  +LOOKALLAROUND
+  states
+  {
+  Spawn:
+    KRIS A 10 A_Look
+    loop
+  See:
+    KRIS AABBCCDD 4 A_Chase
+    loop
+  Missile:
+    KRIS E 10 A_FaceTarget
+    KRIS F 8 BRIGHT A_CustomMissile("MiniRocket",48,15,0)
+    KRIS E 8
+    KRIS G 8 BRIGHT A_CustomMissile("MiniRocket",48,-15,0)
+    KRIS E 8
+    goto See
+  Pain:
+    KRIS A 3
+    KRIS A 3 A_Pain
+    goto See
+  Death:
+    KRIS H 5
+    KRIS I 5 A_Scream
+    KRIS J 5
+    KRIS K -1
+    Wait
+  Crash:
+    KRIS H 0 A_SetFloorClip
+	KRIS H 0 A_PlaySound("weapons/rocklx")
+    MISL B 8 bright A_Explode(40,40)
+    MISL C 6 bright
+    MISL D 4 bright
+	Stop
+  Idle:
+    KRIS AA 4 A_Wander
+    KRIS A 0 A_Look
+    KRIS BB 4 A_Wander
+    KRIS A 0 A_Look
+    KRIS CC 4 A_Wander
+    KRIS A 0 A_Look
+    KRIS DD 4 A_Wander
+    KRIS A 0 A_Look
+    loop
+  }
+}
+
+actor HitlerGhost 12026
+{
+//$Category Monsters (Wolf3D)
+//$Title Hitler Ghost
+//$Color 4
+	Scale 1.2
+	obituary "%o thought %g saw Hitler."
+	health 250
+	radius 20
+	height 56
+	mass 1000
+	speed 13
+	painchance 24
+	deathsound "hitlerghost/die"
+	seesound "hitlerghost/see"
+	DamageFactor "enemy", 0.0
+	MONSTER
+	+FLOAT
+	+NOGRAVITY
+	+NOTARGET
+	+NOINFIGHTING
+	+LOOKALLAROUND
+	+NOBLOOD
+	States
+	{
+	Spawn:
+		HGST A 10 A_Look
+		Loop
+	See:
+		HGST A 6 A_FastChase
+		HGST BCB 6 A_Chase
+		Loop
+	Missile:
+		HGST A 4 A_FaceTarget
+		HGST D 4 BRIGHT A_CustomMissile("EnemyFlamebolt2",30)
+		HGST A 4
+		Goto See
+	Pain:
+		HGST A 4 A_Pain
+		Goto See
+	Death:
+		HGST E 6 A_Scream
+		HGST FGHI 6
+		HGST J -1 A_NoBlocking
+		Stop
+	}
+}
+
+actor MiniShip 12028
+{
+//$Category Monsters (Wolf3D)
+//$Title Miniship
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o received death from above."
+  health 375
+  radius 20
+  height 56
+  mass 2000
+  speed 13
+  painchance 200
+  attacksound "weapons/stg44"
+  painsound "metal/pain"
+  deathsound "weapons/rocklx"
+  activesound " "
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOAT
+  +NOGRAVITY
+  +NOTARGET
+  +NOINFIGHTING
+  +LOOKALLAROUND
+  +NOBLOOD
+  states
+  {
+  Spawn:
+    SHIP A 10 A_Look
+    loop
+  See:
+    SHIP AABBCCDD 4 A_Chase
+    loop
+  Missile:
+    SHIP D 10 A_FaceTarget
+	SHIP E 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
+    SHIP E 4 BRIGHT A_CustomMissile("EnemyChaingunTracer",20,4,random(-11,11))
+    SHIP D 4
+	SHIP E 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
+    SHIP F 4 BRIGHT A_CustomMissile("EnemyChaingunTracer",20,-4,random(-11,11))
+    SHIP D 4
+    goto See
+  Pain:
+    SHIP A 3
+    SHIP A 3 A_Pain
+    goto See
+  Death:
+    SHIP B 0 A_Scream
+    MISL B 8 bright A_Explode(40,40)
+    MISL C 6 bright
+    MISL D 4 bright
+	Stop
+  Idle:
+    SHIP AA 4 A_Wander
+    SHIP A 0 A_Look
+    SHIP BB 4 A_Wander
+    SHIP A 0 A_Look
+    SHIP CC 4 A_Wander
+    SHIP A 0 A_Look
+    SHIP DD 4 A_Wander
+    SHIP A 0 A_Look
+    loop
+  }
+}
+
+actor Geist 12029
+{
+//$Category Monsters (Wolf3D)
+//$Title Geist
+//$Color 4
+	Scale 0.8
+	obituary "%o had %p soul removed by a Geist."
+	health 100
+	radius 16
+	height 56
+	mass 1000
+	speed 15
+	painchance 255
+	renderstyle translucent
+	alpha 0.5
+	deathsound "geist/die"
+	painsound "geist/pain"
+	activesound "brain/cube"
+	DamageFactor "enemy", 0.0
+	MONSTER
+	+FLOAT
+	+NOGRAVITY
+	+NOTARGET
+	+NOINFIGHTING
+	+LOOKALLAROUND
+	+DONTFALL
+	+NOBLOOD
+	States
+	{
+	Spawn:
+		GEST A 10 A_Look
+		Loop
+	See:
+		GEST A 0 A_LoopActiveSound
+		GEST A 0 A_SetTranslucent(0.1,0)
+		GEST ABCD 3 A_Chase
+		GEST A 0 A_SetTranslucent(0.2,0)
+		GEST ABCD 3 A_Chase
+		GEST A 0 A_SetTranslucent(0.3,0)
+		GEST ABCD 3 A_Chase
+		GEST A 0 A_SetTranslucent(0.4,0)
+		GEST ABCD 3 A_Chase
+		GEST A 0 A_SetTranslucent(0.5,0)
+		GEST ABCD 3 A_Chase
+		GEST A 0 A_SetTranslucent(0.4,0)
+		GEST ABCD 3 A_Chase
+		GEST A 0 A_SetTranslucent(0.3,0)
+		GEST ABCD 3 A_Chase
+		GEST A 0 A_SetTranslucent(0.2,0)
+		GEST ABCD 3 A_Chase
+		Loop
+	Melee:
+		GEST A 1 A_SetTranslucent(0.1)
+		GEST A 1 A_SetTranslucent(0.3)
+		GEST A 1 A_SetTranslucent(0.5)
+		GEST B 3 Bright A_FaceTarget
+		GEST CDABCD 3 BRIGHT A_CustomMeleeAttack(4)
+		GEST A 1 A_SetTranslucent(0.4)
+		GEST A 1 A_SetTranslucent(0.3)
+		GEST A 1 A_SetTranslucent(0.2)
+		GEST A 1 A_SetTranslucent(0.1)
+		Goto See
+	Pain:
+		GEST E 1 A_Pain
+		GEST E 1 A_SetTranslucent(0.4)
+		GEST E 1 A_SetTranslucent(0.3)
+		GEST E 1 A_SetTranslucent(0.2)
+		GEST E 1 A_SetTranslucent(0.1)
+		Goto See
+	Death:
+		GEST E 5 A_SetTranslucent(0.5)
+		GEST E 6 A_Scream
+		GEST FG 6
+		GEST H 6 A_NoBlocking
+		Stop
+	}
+}
+
+ACTOR MGTurret 12030
+{
+//$Category Monsters (Wolf3D)
+//$Title MGTurret
+//$Color 4
+  spawnid 4
+  obituary "%o was shot up by a gun turret."
+  health 100
+  radius 24
+  height 24
+  mass 10000000000000000
+  speed 0
+  painchance 100
+  attacksound "weapons/chaingun"
+  painsound "metal/pain"
+  deathsound "weapons/rocklx"
+  MONSTER
+  +MISSILEEVENMORE
+  +NOGRAVITY
+  +LOOKALLAROUND
+  +NOBLOOD
+  states
+  {
+  Spawn:
+    GTUR A 1 A_Look
+    loop
+  See:
+    GTUR A 4 A_Chase
+    loop
+  Pain:
+    GTUR A 3
+    GTUR A 3 A_Pain
+    goto See
+  Missile:
+    GTUR A 10 A_FaceTarget
+	GTUR B 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
+    GTUR C 3 bright A_CustomMissile("EnemyChaingunTracer",20,0,random(-11,11))
+    GTUR B 3 bright A_CPosRefire
+    goto Missile+1
+  Death:
+	TNT1 A 0 bright A_Scream
+	GTUR D 6 bright A_Explode(40,40)
+	GTUR EFG 6 bright
+	GTUR H -1 A_NoBlocking
+	Stop
+  }
+}
+
+actor DeathKnight 12032
+{
+//$Category Monsters (Wolf3D)
+//$Title Todesritter (Boss)
+//$Color 4
+  scale 1.5
+  spawnid 4
+  obituary "%o knelt before the Death Knight."
+  health 3000
+  radius 64
+  height 96
+  mass 1000
+  speed 14
+  painchance 20
+  seesound "deathknight/sight"
+  attacksound "weapons/chaingun"
+  painsound "boss/pain"
+  deathsound "deathknight/death"
+  activesound " "
+  DropItem "MClip" 128
+  DropItem "MClipSmall" 128
+  DropItem "NebAmmoSmall" 256
+  DropItem "MClipSmall" 128
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +LOOKALLAROUND
+  +MISSILEEVENMORE
+  +BOSS
+  +NORADIUSDMG
+  states
+  {
+  Spawn:
+    DKGT A 10 A_Look
+    loop
+  See:
+    DKGT AABB 4 A_Chase
+    DKGT A 0 A_Hoof
+    DKGT CCDD 4 A_Chase
+    DKGT A 0 A_Hoof
+	Loop
+  Missile:
+    DKGT E 10 A_FaceTarget
+	DKGT E 0 A_Jump(40, "AlphaStrike")
+	DKGT E 0 A_Jump(128,"Chaingun")
+    DKGT F 3 BRIGHT A_CustomMissile("NebRocketEnemy",80,24,0)
+    DKGT E 3 A_CPosRefire
+	DKGT G 3 BRIGHT A_CustomMissile("NebRocketEnemy",80,-24,0)
+	DKGT E 3 A_CPosRefire
+    DKGT F 3 BRIGHT A_CustomMissile("NebRocketEnemy",80,24,0)
+    DKGT E 3 A_CPosRefire
+	DKGT G 3 BRIGHT A_CustomMissile("NebRocketEnemy",80,-24,0)
+	DKGT E 3
+    goto See
+  Chaingun:
+	DKGT H 0 A_FaceTarget
+	DKGT K 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
+	DKGT II 0 BRIGHT A_CustomMissile("EnemyChaingunTracer",40,24,random(-11,11))
+    DKGT II 1 BRIGHT A_CustomMissile("EnemyChaingunTracer",40,-24,random(-11,11))
+    DKGT H 2 bright A_SentinelRefire
+    goto Chaingun+1
+  AlphaStrike:
+	DKGT K 0 A_FaceTarget
+    DKGT K 0 BRIGHT A_CustomMissile("NebRocketEnemy",80,24,0)	
+	DKGT K 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
+	DKGT KK 0 BRIGHT A_CustomMissile("EnemyChaingunTracer",40,24,random(-11,11))
+    DKGT KK 1 BRIGHT A_CustomMissile("EnemyChaingunTracer",40,-24,random(-11,11))
+    DKGT L 0 BRIGHT A_CustomMissile("NebRocketEnemy",80,-24,0)	
+    DKGT L 2 bright A_SentinelRefire
+    goto AlphaStrike+1
+  Pain:
+    DKGT E 3
+    DKGT E 3 A_Pain
+    goto See
+  Death:
+    DKGT M 5 A_Scream
+    DKGT NOP 5 
+    DKGT Q 5 A_NoBlocking
+	DKGT R 5
+    DKGT S -1 A_BossDeath
+    stop
+  }
+}
+
+actor Hitler 12033
+{
+//$Category Monsters (Wolf3D)
+//$Title Adolf Hitler (Boss)
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o heiled Hitler."
+  health 2500
+  radius 32
+  height 64
+  mass 1000
+  speed 10
+  painchance 20
+  seesound "hitler/sight"
+  attacksound "weapons/chaingun"
+  painsound "hitler/pain"
+  deathsound "hitler/death"
+  activesound "hitler/active"
+  DamageFactor "Enemy", 0.0
+  DropItem "MClip" 128
+  DropItem "MClipSmall" 128
+  DropItem "NebAmmoSmall" 256
+  DropItem "MClipSmall" 128
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +LOOKALLAROUND
+  +MISSILEEVENMORE
+  +BOSS
+  +NORADIUSDMG
+  states
+  {
+  Spawn:
+    HITL A 10 A_Look
+    loop
+  See:
+    HITL AABB 4 A_Chase
+    HITL A 0 A_Hoof
+    HITL CCDD 4 A_Chase
+    HITL A 0 A_Hoof
+	Loop
+  Missile:
+    HITL E 10 A_FaceTarget
+	HITL F 0 A_FaceTarget
+	HITL F 0 A_PlayWeaponSound("weapons/chaingun")
+    HITL F 0 BRIGHT A_CustomMissile("EnemyChaingunTracer",32,24,random(-3,3))
+	HITL F 1 BRIGHT A_CustomMissile("EnemyChaingunTracer",32,-24,random(-3,3))
+	HITL F 0 BRIGHT A_CustomMissile("EnemyChaingunTracer",48,24,random(-3,3))
+	HITL F 1 BRIGHT A_CustomMissile("EnemyChaingunTracer",48,-24,random(-3,3))
+    HITL G 2 BRIGHT A_SentinelRefire
+    goto Missile+1
+  Pain:
+    HITL Q 3
+    HITL Q 3 A_Pain
+    goto See
+  Death:
+    HITL H 10 A_Scream
+    HITL IJK 10 
+    HITL L 10 A_PlaySound("hitler/gib")
+	HITL M 10 A_NoBlocking
+	HITL NO 10
+    HITL P -1 A_BossDeath
+    stop
+  }
+}
+
+actor FatMan 12034
+{
+//$Category Monsters (Wolf3D)
+//$Title FatMan (Boss)
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was vaporized by a Nazi's double rocket penetration."
+  health 600
+  radius 20
+  height 56
+  mass 1000
+  speed 8
+  painchance 110
+  seesound "fatman/sight"
+  attacksound "weapons/chaingun"
+  painsound "boss/pain"
+  deathsound "fatman/death"
+  activesound " "
+  DropItem "GrenadePickup" 128
+  DropItem "GrenadePickup" 128
+  DropItem "GrenadePickup" 128
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +LOOKALLAROUND
+  +MISSILEEVENMORE
+  states
+  {
+  Spawn:
+    GOER A 10 A_Look
+    loop
+  See:
+    GOER AABBCCDD 4 A_Chase
+    loop
+  Missile:
+    GOER E 10 A_FaceTarget
+    GOER F 6 BRIGHT A_CustomMissile("MiniMiniRocket",32,15,0)
+    GOER E 6
+	GOER G 6 BRIGHT A_CustomMissile("MiniMiniRocket",32,-15,0)
+	GOER E 6
+	GOER F 6 BRIGHT A_CustomMissile("MiniMiniRocket",32,15,0)
+	GOER E 6
+	GOER G 6 BRIGHT A_CustomMissile("MiniMiniRocket",32,-15,0)
+    goto See
+  Pain:
+    GOER D 3
+    GOER D 3 A_Pain
+    goto See
+  Death:
+    GOER H 5
+    GOER I 5 A_Scream
+    GOER J 5
+	GOER K 0 A_NoBlocking
+    GOER K -1 A_BossDeath
+    stop
+  Raise:
+    GOER KJIH 5
+    goto See
+  Idle:
+    GOER AA 4 A_Wander
+    GOER A 0 A_Look
+    GOER BB 4 A_Wander
+    GOER A 0 A_Look
+    GOER CC 4 A_Wander
+    GOER A 0 A_Look
+    GOER DD 4 A_Wander
+    GOER A 0 A_Look
+    loop
+  }
+}
+
+actor Scientist : Nazi 12035
+{
+//$Category Monsters (Wolf3D)
+//$Title Scientist
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was shot by a scientist."
+  health 20
+  radius 20
+  height 56
+  mass 100
+  speed 8
+  painchance 200
+  seesound "Nazi1/Sighted"
+  painsound "Nazi1/Pain"
+  deathsound "Nazi1/Death"
+  activesound ""
+  dropitem "MPClipSmall" 256
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  states
+  {
+  Spawn:
+    SCIE A 10 A_Look
+    loop
+  See:
+    SCIE AABBCCDD 4 A_Chase
+    loop
+  Missile:
+    SCIE EE 5 A_FaceTarget
+	GARD G 0 A_PlayWeaponSound("nazi/pistol")
+    SCIE F 8 BRIGHT A_CustomMissile("EnemyPistolTracer",32,0,random(-8,8))
+    SCIE E 8
+    goto See
+  Pain:
+    SCIE G 3
+    SCIE G 3 A_Pain
+    goto See
+  Death:
+    SCIE H 5
+    SCIE I 5 A_Scream
+    SCIE J 5 A_NoBlocking
+    SCIE KL 5
+    SCIE M -1
+    stop
+  Raise:
+    SCIE MLKJIH 5
+    goto See
+  Idle:
+    SCIE AA 4 A_Wander
+    SCIE A 0 A_Look
+    SCIE BB 4 A_Wander
+    SCIE A 0 A_Look
+    SCIE CC 4 A_Wander
+    SCIE A 0 A_Look
+    SCIE DD 4 A_Wander
+    SCIE A 0 A_Look
+    loop
+  }
+}
+
+ACTOR UberMutant 12058
+{
+//$Category Monsters (Wolf3D)
+//$Title Übermutant (Boss)
+//$Color 4
+  Health 1000
+  Radius 24
+  Height 64
+  Mass 1000
+  Speed 8
+  PainChance 50
+  Monster
+  +FLOORCLIP
+  +BOSSDEATH
+  DamageFactor "Enemy", 0.0
+  BloodColor "Purple"
+  SeeSound "baron/sight"
+  DeathSound "baron/death"
+  activesound ""
+  Obituary "$OB_BARON"
+  HitObituary "%o was crushed by an ubermutant."
+  States
+  {
+  Spawn:
+    UBMU AB 10 A_Look
+    Loop
+  See:
+    UBMU AABBCCDD 3 A_Chase
+    Loop
+  Melee:
+  Missile:
+    UBMU EF 8 A_FaceTarget
+    UBMU G 8 A_BruisAttack
+    Goto See
+  Pain:
+    UBMU H 2
+    UBMU H 2 A_Pain
+    Goto See
+  Death:
+    UBMU I 8
+    UBMU J 8 A_Scream
+    UBMU K 8
+    UBMU L 8 A_NoBlocking
+    UBMU MN 8
+    UBMU O -1 A_BossDeath
+    Stop
+  Raise:
+    UBMU O 8
+    UBMU NMLKJI 8
+    Goto See
+  }
+}
+
+
+ACTOR NaziPuff : BulletPuff
+{
+DamageType "Enemy"
+}
+
+actor Sniper : Nazi 12701
+{
+//$Category Monsters (Wolf3D)
+//$Title SA Sniper
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was headshot by a sniper."
+  health 50
+  radius 20
+  height 56
+  mass 100
+  speed 0
+  painchance 200
+  seesound "Nazi1/Sighted"
+  painsound "Nazi1/Pain"
+  deathsound "Nazi1/Death"
+  activesound ""
+  dropitem "MauserAmmo" 256
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  states
+  {
+  Spawn:
+    SNIP A 10 A_Look
+    loop
+  See:
+    SNIP A 1 A_Chase
+    loop
+  Missile:
+    SNIP A 32 A_FaceTarget
+    SNIP B 0 A_PlayWeaponSound("Enfield/Fire")
+    SNIP B 8 BRIGHT A_CustomMissile("EnemySniperTracer",32,0,0)
+    SNIP A 32
+    goto See
+  Pain:
+    SNIP A 3
+    SNIP A 3 A_Pain
+    goto See
+  Death:
+    SNIP E 5
+    SNIP F 5 A_Scream
+    SNIP G 5 A_NoBlocking
+    SNIP H 5
+    SNIP I -1
+    stop
+  Raise:
+    SNIP IHGFE 5
+    goto See
+  }
+}

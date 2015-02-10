@@ -1,0 +1,30 @@
+actor Mine 15124
+{
+//$Category Hazards (Wolf3D)
+//$Title Mine
+//$Color 3
+	Health 20
+  	Radius 10
+  	Height 42
+	Mass 9999999
+  	+SOLID
+  	+SHOOTABLE
+  	+NOBLOOD
+  	+ACTIVATEMCROSS
+  	+DONTGIB
+  	+NOICEDEATH
+	+TOUCHY
+  	DeathSound "panzer/explode"
+  	Obituary "$OB_BARREL" // "%o touched a mine."
+	States
+	{
+		Spawn: 
+			MINE A 6
+			Loop
+		Death:
+			MINE A 8 A_PlaySound("MINEF")
+			MINE A 0 A_Scream
+			TNT1 A 0 BRIGHT A_SpawnItemEx("GeneralExplosion_Large", 0, 0, 0)
+			Stop
+	}
+}

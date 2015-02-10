@@ -1,0 +1,254 @@
+ACTOR SwordSeq : Inventory
+{
+	Inventory.MaxAmount 2
+}
+
+ACTOR Firebrand : Weapon replaces Chainsaw 15006
+{
+//$Category Weapons (Wolf3D)
+//$Title (1) Tyrfing
+//$Color 14
+	Weapon.SelectionOrder 0
+	Weapon.SlotNumber 1
+	Weapon.Kickback 10
+	Weapon.SisterWeapon FlameSword
+	Inventory.PickupMessage "The legendary Tyrfing!"
+	Inventory.PickupSound "weapons/sworddraw"
+	Weapon.UpSound "weapons/sworddraw"
+	Tag "Tyrfing"
+	+NOAUTOFIRE
+	+NOALERT
+	+CHEATNOTWEAPON
+	States
+	{
+	Spawn:
+		SRDP A -1 bright
+		Loop
+	Select:
+		SRDG A 1 A_Raise
+		Loop
+	Deselect:
+		SRDG A 1 A_Lower
+		Loop
+	Ready:
+		SRDG A 1 A_weaponready
+		loop
+	Fire:
+		SRDG B 0
+		SRDG B 0 A_JumpIfInventory("SwordSeq",2,"Fire3")
+		SRDG B 0 A_JumpIfInventory("SwordSeq",1,"Fire2")
+		SRDG B 1
+		SRDG C 1 A_GiveInventory("SwordSeq",1)
+		TNT1 A 4
+		SRDG DE 1 
+		SRDG F 1 A_PlaySound("weapons/swordswing")
+		SRDG GHI 1
+		SRDG J 1  A_CustomPunch(35,1,0,"SwordPuff",96)
+		SRDG KLM 1
+		TNT1 AAAAAAAA 1 A_WeaponReady
+		SRDG C 1
+		SRDG B 1 A_TakeInventory("SwordSeq",999)
+		Goto ready
+	Fire2:
+		TNT1 A 5
+		SRDG N 0
+		SRDG N 1 A_GiveInventory("SwordSeq",1)
+		SRDG O 1 A_PlaySound("weapons/swordswing")
+		SRDG PQR 1
+		SRDG S 1 A_CustomPunch(45,1,0,"SwordPuff",96)
+		SRDG TUV 1
+		TNT1 AAAAAAAA 1 A_WeaponReady
+		TNT1 A 0 A_TakeInventory("SwordSeq",999)
+		Goto Ready
+	Fire3:
+		TNT1 A 4
+		SRDG DE 1 
+		SRDG F 1 A_PlaySound("weapons/swordswing")
+		SRDG GHI 1
+		SRDG J 1  A_CustomPunch(35,1,0,"SwordPuff",96)
+		SRDG KL 1
+		SRDG M 1 A_TakeInventory("SwordSeq",1)
+		TNT1 AAAAAAAA 1 A_WeaponReady
+		SRDG C 1
+		SRDG B 1 A_TakeInventory("SwordSeq",999)
+		Goto Ready
+	AltFire:
+		SRDG ABC 1
+		TNT1 A 7 Thing_Damage(0,25)
+		TNT1 A 0 A_GiveInventory("PowerWeaponLevel2",1)
+		SRDG CBA 1
+		Goto Ready
+	}
+}
+
+ACTOR FlameSword : Weapon
+{
+	Weapon.Kickback 30
+	Weapon.SisterWeapon Firebrand
+	AttackSound "weapons/flameswordhit"
+	+POWERED_UP
+	+NOAUTOFIRE
+	+NOALERT
+	Tag "Fire Tyrfing"
+	States
+	{
+	Select:
+		SRDG A 1 A_Raise
+		Loop
+	Deselect:
+		SRDG A 1 A_Lower
+		Loop
+	Ready:
+		SRDF AAA 1 A_weaponready
+		SRDI BBBCCC 1 A_WeaponReady
+		loop
+	Fire:
+		SRDF B 0
+		SRDF B 0 A_JumpIfInventory("SwordSeq",2,"Fire3")
+		SRDF B 0 A_JumpIfInventory("SwordSeq",1,"Fire2")
+		SRDF B 1
+		SRDF C 1 A_GiveInventory("SwordSeq",1)
+		TNT1 A 4
+		SRDG DE 1 
+		SRDF F 1 A_PlaySound("weapons/flameswordswing")
+		SRDF GHI 1
+		SRDF J 1  A_CustomPunch(80,1,0,"FireSwordPuff",96)
+		SRDF KLM 1
+		TNT1 AAAAAAAA 1 A_WeaponReady
+		SRDF C 1
+		SRDF B 1 A_TakeInventory("SwordSeq",999)
+		Goto ready
+	Fire2:
+		TNT1 A 5
+		SRDF N 0
+		SRDF N 1 A_GiveInventory("SwordSeq",1)
+		SRDF O 1 A_PlaySound("weapons/flameswordswing")
+		SRDF PQR 1
+		SRDF S 1 A_CustomPunch(100,1,0,"FireSwordPuff",96)
+		SRDF TUV 1
+		TNT1 AAAAAAAA 1 A_WeaponReady
+		TNT1 A 0 A_TakeInventory("SwordSeq",999)
+		Goto Ready
+	Fire3:
+		TNT1 A 4
+		SRDG DE 1 
+		SRDF F 1 A_PlaySound("weapons/flameswordswing")
+		SRDF GHI 1
+		SRDF J 1  A_CustomPunch(80,1,0,"FireSwordPuff",96)
+		SRDF KL 1
+		SRDF M 1 A_TakeInventory("SwordSeq",1)
+		TNT1 AAAAAAAA 1 A_WeaponReady
+		SRDF C 1
+		SRDF B 1 A_TakeInventory("SwordSeq",999)
+		Goto Ready
+	Altfire:
+		SRDF BC 1
+		TNT1 A 4
+		SRDG DE 1 
+		SRDF F 1 A_PlaySound("weapons/flameswordswing")
+		SRDF GH 1
+		SRDF I 1 Thing_Damage(0,2)
+		SRDF J 1 A_FireCustomMissile("FirebrandFireball")
+		SRDF KLM 1
+		TNT1 A 20 A_WeaponReady
+		SRDF C 1
+		SRDF B 1 A_TakeInventory("SwordSeq",999)
+		Goto ready
+	}
+}
+
+ACTOR FirebrandFireball
+{
+	PROJECTILE
+	Radius 12
+	Height 12
+	Speed 40
+	Damage (40)
+	RenderStyle Add
+	Alpha 1.0
+	DeathSound "weapons/rocklx"
+	DamageType Fire
+	States
+	{
+	Spawn:
+		CFFX N 1 BRIGHT A_SpawnItemEx("FirebrandFireballTrail")
+		Loop
+	Death:
+		CFCF Q 2 BRIGHT A_Scream
+		CFCF R 2 BRIGHT A_Explode(16,128,0)
+		CFCF STUVWXYZ 2 BRIGHT
+		Stop
+	}
+}
+
+ACTOR FirebrandFireballTrail
+{
+	RenderStyle Add
+	Alpha 1.0
+	States
+	{
+	Spawn:
+		CFFX NOP 4 BRIGHT
+		Stop
+	}
+}
+
+ACTOR SwordPuff
+{
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+PUFFONACTORS
+	AttackSound "weapons/swordwall"
+	SeeSound "weapons/swordhit"
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 1
+		stop
+	Melee:
+		TNT1 A 0
+		TNT1 A 1
+		stop
+	Crash:
+		TNT1 A 0
+		TNT1 A 1 A_SpawnDebris("SwordPuffSpark")
+		TNT1 A 1 A_AlertMonsters
+		Stop
+	}
+}
+
+ACTOR FireSwordPuff : SwordPuff
+{
+	DamageType Fire
+}
+
+ACTOR SwordPuffSpark
+{
+	Health 4
+	radius 3
+	height 6
+	speed .1
+	RenderStyle ADD
+	Alpha 1
+	Scale .4
+	Mass 0
+	BounceType Doom
+	+missile
+	+FLOORCLIP
+	+DONTSPLASH
+	States
+	{
+		PUFF A 1
+		PUFF AAAAA 1  Bright A_SetTranslucent(.8,1)
+		PUFF AAAAAA 1  Bright A_SetTranslucent(.6,1)
+		PUFF AAAAAAAA 1  Bright A_SetTranslucent(.4,1)
+		PUFF AAAAAAAAAA 1 Bright A_SetTranslucent(.2,1)
+		Stop
+	}
+}
+
+ACTOR WWKeen : CommanderKeen replaces CommanderKeen
+{
+	DropItem "Firebrand"
+}

@@ -1,0 +1,520 @@
+ACTOR CeilingLightM2 19008
+{
+//$Category Light Sources (Wolf3D)
+//$Title Ceiling Light (middle)
+//$Color 11 
+  Radius 16
+  Height 16
+  +SOLID
+  +SPAWNCEILING
+  +NOGRAVITY
+  States
+  {
+  Spawn:
+    CLIT A -1
+    Stop
+  }
+}
+
+Actor Chandelier1Switchable : SwitchableDecoration 19605
+{
+//$Category Light Sources (Wolf3D)
+//$Title Chandelier (1, switchable)
+//$Color 11 
+  Radius 10
+  Height 21
+  Activation THINGSPEC_Switch
+  +NOGRAVITY
+  +SPAWNCEILING
+  +SOLID
+  +USESPECIAL
+  States
+  {
+  Spawn:
+    CHAN D -1
+    Stop
+  Active:
+    TNT1 A 0 A_PlaySound("DSCHAFIR", CHAN_BODY, 1.0, 1)
+    CHAN ABC 4
+    Goto Active+1
+  Inactive:
+    CHAN D -1 A_StopSound(CHAN_BODY)
+    Stop
+  }
+}
+
+Actor Chandelier2Switchable : SwitchableDecoration 19603
+{
+//$Category Light Sources (Wolf3D)
+//$Title Chandelier (2, switchable)
+//$Color 11 
+  Radius 10
+  Height 21
+  Activation THINGSPEC_Switch
+  +NOGRAVITY
+  +SPAWNCEILING
+  +SOLID
+  +USESPECIAL
+  States
+  {
+  Spawn:
+    CHAN H -1
+    Stop
+  Active:
+    TNT1 A 0 A_PlaySound("DSCHAFIR", CHAN_BODY, 1.0, 1)
+    CHAN EFG 4
+    Goto Active+1
+  Inactive:
+    CHAN H -1 A_StopSound(CHAN_BODY)
+    Stop
+  }
+}
+
+
+Actor Chandelier3Switchable : SwitchableDecoration 19602
+{
+//$Category Light Sources (Wolf3D)
+//$Title Chandelier (3, switchable)
+//$Color 11 
+  Radius 10
+  Height 21
+  Activation THINGSPEC_Switch
+  +NOGRAVITY
+  +SPAWNCEILING
+  +SOLID
+  +USESPECIAL
+  States
+  {
+  Spawn:
+    CHAN M -1
+    Stop
+  Active:
+    TNT1 A 0 A_PlaySound("DSCHAFIR", CHAN_BODY, 1.0, 1)
+    CHAN IJL 4
+    Goto Active+1
+  Inactive:
+    CHAN M -1 A_StopSound(CHAN_BODY)
+    Stop
+  }
+}
+
+Actor Chandelier4Switchable : SwitchableDecoration 19601
+{
+//$Category Light Sources (Wolf3D)
+//$Title Chandelier (4, switchable)
+//$Color 11 
+  Radius 10
+  Height 21
+  Activation THINGSPEC_Switch
+  +NOGRAVITY
+  +SPAWNCEILING
+  +SOLID
+  +USESPECIAL
+  States
+  {
+  Spawn:
+    CHAN Q -1
+    Stop
+  Active:
+    TNT1 A 0 A_PlaySound("DSCHAFIR", CHAN_BODY, 1.0, 1)
+    CHAN NOP 4
+    Goto Active+1
+  Inactive:
+    CHAN Q -1 A_StopSound(CHAN_BODY)
+    Stop
+  }
+}
+
+
+ACTOR CeilingLightM 19030
+{
+//$Category Light Sources (Wolf3D)
+//$Title Ceiling Light (small)
+//$Color 11 
+  Radius 16
+  Height 8
+  +SOLID
+  +SPAWNCEILING
+  +NOGRAVITY
+  States
+  {
+  Spawn:
+    CLIT B -1
+    Stop
+  }
+}
+
+
+ACTOR TableLightM 19009
+{
+//$Category Light Sources (Wolf3D)
+//$Title Table Light (middle)
+//$Color 11 
+  Radius 4
+  Height 32
+  +SOLID
+  States
+  {
+  Spawn:
+    TLIT A -1
+    Stop
+  }
+}
+
+ACTOR TableLightS 19049
+{
+//$Category Light Sources (Wolf3D)
+//$Title Table Light (small)
+//$Color 11 
+  Radius 4
+  Height 16
+  +SOLID
+  States
+  {
+  Spawn:
+    TLIT B -1
+    Stop
+  }
+}
+
+ACTOR ColumnLight 19010
+{
+//$Category Light Sources (Wolf3D)
+//$Title Column Light (bright)
+//$Color 11 
+  Radius 8
+  Height 128
+  +SOLID
+  States
+  {
+  Spawn:
+    COLL A -1
+    Stop
+  }
+}
+
+ACTOR StreetLight1 19011
+{
+//$Category Light Sources (Wolf3D)
+//$Title Street Light
+//$Color 11 
+  Radius 4
+  Height 128
+  +SOLID
+  States
+  {
+  Spawn:
+    STRL D -1
+    Stop
+  }
+}
+
+ACTOR StreetLight2 : SwitchingDecoration 19039
+{
+//$Category Light Sources (Wolf3D)
+//$Title Street Light (triple,toggle)
+//$Color 11 
+  Radius 4
+  Height 128
+  +SOLID
+  States
+  {
+  Spawn:
+  Active:
+    STLA C 10
+    Loop
+  Inactve:
+    STLA A 10
+    Loop
+  }
+}
+
+
+ACTOR StreetLight3 : SwitchingDecoration 19040
+{
+//$Category Light Sources (Wolf3D)
+//$Title Street Light (single,toggle)
+//$Color 11 
+  Radius 4
+  Height 128
+  +SOLID
+  States
+  {
+  Spawn:
+  Active:
+    STLA D 10
+    Loop
+  Inactve:
+    STLA B 10
+    Loop
+  }
+}
+
+ACTOR ColumnLight2 19762
+{
+//$Category Light Sources (Wolf3D)
+//$Title Column Light (dark)
+//$Color 11 
+  Radius 8
+  Height 128
+  +SOLID
+  States
+  {
+  Spawn:
+    COLL B -1
+    Stop
+  }
+}
+
+ACTOR FBowl1 19063
+{
+//$Category Light Sources (Wolf3D)
+//$Title Fire Bowl (egypt)
+//$Color 11 
+  Radius 32
+  Height 64
+  +SOLID
+  States
+  {
+  Spawn:
+    FBWL ABC 5
+    Loop
+  }
+}
+
+ACTOR CBowl1 19064
+{
+//$Category Light Sources (Wolf3D)
+//$Title Ceiling Fire Bowl (egypt)
+//$Color 11 
+  Radius 32
+  Height 64
+  +SOLID
+  +NOGRAVITY
+  +SPAWNCEILING
+  States
+  {
+  Spawn:
+    CFIR ABC 5
+    Loop
+  }
+}
+
+ACTOR FBarrel1 19065
+{
+//$Category Light Sources (Wolf3D)
+//$Title Fire Barrel (egypt)
+//$Color 11 
+  Radius 32
+  Height 64
+  +SOLID
+  States
+  {
+  Spawn:
+    FCNE ABC 5
+    Loop
+  }
+}
+
+//CEILING LIGHTS
+
+ACTOR StrobeLightBlue 12400
+{
+//$Category Light Sources (Wolf3D)
+//$Title Strobe Light (blue)
+//$Color 11 
+  Radius 16
+  Height 16
+  +NOGRAVITY
+  +SPAWNCEILING
+  States
+  {
+  Spawn:
+    STRB A 0 BRIGHT
+    STRB A 0 BRIGHT A_SpawnItem ("StrobeEmitterBlue")
+  Spin:
+    STRB DCBA 4 BRIGHT
+    Loop
+  }
+}
+
+ACTOR StrobeLightGreen 12401
+{
+//$Category Light Sources (Wolf3D)
+//$Title Strobe Light (green)
+//$Color 11 
+  Radius 16
+  Height 16
+  +NOGRAVITY
+  +SPAWNCEILING
+  States
+  {
+  Spawn:
+    STRG A 0 BRIGHT
+    STRG A 0 BRIGHT A_SpawnItem ("StrobeEmitterGreen")
+  Spin:
+    STRG DCBA 4 BRIGHT
+    Loop
+  }
+}
+
+ACTOR StrobeLightRed 12402
+{
+//$Category Light Sources (Wolf3D)
+//$Title Strobe Light (red)
+//$Color 11 
+  Radius 16
+  Height 16
+  +NOGRAVITY
+  +SPAWNCEILING
+  States
+  {
+  Spawn:
+    STRR A 0 BRIGHT
+    STRR A 0 BRIGHT A_SpawnItem ("StrobeEmitterRed")
+  Spin:
+    STRR DCBA 4 BRIGHT
+    Loop
+  }
+}
+
+ACTOR StrobeLightYellow 12403
+{
+//$Category Light Sources (Wolf3D)
+//$Title Strobe Light (yellow)
+//$Color 11 
+  Radius 16
+  Height 16
+  +NOGRAVITY
+  +SPAWNCEILING
+  States
+  {
+  Spawn:
+    STRY A 0 BRIGHT
+    STRY A 0 BRIGHT A_SpawnItem ("StrobeEmitterYellow")
+  Spin:
+    STRY DCBA 4 BRIGHT
+    Loop
+  }
+}
+
+
+
+//ROTATING EMITTERS
+
+ACTOR StrobeEmitterBlue
+{
+  Radius 16
+  Height 16
+  +NOGRAVITY
+  +SPAWNCEILING
+  States
+  {
+  Spawn:
+    TNT1 A 0
+  Spin:
+    TNT1 A 1
+    TNT1 A 0 A_CustomMissile ("StrobeRayBlue", 0, 0, 0, 2, -35)
+    TNT1 A 0 A_CustomMissile ("StrobeRayBlue", 0, 0, 180, 2, -35)
+    TNT1 A 0 A_SetAngle(10 + angle)
+    Loop
+  }
+}
+
+ACTOR StrobeEmitterGreen
+{
+  Radius 16
+  Height 16
+  +NOGRAVITY
+  +SPAWNCEILING
+  States
+  {
+  Spawn:
+    TNT1 A 0
+  Spin:
+    TNT1 A 1
+    TNT1 A 0 A_CustomMissile ("StrobeRayGreen", 0, 0, 0, 2, -35)
+    TNT1 A 0 A_CustomMissile ("StrobeRayGreen", 0, 0, 180, 2, -35)
+    TNT1 A 0 A_SetAngle(10 + angle)
+    Loop
+  }
+}
+
+ACTOR StrobeEmitterRed
+{
+  Radius 16
+  Height 16
+  +NOGRAVITY
+  +SPAWNCEILING
+  States
+  {
+  Spawn:
+    TNT1 A 0
+  Spin:
+    TNT1 A 1
+    TNT1 A 0 A_CustomMissile ("StrobeRayRed", 0, 0, 0, 2, -35)
+    TNT1 A 0 A_CustomMissile ("StrobeRayRed", 0, 0, 180, 2, -35)
+    TNT1 A 0 A_SetAngle(10 + angle)
+    Loop
+  }
+}
+
+ACTOR StrobeEmitterYellow
+{
+  Radius 16
+  Height 16
+  +NOGRAVITY
+  +SPAWNCEILING
+  States
+  {
+  Spawn:
+    TNT1 A 0
+  Spin:
+    TNT1 A 1
+    TNT1 A 0 A_CustomMissile ("StrobeRayYellow", 0, 0, 0, 2, -35)
+    TNT1 A 0 A_CustomMissile ("StrobeRayYellow", 0, 0, 180, 2, -35)
+    TNT1 A 0 A_SetAngle(10 + angle)
+    Loop
+  }
+}
+
+
+
+//LIGHT RAYS
+
+ACTOR StrobeRayBlue
+{
+  Radius 2
+  Height 2
+  Speed 100
+  Damage 0
+  Renderstyle None
+  projectile
+  -ACTIVATEIMPACT
+  -ACTIVATEPCROSS
+  +RIPPER
+  +BLOODLESSIMPACT
+  +PAINLESS
+  +THRUACTORS
+  States
+  {
+  Spawn:
+    BAL1 A 8
+    Loop
+  Death:
+    BAL1 C 2
+    Stop
+  }
+}
+
+ACTOR StrobeRayGreen : StrobeRayBlue
+{
+}
+
+ACTOR StrobeRayRed : StrobeRayBlue
+{
+}
+
+ACTOR StrobeRayYellow : StrobeRayBlue
+{
+}

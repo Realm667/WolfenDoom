@@ -1,0 +1,308 @@
+/////////////////////////////////////////////////////
+// SPARK SPAWNERS ///////////////////////////////////
+/////////////////////////////////////////////////////
+
+Pointlight WhiteSparkFlare
+{
+Color 1.0 1.0 1.0
+Size 12
+}
+
+Pointlight RedSparkFlare
+{
+Color 0.4 0.0 0.0
+Size 12
+}
+
+Pointlight OrangeSparkFlare
+{
+Color 0.8 0.4 0.0
+Size 12
+}
+
+Pointlight YellowSparkFlare
+{
+Color 1.0 1.0 0.0
+Size 12
+}
+
+Pointlight GreenSparkFlare
+{
+Color 0.0 1.0 0.0
+Size 12
+}
+
+Pointlight BlueSparkFlare
+{
+Color 0.0 0.0 0.8
+Size 12
+}
+
+Pointlight PurpleSparkFlare
+{
+Color 0.5 0.0 0.5
+Size 12
+}
+
+Object SparkFlare_W1 { Frame SPKW { Light WhiteSparkFlare } }
+Object SparkFlare_W2 { Frame SPKW { Light WhiteSparkFlare } }
+Object SparkFlare_W3 { Frame SPKW { Light WhiteSparkFlare } }
+Object SparkFlare_W4 { Frame SPKW { Light WhiteSparkFlare } }
+Object SparkFlare_W5 { Frame SPKW { Light WhiteSparkFlare } }
+Object SparkFlare_W6 { Frame SPKW { Light WhiteSparkFlare } }
+
+Object SparkFlare_R1 { Frame SPKR { Light RedSparkFlare } }
+Object SparkFlare_R2 { Frame SPKR { Light RedSparkFlare } }
+Object SparkFlare_R3 { Frame SPKR { Light RedSparkFlare } }
+Object SparkFlare_R4 { Frame SPKR { Light RedSparkFlare } }
+Object SparkFlare_R5 { Frame SPKR { Light RedSparkFlare } }
+Object SparkFlare_R6 { Frame SPKR { Light RedSparkFlare } }
+
+Object SparkFlare_O1 { Frame SPKO { Light OrangeSparkFlare } }
+Object SparkFlare_O2 { Frame SPKO { Light OrangeSparkFlare } }
+Object SparkFlare_O3 { Frame SPKO { Light OrangeSparkFlare } }
+Object SparkFlare_O4 { Frame SPKO { Light OrangeSparkFlare } }
+Object SparkFlare_O5 { Frame SPKO { Light OrangeSparkFlare } }
+Object SparkFlare_O6 { Frame SPKO { Light OrangeSparkFlare } }
+
+Object SparkFlare_Y1 { Frame SPKY { Light YellowSparkFlare } }
+Object SparkFlare_Y2 { Frame SPKY { Light YellowSparkFlare } }
+Object SparkFlare_Y3 { Frame SPKY { Light YellowSparkFlare } }
+Object SparkFlare_Y4 { Frame SPKY { Light YellowSparkFlare } }
+Object SparkFlare_Y5 { Frame SPKY { Light YellowSparkFlare } }
+Object SparkFlare_Y6 { Frame SPKY { Light YellowSparkFlare } }
+
+Object SparkFlare_G1 { Frame SPKG { Light GreenSparkFlare } }
+Object SparkFlare_G2 { Frame SPKG { Light GreenSparkFlare } }
+Object SparkFlare_G3 { Frame SPKG { Light GreenSparkFlare } }
+Object SparkFlare_G4 { Frame SPKG { Light GreenSparkFlare } }
+Object SparkFlare_G5 { Frame SPKG { Light GreenSparkFlare } }
+Object SparkFlare_G6 { Frame SPKG { Light GreenSparkFlare } }
+
+Object SparkFlare_B1 { Frame SPKB { Light BlueSparkFlare } }
+Object SparkFlare_B2 { Frame SPKB { Light BlueSparkFlare } }
+Object SparkFlare_B3 { Frame SPKB { Light BlueSparkFlare } }
+Object SparkFlare_B4 { Frame SPKB { Light BlueSparkFlare } }
+Object SparkFlare_B5 { Frame SPKB { Light BlueSparkFlare } }
+Object SparkFlare_B6 { Frame SPKB { Light BlueSparkFlare } }
+
+Object SparkFlare_P1 { Frame SPKP { Light PurpleSparkFlare } }
+Object SparkFlare_P2 { Frame SPKP { Light PurpleSparkFlare } }
+Object SparkFlare_P3 { Frame SPKP { Light PurpleSparkFlare } }
+Object SparkFlare_P4 { Frame SPKP { Light PurpleSparkFlare } }
+Object SparkFlare_P5 { Frame SPKP { Light PurpleSparkFlare } }
+Object SparkFlare_P6 { Frame SPKP { Light PurpleSparkFlare } }
+
+
+/////////////////////////////////////////////////////
+// CHANDELIER LIGHTS ////////////////////////////////
+/////////////////////////////////////////////////////
+
+pointlight Chandelier
+{
+    color 1.0 1.0 1.0
+    size 40
+    offset 0 16 0
+}
+
+pointlight Chandelier2
+{
+    color 1.0 1.0 1.0
+    size 38
+    offset 0 16 0
+}
+
+pointlight Chandelier3
+{
+    color 1.0 1.0 1.0
+    size 36
+    offset 0 16 0
+}
+
+object Chandelier1Switchable
+{
+        frame CHANA { light Chandelier }
+	frame CHANB { light Chandelier2 }
+	frame CHANC { light Chandelier3 }
+}
+
+object Chandelier2Switchable
+{
+        frame CHANE { light Chandelier }
+	frame CHANF { light Chandelier2 }
+	frame CHANG { light Chandelier3 }
+}
+
+object Chandelier3Switchable
+{
+        frame CHANI { light Chandelier }
+	frame CHANJ { light Chandelier2 }
+	frame CHANL { light Chandelier3 }
+}
+
+object Chandelier4Switchable
+{
+        frame CHANN { light Chandelier }
+	frame CHANO { light Chandelier2 }
+	frame CHANP { light Chandelier3 }
+}
+
+
+/////////////////////////////////////////////////////
+// LAVA CAULDRON LIGHTS /////////////////////////////
+/////////////////////////////////////////////////////
+
+flickerlight2 CAULDRON
+{
+    color 1.0 0.5 0.0
+    size 68
+    secondarySize 76
+    interval 0.1
+    offset 0 40 0
+}
+
+object LavaCauldron
+{
+    frame LAVC { light CAULDRON }
+}
+
+
+/////////////////////////////////////////////////////
+// BRIGHTMAPS FOR SPLASHES //////////////////////////
+/////////////////////////////////////////////////////
+BrightMap Sprite SLIMA0
+{
+Map BMSLIMA0
+DisableFullBright
+}
+
+BrightMap Sprite SLIMB0
+{
+Map BMSLIMB0
+DisableFullBright
+}
+
+BrightMap Sprite SLIMC0
+{
+Map BMSLIMC0
+DisableFullBright
+}
+
+BrightMap Sprite SLIMD0
+{
+Map BMSLIMD0
+DisableFullBright
+}
+
+BrightMap Sprite SLIME0
+{
+Map BMSLIME0
+DisableFullBright
+}
+
+BrightMap Sprite SLIMF0
+{
+Map BMSLIMF0
+DisableFullBright
+}
+
+BrightMap Sprite SLIMG0
+{
+Map BMSLIMG0
+DisableFullBright
+}
+
+BrightMap Sprite SLIMH0
+{
+Map BMSLIMH0
+DisableFullBright
+}
+
+/////////////////////////////////////////////////////
+// STROBE LIGHTS ////////////////////////////////////
+/////////////////////////////////////////////////////
+
+//BLUE
+pointlight BLUESTROBE
+{
+    color 0.0 0.0 0.4
+    size 48
+}
+
+object StrobeRayBlue
+{
+    frame BAL1C { light BLUESTROBE }
+}
+
+
+//GREEN
+pointlight GREENSTROBE
+{
+    color 0.0 0.4 0.0
+    size 48
+}
+
+object StrobeRayGreen
+{
+    frame BAL1C { light GREENSTROBE }
+}
+
+
+//RED
+pointlight REDSTROBE
+{
+    color 0.4 0.0 0.0
+    size 48
+}
+
+object StrobeRayRed
+{
+    frame BAL1C { light REDSTROBE }
+}
+
+
+//YELLOW
+pointlight YELLOWSTROBE
+{
+    color 0.4 0.2 0.0
+    size 48
+}
+
+object StrobeRayYellow
+{
+    frame BAL1C { light YELLOWSTROBE }
+}
+
+
+/////////////////////////////////////////////////////
+// FIRE SPAWNER LIGHTS //////////////////////////////
+/////////////////////////////////////////////////////
+
+Flickerlight FireSpawnerSmall
+{
+Color 1.0 0.6 0.0
+Size 32
+SecondarySize 48
+Chance 0.6
+}
+
+Flickerlight FireSpawnerMedium
+{
+Color 1.0 0.6 0.0
+Size 56
+SecondarySize 72
+Chance 0.6
+}
+
+Flickerlight FireSpawnerLarge
+{
+Color 1.0 0.6 0.0
+Size 80
+SecondarySize 128
+Chance 0.6
+}
+
+Object SmallFlame { Frame TNT1 { Light FireSpawnerSmall } }
+Object MediumFlame { Frame TNT1 { Light FireSpawnerMedium } }
+Object LargeFlame { Frame TNT1 { Light FireSpawnerLarge } }
+

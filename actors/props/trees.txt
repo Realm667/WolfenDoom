@@ -1,0 +1,359 @@
+ACTOR Tree1 21234
+{
+//$Category Props (Wolf3D)
+//$Title Tree (snow)
+//$Color 3 
+  Radius 32
+  Height 192
+  +SOLID
+  States
+  {
+  Spawn:
+    TREW A -1
+    Stop
+  }
+}
+
+ACTOR Tree2 19033
+{
+//$Category Props (Wolf3D)
+//$Title Tree (large)
+//$Color 3 
+  Radius 32
+  Height 192
+  +SOLID
+  States
+  {
+  Spawn:
+    TREG A -1
+    Stop
+  }
+}
+
+ACTOR Tree3 19148
+{
+//$Category Props (Wolf3D)
+//$Title Tree 1 (middle)
+//$Color 3 
+  Radius 32
+  Height 96
+  +SOLID
+  States
+  {
+  Spawn:
+    TREG B -1
+    Stop
+  }
+}
+
+ACTOR Bush 19035
+{
+//$Category Props (Wolf3D)
+//$Title Bush (small)
+//$Color 3 
+  Radius 16
+  Height 32
+  +SOLID
+  States
+  {
+  Spawn:
+    BUSH A -1
+    Stop
+  }
+}
+
+ACTOR Tree4 19093
+{
+//$Category Props (Wolf3D)
+//$Title Tree 2 (middle)
+//$Color 3 
+  Radius 32
+  Height 96
+  +SOLID
+  States
+  {
+  Spawn:
+    TREG C -1
+    Stop
+  }
+}
+
+ACTOR Palm1 19097
+{
+//$Category Props (Wolf3D)
+//$Title Palm (center)
+//$Color 3 
+  Radius 16
+  Height 128
+  +SOLID
+  States
+  {
+  Spawn:
+    PAMN A -1
+    Stop
+  }
+}
+
+ACTOR Palm2 19098
+{
+//$Category Props (Wolf3D)
+//$Title Palm (left)
+//$Color 3 
+  Radius 16
+  Height 128
+  +SOLID
+  States
+  {
+  Spawn:
+    PAMN B -1
+    Stop
+  }
+}
+
+ACTOR Palm3 19099
+{
+//$Category Props (Wolf3D)
+//$Title Palm (right)
+//$Color 3 
+  Radius 16
+  Height 128
+  +SOLID
+  States
+  {
+  Spawn:
+    PAMN C -1
+    Stop
+  }
+}
+
+
+actor PhobosRock1 30354
+{
+//$Category Props (Wolf3D)
+//$Title Rock (brown 1)
+//$Color 3 
+Radius 24
+Height 16
++SOLID
+States
+{
+Spawn:
+ROK1 A -1
+Loop
+}
+}
+
+actor PhobosRock2 30355
+{
+//$Category Props (Wolf3D)
+//$Title Rock (brown 2)
+//$Color 3 
+Radius 24
+Height 16
++SOLID
+States
+{
+Spawn:
+ROK2 A -1
+Loop
+}
+}
+
+actor PhobosRockSmall 30356
+{
+//$Category Props (Wolf3D)
+//$Title Rock (brown 3)
+//$Color 3 
+Radius 1
+Height 1
+States
+{
+Spawn:
+ROK3 A -1
+Loop
+}
+}
+
+
+//$Category Props (Wolf3D)
+//$Title Tree (snow spawner)
+//$Color 3 
+actor wintertreespawner : RandomSpawner 20073
+{
+    DropItem "winterA"
+    DropItem "winterB"
+    DropItem "winterC"
+    DropItem "winterD"
+    DropItem "winterE"
+    DropItem "winterF"
+    DropItem "winterG"
+}
+
+ACTOR winterA 
+{
+  Game Doom
+  Radius 20
+  Height 115
+  +SOLID
+  States
+  {
+  Spawn:
+    WINT A -1
+    Stop
+  }
+}
+
+ACTOR winterB
+{
+  Game Doom
+  Radius 15
+  Height 90
+  +SOLID
+  States
+  {
+  Spawn:
+    WINT B -1
+    Stop
+  }
+}
+
+ACTOR winterC 
+{
+  Game Doom
+  Radius 20
+  Height 140
+  +SOLID
+  States
+  {
+  Spawn:
+    WINT C -1
+    Stop
+  }
+}
+
+ACTOR winterD 
+{
+  Game Doom
+  Radius 20
+  Height 60
+  +SOLID
+  States
+  {
+  Spawn:
+    WINT D -1
+    Stop
+  }
+}
+
+ACTOR winterE 
+{
+  Game Doom
+  Radius 10
+  Height 45
+  +SOLID
+  States
+  {
+  Spawn:
+    WINT E -1
+    Stop
+  }
+}
+
+ACTOR winterF 
+{
+  Game Doom
+  Radius 10
+  Height 110
+  +SOLID
+  States
+  {
+  Spawn:
+    WINT F -1
+    Stop
+  }
+}
+
+ACTOR winterG 
+{
+  Game Doom
+  Radius 25
+  Height 130
+  +SOLID
+  States
+  {
+  Spawn:
+    WINT G -1
+    Stop
+  }
+}
+
+ACTOR SmallTree1 10700
+{
+//$Category Props (Wolf3D)
+//$Title Tree 4 (middle)
+//$Color 3 
+  Radius 16
+  Height 96
+  +SOLID
+  States
+  {
+  Spawn:
+    TREN A -1
+    Stop
+  }
+}
+
+ACTOR SmallTree2 10701
+{
+//$Category Props (Wolf3D)
+//$Title Tree 5 (small)
+//$Color 3 
+  Radius 16
+  Height 64
+  +SOLID
+  States
+  {
+  Spawn:
+    TREN B -1
+    Stop
+  }
+}
+
+ACTOR SmallBush1 10702
+{
+//$Category Props (Wolf3D)
+//$Title Bush 1
+//$Color 3 
+  Radius 16
+  Height 24
+  +SOLID
+  States
+  {
+  Spawn:
+    BUSN A -1
+    Stop
+  }
+}
+
+ACTOR SmallBush2 10703
+{
+//$Category Props (Wolf3D)
+//$Title Bush 1
+//$Color 3 
+  Radius 16
+  Height 40
+  +SOLID
+  States
+  {
+  Spawn:
+    BUSN B -1
+    Stop
+  }
+}
+
+
+
+
+
+
+

@@ -1,0 +1,15 @@
+ACTOR NaziBerserk : Berserk replaces Berserk 17012
+{
+//$Category Powerups (Wolf3D)
+//$Title Totale Macht (Berserk)
+//$Color 9
+  Inventory.PickupMessage "Totale Macht!" // "Powerful!"
+  Inventory.PickupSound "misc/p_pkup"
+  States
+  {
+  Pickup:
+    TNT1 A 0 A_GiveInventory("PowerStrength")
+    TNT1 A 0 HealThing(100, 0)
+    Stop
+  }
+}

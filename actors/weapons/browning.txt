@@ -1,0 +1,158 @@
+ACTOR NewShell : Ammo 15102
+{
+//$Category Ammo (Wolf3D)
+//$Title Shells
+//$Color 6
+  Inventory.PickupMessage "Picked up some shotgun shells."
+  Inventory.Amount 4
+  Inventory.MaxAmount 30
+  Ammo.BackpackAmount 4
+  Ammo.BackpackMaxAmount 60
+  Inventory.Icon "SHELA0"
+  States
+  {
+  Spawn:
+    SHEL A -1
+    Stop
+  }
+}
+
+ACTOR NewShellBox : NewShell 15103
+{
+//$Category Ammo (Wolf3D)
+//$Title Shellbox
+//$Color 6
+	Inventory.Amount 16
+	ConversationID 180
+	Inventory.PickupMessage "Picked up a box of shells."
+	States
+	{
+	Spawn:
+		SBOX A -1
+		Stop
+	}
+}
+
+ACTOR BrowningLoaded : Ammo
+{
+	Inventory.MaxAmount 4
+	+IGNORESKILL
+}
+
+ACTOR Browning5 : Weapon 15003
+{
+//$Category Weapons (Wolf3D)
+//$Title (3) Browning
+//$Color 14
+	Weapon.SlotNumber 3
+	Game Doom
+	SpawnID 33
+	Weapon.SelectionOrder 400
+	Weapon.AmmoUse1 1
+	Weapon.AmmoGive1 0
+	Weapon.AmmoType1 "BrowningLoaded"
+	Weapon.AmmoType2 "NewShell"
+	Weapon.AmmoGive2 8
+	Weapon.AmmoUse2 0
+	Weapon.BobStyle InverseSmooth
+	Weapon.BobSpeed 2.2
+	Weapon.BobRangeY 0.5
+	Weapon.BobRangeX 0.7
+	Scale 0.5
+    Decal BulletChip
+	Inventory.PickupMessage "You got the Browning Auto-5!"
+	Obituary "%o was peppered by %k's auto shotgun."
+	Tag "Browning Auto-5"
+    AttackSound "weapons/ba5fire"
+	+Ammo_Optional
+	+NOAUTOFIRE
+	+Weapon.NoAlert
+	States
+	{
+	Spawn:
+		BA5P A -1
+		Stop
+	Select:
+		BA5G A 0 A_Raise
+		BA5G A 1 A_Raise
+		Loop
+	Deselect:
+		BA5G A 0 A_Lower
+		BA5G A 1 A_Lower
+		Loop
+	Ready:
+		BA5G A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	Fire:
+		BA5G A 0 A_JumpIfInventory("ShotgunReloading",1,"ReloadFinish")
+		BA5G A 0 A_JumpIfNoAmmo("Dryfire")
+		BA5G A 0 A_TakeInventory("BrowningLoaded",1)
+		BA5G A 0 A_PlayWeaponSound("weapons/ba5fire")
+		BA5G AAAAAAAAAA 0 A_FireCustomMissile("ShotgunTracer",frandom(-4.0,4.0),0,0,0,0,frandom(-3,3))
+		BA5G B 1 BRIGHT A_GunFlash
+		BA5G C 1 BRIGHT A_SetPitch(pitch - 4.0)
+		BA5G D 1 Offset(0,40) A_SetPitch(pitch - 2.0)
+		BA5G A 1 Offset(0,36) A_SetPitch(pitch - 1.0)
+		BA5G A 1 Offset(0,34) A_SetPitch(pitch + 1.0)
+		BA5G A 1 Offset(0,33) A_SetPitch(pitch + 0.5)
+		BA5G A 1 A_WeaponReady(26)
+		BA5G A 1 A_AlertMonsters
+		BA5G A 1 Offset(-1,33)
+		TNT1 A 0 A_Jump(250,2)
+		TNT1 A 0 A_PlaySound("*taunt", CHAN_VOICE)
+		BA5G A 1
+		Goto Ready
+	Dryfire:
+		BA5G A 1
+	Reload:
+		BA5G A 0 A_JumpIfInventory("BrowningLoaded",4,2)
+		BA5G A 0 A_JumpIfInventory("NewShell",1,2)
+		BA5G A 1
+		Goto Ready
+	ProperReload:
+		TNT1 A 0 A_Jump(128,2)
+		TNT1 A 0 A_PlaySound("*taunt", CHAN_VOICE)
+		BA5G E 1 Offset(-1,33) A_GiveInventory("ShotgunReloading",1)
+		BA5G E 1 Offset(-4,41)
+		BA5G E 1 Offset(-6,46)
+		BA5G E 1 Offset(-7,55)
+	ReloadWork:
+		BA5G A 0 A_TakeInventory("NewShell",1,TIF_NOTAKEINFINITE)
+		BA5G A 0 A_GiveInventory("BrowningLoaded",1)
+		BA5G E 1 Offset(-8,58) A_PlaySound("weapons/ba5Load",CHAN_ITEM)
+		BA5G E 1 Offset(-9,64)
+		BA5G E 1 Offset(-10,70)
+		BA5G E 1 Offset(-10,68)
+		BA5G E 1 Offset(-9,66)
+		BA5G E 1 Offset(-9,64)
+		BA5G E 1 Offset(-9,62)
+		BA5G E 1 Offset(-8,61) A_WeaponReady(1)
+		BA5G EE 1 Offset(-8,60) A_WeaponReady(1)
+		BA5G EEE 1 Offset(-8,59) A_WeaponReady(1)
+		BA5G EEEE 1 Offset(-8,58) A_WeaponReady(1)
+		BA5G A 0 A_JumpIfInventory("BrowningLoaded",4,"ReloadFinish")
+		BA5G A 0 A_JumpIfInventory("NewShell",1,"ReloadWork")
+		Goto ReloadFinish
+	ReloadFinish:
+		BA5G E 1 Offset(-8,58) A_PlaySound("weapons/ba5cock")
+		BA5G E 1 Offset(-8,60)
+		BA5G E 1 Offset(-8,63)
+		BA5G E 1 Offset(-9,67)
+		BA5G E 1 Offset(-9,72)
+		BA5G E 1 Offset(-10,75)
+		BA5G EE 1 Offset(-10,77)
+		BA5G EEE 1 Offset(-11,78)
+		BA5G E 1 Offset(-10,76)
+		BA5G E 1 Offset(-8,68)
+		BA5G E 1 Offset(-6,58)
+		BA5G E 1 Offset(-4,46)
+		BA5G E 1 Offset(-2,33)
+		BA5G E 1 Offset(-1,32) A_TakeInventory("ShotgunReloading",1)
+		Goto Ready
+	Flash:
+		TNT1 A 2 BRIGHT A_Light2
+		TNT1 A 2 BRIGHT A_Light1
+		TNT1 A 0 A_Light0
+		Stop
+	}
+}

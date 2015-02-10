@@ -1,0 +1,146 @@
+ACTOR MauserAmmo : Ammo 15115
+{
+//$Category Ammo (Wolf3D)
+//$Title Clipbox
+//$Color 6
+	Inventory.Amount 20
+	Inventory.MaxAmount 40
+	Ammo.BackpackAmount 5
+	Ammo.BackpackMaxAmount 100
+	ConversationID 185
+	Inventory.Icon "M1GAA0"
+	Inventory.PickupMessage "Picked up a box of 7.92mm Mauser ammo."
+	States
+	{
+		Spawn:
+			M1GA A -1
+			Stop
+	}
+}
+
+ACTOR MauserAmmoSmall : MauserAmmo 15116
+{
+//$Category Ammo (Wolf3D)
+//$Title Clip
+//$Color 6
+	Inventory.Amount 5
+	Inventory.PickupMessage "Picked up a 7.92mm stripper clip."
+	Scale 0.3
+	States
+	{
+	Spawn:
+		M1GA B -1
+		Stop
+	}
+}
+
+ACTOR G41Clip : Ammo
+{
+	+IGNORESKILL
+	Inventory.MaxAmount 10
+	Inventory.Icon "M1GPA0"
+}
+
+ACTOR G41 : DoomWeapon 15097
+{
+//$Category Weapons (Wolf3D)
+//$Title (4) G41
+//$Color 14
+	Weapon.SlotNumber 5
+	Weapon.AmmoType1 "G41Clip"
+	Weapon.AmmoUse1 0
+	Weapon.AmmoGive1 0
+	Weapon.AmmoType2 "MauserAmmo"
+	Weapon.AmmoGive2 10
+	Weapon.AmmoUse2 1
+	Weapon.BobStyle InverseSmooth
+	Weapon.BobSpeed 2.2
+	Weapon.BobRangeY 0.5
+	Weapon.BobRangeX 0.7
+	AttackSound "Garand/Fire"
+	Inventory.PickupMessage "You got the Gewehr 43!"
+	Tag "Gewehr 43"
+	ConversationID 194
+	+AMMO_OPTIONAL
+		+Alt_Ammo_Optional
+		+WEAPON.PRIMARY_USES_BOTH
+		+Weapon.NoAlert
+	+NOAUTOFIRE
+	States
+	{
+	Spawn:
+		M1GP A -1
+		Stop
+	Select:
+		M1GG A 0 A_Raise
+		M1GG A 1 A_Raise
+		Loop
+	Deselect:
+		M1GG A 0 A_Lower
+		M1GG A 1 A_Lower
+		Loop
+	Ready:
+		M1GG A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	Fire:
+		M1GG A 0 A_JumpIfInventory("G41Clip",1,1)
+		Goto Dryfire
+		M1GF A 0 A_PlayWeaponSound("garand/fire")
+		M1GF A 0 A_TakeInventory("G41Clip",1)
+		M1GF A 0 A_GunFlash
+		M1GF A 1 BRIGHT A_FireCustomMissile("RifleTracer",0,0)
+		M1GF B 1 BRIGHT A_SetPitch (pitch - 1.4)
+		M1GG CDEDC 1 A_AlertMonsters
+		M1GG AAFFFA 1 A_WeaponReady(1)
+		Goto Ready
+	Dryfire:
+		M1GG A 1
+	Reload:
+		M1GG A 0 A_JumpIfInventory("G41Clip",10,2)
+		M1GG A 0 A_JumpIfNoAmmo(1)
+		Goto ProperReload
+		M1GG A 1
+		Goto Ready
+	ProperReload:
+		TNT1 A 0 A_Jump(180,2)
+		TNT1 A 0 A_PlaySound("*taunt", CHAN_VOICE)
+		M1GG A 1 Offset(0,35) A_PlaySound("reloads/g43",CHAN_ITEM)
+		M1GG A 1 Offset(-2,38)
+		M1GG A 1 Offset(-4,44)
+		M1GG A 1 Offset(-6,52)
+		M1GG A 1 Offset(-7,57)
+		M1GG C 1 Offset(-8,62)
+		M1GG C 1 Offset(-9,67)
+		M1GG C 1 Offset(-10,72)
+		M1GG C 1 Offset(-11,77)
+		M1GG C 1 Offset(-11,80)
+		M1GG D 1 Offset(-12,82)
+		M1GG D 1 Offset(-12,84)
+		M1GG D 1 Offset(-13,86)
+		M1GG E 1 Offset(-13,87)
+		M1GG E 2 Offset(-14,88)
+		M1GG E 3 Offset(-14,89)
+	ReloadLoop:
+		TNT1 A 0 A_TakeInventory("MauserAmmo",1,TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_GiveInventory("G41Clip",1)
+		TNT1 A 0 A_JumpIfInventory("G41Clip",10,"ReloadFinish")
+		TNT1 A 0 A_JumpIfNoAmmo("ReloadFinish")
+		Goto ReloadLoop
+	ReloadFinish:
+		M1GG D 2 Offset(-10,96)
+		M1GG D 1 Offset(-6,100)
+		M1GG C 1 Offset(-7,90)
+		M1GG C 1 Offset(-6,80)
+		M1GG C 1 Offset(-4,70)
+		M1GG A 1 Offset(-2,60)
+		M1GG A 1 Offset(0,50)
+		M1GG A 1 Offset(0,40)
+		M1GG A 1 Offset(0,32)
+		Goto Ready
+	Flash:
+		TNT1 A 2 BRIGHT A_Light2
+		TNT1 A 2 BRIGHT A_Light1
+		TNT1 A 0 A_Light0
+		Stop
+	}
+}

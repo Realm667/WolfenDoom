@@ -1,0 +1,104 @@
+height 32;
+LowerHealthCap false;
+InterpolateHealth true;
+InterpolateArmor true;
+
+statusbar normal // Standard Doom Status bar
+{
+    drawimage "HUDBAR", -54, 152;
+
+    //Ammo
+    drawnumber 3, BIGFONT, untranslated, ammo1, 225, 171;
+    drawnumber 3, BIGFONT, untranslated, ammo2, 225, 185;
+
+    //Weapon
+    drawstring "THREEFIV", untranslated, weapontag, 225, 159, 1, alignment(right);
+
+    //Time
+    drawstring "THREEFIV", untranslated, time, 249, 159, 1, alignment(center);
+
+    //Health
+    drawnumber 3, BIGFONT, untranslated, health, 52, 171;
+    drawstring "BIGFONT", untranslated, "%", 65, 171;
+
+    //Armor
+    drawnumber 3, BIGFONT, untranslated, armor, 52, 185;
+    drawstring "BIGFONT", untranslated, "%", 65, 185;
+
+    //Money
+    drawnumber 3, BIGFONT, untranslated, coinitem, alignment(left), 138, 171;
+
+    //Grenade
+    drawnumber 3, BIGFONT, untranslated, GrenadePickup, alignment(left), 138, 185;
+
+    //keys
+    drawswitchableimage keyslot 2, "nullimage", "STKEYS0", 255, 172;
+    drawswitchableimage keyslot 5, "nullimage", "STKEYS3", 261, 172;
+    drawswitchableimage keyslot 3, "nullimage", "STKEYS1", 255, 181;
+    drawswitchableimage keyslot 6, "nullimage", "STKEYS4", 261, 181;
+    drawswitchableimage keyslot 1, "nullimage", "STKEYS2", 255, 190;
+    drawswitchableimage keyslot 4, "nullimage", "STKEYS5", 261, 190;
+
+    //Ammo
+    drawnumber 3, THREEFIV, untranslated, ammo MPClip, 284, 172, 1;
+    drawnumber 3, THREEFIV, untranslated, ammo NewShell, 284, 178, 1;
+    drawnumber 3, THREEFIV, untranslated, ammo MauserAmmo, 284, 184, 1;
+    drawnumber 3, THREEFIV, untranslated, ammo FlameAmmo, 284, 190, 1;
+    drawnumber 3, THREEFIV, untranslated, ammo NebAmmo, 307, 172, 1;
+    drawnumber 3, THREEFIV, untranslated, ammo PanzerAmmo, 307, 178, 1;
+
+    drawselectedinventory alternateonempty, THREEFIV, 76, 168
+    {
+        drawmugshot 5, 76, 168;
+    }
+}
+
+statusbar fullscreen, fullscreenoffsets // ZDoom HUD
+{
+    //health
+    drawimage "MEDIA0", 20, -2, centerbottom;
+    drawnumber 3, BIGFONT, untranslated, health, drawshadow, 82, -20;
+
+    //armor
+    drawimage armoricon, 20, -24, centerbottom;
+    drawnumber 3, BIGFONT, untranslated, armor, drawshadow, whennotzero, 82, -39;
+
+    //ammo
+    drawimage ammoicon1, -14, -4, centerbottom;
+    drawnumber 3, BIGFONT, untranslated, ammo1, drawshadow, -25, -20;
+
+    usesammo
+    {
+        //secondary ammo and inventory
+        usessecondaryammo
+        {
+            drawimage ammoicon2, -14, -22, centerbottom;
+            drawnumber 3, BIGFONT, untranslated, ammo2, drawshadow, -25, -38;
+            inventorybarnotvisible
+            {
+                drawselectedinventory centerbottom, drawshadow, alwaysshowcounter, BIGFONT, -14, -39, -26, -56, untranslated;
+            }
+        }
+        //no secondary ammo
+        usessecondaryammo not
+        {
+            inventorybarnotvisible
+            {
+                drawselectedinventory centerbottom, drawshadow, alwaysshowcounter, BIGFONT, -14, -21, -26, -38, untranslated;
+            }
+        }
+    }
+    
+    // no ammo but inventory
+    usesammo not
+    {
+        inventorybarnotvisible
+        {
+            drawselectedinventory centerbottom, drawshadow, alwaysshowcounter, BIGFONT, -14, -3, -26, -20, untranslated;
+        }
+    }
+}
+
+
+
+

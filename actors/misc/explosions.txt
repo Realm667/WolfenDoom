@@ -1,0 +1,18 @@
+ACTOR GeneralExplosion_Large
+{
+	+NOGRAVITY
+	Obituary "$OB_BARREL" // "%o went boom."
+	States
+	{
+	Spawn:
+		BARX A 2 BRIGHT 
+		BARX B 2 BRIGHT A_Scream
+		BARX C 2 BRIGHT Radius_Quake(10,10,0,120,0)
+		BARX DEFG 2 BRIGHT
+		BARX H 2 BRIGHT A_Explode
+		BARX IJKLM 2 BRIGHT
+		BARX M 1050 BRIGHT A_BarrelDestroy
+		BARX M 5 A_Respawn
+		Wait
+	}
+}

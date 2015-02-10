@@ -1,0 +1,64 @@
+//Player
+Actor WildWeaselPlayer : DoomPlayer 
+{
+	gibhealth -50
+	player.invulnerabilitymode "reflective"
+	player.startitem "WeaselsRevolver"
+	player.startitem "Melee"
+	player.startitem "RevolverClip" 30
+	player.startitem "RevolverAmmo" 6
+	player.startitem "ShotgunClip" 8
+	player.startitem "BrowningLoaded" 4
+	player.startitem "STGAmmo" 30
+	player.startitem "MPAmmo" 32
+	player.startitem "G41Clip" 10
+	player.startitem "WaltherAmmo" 8
+	player.startitem "LugerAmmo" 8
+	player.startitem "FG42Ammo" 20
+	player.startitem "PPSHAmmo" 71
+	player.startitem "ThompsonClip" 20
+	player.startitem "EnfieldLoaded" 10
+	player.startitem "FlameLoad" 25
+	player.startitem "GrenadePickup" 1
+	Player.ViewHeight 49
+	Player.AttackZOffset 17
+	Player.ColorRange 0 0
+	Player.AttackZOffset 18
+	Player.CrouchSprite ""
+	Player.DisplayName "Weasel"
+	Player.SoundClass "Weasel"
+	Scale 1.1
+	States
+	{
+	Spawn:
+		WEAS A 1
+   		Loop
+   	See:
+      	WEAS ABCD 6
+      	goto Spawn
+    Pain:
+		WEAS G 0
+        WEAS G 3 A_Pain
+        Goto Spawn
+	Missile:
+		WEAS E 12 
+		Goto Spawn
+	Melee:
+		WEAS F 6 BRIGHT
+		Goto Missile
+	Death:
+		WEAS H 5 A_PlayerScream
+		WEAS I 5 
+		WEAS J 5 A_NoBlocking
+		WEAS K 5
+		WEAS L -1
+		Stop
+	XDeath:
+		WEAS H 5
+		WEAS I 5 A_XScream
+		WEAS J 5 A_NoBlocking
+		WEAS K 5
+		WEAS L -1
+		Stop
+	}
+}

@@ -1,0 +1,34 @@
+actor UnderwaterMine 15123
+{
+//$Category Hazards (Wolf3D)
+//$Title Underwater Mine
+//$Color 3
+	Health 20
+  	Radius 10
+  	Height 42
+	Mass 9999999
+  	+SOLID
+  	+SHOOTABLE
+  	+NOBLOOD
+  	+ACTIVATEMCROSS
+  	+DONTGIB
+  	+NOICEDEATH
+	+TOUCHY
+  	DeathSound "panzer/explode"
+  	Obituary "$OB_BARREL" // "%o went boom."
+	States
+	{
+		Spawn: 
+			UWMR ABCDE 6 A_Look
+			Loop
+		See:
+			UWMR ABCDE 6 A_Chase
+			Loop
+		Death:
+			TNT1 A 0 BRIGHT A_SpawnItemEx("GeneralExplosion_Large", 0, 0, 64)
+			UWMR A 12 A_Scream
+			UWMI H 1
+			UWMI H -1
+		Stop
+	}
+}
