@@ -98,3 +98,38 @@ ACTOR TreasureChest2 : CustomInventory 16503
   	}
 }
 
+ACTOR TreasureChest3 : CustomInventory 16504
+{
+//$Category Pickups (Wolf3D)
+//$Title Treasure (Chest, 25pts)
+//$Color 17
+  inventory.pickupmessage "Picked up a small treasure cheast"
+  inventory.pickupsound "treasure/pickup"
+  States
+  	{
+  	Spawn:
+    		TRES E -1
+    		stop
+	Pickup:
+		TNT1 A 0 A_GiveInventory ("CoinItem", 50)
+		stop
+  	}
+}
+
+ACTOR TreasureCross : CustomInventory 16505
+{
+//$Category Pickups (Wolf3D)
+//$Title Treasure (Cross, 15pts)
+//$Color 17
+  inventory.pickupmessage "Picked up a golden cross"
+  inventory.pickupsound "treasure/pickup"
+  States
+  	{
+  	Spawn:
+    		TRES F -1
+    		stop
+	Pickup:
+		TNT1 A 0 A_GiveInventory ("CoinItem", 15)
+		stop
+  	}
+}

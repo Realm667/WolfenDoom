@@ -2024,50 +2024,51 @@ actor Geist 12029
 	States
 	{
 	Spawn:
-		GEST A 10 A_Look
+		GHUL A 10 A_Look
 		Loop
 	See:
-		GEST A 0 A_LoopActiveSound
-		GEST A 0 A_SetTranslucent(0.1,0)
-		GEST ABCD 3 A_Chase
-		GEST A 0 A_SetTranslucent(0.2,0)
-		GEST ABCD 3 A_Chase
-		GEST A 0 A_SetTranslucent(0.3,0)
-		GEST ABCD 3 A_Chase
-		GEST A 0 A_SetTranslucent(0.4,0)
-		GEST ABCD 3 A_Chase
-		GEST A 0 A_SetTranslucent(0.5,0)
-		GEST ABCD 3 A_Chase
-		GEST A 0 A_SetTranslucent(0.4,0)
-		GEST ABCD 3 A_Chase
-		GEST A 0 A_SetTranslucent(0.3,0)
-		GEST ABCD 3 A_Chase
-		GEST A 0 A_SetTranslucent(0.2,0)
-		GEST ABCD 3 A_Chase
+		GHUL A 0 A_LoopActiveSound
+		GHUL A 0 A_SetTranslucent(0.1,0)
+		GHUL ABCD 3 A_Chase
+		GHUL A 0 A_SetTranslucent(0.2,0)
+		GHUL ABCD 3 A_Chase
+		GHUL A 0 A_SetTranslucent(0.3,0)
+		GHUL ABCD 3 A_Chase
+		GHUL A 0 A_SetTranslucent(0.4,0)
+		GHUL ABCD 3 A_Chase
+		GHUL A 0 A_SetTranslucent(0.5,0)
+		GHUL ABCD 3 A_Chase
+		GHUL A 0 A_SetTranslucent(0.4,0)
+		GHUL ABCD 3 A_Chase
+		GHUL A 0 A_SetTranslucent(0.3,0)
+		GHUL ABCD 3 A_Chase
+		GHUL A 0 A_SetTranslucent(0.2,0)
+		GHUL ABCD 3 A_Chase
 		Loop
 	Melee:
-		GEST A 1 A_SetTranslucent(0.1)
-		GEST A 1 A_SetTranslucent(0.3)
-		GEST A 1 A_SetTranslucent(0.5)
-		GEST B 3 Bright A_FaceTarget
-		GEST CDABCD 3 BRIGHT A_CustomMeleeAttack(4)
-		GEST A 1 A_SetTranslucent(0.4)
-		GEST A 1 A_SetTranslucent(0.3)
-		GEST A 1 A_SetTranslucent(0.2)
-		GEST A 1 A_SetTranslucent(0.1)
+		GHUL A 1 A_SetTranslucent(0.1)
+		GHUL A 1 A_SetTranslucent(0.3)
+		GHUL A 1 A_SetTranslucent(0.5)
+		GHUL B 3 Bright A_FaceTarget
+		GHUL CDABCD 3 BRIGHT A_CustomMeleeAttack(4)
+		GHUL A 1 A_SetTranslucent(0.4)
+		GHUL A 1 A_SetTranslucent(0.3)
+		GHUL A 1 A_SetTranslucent(0.2)
+		GHUL A 1 A_SetTranslucent(0.1)
 		Goto See
 	Pain:
-		GEST E 1 A_Pain
-		GEST E 1 A_SetTranslucent(0.4)
-		GEST E 1 A_SetTranslucent(0.3)
-		GEST E 1 A_SetTranslucent(0.2)
-		GEST E 1 A_SetTranslucent(0.1)
+		GHUL E 1 A_Pain
+		GHUL E 1 A_SetTranslucent(0.4)
+		GHUL E 1 A_SetTranslucent(0.3)
+		GHUL E 1 A_SetTranslucent(0.2)
+		GHUL E 1 A_SetTranslucent(0.1)
 		Goto See
 	Death:
-		GEST E 5 A_SetTranslucent(0.5)
-		GEST E 6 A_Scream
-		GEST FG 6
-		GEST H 6 A_NoBlocking
+		GHUL E 5 A_SetTranslucent(0.5)
+		GHUL E 6 A_Scream
+		GHUL FG 6
+		GHUL H 6 A_NoBlocking
+		GHUL H -1
 		Stop
 	}
 }
@@ -2524,5 +2525,244 @@ actor Sniper : Nazi 12701
   Raise:
     SNIP IHGFE 5
     goto See
+  }
+}
+
+actor Hostage : Nazi 12702
+{
+//$Category Monsters (Wolf3D)
+//$Title Hostage
+//$Color 4
+  scale 1.1
+  obituary "%o was somehow killed by the hostage."
+  health 20
+  radius 20
+  height 56
+  mass 100
+  speed 8
+  painchance 255
+  painsound "Nazi1/Pain"
+  deathsound "Nazi1/Death"
+  activesound ""
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +FRIENDLY
+  states
+  {
+  Spawn:
+    HOST A 10 A_Look
+    loop
+  See:
+    HOST AABBCCDD 4 A_Chase
+    loop
+  Pain:
+    HOST E 3
+    HOST E 3 A_Pain
+    goto See
+  Death:
+    HOST E 5
+    HOST F 5 A_Scream
+    HOST G 5 A_NoBlocking
+    HOST H 5
+    HOST I -1
+    stop
+  Raise:
+    HOST IHGFE 5
+    goto See
+  Idle:
+    HOST AA 4 A_Wander
+    HOST A 0 A_Look
+    HOST BB 4 A_Wander
+    HOST A 0 A_Look
+    HOST CC 4 A_Wander
+    HOST A 0 A_Look
+    HOST DD 4 A_Wander
+    HOST A 0 A_Look
+    loop
+  }
+}
+
+actor UndeadMonk 12703
+{
+//$Category Monsters (Wolf3D)
+//$Title Undead Monk
+//$Color 4
+	Scale 1.2
+	obituary "%o was slain by an undead monk."
+	health 125
+	radius 20
+	height 56
+	mass 1000
+	speed 13
+	painchance 24
+	deathsound "hitlerghost/die"
+	seesound "hitlerghost/see"
+	DamageFactor "enemy", 0.0
+	MONSTER
+	+FLOAT
+	+NOGRAVITY
+	+NOTARGET
+	+NOINFIGHTING
+	+LOOKALLAROUND
+	+NOBLOOD
+	States
+	{
+	Spawn:
+		MONK A 10 A_Look
+		Loop
+	See:
+		MONK A 6 A_FastChase
+		MONK BCDCB 6 A_Chase
+		Loop
+	Missile:
+		MONK A 4 A_FaceTarget
+		MONK E 4 BRIGHT A_CustomMissile("EnemyFlamebolt2",30)
+		MONK A 4
+		Goto See
+	Pain:
+		MONK A 4 A_Pain
+		Goto See
+	Death:
+		MONK E 6 A_Scream
+		MONK FGHIJ 6
+		MONK K -1 A_NoBlocking
+		Stop
+	}
+}
+
+actor SuperMutant 12704
+{
+//$Category Monsters (Wolf3D)
+//$Title Mutant (super)
+//$Color 4
+  scale 1.1
+  obituary "%o did the dance of doom with a powerful Mutant."
+  health 180
+  radius 20
+  height 56
+  mass 100
+  speed 6
+  painchance 200
+  seesound ""
+  deathsound "mutant/Death"
+  activesound ""
+  dropitem "MPClipSmall" 128
+  DamageFactor "Enemy", 0.0
+  BloodColor "Green"
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +MISSILEMORE
+  +MISSILEEVENMORE
+  states
+  {
+  Spawn:
+    SUPM A 10 A_Look
+    loop
+  See:
+    SUPM BBCCDDEE 2 A_Chase
+    loop
+  Missile:
+    SUPM L 6 A_FaceTarget
+    SUPM M 0 A_PlayWeaponSound("weapons/Walther")
+    SUPM M 5 BRIGHT A_CustomMissile("EnemyPistolTracer",32,0,random(-1,1))
+    SUPM N 6
+    SUPM O 0 A_PlayWeaponSound("weapons/Walther")
+    SUPM O 5 BRIGHT A_CustomMissile("EnemyPistolTracer",32,0,random(-1,1))
+    SUPM L 6 A_SentinelRefire
+    goto Missile+2
+  Pain:
+    SUPM F 3
+    SUPM F 3 A_Pain
+    goto See
+  Death:
+    SUPM F 3
+    SUPM G 3 A_Scream
+    SUPM H 3 A_NoBlocking
+    SUPM I 3
+    SUPM J 3
+    SUPM K -1
+    stop
+  Raise:
+    MTNT KJIHGF 5
+    goto See
+  Idle:
+    SUPM AA 4 A_Wander
+    SUPM A 0 A_Look
+    SUPM BB 4 A_Wander
+    SUPM A 0 A_Look
+    SUPM CC 4 A_Wander
+    SUPM A 0 A_Look
+    SUPM DD 4 A_Wander
+    SUPM A 0 A_Look
+    loop
+  }
+}
+
+actor Scientist2 : Nazi 12705
+{
+//$Category Monsters (Wolf3D)
+//$Title Scientist (old)
+//$Color 4
+  scale 1.1
+  obituary "%o was shot by a scientist."
+  health 20
+  radius 20
+  height 56
+  mass 100
+  speed 8
+  painchance 200
+  seesound "Nazi1/Sighted"
+  painsound "Nazi1/Pain"
+  deathsound "Nazi1/Death"
+  activesound ""
+  dropitem "MPClipSmall" 256
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  states
+  {
+  Spawn:
+    SCIB A 10 A_Look
+    loop
+  See:
+    SCIB BBCCDDEE 4 A_Chase
+    loop
+  Missile:
+    SCIB FG 5 A_FaceTarget
+    GARD G 0 A_PlayWeaponSound("nazi/pistol")
+    SCIB H 8 BRIGHT A_CustomMissile("EnemyPistolTracer",32,0,random(-8,8))
+    SCIB G 8
+    goto See
+  Pain:
+    SCIB I 3
+    SCIB I 3 A_Pain
+    goto See
+  Death:
+    SCIB I 5
+    SCIB J 5 A_Scream
+    SCIB K 5 A_NoBlocking
+    SCIB L 5
+    SCIB M -1
+    stop
+  Raise:
+    SCIB MLKJI 5
+    goto See
+  Idle:
+    SCIB EE 4 A_Wander
+    SCIB A 0 A_Look
+    SCIB BB 4 A_Wander
+    SCIB A 0 A_Look
+    SCIB CC 4 A_Wander
+    SCIB A 0 A_Look
+    SCIB DD 4 A_Wander
+    SCIB A 0 A_Look
+    loop
   }
 }
