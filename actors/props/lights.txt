@@ -378,7 +378,7 @@ ACTOR StrobeLightRed 12402
   }
 }
 
-ACTOR StrobeLightYellow 12403
+ACTOR StrobeLightYellow : SwitchableDecoration 12403
 {
 //$Category Light Sources (Wolf3D)
 //$Title Strobe Light (yellow)
@@ -390,6 +390,10 @@ ACTOR StrobeLightYellow 12403
   States
   {
   Spawn:
+  Inactive:
+    STRY C 4 BRIGHT
+    Loop
+  Active:
     STRY A 0 BRIGHT
     STRY A 0 BRIGHT A_SpawnItem ("StrobeEmitterYellow")
   Spin:

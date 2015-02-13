@@ -34,7 +34,7 @@ maps
 			resource2
 			{
 				type = 1;
-				location = "G:\\DoomDev\\Projects\\Wolfendoom\\pk3";
+				location = "G:\\DoomDev\\Projects\\Wolfendoom\\Github\\trunk";
 				option1 = 0;
 				option2 = 0;
 				notfortesting = 0;
@@ -42,7 +42,7 @@ maps
 			
 		}
 		
-		defaultfloortexture = "FLOOR0_1";
+		defaultfloortexture = "textures/rock_g13.png";
 		defaultceiltexture = "F_SKY1";
 		defaulttoptexture = "F_SKY1";
 		defaultwalltexture = "F_SKY1";
@@ -68,32 +68,54 @@ maps
 			backoffsety = 0;
 			backscalex = 100;
 			backscaley = 100;
-			gridsize = 64;
+			gridsize = 4;
+		}
+		
+		
+		taglabels
+		{
+			
+			taglabel1
+			{
+				tag = 26;
+				label = "8+";
+			}
+			
 		}
 		
 		
 		fieldtypes
 		{
 			
+			linedef
+			{
+				locknumber = 0;
+			}
+			
+			
 			sidedef
 			{
-				light = 0;
-				offsetx_bottom = 1;
-				offsetx_top = 1;
-				offsety_bottom = 1;
-				offsety_top = 1;
 				offsetx_mid = 1;
 				offsety_mid = 1;
+				offsetx_bottom = 1;
+				offsety_bottom = 1;
+				offsetx_top = 1;
+				offsety_top = 1;
+				scaley_mid = 1;
+				scalex_mid = 1;
 			}
 			
 			
 			sector
 			{
 				rotationceiling = 1;
+				lightcolor = 0;
+				xpanningceiling = 1;
+				ypanningceiling = 1;
 				rotationfloor = 1;
-				fadecolor = 0;
 				xpanningfloor = 1;
 				ypanningfloor = 1;
+				fadecolor = 0;
 			}
 			
 		}
