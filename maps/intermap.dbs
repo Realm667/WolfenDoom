@@ -42,11 +42,11 @@ maps
 			
 		}
 		
-		defaultfloortexture = "FLOOR0_1";
-		defaultceiltexture = "F_SKY1";
-		defaulttoptexture = "STARTAN2";
-		defaultwalltexture = "STARTAN2";
-		defaultbottomtexture = "STARTAN2";
+		defaultfloortexture = "FLAT5_5";
+		defaultceiltexture = "CEIL3_3";
+		defaulttoptexture = "textures/room_t48.png";
+		defaultwalltexture = "textures/room_t48.png";
+		defaultbottomtexture = "textures/room_t48.png";
 		custombrightness = 196;
 		customfloorheight = 0;
 		customceilheight = 128;
@@ -68,7 +68,29 @@ maps
 			backoffsety = 0;
 			backscalex = 100;
 			backscaley = 100;
-			gridsize = 32;
+			gridsize = 4;
+		}
+		
+		
+		fieldtypes
+		{
+			
+			linedef
+			{
+				renderstyle = 2;
+			}
+			
+			
+			sidedef
+			{
+				offsetx_bottom = 1;
+				offsetx_top = 1;
+				offsetx_mid = 1;
+				offsety_mid = 1;
+				offsety_bottom = 1;
+				offsety_top = 1;
+			}
+			
 		}
 		
 	}
