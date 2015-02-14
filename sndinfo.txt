@@ -704,12 +704,12 @@ $Limit world/sludgegloop 4
 /////////////////////////////////////////////////////////////////////
 
 // Toilet
-toilet/death	DSKEENDT	//!!!Placeholder!!!
-toilet/broken	WATER_FOUNTAIN	//!!!Placeholder!!!
+toilet/death	DSBGLASS	
+toilet/broken	WATR_02		
 
 // Hydrant
-hydrant/death	DSKEENDT	//!!!Placeholder!!!
-hydrant/broken	WATER_FOUNTAIN	//!!!Placeholder!!!
+hydrant/death	DSBGLASS	
+hydrant/broken	WATR_02		
 
 // Treasure
 treasure/pickup	DSTRESUP	
@@ -755,6 +755,10 @@ $Limit SFX/FireDie	0
 
 //Mine
 MINEF MINEF
+
+//Breaking Glass
+world/glassbreak   DSBGLASS
+$limit	world/glassbreak		4
 
 /////////////////////////////////////////////////////////////////////
 //// NASHGORE SOUNDS ////////////////////////////////////////////////
@@ -836,7 +840,7 @@ $AMBIENT 14 MACHINE_LOOP_SILENT POINT CONTINUOUS 1.0
 $AMBIENT 15 MACHINEGUN_RICOCHET POINT CONTINUOUS 1.0
 $AMBIENT 16 MOTOR_JEEP POINT CONTINUOUS 1.0
 $AMBIENT 17 MOTOR_TANK POINT CONTINUOUS 1.0
-$AMBIENT 18 PLANE_FLYBY POINT CONTINUOUS 1.0
+$AMBIENT 18 PLANE_FLYBY POINT RANDOM 10.0 30.0
 $AMBIENT 19 RADIO_LOOP POINT CONTINUOUS 1.0
 $AMBIENT 20 SEQ_PLANEATTACK POINT CONTINUOUS 1.0
 $AMBIENT 21 WATER_BASEMENT POINT CONTINUOUS 1.0
