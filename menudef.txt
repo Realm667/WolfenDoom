@@ -9,7 +9,9 @@ DefaultListMenu
 
 ListMenu "MainMenu"
 {
-  StaticPatch 94, 0, "M_DOOM"
+  StaticPatch 0, 20, "MENUBAK"
+
+  StaticPatch 55, 5, "M_DOOM"
   Position 110, 76
 
   TextItem "$MNU_NEWGAME", "n", "PlayerclassMenu"

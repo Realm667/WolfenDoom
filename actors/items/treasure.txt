@@ -133,3 +133,22 @@ ACTOR TreasureCross : CustomInventory 16505
 		stop
   	}
 }
+
+ACTOR GoldBar : CustomInventory 16506
+{
+//$Category Pickups (Wolf3D)
+//$Title Gold (Cross, 20pts)
+//$Color 17
+  inventory.pickupmessage "Picked up a gold bar"
+  inventory.pickupsound "treasure/pickup"
+  States
+  	{
+  	Spawn:
+    		GOLD B -1
+    		stop
+	Pickup:
+		TNT1 A 0 A_GiveInventory ("CoinItem", 20)
+		stop
+  	}
+}
+

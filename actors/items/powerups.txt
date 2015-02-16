@@ -13,3 +13,18 @@ ACTOR NaziBerserk : Berserk replaces Berserk 17012
     Stop
   }
 }
+
+ACTOR Meal : Health replaces Stimpack 17013
+{
+  Inventory.Amount 10
+  Inventory.PickupMessage "$GOTSTIM" // "Picked up a meal."
+  States
+  {
+  Spawn:
+    TNT1 A 0 A_Jump (127, 2)
+    MEAL A -1
+    Stop
+    STIM A -1
+    Stop
+  }
+}
