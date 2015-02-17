@@ -42,11 +42,11 @@ maps
 			
 		}
 		
-		defaultfloortexture = "FLAT5_5";
+		defaultfloortexture = "TEXTURES/CARP_B02.PNG";
 		defaultceiltexture = "CEIL3_3";
-		defaulttoptexture = "textures/room_t48.png";
-		defaultwalltexture = "textures/room_t48.png";
-		defaultbottomtexture = "textures/room_t48.png";
+		defaulttoptexture = "TEXTURES/BANR_U01.PNG";
+		defaultwalltexture = "TEXTURES/BANR_U01.PNG";
+		defaultbottomtexture = "TEXTURES/BANR_U01.PNG";
 		custombrightness = 196;
 		customfloorheight = 0;
 		customceilheight = 128;
@@ -68,7 +68,7 @@ maps
 			backoffsety = 0;
 			backscalex = 100;
 			backscaley = 100;
-			gridsize = 1;
+			gridsize = 8;
 		}
 		
 		
@@ -78,17 +78,18 @@ maps
 			linedef
 			{
 				renderstyle = 2;
+				alpha = 1;
 			}
 			
 			
 			sidedef
 			{
 				offsetx_bottom = 1;
+				offsety_bottom = 1;
 				offsetx_top = 1;
+				offsety_top = 1;
 				offsetx_mid = 1;
 				offsety_mid = 1;
-				offsety_bottom = 1;
-				offsety_top = 1;
 				scalex_mid = 1;
 				scaley_mid = 1;
 				light = 0;
@@ -97,17 +98,17 @@ maps
 			
 			sector
 			{
+				xpanningfloor = 1;
+				ypanningfloor = 1;
 				rotationceiling = 1;
+				rotationfloor = 1;
 				xpanningceiling = 1;
-				ypanningceiling = 1;
 				xscaleceiling = 1;
 				xscalefloor = 1;
+				ypanningceiling = 1;
 				yscaleceiling = 1;
 				yscalefloor = 1;
 				lightcolor = 0;
-				rotationfloor = 1;
-				xpanningfloor = 1;
-				ypanningfloor = 1;
 			}
 			
 		}
