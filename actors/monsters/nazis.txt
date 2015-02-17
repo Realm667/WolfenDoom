@@ -2772,7 +2772,7 @@ actor Scientist2 : Nazi 12705
 actor GeneralAllied : Nazi 12708
 {
 //$Category Monsters (Wolf3D)
-//$Title General
+//$Title General Miller
 //$Color 4
   scale 1.2
   obituary "%o was somehow killed by the prisoner."
@@ -2791,6 +2791,7 @@ actor GeneralAllied : Nazi 12708
   +NOTARGET
   +NOINFIGHTING
   +FRIENDLY
+  +USESPECIAL
   states
   {
   Spawn:
@@ -2849,6 +2850,8 @@ actor DirtyDarren : Nazi 12709
   +FLOORCLIP
   +NOTARGET
   +NOINFIGHTING
+  +FRIENDLY
+  +USESPECIAL
   states
   {
   Spawn:

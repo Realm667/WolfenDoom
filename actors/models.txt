@@ -149,3 +149,22 @@ Actor Vidcam : ModelBase 20138
 
 	Radius 20
 }
+
+Actor FighterM109B_Flight : ModelBase 
+{
+	Projectile
+        Speed 1
+        Height 1
+        Radius 1
+	SpawnID 160
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		SMGT A 4
+		Loop
+	Death:
+		TNT1 A -1
+		Stop
+	}
+}
