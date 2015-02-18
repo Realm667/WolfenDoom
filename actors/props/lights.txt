@@ -522,3 +522,19 @@ ACTOR StrobeRayRed : StrobeRayBlue
 ACTOR StrobeRayYellow : StrobeRayBlue
 {
 }
+
+ACTOR LightBulb 19092
+{
+//$Category Light Sources (Wolf3D)
+//$Title Light Bulb
+//$Color 11 
+  Radius 4
+  Height 8
+  -SOLID
+  States
+  {
+  Spawn:
+    BULB A -1
+    Stop
+  }
+}

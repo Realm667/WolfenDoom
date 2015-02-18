@@ -79,3 +79,80 @@ ACTOR Uniform 19150
   }
 }
 
+ACTOR Cup1 19151
+{
+//$Category Props (Wolf3D)
+//$Title Cup (coffee)
+//$Color 3 
+  Radius 2
+  Height 4
+  +SOLID
+  States
+  {
+  Spawn:
+	CUP1 A -1
+    Stop
+  }
+}
+
+ACTOR Cup2 19152
+{
+//$Category Props (Wolf3D)
+//$Title Cups (empty)
+//$Color 3 
+  Radius 2
+  Height 4
+  +SOLID
+  States
+  {
+  Spawn:
+	CUP3 A -1
+    Stop
+  }
+}
+
+ACTOR CoffeeMachine 19153
+{
+//$Category Props (Wolf3D)
+//$Title Coffee Machine
+//$Color 3 
+  Radius 4
+  Height 16
+  Health 1
+  +SOLID
+  +NOBLOOD
+  +SHOOTABLE
+  States
+  {
+  Spawn:
+    CUP2 A -1
+    Stop
+  Death:
+    CUP2 B -1
+    Stop
+  }
+}
+
+
+ACTOR WaterMachine 19154
+{
+//$Category Props (Wolf3D)
+//$Title Water Machine
+//$Color 3 
+  Radius 4
+  Height 16
+  Health 1
+  +SOLID
+  +NOBLOOD
+  +SHOOTABLE
+  States
+  {
+  Spawn:
+    WATR A -1
+    Stop
+  Death:
+    WATR B -1
+    Stop
+  }
+}
+
