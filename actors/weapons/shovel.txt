@@ -78,6 +78,9 @@ ACTOR Melee : Weapon replaces Fist 15002
 	  SHUV A 1 Offset(20,40) A_WeaponReady(WRF_NOBOB)
 	  SHUV A 1 Offset(10,35) A_WeaponReady(WRF_NOBOB)
 	  Goto Ready
+    Spawn:
+	  SHUV P -1
+	  Stop
    }
 }
 
