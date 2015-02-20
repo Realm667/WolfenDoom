@@ -1,5 +1,6 @@
 actor Nazi
 {
+  GibHealth 20
   scale 1.2	
 	States
 	{
@@ -11,6 +12,10 @@ actor Nazi
 		BURN O 5 BRIGHT A_NoBlocking
 		BURN PQRSTU 5 BRIGHT
 		BURN V -1
+		Stop
+	XDeath:
+		SLOP ABCDEF 5
+		SLOP G -1
 		Stop
 	}
 }

@@ -31,6 +31,7 @@ ACTOR TNTBarrelBase
 		Loop
 	Death:
 		BARX A 2 BRIGHT A_SpawnItemEx("BarrelFrags")
+		BARX A 0 BRIGHT A_SpawnItemEx("GeneralExplosion_Medium", 0, 0, 0)
 		BARX B 2 BRIGHT A_Scream
 		BARX CDEFG 2 BRIGHT
 		BARX H 2 BRIGHT A_Explode
