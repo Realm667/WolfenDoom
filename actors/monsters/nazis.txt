@@ -239,7 +239,7 @@ actor MP40Guard : Nazi 12004
   painsound "Nazi2/Pain"
   deathsound "Nazi2/Death"
   activesound ""
-  /*dropitem "MP40" 256*/
+  dropitem "MPClipSmall" 256
   dropitem "GrenadePickup" 16
   DamageFactor "Enemy", 0.0
   MONSTER
@@ -457,7 +457,7 @@ actor RifleGuard : Nazi 12007
   painsound "Nazi2/Pain"
   deathsound "Nazi2/Death"
   activesound ""
-  /*dropitem "G41" 256*/
+  dropitem "MauserAmmoSmall" 256
   DamageFactor "Enemy", 0.0
   MONSTER
   +FLOORCLIP
@@ -661,7 +661,7 @@ actor Paratrooper : Nazi 12109
   painsound "Nazi2/Pain"
   deathsound "Nazi2/Death"
   activesound ""
-  dropitem "MPClipSmall" 128
+  dropitem "MPClipSmall" 192
   dropitem "MauserAmmoSmall" 128
   DamageFactor "Enemy", 0.0
   MONSTER
@@ -728,7 +728,7 @@ actor Mutant 12010
   activesound ""
   dropitem "MPClipSmall" 128
   DamageFactor "Enemy", 0.0
-  BloodColor "Green"
+  BloodColor "Purple"
   MONSTER
   +FLOORCLIP
   +NOTARGET
@@ -798,7 +798,7 @@ actor MutantMelee : Nazi 12011
   deathsound "mutant/Death"
   activesound ""
   DamageFactor "Enemy", 0.0
-  BloodColor "Green"
+  BloodColor "Purple"
   MONSTER
   +FLOORCLIP
   +NOTARGET
@@ -867,7 +867,7 @@ actor Officer : Nazi 12012
   painsound "Nazi4/Pain"
   deathsound "Nazi4/Death"
   activesound ""
-  /*dropitem "Luger9mm" 256*/
+  dropitem "MPClipSmall" 256
   DamageFactor "Enemy", 0.0
   MONSTER
   +FLOORCLIP
@@ -1167,11 +1167,11 @@ actor Doberman2 12036
   Death:
     DOG1 H 8
     DOG1 I 8 A_Scream
-    DOG1 J 6
-    DOG1 K -1 A_NoBlocking
+    DOG1 JK 6
+    DOG1 L -1 A_NoBlocking
     stop
   Raise:
-    DOG1 KJIH 6
+    DOG1 LKJIH 6
     Goto See
   }
 }
@@ -1254,7 +1254,7 @@ actor RocketMan 12018
   painsound "boss/pain"
   deathsound "Boss2/Death"
   activesound " "
-  dropitem "NebAmmoSmall" 128
+  dropitem "NebAmmoSmall" 256
   DamageFactor "Enemy", 0.0
   MONSTER
   +FLOORCLIP
@@ -1320,6 +1320,7 @@ actor MadDoctor 12019
 	deathsound "Boss2/Death"
 	activesound " "
 	DamageFactor "Enemy", 0.0
+	dropitem "Medikit_Medium" 256
 	MONSTER
 	+FLOORCLIP
 	+NOTARGET
@@ -1407,7 +1408,6 @@ actor SuperSoldier 12020
   painsound "boss/pain"
   deathsound "Boss1/Death"
   activesound " "
-  /*DropItem "UMG43" 8*/
   DamageFactor "Enemy", 0.0
   MONSTER
   +FLOORCLIP
