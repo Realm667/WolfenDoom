@@ -41,19 +41,3 @@ Actor HeavyArmor : BasicArmorPickup 13002
     loop
   }
 }
-
-Actor NazisBackpack : BackpackItem 13003
-{
-//$Category Items (Wolf3D)
-//$Title Backpack (Backpack)
-//$Color 6
-	Height 26
-	ConversationID 187
-	Inventory.PickupMessage "Picked up an ammo pack."
-	States
-	{
-	Spawn:
-		BPK2 A -1
-		Stop
-	}
-}
