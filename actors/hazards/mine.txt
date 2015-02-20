@@ -3,12 +3,13 @@ actor Mine 15124
 //$Category Hazards (Wolf3D)
 //$Title Mine
 //$Color 3
-	Health 20
+	Health 100
   	Radius 30
   	Height 42
 	Mass 9999999
-  	+SOLID
-  	-SHOOTABLE
+  	-SOLID
+	+LOOKALLAROUND
+  	+SHOOTABLE
   	+NOBLOOD
   	+ACTIVATEMCROSS
   	+DONTGIB
@@ -19,7 +20,8 @@ actor Mine 15124
 	States
 	{
 		Spawn: 
-			MINE A 6
+		See:
+			MINE A 6 A_Chase
 			Loop
 		Death:
 			MINE A 8 A_PlaySound("MINEF")
