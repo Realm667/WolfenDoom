@@ -1,4 +1,4 @@
-ACTOR Melee : Weapon replaces Fist 15002
+ACTOR Melee : Weapon 15002
 {
 //$Category Weapons (Wolf3D)
 //$Title (1) Shovel
@@ -40,7 +40,7 @@ ACTOR Melee : Weapon replaces Fist 15002
 	  SHUV B 1 Offset(78,38)
 	  SHUV B 1 Offset(92,44)
 	  SHUV B 1 Offset(64,50)
-	  SHUV C 1 Offset(30,38) A_CustomPunch(20,1,CPF_DAGGER,"ShovelPuff",100)
+	  SHUV C 1 Offset(30,38) A_CustomPunch(40,1,CPF_DAGGER,"ShovelPuff",100)
 	  SHUV C 1 Offset(1,44)
 	  SHUV D 1 Offset(-32,24)
 	  SHUV D 1 Offset(-50,28)
@@ -105,4 +105,9 @@ actor ShovelPuff
    	 POOF ABCDE 3 
       Stop
   }
+}
+
+actor KnifeSilent : Fist replaces Fist
+{
+	   +NOALERT
 }
