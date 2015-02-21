@@ -68,30 +68,30 @@ actor ScurryRat 12380
     RATS A 10 A_Look 
     loop
   See:
-    RATS A 2 A_Chase
-	RATS A 0 A_CheckSight ("Vanish")
-	RATS A 2 A_Chase
-	RATS A 0 A_CheckSight ("Vanish")
-	RATS B 2 A_Chase
-	RATS A 0 A_CheckSight ("Vanish")
-	RATS B 2 A_Chase
-	RATS A 0 A_CheckSight ("Vanish")
-	RATS C 2 A_Chase
-	RATS A 0 A_CheckSight ("Vanish")
-	RATS C 2 A_Chase
-	RATS A 0 A_CheckSight ("Vanish")
-	RATS D 2 A_Chase
-	RATS A 0 A_CheckSight ("Vanish")
-	RATS D 2 A_Chase
-	RATS A 0 A_CheckSight ("Vanish")
+    PAIN A 2 A_Chase
+	PAIN A 0 A_CheckSight ("Vanish")
+	PAIN A 2 A_Chase
+	PAIN A 0 A_CheckSight ("Vanish")
+	PAIN B 2 A_Chase
+	PAIN A 0 A_CheckSight ("Vanish")
+	PAIN B 2 A_Chase
+	PAIN A 0 A_CheckSight ("Vanish")
+	PAIN B 2 A_Chase
+	PAIN A 0 A_CheckSight ("Vanish")
+	PAIN B 2 A_Chase
+	PAIN A 0 A_CheckSight ("Vanish")
+	PAIN B 2 A_Chase
+	PAIN A 0 A_CheckSight ("Vanish")
+	PAIN B 2 A_Chase
+	PAIN A 0 A_CheckSight ("Vanish")
     loop
   Vanish:
     TNT1 A 1
     stop
   Death:
-    RATS I 3 A_ScreamAndUnblock
-	RATS JKL 3
-	RATS L -1
+    PAIN H 3 A_ScreamAndUnblock
+	PAIN IJKL 3
+	PAIN M -1
 	stop
   }
 }
