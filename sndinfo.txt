@@ -232,6 +232,15 @@ hitflesh9 trcehit9
 //// MONSTER SOUNDS /////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
 
+
+// Shark
+
+shark/sight DETECT
+shark/death SQUISH
+shark/active ROAMING
+CHOMP CHOMP
+SWIPE SWIPE
+
 // Basic guards
 
 nazi/pistol DSNLUGER
@@ -750,12 +759,22 @@ SFX/FireLoop2	FIRELOP2
 SFX/FireLoop3	FIRELOP3
 SFX/FireDie	FIREDIE
 
+//Swarm
+SFX/Buzz	DSBUZZ
+
 $Limit SFX/FireStart	0
 $Limit SFX/FireLoop	0
 $Limit SFX/FireDie	0
 
 //Mine
 MINEF MINEF
+
+//Rats
+Rat/Squeek	DSRAT
+Rat/Active	DSRATIDL
+DSRATDI1	DSRATDI1
+DSRATDI2	DSRATDI2
+$random Rat/Death	{ DSRATDI1 DSRATDI2 }
 
 //Small Switches
 SMSWITCH SMSWITCH
