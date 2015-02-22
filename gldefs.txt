@@ -470,6 +470,61 @@ object FBarrel1
 frame FCNE {light BOAEBRL1}
 }
 
+//PROPS - INDUSTRIAL//
+pulselight BOARBRL1
+{
+color 0.0 0.8 0.0
+size 16
+secondarySize 24
+interval 0.6
+Offset 0 8 0
+}
+
+object RadioactiveBarrel
+{
+frame BARRA {light BOARBRL1}
+frame BARRB {light BOARBRL1}
+frame BARRC {light BOARBRL1}
+frame BARRD {light BOARBRL1}
+}
+
+//ITEMS - KEYS//
+PointLight BOABKEY
+{
+color 0.8 0.8 0.8
+size 16
+offset 0 4 0
+}
+
+object SilverKey2
+{
+frame BKEYB {light BOABKEY}
+}
+
+PointLight BOAYKEY
+{
+color 0.8 0.8 0.0
+size 16
+offset 0 4 0
+}
+
+object GoldKey2
+{
+frame YKEYB {light BOAYKEY}
+}
+
+PointLight BOARKEY
+{
+color 0.8 0.2 0.2
+size 16
+offset 0 4 0
+}
+
+object BronzeKey
+{
+frame RKEYB {light BOARKEY}
+}
+
 //WEAPONS//
 FlickerLight2 BOAFLAMW
 {
