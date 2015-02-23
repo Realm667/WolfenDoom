@@ -43,6 +43,7 @@ states{
   BARR E -1
   stop}
 }
+
 actor radioactivebarrel 19198
 {
 //$Category Props (Wolf3D)
@@ -55,4 +56,40 @@ states{
  spawn:
   BARR ABCD 4
   loop}
+}
+
+actor Crane 19199
+{
+//$Category Props (Wolf3D)
+//$Title Crane
+//$Color 3 
+radius 8
+height 80
++SOLID
++SPAWNCEILING
++NOGRAVITY
+states
+{
+ spawn:
+  HDB1 A -1
+  stop
+ }
+}
+
+actor Crane 19200
+{
+//$Category Props (Wolf3D)
+//$Title U-Boat
+//$Color 3 
+radius 8
+height 80
++SOLID
++SPAWNCEILING
++NOGRAVITY
+states
+{
+ spawn:
+  UBOT A -1
+  stop
+ }
 }
