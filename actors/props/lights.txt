@@ -273,12 +273,14 @@ ACTOR StreetLight2 : SwitchingDecoration 19039
   States
   {
   Spawn:
+    STLA A -1
+    Stop
   Active:
-    STLA C 10
-    Loop
+    STLA C -1
+    Stop 
   Inactve:
-    STLA A 10
-    Loop
+    STLA A -1
+    Stop
   }
 }
 
@@ -294,12 +296,14 @@ ACTOR StreetLight3 : SwitchingDecoration 19040
   States
   {
   Spawn:
+    STLA B -1
+    Stop
   Active:
-    STLA D 10
-    Loop
+    STLA D -1
+    Stop
   Inactve:
-    STLA B 10
-    Loop
+    STLA B -1
+    Stop
   }
 }
 
