@@ -16,6 +16,13 @@ ACTOR CeilingLightM2 19008
   }
 }
 
+ACTOR CeilingLightM2Off : CeilingLightM2 24000
+{
+//$Category Light Sources (Wolf3D)
+//$Title Ceiling Light (middle - off)
+//$Color 11
+}
+
 Actor Chandelier1Switchable : SwitchableDecoration 19605
 {
 //$Category Light Sources (Wolf3D)
@@ -125,7 +132,6 @@ Actor Chandelier4Switchable : SwitchableDecoration 19601
   }
 }
 
-
 ACTOR CeilingLightM 19030
 {
 //$Category Light Sources (Wolf3D)
@@ -142,6 +148,13 @@ ACTOR CeilingLightM 19030
     CLIT B -1
     Stop
   }
+}
+
+ACTOR CeilingLightMOff : CeilingLightM 24001
+{
+//$Category Light Sources (Wolf3D)
+//$Title Ceiling Light (small - off)
+//$Color 11
 }
 
 ACTOR TableLightM : SwitchableDecoration 19009
@@ -277,13 +290,12 @@ ACTOR StreetLight2 : SwitchingDecoration 19039
     Stop
   Active:
     STLA C -1
-    Stop 
+    Stop
   Inactve:
     STLA A -1
     Stop
   }
 }
-
 
 ACTOR StreetLight3 : SwitchingDecoration 19040
 {
@@ -374,7 +386,6 @@ ACTOR FBarrel1 19065
 }
 
 //CEILING LIGHTS
-
 ACTOR StrobeLightBlue 12400
 {
 //$Category Light Sources (Wolf3D)
@@ -459,10 +470,7 @@ ACTOR StrobeLightYellow : SwitchableDecoration 12403
   }
 }
 
-
-
 //ROTATING EMITTERS
-
 ACTOR StrobeEmitterBlue
 {
   Radius 16
@@ -539,10 +547,7 @@ ACTOR StrobeEmitterYellow
   }
 }
 
-
-
 //LIGHT RAYS
-
 ACTOR StrobeRayBlue
 {
   Radius 2
@@ -568,17 +573,9 @@ ACTOR StrobeRayBlue
   }
 }
 
-ACTOR StrobeRayGreen : StrobeRayBlue
-{
-}
-
-ACTOR StrobeRayRed : StrobeRayBlue
-{
-}
-
-ACTOR StrobeRayYellow : StrobeRayBlue
-{
-}
+ACTOR StrobeRayGreen : StrobeRayBlue{}
+ACTOR StrobeRayRed : StrobeRayBlue{}
+ACTOR StrobeRayYellow : StrobeRayBlue{}
 
 ACTOR LightBulb 19092
 {
