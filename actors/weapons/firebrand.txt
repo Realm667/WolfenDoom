@@ -41,7 +41,7 @@ ACTOR Firebrand : Weapon replaces Chainsaw 15006
 		SRDG B 1
 		SRDG C 1 A_GiveInventory("SwordSeq",1)
 		TNT1 A 4
-		SRDG DE 1 
+		SRDG DE 1
 		SRDG F 1 A_PlaySound("weapons/swordswing")
 		SRDG GHI 1
 		SRDG J 1  A_CustomPunch(35,1,0,"SwordPuff",96)
@@ -63,7 +63,7 @@ ACTOR Firebrand : Weapon replaces Chainsaw 15006
 		Goto Ready
 	Fire3:
 		TNT1 A 4
-		SRDG DE 1 
+		SRDG DE 1
 		SRDG F 1 A_PlaySound("weapons/swordswing")
 		SRDG GHI 1
 		SRDG J 1  A_CustomPunch(35,1,0,"SwordPuff",96)
@@ -110,7 +110,7 @@ ACTOR FlameSword : Weapon
 		SRDF B 1
 		SRDF C 1 A_GiveInventory("SwordSeq",1)
 		TNT1 A 4
-		SRDG DE 1 
+		SRDG DE 1
 		SRDF F 1 A_PlaySound("weapons/flameswordswing")
 		SRDF GHI 1
 		SRDF J 1  A_CustomPunch(80,1,0,"FireSwordPuff",96)
@@ -132,7 +132,7 @@ ACTOR FlameSword : Weapon
 		Goto Ready
 	Fire3:
 		TNT1 A 4
-		SRDG DE 1 
+		SRDG DE 1
 		SRDF F 1 A_PlaySound("weapons/flameswordswing")
 		SRDF GHI 1
 		SRDF J 1  A_CustomPunch(80,1,0,"FireSwordPuff",96)
@@ -145,7 +145,7 @@ ACTOR FlameSword : Weapon
 	Altfire:
 		SRDF BC 1
 		TNT1 A 4
-		SRDG DE 1 
+		SRDG DE 1
 		SRDF F 1 A_PlaySound("weapons/flameswordswing")
 		SRDF GH 1
 		SRDF I 1 Thing_Damage(0,2)
@@ -172,12 +172,12 @@ ACTOR FirebrandFireball
 	States
 	{
 	Spawn:
-		CFFX N 1 BRIGHT A_SpawnItemEx("FirebrandFireballTrail")
+		CFFX N 1 BRIGHT LIGHT(BOAFLAMW) A_SpawnItemEx("FirebrandFireballTrail")
 		Loop
 	Death:
-		CFCF Q 2 BRIGHT A_Scream
-		CFCF R 2 BRIGHT A_Explode(16,128,0)
-		CFCF STUVWXYZ 2 BRIGHT
+		CFCF Q 2 BRIGHT LIGHT(BOAFLAMW) A_Scream
+		CFCF R 2 BRIGHT LIGHT(BOAFLAMW) A_Explode(16,128,0)
+		CFCF STUVWXYZ 2 BRIGHT LIGHT(BOAFLAMW)
 		Stop
 	}
 }
@@ -189,7 +189,7 @@ ACTOR FirebrandFireballTrail
 	States
 	{
 	Spawn:
-		CFFX NOP 4 BRIGHT
+		CFFX NOP 4 BRIGHT LIGHT(BOAFLAMW)
 		Stop
 	}
 }
