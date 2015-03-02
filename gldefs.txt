@@ -528,3 +528,139 @@ Frame FBLXI {Light BOAFLAMW}
 Frame FBLXJ {Light BOAFLAMW}
 Frame FBLXK {Light BOAFLAMW}
 }
+
+//////////////////////////////
+// Underwater Light Effects //
+//////////////////////////////
+
+//underwaters
+pulselight LIGHTWATR1
+{
+    color 0.1 0.1 0.1
+    size 32
+    secondarySize 64
+    interval 1
+}
+
+pulselight LIGHTWATR2
+{
+    color 0.1 0.1 0.1
+    size 24
+    secondarySize 48
+    interval 1
+}
+
+pulselight LIGHTWATR3
+{
+    color 0.1 0.1 0.1
+    size 16
+    secondarySize 32
+    interval 1
+}
+
+pulselight LIGHTLAVA1
+{
+    color 0.1 0.1 0.0
+    size 32
+    secondarySize 64
+    interval 1
+}
+
+pulselight LIGHTLAVA2
+{
+    color 0.1 0.1 0.0
+    size 24
+    secondarySize 48
+    interval 1
+}
+
+pulselight LIGHTLAVA3
+{
+    color 0.1 0.1 0.0
+    size 16
+    secondarySize 32
+    interval 1
+}
+
+pulselight LIGHTBLOD1
+{
+    color 0.1 0.0 0.0
+    size 32
+    secondarySize 64
+    interval 1
+}
+
+pulselight LIGHTBLOD2
+{
+    color 0.1 0.0 0.0
+    size 24
+    secondarySize 48
+    interval 1
+}
+
+pulselight LIGHTBLOD3
+{
+    color 0.1 0.0 0.0
+    size 16
+    secondarySize 32
+    interval 1
+}
+
+pulselight LIGHTNUKE1
+{
+    color 0.0 0.1 0.0
+    size 32
+    secondarySize 64
+    interval 1
+}
+
+pulselight LIGHTNUKE2
+{
+    color 0.0 0.1 0.0
+    size 24
+    secondarySize 48
+    interval 1
+}
+
+pulselight LIGHTNUKE3
+{
+    color 0.0 0.1 0.0
+    size 16
+    secondarySize 32
+    interval 1
+}
+
+object UWaterLShooter
+{
+    frame BAL1C { light LIGHTWATR1 }
+    frame BAL1D { light LIGHTWATR2 }
+    frame BAL1E { light LIGHTWATR3 }
+}
+
+object ULavaLShooter
+{
+    frame BAL1C { light LIGHTLAVA1 }
+    frame BAL1D { light LIGHTLAVA2 }
+    frame BAL1E { light LIGHTLAVA3 }
+}
+
+object UGoreLShooter
+{
+    frame BAL1C { light LIGHTBLOD1 }
+    frame BAL1D { light LIGHTBLOD2 }
+    frame BAL1E { light LIGHTBLOD3 }
+}
+
+object UHazardLShooter
+{
+    frame BAL1C { light LIGHTNUKE1 }
+    frame BAL1D { light LIGHTNUKE2 }
+    frame BAL1E { light LIGHTNUKE3 }
+}
+
+pointlight DARKWATER1
+{
+    color 1.0 1.0 1.0
+    size 64
+    subtractive 1
+}
