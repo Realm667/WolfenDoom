@@ -88,9 +88,12 @@ Height 52
 States
 	{
 	Spawn:
-	SMGT A 4 A_SpawnItemEx("InvisibleBridge32",-48,0,20)
-	SMGT A 4 A_SpawnItemEx("InvisibleBridge32",80,0,40)
-	Loop
+	SMGT A 1
+	SMGT A 1 A_SpawnItemEx("InvisibleBridge32",-48,0,20)
+	SMGT A 1 A_SpawnItemEx("InvisibleBridge32",80,0,36)
+	SMGT A 1 A_SpawnItemEx("InvisibleBridge32",88,0,16)
+	SMGT A -1
+	Stop
 	}
 }
 
