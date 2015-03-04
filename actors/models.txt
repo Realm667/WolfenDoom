@@ -1,264 +1,310 @@
 ACTOR ModelBase
 {
-	Radius 20
-	Height 56
-	+FLOORCLIP
-	+DONTSPLASH
-	+NOBLOOD
-	States
+Radius 20
+Height 56
++NOBLOOD
++FLOORCLIP
++DONTSPLASH
+States
 	{
 	Spawn:
-		SMGT A 4
-		Loop
+	SMGT A 4
+	Loop
 	}
 }
 
-ACTOR ModelBeachHedgeHog : ModelBase 22169
+actor 3dObstacle
+{
+Radius 20
+Height 56
+Mass 0x7fffffff
+Health -1
++SOLID
++NOBLOOD
++DROPPED
++NODAMAGE
++SHOOTABLE
++DONTSPLASH
++NOBLOODDECALS
++ACTLIKEBRIDGE
+States
+	{
+	Spawn:
+	SMGT A 4
+	Loop
+	}
+}
+
+actor 3dObject //nomass = nocollisions because of noblockmap
+{
+Radius 20
+Height 56
++SOLID
++DROPPED
++FLOORCLIP
++NOBLOCKMAP
++DONTSPLASH
++ACTLIKEBRIDGE
+States
+	{
+	Spawn:
+	SMGT A 4
+	Loop
+	}
+}
+
+ACTOR ModelBeachHedgeHog : 3dObstacle 22169
 {
 //$Category Models (Wolf3D)
 //$Title Beach Hedgehog
-//$Color 3 
-	Radius 32
-	Height 64
-	+SOLID
+//$Color 3
+Radius 32
 }
 
-ACTOR ModelCampBed : ModelBase 22151
+ACTOR ModelCampBed : 3dObstacle 22151
 {
 //$Category Models (Wolf3D)
 //$Title Camp Bed (single)
-//$Color 3 
-	Radius 20
+//$Color 3
+Radius 32
 }
 
-ACTOR ModelCampBed2 : ModelBase 22152
+ACTOR ModelCampBed2 : 3dObstacle 22152
 {
 //$Category Models (Wolf3D)
 //$Title Camp Bed (double)
-//$Color 3 
-	Radius 20
+//$Color 3
+Radius 32
+Height 24
 }
 
-ACTOR ModelIncaTruck4Wheel : ModelBase 22182
+ACTOR ModelIncaTruck4Wheel : 3dObstacle 22182
 {
 //$Category Models (Wolf3D)
 //$Title Truck (Nazi)
-//$Color 3 
-	Radius 4
-	Height 4
+//$Color 3
+Radius 12
+Height 52
+States
+	{
+	Spawn:
+	SMGT A 4 A_SpawnItemEx("InvisibleBridge32",-48,0,20)
+	SMGT A 4 A_SpawnItemEx("InvisibleBridge32",80,0,40)
+	Loop
+	}
 }
 
 ACTOR ModelIncaTrain : ModelBase 22214
 {
 //$Category Models (Wolf3D)
 //$Title Train
-//$Color 3 
-	Radius 4
-	Height 4
-	+NOGRAVITY
+//$Color 3
+Radius 4
+Height 4
++NOGRAVITY
 }
 
 ACTOR ModelRailBoxcar : ModelBase 22225
 {
 //$Category Models (Wolf3D)
 //$Title Train (boxcar)
-//$Color 3 
-	Radius 4
-	Height 4
-	+nogravity
+//$Color 3
+Radius 4
+Height 4
++NOGRAVITY
 }
 
 ACTOR ModelRailTanker : ModelBase 22226
 {
 //$Category Models (Wolf3D)
 //$Title Train (tanker)
-//$Color 3 
-	Radius 4
-	Height 4
-	+nogravity
+//$Color 3
+Radius 4
+Height 4
++NOGRAVITY
 }
 
 ACTOR ModelSandBagCurve : ModelBase 22218
 {
 //$Category Models (Wolf3D)
 //$Title Sandbag (curve)
-//$Color 3 
-	Radius 4
-	Height 4
+//$Color 3
+Radius 4
+Height 4
 }
 
 ACTOR ModelSandBagStraight : ModelBase 22238
 {
 //$Category Models (Wolf3D)
 //$Title Sandbag (straight)
-//$Color 3 
-	Radius 4
-	Height 4
+//$Color 3
+Radius 4
+Height 4
 }
 
 Actor WaterTower001 : ModelBase 20133
 //$Category Models (Wolf3D)
 //$Title Watertower
-//$Color 3 
+//$Color 3
 {
 
-	Radius 20
+Radius 20
 }
 
 Actor Tent : ModelBase 20134
 //$Category Models (Wolf3D)
 //$Title Tent
-//$Color 3 
+//$Color 3
 {
 
-	Radius 20
+Radius 20
 }
 
 Actor FighterM109B : ModelBase 20135
 //$Category Models (Wolf3D)
 //$Title FighterM109B
-//$Color 3 
+//$Color 3
 {
 
-	Radius 20
+Radius 20
 }
 
 Actor BomberVTOL3 : ModelBase 20136
 //$Category Models (Wolf3D)
 //$Title BomberVTOL3
-//$Color 3 
+//$Color 3
 {
 
-	Radius 20
+Radius 20
 }
 
 Actor Submarine : ModelBase 20137
 //$Category Models (Wolf3D)
 //$Title Submarine
-//$Color 3 
+//$Color 3
 {
 
-	Radius 20
+Radius 20
 }
 
 Actor Vidcam : ModelBase 20138
 //$Category Models (Wolf3D)
 //$Title Video Cam
-//$Color 3 
+//$Color 3
 {
 
-	Radius 20
+Radius 20
 }
 
-Actor FighterM109B_Flight : ModelBase 
+Actor FighterM109B_Flight : ModelBase
 {
-	Projectile
-        Speed 1
-        Height 1
-        Radius 1
-	SpawnID 160
-	+NOGRAVITY
-	-BRIGHT
-	States
-	{
-	Spawn:
-		SMGT A 4
-		Loop
-	Death:
-		TNT1 A -1
-		Stop
-	}
+Projectile
+Speed 1
+Height 1
+Radius 1
+SpawnID 160
++NOGRAVITY
+-BRIGHT
+States
+{
+Spawn:
+SMGT A 4
+Loop
+Death:
+TNT1 A -1
+Stop
+}
 }
 
 ACTOR ModelIncaTruck4Wheel_US : ModelBase 20143
 {
 //$Category Models (Wolf3D)
 //$Title Truck (US)
-//$Color 3 
-	Radius 4
-	Height 4
+//$Color 3
+Radius 4
+Height 4
 }
 
 ACTOR 88mmFlak : ModelBase 20144
 {
 //$Category Models (Wolf3D)
 //$Title 88mm Flak
-//$Color 3 
-	+SOLID
-  	+USESPECIAL
-	+NOGRAVITY
-	Radius 64
-	Height 64
+//$Color 3
++SOLID
++USESPECIAL
++NOGRAVITY
+Radius 64
+Height 64
 }
 
 ACTOR Nebelwerfer3D : ModelBase 20145
 {
 //$Category Models (Wolf3D)
 //$Title Nebelwerfer
-//$Color 3 
-	Radius 4
-	Height 4
+//$Color 3
+Radius 4
+Height 4
 }
 
 ACTOR Turret3D : ModelBase 20146
 {
 //$Category Models (Wolf3D)
 //$Title Turret
-//$Color 3 
-	Radius 4
-	Height 4
+//$Color 3
+Radius 4
+Height 4
 }
 
 ACTOR Wire3D : ModelBase 20147
 {
 //$Category Models (Wolf3D)
 //$Title Wire
-//$Color 3 
-	Radius 4
-	Height 4
+//$Color 3
+Radius 4
+Height 4
 }
 
 ACTOR Bunker3D : ModelBase 20148
 {
 //$Category Models (Wolf3D)
 //$Title Bunker
-//$Color 3 
-	Radius 4
-	Height 4
+//$Color 3
+Radius 4
+Height 4
 }
 
 ACTOR FlakGun3D : ModelBase 20149
 {
 //$Category Models (Wolf3D)
 //$Title Flakgun
-//$Color 3 
-	Radius 4
-	Height 4
+//$Color 3
+Radius 4
+Height 4
 }
 
 ACTOR ThankSherman3D : ModelBase 20150
 {
 //$Category Models (Wolf3D)
 //$Title Thank (Sherman)
-//$Color 3 
-	Radius 4
-	Height 4
+//$Color 3
+Radius 4
+Height 4
 }
 
 ACTOR KingGeorge : ModelBase 20151
 {
 //$Category Models (Wolf3D)
 //$Title Battleship
-//$Color 3 
-	Radius 4
-	Height 4
+//$Color 3
+Radius 4
+Height 4
 }
 
 ACTOR FlakVierling3D : ModelBase 20152
 {
 //$Category Models (Wolf3D)
 //$Title Flak Vierling
-//$Color 3 
-	Radius 4
-	Height 4
+//$Color 3
+Radius 4
+Height 4
 }
