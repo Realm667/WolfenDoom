@@ -28,7 +28,7 @@ ACTOR FlameAmmo : Ammo replaces RocketBox 15114
 }
 
 ACTOR Flamebolt
-{ 
+{
     Damage 1
     Alpha 0.90
     RenderStyle Add
@@ -74,7 +74,7 @@ ACTOR EnemyFlamerShot : Flamebolt
 }
 
 ACTOR Flameball
-{ 
+{
    Damage 30
    Alpha 0.90
    RenderStyle Add
@@ -106,12 +106,12 @@ ACTOR EnemyFlamebolt : Flameball
 	States
    {
    Spawn:
-      FBAL ABC 3 BRIGHT
+      FBAL ABC 3 BRIGHT LIGHT(BOAFLMW2)
       Loop
    Death:
-      FBLX A 0 BRIGHT A_PlaySound("weapons/nebxpl")
-      FBLX A 2 BRIGHT A_Explode(8,64)
-      FBLX BCDEFGHIJK 2 BRIGHT
+      FBLX A 0 BRIGHT LIGHT(BOAFLMW2) A_PlaySound("weapons/nebxpl")
+      FBLX A 2 BRIGHT LIGHT(BOAFLMW2) A_Explode(8,64)
+      FBLX BCDEFGHIJK 2 BRIGHT LIGHT(BOAFLMW2)
       Stop
    }
 }
@@ -125,15 +125,15 @@ ACTOR EnemyFlamebolt2 : Flameball
 	States
    {
    Spawn:
-      FBAL ABC 3 BRIGHT
+      FBAL ABC 3 BRIGHT LIGHT(BOAFLMW2)
       Loop
    Death:
-      FBLX A 0 BRIGHT A_PlaySound("weapons/nebxpl")
-      FBLX ABCDEFGHIJK 2 BRIGHT
+      FBLX A 0 BRIGHT LIGHT(BOAFLMW2) A_PlaySound("weapons/nebxpl")
+      FBLX ABCDEFGHIJK 2 BRIGHT LIGHT(BOAFLMW2)
       Stop
    }
 }
-	
+
 
 ACTOR Pyrolight : Weapon replaces PlasmaRifle 15007
 {
