@@ -117,8 +117,43 @@ pointlight Chandelier3
     size 36
     offset 0 16 0
 }
+//some ozydefs
+pointlight Chandelier4
+{
+    color 1.0 1.0 0.0
+    size 44
+    offset 0 20 0
+}
 
-object Chandelier1Switchable
+pointlight Chandelier5
+{
+    color 1.0 1.0 0.1
+    size 40
+    offset 0 18 0
+}
+
+pointlight Chandelier6
+{
+    color 1.0 1.0 0.2
+    size 36
+    offset 0 16 0
+}
+//end ozydefs
+object Chandelier1Switchable //added warmy fire lights
+{
+    frame CHANA { light Chandelier4 }
+	frame CHANB { light Chandelier5 }
+	frame CHANC { light Chandelier6 }
+}
+
+object Chandelier2Switchable //added warmy fire lights
+{
+    frame CHANE { light Chandelier4 }
+	frame CHANF { light Chandelier5 }
+	frame CHANG { light Chandelier6 }
+}
+
+/*object Chandelier1Switchable
 {
         frame CHANA { light Chandelier }
 	frame CHANB { light Chandelier2 }
@@ -130,7 +165,7 @@ object Chandelier2Switchable
         frame CHANE { light Chandelier }
 	frame CHANF { light Chandelier2 }
 	frame CHANG { light Chandelier3 }
-}
+}*/
 
 object Chandelier3Switchable
 {
