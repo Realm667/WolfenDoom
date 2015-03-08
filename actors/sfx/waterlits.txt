@@ -16,8 +16,8 @@ States
 	Active:
 	TNT1 A 0
 	TNT1 A 0 A_CheckSight("Unsighted")
+	TNT1 A 2 A_SpawnItemEx("UWaterLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
 	TNT1 A 1 A_SpawnItemEx("UWaterLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
-	TNT1 A 0 A_SpawnItemEx("UWaterLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
 	loop
 	Unsighted:
 	TNT1 A 1
@@ -46,8 +46,8 @@ States
 	Active:
 	TNT1 A 0
 	TNT1 A 0 A_CheckSight("Unsighted")
+	TNT1 A 2 A_SpawnItemEx("ULavaLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
 	TNT1 A 1 A_SpawnItemEx("ULavaLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
-	TNT1 A 0 A_SpawnItemEx("ULavaLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
 	loop
 	Unsighted:
 	TNT1 A 1
@@ -75,8 +75,8 @@ States
 	Active:
 	TNT1 A 0
 	TNT1 A 0 A_CheckSight("Unsighted")
+	TNT1 A 2 A_SpawnItemEx("UGoreLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
 	TNT1 A 1 A_SpawnItemEx("UGoreLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
-	TNT1 A 0 A_SpawnItemEx("UGoreLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
 	loop
 	Unsighted:
 	TNT1 A 1
@@ -104,8 +104,8 @@ States
 	Active:
 	TNT1 A 0
 	TNT1 A 0 A_CheckSight("Unsighted")
+	TNT1 A 2 A_SpawnItemEx("UHazardLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
 	TNT1 A 1 A_SpawnItemEx("UHazardLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
-	TNT1 A 0 A_SpawnItemEx("UHazardLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
 	loop
 	Unsighted:
 	TNT1 A 1
@@ -139,7 +139,7 @@ States
 	BAL1 A 1 A_Stop
 	stop
 	Death:
-	BAL1 CCCDE 8
+	BAL1 CCCDE 8 A_FadeOut(0.025)
 	stop
 	}
 }
