@@ -68,7 +68,6 @@ poof-3 ploof3
 poof-4 ploof4
 poof-5 ploof5
 
-
 /////////////////////////////////////////////////////////////////////
 //// WEAPON SOUNDS //////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
@@ -180,7 +179,6 @@ weapons/nebelwerfer dsnebsht
 weapons/nebxpl		dsnebxpl
 
 // Feuerbrand
-
 $random weapons/swordhit { sword1 sword2 sword3 }
 sword1 dsswdht1
 sword2 dsswdht2
@@ -202,7 +200,6 @@ fsword3 dsfwdht3
 weapons/flameswordswing dsfwdswg
 
 // Bullet Whizzes, Ricochet and suchwise
-
 $random ricochet { rico1 rico2 rico3 rico4 rico5 rico6 rico7 rico8 rico9 }
 $random whiz { whiz1 whiz2 whiz3 }
 $random hitflesh { hitflesh1 hitflesh2 hitflesh3 hitflesh4 hitflesh5 hitflesh6 hitflesh7 hitflesh8 hitflesh9 }
@@ -232,9 +229,7 @@ hitflesh9 trcehit9
 //// MONSTER SOUNDS /////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
 
-
 // Shark
-
 shark/sight DETECT
 shark/death SQUISH
 shark/active ROAMING
@@ -242,7 +237,6 @@ CHOMP CHOMP
 SWIPE SWIPE
 
 // Basic guards
-
 nazi/pistol DSNLUGER
 
 $random guard/sight { guard/sight1 guard/sight2 guard/sight3 guard/sight4 guard/sight5 guard/sight6 guard/sight7 guard/sight8 guard/sight9 }
@@ -269,7 +263,6 @@ guard/death8		dsgddth8
 guard/death9		dsgddth9
 
 // Officers
-
 $random officer/sight { officer/sight1 officer/sight2 officer/sight3 officer/sight4 }
 $random officer/death { officer/death1 officer/death2 officer/death3 officer/death4 }
 
@@ -284,7 +277,6 @@ officer/death3		dsofdth3
 officer/death4		dsofdth4
 
 // SS
-
 $random ss/sight { ss/sight1 ss/sight2 ss/sight3 ss/sight4 }
 $random ss/death { ss/death1 ss/death2 ss/death3 ss/death4 }
 
@@ -300,16 +292,16 @@ ss/death4			dspodth4
 
 // Dogs
 $random dog/sight 		{ dog/sight1  dog/sight2  dog/sight3 }
-dog/sight1  			DSDGSIT1  
-dog/sight2  			DSDGSIT2 
-dog/sight3  			DSDGSIT3 
+dog/sight1  			DSDGSIT1
+dog/sight2  			DSDGSIT2
+dog/sight3  			DSDGSIT3
 $random dog/active 		{ dog/act1  dog/act2 }
-dog/act1  			DSDGACT1  
-dog/act2 			DSDGACT2 
+dog/act1  			DSDGACT1
+dog/act2 			DSDGACT2
 $random dog/death 		{ dog/death1  dog/death2  dog/death3 }
-dog/death1  			DSDGDIE1  
-dog/death2  			DSDGDIE2 
-dog/death3  			DSDGDIE3 
+dog/death1  			DSDGDIE1
+dog/death2  			DSDGDIE2
+dog/death3  			DSDGDIE3
 dog/pain			dsdgpai
 dog/attack			dsdogatk
 
@@ -355,9 +347,7 @@ nazi/pain		dsnazpai
 boss/active		dsbosact
 boss/pain		dsbospai
 
-
 // Miscellaneous
-
 misc/k_pkup		dsgetkey
 misc/armor_pkup		dsgetarm
 misc/health_pkup		dsgethlt
@@ -679,7 +669,6 @@ burndthc burndthc
 //// SYSTEM/MENU SOUNDS /////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
 
-
 menu/activate	menuopen	// Activate a new menu
 menu/backup	menucls 	// Backup to previous menu
 menu/prompt	menuopen	// Activate a prompt "menu"
@@ -715,14 +704,14 @@ $Limit world/sludgegloop 4
 // Toilet
 toilet/death	WCBREAK
 toilet/broken	WCFLOW
-toilet/flush	WCFLUSH		
+toilet/flush	WCFLUSH
 
 // Hydrant
-hydrant/death	WCBREAK	
-hydrant/broken	WCFLOW		
+hydrant/death	WCBREAK
+hydrant/broken	WCFLOW
 
 // Treasure
-treasure/pickup	DSTRESUP	
+treasure/pickup	DSTRESUP
 
 // Radioactive Barrel
 radioactivebarrel/detected DSDETECT
@@ -801,8 +790,6 @@ DSDETOP DSDETOP //Detonator Place
 /////////////////////////////////////////////////////////////////////
 //// NASHGORE SOUNDS ////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
-
-
 $random bloodsplat { bloodsplat1 bloodsplat2 bloodsplat3 }
 bloodsplat1 dsblud01
 bloodsplat2 dsblud02
@@ -872,10 +859,16 @@ $random WAR_DISTANT { WAR_DISTANT_1 WAR_DISTANT_2 WAR_DISTANT_3 WAR_DISTANT_4 }
 WIND_HOWLING WIND_02
 WIND_MEDIUM WIND_03
 WIND_SILENT WIND_04
-STEEL1 STEEL1 
+STEEL1 STEEL1
 STEEL2 STEEL2
 WATERFALL dsfalls
 WATER_RIVER2 amb15
+//underwater effects
+underwt1	underwt1
+underwt2	underwt2
+underwt3	underwt3
+underwt4	underwt4
+$random underwtr { underwt1 underwt2 underwt3 underwt4 }
 
 $AMBIENT 1 ALARM_DOOD POINT CONTINUOUS 1.0
 $AMBIENT 2 ALARM_RING POINT CONTINUOUS 1.0
@@ -914,3 +907,4 @@ $AMBIENT 34 STEEL2 POINT CONTINUOUS 1.0
 $AMBIENT 35 CELLAR_CRY POINT RANDOM 1.0 10.0 30.0
 $AMBIENT 36 WATERFALL POINT CONTINUOUS 1.0
 $AMBIENT 37 WATER_RIVER2 POINT CONTINUOUS 1.0
+$ambient 38 underwtr point 1.0 random 20.0 60.0 1.0
