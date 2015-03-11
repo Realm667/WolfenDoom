@@ -1,0 +1,86 @@
+DefaultListMenu
+{
+  Font "BigFont", "DarkGray"
+  Selector "M_SKULL1", -28, -5
+  Linespacing 16
+}
+
+// Main menu ---------------------------------------------------------------------------------------
+
+ListMenu "MainMenu"
+{
+  StaticPatch 60, 20, "MENUBAK"
+
+  StaticPatch 55, 5, "M_DOOM"
+  Position 110, 76
+
+  TextItem "$MNU_NEWGAME", "n", "PlayerclassMenu"
+  TextItem "$MNU_OPTIONS", "o", "OptionsMenu"
+  TextItem "BOA OPTIONS", "h", "BOAOptionsMenu"
+  TextItem "$MNU_GAMEFILES", "g", "GameFilesMenu"
+  TextItem "$MNU_INFO", "i", "ReadThisMenu"
+  TextItem "$MNU_QUITGAME", "q", "QuitMenu"
+}
+
+// Episode selection menu --------------------------------------------------------------------------
+
+ListMenu "EpisodeMenu"
+{
+  NetgameMessage "$NEWGAME"
+  Position 80, 50
+}
+
+// Skill selection menu ----------------------------------------------------------------------------
+
+ListMenu "SkillMenu"
+{
+  Position 38, 30
+}
+
+// Game files selection menu -----------------------------------------------------------------------
+
+ListMenu "GameFilesMenu"
+{
+  Position 110, 60
+  TextItem "$MNU_LOADGAME", "l", "LoadGameMenu"
+  TextItem "$MNU_SAVEGAME", "s", "SaveGameMenu"
+}
+
+// Load game menu ----------------------------------------------------------------------------------
+
+ListMenu "LoadGameMenu"
+{
+  NetgameMessage "$LOADNET"
+  StaticTextCentered 160, -10, "$MNU_LOADGAME"
+
+  Position 80, 54
+  Class "LoadMenu"
+}
+
+// Save game menu ----------------------------------------------------------------------------------
+
+ListMenu "SaveGameMenu"
+{
+  StaticTextCentered 160, -10, "$MNU_SAVEGAME"
+
+  Position 80, 54
+  Class "SaveMenu"
+}
+
+// Firebrand options menu ------------------------------------------------------------------------------
+
+OptionMenu "BOAOptionsMenu"
+{
+  Title "BOA Options"
+  StaticText ""
+  StaticText "BOA Settings",        1
+  StaticText ""
+  // Settings should go here
+
+  StaticText "BOA Controls",        1
+  StaticTextSwitchable "ENTER to change, BACKSPACE to clear",
+                       "Press new key for control, ESC to cancel",
+                       "ControlMessage"
+  StaticText ""
+  Control "Throw Grenade",         "use GrenadePickup"
+}

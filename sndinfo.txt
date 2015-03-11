@@ -1,0 +1,916 @@
+/////////////////////////////////////////////////////////////////////
+//// PLAYER SOUNDS //////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+
+$playersound player weasel *death wwdthlo
+$playersound player weasel *wimpydeath wwdthlo
+$playersound player weasel *crazydeath wwdthhi
+$playersound player weasel *xdeath wwdthhi
+$playersound player weasel *gibbed wwdthhi
+$playeralias player weasel *pain100 weasellowpain
+$playeralias player weasel *pain75 weaselmedpain
+$playeralias player weasel *pain50 weaselhipain
+$playeralias player weasel *pain25 weaselcritpain
+$playeralias player weasel *grunt weaseloof
+$playersound player weasel *usefail dsnoway
+$playersound player weasel *weaponlaugh dswpnup
+$playeralias player weasel *taunt player/taunt
+$playeralias player weasel *grenadecall player/grenadecall
+$random player/taunt { taunt1 taunt2 taunt3 taunt4 taunt5 taunt6 taunt7 taunt8 taunt9 taunt10 taunt11 taunt12 taunt13 taunt14 taunt15 }
+$random player/grenadecall { grenade1 grenade2 grenade3 }
+grenade1 grenade1
+grenade2 grenade2
+grenade3 grenade3
+taunt1 taunt1
+taunt2 taunt2
+taunt3 taunt3
+taunt4 taunt4
+taunt5 taunt5
+taunt6 taunt6
+taunt7 taunt7
+taunt8 taunt8
+taunt9 taunt9
+taunt10 taunt10
+taunt11 taunt11
+taunt12 taunt12
+taunt13 taunt13
+taunt14 taunt14
+taunt15 taunt15
+$random weaselcritpain { p1-1 p1-2 p1-3 p1-4 p1-5 p1-6 }
+$random weaselhipain { p2-1 p2-2 p2-3 p2-4 p2-5 p2-6 }
+$random weaselmedpain { p3-1 p3-2 p3-3 p3-4 p3-5 }
+$random weasellowpain { p4-1 p4-2 p4-3 p4-4 }
+$random weaseloof { poof-1 poof-2 poof-3 poof-4 poof-5 }
+p4-1 plpain41
+p4-2 plpain42
+p4-3 plpain43
+p4-4 plpain44
+p3-1 plpain31
+p3-2 plpain32
+p3-3 plpain33
+p3-4 plpain34
+p3-5 plpain35
+p2-1 plpain21
+p2-2 plpain22
+p2-3 plpain23
+p2-4 plpain24
+p2-5 plpain25
+p2-6 plpain26
+p1-1 plpain11
+p1-2 plpain12
+p1-3 plpain13
+p1-4 plpain14
+p1-5 plpain15
+p1-6 plpain16
+poof-1 ploof1
+poof-2 ploof2
+poof-3 ploof3
+poof-4 ploof4
+poof-5 ploof5
+
+
+/////////////////////////////////////////////////////////////////////
+//// WEAPON SOUNDS //////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+
+//Shovel
+$random shovel/impact {shovel/impact1 shovel/impact2}
+shovel/impact1          dsshvi1
+shovel/impact2          dsshvi2
+shovel/wall          dsshvi3
+
+$random shovel/miss {shovel/miss1 shovel/miss2 shovel/miss3}
+shovel/miss1            dsshvw1
+shovel/miss2            dsshvw2
+shovel/miss3            dsshvw3
+
+melee/miss dspmiss
+melee/hit dspunch
+melee/wall dspwall
+
+weapons/Walther WALTFIR
+
+weapons/Luger LUGRFIRE
+
+Shotgun/Fire SHOTFIRE
+Shotgun/Load SHOTLOAD
+Shotgun/Pump SHOTPUMP
+
+Garand/Fire M1FIRE
+Garand/Load M1LOAD
+Garand/Ping M1PING
+
+weapons/wweshotgunfire dswgfire
+weapons/wweshotguncock dswgcock
+weapons/wweshotgundouble dswgdblf
+
+Weapons/STGFIRE STGFIRE
+
+weapons/flamer dsfthrow
+weapons/steam dssteam
+weapons/napalm THERMFIR
+
+weapons/mp40 dsrifle
+
+weapons/ba5fire ba5fire
+weapons/ba5load ba5load
+weapons/ba5cock ba5cock
+
+weapons/nebelwerfer dsnebsht
+weapons/nebxpl		dsnebxpl
+
+reloads/p38 loadp38
+reloads/mp40 loadmp40
+reloads/g43 loadg43
+reloads/luger lugrload
+reloads/flamer THERMRLD
+
+Enfield/Fire EnflFire
+Enfield/BoltBack EnflBack
+Enfield/BoltFwd EnflFwd
+Enfield/Load EnflLoad
+
+Thompson/Fire THOMFIRE
+Thompson/Reload THOMLOAD
+
+ppsh/fire ppshfire
+ppsh/reload ppshload
+
+$random grenade/throw { grenthr1 grenthr2 grenthr3 }
+$random grenade/bounce { grenbnc1 grenbnc2 grenbnc3 grenbnc4 }
+$random grenade/explode { grenexp1 grenexp2 grenexp3 grenexp4 }
+grenthr1 grenthr1
+grenthr2 grenthr2
+grenthr3 grenthr3
+grenbnc1 grenbnc1
+grenbnc2 grenbnc2
+grenbnc3 grenbnc3
+grenbnc4 grenbnc4
+grenexp1 grenexp1
+grenexp2 grenexp2
+grenexp3 grenexp3
+grenexp4 grenexp4
+grenade/pickup grenpick
+
+panzer/fire panzfire
+panzer/load panzload
+panzer/fly panzfly
+panzer/explode panzexpl
+
+$random weapons/rocklx {grnx1 grnx2 grnx3 grnx4}
+grnx1 dsbarex1
+grnx2 dsbarex2
+grnx3 dsbarex3
+grnx4 dsbarex4
+
+$random weapons/assaultgun {mp401 mp402}
+mp401 dsmp401
+mp402 dsmp402
+
+weapons/stg44 dsstg44
+weapons/p38fire dsp38
+weapons/mauser dsmauser
+
+weapons/chaingun dscgun
+weapons/chaingunstart chaingo
+weapons/chaingunloop chainlp
+weapons/chaingunstop chainstp
+
+weapons/nebelwerfer dsnebsht
+weapons/nebxpl		dsnebxpl
+
+// Feuerbrand
+
+$random weapons/swordhit { sword1 sword2 sword3 }
+sword1 dsswdht1
+sword2 dsswdht2
+sword3 dsswdht3
+$random weapons/swordwall { swordwall1 swordwall2 swordwall3 swordwall4 }
+swordwall1 dsswdwal
+swordwall2 dsswdwl2
+swordwall3 dsswdwl3
+swordwall4 dsswdwl4
+$random weapons/swordswing { swordswing1 swordswing2 swordswing3 }
+swordswing1 dsswdswg
+swordswing2 dsswdsw2
+swordswing3 dsswdsw3
+weapons/sworddraw dsswdup
+$random weapons/flameswordhit { fsword1 fsword2 fsword3 }
+fsword1 dsfwdht1
+fsword2 dsfwdht2
+fsword3 dsfwdht3
+weapons/flameswordswing dsfwdswg
+
+// Bullet Whizzes, Ricochet and suchwise
+
+$random ricochet { rico1 rico2 rico3 rico4 rico5 rico6 rico7 rico8 rico9 }
+$random whiz { whiz1 whiz2 whiz3 }
+$random hitflesh { hitflesh1 hitflesh2 hitflesh3 hitflesh4 hitflesh5 hitflesh6 hitflesh7 hitflesh8 hitflesh9 }
+rico1 trceric1
+rico2 trceric2
+rico3 trceric3
+rico4 trceric4
+rico5 trceric5
+rico6 trceric6
+rico7 trceric7
+rico8 trceric8
+rico9 trceric9
+whiz1 trcefly1
+whiz2 trcefly2
+whiz3 trcefly3
+hitflesh1 trcehit1
+hitflesh2 trcehit2
+hitflesh3 trcehit3
+hitflesh4 trcehit4
+hitflesh5 trcehit5
+hitflesh6 trcehit6
+hitflesh7 trcehit7
+hitflesh8 trcehit8
+hitflesh9 trcehit9
+
+/////////////////////////////////////////////////////////////////////
+//// MONSTER SOUNDS /////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+
+
+// Shark
+
+shark/sight DETECT
+shark/death SQUISH
+shark/active ROAMING
+CHOMP CHOMP
+SWIPE SWIPE
+
+// Basic guards
+
+nazi/pistol DSNLUGER
+
+$random guard/sight { guard/sight1 guard/sight2 guard/sight3 guard/sight4 guard/sight5 guard/sight6 guard/sight7 guard/sight8 guard/sight9 }
+$random guard/death { guard/death1 guard/death1 guard/death3 guard/death4 guard/death5 guard/death6 guard/death7 guard/death8 guard/death9 }
+
+guard/sight1		dsgdsit1
+guard/sight2		dsgdsit2
+guard/sight3		dsgdsit3
+guard/sight4		dsgdsit4
+guard/sight5		dsgdsit5
+guard/sight6		dsgdsit6
+guard/sight7		dsgdsit7
+guard/sight8		dsgdsit8
+guard/sight9		dsgdsit9
+
+guard/death1		dsgddth1
+guard/death2		dsgddth2
+guard/death3		dsgddth3
+guard/death4		dsgddth4
+guard/death5		dsgddth5
+guard/death6		dsgddth6
+guard/death7		dsgddth7
+guard/death8		dsgddth8
+guard/death9		dsgddth9
+
+// Officers
+
+$random officer/sight { officer/sight1 officer/sight2 officer/sight3 officer/sight4 }
+$random officer/death { officer/death1 officer/death2 officer/death3 officer/death4 }
+
+officer/sight1		dsofsit1
+officer/sight2		dsofsit2
+officer/sight3		dsofsit3
+officer/sight4		dsofsit4
+
+officer/death1		dsofdth1
+officer/death2		dsofdth2
+officer/death3		dsofdth3
+officer/death4		dsofdth4
+
+// SS
+
+$random ss/sight { ss/sight1 ss/sight2 ss/sight3 ss/sight4 }
+$random ss/death { ss/death1 ss/death2 ss/death3 ss/death4 }
+
+ss/sight1			dsposit1
+ss/sight2			dsposit2
+ss/sight3			dsposit3
+ss/sight4			dsposit4
+
+ss/death1			dspodth1
+ss/death2			dspodth2
+ss/death3			dspodth3
+ss/death4			dspodth4
+
+// Dogs
+$random dog/sight 		{ dog/sight1  dog/sight2  dog/sight3 }
+dog/sight1  			DSDGSIT1  
+dog/sight2  			DSDGSIT2 
+dog/sight3  			DSDGSIT3 
+$random dog/active 		{ dog/act1  dog/act2 }
+dog/act1  			DSDGACT1  
+dog/act2 			DSDGACT2 
+$random dog/death 		{ dog/death1  dog/death2  dog/death3 }
+dog/death1  			DSDGDIE1  
+dog/death2  			DSDGDIE2 
+dog/death3  			DSDGDIE3 
+dog/pain			dsdgpai
+dog/attack			dsdogatk
+
+// Hans
+hans/sight		dshansit
+hans/death		dshandth
+
+// Franz
+franz/sight		dsfrasit
+franz/death		dsfradth
+
+// Otto
+otto/sight		dsottsit
+otto/death		dsottdth
+
+// General
+general/sight	dsgensit
+general/death	dsgendth
+
+// Chair Guy
+krist/sight		dskrisit
+krist/death		dskridth
+
+// Death Knight
+deathknight/sight	dsdtksit
+deathknight/death	dsdtkdth
+
+// Hitler
+hitler/sight	dshitsit
+hitler/pain		dshitpai
+hitler/death	dshitdth
+hitler/act		dshitact
+hitler/gib		hitlrgib
+
+// Fat Man
+fatman/sight	dsfatsit
+fatman/death	dsfatdth
+
+// Machines
+metal/pain		dsping
+
+nazi/pain		dsnazpai
+boss/active		dsbosact
+boss/pain		dsbospai
+
+
+// Miscellaneous
+
+misc/k_pkup		dsgetkey
+misc/armor_pkup		dsgetarm
+misc/health_pkup		dsgethlt
+misc/ammo_pkup		dsammoup
+
+
+// Grosse
+Boss1/Death Bos1Dt01
+$random Boss1/Sighted { Bos1St01 Bos1St02 Bos1St03 Bos1St04 Bos1St05 Bos1St06 Bos1St07 Bos1St08 Bos1St09 }
+Bos1St01 Bos1St01
+Bos1St02 Bos1St02
+Bos1St03 Bos1St03
+Bos1St04 Bos1St04
+Bos1St05 Bos1St05
+Bos1St06 Bos1St06
+Bos1St07 Bos1St07
+Bos1St08 Bos1St08
+Bos1St09 Bos1St09
+
+// Gretel
+$random BossGirl/Death { gretdt1 gretdt2 gretdt3 gretdt4 }
+gretdt1 gretdt1
+gretdt2 gretdt2
+gretdt3 gretdt3
+gretdt4 gretdt4
+$random BossGirl/Sighted { gretsee1 gretsee2 gretsee3 gretsee4 }
+gretsee1 gretsee1
+gretsee2 gretsee2
+gretsee3 gretsee3
+gretsee4 gretsee4
+BossGirl/Pain gretpain
+
+// Colonel
+Boss2/Death Bos2Dt01
+$random Boss2/Sighted { bos2st01 bos2st02 bos2st03 bos2st04 bos2st05 bos2st06 bos2st07 bos2st08 }
+Bos2St01 Bos2St01
+Bos2St02 Bos2St02
+Bos2St03 Bos2St03
+Bos2St04 Bos2St04
+Bos2St05 Bos2St05
+Bos2St06 Bos2St06
+Bos2St07 Bos2St07
+Bos2St08 Bos2St08
+
+// General
+Boss3/Death Bos3Dt01
+Boss3/Sighted Bos3St01
+
+// Voice 1
+$random Nazi1/Death { Naz1Dt02 Naz1Dt02 Naz1Dt03 Naz1Dt03 Naz1Dt04 Naz1Dt04 Naz1Dt05 Naz1Dt05 Naz1Dt06 Naz1Dt06 Naz1Dt07 Naz1Dt07 Naz1Dt08 Naz1Dt08 Naz1Dt09 Naz1Dt09 Naz1Dt10 Naz1Dt10 Naz1Dt11 Naz1Dt11 Naz1Dt12 Naz1Dt12 }
+$random Nazi1/Pain { Naz1Pn02 Naz1Pn02 Naz1Pn03 Naz1Pn03 Naz1Pn04 Naz1Pn04 Naz1Pn05 Naz1Pn05 Naz1Pn06 Naz1Pn06 Naz1Pn07 Naz1Pn07 Naz1Pn08 Naz1Pn08 Naz1Pn09 Naz1Pn09 }
+$random Nazi1/Sighted { Naz1St02 Naz1St02 Naz1St03 Naz1St03 Naz1St04 Naz1St04 Naz1St05 Naz1St05 Naz1St06 Naz1St06 Naz1St07 Naz1St07 Naz1St08 Naz1St08 Naz1St09 Naz1St09 Naz1St10 Naz1St10 Naz1St11 Naz1St11 Naz1St12 Naz1St12 Naz1St13 Naz1St13 Naz1St14 Naz1St14 Naz1St15 Naz1St15 Naz1St16 Naz1St16 Naz1St17 Naz1St17 Naz1St18 Naz1St18 Naz1St19 Naz1St19 Naz1St20 Naz1St20 Naz1St21 Naz1St21 Naz1St22 Naz1St22 Naz1St23 Naz1St23 Naz1St24 Naz1St24 Naz1St25 Naz1St25 Naz1St26 Naz1St26 Naz1St27 Naz1St27 Naz1St28 Naz1St28 Naz1St29 Naz1St29 Naz1St30 Naz1St30 Naz1St31 Naz1St31 Naz1St32 Naz1St32 Naz1St33 Naz1St33 Naz1St34 Naz1St34 Naz1St35 Naz1St35 Naz1St36 Naz1St36 Naz1St37 Naz1St37 Naz1St38 Naz1St38 Naz1St39 Naz1St39 }
+Naz1Dt02 Naz1Dt02
+Naz1Dt03 Naz1Dt03
+Naz1Dt04 Naz1Dt04
+Naz1Dt05 Naz1Dt05
+Naz1Dt06 Naz1Dt06
+Naz1Dt07 Naz1Dt07
+Naz1Dt08 Naz1Dt08
+Naz1Dt09 Naz1Dt09
+Naz1Dt10 Naz1Dt10
+Naz1Dt11 Naz1Dt11
+Naz1Dt12 Naz1Dt12
+Naz1Pn02 Naz1Pn02
+Naz1Pn03 Naz1Pn03
+Naz1Pn04 Naz1Pn04
+Naz1Pn05 Naz1Pn05
+Naz1Pn06 Naz1Pn06
+Naz1Pn07 Naz1Pn07
+Naz1Pn08 Naz1Pn08
+Naz1Pn09 Naz1Pn09
+Naz1St02 Naz1St02
+Naz1St03 Naz1St03
+Naz1St04 Naz1St04
+Naz1St05 Naz1St05
+Naz1St06 Naz1St06
+Naz1St07 Naz1St07
+Naz1St08 Naz1St08
+Naz1St09 Naz1St09
+Naz1St10 Naz1St10
+Naz1St11 Naz1St11
+Naz1St12 Naz1St12
+Naz1St13 Naz1St13
+Naz1St14 Naz1St14
+Naz1St15 Naz1St15
+Naz1St16 Naz1St16
+Naz1St17 Naz1St17
+Naz1St18 Naz1St18
+Naz1St19 Naz1St19
+Naz1St20 Naz1St20
+Naz1St21 Naz1St21
+Naz1St22 Naz1St22
+Naz1St23 Naz1St23
+Naz1St24 Naz1St24
+Naz1St25 Naz1St25
+Naz1St26 Naz1St26
+Naz1St27 Naz1St27
+Naz1St28 Naz1St28
+Naz1St29 Naz1St29
+Naz1St30 Naz1St30
+Naz1St31 Naz1St31
+Naz1St32 Naz1St32
+Naz1St33 Naz1St33
+Naz1St34 Naz1St34
+Naz1St35 Naz1St35
+Naz1St36 Naz1St36
+Naz1St37 Naz1St37
+Naz1St38 Naz1St38
+Naz1St39 Naz1St39
+
+// Voice 2
+$random Nazi2/Death { Naz2Dt02 Naz2Dt02 Naz2Dt03 Naz2Dt03 Naz2Dt04 Naz2Dt04 Naz2Dt05 Naz2Dt05 Naz2Dt06 Naz2Dt06 }
+$random Nazi2/Pain { Naz2Pn02 Naz2Pn02 Naz2Pn03 Naz2Pn03 Naz2Pn04 Naz2Pn04 Naz2Pn05 Naz2Pn05 Naz2Pn06 Naz2Pn06 Naz2Pn07 Naz2Pn07 Naz2Pn08 Naz2Pn08 }
+$random Nazi2/Sighted { Naz2St02 Naz2St02 Naz2St03 Naz2St03 Naz2St04 Naz2St04 Naz2St05 Naz2St05 Naz2St06 Naz2St06 Naz2St07 Naz2St07 Naz2St08 Naz2St08 Naz2St09 Naz2St09 Naz2St10 Naz2St10 Naz2St11 Naz2St11 Naz2St12 Naz2St12 Naz2St13 Naz2St13 Naz2St14 Naz2St14 Naz2St15 Naz2St15 Naz2St16 Naz2St16 Naz2St17 Naz2St17 Naz2St18 Naz2St18 Naz2St19 Naz2St19 Naz2St20 Naz2St20 Naz2St21 Naz2St21 Naz2St22 Naz2St22 Naz2St23 Naz2St23 Naz2St24 Naz2St24 Naz2St25 Naz2St25 Naz2St26 Naz2St26 Naz2St27 Naz2St27 Naz2St28 Naz2St28 Naz2St29 Naz2St29 Naz2St30 Naz2St30 Naz2St31 Naz2St31 Naz2St32 Naz2St32 Naz2St33 Naz2St33 Naz2St34 Naz2St34 Naz2St35 Naz2St35 Naz2St36 Naz2St36 Naz2St37 Naz2St37 Naz2St38 Naz2St38 Naz2St39 Naz2St39 Naz2St40 Naz2St40 Naz2St41 Naz2St41 Naz2St42 Naz2St42 Naz2St43 Naz2St43 Naz2St44 Naz2St44 Naz2St45 Naz2St45 Naz2St46 Naz2St46 Naz2St47 Naz2St47 Naz2St48 Naz2St48 Naz2St49 Naz2St49 }
+Naz2Dt02 Naz2Dt02
+Naz2Dt03 Naz2Dt03
+Naz2Dt04 Naz2Dt04
+Naz2Dt05 Naz2Dt05
+Naz2Dt06 Naz2Dt06
+Naz2Pn02 Naz2Pn02
+Naz2Pn03 Naz2Pn03
+Naz2Pn04 Naz2Pn04
+Naz2Pn05 Naz2Pn05
+Naz2Pn06 Naz2Pn06
+Naz2Pn07 Naz2Pn07
+Naz2Pn08 Naz2Pn08
+Naz2St02 Naz2St02
+Naz2St03 Naz2St03
+Naz2St04 Naz2St04
+Naz2St05 Naz2St05
+Naz2St06 Naz2St06
+Naz2St07 Naz2St07
+Naz2St08 Naz2St08
+Naz2St09 Naz2St09
+Naz2St10 Naz2St10
+Naz2St11 Naz2St11
+Naz2St12 Naz2St12
+Naz2St13 Naz2St13
+Naz2St14 Naz2St14
+Naz2St15 Naz2St15
+Naz2St16 Naz2St16
+Naz2St17 Naz2St17
+Naz2St18 Naz2St18
+Naz2St19 Naz2St19
+Naz2St20 Naz2St20
+Naz2St21 Naz2St21
+Naz2St22 Naz2St22
+Naz2St23 Naz2St23
+Naz2St24 Naz2St24
+Naz2St25 Naz2St25
+Naz2St26 Naz2St26
+Naz2St27 Naz2St27
+Naz2St28 Naz2St28
+Naz2St29 Naz2St29
+Naz2St30 Naz2St30
+Naz2St31 Naz2St31
+Naz2St32 Naz2St32
+Naz2St33 Naz2St33
+Naz2St34 Naz2St34
+Naz2St35 Naz2St35
+Naz2St36 Naz2St36
+Naz2St37 Naz2St37
+Naz2St38 Naz2St38
+Naz2St39 Naz2St39
+Naz2St40 Naz2St40
+Naz2St41 Naz2St41
+Naz2St42 Naz2St42
+Naz2St43 Naz2St43
+Naz2St44 Naz2St44
+Naz2St45 Naz2St45
+Naz2St46 Naz2St46
+Naz2St47 Naz2St47
+Naz2St48 Naz2St48
+Naz2St49 Naz2St49
+
+// Voice 3 (Has no death/pains, use voice 2's instead)
+$random Nazi3/Sighted { Naz3St02 Naz3St02 Naz3St03 Naz3St03 Naz3St04 Naz3St04 Naz3St05 Naz3St05 Naz3St06 Naz3St06 Naz3St07 Naz3St07 Naz3St08 Naz3St08 Naz3St09 Naz3St09 Naz3St10 Naz3St10 Naz3St11 Naz3St11 Naz3St12 Naz3St12 Naz3St13 Naz3St13 Naz3St14 Naz3St14 Naz3St15 Naz3St15 Naz3St16 Naz3St16 Naz3St17 Naz3St17 Naz3St18 Naz3St18 Naz3St19 Naz3St19 Naz3St20 Naz3St20 Naz3St21 Naz3St21 Naz3St22 Naz3St22 Naz3St23 Naz3St23 Naz3St24 Naz3St24 Naz3St25 Naz3St25 Naz3St26 Naz3St26 Naz3St27 Naz3St27 Naz3St28 Naz3St28 Naz3St29 Naz3St29 Naz3St30 Naz3St30 Naz3St31 Naz3St31 Naz3St32 Naz3St32 Naz3St33 Naz3St33 Naz3St34 Naz3St34 Naz3St35 Naz3St35 Naz3St36 Naz3St36 Naz3St37 Naz3St37 Naz3St38 Naz3St38 Naz3St39 Naz3St39 Naz3St40 Naz3St40 Naz3St41 Naz3St41 Naz3St42 Naz3St42 Naz3St43 Naz3St43 Naz3St44 Naz3St44 Naz3St45 Naz3St45 Naz3St46 Naz3St46 Naz3St47 Naz3St47 Naz3St48 Naz3St48 }
+Naz3St02 Naz3St02
+Naz3St03 Naz3St03
+Naz3St04 Naz3St04
+Naz3St05 Naz3St05
+Naz3St06 Naz3St06
+Naz3St07 Naz3St07
+Naz3St08 Naz3St08
+Naz3St09 Naz3St09
+Naz3St10 Naz3St10
+Naz3St11 Naz3St11
+Naz3St12 Naz3St12
+Naz3St13 Naz3St13
+Naz3St14 Naz3St14
+Naz3St15 Naz3St15
+Naz3St16 Naz3St16
+Naz3St17 Naz3St17
+Naz3St18 Naz3St18
+Naz3St19 Naz3St19
+Naz3St20 Naz3St20
+Naz3St21 Naz3St21
+Naz3St22 Naz3St22
+Naz3St23 Naz3St23
+Naz3St24 Naz3St24
+Naz3St25 Naz3St25
+Naz3St26 Naz3St26
+Naz3St27 Naz3St27
+Naz3St28 Naz3St28
+Naz3St29 Naz3St29
+Naz3St30 Naz3St30
+Naz3St31 Naz3St31
+Naz3St32 Naz3St32
+Naz3St33 Naz3St33
+Naz3St34 Naz3St34
+Naz3St35 Naz3St35
+Naz3St36 Naz3St36
+Naz3St37 Naz3St37
+Naz3St38 Naz3St38
+Naz3St39 Naz3St39
+Naz3St40 Naz3St40
+Naz3St41 Naz3St41
+Naz3St42 Naz3St42
+Naz3St43 Naz3St43
+Naz3St44 Naz3St44
+Naz3St45 Naz3St45
+Naz3St46 Naz3St46
+Naz3St47 Naz3St47
+Naz3St48 Naz3St48
+
+// Voice 4
+$random Nazi4/Death { Naz4Dt02 Naz4Dt02 Naz4Dt03 Naz4Dt03 Naz4Dt04 Naz4Dt04 Naz4Dt05 Naz4Dt05 Naz4Dt06 Naz4Dt06 Naz4Dt07 Naz4Dt07 Naz4Dt08 Naz4Dt08 Naz4Dt09 Naz4Dt09 Naz4Dt10 Naz4Dt10 Naz4Dt11 Naz4Dt11 Naz4Dt12 Naz4Dt12 Naz4Dt13 Naz4Dt13 }
+$random Nazi4/Pain { Naz4Pn02 Naz4Pn02 Naz4Pn03 Naz4Pn03 Naz4Pn04 Naz4Pn04 Naz4Pn05 Naz4Pn05 }
+$random Nazi4/Sighted { Naz4St02 Naz4St02 Naz4St03 Naz4St03 Naz4St04 Naz4St04 Naz4St05 Naz4St05 Naz4St06 Naz4St06 Naz4St07 Naz4St07 Naz4St08 Naz4St08 Naz4St09 Naz4St09 Naz4St10 Naz4St10 Naz4St11 Naz4St11 Naz4St12 Naz4St12 Naz4St13 Naz4St13 Naz4St14 Naz4St14 Naz4St15 Naz4St15 Naz4St16 Naz4St16 Naz4St17 Naz4St17 Naz4St18 Naz4St18 Naz4St19 Naz4St19 Naz4St20 Naz4St20 Naz4St21 Naz4St21 Naz4St22 Naz4St22 Naz4St23 Naz4St23 Naz4St24 Naz4St24 Naz4St25 Naz4St25 Naz4St26 Naz4St26 Naz4St27 Naz4St27 Naz4St28 Naz4St28 Naz4St29 Naz4St29 Naz4St30 Naz4St30 Naz4St31 Naz4St31 Naz4St32 Naz4St32 Naz4St33 Naz4St33 Naz4St34 Naz4St34 Naz4St35 Naz4St35 Naz4St36 Naz4St36 Naz4St37 Naz4St37 Naz4St38 Naz4St38 Naz4St39 Naz4St39 Naz4St40 Naz4St40 Naz4St41 Naz4St41 Naz4St42 Naz4St42 Naz4St43 Naz4St43 Naz4St44 Naz4St44 Naz4St45 Naz4St45 Naz4St46 Naz4St46 Naz4St47 Naz4St47 Naz4St48 Naz4St48 }
+Naz4Dt02 Naz4Dt02
+Naz4Dt03 Naz4Dt03
+Naz4Dt04 Naz4Dt04
+Naz4Dt05 Naz4Dt05
+Naz4Dt06 Naz4Dt06
+Naz4Dt07 Naz4Dt07
+Naz4Dt08 Naz4Dt08
+Naz4Dt09 Naz4Dt09
+Naz4Dt10 Naz4Dt10
+Naz4Dt11 Naz4Dt11
+Naz4Dt12 Naz4Dt12
+Naz4Dt13 Naz4Dt13
+Naz4Pn02 Naz4Pn02
+Naz4Pn03 Naz4Pn03
+Naz4Pn04 Naz4Pn04
+Naz4Pn05 Naz4Pn05
+Naz4St02 Naz4St02
+Naz4St03 Naz4St03
+Naz4St04 Naz4St04
+Naz4St05 Naz4St05
+Naz4St06 Naz4St06
+Naz4St07 Naz4St07
+Naz4St08 Naz4St08
+Naz4St09 Naz4St09
+Naz4St10 Naz4St10
+Naz4St11 Naz4St11
+Naz4St12 Naz4St12
+Naz4St13 Naz4St13
+Naz4St14 Naz4St14
+Naz4St15 Naz4St15
+Naz4St16 Naz4St16
+Naz4St17 Naz4St17
+Naz4St18 Naz4St18
+Naz4St19 Naz4St19
+Naz4St20 Naz4St20
+Naz4St21 Naz4St21
+Naz4St22 Naz4St22
+Naz4St23 Naz4St23
+Naz4St24 Naz4St24
+Naz4St25 Naz4St25
+Naz4St26 Naz4St26
+Naz4St27 Naz4St27
+Naz4St28 Naz4St28
+Naz4St29 Naz4St29
+Naz4St30 Naz4St30
+Naz4St31 Naz4St31
+Naz4St32 Naz4St32
+Naz4St33 Naz4St33
+Naz4St34 Naz4St34
+Naz4St35 Naz4St35
+Naz4St36 Naz4St36
+Naz4St37 Naz4St37
+Naz4St38 Naz4St38
+Naz4St39 Naz4St39
+Naz4St40 Naz4St40
+Naz4St41 Naz4St41
+Naz4St42 Naz4St42
+Naz4St43 Naz4St43
+Naz4St44 Naz4St44
+Naz4St45 Naz4St45
+Naz4St46 Naz4St46
+Naz4St47 Naz4St47
+Naz4St48 Naz4St48
+
+hitlerghost/see hghsee
+hitlerghost/die hghdie
+
+geist/pain geisthit
+geist/die geistdie
+
+chaingun/get P_CGUN
+
+mutant/death dsmutdt
+
+$random death/burning { burndth1 burndth2 burndth3 burndth4 burndth5 burndth6 burndth7 burndth8 burndth9 burndtha burndthb burndthc }
+burndth1 burndth1
+burndth2 burndth2
+burndth3 burndth3
+burndth4 burndth4
+burndth5 burndth5
+burndth6 burndth6
+burndth7 burndth7
+burndth8 burndth8
+burndth9 burndth9
+burndtha burndtha
+burndthb burndthb
+burndthc burndthc
+
+/////////////////////////////////////////////////////////////////////
+//// SYSTEM/MENU SOUNDS /////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+
+
+menu/activate	menuopen	// Activate a new menu
+menu/backup	menucls 	// Backup to previous menu
+menu/prompt	menuopen	// Activate a prompt "menu"
+menu/cursor	menumove	// Move cursor up/down
+menu/change	menuslid	// Select new value for option
+menu/invalid	menuslid	// Menu not available
+menu/dismiss	menupick	// Dismiss a prompt message
+menu/choose	menupick	// Choose a menu item
+menu/clear	menucls 	// Close top menu
+
+/////////////////////////////////////////////////////////////////////
+//// TERRAIN SPLASH SOUNDS //////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+
+// Splashes
+world/drip gloop
+world/watersplash gloop
+world/lavasizzle acid5
+world/sludgegloop muck5
+
+//you can override the limit values so multiple splashes can play simultaneously
+//note that this sounds bad if multiple splashes play all at once (such as when firing a shotgun into liquid), so override these values at your own discretion
+
+$Limit world/drip 4
+$Limit world/watersplash 4
+$Limit world/lavasizzle 4
+$Limit world/sludgegloop 4
+
+/////////////////////////////////////////////////////////////////////
+//// PROP SOUNDS ////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+
+// Toilet
+toilet/death	WCBREAK
+toilet/broken	WCFLOW
+toilet/flush	WCFLUSH		
+
+// Hydrant
+hydrant/death	WCBREAK	
+hydrant/broken	WCFLOW		
+
+// Treasure
+treasure/pickup	DSTRESUP	
+
+// Radioactive Barrel
+radioactivebarrel/detected DSDETECT
+
+// Chandelier
+DSCHAFIR DSCHAFIR
+
+//Lava Cauldron
+LavaCauldron/Loop	DSLAVLOP
+
+//Ceramic Potery
+Pot/Break      POTBRK
+
+//Bird Critter
+CRWFLP CRWFLP
+
+CRWCAW1 CRWCAW1
+$Limit CRWCAW1	0
+
+CRWCAW2 CRWCAW2
+$Limit CRWCAW2	0
+
+CRWCAW3 CRWCAW3
+$Limit CRWCAW3 0
+
+//Bubbles
+SND_BOIL	SND_BOIL
+SND_LAVA	SND_LAVA
+
+//SFX Fire
+SFX/FireStart	FIRESTRT
+SFX/FireLoop1	FIRELOP1
+SFX/FireLoop2	FIRELOP2
+SFX/FireLoop3	FIRELOP3
+SFX/FireDie	FIREDIE
+
+//Swarm
+SFX/Buzz	DSBUZZ
+
+$Limit SFX/FireStart	0
+$Limit SFX/FireLoop	0
+$Limit SFX/FireDie	0
+
+//Mine
+MINEF MINEF
+
+//Rats
+Rat/Squeek	DSRAT
+Rat/Active	DSRATIDL
+DSRATDI1	DSRATDI1
+DSRATDI2	DSRATDI2
+$random Rat/Death	{ DSRATDI1 DSRATDI2 }
+
+//Small Switches
+SMSWITCH SMSWITCH
+
+//Metal Vent Destroy
+DSMETDST DSMETDST
+
+//Breaking Glass
+GLASS1 GLASS1
+GLASS2 GLASS2
+GLASS3 GLASS3
+$random world/glassbreak { GLASS1 GLASS2 GLASS3 }
+$limit	world/glassbreak		4
+
+//Briefing
+DIA_SLID DIA_SLID //Dia Slide
+DIA_BEEP DIA_BEEP //Dia Beep
+RADIONOS RADIONOS //Radio Noise
+
+//Detonator
+DSDETON DSDETON //Detonator
+DSDETOP DSDETOP //Detonator Place
+
+/////////////////////////////////////////////////////////////////////
+//// NASHGORE SOUNDS ////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+
+
+$random bloodsplat { bloodsplat1 bloodsplat2 bloodsplat3 }
+bloodsplat1 dsblud01
+bloodsplat2 dsblud02
+bloodsplat3 dsblud03
+
+/////////////////////////////////////////////////////////////////////
+//// SEQUENCE SOUNDS ////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+DR_MTL01 DR_MTL01
+DR_WD01 DR_WD01
+DR_PRS01 DR_PRS01
+
+SW_LIGHT SW_LIGHT
+
+/////////////////////////////////////////////////////////////////////
+//// AMBIENT SOUNDS /////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+ALARM_DOOD ALARM01
+ALARM_RING ALARM02
+CRICKET_NIGHT CRICKT01
+CRICKET_NIGHT2 CRICKT02
+CRY01 CRY01
+CRY02 CRY02
+CRY03 CRY03
+CRY04 CRY04
+CRY05 CRY05
+CRY06 CRY06
+CRY07 CRY07
+$random CELLAR_CRY { CRY01 CRY02 CRY03 CRY04 CRY05 CRY06 CRY07 }
+EXPLOSION_LEADIN01 EXLEAD01
+EXPLOSION_LEADIN02 EXLEAD02
+EXPLOSION_LEADIN03 EXLEAD03
+EXPLOSION_LEADIN04 EXLEAD04
+$random EXPLOSION_LEADIN { EXPLOSION_LEADIN01 EXPLOSION_LEADIN02 EXPLOSION_LEADIN03 EXPLOSION_LEADIN04 }
+FAN FAN
+FIRE_LARGE FIRE_LG
+FIRE_MEDIUM FIRE_MD
+FIRE_SMALL FIRE_SM
+FLIES FLIES
+HUM_LIGHT_HEAVY HUM_L_H
+HUM_LIGHT_MEDIUM HUM_L_M
+HUM_LIGHT_SMALL HUM_L_S
+MACHINE_LOOP_1 MACH_L_1
+MACHINE_LOOP_2 MACH_L_2
+MACHINE_LOOP_3 MACH_L_3
+MACHINE_LOOP_SILENT MACH_L_4
+MACHINEGUN_RICOCHET MGUNRIC
+MOTOR_JEEP MOT_01
+MOTOR_TANK MOT_02
+PLANE_FLYBY_1 PLANE01
+PLANE_FLYBY_2 PLANE02
+PLANE_FLYBY_3 PLANE03
+$random PLANE_FLYBY { PLANE_FLYBY_1 PLANE_FLYBY_2 PLANE_FLYBY_3 }
+RADIO_LOOP RADIO_L
+SEQ_PLANEATTACK SEQ_P_A
+WATER_BASEMENT WATR_01
+WATER_FOUNTAIN WATR_02
+WATER_LAPS WATR_03
+WATER_RIVER WATR_04
+WATER_SHORE WATR_05
+WIND_CAVE WIND_01
+WAR_DISTANT_1 WAR_01
+WAR_DISTANT_2 WAR_02
+WAR_DISTANT_3 WAR_03
+WAR_DISTANT_4 WAR_04
+$random WAR_DISTANT { WAR_DISTANT_1 WAR_DISTANT_2 WAR_DISTANT_3 WAR_DISTANT_4 }
+WIND_HOWLING WIND_02
+WIND_MEDIUM WIND_03
+WIND_SILENT WIND_04
+STEEL1 STEEL1 
+STEEL2 STEEL2
+WATERFALL dsfalls
+WATER_RIVER2 amb15
+
+$AMBIENT 1 ALARM_DOOD POINT CONTINUOUS 1.0
+$AMBIENT 2 ALARM_RING POINT CONTINUOUS 1.0
+$AMBIENT 3 CRICKET_NIGHT POINT CONTINUOUS 1.0
+$AMBIENT 4 FAN POINT CONTINUOUS 1.0
+$AMBIENT 5 FIRE_LARGE POINT CONTINUOUS 1.0
+$AMBIENT 6 FIRE_MEDIUM POINT CONTINUOUS 1.0
+$AMBIENT 7 FIRE_SMALL POINT CONTINUOUS 1.0
+$AMBIENT 8 HUM_LIGHT_HEAVY POINT CONTINUOUS 1.0
+$AMBIENT 9 HUM_LIGHT_MEDIUM POINT CONTINUOUS 1.0
+$AMBIENT 10 HUM_LIGHT_SMALL POINT CONTINUOUS 0.4
+$AMBIENT 11 MACHINE_LOOP_1 POINT CONTINUOUS 1.0
+$AMBIENT 12 MACHINE_LOOP_2 POINT CONTINUOUS 1.0
+$AMBIENT 13 MACHINE_LOOP_3 POINT CONTINUOUS 1.0
+$AMBIENT 14 MACHINE_LOOP_SILENT POINT CONTINUOUS 1.0
+$AMBIENT 15 MACHINEGUN_RICOCHET POINT CONTINUOUS 1.0
+$AMBIENT 16 MOTOR_JEEP POINT CONTINUOUS 1.0
+$AMBIENT 17 MOTOR_TANK POINT CONTINUOUS 1.0
+$AMBIENT 18 PLANE_FLYBY POINT RANDOM 1.0 10.0 30.0
+$AMBIENT 19 RADIO_LOOP POINT CONTINUOUS 0.3
+$AMBIENT 20 SEQ_PLANEATTACK POINT CONTINUOUS 1.0
+$AMBIENT 21 WATER_BASEMENT POINT CONTINUOUS 1.0
+$AMBIENT 22 WATER_FOUNTAIN POINT CONTINUOUS 1.0
+$AMBIENT 23 WATER_LAPS POINT CONTINUOUS 1.0
+$AMBIENT 24 WATER_RIVER POINT CONTINUOUS 1.0
+$AMBIENT 25 WATER_SHORE POINT CONTINUOUS 1.0
+$AMBIENT 26 WIND_CAVE POINT CONTINUOUS 1.0
+$AMBIENT 27 WAR_DISTANT SURROUND CONTINUOUS 1.0
+$AMBIENT 28 WIND_HOWLING POINT CONTINUOUS 1.0
+$AMBIENT 29 WIND_MEDIUM POINT CONTINUOUS 1.0
+$AMBIENT 30 WIND_SILENT POINT CONTINUOUS 1.0
+$AMBIENT 31 CRICKET_NIGHT2 POINT CONTINUOUS 1.0
+$AMBIENT 32 FLIES POINT CONTINUOUS 1.0
+$AMBIENT 33 STEEL1 POINT CONTINUOUS 1.0
+$AMBIENT 34 STEEL2 POINT CONTINUOUS 1.0
+$AMBIENT 35 CELLAR_CRY POINT RANDOM 1.0 10.0 30.0
+$AMBIENT 36 WATERFALL POINT CONTINUOUS 1.0
+$AMBIENT 37 WATER_RIVER2 POINT CONTINUOUS 1.0
