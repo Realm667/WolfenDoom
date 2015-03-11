@@ -1,0 +1,16 @@
+//ozymandias81 underwater sounds while underwater
+#library "ozystuff"
+#include "zcommon.acs"
+
+//underwater sounds
+script "Underwater" ENTER
+{
+if (GetActorProperty(0, APROP_WATERLEVEL)<3){}
+else
+	{
+	delay(const:3);
+	localambientsound("underwtr", random(90,127));
+	}
+delay(35*8); //only 1 sound is 8sec long, 2 4sec & 1 2,5sec
+restart;
+}
