@@ -4,7 +4,7 @@ Actor Chandelier1Switchable : SwitchableDecoration 19605
 //$Title Chandelier (1, switchable)
 //$Color 11
 Radius 10
-Height 21
+Height 65 //same of sprite height
 Activation THINGSPEC_Switch
 +NOGRAVITY
 +SPAWNCEILING
@@ -31,7 +31,7 @@ Actor Chandelier2Switchable : SwitchableDecoration 19603
 //$Title Chandelier (2, switchable)
 //$Color 11
 Radius 10
-Height 21
+Height 65
 Activation THINGSPEC_Switch
 +NOGRAVITY
 +SPAWNCEILING
@@ -58,7 +58,7 @@ Actor Chandelier3Switchable : SwitchableDecoration 19602
 //$Title Chandelier (3, switchable)
 //$Color 11
 Radius 10
-Height 21
+Height 65
 Activation THINGSPEC_Switch
 +NOGRAVITY
 +SPAWNCEILING
@@ -85,7 +85,7 @@ Actor Chandelier4Switchable : SwitchableDecoration 19601
 //$Title Chandelier (4, switchable)
 //$Color 11
 Radius 10
-Height 21
+Height 65
 Activation THINGSPEC_Switch
 +NOGRAVITY
 +SPAWNCEILING
@@ -109,10 +109,10 @@ States
 ACTOR CeilingLightM : SwitchableDecoration 19030
 {
 //$Category Light Sources (Wolf3D)
-//$Title Ceiling Light (small, switchable)
+//$Title Ceiling Light (middle, switchable)
 //$Color 11
 Radius 16
-Height 8
+Height 23
 +SOLID
 +SPAWNCEILING
 +NOGRAVITY
@@ -127,7 +127,7 @@ States
 	Active:
 	TNT1 A 0 A_PlaySound(SMSWITCH)
 	On:
-	CLIT A 1 Bright Light(BOACEIL1)
+	CLIT A 1 Bright Light(BOACEIL2)
 	Loop
 	Inactive:
 	CLIT A -1 A_PlaySound(SMSWITCH)
@@ -138,10 +138,10 @@ States
 ACTOR CeilingLightM2 : SwitchableDecoration 19008
 {
 //$Category Light Sources (Wolf3D)
-//$Title Ceiling Light (middle, switchable)
+//$Title Ceiling Light (small, switchable)
 //$Color 11
-Radius 16
-Height 16
+Radius 8
+Height 10
 +SOLID
 +SPAWNCEILING
 +NOGRAVITY
@@ -156,7 +156,7 @@ States
 	Active:
 	TNT1 A 0 A_PlaySound(SMSWITCH)
 	On:
-	CLIT B 1 Bright Light(BOACEIL2)
+	CLIT B 1 Bright Light(BOACEIL1)
 	Loop
 	Inactive:
 	CLIT B -1 A_PlaySound(SMSWITCH)
@@ -234,6 +234,22 @@ States
 	}
 }
 
+ACTOR ColumnLight2 19762
+{
+//$Category Light Sources (Wolf3D)
+//$Title Column Light (dark)
+//$Color 11
+Radius 8
+Height 128
++SOLID
+States
+	{
+	Spawn:
+	COLL B -1
+	Stop
+	}
+}
+
 ACTOR StreetLight1 19011
 {
 //$Category Light Sources (Wolf3D)
@@ -264,9 +280,9 @@ States
 	STLA A -1
 	Stop
 	Active:
-	STLA C -1
+	STLA C -1 Light(BOASTLT2)
 	Stop
-	Inactve:
+	Inactive:
 	STLA A -1
 	Stop
 	}
@@ -286,26 +302,10 @@ States
 	STLA B -1
 	Stop
 	Active:
-	STLA D -1
+	STLA D -1 Light(BOASTLT3)
 	Stop
-	Inactve:
+	Inactive:
 	STLA B -1
-	Stop
-	}
-}
-
-ACTOR ColumnLight2 19762
-{
-//$Category Light Sources (Wolf3D)
-//$Title Column Light (dark)
-//$Color 11
-Radius 8
-Height 128
-+SOLID
-States
-	{
-	Spawn:
-	COLL B -1
 	Stop
 	}
 }
@@ -332,7 +332,7 @@ ACTOR CBowl1 19064
 //$Title Ceiling Fire Bowl (egypt)
 //$Color 11
 Radius 32
-Height 64
+Height 80
 +SOLID
 +NOGRAVITY
 +SPAWNCEILING
@@ -558,8 +558,10 @@ ACTOR LightBulb 19092
 //$Title Light Bulb
 //$Color 11
 Radius 4
-Height 8
+Height 12
 -SOLID
++NOGRAVITY
++SPAWNCEILING
 States
 	{
 	Spawn:

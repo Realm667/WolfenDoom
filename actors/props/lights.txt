@@ -132,6 +132,12 @@ States
 	Inactive:
 	CLIT A -1 A_PlaySound(SMSWITCH)
 	Stop
+	Script1:
+	CLIT A -1 A_ChangeFlag("USESPECIAL",0)
+	Stop
+	Script2:
+	CLIT A -1 Bright Light(BOACEIL2) A_ChangeFlag("USESPECIAL",0)
+	Stop
 	}
 }
 
@@ -160,6 +166,12 @@ States
 	Loop
 	Inactive:
 	CLIT B -1 A_PlaySound(SMSWITCH)
+	Stop
+	Script1:
+	CLIT B -1 A_ChangeFlag("USESPECIAL",0)
+	Stop
+	Script2:
+	CLIT B -1 Bright Light(BOACEIL1) A_ChangeFlag("USESPECIAL",0)
 	Stop
 	}
 }

@@ -52,7 +52,47 @@ States
 	Loop
 	}
 }
+//some smart bridges
+ACTOR 3dBridge256 : InvisibleBridge
+{Radius 256 Height 256}
 
+ACTOR 3dBridge192 : InvisibleBridge
+{Radius 192 Height 192}
+
+ACTOR 3dBridge176 : InvisibleBridge
+{Radius 176 Height 176}
+
+ACTOR 3dBridge144 : InvisibleBridge
+{Radius 144 Height 144}
+
+ACTOR 3dBridge128 : InvisibleBridge
+{Radius 128 Height 128}
+
+ACTOR 3dBridge96 : InvisibleBridge
+{Radius 96 Height 96}
+
+ACTOR 3dBridge64 : InvisibleBridge
+{Radius 64 Height 64}
+
+ACTOR 3dBridge56 : InvisibleBridge
+{Radius 56 Height 56}
+
+ACTOR 3dBridge48 : InvisibleBridge
+{Radius 48 Height 48}
+
+ACTOR 3dBridge32 : InvisibleBridge
+{Radius 32 Height 32}
+
+ACTOR 3dBridge24 : InvisibleBridge
+{Radius 24 Height 24}
+
+ACTOR 3dBridge16 : InvisibleBridge
+{Radius 16 Height 16}
+
+ACTOR 3dBridge8 : InvisibleBridge
+{Radius 8 Height 24}
+
+//das models :-) - a bit of kraftwerk here
 ACTOR ModelBeachHedgeHog : 3dObstacle 22169
 {
 //$Category Models (Wolf3D)
@@ -127,22 +167,31 @@ Height 4
 +NOGRAVITY
 }
 
-ACTOR ModelSandBagCurve : ModelBase 22218
+ACTOR ModelSandBagCurve : 3dObstacle 22218 //ModelBase 22218
 {
 //$Category Models (Wolf3D)
 //$Title Sandbag (curve)
 //$Color 3
-Radius 4
-Height 4
+Radius 12
+Height 28
+States
+	{
+	Spawn:
+	SMGT A 1
+	SMGT A 1 A_SpawnItemEx("3dBridge16",0,-16,0)
+	SMGT A 1 A_SpawnItemEx("3dBridge16",0,16,0)
+	SMGT A -1
+	Stop
+	}
 }
 
-ACTOR ModelSandBagStraight : ModelBase 22238
+ACTOR ModelSandBagStraight : 3dObstacle 22238 //ModelBase 22238
 {
 //$Category Models (Wolf3D)
 //$Title Sandbag (straight)
 //$Color 3
-Radius 4
-Height 4
+Radius 16
+Height 24
 }
 
 Actor WaterTower001 : ModelBase 20133
@@ -228,28 +277,23 @@ Radius 4
 Height 4
 }
 
-ACTOR 88mmFlak : ModelBase 20144
+ACTOR 88mmFlak : 3dObstacle 20144 //ModelBase 20144
 {
 //$Category Models (Wolf3D)
 //$Title 88mm Flak
 //$Color 3
-+SOLID
 +USESPECIAL
-+NOGRAVITY
 Radius 64
-Height 64
+Height 80
 }
 
-ACTOR Nebelwerfer3D : ModelBase 20145
+ACTOR Nebelwerfer3D : 3dObstacle 20145 //ModelBase 20145
 {
 //$Category Models (Wolf3D)
 //$Title Nebelwerfer
 //$Color 3
-+SOLID
-+SHOOTABLE
-Mass 9999999
 Radius 32
-Height 32
+Height 56
 }
 
 ACTOR Turret3D : ModelBase 20146
@@ -306,11 +350,11 @@ Radius 4
 Height 4
 }
 
-ACTOR FlakVierling3D : ModelBase 20152
+ACTOR FlakVierling3D : 3dObstacle 20152 //ModelBase 20152
 {
 //$Category Models (Wolf3D)
 //$Title Flak Vierling
 //$Color 3
-Radius 4
-Height 4
+Radius 80
+Height 88
 }
