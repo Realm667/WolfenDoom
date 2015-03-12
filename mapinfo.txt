@@ -1,0 +1,392 @@
+gameinfo
+{
+	PlayerClasses = "WildWeaselPlayer"
+
+	weaponslot = 1, "Melee", "Firebrand"
+	weaponslot = 2, "Luger9mm", "Walther9mm"
+	weaponslot = 3, "TrenchShotgun", "Browning5"
+	weaponslot = 4, "Thompson", "MP40"
+	weaponslot = 5, "G41", "Enfield"
+	weaponslot = 6, "STG44", "FG42"
+	weaponslot = 7, "Pyrolight"
+	weaponslot = 8, "Nebelwerfer", "Panzerschreck"
+	weaponslot = 9, "UMG43"
+
+	menufontcolor_title = "DARKGRAY"
+    	menufontcolor_label = "DARKGRAY"
+	menufontcolor_value = "DARKGRAY"
+	menufontcolor_action = "DARKGRAY"
+	menufontcolor_header = "DARKGRAY"
+	menufontcolor_highlight = "BLACK"
+	menufontcolor_selection = "BLACK"
+
+	dimcolor = "333333"
+	dimamount = 0.3
+	pickupcolor = "FFFFFF"
+
+	statscreen_mapnamefont = "BIGFONT", "DARKGRAY"
+	statscreen_finishedfont = "BIGFONT", "DARKGRAY"
+	statscreen_enteringfont = "BIGFONT", "DARKGRAY"
+}
+
+clearepisodes
+
+defaultmap
+{
+	lightmode = 3
+	pixelratio = 1.0
+	cluster = 1
+}
+
+episode INTERMAP
+{
+	name = "Blade of Agony"
+	key = "a"
+}
+
+clusterdef 1
+{
+	hub
+}
+
+map C1M1 "Operation: Speerspitze"	//Tormentor667
+{
+	levelnum = 1
+	next = INTERMAP
+	nointermission
+	music = "C1M1_MUS"
+}
+
+map C1M3 "Operation: Overlord"		//Tormentor667
+{
+	levelnum = 3
+	next = INTERMAP
+	nointermission
+	music = "C1M3_MUS"
+}
+
+map C1M4 "Operation: Eder Dam" 		//GuardSoul
+{
+	levelnum = 4
+	next = INTERMAP
+	nointermission
+	music = "C1M4_MUS"
+}
+
+map C1M5 "Operation: St. Quentin" 	//Tormentor667
+{
+	levelnum = 5
+	next = INTERMAP
+	nointermission
+	music = "C1M5_MUS"
+}
+
+map INTERMAP "Allied Headquarter"
+{
+	levelnum = 99
+	nointermission
+	music = "BRIEFING"
+}
+
+clearskills
+
+skill Nazis1
+{
+	AmmoFactor = 1.0
+	DamageFactor = 0.5
+	Aggressiveness = -0.5
+	SpawnFilter = Easy
+	EasyBossBrain
+	ACSReturn = 0
+	Key = 1
+	Name = "Bund Deutscher Madel" // "German Girls" - the division of the Hitler Youth for girls aged 10-14.
+	replaceactor = "EnemyPistolTracer", "BabyEnemyPistolTracer"
+	replaceactor = "EnemySniperTracer", "BabyEnemySniperTracer"
+	replaceactor = "EnemySMGTracer", "BabyEnemySMGTracer"
+	replaceactor = "EnemyRifleTracer", "BabyEnemyRifleTracer"
+	replaceactor = "EnemySTGTracer", "BabyEnemySTGTracer"
+	replaceactor = "EnemyChaingunTracer", "BabyEnemyChaingunTracer"
+}
+
+skill Nazis2
+{
+	AmmoFactor = 1.0
+	DamageFactor = 0.75
+	Aggressiveness = 0
+	SpawnFilter = Easy
+	ACSReturn = 1
+	Key = 2
+	Name = "Morgenspaziergang" // "Morning Stroll" - borrowed from the title of a Kraftwerk song.
+	replaceactor = "EnemyPistolTracer", "EasyEnemyPistolTracer"
+	replaceactor = "EnemySniperTracer", "EasyEnemySniperTracer"
+	replaceactor = "EnemySMGTracer", "EasyEnemySMGTracer"
+	replaceactor = "EnemyRifleTracer", "EasyEnemyRifleTracer"
+	replaceactor = "EnemySTGTracer", "EasyEnemySTGTracer"
+	replaceactor = "EnemyChaingunTracer", "EasyEnemyChaingunTracer"
+}
+
+skill Nazis3
+{
+	AmmoFactor = 1.0
+	DamageFactor = 1.0
+	Aggressiveness = 0
+	SpawnFilter = Normal
+	ACSReturn = 2
+	Key = 3
+	Name = "Bierdurst"
+}
+
+skill Nazis4
+{
+	AmmoFactor = 1.0
+	DamageFactor = 1.0
+	Aggressiveness = 0.5
+	SpawnFilter = Hard
+	ACSReturn = 3
+	Key = 4
+	Name = "Herrenrasse" // "Super Man"
+	replaceactor = "EnemyPistolTracer", "HardEnemyPistolTracer"
+	replaceactor = "EnemySniperTracer", "HardEnemySniperTracer"
+	replaceactor = "EnemySMGTracer", "HardEnemySMGTracer"
+	replaceactor = "EnemyRifleTracer", "HardEnemyRifleTracer"
+	replaceactor = "EnemySTGTracer", "HardEnemySTGTracer"
+	replaceactor = "EnemyChaingunTracer", "HardEnemyChaingunTracer"
+}
+
+skill Nazis5
+{
+	AmmoFactor = 1.0
+	DamageFactor = 2.0
+	Aggressiveness = 1
+	SpawnFilter = Hard
+	ACSReturn = 4
+	Key = 5
+	DisableCheats
+	MustConfirm = "You'll be pleading for your life soon enough. -ww"
+	FastMonsters
+	Name = "Mein Leben!" // If you don't know this...
+	replaceactor = "EnemyPistolTracer", "HardEnemyPistolTracer"
+	replaceactor = "EnemySniperTracer", "HardEnemySniperTracer"
+	replaceactor = "EnemySMGTracer", "HardEnemySMGTracer"
+	replaceactor = "EnemyRifleTracer", "HardEnemyRifleTracer"
+	replaceactor = "EnemySTGTracer", "HardEnemySTGTracer"
+	replaceactor = "EnemyChaingunTracer", "HardEnemyChaingunTracer"
+}
+
+Intermission Inter_Cast
+{
+	Image
+	{
+		Background = "WLFTITLE"
+		Time = -1
+		Music = "BRIEFING"
+	}
+	Link = Doom2Cast
+}
+
+Intermission Doom2Cast
+{
+	Cast
+	{
+		CastClass = "Guard"
+		CastName = "Soldat - P-38"
+		AttackSound = "Missile", 1, "grunt/attack"
+	}
+	Cast
+	{
+		CastClass = "SSGuard"
+		CastName = "Gefreiter (SS) - P-38"
+		AttackSound = "Missile", 1, "grunt/attack"
+	}
+	Cast
+	{
+		CastClass = "MP40Guard"
+		CastName = "Leutnant - MP-40"
+		AttackSound = "Missile", 1, "weapons/assaultgun"
+		AttackSound = "Missile", 3, "weapons/assaultgun"
+		AttackSound = "Missile", 5, "weapons/assaultgun"
+		AttackSound = "Missile", 7, "weapons/assaultgun"
+		AttackSound = "Missile", 9, "weapons/assaultgun"
+	}
+	Cast
+	{
+		CastClass = "SSMP40Guard"
+		CastName = "Oberleutnant (SS) - MP-40"
+		AttackSound = "Missile", 1, "weapons/assaultgun"
+		AttackSound = "Missile", 3, "weapons/assaultgun"
+		AttackSound = "Missile", 5, "weapons/assaultgun"
+		AttackSound = "Missile", 7, "weapons/assaultgun"
+		AttackSound = "Missile", 9, "weapons/assaultgun"
+	}
+	Cast
+	{
+		CastClass = "RifleGuard"
+		CastName = "Hauptgefreiter - G43"
+		AttackSound = "Missile", 1, "garand/fire"
+	}
+	Cast
+	{
+		CastClass = "WaffenSS"
+		CastName = "Waffen SS - StG-44"
+		AttackSound = "Missile", 1, "weapons/stg44"
+		AttackSound = "Missile", 3, "weapons/stg44"
+		AttackSound = "Missile", 5, "weapons/stg44"
+		AttackSound = "Missile", 7, "weapons/stg44"
+		AttackSound = "Missile", 9, "weapons/stg44"
+	}
+	Cast
+	{
+		CastClass = "Paratrooper"
+		CastName = "Fallschirmjaeger"
+		AttackSound = "Missile", 1, "weapons/stg44"
+		AttackSound = "Missile", 3, "weapons/stg44"
+		AttackSound = "Missile", 5, "weapons/stg44"
+		AttackSound = "Missile", 7, "weapons/stg44"
+		AttackSound = "Missile", 9, "weapons/stg44"
+	}
+	Cast
+	{
+		CastClass = "Mutant"
+		CastName = "Schabbs' Test Subject"
+		AttackSound = "Missile", 1, "weapons/luger"
+		AttackSound = "Missile", 3, "weapons/luger"
+	}
+	Cast
+	{
+		CastClass = "Officer"
+		CastName = "Hauptmann - P-38"
+		AttackSound = "Missile", 1, "grunt/attack"
+	}
+	Cast
+	{
+		CastClass = "SSOfficer"
+		CastName = "Oberstleutnant (SS) - P-38"
+		AttackSound = "Missile", 1, "grunt/attack"
+	}
+	Cast
+	{
+		CastClass = "Doberman"
+		CastName = "Rottweiler"
+		Attacksound = "Melee", 1, "dog/attack"
+	}
+	Cast
+	{
+		CastClass = "GermanShepherd"
+		CastName = "German Shepherd"
+		Attacksound = "Melee", 1, "dog/attack"
+	}
+	Cast
+	{
+		CastClass = "RocketMan"
+		CastName = "Otto Giftmacher - Rocketeer"
+		AttackSound = "Missile", 1, "weapons/rocklf"
+	}
+	Cast
+	{
+		CastClass = "MadDoctor"
+		CastName = "Dr. Schabbs - SS Paranormal Division"
+	}
+	Cast
+	{
+		CastClass = "SuperSoldier"
+		CastName = "Hans Grosse - Uber Soldat"
+		AttackSound = "Missile", 1, "weapons/chaingun"
+		AttackSound = "Missile", 3, "weapons/chaingun"
+		AttackSound = "Missile", 5, "weapons/chaingun"
+		AttackSound = "Missile", 7, "weapons/chaingun"
+		AttackSound = "Missile", 9, "weapons/chaingun"
+	}
+	Cast
+	{
+		CastClass = "SuperSoldierGirl"
+		CastName = "Gretel Grosse - Uber Soldat"
+		AttackSound = "Missile", 1, "weapons/ba5fire"
+		AttackSound = "Missile", 3, "weapons/ba5fire"
+		AttackSound = "Missile", 5, "weapons/ba5fire"
+	}
+	Cast
+	{
+		CastClass = "SuperSoldierElite"
+		CastName = "Franz Grosse - Uber Soldat Elite"
+		AttackSound = "Missile", 1, "weapons/chaingun"
+		AttackSound = "Missile", 3, "weapons/chaingun"
+		AttackSound = "Missile", 5, "weapons/chaingun"
+		AttackSound = "Missile", 7, "weapons/chaingun"
+		AttackSound = "Missile", 9, "weapons/chaingun"
+	}
+	Cast
+	{
+		CastClass = "General"
+		CastName = "General Fettgesicht"
+		AttackSound = "Missile", 1, "weapons/rocklf"
+		AttackSound = "Missile", 3, "weapons/rocklf"
+		AttackSound = "Missile", 5, "weapons/rocklf"
+		AttackSound = "Chaingun", 1, "weapons/chaingun"
+		AttackSound = "Chaingun", 3, "weapons/chaingun"
+		AttackSound = "Chaingun", 5, "weapons/chaingun"
+		AttackSound = "Chaingun", 7, "weapons/chaingun"
+		AttackSound = "Chaingun", 9, "weapons/chaingun"
+	}
+	Cast
+	{
+		CastClass = "FatMan"
+		CastName = "Colonel Zweimeltod"
+		AttackSound = "Missile", 1, "weapons/rocklf"
+		AttackSound = "Missile", 3, "weapons/rocklf"
+		AttackSound = "Missile", 5, "weapons/rocklf"
+		AttackSound = "Missile", 7, "weapons/rocklf"
+	}
+	Cast
+	{
+		CastClass = "FlamerMan"
+		CastName = "Boss Grosse - Pyrolight"
+		AttackSound = "Missile", 1, "weapons/flamer"
+		AttackSound = "Missile", 3, "weapons/flamer"
+		AttackSound = "Missile", 5, "weapons/flamer"
+		AttackSound = "Missile", 7, "weapons/flamer"
+		AttackSound = "Missile", 9, "weapons/flamer"
+	}
+	Cast
+	{
+		CastClass = "ChairGuy"
+		CastName = "Heinrich Krist - Rollstuhl-Rocket"
+		AttackSound = "Missile", 1, "weapons/rocklf"
+		AttackSound = "Missile", 3, "weapons/rocklf"
+	}
+	Cast
+	{
+		CastClass = "HitlerGhost"
+		CastName = "Hitler?"
+		AttackSound = "Missile", 1, "weapons/rocklf"
+	}
+	Cast
+	{
+		CastClass = "Geist"
+		CastName = "Geist"
+	}
+	Cast
+	{
+		CastClass = "DeathKnight"
+		CastName = "Death Knight"
+		AttackSound = "Missile", 1, "weapons/rocklf"
+		AttackSound = "Missile", 3, "weapons/rocklf"
+		AttackSound = "Missile", 5, "weapons/rocklf"
+		AttackSound = "Missile", 7, "weapons/rocklf"
+		AttackSound = "Chaingun", 1, "weapons/chaingun"
+		AttackSound = "Chaingun", 3, "weapons/chaingun"
+		AttackSound = "Chaingun", 5, "weapons/chaingun"
+		AttackSound = "Chaingun", 7, "weapons/chaingun"
+		AttackSound = "Chaingun", 9, "weapons/chaingun"
+	}
+	Cast
+	{
+		CastClass = "Hitler"
+		CastName = "Hitler"
+		AttackSound = "Missile", 1, "weapons/chaingun"
+		AttackSound = "Missile", 3, "weapons/chaingun"
+		AttackSound = "Missile", 5, "weapons/chaingun"
+		AttackSound = "Missile", 7, "weapons/chaingun"
+		AttackSound = "Missile", 9, "weapons/chaingun"
+	}
+	Link = Doom2Cast	// restart cast call
+}

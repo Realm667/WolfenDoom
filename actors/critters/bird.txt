@@ -1,0 +1,1855 @@
+/*
+Quick Reference:
+CrowWander1L 8881 - Wanders, proximity flee. Reacts to weapon fire. Left.
+CrowWander1R 8882 - Wanders, proximity flee. Reacts to weapon fire. Right.
+CrowWander2L 8883 - Wanders, proximity flee. No reaction to weapon fire. Left.
+CrowWander2R 8884 - Wanders, proximity flee. No reaction to weapon fire. Right.
+CrowWander3L 8885 - Wanders, no proximity flee. Reacts to weapon fire. Left.
+CrowWander3R 8886 - Wanders, no proximity flee. Reacts to weapon fire. Right.
+CrowWander4L 8887 - Wanders, no proximity flee. No reaction to weapon fire. Left.
+CrowWander4R 8888 - Wanders, no proximity flee. No reaction to weapon fire. Right.
+CrowStill1L  8889 - Stationary, proximity flee. Reacts to weapon fire. Left.
+CrowStill1R  8890 - Stationary, proximity flee. Reacts to weapon fire. Right.
+CrowStill2L  8891 - Stationary, proximity flee. No reaction to weapon fire. Left.
+CrowStill2R  8892 - Stationary, proximity flee. No reaction to weapon fire. Right.
+CrowStill3L  8893 - Stationary, no proximity flee. Reacts to weapon fire. Left.
+CrowStill3R  8894 - Stationary, no proximity flee. Reacts to weapon fire. Right.
+CrowStill4L  8895 - Stationary, no proximity flee. No reaction to weapon fire. Left.
+CrowStill4R  8896 - Stationary, no proximity flee. No reaction to weapon fire. Right.
+
+
+Proximity Flee - Flees when player is close to the actor
+Reacts to weapon fire - An actor will fly away if a weapon is shot within 800 map units of it.
+
+Note: All actors flee when shot directly. Some flee upon reacting to weapon sound, or when the player approaches. In any case 
+they will fly towards the sky and permanently disappear.
+
+A fleeing crow will cause any other crows in a nearby group to flee as well when the above conditions are met.
+*/
+
+
+
+ACTOR CrowWander1L 8881 //Wandering version. Flees when player gets close and reacts to weapon fire. Faces left.
+{
+//$Category Critters (Wolf3D)
+//$Title Crow (left,wander,proxflee,reactsweapon)
+//$Color 0
+  Mass 99999
+  Health 999
+  Radius 3
+  Height 3
+  Scale 0.7
+  Monster
+  Alpha 1
+  -ISMONSTER
+  -COUNTKILL
+  +THRUACTORS
+  +NOTARGET
+  +NODAMAGETHRUST
+  +FLOORHUGGER
+  +FLOORCLIP
+  -CANUSEWALLS
+  -NOGRAVITY
+  +NOBLOOD
+  +NODAMAGE
+  +NOTAUTOAIMED
+  +LOOKALLAROUND
+  +BOUNCEONWALLS
+  PainChance 255
+  MeleeDamage 0
+  MeleeRange 310
+  States
+  {
+  Spawn: 
+     TNT1 A 0
+	 TNT1 A 0 A_Stop
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+	 TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 A 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 TNT1 A 0 A_Jump(10,"WanderFly")
+	 Loop
+  See:
+     TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_FaceTarget
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 A 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 TNT1 A 0 A_Jump(10,"WanderFly")
+	 Goto Spawn
+  Melee:	
+     TNT1 A 0
+	 Goto Pain
+  LookDown:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+     CRW1 C 5
+	 TNT1 A 0 A_Jump(60,"Spawn","Peck")
+	 Loop	
+  Peck:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+     CRW1 C 5
+	 CRW1 EC 2
+	 TNT1 A 0 A_Jump(60,"Spawn","LookDown")
+	 Loop
+  Caw:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+	 TNT1 A 0 A_Jump(60,4) //To play one caw on occasion.
+	 TNT1 A 0 A_PlaySound("CRWCAW1",6,0.3,0)
+     CRW1 A 12
+	 CRW1 M 6
+	 Goto Spawn
+	 TNT1 A 0 A_PlaySound("CRWCAW3",6,0.3,0)
+	 CRW1 A 12
+	 Goto Spawn
+  ForwardLook:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+     CRW1 G 16
+	 TNT1 A 0 A_Jump(120,"Spawn")
+	 Loop	 
+  WanderFly:
+     TNT1 A 0
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(4,8), 0, 0)
+	 CRW1 IK 2
+	 TNT1 A 0 ThrustThingZ(0,random(4,8),0,1)
+	 TNT1 A 0 A_Jump(20,"Flight")
+	 Goto WanderFly+4
+  Flight:
+     TNT1 A 0
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 ThrustThing(random(0,360), random(3,6), 0, 0)
+	 CRW1 IK 2
+	 TNT1 A 0 A_Jump(35,"FlyDown")
+	 Goto Flight+2
+  FlyDown:	 
+	 TNT1 A 0 A_Stop
+	 CRW1 IK 2
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 ThrustThing(random(0,360), random(3,6), 0, 0)
+	 TNT1 A 0 ThrustThingZ(0,-2,0,1)
+	 TNT1 A 0 A_CheckFloor("Spawn")
+	 Goto FlyDown+1
+  Pain:
+     TNT1 A 0
+	 TNT1 A 0 A_RadiusGive("CrowGroupFlee",160,RGF_OBJECTS,1)
+	 TNT1 A 0 A_Jump(25,2)
+	 TNT1 A 0 A_PlaySound("CRWCAW2",6,0.4,0)
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(6,12), 0, 0)
+	 CRW1 IK 2
+	 TNT1 A 0 ThrustThingZ(0,random(12,20),0,1)
+	 TNT1 A 0 A_FadeOut(0.1)
+	 Goto Pain+6
+  }
+}
+
+ACTOR CrowWander1R 8882 //Wandering version. Flees when player gets close and reacts to weapon fire. Faces right.
+{
+//$Category Critters (Wolf3D)
+//$Title Crow (right,wander,proxflee,reactsweapon)
+//$Color 0
+  Mass 99999
+  Health 999
+  Radius 3
+  Height 3
+  Scale 0.7
+  Monster
+  Alpha 1
+  -ISMONSTER
+  -COUNTKILL
+  +THRUACTORS
+  +NOTARGET
+  +NODAMAGETHRUST
+  +FLOORHUGGER
+  +FLOORCLIP
+  -CANUSEWALLS
+  -NOGRAVITY
+  +NOBLOOD
+  +NODAMAGE
+  +NOTAUTOAIMED
+  +LOOKALLAROUND
+  +BOUNCEONWALLS
+  PainChance 255
+  MeleeDamage 0
+  MeleeRange 310
+  States
+  {
+  Spawn: 
+     TNT1 A 0
+	 TNT1 A 0 A_Stop
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+	 TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 B 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 TNT1 A 0 A_Jump(10,"WanderFly")
+	 Loop
+  See:
+     TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_FaceTarget
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 B 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 TNT1 A 0 A_Jump(10,"WanderFly")
+	 Goto Spawn
+  Melee:	
+     TNT1 A 0
+	 Goto Pain
+  LookDown:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+     CRW1 D 5
+	 TNT1 A 0 A_Jump(60,"Spawn","Peck")
+	 Loop	
+  Peck:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+     CRW1 D 5
+	 CRW1 FD 2
+	 TNT1 A 0 A_Jump(60,"Spawn","LookDown")
+	 Loop
+  Caw:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_Jump(60,4) //To play one caw on occasion.
+	 TNT1 A 0 A_PlaySound("CRWCAW1",6,0.3,0)
+     CRW1 B 12
+	 CRW1 N 6
+	 Goto Spawn
+	 TNT1 A 0 A_PlaySound("CRWCAW3",6,0.3,0)
+	 CRW1 B 12
+	 Goto Spawn
+  ForwardLook:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+     CRW1 H 16
+	 TNT1 A 0 A_Jump(120,"Spawn")
+	 Loop	 
+  WanderFly:
+     TNT1 A 0
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(4,8), 0, 0)
+	 CRW1 JL 2
+	 TNT1 A 0 ThrustThingZ(0,random(4,8),0,1)
+	 TNT1 A 0 A_Jump(20,"Flight")
+	 Goto WanderFly+4
+  Flight:
+     TNT1 A 0
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 ThrustThing(random(0,360), random(3,6), 0, 0)
+	 CRW1 JL 2
+	 TNT1 A 0 A_Jump(35,"FlyDown")
+	 Goto Flight+2
+  FlyDown:	 
+	 TNT1 A 0 A_Stop
+	 CRW1 JL 2
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 ThrustThing(random(0,360), random(3,6), 0, 0)
+	 TNT1 A 0 ThrustThingZ(0,-2,0,1)
+	 TNT1 A 0 A_CheckFloor("Spawn")
+	 Goto FlyDown+1
+  Pain:
+     TNT1 A 0
+	 TNT1 A 0 A_RadiusGive("CrowGroupFlee",160,RGF_OBJECTS,1)
+	 TNT1 A 0 A_Jump(25,2)
+	 TNT1 A 0 A_PlaySound("CRWCAW2",6,0.4,0)
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(6,12), 0, 0)
+	 CRW1 JL 2
+	 TNT1 A 0 ThrustThingZ(0,random(12,20),0,1)
+	 TNT1 A 0 A_FadeOut(0.1)
+	 Goto Pain+6
+  }
+}
+
+ACTOR CrowWander2L 8883 //Wandering version. Flees when player gets close. No reaction to weapon fire. Faces left.
+{
+//$Category Critters (Wolf3D)
+//$Title Crow (left,wander,proxflee)
+//$Color 0
+  Mass 99999
+  Health 999
+  Radius 3
+  Height 3
+  Scale 0.7
+  Monster
+  Alpha 1
+  -ISMONSTER
+  -COUNTKILL
+  +THRUACTORS
+  +NOTARGET
+  +NODAMAGETHRUST
+  +FLOORHUGGER
+  +FLOORCLIP
+  -CANUSEWALLS
+  -NOGRAVITY
+  +NOBLOOD
+  +NODAMAGE
+  +NOTAUTOAIMED
+  +LOOKALLAROUND
+  +BOUNCEONWALLS
+  PainChance 255
+  MeleeDamage 0
+  MeleeRange 310
+  States
+  {
+  Spawn: 
+     TNT1 A 0
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+	 TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 A 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 TNT1 A 0 A_Jump(10,"WanderFly")
+	 Loop
+  See:
+     TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_FaceTarget
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 A 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 TNT1 A 0 A_Jump(10,"WanderFly")
+	 Goto Spawn
+  Melee:	
+     TNT1 A 0
+	 Goto Pain
+  LookDown:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+     CRW1 C 5
+	 TNT1 A 0 A_Jump(60,"Spawn","Peck")
+	 Loop	
+  Peck:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+     CRW1 C 5
+	 CRW1 EC 2
+	 TNT1 A 0 A_Jump(60,"Spawn","LookDown")
+	 Loop
+  Caw:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+	 TNT1 A 0 A_Jump(60,4) //To play one caw on occasion.
+	 TNT1 A 0 A_PlaySound("CRWCAW1",6,0.3,0)
+     CRW1 A 12
+	 CRW1 M 6
+	 Goto Spawn
+	 TNT1 A 0 A_PlaySound("CRWCAW3",6,0.3,0)
+	 CRW1 A 12
+	 Goto Spawn
+  ForwardLook:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+     CRW1 G 16
+	 TNT1 A 0 A_Jump(120,"Spawn")
+	 Loop	 
+  WanderFly:
+     TNT1 A 0
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(4,8), 0, 0)
+	 CRW1 IK 2
+	 TNT1 A 0 ThrustThingZ(0,random(4,8),0,1)
+	 TNT1 A 0 A_Jump(20,"Flight")
+	 Goto WanderFly+4
+  Flight:
+     TNT1 A 0
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 ThrustThing(random(0,360), random(3,6), 0, 0)
+	 CRW1 IK 2
+	 TNT1 A 0 A_Jump(35,"FlyDown")
+	 Goto Flight+2
+  FlyDown:	 
+	 TNT1 A 0 A_Stop
+	 CRW1 IK 2
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 ThrustThing(random(0,360), random(3,6), 0, 0)
+	 TNT1 A 0 ThrustThingZ(0,-2,0,1)
+	 TNT1 A 0 A_CheckFloor("Spawn")
+	 Goto FlyDown+1
+  Pain:
+     TNT1 A 0
+	 TNT1 A 0 A_RadiusGive("CrowGroupFlee",160,RGF_OBJECTS,1)
+	 TNT1 A 0 A_Jump(25,2)
+	 TNT1 A 0 A_PlaySound("CRWCAW2",6,0.4,0)
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(6,12), 0, 0)
+	 CRW1 IK 2
+	 TNT1 A 0 ThrustThingZ(0,random(12,20),0,1)
+	 TNT1 A 0 A_FadeOut(0.1)
+	 Goto Pain+6
+  }
+}
+
+ACTOR CrowWander2R 8884 //Wandering version. Flees when player gets close. No reaction to weapon fire. Faces right.
+{
+//$Category Critters (Wolf3D)
+//$Title Crow (right,wander,proxflee)
+//$Color 0
+  Mass 99999
+  Health 999
+  Radius 3
+  Height 3
+  Scale 0.7
+  Monster
+  Alpha 1
+  -ISMONSTER
+  -COUNTKILL
+  +THRUACTORS
+  +NOTARGET
+  +NODAMAGETHRUST
+  +FLOORHUGGER
+  +FLOORCLIP
+  -CANUSEWALLS
+  -NOGRAVITY
+  +NOBLOOD
+  +NODAMAGE
+  +NOTAUTOAIMED
+  +LOOKALLAROUND
+  +BOUNCEONWALLS
+  PainChance 255
+  MeleeDamage 0
+  MeleeRange 310
+  States
+  {
+  Spawn: 
+     TNT1 A 0
+	 TNT1 A 0 A_Stop
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+	 TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 B 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 TNT1 A 0 A_Jump(10,"WanderFly")
+	 Loop
+  See:
+     TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_FaceTarget
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 B 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 TNT1 A 0 A_Jump(10,"WanderFly")
+	 Goto Spawn
+  Melee:	
+     TNT1 A 0
+	 Goto Pain
+  LookDown:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+     CRW1 D 5
+	 TNT1 A 0 A_Jump(60,"Spawn","Peck")
+	 Loop	
+  Peck:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+     CRW1 D 5
+	 CRW1 FD 2
+	 TNT1 A 0 A_Jump(60,"Spawn","LookDown")
+	 Loop
+  Caw:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_Jump(60,4) //To play one caw on occasion.
+	 TNT1 A 0 A_PlaySound("CRWCAW1",6,0.3,0)
+     CRW1 B 12
+	 CRW1 N 6
+	 Goto Spawn
+	 TNT1 A 0 A_PlaySound("CRWCAW3",6,0.3,0)
+	 CRW1 B 12
+	 Goto Spawn
+  ForwardLook:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+     CRW1 H 16
+	 TNT1 A 0 A_Jump(120,"Spawn")
+	 Loop	 
+  WanderFly:
+     TNT1 A 0
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(4,8), 0, 0)
+	 CRW1 JL 2
+	 TNT1 A 0 ThrustThingZ(0,random(4,8),0,1)
+	 TNT1 A 0 A_Jump(20,"Flight")
+	 Goto WanderFly+4
+  Flight:
+     TNT1 A 0
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 ThrustThing(random(0,360), random(3,6), 0, 0)
+	 CRW1 JL 2
+	 TNT1 A 0 A_Jump(35,"FlyDown")
+	 Goto Flight+2
+  FlyDown:	 
+	 TNT1 A 0 A_Stop
+	 CRW1 JL 2
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 ThrustThing(random(0,360), random(3,6), 0, 0)
+	 TNT1 A 0 ThrustThingZ(0,-2,0,1)
+	 TNT1 A 0 A_CheckFloor("Spawn")
+	 Goto FlyDown+1
+  Pain:
+     TNT1 A 0
+	 TNT1 A 0 A_RadiusGive("CrowGroupFlee",160,RGF_OBJECTS,1)
+	 TNT1 A 0 A_Jump(25,2)
+	 TNT1 A 0 A_PlaySound("CRWCAW2",6,0.4,0)
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(6,12), 0, 0)
+	 CRW1 JL 2
+	 TNT1 A 0 ThrustThingZ(0,random(12,20),0,1)
+	 TNT1 A 0 A_FadeOut(0.1)
+	 Goto Pain+6
+  }
+}
+
+ACTOR CrowWander3L 8885 //Wandering version. Does not flee when player approches but reacts to weapon fire. Faces left.
+{
+//$Category Critters (Wolf3D)
+//$Color 0
+//$Title Crow (left,wander,reactsweapon)
+  Mass 99999
+  Health 999
+  Radius 3
+  Height 3
+  Scale 0.7
+  Monster
+  Alpha 1
+  -ISMONSTER
+  -COUNTKILL
+  +THRUACTORS
+  +NOTARGET
+  +NODAMAGETHRUST
+  +FLOORHUGGER
+  +FLOORCLIP
+  -CANUSEWALLS
+  -NOGRAVITY
+  +NOBLOOD
+  +NODAMAGE
+  +NOTAUTOAIMED
+  +BOUNCEONWALLS
+  PainChance 255
+  States
+  {
+  Spawn: 
+     TNT1 A 0
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_Stop
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+	 TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 A 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 TNT1 A 0 A_Jump(10,"WanderFly")
+	 Loop
+  See:
+     TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_FaceTarget
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 A 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 TNT1 A 0 A_Jump(10,"WanderFly")
+	 Goto Spawn	 
+  LookDown:
+     TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+     CRW1 C 5
+	 TNT1 A 0 A_Jump(60,"Spawn","Peck")
+	 Loop	
+  Peck:
+     TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+     CRW1 C 5
+	 CRW1 EC 2
+	 TNT1 A 0 A_Jump(60,"Spawn","LookDown")
+	 Loop
+  Caw:
+     TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+	 TNT1 A 0 A_Jump(60,4) //To play one caw on occasion.
+	 TNT1 A 0 A_PlaySound("CRWCAW1",6,0.3,0)
+     CRW1 A 12
+	 CRW1 M 6
+	 Goto Spawn
+	 TNT1 A 0 A_PlaySound("CRWCAW3",6,0.3,0)
+	 CRW1 A 12
+	 Goto Spawn
+  ForwardLook:
+     TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+     CRW1 G 16
+	 TNT1 A 0 A_Jump(120,"Spawn")
+	 Loop	 
+  WanderFly:
+     TNT1 A 0
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(4,8), 0, 0)
+	 CRW1 IK 2
+	 TNT1 A 0 ThrustThingZ(0,random(4,8),0,1)
+	 TNT1 A 0 A_Jump(20,"Flight")
+	 Goto WanderFly+4
+  Flight:
+     TNT1 A 0
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 ThrustThing(random(0,360), random(3,6), 0, 0)
+	 CRW1 IK 2
+	 TNT1 A 0 A_Jump(35,"FlyDown")
+	 Goto Flight+2
+  FlyDown:	 
+	 TNT1 A 0 A_Stop
+	 CRW1 IK 2
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 ThrustThing(random(0,360), random(3,6), 0, 0)
+	 TNT1 A 0 ThrustThingZ(0,-2,0,1)
+	 TNT1 A 0 A_CheckFloor("Spawn")
+	 Goto FlyDown+1
+  Pain:
+     TNT1 A 0
+	 TNT1 A 0 A_RadiusGive("CrowGroupFlee",160,RGF_OBJECTS,1)
+	 TNT1 A 0 A_Jump(25,2)
+	 TNT1 A 0 A_PlaySound("CRWCAW2",6,0.4,0)
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(6,12), 0, 0)
+	 CRW1 IK 2
+	 TNT1 A 0 ThrustThingZ(0,random(12,20),0,1)
+	 TNT1 A 0 A_FadeOut(0.1)
+	 Goto Pain+6
+  }
+}
+
+ACTOR CrowWander3R 8886 //Wandering version. Does not flee when player approches but reacts to weapon fire. Faces right.
+{
+//$Category Critters (Wolf3D)
+//$Title Crow (right,wander,reactsweapon)
+//$Color 0
+  Mass 99999
+  Health 999
+  Radius 3
+  Height 3
+  Scale 0.7
+  Monster
+  Alpha 1
+  -ISMONSTER
+  -COUNTKILL
+  +THRUACTORS
+  +NOTARGET
+  +NODAMAGETHRUST
+  +FLOORHUGGER
+  +FLOORCLIP
+  -CANUSEWALLS
+  -NOGRAVITY
+  +NOBLOOD
+  +NODAMAGE
+  +NOTAUTOAIMED
+  +BOUNCEONWALLS
+  PainChance 255
+  States
+  {
+  Spawn: 
+     TNT1 A 0
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_Stop
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+	 TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 B 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 TNT1 A 0 A_Jump(10,"WanderFly")
+	 Loop
+  See:
+     TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_FaceTarget
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 B 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 TNT1 A 0 A_Jump(10,"WanderFly")
+	 Goto Spawn		 
+  LookDown:
+     TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+     CRW1 F 5
+	 TNT1 A 0 A_Jump(60,"Spawn","Peck")
+	 Loop	
+  Peck:
+     TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+     CRW1 D 5
+	 CRW1 FD 2
+	 TNT1 A 0 A_Jump(60,"Spawn","LookDown")
+	 Loop
+  Caw:
+     TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+	 TNT1 A 0 A_Jump(60,4) //To play one caw on occasion.
+	 TNT1 A 0 A_PlaySound("CRWCAW1",6,0.3,0)
+     CRW1 B 12
+	 CRW1 N 6
+	 Goto Spawn
+	 TNT1 A 0 A_PlaySound("CRWCAW3",6,0.3,0)
+	 CRW1 B 12
+	 TNT1 A 0
+	 Goto Spawn
+  ForwardLook:
+     TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+     CRW1 H 16
+	 TNT1 A 0 A_Jump(120,"Spawn")
+	 Loop	 
+  WanderFly:
+     TNT1 A 0
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(4,8), 0, 0)
+	 CRW1 JL 2
+	 TNT1 A 0 ThrustThingZ(0,random(4,8),0,1)
+	 TNT1 A 0 A_Jump(20,"Flight")
+	 Goto WanderFly+4
+  Flight:
+     TNT1 A 0
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 ThrustThing(random(0,360), random(3,6), 0, 0)
+	 CRW1 JL 2
+	 TNT1 A 0 A_Jump(35,"FlyDown")
+	 Goto Flight+2
+  FlyDown:	 
+	 TNT1 A 0 A_Stop
+	 CRW1 JL 2
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 ThrustThing(random(0,360), random(3,6), 0, 0)
+	 TNT1 A 0 ThrustThingZ(0,-2,0,1)
+	 TNT1 A 0 A_CheckFloor("Spawn")
+	 Goto FlyDown+1
+  Pain:
+     TNT1 A 0
+	 TNT1 A 0 A_RadiusGive("CrowGroupFlee",160,RGF_OBJECTS,1)
+	 TNT1 A 0 A_Jump(25,2)
+	 TNT1 A 0 A_PlaySound("CRWCAW2",6,0.4,0)
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(6,12), 0, 0)
+	 CRW1 JL 2
+	 TNT1 A 0 ThrustThingZ(0,random(12,20),0,1)
+	 TNT1 A 0 A_FadeOut(0.1)
+	 Goto Pain+6
+  }
+}
+
+ACTOR CrowWander4L 8887 //Wandering version. Does not flee when player approches. No sounds reaction. Faces left.
+{
+//$Category Critters (Wolf3D)
+//$Title Crow (left,wander)
+//$Color 0
+  Mass 99999
+  Health 999
+  Radius 3
+  Height 3
+  Scale 0.7
+  Monster
+  Alpha 1
+  -ISMONSTER
+  -COUNTKILL
+  +THRUACTORS
+  +NOTARGET
+  +NODAMAGETHRUST
+  +FLOORHUGGER
+  +FLOORCLIP
+  -CANUSEWALLS
+  -NOGRAVITY
+  +NOBLOOD
+  +NODAMAGE
+  +NOTAUTOAIMED
+  +BOUNCEONWALLS
+  PainChance 255
+  States
+  {
+  Spawn: 
+     TNT1 A 0
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_Stop
+	 TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 A 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 TNT1 A 0 A_Jump(10,"WanderFly")
+	 Loop
+  See:
+     TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_FaceTarget
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 A 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 TNT1 A 0 A_Jump(10,"WanderFly")
+	 Goto Spawn	 
+  LookDown:
+     TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+     CRW1 C 5
+	 TNT1 A 0 A_Jump(60,"Spawn","Peck")
+	 Loop	
+  Peck:
+     TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+     CRW1 C 5
+	 CRW1 EC 2
+	 TNT1 A 0 A_Jump(60,"Spawn","LookDown")
+	 Loop
+  Caw:
+     TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_Jump(60,4) //To play one caw on occasion.
+	 TNT1 A 0 A_PlaySound("CRWCAW1",6,0.3,0)
+     CRW1 A 12
+	 CRW1 M 6
+	 Goto Spawn
+	 TNT1 A 0 A_PlaySound("CRWCAW3",6,0.3,0)
+	 CRW1 A 12
+	 Goto Spawn
+  ForwardLook:
+     TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+     CRW1 G 16
+	 TNT1 A 0 A_Jump(120,"Spawn")
+	 Loop	 
+  WanderFly:
+     TNT1 A 0
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(4,8), 0, 0)
+	 CRW1 IK 2
+	 TNT1 A 0 ThrustThingZ(0,random(4,8),0,1)
+	 TNT1 A 0 A_Jump(20,"Flight")
+	 Goto WanderFly+4
+  Flight:
+     TNT1 A 0
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 ThrustThing(random(0,360), random(3,6), 0, 0)
+	 CRW1 IK 2
+	 TNT1 A 0 A_Jump(35,"FlyDown")
+	 Goto Flight+2
+  FlyDown:	 
+	 TNT1 A 0 A_Stop
+	 CRW1 IK 2
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 ThrustThing(random(0,360), random(3,6), 0, 0)
+	 TNT1 A 0 ThrustThingZ(0,-2,0,1)
+	 TNT1 A 0 A_CheckFloor("Spawn")
+	 Goto FlyDown+1
+  Pain:
+     TNT1 A 0
+	 TNT1 A 0 A_RadiusGive("CrowGroupFlee",160,RGF_OBJECTS,1)
+	 TNT1 A 0 A_Jump(25,2)
+	 TNT1 A 0 A_PlaySound("CRWCAW2",6,0.4,0)
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(6,12), 0, 0)
+	 CRW1 IK 2
+	 TNT1 A 0 ThrustThingZ(0,random(12,20),0,1)
+	 TNT1 A 0 A_FadeOut(0.1)
+	 Goto Pain+6
+  }
+}
+
+ACTOR CrowWander4R 8888 //Wandering version. Does not flee when player approches. No sound reaction. Faces right.
+{
+//$Category Critters (Wolf3D)
+//$Title Crow (right,wander)
+//$Color 0
+  Mass 99999
+  Health 999
+  Radius 3
+  Height 3
+  Scale 0.7
+  Monster
+  Alpha 1
+  -ISMONSTER
+  -COUNTKILL
+  +THRUACTORS
+  +NOTARGET
+  +NODAMAGETHRUST
+  +FLOORHUGGER
+  +FLOORCLIP
+  -CANUSEWALLS
+  -NOGRAVITY
+  +NOBLOOD
+  +NODAMAGE
+  +NOTAUTOAIMED
+  +BOUNCEONWALLS
+  PainChance 255
+  States
+  {
+  Spawn: 
+     TNT1 A 0
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_Stop
+	 TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 B 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 TNT1 A 0 A_Jump(10,"WanderFly")
+	 Loop
+  See:
+     TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_FaceTarget
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 B 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 TNT1 A 0 A_Jump(10,"WanderFly")
+	 Goto Spawn		 
+  LookDown:
+     TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+     CRW1 F 5
+	 TNT1 A 0 A_Jump(60,"Spawn","Peck")
+	 Loop	
+  Peck:
+     TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+     CRW1 D 5
+	 CRW1 FD 2
+	 TNT1 A 0 A_Jump(60,"Spawn","LookDown")
+	 Loop
+  Caw:
+     TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_Jump(60,4) //To play one caw on occasion.
+	 TNT1 A 0 A_PlaySound("CRWCAW1",6,0.3,0)
+     CRW1 B 12
+	 CRW1 N 6
+	 Goto Spawn
+	 TNT1 A 0 A_PlaySound("CRWCAW3",6,0.3,0)
+	 CRW1 B 12
+	 TNT1 A 0
+	 Goto Spawn
+  ForwardLook:
+     TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+     CRW1 H 16
+	 TNT1 A 0 A_Jump(120,"Spawn")
+	 Loop	 
+  WanderFly:
+     TNT1 A 0
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(4,8), 0, 0)
+	 CRW1 JL 2
+	 TNT1 A 0 ThrustThingZ(0,random(4,8),0,1)
+	 TNT1 A 0 A_Jump(20,"Flight")
+	 Goto WanderFly+4
+  Flight:
+     TNT1 A 0
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 ThrustThing(random(0,360), random(3,6), 0, 0)
+	 CRW1 JL 2
+	 TNT1 A 0 A_Jump(35,"FlyDown")
+	 Goto Flight+2
+  FlyDown:	 
+	 TNT1 A 0 A_Stop
+	 CRW1 JL 2
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 ThrustThing(random(0,360), random(3,6), 0, 0)
+	 TNT1 A 0 ThrustThingZ(0,-2,0,1)
+	 TNT1 A 0 A_CheckFloor("Spawn")
+	 Goto FlyDown+1
+  Pain:
+     TNT1 A 0
+	 TNT1 A 0 A_RadiusGive("CrowGroupFlee",160,RGF_OBJECTS,1)
+	 TNT1 A 0 A_Jump(25,2)
+	 TNT1 A 0 A_PlaySound("CRWCAW2",6,0.4,0)
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(6,12), 0, 0)
+	 CRW1 JL 2
+	 TNT1 A 0 ThrustThingZ(0,random(12,20),0,1)
+	 TNT1 A 0 A_FadeOut(0.1)
+	 Goto Pain+6
+  }
+}
+
+/*
+================================================
+STATIONARY VERSIONS
+================================================
+*/
+
+ACTOR CrowStill1L 8889 //Stationary version. Flees when player is close. Reacts to sound. Faces left.
+{
+//$Category Critters (Wolf3D)
+//$Title Crow (left,statonary,proxflee,reactsweapon)
+//$Color 0
+  Mass 99999
+  Health 999
+  Radius 3
+  Height 3
+  Scale 0.7
+  Monster
+  Alpha 1
+  -ISMONSTER
+  -COUNTKILL
+  +THRUACTORS
+  +NOTARGET
+  +NODAMAGETHRUST
+  +FLOORHUGGER
+  +FLOORCLIP
+  -CANUSEWALLS
+  -NOGRAVITY
+  +NOBLOOD
+  +NODAMAGE
+  +NOTAUTOAIMED
+  +LOOKALLAROUND
+  PainChance 255
+  MeleeDamage 0
+  MeleeRange 310
+  States
+  {
+  Spawn: 
+     TNT1 A 0
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 A 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 Loop
+  See:
+     TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_FaceTarget
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 A 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 Goto Spawn	 
+  Melee:	
+     TNT1 A 0
+	 Goto Pain
+  LookDown:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+     CRW1 C 5
+	 TNT1 A 0 A_Jump(60,"Spawn","Peck")
+	 Loop	
+  Peck:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+     CRW1 C 5
+	 CRW1 EC 2
+	 TNT1 A 0 A_Jump(60,"Spawn","LookDown")
+	 Loop
+  Caw:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+	 TNT1 A 0 A_Jump(60,4) //To play one caw on occasion.
+	 TNT1 A 0 A_PlaySound("CRWCAW1",6,0.3,0)
+     CRW1 A 12
+	 CRW1 M 6
+	 Goto Spawn
+	 TNT1 A 0 A_PlaySound("CRWCAW3",6,0.3,0)
+	 CRW1 A 12
+	 Goto Spawn
+  ForwardLook:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+     CRW1 G 16
+	 TNT1 A 0 A_Jump(120,"Spawn")
+	 Loop	
+  Pain:
+     TNT1 A 0
+	 TNT1 A 0 A_RadiusGive("CrowGroupFlee",160,RGF_OBJECTS,1)
+	 TNT1 A 0 A_Jump(25,2)
+	 TNT1 A 0 A_PlaySound("CRWCAW2",6,0.4,0)
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(6,12), 0, 0)
+	 CRW1 IK 2
+	 TNT1 A 0 ThrustThingZ(0,random(12,20),0,1)
+	 TNT1 A 0 A_FadeOut(0.1)
+	 Goto Pain+6	 
+  }
+}
+
+ACTOR CrowStill1R 8890 //Stationary version. Flees when player is close. Reacts to sound. Faces right.
+{
+//$Category Critters (Wolf3D)
+//$Title Crow (right,statonary,proxflee,reactsweapon)
+//$Color 0
+  Mass 99999
+  Health 999
+  Radius 3
+  Height 3
+  Scale 0.7
+  Monster
+  Alpha 1
+  -ISMONSTER
+  -COUNTKILL
+  +THRUACTORS
+  +NOTARGET
+  +NODAMAGETHRUST
+  +FLOORHUGGER
+  +FLOORCLIP
+  -CANUSEWALLS
+  -NOGRAVITY
+  +NOBLOOD
+  +NODAMAGE
+  +NOTAUTOAIMED
+  +LOOKALLAROUND
+  PainChance 255
+  MeleeDamage 0
+  MeleeRange 310
+  States
+  {
+  Spawn: 
+     TNT1 A 0
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 B 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 Loop
+  See:
+     TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_FaceTarget
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 B 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 Goto Spawn	
+  Melee:	
+     TNT1 A 0
+	 Goto Pain
+  LookDown:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+     CRW1 D 5
+	 TNT1 A 0 A_Jump(60,"Spawn","Peck")
+	 Loop	
+  Peck:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+     CRW1 D 5
+	 CRW1 FD 2
+	 TNT1 A 0 A_Jump(60,"Spawn","LookDown")
+	 Loop
+  Caw:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+	 TNT1 A 0 A_Jump(60,4) //To play one caw on occasion.
+	 TNT1 A 0 A_PlaySound("CRWCAW1",6,0.3,0)
+     CRW1 B 12
+	 CRW1 N 6
+	 Goto Spawn
+	 TNT1 A 0 A_PlaySound("CRWCAW3",6,0.3,0)
+	 CRW1 B 12
+	 TNT1 A 0
+	 Goto Spawn
+  ForwardLook:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(0,0,310,800,0,"Pain")
+     CRW1 H 16
+	 TNT1 A 0 A_Jump(120,"Spawn")
+	 Loop	
+  Pain:
+     TNT1 A 0
+	 TNT1 A 0 A_RadiusGive("CrowGroupFlee",160,RGF_OBJECTS,1)
+	 TNT1 A 0 A_Jump(25,2)
+	 TNT1 A 0 A_PlaySound("CRWCAW2",6,0.4,0)
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(6,12), 0, 0)
+	 CRW1 JL 2
+	 TNT1 A 0 ThrustThingZ(0,random(12,20),0,1)
+	 TNT1 A 0 A_FadeOut(0.1)
+	 Goto Pain+6	 
+  }
+}
+
+
+ACTOR CrowStill2L 8891 //Stationary version. Flees when player is close. No sound reaction. Faces left.
+{
+//$Category Critters (Wolf3D)
+//$Title Crow (left,statonary,proxflee)
+//$Color 0
+  Mass 99999
+  Health 999
+  Radius 3
+  Height 3
+  Scale 0.7
+  Monster
+  Alpha 1
+  -ISMONSTER
+  -COUNTKILL
+  +THRUACTORS
+  +NOTARGET
+  +NODAMAGETHRUST
+  +FLOORHUGGER
+  +FLOORCLIP
+  -CANUSEWALLS
+  -NOGRAVITY
+  +NOBLOOD
+  +NODAMAGE
+  +NOTAUTOAIMED
+  +LOOKALLAROUND
+  PainChance 255
+  MeleeDamage 0
+  MeleeRange 310
+  States
+  {
+  Spawn: 
+     TNT1 A 0
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 A 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 Loop
+  See:
+     TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_FaceTarget
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 A 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 Goto Spawn	 
+  Melee:	
+     TNT1 A 0
+	 Goto Pain
+  LookDown:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+     CRW1 C 5
+	 TNT1 A 0 A_Jump(60,"Spawn","Peck")
+	 Loop	
+  Peck:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+     CRW1 C 5
+	 CRW1 EC 2
+	 TNT1 A 0 A_Jump(60,"Spawn","LookDown")
+	 Loop
+  Caw:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+	 TNT1 A 0 A_Jump(60,4) //To play one caw on occasion.
+	 TNT1 A 0 A_PlaySound("CRWCAW1",6,0.3,0)
+     CRW1 A 12
+	 CRW1 M 6
+	 Goto Spawn
+	 TNT1 A 0 A_PlaySound("CRWCAW3",6,0.3,0)
+	 CRW1 A 12
+	 Goto Spawn
+  ForwardLook:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+     CRW1 G 16
+	 TNT1 A 0 A_Jump(120,"Spawn")
+	 Loop	
+  Pain:
+     TNT1 A 0
+	 TNT1 A 0 A_RadiusGive("CrowGroupFlee",160,RGF_OBJECTS,1)
+	 TNT1 A 0 A_Jump(25,2)
+	 TNT1 A 0 A_PlaySound("CRWCAW2",6,0.4,0)
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(6,12), 0, 0)
+	 CRW1 IK 2
+	 TNT1 A 0 ThrustThingZ(0,random(12,20),0,1)
+	 TNT1 A 0 A_FadeOut(0.1)
+	 Goto Pain+6	 
+  }
+}
+
+ACTOR CrowStill2R 8892 //Stationary version. Flees when player is close. No sound reaction. Faces right.
+{
+//$Category Critters (Wolf3D)
+//$Title Crow (right,statonary,proxflee)
+//$Color 0
+  Mass 99999
+  Health 999
+  Radius 3
+  Height 3
+  Scale 0.7
+  Monster
+  Alpha 1
+  -ISMONSTER
+  -COUNTKILL
+  +THRUACTORS
+  +NOTARGET
+  +NODAMAGETHRUST
+  +FLOORHUGGER
+  +FLOORCLIP
+  -CANUSEWALLS
+  -NOGRAVITY
+  +NOBLOOD
+  +NODAMAGE
+  +NOTAUTOAIMED
+  +LOOKALLAROUND
+  PainChance 255
+  MeleeDamage 0
+  MeleeRange 310
+  States
+  {
+  Spawn: 
+     TNT1 A 0
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 B 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 Loop
+  See:
+     TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_FaceTarget
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 B 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 Goto Spawn	
+  Melee:	
+     TNT1 A 0
+	 Goto Pain
+  LookDown:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+     CRW1 D 5
+	 TNT1 A 0 A_Jump(60,"Spawn","Peck")
+	 Loop	
+  Peck:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+     CRW1 D 5
+	 CRW1 FD 2
+	 TNT1 A 0 A_Jump(60,"Spawn","LookDown")
+	 Loop
+  Caw:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+	 TNT1 A 0 A_Jump(60,4) //To play one caw on occasion.
+	 TNT1 A 0 A_PlaySound("CRWCAW1",6,0.3,0)
+     CRW1 B 12
+	 CRW1 N 6
+	 Goto Spawn
+	 TNT1 A 0 A_PlaySound("CRWCAW3",6,0.3,0)
+	 CRW1 B 12
+	 TNT1 A 0
+	 Goto Spawn
+  ForwardLook:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSOUNDCHECK ,0,310,800,0,"Pain")
+     CRW1 H 16
+	 TNT1 A 0 A_Jump(120,"Spawn")
+	 Loop	
+  Pain:
+     TNT1 A 0
+	 TNT1 A 0 A_RadiusGive("CrowGroupFlee",160,RGF_OBJECTS,1)
+	 TNT1 A 0 A_Jump(25,2)
+	 TNT1 A 0 A_PlaySound("CRWCAW2",6,0.4,0)
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(6,12), 0, 0)
+	 CRW1 JL 2
+	 TNT1 A 0 ThrustThingZ(0,random(12,20),0,1)
+	 TNT1 A 0 A_FadeOut(0.1)
+	 Goto Pain+6	 
+  }
+}
+
+ACTOR CrowStill3L 8893 //Stationary version. Does not flee when player is close. Reacts to sound. Faces left.
+{
+//$Category Critters (Wolf3D)
+//$Title Crow (left,statonary,reactsweapon)
+//$Color 0
+  Mass 99999
+  Health 999
+  Radius 3
+  Height 3
+  Scale 0.7
+  Monster
+  Alpha 1
+  -ISMONSTER
+  -COUNTKILL
+  +THRUACTORS
+  +NOTARGET
+  +NODAMAGETHRUST
+  +FLOORHUGGER
+  +FLOORCLIP
+  -CANUSEWALLS
+  -NOGRAVITY
+  +NOBLOOD
+  +NODAMAGE
+  +NOTAUTOAIMED
+  +LOOKALLAROUND
+  PainChance 255
+  MeleeDamage 0
+  MeleeRange 310
+  States
+  {
+  Spawn: 
+     TNT1 A 0
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 A 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 Loop
+  See:
+     TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_FaceTarget
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 A 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 Goto Spawn	 
+  Melee:	
+     TNT1 A 0
+	 Goto Pain
+  LookDown:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+     CRW1 C 5
+	 TNT1 A 0 A_Jump(60,"Spawn","Peck")
+	 Loop	
+  Peck:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+     CRW1 C 5
+	 CRW1 EC 2
+	 TNT1 A 0 A_Jump(60,"Spawn","LookDown")
+	 Loop
+  Caw:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+	 TNT1 A 0 A_Jump(60,4) //To play one caw on occasion.
+	 TNT1 A 0 A_PlaySound("CRWCAW1",6,0.3,0)
+     CRW1 A 12
+	 CRW1 M 6
+	 Goto Spawn
+	 TNT1 A 0 A_PlaySound("CRWCAW3",6,0.3,0)
+	 CRW1 A 12
+	 Goto Spawn
+  ForwardLook:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+     CRW1 G 16
+	 TNT1 A 0 A_Jump(120,"Spawn")
+	 Loop	
+  Pain:
+     TNT1 A 0
+	 TNT1 A 0 A_RadiusGive("CrowGroupFlee",160,RGF_OBJECTS,1)
+	 TNT1 A 0 A_Jump(25,2)
+	 TNT1 A 0 A_PlaySound("CRWCAW2",6,0.4,0)
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(6,12), 0, 0)
+	 CRW1 IK 2
+	 TNT1 A 0 ThrustThingZ(0,random(12,20),0,1)
+	 TNT1 A 0 A_FadeOut(0.1)
+	 Goto Pain+6	 
+  }
+}
+
+ACTOR CrowStill3R 8894 //Stationary version. Flees when player is close. No sound reaction. Faces right.
+{
+//$Category Critters (Wolf3D)
+//$Title Crow (right,statonary,reactsweapon)
+//$Color 0
+  Mass 99999
+  Health 999
+  Radius 3
+  Height 3
+  Scale 0.7
+  Monster
+  Alpha 1
+  -ISMONSTER
+  -COUNTKILL
+  +THRUACTORS
+  +NOTARGET
+  +NODAMAGETHRUST
+  +FLOORHUGGER
+  +FLOORCLIP
+  -CANUSEWALLS
+  -NOGRAVITY
+  +NOBLOOD
+  +NODAMAGE
+  +NOTAUTOAIMED
+  +LOOKALLAROUND
+  PainChance 255
+  MeleeDamage 0
+  MeleeRange 310
+  States
+  {
+  Spawn: 
+     TNT1 A 0
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 B 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 Loop
+  See:
+     TNT1 A 0 A_StopSound(5)
+	 TNT1 A 0 A_FaceTarget
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 B 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 Goto Spawn	
+  Melee:	
+     TNT1 A 0
+	 Goto Pain
+  LookDown:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+     CRW1 D 5
+	 TNT1 A 0 A_Jump(60,"Spawn","Peck")
+	 Loop	
+  Peck:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+     CRW1 D 5
+	 CRW1 FD 2
+	 TNT1 A 0 A_Jump(60,"Spawn","LookDown")
+	 Loop
+  Caw:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+	 TNT1 A 0 A_Jump(60,4) //To play one caw on occasion.
+	 TNT1 A 0 A_PlaySound("CRWCAW1",6,0.3,0)
+     CRW1 B 12
+	 CRW1 N 6
+	 Goto Spawn
+	 TNT1 A 0 A_PlaySound("CRWCAW3",6,0.3,0)
+	 CRW1 B 12
+	 TNT1 A 0
+	 Goto Spawn
+  ForwardLook:
+     TNT1 A 0 A_JumpIfTargetInsideMeleeRange("Pain")
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_LookEx(LOF_NOSIGHTCHECK ,0,310,800,0,"Pain")
+     CRW1 H 16
+	 TNT1 A 0 A_Jump(120,"Spawn")
+	 Loop	
+  Pain:
+     TNT1 A 0
+	 TNT1 A 0 A_RadiusGive("CrowGroupFlee",160,RGF_OBJECTS,1)
+	 TNT1 A 0 A_Jump(25,2)
+	 TNT1 A 0 A_PlaySound("CRWCAW2",6,0.4,0)
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(6,12), 0, 0)
+	 CRW1 JL 2
+	 TNT1 A 0 ThrustThingZ(0,random(12,20),0,1)
+	 TNT1 A 0 A_FadeOut(0.1)
+	 Goto Pain+6	 
+  }
+}
+
+ACTOR CrowStill4L 8895 //Stationary version. Does not flee when player is close. No sound reaction. Faces left.
+{
+//$Category Critters (Wolf3D)
+//$Title Crow (left,statonary)
+//$Color 0
+  Mass 99999
+  Health 999
+  Radius 3
+  Height 3
+  Scale 0.7
+  Monster
+  Alpha 1
+  -ISMONSTER
+  -COUNTKILL
+  +THRUACTORS
+  +NOTARGET
+  +NODAMAGETHRUST
+  +FLOORHUGGER
+  +FLOORCLIP
+  -CANUSEWALLS
+  -NOGRAVITY
+  +NOBLOOD
+  +NODAMAGE
+  +NOTAUTOAIMED
+  PainChance 255
+  States
+  {
+  Spawn: 
+     TNT1 A 0
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 A 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 Loop
+  LookDown:
+  	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+     CRW1 C 5
+	 TNT1 A 0 A_Jump(60,"Spawn","Peck")
+	 Loop	
+  Peck:
+  	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+     CRW1 C 5
+	 CRW1 EC 2
+	 TNT1 A 0 A_Jump(60,"Spawn","LookDown")
+	 Loop
+  Caw:
+	 TNT1 A 0 A_Jump(60,4) //To play one caw on occasion.
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_PlaySound("CRWCAW1",6,0.3,0)
+     CRW1 A 12
+	 CRW1 M 6
+	 Goto Spawn
+	 TNT1 A 0 A_PlaySound("CRWCAW3",6,0.3,0)
+	 CRW1 A 12
+	 Goto Spawn
+  ForwardLook:
+  	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+     CRW1 G 16
+	 TNT1 A 0 A_Jump(120,"Spawn")
+	 Loop	
+  Pain:
+     TNT1 A 0
+	 TNT1 A 0 A_RadiusGive("CrowGroupFlee",160,RGF_OBJECTS,1)
+	 TNT1 A 0 A_Jump(25,2)
+	 TNT1 A 0 A_PlaySound("CRWCAW2",6,0.4,0)
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(6,12), 0, 0)
+	 CRW1 IK 2
+	 TNT1 A 0 ThrustThingZ(0,random(12,20),0,1)
+	 TNT1 A 0 A_FadeOut(0.1)
+	 Goto Pain+6	 
+  }
+}
+
+ACTOR CrowStill4R 8896 //Stationary version. Does not flee when player is close. No sound reaction. Faces right.
+{
+//$Category Critters (Wolf3D)
+//$Title Crow (right,statonary)
+//$Color 0
+  Mass 99999
+  Health 999
+  Radius 3
+  Height 3
+  Scale 0.7
+  Monster
+  Alpha 1
+  -ISMONSTER
+  -COUNTKILL
+  +THRUACTORS
+  +NOTARGET
+  +NODAMAGETHRUST
+  +FLOORHUGGER
+  +FLOORCLIP
+  -CANUSEWALLS
+  -NOGRAVITY
+  +NOBLOOD
+  +NODAMAGE
+  +NOTAUTOAIMED
+  PainChance 255
+  States
+  {
+  Spawn: 
+     TNT1 A 0
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",0)
+     CRW1 B 25
+	 TNT1 A 0 A_Jump(60,"LookDown","Peck","ForwardLook")
+	 TNT1 A 0 A_Jump(15,"Caw")
+	 Loop
+  LookDown:
+  	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+     CRW1 F 5
+	 TNT1 A 0 A_Jump(60,"Spawn","Peck")
+	 Loop	
+  Peck:
+  	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+     CRW1 D 5
+	 CRW1 FD 2
+	 TNT1 A 0 A_Jump(60,"Spawn","LookDown")
+	 Loop
+  Caw:
+	 TNT1 A 0 A_Jump(60,4) //To play one caw on occasion.
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_PlaySound("CRWCAW1",6,0.3,0)
+     CRW1 B 12
+	 CRW1 N 6
+	 Goto Spawn
+	 TNT1 A 0 A_PlaySound("CRWCAW3",6,0.3,0)
+	 CRW1 B 12
+	 TNT1 A 0
+	 Goto Spawn
+  ForwardLook:
+     CRW1 H 16
+	 TNT1 A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
+	 TNT1 A 0 A_Jump(120,"Spawn")
+	 Loop	
+  Pain:
+     TNT1 A 0
+	 TNT1 A 0 A_RadiusGive("CrowGroupFlee",160,RGF_OBJECTS,1)
+	 TNT1 A 0 A_Jump(25,2)
+	 TNT1 A 0 A_PlaySound("CRWCAW2",6,0.4,0)
+	 TNT1 A 0 A_PlaySound("CRWFLP",5,0.3,1)
+	 TNT1 A 0 A_ChangeFlag("NOGRAVITY",1)
+	 TNT1 A 0 A_ChangeFlag("FLOORHUGGER",0)
+	 TNT1 A 0 ThrustThing(random(0,360), random(6,12), 0, 0)
+	 CRW1 JL 2
+	 TNT1 A 0 ThrustThingZ(0,random(12,20),0,1)
+	 TNT1 A 0 A_FadeOut(0.1)
+	 Goto Pain+6	 
+  }
+}
+
+Actor CrowGroupFlee : Inventory 
+{ 
+Inventory.MaxAmount 1 
+}
