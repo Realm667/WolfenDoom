@@ -5,10 +5,10 @@ strictpatches = 0;
 maps
 {
 	
-	C1M4
+	TESTMAP
 	{
 		scriptcompiler = "zdoom_acs.cfg";
-		defaultfloortexture = "FLOOR0_1";
+		defaultfloortexture = "GRAS_B12";
 		overrideceilheight = false;
 		
 		resources
@@ -25,7 +25,7 @@ maps
 			
 		}
 		
-		defaulttoptexture = "MALRCK01";
+		defaulttoptexture = "FOG1_W";
 		overridemiddletexture = false;
 		
 		grid
@@ -36,13 +36,13 @@ maps
 			backscalex = 100;
 			backscaley = 100;
 			backsource = 0;
-			gridsize = 16;
+			gridsize = 32;
 		}
 		
 		overridefloortexture = false;
 		customceilheight = 128;
 		customfloorheight = 0;
-		defaultceiltexture = "CEIL1_1";
+		defaultceiltexture = "F_SKY1";
 		overridebrightness = false;
 		uselongtexturenames = false;
 		overridebottomtexture = false;
@@ -50,50 +50,8 @@ maps
 		overridetoptexture = false;
 		custombrightness = 196;
 		overrideceiltexture = false;
-		defaultwalltexture = "MALRCK01";
-		defaultbottomtexture = "MALRCK01";
-		
-		fieldtypes
-		{
-			
-			linedef
-			{
-				alpha = 1;
-			}
-			
-			
-			sidedef
-			{
-				offsetx_top = 1;
-				offsetx_mid = 1;
-				offsetx_bottom = 1;
-				offsety_mid = 1;
-				offsety_top = 1;
-				offsety_bottom = 1;
-				scaley_bottom = 1;
-				scalex_bottom = 1;
-				scalex_mid = 1;
-				scaley_mid = 1;
-			}
-			
-			
-			sector
-			{
-				rotationfloor = 1;
-				xpanningfloor = 1;
-				xpanningceiling = 1;
-				ypanningceiling = 1;
-				rotationceiling = 1;
-				xscaleceiling = 1;
-				xscalefloor = 1;
-				ypanningfloor = 1;
-				yscaleceiling = 1;
-				yscalefloor = 1;
-				lightcolor = 0;
-			}
-			
-		}
-		
+		defaultwalltexture = "FOG1_W";
+		defaultbottomtexture = "FOG1_W";
 	}
 	
 }
