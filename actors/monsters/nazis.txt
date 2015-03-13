@@ -1,4 +1,4 @@
-actor Nazi
+﻿actor Nazi
 {
   GibHealth 30
   scale 1.2
@@ -2127,6 +2127,7 @@ ACTOR MGTurret 12030
   }
 }
 
+
 actor DeathKnight 12032
 {
 //$Category Monsters (Wolf3D)
@@ -3138,4 +3139,54 @@ actor FlamerSoldier 12789
   }
 }
 
+
+
+ACTOR MGTurret 12790
+{
+//$Category Monsters (Wolf3D)
+//$Title Stationary Turret Soldier
+//$Color 4
+  spawnid 4
+  obituary "%o was shot up by a gun turret."
+  health 100
+  radius 24
+  height 24
+  mass 10000000000000000
+  speed 0
+  painchance 100
+  seesound "Nazi1/Sighted"
+  painsound "Nazi1/Pain"
+  deathsound "Nazi1/Death"
+  attacksound "weapons/chaingun"
+  MONSTER
+  +MISSILEEVENMORE
+  +NOGRAVITY
+  +LOOKALLAROUND
+  +NOBLOOD
+  states
+  {
+  Spawn:
+    SMGS A 1 A_Look
+    loop
+  See:
+    SMGS A 4 A_Chase
+    loop
+  Pain:
+    SMGS A 3
+    SMGS A 3 A_Pain
+    goto See
+  Missile:
+    SMGS A 10 A_FaceTarget
+    SMGS B 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
+    SMGS C 3 bright A_CustomMissile("EnemyChaingunTracer",20,0,random(-11,11))
+    SMGS B 3 bright A_CPosRefire
+    goto Missile+1
+  Death:
+    TNT1 A 0 A_Scream
+    SMGS D 6 A_SpawnItemEx("GeneralExplosion_Small", 0, 0, 32)
+    SMGS EFG 6 
+    SMGS H -1 A_NoBlocking
+    Stop
+  }
+}
 
