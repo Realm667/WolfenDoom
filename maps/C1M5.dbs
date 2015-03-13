@@ -1,5 +1,5 @@
 type = "Doom Builder Map Settings Configuration";
-gameconfig = "GZDoom_Doom2UDMF.cfg";
+gameconfig = "GZDoom_DoomUDMF.cfg";
 strictpatches = 0;
 
 maps
@@ -16,8 +16,18 @@ maps
 			
 			resource0
 			{
+				type = 0;
+				location = "G:\\DoomDev\\DOOM2.WAD";
+				option1 = 0;
+				option2 = 0;
+				notfortesting = 0;
+			}
+			
+			
+			resource1
+			{
 				type = 1;
-				location = "C:\\Users\\Vasagralem\\Downloads\\_BoA\\trunk";
+				location = "G:\\DoomDev\\Projects\\Wolfendoom\\GitHub\\trunk";
 				option1 = 0;
 				option2 = 0;
 				notfortesting = 0;
@@ -33,7 +43,7 @@ maps
 			backoffsety = 0;
 			backoffsetx = 0;
 			backscalex = 100;
-			gridsize = 32;
+			gridsize = 8;
 			background = "";
 			backsource = 0;
 			backscaley = 100;
@@ -52,6 +62,63 @@ maps
 		overrideceiltexture = false;
 		defaultwalltexture = "TEXTURES/SKYBOXES/BOCDUSK_RT.JPG";
 		defaultbottomtexture = "TEXTURES/SKYBOXES/BOCDUSK_RT.JPG";
+		
+		plugins
+		{
+			
+			stairsectorbuilder
+			{
+				
+				prefabs
+				{
+				}
+				
+			}
+			
+		}
+		
+		
+		fieldtypes
+		{
+			
+			linedef
+			{
+				alpha = 1;
+			}
+			
+			
+			sidedef
+			{
+				offsetx_mid = 1;
+				offsety_mid = 1;
+				light = 0;
+				offsetx_bottom = 1;
+				offsety_bottom = 1;
+				offsetx_top = 1;
+				scaley_mid = 1;
+				offsety_top = 1;
+				scaley_bottom = 1;
+				scalex_mid = 1;
+			}
+			
+			
+			sector
+			{
+				fadecolor = 0;
+				rotationceiling = 1;
+				rotationfloor = 1;
+				xpanningceiling = 1;
+				ypanningceiling = 1;
+				yscaleceiling = 1;
+				lightcolor = 0;
+				xpanningfloor = 1;
+				ypanningfloor = 1;
+				lightceiling = 0;
+				yscalefloor = 1;
+			}
+			
+		}
+		
 	}
 	
 }
