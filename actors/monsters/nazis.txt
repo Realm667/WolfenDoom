@@ -2878,7 +2878,7 @@ states
 	MARN BBCCDDEE 4 A_Chase
 	loop
 	Missile:
-	MARN L 5 A_FaceTarget
+	MARN LM 5 A_FaceTarget
 	MARN N 0 A_PlayWeaponSound("nazi/pistol")
 	MARN N 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-8,8))
 	MARN L 8
@@ -2942,8 +2942,8 @@ states
 	loop
 	Missile:
 	MAR2 L 5 A_FaceTarget
-	MAR2 N 0 A_PlayWeaponSound("nazi/pistol")
-	MAR2 N 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-8,8))
+	MAR2 M 0 A_PlayWeaponSound("nazi/pistol")
+	MAR2 M 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-8,8))
 	MAR2 L 8
 	goto See
 	Pain:
