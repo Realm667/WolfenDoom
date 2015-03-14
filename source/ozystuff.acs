@@ -1,4 +1,4 @@
-//ozymandias81 underwater sounds while underwater
+//ozymandias81 stuff
 #library "ozystuff"
 #include "zcommon.acs"
 
@@ -14,3 +14,44 @@ else
 delay(35*8); //only 1 sound is 8sec long, 2 4sec & 1 2,5sec
 restart;
 }
+
+//death script
+script "Fucked" DEATH
+{
+sethudsize (1024,768,0);
+setfont ("MOVIEHUD");
+hudmessagebold(s:"A";HUDMSG_FADEINOUT,5,CR_UNTRANSLATED,640.4,384.0,1.0*32767); //it lasts practically forever...
+delay (35*2);
+/*sethudsize (800,600,0);
+setfont ("DBIGFONT");
+hudmessagebold (s:"MISSION FAILED";HUDMSG_FADEINOUT,0,CR_RED,400.4,300.0,6.0);*/
+faderange (0,0,0,0.0,0,0,0,1.0,3.0);
+delay (35*8);
+setfont ("SMALLFNT");
+hudmessage (s:"PRESS ANY KEY TO RESTART";HUDMSG_FADEINOUT,0,CR_GREEN,400.0,300.0,1.0*32767);
+}
+
+//lowhealth scripts
+/*script "50Health" ENTER
+{
+if (GetActorProperty(0, APROP_HEALTH) <51 && GetActorProperty(0, APROP_HEALTH) >25)
+	{
+	localambientsound("hbeat", 120);
+	delay(const:8);
+	localambientsound("hbeat", 127);
+	}
+delay(const:35);
+restart;
+}
+
+script "25Health" ENTER
+{
+if (GetActorProperty(0, APROP_HEALTH) <26 && GetActorProperty(0, APROP_HEALTH) >0)
+	{
+	localambientsound("hbeat", 137);
+	delay(const:8);
+	localambientsound("hbeat", 130);
+	}
+delay(const:15);
+restart;
+}*/
