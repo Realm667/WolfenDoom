@@ -18,17 +18,18 @@ restart;
 //death script
 script "Fucked" DEATH
 {
-sethudsize (1024,768,0);
+sethudsize (1600,1200,1);
 setfont ("MOVIEHUD");
-hudmessagebold(s:"A";HUDMSG_FADEINOUT,5,CR_UNTRANSLATED,640.4,384.0,1.0*32767); //it lasts practically forever...
+hudmessagebold(s:"A";HUDMSG_FADEINOUT,5,CR_UNTRANSLATED,800.4,600.0,1.0*32767); //it lasts practically forever...
 delay (35*2);
 /*sethudsize (800,600,0);
 setfont ("DBIGFONT");
 hudmessagebold (s:"MISSION FAILED";HUDMSG_FADEINOUT,0,CR_RED,400.4,300.0,6.0);*/
 faderange (0,0,0,0.0,0,0,0,1.0,3.0);
 delay (35*8);
+sethudsize (320,200,0);
 setfont ("SMALLFNT");
-hudmessage (s:"PRESS ANY KEY TO RESTART";HUDMSG_FADEINOUT,0,CR_GREEN,400.0,300.0,1.0*32767);
+hudmessage (s:"PRESS ANY KEY TO RESTART";HUDMSG_FADEINOUT,0,CR_GREEN,160.4,100.0,1.0*32767);
 }
 
 //lowhealth scripts
