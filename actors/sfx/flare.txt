@@ -1,0 +1,25 @@
+Actor Flare : SwitchableDecoration 30001
+{
+//$Category Special Effects (Wolf3D)
+//$Title Flare
+//$Color 12
+  Height 16
+  Radius 16
+  +NOBLOCKMAP
+  +NOGRAVITY
+  +NOINTERACTION
+  +NOCLIP
+  -SOLID
+  Scale 0.5
+  RenderStyle Add
+  States
+  {
+  Spawn:
+  Active:
+    FLAR A 2 BRIGHT
+    Loop
+  Inactive:
+    TNT1 A 2 
+    Loop
+  }
+}
