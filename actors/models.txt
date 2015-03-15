@@ -208,7 +208,6 @@ Actor Tent : ModelBase 20134
 //$Title Tent
 //$Color 3
 {
-
 Radius 20
 }
 
@@ -217,7 +216,6 @@ Actor FighterM109B : ModelBase 20135
 //$Title FighterM109B
 //$Color 3
 {
-
 Radius 20
 }
 
@@ -226,7 +224,6 @@ Actor BomberVTOL3 : ModelBase 20136
 //$Title BomberVTOL3
 //$Color 3
 {
-
 Radius 20
 }
 
@@ -235,17 +232,15 @@ Actor Submarine : ModelBase 20137
 //$Title Submarine
 //$Color 3
 {
-
 Radius 20
 }
 
-Actor Vidcam : ModelBase 20138
+Actor Vidcam : 3dObstacle 20138 //ModelBase 20138
 //$Category Models (Wolf3D)
 //$Title Video Cam
 //$Color 3
 {
-
-Radius 20
+Height 64
 }
 
 Actor FighterM109B_Flight : ModelBase
@@ -257,24 +252,34 @@ Radius 1
 SpawnID 160
 +NOGRAVITY
 -BRIGHT
-States
-{
-Spawn:
-SMGT A 4
-Loop
-Death:
-TNT1 A -1
-Stop
-}
+	States
+	{
+	Spawn:
+	SMGT A 4
+	Loop
+	Death:
+	TNT1 A -1
+	Stop
+	}
 }
 
-ACTOR ModelIncaTruck4Wheel_US : ModelBase 20143
+ACTOR ModelIncaTruck4Wheel_US : 3dObstacle 20143 //ModelBase 20143
 {
 //$Category Models (Wolf3D)
 //$Title Truck (US)
 //$Color 3
-Radius 4
-Height 4
+Radius 12
+Height 52
+States
+	{
+	Spawn:
+	SMGT A 1
+	SMGT A 1 A_SpawnItemEx("InvisibleBridge32",-48,0,20)
+	SMGT A 1 A_SpawnItemEx("InvisibleBridge32",80,0,36)
+	SMGT A 1 A_SpawnItemEx("InvisibleBridge32",88,0,16)
+	SMGT A -1
+	Stop
+	}
 }
 
 ACTOR 88mmFlak : 3dObstacle 20144 //ModelBase 20144
@@ -305,13 +310,12 @@ Radius 4
 Height 4
 }
 
-ACTOR Wire3D : ModelBase 20147
+ACTOR Wire3D : 3dObstacle 20147 //ModelBase 20147
 {
 //$Category Models (Wolf3D)
 //$Title Wire
 //$Color 3
-Radius 4
-Height 4
+Height 32
 }
 
 ACTOR Bunker3D : ModelBase 20148
