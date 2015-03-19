@@ -1,4 +1,4 @@
-ACTOR Nazi
+﻿ACTOR Nazi
 {
 GibHealth 30
 Scale 1.2
@@ -3180,4 +3180,311 @@ states
 	SMGS H -1 A_NoBlocking
 	Stop
 	}
+}
+
+
+actor EliteFlamer : Nazi 12791
+{
+//$Category Monsters (Wolf3D)
+//$Title Elite Soldier (Flamer)
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o was turn into a crispy part of the kuchen, thanks to good ol' chef; elite soldat with flamer."
+  health 450
+  radius 20
+  height 56
+  mass 100
+  speed 12
+  painchance 220
+  seesound "eliteflamer/sight"
+  attacksound "nazi/pistol"
+  painsound "eliteflamer/pain"
+  deathsound "eliteflamer/death"
+  activesound ""
+  DamageFactor "Enemy", 0.0
+  dropitem "FlameAmmo"
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +MISSILEMORE
+  +LOOKALLAROUND
+  states
+  {
+  Spawn:
+    ELTF A 10 A_Look
+    loop
+  See:
+    ELTF BBCCDDE 3 A_Chase
+	ELTF E 3 A_FastChase
+    loop
+  Missile:
+	ELTF F 0 A_JumpIfCloser(400,"ProperMissile")
+	Goto See
+  ProperMissile:
+	ELTF F 0 A_PlaySound("ammo/cell1")
+	ELTF F 15 A_FaceTarget
+	ELTF F 0 A_Jump(60,"ProperMissile2")
+  ProperMissileStart:
+  	ELTF F 0 A_FaceTarget
+    ELTF GH 2 BRIGHT A_CustomMissile("EnemyFlamerShot",34,0,0)
+    ELTF G 0 A_CposRefire
+	Goto ProperMissileStart+1
+  ProperMissile2:
+	ELTF F 0 A_FaceTarget
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 0)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 2)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 4)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 6)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 8)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 10)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 12)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 14)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 16)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 18)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 20)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 18)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 16)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 14)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 12)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 10)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 8)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 6)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 4)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 2)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 0)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, -2)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, -4)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, -6)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, -8)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, -10)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, -12)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, -14)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, -16)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, -18)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, -20)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, -18)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, -16)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, -14)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, -12)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, -10)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, -8)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, -6)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, -4)
+	ELTF H 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, -2)
+	ELTF G 2 Bright A_CustomMissile("EnemyFlamerShot", 34, 0, 0) //many thanks to Grossdeutschland.wad, Comrade!
+	ELTF F 6
+	Goto See
+  Pain:
+    ELTF F 3
+    ELTF F 3 A_Pain
+    goto See
+  Death:
+    ELTF I 5
+    ELTF J 5 A_Scream
+    ELTF K 5 A_NoBlocking
+    ELTF L -1
+    stop
+  Raise:
+    ELTF LKJIF 5
+    goto See
+  Idle:
+    ELTF BB 4 A_Wander
+    ELTF B 0 A_Look
+    ELTF CC 4 A_Wander
+    ELTF C 0 A_Look
+    ELTF DD 4 A_Wander
+    ELTF D 0 A_Look
+    ELTF EE 4 A_Wander
+    ELTF E 0 A_Look
+    loop
+  }
+}
+
+actor EliteAssaulter : Nazi 12792
+{
+//$Category Monsters (Wolf3D)
+//$Title Elite Soldier (MP40)
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o met his own subversion from elite soldat with an STG-44."
+  health 350
+  radius 20
+  height 56
+  mass 100
+  speed 14
+  painchance 200
+  seesound "eliteassaulter/sight"
+  attacksound "weapons/stg44"
+  painsound "eliteassaulter/pain"
+  deathsound "eliteassaulter/death"
+  activesound ""
+  dropitem "MPClipSmall" 256
+  dropitem "GrenadePickup" 16
+  DamageFactor "Enemy", 0.0
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +MISSILEMORE
+  +LOOKALLAROUND
+  states
+  {
+  Spawn:
+    ELTA A 10 A_Look
+    loop
+  See:
+    ELTA B 0 A_ChangeFlag("FRIGHTENED",0)
+    ELTA BBC 3 A_Chase
+	ELTA C 3 A_FastChase
+	ELTA DDE 3 A_Chase
+	ELTA E 3 A_FastChase
+    loop
+  Missile:
+    ELTA F 0 A_Jump(50,"Grenada")
+  	ELTA F 0 A_PlaySound("ammo/cell2")
+	ELTA FG 12 A_FaceTarget
+	ELTA H 0 A_PlayWeaponSound("weapons/stg44")
+    ELTA H 2 BRIGHT A_CustomMissile("EnemyStGTracer",37,5,random(-6,6))
+    ELTA G 4 A_FaceTarget
+	ELTA H 0 A_PlayWeaponSound("weapons/stg44")
+    ELTA H 2 BRIGHT A_CustomMissile("EnemyStGTracer",37,5,random(-5,5))
+	ELTA G 4 A_FaceTarget
+	ELTA H 0 A_PlayWeaponSound("weapons/stg44")
+    ELTA H 2 BRIGHT A_CustomMissile("EnemyStGTracer",37,5,random(-6,6))
+	ELTA G 10 A_FaceTarget
+	ELTA G 0 A_SentinelRefire
+    goto Missile+4
+  Grenada:
+	ELTA FG 7 A_FaceTarget
+	ELTA F 4 A_CustomMissile("EnemyHandGrenade")
+  Retreat:
+    ELTA B 0 A_ChangeFlag("FRIGHTENED",1)
+	ELTA BBCCDDEEBBCCDDEEBBCCDDEE 1 A_Chase
+	ELTA B 0 A_ChangeFlag("FRIGHTENED",0)
+	Goto Missile
+  Pain:
+    ELTA I 3
+    ELTA I 3 A_Pain
+    goto See
+  Death:
+    ELTA J 5
+    ELTA K 5 A_Scream
+    ELTA L 5 A_NoBlocking
+    ELTA M 5
+	ELTA N 0 A_PlaySound("body/thump1")
+    ELTA N -1
+    stop
+  Raise:
+    ELTA NMLKJ 5
+    goto See
+  Idle:
+    ELTA BB 4 A_Wander
+    ELTA B 0 A_Look
+    ELTA CC 4 A_Wander
+    ELTA C 0 A_Look
+    ELTA DD 4 A_Wander
+    ELTA D 0 A_Look
+    ELTA EE 4 A_Wander
+    ELTA E 0 A_Look
+    loop
+  }
+}
+
+actor EliteSoldatRifler : Nazi 12793
+{
+//$Category Monsters (Wolf3D)
+//$Title Elite Soldier (Rifle)
+//$Color 4
+  scale 1.1
+  spawnid 4
+  obituary "%o's Nice Pose of Death has been Shot by Elite Soldat with a Rifle."
+  health 65
+  radius 20
+  height 56
+  mass 100
+  speed 14
+  painchance 80
+  seesound "eliterifler/Sight"
+  attacksound "weapons/mauser/fire"
+  painsound "eliteassaulter/pain"
+  deathsound "eliterifler/death"
+  activesound ""
+  dropitem "MauserAmmoSmall" 256
+  dropitem "GrenadePickup" 16
+  DamageFactor "Enemy", 0.0
+  MeleeRange 8000
+  MONSTER
+  +FLOORCLIP
+  +NOTARGET
+  +NOINFIGHTING
+  +MISSILEEVENMORE
+  states
+  {
+  Spawn:
+    ELTR A 10 A_Look
+    loop
+  See:
+    ELTR BBC 2 A_Chase
+	ELTR C 3 A_FastChase
+	ELTR DDE 2 A_Chase
+	ELTR E 3 A_FastChase
+    loop
+  Missile:
+  	ELTR L 1 A_JumpIfCloser(1000,"ProperMissile")
+	Goto Camping
+  ProperMissile:
+	ELTR LM 9 A_FaceTarget
+	ELTR N 0 A_PlayWeaponSound("weapons/mauser/fire")
+    ELTR N 2 BRIGHT A_CustomMissile("EnemyRifleTracer",36,7,random(-4,4))
+    ELTR M 4
+	ELTR L 14
+	Goto See
+  Camping:
+  	ELTR L 0 A_JumpIfCloser(540,"CampingDone")
+  	ELTR LOP 3
+  CampingContinue:
+	ELTR L 0 A_JumpIfCloser(540,"CampingDone")
+	ELTR L 0 A_Jump(6,"CampingDone")
+	ELTR L 0 A_JumpIfTargetInsideMeleeRange("CampingFire")
+	ELTR Q 6 A_FaceTarget
+	Loop
+  CampingFire:
+  	ELTR L 0 A_JumpIfCloser(540,"CampingDone")
+	ELTR Q 10 A_FaceTarget
+  	ELTR R 0 A_PlayWeaponSound("weapons/mauser/fire")
+  	ELTR R 2 BRIGHT A_CustomMissile("EnemyRifleTracer",32,5,random(-1,1))
+	ELTR Q 4
+	ELTR P 16
+	Goto CampingContinue
+  CampingDone:
+	ELTR POL 2
+	Goto See
+  Pain:
+    ELTR F 3
+	ELTR F 3 A_Pain
+    goto See
+  Death:
+    ELTR G 5
+    ELTR H 5 A_Scream
+    ELTR I 5 A_NoBlocking
+    ELTR J 5
+    ELTR K -1
+    stop
+  Raise:
+    ELTR KJIHG 5
+    goto See
+  Idle:
+    ELTR AA 3 A_Wander
+    ELTR A 0 A_Look
+    ELTR BB 3 A_Wander
+    ELTR A 0 A_Look
+    ELTR CC 3 A_Wander
+    ELTR A 0 A_Look
+    ELTR DD 3 A_Wander
+    ELTR A 0 A_Look
+    loop
+  }
 }
