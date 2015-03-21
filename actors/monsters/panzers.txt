@@ -199,10 +199,10 @@ MinMissileChance 160
 +SOLID
 Monster
 //these needs to be defined/added
-SeeSound "cyber/sight"
-PainSound "cyber/pain"
-DeathSound "cyber/death"
-ActiveSound "cyber/active"
+//SeeSound "cyber/sight"
+//PainSound "cyber/pain"
+//DeathSound "cyber/death"
+//ActiveSound "cyber/active"
 //endofsoundstodefine
 Obituary "%o was disintegrated by a Tank missile."
 DamageFactor "Enemy", 0.0
@@ -210,27 +210,32 @@ MaxStepHeight 32
 States
 	{
 	Spawn:
+	TNT1 A 0 A_PlaySound("tnk1loop")
 	TNK1 A 10 A_Look
 	Loop
 	See:
+	TNT1 A 0 A_PlaySound("tnk1loop")
 	TNK1 A 3 A_Hoof
 	TNK1 A 3 A_Chase
 	TNK1 A 3 A_Metal
 	TNK1 A 3 A_Chase
 	Loop
 	Missile:
+	TNT1 A 0 A_PlaySound("tnk1loop")
 	TNK1 A 10 A_FaceTarget
 	TNK1 A 0 A_Jump(96,"Missile2")
 	TNK1 A 0 A_Jump(32,"Missile3")
 	TNK1 A 12 A_CustomMissile("PanzerRocket",64,0)
 	Goto See
 	Missile2: //so it becomes a bit challengin'
+	TNT1 A 0 A_PlaySound("tnk1loop")
 	TNK1 A 12 A_CustomMissile("PanzerRocket",64,0)
 	TNK1 A 10 A_FaceTarget
 	TNK1 A 20 A_CustomMissile("PanzerRocket",64,0)
 	TNK1 A 10 A_FaceTarget
 	Goto See
 	Missile3: //so it becomes mooore challengin'
+	TNT1 A 0 A_PlaySound("tnk1loop")
 	TNK1 A 12 A_CustomMissile("PanzerRocket",64,0)
 	TNK1 A 10 A_FaceTarget
 	TNK1 A 20 A_CustomMissile("PanzerRocket",64,0)
