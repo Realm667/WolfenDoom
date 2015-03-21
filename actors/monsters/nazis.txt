@@ -3544,3 +3544,93 @@ actor EliteSoldatRifler : Nazi 12793
     loop
   }
 }
+
+
+ACTOR MadCook 12794
+{
+//$Category Monsters (Wolf3D)
+//$Title Cook (Boss)
+//$Color 4
+Scale 1.2
+SpawnID 4
+Obituary "%o was used as a delicious ingredient for his next 5-set meal"
+Health 400
+Radius 20
+Height 56
+mass 200
+speed 8
+painchance 110
+seesound "Boss2/Sighted"
+attacksound "nazi/pistol"
+painsound "boss/pain"
+deathsound "Boss2/Death"
+activesound " "
+DamageFactor "Enemy", 0.0
+dropitem "Medikit_Medium" 256
+MONSTER
++FLOORCLIP
++NOTARGET
++NOINFIGHTING
++LOOKALLAROUND
+states
+	{
+	Spawn:
+	COOK A 10 A_Look
+	loop
+	See:
+	COOK AABBCCDD 4 A_Chase
+	loop
+	Missile:
+	COOK G 10 A_FaceTarget
+	COOK H 8 A_CustomMissile("FlyingHack",32,12,0)
+	COOK H 8
+	goto See
+	Pain:
+	COOK D 3
+	COOK D 3 A_Pain
+	goto See
+	Death:
+	COOK M 5
+	COOK N 5 A_Scream
+	COOK O 5
+	COOK P -1 A_NoBlocking
+	stop
+	Raise:
+	COOK PONM 5
+	goto See
+	Idle:
+	COOK AA 4 A_Wander
+	COOK A 0 A_Look
+	COOK BB 4 A_Wander
+	COOK A 0 A_Look
+	COOK CC 4 A_Wander
+	COOK A 0 A_Look
+	COOK DD 4 A_Wander
+	COOK A 0 A_Look
+	loop
+	}
+}
+
+ACTOR FlyingHack
+{
+Game Doom
+Radius 11
+Height 8
+Speed 20
+Damage 8
+Gravity 0.2
+Projectile
++RANDOMIZE
++STRIFEDAMAGE
+DamageType "Enemy"
+Obituary "$OB_MPROCKET" // "%o rode %k's Hackebeil."
+States
+	{
+	Spawn:
+	COPR A 3
+	loop
+	Death:
+	TNT1 A 1
+	stop
+	}
+}
