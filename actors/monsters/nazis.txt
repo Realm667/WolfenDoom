@@ -2004,7 +2004,7 @@ ACTOR Geist 12029
 //$Category Monsters (Wolf3D)
 //$Title Geist
 //$Color 4
-Scale 0.8
+Scale 1.3
 Obituary "%o had %p soul removed by a Geist."
 Health 100
 Radius 16
@@ -2873,7 +2873,7 @@ states
 	Missile:
 	DARR LM 5 A_FaceTarget
 	DARR N 0 A_PlayWeaponSound("nazi/pistol")
-	DARR N 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-8,8))
+	DARR N 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("ThompsonTracer",32,0,random(-8,8))
 	DARR M 8
 	goto See
 	Pain:
@@ -2936,7 +2936,7 @@ states
 	Missile:
 	MARN LM 5 A_FaceTarget
 	MARN N 0 A_PlayWeaponSound("nazi/pistol")
-	MARN N 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-8,8))
+	MARN N 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("ThompsonTracer",32,0,random(-8,8))
 	MARN L 8
 	goto See
 	Pain:
@@ -2999,7 +2999,7 @@ states
 	Missile:
 	MAR2 L 5 A_FaceTarget
 	MAR2 M 0 A_PlayWeaponSound("nazi/pistol")
-	MAR2 M 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-8,8))
+	MAR2 M 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("ThompsonTracer",32,0,random(-8,8))
 	MAR2 L 8
 	goto See
 	Pain:

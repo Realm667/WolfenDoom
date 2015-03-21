@@ -292,13 +292,16 @@ Radius 64
 Height 80
 }
 
-ACTOR Nebelwerfer3D : 3dObstacle 20145 //ModelBase 20145
+ACTOR Nebelwerfer3D : ModelBase 20145 //this is a mission specific object
 {
 //$Category Models (Wolf3D)
 //$Title Nebelwerfer
 //$Color 3
 Radius 32
 Height 56
+Health 1000
++SOLID
++SHOOTABLE
 }
 
 ACTOR Turret3D : ModelBase 20146
