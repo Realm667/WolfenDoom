@@ -413,7 +413,7 @@ States
 	}
 }
 
-ACTOR StrobeLightRed 12402
+ACTOR StrobeLightRed : SwitchableDecoration 12402
 {
 //$Category Light Sources (Wolf3D)
 //$Title Strobe Light (red)
@@ -425,6 +425,10 @@ Height 16
 States
 	{
 	Spawn:
+	InActive:
+	STRR A 4 BRIGHT
+	Loop
+	Active:
 	STRR A 0 BRIGHT
 	STRR A 0 BRIGHT A_SpawnItem ("StrobeEmitterRed")
 	Spin:

@@ -26,9 +26,9 @@ ACTOR Shark 8000
 	SHRK ABCB 4 A_GiveInventory("Chase_Water",1)
 	loop
    Missile:
-    SHRK F 10 Bright A_FaceTarget
-    SHRK F 4 Bright A_SkullAttack
-    SHRK F 4 Bright
+    SHRK A 10 A_FaceTarget
+    SHRK A 4 A_SkullAttack
+    SHRK A 4 Bright
     Goto Missile+2
    Melee:
     SHRK A 10 A_FaceTarget
