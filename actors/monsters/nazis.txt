@@ -1,4 +1,4 @@
-ACTOR Nazi
+﻿ACTOR Nazi
 {
 GibHealth 30
 Scale 1.2
@@ -2482,6 +2482,43 @@ states
 	SNIP IHGFE 5
 	goto See
 	}
+}
+
+ACTOR WSniper: Sniper 12801
+{
+//$Category Monsters (Wolf3D)
+//$Title Wehrmacht Sniper
+//$Color 4
+states
+	{
+	Spawn:
+	SNI2 A 10 A_Look
+	loop
+	See:
+	SNI2 A 1 A_Chase
+	loop
+	Missile:
+	SNI2 A 32 A_FaceTarget
+	SNI2 B 0 A_PlayWeaponSound("Enfield/Fire")
+	SNI2 B 8 BRIGHT LIGHT(NAZIFIRE)A_CustomMissile("EnemySniperTracer",32,0,0)
+	SNI2 A 32
+	goto See
+	Pain:
+	SNI2 A 3
+	SNI2 A 3 A_Pain
+	goto See
+	Death:
+	SNI2 E 5
+	SNI2 F 5 A_Scream
+	SNI2 G 5 A_NoBlocking
+	SNI2 H 5
+	SNIP I -1
+	stop
+	Raise:
+	SNIP I 5
+	SNI2 HGFE 5
+	goto See
+	}	
 }
 
 ACTOR Hostage : Nazi 12702
