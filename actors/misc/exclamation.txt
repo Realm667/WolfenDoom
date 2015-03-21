@@ -4,9 +4,9 @@
 
 actor Exclamation : SwitchableDecoration 21236
 {
-//$Category Monsters (Wolf3D)
+//$Category Misc (Wolf3D)
 //$Title Exclamation Mark
-//$Color 4
+//$Color 1
   scale 1.35
   alpha 1.0
   renderstyle Add
@@ -22,5 +22,41 @@ actor Exclamation : SwitchableDecoration 21236
   Inactive:
     TNT1 A -1
     stop
+  }
+}
+
+/////////////////
+// EASTER EGGS //
+/////////////////
+
+ACTOR Dogse 19534
+{
+//$Category Misc (Wolf3D)
+//$Title Dogse (Easteregg)
+//$Color 3 
+  Radius 16
+  Height 24
+  +SOLID
+  States
+  {
+  Spawn:
+    DOGS AB 5
+    Loop
+  }
+}
+
+ACTOR Dogse 19535
+{
+//$Category Misc (Wolf3D)
+//$Title Dogpuppy (Easteregg)
+//$Color 3 
+  Radius 16
+  Height 24
+  +SOLID
+  States
+  {
+  Spawn:
+    PUPP AB 5
+    Loop
   }
 }
