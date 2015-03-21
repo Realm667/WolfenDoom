@@ -147,3 +147,20 @@ ACTOR SkeletonChains 19109
   }
 }
 
+ACTOR EmptyCage 19110
+{
+//$Category Gore (Wolf3D)
+//$Title Cage (empty)
+//$Color 4 
+  Radius 16
+  Height 12
+  +NOGRAVITY
+  +SPAWNCEILING
+  States
+  {
+  Spawn:
+    CCLL A -1
+    Stop
+  }
+}
+

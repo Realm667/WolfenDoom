@@ -39,3 +39,24 @@ actor GasBottle : ExplosiveBarrel 15126
 		Stop
 	}
 }
+
+actor Bomb : ExplosiveBarrel 15128
+{
+//$Category Hazards (Wolf3D)
+//$Title Bomb
+//$Color 3
+	Health 10
+	Height 64
+	Radius 8
+	DeathSound "weapons/nebxpl"
+	States
+	{
+		Spawn: 
+			BOMB A 6
+			Loop
+		Death:	
+			TNT1 A 0 BRIGHT A_SpawnItemEx("GeneralExplosion_Medium", 0, 0, 0)
+			BOMB A 6 A_Scream
+		Stop
+	}
+}
