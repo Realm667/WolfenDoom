@@ -2484,11 +2484,30 @@ states
 	}
 }
 
-ACTOR WSniper: Sniper 12801
+ACTOR WSniper: Nazi 12801
 {
 //$Category Monsters (Wolf3D)
 //$Title Wehrmacht Sniper
 //$Color 4
+Scale 1.2
+SpawnID 4
+Obituary "%o was headshot by a sniper."
+Health 50
+Radius 20
+Height 56
+mass 100
+speed 0
+painchance 200
+seesound "Nazi1/Sighted"
+painsound "Nazi1/Pain"
+deathsound "Nazi1/Death"
+activesound ""
+dropitem "MauserAmmo" 256
+DamageFactor "Enemy", 0.0
+MONSTER
++FLOORCLIP
++NOTARGET
++NOINFIGHTING
 states
 	{
 	Spawn:
