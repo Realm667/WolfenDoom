@@ -1,5 +1,5 @@
 type = "Doom Builder Map Settings Configuration";
-gameconfig = "GZDoom_HereticUDMF.cfg";
+gameconfig = "GZDoom_DoomUDMF.cfg";
 strictpatches = 0;
 
 maps
@@ -8,14 +8,34 @@ maps
 	C1M1
 	{
 		scriptcompiler = "zdoom_acs.cfg";
-		defaultfloortexture = "FLOOR00";
+		defaultfloortexture = "NIGHT_B";
 		overrideceilheight = false;
 		
 		resources
 		{
+			
+			resource0
+			{
+				type = 1;
+				location = "G:\\DoomDev\\Projects\\WolfenDoom\\Github\\trunk";
+				option1 = 0;
+				option2 = 0;
+				notfortesting = 0;
+			}
+			
+			
+			resource1
+			{
+				type = 0;
+				location = "G:\\DoomDev\\DOOM2.WAD";
+				option1 = 0;
+				option2 = 0;
+				notfortesting = 0;
+			}
+			
 		}
 		
-		defaulttoptexture = "F_SKY1";
+		defaulttoptexture = "NIGHT_E";
 		overridemiddletexture = false;
 		
 		grid
@@ -32,16 +52,16 @@ maps
 		overridefloortexture = false;
 		customceilheight = 128;
 		customfloorheight = 0;
-		defaultceiltexture = "F_SKY1";
+		defaultceiltexture = "NIGHT_T";
 		overridebrightness = false;
-		uselongtexturenames = false;
+		uselongtexturenames = true;
 		overridebottomtexture = false;
 		overridefloorheight = false;
 		overridetoptexture = false;
 		custombrightness = 196;
 		overrideceiltexture = false;
-		defaultwalltexture = "F_SKY1";
-		defaultbottomtexture = "F_SKY1";
+		defaultwalltexture = "NIGHT_E";
+		defaultbottomtexture = "NIGHT_E";
 		
 		fieldtypes
 		{
