@@ -107,8 +107,9 @@ actor ShovelPuff
   }
 }
 
-actor KnifeSilent : Fist replaces Fist
+actor KnifeSilent : Fist 
 {
-	   +NOALERT
-	   Tag "Combat Knife"
+	Weapon.SlotNumber 1   
+	+NOALERT
+	Tag "Combat Knife"
 }
