@@ -1,0 +1,115 @@
+ACTOR Melee : Weapon 15002
+{
+//$Category Weapons (Wolf3D)
+//$Title (1) Shovel
+//$Color 14
+   Weapon.SelectionOrder 9999
+   Weapon.Kickback 100
+   Weapon.BobStyle InverseSmooth
+	Weapon.BobSpeed 2.2
+	Weapon.BobRangeY 0.5
+	Weapon.BobRangeX 0.7
+	Weapon.SlotNumber 1
+   AttackSound "shovel/impact"
+   Tag "The Shovel!"
+   Obituary "%o was shcklonked with %k's shovel."
+   +NOALERT
+   +NOEXTREMEDEATH
+   +NOAUTOFIRE
+   States
+   {
+   Ready:
+      SHUV A 1 A_WeaponReady
+      Loop
+   Deselect:
+	SHUV A 0 A_Lower
+	  SHUV A 1 A_Lower
+      Loop
+   Select:
+	SHUV A 0 A_Raise
+      SHUV A 1 A_Raise
+	  Loop
+   Fire:
+	  SHUV B 1 A_JumpIfInventory("PowerStrength",1,"PowerShovel")
+	  SHUV B 1
+	  TNT1 A 0 A_Jump(250,2)
+	  TNT1 A 0 A_PlaySound("*taunt", CHAN_VOICE)
+	  SHUV B 1 Offset(15,32)
+	  SHUV B 1 Offset(30,33) A_PlayWeaponSound("shovel/miss")
+	  SHUV B 1 Offset(52,35)
+	  SHUV B 1 Offset(78,38)
+	  SHUV B 1 Offset(92,44)
+	  SHUV B 1 Offset(64,50)
+	  SHUV C 1 Offset(30,38) A_CustomPunch(40,1,CPF_DAGGER,"ShovelPuff",100)
+	  SHUV C 1 Offset(1,44)
+	  SHUV D 1 Offset(-32,24)
+	  SHUV D 1 Offset(-50,28)
+	  SHUV E 1 Offset(-74,32)
+	  SHUV E 1 Offset(-100,36)
+	  TNT1 A 10
+	  SHUV A 1 Offset(60,60)
+	  SHUV A 1 Offset(50,55)
+	  SHUV A 1 Offset(40,50) A_WeaponReady(WRF_NOBOB)
+	  SHUV A 1 Offset(30,45) A_WeaponReady(WRF_NOBOB)
+	  SHUV A 1 Offset(20,40) A_WeaponReady(WRF_NOBOB)
+	  SHUV A 1 Offset(10,35) A_WeaponReady(WRF_NOBOB)
+	  Goto Ready
+   PowerShovel:
+	  TNT1 A 0 A_Jump(250,2)
+	  TNT1 A 0 A_PlaySound("*taunt", CHAN_VOICE)
+	  SHUV B 1 Offset(5,32)
+	  SHUV B 1 Offset(10,33) A_PlayWeaponSound("shovel/miss")
+	  SHUV B 1 Offset(16,35)
+	  SHUV B 1 Offset(24,38)
+	  SHUV B 1 Offset(26,39)
+	  SHUV B 1 Offset(27,40)
+	  SHUV C 1 Offset(20,38) A_CustomPunch(200,1,CPF_DAGGER,"ShovelPuff",100)
+	  SHUV C 1 Offset(10,39)
+	  SHUV C 1 Offset(-3,40)
+	  SHUV D 1 Offset(-19,32)
+	  SHUV D 1 Offset(-40,36)
+	  SHUV E 1 Offset(-64,40)
+	  SHUV E 1 Offset(-90,42)
+	  TNT1 A 10
+	  SHUV A 1 Offset(60,60)
+	  SHUV A 1 Offset(50,55)
+	  SHUV A 1 Offset(40,50) A_WeaponReady(WRF_NOBOB)
+	  SHUV A 1 Offset(30,45) A_WeaponReady(WRF_NOBOB)
+	  SHUV A 1 Offset(20,40) A_WeaponReady(WRF_NOBOB)
+	  SHUV A 1 Offset(10,35) A_WeaponReady(WRF_NOBOB)
+	  Goto Ready
+    Spawn:
+	  SHUV P -1
+	  Stop
+   }
+}
+
+actor ShovelPuff
+{
+  +NOBLOCKMAP
+  +NOGRAVITY
+  +PUFFONACTORS
+  RenderStyle Add
+  activesound ""
+  attacksound "shovel/wall"
+  seesound "shovel/impact"
+  states
+  {
+   Spawn:
+   	 POOF ABCDE 3 
+      Stop
+	  Melee:
+   	 POOF ABCDE 3 
+      Stop
+	  Crash:
+   	 POOF ABCDE 3 
+      Stop
+  }
+}
+
+actor KnifeSilent : Fist 
+{
+	Weapon.SlotNumber 1   
+	+NOALERT
+	Tag "Combat Knife"
+}

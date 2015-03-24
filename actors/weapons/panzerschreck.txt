@@ -1,0 +1,195 @@
+ACTOR PanzerLoaded : Ammo
+{
+	+IGNORESKILL
+	Inventory.MaxAmount 1
+	Tag "Loaded"
+}
+
+ACTOR PanzerAmmo : Ammo replaces Rocket 15158
+{
+//$Category Ammo (Wolf3D)
+//$Title Panzerrocket
+//$Color 6
+	Inventory.MaxAmount 10
+	Inventory.PickupMessage "Picked up a Panzerschreck rocket."
+	Tag "Rockets"
+	Inventory.Amount	1
+	Inventory.Icon "PANZ01"
+	Ammo.BackpackAmount 1
+	Ammo.BackpackMaxAmount 20
+	Scale 0.25
+	States
+	{
+	Spawn:
+	    	PANA A -1
+	    	LOOP
+	}
+}
+
+ACTOR Panzerschreck : Weapon 15013
+{
+//$Category Weapons (Wolf3D)
+//$Title (7) Panzerschreck
+//$Color 14
+	Inventory.PickupMessage "You got the Panzerschreck! (8)"
+	Tag "Panzerschreck"
+	Obituary "%o notices %k's rocket speeding towards %h."
+	Weapon.AmmoType		"PanzerLoaded"
+	Weapon.AmmoGive		0
+	Weapon.AmmoUse		1
+	Weapon.AmmoType2	"PanzerAmmo"
+	Weapon.AmmoGive2	1
+	Weapon.AmmoUse2		0
+	Weapon.SlotNumber 7
+	Weapon.BobStyle InverseSmooth
+	Weapon.BobSpeed 2.2
+	Weapon.BobRangeY 0.5
+	Weapon.BobRangeX 0.7
+	Radius				18
+	Height				12
+	Weapon.Kickback		25000
+	+NOAUTOFIRE
+	+NOALERT
+	+AMMO_OPTIONAL
+	Scale 0.7
+	States
+	{
+	Spawn:
+		PANP A 1
+		Loop
+    Deselect:
+		PANZ A 1 A_Lower
+		Loop
+	Select:
+		PANZ A 1 A_Raise
+		Loop
+    Ready:
+    	PANZ A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+    	Loop
+    Fire:
+		PANZ A 0 A_JumpIfNoAmmo("Dryfire")
+        PANZ A 0 A_PlayWeaponSound("panzer/fire")
+        PANZ A 0 BRIGHT A_GunFlash
+    	PANZ A 2 Bright A_FireCustomMissile("PanzerRocket",0,1,12,0)
+		PANZ A 1 Offset(6,34)
+		PANZ A 1 Offset(14,36)
+		PANZ A 1 Offset(24,39)
+		PANZ A 1 Offset(28,43)
+		PANZ A 1 Offset(31,48)
+		PANZ A 1 Offset(27,44)
+		PANZ A 1 Offset(23,40)
+		PANZ A 1 Offset(18,36)
+		PANZ A 1 Offset(12,34)
+		PANZ A 1 Offset(6,32)
+		PANZ A 1 Offset(3,30)
+		PANZ A 1 Offset(1,29)
+		PANZ A 1 Offset(-2,30)
+		PANZ A 1 Offset(-1,32)
+    	Goto Ready
+	Dryfire:
+		PANZ A 4
+	Reload:
+		PANZ A 0 A_JumpIfInventory("PanzerLoaded",1,2)
+		PANZ A 0 A_JumpIfInventory("PanzerAmmo",1,2)
+		PANZ A 1
+		Goto Ready
+	TrueReload:
+		PANZ A 1 Offset(1,33) A_PlayWeaponSound("panzer/load")
+		PANZ A 1 Offset(2,34)
+		PANZ A 1 Offset(3,35)
+		PANZ A 1 Offset(4,36)
+		PANZ A 1 Offset(4,43)
+		PANZ A 1 Offset(4,50)
+		PANZ A 1 Offset(5,58)
+		PANZ A 1 Offset(5,67)
+		PANZ A 1 Offset(5,71)
+		PANZ A 1 Offset(5,77)
+		PANZ A 1 Offset(4,83)
+		PANZ A 1 Offset(3,89)
+		PANZ A 1 Offset(3,94)
+		PANZ A 1 Offset(2,100)
+		PANZ A 1 Offset(2,102)
+		PANZ A 1 Offset(1,104)
+		PANZ A 1 Offset(1,106)
+		PANZ A 1 Offset(-1,108)
+		PANZ A 1 Offset(-3,112)
+		PANZ A 1 Offset(-5,116)
+		PANZ A 1 Offset(-7,120)
+		PANZ A 1 Offset(-10,124)
+		PANZ A 1 Offset(-14,126)
+		PANZ A 1 Offset(-18,128)
+		PANZ A 0 A_TakeInventory("PanzerAmmo",1)
+		PANZ A 0 A_GiveInventory("PanzerLoaded",1)
+		PANZ A 1 Offset(-21,129)
+		PANZ A 1 Offset(-24,130)
+		PANZ A 1 Offset(-27,131)
+		PANZ A 1 Offset(-28,130)
+		PANZ A 1 Offset(-26,128)
+		PANZ A 1 Offset(-22,124)
+		PANZ A 1 Offset(-21,112)
+		PANZ A 1 Offset(-20,108)
+		PANZ A 1 Offset(-19,98)
+		PANZ A 1 Offset(-18,88)
+		PANZ A 1 Offset(-17,78)
+		PANZ A 1 Offset(-16,68)
+		PANZ A 1 Offset(-15,57)
+		PANZ A 1 Offset(-14,46)
+		PANZ A 1 Offset(-12,42)
+		PANZ A 1 Offset(-11,38)
+		PANZ A 1 Offset(-8,35)
+		PANZ A 1 Offset(-6,32)
+		PANZ A 1 Offset(-2,28)
+		PANZ A 1 Offset(1,27)
+		PANZ A 1 Offset(-1,29)
+		Goto Ready
+    Flash:
+      	TNT1 A 0
+      	TNT1 A 2 A_Light2
+      	TNT1 A 2 A_Light1
+      	TNT1 A 1 A_Light0
+      	Stop
+    }
+}
+
+ACTOR PanzerRocket
+{
+	Radius 5
+	Height 6
+	Speed 70
+	PROJECTILE
+	-NOTELEPORT
+	Damage (2500)
+	Decal Scorch
+	ActiveSound "panzer/fly"
+	DeathSound "panzer/explode"
+	States
+	{
+	Spawn:
+		MNSS A 1 BRIGHT A_LoopActiveSound
+		MNSS A 1 bright A_CustomMissile("RocketFlameSpawner",0,0,0,5)
+		Goto Spawn+1
+	Death:
+		EXP1 A 0 A_SetScale(1.25,1.25)
+		EXP1 A 2 BRIGHT A_PlaySound("panzer/explode", CHAN_AUTO, 1.0, 0, ATTN_NONE)
+		EXP1 B 2 BRIGHT A_Explode(192,192,1)
+		EXP1 C 2 BRIGHT A_Quake(9,15,0,1024,"")
+		EXP1 D 2 BRIGHT A_AlertMonsters
+		EXP1 EFGHIJKLMN 2 BRIGHT
+		Stop
+	}
+}
+
+ACTOR PanzerSpawner replaces BFG9000
+{
+	DropItem "Panzerschreck"
+	DropItem "PanzerAmmo"
+	DropItem "PanzerAmmo"
+	DropItem "PanzerAmmo"
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 1 A_Fall
+		Stop
+	}
+}

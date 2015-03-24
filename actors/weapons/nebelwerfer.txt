@@ -1,0 +1,200 @@
+actor NebRocket
+{
+  scale 0.5
+  Game Doom
+  SpawnID 127
+  Radius 11
+  Height 8
+  Speed 35
+  Damage 8
+  Projectile
+  +RANDOMIZE
+  +FORCERADIUSDMG
+  DeathSound "weapons/nebxpl"
+  Obituary "$OB_MPROCKET" // "%o rode %k's rocket."
+  MissileHeight 0
+  Decal Scorch
+  States
+  {
+  Spawn:
+    MNSS A 1 bright A_CustomMissile("RocketFlameSpawner",0,0,0,5)
+    loop
+  Death:
+    FRME A 1 bright A_Explode(64,56)
+	FRME BCDEFGHIHJKLMNOPQRS 1 bright
+    stop
+  }
+}
+
+actor NebRocketEnemy
+{
+  scale 0.5
+  Game Doom
+  SpawnID 127
+  Radius 11
+  Height 8
+  Speed 15
+  Damage 8
+  Projectile
+  Damagetype "Enemy"
+  +RANDOMIZE
+  SeeSound "weapons/nebelwerfer"
+  DeathSound "weapons/nebxpl"
+  Obituary "$OB_MPROCKET" // "%o rode %k's rocket."
+  Decal Scorch
+  States
+  {
+  Spawn:
+    MNSS A 1 bright A_CustomMissile("RocketFlameSpawner",0,0,0,5)
+    loop
+  Death:
+    FRME A 1 bright A_Explode(40,40)
+	FRME BCDEFGHIHJKLMNOPQRS 1 bright
+    stop
+  }
+}
+
+actor Nebelwerfer : DoomWeapon replaces Rocketlauncher 15010
+{
+//$Category Weapons (Wolf3D)
+//$Title (6) Nebelwerfer
+//$Color 14
+  Game Doom
+  SpawnID 29
+  Weapon.SelectionOrder 2500
+  Weapon.AmmoUse 1
+  Weapon.AmmoGive 10
+  Weapon.AmmoType "NebAmmo"
+  Weapon.SlotNumber 6
+  Weapon.BobStyle InverseSmooth
+	Weapon.BobSpeed 2.2
+	Weapon.BobRangeY 0.5
+	Weapon.BobRangeX 0.7
+  Tag "Klein'Nebelwerfer"
+  ConversationID 192
+  Inventory.PickupMessage "You got the Klein Nebelwerfer!"
+  States
+  {
+  Ready:
+    NEBG A 1 A_WeaponReady
+    Loop
+  Deselect:
+	NEBG A 0 A_Lower
+    NEBG A 1 A_Lower
+    Loop
+  Select:
+	NEBG A 0 A_Raise
+    NEBG A 1 A_Raise
+    Loop
+  Fire:
+    NEBG A 0 A_GunFlash
+	NEBG A 0 A_PlayWeaponSound("weapons/nebelwerfer")
+    NEBG A 2 A_FireCustomMissile("NebRocket")
+	NEBG BCDEB 1 A_SetPitch(pitch - 0.5)
+    NEBG A 2 A_ReFire
+    Goto Ready
+  Flash:
+    NEBF A 2 bright A_Light2
+	Goto LightDone
+  Spawn:
+    NEBL A -1
+    Stop
+  }
+}
+
+ACTOR NebAmmo : Ammo replaces CellPack 15110
+{
+//$Category Ammo (Wolf3D)
+//$Title Nebelbox
+//$Color 6
+  Game Doom
+  SpawnID 75
+  Inventory.PickupMessage "Picked up a crate of mini-rockets."
+  Inventory.Amount 30
+  Inventory.MaxAmount 150
+  Ammo.BackpackAmount 20
+  Ammo.BackpackMaxAmount 300
+  ConversationID 182
+  Inventory.Icon "NEBE01"
+  States
+  {
+  Spawn:
+    MNRB A -1
+    Stop
+  }
+}
+
+ACTOR NebAmmoSmall : NebAmmo 15119
+{
+//$Category Ammo (Wolf3D)
+//$Title Nebelrounds
+//$Color 6
+  Inventory.PickupMessage "Picked up a small crate of mini-rockets."
+  Inventory.Amount 5
+  States
+  {
+  Spawn:
+    MNRB B -1
+    Stop
+  }
+}
+
+
+ACTOR RocketFlameSpawner
+{
+	Projectile
+	Speed 0
+	Scale 0.15
+	Alpha 0.5
+	Height 0
+	+NOCLIP
+	+NOTELEPORT
+	+NOBLOCKMAP
+	-FLOORCLIP
+	Renderstyle None
+	States
+	{
+		Spawn:
+			TNT1 A 1
+			TNT1 A 1 A_CustomMissile("RocketFlame",random(-1,1),random(-1,1),0)
+			Stop
+	}
+}
+
+ACTOR RocketFlame
+{
+	Projectile
+	Speed 0
+	Scale 0.15
+	Alpha 0.5
+	Height 0
+	+NOCLIP
+	+NOTELEPORT
+	+NOBLOCKMAP
+	-FLOORCLIP
+	Renderstyle Add
+	States
+	{
+		Spawn:
+			XPLO AB 2 BRIGHT 
+			XPLO C 2 BRIGHT A_CustomMissile("RPG8RocketTrail",1,random(-1,1),0)
+			Stop
+	}
+}
+
+ACTOR RPG8RocketTrail
+{
+    PROJECTILE
+    Height 1
+    Radius 1
+    Scale 0.18
+    Alpha 0.6
+    Renderstyle Add
+    States
+    {
+    Spawn:
+      SMOK ABCDEFGHIJKLMNOP 1
+      SMOK Q 1 A_FadeOut
+      Stop
+	}
+}

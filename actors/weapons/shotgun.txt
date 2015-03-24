@@ -1,0 +1,149 @@
+ACTOR ShotgunReloading : Inventory
+{
+	inventory.maxamount 1
+}
+
+ACTOR ShotgunClip : Ammo
+{
+	+IGNORESKILL
+	Inventory.MaxAmount 8
+	Inventory.Icon "BROW01"
+}
+
+ACTOR TrenchShotgun : Weapon replaces Shotgun 15018
+{
+//$Category Weapons (Wolf3D)
+//$Title (3) Trench Shotgun
+//$Color 14
+	Weapon.SlotNumber 3
+	Weapon.AmmoType1 "ShotgunClip"
+	Weapon.AmmoUse1 0
+	Weapon.AmmoGive1 0
+	Weapon.AmmoType2 "NewShell"
+	Weapon.AmmoUse2 1
+	Weapon.AmmoGive2 8
+	Weapon.BobStyle InverseSmooth
+	Weapon.BobSpeed 2.2
+	Weapon.BobRangeY 0.5
+	Weapon.BobRangeX 0.7
+	Inventory.PickupMessage "You got the Winchester Trenchgun! (slot 3)"
+	+WEAPON.NOAUTOFIRE
+	+WEAPON.NOALERT
+	+WEAPON.AMMO_OPTIONAL
+		+Alt_Ammo_Optional
+		+WEAPON.PRIMARY_USES_BOTH
+		Scale 0.5
+	Tag "M1897 Trenchgun"
+	AttackSound "Shotgun/Fire"
+	States
+	{
+	Spawn:
+		SHOT A -1
+		Stop
+	Select:
+		SHTG A 0 A_Raise
+		SHTG A 1 A_Raise
+		Loop
+	Deselect:
+		SHTG A 0 A_Lower
+		SHTG A 1 A_Lower
+		Loop
+	Ready:
+		SHTG A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	Fire:
+		SHTF A 0 A_JumpIfInventory("ShotgunReloading",1,"ReloadFinish")
+		SHTF A 0 A_JumpIfInventory("ShotgunClip",1,1)
+		Goto Dryfire
+		SHTF A 0 A_TakeInventory("ShotgunClip",1)
+		SHTF A 0 A_PlayWeaponSound("Shotgun/Fire")
+		SHTF AAAAAAAAAA 0 A_FireCustomMissile("ShotgunTracer",frandom(-2.0,2.0),0,0,0,0,frandom(-1.5,1.5))
+		SHTF A 1 BRIGHT A_GunFlash
+		SHTG A 1 BRIGHT A_SetPitch(pitch - 4.0)
+		SHTG A 1 Offset(0,40) A_SetPitch(pitch - 2.0)
+		SHTG A 1 Offset(0,36) A_SetPitch(pitch - 1.0)
+		SHTG A 1 Offset(0,34) A_SetPitch(pitch + 1.0)
+		SHTG A 1 Offset(0,33) A_SetPitch(pitch + 0.5)
+		SHTG A 1 A_WeaponReady(WRF_NOFIRE)
+		SHTG A 6 A_AlertMonsters
+		SHTG A 1 Offset(-1,33)
+			  TNT1 A 0 A_Jump(250,2)
+		TNT1 A 0 A_PlaySound("*taunt", CHAN_VOICE)
+		SHTG B 1 Offset(5,34) A_PlaySound("Shotgun/Pump",CHAN_ITEM)
+		SHTG B 1 Offset(2,36)
+		SHTG B 1 Offset(-1,38)
+		SHTG C 1 Offset(3,35)
+		SHTG C 1 Offset(-1,38)
+		SHTG D 1 Offset(-4,41)
+		SHTG D 1 Offset(-4,43)
+		SHTG E 1 Offset(-4,45)
+		SHTG E 1 Offset(-3,44)
+		SHTG D 1 Offset(-2,40)
+		SHTG D 1 Offset(-4,41)
+		SHTG C 1 Offset(-1,38)
+		SHTG C 1 Offset(-1,37)
+		SHTG B 1 Offset(1,36)
+		SHTG B 1 Offset(2,36)
+		SHTG B 1 Offset(5,34)
+		SHTG A 1
+		Goto Ready
+	Dryfire:
+		SHTG A 1
+	Reload:
+		SHTG A 0 A_JumpIfInventory("ShotgunClip",8,2)
+		SHTG A 0 A_JumpIfNoAmmo(1)
+		Goto ProperReload
+		SHTG A 1
+		Goto Ready
+	ProperReload:
+		  TNT1 A 0 A_Jump(128,2)
+		TNT1 A 0 A_PlaySound("*taunt", CHAN_VOICE)
+		TNT1 A 0 A_GiveInventory("ShotgunReloading",1)
+		SHTG A 1 Offset(-1,33)
+		SHTG B 1 Offset(5,34)
+		SHTG B 1 Offset(2,36)
+		SHTG B 1 Offset(-1,38)
+		SHTG C 1 Offset(3,35)
+		SHTG C 1 Offset(-1,38)
+		SHTG C 1 Offset(-4,41)
+		SHTG C 1 Offset(-6,46)
+		SHTG C 1 Offset(-7,55)
+	ReloadWork:
+		SHTG A 0 A_TakeInventory("NewShell",1,TIF_NOTAKEINFINITE)
+		SHTG A 0 A_GiveInventory("ShotgunClip",1)
+		SHTG C 1 Offset(-8,58) A_PlayWeaponSound("Shotgun/Load")
+		SHTG C 1 Offset(-9,64)
+		SHTG C 1 Offset(-10,70)
+		SHTG C 1 Offset(-10,68)
+		SHTG C 1 Offset(-9,66)
+		SHTG C 1 Offset(-9,64)
+		SHTG C 1 Offset(-9,62)
+		SHTG C 1 Offset(-8,61) A_WeaponReady(1)
+		SHTG C 1 Offset(-8,60) A_WeaponReady(1)
+		SHTG CC 1 Offset(-8,59) A_WeaponReady(1)
+		SHTG CCC 1 Offset(-8,58) A_WeaponReady(1)
+		SHTG A 0 A_JumpIfInventory("ShotgunClip",8,"ReloadFinish")
+		SHTG A 0 A_JumpIfNoAmmo("ReloadFinish")
+		Goto ReloadWork
+	ReloadFinish:
+		SHTG C 1 Offset(3,35) A_PlaySound("Shotgun/Pump")
+		SHTG C 1 Offset(-1,38)
+		SHTG D 1 Offset(-4,41)
+		SHTG D 1 Offset(-1,33)
+		SHTG E 1 Offset(-2,37)
+		SHTG E 1 Offset(-3,43)
+		SHTG D 1 Offset(-2,40)
+		SHTG D 1 Offset(-4,41)
+		SHTG C 1 Offset(-1,38)
+		SHTG C 1 Offset(3,35)
+		SHTG B 1 Offset(-1,38)
+		SHTG B 1 Offset(2,36)
+		SHTG B 1 Offset(5,34) A_TakeInventory("ShotgunReloading",1)
+		Goto Ready
+	Flash:
+		TNT1 A 2 BRIGHT A_Light2
+		TNT1 A 2 BRIGHT A_Light1
+		TNT1 A 0 A_Light0
+		Stop
+	}
+}
