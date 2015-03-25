@@ -323,24 +323,16 @@ States
 	Missile:
 	TNT1 A 0 A_PlaySoundEx("tnk2loop", "SoundSlot7", 1)
 	PTN3 A 10 A_FaceTarget
-	PTN3 A 0 A_Jump(96,"Missile2")
+	PTN3 A 0 A_Jump(128,"Turret")
 	PTN3 A 12 A_CustomMissile("PanzerRocket",90,0)
 	Goto See
-	Missile2:
+	Turret:
 	TNT1 A 0 A_PlaySoundEx("tnk2loop", "SoundSlot7", 1)
+	PTN3 A 0 A_FaceTarget
 	PTN3 A 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
-	PTN3 AAAAA 1 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyChaingunTracer",60,16,random(-4,4))
-	PTN3 A 2
-	PTN3 A 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
-	PTN3 AAAA 1 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyChaingunTracer",60,16,random(-4,4))
-	PTN3 A 2
-	PTN3 A 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
-	PTN3 AAA 1 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyChaingunTracer",60,16,random(-4,4))
-	PTN3 A 2
-	PTN3 A 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
-	PTN3 AA 1 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyChaingunTracer",60,16,random(-4,4))
+	PTN3 AAAA 1 BRIGHT light("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer",60,16,random(-4,4))
 	PTN3 A 2 BRIGHT A_SentinelRefire
-	Goto Missile+1
+	goto Turret+1
 	Death:
 	TNT1 A 0 A_StopSoundEx("SoundSlot7")
 	TNT1 A 0 A_SpawnItem("TankExplosion2")
