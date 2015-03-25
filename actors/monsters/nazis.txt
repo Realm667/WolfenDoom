@@ -21,6 +21,28 @@ States
 	}
 }
 
+ACTOR MutantNazi
+{
+Scale 1.2
+States
+	{
+	Death.Fire:
+	TNT1 A 0 A_SetScale(0.9)
+	BURN ABC 5 BRIGHT
+	BURN D 5 BRIGHT A_PlaySound("death/burning")
+	BURN EFGHIJKLMN 5 BRIGHT
+	BURN O 5 BRIGHT A_NoBlocking
+	BURN PQRSTU 5 BRIGHT
+	BURN V -1
+	Stop
+	XDeath:
+	SLOP ABCDEF 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
+	SLOP G 0 A_NoBlocking
+	SLOP G -1
+	Stop
+	}
+}
+
 ACTOR Guard : Nazi 12001
 {
 //$Category Monsters (Wolf3D)
@@ -710,10 +732,10 @@ states
 	}
 }
 
-ACTOR Mutant 12010
+ACTOR Mutant : MutantNazi 12010
 {
 //$Category Monsters (Wolf3D)
-//$Title Mutant (projectile)
+//$Title Mutant(Projectile)
 //$Color 4
 Scale 1.2
 SpawnID 4
@@ -781,10 +803,10 @@ states
 	}
 }
 
-ACTOR MutantMelee : Nazi 12011
+ACTOR MutantMelee : MutantNazi 12011
 {
 //$Category Monsters (Wolf3D)
-//$Title Mutant (Melee)
+//$Title Mutant(Melee)
 //$Color 4
 Scale 1.2
 Obituary "%o did the dance of doom with a Mutant."
@@ -2375,7 +2397,7 @@ states
 ACTOR UberMutant 12058
 {
 //$Category Monsters (Wolf3D)
-//$Title Übermutant (Boss)
+//$Title Ãœbermutant (Boss)
 //$Color 4
 Health 1000
 Radius 24
@@ -2538,7 +2560,7 @@ states
 	SNIP I 5
 	SNI2 HGFE 5
 	goto See
-	}	
+	}
 }
 
 ACTOR Hostage : Nazi 12702
@@ -2649,7 +2671,7 @@ States
 ACTOR SuperMutant 12704
 {
 //$Category Monsters (Wolf3D)
-//$Title Mutant (super)
+//$Title Mutant(super)
 //$Color 4
 Scale 1.2
 Obituary "%o did the dance of doom with a powerful Mutant."
@@ -2682,10 +2704,12 @@ states
 	Missile:
 	SUPM L 6 A_FaceTarget
 	SUPM M 0 A_PlayWeaponSound("weapons/Walther")
-	SUPM M 5 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-1,1))
+	SUPM M 0 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyPistolTracer",32,-16,random(-1,1))
+	SUPM M 5 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyPistolTracer",32,16,random(-1,1))
 	SUPM N 6
 	SUPM O 0 A_PlayWeaponSound("weapons/Walther")
-	SUPM O 5 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-1,1))
+	SUPM O 0 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyPistolTracer",32,-16,random(-1,1))
+	SUPM O 5 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyPistolTracer",32,16,random(-1,1))
 	SUPM L 6 A_SentinelRefire
 	goto Missile+2
 	Pain:
