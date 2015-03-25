@@ -17,11 +17,11 @@ actor NebRocket
   States
   {
   Spawn:
-    MNSS A 1 bright A_CustomMissile("RocketFlameSpawner",0,0,0,5)
+    MNSS A 1 bright LIGHT(NEBLIGHT) A_CustomMissile("RocketFlameSpawner",0,0,0,5)
     loop
   Death:
-    FRME A 1 bright A_Explode(64,56)
-	FRME BCDEFGHIHJKLMNOPQRS 1 bright
+    FRME A 1 bright LIGHT(NEBEXPLO) A_Explode(64,56)
+	FRME BCDEFGHIHJKLMNOPQRS 1 bright LIGHT(NEBEXPLO)
     stop
   }
 }
@@ -45,11 +45,11 @@ actor NebRocketEnemy
   States
   {
   Spawn:
-    MNSS A 1 bright A_CustomMissile("RocketFlameSpawner",0,0,0,5)
+    MNSS A 1 bright LIGHT(NEBLIGHT) A_CustomMissile("RocketFlameSpawner",0,0,0,5)
     loop
   Death:
-    FRME A 1 bright A_Explode(40,40)
-	FRME BCDEFGHIHJKLMNOPQRS 1 bright
+    FRME A 1 bright LIGHT(NEBEXPLO) A_Explode(40,40)
+	FRME BCDEFGHIHJKLMNOPQRS 1 bright LIGHT(NEBEXPLO)
     stop
   }
 }
@@ -176,8 +176,8 @@ ACTOR RocketFlame
 	States
 	{
 		Spawn:
-			XPLO AB 2 BRIGHT 
-			XPLO C 2 BRIGHT A_CustomMissile("RPG8RocketTrail",1,random(-1,1),0)
+			XPLO AB 2 BRIGHT LIGHT(NEBEXPLO)
+			XPLO C 2 BRIGHT LIGHT(NEBEXPLO)A_CustomMissile("RPG8RocketTrail",1,random(-1,1),0)
 			Stop
 	}
 }
@@ -193,7 +193,7 @@ ACTOR RPG8RocketTrail
     States
     {
     Spawn:
-      SMOK ABCDEFGHIJKLMNOP 1
+      SMOK ABCDEFGHIJKLMNOP 1 LIGHT(NEBLIGHT)
       SMOK Q 1 A_FadeOut
       Stop
 	}

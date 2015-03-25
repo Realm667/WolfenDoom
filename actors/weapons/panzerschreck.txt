@@ -165,16 +165,16 @@ ACTOR PanzerRocket
 	States
 	{
 	Spawn:
-		MNSS A 1 BRIGHT A_LoopActiveSound
-		MNSS A 1 bright A_CustomMissile("RocketFlameSpawner",0,0,0,5)
+		MNSS A 1 BRIGHT LIGHT(BOAFLMW2) A_LoopActiveSound
+		MNSS A 1 bright LIGHT(BOAFLMW2) A_CustomMissile("RocketFlameSpawner",0,0,0,5)
 		Goto Spawn+1
 	Death:
 		EXP1 A 0 A_SetScale(1.25,1.25)
-		EXP1 A 2 BRIGHT A_PlaySound("panzer/explode", CHAN_AUTO, 1.0, 0, ATTN_NONE)
-		EXP1 B 2 BRIGHT A_Explode(192,192,1)
-		EXP1 C 2 BRIGHT A_Quake(9,15,0,1024,"")
-		EXP1 D 2 BRIGHT A_AlertMonsters
-		EXP1 EFGHIJKLMN 2 BRIGHT
+		EXP1 A 2 BRIGHT LIGHT(BOAFLMW2) A_PlaySound("panzer/explode", CHAN_AUTO, 1.0, 0, ATTN_NONE)
+		EXP1 B 2 BRIGHT LIGHT(BOAFLMW2) A_Explode(192,192,1)
+		EXP1 C 2 BRIGHT LIGHT(BOAFLMW2) A_Quake(9,15,0,1024,"")
+		EXP1 D 2 BRIGHT LIGHT(BOAFLMW2) A_AlertMonsters
+		EXP1 EFGHIJKLMN 2 BRIGHT LIGHT(BOAFLMW2)
 		Stop
 	}
 }
