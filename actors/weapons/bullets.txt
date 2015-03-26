@@ -1,0 +1,336 @@
+ACTOR Tracer : FastProjectile
+{
+Alpha 0.90
+RenderStyle Add
+Radius 2
+Height 2
+Speed 75
+PROJECTILE
++BLOODSPLATTER
+Scale 0.4
+MissileType TracerTrail
+MissileHeight 8
+Decal BulletChip
+States
+	{
+	Spawn:
+	PUFF A 1 BRIGHT
+	PUFF A 1 BRIGHT LIGHT(TRCRFIRE) A_CheckSightOrRange(192,"Whiz")
+	Loop
+	Whiz:
+	PUFF A 1 BRIGHT LIGHT(TRCRFIRE) A_PlaySound("whiz",1.0,0,ATTN_NONE)
+	SpawnNoWhiz:
+	PUFF A 1 BRIGHT
+	Loop
+	Death:
+	Crash:
+	PUFF A 2 BRIGHT LIGHT(TRCRFIRE) A_SpawnDebris("TracerSpark")
+	PUFF B 1 BRIGHT A_SetTranslucent(0.9,0)
+	PUFF B 1 BRIGHT A_PlaySound("ricochet")
+	PUFF CD 2 BRIGHT
+	Stop
+	XDeath:
+	TNT1 A 3 A_PlaySound("hitflesh")
+	Stop
+	}
+}
+
+ACTOR TracerTrail
+{
+Alpha 0.75
+RenderStyle Add
+Speed 0
++NOBLOCKMAP
++NOGRAVITY
++NOTELEPORT
++CANNOTPUSH
++NODAMAGETHRUST
+Scale 0.4
+States
+	{
+	Spawn:
+	PUFF A 1 BRIGHT LIGHT(TRCRFIRE) A_FadeOut(0.3)
+	Loop
+	}
+}
+
+ACTOR TracerSpark
+{
+Health 4
+radius 3
+height 6
+speed .1
+RenderStyle ADD
+Alpha		1
+Scale 0.5
+Mass		0
++missile
++doombounce
++FLOORCLIP
++DONTSPLASH
++NOTELEPORT
+States
+	{
+	PUFF A 1
+	PUFF AAAAA 1 BRIGHT LIGHT(TRCRFIRE) A_SetTranslucent(.8,1)
+	PUFF AAAAAA 1 BRIGHT LIGHT(TRCRFIRE) A_SetTranslucent(.6,1)
+	PUFF AAAAAAAA 1 BRIGHT LIGHT(TRCRFIRE) A_SetTranslucent(.4,1)
+	PUFF AAAAAAAAAA 1 BRIGHT LIGHT(TRCRFIRE) A_SetTranslucent(.2,1)
+	Stop
+	}
+}
+
+// The Player's variants on the tracers, so they have different speeds and damages
+// based on which weapon is being used.
+ACTOR PistolTracer : Tracer
+{
+	Damage (random(6,18))
+	Speed 90
+}
+
+ACTOR LugerTracer : Tracer
+{
+	Damage (random(3,17))
+	Speed 100
+}
+
+ACTOR RevolverTracer : Tracer
+{
+	Damage (random(22,34))
+	Speed 90
+}
+
+ACTOR SMGTracer : Tracer
+{
+	Damage (random(9,14))
+	Speed 90
+}
+
+ACTOR ThompsonTracer : Tracer
+{
+	Damage (random(14,18))
+	Speed 120
+}
+
+ACTOR PPSHTracer : Tracer
+{
+	Damage (random(11,12))
+	Speed 100
+}
+
+ACTOR RifleTracer : Tracer
+{
+	Damage (random(26,55))
+	Speed 150
+}
+
+ACTOR EnfieldTracer : Tracer
+{
+	Damage (random(40,65))
+	Speed 180
+}
+
+ACTOR FGTracer : Tracer
+{
+	Damage (random(30,44))
+	Speed 155
+}
+
+ACTOR StGTracer : Tracer
+{
+	Damage (random(18,24))
+	Speed 115
+}
+
+ACTOR ShotgunTracer : Tracer
+{
+	Damage (random(5,15))
+	States
+	{
+	Death:
+	Crash:
+		PUFF B 3 BRIGHT
+		PUFF CD 3 BRIGHT
+		Stop
+	}
+}
+
+ACTOR ChaingunTracer : Tracer
+{
+	Damage (random(11,15))
+	Speed 90
+}
+
+
+// Enemy tracer variants for Baby mode
+ACTOR BabyEnemyPistolTracer : Tracer
+{
+	Damage (random(4,8))
+	DamageType "EasyEnemy"
+	Speed 30
+}
+
+ACTOR BabyEnemySMGTracer : Tracer
+{
+	Damage (random(6,7))
+	DamageType "EasyEnemy"
+	Speed 30
+}
+
+ACTOR BabyEnemyRifleTracer : Tracer
+{
+	Damage (random(15,30))
+	DamageType "EasyEnemy"
+	Speed 30
+}
+
+ACTOR BabyEnemySniperTracer : Tracer
+{
+	Damage (random(30,60))
+	DamageType "EasyEnemy"
+	Speed 60
+}
+
+ACTOR BabyEnemyStGTracer : Tracer
+{
+	Damage (random(7,8))
+	DamageType "EasyEnemy"
+	Speed 30
+}
+
+ACTOR BabyEnemyChaingunTracer : Tracer
+{
+	Damage (random(6,8))
+	DamageType "EasyEnemy"
+	Speed 30
+}
+
+// Enemy tracer variants for Easy mode
+ACTOR EasyEnemyPistolTracer : Tracer
+{
+	Damage (random(4,8))
+	DamageType "EasyEnemy"
+	Speed 50
+}
+
+ACTOR EasyEnemySMGTracer : Tracer
+{
+	Damage (random(6,7))
+	DamageType "EasyEnemy"
+	Speed 50
+}
+
+ACTOR EasyEnemyRifleTracer : Tracer
+{
+	Damage (random(15,30))
+	DamageType "EasyEnemy"
+	Speed 50
+}
+
+ACTOR EasyEnemySniperTracer : Tracer
+{
+	Damage (random(15,30))
+	DamageType "EasyEnemy"
+	Speed 100
+}
+
+ACTOR EasyEnemyStGTracer : Tracer
+{
+	Damage (random(7,8))
+	DamageType "EasyEnemy"
+	Speed 50
+}
+
+ACTOR EasyEnemyChaingunTracer : Tracer
+{
+	Damage (random(6,8))
+	DamageType "EasyEnemy"
+	Speed 50
+}
+
+// Enemy tracer variants for Normal mode.
+ACTOR EnemyPistolTracer : Tracer
+{
+	Damage (random(4,8))
+	DamageType "Enemy"
+}
+
+ACTOR EnemySMGTracer : Tracer
+{
+	Damage (random(6,7))
+	DamageType "Enemy"
+}
+
+ACTOR EnemyRifleTracer : Tracer
+{
+	Damage (random(15,30))
+	DamageType "Enemy"
+}
+
+ACTOR EnemyStGTracer : Tracer
+{
+	Damage (random(7,8))
+	DamageType "Enemy"
+}
+
+ACTOR EnemyChaingunTracer : Tracer
+{
+	Damage (random(6,8))
+	DamageType "Enemy"
+}
+
+ACTOR EnemySniperTracer : Tracer
+{
+	Damage (random(30,60))
+	DamageType "Enemy"
+	Speed 150
+}
+
+// Enemy tracer variants for Hard and Nightmare mode
+ACTOR HardEnemyPistolTracer : Tracer
+{
+	Damage (random(4,8))
+	DamageType "Enemy"
+	Speed 90
+	+THRUGHOST
+}
+
+ACTOR HardEnemySMGTracer : Tracer
+{
+	Damage (random(6,7))
+	DamageType "Enemy"
+	Speed 90
+	+THRUGHOST
+}
+
+ACTOR HardEnemyRifleTracer : Tracer
+{
+	Damage (random(15,30))
+	DamageType "Enemy"
+	Speed 90
+	+THRUGHOST
+}
+
+ACTOR HardEnemySniperTracer : Tracer
+{
+	Damage (random(30,60))
+	DamageType "Enemy"
+	Speed 180
+	+THRUGHOST
+}
+
+ACTOR HardEnemyStGTracer : Tracer
+{
+	Damage (random(7,8))
+	DamageType "Enemy"
+	Speed 90
+	+THRUGHOST
+}
+
+ACTOR HardEnemyChaingunTracer : Tracer
+{
+	Damage (random(6,8))
+	DamageType "Enemy"
+	Speed 90
+	+THRUGHOST
+}

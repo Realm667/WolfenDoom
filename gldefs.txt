@@ -1,0 +1,1502 @@
+/////////////////////////////////////////////////////
+// SPARK SPAWNERS ///////////////////////////////////
+/////////////////////////////////////////////////////
+Pointlight WhiteSparkFlare
+{
+Color 1.0 1.0 1.0
+Size 12
+}
+
+Pointlight RedSparkFlare
+{
+Color 0.4 0.0 0.0
+Size 12
+}
+
+Pointlight OrangeSparkFlare
+{
+Color 0.8 0.4 0.0
+Size 12
+}
+
+Pointlight YellowSparkFlare
+{
+Color 1.0 1.0 0.0
+Size 12
+}
+
+Pointlight GreenSparkFlare
+{
+Color 0.0 1.0 0.0
+Size 12
+}
+
+Pointlight BlueSparkFlare
+{
+Color 0.0 0.0 0.8
+Size 12
+}
+
+Pointlight PurpleSparkFlare
+{
+Color 0.5 0.0 0.5
+Size 12
+}
+
+Object SparkFlare_W1 { Frame SPKW { Light WhiteSparkFlare } }
+Object SparkFlare_W2 { Frame SPKW { Light WhiteSparkFlare } }
+Object SparkFlare_W3 { Frame SPKW { Light WhiteSparkFlare } }
+Object SparkFlare_W4 { Frame SPKW { Light WhiteSparkFlare } }
+Object SparkFlare_W5 { Frame SPKW { Light WhiteSparkFlare } }
+Object SparkFlare_W6 { Frame SPKW { Light WhiteSparkFlare } }
+
+Object SparkFlare_R1 { Frame SPKR { Light RedSparkFlare } }
+Object SparkFlare_R2 { Frame SPKR { Light RedSparkFlare } }
+Object SparkFlare_R3 { Frame SPKR { Light RedSparkFlare } }
+Object SparkFlare_R4 { Frame SPKR { Light RedSparkFlare } }
+Object SparkFlare_R5 { Frame SPKR { Light RedSparkFlare } }
+Object SparkFlare_R6 { Frame SPKR { Light RedSparkFlare } }
+
+Object SparkFlare_O1 { Frame SPKO { Light OrangeSparkFlare } }
+Object SparkFlare_O2 { Frame SPKO { Light OrangeSparkFlare } }
+Object SparkFlare_O3 { Frame SPKO { Light OrangeSparkFlare } }
+Object SparkFlare_O4 { Frame SPKO { Light OrangeSparkFlare } }
+Object SparkFlare_O5 { Frame SPKO { Light OrangeSparkFlare } }
+Object SparkFlare_O6 { Frame SPKO { Light OrangeSparkFlare } }
+
+Object SparkFlare_Y1 { Frame SPKY { Light YellowSparkFlare } }
+Object SparkFlare_Y2 { Frame SPKY { Light YellowSparkFlare } }
+Object SparkFlare_Y3 { Frame SPKY { Light YellowSparkFlare } }
+Object SparkFlare_Y4 { Frame SPKY { Light YellowSparkFlare } }
+Object SparkFlare_Y5 { Frame SPKY { Light YellowSparkFlare } }
+Object SparkFlare_Y6 { Frame SPKY { Light YellowSparkFlare } }
+
+Object SparkFlare_G1 { Frame SPKG { Light GreenSparkFlare } }
+Object SparkFlare_G2 { Frame SPKG { Light GreenSparkFlare } }
+Object SparkFlare_G3 { Frame SPKG { Light GreenSparkFlare } }
+Object SparkFlare_G4 { Frame SPKG { Light GreenSparkFlare } }
+Object SparkFlare_G5 { Frame SPKG { Light GreenSparkFlare } }
+Object SparkFlare_G6 { Frame SPKG { Light GreenSparkFlare } }
+
+Object SparkFlare_B1 { Frame SPKB { Light BlueSparkFlare } }
+Object SparkFlare_B2 { Frame SPKB { Light BlueSparkFlare } }
+Object SparkFlare_B3 { Frame SPKB { Light BlueSparkFlare } }
+Object SparkFlare_B4 { Frame SPKB { Light BlueSparkFlare } }
+Object SparkFlare_B5 { Frame SPKB { Light BlueSparkFlare } }
+Object SparkFlare_B6 { Frame SPKB { Light BlueSparkFlare } }
+
+Object SparkFlare_P1 { Frame SPKP { Light PurpleSparkFlare } }
+Object SparkFlare_P2 { Frame SPKP { Light PurpleSparkFlare } }
+Object SparkFlare_P3 { Frame SPKP { Light PurpleSparkFlare } }
+Object SparkFlare_P4 { Frame SPKP { Light PurpleSparkFlare } }
+Object SparkFlare_P5 { Frame SPKP { Light PurpleSparkFlare } }
+Object SparkFlare_P6 { Frame SPKP { Light PurpleSparkFlare } }
+
+
+/////////////////////////////////////////////////////
+// CHANDELIER LIGHTS ////////////////////////////////
+/////////////////////////////////////////////////////
+
+pointlight Chandelier
+{
+    color 1.0 1.0 1.0
+    size 40
+    offset 0 16 0
+}
+
+pointlight Chandelier2
+{
+    color 1.0 1.0 1.0
+    size 38
+    offset 0 16 0
+}
+
+pointlight Chandelier3
+{
+    color 1.0 1.0 1.0
+    size 36
+    offset 0 16 0
+}
+//some ozydefs
+pointlight Chandelier4
+{
+    color 1.0 1.0 0.0
+    size 44
+    offset 0 20 0
+}
+
+pointlight Chandelier5
+{
+    color 1.0 1.0 0.1
+    size 40
+    offset 0 18 0
+}
+
+pointlight Chandelier6
+{
+    color 1.0 1.0 0.2
+    size 36
+    offset 0 16 0
+}
+//end ozydefs
+object Chandelier1Switchable //added warmy fire lights
+{
+    frame CHANA { light Chandelier4 }
+	frame CHANB { light Chandelier5 }
+	frame CHANC { light Chandelier6 }
+}
+
+object Chandelier2Switchable //added warmy fire lights
+{
+    frame CHANE { light Chandelier4 }
+	frame CHANF { light Chandelier5 }
+	frame CHANG { light Chandelier6 }
+}
+
+/*object Chandelier1Switchable
+{
+        frame CHANA { light Chandelier }
+	frame CHANB { light Chandelier2 }
+	frame CHANC { light Chandelier3 }
+}
+
+object Chandelier2Switchable
+{
+        frame CHANE { light Chandelier }
+	frame CHANF { light Chandelier2 }
+	frame CHANG { light Chandelier3 }
+}*/
+
+object Chandelier3Switchable
+{
+        frame CHANI { light Chandelier }
+	frame CHANJ { light Chandelier2 }
+	frame CHANL { light Chandelier3 }
+}
+
+object Chandelier4Switchable
+{
+        frame CHANN { light Chandelier }
+	frame CHANO { light Chandelier2 }
+	frame CHANP { light Chandelier3 }
+}
+
+
+/////////////////////////////////////////////////////
+// LAVA CAULDRON LIGHTS /////////////////////////////
+/////////////////////////////////////////////////////
+
+flickerlight2 CAULDRON
+{
+    color 1.0 0.5 0.0
+    size 68
+    secondarySize 76
+    interval 0.1
+    offset 0 40 0
+}
+
+object LavaCauldron
+{
+    frame LAVC { light CAULDRON }
+}
+
+
+/////////////////////////////////////////////////////
+// BRIGHTMAPS FOR SPLASHES //////////////////////////
+/////////////////////////////////////////////////////
+BrightMap Sprite SLIMA0
+{
+Map BMSLIMA0
+DisableFullBright
+}
+
+BrightMap Sprite SLIMB0
+{
+Map BMSLIMB0
+DisableFullBright
+}
+
+BrightMap Sprite SLIMC0
+{
+Map BMSLIMC0
+DisableFullBright
+}
+
+BrightMap Sprite SLIMD0
+{
+Map BMSLIMD0
+DisableFullBright
+}
+
+BrightMap Sprite SLIME0
+{
+Map BMSLIME0
+DisableFullBright
+}
+
+BrightMap Sprite SLIMF0
+{
+Map BMSLIMF0
+DisableFullBright
+}
+
+BrightMap Sprite SLIMG0
+{
+Map BMSLIMG0
+DisableFullBright
+}
+
+BrightMap Sprite SLIMH0
+{
+Map BMSLIMH0
+DisableFullBright
+}
+
+/////////////////////////////////////////////////////
+// STROBE LIGHTS ////////////////////////////////////
+/////////////////////////////////////////////////////
+
+//BLUE
+pointlight BLUESTROBE
+{
+    color 0.0 0.0 0.4
+    size 48
+}
+
+object StrobeRayBlue
+{
+    frame BAL1C { light BLUESTROBE }
+}
+
+
+//GREEN
+pointlight GREENSTROBE
+{
+    color 0.0 0.4 0.0
+    size 48
+}
+
+object StrobeRayGreen
+{
+    frame BAL1C { light GREENSTROBE }
+}
+
+
+//RED
+pointlight REDSTROBE
+{
+    color 0.4 0.0 0.0
+    size 48
+}
+
+object StrobeRayRed
+{
+    frame BAL1C { light REDSTROBE }
+}
+
+
+//YELLOW
+pointlight YELLOWSTROBE
+{
+    color 0.4 0.2 0.0
+    size 48
+}
+
+object StrobeRayYellow
+{
+    frame BAL1C { light YELLOWSTROBE }
+}
+
+
+/////////////////////////////////////////////////////
+// FIRE SPAWNER LIGHTS //////////////////////////////
+/////////////////////////////////////////////////////
+
+Flickerlight FireSpawnerSmall
+{
+Color 1.0 0.6 0.0
+Size 32
+SecondarySize 48
+Chance 0.6
+}
+
+Flickerlight FireSpawnerMedium
+{
+Color 1.0 0.6 0.0
+Size 56
+SecondarySize 72
+Chance 0.6
+}
+
+Flickerlight FireSpawnerLarge
+{
+Color 1.0 0.6 0.0
+Size 80
+SecondarySize 128
+Chance 0.6
+}
+
+Object SmallFlame { Frame TNT1 { Light FireSpawnerSmall } }
+Object MediumFlame { Frame TNT1 { Light FireSpawnerMedium } }
+Object LargeFlame { Frame TNT1 { Light FireSpawnerLarge } }
+//========================OZYDEFS HERE========================//
+//PROPS - LIGHT SOURCES//
+PointLight BOACEIL1 //CelLitM2
+{
+color 0.7 0.7 0.7
+size 24
+offset 0 -8 0
+}
+
+PointLight BOACEIL2 //CelLitM
+{
+color 0.7 0.7 0.7
+size 48
+offset 0 -8 0
+}
+
+PointLight BOATABL1 //TabLitM
+{
+color 0.7 0.7 0.7
+size 32
+}
+
+PointLight BOATABL2 //TabLitS
+{
+color 0.7 0.7 0.7
+size 16
+}
+
+PointLight BOACLMN1
+{
+color 0.8 0.8 0.8
+size 48
+offset 0 64 0
+}
+
+object ColumnLight
+{
+frame COLLA {light BOACLMN1}
+}
+
+PointLight BOACLMN2
+{
+color 0.6 0.5 0.4
+size 48
+offset 0 56 0
+}
+
+object ColumnLight2
+{
+frame COLLB {light BOACLMN2}
+}
+
+PointLight BOASTLT1
+{
+color 0.8 0.8 0.8
+size 48
+offset 32 16 0
+}
+
+object StreetLight1
+{
+frame STRLD {light BOASTLT1}
+}
+
+PointLight BOASTLT2 //StreetLight2
+{
+color 1.0 1.0 1.0
+size 64
+offset 0 56 0
+}
+
+PointLight BOASTLT3 //StreetLight3
+{
+color 0.8 0.8 0.8
+size 40
+offset 0 56 0
+}
+
+flickerlight BOAEBWL1
+{
+color 1.2 1.2 0.2
+size 54
+secondarySize 56
+chance 0.5
+}
+
+object FBowl1
+{
+frame FBWL {light BOAEBWL1}
+}
+
+pointlight BOAEBWL2
+{
+color 0.9 0.7 0.0
+size 40
+offset 0 16 0
+}
+
+pointlight BOAEBWL3
+{
+color 1.0 0.7 0.0
+size 44
+offset 0 16 0
+}
+
+pointlight BOAEBWL4
+{
+color 1.0 0.8 0.0
+size 48
+offset 0 16 0
+}
+
+object CBowl1
+{
+frame CFIRA {light BOAEBWL2}
+frame CFIRB {light BOAEBWL3}
+frame CFIRC {light BOAEBWL4}
+}
+
+flickerlight BOAEBRL1
+{
+color 1.0 0.8 0.0
+size 48
+secondarySize 52
+chance 0.2
+}
+
+object FBarrel1
+{
+frame FCNE {light BOAEBRL1}
+}
+
+//PROPS - INDUSTRIAL//
+pulselight BOARBRL1
+{
+color 0.0 0.8 0.0
+size 16
+secondarySize 20
+interval 0.6
+Offset 0 8 0
+}
+
+object RadioactiveBarrel
+{
+frame BARRA {light BOARBRL1}
+frame BARRB {light BOARBRL1}
+frame BARRC {light BOARBRL1}
+frame BARRD {light BOARBRL1}
+}
+
+//ITEMS - KEYS//
+PointLight BOABKEY
+{
+color 0.8 0.8 0.8
+size 16
+offset 0 4 0
+}
+
+object SilverKey2
+{
+frame BKEYB {light BOABKEY}
+}
+
+PointLight BOAYKEY
+{
+color 0.8 0.8 0.0
+size 16
+offset 0 4 0
+}
+
+object GoldKey2
+{
+frame YKEYB {light BOAYKEY}
+}
+
+PointLight BOARKEY
+{
+color 0.8 0.2 0.2
+size 16
+offset 0 4 0
+}
+
+object BronzeKey
+{
+frame RKEYB {light BOARKEY}
+}
+
+//WEAPONS//
+FlickerLight2 BOAFLAMW
+{
+Offset 0 0 0
+Color 0.45 0.24 0.0
+Size 30
+SecondarySize 35
+Interval 1.7
+}
+
+object FlameBolt
+{
+Frame FBLXA {Light BOAFLAMW}
+Frame FBLXB {Light BOAFLAMW}
+Frame FBLXC {Light BOAFLAMW}
+Frame FBLXD {Light BOAFLAMW}
+Frame FBLXE {Light BOAFLAMW}
+Frame FBLXF {Light BOAFLAMW}
+Frame FBLXG {Light BOAFLAMW}
+Frame FBLXH {Light BOAFLAMW}
+Frame FBLXI {Light BOAFLAMW}
+Frame FBLXJ {Light BOAFLAMW}
+Frame FBLXK {Light BOAFLAMW}
+}
+
+FlickerLight2 BOAFLMW2
+{
+Offset 0 0 0
+Color 0.65 0.44 0.0
+Size 40
+SecondarySize 48
+Interval 1.7
+}
+
+object FlameBall
+{
+Frame FBAL {Light BOAFLMW2}
+Frame FBLX {Light BOAFLMW2}
+}
+
+object EnemyFlamerShot
+{
+Frame FBLX {Light BOAFLMW2}
+}
+
+PointLight NEBLIGHT
+{
+color 1.0 0.9 0.8
+size 16
+offset 0 16 0
+}
+
+PointLight NEBEXPLO
+{
+color 1.0 0.9 0.0
+size 32
+offset 0 16 0
+}
+
+PointLight TRCRFIRE
+{
+color 0.5 0.5 0.0
+size 4
+offset 0 0 0
+}
+
+//////////////////////////////
+// Underwater Light Effects //
+//////////////////////////////
+
+//underwaters
+pulselight LIGHTWATR1
+{
+    color 0.1 0.1 0.1
+    size 32
+    secondarySize 64
+    interval 1
+}
+
+pulselight LIGHTWATR2
+{
+    color 0.1 0.1 0.1
+    size 24
+    secondarySize 48
+    interval 1
+}
+
+pulselight LIGHTWATR3
+{
+    color 0.1 0.1 0.1
+    size 16
+    secondarySize 32
+    interval 1
+}
+
+pulselight LIGHTLAVA1
+{
+    color 0.1 0.1 0.0
+    size 32
+    secondarySize 64
+    interval 1
+}
+
+pulselight LIGHTLAVA2
+{
+    color 0.1 0.1 0.0
+    size 24
+    secondarySize 48
+    interval 1
+}
+
+pulselight LIGHTLAVA3
+{
+    color 0.1 0.1 0.0
+    size 16
+    secondarySize 32
+    interval 1
+}
+
+pulselight LIGHTBLOD1
+{
+    color 0.1 0.0 0.0
+    size 32
+    secondarySize 64
+    interval 1
+}
+
+pulselight LIGHTBLOD2
+{
+    color 0.1 0.0 0.0
+    size 24
+    secondarySize 48
+    interval 1
+}
+
+pulselight LIGHTBLOD3
+{
+    color 0.1 0.0 0.0
+    size 16
+    secondarySize 32
+    interval 1
+}
+
+pulselight LIGHTNUKE1
+{
+    color 0.0 0.1 0.0
+    size 32
+    secondarySize 64
+    interval 1
+}
+
+pulselight LIGHTNUKE2
+{
+    color 0.0 0.1 0.0
+    size 24
+    secondarySize 48
+    interval 1
+}
+
+pulselight LIGHTNUKE3
+{
+    color 0.0 0.1 0.0
+    size 16
+    secondarySize 32
+    interval 1
+}
+
+object UWaterLShooter
+{
+    frame BAL1C { light LIGHTWATR1 }
+    frame BAL1D { light LIGHTWATR2 }
+    frame BAL1E { light LIGHTWATR3 }
+}
+
+object ULavaLShooter
+{
+    frame BAL1C { light LIGHTLAVA1 }
+    frame BAL1D { light LIGHTLAVA2 }
+    frame BAL1E { light LIGHTLAVA3 }
+}
+
+object UGoreLShooter
+{
+    frame BAL1C { light LIGHTBLOD1 }
+    frame BAL1D { light LIGHTBLOD2 }
+    frame BAL1E { light LIGHTBLOD3 }
+}
+
+object UHazardLShooter
+{
+    frame BAL1C { light LIGHTNUKE1 }
+    frame BAL1D { light LIGHTNUKE2 }
+    frame BAL1E { light LIGHTNUKE3 }
+}
+//////////////////////
+//Death Burning Defs//
+//////////////////////
+flickerlight ITBURNS1
+{
+    color 0.6 0.6 0.0
+    size 24
+    secondarySize 32
+    chance 0.2
+}
+
+flickerlight ITBURNS2
+{
+    color 0.8 0.8 0.0
+    size 32
+    secondarySize 36
+    chance 0.3
+}
+
+flickerlight ITBURNS3
+{
+    color 1.0 1.0 0.0
+    size 36
+    secondarySize 44
+    chance 0.4
+}
+
+object WildWeaselPlayer
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object Guard
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object SSGuard
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object WGuard
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object MP40Guard
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object WMP40Guard
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object SSMP40Guard
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object RifleGuard
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object WRifleGuard
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object WaffenSS //ToFix
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object Paratrooper //ToFix
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object Mutant //tofix
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object MutantMelee //tofix
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object Officer
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object WOfficer
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object SSOfficer
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object Scientist
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object Scientist2
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object Sniper
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object Hostage
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object GeneralAllied
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object DirtyDarren
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object Marine1
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object Marine2
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object FlamerSoldier
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object EliteAssaulter
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+
+object EliteSoldatRifler
+{
+frame BURNA { light ITBURNS1 }
+frame BURNB { light ITBURNS1 }
+frame BURNC { light ITBURNS1 }
+frame BURND { light ITBURNS1 }
+frame BURNE { light ITBURNS1 }
+frame BURNF { light ITBURNS2 }
+frame BURNG { light ITBURNS2 }
+frame BURNH { light ITBURNS2 }
+frame BURNI { light ITBURNS2 }
+frame BURNJ { light ITBURNS2 }
+frame BURNK { light ITBURNS3 }
+frame BURNL { light ITBURNS3 }
+frame BURNM { light ITBURNS3 }
+frame BURNN { light ITBURNS3 }
+frame BURNO { light ITBURNS3 }
+frame BURNP { light ITBURNS2 }
+frame BURNQ { light ITBURNS2 }
+frame BURNR { light ITBURNS2 }
+frame BURNS { light ITBURNS1 }
+frame BURNT { light ITBURNS1 }
+frame BURNU { light ITBURNS1 }
+}
+//END OF BURNING DEFS//
+
+//NAZI FOES//
+PointLight NAZIFIRE
+{
+color 0.9 0.8 0.0
+size 24
+offset 0 24 0
+}
+
+PointLight MUTNFIRE
+{
+color 1.0 0.7 0.0
+size 24
+offset 0 16 0
+}
+
+PointLight OTTOFIRE
+{
+color 1.0 0.9 0.8
+size 32
+offset 0 24 12
+}
+
+PointLight OTT2FIRE
+{
+color 1.0 0.9 0.8
+size 32
+offset 0 24 -12
+}
+
+PointLight SUPAFIRE
+{
+color 1.0 0.9 0.0
+size 36
+offset 0 24 0
+}
+
+PointLight DEKNAFIR
+{
+color 1.0 0.9 0.0
+size 48
+offset 0 40 24
+}
+
+PointLight DEKNBFIR
+{
+color 1.0 0.9 0.0
+size 48
+offset 0 40 -24
+}
+
+PointLight HAILFIRE
+{
+color 1.0 0.9 0.0
+size 36
+offset 0 32 24
+}
+
+PointLight HAIL2FIR
+{
+color 1.0 0.9 0.0
+size 36
+offset 0 32 -24
+}
+
+PointLight HAIL3FIR
+{
+color 1.0 0.9 0.0
+size 40
+offset 0 48 24
+}
+
+PointLight HAIL4FIR
+{
+color 1.0 0.9 0.0
+size 40
+offset 0 48 -24
+}
