@@ -15,7 +15,6 @@ Actor FlakJacket : BasicArmorPickup 13001
   {
   Spawn:
     ARM3 A 6
-    ARM3 A 7 bright
     loop
   }
 }
@@ -37,7 +36,27 @@ Actor HeavyArmor : BasicArmorPickup 13002
   {
   Spawn:
     ARM4 A 6
-    ARM4 A 7 bright
+    loop
+  }
+}
+
+Actor LeatherJacket : BasicArmorPickup 13103
+{
+//$Category Items (Wolf3D)
+//$Title LeatherJacket (Half Green Armor)
+//$Color 1
+  Game Doom
+  SpawnID 68
+  Radius 20
+  Height 16
+  Inventory.Pickupmessage "Picked up a flak jacket."
+  Inventory.Icon "ARM3A0"
+  Armor.Savepercent 25
+  Armor.Saveamount 50
+  States
+  {
+  Spawn:
+    ARM2 A 6
     loop
   }
 }
