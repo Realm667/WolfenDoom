@@ -1,4 +1,4 @@
-//OzyTanks here...
+//OzyTanks defs here...
 ACTOR TankSmoke : PuffSmoke //connections with GuardSoul smoke
 {
 Radius 1
@@ -15,111 +15,236 @@ Gravity 0
 +MISSILEEVENMORE
 }
 
-actor Boom
+//Ka-Boom from Russian Overkill by PillowBlaster - Tweaked by Ozymandias81
+ACTOR KaBoom
 {
-Radius 11
-Height 8
-Speed 8
-Damage 0
-Projectile
-Renderstyle Translucent
-Scale 0.6
-Alpha 0.7
-+MISSILE
+Scale 2
+Renderstyle Add
+DamageType "Enemy"
+PROJECTILE
++NOINTERACTION
++NOGRAVITY
+States
+	{
+	Spawn:
+	BFE1 ABCDE 2 Bright
+	BFE1 FGHI 2 Bright A_Explode(75,128,1,1)
+	BFE1 JKL 2 Bright
+	Stop
+	}
+}
+
+ACTOR KaBoomer
+{
++NOGRAVITY
 +NOINTERACTION
 States
 	{
 	Spawn:
-	FBLX ABCDEFGHIJ 4 Bright A_FadeOut(0.005)
-	stop
+	TNT1 AA 1 A_SpawnItemEx("KaBoom",0,0,0,random(-4,4),random(-4,4),random(-2,6),random(0,359),SXF_TRANSFERTRANSLATION|SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION,40)
+	Stop
 	}
 }
-//Some Sergeant_Mark_IV ArmageDoom stuff here + slight modifications of mine
-ACTOR TankExplosion
+
+Actor Nuke
 {
-Radius 8
-Height 8
-Speed 5
-Mass 6
-Scale 1.5
-BounceFactor 0
-+MISSILE
-+DOOMBOUNCE
-+NOBLOCKMAP
-+NOGRAVITY
-+NOTELEPORT
-+DONTSPLASH
-+MOVEWITHSECTOR
-+CLIENTSIDEONLY
-+FORCEXYBILLBOARD
-Renderstyle Add
++NoBlockmap
++NoGravity
++NoInteraction
+Radius 0
+Height 0
 States
 	{
 	Spawn:
-	EXPL A 0 Radius_Quake(4, 8, 0, 20, 0)
-	TNT1 AAAA 0 A_CustomMissile("TankSmoke", 15, 0, random(0, 360), 2, random(0, 360))
-	EXPL A 0 A_Explode(100, 150)
-	BEXP DEFG 3 BRIGHT
-	TNT1 AAAA 0 A_CustomMissile("TankSmoke", 30, 0, random(0, 360), 2, random(70, 130))
-	BEXP HIJKLM 3 BRIGHT
-	TNT1 AA 0 A_CustomMissile("TankSmoke", 40, 0, random(0, 360), 2, random(70, 130))
-	BEXP NOPQ 3 BRIGHT
-	TNT1 AA 0 A_CustomMissile("TankSmoke", 40, 0, random(0, 360), 2, random(70, 130))
 	TNT1 A 0
+	TNT1 A 0 A_PlaySoundEx("panzer/explode", "Voice", 0, 2)
+	TNT1 A 0 Radius_Quake(7, 30, 0, 96, 0)
+	TNT1 A 0 A_SpawnItemEx("TankBoom",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	TNT1 A 0 A_SpawnItemEx("TankFlare", 0, 0, 0, 0, 0, 0, 0)
+	TNT1 A 25 A_SpawnItemEx("NukeFloor", 0, 0, 0, 0, 0, 0, 0)
+	TNT1 AA 0 A_SpawnItemEx("NukeSmokeFloor", 0, 0, 0, 0, 0, 0, 0)
+	TNT1 A 0 A_SpawnItemEx("TankPillar", 0, 0, 0, 0, 0, 2, 0)
+	TNT1 A 45 A_SpawnItemEx("TankSmokePillar", 0, 0, 0, 0, 0, 2, 0)
+	TNT1 A 0 A_SpawnItemEx("TankMushroom", 0, 0, 56, 0, 0, 0, 0)
+	TNT1 AA 0 A_SpawnItemEx("TankSmokeMushroom", 0, 0, 56, 0, 0, 0, 0)
 	Stop
 	}
 }
 
-ACTOR TankExplosion2: TankExplosion
+Actor TankBoom
 {
-Radius 8
-Height 8
-Speed 5
-Mass 6
-Scale 1.5
-BounceFactor 0
-+MISSILE
-+NOGRAVITY
-+DOOMBOUNCE
-+NOBLOCKMAP
-+NOTELEPORT
-+DONTSPLASH
-+MOVEWITHSECTOR
-+CLIENTSIDEONLY
-+FORCEXYBILLBOARD
-Renderstyle Add
++NoBlockmap
++NoGravity
++ForceRadiusDmg
+DamageType "Enemy"
 States
 	{
 	Spawn:
-	EXPL A 0 Radius_Quake(4, 8, 0, 20, 0)
-	TNT1 AAAA 0 A_CustomMissile("TankSmoke", 15, 0, random(0, 360), 2, random(0, 360))
-	EXPL A 0 A_Explode(100, 150)
-	FBLX A 0 Bright A_CustomMissile("Boom",56,0,0,2,0)
-	FBLX A 0 Bright A_CustomMissile("Boom",56,0,20,2,0)
-	FBLX A 0 Bright A_CustomMissile("Boom",56,0,40,2,0)
-	FBLX A 0 Bright A_CustomMissile("Boom",56,0,60,2,0)
-	FBLX A 0 Bright A_CustomMissile("Boom",56,0,80,2,0)
-	FBLX A 0 Bright A_CustomMissile("Boom",56,0,100,2,0)
-	FBLX A 0 Bright A_CustomMissile("Boom",56,0,120,2,0)
-	FBLX A 0 Bright A_CustomMissile("Boom",56,0,140,2,0)
-	FBLX A 0 Bright A_CustomMissile("Boom",56,0,160,2,0)
-	FBLX A 0 Bright A_CustomMissile("Boom",56,0,180,2,0)
-	FBLX A 0 Bright A_CustomMissile("Boom",56,0,200,2,0)
-	FBLX A 0 Bright A_CustomMissile("Boom",56,0,220,2,0)
-	FBLX A 0 Bright A_CustomMissile("Boom",56,0,240,2,0)
-	FBLX A 0 Bright A_CustomMissile("Boom",56,0,260,2,0)
-	FBLX A 0 Bright A_CustomMissile("Boom",56,0,280,2,0)
-	FBLX A 0 Bright A_CustomMissile("Boom",56,0,300,2,0)
-	FBLX A 0 Bright A_CustomMissile("Boom",56,0,320,2,0)
-	FBLX A 0 Bright A_CustomMissile("Boom",56,0,340,2,0)
-	EXPL A 4 Bright A_Mushroom("Boom", random(8,16))
-	BFE1 ABCDEFG 3 BRIGHT
-	TNT1 AAAA 0 A_CustomMissile("TankSmoke", 30, 0, random(0, 360), 2, random(70, 130))
-	BFE1 HIJKL 3 BRIGHT
+	TNT1 A 0
+	TNT1 AAAAA 2 A_Explode(10, 128, 0)
 	Stop
 	}
 }
 
+Actor TankFire : Nuke
+{
+RenderStyle Add
++NoInteraction
++DONTSPLASH
++EXPLODEONWATER
+Scale 0.5
+States
+	{
+	Spawn:
+	TNT1 AA 0 A_Jump(196, "Spawn2", "Spawn3", "Spawn4")
+	FLA1 A 2 Bright A_FadeOut(0.03)
+	Wait
+	Spawn2:
+	FLA2 A 2 Bright A_FadeOut(0.02)
+	Wait
+	Spawn3:
+	FLA3 A 2 Bright A_FadeOut(0.03)
+	Wait
+	Spawn4:
+	FLA4 A 2 Bright A_FadeOut(0.02)
+	Wait
+	}
+}
+
+Actor NukeSmoke : Nuke
+{
+Scale 1.7
++NoInteraction
++DONTSPLASH
++EXPLODEONWATER
+Alpha 0.5
+States
+	{
+	Spawn:
+	TNT1 AA 0 A_Jump(196, "Spawn2", "Spawn3", "Spawn4")
+	NSMK A 2 A_FadeOut(0.008)
+	Wait
+	Spawn2:
+	NSMK B 2 A_FadeOut(0.009)
+	Wait
+	Spawn3:
+	NSMK C 2 A_FadeOut(0.008)
+	Wait
+	Spawn4:
+	NSMK D 2 A_FadeOut(0.009)
+	Wait
+	}
+}
+
+Actor TankFlare : TankFire
+{
+Scale 0.8
++NoInteraction
+States
+	{
+	Spawn:
+	FLAR A 1 Bright A_FadeOut(0.011)
+	Wait
+	}
+}
+
+Actor NukeFloor : Nuke
+{
+States
+	{
+	Spawn:
+	TNT1 A 0
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire", 0, 0, 0, 0.1 * Random(0, 30), 0.1 * Random(0, 30), 0, Random(0, 359), 128, 0)
+	Stop
+	}
+}
+
+Actor NukeSmokeFloor : Nuke
+{
+States
+	{
+	Spawn:
+	TNT1 A 0
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 0.1 * Random(0, 30), 0.1 * Random(0, 30), 0, Random(0, 359), 128, 0)
+	Stop
+	}
+}
+
+Actor TankPillar : Nuke
+{
+States
+	{
+	Spawn:
+	TNT1 A 0
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire", 0, 0, 0, 0.1 * Random(0, 10), 0.1 * Random(0, 10), Random(0, -3), Random(0, 359), 128, 0)
+	TNT1 A 0 A_SpawnItem("TankSmokeRing", 0, 0, 0)
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire", 0, 0, 0, 0.1 * Random(0, 10), 0.1 * Random(0, 10), Random(0, -3), Random(0, 359), 128, 0)
+	Stop
+	}
+}
+
+Actor TankSmokePillar : Nuke
+{
+States
+	{
+	Spawn:
+	TNT1 A 0
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 0.1 * Random(0, 10), 0.1 * Random(0, 10), 0.1 * Random(0, -40), Random(0, 359), 128, 0)
+	Stop
+	}
+}
+
+Actor TankMushroom : Nuke
+{
+States
+	{
+	Spawn:
+	TNT1 A 0
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire", 0, 0, 0, 0.1 * Random(0, 25), 0.01 * Random(0, 25), 0.1 * Random(-10, 10), Random(0, 359), 128, 0)
+	Stop
+	}
+}
+
+Actor TankSmokeMushroom : Nuke
+{
+States
+	{
+	Spawn:
+	TNT1 A 0
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 0.1 * Random(0, 25), 0.1 * Random(0, 25), 0.1 * Random(-10, 10), Random(0, 359), 128, 0)
+	Stop
+	}
+}
+
+Actor TankSmokeRing : Nuke
+{
+States
+	{
+	Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 0, 0, 0)
+	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 20, 0, 0)
+	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 40, 0, 0)
+	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 60, 0, 0)
+	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 80, 0, 0)
+	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 100, 0, 0)
+	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 120, 0, 0)
+	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 140, 0, 0)
+	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 160, 0, 0)
+	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 180, 0, 0)
+	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 200, 0, 0)
+	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 220, 0, 0)
+	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 240, 0, 0)
+	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 260, 0, 0)
+	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 280, 0, 0)
+	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 300, 0, 0)
+	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 320, 0, 0)
+	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 340, 0, 0)
+	Stop
+	}
+}
+
+//Some Sergeant_Mark_IV ArmageDoom stuff here + slight modifications of mine
 ACTOR TankPieces
 {
 Radius 5
@@ -264,11 +389,12 @@ States
 	Goto See
 	Death:
 	TNT1 A 0 A_StopSoundEx("SoundSlot7")
-	TNT1 A 0 A_SpawnItem("TankExplosion2")
 	TNT1 A 0 A_PlaySound("weapons/explode")
 	TNT1 A 0 A_Scream
 	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile("TankPieces", random(96,128), 0, random(0, 360), 2, random(0, 360))
 	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile("TankGlassShards", random(96,128), 0, random(0, 360), 2, random(0, 360))
+	TNT1 A 0 A_SpawnItemEx("Nuke", 0, 0, 5, 0, 0, 0, 0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
+	TNT1 A 1 A_SpawnItemEx("KaBoomer",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS,0)
 	WRK1 A 8 A_SpawnItemEx("GeneralExplosion_Large", 56, 0, 32)
 	TNT1 A 0 A_SpawnItem("FuckedSSTank1")
 	TNT1 A 20
@@ -335,11 +461,12 @@ States
 	goto Turret+1
 	Death:
 	TNT1 A 0 A_StopSoundEx("SoundSlot7")
-	TNT1 A 0 A_SpawnItem("TankExplosion2")
 	TNT1 A 0 A_PlaySound("weapons/explode")
 	TNT1 A 0 A_Scream
 	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile("TankPieces2", random(96,128), 0, random(0, 360), 2, random(0, 360))
 	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile("TankGlassShards", random(96,128), 0, random(0, 360), 2, random(0, 360))
+	TNT1 A 0 A_SpawnItemEx("Nuke", 0, 0, 5, 0, 0, 0, 0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
+	TNT1 A 1 A_SpawnItemEx("KaBoomer",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS,0)
 	WRK3 A 8 A_SpawnItemEx("GeneralExplosion_Large", 56, 0, 32)
 	TNT1 A 0 A_SpawnItem("FuckedSSTank2")
 	TNT1 A 20
