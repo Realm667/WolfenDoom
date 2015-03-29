@@ -27,6 +27,12 @@ end
    nostopcutoff
 end
 
+:Moving_Stone_Door
+   door 5
+   playuntildone   DSSTN01
+   playrepeat      DSSTN01
+end
+
 ///////////////////////
 // Lifts //////////////
 ///////////////////////
@@ -36,4 +42,11 @@ end
         playuntildone   slift1a
         playrepeat      slift1b
         stopsound       slift1c
+end
+
+:Moving_Stone
+	platform        2
+        playuntildone   DSSTN01
+	playrepeat      DSSTN01
+	nostopcutoff
 end
