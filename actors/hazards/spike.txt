@@ -14,10 +14,12 @@ actor GroundSpikes : SwitchableDecoration 10315
   Spawn:
   Active:
     BSPK ABCDE 5 
-    BSPK F -1 NoDelay Thing_SetSpecial(0, 73, 15, 22, 0)
+    BSPK F 0 A_SetSolid
+    BSPK F -1 Thing_SetSpecial(0, 73, 200, 22, 0)
     stop 
   Inactive:
     BSPK FEDCB 5
+    BSPK A 0 A_UnSetSolid
     BSPK A -1
     stop
   }
