@@ -8,17 +8,18 @@ actor GroundSpikes : SwitchableDecoration 10315
   Scale 1.0
   obituary "%o was impaled by Tutanchamun's toothpicks."
   -SOLID
+  +BUMPSPECIAL
   States
   {
   Spawn:
   Active:
-    BSPK ABCDEF 5 
-    BSPK F 1 A_Explode(200, 32)
-    goto Active+6   
+    BSPK ABCDE 5 
+    BSPK F -1 NoDelay Thing_SetSpecial(0, 73, 15, 22, 0)
+    stop 
   Inactive:
-    BSPK FEDCBA 5
-    BSPK A 5
-    goto Inactive+6   
+    BSPK FEDCB 5
+    BSPK A -1
+    stop
   }
 }
 
