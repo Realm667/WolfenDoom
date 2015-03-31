@@ -351,6 +351,23 @@ ACTOR SmallBush2 10703
   }
 }
 
+ACTOR CeilingGrass 10705
+{
+//$Category Props (Wolf3D)
+//$Title Ceiling Grass
+//$Color 3 
+  Radius 16
+  Height 24
+  -SOLID
+  +NOGRAVITY
+  +SPAWNCEILING
+  States
+  {
+  Spawn:
+    CLGR A -1
+    Stop
+  }
+}
 
 
 
