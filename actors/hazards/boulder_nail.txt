@@ -5,14 +5,23 @@ actor RollingBoulderGrey
   Speed 10
   Damage 250
   Scale 0.5
+  Gravity 1.5
+  BounceFactor 0.7
+  BounceType Doom
   obituary "%o was flattened by a boulder."
-  Projectile
   +RIPPER
+  +DONTRIP
+  +BOUNCEONFLOORS
+  +NOBOUNCESOUND
   +NODAMAGETHRUST
-  +FLOORHUGGER
   +NOEXTREMEDEATH
-  -NOGRAVITY
   -NOTELEPORT
+  -NOGRAVITY
+  +SOLID
+  +DROPOFF
+  +MISSILE
+
+
   DeathSound "boulder/stop"
   States
   {
