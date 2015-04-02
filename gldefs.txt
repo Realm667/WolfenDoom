@@ -403,6 +403,25 @@ object StreetLight1
 frame STRLD {light BOASTLT1}
 }
 
+
+brightmap texture "models/lightpost_lit.png"
+{
+	map "models/lightpost_bm.png"
+}
+
+pointlight LIGHTPOSTLIGHT
+{
+	color 1.00 0.93 0.78
+	size 64
+	offset 50 0 16
+	dontlightself 1
+}
+
+object StreetLight1Lit
+{
+	frame STRL { light LIGHTPOSTLIGHT }
+}
+
 PointLight BOASTLT2 //StreetLight2
 {
 color 1.0 1.0 1.0
