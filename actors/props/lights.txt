@@ -257,7 +257,7 @@ States
 ACTOR StreetLight1 19011
 {
 //$Category Light Sources (Wolf3D)
-//$Title Street Light
+//$Title Street Light (unlit)
 //$Color 11
 Radius 4
 Height 128
@@ -268,6 +268,13 @@ States
 	STRL D -1
 	Stop
 	}
+}
+
+ACTOR StreetLight1Lit : StreetLight1 19012
+{
+//$Category Light Sources (Wolf3D)
+//$Title Street Light (lit)
+//$Color 11
 }
 
 ACTOR StreetLight2 : SwitchingDecoration 19039
