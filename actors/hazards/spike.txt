@@ -12,7 +12,8 @@ actor GroundSpikes : SwitchableDecoration 10315
       {
       Spawn:
       Active:
-        BSPK ABCDE 2
+	BSPK A 0 A_PlaySound ("SpikeToggle") 
+        BSPK ABCDE 2 
         BSPK A 0 A_SetSolid
         BSPK F 0 Thing_SetSpecial(0, 73, 200, 22, 0)
         BSPK F -1
