@@ -1,3 +1,17 @@
+ACTOR SharkBlocker 7999
+//$Category Monsters (Wolf3D)
+//$Title Shark (blocker)
+//$Color 4
+{
+	Height 1
+	Radius 256
+	Mass 99999999
+	Species "Player"
+	+SOLID
+	+NOGRAVITY
+	+THRUSPECIES
+}
+
 ACTOR Shark 8000
 {
 //$Category Monsters (Wolf3D)
@@ -12,11 +26,10 @@ ACTOR Shark 8000
   seesound "shark/sight"
   deathsound "shark/death"
   activesound "shark/active"
-    MONSTER
+  MONSTER
   +FLOORCLIP
   +NOGRAVITY
   +FLOAT
-  
   States
   {
    Spawn:

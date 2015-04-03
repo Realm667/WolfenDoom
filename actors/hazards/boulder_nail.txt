@@ -40,7 +40,59 @@ actor RollingBoulderGrey
   }
 }
 
+actor RollingBoulderGreyHugger
+{
+  Radius 24
+  Height 48
+  Speed 10
+  Damage 250
+  Scale 0.5
+  obituary "%o was flattened by a boulder."
+  Projectile
+  +RIPPER
+  +NODAMAGETHRUST
+  +FLOORHUGGER
+  +NOEXTREMEDEATH
+  -NOGRAVITY
+  -NOTELEPORT
+  DeathSound "boulder/stop"
+  States
+  {
+  Spawn:
+    GBOL A 0
+    GBOL A 2 A_PlaySoundEx ("Boulder/Roll", "SoundSlot5", 1)
+    // Fall through
+  Roll:
+    GBOL BCDA 2 A_Quake (1, 2, 0, 192, "") 
+    loop
+  Death:
+    TNT1 A 1 A_SpawnItem ("BoulderStoppedGrey")
+    TNT1 A 0 A_StopSoundEx ("SoundSlot5")
+    TNT1 A 0 A_PlaySound ("Boulder/Stop")
+    stop
+  }
+}
+
 actor RollingBoulderBrown : RollingBoulderGrey
+{
+  States
+  {
+  Spawn:
+    BBOL A 0
+    BBOL A 2 A_PlaySoundEx ("Boulder/Roll", "SoundSlot5", 1)
+    // Fall through
+  Roll:
+    BBOL BCDA 2 A_Quake (1, 2, 0, 192, "") 
+    loop
+  Death:
+    TNT1 A 1 A_SpawnItem ("BoulderStoppedBrown")
+    TNT1 A 0 A_StopSoundEx ("SoundSlot5")
+    TNT1 A 0 A_PlaySound ("Boulder/Stop")
+    stop
+  }
+}
+
+actor RollingBoulderBrownHugger : RollingBoulderGreyHugger
 {
   States
   {
@@ -88,7 +140,7 @@ actor BoulderStoppedBrown : BoulderStoppedGrey
 actor BoulderStartGrey : SwitchableDecoration 10310
 {
 //$Category Hazards (Wolf3D)
-//$Title Boulder grey (inactive)
+//$Title Boulder grey (bounce, inactive)
 //$Color 3
   Radius 24
   Height 48
@@ -110,7 +162,7 @@ actor BoulderStartGrey : SwitchableDecoration 10310
 actor BoulderStartBrown : BoulderStartGrey 10311
 {
 //$Category Hazards (Wolf3D)
-//$Title Boulder brown (inactive)
+//$Title Boulder brown (bounce, inactive)
 //$Color 3
   States
   {
@@ -123,6 +175,24 @@ actor BoulderStartBrown : BoulderStartGrey 10311
     stop   
   }
 }
+
+actor BoulderStartBrownHugger : BoulderStartGrey 10312
+{
+//$Category Hazards (Wolf3D)
+//$Title Boulder brown (hugger, inactive)
+//$Color 3
+  States
+  {
+  Spawn:
+  Inactive:
+    BBOL A -1
+    stop
+  Active:
+    TNT1 A 1 A_SpawnItemEx ("RollingBoulderBrownHugger", 0, 0, 0, 10, 0, 0, 0) 
+    stop   
+  }
+}
+
 
 
 //////////////////
