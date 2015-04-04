@@ -1544,3 +1544,101 @@ Frame BMBEM { Light SuicideBomberDeath1 }
 Frame BMBEN { Light SuicideBomberDeath2 }
 Frame BMBEO { Light SuicideBomberDeath3 }
 }
+
+Flickerlight BLOODSKULL_X1
+{
+	color 0.8 0.3 0.0
+	size 52
+	secondarySize 60
+	chance 0.25
+}
+
+Flickerlight BLOODSKULL_X2
+{
+	color 0.8 0.3 0.0
+	size 56
+	secondarySize 64
+	chance 0.25
+}
+
+Flickerlight BLOODSKULL_X3
+{
+	color 0.6 0.2 0.0
+	size 68
+	secondarySize 76
+	chance 0.25
+}
+
+Flickerlight BLOODSKULL_X4
+{
+	color 0.4 0.1 0.0
+	size 84
+	secondarySize 92
+	chance 0.25
+}
+
+Flickerlight BLOODSKULL_X5
+{
+	color 0.2 0.0 0.0
+	size 92
+	secondarySize 100
+	chance 0.25
+}
+
+Object BloodSkull
+{
+frame SWBSD { light BLOODSKULL_X1 }
+frame SWBSE { light BLOODSKULL_X2 }
+frame SWBSF { light BLOODSKULL_X3 }
+frame SWBSG { light BLOODSKULL_X4 }
+frame SWBSH { light BLOODSKULL_X5 }
+}
+
+FlickerLight2 SmokeLight_A
+{
+Color 255 255 255
+Subtractive 1
+Size 32
+SecondarySize 48
+Interval 2.0
+Offset 0 0 0
+}
+
+Object SmokeMonster
+{
+Frame SMMO { Light SmokeLight_A }
+Frame TNT1 { Light SmokeLight_A }
+}
+
+// Bullet puff
+flickerlight BPUFF1
+{
+    color 0.5 0.5 0.0
+    size 6
+    secondarySize 8
+    chance 0.8
+}
+
+flickerlight BPUFF2
+{
+    color 0.5 0.5 0.0
+    size 3
+    secondarySize 4
+    chance 0.8
+}
+
+
+// Zombies
+flickerlight2 ZOMBIEATK
+{
+    color 1.0 0.8 0.2
+    size 48
+    secondarySize 56
+    interval 1
+    offset 0 40 0
+}
+
+object UndeadPriest
+{
+    frame UNDPF { light ZOMBIEATK }
+}

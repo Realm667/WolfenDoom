@@ -3658,3 +3658,64 @@ States
 	stop
 	}
 }
+
+actor UndeadPriest : Nazi 18921
+{
+//$Category Monsters (Wolf3D)
+//$Title Priest
+//$Color 4
+  obituary "%o was bagged by a priest."
+  health 200
+  Scale 1.1
+  radius 20
+  height 56
+  mass 125
+  speed 8
+  painchance 30
+  dropitem "NewShell" 96
+  dropitem "NewShell" 128
+  painsound "UndeadPriest/Pain"
+  deathsound "UndeadPriest/Die"
+  DamageFactor "UndeadPriest", 0
+  MONSTER
+  +FLOORCLIP
+  states
+  {
+  Spawn:
+    UNDP A 10 A_Look
+    loop
+  See:
+    UNDP A 0 A_Jump (32, "Run")
+    UNDP AABBCCDD 3 A_Chase
+    loop
+  Run:
+    UNDP A 0 A_Jump (24, "See")
+    UNDP AABBCCDD 2 A_Chase
+    loop
+  Missile:
+    UNDP E 10 A_FaceTarget
+    UNDP FFF 2 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
+    UNDP F 0 bright A_PlaySoundEx ("UndeadPriest/Shoot","SoundSlot6")
+    UNDP E 2 A_SentinelRefire
+    UNDP E 10 A_FaceTarget
+    UNDP FFF 2 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
+    UNDP F 0 bright A_PlaySoundEx ("UndeadPriest/Shoot2","SoundSlot7")
+    UNDP E 10
+    goto See
+  Pain:
+    UNDP G 3
+    UNDP G 3 A_Pain
+    goto See
+  Death:
+    UNDP H 6
+    UNDP I 6 A_Scream
+    UNDP JK 6
+    UNDP L 6 A_NoBlocking
+    UNDP M 6
+    UNDP N -1
+    Stop
+  Raise:
+    UNDP NMLKJIH 6
+    goto See
+  }
+}

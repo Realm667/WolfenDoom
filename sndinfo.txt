@@ -726,6 +726,44 @@ eliteflamer/death7		ELTFDTH7
 eliteflamer/death8		ELTFDTH8
 eliteflamer/death9		ELTFDTH9
 
+//Bat
+$RANDOM batfam/idle { batfam/idle1 batfam/idle2 }
+batfam/idle1 batidle1
+batfam/idle2 batidle2
+
+batfam/pain batpain
+batfam/death batdie
+batfam/crash batcrash
+
+//Bloodskull
+BSkull/See		BSKULSEE
+BSkull/Pain		BSKULPIN
+BSkull/Death	BSKULEXP
+Blood/Spit		BLDSPIT
+$limit Blood/Spit 0
+Blood/Impact	BLDIMPAC
+$limit Blood/Impact 0
+
+//Priest
+DSUNDPN1	DSUNDPN1
+DSUNDPN2	DSUNDPN2
+DSUNDPN3	DSUNDPN3
+
+DSUNDIE1	DSUNDIE1
+DSUNDIE2	DSUNDIE2
+DSUNDIE3	DSUNDIE3
+
+DSUNDSHT	DSUNDSHT
+
+UndeadPriest/Shoot	DSUNDSHT
+UndeadPriest/Shoot2	DSUNDSHT
+$limit UndeadPriest/Shoot 0
+$limit UndeadPriest/Shoot2 0
+$random UndeadPriest/Pain	{ DSUNDPN1 DSUNDPN2 DSUNDPN3 }
+$random UndeadPriest/Die	{ DSUNDIE1 DSUNDIE2 DSUNDIE3 }
+
+
+
 /////////////////////////////////////////////////////////////////////
 //// SYSTEM/MENU SOUNDS /////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
@@ -866,6 +904,22 @@ DSDETOP DSDETOP //Detonator Place
 //Tanks - from World War II G.I.
 TNK1LOOP TNK1LOOP
 TNK2LOOP TNK2LOOP
+
+//Smokemonster
+Smoke/See		SSee
+
+Smoke/Tick 		Slop1
+Smoke/Die 		SDIE
+Smoke/Charge1		scrg1
+Smoke/Charge2		scrg2
+$random Smoke/Charge	{ Smoke/Charge1  Smoke/Charge2 }
+
+Smoke/pain1		Sact1
+Smoke/pain2		Sact2
+Smoke/pain3		Sact3
+Smoke/pain4		Sact4
+$random Smoke/pain	{ Smoke/pain1  Smoke/pain2 Smoke/pain3 Smoke/pain4 }
+
 
 /////////////////////////////////////////////////////////////////////
 //// NASHGORE SOUNDS ////////////////////////////////////////////////
