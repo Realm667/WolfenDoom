@@ -293,6 +293,7 @@ Teleport:
 	Goto See
 	}
 }
+
 actor IsawYou : Inventory
 {
 Inventory.MaxAmount 1
@@ -313,4 +314,25 @@ TNT1 A 2
 SMMO ABCDEFGHIJKLMNOPQR 2
 Stop
 }
+}
+
+ACTOR SmokeMonsterDummy
+{
+  Game Doom
+  SpawnID 171
+  Radius 6
+  Height 8
+  Speed 50
+  Damage 3
+  Projectile
+  States
+  {
+  Spawn:
+    SMMO A 1 
+    TNT1 AAAAAA 0 Bright A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
+    Loop
+  Death:
+    SMMO A 1
+    Stop
+  }
 }
