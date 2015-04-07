@@ -1,3 +1,7 @@
+////////////////////////////////
+///// GAME INFO SETTINGS ///////
+////////////////////////////////
+
 gameinfo
 {
 	PlayerClasses = "WildWeaselPlayer"
@@ -29,23 +33,44 @@ gameinfo
 	statscreen_enteringfont = "BIGFONT", "DARKGRAY"
 }
 
+
+////////////////////////////////
+/////// EPISODE MENU ///////////
+////////////////////////////////
+
 clearepisodes
 
 defaultmap
 {
 	lightmode = 3
 	pixelratio = 1.0
-	cluster = 1
 	FallingDamage
 }
 
-episode INTERMAP
+map INTERMAP "Allied Headquarter"
 {
-	name = "Blade of Agony"
-	key = "a"
+	levelnum = 99
+	nointermission
+	music = "BRIEFING"
+	cluster = 1
 }
 
-clusterdef 1
+map TITLEMAP "Titlemap"
+{
+	music = "D_DM2TTL"
+}
+
+//##############################
+//###### FIRST EPISODE #########
+//##############################
+
+episode INTERMAP
+{
+	name = "The Spear of Gods"
+	key = "s"
+}
+
+cluster 1
 {
 	hub
 }
@@ -56,6 +81,7 @@ map C1M1 "Operation: Speerspitze"	//Tormentor667
 	next = INTERMAP
 	nointermission
 	music = "C1M1_MUS"
+	cluster = 1
 }
 
 map C1M3 "Operation: Overlord"		//Tormentor667
@@ -64,6 +90,7 @@ map C1M3 "Operation: Overlord"		//Tormentor667
 	next = INTERMAP
 	nointermission
 	music = "C1M3_MUS"
+	cluster = 1
 }
 
 map C1M4 "Operation: Eder Dam" 		//GuardSoul
@@ -72,6 +99,7 @@ map C1M4 "Operation: Eder Dam" 		//GuardSoul
 	next = INTERMAP
 	nointermission
 	music = "C1M4_MUS"
+	cluster = 1
 }
 
 map C1M5 "Operation: St. Quentin" 	//Tormentor667
@@ -80,27 +108,27 @@ map C1M5 "Operation: St. Quentin" 	//Tormentor667
 	next = INTERMAP
 	nointermission
 	music = "C1M5_MUS"
+	cluster = 1
 }
 
 map C1M6 "Operation: Grabräuber"	//Tormentor667
 {
 	levelnum = 6
-	next = INTERMAP
+	next = EndTitle //next = INTERMAP
 	nointermission
 	music = "C1M6_MUS"
+	cluster = 1
 }
 
-map INTERMAP "Allied Headquarter"
-{
-	levelnum = 99
-	nointermission
-	music = "BRIEFING"
-}
+//###############################/
+//###### SECOND EPISODE #########/
+//###############################/
 
-map TITLEMAP "Titlemap"
-{
-	music = "D_DM2TTL"
-}
+
+
+////////////////////////////////
+////// SKILL SETTINGS //////////
+////////////////////////////////
 
 clearskills
 
@@ -186,6 +214,10 @@ skill Nazis5
 	replaceactor = "EnemySTGTracer", "HardEnemySTGTracer"
 	replaceactor = "EnemyChaingunTracer", "HardEnemyChaingunTracer"
 }
+
+////////////////////////////////////
+/////// INTERMISSION & CAST ////////
+////////////////////////////////////
 
 Intermission Inter_Cast
 {
