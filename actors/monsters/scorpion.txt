@@ -1,19 +1,22 @@
 actor Scorpion 11333
 {
-Monster
-+FLOORCLIP
-+LOOKALLAROUND
-+DONTMORPH
-+NOTRIGGER
 Radius 10
 Height 12
 Scale 0.6
 Mass 20
-Speed 1
-Health 1
-MaxStepHeight 8
-MaxDropOffHeight 8
+Speed 1.2
+Health 20
+MeleeRange 16
+MaxStepHeight 16
+MaxDropOffHeight 128
+MeleeDamage 2
+Damage 1 //jumpattacks
 DeathSound "rat/death"
+Obituary "%o was stinged by a scorpion"
+Monster
++FLOORCLIP
++LOOKALLAROUND
++DONTMORPH
 +NOTRIGGER
 -COUNTKILL
 States
@@ -22,15 +25,20 @@ States
 	SCRP A 0 NoDelay A_SetScale(ScaleX + frandom(-0.05, 0.05), ScaleY + frandom(-0.05, 0.05))
 	goto Idle
 	Idle:
-	SCRP A 35 A_LookEx(0, 0, 0, 1280)
+	SCRP A 4 A_LookEx(0, 0, 0, 512)
 	loop
 	See:
-	SCRP AAAAAA 1 A_Wander
+	SCRP AAAA 1 A_Chase
 	SCRP A 0 A_JumpIf(Random(1, 16) == 5, "Procrastinate")
-	SCRP BBBBBB 1 A_Wander
+	SCRP BBBB 1 A_Chase
 	SCRP B 0 A_JumpIf(Random(1, 16) == 5, "Procrastinate")
 	NULL A 0 A_JumpIf(Random(1, 24) == 5, "TryJump")
 	loop
+	Melee:
+	NULL A 0 A_FaceTarget
+	NULL A 0 A_PlaySound("spider/see", CHAN_AUTO, 0.5)
+	SCRP AB 6 A_MeleeAttack
+	goto See
 	TryJump:
 	NULL A 0 A_CheckFloor("Jump") //don't jump if mid-air
 	goto See
@@ -38,6 +46,16 @@ States
 	NULL A 0 ThrustThing(angle*256/360, Random(4, 6), 0, 0)
 	NULL A 0 ThrustThingZ(0, Random(30, 40), 0, 1)
 	SCRP C 15
+	goto See
+	Missile:
+	SCRP A 0 A_Jumpifcloser(112, 2)
+	Goto See
+	SCRP AB 4 A_FaceTarget
+	SCRP A 8 A_SkullAttack
+	SCRP B 5 A_Gravity
+	Goto See
+	TryJump:
+	NULL A 0 A_CheckFloor("Jump") //don't jump if mid-air
 	goto See
 	Procrastinate:
 	"----" "#" 35
