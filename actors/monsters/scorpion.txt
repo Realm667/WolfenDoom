@@ -1,5 +1,8 @@
 actor Scorpion 11333
 {
+//$Category Monsters (Wolf3D)
+//$Title Scorpion (normal)
+//$Color 4
 Radius 10
 Height 12
 Scale 0.6
@@ -9,7 +12,7 @@ Health 20
 MeleeRange 16
 MaxStepHeight 16
 MaxDropOffHeight 128
-MeleeDamage 2
+MeleeDamage 3
 Damage 1 //jumpattacks
 DeathSound "rat/death"
 Obituary "%o was stinged by a scorpion"
@@ -68,6 +71,79 @@ States
 	}
 }
 
+actor ScorpionBig 11334
+{
+//$Category Monsters (Wolf3D)
+//$Title Scorpion (big)
+//$Color 4
+Radius 32
+Height 48
+Scale 1.0
+Mass 150
+Speed 1.2
+Health 250
+MeleeRange 32
+MaxStepHeight 32
+MaxDropOffHeight 256
+MeleeDamage 10
+Damage 2 //jumpattacks
+DeathSound "rat/death"
+Obituary "%o was nailed by a big scorpion"
+Monster
++FLOORCLIP
++LOOKALLAROUND
++DONTMORPH
++NOTRIGGER
+-COUNTKILL
+States
+	{
+	Spawn:
+	SCR2 A 0 NoDelay A_SetScale(ScaleX + frandom(-0.05, 0.05), ScaleY + frandom(-0.05, 0.05))
+	goto Idle
+	Idle:
+	SCR2 A 4 A_LookEx(0, 0, 0, 512)
+	loop
+	See:
+	SCR2 AAAA 1 A_Chase
+	SCR2 A 0 A_JumpIf(Random(1, 16) == 5, "Procrastinate")
+	SCR2 BBBB 1 A_Chase
+	SCR2 B 0 A_JumpIf(Random(1, 16) == 5, "Procrastinate")
+	NULL A 0 A_JumpIf(Random(1, 24) == 5, "TryJump")
+	loop
+	Melee:
+	NULL A 0 A_FaceTarget
+	NULL A 0 A_PlaySound("spider/see", CHAN_AUTO, 0.5)
+	SCR2 AB 6 A_MeleeAttack
+	goto See
+	TryJump:
+	NULL A 0 A_CheckFloor("Jump") //don't jump if mid-air
+	goto See
+	Jump:
+	NULL A 0 ThrustThing(angle*256/360, Random(4, 6), 0, 0)
+	NULL A 0 ThrustThingZ(0, Random(30, 40), 0, 1)
+	SCR2 C 15
+	goto See
+	Missile:
+	SCR2 A 0 A_Jumpifcloser(224, 2)
+	Goto See
+	SCR2 AB 4 A_FaceTarget
+	SCR2 A 8 A_SkullAttack
+	SCR2 B 5 A_Gravity
+	Goto See
+	TryJump:
+	NULL A 0 A_CheckFloor("Jump") //don't jump if mid-air
+	goto See
+	Procrastinate:
+	"----" "#" 35
+	"----" "#" 0 A_JumpIf(Random(1, 2) == 1, "Procrastinate")
+	goto Idle
+	Death:
+	NULL A 0 A_ScreamAndUnblock
+	NULL AAAAAAAAAAAAAAA 0 A_SpawnItemEx("BigScorpionChunk", 0, 0, 4, Random(-2, 2), Random(-2, 2), Random(5, 10), Random(0, 256), 0, 100)
+	stop
+	}
+}
+
 Actor ScorpionChunk
 {
 Radius 8
@@ -107,6 +183,41 @@ States
 	loop
 	Chunk4:
 	SCRG D 3 A_SpawnItemEx("ScorpionFlyingBlood", Random(-1, 1), Random(-1, 1))
+	loop
+	Lay:
+	"----" "#" 250 A_CheckSight("Vanish")
+	loop
+	Vanish:
+	NULL A 0
+	stop
+	}
+}
+
+Actor BigScorpionChunk : ScorpionChunk
+{
+Scale 1.0
+Mass 60
+Gravity 0.7
+States
+	{
+	Spawn:
+	NULL A 0 NoDelay A_SetScale(ScaleX + frandom(-0.1, 0.1), ScaleY + frandom(-0.1, 0.1))
+	NULL A 0 A_Jump(256, "Chunk1", "Chunk2", "Chunk3", "Chunk4")
+	stop
+	Death:
+	"----" "#" 0 A_SpawnItemEx("ScorpionBlood", 0, 0)
+	Goto Lay
+	Chunk1:
+	SC2G A 9 A_SpawnItemEx("ScorpionFlyingBlood", Random(-1, 1), Random(-1, 1))
+	loop
+	Chunk2:
+	SC2G B 9 A_SpawnItemEx("ScorpionFlyingBlood", Random(-1, 1), Random(-1, 1))
+	loop
+	Chunk3:
+	SC2G C 9 A_SpawnItemEx("ScorpionFlyingBlood", Random(-1, 1), Random(-1, 1))
+	loop
+	Chunk4:
+	SC2G D 9 A_SpawnItemEx("ScorpionFlyingBlood", Random(-1, 1), Random(-1, 1))
 	loop
 	Lay:
 	"----" "#" 250 A_CheckSight("Vanish")
