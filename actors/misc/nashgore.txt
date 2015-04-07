@@ -164,3 +164,55 @@ actor ScorpionBloodSpot : NashGore_BloodSpot
 
 actor ScorpionFlyingBloodTrail : NashGore_FlyingBloodTrail
 {XScale 0.2 YScale 0.2 translation "16:47=208:223","168:191=210:224"}
+
+actor BScorpionBlood : NashGore_Blood
+{
+game Doom
+XScale 0.8
+YScale 0.8
+States
+	{
+	Spawn:
+	BLUD C 8
+	BLUD B 8 A_SpawnItemEx("ScorpionFlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
+	BLUD A 8
+	stop
+	}
+}
+
+actor BScorpionFlyingBlood : NashGore_FlyingBlood
+{
+XScale 0.8
+YScale 0.8
+States
+	{
+	Spawn:
+	TNT1 A 0
+	FBLD A 1 A_SpawnItem("BScorpionFlyingBloodTrail",0,0,0,1)
+	FBLD A 1
+	FBLD A 1 A_SpawnItem("BScorpionFlyingBloodTrail",0,0,0,2)
+	FBLD A 1
+	FBLD B 1 A_SpawnItem("BScorpionFlyingBloodTrail",0,0,0,3)
+	FBLD B 1
+	FBLD B 1 A_SpawnItem("BScorpionFlyingBloodTrail",0,0,0,4)
+	FBLD B 1
+	FBLD C 1 A_SpawnItem("BScorpionFlyingBloodTrail",0,0,0,5)
+	FBLD C 1
+	FBLD C 1 A_SpawnItem("BScorpionFlyingBloodTrail",0,0,0,6)
+	FBLD C 1
+	FBLD D 1 A_SpawnItem("BScorpionFlyingBloodTrail",0,0,0,7)
+	FBLD D 1
+	FBLD D 1 A_SpawnItem("BScorpionFlyingBloodTrail",0,0,0,8)
+	FBLD D 1
+	loop
+	Crash:
+	TNT1 A 1 A_SpawnItem("ScorpionBloodSpot",0,0,0,1)
+	stop
+	}
+}
+
+actor BScorpionBloodSpot : NashGore_BloodSpot
+{XScale 0.8 YScale 0.8}
+
+actor BScorpionFlyingBloodTrail : NashGore_FlyingBloodTrail
+{XScale 0.8 YScale 0.8}
