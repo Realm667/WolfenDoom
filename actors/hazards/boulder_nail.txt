@@ -20,8 +20,6 @@ actor RollingBoulderGrey
   +SOLID
   +DROPOFF
   +MISSILE
-
-
   DeathSound "boulder/stop"
   States
   {
@@ -30,7 +28,7 @@ actor RollingBoulderGrey
     GBOL A 2 A_PlaySoundEx ("Boulder/Roll", "SoundSlot5", 1)
     // Fall through
   Roll:
-    GBOL BCDA 2 A_Quake (1, 2, 0, 192, "") 
+    GBOL BCDA 2 A_Quake (1, 2, 0, 192, "")
     loop
   Death:
     TNT1 A 1 A_SpawnItem ("BoulderStoppedGrey")
@@ -63,7 +61,7 @@ actor RollingBoulderGreyHugger
     GBOL A 2 A_PlaySoundEx ("Boulder/Roll", "SoundSlot5", 1)
     // Fall through
   Roll:
-    GBOL BCDA 2 A_Quake (1, 2, 0, 192, "") 
+    GBOL BCDA 2 A_Quake (1, 2, 0, 192, "")
     loop
   Death:
     TNT1 A 1 A_SpawnItem ("BoulderStoppedGrey")
@@ -82,7 +80,7 @@ actor RollingBoulderBrown : RollingBoulderGrey
     BBOL A 2 A_PlaySoundEx ("Boulder/Roll", "SoundSlot5", 1)
     // Fall through
   Roll:
-    BBOL BCDA 2 A_Quake (1, 2, 0, 192, "") 
+    BBOL BCDA 2 A_Quake (1, 2, 0, 192, "")
     loop
   Death:
     TNT1 A 1 A_SpawnItem ("BoulderStoppedBrown")
@@ -101,7 +99,7 @@ actor RollingBoulderBrownHugger : RollingBoulderGreyHugger
     BBOL A 2 A_PlaySoundEx ("Boulder/Roll", "SoundSlot5", 1)
     // Fall through
   Roll:
-    BBOL BCDA 2 A_Quake (1, 2, 0, 192, "") 
+    BBOL BCDA 2 A_Quake (1, 2, 0, 192, "")
     loop
   Death:
     TNT1 A 1 A_SpawnItem ("BoulderStoppedBrown")
@@ -154,8 +152,8 @@ actor BoulderStartGrey : SwitchableDecoration 10310
     GBOL A -1
     stop
   Active:
-    TNT1 A 1 A_SpawnItemEx ("RollingBoulderGrey", 0, 0, 0, 10, 0, 0, 0) 
-    stop   
+    TNT1 A 1 A_SpawnItemEx ("RollingBoulderGrey", 0, 0, 0, 10, 0, 0, 0)
+    stop
   }
 }
 
@@ -171,8 +169,8 @@ actor BoulderStartBrown : BoulderStartGrey 10311
     BBOL A -1
     stop
   Active:
-    TNT1 A 1 A_SpawnItemEx ("RollingBoulderBrown", 0, 0, 0, 10, 0, 0, 0) 
-    stop   
+    TNT1 A 1 A_SpawnItemEx ("RollingBoulderBrown", 0, 0, 0, 10, 0, 0, 0)
+    stop
   }
 }
 
@@ -188,12 +186,10 @@ actor BoulderStartBrownHugger : BoulderStartGrey 10312
     BBOL A -1
     stop
   Active:
-    TNT1 A 1 A_SpawnItemEx ("RollingBoulderBrownHugger", 0, 0, 0, 10, 0, 0, 0) 
-    stop   
+    TNT1 A 1 A_SpawnItemEx ("RollingBoulderBrownHugger", 0, 0, 0, 10, 0, 0, 0)
+    stop
   }
 }
-
-
 
 //////////////////
 // Nails in Air // SpawnID 180
@@ -228,7 +224,7 @@ actor Nail
 	}
 }
 
-actor NailBlur       
+actor NailBlur
 {
 	height 8
 	radius 1
@@ -245,4 +241,13 @@ actor NailBlur
 			DART A 1 A_FadeOut(0.2)
 			loop
 	}
+}
+
+//External Actors
+actor ScorpionNail : Nail //no spawnid for this!
+{
+Speed 48
+Scale 0.4
+SeeSound "scorpion/sting1"
+DeathSound "scorpion/sting2"
 }
