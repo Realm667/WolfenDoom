@@ -18,16 +18,18 @@ MeleeSound "scorpion/attacks"
 DeathSound "rat/death"
 Obituary "%o was stinged by a scorpion"
 BloodType "ScorpionBlood"
+Damagefactor "Enemy", 0.0
 Monster
 +FLOORCLIP
 +LOOKALLAROUND
++NOINFIGHTING
 +DONTMORPH
 +NOTRIGGER
 -COUNTKILL
 States
 	{
 	Spawn:
-	SCRP A 0 NoDelay A_SetScale(ScaleX + frandom(-0.05, 0.05), ScaleY + frandom(-0.05, 0.05))
+	SCRP A 2 //0 NoDelay A_SetScale(ScaleX + frandom(-0.05, 0.05), ScaleY + frandom(-0.05, 0.05))
 	goto See
 	See:
 	SCRP AAAA 1 A_Chase
@@ -90,16 +92,18 @@ MeleeSound "scorpion/attacks"
 DeathSound "scorpion/death"
 Obituary "%o was nailed by a big scorpion"
 BloodType "BScorpionBlood"
+Damagefactor "Enemy", 0.0
 Monster
 +FLOORCLIP
 +LOOKALLAROUND
++NOINFIGHTING
 +DONTMORPH
 +NOTRIGGER
 -COUNTKILL
 States
 	{
 	Spawn:
-	SCR2 A 0 NoDelay A_SetScale(ScaleX + frandom(-0.05, 0.05), ScaleY + frandom(-0.05, 0.05))
+	SCR2 A 2 //0 NoDelay A_SetScale(ScaleX + frandom(-0.05, 0.05), ScaleY + frandom(-0.05, 0.05))
 	goto See
 	See:
 	SCR2 AABB 3 A_Chase
