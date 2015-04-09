@@ -22,9 +22,9 @@ sethudsize (1600,1200,1);
 setfont ("MOVIEHUD");
 hudmessagebold(s:"A";HUDMSG_FADEINOUT,5,CR_UNTRANSLATED,800.4,600.0,1.0*32767); //it lasts practically forever...
 delay (35*2);
-/*sethudsize (800,600,0);
+sethudsize (800,600,0);
 setfont ("DBIGFONT");
-hudmessagebold (s:"MISSION FAILED";HUDMSG_FADEINOUT,0,CR_RED,400.4,300.0,6.0);*/
+hudmessagebold (s:"MISSION FAILED";HUDMSG_FADEINOUT,0,CR_RED,400.4,300.0,6.0);
 faderange (0,0,0,0.0,0,0,0,1.0,3.0);
 delay (35*8);
 sethudsize (320,200,0);
@@ -33,26 +33,42 @@ hudmessage (s:"PRESS ANY KEY TO RESTART";HUDMSG_FADEINOUT,0,CR_GREEN,160.4,100.0
 }
 
 //lowhealth scripts
-/*script "50Health" ENTER
+script "50Health" ENTER
 {
 if (GetActorProperty(0, APROP_HEALTH) <51 && GetActorProperty(0, APROP_HEALTH) >25)
 	{
-	localambientsound("hbeat", 120);
-	delay(const:8);
-	localambientsound("hbeat", 127);
+	localambientsound("hbeat", 130);
+	delay(const:21);
+	localambientsound("hbeat", 130);
 	}
-delay(const:35);
+delay(25);
 restart;
 }
 
 script "25Health" ENTER
 {
-if (GetActorProperty(0, APROP_HEALTH) <26 && GetActorProperty(0, APROP_HEALTH) >0)
+if (GetActorProperty(0, APROP_HEALTH) <26 && GetActorProperty(0, APROP_HEALTH) >10)
 	{
-	localambientsound("hbeat", 137);
-	delay(const:8);
-	localambientsound("hbeat", 130);
+	localambientsound("hbeat", 125);
+	delay(const:18);
+	localambientsound("hbeat", 125);
 	}
-delay(const:15);
+delay(25);
 restart;
-}*/
+}
+
+script "10Health" ENTER
+{
+if (GetActorProperty(0, APROP_HEALTH) <11 && GetActorProperty(0, APROP_HEALTH) >0)
+	{
+	SetHudSize(640, 480, 0);
+	Setfont("M_INJ");
+	Hudmessage(s:"A";
+	HUDMSG_FADEINOUT, 0, CR_WHITE, 320.0, 240.0, 0.0, 0.5, 0.5);
+	localambientsound("hbeat", 120);
+	delay(15);
+	localambientsound("hbeat", 120);
+	}
+delay(25);
+restart;
+}
