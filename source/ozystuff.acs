@@ -2,6 +2,12 @@
 #library "ozystuff"
 #include "zcommon.acs"
 
+//fadescript for map setup
+script "Maplaunch" ENTER
+{
+	FadeRange (0,0,0,1.0,0,0,0,0.0,2.5);
+}
+
 //underwater sounds
 script "Underwater" ENTER
 {
@@ -22,20 +28,20 @@ sethudsize (1600,1200,1);
 setfont ("MOVIEHUD");
 hudmessagebold(s:"A";HUDMSG_FADEINOUT,5,CR_UNTRANSLATED,800.4,600.0,1.0*32767); //it lasts practically forever...
 delay (35*2);
-sethudsize (800,600,0);
-setfont ("DBIGFONT");
-hudmessagebold (s:"MISSION FAILED";HUDMSG_FADEINOUT,0,CR_RED,400.4,300.0,6.0);
+//sethudsize (800,600,0);
+//setfont ("DBIGFONT");
+//hudmessagebold (s:"MISSION FAILED";HUDMSG_FADEINOUT,0,CR_RED,400.4,300.0,6.0);
 faderange (0,0,0,0.0,0,0,0,1.0,3.0);
-delay (35*8);
-sethudsize (320,200,0);
-setfont ("SMALLFNT");
-hudmessage (s:"PRESS ANY KEY TO RESTART";HUDMSG_FADEINOUT,0,CR_GREEN,160.4,100.0,1.0*32767);
+//delay (35*8);
+//sethudsize (320,200,0);
+//setfont ("SMALLFNT");
+//hudmessage (s:"PRESS ANY KEY TO RESTART";HUDMSG_FADEINOUT,0,CR_GREEN,160.4,100.0,1.0*32767);
 }
 
 //lowhealth scripts
-script "50Health" ENTER
+script "30Health" ENTER
 {
-if (GetActorProperty(0, APROP_HEALTH) <51 && GetActorProperty(0, APROP_HEALTH) >25)
+if (GetActorProperty(0, APROP_HEALTH) <31 && GetActorProperty(0, APROP_HEALTH) >20)
 	{
 	localambientsound("hbeat", 130);
 	delay(const:21);
@@ -45,9 +51,9 @@ delay(25);
 restart;
 }
 
-script "25Health" ENTER
+script "20Health" ENTER
 {
-if (GetActorProperty(0, APROP_HEALTH) <26 && GetActorProperty(0, APROP_HEALTH) >10)
+if (GetActorProperty(0, APROP_HEALTH) <21 && GetActorProperty(0, APROP_HEALTH) >10)
 	{
 	localambientsound("hbeat", 125);
 	delay(const:18);
