@@ -112,4 +112,46 @@ actor KnifeSilent : Fist
 	Weapon.SlotNumber 1   
 	+NOALERT
 	Tag "Combat Knife"
+
+	States
+	  {
+	  Ready:
+	    PUNG A 1 A_WeaponReady
+	    Loop
+	  Deselect:
+	    PUNG A 1 A_Lower
+	    Loop
+	  Select:
+	    PUNG A 1 A_Raise
+	    Loop
+	  Fire:
+	    PUNG B 4 A_PlayWeaponSound("knife/swing")
+	    PUNG C 4 A_CustomPunch(10, 1, CPF_DAGGER, "KnifePuff", 64)
+	    PUNG D 5
+	    PUNG C 4
+	    PUNG B 5 A_ReFire
+	    Goto Ready
+  }
+}
+
+actor KnifePuff
+{
+  +NOBLOCKMAP
+  +NOGRAVITY
+  +PUFFONACTORS
+  activesound ""
+  attacksound "knife/stone"
+  seesound "knife/hit"
+  states
+  {
+   Spawn:
+      BTRL ABCDE 3 
+      Stop
+   Melee:
+      BTRL ABCDE 3 
+      Stop
+   Crash:
+      TNT1 A 1 
+      Stop
+  }
 }
