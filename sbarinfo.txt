@@ -3,7 +3,7 @@ LowerHealthCap false;
 InterpolateHealth true;
 InterpolateArmor true;
 
-statusbar normal // Standard Doom Status bar
+statusbar Normal // Standard Doom Status bar
 {
     drawimage "HUDBAR", -54, 152;
 
@@ -57,3 +57,64 @@ statusbar normal // Standard Doom Status bar
     }
 }
 
+Statusbar FullScreen, FullScreenOffsets, forcescaled
+{
+
+	//Top Left
+	drawimage "HUD_UL", 0, 0;
+		//Money
+    		drawnumber 3, BIGFONT, untranslated, coinitem, alignment(left), 25, 8;		
+
+		//Time
+    		drawstring "THREEFIV", untranslated, time, 14, 21, 1, alignment(left);
+
+	//Top Right
+	drawimage "HUD_UR", -29, 0;
+		//Keys
+		drawswitchableimage keyslot 2, "nullimage", "STKEYS0", -13, 11;
+    		drawswitchableimage keyslot 5, "nullimage", "STKEYS3", -13, 21;
+    		drawswitchableimage keyslot 3, "nullimage", "STKEYS1", -13, 31;
+    		drawswitchableimage keyslot 6, "nullimage", "STKEYS4", -13, 41;
+    		drawswitchableimage keyslot 1, "nullimage", "STKEYS2", -13, 51;
+    		drawswitchableimage keyslot 4, "nullimage", "STKEYS5", -13, 61;
+
+	//Bottom Left
+	drawimage "HUD_BL", 0, -53;
+		//Health
+    		drawnumber 3, BIGFONT, untranslated, health, 86, -20;
+    		drawstring "BIGFONT", untranslated, "%", 99, -20;
+
+    		//Armor
+    		drawnumber 3, BIGFONT, untranslated, armor, 86, -36;
+    		drawstring "BIGFONT", untranslated, "%", 99, -36;
+
+		//Mugshot + Inventory
+		drawselectedinventory alternateonempty, THREEFIV, 7, -38
+    		{
+			drawmugshot 5, 7, -38;
+    		}
+
+	//Bottom Right
+	drawimage "HUD_BR", -116, -53;
+		//Weapon
+    		drawstring "THREEFIV", untranslated, weapontag, -10, -48, 1, alignment(right);
+
+		//Ammo
+		drawnumber 3, BIGFONT, untranslated, ammo1, -10, -20;
+    		drawnumber 3, BIGFONT, untranslated, ammo2, -10, -36;
+
+    		//Ammo Icons
+    		drawimage ammoicon1, -61, -20;
+    		drawimage ammoicon2, -61, -36;
+
+		//Ammo
+    		drawnumber 3, THREEFIV, untranslated, ammo MPClip, 	-10, -85, 1;
+    		drawnumber 3, THREEFIV, untranslated, ammo NewShell, 	-10, -80, 1;
+    		drawnumber 3, THREEFIV, untranslated, ammo MauserAmmo, 	-10, -75, 1;
+    		drawnumber 3, THREEFIV, untranslated, ammo FlameAmmo, 	-10, -70, 1;
+    		drawnumber 3, THREEFIV, untranslated, ammo NebAmmo, 	-10, -65, 1;
+    		drawnumber 3, THREEFIV, untranslated, ammo PanzerAmmo, 	-10, -60, 1;
+
+		//Grenade
+    		drawnumber 3, BIGFONT, untranslated, GrenadePickup, alignment(left), -83, -20;
+}
