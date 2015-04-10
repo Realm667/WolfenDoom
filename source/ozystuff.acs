@@ -38,9 +38,13 @@ faderange (0,0,0,0.0,0,0,0,1.0,3.0);
 //hudmessage (s:"PRESS ANY KEY TO RESTART";HUDMSG_FADEINOUT,0,CR_GREEN,160.4,100.0,1.0*32767);
 }
 
+global int 1:HealthScriptDeactivate;
+
 //lowhealth scripts
 script "30Health" ENTER
 {
+if (HealthScriptDeactivate == TRUE) { terminate; }
+
 if (GetActorProperty(0, APROP_HEALTH) <31 && GetActorProperty(0, APROP_HEALTH) >20)
 	{
 	localambientsound("hbeat", 130);
@@ -53,6 +57,8 @@ restart;
 
 script "20Health" ENTER
 {
+if (HealthScriptDeactivate == TRUE) { terminate; }
+
 if (GetActorProperty(0, APROP_HEALTH) <21 && GetActorProperty(0, APROP_HEALTH) >10)
 	{
 	localambientsound("hbeat", 125);
@@ -65,6 +71,8 @@ restart;
 
 script "10Health" ENTER
 {
+if (HealthScriptDeactivate == TRUE) { terminate; }
+		
 if (GetActorProperty(0, APROP_HEALTH) <11 && GetActorProperty(0, APROP_HEALTH) >0)
 	{
 	SetHudSize(640, 480, 0);
@@ -72,7 +80,7 @@ if (GetActorProperty(0, APROP_HEALTH) <11 && GetActorProperty(0, APROP_HEALTH) >
 	Hudmessage(s:"A";
 	HUDMSG_FADEINOUT, 0, CR_WHITE, 320.0, 240.0, 0.0, 0.5, 0.5);
 	localambientsound("hbeat", 120);
-	delay(15);
+	delay(10);
 	localambientsound("hbeat", 120);
 	}
 delay(15);
