@@ -107,51 +107,83 @@ actor ShovelPuff
   }
 }
 
-actor KnifeSilent : Fist 
+actor KnifeSilent : Fist
 {
-	Weapon.SlotNumber 1   
-	+NOALERT
-	Tag "Combat Knife"
-
-	States
-	  {
-	  Ready:
-	    PUNG A 1 A_WeaponReady
-	    Loop
-	  Deselect:
-	    PUNG A 1 A_Lower
-	    Loop
-	  Select:
-	    PUNG A 1 A_Raise
-	    Loop
-	  Fire:
-	    PUNG B 4 A_PlayWeaponSound("knife/swing")
-	    PUNG C 4 A_CustomPunch(10, 1, CPF_DAGGER, "KnifePuff", 64)
-	    PUNG D 5
-	    PUNG C 4
-	    PUNG B 5 A_ReFire
-	    Goto Ready
-  }
+Game Doom
+Weapon.SlotNumber 1
++FORCEPAIN
++WEAPON.MELEEWEAPON
++WEAPON.NOALERT
+Weapon.BobStyle Smooth
+Weapon.BobSpeed 1.5
+Weapon.BobRangeX 1.5
+Obituary "%o was stabbed by %k."
+Inventory.PickupMessage "You found a tactical knife."
+States
+	{
+	Spawn:
+	KNFE A -1
+	loop
+	Ready:
+	KNFG A 1 A_WeaponReady
+	loop
+	Deselect:
+	KNFG A 1 A_Lower
+	KNFG A 0 A_Lower
+	loop
+	Select:
+	KNFG A 1 A_Raise
+	KNFG A 0 A_Raise
+	loop
+	Fire:
+	KNFG A 1
+	KNFG B 1 Offset(-10,32) A_CustomPunch(10, 1, CPF_DAGGER, "KnifePuff", 64)
+	KNFG B 1 Offset(-10,32) A_CustomPunch(10, 1, CPF_DAGGER, "KnifePuff", 64)
+	KNFG B 1 Offset(-20,32)
+	KNFG C 1 Offset(10,32)
+	KNFG C 1 Offset(-20,40)
+	KNFG D 2 A_ReFire("Fire2")
+	KNFG D 4 Offset(-10,32)
+	KNFG E 2
+	KNFG E 2 Offset(10,32)
+	KNFG F 2
+	goto Ready
+	Fire2:
+	KNFG D 1
+	KNFG D 2 Offset(-10,32)
+	KNFG E 1
+	KNFG G 1 Offset(-4,28) A_CustomPunch(10, 1, CPF_DAGGER, "KnifePuff", 64)
+	KNFG G 1 Offset(-4,28) A_CustomPunch(10, 1, CPF_DAGGER, "KnifePuff", 64)
+	KNFG G 1 Offset(-10,20)
+	KNFG G 1 Offset(-22,4)
+	KNFG G 1 Offset(-28,-28)
+	KNFG G 2 Offset(-26,-32)
+	KNFG G 4 Offset(-13,0)
+	KNFG G 2 Offset(-6,16)
+	KNFG C 1 Offset(64,96)
+	KNFG A 3 Offset(-16,40)
+	goto Ready
+	}
 }
 
 actor KnifePuff
 {
-  +NOBLOCKMAP
-  +NOGRAVITY
-  +PUFFONACTORS
-  activesound ""
-  attacksound "knife/stone"
-  seesound "knife/hit"
-  states
-  {
-   Spawn:
-      BTRL ABCDE 3 
-      Stop
-   Melee:
-      BTRL ABCDE 3 
-      Stop
-   Crash:
-      TNT1 A 1 
-      Stop
-  }
++NOBLOCKMAP
++NOGRAVITY
++PUFFONACTORS
+activesound ""
+attacksound "knife/stone"
+seesound "knife/hit"
+states
+	{
+	Spawn:
+	BTRL ABCDE 3
+	Stop
+	Melee:
+	BTRL ABCDE 3
+	Stop
+	Crash:
+	TNT1 A 1
+	Stop
+	}
 }
