@@ -63,7 +63,7 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 	//Top Left
 	drawimage "HUD_UL", 0, 0;
 		//Money
-    		drawnumber 3, BIGFONT, untranslated, coinitem, alignment(left), 25, 8;		
+    		drawnumber 3, BIGFONT, untranslated, coinitem, alignment(right), 50, 7;		
 
 		//Time
     		drawstring "THREEFIV", untranslated, time, 14, 21, 1, alignment(left);
@@ -81,12 +81,12 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 	//Bottom Left
 	drawimage "HUD_BL", 0, -53;
 		//Health
-    		drawnumber 3, BIGFONT, untranslated, health, 86, -20;
-    		drawstring "BIGFONT", untranslated, "%", 99, -20;
+    		drawnumber 3, BIGFONT, untranslated, health, 86, -36;
+    		drawstring "BIGFONT", untranslated, "%", 99, -36;
 
     		//Armor
-    		drawnumber 3, BIGFONT, untranslated, armor, 86, -36;
-    		drawstring "BIGFONT", untranslated, "%", 99, -36;
+    		drawnumber 3, BIGFONT, untranslated, armor, 86, -20;
+    		drawstring "BIGFONT", untranslated, "%", 99, -20;
 
 		//Mugshot + Inventory
 		drawselectedinventory alternateonempty, THREEFIV, 7, -38
@@ -104,16 +104,16 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
     		drawnumber 3, BIGFONT, untranslated, ammo2, -10, -36;
 
     		//Ammo Icons
-    		drawimage ammoicon1, -61, -20;
-    		drawimage ammoicon2, -61, -36;
+    		drawimage ammoicon1, -61, -21;
+    		drawimage ammoicon2, -61, -37;
 
 		//Ammo
-    		drawnumber 3, THREEFIV, untranslated, ammo MPClip, 	-10, -85, 1;
-    		drawnumber 3, THREEFIV, untranslated, ammo NewShell, 	-10, -80, 1;
-    		drawnumber 3, THREEFIV, untranslated, ammo MauserAmmo, 	-10, -75, 1;
-    		drawnumber 3, THREEFIV, untranslated, ammo FlameAmmo, 	-10, -70, 1;
-    		drawnumber 3, THREEFIV, untranslated, ammo NebAmmo, 	-10, -65, 1;
-    		drawnumber 3, THREEFIV, untranslated, ammo PanzerAmmo, 	-10, -60, 1;
+    		//drawnumber 3, THREEFIV, untranslated, ammo MPClip, 	-10, -85, 1;
+    		//drawnumber 3, THREEFIV, untranslated, ammo NewShell, 	-10, -80, 1;
+    		//drawnumber 3, THREEFIV, untranslated, ammo MauserAmmo, 	-10, -75, 1;
+    		//drawnumber 3, THREEFIV, untranslated, ammo FlameAmmo, 	-10, -70, 1;
+    		//drawnumber 3, THREEFIV, untranslated, ammo NebAmmo, 	-10, -65, 1;
+    		//drawnumber 3, THREEFIV, untranslated, ammo PanzerAmmo, 	-10, -60, 1;
 
 		//Grenade
     		drawnumber 3, BIGFONT, untranslated, GrenadePickup, alignment(left), -83, -20;
