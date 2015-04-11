@@ -3722,3 +3722,69 @@ actor UndeadPriest : Nazi 18921
     goto See
   }
 }
+
+ACTOR BlackGuy : Nazi 12739
+{
+//$Category Monsters (Wolf3D)
+//$Title Black Guy
+//$Color 4
+Scale 1.2
+Obituary "%o was shot by a Black Guy."
+Health 20
+Translation 1
+Radius 20
+Height 56
+mass 100
+speed 8
+painchance 200
+seesound ""
+painsound "Nazi1/Pain"
+deathsound "Nazi1/Death"
+activesound ""
+DamageFactor "Enemy", 0.0
+MONSTER
++FLOORCLIP
++NOTARGET
++NOINFIGHTING
++FRIENDLY
++USESPECIAL
+states
+	{
+	Spawn:
+	BLCK A 10 A_Look
+	loop
+	See:
+	BLCK BBCCDDEE 4 A_Chase
+	loop
+	Missile:
+	BLCK LM 5 A_FaceTarget
+	BLCK N 0 A_PlayWeaponSound("nazi/pistol")
+	BLCK N 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("ThompsonTracer",32,0,random(-8,8))
+	BLCK M 8
+	goto See
+	Pain:
+	BLCK K 3
+	BLCK K 3 A_Pain
+	goto See
+	Death:
+	BLCK F 5
+	BLCK G 5 A_Scream
+	BLCK H 5 A_NoBlocking
+	BLCK I 5
+	BLCK J -1
+	stop
+	Raise:
+	BLCK JIHGF 5
+	goto See
+	Idle:
+	BLCK EE 4 A_Wander
+	BLCK A 0 A_Look
+	BLCK BB 4 A_Wander
+	BLCK A 0 A_Look
+	BLCK CC 4 A_Wander
+	BLCK A 0 A_Look
+	BLCK DD 4 A_Wander
+	BLCK A 0 A_Look
+	loop
+	}
+}
