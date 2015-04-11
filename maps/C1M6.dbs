@@ -1,0 +1,114 @@
+type = "Doom Builder Map Settings Configuration";
+gameconfig = "GZDoom_DoomUDMF.cfg";
+strictpatches = 0;
+
+maps
+{
+	
+	C1M6
+	{
+		scriptcompiler = "zdoom_acs.cfg";
+		defaultfloortexture = "TEXTURES/SKYBOXES/SORB_B.PNG";
+		overrideceilheight = false;
+		
+		resources
+		{
+			
+			resource0
+			{
+				type = 0;
+				location = "G:\\DoomDev\\DOOM2.WAD";
+				option1 = 0;
+				option2 = 0;
+				notfortesting = 0;
+			}
+			
+			
+			resource1
+			{
+				type = 1;
+				location = "G:\\DoomDev\\Projects\\Wolfendoom\\GitHub\\trunk";
+				option1 = 0;
+				option2 = 0;
+				notfortesting = 0;
+			}
+			
+		}
+		
+		defaulttoptexture = "TEXTURES/SKYBOXES/SORB_S.PNG";
+		overridemiddletexture = false;
+		
+		grid
+		{
+			backoffsety = 0;
+			backoffsetx = 0;
+			backscalex = 100;
+			gridsize = 8;
+			background = "";
+			backsource = 0;
+			backscaley = 100;
+		}
+		
+		overridefloortexture = false;
+		customceilheight = 128;
+		customfloorheight = 0;
+		defaultceiltexture = "TEXTURES/SKYBOXES/SORB_T.PNG";
+		overridebrightness = false;
+		uselongtexturenames = true;
+		overridebottomtexture = false;
+		overridefloorheight = false;
+		overridetoptexture = false;
+		custombrightness = 196;
+		overrideceiltexture = false;
+		defaultwalltexture = "TEXTURES/SKYBOXES/SORB_S.PNG";
+		defaultbottomtexture = "TEXTURES/SKYBOXES/SORB_S.PNG";
+		
+		fieldtypes
+		{
+			
+			linedef
+			{
+				alpha = 1;
+				renderstyle = 2;
+				locknumber = 0;
+			}
+			
+			
+			sidedef
+			{
+				offsetx_mid = 1;
+				offsety_mid = 1;
+				offsetx_bottom = 1;
+				offsety_bottom = 1;
+				offsetx_top = 1;
+				offsety_top = 1;
+				scaley_mid = 1;
+				scalex_mid = 1;
+				scalex_bottom = 1;
+				scaley_bottom = 1;
+				light = 0;
+			}
+			
+			
+			sector
+			{
+				fadecolor = 0;
+				lightcolor = 0;
+				xpanningceiling = 1;
+				ypanningceiling = 1;
+				rotationfloor = 1;
+				xpanningfloor = 1;
+				ypanningfloor = 1;
+				rotationceiling = 1;
+				lightfloor = 0;
+				yscaleceiling = 1;
+				yscalefloor = 1;
+				xscaleceiling = 1;
+			}
+			
+		}
+		
+	}
+	
+}
+
