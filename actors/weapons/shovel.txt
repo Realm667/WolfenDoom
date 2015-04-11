@@ -96,13 +96,13 @@ actor ShovelPuff
   states
   {
    Spawn:
-   	 POOF ABCDE 3 
+   	 POOF ABCDE 3
       Stop
 	  Melee:
-   	 POOF ABCDE 3 
+   	 POOF ABCDE 3
       Stop
 	  Crash:
-   	 POOF ABCDE 3 
+   	 POOF ABCDE 3
       Stop
   }
 }
@@ -136,45 +136,24 @@ States
 	KNFG A 0 A_Raise
 	loop
 	Fire:
-	KNFG A 1 A_PlayWeaponSound("knife/swing")
-	KNFG B 1 Offset(-10,32) A_CustomPunch(10, 1, CPF_DAGGER, "KnifePuff", 64)
-	KNFG B 1 Offset(-10,32) A_CustomPunch(10, 1, CPF_DAGGER, "KnifePuff", 64)
+	KNFG A 1
+	KNFG B 1 Offset(-10,32) A_CustomPunch(10, 1, CPF_DAGGER, "KnifePuff", 64)4)
 	KNFG B 1 Offset(-20,32)
 	KNFG C 1 Offset(10,32)
 	KNFG C 1 Offset(-20,40)
-	KNFG D 2 A_ReFire("Fire2")
 	KNFG D 4 Offset(-10,32)
 	KNFG E 2
 	KNFG E 2 Offset(10,32)
 	KNFG F 2
 	goto Ready
-	Fire2:
-	KNFG D 1
-	KNFG D 2 Offset(-10,32)
-	KNFG E 1
-	KNFG G 1 Offset(-4,28) A_CustomPunch(10, 1, CPF_DAGGER, "KnifePuff", 64)
-	KNFG G 1 Offset(-4,28) A_CustomPunch(10, 1, CPF_DAGGER, "KnifePuff", 64)
-	KNFG G 1 Offset(-10,20)
-	KNFG G 1 Offset(-22,4)
-	KNFG G 1 Offset(-28,-28)
-	KNFG G 2 Offset(-26,-32)
-	KNFG G 4 Offset(-13,0)
-	KNFG G 2 Offset(-6,16)
-	KNFG C 1 Offset(64,96)
-	KNFG A 3 Offset(-16,40)
-	goto Ready
 	}
 }
 
-actor KnifePuff
+actor KnifePuff : ShovelPuff
 {
-+NOBLOCKMAP
-+NOGRAVITY
-+PUFFONACTORS
-activesound ""
 attacksound "knife/stone"
 seesound "knife/hit"
-states
+States
 	{
 	Spawn:
 	BTRL ABCDE 3
