@@ -1,0 +1,230 @@
+//NASHGORES - from hgarden.wad//
+//***** Animators ***********************************************************/
+fader FastGoAway
+{
+	DecayStart	0.2
+	DecayTime	0.5
+}
+
+fader GoAway
+{
+	DecayStart	0.5
+	DecayTime	1.0
+}
+
+fader GoAway2
+{
+	DecayStart	1.0
+	DecayTime	3.0
+}
+
+colorchanger ToBlack
+{
+	FadeStart	0.5
+	FadeTime	1.0
+}
+
+stretcher BloodStretcher
+{
+	StretchTime	10
+	GoalY		2.0
+}
+
+slider BloodSlider
+{
+	SlideTime	10
+	DistY		-132
+}
+
+combiner BloodSmearer
+{
+	BloodStretcher
+	BloodSlider
+}
+
+//***** Blood decals *****//
+decal BloodSplat01
+{
+pic BSPLAT01
+shade "60 00 00"
+x-scale 0.5
+y-scale 0.5
+randomflipx
+randomflipy
+}
+
+decal BloodSplat02
+{
+pic BSPLAT02
+shade "60 00 00"
+x-scale 0.5
+y-scale 0.5
+randomflipx
+randomflipy
+}
+
+decal BloodSplat03
+{
+pic BSPLAT03
+shade "60 00 00"
+x-scale 0.5
+y-scale 0.5
+randomflipx
+randomflipy
+}
+
+decal BloodSplat04
+{
+pic BSPLAT04
+shade "60 00 00"
+x-scale 0.5
+y-scale 0.5
+randomflipx
+randomflipy
+}
+
+decal BloodSplat05
+{
+pic BSPLAT05
+shade "60 00 00"
+x-scale 0.5
+y-scale 0.5
+randomflipx
+randomflipy
+}
+
+decal BloodSplat06
+{
+pic BSPLAT06
+shade "60 00 00"
+x-scale 0.5
+y-scale 0.5
+randomflipx
+randomflipy
+}
+
+decal BloodSplat07
+{
+pic BSPLAT07
+shade "60 00 00"
+x-scale 0.5
+y-scale 0.5
+randomflipx
+randomflipy
+}
+
+decal BloodSplat08
+{
+pic BSPLAT08
+shade "60 00 00"
+x-scale 0.5
+y-scale 0.5
+randomflipx
+randomflipy
+}
+
+decal BloodSplat09
+{
+pic BSPLAT09
+shade "60 00 00"
+x-scale 0.5
+y-scale 0.5
+randomflipx
+randomflipy
+}
+
+decal BloodSplat10
+{
+pic BSPLAT10
+shade "60 00 00"
+x-scale 0.5
+y-scale 0.5
+randomflipx
+randomflipy
+}
+
+decal BloodSplat11
+{
+pic BSPLAT11
+shade "60 00 00"
+x-scale 0.5
+y-scale 0.5
+randomflipx
+randomflipy
+}
+
+decal BloodSplat12
+{
+pic BSPLAT12
+shade "60 00 00"
+x-scale 0.5
+y-scale 0.5
+randomflipx
+randomflipy
+}
+
+decal BloodSplat13
+{
+pic BSPLAT13
+shade "60 00 00"
+x-scale 0.5
+y-scale 0.5
+randomflipx
+randomflipy
+}
+
+decal BloodSplat14
+{
+pic BSPLAT14
+shade "60 00 00"
+x-scale 0.5
+y-scale 0.5
+randomflipx
+randomflipy
+}
+
+decalgroup BloodSplat
+{
+BloodSplat01 6
+BloodSplat02 6
+BloodSplat03 6
+BloodSplat04 6
+BloodSplat05 6
+BloodSplat06 6
+BloodSplat07 6
+BloodSplat08 6
+BloodSplat09 6
+BloodSplat10 6
+BloodSplat11 6
+BloodSplat12 6
+BloodSplat13 6
+BloodSplat14 6
+}
+
+decal BloodSmear1
+{
+pic BSMEAR1
+x-scale 0.625
+y-scale 0.625
+shade "60 00 00"
+randomflipx
+randomflipy
+animator BloodSmearer
+}
+
+decal BloodSmear2
+{
+pic BSMEAR1
+x-scale 0.625
+y-scale 0.625
+shade "60 00 00"
+randomflipx
+randomflipy
+animator BloodSmearer
+}
+
+decalgroup BloodSmear
+{
+BloodSmear1		6
+BloodSmear2		6
+}
