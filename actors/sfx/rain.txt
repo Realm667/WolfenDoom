@@ -24,16 +24,16 @@ Actor RainSpawner 8187
     TNT1 A 0 A_JumpIf(Args[2] > 0, "NoSound")
     TNT1 A 0 A_JumpIf(Args[3] > 0, "Circle")
     TNT1 A 0 A_PlaySoundEx("Ambient/Rain", "SoundSlot7", 1)
-    TNT1 A 2 A_SpawnItemEx("RainDrop", Random(-Args[0], Args[0]), Random(-Args[0], Args[0]), -2, 0, 0, 0, 0, 128, Args[1])
+    TNT1 A 1 A_SpawnItemEx("RainDrop", Random(-Args[0], Args[0]), Random(-Args[0], Args[0]), -2, 0, 0, 0, 0, 128, Args[1])
     Loop
   Circle:
-    TNT1 A 2 A_SpawnItemEx("RainDrop", Random(-Args[0], Args[0]), 0, -2, 0, 0, 0, Random(0, 360), 128, Args[1])
+    TNT1 A 1 A_SpawnItemEx("RainDrop", Random(-Args[0], Args[0]), 0, -2, 0, 0, 0, Random(0, 360), 128, Args[1])
   NoSound:
     TNT1 A 0 A_Jumpif(Args[3] > 0, "NoSoundCircle")
-    TNT1 A 2 A_SpawnItemEx("RainDrop", Random(-Args[0], Args[0]), Random(-Args[0], Args[0]), -2, 0, 0, 0, 0, 128, Args[1])
+    TNT1 A 1 A_SpawnItemEx("RainDrop", Random(-Args[0], Args[0]), Random(-Args[0], Args[0]), -2, 0, 0, 0, 0, 128, Args[1])
     Loop
   NoSoundCircle:
-    TNT1 A 2 A_SpawnItemEx("RainDrop", Random(-Args[0], Args[0]), 0, -2, 0, 0, 0, Random(0, 360), 128, Args[1])
+    TNT1 A 1 A_SpawnItemEx("RainDrop", Random(-Args[0], Args[0]), 0, -2, 0, 0, 0, Random(0, 360), 128, Args[1])
     Loop
   }
 }
@@ -43,11 +43,12 @@ Actor RainDrop
   +Missile
   +NoBlockMap
   -NoGravity
+  +DONTSPLASH
   Height 2
   Radius 2
   Renderstyle Translucent
-  Alpha 0.6
-  Scale 0.2
+  Alpha 0.8
+  YScale 4.0
   States
   {
   Spawn:
