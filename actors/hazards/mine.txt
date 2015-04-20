@@ -30,3 +30,23 @@ actor Mine 15124
 			Stop
 	}
 }
+
+actor MineInvisible : Mine 15129
+{
+//$Category Hazards (Wolf3D)
+//$Title Mine (invisible)
+//$Color 3
+	States
+	{
+		Spawn: 
+		See:
+			TNT1 A 6 A_Chase
+			Loop
+		Death:
+			TNT1 A 8 A_PlaySound("MINEF")
+			TNT1 A 0 A_Scream
+			TNT1 A 0 BRIGHT A_SpawnItemEx("GeneralExplosion_Medium", 0, 0, 0)
+			Stop
+	}
+
+}
