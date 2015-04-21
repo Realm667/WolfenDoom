@@ -150,3 +150,21 @@ States
 	stop
 	}
 }
+
+ACTOR Goblet : CustomInventory 16507
+{
+//$Category Pickups (Wolf3D)
+//$Title Treasure (Goblet, 15pts)
+//$Color 17
+inventory.pickupmessage "Picked up a gold bar"
+inventory.pickupsound "treasure/pickup"
+States
+	{
+	Spawn:
+	TRES G -1 Light(TRESLITE)
+	stop
+	Pickup:
+	TNT1 A 0 A_GiveInventory ("CoinItem", 20)
+	stop
+	}
+}
