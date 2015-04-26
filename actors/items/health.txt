@@ -16,6 +16,21 @@ ACTOR Meal : Health 17013
   }
 }
 
+ACTOR Dogfood : Health 17019
+{
+//$Category Health (Wolf3D)
+//$Title Dog Food (+2)
+//$Color 6
+  Inventory.Amount 2
+  Inventory.PickupMessage "Picked up a bowl of dog food."
+  States
+  {
+  Spawn:
+    DGFD A -1
+    Stop
+  }
+}
+
 ACTOR Medikit_Small : Health replaces Stimpack 17014
 {
 //$Category Health (Wolf3D)
