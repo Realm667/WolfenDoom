@@ -1,7 +1,7 @@
 ACTOR KnightSilver 19034
 {
 //$Category Props (Wolf3D)
-//$Title Knight (silver)
+//$Title Knight (silver,red)
 //$Color 3 
   Radius 16
   Height 96
@@ -10,6 +10,22 @@ ACTOR KnightSilver 19034
   {
   Spawn:
     KNGH A -1
+    Stop
+  }
+}
+
+ACTOR KnightSilver2 19038
+{
+//$Category Props (Wolf3D)
+//$Title Knight (silver,blue)
+//$Color 3 
+  Radius 16
+  Height 96
+  +SOLID
+  States
+  {
+  Spawn:
+    KNGH B -1
     Stop
   }
 }
@@ -106,6 +122,86 @@ ACTOR Table6 19139
   {
   Spawn:
     TBL7 A -1
+    Stop
+  }
+}
+
+ACTOR MonsterStatue 19140
+{
+//$Category Props (Wolf3D)
+//$Title Statue (monster)
+//$Color 3 
+  Radius 24
+  Height 64
+  +SOLID
+  States
+  {
+  Spawn:
+    WSTA C -1
+    Stop
+  }
+}
+
+ACTOR WellEmpty 19141
+{
+//$Category Props (Wolf3D)
+//$Title Well (empty)
+//$Color 3 
+  Radius 24
+  Height 32
+  +SOLID
+  States
+  {
+  Spawn:
+    WELL I -1
+    Stop
+  }
+}
+
+ACTOR WellWater 19142
+{
+//$Category Props (Wolf3D)
+//$Title Well (water)
+//$Color 3 
+  Radius 24
+  Height 32
+  +SOLID
+  States
+  {
+  Spawn:
+    WELL H -1
+    Stop
+  }
+}
+
+ACTOR WellBlood 19143
+{
+//$Category Props (Wolf3D)
+//$Title Well (blood)
+//$Color 3 
+  Radius 24
+  Height 32
+  +SOLID
+  States
+  {
+  Spawn:
+    WELL J -1
+    Stop
+  }
+}
+
+ACTOR BarrelWine 19144
+{
+//$Category Props (Wolf3D)
+//$Title Barrel (wine)
+//$Color 3 
+  Radius 24
+  Height 32
+  +SOLID
+  States
+  {
+  Spawn:
+    BARC A -1
     Stop
   }
 }

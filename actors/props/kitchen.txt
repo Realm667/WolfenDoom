@@ -68,10 +68,16 @@ ACTOR OvenHot 19504
   Radius 16
   Height 64
   +SOLID
+  +USESPECIAL
+  Activation THINGSPEC_Switch | THINGSPEC_Deactivate
   States
   {
   Spawn:
+  Active:
     OVEN A -1
+    Stop
+  Inactive:
+    OVEN B -1
     Stop
   }
 }
