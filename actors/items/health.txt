@@ -75,3 +75,44 @@ ACTOR Medikit_Large : Health 17016
     Stop
   }
 }
+
+actor VitalitySerum : UpgradeStamina 17018
+{
+//$Category Health (Wolf3D)
+//$Title Vitality Serum (max+5)
+//$Color 6
+  //$Category Powerups
+  //$Title "Vitality Serum"
+  Radius 20
+  Scale 0.9
+  Inventory.Amount 5 //this controls how much health boost you receive
+  Inventory.MaxAmount 100 //this controls how high your health can get
+  +COUNTITEM
+  +INVENTORY.ALWAYSPICKUP
+  Inventory.PickupMessage "Your body toughens slightly..."
+  States
+  {
+  Spawn:
+    VSRM ABC 6 Bright
+    loop
+  }
+}
+
+Actor FieldKit : HealthPickup 17020
+{
+  Health 25
+  +CountItem
+  +Inventory.AlwaysPickup
+  Inventory.PickupMessage "You got a field kit"
+  Inventory.PickupSound "Misc/I_PkUp"
+  Inventory.UseSound "Misc/I_PkUp"
+  Inventory.Icon "FKITC0"
+  Inventory.MaxAmount 15
+  HealthPickup.AutoUse 1
+  States
+  {
+  Spawn:
+    FKIT AB 10
+    Loop
+  }
+}

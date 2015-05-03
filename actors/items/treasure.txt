@@ -168,3 +168,45 @@ States
 	stop
 	}
 }
+
+
+/////////////Treasure Box //////////
+
+ACTOR ChestKey : PuzzleItem 11001
+{
+//$Category Pickups (Wolf3D)
+//$Title Treasure Chest Key
+//$Color 17
+  Inventory.Icon "I_SPBKEY"
+  Inventory.PickupMessage "CHEST KEY"
+  Inventory.PickupSound "misc/k_pkup"
+  Inventory.UseSound "supplychest/open"
+  PuzzleItem.Number 1
+  Tag "Chest key"
+  States
+  {
+  Spawn:
+    SBKY A -1
+    Stop
+  }
+}
+
+ACTOR SupplyChest : SwitchingDecoration 11002
+{
+//$Category Pickups (Wolf3D)
+//$Title Treasure Chest 
+//$Color 17
+  Height 34
+  Radius 21
+  +SOLID
+  States
+  {
+  Spawn:
+    SUBX A -1
+    Stop
+  Active:
+    SUBX B 20
+    SUBX C -1 A_UnSetSolid
+    Stop
+  }
+}
