@@ -1,4 +1,4 @@
-actor Prisoner : Nazi 12710
+actor PrisonerAgent : Nazi 12710
 {
 //$Category Monsters (Wolf3D)
 //$Title Prisoner
@@ -31,16 +31,17 @@ actor Prisoner : Nazi 12710
   +NOTELESTOMP
   +NOTAUTOAIMED
   +NOFEAR
-  +USESPECIAL
   -DONTSPLASH
   -NORADIUSDMG
   -CANNOTPUSH
   -COUNTKILL
+  +FRIENDLY
+  +USESPECIAL
   states
   {
   		SPAWN:
-			TORT A 1 NODELAY A_LookEx(0, 0, 0, 0, 360)
-			GOTO SEE
+			TORT A 1  NODELAY A_LookEx(0, 0, 0, 0, 360)
+			LOOP
 		
 		SEE:
 			TORT A 1 A_FaceTarget
