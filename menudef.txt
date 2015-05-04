@@ -11,8 +11,8 @@ ListMenu "MainMenu"
 {
   StaticPatch 105, 20, "MENUBAK"
 
-  //StaticPatch 55, 5, "M_DOOM"
-  Position 110, 50
+  StaticPatchCentered 160, 5, "M_START"
+  Position 110, 60
 
   TextItem "$MNU_NEWGAME", "n", "PlayerclassMenu"
   TextItem "$MNU_OPTIONS", "o", "OptionsMenu"
@@ -26,28 +26,33 @@ ListMenu "MainMenu"
 
 ListMenu "EpisodeMenu"
 {
-  StaticTextCentered 160, -10, "Choose your episode"
+  //StaticTextCentered 160, -10, "Choose your episode"
+  StaticPatchCentered 160, 5, "M_EPIS"
 
   NetgameMessage "$NEWGAME"
-  Position 70, 50
+  Position 70, 60
 }
 
 // Skill selection menu ----------------------------------------------------------------------------
 
 ListMenu "SkillMenu"
 {
-  StaticTextCentered 160, -10, "Choose your skill level"
+  //StaticPatchCentered 160, 5, "Choose your skill level"
+  StaticPatchCentered 160, 5, "M_SKILL"
 
-  Position 70, 50
+  Position 70, 60
 }
 
 // Game files selection menu -----------------------------------------------------------------------
 
 ListMenu "GameFilesMenu"
 {
-  Position 110, 50
+  StaticPatchCentered 160, 5, "M_SAVE"
+
+  Position 110, 60
   TextItem "$MNU_LOADGAME", "l", "LoadGameMenu"
   TextItem "$MNU_SAVEGAME", "s", "SaveGameMenu"
+
 }
 
 // Load game menu ----------------------------------------------------------------------------------
@@ -55,9 +60,10 @@ ListMenu "GameFilesMenu"
 ListMenu "LoadGameMenu"
 {
   NetgameMessage "$LOADNET"
+  //StaticPatchCentered 160, 5, "M_LOADG"
   StaticTextCentered 160, -10, "$MNU_LOADGAME"
 
-  Position 80, 54
+  Position 80, 60
   Class "LoadMenu"
 }
 
@@ -65,9 +71,10 @@ ListMenu "LoadGameMenu"
 
 ListMenu "SaveGameMenu"
 {
+  //StaticPatchCentered 160, 5, "M_SAVEG"
   StaticTextCentered 160, -10, "$MNU_SAVEGAME"
 
-  Position 80, 54
+  Position 80, 60
   Class "SaveMenu"
 }
 
@@ -76,7 +83,7 @@ ListMenu "SaveGameMenu"
 OptionMenu "BOAOptionsMenu"
 {
   Title "BOA Options"
-  StaticText ""
+  //StaticText ""
   StaticText "BOA Settings",        1
   StaticText ""
   // Settings should go here
