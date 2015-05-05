@@ -1,7 +1,7 @@
 ACTOR Nazi
 {
 GibHealth 30
-Scale 1.2
+Scale 1.25
 States
 	{
 	Death.Fire:
@@ -3063,14 +3063,30 @@ ACTOR Marine_Talk1 : Marine2 12711
 {
 //$Category Conversion Stuff (Wolf3D)
 //$Title Talking Marine 1
-//$Color 3 
+//$Color 5 
 }
 
 ACTOR Marine_Talk2 : Marine2 12712 
 {
 //$Category Conversion Stuff (Wolf3D)
 //$Title Talking Marine 2
-//$Color 3 
+//$Color 5 
+}
+
+ACTOR Dummy_Talk 12713
+{
+//$Category Conversion Stuff (Wolf3D)
+//$Title Talking Dummy
+//$Color 5 
+  Radius 8
+  Height 64
+  +SOLID
+  States
+  {
+  Spawn:
+    TNT1 A -1
+    Loop
+  }
 }
 
 ACTOR FlamerSoldier 12789
