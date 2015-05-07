@@ -13,10 +13,22 @@ PainChance 10
 Monster
 DamageType smoke
 Damagefactor smoke, 0
-+FLOAT +NOGRAVITY +DONTFALL +NOICEDEATH +BOSS// +MISSILEMORE
-+NOBLOOD +EXTREMEDEATH +FORCERADIUSDMG +FLOATBOB
-+DONTHURTSPECIES +BOSSDEATH +LONGMELEERANGE +DONTMORPH
-+NOTIMEFREEZE +NEVERRESPAWN +NOBLOODDECALS
++BOSS
++BOSSDEATH
++DONTFALL
++DONTHURTSPECIES
++DONTMORPH
++EXTREMEDEATH
++FLOAT
++FLOATBOB
++FORCERADIUSDMG
++LONGMELEERANGE
++NEVERRESPAWN
++NOBLOOD
++NOBLOODDECALS
++NOGRAVITY
++NOICEDEATH
++NOTIMEFREEZE
 SeeSound "Smoke/See"
 AttackSound ""
 PainSound ""
@@ -26,16 +38,16 @@ Obituary "%o was consumed by the smoke-monster!"
 bloodtype ""
 Renderstyle none
 States
-{
-Spawn:
+	{
+	Spawn:
 	SMMO A 1 A_Look
 	TNT1 AAAAAA 0 Bright A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
 	loop
-See:
+	See:
 	TNT1 A 0 A_JumpIfInventory ("IsawYou",1,"Walk")
 	TNT1 A 0 A_PlaySoundEx ("Smoke/Tick", "SoundSlot77", 1)
 	TNT1 A 0 A_GiveInventory ("IsawYou",1)
-Walk:
+	Walk:
 	SMMO A 1 A_Chase
 	TNT1 AAAAAA 0 Bright A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
 	SMMO A 1
@@ -49,7 +61,7 @@ Walk:
 	SMMO A 1
 	TNT1 AAAAAA 0 Bright A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
 	loop
-Missile:
+	Missile:
 	SMMO A 1  A_SkullAttack
 	TNT1 A 0 A_playsound("Smoke/charge")
 	TNT1 AAAAAA 0 Bright A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
@@ -76,7 +88,7 @@ Missile:
 	Goto StopCharge
 	SMMO A 0
 	Goto Melee
-Melee:
+	Melee:
 	SMMO A 1  A_SkullAttack
 	TNT1 AAAAAA 0 Bright A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
 	SMMO A 1 A_FaceTarget
@@ -102,12 +114,12 @@ Melee:
 	Goto StopCharge
 	SMMO A 0
 	Goto Melee
-StopCharge:
+	StopCharge:
 	SMMO A 0 A_Stop
 	Goto See
-Pain:
+	Pain:
 	TNT1 A 0 A_Jump (256,"SmokePain1","SmokePain2","SmokePain3")
-SmokePain1:
+	SmokePain1:
 	SMMO A 1 A_playsound("Smoke/pain")
 	TNT1 AAAAAA 0 Bright A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
 	SMMO A 1
@@ -136,7 +148,7 @@ SmokePain1:
 	TNT1 AAAAAA 0 Bright A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
 	TNT1 A 0 A_Jump (64,"Teleport")
 	Goto See
-SmokePain2:
+	SmokePain2:
 	SMMO A 1 A_playsound("Smoke/pain")
 	TNT1 AAAAAA 0 Bright A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
 	SMMO A 1
@@ -167,7 +179,7 @@ SmokePain2:
 	TNT1 AAAAAA 0 Bright A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
 	TNT1 A 0 A_Jump (64,"Teleport")
 	Goto See
-SmokePain3:
+	SmokePain3:
 	SMMO A 1 A_playsound("Smoke/pain")
 	TNT1 AAAAAA 0 Bright A_SpawnItemEx("MonsterHole",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360))
 	SMMO A 1
@@ -196,7 +208,7 @@ SmokePain3:
 	TNT1 AAAAAA 0 Bright A_SpawnItemEx("MonsterHole",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360))
 	TNT1 A 0 A_Jump (64,"Teleport")
 	Goto See
-Death:
+	Death:
 	SMMO A 1
 	TNT1 A 0 A_StopSoundEx ("SoundSlot77")
 	TNT1 A 0 A_Scream
@@ -258,7 +270,7 @@ Death:
 	TNT1 A 0 Bright A_SpawnItemEx("MonsterHole",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360))
 	TNT1 A 1
 	Stop
-Teleport:
+	Teleport:
 	TNT1 A 0 A_SetReflective
 	SMMO A 1
 	TNT1 AAAAAA 0 Bright A_SpawnItemEx("MonsterHole",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360))
@@ -294,10 +306,8 @@ Teleport:
 	}
 }
 
-actor IsawYou : Inventory
-{
-Inventory.MaxAmount 1
-}
+actor IsawYou : Inventory {Inventory.MaxAmount 1}
+
 Actor MonsterHole
 {
 +NOCLIP
@@ -308,31 +318,31 @@ renderstyle Translucent
 alpha 0.3
 scale .75
 states
-{
-Spawn:
-TNT1 A 2
-SMMO ABCDEFGHIJKLMNOPQR 2
-Stop
-}
+	{
+	Spawn:
+	TNT1 A 2
+	SMMO ABCDEFGHIJKLMNOPQR 2
+	Stop
+	}
 }
 
 ACTOR SmokeMonsterDummy
 {
-  Game Doom
-  SpawnID 171
-  Radius 6
-  Height 8
-  Speed 50
-  Damage 3
-  Projectile
-  States
-  {
-  Spawn:
-    SMMO A 1 
-    TNT1 AAAAAA 0 Bright A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
-    Loop
-  Death:
-    SMMO A 1
-    Stop
-  }
+Game Doom
+SpawnID 171
+Radius 6
+Height 8
+Speed 50
+Damage 3
+Projectile
+States
+	{
+	Spawn:
+	SMMO A 1
+	TNT1 AAAAAA 0 Bright A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
+	Loop
+	Death:
+	SMMO A 1
+	Stop
+	}
 }

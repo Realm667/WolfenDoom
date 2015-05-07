@@ -1,256 +1,256 @@
 ACTOR NaziWeapon : Weapon
 {
-	Weapon.BobStyle InverseSmooth
-	Weapon.BobSpeed 2.2
-	Weapon.BobRangeY 0.5
-	Weapon.BobRangeX 0.7
-	+WEAPON.AMMO_CHECKBOTH
-	+WEAPON.NOALERT
-	States
+Weapon.BobStyle InverseSmooth
+Weapon.BobSpeed 2.2
+Weapon.BobRangeY 0.5
+Weapon.BobRangeX 0.7
++WEAPON.AMMO_CHECKBOTH
++WEAPON.NOALERT
+States
 	{
 	Dryfire:
-		"####" "#" 1 A_JumpIf(CallACS("Autoreload")==1,"Reload")
-		"####" "#" 0 A_Jump(256,"Ready")
-		Stop
+	"####" "#" 1 A_JumpIf(CallACS("Autoreload")==1,"Reload")
+	"####" "#" 0 A_Jump(256,"Ready")
+	Stop
 	}
 }
 
 ACTOR 9mmAmmo : Ammo 15193
 {
-	//$Category Ammo (Wolf3D)
-	//$Title Ammoclip
-	//$Color 6
-	Tag "9x19mm"
-	Inventory.Amount 16
-	Inventory.MaxAmount 256
-	Ammo.BackpackAmount 64
-	Ammo.BackpackMaxAmount 480
-	Inventory.PickupMessage "Picked up a 9mm magazine."
-	Inventory.Icon WALT01
-	States
+//$Category Ammo (Wolf3D)
+//$Title Ammoclip
+//$Color 6
+Tag "9x19mm"
+Inventory.Amount 16
+Inventory.MaxAmount 256
+Ammo.BackpackAmount 64
+Ammo.BackpackMaxAmount 480
+Inventory.PickupMessage "Picked up a 9mm magazine."
+Inventory.Icon WALT01
+States
 	{
 	Spawn:
-		MCLP A -1
-		Stop
+	MCLP A -1
+	Stop
 	}
 }
 
 ACTOR 9mmAmmoBox : 9mmAmmo replaces ClipBox 15192
 {
-	//$Category Ammo (Wolf3D)
-	//$Title Ammobox
-	//$Color 6
-	Inventory.Amount 64
-	Inventory.PickupMessage "Picked up a box of 9mm ammo."
-	Inventory.Icon WALT02
-	States
+//$Category Ammo (Wolf3D)
+//$Title Ammobox
+//$Color 6
+Inventory.Amount 64
+Inventory.PickupMessage "Picked up a box of 9mm ammo."
+Inventory.Icon WALT02
+States
 	{
 	Spawn:
-		MCLP B -1
-		Stop
+	MCLP B -1
+	Stop
 	}
 }
 
 ACTOR 45ACPAmmo : Ammo
 {
-	Tag ".45 ACP"
-	Inventory.Amount 7
-	Inventory.MaxAmount 300
-	Ammo.BackpackAmount 80
-	Ammo.BackpackMaxAmount 450
-	Inventory.PickupMessage "Picked up a .45 ACP magazine."
-	States
+Tag ".45 ACP"
+Inventory.Amount 7
+Inventory.MaxAmount 300
+Ammo.BackpackAmount 80
+Ammo.BackpackMaxAmount 450
+Inventory.PickupMessage "Picked up a .45 ACP magazine."
+States
 	{
 	Spawn:
-		45AM A -1
-		Stop
+	45AM A -1
+	Stop
 	}
 }
 
 ACTOR 45ACPAmmoBox : 45ACPAmmo
 {
-	Inventory.Amount 20
-	Scale .6
-	Inventory.PickupMessage "Picked up a box of .45 ACP ammo."
-	States
+Inventory.Amount 20
+Scale .6
+Inventory.PickupMessage "Picked up a box of .45 ACP ammo."
+States
 	{
 	Spawn:
-		45AM B -1
-		Stop
+	45AM B -1
+	Stop
 	}
 }
 
 ACTOR 12GaugeAmmo : Ammo 15102
 {
-	//$Category Ammo (Wolf3D)
-	//$Title Shells
-	//$Color 6
-	Tag "12 Gauge"
-	Inventory.PickupMessage "Picked up some shotgun shells."
-	Inventory.Amount 4
-	Inventory.MaxAmount 32
-	Ammo.BackpackAmount 4
-	Ammo.BackpackMaxAmount 64
-	Inventory.Icon BROW02
-	States
+//$Category Ammo (Wolf3D)
+//$Title Shells
+//$Color 6
+Tag "12 Gauge"
+Inventory.PickupMessage "Picked up some shotgun shells."
+Inventory.Amount 4
+Inventory.MaxAmount 32
+Ammo.BackpackAmount 4
+Ammo.BackpackMaxAmount 64
+Inventory.Icon BROW02
+States
 	{
 	Spawn:
-		SHEL A -1
-		Stop
+	SHEL A -1
+	Stop
 	}
 }
 
 ACTOR 12GaugeAmmoBox : 12GaugeAmmo 15103
 {
-	//$Category Ammo (Wolf3D)
-	//$Title Shellbox
-	//$Color 6
-	Inventory.Amount 16
-	Inventory.PickupMessage "Picked up a box of shells."
-	States
+//$Category Ammo (Wolf3D)
+//$Title Shellbox
+//$Color 6
+Inventory.Amount 16
+Inventory.PickupMessage "Picked up a box of shells."
+States
 	{
 	Spawn:
-		SBOX A -1
-		Stop
+	SBOX A -1
+	Stop
 	}
 }
 
 ACTOR MauserAmmo : Ammo 15116
 {
-	//$Category Ammo (Wolf3D)
-	//$Title Clip
-	//$Color 6
-	Tag "7.92x57mm"
-	Inventory.Amount 5
-	Inventory.MaxAmount 40
-	Ammo.BackpackAmount 5
-	Ammo.BackpackMaxAmount 100
-	Inventory.PickupMessage "Picked up a 7.92mm stripper clip."
-	Scale .3
-	Inventory.Icon MAUS02
-	States
+//$Category Ammo (Wolf3D)
+//$Title Clip
+//$Color 6
+Tag "7.92x57mm"
+Inventory.Amount 5
+Inventory.MaxAmount 40
+Ammo.BackpackAmount 5
+Ammo.BackpackMaxAmount 100
+Inventory.PickupMessage "Picked up a 7.92mm stripper clip."
+Scale .3
+Inventory.Icon MAUS02
+States
 	{
 	Spawn:
-		792A A -1
-		Stop
+	792A A -1
+	Stop
 	}
 }
 
 ACTOR MauserAmmoBox : MauserAmmo 15115
 {
-	//$Category Ammo (Wolf3D)
-	//$Title Clipbox
-	//$Color 6
-	Scale 1
-	Inventory.Amount 20
-	Inventory.PickupMessage "Picked up a box of 7.92mm Mauser ammo."
-	States
+//$Category Ammo (Wolf3D)
+//$Title Clipbox
+//$Color 6
+Scale 1
+Inventory.Amount 20
+Inventory.PickupMessage "Picked up a box of 7.92mm Mauser ammo."
+States
 	{
 	Spawn:
-		792A B -1
-		Stop
+	792A B -1
+	Stop
 	}
-}
+	}
 
 ACTOR 303Ammo : Ammo
 {
-	Tag ".303 British"
-	Inventory.Amount 5
-	Inventory.MaxAmount 40
-	Ammo.BackpackAmount 5
-	Ammo.BackpackMaxAmount 100
-	Inventory.PickupMessage "Picked up a .303 charger clip."
-	Scale .3
-	States
+Tag ".303 British"
+Inventory.Amount 5
+Inventory.MaxAmount 40
+Ammo.BackpackAmount 5
+Ammo.BackpackMaxAmount 100
+Inventory.PickupMessage "Picked up a .303 charger clip."
+Scale .3
+States
 	{
 	Spawn:
-		792A A -1	//Placeholder sprite
-		Stop
+	792A A -1	//Placeholder sprite
+	Stop
 	}
 }
 
 ACTOR 303AmmoBox : 303Ammo
 {
-	Scale 1
-	Inventory.Amount 20
-	Inventory.PickupMessage "Picked up a box of .303 British ammo."
-	States
+Scale 1
+Inventory.Amount 20
+Inventory.PickupMessage "Picked up a box of .303 British ammo."
+States
 	{
 	Spawn:
-		792A B -1	//Placeholder sprite
-		Stop
+	792A B -1	//Placeholder sprite
+	Stop
 	}
 }
 
 ACTOR FlameAmmo : Ammo replaces RocketBox 15114
 {
-	//$Category Ammo (Wolf3D)
-	//$Title Gas
-	//$Color 6
-	Tag "Petrol"
-	Inventory.PickupMessage "A petrol canister."
-	Inventory.Amount 25
-	Inventory.MaxAmount 175
-	Ammo.BackpackAmount 25
-	Ammo.BackpackMaxAmount 350
-	Scale .5
-	Inventory.Icon FLAM01
-	States
+//$Category Ammo (Wolf3D)
+//$Title Gas
+//$Color 6
+Tag "Petrol"
+Inventory.PickupMessage "A petrol canister."
+Inventory.Amount 25
+Inventory.MaxAmount 175
+Ammo.BackpackAmount 25
+Ammo.BackpackMaxAmount 350
+Scale .5
+Inventory.Icon FLAM01
+States
 	{
 	Spawn:
-		FAMO A -1
-		Stop
+	FAMO A -1
+	Stop
 	}
 }
 
 ACTOR NebAmmo : Ammo 15119
 {
-	//$Category Ammo (Wolf3D)
-	//$Title Nebelrounds
-	//$Color 6
-	Tag "Mini-rocket"
-	Inventory.Amount 5
-	Inventory.MaxAmount 150
-	Ammo.BackpackAmount 20
-	Ammo.BackpackMaxAmount 300
-	Inventory.PickupMessage "Picked up a small crate of mini-rockets."
-	States
+//$Category Ammo (Wolf3D)
+//$Title Nebelrounds
+//$Color 6
+Tag "Mini-rocket"
+Inventory.Amount 5
+Inventory.MaxAmount 150
+Ammo.BackpackAmount 20
+Ammo.BackpackMaxAmount 300
+Inventory.PickupMessage "Picked up a small crate of mini-rockets."
+States
 	{
 	Spawn:
-		MNRB A -1
-		Stop
+	MNRB A -1
+	Stop
 	}
 }
 
 ACTOR NebAmmoBox : NebAmmo replaces CellPack 15110
 {
-	//$Category Ammo (Wolf3D)
-	//$Title Nebelbox
-	//$Color 6
-	Inventory.Amount 30
-	Inventory.PickupMessage "Picked up a crate of mini-rockets."
-	Inventory.Icon NEBE01
-	States
+//$Category Ammo (Wolf3D)
+//$Title Nebelbox
+//$Color 6
+Inventory.Amount 30
+Inventory.PickupMessage "Picked up a crate of mini-rockets."
+Inventory.Icon NEBE01
+States
 	{
 	Spawn:
-		MNRB B -1
-		Stop
+	MNRB B -1
+	Stop
 	}
 }
 
 ACTOR PanzerAmmo : Ammo replaces Rocket 15158
 {
-	Tag "Rocket"
-	Inventory.MaxAmount 10
-	Inventory.PickupMessage "Picked up a Panzerschreck rocket."
-	Ammo.BackpackAmount 1
-	Ammo.BackpackMaxAmount 20
-	Inventory.Icon PANZ01
-	Scale .25
-	States
+Tag "Rocket"
+Inventory.MaxAmount 10
+Inventory.PickupMessage "Picked up a Panzerschreck rocket."
+Ammo.BackpackAmount 1
+Ammo.BackpackMaxAmount 20
+Inventory.Icon PANZ01
+Scale .25
+States
 	{
 	Spawn:
-		PANA A -1
-		Stop
+	PANA A -1
+	Stop
 	}
 }

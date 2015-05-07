@@ -1,88 +1,88 @@
 ACTOR Luger9mm : NaziWeapon replaces Pistol 15008
 {
-	Weapon.SlotNumber 2
-	Weapon.SelectionOrder 9998
-	Weapon.AmmoType "Luger9mmLoaded"
-	Weapon.AmmoUse 1
-	Weapon.AmmoType2 "9mmAmmo"
-	Weapon.AmmoUse2 1
-	Weapon.AmmoGive2 8
-	Tag "Luger P08"
-	Inventory.PickupMessage "You got the Luger P08!"
-	+WEAPON.NOAUTOFIRE
-	States
+Weapon.SlotNumber 2
+Weapon.SelectionOrder 9998
+Weapon.AmmoType "Luger9mmLoaded"
+Weapon.AmmoUse 1
+Weapon.AmmoType2 "9mmAmmo"
+Weapon.AmmoUse2 1
+Weapon.AmmoGive2 8
+Tag "Luger P08"
+Inventory.PickupMessage "You got the Luger P08!"
++WEAPON.NOAUTOFIRE
+States
 	{
 	Ready:
-		LUGG A 0 A_JumpIfInventory("Luger9mmLoaded",0,2)
-		LUGG A 0 A_JumpIfInventory("9mmAmmo",1,2)
-		LUGG A 1 A_WeaponReady
-		Loop
-		LUGG A 1 A_WeaponReady(WRF_ALLOWRELOAD)
-		Loop
+	LUGG A 0 A_JumpIfInventory("Luger9mmLoaded",0,2)
+	LUGG A 0 A_JumpIfInventory("9mmAmmo",1,2)
+	LUGG A 1 A_WeaponReady
+	Loop
+	LUGG A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+	Loop
 	Deselect:
-		LUGG A 0 A_Lower
-		LUGG A 1 A_Lower
-		Loop
+	LUGG A 0 A_Lower
+	LUGG A 1 A_Lower
+	Loop
 	Select:
-		LUGG A 0 A_Raise
-		LUGG A 1 A_Raise
-		Loop
+	LUGG A 0 A_Raise
+	LUGG A 1 A_Raise
+	Loop
 	Fire:
-		LUGG A 0 A_JumpIfInventory("Luger9mmLoaded",1,1)
-		Goto Dryfire
-		LUGG A 0 A_GunFlash
-		LUGG A 0 A_SetPitch(pitch-(0.2*CallACS("RecoilAmount")))
-		LUGG A 0 A_PlaySound("luger/fire",CHAN_WEAPON)
-		LUGG A 0 A_SpawnItemEx("9MMCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
-		LUGG A 0 A_AlertMonsters
-		LUGG A 1 A_FireCustomMissile("LugerTracer",frandom(-1,1))
-		LUGG B 1
-		LUGG B 1 Offset(0,36) A_SetPitch(pitch-(0.2*CallACS("RecoilAmount")))
-		LUGG B 1 Offset(0,41) A_CheckReload
-		LUGG C 1 Offset(0,35) A_WeaponReady(WRF_NOBOB)
-		LUGG C 1 Offset(0,33) A_WeaponReady(WRF_NOBOB)
-		LUGG C 1 Offset(0,31) A_WeaponReady(WRF_NOBOB)
-		LUGG A 1 Offset(0,32) A_WeaponReady(WRF_NOBOB)
-		Goto Ready
+	LUGG A 0 A_JumpIfInventory("Luger9mmLoaded",1,1)
+	Goto Dryfire
+	LUGG A 0 A_GunFlash
+	LUGG A 0 A_SetPitch(pitch-(0.2*CallACS("RecoilAmount")))
+	LUGG A 0 A_PlaySound("luger/fire",CHAN_WEAPON)
+	LUGG A 0 A_SpawnItemEx("9MMCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+	LUGG A 0 A_AlertMonsters
+	LUGG A 1 A_FireCustomMissile("LugerTracer",frandom(-1,1))
+	LUGG B 1
+	LUGG B 1 Offset(0,36) A_SetPitch(pitch-(0.2*CallACS("RecoilAmount")))
+	LUGG B 1 Offset(0,41) A_CheckReload
+	LUGG C 1 Offset(0,35) A_WeaponReady(WRF_NOBOB)
+	LUGG C 1 Offset(0,33) A_WeaponReady(WRF_NOBOB)
+	LUGG C 1 Offset(0,31) A_WeaponReady(WRF_NOBOB)
+	LUGG A 1 Offset(0,32) A_WeaponReady(WRF_NOBOB)
+	Goto Ready
 	Reload:
-		LUGG A 1 Offset(0,35) A_PlaySound("luger/reload",5)
-		LUGG A 1 Offset(0,38)
-		LUGG A 1 Offset(0,44)
-		LUGG A 1 Offset(0,52)
-		LUGG C 1 Offset(0,62)
-		LUGG C 1 Offset(0,72)
-		LUGG C 1 Offset(0,82)
-		TNT1 A 11
+	LUGG A 1 Offset(0,35) A_PlaySound("luger/reload",5)
+	LUGG A 1 Offset(0,38)
+	LUGG A 1 Offset(0,44)
+	LUGG A 1 Offset(0,52)
+	LUGG C 1 Offset(0,62)
+	LUGG C 1 Offset(0,72)
+	LUGG C 1 Offset(0,82)
+	TNT1 A 11
 	ReloadLoop:
-		TNT1 A 0 A_TakeInventory("9mmAmmo",1,TIF_NOTAKEINFINITE)
-		TNT1 A 0 A_GiveInventory("Luger9mmLoaded")
-		TNT1 A 0 A_JumpIfInventory("Luger9mmLoaded",0,"ReloadFinish")
-		TNT1 A 0 A_JumpIfInventory("9mmAmmo",1,"ReloadLoop")
+	TNT1 A 0 A_TakeInventory("9mmAmmo",1,TIF_NOTAKEINFINITE)
+	TNT1 A 0 A_GiveInventory("Luger9mmLoaded")
+	TNT1 A 0 A_JumpIfInventory("Luger9mmLoaded",0,"ReloadFinish")
+	TNT1 A 0 A_JumpIfInventory("9mmAmmo",1,"ReloadLoop")
 	ReloadFinish:
-		LUGG B 1 Offset(0,82)
-		LUGG B 1 Offset(0,72)
-		LUGG B 1 Offset(0,62)
-		LUGG C 1 Offset(0,52)
-		LUGG C 1 Offset(0,44)
-		LUGG C 1 Offset(0,38)
-		LUGG A 1 Offset(0,35)
-		LUGG A 1 Offset(0,32)
-		Goto Ready
+	LUGG B 1 Offset(0,82)
+	LUGG B 1 Offset(0,72)
+	LUGG B 1 Offset(0,62)
+	LUGG C 1 Offset(0,52)
+	LUGG C 1 Offset(0,44)
+	LUGG C 1 Offset(0,38)
+	LUGG A 1 Offset(0,35)
+	LUGG A 1 Offset(0,32)
+	Goto Ready
 	Flash:
-		LUGF A 1 BRIGHT A_Light2
-		TNT1 A 1
-		TNT1 A 2 A_Light1
-		Goto LightDone
+	LUGF A 1 BRIGHT A_Light2
+	TNT1 A 1
+	TNT1 A 2 A_Light1
+	Goto LightDone
 	Spawn:
-		LUGP A -1
-		Stop
+	LUGP A -1
+	Stop
 	}
 }
 
 ACTOR Luger9mmLoaded : Ammo
 {
-	Tag "9x19mm"
-	+IGNORESKILL
-	Inventory.MaxAmount 8
-	Inventory.Icon WALT01
+Tag "9x19mm"
++IGNORESKILL
+Inventory.MaxAmount 8
+Inventory.Icon WALT01
 }

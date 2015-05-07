@@ -1,240 +1,232 @@
 ACTOR Tracer : FastProjectile
 {
-	Alpha .9
-	RenderStyle Add
-	Radius 2
-	Height 2
-	Speed 75
-	+BLOODSPLATTER
-	+SEEKERMISSILE
-	Scale .4
-	MissileType TracerTrail
-	MissileHeight 8
-	Decal BulletChip
-	States
+Alpha .9
+RenderStyle Add
+Radius 2
+Height 2
+Speed 75
++BLOODSPLATTER
++SEEKERMISSILE
+Scale .4
+MissileType TracerTrail
+MissileHeight 8
+Decal BulletChip
+States
 	{
 	Spawn:
-		PUFF A 1 BRIGHT A_JumpIfTracerCloser(96,"Whiz")
-		Loop
+	PUFF A 1 BRIGHT A_JumpIfTracerCloser(96,"Whiz")
+	Loop
 	Whiz:
-		PUFF A -1 BRIGHT A_SpawnItemEx("Whizzer")
-		Stop
+	PUFF A -1 BRIGHT A_SpawnItemEx("Whizzer")
+	Stop
 	Death:
 	Crash:
-		PUFF A 0 A_SpawnDebris("TracerSpark")
-		PUFF A 2 BRIGHT A_PlaySound("ricochet")
-		PUFF BCD 2 BRIGHT
-		Stop
+	PUFF A 0 A_SpawnDebris("TracerSpark")
+	PUFF A 2 BRIGHT A_PlaySound("ricochet")
+	PUFF BCD 2 BRIGHT
+	Stop
 	XDeath:
-		TNT1 A 1 A_PlaySound("hitflesh")
-		Stop
+	TNT1 A 1 A_PlaySound("hitflesh")
+	Stop
 	}
 }
 
 ACTOR Whizzer
 {
-	States
+States
 	{
 	Spawn:
-		TNT1 A 1 A_PlaySound("whiz")
-		Stop
+	TNT1 A 1 A_PlaySound("whiz")
+	Stop
 	}
 }
 
 ACTOR TracerTrail
 {
-	Alpha .75
-	RenderStyle Add
-	+NOBLOCKMAP
-	+NOGRAVITY
-	+NOTELEPORT
-	+CANNOTPUSH
-	+NODAMAGETHRUST
-	Scale .4
-	States
+Alpha .75
+RenderStyle Add
++NOBLOCKMAP
++NOGRAVITY
++NOTELEPORT
++CANNOTPUSH
++NODAMAGETHRUST
+Scale .4
+States
 	{
 	Spawn:
-		PUFF A 1 BRIGHT A_FadeOut(0.3)
-		Loop
+	PUFF A 1 BRIGHT A_FadeOut(0.3)
+	Loop
 	}
 }
 
 ACTOR TracerSpark
 {
-	Health 4
-	Radius 3
-	Height 6
-	Speed .1
-	RenderStyle Add
-	Scale .5
-	Mass 0
-	+MISSILE
-	BounceType Doom
-	+FLOORCLIP
-	+DONTSPLASH
-	+NOTELEPORT
-	States
+Health 4
+Radius 3
+Height 6
+Speed .1
+RenderStyle Add
+Scale .5
+Mass 0
++MISSILE
+BounceType Doom
++FLOORCLIP
++DONTSPLASH
++NOTELEPORT
+States
 	{
 	Spawn:
-		PUFF A 1
-		PUFF A 5 BRIGHT A_SetTranslucent(.8,1)
-		PUFF A 6 BRIGHT A_SetTranslucent(.6,1)
-		PUFF A 8 BRIGHT A_SetTranslucent(.4,1)
-		PUFF A 10 BRIGHT A_SetTranslucent(.2,1)
-		Stop
+	PUFF A 1
+	PUFF A 5 BRIGHT A_SetTranslucent(.8,1)
+	PUFF A 6 BRIGHT A_SetTranslucent(.6,1)
+	PUFF A 8 BRIGHT A_SetTranslucent(.4,1)
+	PUFF A 10 BRIGHT A_SetTranslucent(.2,1)
+	Stop
 	}
 }
 
 // The Player's variants on the tracers, so they have different speeds and damages
 // based on which weapon is being used.
-
 //Muzzle velocity: 1,148-1,312 ft/s (350-400 m/s) - Wikipedia
 ACTOR LugerTracer : Tracer
 {
-	ProjectileKickback 60
-	Damage (random(3,17))
-	Speed 100
+ProjectileKickback 60
+Damage (random(3,17))
+Speed 100
 }
 
 //Muzzle velocity: 1,200 ft/s (365 m/s) - Wikipedia
 ACTOR WaltherTracer : LugerTracer
 {
-	Damage (random(6,18))
-	Speed 90
+Damage (random(6,18))
+Speed 90
 }
 
 ACTOR RevolverTracer : Tracer
 {
-	ProjectileKickback 45
-	Damage (random(22,34))
-	Speed 90
-	Obituary "%o was breached by %k's revolver."
+ProjectileKickback 45
+Damage (random(22,34))
+Speed 90
+Obituary "%o was breached by %k's revolver."
 }
 
 //Muzzle velocity: 825 ft/s (251 m/s) - Wikipedia
 ACTOR 1911Tracer : RevolverTracer
-{
-	Obituary "%o was executed by %k's M1911."
-}
+{Obituary "%o was executed by %k's M1911."}
 
 ACTOR ShotgunTracer : Tracer
 {
-	Damage (random(5,15))
-	States
+Damage (random(5,15))
+States
 	{
 	Death:
 	Crash:
-		PUFF BCD 3 BRIGHT
-		Stop
+	PUFF BCD 3 BRIGHT
+	Stop
 	}
 }
 
 ACTOR AutoShotgunTracer : ShotgunTracer
-{
-	Obituary "%o was peppered by %k's auto shotgun."
-}
+{Obituary "%o was peppered by %k's auto shotgun."}
 
 //Muzzle velocity: 1,312 ft/s (400 m/s) - Wikipedia
 ACTOR MP40Tracer : Tracer
 {
-	Damage (random(9,14))
-	Speed 90
+Damage (random(9,14))
+Speed 90
 }
 
 //Muzzle velocity: 1,600.6 ft/s (488 m/s) - Wikipedia
 ACTOR PPSHTracer : WaltherTracer
 {
-	Damage (random(11,12))
-	Speed 100
+Damage (random(11,12))
+Speed 100
 }
 
 //Muzzle velocity: 935 ft/s (285 m/s) - Wikipedia
 ACTOR ThompsonTracer : Tracer
 {
-	ProjectileKickback 100
-	Damage (random(14,18))
-	Speed 120
+ProjectileKickback 100
+Damage (random(14,18))
+Speed 120
 }
 
 //Muzzle velocity: 2,822 ft/s (860 m/s) - Wikipedia
 ACTOR Kar98kTracer : Tracer
 {
-	ProjectileKickback 100
-	Damage (random(26,55))
-	Speed 180
-	Obituary "%o was gunned down by %k's Mauser."
+ProjectileKickback 100
+Damage (random(26,55))
+Speed 180
+Obituary "%o was gunned down by %k's Mauser."
 }
 
 //Muzzle velocity: 2,448-2,546 ft/s (746-776 m/s) - Wikipedia
 ACTOR G43Tracer : Kar98kTracer
 {
-	Speed 150
-	Obituary ""
+Speed 150
+Obituary ""
 }
 
 //Muzzle velocity: 2,441 ft/s (744 m/s) - Wikipedia
 ACTOR EnfieldTracer : Tracer
 {
-	Damage (random(40,65))
-	Speed 180
+Damage (random(40,65))
+Speed 180
 }
 
 //Muzzle velocity: 2,800 ft/s (853 m/s) - Wikipedia
-ACTOR GarandTracer : EnfieldTracer
-{
-	ProjectileKickback 100
-}
+ACTOR GarandTracer : EnfieldTracer {ProjectileKickback 100}
 
 //Muzzle velocity: 2,247 ft/s (685 m/s) - Wikipedia
 ACTOR StGTracer : Tracer
 {
-	ProjectileKickback 100
-	Damage (random(18,24))
-	Speed 115
+ProjectileKickback 100
+Damage (random(18,24))
+Speed 115
 }
 
 //Muzzle velocity: 2,428 ft/s (740 m/s) - Wikipedia
 ACTOR FGTracer : Tracer
 {
-	ProjectileKickback 100
-	Damage (random(30,44))
-	Speed 155
+ProjectileKickback 100
+Damage (random(30,44))
+Speed 155
 }
 
 ACTOR ChaingunTracer : Tracer
 {
-	Damage (random(11,15))
-	Speed 90
+Damage (random(11,15))
+Speed 90
 }
 
 //Shells/Casings
 ACTOR 9MMCasing
 {
-	Scale .075
-	Projectile
-	-NOGRAVITY
-	-NOBLOCKMAP
-	+BOUNCEONACTORS
-	BounceType Doom
-	BounceSound "bulletcasing/bounce"
-	BounceFactor .5
-	WallBounceFactor .2
-	Mass 5
-	Radius 3
-	Height 3
-	States
+Scale .075
+Projectile
+-NOGRAVITY
+-NOBLOCKMAP
++BOUNCEONACTORS
+BounceType Doom
+BounceSound "bulletcasing/bounce"
+BounceFactor .5
+WallBounceFactor .2
+Mass 5
+Radius 3
+Height 3
+States
 	{
 	Spawn:
-		CAS1 ABCDEFGH 2
-		Loop
+	CAS1 ABCDEFGH 2
+	Loop
 	Death:
-		"####" A 0 A_Jump(256,1,2,3)
-		"####" ACG 0 A_Jump(256,"Death1")
-		Stop
+	"####" A 0 A_Jump(256,1,2,3)
+	"####" ACG 0 A_Jump(256,"Death1")
+	Stop
 	Death1:
-		"####" "#" 1 A_SetTics(CallACS("ShellLifetime"))
-		"####" "#" 1 A_FadeOut(0.1)
-		Wait
+	"####" "#" 1 A_SetTics(CallACS("ShellLifetime"))
+	"####" "#" 1 A_FadeOut(0.1)
+	Wait
 	}
 }
 
@@ -242,26 +234,26 @@ ACTOR RevolverCasing : 9MMCasing{}
 
 ACTOR 45ACPCasing : 9MMCasing
 {
-	Scale .1
-	States
+Scale .1
+States
 	{
 	Spawn:
-		CAS3 ABCDEFGH 2
-		Loop
+	CAS3 ABCDEFGH 2
+	Loop
 	}
 }
 
 ACTOR ShotgunCasing : 9MMCasing
 {
-	WallBounceSound "shellcasing/bounce"
-	BounceSound "shellcasing/bounce"
-	DeathSound "shellcasing/stop"
-	Scale .175
-	States
+WallBounceSound "shellcasing/bounce"
+BounceSound "shellcasing/bounce"
+DeathSound "shellcasing/stop"
+Scale .175
+States
 	{
 	Spawn:
-		CAS2 ABCDEFGH 2
-		Loop
+	CAS2 ABCDEFGH 2
+	Loop
 	}
 }
 
@@ -269,122 +261,48 @@ ACTOR TokarevCasing : 9MMCasing{}
 
 ACTOR MauserRifleCasing : 9MMCasing
 {
-	Scale .15
-	States
+Scale .15
+States
 	{
 	Spawn:
-		CAS4 ABCDEFGH 2
-		Loop
+	CAS4 ABCDEFGH 2
+	Loop
 	}
 }
 
 ACTOR EnfieldRifleCasing : MauserRifleCasing{}
-
 ACTOR GarandRifleCasing : MauserRifleCasing{}
-
 ACTOR STGCasing : MauserRifleCasing{}
 
 // Enemy tracer variants for Normal mode.
 ACTOR EnemyPistolTracer : Tracer
 {
-	+THRUGHOST
-	Damage (random(4,8))
++THRUGHOST
+Damage (random(4,8))
 }
 
-ACTOR EnemySMGTracer : EnemyPistolTracer
-{
-	Damage (random(6,7))
-}
-
-ACTOR EnemyRifleTracer : EnemyPistolTracer
-{
-	Damage (random(15,30))
-}
-
-ACTOR EnemyStGTracer : EnemyPistolTracer
-{
-	Damage (random(7,8))
-}
-
-ACTOR EnemyChaingunTracer : EnemyPistolTracer
-{
-	Damage (random(6,8))
-}
+ACTOR EnemySMGTracer : EnemyPistolTracer {Damage (random(6,7))}
+ACTOR EnemyRifleTracer : EnemyPistolTracer {Damage (random(15,30))}
+ACTOR EnemyStGTracer : EnemyPistolTracer {Damage (random(7,8))}
+ACTOR EnemyChaingunTracer : EnemyPistolTracer {Damage (random(6,8))}
 
 // Enemy tracer variants for Baby mode
-ACTOR BabyEnemyPistolTracer : EnemyPistolTracer
-{
-	Speed 30
-}
-
-ACTOR BabyEnemySMGTracer : EnemySMGTracer
-{
-	Speed 30
-}
-
-ACTOR BabyEnemyRifleTracer : EnemyRifleTracer
-{
-	Speed 30
-}
-
-ACTOR BabyEnemyStGTracer : EnemyStGTracer
-{
-	Speed 30
-}
-
-ACTOR BabyEnemyChaingunTracer : EnemyChaingunTracer
-{
-	Speed 30
-}
+ACTOR BabyEnemyPistolTracer : EnemyPistolTracer {Speed 30}
+ACTOR BabyEnemySMGTracer : EnemySMGTracer {Speed 30}
+ACTOR BabyEnemyRifleTracer : EnemyRifleTracer {Speed 30}
+ACTOR BabyEnemyStGTracer : EnemyStGTracer {Speed 30}
+ACTOR BabyEnemyChaingunTracer : EnemyChaingunTracer {Speed 30}
 
 // Enemy tracer variants for Easy mode
-ACTOR EasyEnemyPistolTracer : EnemyPistolTracer
-{
-	Speed 50
-}
-
-ACTOR EasyEnemySMGTracer : EnemySMGTracer
-{
-	Speed 50
-}
-
-ACTOR EasyEnemyRifleTracer : EnemyRifleTracer
-{
-	Speed 50
-}
-
-ACTOR EasyEnemyStGTracer : EnemyStGTracer
-{
-	Speed 50
-}
-
-ACTOR EasyEnemyChaingunTracer : EnemyChaingunTracer
-{
-	Speed 50
-}
+ACTOR EasyEnemyPistolTracer : EnemyPistolTracer {Speed 50}
+ACTOR EasyEnemySMGTracer : EnemySMGTracer {Speed 50}
+ACTOR EasyEnemyRifleTracer : EnemyRifleTracer {Speed 50}
+ACTOR EasyEnemyStGTracer : EnemyStGTracer {Speed 50}
+ACTOR EasyEnemyChaingunTracer : EnemyChaingunTracer {Speed 50}
 
 // Enemy tracer variants for Hard and Nightmare mode
-ACTOR HardEnemyPistolTracer : EnemyPistolTracer
-{
-	Speed 90
-}
-
-ACTOR HardEnemySMGTracer : EnemySMGTracer
-{
-	Speed 90
-}
-
-ACTOR HardEnemyRifleTracer : EnemyRifleTracer
-{
-	Speed 90
-}
-
-ACTOR HardEnemyStGTracer : EnemyStGTracer
-{
-	Speed 90
-}
-
-ACTOR HardEnemyChaingunTracer : EnemyChaingunTracer
-{
-	Speed 90
-}
+ACTOR HardEnemyPistolTracer : EnemyPistolTracer {Speed 90}
+ACTOR HardEnemySMGTracer : EnemySMGTracer {Speed 90}
+ACTOR HardEnemyRifleTracer : EnemyRifleTracer {Speed 90}
+ACTOR HardEnemyStGTracer : EnemyStGTracer {Speed 90}
+ACTOR HardEnemyChaingunTracer : EnemyChaingunTracer {Speed 90}

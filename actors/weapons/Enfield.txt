@@ -4,136 +4,136 @@
 
 ACTOR Enfield : NaziWeapon replaces SuperShotgun 15004
 {
-	//$Category Weapons (Wolf3D)
-	//$Title (5) Enfield
-	//$Color 14
-	Weapon.SlotNumber 5
-	Weapon.SelectionOrder 750
-	Weapon.AmmoType "EnfieldLoaded"
-	Weapon.AmmoUse 1
-	Weapon.AmmoType2 "303Ammo"
-	Weapon.AmmoUse2 1
-	Weapon.AmmoGive2 5
-	Tag "Lee-Enfield SMLE"
-	Inventory.PickupMessage "You got the Lee-Enfield SMLE!"
-	+WEAPON.NOAUTOFIRE
-	States
+//$Category Weapons (Wolf3D)
+//$Title (5) Enfield
+//$Color 14
+Weapon.SlotNumber 5
+Weapon.SelectionOrder 750
+Weapon.AmmoType "EnfieldLoaded"
+Weapon.AmmoUse 1
+Weapon.AmmoType2 "303Ammo"
+Weapon.AmmoUse2 1
+Weapon.AmmoGive2 5
+Tag "Lee-Enfield SMLE"
+Inventory.PickupMessage "You got the Lee-Enfield SMLE!"
++WEAPON.NOAUTOFIRE
+States
 	{
 	Select:
-		ENFG A 0 A_Raise
-		ENFG A 1 A_Raise
-		Loop
+	ENFG A 0 A_Raise
+	ENFG A 1 A_Raise
+	Loop
 	Deselect:
-		ENFG A 0 A_Lower
-		ENFG A 1 A_Lower
-		Loop
+	ENFG A 0 A_Lower
+	ENFG A 1 A_Lower
+	Loop
 	Ready:
-		ENFG A 0 A_JumpIfInventory("EnfieldLoaded",0,2)
-		ENFG A 0 A_JumpIfInventory("303Ammo",1,2)
-		ENFG A 1 A_WeaponReady
-		Loop
-		ENFG A 1 A_WeaponReady(WRF_ALLOWRELOAD)
-		Loop
+	ENFG A 0 A_JumpIfInventory("EnfieldLoaded",0,2)
+	ENFG A 0 A_JumpIfInventory("303Ammo",1,2)
+	ENFG A 1 A_WeaponReady
+	Loop
+	ENFG A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+	Loop
 	Fire:
-		ENFG A 0 A_JumpIfInventory("EnfieldLoaded",1,1)
-		Goto Dryfire
-		ENFG A 0 A_GunFlash
-		ENFG A 0 A_PlaySound("enfield/fire",CHAN_WEAPON)
-		ENFG A 0 A_AlertMonsters
-		ENFG A 1 A_FireCustomMissile("EnfieldTracer")
-		ENFG A 1 Offset(0,52)
-		ENFG A 1 Offset(0,45) A_SetPitch(pitch-(4.0*CallACS("RecoilAmount")))
-		ENFG A 1 Offset(0,40) A_SetPitch(pitch-(2.0*CallACS("RecoilAmount")))
-		ENFG A 1 Offset(0,36) A_SetPitch(pitch+(1.0*CallACS("RecoilAmount")))
-		ENFG A 1 Offset(0,34) A_SetPitch(pitch+(1.0*CallACS("RecoilAmount")))
-		ENFG A 1 Offset(0,33) A_SetPitch(pitch+(0.5*CallACS("RecoilAmount")))
-		ENFG A 1 Offset(-2,33) A_PlaySound("enfield/boltback",5)
-		ENFG A 1 Offset(-4,34)
-		ENFG A 1 Offset(-6,35)
-		ENFG A 2 Offset(-8,36)
-		ENFG A 2 Offset(-4,42)
-		ENFG A 1 Offset(0,51) A_SpawnItemEx("EnfieldRifleCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
-		ENFG A 1 Offset(4,60)
-		ENFG A 2 Offset(5,74)
-		ENFG A 3 Offset(6,76)
-		ENFG A 2 Offset(5,74) A_PlaySound("enfield/boltfwd",5)
-		ENFG A 1 Offset(4,60)
-		ENFG A 1 Offset(0,51)
-		ENFG A 1 Offset(-4,42)
-		ENFG A 2 Offset(-8,36)
-		ENFG A 1 Offset(-6,35)
-		ENFG A 1 Offset(-4,34)
-		ENFG A 1 Offset(-2,33)
-		TNT1 A 0 A_CheckReload
-		Goto Ready
+	ENFG A 0 A_JumpIfInventory("EnfieldLoaded",1,1)
+	Goto Dryfire
+	ENFG A 0 A_GunFlash
+	ENFG A 0 A_PlaySound("enfield/fire",CHAN_WEAPON)
+	ENFG A 0 A_AlertMonsters
+	ENFG A 1 A_FireCustomMissile("EnfieldTracer")
+	ENFG A 1 Offset(0,52)
+	ENFG A 1 Offset(0,45) A_SetPitch(pitch-(4.0*CallACS("RecoilAmount")))
+	ENFG A 1 Offset(0,40) A_SetPitch(pitch-(2.0*CallACS("RecoilAmount")))
+	ENFG A 1 Offset(0,36) A_SetPitch(pitch+(1.0*CallACS("RecoilAmount")))
+	ENFG A 1 Offset(0,34) A_SetPitch(pitch+(1.0*CallACS("RecoilAmount")))
+	ENFG A 1 Offset(0,33) A_SetPitch(pitch+(0.5*CallACS("RecoilAmount")))
+	ENFG A 1 Offset(-2,33) A_PlaySound("enfield/boltback",5)
+	ENFG A 1 Offset(-4,34)
+	ENFG A 1 Offset(-6,35)
+	ENFG A 2 Offset(-8,36)
+	ENFG A 2 Offset(-4,42)
+	ENFG A 1 Offset(0,51) A_SpawnItemEx("EnfieldRifleCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+	ENFG A 1 Offset(4,60)
+	ENFG A 2 Offset(5,74)
+	ENFG A 3 Offset(6,76)
+	ENFG A 2 Offset(5,74) A_PlaySound("enfield/boltfwd",5)
+	ENFG A 1 Offset(4,60)
+	ENFG A 1 Offset(0,51)
+	ENFG A 1 Offset(-4,42)
+	ENFG A 2 Offset(-8,36)
+	ENFG A 1 Offset(-6,35)
+	ENFG A 1 Offset(-4,34)
+	ENFG A 1 Offset(-2,33)
+	TNT1 A 0 A_CheckReload
+	Goto Ready
 	Reload:
-		ENFG A 1 Offset(-2,33) A_PlaySound("enfield/boltback",5)
-		ENFG A 1 Offset(-4,34)
-		ENFG A 1 Offset(-6,35)
-		ENFG A 2 Offset(-8,36)
-		ENFG A 2 Offset(-4,42)
-		ENFG A 1 Offset(0,51)
-		ENFG A 1 Offset(4,60)
-		ENFG A 2 Offset(5,74)
-		ENFG A 3 Offset(6,76)
-		ENFG A 2 Offset(5,74)
-		ENFG A 8 Offset(6,76)
-		ENFG A 0 A_JumpIfInventory("EnfieldLoaded",5,"ReloadLoop2")
-		ENFG A 0 A_JumpIfInventory("303Ammo",5,1)
-		Goto ReloadLoop2
-		TNT1 A 0 A_TakeInventory("303Ammo",5)
-		TNT1 A 0 A_GiveInventory("EnfieldLoaded",5)
-		ENFG A 1 Offset(6,80) A_PlaySound("enfield/load",5)
-		ENFG A 1 Offset(6,84)
-		ENFG A 1 Offset(6,87)
-		ENFG A 1 Offset(7,90)
-		ENFG A 1 Offset(8,92)
-		ENFG A 1 Offset(9,88)
-		ENFG A 1 Offset(8,82)
-		ENFG A 1 Offset(7,77)
-		ENFG A 0 A_JumpIfInventory("EnfieldLoaded",0,"ReloadOnlyOneClip")
-		TNT1 A 0 A_JumpIfInventory("303Ammo",1,1)
-		Goto ReloadOnlyOneClip
-		ENFG A 5 Offset(6,75)
+	ENFG A 1 Offset(-2,33) A_PlaySound("enfield/boltback",5)
+	ENFG A 1 Offset(-4,34)
+	ENFG A 1 Offset(-6,35)
+	ENFG A 2 Offset(-8,36)
+	ENFG A 2 Offset(-4,42)
+	ENFG A 1 Offset(0,51)
+	ENFG A 1 Offset(4,60)
+	ENFG A 2 Offset(5,74)
+	ENFG A 3 Offset(6,76)
+	ENFG A 2 Offset(5,74)
+	ENFG A 8 Offset(6,76)
+	ENFG A 0 A_JumpIfInventory("EnfieldLoaded",5,"ReloadLoop2")
+	ENFG A 0 A_JumpIfInventory("303Ammo",5,1)
+	Goto ReloadLoop2
+	TNT1 A 0 A_TakeInventory("303Ammo",5)
+	TNT1 A 0 A_GiveInventory("EnfieldLoaded",5)
+	ENFG A 1 Offset(6,80) A_PlaySound("enfield/load",5)
+	ENFG A 1 Offset(6,84)
+	ENFG A 1 Offset(6,87)
+	ENFG A 1 Offset(7,90)
+	ENFG A 1 Offset(8,92)
+	ENFG A 1 Offset(9,88)
+	ENFG A 1 Offset(8,82)
+	ENFG A 1 Offset(7,77)
+	ENFG A 0 A_JumpIfInventory("EnfieldLoaded",0,"ReloadOnlyOneClip")
+	TNT1 A 0 A_JumpIfInventory("303Ammo",1,1)
+	Goto ReloadOnlyOneClip
+	ENFG A 5 Offset(6,75)
 	ReloadLoop2:
-		TNT1 A 0 A_TakeInventory("303Ammo",1)
-		TNT1 A 0 A_GiveInventory("EnfieldLoaded")
-		TNT1 A 0 A_JumpIfInventory("EnfieldLoaded",0,"ReloadFinish")
-		TNT1 A 0 A_JumpIfInventory("303Ammo",1,"ReloadLoop2")
+	TNT1 A 0 A_TakeInventory("303Ammo",1)
+	TNT1 A 0 A_GiveInventory("EnfieldLoaded")
+	TNT1 A 0 A_JumpIfInventory("EnfieldLoaded",0,"ReloadFinish")
+	TNT1 A 0 A_JumpIfInventory("303Ammo",1,"ReloadLoop2")
 	ReloadFinish:
-		ENFG A 1 Offset(6,80) A_PlaySound("enfield/load",5)
-		ENFG A 1 Offset(6,84)
-		ENFG A 1 Offset(6,87)
-		ENFG A 1 Offset(7,90)
-		ENFG A 1 Offset(8,92)
-		ENFG A 1 Offset(9,88)
-		ENFG A 1 Offset(8,82)
-		ENFG A 1 Offset(7,77)
+	ENFG A 1 Offset(6,80) A_PlaySound("enfield/load",5)
+	ENFG A 1 Offset(6,84)
+	ENFG A 1 Offset(6,87)
+	ENFG A 1 Offset(7,90)
+	ENFG A 1 Offset(8,92)
+	ENFG A 1 Offset(9,88)
+	ENFG A 1 Offset(8,82)
+	ENFG A 1 Offset(7,77)
 	ReloadOnlyOneClip:
-		ENFG A 2 Offset(5,74) A_PlaySound("enfield/boltfwd",5)
-		ENFG A 1 Offset(4,60)
-		ENFG A 1 Offset(0,51)
-		ENFG A 1 Offset(-4,42)
-		ENFG A 2 Offset(-8,36)
-		ENFG A 1 Offset(-6,35)
-		ENFG A 1 Offset(-4,34)
-		ENFG A 1 Offset(-2,33)
-		Goto Ready
+	ENFG A 2 Offset(5,74) A_PlaySound("enfield/boltfwd",5)
+	ENFG A 1 Offset(4,60)
+	ENFG A 1 Offset(0,51)
+	ENFG A 1 Offset(-4,42)
+	ENFG A 2 Offset(-8,36)
+	ENFG A 1 Offset(-6,35)
+	ENFG A 1 Offset(-4,34)
+	ENFG A 1 Offset(-2,33)
+	Goto Ready
 	Flash:
-		ENFF A 1 BRIGHT A_Light2
-		ENFF B 1 BRIGHT
-		TNT1 A 2 A_Light1
-		Goto LightDone
+	ENFF A 1 BRIGHT A_Light2
+	ENFF B 1 BRIGHT
+	TNT1 A 2 A_Light1
+	Goto LightDone
 	Spawn:
-		ENFP A -1
-		Stop
+	ENFP A -1
+	Stop
 	}
 }
 
 ACTOR EnfieldLoaded : Ammo
 {
-	Tag ".303 British"
-	+IGNORESKILL
-	Inventory.MaxAmount 10
-	Inventory.Icon MAUS01
+Tag ".303 British"
++IGNORESKILL
+Inventory.MaxAmount 10
+Inventory.Icon MAUS01
 }
