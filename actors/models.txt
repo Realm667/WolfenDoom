@@ -1,6 +1,5 @@
 ACTOR ModelBase
 {
-Radius 20
 Height 56
 +NOBLOOD
 +FLOORCLIP
@@ -16,7 +15,6 @@ States
 
 actor 3dObstacle
 {
-Radius 20
 Height 56
 Mass 0x7fffffff
 Health -1
@@ -39,7 +37,6 @@ States
 
 actor 3dObject //nomass = nocollisions because of noblockmap
 {
-Radius 20
 Height 56
 +SOLID
 +DROPPED
@@ -275,7 +272,7 @@ SpawnID 160
 	}
 }
 
-Actor FighterM109B_Flight_Fog : FighterM109B_Flight 
+Actor FighterM109B_Flight_Fog : FighterM109B_Flight
 {
 SpawnID 161
 }
@@ -398,7 +395,7 @@ ACTOR FlagWave : ModelBase 20155
 //$Category Models (Wolf3D)
 //$Title Waving Flag
 //$Color 3
-        Radius 1 
+        Radius 1
         Height 1
 	Mass 5
 	+NOGRAVITY
