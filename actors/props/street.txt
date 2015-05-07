@@ -3,28 +3,28 @@ ACTOR HydrantShootable 19037
 //$Category Props (Wolf3D)
 //$Title Hydrant (shootable)
 //$Color 3
-  Health 1
-  Radius 10
-  Height 42
-  Mass 999999
-  +SOLID
-  +SHOOTABLE
-  +NOBLOOD
-  +DONTGIB
-  +NOICEDEATH
-  DeathSound "hydrant/death"
-  States
-  {
-  Spawn:
-    HYDR A -1
-    Stop
-  Death:
-    HYDR B 4 A_Scream
-    HYDB ABC 4
-  Broken:
-    HYDR BCDE 4 A_PlaySound ("hydrant/broken", 0, 1.0, 1, 15)
-    Loop
-  }
+Health 1
+Radius 10
+Height 42
+Mass 999999
++SOLID
++SHOOTABLE
++NOBLOOD
++DONTGIB
++NOICEDEATH
+DeathSound "hydrant/death"
+States
+	{
+	Spawn:
+	HYDR A -1
+	Stop
+	Death:
+	HYDR B 4 A_Scream
+	HYDB ABC 4
+	Broken:
+	HYDR BCDE 4 A_PlaySound ("hydrant/broken", 0, 1.0, 1, 15)
+	Loop
+	}
 }
 
 ACTOR Tires 19045
@@ -32,15 +32,15 @@ ACTOR Tires 19045
 //$Category Props (Wolf3D)
 //$Title Tires (grey)
 //$Color 3
-  Radius 16
-  Height 8
-  +SOLID
-  States
-  {
-  Spawn:
-    TIRE A -1
-    Stop
-  }
+Radius 16
+Height 8
++SOLID
+States
+	{
+	Spawn:
+	TIRE A -1
+	Stop
+	}
 }
 
 ACTOR Tires2 19056
@@ -48,15 +48,15 @@ ACTOR Tires2 19056
 //$Category Props (Wolf3D)
 //$Title Barrier
 //$Color 3
-  Radius 32
-  Height 64
-  +SOLID
-  States
-  {
-  Spawn:
-    ROBA A -1
-    Stop
-  }
+Radius 32
+Height 64
++SOLID
+States
+	{
+	Spawn:
+	ROBA A -1
+	Stop
+	}
 }
 
 ACTOR StreetBin 19090
@@ -91,16 +91,16 @@ ACTOR Denkmal 19091
 //$Category Props (Wolf3D)
 //$Title Statue Horse (Street)
 //$Color 3
-  Scale 0.85
-  Radius 64
-  Height 128
-  +SOLID
-  States
-  {
-  Spawn:
-    DNML A -1
-    Stop
-  }
+Scale 0.85
+Radius 64
+Height 128
++SOLID
+States
+	{
+	Spawn:
+	DNML A -1
+	Stop
+	}
 }
 
 ACTOR CafeStuff 19593
@@ -108,16 +108,16 @@ ACTOR CafeStuff 19593
 //$Category Props (Wolf3D)
 //$Title Chairs & Table (Cafe)
 //$Color 3
-  Scale 0.85
-  Radius 24
-  Height 32
-  +SOLID
-  States
-  {
-  Spawn:
-    CAFE A -1
-    Stop
-  }
+Scale 0.85
+Radius 24
+Height 32
++SOLID
+States
+	{
+	Spawn:
+	CAFE A -1
+	Stop
+	}
 }
 
 Actor JunkPile1 19094
@@ -129,11 +129,11 @@ Radius 25
 Height 20
 +SOLID
 States
-{
-Spawn:
+	{
+	Spawn:
 	JPIL A -1
 	Stop
-}
+	}
 }
 
 Actor JunkPile2 19095
@@ -145,11 +145,11 @@ Radius 28
 Height 28
 +SOLID
 States
-{
-Spawn:
+	{
+	Spawn:
 	JPIL B -1
 	Stop
-}
+	}
 }
 
 actor Hedgehog 19596
@@ -157,15 +157,15 @@ actor Hedgehog 19596
 //$Title "Czech Hedgehog"
 //$Category Props (Wolf3D)
 //$Color 3
-  Radius 32
-  Height 64
-  +SOLID
-  States
-  {
-  Spawn:
-    HEDG A -1
-    Stop
-  }
+Radius 32
+Height 64
++SOLID
+States
+	{
+	Spawn:
+	HEDG A -1
+	Stop
+	}
 }
 
 Actor NTomb1 15201
@@ -177,11 +177,11 @@ Radius 15
 Height 68
 +SOLID
 States
-{
-Spawn:
+	{
+	Spawn:
 	NTOM A -1
 	Stop
-}
+	}
 }
 
 Actor NTomb2 15202
@@ -193,11 +193,11 @@ Radius 15
 Height 62
 +SOLID
 States
-{
-Spawn:
+	{
+	Spawn:
 	NTOM B -1
 	Stop
-}
+	}
 }
 
 Actor NTomb3 15203
@@ -209,11 +209,11 @@ Radius 15
 Height 48
 +SOLID
 States
-{
-Spawn:
+	{
+	Spawn:
 	NTOM C -1
 	Stop
-}
+	}
 }
 
 Actor NTomb4 15204
@@ -225,11 +225,11 @@ Radius 15
 Height 43
 +SOLID
 States
-{
-Spawn:
+	{
+	Spawn:
 	NTOM D -1
 	Stop
-}
+	}
 }
 
 Actor NTomb5 15205
@@ -241,11 +241,11 @@ Radius 12
 Height 35
 +SOLID
 States
-{
-Spawn:
+	{
+	Spawn:
 	NTOM E -1
 	Stop
-}
+	}
 }
 
 Actor OldWagon 15206
@@ -257,11 +257,11 @@ Radius 40
 Height 64
 +SOLID
 States
-{
-Spawn:
+	{
+	Spawn:
 	OLWG A -1
 	Stop
-}
+	}
 }
 
 Actor BurningBarrelBoA 15207
@@ -273,9 +273,9 @@ Radius 16
 Height 64
 +SOLID
 States
-{
-Spawn:
+	{
+	Spawn:
 	BBAR ABCD -1
 	Loop
-}
+	}
 }

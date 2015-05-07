@@ -3,17 +3,16 @@ ACTOR BarrelLay 19061
 //$Category Props (Wolf3D)
 //$Title Barrel (metal, laying)
 //$Color 3
-  Radius 16
-  Height 24
-  +SOLID
-  States
-  {
-  Spawn:
-    BARL Z -1
-    Stop
-  }
+Radius 16
+Height 24
++SOLID
+States
+	{
+	Spawn:
+	BARL Z -1
+	Stop
+	}
 }
-
 
 actor soundbarrel 19096
 {
@@ -23,11 +22,13 @@ actor soundbarrel 19096
 radius 8
 height 29
 +solid
-states{
- spawn:
-  BARR ABCD 4
-  //TNT1 A 0 a_playsound("radioactivebarrel/detected",0,0.2,true,attn_static)
-  loop}
+states
+	{
+	spawn:
+	BARR ABCD 4
+	//TNT1 A 0 a_playsound("radioactivebarrel/detected",0,0.2,true,attn_static)
+	loop
+	}
 }
 
 actor emptybarrel 19197

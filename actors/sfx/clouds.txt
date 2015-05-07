@@ -3,164 +3,131 @@ Actor CloudSpawner 10000
 //$Category Special Effects (Wolf3D)
 //$Title Cloud Spawner (arg1 xRadius, arg2 zRadius, arg3 Chance, arg4 Size, arg5 Color)
 //$Color 12
-  +NoBlockMap
-  +NoGravity
-  +NoSector
-  +NoInteraction
-  +NoClip 
-  -Solid
-  +ClientSideOnly
-  States
-  {
-  Spawn:
-  Active:
-    TNT1 A 0
-    TNT1 A 0 A_JumpIf(Args[4] == 1, "Tan")
-    TNT1 A 0 A_JumpIf(Args[4] > 1, "Red")
-    Goto Grey
-  Grey:
-    TNT1 A 0 A_JumpIf(Args[3] == 1, "SmallGrey")
-    TNT1 A 0 A_JumpIf(Args[3] == 2, "MediumGrey")
-    TNT1 A 0 A_JumpIf(Args[3] > 2, "LargeGrey")
-    Goto MiniGrey
-  Tan:
-    TNT1 A 0 A_JumpIf(Args[3] == 1, "SmallTan")
-    TNT1 A 0 A_JumpIf(Args[3] == 2, "MediumTan")
-    TNT1 A 0 A_JumpIf(Args[3] > 2, "LargeTan")
-    Goto MiniTan
-  Red:
-    TNT1 A 0 A_JumpIf(Args[3] == 1, "SmallRed")
-    TNT1 A 0 A_JumpIf(Args[3] == 2, "MediumRed")
-    TNT1 A 0 A_JumpIf(Args[3] > 2, "LargeRed")
-    Goto MiniRed
-  MiniGrey:
-    TNT1 A 30 A_SpawnItemEx("MiniCloudGrey", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
-    Loop
-  SmallGrey:
-    TNT1 A 30 A_SpawnItemEx("SmallCloudGrey", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
-    Loop
-  MediumGrey:
-    TNT1 A 30 A_SpawnItemEx("MediumCloudGrey", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
-    Loop
-  LargeGrey:
-    TNT1 A 30 A_SpawnItemEx("LargeCloudGrey", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
-    Loop
-  MiniTan:
-    TNT1 A 30 A_SpawnItemEx("MiniCloudTan", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
-    Loop
-  SmallTan:
-    TNT1 A 30 A_SpawnItemEx("SmallCloudTan", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
-    Loop
-  MediumTan:
-    TNT1 A 30 A_SpawnItemEx("MediumCloudTan", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
-    Loop
-  LargeTan:
-    TNT1 A 30 A_SpawnItemEx("LargeCloudTan", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
-    Loop
-  MiniRed:
-    TNT1 A 30 A_SpawnItemEx("MiniCloudRed", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
-    Loop
-  SmallRed:
-    TNT1 A 30 A_SpawnItemEx("SmallCloudRed", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
-    Loop
-  MediumRed:
-    TNT1 A 30 A_SpawnItemEx("MediumCloudRed", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
-    Loop
-  LargeRed:
-    TNT1 A 30 A_SpawnItemEx("LargeCloudRed", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
-    Loop
-  Inactive:
-    TNT1 A -1
-    Loop
-  }
++NoBlockMap
++NoGravity
++NoSector
++NoInteraction
++NoClip
+-Solid
++ClientSideOnly
+States
+	{
+	Spawn:
+	Active:
+	TNT1 A 0
+	TNT1 A 0 A_JumpIf(Args[4] == 1, "Tan")
+	TNT1 A 0 A_JumpIf(Args[4] > 1, "Red")
+	Goto Grey
+	Grey:
+	TNT1 A 0 A_JumpIf(Args[3] == 1, "SmallGrey")
+	TNT1 A 0 A_JumpIf(Args[3] == 2, "MediumGrey")
+	TNT1 A 0 A_JumpIf(Args[3] > 2, "LargeGrey")
+	Goto MiniGrey
+	Tan:
+	TNT1 A 0 A_JumpIf(Args[3] == 1, "SmallTan")
+	TNT1 A 0 A_JumpIf(Args[3] == 2, "MediumTan")
+	TNT1 A 0 A_JumpIf(Args[3] > 2, "LargeTan")
+	Goto MiniTan
+	Red:
+	TNT1 A 0 A_JumpIf(Args[3] == 1, "SmallRed")
+	TNT1 A 0 A_JumpIf(Args[3] == 2, "MediumRed")
+	TNT1 A 0 A_JumpIf(Args[3] > 2, "LargeRed")
+	Goto MiniRed
+	MiniGrey:
+	TNT1 A 30 A_SpawnItemEx("MiniCloudGrey", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
+	Loop
+	SmallGrey:
+	TNT1 A 30 A_SpawnItemEx("SmallCloudGrey", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
+	Loop
+	MediumGrey:
+	TNT1 A 30 A_SpawnItemEx("MediumCloudGrey", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
+	Loop
+	LargeGrey:
+	TNT1 A 30 A_SpawnItemEx("LargeCloudGrey", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
+	Loop
+	MiniTan:
+	TNT1 A 30 A_SpawnItemEx("MiniCloudTan", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
+	Loop
+	SmallTan:
+	TNT1 A 30 A_SpawnItemEx("SmallCloudTan", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
+	Loop
+	MediumTan:
+	TNT1 A 30 A_SpawnItemEx("MediumCloudTan", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
+	Loop
+	LargeTan:
+	TNT1 A 30 A_SpawnItemEx("LargeCloudTan", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
+	Loop
+	MiniRed:
+	TNT1 A 30 A_SpawnItemEx("MiniCloudRed", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
+	Loop
+	SmallRed:
+	TNT1 A 30 A_SpawnItemEx("SmallCloudRed", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
+	Loop
+	MediumRed:
+	TNT1 A 30 A_SpawnItemEx("MediumCloudRed", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
+	Loop
+	LargeRed:
+	TNT1 A 30 A_SpawnItemEx("LargeCloudRed", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
+	Loop
+	Inactive:
+	TNT1 A -1
+	Loop
+	}
 }
 
 //Grey Clouds
-
 Actor MiniCloudGrey
 {
-  +Missile
-  +NoBlockmap
-  +NoGravity
-  Radius 8
-  Height 8
-  RenderStyle Add
-  Alpha 0.1
-  Scale 0.5
-  States
-  {
-  Spawn:
-    CLFX AAAAA 3 A_FadeIn(0.1)
-    CLFX A 1000 Bright 
-    Goto Spawn+6
-  Death:
-    CLFX AAAAAA 10 A_FadeOut(0.1)
-    TNT1 A 1
-    Stop
-  }
++Missile
++NoBlockmap
++NoGravity
+Radius 8
+Height 8
+RenderStyle Add
+Alpha 0.1
+Scale 0.5
+States
+	{
+	Spawn:
+	CLFX AAAAA 3 A_FadeIn(0.1)
+	CLFX A 1000 Bright
+	Goto Spawn+6
+	Death:
+	CLFX AAAAAA 10 A_FadeOut(0.1)
+	TNT1 A 1
+	Stop
+	}
 }
 
 Actor SmallCloudGrey : MiniCloudGrey
 {
-  Scale 1.0
-  Radius 16
-  Height 16
+Scale 1.0
+Radius 16
+Height 16
 }
 
 Actor MediumCloudGrey : MiniCloudGrey
 {
-  Scale 2.0
-  Radius 32
-  Height 32
+Scale 2.0
+Radius 32
+Height 32
 }
 
 Actor LargeCloudGrey : MiniCloudGrey
 {
-  Scale 4.0
-  Radius 64
-  Height 64
+Scale 4.0
+Radius 64
+Height 64
 }
 
 //Tan Clouds
-
-Actor MiniCloudTan : MiniCloudGrey
-{
-  Translation "80:111=48:79"
-}
-
-Actor SmallCloudTan : SmallCloudGrey
-{
-  Translation "80:111=48:79"
-}
-
-Actor MediumCloudTan : MediumCloudGrey
-{
-  Translation "80:111=48:79"
-}
-
-Actor LargeCloudTan : LargeCloudGrey
-{
-  Translation "80:111=48:79"
-}
+Actor MiniCloudTan : MiniCloudGrey {Translation "80:111=48:79"}
+Actor SmallCloudTan : SmallCloudGrey {Translation "80:111=48:79"}
+Actor MediumCloudTan : MediumCloudGrey {Translation "80:111=48:79"}
+Actor LargeCloudTan : LargeCloudGrey {Translation "80:111=48:79"}
 
 //Red Clouds
-
-Actor MiniCloudRed : MiniCloudGrey
-{
-  Translation "80:111=16:47"
-}
-
-Actor SmallCloudRed : SmallCloudGrey
-{
-  Translation "80:111=16:47"
-}
-
-Actor MediumCloudRed : MediumCloudGrey
-{
-  Translation "80:111=16:47"
-}
-
-Actor LargeCloudRed : LargeCloudGrey
-{
-  Translation "80:111=16:47"
-}
+Actor MiniCloudRed : MiniCloudGrey {Translation "80:111=16:47"}
+Actor SmallCloudRed : SmallCloudGrey {Translation "80:111=16:47"}
+Actor MediumCloudRed : MediumCloudGrey {Translation "80:111=16:47"}
+Actor LargeCloudRed : LargeCloudGrey {Translation "80:111=16:47"}

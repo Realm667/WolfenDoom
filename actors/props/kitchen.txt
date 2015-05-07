@@ -2,83 +2,82 @@ ACTOR PotKitchen1 19500
 {
 //$Category Props (Wolf3D)
 //$Title Pot (kitchen)
-//$Color 3 
-  Radius 16
-  Height 32
-  States
-  {
-  Spawn:
-    TOPF A -1
-    Stop
-  }
+//$Color 3
+Radius 16
+Height 32
+States
+	{
+	Spawn:
+	TOPF A -1
+	Stop
+	}
 }
 
 ACTOR PotKitchen2 19501
 {
 //$Category Props (Wolf3D)
 //$Title Pot (kitchen,smoking)
-//$Color 3 
-  Radius 16
-  Height 32
-  States
-  {
-  Spawn:
-    FCAN ABC 5
-    Loop
-  }
+//$Color 3
+Radius 16
+Height 32
+States
+	{
+	Spawn:
+	FCAN ABC 5
+	Loop
+	}
 }
 
 ACTOR BarSeat 19502
 {
 //$Category Props (Wolf3D)
 //$Title Bar Chair
-//$Color 3 
-  Radius 12
-  Height 24
-  +SOLID
-  States
-  {
-  Spawn:
-    BARH A -1
-    Stop
-  }
+//$Color 3
+Radius 12
+Height 24
++SOLID
+States
+	{
+	Spawn:
+	BARH A -1
+	Stop
+	}
 }
 
 ACTOR WineBottle 19503
 {
 //$Category Props (Wolf3D)
 //$Title Bottle (wine)
-//$Color 3 
-  Radius 8
-  Height 8
-  -SOLID
-  States
-  {
-  Spawn:
-    FLAS A -1
-    Stop
-  }
+//$Color 3
+Radius 8
+Height 8
+-SOLID
+States
+	{
+	Spawn:
+	FLAS A -1
+	Stop
+	}
 }
 
 ACTOR OvenHot 19504
 {
 //$Category Props (Wolf3D)
 //$Title Oven
-//$Color 3 
-  Radius 16
-  Height 64
-  +SOLID
-  +USESPECIAL
-  Activation THINGSPEC_Switch | THINGSPEC_Deactivate
-  States
-  {
-  Spawn:
-  Active:
-    OVEN A -1
-    Stop
-  Inactive:
-    OVEN B -1
-    Stop
-  }
+//$Color 3
+Radius 16
+Height 64
++SOLID
++USESPECIAL
+Activation THINGSPEC_Switch | THINGSPEC_Deactivate
+States
+	{
+	Spawn:
+	Active:
+	OVEN A -1
+	Stop
+	Inactive:
+	OVEN B -1
+	Stop
+	}
 }
-
