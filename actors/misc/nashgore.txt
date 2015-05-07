@@ -1,113 +1,109 @@
 actor NashGore_Blood : Blood replaces Blood
 {
- game Doom
- states
- {
-  Spawn:
-  BLUD C 8
-  BLUD B 8 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
-  BLUD A 8
-  stop
- }
+game Doom
+states
+	{
+	Spawn:
+	BLUD C 8
+	BLUD B 8 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
+	BLUD A 8
+	stop
+	}
 }
 
-actor NashGore_Bloodsplatter : NashGore_Blood replaces Bloodsplatter
-{
-
-}
-
+actor NashGore_Bloodsplatter : NashGore_Blood replaces Bloodsplatter {}
 
 actor NashGore_FlyingBlood
 {
- game Doom
- scale 0.75
- health 1
- radius 8
- height 1
- mass 1
- gravity 0.5 // [Nash] make it fall slower. pretty!
- +CORPSE
- +NOTELEPORT
- +NOBLOCKMAP
- -SOLID // [Nash] so that it doesn't stick into other actors
- states
- {
- Spawn:
-  TNT1 A 0
-  FBLD A 1 A_SpawnItem("NashGore_FlyingBloodTrail",0,0,0,1)
-  FBLD A 1
-  FBLD A 1 A_SpawnItem("NashGore_FlyingBloodTrail",0,0,0,1)
-  FBLD A 1
-  FBLD B 1 A_SpawnItem("NashGore_FlyingBloodTrail",0,0,0,1)
-  FBLD B 1
-  FBLD B 1 A_SpawnItem("NashGore_FlyingBloodTrail",0,0,0,1)
-  FBLD B 1
-  FBLD C 1 A_SpawnItem("NashGore_FlyingBloodTrail",0,0,0,1)
-  FBLD C 1
-  FBLD C 1 A_SpawnItem("NashGore_FlyingBloodTrail",0,0,0,1)
-  FBLD C 1
-  FBLD D 1 A_SpawnItem("NashGore_FlyingBloodTrail",0,0,0,1)
-  FBLD D 1
-  FBLD D 1 A_SpawnItem("NashGore_FlyingBloodTrail",0,0,0,1)
-  FBLD D 1
-  loop
- Crash:
-  TNT1 A 1 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
-  stop
- }
+game Doom
+scale 0.75
+health 1
+radius 8
+height 1
+mass 1
+gravity 0.5 // [Nash] make it fall slower. pretty!
++CORPSE
++NOTELEPORT
++NOBLOCKMAP
+-SOLID // [Nash] so that it doesn't stick into other actors
+states
+	{
+	Spawn:
+	TNT1 A 0
+	FBLD A 1 A_SpawnItem("NashGore_FlyingBloodTrail",0,0,0,1)
+	FBLD A 1
+	FBLD A 1 A_SpawnItem("NashGore_FlyingBloodTrail",0,0,0,1)
+	FBLD A 1
+	FBLD B 1 A_SpawnItem("NashGore_FlyingBloodTrail",0,0,0,1)
+	FBLD B 1
+	FBLD B 1 A_SpawnItem("NashGore_FlyingBloodTrail",0,0,0,1)
+	FBLD B 1
+	FBLD C 1 A_SpawnItem("NashGore_FlyingBloodTrail",0,0,0,1)
+	FBLD C 1
+	FBLD C 1 A_SpawnItem("NashGore_FlyingBloodTrail",0,0,0,1)
+	FBLD C 1
+	FBLD D 1 A_SpawnItem("NashGore_FlyingBloodTrail",0,0,0,1)
+	FBLD D 1
+	FBLD D 1 A_SpawnItem("NashGore_FlyingBloodTrail",0,0,0,1)
+	FBLD D 1
+	loop
+	Crash:
+	TNT1 A 1 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
+	stop
+	}
 }
 
 actor NashGore_FlyingBloodTrail
 {
- game Doom
- scale 0.70
- mass 1
- +LOWGRAVITY
- +NOTELEPORT
- +NOBLOCKMAP
- states
- {
-  Spawn:
-  BTRL A 4
-  BTRL B 4
-  BTRL C 4
-  BTRL D 4
-  stop
- }
+game Doom
+scale 0.70
+mass 1
++LOWGRAVITY
++NOTELEPORT
++NOBLOCKMAP
+states
+	{
+	Spawn:
+	BTRL A 4
+	BTRL B 4
+	BTRL C 4
+	BTRL D 4
+	stop
+	}
 }
 
 actor NashGore_BloodSpot
 {
- game Doom
- radius 12
- height 2
- mass 1
- +NOTELEPORT
- -NOBLOCKMAP
- states
- {
- Spawn:
-  TNT1 A 0
-  TNT1 A 0 A_PlaySound("bloodsplat")
-  TNT1 A 0 A_Jump(64,4)
-  TNT1 A 0 A_Jump(128,54)
-  TNT1 A 0 A_Jump(192,104)
-  TNT1 A 0 A_Jump(255,154)
-  // make the blood spots stay on the ground. 1500 is the default duration.
-  // Fadeout added by Zero Prophet for effect.
-  BSPT A 1500
-  BSPT AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_FadeOut(0.02)
-  stop
-  BSPT B 1500
-  BSPT BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 1 A_FadeOut(0.02)
-  stop
-  BSPT C 1500
-  BSPT CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.02)
-  stop
-  BSPT D 1500
-  BSPT DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD 1 A_FadeOut(0.02)
-  stop
- }
+game Doom
+radius 12
+height 2
+mass 1
++NOTELEPORT
+-NOBLOCKMAP
+states
+	{
+	Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_PlaySound("bloodsplat")
+	TNT1 A 0 A_Jump(64,4)
+	TNT1 A 0 A_Jump(128,54)
+	TNT1 A 0 A_Jump(192,104)
+	TNT1 A 0 A_Jump(255,154)
+	// make the blood spots stay on the ground. 1500 is the default duration.
+	// Fadeout added by Zero Prophet for effect.
+	BSPT A 1500
+	BSPT AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_FadeOut(0.02)
+	stop
+	BSPT B 1500
+	BSPT BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 1 A_FadeOut(0.02)
+	stop
+	BSPT C 1500
+	BSPT CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 A_FadeOut(0.02)
+	stop
+	BSPT D 1500
+	BSPT DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD 1 A_FadeOut(0.02)
+	stop
+	}
 }
 
 //BoA Critters here

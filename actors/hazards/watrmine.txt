@@ -3,52 +3,52 @@ ACTOR UnderwaterMine 15123
 //$Category Hazards (Wolf3D)
 //$Title Underwater Mine
 //$Color 3
-	Health 20
-  	Radius 16
-  	Height 128
-	Mass 9999999
-  	-SOLID
-	+LOOKALLAROUND
-  	+SHOOTABLE
-  	+NOBLOOD
-  	+ACTIVATEMCROSS
-  	+DONTGIB
-  	+NOICEDEATH
-	+TOUCHY
-	+NOGRAVITY
-	+NOTAUTOAIMED
-  	DeathSound "panzer/explode"
-  	Obituary "$OB_BARREL" // "%o went boom."
-	States
+Health 20
+Radius 16
+Height 128
+Mass 9999999
+-SOLID
++LOOKALLAROUND
++SHOOTABLE
++NOBLOOD
++ACTIVATEMCROSS
++DONTGIB
++NOICEDEATH
++TOUCHY
++NOGRAVITY
++NOTAUTOAIMED
+DeathSound "panzer/explode"
+Obituary "$OB_BARREL" // "%o went boom."
+States
 	{
-		Spawn:
-		See:
-			UWMR ABCDE 6 A_Chase
-			Loop
-		Death:
-			TNT1 A 0 BRIGHT A_SpawnItemEx("GeneralExplosion_Medium", 0, 0, 64)
-			UWMR A 12 A_Scream
-			UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,0,2,0)
-			UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,20,2,0)
-			UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,40,2,0)
-			UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,60,2,0)
-			UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,80,2,0)
-			UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,100,2,0)
-			UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,120,2,0)
-			UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,140,2,0)
-			UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,160,2,0)
-			UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,180,2,0)
-			UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,200,2,0)
-			UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,220,2,0)
-			UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,240,2,0)
-			UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,260,2,0)
-			UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,280,2,0)
-			UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,300,2,0)
-			UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,320,2,0)
-			UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,340,2,0)
-			UWMI H 1
-			UWMI H -1
-		Stop
+	Spawn:
+	See:
+	UWMR ABCDE 6 A_Chase
+	Loop
+	Death:
+	TNT1 A 0 BRIGHT A_SpawnItemEx("GeneralExplosion_Medium", 0, 0, 64)
+	UWMR A 12 A_Scream
+	UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,0,2,0)
+	UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,20,2,0)
+	UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,40,2,0)
+	UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,60,2,0)
+	UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,80,2,0)
+	UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,100,2,0)
+	UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,120,2,0)
+	UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,140,2,0)
+	UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,160,2,0)
+	UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,180,2,0)
+	UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,200,2,0)
+	UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,220,2,0)
+	UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,240,2,0)
+	UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,260,2,0)
+	UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,280,2,0)
+	UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,300,2,0)
+	UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,320,2,0)
+	UWMR A 0 Bright A_CustomMissile("Bubble",random(64,76),0,340,2,0)
+	UWMI H 1
+	UWMI H -1
+	Stop
 	}
 }
 
@@ -57,16 +57,16 @@ ACTOR UnderwaterMineChain 15127
 //$Category Hazards (Wolf3D)
 //$Title Underwater Mine (longer Chain)
 //$Color 3
-  	Radius 16
-  	Height 128
-	Mass 9999999
-	+NOGRAVITY
-  	-SOLID
-	States
+Radius 16
+Height 128
+Mass 9999999
++NOGRAVITY
+-SOLID
+States
 	{
-		Spawn:
-		See:
-			UWMI I -1
-			Stop
+	Spawn:
+	See:
+	UWMI I -1
+	Stop
 	}
 }

@@ -3,19 +3,19 @@ actor FireExtinguisher : ExplosiveBarrel 15125
 //$Category Hazards (Wolf3D)
 //$Title Fire Extinguisher
 //$Color 3
-	Health 10
-	Height 64
-	Radius 8
-	DeathSound "weapons/nebxpl"
-	States
+Health 10
+Height 64
+Radius 8
+DeathSound "weapons/nebxpl"
+States
 	{
-		Spawn: 
-			GASF A 6
-			Loop
-		Death:	
-			TNT1 A 0 BRIGHT A_SpawnItemEx("GeneralExplosion_Medium", 0, 0, 32)
-			GASF A 6 A_Scream
-		Stop
+	Spawn:
+	GASF A 6
+	Loop
+	Death:
+	TNT1 A 0 BRIGHT A_SpawnItemEx("GeneralExplosion_Medium", 0, 0, 32)
+	GASF A 6 A_Scream
+	Stop
 	}
 }
 
@@ -24,19 +24,19 @@ actor GasBottle : ExplosiveBarrel 15126
 //$Category Hazards (Wolf3D)
 //$Title Gas Bottle
 //$Color 3
-	Health 10
-	Height 64
-	Radius 8
-	DeathSound "weapons/nebxpl"
-	States
+Health 10
+Height 64
+Radius 8
+DeathSound "weapons/nebxpl"
+States
 	{
-		Spawn: 
-			GASB A 6
-			Loop
-		Death:	
-			TNT1 A 0 BRIGHT A_SpawnItemEx("GeneralExplosion_Medium", 0, 0, 0)
-			GASB A 6 A_Scream
-		Stop
+	Spawn:
+	GASB A 6
+	Loop
+	Death:
+	TNT1 A 0 BRIGHT A_SpawnItemEx("GeneralExplosion_Medium", 0, 0, 0)
+	GASB A 6 A_Scream
+	Stop
 	}
 }
 
@@ -45,18 +45,18 @@ actor Bomb : ExplosiveBarrel 15128
 //$Category Hazards (Wolf3D)
 //$Title Bomb
 //$Color 3
-	Health 10
-	Height 64
-	Radius 8
-	DeathSound "weapons/nebxpl"
-	States
+Health 10
+Height 64
+Radius 8
+DeathSound "weapons/nebxpl"
+States
 	{
-		Spawn: 
-			BOMB A 6
-			Loop
-		Death:	
-			TNT1 A 0 BRIGHT A_SpawnItemEx("GeneralExplosion_Medium", 0, 0, 0)
-			BOMB A 6 A_Scream
-		Stop
+	Spawn:
+	BOMB A 6
+	Loop
+	Death:
+	TNT1 A 0 BRIGHT A_SpawnItemEx("GeneralExplosion_Medium", 0, 0, 0)
+	BOMB A 6 A_Scream
+	Stop
 	}
 }
