@@ -44,12 +44,12 @@ statusbar Normal // Standard Doom Status bar
     drawswitchableimage keyslot 4, "nullimage", "STKEYS5", 261, 190;
 
     //Ammo
-    drawnumber 3, THREEFIV, untranslated, ammo MPClip, 284, 172, 1;
-    drawnumber 3, THREEFIV, untranslated, ammo NewShell, 284, 178, 1;
-    drawnumber 3, THREEFIV, untranslated, ammo MauserAmmo, 284, 184, 1;
-    drawnumber 3, THREEFIV, untranslated, ammo FlameAmmo, 284, 190, 1;
-    drawnumber 3, THREEFIV, untranslated, ammo NebAmmo, 307, 172, 1;
-    drawnumber 3, THREEFIV, untranslated, ammo PanzerAmmo, 307, 178, 1;
+    drawnumber 3, THREEFIV, untranslated, "9mmAmmo", 284, 172, 1;
+    drawnumber 3, THREEFIV, untranslated, "12GaugeAmmo", 284, 178, 1;
+    drawnumber 3, THREEFIV, untranslated, "MauserAmmo", 284, 184, 1;
+    drawnumber 3, THREEFIV, untranslated, "FlameAmmo", 284, 190, 1;
+    drawnumber 3, THREEFIV, untranslated, "NebAmmo", 307, 172, 1;
+    drawnumber 3, THREEFIV, untranslated, "PanzerAmmo", 307, 178, 1;
 
     drawselectedinventory alternateonempty, THREEFIV, 76, 168
     {
@@ -68,7 +68,7 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 	//Top Left
 	drawimage "HUD_UL", 0, 0;
 		//Money
-    		drawnumber 3, BIGFONT, untranslated, coinitem, alignment(right), 50, 7;		
+    		drawnumber 3, BIGFONT, untranslated, coinitem, alignment(right), 50, 7;
 
 		//Time
     		drawstring "THREEFIV", untranslated, time, 14, 21, 1, alignment(left);
@@ -113,8 +113,8 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
     		drawimage ammoicon2, -61, -37;
 
 		//Ammo
-    		//drawnumber 3, THREEFIV, untranslated, ammo MPClip, 	-10, -85, 1;
-    		//drawnumber 3, THREEFIV, untranslated, ammo NewShell, 	-10, -80, 1;
+    		//drawnumber 3, THREEFIV, untranslated, ammo "9mmAmmo", 	-10, -85, 1;
+    		//drawnumber 3, THREEFIV, untranslated, ammo "12GaugeAmmo", 	-10, -80, 1;
     		//drawnumber 3, THREEFIV, untranslated, ammo MauserAmmo, 	-10, -75, 1;
     		//drawnumber 3, THREEFIV, untranslated, ammo FlameAmmo, 	-10, -70, 1;
     		//drawnumber 3, THREEFIV, untranslated, ammo NebAmmo, 	-10, -65, 1;

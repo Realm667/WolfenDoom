@@ -1,14 +1,14 @@
 Actor BatFamiliar 7891
 {
-//$Category Monsters (Wolf3D)
-//$Title Bat
-//$Color 4
+	//$Category Monsters (Wolf3D)
+	//$Title Bat
+	//$Color 4
     Health 10
     Radius 12
     Height 24
-    Speed 14
+    Speed 4.66666667
     PainChance 200
-    MONSTER 
+    MONSTER
     +NOGRAVITY
     +FLOAT
     SeeSound "batfam/idle"
@@ -22,7 +22,14 @@ Actor BatFamiliar 7891
         BFAM ABCB 3 A_Look
         Loop
     See:
-        BFAM ABCB 3 A_Chase
+        BFAM A 1 A_Chase
+        BFAM AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+        BFAM B 1 A_Chase
+        BFAM BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+        BFAM C 1 A_Chase
+        BFAM CC 1 A_Chase("","",CHF_NOPLAYACTIVE)
+        BFAM D 1 A_Chase
+        BFAM DD 1 A_Chase("","",CHF_NOPLAYACTIVE)
         Loop
     Melee:
         BFAM A 3 A_FaceTarget
@@ -34,12 +41,9 @@ Actor BatFamiliar 7891
         BFAM A 2 A_Pain
         Goto See
     Death:
-        TNT1 A 0 A_Die
-        TNT1 A 0 A_NoBlocking 
-        BFAM D 5 A_Scream
-        BFAM E 5
-        BFAM FDEF 5
-        Goto Death+5
+        BFAM D 5 A_ScreamAndUnblock
+        BFAM EFD 5
+        Goto Death+1
     Crash:
 	    TNT1 A 0 A_SetFloorClip
         BFAM G 6 A_PlaySound("batfam/crash")

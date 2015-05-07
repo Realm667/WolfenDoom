@@ -14,7 +14,7 @@ ACTOR Akten : Inventory 16001
   States
   	{
   	Spawn:
-    		AKTT B -1
+		AKTT B -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
     		stop
   	}
 }
@@ -36,7 +36,7 @@ ACTOR AktenEisenmann : Inventory 16002
   States
   	{
   	Spawn:
-    		AKTE B -1
+		AKTE B -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
     		stop
   	}
 }
@@ -57,9 +57,26 @@ ACTOR SpearOfDestiny : Inventory 16003
   States
   	{
   	Spawn:
-    		SPER B -1
+		SPER B -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
     		stop
   	}
 }
 
-
+ACTOR BoACompass : CustomInventory 30007
+{
+	+INVBAR
+	Scale 0.7
+	Inventory.Icon CMPSB0
+	Inventory.PickupMessage "Got a Compass"
+	Inventory.PickupSound "misc/p_pkup"
+	Tag "Compass"
+	States
+	{
+	Spawn:
+		CMPS A -1
+		Stop
+	Use:
+		CMPS A 0 ACS_NamedExecuteAlways("BoA_Objectives",0)
+		Fail
+	}
+}

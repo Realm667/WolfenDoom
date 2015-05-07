@@ -1,0 +1,19 @@
+#library "nazis"
+#include "zcommon.acs"
+
+Script "AutoReload"(void)
+{
+	SetResultValue(GetCVar("autoreload"));
+}
+Script "ShellLifetime"(void)
+{
+	SetResultValue(GetCVar("casinglifetime"));
+}
+Script "RecoilAmount"(void)
+{
+	SetResultValue(GetCVar("recoilamount"));
+}
+script "WWNaziSkillCheck" (void)
+{
+	SetResultValue(GameSkill());
+}

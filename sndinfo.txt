@@ -1,46 +1,21 @@
 /////////////////////////////////////////////////////////////////////
-//// PLAYER SOUNDS //////////////////////////////////////////////////
+//// WEAPON SOUNDS //////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
+$playersound	player	male	*death		wwdthlo
+$playersound	player	male	*xdeath		wwdthhi
+$playeralias	player	male	*pain100	lowpain
+$playeralias	player	male	*pain75		medpain
+$playeralias	player	male	*pain50		hipain
+$playeralias	player	male	*pain25		critpain
+$playeralias	player	male	*grunt		oof
+$playersound	player	male	*land		wwoof
+$playersound	player	male	*usefail	wwnoway
 
-$playersound player weasel *death wwdthlo
-$playersound player weasel *wimpydeath wwdthlo
-$playersound player weasel *crazydeath wwdthhi
-$playersound player weasel *xdeath wwdthhi
-$playersound player weasel *gibbed wwdthhi
-$playeralias player weasel *pain100 weasellowpain
-$playeralias player weasel *pain75 weaselmedpain
-$playeralias player weasel *pain50 weaselhipain
-$playeralias player weasel *pain25 weaselcritpain
-$playeralias player weasel *grunt weaseloof
-$playersound player weasel *usefail dsnoway
-$playersound player weasel *weaponlaugh dswpnup
-$playeralias player weasel *taunt player/taunt
-$playeralias player weasel *grenadecall player/grenadecall
-$random player/taunt { taunt1 taunt2 taunt3 taunt4 taunt5 taunt6 taunt7 taunt8 taunt9 taunt10 taunt11 taunt12 taunt13 taunt14 taunt15 }
-$random player/grenadecall { grenade1 grenade2 grenade3 }
-grenade1 grenade1
-grenade2 grenade2
-grenade3 grenade3
-taunt1 taunt1
-taunt2 taunt2
-taunt3 taunt3
-taunt4 taunt4
-taunt5 taunt5
-taunt6 taunt6
-taunt7 taunt7
-taunt8 taunt8
-taunt9 taunt9
-taunt10 taunt10
-taunt11 taunt11
-taunt12 taunt12
-taunt13 taunt13
-taunt14 taunt14
-taunt15 taunt15
-$random weaselcritpain { p1-1 p1-2 p1-3 p1-4 p1-5 p1-6 }
-$random weaselhipain { p2-1 p2-2 p2-3 p2-4 p2-5 p2-6 }
-$random weaselmedpain { p3-1 p3-2 p3-3 p3-4 p3-5 }
-$random weasellowpain { p4-1 p4-2 p4-3 p4-4 }
-$random weaseloof { poof-1 poof-2 poof-3 poof-4 poof-5 }
+$random critpain { p1-1 p1-2 p1-3 p1-4 p1-5 p1-6 }
+$random hipain { p2-1 p2-2 p2-3 p2-4 p2-5 p2-6 }
+$random medpain { p3-1 p3-2 p3-3 p3-4 p3-5 }
+$random lowpain { p4-1 p4-2 p4-3 p4-4 }
+$random oof { poof-1 poof-2 poof-3 poof-4 poof-5 }
 p4-1 plpain41
 p4-2 plpain42
 p4-3 plpain43
@@ -68,10 +43,19 @@ poof-3 ploof3
 poof-4 ploof4
 poof-5 ploof5
 
-
-/////////////////////////////////////////////////////////////////////
-//// WEAPON SOUNDS //////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////
+// Shell Casings
+$random bulletcasing/bounce {bcase1 bcase2 bcase3 bcase4}
+bcase1 bcase1
+bcase2 bcase2
+bcase3 bcase3
+bcase4 bcase4
+$random shellcasing/bounce {scasesb1 scasesb2}
+$random shellcasing/stop {scases1 scases2 scases3}
+scases1 scases1
+scases2 scases2
+scases3 scases3
+scasesb1 scasesb1
+scasesb2 scasesb2
 
 //Knife
 knife/swing	KNSWNG
@@ -89,57 +73,64 @@ shovel/miss1            dsshvw1
 shovel/miss2            dsshvw2
 shovel/miss3            dsshvw3
 
-melee/miss dspmiss
-melee/hit dspunch
-melee/wall dspwall
+//Luger P-08
+luger/fire		lugrfire
+luger/reload	lugrload
 
-weapons/Walther WALTFIR
+//Walther P-38
+walther/fire	waltfir
+walther/reload	loadp38
 
-weapons/Luger LUGRFIRE
+//M1897 Trenchgun
+shotgun/fire	SHOTFIRE
+shotgun/load	SHOTLOAD
+shotgun/pump	SHOTPUMP
 
-Shotgun/Fire SHOTFIRE
-Shotgun/Load SHOTLOAD
-Shotgun/Pump SHOTPUMP
+//Browning Auto-5
+browning/fire	ba5fire
+browning/load	ba5load
+browning/cock	ba5cock
 
-Garand/Fire M1FIRE
-Garand/Load M1LOAD
-Garand/Ping M1PING
+//MP-40
+mp40/fire 	mp40fire
+mp40/reload	loadmp40
 
-weapons/wweshotgunfire dswgfire
-weapons/wweshotguncock dswgcock
-weapons/wweshotgundouble dswgdblf
+//Thompson M1A1
+thompson/fire	THOMFIRE
+thompson/reload	THOMLOAD
 
-Weapons/STGFIRE STGFIRE
+//Gewehr 43
+g43/fire	m1fire
+g43/reload	loadg43
 
-weapons/flamer dsfthrow
-weapons/steam dssteam
-weapons/napalm THERMFIR
+//Lee-Enfield SMLE
+enfield/fire		EnflFire
+enfield/boltback	EnflBack
+enfield/boltfwd		EnflFwd
+enfield/load		EnflLoad
 
-weapons/mp40 dsrifle
+//Pyrolight
+flamer/fire		dsfthrow
+flamer/steam	dssteam
+flamer/napalm	THERMFIR
+flamer/reload	THERMRLD
 
-weapons/ba5fire ba5fire
-weapons/ba5load ba5load
-weapons/ba5cock ba5cock
+//Nebelwerfer
+nebelwerfer/fire	dsnebsht
+nebelwerfer/xplode	dsnebxpl
 
-weapons/nebelwerfer dsnebsht
-weapons/nebxpl		dsnebxpl
+//Panzerschreck
+panzer/fire		panzfire
+panzer/load		panzload
+panzer/fly		panzfly
+panzer/explode	panzexpl
 
-reloads/p38 loadp38
-reloads/mp40 loadmp40
-reloads/g43 loadg43
-reloads/luger lugrload
-reloads/flamer THERMRLD
-
-Enfield/Fire EnflFire
-Enfield/BoltBack EnflBack
-Enfield/BoltFwd EnflFwd
-Enfield/Load EnflLoad
-
-Thompson/Fire THOMFIRE
-Thompson/Reload THOMLOAD
-
-ppsh/fire ppshfire
-ppsh/reload ppshload
+//UMG43
+chaingun/fire	dscgun
+chaingun/start	chaingo
+chaingun/loop	chainlp
+chaingun/stop	chainstp
+chaingun/get	p_cgun
 
 $random grenade/throw { grenthr1 grenthr2 grenthr3 }
 $random grenade/bounce { grenbnc1 grenbnc2 grenbnc3 grenbnc4 }
@@ -157,56 +148,29 @@ grenexp3 grenexp3
 grenexp4 grenexp4
 grenade/pickup grenpick
 
-panzer/fire panzfire
-panzer/load panzload
-panzer/fly panzfly
-panzer/explode panzexpl
-
-$random weapons/rocklx {grnx1 grnx2 grnx3 grnx4}
-grnx1 dsbarex1
-grnx2 dsbarex2
-grnx3 dsbarex3
-grnx4 dsbarex4
-
-$random weapons/assaultgun {mp401 mp402}
-mp401 dsmp401
-mp402 dsmp402
-
-weapons/stg44 dsstg44
-weapons/p38fire dsp38
-weapons/mauser dsmauser
-
-weapons/chaingun dscgun
-weapons/chaingunstart chaingo
-weapons/chaingunloop chainlp
-weapons/chaingunstop chainstp
-
-weapons/nebelwerfer dsnebsht
-weapons/nebxpl		dsnebxpl
-
 // Feuerbrand
 
-$random weapons/swordhit { sword1 sword2 sword3 }
+$random sword/hit { sword1 sword2 sword3 }
 sword1 dsswdht1
 sword2 dsswdht2
 sword3 dsswdht3
-$random weapons/swordwall { swordwall1 swordwall2 swordwall3 swordwall4 }
+$random sword/wall { swordwall1 swordwall2 swordwall3 swordwall4 }
 swordwall1 dsswdwal
 swordwall2 dsswdwl2
 swordwall3 dsswdwl3
 swordwall4 dsswdwl4
-$random weapons/swordswing { swordswing1 swordswing2 swordswing3 }
-swordswing1 dsswdswg
-swordswing2 dsswdsw2
-swordswing3 dsswdsw3
-weapons/sworddraw dsswdup
-$random weapons/flameswordhit { fsword1 fsword2 fsword3 }
+$random sword/swing { swordswing1 swordswing2 swordswing3 }
+swordswing1 dsshvw1
+swordswing2 dsshvw2
+swordswing3 dsshvw3
+sword/draw dsswdup
+$random flamesword/hit { fsword1 fsword2 fsword3 }
 fsword1 dsfwdht1
 fsword2 dsfwdht2
 fsword3 dsfwdht3
-weapons/flameswordswing dsfwdswg
+flamesword/swing dsfwdswg
 
-// Bullet Whizzes, Ricochet and suchwise
+// Bullet Whizzes and Suchwise
 
 $random ricochet { rico1 rico2 rico3 rico4 rico5 rico6 rico7 rico8 rico9 }
 $random whiz { whiz1 whiz2 whiz3 }
@@ -233,143 +197,32 @@ hitflesh7 trcehit7
 hitflesh8 trcehit8
 hitflesh9 trcehit9
 
+/*$random world/barrelboom {grnx1 grnx2 grnx3 grnx4}
+grnx1 dsbarex1
+grnx2 dsbarex2
+grnx3 dsbarex3
+grnx4 dsbarex4*/
+
+// Miscellaneous
+misc/w_pkup			dsgetwep
+misc/k_pkup			dsgetkey
+misc/armor_pkup		dsgetarm
+misc/health_pkup	dsgethlt
+misc/ammo_pkup		dsammoup
+
 /////////////////////////////////////////////////////////////////////
 //// MONSTER SOUNDS /////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
 
-
-// Shark
-
-shark/sight DETECT
-shark/death SQUISH
-shark/active ROAMING
-CHOMP CHOMP
-SWIPE SWIPE
-
-// Basic guards
-
+// Weapons
 nazi/pistol DSNLUGER
-
-$random guard/sight { guard/sight1 guard/sight2 guard/sight3 guard/sight4 guard/sight5 guard/sight6 guard/sight7 guard/sight8 guard/sight9 }
-$random guard/death { guard/death1 guard/death1 guard/death3 guard/death4 guard/death5 guard/death6 guard/death7 guard/death8 guard/death9 }
-
-guard/sight1		dsgdsit1
-guard/sight2		dsgdsit2
-guard/sight3		dsgdsit3
-guard/sight4		dsgdsit4
-guard/sight5		dsgdsit5
-guard/sight6		dsgdsit6
-guard/sight7		dsgdsit7
-guard/sight8		dsgdsit8
-guard/sight9		dsgdsit9
-
-guard/death1		dsgddth1
-guard/death2		dsgddth2
-guard/death3		dsgddth3
-guard/death4		dsgddth4
-guard/death5		dsgddth5
-guard/death6		dsgddth6
-guard/death7		dsgddth7
-guard/death8		dsgddth8
-guard/death9		dsgddth9
-
-// Officers
-
-$random officer/sight { officer/sight1 officer/sight2 officer/sight3 officer/sight4 }
-$random officer/death { officer/death1 officer/death2 officer/death3 officer/death4 }
-
-officer/sight1		dsofsit1
-officer/sight2		dsofsit2
-officer/sight3		dsofsit3
-officer/sight4		dsofsit4
-
-officer/death1		dsofdth1
-officer/death2		dsofdth2
-officer/death3		dsofdth3
-officer/death4		dsofdth4
-
-// SS
-
-$random ss/sight { ss/sight1 ss/sight2 ss/sight3 ss/sight4 }
-$random ss/death { ss/death1 ss/death2 ss/death3 ss/death4 }
-
-ss/sight1			dsposit1
-ss/sight2			dsposit2
-ss/sight3			dsposit3
-ss/sight4			dsposit4
-
-ss/death1			dspodth1
-ss/death2			dspodth2
-ss/death3			dspodth3
-ss/death4			dspodth4
-
-// Dogs
-$random dog/sight 		{ dog/sight1  dog/sight2  dog/sight3 }
-dog/sight1  			DSDGSIT1
-dog/sight2  			DSDGSIT2
-dog/sight3  			DSDGSIT3
-$random dog/active 		{ dog/act1  dog/act2 }
-dog/act1  			DSDGACT1
-dog/act2 			DSDGACT2
-$random dog/death 		{ dog/death1  dog/death2  dog/death3 }
-dog/death1  			DSDGDIE1
-dog/death2  			DSDGDIE2
-dog/death3  			DSDGDIE3
-dog/pain			dsdgpai
-dog/attack			dsdogatk
-
-// Hans
-hans/sight		dshansit
-hans/death		dshandth
-
-// Franz
-franz/sight		dsfrasit
-franz/death		dsfradth
-
-// Otto
-otto/sight		dsottsit
-otto/death		dsottdth
-
-// General
-general/sight	dsgensit
-general/death	dsgendth
-
-// Chair Guy
-krist/sight		dskrisit
-krist/death		dskridth
-
-// Death Knight
-deathknight/sight	dsdtksit
-deathknight/death	dsdtkdth
-
-// Hitler
-hitler/sight	dshitsit
-hitler/pain		dshitpai
-hitler/death	dshitdth
-hitler/act		dshitact
-hitler/gib		hitlrgib
-
-// Fat Man
-fatman/sight	dsfatsit
-fatman/death	dsfatdth
-
-// Machines
-metal/pain		dsping
-
-nazi/pain		dsnazpai
-boss/active		dsbosact
-boss/pain		dsbospai
-
-
-// Miscellaneous
-
-misc/k_pkup		dsgetkey
-misc/armor_pkup		dsgetarm
-misc/health_pkup		dsgethlt
-misc/ammo_pkup		dsammoup
-
-
+nazi/stg44		dsstg44
+nazi/missilef	dsmissil
+$random nazi/mp40 {mp401 mp402}
+mp401	dsmp401
+mp402	dsmp402
 // Grosse
+boss/pain	dsbospai
 Boss1/Death Bos1Dt01
 $random Boss1/Sighted { Bos1St01 Bos1St02 Bos1St03 Bos1St04 Bos1St05 Bos1St06 Bos1St07 Bos1St08 Bos1St09 }
 Bos1St01 Bos1St01
@@ -381,7 +234,6 @@ Bos1St06 Bos1St06
 Bos1St07 Bos1St07
 Bos1St08 Bos1St08
 Bos1St09 Bos1St09
-
 // Gretel
 $random BossGirl/Death { gretdt1 gretdt2 gretdt3 gretdt4 }
 gretdt1 gretdt1
@@ -394,8 +246,7 @@ gretsee2 gretsee2
 gretsee3 gretsee3
 gretsee4 gretsee4
 BossGirl/Pain gretpain
-
-// Colonel
+// Doctor
 Boss2/Death Bos2Dt01
 $random Boss2/Sighted { bos2st01 bos2st02 bos2st03 bos2st04 bos2st05 bos2st06 bos2st07 bos2st08 }
 Bos2St01 Bos2St01
@@ -406,11 +257,50 @@ Bos2St05 Bos2St05
 Bos2St06 Bos2St06
 Bos2St07 Bos2St07
 Bos2St08 Bos2St08
-
+// Fat Man
+fatman/sight	dsfatsit
+fatman/death	dsfatdth
 // General
 Boss3/Death Bos3Dt01
 Boss3/Sighted Bos3St01
-
+// Chair Guy
+krist/sight		dskrisit
+krist/death		dskridth
+// Death Knight
+deathknight/sight	dsdtksit
+deathknight/death	dsdtkdth
+// Hitler
+hitler/sight	dshitsit
+hitler/pain		dshitpai
+hitler/death	dshitdth
+hitler/gib		hitlrgib
+hitler/walk		dshitwlk
+hitler/act		hghdie
+// Machines
+metal/pain	dsping
+// Dogs
+$random dog/sight 	{ dog/sight1  dog/sight2  dog/sight3 }
+dog/sight1  		DSDGSIT1
+dog/sight2  		DSDGSIT2
+dog/sight3  		DSDGSIT3
+$random dog/active 	{dog/act1 dog/act2}
+dog/act1  			DSDGACT1
+dog/act2 			DSDGACT2
+$random dog/death	{ dog/death1  dog/death2  dog/death3 }
+dog/death1  		DSDGDIE1
+dog/death2  		DSDGDIE2
+dog/death3  		DSDGDIE3
+dog/pain			dsdgpai
+dog/attack			dsdogatk
+// Geist
+geist/pain		geisthit
+geist/die		geistdie
+geist/active	geistact
+// Mutant
+mutant/death dsmutdt
+// Fake Hitler
+hitlerghost/see hghsee
+hitlerghost/die hghdie
 // Voice 1
 $random Nazi1/Death { Naz1Dt02 Naz1Dt02 Naz1Dt03 Naz1Dt03 Naz1Dt04 Naz1Dt04 Naz1Dt05 Naz1Dt05 Naz1Dt06 Naz1Dt06 Naz1Dt07 Naz1Dt07 Naz1Dt08 Naz1Dt08 Naz1Dt09 Naz1Dt09 Naz1Dt10 Naz1Dt10 Naz1Dt11 Naz1Dt11 Naz1Dt12 Naz1Dt12 }
 $random Nazi1/Pain { Naz1Pn02 Naz1Pn02 Naz1Pn03 Naz1Pn03 Naz1Pn04 Naz1Pn04 Naz1Pn05 Naz1Pn05 Naz1Pn06 Naz1Pn06 Naz1Pn07 Naz1Pn07 Naz1Pn08 Naz1Pn08 Naz1Pn09 Naz1Pn09 }
@@ -472,7 +362,6 @@ Naz1St36 Naz1St36
 Naz1St37 Naz1St37
 Naz1St38 Naz1St38
 Naz1St39 Naz1St39
-
 // Voice 2
 $random Nazi2/Death { Naz2Dt02 Naz2Dt02 Naz2Dt03 Naz2Dt03 Naz2Dt04 Naz2Dt04 Naz2Dt05 Naz2Dt05 Naz2Dt06 Naz2Dt06 }
 $random Nazi2/Pain { Naz2Pn02 Naz2Pn02 Naz2Pn03 Naz2Pn03 Naz2Pn04 Naz2Pn04 Naz2Pn05 Naz2Pn05 Naz2Pn06 Naz2Pn06 Naz2Pn07 Naz2Pn07 Naz2Pn08 Naz2Pn08 }
@@ -537,7 +426,6 @@ Naz2St46 Naz2St46
 Naz2St47 Naz2St47
 Naz2St48 Naz2St48
 Naz2St49 Naz2St49
-
 // Voice 3 (Has no death/pains, use voice 2's instead)
 $random Nazi3/Sighted { Naz3St02 Naz3St02 Naz3St03 Naz3St03 Naz3St04 Naz3St04 Naz3St05 Naz3St05 Naz3St06 Naz3St06 Naz3St07 Naz3St07 Naz3St08 Naz3St08 Naz3St09 Naz3St09 Naz3St10 Naz3St10 Naz3St11 Naz3St11 Naz3St12 Naz3St12 Naz3St13 Naz3St13 Naz3St14 Naz3St14 Naz3St15 Naz3St15 Naz3St16 Naz3St16 Naz3St17 Naz3St17 Naz3St18 Naz3St18 Naz3St19 Naz3St19 Naz3St20 Naz3St20 Naz3St21 Naz3St21 Naz3St22 Naz3St22 Naz3St23 Naz3St23 Naz3St24 Naz3St24 Naz3St25 Naz3St25 Naz3St26 Naz3St26 Naz3St27 Naz3St27 Naz3St28 Naz3St28 Naz3St29 Naz3St29 Naz3St30 Naz3St30 Naz3St31 Naz3St31 Naz3St32 Naz3St32 Naz3St33 Naz3St33 Naz3St34 Naz3St34 Naz3St35 Naz3St35 Naz3St36 Naz3St36 Naz3St37 Naz3St37 Naz3St38 Naz3St38 Naz3St39 Naz3St39 Naz3St40 Naz3St40 Naz3St41 Naz3St41 Naz3St42 Naz3St42 Naz3St43 Naz3St43 Naz3St44 Naz3St44 Naz3St45 Naz3St45 Naz3St46 Naz3St46 Naz3St47 Naz3St47 Naz3St48 Naz3St48 }
 Naz3St02 Naz3St02
@@ -587,7 +475,6 @@ Naz3St45 Naz3St45
 Naz3St46 Naz3St46
 Naz3St47 Naz3St47
 Naz3St48 Naz3St48
-
 // Voice 4
 $random Nazi4/Death { Naz4Dt02 Naz4Dt02 Naz4Dt03 Naz4Dt03 Naz4Dt04 Naz4Dt04 Naz4Dt05 Naz4Dt05 Naz4Dt06 Naz4Dt06 Naz4Dt07 Naz4Dt07 Naz4Dt08 Naz4Dt08 Naz4Dt09 Naz4Dt09 Naz4Dt10 Naz4Dt10 Naz4Dt11 Naz4Dt11 Naz4Dt12 Naz4Dt12 Naz4Dt13 Naz4Dt13 }
 $random Nazi4/Pain { Naz4Pn02 Naz4Pn02 Naz4Pn03 Naz4Pn03 Naz4Pn04 Naz4Pn04 Naz4Pn05 Naz4Pn05 }
@@ -656,19 +543,17 @@ Naz4St46 Naz4St46
 Naz4St47 Naz4St47
 Naz4St48 Naz4St48
 
-hitlerghost/see hghsee
-hitlerghost/die hghdie
+// Shark
+shark/sight DETECT
+shark/death SQUISH
+shark/active ROAMING
+CHOMP CHOMP
+SWIPE SWIPE
 
 kamikazi/scream		DSKAMAAH
 kamikazi/idle		DSKAMIDL
 
-geist/pain geisthit
-geist/die geistdie
-
-chaingun/get P_CGUN
-
-mutant/death dsmutdt
-
+// Burning
 $random death/burning { burndth1 burndth2 burndth3 burndth4 burndth5 burndth6 burndth7 burndth8 burndth9 burndtha burndthb burndthc }
 burndth1 burndth1
 burndth2 burndth2
@@ -977,9 +862,9 @@ DSSTN01 DSSTN01
 DSSTN02 DSSTN02
 TRSECRET TRSECRET
 CLSECRET CLSECRET
-SWDTH1 SWDTH1 
-SWDTH2 SWDTH2 
-SWDTH3 SWDTH3 
+SWDTH1 SWDTH1
+SWDTH2 SWDTH2
+SWDTH3 SWDTH3
 $random switch/death	{ SWDTH1 SWDTH2 SWDTH3 }
 
 ///////////////////////////////////////////////////////////////////////

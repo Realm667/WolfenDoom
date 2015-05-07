@@ -1,33 +1,25 @@
-Actor Thompson : Weapon 15021
+ACTOR Thompson : NaziWeapon replaces Chaingun 15021
 {
-//$Category Weapons (Wolf3D)
-//$Title (4) Thompson
-//$Color 14
-	attacksound "Weapons/AK47FIR"
-	inventory.pickupmessage "You got the Thompson M1A1!"
+	//$Category Weapons (Wolf3D)
+	//$Title (4) Thompson
+	//$Color 14//Rate of fire: 700 rounds/min - Wikipedia
 	Weapon.SlotNumber 4
-	weapon.kickback 100
-	Weapon.AmmoType "MPAmmo"
-	Weapon.AmmoUse1 0
-	Weapon.AmmoGive1 0
-	weapon.ammotype2 "MPClip"
-	weapon.ammouse2 1
-	weapon.ammogive2 128
-	Weapon.BobStyle InverseSmooth
-	Weapon.BobSpeed 2.2
-	Weapon.BobRangeY 0.5
-	Weapon.BobRangeX 0.7
-	ConversationID 195
+	Weapon.SelectionOrder 600
+	Inventory.PickupMessage "You got the Thompson M1A1!"
+	Weapon.AmmoType "ThompsonLoaded"
+	Weapon.AmmoUse 1
+	Weapon.AmmoType2 "45ACPAmmo"
+	Weapon.AmmoUse2 1
+	weapon.ammogive2 20
 	Scale 0.5
 	Tag "Thompson M1A1"
-	Decal "BulletChip"
-	+Ammo_Optional
-  	+Alt_Ammo_Optional
-	+WEAPON.PRIMARY_USES_BOTH
-	+Weapon.NoAlert
 	States
 	{
 	Ready:
+		THOM A 0 A_JumpIfInventory("ThompsonLoaded",0,2)
+		THOM A 0 A_JumpIfInventory("45ACPAmmo",1,2)
+		THOM A 1 A_WeaponReady
+		Loop
 		THOM A 1 A_WeaponReady(WRF_ALLOWRELOAD)
 		Loop
 	Deselect:
@@ -39,29 +31,31 @@ Actor Thompson : Weapon 15021
 		THOM A 1 A_Raise
 		Loop
 	Fire:
-		THOM A 0 A_JumpIfInventory("MPAmmo",1,1)
+		THOM A 0 A_JumpIfInventory("ThompsonLoaded",1,1)
 		Goto Dryfire
-		THOM B 0 A_GunFlash
-		TNT1 A 0 A_Jump(250,2)
-		TNT1 A 0 A_PlaySound("*taunt", CHAN_VOICE)
-		THOM B 0 A_PlayWeaponSound("Thompson/fire")
-		THOM B 0 A_TakeInventory("MPAmmo",1)
-		THOM B 1 bright A_FireCustomMissile("ThompsonTracer",frandom(-1.5,1.5),0,0,0,0,frandom(-1.0,1.0))
-		THOM C 1 bright Offset(0,38) A_SetPitch(pitch - 0.5)
-		THOM A 1 Offset(0,34) A_AlertMonsters
+		THOM A 0 A_GunFlash
+		THOM A 0 A_PlaySound("thompson/fire",CHAN_WEAPON)
+		THOM A 0 A_SpawnItemEx("45ACPCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		THOM A 0 A_AlertMonsters
+		THOM A 1 A_FireCustomMissile("ThompsonTracer",frandom(-1.5,1.5),1,0,0,0,frandom(-1.0,1.0))
+		THOM A 1 Offset(0,40) A_SetPitch(pitch-(0.5*CallACS("RecoilAmount")))
+		THOM A 1 Offset(0,34)
+		TNT1 A 0 A_Refire
 		Goto Ready
-	Dryfire:
-		THOM A 1
+	Hold:
+		THOM A 0 A_JumpIfInventory("ThompsonLoaded",1,1)
+		Goto Dryfire
+		THOM A 0 A_GunFlash
+		THOM A 0 A_PlaySound("thompson/fire",CHAN_WEAPON)
+		THOM A 0 A_SpawnItemEx("45ACPCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		THOM A 0 A_AlertMonsters
+		THOM A 1 Offset(0,36) A_FireCustomMissile("ThompsonTracer",frandom(-1.5,1.5),1,0,0,0,frandom(-1.0,1.0))
+		THOM A 1 Offset(0,40) A_SetPitch(pitch-(0.5*CallACS("RecoilAmount")))
+		THOM A 1 Offset(0,34)
+		TNT1 A 0 A_Refire
+		Goto Ready
 	Reload:
-		THOM A 0 A_JumpIfInventory("MPAmmo",20,2)
-		THOM A 0 A_JumpIfNoAmmo(1)
-		Goto ProperReload
-		THOM A 1
-		Goto Ready
-	ProperReload:
-		THOM A 1 Offset(0,35) A_PlaySound("Thompson/reload",CHAN_ITEM)
-		TNT1 A 0 A_Jump(160,2)
-		TNT1 A 0 A_PlaySound("*taunt", CHAN_VOICE)
+		THOM A 1 Offset(0,35) A_PlaySound("thompson/reload",5)
 		THOM A 1 Offset(0,38)
 		THOM A 1 Offset(0,44)
 		THOM A 1 Offset(-2,46)
@@ -70,11 +64,10 @@ Actor Thompson : Weapon 15021
 		THOM A 1 Offset(-10,57)
 		THOM A 8 Offset(-11,58)
 	ReloadLoop:
-		TNT1 A 0 A_TakeInventory("MPClip",1,TIF_NOTAKEINFINITE)
-		TNT1 A 0 A_GiveInventory("MPAmmo",1)
-		TNT1 A 0 A_JumpIfInventory("MPAmmo",32,"ReloadFinish")
-		TNT1 A 0 A_JumpIfNoAmmo("ReloadFinish")
-		Goto ReloadLoop
+		TNT1 A 0 A_TakeInventory("45ACPAmmo",1,TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_GiveInventory("ThompsonLoaded")
+		TNT1 A 0 A_JumpIfInventory("ThompsonLoaded",0,"ReloadFinish")
+		TNT1 A 0 A_JumpIfInventory("45ACPAmmo",1,"ReloadLoop")
 	ReloadFinish:
 		THOM A 1 Offset(-10,58)
 		THOM A 1 Offset(-10,61)
@@ -94,27 +87,20 @@ Actor Thompson : Weapon 15021
 		THOM A 1 Offset(0,32)
 		Goto Ready
 	Flash:
-		TNT1 A 2 BRIGHT A_Light2
-		TNT1 A 2 BRIGHT A_Light1
-		TNT1 A 0 A_Light0
-		Stop
+		THOM B 1 BRIGHT A_Light2
+		THOM C 1 BRIGHT
+		TNT1 A 2 A_Light1
+		Goto LightDone
 	Spawn:
 		THOM P -1
 		Stop
 	}
 }
 
-ACTOR ThompsonSpawner replaces Chaingun
+ACTOR ThompsonLoaded : Ammo
 {
-	DropItem "Thompson"
-	DropItem "MPClip"
-	DropItem "MPClip"
-	DropItem "MPClip"
-	States
-	{
-	Spawn:
-		TNT1 A 0
-		TNT1 A 1 A_Fall
-		Stop
-	}
+	Tag ".45 ACP"
+	Inventory.MaxAmount 20
+	+IGNORESKILL
+	Inventory.Icon THOMP0
 }
