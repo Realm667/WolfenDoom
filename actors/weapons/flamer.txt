@@ -203,15 +203,15 @@ ACTOR Flamebolt
 	States
 	{
 	Spawn:
-		FBLX ABCD 2 BRIGHT A_SetScale(scalex+0.05)
+		FBLX ABCD 2 BRIGHT LIGHT(BOAFLAMW) A_SetScale(scalex+0.05)
 		FBLX E 0 A_Explode(2,64)
-		FBLX E 2 BRIGHT A_SetScale(scalex+0.05)
-		FBLX FGHI 2 BRIGHT A_SetScale(scalex+0.1)
-		FBLX JK 2 BRIGHT A_SetScale(scalex+0.15)
+		FBLX E 2 BRIGHT LIGHT(BOAFLAMW) A_SetScale(scalex+0.05)
+		FBLX FGHI 2 BRIGHT LIGHT(BOAFLAMW) A_SetScale(scalex+0.1)
+		FBLX JK 2 BRIGHT LIGHT(BOAFLAMW) A_SetScale(scalex+0.15)
 		Stop
 	Death:
-		FBLX A 1 Bright A_Explode(2,64)
-		FBLX BCDEFGHIJK 1 BRIGHT
+		FBLX A 1 BRIGHT LIGHT(BOAFLAMW) A_Explode(2,64)
+		FBLX BCDEFGHIJK 1 BRIGHT LIGHT(BOAFLAMW)
 		Stop
 	}
 }

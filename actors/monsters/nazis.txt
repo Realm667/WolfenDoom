@@ -252,7 +252,7 @@ ACTOR SSMP40Guard : SSGuard 12006
 	}
 }
 
-ACTOR WMP40Guard : MP40Guard
+ACTOR WMP40Guard : MP40Guard 12005
 {
 	//$Category Monsters (Wolf3D)
 	//$Title Wehrmacht Guard (MP40)
@@ -614,7 +614,6 @@ ACTOR Rottweiler : Nazi 12016
 	Spawn:
 		DOGY A 0
 		Goto SkillCheck
-	Look:
 	Idle:
 		"####" A 0 A_SetSpeed(4)
 		"####" AAAAAAAA 1 A_Wander
@@ -2274,7 +2273,7 @@ ACTOR MadCook : MadDoctor 12794
 		Goto SkillCheck
 	Missile:
 		COOK E 10 A_FaceTarget
-		COOK F 8 A_CustomMissile("FlyingNeedle",32,12)
+		COOK F 8 A_CustomMissile("FlyingHack",32,12)
 		COOK A 8
 		Goto See
 	}

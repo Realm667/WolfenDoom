@@ -150,7 +150,7 @@ ACTOR MauserAmmoBox : MauserAmmo 15115
 		792A B -1
 		Stop
 	}
-	}
+}
 
 ACTOR 303Ammo : Ammo
 {
@@ -214,6 +214,7 @@ ACTOR NebAmmo : Ammo 15119
 	Ammo.BackpackAmount 20
 	Ammo.BackpackMaxAmount 300
 	Inventory.PickupMessage "Picked up a small crate of mini-rockets."
+	Inventory.Icon NEBE01
 	States
 	{
 	Spawn:
@@ -229,7 +230,6 @@ ACTOR NebAmmoBox : NebAmmo replaces CellPack 15110
 	//$Color 6
 	Inventory.Amount 30
 	Inventory.PickupMessage "Picked up a crate of mini-rockets."
-	Inventory.Icon NEBE01
 	States
 	{
 	Spawn:
