@@ -1,2576 +1,2577 @@
 ACTOR Nazi
 {
-Scale 1.2
-Height 56
-Mass 100
-PainChance 200
-Speed 2
-Monster
-+FLOORCLIP
-+DONTHARMSPECIES
-+BOSSDEATH
-+DONTGIB
-States
+	Scale 1.2
+	Height 56
+	Mass 100
+	PainChance 200
+	Speed 2
+	Monster
+	+FLOORCLIP
+	+DONTHARMSPECIES
+	+BOSSDEATH
+	+DONTGIB
+	States
 	{
 	SkillCheck:
-	"####" "#" 0 A_JumpIf(CallACS("WWNaziSkillCheck")>=2,3)
-	"####" "#" 0 A_ChangeFlag("DOHARMSPECIES",1)
-	"####" "#" 0 A_ChangeFlag("DONTHARMSPECIES",0)
-	"####" "#" 0 A_JumpIf(CallACS("WWNaziSkillCheck")<=2,2)
-	"####" "#" 0 A_ChangeFlag("GHOST",1)
-	"####" "#" 0 A_Jump(256,"Look")
-	Stop
+		"####" "#" 0 A_JumpIf(CallACS("WWNaziSkillCheck")>=2,3)
+		"####" "#" 0 A_ChangeFlag("DOHARMSPECIES",1)
+		"####" "#" 0 A_ChangeFlag("DONTHARMSPECIES",0)
+		"####" "#" 0 A_JumpIf(CallACS("WWNaziSkillCheck")<=2,2)
+		"####" "#" 0 A_ChangeFlag("GHOST",1)
+		"####" "#" 0 A_Jump(256,"Look")
+		Stop
 	Look:
-	"####" "#" 10 A_Look
-	Loop
+		"####" "#" 10 A_Look
+		Loop
 	See:
-	"####" A 1 A_Chase
-	"####" AAA 1 A_Chase("","")
-	"####" A 1 A_Chase
-	"####" AAA 1 A_Chase("","")
-	"####" B 1 A_Chase
-	"####" BBB 1 A_Chase("","")
-	"####" B 1 A_Chase
-	"####" BBB 1 A_Chase("","")
-	"####" C 1 A_Chase
-	"####" CCC 1 A_Chase("","")
-	"####" C 1 A_Chase
-	"####" CCC 1 A_Chase("","")
-	"####" D 1 A_Chase
-	"####" DDD 1 A_Chase("","")
-	"####" D 1 A_Chase
-	"####" DDD 1 A_Chase("","")
-	Loop
+		"####" A 1 A_Chase
+		"####" AAA 1 A_Chase("","")
+		"####" A 1 A_Chase
+		"####" AAA 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" BBB 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" BBB 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" CCC 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" CCC 1 A_Chase("","")
+		"####" D 1 A_Chase
+		"####" DDD 1 A_Chase("","")
+		"####" D 1 A_Chase
+		"####" DDD 1 A_Chase("","")
+		Loop
 	Idle:
-	"####" AAAAAAAA 1 A_Wander
-	"####" A 0 A_Look
-	"####" BBBBBBBB 1 A_Wander
-	"####" A 0 A_Look
-	"####" CCCCCCCC 1 A_Wander
-	"####" A 0 A_Look
-	"####" DDDDDDDD 1 A_Wander
-	"####" A 0 A_Look
-	Loop
+		"####" AAAAAAAA 1 A_Wander
+		"####" A 0 A_Look
+		"####" BBBBBBBB 1 A_Wander
+		"####" A 0 A_Look
+		"####" CCCCCCCC 1 A_Wander
+		"####" A 0 A_Look
+		"####" DDDDDDDD 1 A_Wander
+		"####" A 0 A_Look
+		Loop
 	Pain:
-	"####" H 3
-	"####" H 3 A_Pain
-	"####" H 0 A_Jump(256,"See")
-	Stop
+		"####" H 3
+		"####" H 3 A_Pain
+		"####" H 0 A_Jump(256,"See")
+		Stop
 	}
 }
 
 ACTOR Guard : Nazi 12001
 {
-//$Category Monsters (Wolf3D)
-//$Title SA Guard
-//$Color 4
-GibHealth 30
-Health 20
-SeeSound "Nazi1/Sighted"
-PainSound "Nazi1/Pain"
-DeathSound "Nazi1/Death"
-Obituary "%o was shot by a pistol soldier."
-DropItem 9mmAmmo 192
-DropItem Walther9mm 64
-States
+	//$Category Monsters (Wolf3D)
+	//$Title SA Guard
+	//$Color 4
+	GibHealth 30
+	Health 20
+	SeeSound "Nazi1/Sighted"
+	PainSound "Nazi1/Pain"
+	DeathSound "Nazi1/Death"
+	Obituary "%o was shot by a pistol soldier."
+	DropItem 9mmAmmo 192
+	DropItem Walther9mm 64
+	States
 	{
 	Spawn:
-	GARD N 0
-	Goto SkillCheck
+		GARD N 0
+		Goto SkillCheck
 	Missile:
-	"####" EF 5 A_FaceTarget
-	"####" G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-	"####" G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-8,8))
-	"####" F 8
-	"####" F 0 A_Jump(256,"See")
-	Stop
+		"####" EF 5 A_FaceTarget
+		"####" G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		"####" G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-8,8))
+		"####" F 8
+		"####" F 0 A_Jump(256,"See")
+		Stop
 	Death:
-	"####" I 5
-	"####" J 5 A_Scream
-	"####" K 5 A_NoBlocking
-	"####" L 5
-	"####" M -1
-	Stop
+		"####" I 5
+		"####" J 5 A_Scream
+		"####" K 5 A_NoBlocking
+		"####" L 5
+		"####" M -1
+		Stop
 	Death.Fire:
-	BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.0)
-	BURN BC 5 BRIGHT LIGHT(ITBURNS1)
-	BURN D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
-	BURN E 5 BRIGHT LIGHT(ITBURNS1)
-	BURN FGHIJ 5 BRIGHT LIGHT(ITBURNS2)
-	BURN KLMN 5 BRIGHT LIGHT(ITBURNS3)
-	BURN O 5 BRIGHT LIGHT(ITBURNS3) A_NoBlocking
-	BURN PQR 5 BRIGHT LIGHT(ITBURNS2)
-	BURN STU 5 BRIGHT LIGHT(ITBURNS1)
-	BURN V -1
-	Stop
+		BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.0)
+		BURN BC 5 BRIGHT LIGHT(ITBURNS1)
+		BURN D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
+		BURN E 5 BRIGHT LIGHT(ITBURNS1)
+		BURN FGHIJ 5 BRIGHT LIGHT(ITBURNS2)
+		BURN KLMN 5 BRIGHT LIGHT(ITBURNS3)
+		BURN O 5 BRIGHT LIGHT(ITBURNS3) A_NoBlocking
+		BURN PQR 5 BRIGHT LIGHT(ITBURNS2)
+		BURN STU 5 BRIGHT LIGHT(ITBURNS1)
+		BURN V -1
+		Stop
 	Raise:
-	"####" MLKJI 5
-	"####" I 0 A_Jump(256,"See")
-	Stop
+		"####" MLKJI 5
+		"####" I 0 A_Jump(256,"See")
+		Stop
 	XDeath:
-	SLOP ABCDEF 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
-	SLOP G 0 A_NoBlocking
-	SLOP G -1
-	Stop
+		SLOP ABCDEF 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
+		SLOP G 0 A_NoBlocking
+		SLOP G -1
+		Stop
 	}
 }
 
 ACTOR SSGuard : Guard 12002
 {
-//$Category Monsters (Wolf3D)
-//$Title SS Guard
-//$Color 4
-Speed 2.67
-Obituary "%o was killed by an SS guard."
-Health 40
-States
+	//$Category Monsters (Wolf3D)
+	//$Title SS Guard
+	//$Color 4
+	Speed 2.67
+	Obituary "%o was killed by an SS guard."
+	Health 40
+	States
 	{
 	Spawn:
-	SSPG N 0
-	Goto SkillCheck
+		SSPG N 0
+		Goto SkillCheck
 	See:
-	"####" A 1 A_Chase
-	"####" AA 1 A_Chase("","")
-	"####" A 1 A_Chase
-	"####" AA 1 A_Chase("","")
-	"####" B 1 A_Chase
-	"####" BB 1 A_Chase("","")
-	"####" B 1 A_Chase
-	"####" BB 1 A_Chase("","")
-	"####" C 1 A_Chase
-	"####" CC 1 A_Chase("","")
-	"####" C 1 A_Chase
-	"####" CC 1 A_Chase("","")
-	"####" D 1 A_Chase
-	"####" DD 1 A_Chase("","")
-	"####" D 1 A_Chase
-	"####" DD 1 A_Chase("","")
-	Loop
+		"####" A 1 A_Chase
+		"####" AA 1 A_Chase("","")
+		"####" A 1 A_Chase
+		"####" AA 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" BB 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" BB 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" CC 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" CC 1 A_Chase("","")
+		"####" D 1 A_Chase
+		"####" DD 1 A_Chase("","")
+		"####" D 1 A_Chase
+		"####" DD 1 A_Chase("","")
+		Loop
 	Idle:
-	"####" AAAAAA 1 A_Wander
-	"####" A 0 A_Look
-	"####" BBBBBB 1 A_Wander
-	"####" A 0 A_Look
-	"####" CCCCCC 1 A_Wander
-	"####" A 0 A_Look
-	"####" DDDDDD 1 A_Wander
-	"####" A 0 A_Look
-	Loop
+		"####" AAAAAA 1 A_Wander
+		"####" A 0 A_Look
+		"####" BBBBBB 1 A_Wander
+		"####" A 0 A_Look
+		"####" CCCCCC 1 A_Wander
+		"####" A 0 A_Look
+		"####" DDDDDD 1 A_Wander
+		"####" A 0 A_Look
+		Loop
 	}
 }
 
 ACTOR WGuard : Guard 12003
 {
-//$Category Monsters (Wolf3D)
-//$Title Wehrmacht Guard
-//$Color 4
-Speed 2.5
-Obituary "%o was shot by a Wehrmacht soldier."
-Health 30
-PainChance 185
-+MISSILEMORE
-+MISSILEEVENMORE
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Wehrmacht Guard
+	//$Color 4
+	Speed 2.5
+	Obituary "%o was shot by a Wehrmacht soldier."
+	Health 30
+	PainChance 185
+	+MISSILEMORE
+	+MISSILEEVENMORE
+	States
 	{
 	Spawn:
-	GRD2 N 0
-	Goto SkillCheck
+		GRD2 N 0
+		Goto SkillCheck
 	Missile:
-	GRD2 EF 2 A_FaceTarget
-	GRD2 G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-	GRD2 G 4 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-6,6))
-	GRD2 F 4 A_FaceTarget
-	GRD2 G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-	GRD2 G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-10,10))
-	GRD2 F 8
-	Goto See
+		GRD2 EF 2 A_FaceTarget
+		GRD2 G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		GRD2 G 4 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-6,6))
+		GRD2 F 4 A_FaceTarget
+		GRD2 G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		GRD2 G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-10,10))
+		GRD2 F 8
+		Goto See
 	}
 }
 
 ACTOR MP40Guard : Guard 12004
 {
-//$Category Monsters (Wolf3D)
-//$Title SA Guard (MP40)
-//$Color 4
-Obituary "%o was plugged by a soldier with an MP40."
-SeeSound "Nazi2/Sighted"
-PainSound "Nazi2/Pain"
-DeathSound "Nazi2/Death"
-dropitem 9mmAmmo 192
-dropitem MP40 64
-dropitem GrenadePickup 16
-States
+	//$Category Monsters (Wolf3D)
+	//$Title SA Guard (MP40)
+	//$Color 4
+	Obituary "%o was plugged by a soldier with an MP40."
+	SeeSound "Nazi2/Sighted"
+	PainSound "Nazi2/Pain"
+	DeathSound "Nazi2/Death"
+	dropitem 9mmAmmo 192
+	dropitem MP40 64
+	dropitem GrenadePickup 16
+	States
 	{
 	Spawn:
-	MGRD N 0
-	Goto SkillCheck
+		MGRD N 0
+		Goto SkillCheck
 	Missile:
-	MGRD EF 5 A_FaceTarget
-	MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
-	MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
-	MGRD F 2 A_FaceTarget
-	MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
-	MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
-	MGRD F 2 A_FaceTarget
-	MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
-	MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
-	MGRD F 2 A_FaceTarget
-	MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
-	MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
-	MGRD F 2 A_FaceTarget
-	MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
-	MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
-	MGRD F 2
-	Goto See
+		MGRD EF 5 A_FaceTarget
+		MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
+		MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
+		MGRD F 2 A_FaceTarget
+		MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
+		MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
+		MGRD F 2 A_FaceTarget
+		MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
+		MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
+		MGRD F 2 A_FaceTarget
+		MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
+		MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
+		MGRD F 2 A_FaceTarget
+		MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
+		MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
+		MGRD F 2
+		Goto See
 	}
 }
 
 ACTOR SSMP40Guard : SSGuard 12006
 {
-//$Category Monsters (Wolf3D)
-//$Title SS Guard (MP40)
-//$Color 4
-SeeSound "Nazi2/Sighted"
-PainSound "Nazi2/Pain"
-DeathSound "Nazi2/Death"
-dropitem 9mmAmmo 192
-dropitem MP40 64
-dropitem GrenadePickup 16
-Obituary "%o was plugged by an SS with an MP40."
-States
+	//$Category Monsters (Wolf3D)
+	//$Title SS Guard (MP40)
+	//$Color 4
+	SeeSound "Nazi2/Sighted"
+	PainSound "Nazi2/Pain"
+	DeathSound "Nazi2/Death"
+	dropitem 9mmAmmo 192
+	dropitem MP40 64
+	dropitem GrenadePickup 16
+	Obituary "%o was plugged by an SS with an MP40."
+	States
 	{
 	Spawn:
-	SSMG N 0
-	Goto SkillCheck
+		SSMG N 0
+		Goto SkillCheck
 	Missile:
-	SSMG EF 5 A_FaceTarget
-	SSMG G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
-	SSMG G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
-	SSMG F 2 A_MonsterRefire(30,"See")
-	SSMG F 0 A_FaceTarget
-	Goto Missile+2
+		SSMG EF 5 A_FaceTarget
+		SSMG G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
+		SSMG G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
+		SSMG F 2 A_MonsterRefire(30,"See")
+		SSMG F 0 A_FaceTarget
+		Goto Missile+2
 	}
 }
 
 ACTOR WMP40Guard : MP40Guard
 {
-//$Category Monsters (Wolf3D)
-//$Title Wehrmacht Guard (MP40)
-//$Color 4
-Obituary "%o was plugged by a trigger-happy Wehrmacht."
-Health 30
-Speed 2.5
-+MISSILEMORE
-+MISSILEEVENMORE
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Wehrmacht Guard (MP40)
+	//$Color 4
+	Obituary "%o was plugged by a trigger-happy Wehrmacht."
+	Health 30
+	Speed 2.5
+	+MISSILEMORE
+	+MISSILEEVENMORE
+	States
 	{
 	Spawn:
-	MGR2 N 0
-	Goto SkillCheck
+		MGR2 N 0
+		Goto SkillCheck
 	Missile:
-	MGR2 EF 2 A_FaceTarget
-	MGR2 G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
-	MGR2 G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
-	MGR2 F 1 A_FaceTarget
-	MGR2 G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
-	MGR2 G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",32,0,random(-12,12))
-	MGR2 F 2 A_MonsterRefire(30,"See")
-	MGR2 F 0 A_FaceTarget
-	Goto Missile+2
+		MGR2 EF 2 A_FaceTarget
+		MGR2 G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
+		MGR2 G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
+		MGR2 F 1 A_FaceTarget
+		MGR2 G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
+		MGR2 G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",32,0,random(-12,12))
+		MGR2 F 2 A_MonsterRefire(30,"See")
+		MGR2 F 0 A_FaceTarget
+		Goto Missile+2
 	}
 }
 
 ACTOR Officer : Guard 12012
 {
-//$Category Monsters (Wolf3D)
-//$Title SA Officer
-//$Color 4
-Speed 4
-Obituary "%o was executed by an officer."
-SeeSound "Nazi4/Sighted"
-PainSound "Nazi4/Pain"
-DeathSound "Nazi4/Death"
-DropItem 9mmAmmo 192
-DropItem Luger9mm 64
-States
+	//$Category Monsters (Wolf3D)
+	//$Title SA Officer
+	//$Color 4
+	Speed 4
+	Obituary "%o was executed by an officer."
+	SeeSound "Nazi4/Sighted"
+	PainSound "Nazi4/Pain"
+	DeathSound "Nazi4/Death"
+	DropItem 9mmAmmo 192
+	DropItem Luger9mm 64
+	States
 	{
 	Spawn:
-	OFFI N 0
-	Goto SkillCheck
+		OFFI N 0
+		Goto SkillCheck
 	See:
-	"####" A 1 A_Chase
-	"####" A 1 A_Chase("","")
-	"####" A 1 A_Chase
-	"####" A 1 A_Chase("","")
-	"####" B 1 A_Chase
-	"####" B 1 A_Chase("","")
-	"####" B 1 A_Chase
-	"####" B 1 A_Chase("","")
-	"####" C 1 A_Chase
-	"####" C 1 A_Chase("","")
-	"####" C 1 A_Chase
-	"####" C 1 A_Chase("","")
-	"####" D 1 A_Chase
-	"####" D 1 A_Chase("","")
-	"####" D 1 A_Chase
-	"####" D 1 A_Chase("","")
-	Loop
+		"####" A 1 A_Chase
+		"####" A 1 A_Chase("","")
+		"####" A 1 A_Chase
+		"####" A 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" B 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" B 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" C 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" C 1 A_Chase("","")
+		"####" D 1 A_Chase
+		"####" D 1 A_Chase("","")
+		"####" D 1 A_Chase
+		"####" D 1 A_Chase("","")
+		Loop
 	Missile:
-	"####" EF 2 A_FaceTarget
-	"####" G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-	"####" G 5 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-4,4))
-	"####" F 4
-	"####" F 0 A_Jump(256,"See")
-	Stop
+		"####" EF 2 A_FaceTarget
+		"####" G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		"####" G 5 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-4,4))
+		"####" F 4
+		"####" F 0 A_Jump(256,"See")
+		Stop
 	Idle:
-	"####" AAAA 1 A_Wander
-	"####" A 0 A_Look
-	"####" BBBB 1 A_Wander
-	"####" A 0 A_Look
-	"####" CCCC 1 A_Wander
-	"####" A 0 A_Look
-	"####" DDDD 1 A_Wander
-	"####" A 0 A_Look
-	Loop
+		"####" AAAA 1 A_Wander
+		"####" A 0 A_Look
+		"####" BBBB 1 A_Wander
+		"####" A 0 A_Look
+		"####" CCCC 1 A_Wander
+		"####" A 0 A_Look
+		"####" DDDD 1 A_Wander
+		"####" A 0 A_Look
+		Loop
 	}
 }
 
 ACTOR SSOfficer : Officer 12015
 {
-//$Category Monsters (Wolf3D)
-//$Title SS Officer
-//$Color 4
-Speed 5.33
-Obituary "%o was viciously executed by an SS officer."
-Health 40
-States
+	//$Category Monsters (Wolf3D)
+	//$Title SS Officer
+	//$Color 4
+	Speed 5.33
+	Obituary "%o was viciously executed by an SS officer."
+	Health 40
+	States
 	{
 	Spawn:
-	SSOF N 0
-	Goto SkillCheck
+		SSOF N 0
+		Goto SkillCheck
 	}
 }
 
 ACTOR WOfficer : Officer 12013
 {
-//$Category Monsters (Wolf3D)
-//$Title Wehrmacht Officer
-//$Color 4
-Obituary "%o was quickly executed by an officer."
-Health 30
-Speed 5
-PainChance 180
-+MISSILEMORE
-+MISSILEEVENMORE
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Wehrmacht Officer
+	//$Color 4
+	Obituary "%o was quickly executed by an officer."
+	Health 30
+	Speed 5
+	PainChance 180
+	+MISSILEMORE
+	+MISSILEEVENMORE
+	States
 	{
 	Spawn:
-	OFR2 N 0
-	Goto SkillCheck
+		OFR2 N 0
+		Goto SkillCheck
 	Missile:
-	OFR2 EF 2 A_FaceTarget
-	OFR2 G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-	OFR2 G 4 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-4,4))
-	OFR2 F 3 A_FaceTarget
-	OFR2 G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-	OFR2 G 5 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-6,6))
-	OFR2 F 3 A_FaceTarget
-	OFR2 G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-	OFR2 G 5 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-8,8))
-	OFR2 F 3 A_FaceTarget
-	OFR2 G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-	OFR2 G 5 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-8,8))
-	OFR2 F 4
-	Goto See
+		OFR2 EF 2 A_FaceTarget
+		OFR2 G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		OFR2 G 4 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-4,4))
+		OFR2 F 3 A_FaceTarget
+		OFR2 G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		OFR2 G 5 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-6,6))
+		OFR2 F 3 A_FaceTarget
+		OFR2 G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		OFR2 G 5 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-8,8))
+		OFR2 F 3 A_FaceTarget
+		OFR2 G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		OFR2 G 5 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-8,8))
+		OFR2 F 4
+		Goto See
 	}
 }
 
 ACTOR RifleGuard : MP40Guard 12007
 {
-//$Category Monsters (Wolf3D)
-//$Title SA Guard (Rifle)
-//$Color 4
-Obituary "%o was plinked by a rifle soldier."
-SeeSound "Nazi3/Sighted"
-dropitem MauserAmmo
-dropitem G43 64
-States
+	//$Category Monsters (Wolf3D)
+	//$Title SA Guard (Rifle)
+	//$Color 4
+	Obituary "%o was plinked by a rifle soldier."
+	SeeSound "Nazi3/Sighted"
+	dropitem MauserAmmo
+	dropitem G43 64
+	States
 	{
 	Spawn:
-	RGRD N 0
-	Goto SkillCheck
+		RGRD N 0
+		Goto SkillCheck
 	Missile:
-	RGRD EF 10 A_FaceTarget
-	RGRD G 0 A_PlaySound("garand/fire",CHAN_WEAPON)
-	RGRD G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",32,0,random(-1,1))
-	RGRD F 8
-	Goto See
+		RGRD EF 10 A_FaceTarget
+		RGRD G 0 A_PlaySound("garand/fire",CHAN_WEAPON)
+		RGRD G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",32,0,random(-1,1))
+		RGRD F 8
+		Goto See
 	}
 }
 
 ACTOR WRifleGuard : RifleGuard 12008
 {
-//$Category Monsters (Wolf3D)
-//$Title Wehrmacht Guard (Rifle)
-//$Color 4
-Obituary "%o was snap-shot by a rifle soldier."
-Health 30
-Speed 2.5
-+MISSILEMORE
-+MISSILEEVENMORE
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Wehrmacht Guard (Rifle)
+	//$Color 4
+	Obituary "%o was snap-shot by a rifle soldier."
+	Health 30
+	Speed 2.5
+	+MISSILEMORE
+	+MISSILEEVENMORE
+	States
 	{
 	Spawn:
-	RGR2 N 0
-	Goto SkillCheck
+		RGR2 N 0
+		Goto SkillCheck
 	Missile:
-	RGR2 EF 10 A_FaceTarget
-	RGR2 G 0 A_PlaySound("garand/fire",CHAN_WEAPON)
-	RGR2 G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",32,0,random(-1,1))
-	RGR2 F 4 A_FaceTarget
-	RGR2 G 0 A_PlaySound("garand/fire",CHAN_WEAPON)
-	RGR2 G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",32,0,random(-5,5))
-	RGR2 F 8
-	Goto See
+		RGR2 EF 10 A_FaceTarget
+		RGR2 G 0 A_PlaySound("garand/fire",CHAN_WEAPON)
+		RGR2 G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",32,0,random(-1,1))
+		RGR2 F 4 A_FaceTarget
+		RGR2 G 0 A_PlaySound("garand/fire",CHAN_WEAPON)
+		RGR2 G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",32,0,random(-5,5))
+		RGR2 F 8
+		Goto See
 	}
 }
 
 ACTOR WaffenSS : SSMP40Guard 12009
 {
-//$Category Monsters (Wolf3D)
-//$Title Waffen SS
-//$Color 4
-SeeSound "Nazi3/Sighted"
-Obituary "%o was shot to pieces by a Waffen-SS."
-Health 80
-dropitem "9mmAmmo" 192
-dropitem "MP40" 64
-dropitem "GrenadePickup" 32
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Waffen SS
+	//$Color 4
+	SeeSound "Nazi3/Sighted"
+	Obituary "%o was shot to pieces by a Waffen-SS."
+	Health 80
+	dropitem "9mmAmmo" 192
+	dropitem "MP40" 64
+	dropitem "GrenadePickup" 32
+	States
 	{
 	Spawn:
-	WAFF N 0
-	Goto SkillCheck
+		WAFF N 0
+		Goto SkillCheck
 	Missile:
-	"####" EF 5 A_FaceTarget
-	"####" G 0 A_PlaySound("nazi/stg44",CHAN_WEAPON)
-	"####" G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyStGTracer",32,0,random(-4,4))
-	"####" F 4 A_MonsterRefire(30,"See")
-	"####" F 0 A_FaceTarget
-	Goto Missile+2
+		"####" EF 5 A_FaceTarget
+		"####" G 0 A_PlaySound("nazi/stg44",CHAN_WEAPON)
+		"####" G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyStGTracer",32,0,random(-4,4))
+		"####" F 4 A_MonsterRefire(30,"See")
+		"####" F 0 A_FaceTarget
+		Goto Missile+2
 	}
 }
 
 ACTOR Paratrooper : WaffenSS 12109
 {
-//$Category Monsters (Wolf3D)
-//$Title Paratrooper
-//$Color 4
-Obituary "%o was slaughtered by a Fallschirmjaeger."
-Health 90
-dropitem "9mmAmmo" 192
-dropitem "MP40" 64
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Paratrooper
+	//$Color 4
+	Obituary "%o was slaughtered by a Fallschirmjaeger."
+	Health 90
+	dropitem "9mmAmmo" 192
+	dropitem "MP40" 64
+	States
 	{
 	Spawn:
-	PARA N 0
-	Goto SkillCheck
+		PARA N 0
+		Goto SkillCheck
 	}
 }
 
 ACTOR Mutant : Nazi 12010
 {
-//$Category Monsters (Wolf3D)
-//$Title Mutant(Projectile)
-//$Color 4
-Obituary "%o did the dance of doom with a Mutant."
-Health 90
-Speed 3
-DeathSound "mutant/Death"
-BloodColor "Purple"
-+MISSILEMORE
-+MISSILEEVENMORE
-dropitem "9mmAmmo" 128
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Mutant(Projectile)
+	//$Color 4
+	Obituary "%o did the dance of doom with a Mutant."
+	Health 90
+	Speed 3
+	DeathSound "mutant/Death"
+	BloodColor "Purple"
+	+MISSILEMORE
+	+MISSILEEVENMORE
+	dropitem "9mmAmmo" 128
+	States
 	{
 	Spawn:
-	MTNT A 0
-	Goto SkillCheck
+		MTNT A 0
+		Goto SkillCheck
 	See:
-	"####" A 0 A_SetSpeed(3)
-	"####" B 1 A_Chase
-	"####" B 1 A_Chase("","")
-	"####" B 1 A_Chase
-	"####" B 1 A_Chase("","")
-	"####" C 1 A_Chase
-	"####" C 1 A_Chase("","")
-	"####" C 1 A_Chase
-	"####" C 1 A_Chase("","")
-	"####" D 1 A_Chase
-	"####" D 1 A_Chase("","")
-	"####" D 1 A_Chase
-	"####" D 1 A_Chase("","")
-	"####" E 1 A_Chase
-	"####" E 1 A_Chase("","")
-	"####" E 1 A_Chase
-	"####" E 1 A_Chase("","")
-	Loop
+		"####" A 0 A_SetSpeed(3)
+		"####" B 1 A_Chase
+		"####" B 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" B 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" C 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" C 1 A_Chase("","")
+		"####" D 1 A_Chase
+		"####" D 1 A_Chase("","")
+		"####" D 1 A_Chase
+		"####" D 1 A_Chase("","")
+		"####" E 1 A_Chase
+		"####" E 1 A_Chase("","")
+		"####" E 1 A_Chase
+		"####" E 1 A_Chase("","")
+		Loop
 	Missile:
-	MTNT F 6 A_FaceTarget
-	MTNT G 0 A_PlaySound("walther/fire",CHAN_WEAPON)
-	MTNT G 5 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-1,1))
-	MTNT F 6 A_FaceTarget
-	MTNT H 0 A_PlaySound("walther/fire",CHAN_WEAPON)
-	MTNT H 5 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-1,1))
-	MTNT F 6 A_MonsterRefire(30,"See")
-	MTNT F 0 A_FaceTarget
-	Goto Missile+1
+		MTNT F 6 A_FaceTarget
+		MTNT G 0 A_PlaySound("walther/fire",CHAN_WEAPON)
+		MTNT G 5 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-1,1))
+		MTNT F 6 A_FaceTarget
+		MTNT H 0 A_PlaySound("walther/fire",CHAN_WEAPON)
+		MTNT H 5 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-1,1))
+		MTNT F 6 A_MonsterRefire(30,"See")
+		MTNT F 0 A_FaceTarget
+		Goto Missile+1
 	Pain:
-	"####" I 6
-	Goto See
+		"####" I 6
+		Goto See
 	Death:
-	"####" J 3
-	"####" K 3 A_Scream
-	"####" L 3 A_NoBlocking
-	"####" MN 3
-	"####" O -1
-	Stop
+		"####" J 3
+		"####" K 3 A_Scream
+		"####" L 3 A_NoBlocking
+		"####" MN 3
+		"####" O -1
+		Stop
 	Idle:
-	"####" A 0 A_SetSpeed(1.5)
-	"####" BBBBBBBB 1 A_Wander
-	"####" A 0 A_Look
-	"####" CCCCCCCC 1 A_Wander
-	"####" A 0 A_Look
-	"####" DDDDDDDD 1 A_Wander
-	"####" A 0 A_Look
-	"####" EEEEEEEE 1 A_Wander
-	"####" A 0 A_Look
-	Loop
+		"####" A 0 A_SetSpeed(1.5)
+		"####" BBBBBBBB 1 A_Wander
+		"####" A 0 A_Look
+		"####" CCCCCCCC 1 A_Wander
+		"####" A 0 A_Look
+		"####" DDDDDDDD 1 A_Wander
+		"####" A 0 A_Look
+		"####" EEEEEEEE 1 A_Wander
+		"####" A 0 A_Look
+		Loop
 	Raise:
-	"####" ONMLKJ 4
-	Goto See
+		"####" ONMLKJ 4
+		Goto See
 	Death.Fire:
-	BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.0)
-	BURN BC 5 BRIGHT LIGHT(ITBURNS1)
-	BURN D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
-	BURN E 5 BRIGHT LIGHT(ITBURNS1)
-	BURN FGHIJ 5 BRIGHT LIGHT(ITBURNS2)
-	BURN KLMN 5 BRIGHT LIGHT(ITBURNS3)
-	BURN O 5 BRIGHT LIGHT(ITBURNS3) A_NoBlocking
-	BURN PQR 5 BRIGHT LIGHT(ITBURNS2)
-	BURN STU 5 BRIGHT LIGHT(ITBURNS1)
-	BURN V -1
-	Stop
+		BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.0)
+		BURN BC 5 BRIGHT LIGHT(ITBURNS1)
+		BURN D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
+		BURN E 5 BRIGHT LIGHT(ITBURNS1)
+		BURN FGHIJ 5 BRIGHT LIGHT(ITBURNS2)
+		BURN KLMN 5 BRIGHT LIGHT(ITBURNS3)
+		BURN O 5 BRIGHT LIGHT(ITBURNS3) A_NoBlocking
+		BURN PQR 5 BRIGHT LIGHT(ITBURNS2)
+		BURN STU 5 BRIGHT LIGHT(ITBURNS1)
+		BURN V -1
+		Stop
 	XDeath:
-	SLOP ABCDEF 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
-	SLOP G 0 A_NoBlocking
-	SLOP G -1
-	Stop
+		SLOP ABCDEF 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
+		SLOP G 0 A_NoBlocking
+		SLOP G -1
+		Stop
 	}
 }
 
 ACTOR MutantMelee : Mutant 12011
 {
-//$Category Monsters (Wolf3D)
-//$Title Mutant(Melee)
-//$Color 4
-BloodColor "Purple"
-dropitem ""
-states
+	//$Category Monsters (Wolf3D)
+	//$Title Mutant(Melee)
+	//$Color 4
+	BloodColor "Purple"
+	dropitem ""
+	states
 	{
 	Spawn:
-	MLMT A 0
-	Goto SkillCheck
+		MLMT A 0
+		Goto SkillCheck
 	Melee:
-	MLMT F 4 A_FaceTarget
-	MLMT G 5 A_CustomMeleeAttack(5*random(1,8))
-	MLMT F 4 A_FaceTarget
-	MLMT H 5 A_CustomMeleeAttack(5*random(1,8))
-	goto See
+		MLMT F 4 A_FaceTarget
+		MLMT G 5 A_CustomMeleeAttack(5*random(1,8))
+		MLMT F 4 A_FaceTarget
+		MLMT H 5 A_CustomMeleeAttack(5*random(1,8))
+		goto See
 	Missile:
-	Stop
+		Stop
 	}
-	}
+}
 
 ACTOR Rottweiler : Nazi 12016
 {
-//$Category Monsters (Wolf3D)
-//$Title Dog (Rottweiler)
-//$Color 4
-Scale 1.1
-HitObituary "%o was bitten by a guard dog."
-Health 25
-PainChance 180
-Speed 4
-Height 48
-Mass 70
-SeeSound "dog/sight"
-PainSound "dog/pain"
-DeathSound "dog/death"
-ActiveSound "dog/active"
--CANUSEWALLS
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Dog (Rottweiler)
+	//$Color 4
+	Scale 1.1
+	HitObituary "%o was bitten by a guard dog."
+	Health 25
+	PainChance 180
+	Speed 4
+	Height 48
+	Mass 70
+	SeeSound "dog/sight"
+	PainSound "dog/pain"
+	DeathSound "dog/death"
+	ActiveSound "dog/active"
+	-CANUSEWALLS
+	States
 	{
 	Spawn:
-	DOGY A 0
-	Goto SkillCheck
+		DOGY A 0
+		Goto SkillCheck
 	Look:
 	Idle:
-	"####" A 0 A_SetSpeed(4)
-	"####" AAAAAAAA 1 A_Wander
-	"####" A 0 A_Look
-	"####" BBBBBBBB 1 A_Wander
-	"####" A 0 A_Look
-	"####" CCCCCCCC 1 A_Wander
-	"####" A 0 A_Look
-	"####" DDDDDDDD 1 A_Wander
-	"####" A 0 A_Look
-	Loop
+		"####" A 0 A_SetSpeed(4)
+		"####" AAAAAAAA 1 A_Wander
+		"####" A 0 A_Look
+		"####" BBBBBBBB 1 A_Wander
+		"####" A 0 A_Look
+		"####" CCCCCCCC 1 A_Wander
+		"####" A 0 A_Look
+		"####" DDDDDDDD 1 A_Wander
+		"####" A 0 A_Look
+		Loop
 	See:
-	"####" A 0 A_SetSpeed(8)
-	"####" A 1 A_Chase
-	"####" AAA 1 A_Chase("","",CHF_NOPLAYACTIVE)
-	"####" B 1 A_Chase
-	"####" BBB 1 A_Chase("","",CHF_NOPLAYACTIVE)
-	"####" C 1 A_Chase
-	"####" CCC 1 A_Chase("","",CHF_NOPLAYACTIVE)
-	"####" D 1 A_Chase
-	"####" DDD 1 A_Chase("","",CHF_NOPLAYACTIVE)
-	Loop
+		"####" A 0 A_SetSpeed(8)
+		"####" A 1 A_Chase
+		"####" AAA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_Chase
+		"####" BBB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" C 1 A_Chase
+		"####" CCC 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" D 1 A_Chase
+		"####" DDD 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		Loop
 	Melee:
-	"####" EF 2 Fast A_FaceTarget
-	"####" G 8 Fast A_CustomMeleeAttack(random(1,8)*5,"dog/attack","dog/attack")
-	"####" FE 4 Fast
-	Goto See
+		"####" EF 2 Fast A_FaceTarget
+		"####" G 8 Fast A_CustomMeleeAttack(random(1,8)*5,"dog/attack","dog/attack")
+		"####" FE 4 Fast
+		Goto See
 	Pain:
-	"####" M 2
-	"####" M 2 A_Pain
-	Goto See
+		"####" M 2
+		"####" M 2 A_Pain
+		Goto See
 	Death:
-	"####" H 8
-	"####" I 8 A_Scream
-	"####" J 6
-	"####" K -1 A_NoBlocking
-	Stop
+		"####" H 8
+		"####" I 8 A_Scream
+		"####" J 6
+		"####" K -1 A_NoBlocking
+		Stop
 	Raise:
-	"####" KJIH 6
-	Goto See
+		"####" KJIH 6
+		Goto See
 	}
 }
 
 ACTOR GermanShepherd : Rottweiler 12017
 {
-//$Category Monsters (Wolf3D)
-//$Title Dog (Shepherd)
-//$Color 4
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Dog (Shepherd)
+	//$Color 4
+	States
 	{
 	Spawn:
-	DOG2 A 0
-	Goto SkillCheck
+		DOG2 A 0
+		Goto SkillCheck
 	}
-	}
+}
 
 ACTOR Doberman : Rottweiler 12036
 {
-//$Category Monsters (Wolf3D)
-//$Title Dog (Doberman)
-//$Color 4
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Dog (Doberman)
+	//$Color 4
+	States
 	{
 	Spawn:
-	DOG3 A 0
-	Goto SkillCheck
+		DOG3 A 0
+		Goto SkillCheck
 	}
 }
 
 ACTOR RocketMan : Nazi 12018
 {
-//$Category Monsters (Wolf3D)
-//$Title Otto Giftmacher (Boss)
-//$Color 4
-Health 300
-PainChance 110
-Mass 200
-Obituary "%o was splattered by Otto Giftmacher."
-SeeSound "Boss2/Sighted"
-PainSound "boss/pain"
-DeathSound "Boss2/Death"
-dropitem NebAmmoSmall
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Otto Giftmacher (Boss)
+	//$Color 4
+	Health 300
+	PainChance 110
+	Mass 200
+	Obituary "%o was splattered by Otto Giftmacher."
+	SeeSound "Boss2/Sighted"
+	PainSound "boss/pain"
+	DeathSound "Boss2/Death"
+	dropitem NebAmmoSmall
+	States
 	{
 	Spawn:
-	OTTO A 0
-	Goto SkillCheck
+		OTTO A 0
+		Goto SkillCheck
 	Missile:
-	OTTO E 10 A_FaceTarget
-	OTTO F 8 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",32,12)
-	OTTO E 8
-	Goto See
+		OTTO E 10 A_FaceTarget
+		OTTO F 8 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",32,12)
+		OTTO E 8
+		Goto See
 	Pain:
-	OTTO K 3
-	OTTO K 3 A_Pain
-	Goto See
+		OTTO K 3
+		OTTO K 3 A_Pain
+		Goto See
 	Death:
-	"####" G 5
-	"####" H 5 A_Scream
-	"####" I 5
-	"####" J -1 A_NoBlocking
-	Stop
+		"####" G 5
+		"####" H 5 A_Scream
+		"####" I 5
+		"####" J -1 A_NoBlocking
+		Stop
 	Raise:
-	"####" JIHG 5
-	Goto See
+		"####" JIHG 5
+		Goto See
 	}
 }
 
 ACTOR MiniRocket
 {
-Radius 11
-Height 8
-Speed 15
-Damage 5
-Projectile
-+RANDOMIZE
-+THRUGHOST
-SeeSound "nazi/missilef"
-DeathSound "world/barrelboom"
-States
+	Radius 11
+	Height 8
+	Speed 15
+	Damage 5
+	Projectile
+	+RANDOMIZE
+	+THRUGHOST
+	SeeSound "nazi/missilef"
+	DeathSound "world/barrelboom"
+	States
 	{
 	Spawn:
-	NMIS A 1 BRIGHT LIGHT(OTTOFIRE) A_SpawnItemEx("RocketFlame",random(-1,1),0,random(-1,1))
-	Loop
+		NMIS A 1 BRIGHT LIGHT(OTTOFIRE) A_SpawnItemEx("RocketFlame",random(-1,1),0,random(-1,1))
+		Loop
 	Death:
-	FRME A 1 BRIGHT LIGHT(OTTOFIRE) A_Explode(20,40)
-	FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT(OTTOFIRE)
-	Stop
+		FRME A 1 BRIGHT LIGHT(OTTOFIRE) A_Explode(20,40)
+		FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT(OTTOFIRE)
+		Stop
 	}
 }
 
 ACTOR MadDoctor : RocketMan 12019
 {
-//$Category Monsters (Wolf3D)
-//$Title Dr Schabbs (Boss)
-//$Color 4
-Obituary "%o was used as an unwitting test subject by Dr. Schabbs."
-dropitem "Medikit_Medium"
-+LOOKALLAROUND
-states
+	//$Category Monsters (Wolf3D)
+	//$Title Dr Schabbs (Boss)
+	//$Color 4
+	Obituary "%o was used as an unwitting test subject by Dr. Schabbs."
+	dropitem "Medikit_Medium"
+	+LOOKALLAROUND
+	states
 	{
 	Spawn:
-	SCHB A 0
-	Goto SkillCheck
+		SCHB A 0
+		Goto SkillCheck
 	Missile:
-	SCHB E 10 A_FaceTarget
-	SCHB F 8 A_CustomMissile("FlyingNeedle",32,12)
-	SCHB A 8
-	Goto See
+		SCHB E 10 A_FaceTarget
+		SCHB F 8 A_CustomMissile("FlyingNeedle",32,12)
+		SCHB A 8
+		Goto See
 	Pain:
-	"####" G 3
-	"####" A 3 A_Pain
-	Goto See
+		"####" G 3
+		"####" A 3 A_Pain
+		Goto See
 	}
 }
 
 ACTOR FlyingNeedle : MiniRocket
 {
-Speed 20
-Damage (random(1,4)*8)
-SeeSound ""
-DeathSound ""
-States
+	Speed 20
+	Damage (random(1,4)*8)
+	SeeSound ""
+	DeathSound ""
+	States
 	{
 	Spawn:
-	NEDL ABCD 3
-	Loop
+		NEDL ABCD 3
+		Loop
 	Death:
-	TNT1 A 1
-	Stop
+		TNT1 A 1
+		Stop
 	}
 }
 
 ACTOR SuperSoldier : Nazi 12020
 {
-//$Category Monsters (Wolf3D)
-//$Title Hans Grosse (Boss)
-//$Color 4
-Obituary "%o was terminated by an ubersoldat."
-Health 500
-Radius 24
-Height 64
-Mass 500
-PainChance 150
-SeeSound "Boss1/Sighted"
-PainSound "boss/pain"
-DeathSound "Boss1/Death"
-+NOBLOOD
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Hans Grosse (Boss)
+	//$Color 4
+	Obituary "%o was terminated by an ubersoldat."
+	Health 500
+	Radius 24
+	Height 64
+	Mass 500
+	PainChance 150
+	SeeSound "Boss1/Sighted"
+	PainSound "boss/pain"
+	DeathSound "Boss1/Death"
+	+NOBLOOD
+	States
 	{
 	Spawn:
-	HANS A 0
-	Goto SkillCheck
+		HANS A 0
+		Goto SkillCheck
 	Missile:
-	HANS E 20 A_FaceTarget
-	HANS F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-	HANS F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
-	HANS F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
-	HANS G 2 BRIGHT A_FaceTarget
-	HANS F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-	HANS F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
-	HANS F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
-	HANS G 2 BRIGHT A_FaceTarget
-	HANS F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-	HANS F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
-	HANS F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
-	HANS G 2 BRIGHT A_MonsterRefire(30,"See")
-	HANS G 0 A_FaceTarget
-	Goto Missile+1
+		HANS E 20 A_FaceTarget
+		HANS F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
+		HANS F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
+		HANS F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
+		HANS G 2 BRIGHT A_FaceTarget
+		HANS F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
+		HANS F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
+		HANS F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
+		HANS G 2 BRIGHT A_FaceTarget
+		HANS F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
+		HANS F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
+		HANS F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
+		HANS G 2 BRIGHT A_MonsterRefire(30,"See")
+		HANS G 0 A_FaceTarget
+ 		Goto Missile+1
 	Death:
-	"####" I 5
-	"####" J 5 A_Scream
-	"####" K 5
-	"####" L -1 A_NoBlocking
-	Stop
+		"####" I 5
+		"####" J 5 A_Scream
+		"####" K 5
+		"####" L -1 A_NoBlocking
+		Stop
 	Raise:
-	"####" LKJI 5
-	Goto See
+		"####" LKJI 5
+		Goto See
 	}
 }
 
 ACTOR SuperSoldierGirl : SuperSoldier 12021
 {
-//$Category Monsters (Wolf3D)
-//$Title Gretel Grosse (Boss)
-//$Color 4
-Obituary "%o was terminated by a female ubersoldat."
-SeeSound "BossGirl/Sighted"
-PainSound "bossGirl/pain"
-DeathSound "BossGirl/Death"
-DropItem "9mmAmmoBox" 128
-DropItem "9mmAmmo" 128
-DropItem "9mmAmmo" 128
-DropItem "9mmAmmo" 128
-+MISSILEMORE
-+MISSILEEVENMORE
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Gretel Grosse (Boss)
+	//$Color 4
+	Obituary "%o was terminated by a female ubersoldat."
+	SeeSound "BossGirl/Sighted"
+	PainSound "bossGirl/pain"
+	DeathSound "BossGirl/Death"
+	DropItem "9mmAmmoBox" 128
+	DropItem "9mmAmmo" 128
+	DropItem "9mmAmmo" 128
+	DropItem "9mmAmmo" 128
+	+MISSILEMORE
+	+MISSILEEVENMORE
+	States
 	{
 	Spawn:
-	WBO4 A 0
-	Goto SkillCheck
+		WBO4 A 0
+		Goto SkillCheck
 	Missile:
-	WBO4 E 20 A_FaceTarget
-	WBO4 F 0 A_PlaySound("browning/fire",CHAN_WEAPON)
-	WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",32,16,frandom(-6,6))
-	WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",32,-16,frandom(-6,6))
-	WBO4 FG 2 BRIGHT LIGHT(SUPAFIRE) A_FaceTarget
-	WBO4 F 0 A_PlaySound("browning/fire",CHAN_WEAPON)
-	WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",32,16,frandom(-6,6))
-	WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",32,-16,frandom(-6,6))
-	WBO4 FG 2 BRIGHT LIGHT(SUPAFIRE) A_FaceTarget
-	WBO4 F 0 A_PlaySound("browning/fire",CHAN_WEAPON)
-	WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",32,16,frandom(-6,6))
-	WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",32,-16,frandom(-6,6))
-	WBO4 FG 2 BRIGHT LIGHT(SUPAFIRE)
-	Goto See
+		WBO4 E 20 A_FaceTarget
+		WBO4 F 0 A_PlaySound("browning/fire",CHAN_WEAPON)
+		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",32,16,frandom(-6,6))
+		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",32,-16,frandom(-6,6))
+		WBO4 FG 2 BRIGHT LIGHT(SUPAFIRE) A_FaceTarget
+		WBO4 F 0 A_PlaySound("browning/fire",CHAN_WEAPON)
+		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",32,16,frandom(-6,6))
+		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",32,-16,frandom(-6,6))
+		WBO4 FG 2 BRIGHT LIGHT(SUPAFIRE) A_FaceTarget
+		WBO4 F 0 A_PlaySound("browning/fire",CHAN_WEAPON)
+		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",32,16,frandom(-6,6))
+		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",32,-16,frandom(-6,6))
+		WBO4 FG 2 BRIGHT LIGHT(SUPAFIRE)
+		Goto See
 	}
 }
 
 ACTOR SuperSoldierElite : SuperSoldier replaces BaronOfHell 12022
 {
-//$Category Monsters (Wolf3D)
-//$Title Ubersoldat
-//$Color 4
-Obituary "%o was pulverized by an elite ubersoldat."
-Health 850
-DropItem "9mmAmmoBox" 128
-DropItem "9mmAmmo" 128
-DropItem "NebAmmoSmall" 256
-DropItem "9mmAmmo" 128
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Ubersoldat
+	//$Color 4
+	Obituary "%o was pulverized by an elite ubersoldat."
+	Health 850
+	DropItem "9mmAmmoBox" 128
+	DropItem "9mmAmmo" 128
+	DropItem "NebAmmoSmall" 256
+	DropItem "9mmAmmo" 128
+	States
 	{
 	Spawn:
-	TRAN A 0
-	Goto SkillCheck
+		TRAN A 0
+		Goto SkillCheck
 	Missile:
-	TRAN E 20 A_FaceTarget
-	TRAN F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-	TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
-	TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
-	TRAN G 2 A_FaceTarget
-	TRAN F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-	TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
-	TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
-	TRAN G 2 A_FaceTarget
-	TRAN F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-	TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
-	TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
-	TRAN G 2 A_FaceTarget
-	TRAN F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-	TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
-	TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
-	TRAN G 2 BRIGHT A_MonsterRefire(30,"See")
-	TRAN G 0 A_FaceTarget
-	Goto Missile+1
+		TRAN E 20 A_FaceTarget
+		TRAN F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
+		TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
+		TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
+		TRAN G 2 A_FaceTarget
+		TRAN F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
+		TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
+		TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
+		TRAN G 2 A_FaceTarget
+		TRAN F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
+		TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
+		TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
+		TRAN G 2 A_FaceTarget
+		TRAN F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
+		TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,16,random(-11,11))
+		TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
+		TRAN G 2 BRIGHT A_MonsterRefire(30,"See")
+		TRAN G 0 A_FaceTarget
+		Goto Missile+1
 	}
 }
 
 ACTOR General : RocketMan replaces Archvile 12023
 {
-//$Category Monsters (Wolf3D)
-//$Title General Fettgesicht (Boss)
-//$Color 4
-Obituary "%o was eliminated by a Nazi general."
-Health 800
-Mass 1000
-SeeSound "Boss3/Sighted"
-DeathSound "Boss3/Death"
-DropItem "NebAmmoSmall" 128
-DropItem "NebAmmoSmall" 128
-DropItem "NebAmmoSmall" 128
-+MISSILEEVENMORE
-States
+	//$Category Monsters (Wolf3D)
+	//$Title General Fettgesicht (Boss)
+	//$Color 4
+	Obituary "%o was eliminated by a Nazi general."
+	Health 800
+	Mass 1000
+	SeeSound "Boss3/Sighted"
+	DeathSound "Boss3/Death"
+	DropItem "NebAmmoSmall" 128
+	DropItem "NebAmmoSmall" 128
+	DropItem "NebAmmoSmall" 128
+	+MISSILEEVENMORE
+	States
 	{
 	Spawn:
-	FETT A 0
-	Goto SkillCheck
+		FETT A 0
+		Goto SkillCheck
 	Missile:
-	FETT E 10 A_FaceTarget
-	FETT E 0 A_Jump(128,"Chaingun")
-	FETT F 8 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",32,15)
-	FETT E 8 A_FaceTarget
-	FETT F 8 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",32,15)
-	FETT E 8 A_FaceTarget
-	FETT F 8 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",32,15)
-	FETT E 8
-	Goto See
+		FETT E 10 A_FaceTarget
+		FETT E 0 A_Jump(128,"Chaingun")
+		FETT F 8 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",32,15)
+		FETT E 8 A_FaceTarget
+		FETT F 8 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",32,15)
+		FETT E 8 A_FaceTarget
+		FETT F 8 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",32,15)
+		FETT E 8
+		Goto See
 	Chaingun:
-	FETT H 0 A_FaceTarget
-	FETT H 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-	FETT H 2 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",40,-12,random(-11,11))
-	FETT G 2 BRIGHT A_MonsterRefire(30,"See")
-	Loop
+		FETT H 0 A_FaceTarget
+		FETT H 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
+		FETT H 2 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",40,-12,random(-11,11))
+		FETT G 2 BRIGHT A_MonsterRefire(30,"See")
+		Loop
 	Pain:
-	FETT I 3
-	FETT I 3 A_Pain
-	Goto See
+		FETT I 3
+		FETT I 3 A_Pain
+		Goto See
 	Death:
-	FETT J 5
-	FETT K 5 A_Scream
-	FETT L 5
-	FETT M -1 A_NoBlocking
-	Stop
+		FETT J 5
+		FETT K 5 A_Scream
+		FETT L 5
+		FETT M -1 A_NoBlocking
+		Stop
 	Raise:
-	FETT MLKJ 5
-	Goto See
+		FETT MLKJ 5
+		Goto See
 	}
 }
 
 ACTOR FlamerMan : RocketMan replaces Arachnotron 12024
 {
-//$Category Monsters (Wolf3D)
-//$Title Flamer (Boss)
-//$Color 4
-Speed 2.67
-+LOOKALLAROUND
-Obituary "%o was roasted by a Nazi with a flamethrower."
-Health 500
-SeeSound "Boss1/Sighted"
-DeathSound "Boss1/Death"
-dropitem "FlameAmmo"
-dropitem "Pyrolight" 64
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Flamer (Boss)
+	//$Color 4
+	Speed 2.67
+	+LOOKALLAROUND
+	Obituary "%o was roasted by a Nazi with a flamethrower."
+	Health 500
+	SeeSound "Boss1/Sighted"
+	DeathSound "Boss1/Death"
+	dropitem "FlameAmmo"
+	dropitem "Pyrolight" 64
+	States
 	{
 	Spawn:
-	FLAM A 0
-	Goto SkillCheck
+		FLAM A 0
+		Goto SkillCheck
 	See:
-	FLAM A 1 A_Chase
-	FLAM AA 1 A_Chase("","")
-	FLAM A 1 A_Chase
-	FLAM AA 1 A_Chase("","")
-	FLAM B 1 A_Chase
-	FLAM BB 1 A_Chase("","")
-	FLAM B 1 A_Chase
-	FLAM BB 1 A_Chase("","")
-	FLAM C 1 A_Chase
-	FLAM CC 1 A_Chase("","")
-	FLAM C 1 A_Chase
-	FLAM CC 1 A_Chase("","")
-	FLAM D 1 A_Chase
-	FLAM DD 1 A_Chase("","")
-	FLAM D 1 A_Chase
-	FLAM DD 1 A_Chase("","")
-	Loop
+		FLAM A 1 A_Chase
+		FLAM AA 1 A_Chase("","")
+		FLAM A 1 A_Chase
+		FLAM AA 1 A_Chase("","")
+		FLAM B 1 A_Chase
+		FLAM BB 1 A_Chase("","")
+		FLAM B 1 A_Chase
+		FLAM BB 1 A_Chase("","")
+		FLAM C 1 A_Chase
+		FLAM CC 1 A_Chase("","")
+		FLAM C 1 A_Chase
+		FLAM CC 1 A_Chase("","")
+		FLAM D 1 A_Chase
+		FLAM DD 1 A_Chase("","")
+		FLAM D 1 A_Chase
+		FLAM DD 1 A_Chase("","")
+		Loop
 	Missile:
-	FLAM E 10 A_FaceTarget
-	FLAM E 0 A_JumpIfCloser(384,"ProperMissile")
-	FLAM F 4 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("EnemyFlamebolt",32,12)
-	FLAM E 6
-	Goto See
+		FLAM E 10 A_FaceTarget
+		FLAM E 0 A_JumpIfCloser(384,"ProperMissile")
+		FLAM F 4 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("EnemyFlamebolt",32,12)
+		FLAM E 6
+		Goto See
 	ProperMissile:
-	FLAM FFFFFFFF 1 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("EnemyFlamerShot",32,12)
-	FLAM E 6 A_MonsterRefire(10,"See")
-	Goto Missile
+		FLAM FFFFFFFF 1 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("EnemyFlamerShot",32,12)
+		FLAM E 6 A_MonsterRefire(10,"See")
+		Goto Missile
 	Pain:
-	FLAM A 3
-	FLAM A 3 A_Pain
-	Goto See
+		FLAM A 3
+		FLAM A 3 A_Pain
+		Goto See
 	Death:
-	FLAM G 5
-	FLAM H 5 A_Scream
-	FLAM I 5
-	FLAM J -1 A_NoBlocking
-	Stop
+		FLAM G 5
+		FLAM H 5 A_Scream
+		FLAM I 5
+		FLAM J -1 A_NoBlocking
+		Stop
 	Idle:
-	FLAM AAAAAA 1 A_Wander
-	FLAM A 0 A_Look
-	FLAM BBBBBB 1 A_Wander
-	FLAM A 0 A_Look
-	FLAM CCCCCC 1 A_Wander
-	FLAM A 0 A_Look
-	FLAM DDDDDD 1 A_Wander
-	FLAM A 0 A_Look
-	Loop
+		FLAM AAAAAA 1 A_Wander
+		FLAM A 0 A_Look
+		FLAM BBBBBB 1 A_Wander
+		FLAM A 0 A_Look
+		FLAM CCCCCC 1 A_Wander
+		FLAM A 0 A_Look
+		FLAM DDDDDD 1 A_Wander
+		FLAM A 0 A_Look
+		Loop
 	}
 }
 
 ACTOR EnemyFlamerShot : Flamebolt
 {
-+THRUGHOST
--RIPPER
+	+THRUGHOST
+	-RIPPER
 }
 
 ACTOR EnemyFlamebolt : Flameball
 {
-+THRUGHOST
-Damage 8
-Scale .5
-States
+	+THRUGHOST
+	Damage 8
+	Scale .5
+	States
 	{
 	Death:
-	FBLX A 2 BRIGHT LIGHT(BOAFLMW2) A_Explode(8,64)
-	FBLX BCDEFGHIJK 2 BRIGHT LIGHT(BOAFLMW2)
-	Stop
+		FBLX A 2 BRIGHT LIGHT(BOAFLMW2) A_Explode(8,64)
+		FBLX BCDEFGHIJK 2 BRIGHT LIGHT(BOAFLMW2)
+		Stop
 	}
 }
 
 ACTOR HitlerGhost : Nazi 12026
 {
-//$Category Monsters (Wolf3D)
-//$Title Hitler Ghost
-//$Color 4
-Scale 1.25
-Obituary "%o thought %g saw Hitler."
-Health 250
-Mass 1000
-Speed 2.167
-Floatspeed .67
-PainChance 24
-DeathSound "hitlerghost/die"
-SeeSound "hitlerghost/see"
-+FLOAT
-+NOGRAVITY
-+NOBLOOD
--FLOORCLIP
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Hitler Ghost
+	//$Color 4
+	Scale 1.25
+	Obituary "%o thought %g saw Hitler."
+	Health 250
+	Mass 1000
+	Speed 2.167
+	Floatspeed .67
+	PainChance 24
+	DeathSound "hitlerghost/die"
+	SeeSound "hitlerghost/see"
+	+FLOAT
+	+NOGRAVITY
+	+NOBLOOD
+	-FLOORCLIP
+	States
 	{
 	Spawn:
-	HGST A 0
-	Goto SkillCheck
+		HGST A 0
+		Goto SkillCheck
 	See:
-	"####" A 1 A_Chase("Missile","Missile",CHF_FASTCHASE)
-	"####" AAAAA 1 A_Chase("","")
-	"####" B 1 A_Chase
-	"####" BBBBB 1 A_Chase("","")
-	"####" C 1 A_Chase
-	"####" CCCCC 1 A_Chase("","")
-	"####" B 1 A_Chase
-	"####" BBBBB 1 A_Chase("","")
-	Loop
+		"####" A 1 A_Chase("Missile","Missile",CHF_FASTCHASE)
+		"####" AAAAA 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" BBBBB 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" CCCCC 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" BBBBB 1 A_Chase("","")
+		Loop
 	Missile:
-	"####" A 4 A_FaceTarget
-	"####" D 4 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("EnemyFlamebolt2",30)
-	"####" A 4
-	Goto See
+		"####" A 4 A_FaceTarget
+		"####" D 4 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("EnemyFlamebolt2",30)
+		"####" A 4
+		Goto See
 	Pain:
-	"####" A 4
-	Goto See
+		"####" A 4
+		Goto See
 	Death:
-	"####" E 6 A_Scream
-	"####" FGHI 6
-	"####" J -1 A_NoBlocking
-	Stop
+		"####" E 6 A_Scream
+		"####" FGHI 6
+		"####" J -1 A_NoBlocking
+		Stop
 	Idle:
-	Stop
+		Stop
 	}
 }
 
 ACTOR EnemyFlamebolt2 : EnemyFlamebolt
 {
-Damage (random(1,4)*5)
-Scale .35
-States
+	Damage (random(1,4)*5)
+	Scale .35
+	States
 	{
 	Death:
-	FBLX ABCDEFGHIJK 2 BRIGHT LIGHT(BOAFLMW2)
-	Stop
+		FBLX ABCDEFGHIJK 2 BRIGHT LIGHT(BOAFLMW2)
+		Stop
 	}
 }
 
 ACTOR Geist : Nazi 12029
 {
-//$Category Monsters (Wolf3D)
-//$Title Geist
-//$Color 4
-+LOOKALLAROUND
-Scale .9
-Obituary "%o had %p soul removed by a Geist."
-Health 100
-Radius 16
-Mass 1000
-Speed 5
-PainChance 255
-RenderStyle Translucent
-Alpha .5
-DeathSound "geist/die"
-PainSound "geist/pain"
-Floatspeed 1.33
--FLOORCLIP
-+FLOAT
-+NOGRAVITY
-+DONTFALL
-+NOBLOOD
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Geist
+	//$Color 4
+	+LOOKALLAROUND
+	Scale .9
+	Obituary "%o had %p soul removed by a Geist."
+	Health 100
+	Radius 16
+	Mass 1000
+	Speed 5
+	PainChance 255
+	RenderStyle Translucent
+	Alpha .5
+	DeathSound "geist/die"
+	PainSound "geist/pain"
+	Floatspeed 1.33
+	-FLOORCLIP
+	+FLOAT
+	+NOGRAVITY
+	+DONTFALL
+	+NOBLOOD
+	States
 	{
 	Spawn:
-	GEST A 0
-	Goto SkillCheck
+		GEST A 0
+		Goto SkillCheck
 	Look:
-	GEST ABCD 4 A_Look
-	Loop
+		GEST ABCD 4 A_Look
+		Loop
 	See:
-	GEST A 0 A_PlaySound("geist/active",CHAN_VOICE,1,1)
-	GEST A 0 A_SetTranslucent(0.1)
-	GEST AAABBBCCCDDD 1 A_Chase
-	GEST A 0 A_SetTranslucent(0.2)
-	GEST AAABBBCCCDDD 1 A_Chase
-	GEST A 0 A_SetTranslucent(0.3)
-	GEST AAABBBCCCDDD 1 A_Chase
-	GEST A 0 A_SetTranslucent(0.4)
-	GEST AAABBBCCCDDD 1 A_Chase
-	GEST A 0 A_SetTranslucent(0.5)
-	GEST AAABBBCCCDDD 1 A_Chase
-	GEST A 0 A_SetTranslucent(0.4)
-	GEST AAABBBCCCDDD 1 A_Chase
-	GEST A 0 A_SetTranslucent(0.3)
-	GEST AAABBBCCCDDD 1 A_Chase
-	GEST A 0 A_SetTranslucent(0.2)
-	GEST AAABBBCCCDDD 1 A_Chase
-	Loop
+		GEST A 0 A_PlaySound("geist/active",CHAN_VOICE,1,1)
+		GEST A 0 A_SetTranslucent(0.1)
+		GEST AAABBBCCCDDD 1 A_Chase
+		GEST A 0 A_SetTranslucent(0.2)
+		GEST AAABBBCCCDDD 1 A_Chase
+		GEST A 0 A_SetTranslucent(0.3)
+		GEST AAABBBCCCDDD 1 A_Chase
+		GEST A 0 A_SetTranslucent(0.4)
+		GEST AAABBBCCCDDD 1 A_Chase
+		GEST A 0 A_SetTranslucent(0.5)
+		GEST AAABBBCCCDDD 1 A_Chase
+		GEST A 0 A_SetTranslucent(0.4)
+		GEST AAABBBCCCDDD 1 A_Chase
+		GEST A 0 A_SetTranslucent(0.3)
+		GEST AAABBBCCCDDD 1 A_Chase
+		GEST A 0 A_SetTranslucent(0.2)
+		GEST AAABBBCCCDDD 1 A_Chase
+		Loop
 	Melee:
-	"####" A 1 A_SetTranslucent(0.1)
-	"####" AA 1 A_FadeIn(0.2)
-	"####" B 3 BRIGHT A_FaceTarget
-	"####" CDABCD 3 BRIGHT A_CustomMeleeAttack(4)
-	"####" AAAA 1 A_Fadeout(0.1)
-	TNT1 A 0 A_Jump(256,"See")
-	Stop
+		"####" A 1 A_SetTranslucent(0.1)
+		"####" AA 1 A_FadeIn(0.2)
+		"####" B 3 BRIGHT A_FaceTarget
+		"####" CDABCD 3 BRIGHT A_CustomMeleeAttack(4)
+		"####" AAAA 1 A_Fadeout(0.1)
+		TNT1 A 0 A_Jump(256,"See")
+		Stop
 	Pain:
-	"####" E 1 A_Pain
-	"####" E 1 A_SetTranslucent(0.4)
-	"####" EEE 1 A_Fadeout(0.1)
-	TNT1 A 0 A_Jump(256,"See")
-	Stop
+		"####" E 1 A_Pain
+		"####" E 1 A_SetTranslucent(0.4)
+		"####" EEE 1 A_Fadeout(0.1)
+		TNT1 A 0 A_Jump(256,"See")
+		Stop
 	Death:
-	"####" E 5 A_SetTranslucent(0.5)
-	"####" E 6 A_Scream
-	"####" FG 6
-	"####" H 6 A_NoBlocking
-	Stop
+		"####" E 5 A_SetTranslucent(0.5)
+		"####" E 6 A_Scream
+		"####" FG 6
+		"####" H 6 A_NoBlocking
+		Stop
 	Idle:
-	Stop
+		Stop
 	}
 }
 
 ACTOR NaziGeist : Geist
 {
-Scale 1.25
-Health 400
-Radius 31
-Speed 3.75
-PainChance 128
-States
+	Scale 1.25
+	Health 400
+	Radius 31
+	Speed 3.75
+	PainChance 128
+	States
 	{
 	Spawn:
-	GES2 A 0
-	Goto SkillCheck
+		GES2 A 0
+		Goto SkillCheck
 	Look:
-	GES2 ABCD 6 A_Look
-	Loop
+		GES2 ABCD 6 A_Look
+		Loop
 	See:
-	GES2 A 0 A_PlaySound("geist/active",CHAN_VOICE,1,1)
-	GES2 A 0 A_SetTranslucent(0.1)
-	GES2 A 1 A_Chase
-	GES2 AAAAA 1 A_Chase("","")
-	GES2 B 1 A_Chase
-	GES2 BBBBB 1 A_Chase("","")
-	GES2 C 1 A_Chase
-	GES2 CCCCC 1 A_Chase("","")
-	GES2 D 1 A_Chase
-	GES2 DDDDD 1 A_Chase("","")
-	GES2 A 0 A_SetTranslucent(0.2)
-	GES2 A 1 A_Chase
-	GES2 AAAAA 1 A_Chase("","")
-	GES2 B 1 A_Chase
-	GES2 BBBBB 1 A_Chase("","")
-	GES2 C 1 A_Chase
-	GES2 CCCCC 1 A_Chase("","")
-	GES2 D 1 A_Chase
-	GES2 DDDDD 1 A_Chase("","")
-	GES2 A 0 A_SetTranslucent(0.3)
-	GES2 A 1 A_Chase
-	GES2 AAAAA 1 A_Chase("","")
-	GES2 B 1 A_Chase
-	GES2 BBBBB 1 A_Chase("","")
-	GES2 C 1 A_Chase
-	GES2 CCCCC 1 A_Chase("","")
-	GES2 D 1 A_Chase
-	GES2 DDDDD 1 A_Chase("","")
-	GES2 A 0 A_SetTranslucent(0.4)
-	GES2 A 1 A_Chase
-	GES2 AAAAA 1 A_Chase("","")
-	GES2 B 1 A_Chase
-	GES2 BBBBB 1 A_Chase("","")
-	GES2 C 1 A_Chase
-	GES2 CCCCC 1 A_Chase("","")
-	GES2 D 1 A_Chase
-	GES2 DDDDD 1 A_Chase("","")
-	GES2 A 0 A_SetTranslucent(0.5)
-	GES2 A 1 A_Chase
-	GES2 AAAAA 1 A_Chase("","")
-	GES2 B 1 A_Chase
-	GES2 BBBBB 1 A_Chase("","")
-	GES2 C 1 A_Chase
-	GES2 CCCCC 1 A_Chase("","")
-	GES2 D 1 A_Chase
-	GES2 DDDDD 1 A_Chase("","")
-	GES2 A 0 A_SetTranslucent(0.4)
-	GES2 A 1 A_Chase
-	GES2 AAAAA 1 A_Chase("","")
-	GES2 B 1 A_Chase
-	GES2 BBBBB 1 A_Chase("","")
-	GES2 C 1 A_Chase
-	GES2 CCCCC 1 A_Chase("","")
-	GES2 D 1 A_Chase
-	GES2 DDDDD 1 A_Chase("","")
-	GES2 A 0 A_SetTranslucent(0.3)
-	GES2 A 1 A_Chase
-	GES2 AAAAA 1 A_Chase("","")
-	GES2 B 1 A_Chase
-	GES2 BBBBB 1 A_Chase("","")
-	GES2 C 1 A_Chase
-	GES2 CCCCC 1 A_Chase("","")
-	GES2 D 1 A_Chase
-	GES2 DDDDD 1 A_Chase("","")
-	GES2 A 0 A_SetTranslucent(0.2)
-	GES2 A 1 A_Chase
-	GES2 AAAAA 1 A_Chase("","")
-	GES2 B 1 A_Chase
-	GES2 BBBBB 1 A_Chase("","")
-	GES2 C 1 A_Chase
-	GES2 CCCCC 1 A_Chase("","")
-	GES2 D 1 A_Chase
-	GES2 DDDDD 1 A_Chase("","")
-	Loop
+		GES2 A 0 A_PlaySound("geist/active",CHAN_VOICE,1,1)
+		GES2 A 0 A_SetTranslucent(0.1)
+		GES2 A 1 A_Chase
+		GES2 AAAAA 1 A_Chase("","")
+		GES2 B 1 A_Chase
+		GES2 BBBBB 1 A_Chase("","")
+		GES2 C 1 A_Chase
+		GES2 CCCCC 1 A_Chase("","")
+		GES2 D 1 A_Chase
+		GES2 DDDDD 1 A_Chase("","")
+		GES2 A 0 A_SetTranslucent(0.2)
+		GES2 A 1 A_Chase
+		GES2 AAAAA 1 A_Chase("","")
+		GES2 B 1 A_Chase
+		GES2 BBBBB 1 A_Chase("","")
+		GES2 C 1 A_Chase
+		GES2 CCCCC 1 A_Chase("","")
+		GES2 D 1 A_Chase
+		GES2 DDDDD 1 A_Chase("","")
+		GES2 A 0 A_SetTranslucent(0.3)
+		GES2 A 1 A_Chase
+		GES2 AAAAA 1 A_Chase("","")
+		GES2 B 1 A_Chase
+		GES2 BBBBB 1 A_Chase("","")
+		GES2 C 1 A_Chase
+		GES2 CCCCC 1 A_Chase("","")
+		GES2 D 1 A_Chase
+		GES2 DDDDD 1 A_Chase("","")
+		GES2 A 0 A_SetTranslucent(0.4)
+		GES2 A 1 A_Chase
+		GES2 AAAAA 1 A_Chase("","")
+		GES2 B 1 A_Chase
+		GES2 BBBBB 1 A_Chase("","")
+		GES2 C 1 A_Chase
+		GES2 CCCCC 1 A_Chase("","")
+		GES2 D 1 A_Chase
+		GES2 DDDDD 1 A_Chase("","")
+		GES2 A 0 A_SetTranslucent(0.5)
+		GES2 A 1 A_Chase
+		GES2 AAAAA 1 A_Chase("","")
+		GES2 B 1 A_Chase
+		GES2 BBBBB 1 A_Chase("","")
+		GES2 C 1 A_Chase
+		GES2 CCCCC 1 A_Chase("","")
+		GES2 D 1 A_Chase
+		GES2 DDDDD 1 A_Chase("","")
+		GES2 A 0 A_SetTranslucent(0.4)
+		GES2 A 1 A_Chase
+		GES2 AAAAA 1 A_Chase("","")
+		GES2 B 1 A_Chase
+		GES2 BBBBB 1 A_Chase("","")
+		GES2 C 1 A_Chase
+		GES2 CCCCC 1 A_Chase("","")
+		GES2 D 1 A_Chase
+		GES2 DDDDD 1 A_Chase("","")
+		GES2 A 0 A_SetTranslucent(0.3)
+		GES2 A 1 A_Chase
+		GES2 AAAAA 1 A_Chase("","")
+		GES2 B 1 A_Chase
+		GES2 BBBBB 1 A_Chase("","")
+		GES2 C 1 A_Chase
+		GES2 CCCCC 1 A_Chase("","")
+		GES2 D 1 A_Chase
+		GES2 DDDDD 1 A_Chase("","")
+		GES2 A 0 A_SetTranslucent(0.2)
+		GES2 A 1 A_Chase
+		GES2 AAAAA 1 A_Chase("","")
+		GES2 B 1 A_Chase
+		GES2 BBBBB 1 A_Chase("","")
+		GES2 C 1 A_Chase
+		GES2 CCCCC 1 A_Chase("","")
+		GES2 D 1 A_Chase
+		GES2 DDDDD 1 A_Chase("","")
+		Loop
 	Missile:
-	GES2 A 1 BRIGHT A_SetTranslucent(0.1)
-	GES2 AAABBB 1 BRIGHT A_FadeIn(0.1)
-	GES2 B 1 BRIGHT A_SetTranslucent(1.0)
-	GES2 CD 4 BRIGHT A_FaceTarget
-	GES2 A 0 A_Jump(128,3)
-	GES2 A 4 BRIGHT A_PainAttack("Geist",0,PAF_NOSKULLATTACK,0)
-	GES2 A 0 A_Jump(256,3)
-	GES2 A 0 A_PainAttack("Geist",-45,PAF_NOSKULLATTACK,0)
-	GES2 A 4 BRIGHT A_PainAttack("Geist",45,PAF_NOSKULLATTACK,0)
-	GES2 B 3 BRIGHT
-	GES2 BCCCC 1 BRIGHT A_Fadeout(0.1)
-	GES2 D 4 BRIGHT
-	Goto See
+		GES2 A 1 BRIGHT A_SetTranslucent(0.1)
+		GES2 AAABBB 1 BRIGHT A_FadeIn(0.1)
+		GES2 B 1 BRIGHT A_SetTranslucent(1.0)
+		GES2 CD 4 BRIGHT A_FaceTarget
+		GES2 A 0 A_Jump(128,3)
+		GES2 A 4 BRIGHT A_PainAttack("Geist",0,PAF_NOSKULLATTACK,0)
+		GES2 A 0 A_Jump(256,3)
+		GES2 A 0 A_PainAttack("Geist",-45,PAF_NOSKULLATTACK,0)
+		GES2 A 4 BRIGHT A_PainAttack("Geist",45,PAF_NOSKULLATTACK,0)
+		GES2 B 3 BRIGHT
+		GES2 BCCCC 1 BRIGHT A_Fadeout(0.1)
+		GES2 D 4 BRIGHT
+		Goto See
 	}
 }
 
 ACTOR MiniShip : Nazi 12028
 {
-//$Category Monsters (Wolf3D)
-//$Title Miniship
-//$Color 4
-+LOOKALLAROUND
-Obituary "%o received death from above."
-Health 375
-Speed 3.25
-Mass 2000
-PainSound "metal/pain"
-DeathSound "world/barrelboom"
-Floatspeed .67
--FLOORCLIP
-+FLOAT
-+NOGRAVITY
-+NOBLOOD
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Miniship
+	//$Color 4
+	+LOOKALLAROUND
+	Obituary "%o received death from above."
+	Health 375
+	Speed 3.25
+	Mass 2000
+	PainSound "metal/pain"
+	DeathSound "world/barrelboom"
+	Floatspeed .67
+	-FLOORCLIP
+	+FLOAT
+	+NOGRAVITY
+	+NOBLOOD
+	States
 	{
 	Spawn:
-	SHIP A 0
-	Goto SkillCheck
+		SHIP A 0
+		Goto SkillCheck
 	See:
-	"####" A 1 A_Chase
-	"####" AAA 1 A_Chase("","")
-	Loop
+		"####" A 1 A_Chase
+		"####" AAA 1 A_Chase("","")
+		Loop
 	Missile:
-	SHIP A 10 A_FaceTarget
-	SHIP B 8 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",20,4,random(-11,11))
-	SHIP A 8 A_FaceTarget
-	SHIP C 8 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",20,-4,random(-11,11))
-	SHIP A 8
-	Goto See
+		SHIP A 10 A_FaceTarget
+		SHIP B 8 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",20,4,random(-11,11))
+		SHIP A 8 A_FaceTarget
+		SHIP C 8 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",20,-4,random(-11,11))
+		SHIP A 8
+		Goto See
 	Pain:
-	"####" A 3
-	"####" A 3 A_Pain
-	Goto See
+		"####" A 3
+		"####" A 3 A_Pain
+		Goto See
 	Death:
-	SHIP A -1
-	Wait
+		SHIP A -1
+		Wait
 	Crash:
-	BARX A 0 A_SetFloorClip
-	BARX A 0 A_Scream
-	BARX A 2 BRIGHT LIGHT(SUPAFIRE) A_Explode(40)
-	BARX BCDEFGHIJKLM 2 BRIGHT
-	Stop
+		BARX A 0 A_SetFloorClip
+		BARX A 0 A_Scream
+		BARX A 2 BRIGHT LIGHT(SUPAFIRE) A_Explode(40)
+		BARX BCDEFGHIJKLM 2 BRIGHT
+		Stop
 	Idle:
-	SHIP AAAAAAAA 1 A_Wander
-	SHIP A 0 A_Look
-	Loop
+		SHIP AAAAAAAA 1 A_Wander
+		SHIP A 0 A_Look
+		Loop
 	}
 }
 
 ACTOR MGTurret : MiniShip 12030
 {
-//$Category Monsters (Wolf3D)
-//$Title MGTurret
-//$Color 4
-Scale 1.1
-Speed 0
-Obituary "%o was shot up by a gun turret."
-Health 100
-Radius 24
-Height 24
-mass 0x7fffffff
-PainChance 100
-+MISSILEEVENMORE
--FLOAT
--NOGRAVITY
-States
+	//$Category Monsters (Wolf3D)
+	//$Title MGTurret
+	//$Color 4
+	Scale 1.1
+	Speed 0
+	Obituary "%o was shot up by a gun turret."
+	Health 100
+	Radius 24
+	Height 24
+	mass 0x7fffffff
+	PainChance 100
+	+MISSILEEVENMORE
+	-FLOAT
+	-NOGRAVITY
+	States
 	{
 	Spawn:
-	GUTR A 0
-	Goto SkillCheck
+		GTUR A 0
+		Goto SkillCheck
 	Missile:
-	"####" A 10 A_FaceTarget
-	"####" B 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-	"####" C 3 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyChaingunTracer",20,0,random(-11,11))
-	"####" B 3 BRIGHT A_MonsterRefire(40,"See")
-	"####" B 0 A_FaceTarget
-	Goto Missile+1
+		"####" A 10 A_FaceTarget
+		"####" B 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
+		"####" C 3 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyChaingunTracer",20,0,random(-11,11))
+		"####" B 3 BRIGHT A_MonsterRefire(40,"See")
+		"####" B 0 A_FaceTarget
+		Goto Missile+1
 	Death:
-	Goto Crash
+		Goto Crash
 	Idle:
-	Goto Look
+		Goto Look
 	}
 }
 
 ACTOR DeathKnight : Nazi 12032
 {
-//$Category Monsters (Wolf3D)
-//$Title Todesritter (Boss)
-//$Color 4
-+LOOKALLAROUND
-Scale 1.5
-Obituary "%o knelt before the Death Knight."
-Health 3000
-Radius 64
-Height 96
-Mass 1000
-Speed 3.5
-PainChance 20
-SeeSound "deathknight/sight"
-PainSound "boss/pain"
-DeathSound "deathknight/death"
-DropItem "9mmAmmoBox" 128
-DropItem "9mmAmmo" 128
-DropItem "NebAmmoSmall" 256
-DropItem "9mmAmmo" 128
-+MISSILEEVENMORE
-+BOSS
-+NORADIUSDMG
-states
+	//$Category Monsters (Wolf3D)
+	//$Title Todesritter (Boss)
+	//$Color 4
+	+LOOKALLAROUND
+	Scale 1.5
+	Obituary "%o knelt before the Death Knight."
+	Health 3000
+	Radius 64
+	Height 96
+	Mass 1000
+	Speed 3.5
+	PainChance 20
+	SeeSound "deathknight/sight"
+	PainSound "boss/pain"
+	DeathSound "deathknight/death"
+	DropItem "9mmAmmoBox" 128
+	DropItem "9mmAmmo" 128
+	DropItem "NebAmmoSmall" 256
+	DropItem "9mmAmmo" 128
+	+MISSILEEVENMORE
+	+BOSS
+	+NORADIUSDMG
+	states
 	{
 	Spawn:
-	DKGT A 0
-	Goto SkillCheck
+		DKGT A 0
+		Goto SkillCheck
 	See:
-	"####" A 1 A_Chase
-	"####" AAA 1 A_Chase("","",CHF_NOPLAYACTIVE)
-	"####" A 1 A_Chase
-	"####" AAA 1 A_Chase("","",CHF_NOPLAYACTIVE)
-	"####" B 1 A_Chase
-	"####" BBB 1 A_Chase("","",CHF_NOPLAYACTIVE)
-	"####" B 1 A_Chase
-	"####" BBB 1 A_Chase("","",CHF_NOPLAYACTIVE)
-	"####" A 0 A_PlaySound("hitler/walk")
-	"####" C 1 A_Chase
-	"####" CCC 1 A_Chase("","",CHF_NOPLAYACTIVE)
-	"####" C 1 A_Chase
-	"####" CCC 1 A_Chase("","",CHF_NOPLAYACTIVE)
-	"####" D 1 A_Chase
-	"####" DDD 1 A_Chase("","",CHF_NOPLAYACTIVE)
-	"####" D 1 A_Chase
-	"####" DDD 1 A_Chase("","",CHF_NOPLAYACTIVE)
-	"####" A 0 A_PlaySound("hitler/walk")
-	Loop
+		"####" A 1 A_Chase
+		"####" AAA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" A 1 A_Chase
+		"####" AAA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_Chase
+		"####" BBB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_Chase
+		"####" BBB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" A 0 A_PlaySound("hitler/walk")
+		"####" C 1 A_Chase
+		"####" CCC 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" C 1 A_Chase
+		"####" CCC 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" D 1 A_Chase
+		"####" DDD 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" D 1 A_Chase
+		"####" DDD 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" A 0 A_PlaySound("hitler/walk")
+		Loop
 	Missile:
-	DKGT E 10 A_FaceTarget
-	DKGT E 0 A_Jump(40,"AlphaStrike")
-	DKGT E 0 A_Jump(128,"Chaingun")
-	DKGT F 3 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("NebRocketEnemy",80,24)
-	DKGT E 3 A_MonsterRefire(40,"See")
-	DKGT G 3 BRIGHT LIGHT(OTT2FIRE) A_CustomMissile("NebRocketEnemy",80,-24)
-	DKGT E 3 A_MonsterRefire(40,"See")
-	DKGT F 3 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("NebRocketEnemy",80,24)
-	DKGT E 3 A_MonsterRefire(40,"See")
-	DKGT G 3 BRIGHT LIGHT(OTT2FIRE) A_CustomMissile("NebRocketEnemy",80,-24)
-	DKGT E 3
-	Goto See
+		DKGT E 10 A_FaceTarget
+		DKGT E 0 A_Jump(40,"AlphaStrike")
+		DKGT E 0 A_Jump(128,"Chaingun")
+		DKGT F 3 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("NebRocketEnemy",80,24)
+		DKGT E 3 A_MonsterRefire(40,"See")
+		DKGT G 3 BRIGHT LIGHT(OTT2FIRE) A_CustomMissile("NebRocketEnemy",80,-24)
+		DKGT E 3 A_MonsterRefire(40,"See")
+		DKGT F 3 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("NebRocketEnemy",80,24)
+		DKGT E 3 A_MonsterRefire(40,"See")
+		DKGT G 3 BRIGHT LIGHT(OTT2FIRE) A_CustomMissile("NebRocketEnemy",80,-24)
+		DKGT E 3
+		Goto See
 	Chaingun:
-	DKGT I 0 A_FaceTarget
-	DKGT I 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-	DKGT II 0 A_CustomMissile("EnemyChaingunTracer",40,24,random(-11,11))
-	DKGT II 0 A_CustomMissile("EnemyChaingunTracer",40,-24,random(-11,11))
-	DKGT I 2 BRIGHT LIGHT(DEKNBFIR)
-	DKGT H 2 BRIGHT A_MonsterRefire(30,"See")
-	Loop
+		DKGT I 0 A_FaceTarget
+		DKGT I 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
+		DKGT II 0 A_CustomMissile("EnemyChaingunTracer",40,24,random(-11,11))
+		DKGT II 0 A_CustomMissile("EnemyChaingunTracer",40,-24,random(-11,11))
+		DKGT I 2 BRIGHT LIGHT(DEKNBFIR)
+		DKGT H 2 BRIGHT A_MonsterRefire(30,"See")
+		Loop
 	AlphaStrike:
-	DKGT K 0 A_FaceTarget
-	DKGT K 0 A_CustomMissile("NebRocketEnemy",80,24)
-	DKGT K 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-	DKGT KK 0 A_CustomMissile("EnemyChaingunTracer",40,24,random(-11,11))
-	DKGT KK 0 A_CustomMissile("EnemyChaingunTracer",40,-24,random(-11,11))
-	DKGT K 2 BRIGHT LIGHT(DEKNBFIR)
-	DKGT L 0 A_CustomMissile("NebRocketEnemy",80,-24)
-	DKGT L 2 BRIGHT A_MonsterRefire(30,"See")
-	Loop
+		DKGT K 0 A_FaceTarget
+		DKGT K 0 A_CustomMissile("NebRocketEnemy",80,24)
+		DKGT K 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
+		DKGT KK 0 A_CustomMissile("EnemyChaingunTracer",40,24,random(-11,11))
+		DKGT KK 0 A_CustomMissile("EnemyChaingunTracer",40,-24,random(-11,11))
+		DKGT K 2 BRIGHT LIGHT(DEKNBFIR)
+		DKGT L 0 A_CustomMissile("NebRocketEnemy",80,-24)
+		DKGT L 2 BRIGHT A_MonsterRefire(30,"See")
+		Loop
 	Pain:
-	DKGT E 3
-	DKGT E 3 A_Pain
-	Goto See
+		DKGT E 3
+		DKGT E 3 A_Pain
+		Goto See
 	Death:
-	DKGT M 5 A_Scream
-	DKGT NOP 5
-	DKGT Q 5 A_NoBlocking
-	DKGT R 5
-	DKGT S -1
-	Stop
+		DKGT M 5 A_Scream
+		DKGT NOP 5
+		DKGT Q 5 A_NoBlocking
+		DKGT R 5
+		DKGT S -1
+		Stop
 	Idle:
-	Stop
+		Stop
 	}
 }
 
 ACTOR NebRocketEnemy : NebRocket
 {
-Speed 15
-+THRUGHOST
--FORCERADIUSDMG
-SeeSound "nebelwerfer/fire"
-States
+	Speed 15
+	+THRUGHOST
+	-FORCERADIUSDMG
+	SeeSound "nebelwerfer/fire"
+	States
 	{
 	Death:
-	FRME A 1 BRIGHT LIGHT(NEBEXPLO) A_Explode(40)
-	FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT(NEBEXPLO)
-	Stop
+		FRME A 1 BRIGHT LIGHT(NEBEXPLO) A_Explode(40)
+		FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT(NEBEXPLO)
+		Stop
 	}
 }
 
 ACTOR Hitler : DeathKnight 12033
 {
-//$Category Monsters (Wolf3D)
-//$Title Adolf Hitler (Boss)
-//$Color 4
--LOOKALLAROUND
-Scale 1.2
-Obituary "%o heiled Hitler."
-Health 2500
-Radius 32
-Height 64
-Speed 2.5
-SeeSound "hitler/sight"
-PainSound "hitler/pain"
-DeathSound "hitler/death"
-ActiveSound "hitler/active"
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Adolf Hitler (Boss)
+	//$Color 4
+	-LOOKALLAROUND
+	Scale 1.2
+	Obituary "%o heiled Hitler."
+	Health 2500
+	Radius 32
+	Height 64
+	Speed 2.5
+	SeeSound "hitler/sight"
+	PainSound "hitler/pain"
+	DeathSound "hitler/death"
+	ActiveSound "hitler/active"
+	States
 	{
 	Spawn:
-	HITL A 0
-	Goto SkillCheck
+		HITL A 0
+		Goto SkillCheck
 	Missile:
-	HITL E 10 A_FaceTarget
-	HITL F 0 A_FaceTarget
-	HITL F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-	HITL F 0 A_CustomMissile("EnemyChaingunTracer",32,24,random(-3,3))
-	HITL F 1 BRIGHT LIGHT(HAIL2FIR) A_CustomMissile("EnemyChaingunTracer",32,-24,random(-3,3))
-	HITL F 0 A_CustomMissile("EnemyChaingunTracer",48,24,random(-3,3))
-	HITL F 1 BRIGHT LIGHT(HAIL4FIR) A_CustomMissile("EnemyChaingunTracer",48,-24,random(-3,3))
-	HITL G 2 BRIGHT A_MonsterRefire(30,"See")
-	Goto Missile+1
+		HITL E 10 A_FaceTarget
+		HITL F 0 A_FaceTarget
+		HITL F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
+		HITL F 0 A_CustomMissile("EnemyChaingunTracer",32,24,random(-3,3))
+		HITL F 1 BRIGHT LIGHT(HAIL2FIR) A_CustomMissile("EnemyChaingunTracer",32,-24,random(-3,3))
+		HITL F 0 A_CustomMissile("EnemyChaingunTracer",48,24,random(-3,3))
+		HITL F 1 BRIGHT LIGHT(HAIL4FIR) A_CustomMissile("EnemyChaingunTracer",48,-24,random(-3,3))
+		HITL G 2 BRIGHT A_MonsterRefire(30,"See")
+		Goto Missile+1
 	Pain:
-	HITL Q 3
-	HITL Q 3 A_Pain
-	Goto See
+		HITL Q 3
+		HITL Q 3 A_Pain
+		Goto See
 	Death:
-	HITL H 10 A_Scream
-	HITL I 10 A_SpawnItemEx("HitlerSuitScrap",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION)
-	HITL JK 10
-	HITL L 10 A_PlaySound("hitler/gib")
-	HITL M 10 A_NoBlocking
-	HITL NO 10
-	HITL P -1
-	Stop
+		HITL H 10 A_Scream
+		HITL I 10 A_SpawnItemEx("HitlerSuitScrap",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION)
+		HITL JK 10
+		HITL L 10 A_PlaySound("hitler/gib")
+		HITL M 10 A_NoBlocking
+		HITL NO 10
+		HITL P -1
+		Stop
 	}
 }
 
 ACTOR HitlerSuitScrap
 {
-Scale 1.2
-+FLOORCLIP
-States
+	Scale 1.2
+	+FLOORCLIP
+	States
 	{
 	Spawn:
-	HIT2 AB 20
-	HIT2 C -1
-	Stop
+		HIT2 AB 20
+		HIT2 C -1
+		Stop
 	}
 }
 
 ACTOR ChairGuy : Nazi 12025
 {
-//$Category Monsters (Wolf3D)
-//$Title Chairman (Boss)
-//$Color 4
-Obituary "%o was given the chair."
-Health 600
-Mass 1000
-PainChance 110
-SeeSound "krist/sight"
-PainSound "boss/pain"
-DeathSound "krist/death"
-DropItem GrenadePickup,128
-DropItem GrenadePickup,128
-DropItem GrenadePickup,128
-+MISSILEEVENMORE
-states
+	//$Category Monsters (Wolf3D)
+	//$Title Chairman (Boss)
+	//$Color 4
+	Obituary "%o was given the chair."
+	Health 600
+	Mass 1000
+	PainChance 110
+	SeeSound "krist/sight"
+	PainSound "boss/pain"
+	DeathSound "krist/death"
+	DropItem GrenadePickup,128
+	DropItem GrenadePickup,128
+	DropItem GrenadePickup,128
+	+MISSILEEVENMORE
+	states
 	{
 	Spawn:
-	KRIS A 0
-	Goto SkillCheck
+		KRIS A 0
+		Goto SkillCheck
 	See:
-	KRIS A 1 A_Chase
-	KRIS AAA 1 A_Chase("","")
-	KRIS A 1 A_Chase
-	KRIS AAA 1 A_Chase("","")
-	KRIS B 1 A_Chase
-	KRIS BBB 1 A_Chase("","")
-	KRIS B 1 A_Chase
-	KRIS BBB 1 A_Chase("","")
-	Loop
+		KRIS A 1 A_Chase
+		KRIS AAA 1 A_Chase("","")
+		KRIS A 1 A_Chase
+		KRIS AAA 1 A_Chase("","")
+		KRIS B 1 A_Chase
+		KRIS BBB 1 A_Chase("","")
+		KRIS B 1 A_Chase
+		KRIS BBB 1 A_Chase("","")
+		Loop
 	Missile:
-	KRIS E 10 A_FaceTarget
-	KRIS F 6 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniMiniRocket",48,15)
-	KRIS E 6 A_FaceTarget
-	KRIS G 6 BRIGHT LIGHT(OTT2FIRE) A_CustomMissile("MiniMiniRocket",48,-15)
-	KRIS E 6 A_FaceTarget
-	KRIS F 6 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniMiniRocket",48,15)
-	KRIS E 6 A_FaceTarget
-	KRIS G 6 BRIGHT LIGHT(OTT2FIRE) A_CustomMissile("MiniMiniRocket",48,-15)
-	Goto See
+		KRIS E 10 A_FaceTarget
+		KRIS F 6 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniMiniRocket",48,15)
+		KRIS E 6 A_FaceTarget
+		KRIS G 6 BRIGHT LIGHT(OTT2FIRE) A_CustomMissile("MiniMiniRocket",48,-15)
+		KRIS E 6 A_FaceTarget
+		KRIS F 6 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniMiniRocket",48,15)
+		KRIS E 6 A_FaceTarget
+		KRIS G 6 BRIGHT LIGHT(OTT2FIRE) A_CustomMissile("MiniMiniRocket",48,-15)
+		Goto See
 	Death:
-	KRIS H 8 A_Scream
-	KRIS HHH 8 A_SetAngle(angle+45)
-	KRIS HHHHHH 4 A_SetAngle(angle+45)
-	KRIS HHHHHHHHHHHH 2 A_SetAngle(angle+45)
-	KRIS HHHHHHHHHHHH 1 A_SetAngle(angle+45)
-	BARX A 0 A_NoBlocking
-	BARX A 0 A_PlaySound("world/barrelboom")
-	BARX A 2 BRIGHT A_Explode(40)
-	BARX BCDEFGHIJKLM 2 BRIGHT
-	Stop
+		KRIS H 8 A_Scream
+		KRIS HHH 8 A_SetAngle(angle+45)
+		KRIS HHHHHH 4 A_SetAngle(angle+45)
+		KRIS HHHHHHHHHHHH 2 A_SetAngle(angle+45)
+		KRIS HHHHHHHHHHHH 1 A_SetAngle(angle+45)
+		BARX A 0 A_NoBlocking
+		BARX A 0 A_PlaySound("world/barrelboom")
+		BARX A 2 BRIGHT A_Explode(40)
+		BARX BCDEFGHIJKLM 2 BRIGHT
+		Stop
 	Idle:
-	KRIS AAAAAAAA 1 A_Wander
-	KRIS A 0 A_Look
-	KRIS BBBBBBBB 1 A_Wander
-	KRIS A 0 A_Look
-	Loop
+		KRIS AAAAAAAA 1 A_Wander
+		KRIS A 0 A_Look
+		KRIS BBBBBBBB 1 A_Wander
+		KRIS A 0 A_Look
+		Loop
 	}
 }
 
 ACTOR MiniMiniRocket : MiniRocket
 {
-Scale .8
-Damage (random(1,4)*4)
-DeathSound "nebelwerfer/xplode"
+	Scale .8
+	Damage (random(1,4)*4)
+	DeathSound "nebelwerfer/xplode"
 }
 
 ACTOR FatMan : ChairGuy 12034
 {
-//$Category Monsters (Wolf3D)
-//$Title FatMan (Boss)
-//$Color 4
-Obituary "%o was vaporized by a Nazi's double rocket penetration."
-seesound "fatman/sight"
-deathsound "fatman/death"
-States
+	//$Category Monsters (Wolf3D)
+	//$Title FatMan (Boss)
+	//$Color 4
+	Obituary "%o was vaporized by a Nazi's double rocket penetration."
+	seesound "fatman/sight"
+	deathsound "fatman/death"
+	States
 	{
 	Spawn:
-	GOER A 0
-	Goto SkillCheck
+		GOER A 0
+		Goto SkillCheck
 	See:
-	GOER A 1 A_Chase
-	GOER AAA 1 A_Chase("","")
-	GOER A 1 A_Chase
-	GOER AAA 1 A_Chase("","")
-	GOER B 1 A_Chase
-	GOER BBB 1 A_Chase("","")
-	GOER B 1 A_Chase
-	GOER BBB 1 A_Chase("","")
-	GOER C 1 A_Chase
-	GOER CCC 1 A_Chase("","")
-	GOER C 1 A_Chase
-	GOER CCC 1 A_Chase("","")
-	GOER D 1 A_Chase
-	GOER DDD 1 A_Chase("","")
-	GOER D 1 A_Chase
-	GOER DDD 1 A_Chase("","")
-	Loop
+		GOER A 1 A_Chase
+		GOER AAA 1 A_Chase("","")
+		GOER A 1 A_Chase
+		GOER AAA 1 A_Chase("","")
+		GOER B 1 A_Chase
+		GOER BBB 1 A_Chase("","")
+		GOER B 1 A_Chase
+		GOER BBB 1 A_Chase("","")
+		GOER C 1 A_Chase
+		GOER CCC 1 A_Chase("","")
+		GOER C 1 A_Chase
+		GOER CCC 1 A_Chase("","")
+		GOER D 1 A_Chase
+		GOER DDD 1 A_Chase("","")
+		GOER D 1 A_Chase
+		GOER DDD 1 A_Chase("","")
+		Loop
 	Missile:
-	GOER E 10 A_FaceTarget
-	GOER F 6 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniMiniRocket",32,15)
-	GOER E 6 A_FaceTarget
-	GOER G 6 BRIGHT LIGHT(OTT2FIRE) A_CustomMissile("MiniMiniRocket",32,-15)
-	GOER E 6 A_FaceTarget
-	GOER F 6 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniMiniRocket",32,15)
-	GOER E 6 A_FaceTarget
-	GOER G 6 BRIGHT LIGHT(OTT2FIRE) A_CustomMissile("MiniMiniRocket",32,-15)
-	Goto See
+		GOER E 10 A_FaceTarget
+		GOER F 6 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniMiniRocket",32,15)
+		GOER E 6 A_FaceTarget
+		GOER G 6 BRIGHT LIGHT(OTT2FIRE) A_CustomMissile("MiniMiniRocket",32,-15)
+		GOER E 6 A_FaceTarget
+		GOER F 6 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniMiniRocket",32,15)
+		GOER E 6 A_FaceTarget
+		GOER G 6 BRIGHT LIGHT(OTT2FIRE) A_CustomMissile("MiniMiniRocket",32,-15)
+		Goto See
 	Pain:
-	GOER D 3
-	GOER D 3 A_Pain
-	goto See
+		GOER D 3
+		GOER D 3 A_Pain
+		goto See
 	Death:
-	GOER H 5
-	GOER I 5 A_Scream
-	GOER J 5
-	GOER K 0 A_NoBlocking
-	GOER K -1 A_BossDeath
-	stop
+		GOER H 5
+		GOER I 5 A_Scream
+		GOER J 5
+		GOER K 0 A_NoBlocking
+		GOER K -1 A_BossDeath
+		stop
 	Raise:
-	GOER KJIH 5
-	goto See
+		GOER KJIH 5
+		goto See
 	Idle:
-	GOER AAAAAAAA 1 A_Wander
-	GOER A 0 A_Look
-	GOER BBBBBBBB 1 A_Wander
-	GOER A 0 A_Look
-	GOER CCCCCCCC 1 A_Wander
-	GOER A 0 A_Look
-	GOER DDDDDDDD 1 A_Wander
-	GOER A 0 A_Look
-	Loop
+		GOER AAAAAAAA 1 A_Wander
+		GOER A 0 A_Look
+		GOER BBBBBBBB 1 A_Wander
+		GOER A 0 A_Look
+		GOER CCCCCCCC 1 A_Wander
+		GOER A 0 A_Look
+		GOER DDDDDDDD 1 A_Wander
+		GOER A 0 A_Look
+		Loop
 	}
 }
 
 ACTOR Scientist : Guard 12035
 {
-//$Category Monsters (Wolf3D)
-//$Title Scientist
-//$Color 4
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Scientist
+	//$Color 4
+	States
 	{
 	Spawn:
-	SCN2 N 0
-	Goto SkillCheck
+		SCN2 N 0
+		Goto SkillCheck
 	}
 }
 
 ACTOR Scientist2 : Guard 12705
 {
-//$Category Monsters (Wolf3D)
-//$Title Scientist (old)
-//$Color 4
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Scientist (old)
+	//$Color 4
+	States
 	{
 	Spawn:
-	SCNT N 0
-	Goto SkillCheck
+		SCNT N 0
+		Goto SkillCheck
 	}
 }
 
 ACTOR UberMutant : Nazi 12058
 {
-//$Category Monsters (Wolf3D)
-//$Title Ubermutant (Boss)
-//$Color 4
-Health 1000
-Radius 24
-Height 64
-Mass 1000
-Speed 2.66666667
-PainChance 50
-BloodColor "Purple"
-SeeSound "baron/sight"
-DeathSound "baron/death"
-Obituary "$OB_BARON"
-HitObituary "%o was crushed by an ubermutant."
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Ubermutant (Boss)
+	//$Color 4
+	Health 1000
+	Radius 24
+	Height 64
+	Mass 1000
+	Speed 2.66666667
+	PainChance 50
+	BloodColor "Purple"
+	SeeSound "baron/sight"
+	DeathSound "baron/death"
+	Obituary "$OB_BARON"
+	HitObituary "%o was crushed by an ubermutant."
+	States
 	{
 	Spawn:
-	UBMU A 0
-	Goto SkillCheck
+		UBMU A 0
+		Goto SkillCheck
 	Look:
-	UBMU AB 10 A_Look
-	Loop
+		UBMU AB 10 A_Look
+		Loop
 	See:
-	UBMU A 1 A_Chase
-	UBMU AA 1 A_Chase("","")
-	UBMU A 1 A_Chase
-	UBMU AA 1 A_Chase("","")
-	UBMU B 1 A_Chase
-	UBMU BB 1 A_Chase("","")
-	UBMU B 1 A_Chase
-	UBMU BB 1 A_Chase("","")
-	UBMU C 1 A_Chase
-	UBMU CC 1 A_Chase("","")
-	UBMU C 1 A_Chase
-	UBMU CC 1 A_Chase("","")
-	UBMU D 1 A_Chase
-	UBMU DD 1 A_Chase("","")
-	UBMU D 1 A_Chase
-	UBMU DD 1 A_Chase("","")
-	Loop
+		UBMU A 1 A_Chase
+		UBMU AA 1 A_Chase("","")
+		UBMU A 1 A_Chase
+		UBMU AA 1 A_Chase("","")
+		UBMU B 1 A_Chase
+		UBMU BB 1 A_Chase("","")
+		UBMU B 1 A_Chase
+		UBMU BB 1 A_Chase("","")
+		UBMU C 1 A_Chase
+		UBMU CC 1 A_Chase("","")
+		UBMU C 1 A_Chase
+		UBMU CC 1 A_Chase("","")
+		UBMU D 1 A_Chase
+		UBMU DD 1 A_Chase("","")
+		UBMU D 1 A_Chase
+		UBMU DD 1 A_Chase("","")
+		Loop
 	Melee:
 	Missile:
-	UBMU EF 8 A_FaceTarget
-	UBMU G 8 A_BruisAttack
-	Goto See
+		UBMU EF 8 A_FaceTarget
+		UBMU G 8 A_BruisAttack
+		Goto See
 	Pain:
-	UBMU H 2
-	UBMU H 2 A_Pain
-	Goto See
+		UBMU H 2
+		UBMU H 2 A_Pain
+		Goto See
 	Death:
-	UBMU I 8
-	UBMU J 8 A_Scream
-	UBMU K 8
-	UBMU L 8 A_NoBlocking
-	UBMU MN 8
-	UBMU O -1 A_BossDeath
-	Stop
+		UBMU I 8
+		UBMU J 8 A_Scream
+		UBMU K 8
+		UBMU L 8 A_NoBlocking
+		UBMU MN 8
+		UBMU O -1 A_BossDeath
+		Stop
 	Raise:
-	UBMU ONMLKJI 8
-	Goto See
+		UBMU ONMLKJI 8
+		Goto See
 	Idle:
-	Stop
+		Stop
 	}
 }
 
 ACTOR Sniper : Guard 12701
 {
-//$Category Monsters (Wolf3D)
-//$Title SA Sniper
-//$Color 4
-Obituary "%o was headshot by a sniper."
-Health 50
-speed 0
-dropitem "MauserAmmo" 192
-dropitem "G43" 64
-States
+	//$Category Monsters (Wolf3D)
+	//$Title SA Sniper
+	//$Color 4
+	Obituary "%o was headshot by a sniper."
+	Health 50
+	speed 0
+	dropitem "MauserAmmo" 192
+	dropitem "G43" 64
+	States
 	{
 	Spawn:
-	SNIP A 0
-	Goto SkillCheck
+		SNIP A 0
+		Goto SkillCheck
 	See:
-	"####" A 1 A_Chase
-	Loop
+		"####" A 1 A_Chase
+		Loop
 	Pain:
-	"####" A 3
-	"####" A 3 A_Pain
-	goto See
+		"####" A 3
+		"####" A 3 A_Pain
+		goto See
 	Missile:
-	"####" A 32 A_FaceTarget
-	"####" B 0 A_PlaySound("Enfield/Fire",CHAN_WEAPON)
-	"####" B 8 BRIGHT LIGHT(NAZIFIRE)A_CustomMissile("EnemyRifleTracer",32)
-	"####" A 32
-	goto See
+		"####" A 32 A_FaceTarget
+		"####" B 0 A_PlaySound("Enfield/Fire",CHAN_WEAPON)
+		"####" B 8 BRIGHT LIGHT(NAZIFIRE)A_CustomMissile("EnemyRifleTracer",32)
+		"####" A 32
+		goto See
 	Death:
-	"####" E 5
-	"####" F 5 A_Scream
-	"####" G 5 A_NoBlocking
-	"####" H 5
-	SNIP I -1
-	stop
+		"####" E 5
+		"####" F 5 A_Scream
+		"####" G 5 A_NoBlocking
+		"####" H 5
+		SNIP I -1
+		stop
 	Raise:
-	SNIP IHGFE 5
-	goto See
+		SNIP IHGFE 5
+		goto See
 	Idle:
-	Goto Look
+		Goto Look
 	}
-	}
+}
 
 ACTOR WSniper : Sniper 12801
 {
-//$Category Monsters (Wolf3D)
-//$Title Wehrmacht Sniper
-//$Color 4
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Wehrmacht Sniper
+	//$Color 4
+	States
 	{
 	Spawn:
-	SNI2 A 0
-	Goto SkillCheck
+		SNI2 A 0
+		Goto SkillCheck
 	Raise:
-	SNIP I 5
-	SNI2 HGFE 5
-	goto See
+		SNIP I 5
+		SNI2 HGFE 5
+		goto See
 	}
 }
 
 ACTOR UndeadMonk : HitlerGhost 12703
 {
-//$Category Monsters (Wolf3D)
-//$Title Undead Monk
-//$Color 4
-Obituary "%o was slain by an undead monk."
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Undead Monk
+	//$Color 4
+	Obituary "%o was slain by an undead monk."
+	States
 	{
 	Spawn:
-	MONK A 0
-	Goto SkillCheck
+		MONK A 0
+		Goto SkillCheck
 	}
 }
 
 ACTOR SuperMutant : Mutant 12704
 {
-//$Category Monsters (Wolf3D)
-//$Title Mutant(super)
-//$Color 4
-Obituary "%o did the dance of doom with a powerful Mutant."
-Health 180
-BloodColor "Green"
-states
+	//$Category Monsters (Wolf3D)
+	//$Title Mutant(super)
+	//$Color 4
+	Obituary "%o did the dance of doom with a powerful Mutant."
+	Health 180
+	BloodColor "Green"
+	states
 	{
 	Spawn:
-	SUPM A 0
-	Goto SkillCheck
+		SUPM A 0
+		Goto SkillCheck
 	Missile:
-	SUPM F 6 A_FaceTarget
-	SUPM G 0 A_PlaySound("walther/fire",CHAN_WEAPON)
-	SUPM G 5 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-1,1))
-	SUPM F 6 A_FaceTarget
-	SUPM H 0 A_PlaySound("walther/fire",CHAN_WEAPON)
-	SUPM H 5 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-1,1))
-	SUPM P 6 A_MonsterRefire(30,"See")
-	SUPM P 0 A_FaceTarget
-	Goto Missile+1
+		SUPM F 6 A_FaceTarget
+		SUPM G 0 A_PlaySound("walther/fire",CHAN_WEAPON)
+		SUPM G 5 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-1,1))
+		SUPM F 6 A_FaceTarget
+		SUPM H 0 A_PlaySound("walther/fire",CHAN_WEAPON)
+		SUPM H 5 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyPistolTracer",32,0,random(-1,1))
+		SUPM P 6 A_MonsterRefire(30,"See")
+		SUPM P 0 A_FaceTarget
+		Goto Missile+1
 	}
 }
 
 ACTOR FlamerSoldier : Guard 12789
 {
-//$Category Monsters (Wolf3D)
-//$Title SS Flamer (Soldier)
-//$Color 4
-Obituary "%o was roasted by a Nazi with a flamethrower."
-Health 100
-dropitem "FlameAmmo" 192
-dropitem "Pyrolight" 32
-MaxTargetRange 384
-States
+	//$Category Monsters (Wolf3D)
+	//$Title SS Flamer (Soldier)
+	//$Color 4
+	Obituary "%o was roasted by a Nazi with a flamethrower."
+	Health 100
+	dropitem "FlameAmmo" 192
+	dropitem "Pyrolight" 32
+	MaxTargetRange 384
+	States
 	{
 	Spawn:
-	FLSL N 0
-	Goto SkillCheck
+		FLSL N 0
+		Goto SkillCheck
 	Missile:
-	FLSL E 3
-	FLSL F 10 A_FaceTarget
-	FLSL GGGGGGGG 1 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyFlamerShot",32,12)
-	FLSL F 6 A_MonsterRefire(10,"See")
-	Goto Missile+1
+		FLSL E 3
+		FLSL F 10 A_FaceTarget
+		FLSL GGGGGGGG 1 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyFlamerShot",32,12)
+		FLSL F 6 A_MonsterRefire(10,"See")
+		Goto Missile+1
 	Death:
 	Death.Fire:
 	XDeath:
-	"####" I 5 A_SpawnItemEx("GeneralExplosion_Medium")
-	Goto Super::Death+1
-	"####" J 5 A_Scream
-	"####" K 5 A_NoBlocking
-	"####" L 5
-	"####" M -1
-	Stop
+		"####" I 5 A_SpawnItemEx("GeneralExplosion_Medium")
+		Goto Super::Death+1
+		"####" J 5 A_Scream
+		"####" K 5 A_NoBlocking
+		"####" L 5
+		"####" M -1
+		Stop
 	}
 }
 
 ACTOR MGTurretInvisible : MGTurret 12788
 {
-//$Category Monsters (Wolf3D)
-//$Title MGTurret (hidden/nokillcount)
-//$Color 4
-Obituary "%o was shot up by a hidden gun turret."
-Health 0
--SHOOTABLE
--SOLID
--COUNTKILL
-RenderStyle None
+	//$Category Monsters (Wolf3D)
+	//$Title MGTurret (hidden/nokillcount)
+	//$Color 4
+	Obituary "%o was shot up by a hidden gun turret."
+	Health 0
+	-SHOOTABLE
+	-SOLID
+	-COUNTKILL
+	RenderStyle None
 }
 
 ACTOR MGTurretSoldier : MGTurret 12790
 {
-//$Category Monsters (Wolf3D)
-//$Title Stationary Turret Soldier
-//$Color 4
-seesound "Nazi1/Sighted"
-painsound "Nazi1/Pain"
-deathsound "Nazi1/Death"
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Stationary Turret Soldier
+	//$Color 4
+	seesound "Nazi1/Sighted"
+	painsound "Nazi1/Pain"
+	deathsound "Nazi1/Death"
+	States
 	{
 	Spawn:
-	SMGS A 0
-	Goto SkillCheck
+		SMGS A 0
+		Goto SkillCheck
 	Death:
-	TNT1 A 0 A_Scream
-	SMGS D 6 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
-	SMGS EFG 6
-	SMGS H -1 A_NoBlocking
-	Stop
+	Crash:
+		TNT1 A 0 A_Scream
+		SMGS D 6 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
+		SMGS EFG 6
+		SMGS H -1 A_NoBlocking
+		Stop
 	}
 }
 
 ACTOR EliteFlamer : Nazi 12791
 {
-//$Category Monsters (Wolf3D)
-//$Title Elite Soldier (Flamer)
-//$Color 4
-Obituary "%o was roasted by a Nazi with a flamethrower."
-health 450
-Speed 4
-seesound "eliteflamer/sight"
-painsound "eliteflamer/pain"
-deathsound "eliteflamer/death"
-dropitem "FlameAmmo"
-dropitem "Pyrolight" 32
-+MISSILEMORE
-MaxTargetRange 400
-var int user_count;
-GibHealth 30
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Elite Soldier (Flamer)
+	//$Color 4
+	Obituary "%o was roasted by a Nazi with a flamethrower."
+	health 450
+	Speed 4
+	seesound "eliteflamer/sight"
+	painsound "eliteflamer/pain"
+	deathsound "eliteflamer/death"
+	dropitem "FlameAmmo"
+	dropitem "Pyrolight" 32
+	+MISSILEMORE
+	MaxTargetRange 400
+	var int user_count;
+	GibHealth 30
+	States
 	{
 	Spawn:
-	ELTF A 0 A_Look
-	Goto SkillCheck
+		ELTF A 0 A_Look
+		Goto SkillCheck
 	See:
-	ELTF A 1 A_Chase
-	ELTF AA 1 A_Chase("","")
-	ELTF A 1 A_Chase
-	ELTF AA 1 A_Chase("","")
-	ELTF B 1 A_Chase
-	ELTF BB 1 A_Chase("","")
-	ELTF B 1 A_Chase
-	ELTF BB 1 A_Chase("","")
-	ELTF C 1 A_Chase
-	ELTF CC 1 A_Chase("","")
-	ELTF C 1 A_Chase
-	ELTF CC 1 A_Chase("","")
-	ELTF D 1 A_Chase
-	ELTF DD 1 A_Chase("","")
-	ELTF D 1 A_Chase("","",CHF_FASTCHASE)
-	ELTF DD 1 A_Chase("","")
-	Loop
+		ELTF A 1 A_Chase
+		ELTF AA 1 A_Chase("","")
+		ELTF A 1 A_Chase
+		ELTF AA 1 A_Chase("","")
+		ELTF B 1 A_Chase
+		ELTF BB 1 A_Chase("","")
+		ELTF B 1 A_Chase
+		ELTF BB 1 A_Chase("","")
+		ELTF C 1 A_Chase
+		ELTF CC 1 A_Chase("","")
+		ELTF C 1 A_Chase
+		ELTF CC 1 A_Chase("","")
+		ELTF D 1 A_Chase
+		ELTF DD 1 A_Chase("","")
+		ELTF D 1 A_Chase("","",CHF_FASTCHASE)
+		ELTF DD 1 A_Chase("","")
+		Loop
 	Missile:
-	ELTF E 0 A_PlaySound("ammo/cell1")
-	ELTF E 15 A_FaceTarget
-	ELTF E 0 A_Jump(60,"ProperMissile2")
+		ELTF E 0 A_PlaySound("ammo/cell1")
+		ELTF E 15 A_FaceTarget
+		ELTF E 0 A_Jump(60,"ProperMissile2")
 	ProperMissileStart:
-	ELTF F 0 A_FaceTarget
-	ELTF FG 2 BRIGHT LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",34)
-	ELTF G 0 A_MonsterRefire(40,"See")
-	FLAM E 0 A_JumpIfCloser(400,"ProperMissileStart")
-	Goto See
+		ELTF F 0 A_FaceTarget
+		ELTF FG 2 BRIGHT LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",34)
+		ELTF G 0 A_MonsterRefire(40,"See")
+		FLAM E 0 A_JumpIfCloser(400,"ProperMissileStart")
+		Goto See
 	ProperMissile2:
-	ELTF F 0 A_FaceTarget
-	ELTF F 0 A_SetUserVar("user_count",0)
-	ELTF F 2 Bright LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",34)
+		ELTF F 0 A_FaceTarget
+		ELTF F 0 A_SetUserVar("user_count",0)
+		ELTF F 2 Bright LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",34)
 	Wave1:
-	ELTF F 0 A_SetAngle(angle+2)
-	ELTF G 2 Bright LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",34,0,angle,CMF_AIMDIRECTION)
-	ELTF F 0 A_SetAngle(angle+2)
-	ELTF F 2 Bright LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",34,0,angle,CMF_AIMDIRECTION)
-	ELTF F 0 A_SetUserVar("user_count",user_count+1)
-	ELTF F 0 A_JumpIf(user_count>=5,1)
-	Loop
+		ELTF F 0 A_SetAngle(angle+2)
+		ELTF G 2 Bright LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",34,0,angle,CMF_AIMDIRECTION)
+		ELTF F 0 A_SetAngle(angle+2)
+		ELTF F 2 Bright LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",34,0,angle,CMF_AIMDIRECTION)
+		ELTF F 0 A_SetUserVar("user_count",user_count+1)
+		ELTF F 0 A_JumpIf(user_count>=5,1)
+		Loop
 	Wave2:
-	ELTF F 0 A_SetAngle(angle-2)
-	ELTF G 2 Bright LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",34,0,angle,CMF_AIMDIRECTION)
-	ELTF F 0 A_SetAngle(angle-2)
-	ELTF F 2 Bright LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",34,0,angle,CMF_AIMDIRECTION)
-	ELTF F 0 A_SetUserVar("user_count",user_count+1)
-	ELTF F 0 A_JumpIf(user_count>=15,1)
-	Loop
+		ELTF F 0 A_SetAngle(angle-2)
+		ELTF G 2 Bright LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",34,0,angle,CMF_AIMDIRECTION)
+		ELTF F 0 A_SetAngle(angle-2)
+		ELTF F 2 Bright LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",34,0,angle,CMF_AIMDIRECTION)
+		ELTF F 0 A_SetUserVar("user_count",user_count+1)
+		ELTF F 0 A_JumpIf(user_count>=15,1)
+		Loop
 	Wave3:
-	ELTF F 0 A_SetAngle(angle+2)
-	ELTF G 2 Bright LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",34,0,angle,CMF_AIMDIRECTION)
-	ELTF F 0 A_SetAngle(angle+2)
-	ELTF F 2 Bright LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",34,0,angle,CMF_AIMDIRECTION)
-	ELTF F 0 A_SetUserVar("user_count",user_count+1)
-	ELTF F 0 A_JumpIf(user_count>=20,1)
-	Loop
-	ELTF E 6
-	Goto See
+		ELTF F 0 A_SetAngle(angle+2)
+		ELTF G 2 Bright LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",34,0,angle,CMF_AIMDIRECTION)
+		ELTF F 0 A_SetAngle(angle+2)
+		ELTF F 2 Bright LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",34,0,angle,CMF_AIMDIRECTION)
+		ELTF F 0 A_SetUserVar("user_count",user_count+1)
+		ELTF F 0 A_JumpIf(user_count>=20,1)
+		Loop
+		ELTF E 6
+		Goto See
 	Death:
-	ELTF I 5
-	ELTF J 5 A_Scream
-	ELTF K 5 A_NoBlocking
-	ELTF L -1
-	stop
+		ELTF I 5
+		ELTF J 5 A_Scream
+		ELTF K 5 A_NoBlocking
+		ELTF L -1
+		stop
 	Raise:
-	ELTF LKJI 5
-	goto See
+		ELTF LKJI 5
+		goto See
 	Death.Fire:
-	BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.0)
-	BURN BC 5 BRIGHT LIGHT(ITBURNS1)
-	BURN D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
-	BURN E 5 BRIGHT LIGHT(ITBURNS1)
-	BURN FGHIJ 5 BRIGHT LIGHT(ITBURNS2)
-	BURN KLMN 5 BRIGHT LIGHT(ITBURNS3)
-	BURN O 5 BRIGHT LIGHT(ITBURNS3) A_NoBlocking
-	BURN PQR 5 BRIGHT LIGHT(ITBURNS2)
-	BURN STU 5 BRIGHT LIGHT(ITBURNS1)
-	BURN V -1
-	Stop
+		BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.0)
+		BURN BC 5 BRIGHT LIGHT(ITBURNS1)
+		BURN D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
+		BURN E 5 BRIGHT LIGHT(ITBURNS1)
+		BURN FGHIJ 5 BRIGHT LIGHT(ITBURNS2)
+		BURN KLMN 5 BRIGHT LIGHT(ITBURNS3)
+		BURN O 5 BRIGHT LIGHT(ITBURNS3) A_NoBlocking
+		BURN PQR 5 BRIGHT LIGHT(ITBURNS2)
+		BURN STU 5 BRIGHT LIGHT(ITBURNS1)
+		BURN V -1
+		Stop
 	XDeath:
-	SLOP ABCDEF 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
-	SLOP G 0 A_NoBlocking
-	SLOP G -1
-	Stop
+		SLOP ABCDEF 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
+		SLOP G 0 A_NoBlocking
+		SLOP G -1
+		Stop
 	}
 }
 
 ACTOR EliteAssaulter : Nazi 12792
 {
-//$Category Monsters (Wolf3D)
-//$Title Elite Soldier (MP40)
-//$Color 4
-Obituary "%o was shot to pieces by an elite soldat."
-health 350
-Speed 4.66666667
-seesound "eliteassaulter/sight"
-painsound "eliteassaulter/pain"
-deathsound "eliteassaulter/death"
-dropitem "9mmAmmo" 192
-dropitem "MP40" 64
-dropitem "GrenadePickup" 16
-+MISSILEMORE
-GibHealth 30
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Elite Soldier (MP40)
+	//$Color 4
+	Obituary "%o was shot to pieces by an elite soldat."
+	health 350
+	Speed 4.66666667
+	seesound "eliteassaulter/sight"
+	painsound "eliteassaulter/pain"
+	deathsound "eliteassaulter/death"
+	dropitem "9mmAmmo" 192
+	dropitem "MP40" 64
+	dropitem "GrenadePickup" 16
+	+MISSILEMORE
+	GibHealth 30
+	States
 	{
 	Spawn:
-	ELTA N 0
-	Goto SkillCheck
+		ELTA N 0
+		Goto SkillCheck
 	See:
-	ELTA A 0 A_SetSpeed(4.66666667)
-	ELTA A 0 A_ChangeFlag("FRIGHTENED",0)
-	ELTA A 1 A_Chase
-	ELTA AA 1 A_Chase("","")
-	ELTA A 1 A_Chase
-	ELTA AA 1 A_Chase("","")
-	ELTA B 1 A_Chase
-	ELTA BB 1 A_Chase("","")
-	ELTA B 1 A_Chase
-	ELTA BB 1 A_Chase("","")
-	ELTA C 1 A_Chase
-	ELTA CC 1 A_Chase("","")
-	ELTA C 1 A_Chase
-	ELTA CC 1 A_Chase("","")
-	ELTA D 1 A_Chase
-	ELTA DD 1 A_Chase("","")
-	ELTA D 1 A_Chase("","",CHF_FASTCHASE)
-	ELTA DD 1 A_Chase("","")
-	Loop
+		ELTA A 0 A_SetSpeed(4.66666667)
+		ELTA A 0 A_ChangeFlag("FRIGHTENED",0)
+		ELTA A 1 A_Chase
+		ELTA AA 1 A_Chase("","")
+		ELTA A 1 A_Chase
+		ELTA AA 1 A_Chase("","")
+		ELTA B 1 A_Chase
+		ELTA BB 1 A_Chase("","")
+		ELTA B 1 A_Chase
+		ELTA BB 1 A_Chase("","")
+		ELTA C 1 A_Chase
+		ELTA CC 1 A_Chase("","")
+		ELTA C 1 A_Chase
+		ELTA CC 1 A_Chase("","")
+		ELTA D 1 A_Chase
+		ELTA DD 1 A_Chase("","")
+		ELTA D 1 A_Chase("","",CHF_FASTCHASE)
+		ELTA DD 1 A_Chase("","")
+		Loop
 	Missile:
-	ELTA E 0 A_Jump(50,"Grenada")
-	ELTA E 0 A_PlaySound("ammo/cell2")
-	ELTA EF 12 A_FaceTarget
-	ELTA G 0 A_PlaySound("weapons/stg44",CHAN_WEAPON)
-	ELTA G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyStGTracer",37,5,random(-6,6))
-	ELTA F 4 A_FaceTarget
-	ELTA G 0 A_PlaySound("weapons/stg44",CHAN_WEAPON)
-	ELTA G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyStGTracer",37,5,random(-5,5))
-	ELTA F 4 A_FaceTarget
-	ELTA G 0 A_PlaySound("weapons/stg44",CHAN_WEAPON)
-	ELTA G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyStGTracer",37,5,random(-6,6))
-	ELTA F 10 A_FaceTarget
-	ELTA F 0 A_MonsterRefire(30,"See")
-	goto Missile+4
+		ELTA E 0 A_Jump(50,"Grenada")
+		ELTA E 0 A_PlaySound("ammo/cell2")
+		ELTA EF 12 A_FaceTarget
+		ELTA G 0 A_PlaySound("weapons/stg44",CHAN_WEAPON)
+		ELTA G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyStGTracer",37,5,random(-6,6))
+		ELTA F 4 A_FaceTarget
+		ELTA G 0 A_PlaySound("weapons/stg44",CHAN_WEAPON)
+		ELTA G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyStGTracer",37,5,random(-5,5))
+		ELTA F 4 A_FaceTarget
+		ELTA G 0 A_PlaySound("weapons/stg44",CHAN_WEAPON)
+		ELTA G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyStGTracer",37,5,random(-6,6))
+		ELTA F 10 A_FaceTarget
+		ELTA F 0 A_MonsterRefire(30,"See")
+		goto Missile+4
 	Grenada:
-	ELTA EF 7 A_FaceTarget
-	ELTA E 4 A_CustomMissile("HandGrenade")
+		ELTA EF 7 A_FaceTarget
+		ELTA E 4 A_CustomMissile("HandGrenade")
 	Retreat:
-	ELTA A 0 A_SetSpeed(14)
-	ELTA A 0 A_ChangeFlag("FRIGHTENED",1)
-	ELTA AABBCCDDAABBCCDDAABBCCDD 1 A_Chase
-	ELTA A 0 A_ChangeFlag("FRIGHTENED",0)
-	Goto Missile
+		ELTA A 0 A_SetSpeed(14)
+		ELTA A 0 A_ChangeFlag("FRIGHTENED",1)
+		ELTA AABBCCDDAABBCCDDAABBCCDD 1 A_Chase
+		ELTA A 0 A_ChangeFlag("FRIGHTENED",0)
+		Goto Missile
 	Death:
-	ELTF I 5
-	ELTF J 5 A_Scream
-	ELTF K 5 A_NoBlocking
-	ELTF L 5
-	ELTF M -1
-	stop
+		ELTF I 5
+		ELTF J 5 A_Scream
+		ELTF K 5 A_NoBlocking
+		ELTF L 5
+		ELTF M -1
+		stop
 	Raise:
-	ELTF MLKJI 5
-	goto See
+		ELTF MLKJI 5
+		goto See
 	Death.Fire:
-	BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.0)
-	BURN BC 5 BRIGHT LIGHT(ITBURNS1)
-	BURN D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
-	BURN E 5 BRIGHT LIGHT(ITBURNS1)
-	BURN FGHIJ 5 BRIGHT LIGHT(ITBURNS2)
-	BURN KLMN 5 BRIGHT LIGHT(ITBURNS3)
-	BURN O 5 BRIGHT LIGHT(ITBURNS3) A_NoBlocking
-	BURN PQR 5 BRIGHT LIGHT(ITBURNS2)
-	BURN STU 5 BRIGHT LIGHT(ITBURNS1)
-	BURN V -1
-	Stop
+		BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.0)
+		BURN BC 5 BRIGHT LIGHT(ITBURNS1)
+		BURN D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
+		BURN E 5 BRIGHT LIGHT(ITBURNS1)
+		BURN FGHIJ 5 BRIGHT LIGHT(ITBURNS2)
+		BURN KLMN 5 BRIGHT LIGHT(ITBURNS3)
+		BURN O 5 BRIGHT LIGHT(ITBURNS3) A_NoBlocking
+		BURN PQR 5 BRIGHT LIGHT(ITBURNS2)
+		BURN STU 5 BRIGHT LIGHT(ITBURNS1)
+		BURN V -1
+		Stop
 	XDeath:
-	SLOP ABCDEF 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
-	SLOP G 0 A_NoBlocking
-	SLOP G -1
-	Stop
+		SLOP ABCDEF 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
+		SLOP G 0 A_NoBlocking
+		SLOP G -1
+		Stop
 	}
 }
 
 ACTOR EliteSoldatRifler : Nazi 12793
 {
-//$Category Monsters (Wolf3D)
-//$Title Elite Soldier (Rifle)
-//$Color 4
-Obituary "%o was snap-shot by an elite rifle soldier."
-health 65
-Speed 4.66666667
-painchance 80
-seesound "eliterifler/Sight"
-painsound "eliteassaulter/pain"
-deathsound "eliterifler/death"
-dropitem "MauserAmmo" 192
-dropitem "GrenadePickup" 16
-dropitem "G41" 64
-+MISSILEEVENMORE
-GibHealth 30
-states
+	//$Category Monsters (Wolf3D)
+	//$Title Elite Soldier (Rifle)
+	//$Color 4
+	Obituary "%o was snap-shot by an elite rifle soldier."
+	health 65
+	Speed 4.66666667
+	painchance 80
+	seesound "eliterifler/Sight"
+	painsound "eliteassaulter/pain"
+	deathsound "eliterifler/death"
+	dropitem "MauserAmmo" 192
+	dropitem "GrenadePickup" 16
+	dropitem "G41" 64
+	+MISSILEEVENMORE
+	GibHealth 30
+	states
 	{
 	Spawn:
-	ELTR N 0
-	Goto SkillCheck
+		ELTR N 0
+		Goto SkillCheck
 	See:
-	ELTR A 1 A_Chase
-	ELTR AA 1 A_Chase("","")
-	ELTR A 1 A_Chase
-	ELTR AA 1 A_Chase("","")
-	ELTR B 1 A_Chase
-	ELTR BB 1 A_Chase("","")
-	ELTR B 1 A_Chase
-	ELTR BB 1 A_Chase("","")
-	ELTR C 1 A_Chase
-	ELTR CC 1 A_Chase("","")
-	ELTR C 1 A_Chase
-	ELTR CC 1 A_Chase("","")
-	ELTR D 1 A_Chase
-	ELTR DD 1 A_Chase("","")
-	ELTR D 1 A_Chase("","",CHF_FASTCHASE)
-	ELTR DD 1 A_Chase("","")
-	Loop
+		ELTR A 1 A_Chase
+		ELTR AA 1 A_Chase("","")
+		ELTR A 1 A_Chase
+		ELTR AA 1 A_Chase("","")
+		ELTR B 1 A_Chase
+		ELTR BB 1 A_Chase("","")
+		ELTR B 1 A_Chase
+		ELTR BB 1 A_Chase("","")
+		ELTR C 1 A_Chase
+		ELTR CC 1 A_Chase("","")
+		ELTR C 1 A_Chase
+		ELTR CC 1 A_Chase("","")
+		ELTR D 1 A_Chase
+		ELTR DD 1 A_Chase("","")
+		ELTR D 1 A_Chase("","",CHF_FASTCHASE)
+		ELTR DD 1 A_Chase("","")
+		Loop
 	Missile:
-	ELTR L 1 A_JumpIfCloser(1000,"ProperMissile")
-	Goto Camping
+		ELTR L 1 A_JumpIfCloser(1000,"ProperMissile")
+		Goto Camping
 	ProperMissile:
-	ELTR LM 9 A_FaceTarget
-	ELTR N 0 A_PlaySound("weapons/mauser/fire",CHAN_WEAPON)
-	ELTR N 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",36,7,random(-4,4))
-	ELTR M 4
-	ELTR L 14
-	Goto See
+		ELTR LM 9 A_FaceTarget
+		ELTR N 0 A_PlaySound("weapons/mauser/fire",CHAN_WEAPON)
+		ELTR N 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",36,7,random(-4,4))
+		ELTR M 4
+		ELTR L 14
+		Goto See
 	Camping:
-	ELTR L 3 A_JumpIfCloser(540,"CampingDone")
-	ELTR OP 3
+		ELTR L 3 A_JumpIfCloser(540,"CampingDone")
+		ELTR OP 3
 	CampingContinue:
-	ELTR L 0 A_JumpIfCloser(540,"CampingDone")
-	ELTR L 0 A_Jump(6,"CampingDone")
-	ELTR L 0 A_JumpIfCloser(1000,"CampingFire")
-	ELTR Q 6 A_FaceTarget
-	Loop
+		ELTR L 0 A_JumpIfCloser(540,"CampingDone")
+		ELTR L 0 A_Jump(6,"CampingDone")
+		ELTR L 0 A_JumpIfCloser(1000,"CampingFire")
+		ELTR Q 6 A_FaceTarget
+		Loop
 	CampingFire:
-	ELTR L 0 A_JumpIfCloser(540,"CampingDone")
-	ELTR Q 10 A_FaceTarget
-	ELTR R 0 A_PlaySound("weapons/mauser/fire",CHAN_WEAPON)
-	ELTR R 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",32,5,random(-1,1))
-	ELTR Q 4
-	ELTR P 16
-	Goto CampingContinue
+		ELTR L 0 A_JumpIfCloser(540,"CampingDone")
+		ELTR Q 10 A_FaceTarget
+		ELTR R 0 A_PlaySound("weapons/mauser/fire",CHAN_WEAPON)
+		ELTR R 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",32,5,random(-1,1))
+		ELTR Q 4
+		ELTR P 16
+		Goto CampingContinue
 	CampingDone:
-	ELTR POL 2
-	Goto See
+		ELTR POL 2
+		Goto See
 	Death:
-	ELTR I 5
-	ELTR J 5 A_Scream
-	ELTR K 5 A_NoBlocking
-	ELTR L 5
-	ELTR M -1
-	stop
+		ELTR I 5
+		ELTR J 5 A_Scream
+		ELTR K 5 A_NoBlocking
+		ELTR L 5
+		ELTR M -1
+		stop
 	Raise:
-	ELTR MLKJI 5
-	goto See
+		ELTR MLKJI 5
+		goto See
 	Death.Fire:
-	BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.0)
-	BURN BC 5 BRIGHT LIGHT(ITBURNS1)
-	BURN D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
-	BURN E 5 BRIGHT LIGHT(ITBURNS1)
-	BURN FGHIJ 5 BRIGHT LIGHT(ITBURNS2)
-	BURN KLMN 5 BRIGHT LIGHT(ITBURNS3)
-	BURN O 5 BRIGHT LIGHT(ITBURNS3) A_NoBlocking
-	BURN PQR 5 BRIGHT LIGHT(ITBURNS2)
-	BURN STU 5 BRIGHT LIGHT(ITBURNS1)
-	BURN V -1
-	Stop
+		BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.0)
+		BURN BC 5 BRIGHT LIGHT(ITBURNS1)
+		BURN D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
+		BURN E 5 BRIGHT LIGHT(ITBURNS1)
+		BURN FGHIJ 5 BRIGHT LIGHT(ITBURNS2)
+		BURN KLMN 5 BRIGHT LIGHT(ITBURNS3)
+		BURN O 5 BRIGHT LIGHT(ITBURNS3) A_NoBlocking
+		BURN PQR 5 BRIGHT LIGHT(ITBURNS2)
+		BURN STU 5 BRIGHT LIGHT(ITBURNS1)
+		BURN V -1
+		Stop
 	XDeath:
-	SLOP ABCDEF 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
-	SLOP G 0 A_NoBlocking
-	SLOP G -1
-	Stop
+		SLOP ABCDEF 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
+		SLOP G 0 A_NoBlocking
+		SLOP G -1
+		Stop
 	}
 }
 
 ACTOR MadCook : MadDoctor 12794
 {
-//$Category Monsters (Wolf3D)
-//$Title Cook (Boss)
-//$Color 4
-Obituary "%o was used as a delicious ingredient for his next 5-set meal"
-Health 400
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Cook (Boss)
+	//$Color 4
+	Obituary "%o was used as a delicious ingredient for his next 5-set meal"
+	Health 400
+	States
 	{
 	Spawn:
-	COOK A 0
-	Goto SkillCheck
+		COOK A 0
+		Goto SkillCheck
 	Missile:
-	COOK E 10 A_FaceTarget
-	COOK F 8 A_CustomMissile("FlyingNeedle",32,12)
-	COOK A 8
-	Goto See
+		COOK E 10 A_FaceTarget
+		COOK F 8 A_CustomMissile("FlyingNeedle",32,12)
+		COOK A 8
+		Goto See
 	}
 }
 
 ACTOR FlyingHack : FlyingNeedle
 {
-States
+	States
 	{
 	Spawn:
-	COPR A -1
-	loop
+		COPR A -1
+		loop
 	}
 }
 
 actor UndeadPriest : Nazi 18921
 {
-//$Category Monsters (Wolf3D)
-//$Title Priest
-//$Color 4
-obituary "%o was bagged by a priest."
-health 200
-mass 125
-Speed 2.66666667
-painchance 30
-dropitem "NewShell" 96
-dropitem "NewShell" 128
-dropitem "TrenchShotgun" 32
-painsound "UndeadPriest/Pain"
-deathsound "UndeadPriest/Die"
-GibHealth 30
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Priest
+	//$Color 4
+	obituary "%o was bagged by a priest."
+	health 200
+	mass 125
+	Speed 2.66666667
+	painchance 30
+	dropitem "NewShell" 96
+	dropitem "NewShell" 128
+	dropitem "TrenchShotgun" 32
+	painsound "UndeadPriest/Pain"
+	deathsound "UndeadPriest/Die"
+	GibHealth 30
+	States
 	{
 	Spawn:
-	UNDP A 0
-	Goto SkillCheck
+		UNDP A 0
+		Goto SkillCheck
 	See:
-	UNDP A 0 A_Jump (32, "Run")
-	UNDP A 0 A_SetSpeed(2.66666667)
-	UNDP A 1 A_Chase
-	UNDP AA 1 A_Chase("","")
-	UNDP A 1 A_Chase
-	UNDP AA 1 A_Chase("","")
-	UNDP B 1 A_Chase
-	UNDP BB 1 A_Chase("","")
-	UNDP B 1 A_Chase
-	UNDP BB 1 A_Chase("","")
-	UNDP C 1 A_Chase
-	UNDP CC 1 A_Chase("","")
-	UNDP C 1 A_Chase
-	UNDP CC 1 A_Chase("","")
-	UNDP D 1 A_Chase
-	UNDP DD 1 A_Chase("","")
-	UNDP D 1 A_Chase
-	UNDP DD 1 A_Chase("","")
-	Loop
+		UNDP A 0 A_Jump (32, "Run")
+		UNDP A 0 A_SetSpeed(2.66666667)
+		UNDP A 1 A_Chase
+		UNDP AA 1 A_Chase("","")
+		UNDP A 1 A_Chase
+		UNDP AA 1 A_Chase("","")
+		UNDP B 1 A_Chase
+		UNDP BB 1 A_Chase("","")
+		UNDP B 1 A_Chase
+		UNDP BB 1 A_Chase("","")
+		UNDP C 1 A_Chase
+		UNDP CC 1 A_Chase("","")
+		UNDP C 1 A_Chase
+		UNDP CC 1 A_Chase("","")
+		UNDP D 1 A_Chase
+		UNDP DD 1 A_Chase("","")
+		UNDP D 1 A_Chase
+		UNDP DD 1 A_Chase("","")
+		Loop
 	Run:
-	UNDP A 0 A_Jump (24, "See")
-	UNDP A 0 A_SetSpeed(4)
-	UNDP A 1 A_Chase
-	UNDP A 1 A_Chase("","")
-	UNDP A 1 A_Chase
-	UNDP A 1 A_Chase("","")
-	UNDP B 1 A_Chase
-	UNDP B 1 A_Chase("","")
-	UNDP B 1 A_Chase
-	UNDP B 1 A_Chase("","")
-	UNDP C 1 A_Chase
-	UNDP C 1 A_Chase("","")
-	UNDP C 1 A_Chase
-	UNDP C 1 A_Chase("","")
-	UNDP D 1 A_Chase
-	UNDP D 1 A_Chase("","")
-	UNDP D 1 A_Chase
-	UNDP D 1 A_Chase("","")
-	Loop
+		UNDP A 0 A_Jump (24, "See")
+		UNDP A 0 A_SetSpeed(4)
+		UNDP A 1 A_Chase
+		UNDP A 1 A_Chase("","")
+		UNDP A 1 A_Chase
+		UNDP A 1 A_Chase("","")
+		UNDP B 1 A_Chase
+		UNDP B 1 A_Chase("","")
+		UNDP B 1 A_Chase
+		UNDP B 1 A_Chase("","")
+		UNDP C 1 A_Chase
+		UNDP C 1 A_Chase("","")
+		UNDP C 1 A_Chase
+		UNDP C 1 A_Chase("","")
+		UNDP D 1 A_Chase
+		UNDP D 1 A_Chase("","")
+		UNDP D 1 A_Chase
+		UNDP D 1 A_Chase("","")
+		Loop
 	Missile:
-	UNDP E 10 A_FaceTarget
-	UNDP F 0 A_PlaySound("UndeadPriest/Shoot",6)
-	UNDP FFF 0 A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
-	UNDP F 6 BRIGHT LIGHT(SUPAFIRE)
-	UNDP E 2 A_MonsterRefire(30,"See")
-	UNDP E 10 A_FaceTarget
-	UNDP F 0 A_PlaySound ("UndeadPriest/Shoot2",7)
-	UNDP FFF 0 A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
-	UNDP F 6 BRIGHT LIGHT(SUPAFIRE)
-	UNDP E 10
-	Goto See
+		UNDP E 10 A_FaceTarget
+		UNDP F 0 A_PlaySound("UndeadPriest/Shoot",6)
+		UNDP FFF 0 A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
+		UNDP F 6 BRIGHT LIGHT(SUPAFIRE)
+		UNDP E 2 A_MonsterRefire(30,"See")
+		UNDP E 10 A_FaceTarget
+		UNDP F 0 A_PlaySound ("UndeadPriest/Shoot2",7)
+		UNDP FFF 0 A_CustomMissile("EnemyChaingunTracer",32,-16,random(-11,11))
+		UNDP F 6 BRIGHT LIGHT(SUPAFIRE)
+		UNDP E 10
+		Goto See
 	Pain:
-	UNDP G 3
-	UNDP G 3 A_Pain
-	goto See
+		UNDP G 3
+		UNDP G 3 A_Pain
+		goto See
 	Death:
-	UNDP H 6
-	UNDP I 6 A_Scream
-	UNDP JK 6
-	UNDP L 6 A_NoBlocking
-	UNDP M 6
-	UNDP N -1
-	Stop
+		UNDP H 6
+		UNDP I 6 A_Scream
+		UNDP JK 6
+		UNDP L 6 A_NoBlocking
+		UNDP M 6
+		UNDP N -1
+		Stop
 	Raise:
-	UNDP NMLKJIH 6
-	goto See
+		UNDP NMLKJIH 6
+		goto See
 	Idle:
-	UNDP AAAAAA 1 A_Wander
-	UNDP A 0 A_Look
-	UNDP BBBBBB 1 A_Wander
-	UNDP A 0 A_Look
-	UNDP CCCCCC 1 A_Wander
-	UNDP A 0 A_Look
-	UNDP DDDDDD 1 A_Wander
-	UNDP A 0 A_Look
-	Loop
+		UNDP AAAAAA 1 A_Wander
+		UNDP A 0 A_Look
+		UNDP BBBBBB 1 A_Wander
+		UNDP A 0 A_Look
+		UNDP CCCCCC 1 A_Wander
+		UNDP A 0 A_Look
+		UNDP DDDDDD 1 A_Wander
+		UNDP A 0 A_Look
+		Loop
 	Death.Fire:
-	BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.0)
-	BURN BC 5 BRIGHT LIGHT(ITBURNS1)
-	BURN D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
-	BURN E 5 BRIGHT LIGHT(ITBURNS1)
-	BURN FGHIJ 5 BRIGHT LIGHT(ITBURNS2)
-	BURN KLMN 5 BRIGHT LIGHT(ITBURNS3)
-	BURN O 5 BRIGHT LIGHT(ITBURNS3) A_NoBlocking
-	BURN PQR 5 BRIGHT LIGHT(ITBURNS2)
-	BURN STU 5 BRIGHT LIGHT(ITBURNS1)
-	BURN V -1
-	Stop
+		BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.0)
+		BURN BC 5 BRIGHT LIGHT(ITBURNS1)
+		BURN D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
+		BURN E 5 BRIGHT LIGHT(ITBURNS1)
+		BURN FGHIJ 5 BRIGHT LIGHT(ITBURNS2)
+		BURN KLMN 5 BRIGHT LIGHT(ITBURNS3)
+		BURN O 5 BRIGHT LIGHT(ITBURNS3) A_NoBlocking
+		BURN PQR 5 BRIGHT LIGHT(ITBURNS2)
+		BURN STU 5 BRIGHT LIGHT(ITBURNS1)
+		BURN V -1
+		Stop
 	XDeath:
-	SLOP ABCDEF 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
-	SLOP G 0 A_NoBlocking
-	SLOP G -1
-	Stop
+		SLOP ABCDEF 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
+		SLOP G 0 A_NoBlocking
+		SLOP G -1
+		Stop
 	}
 }
 
 ACTOR Hostage : Guard 12702
 {
-//$Category Monsters (Wolf3D)
-//$Title Hostage
-//$Color 4
-Obituary "%o was somehow killed by the hostage."
-painchance 255
-DropItem ""
-SeeSound ""
-+FRIENDLY
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Hostage
+	//$Color 4
+	Obituary "%o was somehow killed by the hostage."
+	painchance 255
+	DropItem ""
+	SeeSound ""
+	+FRIENDLY
+	States
 	{
 	Spawn:
-	HOST A 0
-	Goto SkillCheck
+		HOST A 0
+		Goto SkillCheck
 	Missile:
-	Stop
+		Stop
 	Pain:
-	HOST E 3
-	HOST E 3 A_Pain
-	goto See
+		HOST E 3
+		HOST E 3 A_Pain
+		goto See
 	Death:
-	HOST E 5
-	HOST F 5 A_Scream
-	HOST G 5 A_NoBlocking
-	HOST H 5
-	HOST I -1
-	stop
+		HOST E 5
+		HOST F 5 A_Scream
+		HOST G 5 A_NoBlocking
+		HOST H 5
+		HOST I -1
+		stop
 	Raise:
-	HOST IHGFE 5
-	Goto See
+		HOST IHGFE 5
+		Goto See
 	}
 }
 
 ACTOR GeneralAllied : Hostage 12708
 {
-//$Category Monsters (Wolf3D)
-//$Title General Miller
-//$Color 4
-+USESPECIAL
-States
+	//$Category Monsters (Wolf3D)
+	//$Title General Miller
+	//$Color 4
+	+USESPECIAL
+	States
 	{
 	Spawn:
-	GENR A 0
-	Goto SkillCheck
+		GENR A 0
+		Goto SkillCheck
 	Pain:
-	GENR L 3
-	GENR L 3 A_Pain
-	goto See
+		GENR L 3
+		GENR L 3 A_Pain
+		goto See
 	Death:
-	GENR F 5
-	GENR G 5 A_Scream
-	GENR H 5 A_NoBlocking
-	GENR IJ 5
-	GENR K -1
-	stop
+		GENR F 5
+		GENR G 5 A_Scream
+		GENR H 5 A_NoBlocking
+		GENR IJ 5
+		GENR K -1
+		stop
 	Raise:
-	GENR KJIHGF 5
-	goto See
+		GENR KJIHGF 5
+		goto See
 	}
 }
 
 ACTOR DirtyDarren : GeneralAllied 12709
 {
-//$Category Monsters (Wolf3D)
-//$Title Dirty Darren
-//$Color 4
-Obituary "%o was shot by Dirty Darren."
-Translation 1
-states
+	//$Category Monsters (Wolf3D)
+	//$Title Dirty Darren
+	//$Color 4
+	Obituary "%o was shot by Dirty Darren."
+	Translation 1
+	states
 	{
 	Spawn:
-	DARR A 0
-	Goto SkillCheck
+		DARR A 0
+		Goto SkillCheck
 	Missile:
-	"####" LM 5 A_FaceTarget
-	"####" N 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-	"####" N 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("ThompsonTracer",32,0,random(-8,8))
-	"####" M 8
-	goto See
+		"####" LM 5 A_FaceTarget
+		"####" N 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		"####" N 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("ThompsonTracer",32,0,random(-8,8))
+		"####" M 8
+		goto See
 	Pain:
-	"####" K 3
-	"####" K 3 A_Pain
-	goto See
+		"####" K 3
+		"####" K 3 A_Pain
+		goto See
 	Death:
-	"####" F 5
-	"####" G 5 A_Scream
-	"####" H 5 A_NoBlocking
-	"####" I 5
-	"####" J -1
-	stop
+		"####" F 5
+		"####" G 5 A_Scream
+		"####" H 5 A_NoBlocking
+		"####" I 5
+		"####" J -1
+		stop
 	Raise:
-	"####" JIHGF 5
-	goto See
+		"####" JIHGF 5
+		goto See
 	}
 }
 
 ACTOR Marine1 : DirtyDarren 12706
 {
-//$Category Monsters (Wolf3D)
-//$Title Marine (1)
-//$Color 4
-Obituary "%o was shot by a marine."
-states
+	//$Category Monsters (Wolf3D)
+	//$Title Marine (1)
+	//$Color 4
+	Obituary "%o was shot by a marine."
+	states
 	{
 	Spawn:
-	MARN A 0
-	Goto SkillCheck
+		MARN A 0
+		Goto SkillCheck
 	Missile:
-	MARN LM 5 A_FaceTarget
-	MARN N 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-	MARN N 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("ThompsonTracer",32,0,random(-8,8))
-	MARN L 8
-	goto See
+		MARN LM 5 A_FaceTarget
+		MARN N 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		MARN N 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("ThompsonTracer",32,0,random(-8,8))
+		MARN L 8
+		goto See
 	}
 }
 
 ACTOR Marine2 : Marine1 12707
 {
-//$Category Monsters (Wolf3D)
-//$Title Marine (2)
-//$Color 4
-states
+	//$Category Monsters (Wolf3D)
+	//$Title Marine (2)
+	//$Color 4
+	states
 	{
 	Spawn:
-	MAR2 A 0
-	Goto SkillCheck
+		MAR2 A 0
+		Goto SkillCheck
 	}
 }
 
 ACTOR Marine_Talk1 : Marine2 12711
 {
-//$Category Conversion Stuff (Wolf3D)
-//$Title Talking Marine 1
-//$Color 5
+	//$Category Conversion Stuff (Wolf3D)
+	//$Title Talking Marine 1
+	//$Color 5
 }
 
 ACTOR Marine_Talk2 : Marine2 12712
 {
-//$Category Conversion Stuff (Wolf3D)
-//$Title Talking Marine 2
-//$Color 5
+	//$Category Conversion Stuff (Wolf3D)
+	//$Title Talking Marine 2
+	//$Color 5
 }
 
 ACTOR Dummy_Talk 12713
 {
-//$Category Conversion Stuff (Wolf3D)
-//$Title Talking Dummy
-//$Color 5
-Radius 8
-Height 64
-+SOLID
+	//$Category Conversion Stuff (Wolf3D)
+	//$Title Talking Dummy
+	//$Color 5
+	Radius 8
+	Height 64
+	+SOLID
 }
 
 ACTOR BlackGuy : DirtyDarren 12739
 {
-//$Category Monsters (Wolf3D)
-//$Title Black Guy
-//$Color 4
-Obituary "%o was shot by a Black Guy."
-states
+	//$Category Monsters (Wolf3D)
+	//$Title Black Guy
+	//$Color 4
+	Obituary "%o was shot by a Black Guy."
+	states
 	{
 	Spawn:
-	BLCK A 0
-	Goto SkillCheck
+		BLCK A 0
+		Goto SkillCheck
 	}
 }

@@ -36,12 +36,12 @@ statusbar Normal // Standard Doom Status bar
     drawnumber 3, BIGFONT, untranslated, GrenadePickup, alignment(left), 138, 185;
 
     //keys
-    drawswitchableimage keyslot 2, "nullimage", "STKEYS0", 255, 172;
-    drawswitchableimage keyslot 5, "nullimage", "STKEYS3", 261, 172;
-    drawswitchableimage keyslot 3, "nullimage", "STKEYS1", 255, 181;
-    drawswitchableimage keyslot 6, "nullimage", "STKEYS4", 261, 181;
-    drawswitchableimage keyslot 1, "nullimage", "STKEYS2", 255, 190;
-    drawswitchableimage keyslot 4, "nullimage", "STKEYS5", 261, 190;
+    drawswitchableimage "BoASilverKey", "nullimage", "STKEYS0", 255, 172;
+    drawswitchableimage "BoASilverSkelKey", "nullimage", "STKEYS3", 261, 172;
+    drawswitchableimage "BoAGoldKey", "nullimage", "STKEYS1", 255, 181;
+    drawswitchableimage "BoAGoldSkelKey", "nullimage", "STKEYS4", 261, 181;
+    drawswitchableimage "BoABronzeKey", "nullimage", "STKEYS2", 255, 190;
+    drawswitchableimage "BoABronzeSkelKey", "nullimage", "STKEYS5", 261, 190;
 
     //Ammo
     drawnumber 3, THREEFIV, untranslated, "9mmAmmo", 284, 172, 1;
@@ -67,21 +67,20 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 
 	//Top Left
 	drawimage "HUD_UL", 0, 0;
-		//Money
-    		drawnumber 3, BIGFONT, untranslated, coinitem, alignment(right), 50, 7;
-
-		//Time
-    		drawstring "THREEFIV", untranslated, time, 14, 21, 1, alignment(left);
+	//Money
+   	drawnumber 3, BIGFONT, untranslated, coinitem, alignment(right), 50, 7;
+	//Time
+	drawstring "THREEFIV", untranslated, time, 14, 21, 1, alignment(left);
 
 	//Top Right
 	drawimage "HUD_UR", -29, 0;
-		//Keys
-		drawswitchableimage keyslot 2, "nullimage", "STKEYS0", -13, 11;
-    		drawswitchableimage keyslot 5, "nullimage", "STKEYS3", -13, 21;
-    		drawswitchableimage keyslot 3, "nullimage", "STKEYS1", -13, 31;
-    		drawswitchableimage keyslot 6, "nullimage", "STKEYS4", -13, 41;
-    		drawswitchableimage keyslot 1, "nullimage", "STKEYS2", -13, 51;
-    		drawswitchableimage keyslot 4, "nullimage", "STKEYS5", -13, 61;
+	//Keys
+	drawswitchableimage "BoASilverKey", "nullimage", "STKEYS0", -13, 11;
+	drawswitchableimage "BoASilverSkelKey", "nullimage", "STKEYS3", -13, 21;
+	drawswitchableimage "BoAGoldKey", "nullimage", "STKEYS1", -13, 31;
+	drawswitchableimage "BoAGoldSkelKey", "nullimage", "STKEYS4", -13, 41;
+	drawswitchableimage "BoABronzeKey", "nullimage", "STKEYS2", -13, 51;
+	drawswitchableimage "BoABronzeSkelKey", "nullimage", "STKEYS5", -13, 61;
 
 	//Bottom Left
 	drawimage "HUD_BL", 0, -53;
