@@ -1,57 +1,57 @@
 ACTOR GrenadePickup : CustomInventory 15001
 {
-//$Category Ammo (Wolf3D)
-//$Title Grenade
-//$Color 6
-Inventory.PickupMessage "Picked up a grenade."
-Tag "Frag Grenade"
-Inventory.MaxAmount 9
-Inventory.Icon THRPB0
-Inventory.UseSound "grenade/throw"
-Inventory.PickupSound "grenade/pickup"
-+INVENTORY.KEEPDEPLETED
-Inventory.InterHubamount 9
-States
+	//$Category Ammo (Wolf3D)
+	//$Title Grenade
+	//$Color 6
+	Inventory.PickupMessage "Picked up a grenade."
+	Tag "Frag Grenade"
+	Inventory.MaxAmount 9
+	Inventory.Icon THRPB0
+	Inventory.UseSound "grenade/throw"
+	Inventory.PickupSound "grenade/pickup"
+	+INVENTORY.KEEPDEPLETED
+	Inventory.InterHubamount 9
+	States
 	{
 	Spawn:
-	THRP A -1
-	Stop
+		THRP A -1
+		Stop
 	Use:
-	TNT1 A 0 A_FireCustomMissile("HandGrenade",0,0)
-	Stop
+		TNT1 A 0 A_FireCustomMissile("HandGrenade",0,0)
+		Stop
 	}
 }
 
 ACTOR HandGrenade
 {
-Radius 4
-Height 3
-Speed 40
-Damage (1)
-DamageType "Frag"
-Projectile
--NOGRAVITY
--NOTELEPORT
-+CANBOUNCEWATER
-Obituary "%o failed to field %k's fragmenting fastball."
-BounceType Doom
-BounceFactor 0.2
-WallBounceFactor 0.6
-BounceSound "grenade/bounce"
-states
+	Radius 4
+	Height 3
+	Speed 40
+	Damage (1)
+	DamageType "Frag"
+	Projectile
+	-NOGRAVITY
+	-NOTELEPORT
+	+CANBOUNCEWATER
+	Obituary "%o failed to field %k's fragmenting fastball."
+	BounceType Doom
+	BounceFactor 0.2
+	WallBounceFactor 0.6
+	BounceSound "grenade/bounce"
+	states
 	{
 	Spawn:
-	THRW A 2 A_Countdown
-	THRW BCDEFGH 2
-	Loop
+		THRW A 2 A_Countdown
+		THRW BCDEFGH 2
+		Loop
 	Death:
-	THRW B 35
-	TNT1 A 0 A_AlertMonsters
-	TNT1 A 0 A_SetScale(1.75,1.75)
-	TNT1 A 0 A_SetTranslucent(0.75,1)
-	TNT1 A 0 A_PlaySound("grenade/explode",0,1.0,0,0.1)
-	TNT1 A 1 A_SpawnItemEx("GeneralExplosion_Medium")
-	TNT1 A 1 Radius_Quake(10,10,0,16,0)
-	stop
+		THRW B 35
+		TNT1 A 0 A_AlertMonsters
+		TNT1 A 0 A_SetScale(1.75,1.75)
+		TNT1 A 0 A_SetTranslucent(0.75,1)
+		TNT1 A 0 A_PlaySound("grenade/explode",0,1.0,0,0.1)
+		TNT1 A 1 A_SpawnItemEx("GeneralExplosion_Medium")
+		TNT1 A 1 Radius_Quake(10,10,0,16,0)
+		stop
 	}
 }

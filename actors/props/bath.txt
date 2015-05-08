@@ -1,72 +1,68 @@
 ACTOR ToiletShootable 19001
 {
-//$Category Props (Wolf3D)
-//$Title Toilet (shootable)
-//$Color 3
-Health 1
-Radius 10
-Height 42
-Mass 999999
-+SOLID
-+SHOOTABLE
-+NOBLOOD
-+DONTGIB
-+NOICEDEATH
-DeathSound "toilet/death"
-States
+	//$Category Props (Wolf3D)
+	//$Title Toilet (shootable)
+	//$Color 3
+	Health 1
+	Radius 10
+	Height 42
+	Mass 999999
+	+SOLID
+	+SHOOTABLE
+	+NOBLOOD
+	+DONTGIB
+	+NOICEDEATH
+	DeathSound "toilet/death"
+	States
 	{
 	Spawn:
-	TOIL Z -1
-	Stop
+		TOIL Z -1
+		Stop
 	Death:
-	TOIL A 4 A_Scream
-	TOIL B 4
-	TOIL C 4
-	TOIL D 4
+		TOIL A 4 A_Scream
+		TOIL BCD 4
 	Broken:
-	TOIL D 4 A_PlaySound ("toilet/broken", 0, 1.0, 1, 5)
-	TOIL E 4
-	TOIL F 4
-	TOIL G 4
-	Loop
+		TOIL D 4 A_PlaySound ("toilet/broken", 0, 1.0, 1, 5)
+		TOIL EFG 4
+		Loop
 	}
 }
 
 ACTOR ToiletTalking : ToiletShootable 19000
 {
-//$Category Conversion Stuff (Wolf3D)
-//$Title Talking Toilet (shootable)
-//$Color 3
+	//$Category Conversion Stuff (Wolf3D)
+	//$Title Talking Toilet (shootable)
+	//$Color 3
 }
 
 ACTOR Shit 19155
 {
-//$Category Props (Wolf3D)
-//$Title Shitpile
-//$Color 3
-Radius 2
-Height 4
-+SOLID
-States
+	//$Category Props (Wolf3D)
+	//$Title Shitpile
+	//$Color 3
+	Radius 2
+	Height 4
+	+SOLID
+	States
 	{
 	Spawn:
-	SHIT A -1
-	Stop
+		SHIT A -1
+		Stop
 	}
 }
 
 ACTOR WashingDish 19156
 {
-//$Category Props (Wolf3D)
-//$Title Washing Dish
-//$Color 3
-Radius 8
-Height 32
-+SOLID
-States
+	//$Category Props (Wolf3D)
+	//$Title Washing Dish
+	//$Color 3
+	Radius 8
+	Height 32
+	+SOLID
+	States
 	{
 	Spawn:
-	WASH C -1
-	Stop
+		WASH C -1
+		Stop
 	}
 }

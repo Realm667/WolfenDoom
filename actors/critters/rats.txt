@@ -3,93 +3,71 @@
 
 actor RatSpawner 12381
 {
-//$Category Critters (Wolf3D)
-//$Title Rats (arg1number1-5 arg2radius)
-//$Color 0
-Radius 2
-Height 2
-+NOINTERACTION
-States
+	//$Category Critters (Wolf3D)
+	//$Title Rats (arg1number1-5 arg2radius)
+	//$Color 0
+	Radius 2
+	Height 2
+	+NOINTERACTION
+	States
 	{
 	Spawn:
-	TNT1 A 0
-	TNT1 A 0 A_JumpIf(Args[0] == 1, "1Rat")
-	TNT1 A 0 A_JumpIf(Args[0] == 2, "2Rats")
-	TNT1 A 0 A_JumpIf(Args[0] == 3, "3Rats")
-	TNT1 A 0 A_JumpIf(Args[0] == 4, "4Rats")
-	TNT1 A 0 A_JumpIf(Args[0] == 5, "5Rats")
-	//fall through
-	1Rat:
-	TNT1 A 1 A_SpawnItemEx ("ScurryRat", random (-Args[1], Args[1]), 0, 0, 0, 0, 0, random (0, 360), 0)
-	stop
-	2Rats:
-	TNT1 A 1
-	TNT1 AA 0 A_SpawnItemEx ("ScurryRat", random (-Args[1], Args[1]), 0, 0, 0, 0, 0, random (0, 360), 0)
-	stop
-	3Rats:
-	TNT1 A 1
-	TNT1 AAA 0 A_SpawnItemEx ("ScurryRat", random (-Args[1], Args[1]), 0, 0, 0, 0, 0, random (0, 360), 0)
-	stop
-	4Rats:
-	TNT1 A 1
-	TNT1 AAAA 0 A_SpawnItemEx ("ScurryRat", random (-Args[1], Args[1]), 0, 0, 0, 0, 0, random (0, 360), 0)
-	stop
-	5Rats:
-	TNT1 A 1
-	TNT1 AAAAA 0 A_SpawnItemEx ("ScurryRat", random (-Args[1], Args[1]), 0, 0, 0, 0, 0, random (0, 360), 0)
-	stop
+		TNT1 A 0 NODELAY A_Jump(256,6-Args[0])
+		TNT1 AAAAA 0 A_SpawnItemEx ("ScurryRat", random (-Args[1], Args[1]), 0, 0, 0, 0, 0, random (0, 360), 0)
+		TNT1 A 1
+		stop
 	}
 }
 
 actor ScurryRat
 {
-radius 8
-height 8
-mass 50
-speed 16
-scale 0.5
-health 1
-seesound 	"rat/squeek"
-activesound	"rat/active"
-deathsound	"rat/death"
-+FLOORCLIP
-+FRIGHTENED
-+LOOKALLAROUND
-+NEVERRESPAWN
-+STANDSTILL
-+AMBUSH
-+VULNERABLE
-+TOUCHY
-states
+	radius 8
+	height 8
+	mass 50
+	speed 16
+	scale 0.5
+	health 1
+	seesound "rat/squeek"
+	activesound "rat/active"
+	deathsound "rat/death"
+	+FLOORCLIP
+	+FRIGHTENED
+	+LOOKALLAROUND
+	+NEVERRESPAWN
+	+STANDSTILL
+	+AMBUSH
+	+VULNERABLE
+	+TOUCHY
+	states
 	{
 	Spawn:
-	RATS A 10 A_Look
-	loop
+		RATS A 10 A_Look
+		loop
 	See:
-	PAIN A 2 A_Chase
-	PAIN A 0 A_CheckSight ("Vanish")
-	PAIN A 2 A_Chase
-	PAIN A 0 A_CheckSight ("Vanish")
-	PAIN B 2 A_Chase
-	PAIN A 0 A_CheckSight ("Vanish")
-	PAIN B 2 A_Chase
-	PAIN A 0 A_CheckSight ("Vanish")
-	PAIN B 2 A_Chase
-	PAIN A 0 A_CheckSight ("Vanish")
-	PAIN B 2 A_Chase
-	PAIN A 0 A_CheckSight ("Vanish")
-	PAIN B 2 A_Chase
-	PAIN A 0 A_CheckSight ("Vanish")
-	PAIN B 2 A_Chase
-	PAIN A 0 A_CheckSight ("Vanish")
-	loop
+		PAIN A 2 A_Chase
+		PAIN A 0 A_CheckSight ("Vanish")
+		PAIN A 2 A_Chase
+		PAIN A 0 A_CheckSight ("Vanish")
+		PAIN B 2 A_Chase
+		PAIN A 0 A_CheckSight ("Vanish")
+		PAIN B 2 A_Chase
+		PAIN A 0 A_CheckSight ("Vanish")
+		PAIN B 2 A_Chase
+		PAIN A 0 A_CheckSight ("Vanish")
+		PAIN B 2 A_Chase
+		PAIN A 0 A_CheckSight ("Vanish")
+		PAIN B 2 A_Chase
+		PAIN A 0 A_CheckSight ("Vanish")
+		PAIN B 2 A_Chase
+		PAIN A 0 A_CheckSight ("Vanish")
+		loop
 	Vanish:
-	TNT1 A 1
-	stop
+		TNT1 A 1
+		stop
 	Death:
-	PAIN H 3 A_ScreamAndUnblock
-	PAIN IJKL 3
-	PAIN M -1
-	stop
+		PAIN H 3 A_ScreamAndUnblock
+		PAIN IJKL 3
+		PAIN M -1
+		stop
 	}
 }

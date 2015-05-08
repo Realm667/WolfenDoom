@@ -1,281 +1,281 @@
 ACTOR HydrantShootable 19037
 {
-//$Category Props (Wolf3D)
-//$Title Hydrant (shootable)
-//$Color 3
-Health 1
-Radius 10
-Height 42
-Mass 999999
-+SOLID
-+SHOOTABLE
-+NOBLOOD
-+DONTGIB
-+NOICEDEATH
-DeathSound "hydrant/death"
-States
+	//$Category Props (Wolf3D)
+	//$Title Hydrant (shootable)
+	//$Color 3
+	Health 1
+	Radius 10
+	Height 42
+	Mass 999999
+	+SOLID
+	+SHOOTABLE
+	+NOBLOOD
+	+DONTGIB
+	+NOICEDEATH
+	DeathSound "hydrant/death"
+	States
 	{
 	Spawn:
-	HYDR A -1
-	Stop
+		HYDR A -1
+		Stop
 	Death:
-	HYDR B 4 A_Scream
-	HYDB ABC 4
+		HYDR B 4 A_Scream
+		HYDB ABC 4
 	Broken:
-	HYDR BCDE 4 A_PlaySound ("hydrant/broken", 0, 1.0, 1, 15)
-	Loop
+		HYDR BCDE 4 A_PlaySound ("hydrant/broken", 0, 1.0, 1, 15)
+		Loop
 	}
 }
 
 ACTOR Tires 19045
 {
-//$Category Props (Wolf3D)
-//$Title Tires (grey)
-//$Color 3
-Radius 16
-Height 8
-+SOLID
-States
+	//$Category Props (Wolf3D)
+	//$Title Tires (grey)
+	//$Color 3
+	Radius 16
+	Height 8
+	+SOLID
+	States
 	{
 	Spawn:
-	TIRE A -1
-	Stop
+		TIRE A -1
+		Stop
 	}
 }
 
 ACTOR Tires2 19056
 {
-//$Category Props (Wolf3D)
-//$Title Barrier
-//$Color 3
-Radius 32
-Height 64
-+SOLID
-States
+	//$Category Props (Wolf3D)
+	//$Title Barrier
+	//$Color 3
+	Radius 32
+	Height 64
+	+SOLID
+	States
 	{
 	Spawn:
-	ROBA A -1
-	Stop
+		ROBA A -1
+		Stop
 	}
 }
 
 ACTOR StreetBin 19090
 {
-//$Category Props (Wolf3D)
-//$Title Recycle Bin (Street)
-//$Color 3
-Scale 0.85
-Radius 16
-Height 56
-Health 20
-Mass 100
-DeathSound "imp/melee"
-+SOLID
-+PUSHABLE
-+NOBLOOD
-+SHOOTABLE
-States
+	//$Category Props (Wolf3D)
+	//$Title Recycle Bin (Street)
+	//$Color 3
+	Scale 0.85
+	Radius 16
+	Height 56
+	Health 20
+	Mass 100
+	DeathSound "imp/melee"
+	+SOLID
+	+PUSHABLE
+	+NOBLOOD
+	+SHOOTABLE
+	States
 	{
 	Spawn:
-	SRCB A -1
-	Stop
+		SRCB A -1
+		Stop
 	Death:
-	TNT1 A 0 A_Scream
-	TNT1 AAAAAAAA 1 A_CustomMissile ("TrashPieces", 32, 0, random (0, 360), 2, random (0, 360))
-	Stop
+		TNT1 A 0 A_Scream
+		TNT1 AAAAAAAA 1 A_CustomMissile ("TrashPieces", 32, 0, random (0, 360), 2, random (0, 360))
+		Stop
 	}
 }
 
 ACTOR Denkmal 19091
 {
-//$Category Props (Wolf3D)
-//$Title Statue Horse (Street)
-//$Color 3
-Scale 0.85
-Radius 64
-Height 128
-+SOLID
-States
+	//$Category Props (Wolf3D)
+	//$Title Statue Horse (Street)
+	//$Color 3
+	Scale 0.85
+	Radius 64
+	Height 128
+	+SOLID
+	States
 	{
 	Spawn:
-	DNML A -1
-	Stop
+		DNML A -1
+		Stop
 	}
 }
 
 ACTOR CafeStuff 19593
 {
-//$Category Props (Wolf3D)
-//$Title Chairs & Table (Cafe)
-//$Color 3
-Scale 0.85
-Radius 24
-Height 32
-+SOLID
-States
+	//$Category Props (Wolf3D)
+	//$Title Chairs & Table (Cafe)
+	//$Color 3
+	Scale 0.85
+	Radius 24
+	Height 32
+	+SOLID
+	States
 	{
 	Spawn:
-	CAFE A -1
-	Stop
+		CAFE A -1
+		Stop
 	}
 }
 
-Actor JunkPile1 19094
+ACTOR JunkPile1 19094
 {
-//$Category Props (Wolf3D)
-//$Title Junk Pile (middle)
-//$Color 3
-Radius 25
-Height 20
-+SOLID
-States
+	//$Category Props (Wolf3D)
+	//$Title Junk Pile (middle)
+	//$Color 3
+	Radius 25
+	Height 20
+	+SOLID
+	States
 	{
 	Spawn:
-	JPIL A -1
-	Stop
+		JPIL A -1
+		Stop
 	}
 }
 
-Actor JunkPile2 19095
+ACTOR JunkPile2 19095
 {
-//$Category Props (Wolf3D)
-//$Title Junk Pile (large)
-//$Color 3
-Radius 28
-Height 28
-+SOLID
-States
+	//$Category Props (Wolf3D)
+	//$Title Junk Pile (large)
+	//$Color 3
+	Radius 28
+	Height 28
+	+SOLID
+	States
 	{
 	Spawn:
-	JPIL B -1
-	Stop
+		JPIL B -1
+		Stop
 	}
 }
 
-actor Hedgehog 19596
+ACTOR Hedgehog 19596
 {
-//$Title "Czech Hedgehog"
-//$Category Props (Wolf3D)
-//$Color 3
-Radius 32
-Height 64
-+SOLID
-States
+	//$Title "Czech Hedgehog"
+	//$Category Props (Wolf3D)
+	//$Color 3
+	Radius 32
+	Height 64
+	+SOLID
+	States
 	{
 	Spawn:
-	HEDG A -1
-	Stop
+		HEDG A -1
+		Stop
 	}
 }
 
-Actor NTomb1 15201
+ACTOR NTomb1 15201
 {
-//$Category Props (Wolf3D)
-//$Title "Tombstone 1"
-//$Color 3
-Radius 15
-Height 68
-+SOLID
-States
+	//$Category Props (Wolf3D)
+	//$Title "Tombstone 1"
+	//$Color 3
+	Radius 15
+	Height 68
+	+SOLID
+	States
 	{
 	Spawn:
-	NTOM A -1
-	Stop
+		NTOM A -1
+		Stop
 	}
 }
 
-Actor NTomb2 15202
+ACTOR NTomb2 15202
 {
-//$Category Props (Wolf3D)
-//$Title "Tombstone 2"
-//$Color 3
-Radius 15
-Height 62
-+SOLID
-States
+	//$Category Props (Wolf3D)
+	//$Title "Tombstone 2"
+	//$Color 3
+	Radius 15
+	Height 62
+	+SOLID
+	States
 	{
 	Spawn:
-	NTOM B -1
-	Stop
+		NTOM B -1
+		Stop
 	}
 }
 
-Actor NTomb3 15203
+ACTOR NTomb3 15203
 {
-//$Category Props (Wolf3D)
-//$Title "Tombstone 3"
-//$Color 3
-Radius 15
-Height 48
-+SOLID
-States
+	//$Category Props (Wolf3D)
+	//$Title "Tombstone 3"
+	//$Color 3
+	Radius 15
+	Height 48
+	+SOLID
+	States
 	{
 	Spawn:
-	NTOM C -1
-	Stop
+		NTOM C -1
+		Stop
 	}
 }
 
-Actor NTomb4 15204
+ACTOR NTomb4 15204
 {
-//$Category Props (Wolf3D)
-//$Title "Tombstone 4"
-//$Color 3
-Radius 15
-Height 43
-+SOLID
-States
+	//$Category Props (Wolf3D)
+	//$Title "Tombstone 4"
+	//$Color 3
+	Radius 15
+	Height 43
+	+SOLID
+	States
 	{
 	Spawn:
-	NTOM D -1
-	Stop
+		NTOM D -1
+		Stop
 	}
 }
 
-Actor NTomb5 15205
+ACTOR NTomb5 15205
 {
-//$Category Props (Wolf3D)
-//$Title "Tombstone 5"
-//$Color 3
-Radius 12
-Height 35
-+SOLID
-States
+	//$Category Props (Wolf3D)
+	//$Title "Tombstone 5"
+	//$Color 3
+	Radius 12
+	Height 35
+	+SOLID
+	States
 	{
 	Spawn:
-	NTOM E -1
-	Stop
+		NTOM E -1
+		Stop
 	}
 }
 
-Actor OldWagon 15206
+ACTOR OldWagon 15206
 {
-//$Category Props (Wolf3D)
-//$Title "Old Wagon"
-//$Color 3
-Radius 40
-Height 64
-+SOLID
-States
+	//$Category Props (Wolf3D)
+	//$Title "Old Wagon"
+	//$Color 3
+	Radius 40
+	Height 64
+	+SOLID
+	States
 	{
 	Spawn:
-	OLWG A -1
-	Stop
+		OLWG A -1
+		Stop
 	}
 }
 
-Actor BurningBarrelBoA 15207
+ACTOR BurningBarrelBoA 15207
 {
-//$Category Props (Wolf3D)
-//$Title "Burning Barrel"
-//$Color 3
-Radius 16
-Height 64
-+SOLID
-States
+	//$Category Props (Wolf3D)
+	//$Title "Burning Barrel"
+	//$Color 3
+	Radius 16
+	Height 64
+	+SOLID
+	States
 	{
 	Spawn:
-	BBAR ABCD -1
-	Loop
+		BBAR ABCD -1
+		Loop
 	}
 }

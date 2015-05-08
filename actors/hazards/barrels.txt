@@ -1,62 +1,62 @@
 ACTOR BarrelFrags
 {
-Scale .75
-States
+	Scale .75
+	States
 	{
 	Spawn:
-	FRAG ABCDEFGHIJKLM 3
-	FRAG N -1
-	Stop
+		FRAG ABCDEFGHIJKLM 3
+		FRAG N -1
+		Stop
 	}
 }
 
 ACTOR TNTBarrel1 : ExplosiveBarrel 12501
 {
-//$Category Hazards (Wolf3D)
-//$Title TNT Barrel (disguise)
-//$Color 3
-Height 34
-DeathSound "world/barrelboom"
-States
+	//$Category Hazards (Wolf3D)
+	//$Title TNT Barrel (disguise)
+	//$Color 3
+	Height 34
+	DeathSound "world/barrelboom"
+	States
 	{
 	Spawn:
-	BARL A -1
-	Loop
+		BARL A -1
+		Loop
 	Death:
-	BARX A 2 BRIGHT A_SpawnItemEx("BarrelFrags")
-	BARX A 0 A_SpawnItemEx("GeneralExplosion_Medium")
-	BARX B 2 BRIGHT A_Scream
-	BARX CDEFG 2 BRIGHT
-	BARX H 2 BRIGHT A_Explode
-	BARX IJKLM 2 BRIGHT
-	BARX M 1050 BRIGHT A_BarrelDestroy
-	BARX M 5 A_Respawn
-	Wait
+		BARX A 2 BRIGHT A_SpawnItemEx("BarrelFrags")
+		BARX A 0 A_SpawnItemEx("GeneralExplosion_Medium")
+		BARX B 2 BRIGHT A_Scream
+		BARX CDEFG 2 BRIGHT
+		BARX H 2 BRIGHT A_Explode
+		BARX IJKLM 2 BRIGHT
+		BARX M 1050 BRIGHT A_BarrelDestroy
+		BARX M 5 A_Respawn
+		Wait
 	}
 }
 
 ACTOR TNTBarrel2 : TNTBarrel1 12502
 {
-//$Category Hazards (Wolf3D)
-//$Title TNT Box
-//$Color 3
-States
+	//$Category Hazards (Wolf3D)
+	//$Title TNT Box
+	//$Color 3
+	States
 	{
 	Spawn:
-	BARL B -1
-	Stop
+		BARL B -1
+		Stop
 	}
 }
 
 ACTOR TNTBarrel3 : TNTBarrel1 12503
 {
-//$Category Hazards (Wolf3D)
-//$Title TNT Barrel
-//$Color 3
-States
+	//$Category Hazards (Wolf3D)
+	//$Title TNT Barrel
+	//$Color 3
+	States
 	{
 	Spawn:
-	BARL C -1
-	Stop
+		BARL C -1
+		Stop
 	}
 }

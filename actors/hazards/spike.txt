@@ -1,29 +1,25 @@
 actor GroundSpikes : SwitchableDecoration 10315
 {
-//$Category Hazards (Wolf3D)
-//$Title Ground Spikes (inactive)
-//$Color 3
-      Radius 16
-      Height 48
-      Scale 1.0
-      obituary "%o was impaled by Tutanchamun's toothpicks."
-      +BUMPSPECIAL
-      States
-      {
-      Spawn:
-      Active:
-	BSPK A 0 A_PlaySound ("SpikeToggle") 
-        BSPK ABCDE 2 
-        BSPK A 0 A_SetSolid
-        BSPK F 0 Thing_SetSpecial(0, 73, 200, 22, 0)
-        BSPK F -1
-        stop
-      Inactive:
-        BSPK F 0 Thing_SetSpecial(0, 0, 0, 0, 0)
-        BSPK FEDCB 2
-        BSPK A 0 A_UnSetSolid
-        BSPK A -1
-        stop
-      }
-    }
-
+	//$Category Hazards (Wolf3D)
+	//$Title Ground Spikes (inactive)
+	//$Color 3
+	Radius 16
+	Height 48
+	obituary "%o was impaled by Tutanchamun's toothpicks."
+	+BUMPSPECIAL
+	States
+	{
+	Spawn:
+	Active:
+		BSPK A 2 A_PlaySound("SpikeToggle")
+		BSPK BCDE 2
+		BSPK A 0 A_SetSolid
+		BSPK F -1 Thing_SetSpecial(0,73,200,22,0)
+		stop
+	Inactive:
+		BSPK F 2 Thing_SetSpecial(0,0,0,0,0)
+		BSPK EDCB 2
+		BSPK A -1 A_UnSetSolid
+		stop
+	}
+}

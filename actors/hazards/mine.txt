@@ -1,52 +1,86 @@
 actor Mine 15124
 {
-//$Category Hazards (Wolf3D)
-//$Title Mine
-//$Color 3
-Health 100
-Radius 30
-Height 42
-Mass 9999999
--SOLID
-+LOOKALLAROUND
-+SHOOTABLE
-+NOBLOOD
-+ACTIVATEMCROSS
-+DONTGIB
-+NOICEDEATH
-+TOUCHY
-+NOTAUTOAIMED
-DeathSound "panzer/explode"
-Obituary "$OB_BARREL" // "%o touched a mine."
-States
+	//$Category Hazards (Wolf3D)
+	//$Title Mine
+	//$Color 3
+	Health 100
+	Radius 30
+	Height 42
+	Mass 9999999
+	+LOOKALLAROUND
+	+SHOOTABLE
+	+NOBLOOD
+	+ACTIVATEMCROSS
+	+DONTGIB
+	+NOICEDEATH
+	+TOUCHY
+	+NOTAUTOAIMED
+	DeathSound "panzer/explode"
+	Obituary "$OB_BARREL" // "%o touched a mine."
+	States
 	{
 	Spawn:
 	See:
-	MINE A 6 A_Chase
-	Loop
+		MINE A 6 A_Chase
+		Loop
 	Death:
-	MINE A 8 A_PlaySound("MINEF")
-	MINE A 0 A_Scream
-	TNT1 A 0 BRIGHT A_SpawnItemEx("GeneralExplosion_Medium", 0, 0, 0)
-	Stop
+		MINE A 8 A_PlaySound("MINEF")
+		MINE A 0 A_Scream
+		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Medium")
+		Stop
 	}
 }
 
 actor MineInvisible : Mine 15129
 {
-//$Category Hazards (Wolf3D)
-//$Title Mine (invisible)
-//$Color 3
-States
+	//$Category Hazards (Wolf3D)
+	//$Title Mine (invisible)
+	//$Color 3
+	RenderStyle None
+}
+
+ACTOR UnderwaterMine : Mine 15123
+{
+	//$Category Hazards (Wolf3D)
+	//$Title Underwater Mine
+	//$Color 3
+	Health 20
+	Radius 16
+	Height 128
+	+NOGRAVITY
+	var int user_theta;
+	States
 	{
 	Spawn:
 	See:
-	TNT1 A 6 A_Chase
-	Loop
+		UWMR ABCDE 6 A_Chase
+		Loop
 	Death:
-	TNT1 A 8 A_PlaySound("MINEF")
-	TNT1 A 0 A_Scream
-	TNT1 A 0 BRIGHT A_SpawnItemEx("GeneralExplosion_Medium", 0, 0, 0)
-	Stop
+		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Medium",0,0,64)
+		UWMR A 12 A_Scream
+	Shock:
+		UWMR A 0 A_CustomMissile("Bubble",random(64,76),0,user_theta,2)
+		UWMR A 0 A_SetUserVar("user_theta",user_theta+20)
+		UWMR A 0 A_JumpIf(user_theta==360,1)
+		Loop
+		UWMI H -1
+		Stop
+	}
+}
+
+ACTOR UnderwaterMineChain 15127
+{
+	//$Category Hazards (Wolf3D)
+	//$Title Underwater Mine (longer Chain)
+	//$Color 3
+	Radius 16
+	Height 128
+	Mass 9999999
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		UWMI I -1
+		Stop
 	}
 }

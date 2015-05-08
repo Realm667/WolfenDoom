@@ -1,62 +1,50 @@
 actor FireExtinguisher : ExplosiveBarrel 15125
 {
-//$Category Hazards (Wolf3D)
-//$Title Fire Extinguisher
-//$Color 3
-Health 10
-Height 64
-Radius 8
-DeathSound "weapons/nebxpl"
-States
+	//$Category Hazards (Wolf3D)
+	//$Title Fire Extinguisher
+	//$Color 3
+	Health 10
+	Height 64
+	Radius 8
+	DeathSound "nebelwerfer/xplode"
+	States
 	{
 	Spawn:
-	GASF A 6
-	Loop
+		GASF A -1
+		Loop
 	Death:
-	TNT1 A 0 BRIGHT A_SpawnItemEx("GeneralExplosion_Medium", 0, 0, 32)
-	GASF A 6 A_Scream
-	Stop
+		"####" A 0 A_SpawnItemEx("GeneralExplosion_Medium",0,0,32)
+		"####" A 6 A_Scream
+		Stop
 	}
 }
 
-actor GasBottle : ExplosiveBarrel 15126
+actor GasBottle : FireExtinguisher 15126
 {
-//$Category Hazards (Wolf3D)
-//$Title Gas Bottle
-//$Color 3
-Health 10
-Height 64
-Radius 8
-DeathSound "weapons/nebxpl"
-States
+	//$Category Hazards (Wolf3D)
+	//$Title Gas Bottle
+	//$Color 3
+	States
 	{
 	Spawn:
-	GASB A 6
-	Loop
+		GASB A -1
+		Loop
 	Death:
-	TNT1 A 0 BRIGHT A_SpawnItemEx("GeneralExplosion_Medium", 0, 0, 0)
-	GASB A 6 A_Scream
-	Stop
+		"####" A 0 A_SpawnItemEx("GeneralExplosion_Medium")
+		"####" A 6 A_Scream
+		Stop
 	}
 }
 
-actor Bomb : ExplosiveBarrel 15128
+actor Bomb : GasBottle 15128
 {
-//$Category Hazards (Wolf3D)
-//$Title Bomb
-//$Color 3
-Health 10
-Height 64
-Radius 8
-DeathSound "weapons/nebxpl"
-States
+	//$Category Hazards (Wolf3D)
+	//$Title Bomb
+	//$Color 3
+	States
 	{
 	Spawn:
-	BOMB A 6
-	Loop
-	Death:
-	TNT1 A 0 BRIGHT A_SpawnItemEx("GeneralExplosion_Medium", 0, 0, 0)
-	BOMB A 6 A_Scream
-	Stop
+		BOMB A -1
+		Loop
 	}
 }

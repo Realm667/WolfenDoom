@@ -1,118 +1,116 @@
 ACTOR Meal : Health 17013
 {
-//$Category Health (Wolf3D)
-//$Title Meals (2 variants+5)
-//$Color 6
-Inventory.Amount 5
-Inventory.PickupMessage "Picked up a meal."
-States
+	//$Category Health (Wolf3D)
+	//$Title Meals (2 variants+5)
+	//$Color 6
+	Inventory.Amount 5
+	Inventory.PickupMessage "Picked up a meal."
+	States
 	{
 	Spawn:
-	TNT1 A 0 A_Jump (127, 2)
-	MEAL A -1
-	Stop
-	MEAL B -1
-	Stop
+		MEAL A -1 NODELAY A_Jump(128,1)
+		MEAL B -1
+		Stop
 	}
 }
 
 ACTOR Dogfood : Health 17019
 {
-//$Category Health (Wolf3D)
-//$Title Dog Food (+2)
-//$Color 6
-Inventory.Amount 2
-Inventory.PickupMessage "Picked up a bowl of dog food."
-States
+	//$Category Health (Wolf3D)
+	//$Title Dog Food (+2)
+	//$Color 6
+	Inventory.Amount 2
+	Inventory.PickupMessage "Picked up a bowl of dog food."
+	States
 	{
 	Spawn:
-	DGFD A -1
-	Stop
+		DGFD A -1
+		Stop
 	}
 }
 
 ACTOR Medikit_Small : Health replaces Stimpack 17014
 {
-//$Category Health (Wolf3D)
-//$Title Medikit (small+10)
-//$Color 6
-Inventory.Amount 10
-Inventory.PickupMessage "Picked up a small medikit."
-States
+	//$Category Health (Wolf3D)
+	//$Title Medikit (small+10)
+	//$Color 6
+	Inventory.Amount 10
+	Inventory.PickupMessage "Picked up a small medikit."
+	States
 	{
 	Spawn:
-	MEDI A -1
-	Stop
+		MEDI A -1
+		Stop
 	}
 }
 
 ACTOR Medikit_Medium : Health replaces Medikit 17015
 {
-//$Category Health (Wolf3D)
-//$Title Medikit (medium+20)
-//$Color 6
-Inventory.Amount 20
-Inventory.PickupMessage "Picked up a medium medikit."
-States
+	//$Category Health (Wolf3D)
+	//$Title Medikit (medium+20)
+	//$Color 6
+	Inventory.Amount 20
+	Inventory.PickupMessage "Picked up a medium medikit."
+	States
 	{
 	Spawn:
-	MEDI B -1
-	Stop
+		MEDI B -1
+		Stop
 	}
 }
 
 ACTOR Medikit_Large : Health 17016
 {
-//$Category Health (Wolf3D)
-//$Title Medikit (large+40)
-//$Color 6
-Inventory.Amount 40
-Inventory.PickupMessage "Picked up a large medikit."
-States
+	//$Category Health (Wolf3D)
+	//$Title Medikit (large+40)
+	//$Color 6
+	Inventory.Amount 40
+	Inventory.PickupMessage "Picked up a large medikit."
+	States
 	{
 	Spawn:
-	MEDI C -1
-	Stop
+		MEDI C -1
+		Stop
 	}
 }
 
 actor VitalitySerum : UpgradeStamina 17018
 {
-//$Category Health (Wolf3D)
-//$Title Vitality Serum (max+5)
-//$Color 6
-//$Category Powerups
-//$Title "Vitality Serum"
-Radius 20
-Scale 0.9
-Inventory.Amount 5 //this controls how much health boost you receive
-Inventory.MaxAmount 100 //this controls how high your health can get
-+COUNTITEM
-+INVENTORY.ALWAYSPICKUP
-Inventory.PickupMessage "Your body toughens slightly..."
-States
+	//$Category Health (Wolf3D)
+	//$Title Vitality Serum (max+5)
+	//$Color 6
+	//$Category Powerups
+	//$Title "Vitality Serum"
+	Radius 20
+	Scale 0.9
+	Inventory.Amount 5 //this controls how much health boost you receive
+	Inventory.MaxAmount 100 //this controls how high your health can get
+	+COUNTITEM
+	+INVENTORY.ALWAYSPICKUP
+	Inventory.PickupMessage "Your body toughens slightly..."
+	States
 	{
 	Spawn:
-	VSRM ABC 6 Bright
-	loop
+		VSRM ABC 6 Bright
+		loop
 	}
 }
 
 Actor FieldKit : HealthPickup 17020
 {
-Health 25
-+CountItem
-+Inventory.AlwaysPickup
-Inventory.PickupMessage "You got a field kit"
-Inventory.PickupSound "Misc/I_PkUp"
-Inventory.UseSound "Misc/I_PkUp"
-Inventory.Icon "FKITC0"
-Inventory.MaxAmount 15
-HealthPickup.AutoUse 1
-States
+	Health 25
+	+CountItem
+	+Inventory.AlwaysPickup
+	Inventory.PickupMessage "You got a field kit"
+	Inventory.PickupSound "Misc/I_PkUp"
+	Inventory.UseSound "Misc/I_PkUp"
+	Inventory.Icon "FKITC0"
+	Inventory.MaxAmount 15
+	HealthPickup.AutoUse 1
+	States
 	{
 	Spawn:
-	FKIT AB 10
-	Loop
+		FKIT AB 10
+		Loop
 	}
 }

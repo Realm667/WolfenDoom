@@ -1,97 +1,97 @@
 ACTOR Nebelwerfer : NaziWeapon replaces Rocketlauncher 15010
 {
-//$Category Weapons (Wolf3D)
-//$Title (6) Nebelwerfer
-//$Color 14
-Weapon.SlotNumber 6
-Weapon.SelectionOrder 2500
-Weapon.AmmoUse 1
-Weapon.AmmoGive 10
-Weapon.AmmoType "NebAmmo"
-Tag "Klein Nebelwerfer"
-Inventory.PickupMessage "You got the Klein Nebelwerfer!"
--WEAPON.NOALERT
--WEAPON.AMMO_CHECKBOTH
-States
+	//$Category Weapons (Wolf3D)
+	//$Title (6) Nebelwerfer
+	//$Color 14
+	Weapon.SlotNumber 6
+	Weapon.SelectionOrder 2500
+	Weapon.AmmoUse 1
+	Weapon.AmmoGive 10
+	Weapon.AmmoType "NebAmmo"
+	Tag "Klein Nebelwerfer"
+	Inventory.PickupMessage "You got the Klein Nebelwerfer!"
+	-WEAPON.NOALERT
+	-WEAPON.AMMO_CHECKBOTH
+	States
 	{
 	Ready:
-	NEBG A 1 A_WeaponReady
-	Loop
+		NEBG A 1 A_WeaponReady
+		Loop
 	Deselect:
-	NEBG A 0 A_Lower
-	NEBG A 1 A_Lower
-	Loop
+		NEBG A 0 A_Lower
+		NEBG A 1 A_Lower
+		Loop
 	Select:
-	NEBG A 0 A_Raise
-	NEBG A 1 A_Raise
-	Loop
+		NEBG A 0 A_Raise
+		NEBG A 1 A_Raise
+		Loop
 	Fire:
-	NEBG A 0 A_GunFlash
-	NEBG A 0 A_PlaySound("nebelwerfer/fire",CHAN_WEAPON)
-	NEBG A 2 A_FireCustomMissile("NebRocket")
-	NEBG BCDEB 1 A_SetPitch(pitch-(0.5*CallACS("RecoilAmount")))
-	NEBG A 2 A_ReFire
-	Goto Ready
+		NEBG A 0 A_GunFlash
+		NEBG A 0 A_PlaySound("nebelwerfer/fire",CHAN_WEAPON)
+		NEBG A 2 A_FireCustomMissile("NebRocket")
+		NEBG BCDEB 1 A_SetPitch(pitch-(0.5*CallACS("RecoilAmount")))
+		NEBG A 2 A_ReFire
+		Goto Ready
 	Flash:
-	NEBF A 2 BRIGHT A_Light2
-	TNT1 A 2 A_Light1
-	Goto LightDone
+		NEBF A 2 BRIGHT A_Light2
+		TNT1 A 2 A_Light1
+		Goto LightDone
 	Spawn:
-	NEBL A -1
-	Stop
+		NEBL A -1
+		Stop
 	}
 }
 
 ACTOR NebRocket
 {
-Scale .5
-Radius 11
-Height 8
-Speed 35
-Damage 8
-Projectile
-+RANDOMIZE
-+FORCERADIUSDMG
-DeathSound "nebelwerfer/xplode"
-Decal Scorch
-ProjectileKickback 100
-States
+	Scale .5
+	Radius 11
+	Height 8
+	Speed 35
+	Damage 8
+	Projectile
+	+RANDOMIZE
+	+FORCERADIUSDMG
+	DeathSound "nebelwerfer/xplode"
+	Decal Scorch
+	ProjectileKickback 100
+	States
 	{
 	Spawn:
-	MNSS A 1 BRIGHT LIGHT(NEBLIGHT) A_SpawnItemEx("RocketFlame",random(-1,1),0,random(-1,1))
-	loop
+		MNSS A 1 BRIGHT LIGHT(NEBLIGHT) A_SpawnItemEx("RocketFlame",random(-1,1),0,random(-1,1))
+		loop
 	Death:
-	FRME A 1 BRIGHT LIGHT(NEBEXPLO) A_Explode(64,56)
-	FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT(NEBEXPLO)
-	stop
+		FRME A 1 BRIGHT LIGHT(NEBEXPLO) A_Explode(64,56)
+		FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT(NEBEXPLO)
+		stop
 	}
 }
 
 ACTOR RocketFlame
 {
-Projectile
-+NOCLIP
-Scale 0.15
-Alpha 0.5
-Renderstyle Add
-States
+	Projectile
+	+NOCLIP
+	Scale 0.15
+	Alpha 0.5
+	Renderstyle Add
+	States
 	{
 	Spawn:
-	TNT1 A 1
-	XPLO AB 2 BRIGHT LIGHT(NEBEXPLO)
-	XPLO C 2 BRIGHT LIGHT(NEBEXPLO) A_SpawnItemEx("RPG8RocketTrail",random(-1,1),0,1)
-	Stop
+		TNT1 A 1
+		XPLO AB 2 BRIGHT LIGHT(NEBEXPLO)
+		XPLO C 2 BRIGHT LIGHT(NEBEXPLO) A_SpawnItemEx("RPG8RocketTrail",random(-1,1),0,1)
+		Stop
 	}
 }
 
 ACTOR RPG8RocketTrail : RocketFlame
 {
-Scale 0.18
-Alpha 0.6
-States
+	Scale 0.18
+	Alpha 0.6
+	States
 	{
 	Spawn:
-	SMOK ABCDEFGHIJKLMNOPQ 1
-	Stop
+		SMOK ABCDEFGHIJKLMNOPQ 1
+		Stop
 	}
 }

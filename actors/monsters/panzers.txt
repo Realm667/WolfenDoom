@@ -1,507 +1,450 @@
 //OzyTanks defs here...
 ACTOR TankSmoke : PuffSmoke //connections with GuardSoul smoke
 {
-Radius 1
-Height 1
-RenderStyle Translucent
-Scale 5
-Speed 3
-Gravity 0
-+MISSILE
-+NOBLOCKMAP
-+NOTELEPORT
-+DONTSPLASH
-+MISSILEMORE
-+MISSILEEVENMORE
+	Radius 1
+	Height 1
+	RenderStyle Translucent
+	Scale 5
+	Speed 3
+	Gravity 0
+	+MISSILE
+	+NOBLOCKMAP
+	+NOTELEPORT
+	+DONTSPLASH
+	+MISSILEMORE
+	+MISSILEEVENMORE
 }
 
 //Ka-Boom from Russian Overkill by PillowBlaster - Tweaked by Ozymandias81
 ACTOR KaBoom
 {
-Scale 2
-Renderstyle Add
-DamageType "Enemy"
-PROJECTILE
-+NOINTERACTION
-+NOGRAVITY
-States
+	Scale 2
+	Renderstyle Add
+	DamageType "Enemy"
+	PROJECTILE
+	+NOINTERACTION
+	+NOGRAVITY
+	States
 	{
 	Spawn:
-	BFE1 ABCDE 2 Bright
-	BFE1 FGHI 2 Bright A_Explode(75,128,1,1)
-	BFE1 JKL 2 Bright
-	Stop
+		BFE1 ABCDE 2 Bright
+		BFE1 FGHI 2 Bright A_Explode(75,128,1,1)
+		BFE1 JKL 2 Bright
+		Stop
 	}
 }
 
 ACTOR KaBoomer
 {
-+NOGRAVITY
-+NOINTERACTION
-States
+	+NOGRAVITY
+	+NOINTERACTION
+	States
 	{
 	Spawn:
-	TNT1 AA 1 A_SpawnItemEx("KaBoom",0,0,0,random(-4,4),random(-4,4),random(-2,6),random(0,359),SXF_TRANSFERTRANSLATION|SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION,40)
-	Stop
+		TNT1 AA 1 A_SpawnItemEx("KaBoom",0,0,0,random(-4,4),random(-4,4),random(-2,6),random(0,359),SXF_TRANSFERTRANSLATION|SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION,40)
+		Stop
 	}
 }
 
 Actor Nuke
 {
-+NoBlockmap
-+NoGravity
-+NoInteraction
-Radius 0
-Height 0
-States
+	+NoBlockmap
+	+NoGravity
+	+NoInteraction
+	Radius 0
+	Height 0
+	States
 	{
 	Spawn:
-	TNT1 A 0
-	TNT1 A 0 A_PlaySoundEx("panzer/explode", "Voice", 0, 2)
-	TNT1 A 0 Radius_Quake(7, 30, 0, 96, 0)
-	TNT1 A 0 A_SpawnItemEx("TankBoom",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
-	TNT1 A 0 A_SpawnItemEx("TankFlare", 0, 0, 0, 0, 0, 0, 0)
-	TNT1 A 25 A_SpawnItemEx("NukeFloor", 0, 0, 0, 0, 0, 0, 0)
-	TNT1 AA 0 A_SpawnItemEx("NukeSmokeFloor", 0, 0, 0, 0, 0, 0, 0)
-	TNT1 A 0 A_SpawnItemEx("TankPillar", 0, 0, 0, 0, 0, 2, 0)
-	TNT1 A 45 A_SpawnItemEx("TankSmokePillar", 0, 0, 0, 0, 0, 2, 0)
-	TNT1 A 0 A_SpawnItemEx("TankMushroom", 0, 0, 56, 0, 0, 0, 0)
-	TNT1 AA 0 A_SpawnItemEx("TankSmokeMushroom", 0, 0, 56, 0, 0, 0, 0)
-	Stop
+		TNT1 A 0
+		TNT1 A 0 A_PlaySound("panzer/explode",CHAN_VOICE,1,0,ATTN_NONE)
+		TNT1 A 0 Radius_Quake(7,30,0,96,0)
+		TNT1 A 0 A_SpawnItemEx("TankBoom",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		TNT1 A 0 A_SpawnItemEx("TankFlare")
+		TNT1 A 25 A_SpawnItemEx("NukeFloor")
+		TNT1 AA 0 A_SpawnItemEx("NukeSmokeFloor")
+		TNT1 A 0 A_SpawnItemEx("TankPillar",0,0,0,0,0,2)
+		TNT1 A 45 A_SpawnItemEx("TankSmokePillar",0,0,0,0,0,2)
+		TNT1 A 0 A_SpawnItemEx("TankMushroom",0,0,56)
+		TNT1 AA 0 A_SpawnItemEx("TankSmokeMushroom",0,0,56)
+		Stop
 	}
 }
 
 Actor TankBoom
 {
-+NoBlockmap
-+NoGravity
-+ForceRadiusDmg
-DamageType "Enemy"
-States
+	+NoBlockmap
+	+NoGravity
+	+ForceRadiusDmg
+	States
 	{
 	Spawn:
-	TNT1 A 0
-	TNT1 AAAAA 2 A_Explode(10, 128, 0)
-	Stop
+		TNT1 A 0
+		TNT1 AAAAA 2 A_Explode(10,128,0)
+		Stop
 	}
 }
 
 Actor TankFire : Nuke
 {
-RenderStyle Add
-+NoInteraction
-+DONTSPLASH
-+EXPLODEONWATER
-Scale 0.5
-States
+	RenderStyle Add
+	+NoInteraction
+	+DONTSPLASH
+	+EXPLODEONWATER
+	Scale 0.5
+	States
 	{
 	Spawn:
-	TNT1 AA 0 A_Jump(196, "Spawn2", "Spawn3", "Spawn4")
-	FLA1 A 2 Bright A_FadeOut(0.03)
-	Wait
-	Spawn2:
-	FLA2 A 2 Bright A_FadeOut(0.02)
-	Wait
-	Spawn3:
-	FLA3 A 2 Bright A_FadeOut(0.03)
-	Wait
-	Spawn4:
-	FLA4 A 2 Bright A_FadeOut(0.02)
-	Wait
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
+		FLA1 A 2 Bright A_FadeOut(0.03)
+		Wait
+		FLA2 A 2 Bright A_FadeOut(0.02)
+		Wait
+		FLA3 A 2 Bright A_FadeOut(0.03)
+		Wait
+		FLA4 A 2 Bright A_FadeOut(0.02)
+		Wait
 	}
 }
 
 Actor NukeSmoke : Nuke
 {
-Scale 1.7
-+NoInteraction
-+DONTSPLASH
-+EXPLODEONWATER
-Alpha 0.5
-States
+	Scale 1.7
+	+NoInteraction
+	+DONTSPLASH
+	+EXPLODEONWATER
+	Alpha 0.5
+	States
 	{
 	Spawn:
-	TNT1 AA 0 A_Jump(196, "Spawn2", "Spawn3", "Spawn4")
-	NSMK A 2 A_FadeOut(0.008)
-	Wait
-	Spawn2:
-	NSMK B 2 A_FadeOut(0.009)
-	Wait
-	Spawn3:
-	NSMK C 2 A_FadeOut(0.008)
-	Wait
-	Spawn4:
-	NSMK D 2 A_FadeOut(0.009)
-	Wait
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
+		NSMK ABCD 0 A_Jump(256,"End")
+		NSMK "#" 2 A_FadeOut(0.008)
+		Wait
 	}
 }
 
 Actor TankFlare : TankFire
 {
-Scale 0.8
-+NoInteraction
-States
+	Scale 0.8
+	+NoInteraction
+	States
 	{
 	Spawn:
-	FLAR B 1 Bright A_FadeOut(0.011)
-	Wait
+		FLAR B 1 Bright A_FadeOut(0.011)
+		Wait
 	}
 }
 
 Actor NukeFloor : Nuke
 {
-States
+	States
 	{
 	Spawn:
-	TNT1 A 0
-	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire", 0, 0, 0, 0.1 * Random(0, 30), 0.1 * Random(0, 30), 0, Random(0, 359), 128, 0)
-	Stop
+		TNT1 A 0
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * Random(0,30),0.1 * Random(0,30),0,Random(0,359),128)
+		Stop
 	}
 }
 
 Actor NukeSmokeFloor : Nuke
 {
-States
+	States
 	{
 	Spawn:
-	TNT1 A 0
-	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 0.1 * Random(0, 30), 0.1 * Random(0, 30), 0, Random(0, 359), 128, 0)
-	Stop
+		TNT1 A 0
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke",0,0,0,0.1 * Random(0,30),0.1 * Random(0,30),0,Random(0,359),128)
+		Stop
 	}
 }
 
 Actor TankPillar : Nuke
 {
-States
+	States
 	{
 	Spawn:
-	TNT1 A 0
-	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire", 0, 0, 0, 0.1 * Random(0, 10), 0.1 * Random(0, 10), Random(0, -3), Random(0, 359), 128, 0)
-	TNT1 A 0 A_SpawnItem("TankSmokeRing", 0, 0, 0)
-	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire", 0, 0, 0, 0.1 * Random(0, 10), 0.1 * Random(0, 10), Random(0, -3), Random(0, 359), 128, 0)
-	Stop
+		TNT1 A 0
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * Random(0,10),0.1 * Random(0,10),Random(0,-3),Random(0,359),128)
+		TNT1 A 0 A_SpawnItemEx("TankSmokeRing")
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * Random(0,10),0.1 * Random(0,10),Random(0,-3),Random(0,359),128)
+		Stop
 	}
 }
 
 Actor TankSmokePillar : Nuke
 {
-States
+	States
 	{
 	Spawn:
-	TNT1 A 0
-	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 0.1 * Random(0, 10), 0.1 * Random(0, 10), 0.1 * Random(0, -40), Random(0, 359), 128, 0)
-	Stop
+		TNT1 A 0
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke",0,0,0,0.1 * Random(0,10),0.1 * Random(0,10),0.1 * Random(0,-40),Random(0,359),128)
+		Stop
 	}
 }
 
 Actor TankMushroom : Nuke
 {
-States
+	States
 	{
 	Spawn:
-	TNT1 A 0
-	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire", 0, 0, 0, 0.1 * Random(0, 25), 0.01 * Random(0, 25), 0.1 * Random(-10, 10), Random(0, 359), 128, 0)
-	Stop
+		TNT1 A 0
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * Random(0,25),0.01 * Random(0,25),0.1 * Random(-10,10),Random(0,359),128)
+		Stop
 	}
 }
 
 Actor TankSmokeMushroom : Nuke
 {
-States
+	States
 	{
 	Spawn:
-	TNT1 A 0
-	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 0.1 * Random(0, 25), 0.1 * Random(0, 25), 0.1 * Random(-10, 10), Random(0, 359), 128, 0)
-	Stop
+		TNT1 A 0
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke",0,0,0,0.1 * Random(0,25),0.1 * Random(0,25),0.1 * Random(-10,10),Random(0,359),128)
+		Stop
 	}
 }
 
 Actor TankSmokeRing : Nuke
 {
-States
+	var int user_theta;
+	States
 	{
 	Spawn:
-	TNT1 A 0
-	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 0, 0, 0)
-	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 20, 0, 0)
-	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 40, 0, 0)
-	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 60, 0, 0)
-	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 80, 0, 0)
-	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 100, 0, 0)
-	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 120, 0, 0)
-	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 140, 0, 0)
-	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 160, 0, 0)
-	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 180, 0, 0)
-	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 200, 0, 0)
-	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 220, 0, 0)
-	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 240, 0, 0)
-	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 260, 0, 0)
-	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 280, 0, 0)
-	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 300, 0, 0)
-	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 320, 0, 0)
-	TNT1 A 0 A_SpawnItemEx("NukeSmoke", 0, 0, 0, 1, 0, 0, 340, 0, 0)
-	Stop
+		TNT1 A 0 NODELAY A_SpawnItemEx("NukeSmoke",0,0,0,1,0,0,user_theta)
+		UWMR A 0 A_SetUserVar("user_theta",user_theta+20)
+		UWMR A 0 A_JumpIf(user_theta==360,1)
+		Loop
+		TNT1 A 0
+		Stop
 	}
 }
 
 //Some Sergeant_Mark_IV ArmageDoom stuff here + slight modifications of mine
 ACTOR TankPieces
 {
-Radius 5
-Height 5
-Speed 8
-Mass 1
-YScale 0.8
-XScale 0.8
-BounceFactor 0.5
-+MISSILE
-+DOOMBOUNCE
-+NOBLOCKMAP
-+NOTELEPORT
-+BOUNCEONWALLS
-+BOUNCEONACTORS
-+CLIENTSIDEONLY
-+BOUNCEONCEILINGS
-States
+	Radius 5
+	Height 5
+	Speed 8
+	Mass 1
+	Scale 0.8
+	BounceFactor 0.5
+	+MISSILE
+	BounceType Doom
+	+NOBLOCKMAP
+	+NOTELEPORT
+	+BOUNCEONWALLS
+	+BOUNCEONACTORS
+	+CLIENTSIDEONLY
+	+BOUNCEONCEILINGS
+	States
 	{
 	Spawn:
-	BRKP AB 2 A_SetScale(ScaleX+frandom(-0.1, 0.15), ScaleY+frandom(-0.1, 0.1))
-	Loop
+		BRKP AB 2 A_SetScale(ScaleX+frandom(-0.1,0.15),ScaleY+frandom(-0.1,0.1))
+		Loop
 	Death:
-	TNT1 A 0 A_Jump(90,2)
-	BRKP A -1
-	Stop
-	BRKP B -1
-	Stop
+		"####" "#" -1
+		Stop
 	}
 }
 
 ACTOR TankPieces2 : TankPieces
 {
-YScale 0.7
-XScale 0.7
-Speed 6
-Mass 1
-BounceFactor 0.7
-States
+	Scale 0.7
+	Speed 6
+	Mass 1
+	BounceFactor 0.7
+	States
 	{
 	Spawn:
-	DBR1 ABCD 2 A_SetScale(ScaleX+frandom(-0.1, 0.15), ScaleY+frandom(-0.1, 0.1))
-	Loop
-	Death:
-	TNT1 A 0 A_Jump(128,2)
-	DBR1 A -1
-	Stop
-	TNT1 A 0 A_Jump(136,2)
-	DBR1 B -1
-	Stop
-	TNT1 A 0 A_Jump(144,2)
-	DBR1 C -1
-	Stop
-	DBR1 D -1
-	Stop
+		DBR1 ABCD 2 A_SetScale(ScaleX+frandom(-0.1,0.15),ScaleY+frandom(-0.1,0.1))
+		Loop
 	}
 }
 
 ACTOR TrashPieces : TankPieces //this is here to avoid warnings
 {
-Speed 4
-BounceFactor 0.3
-States
+	Speed 4
+	BounceFactor 0.3
+	States
 	{
 	Spawn:
-	SRCB BCD 2
-	Loop
-	Death:
-	TNT1 A 0 A_Jump(128,2)
-	SRCB B -1
-	Stop
-	TNT1 A 0 A_Jump(144,2)
-	SRCB C -1
-	Stop
-	SRCB D -1
-	Stop
+		SRCB BCD 2
+		Loop
 	}
 }
 
 ACTOR TankGlassShards : TankPieces
 {
-Speed 7
-BounceFactor 0.75
-RENDERSTYLE ADD
-Alpha 0.6
-States
+	Speed 7
+	BounceFactor 0.75
+	RENDERSTYLE ADD
+	Alpha 0.6
+	States
 	{
 	Spawn:
-	PBIT ABCDEFGHIJ 1
-	Loop
+		PBIT ABCDEFGHIJ 1
+		Loop
 	Death:
-	TNT1 A 0 A_Jump(90,2)
-	PBIT G -1
-	Stop
-	TNT1 A 0 A_Jump(90,2)
-	PBIT H -1
-	Stop
-	PBIT J -1
-	Stop
+		TNT1 A 0 A(Jump(256,1,2,3)
+		PBIT GHJ 0 A_Jump(256,"End")
+	End:
+		PBIT "#" -1
+		Stop
 	}
 }
 //End MarkIV///////////////////////////////////////////////
 ACTOR SSTank1 11116
 {
-//$Category Monsters (Wolf3D)
-//$Title Tank 1
-//$Color 4
-Game Doom
-Health 3500
-Radius 48
-Height 96
-Mass 0x7ffffff
-Speed 8
-MinMissileChance 160
-+NOBLOODDECALS
-+MISSILEMORE
-+NORADIUSDMG
-+RANDOMIZE
-+FLOORCLIP
-+DONTMORPH
-+BOSSDEATH
-+PAINLESS
-+NOBLOOD
-+SOLID
-Monster
-Obituary "%o was disintegrated by a Tank missile."
-DamageFactor "Enemy", 0.0
-MaxStepHeight 32
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Tank 1
+	//$Color 4
+	Health 3500
+	Radius 48
+	Height 96
+	Mass 0x7ffffff
+	Speed 8
+	MinMissileChance 160
+	+NOBLOODDECALS
+	+MISSILEMORE
+	+NORADIUSDMG
+	+RANDOMIZE
+	+FLOORCLIP
+	+DONTMORPH
+	+BOSSDEATH
+	+PAINLESS
+	+NOBLOOD
+	+SOLID
+	Monster
+	Obituary "%o was disintegrated by a Tank missile."
+	Species Nazi
+	MaxStepHeight 32
+	States
 	{
 	Spawn:
-	TNK4 A 10 A_Look
-	Loop
+		TNK4 A 10 A_Look
+		Loop
 	See:
-	TNT1 A 0 A_PlaySoundEx("tnk1loop", "SoundSlot7", 1)
-	TNK4 A 3 A_Hoof
-	TNK4 A 3 A_Chase
-	TNK4 A 3 A_Metal
-	TNK4 A 3 A_Chase
-	Loop
+		TNT1 A 0 A_PlaySound("tnk1loop",7,1,1)
+		TNK4 A 3 A_Hoof
+		TNK4 A 3 A_Chase
+		TNK4 A 3 A_Metal
+		TNK4 A 3 A_Chase
+		Loop
 	Missile:
-	TNT1 A 0 A_PlaySoundEx("tnk1loop", "SoundSlot7", 1)
-	TNK4 A 10 A_FaceTarget
-	TNK4 A 0 A_Jump(128,"Turret")
-	TNK4 A 0 A_Jump(96,"Missile2")
-	TNK4 B 12 A_CustomMissile("PanzerRocket",64,0)
-	Goto See
+		TNT1 A 0 A_PlaySound("tnk1loop",7,1,1)
+		TNK4 A 10 A_FaceTarget
+		TNK4 A 0 A_Jump(128,"Turret")
+		TNK4 A 0 A_Jump(96,"Missile2")
+		TNK4 B 12 A_CustomMissile("PanzerRocket",64)
+		Goto See
 	Turret:
-	TNT1 A 0 A_PlaySoundEx("tnk1loop", "SoundSlot7", 1)
-	TNK4 A 0 A_FaceTarget
-	TNK4 C 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
-	TNK4 CCCC 1 BRIGHT light("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer",98,-12,random(-4,4))
-	TNK4 A 2 BRIGHT A_SentinelRefire
-	goto Turret+1
+		TNT1 A 0 A_PlaySound("tnk1loop",7,1,1)
+		TNK4 A 0 A_FaceTarget
+		TNK4 C 0 A_PlaySound("weapons/chaingun",CHAN_WEAPON)
+		TNK4 CCCC 1 BRIGHT light("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer",98,-12,random(-4,4))
+		TNK4 A 2 BRIGHT A_SentinelRefire
+		goto Turret+1
 	Missile2:
-	TNT1 A 0 A_PlaySoundEx("tnk1loop", "SoundSlot7", 1)
-	TNK4 B 12 A_CustomMissile("PanzerRocket",64,0)
-	TNK4 A 10 A_FaceTarget
-	TNK4 B 20 A_CustomMissile("PanzerRocket",64,0)
-	TNK4 A 10 A_FaceTarget
-	Goto See
+		TNT1 A 0 A_PlaySound("tnk1loop",7,1,1)
+		TNK4 B 12 A_CustomMissile("PanzerRocket",64)
+		TNK4 A 10 A_FaceTarget
+		TNK4 B 20 A_CustomMissile("PanzerRocket",64)
+		TNK4 A 10 A_FaceTarget
+		Goto See
 	Death:
-	TNT1 A 0 A_StopSoundEx("SoundSlot7")
-	TNT1 A 0 A_PlaySound("weapons/explode")
-	TNT1 A 0 A_Scream
-	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile("TankPieces", random(96,128), 0, random(0, 360), 2, random(0, 360))
-	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile("TankGlassShards", random(96,128), 0, random(0, 360), 2, random(0, 360))
-	TNT1 A 0 A_SpawnItemEx("Nuke", 0, 0, 5, 0, 0, 0, 0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
-	TNT1 A 1 A_SpawnItemEx("KaBoomer",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS,0)
-	WRK4 A 8 A_SpawnItemEx("GeneralExplosion_Large", 56, 0, 32)
-	TNT1 A 0 A_SpawnItem("FuckedSSTank1")
-	TNT1 A 20
-	Stop
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("weapons/explode")
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_NoBlocking
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile("TankPieces",random(96,128),0,random(0,360),2,random(0,360))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile("TankGlassShards",random(96,128),0,random(0,360),2,random(0,360))
+		TNT1 A 0 A_SpawnItemEx("Nuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
+		TNT1 A 1 A_SpawnItemEx("KaBoomer",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		WRK4 A 8 A_SpawnItemEx("GeneralExplosion_Large",56,0,32)
+		TNT1 A 20 A_SpawnItemEx("FuckedSSTank1")
+		Stop
 	}
 }
 
 ACTOR FuckedSSTank1 11117
 {
-//$Category Gore (Wolf3D)
-//$Title Tank 1 (destroyed)
-//$Color 4
-Game Doom
-+NOBLOODDECALS
-+INVULNERABLE
-+SHOOTABLE
-+FLOORCLIP
--PUSHABLE
-+NOBLOOD
-+SOLID
-Health -1
-Height 48
-Radius 48
-Mass 0x7ffffff
-States
+	//$Category Gore (Wolf3D)
+	//$Title Tank 1 (destroyed)
+	//$Color 4
+	+NOBLOODDECALS
+	+INVULNERABLE
+	+SHOOTABLE
+	+FLOORCLIP
+	+NOBLOOD
+	+SOLID
+	Health -1
+	Height 48
+	Radius 48
+	Mass 0x7ffffff
+	States
 	{
 	Spawn:
-	WRK4 A 20 A_CustomMissile("TankSmoke", 56, 0, random(0, 360), 2, random(70, 130))
-	Loop
+		WRK4 A 20 A_CustomMissile("TankSmoke",56,0,random(0,360),2,random(70,130))
+		Loop
 	}
 }
 
 ACTOR SSTank2 : SSTank1 11118
 {
-//$Category Monsters (Wolf3D)
-//$Title Tank 2
-//$Color 4
-Health 4000
-Speed 7
-States
+	//$Category Monsters (Wolf3D)
+	//$Title Tank 2
+	//$Color 4
+	Health 4000
+	Speed 7
+	States
 	{
 	Spawn:
-	TNK1 A 10 A_Look
-	Loop
+		TNK1 A 10 A_Look
+		Loop
 	See:
-	TNT1 A 0 A_PlaySoundEx("tnk2loop", "SoundSlot7", 1)
-	TNK1 A 3 A_Hoof
-	TNK1 A 3 A_Chase
-	TNK1 A 3 A_Metal
-	TNK1 A 3 A_Chase
-	Loop
+		TNT1 A 0 A_PlaySound("tnk2loop",7,1,1)
+		TNK1 A 3 A_Hoof
+		TNK1 A 3 A_Chase
+		TNK1 A 3 A_Metal
+		TNK1 A 3 A_Chase
+		Loop
 	Missile:
-	TNT1 A 0 A_PlaySoundEx("tnk2loop", "SoundSlot7", 1)
-	TNK1 A 10 A_FaceTarget
-	TNK1 A 0 A_Jump(128,"Turret")
-	TNK1 B 12 A_CustomMissile("PanzerRocket",90,0)
-	Goto See
+		TNT1 A 0 A_PlaySound("tnk2loop",7,1,1)
+		TNK1 A 10 A_FaceTarget
+		TNK1 A 0 A_Jump(128,"Turret")
+		TNK1 B 12 A_CustomMissile("PanzerRocket",90)
+		Goto See
 	Turret:
-	TNT1 A 0 A_PlaySoundEx("tnk2loop", "SoundSlot7", 1)
-	TNK1 A 0 A_FaceTarget
-	TNK1 C 0 BRIGHT A_PlayWeaponSound("weapons/chaingun")
-	TNK1 CCCC 1 BRIGHT light("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer",60,16,random(-4,4))
-	TNK1 A 2 BRIGHT A_SentinelRefire
-	goto Turret+1
+		TNT1 A 0 A_PlaySound("tnk2loop",7,1,1)
+		TNK1 A 0 A_FaceTarget
+		TNK1 C 0 A_PlaySound("weapons/chaingun",CHAN_WEAPON)
+		TNK1 CCCC 1 BRIGHT light("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer",60,16,random(-4,4))
+		TNK1 A 2 BRIGHT A_SentinelRefire
+		goto Turret+1
 	Death:
-	TNT1 A 0 A_StopSoundEx("SoundSlot7")
-	TNT1 A 0 A_PlaySound("weapons/explode")
-	TNT1 A 0 A_Scream
-	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile("TankPieces2", random(96,128), 0, random(0, 360), 2, random(0, 360))
-	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile("TankGlassShards", random(96,128), 0, random(0, 360), 2, random(0, 360))
-	TNT1 A 0 A_SpawnItemEx("Nuke", 0, 0, 5, 0, 0, 0, 0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
-	TNT1 A 1 A_SpawnItemEx("KaBoomer",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS,0)
-	WRK1 A 8 A_SpawnItemEx("GeneralExplosion_Large", 56, 0, 32)
-	TNT1 A 0 A_SpawnItem("FuckedSSTank2")
-	TNT1 A 20
-	Stop
+		TNT1 A 0 A_StopSound(7)
+		TNT1 A 0 A_PlaySound("weapons/explode")
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_NoBlocking
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile("TankPieces2",random(96,128),0,random(0,360),2,random(0,360))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile("TankGlassShards",random(96,128),0,random(0,360),2,random(0,360))
+		TNT1 A 0 A_SpawnItemEx("Nuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
+		TNT1 A 1 A_SpawnItemEx("KaBoomer",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		WRK1 A 8 A_SpawnItemEx("GeneralExplosion_Large",56,0,32)
+		TNT1 A 20 A_SpawnItemEx("FuckedSSTank2")
+		Stop
 	}
 }
 
 ACTOR FuckedSSTank2 : FuckedSSTank1 11119
 {
-//$Category Gore (Wolf3D)
-//$Title Tank 2 (destroyed)
-//$Color 4
-States
+	//$Category Gore (Wolf3D)
+	//$Title Tank 2 (destroyed)
+	//$Color 4
+	States
 	{
 	Spawn:
-	WRK1 A 20 A_CustomMissile("TankSmoke", 58, 0, random(0, 360), 2, random(70, 130))
-	Loop
+		WRK1 A 20 A_CustomMissile("TankSmoke",58,0,random(0,360),2,random(70,130))
+		Loop
 	}
 }

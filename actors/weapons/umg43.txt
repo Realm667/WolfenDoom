@@ -1,72 +1,72 @@
 ACTOR UMG43 : NaziWeapon 15022
 {
-//$Category Weapons (Wolf3D)
-//$Title (8) UMG43
-//$Color 14
-Weapon.SlotNumber 5
-Weapon.SelectionOrder 900
-Inventory.PickupMessage "You got the Ubermaschinengewehr 43!"
-Inventory.PickupSound "chaingun/get"
-Tag "UMG 43"
-Weapon.AmmoType "9mmAmmo"
-Weapon.AmmoUse 1
-Weapon.AmmoGive 30
--WEAPON.NOALERT
--WEAPON.AMMO_CHECKBOTH
-States
+	//$Category Weapons (Wolf3D)
+	//$Title (8) UMG43
+	//$Color 14
+	Weapon.SlotNumber 5
+	Weapon.SelectionOrder 900
+	Inventory.PickupMessage "You got the Ubermaschinengewehr 43!"
+	Inventory.PickupSound "chaingun/get"
+	Tag "UMG 43"
+	Weapon.AmmoType "9mmAmmo"
+	Weapon.AmmoUse 1
+	Weapon.AmmoGive 30
+	-WEAPON.NOALERT
+	-WEAPON.AMMO_CHECKBOTH
+	States
 	{
 	Select:
-	UMGG A 0 A_Raise
-	UMGG A 1 A_Raise
-	Loop
+		UMGG A 0 A_Raise
+		UMGG A 1 A_Raise
+		Loop
 	Deselect:
-	UMGG A 0 A_StopSound(5)
-	UMGG A 0 A_Lower
-	UMGG A 1 A_Lower
-	Loop
+		UMGG A 0 A_StopSound(5)
+		UMGG A 0 A_Lower
+		UMGG A 1 A_Lower
+		Loop
 	Ready:
-	UMGG A 0 A_ClearRefire
-	UMGG A 0 A_StopSound(5)
-	UMGG A 1 A_WeaponReady
-	Wait
+		UMGG A 0 A_ClearRefire
+		UMGG A 0 A_StopSound(5)
+		UMGG A 1 A_WeaponReady
+		Wait
 	Fire:
-	UMGG A 0 A_PlaySound("chaingun/start")
-	UMGG A 1 A_PlaySound("chaingun/loop",5,1,1)
-	UMGG AAABBBCCD 1
-	UMGG D 1 A_Refire
+		UMGG A 0 A_PlaySound("chaingun/start")
+		UMGG A 1 A_PlaySound("chaingun/loop",5,1,1)
+		UMGG AAABBBCCD 1
+		UMGG D 1 A_Refire
 	FireFinish:
-	UMGG D 0 Offset(0,32) A_PlaySound("chaingun/stop",5)
-	UMGG DABCDABCDAABBBCCCCDDDDD 1 A_WeaponReady
-	Goto Ready
+		UMGG D 0 Offset(0,32) A_PlaySound("chaingun/stop",5)
+		UMGG DABCDABCDAABBBCCCCDDDDD 1 A_WeaponReady
+		Goto Ready
 	Hold:
-	UMGG A 0 A_GunFlash
-	UMGG A 0 A_SetPitch(pitch-(0.34*CallACS("RecoilAmount")))
-	UMGG A 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-	UMGG A 0 A_SpawnItemEx("9MMCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
-	UMGG A 1 Offset(0,34) A_FireCustomMissile("ChaingunTracer",frandom(-5.0,5.0),1,0,0,0,frandom(-3.0,3.0))
-	UMGG C 0 A_SetPitch(pitch-(0.34*CallACS("RecoilAmount")))
-	UMGG C 0 A_SpawnItemEx("9MMCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
-	UMGG C 1 Offset(0,36) A_FireCustomMissile("ChaingunTracer",frandom(-5,5),1,0,0,0,frandom(-3,3))
-	UMGG A 0 A_GunFlash("Flash2")
-	UMGG A 0 A_SetPitch(pitch-(0.34*CallACS("RecoilAmount")))
-	UMGG A 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-	UMGG A 0 A_SpawnItemEx("9MMCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
-	UMGG A 1 Offset(0,37) A_FireCustomMissile("ChaingunTracer",frandom(-5.0,5.0),1,0,0,0,frandom(-3.0,3.0))
-	UMGG C 0 A_SetPitch(pitch-(0.34*CallACS("RecoilAmount")))
-	UMGG C 0 A_SpawnItemEx("9MMCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
-	UMGG C 1 Offset(0,35) A_FireCustomMissile("ChaingunTracer",frandom(-5,5),1,0,0,0,frandom(-3,3))
-	UMGG A 1 A_Refire
-	Goto FireFinish
+		UMGG A 0 A_GunFlash
+		UMGG A 0 A_SetPitch(pitch-(0.34*CallACS("RecoilAmount")))
+		UMGG A 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
+		UMGG A 0 A_SpawnItemEx("9MMCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		UMGG A 1 Offset(0,34) A_FireCustomMissile("ChaingunTracer",frandom(-5.0,5.0),1,0,0,0,frandom(-3.0,3.0))
+		UMGG C 0 A_SetPitch(pitch-(0.34*CallACS("RecoilAmount")))
+		UMGG C 0 A_SpawnItemEx("9MMCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		UMGG C 1 Offset(0,36) A_FireCustomMissile("ChaingunTracer",frandom(-5,5),1,0,0,0,frandom(-3,3))
+		UMGG A 0 A_GunFlash("Flash2")
+		UMGG A 0 A_SetPitch(pitch-(0.34*CallACS("RecoilAmount")))
+		UMGG A 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
+		UMGG A 0 A_SpawnItemEx("9MMCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		UMGG A 1 Offset(0,37) A_FireCustomMissile("ChaingunTracer",frandom(-5.0,5.0),1,0,0,0,frandom(-3.0,3.0))
+		UMGG C 0 A_SetPitch(pitch-(0.34*CallACS("RecoilAmount")))
+		UMGG C 0 A_SpawnItemEx("9MMCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		UMGG C 1 Offset(0,35) A_FireCustomMissile("ChaingunTracer",frandom(-5,5),1,0,0,0,frandom(-3,3))
+		UMGG A 1 A_Refire
+		Goto FireFinish
 	Flash:
-	UMGF A 1 BRIGHT A_Light2
-	TNT1 A 1
-	TNT1 A 2 A_Light1
-	Goto LightDone
+		UMGF A 1 BRIGHT A_Light2
+		TNT1 A 1
+		TNT1 A 2 A_Light1
+		Goto LightDone
 	Flash2:
-	UMGF B 1 BRIGHT A_Light2
-	Goto Flash+1
+		UMGF B 1 BRIGHT A_Light2
+		Goto Flash+1
 	Spawn:
-	UMGP A -1
-	Stop
+		UMGP A -1
+		Stop
 	}
 }

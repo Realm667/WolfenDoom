@@ -1,61 +1,61 @@
 ACTOR KamikaziGuy 10300
 {
-//$Category Misc (Wolf3D)
-//$Title Beheaded (Easteregg)
-//$Color 3
-Obituary "%o fell victim to a beheaded kamikaze!"
-Health 20
-Radius 16
-Height 56
-Mass 100
-Speed 6
-Monster
-+FLOORCLIP
-+QUICKTORETALIATE
-states
+	//$Category Misc (Wolf3D)
+	//$Title Beheaded (Easteregg)
+	//$Color 3
+	Obituary "%o fell victim to a beheaded kamikaze!"
+	Health 20
+	Radius 16
+	Height 56
+	Mass 100
+	Speed 6
+	Monster
+	+FLOORCLIP
+	+QUICKTORETALIATE
+	states
 	{
 	Spawn:
-	BKAM A 0 A_StopSound
-	BKAM AB 10 A_LookEx(0,0,0,1024)
-	loop
+		BKAM A 0 A_StopSound
+		BKAM AB 10 A_LookEx(0,0,0,1024)
+		loop
 	Idle:
-	BKAM A 0 A_StopSound
-	BKAM AB 10 A_LookEx(0,0,0,1024)
-	BKAM A 0 A_Jump(8,"IdleNoise")
-	Loop
+		BKAM A 0 A_StopSound
+		BKAM AB 10 A_LookEx(0,0,0,1024)
+		BKAM A 0 A_Jump(8,"IdleNoise")
+		Loop
 	IdleNoise:
-	BKAM A 0 A_PlaySound("kamikazi/idle")
-	Goto Idle+1
+		BKAM A 0 A_PlaySound("kamikazi/idle")
+		Goto Idle+1
 	See:
-	BKAM A 0 A_PlaySound("kamikazi/scream",CHAN_VOICE,1,1)
-	BKAM A 2 A_FaceTarget
-	BKAM A 0 A_JumpIfCloser(56,"Melee")
-	BKAM A 2 A_Recoil(-5)
-	BKAM B 2 A_FaceTarget
-	BKAM A 0 A_JumpIfCloser(56,"Melee")
-	BKAM B 2 A_Recoil(-5)
-	BKAM C 2 A_FaceTarget
-	BKAM A 0 A_JumpIfCloser(56,"Melee")
-	BKAM C 2 A_Recoil(-5)
-	BKAM D 2 A_FaceTarget
-	BKAM A 0 A_JumpIfCloser(56,"Melee")
-	BKAM D 2 A_Recoil(-5)
+		BKAM A 0 A_PlaySound("kamikazi/scream",CHAN_VOICE,1,1)
+		BKAM A 2 A_FaceTarget
+		BKAM A 0 A_JumpIfCloser(56,"Melee")
+		BKAM A 2 A_Recoil(-5)
+		BKAM B 2 A_FaceTarget
+		BKAM A 0 A_JumpIfCloser(56,"Melee")
+		BKAM B 2 A_Recoil(-5)
+		BKAM C 2 A_FaceTarget
+		BKAM A 0 A_JumpIfCloser(56,"Melee")
+		BKAM C 2 A_Recoil(-5)
+		BKAM D 2 A_FaceTarget
+		BKAM A 0 A_JumpIfCloser(56,"Melee")
+		BKAM D 2 A_Recoil(-5)
 	CheckSee:
-	BKAM D 0 A_CheckSight("Navigate")
-	Goto See
+		BKAM D 0 A_CheckSight("Navigate")
+		Goto See
 	Navigate:
-	BKAM AAAABBBBCCCCDDDD 1 A_Chase
-	Goto CheckSee
+		BKAM AAAABBBBCCCCDDDD 1 A_Chase
+		Goto CheckSee
 	Melee:
-	BKAM A 0 A_Die
+		BKAM A 0 A_Die
 	Death:
-	BMBE M 0 A_Explode(25,32,XF_NOTMISSILE)
-	BMBE M 0 A_Stop
-	BMBE M 5 BRIGHT A_PlaySound("weapons/rocklx",CHAN_VOICE)
-	BMBE N 5 BRIGHT
-	BMBE O 5 A_NoBlocking
-	BMBE PQRST 5
-	BMBE U -1
-	Stop
+		BMBE M 0 A_Explode(25,32,XF_NOTMISSILE)
+		BMBE M 0 A_Stop
+		BMBE M 5 BRIGHT A_PlaySound("weapons/rocklx",CHAN_VOICE)
+		BMBE N 5 BRIGHT
+		BMBE O 5 A_NoBlocking
+		BMBE PQRST 5
+		BMBE U -1
+		Stop
 	}
 }

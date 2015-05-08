@@ -1,35 +1,35 @@
 ACTOR BOD_GlassShardSpawner : GlassJunk replaces GlassJunk
 {
-Deathsound "world/glassbreak"
-States
+	Deathsound "world/glassbreak"
+	States
 	{
 	Spawn:
-	TNT1 A 1 A_Scream
-	TNT1 AAAAAAAAA 0 A_SpawnItemEx(BOD_GlassShard, random(-32,32), random(-32,32), random(-32,32), 1, 1, 1, random(0,360))
-	Stop
+		TNT1 A 1 A_Scream
+		TNT1 AAAAAAAAA 0 A_SpawnItemEx(BOD_GlassShard, random(-32,32), random(-32,32), random(-32,32), 1, 1, 1, random(0,360))
+		Stop
 	}
 }
 
 ACTOR BOD_GlassShard : GlassShard
 {
-Radius 5
-Mass 5
-Projectile
--ACTIVATEPCROSS
--ACTIVATEIMPACT
--NOGRAVITY
-BounceType "HexenCompat"
-BounceFactor 0.3
-Renderstyle Translucent
-Alpha 0.4
-Gravity 0.4
-States
+	Radius 5
+	Mass 5
+	Projectile
+	-ACTIVATEPCROSS
+	-ACTIVATEIMPACT
+	-NOGRAVITY
+	BounceType "HexenCompat"
+	BounceFactor 0.3
+	Renderstyle Translucent
+	Alpha 0.4
+	Gravity 0.4
+	States
 	{
 	Spawn:
-	SHAR ABCDE 4
-	Loop
+		SHAR ABCDE 4
+		Loop
 	Death:
-	SHAR E 30
-	Stop
+		SHAR E 30
+		Stop
 	}
 }

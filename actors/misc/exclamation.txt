@@ -3,22 +3,22 @@
 //////////////////////
 actor Exclamation : SwitchableDecoration 21236
 {
-//$Category Misc (Wolf3D)
-//$Title Exclamation Mark
-//$Color 1
-scale 1.35
-renderstyle Add
-+NOGRAVITY
-+CLIENTSIDEONLY
-states
+	//$Category Misc (Wolf3D)
+	//$Title Exclamation Mark
+	//$Color 1
+	scale 1.35
+	renderstyle Add
+	+NOGRAVITY
+	+CLIENTSIDEONLY
+	states
 	{
 	Active:
 	Spawn:
-	EXCL A -1 BRIGHT NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
-	stop
+		EXCL A -1 BRIGHT NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		stop
 	Inactive:
-	TNT1 A -1
-	stop
+		TNT1 A -1
+		stop
 	}
 }
 
@@ -27,29 +27,29 @@ states
 /////////////////
 ACTOR Dogse 19534
 {
-//$Category Misc (Wolf3D)
-//$Title Dogse (Easteregg)
-//$Color 3
-Radius 16
-Height 24
-+SOLID
-States
+	//$Category Misc (Wolf3D)
+	//$Title Dogse (Easteregg)
+	//$Color 3
+	Radius 16
+	Height 24
+	+SOLID
+	States
 	{
 	Spawn:
-	DOGS AB 5
-	Loop
+		DOGS AB 5
+		Loop
 	}
 }
 
 ACTOR DogseResult : Dogse 19535
 {
-//$Category Misc (Wolf3D)
-//$Title Dogpuppy (Easteregg)
-//$Color 3
-States
+	//$Category Misc (Wolf3D)
+	//$Title Dogpuppy (Easteregg)
+	//$Color 3
+	States
 	{
 	Spawn:
-	PUPP AB 5
-	Loop
+		PUPP AB 5
+		Loop
 	}
 }
