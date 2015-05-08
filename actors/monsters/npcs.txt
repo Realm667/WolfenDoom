@@ -1,0 +1,20 @@
+actor StatistBarkeeper : Nazi 25104
+{
+//$Category Monsters (Wolf3D)
+//$Title Barkeeper (NPC)
+//$Color 4
+  Scale 1.0
+  +FRIENDLY
+  +INVULNERABLE
+  +SOLID
+  states
+  {
+  Spawn:
+    MRST A 80
+    MRLK A 40
+    MRST A 80
+    MRLK B 40
+    MRBD ABC 80
+    loop
+  }
+}

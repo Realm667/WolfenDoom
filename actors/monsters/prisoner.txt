@@ -107,3 +107,22 @@ actor PrisonerAgent 12710
 		Stop
 	}
 }
+
+actor PrisonerAgentTalk 12714
+{
+	//$Category Conversion Stuff (Wolf3D)
+	//$Title Talking Prisoner
+	//$Color 5
+	Scale 1.2
+	Mass 100
+	health 99999999
+	radius 6
+	height 52
+	+SOLID
+	States
+	{
+	Spawn:
+		TORT A 1 NODELAY A_LookEx(0,0,0,0,360)
+		Loop
+	}
+}
