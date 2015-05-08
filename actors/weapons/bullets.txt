@@ -7,6 +7,7 @@ ACTOR Tracer : FastProjectile
 	Speed 75
 	+BLOODSPLATTER
 	+SEEKERMISSILE
+	+NOEXTREMEDEATH
 	Scale .4
 	MissileType TracerTrail
 	MissileHeight 8
@@ -102,20 +103,6 @@ ACTOR WaltherTracer : LugerTracer
 	Speed 90
 }
 
-ACTOR RevolverTracer : Tracer
-{
-	ProjectileKickback 45
-	Damage (random(22,34))
-	Speed 90
-	Obituary "%o was breached by %k's revolver."
-}
-
-//Muzzle velocity: 825 ft/s (251 m/s) - Wikipedia
-ACTOR 1911Tracer : RevolverTracer
-{
-	Obituary "%o was executed by %k's M1911."
-}
-
 ACTOR ShotgunTracer : Tracer
 {
 	Damage (random(5,15))
@@ -140,13 +127,6 @@ ACTOR MP40Tracer : Tracer
 	Speed 90
 }
 
-//Muzzle velocity: 1,600.6 ft/s (488 m/s) - Wikipedia
-ACTOR PPSHTracer : WaltherTracer
-{
-	Damage (random(11,12))
-	Speed 100
-}
-
 //Muzzle velocity: 935 ft/s (285 m/s) - Wikipedia
 ACTOR ThompsonTracer : Tracer
 {
@@ -159,7 +139,7 @@ ACTOR ThompsonTracer : Tracer
 ACTOR Kar98kTracer : Tracer
 {
 	ProjectileKickback 100
-	Damage (random(26,55))
+	Damage (random(40,65))
 	Speed 180
 	Obituary "%o was gunned down by %k's Mauser."
 }
@@ -167,37 +147,9 @@ ACTOR Kar98kTracer : Tracer
 //Muzzle velocity: 2,448-2,546 ft/s (746-776 m/s) - Wikipedia
 ACTOR G43Tracer : Kar98kTracer
 {
+	Damage (random(26,55))
 	Speed 150
 	Obituary ""
-}
-
-//Muzzle velocity: 2,441 ft/s (744 m/s) - Wikipedia
-ACTOR EnfieldTracer : Tracer
-{
-	Damage (random(40,65))
-	Speed 180
-}
-
-//Muzzle velocity: 2,800 ft/s (853 m/s) - Wikipedia
-ACTOR GarandTracer : EnfieldTracer
-{
-	ProjectileKickback 100
-}
-
-//Muzzle velocity: 2,247 ft/s (685 m/s) - Wikipedia
-ACTOR StGTracer : Tracer
-{
-	ProjectileKickback 100
-	Damage (random(18,24))
-	Speed 115
-}
-
-//Muzzle velocity: 2,428 ft/s (740 m/s) - Wikipedia
-ACTOR FGTracer : Tracer
-{
-	ProjectileKickback 100
-	Damage (random(30,44))
-	Speed 155
 }
 
 ACTOR ChaingunTracer : Tracer

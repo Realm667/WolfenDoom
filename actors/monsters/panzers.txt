@@ -119,6 +119,7 @@ Actor NukeSmoke : Nuke
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
 		NSMK ABCD 0 A_Jump(256,"End")
+	End:
 		NSMK "#" 2 A_FadeOut(0.008)
 		Wait
 	}

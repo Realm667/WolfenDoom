@@ -12,13 +12,13 @@ actor Exclamation : SwitchableDecoration 21236
 	+CLIENTSIDEONLY
 	states
 	{
-	Active:
 	Spawn:
-		EXCL A -1 BRIGHT NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
-		stop
+	Active:
+		EXCL A -1 BRIGHT //ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		Stop
 	Inactive:
 		TNT1 A -1
-		stop
+		Stop
 	}
 }
 

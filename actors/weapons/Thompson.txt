@@ -8,7 +8,7 @@ ACTOR Thompson : NaziWeapon replaces Chaingun 15021
 	Inventory.PickupMessage "You got the Thompson M1A1!"
 	Weapon.AmmoType "ThompsonLoaded"
 	Weapon.AmmoUse 1
-	Weapon.AmmoType2 "45ACPAmmo"
+	Weapon.AmmoType2 "9mmAmmo"	//Temporary so it works right...
 	Weapon.AmmoUse2 1
 	weapon.ammogive2 20
 	Scale 0.5
@@ -17,7 +17,7 @@ ACTOR Thompson : NaziWeapon replaces Chaingun 15021
 	{
 	Ready:
 		THOM A 0 A_JumpIfInventory("ThompsonLoaded",0,2)
-		THOM A 0 A_JumpIfInventory("45ACPAmmo",1,2)
+		THOM A 0 A_JumpIfInventory("9mmAmmo",1,2)
 		THOM A 1 A_WeaponReady
 		Loop
 		THOM A 1 A_WeaponReady(WRF_ALLOWRELOAD)
@@ -64,10 +64,10 @@ ACTOR Thompson : NaziWeapon replaces Chaingun 15021
 		THOM A 1 Offset(-10,57)
 		THOM A 8 Offset(-11,58)
 	ReloadLoop:
-		TNT1 A 0 A_TakeInventory("45ACPAmmo",1,TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_TakeInventory("9mmAmmo",1,TIF_NOTAKEINFINITE)
 		TNT1 A 0 A_GiveInventory("ThompsonLoaded")
 		TNT1 A 0 A_JumpIfInventory("ThompsonLoaded",0,"ReloadFinish")
-		TNT1 A 0 A_JumpIfInventory("45ACPAmmo",1,"ReloadLoop")
+		TNT1 A 0 A_JumpIfInventory("9mmAmmo",1,"ReloadLoop")
 	ReloadFinish:
 		THOM A 1 Offset(-10,58)
 		THOM A 1 Offset(-10,61)

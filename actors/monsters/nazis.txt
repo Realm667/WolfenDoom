@@ -71,7 +71,7 @@ ACTOR Guard : Nazi 12001
 	DeathSound "Nazi1/Death"
 	Obituary "%o was shot by a pistol soldier."
 	DropItem 9mmAmmo 192
-	DropItem Walther9mm 64
+	DropItem Luger9mm 64
 	States
 	{
 	Spawn:
@@ -290,8 +290,6 @@ ACTOR Officer : Guard 12012
 	SeeSound "Nazi4/Sighted"
 	PainSound "Nazi4/Pain"
 	DeathSound "Nazi4/Death"
-	DropItem 9mmAmmo 192
-	DropItem Luger9mm 64
 	States
 	{
 	Spawn:
@@ -1338,10 +1336,9 @@ ACTOR MiniShip : Nazi 12028
 		SHIP A -1
 		Wait
 	Crash:
-		BARX A 0 A_SetFloorClip
-		BARX A 0 A_Scream
-		BARX A 2 BRIGHT LIGHT(SUPAFIRE) A_Explode(40)
-		BARX BCDEFGHIJKLM 2 BRIGHT
+		TNT1 A 0 A_SetFloorClip
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
 		Stop
 	Idle:
 		SHIP AAAAAAAA 1 A_Wander

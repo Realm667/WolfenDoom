@@ -21,7 +21,7 @@ ACTOR 9mmAmmo : Ammo 15193
 	//$Title Ammoclip
 	//$Color 6
 	Tag "9x19mm"
-	Inventory.Amount 16
+	Inventory.Amount 8
 	Inventory.MaxAmount 256
 	Ammo.BackpackAmount 64
 	Ammo.BackpackMaxAmount 480
@@ -47,35 +47,6 @@ ACTOR 9mmAmmoBox : 9mmAmmo replaces ClipBox 15192
 	{
 	Spawn:
 		MCLP B -1
-		Stop
-	}
-}
-
-ACTOR 45ACPAmmo : Ammo
-{
-	Tag ".45 ACP"
-	Inventory.Amount 7
-	Inventory.MaxAmount 300
-	Ammo.BackpackAmount 80
-	Ammo.BackpackMaxAmount 450
-	Inventory.PickupMessage "Picked up a .45 ACP magazine."
-	States
-	{
-	Spawn:
-		45AM A -1
-		Stop
-	}
-}
-
-ACTOR 45ACPAmmoBox : 45ACPAmmo
-{
-	Inventory.Amount 20
-	Scale .6
-	Inventory.PickupMessage "Picked up a box of .45 ACP ammo."
-	States
-	{
-	Spawn:
-		45AM B -1
 		Stop
 	}
 }
@@ -148,36 +119,6 @@ ACTOR MauserAmmoBox : MauserAmmo 15115
 	{
 	Spawn:
 		792A B -1
-		Stop
-	}
-}
-
-ACTOR 303Ammo : Ammo
-{
-	Tag ".303 British"
-	Inventory.Amount 5
-	Inventory.MaxAmount 40
-	Ammo.BackpackAmount 5
-	Ammo.BackpackMaxAmount 100
-	Inventory.PickupMessage "Picked up a .303 charger clip."
-	Scale .3
-	States
-	{
-	Spawn:
-		792A A -1	//Placeholder sprite
-		Stop
-	}
-}
-
-ACTOR 303AmmoBox : 303Ammo
-{
-	Scale 1
-	Inventory.Amount 20
-	Inventory.PickupMessage "Picked up a box of .303 British ammo."
-	States
-	{
-	Spawn:
-		792A B -1	//Placeholder sprite
 		Stop
 	}
 }
