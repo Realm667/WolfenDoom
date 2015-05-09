@@ -34,7 +34,6 @@ ACTOR Kar98k : NaziWeapon
 		TNT1 A 0 A_GunFlash
 		KAR9 A 0 A_PlaySound("mauser/fire",CHAN_WEAPON)
 		M1GF A 0 A_SpawnItemEx("MauserRifleCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
-		TNT1 A 0 ACS_NamedExecute("WWNaziTaunt",0,1)
 		KAR9 A 2 BRIGHT A_FireCustomMissile("Kar98kTracer")
 		KAR9 A 2 Offset(0,40) A_SetPitch(pitch-(4.0*CallACS("RecoilAmount")))
 		KAR9 A 1 Offset(0,36) A_SetPitch(pitch-(2.0*CallACS("RecoilAmount")))

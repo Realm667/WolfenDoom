@@ -1,7 +1,7 @@
 //////////////////////
 // EXCLAMATION MARK //
 //////////////////////
-actor Exclamation : SwitchableDecoration 21236
+actor Exclamation 21236
 {
 	//$Category Misc (Wolf3D)
 	//$Title Exclamation Mark
@@ -13,11 +13,7 @@ actor Exclamation : SwitchableDecoration 21236
 	states
 	{
 	Spawn:
-	Active:
-		EXCL A -1 BRIGHT //ACS_NamedExecuteAlways("BoA_CompassQueue",0)
-		Stop
-	Inactive:
-		TNT1 A -1
+		EXCL A -1 BRIGHT NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 		Stop
 	}
 }
