@@ -5,37 +5,33 @@
 //fadescript for map setup
 script "Maplaunch" ENTER
 {
-	FadeRange (0,0,0,1.0,0,0,0,0.0,2.5);
+	FadeRange(0,0,0,1.0,0,0,0,0.0,2.5);
 }
 
 //underwater sounds
 script "Underwater" ENTER
 {
-if (GetActorProperty(0, APROP_WATERLEVEL)<3){}
-else
+	if(GetActorProperty(0,APROP_WATERLEVEL)>=3)
 	{
-	delay(const:3);
-	localambientsound("underwtr", random(90,127));
+		delay(3);
+		localambientsound("underwtr",random(90,127));
 	}
-delay(35*8); //only 1 sound is 8sec long, 2 4sec & 1 2,5sec
-restart;
+	delay(35*8);	//only 1 sound is 8sec long, 2 4sec & 1 2.5sec
+	restart;
 }
 
 //death script
 script "Fucked" DEATH
 {
-SetHudSize(640, 480, 0);
-setfont ("MOVIEHUD");
-hudmessagebold(s:"A";HUDMSG_FADEINOUT,5,CR_UNTRANSLATED,320.0,240.0,1.0, 3.0, 0.0); //it lasts practically forever...
-faderange (0,0,0,0.0,0,0,0,1.0,6.0);
-
-	while(GetActorProperty(0, APROP_HEALTH) <= 0)
-	{
+	SetHudSize(640,480,0);
+	setfont("MOVIEHUD");
+	hudmessagebold(s:"A";HUDMSG_FADEINOUT,5,CR_UNTRANSLATED,320.0,240.0,1.0,3.0,0.0);	//it lasts practically forever...
+	faderange(0,0,0,0.0,0,0,0,1.0,6.0);
+	delay(35*6);
+	while(GetActorProperty(0,APROP_HEALTH)<=0)
 		delay(35);
-	}
-
-hudmessagebold(s:"A";HUDMSG_FADEINOUT,5,CR_UNTRANSLATED,320.0,240.0, 0.0, 0.0, 1.0); //fadeback if resurrected
-faderange (0,0,0,1.0,0,0,0,0.0,1.0);
+	hudmessagebold(s:"A";HUDMSG_FADEINOUT,5,CR_UNTRANSLATED,320.0,240.0,0.0,0.0,1.0);	//fadeback if resurrected
+	faderange(0,0,0,1.0,0,0,0,0.0,1.0);
 }
 
 global int 1:HealthScriptDeactivate;
@@ -43,46 +39,32 @@ global int 1:HealthScriptDeactivate;
 //lowhealth scripts
 script "30Health" ENTER
 {
-if (HealthScriptDeactivate == TRUE) { terminate; }
-
-if (GetActorProperty(0, APROP_HEALTH) <31 && GetActorProperty(0, APROP_HEALTH) >20)
+	if(HealthScriptDeactivate)
+		terminate;
+	if(GetActorProperty(0,APROP_HEALTH)<=30&&GetActorProperty(0,APROP_HEALTH)>20)
 	{
-	localambientsound("hbeat", 130);
-	delay(const:21);
-	localambientsound("hbeat", 130);
+		localambientsound("hbeat",130);
+		delay(21);
+		localambientsound("hbeat",130);
+		delay(34);
 	}
-delay(35);
-restart;
-}
-
-script "20Health" ENTER
-{
-if (HealthScriptDeactivate == TRUE) { terminate; }
-
-if (GetActorProperty(0, APROP_HEALTH) <21 && GetActorProperty(0, APROP_HEALTH) >10)
+	else if(GetActorProperty(0,APROP_HEALTH)<=20&&GetActorProperty(0,APROP_HEALTH)>10)
 	{
-	localambientsound("hbeat", 125);
-	delay(const:18);
-	localambientsound("hbeat", 125);
+		localambientsound("hbeat",125);
+		delay(18);
+		localambientsound("hbeat",125);
+		delay(24);
 	}
-delay(25);
-restart;
-}
-
-script "10Health" ENTER
-{
-if (HealthScriptDeactivate == TRUE) { terminate; }
-		
-if (GetActorProperty(0, APROP_HEALTH) <11 && GetActorProperty(0, APROP_HEALTH) >0)
+	else if(GetActorProperty(0,APROP_HEALTH)<=10&&GetActorProperty(0,APROP_HEALTH)>0)
 	{
-	SetHudSize(640, 480, 0);
-	Setfont("M_INJ");
-	Hudmessage(s:"A";
-	HUDMSG_FADEINOUT, 0, CR_WHITE, 320.0, 240.0, 0.0, 0.5, 0.5);
-	localambientsound("hbeat", 120);
-	delay(10);
-	localambientsound("hbeat", 120);
+		SetHudSize(640,480,0);
+		Setfont("M_INJ");
+		Hudmessage(s:"A"; HUDMSG_FADEINOUT,0,CR_WHITE,320.0,240.0,0.0,0.5,0.5);
+		localambientsound("hbeat",120);
+		delay(10);
+		localambientsound("hbeat",120);
+		delay(14);
 	}
-delay(15);
-restart;
+	delay(1);
+	restart;
 }
