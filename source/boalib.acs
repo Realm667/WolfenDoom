@@ -1,0 +1,166 @@
+#library "boalib"
+#include "zcommon.acs"
+
+str darrenmessage[12]=
+{
+	"\cCHey, Bill. Darren here. I found the back entrance of the headquarters, but there seems to be more nazi activity than we expected. Be careful!",
+	"\cCTime to get out here! The alarm has been activated! There's a switch nearby to lower the gates. Go for it, if you haven't already. I'll be waiting for you outside the area.",
+	"\cCLooks like we got in unnoticed. But be prepared. There will be heavy resistance!",
+	"\cCWell done, BJ! I'm almost caught up with you two. Follow the railroad, but make sure to take that Panzerschreck with you. I spotted a German tank heading in your direction!",
+	"\cCThe Germans haven't noticed us yet. They're concentrating on the beach area, so we have first strike advantage. Bring their artillery down and get back here when you're done. I'll be waitng for you.",
+	"\cCWell done! Time to get outta here and let the infantry finish up. I'm waiting for you at the drop point. Just head back here, but be careful... I saw some Nazi paratrooper reinforcements dropping in!",
+	"\cCAlright, boy! Make your way back to the upper part of the dam. We'll be waiting you at the north gate.",
+	"\cCGet on it, boy! I'll head back and lead the reinforcements to the center of the city to catch up with you as fast as I can!",
+	"\cCHurry up! The Krauts are coming! They'll reach the city in about 30 seconds! I'm already on my way with the allied reinforcements, but you need to hold on for a while. Secure the Nebelwerfer at all costs! Check the area near the objective for some ammo and medikits!",
+	"\cCYeeehaw! The cavalry has arrived! Time to beat these Krauts up! Let's bring them down for good!",
+	"\cCBetter get in and out quickly. It's hot and I don't feel comfortable in my uniform anymore... Good luck, Bill!",
+	"\cCBill? Can you hear me? Take the relic and get back to the meeting point. Nazi divisions are heading towards your position. C'mon, get out of there! Move it!"
+};
+str prisonermessage[3]=
+{
+	"\cCIt's about time, Man! Now, let's get out of this hell. Take the red key, and let's grab some equipment before leaving.",
+	"\cCDamnit, they noticed us! Now we're really in trouble! C'mon!",
+	"\cCDamn, William! That was a blast!"
+};
+
+script "BoADialogue"(int who,int which)
+{
+	str message;
+	SetHudSize(320,200,1);
+	SetFont("HEADBAR");
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT,3,CR_UNTRANSLATED,160.0,24.0,8.0,2.0,2.0);
+	if(who==1)
+	{
+		SetFont("MS_DARR1");
+		message=StrParam(s:"\cEDirty Darren\n",s:darrenmessage[which]);
+	}
+	else if(who==2)
+	{
+		SetFont("MS_PRIB1");
+		message=StrParam(s:"\cEPrisoner\n",s:prisonermessage[which]);
+	}
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT,2,CR_UNTRANSLATED,21.0,16.0,999.0,2.0,999.0);
+	AmbientSound("RADIONOS",127);
+	SetHudSize(640,400,0);
+	SetFont("SMALLFONT");
+	SetHudWrapWidth(540);
+	hudmessagebold(s:message; HUDMSG_TYPEON,1,CR_GRAY,100.1,13.1,4.0,0.03);
+	delay(5*35);
+	SetHudSize(320,200,1);
+	if(who==1)
+		SetFont("MS_DARR0");
+	else if(who==2)
+		SetFont("MS_PRIB0");
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT,2,CR_UNTRANSLATED,21.0,16.0,0.0,0.0,2.0);
+}
+
+Script "AutoReload"(void)
+{
+	SetResultValue(GetCVar("autoreload"));
+}
+Script "ShellLifetime"(void)
+{
+	SetResultValue(GetCVar("casinglifetime"));
+}
+Script "RecoilAmount"(void)
+{
+	SetResultValue(GetCVar("recoilamount"));
+}
+script "WWNaziSkillCheck" (void)
+{
+	SetResultValue(GameSkill());
+}
+
+//Compass
+bool compassActive[8];
+
+int dots;		//Items to appear on compass
+int marks[50];	//Items with tids
+
+//FUNCTIONS
+function int _cos(int a)
+{
+	a%=1.0;
+	if(a<0)
+		a+=1.0;
+	if(a>0.5)
+		a=-a+1.0;
+	return cos(a);
+}
+
+function int _sin(int a)
+{
+	return _cos(a+0.25);
+}
+
+script "BoA_Compass" ENTER
+{
+	if(compassActive[playerNumber()])
+	{
+		SetHUDSize(1024,768,1);
+		int a=GetActorAngle(0);
+		int x=-_cos(a)*44/1.0,y=_sin(a)*44/1.0;
+		SetFont("COMPASS1");
+		HUDMessage(s:"N"; HUDMSG_PLAIN,0,CR_UNTRANSLATED,x * 1.0 + 85.0,y * 1.0 + 170.0,0.03);
+		HUDMessage(s:"S"; HUDMSG_PLAIN,0,CR_UNTRANSLATED,-x * 1.0 + 85.0,-y * 1.0 + 170.0,0.03);
+		HUDMessage(s:"E"; HUDMSG_PLAIN,0,CR_UNTRANSLATED,-y * 1.0 + 85.0,x * 1.0 + 170.0,0.03);
+		HUDMessage(s:"W"; HUDMSG_PLAIN,0,CR_UNTRANSLATED,y * 1.0 + 85.0,-x * 1.0 + 170.0,0.03);
+		SetFont("COMPASS");
+		HUDMessage(s:"A"; HUDMSG_PLAIN,0,CR_UNTRANSLATED,85.0,170.0,0.03);
+		for(int i=0;i<dots;i++)
+			drawdot(4000+i);
+		for(i=0;marks[i]!=0;i++)
+			drawdot(marks[i]);
+	}
+	Delay(1);
+	restart;
+}
+
+script "BoA_CompassQueue"(void)
+{
+	if(ActivatorTID())
+	{
+		int i;
+		while(marks[i]!=0)
+			i++;
+		marks[i]=ActivatorTID();
+	}
+	else
+		Thing_ChangeTID(0,4000+dots++);
+}
+
+function void drawdot(int tid)
+{
+	SetHUDSize(1024,768,1);
+	if(GetActorProperty(tid,APROP_Health)>0)
+	{
+		int dx = GetActorX(0) - GetActorX(tid),dy = GetActorY(0) - GetActorY(tid);
+		int a = GetActorAngle(0) - VectorAngle(dx, dy) - 0.25;
+		dx /= 1.0;
+		dy /= 1.0;
+		int dist = sqrt(dx*dx + dy*dy),rdist = dist / 10;
+		if(rdist > 33)
+			rdist = 33;
+		if(CheckActorClass(tid,"Akten")||CheckActorClass(tid,"AktenEisenmann")||CheckActorClass(tid,"SpearOfDestiny"))
+		{
+			SetFont("GOAL1");
+			HUDMessage(s:"A"; HUDMSG_PLAIN, 0, CR_UNTRANSLATED, (-_cos(a) * rdist / 1.0) * 1.0 + 85.0, (_sin(a) * rdist / 1.0) * 1.0 + 170.0,0.03);
+		}
+		else if(GetActorProperty(tid,APROP_RenderStyle)!=STYLE_None)
+		{
+			SetFont("GOAL2");
+			HUDMessage(s:"A"; HUDMSG_PLAIN, 0, CR_UNTRANSLATED, (-_cos(a) * rdist / 1.0) * 1.0 + 85.0, (_sin(a) * rdist / 1.0) * 1.0 + 170.0,0.03);
+		}
+		/*SetFont("SmallFont");
+		HUDMessage(i:dist / 32, s:" m"; HUDMSG_PLAIN, 0, CR_RED, 85.0, 240.1, 0.03);*/
+	}
+}
+
+//SCRIPTS
+script "BoA_Objectives"(void) //Call this script to activate and draw the compass
+{
+	if(compassActive[playerNumber()])
+		compassActive[playerNumber()]=0;
+	else
+		compassActive [playerNumber()]=1;
+}
