@@ -28,30 +28,19 @@ ACTOR NaziBerserk : Berserk replaces Berserk 17012
 	}
 }
 
-ACTOR ScubaGearPower : PowerIronFeet
-{
-	Powerup.Duration -60
-	Powerup.Color 0, 0, 255, 1.0
-}
-
-ACTOR ScubaGearGiver : CustomInventory replaces RadSuit 17017
+ACTOR ScubaGearGiver : RadSuit replaces RadSuit 17017
 {
 	//$Category Powerups (Wolf3D)
 	//$Title Scuba Gear (Radiation Suite)
 	//$Color 6
 	Height 32
-	+INVENTORY.AUTOACTIVATE
-	+INVENTORY.ALWAYSPICKUP
-	Inventory.MaxAmount 0
 	Inventory.PickupMessage "Picked up a scuba gear"
-	Inventory.PickupSound "misc/p_pkup"
+	Powerup.Duration -60
+	Powerup.Color 0,0,255,1.0
 	States
 	{
 	Spawn:
 		SCUB A -1
-		Stop
-	Pickup:
-		TNT1 A 0 A_GiveInventory("ScubaGearPower")
 		Stop
 	}
 }

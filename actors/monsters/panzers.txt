@@ -303,7 +303,7 @@ ACTOR SSTank1 11116
 	Radius 48
 	Height 96
 	Mass 0x7ffffff
-	Speed 8
+	Speed 2.66666667
 	MinMissileChance 160
 	+NOBLOODDECALS
 	+MISSILEMORE
@@ -325,28 +325,22 @@ ACTOR SSTank1 11116
 		TNK4 A 10 A_Look
 		Loop
 	See:
-		TNT1 A 0 A_PlaySound("tnk1loop",7,1,1)
-		TNK4 A 3 A_Hoof
-		TNK4 A 3 A_Chase
-		TNK4 A 3 A_Metal
-		TNK4 A 3 A_Chase
+		TNK4 A 0 A_PlaySound("tnk1loop",7,1,1)
+		TNK4 A 1 A_Chase
 		Loop
 	Missile:
-		TNT1 A 0 A_PlaySound("tnk1loop",7,1,1)
 		TNK4 A 10 A_FaceTarget
 		TNK4 A 0 A_Jump(128,"Turret")
 		TNK4 A 0 A_Jump(96,"Missile2")
 		TNK4 B 12 A_CustomMissile("PanzerRocket",64)
 		Goto See
 	Turret:
-		TNT1 A 0 A_PlaySound("tnk1loop",7,1,1)
 		TNK4 A 0 A_FaceTarget
 		TNK4 C 0 A_PlaySound("weapons/chaingun",CHAN_WEAPON)
 		TNK4 CCCC 1 BRIGHT light("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer",98,-12,random(-4,4))
-		TNK4 A 2 BRIGHT A_SentinelRefire
-		goto Turret+1
+		TNK4 A 2 BRIGHT A_MonsterRefire(30,"See")
+		Loop
 	Missile2:
-		TNT1 A 0 A_PlaySound("tnk1loop",7,1,1)
 		TNK4 B 12 A_CustomMissile("PanzerRocket",64)
 		TNK4 A 10 A_FaceTarget
 		TNK4 B 20 A_CustomMissile("PanzerRocket",64)
@@ -404,10 +398,7 @@ ACTOR SSTank2 : SSTank1 11118
 		Loop
 	See:
 		TNT1 A 0 A_PlaySound("tnk2loop",7,1,1)
-		TNK1 A 3 A_Hoof
-		TNK1 A 3 A_Chase
-		TNK1 A 3 A_Metal
-		TNK1 A 3 A_Chase
+		TNT1 A 1 A_Chase
 		Loop
 	Missile:
 		TNT1 A 0 A_PlaySound("tnk2loop",7,1,1)
@@ -421,7 +412,7 @@ ACTOR SSTank2 : SSTank1 11118
 		TNK1 C 0 A_PlaySound("weapons/chaingun",CHAN_WEAPON)
 		TNK1 CCCC 1 BRIGHT light("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer",60,16,random(-4,4))
 		TNK1 A 2 BRIGHT A_SentinelRefire
-		goto Turret+1
+		Loop
 	Death:
 		TNT1 A 0 A_StopSound(7)
 		TNT1 A 0 A_PlaySound("weapons/explode")

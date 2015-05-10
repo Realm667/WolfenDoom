@@ -14,7 +14,6 @@ actor Bubble
 	{
 	Spawn:
 		SBUB A 1
-		//fall through
 	Rise:
 		SBUB A 0 A_JumpIf(waterlevel == 0, "Death")
 		SBUB A 1 A_Jump (32, "Jiggle")

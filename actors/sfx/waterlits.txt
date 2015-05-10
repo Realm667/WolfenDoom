@@ -13,15 +13,13 @@ ACTOR UWLightGenerator1 : SwitchableDecoration 25000
 	{
 	Spawn:
 	Active:
-		TNT1 A 0
-		TNT1 A 0 A_CheckSight("Unsighted")
-		TNT1 A 2 A_SpawnItemEx("UWaterLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
-		TNT1 A 1 A_SpawnItemEx("UWaterLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
+		TNT1 A 0 NODELAY A_CheckSight("Unsighted")
+		TNT1 A 2 A_SpawnItemEx("UWaterLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
+		TNT1 A 1 A_SpawnItemEx("UWaterLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		loop
 	Unsighted:
 		TNT1 A 1
 		TNT1 A 0 A_Jump(256,"Spawn")
-		Goto Spawn
 	Inactive:
 		TNT1 A -1
 		Loop
@@ -38,10 +36,9 @@ ACTOR UWLightGenerator2 : UWLightGenerator1 25001
 	{
 	Spawn:
 	Active:
-		TNT1 A 0
-		TNT1 A 0 A_CheckSight("Unsighted")
-		TNT1 A 2 A_SpawnItemEx("ULavaLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
-		TNT1 A 1 A_SpawnItemEx("ULavaLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
+		TNT1 A 0 NODELAY A_CheckSight("Unsighted")
+		TNT1 A 2 A_SpawnItemEx("ULavaLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
+		TNT1 A 1 A_SpawnItemEx("ULavaLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		loop
 	}
 }
@@ -55,10 +52,9 @@ ACTOR UWLightGenerator3 : UWLightGenerator1 25002
 	{
 	Spawn:
 	Active:
-		TNT1 A 0
-		TNT1 A 0 A_CheckSight("Unsighted")
-		TNT1 A 2 A_SpawnItemEx("UGoreLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
-		TNT1 A 1 A_SpawnItemEx("UGoreLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
+		TNT1 A 0 NODELAY A_CheckSight("Unsighted")
+		TNT1 A 2 A_SpawnItemEx("UGoreLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
+		TNT1 A 1 A_SpawnItemEx("UGoreLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		loop
 	}
 }
@@ -72,10 +68,9 @@ ACTOR UWLightGenerator4 : UWLightGenerator1 25003
 	{
 	Spawn:
 	Active:
-		TNT1 A 0
-		TNT1 A 0 A_CheckSight("Unsighted")
-		TNT1 A 2 A_SpawnItemEx("UHazardLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
-		TNT1 A 1 A_SpawnItemEx("UHazardLShooter", 0,0,0, random(-32,32), random(-32,32), random(-32,0), random(0,32), 160)
+		TNT1 A 0 NODELAY A_CheckSight("Unsighted")
+		TNT1 A 2 A_SpawnItemEx("UHazardLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
+		TNT1 A 1 A_SpawnItemEx("UHazardLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		loop
 	}
 }
@@ -94,19 +89,16 @@ actor UWaterLShooter
 	States
 	{
 	Spawn:
-		BAL1 A 1 A_JumpIf(waterlevel == 0, "Remove")
-		BAL1 A 0 A_JumpIf(waterlevel == 1, "Remove")
-		BAL1 A 0 A_JumpIf(waterlevel == 2, "Remove")
-		loop
-	Remove:
+		BAL1 A 1 A_JumpIf(waterlevel < 3,1)
+		Loop
 		BAL1 A 1 A_Stop
-		stop
+		Stop
 	Death:
 		BAL1 CCCDE 8 A_FadeOut(0.025)
-		stop
+		Stop
 	}
 }
 
-actor ULavaLShooter : UWaterLShooter {}
-actor UGoreLShooter : UWaterLShooter {}
-actor UHazardLShooter : UWaterLShooter {}
+actor ULavaLShooter : UWaterLShooter{}
+actor UGoreLShooter : UWaterLShooter{}
+actor UHazardLShooter : UWaterLShooter{}

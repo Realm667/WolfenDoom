@@ -20,13 +20,14 @@ ACTOR Shark 8000
 	obituary "%o was shredded by a shark."
 	health 100
 	mass 120
-	speed 10
+	Speed 2.5
+	FloatSpeed 1
 	Radius 30
 	Height 30
 	seesound "shark/sight"
 	deathsound "shark/death"
 	activesound "shark/active"
-	MONSTER
+	Monster
 	+FLOORCLIP
 	+NOGRAVITY
 	+FLOAT
@@ -34,42 +35,38 @@ ACTOR Shark 8000
 	{
 	Spawn:
 		SHRK BC 10 A_Look
-		loop
+		Loop
 	See:
-		SHRK ABCB 4 A_GiveInventory("Chase_Water")
-		loop
+		SHRK A 0 A_JumpIf(waterlevel>=3,2)
+		SHRK A 0 ThrustThingZ(0,4,1,1)
+		SHRK A 1 A_Chase
+		SHRK AAA 1 A_Chase("","")
+		SHRK B 0 A_JumpIf(waterlevel>=3,2)
+		SHRK B 0 ThrustThingZ(0,4,1,1)
+		SHRK B 1 A_Chase
+		SHRK BBB 1 A_Chase("","")
+		SHRK C 0 A_JumpIf(waterlevel>=3,2)
+		SHRK C 0 ThrustThingZ(0,4,1,1)
+		SHRK C 1 A_Chase
+		SHRK CCC 1 A_Chase("","")
+		SHRK D 0 A_JumpIf(waterlevel>=3,2)
+		SHRK D 0 ThrustThingZ(0,4,1,1)
+		SHRK D 1 A_Chase
+		SHRK DDD 1 A_Chase("","")
+		Loop
 	Missile:
 		SHRK A 10 A_FaceTarget
-		SHRK A 4 A_SkullAttack
-		SHRK A 4
-		Goto Missile+2
+		SHRK A 8 A_SkullAttack
+		Wait
 	Melee:
 		SHRK A 10 A_FaceTarget
-		SHRK F 8 A_CustomMeleeAttack (random (1, 5) *5, "Chomp", "Swipe")
+		SHRK F 8 A_CustomMeleeAttack(random(1,5)*5,"Chomp","Swipe")
 		SHRK A 10
-		goto See
+		Goto See
 	Death:
-		SHRK A 0
 		SHRK A 0 A_Scream
 		SHRK AAAAAAAA 0 A_CustomMissile("Gibs1",random(20,40),0,random(0,360),2,random(-100,100))
 		stop
-	}
-}
-
-Actor Chase_Water : CustomInventory
-{
-	Inventory.MaxAmount 0
-	+Inventory.AutoActivate
-	States
-	{
-	Pickup:
-		TNT1 A 0 A_jumpif(waterlevel < 3, "Waterlimit")
-		TNT1 A 0 A_Chase
-		Stop
-	Waterlimit:
-		TNT1 A 0 ThrustThingZ(0, 4, 1, 1)
-		TNT1 A 0 A_Chase
-		Stop
 	}
 }
 

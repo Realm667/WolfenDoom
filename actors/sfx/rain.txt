@@ -18,21 +18,13 @@ Actor RainSpawner 8187
 	States
 	{
 	Spawn:
-		TNT1 A 0
-		TNT1 A 0 A_JumpIf(Args[2] > 0, "NoSound")
-		TNT1 A 0 A_JumpIf(Args[3] > 0, "Circle")
+		TNT1 A 0 NODELAY A_JumpIf(Args[2] > 0,2)
 		TNT1 A 0 A_PlaySound("Ambient/Rain",7,1,1)
-		TNT1 A 1 A_SpawnItemEx("RainDrop", Random(-Args[0], Args[0]), Random(-Args[0], Args[0]), -2, 0, 0, 0, 0, 128, Args[1])
-		Loop
-	Circle:
-		TNT1 A 1 A_SpawnItemEx("RainDrop", Random(-Args[0], Args[0]), 0, -2, 0, 0, 0, Random(0, 360), 128, Args[1])
-	NoSound:
-		TNT1 A 0 A_Jumpif(Args[3] > 0, "NoSoundCircle")
-		TNT1 A 1 A_SpawnItemEx("RainDrop", Random(-Args[0], Args[0]), Random(-Args[0], Args[0]), -2, 0, 0, 0, 0, 128, Args[1])
-		Loop
-	NoSoundCircle:
-		TNT1 A 1 A_SpawnItemEx("RainDrop", Random(-Args[0], Args[0]), 0, -2, 0, 0, 0, Random(0, 360), 128, Args[1])
-		Loop
+		TNT1 A 0 A_JumpIf(Args[3] > 0,2)
+		TNT1 A 1 A_SpawnItemEx("RainDrop",Random(-Args[0],Args[0]),Random(-Args[0],Args[0]),-2,0,0,0,0,128,Args[1])
+		Wait
+		TNT1 A 1 A_SpawnItemEx("RainDrop",Random(-Args[0],Args[0]),0,-2,0,0,0,Random(0,360),128,Args[1])
+		Wait
 	}
 }
 
@@ -50,7 +42,7 @@ Actor RainDrop
 	States
 	{
 	Spawn:
-		RNDR A 1 A_JumpIf(WaterLevel > 0, "Death")
+		RNDR A 1 A_JumpIf(WaterLevel > 0,"Death")
 		Loop
 	Death:
 		RNDR BCDEFGH 3 A_FadeOut(0.15)

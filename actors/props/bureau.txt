@@ -8,7 +8,7 @@ ACTOR BinSilver 19002
 	+SOLID
 	States
 	{
-Spawn:
+	Spawn:
 		BINS A -1
 		Stop
 	}
@@ -24,7 +24,7 @@ ACTOR Plant1 19036
 	+SOLID
 	States
 	{
-Spawn:
+	Spawn:
 		PLNT A -1
 		Stop
 	}
@@ -40,7 +40,7 @@ ACTOR Chair1 19044
 	+SOLID
 	States
 	{
-Spawn:
+	Spawn:
 		CHR1 A -1
 		Stop
 	}
@@ -56,7 +56,7 @@ ACTOR Chair2 19544
 	+SOLID
 	States
 	{
-Spawn:
+	Spawn:
 		CHR2 A -1
 		Stop
 	}
@@ -73,7 +73,7 @@ ACTOR SSUniform 19149
 	+SOLID
 	States
 	{
-Spawn:
+	Spawn:
 		SSUN A -1
 		Stop
 	}
@@ -89,7 +89,7 @@ ACTOR Uniform 19150
 	+SOLID
 	States
 	{
-Spawn:
+	Spawn:
 		SSUN B -1
 		Stop
 	}
@@ -105,7 +105,7 @@ ACTOR Cup1 19151
 	+SOLID
 	States
 	{
-Spawn:
+	Spawn:
 		CUP1 A -1
 		Stop
 	}
@@ -118,7 +118,7 @@ ACTOR Cup2 : Cup1 19152
 	//$Color 3
 	States
 	{
-Spawn:
+	Spawn:
 		CUP3 A -1
 		Stop
 	}
@@ -137,7 +137,7 @@ ACTOR CoffeeMachine 19153
 	+SHOOTABLE
 	States
 	{
-Spawn:
+	Spawn:
 		CUP2 A -1
 		Stop
 Death:
@@ -161,7 +161,7 @@ ACTOR WaterMachine 19154
 	+SHOOTABLE
 	States
 	{
-Spawn:
+	Spawn:
 		WATR A -1
 		Stop
 Death:
@@ -180,7 +180,7 @@ ACTOR Chair5 19159
 	+SOLID
 	States
 	{
-	Spawn:
+		Spawn:
 		CHR5 A -1
 		Stop
 	}
@@ -196,7 +196,7 @@ ACTOR Plant2 19160
 	+SOLID
 	States
 	{
-	Spawn:
+		Spawn:
 		PLNT B -1
 		Stop
 	}
@@ -214,7 +214,7 @@ ACTOR CeilingFan 19161
 	+SPAWNCEILING
 	States
 	{
-	Spawn:
+		Spawn:
 		CEFA ABC 4
 		Loop
 	}
@@ -230,7 +230,7 @@ ACTOR PaperBox1 19202
 	+SOLID
 	States
 	{
-	Spawn:
+		Spawn:
 		BOX1 A -1
 		Stop
 	}
@@ -243,7 +243,7 @@ ACTOR PaperBox2 : PaperBox1 19203
 	//$Color 3
 	States
 	{
-	Spawn:
+		Spawn:
 		BOX1 B -1
 		Stop
 	}
@@ -260,7 +260,7 @@ ACTOR ChanGold 19204
 	+SPAWNCEILING
 	States
 	{
-	Spawn:
+		Spawn:
 		CHGL A -1 LIGHT(BAGCLITE)
 		Stop
 	}
@@ -287,7 +287,7 @@ ACTOR flaskblueA 19205
 	DeathSound "tubes/break"
 	States
 	{
-	Spawn:
+		Spawn:
 		FLKS A -1
 		loop
 	Death:
@@ -306,7 +306,7 @@ ACTOR flaskblueB : flaskblueA 19206
 	Radius 6
 	States
 	{
-	Spawn:
+		Spawn:
 		FLKS G -1
 		loop
 	}
@@ -319,7 +319,7 @@ ACTOR flaskpurpleA : flaskblueA 19207
 	//$Color 3
 	States
 	{
-	Spawn:
+		Spawn:
 		FLKS B -1
 		loop
 	}
@@ -332,7 +332,7 @@ ACTOR flaskpurpleB : flaskblueB 19208
 	//$Color 3
 	States
 	{
-	Spawn:
+		Spawn:
 		FLKS H -1
 		loop
 	}
@@ -345,7 +345,7 @@ ACTOR flaskredA : flaskblueA 19209
 	//$Color 3
 	States
 	{
-	Spawn:
+		Spawn:
 		FLKS C -1
 		loop
 	}
@@ -358,7 +358,7 @@ ACTOR flaskredB : flaskblueB 19210
 	//$Color 3
 	States
 	{
-	Spawn:
+		Spawn:
 		FLKS I -1
 		loop
 	}
@@ -368,7 +368,7 @@ ACTOR flaskgreenA : flaskblueA
 {
 	States
 	{
-	Spawn:
+		Spawn:
 		FLKS D -1
 		loop
 	}
@@ -378,7 +378,7 @@ ACTOR flaskgreenB : flaskblueB
 {
 	States
 	{
-	Spawn:
+		Spawn:
 		FLKS J -1
 		loop
 	}
@@ -388,7 +388,7 @@ ACTOR flaskyellowA : flaskblueA
 {
 	States
 	{
-	Spawn:
+		Spawn:
 		FLKS E -1
 		loop
 	}
@@ -398,7 +398,7 @@ ACTOR flaskyellowB : flaskblueB
 {
 	States
 	{
-	Spawn:
+		Spawn:
 		FLKS K -1
 		loop
 	}
@@ -408,7 +408,7 @@ ACTOR flaskgreyA : flaskblueA
 {
 	States
 	{
-	Spawn:
+		Spawn:
 		FLKS F -1
 		loop
 	}
@@ -418,7 +418,7 @@ ACTOR flaskgreyB : flaskblueB
 {
 	States
 	{
-	Spawn:
+		Spawn:
 		FLKS L -1
 		loop
 	}
@@ -430,7 +430,7 @@ ACTOR glassblue : flaskblueA
 	Height 8
 	States
 	{
-	Spawn:
+		Spawn:
 		BEAK A -1
 		loop
 	Death:
@@ -445,7 +445,7 @@ ACTOR glasspurple : glassblue
 {
 	States
 	{
-	Spawn:
+		Spawn:
 		BEAK B -1
 		loop
 	}
@@ -455,7 +455,7 @@ ACTOR glassred : glassblue
 {
 	States
 	{
-	Spawn:
+		Spawn:
 		BEAK C -1
 		loop
 	}
@@ -465,7 +465,7 @@ ACTOR glassgreen : glassblue
 {
 	States
 	{
-	Spawn:
+		Spawn:
 		BEAK D -1
 		loop
 	}
@@ -475,7 +475,7 @@ ACTOR glassyellow : glassblue
 {
 	States
 	{
-	Spawn:
+		Spawn:
 		BEAK E -1
 		loop
 	}
@@ -485,7 +485,7 @@ ACTOR glassgrey : glassblue
 {
 	States
 	{
-	Spawn:
+		Spawn:
 		BEAK F -1
 		loop
 	}
@@ -506,7 +506,7 @@ ACTOR flaskshard1
 	+NOICEDEATH
 	States
 	{
-	Spawn:
+		Spawn:
 		TSR1 ABCD 4
 		TSR1 ABC 4
 		TSR1 D 4 A_Jump (24, "DeathA")
@@ -533,7 +533,7 @@ ACTOR flaskshard2 : flaskshard1
 {
 	States
 	{
-	Spawn:
+		Spawn:
 		TSR2 ADBC 4
 		TSR2 ADB 4
 		TSR2 C 4 A_Jump (24, "DeathA")

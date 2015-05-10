@@ -14,14 +14,11 @@ ACTOR KnightSilver 19034
 	}
 }
 
-ACTOR KnightSilver2 19038
+ACTOR KnightSilver2 : KnightSilver 19038
 {
 	//$Category Props (Wolf3D)
 	//$Title Knight (silver,blue)
 	//$Color 3
-	Radius 16
-	Height 96
-	+SOLID
 	States
 	{
 	Spawn:
@@ -143,14 +140,11 @@ ACTOR WellEmpty 19141
 	}
 }
 
-ACTOR WellWater 19142
+ACTOR WellWater : WellEmpty 19142
 {
 	//$Category Props (Wolf3D)
 	//$Title Well (water)
 	//$Color 3
-	Radius 24
-	Height 32
-	+SOLID
 	States
 	{
 	Spawn:
@@ -159,14 +153,11 @@ ACTOR WellWater 19142
 	}
 }
 
-ACTOR WellBlood 19143
+ACTOR WellBlood : WellEmpty 19143
 {
 	//$Category Props (Wolf3D)
 	//$Title Well (blood)
 	//$Color 3
-	Radius 24
-	Height 32
-	+SOLID
 	States
 	{
 	Spawn:
@@ -175,14 +166,11 @@ ACTOR WellBlood 19143
 	}
 }
 
-ACTOR BarrelWine 19144
+ACTOR BarrelWine : WellEmpty 19144
 {
 	//$Category Props (Wolf3D)
 	//$Title Barrel (wine)
 	//$Color 3
-	Radius 24
-	Height 32
-	+SOLID
 	States
 	{
 	Spawn:

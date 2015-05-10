@@ -8,50 +8,34 @@ ACTOR ModelBase
 	States
 	{
 	Spawn:
-		SMGT A 4
+		SMGT A -1
 		Loop
 	}
 }
 
-ACTOR 3dObstacle
+ACTOR 3dObject : ModelBase //nomass = nocollisions because of noblockmap
 {
-	Height 56
+	-NOBLOOD
+	+SOLID
+	+NOBLOCKMAP
+	+ACTLIKEBRIDGE
+	-NOTAUTOAIMED
+}
+
+ACTOR 3dObstacle : 3dObject
+{
 	Mass 0x7fffffff
 	Health -1
-	+SOLID
 	+NOBLOOD
-	+DROPPED
 	+NODAMAGE
 	+SHOOTABLE
-	+DONTSPLASH
 	+NOBLOODDECALS
-	+ACTLIKEBRIDGE
 	+NOTAUTOAIMED
-	States
-	{
-	Spawn:
-		SMGT A 4
-		Loop
-	}
+	-FLOORCLIP
+	-NOBLOCKMAP
 }
 
-ACTOR 3dObject //nomass = nocollisions because of noblockmap
-{
-	Height 56
-	+SOLID
-	+DROPPED
-	+FLOORCLIP
-	+NOBLOCKMAP
-	+DONTSPLASH
-	+ACTLIKEBRIDGE
-	States
-	{
-	Spawn:
-		SMGT A 4
-		Loop
-	}
-}
-	//some smart bridges
+//some smart bridges
 ACTOR 3dBridge256 : InvisibleBridge
 {Radius 256 Height 256}
 
@@ -91,7 +75,7 @@ ACTOR 3dBridge16 : InvisibleBridge
 ACTOR 3dBridge8 : InvisibleBridge
 {Radius 8 Height 24}
 
-	//das models :-) - a bit of kraftwerk here
+//das models :-) - a bit of kraftwerk here
 ACTOR ModelBeachHedgeHog : 3dObstacle 22169
 {
 	//$Category Models (Wolf3D)
@@ -130,8 +114,7 @@ ACTOR ModelIncaTruck4Wheel : 3dObstacle 22182
 		SMGT A 1
 		SMGT A 1 A_SpawnItemEx("InvisibleBridge32",-48,0,20)
 		SMGT A 1 A_SpawnItemEx("InvisibleBridge32",80,0,36)
-		SMGT A 1 A_SpawnItemEx("InvisibleBridge32",88,0,16)
-		SMGT A -1
+		SMGT A -1 A_SpawnItemEx("InvisibleBridge32",88,0,16)
 		Stop
 	}
 }
@@ -146,34 +129,25 @@ ACTOR ModelIncaTrain : ModelBase 22214
 	+NOGRAVITY
 }
 
-ACTOR ModelRailBoxcar : ModelBase 22225
+ACTOR ModelRailBoxcar : ModelIncaTrain 22225
 {
 	//$Category Models (Wolf3D)
 	//$Title Train (boxcar)
 	//$Color 3
-	Radius 4
-	Height 4
-	+NOGRAVITY
 }
 
-ACTOR ModelRailBoxcar2 : ModelBase 20154
+ACTOR ModelRailBoxcar2 : ModelIncaTrain 20154
 {
 	//$Category Models (Wolf3D)
 	//$Title Train (boxcar,kz)
 	//$Color 3
-	Radius 4
-	Height 4
-	+NOGRAVITY
 }
 
-ACTOR ModelRailTanker : ModelBase 22226
+ACTOR ModelRailTanker : ModelIncaTrain 22226
 {
 	//$Category Models (Wolf3D)
 	//$Title Train (tanker)
 	//$Color 3
-	Radius 4
-	Height 4
-	+NOGRAVITY
 }
 
 ACTOR ModelSandBagCurve : ModelBase 22218
@@ -188,8 +162,7 @@ ACTOR ModelSandBagCurve : ModelBase 22218
 	Spawn:
 		SMGT A 1
 		SMGT A 1 A_SpawnItemEx("3dBridge16",0,-16,0)
-		SMGT A 1 A_SpawnItemEx("3dBridge16",0,16,0)
-		SMGT A -1
+		SMGT A -1 A_SpawnItemEx("3dBridge16",0,16,0)
 		Stop
 	}
 }
@@ -208,7 +181,6 @@ ACTOR WaterTower001 : ModelBase 20133
 	//$Category Models (Wolf3D)
 	//$Title Watertower
 	//$Color 3
-	Radius 20
 }
 
 ACTOR Tent : ModelBase 20134
@@ -216,7 +188,6 @@ ACTOR Tent : ModelBase 20134
 	//$Category Models (Wolf3D)
 	//$Title Tent
 	//$Color 3
-	Radius 20
 }
 
 ACTOR FighterM109B : ModelBase 20135
@@ -224,7 +195,6 @@ ACTOR FighterM109B : ModelBase 20135
 	//$Category Models (Wolf3D)
 	//$Title FighterM109B
 	//$Color 3
-	Radius 20
 }
 
 ACTOR BomberVTOL3 : ModelBase 20136
@@ -232,7 +202,6 @@ ACTOR BomberVTOL3 : ModelBase 20136
 	//$Category Models (Wolf3D)
 	//$Title BomberVTOL3
 	//$Color 3
-	Radius 20
 }
 
 ACTOR Submarine : ModelBase 20137
@@ -240,7 +209,6 @@ ACTOR Submarine : ModelBase 20137
 	//$Category Models (Wolf3D)
 	//$Title Submarine
 	//$Color 3
-	Radius 20
 }
 
 ACTOR Vidcam : 3dObstacle 20138 //ModelBase 20138
@@ -259,12 +227,8 @@ ACTOR FighterM109B_Flight : ModelBase
 	Radius 1
 	SpawnID 160
 	+NOGRAVITY
-	-BRIGHT
 	States
 	{
-	Spawn:
-		SMGT A 4
-		Loop
 	Death:
 		TNT1 A -1
 		Stop
@@ -272,7 +236,6 @@ ACTOR FighterM109B_Flight : ModelBase
 }
 
 ACTOR FighterM109B_Flight_Fog : FighterM109B_Flight {SpawnID 161}
-
 
 ACTOR ModelIncaTruck4Wheel_US : 3dObstacle 20143 //ModelBase 20143
 {
@@ -287,8 +250,7 @@ ACTOR ModelIncaTruck4Wheel_US : 3dObstacle 20143 //ModelBase 20143
 		SMGT A 1
 		SMGT A 1 A_SpawnItemEx("InvisibleBridge32",-48,0,20)
 		SMGT A 1 A_SpawnItemEx("InvisibleBridge32",80,0,36)
-		SMGT A 1 A_SpawnItemEx("InvisibleBridge32",88,0,16)
-		SMGT A -1
+		SMGT A -1 A_SpawnItemEx("InvisibleBridge32",88,0,16)
 		Stop
 	}
 }

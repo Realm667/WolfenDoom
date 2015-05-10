@@ -34,15 +34,14 @@ Actor FloatingCinder
 	States
 	{
 	Spawn:
-		EMBR A 0
-		EMBR A 0 A_SetScale(FRandom(0.03, 0.06))
-		TNT1 A 0 A_Jump(80, 8)
-		TNT1 A 0 A_Jump(80, 6)
-		TNT1 A 0 A_Jump(80, 4)
-		TNT1 A 0 A_Jump(80, 2)
-		EMBR AAAAAAAAAAAAAAAAAAAAAAAA 8 Bright
+		EMBR A 0 NODELAY A_SetScale(FRandom(0.03, 0.06))
+		TNT1 A 0 A_Jump(80,8)
+		TNT1 A 0 A_Jump(80,6)
+		TNT1 A 0 A_Jump(80,4)
+		TNT1 A 0 A_Jump(80,2)
+		EMBR AAAAAAAAAAAAAAAAAAAAAAAA 8 BRIGHT
 	Death:
-		EMBR A 1 Bright A_FadeOut(0.06)
+		EMBR A 1 BRIGHT A_FadeOut(0.06)
 		Loop
 	}
 }

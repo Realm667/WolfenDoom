@@ -12,9 +12,7 @@ Actor CloudSpawner 10000
 	States
 	{
 	Spawn:
-	Active:
-		TNT1 A 0
-		TNT1 A 0 A_JumpIf(Args[4] == 1, "Tan")
+		TNT1 A 0 NODELAY A_JumpIf(Args[4] == 1, "Tan")
 		TNT1 A 0 A_JumpIf(Args[4] > 1, "Red")
 	Grey:
 		TNT1 A 0 A_JumpIf(Args[3] == 1, "SmallGrey")
@@ -67,9 +65,6 @@ Actor CloudSpawner 10000
 	LargeRed:
 		TNT1 A 30 A_SpawnItemEx("LargeCloudRed", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
 		Loop
-	Inactive:
-		TNT1 A -1
-		Loop
 	}
 }
 
@@ -93,7 +88,7 @@ Actor MiniCloudGrey
 	Death:
 		CLFX AAAAAA 10 A_FadeOut(0.1)
 		TNT1 A 1
-	Stop
+		Stop
 	}
 }
 

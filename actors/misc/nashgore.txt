@@ -4,13 +4,13 @@ actor NashGore_Blood : Blood replaces Blood
 	{
 	Spawn:
 		BLUD C 8
-		BLUD B 8 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
+		BLUD B 8 A_SpawnItemEx("NashGore_FlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
 		BLUD A 8
 		stop
 	}
 }
 
-actor NashGore_Bloodsplatter : NashGore_Blood replaces Bloodsplatter {}
+actor NashGore_Bloodsplatter : NashGore_Blood replaces Bloodsplatter{}
 
 actor NashGore_FlyingBlood
 {
@@ -80,7 +80,7 @@ actor ScorpionBlood : NashGore_Blood
 	{
 	Spawn:
 		BLUD C 8
-		BLUD B 8 A_SpawnItemEx("ScorpionFlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
+		BLUD B 8 A_SpawnItemEx("ScorpionFlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
 		BLUD A 8
 		stop
 	}
@@ -96,7 +96,7 @@ actor ScorpionFlyingBlood : NashGore_FlyingBlood
 		FBLD AABBCCDD 2 NODELAY A_SpawnItem("ScorpionFlyingBloodTrail",0,0,0,1)
 		Loop
 	Crash:
-		TNT1 A 1 A_SpawnItem("ScorpionBloodSpot",0,0,0,1)
+		TNT1 A 1 A_SpawnItemEx("ScorpionBloodSpot",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION)
 		stop
 	}
 }
@@ -120,7 +120,7 @@ actor BScorpionBlood : NashGore_Blood
 	{
 	Spawn:
 		BLUD C 8
-		BLUD B 8 A_SpawnItemEx("ScorpionFlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
+		BLUD B 8 A_SpawnItemEx("ScorpionFlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
 		BLUD A 8
 		stop
 	}
@@ -132,10 +132,10 @@ actor BScorpionFlyingBlood : NashGore_FlyingBlood
 	States
 	{
 	Spawn:
-		FBLD AABBCCDD 2 NODELAY A_SpawnItem("BScorpionFlyingBloodTrail",0,0,0,1)
+		FBLD AABBCCDD 2 NODELAY A_SpawnItemEx("BScorpionFlyingBloodTrail",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION)
 		loop
 	Crash:
-		TNT1 A 1 A_SpawnItem("ScorpionBloodSpot",0,0,0,1)
+		TNT1 A 1 A_SpawnItemEx("ScorpionBloodSpot",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION)
 		stop
 	}
 }
