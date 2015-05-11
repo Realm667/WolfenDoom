@@ -1,0 +1,107 @@
+//Base code scripts from Lasting Light by ral22 - silly workarounds by Ozymandias81
+#library "ralrun"
+#include "zcommon.acs"
+
+//Running and Stamina
+int prunning=FALSE;
+
+Script "TheStamina" ENTER
+{
+	While(TRUE)
+	{
+		While(prunning == True)
+		{
+			Delay(1);
+		}
+		If(prunning == FALSE && CheckInventory("Stamina")!=100)
+		{
+			Until(CheckInventory("Stamina")==100)
+			{
+				If(prunning == True){restart;}
+				GiveInventory("Stamina",1);
+				Delay(random(1,4));
+			}
+		}
+		Delay(1);
+	}
+}
+
+Script "TheSprint" ENTER
+{
+	int runinput;
+	ACS_NamedExecute("TheSpeed",0,100);
+	While(TRUE)
+	{
+		While(CheckInventory("Stamina")!=0)
+		{
+			runinput = GetPlayerInput(-1, INPUT_BUTTONS);
+			If(runinput & BT_SPEED && runinput & BT_FORWARD)
+			{
+				If(GetActorVelX(0)+GetActorVelY(0)!=0)
+				{
+					ACS_NamedTerminate("TheCheck",0);
+					prunning = TRUE;
+					ACS_NamedExecute("TheSpeed",0,250);
+					If(GetCvar("sprinttoggle")==FALSE)
+					{
+						TakeInventory("Stamina",random(5,10));
+					}
+					Delay(1);
+					ACS_NamedExecute("TheCheck",0);
+					If(CheckInventory("Stamina")==0){restart;}
+					Delay(1);
+				}
+				Delay(1);
+			}
+			ACS_NamedExecute("TheSpeed",0,100);
+			Delay(1);
+		}
+	Delay(1);
+	ACS_NamedExecute("TheSpeed",0,100);
+	}
+}
+
+Script "TheSpeed" (int movespeed)
+{
+	SetActorProperty(0,APROP_SPEED,movespeed*65535/100);
+}
+
+Script "TheCheck" (Void)
+{
+	Delay(100);
+	prunning = FALSE;
+}
+
+Script "TheTired" ENTER
+{
+	While(True)
+	{
+		If(CheckInventory("Stamina")<=25)
+		{
+			Until(CheckInventory("Stamina")>=25)
+			{
+				AmbientSound("player/breathing", 255);
+				Delay(50);
+			}
+		}
+		Delay(1);
+	}
+}
+
+// Functions
+Function int GetVelocity(void)
+{
+int vel;
+int x = GetActorVelX(0);
+int y = GetActorVelY(0);
+int angle = VectorAngle(x, y);
+if(((angle + 0.125) % 0.5) > 0.25)
+	{
+	vel = FixedDiv(y, Sin(angle));
+	}
+	else
+	{
+	vel = FixedDiv(x, Cos(angle));
+	}
+	return vel >> 16;
+}

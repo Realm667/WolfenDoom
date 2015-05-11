@@ -7,6 +7,10 @@ statusbar Normal // Standard Doom Status bar
 {
     drawimage "HUDBAR", -54, 152;
 
+	//AirControl & Stamina
+	drawbar "HORZAIRF", "HORZAIRE", airtime, horizontal, interpolate(2), 8, 160;
+	drawbar "HORZSTMF", "HORZSTME", stamina, horizontal, interpolate(2), 88, 160;
+
     //Ammo
     drawnumber 3, BIGFONT, untranslated, ammo1, 225, 171;
     drawnumber 3, BIGFONT, untranslated, ammo2, 225, 185;
@@ -64,6 +68,9 @@ Statusbar Automap
 
 Statusbar FullScreen, FullScreenOffsets, forcescaled
 {
+	//AirControl & Stamina
+	drawbar "VERTAIRF", "VERTAIRE", airtime, vertical, interpolate(2), 4, -174;
+	drawbar "VERTSTMF", "VERTSTME", stamina, vertical, interpolate(2), -10, -174;
 
 	//Top Left
 	drawimage "HUD_UL", 0, 0;

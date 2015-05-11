@@ -1,4 +1,9 @@
 //Player
+Actor Stamina : Inventory
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 100
+}
 Actor BoAPlayer : PlayerPawn
 {
 	Species "Player"
@@ -16,6 +21,7 @@ Actor BoAPlayer : PlayerPawn
 	player.startitem "PyrolightLoaded",25
 	player.startitem "PanzerschreckLoaded"
 	player.startitem "GrenadePickup"
+	Player.StartItem "Stamina", 100
 	Player.ViewHeight 56
 	Player.AttackZOffset 18
 	Player.DisplayName "William Blazkowicz"
