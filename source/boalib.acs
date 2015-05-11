@@ -71,6 +71,43 @@ script "WWNaziSkillCheck" (void)
 	SetResultValue(GameSkill());
 }
 
+//sprinting stamina
+int cooldown[8];
+
+script "Dashing" ENTER
+{
+	if(!CheckActorClass(0,"BoAPlayer"))
+		terminate;
+	if((GetPlayerInput(-1,INPUT_BUTTONS)&BT_SPEED)&&CheckInventory("Stamina")&&cooldown[PlayerNumber()]<=0)
+	{
+		SetActorProperty(0,APROP_SPEED,2.0);
+		TakeInventory("Stamina",1);
+	}
+	else
+	{
+		SetActorProperty(0,APROP_SPEED,1.0);
+		cooldown[PlayerNumber()]--;
+		GiveInventory("Stamina",1);
+	}
+	if(!CheckInventory("Stamina"))
+		cooldown[PlayerNumber()]=100;
+	delay(1);
+	restart;
+}
+
+Script "Exhausted" ENTER
+{
+	if(!CheckActorClass(0,"BoAPlayer"))
+		terminate;
+	while(CheckInventory("Stamina")<25)
+	{
+		PlaySound(0,"player/breathing",CHAN_VOICE);
+		Delay(50);
+	}
+	Delay(1);
+	restart;
+}
+
 //Compass
 bool compassActive[8];
 

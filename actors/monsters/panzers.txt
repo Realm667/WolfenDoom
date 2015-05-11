@@ -325,8 +325,8 @@ ACTOR SSTank1 11116
 		TNK4 A 10 A_Look
 		Loop
 	See:
-		TNK4 A 0 A_PlaySound("TKMOVE",7,1,1)
-		TNK4 A 1 A_Chase
+		"####" A 0 A_PlaySound("TKMOVE",7,1,1)
+		"####" A 1 A_Chase
 		Loop
 	Missile:
 		TNK4 A 10 A_FaceTarget
@@ -395,10 +395,6 @@ ACTOR SSTank2 : SSTank1 11118
 	{
 	Spawn:
 		TNK1 A 10 A_Look
-		Loop
-	See:
-		TNK1 A 0 A_PlaySound("TKMOVE",7,1,1)
-		TNK1 A 1 A_Chase
 		Loop
 	Missile:
 		//TNT1 A 0 A_PlaySound("TKIDLE",7,1,1)
