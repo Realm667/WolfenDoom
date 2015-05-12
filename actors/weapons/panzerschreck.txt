@@ -141,14 +141,3 @@ ACTOR PanzerRocket
 		Stop
 	}
 }
-
-ACTOR PanzerSpawner replaces BFG9000
-{
-	States
-	{
-	Spawn:
-		TNT1 A 0 NODELAY A_SpawnItemEx("Panzerschreck",0,0,0,velx,vely,velz)
-		TNT1 AAAA 0 A_SpawnItemEx("PanzerAmmo",frandom(-16,16),frandom(-16,16),0,velx,vely,velz,0,SXF_NOCHECKPOSITION)
-		Stop
-	}
-}
