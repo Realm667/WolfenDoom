@@ -588,3 +588,51 @@ ACTOR CellLight2 19341
 		Stop
 	}
 }
+
+ACTOR CastleLight1 : SwitchableDecoration 31450
+{
+	//$Category Light Sources (Wolf3D)
+	//$Title Castle Light 1
+	//$Color 11
+	Radius 16
+	Height 38
+	+SOLID
+	+SPAWNCEILING
+	+NOGRAVITY
+	+NOTAUTOAIMED
+	States
+	{
+	Spawn:
+		CLIT C -1
+		Stop
+	Active:
+		TNT1 A 0 A_PlaySound(SMSWITCH)
+		CLIT C 1 Bright Light(BOACEIL3)
+		Wait
+	Inactive:
+		CLIT C -1 A_PlaySound(SMSWITCH)
+		Stop
+	}
+}
+
+ACTOR CastleLight2 : CastleLight1 31451
+{
+	//$Category Light Sources (Wolf3D)
+	//$Title Castle Light 2
+	//$Color 11
+	Radius 16
+	Height 76
+	States
+	{
+	Spawn:
+		CLIT D -1
+		Stop
+	Active:
+		TNT1 A 0 A_PlaySound(SMSWITCH)
+		CLIT D 1 Bright Light(BOACEIL4)
+		Wait
+	Inactive:
+		CLIT D -1 A_PlaySound(SMSWITCH)
+		Stop
+	}
+}
