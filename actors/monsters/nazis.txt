@@ -255,7 +255,7 @@ ACTOR SSMP40Guard : SSGuard 12006
 ACTOR SSMP40GuardBlind : SSMP40Guard 12101
 {
 	//$Category Monsters (Wolf3D)
-	//$Title SS Guard (MP40, blind)
+	//$Title SS Guard (MP40, blind, alert)
 	//$Color 4
 	SeeSound "Nazi2/Sighted"
 	PainSound "Nazi2/Pain"
@@ -270,10 +270,11 @@ ACTOR SSMP40GuardBlind : SSMP40Guard 12101
 		SSMG N 0
 		Goto SkillCheck
 	Look:
-		"####" "#" 10 A_LookEx(0, 0, 256, 512, 90, "See")
+		SSMG A 10 A_LookEx(0, 0, 256, 0, 90, "See")
 		Loop
 	Missile:
 		SSMG EF 5 A_FaceTarget
+		SSMG G 0 A_AlertMonsters(512)
 		SSMG G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
 		SSMG G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
 		SSMG F 2 A_MonsterRefire(30,"See")

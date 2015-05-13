@@ -148,7 +148,7 @@ ACTOR CeilingLightM2 : CeilingLightM 19008
 ACTOR TableLightM : SwitchableDecoration 19009
 {
 	//$Category Light Sources (Wolf3D)
-	//$Title Table Light (middle)
+	//$Title Bureau Light 1 (middle)
 	//$Color 11
 	Radius 4
 	Height 32
@@ -167,6 +167,32 @@ ACTOR TableLightM : SwitchableDecoration 19009
 		Wait
 	Inactive:
 		TLIT A -1 A_PlaySound(SMSWITCH)
+		Stop
+	}
+}
+
+ACTOR TableLightM2 : SwitchableDecoration 19013
+{
+	//$Category Light Sources (Wolf3D)
+	//$Title Bureau Light 2 (middle)
+	//$Color 11
+	Radius 4
+	Height 32
+	+SOLID
+	+USESPECIAL
+	+NOTAUTOAIMED
+	Activation THINGSPEC_Switch
+	States
+	{
+	Spawn:
+		TLIT C -1
+		Stop
+	Active:
+		TNT1 A 0 A_PlaySound(SMSWITCH)
+		TLIT C 1 Bright Light(BOATABL1)
+		Wait
+	Inactive:
+		TLIT C -1 A_PlaySound(SMSWITCH)
 		Stop
 	}
 }
