@@ -171,3 +171,22 @@ ACTOR Pileofskulls 19111
 		Stop
 	}
 }
+
+ACTOR RandomDeadSoldier 19112
+{
+	//$Category Gore (Wolf3D)
+	//$Title Dead Soldier (random)
+	//$Color 4
+	Radius 16
+	Height 8
+	States
+	{
+	Spawn:
+		GRD2 M -1 NODELAY A_Jump(128,1)
+		PARA M -1 A_Jump(128,1)
+		SSMG M -1 A_Jump(128,1)
+		WAFF M -1 A_Jump(128,1)
+		SNIP M -1
+		Stop
+	}
+}
