@@ -252,6 +252,38 @@ ACTOR SSMP40Guard : SSGuard 12006
 	}
 }
 
+ACTOR SSMP40GuardBlind : SSMP40Guard 12101
+{
+	//$Category Monsters (Wolf3D)
+	//$Title SS Guard (MP40, blind)
+	//$Color 4
+	SeeSound "Nazi2/Sighted"
+	PainSound "Nazi2/Pain"
+	DeathSound "Nazi2/Death"
+	dropitem 9mmAmmo 192
+	dropitem MP40 64
+	dropitem GrenadePickup 16
+	Obituary "%o was plugged by an SS with an MP40."
+	States
+	{
+	Spawn:
+		SSMG N 0
+		Goto SkillCheck
+	Look:
+		"####" "#" 10 A_LookEx(0, 0, 256, 512, 90, "See")
+		Loop
+	Missile:
+		SSMG EF 5 A_FaceTarget
+		SSMG G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
+		SSMG G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",32,0,random(-8,8))
+		SSMG F 2 A_MonsterRefire(30,"See")
+		SSMG F 0 A_FaceTarget
+		Goto Missile+2
+	}
+}
+
+
+
 ACTOR WMP40Guard : MP40Guard 12005
 {
 	//$Category Monsters (Wolf3D)
