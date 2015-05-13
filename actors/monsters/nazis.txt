@@ -1953,7 +1953,7 @@ ACTOR MGTurretSoldier : MGTurret 12790
 	}
 }
 
-ACTOR EliteFlamer : Nazi 12791
+ACTOR EliteFlamer : Guard 12791
 {
 	//$Category Monsters (Wolf3D)
 	//$Title Elite Soldier (Flamer)
@@ -1969,7 +1969,6 @@ ACTOR EliteFlamer : Nazi 12791
 	+MISSILEMORE
 	MaxTargetRange 400
 	var int user_count;
-	GibHealth 30
 	States
 	{
 	Spawn:
@@ -2042,27 +2041,10 @@ ACTOR EliteFlamer : Nazi 12791
 	Raise:
 		ELTF LKJI 5
 		goto See
-	Death.Fire:
-		BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.0)
-		BURN BC 5 BRIGHT LIGHT(ITBURNS1)
-		BURN D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
-		BURN E 5 BRIGHT LIGHT(ITBURNS1)
-		BURN FGHIJ 5 BRIGHT LIGHT(ITBURNS2)
-		BURN KLMN 5 BRIGHT LIGHT(ITBURNS3)
-		BURN O 5 BRIGHT LIGHT(ITBURNS3) A_NoBlocking
-		BURN PQR 5 BRIGHT LIGHT(ITBURNS2)
-		BURN STU 5 BRIGHT LIGHT(ITBURNS1)
-		BURN V -1
-		Stop
-	XDeath:
-		SLOP ABCDEF 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
-		SLOP G 0 A_NoBlocking
-		SLOP G -1
-		Stop
 	}
 }
 
-ACTOR EliteAssaulter : Nazi 12792
+ACTOR EliteAssaulter : Guard 12792
 {
 	//$Category Monsters (Wolf3D)
 	//$Title Elite Soldier (MP40)
@@ -2077,7 +2059,6 @@ ACTOR EliteAssaulter : Nazi 12792
 	dropitem "MP40" 64
 	dropitem "GrenadePickup" 16
 	+MISSILEMORE
-	GibHealth 30
 	States
 	{
 	Spawn:
@@ -2127,37 +2108,10 @@ ACTOR EliteAssaulter : Nazi 12792
 		ELTA AABBCCDDAABBCCDDAABBCCDD 1 A_Chase
 		ELTA A 0 A_ChangeFlag("FRIGHTENED",0)
 		Goto Missile
-	Death:
-		ELTF I 5
-		ELTF J 5 A_Scream
-		ELTF K 5 A_NoBlocking
-		ELTF L 5
-		ELTF M -1
-		stop
-	Raise:
-		ELTF MLKJI 5
-		goto See
-	Death.Fire:
-		BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.0)
-		BURN BC 5 BRIGHT LIGHT(ITBURNS1)
-		BURN D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
-		BURN E 5 BRIGHT LIGHT(ITBURNS1)
-		BURN FGHIJ 5 BRIGHT LIGHT(ITBURNS2)
-		BURN KLMN 5 BRIGHT LIGHT(ITBURNS3)
-		BURN O 5 BRIGHT LIGHT(ITBURNS3) A_NoBlocking
-		BURN PQR 5 BRIGHT LIGHT(ITBURNS2)
-		BURN STU 5 BRIGHT LIGHT(ITBURNS1)
-		BURN V -1
-		Stop
-	XDeath:
-		SLOP ABCDEF 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
-		SLOP G 0 A_NoBlocking
-		SLOP G -1
-		Stop
 	}
 }
 
-ACTOR EliteSoldatRifler : Nazi 12793
+ACTOR EliteSoldatRifler : Guard 12793
 {
 	//$Category Monsters (Wolf3D)
 	//$Title Elite Soldier (Rifle)
@@ -2173,7 +2127,6 @@ ACTOR EliteSoldatRifler : Nazi 12793
 	dropitem "GrenadePickup" 16
 	dropitem "G43" 64
 	+MISSILEEVENMORE
-	GibHealth 30
 	states
 	{
 	Spawn:
@@ -2198,62 +2151,34 @@ ACTOR EliteSoldatRifler : Nazi 12793
 		ELTR DD 1 A_Chase("","")
 		Loop
 	Missile:
-		ELTR L 1 A_JumpIfCloser(1000,"ProperMissile")
+		ELTR E 0 A_JumpIfCloser(1000,"ProperMissile")
 		Goto Camping
 	ProperMissile:
-		ELTR LM 9 A_FaceTarget
-		ELTR N 0 A_PlaySound("weapons/mauser/fire",CHAN_WEAPON)
-		ELTR N 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",36,7,random(-4,4))
-		ELTR M 4
-		ELTR L 14
+		ELTR EF 9 A_FaceTarget
+		ELTR G 0 A_PlaySound("weapons/mauser/fire",CHAN_WEAPON)
+		ELTR G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",36,7,random(-4,4))
+		ELTR F 4
+		ELTR E 14
 		Goto See
 	Camping:
-		ELTR L 3 A_JumpIfCloser(540,"CampingDone")
-		ELTR OP 3
+		ELTR O 4 A_JumpIfCloser(540,"CampingDone")
+		ELTR P 6
 	CampingContinue:
-		ELTR L 0 A_JumpIfCloser(540,"CampingDone")
-		ELTR L 0 A_Jump(6,"CampingDone")
-		ELTR L 0 A_JumpIfCloser(1000,"CampingFire")
+		ELTR Q 0 A_JumpIfCloser(540,"CampingDone")
+		ELTR Q 0 A_Jump(6,"CampingDone")
+		ELTR Q 0 A_JumpIfCloser(1000,"CampingFire")
 		ELTR Q 6 A_FaceTarget
 		Loop
 	CampingFire:
-		ELTR L 0 A_JumpIfCloser(540,"CampingDone")
+		ELTR Q 0 A_JumpIfCloser(540,"CampingDone")
 		ELTR Q 10 A_FaceTarget
 		ELTR R 0 A_PlaySound("weapons/mauser/fire",CHAN_WEAPON)
 		ELTR R 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",32,5,random(-1,1))
-		ELTR Q 4
-		ELTR P 16
+		ELTR Q 20
 		Goto CampingContinue
 	CampingDone:
-		ELTR POL 2
+		ELTR QPO 2
 		Goto See
-	Death:
-		ELTR I 5
-		ELTR J 5 A_Scream
-		ELTR K 5 A_NoBlocking
-		ELTR L 5
-		ELTR M -1
-		stop
-	Raise:
-		ELTR MLKJI 5
-		goto See
-	Death.Fire:
-		BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.0)
-		BURN BC 5 BRIGHT LIGHT(ITBURNS1)
-		BURN D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
-		BURN E 5 BRIGHT LIGHT(ITBURNS1)
-		BURN FGHIJ 5 BRIGHT LIGHT(ITBURNS2)
-		BURN KLMN 5 BRIGHT LIGHT(ITBURNS3)
-		BURN O 5 BRIGHT LIGHT(ITBURNS3) A_NoBlocking
-		BURN PQR 5 BRIGHT LIGHT(ITBURNS2)
-		BURN STU 5 BRIGHT LIGHT(ITBURNS1)
-		BURN V -1
-		Stop
-	XDeath:
-		SLOP ABCDEF 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
-		SLOP G 0 A_NoBlocking
-		SLOP G -1
-		Stop
 	}
 }
 
@@ -2287,7 +2212,7 @@ ACTOR FlyingHack : FlyingNeedle
 	}
 }
 
-actor UndeadPriest : Nazi 18921
+actor UndeadPriest : Guard 18921
 {
 	//$Category Monsters (Wolf3D)
 	//$Title Priest
@@ -2302,7 +2227,7 @@ actor UndeadPriest : Nazi 18921
 	dropitem "TrenchShotgun" 32
 	painsound "UndeadPriest/Pain"
 	deathsound "UndeadPriest/Die"
-	GibHealth 30
+	SeeSound ""
 	States
 	{
 	Spawn:
@@ -2385,23 +2310,6 @@ actor UndeadPriest : Nazi 18921
 		UNDP DDDDDD 1 A_Wander
 		UNDP A 0 A_Look
 		Loop
-	Death.Fire:
-		BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.0)
-		BURN BC 5 BRIGHT LIGHT(ITBURNS1)
-		BURN D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
-		BURN E 5 BRIGHT LIGHT(ITBURNS1)
-		BURN FGHIJ 5 BRIGHT LIGHT(ITBURNS2)
-		BURN KLMN 5 BRIGHT LIGHT(ITBURNS3)
-		BURN O 5 BRIGHT LIGHT(ITBURNS3) A_NoBlocking
-		BURN PQR 5 BRIGHT LIGHT(ITBURNS2)
-		BURN STU 5 BRIGHT LIGHT(ITBURNS1)
-		BURN V -1
-		Stop
-	XDeath:
-		SLOP ABCDEF 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
-		SLOP G 0 A_NoBlocking
-		SLOP G -1
-		Stop
 	}
 }
 
@@ -2439,66 +2347,57 @@ ACTOR Hostage : Guard 12702
 	}
 }
 
-ACTOR GeneralAllied : Hostage 12708
-{
-	//$Category Monsters (Wolf3D)
-	//$Title General Miller
-	//$Color 4
-	+USESPECIAL
-	States
-	{
-	Spawn:
-		GENR A 0
-		Goto SkillCheck
-	Pain:
-		GENR L 3
-		GENR L 3 A_Pain
-		goto See
-	Death:
-		GENR F 5
-		GENR G 5 A_Scream
-		GENR H 5 A_NoBlocking
-		GENR IJ 5
-		GENR K -1
-		stop
-	Raise:
-		GENR KJIHGF 5
-		goto See
-	}
-}
-
-ACTOR DirtyDarren : GeneralAllied 12709
+ACTOR DirtyDarren : Guard 12709
 {
 	//$Category Monsters (Wolf3D)
 	//$Title Dirty Darren
 	//$Color 4
 	Obituary "%o was shot by Dirty Darren."
 	Translation 1
+	painchance 255
+	DropItem ""
+	SeeSound ""
+	+FRIENDLY
+	+USESPECIAL
 	states
 	{
 	Spawn:
-		DARR A 0
+		DARR N 0
 		Goto SkillCheck
 	Missile:
-		"####" LM 5 A_FaceTarget
-		"####" N 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-		"####" N 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("ThompsonTracer",32,0,random(-8,8))
-		"####" M 8
-		goto See
-	Pain:
-		"####" K 3
-		"####" K 3 A_Pain
-		goto See
+		"####" EF 5 A_FaceTarget
+		"####" G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		"####" G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("ThompsonTracer",32,0,random(-8,8))
+		"####" F 8
+		"####" F 0 A_Jump(256,"See")
+		Stop
+	}
+}
+
+ACTOR GeneralAllied : DirtyDarren 12708
+{
+	//$Category Monsters (Wolf3D)
+	//$Title General Miller
+	//$Color 4
+	Obituary "%o was shot by General Miller."
+	Translation "0:0=0:0"
+	States
+	{
+	States
+	{
+	Spawn:
+		GENR O 0
+		Goto SkillCheck
 	Death:
-		"####" F 5
-		"####" G 5 A_Scream
-		"####" H 5 A_NoBlocking
-		"####" I 5
-		"####" J -1
+		GENR I 5
+		GENR J 5 A_Scream
+		GENR K 5 A_NoBlocking
+		GENR LM 5
+		GENR N -1
 		stop
 	Raise:
-		"####" JIHGF 5
-		goto See
+		GENR NMLKJI 5
+		Goto See
 	}
 }
 
@@ -2511,14 +2410,8 @@ ACTOR Marine1 : DirtyDarren 12706
 	states
 	{
 	Spawn:
-		MARN A 0
+		MARN N 0
 		Goto SkillCheck
-	Missile:
-		MARN LM 5 A_FaceTarget
-		MARN N 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-		MARN N 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("ThompsonTracer",32,0,random(-8,8))
-		MARN L 8
-		goto See
 	}
 }
 
@@ -2530,7 +2423,7 @@ ACTOR Marine2 : Marine1 12707
 	states
 	{
 	Spawn:
-		MAR2 A 0
+		MAR2 N 0
 		Goto SkillCheck
 	}
 }
