@@ -4,15 +4,13 @@ actor PuffSmoke
 	+FORCEXYBILLBOARD
 	+CLIENTSIDEONLY
 	+WINDTHRUST
-	+NOINTERACTION
 	Renderstyle Translucent
 	alpha 0.5
 	Scale 0.5
 	states
 	{
 	Spawn:
-		TNT1 A 1
-		TNT1 A 0 A_Jump(256,1,2,3)
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
 		SMK1 A 0 A_Jump(256,"End")
 		SMK2 A 0 A_Jump(256,"End")
 		SMK3 A 0 A_Jump(256,"End")

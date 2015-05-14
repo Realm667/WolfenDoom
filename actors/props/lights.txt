@@ -171,17 +171,11 @@ ACTOR TableLightM : SwitchableDecoration 19009
 	}
 }
 
-ACTOR TableLightM2 : SwitchableDecoration 19013
+ACTOR TableLightM2 : TableLightM 19013
 {
 	//$Category Light Sources (Wolf3D)
 	//$Title Bureau Light 2 (middle)
 	//$Color 11
-	Radius 4
-	Height 32
-	+SOLID
-	+USESPECIAL
-	+NOTAUTOAIMED
-	Activation THINGSPEC_Switch
 	States
 	{
 	Spawn:
@@ -197,17 +191,12 @@ ACTOR TableLightM2 : SwitchableDecoration 19013
 	}
 }
 
-ACTOR TableLightS : SwitchableDecoration 19049
+ACTOR TableLightS : TableLightM 19049
 {
 	//$Category Light Sources (Wolf3D)
 	//$Title Table Light (small)
 	//$Color 11
-	Radius 4
 	Height 16
-	+SOLID
-	+USESPECIAL
-	+NOTAUTOAIMED
-	Activation THINGSPEC_Switch
 	States
 	{
 	Spawn:
@@ -239,14 +228,11 @@ ACTOR ColumnLight 19010
 	}
 }
 
-ACTOR ColumnLight2 19762
+ACTOR ColumnLight2 : ColumnLight 19762
 {
 	//$Category Light Sources (Wolf3D)
 	//$Title Column Light (dark)
 	//$Color 11
-	Radius 8
-	Height 128
-	+SOLID
 	States
 	{
 	Spawn:
@@ -393,16 +379,11 @@ ACTOR StrobeLightBlue 12400
 	}
 }
 
-ACTOR StrobeLightGreen 12401
+ACTOR StrobeLightGreen : StrobeLightBlue 12401
 {
 	//$Category Light Sources (Wolf3D)
 	//$Title Strobe Light (green)
 	//$Color 11
-	Radius 16
-	Height 16
-	+NOGRAVITY
-	+SPAWNCEILING
-	+DONTSPLASH
 	States
 	{
 	Spawn:
@@ -437,16 +418,11 @@ ACTOR StrobeLightRed : SwitchableDecoration 12402
 	}
 }
 
-ACTOR StrobeLightYellow : SwitchableDecoration 12403
+ACTOR StrobeLightYellow : StrobeLightRed 12403
 {
 	//$Category Light Sources (Wolf3D)
 	//$Title Strobe Light (yellow)
 	//$Color 11
-	Radius 16
-	Height 16
-	+NOGRAVITY
-	+SPAWNCEILING
-	+DONTSPLASH
 	States
 	{
 	Spawn:
@@ -455,13 +431,13 @@ ACTOR StrobeLightYellow : SwitchableDecoration 12403
 		Loop
 	Active:
 		STRY A 0 A_SpawnItem ("StrobeEmitterYellow")
-		Spin:
+	Spin:
 		STRY DCBA 4 BRIGHT
 		Loop
 	}
 }
 
-	//ROTATING EMITTERS
+//ROTATING EMITTERS
 ACTOR StrobeEmitterBlue
 {
 	Radius 16
@@ -480,13 +456,8 @@ ACTOR StrobeEmitterBlue
 	}
 }
 
-ACTOR StrobeEmitterGreen
+ACTOR StrobeEmitterGreen : StrobeEmitterBlue
 {
-	Radius 16
-	Height 16
-	+NOGRAVITY
-	+SPAWNCEILING
-	+DONTSPLASH
 	States
 	{
 	Spawn:
@@ -498,13 +469,8 @@ ACTOR StrobeEmitterGreen
 	}
 }
 
-ACTOR StrobeEmitterRed
+ACTOR StrobeEmitterRed : StrobeEmitterBlue
 {
-	Radius 16
-	Height 16
-	+NOGRAVITY
-	+SPAWNCEILING
-	+DONTSPLASH
 	States
 	{
 	Spawn:
@@ -516,13 +482,8 @@ ACTOR StrobeEmitterRed
 	}
 }
 
-ACTOR StrobeEmitterYellow
+ACTOR StrobeEmitterYellow : StrobeEmitterBlue
 {
-	Radius 16
-	Height 16
-	+NOGRAVITY
-	+SPAWNCEILING
-	+DONTSPLASH
 	States
 	{
 	Spawn:
@@ -625,7 +586,6 @@ ACTOR CastleLight1 : SwitchableDecoration 31450
 	+SOLID
 	+SPAWNCEILING
 	+NOGRAVITY
-	+NOTAUTOAIMED
 	States
 	{
 	Spawn:
@@ -646,7 +606,6 @@ ACTOR CastleLight2 : CastleLight1 31451
 	//$Category Light Sources (Wolf3D)
 	//$Title Castle Light 2
 	//$Color 11
-	Radius 16
 	Height 76
 	States
 	{

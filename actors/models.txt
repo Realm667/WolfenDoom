@@ -1,10 +1,8 @@
 ACTOR ModelBase
 {
 	Height 56
-	+NOBLOOD
 	+FLOORCLIP
 	+DONTSPLASH
-	+NOTAUTOAIMED
 	States
 	{
 	Spawn:
@@ -15,11 +13,9 @@ ACTOR ModelBase
 
 ACTOR 3dObject : ModelBase //nomass = nocollisions because of noblockmap
 {
-	-NOBLOOD
 	+SOLID
 	+NOBLOCKMAP
 	+ACTLIKEBRIDGE
-	-NOTAUTOAIMED
 }
 
 ACTOR 3dObstacle : 3dObject

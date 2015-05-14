@@ -14,14 +14,27 @@ ACTOR BarrelLay 19061
 	}
 }
 
-ACTOR soundbarrel 19096
+ACTOR radioactivebarrel 19198
 {
 	//$Category Props (Wolf3D)
-	//$Title Barrel (wih sound)
+	//$Title Barrel (nosound)
 	//$Color 3
 	radius 8
 	height 29
 	+solid
+	states
+	{
+	Spawn:
+		BARR ABCD 4
+		loop
+	}
+}
+
+ACTOR soundbarrel : radioactivebarrel 19096
+{
+	//$Category Props (Wolf3D)
+	//$Title Barrel (wih sound)
+	//$Color 3
 	states
 	{
 	Spawn:
@@ -44,22 +57,6 @@ ACTOR emptybarrel 19197
 	Spawn:
 		BARR E -1
 		stop
-	}
-}
-
-ACTOR radioactivebarrel 19198
-{
-	//$Category Props (Wolf3D)
-	//$Title Barrel (nosound)
-	//$Color 3
-	radius 8
-	height 29
-	+solid
-	states
-	{
-	Spawn:
-		BARR ABCD 4
-		loop
 	}
 }
 

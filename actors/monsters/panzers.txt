@@ -3,16 +3,13 @@ ACTOR TankSmoke : PuffSmoke //connections with GuardSoul smoke
 {
 	Radius 1
 	Height 1
-	RenderStyle Translucent
 	Scale 5
 	Speed 3
-	Gravity 0
-	+MISSILE
-	+NOBLOCKMAP
-	+NOTELEPORT
+	Projectile
+	-DROPOFF
+	-ACTIVATEIMPACT
+	-ACTIVATEPCROSS
 	+DONTSPLASH
-	+MISSILEMORE
-	+MISSILEEVENMORE
 }
 
 //Ka-Boom from Russian Overkill by PillowBlaster - Tweaked by Ozymandias81
@@ -20,15 +17,13 @@ ACTOR KaBoom
 {
 	Scale 2
 	Renderstyle Add
-	DamageType "Enemy"
 	PROJECTILE
 	+NOINTERACTION
-	+NOGRAVITY
 	States
 	{
 	Spawn:
 		BFE1 ABCDE 2 Bright
-		BFE1 FGHI 2 Bright A_Explode(75,128,1,1)
+		BFE1 FGHI 2 Bright A_Explode(75,128)
 		BFE1 JKL 2 Bright
 		Stop
 	}
@@ -315,7 +310,7 @@ ACTOR SSTank1 11116
 	+NOBLOOD
 	+SOLID
 	Monster
-	Obituary "%o was disintegrated by a Tank missile."
+	Obituary "%o was disintegrated by a tank shell."
 	Species Nazi
 	MaxStepHeight 32
 	States
@@ -389,7 +384,7 @@ ACTOR SSTank2 : SSTank1 11118
 	//$Title Tank 2
 	//$Color 4
 	Health 4000
-	Speed 7
+	Speed 2.33333333
 	States
 	{
 	Spawn:

@@ -182,10 +182,11 @@ ACTOR RandomDeadSoldier 19112
 	States
 	{
 	Spawn:
-		GRD2 M -1 NODELAY A_Jump(128,1)
-		PARA M -1 A_Jump(128,1)
-		SSMG M -1 A_Jump(128,1)
-		WAFF M -1 A_Jump(128,1)
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5)
+		GRD2 M -1
+		PARA M -1
+		SSMG M -1
+		WAFF M -1
 		SNIP M -1
 		Stop
 	}

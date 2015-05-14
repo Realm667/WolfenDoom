@@ -19,11 +19,11 @@ ACTOR ToiletShootable 19001
 		TOIL Z -1
 		Stop
 	Death:
-		TOIL A 4 A_Scream
-		TOIL BCD 4
+		TOIL A 2 A_Scream
+		TOIL BC 2
 	Broken:
-		TOIL D 4 A_PlaySound ("toilet/broken", 0, 1.0, 1, 5)
-		TOIL EFG 4
+		TOIL D 2 A_PlaySound ("toilet/broken", 0, 1.0, 1, 5)
+		TOIL EFG 2
 		Loop
 	}
 }
