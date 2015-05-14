@@ -1,0 +1,47 @@
+ACTOR Electricity1 : SwitchableDecoration 19066			
+{
+	//$Category Hazards (Wolf3D)
+	//$Title Electricity (large)
+	//$Color 3
+	Radius 16
+	Height 128
+	+BUMPSPECIAL
+	States
+	{
+	Spawn:
+	Inactive:
+		TNT1 A 0 Thing_SetSpecial(0,0,0,0,0)
+		TNT1 A 0 A_UnSetSolid
+		TNT1 A 2
+		Loop
+	Active:
+		ELEC A 0 Thing_SetSpecial(0,73,200,22,0)
+		ELEC A 0 A_SetSolid
+		ELEC ABCD 3
+		Loop
+	}
+}
+
+ACTOR Electricity2 : SwitchableDecoration 19067			
+{
+	//$Category Hazards (Wolf3D)
+	//$Title Electricity (small)
+	//$Color 3
+	Radius 16
+	Height 64
+	+BUMPSPECIAL
+	States
+	{
+	Spawn:
+	Inactive:
+		TNT1 A 0 Thing_SetSpecial(0,0,0,0,0)
+		TNT1 A 0 A_UnSetSolid
+		TNT1 A 2
+		Loop
+	Active:
+		ELEC E 0 Thing_SetSpecial(0,73,200,22,0)
+		ELEC E 0 A_SetSolid
+		ELEC EFGH 3
+		Loop
+	}
+}
