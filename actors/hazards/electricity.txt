@@ -1,4 +1,4 @@
-ACTOR Electricity1 : SwitchableDecoration 19066			
+ACTOR Electricity1 : SwitchableDecoration
 {
 	//$Category Hazards (Wolf3D)
 	//$Title Electricity (large)
@@ -22,22 +22,14 @@ ACTOR Electricity1 : SwitchableDecoration 19066
 	}
 }
 
-ACTOR Electricity2 : SwitchableDecoration 19067			
+ACTOR Electricity2 : Electricity1
 {
 	//$Category Hazards (Wolf3D)
 	//$Title Electricity (small)
 	//$Color 3
-	Radius 16
 	Height 64
-	+BUMPSPECIAL
 	States
 	{
-	Spawn:
-	Inactive:
-		TNT1 A 0 Thing_SetSpecial(0,0,0,0,0)
-		TNT1 A 0 A_UnSetSolid
-		TNT1 A 2
-		Loop
 	Active:
 		ELEC E 0 Thing_SetSpecial(0,73,200,22,0)
 		ELEC E 0 A_SetSolid

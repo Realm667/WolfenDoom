@@ -26,7 +26,7 @@ they will fly towards the sky and permanently disappear.
 A fleeing crow will cause any other crows in a nearby group to flee as well when the above conditions are met.
 */
 
-ACTOR CrowWander1L 8881 //Wandering version. Flees when player gets close and reacts to weapon fire. Faces left.
+ACTOR CrowWander1L //Wandering version. Flees when player gets close and reacts to weapon fire. Faces left.
 {
 	//$Category Critters (Wolf3D)
 	//$Title Crow (left,wander,proxflee,reactsweapon)
@@ -146,7 +146,7 @@ ACTOR CrowWander1L 8881 //Wandering version. Flees when player gets close and re
 	}
 }
 
-ACTOR CrowWander1R : CrowWander1L 8882 //Wandering version. Flees when player gets close and reacts to weapon fire. Faces right.
+ACTOR CrowWander1R : CrowWander1L //Wandering version. Flees when player gets close and reacts to weapon fire. Faces right.
 {
 	//$Category Critters (Wolf3D)
 	//$Title Crow (right,wander,proxflee,reactsweapon)
@@ -159,7 +159,7 @@ ACTOR CrowWander1R : CrowWander1L 8882 //Wandering version. Flees when player ge
 	}
 }
 
-ACTOR CrowWander2L : CrowWander1L 8883 //Wandering version. Flees when player gets close. No reaction to weapon fire. Faces left.
+ACTOR CrowWander2L : CrowWander1L //Wandering version. Flees when player gets close. No reaction to weapon fire. Faces left.
 {
 	//$Category Critters (Wolf3D)
 	//$Title Crow (left,wander,proxflee)
@@ -172,7 +172,7 @@ ACTOR CrowWander2L : CrowWander1L 8883 //Wandering version. Flees when player ge
 	}
 }
 
-ACTOR CrowWander2R : CrowWander1R 8884 //Wandering version. Flees when player gets close. No reaction to weapon fire. Faces right.
+ACTOR CrowWander2R : CrowWander1R //Wandering version. Flees when player gets close. No reaction to weapon fire. Faces right.
 {
 	//$Category Critters (Wolf3D)
 	//$Title Crow (right,wander,proxflee)
@@ -185,7 +185,7 @@ ACTOR CrowWander2R : CrowWander1R 8884 //Wandering version. Flees when player ge
 	}
 }
 
-ACTOR CrowWander3L : CrowWander1L 8885 //Wandering version. Does not flee when player approches but reacts to weapon fire. Faces left.
+ACTOR CrowWander3L : CrowWander1L //Wandering version. Does not flee when player approches but reacts to weapon fire. Faces left.
 {
 	//$Category Critters (Wolf3D)
 	//$Color 0
@@ -200,7 +200,7 @@ ACTOR CrowWander3L : CrowWander1L 8885 //Wandering version. Does not flee when p
 	}
 }
 
-ACTOR CrowWander3R : CrowWander1R 8886 //Wandering version. Does not flee when player approches but reacts to weapon fire. Faces right.
+ACTOR CrowWander3R : CrowWander1R //Wandering version. Does not flee when player approches but reacts to weapon fire. Faces right.
 {
 	//$Category Critters (Wolf3D)
 	//$Title Crow (right,wander,reactsweapon)
@@ -215,7 +215,7 @@ ACTOR CrowWander3R : CrowWander1R 8886 //Wandering version. Does not flee when p
 	}
 }
 
-ACTOR CrowWander4L : CrowWander1L 8887 //Wandering version. Does not flee when player approches. No sounds reaction. Faces left.
+ACTOR CrowWander4L : CrowWander1L //Wandering version. Does not flee when player approches. No sounds reaction. Faces left.
 {
 	//$Category Critters (Wolf3D)
 	//$Title Crow (left,wander)
@@ -230,7 +230,7 @@ ACTOR CrowWander4L : CrowWander1L 8887 //Wandering version. Does not flee when p
 	}
 }
 
-ACTOR CrowWander4R : CrowWander1R 8888 //Wandering version. Does not flee when player approches. No sound reaction. Faces right.
+ACTOR CrowWander4R : CrowWander1R //Wandering version. Does not flee when player approches. No sound reaction. Faces right.
 {
 	//$Category Critters (Wolf3D)
 	//$Title Crow (right,wander)
@@ -251,7 +251,7 @@ STATIONARY VERSIONS
 ================================================
 */
 
-ACTOR CrowStill1L : CrowWander1L 8889 //Stationary version. Flees when player is close. Reacts to sound. Faces left.
+ACTOR CrowStill1L : CrowWander1L //Stationary version. Flees when player is close. Reacts to sound. Faces left.
 {
 	//$Category Critters (Wolf3D)
 	//$Title Crow (left,statonary,proxflee,reactsweapon)
@@ -263,7 +263,7 @@ ACTOR CrowStill1L : CrowWander1L 8889 //Stationary version. Flees when player is
 	}
 }
 
-ACTOR CrowStill1R : CrowWander1R 8890 //Stationary version. Flees when player is close. Reacts to sound. Faces right.
+ACTOR CrowStill1R : CrowWander1R //Stationary version. Flees when player is close. Reacts to sound. Faces right.
 {
 	//$Category Critters (Wolf3D)
 	//$Title Crow (right,statonary,proxflee,reactsweapon)
@@ -275,7 +275,7 @@ ACTOR CrowStill1R : CrowWander1R 8890 //Stationary version. Flees when player is
 	}
 }
 
-ACTOR CrowStill2L : CrowWander2L 8891 //Stationary version. Flees when player is close. No sound reaction. Faces left.
+ACTOR CrowStill2L : CrowWander2L //Stationary version. Flees when player is close. No sound reaction. Faces left.
 {
 	//$Category Critters (Wolf3D)
 	//$Title Crow (left,statonary,proxflee)
@@ -287,7 +287,7 @@ ACTOR CrowStill2L : CrowWander2L 8891 //Stationary version. Flees when player is
 	}
 }
 
-ACTOR CrowStill2R : CrowWander2R 8892 //Stationary version. Flees when player is close. No sound reaction. Faces right.
+ACTOR CrowStill2R : CrowWander2R //Stationary version. Flees when player is close. No sound reaction. Faces right.
 {
 	//$Category Critters (Wolf3D)
 	//$Title Crow (right,statonary,proxflee)
@@ -299,7 +299,7 @@ ACTOR CrowStill2R : CrowWander2R 8892 //Stationary version. Flees when player is
 	}
 }
 
-ACTOR CrowStill3L : CrowWander3L 8893 //Stationary version. Does not flee when player is close. Reacts to sound. Faces left.
+ACTOR CrowStill3L : CrowWander3L //Stationary version. Does not flee when player is close. Reacts to sound. Faces left.
 {
 	//$Category Critters (Wolf3D)
 	//$Title Crow (left,statonary,reactsweapon)
@@ -311,7 +311,7 @@ ACTOR CrowStill3L : CrowWander3L 8893 //Stationary version. Does not flee when p
 	}
 }
 
-ACTOR CrowStill3R : CrowWander3R 8894 //Stationary version. Flees when player is close. No sound reaction. Faces right.
+ACTOR CrowStill3R : CrowWander3R //Stationary version. Flees when player is close. No sound reaction. Faces right.
 {
 	//$Category Critters (Wolf3D)
 	//$Title Crow (right,statonary,reactsweapon)
@@ -323,7 +323,7 @@ ACTOR CrowStill3R : CrowWander3R 8894 //Stationary version. Flees when player is
 	}
 }
 
-ACTOR CrowStill4L : CrowWander4L 8895 //Stationary version. Does not flee when player is close. No sound reaction. Faces left.
+ACTOR CrowStill4L : CrowWander4L //Stationary version. Does not flee when player is close. No sound reaction. Faces left.
 {
 	//$Category Critters (Wolf3D)
 	//$Title Crow (left,statonary)
@@ -335,7 +335,7 @@ ACTOR CrowStill4L : CrowWander4L 8895 //Stationary version. Does not flee when p
 	}
 }
 
-ACTOR CrowStill4R : CrowWander4R 8896 //Stationary version. Does not flee when player is close. No sound reaction. Faces right.
+ACTOR CrowStill4R : CrowWander4R //Stationary version. Does not flee when player is close. No sound reaction. Faces right.
 {
 	//$Category Critters (Wolf3D)
 	//$Title Crow (right,statonary)
