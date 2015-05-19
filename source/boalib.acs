@@ -101,7 +101,8 @@ Script "Exhausted" ENTER
 		terminate;
 	while(CheckInventory("Stamina")<25)
 	{
-		PlaySound(0,"player/breathing",CHAN_VOICE);
+		if(GetActorProperty(0,APROP_WATERLEVEL)<3)
+			PlaySound(0,"player/breathing",CHAN_VOICE);
 		Delay(50);
 	}
 	Delay(1);
