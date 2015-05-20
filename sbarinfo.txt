@@ -7,9 +7,9 @@ statusbar Normal // Standard Doom Status bar
 {
     drawimage "HUDBAR", -54, 152;
 
-	//AirControl & Stamina
-	drawbar "HORZAIRF", "HORZAIRE", airtime, horizontal, interpolate(2), 8, 160;
-	drawbar "HORZSTMF", "HORZSTME", stamina, horizontal, interpolate(2), 88, 160;
+    //AirControl & Stamina
+    drawbar "HORZAIRF", "HORZAIRE", airtime, horizontal, interpolate(2), 36, 160;
+    drawbar "HORZSTMF", "HORZSTME", stamina, horizontal, interpolate(2), 88, 160;
 
     //Ammo
     drawnumber 3, BIGFONT, untranslated, ammo1, 225, 171;
@@ -80,14 +80,14 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 	drawstring "THREEFIV", untranslated, time, 14, 21, 1, alignment(left);
 
 	//Top Right
-	drawimage "HUD_UR", -29, 0;
+	drawimage "HUD_UR", -66, 0;
 	//Keys
-	drawswitchableimage "BoASilverKey", "nullimage", "STKEYS0", -13, 11;
-	drawswitchableimage "BoASilverSkelKey", "nullimage", "STKEYS3", -13, 21;
-	drawswitchableimage "BoAGoldKey", "nullimage", "STKEYS1", -13, 31;
-	drawswitchableimage "BoAGoldSkelKey", "nullimage", "STKEYS4", -13, 41;
-	drawswitchableimage "BoABronzeKey", "nullimage", "STKEYS2", -13, 51;
-	drawswitchableimage "BoABronzeSkelKey", "nullimage", "STKEYS5", -13, 61;
+	drawswitchableimage "BoASilverKey", "nullimage", "STKEYS0", -14, 9;
+	drawswitchableimage "BoASilverSkelKey", "nullimage", "STKEYS3", -14, 19;
+	drawswitchableimage "BoAGoldKey", "nullimage", "STKEYS1", -24, 9;
+	drawswitchableimage "BoAGoldSkelKey", "nullimage", "STKEYS4", -24, 19;
+	drawswitchableimage "BoABronzeKey", "nullimage", "STKEYS2", -34, 9;
+	drawswitchableimage "BoABronzeSkelKey", "nullimage", "STKEYS5", -34, 19;
 
 	//Bottom Left
 	drawimage "HUD_BL", 0, -53;
