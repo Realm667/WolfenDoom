@@ -185,6 +185,8 @@ ACTOR wintertreespawner : RandomSpawner
 	DropItem "winterE"
 	DropItem "winterF"
 	DropItem "winterG"
+	DropItem "winterH"
+	DropItem "winterI"
 }
 
 ACTOR winterA
@@ -271,6 +273,32 @@ ACTOR winterG
 	{
 	Spawn:
 		WINT G -1
+		Stop
+	}
+}
+
+ACTOR winterH
+{
+	Radius 25
+	Height 130
+	+SOLID
+	States
+	{
+	Spawn:
+		WINT H -1
+		Stop
+	}
+}
+
+ACTOR winterI
+{
+	Radius 25
+	Height 130
+	+SOLID
+	States
+	{
+	Spawn:
+		WINT I -1
 		Stop
 	}
 }

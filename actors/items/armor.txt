@@ -48,3 +48,20 @@ Actor LeatherJacket : BasicArmorPickup
 		loop
 	}
 }
+
+ACTOR Stahlhelm : BasicArmorBonus
+{
+  Radius 20
+  Height 16
+  Inventory.PickupMessage "$GOTARMBONUS" // "Picked up a Stahlhelm."
+  Inventory.Icon "STALA0"
+  Armor.SavePercent 33.335
+  Armor.SaveAmount 1
+  Armor.MaxSaveAmount 100
+  States
+  {
+  Spawn:
+    STAL A -1
+    Loop
+  }
+}
