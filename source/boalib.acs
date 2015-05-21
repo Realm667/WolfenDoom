@@ -97,7 +97,7 @@ script "Dashing" ENTER
 
 Script "Exhausted" ENTER
 {
-	if(!CheckActorClass(0,"BoAPlayer"))
+	if(!CheckActorClass(0,"BoAPlayer")||GameType()==GAME_TITLE_MAP)
 		terminate;
 	while(CheckInventory("Stamina")<25)
 	{
@@ -201,4 +201,31 @@ script "BoA_Objectives"(void) //Call this script to activate and draw the compas
 		compassActive[playerNumber()]=0;
 	else
 		compassActive [playerNumber()]=1;
+}
+
+script "UnderwaterBubbles" ENTER
+{
+	if(GetActorProperty(0,APROP_WATERLEVEL)>=3)
+		SpawnForced("PlayerBubble",GetActorX(0)+random(4,8),GetActorY(0),GetActorZ(0)+random(48,52),0,random(0,255));
+	delay(7);
+	restart;
+}
+
+str BossHealth[11] =
+{
+	"HEALTH00","HEALTH10","HEALTH20","HEALTH30","HEALTH40","HEALTH50",
+	"HEALTH60","HEALTH70","HEALTH80","HEALTH90","HEALTHMX"
+};
+script "BossHealth"(int tid,int maxhealth)
+{
+	SetHudSize(320,200,1);
+	while(GetActorProperty(tid,APROP_Health)>0)
+	{
+		SetFont("HELTHBAR");
+		hudmessagebold(s:"A"; HUDMSG_PLAIN,3,CR_UNTRANSLATED,160.0,24.0,1.0);
+		SetFont(BossHealth[FixedDiv(GetActorProperty(tid,APROP_Health),maxhealth)*10/65536]);
+		HudMessageBold(s:"A"; HUDMSG_PLAIN,1,CR_GRAY,160.0,40.0,1.0);
+		delay(35);
+	}
+	HudMessage(s:"A"; HUDMSG_PLAIN,1,CR_GRAY,160.0,12.0,1.0);
 }

@@ -29,6 +29,16 @@ actor Bubble
 	}
 }
 
+ACTOR PlayerBubble : Bubble
+{
+	States
+	{
+	Spawn:
+		SBUB A 1 NODELAY A_ChangeVelocity(0,0,random(1,3),CVF_RELATIVE)
+		Goto Rise
+	}
+}
+
 actor BubbleSpawner
 {
 	//$Category Special Effects (Wolf3D)
