@@ -32,11 +32,11 @@ maps
 			
 		}
 		
-		defaultfloortexture = "SNOW_F01";
+		defaultfloortexture = "SNOW_W04";
 		defaultceiltexture = "F_SKY1";
-		defaulttoptexture = "SNOW_W02";
-		defaultwalltexture = "SNOW_W02";
-		defaultbottomtexture = "SNOW_W02";
+		defaulttoptexture = "F_SKY1";
+		defaultwalltexture = "F_SKY1";
+		defaultbottomtexture = "F_SKY1";
 		custombrightness = 196;
 		customfloorheight = 0;
 		customceilheight = 128;
@@ -59,7 +59,7 @@ maps
 			backoffsety = 0;
 			backscalex = 100;
 			backscaley = 100;
-			gridsize = 16;
+			gridsize = 8;
 		}
 		
 		
@@ -68,10 +68,11 @@ maps
 			
 			sidedef
 			{
-				offsetx_mid = 1;
-				offsety_mid = 1;
 				offsetx_bottom = 1;
+				offsetx_mid = 1;
 				offsety_bottom = 1;
+				offsety_mid = 1;
+				offsetx_top = 1;
 				scalex_mid = 1;
 				scaley_mid = 1;
 			}
@@ -84,6 +85,8 @@ maps
 				xpanningfloor = 1;
 				ypanningceiling = 1;
 				ypanningfloor = 1;
+				rotationceiling = 1;
+				rotationfloor = 1;
 			}
 			
 		}
