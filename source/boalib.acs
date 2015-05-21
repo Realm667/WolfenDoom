@@ -216,6 +216,23 @@ str BossHealth[11] =
 	"HEALTH00","HEALTH10","HEALTH20","HEALTH30","HEALTH40","HEALTH50",
 	"HEALTH60","HEALTH70","HEALTH80","HEALTH90","HEALTHMX"
 };
+script "MiniBossHealth" ENTER
+{
+	SetHudSize(320,200,1);
+	while(GetActorProperty(0,APROP_Health)<=0)
+		delay(1);
+	int tid = UniqueTID();
+	if(PickActor(0,GetActorAngle(0),GetActorPitch(0),500.0,tid)&&CheckFlag(tid,"BOSS"))
+	{
+		SetFont("SMALLFONT");
+		HudMessageBold(s:GetActorProperty(tid,APROP_NameTag); HUDMSG_PLAIN,1,CR_GRAY,160.0,40.0,0.01);
+		SetFont(BossHealth[FixedDiv(GetActorProperty(tid,APROP_Health),GetActorProperty(tid,APROP_SpawnHealth))*10/65536]);
+		HudMessageBold(s:"A"; HUDMSG_PLAIN,10,CR_GRAY,160.0,40.0,0.01);
+		Thing_ChangeTID(tid,0);
+	}
+	delay(1);
+	restart;
+}
 script "BossHealth"(int tid,int maxhealth)
 {
 	SetHudSize(320,200,1);
@@ -223,9 +240,10 @@ script "BossHealth"(int tid,int maxhealth)
 	{
 		SetFont("HELTHBAR");
 		hudmessagebold(s:"A"; HUDMSG_PLAIN,3,CR_UNTRANSLATED,160.0,24.0,1.0);
-		SetFont(BossHealth[FixedDiv(GetActorProperty(tid,APROP_Health),maxhealth)*10/65536]);
-		HudMessageBold(s:"A"; HUDMSG_PLAIN,1,CR_GRAY,160.0,40.0,1.0);
+		SetFont("SMALLFONT");
+		HudMessageBold(s:GetActorProperty(tid,APROP_NameTag); HUDMSG_PLAIN,1,CR_GRAY,160.0,40.0,0.01);
+		SetFont(BossHealth[FixedDiv(GetActorProperty(tid,APROP_Health),GetActorProperty(tid,APROP_SpawnHealth))*10/65536]);
+		HudMessageBold(s:"A"; HUDMSG_PLAIN,10,CR_GRAY,160.0,40.0,1.0);
 		delay(35);
 	}
-	HudMessage(s:"A"; HUDMSG_PLAIN,1,CR_GRAY,160.0,12.0,1.0);
 }
