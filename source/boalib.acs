@@ -81,12 +81,13 @@ script "Dashing" ENTER
 	if((GetPlayerInput(-1,INPUT_BUTTONS)&BT_SPEED)&&CheckInventory("Stamina")&&cooldown[PlayerNumber()]<=0)
 	{
 		SetActorProperty(0,APROP_SPEED,2.0);
-		TakeInventory("Stamina",1);
+		TakeInventory("Stamina",3);
 	}
 	else
 	{
 		SetActorProperty(0,APROP_SPEED,1.0);
 		cooldown[PlayerNumber()]--;
+		delay(random(1,5));
 		GiveInventory("Stamina",1);
 	}
 	if(!CheckInventory("Stamina"))
