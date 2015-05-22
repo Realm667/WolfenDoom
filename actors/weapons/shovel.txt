@@ -3,7 +3,6 @@ ACTOR Shovel : NaziWeapon
 	//$Category Weapons (Wolf3D)
 	//$Title (1) Shovel
 	//$Color 14
-	Weapon.SlotNumber 1
 	Scale .5
 	Weapon.SelectionOrder 9999
 	Tag "The Shovel!"
@@ -91,10 +90,10 @@ ACTOR ShovelPuff
 
 ACTOR KnifeSilent : Weapon
 {
-	Weapon.SlotNumber 1
 	+FORCEPAIN
 	+WEAPON.MELEEWEAPON
 	+WEAPON.NOALERT
+	+WEAPON.WIMPY_WEAPON
 	Tag "Combat Knife"
 	Weapon.BobStyle Smooth
 	Weapon.BobSpeed 1.5
