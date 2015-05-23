@@ -219,16 +219,16 @@ str BossHealth[11] =
 };
 script "MiniBossHealth" ENTER
 {
-	SetHudSize(320,200,1);
+	SetHudSize(640,400,1);
 	while(GetActorProperty(0,APROP_Health)<=0)
 		delay(1);
 	int tid = UniqueTID();
 	if(PickActor(0,GetActorAngle(0),GetActorPitch(0),500.0,tid)&&CheckFlag(tid,"BOSS"))
 	{
 		SetFont("SMALLFONT");
-		HudMessage(s:GetActorProperty(tid,APROP_NameTag); HUDMSG_PLAIN,21,CR_GRAY,160.0,40.0,0.03);
+		HudMessage(s:GetActorProperty(tid,APROP_NameTag); HUDMSG_PLAIN,21,CR_GRAY,320.0,40.0,0.03);
 		SetFont(BossHealth[FixedDiv(GetActorProperty(tid,APROP_Health),GetActorProperty(tid,APROP_SpawnHealth))*10/65536]);
-		HudMessage(s:"A"; HUDMSG_PLAIN,20,CR_GRAY,160.0,40.0,0.03);
+		HudMessage(s:"A"; HUDMSG_PLAIN,22,CR_GRAY,320.0,40.0,0.03);
 		Thing_ChangeTID(tid,0);
 	}
 	delay(1);
@@ -236,15 +236,15 @@ script "MiniBossHealth" ENTER
 }
 script "BossHealth"(int tid,int maxhealth)
 {
-	SetHudSize(320,200,1);
+	SetHudSize(640,400,1);
 	while(GetActorProperty(tid,APROP_Health)>0)
 	{
-		SetFont("HELTHBAR");
-		hudmessagebold(s:"A"; HUDMSG_PLAIN,3,CR_UNTRANSLATED,160.0,24.0,1.0);
+		//SetFont("HELTHBAR");
+		//hudmessagebold(s:"A"; HUDMSG_PLAIN,3,CR_UNTRANSLATED,160.0,24.0,1.0);
 		SetFont("SMALLFONT");
-		HudMessageBold(s:GetActorProperty(tid,APROP_NameTag); HUDMSG_PLAIN,1,CR_GRAY,160.0,40.0,0.01);
+		HudMessageBold(s:GetActorProperty(tid,APROP_NameTag); HUDMSG_PLAIN,1,CR_GRAY,320.0,40.0,0.01);
 		SetFont(BossHealth[FixedDiv(GetActorProperty(tid,APROP_Health),GetActorProperty(tid,APROP_SpawnHealth))*10/65536]);
-		HudMessageBold(s:"A"; HUDMSG_PLAIN,10,CR_GRAY,160.0,40.0,1.0);
+		HudMessageBold(s:"A"; HUDMSG_PLAIN,10,CR_GRAY,320.0,40.0,1.0);
 		delay(35);
 	}
 }
