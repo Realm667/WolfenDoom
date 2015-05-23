@@ -701,6 +701,8 @@ ACTOR RocketMan : Nazi
 	DeathSound "Boss2/Death"
 	dropitem NebAmmoSmall
 	+LOOKALLAROUND
+	+BOSS
+	Tag "Otto Giftmacher"
 	States
 	{
 	Spawn:
@@ -934,6 +936,8 @@ ACTOR General : RocketMan replaces Archvile
 	DropItem "NebAmmoSmall" 128
 	DropItem "NebAmmoSmall" 128
 	+MISSILEEVENMORE
+	+BOSS
+	Tag "Gen. Fettgesicht"
 	States
 	{
 	Spawn:
@@ -1636,7 +1640,7 @@ ACTOR FatMan : ChairGuy
 	//$Title FatMan (Boss)
 	//$Color 4
 	+BOSS
-	Tag "Gen. Fettgesicht"
+	Tag "Gen. Schwabbelhals"
 	Obituary "%o was vaporized by a Nazi's double rocket penetration."
 	seesound "fatman/sight"
 	deathsound "fatman/death"
@@ -2199,6 +2203,8 @@ ACTOR MadCook : MadDoctor
 	//$Color 4
 	Obituary "%o was used as a delicious ingredient for his next 5-set meal"
 	Health 400
+	+BOSS
+	Tag "Heinrich Gulasch"
 	States
 	{
 	Spawn:
@@ -2210,6 +2216,16 @@ ACTOR MadCook : MadDoctor
 		COOK A 8
 		Goto See
 	}
+}
+
+Actor MadCook2 : MadCook
+{
+	//$Category Monsters (Wolf3D)
+	//$Title Cook 2 (Boss)
+	//$Color 4
+	Health 400
+	+BOSS
+	Tag "Max Gulasch"
 }
 
 ACTOR FlyingHack : FlyingNeedle
