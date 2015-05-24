@@ -33,6 +33,7 @@ Actor BoAPlayer : PlayerPawn
 	Player.WeaponSlot 5,Kar98k,G43,UMG43
 	Player.WeaponSlot 6,Pyrolight,Nebelwerfer
 	Player.WeaponSlot 7,Panzerschreck
+	Player.DamageScreenColor "ff ff ff", 1, "IceWater" 
 	Scale 1.2
 	States
 	{
@@ -93,4 +94,10 @@ ACTOR PlayerStep
 		TNT1 A 1
 		Stop
 	}
+}
+
+DamageType IceWater
+{
+    NoArmor
+    ReplaceFactor
 }
