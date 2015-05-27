@@ -53,7 +53,7 @@ script "BoADialogue"(int who,int which)
 		SetFont("MS_PRIB0");
 	hudmessagebold(s:"A"; HUDMSG_FADEINOUT,2,CR_UNTRANSLATED,21.0,16.0,0.0,0.0,2.0);
 }
-
+//Controls
 Script "AutoReload"(void)
 {
 	SetResultValue(GetCVar("autoreload"));
@@ -69,6 +69,15 @@ Script "RecoilAmount"(void)
 script "WWNaziSkillCheck" (void)
 {
 	SetResultValue(GameSkill());
+}
+//Weather
+Script "RainSwitch"(void)
+{
+	SetResultValue(GetCVar("rainswitch"));
+}
+Script "SnowSwitch"(void)
+{
+	SetResultValue(GetCVar("snowswitch"));
 }
 
 //sprinting stamina

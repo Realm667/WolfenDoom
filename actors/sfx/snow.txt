@@ -47,6 +47,7 @@ Actor SnowSpawner
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_CheckSight("Unsighted")
+		TNT1 A 0 A_JumpIf(CallACS("snowswitch")==0,"Unsighted")
 		TNT1 A 0 A_JumpIf(Args[2] > 0,"Circle")
 		TNT1 A 8 A_SpawnItemEx ("SnowParticle",Random(-Args[0],Args[0]),Random(-Args[0],Args[0]),0,frandom(-1.0,1.0),frandom(-1.0,1.0),frandom(-1.0,-3.0),0,128,Args[1])
 		Loop
