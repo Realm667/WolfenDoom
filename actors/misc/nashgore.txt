@@ -81,16 +81,7 @@ actor ScorpionFlyingBlood : NashGore_FlyingBlood
 	Spawn:
 		FBLD AABBCCDD 2 NODELAY A_SpawnItem("ScorpionFlyingBloodTrail",0,0,0,1)
 		Loop
-	Crash:
-		TNT1 A 1 A_SpawnItemEx("ScorpionBloodSpot",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION)
-		stop
 	}
-}
-
-actor ScorpionBloodSpot : NashGore_BloodSpot
-{
-	Scale 0.2
-	translation "16:47=208:223","168:191=210:224"
 }
 
 actor ScorpionFlyingBloodTrail : NashGore_FlyingBloodTrail
@@ -120,15 +111,7 @@ actor BScorpionFlyingBlood : NashGore_FlyingBlood
 	Spawn:
 		FBLD AABBCCDD 2 NODELAY A_SpawnItemEx("BScorpionFlyingBloodTrail",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION)
 		loop
-	Crash:
-		TNT1 A 1 A_SpawnItemEx("ScorpionBloodSpot",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION)
-		stop
 	}
-}
-
-actor BScorpionBloodSpot : NashGore_BloodSpot
-{
-	Scale 0.8
 }
 
 actor BScorpionFlyingBloodTrail : NashGore_FlyingBloodTrail
