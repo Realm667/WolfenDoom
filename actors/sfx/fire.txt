@@ -9,84 +9,70 @@ Actor FireSpawner : SwitchableDecoration
 	+NoClip
 	+NoBlockMap
 	+NoGravity
-	+NoSector
 	+NoInteraction
 	States
 	{
 	Spawn:
 	Active:
-		TNT1 A 0
-		TNT1 A 0 A_JumpIf(Args[1] > 0, 2)
-		TNT1 A 0 A_PlaySound("SFX/FireStart", 7)
-		TNT1 A 0 A_JumpIf(Args[0] == 1, "Medium")
-		TNT1 A 0 A_JumpIf(Args[0] > 1, "Large")
-		TNT1 A 0 A_JumpIf(Args[1] > 0, 2)
-		TNT1 A 0 A_PlaySound("SFX/FireLoop1", 6,1,1)
+		TNT1 A 0 A_JumpIf(Args[1] > 0,2)
+		TNT1 A 0 A_PlaySound("SFX/FireStart",7)
+		TNT1 A 0 A_JumpIf(Args[0] == 1,"Medium")
+		TNT1 A 0 A_JumpIf(Args[0] > 1,"Large")
+		TNT1 A 0 A_JumpIf(Args[1] > 0,2)
+		TNT1 A 0 A_PlaySound("SFX/FireLoop1",6,1,1)
 		TNT1 A 0 A_SpawnItemEx("SmallFlame")
-		TNT1 A 0 A_Jump(216, 3)
+		TNT1 A 0 A_Jump(256,1,3,4,5,6,7)
 		TNT1 A 1 A_SpawnItemEx("Flame1A")
 		TNT1 A 0 A_SpawnItemEx("Ember1")
 		Loop
-		TNT1 A 0 A_Jump(176, 2)
 		TNT1 A 1 A_SpawnItemEx("Flame1B")
 		Loop
-		TNT1 A 0 A_Jump(136, 2)
 		TNT1 A 1 A_SpawnItemEx("Flame2A")
 		Loop
-		TNT1 A 0 A_Jump(96, 2)
 		TNT1 A 1 A_SpawnItemEx("Flame2B")
 		Loop
-		TNT1 A 0 A_Jump(56, 2)
 		TNT1 A 1 A_SpawnItemEx("Flame3A")
 		Loop
 		TNT1 A 1 A_SpawnItemEx("Flame3B")
 		Loop
 	Medium:
-		TNT1 A 0 A_JumpIf(Args[1] > 0, 2)
-		TNT1 A 0 A_PlaySound("SFX/FireLoop2",6,1, 1)
+		TNT1 A 0 A_JumpIf(Args[1] > 0,2)
+		TNT1 A 0 A_PlaySound("SFX/FireLoop2",6,1,1)
 		TNT1 A 0 A_SpawnItemEx("MediumFlame")
-		TNT1 A 0 A_Jump(216, 3)
+		TNT1 A 0 A_Jump(256,1,3,4,5,6,7)
 		TNT1 A 1 A_SpawnItemEx("Flame4A")
 		TNT1 A 0 A_SpawnItemEx("Ember2")
 		Loop
-		TNT1 A 0 A_Jump(176, 2)
 		TNT1 A 1 A_SpawnItemEx("Flame4B")
 		Loop
-		TNT1 A 0 A_Jump(136, 2)
 		TNT1 A 1 A_SpawnItemEx("Flame5A")
 		Loop
-		TNT1 A 0 A_Jump(96, 2)
 		TNT1 A 1 A_SpawnItemEx("Flame5B")
 		Loop
-		TNT1 A 0 A_Jump(56, 2)
 		TNT1 A 1 A_SpawnItemEx("Flame6A")
 		Loop
 		TNT1 A 1 A_SpawnItemEx("Flame6B")
 		Loop
 	Large:
-		TNT1 A 0 A_JumpIf(Args[1] > 0, 2)
+		TNT1 A 0 A_JumpIf(Args[1] > 0,2)
 		TNT1 A 0 A_PlaySound("SFX/FireLoop3",6,1,1)
 		TNT1 A 0 A_SpawnItemEx("LargeFlame")
-		TNT1 A 0 A_Jump (216, 3)
+		TNT1 A 0 A_Jump(256,1,3,4,5,6,7)
 		TNT1 A 1 A_SpawnItemEx("Flame7A")
 		TNT1 A 0 A_SpawnItemEx("Ember2")
 		Loop
-		TNT1 A 0 A_Jump (176, 2)
 		TNT1 A 1 A_SpawnItemEx("Flame7B")
 		Loop
-		TNT1 A 0 A_Jump (136, 2)
 		TNT1 A 1 A_SpawnItemEx("Flame8A")
 		Loop
-		TNT1 A 0 A_Jump (96, 2)
 		TNT1 A 1 A_SpawnItemEx("Flame8B")
 		Loop
-		TNT1 A 0 A_Jump (56, 2)
 		TNT1 A 1 A_SpawnItemEx("Flame9A")
 		Loop
 		TNT1 A 1 A_SpawnItemEx("Flame9B")
 		Loop
 	Inactive:
-		TNT1 A 0 A_JumpIf(Args[1] > 0, 2)
+		TNT1 A 0 A_JumpIf(Args[1] > 0,2)
 		TNT1 A 0 A_PlaySound("SFX/FireDie",7)
 		TNT1 A -1 A_StopSound(6)
 		Stop
@@ -113,33 +99,35 @@ Actor MediumFlame : SmallFlame {}
 Actor LargeFlame : SmallFlame {}
 
 //Flames and particles
-Actor Flame1A
+actor Flame1A
 {
-	Height 2
-	Radius 1
-	+NoGravity
-	+NoBlockMap
-	+Missile
-	+NoInteraction
+	height 2
+	radius 1
+	+NOGRAVITY
+	+NOCLIP
+	+NOBLOCKMAP
+	+MISSILE
+	+CLIENTSIDEONLY
+	+NOINTERACTION
 	+ForceXYBillboard
 	RenderStyle Add
 	Alpha 0.8
 	Scale 0.35
-	States
+	states
 	{
 	Spawn:
 		FLM1 A 0
-		"####" A 0 ThrustThingZ(0, Random(2, 6), 0, 0)
-		"####" A 0 ThrustThing(Random(0, 255), Random(0, 1), 0, 0)
-		"####" ABCDE 2 Bright
-		"####" FFGGHHIIJJKKLL 1 Bright A_FadeOut(.05)
-		Stop
+		"####" A 0 ThrustThingZ(0,random(2,6),0,0)
+		"####" A 0 ThrustThing(random(0,255),random(0,1),0,0)
+		"####" ABCDE 2 bright
+		"####" FFGGHHIIJJKKLL 1 bright A_FadeOut(.05)
+		stop
 	}
 }
 
-Actor Flame1B : Flame1A
+actor Flame1B : Flame1A
 {
-	States
+	states
 	{
 	Spawn:
 		FLM2 A 0
@@ -147,9 +135,9 @@ Actor Flame1B : Flame1A
 	}
 }
 
-Actor Flame2A : Flame1A
+actor Flame2A : Flame1A
 {
-	States
+	states
 	{
 	Spawn:
 		FLM3 A 0
@@ -157,9 +145,9 @@ Actor Flame2A : Flame1A
 	}
 }
 
-Actor Flame2B : Flame1A
+actor Flame2B : Flame1A
 {
-	States
+	states
 	{
 	Spawn:
 		FLM4 A 0
@@ -167,9 +155,9 @@ Actor Flame2B : Flame1A
 	}
 }
 
-Actor Flame3A : Flame1A
+actor Flame3A : Flame1A
 {
-	States
+	states
 	{
 	Spawn:
 		FLM5 A 0
@@ -177,9 +165,9 @@ Actor Flame3A : Flame1A
 	}
 }
 
-Actor Flame3B : Flame1A
+actor Flame3B : Flame1A
 {
-	States
+	states
 	{
 	Spawn:
 		FLM6 A 0
@@ -194,8 +182,8 @@ Actor Flame4A : Flame1A
 	{
 	Spawn:
 		FLM1 A 0
-		"####" A 0 ThrustThingZ(0, Random(4, 12), 0, 0)
-		"####" A 0 ThrustThing(Random(0, 255), Random(0, 2), 0, 0)
+		"####" A 0 ThrustThingZ(0,Random(4,12),0,0)
+		"####" A 0 ThrustThing(Random(0,255),Random(0,2),0,0)
 		"####" ABCDE 2 Bright
 		"####" FFGGHHIIJJKKLL 1 Bright A_FadeOut(.05)
 		Stop
@@ -259,8 +247,8 @@ Actor Flame7A : Flame1A
 	{
 	Spawn:
 		FLM1 A 0
-		"####" A 0 ThrustThingZ(0, Random(8, 24), 0, 0)
-		"####" A 0 ThrustThing(Random(0, 255), Random(0, 4), 0, 0)
+		"####" A 0 ThrustThingZ(0,Random(8,24),0,0)
+		"####" A 0 ThrustThing(Random(0,255),Random(0,4),0,0)
 		"####" ABCDE 2 Bright
 		"####" FFGGHHIIJJKKLL 1 Bright A_FadeOut(.05)
 		Stop
@@ -317,18 +305,19 @@ Actor Flame9B : Flame7A
 	}
 }
 
-Actor Ember1 : Flame1A
+actor Ember1 : Flame1A
 {
-	Scale 0.1
-	States
+	Scale .1
+	states
 	{
 	Spawn:
 		EMBR A 0
-		EMBR A 0 ThrustThingZ(0, Random(4, 16), 0, 0)
-		EMBR A 0 ThrustThing(Random(0, 255), Random(0, 1), 0, 0)
+		EMBR A 0 ThrustThingZ(0,random(4,16),0,0)
+		EMBR A 0 ThrustThing(random(0,255),random(0,1),0,0)
 		EMBR A 32 Bright
-		EMBR A 2 Bright A_FadeOut(0.1)
-		Wait
+	Death:
+		EMBR A 2 Bright A_FadeOut
+		loop
 	}
 }
 
@@ -338,10 +327,9 @@ Actor Ember2 : Ember1
 	{
 	Spawn:
 		EMBR A 0
-		EMBR A 0 ThrustThingZ(0, Random(4, 16), 0, 0)
-		EMBR A 0 ThrustThing(Random(0, 255), Random(0, 1), 0, 0)
+		EMBR A 0 ThrustThingZ(0,random(4,16),0,0)
+		EMBR A 0 ThrustThing(random(0,255),random(0,1),0,0)
 		EMBR A 64 Bright
-		EMBR A 2 Bright A_FadeOut(0.1)
-		Wait
+		Goto Death
 	}
 }

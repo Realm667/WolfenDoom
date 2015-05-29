@@ -3,6 +3,7 @@
 // by Tormentor667  //
 // improved by Ceeb //
 //////////////////////
+
 Actor SnowParticle
 {
 	Radius 1
@@ -18,11 +19,10 @@ Actor SnowParticle
 	States
 	{
 	Spawn:
-		TNT1 A 0
-		TNT1 A 0 A_SetScale(frandom(0.3, 0.6))
-		SNOW AAAAAAA 2 A_FadeIn(0.1)
-		SNOW A 3
-		goto Spawn+9
+		TNT1 A 0 NODELAY A_SetScale(frandom(0.3, 0.6))
+		SNOW AAAAAAAAAAAAAA 1 A_FadeIn(0.05)
+		SNOW A -1
+		Stop
 	Death:
 		SNOW A 1 A_FadeOut(0.05)
 		Loop
