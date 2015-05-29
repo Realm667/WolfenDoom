@@ -4,7 +4,7 @@ actor NashGore_Blood : Blood replaces Blood
 	{
 	Spawn:
 		BLUD C 8
-		BLUD B 8 A_SpawnItemEx("NashGore_FlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
+		BLUD B 8 A_SpawnItemEx("NashGore_FlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,SXF_ABSOLUTEVELOCITY|SXF_NOCHECKPOSITION) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
 		BLUD A 8
 		stop
 	}
@@ -14,6 +14,7 @@ actor NashGore_Bloodsplatter : NashGore_Blood replaces Bloodsplatter{}
 
 actor NashGore_FlyingBlood
 {
+	+CLIENTSIDEONLY
 	scale 0.75
 	health 1
 	radius 8
@@ -26,11 +27,18 @@ actor NashGore_FlyingBlood
 	states
 	{
 	Spawn:
-		FBLD AABBCCDD 2 NODELAY A_SpawnItem("NashGore_FlyingBloodTrail",0,0,0,1)
+		FBLD AABBCCDD 2 NODELAY A_SpawnItemEx("NashGore_FlyingBloodTrail",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION)
 		loop
 	Crash:
-		TNT1 A 1 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
-		stop
+		TNT1 A 0 A_PlaySound("bloodsplat")
+		TNT1 A 0 A_Jump(256,1,2,3,4)
+		BSPT ABCD 0 A_Jump(256,"End")
+		// make the blood spots stay on the ground. 1500 is the default duration.
+		// Fadeout added by Zero Prophet for effect.
+	End:
+		BSPT "#" 1500
+		BSPT "#" 1 A_FadeOut(0.02)
+		Wait
 	}
 }
 
@@ -46,27 +54,6 @@ actor NashGore_FlyingBloodTrail
 	Spawn:
 		BTRL ABCD 4
 		stop
-	}
-}
-
-actor NashGore_BloodSpot
-{
-	radius 12
-	height 2
-	mass 1
-	+NOTELEPORT
-	states
-	{
-	Spawn:
-		TNT1 A 0 NODELAY A_PlaySound("bloodsplat")
-		TNT1 A 0 A_Jump(256,1,2,3,4)
-		BSPT ABCD 0 A_Jump(256,"End")
-		// make the blood spots stay on the ground. 1500 is the default duration.
-		// Fadeout added by Zero Prophet for effect.
-	End:
-		BSPT "#" 1500
-		BSPT "#" 1 A_FadeOut(0.02)
-		Wait
 	}
 }
 
