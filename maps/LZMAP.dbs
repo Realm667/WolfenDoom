@@ -22,11 +22,11 @@ maps
 			
 		}
 		
-		defaultfloortexture = "METL_G22";
+		defaultfloortexture = "TEXTURES/METL_G52.PNG";
 		defaultceiltexture = "TEXTURES/ROOF_S01.PNG";
-		defaulttoptexture = "METL_G22";
-		defaultwalltexture = "METL_G22";
-		defaultbottomtexture = "METL_G22";
+		defaulttoptexture = "TEXTURES/METL_G52.PNG";
+		defaultwalltexture = "TEXTURES/METL_G52.PNG";
+		defaultbottomtexture = "TEXTURES/METL_G52.PNG";
 		custombrightness = 196;
 		customfloorheight = 0;
 		customceilheight = 128;
@@ -49,7 +49,7 @@ maps
 			backoffsety = 0;
 			backscalex = 100;
 			backscaley = 100;
-			gridsize = 1;
+			gridsize = 2;
 		}
 		
 		
@@ -59,6 +59,7 @@ maps
 			linedef
 			{
 				arg0str = 2;
+				alpha = 1;
 			}
 			
 			
@@ -72,16 +73,20 @@ maps
 				scalex_mid = 1;
 				offsety_top = 1;
 				offsety_bottom = 1;
+				scaley_bottom = 1;
+				scaley_top = 1;
 			}
 			
 			
 			sector
 			{
-				rotationfloor = 1;
 				xpanningfloor = 1;
+				ypanningfloor = 1;
+				rotationfloor = 1;
 				xpanningceiling = 1;
 				ypanningceiling = 1;
-				ypanningfloor = 1;
+				xscalefloor = 1;
+				yscalefloor = 1;
 			}
 			
 		}
