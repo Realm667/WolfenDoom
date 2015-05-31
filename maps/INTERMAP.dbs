@@ -28,56 +28,6 @@ maps
 		defaulttoptexture = "textures/room_r00.png";
 		overridemiddletexture = false;
 		
-		fieldtypes
-		{
-			
-			sector
-			{
-				ypanningfloor = 1;
-				xpanningceiling = 1;
-				yscaleceiling = 1;
-				yscalefloor = 1;
-				ypanningceiling = 1;
-				rotationceiling = 1;
-				lightcolor = 0;
-				xpanningfloor = 1;
-				xscalefloor = 1;
-				rotationfloor = 1;
-				xscaleceiling = 1;
-			}
-			
-			
-			linedef
-			{
-				renderstyle = 2;
-				alpha = 1;
-			}
-			
-			
-			sidedef
-			{
-				offsetx_bottom = 1;
-				offsetx_top = 1;
-				scalex_bottom = 1;
-				offsety_mid = 1;
-				light = 0;
-				scaley_bottom = 1;
-				offsety_top = 1;
-				offsety_bottom = 1;
-				offsetx_mid = 1;
-				scalex_mid = 1;
-				scaley_mid = 1;
-			}
-			
-			
-			thing
-			{
-				conversation = 0;
-			}
-			
-		}
-		
-		
 		grid
 		{
 			background = "";
@@ -86,7 +36,7 @@ maps
 			backscalex = 100;
 			backscaley = 100;
 			backsource = 0;
-			gridsize = 16;
+			gridsize = 8;
 		}
 		
 		overridefloortexture = false;
@@ -102,6 +52,56 @@ maps
 		overrideceiltexture = false;
 		defaultwalltexture = "textures/room_r00.png";
 		defaultbottomtexture = "textures/room_r00.png";
+		
+		fieldtypes
+		{
+			
+			linedef
+			{
+				alpha = 1;
+				renderstyle = 2;
+			}
+			
+			
+			sidedef
+			{
+				offsetx_mid = 1;
+				offsety_mid = 1;
+				offsetx_bottom = 1;
+				offsety_bottom = 1;
+				scalex_mid = 1;
+				scaley_mid = 1;
+				offsetx_top = 1;
+				offsety_top = 1;
+				light = 0;
+				scalex_bottom = 1;
+				scaley_bottom = 1;
+			}
+			
+			
+			sector
+			{
+				xpanningceiling = 1;
+				ypanningceiling = 1;
+				rotationceiling = 1;
+				rotationfloor = 1;
+				xpanningfloor = 1;
+				ypanningfloor = 1;
+				xscaleceiling = 1;
+				xscalefloor = 1;
+				yscaleceiling = 1;
+				yscalefloor = 1;
+				lightcolor = 0;
+			}
+			
+			
+			thing
+			{
+				conversation = 0;
+			}
+			
+		}
+		
 	}
 	
 }
