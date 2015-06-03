@@ -318,13 +318,15 @@ ACTOR FlakVierling3D : 3dObstacle //ModelBase
 	Height 88
 }
 
-ACTOR Luftschiff : ModelBase
+ACTOR Luftschiff : 3dObstacle
 {
 	//$Category Models (Wolf3D)
 	//$Title Luftschiff LZ128
 	//$Color 3
-	Radius 4
-	Height 4
+	+NOGRAVITY
+	-SOLID
+	Radius 64
+	Height 64
 }
 
 ACTOR FlagWave : ModelBase
