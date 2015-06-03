@@ -629,9 +629,7 @@ ACTOR BigMutant1 : Mutant
 	BloodColor "Purple"
 	+MISSILEMORE
 	-MISSILEEVENMORE
-	dropitem "9mmAmmo" 128, 1
-	dropitem "9mmAmmo" 128, 1
-	dropitem "9mmAmmo" 128, 1 //so they will not spawn in the same place
+	dropitem "9mmAmmo", 128, 3
 	States
 	{
 	Spawn:
@@ -723,7 +721,7 @@ ACTOR BigMutant2 : BigMutant1
 	BloodColor "Purple"
 	+MISSILEMORE
 	+MISSILEEVENMORE
-	dropitem NebAmmoSmall
+	dropitem NebAmmoSmall, 128, 2
 	States
 	{
 	Spawn:
