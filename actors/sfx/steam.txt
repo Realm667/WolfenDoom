@@ -1,8 +1,18 @@
 Actor SteamSpawner : SwitchableDecoration
 {
 	//$Category Special Effects (Wolf3D)
-	//$Title Steam Spawner (arg1 dir 0up1down2for, arg2 burstbool, arg3 freq)
+	//$Title Steam Spawner
 	//$Color 12
+
+	//$Arg0 "Direction"
+	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 4 map units below the ceiling)"
+	//$Arg1 "Type"
+	//$Arg1Tooltip "Second argument chooses if it's a constant spawner, or spawns in bursts. Burst spawners use the third argument and play a different sound."
+	//$Arg3 "Frequency"
+	//$Arg3Tooltip "Third argument controls the frequency of the bursts (divided by 16. I.e, 128 will end up as 8). This is only used by the second argument."
+	//$Arg4 "Sound"
+	//$Arg4Tooltip "0 plays the sound, 1 won't play it"
+
 	Height 2
 	Radius 1
 	Mass 0

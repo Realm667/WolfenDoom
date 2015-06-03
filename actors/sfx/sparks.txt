@@ -2,8 +2,16 @@
 ACTOR WhiteSparkSpawner : SwitchableDecoration
 {
 	//$Category Special Effects (Wolf3D)
-	//$Title Spark Spawner White (arg1 dir 0up1down2forward, arg2 frequency, arg3 scriptbool)
+	//$Title Spark Spawner White
 	//$Color 12
+
+	//$Arg0 "Direction"
+	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
+	//$Arg1 "Frequency"
+	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
+	//$Arg3 "ACS-only"
+	//$Arg3Tooltip "0 spawns it automatically (using the 2nd argument for frequency), 1 makes it ACS-only"
+
 	Height 8
 	Radius 4
 	+NoBlockMap
@@ -102,8 +110,16 @@ ACTOR WhiteSparkSpawner : SwitchableDecoration
 ACTOR RedSparkSpawner : WhiteSparkSpawner
 {
 	//$Category Special Effects (Wolf3D)
-	//$Title Spark Spawner Red (arg1 dir 0up1down2forward, arg2 frequency, arg3 scriptbool)
+	//$Title Spark Spawner Red
 	//$Color 12
+
+	//$Arg0 "Direction"
+	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
+	//$Arg1 "Frequency"
+	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
+	//$Arg3 "ACS-only"
+	//$Arg3Tooltip "0 spawns it automatically (using the 2nd argument for frequency), 1 makes it ACS-only"
+
 	States
 	{
 	Spawn:
@@ -193,8 +209,15 @@ ACTOR RedSparkSpawner : WhiteSparkSpawner
 ACTOR OrangeSparkSpawner : WhiteSparkSpawner
 {
 	//$Category Special Effects (Wolf3D)
-	//$Title Spark Spawner Orange (arg1 dir 0up1down2forward, arg2 frequency, arg3 scriptbool)
+	//$Title Spark Spawner Orange
 	//$Color 12
+
+	//$Arg0 "Direction"
+	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
+	//$Arg1 "Frequency"
+	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
+	//$Arg3 "ACS-only"
+	//$Arg3Tooltip "0 spawns it automatically (using the 2nd argument for frequency), 1 makes it ACS-only"
 	States
 	{
 	Spawn:
@@ -284,8 +307,15 @@ ACTOR OrangeSparkSpawner : WhiteSparkSpawner
 ACTOR YellowSparkSpawner : WhiteSparkSpawner
 {
 	//$Category Special Effects (Wolf3D)
-	//$Title Spark Spawner Yellow (arg1 dir 0up1down2forward, arg2 frequency, arg3 scriptbool)
+	//$Title Spark Spawner Yellow
 	//$Color 12
+
+	//$Arg0 "Direction"
+	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
+	//$Arg1 "Frequency"
+	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
+	//$Arg3 "ACS-only"
+	//$Arg3Tooltip "0 spawns it automatically (using the 2nd argument for frequency), 1 makes it ACS-only"
 	States
 	{
 	Spawn:
@@ -375,8 +405,15 @@ ACTOR YellowSparkSpawner : WhiteSparkSpawner
 ACTOR GreenSparkSpawner : WhiteSparkSpawner
 {
 	//$Category Special Effects (Wolf3D)
-	//$Title Spark Spawner Green (arg1 dir 0up1down2forward, arg2 frequency, arg3 scriptbool)
+	//$Title Spark Spawner Green
 	//$Color 12
+
+	//$Arg0 "Direction"
+	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
+	//$Arg1 "Frequency"
+	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
+	//$Arg3 "ACS-only"
+	//$Arg3Tooltip "0 spawns it automatically (using the 2nd argument for frequency), 1 makes it ACS-only"
 	States
 	{
 	Spawn:
@@ -466,8 +503,15 @@ ACTOR GreenSparkSpawner : WhiteSparkSpawner
 ACTOR BlueSparkSpawner : WhiteSparkSpawner
 {
 	//$Category Special Effects (Wolf3D)
-	//$Title Spark Spawner Blue (arg1 dir 0up1down2forward, arg2 frequency, arg3 scriptbool)
+	//$Title Spark Spawner Blue
 	//$Color 12
+
+	//$Arg0 "Direction"
+	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
+	//$Arg1 "Frequency"
+	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
+	//$Arg3 "ACS-only"
+	//$Arg3Tooltip "0 spawns it automatically (using the 2nd argument for frequency), 1 makes it ACS-only"
 	States
 	{
 	Spawn:
@@ -557,8 +601,15 @@ ACTOR BlueSparkSpawner : WhiteSparkSpawner
 ACTOR PurpleSparkSpawner : WhiteSparkSpawner
 {
 	//$Category Special Effects (Wolf3D)
-	//$Title Spark Spawner Purple (arg1 dir 0up1down2forward, arg2 frequency, arg3 scriptbool)
+	//$Title Spark Spawner Purple
 	//$Color 12
+
+	//$Arg0 "Direction"
+	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
+	//$Arg1 "Frequency"
+	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
+	//$Arg3 "ACS-only"
+	//$Arg3Tooltip "0 spawns it automatically (using the 2nd argument for frequency), 1 makes it ACS-only"
 	States
 	{
 	Spawn:
