@@ -556,6 +556,35 @@ States
 	}
 }
 
+ACTOR SimpleLight1 : 3dObstacle
+{
+//$Category Light Sources (Wolf3D)
+//$Title Simple Light (off)
+//$Color 11
+Radius 8
+Height 16
++NOGRAVITY
+States
+	{
+	Spawn:
+	SMGT A -1
+	Stop
+	}
+}
+
+ACTOR SimpleLight1Lit : SimpleLight1
+{
+//$Category Light Sources (Wolf3D)
+//$Title Simple Light (on)
+//$Color 11
+States
+	{
+	Spawn:
+	SMGT A -1 LIGHT(OZYWALLT)
+	Stop
+	}
+}
+
 ACTOR EnigmaMachine : 3dObstacle
 {
 //$Category Models (Wolf3D)
