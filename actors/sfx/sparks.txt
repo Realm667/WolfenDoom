@@ -7,10 +7,14 @@ ACTOR WhiteSparkSpawner : SwitchableDecoration
 
 	//$Arg0 "Direction"
 	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
+	//$Arg0Type 11
+	//$Arg0Enum { 0 = "Up"; 1 = "Down"; 2 = "Forward"; }
 	//$Arg1 "Frequency"
 	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
 	//$Arg3 "ACS-only"
-	//$Arg3Tooltip "0 spawns it automatically (using the 2nd argument for frequency), 1 makes it ACS-only"
+	//$Arg3Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
+	//$Arg3Type 11
+	//$Arg3Enum { 0 = "False"; 1 = "True"; }
 
 	Height 8
 	Radius 4
@@ -115,10 +119,14 @@ ACTOR RedSparkSpawner : WhiteSparkSpawner
 
 	//$Arg0 "Direction"
 	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
+	//$Arg0Type 11
+	//$Arg0Enum { 0 = "Up"; 1 = "Down"; 2 = "Forward"; }
 	//$Arg1 "Frequency"
 	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
 	//$Arg3 "ACS-only"
-	//$Arg3Tooltip "0 spawns it automatically (using the 2nd argument for frequency), 1 makes it ACS-only"
+	//$Arg3Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
+	//$Arg3Type 11
+	//$Arg3Enum { 0 = "False"; 1 = "True"; }
 
 	States
 	{
@@ -214,10 +222,14 @@ ACTOR OrangeSparkSpawner : WhiteSparkSpawner
 
 	//$Arg0 "Direction"
 	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
+	//$Arg0Type 11
+	//$Arg0Enum { 0 = "Up"; 1 = "Down"; 2 = "Forward"; }
 	//$Arg1 "Frequency"
 	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
 	//$Arg3 "ACS-only"
-	//$Arg3Tooltip "0 spawns it automatically (using the 2nd argument for frequency), 1 makes it ACS-only"
+	//$Arg3Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
+	//$Arg3Type 11
+	//$Arg3Enum { 0 = "False"; 1 = "True"; }
 	States
 	{
 	Spawn:
@@ -312,10 +324,14 @@ ACTOR YellowSparkSpawner : WhiteSparkSpawner
 
 	//$Arg0 "Direction"
 	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
+	//$Arg0Type 11
+	//$Arg0Enum { 0 = "Up"; 1 = "Down"; 2 = "Forward"; }
 	//$Arg1 "Frequency"
 	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
 	//$Arg3 "ACS-only"
-	//$Arg3Tooltip "0 spawns it automatically (using the 2nd argument for frequency), 1 makes it ACS-only"
+	//$Arg3Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
+	//$Arg3Type 11
+	//$Arg3Enum { 0 = "False"; 1 = "True"; }
 	States
 	{
 	Spawn:
@@ -410,10 +426,14 @@ ACTOR GreenSparkSpawner : WhiteSparkSpawner
 
 	//$Arg0 "Direction"
 	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
+	//$Arg0Type 11
+	//$Arg0Enum { 0 = "Up"; 1 = "Down"; 2 = "Forward"; }
 	//$Arg1 "Frequency"
 	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
 	//$Arg3 "ACS-only"
-	//$Arg3Tooltip "0 spawns it automatically (using the 2nd argument for frequency), 1 makes it ACS-only"
+	//$Arg3Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
+	//$Arg3Type 11
+	//$Arg3Enum { 0 = "False"; 1 = "True"; }
 	States
 	{
 	Spawn:
@@ -508,10 +528,14 @@ ACTOR BlueSparkSpawner : WhiteSparkSpawner
 
 	//$Arg0 "Direction"
 	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
+	//$Arg0Type 11
+	//$Arg0Enum { 0 = "Up"; 1 = "Down"; 2 = "Forward"; }
 	//$Arg1 "Frequency"
 	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
 	//$Arg3 "ACS-only"
-	//$Arg3Tooltip "0 spawns it automatically (using the 2nd argument for frequency), 1 makes it ACS-only"
+	//$Arg3Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
+	//$Arg3Type 11
+	//$Arg3Enum { 0 = "False"; 1 = "True"; }
 	States
 	{
 	Spawn:
@@ -606,10 +630,14 @@ ACTOR PurpleSparkSpawner : WhiteSparkSpawner
 
 	//$Arg0 "Direction"
 	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
+	//$Arg0Type 11
+	//$Arg0Enum { 0 = "Up"; 1 = "Down"; 2 = "Forward"; }
 	//$Arg1 "Frequency"
 	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
 	//$Arg3 "ACS-only"
-	//$Arg3Tooltip "0 spawns it automatically (using the 2nd argument for frequency), 1 makes it ACS-only"
+	//$Arg3Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
+	//$Arg3Type 11
+	//$Arg3Enum { 0 = "False"; 1 = "True"; }
 	States
 	{
 	Spawn:
