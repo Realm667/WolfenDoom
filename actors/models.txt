@@ -11,7 +11,7 @@ ACTOR ModelBase
 	}
 }
 
-ACTOR 3dObject : ModelBase //nomass = nocollisions because of noblockmap
+ACTOR 3dObject : ModelBase
 {
 	+SOLID
 	+NOBLOCKMAP
@@ -161,7 +161,7 @@ ACTOR ModelSandBagCurve : ModelBase
 	}
 }
 
-ACTOR ModelSandBagStraight : 3dObstacle //ModelBase
+ACTOR ModelSandBagStraight : 3dObstacle
 {
 	//$Category Models (Wolf3D)
 	//$Title Sandbag (straight)
@@ -203,23 +203,13 @@ ACTOR Submarine : ModelBase
 	//$Category Models (Wolf3D)
 	//$Title Submarine
 	//$Color 3
-	+SOLID
-	Radius 32
-	Height 1
-}
-
-ACTOR SubmarineSolid : 3dObstacle
-{
-	//$Category Models (Wolf3D)
-	//$Title Submarine (with height)
-	//$Color 3
 	+NOGRAVITY
 	-SOLID
 	Radius 64
 	Height 64
 }
 
-ACTOR Vidcam : 3dObstacle //ModelBase
+ACTOR Vidcam : 3dObstacle
 {
 	//$Category Models (Wolf3D)
 	//$Title Video Cam
@@ -238,14 +228,14 @@ ACTOR FighterM109B_Flight : ModelBase
 
 ACTOR FighterM109B_Flight_Fog : FighterM109B_Flight{}
 
-ACTOR ModelIncaTruck4Wheel_US : ModelIncaTruck4Wheel //ModelBase
+ACTOR ModelIncaTruck4Wheel_US : ModelIncaTruck4Wheel
 {
 	//$Category Models (Wolf3D)
 	//$Title Truck (US)
 	//$Color 3
 }
 
-ACTOR 88mmFlak : 3dObstacle //ModelBase
+ACTOR 88mmFlak : 3dObstacle
 {
 	//$Category Models (Wolf3D)
 	//$Title 88mm Flak
@@ -276,7 +266,7 @@ ACTOR Turret3D : ModelBase
 	Height 4
 }
 
-ACTOR Wire3D : 3dObstacle //ModelBase
+ACTOR Wire3D : 3dObstacle
 {
 	//$Category Models (Wolf3D)
 	//$Title Wire
@@ -320,7 +310,7 @@ ACTOR KingGeorge : ModelBase
 	Height 4
 }
 
-ACTOR FlakVierling3D : 3dObstacle //ModelBase
+ACTOR FlakVierling3D : 3dObstacle
 {
 	//$Category Models (Wolf3D)
 	//$Title Flak Vierling
@@ -591,7 +581,7 @@ ACTOR SimpleLight1Lit : SimpleLight1
 States
 	{
 	Spawn:
-	SMGT A -1 LIGHT(OZYWALLT)
+	SMGT A -1 LIGHT(OZYSIMLT)
 	Stop
 	}
 }
