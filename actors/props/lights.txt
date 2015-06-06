@@ -593,7 +593,7 @@ ACTOR CastleLight1 : SwitchableDecoration
 		Stop
 	Active:
 		TNT1 A 0 A_PlaySound(SMSWITCH)
-		CLIT C 1 Bright Light(BOACEIL3)
+		CLIT C 1 Light(BOACEIL3)
 		Wait
 	Inactive:
 		CLIT C -1 A_PlaySound(SMSWITCH)
@@ -614,7 +614,7 @@ ACTOR CastleLight2 : CastleLight1
 		Stop
 	Active:
 		TNT1 A 0 A_PlaySound(SMSWITCH)
-		CLIT D 1 Bright Light(BOACEIL4)
+		CLIT D 1 Light(BOACEIL4)
 		Wait
 	Inactive:
 		CLIT D -1 A_PlaySound(SMSWITCH)
