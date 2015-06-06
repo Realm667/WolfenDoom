@@ -49,12 +49,18 @@ maps
 			backoffsety = 0;
 			backscalex = 100;
 			backscaley = 100;
-			gridsize = 64;
+			gridsize = 32;
 		}
 		
 		
 		fieldtypes
 		{
+			
+			linedef
+			{
+				renderstyle = 2;
+			}
+			
 			
 			sidedef
 			{
@@ -69,6 +75,7 @@ maps
 				scaley_mid = 1;
 				scalex_bottom = 1;
 				scaley_bottom = 1;
+				lightabsolute = 3;
 			}
 			
 			
@@ -87,6 +94,8 @@ maps
 				ypanningfloor = 1;
 				xscalefloor = 1;
 				yscalefloor = 1;
+				lightfloor = 0;
+				desaturation = 1;
 			}
 			
 		}
