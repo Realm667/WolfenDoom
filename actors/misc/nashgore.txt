@@ -118,3 +118,33 @@ actor BScorpionFlyingBloodTrail : NashGore_FlyingBloodTrail
 {
 	Scale 0.8
 }
+
+//Mutants and non-red blooded ones
+actor MutantBlood : NashGore_Blood
+{
+	Translation "16:47=[205,0,215]:[40,0,96]","168:191=[205,0,215]:[40,0,96]"
+	States
+	{
+	Spawn:
+		BLUD C 8
+		BLUD B 8 A_SpawnItemEx("MutantFlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
+		BLUD A 8
+		stop
+	}
+}
+
+actor MutantFlyingBlood : NashGore_FlyingBlood
+{
+	Translation "16:47=[205,0,215]:[40,0,96]","168:191=[205,0,215]:[40,0,96]"
+	States
+	{
+	Spawn:
+		FBLD AABBCCDD 2 NODELAY A_SpawnItem("MutantFlyingBloodTrail",0,0,0,1)
+		Loop
+	}
+}
+
+actor MutantFlyingBloodTrail : NashGore_FlyingBloodTrail
+{
+	Translation "16:47=[205,0,215]:[40,0,96]","168:191=[205,0,215]:[40,0,96]"
+}

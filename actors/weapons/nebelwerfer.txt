@@ -94,3 +94,32 @@ ACTOR RPG8RocketTrail : RocketFlame
 		Stop
 	}
 }
+
+ACTOR MutantFlame
+{
+	Projectile
+	+NOCLIP
+	Scale 0.15
+	Alpha 0.5
+	Renderstyle Add
+	States
+	{
+	Spawn:
+		TNT1 A 1
+		XPLO AB 2 BRIGHT LIGHT(MUTNEXPL)
+		XPLO C 2 BRIGHT LIGHT(MUTNEXPL) A_SpawnItemEx("MutnRocketTrail",random(-1,1),0,1)
+		Stop
+	}
+}
+
+ACTOR MutnRocketTrail : MutantFlame
+{
+	Scale 0.18
+	Alpha 0.6
+	States
+	{
+	Spawn:
+		SMOK ABCDEFGHIJKLMNOPQ 1
+		Stop
+	}
+}
