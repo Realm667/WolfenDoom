@@ -654,3 +654,22 @@ States
 	Stop
 	}
 }
+
+ACTOR IntermapSkylight : 3dObstacle
+{
+	//$Category Models (Wolf3D)
+	//$Title INTERMAP Skylight
+	//$Color 3
+	
+	Radius 64
+	Height 16
+	
+	+NOGRAVITY
+	
+	States
+	{
+		Spawn:
+		SMGT A -1
+		Stop
+	}
+}

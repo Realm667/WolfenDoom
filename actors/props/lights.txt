@@ -3,6 +3,11 @@ ACTOR Chandelier1Switchable : SwitchableDecoration
 	//$Category Light Sources (Wolf3D)
 	//$Title Chandelier (1, switchable)
 	//$Color 11
+	
+	//$Arg0 Sound
+	//$Arg0Type 11
+	//$Arg0Enum { 0 = "Yes"; 1 = "No"; }
+	
 	Radius 10
 	Height 65 //same of sprite height
 	Activation THINGSPEC_Switch
@@ -15,7 +20,7 @@ ACTOR Chandelier1Switchable : SwitchableDecoration
 		CHAN D -1
 		Stop
 	Active:
-		CHAN A 4 A_PlaySound("DSCHAFIR", CHAN_BODY, 1.0, 1)
+		CHAN A 4 A_PlaySound("DSCHAFIR", CHAN_BODY, 1.0 - args[0], 1)
 		CHAN BC 4
 		Loop
 	Inactive:
@@ -29,13 +34,18 @@ ACTOR Chandelier2Switchable : Chandelier1Switchable
 	//$Category Light Sources (Wolf3D)
 	//$Title Chandelier (2, switchable)
 	//$Color 11
+	
+	//$Arg0 Sound
+	//$Arg0Type 11
+	//$Arg0Enum { 0 = "Yes"; 1 = "No"; }
+	
 	States
 	{
 	Spawn:
 		CHAN H -1
 		Stop
 	Active:
-		CHAN E 4 A_PlaySound("DSCHAFIR", CHAN_BODY, 1.0, 1)
+		CHAN E 4 A_PlaySound("DSCHAFIR", CHAN_BODY, 1.0 - args[0], 1)
 		CHAN FG 4
 		Loop
 	Inactive:
@@ -49,13 +59,18 @@ ACTOR Chandelier3Switchable : Chandelier1Switchable
 	//$Category Light Sources (Wolf3D)
 	//$Title Chandelier (3, switchable)
 	//$Color 11
+	
+	//$Arg0 Sound
+	//$Arg0Type 11
+	//$Arg0Enum { 0 = "Yes"; 1 = "No"; }
+	
 	States
 	{
 	Spawn:
 		CHAN M -1
 		Stop
 	Active:
-		CHAN I 4 A_PlaySound("DSCHAFIR", CHAN_BODY, 1.0, 1)
+		CHAN I 4 A_PlaySound("DSCHAFIR", CHAN_BODY, 1.0 - args[0], 1)
 		CHAN JL 4
 		Loop
 	Inactive:
@@ -69,13 +84,18 @@ ACTOR Chandelier4Switchable : Chandelier1Switchable
 	//$Category Light Sources (Wolf3D)
 	//$Title Chandelier (4, switchable)
 	//$Color 11
+	
+	//$Arg0 Sound
+	//$Arg0Type 11
+	//$Arg0Enum { 0 = "Yes"; 1 = "No"; }
+	
 	States
 	{
 	Spawn:
 		CHAN Q -1
 		Stop
 	Active:
-		CHAN N 4 A_PlaySound("DSCHAFIR", CHAN_BODY, 1.0, 1)
+		CHAN N 4 A_PlaySound("DSCHAFIR", CHAN_BODY, 1.0 - args[0], 1)
 		CHAN OP 4
 		Loop
 	Inactive:
