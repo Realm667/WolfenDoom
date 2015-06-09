@@ -209,6 +209,17 @@ ACTOR Submarine : ModelBase
 	Height 64
 }
 
+ACTOR SubmarineIcy : Submarine
+{
+	//$Category Models (Wolf3D)
+	//$Title Submarine (congealed)
+	//$Color 3
+	+NOGRAVITY
+	-SOLID
+	Radius 64
+	Height 64
+}
+
 ACTOR Vidcam : 3dObstacle
 {
 	//$Category Models (Wolf3D)
@@ -655,17 +666,33 @@ States
 	}
 }
 
+ACTOR SlopeMe1 : 3dObstacle
+{
+	//$Category Models (Wolf3D)
+	//$Title Slopeable Windows A
+	//$Color 3
+	Radius 48
+	Height 4
+	+NOGRAVITY
+	States
+	{
+		Spawn:
+		SMGT A -1
+		Stop
+	}
+}
+
 ACTOR IntermapSkylight : 3dObstacle
 {
 	//$Category Models (Wolf3D)
 	//$Title INTERMAP Skylight
 	//$Color 3
-	
+
 	Radius 64
 	Height 16
-	
+
 	+NOGRAVITY
-	
+
 	States
 	{
 		Spawn:
