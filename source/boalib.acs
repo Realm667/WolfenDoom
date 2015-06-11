@@ -29,6 +29,8 @@ script "BoADialogue"(int who,int which)
 	SetHudSize(320,200,1);
 	SetFont("HEADBAR");
 	hudmessagebold(s:"A"; HUDMSG_FADEINOUT,3,CR_UNTRANSLATED,160.0,24.0,8.0,2.0,2.0);
+	SetFont("HEADBOVL"); //mxd. Frame overlay
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT,5,CR_UNTRANSLATED,160.0,24.0,8.0,2.0,2.0); //mxd
 	if(who==1)
 	{
 		SetFont("MS_DARR1");

@@ -2642,6 +2642,7 @@ ACTOR Hostage : Guard
 	//$Color 4
 	Obituary "%o was somehow killed by the hostage."
 	painchance 255
+	Scale 1.25 //mxd
 	DropItem ""
 	SeeSound ""
 	+FRIENDLY
@@ -2677,6 +2678,7 @@ ACTOR DirtyDarren : Guard
 	Obituary "%o was shot by Dirty Darren."
 	Translation 1
 	painchance 255
+	Scale 1.23 //mxd
 	DropItem ""
 	SeeSound ""
 	+FRIENDLY
@@ -2703,6 +2705,7 @@ ACTOR GeneralAllied : DirtyDarren
 	//$Color 4
 	Obituary "%o was shot by General Miller."
 	Translation "0:0=0:0"
+	Scale 1.35 //mxd
 	States
 	{
 	Spawn:
@@ -2727,6 +2730,7 @@ ACTOR Marine1 : DirtyDarren
 	//$Title Marine (1)
 	//$Color 4
 	Obituary "%o was shot by a marine."
+	Scale 1.3 //mxd
 	states
 	{
 	Spawn:
@@ -2779,6 +2783,7 @@ ACTOR BlackGuy : DirtyDarren
 	//$Color 4
 	Obituary "%o was shot by a Black Guy."
 	Height 75 //mxd. Players shouldn't be able to jump on this guy
+	Scale 1.35 //mxd
 	states
 	{
 	Spawn:
