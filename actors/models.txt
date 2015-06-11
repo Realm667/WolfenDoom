@@ -668,10 +668,10 @@ States
 
 ACTOR SlopeMe1 : 3dObstacle
 {
-	//$Category Models (Wolf3D)
-	//$Title Slopeable Windows A
+	//$Category Models (Special)
+	//$Title Slopeable Glass A
 	//$Color 3
-	Radius 48
+	Radius 16
 	Height 4
 	+NOGRAVITY
 	States
@@ -680,6 +680,27 @@ ACTOR SlopeMe1 : 3dObstacle
 		SMGT A -1
 		Stop
 	}
+}
+
+ACTOR SlopeMe2 : SlopeMe1
+{
+	//$Category Models (Special)
+	//$Title Slopeable Glass B
+	//$Color 3
+}
+
+ACTOR SlopeMe3 : SlopeMe1
+{
+	//$Category Models (Special)
+	//$Title Slopeable Window A
+	//$Color 3
+}
+
+ACTOR SlopeMe4 : SlopeMe1
+{
+	//$Category Models (Special)
+	//$Title Slopeable Window B
+	//$Color 3
 }
 
 ACTOR IntermapSkylight : 3dObstacle
