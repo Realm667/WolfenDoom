@@ -1,39 +1,109 @@
-//Just to slot the new keys for cheats
-Lock 254 Doom
+Lock 1 Doom
 {
-	BoASilverKey
-	BoAGoldKey
-	BoABronzeKey
-	BoASilverSkelKey
-	BoAGoldSkelKey
-	BoABronzeSkelKey
+	BoARedKey
+	Message "$PD_REDC"
+	RemoteMessage "$PD_REDCO"
+	Mapcolor 255 0 0
 }
-
 Lock 2 Doom
 {
-	BlueCard
+	BoABlueKey
 	Message "$PD_BLUEC"
 	RemoteMessage "$PD_BLUECO"
-	Mapcolor 255 255 255
+	Mapcolor 0 0 255
+}
+Lock 3 Doom
+{
+	BoAYellowKey
+	Message "$PD_YELLOWC"
+	RemoteMessage "$PD_YELLOWCO"
+	Mapcolor 255 255 0
+}
+Lock 4 Doom
+{
+	BoACyanKey
+	Message "$PD_REDS"
+	RemoteMessage "$PD_REDSO"
+	Mapcolor 0 255 255
 }
 Lock 5 Doom
 {
-	BlueSkull
+	BoAGreenKey
 	Message "$PD_BLUES"
 	RemoteMessage "$PD_BLUESO"
-	Mapcolor 255 255 255
+	Mapcolor 0 255 0
+}
+Lock 6 Doom
+{
+	BoAPurpleKey
+	Message "$PD_YELLOWS"
+	RemoteMessage "$PD_YELLOWSO"
+	Mapcolor 255 0 255
+}
+Lock 129 Doom
+{
+	Any {BoARedKey BoACyanKey}
+	Message "$PD_REDK"
+	RemoteMessage "$PD_REDO"
 }
 Lock 130 Doom
 {
-	Any{BlueSkull BlueCard}
+	Any {BoABlueKey BoAGreenKey}
 	Message "$PD_BLUEK"
 	RemoteMessage "$PD_BLUEO"
-	Mapcolor 255 255 255
+}
+Lock 131 Doom
+{
+	Any {BoAYellowKey BoAPurpleKey}
+	Message "$PD_YELLOWK"
+	RemoteMessage "$PD_YELLOWO"
+}
+Lock 132 Doom
+{
+	Any {BoARedKey BoACyanKey}
+	Message "$PD_REDK"
+	RemoteMessage "$PD_REDO"
 }
 Lock 133 Doom
 {
-	Any{BlueCard BlueSkull}
+	Any {BoABlueKey BoAGreenKey}
 	Message "$PD_BLUEK"
 	RemoteMessage "$PD_BLUEO"
-	Mapcolor 255 255 255
+}
+Lock 134 Doom
+{
+	Any {BoAYellowKey BoAPurpleKey}
+	Message "$PD_YELLOWK"
+	RemoteMessage "$PD_YELLOWO"
+}
+Lock 100
+{
+	Message "$PD_ANY"
+	RemoteMessage "$PD_ANYOBJ"
+	Mapcolor 128 128 255
+}
+Lock 228
+{
+	Message "$PD_ANY"
+	RemoteMessage "$PD_ANYOBJ"
+	Mapcolor 128 128 255
+}
+Lock 229 Doom
+{
+	Any {BoABlueKey BoAGreenKey KeyBlue}
+	Any {BoAYellowKey BoAPurpleKey KeyYellow}
+	Any {BoARedKey BoACyanKey KeyGreen}
+	Message "$PD_ALL3"
+	RemoteMessage "$PD_ALL3O"
+}
+Lock 101 Doom
+{
+	BoABlueKey
+	BoAGreenKey
+	BoAYellowKey
+	BoAPurpleKey
+	BoARedKey
+	BoACyanKey
+	Message "$PD_ALL6"
+	RemoteMessage "$PD_ALL6O"
 }
