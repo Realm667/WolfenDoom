@@ -1,0 +1,62 @@
+actor TMBlazko
+{
+	//$Category Misc (Wolf3D)
+	//$Title Title map Blazko 
+	
+	+CLIENTSIDEONLY
+	+NOGRAVITY
+	
+	states
+	{
+		Spawn:
+			BLAZ A -1
+			Stop
+	}
+}
+
+actor TMGuard
+{
+	//$Category Misc (Wolf3D)
+	//$Title Title map soldier
+	
+	+CLIENTSIDEONLY
+	
+	states
+	{
+		Spawn:
+			MGR2 A -1
+			Stop
+	}
+}
+
+actor TMDog
+{
+	//$Category Misc (Wolf3D)
+	//$Title Title map doge
+	
+	+CLIENTSIDEONLY
+	
+	states
+	{
+		Spawn:
+			DOG3 L -1
+			Stop
+	}
+}
+
+ACTOR TMPlane : ModelBase
+{
+	//$Category Misc (Wolf3D)
+	//$Title Title map plane
+	+NOGRAVITY
+}
+
+ACTOR TMLightBeam : ModelBase
+{
+	//$Category Misc (Wolf3D)
+	//$Title Title map light beam
+	RenderStyle Add
+	Alpha 0.4
+	+NOGRAVITY
+	+BRIGHT
+}

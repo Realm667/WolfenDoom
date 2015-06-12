@@ -166,6 +166,18 @@ Model FighterM109B
 	FrameIndex SMGT A 0 0
 }
 
+Model TMPlane
+{
+	Path "models"
+	Model 0 "m109b.md3"
+	Skin 0 "m109b.jpg"
+	Scale 1.75 1.75 1.75
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
 Model FighterM109B_Flight
 {
 	Path "models"
@@ -844,5 +856,17 @@ Model IntermapSkylight
 	Skin 0 "intermap_skylight.png"
 	Scale 1.0 1.0 1.2
 	ZOffset 28
+	FrameIndex SMGT A 0 0
+}
+
+Model TMLightBeam
+{
+	Path "models"
+	Model 0 "lightbeam.md3"
+	Skin 0 "lightbeam.png"
+	Scale 5.0 5.0 15.0
+	InheritActorPitch
+	InheritActorRoll
+
 	FrameIndex SMGT A 0 0
 }
