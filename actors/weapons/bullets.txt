@@ -261,7 +261,11 @@ ACTOR EnemyChaingunTracer : EnemyPistolTracer
 {
 	Damage (random(6,8))
 }
-
+ACTOR EnemyMutantTracer : Tracer //new
+{
+	+THRUGHOST
+	Damage (random(2,4))
+}
 	// Enemy tracer variants for Baby mode
 ACTOR BabyEnemyPistolTracer : EnemyPistolTracer
 {
@@ -280,6 +284,10 @@ ACTOR BabyEnemyStGTracer : EnemyStGTracer
 	Speed 30
 }
 ACTOR BabyEnemyChaingunTracer : EnemyChaingunTracer
+{
+	Speed 30
+}
+ACTOR BabyEnemyMutantTracer : EnemyMutantTracer //new
 {
 	Speed 30
 }
@@ -305,6 +313,10 @@ ACTOR EasyEnemyChaingunTracer : EnemyChaingunTracer
 {
 	Speed 50
 }
+ACTOR EasyEnemyMutantTracer : EnemyMutantTracer //new
+{
+	Speed 50
+}
 
 // Enemy tracer variants for Hard and Nightmare mode
 ACTOR HardEnemyPistolTracer : EnemyPistolTracer
@@ -324,6 +336,10 @@ ACTOR HardEnemyStGTracer : EnemyStGTracer
 	Speed 90
 }
 ACTOR HardEnemyChaingunTracer : EnemyChaingunTracer
+{
+	Speed 90
+}
+ACTOR HardEnemyMutantTracer : EnemyMutantTracer //new
 {
 	Speed 90
 }
