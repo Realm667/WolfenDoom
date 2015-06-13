@@ -1,4 +1,4 @@
-ACTOR Nazi
+﻿ACTOR Nazi
 {
 	Scale 1.2
 	Height 56
@@ -583,8 +583,6 @@ ACTOR MutantMelee : Mutant
 	//$Category Monsters (Wolf3D)
 	//$Title Mutant(Melee)
 	//$Color 4
-	BloodColor "Purple"
-	BloodType "MutantBlood"
 	dropitem ""
 	+LOOKALLAROUND
 	states
@@ -630,12 +628,6 @@ ACTOR BigMutant1 : Mutant
 	Obituary "%o was chaingunnered by a Giant Mutant."
 	Health 400
 	Scale 1.0
-	SeeSound ""
-	PainSound ""
-	DeathSound "mutant/Death"
-	+MISSILEMORE
-	-MISSILEEVENMORE
-	dropitem "9mmAmmo", 128, 3
 	States
 	{
 	Spawn:
@@ -689,7 +681,7 @@ ACTOR BigMutant1 : Mutant
 		MTB1 F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
 		MTB1 F 2 BRIGHT A_CustomMissile("EnemyMutantTracer", 62, 0, 16, 0)
 		MTB1 F 2
-	Goto See
+		Goto See
 		MTB1 E 3
 		MTB1 E 7 A_FaceTarget
 		MTB1 G 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
@@ -710,7 +702,7 @@ ACTOR BigMutant1 : Mutant
 		MTB1 G 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
 		MTB1 G 2 BRIGHT A_CustomMissile("EnemyMutantTracer", 62, 0, -16, 0)
 		MTB1 G 2
-	Goto See
+		Goto See
 	Missile2:
 		MTB1 E 4
 		MTB1 E 10 A_FaceTarget
@@ -720,7 +712,7 @@ ACTOR BigMutant1 : Mutant
 		MTB1 G 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
 		MTB1 GGG 0 A_CustomMissile("EnemyMutantTracer",64,0,frandom(-4,4))
 		MTB1 EF 3 BRIGHT LIGHT(SUPAFIRE) A_FaceTarget
-	Goto See
+		Goto See
 	Pain:
 		"####" H 6
 		Goto See
@@ -729,8 +721,7 @@ ACTOR BigMutant1 : Mutant
 		"####" J 5
 		"####" K 5 A_Scream
 		"####" L 5 A_NoBlocking
-		"####" MN 5
-		"####" O -1
+		"####" M -1
 		Stop
 	Idle:
 		"####" A 0 A_SetSpeed(2.5)
@@ -744,7 +735,7 @@ ACTOR BigMutant1 : Mutant
 		"####" A 0 A_Look
 		Loop
 	Raise:
-		"####" ONMLKJI 4
+		"####" MMMLKJI 4
 		Goto See
 	Death.Fire:
 		BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.4)
@@ -774,10 +765,6 @@ ACTOR BigMutant2 : BigMutant1
 	//$Color 4
 	Obituary "%o was rocketeed by a Giant Mutant."
 	Health 450
-	SeeSound ""
-	PainSound ""
-	DeathSound "mutant/Death"
-	+MISSILEMORE
 	+MISSILEEVENMORE
 	dropitem NebAmmoSmall, 128, 2
 	States
@@ -811,28 +798,6 @@ ACTOR BigMutant2 : BigMutant1
 		Goto See
 	Pain:
 		"####" H 5
-		Goto See
-	Death:
-		"####" I 5
-		"####" J 5
-		"####" K 5 A_Scream
-		"####" L 5 A_NoBlocking
-		"####" MN 5
-		"####" O -1
-		Stop
-	Idle:
-		"####" A 0 A_SetSpeed(2.5)
-		"####" BBBBBBBB 1 A_Wander
-		"####" A 0 A_Look
-		"####" CCCCCCCC 1 A_Wander
-		"####" A 0 A_Look
-		"####" DDDDDDDD 1 A_Wander
-		"####" A 0 A_Look
-		"####" EEEEEEEE 1 A_Wander
-		"####" A 0 A_Look
-		Loop
-	Raise:
-		"####" ONMLKJI 4
 		Goto See
 	}
 }
