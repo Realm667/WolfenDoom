@@ -85,6 +85,9 @@ ACTOR TracerSpark
 		Stop
 	}
 }
+//Nifty new mutants variations for tracers
+ACTOR MutantTracer : Tracer {MissileType MutantTrail}
+ACTOR MutantTrail: TracerTrail {}
 
 // The Player's variants on the tracers, so they have different speeds and damages
 // based on which weapon is being used.
@@ -261,7 +264,7 @@ ACTOR EnemyChaingunTracer : EnemyPistolTracer
 {
 	Damage (random(6,8))
 }
-ACTOR EnemyMutantTracer : Tracer //new
+ACTOR EnemyMutantTracer : MutantTracer //new
 {
 	+THRUGHOST
 	Damage (random(2,4))
