@@ -51,6 +51,54 @@ ACTOR SpearOfDestiny : Akten
 	}
 }
 
+ACTOR Cartridge51 : Akten
+{
+	//$Category Pickups (Wolf3D)
+	//$Title Cartridge (for MAP51)
+	//$Color 13
+	Tag "Cartridge 51"
+	inventory.icon SNSCB0
+	inventory.pickupmessage "Picked up a Cartridge"
+	States
+	{
+	Spawn:
+		SNSC A -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		stop
+	}
+}
+
+ACTOR Cartridge52 : Akten
+{
+	//$Category Pickups (Wolf3D)
+	//$Title Cartridge (for MAP52)
+	//$Color 13
+	Tag "Cartridge 52"
+	inventory.icon SNSCD0
+	inventory.pickupmessage "Picked up a Cartridge"
+	States
+	{
+	Spawn:
+		SNSC C -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		stop
+	}
+}
+
+ACTOR Cartridge53 : Akten
+{
+	//$Category Pickups (Wolf3D)
+	//$Title Cartridge (for MAP53)
+	//$Color 13
+	Tag "Cartridge 53"
+	inventory.icon SNSCF0
+	inventory.pickupmessage "Picked up a Cartridge"
+	States
+	{
+	Spawn:
+		SNSE A -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		stop
+	}
+}
+
 ACTOR BoACompass : CustomInventory
 {
 	//$Category Pickups (Wolf3D)
