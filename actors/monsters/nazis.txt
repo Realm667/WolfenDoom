@@ -1960,7 +1960,7 @@ ACTOR Scientist2 : Guard
 	}
 }
 
-ACTOR UberMutant : Nazi
+ACTOR UberMutant : Mutant
 {
 	//$Category Monsters (Wolf3D)
 	//$Title Ubermutant (Boss)
@@ -1972,7 +1972,6 @@ ACTOR UberMutant : Nazi
 	Mass 1000
 	Speed 2.66666667
 	PainChance 50
-	BloodColor "Purple"
 	SeeSound "baron/sight"
 	DeathSound "baron/death"
 	Obituary "$OB_BARON"
@@ -2119,7 +2118,6 @@ ACTOR SuperMutant : Mutant
 	Obituary "%o did the dance of doom with a powerful Mutant."
 	Health 180
 	Scale 1.45
-	BloodColor "Purple"
 	states
 	{
 	Spawn:
@@ -2147,12 +2145,12 @@ ACTOR SuperMutant : Mutant
 	Missile:
 		SUPM F 6 A_FaceTarget
 		SUPM G 0 A_PlaySound("walther/fire",CHAN_WEAPON)
-		SUPM G 4 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyPistolTracer",32,random(-16,-14),random(-1,1))
+		SUPM G 4 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyMutantTracer",32,random(-16,-14),random(-1,1))
 		SUPM F 5 A_FaceTarget
-		SUPM H 0 A_PlaySound("walther/fire",CHAN_WEAPON)
-		SUPM H 4 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyPistolTracer",32,random(16,14),random(-1,1))
-		SUPM P 5 A_MonsterRefire(30,"See")
-		SUPM P 0 A_FaceTarget
+		SUPM P 0 A_PlaySound("walther/fire",CHAN_WEAPON)
+		SUPM P 4 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyMutantTracer",32,random(16,14),random(-1,1))
+		SUPM H 5 A_MonsterRefire(30,"See")
+		SUPM H 0 A_FaceTarget
 		Goto Missile+1
 	}
 }
