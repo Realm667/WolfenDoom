@@ -148,3 +148,32 @@ actor MutantFlyingBloodTrail : NashGore_FlyingBloodTrail
 {
 	Translation "16:47=[205,0,215]:[40,0,96]","168:191=[205,0,215]:[40,0,96]"
 }
+
+actor UndeadBlood : NashGore_Blood
+{
+	translation "16:47=[34,0,7]:[0,0,0]","168:191=[36,0,9]:[2,0,0]"
+	States
+	{
+	Spawn:
+		BLUD C 8
+		BLUD B 8 A_SpawnItemEx("MutantFlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
+		BLUD A 8
+		stop
+	}
+}
+
+actor UndeadFlyingBlood : NashGore_FlyingBlood
+{
+	translation "16:47=[34,0,7]:[0,0,0]","168:191=[36,0,9]:[2,0,0]"
+	States
+	{
+	Spawn:
+		FBLD AABBCCDD 2 NODELAY A_SpawnItem("MutantFlyingBloodTrail",0,0,0,1)
+		Loop
+	}
+}
+
+actor UndeadFlyingBloodTrail : NashGore_FlyingBloodTrail
+{
+	translation "16:47=[34,0,7]:[0,0,0]","168:191=[36,0,9]:[2,0,0]"
+}
