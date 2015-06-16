@@ -119,14 +119,8 @@ ACTOR KnifeSilent : Weapon
 		Loop
 	Fire:
 		KNFG A 1 A_PlaySound("knife/swing",CHAN_WEAPON)
-		KNFG B 1 Offset(-10,32) A_CustomPunch(10,1,CPF_DAGGER,"KnifePuff",64)
-		KNFG B 1 Offset(-20,32)
-		KNFG C 1 Offset(10,32)
-		KNFG C 1 Offset(-20,40)
-		KNFG D 4 Offset(-10,32)
-		KNFG E 2
-		KNFG E 2 Offset(10,32)
-		KNFG F 2
+		KNFG B 1 A_CustomPunch(10,1,CPF_DAGGER,"KnifePuff",64)
+		KNFG CDEFGHJKLMN 1
 		Goto Ready
 	}
 }
