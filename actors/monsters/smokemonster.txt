@@ -237,6 +237,24 @@ ACTOR SmokeMonster
 	}
 }
 
+Actor SmokeMonsterProjectile
+{
+	Height 32
+	Radius 16
+	Speed 10
+	SpawnID 171
+	PROJECTILE
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
+		TNT1 A 1
+		loop
+	}
+}
+
+
 Actor MonsterHole
 {
 	+NOCLIP
