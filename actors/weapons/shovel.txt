@@ -5,6 +5,7 @@ ACTOR Shovel : NaziWeapon
 	//$Color 14
 	Scale .5
 	Weapon.SelectionOrder 9999
+	Weapon.UpSound "shovel/select"
 	Tag "The Shovel!"
 	Inventory.PickupMessage "You got the shovel!"
 	+WEAPON.NOAUTOFIRE
@@ -98,6 +99,7 @@ ACTOR KnifeSilent : Weapon
 	Weapon.BobStyle Smooth
 	Weapon.BobSpeed 1.5
 	Weapon.BobRangeX 1.5
+	Weapon.UpSound "knife/select"
 	Obituary "%o was stabbed by %k."
 	Inventory.PickupMessage "You found a combat knife."
 	Weapon.SelectionOrder 10000

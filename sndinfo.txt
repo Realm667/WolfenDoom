@@ -60,16 +60,30 @@ scases3 scases3
 scasesb1 scasesb1
 scasesb2 scasesb2
 
+// Weapon select sounds
+select/bazooka  bazoosel
+select/heavywpn hwpnsel
+select/mg       mgsel
+select/mp44     mp44sel
+select/pistol   pstlsel
+select/rifle    riflesel
+select/shotgun  shotsel
+select/smg      smgsel
+select/knife    knifesel
+select/shovel   shovlsel
+
 //Knife
 knife/swing	KNSWNG
 knife/hit	KNHITB
 knife/stone	KNSTON
+$alias knife/select select/knife
 
 //Shovel
 $random shovel/impact {shovel/impact1 shovel/impact2}
 shovel/impact1          dsshvi1
 shovel/impact2          dsshvi2
 shovel/wall          dsshvi3
+$alias shovel/select select/shovel
 
 $random shovel/miss {shovel/miss1 shovel/miss2 shovel/miss3}
 shovel/miss1            dsshvw1
@@ -79,32 +93,39 @@ shovel/miss3            dsshvw3
 //Luger P-08
 luger/fire		lugrfire
 luger/reload	lugrload
+$alias luger/select	select/pistol
 
 //Walther P-38
 walther/fire	waltfir
 walther/reload	loadp38
+$alias walther/select  select/pistol
 
 //M1897 Trenchgun
 shotgun/fire	SHOTFIRE
 shotgun/load	SHOTLOAD
 shotgun/pump	SHOTPUMP
+$alias shotgun/select select/shotgun
 
 //Browning Auto-5
 browning/fire	ba5fire
 browning/load	ba5load
 browning/cock	ba5cock
+$alias browning/select select/shotgun
 
 //MP-40
 mp40/fire 	mp40fire
 mp40/reload	loadmp40
+$alias mp40/select select/mp44
 
 //Sten MkII
 sten/fire	STENFIRE
 sten/reload	STENLOAD
+$alias sten/select select/smg
 
 //Gewehr 43
 g43/fire	m1fire
 g43/reload	loadg43
+$alias g43/select select/rifle
 
 //Karabiner 98k
 mauser/fire		DSMAUS
@@ -112,22 +133,26 @@ mauser/cock		DSMCLACK
 mauser/open		DSPOP
 mauser/insert	DSINSERT
 mauser/shut		DSCLACK
+$alias mauser/select select/rifle
 
 //Pyrolight
 flamer/fire		dsfthrow
 flamer/steam	dssteam
 flamer/napalm	THERMFIR
 flamer/reload	THERMRLD
+$alias flamer/select select/heavywpn
 
 //Nebelwerfer
 nebelwerfer/fire	dsnebsht
 nebelwerfer/xplode	dsnebxpl
+$alias nebelwerfer/select select/heavywpn
 
 //Panzerschreck
 panzer/fire		panzfire
 panzer/load		panzload
 panzer/fly		panzfly
 panzer/explode	panzexpl
+$alias panzer/select select/bazooka
 
 //UMG43
 chaingun/fire	dscgun
@@ -135,6 +160,7 @@ chaingun/start	chaingo
 chaingun/loop	chainlp
 chaingun/stop	chainstp
 chaingun/get	p_cgun
+$alias chaingun/select select/heavywpn
 
 $random grenade/throw { grenthr1 grenthr2 grenthr3 }
 $random grenade/bounce { grenbnc1 grenbnc2 grenbnc3 grenbnc4 }
