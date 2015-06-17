@@ -137,6 +137,7 @@ ACTOR CoffeeMachine
 		CUP2 A -1
 		Stop
 	Death:
+		TNT1 A 0 A_PlaySound ("GLSBRK01", 1.0)
 		CUP2 B -1
 		Stop
 	}
@@ -160,6 +161,7 @@ ACTOR WaterMachine
 		WATR A -1
 		Stop
 	Death:
+		TNT1 A 0 A_PlaySound ("GLSBRK01", 1.0)
 		WATR B -1
 		Stop
 	}
