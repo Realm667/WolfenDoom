@@ -11,10 +11,10 @@ ACTOR WhiteSparkSpawner : SwitchableDecoration
 	//$Arg0Enum { 0 = "Up"; 1 = "Down"; 2 = "Forward"; }
 	//$Arg1 "Frequency"
 	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
-	//$Arg3 "ACS-only"
-	//$Arg3Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
-	//$Arg3Type 11
-	//$Arg3Enum { 0 = "False"; 1 = "True"; }
+	//$Arg2 "ACS-only"
+	//$Arg2Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
+	//$Arg2Type 11
+	//$Arg2Enum { 0 = "False"; 1 = "True"; }
 
 	Height 8
 	Radius 4
@@ -123,10 +123,10 @@ ACTOR RedSparkSpawner : WhiteSparkSpawner
 	//$Arg0Enum { 0 = "Up"; 1 = "Down"; 2 = "Forward"; }
 	//$Arg1 "Frequency"
 	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
-	//$Arg3 "ACS-only"
-	//$Arg3Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
-	//$Arg3Type 11
-	//$Arg3Enum { 0 = "False"; 1 = "True"; }
+	//$Arg2 "ACS-only"
+	//$Arg2Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
+	//$Arg2Type 11
+	//$Arg2Enum { 0 = "False"; 1 = "True"; }
 
 	States
 	{
@@ -226,10 +226,10 @@ ACTOR OrangeSparkSpawner : WhiteSparkSpawner
 	//$Arg0Enum { 0 = "Up"; 1 = "Down"; 2 = "Forward"; }
 	//$Arg1 "Frequency"
 	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
-	//$Arg3 "ACS-only"
-	//$Arg3Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
-	//$Arg3Type 11
-	//$Arg3Enum { 0 = "False"; 1 = "True"; }
+	//$Arg2 "ACS-only"
+	//$Arg2Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
+	//$Arg2Type 11
+	//$Arg2Enum { 0 = "False"; 1 = "True"; }
 	States
 	{
 	Spawn:
@@ -328,10 +328,10 @@ ACTOR YellowSparkSpawner : WhiteSparkSpawner
 	//$Arg0Enum { 0 = "Up"; 1 = "Down"; 2 = "Forward"; }
 	//$Arg1 "Frequency"
 	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
-	//$Arg3 "ACS-only"
-	//$Arg3Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
-	//$Arg3Type 11
-	//$Arg3Enum { 0 = "False"; 1 = "True"; }
+	//$Arg2 "ACS-only"
+	//$Arg2Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
+	//$Arg2Type 11
+	//$Arg2Enum { 0 = "False"; 1 = "True"; }
 	States
 	{
 	Spawn:
@@ -430,10 +430,10 @@ ACTOR GreenSparkSpawner : WhiteSparkSpawner
 	//$Arg0Enum { 0 = "Up"; 1 = "Down"; 2 = "Forward"; }
 	//$Arg1 "Frequency"
 	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
-	//$Arg3 "ACS-only"
-	//$Arg3Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
-	//$Arg3Type 11
-	//$Arg3Enum { 0 = "False"; 1 = "True"; }
+	//$Arg2 "ACS-only"
+	//$Arg2Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
+	//$Arg2Type 11
+	//$Arg2Enum { 0 = "False"; 1 = "True"; }
 	States
 	{
 	Spawn:
@@ -532,10 +532,10 @@ ACTOR BlueSparkSpawner : WhiteSparkSpawner
 	//$Arg0Enum { 0 = "Up"; 1 = "Down"; 2 = "Forward"; }
 	//$Arg1 "Frequency"
 	//$Arg1Tooltip "Values are divided by 16 so you can't get a spawner that spawns every time. Only used if third argument is 0."
-	//$Arg3 "ACS-only"
-	//$Arg3Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
-	//$Arg3Type 11
-	//$Arg3Enum { 0 = "False"; 1 = "True"; }
+	//$Arg2 "ACS-only"
+	//$Arg2Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
+	//$Arg2Type 11
+	//$Arg2Enum { 0 = "False"; 1 = "True"; }
 	States
 	{
 	Spawn:
@@ -735,6 +735,7 @@ ACTOR SparkFlare_W1
 	+NoClip
 	+NoGravity
 	+NoInteraction
+	+FORCEXYBILLBOARD
 	RenderStyle Add
 	Scale 0.25
 	States
@@ -803,6 +804,7 @@ ACTOR Spark_W1
 	+Missile
 	+NoBlockMap
 	+LowGravity
+	+FORCEXYBILLBOARD
 	RenderStyle Add
 	Scale 0.025
 	States

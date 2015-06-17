@@ -34,8 +34,8 @@ ACTOR Sten : NaziWeapon replaces Chaingun
 		Goto Dryfire
 		STEN A 0 A_PlaySound("sten/fire",CHAN_WEAPON)
 		STEN A 0 A_SpawnItemEx("9mmCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
-		STEN A 1 A_FireCustomMissile("StenTracer",frandom(-1.5,1.5),1,0,0,0,frandom(-1.0,1.0))
-		STEN A 1 Offset(0,40) A_SetPitch(pitch-(0.5*CallACS("RecoilAmount")))
+		STEN B 1 A_FireCustomMissile("StenTracer",frandom(-1.5,1.5),1,0,0,0,frandom(-1.0,1.0))
+		STEN B 1 Offset(0,40) A_SetPitch(pitch-(0.5*CallACS("RecoilAmount")))
 		STEN A 1 Offset(0,34)
 		TNT1 A 0 A_Refire
 		Goto Ready
@@ -45,8 +45,8 @@ ACTOR Sten : NaziWeapon replaces Chaingun
 		STEN A 0 A_PlaySound("sten/fire",CHAN_WEAPON)
 		STEN A 0 A_SpawnItemEx("9mmCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
 		STEN A 0 A_AlertMonsters
-		STEN A 1 Offset(0,36) A_FireCustomMissile("StenTracer",frandom(-1.5,1.5),1,0,0,0,frandom(-1.0,1.0))
-		STEN A 1 Offset(0,40) A_SetPitch(pitch-(0.5*CallACS("RecoilAmount")))
+		STEN B 1 Offset(0,36) A_FireCustomMissile("StenTracer",frandom(-1.5,1.5),1,0,0,0,frandom(-1.0,1.0))
+		STEN B 1 Offset(0,40) A_SetPitch(pitch-(0.5*CallACS("RecoilAmount")))
 		STEN A 1 Offset(0,34)
 		TNT1 A 0 A_Refire
 		Goto Ready

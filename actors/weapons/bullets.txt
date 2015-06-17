@@ -8,6 +8,7 @@ ACTOR Tracer : FastProjectile
 	+BLOODSPLATTER
 	+SEEKERMISSILE
 	+NOEXTREMEDEATH
+	+FORCEXYBILLBOARD
 	Scale .4
 	MissileType TracerTrail
 	MissileHeight 8
@@ -51,6 +52,7 @@ ACTOR TracerTrail
 	+NOTELEPORT
 	+CANNOTPUSH
 	+NODAMAGETHRUST
+	+FORCEXYBILLBOARD
 	Scale .4
 	States
 	{
@@ -74,6 +76,7 @@ ACTOR TracerSpark
 	+FLOORCLIP
 	+DONTSPLASH
 	+NOTELEPORT
+	+FORCEXYBILLBOARD
 	States
 	{
 	Spawn:
