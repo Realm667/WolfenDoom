@@ -55,6 +55,11 @@ actor RollingBoulderBrown : RollingBoulderGrey
 		BBOL A 2 NODELAY A_PlaySound("Boulder/Roll",5,1,1)
 		BBOL BCDA 2 A_Quake(1,2,0,192,"")
 		Wait
+	Death:
+		TNT1 A 1 A_SpawnItem ("BoulderStoppedBrown")
+		TNT1 A 0 A_StopSound(5)
+		TNT1 A 0 A_PlaySound ("Boulder/Stop")
+		stop
 	}
 }
 
