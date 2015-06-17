@@ -20,7 +20,7 @@ statusbar Normal // Standard Doom Status bar
     drawimage ammoicon2, 231, 184;
 
     //Weapon
-    drawstring "THREEFIV", untranslated, weapontag, 225, 159, 1, alignment(right);
+    drawstring "THREEFIV", untranslated, weapontag, 190, 159, 1, alignment(center);
 
     //Time
     drawstring "THREEFIV", untranslated, time, 249, 159, 1, alignment(center);
@@ -48,12 +48,12 @@ statusbar Normal // Standard Doom Status bar
     drawswitchableimage "BoACyanKey",   "nullimage", "STKEYS5", 260, 189;
 
     //Ammo
-    drawnumber 3, THREEFIV, untranslated, "9mmAmmo", 284, 172, 1;
-    drawnumber 3, THREEFIV, untranslated, "12GaugeAmmo", 284, 178, 1;
-    drawnumber 3, THREEFIV, untranslated, "MauserAmmo", 284, 184, 1;
-    drawnumber 3, THREEFIV, untranslated, "FlameAmmo", 284, 190, 1;
-    drawnumber 3, THREEFIV, untranslated, "NebAmmo", 307, 172, 1;
-    drawnumber 3, THREEFIV, untranslated, "PanzerAmmo", 307, 178, 1;
+    drawnumber 3, THREEFIV, untranslated, "9mmAmmo", 283, 172, 1;
+    drawnumber 3, THREEFIV, untranslated, "12GaugeAmmo", 283, 178, 1;
+    drawnumber 3, THREEFIV, untranslated, "MauserAmmo", 283, 184, 1;
+    drawnumber 3, THREEFIV, untranslated, "FlameAmmo", 283, 190, 1;
+    drawnumber 3, THREEFIV, untranslated, "NebAmmo", 306, 172, 1;
+    drawnumber 3, THREEFIV, untranslated, "PanzerAmmo", 306, 178, 1;
 
     drawselectedinventory alternateonempty, THREEFIV, 76, 168
     {
@@ -95,12 +95,12 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 	//Bottom Left
 	drawimage "HUD_BL", 0, -53;
 		//Health
-    		drawnumber 3, BIGFONT, untranslated, health, 86, -36;
-    		drawstring "BIGFONT", untranslated, "%", 99, -36;
+    		drawnumber 3, BIGFONT, untranslated, health, 94, -36;
+    		drawstring "BIGFONT", untranslated, "%", 107, -36;
 
     		//Armor
-    		drawnumber 3, BIGFONT, untranslated, armor, 86, -20;
-    		drawstring "BIGFONT", untranslated, "%", 99, -20;
+    		drawnumber 3, BIGFONT, untranslated, armor, 94, -20;
+    		drawstring "BIGFONT", untranslated, "%", 107, -20;
 
 		//Mugshot + Inventory
 		drawselectedinventory alternateonempty, THREEFIV, 7, -38
@@ -111,7 +111,7 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 	//Bottom Right
 	drawimage "HUD_BR", -116, -53;
 		//Weapon
-    		drawstring "THREEFIV", untranslated, weapontag, -50, -52, 1, alignment(center);
+    		drawstring "THREEFIV", untranslated, weapontag, -55, -52, 1, alignment(center);
 
 		//Ammo
 		drawnumber 3, BIGFONT, untranslated, ammo1, -10, -20;
