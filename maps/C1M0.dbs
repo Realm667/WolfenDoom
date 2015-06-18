@@ -42,11 +42,11 @@ maps
 			
 		}
 		
-		defaultfloortexture = "FLOOR0_1";
-		defaultceiltexture = "CEIL1_1";
-		defaulttoptexture = "STARTAN2";
-		defaultwalltexture = "STARTAN2";
-		defaultbottomtexture = "STARTAN2";
+		defaultfloortexture = "ABRA_B";
+		defaultceiltexture = "ABRA_T";
+		defaulttoptexture = "ABRA_W";
+		defaultwalltexture = "ABRA_W";
+		defaultbottomtexture = "ABRA_W";
 		custombrightness = 196;
 		customfloorheight = 0;
 		customceilheight = 128;
@@ -69,7 +69,42 @@ maps
 			backoffsety = 0;
 			backscalex = 100;
 			backscaley = 100;
-			gridsize = 32;
+			gridsize = 1;
+		}
+		
+		
+		fieldtypes
+		{
+			
+			sidedef
+			{
+				offsetx_mid = 1;
+				offsetx_bottom = 1;
+				offsety_bottom = 1;
+				offsety_mid = 1;
+				offsetx_top = 1;
+				scaley_bottom = 1;
+				scalex_mid = 1;
+				scaley_mid = 1;
+			}
+			
+			
+			sector
+			{
+				xpanningceiling = 1;
+				xpanningfloor = 1;
+				ypanningceiling = 1;
+				ypanningfloor = 1;
+				rotationceiling = 1;
+				rotationfloor = 1;
+				xscaleceiling = 1;
+				xscalefloor = 1;
+				yscaleceiling = 1;
+				yscalefloor = 1;
+				fadecolor = 0;
+				lightcolor = 0;
+			}
+			
 		}
 		
 	}
