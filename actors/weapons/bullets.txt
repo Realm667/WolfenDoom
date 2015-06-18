@@ -16,16 +16,16 @@ ACTOR Tracer : FastProjectile
 	States
 	{
 	Spawn:
-		PUFF A 1 BRIGHT A_JumpIfTracerCloser(96,"Whiz")
+		TNT1 A 1 BRIGHT A_JumpIfTracerCloser(96,"Whiz")
 		Loop
 		Whiz:
-		PUFF A -1 BRIGHT A_SpawnItemEx("Whizzer")
+		TNT1 A -1 BRIGHT A_SpawnItemEx("Whizzer")
 		Stop
 	Death:
 	Crash:
-		PUFF A 0 A_SpawnDebris("TracerSpark")
-		PUFF A 2 BRIGHT A_PlaySound("ricochet")
-		PUFF BCD 2 BRIGHT
+		//TNT1 A 0 A_SpawnDebris("TracerSpark")
+		TNT1 A 2 BRIGHT A_PlaySound("ricochet")
+		TNT1 AAA 2 BRIGHT
 		Stop
 	XDeath:
 		TNT1 A 1 A_PlaySound("hitflesh")
