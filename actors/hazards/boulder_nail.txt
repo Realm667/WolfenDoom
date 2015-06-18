@@ -24,7 +24,7 @@ actor RollingBoulderGrey
 	Spawn:
 		GBOL A 2 NODELAY A_PlaySound("Boulder/Roll",5,1,1)
 		GBOL BCDA 2 A_Quake(1,2,0,192,"")
-		Wait
+		Loop
 	Death:
 		TNT1 A 1 A_SpawnItem ("BoulderStoppedGrey")
 		TNT1 A 0 A_StopSound(5)
@@ -54,7 +54,7 @@ actor RollingBoulderBrown : RollingBoulderGrey
 	Spawn:
 		BBOL A 2 NODELAY A_PlaySound("Boulder/Roll",5,1,1)
 		BBOL BCDA 2 A_Quake(1,2,0,192,"")
-		Wait
+		Loop
 	Death:
 		TNT1 A 1 A_SpawnItem ("BoulderStoppedBrown")
 		TNT1 A 0 A_StopSound(5)
@@ -70,7 +70,7 @@ actor RollingBoulderBrownHugger : RollingBoulderGreyHugger
 	Spawn:
 		BBOL A 2 NODELAY A_PlaySound("Boulder/Roll",5,1,1)
 		BBOL BCDA 2 A_Quake(1,2,0,192,"")
-		Wait
+		Loop
 	}
 }
 
