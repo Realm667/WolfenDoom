@@ -397,3 +397,285 @@ ACTOR CeilingGrass
 		Stop
 	}
 }
+
+actor Grass1
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Grass 1
+	//$Color 3
+	
+	Radius 16
+	Height 16
+	Scale 0.5
+	
+	States
+	{
+		Spawn:
+			GRS1 A 0
+			goto Setup
+		
+		Setup:
+			"####" "#" 0 A_SetScale(frandom(0.4, 0.6), frandom(0.4, 0.6))
+			"####" "#" -1 A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
+			Stop
+	}
+}
+
+actor Grass2 : Grass1
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Grass 2
+	//$Color 3
+	
+	States
+	{
+		Spawn:
+			GRS2 A 0
+			goto Setup
+	}
+}
+
+actor Grass3 : Grass1
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Grass 3
+	//$Color 3
+	
+	States
+	{
+		Spawn:
+			GRS2 A 0
+			goto Setup
+	}
+}
+
+actor Grass4 : Grass1
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Grass 1 (desert)
+	//$Color 3
+	
+	States 
+	{ 
+		Spawn:
+			GRS4 A 0
+			goto Setup
+	}
+}
+
+actor Grass5 : Grass1
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Grass 2 (desert)
+	//$Color 3
+	
+	States 
+	{ 
+		Spawn:
+			GRS5 A 0
+			goto Setup
+	}
+}
+
+actor Grass6 : Grass1
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Grass 3 (desert)
+	//$Color 3
+	
+	States 
+	{ 
+		Spawn:
+			GRS6 A 0
+			goto Setup
+	}
+}
+
+actor Grass7 : Grass1
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Grass 1 (winter)
+	//$Color 3
+	
+	States 
+	{ 
+		Spawn:
+			GRS7 A 0
+			goto Setup
+	}
+}
+
+actor Grass8 : Grass1
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Grass 2 (winter)
+	//$Color 3
+	
+	States 
+	{ 
+		Spawn:
+			GRS8 A 0
+			goto Setup
+	}
+}
+
+actor Grass9 : Grass1
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Grass 3 (winter)
+	//$Color 3
+	
+	States 
+	{ 
+		Spawn:
+			GRS9 A 0
+			goto Setup
+	}
+}
+
+actor Flower1
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Flower (yellow)
+	//$Color 3
+	
+	Radius 16
+	Height 32
+	
+	States
+	{
+		Spawn:
+			FLW1 A 0
+			goto Setup
+			
+		Setup:
+			"####" "#" 0 A_SetScale(frandom(0.8, 1.1), frandom(0.8, 1.1))
+			"####" "#" -1 A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
+			Stop
+	}
+}
+
+actor Flower2 : Flower1
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Flower (white)
+	//$Color 3
+	
+	States
+	{
+		Spawn:
+			FLW2 A 0 
+			goto Setup
+	}
+}
+
+actor Flower3 : Flower1
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Flower (winter)
+	//$Color 3
+	
+	States
+	{
+		Spawn:
+			FLW3 A 0 
+			goto Setup
+	}
+}
+
+actor Rose1 : Flower1
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Rose (red)
+	//$Color 3
+	
+	States
+	{
+		Spawn:
+			FLW4 A 0 
+			goto Setup
+	}
+}
+
+actor Rose2 : Flower1
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Rose (yellow)
+	//$Color 3
+	
+	States
+	{
+		Spawn:
+			FLW5 A 0 
+			goto Setup
+	}
+}
+
+actor Rose3 : Flower1
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Rose (blue-white)
+	//$Color 3
+	
+	States
+	{
+		Spawn:
+			FLW6 A 0 
+			goto Setup
+	}
+}
+
+actor Rose4 : Flower1
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Rose (winter)
+	//$Color 3
+	
+	States
+	{
+		Spawn:
+			FLW7 A 0 
+			goto Setup
+	}
+}
+
+
+ACTOR GrassSpawner : RandomSpawner
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Random Grass Spawner (also flowers)
+	//$Color 3
+	
+	DropItem "Grass1"
+	DropItem "Grass2"
+	DropItem "Grass3"
+	DropItem "Flower1"
+	DropItem "Flower2"
+	DropItem "Rose1"
+	DropItem "Rose2"
+	DropItem "Rose3"
+}
+
+ACTOR GrassSpawnerDesert : RandomSpawner
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Random Grass Spawner (desert)
+	//$Color 3
+	
+	DropItem "Grass4"
+	DropItem "Grass5"
+	DropItem "Grass6"
+}
+
+ACTOR GrassSpawnerWinter : RandomSpawner
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Random Grass Spawner (winter, also flowers)
+	//$Color 3
+	
+	DropItem "Grass7"
+	DropItem "Grass8"
+	DropItem "Grass9"
+	DropItem "Flower3"
+	DropItem "Rose4"
+}
