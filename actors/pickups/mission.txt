@@ -5,7 +5,7 @@ ACTOR Akten : Inventory
 	//$Color 13
 	Tag "Secret Files"
 	inventory.icon AKTTA0
-	inventory.pickupmessage "Picked up Secret files"
+	inventory.pickupmessage "$AKTEN"
 	inventory.pickupsound "misc/p_pkup"
 	+INVENTORY.UNDROPPABLE
 	+INVENTORY.INVBAR
@@ -25,7 +25,7 @@ ACTOR AktenEisenmann : Akten
 	//$Color 13
 	Tag "Eisenmann Files"
 	inventory.icon AKTEA0
-	inventory.pickupmessage "Picked up Eisenmann files"
+	inventory.pickupmessage "$EISEN"
 	inventory.maxamount 10
 	States
 	{
@@ -42,7 +42,7 @@ ACTOR SpearOfDestiny : Akten
 	//$Color 13
 	Tag "Staff of Kings"
 	inventory.icon SPERA0
-	inventory.pickupmessage "Picked up the Staff of Kings"
+	inventory.pickupmessage "$SPEAROD"
 	States
 	{
 	Spawn:
@@ -58,7 +58,7 @@ ACTOR Cartridge51 : Akten
 	//$Color 13
 	Tag "Cartridge 51"
 	inventory.icon SNSCB0
-	inventory.pickupmessage "Picked up a Cartridge"
+	inventory.pickupmessage "$SNESCART"
 	States
 	{
 	Spawn:
@@ -74,7 +74,7 @@ ACTOR Cartridge52 : Akten
 	//$Color 13
 	Tag "Cartridge 52"
 	inventory.icon SNSCD0
-	inventory.pickupmessage "Picked up a Cartridge"
+	inventory.pickupmessage "$SNESCART"
 	States
 	{
 	Spawn:
@@ -90,7 +90,7 @@ ACTOR Cartridge53 : Akten
 	//$Color 13
 	Tag "Cartridge 53"
 	inventory.icon SNSCF0
-	inventory.pickupmessage "Picked up a Cartridge"
+	inventory.pickupmessage "$SNESCART"
 	States
 	{
 	Spawn:
@@ -107,7 +107,7 @@ ACTOR BoACompass : CustomInventory
 	Scale 0.7
 	Tag "Compass"
 	Inventory.Icon CMPSB0
-	Inventory.PickupMessage "Got a Compass"
+	Inventory.PickupMessage "$COMPASS"
 	Inventory.PickupSound "misc/p_pkup"
 	+INVENTORY.UNDROPPABLE
 	+INVENTORY.INVBAR
