@@ -4,7 +4,7 @@ ACTOR Pyrolight : NaziWeapon replaces PlasmaRifle
 	//$Title (5) Pyrolight
 	//$Color 14
 	Weapon.SelectionOrder 800
-	Inventory.PickupMessage "You got the Pyrolight!"
+	Inventory.PickupMessage "$PYRO"
 	Weapon.AmmoType "PyrolightLoaded"
 	Weapon.AmmoType2 "FlameAmmo"
 	Weapon.AmmoUse 1
@@ -198,7 +198,7 @@ ACTOR Flamebolt
 	SeeSound "flamer/fire"
 	DamageType Fire
 	Decal Scorch
-	Obituary "%o was burninated by %k."
+	Obituary "$OBPYRO"
 	ProjectileKickback 20
 	States
 	{

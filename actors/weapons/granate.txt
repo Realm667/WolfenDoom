@@ -3,7 +3,7 @@ ACTOR GrenadePickup : CustomInventory
 	//$Category Ammo (Wolf3D)
 	//$Title Grenade
 	//$Color 6
-	Inventory.PickupMessage "Picked up a grenade."
+	Inventory.PickupMessage "$GRENADE"
 	Tag "Frag Grenade"
 	Inventory.MaxAmount 9
 	Inventory.Icon THRPB0
@@ -33,7 +33,7 @@ ACTOR HandGrenade
 	-NOGRAVITY
 	-NOTELEPORT
 	+CANBOUNCEWATER
-	Obituary "%o failed to field %k's fragmenting fastball."
+	Obituary "$OBGRENADE"
 	BounceType Doom
 	BounceFactor 0.2
 	WallBounceFactor 0.6

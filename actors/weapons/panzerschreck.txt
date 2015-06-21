@@ -4,7 +4,7 @@ ACTOR Panzerschreck : NaziWeapon
 	//$Title (7) Panzerschreck
 	//$Color 14
 	Weapon.SelectionOrder 10000
-	Inventory.PickupMessage "You got the Panzerschreck!"
+	Inventory.PickupMessage "$PANZA"
 	Tag "Panzerschreck"
 	Weapon.AmmoType "PanzerschreckLoaded"
 	Weapon.AmmoUse 1
@@ -123,7 +123,7 @@ ACTOR PanzerRocket
 	-NOTELEPORT
 	Damage (2500)
 	Decal Scorch
-	Obituary "%o notices %k's rocket speeding towards %h."
+	Obituary "$OBPANZA"
 	ProjectileKickback 25000
 	States
 	{

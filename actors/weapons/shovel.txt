@@ -7,7 +7,7 @@ ACTOR Shovel : NaziWeapon
 	Weapon.SelectionOrder 9999
 	Weapon.UpSound "shovel/select"
 	Tag "The Shovel!"
-	Inventory.PickupMessage "You got the shovel!"
+	Inventory.PickupMessage "$SHOVEL"
 	+WEAPON.NOAUTOFIRE
 	-WEAPON.AMMO_CHECKBOTH
 	States
@@ -77,7 +77,7 @@ ACTOR ShovelPuff
 	activesound ""
 	attacksound "shovel/wall"
 	seesound "shovel/impact"
-	Obituary "%o was shcklonked with %k's shovel."
+	Obituary "$OBSHOVEL"
 	ProjectileKickback 100
 	states
 	{
@@ -100,8 +100,8 @@ ACTOR KnifeSilent : Weapon
 	Weapon.BobSpeed 1.5
 	Weapon.BobRangeX 1.5
 	Weapon.UpSound "knife/select"
-	Obituary "%o was stabbed by %k."
-	Inventory.PickupMessage "You found a combat knife."
+	Obituary "$OBKNIFE"
+	Inventory.PickupMessage "$KNIFE"
 	Weapon.SelectionOrder 10000
 	States
 	{

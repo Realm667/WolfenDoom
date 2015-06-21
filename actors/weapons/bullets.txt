@@ -123,7 +123,7 @@ ACTOR ShotgunTracer : Tracer
 
 ACTOR AutoShotgunTracer : ShotgunTracer
 {
-	Obituary "%o was peppered by %k's auto shotgun."
+	Obituary "$OBAUTOSH"
 }
 
 //Muzzle velocity: 1,312 ft/s (400 m/s) - Wikipedia
@@ -153,7 +153,7 @@ ACTOR Kar98kTracer : Tracer
 	ProjectileKickback 100
 	Damage (random(40,65))
 	Speed 180
-	Obituary "%o was gunned down by %k's Mauser."
+	Obituary "$OBMAUSER"
 }
 
 //Muzzle velocity: 2,448-2,546 ft/s (746-776 m/s) - Wikipedia
