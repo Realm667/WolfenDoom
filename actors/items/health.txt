@@ -4,7 +4,7 @@ ACTOR Meal : Health
 	//$Title Meals (2 variants+5)
 	//$Color 6
 	Inventory.Amount 5
-	Inventory.PickupMessage "Picked up a meal."
+	Inventory.PickupMessage "$MEAL"
 	States
 	{
 	Spawn:
@@ -20,7 +20,7 @@ ACTOR Dogfood : Health
 	//$Title Dog Food (+2)
 	//$Color 6
 	Inventory.Amount 2
-	Inventory.PickupMessage "Picked up a bowl of dog food."
+	Inventory.PickupMessage "$DOGFOOD"
 	States
 	{
 	Spawn:
@@ -35,7 +35,7 @@ ACTOR Medikit_Small : Health replaces Stimpack
 	//$Title Medikit (small+10)
 	//$Color 6
 	Inventory.Amount 10
-	Inventory.PickupMessage "Picked up a small medikit."
+	Inventory.PickupMessage "$MEDSML"
 	States
 	{
 	Spawn:
@@ -50,7 +50,7 @@ ACTOR Medikit_Medium : Health replaces Medikit
 	//$Title Medikit (medium+20)
 	//$Color 6
 	Inventory.Amount 20
-	Inventory.PickupMessage "Picked up a medium medikit."
+	Inventory.PickupMessage "$MEDMID"
 	States
 	{
 	Spawn:
@@ -65,7 +65,7 @@ ACTOR Medikit_Large : Health
 	//$Title Medikit (large+40)
 	//$Color 6
 	Inventory.Amount 40
-	Inventory.PickupMessage "Picked up a large medikit."
+	Inventory.PickupMessage "$MEDBIG"
 	States
 	{
 	Spawn:
@@ -87,7 +87,7 @@ actor VitalitySerum : UpgradeStamina
 	Inventory.MaxAmount 100 //this controls how high your health can get
 	+COUNTITEM
 	+INVENTORY.ALWAYSPICKUP
-	Inventory.PickupMessage "Your body toughens slightly..."
+	Inventory.PickupMessage "$SERUM"
 	States
 	{
 	Spawn:
@@ -104,7 +104,7 @@ Actor FieldKit : HealthPickup
 	Health 25
 	+CountItem
 	+Inventory.AlwaysPickup
-	Inventory.PickupMessage "You got a field kit"
+	Inventory.PickupMessage "$FKIT"
 	Inventory.PickupSound "Misc/I_PkUp"
 	Inventory.UseSound "Misc/I_PkUp"
 	Inventory.Icon "FKITC0"

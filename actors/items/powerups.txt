@@ -4,7 +4,7 @@ Actor NazisBackpack : BackpackItem
 	//$Title Backpack (Backpack)
 	//$Color 6
 	Height 26
-	Inventory.PickupMessage "Picked up an ammo pack."
+	Inventory.PickupMessage "$SSPACK"
 	States
 	{
 	Spawn:
@@ -18,7 +18,7 @@ ACTOR NaziBerserk : Berserk replaces Berserk
 	//$Category Powerups (Wolf3D)
 	//$Title Totale Macht (Berserk)
 	//$Color 6
-	Inventory.PickupMessage "Totale Macht!" // "Powerful!"
+	Inventory.PickupMessage "$SSBERSK"
 	States
 	{
 	Pickup:
@@ -34,7 +34,7 @@ ACTOR ScubaGearGiver : RadSuit replaces RadSuit
 	//$Title Scuba Gear (Radiation Suite)
 	//$Color 6
 	Height 32
-	Inventory.PickupMessage "Picked up a scuba gear"
+	Inventory.PickupMessage "$SCUBA"
 	Powerup.Duration -60
 	Powerup.Color 0,0,150,.125
 	States
