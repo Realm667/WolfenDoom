@@ -25,7 +25,7 @@ ACTOR 9mmAmmo : Ammo
 	Inventory.MaxAmount 256
 	Ammo.BackpackAmount 64
 	Ammo.BackpackMaxAmount 480
-	Inventory.PickupMessage "Picked up a 9mm magazine."
+	Inventory.PickupMessage "$9MMAMMO"
 	Inventory.Icon WALT01
 	States
 	{
@@ -41,7 +41,7 @@ ACTOR 9mmAmmoBox : 9mmAmmo replaces ClipBox
 	//$Title Ammobox
 	//$Color 6
 	Inventory.Amount 64
-	Inventory.PickupMessage "Picked up a box of 9mm ammo."
+	Inventory.PickupMessage "$9MMBOX"
 	Inventory.Icon WALT02
 	States
 	{
@@ -57,7 +57,7 @@ ACTOR 12GaugeAmmo : Ammo
 	//$Title Shells
 	//$Color 6
 	Tag "12 Gauge"
-	Inventory.PickupMessage "Picked up some shotgun shells."
+	Inventory.PickupMessage "$GAUGAMMO"
 	Inventory.Amount 4
 	Inventory.MaxAmount 32
 	Ammo.BackpackAmount 4
@@ -77,7 +77,7 @@ ACTOR 12GaugeAmmoBox : 12GaugeAmmo
 	//$Title Shellbox
 	//$Color 6
 	Inventory.Amount 16
-	Inventory.PickupMessage "Picked up a box of shells."
+	Inventory.PickupMessage "$GAUGBOX"
 	States
 	{
 	Spawn:
@@ -96,7 +96,7 @@ ACTOR MauserAmmo : Ammo
 	Inventory.MaxAmount 40
 	Ammo.BackpackAmount 5
 	Ammo.BackpackMaxAmount 100
-	Inventory.PickupMessage "Picked up a 7.92mm stripper clip."
+	Inventory.PickupMessage "$MAUSAMMO"
 	Scale .3
 	Inventory.Icon MAUS02
 	States
@@ -114,7 +114,7 @@ ACTOR MauserAmmoBox : MauserAmmo
 	//$Color 6
 	Scale 1
 	Inventory.Amount 20
-	Inventory.PickupMessage "Picked up a box of 7.92mm Mauser ammo."
+	Inventory.PickupMessage "$MAUSBOX"
 	States
 	{
 	Spawn:
@@ -129,7 +129,7 @@ ACTOR FlameAmmo : Ammo replaces RocketBox
 	//$Title Gas
 	//$Color 6
 	Tag "Petrol"
-	Inventory.PickupMessage "A petrol canister."
+	Inventory.PickupMessage "$FLAMAMMO"
 	Inventory.Amount 25
 	Inventory.MaxAmount 175
 	Ammo.BackpackAmount 25
@@ -154,7 +154,7 @@ ACTOR NebAmmo : Ammo
 	Inventory.MaxAmount 150
 	Ammo.BackpackAmount 20
 	Ammo.BackpackMaxAmount 300
-	Inventory.PickupMessage "Picked up a small crate of mini-rockets."
+	Inventory.PickupMessage "$NEBWAMMO"
 	Inventory.Icon NEBE01
 	States
 	{
@@ -170,7 +170,7 @@ ACTOR NebAmmoBox : NebAmmo replaces CellPack
 	//$Title Nebelbox
 	//$Color 6
 	Inventory.Amount 30
-	Inventory.PickupMessage "Picked up a crate of mini-rockets."
+	Inventory.PickupMessage "$NEBWBOX"
 	States
 	{
 	Spawn:
@@ -186,7 +186,7 @@ ACTOR PanzerAmmo : Ammo replaces Rocket
 	//$Color 6
 	Tag "Rocket"
 	Inventory.MaxAmount 10
-	Inventory.PickupMessage "Picked up a Panzerschreck rocket."
+	Inventory.PickupMessage "$PANZAMMO"
 	Ammo.BackpackAmount 1
 	Ammo.BackpackMaxAmount 20
 	Inventory.Icon PANZ01
