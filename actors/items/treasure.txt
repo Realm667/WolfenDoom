@@ -11,7 +11,7 @@ actor SingleCoin : CustomInventory
 	//$Category Pickups (Wolf3D)
 	//$Title Treasure (Coin, 1pts)
 	//$Color 17
-	inventory.pickupmessage "Picked up a coin."
+	inventory.pickupmessage "$COIN"
 	inventory.pickupsound "treasure/pickup"
 	states
 	{
@@ -29,7 +29,7 @@ actor BagOfCoins : SingleCoin
 	//$Category Pickups (Wolf3D)
 	//$Title Treasure (Coin Bag, 10pts)
 	//$Color 17
-	inventory.pickupmessage "Picked up a bag of coins."
+	inventory.pickupmessage "$COINSBAG"
 	states
 	{
 	Spawn:
@@ -46,7 +46,7 @@ ACTOR TreasureChest : SingleCoin
 	//$Category Pickups (Wolf3D)
 	//$Title Treasure (Chest, 50pts)
 	//$Color 17
-	inventory.pickupmessage "Picked up a treasure chest."
+	inventory.pickupmessage "$CHEST"
 	States
 	{
 	Spawn:
@@ -63,7 +63,7 @@ ACTOR TreasureChest2 : SingleCoin
 	//$Category Pickups (Wolf3D)
 	//$Title Treasure (Large Chest, 100pts)
 	//$Color 17
-	inventory.pickupmessage "Picked up a large treasure chest."
+	inventory.pickupmessage "$CHESTBIG"
 	States
 	{
 	Spawn:
@@ -80,7 +80,7 @@ ACTOR TreasureChest3 : SingleCoin
 	//$Category Pickups (Wolf3D)
 	//$Title Treasure (Chest, 25pts)
 	//$Color 17
-	inventory.pickupmessage "Picked up a small treasure chest."
+	inventory.pickupmessage "$CHESTSML"
 	States
 	{
 	Spawn:
@@ -97,7 +97,7 @@ ACTOR TreasureCross : SingleCoin
 	//$Category Pickups (Wolf3D)
 	//$Title Treasure (Cross, 15pts)
 	//$Color 17
-	inventory.pickupmessage "Picked up a golden cross."
+	inventory.pickupmessage "$CROSS"
 	States
 	{
 	Spawn:
@@ -114,7 +114,7 @@ ACTOR Goblet : TreasureCross
 	//$Category Pickups (Wolf3D)
 	//$Title Treasure (Goblet, 15pts)
 	//$Color 17
-	inventory.pickupmessage "Picked up a golden chalice."
+	inventory.pickupmessage "$CHALICE"
 	States
 	{
 	Spawn:
@@ -128,7 +128,7 @@ ACTOR TreasureCrown : SingleCoin
 	//$Category Pickups (Wolf3D)
 	//$Title Treasure (Crown, 20pts)
 	//$Color 17
-	inventory.pickupmessage "Picked up a gold crown."
+	inventory.pickupmessage "$CROWN"
 	States
 	{
 	Spawn:
@@ -145,7 +145,7 @@ ACTOR GoldBar : TreasureCrown
 	//$Category Pickups (Wolf3D)
 	//$Title Treasure (Gold Bar, 20pts)
 	//$Color 17
-	inventory.pickupmessage "Picked up a gold bar."
+	inventory.pickupmessage "$GOLDBAR"
 	States
 	{
 	Spawn:
@@ -161,7 +161,7 @@ ACTOR ChestKey : Inventory
 	//$Title Treasure Chest Key
 	//$Color 17
 	Inventory.Icon "I_SPBKEY"
-	Inventory.PickupMessage "CHEST KEY"
+	Inventory.PickupMessage "$CHESTKEY"
 	Inventory.PickupSound "misc/k_pkup"
 	Inventory.UseSound "supplychest/open"
 	Inventory.MaxAmount 3
