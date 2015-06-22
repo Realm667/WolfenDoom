@@ -69,7 +69,7 @@ ACTOR Guard : Nazi
 	SeeSound "Nazi1/Sighted"
 	PainSound "Nazi1/Pain"
 	DeathSound "Nazi1/Death"
-	Obituary "%o was shot by a pistol soldier."
+	Obituary "$GUARD"
 	DropItem 9mmAmmo 192
 	DropItem Luger9mm 64
 	States
@@ -121,7 +121,7 @@ ACTOR SSGuard : Guard
 	//$Title SS Guard
 	//$Color 4
 	Speed 2.67
-	Obituary "%o was killed by an SS guard."
+	Obituary "SSGUARD"
 	Health 40
 	States
 	{
@@ -165,7 +165,7 @@ ACTOR WGuard : Guard
 	//$Title Wehrmacht Guard
 	//$Color 4
 	Speed 2.5
-	Obituary "%o was shot by a Wehrmacht soldier."
+	Obituary "$WGUARD"
 	Health 30
 	PainChance 185
 	+MISSILEMORE
@@ -192,7 +192,7 @@ ACTOR MP40Guard : Guard
 	//$Category Monsters (Wolf3D)
 	//$Title SA Guard (MP40)
 	//$Color 4
-	Obituary "%o was plugged by a soldier with an MP40."
+	Obituary "$MPGUARD"
 	SeeSound "Nazi2/Sighted"
 	PainSound "Nazi2/Pain"
 	DeathSound "Nazi2/Death"
@@ -236,7 +236,7 @@ ACTOR SSMP40Guard : SSGuard
 	dropitem 9mmAmmo 192
 	dropitem MP40 64
 	dropitem GrenadePickup 16
-	Obituary "%o was plugged by an SS with an MP40."
+	Obituary "$SSMPGURD"
 	States
 	{
 	Spawn:
@@ -278,7 +278,7 @@ ACTOR WMP40Guard : MP40Guard
 	//$Category Monsters (Wolf3D)
 	//$Title Wehrmacht Guard (MP40)
 	//$Color 4
-	Obituary "%o was plugged by a trigger-happy Wehrmacht."
+	Obituary "$WMPGUARD"
 	Health 30
 	Speed 2.5
 	+MISSILEMORE
@@ -307,7 +307,7 @@ ACTOR Officer : Guard
 	//$Title SA Officer
 	//$Color 4
 	Speed 4
-	Obituary "%o was executed by an officer."
+	Obituary "$OFFICER"
 	SeeSound "Nazi4/Sighted"
 	PainSound "Nazi4/Pain"
 	DeathSound "Nazi4/Death"
@@ -360,7 +360,7 @@ ACTOR SSOfficer : Officer
 	//$Title SS Officer
 	//$Color 4
 	Speed 5.33
-	Obituary "%o was viciously executed by an SS officer."
+	Obituary "$SSOFFICE"
 	Health 40
 	States
 	{
@@ -375,7 +375,7 @@ ACTOR WOfficer : Officer
 	//$Category Monsters (Wolf3D)
 	//$Title Wehrmacht Officer
 	//$Color 4
-	Obituary "%o was quickly executed by an officer."
+	Obituary "$WOFFICER"
 	Health 30
 	Speed 5
 	PainChance 180
@@ -409,7 +409,7 @@ ACTOR RifleGuard : MP40Guard
 	//$Category Monsters (Wolf3D)
 	//$Title SA Guard (Rifle)
 	//$Color 4
-	Obituary "%o was plinked by a rifle soldier."
+	Obituary "$RIFLSOLD"
 	SeeSound "Nazi3/Sighted"
 	dropitem MauserAmmo
 	dropitem G43 64
@@ -432,7 +432,7 @@ ACTOR WRifleGuard : RifleGuard
 	//$Category Monsters (Wolf3D)
 	//$Title Wehrmacht Guard (Rifle)
 	//$Color 4
-	Obituary "%o was snap-shot by a rifle soldier."
+	Obituary "$WRIFSOLD"
 	Health 30
 	Speed 2.5
 	+MISSILEMORE
@@ -460,7 +460,7 @@ ACTOR WaffenSS : SSMP40Guard
 	//$Title Waffen SS
 	//$Color 4
 	SeeSound "Nazi3/Sighted"
-	Obituary "%o was shot to pieces by a Waffen-SS."
+	Obituary "$SSWAFFEN"
 	Health 80
 	dropitem "9mmAmmo" 192
 	dropitem "MP40" 64
@@ -485,7 +485,7 @@ ACTOR Paratrooper : WaffenSS
 	//$Category Monsters (Wolf3D)
 	//$Title Paratrooper
 	//$Color 4
-	Obituary "%o was slaughtered by a Fallschirmjaeger."
+	Obituary "$PARATROP"
 	Health 90
 	dropitem "9mmAmmo" 192
 	dropitem "MP40" 64
@@ -502,7 +502,7 @@ ACTOR Mutant : Guard
 	//$Category Monsters (Wolf3D)
 	//$Title Mutant(Projectile)
 	//$Color 4
-	Obituary "%o did the dance of doom with a Mutant."
+	Obituary "$MUTANT"
 	Health 90
 	SeeSound ""
 	PainSound ""
@@ -627,7 +627,7 @@ ACTOR BigMutant1 : Mutant
 	//$Category Monsters (Wolf3D)
 	//$Title Giant Mutant(UMG43)
 	//$Color 4
-	Obituary "%o was chaingunnered by a Giant Mutant."
+	Obituary "$GMUTANT1"
 	Health 400
 	Scale 1.0
 	States
@@ -765,7 +765,7 @@ ACTOR BigMutant2 : BigMutant1
 	//$Category Monsters (Wolf3D)
 	//$Title Giant Mutant(NebRockets)
 	//$Color 4
-	Obituary "%o was rocketeed by a Giant Mutant."
+	Obituary "$GMUTANT2"
 	Health 450
 	+MISSILEEVENMORE
 	dropitem NebAmmoSmall, 128, 2
@@ -810,7 +810,7 @@ ACTOR Rottweiler : Nazi
 	//$Title Dog (Rottweiler)
 	//$Color 4
 	Scale 1.1
-	HitObituary "%o was bitten by a guard dog."
+	HitObituary "$DOGS"
 	Health 25
 	PainChance 180
 	Speed 4
@@ -903,7 +903,7 @@ ACTOR RocketMan : Nazi
 	Health 300
 	PainChance 110
 	Mass 200
-	Obituary "%o was splattered by Otto Giftmacher."
+	Obituary "$OTTOBOSS"
 	SeeSound "Boss2/Sighted"
 	PainSound "boss/pain"
 	DeathSound "Boss2/Death"
@@ -1049,7 +1049,7 @@ ACTOR MadDoctor : RocketMan
 	//$Category Monsters (Wolf3D)
 	//$Title Dr Schabbs (Boss)
 	//$Color 4
-	Obituary "%o was used as an unwitting test subject by Dr. Schabbs Junior."
+	Obituary "$SCHABBS"
 	dropitem "Medikit_Medium"
 	Tag "Dr. Schabbs Jr."
 	Health 400
@@ -1093,7 +1093,7 @@ ACTOR SuperSoldier : Nazi
 	//$Category Monsters (Wolf3D)
 	//$Title Hans Grosse (Boss)
 	//$Color 4
-	Obituary "%o was terminated by an ubersoldat."
+	Obituary "$SUPASOLD"
 	Health 500
 	Radius 24
 	Height 64
@@ -1142,7 +1142,7 @@ ACTOR SuperSoldierGirl : SuperSoldier
 	//$Category Monsters (Wolf3D)
 	//$Title Gretel Grosse (Boss)
 	//$Color 4
-	Obituary "%o was terminated by a female ubersoldat."
+	Obituary "$SUPAGIRL"
 	SeeSound "BossGirl/Sighted"
 	PainSound "bossGirl/pain"
 	DeathSound "BossGirl/Death"
@@ -1182,7 +1182,7 @@ ACTOR SuperSoldierElite : SuperSoldier replaces BaronOfHell
 	//$Color 4
 	+BOSS
 	Tag "Hptm. Furzknall"
-	Obituary "%o was pulverized by an elite ubersoldat."
+	Obituary "$SUPAELIT"
 	Health 850
 	DropItem "9mmAmmoBox" 128
 	DropItem "9mmAmmo" 128
@@ -1221,7 +1221,7 @@ ACTOR General : RocketMan replaces Archvile
 	//$Category Monsters (Wolf3D)
 	//$Title General Fettgesicht (Boss)
 	//$Color 4
-	Obituary "%o was eliminated by a Nazi general."
+	Obituary "$GENERAL"
 	Health 800
 	Mass 1000
 	SeeSound "Boss3/Sighted"
@@ -1275,7 +1275,7 @@ ACTOR FlamerMan : RocketMan replaces Arachnotron
 	//$Title Flamer (Boss)
 	//$Color 4
 	Speed 2.67
-	Obituary "%o was roasted by a Nazi with a flamethrower."
+	Obituary "$FLAMEBOY"
 	Health 500
 	SeeSound "Boss1/Sighted"
 	DeathSound "Boss1/Death"
@@ -1363,7 +1363,7 @@ ACTOR HitlerGhost : Nazi
 	//$Title Hitler Ghost
 	//$Color 4
 	Scale 1.25
-	Obituary "%o thought %g saw Hitler."
+	Obituary "$SSGHOST"
 	Health 250
 	Mass 1000
 	Speed 2.167
@@ -1427,7 +1427,7 @@ ACTOR Geist : Nazi
 	//$Color 4
 	+LOOKALLAROUND
 	Scale .9
-	Obituary "%o had %p soul removed by a Geist."
+	Obituary "$GEIST"
 	Health 100
 	Radius 16
 	Mass 1000
@@ -1608,7 +1608,7 @@ ACTOR MiniShip : Nazi
 	//$Title Miniship
 	//$Color 4
 	+LOOKALLAROUND
-	Obituary "%o received death from above."
+	Obituary "$NAZISHIP"
 	Health 375
 	Speed 3.25
 	Mass 2000
@@ -1661,7 +1661,7 @@ ACTOR MGTurret : MiniShip
 	//$Color 4
 	Scale 1.1
 	Speed 0
-	Obituary "%o was shot up by a gun turret."
+	Obituary "$MGTURRET"
 	Health 100
 	Radius 24
 	Height 24
@@ -1696,7 +1696,7 @@ ACTOR DeathKnight : Nazi
 	//$Color 4
 	+LOOKALLAROUND
 	Scale 1.5
-	Obituary "%o knelt before the Death Knight."
+	Obituary "$DKNIGHT"
 	Health 3000
 	Radius 64
 	Height 96
@@ -1806,7 +1806,7 @@ ACTOR Hitler : DeathKnight
 	//$Title Adolf Hitler (Boss)
 	//$Color 4
 	Scale 1.2
-	Obituary "%o heiled Hitler."
+	Obituary "$HITLER"
 	Health 2500
 	Radius 32
 	Height 64
@@ -1864,7 +1864,7 @@ ACTOR ChairGuy : Nazi
 	//$Category Monsters (Wolf3D)
 	//$Title Chairman (Boss)
 	//$Color 4
-	Obituary "%o was given the chair."
+	Obituary "$CHAIRMAN"
 	Health 600
 	Mass 1000
 	PainChance 110
@@ -1935,7 +1935,7 @@ ACTOR FatMan : ChairGuy
 	//$Color 4
 	+BOSS
 	Tag "Gen. Schwabbelhals"
-	Obituary "%o was vaporized by a Nazi's double rocket penetration."
+	Obituary "$FATMAN"
 	seesound "fatman/sight"
 	deathsound "fatman/death"
 	States
@@ -2039,7 +2039,7 @@ ACTOR UberMutant : Mutant
 	SeeSound "baron/sight"
 	DeathSound "baron/death"
 	Obituary "$OB_BARON"
-	HitObituary "%o was crushed by an ubermutant."
+	HitObituary "$UBERMUTN"
 	+LOOKALLAROUND
 	+BOSS
 	States
@@ -2120,7 +2120,7 @@ ACTOR Sniper : Guard
 	//$Category Monsters (Wolf3D)
 	//$Title SA Sniper
 	//$Color 4
-	Obituary "%o was headshot by a sniper."
+	Obituary "$SNIPER"
 	Health 50
 	speed 0
 	dropitem "MauserAmmo" 192
@@ -2178,7 +2178,7 @@ ACTOR UndeadMonk : HitlerGhost
 	//$Title Undead Monk
 	//$Color 4
 	+LOOKALLAROUND
-	Obituary "%o was slain by an undead monk."
+	Obituary "$UNDEADM"
 	States
 	{
 	Spawn:
@@ -2192,7 +2192,7 @@ ACTOR SuperMutant : Mutant
 	//$Category Monsters (Wolf3D)
 	//$Title Mutant(super)
 	//$Color 4
-	Obituary "%o did the dance of doom with a powerful Mutant."
+	Obituary "$SUPAMUTN"
 	Health 180
 	Scale 1.45
 	states
@@ -2237,7 +2237,7 @@ ACTOR FlamerSoldier : Guard
 	//$Category Monsters (Wolf3D)
 	//$Title SS Flamer (Soldier)
 	//$Color 4
-	Obituary "%o was roasted by a Nazi with a flamethrower."
+	Obituary "$FLAMEBOY"
 	Health 100
 	dropitem "FlameAmmo" 192
 	dropitem "Pyrolight" 32
@@ -2271,7 +2271,7 @@ ACTOR MGTurretInvisible : MGTurret
 	//$Category Monsters (Wolf3D)
 	//$Title MGTurret (hidden/nokillcount)
 	//$Color 4
-	Obituary "%o was shot up by a hidden gun turret."
+	Obituary "$MGTHIDE"
 	Health 0
 	-SHOOTABLE
 	-SOLID
@@ -2308,7 +2308,7 @@ ACTOR EliteFlamer : Guard
 	//$Category Monsters (Wolf3D)
 	//$Title Elite Soldier (Flamer)
 	//$Color 4
-	Obituary "%o was roasted by a Nazi with a flamethrower."
+	Obituary "$FLAMEBOY"
 	health 450
 	Speed 4
 	seesound "eliteflamer/sight"
@@ -2399,7 +2399,7 @@ ACTOR EliteAssaulter : Guard
 	//$Category Monsters (Wolf3D)
 	//$Title Elite Soldier (MP40)
 	//$Color 4
-	Obituary "%o was shot to pieces by an elite soldat."
+	Obituary "$ELITASS"
 	health 350
 	Speed 4.66666667
 	seesound "eliteassaulter/sight"
@@ -2466,7 +2466,7 @@ ACTOR EliteSoldatRifler : Guard
 	//$Category Monsters (Wolf3D)
 	//$Title Elite Soldier (Rifle)
 	//$Color 4
-	Obituary "%o was snap-shot by an elite rifle soldier."
+	Obituary "$ELITRIFL"
 	health 65
 	Speed 4.66666667
 	painchance 80
@@ -2537,7 +2537,7 @@ ACTOR MadCook : MadDoctor
 	//$Category Monsters (Wolf3D)
 	//$Title Cook (Boss)
 	//$Color 4
-	Obituary "%o was used as a delicious ingredient for his next 5-set meal"
+	Obituary "$MADCOOK"
 	Health 400
 	+BOSS
 	Tag "Heinrich Gulasch"
@@ -2579,7 +2579,7 @@ actor UndeadPriest : Guard
 	//$Category Monsters (Wolf3D)
 	//$Title Priest
 	//$Color 4
-	obituary "%o was bagged by a priest."
+	obituary "$UNDEADP"
 	health 200
 	mass 125
 	Speed 2.66666667
@@ -2682,7 +2682,7 @@ ACTOR Hostage : Guard
 	//$Category Monsters (Wolf3D)
 	//$Title Hostage
 	//$Color 4
-	Obituary "%o was somehow killed by the hostage."
+	Obituary "$HOSTAGE"
 	painchance 255
 	Scale 1.25 //mxd
 	DropItem ""
@@ -2717,7 +2717,7 @@ ACTOR DirtyDarren : Guard
 	//$Category Monsters (Wolf3D)
 	//$Title Dirty Darren
 	//$Color 4
-	Obituary "%o was shot by Dirty Darren."
+	Obituary "$DARREN"
 	Translation 1
 	painchance 255
 	Scale 1.23 //mxd
@@ -2745,7 +2745,7 @@ ACTOR GeneralAllied : DirtyDarren
 	//$Category Monsters (Wolf3D)
 	//$Title General Miller
 	//$Color 4
-	Obituary "%o was shot by General Miller."
+	Obituary "$MILLER"
 	Translation "0:0=0:0"
 	Scale 1.35 //mxd
 	States
@@ -2771,7 +2771,7 @@ ACTOR Marine1 : DirtyDarren
 	//$Category Monsters (Wolf3D)
 	//$Title Marine (1)
 	//$Color 4
-	Obituary "%o was shot by a marine."
+	Obituary "$MARINE"
 	Scale 1.3 //mxd
 	states
 	{
@@ -2833,7 +2833,7 @@ ACTOR BlackGuy : DirtyDarren
 	//$Category Monsters (Wolf3D)
 	//$Title Black Guy
 	//$Color 4
-	Obituary "%o was shot by a Black Guy."
+	Obituary "$NIGGAGUY"
 	Height 75 //mxd. Players shouldn't be able to jump on this guy
 	Scale 1.35 //mxd
 	states
