@@ -581,17 +581,32 @@ Path "models"
 Model 0 "clock1.md3"
 Skin 0 "clock.jpg"
 Scale 1.0 1.0 1.0
-Path "models"
-Model 1 "clock2.md3"
-Skin 1 "clock.jpg"
-Scale 1.0 1.0 1.0
-Path "models"
-Model 2 "clock3.md3"
-Skin 2 "clock.jpg"
-Scale 1.0 1.0 1.0
 InheritActorPitch
 InheritActorRoll
 FrameIndex SMGT A 0 0
+}
+
+Model RTCWClockPendulum
+{
+	Path "models"
+	Model 0 "clock3.md3"
+	Skin 0 "clock.jpg"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+	
+	FrameIndex FLM1 A 0 0
+	FrameIndex FLM1 B 0 1
+	FrameIndex FLM1 C 0 2
+	FrameIndex FLM1 D 0 3
+	FrameIndex FLM1 E 0 4
+	FrameIndex FLM1 F 0 5
+	FrameIndex FLM1 G 0 6
+	FrameIndex FLM1 H 0 7
+	FrameIndex FLM1 I 0 8
+	FrameIndex FLM1 J 0 9
+	FrameIndex FLM1 K 0 10
+	FrameIndex FLM1 L 0 11
 }
 
 Model RTCWCar
@@ -600,28 +615,27 @@ Path "models"
 Model 0 "carbody.md3"
 Skin 0 "carbody.png"
 Scale 1.0 1.0 1.0
-//Path "models"
-//Model 1 "carglass.md3"
-//Skin 1 "carglass.png" //no way to make it transparent
-//Scale 1.0 1.0 1.0
 InheritActorPitch
 InheritActorRoll
 FrameIndex SMGT A 0 0
 }
 
+Model RTCWCarGlass
+{
+	Path "models"
+	Model 0 "carglass.md3"
+	Skin 0 "carglass.png"
+	InheritActorPitch
+	InheritActorRoll
+	
+	FrameIndex SMGT A 0 0
+}
+
 Model ControlPanel
 {
 Path "models"
-Model 0 "cp1.md3"
+Model 0 "control_panel.md3"
 Skin 0 "cpwork.jpg"
-Scale 1.0 1.0 1.0
-Path "models"
-Model 1 "cp2.md3"
-Skin 1 "cpwork.jpg"
-Scale 1.0 1.0 1.0
-Path "models"
-Model 2 "cp3.md3"
-Skin 2 "cpwork.jpg"
 Scale 1.0 1.0 1.0
 InheritActorPitch
 InheritActorRoll
@@ -631,16 +645,8 @@ FrameIndex SMGT A 0 0
 Model ControlPanelB
 {
 Path "models"
-Model 0 "cp1.md3"
+Model 0 "control_panel.md3"
 Skin 0 "cpblown.jpg"
-Scale 1.0 1.0 1.0
-Path "models"
-Model 1 "cp2.md3"
-Skin 1 "cpblown.jpg"
-Scale 1.0 1.0 1.0
-Path "models"
-Model 2 "cp3.md3"
-Skin 2 "cpblown.jpg"
 Scale 1.0 1.0 1.0
 InheritActorPitch
 InheritActorRoll
@@ -715,16 +721,8 @@ FrameIndex SMGT A 0 0
 Model EnigmaMachine //good for easter eggs
 {
 Path "models"
-Model 0 "enigma1.md3"
+Model 0 "enigma.md3"
 Skin 0 "enigma.jpg"
-Scale 1.0 1.0 1.0
-Path "models"
-Model 1 "enigma2.md3"
-Skin 1 "enigma.jpg"
-Scale 1.0 1.0 1.0
-Path "models"
-Model 2 "enigma3.md3"
-Skin 2 "enigma.jpg"
 Scale 1.0 1.0 1.0
 InheritActorPitch
 InheritActorRoll
@@ -736,15 +734,7 @@ Model RTCWBench
 Path "models"
 Model 0 "bench.md3"
 Skin 0 "bench.jpg"
-Scale 1.0 1.0 1.0
-Path "models"
-Model 1 "leg1.md3"
-Skin 1 "bench.jpg"
-Scale 1.0 1.0 1.0
-Path "models"
-Model 2 "leg2.md3"
-Skin 2 "bench.jpg"
-Scale 1.0 1.0 1.0
+Scale 1.2 1.2 1.2
 InheritActorPitch
 InheritActorRoll
 FrameIndex SMGT A 0 0

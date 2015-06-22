@@ -756,6 +756,23 @@ radioactivebarrel/detected DSDETECT
 // Chandelier
 DSCHAFIR DSCHAFIR
 
+// RTCWClock
+ctick1 ctick1
+ctick2 ctick2
+ctick3 ctick3
+$random oldclock/tick { ctick1 ctick2 ctick3 }
+$pitchshift ctick1 0
+$pitchshift ctick2 0
+$pitchshift ctick3 0
+$volume oldclock/tick 0.2
+$rolloff oldclock/tick 32 512
+
+oldclock/chime cchime
+$pitchshift oldclock/chime 0
+$limit oldclock/chime 1
+$volume oldclock/chime 0.5
+$rolloff oldclock/chime 32 1024
+
 //Lava Cauldron
 LavaCauldron/Loop	DSLAVLOP
 
