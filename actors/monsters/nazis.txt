@@ -2071,16 +2071,29 @@ ACTOR UberMutant : Mutant
 	Melee:
 	Missile:
 		UBMU EF 8 A_FaceTarget
-		UBMU G 0 A_Jump(128,"Chaingun")
-		UBMU G 8 A_BruisAttack
+		UBMU G 0 A_Jump(64,"Chaingun")
+		UBMU G 0 A_Jump(128,"Missile2")
+		UBMU G 0 A_Jump(192,"Missile3")
+		UBMU G 4 BRIGHT LIGHT(MUTNROCK) A_CustomMissile("MutantRocket",44,0,0)
+		Goto See
+	Missile2:
+		UBMU G 4 BRIGHT LIGHT(MUTNROCK) A_CustomMissile("MutantRocket",44,0,random(8,16))
+		UBMU EF 5 A_FaceTarget
+		UBMU G 4 BRIGHT LIGHT(MUTNROCK) A_CustomMissile("MutantRocket",44,0,0)
+		Goto See
+	Missile3:
+		UBMU G 0 BRIGHT LIGHT(MUTNROCK) A_CustomMissile("MutantRocket",44,0,random(-8,-16))
+		UBMU G 0 BRIGHT LIGHT(MUTNROCK) A_CustomMissile("MutantRocket",44,0, 0)
+		UBMU G 5 BRIGHT LIGHT(MUTNROCK) A_CustomMissile("MutantRocket",44,0,random(8,16))
+		UBMU EF 5 A_FaceTarget
 		Goto See
 	Chaingun:
 		UBMU G 0 A_FaceTarget
 		UBMU G 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-		UBMU GG 0 A_CustomMissile("EnemyChaingunTracer",44,0,random(-1,1))
-		UBMU GG 0 A_CustomMissile("EnemyChaingunTracer",44,0,random(-4,4))
-		UBMU G 2 BRIGHT LIGHT(DEKNBFIR)
-		UBMU G 2 BRIGHT A_MonsterRefire(30,"See")
+		UBMU GGGG 0 A_CustomMissile("EnemyMutantTracer",44,0,random(-1,1))
+		UBMU GGGG 0 A_CustomMissile("EnemyMutantTracer",44,0,random(-4,4))
+		UBMU G 2 BRIGHT LIGHT(MUTNROCK)
+		UBMU G 2 BRIGHT A_MonsterRefire(200,"See")
 		Loop
 	Pain:
 		UBMU H 2
