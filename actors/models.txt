@@ -467,6 +467,33 @@ ACTOR RTCWCarGlass : ModelBase
 	StencilColor "CC CC CC"
 }
 
+ACTOR ModelGMCTruck : 3dObstacle
+{
+	//$Category Models (Wolf3D)
+	//$Title Truck (US, MoH)
+	//$Color 3
+}
+
+ACTOR ModelOpelTruck : 3dObstacle
+{
+	//$Category Models (Wolf3D)
+	//$Title Truck (Opel, MoH)
+	//$Color 3
+	
+	States
+	{
+		Spawn:
+			SMGT A -1 NoDelay A_SpawnItemEx("ModelOpelTruckWindows", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+			Stop
+	}
+}
+
+ACTOR ModelOpelTruckWindows : ModelBase
+{
+	RenderStyle Shaded
+	StencilColor "CC CC CC"
+}
+
 ACTOR H2Table : 3dObstacle //from hexen 2
 {
 //$Category Models (Wolf3D)
