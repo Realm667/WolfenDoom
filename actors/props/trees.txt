@@ -639,21 +639,28 @@ actor Rose4 : Flower1
 	}
 }
 
-
-ACTOR GrassSpawner : RandomSpawner
+ACTOR FlowersSpawner : RandomSpawner
 {
 	//$Category Props (Wolf3D)/Grass
-	//$Title Random Grass Spawner (also flowers)
+	//$Title Random Flowers Spawner
 	//$Color 3
 	
-	DropItem "Grass1"
-	DropItem "Grass2"
-	DropItem "Grass3"
 	DropItem "Flower1"
 	DropItem "Flower2"
 	DropItem "Rose1"
 	DropItem "Rose2"
 	DropItem "Rose3"
+}
+
+ACTOR GrassSpawner : RandomSpawner
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Random Grass Spawner
+	//$Color 3
+	
+	DropItem "Grass1"
+	DropItem "Grass2"
+	DropItem "Grass3"
 }
 
 ACTOR GrassSpawnerDesert : RandomSpawner
@@ -673,6 +680,9 @@ ACTOR GrassSpawnerWinter : RandomSpawner
 	//$Title Random Grass Spawner (winter, also flowers)
 	//$Color 3
 	
+	DropItem "Grass7"
+	DropItem "Grass8"
+	DropItem "Grass9"
 	DropItem "Grass7"
 	DropItem "Grass8"
 	DropItem "Grass9"
