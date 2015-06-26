@@ -677,3 +677,21 @@ ACTOR IntermapSkylight : 3dObstacle
 
 	+NOGRAVITY
 }
+
+ACTOR LighthouseBeam : IntermapSkylight
+{
+	//$Category Models (Wolf3D)
+	//$Title Lighthouse Beam
+	//$Color 3
+	
+	RenderStyle Add
+
+	+BRIGHT
+	
+	States
+	{
+		Spawn:
+			SMGT A 1 A_SetAngle(angle + 1) //0.1
+			loop
+	}
+}
