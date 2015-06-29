@@ -967,7 +967,7 @@ ACTOR MutantFartCloud
 Game Doom
 Radius 2
 Height 2
-PoisonDamage 1
+DamageType MutantPoison
 +NOINTERACTION
 +WINDTHRUST
 RenderStyle Translucent
@@ -1024,6 +1024,7 @@ ACTOR MutantRocket
 	Speed 12
 	FastSpeed 14
 	Damage (Random(4,8))
+	DamageType MutantPoison
 	Projectile
 	Scale 0.9
 	+RANDOMIZE

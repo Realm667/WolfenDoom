@@ -34,6 +34,7 @@ Actor BoAPlayer : PlayerPawn
 	Player.WeaponSlot 6,Pyrolight,Nebelwerfer
 	Player.WeaponSlot 7,Panzerschreck
 	Player.DamageScreenColor "ff ff ff", 1, "IceWater" 
+	Player.DamageScreenColor "64 00 C8", 1, "MutantPoison" 
 	Scale 1.2
 	States
 	{
@@ -97,6 +98,12 @@ ACTOR PlayerStep
 }
 
 DamageType IceWater
+{
+    NoArmor
+    ReplaceFactor
+}
+
+DamageType MutantPoison
 {
     NoArmor
     ReplaceFactor

@@ -89,7 +89,11 @@ ACTOR TracerSpark
 	}
 }
 //Nifty new mutants variations for tracers
-ACTOR MutantTracer : Tracer {MissileType MutantTrail}
+ACTOR MutantTracer : Tracer 
+{
+	MissileType MutantTrail
+	DamageType MutantPoison
+}
 ACTOR MutantTrail: TracerTrail {}
 
 // The Player's variants on the tracers, so they have different speeds and damages
