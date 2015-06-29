@@ -511,7 +511,7 @@ ACTOR Mutant : Guard
 	DeathSound "mutant/Death"
 	BloodColor "Purple"
 	BloodType "MutantBlood"
-	DamageFactor PoisonCloud, 0
+	DamageFactor MutantPoison, 0
 	DamageFactor Poison, 0
 	+MISSILEMORE
 	+MISSILEEVENMORE
@@ -1038,7 +1038,7 @@ ACTOR MutantRocket
 		Loop
 	Death:
 		FUGS A 1 BRIGHT LIGHT(MUTNROCK) A_Explode(10,30)
-		FUGS A 0 BRIGHT A_CustomMissile("PoisonCloud",16,0,0,2,0)
+		FUGS A 0 BRIGHT A_CustomMissile("PoisonCloudMutant",16,0,0,2,0)
 		FUGS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx ("MutantFartCloud",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128)
 		FUGS BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx ("MutantSmoke",random(-64,64),random(-64,64),random(-48,48),momx,0,random(0.5,1),0,SXF_TRANSFERTRANSLATION,160)
 		FUGS ABCDEDCBABCDE 1 BRIGHT LIGHT(MUTNROCK)
@@ -1046,6 +1046,39 @@ ACTOR MutantRocket
 	}
 }
 //End of Mutants Stuff
+
+Actor PoisonCloudMutant
+{
+  Radius 20
+  Height 30
+  Mass 0x7fffffff
+  Reactiontime 5
+  +NOBLOCKMAP
+  +NOGRAVITY
+  +DROPOFF
+  +NODAMAGETHRUST
+  +DONTSPLASH
+  +FOILINVUL
+  +CANBLAST
+  +BLOODLESSIMPACT
+  +BLOCKEDBYSOLIDACTORS
+  RenderStyle Translucent
+  Alpha 0.6
+  DamageType MutantPoison
+
+  States
+  {
+  Spawn:
+    TNT1 A 1
+    "####" A 2 A_Explode(10,128,0,0,128)
+    "####" A 20 A_Countdown
+    Loop
+  Death:
+    "####" A 7
+    "####" A 6
+    Stop
+  }
+}
 
 ACTOR MadDoctor : RocketMan
 {
