@@ -691,7 +691,7 @@ ACTOR LighthouseBeam : IntermapSkylight
 	States
 	{
 		Spawn:
-			SMGT A 1 A_SetAngle(angle + 1) //0.1
-			loop
+			SMGT A -1
+			stop
 	}
 }
