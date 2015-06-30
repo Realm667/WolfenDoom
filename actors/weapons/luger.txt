@@ -38,7 +38,7 @@ ACTOR Luger9mm : NaziWeapon replaces Pistol
 		LUGG A 0 A_PlaySound("luger/fire",CHAN_WEAPON)
 		LUGG A 0 A_SpawnItemEx("9MMCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
 		LUGG A 0 A_AlertMonsters
-		LUGG A 1 A_FireCustomMissile("LugerTracer",frandom(-1,1))
+		LUGG D 1 A_FireCustomMissile("LugerTracer",frandom(-1,1))
 		LUGG B 1
 		LUGG B 1 Offset(0,36) A_SetPitch(pitch-(0.2*CallACS("RecoilAmount")))
 		LUGG B 1 Offset(0,41) A_CheckReload
