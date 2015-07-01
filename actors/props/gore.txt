@@ -207,3 +207,67 @@ ACTOR RandomDeadSoldier
 		Stop
 	}
 }
+
+ACTOR MutantSubject1
+{
+	//$Category Gore (Wolf3D)
+	//$Title Subject (1)
+	//$Color 4
+	Radius 16
+	Height 64
+	Scale 1.1
+	States
+	{
+	Spawn:
+		ALMU A -1
+		Stop
+	}
+}
+
+ACTOR MutantSubject2
+{
+	//$Category Gore (Wolf3D)
+	//$Title Subject (2)
+	//$Color 4
+	Radius 16
+	Height 64
+	Scale 1.1
+	States
+	{
+	Spawn:
+		ALMU A -1
+		Stop
+	}
+}
+
+ACTOR MutantSubject3
+{
+	//$Category Gore (Wolf3D)
+	//$Title Subject (3)
+	//$Color 4
+	Radius 16
+	Height 64
+	Scale 1.1
+	States
+	{
+	Spawn:
+		ALMU A -1
+		Stop
+	}
+}
+
+ACTOR MutantSubjectRandom : RandomSpawner
+{
+	//$Category Gore (Wolf3D)
+	//$Title Random Mutant Subject
+	//$Color 4
+	//$Sprite ALMUA0
+	
+	DropItem "MutantSubject3"
+	DropItem "MutantSubject2"
+	DropItem "MutantSubject1"
+	
+	Radius 16
+	Height 64
+	Scale 1.0
+}
