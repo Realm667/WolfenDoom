@@ -2812,32 +2812,48 @@ ACTOR Marine1 : DirtyDarren
 	states
 	{
 	Spawn:
-		MARN N 0
+		PARS A 0
 		Goto SkillCheck
 	}
 }
 
-ACTOR Marine2 : Marine1
+ACTOR Marine2 : RandomSpawner
 {
 	//$Category Monsters (Wolf3D)
 	//$Title Marine (2)
 	//$Color 4
+	DropItem Marine2A
+	DropItem Marine2B
+}
+
+ACTOR Marine2A : Marine1
+{
 	states
 	{
 	Spawn:
-		MAR2 N 0
+		ARMH A 0
 		Goto SkillCheck
 	}
 }
 
-ACTOR Marine_Talk1 : Marine2
+ACTOR Marine2B : Marine1
+{
+	states
+	{
+	Spawn:
+		MARH A 0
+		Goto SkillCheck
+	}
+}
+
+ACTOR Marine_Talk1 : Marine2A
 {
 	//$Category Conversion Stuff (Wolf3D)
 	//$Title Talking Marine 1
 	//$Color 5
 }
 
-ACTOR Marine_Talk2 : Marine2
+ACTOR Marine_Talk2 : Marine2B
 {
 	//$Category Conversion Stuff (Wolf3D)
 	//$Title Talking Marine 2
