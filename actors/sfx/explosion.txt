@@ -18,7 +18,7 @@ Actor GeneralExplosion_Medium : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 NoDelay A_PlaySound("Weapons/RockLX")
+		TNT1 A 0 NoDelay A_PlaySound("panzer/explode")
 		TNT1 A 0 Radius_Quake(10,10,0,16,0)
 		TNT1 A 0 A_Explode(100, 192)
 		TNT1 A 0 A_SpawnItemEx("KD_HL2Flash", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE)
