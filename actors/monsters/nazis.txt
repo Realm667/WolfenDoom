@@ -2790,14 +2790,14 @@ ACTOR GeneralAllied : DirtyDarren
 		GENR O 0
 		Goto SkillCheck
 	Death:
-		GENR I 5
-		GENR J 5 A_Scream
-		GENR K 5 A_NoBlocking
-		GENR LM 5
-		GENR N -1
+		"####" I 5
+		"####" J 5 A_Scream
+		"####" K 5 A_NoBlocking
+		"####" LM 5
+		"####" N -1
 		stop
 	Raise:
-		GENR NMLKJI 5
+		"####" NMLKJI 5
 		Goto See
 	}
 }
@@ -2814,6 +2814,21 @@ ACTOR Marine1 : DirtyDarren
 	Spawn:
 		PARS A 0
 		Goto SkillCheck
+	Death:
+		"####" J 5
+		"####" K 5 A_Scream
+		"####" L 5 A_NoBlocking
+		"####" MN 5
+		"####" O -1
+		stop
+	Pain:
+		"####" I 3
+		"####" I 3 A_Pain
+		"####" I 0 A_Jump(256,"See")
+		Stop
+	Raise:
+		"####" ONMLKJ 5
+		Goto See
 	}
 }
 
