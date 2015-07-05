@@ -28,9 +28,9 @@ script "BoADialogue"(int who,int which)
 	str message;
 	SetHudSize(320,200,1);
 	SetFont("HEADBAR");
-	hudmessagebold(s:"A"; HUDMSG_FADEINOUT,3,CR_UNTRANSLATED,160.0,24.0,8.0,2.0,2.0);
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT,4,CR_UNTRANSLATED,160.0,24.0,8.0,2.0,2.0);
 	SetFont("HEADBOVL"); //mxd. Frame overlay
-	hudmessagebold(s:"A"; HUDMSG_FADEINOUT,5,CR_UNTRANSLATED,160.0,24.0,8.0,2.0,2.0); //mxd
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT,1,CR_UNTRANSLATED,160.0,24.0,8.0,2.0,2.0); //mxd
 	if(who==1)
 	{
 		SetFont("MS_DARR1");
@@ -41,19 +41,19 @@ script "BoADialogue"(int who,int which)
 		SetFont("MS_PRIB1");
 		message=StrParam(s:"\cEPrisoner\n",s:prisonermessage[which]);
 	}
-	hudmessagebold(s:"A"; HUDMSG_FADEINOUT,2,CR_UNTRANSLATED,21.0,16.0,999.0,2.0,999.0);
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT,3,CR_UNTRANSLATED,21.0,16.0,999.0,2.0,999.0);
 	AmbientSound("RADIONOS",127);
 	SetHudSize(640,400,0);
 	SetFont("SMALLFONT");
 	SetHudWrapWidth(540);
-	hudmessagebold(s:message; HUDMSG_TYPEON,1,CR_GRAY,100.1,13.1,4.0,0.03);
+	hudmessagebold(s:message; HUDMSG_TYPEON,2,CR_GRAY,100.1,13.1,4.0,0.03);
 	delay(5*35);
 	SetHudSize(320,200,1);
 	if(who==1)
 		SetFont("MS_DARR0");
 	else if(who==2)
 		SetFont("MS_PRIB0");
-	hudmessagebold(s:"A"; HUDMSG_FADEINOUT,2,CR_UNTRANSLATED,21.0,16.0,0.0,0.0,2.0);
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT,3,CR_UNTRANSLATED,21.0,16.0,0.0,0.0,2.0);
 }
 //Controls
 Script "AutoReload"(void)
