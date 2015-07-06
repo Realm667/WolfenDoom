@@ -1,8 +1,9 @@
 ACTOR SmokeMonster
 {
-	//$Category Monsters (Wolf3D)
+	//$Category Monsters (Wolf3D)/Bosses
 	//$Title Smokemonster (Boss)
 	//$Color 4
+	//$Sprite SMMOA0
 	Health 3000
 	Height 56
 	Mass 10000000
@@ -31,6 +32,7 @@ ACTOR SmokeMonster
 	SeeSound "Smoke/See"
 	DeathSound "Smoke/Die"
 	Obituary "$SMOKEMO"
+	Tag "Smoke-monster"
 	var int user_saw;
 	States
 	{

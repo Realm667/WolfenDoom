@@ -48,11 +48,13 @@ player/breathing	PLAYBRTH
 
 // Shell Casings
 $random bulletcasing/bounce {bcase1 bcase2 bcase3 bcase4}
+$rolloff bulletcasing/bounce 64 512
 bcase1 bcase1
 bcase2 bcase2
 bcase3 bcase3
 bcase4 bcase4
 $random shellcasing/bounce {scasesb1 scasesb2}
+$rolloff shellcasing/bounce 64 512
 $random shellcasing/stop {scases1 scases2 scases3}
 scases1 scases1
 scases2 scases2
@@ -328,10 +330,22 @@ geist/pain		geisthit
 geist/die		geistdie
 geist/active	geistact
 // Mutant
+mutant/see   mtnt_see
+mutant/pain1 mtnt_pn1
+mutant/pain2 mtnt_pn2
+mutant/pain3 mtnt_pn3
+$random mutant/pain { mutant/pain1 mutant/pain2 mutant/pain3 }
 mutant/death dsmutdt
 // Fake Hitler
 hitlerghost/see hghsee
 hitlerghost/die hghdie
+// Undead Monk
+monk/see monk_see
+monk/pain1 monk_pn1
+monk/pain2 monk_pn2
+monk/pain3 monk_pn3
+$random monk/pain { monk/pain1 monk/pain2 monk/pain3 }
+monk/death monk_die
 // Voice 1
 $random Nazi1/Death { Naz1Dt02 Naz1Dt02 Naz1Dt03 Naz1Dt03 Naz1Dt04 Naz1Dt04 Naz1Dt05 Naz1Dt05 Naz1Dt06 Naz1Dt06 Naz1Dt07 Naz1Dt07 Naz1Dt08 Naz1Dt08 Naz1Dt09 Naz1Dt09 Naz1Dt10 Naz1Dt10 Naz1Dt11 Naz1Dt11 Naz1Dt12 Naz1Dt12 }
 $random Nazi1/Pain { Naz1Pn02 Naz1Pn02 Naz1Pn03 Naz1Pn03 Naz1Pn04 Naz1Pn04 Naz1Pn05 Naz1Pn05 Naz1Pn06 Naz1Pn06 Naz1Pn07 Naz1Pn07 Naz1Pn08 Naz1Pn08 Naz1Pn09 Naz1Pn09 }
@@ -893,6 +907,9 @@ DSDETOP DSDETOP //Detonator Place
 //Tanks - from Return To Castle Wolfenstein
 TKIDLE TKIDLE
 TKMOVE TKMOVE
+
+//Mini-ship
+miniship/fire mshpfire
 
 //Smokemonster
 Smoke/See		SSee

@@ -328,18 +328,18 @@ ACTOR SSTank1
 		TNK4 A 10 A_FaceTarget
 		TNK4 A 0 A_Jump(128,"Turret")
 		TNK4 A 0 A_Jump(96,"Missile2")
-		TNK4 BCDEFG 2 A_CustomMissile("PanzerRocket",64)
+		TNK4 BCDEFG 2 A_CustomMissile("PanzerRocket",78)
 		Goto See
 	Turret:
 		TNK4 A 0 A_FaceTarget
 		TNK4 H 0 A_PlaySound("weapons/chaingun",CHAN_WEAPON)
-		TNK4 HHHH 1 BRIGHT light("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer",98,-12,random(-4,4))
+		TNK4 HHHH 1 BRIGHT light("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer",106,-12,random(-4,4))
 		TNK4 A 2 BRIGHT A_MonsterRefire(30,"See")
 		Loop
 	Missile2:
-		TNK4 BCDEFG 2 A_CustomMissile("PanzerRocket",64)
+		TNK4 BCDEFG 2 A_CustomMissile("PanzerRocket",78)
 		TNK4 A 10 A_FaceTarget
-		TNK4 BCDEFG 4 A_CustomMissile("PanzerRocket",64)
+		TNK4 BCDEFG 4 A_CustomMissile("PanzerRocket",78)
 		TNK4 A 10 A_FaceTarget
 		Goto See
 	Death:
@@ -398,13 +398,13 @@ ACTOR SSTank2 : SSTank1
 		TNK1 A 10 A_FaceTarget
 		TNK1 A 0 A_Jump(128,"Turret")
 		TNK1 BCD 2 BRIGHT
-		TNK1 E 2 BRIGHT A_CustomMissile("PanzerRocket",90)
+		TNK1 E 2 BRIGHT A_CustomMissile("PanzerRocket",96)
 		TNK1 FG 2
 		Goto See
 	Turret:
 		TNK1 A 0 A_FaceTarget
 		TNK1 H 0 A_PlaySound("weapons/chaingun",CHAN_WEAPON)
-		TNK1 HHHH 1 BRIGHT light("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer",60,16,random(-4,4))
+		TNK1 HHHH 1 BRIGHT light("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer",60,12,random(-4,4))
 		TNK1 A 2 BRIGHT A_SentinelRefire
 		Loop
 	Death:
@@ -453,13 +453,13 @@ ACTOR SSTank3 : SSTank1
 		TNK3 A 10 A_FaceTarget
 		TNK3 A 0 A_Jump(128,"Turret")
 		TNK3 BCD 2 BRIGHT
-		TNK3 E 2 BRIGHT A_CustomMissile("PanzerRocket",54)
+		TNK3 E 2 BRIGHT A_CustomMissile("PanzerRocket",67)
 		TNK3 FG 2
 		Goto See
 	Turret:
 		TNK3 A 0 A_FaceTarget
 		TNK3 H 0 A_PlaySound("weapons/chaingun",CHAN_WEAPON)
-		TNK3 HHHH 1 BRIGHT light("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer",98,-16,random(-4,4))
+		TNK3 HHHH 1 BRIGHT light("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer",102,-16,random(-4,4))
 		TNK3 A 2 BRIGHT A_SentinelRefire
 		Loop
 	Death:
