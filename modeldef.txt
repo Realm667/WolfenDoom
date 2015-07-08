@@ -308,9 +308,21 @@ Model Vidcam
 Model 88mmFlak
 {
 	Path "models"
-	Model 0 "88.md3"
-	Skin 0 "88mm.png"
-	Scale 1.0 1.0 1.0
+	Model 0 "88mmflak.md3"
+	Skin 0 "88mmflak.png"
+	Scale 0.8 0.8 0.8
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
+Model 88mmFlakDestroyed
+{
+	Path "models"
+	Model 0 "88mmflak_d.md3"
+	Skin 0 "88mmflak_d.png"
+	Scale 0.8 0.8 0.8
 	InheritActorPitch
 	InheritActorRoll
 

@@ -246,12 +246,20 @@ ACTOR ModelIncaTruck4Wheel_US : ModelIncaTruck4Wheel
 	//$Color 3
 }
 
-ACTOR 88mmFlak : 3dObstacle
+ACTOR 88mmFlak : ModelBase
 {
 	//$Category Models (Wolf3D)
 	//$Title 88mm Flak
 	//$Color 3
-	+USESPECIAL
+	Radius 64
+	Height 80
+}
+
+ACTOR 88mmFlakDestroyed : ModelBase
+{
+	//$Category Models (Wolf3D)
+	//$Title 88mm Flak (destroyed)
+	//$Color 3
 	Radius 64
 	Height 80
 }
