@@ -73,10 +73,22 @@ ACTOR OvenHot
 	{
 	Spawn:
 	Active:
-		OVEN A -1
-		Stop
+		OVEN A 0 NoDelay A_PlaySound("SFX/FireLoop1", CHAN_AUTO, 0.7, true, ATTN_STATIC)
+		goto Frame1 
+	Frame1:
+	  OVEN A 4 A_Jump(64, "Frame3")
+		goto Frame2
+	Frame2:
+	  OVEN B 4 A_Jump(64, "Frame4")
+		goto Frame3
+	Frame3:
+	  OVEN C 4 A_Jump(64, "Frame1")
+		goto Frame4
+	Frame4: 
+		OVEN D 4 A_Jump(64, "Frame2")
+		goto Frame1
 	Inactive:
-		OVEN B -1
+		OVEN E -1
 		Stop
 	}
 }
