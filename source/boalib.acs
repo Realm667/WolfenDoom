@@ -39,7 +39,7 @@ script "BoADialogue"(int who,int which)
 	else if(who==2)
 	{
 		SetFont("MS_PRIB1");
-		message=StrParam(s:"\cEPrisoner\n",s:prisonermessage[which]);
+		message=StrParam(s:"\cEAgent Ryan\n",s:prisonermessage[which]);
 	}
 	hudmessagebold(s:"A"; HUDMSG_FADEINOUT,3,CR_UNTRANSLATED,21.0,16.0,999.0,2.0,999.0);
 	AmbientSound("RADIONOS",127);
