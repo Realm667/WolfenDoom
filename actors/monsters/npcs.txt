@@ -5,15 +5,18 @@ ACTOR StatistBarkeeper
 	//$Color 4
 	Height 56
 	Mass 100
+	Scale 1.20
 	+SOLID
 	states
 	{
 	Spawn:
-		MRST A 80
-		MRLK A 40
-		MRST A 80
-		MRLK B 40
-		MRBD ABC 80
+		BDKP A 80
+		BDKP B 40
+		BDKP CB 40
+		BDKP D 80
+		BDKP DACB 40
+		BDKP E 40
+		BDKP F 40
 		Loop
 	}
 }
