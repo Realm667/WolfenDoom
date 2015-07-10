@@ -13,60 +13,24 @@ warp2 texture UWPLB0
 warp2 texture UWPLC0
 warp2 texture sbuba0
 
+//mxd. Also long-named variants. DOESNT BLOODY WORK...
+/*warp  texture "textures/LAVA_A01.png"
+warp  texture "textures/LAVA_A02.png"
+warp  texture "textures/BLOD_A01.png"
+warp  texture "textures/SLDG_A01.png"
+warp2 texture "textures/WATR_A01.png"
+warp2 texture "textures/WATR_A02.png"
+warp2 texture "textures/NUKA_A01.png"
+warp2 texture "textures/WATR_X98.png"
+warp2 texture "textures/WATR_X99.png"*/
+
 //ANIMATIONS
-texture TURB_A31
- pic TURB_A31 tics 8
- pic TURB_A32 tics 8
- pic TURB_A33 tics 8
- pic TURB_A34 tics 8
-
-texture VENT_A01
- pic VENT_A01 tics 1
- pic VENT_A02 tics 1
- pic VENT_A03 tics 1
- pic VENT_A04 tics 1
-
-texture RADA_A01
- pic RADA_A01 tics 8
- pic RADA_A02 tics 8
- pic RADA_A03 tics 8
- pic RADA_A04 tics 8
- pic RADA_A05 tics 8
- pic RADA_A06 tics 8
-
-texture COMP_A11
- pic COMP_A11 tics 8
- pic COMP_A12 tics 8
-
+texture TURB_A31 range TURB_A34 tics 2
+texture VENT_A01 range VENT_A04 tics 1
+texture RADA_A01 range RADA_A06 tics 8
+texture COMP_A11 range COMP_A12 tics 8
 texture ENGI_A21 range ENGI_A32 tics 3
-
-texture LITE_S01
- pic LITE_S01 tics 3
- pic LITE_S02 tics 3
- pic LITE_S03 tics 3
- pic LITE_S04 tics 3
- pic LITE_S05 tics 3
- pic LITE_S06 tics 3
- pic LITE_S07 tics 3
- pic LITE_S08 tics 3
- pic LITE_S09 tics 3
- pic LITE_S10 tics 3
- pic LITE_S11 tics 3
- pic LITE_S12 tics 3
- pic LITE_S13 tics 3
- pic LITE_S14 tics 3
- pic LITE_S13 tics 3
- pic LITE_S12 tics 3
- pic LITE_S11 tics 3
- pic LITE_S10 tics 3
- pic LITE_S09 tics 3
- pic LITE_S08 tics 3
- pic LITE_S07 tics 3
- pic LITE_S06 tics 3
- pic LITE_S05 tics 3
- pic LITE_S04 tics 3
- pic LITE_S03 tics 3
- pic LITE_S02 tics 3
+texture LITE_S01 range LITE_S14 tics 3 OSCILLATE
 
 texture COMP_S01
  RANDOM
@@ -76,6 +40,28 @@ texture COMP_S01
  pic COMP_S1D tics 12
 
 texture COMP_S02
+ RANDOM
+ pic COMP_S02 tics 12
+ pic COMP_S2B tics 12
+ pic COMP_S2C tics 12
+ pic COMP_S2D tics 12
+ 
+//mxd. Also long-named variants. DOESNT BLOODY WORK...
+/*texture "textures/TURB_A31.png" range "textures/TURB_A34.png" tics 2
+texture "textures/VENT_A01.png" range "textures/VENT_A04.png" tics 1
+texture "textures/RADA_A01.png" range "textures/RADA_A06.png" tics 8
+texture "textures/COMP_A11.png" range "textures/COMP_A12.png" tics 8
+texture "textures/ENGI_A21.png" range "textures/ENGI_A32.png" tics 3
+texture "textures/LITE_S01.png" range "textures/LITE_S14.png" tics 3 OSCILLATE*/
+
+texture "textures/COMP_S01.png"
+ RANDOM
+ pic COMP_S01 tics 12
+ pic COMP_S1B tics 12
+ pic COMP_S1C tics 12
+ pic COMP_S1D tics 12
+
+texture "textures/COMP_S02.png"
  RANDOM
  pic COMP_S02 tics 12
  pic COMP_S2B tics 12
