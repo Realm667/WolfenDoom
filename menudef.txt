@@ -82,24 +82,31 @@ ListMenu "SaveGameMenu"
 
 OptionMenu "BOAOptionsMenu"
 {
-  Title "BOA Options"
+  //Title "BOA Options"
   //StaticText ""
-  StaticText "BOA Settings",        1
+  
+	StaticText "BOA Settings",        1
   StaticText ""
   // Settings should go here
-
-  StaticText "BOA Controls",        1
-  StaticTextSwitchable "ENTER to change, BACKSPACE to clear",
-                       "Press new key for control, ESC to cancel",
-                       "ControlMessage"
-  StaticText ""
-  Control "Throw Grenade",         "use GrenadePickup"
 	Option "Auto-Reload","autoreload","OnOff"
 	Slider "Shell Casing Lifetime","casinglifetime",100,9000,100
 	Slider "Weapon Recoil Multiplier","recoilamount",0,20,1
 	//Option "Unlimited Stamina", "sprinttoggle", "OnOff"
-  StaticText ""
+  
+	StaticText ""
+	StaticText ""
   StaticText "BOA Weather Effects",	2
+	StaticText ""
 	Option "Rain","rainswitch","OnOff"
 	Option "Snow","snowswitch","OnOff"
+	
+	StaticText ""
+	StaticText ""
+	StaticText "BOA Controls",        1
+  StaticTextSwitchable "ENTER to change, BACKSPACE to clear",
+                       "Press new key for control, ESC to cancel",
+                       "ControlMessage"
+  StaticText ""
+	// Controls should go here
+  Control "Throw Grenade",         "use GrenadePickup"
 }

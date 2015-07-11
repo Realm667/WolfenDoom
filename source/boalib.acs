@@ -87,9 +87,10 @@ int cooldown[8];
 
 script "Dashing" ENTER
 {
-	if(!CheckActorClass(0,"BoAPlayer"))
-		terminate;
-	if((GetPlayerInput(-1,INPUT_BUTTONS)&BT_SPEED)&&CheckInventory("Stamina")&&cooldown[PlayerNumber()]<=0)
+	if(!CheckActorClass(0,"BoAPlayer")) terminate;
+	
+	int buttons = GetPlayerInput(-1,INPUT_BUTTONS);
+	if((buttons & BT_SPEED) && (buttons & BT_FORWARD) && CheckInventory("Stamina") && cooldown[PlayerNumber()] <= 0)
 	{
 		SetActorProperty(0,APROP_SPEED,2.0);
 		TakeInventory("Stamina",3);
