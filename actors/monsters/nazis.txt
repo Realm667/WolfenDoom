@@ -5,6 +5,7 @@ ACTOR Nazi
 	Mass 100
 	PainChance 200
 	Speed 2
+	var int user_incombat;
 	Monster
 	+FLOORCLIP
 	+DONTHARMSPECIES
@@ -24,6 +25,7 @@ ACTOR Nazi
 		"####" "#" 10 A_Look
 		Loop
 	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		"####" A 1 A_Chase
 		"####" AAA 1 A_Chase("","")
 		"####" A 1 A_Chase
@@ -56,8 +58,16 @@ ACTOR Nazi
 	Pain:
 		"####" H 3
 		"####" H 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		"####" H 0 A_Jump(256,"See")
 		Stop
+	Pain.Dagger: //mxd. Hacky critical hit system
+		 "####" "#" 0 A_JumpIf(user_incombat, "Pain")
+		 "####" "#" 0 A_SetUserVar("user_incombat", true)
+		 "####" "#" 0 A_Log("Critical hit!")
+		 "####" "#" 0 A_AlertMonsters(128) //mxd
+		 "####" "#" 0 A_DamageSelf(health, "Melee")
+		 goto Pain
 	}
 }
 
@@ -132,6 +142,7 @@ ACTOR SSGuard : Guard
 		SSPG N 0
 		Goto SkillCheck
 	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		"####" A 1 A_Chase
 		"####" AA 1 A_Chase("","")
 		"####" A 1 A_Chase
@@ -332,6 +343,7 @@ ACTOR Officer : Guard
 		OFFI N 0
 		Goto SkillCheck
 	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd 
 		"####" A 1 A_Chase
 		"####" A 1 A_Chase("","")
 		"####" A 1 A_Chase
@@ -547,6 +559,7 @@ ACTOR Mutant : Guard
 		MTNT A 0
 		Goto SkillCheck
 	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		"####" A 0 A_SetSpeed(4)
 		"####" B 1 A_Chase
 		"####" B 1 A_Chase("","")
@@ -579,6 +592,7 @@ ACTOR Mutant : Guard
 		Goto Missile+1
 	Pain:
 		"####" I 6 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	Death:
 		"####" J 3
@@ -622,6 +636,7 @@ ACTOR MutantMelee : Mutant
 		MLMT A 0
 		Goto SkillCheck
 	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		"####" A 0 A_SetSpeed(6)
 		"####" B 1 A_Chase
 		"####" B 1 A_Chase("","")
@@ -666,6 +681,7 @@ ACTOR BigMutant1 : Mutant
 		MTB1 A 0
 		Goto SkillCheck
 	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		"####" A 0 A_SetSpeed(5)
 		"####" B 1 A_Chase
 		"####" B 1 A_Chase("","")
@@ -749,6 +765,7 @@ ACTOR BigMutant1 : Mutant
 		Goto See
 	Pain:
 		"####" H 6
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	Death:
 		"####" I 5
@@ -832,6 +849,7 @@ ACTOR BigMutant2 : BigMutant1
 		Goto See
 	Pain:
 		"####" H 5
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	}
 }
@@ -870,6 +888,7 @@ ACTOR Rottweiler : Nazi
 		"####" A 0 A_Look
 		Loop
 	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		"####" A 0 A_SetSpeed(8)
 		"####" A 1 A_Chase
 		"####" AAA 1 A_Chase("","",CHF_NOPLAYACTIVE)
@@ -888,6 +907,7 @@ ACTOR Rottweiler : Nazi
 	Pain:
 		"####" M 2
 		"####" M 2 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	Death:
 		"####" H 8
@@ -956,6 +976,7 @@ ACTOR RocketMan : Nazi
 	Pain:
 		OTTO K 3
 		OTTO K 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	Death:
 		"####" G 5
@@ -1133,6 +1154,7 @@ ACTOR MadDoctor : RocketMan
 	Pain:
 		"####" G 3
 		"####" A 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	}
 }
@@ -1353,6 +1375,7 @@ ACTOR General : RocketMan replaces Archvile
 	Pain:
 		FETT I 3
 		FETT I 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	Death:
 		FETT J 5
@@ -1385,6 +1408,7 @@ ACTOR FlamerMan : RocketMan replaces Arachnotron
 		FLAM A 0
 		Goto SkillCheck
 	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		FLAM A 1 A_Chase
 		FLAM AA 1 A_Chase("","")
 		FLAM A 1 A_Chase
@@ -1415,6 +1439,7 @@ ACTOR FlamerMan : RocketMan replaces Arachnotron
 	Pain:
 		FLAM A 3
 		FLAM A 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	Death:
 		FLAM G 5
@@ -1479,6 +1504,7 @@ ACTOR HitlerGhost : Nazi
 	{
 	Spawn:
 		HGST A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		Goto SkillCheck
 	See:
 		"####" A 1 A_Chase("Missile","Missile",CHF_FASTCHASE)
@@ -1497,6 +1523,7 @@ ACTOR HitlerGhost : Nazi
 		Goto See
 	Pain:
 		"####" A 4 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	Death:
 		"####" E 6 A_Scream
@@ -1547,6 +1574,7 @@ ACTOR Geist : Nazi
 	{
 	Spawn:
 		GEST A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		Goto SkillCheck
 	Look:
 		GEST ABCD 4 A_Look
@@ -1582,6 +1610,7 @@ ACTOR Geist : Nazi
 		"####" E 1 A_Pain
 		"####" E 1 A_SetTranslucent(0.4)
 		"####" EEE 1 A_Fadeout(0.1)
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		TNT1 A 0 A_Jump(256,"See")
 		Stop
 	Death:
@@ -1606,6 +1635,7 @@ ACTOR NaziGeist : Geist
 	{
 	Spawn:
 		GES2 A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		Goto SkillCheck
 	Look:
 		GES2 ABCD 6 A_Look
@@ -1723,6 +1753,7 @@ ACTOR MiniShip : Nazi
 	{
 	Spawn:
 		SHIP A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		Goto SkillCheck
 	See:
 		"####" A 1 A_Chase
@@ -1740,6 +1771,7 @@ ACTOR MiniShip : Nazi
 	Pain:
 		"####" A 3
 		"####" A 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	Death:
 		SHIP A -1
@@ -1776,6 +1808,7 @@ ACTOR MGTurret : MiniShip
 	{
 	Spawn:
 		GTUR A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		Goto SkillCheck
 	Missile:
 		"####" A 4 A_PlaySound("chaingun/start",CHAN_WEAPON)
@@ -1822,6 +1855,7 @@ ACTOR DeathKnight : Nazi
 	{
 	Spawn:
 		DKGT A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		Goto SkillCheck
 	See:
 		"####" A 1 A_Chase
@@ -1881,6 +1915,7 @@ ACTOR DeathKnight : Nazi
 	Pain:
 		DKGT E 3
 		DKGT E 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	Death:
 		DKGT M 5 A_Scream
@@ -1929,6 +1964,7 @@ ACTOR Hitler : DeathKnight
 	{
 	Spawn:
 		HITL A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		Goto SkillCheck
 	Missile:
 		HITL E 6 A_FaceTarget
@@ -1949,6 +1985,7 @@ ACTOR Hitler : DeathKnight
 	Pain:
 		HITL Q 3
 		HITL Q 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	Death:
 		HITL H 10 A_Scream
@@ -1998,6 +2035,7 @@ ACTOR ChairGuy : Nazi
 	{
 	Spawn:
 		KRIS A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		Goto SkillCheck
 	See:
 		KRIS A 1 A_Chase
@@ -2060,6 +2098,7 @@ ACTOR FatMan : ChairGuy
 	{
 	Spawn:
 		GOER A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		Goto SkillCheck
 	See:
 		GOER A 1 A_Chase
@@ -2092,6 +2131,7 @@ ACTOR FatMan : ChairGuy
 	Pain:
 		GOER D 3
 		GOER D 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		goto See
 	Death:
 		GOER H 5
@@ -2164,6 +2204,7 @@ ACTOR UberMutant : Mutant
 	{
 	Spawn:
 		UBMU A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		Goto SkillCheck
 	Look:
 		UBMU AB 10 A_Look
@@ -2217,6 +2258,7 @@ ACTOR UberMutant : Mutant
 	Pain:
 		UBMU H 2
 		UBMU H 2 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	Death:
 		UBMU I 6
@@ -2251,11 +2293,13 @@ ACTOR Sniper : Guard
 		SNIP A 0
 		Goto SkillCheck
 	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		"####" A 1 A_Chase
 		Loop
 	Pain:
 		"####" A 3
 		"####" A 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		goto See
 	Missile:
 		"####" A 32 A_FaceTarget
@@ -2307,6 +2351,7 @@ ACTOR UndeadMonk : HitlerGhost
 	{
 	Spawn:
 		MONK A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		Goto SkillCheck
 	Missile: //mxd. Added cause firing offset
 		"####" A 4 A_FaceTarget
@@ -2330,6 +2375,7 @@ ACTOR SuperMutant : Mutant
 		SUPM A 0
 		Goto SkillCheck
 	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		"####" A 0 A_SetSpeed(5)
 		"####" B 1 A_Chase
 		"####" B 1 A_Chase("","")
@@ -2423,6 +2469,7 @@ ACTOR MGTurretSoldier : MGTurret
 	{
 	Spawn:
 		SMGS A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		Goto SkillCheck
 	Missile: //mxd. Copied from parent cause diffetent firing offset
 		"####" A 4 A_PlaySound("chaingun/start",CHAN_WEAPON)
@@ -2467,6 +2514,7 @@ ACTOR EliteFlamer : Guard
 		ELTF A 0 A_Look
 		Goto SkillCheck
 	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		ELTF A 1 A_Chase
 		ELTF AA 1 A_Chase("","")
 		ELTF A 1 A_Chase
@@ -2558,6 +2606,7 @@ ACTOR EliteAssaulter : Guard
 		ELTA N 0
 		Goto SkillCheck
 	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		ELTA A 0 A_SetSpeed(4.66666667)
 		ELTA A 0 A_ChangeFlag("FRIGHTENED",0)
 		ELTA A 1 A_Chase
@@ -2629,6 +2678,7 @@ ACTOR EliteSoldatRifler : Guard
 		ELTR N 0
 		Goto SkillCheck
 	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		ELTR A 1 A_Chase
 		ELTR AA 1 A_Chase("","")
 		ELTR A 1 A_Chase
@@ -2692,6 +2742,7 @@ ACTOR MadCook : MadDoctor
 	{
 	Spawn:
 		COOK A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		Goto SkillCheck
 	Missile:
 		COOK E 10 A_FaceTarget
@@ -2746,6 +2797,7 @@ actor UndeadPriest : Guard
 		UNDP A 0
 		Goto SkillCheck
 	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		UNDP A 0 A_Jump (32, "Run")
 		UNDP A 0 A_SetSpeed(2.66666667)
 		UNDP A 1 A_Chase
@@ -2802,6 +2854,7 @@ actor UndeadPriest : Guard
 	Pain:
 		UNDP G 3
 		UNDP G 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		goto See
 	Death:
 		UNDP H 6
@@ -2848,6 +2901,7 @@ ACTOR Hostage : Guard
 	Pain:
 		HOST E 3
 		HOST E 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		goto See
 	Death:
 		HOST E 5

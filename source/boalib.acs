@@ -122,6 +122,65 @@ Script "Exhausted" ENTER
 	restart;
 }
 
+//mxd. Footsteps
+int stepDistance = 76.0;
+int curStepDistance;
+int lastPlayerX;
+int lastPlayerY;
+int playerID;
+
+Script "PlayFootstepsSoundLoop" ENTER
+{
+	Delay(1);
+	playerID = 1000 +  PlayerNumber();
+	Thing_ChangeTID(0, playerID);
+	
+	lastPlayerX = GetActorX(playerID);
+	lastPlayerY = GetActorY(playerID);
+	
+	while(true)
+	{
+		if(GetActorProperty(playerID, APROP_Waterlevel) < 3)
+		{
+			//footsteps
+			int cfz = GetActorFloorZ(playerID);
+			
+			if(GetActorZ(playerID) - cfz == 0) //if we are not in the air
+			{
+				int cx = GetActorX(playerID);
+				int cy = GetActorY(playerID);
+
+				if(curStepDistance > stepDistance)
+				{
+					if((GetPlayerInput(-1, INPUT_BUTTONS) & BT_CROUCH)) //different step sounds while crouching
+					{
+						ThingSound(playerID, "floor/dirt", 36);
+					}
+					else
+					{
+						SetActorState(playerID, "Footstep");
+					}
+
+					curStepDistance = 0;
+				}
+				else
+				{
+					curStepDistance += VectorLength(lastPlayerX - cx, lastPlayerY - cy);
+				}
+				
+				lastPlayerX = cx;
+				lastPlayerY = cy;
+			}
+			else
+			{
+				curStepDistance = 0;
+			}
+		}
+
+		Delay(1);
+	}
+}
+
 //Compass
 bool compassActive[8];
 

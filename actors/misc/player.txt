@@ -42,11 +42,12 @@ Actor BoAPlayer : PlayerPawn
 		PLAY A -1
 		Stop
 	See:
-		PLAY A 7
-		PLAY B 7 A_SpawnItemEx("PlayerStep",0,0,14,0,0,0,0,SXF_NoCheckPosition)
-		PLAY C 7
-		PLAY D 7 A_SpawnItemEx("PlayerStep",0,0,14,0,0,0,0,SXF_NoCheckPosition)
+		PLAY ABCD 7
 		Loop
+	Footstep:
+		"####" "#" 0 A_AlertMonsters(256)
+		"####" "#" 0 A_SpawnItemEx("PlayerStep",0,0,14,0,0,0,0,SXF_NoCheckPosition)
+		goto Spawn
 	Pain:
 		PLAY G 3 A_Pain
 		Goto Spawn
