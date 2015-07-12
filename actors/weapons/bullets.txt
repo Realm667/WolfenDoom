@@ -192,8 +192,21 @@ ACTOR 9MMCasing
 	States
 	{
 	Spawn:
-		CAS1 ABCDEFGH 2
+		CAS1 ABCDEFGH 2 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
+	AdjustMass: //mxd
+		"####" "#" 0 A_SetMass(400)
+		goto Swim
+	Swim: //mxd. This presumes all cases have the same ammout of frames...
+		"####" A 2 A_ScaleVelocity(0.7)
+		"####" B 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" C 2 A_ScaleVelocity(0.7)
+		"####" D 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" E 2 A_ScaleVelocity(0.7)
+		"####" F 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" G 2 A_ScaleVelocity(0.7)
+		"####" H 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		Loop	
 	Death:
 		"####" A 0 A_Jump(256,1,2,3)
 		"####" ACG 0 A_Jump(256,"Death1")
@@ -213,7 +226,7 @@ ACTOR 45ACPCasing : 9MMCasing
 	States
 	{
 	Spawn:
-		CAS3 ABCDEFGH 2
+		CAS3 ABCDEFGH 2 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	}
 }
@@ -227,7 +240,7 @@ ACTOR ShotgunCasing : 9MMCasing
 	States
 	{
 	Spawn:
-		CAS2 ABCDEFGH 2
+		CAS2 ABCDEFGH 2 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	}
 }
@@ -240,7 +253,7 @@ ACTOR MauserRifleCasing : 9MMCasing
 	States
 	{
 	Spawn:
-		CAS4 ABCDEFGH 2
+		CAS4 ABCDEFGH 2 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	}
 }

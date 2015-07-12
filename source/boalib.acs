@@ -1,6 +1,8 @@
 #library "boalib"
 #include "zcommon.acs"
 
+global int 1:disable_mutants; //mxd. When set to true, all mutants will immediately despawn after spawning.
+
 str darrenmessage[12]=
 {
 	"\cCHey, Bill. Darren here. I found the back entrance of the headquarters, but there seems to be more nazi activity than we expected. Be careful!",
@@ -179,6 +181,12 @@ Script "PlayFootstepsSoundLoop" ENTER
 
 		Delay(1);
 	}
+}
+
+//mxd. Mutants despawn check
+script "DisableMutants" (void)
+{
+	SetResultValue(disable_mutants);
 }
 
 //Compass
