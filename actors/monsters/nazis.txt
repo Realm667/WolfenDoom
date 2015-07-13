@@ -602,7 +602,7 @@ ACTOR Mutant : Guard
 		"####" O -1
 		Stop
 	Vanish: //mxd
-		TNT1 A 0 A_ChangeFlag("COUNTKILL", false)
+		TNT1 A 0 Thing_Remove(0)
 		Stop	
 	Idle:
 		"####" A 0 A_SetSpeed(1.5)
