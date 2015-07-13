@@ -90,7 +90,7 @@ int cooldown[8];
 script "Dashing" ENTER
 {
 	if(!CheckActorClass(0,"BoAPlayer")) terminate;
-	
+
 	int buttons = GetPlayerInput(-1,INPUT_BUTTONS);
 	if((buttons & BT_SPEED) && (buttons & BT_FORWARD) && CheckInventory("Stamina") && cooldown[PlayerNumber()] <= 0)
 	{
@@ -136,17 +136,17 @@ Script "PlayFootstepsSoundLoop" ENTER
 	Delay(1);
 	playerID = 1000 +  PlayerNumber();
 	Thing_ChangeTID(0, playerID);
-	
+
 	lastPlayerX = GetActorX(playerID);
 	lastPlayerY = GetActorY(playerID);
-	
+
 	while(true)
 	{
 		if(GetActorProperty(playerID, APROP_Waterlevel) < 3)
 		{
 			//footsteps
 			int cfz = GetActorFloorZ(playerID);
-			
+
 			if(GetActorZ(playerID) - cfz == 0) //if we are not in the air
 			{
 				int cx = GetActorX(playerID);
@@ -169,7 +169,7 @@ Script "PlayFootstepsSoundLoop" ENTER
 				{
 					curStepDistance += VectorLength(lastPlayerX - cx, lastPlayerY - cy);
 				}
-				
+
 				lastPlayerX = cx;
 				lastPlayerY = cy;
 			}
@@ -186,7 +186,8 @@ Script "PlayFootstepsSoundLoop" ENTER
 //mxd. Mutants despawn check
 script "DisableMutants" (void)
 {
-	SetResultValue(disable_mutants);
+	if(disable_mutants)
+		Thing_Remove(0);
 }
 
 //Compass

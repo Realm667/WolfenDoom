@@ -343,7 +343,7 @@ ACTOR Officer : Guard
 		OFFI N 0
 		Goto SkillCheck
 	See:
-		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd 
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		"####" A 1 A_Chase
 		"####" A 1 A_Chase("","")
 		"####" A 1 A_Chase
@@ -556,7 +556,7 @@ ACTOR Mutant : Guard
 	States
 	{
 	Spawn:
-		MTNT A 0 NoDelay A_JumpIf(CallACS("DisableMutants"), "Vanish") //mxd
+		MTNT A 0 NoDelay ACS_NamedExecuteAlways("DisableMutants",0) //mxd
 		Goto SkillCheck
 	See:
 		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
@@ -601,9 +601,6 @@ ACTOR Mutant : Guard
 		"####" MN 3
 		"####" O -1
 		Stop
-	Vanish: //mxd
-		TNT1 A 0 Thing_Remove(0)
-		Stop	
 	Idle:
 		"####" A 0 A_SetSpeed(1.5)
 		"####" BBBBBBBB 1 A_Wander
@@ -636,7 +633,7 @@ ACTOR MutantMelee : Mutant
 	states
 	{
 	Spawn:
-		MLMT A 0 NoDelay A_JumpIf(CallACS("DisableMutants"), "Vanish") //mxd
+		MLMT A 0 NoDelay ACS_NamedExecuteAlways("DisableMutants",0) //mxd
 		Goto SkillCheck
 	See:
 		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
@@ -681,7 +678,7 @@ ACTOR BigMutant1 : Mutant
 	States
 	{
 	Spawn:
-		MTB1 A 0 NoDelay A_JumpIf(CallACS("DisableMutants"), "Vanish") //mxd
+		MTB1 A 0 NoDelay ACS_NamedExecuteAlways("DisableMutants",0) //mxd
 		Goto SkillCheck
 	See:
 		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
@@ -824,7 +821,7 @@ ACTOR BigMutant2 : BigMutant1
 	States
 	{
 	Spawn:
-		MTB2 A 0 NoDelay A_JumpIf(CallACS("DisableMutants"), "Vanish") //mxd
+		MTB2 A 0 NoDelay ACS_NamedExecuteAlways("DisableMutants",0) //mxd
 		Goto SkillCheck
 	Melee:
 		MTB2 E 4 A_FaceTarget
@@ -2375,7 +2372,7 @@ ACTOR SuperMutant : Mutant
 	states
 	{
 	Spawn:
-		SUPM A 0 NoDelay A_JumpIf(CallACS("DisableMutants"), "Vanish") //mxd
+		SUPM A 0 NoDelay ACS_NamedExecuteAlways("DisableMutants",0) //mxd
 		Goto SkillCheck
 	See:
 		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
