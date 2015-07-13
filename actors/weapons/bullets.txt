@@ -1,31 +1,25 @@
 ACTOR Tracer : FastProjectile
 {
-	Alpha .9
-	RenderStyle Add
 	Radius 2
 	Height 2
 	Speed 75
+	Decal BulletChip
 	+BLOODSPLATTER
 	+SEEKERMISSILE
 	+NOEXTREMEDEATH
-	+FORCEXYBILLBOARD
-	Scale .4
-	MissileType TracerTrail
-	MissileHeight 8
-	Decal BulletChip
 	States
 	{
 	Spawn:
 		TNT1 A 1 BRIGHT A_JumpIfTracerCloser(96,"Whiz")
+		TNT1 A 0 A_SpawnItemEx("TracerTrail", 0, 0, 0, velx, vely, velz, 0, SXF_ABSOLUTEVELOCITY) //mxd
 		Loop
-		Whiz:
+	Whiz:
 		TNT1 A -1 BRIGHT A_SpawnItemEx("Whizzer")
 		Stop
 	Death:
 	Crash:
 		//TNT1 A 0 A_SpawnDebris("TracerSpark")
-		TNT1 A 2 BRIGHT A_PlaySound("ricochet")
-		TNT1 AAA 2 BRIGHT
+		TNT1 A 8 A_PlaySound("ricochet")
 		Stop
 	XDeath:
 		TNT1 A 1 A_PlaySound("hitflesh")
@@ -46,14 +40,15 @@ ACTOR Whizzer
 ACTOR TracerTrail
 {
 	Alpha .75
+	Scale .4
 	RenderStyle Add
+	+MISSILE //mxd
 	+NOBLOCKMAP
 	+NOGRAVITY
 	+NOTELEPORT
 	+CANNOTPUSH
 	+NODAMAGETHRUST
 	+FORCEXYBILLBOARD
-	Scale .4
 	States
 	{
 	Spawn:
@@ -62,7 +57,8 @@ ACTOR TracerTrail
 	}
 }
 
-ACTOR TracerSpark
+//mxd. Seems unused
+/*ACTOR TracerSpark
 {
 	Health 4
 	Radius 3
@@ -87,12 +83,21 @@ ACTOR TracerSpark
 		PUFF A 10 BRIGHT A_SetTranslucent(.2,1)
 		Stop
 	}
-}
+}*/
+
 //Nifty new mutants variations for tracers
 ACTOR MutantTracer : Tracer 
 {
-	MissileType MutantTrail
+	//MissileType MutantTrail
 	DamageType MutantPoison
+	
+	States
+	{
+	Spawn:
+		TNT1 A 1 BRIGHT A_JumpIfTracerCloser(96,"Whiz")
+		TNT1 A 0 A_SpawnItemEx("MutantTrail", 0, 0, 0, velx, vely, velz, 0, SXF_ABSOLUTEVELOCITY) //mxd
+		Loop
+	}
 }
 ACTOR MutantTrail: TracerTrail {}
 
