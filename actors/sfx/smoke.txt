@@ -24,7 +24,7 @@ actor PuffSmoke
 actor PowerPlantSmokePuff : PuffSmoke {Scale 8.0}
 actor PowerPlantSmokePuffSmall : PuffSmoke {Scale 4.0}
 
-actor PowerPlantSmokeGenerator
+actor PowerPlantSmokeGenerator : SwitchableDecoration
 {
 	//$Category Special Effects (Wolf3D)
 	//$Title Power Plant Smoke Generator (Normal)
@@ -36,9 +36,10 @@ actor PowerPlantSmokeGenerator
 	states
 	{
 	Spawn:
+	Active:
 		TNT1 A 70 A_SpawnItemEx("PowerPlantSmokeGeneratorFX")
 		loop
-	Death:
+	Inactive:
 		TNT1 A -1
 		stop
 	}
@@ -55,8 +56,8 @@ actor PowerPlantSmokeGeneratorFX
 		stop
 	}
 }
-
-actor PowerPlantSmokeGeneratorSmall
+ 
+actor PowerPlantSmokeGeneratorSmall : SwitchableDecoration
 {
 	//$Category Special Effects (Wolf3D)
 	//$Title Power Plant Smoke Generator (Small)
@@ -66,8 +67,12 @@ actor PowerPlantSmokeGeneratorSmall
 	states
 	{
 	Spawn:
+	Active:
 		TNT1 A 2 A_SpawnItemEx("PowerPlantSmokePuffSmall", random(-32,32), random(-32,32), 0, 0, 0, 3)
 		loop
+	Inactive:
+		TNT1 A -1
+		stop
 	}
 }
 
@@ -79,8 +84,12 @@ actor PowerPlantSmokeGenerator2 : PowerPlantSmokeGenerator
 	states
 	{
 	Spawn:
+	Active:
 		TNT1 A 70 A_SpawnItemEx("PowerPlantSmokeGeneratorFX2")
 		loop
+	Inactive:
+		TNT1 A -1
+		stop
 	}
 }
 
