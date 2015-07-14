@@ -1,0 +1,25 @@
+Actor UnderwaterLightRay : SwitchableDecoration
+{
+	//$Category Special Effects (Wolf3D)
+	//$Title Underwater Light Ray
+	//$Color 12
+	Height 128
+	Radius 32
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+NOINTERACTION
+	+NOCLIP
+	+FLOATBOB
+	RenderStyle Add
+	Scale 0.5
+	States
+	{
+	Spawn:
+	Active:
+		LRAY A -1 BRIGHT
+		Loop
+	Inactive:
+		TNT1 A -1
+		Loop
+	}
+}
