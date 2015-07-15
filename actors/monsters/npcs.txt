@@ -20,3 +20,26 @@ ACTOR StatistBarkeeper
 		Loop
 	}
 }
+
+ACTOR StatistMedic
+{
+	//$Category Monsters (Wolf3D)/NPCs
+	//$Title Medic (NPC)
+	//$Color 4
+	Height 56
+	Mass 100
+	Scale 1.3
+	+SOLID
+	states
+	{
+	Spawn:
+		MEDC A 80
+		MEDC B 40
+		MEDC CB 40
+		MEDC D 80
+		MEDC DACB 40
+		MEDC E 40
+		MEDC F 40
+		Loop
+	}
+}
