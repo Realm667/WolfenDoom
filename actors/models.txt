@@ -203,10 +203,25 @@ ACTOR Submarine : ModelBase
 	//$Category Models (Wolf3D)
 	//$Title Submarine
 	//$Color 3
+	//$Arg0 "Engine Sound"
+	//$Arg0Type 11
+	//$Arg0Enum noyes
+	
 	+NOGRAVITY
 	-SOLID
 	Radius 64
 	Height 64
+	
+	States
+	{
+		Spawn:
+			SMGT A 0 NoDelay A_JumpIf(args[0] == 1, "PlayEngineSound")
+			goto Super::Spawn
+			
+		PlayEngineSound:
+			SMGT A 0 A_PlaySound("uboat/engine", CHAN_AUTO, 1.0, true, 0.5)
+			goto Super::Spawn
+	}
 }
 
 ACTOR SubmarineIcy : Submarine

@@ -108,6 +108,49 @@ ACTOR Table6 : Table1
 	}
 }
 
+ACTOR Table7
+{
+	//$Category Props (Wolf3D)
+	//$Title Table (1, no chairs)
+	//$Color 3
+	Radius 20
+	Height 28
+	Scale 1.15
+	+SOLID
+	States
+	{
+	Spawn:
+		TBL1 B -1
+		Stop
+	}
+}
+
+ACTOR Table8 : Table7
+{
+	//$Category Props (Wolf3D)
+	//$Title Table (2, no chairs)
+	//$Color 3
+	States
+	{
+	Spawn:
+		TBL2 B -1
+		Stop
+	}
+}
+
+ACTOR Table9 : Table7
+{
+	//$Category Props (Wolf3D)
+	//$Title Table (3, no chairs)
+	//$Color 3
+	States
+	{
+	Spawn:
+		TBL3 B -1
+		Stop
+	}
+}
+
 ACTOR MonsterStatue
 {
 	//$Category Props (Wolf3D)
