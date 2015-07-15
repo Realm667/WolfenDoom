@@ -74,6 +74,21 @@ ACTOR Medikit_Large : Health
 	}
 }
 
+ACTOR Medikit_Fullhealth : Health
+{
+	//$Category Health (Wolf3D)
+	//$Title Medikit (large+40)
+	//$Color 6
+	Inventory.Amount 200
+	Inventory.PickupMessage "$MEDBIG"
+	States
+	{
+	Spawn:
+		TNT1 A -1
+		Stop
+	}
+}
+
 actor VitalitySerum : UpgradeStamina
 {
 	//$Category Health (Wolf3D)
