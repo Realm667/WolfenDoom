@@ -24,6 +24,7 @@ script "Underwater" ENTER
 script "OhNoes!" DEATH
 {
 	SetHudSize(320, 240, false);
+	LocalSetMusic("THEEND");
 	
 	SetFont("fade");
 	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1000, CR_UNTRANSLATED, 160.0, 120.0, 999999.0, 6.0, 1.0); 

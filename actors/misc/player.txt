@@ -44,10 +44,6 @@ Actor BoAPlayer : PlayerPawn
 	See:
 		PLAY ABCD 7
 		Loop
-	Footstep:
-		"####" "#" 0 A_AlertMonsters(256)
-		"####" "#" 0 A_SpawnItemEx("PlayerStep",0,0,14,0,0,0,0,SXF_NoCheckPosition)
-		goto Spawn
 	Pain:
 		PLAY G 3 A_Pain
 		Goto Spawn
@@ -79,19 +75,39 @@ Actor BoAPlayer : PlayerPawn
 	}
 }
 
-ACTOR PlayerStep
+ACTOR EnemyStep
 {
 	Radius 32
 	Height 55
 	Gravity 10
-	//Mass 0
 	+CORPSE
 	+NOCLIP
 	States
 	{
 	Spawn:
-		TNT1 A 3
+		TNT1 A 3 
 		Stop
+	Crash:
+		TNT1 A 1
+		Stop
+	}
+}
+
+actor PlayerStep
+{
+	Speed 0
+	Gravity 10
+	+CORPSE
+	+LOOKALLAROUND
+	States
+	{
+	Spawn:
+		TNT1 A 1 NoDelay A_Look 
+		loop
+	See:
+		TNT1 A 0 A_AlertMonsters(256)
+		TNT1 A 3
+		goto See + 1
 	Crash:
 		TNT1 A 1
 		Stop

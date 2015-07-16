@@ -1,9 +1,11 @@
 #library "boalib"
 #include "zcommon.acs"
 
-global int 1:disable_mutants; //mxd. When set to true, all mutants will immediately despawn after spawning.
+global int 1:disable_mutants; //mxd. When set to true, Mutant and MutantMelee will immediately despawn after spawning.
+global int 2:disable_big_mutants; //mxd. When set to true, BigMutant1 and BigMutant2 will immediately despawn after spawning.
+global int 3:disable_supermutants; //mxd. When set to true, UberMutant and SuperMutant will immediately despawn after spawning.
 
-str darrenmessage[15]=
+str darrenmessage[18]=
 {
 	"\cCHey, Bill. Darren here. I found the back entrance of the headquarters, but there seems to be more nazi activity than we expected. Be careful!",
 	"\cCTime to get out here! The alarm has been activated! There's a switch nearby to lower the gates. Go for it, if you haven't already. I'll be waiting for you outside the area.",
@@ -17,11 +19,11 @@ str darrenmessage[15]=
 	"\cCYeeehaw! The cavalry has arrived! Time to beat these Krauts up! Let's bring them down for good!",
 	"\cCBetter get in and out quickly. It's hot and I don't feel comfortable in my uniform anymore... Good luck, Bill!",
 	"\cCBill? Can you hear me? Take the relic and get back to the meeting point. Nazi divisions are heading towards your position. C'mon, get out of there! Move it!",
-    "\cCProf. Gutenberg was right, the Eisenmann files led us directly to the secret facility. The railroad brought us already very close but we can't follow you any further unsighted. Time for your one-man-superhero show Bill. The facility's entrance is east from us. We will follow the rail track and secure your escape, and you, make sure to blow up that bitch!",
-    "\cCHey Bill, glad that you are still alive. Get to the facility and blow it up, we will wait for you here and secure the train station.",
-    "\cCDamn, Bill! I could even feel the ground shaking here. Get out quickly before the whole facility colapses. Every second counts now!",
-    "\cCWell done Bill, get on to the next one and place your C4 package quickly!",
-    "\cCDamnit, the Nazis noticed you. You need to be quick now, they will flood the facility in about 15 minutes. Get through this, place your C4 and get out alive!",
+	"\cCProf. Gutenberg was right, the Eisenmann files led us directly to the secret facility. The railroad brought us already very close but we can't follow you any further unsighted. Time for your one-man-superhero show Bill. The facility's entrance is east from us. We will follow the rail track and secure your escape, and you, make sure to blow up that bitch!",
+	"\cCHey Bill, glad that you are still alive. Get to the facility and blow it up, we will wait for you here and secure the train station.",
+	"\cCDamn, Bill! I could even feel the ground shaking here. Get out quickly before the whole facility colapses. Every second counts now!",
+	"\cCWell done Bill, get on to the next one and place your C4 package quickly!",
+	"\cCDamnit, the Nazis noticed you. You need to be quick now, they will flood the facility in about 15 minutes. Get through this, place your C4 and get out alive!",
 	"\cCIt's beginning Bill, you need to get out now! Your time is over! Quick!",
 };
 str prisonermessage[3]=
@@ -166,7 +168,7 @@ Script "PlayFootstepsSoundLoop" ENTER
 					}
 					else
 					{
-						SetActorState(playerID, "Footstep");
+						SpawnForced("PlayerStep", cx, cy, cfz + 14);
 					}
 
 					curStepDistance = 0;
@@ -189,11 +191,52 @@ Script "PlayFootstepsSoundLoop" ENTER
 	}
 }
 
-//mxd. Mutants despawn check
+//mxd. Stealth-related. For this to work, each player must have unique TID.
+script "TargetIsHidden" (void)
+{
+		// Get target's TID
+		int targettid = GetActorProperty(0, APROP_TargetTID);
+		
+		// 0 TID means that target is not a player, but something (probably PlayerStep), which called A_AlertMonsters.
+		if(targettid == 0)
+		{
+			SetResultValue(true);
+			terminate;
+		}
+		
+		// Get it's light level
+		int targetlightlevel = GetActorLightLevel(targettid);
+		
+		// And speed
+		int x = GetActorVelX(targettid);
+		int y = GetActorVelY(targettid);
+		int z = GetActorVelZ(targettid);
+		
+		// That's squared speed actually
+		// Full speed is around 56 when running forward, around 92 when going sideways, around 200 when sprinting.
+		int speed = (FixedMul(x, x) + FixedMul(y, y) + FixedMul(z, z)) >> 16;
+		
+		// Calculate resulting visibility level (will probably require lots of tweaking...)
+		int visibility = targetlightlevel + speed;
+		
+		// Return the value
+		SetResultValue(visibility < 100);
+}
+
+//mxd. Mutants despawn checks
 script "DisableMutants" (void)
 {
-	if(disable_mutants)
-		Thing_Remove(0);
+	if(disable_mutants) Thing_Remove(0);
+}
+
+script "DisableBigMutants" (void)
+{
+	if(disable_big_mutants) Thing_Remove(0);
+}
+
+script "DisableSuperMutants" (void)
+{
+	if(disable_supermutants) Thing_Remove(0);
 }
 
 //Compass
