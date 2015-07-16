@@ -202,6 +202,26 @@ actor NailBlur
 	}
 }
 
+script NailFlame : Nail
+{
+	states
+	{
+	Spawn:
+		DARF A 1 Bright A_SpawnItemEx("NailBlur")
+		loop
+	Crash:
+	Death:
+		DART B 0 A_PlaySound("NailHit")
+		DART BCDEFG 2
+		stop
+	XDeath:
+		DART B 0 A_PlaySound("NailHitBleed")
+		DART BCDEFG 2
+		stop
+	}
+}
+
+
 //External Actors
 actor ScorpionNail : Nail
 {
