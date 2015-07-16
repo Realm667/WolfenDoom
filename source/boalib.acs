@@ -216,8 +216,11 @@ script "TargetIsHidden" (void)
 		// Full speed is around 56 when running forward, around 92 when going sideways, around 200 when sprinting.
 		int speed = (FixedMul(x, x) + FixedMul(y, y) + FixedMul(z, z)) >> 16;
 		
+		// And view height (56 when standing, 28 when crouching)
+		int viewheightmod = 56 - (GetActorViewHeight(targettid) >> 16);
+		
 		// Calculate resulting visibility level (will probably require lots of tweaking...)
-		int visibility = targetlightlevel + speed;
+		int visibility = targetlightlevel + speed - viewheightmod;
 		
 		// Return the value
 		SetResultValue(visibility < 100);
