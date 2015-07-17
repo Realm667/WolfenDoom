@@ -1,0 +1,128 @@
+ACTOR AstroGuard : Nazi
+{
+	//$Category Monsters (Wolf3D)/Astrostein
+	//$Title Astrostein Guard
+	//$Color 4
+	Health 20
+	SeeSound "Nazi1/Sighted"
+	PainSound "Nazi1/Pain"
+	DeathSound "Nazi1/Death"
+	Obituary "$GUARD"
+	DropItem 9mmAmmo 192
+	DropItem Luger9mm 64
+	+NOBLOOD
+	States
+	{
+	Spawn:
+		ATR2 A 0
+		Goto SkillCheck
+	Missile:
+		"####" E 5 A_FaceTarget
+		"####" F 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		"####" F 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyAstroTracer",54,1,random(-8,8))
+		"####" E 8 A_Jump(256,"See")
+		Stop
+	Pain:
+		"####" G 3
+		"####" G 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		"####" G 0 A_Jump(256,"See")
+		Stop
+	Death:
+		"####" H 5 A_Scream
+		"####" H 0 A_NoBlocking
+		"####" H 5 A_FadeOut(0.05)
+		Wait
+	}
+}
+
+ACTOR AstroGuard2 : AstroGuard
+{
+	//$Category Monsters (Wolf3D)/Astrostein
+	//$Title Astrostein Guard 2
+	//$Color 4
+	Health 30
+	States
+	{
+	Spawn:
+		ATR1 A 0
+		Goto SkillCheck
+	Missile:
+		"####" E 5 A_FaceTarget
+		"####" F 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		"####" F 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyAstroTracer",54,1,random(-8,8))
+		"####" E 5 A_FaceTarget
+		"####" F 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		"####" F 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyAstroTracer",54,1,random(-8,8))
+		"####" E 5 A_FaceTarget
+		"####" F 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		"####" F 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyAstroTracer",54,1,random(-8,8))
+		"####" E 8 A_Jump(256,"See")
+		Stop
+	}
+}
+
+ACTOR AstroCommando : AstroGuard
+{
+	//$Category Monsters (Wolf3D)/Astrostein
+	//$Title Astrostein Commando
+	//$Color 4
+	Health 30
+	States
+	{
+	Spawn:
+		ATR3 A 0
+		Goto SkillCheck
+	Missile:
+		"####" EF 5 A_FaceTarget
+		"####" G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		"####" G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyAstroTracer",54,1,random(-8,8))
+		"####" F 5 A_MonsterRefire(30,"See")
+		"####" E 8 A_Jump(256,"See")
+		Stop
+	}
+}
+
+Actor AstroOfficer : AstroGuard
+{
+	//$Category Monsters (Wolf3D)/Astrostein
+	//$Title Astrostein Officer
+	//$Color 4
+	Speed 5.33
+	Health 30
+	States
+	{
+	Spawn:
+		ATR5 A 0
+		Goto SkillCheck
+	Missile:
+		"####" G 5 A_FaceTarget
+		"####" G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		"####" E 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyAstroTracer",54,1,random(-8,8))
+		"####" F 5 A_MonsterRefire(30,"See")
+		"####" E 8 A_Jump(256,"See")
+		Stop
+	}
+}
+
+Actor AstroElite : AstroGuard
+{
+	//$Category Monsters (Wolf3D)/Astrostein
+	//$Title Astrostein Elite
+	//$Color 4
+	Speed 5.33
+	Health 30
+	States
+	{
+	Spawn:
+		ATR4 A 0
+		Goto SkillCheck
+	Missile:
+		"####" F 5 A_FaceTarget
+		"####" F 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		"####" G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyAstroTracer",54,1,random(-8,8))
+		"####" F 5 A_MonsterRefire(30,"See")
+		"####" F 8 A_Jump(256,"See")
+		Stop
+	}
+}
