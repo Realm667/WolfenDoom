@@ -10,3 +10,51 @@ actor AstroMedikit : Medikit
 			Stop
 	}
 }
+
+actor AstroBlueKey : BoABlueKey
+{
+	//$Category Keys (Wolf3D)/Astrostein
+	//$Title Blue Keycard (Blue Card)
+	//$Color 13
+	Inventory.PickupMessage "$GOTBLUEKEY"
+	Inventory.Icon "ATKEYS0"
+	states
+	{
+	Spawn:
+		KCBL A 10
+		KCBL B 10 LIGHT(BOABKEY)
+		Loop
+	}
+}
+
+actor AstroYellowKey : BoAYellowKey
+{
+	//$Category Keys (Wolf3D)/Astrostein
+	//$Title Yellow Key (Yellow Card)
+	//$Color 13
+	Inventory.PickupMessage "$GOTYELLOWKEY"
+	Inventory.Icon "ATKEYS1"
+	states
+	{
+	Spawn:
+		KCYE A 10
+		KCYE B 10 LIGHT(BOAYKEY)
+		Loop
+	}
+}
+
+actor AstroRedKey : BoARedKey
+{
+	//$Category Keys (Wolf3D)/Astrostein
+	//$Title Red Key (Red Card)
+	//$Color 13
+	Inventory.PickupMessage "$GOTREDKEY"
+	Inventory.Icon "ATKEYS2"
+	states
+	{
+	Spawn:
+		KCRE A 10
+		KCRE B 10 LIGHT(BOARKEY)
+		Loop
+	}
+}
