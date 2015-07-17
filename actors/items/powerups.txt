@@ -44,3 +44,18 @@ ACTOR ScubaGearGiver : RadSuit replaces RadSuit
 		Stop
 	}
 }
+
+ACTOR C4 : Inventory
+{
+	Scale 0.5
+	Inventory.Icon "I_C4"
+	Inventory.MaxAmount 3
+	+INVENTORY.INVBAR
+	Tag "C4"
+	States
+	{
+	Spawn:
+		C4__ A -1
+		Stop
+	}
+}
