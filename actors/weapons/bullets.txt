@@ -99,7 +99,24 @@ ACTOR MutantTracer : Tracer
 		Loop
 	}
 }
-ACTOR MutantTrail: TracerTrail {}
+ACTOR AstroTrail: TracerTrail {}
+
+
+//Nifty new astrostein variations for tracers
+ACTOR AstroTracer : Tracer 
+{
+	//MissileType MutantTrail
+	DamageType AstroPoison
+	
+	States
+	{
+	Spawn:
+		TNT1 A 1 BRIGHT A_JumpIfTracerCloser(96,"Whiz")
+		TNT1 A 0 A_SpawnItemEx("AstroTrail", 0, 0, 0, velx, vely, velz, 0, SXF_ABSOLUTEVELOCITY) //mxd
+		Loop
+	}
+}
+ACTOR AstroTrail: TracerTrail {}
 
 // The Player's variants on the tracers, so they have different speeds and damages
 // based on which weapon is being used.
@@ -294,7 +311,14 @@ ACTOR EnemyMutantTracer : MutantTracer //new
 	+THRUGHOST
 	Damage (random(2,4))
 }
-	// Enemy tracer variants for Baby mode
+
+ACTOR EnemyAstroTracer : AstroTracer //new
+{
+	+THRUGHOST
+	Damage (random(2,4))
+}
+
+// Enemy tracer variants for Baby mode
 ACTOR BabyEnemyPistolTracer : EnemyPistolTracer
 {
 	Speed 30
@@ -319,6 +343,12 @@ ACTOR BabyEnemyMutantTracer : EnemyMutantTracer //new
 {
 	Speed 30
 }
+
+ACTOR BabyEnemyAstroTracer : EnemyAstroTracer //new
+{
+	Speed 30
+}
+
 
 // Enemy tracer variants for Easy mode
 ACTOR EasyEnemyPistolTracer : EnemyPistolTracer
@@ -346,6 +376,11 @@ ACTOR EasyEnemyMutantTracer : EnemyMutantTracer //new
 	Speed 50
 }
 
+ACTOR EasyEnemyAstroTracer : EnemyAstroTracer //new
+{
+	Speed 50
+}
+
 // Enemy tracer variants for Hard and Nightmare mode
 ACTOR HardEnemyPistolTracer : EnemyPistolTracer
 {
@@ -368,6 +403,11 @@ ACTOR HardEnemyChaingunTracer : EnemyChaingunTracer
 	Speed 90
 }
 ACTOR HardEnemyMutantTracer : EnemyMutantTracer //new
+{
+	Speed 90
+}
+
+ACTOR HardEnemyAstroTracer : EnemyAstroTracer //new
 {
 	Speed 90
 }
