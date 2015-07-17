@@ -41,6 +41,13 @@ end
    stopsound	   NULL
 end
 
+:Astrostein_Door
+   door 7
+   playuntildone   astrostein/door
+   playrepeat      NULL
+   stopsound	   NULL
+end
+
 // Doom door overrides
 :DoorOpenNormal
 	play		doors/dr1_open
@@ -75,4 +82,11 @@ end
         playuntildone   ulift1a
         playrepeat      ulift1b
         stopsound       ulift1c
+end
+
+:Lift_Astrostein
+        platform        4
+        playuntildone   astrostein/liftstart
+        playrepeat      null
+        stopsound       astrostein/liftstop
 end

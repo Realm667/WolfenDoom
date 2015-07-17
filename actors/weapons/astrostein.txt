@@ -29,6 +29,7 @@ ACTOR AstroShotgun : NaziWeapon
   	 ASSG B 1 A_Raise
   	  Loop
   	Fire:
+	  TNT1 A 0 A_PlaySound("astroshotgun/fire")
   	  ASSG C 0 A_FireCustomMissile ("AstroTracerPlayer", -1.5, 1,  0, 0, 0)
   	  ASSG C 0 A_FireCustomMissile ("AstroTracerPlayer", -3.0, 0,  0, 0, 0)
   	  ASSG C 0 A_FireCustomMissile ("AstroTracerPlayer", -4.5, 0,  0, 0, 0)
@@ -42,29 +43,6 @@ ACTOR AstroShotgun : NaziWeapon
   	}
 }
 
-
-ACTOR AstroShotgunProjectile
-{
-  Radius 11
-  Height 8
-  Speed 30
-  Damage 10
-  Projectile
-  RenderStyle Add
-  Scale 0.5
-  SeeSound "weapons/bowshoot"
-  DeathSound "weapons/bowhit"
-  Obituary "$OB_MPCROSSBOW"
-  States
-  {
-  Spawn:
-    ASRK BC 2 Bright
-    Loop
-  Death:
-    ASRK DEF 8 Bright
-    Stop
-  }
-}
 
 actor AstroShotgunShell : Ammo
 {
@@ -142,7 +120,9 @@ ACTOR AstroRocket
   BounceFactor 0.9
   WallBounceFactor 0.9
   BounceCount 5
-  SeeSound "weapons/maceshoot"
+  SeeSound "astrolauncher/fire"
+  DeathSound "astrolauncher/explode"
+  BounceSound "astrolauncher/bounce"
   Obituary "$OB_MPMACE"
 
   States
@@ -204,6 +184,7 @@ ACTOR AstroChaingun : NaziWeapon
      ASCG C 1 A_Raise
      Loop
    Fire:
+     TNT1 A 0 A_PlaySound("astrochaingun/fire")
      ASCG DE 4 A_FireCustomMissile ("AstroTracerPlayer", random(-1.0,1.0), 1, 0, 0, 0, random(-1.0,1.0))
      ASCG D 0 A_ReFire
      Goto Ready

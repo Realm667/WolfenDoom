@@ -8,8 +8,7 @@ ACTOR AstroGuard : Nazi
 	PainSound "Nazi1/Pain"
 	DeathSound "Nazi1/Death"
 	Obituary "$GUARD"
-	DropItem 9mmAmmo 192
-	DropItem Luger9mm 64
+	DropItem AstroClipAmmo 192
 	+NOBLOOD
 	States
 	{
@@ -18,7 +17,7 @@ ACTOR AstroGuard : Nazi
 		Goto SkillCheck
 	Missile:
 		"####" E 5 A_FaceTarget
-		"####" F 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		"####" F 0 A_PlaySound("astrochaingun/fire",CHAN_WEAPON)
 		"####" F 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyAstroTracer",54,1,random(-8,8))
 		"####" E 8 A_Jump(256,"See")
 		Stop
@@ -29,9 +28,10 @@ ACTOR AstroGuard : Nazi
 		"####" G 0 A_Jump(256,"See")
 		Stop
 	Death:
+		"####" H 0 A_Playsound("astrostein/guard_death")
 		"####" H 5 A_Scream
 		"####" H 0 A_NoBlocking
-		"####" H 5 A_FadeOut(0.05)
+		"####" H 1 A_FadeOut(0.05)
 		Wait
 	}
 }
@@ -49,13 +49,13 @@ ACTOR AstroGuard2 : AstroGuard
 		Goto SkillCheck
 	Missile:
 		"####" E 5 A_FaceTarget
-		"####" F 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		"####" F 0 A_PlaySound("astrochaingun/fire",CHAN_WEAPON)
 		"####" F 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyAstroTracer",54,1,random(-8,8))
 		"####" E 5 A_FaceTarget
-		"####" F 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		"####" F 0 A_PlaySound("astrochaingun/fire",CHAN_WEAPON)
 		"####" F 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyAstroTracer",54,1,random(-8,8))
 		"####" E 5 A_FaceTarget
-		"####" F 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		"####" F 0 A_PlaySound("astrochaingun/fire",CHAN_WEAPON)
 		"####" F 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyAstroTracer",54,1,random(-8,8))
 		"####" E 8 A_Jump(256,"See")
 		Stop
@@ -67,7 +67,7 @@ ACTOR AstroCommando : AstroGuard
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Astrostein Commando
 	//$Color 4
-	Health 30
+	Health 80
 	States
 	{
 	Spawn:
@@ -75,7 +75,7 @@ ACTOR AstroCommando : AstroGuard
 		Goto SkillCheck
 	Missile:
 		"####" EF 5 A_FaceTarget
-		"####" G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		"####" G 0 A_PlaySound("astrochaingun/fire",CHAN_WEAPON)
 		"####" G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyAstroTracer",54,1,random(-8,8))
 		"####" F 5 A_MonsterRefire(30,"See")
 		"####" E 8 A_Jump(256,"See")
@@ -97,7 +97,7 @@ Actor AstroOfficer : AstroGuard
 		Goto SkillCheck
 	Missile:
 		"####" G 5 A_FaceTarget
-		"####" G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		"####" G 0 A_PlaySound("astrochaingun/fire",CHAN_WEAPON)
 		"####" E 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyAstroTracer",54,1,random(-8,8))
 		"####" F 5 A_MonsterRefire(30,"See")
 		"####" E 8 A_Jump(256,"See")
@@ -112,6 +112,8 @@ Actor AstroElite : AstroGuard
 	//$Color 4
 	Speed 5.33
 	Health 30
+	DropItem AstroShotgun 64
+	DropItem AstroShotgunShell 192
 	States
 	{
 	Spawn:
@@ -119,10 +121,251 @@ Actor AstroElite : AstroGuard
 		Goto SkillCheck
 	Missile:
 		"####" F 5 A_FaceTarget
-		"####" F 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
+		"####" F 0 A_PlaySound("astrochaingun/fire",CHAN_WEAPON)
 		"####" G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyAstroTracer",54,1,random(-8,8))
 		"####" F 5 A_MonsterRefire(30,"See")
 		"####" F 8 A_Jump(256,"See")
 		Stop
 	}
+}
+
+ACTOR AstroDrone
+{
+	//$Category Monsters (Wolf3D)/Astrostein
+	//$Title Astrostein Drone
+	//$Color 4
+  Health 200
+  Radius 31
+  Height 56
+  Mass 400
+  Speed 8
+  PainChance 128
+  Monster
+  +FLOAT
+  +NOGRAVITY
+  +NOBLOOD
+  SeeSound "drone_sight"
+  PainSound "drone_pain"
+  DeathSound "drone_death"
+  ActiveSound "drone_act"
+  Obituary "$OB_CACO"
+  HitObituary "$OB_CACOHIT"
+  States
+  {
+  Spawn:
+    DRON A 10 A_Look
+    Loop
+  See:
+    DRON AB 3 A_Chase
+    Loop
+  Missile:
+    DRON EG 5 A_FaceTarget
+    DRON E 5 Bright A_CustomMissile("AstroDroneBall",54,1,random(-8,8))
+    Goto See
+  Pain:
+    DRON H 3
+    DRON H 3 A_Pain
+    DRON H 6
+    Goto See
+  Death:
+    DRON M 8
+    DRON M 8 A_Scream
+    DRON M 8
+    DRON M 8 A_NoBlocking
+    DRON M -1 A_SetFloorClip
+    Stop
+  }
+}
+
+ACTOR AstroDroneBall
+{
+  Radius 6
+  Height 8
+  Speed 10
+  FastSpeed 20
+  Damage 5
+  Projectile
+  +RANDOMIZE
+  RenderStyle Add
+  Alpha 1
+  Scale 0.5
+  SeeSound "astrochaingun/fire"
+  DeathSound "astroplasmaexplode"
+  States
+  {
+  Spawn:
+    ROBP AB 4 Bright
+    Loop
+  Death:
+    ROBP CDEG 6 Bright
+   Stop
+  }
+}
+
+ACTOR AstroCyborg1
+{
+	//$Category Monsters (Wolf3D)/Astrostein
+	//$Title Astrostein Cyborg (1)
+	//$Color 4
+  Health 200
+  Radius 31
+  Height 56
+  Mass 400
+  Speed 8
+  PainChance 128
+  +NOBLOOD
+  Monster
+  SeeSound "astrostein/cyborg_sight"
+  PainSound "astrostein/cyborg_pain"
+  DeathSound "astrostein/cyborg_death"
+  ActiveSound "astrostein/cyborg_act"
+  Obituary "$OB_CACO"
+  HitObituary "$OB_CACOHIT"
+  DropItem AstroRocketAmmo 64
+  States
+  {
+  Spawn:
+    CYB2 H 10 A_Look
+    Loop
+  See:
+    CYB2 ABCD 3 A_Chase
+    Loop
+  Missile:
+    CYB2 EF 5 A_FaceTarget
+    CYB2 F 5 Bright A_CustomMissile("AstroDroneBall",54,1,random(-8,8))
+    Goto See
+  Pain:
+    CYB2 G 3
+    CYB2 G 3 A_Pain
+    CYB2 G 6
+    Goto See
+  Death:
+    CYB2 H 8 A_Scream
+    CYB2 H 0 A_NoBlocking
+    CYB2 H 1 A_FadeOut(0.05)
+    Wait
+  }
+}
+
+ACTOR AstroCyborg2
+{
+	//$Category Monsters (Wolf3D)/Astrostein
+	//$Title Astrostein Cyborg (1)
+	//$Color 4
+  Health 200
+  Radius 31
+  Height 56
+  Mass 400
+  Speed 8
+  PainChance 128
+  +NOBLOOD
+  DropItem AstroRocketAmmo 64
+  Monster
+  SeeSound "astrostein/cyborg_sight"
+  PainSound "astrostein/cyborg_pain"
+  DeathSound "astrostein/cyborg_death"
+  ActiveSound "astrostein/cyborg_act"
+  Obituary "$OB_CACO"
+  HitObituary "$OB_CACOHIT"
+  States
+  {
+  Spawn:
+    CYB1 J 10 A_Look
+    Loop
+  See:
+    CYB1 ABCD 3 A_Chase
+    Loop
+  Missile:
+    CYB1 EF 5 A_FaceTarget
+    CYB1 F 5 Bright A_CustomMissile("AstroDroneBall",54,1,random(-8,8))
+    Goto See
+  Pain:
+    CYB1 G 3
+    CYB1 G 3 A_Pain
+    CYB1 G 6
+    Goto See
+  Death:
+    CYB1 J 8 A_Scream
+    CYB1 J 0 A_NoBlocking
+    CYB1 J 1 A_FadeOut(0.05)
+    Wait
+  }
+}
+
+Actor AstroSuiteGuard : AstroGuard
+{
+	//$Category Monsters (Wolf3D)/Astrostein
+	//$Title Astrostein Suite Guard
+	//$Color 4
+	Speed 5.33
+	Health 30
+	States
+	{
+	Spawn:
+		ROB1 A 0
+		Goto SkillCheck
+	Missile:
+		"####" EF 5 A_FaceTarget
+		"####" F 0 A_PlaySound("astrochaingun/fire",CHAN_WEAPON)
+		"####" G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyAstroTracer",54,1,random(-8,8))
+		"####" E 8 A_Jump(256,"See")
+		Stop
+	Pain:
+		"####" H 3
+		"####" H 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		"####" H 0 A_Jump(256,"See")
+		Stop
+	Death:
+		"####" I 0 A_Playsound("astrostein/guard_death")
+		"####" I 0 A_Scream
+		"####" IJKLMNO 5 A_Scream
+		"####" O -1 A_NoBlocking
+		Stop
+	}
+}
+
+ACTOR AstroRobot
+{
+	//$Category Monsters (Wolf3D)/Astrostein
+	//$Title Astrostein Robot
+	//$Color 4
+  Health 200
+  Radius 31
+  Height 56
+  Mass 400
+  +NOBLOOD
+  Speed 8
+  PainChance 128
+  Monster
+  SeeSound "astrostein/robot_sight"
+  PainSound "astrostein/robot_pain"
+  DeathSound "astrostein/robot_death"
+  ActiveSound "astrostein/robot_act"
+  Obituary "$OB_CACO"
+  HitObituary "$OB_CACOHIT"
+  DropItem AstroRocketAmmo 160
+  States
+  {
+  Spawn:
+    ROB2 A 10 A_Look
+    Loop
+  See:
+    ROB2 ABCD 3 A_Chase
+    Loop
+  Missile:
+    ROB2 HG 5 A_FaceTarget
+    ROB2 F 5 Bright A_CustomMissile("AstroDroneBall",54,1,random(-8,8))
+    Goto See
+  Pain:
+    ROB2 H 3
+    ROB2 H 3 A_Pain
+    ROB2 H 6
+    Goto See
+  Death:
+    ROB2 H 4 A_Scream
+    ROB2 IJKLMN 5
+    ROB2 O -1 A_NoBlocking
+    Wait
+  }
 }
