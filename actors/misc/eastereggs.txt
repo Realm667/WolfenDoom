@@ -1,5 +1,8 @@
 Actor JazzJackrabbit : CommanderKeen
 {
+	//$Category Misc (Wolf3D)
+	//$Title Jazz Jackrabbit (Easteregg)
+	//$Color 3
 	PainSound "jazz/pain"
 	DeathSound "jazz/death"
 	//Scale 0.56
@@ -21,5 +24,37 @@ Actor JazzJackrabbit : CommanderKeen
 		JAZZ M 4
 		JAZZ M 8 A_Pain
 		Goto Spawn
+	}
+}
+
+/////////////////
+// EASTER EGGS //
+/////////////////
+ACTOR Dogse
+{
+	//$Category Misc (Wolf3D)
+	//$Title Dogse (Easteregg)
+	//$Color 3
+	Radius 16
+	Height 24
+	+SOLID
+	States
+	{
+	Spawn:
+		DOGS AB 5
+		Loop
+	}
+}
+
+ACTOR DogseResult : Dogse
+{
+	//$Category Misc (Wolf3D)
+	//$Title Dogpuppy (Easteregg)
+	//$Color 3
+	States
+	{
+	Spawn:
+		PUPP AB 5
+		Loop
 	}
 }
