@@ -102,10 +102,12 @@ ACTOR MutantTracer : Tracer
 ACTOR MutantTrail: TracerTrail {}
 
 
+
+
+
 //Nifty new astrostein variations for tracers
-ACTOR AstroTracer : Tracer 
+ACTOR AstroTracer : Tracer
 {
-	//MissileType MutantTrail
 	DamageType AstroPoison
 	
 	States
@@ -116,7 +118,16 @@ ACTOR AstroTracer : Tracer
 		Loop
 	}
 }
+
 ACTOR AstroTrail: TracerTrail {}
+
+//Astrotracer for the player weapons
+ACTOR AstroTracerPlayer : AstroTracer 
+{
+	DamageType None
+}
+
+
 
 // The Player's variants on the tracers, so they have different speeds and damages
 // based on which weapon is being used.
