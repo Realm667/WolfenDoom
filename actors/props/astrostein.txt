@@ -58,7 +58,7 @@ ACTOR StreetLightAstro
 	States
 	{
 	Spawn:
-		STRL D -1
+		STRL X -1
 		Loop
 	}
 }
@@ -100,14 +100,32 @@ ACTOR BarrelFutureExploding
 	//$Category Props (Wolf3D)/Astrostein
 	//$Title Barrel (modern, explode)
 	//$Color 3
-	Radius 8
-	Height 56
-	+SOLID
+	 Health 20
+  	Radius 10
+  	Height 42
+  	+SOLID
+  	+SHOOTABLE
+  	+NOBLOOD
+  	+ACTIVATEMCROSS
+  	+DONTGIB
+  	+NOICEDEATH
+  	+OLDRADIUSDMG
+  	DeathSound "world/barrelx"
+  	Obituary "$OB_BARREL" // "%o went boom."
 	States
 	{
 	Spawn:
 		BARF ABCDCB 8
 		Loop
+	Death:
+    		BEXP A 5 Bright
+    		BEXP B 5 Bright A_Scream
+    		BEXP C 5 Bright
+    		BEXP D 5 Bright A_Explode
+    		BEXP E 10 Bright
+    		TNT1 A 1050 Bright A_BarrelDestroy
+    		TNT1 A 5 A_Respawn
+    	Wait
 	}
 }
 
@@ -184,7 +202,7 @@ ACTOR FutureCeilingLight
 	//$Category Props (Wolf3D)/Astrostein
 	//$Title Ceiling Light (modern)
 	//$Color 3
-	Radius 64
+	Radius 16
 	Height 64
 	-SOLID
 	+SPAWNCEILING
