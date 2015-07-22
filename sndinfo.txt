@@ -1002,6 +1002,7 @@ bloodsplat3 dsblud03
 /////////////////////////////////////////////////////////////////////
 //// SEQUENCE SOUNDS ////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
+doors/dr1_move DSDORMOV
 doors/dr1_stop DSDORSTP
 $volume doors/dr1_stop 0.4
 DR_MTL01 DR_MTL01
@@ -1012,11 +1013,14 @@ slift1b  slift1b
 slift1c  slift1c
 SW_LIGHT SW_LIGHT
 ELDOR_OP ELDOR_OP
+ELDOR_MV ELDOR_MV
 ELDOR_CL ELDOR_CL
 DSSTN01 DSSTN01
 DSSTN02 DSSTN02
 TRSECRET TRSECRET
-CLSECRET CLSECRET
+CLSCRT_M CLSCRT_M
+CLSCRT_O CLSCRT_O
+CLSCRT_S CLSCRT_S
 SWDTH1 SWDTH1
 SWDTH2 SWDTH2
 SWDTH3 SWDTH3
@@ -1199,6 +1203,11 @@ FAN FAN
 FIRE_LARGE FIRE_LG
 FIRE_MEDIUM FIRE_MD
 FIRE_SMALL FIRE_SM
+$rolloff FIRE_LARGE 160 640
+$rolloff FIRE_MEDIUM 128 500
+$rolloff FIRE_SMALL 64 380
+$volume FIRE_MEDIUM 0.85
+$volume FIRE_SMALL 0.7
 FLIES FLIES
 HUM_LIGHT_HEAVY HUM_L_H
 HUM_LIGHT_MEDIUM HUM_L_M

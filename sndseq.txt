@@ -22,9 +22,9 @@ end
 
 :SlidingDoor_Elevator
    door 4
-   playuntildone	ELDOR_OP
+   play				ELDOR_OP
+   playrepeat		ELDOR_MV
    stopsound		ELDOR_CL
-   nostopcutoff
 end
 
 :Moving_Stone_Door
@@ -36,9 +36,9 @@ end
 
 :Moving_Secret_Door
    door 6
-   playuntildone   CLSECRET
-   playrepeat      NULL
-   stopsound	   NULL
+   play				CLSCRT_O
+   playrepeat		CLSCRT_M
+   stopsound		CLSCRT_S
 end
 
 :Astrostein_Door
@@ -51,6 +51,7 @@ end
 // Doom door overrides
 :DoorOpenNormal
 	play		doors/dr1_open
+	playrepeat	doors/dr1_move
 	stopsound	doors/dr1_stop
 end
 
