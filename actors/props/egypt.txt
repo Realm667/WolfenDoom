@@ -90,9 +90,25 @@ ACTOR LavaCauldron
 	{
 	Spawn:
 		LAVC A 0 NODELAY A_PlaySound("LavaCauldron/Loop",5,1,1,ATTN_STATIC)
+		LAVC A 0 A_SpawnItemEx("LavaCauldronFire", 0, 0, Height, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
 	Bubble:
 		LAVC ABC 6 Bright
 		Loop
+	}
+}
+
+actor LavaCauldronFire
+{
+	Radius 24
+	Height 30
+	DamageType Fire
+	+NOGRAVITY
+
+	States
+	{
+		Spawn:
+			TNT1 A 16 A_Explode(8, Radius, 0, false, Radius)
+			loop
 	}
 }
 

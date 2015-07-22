@@ -334,14 +334,31 @@ ACTOR FBowl1
 	//$Title Fire Bowl (egypt)
 	//$Color 11
 	Radius 32
-	Height 64
+	Height 30
 	Scale 0.78 //mxd
 	+SOLID
 	States
 	{
 	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("FBowlFire", 0, 0, Height, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+	FireLoop:
 		FBWL ABCDEFGHIJKLM 2
 		Loop
+	}
+}
+
+actor FBowlFire
+{
+	Radius 32
+	Height 30
+	DamageType Fire
+	+NOGRAVITY
+
+	States
+	{
+		Spawn:
+			TNT1 A 16 A_Explode(8, Radius, 0, false, Radius)
+			loop
 	}
 }
 
