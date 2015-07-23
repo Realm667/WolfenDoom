@@ -71,6 +71,35 @@ ACTOR Nazi
 	}
 }
 
+//mxd. The only difference are footstep sounds...
+actor NaziBoss : Nazi
+{
+	States
+	{
+	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", true)
+		"####" A 1 A_Chase
+		"####" AAA 1 A_Chase("","")
+		"####" A 1 A_Chase
+		"####" AAA 1 A_Chase("","")
+		"####" B 0 A_PlaySound("floor/heavy")
+		"####" B 1 A_Chase
+		"####" BBB 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" BBB 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" CCC 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" CCC 1 A_Chase("","")
+		"####" D 0 A_PlaySound("floor/heavy")
+		"####" D 1 A_Chase
+		"####" DDD 1 A_Chase("","")
+		"####" D 1 A_Chase
+		"####" DDD 1 A_Chase("","")
+		Loop
+	}
+}
+
 ACTOR Guard : Nazi
 {
 	//$Category Monsters (Wolf3D)
@@ -996,7 +1025,7 @@ ACTOR Doberman : Rottweiler
 	}
 }
 
-ACTOR RocketMan : Nazi
+ACTOR RocketMan : NaziBoss
 {
 	//$Category Monsters (Wolf3D)/Bosses
 	//$Title Otto Giftmacher (Boss)
@@ -1019,7 +1048,7 @@ ACTOR RocketMan : Nazi
 		Goto SkillCheck
 	Missile:
 		OTTO E 10 A_FaceTarget
-		OTTO F 8 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",32,12)
+		OTTO F 8 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",42,12)
 		OTTO E 8
 		Goto See
 	Pain:
@@ -1053,6 +1082,8 @@ ACTOR MiniRocket
 	States
 	{
 	Spawn:
+		NMIS A 0 NoDelay A_PlaySound("nazi/missileengine", CHAN_AUTO, 0.3, true)
+	Fly:
 		NMIS A 1 BRIGHT LIGHT(OTTOFIRE) A_SpawnItemEx("RocketFlame",random(-1,1),0,random(-1,1))
 		Loop
 	Death:
@@ -1134,6 +1165,8 @@ ACTOR MutantRocket
 	States
 	{
 	Spawn:
+		NMIS A 0 NoDelay A_PlaySound("nazi/missileengine", CHAN_AUTO, 0.3, true)
+	Fly:
 		NMIS A 1 BRIGHT LIGHT(MUTNROCK) A_SpawnItemEx("MutantFlame",random(-1,1),0,random(-1,1))
 		Loop
 	Death:
@@ -1225,7 +1258,7 @@ ACTOR FlyingNeedle : MiniRocket
 	}
 }
 
-ACTOR SuperSoldier : Nazi
+ACTOR SuperSoldier : NaziBoss
 {
 	//$Category Monsters (Wolf3D)/Bosses
 	//$Title Hans Grosse (Boss)
@@ -2269,7 +2302,7 @@ ACTOR UberMutant : Mutant
 		UBMU AA 1 A_Chase("","")
 		UBMU B 1 A_Chase
 		UBMU BB 1 A_Chase("","")
-		UBMU B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NoCheckPosition)
+		UBMU B 0 A_PlaySound("floor/heavy")
 		UBMU B 1 A_Chase
 		UBMU BB 1 A_Chase("","")
 		UBMU C 1 A_Chase
@@ -2278,7 +2311,7 @@ ACTOR UberMutant : Mutant
 		UBMU CC 1 A_Chase("","")
 		UBMU D 1 A_Chase
 		UBMU DD 1 A_Chase("","")
-		UBMU B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NoCheckPosition)
+		UBMU B 0 A_PlaySound("floor/heavy")
 		UBMU D 1 A_Chase
 		UBMU DD 1 A_Chase("","")
 		Loop

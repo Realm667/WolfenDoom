@@ -271,6 +271,8 @@ misc/alert			alert //mxd
 nazi/pistol DSNLUGER
 nazi/stg44		dsstg44
 nazi/missilef	dsmissil
+nazi/missileengine DSMISLF
+$rolloff nazi/missileengine 64 800
 $random nazi/mp40 {mp401 mp402}
 mp401	dsmp401
 mp402	dsmp402
@@ -1175,6 +1177,14 @@ floor/slimy04	dsslimy4
 
 $limit floor/slimy 2
 $volume floor/slimy 0.4
+
+// Heavy - boss footsteps
+$random floor/heavy { floor/heavy1 floor/heavy2 floor/heavy3 floor/heavy4 }
+floor/heavy1 STEPHVY1
+floor/heavy2 STEPHVY2
+floor/heavy3 STEPHVY3
+floor/heavy4 STEPHVY4
+$rolloff floor/heavy 128 750
 
 /////////////////////////////////////////////////////////////////////
 //// AMBIENT SOUNDS /////////////////////////////////////////////////
