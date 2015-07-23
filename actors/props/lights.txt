@@ -10,20 +10,21 @@ ACTOR Chandelier1Switchable : SwitchableDecoration
 	
 	Radius 10
 	Height 65 //same of sprite height
-	Activation THINGSPEC_Switch
 	+NOGRAVITY
 	+SPAWNCEILING
 	+SOLID
+	
 	States
 	{
-	Spawn:
-		CHAN D -1
-		Stop
 	Active:
-		CHAN A 4 A_PlaySound("DSCHAFIR", CHAN_BODY, 1.0 - args[0], 1)
-		CHAN BC 4
+		CHAN A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+	Spawn:
+	  CHAN A 0 NoDelay A_PlaySound("FIRE_SMALL", CHAN_BODY, 0.6 - args[0], true)
+	ActiveLoop:
+		CHAN ABC 4 
 		Loop
 	Inactive:
+		CHAN D 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		CHAN D -1 A_StopSound(CHAN_BODY)
 		Stop
 	}
@@ -41,14 +42,15 @@ ACTOR Chandelier2Switchable : Chandelier1Switchable
 	
 	States
 	{
-	Spawn:
-		CHAN H -1
-		Stop
 	Active:
-		CHAN E 4 A_PlaySound("DSCHAFIR", CHAN_BODY, 1.0 - args[0], 1)
-		CHAN FG 4
+		CHAN E 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+	Spawn:
+	  CHAN E 0 NoDelay A_PlaySound("FIRE_SMALL", CHAN_BODY, 0.6 - args[0], true)
+	ActiveLoop:
+		CHAN EFG 4 
 		Loop
 	Inactive:
+		CHAN H 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		CHAN H -1 A_StopSound(CHAN_BODY)
 		Stop
 	}
@@ -66,14 +68,15 @@ ACTOR Chandelier3Switchable : Chandelier1Switchable
 	
 	States
 	{
-	Spawn:
-		CHAN M -1
-		Stop
 	Active:
-		CHAN I 4 A_PlaySound("DSCHAFIR", CHAN_BODY, 1.0 - args[0], 1)
-		CHAN JL 4
+		CHAN I 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+	Spawn:
+	  CHAN I 0 NoDelay A_PlaySound("FIRE_SMALL", CHAN_BODY, 0.3 - args[0], true)
+	ActiveLoop:
+		CHAN IJL 4 
 		Loop
 	Inactive:
+		CHAN M 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		CHAN M -1 A_StopSound(CHAN_BODY)
 		Stop
 	}
@@ -91,14 +94,15 @@ ACTOR Chandelier4Switchable : Chandelier1Switchable
 	
 	States
 	{
-	Spawn:
-		CHAN Q -1
-		Stop
 	Active:
-		CHAN N 4 A_PlaySound("DSCHAFIR", CHAN_BODY, 1.0 - args[0], 1)
-		CHAN OP 4
+		CHAN N 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+	Spawn:
+	  CHAN N 0 NoDelay A_PlaySound("FIRE_SMALL", CHAN_BODY, 0.3 - args[0], true)
+	ActiveLoop:
+		CHAN NOP 4 
 		Loop
 	Inactive:
+		CHAN Q 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		CHAN Q -1 A_StopSound(CHAN_BODY)
 		Stop
 	}
@@ -117,22 +121,15 @@ ACTOR CeilingLightM : SwitchableDecoration
 	+NOTAUTOAIMED
 	States
 	{
+	Active: //mxd. CLIT? No, srsly, who comes with these names?..
+		CLIT A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 	Spawn:
-		CLIT A -1
-		Stop
-	Active:
-		TNT1 A 0 A_PlaySound(SMSWITCH)
-		CLIT A 1 Bright Light(BOACEIL2)
-		Wait
+	  CLIT A -1 Bright Light("BOACEIL2") NoDelay A_PlaySound("SMSWITCH")
+		stop
 	Inactive:
-		CLIT A -1 A_PlaySound(SMSWITCH)
-		Stop
-	Script1:
-		CLIT A -1 A_ChangeFlag("USESPECIAL",0)
-		Stop
-	Script2:
-		CLIT A -1 Bright Light(BOACEIL2) A_ChangeFlag("USESPECIAL",0)
-		Stop
+		CLIT A 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		CLIT A -1 A_PlaySound("SMSWITCH")
+		Stop	
 	}
 }
 
@@ -146,21 +143,14 @@ ACTOR CeilingLightM2 : CeilingLightM
 	-SOLID
 	States
 	{
-	Spawn:
-		CLIT B -1
-		Stop
 	Active:
-		TNT1 A 0 A_PlaySound(SMSWITCH)
-		CLIT B 1 Bright Light(BOACEIL1)
-		Wait
+		CLIT B 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+	Spawn:
+	  CLIT B -1 Bright Light("BOACEIL1") NoDelay A_PlaySound("SMSWITCH")
+		stop
 	Inactive:
-		CLIT B -1 A_PlaySound(SMSWITCH)
-		Stop
-	Script1:
-		CLIT B -1 A_ChangeFlag("USESPECIAL",0)
-		Stop
-	Script2:
-		CLIT B -1 Bright Light(BOACEIL1) A_ChangeFlag("USESPECIAL",0)
+		CLIT B 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		CLIT B -1 A_PlaySound("SMSWITCH")
 		Stop
 	}
 }
@@ -168,25 +158,24 @@ ACTOR CeilingLightM2 : CeilingLightM
 ACTOR TableLightM : SwitchableDecoration
 {
 	//$Category Light Sources (Wolf3D)
-	//$Title Bureau Light 1 (middle)
+	//$Title Bureau Light 1 (middle, switchable)
 	//$Color 11
 	Radius 4
 	Height 32
 	+SOLID
 	+USESPECIAL
 	+NOTAUTOAIMED
-	Activation THINGSPEC_Switch
+	Activation THINGSPEC_Switch | THINGSPEC_Deactivate
 	States
 	{
-	Spawn:
-		TLIT A -1
-		Stop
 	Active:
-		TNT1 A 0 A_PlaySound(SMSWITCH)
-		TLIT A 1 Bright Light(BOATABL1)
-		Wait
+		TLIT A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+	Spawn:
+	  TLIT A -1 Bright Light("BOATABL1") NoDelay A_PlaySound("SMSWITCH")
+		stop
 	Inactive:
-		TLIT A -1 A_PlaySound(SMSWITCH)
+		TLIT A 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		TLIT A -1 A_PlaySound("SMSWITCH")
 		Stop
 	}
 }
@@ -194,19 +183,18 @@ ACTOR TableLightM : SwitchableDecoration
 ACTOR TableLightM2 : TableLightM
 {
 	//$Category Light Sources (Wolf3D)
-	//$Title Bureau Light 2 (middle)
+	//$Title Bureau Light 2 (middle, switchable)
 	//$Color 11
 	States
 	{
-	Spawn:
-		TLIT C -1
-		Stop
 	Active:
-		TNT1 A 0 A_PlaySound(SMSWITCH)
-		TLIT C 1 Bright Light(BOATABL1)
-		Wait
+		TLIT C 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+	Spawn:
+	  TLIT C -1 Bright Light("BOATABL1") NoDelay A_PlaySound("SMSWITCH")
+		stop
 	Inactive:
-		TLIT C -1 A_PlaySound(SMSWITCH)
+		TLIT C 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		TLIT C -1 A_PlaySound("SMSWITCH")
 		Stop
 	}
 }
@@ -214,20 +202,19 @@ ACTOR TableLightM2 : TableLightM
 ACTOR TableLightS : TableLightM
 {
 	//$Category Light Sources (Wolf3D)
-	//$Title Table Light (small)
+	//$Title Table Light (small, switchable)
 	//$Color 11
 	Height 16
 	States
 	{
-	Spawn:
-		TLIT B -1
-		Stop
 	Active:
-		TNT1 A 0 A_PlaySound(SMSWITCH)
-		TLIT B 1 Bright Light(BOATABL2)
-		Wait
+		TLIT B 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+	Spawn:
+	  TLIT B -1 Bright Light("BOATABL2") NoDelay A_PlaySound("SMSWITCH")
+		stop
 	Inactive:
-		TLIT B -1 A_PlaySound(SMSWITCH)
+		TLIT B 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		TLIT B -1 A_PlaySound("SMSWITCH")
 		Stop
 	}
 }
@@ -284,46 +271,44 @@ ACTOR StreetLight1Lit : StreetLight1
 	//$Color 11
 }
 
-ACTOR StreetLight2 : SwitchingDecoration
+ACTOR StreetLight2 : SwitchableDecoration
 {
 	//$Category Light Sources (Wolf3D)
-	//$Title Street Light (triple,toggle)
+	//$Title Street Light (triple, switchable)
 	//$Color 11
 	Radius 4
 	Height 128
 	+SOLID
 	States
 	{
-	Spawn:
-		STLA A -1
-		Stop
 	Active:
-		STLA C -1 Light(BOASTLT2)
-		Stop
+		STLA C 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+	Spawn:
+	  STLA C -1 Light("BOASTLT2")
+		stop
 	Inactive:
-		STLA A -1
+		STLA A -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		Stop
 	}
 }
 
-ACTOR StreetLight3 : SwitchingDecoration
+ACTOR StreetLight3 : SwitchableDecoration
 {
 	//$Category Light Sources (Wolf3D)
-	//$Title Street Light (single,toggle)
+	//$Title Street Light (single, switchable)
 	//$Color 11
 	Radius 4
 	Height 128
 	+SOLID
 	States
 	{
-	Spawn:
-		STLA B -1
-		Stop
 	Active:
-		STLA D -1 Light(BOASTLT3)
-		Stop
+		STLA D 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+	Spawn:
+	  STLA D -1 Light("BOASTLT3")
+		stop
 	Inactive:
-		STLA B -1
+		STLA B -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		Stop
 	}
 }
@@ -444,15 +429,15 @@ ACTOR StrobeLightRed : SwitchableDecoration
 	+DONTSPLASH
 	States
 	{
-	Spawn:
-	Inactive:
-		STRR A -1
-		Loop
 	Active:
+		STRR A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 		STRR A 0 A_SpawnItem ("StrobeEmitterRed")
-	Spin:
-		STRR DCBA 4 BRIGHT
+	Spawn:
+	  STRR DCBA 4 BRIGHT
 		Loop
+	Inactive:
+		STRR A -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		Stop
 	}
 }
 
@@ -463,15 +448,15 @@ ACTOR StrobeLightYellow : StrobeLightRed
 	//$Color 11
 	States
 	{
-	Spawn:
-	Inactive:
-		STRY C 4
-		Loop
 	Active:
+		STRY A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 		STRY A 0 A_SpawnItem ("StrobeEmitterYellow")
-	Spin:
-		STRY DCBA 4 BRIGHT
+	Spawn:
+	  STRY DCBA 4 BRIGHT
 		Loop
+	Inactive:
+		STRY C -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		Stop
 	}
 }
 
@@ -583,7 +568,7 @@ ACTOR StrobeRayYellow : StrobeRayBlue
 ACTOR LightBulb
 {
 	//$Category Light Sources (Wolf3D)
-	//$Title Light Bulb
+	//$Title Light Bulb (off)
 	//$Color 11
 	Radius 4
 	Height 12
@@ -600,7 +585,7 @@ ACTOR LightBulb
 ACTOR CellLight2
 {
 	//$Category Light Sources (Wolf3D)
-	//$Title Cell Light
+	//$Title Cell Light (off)
 	//$Color 11
 	Radius 4
 	Height 38
@@ -626,15 +611,15 @@ ACTOR CastleLight1 : SwitchableDecoration
 	+NOGRAVITY
 	States
 	{
-	Spawn:
-		CLIT C -1
-		Stop
 	Active:
-		TNT1 A 0 A_PlaySound(SMSWITCH)
-		CLIT C 1 Light(BOACEIL3)
-		Wait
+		CLIT C 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+		CLIT C 0 A_PlaySound("SMSWITCH")
+	Spawn:
+	  CLIT C -1 Light("BOACEIL3")
+		Stop
 	Inactive:
-		CLIT C -1 A_PlaySound(SMSWITCH)
+		CLIT E 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		CLIT E -1 A_PlaySound("SMSWITCH")
 		Stop
 	}
 }
@@ -647,15 +632,15 @@ ACTOR CastleLight2 : CastleLight1
 	Height 76
 	States
 	{
-	Spawn:
-		CLIT D -1
-		Stop
 	Active:
-		TNT1 A 0 A_PlaySound(SMSWITCH)
-		CLIT D 1 Light(BOACEIL4)
-		Wait
+		CLIT D 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+		CLIT D 0 A_PlaySound("SMSWITCH")
+	Spawn:
+	  CLIT D -1 Light("BOACEIL3")
+		Stop
 	Inactive:
-		CLIT D -1 A_PlaySound(SMSWITCH)
+		CLIT F 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		CLIT F -1 A_PlaySound("SMSWITCH")
 		Stop
 	}
 }

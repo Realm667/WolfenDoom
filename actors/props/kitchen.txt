@@ -71,10 +71,11 @@ ACTOR OvenHot : SwitchableDecoration
 	Activation THINGSPEC_Switch | THINGSPEC_Deactivate
 	States
 	{
-	Spawn:
 	Active:
-		OVEN A 0 NoDelay A_PlaySound("SFX/FireLoop1", CHAN_AUTO, 0.7, true, ATTN_STATIC)
-		goto Frame1 
+		OVEN A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually (because OF HORSE it must be! Why would the engine bother setting this for you?!)
+	Spawn:
+	  OVEN A 0 NoDelay A_PlaySound("SFX/FireLoop1", CHAN_BODY, 0.7, true, ATTN_STATIC)
+		goto Frame1
 	Frame1:
 	  OVEN A 4 A_Jump(64, "Frame3")
 		goto Frame2
@@ -88,7 +89,8 @@ ACTOR OvenHot : SwitchableDecoration
 		OVEN D 4 A_Jump(64, "Frame2")
 		goto Frame1
 	Inactive:
-		OVEN E -1
+		OVEN E 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		OVEN E -1 A_StopSound(CHAN_BODY)
 		Stop
 	}
 }
