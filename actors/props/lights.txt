@@ -124,11 +124,10 @@ ACTOR CeilingLightM : SwitchableDecoration
 	Active: //mxd. CLIT? No, srsly, who comes with these names?..
 		CLIT A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 	Spawn:
-	  CLIT A -1 Bright Light("BOACEIL2") NoDelay A_PlaySound("SMSWITCH")
+		CLIT A -1 Bright Light("BOACEIL2")
 		stop
 	Inactive:
-		CLIT A 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
-		CLIT A -1 A_PlaySound("SMSWITCH")
+		CLIT A -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		Stop	
 	}
 }
@@ -146,11 +145,10 @@ ACTOR CeilingLightM2 : CeilingLightM
 	Active:
 		CLIT B 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 	Spawn:
-	  CLIT B -1 Bright Light("BOACEIL1") NoDelay A_PlaySound("SMSWITCH")
+		CLIT B -1 Bright Light("BOACEIL1")
 		stop
 	Inactive:
-		CLIT B 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
-		CLIT B -1 A_PlaySound("SMSWITCH")
+		CLIT B -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		Stop
 	}
 }
@@ -165,13 +163,14 @@ ACTOR TableLightM : SwitchableDecoration
 	+SOLID
 	+USESPECIAL
 	+NOTAUTOAIMED
-	Activation THINGSPEC_Switch | THINGSPEC_Deactivate
+	Activation THINGSPEC_Switch
 	States
 	{
 	Active:
 		TLIT A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+		TLIT A 0 A_PlaySound("SMSWITCH")
 	Spawn:
-	  TLIT A -1 Bright Light("BOATABL1") NoDelay A_PlaySound("SMSWITCH")
+		TLIT A -1 Bright Light("BOATABL1")
 		stop
 	Inactive:
 		TLIT A 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
@@ -189,8 +188,9 @@ ACTOR TableLightM2 : TableLightM
 	{
 	Active:
 		TLIT C 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+		TLIT C 0 A_PlaySound("SMSWITCH")
 	Spawn:
-	  TLIT C -1 Bright Light("BOATABL1") NoDelay A_PlaySound("SMSWITCH")
+		TLIT C -1 Bright Light("BOATABL1")
 		stop
 	Inactive:
 		TLIT C 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
@@ -209,8 +209,9 @@ ACTOR TableLightS : TableLightM
 	{
 	Active:
 		TLIT B 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+		TLIT B 0 A_PlaySound("SMSWITCH")
 	Spawn:
-	  TLIT B -1 Bright Light("BOATABL2") NoDelay A_PlaySound("SMSWITCH")
+		TLIT B -1 Bright Light("BOATABL2")
 		stop
 	Inactive:
 		TLIT B 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
@@ -582,10 +583,10 @@ ACTOR LightBulb
 	}
 }
 
-ACTOR CellLight2
+ACTOR CellLight2 : SwitchableDecoration
 {
 	//$Category Light Sources (Wolf3D)
-	//$Title Cell Light (off)
+	//$Title Cell Light (switchable)
 	//$Color 11
 	Radius 4
 	Height 38
@@ -593,8 +594,13 @@ ACTOR CellLight2
 	+SPAWNCEILING
 	States
 	{
+	Active:
+		CLLI A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 	Spawn:
-		CLLI A -1
+		CLLI A -1 Light("BOACEIL2")
+		Stop
+	Inactive:
+		CLLI B -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		Stop
 	}
 }
@@ -602,7 +608,7 @@ ACTOR CellLight2
 ACTOR CastleLight1 : SwitchableDecoration
 {
 	//$Category Light Sources (Wolf3D)
-	//$Title Castle Light 1
+	//$Title Castle Light 1 (switchable)
 	//$Color 11
 	Radius 16
 	Height 38
@@ -613,13 +619,11 @@ ACTOR CastleLight1 : SwitchableDecoration
 	{
 	Active:
 		CLIT C 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
-		CLIT C 0 A_PlaySound("SMSWITCH")
 	Spawn:
-	  CLIT C -1 Light("BOACEIL3")
+		CLIT C -1 Light("BOACEIL3")
 		Stop
 	Inactive:
-		CLIT E 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
-		CLIT E -1 A_PlaySound("SMSWITCH")
+		CLIT E -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		Stop
 	}
 }
@@ -627,20 +631,18 @@ ACTOR CastleLight1 : SwitchableDecoration
 ACTOR CastleLight2 : CastleLight1
 {
 	//$Category Light Sources (Wolf3D)
-	//$Title Castle Light 2
+	//$Title Castle Light 2 (switchable)
 	//$Color 11
 	Height 76
 	States
 	{
 	Active:
 		CLIT D 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
-		CLIT D 0 A_PlaySound("SMSWITCH")
 	Spawn:
-	  CLIT D -1 Light("BOACEIL3")
+		CLIT D -1 Light("BOACEIL3")
 		Stop
 	Inactive:
-		CLIT F 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
-		CLIT F -1 A_PlaySound("SMSWITCH")
+		CLIT F -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		Stop
 	}
 }
