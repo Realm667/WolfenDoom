@@ -380,3 +380,16 @@ script "BossHealth"(int tid,int maxhealth)
 		delay(35);
 	}
 }
+
+//Teleportscript from Re-Exhumed
+script "ExTeleportPlayer" (int teleportID, int destinationID) 
+{
+	int deltaX = GetActorX(playerID) - GetActorX(teleportID);
+	int deltaY = GetActorY(playerID) - GetActorY(teleportID);
+	SetActorPosition(playerID, GetActorX(destinationID) + deltaX, GetActorY(destinationID) + deltaY, GetActorZ(playerID), false);
+}
+
+script "ExGetPlayerZ" (void) 
+{
+	SetResultValue(GetActorZ(playerID) >> 16);
+}
