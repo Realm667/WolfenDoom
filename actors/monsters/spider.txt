@@ -1,55 +1,54 @@
-ACTOR Kreuzschlussel //:-D that if I am not wrong would mean Spider
+ACTOR BigSpider 10018
 {
 	//$Category Monsters (Wolf3D)/Critters
-	//$Title Spider
+	//$Title Spider (small)
 	//$Color 4
-	health 200
-	radius 42
-	height 56
-	speed 12
-	Painchance 200
-	Obituary "%o was eaten by a spider"
-	HitObituary "%o was eaten by a spider"
-	SeeSound "spider2/sight"
-	DeathSound "spider2/pain"
-	PainSound "spider2/pain"
-	ActiveSound "spider2/sight"
-	MeleeSound "misc/gibbed"
-	MONSTER
-	+FLOORCLIP
-	+LOOKALLAROUND
-	+NOINFIGHTING
-	+DONTMORPH
-	+NOTRIGGER
-	-COUNTKILL
-	translation 1
-	translation "96:111=64:79"
-	scale 0.75
-	meleedamage 6
-	Species Nazi
-	States
-	{
+    	Health 15
+    	Radius 8
+    	Height 16
+    	Speed 8
+	Mass 100
+    	PainChance 150
+        Scale 0.33
+        Translation "176:191=164:167" , "32:47=164:167"
+        MaxDropOffHeight 128
+        MaxStepHeight 16
+    	MONSTER 
+    	+FLOORCLIP
+        +NEVERFAST
+        +DONTGIB
+    	MeleeSound "spider1/melee"
+        SeeSound "spider1/sight"
+    	PainSound "spider1/pain"
+    	DeathSound "spider1/death"
+        ActiveSound "spider1/active"
+    	HitObituary "%o was bitten by a big spider."
+    	MeleeDamage 1
+    	States
+    	{
 	Spawn:
-		GAYS A 1 A_Look
-		Loop
-	See:
-		GAYS ABCD 1 A_chase
-		Loop
-	Melee:
-		GAYS E 0 A_Facetarget
-		GAYS E 8 A_Meleeattack
-		GAYS E 13 A_Facetarget
-		Goto see
-	Pain:
-		GAYS A 2 A_Pain
-		GAYS A 2
-		Goto see
-	Death:
-		GAYR FEDC 5 A_Setfloorclip
-		GAYR B 5 A_Scream
-		GAYR A 5 A_Die
-		GAYR A 0 A_Fall
-		GAYR A -1
-		Stop
-	}
+		GAYS A 10 A_Look
+                Loop
+    	See:
+                GAYS AABBCCDD 2 A_Chase
+        	Loop
+    	Melee:
+        	GAYS A 4 A_FaceTarget
+        	GAYS E 4 A_MeleeAttack
+        	GAYS E 9 A_FaceTarget
+	Goto See
+    	Pain:
+        	GAYS C 5
+        	GAYS C 3 A_Pain
+        	Goto See
+    	Death:
+        	GAYR F 5
+        	GAYR E 5 A_Scream
+        	GAYR D 5 A_Fall
+        	GAYR C 5
+        	GAYR B 5
+        	GAYR A 5
+        	GAYR A -1
+	Stop
+    	}
 }
