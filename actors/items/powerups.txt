@@ -34,13 +34,30 @@ ACTOR ScubaGearGiver : RadSuit replaces RadSuit
 	//$Title Scuba Gear (Radiation Suite)
 	//$Color 6
 	Height 32
-	Inventory.PickupMessage "$SCUBA"
+	Inventory.PickupMessage "Picked up a Scuba Gear"
 	Powerup.Duration -60
 	Powerup.Color 0,0,150,.125
 	States
 	{
 	Spawn:
 		SCUB A -1
+		Stop
+	}
+}
+
+ACTOR SpaceSuit : RadSuit
+{
+	//$Category Powerups (Wolf3D)
+	//$Title SpaceSuit (Radiation Suite)
+	//$Color 6
+	Height 32
+	Inventory.PickupMessage "Picked up a Space Suit"
+	Powerup.Duration -60
+	Powerup.Color 100,100,100,.125
+	States
+	{
+	Spawn:
+		SSUT A -1
 		Stop
 	}
 }
