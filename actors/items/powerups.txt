@@ -45,21 +45,31 @@ ACTOR ScubaGearGiver : RadSuit replaces RadSuit
 	}
 }
 
-ACTOR SpaceSuit : RadSuit
+ACTOR PowerSpaceSuit : PowerProtection
 {
-	//$Category Powerups (Wolf3D)
-	//$Title SpaceSuit (Radiation Suite)
-	//$Color 6
-	Height 32
-	Inventory.PickupMessage "Picked up a Space Suit"
-	Powerup.Duration -60
-	Powerup.Color 100,100,100,.125
-	States
-	{
-	Spawn:
-		SSUT A -1
-		Stop
-	}
+  DamageFactor "IceWater", 0.0
+  Inventory.Icon "MEGAA0"
+}
+
+ACTOR SpaceSuit : PowerupGiver
+{
+  //$Category Powerups (Wolf3D)
+  //$Title SpaceSuit ("IceWater" protection)
+  //$Color 6
+  Inventory.PickupMessage "Space Suit"
+  Powerup.Color 100,100,100,.20
+  Inventory.MaxAmount 0
+  Inventory.UseSound "pickups/suite"
+  Powerup.Type "SpaceSuit"
+  Powerup.Duration -60
+  +INVENTORY.AUTOACTIVATE
+  +INVENTORY.FANCYPICKUPSOUND
+  States
+  {
+  Spawn:
+	SSUT A -1
+	Stop
+  }
 }
 
 ACTOR C4 : Inventory
