@@ -63,6 +63,10 @@ ACTOR NebRocket
 		MNSS A 1 BRIGHT LIGHT(NEBLIGHT) A_SpawnItemEx("RocketFlame",random(-1,1),0,random(-1,1))
 		loop
 	Death:
+		EXP1 A 0 A_SetScale(0.85,0.95)
+		EXP1 A 0 A_AlertMonsters
+		TNT1 A 0 A_SpawnItemEx("NebNuke",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
+		TNT1 A 8 A_SpawnItemEx("GeneralExplosion_Small",56,0,32)
 		FRME A 1 BRIGHT LIGHT(NEBEXPLO) A_Explode(64,56)
 		FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT(NEBEXPLO)
 		stop

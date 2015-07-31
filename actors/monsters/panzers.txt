@@ -79,6 +79,18 @@ Actor TankBoom
 	}
 }
 
+Actor NebBoom : TankBoom
+{
+	-ForceRadiusDmg
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 AAAAA 2 A_Explode(5,32,0)
+		Stop
+	}
+}
+
 Actor TankFire : Nuke
 {
 	RenderStyle Add
@@ -101,6 +113,24 @@ Actor TankFire : Nuke
 	}
 }
 
+Actor NebFire : TankFire
+{
+	Scale 0.25
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
+		FLA1 A 1 Bright A_FadeOut(0.02)
+		Wait
+		FLA2 A 1 Bright A_FadeOut(0.01)
+		Wait
+		FLA3 A 1 Bright A_FadeOut(0.02)
+		Wait
+		FLA4 A 1 Bright A_FadeOut(0.01)
+		Wait
+	}
+}
+
 Actor NukeSmoke : Nuke
 {
 	Scale 1.7
@@ -119,6 +149,20 @@ Actor NukeSmoke : Nuke
 	}
 }
 
+Actor NebSmoke : NukeSmoke
+{
+	Scale 0.75
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
+		NSMK ABCD 0 A_Jump(256,"End")
+	End:
+		NSMK "#" 1 A_FadeOut(0.004)
+		Wait
+	}
+}
+
 Actor TankFlare : TankFire
 {
 	Scale 0.8
@@ -131,6 +175,8 @@ Actor TankFlare : TankFire
 	}
 }
 
+Actor NebFlare : TankFlare {Scale 0.45}
+
 Actor NukeFloor : Nuke
 {
 	States
@@ -142,6 +188,17 @@ Actor NukeFloor : Nuke
 	}
 }
 
+Actor NebFloor : NukeFloor
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 AAAAAAAA 1 A_SpawnItemEx("NebFire",0,0,0,0.1 * Random(0,15),0.1 * Random(0,15),0,Random(0,359),128)
+		Stop
+	}
+}
+
 Actor NukeSmokeFloor : Nuke
 {
 	States
@@ -149,6 +206,17 @@ Actor NukeSmokeFloor : Nuke
 	Spawn:
 		TNT1 A 0
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke",0,0,0,0.1 * Random(0,30),0.1 * Random(0,30),0,Random(0,359),128)
+		Stop
+	}
+}
+
+Actor NebSmokeFloor : NukeSmokeFloor
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * Random(0,15),0.1 * Random(0,15),0,Random(0,359),128)
 		Stop
 	}
 }
@@ -177,6 +245,17 @@ Actor TankSmokePillar : Nuke
 	}
 }
 
+Actor NebSmokePillar : TankSmokePillar
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * Random(0,5),0.1 * Random(0,5),0.1 * Random(0,-20),Random(0,359),128)
+		Stop
+	}
+}
+
 Actor TankMushroom : Nuke
 {
 	States
@@ -195,6 +274,17 @@ Actor TankSmokeMushroom : Nuke
 	Spawn:
 		TNT1 A 0
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke",0,0,0,0.1 * Random(0,25),0.1 * Random(0,25),0.1 * Random(-10,10),Random(0,359),128)
+		Stop
+	}
+}
+
+Actor NebSmokeMushroom : TankSmokeMushroom
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * Random(0,15),0.1 * Random(0,15),0.1 * Random(-5,5),Random(0,359),128)
 		Stop
 	}
 }
@@ -227,6 +317,22 @@ Actor PanzerNuke : Nuke //for panzerschreck rockets
 		TNT1 AA 0 A_SpawnItemEx("NukeSmokeFloor")
 		TNT1 A 11 A_SpawnItemEx("TankSmokePillar",0,0,0,0,0,2)
 		TNT1 AA 0 A_SpawnItemEx("TankSmokeMushroom",0,0,56)
+		Stop
+	}
+}
+
+Actor NebNuke : Nuke //for nebelwerfer rockets
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 Radius_Quake(4,15,0,48,0)
+		TNT1 A 0 A_SpawnItemEx("NebBoom",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		TNT1 A 0 A_SpawnItemEx("NebFlare")
+		TNT1 A 3 A_SpawnItemEx("NebFloor")
+		TNT1 A 0 A_SpawnItemEx("NebSmokeFloor")
+		TNT1 A 6 A_SpawnItemEx("NebSmokePillar",0,0,0,0,0,2)
+		TNT1 A 0 A_SpawnItemEx("NebSmokeMushroom",0,0,56)
 		Stop
 	}
 }
