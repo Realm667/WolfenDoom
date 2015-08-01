@@ -25,7 +25,7 @@ actor StarParticle
 actor StarParticle_Spawner : SwitchableDecoration
 {
 	//$Category Special Effects (Wolf3D)
-	//$Title Startdust Spawner
+	//$Title Startdust Spawner (horizontal)
 	//$Color 12
 	+NoGravity +NoInteraction +NoClip -Solid +CLIENTSIDEONLY
 	RenderStyle Add
@@ -36,6 +36,28 @@ actor StarParticle_Spawner : SwitchableDecoration
            Active:
         	TNT1 A 1
         	TNT1 A 5 A_SpawnItemEx ("StarParticle", random(0,128), 0, random(0,128), 0, random(2,8), 0, 0, SXF_CLIENTSIDE, 64) 
+		Loop
+	   Inactive:
+		TNT1 A 1
+		Loop
+        }     
+        
+}
+
+actor StarParticle_Spawner2 : SwitchableDecoration
+{
+	//$Category Special Effects (Wolf3D)
+	//$Title Startdust Spawner (with pitched)
+	//$Color 12
+	+NoGravity +NoInteraction +NoClip -Solid +CLIENTSIDEONLY
+	RenderStyle Add
+	Alpha 1.0
+        states
+        {
+        Spawn:
+           Active:
+        	TNT1 A 1
+        	TNT1 A 5 A_SpawnItemEx ("StarParticle", random(0,128), random(0,128), 0, 0, random(2,8), -5, 0, SXF_CLIENTSIDE, 64) 
 		Loop
 	   Inactive:
 		TNT1 A 1
