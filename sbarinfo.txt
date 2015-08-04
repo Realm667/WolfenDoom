@@ -5,7 +5,7 @@ InterpolateArmor true;
 
 statusbar Normal // Standard Doom Status bar
 {
-	
+
     //Draw Mask for Space Suite
     InInventory PowerSpaceSuit, 1
     {
@@ -14,9 +14,10 @@ statusbar Normal // Standard Doom Status bar
 
     drawimage "HUDBAR", -54, 152;
 
-    //AirControl & Stamina
+    //AirControl, Stamina & SpaceSuit
     drawbar "HORZAIRF", "HORZAIRE", airtime, horizontal, interpolate(2), 36, 160;
     drawbar "HORZSTMF", "HORZSTME", stamina, horizontal, interpolate(2), 88, 160;
+	drawbar "HORZSPCF", " ", PowerSpaceSuit, horizontal, interpolate(10), 36, 160;
 
     //Ammo
     drawnumber 3, BIGFONT, untranslated, ammo1, 225, 171;
@@ -87,9 +88,10 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 	     DrawImage "STGMASK", 0+center, 0+center, center;
   	}
 
-	//AirControl & Stamina
+	//AirControl, Stamina & SpaceSuit
 	drawbar "VERTAIRF", "VERTAIRE", airtime, vertical, interpolate(2), 4, -174;
 	drawbar "VERTSTMF", "VERTSTME", stamina, vertical, interpolate(2), -10, -174;
+	drawbar "VERTSPCF", " ", PowerSpaceSuit, vertical, interpolate(10), 4, -174;
 
 	//Top Left
 	drawimage "HUD_UL", 0, 0;
@@ -151,6 +153,6 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 
 		//Grenade
     		drawnumber 3, BIGFONT, untranslated, GrenadePickup, alignment(left), -83, -20;
-		
-		
+
+
 }
