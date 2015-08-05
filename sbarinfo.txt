@@ -17,7 +17,7 @@ statusbar Normal // Standard Doom Status bar
     //AirControl, Stamina & SpaceSuit
     drawbar "HORZAIRF", "HORZAIRE", airtime, horizontal, interpolate(2), 36, 160;
     drawbar "HORZSTMF", "HORZSTME", stamina, horizontal, interpolate(2), 88, 160;
-	drawbar "HORZSPCF", " ", PowerSpaceSuit, horizontal, interpolate(10), 36, 160;
+    drawbar "HORZSPCF", "HORZAIRF", PowerupTime(SpaceSuit), horizontal, interpolate(2), 36, 160;
 
     //Ammo
     drawnumber 3, BIGFONT, untranslated, ammo1, 225, 171;
@@ -91,7 +91,7 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 	//AirControl, Stamina & SpaceSuit
 	drawbar "VERTAIRF", "VERTAIRE", airtime, vertical, interpolate(2), 4, -174;
 	drawbar "VERTSTMF", "VERTSTME", stamina, vertical, interpolate(2), -10, -174;
-	drawbar "VERTSPCF", " ", PowerSpaceSuit, vertical, interpolate(10), 4, -174;
+	drawbar "VERTSPCF", "VERTAIRF", PowerupTime(SpaceSuit), vertical, interpolate(2), 4, -174;
 
 	//Top Left
 	drawimage "HUD_UL", 0, 0;
