@@ -10,6 +10,7 @@ statusbar Normal // Standard Doom Status bar
     InInventory PowerSpaceSuit, 1
     {
        DrawImage "STGMASK", 157, 78, center;
+       drawbar "HORZSP2F", "HORZSP2E", PowerupTime(SpaceSuit), horizontal, interpolate(2), 135, 133;
     }
 
     drawimage "HUDBAR", -54, 152;
@@ -17,7 +18,6 @@ statusbar Normal // Standard Doom Status bar
     //AirControl, Stamina & SpaceSuit
     drawbar "HORZAIRF", "HORZAIRE", airtime, horizontal, interpolate(2), 36, 160;
     drawbar "HORZSTMF", "HORZSTME", stamina, horizontal, interpolate(2), 88, 160;
-    drawbar "HORZSPCF", "HORZAIRF", PowerupTime(SpaceSuit), horizontal, interpolate(2), 36, 160;
 
     //Ammo
     drawnumber 3, BIGFONT, untranslated, ammo1, 225, 171;
@@ -86,12 +86,12 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 	InInventory PowerSpaceSuit, 1
 	{
 	     DrawImage "STGMASK", 0+center, 0+center, center;
+	     drawbar "HORZSPCF", "HORZSPCE", PowerupTime(SpaceSuit), horizontal, interpolate(2), 116, 16;
   	}
 
 	//AirControl, Stamina & SpaceSuit
 	drawbar "VERTAIRF", "VERTAIRE", airtime, vertical, interpolate(2), 4, -174;
 	drawbar "VERTSTMF", "VERTSTME", stamina, vertical, interpolate(2), -10, -174;
-	drawbar "VERTSPCF", "VERTAIRF", PowerupTime(SpaceSuit), vertical, interpolate(2), 4, -174;
 
 	//Top Left
 	drawimage "HUD_UL", 0, 0;
