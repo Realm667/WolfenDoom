@@ -133,6 +133,11 @@ ACTOR Guard : Nazi
 		"####" M -1
 		Stop
 	Death.Fire:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(128,"Death.Fire.A")
+		TNT1 A 0 A_Jump(128,"Death.Fire.B")
+		Wait
+	Death.Fire.A:
 		BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.0)
 		BURN BC 5 BRIGHT LIGHT(ITBURNS1)
 		BURN D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
@@ -143,6 +148,18 @@ ACTOR Guard : Nazi
 		BURN PQR 5 BRIGHT LIGHT(ITBURNS2)
 		BURN STU 5 BRIGHT LIGHT(ITBURNS1)
 		BURN V -1
+		Stop
+	Death.Fire.B:
+		NRUB A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.0)
+		NRUB BC 5 BRIGHT LIGHT(ITBURNS1)
+		NRUB D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
+		NRUB E 5 BRIGHT LIGHT(ITBURNS1)
+		NRUB FGHIJ 5 BRIGHT LIGHT(ITBURNS2)
+		NRUB KLMN 5 BRIGHT LIGHT(ITBURNS3)
+		NRUB O 5 BRIGHT LIGHT(ITBURNS3) A_NoBlocking
+		NRUB PQR 5 BRIGHT LIGHT(ITBURNS2)
+		NRUB STU 5 BRIGHT LIGHT(ITBURNS1)
+		NRUB V -1
 		Stop
 	Raise:
 		"####" MLKJI 5
@@ -329,7 +346,7 @@ ACTOR SSMP40GuardBlind : SSMP40Guard
 		Goto Missile+2
 	Pain: // Stop being so friendly when damaged
 		SSMG A 0 A_ChangeFlag("FRIENDLY", false)
-		goto Super::Pain	
+		goto Super::Pain
 	Pain.Poke: // Stop being friendly without visual effects when poked by PatrollingGuardEyes
 		SSMG A 0 A_ChangeFlag("FRIENDLY", false)
 		goto See
@@ -341,25 +358,25 @@ Actor BlindGuardEyes
 {
 	RenderStyle None
 	Height 46
-	
+
 	+NOGRAVITY
 	+NOCLIP
-	
+
 	States
 	{
 		Spawn:
 		  TNT1 A 1 A_Warp(AAPTR_MASTER, 0, 0, Height) // Need a slight delay between A_Looks to prevent infinite loop
 			TNT1 A 0 A_LookEx(0, 0.0, 1024.0, 256.0, 65.0, "PlayerSeen")
 			loop
-	  
+
 		PlayerSeen:
 			TNT1 A 0 A_JumpIf(CallACS("TargetIsHidden"), "IgnorePlayer")
 			goto AlertMaster
-		
+
 		IgnorePlayer:
 			TNT1 A 1 A_ClearTarget
 			goto Spawn
-			
+
 		AlertMaster:
 		  TNT1 A 0 A_SpawnItemEx("AlertMarker", 0, 0, 68, 0, 0, 0, 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION)
 			TNT1 A 0 A_DamageMaster(1, "Poke") // Cause the master to enter Pain.Poke state (HAAAACKS!!!!11)
@@ -760,7 +777,7 @@ ACTOR BigMutant1 : Mutant
 		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		"####" A 0 A_SetSpeed(5)
 		"####" B 1 A_Chase
-		"####" B 1 A_Chase("","") 
+		"####" B 1 A_Chase("","")
 		"####" B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NoCheckPosition)
 		"####" B 1 A_Chase
 		"####" B 1 A_Chase("","")
@@ -867,6 +884,11 @@ ACTOR BigMutant1 : Mutant
 		"####" MMMLKJI 4
 		Goto See
 	Death.Fire:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(128,"Death.Fire.A")
+		TNT1 A 0 A_Jump(128,"Death.Fire.B")
+		Wait
+	Death.Fire.A:
 		BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.4)
 		BURN BC 5 BRIGHT LIGHT(ITBURNS1)
 		BURN D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
@@ -877,6 +899,18 @@ ACTOR BigMutant1 : Mutant
 		BURN PQR 5 BRIGHT LIGHT(ITBURNS2)
 		BURN STU 5 BRIGHT LIGHT(ITBURNS1)
 		BURN V -1
+		Stop
+	Death.Fire.B:
+		NRUB A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.4)
+		NRUB BC 5 BRIGHT LIGHT(ITBURNS1)
+		NRUB D 5 BRIGHT LIGHT(ITBURNS1) A_PlaySound("death/burning")
+		NRUB E 5 BRIGHT LIGHT(ITBURNS1)
+		NRUB FGHIJ 5 BRIGHT LIGHT(ITBURNS2)
+		NRUB KLMN 5 BRIGHT LIGHT(ITBURNS3)
+		NRUB O 5 BRIGHT LIGHT(ITBURNS3) A_NoBlocking
+		NRUB PQR 5 BRIGHT LIGHT(ITBURNS2)
+		NRUB STU 5 BRIGHT LIGHT(ITBURNS1)
+		NRUB V -1
 		Stop
 	XDeath:
 		SLOP A 0 A_SetScale(1.4)
@@ -1178,7 +1212,6 @@ ACTOR MutantRocket
 		Stop
 	}
 }
-//End of Mutants Stuff
 
 Actor PoisonCloudMutant
 {
@@ -1212,6 +1245,7 @@ Actor PoisonCloudMutant
     Stop
   }
 }
+//End of Mutants Stuff
 
 ACTOR MadDoctor : RocketMan
 {
@@ -1505,7 +1539,7 @@ ACTOR FlamerMan : RocketMan replaces Arachnotron
 		FLAM C 1 A_Chase
 		FLAM CC 1 A_Chase("","")
 		FLAM D 1 A_Chase
-		FLAM DD 1 A_Chase("","") 
+		FLAM DD 1 A_Chase("","")
 		FLAM B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NoCheckPosition)
 		FLAM D 1 A_Chase
 		FLAM DD 1 A_Chase("","")
@@ -2359,8 +2393,6 @@ ACTOR UberMutant : Mutant
 	Raise:
 		UBMU MLKJJII 6
 		Goto See
-	/*Idle:
-		Stop*/
 	}
 }
 
@@ -2522,6 +2554,8 @@ ACTOR FlamerSoldier : Guard
 		Goto Missile+1
 	Death:
 	Death.Fire:
+	Death.Fire.A:
+	Death.Fire.B:
 	XDeath:
 		"####" I 5 A_SpawnItemEx("GeneralExplosion_Medium")
 		Goto Super::Death+1
@@ -2902,7 +2936,7 @@ actor UndeadPriest : Guard
 		UNDP A 1 A_Chase
 		UNDP AA 1 A_Chase("","")
 		UNDP B 1 A_Chase
-		UNDP BB 1 A_Chase("","") 
+		UNDP BB 1 A_Chase("","")
 		UNDP B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NoCheckPosition)
 		UNDP B 1 A_Chase
 		UNDP BB 1 A_Chase("","")
