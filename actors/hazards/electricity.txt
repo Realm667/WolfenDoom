@@ -38,3 +38,21 @@ ACTOR Electricity2 : Electricity1
 		Loop
 	}
 }
+
+
+ACTOR Electricity3 : Electricity1
+{
+	//$Category Hazards (Wolf3D)
+	//$Title Electricity (large, horizontal)
+	//$Color 3
+	Height 16
+	Radius 64
+	States
+	{
+	Active:
+		ELEC I 0 Thing_SetSpecial(0,73,200,22,0)
+		ELEC I 0 A_SetSolid
+		ELEC IJKL 3
+		Loop
+	}
+}

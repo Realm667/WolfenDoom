@@ -47,14 +47,34 @@ ACTOR BarSeat
 ACTOR WineBottle
 {
 	//$Category Props (Wolf3D)
-	//$Title Bottle (wine)
+	//$Title Bottle (wine, random)
 	//$Color 3
 	Radius 8
 	Height 8
+	Scale 0.6
 	States
 	{
 	Spawn:
-		FLAS A -1
+		FLAS A -1 NODELAY A_Jump(128,1)
+		FLAS C -1 NODELAY A_Jump(128,1)
+		FLAS D -1 NODELAY A_Jump(128,1)
+		FLAS E -1 
+		Stop
+	}
+}
+
+ACTOR WineGlass
+{
+	//$Category Props (Wolf3D)
+	//$Title Glass (wine)
+	//$Color 3
+	Radius 8
+	Height 8
+	Scale 0.6
+	States
+	{
+	Spawn:
+		FLAS B -1
 		Stop
 	}
 }
