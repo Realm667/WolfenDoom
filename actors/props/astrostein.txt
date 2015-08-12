@@ -437,9 +437,13 @@ ACTOR StripperGirl
 	Height 56
 	Scale 0.6
 	+SOLID
+	+RANDOMIZE
 	States
 	{
 	Spawn:
+	STRP A 0 A_Jump(64, 9)
+	STRP A 0 A_Jump(64, 5)
+	STRP A 0 A_Jump(64, 2)
 	STRP ABCDEDCBA 3
 	STRP FGHGHF 6
 	loop
