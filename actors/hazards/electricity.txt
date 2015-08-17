@@ -6,19 +6,21 @@ ACTOR Electricity1 : SwitchableDecoration
 	Radius 16
 	Height 128
 	+BUMPSPECIAL
+	+RANDOMIZE
 	DamageType IceWater
 	States
 	{
 	Spawn:
-	Inactive:
-		TNT1 A 0 Thing_SetSpecial(0,0,0,0,0)
-		TNT1 A 0 A_UnSetSolid
-		TNT1 A 2
-		Loop
 	Active:
 		ELEC A 0 Thing_SetSpecial(0,73,200,22,0)
 		ELEC A 0 A_SetSolid
+		ELEC A 0 A_Jump(128, 2)
 		ELEC ABCD 3
+		Loop
+	Inactive:
+		TNT1 A 0 Thing_SetSpecial(0,0,0,0,0)
+		TNT1 A 0 A_UnSetSolid
+		TNT1 A 2 
 		Loop
 	}
 }
