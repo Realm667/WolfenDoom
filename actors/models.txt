@@ -138,6 +138,26 @@ ACTOR ModelRailBoxcar2 : ModelIncaTrain
 	//$Color 3
 }
 
+ACTOR ModelRailBoxcar3 : ModelIncaTrain
+{
+	//$Category Models (Wolf3D)
+	//$Title Train (future)
+	//$Color 3
+}
+
+ACTOR ModelRailBoxcar3_Projectile : ModelRailBoxcar3
+{
+	SeeSound "subway/active"
+	SpawnID 212
+	Radius 48
+	Height 48
+	Projectile
+	Speed 1
+	Damage 1000
+	+NOGRAVITY
+	+RIPPER
+}
+
 ACTOR ModelRailTanker : ModelIncaTrain
 {
 	//$Category Models (Wolf3D)
