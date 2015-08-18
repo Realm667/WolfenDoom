@@ -212,3 +212,65 @@ actor AstroClipAmmo : Ammo
     stop
   }
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+actor AstrosteinMelee : Naziweapon
+{
+   //$Category Weapons (Wolf3D)/Astrostein
+   //$Title (1) Astrostein Melee
+   //$Color 14
+	Weapon.Kickback 0
+	Weapon.SelectionOrder 2200
+	Weapon.UpSound "weapons/rezup"
+	Weapon.ReadySound "weapons/rezidle"
+	Inventory.PickupMessage "You picked up the Elektroschocker"
+	Obituary "%o was mowed down by %k's Elektroschocker."
+	Tag "Elektroschocker"
+	+WEAPON.MELEEWEAPON	
+	States
+	{
+		Spawn:
+			REZN A -1
+			Stop
+		Ready:
+			REZG CD 4 A_WeaponReady
+			Loop
+		Idle:
+			REZG D 2 A_WeaponReady(WRF_NOSECONDARY)
+			REZG C 0 A_PlayWeaponSound("weapons/rezidle")
+			REZG CD 4 A_WeaponReady(WRF_NOSECONDARY)
+			Goto Ready
+		Deselect:
+			REZG C 0 A_Lower
+			REZG C 1 A_Lower
+			Loop
+		Select:
+			REZG C 1 A_Raise
+			Loop
+		Fire:
+			REZG A 0 A_GunFlash("LightDone", GFF_NOEXTCHANGE)
+			REZG AB 3 bright A_Saw("weapons/rezfull","weapons/rezhit",2,"ElektroshockerPuff")
+			REZG B 0 A_ReFire
+			goto Ready
+	}
+}
+
+Actor ElektroshockerPuff : BulletPuff
+{
+	+PUFFONACTORS
+	DamageType Reznator
+	RenderStyle Add
+	Alpha 0.8
+	VSpeed 0
+	States
+	{
+	Spawn:
+	Melee:
+		RZAP ACEGH 2 bright
+		Stop
+	}	
+}
