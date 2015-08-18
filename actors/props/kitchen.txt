@@ -55,9 +55,10 @@ ACTOR WineBottle
 	States
 	{
 	Spawn:
-		FLAS A -1 NODELAY A_Jump(128,1)
-		FLAS C -1 NODELAY A_Jump(128,1)
-		FLAS D -1 NODELAY A_Jump(128,1)
+		TNT1 A 0 NODELAY
+		FLAS A -1 A_Jump(128,1)
+		FLAS C -1 A_Jump(128,1)
+		FLAS D -1 A_Jump(128,1)
 		FLAS E -1 
 		Stop
 	}
