@@ -33,7 +33,7 @@ ACTOR AstroGuard : Nazi
 		"####" H 0 A_Playsound("astrostein/guard_death")
 		"####" H 5 A_Scream
 		"####" H 0 A_NoBlocking
-		"####" H 0 A_SpawnItemEx ("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0) 
+		"####" H 0 A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0)
 		"####" H 1 A_FadeOut(0.02)
 		Goto Death+3
 	}
@@ -135,149 +135,87 @@ ACTOR AstroDrone
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Astrostein Drone
 	//$Color 4
-  Health 200
-  Radius 31
-  Height 56
-  Mass 400
-  Speed 8
-  PainChance 128
-  Monster
-  +FLOAT
-  +NOGRAVITY
-  +NOBLOOD
-  SeeSound "drone_sight"
-  PainSound "drone_pain"
-  DeathSound "drone_death"
-  ActiveSound "drone_act"
-  Obituary "$OB_CACO"
-  HitObituary "$OB_CACOHIT"
-  States
-  {
-  Spawn:
-    DRON A 10 A_Look
-    Loop
-  See:
-    DRON AB 3 A_Chase
-    Loop
-  Missile:
-    DRON EG 5 A_FaceTarget
-    DRON E 5 Bright A_CustomMissile("AstroDroneBall",54,1,random(-8,8))
-    Goto See
-  Pain:
-    DRON H 3
-    DRON H 3 A_Pain
-    DRON H 6
-    Goto See
-  Death:
-    DRON M 8
-    DRON M 8 A_Scream
-    DRON M 8
-    DRON M 8 A_NoBlocking
-    DRON M -1 A_SetFloorClip
-    Stop
-  }
+	Health 200
+	Radius 31
+	Height 56
+	Mass 400
+	Speed 2.66666667
+	PainChance 128
+	Monster
+	+FLOAT
+	+NOGRAVITY
+	+NOBLOOD
+	SeeSound "drone_sight"
+	PainSound "drone_pain"
+	DeathSound "drone_death"
+	ActiveSound "drone_act"
+	//Obituary "$OB_CACO"
+	//HitObituary "$OB_CACOHIT"
+	States
+	{
+	Spawn:
+		DRON A 10 A_Look
+		Loop
+	See:
+		DRON A 1 A_Chase
+		DRON AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		DRON B 1 A_Chase
+		DRON BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		Loop
+	Missile:
+		DRON EG 5 A_FaceTarget
+		DRON E 5 Bright A_CustomMissile("AstroDroneBall",54,1,random(-8,8))
+		Goto See
+	Pain:
+		DRON H 3
+		DRON H 3 A_Pain
+		DRON H 6
+		Goto See
+	Death:
+		DRON M 8
+		DRON M 8 A_Scream
+		DRON M 8
+		DRON M 8 A_NoBlocking
+		DRON M -1 A_SetFloorClip
+		Stop
+	}
 }
 
 ACTOR AstroDroneBall
 {
-  Radius 6
-  Height 8
-  Speed 10
-  FastSpeed 20
-  Damage 5
-  Projectile
-  +RANDOMIZE
-  RenderStyle Add
-  Alpha 1
-  Scale 0.5
-  SeeSound "astrochaingun/fire"
-  DeathSound "astroplasmaexplode"
-  States
-  {
-  Spawn:
-    ROBP AB 4 Bright
-    Loop
-  Death:
-    ROBP CDEG 6 Bright
-   Stop
-  }
+	Radius 6
+	Height 8
+	Speed 10
+	FastSpeed 20
+	Damage 5
+	Projectile
+	+RANDOMIZE
+	RenderStyle Add
+	Scale 0.5
+	SeeSound "astrochaingun/fire"
+	DeathSound "astroplasmaexplode"
+	States
+	{
+	Spawn:
+		ROBP AB 4 Bright
+		Loop
+	Death:
+		ROBP CDEG 6 Bright
+	Stop
+	}
 }
 
 ACTOR AstroRobotSeekerBall : AstroDroneBall
 {
-  Radius 12
-  Height 16
-  Scale 1.0
-  +SEEKERMISSILE
-  States
-  {
-  Spawn:
-    ROBP AB 4 Bright A_Tracer2
-    Loop
-  }
-}
-
-ACTOR AstroCyborg2
-{
-	//$Category Monsters (Wolf3D)/Astrostein
-	//$Title Astrostein Cyborg (2)
-	//$Color 4
-  Health 500
-  Radius 31
-  Scale 1.5
-  Height 56
-  Mass 400
-  Speed 8
-  PainChance 32
-  +NOBLOOD
-  Monster
-  SeeSound "astrostein/cyborg_sight"
-  PainSound "astrostein/cyborg_pain"
-  DeathSound "astrostein/cyborg_death"
-  ActiveSound "astrostein/cyborg_act"
-  Obituary "$OB_CACO"
-  HitObituary "$OB_CACOHIT"
-  DropItem AstroRocketAmmo 64
-  States
-  {
-  Spawn:
-    CYB2 H 10 A_Look
-    Loop
-  See:
-    CYB2 AAABBBBCCCCDDDD 3 A_Chase
-    Loop
-  Missile:
-    CYB2 E 10 A_FaceTarget
-    CYB2 F 0 Bright A_CustomMissile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
-    CYB2 F 3 Bright A_CustomMissile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
-    CYB2 E 3 A_FaceTarget
-    CYB2 F 0 Bright A_CustomMissile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
-    CYB2 F 3 Bright A_CustomMissile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
-    CYB2 E 3 A_FaceTarget
-    CYB2 F 0 Bright A_CustomMissile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
-    CYB2 F 3 Bright A_CustomMissile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
-    CYB2 E 3 A_FaceTarget
-    CYB2 F 0 Bright A_CustomMissile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
-    CYB2 F 3 Bright A_CustomMissile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
-    CYB2 E 3 A_FaceTarget
-    CYB2 F 0 Bright A_CustomMissile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
-    CYB2 F 3 Bright A_CustomMissile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
-    CYB2 E 3 A_FaceTarget
-    CYB2 F 0 Bright A_CustomMissile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
-    CYB2 F 3 Bright A_CustomMissile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
-    CYB2 E 3 A_FaceTarget
-    Goto See
-  Pain:
-    CYB2 G 3
-    CYB2 G 3 A_Pain
-    CYB2 G 6
-    Goto See
-  Death:
-    CYB2 H 8 A_Scream
-    CYB2 H 0 A_NoBlocking
-    CYB2 H 1 A_FadeOut(0.05)
-    Wait
-  }
+	Radius 12
+	Height 16
+	+SEEKERMISSILE
+	States
+	{
+	Spawn:
+		ROBP AB 4 Bright A_Tracer2
+		Loop
+	}
 }
 
 ACTOR AstroCyborg1
@@ -285,46 +223,147 @@ ACTOR AstroCyborg1
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Astrostein Cyborg (1)
 	//$Color 4
-  Health 500
-  Radius 31
-  Height 56
-  Mass 400
-  Speed 8
-  Scale 1.5
-  PainChance 32
-  +NOBLOOD
-  DropItem AstroRocketAmmo 64
-  Monster
-  SeeSound "astrostein/cyborg_sight"
-  PainSound "astrostein/cyborg_pain"
-  DeathSound "astrostein/cyborg_death"
-  ActiveSound "astrostein/cyborg_act"
-  Obituary "$OB_CACO"
-  HitObituary "$OB_CACOHIT"
-  States
-  {
-  Spawn:
-    CYB1 J 10 A_Look
-    Loop
-  See:
-    CYB1 AAABBBCCCDDD 3 A_Chase
-    Loop
-  Missile:
-    CYB1 G 10 A_FaceTarget
-    CYB1 H 0 Bright A_CustomMissile("AstroRocket",54,-32,random(-8,8))
-    CYB1 H 2 Bright A_CustomMissile("AstroRocket",54, 32,random(-8,8))
-    Goto See
-  Pain:
-    CYB1 I 3
-    CYB1 I 3 A_Pain
-    CYB1 I 6
-    Goto See
-  Death:
-    CYB1 J 8 A_Scream
-    CYB1 J 0 A_NoBlocking
-    CYB1 J 1 A_FadeOut(0.05)
-    Wait
-  }
+	Health 500
+	Radius 31
+	Height 56
+	Mass 400
+	Speed 2.66666667
+	Scale 1.5
+	PainChance 32
+	+NOBLOOD
+	DropItem AstroRocketAmmo 64
+	Monster
+	SeeSound "astrostein/cyborg_sight"
+	PainSound "astrostein/cyborg_pain"
+	DeathSound "astrostein/cyborg_death"
+	ActiveSound "astrostein/cyborg_act"
+	//Obituary "$OB_CACO"
+	States
+	{
+	Spawn:
+		CYB1 J 10 A_Look
+		Loop
+	See:
+		"####" A 1 A_Chase
+		"####" AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" A 1 A_Chase
+		"####" AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" A 1 A_Chase
+		"####" AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_Chase
+		"####" BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_Chase
+		"####" BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_Chase
+		"####" BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" C 1 A_Chase
+		"####" CC 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" C 1 A_Chase
+		"####" CC 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" C 1 A_Chase
+		"####" CC 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" D 1 A_Chase
+		"####" DD 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" D 1 A_Chase
+		"####" DD 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" D 1 A_Chase
+		"####" DD 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		Loop
+	Missile:
+		CYB1 G 10 A_FaceTarget
+		CYB1 H 0 A_CustomMissile("AstroRocket",54,-32,random(-8,8))
+		CYB1 H 2 Bright A_CustomMissile("AstroRocket",54, 32,random(-8,8))
+		Goto See
+	Pain:
+		CYB1 I 3
+		CYB1 I 3 A_Pain
+		CYB1 I 6
+		Goto See
+	Death:
+		CYB1 J 8 A_Scream
+		CYB1 J 0 A_NoBlocking
+		CYB1 J 1 A_FadeOut(0.05)
+		Wait
+	}
+}
+
+ACTOR AstroCyborg2 : AstroCyborg1
+{
+	//$Category Monsters (Wolf3D)/Astrostein
+	//$Title Astrostein Cyborg (2)
+	//$Color 4
+	Species "AstroCyborg2"
+	//Obituary "$OB_CACO"
+	DropItem "" //AstroRocketAmmo 64
+	States
+	{
+	Spawn:
+		CYB2 H 10 A_Look
+		Loop
+	See:
+		CYB2 A 1 A_Chase
+		CYB2 AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		CYB2 A 1 A_Chase
+		CYB2 AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		CYB2 A 1 A_Chase
+		CYB2 AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		CYB2 B 1 A_Chase
+		CYB2 BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		CYB2 B 1 A_Chase
+		CYB2 BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		CYB2 B 1 A_Chase
+		CYB2 BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		CYB2 B 1 A_Chase
+		CYB2 BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		CYB2 C 1 A_Chase
+		CYB2 CC 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		CYB2 C 1 A_Chase
+		CYB2 CC 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		CYB2 C 1 A_Chase
+		CYB2 CC 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		CYB2 C 1 A_Chase
+		CYB2 CC 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		CYB2 D 1 A_Chase
+		CYB2 DD 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		CYB2 D 1 A_Chase
+		CYB2 DD 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		CYB2 D 1 A_Chase
+		CYB2 DD 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		CYB2 D 1 A_Chase
+		CYB2 DD 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		Loop
+	Missile:
+		CYB2 E 10 A_FaceTarget
+		CYB2 F 0 A_CustomMissile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
+		CYB2 F 3 Bright A_CustomMissile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
+		CYB2 E 3 A_FaceTarget
+		CYB2 F 0 A_CustomMissile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
+		CYB2 F 3 Bright A_CustomMissile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
+		CYB2 E 3 A_FaceTarget
+		CYB2 F 0 A_CustomMissile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
+		CYB2 F 3 Bright A_CustomMissile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
+		CYB2 E 3 A_FaceTarget
+		CYB2 F 0 A_CustomMissile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
+		CYB2 F 3 Bright A_CustomMissile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
+		CYB2 E 3 A_FaceTarget
+		CYB2 F 0 A_CustomMissile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
+		CYB2 F 3 Bright A_CustomMissile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
+		CYB2 E 3 A_FaceTarget
+		CYB2 F 0 A_CustomMissile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
+		CYB2 F 3 Bright A_CustomMissile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
+		CYB2 E 3 A_FaceTarget
+		Goto See
+	Pain:
+		CYB2 G 3
+		CYB2 G 3 A_Pain
+		CYB2 G 6
+		Goto See
+	Death:
+		CYB2 H 8 A_Scream
+		CYB2 H 0 A_NoBlocking
+		CYB2 H 1 A_FadeOut(0.05)
+		Wait
+	}
 }
 
 Actor AstroSuiteGuard : AstroGuard
@@ -332,7 +371,7 @@ Actor AstroSuiteGuard : AstroGuard
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Astrostein Suite Guard
 	//$Color 4
-	Speed 2.0
+	Speed 2
 	Scale 1.5
 	Health 100
 	Painchance 16
@@ -344,9 +383,9 @@ Actor AstroSuiteGuard : AstroGuard
 	Missile:
 		"####" EF 5 A_FaceTarget
 		"####" F 0 A_PlaySound("astrochaingun/fire")
-		"####" G 0 BRIGHT LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,-10,random(-8,8))
-		"####" G 0 BRIGHT LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",40,-10,random(-8,8))
-		"####" G 0 BRIGHT LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",40,10,random(-8,8))
+		"####" G 0 A_CustomMissile("EnemyAstroTracer",48,-10,random(-8,8))
+		"####" G 0 A_CustomMissile("EnemyAstroTracer",40,-10,random(-8,8))
+		"####" G 0 A_CustomMissile("EnemyAstroTracer",40,10,random(-8,8))
 		"####" G 8 BRIGHT LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",40,10,random(-8,8))
 		"####" E 8 A_Jump(256,"See")
 		Stop
@@ -364,84 +403,64 @@ Actor AstroSuiteGuard : AstroGuard
 	}
 }
 
-ACTOR AstroRobot
+ACTOR AstroRobot : AstroCyborg1
 {
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Astrostein Robot
 	//$Color 4
-  Health 750
-  Radius 31
-  Height 56
-  Mass 400
-  +NOBLOOD
-  Speed 8
-  PainChance 32
-  Monster
-  SeeSound "astrostein/robot_sight"
-  PainSound "astrostein/robot_pain"
-  DeathSound "astrostein/robot_death"
-  ActiveSound "astrostein/robot_act"
-  Obituary "$OB_CACO"
-  HitObituary "$OB_CACOHIT"
-  DropItem AstroRocketAmmo 160
-  States
-  {
-  Spawn:
-    ROB2 A 10 A_Look
-    Loop
-  See:
-    ROB2 AAABBBCCCDDD 3 A_Chase
-    Loop
-  Missile:
-    ROB2 HG 5 A_FaceTarget
-    ROB2 F 0 Bright A_CustomMissile("AstroRobotSeekerBall",72,-36,random(-8,8))
-    ROB2 F 5 Bright A_CustomMissile("AstroRobotSeekerBall",72, 36,random(-8,8))
-    Goto See
-  Pain:
-    ROB2 H 3
-    ROB2 H 3 A_Pain
-    ROB2 H 6
-    Goto See
-  Death:
-    ROB2 H 4 A_Scream
-    ROB2 IJKLMN 10
-    ROB2 O -1 A_NoBlocking
-    Wait
-  }
+	Species "AstroRobot"
+	Health 750
+	Scale 1
+	SeeSound "astrostein/robot_sight"
+	PainSound "astrostein/robot_pain"
+	DeathSound "astrostein/robot_death"
+	ActiveSound "astrostein/robot_act"
+	//Obituary "$OB_CACO"
+	DropItem AstroRocketAmmo 160
+	States
+	{
+	Spawn:
+		ROB2 A 10 A_Look
+		Loop
+	Missile:
+		ROB2 HG 5 A_FaceTarget
+		ROB2 F 0 A_CustomMissile("AstroRobotSeekerBall",72,-36,random(-8,8))
+		ROB2 F 5 Bright A_CustomMissile("AstroRobotSeekerBall",72, 36,random(-8,8))
+		Goto See
+	Pain:
+		ROB2 H 3
+		ROB2 H 3 A_Pain
+		ROB2 H 6
+		Goto See
+	Death:
+		ROB2 H 4 A_Scream
+		ROB2 IJKLMN 10
+		ROB2 O -1 A_NoBlocking
+		Wait
+	}
 }
 
-ACTOR AstroHitler
+ACTOR AstroHitler : ExplosiveBarrel
 {
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Hitler Cyborg
 	//$Color 4
-  Health 400
-  Radius 10
-  Height 42
-  +SOLID
-  +SHOOTABLE
-  +NOBLOOD
-  +ACTIVATEMCROSS
-  +DONTGIB
-  +NOICEDEATH
-  +OLDRADIUSDMG
-  DeathSound "world/barrelx"
-  Obituary "$OB_BARREL" // "%o went boom."
-  States
-  {
-  Spawn:
-    ADHI ABC 6
-    Loop
-  Death:
-    BEXP D 5 Bright
-    BEXP E 5 Bright A_Scream
-    BEXP F 5 Bright
-    BEXP G 5 Bright A_Explode
-    BEXP HIJ 5 Bright
-    TNT1 A 1050 Bright A_BarrelDestroy
-    TNT1 A 5 A_Respawn
-    Wait
-  }
+	Health 400
+	States
+	{
+	Spawn:
+		ADHI ABC 6
+		Loop
+	Death:
+		BEXP D 5 Bright
+		BEXP E 5 Bright A_Scream
+		BEXP F 5 Bright
+		BEXP G 5 Bright A_Explode
+		BEXP HIJ 5 Bright
+		TNT1 A 1050 Bright A_BarrelDestroy
+		TNT1 A 5 A_Respawn
+		Wait
+	}
 }
 
 /////////////////////////////
@@ -449,21 +468,19 @@ ACTOR AstroHitler
 /////////////////////////////
 Actor BaseLine
 {
- +Missile
- +NoGravity
- +NoBlockmap
- +NoInteraction
- -Solid
- Radius 0
- Height 0
- RenderStyle Add
- Alpha 0.01
- Scale 1.0
- States
- {
-  Spawn:
-   SPFX AAAAA 1 Bright A_FadeIn(0.2)
-   SPFX AAAAAAAAAAAAAAAA 1 Bright A_FadeOut(0.06)
-   Stop
- }
+	+Missile
+	+NoGravity
+	+NoBlockmap
+	+NoInteraction
+	Radius 0
+	Height 0
+	RenderStyle Add
+	Alpha 0.01
+	States
+	{
+	Spawn:
+		SPFX AAAAA 1 Bright A_FadeIn(0.2)
+		SPFX A 1 Bright A_FadeOut(0.06)
+		Wait
+	}
 }

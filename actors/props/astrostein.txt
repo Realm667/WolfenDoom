@@ -217,37 +217,16 @@ ACTOR BarrelFuture
 	}
 }
 
-ACTOR BarrelFutureExploding
+ACTOR BarrelFutureExploding : ExplosiveBarrel
 {
 	//$Category Props (Wolf3D)/Astrostein
 	//$Title Barrel (modern, explode)
 	//$Color 3
-	 Health 20
-  	Radius 10
-  	Height 42
-  	+SOLID
-  	+SHOOTABLE
-  	+NOBLOOD
-  	+ACTIVATEMCROSS
-  	+DONTGIB
-  	+NOICEDEATH
-  	+OLDRADIUSDMG
-  	DeathSound "world/barrelx"
-  	Obituary "$OB_BARREL" // "%o went boom."
 	States
 	{
 	Spawn:
 		BARF ABCDCB 8
 		Loop
-	Death:
-    		BEXP A 5 Bright
-    		BEXP B 5 Bright A_Scream
-    		BEXP C 5 Bright
-    		BEXP D 5 Bright A_Explode
-    		BEXP E 10 Bright
-    		TNT1 A 1050 Bright A_BarrelDestroy
-    		TNT1 A 5 A_Respawn
-    	Wait
 	}
 }
 
@@ -415,7 +394,7 @@ ACTOR SkyboxAstroMoon
 	//$Category Props (Wolf3D)/Astrostein
 	//$Title Nazimoon (skybox)
 	//$Color 3
-	Radius 16		
+	Radius 16
 	Height 16
 	Scale 1.0
 	+SOLID
@@ -433,7 +412,7 @@ ACTOR StripperGirl
 	//$Category Props (Wolf3D)/Astrostein
 	//$Title Strippergirl
 	//$Color 3
-	Radius 16		
+	Radius 16
 	Height 56
 	Scale 0.6
 	+SOLID
@@ -441,11 +420,11 @@ ACTOR StripperGirl
 	States
 	{
 	Spawn:
-	STRP A 0 A_Jump(64, 9)
-	STRP A 0 A_Jump(64, 5)
-	STRP A 0 A_Jump(64, 2)
-	STRP ABCDEDCBA 3
-	STRP FGHGHF 6
-	loop
+		STRP A 0 A_Jump(64, 9)
+		STRP A 0 A_Jump(64, 5)
+		STRP A 0 A_Jump(64, 2)
+		STRP ABCDEDCBA 3
+		STRP FGHGHF 6
+		loop
 	}
 }
