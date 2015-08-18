@@ -1,0 +1,43 @@
+///////////////////////////////////////////////
+// SHARDS AND DEBRIS FOR DESTROYABLES /////////
+///////////////////////////////////////////////
+
+ACTOR Debris_Base
+{
+	Radius 1
+	Height 1
+	Mass 5
+	Projectile
+	-ACTIVATEPCROSS
+	-ACTIVATEIMPACT
+	-NOGRAVITY
+	+RANDOMIZE
+	BounceType "None"
+	BounceFactor 0.3
+	WallBounceFactor 0.3
+	BounceCount 3
+	Renderstyle Translucent
+	Alpha 0.4
+	Gravity 0.4
+	States
+	{
+	Death:
+		"####" "#" 350
+		"####" "#" 3 A_FadeOut(0.1)
+		Loop
+	}
+}
+
+ACTOR Debris_GlassShard_Small : Debris_Base
+{
+	Scale 0.25
+	States
+	{
+	Spawn:
+		GLAS ABCD 4
+		Loop
+	}
+}
+
+ACTOR Debris_GlassShard_Medium : Debris_GlassShard_Small { Scale 0.5 }
+ACTOR Debris_GlassShard_Large : Debris_GlassShard_Small { Scale 1.0 }
