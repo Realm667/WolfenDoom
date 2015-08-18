@@ -18,7 +18,7 @@ ACTOR Tracer : FastProjectile
 		Stop
 	Death:
 	Crash:
-		//TNT1 A 0 A_SpawnDebris("TracerSpark")
+		TNT1 A 0 A_SpawnDebris("TracerSpark")
 		TNT1 A 8 A_PlaySound("ricochet")
 		Stop
 	XDeath:
@@ -58,7 +58,7 @@ ACTOR TracerTrail
 }
 
 //mxd. Seems unused
-/*ACTOR TracerSpark
+ACTOR TracerSpark
 {
 	Health 4
 	Radius 3
@@ -83,7 +83,7 @@ ACTOR TracerTrail
 		PUFF A 10 BRIGHT A_SetTranslucent(.2,1)
 		Stop
 	}
-}*/
+}
 
 //////////////////////////////////////////////////////////////////
 ////////////////// PLAYER WEAPON TRACERS /////////////////////////
