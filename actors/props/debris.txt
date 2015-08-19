@@ -52,12 +52,10 @@ ACTOR Debris_Trash : Debris_Base
 	}
 }
 
-
 ///////////////////////////////////////////////////////
 // SHARDS AND DEBRIS FOR TANKS - SPECIAL ONES /////////
 ///////////////////////////////////////////////////////
-
-ACTOR Tank_Base
+ACTOR Debris_Tank
 {
 	Radius 5
 	Height 5
@@ -84,7 +82,7 @@ ACTOR Tank_Base
 	}
 }
 
-ACTOR TankPieces2 : Tank_Base
+ACTOR Debris_Tank2 : Debris_Tank
 {
 	Scale 0.7
 	Speed 6
@@ -98,7 +96,7 @@ ACTOR TankPieces2 : Tank_Base
 	}
 }
 
-ACTOR TankGlassShards : Tank_Base
+ACTOR Debris_TankShards : Debris_Tank
 {
 	Speed 7
 	BounceFactor 0.75
