@@ -19,10 +19,11 @@ ACTOR HydrantShootable
 		HYDR A -1
 		Stop
 	Death:
-		HYDR B 4 A_Scream
-		HYDB ABC 4
+		HYDB A 4 A_Scream
+		HYDB BC 4
+		TNT1 A 0 A_PlaySound ("hydrant/broken", 7, frandom(0.8, 1.0), TRUE, ATTN_NORM)
 	Broken:
-		HYDR BCDE 4 A_PlaySound ("hydrant/broken", 0, 1.0, 1, 15)
+		HYDR BCDE 4
 		Loop
 	}
 }
