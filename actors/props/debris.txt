@@ -12,13 +12,11 @@ ACTOR Debris_Base
 	-ACTIVATEIMPACT
 	-NOGRAVITY
 	+RANDOMIZE
-	BounceType "None"
+	BounceType "Hexen"
 	BounceFactor 0.3
 	WallBounceFactor 0.3
 	BounceCount 3
-	Renderstyle Translucent
-	Alpha 0.4
-	Gravity 0.4
+	Gravity 0.3
 	States
 	{
 	Death:
@@ -30,6 +28,8 @@ ACTOR Debris_Base
 
 ACTOR Debris_GlassShard_Small : Debris_Base
 {
+	Renderstyle Translucent
+	Alpha 0.4
 	Scale 0.25
 	States
 	{
@@ -41,6 +41,21 @@ ACTOR Debris_GlassShard_Small : Debris_Base
 
 ACTOR Debris_GlassShard_Medium : Debris_GlassShard_Small { Scale 0.5 }
 ACTOR Debris_GlassShard_Large : Debris_GlassShard_Small { Scale 1.0 }
+
+ACTOR Debris_Trash : Debris_Base
+{
+	States
+	{
+	Spawn:
+		SRCB BCDF 4
+		Loop
+	}
+}
+
+
+///////////////////////////////////////////////////////
+// SHARDS AND DEBRIS FOR TANKS - SPECIAL ONES /////////
+///////////////////////////////////////////////////////
 
 ACTOR Tank_Base
 {
@@ -79,17 +94,6 @@ ACTOR TankPieces2 : Tank_Base
 	{
 	Spawn:
 		MDB1 ABCD 2 A_SetScale(ScaleX+frandom(-0.1,0.1),ScaleY+frandom(-0.1,0.1))
-		Loop
-	}
-}
-
-ACTOR TrashPieces : Tank_Base //needs some changes
-{
-	BounceFactor 0.7
-	States
-	{
-	Spawn:
-		SRCB BCD 2 A_SetScale(ScaleX+frandom(-0.1,0.1),ScaleY+frandom(-0.1,0.1))
 		Loop
 	}
 }
