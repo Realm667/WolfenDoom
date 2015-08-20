@@ -22,7 +22,7 @@ ACTOR Debris_Base
 	Death:
 		"####" "#" 350
 		"####" "#" 3 A_FadeOut(0.1)
-		Loop
+		Wait
 	}
 }
 
@@ -50,6 +50,42 @@ ACTOR Debris_Trash : Debris_Base
 		SRCB BCDF 4
 		Loop
 	}
+}
+
+ACTOR Debris_Metal1 : Debris_Base
+{
+	States
+	{
+	Spawn:
+		MDB1 BCDA 4
+		Loop
+	}
+}
+
+ACTOR Debris_Metal2 : Debris_Base
+{
+	States
+	{
+	Spawn:
+		MDB2 BCDA 4
+		Loop
+	}
+}
+
+ACTOR Debris_Metal3 : Debris_Base
+{
+	States
+	{
+	Spawn:
+		MDB3 BCDFGHIA 2
+		Loop
+	}
+}
+
+//Translated ones
+ACTOR Debris_Metal3Dark : Debris_Metal3
+{
+Translation "80:111=109:111"
 }
 
 ///////////////////////////////////////////////////////
