@@ -8,12 +8,11 @@ ACTOR AstroShotgun : NaziWeapon
 	Weapon.AmmoGive 8
 	Weapon.AmmoType "AstroShotgunShell"
  	Weapon.UpSound "shotgun/select"
- 	Inventory.PickupMessage "You got the Protonenflinte S79"
-	Obituary "%o was mowed down by %k's protonenflinte."
+ 	Inventory.PickupMessage "$PROTON"
+	Obituary "$OBPROTON"
 	+WEAPON.NOAUTOFIRE
 	Scale 1.0
 	Tag "Protonenflinte S79"
-	
 	States
   	{
   	Spawn:
@@ -43,7 +42,6 @@ ACTOR AstroShotgun : NaziWeapon
   	}
 }
 
-
 actor AstroShotgunShell : Ammo
 {
   //$Category Ammo (Wolf3D)/Astrostein	
@@ -55,18 +53,13 @@ actor AstroShotgunShell : Ammo
   Inventory.Icon "ASSLA0"
   Ammo.BackpackAmount 10
   Ammo.BackpackMaxAmount 100
-  states
+  States
   {
   Spawn:
     ASSL A -1
     stop
   }
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 ACTOR AstroRocketlauncher : NaziWeapon
 {
@@ -77,10 +70,9 @@ ACTOR AstroRocketlauncher : NaziWeapon
   Weapon.AmmoUse 1
   Weapon.AmmoGive 5
   Weapon.AmmoType "AstroRocketAmmo"
-  Inventory.PickupMessage "You got the Energiegewehr B95"
-  Obituary "%o was mowed down by %k's energiegewehr."
+  Inventory.PickupMessage "$ENERGIE"
+  Obituary "$OBENERGIE"
   Tag "Energiegewehr B95"
-
   States
   {
   Spawn:
@@ -123,8 +115,7 @@ ACTOR AstroRocket
   SeeSound "astrolauncher/fire"
   DeathSound "astrolauncher/explode"
   BounceSound "astrolauncher/bounce"
-  Obituary "$OB_MPMACE"
-
+  Obituary "$OBASTROR"
   States
   {
   Spawn:
@@ -147,18 +138,13 @@ actor AstroRocketAmmo : Ammo
   Inventory.Icon "ASRKA0"
   Ammo.BackpackAmount 5
   Ammo.BackpackMaxAmount 100
-  states
+  States
   {
   Spawn:
     ASRK A -1
     stop
   }
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 ACTOR AstroChaingun : NaziWeapon
 {
@@ -169,8 +155,8 @@ ACTOR AstroChaingun : NaziWeapon
    Weapon.AmmoUse 1
    Weapon.AmmoGive 20
    Weapon.AmmoType "AstroClipAmmo"
-   Inventory.PickupMessage "You got the Repetierlaser 0815"
-   Obituary "%o was mowed down by %k's repetierlaser."
+   Inventory.PickupMessage "$REPETIE"
+   Obituary "$OBREPETIE"
    Tag "Repetierlaser 0815"
    States
    {
@@ -213,11 +199,6 @@ actor AstroClipAmmo : Ammo
   }
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 actor AstrosteinMelee : Naziweapon
 {
    //$Category Weapons (Wolf3D)/Astrostein
@@ -227,8 +208,8 @@ actor AstrosteinMelee : Naziweapon
 	Weapon.SelectionOrder 2200
 	Weapon.UpSound "weapons/rezup"
 	Weapon.ReadySound "weapons/rezidle"
-	Inventory.PickupMessage "You picked up the Elektroschocker"
-	Obituary "%o was mowed down by %k's Elektroschocker."
+	Inventory.PickupMessage "$ELEKTRO"
+	Obituary "$OBELEKTRO"
 	Tag "Elektroschocker"
 	+WEAPON.MELEEWEAPON	
 	States
