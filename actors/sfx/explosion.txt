@@ -110,3 +110,47 @@ Actor KD_HL2SparkGenerator : KD_HL2GeneratorBase
 //////////////////////////////////////
 Actor GeneralExplosion_Large : GeneralExplosion_Medium {Scale 2.0}
 Actor GeneralExplosion_Small : GeneralExplosion_Medium {Scale 0.5}
+
+
+//////////////////////////////////////
+// Variant for Astrostein ////////////
+//////////////////////////////////////
+
+Actor KD_HL2FlashAstrostein : KD_HL2ExplosionBase
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_SetScale(FRandom(0.5, 0.8) * ScaleX)
+		TNT1 A 0 A_Jump(256,1,2)
+		EXN2 AB 0 Light("FireSpawnerSmall") A_Jump(256,"Fade")
+	Fade:
+		"####" "#" 1 Bright Light("AstrosteinExplosionSpawnerLarge") A_FadeOut(FRandom(0.05, 0.10))
+		Wait
+	}
+}
+
+Actor AstrosteinExplosion_Medium : SwitchableDecoration
+{
+	//$Category Special Effects (Wolf3D)
+	//$Title Astrostein Explosion Effect (activatable)
+	//$Color 12
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+	Active:
+		TNT1 A 0 NoDelay A_PlaySound("panzer/explode")
+		TNT1 A 0 Radius_Quake(10,10,0,16,0)
+		TNT1 A 0 A_Explode(100, 192)
+		TNT1 A 0 A_SpawnItemEx("KD_HL2FlashAstrostein", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE)
+		TNT1 A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE)
+		TNT1 A 0 A_SpawnItemEx("KD_HL2SparkGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE)
+	Inactive:
+		TNT1 A 350
+		Wait
+	}
+}
+
+Actor AstrosteinExplosion_Large : AstrosteinExplosion_Medium {Scale 2.0}
+Actor AstrosteinExplosion_Small : AstrosteinExplosion_Medium {Scale 0.5}
