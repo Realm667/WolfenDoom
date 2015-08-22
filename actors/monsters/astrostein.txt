@@ -376,7 +376,7 @@ Actor AstroSuiteGuard : AstroGuard
 	//$Color 4
 	Speed 2
 	Scale 1.5
-	Health 100
+	Health 200
 	Painchance 16
 	States
 	{
@@ -471,6 +471,19 @@ ACTOR AstroHitler : ExplosiveBarrel
 		ADHI FGHIJ 20 Bright
 		ADHI J -1
 		Stop
+	}
+}
+
+ACTOR AstroScientist : AstroGuard
+{
+	//$Category Monsters (Wolf3D)/Astrostein//$Category Monsters (Wolf3D)
+	//$Title Astro Scientist
+	//$Color 4
+	States
+	{
+	Spawn:
+		SCN2 N 0
+		Goto SkillCheck
 	}
 }
 
