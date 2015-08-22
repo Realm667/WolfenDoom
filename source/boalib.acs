@@ -4,6 +4,7 @@
 global int 1:disable_mutants; //mxd. When set to true, Mutant and MutantMelee will immediately despawn after spawning.
 global int 2:disable_big_mutants; //mxd. When set to true, BigMutant1 and BigMutant2 will immediately despawn after spawning.
 global int 3:disable_supermutants; //mxd. When set to true, UberMutant and SuperMutant will immediately despawn after spawning.
+global int 4:astrostein; //[Ed} When set to true, grenades will change to the Astrostein variant
 
 str darrenmessage[18]=
 {
@@ -196,32 +197,32 @@ script "TargetIsHidden" (void)
 {
 		// Get target's TID
 		int targettid = GetActorProperty(0, APROP_TargetTID);
-		
+
 		// 0 TID means that target is not a player, but something (probably PlayerStep), which called A_AlertMonsters.
 		if(targettid == 0)
 		{
 			SetResultValue(true);
 			terminate;
 		}
-		
+
 		// Get it's light level
 		int targetlightlevel = GetActorLightLevel(targettid);
-		
+
 		// And speed
 		int x = GetActorVelX(targettid);
 		int y = GetActorVelY(targettid);
 		int z = GetActorVelZ(targettid);
-		
+
 		// That's squared speed actually
 		// Full speed is around 56 when running forward, around 92 when going sideways, around 200 when sprinting.
 		int speed = (FixedMul(x, x) + FixedMul(y, y) + FixedMul(z, z)) >> 16;
-		
+
 		// And view height (56 when standing, 28 when crouching)
 		int viewheightmod = 56 - (GetActorViewHeight(targettid) >> 16);
-		
+
 		// Calculate resulting visibility level (will probably require lots of tweaking...)
 		int visibility = targetlightlevel + speed - viewheightmod;
-		
+
 		// Return the value
 		SetResultValue(visibility < 100);
 }
@@ -240,6 +241,12 @@ script "DisableBigMutants" (void)
 script "DisableSuperMutants" (void)
 {
 	if(disable_supermutants) Thing_Remove(0);
+}
+
+//Astrostein check
+script "AstrosteinCheck" (void)
+{
+	SetResultValue(astrostein);
 }
 
 //Compass
@@ -382,14 +389,14 @@ script "BossHealth"(int tid,int maxhealth)
 }
 
 //Teleportscript from Re-Exhumed
-script "ExTeleportPlayer" (int teleportID, int destinationID) 
+script "ExTeleportPlayer" (int teleportID, int destinationID)
 {
 	int deltaX = GetActorX(playerID) - GetActorX(teleportID);
 	int deltaY = GetActorY(playerID) - GetActorY(teleportID);
 	SetActorPosition(playerID, GetActorX(destinationID) + deltaX, GetActorY(destinationID) + deltaY, GetActorZ(playerID), false);
 }
 
-script "ExGetPlayerZ" (void) 
+script "ExGetPlayerZ" (void)
 {
 	SetResultValue(GetActorZ(playerID) >> 16);
 }

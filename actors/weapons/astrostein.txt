@@ -44,7 +44,7 @@ ACTOR AstroShotgun : NaziWeapon
 
 actor AstroShotgunShell : Ammo
 {
-  //$Category Ammo (Wolf3D)/Astrostein	
+  //$Category Ammo (Wolf3D)/Astrostein
   //$Title Protonenflinte (ammo)
   //$Color 6
   Inventory.PickupMessage "Protonencell"
@@ -93,7 +93,7 @@ ACTOR AstroRocketlauncher : NaziWeapon
     ASRL D 4
     ASRL E 4 A_FireCustomMissile ("AstroRocket", 0, 1,  0, 0, 0, 0)
     ASRL D 4
-    ASRL C 25 
+    ASRL C 25
     ASRL C 0 A_ReFire
     Goto Ready
   }
@@ -129,7 +129,7 @@ ACTOR AstroRocket
 
 actor AstroRocketAmmo : Ammo
 {
-  //$Category Ammo (Wolf3D)/Astrostein	
+  //$Category Ammo (Wolf3D)/Astrostein
   //$Title Energiegewehr (ammo)
   //$Color 6
   Inventory.PickupMessage "Energy unit"
@@ -182,7 +182,7 @@ ACTOR AstroChaingun : NaziWeapon
 
 actor AstroClipAmmo : Ammo
 {
-  //$Category Ammo (Wolf3D)/Astrostein	
+  //$Category Ammo (Wolf3D)/Astrostein
   //$Title Repetierlaser (ammo)
   //$Color 6
   Inventory.PickupMessage "Laser rounds"
@@ -211,7 +211,7 @@ actor AstrosteinMelee : Naziweapon
 	Inventory.PickupMessage "$ELEKTRO"
 	Obituary "$OBELEKTRO"
 	Tag "Elektroschocker"
-	+WEAPON.MELEEWEAPON	
+	+WEAPON.MELEEWEAPON
 	States
 	{
 		Spawn:
@@ -253,7 +253,7 @@ Actor ElektroshockerPuff : BulletPuff
 	Melee:
 		RZAP ACEGH 2 bright
 		Stop
-	}	
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -267,12 +267,7 @@ ACTOR AstroGrenadePickup : CustomInventory
 	//$Color 6
 	Inventory.PickupMessage "$GRENADE"
 	Tag "Astro Grenade"
-	Inventory.MaxAmount 9
-	Inventory.Icon ASGNA0
-	Inventory.UseSound "grenade/throw"
 	Inventory.PickupSound "grenade/pickup"
-	+INVENTORY.KEEPDEPLETED
-	Inventory.InterHubamount 0
 	Scale 0.25
 	States
 	{
@@ -280,7 +275,7 @@ ACTOR AstroGrenadePickup : CustomInventory
 		ASGN A -1
 		Stop
 	Use:
-		TNT1 A 0 A_FireCustomMissile("AstroHandGrenade",0,0)
+		TNT1 A 0 A_GiveInventory("GrenadePickup")
 		Stop
 	}
 }
