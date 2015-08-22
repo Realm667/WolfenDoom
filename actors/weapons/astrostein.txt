@@ -107,6 +107,7 @@ ACTOR AstroRocket
   Speed 12
   Damage 6
   Gravity 0.125
+  Renderstyle "Add"
   -NOGRAVITY
   BounceType "Grenade"
   BounceFactor 0.9
@@ -119,9 +120,11 @@ ACTOR AstroRocket
   States
   {
   Spawn:
-    ASRK BC 4 Bright
+    ASRK BC 4 Bright A_SpawnItemEx("Spark_G1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
     Loop
   Death:
+    TNT1 AAAAA 0 A_SpawnItemEx("Spark_G1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
+    TNT1 A 0 A_SpawnItemEx("SparkFlare_G1")
     ASRK DEF 4 Bright
     Stop
   }
@@ -251,6 +254,8 @@ Actor ElektroshockerPuff : BulletPuff
 	{
 	Spawn:
 	Melee:
+		TNT1 AAAAA 0 A_SpawnItemEx("Spark_G1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
+		TNT1 A 0 A_SpawnItemEx("SparkFlare_G1")
 		RZAP ACEGH 2 bright
 		Stop
 	}
