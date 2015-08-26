@@ -448,7 +448,12 @@ ACTOR AstroHitler : ExplosiveBarrel
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Hitler Cyborg
 	//$Color 4
-	Health 400
+	Health 500
+	Scale 2.0
+	Height 72
+	Radius 36
+	+BOSS
+	Tag "Adolf Hitler"
 	Mass 99999999
 	States
 	{
@@ -456,19 +461,19 @@ ACTOR AstroHitler : ExplosiveBarrel
 		ADHI ABC 6
 		Loop
 	Death:
-		ADHI E 35 Bright A_Scream
+		ADHI E 35 A_Scream
 		TNT1 A 0 A_PlaySound("astrostein/explosion",0,1.0,0,0.1)
-		TNT1 A 0 A_SpawnItemEx("AstrosteinExplosion_Small")
-		ADHI E 25 Bright
+		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Medium")
+		ADHI E 25 
 		TNT1 A 0 A_PlaySound("astrostein/explosion",0,1.0,0,0.1)
-		TNT1 A 0 A_SpawnItemEx("AstrosteinExplosion_Medium")
-		ADHI E 15 Bright
+		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Medium")
+		ADHI E 15 
 		TNT1 A 0 A_PlaySound("astrostein/explosion",0,1.0,0,0.1)
-		TNT1 A 0 A_SpawnItemEx("AstrosteinExplosion_Medium")
-		ADHI E 5 Bright
+		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Large")
+		ADHI E 5 
 		TNT1 A 0 A_PlaySound("astrostein/explosion",0,1.0,0,0.1)
-		TNT1 A 0 A_SpawnItemEx("AstrosteinExplosion_Large")
-		ADHI FGHIJ 20 Bright
+		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Large")
+		ADHI FGHIJ 20 
 		ADHI J -1
 		Stop
 	}
