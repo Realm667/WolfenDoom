@@ -362,7 +362,7 @@ script "MiniBossHealth" ENTER
 	while(GetActorProperty(0,APROP_Health)<=0)
 		delay(1);
 	int tid = UniqueTID();
-	if(PickActor(0,GetActorAngle(0),GetActorPitch(0),500.0,tid)&&CheckFlag(tid,"BOSS"))
+	if(PickActor(0,GetActorAngle(0),GetActorPitch(0),2000.0,tid)&&CheckFlag(tid,"BOSS"))
 	{
 		SetFont("SMALLFONT");
 		HudMessage(s:GetActorProperty(tid,APROP_NameTag); HUDMSG_PLAIN,21,CR_GRAY,320.0,41.0,0.03);
