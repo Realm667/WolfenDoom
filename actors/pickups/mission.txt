@@ -58,11 +58,11 @@ ACTOR Cartridge51 : Akten
 	//$Color 13
 	Tag "Cartridge 51"
 	inventory.icon SNSCB0
-	inventory.pickupmessage "$SNESCART"
+	inventory.pickupmessage "Picked up a Commander Keen cartridge"
 	States
 	{
 	Spawn:
-		SNSC A -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		SNSC A -1 NODELAY 
 		stop
 	}
 }
@@ -78,7 +78,7 @@ ACTOR Cartridge52 : Akten
 	States
 	{
 	Spawn:
-		SNSC C -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		SNSC C -1 NODELAY 
 		stop
 	}
 }
@@ -94,7 +94,7 @@ ACTOR Cartridge53 : Akten
 	States
 	{
 	Spawn:
-		SNSE A -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		SNSE A -1 NODELAY 
 		stop
 	}
 }
