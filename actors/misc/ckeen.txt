@@ -1,0 +1,234 @@
+////////////////////////////////////////////////////
+// ITEMS & POWERUPS ////////////////////////////////
+////////////////////////////////////////////////////
+
+actor CKShikadiSoda : SingleCoin
+{
+	//$Category Misc (Wolf3D)/Commander Keen
+	//$Title Pickup (Shikadi Soda, 1pts)
+	//$Color 17
+	inventory.pickupmessage "Picked up a Shikadi Soda."
+	inventory.pickupsound "ckeen/pickup"
+	states
+	{
+	Spawn:
+		CKPU AB 15 
+		stop
+	Pickup:
+		CKPU C 5 A_GiveInventory("CoinItem",1)
+		stop
+	}
+}
+
+actor CKShikkersCandyBar : SingleCoin
+{
+	//$Category Misc (Wolf3D)/Commander Keen
+	//$Title Pickup (Shikkers Candy Bar, 5pts)
+	//$Color 17
+	inventory.pickupmessage "Picked up a Shikkers Candy Bar."
+	inventory.pickupsound "ckeen/pickup"
+	states
+	{
+	Spawn:
+		CKPU DE 15 
+		stop
+	Pickup:
+		CKPU F 5 A_GiveInventory("CoinItem",2)
+		stop
+	}
+}
+
+actor CKDoughnut : SingleCoin
+{
+	//$Category Misc (Wolf3D)/Commander Keen
+	//$Title Pickup (Dougnut, 20pts)
+	//$Color 17
+	inventory.pickupmessage "Picked up a Doughnut."
+	inventory.pickupsound "ckeen/pickup"
+	states
+	{
+	Spawn:
+		CKPU DE 15 
+		stop
+	Pickup:
+		CKPU F 5 A_GiveInventory("CoinItem",5)
+		stop
+	}
+}
+
+actor CKIceCreamCone : SingleCoin
+{
+	//$Category Misc (Wolf3D)/Commander Keen
+	//$Title Pickup (IceCreamCone, 50pts)
+	//$Color 17
+	inventory.pickupmessage "Picked up an Ice Cream Cone."
+	inventory.pickupsound "ckeen/pickup"
+	states
+	{
+	Spawn:
+		CKPU DE 15 
+		stop
+	Pickup:
+		CKPU F 5 A_GiveInventory("CoinItem",10)
+		stop
+	}
+}
+
+ACTOR CKRaindrop : Health
+{
+	//$Category Misc (Wolf3D)/Commander Keen
+	//$Title Health (Raindrop, +1)
+	//$Color 17
+  	+COUNTITEM
+	+INVENTORY.ALWAYSPICKUP
+  	Inventory.Amount 1
+  	Inventory.MaxAmount 200
+  	Inventory.PickupMessage "Picked up a Raindrop."
+	inventory.pickupsound "ckeen/raindrop"
+  	States
+	  {
+	  Spawn:
+	    CKDP ABCB 6
+	    Loop
+	  Pickup:
+	    CKPU DEF 3
+            stop
+	}
+}
+
+ACTOR CKOneUp : Health
+{
+  //$Category Misc (Wolf3D)/Commander Keen
+  //$Title Health (Lifewater Flask, +100)
+  //$Color 17
+  +COUNTITEM
+  +INVENTORY.AUTOACTIVATE
+  +INVENTORY.ALWAYSPICKUP
+  Inventory.Amount 100
+  Inventory.MaxAmount 200
+  Inventory.PickupMessage "Picked up a lifewater flask!"
+  inventory.pickupsound "ckeen/oneup"
+  States
+  {
+  Spawn:
+    CKPU MN 15 Bright
+    Loop
+  Pickup:
+    CKPU O 5
+    stop
+  }
+}
+
+//////////////////////////////////////////////////
+// KEYS & KEYPOTS ////////////////////////////////
+//////////////////////////////////////////////////
+
+actor CKBlueKey : BoABlueKey
+{
+        //$Category Misc (Wolf3D)/Commander Keen
+	//$Title Gem, blue (Blue Card)
+	//$Color 13
+	Inventory.PickupMessage "Picked up a blue gem."
+	Inventory.Icon "CKKEYS1"
+	Species "BoABlueKey"
+	states
+	{
+	Spawn:
+		CKKY CD 5
+		Loop
+	Pickup:
+    		CKKY G 5
+    		stop
+	}
+}
+
+actor CKYellowKey : BoAYellowKey
+{
+	//$Category Keys (Wolf3D)/Astrostein
+	//$Title Gem, yellow (Yellow Card)
+	//$Color 13
+	Inventory.PickupMessage "Picked up a yellow gem."
+	Inventory.Icon "CKKEYS0"
+	Species "BoAYellowKey"
+	states
+	{
+	Spawn:
+		CKKY EF 5
+		Loop
+	Pickup:
+    		CKKY G 5
+    		stop
+	}
+}
+
+actor CKRedKey : BoARedKey
+{
+	//$Category Keys (Wolf3D)/Astrostein
+	//$Title Gem, red (Red Card)
+	//$Color 13
+	Inventory.PickupMessage "Picked up a red gem."
+	Inventory.Icon "CKKEYS2"
+	Species "BoARedKey"
+	states
+	{
+	Spawn:
+		CKKY AB 5
+		Loop
+	Pickup:
+    		CKKY G 5
+    		stop
+	}
+}
+
+/////////////////////////////////////////////
+// MONSTERS /////////////////////////////////
+/////////////////////////////////////////////
+
+ACTOR CKConfusion
+{
+  Radius 1
+  Height 1
+  -SOLID
+  States
+  {
+  Spawn:
+    CKCF ABC 12 Bright
+    Loop
+  }
+}
+
+ACTOR CKArachnut
+{
+  Health 999
+  PainChance 180
+  Speed 10
+  Radius 30
+  Height 56
+  Mass 400
+  Monster
+  Scale 2.0
+  +FLOORCLIP
+  PainSound "ckeen/kill"
+  DeathSound "ckeen/kill"
+  Obituary "%o was bit by an Arachnut."
+  States
+  {
+  Spawn:
+    CKAC A 10 A_Look
+    Loop
+  See:
+    CKAC AABBCCDD 2 Fast A_Chase
+    Loop
+  Melee:
+    CKAC A 1 Fast A_FaceTarget
+    CKAC A 1 Fast A_SargAttack
+    Goto See
+  Pain:
+    CKAC E 350 Fast
+    Goto See
+  Death:
+    CKAC E 0 A_SpawnItemEx("CKConfusion", 0, 0, 48)
+    CKAC E -1
+    Stop
+  }
+}
