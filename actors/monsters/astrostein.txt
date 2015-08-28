@@ -8,7 +8,8 @@ ACTOR AstroGuard : Nazi
 	PainSound "Nazi1/Pain"
 	DeathSound "Nazi1/Death"
 	Obituary "$GUARD"
-	DropItem AstroClipAmmo 192
+	DropItem AstroClipAmmo 128
+	DropItem AstroShotgunShell 32
 	DamageFactor "AstroPoison", 0.0
 	+NOBLOOD
 	+NOINFIGHTING
@@ -232,7 +233,7 @@ ACTOR AstroCyborg1
 	Scale 1.5
 	PainChance 32
 	+NOBLOOD
-	DropItem AstroRocketAmmo 64
+	DropItem AstroRocketAmmo 128
 	Monster
 	SeeSound "astrostein/cyborg_sight"
 	PainSound "astrostein/cyborg_pain"
@@ -296,7 +297,8 @@ ACTOR AstroCyborg2 : AstroCyborg1
 	//$Color 4
 	Species "AstroCyborg2"
 	//Obituary "$OB_CACO"
-	DropItem "" //AstroRocketAmmo 64
+	DropItem AstroShotgunShell 256
+	DropItem AstroShotgunShell 256
 	States
 	{
 	Spawn:
@@ -448,7 +450,7 @@ ACTOR AstroHitler : ExplosiveBarrel
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Hitler Cyborg
 	//$Color 4
-	Health 500
+	Health 2000
 	Scale 2.0
 	Height 72
 	Radius 36
@@ -485,7 +487,7 @@ ACTOR AstroHitler : ExplosiveBarrel
 
 ACTOR AstroScientist : AstroGuard
 {
-	//$Category Monsters (Wolf3D)/Astrostein//$Category Monsters (Wolf3D)
+	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Astro Scientist
 	//$Color 4
 	States
@@ -505,14 +507,14 @@ ACTOR AstroTurret : MGTurret
 	Speed 0
 	Obituary "$MGTURRET"
 	Health 100
-	Radius 8
-	Height 32
+	Radius 15
+	Height 21
 	mass 0x7fffffff
 	PainChance 100
 	+MISSILEEVENMORE
 	+SPAWNCEILING
 	-FLOAT
-	-NOGRAVITY
+	+NOGRAVITY
 	States
 	{
 	Spawn:
@@ -520,16 +522,21 @@ ACTOR AstroTurret : MGTurret
 		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		Goto SkillCheck
 	Missile:
-		"####" A 16 A_FaceTarget
+		"####" A 10 A_FaceTarget
+		"####" A 5 A_FaceTarget
 		"####" B 0 A_PlaySound("astrochaingun/fire")
-		"####" C 3 BRIGHT LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-8,8))
+		"####" C 3 BRIGHT LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",10,0,random(-8,8))
 		"####" B 3 BRIGHT A_MonsterRefire(40,"See")
 		"####" B 0 A_FaceTarget
-		Goto Missile+3
+		Goto Missile+1
 	Death:
 		TNT1 A 0 A_PlaySound("astrostein/explosion",0,1.0,0,0.1)
 		TNT1 A 0 A_SpawnItemEx("AstrosteinExplosion_Small")
 		ASTR D -1
+		Wait
+	Crash:
+		TNT1 A 0 
+		Stop
 	Idle:
 		Goto Look
 	}
