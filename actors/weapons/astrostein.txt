@@ -1,18 +1,31 @@
-ACTOR AstroShotgun : NaziWeapon
+ACTOR NaziAstroWeapon : NaziWeapon
+{
+	States
+	{
+	Dryfire:
+		"####" "#" 1 A_JumpIf(CallACS("Autoreload")==1,"Reload")
+		"####" "#" 1 Offset(0,35) A_PlaySound("weapon/dryfire", CHAN_WEAPON)	//Make a new sound for this?
+		"####" "#" 9 Offset(0,34)
+		"####" "#" 0 A_Jump(256,"Ready")
+		Stop
+	}
+}
+
+ACTOR AstroShotgun : NaziAstroWeapon
 {
 	//$Category Weapons (Wolf3D)/Astrostein
 	//$Title (3) Astrostein Shotgun
 	//$Color 14
 	Weapon.SelectionOrder 400
+	Weapon.AmmoType "AstroShotgunLoaded"
 	Weapon.AmmoUse 1
-	Weapon.AmmoGive 8
-	Weapon.AmmoType "AstroShotgunShell"
+	Weapon.AmmoType2 "AstroShotgunShell"
+	Weapon.AmmoUse2 1
+	Weapon.AmmoGive2 8
  	Weapon.UpSound "shotgun/select"
  	Inventory.PickupMessage "$PROTON"
 	Obituary "$OBPROTON"
 	Tag "Protonenflinte S79"
-	-WEAPON.AMMO_CHECKBOTH
-	-WEAPON.NOALERT
 	States
 	{
   	Select:
@@ -23,11 +36,18 @@ ACTOR AstroShotgun : NaziWeapon
 		ASSG B 0 A_Lower
 		ASSG B 1 A_Lower
 		Loop
-  	Ready:
+	Ready:
+		ASSG B 0 A_JumpIfInventory("AstroShotgunLoaded",0,2)
+		ASSG B 0 A_JumpIfInventory("AstroShotgunShell",1,2)
 		ASSG B 1 A_WeaponReady
 		Loop
+		ASSG B 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
 	Fire:
-		TNT1 A 0 A_PlaySound("astroshotgun/fire",CHAN_WEAPON)
+		ASSG B 0 A_JumpIfInventory("AstroShotgunLoaded",1,1)
+		Goto Dryfire
+		ASSG C 0 A_AlertMonsters
+		ASSG C 0 A_PlaySound("astroshotgun/fire",CHAN_WEAPON)
 		ASSG C 0 A_FireCustomMissile("AstroTracerPlayer",-4.5,0)
 		ASSG C 0 A_FireCustomMissile("AstroTracerPlayer",-3.0,0)
 		ASSG C 0 A_FireCustomMissile("AstroTracerPlayer",-1.5,0)
@@ -39,10 +59,59 @@ ACTOR AstroShotgun : NaziWeapon
 		ASSG B 15
 		ASSG B 0 A_ReFire
 		Goto Ready
+	Reload:
+		ASSG B 1 Offset(0,35) A_PlaySound("mp40/reload",5)	//replace this sound?
+		ASSG B 1 Offset(0,38)
+		ASSG B 1 Offset(0,44)
+		ASSG B 1 Offset(0,52)
+		ASSG B 1 Offset(-1,54)
+		ASSG B 1 Offset(-2,56)
+		ASSG B 1 Offset(-3,58)
+		ASSG B 1 Offset(-4,58)
+		ASSG B 1 Offset(-4,57)
+		ASSG B 1 Offset(-3,54)
+		ASSG B 1 Offset(-3,51)
+		ASSG B 1 Offset(-3,53)
+		ASSG B 1 Offset(-3,55)
+		ASSG B 1 Offset(-3,56)
+	ReloadLoop:
+		TNT1 A 0 A_TakeInventory("AstroShotgunShell",1,TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_GiveInventory("AstroShotgunLoaded")
+		TNT1 A 0 A_JumpIfInventory("AstroShotgunLoaded",0,"ReloadFinish")
+		TNT1 A 0 A_JumpIfInventory("AstroShotgunShell",1,"ReloadLoop")
+	ReloadFinish:
+		ASSG B 1 Offset(-3,57)
+		ASSG B 1 Offset(-3,59)
+		ASSG B 1 Offset(-3,63)
+		ASSG B 1 Offset(-3,67)
+		ASSG B 1 Offset(-3,65)
+		ASSG B 1 Offset(-3,62)
+		ASSG B 1 Offset(-3,58)
+		ASSG B 1 Offset(-3,55)
+		ASSG B 1 Offset(-2,53)
+		ASSG B 1 Offset(-2,49)
+		ASSG B 1 Offset(-2,46)
+		ASSG B 1 Offset(-2,45)
+		ASSG B 1 Offset(-1,44)
+		ASSG B 1 Offset(-1,46)
+		ASSG B 1 Offset(-1,47)
+		ASSG B 1 Offset(0,49) A_WeaponReady(WRF_NOBOB)
+		ASSG B 1 Offset(0,44) A_WeaponReady(WRF_NOBOB)
+		ASSG B 1 Offset(0,38) A_WeaponReady(WRF_NOBOB)
+		ASSG B 1 Offset(0,35) A_WeaponReady(WRF_NOBOB)
+		ASSG B 1 Offset(0,32) A_WeaponReady(WRF_NOBOB)
+		Goto Ready
 	Spawn:
 		ASSG A -1
 		Stop
 	}
+}
+ACTOR AstroShotgunLoaded : Ammo
+{
+	Tag "Protonencell"
+	+IGNORESKILL
+	Inventory.MaxAmount 8
+	Inventory.Icon "ASSLA0"
 }
 
 actor AstroShotgunShell : Ammo
@@ -50,6 +119,7 @@ actor AstroShotgunShell : Ammo
 	//$Category Ammo (Wolf3D)/Astrostein
 	//$Title Protonenflinte (ammo)
 	//$Color 6
+	Tag "Protonencell"
 	Inventory.PickupMessage "Protonencell"
 	Inventory.Amount 5
 	Inventory.MaxAmount 100
@@ -64,21 +134,21 @@ actor AstroShotgunShell : Ammo
 	}
 }
 
-ACTOR AstroRocketlauncher : NaziWeapon
+ACTOR AstroRocketlauncher : NaziAstroWeapon
 {
 	//$Category Weapons (Wolf3D)/Astrostein
 	//$Title (5) Astrostein RocketLauncher
 	//$Color 14
 	Weapon.SelectionOrder 1400
+	Weapon.AmmoType "AstroRocketLauncherLoaded"
 	Weapon.AmmoUse 1
-	Weapon.AmmoGive 5
-	Weapon.AmmoType "AstroRocketAmmo"
+	Weapon.AmmoType2 "AstroRocketAmmo"
+	Weapon.AmmoUse2 1
+	Weapon.AmmoGive2 5
 	Inventory.PickupMessage "$ENERGIE"
 	Obituary "$OBENERGIE"
 	Tag "Energiegewehr B95"
 	+WEAPON.NOAUTOFIRE
-	-WEAPON.AMMO_CHECKBOTH
-	-WEAPON.NOALERT
 	States
 	{
 	Select:
@@ -90,19 +160,68 @@ ACTOR AstroRocketlauncher : NaziWeapon
 		ASRL B 1 A_Lower
 		Loop
 	Ready:
+		ASRL B 0 A_JumpIfInventory("AstroRocketLauncherLoaded",0,2)
+		ASRL B 0 A_JumpIfInventory("AstroRocketAmmo",1,2)
 		ASRL B 1 A_WeaponReady
 		Loop
+		ASRL B 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
 	Fire:
+		ASRL B 0 A_JumpIfInventory("AstroRocketLauncherLoaded",1,1)
+		Goto Dryfire
 		ASRL CD 4
+		ASRL E 0 A_AlertMonsters
 		ASRL E 4 A_FireCustomMissile("AstroRocket")
 		ASRL D 4
 		ASRL C 21
 		ASRL C 0 A_ReFire
 		Goto Ready
+	Reload:
+		ASRL B 1 Offset(0,35) A_PlaySound("mp40/reload",5)	//replace this sound?
+		ASRL B 1 Offset(0,38)
+		ASRL B 1 Offset(0,44)
+		ASRL B 1 Offset(0,52)
+		ASRL B 1 Offset(-1,54)
+		ASRL B 1 Offset(-2,56)
+		ASRL B 1 Offset(-3,58)
+		ASRL B 1 Offset(-4,58)
+		ASRL B 1 Offset(-4,57)
+		ASRL B 1 Offset(-3,54)
+		ASRL B 1 Offset(-3,51)
+		ASRL B 1 Offset(-3,53)
+		ASRL B 1 Offset(-3,55)
+		ASRL B 1 Offset(-3,56)
+	ReloadLoop:
+		TNT1 A 0 A_TakeInventory("AstroRocketAmmo",1,TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_GiveInventory("AstroRocketLauncherLoaded")
+		TNT1 A 0 A_JumpIfInventory("AstroRocketLauncherLoaded",0,"ReloadFinish")
+		TNT1 A 0 A_JumpIfInventory("AstroRocketAmmo",1,"ReloadLoop")
+	ReloadFinish:
+		ASRL B 1 Offset(-3,57)
+		ASRL B 1 Offset(-3,59)
+		ASRL B 1 Offset(-3,63)
+		ASRL B 1 Offset(-3,67)
+		ASRL B 1 Offset(-3,65)
+		ASRL B 1 Offset(-3,62)
+		ASRL B 1 Offset(-3,58)
+		ASRL B 1 Offset(-3,55)
+		ASRL B 1 Offset(-2,53)
+		ASRL B 1 Offset(-2,49)
+		ASRL B 1 Offset(-2,46)
+		ASRL B 1 Offset(-2,45)
+		ASRL B 1 Offset(-1,44)
+		ASRL B 1 Offset(-1,46)
+		ASRL B 1 Offset(-1,47)
+		ASRL B 1 Offset(0,49) A_WeaponReady(WRF_NOBOB)
+		ASRL B 1 Offset(0,44) A_WeaponReady(WRF_NOBOB)
+		ASRL B 1 Offset(0,38) A_WeaponReady(WRF_NOBOB)
+		ASRL B 1 Offset(0,35) A_WeaponReady(WRF_NOBOB)
+		ASRL B 1 Offset(0,32) A_WeaponReady(WRF_NOBOB)
+		Goto Ready
 	Spawn:
 		ASRL A -1
 		Stop
-  }
+	}
 }
 
 ACTOR AstroRocket
@@ -137,11 +256,20 @@ ACTOR AstroRocket
 	}
 }
 
+ACTOR AstroRocketLauncherLoaded : Ammo
+{
+	Tag "Energy unit"
+	+IGNORESKILL
+	Inventory.MaxAmount 5
+	Inventory.Icon "ASRKA0"
+}
+
 actor AstroRocketAmmo : Ammo
 {
 	//$Category Ammo (Wolf3D)/Astrostein
 	//$Title Energiegewehr (ammo)
 	//$Color 6
+	Tag "Energy unit"
 	Inventory.PickupMessage "Energy unit"
 	Inventory.MaxAmount 50
 	Inventory.Icon "ASRKA0"
@@ -155,42 +283,99 @@ actor AstroRocketAmmo : Ammo
 	}
 }
 
-ACTOR AstroChaingun : NaziWeapon
+ACTOR AstroChaingun : NaziAstroWeapon
 {
 	//$Category Weapons (Wolf3D)/Astrostein
 	//$Title (4) Astrostein Chaingun
 	//$Color 14
 	Weapon.SelectionOrder 700
+	Weapon.AmmoType "AstroChaingunLoaded"
 	Weapon.AmmoUse 1
-	Weapon.AmmoGive 20
-	Weapon.AmmoType "AstroClipAmmo"
+	Weapon.AmmoType2 "AstroClipAmmo"
+	Weapon.AmmoUse2 1
+	Weapon.AmmoGive2 20
 	Inventory.PickupMessage "$REPETIE"
 	Obituary "$OBREPETIE"
 	Tag "Repetierlaser 0815"
-	-WEAPON.AMMO_CHECKBOTH
-	-WEAPON.NOALERT
 	States
 	{
-	Spawn:
-		ASCG A -1
-		Stop
-	Ready:
-		ASCG B 1 A_WeaponReady
+	Select:
+		ASCG C 0 A_Raise
+		ASCG C 1 A_Raise
 		Loop
 	Deselect:
 		ASCG B 0 A_Lower
 		ASCG B 1 A_Lower
 		Loop
-	Select:
-		ASCG C 0 A_Raise
-		ASCG C 1 A_Raise
+	Ready:
+		ASCG B 0 A_JumpIfInventory("AstroChaingunLoaded",0,2)
+		ASCG B 0 A_JumpIfInventory("AstroClipAmmo",1,2)
+		ASCG B 1 A_WeaponReady
+		Loop
+		ASCG B 1 A_WeaponReady(WRF_ALLOWRELOAD)
 		Loop
 	Fire:
-		TNT1 A 0 A_PlaySound("astrochaingun/fire",CHAN_WEAPON)
+		ASCG B 0 A_JumpIfInventory("AstroChaingunLoaded",1,1)
+		Goto Dryfire
+		ASCG D 0 A_AlertMonsters
+		ASCG D 0 A_PlaySound("astrochaingun/fire",CHAN_WEAPON)
 		ASCG DE 4 A_FireCustomMissile("AstroTracerPlayer",random(-1.0,1.0),1,0,0,0,random(-1.0,1.0))
 		ASCG D 0 A_ReFire
 		Goto Ready
+	Reload:
+		ASCG B 1 Offset(0,35) A_PlaySound("mp40/reload",5)	//replace this sound?
+		ASCG B 1 Offset(0,38)
+		ASCG B 1 Offset(0,44)
+		ASCG B 1 Offset(0,52)
+		ASCG B 1 Offset(-1,54)
+		ASCG B 1 Offset(-2,56)
+		ASCG B 1 Offset(-3,58)
+		ASCG B 1 Offset(-4,58)
+		ASCG B 1 Offset(-4,57)
+		ASCG B 1 Offset(-3,54)
+		ASCG B 1 Offset(-3,51)
+		ASCG B 1 Offset(-3,53)
+		ASCG B 1 Offset(-3,55)
+		ASCG B 1 Offset(-3,56)
+	ReloadLoop:
+		TNT1 A 0 A_TakeInventory("AstroClipAmmo",1,TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_GiveInventory("AstroChaingunLoaded")
+		TNT1 A 0 A_JumpIfInventory("AstroChaingunLoaded",0,"ReloadFinish")
+		TNT1 A 0 A_JumpIfInventory("AstroClipAmmo",1,"ReloadLoop")
+	ReloadFinish:
+		ASCG B 1 Offset(-3,57)
+		ASCG B 1 Offset(-3,59)
+		ASCG B 1 Offset(-3,63)
+		ASCG B 1 Offset(-3,67)
+		ASCG B 1 Offset(-3,65)
+		ASCG B 1 Offset(-3,62)
+		ASCG B 1 Offset(-3,58)
+		ASCG B 1 Offset(-3,55)
+		ASCG B 1 Offset(-2,53)
+		ASCG B 1 Offset(-2,49)
+		ASCG B 1 Offset(-2,46)
+		ASCG B 1 Offset(-2,45)
+		ASCG B 1 Offset(-1,44)
+		ASCG B 1 Offset(-1,46)
+		ASCG B 1 Offset(-1,47)
+		ASCG B 1 Offset(0,49) A_WeaponReady(WRF_NOBOB)
+		ASCG B 1 Offset(0,44) A_WeaponReady(WRF_NOBOB)
+		ASCG B 1 Offset(0,38) A_WeaponReady(WRF_NOBOB)
+		ASCG B 1 Offset(0,35) A_WeaponReady(WRF_NOBOB)
+		ASCG B 1 Offset(0,32) A_WeaponReady(WRF_NOBOB)
+		Goto Ready
+	Spawn:
+		ASCG A -1
+		Stop
 	}
+}
+
+ACTOR AstroChaingunLoaded : Ammo
+{
+	Tag "Laser rounds"
+	+IGNORESKILL
+	Inventory.MaxAmount 30
+	Inventory.Icon "ASRKA0"
 }
 
 actor AstroClipAmmo : Ammo
@@ -198,6 +383,7 @@ actor AstroClipAmmo : Ammo
 	//$Category Ammo (Wolf3D)/Astrostein
 	//$Title Repetierlaser (ammo)
 	//$Color 6
+	Tag "Laser rounds"
 	Inventory.PickupMessage "Laser rounds"
 	Inventory.Amount 10
 	Inventory.MaxAmount 200
@@ -212,7 +398,7 @@ actor AstroClipAmmo : Ammo
 	}
 }
 
-actor AstrosteinMelee : Naziweapon
+actor AstrosteinMelee : NaziAstroWeapon
 {
 	//$Category Weapons (Wolf3D)/Astrostein
 	//$Title (1) Astrostein Melee

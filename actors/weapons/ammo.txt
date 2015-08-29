@@ -11,8 +11,7 @@ ACTOR NaziWeapon : Weapon
 	Dryfire:
 		"####" "#" 1 A_JumpIf(CallACS("Autoreload")==1,"Reload")
 		"####" "#" 1 Offset(0,35) A_PlaySound("weapon/dryfire", CHAN_WEAPON)
-		"####" "#" 1 Offset(0,34)
-		"####" "#" 8 
+		"####" "#" 9 Offset(0,34)
 		"####" "#" 0 A_Jump(256,"Ready")
 		Stop
 	}
