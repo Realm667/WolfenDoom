@@ -515,6 +515,7 @@ ACTOR AstroTurret : MGTurret
 	+SPAWNCEILING
 	-FLOAT
 	+NOGRAVITY
+	+DONTFALL
 	States
 	{
 	Spawn:
@@ -533,7 +534,7 @@ ACTOR AstroTurret : MGTurret
 		TNT1 A 0 A_PlaySound("astrostein/explosion",0,1.0,0,0.1)
 		TNT1 A 0 A_SpawnItemEx("AstrosteinExplosion_Small")
 		ASTR D -1
-		Wait
+		Stop
 	Crash:
 		TNT1 A 0 
 		Stop
