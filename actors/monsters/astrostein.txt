@@ -146,6 +146,7 @@ ACTOR AstroDrone
 	+FLOAT
 	+NOGRAVITY
 	+NOBLOOD
+	++LOOKALLAROUND
 	SeeSound "drone_sight"
 	PainSound "drone_pain"
 	DeathSound "astrostein/explosion"
@@ -211,6 +212,7 @@ ACTOR AstroRobotSeekerBall : AstroDroneBall
 {
 	Radius 12
 	Height 16
+	Speed 7
 	+SEEKERMISSILE
 	States
 	{
