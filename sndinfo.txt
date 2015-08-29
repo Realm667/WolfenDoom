@@ -20,9 +20,10 @@ weapons/rezfull		dsrezful
 weapons/rezhit		dsrezhit
 astrostein/explosion	ASTEXP02
 astrostein/hitler_act1	ashtac01
-astrostein/hitler_act2	ashtac01
-astrostein/hitler_act3	ashtac01
-$random astrostein/hitler_act {astrostein/hitler_act2 astrostein/hitler_act1 astrostein/hitler_act3}
+astrostein/hitler_act2	ashtac02
+astrostein/hitler_act3	ashtac03
+$random astrostein/hitler_act {astrostein/hitler_act1 astrostein/hitler_act2 astrostein/hitler_act3}
+$rolloff astrostein/hitler_act 1280 1600
 astrostein/hitler_see null
 astrostein/hitler_dth null 
 astrostein/hitler_pai null 
@@ -1313,6 +1314,7 @@ ELECTRICITY ELCLOOP
 $rolloff ELECTRICITY 128 512
 TRAINSTATION_AMBIENT TRNSTATA
 PORTAL_HUM PORTALHM
+ASTROCITYAMB SciFiCityAmb
 
 //Thunder
 misc/thunder1 thunder1
@@ -1378,6 +1380,7 @@ $AMBIENT 52 SWING_SONG POINT CONTINUOUS 1.0
 $AMBIENT 53 ELECTRICITY POINT CONTINUOUS 1.0
 $AMBIENT 54 TRAINSTATION_AMBIENT POINT CONTINUOUS 1.0
 $AMBIENT 55 PORTAL_HUM POINT CONTINUOUS 1.0
+$AMBIENT 56 ASTROCITYAMB POINT CONTINUOUS 1.0
 
 /////////////////////////////////////////////////////////////////////
 //// BRIEFING VOICEOVER SOUNDS //////////////////////////////////////

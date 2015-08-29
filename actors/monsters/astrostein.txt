@@ -146,7 +146,7 @@ ACTOR AstroDrone
 	+FLOAT
 	+NOGRAVITY
 	+NOBLOOD
-	++LOOKALLAROUND
+	+LOOKALLAROUND
 	SeeSound "drone_sight"
 	PainSound "drone_pain"
 	DeathSound "astrostein/explosion"
@@ -235,6 +235,7 @@ ACTOR AstroCyborg1
 	Scale 1.5
 	PainChance 32
 	+NOBLOOD
+	+LOOKALLAROUND
 	DropItem AstroRocketAmmo 128
 	Monster
 	SeeSound "astrostein/cyborg_sight"
@@ -382,6 +383,7 @@ Actor AstroSuiteGuard : AstroGuard
 	Scale 1.5
 	Health 200
 	Painchance 16
+	+LOOKALLAROUND
 	States
 	{
 	Spawn:
@@ -424,6 +426,8 @@ ACTOR AstroRobot : AstroCyborg1
 	ActiveSound "astrostein/robot_act"
 	//Obituary "$OB_CACO"
 	DropItem AstroRocketAmmo 160
+	+BOSS
+	Tag "Tiger Roboter"
 	States
 	{
 	Spawn:
@@ -447,27 +451,39 @@ ACTOR AstroRobot : AstroCyborg1
 	}
 }
 
-ACTOR AstroHitler : ExplosiveBarrel
+ACTOR AstroHitler
 {
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Hitler Cyborg
 	//$Color 4
-	Health 2000
+	Monster
+	Health 1500
 	Scale 2.0
+	Speed 0
 	Height 72
 	Radius 36
+	PainChance 128
 	ActiveSound "astrostein/hitler_act"
 	DeathSound "astrostein/hitler_dth"
-	SeeSound "astrostein/hitler_see"
+	SeeSound "astrostein/hitler_act"
 	PainSound "astrostein/hitler_pai"
+	+NOBLOOD
+	+FLOORCLIP
 	+BOSS
 	Tag "Adolf Hitler"
 	Mass 99999999
 	States
 	{
 	Spawn:
-		ADHI ABC 6
+		ADHI A 6 A_Look
 		Loop
+	See:
+		ADHI ABC 6 A_Chase
+		Loop
+	Pain:
+		ADHI E 3
+		ADHI E 3 A_Pain
+		Goto See
 	Death:
 		ADHI E 35 A_Scream
 		TNT1 A 0 A_PlaySound("astrostein/explosion",0,1.0,0,0.1)
@@ -517,7 +533,6 @@ ACTOR AstroTurret : MGTurret
 	+SPAWNCEILING
 	-FLOAT
 	+NOGRAVITY
-	+DONTFALL
 	States
 	{
 	Spawn:
@@ -536,7 +551,7 @@ ACTOR AstroTurret : MGTurret
 		TNT1 A 0 A_PlaySound("astrostein/explosion",0,1.0,0,0.1)
 		TNT1 A 0 A_SpawnItemEx("AstrosteinExplosion_Small")
 		ASTR D -1
-		Stop
+		Wait
 	Crash:
 		TNT1 A 0 
 		Stop
