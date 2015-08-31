@@ -129,7 +129,7 @@ actor AstroShotgunShell : Ammo
 	States
 	{
 	Spawn:
-		ASSL A -1
+		ASSL A -1 LIGHT(ASTRAMM1)
 		stop
 	}
 }
@@ -219,7 +219,7 @@ ACTOR AstroRocketlauncher : NaziAstroWeapon
 		ASRL B 1 Offset(0,32) A_WeaponReady(WRF_NOBOB)
 		Goto Ready
 	Spawn:
-		ASRL A -1
+		ASRL A -1 LIGHT(ASTRWEP1)
 		Stop
 	}
 }
@@ -245,13 +245,13 @@ ACTOR AstroRocket
 	States
 	{
 	Spawn:
-		ASRK BC 4 Bright A_SpawnItemEx("Spark_G1",0,0,0,random(1,2),random(1,2),random(1,2),random(1,360))
+		ASRK BC 4 A_SpawnItemEx("Spark_G1",0,0,0,random(1,2),random(1,2),random(1,2),random(1,360))
 		Loop
 	Death:
 		TNT1 AAAAA 0 A_SpawnItemEx("Spark_G1",0,0,0,random(1,2),random(1,2),random(1,2),random(1,360))
 		TNT1 A 0 A_SpawnItemEx("SparkFlare_G1")
 		TNT1 A 0 A_Explode
-		ASRK DEF 4 Bright
+		ASRK DEF 4
 		Stop
 	}
 }
@@ -278,7 +278,7 @@ actor AstroRocketAmmo : Ammo
 	States
 	{
 	Spawn:
-		ASRK A -1
+		ASRK A -1 LIGHT(ASTRAMM1)
 		stop
 	}
 }
@@ -365,7 +365,7 @@ ACTOR AstroChaingun : NaziAstroWeapon
 		ASCG B 1 Offset(0,32) A_WeaponReady(WRF_NOBOB)
 		Goto Ready
 	Spawn:
-		ASCG A -1
+		ASCG A -1 LIGHT(ASTRWEP2)
 		Stop
 	}
 }
@@ -393,8 +393,8 @@ actor AstroClipAmmo : Ammo
 	states
 	{
 	Spawn:
-		ASCL A -1
-		stop
+		ASCL A -1 LIGHT(ASTRAMM3)
+		Stop
 	}
 }
 
@@ -471,7 +471,7 @@ ACTOR AstroGrenadePickup : CustomInventory
 	States
 	{
 	Spawn:
-		ASGN A -1
+		ASGN A -1 LIGHT(ASTRAMM1)
 		Stop
 	Use:
 		TNT1 A 0 A_GiveInventory("GrenadePickup")
