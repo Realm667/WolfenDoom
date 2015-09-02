@@ -2544,25 +2544,25 @@ ACTOR FlamerSoldier : Guard
 	States
 	{
 	Spawn:
-		FLSL N 0
+		FLSL A 0
 		Goto SkillCheck
 	Missile:
-		FLSL E 3
-		FLSL F 10 A_FaceTarget
-		FLSL GGGGGGGG 1 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyFlamerShot",38,4)
-		FLSL F 6 A_MonsterRefire(10,"See")
+		FLSL F 3
+		FLSL G 10 A_FaceTarget
+		FLSL HHHHHHHH 1 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyFlamerShot",38,4)
+		FLSL G 6 A_MonsterRefire(10,"See")
 		Goto Missile+1
 	Death:
 	Death.Fire:
 	Death.Fire.A:
 	Death.Fire.B:
 	XDeath:
-		"####" I 5 A_SpawnItemEx("GeneralExplosion_Medium")
+		"####" J 5 A_SpawnItemEx("GeneralExplosion_Medium")
 		Goto Super::Death+1
-		"####" J 5 A_Scream
-		"####" K 5 A_NoBlocking
-		"####" L 5
-		"####" M -1
+		"####" K 5 A_Scream
+		"####" L 5 A_NoBlocking
+		"####" M 5
+		"####" N -1
 		Stop
 	}
 }
