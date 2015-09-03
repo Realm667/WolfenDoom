@@ -13,7 +13,7 @@ ACTOR Akten : Inventory
 	States
 	{
 	Spawn:
-		AKTT B -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		AKTT B -1
 		stop
 	}
 }
@@ -30,7 +30,24 @@ ACTOR AktenEisenmann : Akten
 	States
 	{
 	Spawn:
-		AKTE B -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		AKTE B -1 
+		stop
+	}
+}
+
+ACTOR ArtifactAstrostrein : Akten
+{
+	//$Category Pickups (Wolf3D)
+	//$Title Mayan Artifact (Astrostein)
+	//$Color 13
+	Tag "Mayan Artifact"
+	inventory.icon ARTM
+	inventory.pickupmessage "Picked up a Mayan Artifact"
+	inventory.maxamount 10
+	States
+	{
+	Spawn:
+		ARTM B -1 
 		stop
 	}
 }
@@ -46,7 +63,7 @@ ACTOR SpearOfDestiny : Akten
 	States
 	{
 	Spawn:
-		SPER B -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		SPER B -1 
 		stop
 	}
 }
