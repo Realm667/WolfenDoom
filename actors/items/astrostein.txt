@@ -11,6 +11,31 @@ actor AstroMedikit : Medikit
 	}
 }
 
+Actor SuperShield : BasicArmorPickup
+{
+  //$Category Health (Wolf3D)/Astrostein
+  //$Title Super Shield (modern)
+  //$Color 6
+  Armor.SavePercent 100.0
+  Armor.SaveAmount 100
+  Inventory.Icon "ARMXA0"
+  Inventory.PickupMessage "Picked up the super shield!"
+  states
+  {
+  Spawn:
+    ARMX AB 3 Bright
+    Loop
+  }
+}
+
+Actor SuperShieldSmall : SuperShield
+{
+  //$Category Health (Wolf3D)/Astrostein
+  //$Title Super Shield (small,modern)
+  //$Color 6
+	Armor.SaveAmount 50
+}
+
 actor AstroBlueKey : BoABlueKey
 {
 	//$Category Keys (Wolf3D)/Astrostein
@@ -59,5 +84,22 @@ actor AstroRedKey : BoARedKey
 		KCRE A 10
 		KCRE B 10 LIGHT(BOARKEY)
 		Loop
+	}
+}
+
+actor ArmorShard : ArmorBonus
+{
+	//$Category Health (Wolf3D)/Astrostein
+	//$Title Armor Shard (modern)
+	//$Color 6
+	Inventory.Pickupmessage "Picked up an Armor Shard."
+	Inventory.Icon "ARSDA0"
+	Inventory.PickupSound "pickup/armorshard"
+	Armor.Saveamount 5
+	States
+	{
+	Spawn:
+		ARSD ABCDCB 6
+		loop
 	}
 }

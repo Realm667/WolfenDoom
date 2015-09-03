@@ -1112,4 +1112,51 @@ interval 0.8
 Offset 0 6 0
 }
 
+
+pointlight ARMORSHARD1
+{
+    color 0.0 0.7 0.0
+    size 6
+}
+
+pointlight ARMORSHARD2
+{
+    color 0.0 0.7 0.0
+    size 7
+}
+
+pointlight ARMORSHARD3
+{
+    color 0.0 0.7 0.0
+    size 8
+}
+
+pointlight ARMORSHARD4
+{
+    color 0.0 0.7 0.0
+    size 9
+}
+
+object ArmorShard
+{
+    frame ARSDA { light ARMORSHARD1 }
+    frame ARSDB { light ARMORSHARD2 }
+	frame ARSDC { light ARMORSHARD3 }
+	frame ARSDD { light ARMORSHARD4 }
+}
+
+PulseLight SUPERSHIELD
+{
+Color 0.6 0.6 0.0
+Size 32
+SecondarySize 48
+Interval 2.5
+}
+
+Object SuperShield
+{
+Frame ARMX { Light SUPERSHIELD }
+}
+
+
 #include "boadefs.bm"
