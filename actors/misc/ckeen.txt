@@ -13,7 +13,7 @@ actor CKShikadiSoda : SingleCoin
 	{
 	Spawn:
 		CKPU AB 15 
-		stop
+		loop
 	Pickup:
 		CKPU C 5 A_GiveInventory("CoinItem",1)
 		stop
@@ -31,7 +31,7 @@ actor CKShikkersCandyBar : SingleCoin
 	{
 	Spawn:
 		CKPU DE 15 
-		stop
+		loop
 	Pickup:
 		CKPU F 5 A_GiveInventory("CoinItem",2)
 		stop
@@ -49,7 +49,7 @@ actor CKDoughnut : SingleCoin
 	{
 	Spawn:
 		CKPU GH 15 
-		stop
+		loop
 	Pickup:
 		CKPU I 5 A_GiveInventory("CoinItem",5)
 		stop
@@ -67,7 +67,7 @@ actor CKIceCreamCone : SingleCoin
 	{
 	Spawn:
 		CKPU JK 15 
-		stop
+		loop
 	Pickup:
 		CKPU L 5 A_GiveInventory("CoinItem",10)
 		stop
@@ -107,14 +107,16 @@ ACTOR CKOneUp : Health
   Inventory.Amount 100
   Inventory.MaxAmount 200
   Inventory.PickupMessage "Picked up a lifewater flask!"
-  inventory.pickupsound "ckeen/oneup"
+  inventory.pickupsound "ckeen/life"
   States
   {
   Spawn:
     CKPU MN 15 Bright
     Loop
   Pickup:
-    CKPU O 5
+    CKPU O 50
+  Death:
+    CKPU O 50
     stop
   }
 }
@@ -130,6 +132,7 @@ actor CKBlueKey : BoABlueKey
 	//$Color 13
 	Inventory.PickupMessage "Picked up a blue gem."
 	Inventory.Icon "CKKEYS1"
+	inventory.pickupsound "ckeen/gem"
 	Species "BoABlueKey"
 	+BRIGHT
 	states
@@ -150,6 +153,7 @@ actor CKYellowKey : BoAYellowKey
 	//$Color 13
 	Inventory.PickupMessage "Picked up a yellow gem."
 	Inventory.Icon "CKKEYS0"
+	inventory.pickupsound "ckeen/gem"
 	Species "BoAYellowKey"
 	+BRIGHT	
 	states
@@ -170,6 +174,7 @@ actor CKRedKey : BoARedKey
 	//$Color 13
 	Inventory.PickupMessage "Picked up a red gem."
 	Inventory.Icon "CKKEYS2"
+	inventory.pickupsound "ckeen/gem"
 	Species "BoARedKey"
 	+BRIGHT
 	states
@@ -200,6 +205,7 @@ actor CKRedKeyPod : SwitchableDecoration
 			CKKS B -1
 			Stop
 		Active:
+			TNT1 A 0 A_Playsound("ckeen/gemuse")
 			CKKS A -1 BRIGHT
 			Stop
 	}			
@@ -217,6 +223,7 @@ actor CKBlueKeyPod : CKRedKeyPod
 			CKKS D -1
 			Stop
 		Active:
+			TNT1 A 0 A_Playsound("ckeen/gemuse")
 			CKKS C -1 BRIGHT
 			Stop
 	}			
@@ -234,6 +241,7 @@ actor CKYellowKeyPod : CKRedKeyPod
 			CKKS F -1
 			Stop
 		Active:
+			TNT1 A 0 A_Playsound("ckeen/gemuse")
 			CKKS E -1 BRIGHT
 			Stop
 	}			
@@ -262,6 +270,7 @@ ACTOR CKBaseEnemy
   Monster
   PainSound "ckeen/kill"
   DeathSound "ckeen/kill"
+  +BUMPSPECIAL
 }
 
 ACTOR CKArachnut : CKBaseEnemy
@@ -277,7 +286,6 @@ ACTOR CKArachnut : CKBaseEnemy
   Mass 400
   MeleeDamage 10
   +FLOORCLIP
-  +BUMPSPECIAL
   +LOOKALLAROUND
   Obituary "%o was bit by an Arachnut."
   States
@@ -291,12 +299,12 @@ ACTOR CKArachnut : CKBaseEnemy
     Loop
   Melee:
     CKAC A 0 Fast A_FaceTarget
-	CKAC A 1 Fast A_MeleeAttack
-	Goto See
+    CKAC A 1 Fast A_MeleeAttack
+    Goto See
   Pain:
     CKAC E 0 Thing_SetSpecial(0, 0, 0, 0, 0)
     CKAC E 350 Fast
-	CKAC AEAE 15
+    CKAC AEAE 15
     Goto See
   Death:
     CKAC E 0 A_SpawnItemEx("CKConfusion", 0, 0, 48)
@@ -313,11 +321,78 @@ ACTOR CKMadMushroom : CKBaseEnemy
   Radius 30
   Height 56
   Mass 9999999
+  Gravity 0.7
   Obituary "%o was crushed by a Mad Mushroom."
   States
   {
-  Spawn: 
-    CKMR AB 15
-	loop	
+  Spawn:
+  See: 
+    CKAC A 0 NoDelay Thing_SetSpecial(0, 73, 15, 22, 0)
+    CKMR A 1 A_CheckFloor("Jump")
+    goto See
+  Jump:
+    TNT1 A 0 A_PlaySound("ckeen/madmushroombounce")
+    CKMR B 12 ThrustThingZ(0, 32, 0, 1)
+    CKMR A 12
+    TNT1 A 0 A_PlaySound("ckeen/madmushroombounce")
+    CKMR B 12 ThrustThingZ(0, 32, 0, 1)
+    CKMR A 12
+    TNT1 A 0 A_PlaySound("ckeen/madmushroombounce")
+    CKMR B 20 ThrustThingZ(0, 64, 0, 1)
+    CKMR A 20
+    loop	
   }
+}
+
+ACTOR CKPoisonSlug : CKBaseEnemy
+{
+  //$Category Misc (Wolf3D)/Commander Keen
+  //$Title Poison Slug
+  //$Color 4
+  Health 40
+  PainChance 128
+  Speed 10
+  Radius 30
+  Height 56
+  Mass 400
+  MeleeDamage 10
+  +FLOORCLIP
+  +LOOKALLAROUND
+  Obituary "%o pooped to death by a Poison Slug."
+  States
+  {
+  Spawn:
+    CKPS A 10 A_Look
+    Loop
+  See:
+    CKPS A 0 NoDelay Thing_SetSpecial(0, 73, 15, 22, 0)
+    CKPS AABB 4 A_Wander
+    Loop
+  Missile:
+    TNT1 A 0 A_PlaySound("ckeen/slugpoo")
+    CKPS C 5 
+    CKPS C 30 A_SpawnItemEx("CKPoisonSlugPoison")
+    Goto See
+  Death:
+    TNT1 A 0 NoDelay A_Jump(128, 2)
+    CKPS E 0 A_SpawnItemEx("CKConfusion", 0, 0, 48)
+    CKPS E -1
+    Stop
+    CKPS F 0 A_SpawnItemEx("CKConfusion", 0, 0, 48)
+    CKPS F -1
+  }
+}
+
+ACTOR CKPoisonSlugPoison : CKBaseEnemy
+{
+  Radius 32
+  Height 2
+	States
+	{
+		Spawn:
+		TNT1 A 0 NoDelay Thing_SetSpecial(0, 73, 15, 22, 0)
+		CKSL Z 210
+		CKSL Y 35
+		Stop 
+	}
 }
