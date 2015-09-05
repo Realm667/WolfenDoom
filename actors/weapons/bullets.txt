@@ -202,7 +202,7 @@ ACTOR 9MMCasing
 		"####" F 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
 		"####" G 2 A_ScaleVelocity(0.7)
 		"####" H 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
-		Loop	
+		Loop
 	Death:
 		"####" A 0 A_Jump(256,1,2,3)
 		"####" ACG 0 A_Jump(256,"Death1")
@@ -263,11 +263,11 @@ ACTOR STGCasing : MauserRifleCasing{}
 /////////////////////////////////////////////////////////////
 
 //Nifty new mutants variations for tracers
-ACTOR MutantTracer : Tracer 
+ACTOR MutantTracer : Tracer
 {
 	//MissileType MutantTrail
 	DamageType MutantPoison
-	
+
 	States
 	{
 	Spawn:
@@ -283,33 +283,33 @@ ACTOR MutantTrail: TracerTrail {}
 /////////////////////////////////////////////////////////////
 
 //Variant for Enemies
-ACTOR AstroTracer : Tracer		
+ACTOR AstroTracer : Tracer
 {
+	+BLOODLESSIMPACT
 	DamageType AstroPoison
-
+	DeathType Disintegrate
 	States
 	{
-		Spawn:
-			TNT1 A 1 BRIGHT A_JumpIfTracerCloser(96,"Whiz")
-			TNT1 A 0 A_SpawnItemEx("AstroTrail", 0, 0, 0, velx, vely, velz, 0, SXF_ABSOLUTEVELOCITY) //mxd
-			Loop
-		Whiz:
-			TNT1 A -1 BRIGHT A_SpawnItemEx("AstroWhizzer")
-			Stop
-		Death:
-		Crash:
-			TNT1 AAAAA 0 A_SpawnItemEx("Spark_G1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
-			TNT1 A 0 A_SpawnItemEx("SparkFlare_G1")
-			TNT1 A 8 A_PlaySound("astroricochet")
-			Stop
-		XDeath:
-			TNT1 A 1 A_PlaySound("astrohitflesh")
-			Stop
-		
+	Spawn:
+		TNT1 A 1 BRIGHT A_JumpIfTracerCloser(96,"Whiz")
+		TNT1 A 0 A_SpawnItemEx("AstroTrail", 0, 0, 0, velx, vely, velz, 0, SXF_ABSOLUTEVELOCITY) //mxd
+		Loop
+	Whiz:
+		TNT1 A -1 BRIGHT A_SpawnItemEx("AstroWhizzer")
+		Stop
+	Death:
+	Crash:
+		TNT1 AAAAA 0 A_SpawnItemEx("Spark_G1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
+		TNT1 A 0 A_SpawnItemEx("SparkFlare_G1")
+		TNT1 A 8 A_PlaySound("astroricochet")
+		Stop
+	XDeath:
+		TNT1 A 1 A_PlaySound("astrohitflesh")
+		Stop
 	}
 }
 
-ACTOR EnemyAstroTracer : AstroTracer 
+ACTOR EnemyAstroTracer : AstroTracer
 {
 	+THRUGHOST
 	Damage (random(2,4))
@@ -325,12 +325,11 @@ ACTOR AstroWhizzer
 	}
 }
 
-ACTOR AstroTrail: TracerTrail {}
+ACTOR AstroTrail: TracerTrail{}
 
 //Variant for Players
-ACTOR AstroTracerPlayer : AstroTracer 
+ACTOR AstroTracerPlayer : AstroTracer
 {
-	DamageType None
 	ProjectileKickback 60
 	Damage (random(3,17))
 	Speed 100

@@ -31,7 +31,7 @@ ACTOR Nazi
 		"####" A 1 A_Chase
 		"####" AAA 1 A_Chase("","")
 		"####" B 1 A_Chase
-    "####" B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NoCheckPosition)
+		"####" B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NoCheckPosition)
 		"####" BBB 1 A_Chase("","")
 		"####" B 1 A_Chase
 		"####" BBB 1 A_Chase("","")
@@ -40,7 +40,7 @@ ACTOR Nazi
 		"####" C 1 A_Chase
 		"####" CCC 1 A_Chase("","")
 		"####" D 1 A_Chase
-    "####" D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NoCheckPosition)
+		"####" D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NoCheckPosition)
 		"####" DDD 1 A_Chase("","")
 		"####" D 1 A_Chase
 		"####" DDD 1 A_Chase("","")
@@ -167,6 +167,13 @@ ACTOR Guard : Nazi
 		SLOP G 0 A_NoBlocking
 		SLOP G -1
 		Stop
+	Disintegrate:
+		"####" H 0 A_Playsound("astrostein/guard_death")
+		"####" H 5 A_Scream
+		"####" H 0 A_NoBlocking
+		"####" H 0 A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0)
+		"####" H 1 A_FadeOut(0.02)
+		Goto Disintegrate+3
 	}
 }
 
@@ -355,29 +362,24 @@ Actor BlindGuardEyes
 {
 	RenderStyle None
 	Height 46
-
 	+NOGRAVITY
 	+NOCLIP
-
 	States
 	{
-		Spawn:
-		  TNT1 A 1 A_Warp(AAPTR_MASTER, 0, 0, Height) // Need a slight delay between A_Looks to prevent infinite loop
-			TNT1 A 0 A_LookEx(0, 0.0, 1024.0, 256.0, 65.0, "PlayerSeen")
-			loop
-
-		PlayerSeen:
-			TNT1 A 0 A_JumpIf(CallACS("TargetIsHidden"), "IgnorePlayer")
-			goto AlertMaster
-
-		IgnorePlayer:
-			TNT1 A 1 A_ClearTarget
-			goto Spawn
-
-		AlertMaster:
-		  TNT1 A 0 A_SpawnItemEx("AlertMarker", 0, 0, 68, 0, 0, 0, 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION)
-			TNT1 A 0 A_DamageMaster(1, "Poke") // Cause the master to enter Pain.Poke state (HAAAACKS!!!!11)
-			stop
+	Spawn:
+		TNT1 A 1 A_Warp(AAPTR_MASTER, 0, 0, Height) // Need a slight delay between A_Looks to prevent infinite loop
+		TNT1 A 0 A_LookEx(0, 0.0, 1024.0, 256.0, 65.0, "PlayerSeen")
+		loop
+	PlayerSeen:
+		TNT1 A 0 A_JumpIf(CallACS("TargetIsHidden"), "IgnorePlayer")
+		goto AlertMaster
+	IgnorePlayer:
+		TNT1 A 1 A_ClearTarget
+		goto Spawn
+	AlertMaster:
+		TNT1 A 0 A_SpawnItemEx("AlertMarker", 0, 0, 68, 0, 0, 0, 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_DamageMaster(1, "Poke") // Cause the master to enter Pain.Poke state (HAAAACKS!!!!11)
+		stop
 	}
 }
 
