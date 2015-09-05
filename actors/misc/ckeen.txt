@@ -286,7 +286,7 @@ ACTOR CKArachnut : CKBaseEnemy
     CKAC A 10 A_Look
     Loop
   See:
-    CKAC A 0 NoDelay Thing_SetSpecial(0, 73, 15, 22, 0)
+    CKAC A 0 Thing_SetSpecial(0, 73, 15, 22, 0)
     CKAC AABBCCDD 2 Fast A_Chase
     Loop
   Melee:
@@ -294,7 +294,7 @@ ACTOR CKArachnut : CKBaseEnemy
 	CKAC A 1 Fast A_MeleeAttack
 	Goto See
   Pain:
-    CKAC E 0 NoDelay Thing_SetSpecial(0, 0, 0, 0, 0)
+    CKAC E 0 Thing_SetSpecial(0, 0, 0, 0, 0)
     CKAC E 350 Fast
 	CKAC AEAE 15
     Goto See
