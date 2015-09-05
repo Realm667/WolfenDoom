@@ -133,10 +133,7 @@ ACTOR Guard : Nazi
 		"####" M -1
 		Stop
 	Death.Fire:
-		TNT1 A 0
-		TNT1 A 0 A_Jump(128,"Death.Fire.A")
-		TNT1 A 0 A_Jump(128,"Death.Fire.B")
-		Wait
+		TNT1 A 0 A_Jump(256,"Death.Fire.B","Death.Fire.B")
 	Death.Fire.A:
 		BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.0)
 		BURN BC 5 BRIGHT LIGHT(ITBURNS1)
@@ -884,10 +881,7 @@ ACTOR BigMutant1 : Mutant
 		"####" MMMLKJI 4
 		Goto See
 	Death.Fire:
-		TNT1 A 0
-		TNT1 A 0 A_Jump(128,"Death.Fire.A")
-		TNT1 A 0 A_Jump(128,"Death.Fire.B")
-		Wait
+		TNT1 A 0 A_Jump(256,"Death.Fire.B","Death.Fire.B")
 	Death.Fire.A:
 		BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.4)
 		BURN BC 5 BRIGHT LIGHT(ITBURNS1)
@@ -2565,15 +2559,8 @@ ACTOR FlamerSoldier : Guard
 		"####" M 5
 		"####" N -1
 		Stop
-	Death.Fire:
-	Death.Fire.A:
-	Death.Fire.B:
 	XDeath:
-		SLOP A 1 A_SpawnItemEx("GeneralExplosion_Medium")
-		SLOP ABCDEF 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
-		SLOP G 0 A_NoBlocking
-		SLOP G -1
-		Stop
+		Goto Death.Fire
 	}
 }
 
