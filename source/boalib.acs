@@ -393,7 +393,8 @@ script "ExTeleportPlayer" (int teleportID, int destinationID)
 {
 	int deltaX = GetActorX(playerID) - GetActorX(teleportID);
 	int deltaY = GetActorY(playerID) - GetActorY(teleportID);
-	SetActorPosition(playerID, GetActorX(destinationID) + deltaX, GetActorY(destinationID) + deltaY, GetActorZ(playerID), false);
+	// [ZK] Use Warp instead of SetActorPosition so that the teleport always succeeds.
+	Warp(playerID, GetActorX(destinationID) + deltaX, GetActorY(destinationID) + deltaY, GetActorZ(playerID), 0, WARPF_ABSOLUTEPOSITION|WARPF_NOCHECKPOSITION);
 }
 
 script "ExGetPlayerZ" (void)

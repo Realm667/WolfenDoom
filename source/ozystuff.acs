@@ -27,13 +27,26 @@ script "OhNoes!" DEATH
 	LocalSetMusic("THEEND");
 	
 	SetFont("fade");
-	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1000, CR_UNTRANSLATED, 160.0, 120.0, 999999.0, 6.0, 1.0); 
-	Delay(35*6);
+	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1000, CR_UNTRANSLATED, 160.0, 120.0, 999999.0, 6.0, 1.0);
+	
+	// [ZK] If you resurrect, the death screen should disappear immediately
+	for (int i = 0; i < 35*6; i++)
+	{
+		Delay(1);
+		
+		if (GetActorProperty(0, APROP_HEALTH) > 0)
+		{	
+			SetFont("fade");
+			HudMessage(s:""; HUDMSG_PLAIN, -1000, CR_UNTRANSLATED, 0.0, 0.0, 0.0, 0.0);
+			terminate;
+		}
+	}
 	
 	SetFont("youdied");
 	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1001, CR_UNTRANSLATED, 160.0, 120.0, 999999.0, 3.0, 1.0);
 	
-	while(GetActorProperty(0,APROP_HEALTH) <= 0) Delay(35);
+	// [ZK] Delay 1 tic instead of 35
+	while(GetActorProperty(0,APROP_HEALTH) <= 0) Delay(1);
 	
 	//fadeback if resurrected
 	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1001, CR_UNTRANSLATED, 160.0, 120.0, 0.0, 0.0, 0.25);	
