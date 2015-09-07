@@ -38,6 +38,7 @@ script "OhNoes!" DEATH
 		{	
 			SetFont("fade");
 			HudMessage(s:""; HUDMSG_PLAIN, -1000, CR_UNTRANSLATED, 0.0, 0.0, 0.0, 0.0);
+			LocalSetMusic("*");
 			terminate;
 		}
 	}
@@ -52,6 +53,9 @@ script "OhNoes!" DEATH
 	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1001, CR_UNTRANSLATED, 160.0, 120.0, 0.0, 0.0, 0.25);	
 	SetFont("fade");
 	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1000, CR_UNTRANSLATED, 160.0, 120.0, 0.0, 0.0, 1.0);
+	
+	// [ZK] restore music
+	LocalSetMusic("*");
 }
 
 global int 1:HealthScriptDeactivate;
