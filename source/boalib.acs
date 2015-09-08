@@ -393,8 +393,9 @@ script "ExTeleportPlayer" (int teleportID, int destinationID)
 {
 	int deltaX = GetActorX(playerID) - GetActorX(teleportID);
 	int deltaY = GetActorY(playerID) - GetActorY(teleportID);
-	// [ZK] Use Warp instead of SetActorPosition so that the teleport always succeeds.
-	Warp(playerID, GetActorX(destinationID) + deltaX, GetActorY(destinationID) + deltaY, GetActorZ(playerID), 0, WARPF_ABSOLUTEPOSITION|WARPF_NOCHECKPOSITION);
+	//mxd. Warp won't work here, because the activator is ExTeleportIfPlayerBelow or ExTeleportIfPlayerAbove and not a player.
+	//mxd. This kinda limits Warp usefulness, dont you think?..
+	SetActorPosition(playerID, GetActorX(destinationID) + deltaX, GetActorY(destinationID) + deltaY, GetActorZ(playerID), false);
 }
 
 script "ExGetPlayerZ" (void)
