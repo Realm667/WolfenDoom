@@ -56,7 +56,7 @@ ACTOR SpaceSuit : PowerupGiver
   //$Category Powerups (Wolf3D)
   //$Title SpaceSuit ("IceWater" protection)
   //$Color 6
-  Inventory.PickupMessage "Space Suit"
+  Inventory.PickupMessage "Found a Space Suit, one small step for men..."
   Powerup.Color 100,100,100,.20
   Inventory.MaxAmount 0
   Inventory.UseSound "pickups/suite"
@@ -80,6 +80,7 @@ ACTOR C4 : Inventory
 	//$Category Powerups (Wolf3D)
 	//$Title C4 Explosives (pickups)
 	//$Color 6
+        Inventory.PickupMessage "Picked up a C4 pack"
 	Scale 0.5
 	Inventory.Icon "I_C4"
 	Inventory.MaxAmount 3
