@@ -59,3 +59,21 @@ ACTOR DogseResult : Dogse
 		Loop
 	}
 }
+
+ACTOR Naziward
+{
+	//$Category Misc (Wolf3D)
+	//$Title Naziward (Easteregg)
+	//$Color 3
+	Radius 2
+	Height 8
+	Scale 0.2
+	+SOLID
+	+USESPECIAL
+	States
+	{
+	Spawn:
+		NZWR A -1
+		Stop
+	}
+}
