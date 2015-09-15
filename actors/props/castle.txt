@@ -221,3 +221,51 @@ ACTOR BarrelWine : WellEmpty
 		Stop
 	}
 }
+
+ACTOR CathedralBell : ZBell
+{
+	//$Category Props (Wolf3D)
+	//$Title Bell (shootable)
+	//$Color 3
+  Health 5
+  Radius 56
+  Height 120
+  Mass 0x7fffffff
+  +SOLID
+  +SHOOTABLE
+  +NOBLOOD
+  +NOGRAVITY
+  +SPAWNCEILING
+  +NOICEDEATH
+  DeathSound "BellRing"
+
+  States
+  {
+  Spawn:
+    BBLL F -1
+    Stop
+  }
+
+}
+
+ACTOR WallTorch
+{
+	//$Category Props (Wolf3D)
+	//$Title Wal Torch (switchable)
+	//$Color 3
+  +NOBLOCKMAP
+  +NOGRAVITY
+  +FIXMAPTHINGPOS
+  Radius 6.5
+  States
+  {
+  Active:
+    WLTR A 0 Bright A_PlaySound("Ignite")
+  Spawn:
+    WLTR ABCDEFGH 5 Bright
+    Loop
+  Inactive:
+    WLTR I -1
+    Stop
+  }
+}
