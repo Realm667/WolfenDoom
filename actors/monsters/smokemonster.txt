@@ -8,8 +8,8 @@ ACTOR SmokeMonster
 	Height 56
 	Mass 10000000
 	Speed 4
-	Damage 10
-	PainChance 10
+	Damage 2
+	PainChance 192 //more chances for teleport himself now, old was 10
 	Monster
 	DamageType smoke
 	Damagefactor smoke,0
@@ -21,6 +21,7 @@ ACTOR SmokeMonster
 	+DONTMORPH
 	+EXTREMEDEATH
 	+FLOAT
+	+FLOORCLIP
 	+FLOATBOB
 	+FORCERADIUSDMG
 	+NEVERRESPAWN
@@ -29,6 +30,7 @@ ACTOR SmokeMonster
 	+NOGRAVITY
 	+NOICEDEATH
 	+NOTIMEFREEZE
+	+VISIBILITYPULSE //just a bit of pulsating effects, I loved the Phantom one
 	SeeSound "Smoke/See"
 	DeathSound "Smoke/Die"
 	Obituary "$SMOKEMO"
