@@ -251,18 +251,18 @@ ACTOR CathedralBell : ZBell
 ACTOR WallTorch
 {
 	//$Category Props (Wolf3D)
-	//$Title Wal Torch (switchable)
+	//$Title Wall Torch (switchable)
 	//$Color 3
   +NOBLOCKMAP
   +NOGRAVITY
-  +FIXMAPTHINGPOS
-  Radius 6.5
+
+  Radius 10
   States
   {
   Active:
-    WLTR A 0 Bright A_PlaySound("Ignite")
+    WLTR A 0 A_PlaySound("Ignite")
   Spawn:
-    WLTR ABCDEFGH 5 Bright
+    WLTR ABCDEFGH 4
     Loop
   Inactive:
     WLTR I -1
