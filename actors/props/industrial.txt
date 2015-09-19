@@ -90,3 +90,19 @@ ACTOR Crane2 : Crane
 		stop
 	}
 }
+
+ACTOR Zapper
+{
+	//$Category Props (Wolf3D)
+	//$Title Zapper
+	//$Color 3
+	radius 8
+	height 56
+	+SOLID
+	states
+	{
+	Spawn:
+	EZAP ABCDEFGH 3
+	loop
+	}
+}
