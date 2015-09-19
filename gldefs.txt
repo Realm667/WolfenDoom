@@ -499,6 +499,27 @@ pointlight OZYSIMLT
 	dontlightself 1
 }
 
+flickerlight2 WALLTORCH
+{
+		color 1.0 0.73 0.0
+		size 24
+		secondarySize 28
+		interval 0.1
+		offset 0 24 0
+}
+
+object BoAWallTorch1
+{
+  frame WLTRA { light WALLTORCH }
+  frame WLTRB { light WALLTORCH }
+  frame WLTRC { light WALLTORCH }
+  frame WLTRD { light WALLTORCH }
+  frame WLTRE { light WALLTORCH }
+  frame WLTRF { light WALLTORCH }
+  frame WLTRG { light WALLTORCH }
+  frame WLTRH { light WALLTORCH }
+}
+
 //PROPS - INDUSTRIAL//
 pulselight BOARBRL1
 {
@@ -1157,7 +1178,6 @@ Object SuperShield
 {
 Frame ARMX { Light SUPERSHIELD }
 }
-
 
 #include "boadefs.bm"
 #include "boashaders.txt" //mxd
