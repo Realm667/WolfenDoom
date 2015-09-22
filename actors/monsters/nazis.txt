@@ -2133,19 +2133,21 @@ ACTOR ChairGuy : Nazi
 	//$Title Chairman (Boss)
 	//$Color 4
 	Obituary "$CHAIRMAN"
-	Health 600
+	Health 1200
 	Mass 1000
 	PainChance 110
 	SeeSound "krist/sight"
 	PainSound "boss/pain"
 	DeathSound "krist/death"
-	Tag "Chairman"
+	Tag "Graf Holzbein"
 	DropItem GrenadePickup,128
 	DropItem GrenadePickup,128
 	DropItem GrenadePickup,128
 	+LOOKALLAROUND
 	+MISSILEEVENMORE
 	+BOSS
+	+NOGRAVITY
+	+FLOAT
 	states
 	{
 	Spawn:
