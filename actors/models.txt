@@ -197,6 +197,35 @@ ACTOR WaterTower001 : ModelBase
 	//$Color 3
 }
 
+ACTOR Windmill : 3dObstacle
+{
+	//$Category Models (Wolf3D)
+	//$Title Windmill
+	//$Color 3
+	
+	Radius 64
+	
+	States
+	{
+		Spawn:
+			SMGT A 0 NoDelay A_PlaySound("misc/windmill", CHAN_AUTO, 0.7, true)
+			SMGT A -1 A_SpawnItemEx("WindmillWheel", 34, 0, 476)
+			stop
+	}
+}
+
+ACTOR WindmillWheel : ModelBase
+{
+	+NOGRAVITY
+	
+	States
+	{
+		Spawn:
+			SMGT A 1 A_SetRoll(roll + 0.3)
+			loop	
+	}
+}
+
 ACTOR Tent : ModelBase
 {
 	//$Category Models (Wolf3D)
