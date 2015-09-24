@@ -924,28 +924,6 @@ Model SlopeMe2
 	FrameIndex SMGT A 0 0
 }
 
-Model SlopeMe3
-{
-	Path "models"
-	Model 0 "slopeme.md3"
-	Skin 0 "slopeme3.png"
-	Scale 1.0 1.0 1.0
-	InheritActorPitch
-	InheritActorRoll
-	FrameIndex SMGT A 0 0
-}
-
-Model SlopeMe4
-{
-	Path "models"
-	Model 0 "slopeme.md3"
-	Skin 0 "slopeme4.png"
-	Scale 1.0 1.0 1.0
-	InheritActorPitch
-	InheritActorRoll
-	FrameIndex SMGT A 0 0
-}
-
 //mxd
 Model IntermapSkylight
 {
@@ -1241,6 +1219,7 @@ Model DecorationShip
    Frame POSS A 0 "viper"
 }
 
+//astrostein
 Model RotatingStation
 { 
    Path "models/astrostein" 
@@ -1253,4 +1232,50 @@ Model RotatingStation
    rotation-speed 0.2
    
    Frame POSS A 0 "frame01"
+}
+
+//interactive
+Model CathedralBell
+{
+	Path "models"
+	Model 0 "h2bell.md3"
+	Skin 0 "h2bell.png"
+	Scale 0.8 0.8 0.8
+	//ZOffset 80
+	InheritActorPitch
+	InheritActorRoll
+	
+	frameindex BBLL F 0 0 //spawn
+	
+	frameindex BBLL A 0 1 //death
+	frameindex BBLL A 0 2
+	frameindex BBLL B 0 3
+	frameindex BBLL B 0 4
+	frameindex BBLL B 0 5
+	frameindex BBLL C 0 6
+	frameindex BBLL C 0 7
+	frameindex BBLL F 0 8
+	frameindex BBLL D 0 9
+	frameindex BBLL D 0 10
+	frameindex BBLL E 0 11
+	frameindex BBLL E 0 12
+	frameindex BBLL G 0 13
+	frameindex BBLL F 0 14
+	frameindex BBLL C 0 15
+	frameindex BBLL B 0 16
+	frameindex BBLL B 0 17
+	frameindex BBLL A 0 18
+	frameindex BBLL A 0 19
+	frameindex BBLL F 0 20
+	frameindex BBLL D 0 21
+	frameindex BBLL E 0 22
+	frameindex BBLL E 0 23
+	frameindex BBLL G 0 24
+	frameindex BBLL F 0 25
+	frameindex BBLL A 0 26
+	frameindex BBLL B 0 27
+	frameindex BBLL B 0 28
+	frameindex BBLL C 0 29
+	frameindex BBLL F 0 30
+	//frameindex BBLL F 0 31
 }
