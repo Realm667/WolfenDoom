@@ -889,8 +889,33 @@ InheritActorPitch
 InheritActorRoll
 FrameIndex SMGT A 0 0
 }
-//Defs for Hexen II models by Ozymandias81 (from Gore)
-//Original mdl files ripped & converted to md3 ones with Misfit Model3d
+
+Model RTCWParachute1 //ragged one
+{
+	Path "models"
+	Model 0 "chute1.md3"
+	Skin 0 "chute1.png"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
+Model RTCWParachute2 //open one
+{
+	Path "models"
+	Model 0 "chute2.md3"
+	Skin 0 "chute2.png"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
+//Hexen II models ripped by Ozy
+//Original mdl files converted to md3 ones with Misfit Model3d
 Model H2Table
 {
 Path "models"
