@@ -60,7 +60,31 @@ ACTOR StatistSinger : SwitchableDecoration
 		MADI ABCDEFBGDHFIB 8
 		Loop
 	Inactive:
-		TNT1 A 1
+		TNT1 A 5
+		Loop
+	}
+}
+
+ACTOR Marine3AStatist : Marine1
+{
+	Height 56
+	Mass 100
+	Scale 1.3
+	+SOLID
+	states
+	{
+	Spawn:
+		ARH2 A -1
+		Stop
+	}
+}
+
+ACTOR Marine3BStatist : Marine3AStatist
+{
+	states
+	{
+	Spawn:
+		MAH2 A -1
 		Stop
 	}
 }
