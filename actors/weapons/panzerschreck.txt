@@ -136,6 +136,7 @@ ACTOR PanzerRocket
 		EXP1 A 0 A_AlertMonsters
 		EXP1 A 0 A_PlaySound("panzer/explode",CHAN_VOICE,1.0,0,ATTN_NONE)
 		EXP1 A 0 A_Explode(192)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark", 0, 0, 0, random(-5,5), random(-5,5), random(-5,5), random(0,359)) //T667 improvements
 		TNT1 A 0 A_SpawnItemEx("PanzerNuke",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
 		TNT1 A 8 A_SpawnItemEx("GeneralExplosion_Large",56,0,32)
 		EXP1 A 2 BRIGHT LIGHT(BOAFLMW2) A_Quake(9,15,0,1024,"")

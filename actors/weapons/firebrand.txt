@@ -179,7 +179,7 @@ ACTOR SwordPuff
 		TNT1 A 1
 		stop
 	Crash:
-		TNT1 A 0 A_SpawnDebris("SwordPuffSpark")
+		TNT1 AAAA 0 A_SpawnItemEx("TracerSpark", 0, 0, 0, random(-2,1), random(-2,1), random(-2,1), random(0,359)) //T667 improvements
 		TNT1 A 1 A_AlertMonsters
 		Stop
 	}

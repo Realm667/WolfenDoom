@@ -18,8 +18,9 @@ ACTOR Tracer : FastProjectile
 		Stop
 	Death:
 	Crash:
-		TNT1 A 0 A_SpawnDebris("TracerSpark")
-		TNT1 A 8 A_PlaySound("ricochet")
+		TNT1 AAA 0 A_SpawnItemEx("TracerSpark", 0, 0, 0, random(-2,2), random(-2,2), random(-2,2), random(0,359)) //T667 improvements
+		PUFF B 3 BRIGHT LIGHT(BPUFF1) A_PlaySound("ricochet")
+		PUFF CD 3 BRIGHT LIGHT(BPUFF1)
 		Stop
 	XDeath:
 		TNT1 A 1 A_PlaySound("hitflesh")
@@ -62,9 +63,10 @@ ACTOR TracerSpark
 	Health 4
 	Radius 3
 	Height 6
+	Gravity .1
 	Speed .1
 	RenderStyle Add
-	Scale .5
+	Scale .3
 	Mass 0
 	+MISSILE
 	BounceType Doom
@@ -76,10 +78,14 @@ ACTOR TracerSpark
 	{
 	Spawn:
 		PUFF A 1
-		PUFF A 5 BRIGHT A_SetTranslucent(.8,1)
-		PUFF A 6 BRIGHT A_SetTranslucent(.6,1)
-		PUFF A 8 BRIGHT A_SetTranslucent(.4,1)
-		PUFF A 10 BRIGHT A_SetTranslucent(.2,1)
+		PUFF AEFGHI 2 BRIGHT A_SetTranslucent(.8,1)
+		PUFF J 1 BRIGHT A_SetTranslucent(.8,1)
+		PUFF K 1 BRIGHT A_SetTranslucent(.7,1)
+		PUFF K 1 BRIGHT A_SetTranslucent(.6,1)
+		PUFF K 1 BRIGHT A_SetTranslucent(.5,1)
+		PUFF K 1 BRIGHT A_SetTranslucent(.4,1)
+		PUFF K 1 BRIGHT A_SetTranslucent(.3,1)
+		PUFF K 1 BRIGHT A_SetTranslucent(.2,1)
 		Stop
 	}
 }
@@ -107,12 +113,13 @@ ACTOR WaltherTracer : LugerTracer
 
 ACTOR ShotgunTracer : Tracer
 {
+	Scale .3
 	Damage (random(5,15))
 	States
 	{
 		Death:
 		Crash:
-		TNT1 A 0 A_SpawnDebris("TracerSpark")
+		TNT1 AAA 0 A_SpawnItemEx("TracerSpark", 0, 0, 0, random(-2,2), random(-2,2), random(-2,2), random(0,359)) //T667 improvements
 		PUFF BCD 3 BRIGHT LIGHT(BPUFF1)
 		Stop
 	}
@@ -431,7 +438,7 @@ ACTOR EasyEnemyAstroTracer : EnemyAstroTracer //new
 
 // Enemy tracer variants for Hard and Nightmare mode
 ACTOR HardEnemyPistolTracer : EnemyPistolTracer
-{
+{ 
 	Speed 90
 }
 ACTOR HardEnemySMGTracer : EnemySMGTracer
