@@ -388,9 +388,13 @@ ACTOR SSTank1
 		TNK4 A 2 BRIGHT A_MonsterRefire(30,"See")
 		Loop
 	Missile2:
-		TNK4 BCDEFG 2 A_CustomMissile("PanzerRocket",78)
+		TNK4 BCD 2
+		TNK4 E 2 A_CustomMissile("PanzerRocket",78)
+		TNK4 FG 2
 		TNK4 A 10 A_FaceTarget
-		TNK4 BCDEFG 4 A_CustomMissile("PanzerRocket",78)
+		TNK4 BCD 4
+		TNK4 E 4 A_CustomMissile("PanzerRocket",78)
+		TNK4 FG 4
 		TNK4 A 10 A_FaceTarget
 		Goto See
 	Death:
