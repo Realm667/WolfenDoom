@@ -100,7 +100,6 @@ ACTOR KnifeSilent : Weapon
 	Weapon.BobSpeed 1.5
 	Weapon.BobRangeX 1.5
 	Weapon.UpSound "knife/select"
-	Obituary "$OBKNIFE"
 	Inventory.PickupMessage "$KNIFE"
 	Weapon.SelectionOrder 10000
 	States
@@ -129,7 +128,20 @@ ACTOR KnifeSilent : Weapon
 
 ACTOR KnifePuff : ShovelPuff
 {
-	attacksound "knife/stone"
-	seesound "knife/hit"
+	attacksound ""
+	seesound ""
 	scale 0.4
+	Obituary "$OBKNIFE"
+	states
+	{
+	Spawn:
+	Melee:
+	Crash:
+		POOF A 3 A_PlaySound("knife/stone")
+		POOF BCDE 3
+		Stop
+	XDeath:
+		POOF A 3 A_PlaySound("knife/hit")
+		Goto Crash+1
+	}
 }
