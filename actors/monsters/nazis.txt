@@ -2588,10 +2588,10 @@ ACTOR MGTurretInvisible : MGTurret
 	-COUNTKILL
 	+NOGRAVITY //mxd
 	RenderStyle None
-	
+
 	States
 	{
-	Missile: //mxd. Same as MGTurret, but without the dynamic light 
+	Missile: //mxd. Same as MGTurret, but without the dynamic light
 		"####" A 4 A_PlaySound("chaingun/start",CHAN_WEAPON)
 		"####" A 1 A_PlaySound("chaingun/loop",CHAN_WEAPON)
 		"####" A 5 A_FaceTarget
@@ -3048,7 +3048,6 @@ ACTOR Hostage : Guard
 	Scale 1.45 //mxd
 	DropItem ""
 	SeeSound ""
-	+FRIENDLY
 	States
 	{
 	Spawn:
