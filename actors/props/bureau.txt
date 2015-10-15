@@ -1,6 +1,6 @@
 ACTOR BinSilver
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Recycle Bin (silver)
 	//$Color 3
 	Radius 16
@@ -27,7 +27,7 @@ ACTOR BinSilver
 
 ACTOR Plant1
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Plant 1 (small)
 	//$Color 3
 	Radius 10
@@ -43,7 +43,7 @@ ACTOR Plant1
 
 ACTOR Chair1
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Chair (brown)
 	//$Color 3
 	Radius 8
@@ -59,7 +59,7 @@ ACTOR Chair1
 
 ACTOR Chair2
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Chair (black)
 	//$Color 3
 	Radius 8
@@ -75,7 +75,7 @@ ACTOR Chair2
 
 ACTOR SSUniform
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title SS Uniform
 	//$Color 3
 	Radius 8
@@ -91,7 +91,7 @@ ACTOR SSUniform
 
 ACTOR Uniform : SSUniform
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Uniform
 	//$Color 3
 	States
@@ -104,19 +104,21 @@ ACTOR Uniform : SSUniform
 
 ACTOR Cup1
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Cup (coffee)
 	//$Color 3
 	Radius 2
 	Height 4
+	Health 1	//needs to be added for being destroyable
 	+SOLID
 	+SHOOTABLE	//needs to be added for being destroyable
 	+NOBLOOD	//needs to be added for being destroyable
-	Health 1	//needs to be added for being destroyable
+	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
+	
 	States
 	{
 	Spawn:
-		CUP1 A -1
+		CUP1 A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 
 	Death:		//needs to be added for being destroyable
@@ -128,7 +130,7 @@ ACTOR Cup1
 
 ACTOR Cup2 : Cup1
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Cups (empty)
 	//$Color 3
 	States
@@ -141,7 +143,7 @@ ACTOR Cup2 : Cup1
 
 ACTOR CoffeeMachine
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Coffee Machine
 	//$Color 3
 	Radius 4
@@ -165,7 +167,7 @@ ACTOR CoffeeMachine
 
 ACTOR WaterMachine
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Water Machine
 	//$Color 3
 	Radius 4
@@ -190,7 +192,7 @@ ACTOR WaterMachine
 
 ACTOR Chair5
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Chair (grey)
 	//$Color 3
 	Radius 8
@@ -206,7 +208,7 @@ ACTOR Chair5
 
 ACTOR Plant2
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Plant 2 (small)
 	//$Color 3
 	Radius 10
@@ -240,7 +242,7 @@ ACTOR CeilingFan
 
 ACTOR PaperBox1
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Box (medium)
 	//$Color 3
 	Radius 8
@@ -256,7 +258,7 @@ ACTOR PaperBox1
 
 ACTOR PaperBox2 : PaperBox1
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Box (small)
 	//$Color 3
 	States
@@ -269,7 +271,7 @@ ACTOR PaperBox2 : PaperBox1
 
 ACTOR ChanGold
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Chandelier (gold)
 	//$Color 3
 	Radius 4
@@ -287,7 +289,7 @@ ACTOR ChanGold
 //Lab Glasses
 ACTOR flaskblueA
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Lab Flask (blue 1)
 	//$Color 3
 	mass 1500
@@ -317,7 +319,7 @@ ACTOR flaskblueA
 
 ACTOR flaskblueB : flaskblueA
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Lab Flask (blue 2)
 	//$Color 3
 	Radius 6
@@ -331,7 +333,7 @@ ACTOR flaskblueB : flaskblueA
 
 ACTOR flaskpurpleA : flaskblueA
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Lab Flask (purple 1)
 	//$Color 3
 	States
@@ -344,7 +346,7 @@ ACTOR flaskpurpleA : flaskblueA
 
 ACTOR flaskpurpleB : flaskblueB
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Lab Flask (purple 2)
 	//$Color 3
 	States
@@ -357,7 +359,7 @@ ACTOR flaskpurpleB : flaskblueB
 
 ACTOR flaskredA : flaskblueA
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Lab Flask (red 1)
 	//$Color 3
 	States
@@ -370,7 +372,7 @@ ACTOR flaskredA : flaskblueA
 
 ACTOR flaskredB : flaskblueB
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Bureau
 	//$Title Lab Flask (red 2)
 	//$Color 3
 	States

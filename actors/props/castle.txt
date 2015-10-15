@@ -1,6 +1,6 @@
 ACTOR KnightSilver
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Castle
 	//$Title Knight (silver,red)
 	//$Color 3
 	Radius 16
@@ -16,7 +16,7 @@ ACTOR KnightSilver
 
 ACTOR KnightSilver2 : KnightSilver
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Castle
 	//$Title Knight (silver,blue)
 	//$Color 3
 	States
@@ -29,7 +29,7 @@ ACTOR KnightSilver2 : KnightSilver
 
 ACTOR Table1
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Castle
 	//$Title Table (1)
 	//$Color 3
 	Radius 24
@@ -45,7 +45,7 @@ ACTOR Table1
 
 ACTOR Table2 : Table1
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Castle
 	//$Title Table (2)
 	//$Color 3
 	States
@@ -58,7 +58,7 @@ ACTOR Table2 : Table1
 
 ACTOR Table3 : Table1
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Castle
 	//$Title Table (3)
 	//$Color 3
 	States
@@ -71,7 +71,7 @@ ACTOR Table3 : Table1
 
 ACTOR Table4 : Table1
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Castle
 	//$Title Table (4)
 	//$Color 3
 	States
@@ -84,7 +84,7 @@ ACTOR Table4 : Table1
 
 ACTOR Table5 : Table1
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Castle
 	//$Title Table (5)
 	//$Color 3
 	States
@@ -97,7 +97,7 @@ ACTOR Table5 : Table1
 
 ACTOR Table6 : Table1
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Castle
 	//$Title Table (6)
 	//$Color 3
 	States
@@ -110,16 +110,22 @@ ACTOR Table6 : Table1
 
 ACTOR Table7
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Castle
 	//$Title Table (1, no chairs)
 	//$Color 3
 	Radius 20
-	Height 28
+	Height 27
 	Scale 1.15
 	+SOLID
 	States
 	{
 	Spawn:
+		TBL1 B 0 NoDelay A_SpawnItemEx("WineBottle", Random(-8, -3), Random(-8, 8), 27, 0, 0, 0, 0, 0, 128)
+		TBL1 B 0 A_SpawnItemEx("WineBottle", Random(3, 8), Random(-8, 8), 27, 0, 0, 0, 0, 0, 128)
+		TBL1 B 0 A_SpawnItemEx("WineGlass", Random(-16, -8), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
+		TBL1 B 0 A_SpawnItemEx("WineGlass", Random(8, 16), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
+		TBL1 B 0 A_SpawnItemEx("WineGlass", Random(-16, -8), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
+		TBL1 B 0 A_SpawnItemEx("WineGlass", Random(8, 16), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
 		TBL1 B -1
 		Stop
 	}
@@ -127,7 +133,7 @@ ACTOR Table7
 
 ACTOR Table8 : Table7
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Castle
 	//$Title Table (2, no chairs)
 	//$Color 3
 	States
@@ -140,12 +146,17 @@ ACTOR Table8 : Table7
 
 ACTOR Table9 : Table7
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Castle
 	//$Title Table (3, no chairs)
 	//$Color 3
 	States
 	{
 	Spawn:
+		TBL3 B 0 NoDelay A_SpawnItemEx("Kettle", Random(-8, -3), Random(-8, 8), 27, 0, 0, 0, 0, 0, 128)
+		TBL3 B 0 A_SpawnItemEx("Cup1", Random(-16, -8), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
+		TBL3 B 0 A_SpawnItemEx("Cup1", Random(8, 16), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
+		TBL3 B 0 A_SpawnItemEx("Cup1", Random(-16, -8), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
+		TBL3 B 0 A_SpawnItemEx("Cup1", Random(8, 16), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
 		TBL3 B -1
 		Stop
 	}
@@ -153,7 +164,7 @@ ACTOR Table9 : Table7
 
 ACTOR MonsterStatue
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Castle
 	//$Title Statue (monster)
 	//$Color 3
 	Radius 24
@@ -169,7 +180,7 @@ ACTOR MonsterStatue
 
 ACTOR WellEmpty
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Castle
 	//$Title Well (empty)
 	//$Color 3
 	Radius 24
@@ -185,7 +196,7 @@ ACTOR WellEmpty
 
 ACTOR WellWater : WellEmpty
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Castle
 	//$Title Well (water)
 	//$Color 3
 	States
@@ -198,7 +209,7 @@ ACTOR WellWater : WellEmpty
 
 ACTOR WellBlood : WellEmpty
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Castle
 	//$Title Well (blood)
 	//$Color 3
 	States
@@ -211,7 +222,7 @@ ACTOR WellBlood : WellEmpty
 
 ACTOR BarrelWine : WellEmpty
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Castle
 	//$Title Barrel (wine)
 	//$Color 3
 	States
@@ -224,7 +235,7 @@ ACTOR BarrelWine : WellEmpty
 
 ACTOR CathedralBell : ZBell
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Castle
 	//$Title Bell (shootable)
 	//$Color 3
   Health 5

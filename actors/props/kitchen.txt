@@ -1,36 +1,60 @@
 ACTOR PotKitchen1
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Kitchen
 	//$Title Pot (kitchen)
 	//$Color 3
 	Radius 16
 	Height 32
+	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
+	
 	States
 	{
 	Spawn:
-		TOPF A -1
+		TOPF A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
 
 ACTOR PotKitchen2
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Kitchen
 	//$Title Pot (kitchen,smoking)
 	//$Color 3
 	Radius 16
 	Height 32
+	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
+	
 	States
 	{
 	Spawn:
+		FCAN A 0 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY) 
+	Cook:
 		FCAN ABC 5
 		Loop
 	}
 }
 
+ACTOR Kettle
+{
+	//$Category Props (Wolf3D)/Kitchen
+	//$Title Kettle
+	//$Color 3
+	Radius 8
+	Height 16
+	Scale 0.5
+	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
+	
+	States
+	{
+	Spawn:
+		KETL A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
 ACTOR BarSeat
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Kitchen
 	//$Title Bar Chair (Destroyable)
 	//$Color 3
 	Radius 12
@@ -58,12 +82,14 @@ ACTOR BarSeat
 
 ACTOR WineBottle
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Kitchen
 	//$Title Bottle (wine, random)
 	//$Color 3
 	Radius 8
 	Height 8
-	Scale 0.6
+	Scale 0.75
+	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
+	
 	States
 	{
 	Spawn:
@@ -78,19 +104,21 @@ ACTOR WineBottle
 
 ACTOR WineGlass
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Kitchen
 	//$Title Glass (wine, destroyable)
 	//$Color 3
 	Radius 8
 	Height 8
-	Scale 0.6
+	Scale 0.4
+	Health 1	//needs to be added for being destroyable
 	+SHOOTABLE	//needs to be added for being destroyable
 	+NOBLOOD	//needs to be added for being destroyable
-	Health 1	//needs to be added for being destroyable
+	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
+	
 	States
 	{
 	Spawn:
-		FLAS B -1
+		FLAS B -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	Death:		//needs to be added for being destroyable
 		TNT1 A 0 A_PlaySound("GLASS5")
@@ -102,7 +130,7 @@ ACTOR WineGlass
 
 ACTOR OvenHot : SwitchableDecoration
 {
-	//$Category Props (Wolf3D)
+	//$Category Props (Wolf3D)/Kitchen
 	//$Title Oven (Destroyable)
 	//$Color 3
 	Radius 16
