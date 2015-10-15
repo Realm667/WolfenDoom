@@ -13,6 +13,15 @@ ACTOR SharkBlocker
 	+DONTSPLASH
 }
 
+//we need it smaller for narrow places/situations, not only the big one for sharks (check map c1m6)
+Actor SharkBlockerMini : SharkBlocker
+{
+	//$Category Monsters (Wolf3D)/Critters
+	//$Title Shark (blocker, mini)
+	//$Color 4
+	Radius 32
+}
+
 ACTOR Shark
 {
 	//$Category Monsters (Wolf3D)/Critters
