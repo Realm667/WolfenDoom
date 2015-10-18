@@ -11,7 +11,7 @@ actor FireExtinguisher : ExplosiveBarrel
 	{
 	Spawn:
 		GASF A -1
-		Loop
+		Stop
 	Death:
 		"####" A 0 A_SpawnItemEx("GeneralExplosion_Medium",0,0,32)
 		"####" A 6 A_Scream
@@ -28,7 +28,7 @@ actor GasBottle : FireExtinguisher
 	{
 	Spawn:
 		GASB A -1
-		Loop
+		Stop
 	Death:
 		"####" A 0 A_SpawnItemEx("GeneralExplosion_Medium")
 		"####" A 6 A_Scream
@@ -45,6 +45,6 @@ actor Bomb : GasBottle
 	{
 	Spawn:
 		BOMB A -1
-		Loop
+		Stop
 	}
 }

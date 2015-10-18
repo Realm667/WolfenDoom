@@ -23,7 +23,7 @@ ACTOR TNTBarrel1 : ExplosiveBarrel
 	{
 	Spawn:
 		BARL A -1
-		Loop
+		Stop
 	Death:
 		BARX A 2 BRIGHT A_SpawnItemEx("BarrelFrags")
 		BARX A 0 A_SpawnItemEx("GeneralExplosion_Medium")
