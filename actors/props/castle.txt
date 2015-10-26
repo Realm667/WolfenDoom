@@ -202,6 +202,20 @@ ACTOR WellWater : WellEmpty
 	States
 	{
 	Spawn:
+		WELL H -1 NoDelay A_SpawnItemEx("WellWaterWater", 0, 0, 0)
+		Stop
+	}
+}
+
+//mxd
+ACTOR WellWaterWater
+{
+	RenderStyle "Translucent"
+	Alpha 0.9
+	
+	States
+	{
+	Spawn:
 		WELL H -1
 		Stop
 	}

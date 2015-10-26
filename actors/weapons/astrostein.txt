@@ -417,7 +417,7 @@ actor AstrosteinMelee : NaziAstroWeapon
 	States
 	{
 	Select:
-		REZG C 0 NoDelay A_PlaySound("weapons/rezup", CHAN_BODY, 1.0) //mxd. UpSound will be cut off by ReadySound 
+		REZG C 0 A_PlaySound("weapons/rezup", CHAN_BODY, 1.0) //mxd. UpSound will be cut off by ReadySound 
 	SelectLoop:
 		REZG C 0 A_Raise
 		REZG C 1 A_Raise
