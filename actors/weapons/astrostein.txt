@@ -145,6 +145,7 @@ ACTOR AstroRocketlauncher : NaziAstroWeapon
 	Weapon.AmmoType2 "AstroRocketAmmo"
 	Weapon.AmmoUse2 1
 	Weapon.AmmoGive2 5
+	Weapon.UpSound "weapons/rezup" //mxd
 	Inventory.PickupMessage "$ENERGIE"
 	Obituary "$OBENERGIE"
 	Tag "Energiegewehr B95"
@@ -294,6 +295,7 @@ ACTOR AstroChaingun : NaziAstroWeapon
 	Weapon.AmmoType2 "AstroClipAmmo"
 	Weapon.AmmoUse2 1
 	Weapon.AmmoGive2 20
+	Weapon.UpSound "weapons/rezup" //mxd
 	Inventory.PickupMessage "$REPETIE"
 	Obituary "$OBREPETIE"
 	Tag "Repetierlaser 0815"
@@ -405,7 +407,6 @@ actor AstrosteinMelee : NaziAstroWeapon
 	//$Color 14
 	Weapon.Kickback 0
 	Weapon.SelectionOrder 2200
-	Weapon.UpSound "weapons/rezup"
 	Weapon.ReadySound "weapons/rezidle"
 	Inventory.PickupMessage "$ELEKTRO"
 	Obituary "$OBELEKTRO"
@@ -416,6 +417,8 @@ actor AstrosteinMelee : NaziAstroWeapon
 	States
 	{
 	Select:
+		REZG C 0 NoDelay A_PlaySound("weapons/rezup", CHAN_BODY, 1.0) //mxd. UpSound will be cut off by ReadySound 
+	SelectLoop:
 		REZG C 0 A_Raise
 		REZG C 1 A_Raise
 		Loop

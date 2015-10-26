@@ -16,6 +16,7 @@ astrohitflesh		astrohf
 astrowhiz		astrowz
 weapons/rezup		dsrezup
 weapons/rezidle		dsrezidl
+$pitchshift weapons/rezidle 0 //mxd
 weapons/rezfull		dsrezful
 weapons/rezhit		dsrezhit
 astrostein/explosion	ASTEXP02
@@ -668,11 +669,32 @@ burndthb burndthb
 burndthc burndthc
 
 //Spider
-spider1/sight	spisit
-spider1/active	spiact
-spider1/melee	spidattk
-spider1/pain	spipai
-spider1/death	spidth
+spider1/sight1 "sounds/monsters/spider/spi_see1.ogg"
+spider1/sight2 "sounds/monsters/spider/spi_see2.ogg"
+$random spider1/sight { spider1/sight1 spider1/sight2 }
+
+spider1/active1 "sounds/monsters/spider/spi_active1.ogg"
+spider1/active2 "sounds/monsters/spider/spi_active2.ogg"
+$random spider1/active { spider1/active1 spider1/active2 }
+
+spider1/melee1 "sounds/monsters/spider/spi_attack1.ogg"
+spider1/melee2 "sounds/monsters/spider/spi_attack2.ogg"
+$random spider1/melee { spider1/melee1 spider1/melee2 }
+
+spider1/pain1 "sounds/monsters/spider/spi_pain1.ogg"
+spider1/pain2 "sounds/monsters/spider/spi_pain2.ogg"
+spider1/pain3 "sounds/monsters/spider/spi_pain3.ogg"
+$random spider1/pain { spider1/pain1 spider1/pain2 spider1/pain3 }
+
+spider1/death1 "sounds/monsters/spider/spi_death1.ogg"
+spider1/death2 "sounds/monsters/spider/spi_death2.ogg"
+$random spider1/death { spider1/death1 spider1/death2 }
+
+spider1/walk1 "sounds/monsters/spider/spi_walk1.ogg"
+spider1/walk2 "sounds/monsters/spider/spi_walk2.ogg"
+$random spider1/walk { spider1/walk1 spider1/walk2 }
+
+spider1/jump "sounds/monsters/spider/spi_jump.ogg"
 
 //Elite Soldats
 $random eliterifler/sight { eliterifler/sight1 eliterifler/sight2 eliterifler/sight3 eliterifler/sight4 }
