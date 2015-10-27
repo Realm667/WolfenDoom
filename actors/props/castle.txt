@@ -229,9 +229,15 @@ ACTOR WellBlood : WellEmpty
 	States
 	{
 	Spawn:
-		WELL J -1
+		WELL J -1 NoDelay A_SpawnItemEx("WellBloodBlood", 0, 0, 0)
 		Stop
 	}
+}
+
+//mxd
+ACTOR WellBloodBlood : WellWaterWater
+{
+	Alpha 0.7
 }
 
 ACTOR BarrelWine : WellEmpty
