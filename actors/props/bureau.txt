@@ -18,8 +18,9 @@ ACTOR BinSilver
 		Stop
 	Death: //need sounds and proper debrises
 		TNT1 A 0 A_UnSetSolid
-		TNT1 A 0 A_PlaySound("METALBRK")
-		TNT1 AAAAAA 0 A_SpawnItemEx ("Debris_Trash", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE) //make sure to always adjust XYZ position depending on the size of the object and the amount of AAA 
+		TNT1 A 0 A_PlaySound("METALBRK", frandom (0.5,0.8))
+		TNT1 AAAAAA 0 A_SpawnItemEx ("Debris_Trash", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		TNT1 A 2 A_SpawnItemEx ("BarrelFragsMetal")
 		BINS B -1
 		Stop
 	}
@@ -28,15 +29,49 @@ ACTOR BinSilver
 ACTOR Plant1
 {
 	//$Category Props (Wolf3D)/Bureau
-	//$Title Plant 1 (small)
+	//$Title Plant 1 (breakable, small)
 	//$Color 3
 	Radius 10
 	Height 32
+	Health 25
+	+NOBLOOD
+	+SHOOTABLE
 	+SOLID
 	States
 	{
 	Spawn:
 		PLNT A -1
+		Stop
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		TNT1 A 0 A_PlaySound("WOODBRK", frandom (0.5,0.8))
+		TNT1 A 2 A_SpawnItemEx ("BarrelFrags")
+		PLNT C -1
+		Stop
+	}
+}
+
+ACTOR Plant2
+{
+	//$Category Props (Wolf3D)/Bureau
+	//$Title Plant 2 (breakable, small)
+	//$Color 3
+	Radius 10
+	Height 32
+	Health 25
+	+NOBLOOD
+	+SHOOTABLE
+	+SOLID
+	States
+	{
+	Spawn:
+		PLNT B -1
+		Stop
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		TNT1 A 0 A_PlaySound("WOODBRK", frandom (0.5,0.8))
+		TNT1 A 2 A_SpawnItemEx ("BarrelFrags")
+		PLNT D -1
 		Stop
 	}
 }
@@ -202,22 +237,6 @@ ACTOR Chair5
 	{
 		Spawn:
 		CHR5 A -1
-		Stop
-	}
-}
-
-ACTOR Plant2
-{
-	//$Category Props (Wolf3D)/Bureau
-	//$Title Plant 2 (small)
-	//$Color 3
-	Radius 10
-	Height 32
-	+SOLID
-	States
-	{
-	Spawn:
-		PLNT B -1
 		Stop
 	}
 }
