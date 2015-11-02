@@ -98,6 +98,7 @@ ACTOR Debris_Tank
 	BounceFactor 0.5
 	+MISSILE
 	BounceType Doom
+	BounceSound "TANKDBRS"
 	+NOBLOCKMAP
 	+NOTELEPORT
 	+BOUNCEONWALLS
@@ -135,6 +136,7 @@ ACTOR Debris_TankShards : Debris_Tank
 	BounceFactor 0.75
 	RENDERSTYLE ADD
 	Alpha 0.6
+	BounceSound "none"
 	States
 	{
 	Spawn:
