@@ -21,11 +21,21 @@ ACTOR NaziflagS
 	//$Color 3
 	Radius 8
 	Height 64
+	Health 20
+	Mass 1000
+	+SHOOTABLE
+	+NOBLOOD
 	+SOLID
 	States
 	{
 	Spawn:
 		FLAG A -1
+		Stop
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		TNT1 A 0 A_PlaySound("WOODBRK", frandom (0.2,0.5))
+		TNT1 A 2 A_SpawnItemEx ("BarrelFrags")
+		FLAG D -1
 		Stop
 	}
 }
@@ -37,23 +47,30 @@ ACTOR NazibannerM
 	//$Color 3
 	Radius 16
 	Height 96
+	Health 30
+	Mass 1000
+	+SHOOTABLE
+	+NOBLOOD
 	+SOLID
 	States
 	{
 	Spawn:
 		FLAG B -1
 		Stop
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		TNT1 A 0 A_PlaySound("WOODBRK", frandom (0.2,0.5))
+		TNT1 A 2 A_SpawnItemEx ("BarrelFrags")
+		FLAG E -1
+		Stop
 	}
 }
 
-ACTOR NazibannerM2
+ACTOR NazibannerM2 : NaziBannerM
 {
 	//$Category Props (Wolf3D)/Flags
 	//$Title Nazibanner 2 (middle)
 	//$Color 3
-	Radius 16
-	Height 96
-	+SOLID
 	States
 	{
 	Spawn:
@@ -69,11 +86,21 @@ ACTOR SSBanner
 	//$Color 3
 	Radius 16
 	Height 64
+	Health 20
+	Mass 1000
+	+SHOOTABLE
+	+NOBLOOD
 	+SOLID
 	States
 	{
 	Spawn:
 		SSFG A -1
+		Stop
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		TNT1 A 0 A_PlaySound("WOODBRK", frandom (0.2,0.5))
+		TNT1 A 2 A_SpawnItemEx ("BarrelFrags")
+		SSFG B -1
 		Stop
 	}
 }
