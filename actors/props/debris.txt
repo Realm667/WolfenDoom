@@ -95,7 +95,24 @@ ACTOR Debris_Metal3 : Debris_Base
 	}
 }
 
+ACTOR Debris_Leaf : Feather //inheritances with Ravens actor
+{
+	-DONTSPLASH //original one has +
+	States
+	{
+	Spawn:
+		PLNT EFGHIJ 3
+		Loop
+	Death:
+		"####" "#" 350
+		Wait
+	}
+}
+
 //Translated ones
+ACTOR Debris_LeafY : Debris_Leaf {Translation "10:10=165:165", "112:125=160:166" }
+ACTOR Debris_LeafR : Debris_Leaf {Translation "10:10=188:188", "112:125=176:189" }
+ACTOR Debris_LeafB : Debris_Leaf {Translation "10:10=240:240", "112:125=194:207" }
 ACTOR Debris_Metal3Dark : Debris_Metal3 {Translation "80:111=109:111"}
 
 ///////////////////////////////////////////////////////

@@ -34,7 +34,8 @@ ACTOR NaziflagS
 	Death:
 		TNT1 A 0 A_UnSetSolid
 		TNT1 A 0 A_PlaySound("WOODBRK", frandom (0.2,0.5))
-		TNT1 A 2 A_SpawnItemEx ("FlagFrags")
+		//TNT1 A 2 A_SpawnItemEx ("FlagFrags") //Torm wants all debris to stay forever
+		TNT1 A 2 A_SpawnItemEx ("BarrelFrags")
 		FLAG D -1
 		Stop
 	}
@@ -60,7 +61,8 @@ ACTOR NazibannerM
 	Death:
 		TNT1 A 0 A_UnSetSolid
 		TNT1 A 0 A_PlaySound("WOODBRK", frandom (0.2,0.5))
-		TNT1 A 2 A_SpawnItemEx("FlagFrags")
+		//TNT1 A 2 A_SpawnItemEx("FlagFrags")
+		TNT1 A 2 A_SpawnItemEx ("BarrelFrags")
 		FLAG E -1
 		Stop
 	}
@@ -99,7 +101,8 @@ ACTOR SSBanner
 	Death:
 		TNT1 A 0 A_UnSetSolid
 		TNT1 A 0 A_PlaySound("WOODBRK", frandom (0.2,0.5))
-		TNT1 A 2 A_SpawnItemEx ("FlagFrags")
+		//TNT1 A 2 A_SpawnItemEx ("FlagFrags")
+		TNT1 A 2 A_SpawnItemEx ("BarrelFrags")
 		SSFG B -1
 		Stop
 	}
