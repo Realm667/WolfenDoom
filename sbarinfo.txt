@@ -6,79 +6,77 @@ InterpolateArmor true;
 statusbar Normal // Standard Doom Status bar
 {
 
-    //Draw Mask for Space Suite
-    InInventory PowerSpaceSuit, 1
-    {
-       DrawImage "STGMASK", 157, 78, center;
-       drawbar "HORZSP2F", "HORZSP2E", PowerupTime(SpaceSuit), horizontal, interpolate(2), 135, 133;
-    }
+	//Draw Mask for Space Suit
+	InInventory PowerSpaceSuit, 1
+	{
+		DrawImage "STGMASK", 157, 78, center;
+		drawbar "HORZSP2F", "HORZSP2E", PowerupTime(SpaceSuit), horizontal, interpolate(2), 135, 133;
+	}
 
-    drawimage "HUDBAR", -54, 152;
+	drawimage "HUDBAR", -54, 152;
 
-    //AirControl, Stamina 
-    drawbar "HORZAIRF", "HORZAIRE", airtime, horizontal, interpolate(2), 36, 160;
-    drawbar "HORZSTMF", "HORZSTME", stamina, horizontal, interpolate(2), 88, 160;
+	//AirControl, Stamina
+	drawbar "HORZAIRF", "HORZAIRE", airtime, horizontal, interpolate(2), 36, 160;
+	drawbar "HORZSTMF", "HORZSTME", stamina, horizontal, interpolate(2), 88, 160;
 
-    //Ammo
-    drawnumber 3, BIGFONT, untranslated, ammo1, 225, 171;
-    drawnumber 3, BIGFONT, untranslated, ammo2, 225, 185;
+	//Ammo
+	drawnumber 3, BIGFONT, untranslated, ammo1, 225, 171;
+	drawnumber 3, BIGFONT, untranslated, ammo2, 225, 185;
 
-    //Ammo Icons
-    drawimage ammoicon1, 231, 170;
-    drawimage ammoicon2, 231, 184;
+	//Ammo Icons
+	drawimage ammoicon1, 231, 170;
+	drawimage ammoicon2, 231, 184;
 
-    //Weapon
-    drawstring "THREEFIV", untranslated, weapontag, 190, 159, 1, alignment(center);
+	//Weapon
+	drawstring "THREEFIV", untranslated, weapontag, 190, 159, 1, alignment(center);
 
-    //Time
-    drawstring "THREEFIV", untranslated, time, 249, 159, 1, alignment(center);
+	//Time
+	drawstring "THREEFIV", untranslated, time, 249, 159, 1, alignment(center);
 
-    //Health
-    drawnumber 3, BIGFONT, untranslated, health, 52, 171;
-    drawstring "BIGFONT", untranslated, "%", 65, 171;
+	//Health
+	drawnumber 3, BIGFONT, untranslated, health, 52, 171;
+	drawstring "BIGFONT", untranslated, "%", 65, 171;
 
-    //Armor
-    drawimage armoricon, 4, 184;
-    drawnumber 3, BIGFONT, untranslated, armor, 52, 185;
-    drawstring "BIGFONT", untranslated, "%", 65, 185;
+	//Armor
+	drawimage armoricon, 4, 184;
+	drawnumber 3, BIGFONT, untranslated, armor, 52, 185;
+	drawstring "BIGFONT", untranslated, "%", 65, 185;
 
-    //Money
-    drawnumber 3, BIGFONT, untranslated, coinitem, alignment(left), 138, 171;
+	//Money
+	drawnumber 3, BIGFONT, untranslated, coinitem, alignment(left), 138, 171;
 
-    //Grenade
-    drawnumber 3, BIGFONT, untranslated, GrenadePickup, alignment(left), 138, 185;
+	//Grenade
+	drawnumber 3, BIGFONT, untranslated, GrenadePickup, alignment(left), 138, 185;
 
-    //keys
-    drawswitchableimage "BoABlueKey",   "nullimage", "STKEYS0", 254, 171;
-    drawswitchableimage "BoAGreenKey",  "nullimage", "STKEYS3", 260, 171;
-    drawswitchableimage "BoAYellowKey", "nullimage", "STKEYS1", 254, 180;
-    drawswitchableimage "BoAPurpleKey", "nullimage", "STKEYS4", 260, 180;
-    drawswitchableimage "BoARedKey",    "nullimage", "STKEYS2", 254, 189;
-    drawswitchableimage "BoACyanKey",   "nullimage", "STKEYS5", 260, 189;
-    drawswitchableimage "AstroBlueKey",   "nullimage", "ATKEYS0", 254, 171;
-    drawswitchableimage "AstroYellowKey", "nullimage", "ATKEYS1", 254, 180;
-    drawswitchableimage "AstroRedKey",    "nullimage", "ATKEYS2", 254, 189;
+	//keys
+	drawswitchableimage "BoABlueKey",	"nullimage", "STKEYS0", 254, 171;
+	drawswitchableimage "BoAGreenKey",	"nullimage", "STKEYS3", 260, 171;
+	drawswitchableimage "BoAYellowKey",	"nullimage", "STKEYS1", 254, 180;
+	drawswitchableimage "BoAPurpleKey",	"nullimage", "STKEYS4", 260, 180;
+	drawswitchableimage "BoARedKey",	"nullimage", "STKEYS2", 254, 189;
+	drawswitchableimage "BoACyanKey",	"nullimage", "STKEYS5", 260, 189;
+	drawswitchableimage "AstroBlueKey",	"nullimage", "ATKEYS0", 254, 171;
+	drawswitchableimage "AstroYellowKey","nullimage", "ATKEYS1", 254, 180;
+	drawswitchableimage "AstroRedKey",	"nullimage", "ATKEYS2", 254, 189;
 
-    //Ammo
-    drawnumber 3, THREEFIV, untranslated, "9mmAmmo", 283, 172, 1;
-    drawnumber 3, THREEFIV, untranslated, "12GaugeAmmo", 283, 178, 1;
-    drawnumber 3, THREEFIV, untranslated, "MauserAmmo", 283, 184, 1;
-    drawnumber 3, THREEFIV, untranslated, "FlameAmmo", 283, 190, 1;
-    drawnumber 3, THREEFIV, untranslated, "NebAmmo", 306, 172, 1;
-    drawnumber 3, THREEFIV, untranslated, "PanzerAmmo", 306, 178, 1;
+	//Ammo
+	drawnumber 3, THREEFIV, untranslated, "9mmAmmo", 283, 172, 1;
+	drawnumber 3, THREEFIV, untranslated, "12GaugeAmmo", 283, 178, 1;
+	drawnumber 3, THREEFIV, untranslated, "MauserAmmo", 283, 184, 1;
+	drawnumber 3, THREEFIV, untranslated, "FlameAmmo", 283, 190, 1;
+	drawnumber 3, THREEFIV, untranslated, "NebAmmo", 306, 172, 1;
+	drawnumber 3, THREEFIV, untranslated, "PanzerAmmo", 306, 178, 1;
 
-    drawselectedinventory alternateonempty, THREEFIV, 76, 168
-    {
-        drawmugshot 5, 76, 168;
-    }
+	drawselectedinventory THREEFIV, 156, 168;
+	drawmugshot 5, 76, 168;
 
-    //mxd. Mugshot frame overlay
-    drawimage "HUDBROVL", 74, 168;
+	//mxd. Mugshot frame overlay
+	drawimage "HUDBROVL", 74, 168;
 }
 
 Statusbar Automap
 {
-    drawimage "AMBAR", -54, 152;
+	drawimage "AMBAR", -54, 152;
 }
 
 Statusbar FullScreen, FullScreenOffsets, forcescaled
@@ -86,9 +84,9 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 	//SpaceSuite Mask
 	InInventory PowerSpaceSuit, 1
 	{
-	     DrawImage "STGMASK", 0+center, 0+center, center;
-	     drawbar "HORZSPCF", "HORZSPCE", PowerupTime(SpaceSuit), horizontal, interpolate(2), -55+center, 16;
-  	}
+		 DrawImage "STGMASK", 0+center, 0+center, center;
+		 drawbar "HORZSPCF", "HORZSPCE", PowerupTime(SpaceSuit), horizontal, interpolate(2), -55+center, 16;
+	}
 
 	//AirControl, Stamina
 	drawbar "VERTAIRF", "VERTAIRE", airtime, vertical, interpolate(2), 4, -174;
@@ -97,64 +95,60 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 	//Top Left
 	drawimage "HUD_UL", 0, 0;
 	//Money
-   	drawnumber 3, BIGFONT, untranslated, coinitem, alignment(right), 50, 7;
+	drawnumber 3, BIGFONT, untranslated, coinitem, alignment(right), 50, 7;
 	//Time
 	drawstring "THREEFIV", untranslated, time, 14, 21, 1, alignment(left);
 
 	//Top Right
 	drawimage "HUD_UR", -66, 0;
 	//Keys
-	drawswitchableimage "BoABlueKey",   "nullimage", "STKEYS0", -14, 9;
-	drawswitchableimage "BoAGreenKey",  "nullimage", "STKEYS3", -14, 19;
-	drawswitchableimage "BoAYellowKey", "nullimage", "STKEYS1", -24, 9;
-	drawswitchableimage "BoAPurpleKey", "nullimage", "STKEYS4", -24, 19;
-	drawswitchableimage "BoARedKey",    "nullimage", "STKEYS2", -34, 9;
-	drawswitchableimage "BoACyanKey",   "nullimage", "STKEYS5", -34, 19;
+	drawswitchableimage "BoABlueKey",	"nullimage", "STKEYS0", -14, 9;
+	drawswitchableimage "BoAGreenKey",	"nullimage", "STKEYS3", -14, 19;
+	drawswitchableimage "BoAYellowKey",	"nullimage", "STKEYS1", -24, 9;
+	drawswitchableimage "BoAPurpleKey",	"nullimage", "STKEYS4", -24, 19;
+	drawswitchableimage "BoARedKey",	"nullimage", "STKEYS2", -34, 9;
+	drawswitchableimage "BoACyanKey",	"nullimage", "STKEYS5", -34, 19;
 
-    	drawswitchableimage "AstroBlueKey",   "nullimage", "ATKEYS0", -14, 9;
-	drawswitchableimage "AstroYellowKey", "nullimage", "ATKEYS1", -24, 9;
-	drawswitchableimage "AstroRedKey",    "nullimage", "ATKEYS2", -34, 9;
+	drawswitchableimage "AstroBlueKey",	"nullimage", "ATKEYS0", -14, 9;
+	drawswitchableimage "AstroYellowKey","nullimage","ATKEYS1", -24, 9;
+	drawswitchableimage "AstroRedKey",	"nullimage", "ATKEYS2", -34, 9;
 
 	//Bottom Left
 	drawimage "HUD_BL", 0, -53;
-		//Health
-    		drawnumber 3, BIGFONT, untranslated, health, 94, -36;
-    		drawstring "BIGFONT", untranslated, "%", 107, -36;
+	//Health
+	drawnumber 3, BIGFONT, untranslated, health, 94, -36;
+	drawstring "BIGFONT", untranslated, "%", 107, -36;
 
-    		//Armor
-		drawimage armoricon, 44, -20;
-    		drawnumber 3, BIGFONT, untranslated, armor, 94, -20;
-    		drawstring "BIGFONT", untranslated, "%", 107, -20;
+	//Armor
+	drawimage armoricon, 44, -20;
+	drawnumber 3, BIGFONT, untranslated, armor, 94, -20;
+	drawstring "BIGFONT", untranslated, "%", 107, -20;
 
-		//Mugshot + Inventory
-		drawselectedinventory alternateonempty, THREEFIV, 7, -38
-    		{
-			drawmugshot 5, 7, -38;
-    		}
+	//Mugshot + Inventory
+	drawselectedinventory THREEFIV, 112, -38;
+	drawmugshot 5, 7, -38;
 
 	//Bottom Right
 	drawimage "HUD_BR", -116, -53;
-		//Weapon
-    		drawstring "THREEFIV", untranslated, weapontag, -55, -52, 1, alignment(center);
+	//Weapon
+	drawstring "THREEFIV", untranslated, weapontag, -55, -52, 1, alignment(center);
 
-		//Ammo
-		drawnumber 3, BIGFONT, untranslated, ammo1, -10, -20;
-    		drawnumber 3, BIGFONT, untranslated, ammo2, -10, -36;
+	//Ammo
+	drawnumber 3, BIGFONT, untranslated, ammo1, -10, -20;
+	drawnumber 3, BIGFONT, untranslated, ammo2, -10, -36;
 
-    		//Ammo Icons
-    		drawimage ammoicon1, -61, -21;
-    		drawimage ammoicon2, -61, -37;
+	//Ammo Icons
+	drawimage ammoicon1, -61, -21;
+	drawimage ammoicon2, -61, -37;
 
-		//Ammo
-    		//drawnumber 3, THREEFIV, untranslated, ammo "9mmAmmo", 	-10, -85, 1;
-    		//drawnumber 3, THREEFIV, untranslated, ammo "12GaugeAmmo", 	-10, -80, 1;
-    		//drawnumber 3, THREEFIV, untranslated, ammo MauserAmmo, 	-10, -75, 1;
-    		//drawnumber 3, THREEFIV, untranslated, ammo FlameAmmo, 	-10, -70, 1;
-    		//drawnumber 3, THREEFIV, untranslated, ammo NebAmmo, 	-10, -65, 1;
-    		//drawnumber 3, THREEFIV, untranslated, ammo PanzerAmmo, 	-10, -60, 1;
+	//Ammo
+	//drawnumber 3, THREEFIV, untranslated, ammo "9mmAmmo", 	-10, -85, 1;
+	//drawnumber 3, THREEFIV, untranslated, ammo "12GaugeAmmo", 	-10, -80, 1;
+	//drawnumber 3, THREEFIV, untranslated, ammo MauserAmmo, 	-10, -75, 1;
+	//drawnumber 3, THREEFIV, untranslated, ammo FlameAmmo, 	-10, -70, 1;
+	//drawnumber 3, THREEFIV, untranslated, ammo NebAmmo, 	-10, -65, 1;
+	//drawnumber 3, THREEFIV, untranslated, ammo PanzerAmmo, 	-10, -60, 1;
 
-		//Grenade
-    		drawnumber 3, BIGFONT, untranslated, GrenadePickup, alignment(left), -83, -20;
-
-
+	//Grenade
+	drawnumber 3, BIGFONT, untranslated, GrenadePickup, alignment(left), -83, -20;
 }
