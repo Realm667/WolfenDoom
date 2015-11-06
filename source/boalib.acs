@@ -56,36 +56,36 @@ script "BoADialogue"(int who, int which)
 		headsilent = "MS_PRIB0";
 		message = StrParam(s:"\cEAgent Ryan\n", s:prisonermessage[which]);
 	}
-	
+
 	// Fade in HUD BGs
 	SetHudSize(320, 200, true);
 	SetFont("HEADBAR");
 	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, 4, CR_UNTRANSLATED, 160.0, 24.0, 9.0, 1.0, 1.0);
 	SetFont("HEADBOVL"); //mxd. Frame overlay
 	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, 1, CR_UNTRANSLATED, 160.0, 24.0, 9.0, 1.0, 1.0); //mxd
-	
+
 	// Fade in the portrait
 	SetFont(headsilent);
 	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, 3, CR_UNTRANSLATED, 21.0, 16.0, 999.0, 1.0, 999.0);
-	
+
 	// Start talk animation
 	Delay(35);
 	SetFont(headtalky);
 	hudmessagebold(s:"A"; HUDMSG_PLAIN, 3, CR_UNTRANSLATED, 21.0, 16.0, 6.0);
-	
+
 	// Show message
 	AmbientSound("RADIONOS",127);
 	SetHudSize(640, 400, false);
 	SetFont("SMALLFONT");
 	SetHudWrapWidth(540);
 	hudmessagebold(s:message; HUDMSG_TYPEON, 2, CR_GRAY, 100.1, 13.1, 6.0, 0.03);
-	
+
 	// Stop talk animation
 	delay(5*35);
 	SetHudSize(320, 200, true);
 	SetFont(headsilent);
 	hudmessagebold(s:"A"; HUDMSG_PLAIN, 3, CR_UNTRANSLATED, 21.0, 16.0, 2.0);
-	
+
 	// Fade out the portrait
 	delay(2*35);
 	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, 3, CR_UNTRANSLATED, 21.0, 16.0, 0.0, 0.0, 1.0);
@@ -425,4 +425,34 @@ script "ExTeleportPlayer" (int teleportID, int destinationID)
 script "ExGetPlayerZ" (void)
 {
 	SetResultValue(GetActorZ(playerID) >> 16);
+}
+
+//Supply Chest Script
+Script "SupplyChest"(int supplychestid,int prize)
+{
+	if(CheckInventory("ChestKey"))
+	{
+		Thing_Activate(supplychestid);
+		Delay(20);
+		ActivatorSound("misc/p_pkup",127);
+		TakeInventory("ChestKey",1);
+		if(prize==1)
+			SpawnForced("SupplyChest100Coins",GetActorX(supplychestid),GetActorY(supplychestid),GetActorZ(supplychestid));
+		else if(prize==2)
+			SpawnForced("SupplyChest75Coins",GetActorX(supplychestid),GetActorY(supplychestid),GetActorZ(supplychestid));
+		else if(prize==3)
+		{
+			SpawnForced("SupplyChest25Coins",GetActorX(supplychestid),GetActorY(supplychestid),GetActorZ(supplychestid));
+			//Special event in C1M1
+			spawnspotfacing("RifleGuard",51,0);
+		}
+		else if(prize==4)
+			SpawnForced("SupplyChestKar98k",GetActorX(supplychestid),GetActorY(supplychestid),GetActorZ(supplychestid));
+		else if(prize==5)
+			SpawnForced("SupplyChestBackpack",GetActorX(supplychestid),GetActorY(supplychestid),GetActorZ(supplychestid));
+		else if(prize==6)
+			SpawnForced("SupplyChestGrenades",GetActorX(supplychestid),GetActorY(supplychestid),GetActorZ(supplychestid));
+	}
+	else
+		ActivatorSound("treasure/locked",127);
 }

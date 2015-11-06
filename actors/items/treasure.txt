@@ -190,8 +190,84 @@ ACTOR SupplyChest : SwitchingDecoration
 		SUBX A -1
 		Stop
 	Active:
-		SUBX B 20
-		SUBX C -1 A_UnSetSolid
+		SUBX B 21
+		Stop
+	}
+}
+ACTOR EmptySupplyChest
+{
+	States
+	{
+	Spawn:
+		SUBX C -1
+		Stop
+	}
+}
+ACTOR SupplyChest100Coins : CustomInventory
+{
+	+INVENTORY.ALWAYSPICKUP
+	Height 34
+	Radius 21
+	Inventory.PickupFlash "EmptySupplyChest"
+	Inventory.PickupMessage "You found 100 Coins, you lucky bastard!"
+	Inventory.PickupSound "treasure/pickup"
+	States
+	{
+	Spawn:
+		SUBX B -1
+		Stop
+	Pickup:
+		TNT1 A 0 A_GiveInventory("CoinItem",100)
+		Stop
+	}
+}
+ACTOR SupplyChest75Coins : SupplyChest100Coins
+{
+	Inventory.PickupMessage "You found 75 Coins, you lucky bastard!"
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_GiveInventory("CoinItem",75)
+		Stop
+	}
+}
+ACTOR SupplyChest25Coins : SupplyChest100Coins
+{
+	Inventory.PickupMessage "You found 25 Coins, you lucky bastard!"
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_GiveInventory("CoinItem",25)
+		Stop
+	}
+}
+ACTOR SupplyChestKar98k : SupplyChest100Coins
+{
+	Inventory.PickupMessage "You found a Karabiner 98k, you lucky bastard!"
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_GiveInventory("Kar98k")
+		Stop
+	}
+}
+ACTOR SupplyChestBackpack : SupplyChest100Coins
+{
+	Inventory.PickupMessage "You found ammunition, ready to kick Nazi ass!"
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_GiveInventory("NazisBackpack")
+		Stop
+	}
+}
+ACTOR SupplyChestGrenades : SupplyChest100Coins
+{
+	Inventory.PickupMessage "You found 3 grenades, time to go boom!"
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_GiveInventory("GrenadePickup",3)
 		Stop
 	}
 }
