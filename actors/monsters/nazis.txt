@@ -2027,7 +2027,7 @@ ACTOR DeathKnight : Nazi
 		DKGT KK 0 A_SpawnItemEx("9MMCasing", 32,0,58, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
 		DKGT K 2 BRIGHT LIGHT(DEKNBFIR)
 		DKGT L 0 A_CustomMissile("NebRocketEnemy",80,-24)
-		DKGT L 2 BRIGHT A_MonsterRefire(30,"See")
+		DKGT L 8 BRIGHT A_MonsterRefire(15,"See")
 		Loop
 	Pain:
 		DKGT E 3
@@ -2177,6 +2177,8 @@ ACTOR ChairGuy : Nazi
 		KRIS G 6 BRIGHT LIGHT(OTT2FIRE) A_CustomMissile("MiniMiniRocket",66,-22)
 		Goto See
 	Death:
+	Death.Fire:
+	XDeath:
 		KRIS H 8 A_Scream
 		KRIS HHH 8 A_SetAngle(angle+45)
 		KRIS HHHHHH 4 A_SetAngle(angle+45)
@@ -2209,6 +2211,8 @@ ACTOR FatMan : ChairGuy
 	//$Title FatMan (Boss)
 	//$Color 4
 	+BOSS
+	-NOGRAVITY	//we don't want him to fly, yeah? ;)
+	-FLOAT			//we don't want him to fly, yeah? ;)
 	PainChance 64
 	Tag "Gen. Schwabbelhals"
 	Obituary "$FATMAN"

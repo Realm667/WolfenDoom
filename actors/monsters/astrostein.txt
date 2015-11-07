@@ -23,6 +23,8 @@ ACTOR AstroGuard : Guard
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		"####" G 0 A_Jump(256,"See")
 		Stop
+	Death.Fire: //We don't want different Death sequences than the Disintegrate one for Astrosteins, yeah?
+	XDeath:
 	Death:	//Temporary until actual frames are implemented
 		"####" A 0 A_Jump(256,"Disintegrate")
 	}
