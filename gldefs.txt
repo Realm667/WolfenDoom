@@ -1,3 +1,6 @@
+#include "boadefs.bm"
+#include "boashaders.txt" //mxd
+
 /////////////////////////////////////////////////////
 // SPARK SPAWNERS ///////////////////////////////////
 /////////////////////////////////////////////////////
@@ -1181,5 +1184,32 @@ Object SuperShield
 Frame ARMX { Light SUPERSHIELD }
 }
 
-#include "boadefs.bm"
-#include "boashaders.txt" //mxd
+//mxd. TITLEMAP shadows
+pointlight TMDOGE_SHADOW
+{
+	color 0.6 0.6 0.6
+	offset 0 0 -4
+	size 6
+	subtractive 1
+	dontlightself 1
+}
+
+pointlight TMGUARD_SHADOW
+{
+	color 0.4 0.4 0.4
+	offset 0 0 -4
+	size 5
+	subtractive 1
+	dontlightself 1
+}
+
+object TMDog
+{
+	frame DOG3L { light TMDOGE_SHADOW }
+}
+
+object TMGuardWithShadow
+{
+	frame MGR2A { light TMGUARD_SHADOW }
+}
+
