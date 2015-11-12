@@ -347,3 +347,80 @@ Actor Ember2 : Ember1
 		Goto Death
 	}
 }
+
+Actor BarrelFireSpawner
+{
+	Height 40
+	Radius 30
+	Projectile
+	DamageType Fire
+	-NOGRAVITY
+	+THRUGHOST
+	+LOWGRAVITY
+	+DONTSPLASH
+	+NOEXPLODEFLOOR
+	+NODAMAGETHRUST
+	+CLIENTSIDEONLY
+	States
+	{
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_PlaySound("SFX/FireStart",7,frandom(0.4,0.8))
+		TNT1 A 0 A_PlaySound("SFX/FireLoop1",6,frandom(0.2,0.4),1)
+		TNT1 A 0 A_SpawnItemEx("SmallFlame")
+		TNT1 A 0 A_Jump(256,1,6,7,8,9,10,11)
+		TNT1 A 1 A_SpawnItemEx("Flame1A")
+		TNT1 A 1 A_Explode(2, 8, 0)
+		TNT1 A 0 A_SpawnItemEx("Ember1")
+		TNT1 A 0 A_SpawnItemEx("Ember2")
+		TNT1 A 0 A_SpawnItemEx("Ember1")
+		Loop
+		TNT1 A 1 A_SpawnItemEx("Flame1B")
+		TNT1 A 1 A_SpawnItemEx("Flame2A")
+		TNT1 A 1 A_SpawnItemEx("Flame2B")
+		TNT1 A 1 A_SpawnItemEx("Flame3A")
+		TNT1 A 1 A_SpawnItemEx("Flame3B")
+		TNT1 A 1 A_Explode(2, 8, 0)
+		TNT1 A 1 A_SpawnItemEx("Flame1B")
+		TNT1 A 1 A_SpawnItemEx("Flame2A")
+		TNT1 A 1 A_SpawnItemEx("Flame2B")
+		TNT1 A 1 A_SpawnItemEx("Flame3A")
+		TNT1 A 1 A_SpawnItemEx("Flame3B")
+		TNT1 A 1 A_Explode(1, 8, 0)
+		TNT1 A 1 A_SpawnItemEx("Flame1B")
+		TNT1 A 1 A_SpawnItemEx("Flame2A")
+		TNT1 A 1 A_SpawnItemEx("Flame2B")
+		TNT1 A 1 A_SpawnItemEx("Flame3A")
+		TNT1 A 1 A_SpawnItemEx("Flame3B")
+		TNT1 A 1 A_Explode(2, 8, 0)
+		TNT1 A 1 A_SpawnItemEx("Flame1B")
+		TNT1 A 1 A_SpawnItemEx("Flame2A")
+		TNT1 A 1 A_SpawnItemEx("Flame2B")
+		TNT1 A 1 A_SpawnItemEx("Flame3A")
+		TNT1 A 1 A_SpawnItemEx("Flame3B")
+		TNT1 A 1 A_Explode(1, 8, 0)
+		TNT1 A 1 A_SpawnItemEx("Flame1B")
+		TNT1 A 1 A_SpawnItemEx("Flame2A")
+		TNT1 A 1 A_SpawnItemEx("Flame2B")
+		TNT1 A 1 A_SpawnItemEx("Flame3A")
+		TNT1 A 1 A_SpawnItemEx("Flame3B")
+		TNT1 A 1 A_Explode(2, 8, 0)
+		TNT1 A 1 A_SpawnItemEx("Flame1B")
+		TNT1 A 1 A_SpawnItemEx("Flame2A")
+		TNT1 A 1 A_SpawnItemEx("Flame2B")
+		TNT1 A 1 A_SpawnItemEx("Flame3A")
+		TNT1 A 1 A_SpawnItemEx("Flame3B")
+		TNT1 A 1 A_Explode(1, 8, 0)
+		TNT1 A 1 A_SpawnItemEx("Flame1B")
+		TNT1 A 1 A_SpawnItemEx("Flame2A")
+		TNT1 A 1 A_SpawnItemEx("Flame2B")
+		TNT1 A 1 A_SpawnItemEx("Flame3A")
+		TNT1 A 1 A_SpawnItemEx("Flame3B")
+		TNT1 A 0 A_Jump(192, 1)
+		Loop
+	Death:
+		TNT1 A 0 A_PlaySound("SFX/FireDie",7)
+		TNT1 A -1 A_StopSound(6)
+		Stop
+	}
+}
