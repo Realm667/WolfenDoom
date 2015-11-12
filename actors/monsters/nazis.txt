@@ -327,62 +327,6 @@ ACTOR SSMP40Guard : SSGuard
 	}
 }
 
-ACTOR SSMP40GuardBlind : SSMP40Guard
-{
-	//$Category Monsters (Wolf3D)
-	//$Title SS Guard (MP40, sneak-friendly)
-	//$Color 4
-	PainChance 256 // Otherwise our Pain states won't always work...
-	+FRIENDLY      // The guy is friendly. Looks like walking the patrol without immediately aquiring the player as a targer won't work otherwise...
-	States
-	{
-	Spawn:
-		TNT1 A 0 NoDelay A_SpawnItemEx("BlindGuardEyes", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION)
-		goto Super::Spawn
-	Missile:
-		SSMG EF 5 A_FaceTarget
-		SSMG G 0 A_AlertMonsters(512)
-		SSMG G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
-		SSMG G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
-		SSMG G 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		SSMG F 2 A_MonsterRefire(30,"See")
-		SSMG F 0 A_FaceTarget
-		Goto Missile+2
-	Pain: // Stop being so friendly when damaged
-		SSMG A 0 A_ChangeFlag("FRIENDLY", false)
-		goto Super::Pain
-	Pain.Poke: // Stop being friendly without visual effects when poked by PatrollingGuardEyes
-		SSMG A 0 A_ChangeFlag("FRIENDLY", false)
-		goto See
-	}
-}
-
-// This actor follows PatrollingGuard around looking for players
-Actor BlindGuardEyes
-{
-	RenderStyle None
-	Height 46
-	+NOGRAVITY
-	+NOCLIP
-	States
-	{
-	Spawn:
-		TNT1 A 1 A_Warp(AAPTR_MASTER, 0, 0, Height) // Need a slight delay between A_Looks to prevent infinite loop
-		TNT1 A 0 A_LookEx(0, 0.0, 1024.0, 256.0, 65.0, "PlayerSeen")
-		loop
-	PlayerSeen:
-		TNT1 A 0 A_JumpIf(CallACS("TargetIsHidden"), "IgnorePlayer")
-		goto AlertMaster
-	IgnorePlayer:
-		TNT1 A 1 A_ClearTarget
-		goto Spawn
-	AlertMaster:
-		TNT1 A 0 A_SpawnItemEx("AlertMarker", 0, 0, 68, 0, 0, 0, 0, SXF_TRANSFERPOINTERS | SXF_NOCHECKPOSITION)
-		TNT1 A 0 A_DamageMaster(1, "Poke") // Cause the master to enter Pain.Poke state (HAAAACKS!!!!11)
-		stop
-	}
-}
-
 ACTOR WMP40Guard : MP40Guard
 {
 	//$Category Monsters (Wolf3D)

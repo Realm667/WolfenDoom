@@ -127,7 +127,7 @@ actor PlayerStep
 		TNT1 A 1 NoDelay A_Look
 		loop
 	See:
-		TNT1 A 0 A_AlertMonsters(256)
+		TNT1 A 0 A_AlertMonsters(CallACS("ApplyNoiseLevelMultiplier", 256))
 		TNT1 A 3
 		goto See + 1
 	Crash:

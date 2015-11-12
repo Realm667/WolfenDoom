@@ -1,0 +1,157 @@
+//mxd. Stealth-related stuff. Must be loaded after nazis.txt
+
+actor SneakableSSMP40Guard : SSMP40Guard
+{
+	//$Category Monsters (Wolf3D)
+	//$Title SS Guard (MP40, sneak-friendly)
+	//$Color 4
+	
+	PainChance 256 					// Otherwise our Pain states won't always work...
+	var int user_chasegoal; // Current PatrolTarget TID is stored here when the guard becomes alerted
+	+FRIENDLY      					// The guy is friendly. Looks like walking the patrol without immediately aquiring the player as a targer won't work otherwise...
+	
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION)
+			goto Super::Spawn
+			
+		Pain: // Stop being so friendly when damaged
+			"####" "#" 0 A_CheckFlag("FRIENDLY", "BecomeAlerted") // Only if not already alerted
+			goto Super::Pain
+			
+		BecomeAlerted: // Become alerted after being attacked 
+			"####" "#" 0 A_SetUserVar("user_chasegoal", CallACS("GetChaseGoal", user_chasegoal)) // Store current chase goal, if any
+			"####" "#" 0 A_ChangeFlag("FRIENDLY", false)
+			"####" "#" 0 A_PlaySound("axis1/sighted", CHAN_BODY)
+			"####" "#" 0 A_RemoveChildren(true, RMVF_EVERYTHING) // Despawn children
+			"####" "#" 0 A_SpawnItemEx("SneakableGuardEyesAlerted", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION)
+			goto Super::Pain
+			
+		Pain.BecomeAlerted: // Stop being friendly without visual effects when poked by PatrollingGuardEyes
+			"####" "#" 0 A_SetUserVar("user_chasegoal", CallACS("GetChaseGoal", user_chasegoal)) // Store current chase goal, if any
+			"####" "#" 0 A_ChangeFlag("FRIENDLY", false)
+			"####" "#" 0 A_SetHealth(health + 1) // Compensate the loss of health
+			"####" "#" 0 A_SpawnItemEx("SneakableGuardEyesAlerted", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION)
+			goto See
+			
+		Pain.BecomeIdle: // Become friendly again and resume patrolling, if possible
+			"####" "#" 0 A_ChangeFlag("FRIENDLY", true)
+			"####" "#" 0 A_SetHealth(health + 1) // Compensate the loss of health
+			"####" "#" 0 A_ClearTarget
+			"####" "#" 0 ACS_NamedExecute("TryResumePatrolling") 
+			goto Spawn
+			
+		Death:
+			"####" "#" 0 A_RemoveChildren(true, RMVF_EVERYTHING) // Despawn children
+			"####" "#" 0 A_CheckFlag("FRIENDLY", "Super::Death") // Don't decrease AlertedCount when friendly
+			"####" "#" 0 ACS_NamedExecute("DecreaseAlertedCount")
+			goto Super::Death
+			
+		XDeath: // Same as Death
+			"####" "#" 0 A_RemoveChildren(true, RMVF_EVERYTHING)  // Despawn children
+			"####" "#" 0 A_CheckFlag("FRIENDLY", "Super::XDeath") // Don't decrease AlertedCount when friendly
+			"####" "#" 0 ACS_NamedExecute("DecreaseAlertedCount")
+			goto Super::XDeath
+	}
+}
+
+// This actor follows SneakableGuard around looking for players
+actor SneakableGuardEyesIdle
+{
+	RenderStyle None
+	Height 46
+	
+	+NOGRAVITY
+	+NOCLIP
+	
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SetArg(1, Random(245, 315)) // Set quote countdown time to 7 - 9 seconds
+			goto Look
+			
+		Look:
+			TNT1 A 1 A_Warp(AAPTR_MASTER, 0, 0, Height) // Need a slight delay between A_Looks to prevent infinite loop
+			TNT1 A 0 A_LookEx(0, 0.0, 1024.0, 128.0, 65.0, "PlayerSeen")
+			TNT1 A 0 A_CountdownArg(1, "PlayIdleSound")
+			loop
+			
+		PlayIdleSound:
+			TNT1 A 0 A_PlaySound("axis1/idle", CHAN_BODY)
+			goto Spawn
+			
+		PlayerSeen:
+			TNT1 A 0 A_JumpIf(CallACS("TargetIsHidden"), "IgnorePlayer")
+			goto AlertMaster
+			
+		IgnorePlayer:
+			TNT1 A 1 A_ClearTarget
+			goto Look
+			
+		AlertMaster:
+			TNT1 A 0 A_SpawnItemEx("AlertMarker", 0, 0, 64, 0, 0, 0, 0, SXF_TRANSFERPOINTERS)
+			TNT1 A 6 A_PlaySound("axis1/sighted", CHAN_BODY)
+			TNT1 A 0 A_DamageMaster(1, "BecomeAlerted") // Cause the master to enter Pain.BecomeAlerted state (HAAAACKS!!!!11)
+			stop
+	}
+}
+
+// This actor follows SneakableGuard around checking if players are no longer seen
+actor SneakableGuardEyesAlerted : SneakableGuardEyesIdle
+{
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay ACS_NamedExecute("IncreaseAlertedCount")
+			TNT1 A 0 A_AlertMonsters(512) // Something fishy is going on. Alert everybody around!
+			goto ResetCounters
+		
+		ResetCounters: 
+			TNT1 A 0 A_SetArg(0, Random(280, 350)) // Set countdown time to 8 - 10 seconds
+			TNT1 A 0 A_SetArg(1, Random(140, 210))   // Set quote countdown time to 4 - 6 seconds 
+			goto Look
+			
+		Look:
+			TNT1 A 1 A_Warp(AAPTR_MASTER, 0, 0, Height) // Need a slight delay between A_Looks to prevent infinite loop
+			TNT1 A 0 A_LookEx(0, 0.0, 1024.0, 128.0, 65.0, "PlayerSeen")
+			TNT1 A 0 A_CountdownArg(0, "ResetMaster") // Sets master state to Patrol when the countdown reaches zero
+			TNT1 A 0 A_CountdownArg(1, "TryPlayLoosingTargetSound")
+			loop
+			
+		TryPlayLoosingTargetSound:
+			TNT1 A 0 A_JumpIf(args[0] > 220, "Look") // Too early!
+			TNT1 A 0 A_PlaySound("axis1/target_not_seen", CHAN_BODY)
+			goto ResetCounters + 1 // Reset quote countdown time only
+			
+		PlayerSeen: // Clear target and reset countdown
+			TNT1 A 1 A_ClearTarget
+			goto ResetCounters
+			
+		ResetMaster:
+			TNT1 A 0 A_DamageMaster(1, "BecomeIdle") // Cause the master to enter Pain.BecomeIdle state (HAAAACKS!!!!11)
+			TNT1 A 0 ACS_NamedExecute("DecreaseAlertedCount")
+			stop
+	}
+}
+
+// It's here just for lulz
+actor AlertMarker
+{
+	Scale 2.0
+	
+	+BRIGHT
+	+NOGRAVITY
+
+	States
+	{
+		Spawn:
+			EXCL C 1 NoDelay A_PlaySound("misc/alert", CHAN_BODY)
+			goto Fade
+		
+		Fade:
+			EXCL C 0 A_Warp(AAPTR_MASTER, 0, 0, 64)
+			EXCL C 1 A_FadeOut(0.01)
+			loop
+	}
+}

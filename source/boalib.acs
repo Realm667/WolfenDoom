@@ -1,5 +1,6 @@
 #library "boalib"
 #include "zcommon.acs"
+#import "stealth.acs" //mxd
 
 global int 1:disable_mutants; //mxd. When set to true, Mutant and MutantMelee will immediately despawn after spawning.
 global int 2:disable_big_mutants; //mxd. When set to true, BigMutant1 and BigMutant2 will immediately despawn after spawning.
@@ -155,100 +156,6 @@ Script "Exhausted" ENTER
 	}
 	Delay(1);
 	restart;
-}
-
-//mxd. Footsteps
-int stepDistance = 76.0;
-int curStepDistance;
-int lastPlayerX;
-int lastPlayerY;
-int playerID;
-
-Script "PlayFootstepsSoundLoop" ENTER
-{
-	Delay(1);
-	playerID = 1000 +  PlayerNumber();
-	Thing_ChangeTID(0, playerID);
-
-	lastPlayerX = GetActorX(playerID);
-	lastPlayerY = GetActorY(playerID);
-
-	while(true)
-	{
-		if(GetActorProperty(playerID, APROP_Waterlevel) < 3)
-		{
-			//footsteps
-			int cfz = GetActorFloorZ(playerID);
-
-			if(GetActorZ(playerID) - cfz == 0) //if we are not in the air
-			{
-				int cx = GetActorX(playerID);
-				int cy = GetActorY(playerID);
-
-				if(curStepDistance > stepDistance)
-				{
-					if((GetPlayerInput(-1, INPUT_BUTTONS) & BT_CROUCH)) //different step sounds while crouching
-					{
-						ThingSound(playerID, "floor/dirt", 36);
-					}
-					else
-					{
-						SpawnForced("PlayerStep", cx, cy, cfz + 14);
-					}
-
-					curStepDistance = 0;
-				}
-				else
-				{
-					curStepDistance += VectorLength(lastPlayerX - cx, lastPlayerY - cy);
-				}
-
-				lastPlayerX = cx;
-				lastPlayerY = cy;
-			}
-			else
-			{
-				curStepDistance = 0;
-			}
-		}
-
-		Delay(1);
-	}
-}
-
-//mxd. Stealth-related. For this to work, each player must have unique TID.
-script "TargetIsHidden" (void)
-{
-		// Get target's TID
-		int targettid = GetActorProperty(0, APROP_TargetTID);
-
-		// 0 TID means that target is not a player, but something (probably PlayerStep), which called A_AlertMonsters.
-		if(targettid == 0)
-		{
-			SetResultValue(true);
-			terminate;
-		}
-
-		// Get it's light level
-		int targetlightlevel = GetActorLightLevel(targettid);
-
-		// And speed
-		int x = GetActorVelX(targettid);
-		int y = GetActorVelY(targettid);
-		int z = GetActorVelZ(targettid);
-
-		// That's squared speed actually
-		// Full speed is around 56 when running forward, around 92 when going sideways, around 200 when sprinting.
-		int speed = (FixedMul(x, x) + FixedMul(y, y) + FixedMul(z, z)) >> 16;
-
-		// And view height (56 when standing, 28 when crouching)
-		int viewheightmod = 56 - (GetActorViewHeight(targettid) >> 16);
-
-		// Calculate resulting visibility level (will probably require lots of tweaking...)
-		int visibility = targetlightlevel + speed - viewheightmod;
-
-		// Return the value
-		SetResultValue(visibility < 100);
 }
 
 //mxd. Mutants despawn checks
