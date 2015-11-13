@@ -48,6 +48,7 @@ Actor FloatingCinder
 	{
 	Spawn:
 		EMBR A 0 NODELAY A_SetScale(FRandom(0.03, 0.06))
+		TNT1 A 0 A_JumpIf(CallACS("CinderSwitch")==0,"EndSpawn")
 		TNT1 A 0 A_Jump(80,8)
 		TNT1 A 0 A_Jump(80,6)
 		TNT1 A 0 A_Jump(80,4)
@@ -56,5 +57,8 @@ Actor FloatingCinder
 	Death:
 		EMBR A 1 BRIGHT A_FadeOut(0.06)
 		Loop
+	EndSpawn:
+		TNT1 A -1
+		Goto Spawn
 	}
 }
