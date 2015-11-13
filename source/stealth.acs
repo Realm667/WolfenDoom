@@ -93,13 +93,14 @@ Script "PlayFootstepsSoundLoop" ENTER
 			}
 
 			// Draw BG
+			SetHudSize(320, 240, false);
 			SetFont("STLTH_BG");
-			HudMessage(s:"A"; HUDMSG_PLAIN | HUDMSG_NOWRAP | HUDMSG_NOTWITHFULLMAP, 20, 0, 0.5, 1.0, 0.1);
+			HudMessage(s:"A"; HUDMSG_PLAIN | HUDMSG_NOWRAP | HUDMSG_NOTWITHFULLMAP, 20, 0, 160.0, 237.2, 0.1);
 
 			// Draw lamp (yellow when hidden, red when can be seen)
 			if(lampalpha < 1.0) SetFont("STLTH_LY");
 			else SetFont("STLTH_LR");
-			HudMessage(s:"A"; HUDMSG_PLAIN | HUDMSG_NOWRAP | HUDMSG_ALPHA | HUDMSG_NOTWITHFULLMAP, 19, 0, 0.5, 1.0, 0.1, lampalpha);
+			HudMessage(s:"A"; HUDMSG_PLAIN | HUDMSG_NOWRAP | HUDMSG_ALPHA | HUDMSG_NOTWITHFULLMAP, 19, 0, 160.0, 237.2, 0.1, lampalpha);
 		}
 		
 		if(curNoiseLevel > 0) curNoiseLevel -= NOISE_FADE_SPEED;
