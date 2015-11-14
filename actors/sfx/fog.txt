@@ -47,6 +47,7 @@ Actor FogCloud_V1
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_SetScale(FRandom(2,2.25))
+		TNT1 A 0 A_JumpIf(CallACS("FogSwitch")==0,"EndSpawn")
 		TNT1 A 0 A_Jump(256,1,2,3,4)
 		AWCF ABCD 0 A_Jump(256,"Coolness")
 	Coolness:
@@ -57,6 +58,9 @@ Actor FogCloud_V1
 		"----" A 0 A_Jump(256,0,1,2,3,4,5,6,7,8,9,10,11,12,13)
 		AWCF AAAAAAAAAAAAAA 4
 		loop
+	EndSpawn:
+		TNT1 A -1
+		Goto Spawn
 	}
 }
 
