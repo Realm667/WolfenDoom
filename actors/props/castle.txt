@@ -273,8 +273,22 @@ ACTOR CathedralBell : ZBell
   States
   {
   Spawn:
-    BBLL F -1
+    FIRE C -1
     Stop
+	Death:
+		VILE A 4 A_BellReset1
+		VILE B 4
+		VILE C 4 A_Scream
+		VILE DEFG 4
+		VILE H 4 A_Scream
+		VILE IJK 4
+		VILE L 4 A_Scream
+		VILE MNOPQ 4
+		VILE R 4 A_Scream
+		VILE STUVWXYZ 4
+		FIRE ABC 4
+		FIRE C 4 A_BellReset2
+		Goto Spawn
   }
 
 }
