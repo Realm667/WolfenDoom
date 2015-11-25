@@ -95,6 +95,17 @@ ACTOR Debris_Metal3 : Debris_Base
 	}
 }
 
+ACTOR Debris_Pottery : Debris_Base
+{
+	Scale 0.9
+	States
+	{
+	Spawn:
+		POTR ABCDEF 2
+		Loop
+	}
+}
+
 ACTOR Debris_Leaf : Feather //inheritances with Ravens actor
 {
 	-DONTSPLASH //original one has +
