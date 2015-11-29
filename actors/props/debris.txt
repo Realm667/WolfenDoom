@@ -17,12 +17,6 @@ ACTOR Debris_Base
 	WallBounceFactor 0.3
 	BounceCount 3
 	Gravity 0.3
-	/*States
-	{
-	Death:
-		"####" "#" 350
-		Wait
-	}*/
 }
 
 ACTOR Debris_GlassShard_Small : Debris_Base
@@ -287,11 +281,24 @@ ACTOR Debris_Tank
 	States
 	{
 	Spawn:
+		BRKP AB 0 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		BRKP AB 2 A_SetScale(ScaleX+frandom(-0.1,0.1),ScaleY+frandom(-0.1,0.1))
 		Loop
+	AdjustMass: //mxd
+		"####" "#" 0 A_SetMass(500)
+		goto Swim
+	Swim: //mxd
+		"####" A 2 A_ScaleVelocity(0.7)
+		"####" B 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		Loop
 	Death:
-		"####" "#" -1
+		"####" A 0 A_Jump(256,1,2,3)
+		"####" AB 0 A_Jump(256,"Death1")
 		Stop
+	Death1:
+		"####" "#" 1 A_SetTics(CallACS("DebrisLifetime"))
+		"####" "#" 1 A_FadeOut(0.1)
+		Wait
 	}
 }
 
@@ -304,8 +311,26 @@ ACTOR Debris_Tank2 : Debris_Tank
 	States
 	{
 	Spawn:
+		MDB1 ABCD 0 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		MDB1 ABCD 2 A_SetScale(ScaleX+frandom(-0.1,0.1),ScaleY+frandom(-0.1,0.1))
 		Loop
+	AdjustMass: //mxd
+		"####" "#" 0 A_SetMass(500)
+		goto Swim
+	Swim: //mxd
+		"####" A 2 A_ScaleVelocity(0.7)
+		"####" B 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" C 2 A_ScaleVelocity(0.7)
+		"####" D 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		Loop
+	Death:
+		"####" A 0 A_Jump(256,1,2,3)
+		"####" BD 0 A_Jump(256,"Death1")
+		Stop
+	Death1:
+		"####" "#" 1 A_SetTics(CallACS("DebrisLifetime"))
+		"####" "#" 1 A_FadeOut(0.1)
+		Wait
 	}
 }
 
@@ -319,13 +344,30 @@ ACTOR Debris_TankShards : Debris_Tank
 	States
 	{
 	Spawn:
-		PBIT ABCDEFGHIJ 1
+		PBIT ABCDEFGHIJ 1 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		Loop
+	AdjustMass: //mxd
+		"####" "#" 0 A_SetMass(400)
+		goto Swim
+	Swim: //mxd
+		"####" A 2 A_ScaleVelocity(0.7)
+		"####" B 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" C 2 A_ScaleVelocity(0.7)
+		"####" D 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" E 2 A_ScaleVelocity(0.7)
+		"####" F 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" G 2 A_ScaleVelocity(0.7)
+		"####" H 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" I 2 A_ScaleVelocity(0.7)
+		"####" J 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
 		Loop
 	Death:
-		TNT1 A 0 A_Jump(256,1,2,3)
-		PBIT GHJ 0 A_Jump(256,"End")
-	End:
-		PBIT "#" -1
+		"####" A 0 A_Jump(256,1,2,3)
+		"####" GHJ 0 A_Jump(256,"Death1")
 		Stop
+	Death1:
+		"####" "#" 1 A_SetTics(CallACS("DebrisLifetime"))
+		"####" "#" 1 A_FadeOut(0.1)
+		Wait
 	}
 }
