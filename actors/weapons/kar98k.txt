@@ -50,7 +50,7 @@ ACTOR Kar98k : NaziWeapon
 		KAR9 A 0 A_AlertMonsters
 		KAR9 A 0 A_PlaySound("mauser/fire",CHAN_WEAPON)
 		KAR9 A 0 A_SpawnItemEx("MauserRifleCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
-		KAR9 A 0 ACS_NamedExecute("WWNaziTaunt",0,1)
+		//KAR9 A 0 ACS_NamedExecute("WWNaziTaunt",0,1)
 		KAR9 A 0 A_JumpIfInventory("SniperZoom", 1, "ScopedFire")
 		KAR9 A 0 A_GunFlash
 		KAR9 A 2 A_FireCustomMissile("Kar98kTracer")
@@ -94,7 +94,7 @@ ACTOR Kar98k : NaziWeapon
         KAR9 A 2 A_ZoomFactor(1.0)
         Goto Ready
 	Reload:
-		KAR9 A 5 ACS_NamedExecute("WWNaziTaunt",0,2)
+		KAR9 A 5 //ACS_NamedExecute("WWNaziTaunt",0,2)
 		KAR9 A 1 A_PlaySound("mauser/open",5)
 		KAR9 A 1 Offset(-4,34)
 		KAR9 A 1 Offset(-6,35)
