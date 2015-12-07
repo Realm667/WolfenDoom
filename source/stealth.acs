@@ -4,17 +4,19 @@
 
 //Constants
 #define PLAYER_STEP_DISTANCE 76 << 16 	// cause defines can't be fixed point numbers
-#define PLAYER_BUMP_DISTANCE 80 				// If a player is closer than this distance, monster will become alerted even if a player is hidden
+#define PLAYER_BUMP_DISTANCE 40 				// If a player is closer than this distance, monster will become alerted even if a player is hidden
 #define MAX_PLAYER_COUNT 4 							// Maximum number of coop players
-#define PLAYER_DETECTION_VISIBILITY 100 // Player must be this visible to be detected by enemies
 #define MAX_NOISE_LEVEL 60 << 16        // This value is added to current visibility level when player step sound is played
 #define NOISE_FADE_SPEED 6              // curNoiseLevel is decreased by this value every tick
 #define PLAYER_TAG_OFFSET 1000
+#define MAX_EXTRA_VISIBILITY 100
+#define EXTRA_VISIBILITY_FADE_SPEED 5   // extraVisibility is decreased by this value every tick
 
 //Options
-int ShowStealthHUD; 						// Set to true to show Stealth HUD
-int VisibilityMultiplier = 1.0; // Calculated visibility is multiplied by this allowing to fine-tune it based, for example, on an area player is in.
-int NoiseLevelMultiplier = 1.0; // Calculated noise level is multiplied by this. This affects the value added to visibility and the alert enemises radius when player makes step sounds
+int ShowStealthHUD; 								 // Set to true to show Stealth HUD
+int VisibilityMultiplier = 1.0; 		 // Calculated visibility is multiplied by this allowing to fine-tune it based, for example, on an area player is in.
+int NoiseLevelMultiplier = 1.0; 		 // Calculated noise level is multiplied by this. This affects the value added to visibility and the alert enemises radius when player makes step sounds
+int PlayerDetectionVisibility = 100; // Player must be this visible to be detected by enemies
 
 //Variables. Don't touch
 int curStepDistance;
@@ -24,6 +26,7 @@ int lastPlayerY;
 int playerID;
 int alertedGuardsCount;
 int displayedVisibility;
+int extraVisibility; // Added manually to emulate dynamic lights influence
 
 ///////////////////////
 //SCRIPTS
@@ -86,7 +89,7 @@ Script "PlayFootstepsSoundLoop" ENTER
 			if(alertedGuardsCount == 0)
 			{
 				 // Make displayed visibility changes more smooth, also clamp it in [0 - 100] range
-				 int visibility = GetVisibility(playerID, curNoiseLevel);
+				 int visibility = GetVisibility(playerID, curNoiseLevel, extraVisibility);
 				 if(displayedVisibility < 100 && visibility > displayedVisibility) displayedVisibility += 2;
 				 else if(visibility < displayedVisibility) displayedVisibility -= 2;
 			   lampalpha = FixedDiv((displayedVisibility << 16), 100.0);
@@ -103,7 +106,9 @@ Script "PlayFootstepsSoundLoop" ENTER
 			HudMessage(s:"A"; HUDMSG_PLAIN | HUDMSG_NOWRAP | HUDMSG_ALPHA | HUDMSG_NOTWITHFULLMAP, 19, 0, 160.0, 237.2, 0.1, lampalpha);
 		}
 		
-		if(curNoiseLevel > 0) curNoiseLevel -= NOISE_FADE_SPEED;
+		curNoiseLevel = Max(curNoiseLevel - NOISE_FADE_SPEED, 0);
+		extraVisibility = Max(extraVisibility - EXTRA_VISIBILITY_FADE_SPEED, 0);
+		
 		Delay(1);
 	}
 }
@@ -113,6 +118,12 @@ script "ApplyNoiseLevelMultiplier" (int baseradius)
 {
 	int result = FixedMul(NoiseLevelMultiplier, baseradius << 16) >> 16;
 	SetResultValue(result);
+}
+
+//mxd. Stealth-related. Called by dynamic light actors to affect player visibility
+script "AddExtraVisibility" (int value)
+{
+	  extraVisibility = Min(extraVisibility + value, MAX_EXTRA_VISIBILITY);
 }
 
 //mxd. Stealth-related. For this to work, each player must have unique TID.
@@ -149,10 +160,10 @@ script "TargetIsHidden" (void)
 		}
 
 		// Get it's light level
-		int visibility = GetVisibility(targettid, curNoiseLevel);
+		int visibility = GetVisibility(targettid, curNoiseLevel, extraVisibility);
 
 		// Return the value
-		SetResultValue(visibility < PLAYER_DETECTION_VISIBILITY);
+		SetResultValue(visibility < PlayerDetectionVisibility);
 }
 
 script "GetChaseGoal" (int storedgoal)
@@ -214,7 +225,7 @@ script "DecreaseAlertedCount"	(void)
 ///////////////////////
 //FUNCTIONS
 ///////////////////////
-function int GetVisibility(int tid, int noiselevel)
+function int GetVisibility(int tid, int noiselevel, int addedvisibility)
 {
 	// Not hidden while at least 1 guard is alerted
 	if(alertedGuardsCount > 0) return 255;
@@ -235,7 +246,7 @@ function int GetVisibility(int tid, int noiselevel)
 	int viewheightmod = 56 - (GetActorViewHeight(tid) >> 16);
 
 	// Calculate resulting visibility level (will probably require lots of tweaking...)
-	return Max(0, targetlightlevel + speed + noiselevel - viewheightmod);
+	return Max(0, targetlightlevel + speed + noiselevel + addedvisibility - viewheightmod);
 }
 
 // Taken straight from the wiki (http://zdoom.org/wiki/VectorLength)
@@ -261,6 +272,13 @@ function bool ActorIsSeen(int tid)
 // Taken straight from the wiki (http://zdoom.org/wiki/Min_and_max)
 function int Max(int a, int b)
 {
-	if (a > b) return a;
+	if(a > b) return a;
+	return b;
+}
+
+// Taken straight from the wiki (http://zdoom.org/wiki/Min_and_max)
+function int Min(int a, int b)
+{
+	if(a < b) return a;
 	return b;
 }

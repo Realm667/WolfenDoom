@@ -102,6 +102,7 @@ ACTOR KnifeSilent : Weapon
 	Weapon.UpSound "knife/select"
 	Inventory.PickupMessage "$KNIFE"
 	Weapon.SelectionOrder 10000
+	
 	States
 	{
 	Spawn:
@@ -132,6 +133,8 @@ ACTOR KnifePuff : ShovelPuff
 	seesound ""
 	scale 0.4
 	Obituary "$OBKNIFE"
+	PainType "SilentKnifeAttack" //mxd. Used to invoke Pain.SilentKnifeAttack exclusively on stealth monsters
+	
 	states
 	{
 	Spawn:
