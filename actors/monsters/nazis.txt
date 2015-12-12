@@ -14,9 +14,6 @@ ACTOR Nazi
 	States
 	{
 	SkillCheck:
-		"####" "#" 0 A_JumpIf(CallACS("WWNaziSkillCheck")>=2,3)
-		"####" "#" 0 A_ChangeFlag("DOHARMSPECIES",1)
-		"####" "#" 0 A_ChangeFlag("DONTHARMSPECIES",0)
 		"####" "#" 0 A_JumpIf(CallACS("WWNaziSkillCheck")<=2,2)
 		"####" "#" 0 A_ChangeFlag("GHOST",1)
 		"####" "#" 0 A_Jump(256,"Look")
@@ -61,11 +58,11 @@ ACTOR Nazi
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		"####" H 0 A_Jump(256,"See")
 		Stop
-	Pain.Dagger: //mxd. Hacky critical hit system
+	Pain.SilentKnifeAttack: //mxd. Hacky critical hit system
 		 "####" "#" 0 A_JumpIf(user_incombat, "Pain")
 		 "####" "#" 0 A_SetUserVar("user_incombat", true)
 		 "####" "#" 0 A_Log("Critical hit!")
-		 "####" "#" 0 A_AlertMonsters(128) //mxd
+		 "####" "#" 0 A_AlertMonsters(128)
 		 "####" "#" 0 A_DamageSelf(health, "Melee")
 		 goto Pain
 	}
