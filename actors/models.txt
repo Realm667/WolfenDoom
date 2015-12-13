@@ -417,7 +417,7 @@ ACTOR Luftschiff : 3dObstacle
 ACTOR FlagWave : ModelBase
 {
 	//$Category Models (Wolf3D)
-	//$Title Waving Flag
+	//$Title Waving Flag (Swastika)
 	//$Color 3
 	Radius 1
 	Height 1
@@ -440,6 +440,13 @@ ACTOR FlagWave : ModelBase
 		TROO ABCDEFGHIJKLMNOPQR 1
 		goto spawn+4
 	}
+}
+
+ACTOR FlagWave_SS : FlagWave
+{
+	//$Category Models (Wolf3D)
+	//$Title Waving Flag (SS)
+	//$Color 3
 }
 
 ACTOR RadioSimple : 3dObstacle
