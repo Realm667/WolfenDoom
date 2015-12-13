@@ -463,6 +463,63 @@ ACTOR StrobeLightYellow : StrobeLightRed
 	}
 }
 
+ACTOR Red_Light
+{
+	//$Category Light Sources (Wolf3D)
+	//$Title Light, Red (on)
+	//$Color 11
+	Radius 16
+	Height 16
+	+NOGRAVITY
+	+SPAWNCEILING
+	+DONTSPLASH
+	States
+	{
+	Spawn:
+		STRR A -1 LIGHT(FIXEDRED)
+		Stop
+	}
+}
+
+ACTOR Blue_Light : Red_Light
+{
+	//$Category Light Sources (Wolf3D)
+	//$Title Light, Blue (on)
+	//$Color 11
+	States
+	{
+	Spawn:
+		STRB A -1 LIGHT(FIXEDBLU)
+		Stop
+	}
+}
+
+ACTOR Green_Light : Red_Light
+{
+	//$Category Light Sources (Wolf3D)
+	//$Title Light, Green (on)
+	//$Color 11
+	States
+	{
+	Spawn:
+		STRG A -1 LIGHT(FIXEDGRN)
+		Stop
+	}
+}
+
+ACTOR Yellow_Light : Red_Light
+{
+	//$Category Light Sources (Wolf3D)
+	//$Title Light, Yellow (on)
+	//$Color 11
+	States
+	{
+	Spawn:
+		STRY A -1 LIGHT(FIXEDYEL)
+		Stop
+	}
+}
+
 //ROTATING EMITTERS
 ACTOR StrobeEmitterBlue
 {
