@@ -1392,6 +1392,60 @@ Model RTCWParachute2 //open one
 	FrameIndex SMGT A 0 0
 }
 
+Model RTCW_V2_Complete //with ramp and basement
+{
+	Path "models"
+	Model 0 "v2_base.md3"
+	Skin 0 "v2.jpg"
+	Scale 1.0 1.0 1.0
+	Path "models"
+	Model 1 "v2_cone.md3"
+	Skin 1 "v2.jpg"
+	Scale 1.0 1.0 1.0
+	Path "models"
+	Model 2 "v2_ramp.md3"
+	Skin 2 "v2.jpg"
+	Scale 1.0 1.0 1.0
+	Path "models"
+	Model 3 "v2_rock.md3"
+	Skin 3 "v2.jpg"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+	FrameIndex SMGT A 0 0
+}
+
+
+Model RTCW_V2_NoRamp //without ramp but with basement
+{
+	Path "models"
+	Model 0 "v2_base.md3"
+	Skin 0 "v2.jpg"
+	Scale 1.0 1.0 1.0
+	Path "models"
+	Model 1 "v2_cone.md3"
+	Skin 1 "v2.jpg"
+	Scale 1.0 1.0 1.0
+	Path "models"
+	Model 2 "v2_rock.md3"
+	Skin 2 "v2.jpg"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+	FrameIndex SMGT A 0 0
+}
+
+Model RTCW_V2_Rocket //rocket only
+{
+	Path "models"
+	Model 0 "v2_rock.md3"
+	Skin 0 "v2.jpg"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+	FrameIndex SMGT A 0 0
+}
+
 //Hexen II models ripped by Ozy
 //Original mdl files converted to md3 ones with Misfit Model3d
 Model H2Table
