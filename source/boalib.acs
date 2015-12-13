@@ -9,33 +9,15 @@ global int 4:astrostein; //[Ed} When set to true, grenades will change to the As
 
 str darrenmessage[21]=
 {
-	"\cCHey, Bill. Darren here. I found the back entrance of the headquarters, but there seems to be more nazi activity than we expected. Be careful!",
-	"\cCTime to get out here! The alarm has been activated! There's a switch nearby to lower the gates. Go for it, if you haven't already. I'll be waiting for you outside the area.",
-	"\cCLooks like we got in unnoticed. But be prepared. There will be heavy resistance!",
-	"\cCWell done, BJ! I'm almost caught up with you two. Follow the railroad, but make sure to take that Panzerschreck with you. I spotted a German tank heading in your direction!",
-	"\cCThe Germans haven't noticed us yet. They're concentrating on the beach area, so we have first strike advantage. Get the C4 explosives, bring their artillery down and get back here when you're done. I'll be waitng for you.",
-	"\cCWell done! Time to get outta here and let the infantry finish up. I'm waiting for you at the drop point. Just head back here, but be careful... I saw some Nazi paratrooper reinforcements dropping in!",
-	"\cCAlright, boy! Make your way back to the upper part of the dam. We'll be waiting you at the north gate.",
-	"\cCGet on it, boy! I'll head back and lead the reinforcements to the center of the city to catch up with you as fast as I can!",
-	"\cCHurry up! The Krauts are coming! They'll reach the city in about 30 seconds! I'm already on my way with the allied reinforcements, but you need to hold on for a while. Secure the Nebelwerfer at all costs! Check the area near the objective for some ammo and medikits!",
-	"\cCYeeehaw! The cavalry has arrived! Time to beat these Krauts up! Let's bring them down for good!",
-	"\cCBetter get in and out quickly. It's hot and I don't feel comfortable in my uniform anymore... Good luck, Bill!",
-	"\cCBill? Can you hear me? Take the relic and get back to the meeting point. Nazi divisions are heading towards your position. C'mon, get out of there! Move it!",
-	"\cCProf. Gutenberg was right, the Eisenmann files led us directly to the secret facility. The railroad brought us already very close but we can't follow you any further unsighted. Time for your one-man-superhero show Bill. The facility's entrance is east from us. We will follow the rail track and secure your escape, and you, make sure to blow up that bitch!",
-	"\cCHey Bill, glad that you are still alive. Get to the facility and blow it up, we will wait for you here and secure the train station.",
-	"\cCDamn, Bill! I could even feel the ground shaking here. Get out quickly before the whole facility colapses. Every second counts now!",
-	"\cCWell done Bill, get on to the next one and place your C4 package quickly!",
-	"\cCDamnit, the Nazis noticed you. You need to be quick now, they will flood the facility in about 20 minutes. Get through this, place your C4 and get out alive!",
-	"\cCIt's beginning Bill, you need to get out now! Your time is over! Quick!",
-	"\cCOkay Bill, we are very close to the town now. Get equipped, investigate the buildings and try to find a way into the secret underground labs. Get the files and return, we will secure the area here.",
-	"\cCGood job so far Bill, but be careful now! There is a prominent treat somewhere down there, Graf Holzbein, and he is well known for his cruelties. Take care, Darren out.",
-	"\cCI can't believe you found them! Well done, get out now Bill, and take care - I can hear tan chains closing in, your way back won't be as easy as your way in.",
+	"DARRENMESSAGE01","DARRENMESSAGE02","DARRENMESSAGE03","DARRENMESSAGE04","DARRENMESSAGE05",
+	"DARRENMESSAGE06","DARRENMESSAGE07","DARRENMESSAGE08","DARRENMESSAGE09","DARRENMESSAGE10",
+	"DARRENMESSAGE11","DARRENMESSAGE12","DARRENMESSAGE13","DARRENMESSAGE14","DARRENMESSAGE15",
+	"DARRENMESSAGE16","DARRENMESSAGE17","DARRENMESSAGE18","DARRENMESSAGE19","DARRENMESSAGE20",
+	"DARRENMESSAGE21"
 };
 str prisonermessage[3]=
 {
-	"\cCIt's about time, Man! Now, let's get out of this hell. Take the red key, and let's grab some equipment before leaving.",
-	"\cCDamnit, they noticed us! Now we're really in trouble! C'mon!",
-	"\cCDamn, William! That was a blast!"
+	"PRISONERMESSAGE01","PRISONERMESSAGE02","PRISONERMESSAGE03"
 };
 
 script "BoADialogue"(int who, int which)
@@ -49,13 +31,13 @@ script "BoADialogue"(int who, int which)
 	{
 		headtalky = "MS_DARR1";
 		headsilent = "MS_DARR0";
-		message = StrParam(s:"\cEDirty Darren\n", s:darrenmessage[which]);
+		message = StrParam(s:"\cEDirty Darren\n\cC", l:darrenmessage[which]);
 	}
 	else if(who == 2) // Prisoner
 	{
 		headtalky = "MS_PRIB1";
 		headsilent = "MS_PRIB0";
-		message = StrParam(s:"\cEAgent Ryan\n", s:prisonermessage[which]);
+		message = StrParam(s:"\cEAgent Ryan\ncC", l:prisonermessage[which]);
 	}
 
 	// Fade in HUD BGs
