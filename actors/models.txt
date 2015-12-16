@@ -815,3 +815,18 @@ ACTOR RTCW_V2_Rocket : RTCW_V2_Complete
 //$Title V2 (Rocket Only)
 //$Color 3
 }
+
+ACTOR Tie_Fighter : 3dObstacle
+{
+//$Category Misc (Wolf3D)
+//$Title Tie Fighter (Easteregg)
+//$Color 3
+Radius 48
+Height 192
+States
+	{
+	Spawn:
+	SMGT A -1
+	Stop
+	}
+}
