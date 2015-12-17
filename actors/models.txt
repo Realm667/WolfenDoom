@@ -449,6 +449,13 @@ ACTOR FlagWave_SS : FlagWave
 	//$Color 3
 }
 
+ACTOR FlagWave_War : FlagWave
+{
+	//$Category Models (Wolf3D)
+	//$Title Waving Flag (War Times)
+	//$Color 3
+}
+
 ACTOR RadioSimple : 3dObstacle
 {
 //$Category Models (Wolf3D)
@@ -572,15 +579,6 @@ ACTOR ModelOpelTruckWindows : ModelBase
 {
 	RenderStyle Shaded
 	StencilColor "CC CC CC"
-}
-
-ACTOR H2Table : 3dObstacle //from hexen 2
-{
-//$Category Models (Wolf3D)
-//$Title Trestle Table
-//$Color 3
-Radius 32
-Height 32
 }
 
 ACTOR ControlPanel : 3dObstacle
@@ -829,4 +827,182 @@ States
 	SMGT A -1
 	Stop
 	}
+}
+
+//DoomJuan Models, added & fixed a bit by Ozymandias81
+ACTOR Eagle : 3dObstacle
+{
+//$Category Models (Wolf3D)
+//$Title Eagle Statue
+//$Color 3
+Radius 48
+Height 64
+States
+	{
+	Spawn:
+	SMGT A -1
+	Stop
+	}
+}
+
+ACTOR Harness : 3dObstacle
+{
+//$Category Models (Wolf3D)
+//$Title Harness
+//$Color 3
+Radius 48
+Height 192
+States
+	{
+	Spawn:
+	SMGT A -1
+	Stop
+	}
+}
+
+ACTOR Lion_Left : 3dObstacle
+{
+//$Category Models (Wolf3D)
+//$Title Lion Statue (Left)
+//$Color 3
+Radius 48
+Height 96
+States
+	{
+	Spawn:
+	SMGT A -1
+	Stop
+	}
+}
+
+ACTOR Lion_Right : Lion_Left
+{
+//$Category Models (Wolf3D)
+//$Title Lion Statue (Right)
+//$Color 3
+}
+
+ACTOR NaziBannerTallFlutter512 : FlagWave
+{
+//$Category Models (Wolf3D)
+//$Title Nazi Banner Tall, Flutter (512)
+//$Color 3
+	States
+	{
+	Spawn:
+		POSS ABCDEFGHIJKLMNOP 8
+		Loop
+	}
+}
+
+ACTOR NaziBannerTallHang512 : FlagWave
+{
+//$Category Models (Wolf3D)
+//$Title Nazi Banner Tall, Not Moving (512)
+//$Color 3
+	States
+	{
+	Spawn:
+		POSS A -1
+		Stop
+	}
+}
+
+ACTOR NaziBannerTallFlutter256 : NaziBannerTallFlutter512
+{
+//$Category Models (Wolf3D)
+//$Title Nazi Banner Tall, Flutter (256)
+//$Color 3
+}
+
+ACTOR NaziBannerTallHang256 : NaziBannerTallHang512
+{
+//$Category Models (Wolf3D)
+//$Title Nazi Banner Tall, Not Moving (256)
+//$Color 3
+}
+
+ACTOR TrestleTable : 3dObstacle
+{
+//$Category Models (Wolf3D)
+//$Title Trestle Table A
+//$Color 3
+Radius 32
+Height 32
+}
+
+//HERETIC II & HEXEN II MODELS - From Gore - Ozymandias81
+ACTOR H2Table : TrestleTable //from Hexen 2
+{
+//$Category Models (Wolf3D)
+//$Title Trestle Table B
+//$Color 3
+}
+
+actor Caesar : 3dObstacle
+{
+//$Category Models (Wolf3D)
+//$Title Bold Fish Statue
+//$Color 3
+Radius 24
+Height 56
+}
+
+actor King : Caesar
+{
+//$Category Models (Wolf3D)
+//$Title Bold Fish Statue
+//$Color 3
+Radius 48
+Height 96
+}
+
+actor Pisces : 3dObstacle //from Heretic 2
+{
+//$Category Models (Wolf3D)
+//$Title Pisces Fountain
+//$Color 3
+Radius 48
+Height 80
+}
+
+actor BoldFish : 3dObstacle
+{
+//$Category Models (Wolf3D)
+//$Title Bold Fish Statue
+//$Color 3
+Radius 32
+Height 56
+}
+
+actor DuckBillL : 3dObstacle
+{
+//$Category Models (Wolf3D)
+//$Title DuckBill Statue (Left)
+//$Color 3
+Radius 64
+Height 96
+}
+
+actor DuckBillR : DuckBillL
+{
+//$Category Models (Wolf3D)
+//$Title DuckBill Statue (Right)
+//$Color 3
+}
+
+actor SDragonL : 3dObstacle
+{
+//$Category Models (Wolf3D)
+//$Title Dragon Statue (Left)
+//$Color 3
+Radius 64
+Height 128
+}
+
+actor SDragonR : SDragonL
+{
+//$Category Models (Wolf3D)
+//$Title Dragon Statue (Right)
+//$Color 3
 }
