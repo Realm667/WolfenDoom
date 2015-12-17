@@ -44,6 +44,13 @@ else
 return onground;
 }
 
+
+// [Nash] is player alive?
+function int GetActorHealth(void)
+{
+	return GetActorProperty(0, APROP_Health);
+}
+
 // get player velocity
 function int GetPlayerMoveSpeed(int p)
 {
@@ -61,7 +68,8 @@ function bool KeyDown(int key)
 return !!(GetPlayerInput(-1, INPUT_BUTTONS) & key);
 }
 
-int dostrafetilt = 1; //nash
+bool dostrafetilt = TRUE; //nash
+bool dodeathtilt = TRUE; // [Nash] death tilt
 int uwrollammountcount = 70; //mxd
 int uwrollammount[70] = {-0.012, -0.01199, -0.01195, -0.01189, -0.01181, -0.0117, -0.01157, -0.01141, -0.01123, -0.01103, -0.01081, -0.01057, -0.0103, -0.01001, -0.00971, -0.00938, -0.00904, -0.00867, -0.00829, -0.0079, -0.00748, -0.00705, -0.00661, -0.00615, -0.00569, -0.00521, -0.00472, -0.00422, -0.00371, -0.00319, -0.00267, -0.00214, -0.00161, -0.00108, -0.00054, 0, 0.00054, 0.00108, 0.00161, 0.00214, 0.00267, 0.00319, 0.00371, 0.00422, 0.00472, 0.00521, 0.00569, 0.00615, 0.00661, 0.00705, 0.00748, 0.0079, 0.00829, 0.00867, 0.00904, 0.00938, 0.00971, 0.01001, 0.0103, 0.01057, 0.01081, 0.01103, 0.01123, 0.01141, 0.01157, 0.0117, 0.01181, 0.01189, 0.01195, 0.01199}; //mxd
 
@@ -88,7 +96,7 @@ while(true)
 			ChangeActorRoll(0, uwrollammount[uwrollstep], true);
 			}
 //Nash strafe tilt codes///////////////////////////////////////////////////
-        else if(dostrafetilt) //mxd. Do strafe tilting
+        else if(dostrafetilt && GetActorHealth() > 0) //mxd. Do strafe tilting (and only if player is alive)
 			{
 			int strafemod;
 			int strafe;
@@ -137,4 +145,48 @@ while(true)
 		}
 	Delay(1);
 	}
+}
+
+// [Nash] Duke-style death tilt
+Script "Script_DeathTilt" Death
+{
+	if (dodeathtilt)
+	{
+		// target angle to roll to
+		int t = random(0.125, 0.25);
+		
+		// speed of the roll, tune this to taste
+		int s = 0.01750;
+		
+		// how many tics before the rolling actually starts, tune to taste
+		int d = 30;
+		
+		while(1)
+		{
+			// delay the rolling until it's time
+			if (d > 0)
+			{
+				d--;
+			}
+			
+			// it's time to roll
+			if (d <= 0)
+			{
+				// get player's roll
+				int r = GetActorRoll(0);
+				
+				// do a barrel roll
+				if (GetActorRoll(0) < t)
+				{
+					ChangeActorRoll(0, r + s, TRUE);
+				}
+			}
+			Delay(1);
+		}
+	}
+}
+
+Script "Script_DeathTiltReset" Respawn
+{
+	SetActorRoll(0, 0);
 }
