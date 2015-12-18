@@ -830,13 +830,11 @@ States
 }
 
 //DoomJuan Models, added & fixed a bit by Ozymandias81
-ACTOR Eagle : 3dObstacle
+ACTOR Eagle : ModelBase
 {
 //$Category Models (Wolf3D)
 //$Title Eagle Statue
 //$Color 3
-Radius 48
-Height 64
 States
 	{
 	Spawn:
@@ -850,8 +848,8 @@ ACTOR Harness : 3dObstacle
 //$Category Models (Wolf3D)
 //$Title Harness
 //$Color 3
-Radius 48
-Height 192
+Radius 24
+Height 90
 States
 	{
 	Spawn:
@@ -866,7 +864,7 @@ ACTOR Lion_Left : 3dObstacle
 //$Title Lion Statue (Left)
 //$Color 3
 Radius 48
-Height 96
+Height 192
 States
 	{
 	Spawn:
@@ -927,8 +925,8 @@ ACTOR TrestleTable : 3dObstacle
 //$Category Models (Wolf3D)
 //$Title Trestle Table A
 //$Color 3
-Radius 32
-Height 32
+Radius 40
+Height 40
 }
 
 //HERETIC II & HEXEN II MODELS - From Gore - Ozymandias81
@@ -937,24 +935,25 @@ ACTOR H2Table : TrestleTable //from Hexen 2
 //$Category Models (Wolf3D)
 //$Title Trestle Table B
 //$Color 3
+Radius 32
+Height 32
 }
 
 actor Caesar : 3dObstacle
 {
 //$Category Models (Wolf3D)
-//$Title Bold Fish Statue
+//$Title Caesar's Statue
 //$Color 3
-Radius 24
-Height 56
+Radius 32
+Height 192
 }
 
 actor King : Caesar
 {
 //$Category Models (Wolf3D)
-//$Title Bold Fish Statue
+//$Title King's Statue
 //$Color 3
 Radius 48
-Height 96
 }
 
 actor Pisces : 3dObstacle //from Heretic 2
@@ -969,7 +968,7 @@ Height 80
 actor BoldFish : 3dObstacle
 {
 //$Category Models (Wolf3D)
-//$Title Bold Fish Statue
+//$Title Fish Statue
 //$Color 3
 Radius 32
 Height 56
