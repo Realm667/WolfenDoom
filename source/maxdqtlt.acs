@@ -150,6 +150,9 @@ while(true)
 // [Nash] Duke-style death tilt
 Script "Script_DeathTilt" Death
 {
+	// reset the player's roll first
+	SetActorRoll(0, 0);
+	
 	if (dodeathtilt)
 	{
 		// target angle to roll to
@@ -161,7 +164,7 @@ Script "Script_DeathTilt" Death
 		// how many tics before the rolling actually starts, tune to taste
 		int d = 30;
 		
-		while(1)
+		while(GetActorHealth() <= 0)
 		{
 			// delay the rolling until it's time
 			if (d > 0)
