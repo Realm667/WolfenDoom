@@ -121,7 +121,7 @@ ACTOR CeilingLightM : SwitchableDecoration
 	+NOTAUTOAIMED
 	States
 	{
-	Active: //mxd. CLIT? No, srsly, who comes with these names?..
+	Active: //mxd. CLIT? No, srsly, who comes with these names?.. //ozy: that was me man, eheh... :)
 		CLIT A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 	Spawn:
 		CLIT A -1 Bright Light("BOACEIL2")
@@ -650,7 +650,7 @@ ACTOR LightBulbOn : LightBulb
 	States
 	{
 	Spawn:
-		BULB A -1 BRIGHT LIGHT(BOACEIL5)
+		BULB B -1 BRIGHT LIGHT(BOACEIL5)
 		Stop
 	}
 }
