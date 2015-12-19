@@ -1,7 +1,7 @@
-Actor Flare : SwitchableDecoration
+Actor Flare1 : SwitchableDecoration
 {
 	//$Category Special Effects (Wolf3D)
-	//$Title Flare
+	//$Title Flare (white)
 	//$Color 12
 	Height 16
 	Radius 16
@@ -16,6 +16,23 @@ Actor Flare : SwitchableDecoration
 	Spawn:
 	Active:
 		FLAR A -1 BRIGHT
+		Loop
+	Inactive:
+		TNT1 A -1
+		Loop
+	}
+}
+
+Actor Flare2 : Flare1
+{
+	//$Category Special Effects (Wolf3D)
+	//$Title Flare (fire)
+	//$Color 12
+	States
+	{
+	Spawn:
+	Active:
+		FLAR B -1 BRIGHT
 		Loop
 	Inactive:
 		TNT1 A -1

@@ -1,3 +1,7 @@
+/////////////////////////////
+// ACTORS FOR REGULAR MAPS // by GuardSoul
+/////////////////////////////
+
 actor PuffSmoke
 {
 	+NOINTERACTION
@@ -101,6 +105,55 @@ actor PowerPlantSmokeGeneratorFX2
 	{
 	Spawn:
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 2 A_SpawnItemEx("PowerPlantSmokePuff", random(-32,32), random(-32,32), 0, 0, 0, -3)
+		stop
+	}
+}
+
+/////////////////////////////
+// ACTORS FOR VOLCANO MAPS // by Tormentor667
+/////////////////////////////
+
+actor VolcanoPuffSmoke
+{
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	+CLIENTSIDEONLY
+	+WINDTHRUST
+	Renderstyle Translucent
+	alpha 1.0
+	Scale 100
+	states
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
+		SMK1 A 0 A_Jump(256,"End")
+		SMK2 A 0 A_Jump(256,"End")
+		SMK3 A 0 A_Jump(256,"End")
+		SMK4 A 0 A_Jump(256,"End")
+	End:
+		"####" AAAAAAAAAA 5 A_FadeIn(0.1)
+		"####" ABCDEFGHIJKLMNOP 16 A_FadeOut(0.0625)
+		stop
+	}
+}
+
+actor VolcanoSmokeGenerator : SwitchableDecoration
+{
+	//$Category Special Effects (Wolf3D)
+	//$Title Volcano Smoke Generator (Huge)
+	//$Color 12
+	+NOGRAVITY
+	+INVULNERABLE
+	+SHOOTABLE
+	+NOINTERACTION
+	states
+	{
+	Spawn:
+	Active:
+		TNT1 A 30 A_SpawnItemEx("VolcanoPuffSmoke", random(-128,128), random(-128,128), 0, random(1,5), random(1,5), random(10,20), random(1,359))
+		loop
+	Inactive:
+		TNT1 A -1
 		stop
 	}
 }
