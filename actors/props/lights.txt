@@ -642,6 +642,19 @@ ACTOR LightBulb
 	}
 }
 
+ACTOR LightBulbOn : LightBulb
+{
+	//$Category Light Sources (Wolf3D)
+	//$Title Light Bulb (on)
+	//$Color 11
+	States
+	{
+	Spawn:
+		BULB A -1 LIGHT(BOACEIL5)
+		Stop
+	}
+}
+
 ACTOR CellLight2 : SwitchableDecoration
 {
 	//$Category Light Sources (Wolf3D)
