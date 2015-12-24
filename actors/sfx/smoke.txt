@@ -40,12 +40,16 @@ actor PowerPlantSmokeGenerator : SwitchableDecoration
 	states
 	{
 	Spawn:
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 	Active:
 		TNT1 A 70 A_SpawnItemEx("PowerPlantSmokeGeneratorFX")
 		loop
 	Inactive:
 		TNT1 A -1
 		stop
+	EndSpawn:
+		TNT1 A -1
+		Goto Spawn
 	}
 }
 
@@ -56,7 +60,7 @@ actor PowerPlantSmokeGeneratorFX
 	states
 	{
 	Spawn:
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 2 A_SpawnItemEx("PowerPlantSmokePuff", random(-32,32), random(-32,32), 0, 0, 0, 3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx("PowerPlantSmokePuff", random(-32,32), random(-32,32), 0, 0, 0, 3)
 		stop
 	}
 }
@@ -71,12 +75,16 @@ actor PowerPlantSmokeGeneratorSmall : SwitchableDecoration
 	states
 	{
 	Spawn:
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 	Active:
 		TNT1 A 2 A_SpawnItemEx("PowerPlantSmokePuffSmall", random(-32,32), random(-32,32), 0, 0, 0, 3)
 		loop
 	Inactive:
 		TNT1 A -1
 		stop
+	EndSpawn:
+		TNT1 A -1
+		Goto Spawn
 	}
 }
 
@@ -88,12 +96,16 @@ actor PowerPlantSmokeGenerator2 : PowerPlantSmokeGenerator
 	states
 	{
 	Spawn:
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 	Active:
 		TNT1 A 70 A_SpawnItemEx("PowerPlantSmokeGeneratorFX2")
 		loop
 	Inactive:
 		TNT1 A -1
 		stop
+	EndSpawn:
+		TNT1 A -1
+		Goto Spawn
 	}
 }
 
@@ -104,7 +116,7 @@ actor PowerPlantSmokeGeneratorFX2
 	states
 	{
 	Spawn:
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 2 A_SpawnItemEx("PowerPlantSmokePuff", random(-32,32), random(-32,32), 0, 0, 0, -3)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx("PowerPlantSmokePuff", random(-32,32), random(-32,32), 0, 0, 0, -3)
 		stop
 	}
 }
@@ -149,11 +161,15 @@ actor VolcanoSmokeGenerator : SwitchableDecoration
 	states
 	{
 	Spawn:
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 	Active:
 		TNT1 A 30 A_SpawnItemEx("VolcanoPuffSmoke", random(-128,128), random(-128,128), 0, random(1,5), random(1,5), random(10,20), random(1,359))
 		loop
 	Inactive:
 		TNT1 A -1
 		stop
+	EndSpawn:
+		TNT1 A -1
+		Goto Spawn
 	}
 }

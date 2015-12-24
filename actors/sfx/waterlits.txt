@@ -12,6 +12,7 @@ ACTOR UWLightGenerator1 : SwitchableDecoration
 	States
 	{
 	Spawn:
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("LitsSwitch")==0,"EndSpawn")
 	Active:
 		TNT1 A 0 NODELAY A_CheckSight("Unsighted")
 		TNT1 A 2 A_SpawnItemEx("UWaterLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
@@ -23,6 +24,9 @@ ACTOR UWLightGenerator1 : SwitchableDecoration
 	Inactive:
 		TNT1 A -1
 		Stop
+	EndSpawn:
+		TNT1 A -1
+		Goto Spawn
 	}
 }
 
@@ -35,11 +39,15 @@ ACTOR UWLightGenerator2 : UWLightGenerator1
 	States
 	{
 	Spawn:
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("LitsSwitch")==0,"EndSpawn")
 	Active:
 		TNT1 A 0 NODELAY A_CheckSight("Unsighted")
 		TNT1 A 2 A_SpawnItemEx("ULavaLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		TNT1 A 1 A_SpawnItemEx("ULavaLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		loop
+	EndSpawn:
+		TNT1 A -1
+		Goto Spawn
 	}
 }
 
@@ -51,11 +59,15 @@ ACTOR UWLightGenerator3 : UWLightGenerator1
 	States
 	{
 	Spawn:
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("LitsSwitch")==0,"EndSpawn")
 	Active:
 		TNT1 A 0 NODELAY A_CheckSight("Unsighted")
 		TNT1 A 2 A_SpawnItemEx("UGoreLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		TNT1 A 1 A_SpawnItemEx("UGoreLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		loop
+	EndSpawn:
+		TNT1 A -1
+		Goto Spawn
 	}
 }
 
@@ -67,11 +79,15 @@ ACTOR UWLightGenerator4 : UWLightGenerator1
 	States
 	{
 	Spawn:
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("LitsSwitch")==0,"EndSpawn")
 	Active:
 		TNT1 A 0 NODELAY A_CheckSight("Unsighted")
 		TNT1 A 2 A_SpawnItemEx("UHazardLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		TNT1 A 1 A_SpawnItemEx("UHazardLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		loop
+	EndSpawn:
+		TNT1 A -1
+		Goto Spawn
 	}
 }
 
