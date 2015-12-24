@@ -61,7 +61,8 @@ ACTOR NazibannerM
 	Death:
 		TNT1 A 0 A_UnSetSolid
 		TNT1 A 0 A_PlaySound("WOODBRK", frandom (0.2,0.5))
-		//TNT1 A 2 A_SpawnItemEx("FlagFrags")
+		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx ("Debris_LeafR", random(0,2), random(0,4), random(32,56), random(1,2), random(1,2), random(1,2), random(0,360), SXF_CLIENTSIDE)
+		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx ("Debris_LeafW", random(1,3), random(2,6), random(30,58), random(1,2), random(1,2), random(1,2), random(0,360), SXF_CLIENTSIDE)
 		TNT1 A 2 A_SpawnItemEx ("BarrelFrags")
 		FLAG E -1
 		Stop
