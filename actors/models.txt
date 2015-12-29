@@ -916,7 +916,7 @@ Radius 40
 Height 40
 }
 
-//HERETIC II & HEXEN II MODELS - From Gore - Ozymandias81
+//HERETIC II, HEXEN II and JEDI KNIGHT 3 MODELS - From Gore - Ozymandias81
 ACTOR H2Table : TrestleTable //from Hexen 2
 {
 //$Category Models (Wolf3D)/Furniture
@@ -991,6 +991,42 @@ actor SDragonR : SDragonL
 //$Category Models (Wolf3D)/Statues
 //$Title Dragon Statue (Right)
 //$Color 3
+}
+
+actor MineCartF : 3dObstacle
+{
+//$Category Models (Wolf3D)/Scenery
+Tag "Mine Cart, Full"
+Radius 34
+Height 24
++NOGRAVITY
+}
+
+actor MineCartE : MineCartF
+{
+//$Category Models (Wolf3D)/Scenery
+Tag "Mine Cart, Empty"
+}
+
+actor MineCartW : MineCartF
+{
+//$Category Models (Wolf3D)/Scenery
+Tag "Mine Cart, Wrecked"
+}
+
+actor 3dMinerals : 3dObstacle
+{
+//$Category Models (Wolf3D)/Scenery
+Tag "Minerals"
+Radius 16
+Height 16
++NOGRAVITY
+States
+	{
+	Spawn:
+		SMGT A -1 LIGHT(SAPHLITE)
+		Stop
+	}
 }
 
 //Sitters models
