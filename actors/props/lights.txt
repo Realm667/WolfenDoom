@@ -741,3 +741,37 @@ ACTOR BoAWallTorch1 : SwitchableDecoration
     Stop
   }
 }
+
+ACTOR CreepyCandle
+{
+	//$Category Light Sources (Wolf3D)
+	//$Title Creepy Candle (on)
+	//$Color 11
+	+NOGRAVITY
+	Radius 4
+	Height 8
+	Scale 0.8
+	States
+	{
+	Spawn:
+		CDLE BCDA 4 BRIGHT LIGHT(CREPLIT2)
+		Loop
+	}
+}
+
+ACTOR CreepyCandlestick
+{
+	//$Category Light Sources (Wolf3D)
+	//$Title Creepy Candlestick (on)
+	//$Color 11
+	+SOLID
+	+NOGRAVITY
+	Radius 16
+	Height 56
+	States
+	{
+	Spawn:
+		CNHD BCDA 4 BRIGHT LIGHT(CREPLIT1)
+		Loop
+	}
+}

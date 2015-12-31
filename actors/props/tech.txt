@@ -16,3 +16,51 @@ ACTOR Radar
 		Loop
 	}
 }
+
+ACTOR TeslaLab1
+{
+	//$Category Props (Wolf3D)/Tech
+	//$Title Tesla Device (1)
+	//$Color 3
+	Radius 32
+	Height 48
+	Scale 0.6
+	+SOLID
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		TESL A -1
+		Stop
+	}
+}
+
+ACTOR TeslaLab2 : TeslaLab1
+{
+	//$Category Props (Wolf3D)/Tech
+	//$Title Tesla Device (2)
+	//$Color 3
+	Radius 16
+	Height 24
+	+RANDOMIZE
+	States
+	{
+	Spawn:
+		TESL CDB 4 BRIGHT LIGHT(TESLIT2)
+		Loop
+	}
+}
+
+ACTOR TeslaLab3 : TeslaLab2
+{
+	//$Category Props (Wolf3D)/Tech
+	//$Title Tesla Device (3)
+	//$Color 3
+	+RANDOMIZE
+	States
+	{
+	Spawn:
+		TESL FGHIJKLE 4 BRIGHT LIGHT(TESLIT1)
+		Loop
+	}
+}

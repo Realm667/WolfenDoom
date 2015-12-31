@@ -271,3 +271,75 @@ ACTOR MutantSubjectRandom : RandomSpawner
 	Height 64
 	Scale 1.0
 }
+
+ACTOR BrainLab1
+{
+	//$Category Gore (Wolf3D)
+	//$Title Brain (1)
+	//$Color 4
+	Radius 16
+	Height 16
+	Scale 0.6
+	Health 1	//needs to be added for being destroyable
+	+SHOOTABLE	//needs to be added for being destroyable
+	+NOBLOOD	//needs to be added for being destroyable
+	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
+	
+	States
+	{
+	Spawn:
+		BRNS A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	Death:		//needs to be added for being destroyable
+		TNT1 A 0 A_PlaySound("GLASS5")
+		TNT1 AA 0 A_SpawnItemEx ("Debris_GlassShard_Large", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		TNT1 AAAA 0 A_SpawnItemEx ("Debris_GlassShard_Medium", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		TNT1 AAAAAAAA 0 A_SpawnItemEx ("Debris_GlassShard_Small", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		TNT1 A 0 A_UnsetSolid
+		Stop
+	}
+}
+
+ACTOR BrainLab2 : BrainLab1
+{
+	//$Category Gore (Wolf3D)
+	//$Title Brain (2)
+	//$Color 4
+	States
+	{
+	Spawn:
+		BRNS B -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Goto Super::Spawn
+	}
+}
+
+ACTOR DripLab1
+{
+	//$Category Gore (Wolf3D)
+	//$Title Medical Drip (1)
+	//$Color 4
+	Radius 12
+	Height 56
+	Scale 0.6
+	+SOLID
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		RIPD A -1
+		Stop
+	}
+}
+
+ACTOR DripLab2 : DripLab1
+{
+	//$Category Gore (Wolf3D)
+	//$Title Medical Drip (2)
+	//$Color 4
+	States
+	{
+	Spawn:
+		RIPD B -1
+		Stop
+	}
+}
