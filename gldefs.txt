@@ -1107,6 +1107,13 @@ flickerlight2 LOPERLIT	//NaziLoper stuff - Ozy81
 	dontlightself 1
 }
 
+Object ZTracer
+{
+frame ZTRAK { light LOPERLIT }
+frame ZTRAL { light LOPERLIT }
+frame ZTRAM { light LOPERLIT }
+}
+
 flickerlight2 TPortNormal
 {
 	color 0.5 0.5 0.7
@@ -1123,7 +1130,21 @@ flickerlight2 TPortZap
 	secondarySize 128
 	interval 0.01
 	offset 0 32 0
-} 											//end of NaziLoper stuff
+}
+
+Object NaziLoper
+{
+frame LOPRA { light TPortNormal }
+frame LOPRB { light TPortNormal }
+frame LOPRC { light TPortNormal }
+frame LOPRD { light TPortNormal }
+frame LOPRE { light TPortNormal }
+frame LOPRF { light TPortNormal }
+frame LOPRG { light TPortNormal }
+frame LOPRH { light TPortNormal }
+frame LOPRI { light TPortNormal }
+}
+ 											//end of NaziLoper stuff
 
 flickerlight WolfStove
 {
