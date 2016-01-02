@@ -53,7 +53,7 @@ ACTOR TeslaLab2 : SwitchableDecoration
 		TESL CDB 4 BRIGHT LIGHT(TESLIT2)
 		Loop
 	Inactive:
-		TNT1 A -1 A_StopSound(6)
+		TESL N -1 A_StopSound(6)
 		Stop
 	}
 }
@@ -70,5 +70,8 @@ ACTOR TeslaLab3 : TeslaLab2
 		TNT1 A 0 A_PlaySound("tesla/active",6,1,1)
 		TESL FGHIJKLE 4 BRIGHT LIGHT(TESLIT1)
 		Loop
+	Inactive:
+		TESL M -1 A_StopSound(6)
+		Stop
 	}
 }
