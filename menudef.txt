@@ -84,7 +84,7 @@ OptionMenu "BOAOptionsMenu"
 {
   //Title "BOA Options"
   //StaticText ""
-  
+
 	StaticText "BOA Settings", 1
   StaticText ""
   // Settings should go here
@@ -92,7 +92,7 @@ OptionMenu "BOAOptionsMenu"
 	Slider "Shell Casing Lifetime","casinglifetime",100,9000,100
 	Slider "Weapon Recoil Multiplier","recoilamount",0,20,1
 	//Option "Unlimited Stamina", "sprinttoggle", "OnOff"
-  
+
 	StaticText ""
 	StaticText ""
   StaticText "BOA Weather Effects",	1
@@ -112,7 +112,7 @@ OptionMenu "BOAOptionsMenu"
 	StaticText ""
 	Option "Smoke","smokeswitch","OnOff"
 	Option "Underwater Lights","litsswitch","OnOff"
-	
+
 	StaticText ""
 	StaticText ""
 	StaticText "BOA Controls", 1
@@ -121,5 +121,6 @@ OptionMenu "BOAOptionsMenu"
                        "ControlMessage"
   StaticText ""
 	// Controls should go here
-  Control "Throw Grenade",         "use GrenadePickup"
+  Control "Throw Grenade",			"use GrenadePickup"
+  Control "Toggle Objectives",		"pukename boaobjectives"
 }

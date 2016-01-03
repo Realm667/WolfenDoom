@@ -8,6 +8,16 @@ global int 3:disable_supermutants; //mxd. When set to true, UberMutant and Super
 global int 4:astrostein; //[Ed} When set to true, grenades will change to the Astrostein variant
 global int 5:HealthScriptDeactivate;
 global int 6:mission_number;		//The variable for the mission number
+global int 7:objectives_on;			//Objective display toggle
+
+script "boaobjectives" (void)
+{
+	if(objectives_on)
+		objectives_on=0;
+	else
+		objectives_on=1;
+}
+
 script "MissionNumber" OPEN
 {
 	if(GetLevelInfo(LEVELINFO_LEVELNUM)<99)					//If it's not a secret mission or the intermap
