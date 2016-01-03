@@ -1352,3 +1352,303 @@ object TMGuardWithShadow
 	frame MGR2A { light TMGUARD_SHADOW }
 }
 
+//AracnorbQueen
+
+//BFG
+Pointlight DCBMiss1
+{
+Color 0.0 1.0 0.0
+Size 40
+}
+
+Pointlight DCBMiss12
+{
+Color 0.0 1.0 0.0
+Size 48
+}
+
+Pointlight DCBMiss13
+{
+Color 0.0 0.9 0.0
+Size 44
+}
+
+Pointlight DCBMiss14
+{
+Color 0.0 0.8 0.0
+Size 40
+}
+
+Pointlight DCBMiss15
+{
+Color 0.0 0.7 0.0
+Size 36
+}
+
+Pointlight DCBMiss16
+{
+Color 0.0 0.6 0.0
+Size 32
+}
+
+Pointlight DCBMiss17
+{
+Color 0.0 0.5 0.0
+Size 28
+}
+
+Pointlight DCBMiss18
+{
+Color 0.0 0.4 0.0
+Size 24
+}
+
+Pointlight DCBMiss19
+{
+Color 0.0 0.3 0.0
+Size 20
+}
+
+Pointlight DCBMiss110
+{
+Color 0.0 0.2 0.0
+Size 16
+}
+
+Pointlight DCBMiss111
+{
+Color 0.0 0.1 0.0
+Size 12
+}
+
+Object QueenBFG
+{
+Frame CBTSA { Light DCBMiss1 }
+Frame CBTSB { Light DCBMiss1 }
+Frame CBTSC { Light DCBMiss1 }
+Frame CBTSD { Light DCBMiss1 }
+Frame CBTSE { Light DCBMiss1 }
+Frame CBTSF { Light DCBMiss1 }
+Frame CBTSG { Light DCBMiss1 }
+Frame CBTSH { Light DCBMiss1 }
+Frame CBTSI { Light DCBMiss1 }
+Frame CBTSJ { Light DCBMiss1 }
+Frame CBTSK { Light DCBMiss12 }
+Frame CBTSL { Light DCBMiss13 }
+Frame CBTSM { Light DCBMiss14 }
+Frame CBTSN { Light DCBMiss15 }
+Frame CBTSO { Light DCBMiss16 }
+Frame CBTSP { Light DCBMiss17 }
+Frame CBTSQ { Light DCBMiss18 }
+Frame CBTSR { Light DCBMiss19 }
+Frame CBTSS { Light DCBMiss110 }
+Frame CBTST { Light DCBMiss111 }
+Frame CBTSU { Light DCBMiss111 }
+Frame CBTSV { Light DCBMiss111 }
+Frame CBTSW { Light DCBMiss111 }
+}
+
+//Note: the lights for the "ZWAVE" particle trail can cause a lot of slowdown.  Use at your discretion.
+Pointlight ZWAVE_01
+{
+	Color 0.2 0.0 0.2
+	Size 25
+}
+
+Pointlight ZWAVE_02
+{
+	Color 0.2 0.0 0.2
+	Size 35
+}
+
+Pointlight ZWAVE_03
+{
+	Color 0.2 0.0 0.2
+	Size 45
+}
+
+Pointlight ZWAVE_04
+{
+	Color 0.2 0.0 0.2
+	Size 55
+}
+
+Pointlight ZWAVE_05
+{
+	Color 0.2 0.0 0.2
+	Size 65
+}
+
+Pointlight ZWAVE_06
+{
+	Color 0.2 0.0 0.2
+	Size 75
+}
+
+Pointlight ZWAVE_07
+{
+	Color 0.2 0.0 0.2
+	Size 85
+}
+
+Pointlight ZWAVE_08
+{
+	Color 0.2 0.0 0.2
+	Size 105
+}
+
+Pointlight ZWAVE_09
+{
+	Color 0.2 0.0 0.2
+	Size 115
+}
+
+Pointlight ZWAVE_10
+{
+	Color 0.2 0.0 0.2
+	Size 125
+}
+
+Pointlight ZWAVE_11
+{
+	Color 0.2 0.0 0.2
+	Size 135
+}
+
+Pointlight ZWAVE_12
+{
+	Color 0.2 0.0 0.2
+	Size 145
+}
+
+Pointlight ZWAVE_13
+{
+	Color 0.2 0.0 0.2
+	Size 155
+}
+
+Pointlight ZWAVE_14
+{
+	Color 0.2 0.0 0.2
+	Size 175
+}
+
+Pointlight ZWAVE_15
+{
+	Color 0.2 0.0 0.2
+	Size 195
+}
+
+Pointlight ZWAVE_16
+{
+	Color 0.2 0.0 0.2
+	Size 205
+}
+
+Object ZWAVE
+{
+	frame BLSTA { light ZWAVE_01 }
+	frame BLSTB { light ZWAVE_02 }
+	frame BLSTC { light ZWAVE_03 }
+	frame BLSTD { light ZWAVE_04 }
+	frame BLSTE { light ZWAVE_05 }
+	frame BLSTF { light ZWAVE_06 }
+	frame BLSTG { light ZWAVE_07 }
+	frame BLSTH { light ZWAVE_08 }
+	frame BLSTI { light ZWAVE_09 }
+	frame BLSTJ { light ZWAVE_10 }
+	frame BLSTK { light ZWAVE_11 }
+	frame BLSTL { light ZWAVE_12 }
+	frame BLSTM { light ZWAVE_13 }
+	frame BLSTN { light ZWAVE_14 }
+	frame BLSTO { light ZWAVE_15 }
+	frame BLSTP { light ZWAVE_16 }
+}
+
+
+//Energy shots
+pointlight QUEENPLASMA
+{
+    color 0.0 1.0 0.1
+    size 64
+}
+
+flickerlight QUEENPLASMA_X1
+{
+    color 0.0 1.0 0.0
+    size 48
+    secondarySize 56
+    chance 0.4
+}
+
+flickerlight QUEENPLASMA_X2
+{
+    color 0.0 0.8 0.0
+    size 32
+    secondarySize 40
+    chance 0.4
+}
+
+flickerlight QUEENPLASMA_X3
+{
+    color 0.0 0.5 0.0
+    size 16
+    secondarySize 24
+    chance 0.4
+}
+
+
+object QueenPlasmaBlast
+{
+    frame EBLTG { light QUEENPLASMA }
+    frame EBLTH { light QUEENPLASMA }
+
+    frame EBLTI { light QUEENPLASMA_X1 }
+    frame EBLTJ { light QUEENPLASMA_X2 }
+    frame EBLTK { light QUEENPLASMA_X2 }
+}
+
+object QueenPainPlasmaBlast
+{
+    frame EBLTG { light QUEENPLASMA }
+    frame EBLTH { light QUEENPLASMA }
+
+    frame EBLTI { light QUEENPLASMA_X1 }
+    frame EBLTJ { light QUEENPLASMA_X2 }
+    frame EBLTK { light QUEENPLASMA_X2 }
+}
+
+//Note: the lights for the "QueenPlasmaBlastTrail" particle trail can cause a lot of slowdown.  Use at your discretion.
+flickerlight QUEENPLASMATRAIL_1
+{
+	color 0.0 0.4 0.1
+	size 40
+	secondarySize 48
+	chance 0.6
+}
+
+flickerlight QUEENPLASMATRAIL_2
+{
+	color 0.0 0.3 0.1
+	size 32
+	secondarySize 40
+	chance 0.6
+}
+
+flickerlight QUEENPLASMATRAIL_3
+{
+	color 0.0 0.2 0.0
+	size 24
+	secondarySize 32
+	chance 0.6
+}
+
+object QueenPlasmaBlastTrail
+{
+	frame EBLTA { light QUEENPLASMATRAIL_1 }
+	frame EBLTB { light QUEENPLASMATRAIL_2 }
+	frame EBLTC { light QUEENPLASMATRAIL_2 }
+	frame EBLTD { light QUEENPLASMATRAIL_3 }
+	frame EBLTE { light QUEENPLASMATRAIL_3 }
+	frame EBLTF { light QUEENPLASMATRAIL_3 }
+}
