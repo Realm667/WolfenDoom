@@ -6,7 +6,13 @@ global int 1:disable_mutants; //mxd. When set to true, Mutant and MutantMelee wi
 global int 2:disable_big_mutants; //mxd. When set to true, BigMutant1 and BigMutant2 will immediately despawn after spawning.
 global int 3:disable_supermutants; //mxd. When set to true, UberMutant and SuperMutant will immediately despawn after spawning.
 global int 4:astrostein; //[Ed} When set to true, grenades will change to the Astrostein variant
-
+global int 5:HealthScriptDeactivate;
+global int 6:mission_number;		//The variable for the mission number
+script "MissionNumber" OPEN
+{
+	if(GetLevelInfo(LEVELINFO_LEVELNUM)<99)					//If it's not a secret mission or the intermap
+		mission_number=GetLevelInfo(LEVELINFO_LEVELNUM);	//Set the mission number just in case we warped/started ahead
+}
 str darrenmessage[21]=
 {
 	"DARRENMESSAGE01","DARRENMESSAGE02","DARRENMESSAGE03","DARRENMESSAGE04","DARRENMESSAGE05",
