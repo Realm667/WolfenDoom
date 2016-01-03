@@ -9,8 +9,8 @@ actor AracnorbQueen
   +FLOATBOB
   +BOSS
   Health 5000
-  Radius 64
-  Height 96
+  Radius 48
+  Height 120
   Mass 2000
   Speed 6
   PainChance 45
@@ -23,7 +23,8 @@ actor AracnorbQueen
   MissileHeight 36
   Obituary "%o suffered psychic trauma from an aracnorb queen's brainwaves."
   HitObituary "%o had %p skull chewed by an aracnorb queen."
-  Scale 1.60
+  Tag "???"
+  Scale 1.50
   States
   {
   Spawn:
@@ -199,7 +200,7 @@ ACTOR QueenBFG
 	Speed 20
 	Damage 10
 	PROJECTILE
-	+SEEKERMISSILE
+	-SEEKERMISSILE
 	Renderstyle Add
 	SEESOUND "queen/fire"
     DEATHSOUND "queen/hit"
