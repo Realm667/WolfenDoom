@@ -3241,8 +3241,8 @@ ACTOR NaziLoper : Nazi
 	MaxDropOffHeight 128
 	SeeSound "loper/wakeup"
 	DeathSound "loper/death"
-	HitObituary "%o was electrificated by a grinny Loper"
-	Obituary "%o was zapped by a Loper"
+	HitObituary "$LOPRHIT1"
+	Obituary "$LOPRHIT2"
 	+SHORTMISSILERANGE
 	+NORADIUSDMG //or the ZTracer will kill the Loper :D
 	Scale 1.10
@@ -3394,7 +3394,7 @@ ACTOR ZTracer
 	+THRUGHOST
 	-NOGRAVITY
 	Translation "112:127=192:200"
-	Obituary "%o got was vaporized by a Loper spark."
+	Obituary "$LOPRHIT3"
 	SeeSound "electricplasma/shoot"
 	DeathSound "electricplasma/hit"
 	Decal "SwordLightning"

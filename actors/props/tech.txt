@@ -50,7 +50,12 @@ ACTOR TeslaLab2 : SwitchableDecoration
 	Spawn:
 	Active:
 		TNT1 A 0 A_PlaySound("tesla/active",6,1,1)
-		TESL CDB 4 BRIGHT LIGHT(TESLIT2)
+		TESL C 4 BRIGHT LIGHT(TESLIT2)
+		TNT1 AAAA 0 A_SpawnItemEx("Spark_B1",0,0,46,0,0,1,0,0,160)
+		TESL D 4 BRIGHT LIGHT(TESLIT2)
+		TNT1 AAAA 0 A_SpawnItemEx("Spark_B1",0,0,54,0,0,1,0,0,160)
+		TESL B 4 BRIGHT LIGHT(TESLIT2)
+		TNT1 AAAA 0 A_SpawnItemEx("Spark_B1",0,0,38,0,0,1,0,0,160)
 		Loop
 	Inactive:
 		TESL N -1 A_StopSound(6)
@@ -68,7 +73,30 @@ ACTOR TeslaLab3 : TeslaLab2
 	Spawn:
 	Active:
 		TNT1 A 0 A_PlaySound("tesla/active",6,1,1)
-		TESL FGHIJKLE 4 BRIGHT LIGHT(TESLIT1)
+		TESL F 4 BRIGHT LIGHT(TESLIT1)
+		TNT1 AAAA 0 A_SpawnItemEx("Spark_B1",0,20,42,0,0,1,0,0,160)
+		TNT1 AAAA 0 A_SpawnItemEx("Spark_B1",0,-20,42,0,0,1,0,0,160)
+		TESL G 4 BRIGHT LIGHT(TESLIT1)
+		TNT1 AAAA 0 A_SpawnItemEx("Spark_B1",0,24,56,0,0,1,0,0,160)
+		TNT1 AAAA 0 A_SpawnItemEx("Spark_B1",0,-24,56,0,0,1,0,0,160)
+		TESL H 4 BRIGHT LIGHT(TESLIT1)
+		TNT1 AAAA 0 A_SpawnItemEx("Spark_B1",0,28,70,0,0,1,0,0,160)
+		TNT1 AAAA 0 A_SpawnItemEx("Spark_B1",0,-28,70,0,0,1,0,0,160)
+		TESL I 4 BRIGHT LIGHT(TESLIT1)
+		TNT1 AAAA 0 A_SpawnItemEx("Spark_B1",0,32,84,0,0,1,0,0,160)
+		TNT1 AAAA 0 A_SpawnItemEx("Spark_B1",0,-32,84,0,0,1,0,0,160)
+		TESL J 4 BRIGHT LIGHT(TESLIT1)
+		TNT1 AAAA 0 A_SpawnItemEx("Spark_B1",0,36,98,0,0,1,0,0,160)
+		TNT1 AAAA 0 A_SpawnItemEx("Spark_B1",0,-36,98,0,0,1,0,0,160)
+		TESL K 4 BRIGHT LIGHT(TESLIT1)
+		TNT1 AAAA 0 A_SpawnItemEx("Spark_B1",0,40,102,0,0,1,0,0,160)
+		TNT1 AAAA 0 A_SpawnItemEx("Spark_B1",0,-40,102,0,0,1,0,0,160)
+		TESL L 4 BRIGHT LIGHT(TESLIT1)
+		TNT1 AAAA 0 A_SpawnItemEx("Spark_B1",0,44,36,0,0,1,0,0,160)
+		TNT1 AAAA 0 A_SpawnItemEx("Spark_B1",0,-44,36,0,0,1,0,0,160)
+		TESL E 4 BRIGHT LIGHT(TESLIT1)
+		TNT1 AAAA 0 A_SpawnItemEx("Spark_B1",0,16,38,0,0,1,0,0,160)
+		TNT1 AAAA 0 A_SpawnItemEx("Spark_B1",0,16,38,0,0,1,0,0,160)
 		Loop
 	Inactive:
 		TESL M -1 A_StopSound(6)
