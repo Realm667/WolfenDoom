@@ -3358,65 +3358,81 @@ ACTOR NaziLoper : Nazi
    }
 }
 
-ACTOR LoperZap : Blood
+ACTOR LoperZap
 {
+	+NOBLOCKMAP
+	+NOTELEPORT
+	+ALLOWPARTICLES
 	+NOGRAVITY
 	Mass 0
 	RenderStyle Translucent
 	Alpha 0.6
-	Translation "176:191=194:197"
+	Scale 0.5
+	Translation "112:127=192:200"
+	States
+	{
+	Spawn:
+		EBLT HIG 3 Bright A_SpawnItemEx("Spark_B1",0,0,8,0,0,1,0,0,160)
+		Stop
+	}
 }
 
 ACTOR ZTracer
 {
-   Radius 5
-   Height 5
-   Speed 15
-   ReactionTime 175
-   Damage 5
-   ExplosionDamage 16
-   ExplosionRadius 16
-   DamageType fire
-   RenderStyle ADD
-   Alpha 0.67
-   PROJECTILE
-   +FLOORHUGGER
-   +THRUGHOST
-   -NOGRAVITY
-   Obituary "%o got was vaporized by a Loper spark."
-   States
-   {
-   Spawn:
-      TNT1 A 1 Bright LIGHT(LOPERLIT)
-      TNT1 A 0 Bright A_Countdown
-      TNT1 A 0 Bright A_CustomMissile("ZTracerPuff",0,0,0,0)
-      loop
-   Death:
-      ZTRA K 4 Bright
-      ZTRA L 4 Bright A_Explode
-      ZTRA MNO 3 Bright
-      stop
-   }
+	Radius 5
+	Height 5
+	Speed 15
+	ReactionTime 175
+	Damage 5
+	ExplosionDamage 16
+	ExplosionRadius 16
+	DamageType fire
+	RenderStyle ADD
+	Alpha 0.67
+	PROJECTILE
+	+FLOORHUGGER
+	+THRUGHOST
+	-NOGRAVITY
+	Translation "112:127=192:200"
+	Obituary "%o got was vaporized by a Loper spark."
+	SeeSound "electricplasma/shoot"
+	DeathSound "electricplasma/hit"
+	Decal "SwordLightning"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright LIGHT(LOPERLIT)
+		"####" A 0 Bright A_Countdown
+		"####" A 0 Bright A_CustomMissile("ZTracerPuff",0,0,0,0)
+		loop
+	Death:
+		EBLT G 4 Bright
+		"####" H 4 Bright A_Explode
+		"####" IJK 3 Bright
+		stop
+	}
 }
 
 ACTOR ZTracerPuff
 {
-   Radius 1
-   Height 1
-   Speed 0
-   RENDERSTYLE ADD
-   DamageType fire
-   ALPHA 0.67
-   PROJECTILE
-   +FLOORHUGGER
-   +RANDOMIZE
-   -NOGRAVITY
-   States
-   {
-   Spawn:
-      ZTRA ABCDEFGHIJ 3 Bright A_Explode(2,4)
-      stop
-   }
+	Radius 1
+	Height 1
+	Speed 0
+	RENDERSTYLE ADD
+	DamageType fire
+	ALPHA 0.67
+	PROJECTILE
+	+FLOORHUGGER
+	+RANDOMIZE
+	-NOGRAVITY
+	Translation "112:127=192:200"
+	States
+	{
+	Spawn:
+		TNT1 AAAAAAAAA 0 A_SpawnItemEx("Spark_B1",0,0,8,0,0,1,0,0,160)
+		EBLT ABCDEFEDCB 3 Bright A_Explode(2,4)
+		stop
+	}
 }
 
 //Support Actors from TPortal//
@@ -3439,7 +3455,7 @@ Actor TPortMist : VisualSpecialEffect
 	{
 	Spawn:
 		TNT1 A 0
-		TNT1 A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
 	Loopy:
 		MIST ABCDEFGHIJKLMOOPQR 1 bright A_FadeOut(0.01)
 		loop
@@ -3452,7 +3468,7 @@ Actor TPortMistSpawner : VisualSpecialEffect
 	{
 	Spawn:
 		TNT1 A 0
-		TNT1 AA 0 A_SpawnItemEx("TPortMist",Random(-14,14),Random(-14,14),Random(-14,14),0.012*Random(-50,50),0.012*Random(-50,50),0.012*Random(-50,50),0,0,24)
+		"####" AA 0 A_SpawnItemEx("TPortMist",Random(-14,14),Random(-14,14),Random(-14,14),0.012*Random(-50,50),0.012*Random(-50,50),0.012*Random(-50,50),0,0,24)
 		stop
 	}
 }
@@ -3465,7 +3481,7 @@ Actor TPortLightning : VisualSpecialEffect
 	{
 	Spawn:
 		TNT1 A 0 // Huh, that's the jump...
-		TNT1 A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72)
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72)
 	Select:
 		BLL1 ABCDEFGHIJKLMNOPQR 0 A_Jump(256,"Fade")
 		BLL2 ABCDEFGHIJKLMNOPQR 0 A_Jump(256,"Fade")
@@ -3489,10 +3505,10 @@ Actor TPortLightningWave : VisualSpecialEffect
 	{
 	Spawn:
 		TNT1 A 0
-		TNT1 A 0 A_SpawnItemEx("TPortLightningSmall",Random(-2,2),Random(-2,2),Random(-2,2),0,0,0,0,0,32)
-		TNT1 A 0 A_SpawnItemEx("TPortLightningMedium",Random(-3,3),Random(-3,3),Random(-3,3),0,0,0,0,0,56)
-		TNT1 A 0 A_SpawnItemEx("TPortLightningLarge",Random(-4,4),Random(-4,4),Random(-3,3),0,0,0,0,0,96)
-		TNT1 A 0 A_SpawnItemEx("TPortLightningHuge",Random(-5,5),Random(-5,5),Random(-5,5),0,0,0,0,0,144)
+		"####" A 0 A_SpawnItemEx("TPortLightningSmall",Random(-2,2),Random(-2,2),Random(-2,2),0,0,0,0,0,32)
+		"####" A 0 A_SpawnItemEx("TPortLightningMedium",Random(-3,3),Random(-3,3),Random(-3,3),0,0,0,0,0,56)
+		"####" A 0 A_SpawnItemEx("TPortLightningLarge",Random(-4,4),Random(-4,4),Random(-3,3),0,0,0,0,0,96)
+		"####" A 0 A_SpawnItemEx("TPortLightningHuge",Random(-5,5),Random(-5,5),Random(-5,5),0,0,0,0,0,144)
 		stop
 	}
 }
@@ -3504,14 +3520,14 @@ Actor TPortLightningWaveSpawner : VisualSpecialEffect
 	{
 	Spawn:
 		TNT1 A 0
-		TNT1 A 0 A_PlaySound("TPortalZap")
-		TNT1 A 2 Light("TPortZap") A_SpawnItem("TPortLightningWave")
-		TNT1 A 1 Light("TPortZap") A_SpawnItem("TPortLightningWave")
-		TNT1 A 3 Light("TPortZap") A_SpawnItem("TPortLightningWave")
-		TNT1 A 5 Light("TPortZap") A_SpawnItem("TPortLightningWave")
-		TNT1 A 1 Light("TPortZap") A_SpawnItem("TPortLightningWave")
-		TNT1 A 2 Light("TPortZap") A_SpawnItem("TPortLightningWave")
-		TNT1 A 4 A_SpawnItem("TPortLightningWave")
+		"####" A 0 A_PlaySound("TPortalZap")
+		"####" A 2 Light("TPortZap") A_SpawnItem("TPortLightningWave")
+		"####" A 1 Light("TPortZap") A_SpawnItem("TPortLightningWave")
+		"####" A 3 Light("TPortZap") A_SpawnItem("TPortLightningWave")
+		"####" A 5 Light("TPortZap") A_SpawnItem("TPortLightningWave")
+		"####" A 1 Light("TPortZap") A_SpawnItem("TPortLightningWave")
+		"####" A 2 Light("TPortZap") A_SpawnItem("TPortLightningWave")
+		"####" A 4 A_SpawnItem("TPortLightningWave")
 		stop
 	}
 }
