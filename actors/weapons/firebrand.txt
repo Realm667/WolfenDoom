@@ -10,7 +10,7 @@ ACTOR Firebrand : NaziWeapon replaces Chainsaw
 	+WEAPON.NOAUTOFIRE
 	+WEAPON.NOALERT
 	-WEAPON.AMMO_CHECKBOTH
-	Tag "Tyrfing"
+	Tag "Blade of Agony"
 	States
 	{
 	Select:
@@ -122,7 +122,7 @@ ACTOR Firebrand : NaziWeapon replaces Chainsaw
 		SRDF B 1 A_TakeInventory("SwordSeq")
 		Goto Ready
 	Spawn:
-		SRDP A -1 bright
+		SRDP ABCD 4 LIGHT(BOAFLAMW)
 		Loop
 	}
 }
