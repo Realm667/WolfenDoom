@@ -57,10 +57,10 @@ ACTOR StatistSinger : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		MADI ABCDEFBGDHFIB 8
+		MADI ABCDEFBGDHFIB 8 A_SetSolid
 		Loop
 	Inactive:
-		TNT1 A 5
+		TNT1 A -1 A_UnSetSolid
 		Loop
 	}
 }
