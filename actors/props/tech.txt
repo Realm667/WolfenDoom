@@ -20,7 +20,7 @@ ACTOR Radar
 ACTOR TeslaLab1 
 {
 	//$Category Props (Wolf3D)/Tech
-	//$Title Tesla Device (1)
+	//$Title Tesla Device (Off)
 	//$Color 3
 	Radius 32
 	Height 48
@@ -38,7 +38,7 @@ ACTOR TeslaLab1
 ACTOR TeslaLab2 : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Tech
-	//$Title Tesla Device (2)
+	//$Title Tesla Device, with Effects (short)
 	//$Color 3
 	Radius 16
 	Height 24
@@ -69,8 +69,9 @@ ACTOR TeslaLab2 : SwitchableDecoration
 ACTOR TeslaLab3 : TeslaLab2
 {
 	//$Category Props (Wolf3D)/Tech
-	//$Title Tesla Device (3)
+	//$Title Tesla Device, with Effects (tall)
 	//$Color 3
+	Height 96
 	States
 	{
 	Spawn:
@@ -114,3 +115,39 @@ ACTOR TeslaLab3 : TeslaLab2
 		Stop
 	}
 }
+
+ACTOR TeslaLab4 : TeslaLab2
+{
+	//$Category Props (Wolf3D)/Tech
+	//$Title Tesla Device, no Effects (short)
+	//$Color 3
+	States
+	{
+	Spawn:
+	Active:
+		TNT1 A 0 A_PlaySound("tesla/active",6,1,1)
+		TESL CDB 4 BRIGHT LIGHT(TESLIT2)
+		Loop
+	Inactive:
+		TESL N -1 A_StopSound(6)
+		Stop
+	}
+}
+
+ACTOR TeslaLab5 : TeslaLab2
+{
+	//$Category Props (Wolf3D)/Tech
+	//$Title Tesla Device, no Effects (tall)
+	//$Color 3
+	Height 96
+	States
+{
+	Spawn:
+	Active:
+		TNT1 A 0 A_PlaySound("tesla/active",6,1,1)
+		TESL FGHIJKLE 4 BRIGHT LIGHT(TESLIT1)
+		Loop
+	Inactive:
+		TESL M -1 A_StopSound(6)
+		Stop
+	}
