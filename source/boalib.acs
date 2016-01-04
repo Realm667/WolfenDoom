@@ -77,7 +77,7 @@ script "BoADialogue"(int who, int which)
 	SetHudSize(640, 400, false);
 	SetFont("SMALLFONT");
 	SetHudWrapWidth(540);
-	hudmessagebold(s:message; HUDMSG_TYPEON, 2, CR_GRAY, 100.1, 13.1, 6.0, 0.03);
+	hudmessagebold(s:message; HUDMSG_TYPEON, 2, CR_GRAY, 100.1, 13.1, 999.0, 0.03, 1.0);
 
 	// Stop talk animation
 	delay(5*35);
@@ -85,9 +85,23 @@ script "BoADialogue"(int who, int which)
 	SetFont(headsilent);
 	hudmessagebold(s:"A"; HUDMSG_PLAIN, 3, CR_UNTRANSLATED, 21.0, 16.0, 2.0);
 
+	delay(5*35);
+
 	// Fade out the portrait
-	delay(2*35);
 	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, 3, CR_UNTRANSLATED, 21.0, 16.0, 0.0, 0.0, 1.0);
+
+	//Fade out HUD BGs
+	SetHudSize(320, 200, true);
+	SetFont("HEADBAR");
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, 4, CR_UNTRANSLATED, 160.0, 24.0, 0.0, 0.0, 1.0);
+	SetFont("HEADBOVL"); //mxd. Frame overlay
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, 1, CR_UNTRANSLATED, 160.0, 24.0, 0.0, 0.0, 1.0); //mxd
+
+	//Fade out the message
+	SetHudSize(640, 400, false);
+	SetFont("SMALLFONT");
+	SetHudWrapWidth(540);
+	hudmessagebold(s:message; HUDMSG_FADEINOUT, 2, CR_GRAY, 100.1, 13.1, 0.0, 0.0, 1.0);
 }
 //Controls
 Script "AutoReload"(void)
@@ -335,9 +349,9 @@ script "BossHealth"(int tid,int maxhealth)
 		//SetFont("HELTHBAR");
 		//hudmessagebold(s:"A"; HUDMSG_PLAIN,3,CR_UNTRANSLATED,160.0,24.0,1.0);
 		SetFont("SMALLFONT");
-		HudMessageBold(s:GetActorProperty(tid,APROP_NameTag); HUDMSG_PLAIN,1,CR_GRAY,320.0,40.0,0.01);
+		HudMessageBold(s:GetActorProperty(tid,APROP_NameTag); HUDMSG_PLAIN,21,CR_GRAY,320.0,40.0,0.01);
 		SetFont(BossHealth[FixedDiv(GetActorProperty(tid,APROP_Health),GetActorProperty(tid,APROP_SpawnHealth))*10/65536]);
-		HudMessageBold(s:"A"; HUDMSG_PLAIN,10,CR_GRAY,320.0,40.0,1.0);
+		HudMessageBold(s:"A"; HUDMSG_PLAIN,22,CR_GRAY,320.0,40.0,1.0);
 		delay(35);
 	}
 }
