@@ -9,7 +9,7 @@ global int 4:astrostein; //[Ed} When set to true, grenades will change to the As
 global int 5:HealthScriptDeactivate;
 global int 6:mission_number;		//The variable for the mission number
 
-int objectives_on;			//Objective display toggle
+int objectives_on[8];			//Objective display toggle
 
 str objectives[6][2]=
 {
@@ -22,10 +22,10 @@ str objectives[6][2]=
 };
 script "boaobjectives" (void)
 {
-	if(objectives_on)
-		objectives_on=0;
+	if(objectives_on[PlayerNumber()])
+		objectives_on[PlayerNumber()]=0;
 	else
-		objectives_on=1;
+		objectives_on[PlayerNumber()]=1;
 }
 script "boaobjectivesset"(int mode,int objnumber,int objtext)
 {
@@ -35,9 +35,9 @@ script "boaobjectivesdisplay" ENTER
 {
 	setfont("SMALLFONT");
 	sethudsize(800,600,1);
-	while(!objectives_on)
+	while(!objectives_on[PlayerNumber()])
 		delay(1);
-	hudmessagebold(s:"Primary Objectives:\n",
+	hudmessage(s:"Primary Objectives:\n",
 		s:objectives[0][0],s:objectives[0][1],
 		s:objectives[1][0],s:objectives[1][1],
 		s:objectives[2][0],s:objectives[2][1],
