@@ -25,8 +25,9 @@ ACTOR TeslaLab1
 	Radius 32
 	Height 48
 	Scale 0.6
-	+SOLID
+	Mass 0x7ffffff
 	+NOGRAVITY
+	+NOTAUTOAIMED
 	States
 	{
 	Spawn:
@@ -42,9 +43,10 @@ ACTOR TeslaLab2 : SwitchableDecoration
 	//$Color 3
 	Radius 16
 	Height 24
-	+SOLID
+	Mass 0x7ffffff
 	+NOGRAVITY
 	+RANDOMIZE
+	+NOTAUTOAIMED
 	States
 	{
 	Spawn:
@@ -150,5 +152,46 @@ ACTOR TeslaLab5 : TeslaLab2
 	Inactive:
 		TESL M -1 A_StopSound(6)
 		Stop
+	}
+}
+
+ACTOR TeslaTurret //inspired from Tesla Coil by Captain Toenail
+{
+	//$Category Monsters (Wolf3D)/Occult
+	//$Title Tesla Turret (Invulnerable)
+	//$Color 4
+	Radius 16
+	Height 104
+	Mass 0x7ffffff
+	Speed 0
+	MONSTER
+	+NOBLOOD
+	+NOGRAVITY
+	+FLOORCLIP
+	-COUNTKILL
+	+NOTAUTOAIMED //because it's invulnerable, some ammo saved
+	+INVULNERABLE
+	+LOOKALLAROUND
+	+SHORTMISSILERANGE
+	obituary "%o was zapped by a Tesla Turret."
+	states
+	{
+	Spawn:
+		TSLT A 1 A_Look
+		"####" A 0 A_PlaySoundEx ("Tesla/Loop", "SoundSlot5", 1)
+		loop
+	See:
+		"####" A 1 A_Chase
+		"####" A 0 A_PlaySoundEx ("Tesla/Loop", "SoundSlot5", 1)
+		loop
+	Missile:
+		"####" A 4 A_FaceTarget
+		"####" A 0 bright A_PlaySound ("Tesla/Attack")
+		"####" AAAAAAAA 0 bright A_CustomRailgun (random(3,4), 0, none, none, RGF_CENTERZ, 1, 0, none, 0, 0, 1000, random(24,48), 8.0, 2.0, "LoperZap", 32)
+		"####" AA 0 A_SpawnItemEx("Spark_B1",0,0,92,0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,Random(157,203))
+		"####" A 0 A_SpawnItemEx("SparkFlare_B6",0,0,92,0,0,0,random(0,360),SXF_TRANSFERSCALE | SXF_CLIENTSIDE)
+		"####" A 70
+		goto See
+	//no Death states because it's invulnerable
 	}
 }
