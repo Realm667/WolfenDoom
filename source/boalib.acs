@@ -8,14 +8,46 @@ global int 3:disable_supermutants; //mxd. When set to true, UberMutant and Super
 global int 4:astrostein; //[Ed} When set to true, grenades will change to the Astrostein variant
 global int 5:HealthScriptDeactivate;
 global int 6:mission_number;		//The variable for the mission number
-global int 7:objectives_on;			//Objective display toggle
 
+int objectives_on;			//Objective display toggle
+
+str objectives[6][2]=
+{
+	{"",""},
+	{"",""},
+	{"",""},
+	{"",""},
+	{"",""},
+	{"",""}
+};
 script "boaobjectives" (void)
 {
 	if(objectives_on)
 		objectives_on=0;
 	else
 		objectives_on=1;
+}
+script "boaobjectivesset"(int mode,int objnumber,int objtext)
+{
+	objectives[objnumber][mode]=objtext;
+}
+script "boaobjectivesdisplay" ENTER
+{
+	setfont("SMALLFONT");
+	sethudsize(800,600,1);
+	while(!objectives_on)
+		delay(1);
+	hudmessagebold(s:"Primary Objectives:\n",
+		s:objectives[0][0],s:objectives[0][1],
+		s:objectives[1][0],s:objectives[1][1],
+		s:objectives[2][0],s:objectives[2][1],
+		s:"Secondary Objectives:\n",
+		s:objectives[3][0],s:objectives[3][1],
+		s:objectives[4][0],s:objectives[4][1],
+		s:objectives[5][0],s:objectives[5][1];
+		HUDMSG_PLAIN,971,CR_UNTRANSLATED,400.0,227.1,0.03);
+	delay(1);
+	restart;
 }
 
 script "MissionNumber" OPEN
