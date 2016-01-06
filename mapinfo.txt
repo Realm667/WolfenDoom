@@ -47,14 +47,14 @@ defaultmap
 	MonsterFallingDamage
 }
 
-map INTERMAP "Allied Headquarter"	//Tormentor667, MaxED & DoomJuan - Ed The Bat & Ozy81 for minor edits
+map INTERMAP lookup "INTERMAP"	//Tormentor667, MaxED & DoomJuan - Ed The Bat & Ozy81 for minor edits
 {
 	levelnum = 99
 	music = "BRIEFING"
 	cluster = 1
 }
 
-map TITLEMAP "Titlemap" //MaxED, Tormentor667
+map TITLEMAP lookup "TITLEMAP" //MaxED, Tormentor667
 {
 	music = "D_DM2TTL"
 }
@@ -74,21 +74,21 @@ cluster 1
 	hub
 }
 
-map C1M1 "Operation: Speerspitze"	//Tormentor667
+map C1M1 lookup "C1M1"	//Tormentor667
 {
 	levelnum = 1
 	music = "C1M1_MUS"
 	cluster = 1
 }
 
-map C1M2 "Operation: Exodus"		//Tormentor667
+map C1M2 lookup "C1M1"	//Tormentor667
 {
 	levelnum = 2
 	music = "C1M2_MUS"
 	cluster = 1
 }
 
-map C1M3 "Operation: Overlord"		//Tormentor667
+map C1M3 lookup "C1M3"	//Tormentor667
 {
 	levelnum = 3
 	FogDensity = 80 //mxd
@@ -96,33 +96,31 @@ map C1M3 "Operation: Overlord"		//Tormentor667
 	cluster = 1
 }
 
-map C1M4 "Operation: Kurzschluss" 	//GuardSoul
+map C1M4 lookup "C1M4"	//GuardSoul
 {
 	levelnum = 4
 	music = "C1M4_MUS"
 	cluster = 1
 }
 
-map C1M5 "Operation: St. Quentin" 	//Tormentor667
+map C1M5 lookup "C1M5"	//Tormentor667
 {
 	levelnum = 5
 	music = "C1M5_MUS"
 	cluster = 1
 }
 
-map C1M6 "Operation: Grabräuber"	//Tormentor667
+map C1M6 lookup "C1M6"	//Tormentor667
 {
 	levelnum = 6
-	next = C2M1//next = EndTitle
+	next = EndTitle
 	music = "C1M6_MUS"
 	cluster = 1
 }
 
-map C1M0 "Operation: Eisenmann"		//Tormentor667
+map C1M0 lookup "C1M0"	//Tormentor667
 {
 	levelnum = 101
-	next = INTERMAP
-	music = ""
 	cluster = 1
 }
 
@@ -136,49 +134,49 @@ episode C2M1
 	key = "f"
 }
 
-map C2M1 "Operation: Ausbruch"	//Tormentor667
+map C2M1 lookup "C2M1"	//Tormentor667
 {
 	levelnum = 7
 	music = "C1M1_MUS"
 	cluster = 2
 }
 
-map C2M2 "Operation: Kanal"	//Guardsoul
+map C2M2 lookup "C2M2"	//Guardsoul
 {
 	levelnum = 8
 	music = "C2M2_MUS"
 	cluster = 2
 }
 
-map C2M3 "Operation: Kopfgeld"		//Tormentor667
+map C2M3 lookup "C2M3"	//Tormentor667
 {
 	levelnum = 9
 	music = "C1M2_MUS"
 	cluster = 2
 }
 
-map C2M4 "Operation: Seeteufel (1)"	//Tormentor667
+map C2M4 lookup "C2M4"	//Tormentor667
 {
 	levelnum = 10
 	music = "C2M4_MUS"
 	cluster = 2
 }
 
-map C2M5 "Operation: Seeteufel (2)"	//DoomJuan
+map C2M5 lookup "C2M5"	//DoomJuan
 {
 	levelnum = 11
 	music = "C2M5_MUS"
 	cluster = 2
 }
 
-map C2M6 "Operation: Schicksalsklinge"	//Tormentor667
+map C2M6 lookup "C2M6"	//Tormentor667
 {
 	levelnum = 12
 	music = "C2M6AMUS"
 	cluster = 2
 }
 
-map C2M0_A "Operation: Astrostein" //Tormentor667
+map C2M0_A lookup "C2M0_A"	//Tormentor667
 {
 	levelnum = 201
 	music = "C2M0AMUS"
@@ -186,7 +184,7 @@ map C2M0_A "Operation: Astrostein" //Tormentor667
 	next = C2M0_B
 }
 
-map C2M0_B "Operation: Astrostein" //Tormentor667
+map C2M0_B lookup "C2M0_B"	//Tormentor667
 {
 	levelnum = 202
 	music = "C2M0BMUS"
@@ -203,35 +201,35 @@ episode C3M1
 	key = "b"
 }
 
-map C3M1 "Operation: ???"		//Tormentor667
+map C3M1 lookup "C3M1"	//Tormentor667
 {
 	levelnum = 13
 	music = "C3M1_MUS"
 	cluster = 3
 }
 
-map C3M5_A "Operation: Zentralflughafen Berlin-Tempelhof (1)"	//Ozymandias81
+map C3M5_A lookup "C3M5_A"	//Ozymandias81
 {
 	levelnum = 301
 	music = "C3M5AMUS"
 	cluster = 3
 }
 
-map C3M5_B "Operation: Zentralflughafen Berlin-Tempelhof (2)"	//Ozymandias81
+map C3M5_B lookup "C3M5_B"	//Ozymandias81
 {
 	levelnum = 302
 	music = "C3M5BMUS"
 	cluster = 3
 }
 
-map C3M6_A "Operation: Wolfenstein (1)"	//DoomJuan
+map C3M6_A lookup "C3M6_A"	//DoomJuan
 {
 	levelnum = 303
 	music = "C3M6_MUS"
 	cluster = 3
 }
 
-//map C3M6_B "Operation: Wolfenstein (2)"
+//map C3M6_B lookup "C3M6_B"
 //{
 //	levelnum = 304
 //	music = "C3M6_MUS"
@@ -242,7 +240,7 @@ map C3M6_A "Operation: Wolfenstein (1)"	//DoomJuan
 //######## BONUS MAPS ###########/
 //###############################/
 
-map SM01 "Slug Village"		//Tormentor667
+map SM01 lookup "SM01"	//Tormentor667
 {
 	levelnum = 51
 	music = "SM01_MUS"
