@@ -5,7 +5,7 @@ ACTOR BarrelFrags
 	{
 	Spawn:
 		FRAG ABCDEFGHIJKLM 3
-		FRAG N -1
+		"####" N -1
 		Stop
 	}
 }
@@ -40,13 +40,13 @@ ACTOR TNTBarrel1 : ExplosiveBarrel
 		Stop
 	Death:
 		BARX A 2 BRIGHT A_SpawnItemEx("BarrelFrags")
-		BARX A 0 A_SpawnItemEx("GeneralExplosion_Medium")
-		BARX B 2 BRIGHT A_Scream
-		BARX CDEFG 2 BRIGHT
-		BARX H 2 BRIGHT A_Explode
-		BARX IJKLM 2 BRIGHT
-		BARX M 1050 BRIGHT A_BarrelDestroy
-		BARX M 5 A_Respawn
+		"####" A 0 A_SpawnItemEx("GeneralExplosion_Medium")
+		"####" B 2 BRIGHT A_Scream
+		"####" CDEFG 2 BRIGHT
+		"####" H 2 BRIGHT A_Explode
+		"####" IJKLM 2 BRIGHT
+		"####" M 1050 BRIGHT A_BarrelDestroy
+		"####" M 5 A_Respawn
 		Wait
 	}
 }

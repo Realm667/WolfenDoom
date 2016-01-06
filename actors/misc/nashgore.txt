@@ -1,6 +1,6 @@
 ACTOR NashGore_Blood : Blood replaces Blood
 {
-	states
+	States
 	{
 	Spawn:
 		BLUD C 8
@@ -15,16 +15,16 @@ ACTOR NashGore_Bloodsplatter : NashGore_Blood replaces Bloodsplatter{}
 ACTOR NashGore_FlyingBlood
 {
 	+CLIENTSIDEONLY
-	scale 0.75
+	Scale 0.75
 	Health 1
 	Radius 8
 	Height 1
 	Mass 1
-	gravity 0.5 // [Nash] make it fall slower. pretty!
+	Gravity 0.5 // [Nash] make it fall slower. pretty!
 	+CORPSE
 	+NOTELEPORT
 	+NOBLOCKMAP
-	states
+	States
 	{
 	Spawn:
 		FBLD AABBCCDD 2 NODELAY A_SpawnItemEx("NashGore_FlyingBloodTrail",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION)
@@ -44,12 +44,12 @@ ACTOR NashGore_FlyingBlood
 
 ACTOR NashGore_FlyingBloodTrail
 {
-	scale 0.70
+	Scale 0.70
 	Mass 1
 	Gravity .125
 	+NOTELEPORT
 	+NOBLOCKMAP
-	states
+	States
 	{
 	Spawn:
 		BTRL ABCD 4

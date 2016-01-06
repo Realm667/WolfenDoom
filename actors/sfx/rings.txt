@@ -7,9 +7,9 @@
 ACTOR BaseOrb
 {
  +Missile
- +NoGravity
+ +NOGRAVITY
  +NoBlockmap
- +NoInteraction
+ +NOINTERACTION
  -Solid
  Radius 0
  Height 0
@@ -38,8 +38,8 @@ ACTOR GreenCirclePad
 	//$Arg2Tooltip "Controls the speed of the rings (can also be negative if you want them to move downwards instead of upwards)"
 	//$Arg1 "Radius"
 	//$Arg1Tooltip "Controls the size of the area. 32, for example, spawns in a 64x64 diameter circle."
-	+NoBlockMap +NoGravity +NoSector +NoInteraction +NoClip -Solid +CLIENTSIDEONLY
-        states
+	+NOBLOCKMAP +NOGRAVITY +NoSector +NOINTERACTION +NoClip -Solid +CLIENTSIDEONLY
+        States
         {
         Spawn:
            Active:

@@ -44,8 +44,8 @@ ACTOR KaBoomer
 ACTOR Nuke
 {
 	+NoBlockmap
-	+NoGravity
-	+NoInteraction
+	+NOGRAVITY
+	+NOINTERACTION
 	Radius 0
 	Height 0
 	States
@@ -68,7 +68,7 @@ ACTOR Nuke
 ACTOR TankBoom
 {
 	+NoBlockmap
-	+NoGravity
+	+NOGRAVITY
 	+ForceRadiusDmg
 	States
 	{
@@ -94,7 +94,7 @@ ACTOR NebBoom : TankBoom
 ACTOR TankFire : Nuke
 {
 	RenderStyle Add
-	+NoInteraction
+	+NOINTERACTION
 	+DONTSPLASH
 	+EXPLODEONWATER
 	Scale 0.5
@@ -134,7 +134,7 @@ ACTOR NebFire : TankFire
 ACTOR NukeSmoke : Nuke
 {
 	Scale 1.7
-	+NoInteraction
+	+NOINTERACTION
 	+DONTSPLASH
 	+EXPLODEONWATER
 	Alpha 0.5
@@ -166,7 +166,7 @@ ACTOR NebSmoke : NukeSmoke
 ACTOR TankFlare : TankFire
 {
 	Scale 0.8
-	+NoInteraction
+	+NOINTERACTION
 	States
 	{
 	Spawn:

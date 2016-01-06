@@ -23,7 +23,7 @@ ACTOR BoilingOrangeSpawner // Lava Boiling without the bright sprites, for norma
 	//$Arg3Enum { 0 = "Yes"; 1 = "No"; }
 
 	+NOBLOCKMAP
-	+NoInteraction
+	+NOINTERACTION
 	+NoClip
 	+CLIENTSIDEONLY
 	States
@@ -52,7 +52,7 @@ ACTOR BoilingOrangeSpawner // Lava Boiling without the bright sprites, for norma
 ACTOR BoilingOrange
 {
 	+NoBlockmap
-	+NoInteraction
+	+NOINTERACTION
 	+CLIENTSIDEONLY
 	+NOGRAVITY
 	+NOCLIP
@@ -74,7 +74,7 @@ ACTOR BoilingOrange
 ACTOR TransparentBoilingOrange : BoilingOrange
 {
 	Renderstyle Translucent
-	alpha .5
+	Alpha .5
 }
 
 ACTOR BoilingBlueSpawner : BoilingOrangeSpawner
@@ -129,7 +129,7 @@ ACTOR BoilingBlue : BoilingOrange
 ACTOR TransparentBoilingBlue : BoilingBlue
 {
 	Renderstyle Translucent
-	alpha .5
+	Alpha .5
 }
 
 ACTOR BoilingGreySpawner : BoilingOrangeSpawner
@@ -178,7 +178,7 @@ ACTOR BoilingGrey : BoilingOrange
 ACTOR TransparentBoilingGrey : BoilingGrey
 {
 	Renderstyle Translucent
-	alpha .5
+	Alpha .5
 }
 
 ACTOR BoilingBrownSpawner : BoilingBlueSpawner
@@ -227,7 +227,7 @@ ACTOR BoilingBrown : BoilingBlue
 ACTOR TransparentBoilingBrown : BoilingBrown
 {
 	Renderstyle Translucent
-	alpha .5
+	Alpha .5
 }
 
 ACTOR BoilingBlackSpawner : BoilingBlueSpawner
@@ -276,7 +276,7 @@ ACTOR BoilingBlack : BoilingBlue
 ACTOR TransparentBoilingBlack : BoilingBlack
 {
 	Renderstyle Translucent
-	alpha .5
+	Alpha .5
 }
 
 ACTOR BoilingRedSpawner : BoilingBlueSpawner
@@ -325,7 +325,7 @@ ACTOR BoilingRed : BoilingBlue
 ACTOR TransparentBoilingRed : BoilingRed
 {
 	Renderstyle Translucent
-	alpha .5
+	Alpha .5
 }
 
 ACTOR BoilingGreenSpawner : BoilingBlueSpawner
@@ -374,7 +374,7 @@ ACTOR BoilingGreen : BoilingBlue
 ACTOR TransparentBoilingGreen : BoilingGreen
 {
 	Renderstyle Translucent
-	alpha .5
+	Alpha .5
 }
 
 // Bonus! Bright Spawner for orange lava! for use with orange lava textures set to Glow with GLDEFS.

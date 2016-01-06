@@ -13,7 +13,7 @@ ACTOR SingleCoin : CustomInventory
 	//$Color 17
 	inventory.pickupmessage "$COIN"
 	inventory.pickupsound "treasure/pickup"
-	states
+	States
 	{
 	Spawn:
 		COIN A -1 Light(COINLITE)
@@ -30,7 +30,7 @@ ACTOR BagOfCoins : SingleCoin
 	//$Title Treasure (Coin Bag, 10pts)
 	//$Color 17
 	inventory.pickupmessage "$COINSBAG"
-	states
+	States
 	{
 	Spawn:
 		SACK A -1 Light(BAGCLITE)
@@ -190,7 +190,7 @@ ACTOR SupplyChest : SwitchingDecoration
 		SUBX A -1
 		Stop
 	Active:
-		SUBX B 21
+		"####" B 21
 		Stop
 	}
 }

@@ -18,10 +18,10 @@ ACTOR WhiteSparkSpawner : SwitchableDecoration
 
 	Height 8
 	Radius 4
-	+NoBlockMap
-	+NoGravity
-	+NoInteraction
-	+ClientSideOnly
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+NOINTERACTION
+	+CLIENTSIDEONLY
 	+NoClip
 	States
 	{
@@ -731,10 +731,10 @@ ACTOR SparkFlare_W1
 	Radius 0
 	Mass 0
 	+Missile
-	+NoBlockMap
+	+NOBLOCKMAP
 	+NoClip
-	+NoGravity
-	+NoInteraction
+	+NOGRAVITY
+	+NOINTERACTION
 	+FORCEXYBILLBOARD
 	RenderStyle Add
 	Scale 0.25
@@ -802,7 +802,7 @@ ACTOR Spark_W1
 	Mass 0
 	Speed 0.25
 	+Missile
-	+NoBlockMap
+	+NOBLOCKMAP
 	+LowGravity
 	+FORCEXYBILLBOARD
 	RenderStyle Add
@@ -966,7 +966,7 @@ ACTOR Spark_B16 : Spark_B1{Speed 4.0}
 
 ACTOR Spark_P1 : Spark_W1
 {
-	states
+	States
 	{
 	Spawn:
 		SPKP E 1 Bright

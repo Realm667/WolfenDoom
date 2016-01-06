@@ -661,7 +661,7 @@ ACTOR MutantMelee : Mutant
 	//$Color 4
 	DropItem ""
 	+LOOKALLAROUND
-	states
+	States
 	{
 	Spawn:
 		MLMT A 0 NoDelay ACS_NamedExecuteAlways("DisableMutants",0) //mxd
@@ -1195,7 +1195,7 @@ ACTOR MadDoctor : RocketMan
 	Tag "Dr. Schabbs Jr."
 	Health 400
 	+BOSS
-	states
+	States
 	{
 	Spawn:
 		SCHB A 0
@@ -1595,7 +1595,7 @@ ACTOR HitlerGhost : Nazi
 	Speed 2.167
 	RenderStyle Translucent
 	Alpha 0.5
-	Floatspeed .67
+	FloatSpeed .67
 	PainChance 24
 	DeathSound "hitlerghost/die"
 	SeeSound "hitlerghost/see"
@@ -1669,7 +1669,7 @@ ACTOR Geist : Nazi
 	Alpha .5
 	DeathSound "geist/die"
 	PainSound "geist/pain"
-	Floatspeed 1.33
+	FloatSpeed 1.33
 	-FLOORCLIP
 	+FLOAT
 	+NOGRAVITY
@@ -1849,7 +1849,7 @@ ACTOR MiniShip : Nazi
 	Mass 2000
 	PainSound "metal/pain"
 	DeathSound "world/barrelboom"
-	Floatspeed .67
+	FloatSpeed .67
 	-FLOORCLIP
 	+FLOAT
 	+NOGRAVITY
@@ -1956,7 +1956,7 @@ ACTOR DeathKnight : Nazi
 	+MISSILEEVENMORE
 	+BOSS
 	+NORADIUSDMG
-	states
+	States
 	{
 	Spawn:
 		DKGT A 0
@@ -2138,7 +2138,7 @@ ACTOR ChairGuy : Nazi
 	+BOSS
 	+NOGRAVITY
 	+FLOAT
-	states
+	States
 	{
 	Spawn:
 		KRIS A 0
@@ -2397,7 +2397,7 @@ ACTOR Sniper : Guard
 	//$Color 4
 	Obituary "$SNIPER"
 	Health 50
-	speed 0
+	Speed 0
 	DropItem "MauserAmmo" 192
 	DropItem "G43" 64
 	+LOOKALLAROUND
@@ -2485,7 +2485,7 @@ ACTOR SuperMutant : Mutant
 	Obituary "$SUPAMUTN"
 	Health 180
 	Scale 1.45
-	states
+	States
 	{
 	Spawn:
 		SUPM A 0 NoDelay ACS_NamedExecuteAlways("DisableSuperMutants",0) //mxd
@@ -2816,7 +2816,7 @@ ACTOR EliteSoldatRifler : Guard
 	DropItem "GrenadePickup" 16
 	DropItem "G43" 64
 	+MISSILEEVENMORE
-	states
+	States
 	{
 	Spawn:
 		ELTR N 0
@@ -3077,7 +3077,7 @@ ACTOR DirtyDarren : Guard
 	DropItem ""
 	SeeSound ""
 	+USESPECIAL
-	states
+	States
 	{
 	Spawn:
 		DARR N 0
@@ -3125,7 +3125,7 @@ ACTOR Marine1 : DirtyDarren
 	//$Color 4
 	Obituary "$MARINE"
 	Scale 1.3 //mxd
-	states
+	States
 	{
 	Spawn:
 		PARS A 0
@@ -3159,7 +3159,7 @@ ACTOR Marine2 : RandomSpawner
 
 ACTOR Marine2A : Marine1
 {
-	states
+	States
 	{
 	Spawn:
 		ARMH A 0
@@ -3169,7 +3169,7 @@ ACTOR Marine2A : Marine1
 
 ACTOR Marine2B : Marine1
 {
-	states
+	States
 	{
 	Spawn:
 		MARH A 0
@@ -3188,7 +3188,7 @@ ACTOR Marine3 : RandomSpawner
 
 ACTOR Marine3A : Marine1
 {
-	states
+	States
 	{
 	Spawn:
 		ARH2 A 0
@@ -3213,7 +3213,7 @@ ACTOR Marine3A : Marine1
 
 ACTOR Marine3B : Marine3A
 {
-	states
+	States
 	{
 	Spawn:
 		MAH2 A 0
@@ -3263,7 +3263,7 @@ ACTOR BlackGuy : DirtyDarren
 	Obituary "$NIGGAGUY"
 	Height 75 //mxd. Players shouldn't be able to jump on this guy
 	Scale 1.35 //mxd
-	states
+	States
 	{
 	Spawn:
 		BLCK N 0

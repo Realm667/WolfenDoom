@@ -23,12 +23,12 @@ ACTOR RollingBoulderGrey
 	{
 	Spawn:
 		GBOL A 2 NODELAY A_PlaySound("Boulder/Roll",5,1,1)
-		GBOL BCDA 2 A_Quake(1,2,0,192,"")
+		"####" BCDA 2 A_Quake(1,2,0,192,"")
 		Loop
 	Death:
 		TNT1 A 1 A_SpawnItem ("BoulderStoppedGrey")
-		TNT1 A 0 A_StopSound(5)
-		TNT1 A 0 A_PlaySound ("Boulder/Stop")
+		"####" A 0 A_StopSound(5)
+		"####" A 0 A_PlaySound ("Boulder/Stop")
 		stop
 	}
 }
@@ -53,12 +53,12 @@ ACTOR RollingBoulderBrown : RollingBoulderGrey
 	{
 	Spawn:
 		BBOL A 2 NODELAY A_PlaySound("Boulder/Roll",5,1,1)
-		BBOL BCDA 2 A_Quake(1,2,0,192,"")
+		"####" BCDA 2 A_Quake(1,2,0,192,"")
 		Loop
 	Death:
 		TNT1 A 1 A_SpawnItem ("BoulderStoppedBrown")
-		TNT1 A 0 A_StopSound(5)
-		TNT1 A 0 A_PlaySound ("Boulder/Stop")
+		"####" A 0 A_StopSound(5)
+		"####" A 0 A_PlaySound ("Boulder/Stop")
 		stop
 	}
 }
@@ -69,7 +69,7 @@ ACTOR RollingBoulderBrownHugger : RollingBoulderGreyHugger
   {
 	Spawn:
 		BBOL A 2 NODELAY A_PlaySound("Boulder/Roll",5,1,1)
-		BBOL BCDA 2 A_Quake(1,2,0,192,"")
+		"####" BCDA 2 A_Quake(1,2,0,192,"")
 		Loop
 	}
 }
@@ -163,24 +163,24 @@ ACTOR Nail
 	Projectile
 	Radius 4
 	Height 8
-	speed 44
+	Speed 44
 	damage 4
-	scale 0.5
+	Scale 0.5
 	+BLOODSPLATTER
 	seesound "NailFlight"
-	states
+	States
 	{
 	Spawn:
 		DART A 1 A_SpawnItemEx("NailBlur")
 		loop
 	Crash:
 	Death:
-		DART B 0 A_PlaySound("NailHit")
-		DART BCDEFG 2
+		"####" B 0 A_PlaySound("NailHit")
+		"####" BCDEFG 2
 		stop
 	XDeath:
-		DART B 0 A_PlaySound("NailHitBleed")
-		DART BCDEFG 2
+		"####" B 0 A_PlaySound("NailHitBleed")
+		"####" BCDEFG 2
 		stop
 	}
 }
@@ -189,12 +189,12 @@ ACTOR NailBlur
 {
 	Height 8
 	Radius 1
-	scale 0.5
-	speed 0.2
-	renderstyle Translucent
+	Scale 0.5
+	Speed 0.2
+	RenderStyle Translucent
 	+NOGRAVITY
 	+DROPOFF
-	states
+	States
 	{
 	Spawn:
 		DART A 1 A_FadeOut(0.2)
@@ -204,7 +204,7 @@ ACTOR NailBlur
 
 ACTOR NailFlame : Nail
 {
-	states
+	States
 	{
 	Spawn:
 		DARF A 1 Bright Light("Chandelier4")A_SpawnItemEx("NailBlur")
@@ -212,11 +212,11 @@ ACTOR NailFlame : Nail
 	Crash:
 	Death:
 		DART B 0 A_PlaySound("NailHit")
-		DART BCDEFG 2
+		"####" BCDEFG 2
 		stop
 	XDeath:
-		DART B 0 A_PlaySound("NailHitBleed")
-		DART BCDEFG 2
+		"####" B 0 A_PlaySound("NailHitBleed")
+		"####" BCDEFG 2
 		stop
 	}
 }

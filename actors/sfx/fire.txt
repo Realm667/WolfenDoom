@@ -13,11 +13,11 @@ ACTOR FireSpawner : SwitchableDecoration
 
 	Height 40
 	Radius 30
-	+ClientSideOnly
+	+CLIENTSIDEONLY
 	+NoClip
-	+NoBlockMap
-	+NoGravity
-	+NoInteraction
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+NOINTERACTION
 	+DONTSPLASH
 	States
 	{
@@ -94,11 +94,11 @@ ACTOR FireSpawner : SwitchableDecoration
 //Dynamic Light actors
 ACTOR SmallFlame
 {
-	+ClientSideOnly
+	+CLIENTSIDEONLY
 	+NoClip
-	+NoBlockMap
-	+NoGravity
-	+NoInteraction
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+NOINTERACTION
 	+DONTSPLASH
 	States
 	{
@@ -127,7 +127,7 @@ ACTOR Flame1A
 	RenderStyle Add
 	Alpha 0.8
 	Scale 0.35
-	states
+	States
 	{
 	Spawn:
 		FLM1 A 0
@@ -141,7 +141,7 @@ ACTOR Flame1A
 
 ACTOR Flame1B : Flame1A
 {
-	states
+	States
 	{
 	Spawn:
 		FLM2 A 0
@@ -151,7 +151,7 @@ ACTOR Flame1B : Flame1A
 
 ACTOR Flame2A : Flame1A
 {
-	states
+	States
 	{
 	Spawn:
 		FLM3 A 0
@@ -161,7 +161,7 @@ ACTOR Flame2A : Flame1A
 
 ACTOR Flame2B : Flame1A
 {
-	states
+	States
 	{
 	Spawn:
 		FLM4 A 0
@@ -171,7 +171,7 @@ ACTOR Flame2B : Flame1A
 
 ACTOR Flame3A : Flame1A
 {
-	states
+	States
 	{
 	Spawn:
 		FLM5 A 0
@@ -181,7 +181,7 @@ ACTOR Flame3A : Flame1A
 
 ACTOR Flame3B : Flame1A
 {
-	states
+	States
 	{
 	Spawn:
 		FLM6 A 0
@@ -322,7 +322,7 @@ ACTOR Flame9B : Flame7A
 ACTOR Ember1 : Flame1A
 {
 	Scale .1
-	states
+	States
 	{
 	Spawn:
 		EMBR A 0

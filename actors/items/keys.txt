@@ -5,11 +5,11 @@ ACTOR BoABlueKey : Key replaces BlueCard
 	//$Color 13
 	Inventory.PickupMessage "$GOTBLUEKEY"
 	Inventory.Icon "STKEYS0"
-	states
+	States
 	{
 	Spawn:
 		BKEY A 10
-		BKEY A 10 LIGHT(BOABKEY)
+		"####" A 10 LIGHT(BOABKEY)
 		Loop
 	}
 }
@@ -21,11 +21,11 @@ ACTOR BoAYellowKey : Key replaces YellowCard
 	//$Color 13
 	Inventory.PickupMessage "$GOTYELLOWKEY"
 	Inventory.Icon "STKEYS1"
-	states
+	States
 	{
 	Spawn:
 		YKEY A 10
-		YKEY A 10 LIGHT(BOAYKEY)
+		"####" A 10 LIGHT(BOAYKEY)
 		Loop
 	}
 }
@@ -37,11 +37,11 @@ ACTOR BoARedKey : Key replaces RedCard
 	//$Color 13
 	Inventory.PickupMessage "$GOTREDKEY"
 	Inventory.Icon "STKEYS2"
-	states
+	States
 	{
 	Spawn:
 		RKEY A 10
-		RKEY A 10 LIGHT(BOARKEY)
+		"####" A 10 LIGHT(BOARKEY)
 		Loop
 	}
 }
@@ -53,11 +53,11 @@ ACTOR BoAGreenKey : Key replaces BlueSkull
 	//$Color 13
 	Inventory.PickupMessage "$GOTGREENKEY"
 	Inventory.Icon "STKEYS3"
-	states
+	States
 	{
 	Spawn:
 		BSKU A 10
-		BSKU A 10 light(BOAGKEY)
+		"####" A 10 light(BOAGKEY)
 		loop
 	}
 }
@@ -69,11 +69,11 @@ ACTOR BoAPurpleKey : Key replaces YellowSkull
 	//$Color 13
 	Inventory.PickupMessage "$GOTPURPLEKEY"
 	Inventory.Icon "STKEYS4"
-	states
+	States
 	{
 	Spawn:
 		YSKU A 10
-		YSKU A 10 light(BOAPKEY)
+		"####" A 10 light(BOAPKEY)
 		loop
 	}
 }
@@ -85,11 +85,11 @@ ACTOR BoACyanKey : Key replaces RedSkull
 	//$Color 13
 	Inventory.PickupMessage "$GOTCYANKEY"
 	Inventory.Icon "STKEYS5"
-	states
+	States
 	{
 	Spawn:
 		RSKU A 10
-		RSKU A 10 light(BOACKEY)
+		"####" A 10 light(BOACKEY)
 		loop
 	}
 }

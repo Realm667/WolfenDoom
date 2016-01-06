@@ -79,7 +79,7 @@ ACTOR ShovelPuff
 	seesound "shovel/impact"
 	Obituary "$OBSHOVEL"
 	ProjectileKickback 100
-	states
+	States
 	{
 	Spawn:
 	Melee:
@@ -134,11 +134,11 @@ ACTOR KnifePuff : ShovelPuff
 {
 	attacksound ""
 	seesound ""
-	scale 0.4
+	Scale 0.4
 	Obituary "$OBKNIFE"
 	PainType "SilentKnifeAttack" //mxd. Used to invoke Pain.SilentKnifeAttack exclusively on stealth monsters
 	
-	states
+	States
 	{
 	Spawn:
 	Melee:

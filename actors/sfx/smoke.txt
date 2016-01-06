@@ -9,9 +9,9 @@ ACTOR PuffSmoke
 	+CLIENTSIDEONLY
 	+WINDTHRUST
 	Renderstyle Translucent
-	alpha 0.5
+	Alpha 0.5
 	Scale 0.5
-	states
+	States
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
@@ -37,7 +37,7 @@ ACTOR PowerPlantSmokeGenerator : SwitchableDecoration
 	+INVULNERABLE
 	+SHOOTABLE
 	+NOINTERACTION
-	states
+	States
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
@@ -57,7 +57,7 @@ ACTOR PowerPlantSmokeGeneratorFX
 {
 	+CLIENTSIDEONLY
 	+NOINTERACTION
-	states
+	States
 	{
 	Spawn:
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 4 A_SpawnItemEx("PowerPlantSmokePuff", random(-32,32), random(-32,32), 0, 0, 0, 3)
@@ -72,7 +72,7 @@ ACTOR PowerPlantSmokeGeneratorSmall : SwitchableDecoration
 	//$Color 12
 	+CLIENTSIDEONLY
 	+NOINTERACTION
-	states
+	States
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
@@ -93,7 +93,7 @@ ACTOR PowerPlantSmokeGenerator2 : PowerPlantSmokeGenerator
 	//$Category Special Effects (Wolf3D)
 	//$Title Power Plant Smoke Generator (Special)
 	//$Color 12
-	states
+	States
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
@@ -113,7 +113,7 @@ ACTOR PowerPlantSmokeGeneratorFX2
 {
 	+CLIENTSIDEONLY
 	+NOINTERACTION
-	states
+	States
 	{
 	Spawn:
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 4 A_SpawnItemEx("PowerPlantSmokePuff", random(-32,32), random(-32,32), 0, 0, 0, -3)
@@ -132,9 +132,9 @@ ACTOR VolcanoPuffSmoke
 	+CLIENTSIDEONLY
 	+WINDTHRUST
 	Renderstyle Translucent
-	alpha 1.0
+	Alpha 1.0
 	Scale 100
-	states
+	States
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
@@ -158,7 +158,7 @@ ACTOR VolcanoSmokeGenerator : SwitchableDecoration
 	+INVULNERABLE
 	+SHOOTABLE
 	+NOINTERACTION
-	states
+	States
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")

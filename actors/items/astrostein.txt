@@ -3,7 +3,7 @@ ACTOR AstroMedikit : Medikit
 	//$Category Health (Wolf3D)/Astrostein
 	//$Title Medikit (modern)
 	//$Color 6
-	states
+	States
 	{
 		Spawn:
 			MEDI Z -1
@@ -20,7 +20,7 @@ ACTOR SuperShield : BasicArmorPickup
   Armor.SaveAmount 100
   Inventory.Icon "armh05"
   Inventory.PickupMessage "Picked up the super shield!"
-  states
+  States
   {
   Spawn:
     ARMX AB 3 Bright
@@ -44,11 +44,11 @@ ACTOR AstroBlueKey : BoABlueKey
 	Inventory.PickupMessage "$GOTBLUEKEY"
 	Inventory.Icon "ATKEYS0"
 	Species "BoABlueKey"
-	states
+	States
 	{
 	Spawn:
 		KCBL A 10
-		KCBL B 10 LIGHT(BOABKEY)
+		"####" B 10 LIGHT(BOABKEY)
 		Loop
 	}
 }
@@ -61,11 +61,11 @@ ACTOR AstroYellowKey : BoAYellowKey
 	Inventory.PickupMessage "$GOTYELLOWKEY"
 	Inventory.Icon "ATKEYS1"
 	Species "BoAYellowKey"
-	states
+	States
 	{
 	Spawn:
 		KCYE A 10
-		KCYE B 10 LIGHT(BOAYKEY)
+		"####" B 10 LIGHT(BOAYKEY)
 		Loop
 	}
 }
@@ -78,11 +78,11 @@ ACTOR AstroRedKey : BoARedKey
 	Inventory.PickupMessage "$GOTREDKEY"
 	Inventory.Icon "ATKEYS2"
 	Species "BoARedKey"
-	states
+	States
 	{
 	Spawn:
 		KCRE A 10
-		KCRE B 10 LIGHT(BOARKEY)
+		"####" B 10 LIGHT(BOARKEY)
 		Loop
 	}
 }

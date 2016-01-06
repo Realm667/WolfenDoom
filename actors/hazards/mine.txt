@@ -24,9 +24,9 @@ ACTOR Mine
 		MINE A 6 A_Chase
 		Loop
 	Death:
-		MINE A 8 A_PlaySound("MINEF")
-		MINE A 0 A_Scream
-		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Medium")
+		"####" A 8 A_PlaySound("MINEF")
+		"####" A 0 A_Scream
+		"####" A 0 A_SpawnItemEx("GeneralExplosion_Medium")
 		Stop
 	}
 }
@@ -62,8 +62,8 @@ ACTOR UnderwaterMine : Mine
 		UWMR A 12 A_Scream
 	Shock:
 		UWMR A 0 A_CustomMissile("Bubble",random(64,76),0,user_theta,2)
-		UWMR A 0 A_SetUserVar("user_theta",user_theta+20)
-		UWMR A 0 A_JumpIf(user_theta==360,1)
+		"####" A 0 A_SetUserVar("user_theta",user_theta+20)
+		"####" A 0 A_JumpIf(user_theta==360,1)
 		Loop
 		UWMI H -1
 		Stop
