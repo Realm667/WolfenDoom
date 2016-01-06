@@ -33,7 +33,7 @@ ACTOR CKShikkersCandyBar : SingleCoin
 		CKPU DE 15 
 		loop
 	Pickup:
-		CKPU F 5 A_GiveInventory("CoinItem",2)
+		"####" F 5 A_GiveInventory("CoinItem",2)
 		stop
 	}
 }
@@ -51,7 +51,7 @@ ACTOR CKDoughnut : SingleCoin
 		CKPU GH 15 
 		loop
 	Pickup:
-		CKPU I 5 A_GiveInventory("CoinItem",5)
+		"####" I 5 A_GiveInventory("CoinItem",5)
 		stop
 	}
 }
@@ -69,7 +69,7 @@ ACTOR CKIceCreamCone : SingleCoin
 		CKPU JK 15 
 		loop
 	Pickup:
-		CKPU L 5 A_GiveInventory("CoinItem",10)
+		"####" L 5 A_GiveInventory("CoinItem",10)
 		stop
 	}
 }
@@ -91,7 +91,7 @@ ACTOR CKRaindrop : Health
 	    CKDP ABCB 6
 	    Loop
 	  Pickup:
-	    CKPU DEF 3
+	    "####" DEF 3
             stop
 	}
 }
@@ -114,9 +114,9 @@ ACTOR CKOneUp : Health
     CKPU MN 15 Bright
     Loop
   Pickup:
-    CKPU O 50
+    "####" O 50
   Death:
-    CKPU O 50
+    "####" O 50
     stop
   }
 }
@@ -141,8 +141,8 @@ ACTOR CKBlueKey : BoABlueKey
 		CKKY CD 5
 		Loop
 	Pickup:
-    		CKKY G 5
-    		stop
+		"####" G 5
+		stop
 	}
 }
 
@@ -162,8 +162,8 @@ ACTOR CKYellowKey : BoAYellowKey
 		CKKY EF 5
 		Loop
 	Pickup:
-    		CKKY G 5
-    		stop
+		"####" G 5
+		stop
 	}
 }
 
@@ -183,8 +183,8 @@ ACTOR CKRedKey : BoARedKey
 		CKKY AB 5
 		Loop
 	Pickup:
-    		CKKY G 5
-    		stop
+		"####" G 5
+		stop
 	}
 }
 
@@ -294,21 +294,21 @@ ACTOR CKArachnut : CKBaseEnemy
     CKAC A 10 A_Look
     Loop
   See:
-    CKAC A 0 Thing_SetSpecial(0, 73, 15, 22, 0)
-    CKAC AABBCCDD 2 Fast A_Chase
+    "####" A 0 Thing_SetSpecial(0, 73, 15, 22, 0)
+    "####" AABBCCDD 2 Fast A_Chase
     Loop
   Melee:
-    CKAC A 0 Fast A_FaceTarget
-    CKAC A 1 Fast A_MeleeAttack
+    "####" A 0 Fast A_FaceTarget
+    "####" A 1 Fast A_MeleeAttack
     Goto See
   Pain:
-    CKAC E 0 Thing_SetSpecial(0, 0, 0, 0, 0)
-    CKAC E 350 Fast
-    CKAC AEAE 15
+    "####" E 0 Thing_SetSpecial(0, 0, 0, 0, 0)
+    "####" E 350 Fast
+    "####" AEAE 15
     Goto See
   Death:
-    CKAC E 0 A_SpawnItemEx("CKConfusion", 0, 0, 48)
-    CKAC E -1
+    "####" E 0 A_SpawnItemEx("CKConfusion", 0, 0, 48)
+    "####" E -1
     Stop
   }
 }
@@ -336,13 +336,13 @@ ACTOR CKMadMushroom : CKBaseEnemy
   Jump:
     TNT1 A 0 A_PlaySound("ckeen/madmushroombounce")
     CKMR B 12 ThrustThingZ(0, 32, 0, 1)
-    CKMR A 12
+    "####" A 12
     TNT1 A 0 A_PlaySound("ckeen/madmushroombounce")
     CKMR B 12 ThrustThingZ(0, 32, 0, 1)
-    CKMR A 12
+    "####" A 12
     TNT1 A 0 A_PlaySound("ckeen/madmushroombounce")
     CKMR B 20 ThrustThingZ(0, 64, 0, 1)
-    CKMR A 20
+    "####" A 20
     loop	
   }
 }
@@ -368,21 +368,21 @@ ACTOR CKPoisonSlug : CKBaseEnemy
     CKPS A 10 A_Look
     Loop
   See:
-    CKPS A 0 Thing_SetSpecial(0, 73, 15, 22, 0)
-    CKPS AABB 4 A_Wander
+    "####" A 0 Thing_SetSpecial(0, 73, 15, 22, 0)
+    "####" AABB 4 A_Wander
     Loop
   Missile:
     TNT1 A 0 A_PlaySound("ckeen/slugpoo")
     CKPS C 5 
-    CKPS C 30 A_SpawnItemEx("CKPoisonSlugPoison")
+    "####" C 30 A_SpawnItemEx("CKPoisonSlugPoison")
     Goto See
   Death:
     TNT1 A 0 A_Jump(128, 2)
     CKPS E 0 A_SpawnItemEx("CKConfusion", 0, 0, 48)
-    CKPS E -1
+    "####" E -1
     Stop
-    CKPS F 0 A_SpawnItemEx("CKConfusion", 0, 0, 48)
-    CKPS F -1
+    "####" F 0 A_SpawnItemEx("CKConfusion", 0, 0, 48)
+    "####" F -1
   }
 }
 
@@ -395,7 +395,7 @@ ACTOR CKPoisonSlugPoison : CKBaseEnemy
 		Spawn:
 		TNT1 A 0 NoDelay Thing_SetSpecial(0, 73, 15, 22, 0)
 		CKSL Z 210
-		CKSL Y 35
+		"####" Y 35
 		Stop 
 	}
 }

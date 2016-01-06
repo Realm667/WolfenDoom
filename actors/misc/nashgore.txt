@@ -4,8 +4,8 @@ ACTOR NashGore_Blood : Blood replaces Blood
 	{
 	Spawn:
 		BLUD C 8
-		BLUD B 8 A_SpawnItemEx("NashGore_FlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,SXF_ABSOLUTEVELOCITY|SXF_NOCHECKPOSITION) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
-		BLUD A 8
+		"####" B 8 A_SpawnItemEx("NashGore_FlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,SXF_ABSOLUTEVELOCITY|SXF_NOCHECKPOSITION) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
+		"####" A 8
 		stop
 	}
 }
@@ -31,13 +31,13 @@ ACTOR NashGore_FlyingBlood
 		loop
 	Crash:
 		TNT1 A 0 A_PlaySound("bloodsplat")
-		TNT1 A 0 A_Jump(256,1,2,3,4)
+		"####" A 0 A_Jump(256,1,2,3,4)
 		BSPT ABCD 0 A_Jump(256,"End")
 		// make the blood spots stay on the ground. 1500 is the default duration.
 		// Fadeout added by Zero Prophet for effect.
 	End:
 		BSPT "#" 1500
-		BSPT "#" 1 A_FadeOut(0.02)
+		"####" "#" 1 A_FadeOut(0.02)
 		Wait
 	}
 }
@@ -66,8 +66,8 @@ ACTOR ScorpionBlood : NashGore_Blood
 	{
 	Spawn:
 		BLUD C 8
-		BLUD B 8 A_SpawnItemEx("ScorpionFlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
-		BLUD A 8
+		"####" B 8 A_SpawnItemEx("ScorpionFlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
+		"####" A 8
 		stop
 	}
 }
@@ -97,8 +97,8 @@ ACTOR BScorpionBlood : NashGore_Blood
 	{
 	Spawn:
 		BLUD C 8
-		BLUD B 8 A_SpawnItemEx("ScorpionFlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
-		BLUD A 8
+		"####" B 8 A_SpawnItemEx("ScorpionFlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
+		"####" A 8
 		stop
 	}
 }
@@ -127,8 +127,8 @@ ACTOR MutantBlood : NashGore_Blood
 	{
 	Spawn:
 		BLUD C 8
-		BLUD B 8 A_SpawnItemEx("MutantFlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
-		BLUD A 8
+		"####" B 8 A_SpawnItemEx("MutantFlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
+		"####" A 8
 		stop
 	}
 }
@@ -156,8 +156,8 @@ ACTOR UndeadBlood : NashGore_Blood
 	{
 	Spawn:
 		BLUD C 8
-		BLUD B 8 A_SpawnItemEx("MutantFlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
-		BLUD A 8
+		"####" B 8 A_SpawnItemEx("MutantFlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
+		"####" A 8
 		stop
 	}
 }
