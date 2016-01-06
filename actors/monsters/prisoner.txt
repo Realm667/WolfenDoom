@@ -1,13 +1,13 @@
-actor PrisonerAgent
+ACTOR PrisonerAgent
 {
 	//$Category Monsters (Wolf3D)/NPCs
 	//$Title Cpt. James Ryan (prison, bloody)
 	//$Color 4
 	Scale 1.2
 	Mass 100
-	obituary "$PRISONER"
-	radius 6
-	height 52
+	Obituary "$PRISONER"
+	Radius 6
+	Height 52
 	speed 5
 	MaxStepHeight 57 //This is equal to the maximum distance a Player can jump. Modify to allow no jumps and stuff.
 	MaxDropOffHeight 16383
@@ -109,16 +109,16 @@ actor PrisonerAgent
 	}
 }
 
-actor PrisonerAgentTalk
+ACTOR PrisonerAgentTalk
 {
 	//$Category Conversation Stuff (Wolf3D)/NPCs
 	//$Title Cpt. James Ryan (uniform, talking)
 	//$Color 5
 	Scale 1.2
 	Mass 100
-	health 99999999
-	radius 6
-	height 52
+	Health 99999999
+	Radius 6
+	Height 52
 	+SOLID
 	States
 	{
@@ -128,7 +128,7 @@ actor PrisonerAgentTalk
 	}
 }
 
-actor PrisonerFree : DirtyDarren
+ACTOR PrisonerFree : DirtyDarren
 {
 	//$Category Monsters (Wolf3D)/NPCs
 	//$Title Cpt. James Ryan (uniform, npc)

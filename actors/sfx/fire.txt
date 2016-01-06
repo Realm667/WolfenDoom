@@ -1,4 +1,4 @@
-Actor FireSpawner : SwitchableDecoration
+ACTOR FireSpawner : SwitchableDecoration
 {
 	//$Category Special Effects (Wolf3D)
 	//$Title Fire Spawner
@@ -92,7 +92,7 @@ Actor FireSpawner : SwitchableDecoration
 }
 
 //Dynamic Light actors
-Actor SmallFlame
+ACTOR SmallFlame
 {
 	+ClientSideOnly
 	+NoClip
@@ -108,14 +108,14 @@ Actor SmallFlame
 	}
 }
 
-Actor MediumFlame : SmallFlame {}
-Actor LargeFlame : SmallFlame {}
+ACTOR MediumFlame : SmallFlame {}
+ACTOR LargeFlame : SmallFlame {}
 
 //Flames and particles
-actor Flame1A
+ACTOR Flame1A
 {
-	height 2
-	radius 1
+	Height 2
+	Radius 1
 	+NOGRAVITY
 	+NOCLIP
 	+NOBLOCKMAP
@@ -139,7 +139,7 @@ actor Flame1A
 	}
 }
 
-actor Flame1B : Flame1A
+ACTOR Flame1B : Flame1A
 {
 	states
 	{
@@ -149,7 +149,7 @@ actor Flame1B : Flame1A
 	}
 }
 
-actor Flame2A : Flame1A
+ACTOR Flame2A : Flame1A
 {
 	states
 	{
@@ -159,7 +159,7 @@ actor Flame2A : Flame1A
 	}
 }
 
-actor Flame2B : Flame1A
+ACTOR Flame2B : Flame1A
 {
 	states
 	{
@@ -169,7 +169,7 @@ actor Flame2B : Flame1A
 	}
 }
 
-actor Flame3A : Flame1A
+ACTOR Flame3A : Flame1A
 {
 	states
 	{
@@ -179,7 +179,7 @@ actor Flame3A : Flame1A
 	}
 }
 
-actor Flame3B : Flame1A
+ACTOR Flame3B : Flame1A
 {
 	states
 	{
@@ -189,7 +189,7 @@ actor Flame3B : Flame1A
 	}
 }
 
-Actor Flame4A : Flame1A
+ACTOR Flame4A : Flame1A
 {
 	Scale 0.7
 	States
@@ -204,7 +204,7 @@ Actor Flame4A : Flame1A
 	}
 }
 
-Actor Flame4B : Flame4A
+ACTOR Flame4B : Flame4A
 {
 	States
 	{
@@ -214,7 +214,7 @@ Actor Flame4B : Flame4A
 	}
 }
 
-Actor Flame5A : Flame4A
+ACTOR Flame5A : Flame4A
 {
 	States
 	{
@@ -224,7 +224,7 @@ Actor Flame5A : Flame4A
 	}
 }
 
-Actor Flame5B : Flame4A
+ACTOR Flame5B : Flame4A
 {
 	States
 	{
@@ -234,7 +234,7 @@ Actor Flame5B : Flame4A
 	}
 }
 
-Actor Flame6A : Flame4A
+ACTOR Flame6A : Flame4A
 {
 	States
 	{
@@ -244,7 +244,7 @@ Actor Flame6A : Flame4A
 	}
 }
 
-Actor Flame6B : Flame4A
+ACTOR Flame6B : Flame4A
 {
 	States
 	{
@@ -254,7 +254,7 @@ Actor Flame6B : Flame4A
 	}
 }
 
-Actor Flame7A : Flame1A
+ACTOR Flame7A : Flame1A
 {
 	Scale 1.4
 	States
@@ -269,7 +269,7 @@ Actor Flame7A : Flame1A
 	}
 }
 
-Actor Flame7B : Flame7A
+ACTOR Flame7B : Flame7A
 {
 	States
 	{
@@ -279,7 +279,7 @@ Actor Flame7B : Flame7A
 	}
 }
 
-Actor Flame8A : Flame7A
+ACTOR Flame8A : Flame7A
 {
 	States
 	{
@@ -289,7 +289,7 @@ Actor Flame8A : Flame7A
 	}
 }
 
-Actor Flame8B : Flame7A
+ACTOR Flame8B : Flame7A
 {
 	States
 	{
@@ -299,7 +299,7 @@ Actor Flame8B : Flame7A
 	}
 }
 
-Actor Flame9A : Flame7A
+ACTOR Flame9A : Flame7A
 {
 	States
 	{
@@ -309,7 +309,7 @@ Actor Flame9A : Flame7A
 	}
 }
 
-Actor Flame9B : Flame7A
+ACTOR Flame9B : Flame7A
 {
 	States
 	{
@@ -319,7 +319,7 @@ Actor Flame9B : Flame7A
 	}
 }
 
-actor Ember1 : Flame1A
+ACTOR Ember1 : Flame1A
 {
 	Scale .1
 	states
@@ -335,7 +335,7 @@ actor Ember1 : Flame1A
 	}
 }
 
-Actor Ember2 : Ember1
+ACTOR Ember2 : Ember1
 {
 	States
 	{
@@ -348,7 +348,7 @@ Actor Ember2 : Ember1
 	}
 }
 
-Actor BarrelFireSpawner
+ACTOR BarrelFireSpawner
 {
 	Height 40
 	Radius 30

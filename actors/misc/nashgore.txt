@@ -1,4 +1,4 @@
-actor NashGore_Blood : Blood replaces Blood
+ACTOR NashGore_Blood : Blood replaces Blood
 {
 	states
 	{
@@ -10,16 +10,16 @@ actor NashGore_Blood : Blood replaces Blood
 	}
 }
 
-actor NashGore_Bloodsplatter : NashGore_Blood replaces Bloodsplatter{}
+ACTOR NashGore_Bloodsplatter : NashGore_Blood replaces Bloodsplatter{}
 
-actor NashGore_FlyingBlood
+ACTOR NashGore_FlyingBlood
 {
 	+CLIENTSIDEONLY
 	scale 0.75
-	health 1
-	radius 8
-	height 1
-	mass 1
+	Health 1
+	Radius 8
+	Height 1
+	Mass 1
 	gravity 0.5 // [Nash] make it fall slower. pretty!
 	+CORPSE
 	+NOTELEPORT
@@ -42,10 +42,10 @@ actor NashGore_FlyingBlood
 	}
 }
 
-actor NashGore_FlyingBloodTrail
+ACTOR NashGore_FlyingBloodTrail
 {
 	scale 0.70
-	mass 1
+	Mass 1
 	Gravity .125
 	+NOTELEPORT
 	+NOBLOCKMAP
@@ -58,7 +58,7 @@ actor NashGore_FlyingBloodTrail
 }
 
 //BoA Critters here
-actor ScorpionBlood : NashGore_Blood
+ACTOR ScorpionBlood : NashGore_Blood
 {
 	translation "16:47=208:223","168:191=210:224"
 	Scale 0.2
@@ -72,7 +72,7 @@ actor ScorpionBlood : NashGore_Blood
 	}
 }
 
-actor ScorpionFlyingBlood : NashGore_FlyingBlood
+ACTOR ScorpionFlyingBlood : NashGore_FlyingBlood
 {
 	translation "16:47=208:223","168:191=210:224"
 	Scale 0.2
@@ -84,13 +84,13 @@ actor ScorpionFlyingBlood : NashGore_FlyingBlood
 	}
 }
 
-actor ScorpionFlyingBloodTrail : NashGore_FlyingBloodTrail
+ACTOR ScorpionFlyingBloodTrail : NashGore_FlyingBloodTrail
 {
 	Scale 0.2
 	translation "16:47=208:223","168:191=210:224"
 }
 
-actor BScorpionBlood : NashGore_Blood
+ACTOR BScorpionBlood : NashGore_Blood
 {
 	Scale 0.8
 	States
@@ -103,7 +103,7 @@ actor BScorpionBlood : NashGore_Blood
 	}
 }
 
-actor BScorpionFlyingBlood : NashGore_FlyingBlood
+ACTOR BScorpionFlyingBlood : NashGore_FlyingBlood
 {
 	Scale 0.8
 	States
@@ -114,13 +114,13 @@ actor BScorpionFlyingBlood : NashGore_FlyingBlood
 	}
 }
 
-actor BScorpionFlyingBloodTrail : NashGore_FlyingBloodTrail
+ACTOR BScorpionFlyingBloodTrail : NashGore_FlyingBloodTrail
 {
 	Scale 0.8
 }
 
 //Mutants and non-red blooded ones
-actor MutantBlood : NashGore_Blood
+ACTOR MutantBlood : NashGore_Blood
 {
 	Translation "16:47=[205,0,215]:[40,0,96]","168:191=[205,0,215]:[40,0,96]"
 	States
@@ -133,7 +133,7 @@ actor MutantBlood : NashGore_Blood
 	}
 }
 
-actor MutantFlyingBlood : NashGore_FlyingBlood
+ACTOR MutantFlyingBlood : NashGore_FlyingBlood
 {
 	Translation "16:47=[205,0,215]:[40,0,96]","168:191=[205,0,215]:[40,0,96]"
 	States
@@ -144,12 +144,12 @@ actor MutantFlyingBlood : NashGore_FlyingBlood
 	}
 }
 
-actor MutantFlyingBloodTrail : NashGore_FlyingBloodTrail
+ACTOR MutantFlyingBloodTrail : NashGore_FlyingBloodTrail
 {
 	Translation "16:47=[205,0,215]:[40,0,96]","168:191=[205,0,215]:[40,0,96]"
 }
 
-actor UndeadBlood : NashGore_Blood
+ACTOR UndeadBlood : NashGore_Blood
 {
 	translation "16:47=[34,0,7]:[0,0,0]","168:191=[36,0,9]:[2,0,0]"
 	States
@@ -162,7 +162,7 @@ actor UndeadBlood : NashGore_Blood
 	}
 }
 
-actor UndeadFlyingBlood : NashGore_FlyingBlood
+ACTOR UndeadFlyingBlood : NashGore_FlyingBlood
 {
 	translation "16:47=[34,0,7]:[0,0,0]","168:191=[36,0,9]:[2,0,0]"
 	States
@@ -173,7 +173,7 @@ actor UndeadFlyingBlood : NashGore_FlyingBlood
 	}
 }
 
-actor UndeadFlyingBloodTrail : NashGore_FlyingBloodTrail
+ACTOR UndeadFlyingBloodTrail : NashGore_FlyingBloodTrail
 {
 	translation "16:47=[34,0,7]:[0,0,0]","168:191=[36,0,9]:[2,0,0]"
 }

@@ -14,7 +14,7 @@ ACTOR SharkBlocker
 }
 
 //we need it smaller for narrow places/situations, not only the big one for sharks (check map c1m6)
-Actor SharkBlockerMini : SharkBlocker
+ACTOR SharkBlockerMini : SharkBlocker
 {
 	//$Category Monsters (Wolf3D)/Critters
 	//$Title Shark (blocker, mini)
@@ -27,9 +27,9 @@ ACTOR Shark
 	//$Category Monsters (Wolf3D)/Critters
 	//$Title Shark
 	//$Color 4
-	obituary "$SHARK"
-	health 100
-	mass 120
+	Obituary "$SHARK"
+	Health 100
+	Mass 120
 	Speed 2.5
 	FloatSpeed 1
 	Radius 30
@@ -107,7 +107,7 @@ ACTOR Gibs1
 	}
 }
 
-actor BloodTrail
+ACTOR BloodTrail
 {
 	Radius 1
 	Height 1
@@ -122,7 +122,7 @@ actor BloodTrail
 	}
 }
 
-actor BloodTrailSM : BloodTrail
+ACTOR BloodTrailSM : BloodTrail
 {
 	Scale 0.5
 }

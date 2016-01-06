@@ -1,4 +1,4 @@
-actor RollingBoulderGrey
+ACTOR RollingBoulderGrey
 {
 	Radius 24
 	Height 48
@@ -8,7 +8,7 @@ actor RollingBoulderGrey
 	Gravity 1.5
 	BounceFactor 0.7
 	BounceType Doom
-	obituary "$BOULDER"
+	Obituary "$BOULDER"
 	+RIPPER
 	+DONTRIP
 	+BOUNCEONFLOORS
@@ -47,7 +47,7 @@ ACTOR RollingBoulderGreyHugger : RollingBoulderGrey
 	+FLOORHUGGER
 }
 
-actor RollingBoulderBrown : RollingBoulderGrey
+ACTOR RollingBoulderBrown : RollingBoulderGrey
 {
 	States
 	{
@@ -63,7 +63,7 @@ actor RollingBoulderBrown : RollingBoulderGrey
 	}
 }
 
-actor RollingBoulderBrownHugger : RollingBoulderGreyHugger
+ACTOR RollingBoulderBrownHugger : RollingBoulderGreyHugger
 {
   States
   {
@@ -74,7 +74,7 @@ actor RollingBoulderBrownHugger : RollingBoulderGreyHugger
 	}
 }
 
-actor BoulderStoppedGrey
+ACTOR BoulderStoppedGrey
 {
 	Radius 24
 	Height 48
@@ -88,7 +88,7 @@ actor BoulderStoppedGrey
 	}
 }
 
-actor BoulderStoppedBrown : BoulderStoppedGrey
+ACTOR BoulderStoppedBrown : BoulderStoppedGrey
 {
 	States
 	{
@@ -98,7 +98,7 @@ actor BoulderStoppedBrown : BoulderStoppedGrey
 	}
 }
 
-actor BoulderStartGrey : SwitchableDecoration
+ACTOR BoulderStartGrey : SwitchableDecoration
 {
 	//$Category Hazards (Wolf3D)
 	//$Title Boulder grey (bounce, inactive)
@@ -106,7 +106,7 @@ actor BoulderStartGrey : SwitchableDecoration
 	Radius 24
 	Height 48
 	Scale 0.5
-	obituary "$BOULDER"
+	Obituary "$BOULDER"
 	+SOLID
 	States
 	{
@@ -120,7 +120,7 @@ actor BoulderStartGrey : SwitchableDecoration
 	}
 }
 
-actor BoulderStartBrown : BoulderStartGrey
+ACTOR BoulderStartBrown : BoulderStartGrey
 {
 	//$Category Hazards (Wolf3D)
 	//$Title Boulder brown (bounce, inactive)
@@ -137,7 +137,7 @@ actor BoulderStartBrown : BoulderStartGrey
 	}
 }
 
-actor BoulderStartBrownHugger : BoulderStartGrey
+ACTOR BoulderStartBrownHugger : BoulderStartGrey
 {
 	//$Category Hazards (Wolf3D)
 	//$Title Boulder brown (hugger, inactive)
@@ -158,11 +158,11 @@ actor BoulderStartBrownHugger : BoulderStartGrey
 // Nails in Air //
 //////////////////
 
-actor Nail
+ACTOR Nail
 {
 	Projectile
-	radius 4
-	height 8
+	Radius 4
+	Height 8
 	speed 44
 	damage 4
 	scale 0.5
@@ -185,10 +185,10 @@ actor Nail
 	}
 }
 
-actor NailBlur
+ACTOR NailBlur
 {
-	height 8
-	radius 1
+	Height 8
+	Radius 1
 	scale 0.5
 	speed 0.2
 	renderstyle Translucent
@@ -202,7 +202,7 @@ actor NailBlur
 	}
 }
 
-actor NailFlame : Nail
+ACTOR NailFlame : Nail
 {
 	states
 	{
@@ -223,7 +223,7 @@ actor NailFlame : Nail
 
 
 //External Actors
-actor ScorpionNail : Nail
+ACTOR ScorpionNail : Nail
 {
 	Speed 48
 	Scale 0.4

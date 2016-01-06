@@ -76,7 +76,7 @@ ACTOR AstroCommando : AstroGuard
 	}
 }
 
-Actor AstroOfficer : AstroGuard
+ACTOR AstroOfficer : AstroGuard
 {
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Astrostein Officer
@@ -98,7 +98,7 @@ Actor AstroOfficer : AstroGuard
 	}
 }
 
-Actor AstroElite : AstroGuard
+ACTOR AstroElite : AstroGuard
 {
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Astrostein Elite
@@ -370,7 +370,7 @@ ACTOR AstroCyborg2 : AstroCyborg1
 	}
 }
 
-Actor AstroSuiteGuard : AstroGuard
+ACTOR AstroSuiteGuard : AstroGuard
 {
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Astrostein Suite Guard
@@ -525,7 +525,7 @@ ACTOR AstroTurret : MGTurret
 	Health 100
 	Radius 15
 	Height 21
-	mass 0x7fffffff
+	Mass 0x7fffffff
 	PainChance 100
 	+MISSILEEVENMORE
 	+SPAWNCEILING
@@ -562,7 +562,7 @@ ACTOR AstroTurret : MGTurret
 /////////////////////////////
 // ASTROSTEIN DEATH EFFECT //
 /////////////////////////////
-Actor BaseLine
+ACTOR BaseLine
 {
 	+Missile
 	+NoGravity
@@ -585,7 +585,7 @@ Actor BaseLine
 // TELEPORTFOG REPLACEMENT //
 /////////////////////////////
 
-Actor TeleportFog_Astro : TeleportFog replaces TeleportFog
+ACTOR TeleportFog_Astro : TeleportFog replaces TeleportFog
 {
 	States
 	{

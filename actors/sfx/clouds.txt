@@ -1,4 +1,4 @@
-Actor CloudSpawner
+ACTOR CloudSpawner
 {
 	//$Category Special Effects (Wolf3D)
 	//$Title Cloud Spawner (arg1 xRadius, arg2 zRadius, arg3 Chance, arg4 Size, arg5 Color)
@@ -82,7 +82,7 @@ Actor CloudSpawner
 }
 
 //Grey Clouds
-Actor MiniCloudGrey
+ACTOR MiniCloudGrey
 {
 	+Missile
 	+NoBlockmap
@@ -105,21 +105,21 @@ Actor MiniCloudGrey
 	}
 }
 
-Actor SmallCloudGrey : MiniCloudGrey
+ACTOR SmallCloudGrey : MiniCloudGrey
 {
 	Scale 1.0
 	Radius 16
 	Height 16
 }
 
-Actor MediumCloudGrey : MiniCloudGrey
+ACTOR MediumCloudGrey : MiniCloudGrey
 {
 	Scale 2.0
 	Radius 32
 	Height 32
 }
 
-Actor LargeCloudGrey : MiniCloudGrey
+ACTOR LargeCloudGrey : MiniCloudGrey
 {
 	Scale 4.0
 	Radius 64
@@ -127,13 +127,13 @@ Actor LargeCloudGrey : MiniCloudGrey
 }
 
 //Tan Clouds
-Actor MiniCloudTan : MiniCloudGrey {Translation "80:111=48:79"}
-Actor SmallCloudTan : SmallCloudGrey {Translation "80:111=48:79"}
-Actor MediumCloudTan : MediumCloudGrey {Translation "80:111=48:79"}
-Actor LargeCloudTan : LargeCloudGrey {Translation "80:111=48:79"}
+ACTOR MiniCloudTan : MiniCloudGrey {Translation "80:111=48:79"}
+ACTOR SmallCloudTan : SmallCloudGrey {Translation "80:111=48:79"}
+ACTOR MediumCloudTan : MediumCloudGrey {Translation "80:111=48:79"}
+ACTOR LargeCloudTan : LargeCloudGrey {Translation "80:111=48:79"}
 
 //Red Clouds
-Actor MiniCloudRed : MiniCloudGrey {Translation "80:111=16:47"}
-Actor SmallCloudRed : SmallCloudGrey {Translation "80:111=16:47"}
-Actor MediumCloudRed : MediumCloudGrey {Translation "80:111=16:47"}
-Actor LargeCloudRed : LargeCloudGrey {Translation "80:111=16:47"}
+ACTOR MiniCloudRed : MiniCloudGrey {Translation "80:111=16:47"}
+ACTOR SmallCloudRed : SmallCloudGrey {Translation "80:111=16:47"}
+ACTOR MediumCloudRed : MediumCloudGrey {Translation "80:111=16:47"}
+ACTOR LargeCloudRed : LargeCloudGrey {Translation "80:111=16:47"}

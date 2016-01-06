@@ -41,7 +41,7 @@ ACTOR KaBoomer
 	}
 }
 
-Actor Nuke
+ACTOR Nuke
 {
 	+NoBlockmap
 	+NoGravity
@@ -65,7 +65,7 @@ Actor Nuke
 	}
 }
 
-Actor TankBoom
+ACTOR TankBoom
 {
 	+NoBlockmap
 	+NoGravity
@@ -79,7 +79,7 @@ Actor TankBoom
 	}
 }
 
-Actor NebBoom : TankBoom
+ACTOR NebBoom : TankBoom
 {
 	-ForceRadiusDmg
 	States
@@ -91,7 +91,7 @@ Actor NebBoom : TankBoom
 	}
 }
 
-Actor TankFire : Nuke
+ACTOR TankFire : Nuke
 {
 	RenderStyle Add
 	+NoInteraction
@@ -113,7 +113,7 @@ Actor TankFire : Nuke
 	}
 }
 
-Actor NebFire : TankFire
+ACTOR NebFire : TankFire
 {
 	Scale 0.15
 	States
@@ -131,7 +131,7 @@ Actor NebFire : TankFire
 	}
 }
 
-Actor NukeSmoke : Nuke
+ACTOR NukeSmoke : Nuke
 {
 	Scale 1.7
 	+NoInteraction
@@ -149,7 +149,7 @@ Actor NukeSmoke : Nuke
 	}
 }
 
-Actor NebSmoke : NukeSmoke
+ACTOR NebSmoke : NukeSmoke
 {
 	Scale 0.35
 	States
@@ -163,7 +163,7 @@ Actor NebSmoke : NukeSmoke
 	}
 }
 
-Actor TankFlare : TankFire
+ACTOR TankFlare : TankFire
 {
 	Scale 0.8
 	+NoInteraction
@@ -175,9 +175,9 @@ Actor TankFlare : TankFire
 	}
 }
 
-Actor NebFlare : TankFlare {Scale 0.25}
+ACTOR NebFlare : TankFlare {Scale 0.25}
 
-Actor NukeFloor : Nuke
+ACTOR NukeFloor : Nuke
 {
 	States
 	{
@@ -188,7 +188,7 @@ Actor NukeFloor : Nuke
 	}
 }
 
-Actor NebFloor : NukeFloor
+ACTOR NebFloor : NukeFloor
 {
 	States
 	{
@@ -199,7 +199,7 @@ Actor NebFloor : NukeFloor
 	}
 }
 
-Actor NukeSmokeFloor : Nuke
+ACTOR NukeSmokeFloor : Nuke
 {
 	States
 	{
@@ -210,7 +210,7 @@ Actor NukeSmokeFloor : Nuke
 	}
 }
 
-Actor NebSmokeFloor : NukeSmokeFloor
+ACTOR NebSmokeFloor : NukeSmokeFloor
 {
 	States
 	{
@@ -221,7 +221,7 @@ Actor NebSmokeFloor : NukeSmokeFloor
 	}
 }
 
-Actor TankPillar : Nuke
+ACTOR TankPillar : Nuke
 {
 	States
 	{
@@ -234,7 +234,7 @@ Actor TankPillar : Nuke
 	}
 }
 
-Actor TankSmokePillar : Nuke
+ACTOR TankSmokePillar : Nuke
 {
 	States
 	{
@@ -245,7 +245,7 @@ Actor TankSmokePillar : Nuke
 	}
 }
 
-Actor NebSmokePillar : TankSmokePillar
+ACTOR NebSmokePillar : TankSmokePillar
 {
 	States
 	{
@@ -256,7 +256,7 @@ Actor NebSmokePillar : TankSmokePillar
 	}
 }
 
-Actor TankMushroom : Nuke
+ACTOR TankMushroom : Nuke
 {
 	States
 	{
@@ -267,7 +267,7 @@ Actor TankMushroom : Nuke
 	}
 }
 
-Actor TankSmokeMushroom : Nuke
+ACTOR TankSmokeMushroom : Nuke
 {
 	States
 	{
@@ -278,7 +278,7 @@ Actor TankSmokeMushroom : Nuke
 	}
 }
 
-Actor NebSmokeMushroom : TankSmokeMushroom
+ACTOR NebSmokeMushroom : TankSmokeMushroom
 {
 	States
 	{
@@ -289,7 +289,7 @@ Actor NebSmokeMushroom : TankSmokeMushroom
 	}
 }
 
-Actor TankSmokeRing : Nuke
+ACTOR TankSmokeRing : Nuke
 {
 	var int user_theta;
 	States
@@ -304,7 +304,7 @@ Actor TankSmokeRing : Nuke
 	}
 }
 
-Actor PanzerNuke : Nuke //for panzerschreck rockets
+ACTOR PanzerNuke : Nuke //for panzerschreck rockets
 {
 	States
 	{
@@ -321,7 +321,7 @@ Actor PanzerNuke : Nuke //for panzerschreck rockets
 	}
 }
 
-Actor NebNuke : Nuke //for nebelwerfer rockets
+ACTOR NebNuke : Nuke //for nebelwerfer rockets
 {
 	States
 	{

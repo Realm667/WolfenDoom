@@ -1,6 +1,6 @@
 //mxd. Stealth-related stuff. Must be loaded after nazis.txt. Contains frightening ammount of hacks...
 
-actor SneakableSSMP40Guard : SSMP40Guard
+ACTOR SneakableSSMP40Guard : SSMP40Guard
 {
 	//$Category Monsters (Wolf3D)/Sneak-friendly
 	//$Title SS Guard (MP40, sneak-friendly)
@@ -82,7 +82,7 @@ actor SneakableSSMP40Guard : SSMP40Guard
 }
 
 // This actor follows SneakableGuard around looking for players
-actor SneakableGuardEyesIdle
+ACTOR SneakableGuardEyesIdle
 {
 	RenderStyle None
 	Height 46
@@ -124,7 +124,7 @@ actor SneakableGuardEyesIdle
 }
 
 // This actor follows SneakableGuard around checking if players are no longer seen
-actor SneakableGuardEyesAlerted : SneakableGuardEyesIdle
+ACTOR SneakableGuardEyesAlerted : SneakableGuardEyesIdle
 {
 	States
 	{
@@ -162,7 +162,7 @@ actor SneakableGuardEyesAlerted : SneakableGuardEyesIdle
 }
 
 // It's here just for lulz
-actor AlertMarker
+ACTOR AlertMarker
 {
 	Scale 2.0
 	

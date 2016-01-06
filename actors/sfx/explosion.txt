@@ -8,7 +8,7 @@
 // and simply activate them with a line special.
 // -----------------------------------------------------------------------------
 
-Actor GeneralExplosion_Medium : SwitchableDecoration
+ACTOR GeneralExplosion_Medium : SwitchableDecoration
 {
 	//$Category Special Effects (Wolf3D)
 	//$Title Explosion Effect (activatable)
@@ -30,9 +30,9 @@ Actor GeneralExplosion_Medium : SwitchableDecoration
 	}
 }
 
-Actor KD_HL2GeneratorBase {+NOINTERACTION}
+ACTOR KD_HL2GeneratorBase {+NOINTERACTION}
 
-Actor KD_HL2ExplosionBase
+ACTOR KD_HL2ExplosionBase
 {
 	+NOINTERACTION
 	+FORCEXYBILLBOARD
@@ -40,7 +40,7 @@ Actor KD_HL2ExplosionBase
 	Alpha 0.99
 }
 
-Actor KD_HL2Flash : KD_HL2ExplosionBase
+ACTOR KD_HL2Flash : KD_HL2ExplosionBase
 {
 	States
 	{
@@ -54,7 +54,7 @@ Actor KD_HL2Flash : KD_HL2ExplosionBase
 	}
 }
 
-Actor KD_HL2Smoke : KD_HL2ExplosionBase
+ACTOR KD_HL2Smoke : KD_HL2ExplosionBase
 {
 	RenderStyle Translucent
 	Alpha 0.8
@@ -67,7 +67,7 @@ Actor KD_HL2Smoke : KD_HL2ExplosionBase
 	}
 }
 
-Actor KD_HL2SmokeGenerator : KD_HL2GeneratorBase
+ACTOR KD_HL2SmokeGenerator : KD_HL2GeneratorBase
 {
 	ReactionTime 15
 	States
@@ -79,7 +79,7 @@ Actor KD_HL2SmokeGenerator : KD_HL2GeneratorBase
 	}
 }
 
-Actor KD_HL2Spark : KD_HL2ExplosionBase
+ACTOR KD_HL2Spark : KD_HL2ExplosionBase
 {
 	States
 	{
@@ -93,7 +93,7 @@ Actor KD_HL2Spark : KD_HL2ExplosionBase
 	}
 }
 
-Actor KD_HL2SparkGenerator : KD_HL2GeneratorBase
+ACTOR KD_HL2SparkGenerator : KD_HL2GeneratorBase
 {
 	ReactionTime 200
 	States
@@ -108,15 +108,15 @@ Actor KD_HL2SparkGenerator : KD_HL2GeneratorBase
 //////////////////////////////////////
 // Variants in Size by Tormentor667 //
 //////////////////////////////////////
-Actor GeneralExplosion_Large : GeneralExplosion_Medium {Scale 2.0}
-Actor GeneralExplosion_Small : GeneralExplosion_Medium {Scale 0.5}
+ACTOR GeneralExplosion_Large : GeneralExplosion_Medium {Scale 2.0}
+ACTOR GeneralExplosion_Small : GeneralExplosion_Medium {Scale 0.5}
 
 
 //////////////////////////////////////
 // Variant for Astrostein ////////////
 //////////////////////////////////////
 
-Actor KD_HL2FlashAstrostein : KD_HL2ExplosionBase
+ACTOR KD_HL2FlashAstrostein : KD_HL2ExplosionBase
 {
 	States
 	{
@@ -130,7 +130,7 @@ Actor KD_HL2FlashAstrostein : KD_HL2ExplosionBase
 	}
 }
 
-Actor AstrosteinExplosion_Medium : SwitchableDecoration
+ACTOR AstrosteinExplosion_Medium : SwitchableDecoration
 {
 	//$Category Special Effects (Wolf3D)
 	//$Title Astrostein Explosion Effect (activatable)
@@ -152,5 +152,5 @@ Actor AstrosteinExplosion_Medium : SwitchableDecoration
 	}
 }
 
-Actor AstrosteinExplosion_Large : AstrosteinExplosion_Medium {Scale 2.0}
-Actor AstrosteinExplosion_Small : AstrosteinExplosion_Medium {Scale 0.5}
+ACTOR AstrosteinExplosion_Large : AstrosteinExplosion_Medium {Scale 2.0}
+ACTOR AstrosteinExplosion_Small : AstrosteinExplosion_Medium {Scale 0.5}

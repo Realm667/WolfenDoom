@@ -2,7 +2,7 @@
 // ITEMS & POWERUPS ////////////////////////////////
 ////////////////////////////////////////////////////
 
-actor CKShikadiSoda : SingleCoin
+ACTOR CKShikadiSoda : SingleCoin
 {
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Pickup (Shikadi Soda, 1pts)
@@ -20,7 +20,7 @@ actor CKShikadiSoda : SingleCoin
 	}
 }
 
-actor CKShikkersCandyBar : SingleCoin
+ACTOR CKShikkersCandyBar : SingleCoin
 {
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Pickup (Shikkers Candy Bar, 5pts)
@@ -38,7 +38,7 @@ actor CKShikkersCandyBar : SingleCoin
 	}
 }
 
-actor CKDoughnut : SingleCoin
+ACTOR CKDoughnut : SingleCoin
 {
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Pickup (Dougnut, 20pts)
@@ -56,7 +56,7 @@ actor CKDoughnut : SingleCoin
 	}
 }
 
-actor CKIceCreamCone : SingleCoin
+ACTOR CKIceCreamCone : SingleCoin
 {
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Pickup (IceCreamCone, 50pts)
@@ -125,7 +125,7 @@ ACTOR CKOneUp : Health
 // KEYS & KEYPOTS ////////////////////////////////
 //////////////////////////////////////////////////
 
-actor CKBlueKey : BoABlueKey
+ACTOR CKBlueKey : BoABlueKey
 {
     //$Category Misc (Wolf3D)/Commander Keen
 	//$Title Gem, blue (Blue Card)
@@ -146,7 +146,7 @@ actor CKBlueKey : BoABlueKey
 	}
 }
 
-actor CKYellowKey : BoAYellowKey
+ACTOR CKYellowKey : BoAYellowKey
 {
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Gem, yellow (Yellow Card)
@@ -167,7 +167,7 @@ actor CKYellowKey : BoAYellowKey
 	}
 }
 
-actor CKRedKey : BoARedKey
+ACTOR CKRedKey : BoARedKey
 {
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Gem, red (Red Card)
@@ -188,7 +188,7 @@ actor CKRedKey : BoARedKey
 	}
 }
 
-actor CKRedKeyPod : SwitchableDecoration
+ACTOR CKRedKeyPod : SwitchableDecoration
 {
     //$Category Misc (Wolf3D)/Commander Keen
 	//$Title Gempod, red
@@ -211,7 +211,7 @@ actor CKRedKeyPod : SwitchableDecoration
 	}			
 }
 
-actor CKBlueKeyPod : CKRedKeyPod
+ACTOR CKBlueKeyPod : CKRedKeyPod
 {
     //$Category Misc (Wolf3D)/Commander Keen
 	//$Title Gempod, blue
@@ -229,7 +229,7 @@ actor CKBlueKeyPod : CKRedKeyPod
 	}			
 }
 
-actor CKYellowKeyPod : CKRedKeyPod
+ACTOR CKYellowKeyPod : CKRedKeyPod
 {
     //$Category Misc (Wolf3D)/Commander Keen
 	//$Title Gempod, yellow
@@ -287,7 +287,7 @@ ACTOR CKArachnut : CKBaseEnemy
   MeleeDamage 10
   +FLOORCLIP
   +LOOKALLAROUND
-  Obituary "%o was bit by an Arachnut."
+  Obituary "$CK_ARACH"
   States
   {
   Spawn:
@@ -325,7 +325,7 @@ ACTOR CKMadMushroom : CKBaseEnemy
   Height 56
   Mass 9999999
   Gravity 0.7
-  Obituary "%o was crushed by a Mad Mushroom."
+  Obituary "$CK_MUSH"
   States
   {
   Spawn:
@@ -361,7 +361,7 @@ ACTOR CKPoisonSlug : CKBaseEnemy
   MeleeDamage 10
   +FLOORCLIP
   +LOOKALLAROUND
-  Obituary "%o pooped to death by a Poison Slug."
+  Obituary "$CK_SLUG"
   States
   {
   Spawn:

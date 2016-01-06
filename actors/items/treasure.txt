@@ -1,4 +1,4 @@
-actor CoinItem : Inventory
+ACTOR CoinItem : Inventory
 {
 	Tag "Money"
 	+INVENTORY.KEEPDEPLETED
@@ -6,7 +6,7 @@ actor CoinItem : Inventory
 	inventory.maxamount 1000000
 }
 
-actor SingleCoin : CustomInventory
+ACTOR SingleCoin : CustomInventory
 {
 	//$Category Pickups (Wolf3D)
 	//$Title Treasure (Coin, 1pts)
@@ -24,7 +24,7 @@ actor SingleCoin : CustomInventory
 	}
 }
 
-actor BagOfCoins : SingleCoin
+ACTOR BagOfCoins : SingleCoin
 {
 	//$Category Pickups (Wolf3D)
 	//$Title Treasure (Coin Bag, 10pts)

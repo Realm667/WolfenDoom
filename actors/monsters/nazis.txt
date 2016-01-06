@@ -69,7 +69,7 @@ ACTOR Nazi
 }
 
 //mxd. The only difference are footstep sounds...
-actor NaziBoss : Nazi
+ACTOR NaziBoss : Nazi
 {
 	States
 	{
@@ -263,9 +263,9 @@ ACTOR MP40Guard : Guard
 	SeeSound "Nazi2/Sighted"
 	PainSound "Nazi2/Pain"
 	DeathSound "Nazi2/Death"
-	dropitem 9mmAmmo 192
-	dropitem MP40 64
-	dropitem GrenadePickup 16
+	DropItem 9mmAmmo 192
+	DropItem MP40 64
+	DropItem GrenadePickup 16
 	States
 	{
 	Spawn:
@@ -304,9 +304,9 @@ ACTOR SSMP40Guard : SSGuard
 	SeeSound "Nazi2/Sighted"
 	PainSound "Nazi2/Pain"
 	DeathSound "Nazi2/Death"
-	dropitem 9mmAmmo 192
-	dropitem MP40 64
-	dropitem GrenadePickup 16
+	DropItem 9mmAmmo 192
+	DropItem MP40 64
+	DropItem GrenadePickup 16
 	Obituary "$SSMPGURD"
 	States
 	{
@@ -472,8 +472,8 @@ ACTOR RifleGuard : MP40Guard
 	//$Color 4
 	Obituary "$RIFLSOLD"
 	SeeSound "Nazi3/Sighted"
-	dropitem MauserAmmo
-	dropitem G43 64
+	DropItem MauserAmmo
+	DropItem G43 64
 	States
 	{
 	Spawn:
@@ -528,9 +528,9 @@ ACTOR WaffenSS : SSMP40Guard
 	SeeSound "Nazi3/Sighted"
 	Obituary "$SSWAFFEN"
 	Health 80
-	dropitem "9mmAmmo" 192
-	dropitem "MP40" 64
-	dropitem "GrenadePickup" 32
+	DropItem "9mmAmmo" 192
+	DropItem "MP40" 64
+	DropItem "GrenadePickup" 32
 	States
 	{
 	Spawn:
@@ -554,8 +554,8 @@ ACTOR Paratrooper : WaffenSS
 	//$Color 4
 	Obituary "$PARATROP"
 	Health 90
-	dropitem "9mmAmmo" 192
-	dropitem "MP40" 64
+	DropItem "9mmAmmo" 192
+	DropItem "MP40" 64
 	States
 	{
 	Spawn:
@@ -581,7 +581,7 @@ ACTOR Mutant : Guard
 	DamageFactor Poison, 0
 	+MISSILEMORE
 	+MISSILEEVENMORE
-	dropitem "9mmAmmo" 128
+	DropItem "9mmAmmo" 128
 	States
 	{
 	Spawn:
@@ -659,7 +659,7 @@ ACTOR MutantMelee : Mutant
 	//$Category Monsters (Wolf3D)/Mutants
 	//$Title Mutant (Melee)
 	//$Color 4
-	dropitem ""
+	DropItem ""
 	+LOOKALLAROUND
 	states
 	{
@@ -867,7 +867,7 @@ ACTOR BigMutant2 : BigMutant1
 	Obituary "$GMUTANT2"
 	Health 450
 	+MISSILEEVENMORE
-	dropitem NebAmmoSmall, 128, 2
+	DropItem NebAmmoSmall, 128, 2
 	States
 	{
 	Spawn:
@@ -1009,7 +1009,7 @@ ACTOR RocketMan : NaziBoss
 	SeeSound "Boss2/Sighted"
 	PainSound "boss/pain"
 	DeathSound "Boss2/Death"
-	dropitem NebAmmoSmall
+	DropItem NebAmmoSmall
 	+LOOKALLAROUND
 	+BOSS
 	Tag "Otto Giftmacher"
@@ -1151,7 +1151,7 @@ ACTOR MutantRocket
 	}
 }
 
-Actor PoisonCloudMutant
+ACTOR PoisonCloudMutant
 {
   Radius 20
   Height 30
@@ -1191,7 +1191,7 @@ ACTOR MadDoctor : RocketMan
 	//$Title Dr Schabbs (Boss)
 	//$Color 4
 	Obituary "$SCHABBS"
-	dropitem "Medikit_Medium"
+	DropItem "Medikit_Medium"
 	Tag "Dr. Schabbs Jr."
 	Health 400
 	+BOSS
@@ -1501,8 +1501,8 @@ ACTOR FlamerMan : RocketMan replaces Arachnotron
 	Health 500
 	SeeSound "Boss1/Sighted"
 	DeathSound "Boss1/Death"
-	dropitem "FlameAmmo"
-	dropitem "Pyrolight" 64
+	DropItem "FlameAmmo"
+	DropItem "Pyrolight" 64
 	States
 	{
 	Spawn:
@@ -1904,7 +1904,7 @@ ACTOR MGTurret : MiniShip
 	Health 100
 	Radius 2
 	Height 32
-	mass 0x7fffffff
+	Mass 0x7fffffff
 	PainChance 100
 	+MISSILEEVENMORE
 	-FLOAT
@@ -2398,8 +2398,8 @@ ACTOR Sniper : Guard
 	Obituary "$SNIPER"
 	Health 50
 	speed 0
-	dropitem "MauserAmmo" 192
-	dropitem "G43" 64
+	DropItem "MauserAmmo" 192
+	DropItem "G43" 64
 	+LOOKALLAROUND
 	States
 	{
@@ -2534,8 +2534,8 @@ ACTOR FlamerSoldier : Guard
 	//$Color 4
 	Obituary "$FLAMEBOY"
 	Health 100
-	dropitem "FlameAmmo" 192
-	dropitem "Pyrolight" 32
+	DropItem "FlameAmmo" 192
+	DropItem "Pyrolight" 32
 	MaxTargetRange 384
 	States
 	{
@@ -2636,13 +2636,13 @@ ACTOR EliteFlamer : Guard
 	//$Title Elite Soldier (Flamer)
 	//$Color 4
 	Obituary "$FLAMEBOY"
-	health 450
+	Health 450
 	Speed 4
 	seesound "eliteflamer/sight"
 	painsound "eliteflamer/pain"
 	deathsound "eliteflamer/death"
-	dropitem "FlameAmmo"
-	dropitem "Pyrolight" 32
+	DropItem "FlameAmmo"
+	DropItem "Pyrolight" 32
 	+MISSILEMORE
 	MaxTargetRange 400
 	var int user_count;
@@ -2732,15 +2732,15 @@ ACTOR EliteAssaulter : Guard
 	//$Title Elite Soldier (MP40)
 	//$Color 4
 	Obituary "$ELITASS"
-	health 350
+	Health 350
 	PainChance 160
 	Speed 4.66666667
 	seesound "eliteassaulter/sight"
 	painsound "eliteassaulter/pain"
 	deathsound "eliteassaulter/death"
-	dropitem "9mmAmmo" 192
-	dropitem "MP40" 64
-	dropitem "GrenadePickup" 16
+	DropItem "9mmAmmo" 192
+	DropItem "MP40" 64
+	DropItem "GrenadePickup" 16
 	+MISSILEMORE
 	States
 	{
@@ -2806,15 +2806,15 @@ ACTOR EliteSoldatRifler : Guard
 	//$Title Elite Soldier (Rifle)
 	//$Color 4
 	Obituary "$ELITRIFL"
-	health 65
+	Health 65
 	Speed 4.66666667
 	painchance 80
 	seesound "eliterifler/Sight"
 	painsound "eliteassaulter/pain"
 	deathsound "eliterifler/death"
-	dropitem "MauserAmmo" 192
-	dropitem "GrenadePickup" 16
-	dropitem "G43" 64
+	DropItem "MauserAmmo" 192
+	DropItem "GrenadePickup" 16
+	DropItem "G43" 64
 	+MISSILEEVENMORE
 	states
 	{
@@ -2898,7 +2898,7 @@ ACTOR MadCook : MadDoctor
 	}
 }
 
-Actor MadCook2 : MadCook
+ACTOR MadCook2 : MadCook
 {
 	//$Category Monsters (Wolf3D)/Bosses
 	//$Title Cook Max Gulasch (Boss)
@@ -2918,20 +2918,20 @@ ACTOR FlyingHack : FlyingNeedle
 	}
 }
 
-actor UndeadPriest : Guard
+ACTOR UndeadPriest : Guard
 {
 	//$Category Monsters (Wolf3D)/Occult
 	//$Title Priest
 	//$Color 4
-	obituary "$UNDEADP"
-	health 200
-	mass 125
+	Obituary "$UNDEADP"
+	Health 200
+	Mass 125
 	Speed 2.66666667
 	Scale 1.1
 	painchance 30
-	dropitem "12GaugeAmmo" 96
-	dropitem "12GaugeAmmo" 128
-	dropitem "TrenchShotgun" 32
+	DropItem "12GaugeAmmo" 96
+	DropItem "12GaugeAmmo" 128
+	DropItem "TrenchShotgun" 32
 	painsound "UndeadPriest/Pain"
 	deathsound "UndeadPriest/Die"
 	SeeSound ""
@@ -3483,7 +3483,7 @@ ACTOR ZTracerPuff
 }
 
 //Support Actors from TPortal//
-Actor VisualSpecialEffect
+ACTOR VisualSpecialEffect
 {
 	+CLIENTSIDEONLY
 	+NOINTERACTION
@@ -3493,7 +3493,7 @@ Actor VisualSpecialEffect
 	+FORCEXYBILLBOARD
 }
 
-Actor TPortMist : VisualSpecialEffect
+ACTOR TPortMist : VisualSpecialEffect
 {
 	RenderStyle Add
 	Alpha 0.25
@@ -3509,7 +3509,7 @@ Actor TPortMist : VisualSpecialEffect
 	}
 }
 
-Actor TPortMistSpawner : VisualSpecialEffect
+ACTOR TPortMistSpawner : VisualSpecialEffect
 {
 	States
 	{
@@ -3520,7 +3520,7 @@ Actor TPortMistSpawner : VisualSpecialEffect
 	}
 }
 
-Actor TPortLightning : VisualSpecialEffect
+ACTOR TPortLightning : VisualSpecialEffect
 {
 	RenderStyle Add
 	Alpha 0.7
@@ -3540,13 +3540,13 @@ Actor TPortLightning : VisualSpecialEffect
 	}
 }
 
-Actor TPortLightningSmall : TPortLightning {Scale 0.1}
-Actor TPortLightningMedium : TPortLightning {Scale 0.2}
-Actor TPortLightningLarge : TPortLightning {Scale 0.3}
-Actor TPortLightningHuge : TPortLightning {Scale 0.4}
+ACTOR TPortLightningSmall : TPortLightning {Scale 0.1}
+ACTOR TPortLightningMedium : TPortLightning {Scale 0.2}
+ACTOR TPortLightningLarge : TPortLightning {Scale 0.3}
+ACTOR TPortLightningHuge : TPortLightning {Scale 0.4}
 
 // A wave of lightning
-Actor TPortLightningWave : VisualSpecialEffect
+ACTOR TPortLightningWave : VisualSpecialEffect
 {
 	States
 	{
@@ -3561,7 +3561,7 @@ Actor TPortLightningWave : VisualSpecialEffect
 }
 
 // Spawns lightning waves
-Actor TPortLightningWaveSpawner : VisualSpecialEffect
+ACTOR TPortLightningWaveSpawner : VisualSpecialEffect
 {
 	States
 	{
