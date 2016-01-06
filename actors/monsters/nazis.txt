@@ -1443,14 +1443,61 @@ ACTOR General : RocketMan replaces Archvile
 	}
 }
 
+ACTOR MarineGeneral : General
+{
+//$Category Monsters (Wolf3D)/Bosses
+	//$Title General Seeteufel (Boss)
+	//$Color 4
+	Obituary "$GENERAL"
+	Health 800
+	Mass 1000
+	SeeSound "Boss3/Sighted"
+	DeathSound "Boss3/Death"
+	DropItem "NebAmmoSmall" 128
+	DropItem "NebAmmoSmall" 128
+	DropItem "NebAmmoSmall" 128
+	+MISSILEEVENMORE
+	+BOSS
+	Tag "Gen. Seeteufel"
+	States
+	{
+	Spawn:
+		SKEL A 0
+		Goto SkillCheck
+	Missile:
+		SKEL J 10 A_FaceTarget
+		SKEL K 8 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
+		SKEL J 8 A_FaceTarget
+		SKEL K 8 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
+		SKEL J 8 A_FaceTarget
+		SKEL K 8 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
+		SKEL J 8
+		Goto See
+	Pain:
+		SKEL L 3
+		SKEL L 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		Goto See
+	Death:
+		SKEL M 5
+		SKEL N 5 A_Scream
+		SKEL O 5
+		SKEL P -1 A_NoBlocking
+		Stop
+	Raise:
+		SKEL PONM 5
+		Goto See
+	}
+}
+
 ACTOR FlamerMan : RocketMan replaces Arachnotron
 {
 	//$Category Monsters (Wolf3D)/Bosses
-	//$Title Flamer (Boss)
+	//$Title Friedhelm Hass (Boss)
 	//$Color 4
 	Speed 2.67
 	Obituary "$FLAMEBOY"
-	Tag "Johan Feuermann"
+	Tag "Friedhelm Hass"
 	Health 500
 	SeeSound "Boss1/Sighted"
 	DeathSound "Boss1/Death"
@@ -2073,7 +2120,7 @@ ACTOR HitlerSuitScrap
 ACTOR ChairGuy : Nazi
 {
 	//$Category Monsters (Wolf3D)/Bosses
-	//$Title Chairman (Boss)
+	//$Title Graf Holzbein (Boss)
 	//$Color 4
 	Obituary "$CHAIRMAN"
 	Health 1200
@@ -2149,7 +2196,7 @@ ACTOR MiniMiniRocket : MiniRocket
 ACTOR FatMan : ChairGuy
 {
 	//$Category Monsters (Wolf3D)/Bosses
-	//$Title FatMan (Boss)
+	//$Title General Schwabbelhals (Boss)
 	//$Color 4
 	+BOSS
 	-NOGRAVITY	//we don't want him to fly, yeah? ;)
@@ -2831,12 +2878,12 @@ ACTOR EliteSoldatRifler : Guard
 ACTOR MadCook : MadDoctor
 {
 	//$Category Monsters (Wolf3D)/Bosses
-	//$Title Cook (Boss)
+	//$Title Cook Fritz Bratwurst (Boss)
 	//$Color 4
 	Obituary "$MADCOOK"
 	Health 400
 	+BOSS
-	Tag "Dr. Heinrich Schabbs"
+	Tag "Fritz Bratwurst"
 	States
 	{
 	Spawn:
@@ -2854,7 +2901,7 @@ ACTOR MadCook : MadDoctor
 Actor MadCook2 : MadCook
 {
 	//$Category Monsters (Wolf3D)/Bosses
-	//$Title Cook 2 (Boss)
+	//$Title Cook Max Gulasch (Boss)
 	//$Color 4
 	Health 400
 	+BOSS

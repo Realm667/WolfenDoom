@@ -55,3 +55,50 @@ Actor BatFamiliar
 		Stop
 	}
 }
+
+Actor RatFamiliar
+{
+	//$Category Monsters (Wolf3D)/Critters
+	//$Title Rat (attacking)
+	//$Color 4
+	Health 10
+	Radius 12
+	Height 24
+	Speed 4.66666667
+	PainChance 200
+	MONSTER
+	+NOINFIGHTING
+	-NOGRAVITY
+	-FLOAT
+	SeeSound "rat/squeek"
+	PainSound "batfam/pain"
+	DeathSound "rat/death"
+	ActiveSound "rat/active"
+	HitObituary "$RAT"
+	States
+	{
+	Spawn:
+		PAIN A 3 A_Look
+		Loop
+	See:
+		PAIN A 1 A_Chase
+		PAIN AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		PAIN B 1 A_Chase
+		PAIN BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		Loop
+	Melee:
+		PAIN A 3 A_FaceTarget
+		PAIN B 3 A_CustomMeleeAttack(Random(1,4)*1,"batfam/idle")
+		PAIN BB 3 A_FaceTarget
+		Goto See
+	Pain:
+		PAIN A 2
+		PAIN A 2 A_Pain
+		Goto See
+	Death:
+		PAIN H 5 A_ScreamAndUnblock
+		PAIN IJKL 5
+		PAIN M -1
+		Stop
+	}
+}
