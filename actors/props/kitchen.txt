@@ -8,6 +8,7 @@ ACTOR PotKitchen1
 	Health 1
 	+NOBLOOD
 	+SHOOTABLE
+	+NOTAUTOAIMED
 	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
 	
 	States
@@ -34,6 +35,7 @@ ACTOR PotKitchen2
 	Health 1
 	+NOBLOOD
 	+SHOOTABLE
+	+NOTAUTOAIMED
 	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
 	
 	States
@@ -64,6 +66,7 @@ ACTOR Kettle
 	Health 1
 	+NOBLOOD
 	+SHOOTABLE
+	+NOTAUTOAIMED
 	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
 	
 	States
@@ -94,6 +97,7 @@ ACTOR BarSeat
 	+PUSHABLE
 	+NOBLOOD
 	+SHOOTABLE
+	+NOTAUTOAIMED
 	States
 	{
 	Spawn:
@@ -140,6 +144,7 @@ ACTOR WineGlass
 	Scale 0.4
 	Health 1	//needs to be added for being destroyable
 	+SHOOTABLE	//needs to be added for being destroyable
+	+NOTAUTOAIMED
 	+NOBLOOD	//needs to be added for being destroyable
 	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
 	
@@ -167,8 +172,8 @@ ACTOR OvenHot : SwitchableDecoration
 	Mass 0x7ffffff
 	+SOLID
 	+NOBLOOD
-	//+PUSHABLE //not needed anymore because it will never move
 	+SHOOTABLE
+	+NOTAUTOAIMED
 	+USESPECIAL
 	Activation THINGSPEC_Switch | THINGSPEC_Deactivate
 	States

@@ -11,6 +11,7 @@ ACTOR BinSilver
 	+PUSHABLE
 	+NOBLOOD
 	+SHOOTABLE
+	+NOTAUTOAIMED
 	States
 	{
 	Spawn:
@@ -36,6 +37,7 @@ ACTOR Plant1
 	Health 25
 	+NOBLOOD
 	+SHOOTABLE
+	+NOTAUTOAIMED
 	+SOLID
 	States
 	{
@@ -62,6 +64,7 @@ ACTOR Plant2
 	Health 25
 	+NOBLOOD
 	+SHOOTABLE
+	+NOTAUTOAIMED
 	+SOLID
 	States
 	{
@@ -151,6 +154,7 @@ ACTOR Cup1
 	Health 1	//needs to be added for being destroyable
 	+SOLID
 	+SHOOTABLE	//needs to be added for being destroyable
+	+NOTAUTOAIMED
 	+NOBLOOD	//needs to be added for being destroyable
 	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
 	
@@ -191,6 +195,7 @@ ACTOR CoffeeMachine
 	+SOLID
 	+NOBLOOD
 	+SHOOTABLE
+	+NOTAUTOAIMED
 	States
 	{
 	Spawn:
@@ -216,6 +221,7 @@ ACTOR WaterMachine
 	+SOLID
 	+NOBLOOD
 	+SHOOTABLE
+	+NOTAUTOAIMED
 	States
 	{
 	Spawn:
@@ -322,6 +328,7 @@ ACTOR flaskblueA
 	Height 17
 	+SOLID
 	+SHOOTABLE
+	+NOTAUTOAIMED
 	+NOBLOOD
 	+ACTIVATEMCROSS
 	+DONTGIB
