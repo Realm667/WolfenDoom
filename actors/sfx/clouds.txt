@@ -18,9 +18,9 @@ ACTOR CloudSpawner
 	//$Arg4Enum { 0 = "Grey"; 1 = "Tan"; 2 = "Red"; }
 	+NOBLOCKMAP
 	+NOGRAVITY
-	+NoSector
+	+NOSECTOR
 	+NOINTERACTION
-	+NoClip
+	+NOCLIP
 	+CLIENTSIDEONLY
 	States
 	{
@@ -84,8 +84,8 @@ ACTOR CloudSpawner
 //Grey Clouds
 ACTOR MiniCloudGrey
 {
-	+Missile
-	+NoBlockmap
+	+MISSILE
+	+NOBLOCKMAP
 	+NOGRAVITY
 	Radius 8
 	Height 8
