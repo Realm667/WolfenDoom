@@ -150,18 +150,21 @@ ACTOR ScientistUnfiform : SwitchableDecoration
 	+SOLID
 	+USESPECIAL
 	+NOTAUTOAIMED
+	-DORMANT
 	Activation THINGSPEC_Switch
 	States
 	{
 	Spawn:
-	Active:
-		SCUN A -1 Bright Light("BOATABL1")
-		SCUN B 0 A_ChangeFlag("DORMANT", false)
-		stop
 	Inactive:
-		SCUN B 0 A_GiveInventory("ScientistUnfiformPickup", 1)
-		SCUN B 0 A_ChangeFlag("DORMANT", true)
+		//SCUN A 0 A_ChangeFlag("DORMANT", true)
+		SCUN A -1 
+		stop
+	Active:
+		SCUN B 0 A_ChangeFlag("SOLID", false)
+		SCUN B 0 A_SpawnItemEx("ScientistUnfiformPickup", 0, 0, 16, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		SCUN B 0 A_ChangeFlag("DORMANT", false)
 		SCUN B 0 A_ChangeFlag("USESPECIAL", false)
+		SCUN B -1
 		Stop
 	}
 }
@@ -174,10 +177,11 @@ ACTOR ScientistUnfiformPickup : Akten
 	Tag "Cartridge 52"
 	inventory.icon SCUNC0
 	inventory.pickupmessage "$SCIENTISTPICKUP"
+	inventory.pickupsound "misc/health_pkup"
 	States
 	{
 	Spawn:
-		SCUN C -1 NODELAY 
+		SCUN D -1 NODELAY 
 		stop
 	}
 }
