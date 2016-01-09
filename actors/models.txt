@@ -645,6 +645,28 @@ States
 	}
 }
 
+ACTOR WallLight2 : WallLight1
+{
+//$Category Light Sources (Wolf3D)
+//$Title Wall Lantern (off)
+//$Color 11
+Height 48
+}
+
+ACTOR WallLight2Lit : WallLight1
+{
+//$Category Light Sources (Wolf3D)
+//$Title Wall Lantern (on)
+//$Color 11
+Height 48
+States
+	{
+	Spawn:
+	SMGT A -1 LIGHT(OZYWALLT)
+	Stop
+	}
+}
+
 ACTOR SimpleLight1 : 3dObstacle
 {
 //$Category Light Sources (Wolf3D)
