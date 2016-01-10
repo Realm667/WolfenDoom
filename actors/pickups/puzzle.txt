@@ -1,0 +1,66 @@
+//Puzzle items here - Ozy81
+ACTOR Rune_Tyr : PuzzleItem
+{
+	//$Category Puzzle Items (Wolf3D)
+	//$Title Armanen Runes, Tyr
+	//$Color 5
+	PuzzleItem.Number 1
+	PuzzleItem.FailMessage "$RUNES"
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	Inventory.Icon PTYRA0
+	Inventory.PickupMessage "$RUNETYR"
+	//Inventory.PickupSound "##"
+	+COUNTITEM
+	+NOGRAVITY
+	+INVENTORY.INVBAR
+	//ConversationID ### //use this if you plan to work with dialogues, and use different values for each actor
+	States
+	{
+	Spawn:
+	RTYR A -1
+	Stop
+	}
+}
+
+ACTOR Rune_Ur : Rune_Tyr
+{
+	//$Title Armanen Runes, Ur
+	PuzzleItem.Number 2
+	Inventory.Icon PZURA0
+	Inventory.PickupMessage "$RUNEUR"
+	States
+	{
+	Spawn:
+	RNUR A -1
+	Stop
+	}
+}
+
+ACTOR Rune_Sig : Rune_Tyr
+{
+	//$Title Armanen Runes, Sig
+	PuzzleItem.Number 3
+	Inventory.Icon PSIGA0
+	Inventory.PickupMessage "$RUNESIG"
+	States
+	{
+	Spawn:
+	RSIG A -1
+	Stop
+	}
+}
+
+ACTOR Rune_Gibor : Rune_Tyr
+{
+	//$Title Armanen Runes, Gibor
+	PuzzleItem.Number 4
+	Inventory.Icon PGBRA0
+	Inventory.PickupMessage "$RUNEGBR"
+	States
+	{
+	Spawn:
+	RGBR A -1
+	Stop
+	}
+}
