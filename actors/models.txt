@@ -645,20 +645,21 @@ States
 	}
 }
 
-ACTOR WallLight2 : WallLight1
+ACTOR WallLight2 : 3dObstacle
 {
 //$Category Light Sources (Wolf3D)
 //$Title Wall Lantern (off)
 //$Color 11
+Radius 14
 Height 48
++NOGRAVITY
 }
 
-ACTOR WallLight2Lit : WallLight1
+ACTOR WallLight2Lit : WallLight2
 {
 //$Category Light Sources (Wolf3D)
 //$Title Wall Lantern (on)
 //$Color 11
-Height 48
 States
 	{
 	Spawn:
