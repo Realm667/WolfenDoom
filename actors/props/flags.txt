@@ -34,20 +34,20 @@ ACTOR NaziflagS
 		Stop
 	Death:
 		TNT1 A 0 A_UnSetSolid
-		TNT1 A 0 A_PlaySound("WOODBRK", frandom (0.2,0.5))
-		TNT1 AAAAAA 0 A_SpawnItemEx ("Debris_FlagsR2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		TNT1 AAAAAA 0 A_SpawnItemEx ("Debris_FlagsR2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		TNT1 AAAAA 0 A_SpawnItemEx ("Debris_FlagsW2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		TNT1 A 2 A_SpawnItemEx ("BarrelFrags")
+		"####" A 0 A_PlaySound("WOODBRK", frandom (0.2,0.5))
+		"####" AAAAAA 0 A_SpawnItemEx ("Debris_FlagsR2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAAA 0 A_SpawnItemEx ("Debris_FlagsR2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAA 0 A_SpawnItemEx ("Debris_FlagsW2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" A 2 A_SpawnItemEx ("BarrelFrags")
 		FLAG D -1
 		Stop
 	}
 }
 
-ACTOR NazibannerM
+ACTOR NazibannerM : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Flags
-	//$Title Nazibanner (middle)
+	//$Title Nazibanner (middle, set Dormant for non-solid/invulnerable)
 	//$Color 3
 	Radius 16
 	Height 96
@@ -64,22 +64,25 @@ ACTOR NazibannerM
 		Stop
 	Death:
 		TNT1 A 0 A_UnSetSolid
-		TNT1 A 0 A_PlaySound("WOODBRK", frandom (0.2,0.5))
-		//so debris will spawn from different coordinates
-		TNT1 AAAA 0 A_SpawnItemEx ("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		TNT1 AAAA 0 A_SpawnItemEx ("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		TNT1 AAAA 0 A_SpawnItemEx ("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		TNT1 AAAA 0 A_SpawnItemEx ("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		TNT1 AAAA 0 A_SpawnItemEx ("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		TNT1 AAAA 0 A_SpawnItemEx ("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		TNT1 AAAA 0 A_SpawnItemEx ("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		TNT1 AAAA 0 A_SpawnItemEx ("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		TNT1 AAAA 0 A_SpawnItemEx ("Debris_FlagsW", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		TNT1 AAAA 0 A_SpawnItemEx ("Debris_FlagsW", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		TNT1 AAAA 0 A_SpawnItemEx ("Debris_FlagsW", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		TNT1 AAAA 0 A_SpawnItemEx ("Debris_FlagsD", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		TNT1 A 2 A_SpawnItemEx ("BarrelFrags")
+		"####" A 0 A_PlaySound("WOODBRK", frandom (0.2,0.5))
+		"####" AAAA 0 A_SpawnItemEx ("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAA 0 A_SpawnItemEx ("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAA 0 A_SpawnItemEx ("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAA 0 A_SpawnItemEx ("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAA 0 A_SpawnItemEx ("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAA 0 A_SpawnItemEx ("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAA 0 A_SpawnItemEx ("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAA 0 A_SpawnItemEx ("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAA 0 A_SpawnItemEx ("Debris_FlagsW", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAA 0 A_SpawnItemEx ("Debris_FlagsW", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAA 0 A_SpawnItemEx ("Debris_FlagsW", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAA 0 A_SpawnItemEx ("Debris_FlagsD", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" A 2 A_SpawnItemEx ("BarrelFrags")
 		FLAG E -1
+		Stop
+	Inactive:
+		FLAG B 0 A_UnsetSolid
+		"####" B -1 A_SetInvulnerable
 		Stop
 	}
 }
@@ -87,12 +90,16 @@ ACTOR NazibannerM
 ACTOR NazibannerM2 : NaziBannerM
 {
 	//$Category Props (Wolf3D)/Flags
-	//$Title Nazibanner 2 (middle)
+	//$Title Nazibanner 2 (middle, set Dormant for non-solid/invulnerable)
 	//$Color 3
 	States
 	{
 	Spawn:
 		FLAG C -1
+		Stop
+	Inactive:
+		FLAG C 0 A_UnsetSolid
+		"####" C -1 A_SetInvulnerable
 		Stop
 	}
 }
@@ -117,11 +124,11 @@ ACTOR SSBanner
 		Stop
 	Death:
 		TNT1 A 0 A_UnSetSolid
-		TNT1 A 0 A_PlaySound("WOODBRK", frandom (0.2,0.5))
-		TNT1 AAAAAA 0 A_SpawnItemEx ("Debris_FlagsD2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		TNT1 AAAAAA 0 A_SpawnItemEx ("Debris_FlagsD2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		TNT1 AAAAA 0 A_SpawnItemEx ("Debris_FlagsW2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		TNT1 A 2 A_SpawnItemEx ("BarrelFrags")
+		"####" A 0 A_PlaySound("WOODBRK", frandom (0.2,0.5))
+		"####" AAAAAA 0 A_SpawnItemEx ("Debris_FlagsD2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAAA 0 A_SpawnItemEx ("Debris_FlagsD2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAA 0 A_SpawnItemEx ("Debris_FlagsW2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" A 2 A_SpawnItemEx ("BarrelFrags")
 		SSFG B -1
 		Stop
 	}
