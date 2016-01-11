@@ -3,6 +3,7 @@ ACTOR Rune_Tyr : PuzzleItem
 {
 	//$Category Puzzle Items (Wolf3D)
 	//$Title Armanen Runes, Tyr
+	//$Sprite RTYRA0
 	//$Color 5
 	PuzzleItem.Number 1
 	PuzzleItem.FailMessage "$RUNES"
@@ -13,26 +14,39 @@ ACTOR Rune_Tyr : PuzzleItem
 	//Inventory.PickupSound "##"
 	+COUNTITEM
 	+NOGRAVITY
+	+FLOATBOB
 	+INVENTORY.INVBAR
 	//ConversationID ### //use this if you plan to work with dialogues, and use different values for each actor
+	Scale 0.2
 	States
 	{
 	Spawn:
+	TNT1 A 0 NoDelay A_PlaySound ("runes/loop", 7, frandom(0.8, 1.0), TRUE, ATTN_NORM)
+	Floating:
 	RTYR A -1
+	Stop
+	Pickup:
+	TNT1 A 1 A_StopSound (7)
 	Stop
 	}
 }
 
-ACTOR Rune_Ur : Rune_Tyr
+ACTOR Rune_Fa : Rune_Tyr
 {
-	//$Title Armanen Runes, Ur
+	//$Title Armanen Runes, Fa
+	//$Sprite RNFAA0
 	PuzzleItem.Number 2
-	Inventory.Icon PZURA0
-	Inventory.PickupMessage "$RUNEUR"
+	Inventory.Icon PZFAA0
+	Inventory.PickupMessage "$RUNEFA"
 	States
 	{
 	Spawn:
-	RNUR A -1
+	TNT1 A 0 NoDelay A_PlaySound ("runes/loop", 7, frandom(0.8, 1.0), TRUE, ATTN_NORM)
+	Floating:
+	RNFA A -1
+	Stop
+	Pickup:
+	TNT1 A 1 A_StopSound (7)
 	Stop
 	}
 }
@@ -40,13 +54,19 @@ ACTOR Rune_Ur : Rune_Tyr
 ACTOR Rune_Sig : Rune_Tyr
 {
 	//$Title Armanen Runes, Sig
+	//$Sprite RSIGA0
 	PuzzleItem.Number 3
 	Inventory.Icon PSIGA0
 	Inventory.PickupMessage "$RUNESIG"
 	States
 	{
 	Spawn:
+	TNT1 A 0 NoDelay A_PlaySound ("runes/loop", 7, frandom(0.8, 1.0), TRUE, ATTN_NORM)
+	Floating:
 	RSIG A -1
+	Stop
+	Pickup:
+	TNT1 A 1 A_StopSound (7)
 	Stop
 	}
 }
@@ -54,13 +74,19 @@ ACTOR Rune_Sig : Rune_Tyr
 ACTOR Rune_Gibor : Rune_Tyr
 {
 	//$Title Armanen Runes, Gibor
+	//$Sprite RGBRA0
 	PuzzleItem.Number 4
 	Inventory.Icon PGBRA0
 	Inventory.PickupMessage "$RUNEGBR"
 	States
 	{
 	Spawn:
+	TNT1 A 0 NoDelay A_PlaySound ("runes/loop", 7, frandom(0.8, 1.0), TRUE, ATTN_NORM)
+	Floating:
 	RGBR A -1
+	Stop
+	Pickup:
+	TNT1 A 1 A_StopSound (7)
 	Stop
 	}
 }
