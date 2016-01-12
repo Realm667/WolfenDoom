@@ -6,6 +6,7 @@ ACTOR AstroGuard : Guard
 	DropItem AstroClipAmmo 128
 	DropItem AstroShotgunShell 32
 	//DamageFactor "AstroPoison", 0.0
+	Obituary "$AGUARD1"
 	States
 	{
 	Spawn:
@@ -62,6 +63,7 @@ ACTOR AstroCommando : AstroGuard
 	//$Title Astrostein Commando
 	//$Color 4
 	Health 80
+	Obituary "$AGUARD2"
 	States
 	{
 	Spawn:
@@ -83,6 +85,7 @@ ACTOR AstroOfficer : AstroGuard
 	//$Color 4
 	Speed 5.33
 	Health 30
+	Obituary "$AGUARD3"
 	States
 	{
 	Spawn:
@@ -107,6 +110,7 @@ ACTOR AstroElite : AstroGuard
 	Health 30
 	DropItem AstroShotgun 64
 	DropItem AstroShotgunShell 192
+	Obituary "$AGUARD4"
 	States
 	{
 	Spawn:
@@ -141,8 +145,7 @@ ACTOR AstroDrone : Nazi
 	PainSound "drone_pain"
 	DeathSound "astrostein/explosion"
 	ActiveSound "drone_act"
-	//Obituary "$OB_CACO"
-	//HitObituary "$OB_CACOHIT"
+	Obituary "$ADRONE"
 	States
 	{
 	Spawn:
@@ -236,7 +239,7 @@ ACTOR AstroCyborg1 : Nazi
 	PainSound "astrostein/cyborg_pain"
 	DeathSound "astrostein/cyborg_death"
 	ActiveSound "astrostein/cyborg_act"
-	//Obituary "$OB_CACO"
+	Obituary "$ACYBORG"
 	States
 	{
 	Spawn:
@@ -421,8 +424,8 @@ ACTOR AstroRobot : AstroCyborg1
 	PainSound "astrostein/robot_pain"
 	DeathSound "astrostein/robot_death"
 	ActiveSound "astrostein/robot_act"
-	//Obituary "$OB_CACO"
 	DropItem AstroRocketAmmo 160
+	Obituary "$AROBOTO"
 	+BOSS
 	Tag "Tiger Roboter"
 	States
@@ -470,6 +473,7 @@ ACTOR AstroHitler
 	+BOSS
 	Tag "Adolf Hitler"
 	Mass 99999999
+	Obituary "$AHITLER"
 	States
 	{
 	Spawn:

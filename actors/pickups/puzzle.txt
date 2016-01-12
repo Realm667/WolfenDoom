@@ -1,92 +1,52 @@
 //Puzzle items here - Ozy81
-ACTOR Rune_Tyr : PuzzleItem
+ACTOR Rune_Fa : PuzzleItem
 {
 	//$Category Puzzle Items (Wolf3D)
-	//$Title Armanen Runes, Tyr
-	//$Sprite RTYRA0
+	//$Title Armanen Runes, Fa
 	//$Color 5
 	PuzzleItem.Number 1
 	PuzzleItem.FailMessage "$RUNES"
 	Inventory.Amount 1
 	Inventory.MaxAmount 1
-	Inventory.Icon PTYRA0
-	Inventory.PickupMessage "$RUNETYR"
-	//Inventory.PickupSound "##"
+	Inventory.Icon RHUDB0
+	Inventory.PickupMessage "$RUNEFA"
 	+COUNTITEM
 	+NOGRAVITY
 	+FLOATBOB
 	+INVENTORY.INVBAR
 	//ConversationID ### //use this if you plan to work with dialogues, and use different values for each actor
-	Scale 0.2
 	States
 	{
 	Spawn:
-	TNT1 A 0 NoDelay A_PlaySound ("runes/loop", 7, frandom(0.8, 1.0), TRUE, ATTN_NORM)
-	Floating:
-	RTYR A -1
-	Stop
-	Pickup:
-	TNT1 A 1 A_StopSound (7)
+	RUNE B -1
 	Stop
 	}
 }
 
-ACTOR Rune_Fa : Rune_Tyr
-{
-	//$Title Armanen Runes, Fa
-	//$Sprite RNFAA0
-	PuzzleItem.Number 2
-	Inventory.Icon PZFAA0
-	Inventory.PickupMessage "$RUNEFA"
-	States
-	{
-	Spawn:
-	TNT1 A 0 NoDelay A_PlaySound ("runes/loop", 7, frandom(0.8, 1.0), TRUE, ATTN_NORM)
-	Floating:
-	RNFA A -1
-	Stop
-	Pickup:
-	TNT1 A 1 A_StopSound (7)
-	Stop
-	}
-}
-
-ACTOR Rune_Sig : Rune_Tyr
-{
-	//$Title Armanen Runes, Sig
-	//$Sprite RSIGA0
-	PuzzleItem.Number 3
-	Inventory.Icon PSIGA0
-	Inventory.PickupMessage "$RUNESIG"
-	States
-	{
-	Spawn:
-	TNT1 A 0 NoDelay A_PlaySound ("runes/loop", 7, frandom(0.8, 1.0), TRUE, ATTN_NORM)
-	Floating:
-	RSIG A -1
-	Stop
-	Pickup:
-	TNT1 A 1 A_StopSound (7)
-	Stop
-	}
-}
-
-ACTOR Rune_Gibor : Rune_Tyr
+ACTOR Rune_Gibor : Rune_Fa
 {
 	//$Title Armanen Runes, Gibor
-	//$Sprite RGBRA0
-	PuzzleItem.Number 4
-	Inventory.Icon PGBRA0
+	PuzzleItem.Number 2
+	Inventory.Icon RHUDC0
 	Inventory.PickupMessage "$RUNEGBR"
 	States
 	{
 	Spawn:
-	TNT1 A 0 NoDelay A_PlaySound ("runes/loop", 7, frandom(0.8, 1.0), TRUE, ATTN_NORM)
-	Floating:
-	RGBR A -1
+	RUNE C -1
 	Stop
-	Pickup:
-	TNT1 A 1 A_StopSound (7)
+	}
+}
+
+ACTOR Rune_Tyr : Rune_Fa
+{
+	//$Title Armanen Runes, Tyr
+	PuzzleItem.Number 3
+	Inventory.Icon RHUDA0
+	Inventory.PickupMessage "$RUNETYR"
+	States
+	{
+	Spawn:
+	RUNE A -1
 	Stop
 	}
 }
