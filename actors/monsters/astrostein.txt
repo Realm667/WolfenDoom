@@ -201,7 +201,7 @@ ACTOR AstroDroneBall
 	Death:
 		TNT1 AAAAA 0 A_SpawnItemEx("Spark_G1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
     	TNT1 A 0 A_SpawnItemEx("SparkFlare_G1")
-		ROBP CDEG 6 Bright
+		ROBP CDEG 6 BRIGHT
 		Stop
 	}
 }
@@ -579,8 +579,8 @@ ACTOR BaseLine
 	States
 	{
 	Spawn:
-		SPFX AAAAA 1 Bright Light("AstrosteinDeathLight") A_FadeIn(0.2)
-		SPFX A 1 Bright Light("AstrosteinDeathLight") A_FadeOut(0.06)
+		SPFX AAAAA 1 BRIGHT Light("AstrosteinDeathLight") A_FadeIn(0.2)
+		SPFX A 1 BRIGHT Light("AstrosteinDeathLight") A_FadeOut(0.06)
 		Wait
 	}
 }

@@ -26,56 +26,48 @@ ACTOR BigSpider
 	ActiveSound "spider1/active"
 	HitObituary "$BSPIDER"
 	MeleeDamage 1
-
 	States
 	{
-		Spawn:
-			GAYS A 0 NoDelay A_SetScale(ScaleX + frandom(-0.1, 0.05))
-			goto Idle
-			
-		Idle:
-			GAYS A 10 A_Look
-			Loop	
-			
-		See:
-			GAYS A 0 A_PlaySound("spider1/walk", CHAN_AUTO, 0.4)
-			GAYS AABB 2 A_Chase
-			GAYS B 0 A_PlaySound("spider1/walk", CHAN_AUTO, 0.4)
-			GAYS CCDD 2 A_Chase
-			GAYS A 0 A_JumpIf(Random(1, 24) == 1, "TryJump")
-			Loop
-			
-		TryJump:
-			GAYS A 0 A_CheckFloor("Jump") //don't jump if mid-air
-			goto See
-
-		Jump:
-			GAYS A 0 A_FaceTarget
-			GAYS A 0 ThrustThing(angle*256/360, Random(8, 12), 0, 0)
-			GAYS A 0 ThrustThingZ(0, Random(30, 50), 0, 1)
-			GAYS A 0 A_PlaySound("spider1/jump", CHAN_AUTO, 0.2)
-			GAYS E 15
-			goto See	
-			
-		Melee:
-			GAYS A 4 A_FaceTarget
-			GAYS E 4 A_MeleeAttack
-			GAYS E 9 A_FaceTarget
-			Goto See
-			
-		Pain:
-			GAYS C 5
-			GAYS C 3 A_Pain
-			Goto See
-			
-		Death:
-			GAYR F 5
-			GAYR E 5 A_Scream
-			GAYR D 5 A_Fall
-			GAYR C 5
-			GAYR B 5
-			GAYR A 5
-			GAYR A -1
-			Stop
+	Spawn:
+		GAYS A 0 NoDelay A_SetScale(ScaleX + frandom(-0.1, 0.05))
+		goto Idle
+	Idle:
+		GAYS A 10 A_Look
+		Loop	
+	See:
+		GAYS A 0 A_PlaySound("spider1/walk", CHAN_AUTO, 0.4)
+		"####" AABB 2 A_Chase
+		"####" B 0 A_PlaySound("spider1/walk", CHAN_AUTO, 0.4)
+		"####" CCDD 2 A_Chase
+		"####" A 0 A_JumpIf(Random(1, 24) == 1, "TryJump")
+		Loop
+	TryJump:
+		GAYS A 0 A_CheckFloor("Jump") //don't jump if mid-air
+		goto See
+	Jump:
+		GAYS A 0 A_FaceTarget
+		"####" A 0 ThrustThing(angle*256/360, Random(8, 12), 0, 0)
+		"####" A 0 ThrustThingZ(0, Random(30, 50), 0, 1)
+		"####" A 0 A_PlaySound("spider1/jump", CHAN_AUTO, 0.2)
+		"####" E 15
+		goto See	
+	Melee:
+		GAYS A 4 A_FaceTarget
+		"####" E 4 A_MeleeAttack
+		"####" E 9 A_FaceTarget
+		Goto See
+	Pain:
+		GAYS C 5
+		"####" C 3 A_Pain
+		Goto See
+	Death:
+		GAYR F 5
+		"####" E 5 A_Scream
+		"####" D 5 A_Fall
+		"####" C 5
+		"####" B 5
+		"####" A 5
+		"####" A -1
+		Stop
 	}
 }

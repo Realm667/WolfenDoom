@@ -22,9 +22,9 @@ ACTOR KaBoom
 	States
 	{
 	Spawn:
-		BFE1 ABCDE 2 Bright
-		"####" FGHI 2 Bright A_Explode(75,128)
-		"####" JKL 2 Bright
+		BFE1 ABCDE 2 BRIGHT
+		"####" FGHI 2 BRIGHT A_Explode(75,128)
+		"####" JKL 2 BRIGHT
 		Stop
 	}
 }
@@ -102,13 +102,13 @@ ACTOR TankFire : Nuke
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
-		FLA1 A 2 Bright A_FadeOut(0.03)
+		FLA1 A 2 BRIGHT A_FadeOut(0.03)
 		Wait
-		FLA2 A 2 Bright A_FadeOut(0.02)
+		FLA2 A 2 BRIGHT A_FadeOut(0.02)
 		Wait
-		FLA3 A 2 Bright A_FadeOut(0.03)
+		FLA3 A 2 BRIGHT A_FadeOut(0.03)
 		Wait
-		FLA4 A 2 Bright A_FadeOut(0.02)
+		FLA4 A 2 BRIGHT A_FadeOut(0.02)
 		Wait
 	}
 }
@@ -120,13 +120,13 @@ ACTOR NebFire : TankFire
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
-		FLA1 A 1 Bright A_FadeOut(0.02)
+		FLA1 A 1 BRIGHT A_FadeOut(0.02)
 		Wait
-		FLA2 A 1 Bright A_FadeOut(0.01)
+		FLA2 A 1 BRIGHT A_FadeOut(0.01)
 		Wait
-		FLA3 A 1 Bright A_FadeOut(0.02)
+		FLA3 A 1 BRIGHT A_FadeOut(0.02)
 		Wait
-		FLA4 A 1 Bright A_FadeOut(0.01)
+		FLA4 A 1 BRIGHT A_FadeOut(0.01)
 		Wait
 	}
 }
@@ -170,7 +170,7 @@ ACTOR TankFlare : TankFire
 	States
 	{
 	Spawn:
-		FLAR B 1 Bright A_FadeOut(0.011)
+		FLAR B 1 BRIGHT A_FadeOut(0.011)
 		Wait
 	}
 }
