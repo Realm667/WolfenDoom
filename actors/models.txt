@@ -23,6 +23,7 @@ ACTOR 3dObstacle : 3dObject
 	Mass 0x7fffffff
 	Health -1
 	+NOBLOOD
+	+CANPASS
 	+NODAMAGE
 	+SHOOTABLE
 	+NOBLOODDECALS
@@ -454,6 +455,15 @@ ACTOR FlagWave_War : FlagWave
 	//$Category Models (Wolf3D)/Flags
 	//$Title Waving Flag (War Times)
 	//$Color 3
+}
+
+ACTOR Typewriter : 3dObstacle
+{
+//$Category Models (Wolf3D)/Scenery
+//$Title Typewriter
+//$Color 3
+Radius 16
+Height 16
 }
 
 ACTOR RadioSimple : 3dObstacle
