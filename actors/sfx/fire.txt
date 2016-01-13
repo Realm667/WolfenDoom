@@ -134,7 +134,7 @@ ACTOR Flame1A
 		"####" A 0 ThrustThingZ(0,random(2,6),0,0)
 		"####" A 0 ThrustThing(random(0,255),random(0,1),0,0)
 		"####" ABCDE 2 bright
-		"####" FFGGHHIIJJKKLL 1 bright A_FadeOut(.05)
+		"####" FFGGHHIIJJKKLL 1 BRIGHT A_FadeOut(.05)
 		stop
 	}
 }
@@ -198,8 +198,8 @@ ACTOR Flame4A : Flame1A
 		FLM1 A 0
 		"####" A 0 ThrustThingZ(0,Random(4,12),0,0)
 		"####" A 0 ThrustThing(Random(0,255),Random(0,2),0,0)
-		"####" ABCDE 2 Bright
-		"####" FFGGHHIIJJKKLL 1 Bright A_FadeOut(.05)
+		"####" ABCDE 2 BRIGHT
+		"####" FFGGHHIIJJKKLL 1 BRIGHT A_FadeOut(.05)
 		Stop
 	}
 }
@@ -263,8 +263,8 @@ ACTOR Flame7A : Flame1A
 		FLM1 A 0
 		"####" A 0 ThrustThingZ(0,Random(8,24),0,0)
 		"####" A 0 ThrustThing(Random(0,255),Random(0,4),0,0)
-		"####" ABCDE 2 Bright
-		"####" FFGGHHIIJJKKLL 1 Bright A_FadeOut(.05)
+		"####" ABCDE 2 BRIGHT
+		"####" FFGGHHIIJJKKLL 1 BRIGHT A_FadeOut(.05)
 		Stop
 	}
 }
@@ -328,9 +328,9 @@ ACTOR Ember1 : Flame1A
 		EMBR A 0
 		EMBR A 0 ThrustThingZ(0,random(4,16),0,0)
 		EMBR A 0 ThrustThing(random(0,255),random(0,1),0,0)
-		EMBR A 32 Bright
+		EMBR A 32 BRIGHT
 	Death:
-		EMBR A 2 Bright A_FadeOut
+		EMBR A 2 BRIGHT A_FadeOut
 		loop
 	}
 }
@@ -343,7 +343,7 @@ ACTOR Ember2 : Ember1
 		EMBR A 0
 		EMBR A 0 ThrustThingZ(0,random(4,16),0,0)
 		EMBR A 0 ThrustThing(random(0,255),random(0,1),0,0)
-		EMBR A 64 Bright
+		EMBR A 64 BRIGHT
 		Goto Death
 	}
 }

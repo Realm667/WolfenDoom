@@ -407,8 +407,7 @@ ACTOR SmallBush1
 	-SOLID
 	Radius 16
 	Height 24
-	
-  States
+	States
 	{
 	Spawn:
 		BUSN A -1
@@ -424,7 +423,6 @@ ACTOR SmallBush2
 	-SOLID
 	Radius 16
 	Height 40
-
 	States
 	{
 	Spawn:
@@ -465,21 +463,19 @@ ACTOR Grass1
 	+NOTAUTOAIMED	
 	States
 	{
-		Spawn:
-			GRS1 A 0
-			goto Setup
-
-		Setup:
-			"####" "#" 0 A_SetScale(ScaleX * frandom(0.9, 1.1), ScaleY * frandom(0.9, 1.1))
-			"####" "#" -1 A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
-			Stop
-
-		Death:
-			TNT1 A 0 A_UnSetSolid
-			TNT1 A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
-			TNT1 A 2 A_SpawnItemEx ("GrassFrags")
-			GRS1 B -1
-			Stop
+	Spawn:
+		GRS1 A 0
+		goto Setup
+	Setup:
+		"####" "#" 0 A_SetScale(ScaleX * frandom(0.9, 1.1), ScaleY * frandom(0.9, 1.1))
+		"####" "#" -1 A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
+		Stop
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
+		"####" A 2 A_SpawnItemEx ("GrassFrags")
+		GRS1 B -1
+		Stop
 	}
 }
 
@@ -488,19 +484,17 @@ ACTOR Grass2 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 2
 	//$Color 3
-	
 	States
 	{
-		Spawn:
-			GRS2 A 0
-			goto Setup
-
-		Death:
-			TNT1 A 0 A_UnSetSolid
-			TNT1 A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
-			TNT1 A 2 A_SpawnItemEx ("GrassFrags")
-			GRS2 B -1
-			Stop
+	Spawn:
+		GRS2 A 0
+		goto Setup
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
+		"####" A 2 A_SpawnItemEx ("GrassFrags")
+		GRS2 B -1
+		Stop
 	}
 }
 
@@ -509,19 +503,17 @@ ACTOR Grass3 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 3
 	//$Color 3
-	
 	States
 	{
-		Spawn:
-			GRS2 A 0
-			goto Setup
-
-		Death:
-			TNT1 A 0 A_UnSetSolid
-			TNT1 A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
-			TNT1 A 2 A_SpawnItemEx ("GrassFrags")
-			GRS3 B -1
-			Stop
+	Spawn:
+		GRS2 A 0
+		goto Setup
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
+		"####" A 2 A_SpawnItemEx ("GrassFrags")
+		GRS3 B -1
+		Stop
 	}
 }
 
@@ -530,19 +522,17 @@ ACTOR Grass4 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 1 (desert)
 	//$Color 3
-	
 	States 
 	{ 
-		Spawn:
-			GRS4 A 0
-			goto Setup
-
-		Death:
-			TNT1 A 0 A_UnSetSolid
-			TNT1 A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
-			TNT1 A 2 A_SpawnItemEx ("GrassFrags_Dry")
-			GRS4 B -1
-			Stop
+	Spawn:
+		GRS4 A 0
+		goto Setup
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
+		"####" A 2 A_SpawnItemEx ("GrassFrags_Dry")
+		GRS4 B -1
+		Stop
 	}
 }
 
@@ -551,19 +541,17 @@ ACTOR Grass5 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 2 (desert)
 	//$Color 3
-	
 	States 
 	{ 
-		Spawn:
-			GRS5 A 0
-			goto Setup
-
-		Death:
-			TNT1 A 0 A_UnSetSolid
-			TNT1 A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
-			TNT1 A 2 A_SpawnItemEx ("GrassFrags_Dry")
-			GRS5 B -1
-			Stop
+	Spawn:
+		GRS5 A 0
+		goto Setup
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
+		"####" A 2 A_SpawnItemEx ("GrassFrags_Dry")
+		GRS5 B -1
+		Stop
 	}
 }
 
@@ -572,19 +560,17 @@ ACTOR Grass6 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 3 (desert)
 	//$Color 3
-	
 	States 
 	{ 
-		Spawn:
-			GRS6 A 0
-			goto Setup
-
-		Death:
-			TNT1 A 0 A_UnSetSolid
-			TNT1 A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
-			TNT1 A 2 A_SpawnItemEx ("GrassFrags_Dry")
-			GRS6 B -1
-			Stop
+	Spawn:
+		GRS6 A 0
+		goto Setup
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
+		"####" A 2 A_SpawnItemEx ("GrassFrags_Dry")
+		GRS6 B -1
+		Stop
 	}
 }
 
@@ -593,19 +579,17 @@ ACTOR Grass7 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 1 (winter)
 	//$Color 3
-	
 	States 
 	{ 
-		Spawn:
-			GRS7 A 0
-			goto Setup
-
-		Death:
-			TNT1 A 0 A_UnSetSolid
-			TNT1 A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
-			TNT1 A 2 A_SpawnItemEx ("GrassFrags_Snowy")
-			GRS7 B -1
-			Stop
+	Spawn:
+		GRS7 A 0
+		goto Setup
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
+		"####" A 2 A_SpawnItemEx ("GrassFrags_Snowy")
+		GRS7 B -1
+		Stop
 	}
 }
 
@@ -613,20 +597,18 @@ ACTOR Grass8 : Grass1
 {
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 2 (winter)
-	//$Color 3
-	
+	//$Color 3	
 	States 
 	{ 
-		Spawn:
-			GRS8 A 0
-			goto Setup
-
-		Death:
-			TNT1 A 0 A_UnSetSolid
-			TNT1 A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
-			TNT1 A 2 A_SpawnItemEx ("GrassFrags_Snowy")
-			GRS8 B -1
-			Stop
+	Spawn:
+		GRS8 A 0
+		goto Setup
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
+		"####" A 2 A_SpawnItemEx ("GrassFrags_Snowy")
+		GRS8 B -1
+		Stop
 	}
 }
 
@@ -635,19 +617,17 @@ ACTOR Grass9 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 3 (winter)
 	//$Color 3
-	
 	States 
 	{ 
-		Spawn:
-			GRS9 A 0
-			goto Setup
-
-		Death:
-			TNT1 A 0 A_UnSetSolid
-			TNT1 A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
-			TNT1 A 2 A_SpawnItemEx ("GrassFrags_Snowy")
-			GRS9 B -1
-			Stop
+	Spawn:
+		GRS9 A 0
+		goto Setup
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
+		"####" A 2 A_SpawnItemEx ("GrassFrags_Snowy")
+		GRS9 B -1
+		Stop
 	}
 }
 
@@ -665,22 +645,20 @@ ACTOR Flower1
 	+NOTAUTOAIMED		
 	States
 	{
-		Spawn:
-			FLW1 A 0
-			goto Setup
-				
-		Setup:
-			"####" "#" 0 A_SetScale(ScaleX * frandom(0.8, 1.1), ScaleY * frandom(0.8, 1.1))
-			"####" "#" -1 A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
-			Stop
-			
-		Death:
-			TNT1 A 0 A_UnSetSolid
-			TNT1 A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
-			TNT1 AAAA 0 A_SpawnItemEx ("Debris_LeafY", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
-			TNT1 A 2 A_SpawnItemEx ("GrassFrags")
-			FLW1 B -1
-			Stop
+	Spawn:
+		FLW1 A 0
+		goto Setup
+	Setup:
+		"####" "#" 0 A_SetScale(ScaleX * frandom(0.8, 1.1), ScaleY * frandom(0.8, 1.1))
+		"####" "#" -1 A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
+		Stop
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
+		"####" AAAA 0 A_SpawnItemEx ("Debris_LeafY", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		"####" A 2 A_SpawnItemEx ("GrassFrags")
+		FLW1 B -1
+		Stop
 	}
 }
 
@@ -689,20 +667,18 @@ ACTOR Flower2 : Flower1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Flower (white)
 	//$Color 3
-	
 	States
 	{
-		Spawn:
-			FLW2 A 0 
-			goto Setup
-			
-		Death:
-			TNT1 A 0 A_UnSetSolid
-			TNT1 A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
-			TNT1 AAAA 0 A_SpawnItemEx ("Debris_LeafW", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
-			TNT1 A 2 A_SpawnItemEx ("GrassFrags")
-			FLW1 B -1
-			Stop
+	Spawn:
+		FLW2 A 0 
+		goto Setup
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
+		"####" AAAA 0 A_SpawnItemEx ("Debris_LeafW", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		"####" A 2 A_SpawnItemEx ("GrassFrags")
+		FLW1 B -1
+		Stop
 	}
 }
 
@@ -711,19 +687,17 @@ ACTOR Flower3 : Flower1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Flower (winter)
 	//$Color 3
-	
 	States
 	{
-		Spawn:
-			FLW3 A 0 
-			goto Setup
-			
-		Death:
-			TNT1 A 0 A_UnSetSolid
-			TNT1 A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
-			TNT1 A 2 A_SpawnItemEx ("GrassFrags_Snowy")
-			FLW3 B -1
-			Stop
+	Spawn:
+		FLW3 A 0 
+		goto Setup
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
+		"####" A 2 A_SpawnItemEx ("GrassFrags_Snowy")
+		FLW3 B -1
+		Stop
 	}
 }
 
@@ -732,20 +706,18 @@ ACTOR Rose1 : Flower1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Rose (red)
 	//$Color 3
-	
 	States
 	{
-		Spawn:
-			FLW4 A 0 
-			goto Setup
-			
-		Death:
-			TNT1 A 0 A_UnSetSolid
-			TNT1 A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
-			TNT1 AAAA 0 A_SpawnItemEx ("Debris_LeafR", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
-			TNT1 A 2 A_SpawnItemEx ("GrassFrags")
-			FLW4 B -1
-			Stop
+	Spawn:
+		FLW4 A 0 
+		goto Setup
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
+		"####" AAAA 0 A_SpawnItemEx ("Debris_LeafR", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		"####" A 2 A_SpawnItemEx ("GrassFrags")
+		FLW4 B -1
+		Stop
 	}
 }
 
@@ -754,20 +726,18 @@ ACTOR Rose2 : Flower1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Rose (yellow)
 	//$Color 3
-	
 	States
 	{
-		Spawn:
-			FLW5 A 0 
-			goto Setup
-			
-		Death:
-			TNT1 A 0 A_UnSetSolid
-			TNT1 A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
-			TNT1 AAAA 0 A_SpawnItemEx ("Debris_LeafY", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
-			TNT1 A 2 A_SpawnItemEx ("GrassFrags")
-			FLW4 B -1
-			Stop
+	Spawn:
+		FLW5 A 0 
+		goto Setup
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
+		"####" AAAA 0 A_SpawnItemEx ("Debris_LeafY", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		"####" A 2 A_SpawnItemEx ("GrassFrags")
+		FLW4 B -1
+		Stop
 	}
 }
 
@@ -776,20 +746,18 @@ ACTOR Rose3 : Flower1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Rose (blue-white)
 	//$Color 3
-	
 	States
 	{
-		Spawn:
-			FLW6 A 0 
-			goto Setup
-			
-		Death:
-			TNT1 A 0 A_UnSetSolid
-			TNT1 A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
-			TNT1 AAAA 0 A_SpawnItemEx ("Debris_LeafB", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
-			TNT1 A 2 A_SpawnItemEx ("GrassFrags")
-			FLW4 B -1
-			Stop
+	Spawn:
+		FLW6 A 0 
+		goto Setup
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
+		"####" AAAA 0 A_SpawnItemEx ("Debris_LeafB", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		"####" A 2 A_SpawnItemEx ("GrassFrags")
+		FLW4 B -1
+		Stop
 	}
 }
 
@@ -798,19 +766,17 @@ ACTOR Rose4 : Flower1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Rose (winter)
 	//$Color 3
-	
 	States
 	{
-		Spawn:
-			FLW7 A 0 
-			goto Setup
-			
-		Death:
-			TNT1 A 0 A_UnSetSolid
-			TNT1 A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
-			TNT1 A 2 A_SpawnItemEx ("GrassFrags_Snowy")
-			FLW7 B -1
-			Stop
+	Spawn:
+		FLW7 A 0 
+		goto Setup
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("GRASBRKS", frandom (0.2,0.5))
+		"####" A 2 A_SpawnItemEx ("GrassFrags_Snowy")
+		FLW7 B -1
+		Stop
 	}
 }
 
@@ -820,7 +786,6 @@ ACTOR FlowersSpawner : RandomSpawner
 	//$Title Random Flowers Spawner
 	//$Color 3
 	//$Sprite FLW1A0
-	
 	DropItem "Flower1"
 	DropItem "Flower2"
 	DropItem "Rose1"
@@ -834,11 +799,9 @@ ACTOR GrassSpawner : RandomSpawner
 	//$Title Random Grass Spawner
 	//$Color 3
 	//$Sprite GRS1A0
-	
 	DropItem "Grass1"
 	DropItem "Grass2"
 	DropItem "Grass3"
-	
 	Radius 16
 	Height 16
 	Scale 0.5
@@ -850,11 +813,9 @@ ACTOR GrassSpawnerDesert : RandomSpawner
 	//$Title Random Grass Spawner (desert)
 	//$Color 3
 	//$Sprite GRS4A0
-	
 	DropItem "Grass4"
 	DropItem "Grass5"
 	DropItem "Grass6"
-	
 	Radius 16
 	Height 16
 	Scale 0.5
@@ -866,7 +827,6 @@ ACTOR GrassSpawnerWinter : RandomSpawner
 	//$Title Random Grass Spawner (winter, also flowers)
 	//$Color 3
 	//$Sprite GRS7A0
-	
 	DropItem "Grass7"
 	DropItem "Grass8"
 	DropItem "Grass9"
@@ -875,7 +835,6 @@ ACTOR GrassSpawnerWinter : RandomSpawner
 	DropItem "Grass9"
 	DropItem "Flower3"
 	DropItem "Rose4"
-	
 	Radius 16
 	Height 16
 	Scale 0.5
@@ -887,44 +846,35 @@ ACTOR RandomRye
 	//$Title Random Rye
 	//$Color 3
 	//$Sprite RYE_A0
-	
 	Radius 8
 	Height 32
 	Scale 0.8
-	
 	States
 	{
-		Spawn:
-			RYE_ A 0 NoDelay A_Jump(256, "RyeA", "RyeB", "RyeC", "RyeD", "RyeE", "RyeF")
-			stop
-				
-		RyeA:
-			RYE_ A 0
-			goto Setup
-			
-		RyeB:
-			RYE_ B 0
-			goto Setup
-			
-		RyeC:
-			RYE_ C 0
-			goto Setup
-			
-		RyeD:
-			RYE_ D 0
-			goto Setup
-			
-		RyeE:
-			RYE_ E 0
-			goto Setup
-			
-		RyeF:
-			RYE_ F 0
-			goto Setup
-			
-		Setup:
-			"####" "#" 0 A_SetScale(ScaleX * frandom(0.85, 1.1), ScaleY * frandom(0.85, 1.1))
-			"####" "#" -1 A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
-			Stop	
+	Spawn:
+		RYE_ A 0 NoDelay A_Jump(256, "RyeA", "RyeB", "RyeC", "RyeD", "RyeE", "RyeF")
+		stop
+	RyeA:
+		RYE_ A 0
+		goto Setup
+	RyeB:
+		RYE_ B 0
+		goto Setup
+	RyeC:
+		RYE_ C 0
+		goto Setup
+	RyeD:
+		RYE_ D 0
+		goto Setup
+	RyeE:
+		RYE_ E 0
+		goto Setup
+	RyeF:
+		RYE_ F 0
+		goto Setup
+	Setup:
+		"####" "#" 0 A_SetScale(ScaleX * frandom(0.85, 1.1), ScaleY * frandom(0.85, 1.1))
+		"####" "#" -1 A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
+		Stop	
 	}
 }

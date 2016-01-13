@@ -21,10 +21,10 @@ ACTOR ToiletShootable
 		Stop
 	Death:
 		TOIL A 2 A_Scream
-		TOIL BC 2
+		"####" BC 2
 	Broken:
 		TOIL D 2 A_PlaySound ("toilet/broken", 0, 1.0, 1, 5)
-		TOIL EFG 2
+		"####" EFG 2
 		Loop
 	}
 }

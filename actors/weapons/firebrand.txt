@@ -204,17 +204,17 @@ ACTOR SwordPuffSpark
 	Scale .4
 	Mass 0
 	BounceType Doom
-	+missile
+	+MISSILE
 	+FLOORCLIP
 	+DONTSPLASH
 	States
 	{
 	States:
 		PUFF A 1
-		"####" A 5 Bright A_SetTranslucent(.8,1)
-		"####" A 6 Bright A_SetTranslucent(.6,1)
-		"####" A 8 Bright A_SetTranslucent(.4,1)
-		"####" A 10 Bright A_SetTranslucent(.2,1)
+		"####" A 5 BRIGHT A_SetTranslucent(.8,1)
+		"####" A 6 BRIGHT A_SetTranslucent(.6,1)
+		"####" A 8 BRIGHT A_SetTranslucent(.4,1)
+		"####" A 10 BRIGHT A_SetTranslucent(.2,1)
 		Stop
 	}
 }

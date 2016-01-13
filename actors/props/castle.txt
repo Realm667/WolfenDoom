@@ -121,12 +121,12 @@ ACTOR Table7
 	{
 	Spawn:
 		TBL1 B 0 NoDelay A_SpawnItemEx("WineBottle", Random(-8, -3), Random(-8, 8), 27, 0, 0, 0, 0, 0, 128)
-		TBL1 B 0 A_SpawnItemEx("WineBottle", Random(3, 8), Random(-8, 8), 27, 0, 0, 0, 0, 0, 128)
-		TBL1 B 0 A_SpawnItemEx("WineGlass", Random(-16, -8), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
-		TBL1 B 0 A_SpawnItemEx("WineGlass", Random(8, 16), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
-		TBL1 B 0 A_SpawnItemEx("WineGlass", Random(-16, -8), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
-		TBL1 B 0 A_SpawnItemEx("WineGlass", Random(8, 16), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
-		TBL1 B -1
+		"####" B 0 A_SpawnItemEx("WineBottle", Random(3, 8), Random(-8, 8), 27, 0, 0, 0, 0, 0, 128)
+		"####" B 0 A_SpawnItemEx("WineGlass", Random(-16, -8), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
+		"####" B 0 A_SpawnItemEx("WineGlass", Random(8, 16), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
+		"####" B 0 A_SpawnItemEx("WineGlass", Random(-16, -8), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
+		"####" B 0 A_SpawnItemEx("WineGlass", Random(8, 16), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
+		"####" B -1
 		Stop
 	}
 }
@@ -153,11 +153,11 @@ ACTOR Table9 : Table7
 	{
 	Spawn:
 		TBL3 B 0 NoDelay A_SpawnItemEx("Kettle", Random(-8, -3), Random(-8, 8), 27, 0, 0, 0, 0, 0, 128)
-		TBL3 B 0 A_SpawnItemEx("Cup1", Random(-16, -8), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
-		TBL3 B 0 A_SpawnItemEx("Cup1", Random(8, 16), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
-		TBL3 B 0 A_SpawnItemEx("Cup1", Random(-16, -8), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
-		TBL3 B 0 A_SpawnItemEx("Cup1", Random(8, 16), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
-		TBL3 B -1
+		"####" B 0 A_SpawnItemEx("Cup1", Random(-16, -8), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
+		"####" B 0 A_SpawnItemEx("Cup1", Random(8, 16), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
+		"####" B 0 A_SpawnItemEx("Cup1", Random(-16, -8), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
+		"####" B 0 A_SpawnItemEx("Cup1", Random(8, 16), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
+		"####" B -1
 		Stop
 	}
 }
@@ -253,42 +253,40 @@ ACTOR BarrelWine : WellEmpty
 	}
 }
 
-ACTOR CathedralBell : ZBell
+ACTOR CathedralBell : ZBell //ozy81
 {
 	//$Category Props (Wolf3D)/Castle
 	//$Title Bell (shootable)
 	//$Color 3
-  Health 5
-  Radius 56
-  Height 120
-  Mass 0x7fffffff
-  +SOLID
-  +SHOOTABLE
-  +NOBLOOD
-  +NOGRAVITY
-  +SPAWNCEILING
-  +NOICEDEATH
-  DeathSound "BellRing"
-
-  States
-  {
-  Spawn:
-    FIRE C -1
-    Stop
+	Health 5
+	Radius 56
+	Height 120
+	Mass 0x7fffffff
+	+SOLID
+	+SHOOTABLE
+	+NOBLOOD
+	+NOGRAVITY
+	+SPAWNCEILING
+	+NOICEDEATH
+	DeathSound "BellRing"
+	States
+	{
+	Spawn:
+		FIRE C -1
+		Stop
 	Death:
 		VILE A 4 A_BellReset1
-		VILE B 4
-		VILE C 4 A_Scream
-		VILE DEFG 4
-		VILE H 4 A_Scream
-		VILE IJK 4
-		VILE L 4 A_Scream
-		VILE MNOPQ 4
-		VILE R 4 A_Scream
-		VILE STUVWXYZ 4
+		"####" B 4
+		"####" C 4 A_Scream
+		"####" DEFG 4
+		"####" H 4 A_Scream
+		"####" IJK 4
+		"####" L 4 A_Scream
+		"####" MNOPQ 4
+		"####" R 4 A_Scream
+		"####" STUVWXYZ 4
 		FIRE ABC 4
-		FIRE C 4 A_BellReset2
+		"####" C 4 A_BellReset2
 		Goto Spawn
-  }
-
+	}
 }

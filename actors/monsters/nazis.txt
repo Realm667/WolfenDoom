@@ -3299,7 +3299,7 @@ ACTOR NaziLoper : Nazi
 	Spawn:
 		LOPR A 0 NoDelay A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
 		"####" A 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
-		"####" AAAA 4 bright A_Look 
+		"####" AAAA 4 BRIGHT A_Look 
 		Goto SkillCheck
 	Idle:
 		"####" BBBBBBBB 1 A_Wander
@@ -3312,71 +3312,71 @@ ACTOR NaziLoper : Nazi
 		"####" A 0 A_Look
 		Loop
 	See:
-		"####" BBBBCCCCDDDDCCCC 1 bright A_Chase
-		"####" B 0 bright A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" B 0 bright A_Jump(128,"Missile")
-		"####" B 0 bright A_Jump(96,"Missile2")
+		"####" BBBBCCCCDDDDCCCC 1 BRIGHT A_Chase
+		"####" B 0 BRIGHT A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" B 0 BRIGHT A_Jump(128,"Missile")
+		"####" B 0 BRIGHT A_Jump(96,"Missile2")
 		Loop
 	Melee:
 		"####" E 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
 		"####" E 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
-		"####" E 8 bright A_FaceTarget
-		"####" E 0 bright A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" FG 8 bright A_CustomMeleeAttack(2*random(2,10),"loper/attack","loper/attack")
+		"####" E 8 BRIGHT A_FaceTarget
+		"####" E 0 BRIGHT A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" FG 8 BRIGHT A_CustomMeleeAttack(2*random(2,10),"loper/attack","loper/attack")
 		Goto See
 	Missile:
 		"####" E 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
 		"####" E 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
-		"####" E 0 bright A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" E 0 BRIGHT A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
 		"####" E 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" E 0 Bright A_PlaySound("tesla/attack")
+		"####" E 0 BRIGHT A_PlaySound("tesla/attack")
 		"####" E 8 BRIGHT LIGHT(LOPERLIT) A_CustomRailgun(random(10,20), 0, white, cyan, RGF_NOPIERCING, 1, 2, none, 0, 0, 1500, random(24,48), 8.0, 2.0, "LoperZap", -28)
 		"####" EE 8 A_FaceTarget
 		"####" E 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
 		"####" E 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
-		"####" E 0 Bright A_PlaySound("tesla/attack")
+		"####" E 0 BRIGHT A_PlaySound("tesla/attack")
 		"####" E 8 BRIGHT LIGHT(LOPERLIT) A_CustomRailgun(random(10,20), 0, cyan, white, RGF_NOPIERCING, 1, 2, none, 0, 0, 1500, random(24,48), 8.0, 2.0, "LoperZap", -28)
 		"####" EE 8 A_FaceTarget
 		Goto See
 	Missile2:
 		"####" A 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
 		"####" A 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
-		"####" A 0 bright A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" A 0 BRIGHT A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
 		"####" A 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
 		"####" A 0 ThrustThing(angle*256/360,Random(4,6),0,0)
-		"####" AE 6 bright A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" H 8 bright ThrustThingZ(0,Random(30,40),0,1)
-		"####" E 6 bright A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" AE 6 BRIGHT A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" H 8 BRIGHT ThrustThingZ(0,Random(30,40),0,1)
+		"####" E 6 BRIGHT A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
 		"####" FG 17 BRIGHT LIGHT(LOPERLIT) A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
 		"####" G 1 BRIGHT LIGHT(LOPERLIT) A_SpawnItemEx("GeneralExplosion_Medium")
 		"####" G 1 BRIGHT LIGHT(LOPERLIT) Radius_Quake(10,10,0,16,0)
 		//Explosion:
-		"####" F 0 bright A_SpawnItem("TPortMistSpawner",0,32)
-		"####" G 0 bright A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" F 0 Bright LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,0,2,0)
-		"####" G 0 Bright LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,20,2,0)
-		"####" F 0 Bright LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,40,2,0)
-		"####" G 0 Bright LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,60,2,0)
-		"####" F 0 Bright LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,80,2,0)
-		"####" G 0 Bright LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,100,2,0)
-		"####" F 0 Bright LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,120,2,0)
-		"####" G 0 Bright LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,140,2,0)
-		"####" F 0 Bright LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,160,2,0)
-		"####" G 0 Bright LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,180,2,0)
-		"####" F 0 Bright LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,200,2,0)
-		"####" G 0 Bright LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,220,2,0)
-		"####" F 0 Bright LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,240,2,0)
-		"####" G 0 Bright LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,260,2,0)
-		"####" F 0 Bright LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,280,2,0)
-		"####" G 0 Bright LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,300,2,0)
-		"####" F 0 Bright LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,320,2,0)
-		"####" G 0 Bright LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,340,2,0)
+		"####" F 0 BRIGHT A_SpawnItem("TPortMistSpawner",0,32)
+		"####" G 0 BRIGHT A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" F 0 BRIGHT LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,0,2,0)
+		"####" G 0 BRIGHT LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,20,2,0)
+		"####" F 0 BRIGHT LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,40,2,0)
+		"####" G 0 BRIGHT LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,60,2,0)
+		"####" F 0 BRIGHT LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,80,2,0)
+		"####" G 0 BRIGHT LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,100,2,0)
+		"####" F 0 BRIGHT LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,120,2,0)
+		"####" G 0 BRIGHT LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,140,2,0)
+		"####" F 0 BRIGHT LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,160,2,0)
+		"####" G 0 BRIGHT LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,180,2,0)
+		"####" F 0 BRIGHT LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,200,2,0)
+		"####" G 0 BRIGHT LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,220,2,0)
+		"####" F 0 BRIGHT LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,240,2,0)
+		"####" G 0 BRIGHT LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,260,2,0)
+		"####" F 0 BRIGHT LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,280,2,0)
+		"####" G 0 BRIGHT LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,300,2,0)
+		"####" F 0 BRIGHT LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,320,2,0)
+		"####" G 0 BRIGHT LIGHT(LOPERLIT) A_custommissile("ZTracer",0,0,340,2,0)
 		"####" G 8 A_FaceTarget
 		goto See
 	Pain:
 		"####" I 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
 		"####" I 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
-		"####" I 0 bright A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" I 0 BRIGHT A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
 		"####" I 3
 		"####" I 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
@@ -3385,8 +3385,8 @@ ACTOR NaziLoper : Nazi
 	Pain:
 		"####" I 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
 		"####" I 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
-		"####" I 0 bright A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" I 5 bright A_Pain
+		"####" I 0 BRIGHT A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" I 5 BRIGHT A_Pain
 		Goto See
 	Death.Fire:
 	Death:
@@ -3420,7 +3420,7 @@ ACTOR LoperZap
 	States
 	{
 	Spawn:
-		EBLT HIG 3 Bright A_SpawnItemEx("Spark_B1",0,0,8,0,0,1,0,0,160)
+		EBLT HIG 3 BRIGHT A_SpawnItemEx("Spark_B1",0,0,8,0,0,1,0,0,160)
 		Stop
 	}
 }
@@ -3449,14 +3449,14 @@ ACTOR ZTracer
 	States
 	{
 	Spawn:
-		TNT1 A 1 Bright LIGHT(LOPERLIT)
-		"####" A 0 Bright A_Countdown
-		"####" A 0 Bright A_CustomMissile("ZTracerPuff",0,0,0,0)
+		TNT1 A 1 BRIGHT LIGHT(LOPERLIT)
+		"####" A 0 BRIGHT A_Countdown
+		"####" A 0 BRIGHT A_CustomMissile("ZTracerPuff",0,0,0,0)
 		loop
 	Death:
-		EBLT G 4 Bright
-		"####" H 4 Bright A_Explode
-		"####" IJK 3 Bright
+		EBLT G 4 BRIGHT
+		"####" H 4 BRIGHT A_Explode
+		"####" IJK 3 BRIGHT
 		stop
 	}
 }
@@ -3478,7 +3478,7 @@ ACTOR ZTracerPuff
 	{
 	Spawn:
 		TNT1 AAAAAAAAA 0 A_SpawnItemEx("Spark_B1",0,0,8,0,0,1,0,0,160)
-		EBLT ABCDEFEDCB 3 Bright A_Explode(2,4)
+		EBLT ABCDEFEDCB 3 BRIGHT A_Explode(2,4)
 		stop
 	}
 }
@@ -3505,7 +3505,7 @@ ACTOR TPortMist : VisualSpecialEffect
 		TNT1 A 0
 		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
 	Loopy:
-		MIST ABCDEFGHIJKLMOOPQR 1 bright A_FadeOut(0.01)
+		MIST ABCDEFGHIJKLMOOPQR 1 BRIGHT A_FadeOut(0.01)
 		loop
 	}
 }
@@ -3536,7 +3536,7 @@ ACTOR TPortLightning : VisualSpecialEffect
 		BLL3 ABCDEFGHIJKLMNOPQR 0 A_Jump(256,"Fade")
 		BLL4 ABCDEFGHIJKLMNOPQR 0 A_Jump(256,"Fade")
 	Fade:
-		"----" A 1 bright A_FadeOut(0.15)
+		"----" A 1 BRIGHT A_FadeOut(0.15)
 		loop
 	}
 }
