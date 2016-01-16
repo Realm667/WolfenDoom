@@ -7,8 +7,8 @@ ACTOR CKShikadiSoda : SingleCoin
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Pickup (Shikadi Soda, 1pts)
 	//$Color 17
-	inventory.pickupmessage "Picked up a Shikadi Soda."
-	inventory.pickupsound "ckeen/pickup"
+	Inventory.PickupMessage "Picked up a Shikadi Soda."
+	Inventory.PickupSound "ckeen/pickup"
 	States
 	{
 	Spawn:
@@ -25,8 +25,8 @@ ACTOR CKShikkersCandyBar : SingleCoin
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Pickup (Shikkers Candy Bar, 5pts)
 	//$Color 17
-	inventory.pickupmessage "Picked up a Shikkers Candy Bar."
-	inventory.pickupsound "ckeen/pickup"
+	Inventory.PickupMessage "Picked up a Shikkers Candy Bar."
+	Inventory.PickupSound "ckeen/pickup"
 	States
 	{
 	Spawn:
@@ -43,8 +43,8 @@ ACTOR CKDoughnut : SingleCoin
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Pickup (Dougnut, 20pts)
 	//$Color 17
-	inventory.pickupmessage "Picked up a Doughnut."
-	inventory.pickupsound "ckeen/pickup"
+	Inventory.PickupMessage "Picked up a Doughnut."
+	Inventory.PickupSound "ckeen/pickup"
 	States
 	{
 	Spawn:
@@ -61,8 +61,8 @@ ACTOR CKIceCreamCone : SingleCoin
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Pickup (IceCreamCone, 50pts)
 	//$Color 17
-	inventory.pickupmessage "Picked up an Ice Cream Cone."
-	inventory.pickupsound "ckeen/pickup"
+	Inventory.PickupMessage "Picked up an Ice Cream Cone."
+	Inventory.PickupSound "ckeen/pickup"
 	States
 	{
 	Spawn:
@@ -79,46 +79,46 @@ ACTOR CKRaindrop : Health
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Health (Raindrop, +1)
 	//$Color 17
-  	+COUNTITEM
+	+COUNTITEM
 	+INVENTORY.ALWAYSPICKUP
-  	Inventory.Amount 1
-  	Inventory.MaxAmount 200
-  	Inventory.PickupMessage "Picked up a Raindrop."
-	inventory.pickupsound "ckeen/raindrop"
-  	States
-	  {
-	  Spawn:
-	    CKDP ABCB 6
-	    Loop
-	  Pickup:
-	    "####" DEF 3
-            stop
+	Inventory.Amount 1
+	Inventory.MaxAmount 200
+	Inventory.PickupMessage "Picked up a Raindrop."
+	Inventory.PickupSound "ckeen/raindrop"
+	States
+	{
+	Spawn:
+		CKDP ABCB 6
+		Loop
+	Pickup:
+		"####" DEF 3
+		stop
 	}
 }
 
 ACTOR CKOneUp : Health
 {
-  //$Category Misc (Wolf3D)/Commander Keen
-  //$Title Health (Lifewater Flask, +100)
-  //$Color 17
-  +COUNTITEM
-  +INVENTORY.AUTOACTIVATE
-  +INVENTORY.ALWAYSPICKUP
-  Inventory.Amount 100
-  Inventory.MaxAmount 200
-  Inventory.PickupMessage "Picked up a lifewater flask!"
-  inventory.pickupsound "ckeen/life"
-  States
-  {
-  Spawn:
-    CKPU MN 15 BRIGHT
-    Loop
-  Pickup:
-    "####" O 50
-  Death:
-    "####" O 50
-    stop
-  }
+	//$Category Misc (Wolf3D)/Commander Keen
+	//$Title Health (Lifewater Flask, +100)
+	//$Color 17
+	+COUNTITEM
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ALWAYSPICKUP
+	Inventory.Amount 100
+	Inventory.MaxAmount 200
+	Inventory.PickupMessage "Picked up a lifewater flask!"
+	Inventory.PickupSound "ckeen/life"
+	States
+	{
+	Spawn:
+		CKPU MN 15 BRIGHT
+		Loop
+	Pickup:
+		"####" O 50
+	Death:
+		"####" O 50
+		stop
+	}
 }
 
 //////////////////////////////////////////////////
@@ -127,12 +127,12 @@ ACTOR CKOneUp : Health
 
 ACTOR CKBlueKey : BoABlueKey
 {
-    //$Category Misc (Wolf3D)/Commander Keen
+	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Gem, blue (Blue Card)
 	//$Color 13
 	Inventory.PickupMessage "Picked up a blue gem."
 	Inventory.Icon "CKKEYS1"
-	inventory.pickupsound "ckeen/gem"
+	Inventory.PickupSound "ckeen/gem"
 	Species "BoABlueKey"
 	+BRIGHT
 	States
@@ -153,7 +153,7 @@ ACTOR CKYellowKey : BoAYellowKey
 	//$Color 13
 	Inventory.PickupMessage "Picked up a yellow gem."
 	Inventory.Icon "CKKEYS0"
-	inventory.pickupsound "ckeen/gem"
+	Inventory.PickupSound "ckeen/gem"
 	Species "BoAYellowKey"
 	+BRIGHT	
 	States
@@ -174,7 +174,7 @@ ACTOR CKRedKey : BoARedKey
 	//$Color 13
 	Inventory.PickupMessage "Picked up a red gem."
 	Inventory.Icon "CKKEYS2"
-	inventory.pickupsound "ckeen/gem"
+	Inventory.PickupSound "ckeen/gem"
 	Species "BoARedKey"
 	+BRIGHT
 	States
@@ -200,51 +200,51 @@ ACTOR CKRedKeyPod : SwitchableDecoration
 	+USESPECIAL
 	States
 	{
-		Spawn:
-		InActive:
-			CKKS B -1
-			Stop
-		Active:
-			TNT1 A 0 A_Playsound("ckeen/gemuse")
-			CKKS A -1 BRIGHT
-			Stop
-	}			
+	Spawn:
+	InActive:
+		CKKS B -1
+		Stop
+	Active:
+		TNT1 A 0 A_Playsound("ckeen/gemuse")
+		CKKS A -1 BRIGHT
+		Stop
+	}
 }
 
 ACTOR CKBlueKeyPod : CKRedKeyPod
 {
-    //$Category Misc (Wolf3D)/Commander Keen
+	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Gempod, blue
 	//$Color 13
 	States
 	{
-		Spawn:
-		InActive:
-			CKKS D -1
-			Stop
-		Active:
-			TNT1 A 0 A_Playsound("ckeen/gemuse")
-			CKKS C -1 BRIGHT
-			Stop
-	}			
+	Spawn:
+	InActive:
+		CKKS D -1
+		Stop
+	Active:
+		TNT1 A 0 A_Playsound("ckeen/gemuse")
+		CKKS C -1 BRIGHT
+		Stop
+	}
 }
 
 ACTOR CKYellowKeyPod : CKRedKeyPod
 {
-    //$Category Misc (Wolf3D)/Commander Keen
+	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Gempod, yellow
 	//$Color 13
 	States
 	{
-		Spawn:
-		InActive:
-			CKKS F -1
-			Stop
-		Active:
-			TNT1 A 0 A_Playsound("ckeen/gemuse")
-			CKKS E -1 BRIGHT
-			Stop
-	}			
+	Spawn:
+	InActive:
+		CKKS F -1
+		Stop
+	Active:
+		TNT1 A 0 A_Playsound("ckeen/gemuse")
+		CKKS E -1 BRIGHT
+		Stop
+	}
 }
 
 /////////////////////////////////////////////
@@ -253,146 +253,146 @@ ACTOR CKYellowKeyPod : CKRedKeyPod
 
 ACTOR CKConfusion
 {
-  Radius 1
-  Height 1
-  -SOLID
-  States
-  {
-  Spawn:
-    CKCF ABC 12 BRIGHT
-    Loop
-  }
+	Radius 1
+	Height 1
+	-SOLID
+	States
+	{
+	Spawn:
+		CKCF ABC 12 BRIGHT
+		Loop
+	}
 }
 
 ACTOR CKBaseEnemy
 {
-  Scale 2.0
-  Monster
-  PainSound "ckeen/kill"
-  DeathSound "ckeen/kill"
-  +BUMPSPECIAL
+	Scale 2.0
+	Monster
+	PainSound "ckeen/kill"
+	DeathSound "ckeen/kill"
+	+BUMPSPECIAL
 }
 
 ACTOR CKArachnut : CKBaseEnemy
 {
-  //$Category Misc (Wolf3D)/Commander Keen
-  //$Title Arachnut
-  //$Color 4
-  Health 999
-  PainChance 128
-  Speed 10
-  Radius 30
-  Height 56
-  Mass 400
-  MeleeDamage 10
-  +FLOORCLIP
-  +LOOKALLAROUND
-  Obituary "$CK_ARACH"
-  States
-  {
-  Spawn:
-    CKAC A 10 A_Look
-    Loop
-  See:
-    "####" A 0 Thing_SetSpecial(0, 73, 15, 22, 0)
-    "####" AABBCCDD 2 Fast A_Chase
-    Loop
-  Melee:
-    "####" A 0 Fast A_FaceTarget
-    "####" A 1 Fast A_MeleeAttack
-    Goto See
-  Pain:
-    "####" E 0 Thing_SetSpecial(0, 0, 0, 0, 0)
-    "####" E 350 Fast
-    "####" AEAE 15
-    Goto See
-  Death:
-    "####" E 0 A_SpawnItemEx("CKConfusion", 0, 0, 48)
-    "####" E -1
-    Stop
-  }
+	//$Category Misc (Wolf3D)/Commander Keen
+	//$Title Arachnut
+	//$Color 4
+	Health 999
+	PainChance 128
+	Speed 10
+	Radius 30
+	Height 56
+	Mass 400
+	MeleeDamage 10
+	+FLOORCLIP
+	+LOOKALLAROUND
+	Obituary "$CK_ARACH"
+	States
+	{
+	Spawn:
+		CKAC A 10 A_Look
+		Loop
+	See:
+		"####" A 0 Thing_SetSpecial(0, 73, 15, 22, 0)
+		"####" AABBCCDD 2 Fast A_Chase
+		Loop
+	Melee:
+		"####" A 0 Fast A_FaceTarget
+		"####" A 1 Fast A_MeleeAttack
+		Goto See
+	Pain:
+		"####" E 0 Thing_SetSpecial(0, 0, 0, 0, 0)
+		"####" E 350 Fast
+		"####" AEAE 15
+		Goto See
+	Death:
+		"####" E 0 A_SpawnItemEx("CKConfusion", 0, 0, 48)
+		"####" E -1
+		Stop
+	}
 }
 
 ACTOR CKMadMushroom : CKBaseEnemy
 {
-  //$Category Misc (Wolf3D)/Commander Keen
-  //$Title Mad Mushroom
-  //$Color 4
-  Health 999
-  Painchance 0
-  Speed 0
-  Radius 30
-  Height 56
-  Mass 9999999
-  Gravity 0.7
-  Obituary "$CK_MUSH"
-  States
-  {
-  Spawn:
-  See: 
-    CKAC A 0 NoDelay Thing_SetSpecial(0, 73, 15, 22, 0)
-    CKMR A 1 A_CheckFloor("Jump")
-    goto See
-  Jump:
-    TNT1 A 0 A_PlaySound("ckeen/madmushroombounce")
-    CKMR B 12 ThrustThingZ(0, 32, 0, 1)
-    "####" A 12
-    TNT1 A 0 A_PlaySound("ckeen/madmushroombounce")
-    CKMR B 12 ThrustThingZ(0, 32, 0, 1)
-    "####" A 12
-    TNT1 A 0 A_PlaySound("ckeen/madmushroombounce")
-    CKMR B 20 ThrustThingZ(0, 64, 0, 1)
-    "####" A 20
-    loop	
-  }
+	//$Category Misc (Wolf3D)/Commander Keen
+	//$Title Mad Mushroom
+	//$Color 4
+	Health 999
+	Painchance 0
+	Speed 0
+	Radius 30
+	Height 56
+	Mass 9999999
+	Gravity 0.7
+	Obituary "$CK_MUSH"
+	States
+	{
+	Spawn:
+	See: 
+		CKAC A 0 NoDelay Thing_SetSpecial(0, 73, 15, 22, 0)
+		CKMR A 1 A_CheckFloor("Jump")
+		goto See
+	Jump:
+		TNT1 A 0 A_PlaySound("ckeen/madmushroombounce")
+		CKMR B 12 ThrustThingZ(0, 32, 0, 1)
+		"####" A 12
+		TNT1 A 0 A_PlaySound("ckeen/madmushroombounce")
+		CKMR B 12 ThrustThingZ(0, 32, 0, 1)
+		"####" A 12
+		TNT1 A 0 A_PlaySound("ckeen/madmushroombounce")
+		CKMR B 20 ThrustThingZ(0, 64, 0, 1)
+		"####" A 20
+		loop	
+	}
 }
 
 ACTOR CKPoisonSlug : CKBaseEnemy
 {
-  //$Category Misc (Wolf3D)/Commander Keen
-  //$Title Poison Slug
-  //$Color 4
-  Health 40
-  PainChance 128
-  Speed 10
-  Radius 30
-  Height 56
-  Mass 400
-  MeleeDamage 10
-  +FLOORCLIP
-  +LOOKALLAROUND
-  Obituary "$CK_SLUG"
-  States
-  {
-  Spawn:
-    CKPS A 10 A_Look
-    Loop
-  See:
-    "####" A 0 Thing_SetSpecial(0, 73, 15, 22, 0)
-    "####" AABB 4 A_Wander
-    Loop
-  Missile:
-    TNT1 A 0 A_PlaySound("ckeen/slugpoo")
-    CKPS C 5 
-    "####" C 30 A_SpawnItemEx("CKPoisonSlugPoison")
-    Goto See
-  Death:
-    TNT1 A 0 A_Jump(128, 2)
-    CKPS E 0 A_SpawnItemEx("CKConfusion", 0, 0, 48)
-    "####" E -1
-    Stop
-    "####" F 0 A_SpawnItemEx("CKConfusion", 0, 0, 48)
-    "####" F -1
-  }
+	//$Category Misc (Wolf3D)/Commander Keen
+	//$Title Poison Slug
+	//$Color 4
+	Health 40
+	PainChance 128
+	Speed 10
+	Radius 30
+	Height 56
+	Mass 400
+	MeleeDamage 10
+	+FLOORCLIP
+	+LOOKALLAROUND
+	Obituary "$CK_SLUG"
+	States
+	{
+	Spawn:
+		CKPS A 10 A_Look
+		Loop
+	See:
+		"####" A 0 Thing_SetSpecial(0, 73, 15, 22, 0)
+		"####" AABB 4 A_Wander
+		Loop
+	Missile:
+		TNT1 A 0 A_PlaySound("ckeen/slugpoo")
+		CKPS C 5 
+		"####" C 30 A_SpawnItemEx("CKPoisonSlugPoison")
+		Goto See
+	Death:
+		TNT1 A 0 A_Jump(128, 2)
+		CKPS E 0 A_SpawnItemEx("CKConfusion", 0, 0, 48)
+		"####" E -1
+		Stop
+		"####" F 0 A_SpawnItemEx("CKConfusion", 0, 0, 48) //why these are here?
+		"####" F -1
+	}
 }
 
 ACTOR CKPoisonSlugPoison : CKBaseEnemy
 {
-  Radius 32
-  Height 2
+	Radius 32
+	Height 2
 	States
 	{
-		Spawn:
+	Spawn:
 		TNT1 A 0 NoDelay Thing_SetSpecial(0, 73, 15, 22, 0)
 		CKSL Z 210
 		"####" Y 35

@@ -73,10 +73,10 @@ ACTOR ShovelPuff
 	+NOGRAVITY
 	+PUFFONACTORS
 	+NOEXTREMEDEATH
-	RenderStyle Add
-	activesound ""
-	attacksound "shovel/wall"
-	seesound "shovel/impact"
+	RenderStyle "Add"
+	ActiveSound ""
+	AttackSound "shovel/wall"
+	SeeSound "shovel/impact"
 	Obituary "$OBSHOVEL"
 	ProjectileKickback 100
 	States
@@ -132,8 +132,8 @@ ACTOR KnifeSilent : Weapon
 
 ACTOR KnifePuff : ShovelPuff
 {
-	attacksound ""
-	seesound ""
+	AttackSound ""
+	SeeSound ""
 	Scale 0.4
 	Obituary "$OBKNIFE"
 	PainType "SilentKnifeAttack" //mxd. Used to invoke Pain.SilentKnifeAttack exclusively on stealth monsters

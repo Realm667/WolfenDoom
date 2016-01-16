@@ -45,31 +45,27 @@ ACTOR ScubaGearGiver : RadSuit replaces RadSuit
 	}
 }
 
-ACTOR PowerSpaceSuit : PowerProtection
-{
-  DamageFactor "IceWater", 0.0
-  //Inventory.Icon "MEGAA0"
-}
+ACTOR PowerSpaceSuit : PowerProtection {DamageFactor "IceWater", 0.0}
 
 ACTOR SpaceSuit : PowerupGiver
 {
-  //$Category Powerups (Wolf3D)
-  //$Title SpaceSuit ("IceWater" protection)
-  //$Color 6
-  Inventory.PickupMessage "Found a Space Suit, one small step for men..."
-  Powerup.Color 100,100,100,.20
-  Inventory.MaxAmount 0
-  Inventory.UseSound "pickups/suite"
-  Powerup.Type "SpaceSuit"
-  Powerup.Duration -150
-  +INVENTORY.AUTOACTIVATE
-  +INVENTORY.FANCYPICKUPSOUND
-  +INVENTORY.ALWAYSPICKUP
-  +INVENTORY.ALWAYSRESPAWN
-  Inventory.RespawnTics 1050 //30 seconds
-  States
-  {
-  Spawn:
+	//$Category Powerups (Wolf3D)
+	//$Title SpaceSuit ("IceWater" protection)
+	//$Color 6
+	Inventory.PickupMessage "Found a Space Suit, one small step for men..."
+	Powerup.Color 100,100,100,.20
+	Inventory.MaxAmount 0
+	Inventory.UseSound "pickups/suite"
+	Powerup.Type "SpaceSuit"
+	Powerup.Duration -150
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.FANCYPICKUPSOUND
+	+INVENTORY.ALWAYSPICKUP
+	+INVENTORY.ALWAYSRESPAWN
+	Inventory.RespawnTics 1050 //30 seconds
+	States
+	{
+	Spawn:
 	SSUT A -1
 	Stop
   }
@@ -80,7 +76,7 @@ ACTOR C4 : Inventory
 	//$Category Powerups (Wolf3D)
 	//$Title C4 Explosives (pickups)
 	//$Color 6
-        Inventory.PickupMessage "Picked up a C4 pack"
+	Inventory.PickupMessage "Picked up a C4 pack"
 	Scale 0.5
 	Inventory.Icon "I_C4"
 	Inventory.MaxAmount 3

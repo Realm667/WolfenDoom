@@ -167,7 +167,7 @@ ACTOR Nail
 	damage 4
 	Scale 0.5
 	+BLOODSPLATTER
-	seesound "NailFlight"
+	SeeSound "NailFlight"
 	States
 	{
 	Spawn:
@@ -191,7 +191,7 @@ ACTOR NailBlur
 	Radius 1
 	Scale 0.5
 	Speed 0.2
-	RenderStyle Translucent
+	RenderStyle "Translucent"
 	+NOGRAVITY
 	+DROPOFF
 	States
@@ -220,7 +220,6 @@ ACTOR NailFlame : Nail
 		stop
 	}
 }
-
 
 //External Actors
 ACTOR ScorpionNail : Nail

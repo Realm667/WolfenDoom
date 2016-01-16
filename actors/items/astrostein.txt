@@ -5,34 +5,34 @@ ACTOR AstroMedikit : Medikit
 	//$Color 6
 	States
 	{
-		Spawn:
-			MEDI Z -1
-			Stop
+	Spawn:
+		MEDI Z -1
+		Stop
 	}
 }
 
 ACTOR SuperShield : BasicArmorPickup
 {
-  //$Category Health (Wolf3D)/Astrostein
-  //$Title Super Shield (modern)
-  //$Color 6
-  Armor.SavePercent 100.0
-  Armor.SaveAmount 100
-  Inventory.Icon "armh05"
-  Inventory.PickupMessage "Picked up the super shield!"
-  States
-  {
-  Spawn:
-    ARMX AB 3 BRIGHT
-    Loop
-  }
+	//$Category Health (Wolf3D)/Astrostein
+	//$Title Super Shield (modern)
+	//$Color 6
+	Armor.SavePercent 100.0
+	Armor.SaveAmount 100
+	Inventory.Icon "armh05"
+	Inventory.PickupMessage "Picked up the super shield!"
+	States
+	{
+	Spawn:
+		ARMX AB 3 BRIGHT
+		Loop
+	}
 }
 
 ACTOR SuperShieldSmall : SuperShield
 {
-  //$Category Health (Wolf3D)/Astrostein
-  //$Title Super Shield (small,modern)
-  //$Color 6
+	//$Category Health (Wolf3D)/Astrostein
+	//$Title Super Shield (small,modern)
+	//$Color 6
 	Armor.SaveAmount 50
 }
 

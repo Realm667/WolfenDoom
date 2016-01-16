@@ -4,9 +4,9 @@ ACTOR Akten : Inventory
 	//$Title Secret Files (Tunis)
 	//$Color 13
 	Tag "Secret Files"
-	inventory.icon AKTTA0
-	inventory.pickupmessage "$AKTEN"
-	inventory.pickupsound "misc/p_pkup"
+	Inventory.Icon AKTTA0
+	Inventory.PickupMessage "$AKTEN"
+	Inventory.PickupSound "misc/p_pkup"
 	+INVENTORY.UNDROPPABLE
 	+INVENTORY.INVBAR
 	+INVENTORY.ALWAYSPICKUP
@@ -24,9 +24,9 @@ ACTOR AktenEisenmann : Akten
 	//$Title Secret Files (Eisenmann)
 	//$Color 13
 	Tag "Eisenmann Files"
-	inventory.icon AKTEA0
-	inventory.pickupmessage "$EISEN"
-	inventory.maxamount 10
+	Inventory.Icon AKTEA0
+	Inventory.PickupMessage "$EISEN"
+	Inventory.MaxAmount 10
 	States
 	{
 	Spawn:
@@ -41,9 +41,9 @@ ACTOR ArtifactAstrostrein : Akten
 	//$Title Mayan Artifact (Astrostein)
 	//$Color 13
 	Tag "Mayan Artifact"
-	inventory.icon ARTMA0
-	inventory.pickupmessage "$MAYAN"
-	inventory.maxamount 10
+	Inventory.Icon ARTMA0
+	Inventory.PickupMessage "$MAYAN"
+	Inventory.MaxAmount 10
 	States
 	{
 	Spawn:
@@ -58,8 +58,8 @@ ACTOR SpearOfDestiny : Akten
 	//$Title Spear of Destiny
 	//$Color 13
 	Tag "Staff of Kings"
-	inventory.icon SPERA0
-	inventory.pickupmessage "$SPEAROD"
+	Inventory.Icon SPERA0
+	Inventory.PickupMessage "$SPEAROD"
 	States
 	{
 	Spawn:
@@ -74,8 +74,8 @@ ACTOR Cartridge51 : Akten
 	//$Title Cartridge (for MAP51)
 	//$Color 13
 	Tag "Cartridge 51"
-	inventory.icon SNSCA0
-	inventory.pickupmessage "$KEENCART"
+	Inventory.Icon SNSCA0
+	Inventory.PickupMessage "$KEENCART"
 	States
 	{
 	Spawn:
@@ -90,8 +90,8 @@ ACTOR Cartridge52 : Akten
 	//$Title Cartridge (for MAP52)
 	//$Color 13
 	Tag "Cartridge 52"
-	inventory.icon SNSCC0
-	inventory.pickupmessage "$SNESCART"
+	Inventory.Icon SNSCC0
+	Inventory.PickupMessage "$SNESCART"
 	States
 	{
 	Spawn:
@@ -106,8 +106,8 @@ ACTOR Cartridge53 : Akten
 	//$Title Cartridge (for MAP53)
 	//$Color 13
 	Tag "Cartridge 53"
-	inventory.icon SNSCE0
-	inventory.pickupmessage "$SNESCART"
+	Inventory.Icon SNSCE0
+	Inventory.PickupMessage "$SNESCART"
 	States
 	{
 	Spawn:
@@ -174,10 +174,10 @@ ACTOR ScientistUnfiformPickup : Akten
 	//$Category Pickups (Wolf3D)
 	//$Title Scientist Uniform (pickup)
 	//$Color 13
-	Tag "Cartridge 52"
-	inventory.icon SCUNC0
-	inventory.pickupmessage "$SCIENTISTPICKUP"
-	inventory.pickupsound "misc/health_pkup"
+	Tag "Scientist Uniform"
+	Inventory.Icon SCUNC0
+	Inventory.PickupMessage "$SCIENCE"
+	Inventory.PickupSound "misc/health_pkup"
 	States
 	{
 	Spawn:

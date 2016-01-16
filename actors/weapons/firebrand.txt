@@ -134,7 +134,7 @@ ACTOR FirebrandFireball
 	Height 12
 	Speed 40
 	Damage (40)
-	RenderStyle Add
+	RenderStyle "Add"
 	DeathSound "world/barrelboom"
 	DamageType Fire
 	Obituary "$OBTYRF1"
@@ -156,7 +156,7 @@ ACTOR FirebrandFireball
 
 ACTOR FirebrandFireballTrail
 {
-	RenderStyle Add
+	RenderStyle "Add"
 	States
 	{
 	Spawn:
@@ -200,7 +200,7 @@ ACTOR SwordPuffSpark
 	Radius 3
 	Height 6
 	Speed .1
-	RenderStyle Add
+	RenderStyle "Add"
 	Scale .4
 	Mass 0
 	BounceType Doom
@@ -219,7 +219,4 @@ ACTOR SwordPuffSpark
 	}
 }
 
-ACTOR SwordSeq : Inventory
-{
-	Inventory.MaxAmount 2
-}
+ACTOR SwordSeq : Inventory {Inventory.MaxAmount 2}

@@ -1,28 +1,26 @@
 //Player
-ACTOR Stamina : Inventory
-{
-	Inventory.MaxAmount 100
-}
+ACTOR Stamina : Inventory {Inventory.MaxAmount 100}
+
 ACTOR BoAPlayer : PlayerPawn
 {
 	Species "Player"
 	+THRUSPECIES
-	player.invulnerabilitymode "reflective"
-	player.startitem "KnifeSilent"
-	player.startitem "TrenchShotgunLoaded",8
-	player.startitem "Browning5Loaded",4
-	player.startitem "MP40Loaded",32
-	player.startitem "G43Loaded",10
-	player.startitem "Walther9mmLoaded",8
-	player.startitem "Luger9mmLoaded",8
-	player.startitem "StenLoaded",32
-	player.startitem "Kar98kLoaded",5
-	player.startitem "PyrolightLoaded",25
-	player.startitem "PanzerschreckLoaded"
-	player.startitem "AstroShotgunLoaded",8
-	player.startitem "AstroRocketLauncherLoaded",5
-	player.startitem "AstroChaingunLoaded",30
-	player.startitem "GrenadePickup"
+	Player.InvulnerabilityMode "reflective"
+	Player.StartItem "KnifeSilent"
+	Player.StartItem "TrenchShotgunLoaded",8
+	Player.StartItem "Browning5Loaded",4
+	Player.StartItem "MP40Loaded",32
+	Player.StartItem "G43Loaded",10
+	Player.StartItem "Walther9mmLoaded",8
+	Player.StartItem "Luger9mmLoaded",8
+	Player.StartItem "StenLoaded",32
+	Player.StartItem "Kar98kLoaded",5
+	Player.StartItem "PyrolightLoaded",25
+	Player.StartItem "PanzerschreckLoaded"
+	Player.StartItem "AstroShotgunLoaded",8
+	Player.StartItem "AstroRocketLauncherLoaded",5
+	Player.StartItem "AstroChaingunLoaded",30
+	Player.StartItem "GrenadePickup"
 	Player.StartItem "Stamina", 100
 	Player.ViewHeight 56
 	Player.AttackZOffset 24
@@ -138,12 +136,12 @@ ACTOR PlayerStep
 
 DamageType IceWater
 {
-    NoArmor
-    ReplaceFactor
+	NoArmor
+	ReplaceFactor
 }
 
 DamageType MutantPoison
 {
-    NoArmor
-    ReplaceFactor
+	NoArmor
+	ReplaceFactor
 }

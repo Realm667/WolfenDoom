@@ -1,6 +1,6 @@
 ACTOR BOD_GlassShardSpawner : GlassJunk replaces GlassJunk
 {
-	Deathsound "world/glassbreak"
+	DeathSound "world/glassbreak"
 	States
 	{
 	Spawn:
@@ -20,7 +20,7 @@ ACTOR BOD_GlassShard : GlassShard
 	-NOGRAVITY
 	BounceType "HexenCompat"
 	BounceFactor 0.3
-	Renderstyle Translucent
+	RenderStyle "Translucent"
 	Alpha 0.4
 	Gravity 0.4
 	States
@@ -33,4 +33,3 @@ ACTOR BOD_GlassShard : GlassShard
 		Stop
 	}
 }
-

@@ -21,7 +21,7 @@ ACTOR Debris_Base
 
 ACTOR Debris_GlassShard_Small : Debris_Base
 {
-	Renderstyle Translucent
+	RenderStyle "Translucent"
 	Alpha 0.4
 	Scale 0.25
 	States
@@ -373,7 +373,7 @@ ACTOR Debris_TankShards : Debris_Tank
 {
 	Speed 7
 	BounceFactor 0.75
-	RENDERSTYLE ADD
+	RenderStyle "Add"
 	Alpha 0.6
 	BounceSound "none"
 	States

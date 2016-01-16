@@ -16,8 +16,8 @@ ACTOR TankSmoke : PuffSmoke //connections with GuardSoul smoke
 ACTOR KaBoom
 {
 	Scale 2
-	Renderstyle Add
-	PROJECTILE
+	RenderStyle "Add"
+	Projectile
 	+NOINTERACTION
 	States
 	{
@@ -93,7 +93,7 @@ ACTOR NebBoom : TankBoom
 
 ACTOR TankFire : Nuke
 {
-	RenderStyle Add
+	RenderStyle "Add"
 	+NOINTERACTION
 	+DONTSPLASH
 	+EXPLODEONWATER

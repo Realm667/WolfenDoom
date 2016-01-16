@@ -7,24 +7,24 @@ ACTOR StarParticle
 	Gravity 0.125
 	Radius 1
 	Height 1
-	RenderStyle Add
+	RenderStyle "Add"
 	Alpha 1.0
 	YScale 1.0
 	XScale 1.0
 	States
-		{
-		Spawn:
-			TNT1 A 0 NODELAY A_JumpIf(CallACS("DustSwitch")==0,"EndSpawn")
-			EMB5 I 1200 BRIGHT 
-			EMB5 A 0 A_Die
-		Death: 
-			/*EMB5 IIIIII 6 BRIGHT A_FadeOut(0.2)*/
-			/*Loop*/
-			Stop
-		EndSpawn:
-			TNT1 A -1
-			Goto Spawn
-		}
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("DustSwitch")==0,"EndSpawn")
+		EMB5 I 1200 BRIGHT 
+		EMB5 A 0 A_Die
+	Death: 
+		/*EMB5 IIIIII 6 BRIGHT A_FadeOut(0.2)*/
+		/*Loop*/
+		Stop
+	EndSpawn:
+		TNT1 A -1
+		Goto Spawn
+	}
 }
 
 ACTOR StarParticle_Spawner : SwitchableDecoration
@@ -33,20 +33,19 @@ ACTOR StarParticle_Spawner : SwitchableDecoration
 	//$Title Startdust Spawner (horizontal)
 	//$Color 12
 	+NOGRAVITY +NOINTERACTION +NOCLIP -SOLID +CLIENTSIDEONLY
-	RenderStyle Add
+	RenderStyle "Add"
 	Alpha 1.0
-        States
-        {
-        Spawn:
-           Active:
-        	TNT1 A 1
-        	TNT1 A 5 A_SpawnItemEx ("StarParticle", random(0,128), 0, random(0,128), 0, random(2,8), 0, 0, SXF_CLIENTSIDE, 64) 
+	States
+	{
+	Spawn:
+	Active:
+		TNT1 A 1
+		TNT1 A 5 A_SpawnItemEx ("StarParticle", random(0,128), 0, random(0,128), 0, random(2,8), 0, 0, SXF_CLIENTSIDE, 64)
 		Loop
-	   Inactive:
+	Inactive:
 		TNT1 A 1
 		Loop
-        }     
-        
+	}
 }
 
 ACTOR StarParticle_Spawner2 : SwitchableDecoration
@@ -55,20 +54,19 @@ ACTOR StarParticle_Spawner2 : SwitchableDecoration
 	//$Title Startdust Spawner (with pitched)
 	//$Color 12
 	+NOGRAVITY +NOINTERACTION +NOCLIP -SOLID +CLIENTSIDEONLY
-	RenderStyle Add
+	RenderStyle "Add"
 	Alpha 1.0
-        States
-        {
-        Spawn:
-           Active:
-        	TNT1 A 1
-        	TNT1 A 5 A_SpawnItemEx ("StarParticle", random(0,128), random(0,128), 0, 0, random(2,8), -5, 0, SXF_CLIENTSIDE, 64) 
+	States
+	{
+	Spawn:
+	Active:
+		TNT1 A 1
+		TNT1 A 5 A_SpawnItemEx ("StarParticle", random(0,128), random(0,128), 0, 0, random(2,8), -5, 0, SXF_CLIENTSIDE, 64)
 		Loop
-	   Inactive:
+	Inactive:
 		TNT1 A 1
 		Loop
-        }     
-        
+	}
 }
 
 ACTOR StarParticle_SpawnerFast : SwitchableDecoration
@@ -77,18 +75,17 @@ ACTOR StarParticle_SpawnerFast : SwitchableDecoration
 	//$Title Startdust Spawner (horizontal, fast)
 	//$Color 12
 	+NOGRAVITY +NOINTERACTION +NOCLIP -SOLID +CLIENTSIDEONLY
-	RenderStyle Add
+	RenderStyle "Add"
 	Alpha 1.0
-        States
-        {
-        Spawn:
-           Active:
-        	TNT1 A 1
-        	TNT1 A 5 A_SpawnItemEx ("StarParticle", random(0,128), 0, random(0,128), 0, random(20,30), 0, 0, SXF_CLIENTSIDE, 64) 
+	States
+	{
+	Spawn:
+	Active:
+		TNT1 A 1
+		TNT1 A 5 A_SpawnItemEx ("StarParticle", random(0,128), 0, random(0,128), 0, random(20,30), 0, 0, SXF_CLIENTSIDE, 64)
 		Loop
-	   Inactive:
+	Inactive:
 		TNT1 A 1
 		Loop
-        }     
-        
+	}
 }

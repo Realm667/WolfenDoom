@@ -36,7 +36,7 @@ ACTOR KD_HL2ExplosionBase
 {
 	+NOINTERACTION
 	+FORCEXYBILLBOARD
-	RenderStyle Add
+	RenderStyle "Add"
 	Alpha 0.99
 }
 
@@ -56,7 +56,7 @@ ACTOR KD_HL2Flash : KD_HL2ExplosionBase
 
 ACTOR KD_HL2Smoke : KD_HL2ExplosionBase
 {
-	RenderStyle Translucent
+	RenderStyle "Translucent"
 	Alpha 0.8
 	States
 	{
@@ -111,11 +111,9 @@ ACTOR KD_HL2SparkGenerator : KD_HL2GeneratorBase
 ACTOR GeneralExplosion_Large : GeneralExplosion_Medium {Scale 2.0}
 ACTOR GeneralExplosion_Small : GeneralExplosion_Medium {Scale 0.5}
 
-
 //////////////////////////////////////
 // Variant for Astrostein ////////////
 //////////////////////////////////////
-
 ACTOR KD_HL2FlashAstrostein : KD_HL2ExplosionBase
 {
 	States
