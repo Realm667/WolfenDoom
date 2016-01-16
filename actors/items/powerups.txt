@@ -34,7 +34,7 @@ ACTOR ScubaGearGiver : RadSuit replaces RadSuit
 	//$Title Scuba Gear ("Underwater" protection)
 	//$Color 6
 	Height 32
-	Inventory.PickupMessage "Picked up a Scuba Gear"
+	Inventory.PickupMessage "$SCUBA2"
 	Powerup.Duration -60
 	Powerup.Color 0,0,150,.125
 	States
@@ -52,7 +52,7 @@ ACTOR SpaceSuit : PowerupGiver
 	//$Category Powerups (Wolf3D)
 	//$Title SpaceSuit ("IceWater" protection)
 	//$Color 6
-	Inventory.PickupMessage "Found a Space Suit, one small step for men..."
+	Inventory.PickupMessage "$SCUBA1"
 	Powerup.Color 100,100,100,.20
 	Inventory.MaxAmount 0
 	Inventory.UseSound "pickups/suite"
@@ -76,7 +76,7 @@ ACTOR C4 : Inventory
 	//$Category Powerups (Wolf3D)
 	//$Title C4 Explosives (pickups)
 	//$Color 6
-	Inventory.PickupMessage "Picked up a C4 pack"
+	Inventory.PickupMessage "$C4PACK"
 	Scale 0.5
 	Inventory.Icon "I_C4"
 	Inventory.MaxAmount 3

@@ -7,7 +7,7 @@ ACTOR CKShikadiSoda : SingleCoin
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Pickup (Shikadi Soda, 1pts)
 	//$Color 17
-	Inventory.PickupMessage "Picked up a Shikadi Soda."
+	Inventory.PickupMessage "$CKSODA"
 	Inventory.PickupSound "ckeen/pickup"
 	States
 	{
@@ -25,7 +25,7 @@ ACTOR CKShikkersCandyBar : SingleCoin
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Pickup (Shikkers Candy Bar, 5pts)
 	//$Color 17
-	Inventory.PickupMessage "Picked up a Shikkers Candy Bar."
+	Inventory.PickupMessage "$CKCANDY"
 	Inventory.PickupSound "ckeen/pickup"
 	States
 	{
@@ -43,7 +43,7 @@ ACTOR CKDoughnut : SingleCoin
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Pickup (Dougnut, 20pts)
 	//$Color 17
-	Inventory.PickupMessage "Picked up a Doughnut."
+	Inventory.PickupMessage "$CKDNUT"
 	Inventory.PickupSound "ckeen/pickup"
 	States
 	{
@@ -61,7 +61,7 @@ ACTOR CKIceCreamCone : SingleCoin
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Pickup (IceCreamCone, 50pts)
 	//$Color 17
-	Inventory.PickupMessage "Picked up an Ice Cream Cone."
+	Inventory.PickupMessage "$CKCONE"
 	Inventory.PickupSound "ckeen/pickup"
 	States
 	{
@@ -83,7 +83,7 @@ ACTOR CKRaindrop : Health
 	+INVENTORY.ALWAYSPICKUP
 	Inventory.Amount 1
 	Inventory.MaxAmount 200
-	Inventory.PickupMessage "Picked up a Raindrop."
+	Inventory.PickupMessage "$CKDROP"
 	Inventory.PickupSound "ckeen/raindrop"
 	States
 	{
@@ -106,7 +106,7 @@ ACTOR CKOneUp : Health
 	+INVENTORY.ALWAYSPICKUP
 	Inventory.Amount 100
 	Inventory.MaxAmount 200
-	Inventory.PickupMessage "Picked up a lifewater flask!"
+	Inventory.PickupMessage "$CKONEUP"
 	Inventory.PickupSound "ckeen/life"
 	States
 	{
@@ -130,7 +130,7 @@ ACTOR CKBlueKey : BoABlueKey
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Gem, blue (Blue Card)
 	//$Color 13
-	Inventory.PickupMessage "Picked up a blue gem."
+	Inventory.PickupMessage "$CKBGEM"
 	Inventory.Icon "CKKEYS1"
 	Inventory.PickupSound "ckeen/gem"
 	Species "BoABlueKey"
@@ -151,7 +151,7 @@ ACTOR CKYellowKey : BoAYellowKey
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Gem, yellow (Yellow Card)
 	//$Color 13
-	Inventory.PickupMessage "Picked up a yellow gem."
+	Inventory.PickupMessage "$CKYGEM"
 	Inventory.Icon "CKKEYS0"
 	Inventory.PickupSound "ckeen/gem"
 	Species "BoAYellowKey"
@@ -172,7 +172,7 @@ ACTOR CKRedKey : BoARedKey
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Gem, red (Red Card)
 	//$Color 13
-	Inventory.PickupMessage "Picked up a red gem."
+	Inventory.PickupMessage "$CKRGEM"
 	Inventory.Icon "CKKEYS2"
 	Inventory.PickupSound "ckeen/gem"
 	Species "BoARedKey"
