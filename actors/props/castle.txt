@@ -263,11 +263,12 @@ ACTOR CathedralBell : ZBell //ozy81
 	Height 120
 	Mass 0x7fffffff
 	+SOLID
-	+SHOOTABLE
 	+NOBLOOD
+	+SHOOTABLE
 	+NOGRAVITY
-	+SPAWNCEILING
 	+NOICEDEATH
+	+SYNCHRONIZED
+	+SPAWNCEILING
 	DeathSound "BellRing"
 	States
 	{
@@ -276,17 +277,17 @@ ACTOR CathedralBell : ZBell //ozy81
 		Stop
 	Death:
 		VILE A 4 A_BellReset1
-		"####" B 4
-		"####" C 4 A_Scream
-		"####" DEFG 4
-		"####" H 4 A_Scream
-		"####" IJK 4
-		"####" L 4 A_Scream
-		"####" MNOPQ 4
-		"####" R 4 A_Scream
-		"####" STUVWXYZ 4
+		VILE B 4
+		VILE C 4 A_Scream
+		VILE DEFG 4
+		VILE H 4 A_Scream
+		VILE IJK 4
+		VILE L 4 A_Scream
+		VILE MNOPQ 4
+		VILE R 4 A_Scream
+		VILE STUVWXYZ 4
 		FIRE ABC 4
-		"####" C 4 A_BellReset2
+		FIRE C 4 A_BellReset2
 		Goto Spawn
 	}
 }
