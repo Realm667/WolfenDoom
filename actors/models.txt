@@ -1108,7 +1108,7 @@ ACTOR Cable5: Cable1
 ACTOR 3dTrolley : 3dObstacle
 {
 //$Category Models (Wolf3D)/Scenery
-//$Title "Trolley"
+//$Title Trolley
 //$Color 3
 Radius 16
 Height 48
@@ -1119,6 +1119,80 @@ States
 		SMGT A -1
 		Stop
 	}
+}
+
+ACTOR 3dCannon : 3dObstacle
+{
+//$Category Models (Wolf3D)/Scenery
+//$Title Cannon
+//$Color 3
+Radius 16
+Height 48
++NOGRAVITY
+States
+	{
+	Spawn:
+		SMGT A -1
+		Stop
+	}
+}
+
+ACTOR 3dCannonballs: 3dCannon
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Cannonballs
+	//$Color 3
+}
+
+ACTOR 3dGuillotine : 3dObstacle
+{
+//$Category Models (Wolf3D)/Occult
+//$Title Guillotine
+//$Color 3
+Radius 16
+Height 48
++NOGRAVITY
+States
+	{
+	Spawn:
+		SMGT A -1
+		Stop
+	}
+}
+
+ACTOR 3dHeadCrusher : 3dGuillotine
+{
+	//$Category Models (Wolf3D)/Occult
+	//$Title Head Crusher
+	//$Color 3
+}
+
+ACTOR 3dJudasCrusher: 3dGuillotine
+{
+	//$Category Models (Wolf3D)/Occult
+	//$Title Judas Crusher
+	//$Color 3
+}
+
+ACTOR 3dPillory : 3dGuillotine
+{
+	//$Category Models (Wolf3D)/Occult
+	//$Title Pillory
+	//$Color 3
+}
+
+ACTOR 3dRack: 3dGuillotine
+{
+	//$Category Models (Wolf3D)/Occult
+	//$Title Rack
+	//$Color 3
+}
+
+ACTOR 3dSplitter: 3dGuillotine
+{
+	//$Category Models (Wolf3D)/Occult
+	//$Title Splitter
+	//$Color 3
 }
 
 //AFADoomer Stuff
