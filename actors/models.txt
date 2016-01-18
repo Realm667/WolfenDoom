@@ -1105,6 +1105,22 @@ ACTOR Cable5: Cable1
 	//$Color 3
 }
 
+ACTOR 3dTrolley : 3dObstacle
+{
+//$Category Models (Wolf3D)/Scenery
+//$Title "Trolley"
+//$Color 3
+Radius 16
+Height 48
++NOGRAVITY
+States
+	{
+	Spawn:
+		SMGT A -1
+		Stop
+	}
+}
+
 //AFADoomer Stuff
 ACTOR AstroShuttle : ModelBase
 {
