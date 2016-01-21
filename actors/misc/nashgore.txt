@@ -1,179 +1,212 @@
-ACTOR NashGore_Blood : Blood replaces Blood
-{
-	States
-	{
-	Spawn:
-		BLUD C 8
-		"####" B 8 A_SpawnItemEx("NashGore_FlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,SXF_ABSOLUTEVELOCITY|SXF_NOCHECKPOSITION) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
-		"####" A 8
-		stop
-	}
-}
+const int NASHGORE_BLOODSPOT_DURATION = 1050;
+const int NASHGORE_BLOODFLAGS1 = SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY;
+const int NASHGORE_BLOODFLAGS2 = SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEVELOCITY | SXF_ABSOLUTEANGLE | SXF_NOCHECKPOSITION;
+const int NASHGORE_BLOODFLAGS3 = SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE;
 
-ACTOR NashGore_Bloodsplatter : NashGore_Blood replaces Bloodsplatter{}
-
-ACTOR NashGore_FlyingBlood
+// Base blood
+Actor NashGore_BloodBase
 {
-	+CLIENTSIDEONLY
-	Scale 0.75
-	Health 1
-	Radius 8
-	Height 1
-	Mass 1
-	Gravity 0.5 // [Nash] make it fall slower. pretty!
+	Game Doom
 	+CORPSE
+	+DONTSPLASH
+	+FORCEXYBILLBOARD
 	+NOTELEPORT
+	+NOBLOCKMONST
 	+NOBLOCKMAP
-	States
-	{
-	Spawn:
-		FBLD AABBCCDD 2 NODELAY A_SpawnItemEx("NashGore_FlyingBloodTrail",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION)
-		loop
-	Crash:
-		TNT1 A 0 A_PlaySound("bloodsplat")
-		"####" A 0 A_Jump(256,1,2,3,4)
-		BSPT ABCD 0 A_Jump(256,"End")
-		// make the blood spots stay on the ground. 1500 is the default duration.
-		// Fadeout added by Zero Prophet for effect.
-	End:
-		BSPT "#" 1500
-		"####" "#" 1 A_FadeOut(0.02)
-		Wait
-	}
+	-SOLID
 }
 
-ACTOR NashGore_FlyingBloodTrail
+// Emulated regular Doom blood
+Actor NashGore_DoomBlood : Blood
 {
-	Scale 0.70
-	Mass 1
-	Gravity .125
-	+NOTELEPORT
-	+NOBLOCKMAP
+	+DONTSPLASH
+	+FORCEXYBILLBOARD
+}
+
+// added for BoA
+Actor NashGore_RavenBlood : BloodSplatter
+{
+	+DONTSPLASH
+	+FORCEXYBILLBOARD
+}
+
+// Modify the internal Blood actor to spawn flying blood
+Actor NashGore_Blood : Blood replaces Blood
+{
+	-RANDOMIZE
 	States
 	{
-	Spawn:
-		BTRL ABCD 4
-		stop
+		Spawn:
+			TNT1 A 0 NoDelay A_SpawnItem("NashGore_DoomBlood", 0, 0, 0, 1)
+		// fall through
+		SpawnDone:
+			TNT1 A 0 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 0, FRandom(0.1, 6.0) * RandomPick(-1, 1), FRandom(0.1, 6.0) * RandomPick(-1, 1), FRandom(0.0, 6.0), 0, NASHGORE_BLOODFLAGS1, 64)
+			//TNT1 AAAAA 0 A_SpawnItemEx("NashGore_SplatMaker", 0, 0, 0, FRandom(-5, 5), FRandom(-5, 5), FRandom(0, 5), Random(0, 360), NASHGORE_BLOODFLAGS2)
+			TNT1 AAAA 4 A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, FRandom(-2.0, 2.0), FRandom(-2.0, 2.0), FRandom(1.0, 2.0), Random(0, 360), NASHGORE_BLOODFLAGS1, 128)
+			Stop
 	}
 }
 
-//BoA Critters here
+// added for BoA
+Actor NashGore_BloodSplatter : NashGore_Blood replaces BloodSplatter
+{
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SpawnItem("NashGore_RavenBlood", 0, 0, 0, 1)
+			TNT1 A 0 A_Jump(256, "SpawnDone")
+			Stop
+	}
+}
+
+// Blood actor that flies outwards and leaves trails behind
+Actor NashGore_FlyingBlood : NashGore_BloodBase
+{
+	Radius 8
+	Height 2
+	Gravity 0.25
+	States
+	{
+		Spawn:
+		FlyingNormal:
+			TNT1 A 2 A_SpawnItem("NashGore_FlyingBloodTrail", 0, 0, 0, 1)
+			TNT1 A 0 A_Jump(12, "RandomlyDestroy")
+			TNT1 A 0 A_Jump(27, "FlyingDecel")
+			Loop
+		FlyingDecel:
+			TNT1 A 2 A_SpawnItem("NashGore_FlyingBloodTrail", 0, 0, 0, 1)
+			TNT1 A 0 A_ChangeVelocity(velx * 0.8, vely * 0.8, velz, CVF_REPLACE)
+			Loop
+		RandomlyDestroy:
+			TNT1 A 0
+			Stop
+		Crash:
+			TNT1 A 0 A_PlaySound("bloodsplat")
+			TNT1 A 0 A_SpawnItem("NashGore_BloodSplash", 0, 0, 0, 1)
+		BloodSplasher:
+			TNT1 A 0 A_SpawnItemEx("NashGore_BloodSpot", 0, 0, 0, 0, 0, 0, FRandom(0, 360), 7, 128)
+			TNT1 AAAAAAAAAA 1 A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, FRandom(-2.0, 2.0), FRandom(-2.0, 2.0), FRandom(1.0, 2.0), Random(0, 360), NASHGORE_BLOODFLAGS1, 150)
+			Stop
+	}
+}
+
+// Blood trails spawned by FlyingBlood
+Actor NashGore_FlyingBloodTrail : NashGore_BloodBase
+{
+	Radius 1
+	Height 1
+	Gravity 0.15
+	Scale 0.55
+	States
+	{
+		Spawn:
+			BTRL ABCD 4 //bright
+			Loop
+		Crash:
+			TNT1 A 0
+			Stop
+	}
+}
+
+// Blood splashers, generates Random splashes
+Actor NashGore_BloodSplasher : NashGore_BloodBase
+{
+	Radius 1
+	Height 1
+	Gravity 0.20
+	States
+	{
+		Spawn:
+			TNT1 A 1
+			Loop
+		Crash:
+			TNT1 A 0 A_SpawnItem("NashGore_BloodSplash", 0, 0, 0, 1)
+			TNT1 A 0 A_SpawnItemEx("NashGore_BloodSpot", 0, 0, 0, 0, 0, 0, Random(0, 360), NASHGORE_BLOODFLAGS3, 200)
+			Stop
+	}
+}
+
+// Blood spots that temporarily stay on the floor
+Actor NashGore_BloodSpot : NashGore_BloodBase
+{
+	Radius 4
+	Height 2
+	Alpha 0.85
+	-NOBLOCKMAP
+	States
+	{
+		Spawn:
+			TNT1 A 0
+			TNT1 A 0 A_SpawnItem("NashGore_BloodSplash", 0, 0, 0, 1)
+			TNT1 A 0 A_Jump(256, "BloodSpot1", "BloodSpot2", "BloodSpot3", "BloodSpot4")
+		BloodSpot1:
+			BSPT A 0 A_SetTics(NASHGORE_BLOODSPOT_DURATION)
+			"####" "#" 0 A_Jump(256, "FadeOut")
+		BloodSpot2:
+			BSPT B 0 A_SetTics(NASHGORE_BLOODSPOT_DURATION)
+			"####" "#" 0 A_Jump(256, "FadeOut")
+		BloodSpot3:
+			BSPT C 0 A_SetTics(NASHGORE_BLOODSPOT_DURATION)
+			"####" "#" 0 A_Jump(256, "FadeOut")
+		BloodSpot4:
+			BSPT D 0 A_SetTics(NASHGORE_BLOODSPOT_DURATION)
+			"####" "#" 0 A_Jump(256, "FadeOut")
+		FadeOut:
+			"####" "#" 2 A_FadeOut(0.005)
+			Loop
+	}
+}
+
+// Blood splashes
+Actor NashGore_BloodSplash : NashGore_BloodBase
+{
+	Radius 1
+	Height 2
+	Scale 0.5
+	-NOBLOCKMAP
+	States
+	{
+		Spawn:
+			BSPL ABCDE 5
+			Stop
+	}
+}
+
+// Blood splat decal maker
+// TO DO: This only generates red blood decals PLEASE FIX
+// http://forum.zdoom.org/viewtopic.php?f=15&t=46146&p=774415#p774415
+Actor NashGore_SplatMaker
+{
+	Radius 4
+	Height 8
+	PROJECTILE
+	States
+	{
+		Spawn:
+			TNT1 A 20
+		Death:
+			TNT1 A 1
+			Stop
+	}
+}
+
+// BOA Critters
+
 ACTOR ScorpionBlood : NashGore_Blood
 {
-	Translation "16:47=208:223","168:191=210:224"
-	Scale 0.2
-	States
-	{
-	Spawn:
-		BLUD C 8
-		"####" B 8 A_SpawnItemEx("ScorpionFlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
-		"####" A 8
-		stop
-	}
-}
-
-ACTOR ScorpionFlyingBlood : NashGore_FlyingBlood
-{
-	Translation "16:47=208:223","168:191=210:224"
-	Scale 0.2
-	States
-	{
-	Spawn:
-		FBLD AABBCCDD 2 NODELAY A_SpawnItem("ScorpionFlyingBloodTrail",0,0,0,1)
-		Loop
-	}
-}
-
-ACTOR ScorpionFlyingBloodTrail : NashGore_FlyingBloodTrail
-{
-	Scale 0.2
 	Translation "16:47=208:223","168:191=210:224"
 }
 
 ACTOR BScorpionBlood : NashGore_Blood
 {
-	Scale 0.8
-	States
-	{
-	Spawn:
-		BLUD C 8
-		"####" B 8 A_SpawnItemEx("ScorpionFlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
-		"####" A 8
-		stop
-	}
 }
 
-ACTOR BScorpionFlyingBlood : NashGore_FlyingBlood
-{
-	Scale 0.8
-	States
-	{
-	Spawn:
-		FBLD AABBCCDD 2 NODELAY A_SpawnItemEx("BScorpionFlyingBloodTrail",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION)
-		loop
-	}
-}
-
-ACTOR BScorpionFlyingBloodTrail : NashGore_FlyingBloodTrail
-{
-	Scale 0.8
-}
-
-//Mutants and non-red blooded ones
 ACTOR MutantBlood : NashGore_Blood
-{
-	Translation "16:47=[205,0,215]:[40,0,96]","168:191=[205,0,215]:[40,0,96]"
-	States
-	{
-	Spawn:
-		BLUD C 8
-		"####" B 8 A_SpawnItemEx("MutantFlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
-		"####" A 8
-		stop
-	}
-}
-
-ACTOR MutantFlyingBlood : NashGore_FlyingBlood
-{
-	Translation "16:47=[205,0,215]:[40,0,96]","168:191=[205,0,215]:[40,0,96]"
-	States
-	{
-	Spawn:
-		FBLD AABBCCDD 2 NODELAY A_SpawnItem("MutantFlyingBloodTrail",0,0,0,1)
-		Loop
-	}
-}
-
-ACTOR MutantFlyingBloodTrail : NashGore_FlyingBloodTrail
 {
 	Translation "16:47=[205,0,215]:[40,0,96]","168:191=[205,0,215]:[40,0,96]"
 }
 
 ACTOR UndeadBlood : NashGore_Blood
-{
-	Translation "16:47=[34,0,7]:[0,0,0]","168:191=[36,0,9]:[2,0,0]"
-	States
-	{
-	Spawn:
-		BLUD C 8
-		"####" B 8 A_SpawnItemEx("MutantFlyingBlood",0,0,8,random(-4,4),random(-4,4),random(2,5),0,143,176) // [Nash] it used to use A_SpawnItem, but we're getting rid of that crap
-		"####" A 8
-		stop
-	}
-}
-
-ACTOR UndeadFlyingBlood : NashGore_FlyingBlood
-{
-	Translation "16:47=[34,0,7]:[0,0,0]","168:191=[36,0,9]:[2,0,0]"
-	States
-	{
-	Spawn:
-		FBLD AABBCCDD 2 NODELAY A_SpawnItem("MutantFlyingBloodTrail",0,0,0,1)
-		Loop
-	}
-}
-
-ACTOR UndeadFlyingBloodTrail : NashGore_FlyingBloodTrail
 {
 	Translation "16:47=[34,0,7]:[0,0,0]","168:191=[36,0,9]:[2,0,0]"
 }
