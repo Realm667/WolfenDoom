@@ -59,7 +59,7 @@ ACTOR Scorpion
 		goto See
 	Death:
 		TNT1 A 0 A_ScreamAndUnblock
-		TNT1 AAAAAAAAAAAAAAA 0 A_SpawnItemEx("ScorpionChunk",0,0,4,Random(-2,2),Random(-2,2),Random(5,10),Random(0,256),0,100)
+		TNT1 AAAAAAAA 0 A_SpawnItemEx("ScorpionChunk",0,0,4,Random(-2,2),Random(-2,2),Random(5,10),Random(0,256),0,100)
 		stop
 	}
 }
@@ -85,7 +85,6 @@ ACTOR ScorpionBig
 	PainSound "scorpion/pains"
 	DeathSound "scorpion/death"
 	Obituary "$SCORPBIG"
-	BloodType "BScorpionBlood"
 	Species Nazi
 	Monster
 	+FLOORCLIP
@@ -143,7 +142,7 @@ ACTOR ScorpionBig
 		Goto See
 	Death:
 		TNT1 A 0 A_ScreamAndUnblock
-		TNT1 AAAAAAAAAAAAAAA 0 A_SpawnItemEx("BigScorpionChunk",0,0,4,Random(-2,2),Random(-2,2),Random(5,10),Random(0,256),0,100)
+		TNT1 AAAAAAAA 0 A_SpawnItemEx("BigScorpionChunk",0,0,4,Random(-2,2),Random(-2,2),Random(5,10),Random(0,256),0,100)
 		stop
 	}
 }
@@ -168,7 +167,7 @@ ACTOR ScorpionSpit
 		SPIT A 0 NoDelay A_SetScale(ScaleX + frandom(-0.05,0.05),ScaleY + frandom(-0.05,0.05))
 		Goto See
 	See:
-		SPIT A 3 A_SpawnItemEx("BScorpionFlyingBlood",0,0,0,0,0,0,0,128)
+		SPIT A 3 A_SpawnItemEx("NashGore_FlyingBlood",0,0,0,0,0,0,0,128)
 		Loop
 	}
 }
@@ -198,7 +197,7 @@ ACTOR ScorpionChunk
 		SCRG ABCDEFG 0 A_Jump(256,"Chunk")
 		stop
 	Chunk:
-		SCRG "#" 3 A_SpawnItemEx("ScorpionFlyingBlood",Random(-1,1),Random(-1,1))
+		SCRG "#" 6 A_SpawnItemEx("ScorpionFlyingBlood",Random(-1,1),Random(-1,1))
 		loop
 	Death:
 		SCRG "#" 0 A_SpawnItemEx("ScorpionBlood")
@@ -223,10 +222,10 @@ ACTOR BigScorpionChunk : ScorpionChunk
 		SC2G ABCDEFG 0 A_Jump(256,"Chunk")
 		stop
 	Chunk:
-		SC2G "#" 3 A_SpawnItemEx("BScorpionFlyingBlood",Random(-1,1),Random(-1,1))
+		SC2G "#" 6 A_SpawnItemEx("NashGore_FlyingBlood",Random(-1,1),Random(-1,1))
 		loop
 	Death:
-		SC2G "#" 0 A_SpawnItemEx("BScorpionBlood")
+		SC2G "#" 0 A_SpawnItemEx("NashGore_Blood")
 		SC2G "#" 250 A_CheckSight("Vanish")
 		Wait
 	}

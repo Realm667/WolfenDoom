@@ -1,4 +1,4 @@
-const int NASHGORE_BLOODSPOT_DURATION = 1050;
+//const int NASHGORE_BLOODSPOT_DURATION = 1050; //not needed anymore because of cvars - Ozy81
 const int NASHGORE_BLOODFLAGS1 = SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY;
 const int NASHGORE_BLOODFLAGS2 = SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEVELOCITY | SXF_ABSOLUTEANGLE | SXF_NOCHECKPOSITION;
 const int NASHGORE_BLOODFLAGS3 = SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE;
@@ -41,8 +41,8 @@ Actor NashGore_Blood : Blood replaces Blood
 		// fall through
 		SpawnDone:
 			TNT1 A 0 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 0, FRandom(0.1, 6.0) * RandomPick(-1, 1), FRandom(0.1, 6.0) * RandomPick(-1, 1), FRandom(0.0, 6.0), 0, NASHGORE_BLOODFLAGS1, 64)
-			//TNT1 AAAAA 0 A_SpawnItemEx("NashGore_SplatMaker", 0, 0, 0, FRandom(-5, 5), FRandom(-5, 5), FRandom(0, 5), Random(0, 360), NASHGORE_BLOODFLAGS2)
-			TNT1 AAAA 4 A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, FRandom(-2.0, 2.0), FRandom(-2.0, 2.0), FRandom(1.0, 2.0), Random(0, 360), NASHGORE_BLOODFLAGS1, 128)
+			TNT1 AA 0 A_SpawnItemEx("NashGore_SplatMaker", 0, 0, 0, FRandom(-5, 5), FRandom(-5, 5), FRandom(0, 5), Random(0, 360), NASHGORE_BLOODFLAGS2)
+			TNT1 AA 4 A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, FRandom(-2.0, 2.0), FRandom(-2.0, 2.0), FRandom(1.0, 2.0), Random(0, 360), NASHGORE_BLOODFLAGS1, 128)
 			Stop
 	}
 }
@@ -85,7 +85,7 @@ Actor NashGore_FlyingBlood : NashGore_BloodBase
 			TNT1 A 0 A_SpawnItem("NashGore_BloodSplash", 0, 0, 0, 1)
 		BloodSplasher:
 			TNT1 A 0 A_SpawnItemEx("NashGore_BloodSpot", 0, 0, 0, 0, 0, 0, FRandom(0, 360), 7, 128)
-			TNT1 AAAAAAAAAA 1 A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, FRandom(-2.0, 2.0), FRandom(-2.0, 2.0), FRandom(1.0, 2.0), Random(0, 360), NASHGORE_BLOODFLAGS1, 150)
+			TNT1 AAAAA 1 A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, FRandom(-2.0, 2.0), FRandom(-2.0, 2.0), FRandom(1.0, 2.0), Random(0, 360), NASHGORE_BLOODFLAGS1, 150)
 			Stop
 	}
 }
@@ -100,7 +100,7 @@ Actor NashGore_FlyingBloodTrail : NashGore_BloodBase
 	States
 	{
 		Spawn:
-			BTRL ABCD 4 //bright
+			BTRL ABCD 4
 			Loop
 		Crash:
 			TNT1 A 0
@@ -140,16 +140,16 @@ Actor NashGore_BloodSpot : NashGore_BloodBase
 			TNT1 A 0 A_SpawnItem("NashGore_BloodSplash", 0, 0, 0, 1)
 			TNT1 A 0 A_Jump(256, "BloodSpot1", "BloodSpot2", "BloodSpot3", "BloodSpot4")
 		BloodSpot1:
-			BSPT A 0 A_SetTics(NASHGORE_BLOODSPOT_DURATION)
+			BSPT A 0 A_SetTics(CallACS("BloodLifetime")) //A_SetTics(NASHGORE_BLOODSPOT_DURATION)
 			"####" "#" 0 A_Jump(256, "FadeOut")
 		BloodSpot2:
-			BSPT B 0 A_SetTics(NASHGORE_BLOODSPOT_DURATION)
+			BSPT B 0 A_SetTics(CallACS("BloodLifetime")) //A_SetTics(NASHGORE_BLOODSPOT_DURATION)
 			"####" "#" 0 A_Jump(256, "FadeOut")
 		BloodSpot3:
-			BSPT C 0 A_SetTics(NASHGORE_BLOODSPOT_DURATION)
+			BSPT C 0 A_SetTics(CallACS("BloodLifetime")) //A_SetTics(NASHGORE_BLOODSPOT_DURATION)
 			"####" "#" 0 A_Jump(256, "FadeOut")
 		BloodSpot4:
-			BSPT D 0 A_SetTics(NASHGORE_BLOODSPOT_DURATION)
+			BSPT D 0 A_SetTics(CallACS("BloodLifetime")) //A_SetTics(NASHGORE_BLOODSPOT_DURATION)
 			"####" "#" 0 A_Jump(256, "FadeOut")
 		FadeOut:
 			"####" "#" 2 A_FadeOut(0.005)
@@ -183,22 +183,22 @@ Actor NashGore_SplatMaker
 	States
 	{
 		Spawn:
-			TNT1 A 20
+			TNT1 A 3
 		Death:
 			TNT1 A 1
 			Stop
 	}
 }
 
-// BOA Critters
-
+// BOA Translations
 ACTOR ScorpionBlood : NashGore_Blood
 {
 	Translation "16:47=208:223","168:191=210:224"
 }
 
-ACTOR BScorpionBlood : NashGore_Blood
+ACTOR ScorpionFlyingBlood : NashGore_FlyingBlood
 {
+	Translation "16:47=208:223","168:191=210:224"
 }
 
 ACTOR MutantBlood : NashGore_Blood
@@ -206,7 +206,7 @@ ACTOR MutantBlood : NashGore_Blood
 	Translation "16:47=[205,0,215]:[40,0,96]","168:191=[205,0,215]:[40,0,96]"
 }
 
-ACTOR UndeadBlood : NashGore_Blood
+ACTOR MutantFlyingBlood : NashGore_FlyingBlood
 {
-	Translation "16:47=[34,0,7]:[0,0,0]","168:191=[36,0,9]:[2,0,0]"
+	Translation "16:47=[205,0,215]:[40,0,96]","168:191=[205,0,215]:[40,0,96]"
 }
