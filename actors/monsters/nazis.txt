@@ -1881,6 +1881,7 @@ ACTOR MiniShip : Nazi
 	-FLOORCLIP
 	+FLOAT
 	+NOGRAVITY
+	+PAINLESS
 	+NOBLOOD
 	States
 	{
@@ -1901,7 +1902,7 @@ ACTOR MiniShip : Nazi
 		"####" C 8 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",26,-7,random(-11,11))
 		"####" A 8
 		Goto See
-	Pain:
+		Pain:
 		SHIP A 3
 		"####" A 3 A_Pain
 		"####" A 1 ThrustThing(Angle*256/360+192, 4, 1, 0)
@@ -2654,7 +2655,7 @@ ACTOR MGTurretSoldier : MGTurret
 		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
 		Goto Look
 	Missile: //mxd. Copied from parent cause diffetent firing offset
-		"####" A 4 A_PlaySound("chaingun/start",CHAN_WEAPON)
+		SMGS A 4 A_PlaySound("chaingun/start",CHAN_WEAPON)
 		"####" A 1 A_PlaySound("chaingun/loop",CHAN_AUTO)
 		"####" A 5 A_FaceTarget
 		"####" B 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
@@ -2663,6 +2664,12 @@ ACTOR MGTurretSoldier : MGTurret
 		"####" B 3 A_MonsterRefire(40,"See")
 		"####" B 0 A_FaceTarget
 		Goto Missile+3
+	Pain: //added this here because it doesn't have H frames for pain states
+		SMGS D 3
+		"####" D 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		"####" D 0 A_Jump(256,"See")
+		Stop
 	Death:
 	Crash:
 		TNT1 A 0 A_Scream
