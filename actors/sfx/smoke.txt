@@ -15,8 +15,8 @@ ACTOR PuffSmoke
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2)
-		GRS2 A 0 A_Jump(256,"End")
-		GRSM A 0 A_Jump(256,"End")
+		GRM2 A 0 A_Jump(256,"End")
+		GRM1 A 0 A_Jump(256,"End")
 	End:
 		"####" AAAAAAAAAAAAAAAA 2 A_FadeOut(0.025)
 		stop
@@ -136,7 +136,7 @@ ACTOR VolcanoPuffSmoke
 	{
 	Spawn:
 		TNT1 A 0 NODELAY
-		GRS3 A 0 A_Jump(256,"End")
+		GRM3 A 0 A_Jump(256,"End")
 	End:
 		"####" AAAAAAAAAA 5 A_FadeIn(0.1)
 		"####" AAAAAAAAAAAAAAAA 8 A_FadeOut(0.0625)
