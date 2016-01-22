@@ -143,12 +143,30 @@ ACTOR Smoke1A
 
 ACTOR Smoke2A : Smoke1A
 {
-	Scale 0.75	
+	Scale 0.75
+	States
+	{
+	Spawn:
+		SMOC A 0
+		"####" A 0 ThrustThingZ(0,random(3,9),0,0)
+		"####" A 0 ThrustThing(random(0,255),random(0,2),0,0)
+		"####" A 3 A_FadeOut(.05)
+		Goto Spawn+3
+	}	
 }
 
 ACTOR Smoke3A : Smoke1A
 {
-	Scale 1.0	
+	Scale 1.0
+	States
+	{
+	Spawn:
+		SMOC A 0
+		"####" A 0 ThrustThingZ(0,random(4,12),0,0)
+		"####" A 0 ThrustThing(random(0,255),random(0,3),0,0)
+		"####" A 3 A_FadeOut(.05)
+		Goto Spawn+3
+	}
 }
 
 ACTOR Flame1A
