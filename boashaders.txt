@@ -167,6 +167,12 @@ HardwareShader Sprite UWPLC0
 	Speed 1.03
 }
 
+HardwareShader Sprite LRAYA0
+{
+	Shader "shaders/underwater_sway.fp"
+	Speed 1.03
+}
+
 //Rotating Drill
 HardwareShader Texture TURB_R01
 {
@@ -190,7 +196,7 @@ HardwareShader Texture MIDG_MI2
 //Rotating Fire
 HardwareShader Sprite FLM1A0
 {
-	Shader "shaders/rotate_cw.fp"
+	Shader "shaders/rotate.fp"
 	Speed 1.0
 }
 
@@ -202,7 +208,7 @@ HardwareShader Sprite FLM2A0
 
 HardwareShader Sprite FLM3A0
 {
-	Shader "shaders/rotate_cw.fp"
+	Shader "shaders/rotate.fp"
 	Speed 0.8
 }
 
@@ -214,7 +220,7 @@ HardwareShader Sprite FLM4A0
 
 HardwareShader Sprite FLM5A0
 {
-	Shader "shaders/rotate_cw.fp"
+	Shader "shaders/rotate.fp"
 	Speed 0.9
 }
 
@@ -224,8 +230,16 @@ HardwareShader Sprite FLM6A0
 	Speed 1.1
 }
 
+//Rotating Smoke
 HardwareShader Sprite SMOCA0
 {
-	Shader "shaders/rotate_cw.fp"
+	Shader "shaders/rotate.fp"
 	Speed 0.5
+}
+
+//Rotating Steam
+HardwareShader Sprite STEMA0
+{
+	Shader "shaders/rotate_cw.fp"
+	Speed 1.5
 }
