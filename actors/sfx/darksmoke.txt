@@ -1,0 +1,108 @@
+ACTOR DarkSmokeSpawner : SwitchableDecoration
+{
+	//$Category Special Effects (Wolf3D)
+	//$Title Dark Smoke Spawner
+	//$Color 12
+
+	//$Arg0 "Size"
+	//$Arg0Type 11
+	//$Arg0Enum { 0 = "Small"; 1 = "Medium"; 2 = "Large"; }
+
+	Height 40
+	Radius 30
+	+CLIENTSIDEONLY
+	+NOCLIP
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+NOINTERACTION
+	+DONTSPLASH
+	States
+	{
+	Spawn:
+	Active:
+		TNT1 A 0 
+		TNT1 A 0 A_JumpIf(Args[0] == 1,"Medium")
+		TNT1 A 0 A_JumpIf(Args[0] > 1,"Large")
+		SmallLoop:
+		TNT1 A 0 A_Jump(256,1,2,3)
+		TNT1 A 2 A_SpawnItemEx("DarkSmoke1")
+		TNT1 A 4 A_SpawnItemEx("DarkSmoke1")
+		TNT1 A 6 A_SpawnItemEx("DarkSmoke1")
+		Loop
+	Medium:
+		MedLoop:
+		TNT1 A 0 A_Jump(256,1,2,3)
+		TNT1 A 2 A_SpawnItemEx("DarkSmoke2")
+		TNT1 A 4 A_SpawnItemEx("DarkSmoke2")
+		TNT1 A 6 A_SpawnItemEx("DarkSmoke2")
+		Loop
+	Large:
+		LargeLoop:
+		TNT1 A 0 A_Jump(256,1,2,3)
+		TNT1 A 2 A_SpawnItemEx("DarkSmoke3")
+		TNT1 A 4 A_SpawnItemEx("DarkSmoke3")
+		TNT1 A 6 A_SpawnItemEx("DarkSmoke3")
+		Loop
+	Inactive:
+		TNT1 A -1
+		Stop
+	}
+}
+
+//Smoke Particles
+ACTOR DarkSmoke1
+{
+	Height 2
+	Radius 1
+	+NOGRAVITY
+	+NOCLIP
+	+NOBLOCKMAP
+	+MISSILE
+	+CLIENTSIDEONLY
+	+NOINTERACTION
+	+ForceXYBillboard
+	+DONTSPLASH
+	//RenderStyle "Add"
+	Alpha 0.7
+	Scale 0.3
+	States
+	{
+	Spawn:
+		DKSM A 0 A_Jump(128, 2)
+		DKS2 A 0  
+		"####" A 0 ThrustThingZ(0,random(3,6),0,0)
+		"####" A 0 ThrustThing(random(0,16),random(1,1),0,0)
+		"####" A 3 A_FadeOut(.01)
+		Goto Spawn+4
+	}
+}
+
+ACTOR DarkSmoke2 : DarkSmoke1
+{
+	Scale 0.6
+	States
+	{
+	Spawn:
+		DKSM A 0 A_Jump(128, 2)
+		DKS2 A 0  
+		"####" A 0 ThrustThingZ(0,random(5,9),0,0)
+		"####" A 0 ThrustThing(random(0,16),random(1,2),0,0)
+		"####" A 3 A_FadeOut(.01)
+		Goto Spawn+4
+	}	
+}
+
+ACTOR DarkSmoke3 : DarkSmoke1
+{
+	Scale 1.0
+	States
+	{
+	Spawn:
+		DKSM A 0 A_Jump(128, 2)
+		DKS2 A 0  
+		"####" A 0 ThrustThingZ(0,random(9,15),0,0)
+		"####" A 0 ThrustThing(random(0,16),random(2,4),0,0)
+		"####" A 3 A_FadeOut(.01)
+		Goto Spawn+4
+	}
+}
