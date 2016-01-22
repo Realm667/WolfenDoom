@@ -1,7 +1,7 @@
 ACTOR WaterSplashGeneratorNormal : SwitchableDecoration
 {
 	//$Category Special Effects (Wolf3D)
-	//$Title Water Splash Generator (Normal)
+	//$Title Water Splash Generator (normal)
 	//$Color 12
 
 	//$Arg3 "Sound"
@@ -39,10 +39,10 @@ ACTOR WaterSplashObject1
 	+CLIENTSIDEONLY
 	+NOINTERACTION
 	-NOGRAVITY
+	Mass 100
 	Gravity 6.0
 	Alpha 0.8
 	Scale 0.3
-	Mass 100
 	States
 	{
 	Spawn:
@@ -81,5 +81,49 @@ ACTOR WaterSplashObject4 : WaterSplashObject1
 		Spawn: 
 			WTSC A 0 NODELAY
 			Goto Super::Spawn+1
+	}
+}
+
+ACTOR WaterSplashCloud
+{
+	+CLIENTSIDEONLY
+	+NOINTERACTION
+	-NOGRAVITY
+	Mass 100
+	Gravity 6.0
+	Renderstyle "Add"
+	Alpha 0.5
+	Scale 0.6
+	States
+	{
+	Spawn:
+		STEM A 0 NODELAY
+		"####" A 0 ThrustThingZ(0,random(2,8),0,0)
+		"####" A 0 ThrustThing(random(0,255),random(0,1),0,0)
+		"####" A 1 A_SetScale(scalex+0.01, scaley+0.01)
+		"####" A 0 A_FadeOut(.01)
+		goto Spawn+3
+	}
+}
+
+
+
+
+ACTOR WaterSplashGeneratorNormalLooping : WaterSplashGeneratorNormal
+{
+	//$Category Special Effects (Wolf3D)
+	//$Title Water Splash Generator (normal, looping)
+	//$Color 12
+
+	States
+	{
+	Spawn:
+	Active:
+		TNT1 A 4 A_SpawnItemEx("WaterSplashSpawner")
+		TNT1 A 4 A_SpawnItemEx("WaterSplashCloud", 0, 0, random(0,32))
+		loop
+	Inactive:
+		TNT1 A -1
+		Loop
 	}
 }
