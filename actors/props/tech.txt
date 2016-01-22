@@ -52,7 +52,6 @@ ACTOR TeslaLab2 : SwitchableDecoration
 	Spawn:
 	Active:
 		TNT1 A 0 A_PlaySound("tesla/active",6,1,1)
-		ActiveLoop:
 		TESL C 8 BRIGHT LIGHT(TESLIT2)
 		"####" AA 0 A_SpawnItemEx("Spark_B1",0,random(-2,2),40,0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,Random(157,203))
 		"####" A 0 A_SpawnItemEx("SparkFlare_B1",0,0,40,0,0,0,random(0,360),SXF_CLIENTSIDE)
@@ -80,7 +79,6 @@ ACTOR TeslaLab3 : TeslaLab2
 	Spawn:
 	Active:
 		TNT1 A 0 A_PlaySound("tesla/active",6,1,1)
-		ActiveLoop:
 		TESL F 5 BRIGHT LIGHT(TESLIT1)
 		"####" AA 0 A_SpawnItemEx("Spark_B1",0,-8,64,0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,Random(157,203))
 		"####" A 0 A_SpawnItemEx("SparkFlare_B3",0,0,64,0,0,0,random(0,360),SXF_TRANSFERSCALE | SXF_CLIENTSIDE)
