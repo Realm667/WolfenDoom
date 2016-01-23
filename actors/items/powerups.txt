@@ -91,7 +91,7 @@ ACTOR C4 : Inventory
 }
 
 
-ACTOR MineSweeper : Inventory
+ACTOR MineSweeper : PowerupGiver
 {
 	//$Category Powerups (Wolf3D)
 	//$Title Mine Scanning Powerup (pickups)
@@ -100,6 +100,7 @@ ACTOR MineSweeper : Inventory
 	Inventory.Icon MSPUB0
 	Inventory.PickupMessage "A Mine Sweeper"
 	Inventory.MaxAmount 1
+	Powerup.Type "MineSweeper"
 	+INVENTORY.INVBAR
 	States
 	{
@@ -107,4 +108,10 @@ ACTOR MineSweeper : Inventory
 		MSPU A -1
 		stop
 	}
+}
+
+ACTOR PowerMineSweeper : Powerup
+{
+	Powerup.Color 255, 100, 100, 0.2
+	Powerup.Duration -30
 }
