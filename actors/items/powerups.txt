@@ -97,13 +97,14 @@ ACTOR MineSweeper : Inventory
 	//$Title Mine Scanning Powerup (pickups)
 	//$Color 6
 	Tag "Mine Sweeper"
-	Inventory.Icon AKTEA0
+	Inventory.Icon MSPUB0
 	Inventory.PickupMessage "A Mine Sweeper"
 	Inventory.MaxAmount 1
+	+INVENTORY.INVBAR
 	States
 	{
 	Spawn:
-		BPK2 A -1
+		MSPU A -1
 		stop
 	}
 }
