@@ -211,6 +211,7 @@ ACTOR 9MMCasing
 		"####" H 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
 		Loop
 	Death:
+		"####" A 0 A_UnSetSolid
 		"####" A 0 A_Jump(256,1,2,3)
 		"####" ACG 0 A_Jump(256,"Death1")
 		Stop
