@@ -15,49 +15,43 @@ Script "SetRadarTID" (void)
 }
 
 /* Modified from the wiki - http://zdoom.org/wiki/Hudmessageonactor */
-function void hudMessageonActor(int tid, int msgID, int hudX, int hudY, int xOffset, int yOffset, int range, str sprite, str text, int holdTime, str colour)
+Function void HudMessageOnActor(int tid, int msgID, int Range, str Font, str text, int holdTime, str colour)
 {
-		
-	int dist, angle, vang, pitch, x, y;
-	
-	if (holdTime == 0) { holdTime = 0.1; }	
-	if (hudX == 0) { hudX = 640; }
-	if (hudY == 0) { hudY = 480; }
-	
-	if(sprite != -1)
-	{
-		SetFont(sprite);
-		text = "A";
-	}
-	
-	SetHudSize(hudX, hudY, 1);
+	int dist, ang, vang, pitch, x, y, multiplierX, multiplierY;
+	int HUDX = 1024;
+	int HUDY = 768;
+	int ratio = 1.0;
+
 	x = GetActorX(tid) - GetActorX(0);
-	y = GetActorY(tid) - GetActorY(0);
-	
+	y = GetActorY(tid) - GetActorY(0); 
+
 	vang = VectorAngle(x,y);
-	angle = (vang - GetActorAngle(0) + 1.0) % 1.0;
-	
+	ang = (vang - GetActorAngle(0) + 1.0) % 1.0;
+
 	if(((vang+0.125)%0.5) > 0.25) dist = FixedDiv(y, sin(vang));
 	else dist = FixedDiv(x, cos(vang));
-	
-	if ((angle < 0.2 || angle > 0.8) && (dist >> 16) < range)
+
+	if ((ang < 0.2 || ang > 0.8) && (dist >> 16 < Range))
 	{
-		if (GetActorPitch(0) >= -0.1 && GetActorPitch(0) <= 0.1)
+		ratio = (Range * 1.0 - dist) / Range;
+
+		HUDX = HUDX - (HUDX * ratio / 1.0);
+		HUDY = HUDY - (HUDY * ratio / 1.0);
+
+		SetHudSize(HUDX, HUDY, 1);
+
+		int Zdist = (GetActorZ(tid)/* + GetActorProperty(tid, APROP_Height) / 2*/) - (GetActorZ(0) + GetActorProperty(0, APROP_Height)); 
+
+		pitch = VectorAngle(dist, ZDist);
+		pitch = (pitch + GetActorPitch(0)) % 1.0;
+
+		if ((hudX/2) * sin(ang) != 0 && cos(ang) != 0 && (hudX/2) * sin(pitch) != 0 && cos(pitch) != 0)
 		{
-			pitch = VectorAngle(dist, GetActorZ(tid) - (GetActorZ(0) + 41.0));
-			pitch = (pitch + GetActorPitch(0) + 1.0) % 1.0;
-			
-			if ((hudX/2) * sin(angle) != 0 && cos(angle) != 0 && (hudX/2) * sin(pitch) != 0 && cos(pitch) != 0)
-			{
-				
-				x = hudX/2 - ((hudX/2) * sin(angle) / cos(angle));
-				y = hudY/2 - ((HUDX/2) * sin(pitch) / cos(pitch));
-				
-				x+=xOffset;
-				y+=yOffset;
-				
-				HudMessage(s:text; HUDMSG_PLAIN | HUDMSG_NOTWITHFULLMAP | HUDMSG_LAYER_UNDERHUD, msgID, colour, (x << 16), (y << 16), holdTime);
-			}
+			x = HUDX/2 - ((HUDX/2) * sin(ang) / cos(ang));
+			y = HUDY/2 - ((HUDX/2) * sin(pitch) / cos(pitch));
+
+			SetFont(Font);
+			HudMessage(s:text; HUDMSG_PLAIN | HUDMSG_NOTWITHFULLMAP | HUDMSG_LAYER_UNDERHUD, msgID, colour, (x << 16) + 32.0, (y << 16) + 32.0, holdTime);
 		}
 	}
 }
@@ -66,7 +60,7 @@ Script "W_PlayerLoop" ENTER
 {
 	While (GameType() != GAME_TITLE_MAP)
 	{
-		If (CheckInventory("MineSweeper") && TIDIndexStart > 0) //Only run if you have the mine sweeper and there are mines in the level.
+		If (CheckInventory("PowerMineSweeper") && TIDIndexStart > 0) //Only run if you have the mine sweeper and there are mines in the level.
 		{
 			int HUDX = GetScreenWidth();
 			int HUDY = GetScreenHeight();
@@ -75,7 +69,7 @@ Script "W_PlayerLoop" ENTER
 
 			For (int i = TIDIndexStart; i <= TIDIndex; ++i)
 			{
-				hudMessageonActor(i, i, 0, 0, 0, 0, 512, "MSPUC0", "A", 0.1, -1); //Range and sprite can be changed)
+				hudMessageonActor(i, i, 512, "MSPUC0", "A", 0.1, -1); //Range and sprite can be changed)
 			}
 		}
 		Delay(1);
