@@ -89,3 +89,21 @@ ACTOR C4 : Inventory
 		Stop
 	}
 }
+
+
+ACTOR MineSweeper : Inventory
+{
+	//$Category Powerups (Wolf3D)
+	//$Title Mine Scanning Powerup (pickups)
+	//$Color 6
+	Tag "Mine Sweeper"
+	Inventory.Icon AKTEA0
+	Inventory.PickupMessage "A Mine Sweeper"
+	Inventory.MaxAmount 1
+	States
+	{
+	Spawn:
+		BPK2 A -1
+		stop
+	}
+}
