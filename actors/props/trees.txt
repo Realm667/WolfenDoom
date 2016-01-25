@@ -30,6 +30,22 @@ ACTOR Tree2
 	}
 }
 
+ACTOR Tree2_Burnt
+{
+	//$Category Props (Wolf3D)/Trees
+	//$Title Tree (burnt, large)
+	//$Color 3
+	Radius 32
+	Height 192
+	+SOLID
+	States
+	{
+	Spawn:
+		TREG A -1
+		Stop
+	}
+}
+
 ACTOR Tree3
 {
 	//$Category Props (Wolf3D)/Trees
@@ -38,6 +54,23 @@ ACTOR Tree3
 	Radius 32
 	Height 96
 	+SOLID
+	States
+	{
+	Spawn:
+		TREG B -1
+		Stop
+	}
+}
+
+ACTOR Tree3_Burnt
+{
+	//$Category Props (Wolf3D)/Trees
+	//$Title Tree 1 (burnt, middle)
+	//$Color 3
+	Radius 32
+	Height 96
+	+SOLID
+	+NOGRAVITY
 	States
 	{
 	Spawn:
@@ -148,7 +181,23 @@ ACTOR Palm3
 ACTOR JungleTree1
 {
 	//$Category Props (Wolf3D)/Trees
-	//$Title Jungle tree 1
+	//$Title Jungle Tree 1
+	//$Color 3
+	Radius 16
+	Height 128
+	+SOLID
+	States
+	{
+	Spawn:
+		SMGT A -1
+		Stop
+	}
+}
+
+ACTOR JungleTree1_Burnt
+{
+	//$Category Props (Wolf3D)/Trees
+	//$Title Jungle Tree 1 (Burnt)
 	//$Color 3
 	Radius 16
 	Height 128
@@ -164,7 +213,7 @@ ACTOR JungleTree1
 ACTOR JungleTree2
 {
 	//$Category Props (Wolf3D)/Trees
-	//$Title Jungle tree 2 (wall)
+	//$Title Jungle Tree 2 (wall)
 	//$Color 3
 	Radius 16
 	Height 32
@@ -177,10 +226,27 @@ ACTOR JungleTree2
 	}
 }
 
+ACTOR JungleTree2_Burnt
+{
+	//$Category Props (Wolf3D)/Trees
+	//$Title Jungle Tree 2 (burnt, wall)
+	//$Color 3
+	Radius 16
+	Height 32
+	+SOLID
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		SMGT A -1
+		Stop
+	}
+}
+
 ACTOR JungleTree3
 {
 	//$Category Props (Wolf3D)/Trees
-	//$Title Jungle tree 3 (bamboo)
+	//$Title Jungle Tree 3 (bamboo)
 	//$Color 3
 	Radius 16
 	Height 128
@@ -399,10 +465,42 @@ ACTOR SmallTree1
 	}
 }
 
+ACTOR SmallTree1_Burnt
+{
+	//$Category Props (Wolf3D)/Trees
+	//$Title Tree 4 (burnt, middle)
+	//$Color 3
+	Radius 16
+	Height 96
+	+SOLID
+	States
+	{
+	Spawn:
+		TREN A -1
+		Stop
+	}
+}
+
 ACTOR SmallTree2
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree 5 (small)
+	//$Color 3
+	Radius 16
+	Height 64
+	+SOLID
+	States
+	{
+	Spawn:
+		TREN B -1
+		Stop
+	}
+}
+
+ACTOR SmallTree2_Burnt
+{
+	//$Category Props (Wolf3D)/Trees
+	//$Title Tree 5 (burnt, small)
 	//$Color 3
 	Radius 16
 	Height 64
