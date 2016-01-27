@@ -1244,6 +1244,29 @@ ACTOR 3dPrometheus_R: 3dPrometheus_L
 	//$Color 3
 }
 
+//TF3DM Models
+ACTOR MercedesLimo : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Mercedes Nazi Limo
+	//$Color 3
+
+	Radius 32
+	Height 32
+	States
+	{
+		Spawn:
+			SMGT A -1 NoDelay A_SpawnItemEx("LimoGlass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+			Stop
+	}
+}
+
+ACTOR LimoGlass : ModelBase
+{
+	RenderStyle "Shaded"
+	StencilColor "CC CC CC"
+}
+
 //AFADoomer Stuff
 ACTOR AstroShuttle : ModelBase
 {
