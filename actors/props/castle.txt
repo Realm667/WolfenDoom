@@ -202,7 +202,7 @@ ACTOR WellWater : WellEmpty
 	States
 	{
 	Spawn:
-		WELL H -1 NoDelay A_SpawnItemEx("WellWaterWater", 0, 0, 0)
+		WELL H -1 NoDelay A_SpawnItemEx("WellWaterWater", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
 		Stop
 	}
 }
@@ -229,7 +229,7 @@ ACTOR WellBlood : WellEmpty
 	States
 	{
 	Spawn:
-		WELL J -1 NoDelay A_SpawnItemEx("WellBloodBlood", 0, 0, 0)
+		WELL J -1 NoDelay A_SpawnItemEx("WellBloodBlood", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
 		Stop
 	}
 }
