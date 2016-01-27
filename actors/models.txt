@@ -1267,6 +1267,60 @@ ACTOR LimoGlass : ModelBase
 	StencilColor "CC CC CC"
 }
 
+ACTOR Kubelwagon : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Kubelwagon
+	//$Color 3
+
+	Radius 32
+	Height 32
+	States
+	{
+		Spawn:
+			SMGT A -1 NoDelay A_SpawnItemEx("KubelGlass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+			Stop
+	}
+}
+
+ACTOR KubelGlass : ModelBase
+{
+	RenderStyle "Shaded"
+	StencilColor "CC CC CC"
+}
+
+ACTOR OldCar : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Old Car
+	//$Color 3
+
+	Radius 32
+	Height 32
+	States
+	{
+		Spawn:
+			SMGT A -1
+			Stop
+	}
+}
+
+ACTOR Tractor : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Tractor
+	//$Color 3
+
+	Radius 32
+	Height 32
+	States
+	{
+		Spawn:
+			SMGT A -1
+			Stop
+	}
+}
+
 //AFADoomer Stuff
 ACTOR AstroShuttle : ModelBase
 {
