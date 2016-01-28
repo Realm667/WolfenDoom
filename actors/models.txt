@@ -1267,10 +1267,10 @@ ACTOR LimoGlass : ModelBase
 	StencilColor "CC CC CC"
 }
 
-ACTOR Kubelwagon : 3dObstacle
+ACTOR Kubelwagen : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Vehicles
-	//$Title Kubelwagon
+	//$Title Kubelwagen
 	//$Color 3
 
 	Radius 32
@@ -1289,10 +1289,10 @@ ACTOR KubelGlass : ModelBase
 	StencilColor "CC CC CC"
 }
 
-ACTOR OldCar : 3dObstacle
+ACTOR OldCar_Olive : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Vehicles
-	//$Title Old Car
+	//$Title Old Car (Olive)
 	//$Color 3
 
 	Radius 32
@@ -1303,6 +1303,20 @@ ACTOR OldCar : 3dObstacle
 			SMGT A -1
 			Stop
 	}
+}
+
+ACTOR OldCar_Red : OldCar_Olive
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Old Car (Red)
+	//$Color 3
+}
+
+ACTOR OldCar_Cyan : OldCar_Olive
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Old Car (Cyan)
+	//$Color 3
 }
 
 ACTOR Tractor : 3dObstacle
@@ -1318,6 +1332,21 @@ ACTOR Tractor : 3dObstacle
 		Spawn:
 			SMGT A -1
 			Stop
+	}
+}
+
+ACTOR SandbagArc : ModelBase
+{
+	//$Category Models (Wolf3D)/Obstacles
+	//$Title Sandbags (large arc)
+	//$Color 3
+	Radius 16
+	Height 24
+	States
+	{
+	Spawn:
+		SMGT A -1
+		Stop
 	}
 }
 
