@@ -44,6 +44,24 @@ ACTOR StatistMedic
 	}
 }
 
+ACTOR GeneralAllied
+{
+	//$Category Monsters (Wolf3D)/NPCs
+	//$Title General Miller
+	//$Color 4
+	Obituary "$MILLER"
+	Height 56
+	Mass 100
+	Scale 1.3
+	+SOLID
+	States
+	{
+	Spawn:
+		GENR O -1
+		Stop
+	}
+}
+
 ACTOR StatistSinger : SwitchableDecoration
 {
 	//$Category Monsters (Wolf3D)/NPCs

@@ -3160,32 +3160,6 @@ ACTOR DirtyDarren : Guard
 	}
 }
 
-ACTOR GeneralAllied : DirtyDarren
-{
-	//$Category Monsters (Wolf3D)/NPCs
-	//$Title General Miller
-	//$Color 4
-	Obituary "$MILLER"
-	Translation "0:0=0:0"
-	Scale 1.35 //mxd
-	States
-	{
-	Spawn:
-		GENR O 0
-		Goto Look
-	Death:
-		"####" I 5
-		"####" J 5 A_Scream
-		"####" K 5 A_NoBlocking
-		"####" LM 5
-		"####" N -1
-		stop
-	Raise:
-		"####" NMLKJI 5
-		Goto See
-	}
-}
-
 ACTOR Marine1 : DirtyDarren
 {
 	//$Category Monsters (Wolf3D)/NPCs
