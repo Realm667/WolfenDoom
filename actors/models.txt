@@ -631,6 +631,15 @@ Radius 8
 Height 8
 }
 
+ACTOR RTCWGramo : 3dObstacle
+{
+//$Category Models (Wolf3D)/Scenery
+//$Title Gramophone
+//$Color 3
+Radius 16
+Height 32
+}
+
 ACTOR WallLight1 : 3dObstacle
 {
 //$Category Light Sources (Wolf3D)
@@ -1197,13 +1206,143 @@ ACTOR 3dSplitter: 3dGuillotine
 
 ACTOR 3dSkeleton_Sit : 3dObstacle
 {
-//$Category Models (Wolf3D)/Occult
-//$Title Skeleton (Sit)
-//$Color 3
-Radius 16
-Height 24
-+NOGRAVITY
-States
+	//$Category Models (Wolf3D)/Occult
+	//$Title Skeleton (Sit)
+	//$Color 3
+	Radius 16
+	Height 24
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		SMGT A -1
+		Stop
+	}
+}
+
+//S.T.A.L.K.E.R. models
+ACTOR 3dPrometheus_L : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Statues
+	//$Title Prometheus Statue (Left Side)
+	//$Color 3
+	Radius 32
+	Height 96
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		SMGT A -1
+		Stop
+	}
+}
+
+ACTOR 3dPrometheus_R: 3dPrometheus_L
+{
+	//$Category Models (Wolf3D)/Statues
+	//$Title Prometheus Statue (Right Side)
+	//$Color 3
+}
+
+//TF3DM Models
+ACTOR MercedesLimo : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Mercedes Nazi Limo
+	//$Color 3
+
+	Radius 32
+	Height 32
+	States
+	{
+		Spawn:
+			SMGT A -1 NoDelay A_SpawnItemEx("LimoGlass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+			Stop
+	}
+}
+
+ACTOR LimoGlass : ModelBase
+{
+	RenderStyle "Shaded"
+	StencilColor "CC CC CC"
+}
+
+ACTOR Kubelwagen : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Kubelwagen
+	//$Color 3
+
+	Radius 32
+	Height 32
+	States
+	{
+		Spawn:
+			SMGT A -1 NoDelay A_SpawnItemEx("KubelGlass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+			Stop
+	}
+}
+
+ACTOR KubelGlass : ModelBase
+{
+	RenderStyle "Shaded"
+	StencilColor "CC CC CC"
+}
+
+ACTOR OldCar_Olive : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Old Car (Olive)
+	//$Color 3
+
+	Radius 32
+	Height 32
+	States
+	{
+		Spawn:
+			SMGT A -1
+			Stop
+	}
+}
+
+ACTOR OldCar_Red : OldCar_Olive
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Old Car (Red)
+	//$Color 3
+}
+
+ACTOR OldCar_Cyan : OldCar_Olive
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Old Car (Cyan)
+	//$Color 3
+}
+
+ACTOR Tractor : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Tractor
+	//$Color 3
+
+	Radius 32
+	Height 32
+	States
+	{
+		Spawn:
+			SMGT A -1
+			Stop
+	}
+}
+
+ACTOR SandbagArc : ModelBase
+{
+	//$Category Models (Wolf3D)/Obstacles
+	//$Title Sandbags (large arc)
+	//$Color 3
+	Radius 16
+	Height 24
+	States
 	{
 	Spawn:
 		SMGT A -1

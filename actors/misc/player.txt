@@ -56,7 +56,8 @@ ACTOR BoAPlayer : PlayerPawn
 		Goto Missile
 	Death:
 		"####" H 5 A_PlayerScream
-		"####" I 5
+		"####" I 8
+		"####" I 1 A_PlaySound("death/bjfall")
 		"####" J 5 A_NoBlocking
 		"####" K 5
 		"####" L -1

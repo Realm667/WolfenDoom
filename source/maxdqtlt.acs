@@ -156,13 +156,14 @@ Script "Script_DeathTilt" Death
 	if (dodeathtilt)
 	{
 		// target angle to roll to
-		int t = random(0.125, 0.25);
+		int t = random(0.25, 0.35);
 		
 		// speed of the roll, tune this to taste
-		int s = 0.01750;
+		//int s = 0.01750;
+		int s;
 		
 		// how many tics before the rolling actually starts, tune to taste
-		int d = 30;
+		int d = 20;
 		
 		while(GetActorHealth() <= 0)
 		{
@@ -182,6 +183,7 @@ Script "Script_DeathTilt" Death
 				if (GetActorRoll(0) < t)
 				{
 					ChangeActorRoll(0, r + s, TRUE);
+					s += 0.00150;
 				}
 			}
 			Delay(1);
