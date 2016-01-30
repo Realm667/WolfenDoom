@@ -10,16 +10,15 @@ ACTOR Rune_Fa : PuzzleItem
 	Inventory.MaxAmount 1
 	Inventory.Icon RHUDB0
 	Inventory.PickupMessage "$RUNEFA"
+	+INVENTORY.INVBAR
 	+COUNTITEM
 	+NOGRAVITY
 	+FLOATBOB
-	+INVENTORY.INVBAR
-	//ConversationID ### //use this if you plan to work with dialogues, and use different values for each actor
 	States
 	{
 	Spawn:
-	RUNE B -1
-	Stop
+	RUNE IHBJKKKKJBHI 8
+	Loop
 	}
 }
 
@@ -32,8 +31,8 @@ ACTOR Rune_Gibor : Rune_Fa
 	States
 	{
 	Spawn:
-	RUNE C -1
-	Stop
+	RUNE MLCNOOOONCLM 8
+	Loop
 	}
 }
 
@@ -46,7 +45,7 @@ ACTOR Rune_Tyr : Rune_Fa
 	States
 	{
 	Spawn:
-	RUNE A -1
-	Stop
+	RUNE EDAFGGGGFADE 8
+	Loop
 	}
 }
