@@ -210,7 +210,7 @@ ACTOR Windmill : 3dObstacle
 	{
 		Spawn:
 			SMGT A 0 NoDelay A_PlaySound("misc/windmill", CHAN_AUTO, 0.7, true)
-			SMGT A -1 A_SpawnItemEx("WindmillWheel", 34, 0, 476)
+			SMGT A -1 A_SpawnItemEx("WindmillWheel", 24, 0, scaleY*476) //don't scale the model more than 1.2 on GZDB
 			stop
 	}
 }
@@ -329,7 +329,7 @@ ACTOR 88mmFlakDestroyed : ModelBase
 	Height 80
 }
 
-ACTOR Nebelwerfer3D : ModelBase //this is a mission specific object
+ACTOR Nebelwerfer3D : ModelBase
 {
 	//$Category Models (Wolf3D)/Mission
 	//$Title Nebelwerfer
@@ -459,47 +459,47 @@ ACTOR FlagWave_War : FlagWave
 
 ACTOR Typewriter : 3dObstacle
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title Typewriter
-//$Color 3
-Radius 16
-Height 16
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Typewriter
+	//$Color 3
+	Radius 16
+	Height 16
 }
 
 ACTOR RadioSimple : 3dObstacle
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title Radio (simple)
-//$Color 3
-Radius 16
-Height 16
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Radio (simple)
+	//$Color 3
+	Radius 16
+	Height 16
 }
 
 ACTOR RadioModern : 3dObstacle
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title Radio (modern)
-//$Color 3
-Radius 16
-Height 20
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Radio (modern)
+	//$Color 3
+	Radius 16
+	Height 20
 }
 
 ACTOR RTCWChalice : 3dObstacle
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title Chalice (Holy Graal?)
-//$Color 3
-Radius 8
-Height 32
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Chalice (Holy Graal?)
+	//$Color 3
+	Radius 8
+	Height 32
 }
 
 ACTOR Obelisk : 3dObstacle
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title Obelisk
-//$Color 3
-Radius 16
-Height 32
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Obelisk
+	//$Color 3
+	Radius 16
+	Height 32
 }
 
 ACTOR RTCWClock : 3dObstacle
@@ -593,166 +593,166 @@ ACTOR ModelOpelTruckWindows : ModelBase
 
 ACTOR ControlPanel : 3dObstacle
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title Control Panel
-//$Color 3
-Radius 8
-Height 32
-+NOGRAVITY
-+FIXMAPTHINGPOS
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Control Panel
+	//$Color 3
+	Radius 8
+	Height 32
+	+NOGRAVITY
+	+FIXMAPTHINGPOS
 }
 
 ACTOR ControlPanelB : 3dObstacle
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title Control Panel (Blown)
-//$Color 3
-Radius 8
-Height 32
-+NOGRAVITY
-+FIXMAPTHINGPOS
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Control Panel (Blown)
+	//$Color 3
+	Radius 8
+	Height 32
+	+NOGRAVITY
+	+FIXMAPTHINGPOS
 }
 
 ACTOR RTCWParlor : 3dObstacle
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title Parlor Radio
-//$Color 3
-Radius 8
-Height 8
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Parlor Radio
+	//$Color 3
+	Radius 8
+	Height 8
 }
 
 ACTOR RTCWPhone : 3dObstacle
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title Phone
-//$Color 3
-Radius 8
-Height 8
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Phone
+	//$Color 3
+	Radius 8
+	Height 8
 }
 
 ACTOR RTCWGramo : 3dObstacle
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title Gramophone
-//$Color 3
-Radius 16
-Height 32
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Gramophone
+	//$Color 3
+	Radius 16
+	Height 32
 }
 
 ACTOR WallLight1 : 3dObstacle
 {
-//$Category Light Sources (Wolf3D)
-//$Title Wall Light (off)
-//$Color 11
-Radius 16
-Height 16
-+NOGRAVITY
-+FIXMAPTHINGPOS
+	//$Category Light Sources (Wolf3D)
+	//$Title Wall Light (off)
+	//$Color 11
+	Radius 16
+	Height 16
+	+NOGRAVITY
+	+FIXMAPTHINGPOS
 }
 
 ACTOR WallLight1Lit : WallLight1
 {
-//$Category Light Sources (Wolf3D)
-//$Title Wall Light (on)
-//$Color 11
-States
+	//$Category Light Sources (Wolf3D)
+	//$Title Wall Light (on)
+	//$Color 11
+	States
 	{
 	Spawn:
-	SMGT A -1 LIGHT(OZYWALLT)
-	Stop
+		SMGT A -1 LIGHT(OZYWALLT)
+		Stop
 	}
 }
 
 ACTOR WallLight2 : 3dObstacle
 {
-//$Category Light Sources (Wolf3D)
-//$Title Wall Lantern (off)
-//$Color 11
-Radius 14
-Height 48
-+NOGRAVITY
+	//$Category Light Sources (Wolf3D)
+	//$Title Wall Lantern (off)
+	//$Color 11
+	Radius 14
+	Height 48
+	+NOGRAVITY
 }
 
 ACTOR WallLight2Lit : WallLight2
 {
-//$Category Light Sources (Wolf3D)
-//$Title Wall Lantern (on)
-//$Color 11
-States
+	//$Category Light Sources (Wolf3D)
+	//$Title Wall Lantern (on)
+	//$Color 11
+	States
 	{
 	Spawn:
-	SMGT A -1 LIGHT(OZYWALLT)
-	Stop
+		SMGT A -1 LIGHT(OZYWALLT)
+		Stop
 	}
 }
 
 ACTOR SimpleLight1 : 3dObstacle
 {
-//$Category Light Sources (Wolf3D)
-//$Title Simple Light (off)
-//$Color 11
-Radius 8
-Height 12
-+NOGRAVITY
+	//$Category Light Sources (Wolf3D)
+	//$Title Simple Light (off)
+	//$Color 11
+	Radius 8
+	Height 12
+	+NOGRAVITY
 }
 
 ACTOR SimpleLight1Lit : SimpleLight1
 {
-//$Category Light Sources (Wolf3D)
-//$Title Simple Light (on)
-//$Color 11
-States
+	//$Category Light Sources (Wolf3D)
+	//$Title Simple Light (on)
+	//$Color 11
+	States
 	{
 	Spawn:
-	SMGT A -1 LIGHT(OZYSIMLT)
-	Stop
+		SMGT A -1 LIGHT(OZYSIMLT)
+		Stop
 	}
 }
 
 ACTOR EnigmaMachine : 3dObstacle
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title Enigma Machine
-//$Color 3
-Radius 16
-Height 8
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Enigma Machine
+	//$Color 3
+	Radius 16
+	Height 8
 }
 
 ACTOR RTCWBench : 3dObstacle
 {
-//$Category Models (Wolf3D)/Furniture
-//$Title Wooden Bench
-//$Color 3
-Radius 16
-Height 8
+	//$Category Models (Wolf3D)/Furniture
+	//$Title Wooden Bench
+	//$Color 3
+	Radius 16
+	Height 8
 }
 
 ACTOR 3dBook1 : 3dObstacle
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title Book (front)
-//$Color 3
-Radius 16
-Height 8
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Book (front)
+	//$Color 3
+	Radius 16
+	Height 8
 }
 
 ACTOR 3dBook2 : 3dBook1
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title Book (back)
-//$Color 3
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Book (back)
+	//$Color 3
 }
 
 ACTOR RTCWShield : 3dObstacle
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title Shield with Swords
-//$Color 3
-Radius 8
-Height 32
-+NOGRAVITY
-+FIXMAPTHINGPOS
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Shield with Swords
+	//$Color 3
+	Radius 8
+	Height 32
+	+NOGRAVITY
+	+FIXMAPTHINGPOS
 }
 
 ACTOR SlopeMe1 : 3dObstacle
@@ -828,92 +828,74 @@ ACTOR RTCWParachute2 : ModelBase
 
 ACTOR RTCW_V2_Complete : ModelBase
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title V2 (Complete)
-//$Color 3
-Radius 46
-Height 192
-+NOGRAVITY
-States
+	//$Category Models (Wolf3D)/Scenery
+	//$Title V2 (Complete)
+	//$Color 3
+	Radius 46
+	Height 192
+	+NOGRAVITY
+	States
 	{
 	Spawn:
-	SMGT A -1
-	Stop
+		SMGT A -1
+		Stop
 	}
 }
 
 ACTOR RTCW_V2_NoRamp : RTCW_V2_Complete
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title V2 (Without Ramp)
-//$Color 3
+	//$Category Models (Wolf3D)/Scenery
+	//$Title V2 (Without Ramp)
+	//$Color 3
 }
 
 ACTOR RTCW_V2_Rocket : RTCW_V2_Complete
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title V2 (Rocket Only)
-//$Color 3
+	//$Category Models (Wolf3D)/Scenery
+	//$Title V2 (Rocket Only)
+	//$Color 3
 }
 
 ACTOR Tie_Fighter : 3dObstacle
 {
-//$Category Models (Wolf3D)/Astrostein
-//$Title Tie Fighter (Easteregg)
-//$Color 3
-Radius 48
-Height 192
-States
-	{
-	Spawn:
-	SMGT A -1
-	Stop
-	}
+	//$Category Models (Wolf3D)/Astrostein
+	//$Title Tie Fighter (Easteregg)
+	//$Color 3
+	Radius 48
+	Height 192
 }
 
 //DoomJuan Models, added & fixed a bit by Ozymandias81
 ACTOR Harness : 3dObstacle
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title Harness
-//$Color 3
-Radius 24
-Height 90
-States
-	{
-	Spawn:
-	SMGT A -1
-	Stop
-	}
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Harness
+	//$Color 3
+	Radius 24
+	Height 90
 }
 
 ACTOR Lion_Left : 3dObstacle
 {
-//$Category Models (Wolf3D)/Statues
-//$Title Lion Statue (Left)
-//$Color 3
-Radius 48
-Height 192
-States
-	{
-	Spawn:
-	SMGT A -1
-	Stop
-	}
+	//$Category Models (Wolf3D)/Statues
+	//$Title Lion Statue (Left)
+	//$Color 3
+	Radius 48
+	Height 192
 }
 
 ACTOR Lion_Right : Lion_Left
 {
-//$Category Models (Wolf3D)/Statues
-//$Title Lion Statue (Right)
-//$Color 3
+	//$Category Models (Wolf3D)/Statues
+	//$Title Lion Statue (Right)
+	//$Color 3
 }
 
 ACTOR NaziBannerTallFlutter512 : FlagWave
 {
-//$Category Models (Wolf3D)/Flags
-//$Title Nazi Banner Tall, Flutter (512)
-//$Color 3
+	//$Category Models (Wolf3D)/Flags
+	//$Title Nazi Banner Tall, Flutter (512)
+	//$Color 3
 	States
 	{
 	Spawn:
@@ -937,137 +919,137 @@ ACTOR NaziBannerTallHang512 : FlagWave
 
 ACTOR NaziBannerTallFlutter256 : NaziBannerTallFlutter512
 {
-//$Category Models (Wolf3D)/Flags
-//$Title Nazi Banner Tall, Flutter (256)
-//$Color 3
+	//$Category Models (Wolf3D)/Flags
+	//$Title Nazi Banner Tall, Flutter (256)
+	//$Color 3
 }
 
 ACTOR NaziBannerTallHang256 : NaziBannerTallHang512
 {
-//$Category Models (Wolf3D)/Flags
-//$Title Nazi Banner Tall, Not Moving (256)
-//$Color 3
+	//$Category Models (Wolf3D)/Flags
+	//$Title Nazi Banner Tall, Not Moving (256)
+	//$Color 3
 }
 
 ACTOR TrestleTable : 3dObstacle
 {
-//$Category Models (Wolf3D)/Furniture
-//$Title Trestle Table A
-//$Color 3
-Radius 40
-Height 40
+	//$Category Models (Wolf3D)/Furniture
+	//$Title Trestle Table A
+	//$Color 3
+	Radius 40
+	Height 40
 }
 
 //HERETIC II, HEXEN II and JEDI KNIGHT 3 MODELS - From Gore - Ozymandias81
 ACTOR H2Table : TrestleTable //from Hexen 2
 {
-//$Category Models (Wolf3D)/Furniture
-//$Title Trestle Table B
-//$Color 3
-Radius 32
-Height 32
+	//$Category Models (Wolf3D)/Furniture
+	//$Title Trestle Table B
+	//$Color 3
+	Radius 32
+	Height 32
 }
 
 ACTOR Caesar : 3dObstacle
 {
-//$Category Models (Wolf3D)/Statues
-//$Title Caesar's Statue
-//$Color 3
-Radius 32
-Height 192
+	//$Category Models (Wolf3D)/Statues
+	//$Title Caesar's Statue
+	//$Color 3
+	Radius 32
+	Height 192
 }
 
 ACTOR King : Caesar
 {
-//$Category Models (Wolf3D)/Statues
-//$Title King's Statue
-//$Color 3
-Radius 48
+	//$Category Models (Wolf3D)/Statues
+	//$Title King's Statue
+	//$Color 3
+	Radius 48
 }
 
 ACTOR Pisces : 3dObstacle //from Heretic 2
 {
-//$Category Models (Wolf3D)/Statues
-//$Title Pisces Fountain
-//$Color 3
-Radius 48
-Height 80
+	//$Category Models (Wolf3D)/Statues
+	//$Title Pisces Fountain
+	//$Color 3
+	Radius 48
+	Height 80
 }
 
 ACTOR BoldFish : 3dObstacle
 {
-//$Category Models (Wolf3D)/Statues
-//$Title Fish Statue
-//$Color 3
-Radius 32
-Height 56
+	//$Category Models (Wolf3D)/Statues
+	//$Title Fish Statue
+	//$Color 3
+	Radius 32
+	Height 56
 }
 
 ACTOR DuckBillL : 3dObstacle
 {
-//$Category Models (Wolf3D)/Statues
-//$Title DuckBill Statue (Left)
-//$Color 3
-Radius 64
-Height 96
+	//$Category Models (Wolf3D)/Statues
+	//$Title DuckBill Statue (Left)
+	//$Color 3
+	Radius 64
+	Height 96
 }
 
 ACTOR DuckBillR : DuckBillL
 {
-//$Category Models (Wolf3D)/Statues
-//$Title DuckBill Statue (Right)
-//$Color 3
+	//$Category Models (Wolf3D)/Statues
+	//$Title DuckBill Statue (Right)
+	//$Color 3
 }
 
 ACTOR SDragonL : 3dObstacle
 {
-//$Category Models (Wolf3D)/Statues
-//$Title Dragon Statue (Left)
-//$Color 3
-Radius 64
-Height 128
+	//$Category Models (Wolf3D)/Statues
+	//$Title Dragon Statue (Left)
+	//$Color 3
+	Radius 64
+	Height 128
 }
 
 ACTOR SDragonR : SDragonL
 {
-//$Category Models (Wolf3D)/Statues
-//$Title Dragon Statue (Right)
-//$Color 3
+	//$Category Models (Wolf3D)/Statues
+	//$Title Dragon Statue (Right)
+	//$Color 3
 }
 
 ACTOR MineCartF : 3dObstacle
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title "Mine Cart, Full"
-//$Color 3
-Radius 34
-Height 24
-+NOGRAVITY
+	//$Category Models (Wolf3D)/Scenery
+	//$Title "Mine Cart, Full"
+	//$Color 3
+	Radius 34
+	Height 24
+	+NOGRAVITY
 }
 
 ACTOR MineCartE : MineCartF
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title "Mine Cart, Empty"
-//$Color 3
+	//$Category Models (Wolf3D)/Scenery
+	//$Title "Mine Cart, Empty"
+	//$Color 3
 }
 
 ACTOR MineCartW : MineCartF
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title "Mine Cart, Wrecked"
-//$Color 3
+	//$Category Models (Wolf3D)/Scenery
+	//$Title "Mine Cart, Wrecked"
+	//$Color 3
 }
 
 ACTOR 3dMinerals : 3dObstacle
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title "Minerals"
-//$Color 3
-Radius 16
-Height 16
-+NOGRAVITY
-States
+	//$Category Models (Wolf3D)/Scenery
+	//$Title "Minerals"
+	//$Color 3
+	Radius 16
+	Height 16
+	+NOGRAVITY
+	States
 	{
 	Spawn:
 		SMGT A -1 LIGHT(MINERALLITE)
@@ -1116,34 +1098,22 @@ ACTOR Cable5: Cable1
 
 ACTOR 3dTrolley : 3dObstacle
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title Trolley
-//$Color 3
-Radius 16
-Height 48
-+NOGRAVITY
-States
-	{
-	Spawn:
-		SMGT A -1
-		Stop
-	}
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Trolley
+	//$Color 3
+	Radius 16
+	Height 48
+	+NOGRAVITY
 }
 
 ACTOR 3dCannon : 3dObstacle
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title Cannon
-//$Color 3
-Radius 16
-Height 48
-+NOGRAVITY
-States
-	{
-	Spawn:
-		SMGT A -1
-		Stop
-	}
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Cannon
+	//$Color 3
+	Radius 16
+	Height 48
+	+NOGRAVITY
 }
 
 ACTOR 3dCannonballs: 3dCannon
@@ -1155,18 +1125,12 @@ ACTOR 3dCannonballs: 3dCannon
 
 ACTOR 3dGuillotine : 3dObstacle
 {
-//$Category Models (Wolf3D)/Occult
-//$Title Guillotine
-//$Color 3
-Radius 16
-Height 48
-+NOGRAVITY
-States
-	{
-	Spawn:
-		SMGT A -1
-		Stop
-	}
+	//$Category Models (Wolf3D)/Occult
+	//$Title Guillotine
+	//$Color 3
+	Radius 16
+	Height 48
+	+NOGRAVITY
 }
 
 ACTOR 3dHeadCrusher : 3dGuillotine
@@ -1212,12 +1176,6 @@ ACTOR 3dSkeleton_Sit : 3dObstacle
 	Radius 16
 	Height 24
 	+NOGRAVITY
-	States
-	{
-	Spawn:
-		SMGT A -1
-		Stop
-	}
 }
 
 //S.T.A.L.K.E.R. models
@@ -1228,13 +1186,6 @@ ACTOR 3dPrometheus_L : 3dObstacle
 	//$Color 3
 	Radius 32
 	Height 96
-	+NOGRAVITY
-	States
-	{
-	Spawn:
-		SMGT A -1
-		Stop
-	}
 }
 
 ACTOR 3dPrometheus_R: 3dPrometheus_L
@@ -1250,14 +1201,13 @@ ACTOR MercedesLimo : 3dObstacle
 	//$Category Models (Wolf3D)/Vehicles
 	//$Title Mercedes Nazi Limo
 	//$Color 3
-
 	Radius 32
 	Height 32
 	States
 	{
-		Spawn:
-			SMGT A -1 NoDelay A_SpawnItemEx("LimoGlass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
-			Stop
+	Spawn:
+		SMGT A -1 NoDelay A_SpawnItemEx("LimoGlass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		Stop
 	}
 }
 
@@ -1272,14 +1222,13 @@ ACTOR Kubelwagen : 3dObstacle
 	//$Category Models (Wolf3D)/Vehicles
 	//$Title Kubelwagen
 	//$Color 3
-
 	Radius 32
 	Height 32
 	States
 	{
-		Spawn:
-			SMGT A -1 NoDelay A_SpawnItemEx("KubelGlass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
-			Stop
+	Spawn:
+		SMGT A -1 NoDelay A_SpawnItemEx("KubelGlass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		Stop
 	}
 }
 
@@ -1291,32 +1240,27 @@ ACTOR KubelGlass : ModelBase
 
 ACTOR OldCar_Olive : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Vehicles
-	//$Title Old Car (Olive)
-	//$Color 3
-
 	Radius 32
 	Height 32
 	States
 	{
-		Spawn:
-			SMGT A -1
-			Stop
+	Spawn:
+		SMGT A -1
+		Stop
 	}
 }
 
-ACTOR OldCar_Red : OldCar_Olive
-{
-	//$Category Models (Wolf3D)/Vehicles
-	//$Title Old Car (Red)
-	//$Color 3
-}
+ACTOR OldCar_Red : OldCar_Olive {}
+ACTOR OldCar_Cyan : OldCar_Olive {}
 
-ACTOR OldCar_Cyan : OldCar_Olive
+ACTOR OldCar_Spawner : RandomSpawner
 {
 	//$Category Models (Wolf3D)/Vehicles
-	//$Title Old Car (Cyan)
+	//$Title Old Car Spawner
 	//$Color 3
+	DropItem "OldCar_Olive"
+	DropItem "OldCar_Red"
+	DropItem "OldCar_Cyan"
 }
 
 ACTOR Tractor : 3dObstacle
@@ -1324,15 +1268,8 @@ ACTOR Tractor : 3dObstacle
 	//$Category Models (Wolf3D)/Vehicles
 	//$Title Tractor
 	//$Color 3
-
 	Radius 32
 	Height 32
-	States
-	{
-		Spawn:
-			SMGT A -1
-			Stop
-	}
 }
 
 ACTOR SandbagArc : ModelBase
@@ -1352,11 +1289,11 @@ ACTOR SandbagArc : ModelBase
 
 ACTOR 3dPiano : 3dObstacle
 {
-//$Category Models (Wolf3D)/Scenery
-//$Title Piano
-//$Color 3
-Radius 56
-Height 48
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Piano
+	//$Color 3
+	Radius 56
+	Height 48
 }
 
 //AFADoomer Stuff
