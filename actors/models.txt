@@ -493,15 +493,6 @@ ACTOR RTCWChalice : 3dObstacle
 	Height 32
 }
 
-ACTOR Obelisk : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title Obelisk
-	//$Color 3
-	Radius 16
-	Height 32
-}
-
 ACTOR RTCWClock : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Scenery
@@ -589,28 +580,6 @@ ACTOR ModelOpelTruckWindows : ModelBase
 {
 	RenderStyle "Shaded"
 	StencilColor "CC CC CC"
-}
-
-ACTOR ControlPanel : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title Control Panel
-	//$Color 3
-	Radius 8
-	Height 32
-	+NOGRAVITY
-	+FIXMAPTHINGPOS
-}
-
-ACTOR ControlPanelB : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title Control Panel (Blown)
-	//$Color 3
-	Radius 8
-	Height 32
-	+NOGRAVITY
-	+FIXMAPTHINGPOS
 }
 
 ACTOR RTCWParlor : 3dObstacle
@@ -934,22 +903,13 @@ ACTOR NaziBannerTallHang256 : NaziBannerTallHang512
 ACTOR TrestleTable : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Furniture
-	//$Title Trestle Table A
+	//$Title Trestle Table
 	//$Color 3
 	Radius 40
-	Height 40
+	Height 34
 }
 
 //HERETIC II, HEXEN II and JEDI KNIGHT 3 MODELS - From Gore - Ozymandias81
-ACTOR H2Table : TrestleTable //from Hexen 2
-{
-	//$Category Models (Wolf3D)/Furniture
-	//$Title Trestle Table B
-	//$Color 3
-	Radius 32
-	Height 32
-}
-
 ACTOR Caesar : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Statues
@@ -965,40 +925,6 @@ ACTOR King : Caesar
 	//$Title King's Statue
 	//$Color 3
 	Radius 48
-}
-
-ACTOR Pisces : 3dObstacle //from Heretic 2
-{
-	//$Category Models (Wolf3D)/Statues
-	//$Title Pisces Fountain
-	//$Color 3
-	Radius 48
-	Height 80
-}
-
-ACTOR BoldFish : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Statues
-	//$Title Fish Statue
-	//$Color 3
-	Radius 32
-	Height 56
-}
-
-ACTOR DuckBillL : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Statues
-	//$Title DuckBill Statue (Left)
-	//$Color 3
-	Radius 64
-	Height 96
-}
-
-ACTOR DuckBillR : DuckBillL
-{
-	//$Category Models (Wolf3D)/Statues
-	//$Title DuckBill Statue (Right)
-	//$Color 3
 }
 
 ACTOR SDragonL : 3dObstacle
@@ -1270,21 +1196,6 @@ ACTOR Tractor : 3dObstacle
 	//$Color 3
 	Radius 32
 	Height 32
-}
-
-ACTOR SandbagArc : ModelBase
-{
-	//$Category Models (Wolf3D)/Obstacles
-	//$Title Sandbags (large arc)
-	//$Color 3
-	Radius 16
-	Height 24
-	States
-	{
-	Spawn:
-		SMGT A -1
-		Stop
-	}
 }
 
 ACTOR 3dPiano : 3dObstacle
