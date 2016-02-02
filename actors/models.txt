@@ -1,3 +1,4 @@
+//Base stuff
 ACTOR ModelBase
 {
 	Height 56
@@ -72,7 +73,7 @@ ACTOR 3dBridge16 : InvisibleBridge
 ACTOR 3dBridge8 : InvisibleBridge
 {Radius 8 Height 24}
 
-//das models :-) - a bit of kraftwerk here
+//Models
 ACTOR ModelBeachHedgeHog : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Obstacles
@@ -415,6 +416,100 @@ ACTOR Luftschiff : 3dObstacle
 	Height 32
 }
 
+//Return to Castle Wolfenstein models
+Model ControlPanel
+{
+	Path "models"
+	Model 0 "control_panel.md3"
+	Skin 0 "cpwork.jpg"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+	FrameIndex SMGT A 0 0
+}
+
+Model ControlPanelB
+{
+	Path "models"
+	Model 0 "control_panel.md3"
+	Skin 0 "cpblown.jpg"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+	FrameIndex SMGT A 0 0
+}
+
+ACTOR RTCWChalice : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Chalice (Holy Graal?)
+	//$Color 3
+	Radius 8
+	Height 32
+}
+
+ACTOR RTCWClock : 3dObstacle //fixed by mxd
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Clock
+	//$Color 3
+
+	Radius 12
+	Height 112
+
+	+SYNCHRONIZED
+
+	States
+	{
+		Spawn:
+			SMGT A 0 NoDelay A_SpawnItemEx("RTCWClockPendulum", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+			goto TickLoop
+
+		TickLoop: // Tried adding those sound effects to RTCWClockPendulum, found out that it horribly messes model interpolation...
+			SMGT A 44 A_PlaySound("oldclock/tick")
+			SMGT A 0 A_Jump(1, "Chime")
+			loop
+
+		Chime:
+			SMGT A 278 A_PlaySound("oldclock/chime", CHAN_ITEM)
+			goto TickLoop
+	}
+}
+
+ACTOR RTCWClockPendulum : ModelBase //mxd
+{
+	+SYNCHRONIZED
+
+	States
+	{
+		Spawn:
+			FLM1 ABCDEFGHIJKLKJIHGFEDCB 4
+			loop
+	}
+}
+
+ACTOR RTCWCar : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Staff Car
+	//$Color 3
+
+	Radius 32
+	Height 32
+	States
+	{
+		Spawn:
+			SMGT A -1 NoDelay A_SpawnItemEx("RTCWCarGlass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+			Stop
+	}
+}
+
+ACTOR RTCWCarGlass : ModelBase
+{
+	RenderStyle "Shaded"
+	StencilColor "CC CC CC"
+}
+
 ACTOR FlagWave : ModelBase
 {
 	//$Category Models (Wolf3D)/Flags
@@ -484,104 +579,6 @@ ACTOR RadioModern : 3dObstacle
 	Height 20
 }
 
-ACTOR RTCWChalice : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title Chalice (Holy Graal?)
-	//$Color 3
-	Radius 8
-	Height 32
-}
-
-ACTOR RTCWClock : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title Clock
-	//$Color 3
-
-	Radius 12
-	Height 112
-
-	+SYNCHRONIZED
-
-	States
-	{
-		Spawn:
-			SMGT A 0 NoDelay A_SpawnItemEx("RTCWClockPendulum", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
-			goto TickLoop
-
-		TickLoop: // Tried adding those sound effects to RTCWClockPendulum, found out that it horribly messes model interpolation...
-			SMGT A 44 A_PlaySound("oldclock/tick")
-			SMGT A 0 A_Jump(1, "Chime")
-			loop
-
-		Chime:
-			SMGT A 278 A_PlaySound("oldclock/chime", CHAN_ITEM)
-			goto TickLoop
-	}
-}
-
-ACTOR RTCWClockPendulum : ModelBase
-{
-	+SYNCHRONIZED
-
-	States
-	{
-		Spawn:
-			FLM1 ABCDEFGHIJKLKJIHGFEDCB 4
-			loop
-	}
-}
-
-ACTOR RTCWCar : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Vehicles
-	//$Title Staff Car
-	//$Color 3
-
-	Radius 32
-	Height 32
-	States
-	{
-		Spawn:
-			SMGT A -1 NoDelay A_SpawnItemEx("RTCWCarGlass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
-			Stop
-	}
-}
-
-ACTOR RTCWCarGlass : ModelBase
-{
-	RenderStyle "Shaded"
-	StencilColor "CC CC CC"
-}
-
-ACTOR ModelGMCTruck : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Vehicles
-	//$Title Truck (US, MoH)
-	//$Color 3
-}
-
-ACTOR ModelOpelTruck : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Vehicles
-	//$Title Truck (Opel, MoH)
-	//$Color 3
-
-	States
-	{
-		Spawn:
-			SMGT A -1 NoDelay A_SpawnItemEx("ModelOpelTruckWindows", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
-			Stop
-	}
-}
-
-ACTOR ModelOpelTruckWindows : ModelBase
-{
-	RenderStyle "Shaded"
-	StencilColor "CC CC CC"
-}
-
 ACTOR RTCWParlor : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Scenery
@@ -607,6 +604,123 @@ ACTOR RTCWGramo : 3dObstacle
 	//$Color 3
 	Radius 16
 	Height 32
+}
+
+ACTOR EnigmaMachine : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Enigma Machine
+	//$Color 3
+	Radius 16
+	Height 8
+}
+
+ACTOR RTCWBench : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Furniture
+	//$Title Wooden Bench
+	//$Color 3
+	Radius 16
+	Height 8
+}
+
+ACTOR 3dBook1 : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Book (front)
+	//$Color 3
+	Radius 16
+	Height 8
+}
+
+ACTOR 3dBook2 : 3dBook1
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Book (back)
+	//$Color 3
+}
+
+ACTOR RTCWShield : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Shield with Swords
+	//$Color 3
+	Radius 8
+	Height 32
+	+NOGRAVITY
+	+FIXMAPTHINGPOS
+}
+
+ACTOR RTCWParachute1 : ModelBase
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Parachute (Ragged One)
+	//$Color 3
+}
+
+ACTOR RTCWParachute2 : ModelBase
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Parachute (Open One)
+	//$Color 3
+}
+
+ACTOR RTCW_V2_Complete : ModelBase
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title V2 (Complete)
+	//$Color 3
+	Radius 46
+	Height 192
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		SMGT A -1
+		Stop
+	}
+}
+
+ACTOR RTCW_V2_NoRamp : RTCW_V2_Complete
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title V2 (Without Ramp)
+	//$Color 3
+}
+
+ACTOR RTCW_V2_Rocket : RTCW_V2_Complete
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title V2 (Rocket Only)
+	//$Color 3
+}
+
+//MaxED stuff
+ACTOR ModelGMCTruck : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Truck (US, MoH)
+	//$Color 3
+}
+
+ACTOR ModelOpelTruck : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Truck (Opel, MoH)
+	//$Color 3
+
+	States
+	{
+		Spawn:
+			SMGT A -1 NoDelay A_SpawnItemEx("ModelOpelTruckWindows", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+			Stop
+	}
+}
+
+ACTOR ModelOpelTruckWindows : ModelBase
+{
+	RenderStyle "Shaded"
+	StencilColor "CC CC CC"
 }
 
 ACTOR WallLight1 : 3dObstacle
@@ -679,51 +793,6 @@ ACTOR SimpleLight1Lit : SimpleLight1
 	}
 }
 
-ACTOR EnigmaMachine : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title Enigma Machine
-	//$Color 3
-	Radius 16
-	Height 8
-}
-
-ACTOR RTCWBench : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Furniture
-	//$Title Wooden Bench
-	//$Color 3
-	Radius 16
-	Height 8
-}
-
-ACTOR 3dBook1 : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title Book (front)
-	//$Color 3
-	Radius 16
-	Height 8
-}
-
-ACTOR 3dBook2 : 3dBook1
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title Book (back)
-	//$Color 3
-}
-
-ACTOR RTCWShield : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title Shield with Swords
-	//$Color 3
-	Radius 8
-	Height 32
-	+NOGRAVITY
-	+FIXMAPTHINGPOS
-}
-
 ACTOR SlopeMe1 : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Special
@@ -781,51 +850,8 @@ ACTOR FuelDrum : 3dObstacle
 	Height 42
 }
 
-ACTOR RTCWParachute1 : ModelBase
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title Parachute (Ragged One)
-	//$Color 3
-}
-
-ACTOR RTCWParachute2 : ModelBase
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title Parachute (Open One)
-	//$Color 3
-}
-
-ACTOR RTCW_V2_Complete : ModelBase
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title V2 (Complete)
-	//$Color 3
-	Radius 46
-	Height 192
-	+NOGRAVITY
-	States
-	{
-	Spawn:
-		SMGT A -1
-		Stop
-	}
-}
-
-ACTOR RTCW_V2_NoRamp : RTCW_V2_Complete
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title V2 (Without Ramp)
-	//$Color 3
-}
-
-ACTOR RTCW_V2_Rocket : RTCW_V2_Complete
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title V2 (Rocket Only)
-	//$Color 3
-}
-
-ACTOR Tie_Fighter : 3dObstacle
+//Easter eggs
+ACTOR Tie_Fighter : 3dObstacle //ozy81
 {
 	//$Category Models (Wolf3D)/Astrostein
 	//$Title Tie Fighter (Easteregg)
@@ -1121,7 +1147,7 @@ ACTOR 3dPrometheus_R: 3dPrometheus_L
 	//$Color 3
 }
 
-//TF3DM Models
+//TF3DM / 3dRegenerator Models
 ACTOR MercedesLimo : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Vehicles
