@@ -417,26 +417,20 @@ ACTOR Luftschiff : 3dObstacle
 }
 
 //Return to Castle Wolfenstein models
-Model ControlPanel
+ACTOR ControlPanel : 3dObstacle
 {
-	Path "models"
-	Model 0 "control_panel.md3"
-	Skin 0 "cpwork.jpg"
-	Scale 1.0 1.0 1.0
-	InheritActorPitch
-	InheritActorRoll
-	FrameIndex SMGT A 0 0
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Control Panel
+	//$Color 3
+	Radius 8
+	Height 32
+	+NOGRAVITY
+	+FIXMAPTHINGPOS
 }
 
-Model ControlPanelB
+ACTOR ControlPanelB : ControlPanel
 {
-	Path "models"
-	Model 0 "control_panel.md3"
-	Skin 0 "cpblown.jpg"
-	Scale 1.0 1.0 1.0
-	InheritActorPitch
-	InheritActorRoll
-	FrameIndex SMGT A 0 0
+	//$Title Control Panel (Blown)
 }
 
 ACTOR RTCWChalice : 3dObstacle
