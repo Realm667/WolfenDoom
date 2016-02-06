@@ -1,4 +1,4 @@
-ACTOR Tree1
+ACTOR Tree1 : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree (snow)
@@ -9,7 +9,14 @@ ACTOR Tree1
 	States
 	{
 	Spawn:
-		TREW A -1
+	Active:
+		TREW A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
@@ -60,22 +67,6 @@ ACTOR Tree3 : SwitchableDecoration
 	}
 }
 
-ACTOR Bush
-{
-	//$Category Props (Wolf3D)/Trees
-	//$Title Bush (small)
-	//$Color 3
-	Radius 16
-	Height 32
-	-SOLID
-	States
-	{
-	Spawn:
-		BUSH A -1
-		Stop
-	}
-}
-
 ACTOR Tree4 : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Trees
@@ -99,7 +90,7 @@ ACTOR Tree4 : SwitchableDecoration
 	}
 }
 
-ACTOR Palm1
+ACTOR Palm1 : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Palm (center)
@@ -111,12 +102,19 @@ ACTOR Palm1
 	States
 	{
 	Spawn:
-		PAMN A -1
+	Active:
+		PAMN A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR Palm2
+ACTOR Palm2 : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Palm (left)
@@ -128,12 +126,19 @@ ACTOR Palm2
 	States
 	{
 	Spawn:
-		PAMN B -1
+	Active:
+		PAMN B 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR Palm3
+ACTOR Palm3 : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Palm (right)
@@ -145,12 +150,19 @@ ACTOR Palm3
 	States
 	{
 	Spawn:
-		PAMN C -1
+	Active:
+		PAMN C 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR JungleTree1
+ACTOR JungleTree1 : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Jungle Tree 1
@@ -161,12 +173,19 @@ ACTOR JungleTree1
 	States
 	{
 	Spawn:
-		SMGT A -1
+	Active:
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR JungleTree2
+ACTOR JungleTree2 : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Jungle Tree 2 (wall)
@@ -177,12 +196,19 @@ ACTOR JungleTree2
 	States
 	{
 	Spawn:
-		SMGT A -1
+	Active:
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR JungleTree3
+ACTOR JungleTree3 : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Jungle Tree 3 (bamboo)
@@ -193,100 +219,38 @@ ACTOR JungleTree3
 	States
 	{
 	Spawn:
-		SMGT A -1
+	Active:
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR PhobosRock1
-{
-	//$Category Props (Wolf3D)/Trees
-	//$Title Rock (brown 1)
-	//$Color 3
-	Radius 24
-	Height 16
-	+SOLID
-	States
-	{
-	Spawn:
-		ROK1 A -1
-		Stop
-	}
-}
-
-ACTOR PhobosRock2
-{
-	//$Category Props (Wolf3D)/Trees
-	//$Title Rock (brown 2)
-	//$Color 3
-	Radius 24
-	Height 16
-	+SOLID
-	States
-	{
-	Spawn:
-		ROK2 A -1
-		Stop
-	}
-}
-
-ACTOR PhobosRockSmall
-{
-	//$Category Props (Wolf3D)/Trees
-	//$Title Rock (brown 3)
-	//$Color 3
-	Radius 1
-	Height 1
-	States
-	{
-	Spawn:
-		ROK3 A -1
-		Stop
-	}
-}
-
-ACTOR summertreespawner : RandomSpawner
-{
-	//$Category Props (Wolf3D)/Trees
-	//$Title Tree (summer, random spawner)
-	//$Color 3
-	DropItem "Bush"
-	DropItem "Tree2"
-	DropItem "Tree3"
-	DropItem "Tree4"
-	DropItem "SmallTree1"
-	DropItem "SmallTree2"
-}
-
-ACTOR wintertreespawner : RandomSpawner
-{
-	//$Category Props (Wolf3D)/Trees
-	//$Title Tree (winter, random spawner)
-	//$Color 3
-	DropItem "winterA"
-	DropItem "winterB"
-	DropItem "winterC"
-	DropItem "winterD"
-	DropItem "winterE"
-	DropItem "winterF"
-	DropItem "winterG"
-	DropItem "winterH"
-	DropItem "winterI"
-}
-
-ACTOR winterA
+ACTOR winterA : SwitchableDecoration
 {
 	Height 115
 	+SOLID
 	States
 	{
 	Spawn:
-		WINT A -1
+	Active:
+		WINT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR winterB
+ACTOR winterB : SwitchableDecoration
 {
 	Radius 15
 	Height 90
@@ -294,36 +258,57 @@ ACTOR winterB
 	States
 	{
 	Spawn:
-		WINT B -1
+	Active:
+		WINT B 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR winterC
+ACTOR winterC : SwitchableDecoration
 {
 	Height 140
 	+SOLID
 	States
 	{
 	Spawn:
-		WINT C -1
+	Active:
+		WINT C 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR winterD
+ACTOR winterD : SwitchableDecoration
 {
 	Height 60
 	+SOLID
 	States
 	{
 	Spawn:
-		WINT D -1
+	Active:
+		WINT D 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR winterE
+ACTOR winterE : SwitchableDecoration
 {
 	Radius 10
 	Height 45
@@ -331,12 +316,19 @@ ACTOR winterE
 	States
 	{
 	Spawn:
-		WINT E -1
+	Active:
+		WINT E 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR winterF
+ACTOR winterF : SwitchableDecoration
 {
 	Radius 10
 	Height 110
@@ -344,12 +336,19 @@ ACTOR winterF
 	States
 	{
 	Spawn:
-		WINT F -1
+	Active:
+		WINT F 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR winterG
+ACTOR winterG : SwitchableDecoration
 {
 	Radius 25
 	Height 130
@@ -357,12 +356,19 @@ ACTOR winterG
 	States
 	{
 	Spawn:
-		WINT G -1
+	Active:
+		WINT G 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR winterH
+ACTOR winterH : SwitchableDecoration
 {
 	Radius 25
 	Height 130
@@ -370,12 +376,19 @@ ACTOR winterH
 	States
 	{
 	Spawn:
-		WINT H -1
+	Active:
+		WINT H 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR winterI
+ACTOR winterI : SwitchableDecoration
 {
 	Radius 25
 	Height 130
@@ -383,7 +396,14 @@ ACTOR winterI
 	States
 	{
 	Spawn:
-		WINT I -1
+	Active:
+		WINT I 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
@@ -435,7 +455,7 @@ ACTOR SmallTree2 : SwitchableDecoration
 }
 
 //Burnt variants - Ozymandias81
-ACTOR Tree2_Burnt
+ACTOR Tree2_Burnt : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Tree (burnt, large)
@@ -446,12 +466,19 @@ ACTOR Tree2_Burnt
 	States
 	{
 	Spawn:
-		TREG A -1
+	Active:
+		TREG A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR Tree3_Burnt
+ACTOR Tree3_Burnt : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Tree 1 (burnt, middle)
@@ -463,12 +490,19 @@ ACTOR Tree3_Burnt
 	States
 	{
 	Spawn:
-		TREG B -1
+	Active:
+		TREG B 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR Tree4_Burnt
+ACTOR Tree4_Burnt : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Tree 2 (burnt, middle)
@@ -479,12 +513,19 @@ ACTOR Tree4_Burnt
 	States
 	{
 	Spawn:
-		TREG C -1
+	Active:
+		TREG C 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR JungleTree1_Burnt
+ACTOR JungleTree1_Burnt : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Jungle Tree 1 (Burnt)
@@ -495,12 +536,19 @@ ACTOR JungleTree1_Burnt
 	States
 	{
 	Spawn:
-		SMGT A -1
+	Active:
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR JungleTree2_Burnt
+ACTOR JungleTree2_Burnt : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Jungle Tree 2 (burnt, wall)
@@ -512,12 +560,19 @@ ACTOR JungleTree2_Burnt
 	States
 	{
 	Spawn:
-		SMGT A -1
+	Active:
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR SmallTree1_Burnt
+ACTOR SmallTree1_Burnt : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Tree 4 (burnt, middle)
@@ -528,21 +583,16 @@ ACTOR SmallTree1_Burnt
 	States
 	{
 	Spawn:
-		TREN A -1
+	Active:
+		TREN A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
-}
-
-ACTOR BurnTreeSpawner : RandomSpawner
-{
-	//$Category Props (Wolf3D)/Trees/Burnt
-	//$Title Trees (burnt, random spawner)
-	//$Color 3
-	DropItem "Tree2_Burnt"
-	DropItem "Tree3_Burnt"
-	DropItem "Tree4_Burnt"
-	DropItem "JungleTree1_Burnt"
-	DropItem "SmallTree1_Burnt"
 }
 
 ACTOR SmallBush1
@@ -573,6 +623,22 @@ ACTOR SmallBush2
 	{
 	Spawn:
 		BUSN B -1
+		Stop
+	}
+}
+
+ACTOR Bush
+{
+	//$Category Props (Wolf3D)/Trees
+	//$Title Bush (small)
+	//$Color 3
+	Radius 16
+	Height 32
+	-SOLID
+	States
+	{
+	Spawn:
+		BUSH A -1
 		Stop
 	}
 }
@@ -926,6 +992,93 @@ ACTOR Rose4 : Flower1
 	}
 }
 
+ACTOR RandomRye
+{
+	//$Category Props (Wolf3D)/Grass
+	//$Title Random Rye
+	//$Color 3
+	//$Sprite RYE_A0
+	Radius 8
+	Height 32
+	Scale 0.8
+	States
+	{
+	Spawn:
+		RYE_ A 0 NoDelay A_Jump(256, "RyeA", "RyeB", "RyeC", "RyeD", "RyeE", "RyeF")
+		stop
+	RyeA:
+		RYE_ A 0
+		goto Setup
+	RyeB:
+		RYE_ B 0
+		goto Setup
+	RyeC:
+		RYE_ C 0
+		goto Setup
+	RyeD:
+		RYE_ D 0
+		goto Setup
+	RyeE:
+		RYE_ E 0
+		goto Setup
+	RyeF:
+		RYE_ F 0
+		goto Setup
+	Setup:
+		"####" "#" 0 A_SetScale(ScaleX * frandom(0.85, 1.1), ScaleY * frandom(0.85, 1.1))
+		"####" "#" -1 A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
+		Stop	
+	}
+}
+
+ACTOR PhobosRock1
+{
+	//$Category Props (Wolf3D)/Trees
+	//$Title Rock (brown 1)
+	//$Color 3
+	Radius 24
+	Height 16
+	+SOLID
+	States
+	{
+	Spawn:
+		ROK1 A -1
+		Stop
+	}
+}
+
+ACTOR PhobosRock2
+{
+	//$Category Props (Wolf3D)/Trees
+	//$Title Rock (brown 2)
+	//$Color 3
+	Radius 24
+	Height 16
+	+SOLID
+	States
+	{
+	Spawn:
+		ROK2 A -1
+		Stop
+	}
+}
+
+ACTOR PhobosRockSmall
+{
+	//$Category Props (Wolf3D)/Trees
+	//$Title Rock (brown 3)
+	//$Color 3
+	Radius 1
+	Height 1
+	States
+	{
+	Spawn:
+		ROK3 A -1
+		Stop
+	}
+}
+
+//Randomizers
 ACTOR FlowersSpawner : RandomSpawner
 {
 	//$Category Props (Wolf3D)/Grass
@@ -986,41 +1139,43 @@ ACTOR GrassSpawnerWinter : RandomSpawner
 	Scale 0.5
 }
 
-ACTOR RandomRye
+ACTOR BurnTreeSpawner : RandomSpawner
 {
-	//$Category Props (Wolf3D)/Grass
-	//$Title Random Rye
+	//$Category Props (Wolf3D)/Trees/Burnt
+	//$Title Trees (burnt, random spawner)
 	//$Color 3
-	//$Sprite RYE_A0
-	Radius 8
-	Height 32
-	Scale 0.8
-	States
-	{
-	Spawn:
-		RYE_ A 0 NoDelay A_Jump(256, "RyeA", "RyeB", "RyeC", "RyeD", "RyeE", "RyeF")
-		stop
-	RyeA:
-		RYE_ A 0
-		goto Setup
-	RyeB:
-		RYE_ B 0
-		goto Setup
-	RyeC:
-		RYE_ C 0
-		goto Setup
-	RyeD:
-		RYE_ D 0
-		goto Setup
-	RyeE:
-		RYE_ E 0
-		goto Setup
-	RyeF:
-		RYE_ F 0
-		goto Setup
-	Setup:
-		"####" "#" 0 A_SetScale(ScaleX * frandom(0.85, 1.1), ScaleY * frandom(0.85, 1.1))
-		"####" "#" -1 A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
-		Stop	
-	}
+	DropItem "Tree2_Burnt"
+	DropItem "Tree3_Burnt"
+	DropItem "Tree4_Burnt"
+	DropItem "JungleTree1_Burnt"
+	DropItem "SmallTree1_Burnt"
+}
+
+ACTOR summertreespawner : RandomSpawner
+{
+	//$Category Props (Wolf3D)/Trees
+	//$Title Tree (summer, random spawner)
+	//$Color 3
+	DropItem "Bush"
+	DropItem "Tree2"
+	DropItem "Tree3"
+	DropItem "Tree4"
+	DropItem "SmallTree1"
+	DropItem "SmallTree2"
+}
+
+ACTOR wintertreespawner : RandomSpawner
+{
+	//$Category Props (Wolf3D)/Trees
+	//$Title Tree (winter, random spawner)
+	//$Color 3
+	DropItem "winterA"
+	DropItem "winterB"
+	DropItem "winterC"
+	DropItem "winterD"
+	DropItem "winterE"
+	DropItem "winterF"
+	DropItem "winterG"
+	DropItem "winterH"
+	DropItem "winterI"
 }
