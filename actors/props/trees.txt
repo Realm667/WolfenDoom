@@ -14,7 +14,7 @@ ACTOR Tree1
 	}
 }
 
-ACTOR Tree2
+ACTOR Tree2 : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree (large)
@@ -25,12 +25,19 @@ ACTOR Tree2
 	States
 	{
 	Spawn:
-		TREG A -1
+	Active:
+		TREG A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR Tree3
+ACTOR Tree3 : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree 1 (middle)
@@ -41,7 +48,14 @@ ACTOR Tree3
 	States
 	{
 	Spawn:
-		TREG B -1
+	Active:
+		TREG B 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
@@ -62,7 +76,7 @@ ACTOR Bush
 	}
 }
 
-ACTOR Tree4
+ACTOR Tree4 : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree 2 (middle)
@@ -73,7 +87,14 @@ ACTOR Tree4
 	States
 	{
 	Spawn:
-		TREG C -1
+	Active:
+		TREG C 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
@@ -367,7 +388,7 @@ ACTOR winterI
 	}
 }
 
-ACTOR SmallTree1
+ACTOR SmallTree1 : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree 4 (middle)
@@ -378,12 +399,19 @@ ACTOR SmallTree1
 	States
 	{
 	Spawn:
-		TREN A -1
+	Active:
+		TREN A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
 
-ACTOR SmallTree2
+ACTOR SmallTree2 : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree 5 (small)
@@ -394,7 +422,14 @@ ACTOR SmallTree2
 	States
 	{
 	Spawn:
-		TREN B -1
+	Active:
+		TREN B 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		Loop
+	Unsighted:
+		TNT1 A 10
+		Goto Active
+	Inactive:
+		TNT1 A -1
 		Stop
 	}
 }
