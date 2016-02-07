@@ -749,9 +749,12 @@ Model SubmarineIcy
 Model Vidcam
 {
 	Path "models"
-	Model 0 "vidcam2.md3"
-	Skin 0 "vidcam2.jpg"
-	Scale 1.0 1.0 1.0
+	Model 0 "camera_b.md3"
+	//Skin 0 "camera_d.jpg"
+	Path "models"
+	Model 1 "camera_a.md3"
+	//Skin 1 "camera_d.jpg"
+	Scale 20.0 20.0 20.0
 	InheritActorPitch
 	InheritActorRoll
 
@@ -1279,17 +1282,6 @@ Model RTCWChalice
 	FrameIndex SMGT A 0 0
 }
 
-Model Obelisk
-{
-	Path "models"
-	Model 0 "obelisk.md3"
-	Skin 0 "obelisk.jpg" //skin needs its black fixed
-	Scale 1.0 1.0 1.0
-	InheritActorPitch
-	InheritActorRoll
-	FrameIndex SMGT A 0 0
-}
-
 Model RTCWClock
 {
 	Path "models"
@@ -1343,28 +1335,6 @@ Model RTCWCarGlass
 	InheritActorPitch
 	InheritActorRoll
 	
-	FrameIndex SMGT A 0 0
-}
-
-Model ControlPanel
-{
-	Path "models"
-	Model 0 "control_panel.md3"
-	Skin 0 "cpwork.jpg"
-	Scale 1.0 1.0 1.0
-	InheritActorPitch
-	InheritActorRoll
-	FrameIndex SMGT A 0 0
-}
-
-Model ControlPanelB
-{
-	Path "models"
-	Model 0 "control_panel.md3"
-	Skin 0 "cpblown.jpg"
-	Scale 1.0 1.0 1.0
-	InheritActorPitch
-	InheritActorRoll
 	FrameIndex SMGT A 0 0
 }
 
@@ -1573,6 +1543,28 @@ Path "models"
 	FrameIndex SMGT A 0 0
 }
 
+Model ControlPanel
+{
+	Path "models"
+	Model 0 "control_panel.md3"
+	Skin 0 "cpwork.jpg"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+	FrameIndex SMGT A 0 0
+}
+
+Model ControlPanelB
+{
+	Path "models"
+	Model 0 "control_panel.md3"
+	Skin 0 "cpblown.jpg"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+	FrameIndex SMGT A 0 0
+}
+
 //DoomJuan stuff
 Model Harness
 {
@@ -1690,42 +1682,6 @@ Model TrestleTable
 
 //Ozy - Brought these from Gore
 //HERETIC II MODELS//
-Model Pisces
-{
-	Path "models"
-	Model 0 "pisces.md3"
-	Skin 0 "pisces.jpg"
-	Scale 1.0 1.0 1.0
-	FrameIndex SMGT A 0 0
-}
-
-Model BoldFish
-{
-	Path "models"
-	Model 0 "bfish.md3"
-	Skin 0 "bfish.jpg"
-	Scale 1.0 1.0 1.0
-	FrameIndex SMGT A 0 0
-}
-
-Model DuckBillL
-{
-	Path "models"
-	Model 0 "duckbill.md3"
-	Skin 0 "duckbill.jpg"
-	Scale 1.0 1.0 1.0
-	FrameIndex SMGT A 0 0
-}
-
-Model DuckBillR
-{
-	Path "models"
-	Model 0 "duckbill.md3"
-	Skin 0 "duckbill.jpg"
-	Scale 1.0 1.0 1.0
-	FrameIndex SMGT A 0 1
-}
-
 Model SDragonL
 {
 	Path "models"
@@ -1791,17 +1747,6 @@ Model 3dMinerals
 }
 
 //HEXEN II MODELS
-Model H2Table
-{
-	Path "models"
-	Model 0 "h2table.md3"
-	Skin 0 "h2table.jpg"
-	Scale 1.0 1.0 1.0
-	InheritActorPitch
-	InheritActorRoll
-	FrameIndex SMGT A 0 0
-}
-
 Model Caesar
 {
 	Path "models"
@@ -1964,15 +1909,39 @@ Model Tractor
 	FrameIndex SMGT A 0 0
 }
 
-Model SandbagArc
+Model 3dPiano
 {
-	Path "Models"
-	Model 0 "sandbags_arc.md3"
-	Skin 0 "sandbags_arc.png"
-	Scale 28.0 28.0 28.0
+	Path "models"
+	Model 0 "piano.md3"
+	//Skin 0 "piano.png"
+	Scale 48.0 48.0 48.0
 	InheritActorPitch
 	InheritActorRoll
+	
+	FrameIndex SMGT A 0 0
+}
 
+Model Bunk_Bed1
+{
+	Path "Models"
+	Model 0 "p_bed1.md3"
+	Skin 0 "p_beds.jpg"
+	Scale 24.0 24.0 24.0
+	InheritActorPitch
+	InheritActorRoll
+	
+	FrameIndex SMGT A 0 0
+}
+
+Model Bunk_Bed2
+{
+	Path "Models"
+	Model 0 "p_bed2.md3"
+	Skin 0 "p_beds.jpg"
+	Scale 24.0 24.0 24.0
+	InheritActorPitch
+	InheritActorRoll
+	
 	FrameIndex SMGT A 0 0
 }
 
@@ -2604,14 +2573,3 @@ Model SlopeMe2
 	FrameIndex SMGT A 0 0
 }
 
-//Special model for moving truck
-Model ModelGMCTruck
-{
-	Path "Models"
-	Model 0 "gmctruck.md3"
-	//Skin 0 "gmc_truck.png"
-	InheritActorPitch
-	InheritActorRoll
-
-	FrameIndex SMGT A 0 0
-}
