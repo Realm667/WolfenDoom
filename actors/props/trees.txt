@@ -1,4 +1,4 @@
-ACTOR Tree1 : SwitchableDecoration
+ACTOR Tree1
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree (snow)
@@ -9,19 +9,15 @@ ACTOR Tree1 : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
-		TREW A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		TREW A 10
+		Goto Spawn
 	}
 }
 
-ACTOR Tree2 : SwitchableDecoration
+ACTOR Tree2
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree (large)
@@ -32,19 +28,15 @@ ACTOR Tree2 : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
-		TREG A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		TREG A 10
+		Goto Spawn
 	}
 }
 
-ACTOR Tree3 : SwitchableDecoration
+ACTOR Tree3
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree 1 (middle)
@@ -55,19 +47,15 @@ ACTOR Tree3 : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
-		TREG B 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		TREG B 10
+		Goto Spawn
 	}
 }
 
-ACTOR Tree4 : SwitchableDecoration
+ACTOR Tree4
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree 2 (middle)
@@ -78,19 +66,15 @@ ACTOR Tree4 : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
-		TREG C 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		TREG C 10
+		Goto Spawn
 	}
 }
 
-ACTOR Palm1 : SwitchableDecoration
+ACTOR Palm1
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Palm (center)
@@ -102,19 +86,15 @@ ACTOR Palm1 : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
-		PAMN A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		PAMN A 10
+		Goto Spawn
 	}
 }
 
-ACTOR Palm2 : SwitchableDecoration
+ACTOR Palm2
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Palm (left)
@@ -126,19 +106,15 @@ ACTOR Palm2 : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
-		PAMN B 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		PAMN B 10
+		Goto Spawn
 	}
 }
 
-ACTOR Palm3 : SwitchableDecoration
+ACTOR Palm3
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Palm (right)
@@ -150,19 +126,15 @@ ACTOR Palm3 : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
-		PAMN C 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		PAMN C 10
+		Goto Spawn
 	}
 }
 
-ACTOR JungleTree1 : SwitchableDecoration
+ACTOR JungleTree1
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Jungle Tree 1
@@ -173,19 +145,15 @@ ACTOR JungleTree1 : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
 		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
 		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		Goto Spawn
 	}
 }
 
-ACTOR JungleTree2 : SwitchableDecoration
+ACTOR JungleTree2
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Jungle Tree 2 (wall)
@@ -196,19 +164,15 @@ ACTOR JungleTree2 : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
 		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
 		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		Goto Spawn
 	}
 }
 
-ACTOR JungleTree3 : SwitchableDecoration
+ACTOR JungleTree3
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Jungle Tree 3 (bamboo)
@@ -219,38 +183,30 @@ ACTOR JungleTree3 : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
 		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
 		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		Goto Spawn
 	}
 }
 
-ACTOR winterA : SwitchableDecoration
+ACTOR winterA
 {
 	Height 115
 	+SOLID
 	States
 	{
 	Spawn:
-	Active:
-		WINT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		WINT A 10
+		Goto Spawn
 	}
 }
 
-ACTOR winterB : SwitchableDecoration
+ACTOR winterB
 {
 	Radius 15
 	Height 90
@@ -258,57 +214,45 @@ ACTOR winterB : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
-		WINT B 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		WINT B 10
+		Goto Spawn
 	}
 }
 
-ACTOR winterC : SwitchableDecoration
+ACTOR winterC
 {
 	Height 140
 	+SOLID
 	States
 	{
 	Spawn:
-	Active:
-		WINT C 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		WINT C 10
+		Goto Spawn
 	}
 }
 
-ACTOR winterD : SwitchableDecoration
+ACTOR winterD
 {
 	Height 60
 	+SOLID
 	States
 	{
 	Spawn:
-	Active:
-		WINT D 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		WINT D 10
+		Goto Spawn
 	}
 }
 
-ACTOR winterE : SwitchableDecoration
+ACTOR winterE
 {
 	Radius 10
 	Height 45
@@ -316,19 +260,15 @@ ACTOR winterE : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
-		WINT E 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		WINT E 10
+		Goto Spawn
 	}
 }
 
-ACTOR winterF : SwitchableDecoration
+ACTOR winterF
 {
 	Radius 10
 	Height 110
@@ -336,19 +276,15 @@ ACTOR winterF : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
-		WINT F 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		WINT F 10
+		Goto Spawn
 	}
 }
 
-ACTOR winterG : SwitchableDecoration
+ACTOR winterG
 {
 	Radius 25
 	Height 130
@@ -356,19 +292,15 @@ ACTOR winterG : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
-		WINT G 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		WINT G 10
+		Goto Spawn
 	}
 }
 
-ACTOR winterH : SwitchableDecoration
+ACTOR winterH
 {
 	Radius 25
 	Height 130
@@ -376,19 +308,15 @@ ACTOR winterH : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
-		WINT H 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		WINT H 10
+		Goto Spawn
 	}
 }
 
-ACTOR winterI : SwitchableDecoration
+ACTOR winterI
 {
 	Radius 25
 	Height 130
@@ -396,19 +324,15 @@ ACTOR winterI : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
-		WINT I 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		WINT I 10
+		Goto Spawn
 	}
 }
 
-ACTOR SmallTree1 : SwitchableDecoration
+ACTOR SmallTree1
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree 4 (middle)
@@ -419,19 +343,15 @@ ACTOR SmallTree1 : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
-		TREN A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		TREN A 10
+		Goto Spawn
 	}
 }
 
-ACTOR SmallTree2 : SwitchableDecoration
+ACTOR SmallTree2
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree 5 (small)
@@ -442,20 +362,16 @@ ACTOR SmallTree2 : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
-		TREN B 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		TREN B 10
+		Goto Spawn
 	}
 }
 
 //Burnt variants - Ozymandias81
-ACTOR Tree2_Burnt : SwitchableDecoration
+ACTOR Tree2_Burnt
 {
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Tree (burnt, large)
@@ -466,19 +382,15 @@ ACTOR Tree2_Burnt : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
-		TREG A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		TREN A 10 //not burned anyway
+		Goto Spawn
 	}
 }
 
-ACTOR Tree3_Burnt : SwitchableDecoration
+ACTOR Tree3_Burnt
 {
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Tree 1 (burnt, middle)
@@ -490,19 +402,15 @@ ACTOR Tree3_Burnt : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
-		TREG B 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		TREG B 10
+		Goto Spawn
 	}
 }
 
-ACTOR Tree4_Burnt : SwitchableDecoration
+ACTOR Tree4_Burnt
 {
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Tree 2 (burnt, middle)
@@ -513,19 +421,15 @@ ACTOR Tree4_Burnt : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
-		TREG C 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		TREG C 10
+		Goto Spawn
 	}
 }
 
-ACTOR JungleTree1_Burnt : SwitchableDecoration
+ACTOR JungleTree1_Burnt
 {
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Jungle Tree 1 (Burnt)
@@ -536,19 +440,15 @@ ACTOR JungleTree1_Burnt : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
 		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
 		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		Goto Spawn
 	}
 }
 
-ACTOR JungleTree2_Burnt : SwitchableDecoration
+ACTOR JungleTree2_Burnt
 {
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Jungle Tree 2 (burnt, wall)
@@ -560,19 +460,15 @@ ACTOR JungleTree2_Burnt : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
 		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
 		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		Goto Spawn
 	}
 }
 
-ACTOR SmallTree1_Burnt : SwitchableDecoration
+ACTOR SmallTree1_Burnt
 {
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Tree 4 (burnt, middle)
@@ -583,15 +479,11 @@ ACTOR SmallTree1_Burnt : SwitchableDecoration
 	States
 	{
 	Spawn:
-	Active:
-		TREN A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
+		SMGT A 1 A_CheckRange(CallACS("ModelsLOD"), "Unsighted", true)
 		Loop
 	Unsighted:
-		TNT1 A 10
-		Goto Active
-	Inactive:
-		TNT1 A -1
-		Stop
+		TREN A 10
+		Goto Spawn
 	}
 }
 
