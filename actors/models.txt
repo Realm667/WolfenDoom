@@ -380,8 +380,8 @@ ACTOR Nebelwerfer3D_Destroyed
 	States
 	{
 	Spawn:
-		SMGT B -1
-		Stop
+		SMGT B 8 A_CustomMissile("DarkSmoke2",32,0,random(0,360),2,random(70,130))
+		Loop
 	}
 }
 
