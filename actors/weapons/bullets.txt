@@ -68,8 +68,8 @@ ACTOR TracerSpark
 	RenderStyle "Add"
 	Scale .3
 	Mass 0
-	+MISSILE
 	BounceType Doom
+	+MISSILE
 	+FLOORCLIP
 	+DONTSPLASH
 	+NOTELEPORT
@@ -78,14 +78,34 @@ ACTOR TracerSpark
 	{
 	Spawn:
 		PUFF A 1
-		PUFF AEFGHI 2 BRIGHT A_SetTranslucent(.8,1)
-		PUFF J 1 BRIGHT A_SetTranslucent(.8,1)
-		PUFF K 1 BRIGHT A_SetTranslucent(.7,1)
-		PUFF K 1 BRIGHT A_SetTranslucent(.6,1)
-		PUFF K 1 BRIGHT A_SetTranslucent(.5,1)
-		PUFF K 1 BRIGHT A_SetTranslucent(.4,1)
-		PUFF K 1 BRIGHT A_SetTranslucent(.3,1)
-		PUFF K 1 BRIGHT A_SetTranslucent(.2,1)
+		"####" AEFGHI 2 BRIGHT A_SetTranslucent(.8,1)
+		"####" J 1 BRIGHT A_SetTranslucent(.8,1)
+		"####" K 1 BRIGHT A_SetTranslucent(.7,1)
+		"####" K 1 BRIGHT A_SetTranslucent(.6,1)
+		"####" K 1 BRIGHT A_SetTranslucent(.5,1)
+		"####" K 1 BRIGHT A_SetTranslucent(.4,1)
+		"####" K 1 BRIGHT A_SetTranslucent(.3,1)
+		"####" K 1 BRIGHT A_SetTranslucent(.2,1)
+		Stop
+	}
+}
+
+ACTOR TankSpark : TracerSpark //use this as blood for vehicles et similae
+{
+	Scale .4
+	Mass 450
+	States
+	{
+	Spawn:
+		PUFF A 4
+		"####" AEFGHI 8 BRIGHT A_SetTranslucent(.8,1)
+		"####" J 4 BRIGHT A_SetTranslucent(.8,1)
+		"####" K 4 BRIGHT A_SetTranslucent(.7,1)
+		"####" K 4 BRIGHT A_SetTranslucent(.6,1)
+		"####" K 4 BRIGHT A_SetTranslucent(.5,1)
+		"####" K 4 BRIGHT A_SetTranslucent(.4,1)
+		"####" K 4 BRIGHT A_SetTranslucent(.3,1)
+		"####" K 4 BRIGHT A_SetTranslucent(.2,1)
 		Stop
 	}
 }

@@ -1,35 +1,35 @@
 //Tracers and stuff
 Model TracerTrail
 {
-   Path "models"
-   Model 0 "tracer.md3"
-   Skin 0 "tracer1.tga"
-   Scale 2.0 1.5 1.5
-   PITCHFROMMOMENTUM
-
-   FrameIndex PUFF A 0 0
+	Path "models"
+	Model 0 "tracer.md3"
+	Skin 0 "tracer1.tga"
+	Scale 2.0 1.5 1.5
+	PITCHFROMMOMENTUM
+	
+	FrameIndex PUFF A 0 0
 }
 
 Model MutantTrail
 {
-   Path "models"
-   Model 0 "tracer.md3"
-   Skin 0 "tracer2.tga"
-   Scale 2.0 1.5 1.5
-   PITCHFROMMOMENTUM
-
-   FrameIndex PUFF A 0 0
+	Path "models"
+	Model 0 "tracer.md3"
+	Skin 0 "tracer2.tga"
+	Scale 2.0 1.5 1.5
+	PITCHFROMMOMENTUM
+	
+	FrameIndex PUFF A 0 0
 }
 
 Model AstroTrail
 {
-   Path "models"
-   Model 0 "tracer.md3"
-   Skin 0 "tracer3.tga"
-   Scale 2.0 1.5 1.5
-   PITCHFROMMOMENTUM
-
-   FrameIndex PUFF A 0 0
+	Path "models"
+	Model 0 "tracer.md3"
+	Skin 0 "tracer3.tga"
+	Scale 2.0 1.5 1.5
+	PITCHFROMMOMENTUM
+	
+	FrameIndex PUFF A 0 0
 }
 
 //Actors
@@ -459,7 +459,7 @@ Model StreetLight2
 	INHERITACTORPITCH
 	INHERITACTORROLL
 
-	FrameIndex STLA A 0 0
+	FrameIndex SMGT A 0 0
 }
 
 Model StreetLight2
@@ -471,7 +471,7 @@ Model StreetLight2
 	INHERITACTORPITCH
 	INHERITACTORROLL
 
-	FrameIndex STLA C 0 0
+	FrameIndex SMGT C 0 0
 }
 
 Model StreetLight3
@@ -483,7 +483,7 @@ Model StreetLight3
 	INHERITACTORPITCH
 	INHERITACTORROLL
 
-	FrameIndex STLA B 0 0
+	FrameIndex SMGT B 0 0
 }
 
 Model StreetLight3
@@ -495,7 +495,7 @@ Model StreetLight3
 	INHERITACTORPITCH
 	INHERITACTORROLL
 
-	FrameIndex STLA D 0 0
+	FrameIndex SMGT D 0 0
 }
 
 Model WallLight2 //this is here because it comes from MaxED model - ozy81
@@ -797,6 +797,18 @@ Model Nebelwerfer3D
 	FrameIndex SMGT A 0 0
 }
 
+Model Nebelwerfer3D_Destroyed
+{
+	Path "Models"
+	Model 0 "nebelwerfer_d.md3"
+	Skin 0 "nebelwerfer_d.jpg"
+	Scale 0.7 0.7 0.7
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT B 0 0
+}
+
 Model Turret3D
 {
 	Path "Models"
@@ -902,7 +914,7 @@ Model StreetLight1
 	InheritActorPitch
 	InheritActorRoll
 
-	FrameIndex STRL D 0 0
+	FrameIndex SMGT A 0 0
 }
 
 Model StreetLight1Lit
@@ -914,7 +926,7 @@ Model StreetLight1Lit
 	InheritActorPitch
 	InheritActorRoll
 
-	FrameIndex STRL D 0 0
+	FrameIndex SMGT A 0 0
 }
 
 Model FlagWave
@@ -2030,7 +2042,7 @@ Model Palm3
 	FrameIndex SMGT A 0 0
 }
 
-//Jungle trees - These doesn't have any sprites though
+//Jungle trees
 Model JungleTree1
 {
 	Path "models/trees"
@@ -2572,4 +2584,3 @@ Model SlopeMe2
 	InheritActorRoll
 	FrameIndex SMGT A 0 0
 }
-

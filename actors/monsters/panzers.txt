@@ -359,12 +359,12 @@ ACTOR SSTank1
 	+DONTMORPH
 	+BOSSDEATH
 	+PAINLESS
-	+NOBLOOD
 	+SOLID
 	Monster
 	Obituary "$TANKS"
 	Species Nazi
 	MaxStepHeight 32
+	BloodType "TankSpark"
 	States
 	{
 	Spawn:
@@ -428,6 +428,7 @@ ACTOR DestroyedTank1
 	Height 48
 	Radius 48
 	Mass 0x7ffffff
+	BloodType "TankSpark"
 	States
 	{
 	Spawn:
