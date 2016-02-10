@@ -260,7 +260,7 @@ ACTOR StreetLight1
 	States
 	{
 	Spawn:
-		STRL D -1
+		SMGT A -1
 		Stop
 	}
 }
@@ -283,12 +283,12 @@ ACTOR StreetLight2 : SwitchableDecoration
 	States
 	{
 	Active:
-		STLA C 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+		SMGT C 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 	Spawn:
-	  STLA C -1 Light("BOASTLT2")
+	  SMGT C -1 Light("BOASTLT2")
 		stop
 	Inactive:
-		STLA A -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		SMGT A -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		Stop
 	}
 }
@@ -304,12 +304,12 @@ ACTOR StreetLight3 : SwitchableDecoration
 	States
 	{
 	Active:
-		STLA D 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+		SMGT D 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 	Spawn:
-	  STLA D -1 Light("BOASTLT3")
+	  SMGT D -1 Light("BOASTLT3")
 		stop
 	Inactive:
-		STLA B -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		SMGT B -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		Stop
 	}
 }

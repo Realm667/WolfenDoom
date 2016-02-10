@@ -120,44 +120,52 @@ ACTOR Table7
 	States
 	{
 	Spawn:
-		TBL1 B 0 NoDelay A_SpawnItemEx("WineBottle", Random(-8, -3), Random(-8, 8), 27, 0, 0, 0, 0, 0, 128)
-		"####" B 0 A_SpawnItemEx("WineBottle", Random(3, 8), Random(-8, 8), 27, 0, 0, 0, 0, 0, 128)
-		"####" B 0 A_SpawnItemEx("WineGlass", Random(-16, -8), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
-		"####" B 0 A_SpawnItemEx("WineGlass", Random(8, 16), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
-		"####" B 0 A_SpawnItemEx("WineGlass", Random(-16, -8), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
-		"####" B 0 A_SpawnItemEx("WineGlass", Random(8, 16), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
-		"####" B -1
+		SMGT A 0 NoDelay A_SpawnItemEx("WineBottle", Random(-8, -3), Random(-8, 8), 27, 0, 0, 0, 0, 0, 128)
+		"####" A 0 A_SpawnItemEx("WineBottle", Random(3, 8), Random(-8, 8), 27, 0, 0, 0, 0, 0, 128)
+		"####" A 0 A_SpawnItemEx("WineGlass", Random(-16, -8), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
+		"####" A 0 A_SpawnItemEx("WineGlass", Random(8, 16), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
+		"####" A 0 A_SpawnItemEx("WineGlass", Random(-16, -8), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
+		"####" A 0 A_SpawnItemEx("WineGlass", Random(8, 16), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
+		"####" A -1
 		Stop
 	}
 }
 
-ACTOR Table8 : Table7
+ACTOR Table8
 {
 	//$Category Props (Wolf3D)/Castle
 	//$Title Table (2, no chairs)
 	//$Color 3
+	Radius 20
+	Height 27
+	Scale 1.15
+	+SOLID
 	States
 	{
 	Spawn:
-		TBL2 B -1
+		SMGT A -1
 		Stop
 	}
 }
 
-ACTOR Table9 : Table7
+ACTOR Table9
 {
 	//$Category Props (Wolf3D)/Castle
 	//$Title Table (3, no chairs)
 	//$Color 3
+	Radius 20
+	Height 27
+	Scale 1.15
+	+SOLID
 	States
 	{
 	Spawn:
-		TBL3 B 0 NoDelay A_SpawnItemEx("Kettle", Random(-8, -3), Random(-8, 8), 27, 0, 0, 0, 0, 0, 128)
-		"####" B 0 A_SpawnItemEx("Cup1", Random(-16, -8), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
-		"####" B 0 A_SpawnItemEx("Cup1", Random(8, 16), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
-		"####" B 0 A_SpawnItemEx("Cup1", Random(-16, -8), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
-		"####" B 0 A_SpawnItemEx("Cup1", Random(8, 16), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
-		"####" B -1
+		SMGT A 0 NoDelay A_SpawnItemEx("Kettle", Random(-8, -3), Random(-8, 8), 27, 0, 0, 0, 0, 0, 128)
+		"####" A 0 A_SpawnItemEx("Cup1", Random(-16, -8), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
+		"####" A 0 A_SpawnItemEx("Cup1", Random(8, 16), Random(-16, -8), 27, 0, 0, 0, 0, 0, 128)
+		"####" A 0 A_SpawnItemEx("Cup1", Random(-16, -8), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
+		"####" A 0 A_SpawnItemEx("Cup1", Random(8, 16), Random(8, 16), 27, 0, 0, 0, 0, 0, 128)
+		"####" A -1
 		Stop
 	}
 }
@@ -189,7 +197,7 @@ ACTOR WellEmpty
 	States
 	{
 	Spawn:
-		WELL I -1
+		SMGT A -1
 		Stop
 	}
 }
@@ -202,7 +210,7 @@ ACTOR WellWater : WellEmpty
 	States
 	{
 	Spawn:
-		WELL H -1 NoDelay A_SpawnItemEx("WellWaterWater", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		SMGT A -1 NoDelay A_SpawnItemEx("WellWaterWater", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
 		Stop
 	}
 }
@@ -216,7 +224,7 @@ ACTOR WellWaterWater
 	States
 	{
 	Spawn:
-		WELL H -1
+		SMGT A -1
 		Stop
 	}
 }
@@ -229,7 +237,7 @@ ACTOR WellBlood : WellEmpty
 	States
 	{
 	Spawn:
-		WELL J -1 NoDelay A_SpawnItemEx("WellBloodBlood", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		SMGT A -1 NoDelay A_SpawnItemEx("WellBloodBlood", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
 		Stop
 	}
 }
@@ -248,7 +256,7 @@ ACTOR BarrelWine : WellEmpty
 	States
 	{
 	Spawn:
-		BARC A -1
+		SMGT A -1
 		Stop
 	}
 }

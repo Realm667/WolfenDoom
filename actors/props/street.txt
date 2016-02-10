@@ -56,7 +56,7 @@ ACTOR RoadBarrier
 	States
 	{
 	Spawn:
-		ROBA A -1
+		SMGT A -1
 		Stop
 	}
 }
@@ -183,73 +183,45 @@ ACTOR NTomb1
 	States
 	{
 	Spawn:
-		NTOM A -1
+		SMGT A -1
 		Stop
 	}
 }
 
-ACTOR NTomb2
+ACTOR NTomb2 : NTomb1
 {
 	//$Category Props (Wolf3D)/Street
 	//$Title "Tombstone 2"
 	//$Color 3
 	Radius 15
 	Height 62
-	+SOLID
-	States
-	{
-	Spawn:
-		NTOM B -1
-		Stop
-	}
 }
 
-ACTOR NTomb3
+ACTOR NTomb3 : NTomb1
 {
 	//$Category Props (Wolf3D)/Street
 	//$Title "Tombstone 3"
 	//$Color 3
 	Radius 15
 	Height 48
-	+SOLID
-	States
-	{
-	Spawn:
-		NTOM C -1
-		Stop
-	}
 }
 
-ACTOR NTomb4
+ACTOR NTomb4 : NTomb1
 {
 	//$Category Props (Wolf3D)/Street
 	//$Title "Tombstone 4"
 	//$Color 3
 	Radius 15
 	Height 43
-	+SOLID
-	States
-	{
-	Spawn:
-		NTOM D -1
-		Stop
-	}
 }
 
-ACTOR NTomb5
+ACTOR NTomb5 : NTomb1
 {
 	//$Category Props (Wolf3D)/Street
 	//$Title "Tombstone 5"
 	//$Color 3
 	Radius 12
 	Height 35
-	+SOLID
-	States
-	{
-	Spawn:
-		NTOM E -1
-		Stop
-	}
 }
 
 ACTOR OldWagon
