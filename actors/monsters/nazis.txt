@@ -290,26 +290,46 @@ ACTOR MP40Guard : Guard
 		MGRD EF 5 A_FaceTarget
 		MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
 		MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
+		MGRD G 0 A_GiveInventory("MP40GuardCounter", 1)
 		MGRD G 0 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		MGRD F 2 A_FaceTarget
 		MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
 		MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
+		MGRD G 0 A_GiveInventory("MP40GuardCounter", 1)
 		MGRD G 0 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		MGRD F 2 A_FaceTarget
 		MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
 		MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
+		MGRD G 0 A_GiveInventory("MP40GuardCounter", 1)
 		MGRD G 0 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		MGRD F 2 A_FaceTarget
 		MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
 		MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
+		MGRD G 0 A_GiveInventory("MP40GuardCounter", 1)
 		MGRD G 0 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		MGRD F 2 A_FaceTarget
 		MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
 		MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
+		MGRD G 0 A_GiveInventory("MP40GuardCounter", 1)
 		MGRD F 2 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		MGRD F 0 A_JumpIfInventory("MP40GuardCounter", 32, "Reload")
+		Goto See
+	Reload:
+		MGRD E 0 A_ChangeFlag("NoPain", 1)
+		MGRD E 30 A_PlaySoundEx("mp40/reload", "SoundSlot7", 0)
+		MGRD E 0 A_TakeInventory("MP40GuardCounter", 4)
+		MGRD E 0 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		MGRD E 0 A_JumpIfInventory("MP40GuardCounter", 1, 1)
+		Goto Reload+6
+		MGRD E 0
+		Goto Reload+2
+		MGRD E 10 A_PlaySoundEx("mp40/reload", "SoundSlot7", 0)
+		MGRD E 0 A_ChangeFlag("NoPain", 0)
 		Goto See
 	}
 }
+
+Actor MP40GuardCounter : Inventory {Inventory.MaxAmount 32}
 
 ACTOR SSMP40Guard : SSGuard
 {
@@ -332,12 +352,28 @@ ACTOR SSMP40Guard : SSGuard
 		SSMG EF 5 A_FaceTarget
 		SSMG G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
 		SSMG G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
+		SSMG G 0 A_GiveInventory("SSMP40GuardCounter", 1)
 		SSMG G 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		SSMG G 0 A_JumpIfInventory("SSMP40GuardCounter", 40, "Reload")
 		SSMG F 2 A_MonsterRefire(30,"See")
 		SSMG F 0 A_FaceTarget
 		Goto Missile+2
+	Reload:
+		SSMG E 0 A_ChangeFlag("NoPain", 1)
+		SSMG E 35 A_PlaySoundEx("mp40/reload", "SoundSlot7", 0)
+		SSMG E 0 A_TakeInventory("SSMP40GuardCounter", 4)
+		SSMG E 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		SSMG E 0 A_JumpIfInventory("SSMP40GuardCounter", 1, 1)
+		Goto Reload+6
+		SSMG E 0
+		Goto Reload+2
+		SSMG E 10 A_PlaySoundEx("mp40/reload", "SoundSlot7", 0)
+		SSMG E 0 A_ChangeFlag("NoPain", 0)
+		Goto See
 	}
 }
+
+Actor SSMP40GuardCounter : Inventory {Inventory.MaxAmount 40}
 
 ACTOR WMP40Guard : MP40Guard
 {
@@ -358,16 +394,33 @@ ACTOR WMP40Guard : MP40Guard
 		MGR2 EF 2 A_FaceTarget
 		MGR2 G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
 		MGR2 G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
+		SSMG G 0 A_GiveInventory("WMP40GuardCounter", 1)
 		MGR2 G 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		MGR2 F 1 A_FaceTarget
 		MGR2 G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
 		MGR2 G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-12,12))
+		MGR2 G 0 A_GiveInventory("WMP40GuardCounter", 1)
 		MGR2 G 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		MGR2 F 0 A_JumpIfInventory("WMP40GuardCounter", 48, "Reload")
 		MGR2 F 2 A_MonsterRefire(30,"See")
 		MGR2 F 0 A_FaceTarget
 		Goto Missile+2
+	Reload:
+		MGR2 E 0 A_ChangeFlag("NoPain", 1)
+		MGR2 E 40 A_PlaySoundEx("mp40/reload", "SoundSlot7", 0)
+		MGR2 E 0 A_TakeInventory("WMP40GuardCounter", 4)
+		MGR2 E 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		MGR2 E 0 A_JumpIfInventory("WMP40GuardCounter", 1, 1)
+		Goto Reload+6
+		MGR2 E 0
+		Goto Reload+2
+		MGR2 E 10 A_PlaySoundEx("mp40/reload", "SoundSlot7", 0)
+		MGR2 E 0 A_ChangeFlag("NoPain", 0)
+		Goto See
 	}
 }
+
+Actor WMP40GuardCounter : Inventory {Inventory.MaxAmount 48}
 
 ACTOR Officer : Guard
 {
