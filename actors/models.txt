@@ -1291,10 +1291,42 @@ ACTOR Bunk_Bed2 : Bunk_Bed1
 ACTOR CODSideCar : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Vehicles
-	//$Title SS SideCar
+	//$Title SideCar
 	//$Color 3
-	Radius 64
+	Radius 56
 	Height 48
+}
+
+ACTOR CODCivCar1_Destroyed : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Civilian Car (Tan, Destroyed)
+	//$Color 3
+	Height 64
+}
+
+ACTOR CODCivCar2_Destroyed : CODCivCar1_Destroyed
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Civilian Car (Tan, Destroyed)
+	//$Color 3
+}
+
+ACTOR CODCivCar3_Destroyed : CODCivCar1_Destroyed
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Civilian Car (Tan, Destroyed)
+	//$Color 3
+}
+
+ACTOR CODCivCar_Spawner : RandomSpawner
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Civilian Car Spawner (Destroyed)
+	//$Color 3
+	DropItem "CODCivCar1_Destroyed"
+	DropItem "CODCivCar2_Destroyed"
+	DropItem "CODCivCar3_Destroyed"
 }
 
 //AFADoomer Stuff
