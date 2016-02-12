@@ -1287,7 +1287,7 @@ ACTOR Bunk_Bed2 : Bunk_Bed1
 	Height 72
 }
 
-//Call Of Duty 1 Stuff
+//CODs Stuff
 ACTOR CODSideCar : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Vehicles
@@ -1327,6 +1327,89 @@ ACTOR CODCivCar_Spawner : RandomSpawner
 	DropItem "CODCivCar1_Destroyed"
 	DropItem "CODCivCar2_Destroyed"
 	DropItem "CODCivCar3_Destroyed"
+}
+
+//Archibase.net Stuff
+ACTOR CanyonRockSpawner : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Rocks
+	//$Title Canyon Rock Spawner
+	//$Color 3
+	Radius 24
+	Height 24
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY
+		SMGT A -1 A_Jump(128,1)
+		SMGT B -1 A_Jump(128,1)
+		SMGT C -1 
+		Stop
+	}
+}
+
+ACTOR DryRockSpawner : CanyonRockSpawner
+{
+	//$Category Models (Wolf3D)/Rocks
+	//$Title Dry Rock Spawner
+	//$Color 3
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY
+		SMGT A -1 A_Jump(128,1)
+		SMGT B -1 A_Jump(128,1)
+		SMGT C -1 
+		Stop
+	}
+}
+
+ACTOR SnowyRockSpawner : CanyonRockSpawner
+{
+	//$Category Models (Wolf3D)/Rocks
+	//$Title Snowy Rock Spawner
+	//$Color 3
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY
+		SMGT A -1 A_Jump(128,1)
+		SMGT B -1 A_Jump(128,1)
+		SMGT C -1 
+		Stop
+	}
+}
+
+ACTOR MuddyRockSpawner : CanyonRockSpawner
+{
+	//$Category Models (Wolf3D)/Rocks
+	//$Title Muddy Rock Spawner
+	//$Color 3
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY
+		SMGT A -1 A_Jump(128,1)
+		SMGT B -1 A_Jump(128,1)
+		SMGT C -1 
+		Stop
+	}
+}
+
+ACTOR LunarRockSpawner : CanyonRockSpawner
+{
+	//$Category Models (Wolf3D)/Rocks
+	//$Title Lunar Rock Spawner
+	//$Color 3
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY
+		SMGT A -1 A_Jump(128,1)
+		SMGT B -1 A_Jump(128,1)
+		SMGT C -1 
+		Stop
+	}
 }
 
 //AFADoomer Stuff
