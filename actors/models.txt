@@ -1412,22 +1412,6 @@ ACTOR LunarRockSpawner : CanyonRockSpawner
 	}
 }
 
-ACTOR SandRockSpawner : CanyonRockSpawner
-{
-	//$Category Models (Wolf3D)/Rocks
-	//$Title Sand Rock Spawner (Tunis)
-	//$Color 3
-	States
-	{
-	Spawn:
-		TNT1 A 0 NODELAY
-		SMGT A -1 A_Jump(128,1)
-		SMGT B -1 A_Jump(128,1)
-		SMGT C -1 
-		Stop
-	}
-}
-
 //AFADoomer Stuff
 ACTOR AstroShuttle : ModelBase
 {
