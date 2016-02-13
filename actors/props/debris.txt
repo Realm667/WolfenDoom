@@ -406,3 +406,21 @@ ACTOR Debris_TankShards : Debris_Tank
 		Wait
 	}
 }
+
+//This is here only for wall explosions debris, can't be selected from GZDB
+//Instead use function SpawnRocks while editing scripts on maps (check c1m1)
+ACTOR PhobosRockSmall
+{
+	Radius 1
+	Height 1
+	+CANPASS
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		ROK1 A -1 A_Jump(128,1)
+		ROK2 A -1 A_Jump(128,1)
+		ROK3 A -1
+		Stop
+	}
+}
