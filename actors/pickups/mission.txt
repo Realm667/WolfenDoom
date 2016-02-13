@@ -185,3 +185,23 @@ ACTOR ScientistUnfiformPickup : Akten
 		stop
 	}
 }
+
+ACTOR Kennkarte : Inventory
+{
+	//$Category Pickups (Wolf3D)
+	//$Title Kennkarte (Scandinavia)
+	//$Color 13
+	Tag "Kennkarte"
+	Inventory.Icon KENKA0
+	Inventory.PickupMessage "$KENK"
+	Inventory.PickupSound "misc/p_pkup"
+	+INVENTORY.UNDROPPABLE
+	+INVENTORY.INVBAR
+	+INVENTORY.ALWAYSPICKUP
+	States
+	{
+	Spawn:
+		KENK B -1
+		stop
+	}
+}
