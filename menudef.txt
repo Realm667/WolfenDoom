@@ -87,9 +87,6 @@ OptionMenuSettings
 // Firebrand options menu ------------------------------------------------------------------------------
 OptionMenu "BOAOptionsMenu"
 {
-  //Title "BOA Options"
-  //StaticText ""
-
 	StaticText "BOA Settings", 1
   StaticText ""
   // Settings should go here
@@ -97,33 +94,38 @@ OptionMenu "BOAOptionsMenu"
 	Slider "Shell Casing Lifetime","casinglifetime",100,9000,100
 	Slider "Weapon Recoil Multiplier","recoilamount",0,20,1
 	//Option "Unlimited Stamina", "sprinttoggle", "OnOff"
-
-	StaticText ""
+	
 	StaticText ""
   StaticText "BOA Weather Effects",	1
 	StaticText "WARNING: these settings require level restart"
+	
 	StaticText ""
 	Option "Fog","fogswitch","OnOff"
 	Option "Rain","rainswitch","OnOff"
 	Option "Snow","snowswitch","OnOff"
+	
 	StaticText ""
   StaticText "BOA Special Effects",	1
+  
 	StaticText ""
 	Option "Cinder","cinderswitch","OnOff"
 	Option "Stardust","dustswitch","OnOff"
 	Slider "Debris Lifetime","debrislifetime",100,10000,100
 	Slider "Blood Lifetime","bloodlifetime",100,3000,100
+	
 	StaticText ""
 	StaticText "WARNING: these settings require level restart"
+	
 	StaticText ""
 	Option "Smoke","smokeswitch","OnOff"
 	Option "Underwater Lights","litsswitch","OnOff"
+	
 	StaticText ""
   StaticText "BOA 3D Models Rendering Distance", 1
+  
 	StaticText ""
 	Slider "3D Trees","modelslod",256,16384,256
 
-	StaticText ""
 	StaticText ""
 	StaticText "BOA Controls", 1
   StaticTextSwitchable "ENTER to change, BACKSPACE to clear",
