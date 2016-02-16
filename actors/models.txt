@@ -770,7 +770,7 @@ ACTOR ModelGMCTruck : SwitchableDecoration //ozy81
 	Active:
 		SMGT A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 		TrampleIsOn:
-		SMGT A 1 NoDelay A_SpawnItemEx("Trample", ScaleX*128, 0, Height-16, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		SMGT A 1 A_SpawnItemEx("Trample", ScaleX*128, 0, Height-16, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
 		Loop
 	Spawn:
 	  SMGT A -1
@@ -1392,24 +1392,36 @@ ACTOR CODScheinwerfer : 3dObstacle
 	Height 80
 }
 
-ACTOR CODWallLight1 : 3dObstacle
+ACTOR CODNeoLights1 : SwitchableDecoration
 {
 	//$Category Light Sources (Wolf3D)
 	//$Title Neoclassical Wall Light A (off)
 	//$Color 11
 	Radius 16
 	Height 24
+	Mass 0x7fffffff
+	Health -1
+	+ACTLIKEBRIDGE
+	+CANPASS
+	+DONTSPLASH
+	+NOBLOOD
+	+NOBLOODDECALS
+	+NODAMAGE
+	+NOTAUTOAIMED
+	+SHOOTABLE
 	+NOGRAVITY
-}
-
-ACTOR CODWallLight1Lit : CODWallLight1
-{
-	//$Title Neoclassical Wall Light A (on)
+	-FLOORCLIP
+	-NOBLOCKMAP
 	States
 	{
+	Active:
+		SMGT A 0 A_ChangeFlag("DORMANT", false) //update manually on GZDB
 	Spawn:
 		SMGT A -1 LIGHT(OZYWALLT)
-		Stop
+		stop
+	Inactive:
+		SMGT B -1 A_ChangeFlag("DORMANT", true) //update manually on GZDB
+		Stop	
 	}
 }
 
