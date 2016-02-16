@@ -732,11 +732,53 @@ ACTOR RTCW_V2_Rocket : RTCW_V2_Complete
 }
 
 //MaxED stuff
-ACTOR ModelGMCTruck : 3dObstacle
+ACTOR Trample : BlastEffect //ozy81
+{
+	Radius 56
+	Height 56
+	DamageType Trample
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		TNT1 A 0 
+	Death:
+		"####" # 20 A_Explode(5, Radius, 0, false, Radius) //100dmg
+		Stop
+	}
+}
+
+ACTOR ModelGMCTruck : SwitchableDecoration //ozy81
 {
 	//$Category Models (Wolf3D)/Vehicles
 	//$Title Truck (US, MoH)
 	//$Color 3
+	Mass 0x7fffffff
+	Health -1
+	+ACTLIKEBRIDGE
+	+CANPASS
+	+DONTSPLASH
+	+NOBLOOD
+	+NOBLOODDECALS
+	+NODAMAGE
+	+NOTAUTOAIMED
+	+SHOOTABLE
+	-FLOORCLIP
+	-NOBLOCKMAP
+	States
+	{
+	Active:
+		SMGT A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+		TrampleIsOn:
+		SMGT A 1 NoDelay A_SpawnItemEx("Trample", ScaleX*128, 0, Height-16, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		Loop
+	Spawn:
+	  SMGT A -1
+		Stop
+	Inactive:
+		SMGT A -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		Stop
+	}
 }
 
 ACTOR ModelOpelTruck : 3dObstacle
