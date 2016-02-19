@@ -163,8 +163,9 @@ ACTOR NebelwerferTruck : Nebelwerfer
 	Fire:
 		NEBG A 0 A_GunFlash
 		NEBG A 0 A_PlaySound("nebelwerfer/fire",CHAN_WEAPON)
-		NEBG A 40 A_FireCustomMissile("NebRocket")
+		NEBG A 2 A_FireCustomMissile("NebRocket")
 		NEBG BCDEB 1 A_SetPitch(pitch-(0.5*CallACS("RecoilAmount")))
+		NEBG A 40 
 		NEBG A 2 A_ReFire
 		Goto Ready
 	Flash:
