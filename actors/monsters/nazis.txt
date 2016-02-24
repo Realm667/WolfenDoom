@@ -758,9 +758,9 @@ ACTOR MutantMelee : Mutant
 		Loop
 	Melee:
 		MLMT F 4 A_FaceTarget
-		MLMT G 5 A_CustomMeleeAttack(5*random(1,8))
+		MLMT G 5 A_CustomMeleeAttack(5*random(1,5))
 		MLMT F 4 A_FaceTarget
-		MLMT H 5 A_CustomMeleeAttack(5*random(1,8))
+		MLMT H 5 A_CustomMeleeAttack(5*random(1,5))
 		goto See
 	Missile:
 		Stop
@@ -805,9 +805,9 @@ ACTOR BigMutant1 : Mutant
 		Loop
 	Melee:
 		MTB1 F 4 A_FaceTarget
-		MTB1 G 5 A_CustomMeleeAttack(8*random(1,8))
+		MTB1 G 5 A_CustomMeleeAttack(8*random(1,5))
 		MTB1 F 4 A_FaceTarget
-		MTB1 H 5 A_CustomMeleeAttack(8*random(1,8))
+		MTB1 H 5 A_CustomMeleeAttack(8*random(1,5))
 		goto See
 	Missile:
 		MTB1 E 0 A_Jump(128, 22)
@@ -943,9 +943,9 @@ ACTOR BigMutant2 : BigMutant1
 		Goto Look
 	Melee:
 		MTB2 E 4 A_FaceTarget
-		MTB2 F 5 A_CustomMeleeAttack(8*random(1,8))
+		MTB2 F 5 A_CustomMeleeAttack(8*random(1,5))
 		MTB2 E 4 A_FaceTarget
-		MTB2 G 5 A_CustomMeleeAttack(8*random(1,8))
+		MTB2 G 5 A_CustomMeleeAttack(8*random(1,5))
 	Missile:
 		MTB2 E 5 A_FaceTarget
 		MTB2 E 0 A_Jump(96,"Missile2")
@@ -1197,7 +1197,7 @@ ACTOR MutantRocket
 	Height 8
 	Speed 12
 	FastSpeed 14
-	Damage (Random(4,8))
+	Damage (Random(2,6))
 	DamageType MutantPoison
 	Projectile
 	Scale 0.9
@@ -1247,7 +1247,7 @@ ACTOR PoisonCloudMutant
 	{
 	Spawn:
 		TNT1 A 1
-		"####" A 2 A_Explode(10,128,0,0,128)
+		"####" A 2 A_Explode(5,128,0,0,128)
 		"####" A 20 A_Countdown
 		Loop
 	Death:
