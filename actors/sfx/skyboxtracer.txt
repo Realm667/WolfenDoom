@@ -1,0 +1,43 @@
+Actor SkyboxTracerTrail
+{
+	Alpha 1.0
+	Scale 1.0
+	RenderStyle Add
+	+NOINTERACTION
+	+CLIENTSIDEONLY
+	States
+	{
+	Spawn:
+		SMGT A 70 BRIGHT
+		Goto Death
+	Death:
+		SMGT A 4 BRIGHT A_FadeOut(0.1)
+		Loop
+	}
+}
+
+
+Actor SkyboxTracerSpawner : SwitchableDecoration
+{
+	//$Category Special Effects (Wolf3D)
+	//$Title Skyfire Tracers
+	//$Color 12
+	+NOGRAVITY
+	+INVULNERABLE
+	+SHOOTABLE
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
+	Active:
+		TNT1 A 12 A_SpawnItemEx("SkyboxTracerTrail", 0, 0, 0, 1, 0, 8, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		loop
+	Inactive:
+		TNT1 A -1
+		stop
+	EndSpawn:
+		TNT1 A -1
+		Goto Spawn
+	}
+}
