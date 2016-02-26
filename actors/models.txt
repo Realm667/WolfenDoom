@@ -1383,13 +1383,39 @@ ACTOR CODCivCarD_Spawner : 3dObstacle
 	}
 }
 
-ACTOR CODScheinwerfer : 3dObstacle
+ACTOR CODScheinwerfer : SwitchableDecoration
 {
 	//$Category Models (Wolf3D)/Vehicles
-	//$Title Scheinwerfer
+	//$Title Scheinwerfer (Set DORMANT to see it shine)
 	//$Color 3
 	Radius 64
 	Height 80
+	Mass 0x7fffffff
+	Health -1
+	+ACTLIKEBRIDGE
+	+CANPASS
+	+DONTSPLASH
+	+NOBLOOD
+	+NOBLOODDECALS
+	+NODAMAGE
+	+NOTAUTOAIMED
+	+SHOOTABLE
+	+SOLID
+	+NOGRAVITY
+	-FLOORCLIP
+	-NOBLOCKMAP
+	BloodType "TankSpark"
+	States
+	{
+	Active:
+		SMGT A 0 A_ChangeFlag("DORMANT", false) //update manually on GZDB
+	Spawn:
+		SMGT A -1 LIGHT(OZYWALLT) //Placeholder light for now
+		stop
+	Inactive:
+		SMGT B -1 A_ChangeFlag("DORMANT", true) //update manually on GZDB
+		Stop	
+	}
 }
 
 ACTOR CODNeoLights1 : SwitchableDecoration
