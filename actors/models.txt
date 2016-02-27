@@ -1410,8 +1410,8 @@ ACTOR CODScheinwerfer : SwitchableDecoration
 	Active:
 		SMGT A 0 A_ChangeFlag("DORMANT", false) //update manually on GZDB
 	Spawn:
-		SMGT A -1 LIGHT(OZYWALLT) //Placeholder light for now
-		stop
+		SMGT A -1 LIGHT(SPOTLITE) A_SpawnItemEx("Flare3d", ScaleX*28, 0, ScaleY*92, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		Stop
 	Inactive:
 		SMGT B -1 A_ChangeFlag("DORMANT", true) //update manually on GZDB
 		Stop	
