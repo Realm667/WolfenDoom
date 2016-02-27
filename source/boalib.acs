@@ -37,11 +37,11 @@ script "boaobjectivesdisplay" ENTER
 	sethudsize(800,600,1);
 	while(!objectives_on[PlayerNumber()])
 		delay(1);
-	hudmessage(s:"Primary Objectives:\n",
+	hudmessage(s:"\cUPrimary Objectives:\n",
 		s:objectives[0][0],s:objectives[0][1],
 		s:objectives[1][0],s:objectives[1][1],
 		s:objectives[2][0],s:objectives[2][1],
-		s:"Secondary Objectives:\n",
+		s:"\cUSecondary Objectives:\n",
 		s:objectives[3][0],s:objectives[3][1],
 		s:objectives[4][0],s:objectives[4][1],
 		s:objectives[5][0],s:objectives[5][1];
