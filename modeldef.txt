@@ -59,49 +59,49 @@ Model ModelBeachHedgeHog
 Model ModelCampBed
 {
 	Path "Models"
-	Model 0 "campbed.md2"
+	Model 0 "campbed.md3"
 	Skin 0 "campbed.png"
 	Scale 1.2 1.2 1.2
 	InheritActorPitch
 	InheritActorRoll
 
-	Frame SMGT A 0 "frame01"
+	FrameIndex SMGT A 0 0
 }
 
 Model ModelCampBed2
 {
 	Path "Models"
-	Model 0 "campbed2.md2"
+	Model 0 "campbed2.md3"
 	Skin 0 "campbed.png"
 	Scale 1.2 1.2 1.2
 	InheritActorPitch
 	InheritActorRoll
 
-	Frame SMGT A 0 "frame01"
+	FrameIndex SMGT A 0 0
 }
 
 Model ModelIncaTruck4Wheel
 {
 	Path "Models"
-	Model 0 "truck02a.md2"
+	Model 0 "truck02a.md3"
 	Skin 0 "truck02.jpg"
 	Scale 0.8 0.8 0.8
 	InheritActorPitch
 	InheritActorRoll
 
-	Frame SMGT A 0 "frame01"
+	FrameIndex SMGT A 0 0
 }
 
 Model ModelIncaTruck4Wheel_US
 {
 	Path "Models"
-	Model 0 "truck02a.md2"
+	Model 0 "truck02a.md3"
 	Skin 0 "truck02_us.jpg"
 	Scale 0.8 0.8 0.8
 	InheritActorPitch
 	InheritActorRoll
 
-	Frame SMGT A 0 "frame01"
+	FrameIndex SMGT A 0 0
 }
 
 Model ModelIncaTrain
@@ -886,18 +886,6 @@ Model KingGeorge
 	Model 0 "KingGeorge.md3"
 	Skin 0 "KingGeorge.jpg"
 	Scale 8.0 8.0 8.0
-	InheritActorPitch
-	InheritActorRoll
-
-	FrameIndex SMGT A 0 0
-}
-
-Model FlakVierling3D
-{
-	Path "Models"
-	Model 0 "FlakVierling.md3"
-	Skin 0 "FlakVierling.jpg"
-	Scale 0.8 0.8 0.8
 	InheritActorPitch
 	InheritActorRoll
 
@@ -2576,6 +2564,40 @@ Model 3dSkeleton_Sit
 }
 
 //CODs Stuff - ozy81
+Model FlakVierling3D
+{
+	Path "Models"
+	Model 0 "flakveirling_A.md3"
+	Path "Models"
+	Model 1 "flakveirling_B.md3"
+	Path "Models"
+	Model 2 "flakveirling_C.md3"
+	Path "Models"
+	Model 3 "flakveirling_D.md3"
+	Scale 1.5 1.5 1.5
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
+Model FlakVierling3D //Destroyed
+{
+	Path "Models"
+	Model 0 "flakveirling_A_d.md3"
+	Path "Models"
+	Model 1 "flakveirling_B_d.md3"
+	Path "Models"
+	Model 2 "flakveirling_C_d.md3"
+	Path "Models"
+	Model 3 "flakveirling_D_d.md3"
+	Scale 1.5 1.5 1.5
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT B 0 0
+}
+
 Model CODSideCar
 {
 	Path "Models"
