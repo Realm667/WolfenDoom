@@ -79,7 +79,7 @@ script "BoADialogue"(int headtalky,int headsilent,int message)
 	SetHudSize(640, 400, false);
 	SetFont("SMALLFONT");
 	SetHudWrapWidth(540);
-	hudmessagebold(l:message; HUDMSG_TYPEON, 2, CR_GRAY, 100.1, 13.1, 999.0, 0.03, 1.0);
+	hudmessagebold(l:message; HUDMSG_TYPEON | HUDMSG_LOG, 2, CR_GRAY, 100.1, 13.1, 999.0, 0.03, 1.0);
 
 	// Stop talk animation
 	delay(5*35);
@@ -104,57 +104,6 @@ script "BoADialogue"(int headtalky,int headsilent,int message)
 	SetFont("SMALLFONT");
 	SetHudWrapWidth(540);
 	hudmessagebold(l:message; HUDMSG_FADEINOUT, 2, CR_GRAY, 100.1, 13.1, 0.0, 0.0, 1.0);
-}
-//Controls
-Script "AutoReload"(void)
-{
-	SetResultValue(GetCVar("autoreload"));
-}
-Script "ShellLifetime"(void)
-{
-	SetResultValue(GetCVar("casinglifetime"));
-}
-Script "RecoilAmount"(void)
-{
-	SetResultValue(GetCVar("recoilamount"));
-}
-Script "DebrisLifetime"(void)
-{
-	SetResultValue(GetCVar("debrislifetime"));
-}
-Script "BloodLifetime"(void)
-{
-	SetResultValue(GetCVar("bloodlifetime"));
-}
-//Weather
-Script "RainSwitch"(void)
-{
-	SetResultValue(GetCVar("rainswitch"));
-}
-Script "SnowSwitch"(void)
-{
-	SetResultValue(GetCVar("snowswitch"));
-}
-Script "FogSwitch"(void)
-{
-	SetResultValue(GetCVar("fogswitch"));
-}
-//Special Effects
-Script "CinderSwitch"(void)
-{
-	SetResultValue(GetCVar("cinderswitch"));
-}
-Script "DustSwitch"(void)
-{
-	SetResultValue(GetCVar("dustswitch"));
-}
-Script "SmokeSwitch"(void)
-{
-	SetResultValue(GetCVar("smokeswitch"));
-}
-Script "LitsSwitch"(void)
-{
-	SetResultValue(GetCVar("litsswitch"));
 }
 
 //sprinting stamina
@@ -401,7 +350,7 @@ Script "SupplyChest"(int supplychestid,int prize)
 		ActivatorSound("treasure/locked",127);
 }
 
-//Clear Inventory
+//Clear Inventory - now added Astrostein stuff (Ozy81)
 script "CLEAR INVENTORY"(void)
 {
 	TakeInventory("9mmAmmo", 9999);
@@ -410,6 +359,9 @@ script "CLEAR INVENTORY"(void)
 	TakeInventory("FlameAmmo", 9999);
 	TakeInventory("NebAmmo", 9999);
 	TakeInventory("PanzerAmmo", 9999);
+	TakeInventory("AstroShotgunShell", 9999); //Astros
+	TakeInventory("AstroRocketAmmo", 9999); //Astros
+	TakeInventory("AstroClipAmmo", 9999); //Astros
 	Takeinventory("KnifeSilent", 9999);
 	TakeInventory("Shovel", 9999);
 	TakeInventory("Firebrand", 9999);
@@ -426,6 +378,11 @@ script "CLEAR INVENTORY"(void)
 	TakeInventory("Panzerschreck", 9999);
 	TakeInventory("UMG43", 9999);
 	TakeInventory("GrenadePickup", 9999); //mxd
+	TakeInventory("AstroGrenadePickup", 9999); //Astros
+	TakeInventory("AstroShotgun", 9999); //Astros
+	TakeInventory("AstroRocketlauncher", 9999); //Astros
+	TakeInventory("AstroChaingun", 9999); //Astros
+	TakeInventory("AstrosteinMelee", 9999); //Astros
 	GiveInventory("Browning5Loaded",9999);
 	GiveInventory("PyrolightLoaded",9999);
 	GiveInventory("G43Loaded",9999);
@@ -436,11 +393,17 @@ script "CLEAR INVENTORY"(void)
 	GiveInventory("PanzerschreckLoaded",9999);
 	GiveInventory("TrenchShotgunLoaded",9999);
 	GiveInventory("StenLoaded",9999);
+	GiveInventory("AstroShotgunLoaded",9999); //Astros
+	GiveInventory("AstroChaingunLoaded",9999); //Astros
+	GiveInventory("AstroRocketLauncherLoaded",9999); //Astros
 	TakeInventory("BoABlueKey",1);
 	TakeInventory("BoAYellowKey",1);
 	TakeInventory("BoARedKey",1);
 	TakeInventory("BoACyanKey",1);
 	TakeInventory("BoAGreenKey",1);
 	TakeInventory("BoAPurpleKey",1);
+	TakeInventory("AstroBlueKey",1); //Astros
+	TakeInventory("AstroYellowKey",1); //Astros
+	TakeInventory("AstroRedKey",1); //Astros
 	TakeInventory("Akten",1);
 }
