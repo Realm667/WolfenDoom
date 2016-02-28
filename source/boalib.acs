@@ -37,21 +37,34 @@ script "boaobjectivesdisplay" ENTER
 	while(!objectives_on[PlayerNumber()])
 		delay(1);
 		setfont("SMALLFONT");
-	hudmessage(s:"\cUPrimary Objectives:\n",
-		s:objectives[0][0],s:objectives[0][1],
-		s:objectives[1][0],s:objectives[1][1],
-		s:objectives[2][0],s:objectives[2][1],
-		s:"\cUSecondary Objectives:\n",
-		s:objectives[3][0],s:objectives[3][1],
-		s:objectives[4][0],s:objectives[4][1],
-		s:objectives[5][0],s:objectives[5][1];
-		HUDMSG_PLAIN,971,CR_UNTRANSLATED,400.0,135.1,0.03);
+	hudmessage(l:"MO_PRIMARY",
+		l:objectives[0][0],l:objectives[0][1],
+		l:objectives[1][0],l:objectives[1][1],
+		l:objectives[2][0],l:objectives[2][1],
+		l:"MO_SECONDARY",
+		l:objectives[3][0],l:objectives[3][1],
+		l:objectives[4][0],l:objectives[4][1],
+		l:objectives[5][0],l:objectives[5][1];
+		HUDMSG_PLAIN,971,CR_UNTRANSLATED,300.1,135.1,0.03);
 		
 		setfont("OBJECTGX");
 	hudmessage(s:"A";
 		HUDMSG_PLAIN,972,CR_UNTRANSLATED,400.0,115.1,0.03);
 	delay(1);	
 	restart;
+}
+
+script "boaobjectiveaccomplished" (void)
+{
+	AmbientSound("misc/objective_acc", 57);
+	sethudsize(800,600,1);
+	setfont("OBJICON");
+	hudmessage(s:"A";
+		HUDMSG_FADEINOUT,990,CR_UNTRANSLATED,400.0,115.1,1.0,0.5,0.5);
+	setfont("SMALLFONT");
+	hudmessage(l:"MO_ACCOMP";
+		HUDMSG_FADEINOUT,989,CR_UNTRANSLATED,400.0,130.1,1.0,0.5,0.5);
+	
 }
 
 script "MissionNumber" OPEN
