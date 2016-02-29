@@ -31,6 +31,7 @@ script "boaobjectivesset"(int mode,int objnumber,int objtext)
 {
 	objectives[objnumber][mode]=objtext;
 }
+
 script "boaobjectivesdisplay" ENTER
 {
 	sethudsize(800,600,1);
@@ -63,6 +64,19 @@ script "boaobjectiveaccomplished" (void)
 		HUDMSG_FADEINOUT,990,CR_UNTRANSLATED,400.0,115.1,1.0,0.5,0.5);
 	setfont("SMALLFONT");
 	hudmessage(l:"MO_ACCOMP";
+		HUDMSG_FADEINOUT,989,CR_UNTRANSLATED,400.0,130.1,1.0,0.5,0.5);
+	
+}
+
+script "boaobjectiveadded" (void)
+{
+	AmbientSound("misc/objective_add", 57);
+	sethudsize(800,600,1);
+	setfont("OBJADD");
+	hudmessage(s:"A";
+		HUDMSG_FADEINOUT,990,CR_UNTRANSLATED,400.0,115.1,1.0,0.5,0.5);
+	setfont("SMALLFONT");
+	hudmessage(l:"MO_ADDED";
 		HUDMSG_FADEINOUT,989,CR_UNTRANSLATED,400.0,130.1,1.0,0.5,0.5);
 	
 }
