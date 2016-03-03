@@ -96,12 +96,16 @@ ACTOR MiniCloudGrey
 	States
 	{
 	Spawn:
+		CLFX A 0 NODELAY A_JumpIf(CallACS("CloudSwitch")==0,"EndSpawn")
 		CLFX AAAAA 3 A_FadeIn(0.1)
 		CLFX A 1000 BRIGHT
 		Wait
 	Death:
 		CLFX AAAAAA 10 A_FadeOut(0.1)
 		TNT1 A 1
+		Stop
+	EndSpawn:
+		TNT1 A -1
 		Stop
 	}
 }

@@ -97,9 +97,10 @@ OptionMenu "BOAOptionsMenu"
 	
 	StaticText ""
   StaticText "BOA Weather Effects",	1
-	StaticText "WARNING: these settings require level restart"
+	StaticText "WARNING: these settings may require level restart"
 	
 	StaticText ""
+	Option "Clouds","cloudswitch","OnOff"
 	Option "Fog","fogswitch","OnOff"
 	Option "Rain","rainswitch","OnOff"
 	Option "Snow","snowswitch","OnOff"
@@ -109,22 +110,26 @@ OptionMenu "BOAOptionsMenu"
   
 	StaticText ""
 	Option "Cinder","cinderswitch","OnOff"
+	Option "Steam","steamswitch","OnOff"
 	Slider "Debris Lifetime","debrislifetime",100,10000,100
 	Slider "Blood Lifetime","bloodlifetime",100,3000,100
 	
 	StaticText ""
-	StaticText "WARNING: these settings require level restart"
+	StaticText "WARNING: these settings may require level restart"
 	
 	StaticText ""
+	Option "Flames","fireswitch","OnOff"
+	Option "Explosions","boomswitch","OnOff"
 	Option "Smoke","smokeswitch","OnOff"
 	Option "Stardust","dustswitch","OnOff"
+	Option "Underwater Bubbles","bubbleswitch","OnOff"
 	Option "Underwater Lights","litsswitch","OnOff"
 	
 	StaticText ""
   StaticText "BOA 3D Models Rendering Distance", 1
   
 	StaticText ""
-	Slider "3D Trees","modelslod",256,16384,256
+	Slider "3D Trees","treeslod",256,16384,256
 
 	StaticText ""
 	StaticText "BOA Controls", 1

@@ -3,9 +3,9 @@
 //Use this acs to store CVARs if possible, so it will be easy to manage them for MP
 
 //Rendering - Added only to trees for now (28-02-2016)
-Script "ModelsLOD"(void)
+Script "TreesLOD"(void)
 {
-	SetResultValue(GetCVar("modelslod"));
+	SetResultValue(GetCVar("treeslod"));
 }
 
 //Controls
@@ -43,6 +43,10 @@ Script "FogSwitch"(void)
 {
 	SetResultValue(GetCVar("fogswitch"));
 }
+Script "CloudSwitch"(void)
+{
+	SetResultValue(GetCVar("cloudswitch"));
+}
 
 //Special Effects
 Script "CinderSwitch"(void)
@@ -60,4 +64,20 @@ Script "SmokeSwitch"(void)
 Script "LitsSwitch"(void)
 {
 	SetResultValue(GetCVar("litsswitch"));
+}
+Script "SteamSwitch"(void)
+{
+	SetResultValue(GetCVar("steamswitch"));
+}
+Script "BubbleSwitch"(void)
+{
+	SetResultValue(GetCVar("bubbleswitch"));
+}
+Script "BoomSwitch"(void)
+{
+	SetResultValue(GetCVar("boomswitch"));
+}
+Script "FireSwitch"(void)
+{
+	SetResultValue(GetCVar("fireswitch"));
 }
