@@ -3230,41 +3230,6 @@ ACTOR UndeadPriest : Guard
 	}
 }
 
-ACTOR Hostage : Guard
-{
-	//$Category Monsters (Wolf3D)/NPCs
-	//$Title Hostage
-	//$Color 4
-	Obituary "$HOSTAGE"
-	PainChance 255
-	Scale 1.45 //mxd
-	DropItem ""
-	SeeSound ""
-	States
-	{
-	Spawn:
-		HOST A 0
-		Goto Look
-	Missile:
-		Stop
-	Pain:
-		HOST E 3
-		HOST E 3 A_Pain
-		"####" "#" 0 A_AlertMonsters(256) //mxd
-		goto See
-	Death:
-		HOST E 5
-		HOST F 5 A_Scream
-		HOST G 5 A_NoBlocking
-		HOST H 5
-		HOST I -1
-		stop
-	Raise:
-		HOST IHGFE 5
-		Goto See
-	}
-}
-
 ACTOR DirtyDarren : Guard
 {
 	//$Category Monsters (Wolf3D)/NPCs
