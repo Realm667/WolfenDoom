@@ -2028,8 +2028,8 @@ ACTOR MGTurret : MiniShip
 		"####" A 1 A_PlaySound("chaingun/loop",CHAN_WEAPON)
 		"####" A 5 A_FaceTarget
 		"####" B 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-		"####" C 3 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyChaingunTracer",20,0,random(-11,11))
-		"####" B 3 BRIGHT A_MonsterRefire(20,"See")
+		"####" C 3 LIGHT(NAZIFIRE) A_CustomMissile("EnemyChaingunTracer",20,0,random(-11,11))
+		"####" B 3 A_MonsterRefire(20,"See")
 		"####" B 0 A_FaceTarget
 		Goto Missile+3
 	Death:
