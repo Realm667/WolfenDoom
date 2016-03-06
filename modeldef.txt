@@ -3,18 +3,29 @@ Model TracerTrail
 {
 	Path "models"
 	Model 0 "tracer.md3"
-	Skin 0 "tracer1.tga"
+	Skin 0 "tracer1.png"
 	Scale 2.0 1.5 1.5
 	PITCHFROMMOMENTUM
 	
 	FrameIndex PUFF A 0 0
 }
 
+Model SkyboxTracerTrail
+{
+	Path "models"
+	Model 0 "tracer.md3"
+	Skin 0 "tracer1.png"
+	Scale 0.4 0.6 0.6
+	PITCHFROMMOMENTUM
+	
+	FrameIndex SMGT A 0 0
+}
+
 Model MutantTrail
 {
 	Path "models"
 	Model 0 "tracer.md3"
-	Skin 0 "tracer2.tga"
+	Skin 0 "tracer2.png"
 	Scale 2.0 1.5 1.5
 	PITCHFROMMOMENTUM
 	
@@ -25,7 +36,7 @@ Model AstroTrail
 {
 	Path "models"
 	Model 0 "tracer.md3"
-	Skin 0 "tracer3.tga"
+	Skin 0 "tracer3.png"
 	Scale 2.0 1.5 1.5
 	PITCHFROMMOMENTUM
 	
@@ -48,49 +59,49 @@ Model ModelBeachHedgeHog
 Model ModelCampBed
 {
 	Path "Models"
-	Model 0 "campbed.md2"
+	Model 0 "campbed.md3"
 	Skin 0 "campbed.png"
 	Scale 1.2 1.2 1.2
 	InheritActorPitch
 	InheritActorRoll
 
-	Frame SMGT A 0 "frame01"
+	FrameIndex SMGT A 0 0
 }
 
 Model ModelCampBed2
 {
 	Path "Models"
-	Model 0 "campbed2.md2"
+	Model 0 "campbed2.md3"
 	Skin 0 "campbed.png"
 	Scale 1.2 1.2 1.2
 	InheritActorPitch
 	InheritActorRoll
 
-	Frame SMGT A 0 "frame01"
+	FrameIndex SMGT A 0 0
 }
 
 Model ModelIncaTruck4Wheel
 {
 	Path "Models"
-	Model 0 "truck02a.md2"
+	Model 0 "truck02a.md3"
 	Skin 0 "truck02.jpg"
 	Scale 0.8 0.8 0.8
 	InheritActorPitch
 	InheritActorRoll
 
-	Frame SMGT A 0 "frame01"
+	FrameIndex SMGT A 0 0
 }
 
 Model ModelIncaTruck4Wheel_US
 {
 	Path "Models"
-	Model 0 "truck02a.md2"
+	Model 0 "truck02a.md3"
 	Skin 0 "truck02_us.jpg"
 	Scale 0.8 0.8 0.8
 	InheritActorPitch
 	InheritActorRoll
 
-	Frame SMGT A 0 "frame01"
+	FrameIndex SMGT A 0 0
 }
 
 Model ModelIncaTrain
@@ -291,7 +302,7 @@ Model WashingDish
 	InheritActorPitch
 	InheritActorRoll
 
-	FrameIndex SMGT C 0 0
+	FrameIndex SMGT A 0 0
 }
 
 //mxd
@@ -875,18 +886,6 @@ Model KingGeorge
 	Model 0 "KingGeorge.md3"
 	Skin 0 "KingGeorge.jpg"
 	Scale 8.0 8.0 8.0
-	InheritActorPitch
-	InheritActorRoll
-
-	FrameIndex SMGT A 0 0
-}
-
-Model FlakVierling3D
-{
-	Path "Models"
-	Model 0 "FlakVierling.md3"
-	Skin 0 "FlakVierling.jpg"
-	Scale 0.8 0.8 0.8
 	InheritActorPitch
 	InheritActorRoll
 
@@ -2565,6 +2564,40 @@ Model 3dSkeleton_Sit
 }
 
 //CODs Stuff - ozy81
+Model FlakVierling3D
+{
+	Path "Models"
+	Model 0 "flakveirling_A.md3"
+	Path "Models"
+	Model 1 "flakveirling_B.md3"
+	Path "Models"
+	Model 2 "flakveirling_C.md3"
+	Path "Models"
+	Model 3 "flakveirling_D.md3"
+	Scale 1.5 1.5 1.5
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
+Model FlakVierling3D //Destroyed
+{
+	Path "Models"
+	Model 0 "flakveirling_A_d.md3"
+	Path "Models"
+	Model 1 "flakveirling_B_d.md3"
+	Path "Models"
+	Model 2 "flakveirling_C_d.md3"
+	Path "Models"
+	Model 3 "flakveirling_D_d.md3"
+	Scale 1.5 1.5 1.5
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT B 0 0
+}
+
 Model CODSideCar
 {
 	Path "Models"
@@ -2625,6 +2658,52 @@ Model CODCivCarD_Spawner
 	InheritActorRoll
 
 	FrameIndex SMGT C 0 0
+}
+
+Model CODScheinwerfer
+{
+	Path "Models"
+	Model 0 "scheinwerfer.md3"
+	Scale 1.5 1.5 1.5
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
+Model CODScheinwerfer
+{
+	Path "Models"
+	Model 0 "scheinwerfer_off.md3"
+	Scale 1.5 1.5 1.5
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT B 0 0
+}
+
+Model CODNeoLights1
+{
+	Path "models"
+	Model 0 "cod_wlight1.md3"
+	Skin 0 "cod_wlight1_on.png"
+	Scale 1.5 1.5 1.5
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
+Model CODNeoLights1
+{
+	Path "models"
+	Model 0 "cod_wlight1.md3"
+	Skin 0 "cod_wlight1_off.png"
+	Scale 1.5 1.5 1.5
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT B 0 0
 }
 
 //Archibase.net Stuff - ozy81

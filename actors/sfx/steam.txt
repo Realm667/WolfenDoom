@@ -99,9 +99,12 @@ ACTOR SteamParticle
 	States
 	{
 	Spawn:
-		STEM A 0 NODELAY
+		STEM A 0 NODELAY A_JumpIf(CallACS("SteamSwitch")==0,"EndSpawn")
 		"####" A 2 A_SetScale(scalex+0.013, scaley+0.013)
 		"####" A 0 A_FadeOut(.04)
 		Loop
+	EndSpawn:
+		TNT1 A -1
+		Stop
 	}
 }

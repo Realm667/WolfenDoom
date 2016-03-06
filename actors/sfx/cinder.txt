@@ -76,7 +76,7 @@ ACTOR CinderSpawnerSky
 	//$Arg0 "Radius"
 	//$Arg0Tooltip "Radius in map units\nDefault: 0"
 	//$Arg1 "Frequency"
-	//$Arg1Tooltip "The lower the number, the heavier the snowfall\nRange: 0 - 255"
+	//$Arg1Tooltip "The lower the number, the heavier the amount of cinders\nRange: 0 - 255"
 	//$Arg2 "Area"
 	//$Arg2Type 11
 	//$Arg2Enum { 0 = "Square"; 1 = "Circle"; }
@@ -123,18 +123,5 @@ ACTOR CinderSpawnerSky
 	Vanish:
 		TNT1 A 1
 		Stop
-	
-	//OLD VERSION (MUCH SLOW)
-	/*Spawn:
-		TNT1 A 0 NODELAY A_CheckSight("Unsighted")
-		TNT1 A 0 A_JumpIf(CallACS("snowswitch")==0,"Unsighted")
-		TNT1 A 0 A_JumpIf(Args[2] > 0,2)
-		TNT1 A 8 A_SpawnItemEx ("FloatingCinder",Random(-Args[0],Args[0]),Random(-Args[0],Args[0]),0,frandom(-1.0,1.0),frandom(-1.0,1.0),frandom(-1.0,-3.0),0,0,Args[1])
-		Loop
-		TNT1 A 8 A_SpawnItemEx ("FloatingCinder",Random(-Args[0],Args[0]),0,0,frandom(-1.0,1.0),frandom(-1.0,1.0),frandom(-1.0,-3.0),Random(0,360),0,Args[1])
-		Loop
-	Unsighted:
-		TNT1 A 8
-		Goto Spawn*/
 	}
 }

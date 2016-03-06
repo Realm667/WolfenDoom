@@ -124,7 +124,7 @@ ACTOR CeilingLightM : SwitchableDecoration
 	Active: //mxd. CLIT? No, srsly, who comes with these names?.. //ozy: that was me man, eheh... :)
 		CLIT A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 	Spawn:
-		CLIT A -1 BRIGHT Light("BOACEIL2")
+		CLIT A -1 Light("BOACEIL2")
 		stop
 	Inactive:
 		CLIT A -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
@@ -859,7 +859,7 @@ ACTOR CreepyCandle
 	States
 	{
 	Spawn:
-		CDLE BCDA 4 BRIGHT LIGHT(CREPLIT2)
+		CDLE BCDA 4 LIGHT(CREPLIT2)
 		Loop
 	}
 }
@@ -876,7 +876,7 @@ ACTOR CreepyCandlestick
 	States
 	{
 	Spawn:
-		CNHD BCDA 4 BRIGHT LIGHT(CREPLIT1)
+		CNHD BCDA 4 LIGHT(CREPLIT1)
 		Loop
 	}
 }

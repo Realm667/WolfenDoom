@@ -26,8 +26,8 @@
 // UTILITY FUNCTIONS
 //
 //===========================================================================
-#include "zcommon.acs"
 #library "maxdqtlt"
+#include "zcommon.acs"
 
 // player is on ground?
 function int CheckPlayerOnGround(void)
@@ -152,39 +152,69 @@ Script "Script_DeathTilt" Death
 {
 	// reset the player's roll first
 	SetActorRoll(0, 0);
-	
+
 	if (dodeathtilt)
 	{
+
+		// roll direction
+		int direction = random(0, 1);
+
 		// target angle to roll to
-		int t = random(0.25, 0.35);
-		
-		// speed of the roll, tune this to taste
-		//int s = 0.01750;
-		int s;
-		
+		int target;
+
+		if (!direction)
+		{
+			target = random(0.25, 0.35);
+		}
+		else
+		{
+			target = random(-0.35, -0.25);
+		}
+
+		// speed of the roll
+		int speed;
+
 		// how many tics before the rolling actually starts, tune to taste
-		int d = 20;
-		
+		int _delay = 20;
+
+		// roll duration counter
+		int rollCounter;
+		int rollCounterMax = random(12, 24);
+
 		while(GetActorHealth() <= 0)
 		{
 			// delay the rolling until it's time
-			if (d > 0)
+			if (_delay > 0)
 			{
-				d--;
+				_delay--;
 			}
-			
+
 			// it's time to roll
-			if (d <= 0)
+			if (_delay <= 0)
 			{
 				// get player's roll
-				int r = GetActorRoll(0);
-				
+				int roll = GetActorRoll(0);
+
 				// do a barrel roll
-				if (GetActorRoll(0) < t)
+				if (direction == 0)
 				{
-					ChangeActorRoll(0, r + s, TRUE);
-					s += 0.00150;
+					if (rollCounter < rollCounterMax)
+					{
+						speed += 0.00150;
+					}
 				}
+				else
+				{
+					if (rollCounter < rollCounterMax)
+					{
+						speed -= 0.00150;
+					}
+				}
+
+				rollCounter++;
+
+				// roll
+				if (rollCounter < rollCounterMax) ChangeActorRoll(0, roll + speed, TRUE);
 			}
 			Delay(1);
 		}

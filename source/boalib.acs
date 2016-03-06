@@ -31,23 +31,54 @@ script "boaobjectivesset"(int mode,int objnumber,int objtext)
 {
 	objectives[objnumber][mode]=objtext;
 }
+
 script "boaobjectivesdisplay" ENTER
 {
-	setfont("SMALLFONT");
 	sethudsize(800,600,1);
 	while(!objectives_on[PlayerNumber()])
 		delay(1);
-	hudmessage(s:"Primary Objectives:\n",
-		s:objectives[0][0],s:objectives[0][1],
-		s:objectives[1][0],s:objectives[1][1],
-		s:objectives[2][0],s:objectives[2][1],
-		s:"Secondary Objectives:\n",
-		s:objectives[3][0],s:objectives[3][1],
-		s:objectives[4][0],s:objectives[4][1],
-		s:objectives[5][0],s:objectives[5][1];
-		HUDMSG_PLAIN,971,CR_UNTRANSLATED,400.0,227.1,0.03);
-	delay(1);
+		setfont("SMALLFONT");
+	hudmessage(l:"MO_PRIMARY",
+		l:objectives[0][0],l:objectives[0][1],
+		l:objectives[1][0],l:objectives[1][1],
+		l:objectives[2][0],l:objectives[2][1],
+		l:"MO_SECONDARY",
+		l:objectives[3][0],l:objectives[3][1],
+		l:objectives[4][0],l:objectives[4][1],
+		l:objectives[5][0],l:objectives[5][1];
+		HUDMSG_PLAIN,971,CR_UNTRANSLATED,300.1,135.1,0.03);
+		
+		setfont("OBJECTGX");
+	hudmessage(s:"A";
+		HUDMSG_PLAIN,972,CR_UNTRANSLATED,400.0,115.1,0.03);
+	delay(1);	
 	restart;
+}
+
+script "boaobjectiveaccomplished" (void)
+{
+	AmbientSound("misc/objective_acc", 57);
+	sethudsize(800,600,1);
+	setfont("OBJICON");
+	hudmessage(s:"A";
+		HUDMSG_FADEINOUT,990,CR_UNTRANSLATED,400.0,115.1,1.0,0.5,0.5);
+	setfont("SMALLFONT");
+	hudmessage(l:"MO_ACCOMP";
+		HUDMSG_FADEINOUT,989,CR_UNTRANSLATED,400.0,130.1,1.0,0.5,0.5);
+	
+}
+
+script "boaobjectiveadded" (void)
+{
+	AmbientSound("misc/objective_add", 57);
+	sethudsize(800,600,1);
+	setfont("OBJADD");
+	hudmessage(s:"A";
+		HUDMSG_FADEINOUT,990,CR_UNTRANSLATED,400.0,115.1,1.0,0.5,0.5);
+	setfont("SMALLFONT");
+	hudmessage(l:"MO_ADDED";
+		HUDMSG_FADEINOUT,989,CR_UNTRANSLATED,400.0,130.1,1.0,0.5,0.5);
+	
 }
 
 script "MissionNumber" OPEN
@@ -79,7 +110,7 @@ script "BoADialogue"(int headtalky,int headsilent,int message)
 	SetHudSize(640, 400, false);
 	SetFont("SMALLFONT");
 	SetHudWrapWidth(540);
-	hudmessagebold(l:message; HUDMSG_TYPEON, 2, CR_GRAY, 100.1, 13.1, 999.0, 0.03, 1.0);
+	hudmessagebold(l:message; HUDMSG_TYPEON | HUDMSG_LOG, 2, CR_GRAY, 100.1, 13.1, 999.0, 0.03, 1.0);
 
 	// Stop talk animation
 	delay(5*35);
@@ -104,57 +135,6 @@ script "BoADialogue"(int headtalky,int headsilent,int message)
 	SetFont("SMALLFONT");
 	SetHudWrapWidth(540);
 	hudmessagebold(l:message; HUDMSG_FADEINOUT, 2, CR_GRAY, 100.1, 13.1, 0.0, 0.0, 1.0);
-}
-//Controls
-Script "AutoReload"(void)
-{
-	SetResultValue(GetCVar("autoreload"));
-}
-Script "ShellLifetime"(void)
-{
-	SetResultValue(GetCVar("casinglifetime"));
-}
-Script "RecoilAmount"(void)
-{
-	SetResultValue(GetCVar("recoilamount"));
-}
-Script "DebrisLifetime"(void)
-{
-	SetResultValue(GetCVar("debrislifetime"));
-}
-Script "BloodLifetime"(void)
-{
-	SetResultValue(GetCVar("bloodlifetime"));
-}
-//Weather
-Script "RainSwitch"(void)
-{
-	SetResultValue(GetCVar("rainswitch"));
-}
-Script "SnowSwitch"(void)
-{
-	SetResultValue(GetCVar("snowswitch"));
-}
-Script "FogSwitch"(void)
-{
-	SetResultValue(GetCVar("fogswitch"));
-}
-//Special Effects
-Script "CinderSwitch"(void)
-{
-	SetResultValue(GetCVar("cinderswitch"));
-}
-Script "DustSwitch"(void)
-{
-	SetResultValue(GetCVar("dustswitch"));
-}
-Script "SmokeSwitch"(void)
-{
-	SetResultValue(GetCVar("smokeswitch"));
-}
-Script "LitsSwitch"(void)
-{
-	SetResultValue(GetCVar("litsswitch"));
 }
 
 //sprinting stamina
@@ -377,7 +357,7 @@ Script "SupplyChest"(int supplychestid,int prize)
 	if(CheckInventory("ChestKey"))
 	{
 		Thing_Activate(supplychestid);
-		Delay(20);
+		Delay(1);
 		ActivatorSound("misc/p_pkup",127);
 		TakeInventory("ChestKey",1);
 		if(prize==1)
@@ -401,7 +381,7 @@ Script "SupplyChest"(int supplychestid,int prize)
 		ActivatorSound("treasure/locked",127);
 }
 
-//Clear Inventory
+//Clear Inventory - now added Astrostein stuff (Ozy81)
 script "CLEAR INVENTORY"(void)
 {
 	TakeInventory("9mmAmmo", 9999);
@@ -410,6 +390,9 @@ script "CLEAR INVENTORY"(void)
 	TakeInventory("FlameAmmo", 9999);
 	TakeInventory("NebAmmo", 9999);
 	TakeInventory("PanzerAmmo", 9999);
+	TakeInventory("AstroShotgunShell", 9999); //Astros
+	TakeInventory("AstroRocketAmmo", 9999); //Astros
+	TakeInventory("AstroClipAmmo", 9999); //Astros
 	Takeinventory("KnifeSilent", 9999);
 	TakeInventory("Shovel", 9999);
 	TakeInventory("Firebrand", 9999);
@@ -426,6 +409,11 @@ script "CLEAR INVENTORY"(void)
 	TakeInventory("Panzerschreck", 9999);
 	TakeInventory("UMG43", 9999);
 	TakeInventory("GrenadePickup", 9999); //mxd
+	TakeInventory("AstroGrenadePickup", 9999); //Astros
+	TakeInventory("AstroShotgun", 9999); //Astros
+	TakeInventory("AstroRocketlauncher", 9999); //Astros
+	TakeInventory("AstroChaingun", 9999); //Astros
+	TakeInventory("AstrosteinMelee", 9999); //Astros
 	GiveInventory("Browning5Loaded",9999);
 	GiveInventory("PyrolightLoaded",9999);
 	GiveInventory("G43Loaded",9999);
@@ -436,11 +424,17 @@ script "CLEAR INVENTORY"(void)
 	GiveInventory("PanzerschreckLoaded",9999);
 	GiveInventory("TrenchShotgunLoaded",9999);
 	GiveInventory("StenLoaded",9999);
+	GiveInventory("AstroShotgunLoaded",9999); //Astros
+	GiveInventory("AstroChaingunLoaded",9999); //Astros
+	GiveInventory("AstroRocketLauncherLoaded",9999); //Astros
 	TakeInventory("BoABlueKey",1);
 	TakeInventory("BoAYellowKey",1);
 	TakeInventory("BoARedKey",1);
 	TakeInventory("BoACyanKey",1);
 	TakeInventory("BoAGreenKey",1);
 	TakeInventory("BoAPurpleKey",1);
+	TakeInventory("AstroBlueKey",1); //Astros
+	TakeInventory("AstroYellowKey",1); //Astros
+	TakeInventory("AstroRedKey",1); //Astros
 	TakeInventory("Akten",1);
 }

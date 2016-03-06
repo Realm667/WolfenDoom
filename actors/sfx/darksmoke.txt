@@ -19,6 +19,7 @@ ACTOR DarkSmokeSpawner : SwitchableDecoration
 	States
 	{
 	Spawn:
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"Inactive")
 	Active:
 		TNT1 A 0 
 		TNT1 A 0 A_JumpIf(Args[0] == 1,"Medium")

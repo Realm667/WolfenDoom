@@ -87,6 +87,7 @@ ACTOR MiniCloudGrey
 	+MISSILE
 	+NOBLOCKMAP
 	+NOGRAVITY
+	//+NOCLIP
 	Radius 8
 	Height 8
 	RenderStyle "Add"
@@ -95,6 +96,7 @@ ACTOR MiniCloudGrey
 	States
 	{
 	Spawn:
+		CLFX A 0 NODELAY A_JumpIf(CallACS("CloudSwitch")==0,"EndSpawn")
 		CLFX AAAAA 3 A_FadeIn(0.1)
 		CLFX A 1000 BRIGHT
 		Wait
@@ -102,38 +104,41 @@ ACTOR MiniCloudGrey
 		CLFX AAAAAA 10 A_FadeOut(0.1)
 		TNT1 A 1
 		Stop
+	EndSpawn:
+		TNT1 A -1
+		Stop
 	}
 }
 
 ACTOR SmallCloudGrey : MiniCloudGrey
 {
 	Scale 1.0
-	Radius 16
-	Height 16
+	Radius 1
+	Height 1
 }
 
 ACTOR MediumCloudGrey : MiniCloudGrey
 {
 	Scale 2.0
-	Radius 32
-	Height 32
+	Radius 1
+	Height 1
 }
 
 ACTOR LargeCloudGrey : MiniCloudGrey
 {
 	Scale 4.0
-	Radius 64
-	Height 64
+	Radius 1
+	Height 1
 }
 
 //Tan Clouds
-ACTOR MiniCloudTan : MiniCloudGrey {Translation "80:111=48:79"}
-ACTOR SmallCloudTan : SmallCloudGrey {Translation "80:111=48:79"}
-ACTOR MediumCloudTan : MediumCloudGrey {Translation "80:111=48:79"}
-ACTOR LargeCloudTan : LargeCloudGrey {Translation "80:111=48:79"}
+ACTOR MiniCloudTan : MiniCloudGrey {Translation "80:111=48:79", "3:3=73:73"}
+ACTOR SmallCloudTan : SmallCloudGrey {Translation "80:111=48:79", "3:3=73:73"}
+ACTOR MediumCloudTan : MediumCloudGrey {Translation "80:111=48:79", "3:3=73:73"}
+ACTOR LargeCloudTan : LargeCloudGrey {Translation "80:111=48:79", "3:3=73:73"}
 
 //Red Clouds
-ACTOR MiniCloudRed : MiniCloudGrey {Translation "80:111=16:47"}
-ACTOR SmallCloudRed : SmallCloudGrey {Translation "80:111=16:47"}
-ACTOR MediumCloudRed : MediumCloudGrey {Translation "80:111=16:47"}
-ACTOR LargeCloudRed : LargeCloudGrey {Translation "80:111=16:47"}
+ACTOR MiniCloudRed : MiniCloudGrey {Translation "80:111=16:47", "3:3=41:41"}
+ACTOR SmallCloudRed : SmallCloudGrey {Translation "80:111=16:47", "3:3=41:41"}
+ACTOR MediumCloudRed : MediumCloudGrey {Translation "80:111=16:47", "3:3=41:41"}
+ACTOR LargeCloudRed : LargeCloudGrey {Translation "80:111=16:47", "3:3=41:41"}
