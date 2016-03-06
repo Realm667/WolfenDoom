@@ -205,3 +205,17 @@ ACTOR Kennkarte : Inventory
 		stop
 	}
 }
+
+///////////////////////////////////
+// Dummy Item for hiding the HUD //
+///////////////////////////////////
+
+ACTOR CutsceneEnabled : Inventory
+{
+	States
+	{
+	Spawn:
+		TNT1 A -1
+		stop
+	}
+}
