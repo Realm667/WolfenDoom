@@ -357,7 +357,7 @@ Script "SupplyChest"(int supplychestid,int prize)
 	if(CheckInventory("ChestKey"))
 	{
 		Thing_Activate(supplychestid);
-		Delay(20);
+		Delay(1);
 		ActivatorSound("misc/p_pkup",127);
 		TakeInventory("ChestKey",1);
 		if(prize==1)
