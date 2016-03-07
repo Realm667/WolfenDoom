@@ -673,48 +673,14 @@ Model Tent
 	FrameIndex SMGT A 0 0
 }
 
-Model FighterM109B
-{
-	Path "models"
-	Model 0 "m109b.md3"
-	Skin 0 "m109b.jpg"
-	Scale 1.75 1.75 1.75
-	InheritActorPitch
-	InheritActorRoll
-
-	FrameIndex SMGT A 0 0
-}
-
 Model TMPlane
 {
 	Path "models"
-	Model 0 "m109b.md3"
-	Skin 0 "m109b.jpg"
-	Scale 1.75 1.75 1.75
-	InheritActorPitch
-	InheritActorRoll
-
-	FrameIndex SMGT A 0 0
-}
-
-Model FighterM109B_Flight
-{
-	Path "models"
-	Model 0 "m109b.md3"
-	Skin 0 "m109b.jpg"
-	Scale 0.05 0.05 0.05
-	InheritActorPitch
-	InheritActorRoll
-
-	FrameIndex SMGT A 0 0
-}
-
-Model FighterM109B_Flight_Fog
-{
-	Path "models"
-	Model 0 "m109b.md3"
-	Skin 0 "m109b_fog.jpg"
-	Scale 0.05 0.05 0.05
+	Model 0 "stuka_a.md3"
+	Skin 0 "stuka.jpg"
+	Model 1 "stuka_b.md3"
+	Skin 1 "stuka_glass.jpg"
+	Scale 1.0 1.0 1.0
 	InheritActorPitch
 	InheritActorRoll
 
@@ -761,10 +727,8 @@ Model Vidcam
 {
 	Path "models"
 	Model 0 "camera_b.md3"
-	//Skin 0 "camera_d.jpg"
 	Path "models"
 	Model 1 "camera_a.md3"
-	//Skin 1 "camera_d.jpg"
 	Scale 20.0 20.0 20.0
 	InheritActorPitch
 	InheritActorRoll
@@ -2564,6 +2528,59 @@ Model 3dSkeleton_Sit
 }
 
 //CODs Stuff - ozy81
+Model CODStuka
+{
+	Path "models"
+	Model 0 "stuka_a.md3"
+	Skin 0 "stuka.jpg"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
+Model CODStuka_Glass
+{
+	Path "models"
+	Model 0 "stuka_b.md3"
+	Skin 0 "stuka_glass.jpg"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
+Model CODStuka_Flight
+{
+	Path "models"
+	Model 0 "stuka_a.md3"
+	Skin 0 "stuka.jpg"
+	Model 1 "stuka_b.md3"
+	Skin 1 "stuka_glass.jpg"
+	Scale 0.02 0.02 0.02
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
+Model CODStuka_Flight_Fog
+{
+	Path "models"
+	Model 0 "stuka_a.md3"
+	Skin 0 "stuka_f.jpg"
+	Path "models"
+	Model 1 "stuka_b.md3"
+	Skin 1 "stuka_glass_f.jpg"
+	Scale 0.02 0.02 0.02
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
 Model FlakVierling3D
 {
 	Path "Models"

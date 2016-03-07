@@ -232,13 +232,6 @@ ACTOR Tent : ModelBase
 	//$Color 3
 }
 
-ACTOR FighterM109B : ModelBase
-{
-	//$Category Models (Wolf3D)/Planes
-	//$Title FighterM109B
-	//$Color 3
-}
-
 ACTOR BomberVTOL3 : ModelBase
 {
 	//$Category Models (Wolf3D)/Planes
@@ -289,16 +282,6 @@ ACTOR Vidcam : 3dObstacle
 	//$Color 3
 	Height 64
 }
-
-ACTOR FighterM109B_Flight : ModelBase
-{
-	Projectile
-	Speed 1
-	Height 1
-	Radius 1
-}
-
-ACTOR FighterM109B_Flight_Fog : FighterM109B_Flight{}
 
 ACTOR ModelIncaTruck4Wheel_US : ModelIncaTruck4Wheel
 {
@@ -1389,6 +1372,42 @@ ACTOR Bunk_Bed2 : Bunk_Bed1
 }
 
 //CODs Stuff
+ACTOR CODStuka : ModelBase
+{
+	//$Category Models (Wolf3D)/Planes
+	//$Title Stuka Airplane (Static)
+	//$Color 3
+	
+	States
+	{
+	Spawn:
+		SMGT A -1 NoDelay A_SpawnItemEx("CODStuka_Glass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		Stop
+	}
+}
+
+ACTOR CODStuka_Glass : ModelBase
+{
+	RenderStyle "Shaded"
+	StencilColor "CC CC CC"
+}
+
+ACTOR CODStuka_Flight : ModelBase
+{
+	Projectile
+	Speed 1
+	Height 1
+	Radius 1
+}
+
+ACTOR CODStuka_Flight_Fog : CODStuka_Flight {}
+
+ACTOR TMPlane : CODStuka
+{
+	//$Category Misc (Wolf3D)/Titlemap
+	//$Title Titlemap Stuka
+}
+
 ACTOR CODSideCar : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Vehicles
