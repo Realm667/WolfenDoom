@@ -4,6 +4,7 @@ ACTOR ModelBase
 	Height 56
 	+FLOORCLIP
 	+DONTSPLASH
+	+NOGRAVITY
 	States
 	{
 	Spawn:
@@ -123,7 +124,6 @@ ACTOR ModelIncaTrain : ModelBase
 	//$Color 3
 	Radius 4
 	Height 4
-	+NOGRAVITY
 }
 
 ACTOR ModelRailBoxcar : ModelIncaTrain
@@ -156,7 +156,6 @@ ACTOR ModelRailBoxcar3_Projectile : ModelRailBoxcar3
 	Projectile
 	Speed 1
 	Damage 1000
-	+NOGRAVITY
 	+RIPPER
 }
 
@@ -218,8 +217,6 @@ ACTOR Windmill : 3dObstacle
 
 ACTOR WindmillWheel : ModelBase
 {
-	+NOGRAVITY
-
 	States
 	{
 		Spawn:
@@ -257,8 +254,7 @@ ACTOR Submarine : ModelBase
 	//$Arg0 "Engine Sound"
 	//$Arg0Type 11
 	//$Arg0Enum noyes
-
-	+NOGRAVITY
+	
 	-SOLID
 	Radius 64
 	Height 64
@@ -300,7 +296,6 @@ ACTOR FighterM109B_Flight : ModelBase
 	Speed 1
 	Height 1
 	Radius 1
-	+NOGRAVITY
 }
 
 ACTOR FighterM109B_Flight_Fog : FighterM109B_Flight{}
@@ -586,7 +581,6 @@ ACTOR FlagWave : ModelBase
 	Radius 1
 	Height 1
 	Mass 5
-	+NOGRAVITY
 	+NOINTERACTION
 	States
 	{
@@ -740,7 +734,6 @@ ACTOR RTCW_V2_Complete : ModelBase
 	//$Color 3
 	Radius 46
 	Height 192
-	+NOGRAVITY
 	States
 	{
 	Spawn:
@@ -1126,7 +1119,6 @@ ACTOR Cable1 : ModelBase
 	//$Title Cable A
 	//$Color 3
 	Height 0
-	+NOGRAVITY
 	+SPAWNCEILING
 }
 
@@ -1562,5 +1554,4 @@ ACTOR AstroShuttle : ModelBase
 	//$Color 3
 	Height 32
 	Radius 64
-	+NOGRAVITY
 }
