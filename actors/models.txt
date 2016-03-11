@@ -1590,6 +1590,40 @@ ACTOR CODSignal_Light : 3dObstacle
 	}
 }
 
+ACTOR CODRailway_Switch : SwitchableDecoration
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Train Railway Switch (Set DORMANT & activate it via ACS)
+	//$Color 3
+	Radius 16
+	Height 144
+	Mass 0x7fffffff
+	Health -1
+	+ACTLIKEBRIDGE
+	+CANPASS
+	+DONTSPLASH
+	+NOBLOOD
+	+NOBLOODDECALS
+	+NODAMAGE
+	+NOTAUTOAIMED
+	+SHOOTABLE
+	+NOGRAVITY
+	+SOLID
+	-FLOORCLIP
+	-NOBLOCKMAP
+	States
+	{
+	Active:
+		SMGT A 0 A_ChangeFlag("DORMANT", false) //update manually on GZDB
+	Spawn:
+		SMGT A -1
+		stop
+	Inactive:
+		SMGT B -1 A_ChangeFlag("DORMANT", true) //update manually on GZDB
+		Stop	
+	}
+}
+
 //Archibase.net Stuff
 ACTOR CanyonRockSpawner : 3dObstacle //ozymandias81
 {
