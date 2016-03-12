@@ -92,18 +92,6 @@ Model ModelIncaTruck4Wheel
 	FrameIndex SMGT A 0 0
 }
 
-Model ModelIncaTruck4Wheel_US
-{
-	Path "Models"
-	Model 0 "truck02a.md3"
-	Skin 0 "truck02_us.jpg"
-	Scale 0.8 0.8 0.8
-	InheritActorPitch
-	InheritActorRoll
-
-	FrameIndex SMGT A 0 0
-}
-
 Model ModelIncaTrain
 {
 	Path "Models"
@@ -2537,6 +2525,45 @@ Model 3dSkeleton_Sit
 }
 
 //CODs Stuff - ozy81
+Model COD_USJeep
+{
+	Path "Models"
+	Model 0 "us_jeep_a.md3"
+	Skin 0 "us_jeep.jpg"
+	Path "Models"
+	Model 1 "us_jeep_b.md3"
+	Skin 1 "us_jeep.jpg"
+	Scale 1.5 1.5 1.5
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
+Model COD_USJeep
+{
+	Path "Models"
+	Model 0 "us_jeep_d.md3"
+	Skin 0 "us_jeep_d.jpg"
+	Scale 1.5 1.5 1.5
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT B 0 0
+}
+
+Model COD_USJeep_Glass
+{
+	Path "Models"
+	Model 0 "us_jeep_c.md3"
+	Skin 0 "us_jeep_glass.png"
+	Scale 1.5 1.5 1.5
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
 Model CODBike
 {
 	Path "models"

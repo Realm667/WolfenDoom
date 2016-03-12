@@ -283,13 +283,6 @@ ACTOR Vidcam : 3dObstacle
 	Height 64
 }
 
-ACTOR ModelIncaTruck4Wheel_US : ModelIncaTruck4Wheel
-{
-	//$Category Models (Wolf3D)/Vehicles
-	//$Title Truck (US)
-	//$Color 3
-}
-
 ACTOR 88mmFlak : ModelBase
 {
 	//$Category Models (Wolf3D)/Mission
@@ -1354,7 +1347,43 @@ ACTOR Bunk_Bed2 : Bunk_Bed1
 	Height 72
 }
 
-//CODs Stuff
+//CODs Stuff - Ozy81
+ACTOR COD_USJeep : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Jeep (US)
+	//$Color 3
+	
+	//$Arg0 "Shape"
+	//$Arg0Tooltip "Change the variant\nDamaged: 1"
+
+	Radius 12
+	Height 52
+	States
+	{
+		Spawn:
+		TNT1 A 0 NODELAY
+		TNT1 A 0 A_JumpIf(Args[0]==1, "Damaged")
+		Normal:
+		SMGT A 0 A_SpawnItemEx("COD_USJeep_Glass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		SMGT A 0 A_SpawnItemEx("InvisibleBridge32",-48,0,20)
+		SMGT A 0 A_SpawnItemEx("InvisibleBridge32",80,0,36)
+		SMGT A -1 A_SpawnItemEx("InvisibleBridge32",88,0,16)
+		Stop
+		Damaged:
+		SMGT B 0 A_UnsetSolid
+		DmgLoop:
+		SMGT B 8 A_CustomMissile("DarkSmoke2",32,0,random(0,360),2,random(70,130))
+		Loop
+	}
+}
+
+ACTOR COD_USJeep_Glass : ModelBase
+{
+	RenderStyle "Shaded"
+	StencilColor "CC CC CC"
+}
+
 ACTOR CODBike : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Vehicles
