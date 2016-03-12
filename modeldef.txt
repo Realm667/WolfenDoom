@@ -673,48 +673,14 @@ Model Tent
 	FrameIndex SMGT A 0 0
 }
 
-Model FighterM109B
-{
-	Path "models"
-	Model 0 "m109b.md3"
-	Skin 0 "m109b.jpg"
-	Scale 1.75 1.75 1.75
-	InheritActorPitch
-	InheritActorRoll
-
-	FrameIndex SMGT A 0 0
-}
-
 Model TMPlane
 {
 	Path "models"
-	Model 0 "m109b.md3"
-	Skin 0 "m109b.jpg"
-	Scale 1.75 1.75 1.75
-	InheritActorPitch
-	InheritActorRoll
-
-	FrameIndex SMGT A 0 0
-}
-
-Model FighterM109B_Flight
-{
-	Path "models"
-	Model 0 "m109b.md3"
-	Skin 0 "m109b.jpg"
-	Scale 0.05 0.05 0.05
-	InheritActorPitch
-	InheritActorRoll
-
-	FrameIndex SMGT A 0 0
-}
-
-Model FighterM109B_Flight_Fog
-{
-	Path "models"
-	Model 0 "m109b.md3"
-	Skin 0 "m109b_fog.jpg"
-	Scale 0.05 0.05 0.05
+	Model 0 "stuka_a.md3"
+	Skin 0 "stuka.jpg"
+	Model 1 "stuka_b.md3"
+	Skin 1 "stuka_glass.jpg"
+	Scale 1.0 1.0 1.0
 	InheritActorPitch
 	InheritActorRoll
 
@@ -761,10 +727,8 @@ Model Vidcam
 {
 	Path "models"
 	Model 0 "camera_b.md3"
-	//Skin 0 "camera_d.jpg"
 	Path "models"
 	Model 1 "camera_a.md3"
-	//Skin 1 "camera_d.jpg"
 	Scale 20.0 20.0 20.0
 	InheritActorPitch
 	InheritActorRoll
@@ -880,12 +844,11 @@ Model TankPanzer3
 	FrameIndex SMGT A 0 0
 }
 
-Model KingGeorge
+Model Cruiser
 {
 	Path "Models"
-	Model 0 "KingGeorge.md3"
-	Skin 0 "KingGeorge.jpg"
-	Scale 8.0 8.0 8.0
+	Model 0 "cruiser.md3"
+	Scale 10.0 10.0 10.0
 	InheritActorPitch
 	InheritActorRoll
 
@@ -1577,6 +1540,16 @@ Model ControlPanelB
 }
 
 //DoomJuan stuff
+Model 3dEagle
+{
+	Path "models"
+	Model 0 "eagle.md3"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+	FrameIndex SMGT A 0 0
+}
+
 Model Harness
 {
 	Path "models"
@@ -2564,6 +2537,84 @@ Model 3dSkeleton_Sit
 }
 
 //CODs Stuff - ozy81
+Model CODBike
+{
+	Path "models"
+	Model 0 "bike.md3"
+	Skin 0 "bike.png"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
+Model CODBike
+{
+	Path "models"
+	Model 0 "bike_d.md3"
+	Skin 0 "bike.png"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT B 0 0
+}
+
+Model CODStuka
+{
+	Path "models"
+	Model 0 "stuka_a.md3"
+	Skin 0 "stuka.jpg"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
+Model CODStuka_Glass
+{
+	Path "models"
+	Model 0 "stuka_b.md3"
+	Skin 0 "stuka_glass.jpg"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
+Model CODStuka_Flight
+{
+	Path "models"
+	Model 0 "stuka_a.md3"
+	Skin 0 "stuka.jpg"
+	Path "models"
+	Model 1 "stuka_b.md3"
+	Skin 1 "stuka_glass.jpg"
+	Scale 0.02 0.02 0.02
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
+Model CODStuka_Flight_Fog
+{
+	Path "models"
+	Model 0 "stuka_a.md3"
+	Skin 0 "stuka_f.jpg"
+	Path "models"
+	Model 1 "stuka_b.md3"
+	Skin 1 "stuka_glass_f.jpg"
+	Scale 0.02 0.02 0.02
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
 Model FlakVierling3D
 {
 	Path "Models"
@@ -2591,6 +2642,43 @@ Model FlakVierling3D //Destroyed
 	Model 2 "flakveirling_C_d.md3"
 	Path "Models"
 	Model 3 "flakveirling_D_d.md3"
+	Scale 1.5 1.5 1.5
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT B 0 0
+}
+
+Model CODOmahaBoat
+{
+	Path "Models"
+	Model 0 "higgins_a.md3"
+	Skin 0 "higgins.jpg"
+	Path "Models"
+	Model 1 "higgins_b.md3"
+	Skin 1 "higgins.jpg"
+	Path "Models"
+	Model 2 "higgins_c.md3"
+	Skin 2 "higgins.jpg"
+	Path "Models"
+	Model 3 "higgins_f.md3"
+	Skin 3 "higgins_f.jpg"
+	Scale 1.1 1.1 1.1
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
+Model CODOmahaBoat
+{
+	Path "Models"
+	Model 0 "higgins_a_d.md3"
+	Skin 0 "higgins_d.jpg"
+	Path "Models"
+	Model 1 "higgins_b_d.md3"
+	Skin 1 "higgins_d.jpg"
+	Path "Models"
 	Scale 1.5 1.5 1.5
 	InheritActorPitch
 	InheritActorRoll
@@ -2700,6 +2788,84 @@ Model CODNeoLights1
 	Model 0 "cod_wlight1.md3"
 	Skin 0 "cod_wlight1_off.png"
 	Scale 1.5 1.5 1.5
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT B 0 0
+}
+
+Model CODSignal_Light
+{
+	Path "models"
+	Model 0 "signal_light.md3"
+	Skin 0 "signal_light_off.jpg"
+	Scale 0.6 0.6 0.6
+	InheritActorPitch
+	InheritActorRoll
+	
+	FrameIndex SMGT A 0 0
+}
+
+Model CODSignal_Light
+{
+	Path "models"
+	Model 0 "signal_light.md3"
+	Skin 0 "signal_light_grn.jpg"
+	Scale 0.6 0.6 0.6
+	InheritActorPitch
+	InheritActorRoll
+	
+	FrameIndex SMGT B 0 0
+}
+
+Model CODSignal_Light
+{
+	Path "models"
+	Model 0 "signal_light.md3"
+	Skin 0 "signal_light_yel.jpg"
+	Scale 0.6 0.6 0.6
+	InheritActorPitch
+	InheritActorRoll
+	
+	FrameIndex SMGT C 0 0
+}
+
+Model CODSignal_Light
+{
+	Path "models"
+	Model 0 "signal_light.md3"
+	Skin 0 "signal_light_red.jpg"
+	Scale 0.6 0.6 0.6
+	InheritActorPitch
+	InheritActorRoll
+	
+	FrameIndex SMGT D 0 0
+}
+
+Model CODRailway_Switch
+{
+	Path "Models"
+	Model 0 "rail_switch.md3"
+	Skin 0 "signal_light_off.jpg"
+	Path "Models"
+	Model 1 "rail_sign.md3"
+	Skin 1 "switch_sign_go.jpg"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
+Model CODRailway_Switch
+{
+	Path "Models"
+	Model 0 "rail_switch.md3"
+	Skin 0 "signal_light_off.jpg"
+	Path "Models"
+	Model 1 "rail_sign.md3"
+	Skin 1 "switch_sign_wait.jpg"
+	Scale 1.0 1.0 1.0
 	InheritActorPitch
 	InheritActorRoll
 

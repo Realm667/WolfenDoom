@@ -5,7 +5,12 @@ InterpolateArmor true;
 
 statusbar Normal // Standard Doom Status bar
 {
-
+    InInventory "CutsceneEnabled"
+    {
+	// nothing to draw when using
+    }
+    else
+    {
 	//Draw Mask for Space Suit
 	InInventory PowerSpaceSuit, 1
 	{
@@ -78,6 +83,7 @@ statusbar Normal // Standard Doom Status bar
 		
 	//mxd. Mugshot frame overlay
 	drawimage "HUDBROVL", 74, 168;
+    }
 }
 
 Statusbar Automap
@@ -87,6 +93,12 @@ Statusbar Automap
 
 Statusbar FullScreen, FullScreenOffsets, forcescaled
 {
+    InInventory "CutsceneEnabled"
+    {
+	// nothing to draw when using
+    }
+    else
+    {
 	//SpaceSuite Mask
 	InInventory PowerSpaceSuit, 1
 	{
@@ -163,4 +175,6 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 
 	//Grenade
 	drawnumber 3, BIGFONT, untranslated, GrenadePickup, alignment(left), -83, -20;
+
+    }
 }

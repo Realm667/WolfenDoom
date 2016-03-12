@@ -4,6 +4,7 @@ ACTOR ModelBase
 	Height 56
 	+FLOORCLIP
 	+DONTSPLASH
+	+NOGRAVITY
 	States
 	{
 	Spawn:
@@ -123,7 +124,6 @@ ACTOR ModelIncaTrain : ModelBase
 	//$Color 3
 	Radius 4
 	Height 4
-	+NOGRAVITY
 }
 
 ACTOR ModelRailBoxcar : ModelIncaTrain
@@ -156,7 +156,6 @@ ACTOR ModelRailBoxcar3_Projectile : ModelRailBoxcar3
 	Projectile
 	Speed 1
 	Damage 1000
-	+NOGRAVITY
 	+RIPPER
 }
 
@@ -218,8 +217,6 @@ ACTOR Windmill : 3dObstacle
 
 ACTOR WindmillWheel : ModelBase
 {
-	+NOGRAVITY
-
 	States
 	{
 		Spawn:
@@ -232,13 +229,6 @@ ACTOR Tent : ModelBase
 {
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Tent
-	//$Color 3
-}
-
-ACTOR FighterM109B : ModelBase
-{
-	//$Category Models (Wolf3D)/Planes
-	//$Title FighterM109B
 	//$Color 3
 }
 
@@ -257,8 +247,7 @@ ACTOR Submarine : ModelBase
 	//$Arg0 "Engine Sound"
 	//$Arg0Type 11
 	//$Arg0Enum noyes
-
-	+NOGRAVITY
+	
 	-SOLID
 	Radius 64
 	Height 64
@@ -293,17 +282,6 @@ ACTOR Vidcam : 3dObstacle
 	//$Color 3
 	Height 64
 }
-
-ACTOR FighterM109B_Flight : ModelBase
-{
-	Projectile
-	Speed 1
-	Height 1
-	Radius 1
-	+NOGRAVITY
-}
-
-ACTOR FighterM109B_Flight_Fog : FighterM109B_Flight{}
 
 ACTOR ModelIncaTruck4Wheel_US : ModelIncaTruck4Wheel
 {
@@ -429,7 +407,7 @@ ACTOR TankPanzer3 : ModelBase
 	Height 64
 }
 
-ACTOR KingGeorge : ModelBase
+ACTOR Cruiser : ModelBase
 {
 	//$Category Models (Wolf3D)/Ships
 	//$Title Battleship
@@ -586,7 +564,6 @@ ACTOR FlagWave : ModelBase
 	Radius 1
 	Height 1
 	Mass 5
-	+NOGRAVITY
 	+NOINTERACTION
 	States
 	{
@@ -740,7 +717,6 @@ ACTOR RTCW_V2_Complete : ModelBase
 	//$Color 3
 	Radius 46
 	Height 192
-	+NOGRAVITY
 	States
 	{
 	Spawn:
@@ -971,6 +947,14 @@ ACTOR Tie_Fighter : 3dObstacle //ozy81
 }
 
 //DoomJuan Models, added & fixed a bit by Ozymandias81
+ACTOR 3dEagle : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title SS Eagle
+	//$Color 3
+	-SOLID
+}
+
 ACTOR Harness : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Scenery
@@ -1126,7 +1110,6 @@ ACTOR Cable1 : ModelBase
 	//$Title Cable A
 	//$Color 3
 	Height 0
-	+NOGRAVITY
 	+SPAWNCEILING
 }
 
@@ -1372,6 +1355,98 @@ ACTOR Bunk_Bed2 : Bunk_Bed1
 }
 
 //CODs Stuff
+ACTOR CODBike : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Old Bike
+	//$Color 3
+	
+	//$Arg0 "Shape"
+	//$Arg0Tooltip "Pickup the desired shape\nRandom: 0\nClean: 1\nBroken: 2"
+	
+	Radius 16
+	Height 32
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY
+		TNT1 A 0 A_JumpIf(Args[0]==1, "Clean")
+		TNT1 A 0 A_JumpIf(Args[0]==2, "Broken")
+		Random: //fall through if set at 0
+		SMGT A -1 A_Jump(128,1)
+		SMGT B -1 A_UnsetSolid
+		Stop
+		Clean:
+		SMGT A -1
+		Stop
+		Broken:
+		SMGT B -1 A_UnsetSolid
+		Stop
+	}
+}
+
+ACTOR CODOmahaBoat : FlakVierling3D
+{
+	//$Category Models (Wolf3D)/Ships
+	//$Title Landing Boat
+	//$Color 3
+	States
+	{
+	Active:
+		SMGT A 0 A_ChangeFlag("DORMANT", false) //update manually on GZDB
+	Spawn:
+		SMGT A -1
+		Stop
+	Inactive:
+		SMGT B 0 A_ChangeFlag("DORMANT", true) //update manually on GZDB
+		SMGT B 0 A_PlaySound("weapons/explode")
+		SMGT B 0 A_Scream
+		SMGT B 0 A_NoBlocking
+		SMGT BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx ("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		SMGT B 1 A_SpawnItemEx("Nuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
+		Destroyed:
+			SMGT B 8 A_CustomMissile("DarkSmoke2",32,0,random(0,360),2,random(70,130))
+			Loop
+	}
+}
+
+ACTOR CODStuka : ModelBase
+{
+	//$Category Models (Wolf3D)/Planes
+	//$Title Stuka Airplane (Static)
+	//$Color 3
+	
+	States
+	{
+	Spawn:
+		SMGT A -1 NoDelay A_SpawnItemEx("CODStuka_Glass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		Stop
+	}
+}
+
+ACTOR CODStuka_Glass : ModelBase
+{
+	RenderStyle "Shaded"
+	StencilColor "CC CC CC"
+}
+
+ACTOR CODStuka_Flight : ModelBase
+{
+	Projectile
+	Speed 1
+	Height 1
+	Radius 1
+}
+
+ACTOR CODStuka_Flight_Fog : CODStuka_Flight {}
+
+ACTOR TMPlane : CODStuka
+{
+	//$Category Misc (Wolf3D)/Titlemap
+	//$Title Titlemap Stuka
+}
+
 ACTOR CODSideCar : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Vehicles
@@ -1483,6 +1558,72 @@ ACTOR CODNeoLights1 : SwitchableDecoration
 	}
 }
 
+ACTOR CODSignal_Light : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Train Signal Light (off/red/yel/green)
+	//$Color 3
+	
+	//$Arg0 "Light"
+	//$Arg0Tooltip "Pickup the desired light\nOff: 0\nGreen: 1\nYellow: 2\nRed: 3"
+	Radius 24
+	Height 128
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY
+		TNT1 A 0 A_JumpIf(Args[0]==1, "Green")
+		TNT1 A 0 A_JumpIf(Args[0]==2, "Yellow")
+		TNT1 A 0 A_JumpIf(Args[0]==3, "Red")
+		Off: //fall through if set at 0
+		SMGT A -1 
+		Stop
+		Green:
+		SMGT B -1 LIGHT("SIGNLGRN")
+		Stop
+		Yellow:
+		SMGT C -1 LIGHT("SIGNLYEL")
+		Stop
+		Red:
+		SMGT D -1 LIGHT("SIGNLRED")
+		Stop
+	}
+}
+
+ACTOR CODRailway_Switch : SwitchableDecoration
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Train Railway Switch (Set DORMANT & activate it via ACS)
+	//$Color 3
+	Radius 16
+	Height 144
+	Mass 0x7fffffff
+	Health -1
+	+ACTLIKEBRIDGE
+	+CANPASS
+	+DONTSPLASH
+	+NOBLOOD
+	+NOBLOODDECALS
+	+NODAMAGE
+	+NOTAUTOAIMED
+	+SHOOTABLE
+	+NOGRAVITY
+	+SOLID
+	-FLOORCLIP
+	-NOBLOCKMAP
+	States
+	{
+	Active:
+		SMGT A 0 A_ChangeFlag("DORMANT", false) //update manually on GZDB
+	Spawn:
+		SMGT A -1
+		stop
+	Inactive:
+		SMGT B -1 A_ChangeFlag("DORMANT", true) //update manually on GZDB
+		Stop	
+	}
+}
+
 //Archibase.net Stuff
 ACTOR CanyonRockSpawner : 3dObstacle //ozymandias81
 {
@@ -1562,5 +1703,4 @@ ACTOR AstroShuttle : ModelBase
 	//$Color 3
 	Height 32
 	Radius 64
-	+NOGRAVITY
 }
