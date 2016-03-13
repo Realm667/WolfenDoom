@@ -1177,9 +1177,24 @@ RADIONOS RADIONOS //Radio Noise
 DSDETON DSDETON //Detonator
 DSDETOP DSDETOP //Detonator Place
 
-//Radio Broadcast
-LASTHITL	LASTHITL
-$singular	LASTHITL
+//Radio Broadcast - Simple
+SPEECH1 SPEECH1
+$singular	SPEECH1
+
+//Radio Broadcast - Parlor Radio
+HWESSL2	HWESSL2
+$singular	HWESSL2
+VIKTORIA	VIKTORIA
+$singular	VIKTORIA
+SPEECH2 SPEECH2
+$singular	SPEECH2
+
+$random radios/loops { HWESSL2 VIKTORIA SPEECH2 }
+$limit	radios/loops 1
+
+//Gramophone
+WALKURE	WALKURE
+$singular	WALKURE
 
 //Tanks - from Return To Castle Wolfenstein - NOT USED
 TKIDLE TKIDLE

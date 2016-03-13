@@ -624,7 +624,7 @@ ACTOR RadioSimple : SwitchableDecoration
 	States
 	{
 	Active:
-		SMGT A 0 A_PlaySound("LASTHITL", CHAN_ITEM)
+		SMGT A 0 A_PlaySound("SPEECH1", CHAN_ITEM)
 	Spawn:
 	  SMGT A -1
 		Stop
@@ -653,13 +653,40 @@ ACTOR RadioModern : 3dObstacle
 	Height 20
 }
 
-ACTOR RTCWParlor : 3dObstacle
+ACTOR RTCWParlor : SwitchableDecoration
 {
 	//$Category Models (Wolf3D)/Scenery
-	//$Title Parlor Radio
+	//$Title Parlor Radio (interactive)
 	//$Color 3
 	Radius 8
 	Height 8
+	Mass 0x7fffffff
+	Health -1
+	+ACTLIKEBRIDGE
+	+CANPASS
+	+DONTSPLASH
+	+NOBLOOD
+	+NOBLOODDECALS
+	+NODAMAGE
+	+NOTAUTOAIMED
+	+SHOOTABLE
+	+SOLID
+	+SYNCHRONIZED
+	+USESPECIAL
+	-FLOORCLIP
+	-NOBLOCKMAP
+	Activation THINGSPEC_Switch
+	States
+	{
+	Active:
+		SMGT A 0 A_PlaySound("radios/loops", CHAN_ITEM)
+	Spawn:
+	  SMGT A -1
+		Stop
+	Inactive:
+		SMGT A 0 A_StopSound(CHAN_ITEM)
+		Goto Spawn
+	}
 }
 
 ACTOR RTCWPhone : 3dObstacle
@@ -671,13 +698,40 @@ ACTOR RTCWPhone : 3dObstacle
 	Height 8
 }
 
-ACTOR RTCWGramo : 3dObstacle
+ACTOR RTCWGramo : SwitchableDecoration
 {
 	//$Category Models (Wolf3D)/Scenery
-	//$Title Gramophone
+	//$Title Gramophone (interactive)
 	//$Color 3
 	Radius 16
 	Height 32
+	Mass 0x7fffffff
+	Health -1
+	+ACTLIKEBRIDGE
+	+CANPASS
+	+DONTSPLASH
+	+NOBLOOD
+	+NOBLOODDECALS
+	+NODAMAGE
+	+NOTAUTOAIMED
+	+SHOOTABLE
+	+SOLID
+	+SYNCHRONIZED
+	+USESPECIAL
+	-FLOORCLIP
+	-NOBLOCKMAP
+	Activation THINGSPEC_Switch
+	States
+	{
+	Active:
+		SMGT A 0 A_PlaySound("WALKURE", CHAN_ITEM)
+	Spawn:
+	  SMGT A -1
+		Stop
+	Inactive:
+		SMGT A 0 A_StopSound(CHAN_ITEM)
+		Goto Spawn
+	}
 }
 
 ACTOR EnigmaMachine : 3dObstacle
