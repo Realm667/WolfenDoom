@@ -100,23 +100,6 @@ ACTOR ModelCampBed2 : 3dObstacle
 	Height 24
 }
 
-ACTOR ModelIncaTruck4Wheel : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Vehicles
-	//$Title Truck (Nazi)
-	//$Color 3
-	Radius 12
-	Height 52
-	States
-	{
-	Spawn:
-		SMGT A 0 NODELAY A_SpawnItemEx("InvisibleBridge32",-48,0,20)
-		SMGT A 0 A_SpawnItemEx("InvisibleBridge32",80,0,36)
-		SMGT A -1 A_SpawnItemEx("InvisibleBridge32",88,0,16)
-		Stop
-	}
-}
-
 ACTOR ModelIncaTrain : ModelBase
 {
 	//$Category Models (Wolf3D)/Vehicles
@@ -1438,6 +1421,31 @@ ACTOR Bunk_Bed2 : Bunk_Bed1
 }
 
 //CODs Stuff - Ozy81
+ACTOR COD_SSHorch : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Truck, Horch-1A (Nazi)
+	//$Color 3
+
+	Radius 12
+	Height 52
+	States
+	{
+		Spawn:
+		SMGT A 0 NODELAY A_SpawnItemEx("COD_SSHorch_Glass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		SMGT A 0 A_SpawnItemEx("InvisibleBridge32",-48,0,20)
+		SMGT A 0 A_SpawnItemEx("InvisibleBridge32",80,0,36)
+		SMGT A -1 A_SpawnItemEx("InvisibleBridge32",88,0,16)
+		Stop
+	}
+}
+
+ACTOR COD_SSHorch_Glass : ModelBase
+{
+	RenderStyle "Shaded"
+	StencilColor "CC CC CC"
+}
+
 ACTOR COD_USJeep : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Vehicles
