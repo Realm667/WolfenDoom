@@ -100,6 +100,23 @@ ACTOR ModelCampBed2 : 3dObstacle
 	Height 24
 }
 
+ACTOR ModelIncaTruck4Wheel : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Truck (Nazi)
+	//$Color 3
+	Radius 12
+	Height 52
+	States
+	{
+	Spawn:
+		SMGT A 0 NODELAY A_SpawnItemEx("InvisibleBridge32",-48,0,20)
+		SMGT A 0 A_SpawnItemEx("InvisibleBridge32",80,0,36)
+		SMGT A -1 A_SpawnItemEx("InvisibleBridge32",88,0,16)
+		Stop
+	}
+}
+
 ACTOR ModelIncaTrain : ModelBase
 {
 	//$Category Models (Wolf3D)/Vehicles
@@ -264,6 +281,13 @@ ACTOR Vidcam : 3dObstacle
 	//$Title Video Cam
 	//$Color 3
 	Height 64
+}
+
+ACTOR ModelIncaTruck4Wheel_US : ModelIncaTruck4Wheel
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Truck (US)
+	//$Color 3
 }
 
 ACTOR 88mmFlak : ModelBase
@@ -445,6 +469,22 @@ ACTOR Luftschiff : 3dObstacle
 }
 
 //Return to Castle Wolfenstein models
+ACTOR ControlPanel : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Control Panel
+	//$Color 3
+	Radius 8
+	Height 32
+	+NOGRAVITY
+	+FIXMAPTHINGPOS
+}
+
+ACTOR ControlPanelB : ControlPanel
+{
+	//$Title Control Panel (Blown)
+}
+
 ACTOR RTCWChalice : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Scenery
@@ -566,6 +606,15 @@ ACTOR Typewriter : 3dObstacle
 	Height 16
 }
 
+ACTOR RadioSimple : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Radio (simple)
+	//$Color 3
+	Radius 16
+	Height 16
+}
+
 ACTOR RadioModern : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Scenery
@@ -575,40 +624,13 @@ ACTOR RadioModern : 3dObstacle
 	Height 20
 }
 
-ACTOR RTCWParlor : SwitchableDecoration
+ACTOR RTCWParlor : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Scenery
-	//$Title Parlor Radio (interactive)
+	//$Title Parlor Radio
 	//$Color 3
 	Radius 8
 	Height 8
-	Mass 0x7fffffff
-	Health -1
-	+ACTLIKEBRIDGE
-	+CANPASS
-	+DONTSPLASH
-	+NOBLOOD
-	+NOBLOODDECALS
-	+NODAMAGE
-	+NOTAUTOAIMED
-	+SHOOTABLE
-	+SOLID
-	+SYNCHRONIZED
-	+USESPECIAL
-	-FLOORCLIP
-	-NOBLOCKMAP
-	Activation THINGSPEC_Switch
-	States
-	{
-	Active:
-		SMGT A 0 A_PlaySound("radios/loops", CHAN_ITEM)
-	Spawn:
-	  SMGT A -1
-		Stop
-	Inactive:
-		SMGT A 0 A_StopSound(CHAN_ITEM)
-		Goto Spawn
-	}
 }
 
 ACTOR RTCWPhone : 3dObstacle
@@ -620,40 +642,13 @@ ACTOR RTCWPhone : 3dObstacle
 	Height 8
 }
 
-ACTOR RTCWGramo : SwitchableDecoration
+ACTOR RTCWGramo : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Scenery
-	//$Title Gramophone (interactive)
+	//$Title Gramophone
 	//$Color 3
 	Radius 16
 	Height 32
-	Mass 0x7fffffff
-	Health -1
-	+ACTLIKEBRIDGE
-	+CANPASS
-	+DONTSPLASH
-	+NOBLOOD
-	+NOBLOODDECALS
-	+NODAMAGE
-	+NOTAUTOAIMED
-	+SHOOTABLE
-	+SOLID
-	+SYNCHRONIZED
-	+USESPECIAL
-	-FLOORCLIP
-	-NOBLOCKMAP
-	Activation THINGSPEC_Switch
-	States
-	{
-	Active:
-		SMGT A 0 A_PlaySound("WALKURE", CHAN_ITEM)
-	Spawn:
-	  SMGT A -1
-		Stop
-	Inactive:
-		SMGT A 0 A_StopSound(CHAN_ITEM)
-		Goto Spawn
-	}
 }
 
 ACTOR EnigmaMachine : 3dObstacle
@@ -952,14 +947,6 @@ ACTOR Tie_Fighter : 3dObstacle //ozy81
 }
 
 //DoomJuan Models, added & fixed a bit by Ozymandias81
-ACTOR 3dEagle : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title SS Eagle
-	//$Color 3
-	-SOLID
-}
-
 ACTOR Harness : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Scenery
@@ -1083,6 +1070,15 @@ ACTOR MineCartE : MineCartF
 	//$Category Models (Wolf3D)/Scenery
 	//$Title "Mine Cart, Empty"
 	//$Color 3
+}
+
+ACTOR MineCartEMoving : MineCartF
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title "Mine Cart, Empty (for movement sequence)"
+	//$Color 3
+	Activation THINGSPEC_MonsterTrigger
+	+BUMPSPECIAL
 }
 
 ACTOR MineCartW : MineCartF
@@ -1359,131 +1355,7 @@ ACTOR Bunk_Bed2 : Bunk_Bed1
 	Height 72
 }
 
-//CODs Stuff - Ozy81
-ACTOR COD_RadioSimple : SwitchableDecoration
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title Radio (interactive, destroyable, simple)
-	//$Color 3
-	Radius 16
-	Height 16
-	Mass 0x7fffffff
-	Health 25
-	+ACTLIKEBRIDGE
-	+CANPASS
-	+DONTSPLASH
-	+NOBLOOD
-	+NOBLOODDECALS
-	+NOTAUTOAIMED
-	+SHOOTABLE
-	+SOLID
-	+SYNCHRONIZED
-	+USESPECIAL
-	-FLOORCLIP
-	-NOBLOCKMAP
-	Activation THINGSPEC_Switch
-	States
-	{
-	Active:
-		SMGT A 0 A_PlaySound("SPEECH1", CHAN_ITEM)
-	Spawn:
-	  SMGT A -1
-		Stop
-	Inactive:
-		SMGT A 0 A_StopSound(CHAN_ITEM)
-		Goto Spawn
-	Death:
-		SMGT B 0 A_StopSound(CHAN_ITEM)
-		"####" B 0 A_PlaySound("METALBRK", frandom (0.5,0.8))
-		"####" B 0 A_PlaySound("tesla/loop",6,1,1)
-		"####" B 0 A_ChangeFlag("USESPECIAL", false)
-		"####" B 0 A_UnSetSolid
-		"####" B 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0, SXF_CLIENTSIDE | SXF_TRANSFERSCALE)
-		"####" BBBBBB 3 A_SpawnItemEx("Spark_B1", ScaleX*24, frandom(-8.0,8.0), ScaleY*8, 0, frandom(-1.0,1.0), frandom(-1.0,1.0), random(0,360), SXF_CLIENTSIDE)
-		"####" B 0 A_StopSound(6)
-		"####" BBBBBB 3 A_SpawnItemEx("Spark_B1", ScaleX*24, frandom(-8.0,8.0), ScaleY*8, 0, frandom(-1.0,1.0), frandom(-1.0,1.0), random(0,360), SXF_CLIENTSIDE)
-		"####" B -1
-		Stop
-	}
-}
-
-ACTOR COD_Radio_Tall : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title Radio, Tall
-	//$Color 3
-	Radius 8
-	Height 32
-	+NOGRAVITY
-	+FIXMAPTHINGPOS
-}
-
-ACTOR COD_Radio_Tall_D : COD_Radio_Tall
-{
-	//$Title Radio, Tall (Blown)
-}
-
-ACTOR COD_SSHorch : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Vehicles
-	//$Title Truck, Horch-1A (Nazi)
-	//$Color 3
-
-	Radius 12
-	Height 52
-	States
-	{
-		Spawn:
-		SMGT A 0 NODELAY A_SpawnItemEx("COD_SSHorch_Glass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
-		SMGT A 0 A_SpawnItemEx("InvisibleBridge32",-48,0,20)
-		SMGT A 0 A_SpawnItemEx("InvisibleBridge32",80,0,36)
-		SMGT A -1 A_SpawnItemEx("InvisibleBridge32",88,0,16)
-		Stop
-	}
-}
-
-ACTOR COD_SSHorch_Glass : ModelBase
-{
-	RenderStyle "Shaded"
-	StencilColor "CC CC CC"
-}
-
-ACTOR COD_USJeep : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Vehicles
-	//$Title Jeep (US)
-	//$Color 3
-	
-	//$Arg0 "Shape"
-	//$Arg0Tooltip "Change the variant\nDamaged: 1"
-
-	Radius 12
-	Height 52
-	States
-	{
-		Spawn:
-		TNT1 A 0 NODELAY
-		TNT1 A 0 A_JumpIf(Args[0]==1, "Damaged")
-		Normal:
-		SMGT A 0 A_SpawnItemEx("COD_USJeep_Glass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
-		SMGT A 0 A_SpawnItemEx("InvisibleBridge32",-48,0,20)
-		SMGT A 0 A_SpawnItemEx("InvisibleBridge32",80,0,36)
-		SMGT A -1 A_SpawnItemEx("InvisibleBridge32",88,0,16)
-		Stop
-		Damaged:
-		SMGT B 0 A_UnsetSolid
-		DmgLoop:
-		SMGT B 8 A_CustomMissile("DarkSmoke2",32,0,random(0,360),2,random(70,130))
-		Loop
-	}
-}
-
-ACTOR COD_USJeep_Glass : ModelBase
-{
-	RenderStyle "Shaded"
-	StencilColor "CC CC CC"
-}
-
+//CODs Stuff
 ACTOR CODBike : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Vehicles
@@ -1680,72 +1552,6 @@ ACTOR CODNeoLights1 : SwitchableDecoration
 		SMGT A 0 A_ChangeFlag("DORMANT", false) //update manually on GZDB
 	Spawn:
 		SMGT A -1 LIGHT(OZYWALLT)
-		stop
-	Inactive:
-		SMGT B -1 A_ChangeFlag("DORMANT", true) //update manually on GZDB
-		Stop	
-	}
-}
-
-ACTOR CODSignal_Light : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title Train Signal Light (off/red/yel/green)
-	//$Color 3
-	
-	//$Arg0 "Light"
-	//$Arg0Tooltip "Pickup the desired light\nOff: 0\nGreen: 1\nYellow: 2\nRed: 3"
-	Radius 24
-	Height 128
-	States
-	{
-	Spawn:
-		TNT1 A 0 NODELAY
-		TNT1 A 0 A_JumpIf(Args[0]==1, "Green")
-		TNT1 A 0 A_JumpIf(Args[0]==2, "Yellow")
-		TNT1 A 0 A_JumpIf(Args[0]==3, "Red")
-		Off: //fall through if set at 0
-		SMGT A -1 
-		Stop
-		Green:
-		SMGT B -1 LIGHT("SIGNLGRN")
-		Stop
-		Yellow:
-		SMGT C -1 LIGHT("SIGNLYEL")
-		Stop
-		Red:
-		SMGT D -1 LIGHT("SIGNLRED")
-		Stop
-	}
-}
-
-ACTOR CODRailway_Switch : SwitchableDecoration
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title Train Railway Switch (Set DORMANT & activate it via ACS)
-	//$Color 3
-	Radius 16
-	Height 144
-	Mass 0x7fffffff
-	Health -1
-	+ACTLIKEBRIDGE
-	+CANPASS
-	+DONTSPLASH
-	+NOBLOOD
-	+NOBLOODDECALS
-	+NODAMAGE
-	+NOTAUTOAIMED
-	+SHOOTABLE
-	+NOGRAVITY
-	+SOLID
-	-FLOORCLIP
-	-NOBLOCKMAP
-	States
-	{
-	Active:
-		SMGT A 0 A_ChangeFlag("DORMANT", false) //update manually on GZDB
-	Spawn:
-		SMGT A -1
 		stop
 	Inactive:
 		SMGT B -1 A_ChangeFlag("DORMANT", true) //update manually on GZDB
