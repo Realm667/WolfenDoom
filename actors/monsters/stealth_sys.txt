@@ -27,18 +27,17 @@ ACTOR SneakableSSMP40Guard : SSMP40Guard
 		Pain: // Stop being so friendly when damaged
 			"####" "#" 0 A_CheckFlag("FRIENDLY", "BecomeAlerted") // Only if not already alerted
 			goto Super::Pain
-			
 		Pain.SilentKnifeAttack: // Done using PainType "SilentKnifeAttack" on KnifePuff because I need this to REPLACE Pain state, not be called AFTER it
 			"####" "#" 0 A_CheckFlag("FRIENDLY", "StealthKill") // Only unalerted enemies can be stealth-killed
 			goto Pain
-			
 		StealthKill:	
 			"####" "#" 0 A_Log("Stealth kill!")
 			"####" "#" 0 A_RemoveChildren(true, RMVF_EVERYTHING) // Despawn children
 			"####" "#" 0 A_SetUserVar("user_stealthkilled", true)
-			"####" "#" 1 A_AlertMonsters(128, AMF_TARGETEMITTER) // 1. The guard must be alive to call A_AlertMonsters 2. ZDoom invariantly jumps to the Pain state after calling A_AlertMonsters...
-			Stop
-			
+//			"####" "#" 1 A_AlertMonsters(128, AMF_TARGETEMITTER) // 1. The guard must be alive to call A_AlertMonsters 2. ZDoom invariantly jumps to the Pain state after calling A_AlertMonsters...
+//			Stop
+			Goto StealthDeath
+
 		BecomeAlerted: // Become alerted after being attacked 
 			"####" "#" 0 A_SetUserVar("user_chasegoal", CallACS("GetChaseGoal", user_chasegoal)) // Store current chase goal, if any
 			"####" "#" 0 A_ChangeFlag("FRIENDLY", false)
