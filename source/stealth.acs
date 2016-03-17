@@ -85,14 +85,17 @@ Script "PlayFootstepsSoundLoop" ENTER
 		if(ShowStealthHUD && GetActorProperty(playerID, APROP_HEALTH) > 0)
 		{
 			// Convert visibility to [0.0 - 1.0] fixed point range
-      int lampalpha = 1.0;
+			int lampalpha = 1.0;
 			if(alertedGuardsCount == 0)
 			{
+				 lampalpha = FixedDiv(GetVisibility(playerID, curNoiseLevel, extraVisibility) << 16, 255.0); 
+/*
 				 // Make displayed visibility changes more smooth, also clamp it in [0 - 100] range
 				 int visibility = GetVisibility(playerID, curNoiseLevel, extraVisibility);
 				 if(displayedVisibility < 100 && visibility > displayedVisibility) displayedVisibility += 2;
 				 else if(visibility < displayedVisibility) displayedVisibility -= 2;
 			   lampalpha = FixedDiv((displayedVisibility << 16), 100.0);
+*/
 			}
 
 			// Draw BG
@@ -121,9 +124,13 @@ script "ApplyNoiseLevelMultiplier" (int baseradius)
 }
 
 //mxd. Stealth-related. Called by dynamic light actors to affect player visibility
-script "AddExtraVisibility" (int value)
+//AFA - Second parameter of 1 tells it to set the value directly instead of adding to what's there
+script "AddExtraVisibility" (int value, int override)
 {
-	  extraVisibility = Min(extraVisibility + value, MAX_EXTRA_VISIBILITY);
+	If (!override)
+		extraVisibility = Min(extraVisibility + value, MAX_EXTRA_VISIBILITY);
+	Else
+		extraVisibility = Clamp(value, 0, MAX_EXTRA_VISIBILITY);
 }
 
 //mxd. Stealth-related. For this to work, each player must have unique TID.
@@ -190,7 +197,7 @@ script "TryResumePatrolling" (void)
 
 script "ResumePatrolling" (int goaltid, int enemytid)
 {
- // Wait untill not seen by any player
+ // Wait until not seen by any player
 	while(ActorIsSeen(enemytid) || ActorIsSeen(goaltid))
 	{
 		Delay(15);
@@ -231,7 +238,8 @@ function int GetVisibility(int tid, int noiselevel, int addedvisibility)
 	if(alertedGuardsCount > 0) return 255;
 
 	// Get it's light level
-	int targetlightlevel = FixedMul(GetActorLightLevel(tid) << 16, VisibilityMultiplier) >> 16;
+	int targetlightlevel = Map(GetActorLightLevel(tid), 96, 160, 0, 255);
+	targetlightlevel = FixedMul(targetlightlevel << 16, VisibilityMultiplier) >> 16;
 
 	// And speed
 	int x = GetActorVelX(tid);
@@ -243,10 +251,13 @@ function int GetVisibility(int tid, int noiselevel, int addedvisibility)
 	int speed = (FixedMul(x, x) + FixedMul(y, y) + FixedMul(z, z)) >> 16;
 
 	// And view height (56 when standing, 28 when crouching)
-	int viewheightmod = 56 - (GetActorViewHeight(tid) >> 16);
+	int viewheightmod = 28 - (GetActorViewHeight(tid) >> 16); //AFA - tweaked so that crouching has less effect
+
+	//And game skill
+	int skillmod = GameSkill() * 2; //AFA - Just enough so that you can't barrel around at full speed while crouched at skill 3 and up (HMP and NM equivalent)
 
 	// Calculate resulting visibility level (will probably require lots of tweaking...)
-	return Max(0, targetlightlevel + speed + noiselevel + addedvisibility - viewheightmod);
+	return Max(0, targetlightlevel + speed + noiselevel + addedvisibility - viewheightmod + skillmod);
 }
 
 // Taken straight from the wiki (http://zdoom.org/wiki/VectorLength)
@@ -281,4 +292,14 @@ function int Min(int a, int b)
 {
 	if(a < b) return a;
 	return b;
+}
+
+function int Map(int val, int a1, int a2, int b1, int b2)
+{
+	return Clamp((((val * 1.0 - a1)/(a2 - a1)) * (b2 - b1) + b1) / 1.0, a1, a2);
+}
+
+function int Clamp(int val, int minVal, int maxVal)
+{
+	return Min(Max(val, minVal), maxVal);
 }
