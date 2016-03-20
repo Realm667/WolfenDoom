@@ -1363,10 +1363,19 @@ ACTOR Bunk_Bed2 : Bunk_Bed1
 }
 
 //CODs Stuff - Ozy81
-ACTOR COD_EagleBust : 3dObstacle
+ACTOR COD_Gascan : 3dObstacle //for now it isn't destroyable
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Gascan
+	//$Color 3
+	Radius 8
+	Height 32
+}
+
+ACTOR COD_FemaleBust : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Statues
-	//$Title Eagle Bust (silver or bronze)
+	//$Title Female Bust (silver or bronze)
 	//$Color 3
 	
 	//$Arg0 "Material"
@@ -1387,6 +1396,11 @@ ACTOR COD_EagleBust : 3dObstacle
 		SMGT B -1
 		Stop
 	}
+}
+
+ACTOR COD_EagleBust : COD_FemaleBust
+{
+	//$Title Eagle Bust (silver or bronze)
 }
 
 ACTOR COD_Tiger1 : ModelBase
