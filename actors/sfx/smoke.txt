@@ -212,7 +212,7 @@ ACTOR AmbientSmokeGenerator : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		TNT1 A 2 A_SpawnItemEx("Ambientsmoke", Random(-Args[0], Args[0]), Random(-Args[0], Args[0]), Random(0,16), 0, 0, 0.5, 0, 0, Args[1])
+		TNT1 A 2 A_SpawnItemEx("Ambientsmoke", Random(-Args[0], Args[0]), Random(-Args[0], Args[0]), Random(0,32), 0, 0, 0.5, 0, 0, Args[1])
 		loop
 	Inactive:
 		TNT1 A -1
