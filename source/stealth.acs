@@ -88,13 +88,14 @@ Script "PlayFootstepsSoundLoop" ENTER
 			int lampalpha = 1.0;
 			if(alertedGuardsCount == 0)
 			{
-				 lampalpha = FixedDiv(GetVisibility(playerID, curNoiseLevel, extraVisibility) << 16, 255.0); 
+				lampalpha = Clamp(GetVisibility(playerID, curNoiseLevel, extraVisibility), 0, PlayerDetectionVisibility);
+				lampalpha = FixedDiv(lampalpha << 16, PlayerDetectionVisibility << 16);
 /*
-				 // Make displayed visibility changes more smooth, also clamp it in [0 - 100] range
-				 int visibility = GetVisibility(playerID, curNoiseLevel, extraVisibility);
-				 if(displayedVisibility < 100 && visibility > displayedVisibility) displayedVisibility += 2;
-				 else if(visibility < displayedVisibility) displayedVisibility -= 2;
-			   lampalpha = FixedDiv((displayedVisibility << 16), 100.0);
+				// Make displayed visibility changes more smooth, also clamp it in [0 - 100] range
+				int visibility = GetVisibility(playerID, curNoiseLevel, extraVisibility);
+				if(displayedVisibility < 100 && visibility > displayedVisibility) displayedVisibility += 2;
+				else if(visibility < displayedVisibility) displayedVisibility -= 2;
+				lampalpha = FixedDiv((displayedVisibility << 16), 100.0);
 */
 			}
 
@@ -145,6 +146,9 @@ script "TargetIsHidden" (void)
 		
 		// Get target's TID
 		int targettid = GetActorProperty(0, APROP_TargetTID);
+
+		//AFA - Add extra visibility if player is in line of sight.  Amount based on difficulty level.
+		ACS_NamedExecuteAlways("AddExtraVisibility", 0, GameSkill());
 
 		// 0 TID means that target is not a player, but something (probably PlayerStep), which called A_AlertMonsters.
 		if(targettid == 0 || !CheckActorClass(targettid, "BoAPlayer"))
@@ -238,7 +242,7 @@ function int GetVisibility(int tid, int noiselevel, int addedvisibility)
 	if(alertedGuardsCount > 0) return 255;
 
 	// Get it's light level
-	int targetlightlevel = Map(GetActorLightLevel(tid), 96, 160, 0, 255);
+	int targetlightlevel = GetActorLightLevel(tid);
 	targetlightlevel = FixedMul(targetlightlevel << 16, VisibilityMultiplier) >> 16;
 
 	// And speed
@@ -254,10 +258,10 @@ function int GetVisibility(int tid, int noiselevel, int addedvisibility)
 	int viewheightmod = 28 - (GetActorViewHeight(tid) >> 16); //AFA - tweaked so that crouching has less effect
 
 	//And game skill
-	int skillmod = GameSkill() * 2; //AFA - Just enough so that you can't barrel around at full speed while crouched at skill 3 and up (HMP and NM equivalent)
+	int skillmod = speed * GameSkill() * 2 / 3; //AFA - Just enough so that you can't barrel around at full speed while crouched at skill 3 and up (HMP and NM equivalent)
 
 	// Calculate resulting visibility level (will probably require lots of tweaking...)
-	return Max(0, targetlightlevel + speed + noiselevel + addedvisibility - viewheightmod + skillmod);
+	return Clamp(targetlightlevel + speed + noiselevel + addedvisibility - viewheightmod + skillmod, 0, 255);
 }
 
 // Taken straight from the wiki (http://zdoom.org/wiki/VectorLength)
