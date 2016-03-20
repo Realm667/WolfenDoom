@@ -1363,6 +1363,32 @@ ACTOR Bunk_Bed2 : Bunk_Bed1
 }
 
 //CODs Stuff - Ozy81
+ACTOR COD_EagleBust : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Statues
+	//$Title Eagle Bust (silver or bronze)
+	//$Color 3
+	
+	//$Arg0 "Material"
+	//$Arg0Tooltip "Choose the desired material\nSilver: 0\nBronze: 1"
+	
+	Radius 8
+	Height 24
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY
+		TNT1 A 0 A_JumpIf(Args[0]==1, "Bronze")
+		Silver: //fall through if set at 0
+		SMGT A -1
+		Stop
+		Bronze:
+		SMGT B -1
+		Stop
+	}
+}
+
 ACTOR COD_Tiger1 : ModelBase
 {
 	//$Category Models (Wolf3D)/Vehicles
