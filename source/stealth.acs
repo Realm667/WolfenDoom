@@ -90,13 +90,6 @@ Script "PlayFootstepsSoundLoop" ENTER
 			{
 				lampalpha = Clamp(GetVisibility(playerID, curNoiseLevel, extraVisibility), 0, PlayerDetectionVisibility);
 				lampalpha = FixedDiv(lampalpha << 16, PlayerDetectionVisibility << 16);
-/*
-				// Make displayed visibility changes more smooth, also clamp it in [0 - 100] range
-				int visibility = GetVisibility(playerID, curNoiseLevel, extraVisibility);
-				if(displayedVisibility < 100 && visibility > displayedVisibility) displayedVisibility += 2;
-				else if(visibility < displayedVisibility) displayedVisibility -= 2;
-				lampalpha = FixedDiv((displayedVisibility << 16), 100.0);
-*/
 			}
 
 			// Draw BG
@@ -147,7 +140,7 @@ script "TargetIsHidden" (void)
 		// Get target's TID
 		int targettid = GetActorProperty(0, APROP_TargetTID);
 
-		//AFA - Add extra visibility if player is in line of sight.  Amount based on difficulty level.
+		//AFA - Add extra visibility if player is in line of sight.  Amount based on difficulty level - So guards effectively have better night vision as you play on higher skills.
 		ACS_NamedExecuteAlways("AddExtraVisibility", 0, GameSkill());
 
 		// 0 TID means that target is not a player, but something (probably PlayerStep), which called A_AlertMonsters.

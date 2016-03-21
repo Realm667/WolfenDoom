@@ -1899,3 +1899,135 @@ ACTOR AstroShuttle : ModelBase
 	Height 32
 	Radius 64
 }
+
+ACTOR Spotlight
+{
+	//$Category Hazards (Wolf3D)
+	//$Title Spotlight
+	//$Color 3
+
+	//$Arg0 "Left Swing Amount"
+	//$Arg0Tooltip "Radius of turn to the left in degrees\nDefault: 0"
+	//$Arg1 "Right Swing Amount"
+	//$Arg1Tooltip "Radius of turn to the right in degrees\nDefault: 0"
+
+	var int user_minAngle;
+	var int user_maxAngle;
+	var int user_position;
+	var int user_sightRange;
+	var int user_startPitch;
+	var int user_speed;
+
+	+NOGRAVITY
+
+	States
+	{
+		Spawn:
+			SMGT A Random(1, 35)
+			"####" # 0 A_SetUserVar("user_minAngle", -args[0])
+			"####" # 0 A_SetUserVar("user_maxAngle", args[1])
+			"####" # 0 A_SetUserVar("user_position", 0)
+			"####" # 0 A_SetUserVar("user_sightRange", 512)
+			"####" # 0 A_SetUserVar("user_startPitch", pitch)
+			"####" # 0 A_SetUserVar("user_speed", Random(0, 2))
+			"####" # 0 A_SpawnItemEx("SpotlightFlare", 15.0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION | SXF_TRANSFERPITCH)
+			"####" # 0 A_SpawnItemEx("SpotlightBeam", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION | SXF_TRANSFERPITCH)
+			Goto Pan
+		Pan:
+			"####" # 1 A_Jump(256, "Left", "Right")
+			Left:
+				"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_CustomBulletAttack(0, 0, 1, 0, "SpotlightGlow", user_sightRange, CBAF_AIMFACING | CBAF_NORANDOMPUFFZ)
+				Left.Loop:
+					"####" # 1 A_CustomBulletAttack(0, 0, 1 + user_speed, 0, "SpotlightGlow", user_sightRange, CBAF_AIMFACING | CBAF_NORANDOMPUFFZ)
+					"####" # 0 A_SetUserVar("user_position", user_position - 1)
+					"####" # 0 A_JumpIf(args[0] == 0 && args[1] == 0, "Left.Loop")
+					"####" # 0 A_JumpIf(user_position <= user_minAngle, "Right")
+					"####" # 0 A_SetAngle(angle - 1)
+					"####" # 0 A_SetTics(user_speed)
+					"####" # 0 A_LookEx(LOF_NOSOUNDCHECK | LOF_NOJUMP, 0, user_sightRange, 0, 30, "")
+					"####" # 0 A_JumpIf(!CallACS("TargetIsHidden"), "See")
+					Loop
+			Right:
+				"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_CustomBulletAttack(0, 0, 1, 0, "SpotlightGlow", user_sightRange, CBAF_AIMFACING | CBAF_NORANDOMPUFFZ)
+				Right.Loop:
+					"####" # 1 A_CustomBulletAttack(0, 0, 1 + user_speed, 0, "SpotlightGlow", user_sightRange, CBAF_AIMFACING | CBAF_NORANDOMPUFFZ)
+					"####" # 0 A_JumpIf(args[0] == 0 && args[1] == 0, "Right.Loop")
+					"####" # 0 A_SetUserVar("user_position", user_position + 1)
+					"####" # 0 A_JumpIf(user_position >= user_maxAngle, "Left")
+					"####" # 0 A_SetAngle(angle + 1)
+					"####" # 0 A_SetTics(user_speed)
+					"####" # 0 A_LookEx(LOF_NOSOUNDCHECK | LOF_NOJUMP, 0, user_sightRange, 0, 30, "")
+					"####" # 0 A_JumpIf(!CallACS("TargetIsHidden"), "See")
+					Loop
+		See:
+			"####" # 0 A_AlertMonsters(256)
+			See.Loop:
+//				"####" # 0 A_FaceTarget(1, -120.0)
+				"####" # 0 A_FaceTarget(1)
+				"####" # 1 A_CustomBulletAttack(0, 0, 1, 0, "SpotlightGlow", user_sightRange, CBAF_AIMFACING | CBAF_NORANDOMPUFFZ)
+				"####" # 0 A_JumpIfTargetInLOS("See.Loop", 45, 0, user_sightRange)
+				"####" # 0 A_ClearTarget
+				Goto Pan
+	}
+}
+
+ACTOR SpotlightGlow : BulletPuff
+{
+	Height 16
+	Radius 16
+
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+ALWAYSPUFF
+	+PUFFONACTORS
+	+BLOODLESSIMPACT
+	+INVISIBLE
+
+	States
+	{
+		Spawn:
+			UNKN A 0
+			"####" # 15 Light("SpotLight")
+			"####" # 0 A_LookEx(LOF_NOSOUNDCHECK | LOF_DONTCHASEGOAL | LOF_NOSEESOUND, 0, 160.0, 0, 360, "Illuminate")
+			Stop
+		Illuminate:
+			"####" # 0 ACS_NamedExecuteAlways("AddExtraVisibility", 0, (160.0 - GetDistance(0)) / 1.0, 1)
+			Stop
+		XDeath:
+		Crash:
+		Melee:
+			TNT1 A 0 A_Jump(256, "Spawn")
+	}
+}
+
+ACTOR SpotlightFlare : Flare1
+{
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SetScale(2.0)
+		Active:
+			FLAR A 1 BRIGHT
+			TNT1 A 0 A_Warp(AAPTR_MASTER, 15.0, 0, sin(pitch) * 15.0, 0, WARPF_COPYPITCH)
+			Loop
+		Inactive:
+			TNT1 A -1
+			Loop
+	}
+}
+
+ACTOR SpotlightBeam : ModelBase
+{
+	RenderStyle "Add"
+	Alpha 0.4
+	+NOGRAVITY
+	+BRIGHT
+
+	States
+	{
+		Spawn:
+			UNKN A 1
+			TNT1 A 0 A_Warp(AAPTR_MASTER, 0, 0, 0, 0, WARPF_COPYPITCH)
+			Loop
+	}
+}

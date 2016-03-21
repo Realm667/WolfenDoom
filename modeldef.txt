@@ -3468,3 +3468,39 @@ Model DestroyedTank3
 
 	FrameIndex CYBR A 0 0
 }
+
+Model Spotlight
+{
+	InheritActorPitch
+	InheritActorRoll
+
+	Path "models"
+
+	Scale 1.6 1.6 1.6
+
+	Model 0 "lpost.md3"
+	Skin 0 "lightpost_lit.png"
+
+	Offset 24 0 0
+	PitchOffset 0
+
+	FrameIndex SMGT A 0 0
+}
+
+Model SpotlightBeam
+{
+	InheritActorPitch
+	InheritActorRoll
+
+	Path "models"
+
+	Model 0 "lightbeam.md3"
+	Skin 0 "lightbeam.png"
+
+	Scale 5.0 15.0 15.0
+
+	Offset 20 0 0
+	PitchOffset -180
+
+	FrameIndex UNKN A 0 0
+}
