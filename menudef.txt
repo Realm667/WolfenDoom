@@ -87,17 +87,21 @@ OptionMenuSettings
 // Firebrand options menu ------------------------------------------------------------------------------
 OptionMenu "BOAOptionsMenu"
 {
-	StaticText "BOA Settings", 1
+	StaticText "Weapon Settings", 1
   StaticText ""
   // Settings should go here
 	Option "Auto-Reload","autoreload","OnOff"
+<<<<<<< HEAD
 	Option "Strafe Camera Tilt", "cl_strafetilt", "OnOff"
 	Slider "Shell Casing Lifetime (seconds)","casinglifetime",1,180,10
+=======
+	Slider "Shell Casing Lifetime","casinglifetime",100,9000,100
+>>>>>>> origin/master
 	Slider "Weapon Recoil Multiplier","recoilamount",0,20,1
 	//Option "Unlimited Stamina", "sprinttoggle", "OnOff"
 	
 	StaticText ""
-  StaticText "BOA Weather Effects",	1
+  StaticText "Weather Effects",	1
 	StaticText "WARNING: these settings may require level restart"
 	
 	StaticText ""
@@ -107,18 +111,26 @@ OptionMenu "BOAOptionsMenu"
 	Option "Snow","snowswitch","OnOff"
 	
 	StaticText ""
-  StaticText "BOA Special Effects",	1
+  StaticText "Special Effects",	1
   
 	StaticText ""
+<<<<<<< HEAD
 	Option "Cinder","cinderswitch","OnOff"
 	Option "Steam","steamswitch","OnOff"
 	Slider "Debris Lifetime (seconds)","debrislifetime",1,180,10
 	Slider "Blood Lifetime (seconds)","bloodlifetime",1,180,10
+=======
+	Slider "Debris Lifetime","debrislifetime",100,10000,100
+	Slider "Blood Lifetime","bloodlifetime",100,3000,100
+	Option "Strafe Camera Tilt", "cl_strafetilt", "OnOff"
+>>>>>>> origin/master
 	
 	StaticText ""
 	StaticText "WARNING: these settings may require level restart"
 	
 	StaticText ""
+	Option "Cinder","cinderswitch","OnOff"
+	Option "Steam","steamswitch","OnOff"
 	Option "Flames","fireswitch","OnOff"
 	Option "Explosions","boomswitch","OnOff"
 	Option "Smoke","smokeswitch","OnOff"
@@ -127,13 +139,13 @@ OptionMenu "BOAOptionsMenu"
 	Option "Underwater Lights","litsswitch","OnOff"
 	
 	StaticText ""
-  StaticText "BOA 3D Models Rendering Distance", 1
+  StaticText "3D Models Rendering Distance (in map units)", 1
   
 	StaticText ""
-	Slider "3D Trees","treeslod",256,16384,256
+	Slider "Trees","treeslod",256,16384,256
 
 	StaticText ""
-	StaticText "BOA Controls", 1
+	StaticText "Controls", 1
   StaticTextSwitchable "ENTER to change, BACKSPACE to clear",
                        "Press new key for control, ESC to cancel",
                        "ControlMessage"
