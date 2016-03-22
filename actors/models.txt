@@ -1980,7 +1980,7 @@ ACTOR Spotlight : ModelBase
 					A_SetUserVar("user_position", user_position + user_direction);
 					A_SetAngle(angle + user_direction);
 					A_SetTics(user_speed);
-					A_LookEx(LOF_NOSOUNDCHECK | LOS_DONTCHASEGOAL | LOF_NOSEESOUND, 0, user_sightRange, 0, 60.0, "");
+					A_LookEx(LOF_NOSOUNDCHECK | LOF_DONTCHASEGOAL | LOF_NOSEESOUND, 0, user_sightRange, 0, 60.0, "");
 				}
 				"####" # 0 A_JumpIfTargetInLOS("See", 45.0, JLOSF_DEADNOJUMP, user_sightRange)
 				"####" # 0 A_JumpIf(user_position >= user_maxAngle || user_position <= user_minAngle, "Pan.Hold")
