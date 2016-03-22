@@ -1900,7 +1900,7 @@ ACTOR AstroShuttle : ModelBase
 	Radius 64
 }
 
-ACTOR Spotlight
+ACTOR Spotlight : ModelBase
 {
 	//$Category Hazards (Wolf3D)
 	//$Title Spotlight
@@ -1913,10 +1913,13 @@ ACTOR Spotlight
 
 	var int user_minAngle;
 	var int user_maxAngle;
+	var int user_startAngle;
+	var int user_startPitch;
 	var int user_position;
 	var int user_sightRange;
-	var int user_startPitch;
 	var int user_speed;
+	var int user_holdTime;
+	var int user_direction;
 
 	+NOGRAVITY
 
@@ -1924,54 +1927,81 @@ ACTOR Spotlight
 	{
 		Spawn:
 			SMGT A Random(1, 35)
-			"####" # 0 A_SetUserVar("user_minAngle", -args[0])
-			"####" # 0 A_SetUserVar("user_maxAngle", args[1])
-			"####" # 0 A_SetUserVar("user_position", 0)
-			"####" # 0 A_SetUserVar("user_sightRange", 512)
-			"####" # 0 A_SetUserVar("user_startPitch", pitch)
-			"####" # 0 A_SetUserVar("user_speed", Random(0, 2))
-			"####" # 0 A_SpawnItemEx("SpotlightFlare", 15.0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION | SXF_TRANSFERPITCH)
-			"####" # 0 A_SpawnItemEx("SpotlightBeam", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION | SXF_TRANSFERPITCH)
+			"####" # 0 {
+				if (pitch == 0 && args[0] == 0 && args[1] == 0) {
+					A_SetPitch(90);
+					A_SetArg(0, 45);
+					A_SetArg(1, 45);
+				}
+			}
+			"####" # 0 {
+					A_SetUserVar("user_minAngle", -args[1]);
+					A_SetUserVar("user_maxAngle", args[0]);
+					A_SetUserVar("user_startAngle", angle);
+					A_SetUserVar("user_startPitch", pitch);
+					A_SetUserVar("user_position", 0);
+					A_SetUserVar("user_sightRange", 1024);
+					A_SetUserVar("user_speed", 0);
+					A_SpawnItemEx("SpotlightFlare", 5.0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION | SXF_TRANSFERPITCH);
+					A_SpawnItemEx("SpotlightBeam", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION | SXF_TRANSFERPITCH);
+			}
 			Goto Pan
 		Pan:
-			"####" # 1 A_Jump(256, "Left", "Right")
-			Left:
-				"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_CustomBulletAttack(0, 0, 1, 0, "SpotlightGlow", user_sightRange, CBAF_AIMFACING | CBAF_NORANDOMPUFFZ)
-				Left.Loop:
-					"####" # 1 A_CustomBulletAttack(0, 0, 1 + user_speed, 0, "SpotlightGlow", user_sightRange, CBAF_AIMFACING | CBAF_NORANDOMPUFFZ)
-					"####" # 0 A_SetUserVar("user_position", user_position - 1)
-					"####" # 0 A_JumpIf(args[0] == 0 && args[1] == 0, "Left.Loop")
-					"####" # 0 A_JumpIf(user_position <= user_minAngle, "Right")
-					"####" # 0 A_SetAngle(angle - 1)
-					"####" # 0 A_SetTics(user_speed)
-					"####" # 0 A_LookEx(LOF_NOSOUNDCHECK | LOF_NOJUMP, 0, user_sightRange, 0, 30, "")
-					"####" # 0 A_JumpIf(!CallACS("TargetIsHidden"), "See")
+			"####" # 0 {
+				A_SetAngle(user_startAngle, SPF_INTERPOLATE);
+				A_SetPitch(user_startPitch, SPF_INTERPOLATE);
+				A_SetUserVar("user_direction", RandomPick(-1, 1));
+				A_SetUserVar("user_position", 0);
+				A_ClearTarget;
+			}
+			Pan.Hold:
+				"####" # 0 {
+					A_SetUserVar("user_holdTime", Random(0, 35));
+					A_SetUserVar("user_direction", -user_direction);
+				}
+				Pan.HoldLoop:
+					"####" # 1 {
+						A_SetPitch(-pitch + 90);
+						A_CustomRailgun(0, 0, "none", "none", RGF_SILENT | RGF_NOPIERCING, 0, 0, "SpotlightGlow", 0, 0, user_sightRange, 1);
+						A_SetPitch(-pitch + 90);
+						A_SetUserVar("user_holdTime", user_holdTime + 1);
+						return A_JumpIf(user_holdTime >= 70, "Pan.Loop");
+					}
+					"####" # 0 A_JumpIfTargetInLOS("See", 45.0, JLOSF_DEADNOJUMP, user_sightRange)
 					Loop
-			Right:
-				"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_CustomBulletAttack(0, 0, 1, 0, "SpotlightGlow", user_sightRange, CBAF_AIMFACING | CBAF_NORANDOMPUFFZ)
-				Right.Loop:
-					"####" # 1 A_CustomBulletAttack(0, 0, 1 + user_speed, 0, "SpotlightGlow", user_sightRange, CBAF_AIMFACING | CBAF_NORANDOMPUFFZ)
-					"####" # 0 A_JumpIf(args[0] == 0 && args[1] == 0, "Right.Loop")
-					"####" # 0 A_SetUserVar("user_position", user_position + 1)
-					"####" # 0 A_JumpIf(user_position >= user_maxAngle, "Left")
-					"####" # 0 A_SetAngle(angle + 1)
-					"####" # 0 A_SetTics(user_speed)
-					"####" # 0 A_LookEx(LOF_NOSOUNDCHECK | LOF_NOJUMP, 0, user_sightRange, 0, 30, "")
-					"####" # 0 A_JumpIf(!CallACS("TargetIsHidden"), "See")
-					Loop
+			Pan.Loop:
+				"####" # 1 {
+					A_SetPitch(-pitch + 90);
+					A_CustomRailgun(0, 0, "none", "none", RGF_SILENT | RGF_NOPIERCING, 0, 0, "SpotlightGlow", 0, 0, user_sightRange, 1);
+					A_SetPitch(-pitch + 90);
+				}
+				"####" # 0 A_JumpIf(args[0] == 0 && args[1] == 0, "Pan.Loop")
+				"####" # 0 {
+					A_SetUserVar("user_position", user_position + user_direction);
+					A_SetAngle(angle + user_direction);
+					A_SetTics(user_speed);
+					A_LookEx(LOF_NOSOUNDCHECK | LOS_DONTCHASEGOAL | LOF_NOSEESOUND, 0, user_sightRange, 0, 60.0, "");
+				}
+				"####" # 0 A_JumpIfTargetInLOS("See", 45.0, JLOSF_DEADNOJUMP, user_sightRange)
+				"####" # 0 A_JumpIf(user_position >= user_maxAngle || user_position <= user_minAngle, "Pan.Hold")
+				Loop
 		See:
-			"####" # 0 A_AlertMonsters(256)
-			See.Loop:
-//				"####" # 0 A_FaceTarget(1, -120.0)
-				"####" # 0 A_FaceTarget(1)
-				"####" # 1 A_CustomBulletAttack(0, 0, 1, 0, "SpotlightGlow", user_sightRange, CBAF_AIMFACING | CBAF_NORANDOMPUFFZ)
-				"####" # 0 A_JumpIfTargetInLOS("See.Loop", 45, 0, user_sightRange)
-				"####" # 0 A_ClearTarget
-				Goto Pan
+			"####" # 0 {
+				A_AlertMonsters(1280);
+				A_FaceTarget(1, -120.0);
+			}
+			"####" # 1 {
+				A_SetPitch(-pitch + 90);
+				A_CustomRailgun(0, 0, "none", "none", RGF_SILENT | RGF_NOPIERCING, 0, 0, "SpotlightGlow", 0, 0, user_sightRange, 1);
+				A_SetPitch(-pitch + 90);
+			}
+			"####" # 0 A_JumpIfTargetInLOS("See.Loop", 60.0, JLOSF_DEADNOJUMP, user_sightRange)
+			"####" # 70
+			Goto Pan
 	}
 }
 
-ACTOR SpotlightGlow : BulletPuff
+ACTOR SpotlightGlow
 {
 	Height 16
 	Radius 16
@@ -1981,17 +2011,18 @@ ACTOR SpotlightGlow : BulletPuff
 	+ALWAYSPUFF
 	+PUFFONACTORS
 	+BLOODLESSIMPACT
+	+PAINLESS
 	+INVISIBLE
 
 	States
 	{
 		Spawn:
 			UNKN A 0
-			"####" # 15 Light("SpotLight")
-			"####" # 0 A_LookEx(LOF_NOSOUNDCHECK | LOF_DONTCHASEGOAL | LOF_NOSEESOUND, 0, 160.0, 0, 360, "Illuminate")
+			"####" # 25 Light("SpotLight")
+			"####" # 0 A_LookEx(LOF_NOSOUNDCHECK | LOF_DONTCHASEGOAL | LOF_NOSEESOUND, 0, 256.0, 0, 360, "Illuminate")
 			Stop
 		Illuminate:
-			"####" # 0 ACS_NamedExecuteAlways("AddExtraVisibility", 0, (160.0 - GetDistance(0)) / 1.0, 1)
+			"####" # 0 ACS_NamedExecuteAlways("AddExtraVisibility", 0, (384.0 - GetDistance(0)) / 1.0, 1)
 			Stop
 		XDeath:
 		Crash:
@@ -2008,7 +2039,7 @@ ACTOR SpotlightFlare : Flare1
 			TNT1 A 0 NoDelay A_SetScale(2.0)
 		Active:
 			FLAR A 1 BRIGHT
-			TNT1 A 0 A_Warp(AAPTR_MASTER, 15.0, 0, sin(pitch) * 15.0, 0, WARPF_COPYPITCH)
+			TNT1 A 0 A_Warp(AAPTR_MASTER, cos(pitch) * 5.0, 0, sin(pitch) * 5.0, 0, WARPF_COPYPITCH)
 			Loop
 		Inactive:
 			TNT1 A -1
@@ -2022,6 +2053,7 @@ ACTOR SpotlightBeam : ModelBase
 	Alpha 0.4
 	+NOGRAVITY
 	+BRIGHT
+	+NOBLOCKMAP
 
 	States
 	{
