@@ -92,7 +92,7 @@ OptionMenu "BOAOptionsMenu"
   // Settings should go here
 	Option "Auto-Reload","autoreload","OnOff"
 	Option "Strafe Camera Tilt", "cl_strafetilt", "OnOff"
-	Slider "Shell Casing Lifetime","casinglifetime",100,9000,100
+	Slider "Shell Casing Lifetime (seconds)","casinglifetime",1,180,10
 	Slider "Weapon Recoil Multiplier","recoilamount",0,20,1
 	//Option "Unlimited Stamina", "sprinttoggle", "OnOff"
 	
@@ -112,8 +112,8 @@ OptionMenu "BOAOptionsMenu"
 	StaticText ""
 	Option "Cinder","cinderswitch","OnOff"
 	Option "Steam","steamswitch","OnOff"
-	Slider "Debris Lifetime","debrislifetime",100,10000,100
-	Slider "Blood Lifetime","bloodlifetime",100,3000,100
+	Slider "Debris Lifetime (seconds)","debrislifetime",1,180,10
+	Slider "Blood Lifetime (seconds)","bloodlifetime",1,180,10
 	
 	StaticText ""
 	StaticText "WARNING: these settings may require level restart"

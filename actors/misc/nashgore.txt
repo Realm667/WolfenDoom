@@ -140,16 +140,16 @@ Actor NashGore_BloodSpot : NashGore_BloodBase
 			TNT1 A 0 A_SpawnItem("NashGore_BloodSplash", 0, 0, 0, 1)
 			TNT1 A 0 A_Jump(256, "BloodSpot1", "BloodSpot2", "BloodSpot3", "BloodSpot4")
 		BloodSpot1:
-			BSPT A 0 A_SetTics(CallACS("BloodLifetime")) //A_SetTics(NASHGORE_BLOODSPOT_DURATION)
+			BSPT A 0 A_SetTics(35*CallACS("BloodLifetime")) //A_SetTics(NASHGORE_BLOODSPOT_DURATION)
 			"####" "#" 0 A_Jump(256, "FadeOut")
 		BloodSpot2:
-			BSPT B 0 A_SetTics(CallACS("BloodLifetime")) //A_SetTics(NASHGORE_BLOODSPOT_DURATION)
+			BSPT B 0 A_SetTics(35*CallACS("BloodLifetime")) //A_SetTics(NASHGORE_BLOODSPOT_DURATION)
 			"####" "#" 0 A_Jump(256, "FadeOut")
 		BloodSpot3:
-			BSPT C 0 A_SetTics(CallACS("BloodLifetime")) //A_SetTics(NASHGORE_BLOODSPOT_DURATION)
+			BSPT C 0 A_SetTics(35*CallACS("BloodLifetime")) //A_SetTics(NASHGORE_BLOODSPOT_DURATION)
 			"####" "#" 0 A_Jump(256, "FadeOut")
 		BloodSpot4:
-			BSPT D 0 A_SetTics(CallACS("BloodLifetime")) //A_SetTics(NASHGORE_BLOODSPOT_DURATION)
+			BSPT D 0 A_SetTics(35*CallACS("BloodLifetime")) //A_SetTics(NASHGORE_BLOODSPOT_DURATION)
 			"####" "#" 0 A_Jump(256, "FadeOut")
 		FadeOut:
 			"####" "#" 2 A_FadeOut(0.005)

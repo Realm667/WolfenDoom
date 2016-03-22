@@ -236,7 +236,7 @@ ACTOR 9MMCasing
 		"####" ACG 0 A_Jump(256,"Death1")
 		Stop
 	Death1:
-		"####" "#" 1 A_SetTics(CallACS("ShellLifetime"))
+		"####" "#" 1 A_SetTics(35*CallACS("ShellLifetime")) //try to run tics into seconds for a player-friendly setting
 		"####" "#" 1 A_FadeOut(0.1)
 		Wait
 	}
