@@ -88,8 +88,7 @@ OptionMenuSettings
 OptionMenu "BOAOptionsMenu"
 {
 	StaticText "Weapon Settings", 1
-  StaticText ""
-  // Settings should go here
+  	StaticText ""
 	Option "Auto-Reload","autoreload","OnOff"
 	Option "Strafe Camera Tilt", "cl_strafetilt", "OnOff"
 	Slider "Shell Casing Lifetime (seconds)","casinglifetime",1,180,10
@@ -97,7 +96,7 @@ OptionMenu "BOAOptionsMenu"
 	//Option "Unlimited Stamina", "sprinttoggle", "OnOff"
 	
 	StaticText ""
-  StaticText "Weather Effects",	1
+  	StaticText "Weather Effects",	1
 	StaticText "WARNING: these settings may require level restart"
 	
 	StaticText ""
@@ -107,7 +106,7 @@ OptionMenu "BOAOptionsMenu"
 	Option "Snow","snowswitch","OnOff"
 	
 	StaticText ""
-  StaticText "Special Effects",	1
+  	StaticText "Special Effects",	1
   
 	StaticText ""
 	Option "Cinder","cinderswitch","OnOff"
@@ -130,18 +129,17 @@ OptionMenu "BOAOptionsMenu"
 	Option "Underwater Lights","litsswitch","OnOff"
 	
 	StaticText ""
-  StaticText "3D Models Rendering Distance (in map units)", 1
+  	StaticText "3D Models Rendering Distance (in map units)", 1
   
 	StaticText ""
 	Slider "Trees","treeslod",256,16384,256
 
 	StaticText ""
 	StaticText "Controls", 1
-  StaticTextSwitchable "ENTER to change, BACKSPACE to clear",
+  	StaticTextSwitchable "ENTER to change, BACKSPACE to clear",
                        "Press new key for control, ESC to cancel",
                        "ControlMessage"
-  StaticText ""
-	// Controls should go here
-  Control "Throw Grenade",			"use GrenadePickup"
-  Control "Toggle Objectives",		"pukename boaobjectives"
+  	StaticText ""
+  	Control "Throw Grenade",			"use GrenadePickup"
+  	Control "Toggle Objectives",		"pukename boaobjectives"
 }
