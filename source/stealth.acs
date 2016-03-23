@@ -14,8 +14,8 @@
 
 //Options
 int ShowStealthHUD; 								 // Set to true to show Stealth HUD
-int VisibilityMultiplier = 1.0; 		 // Calculated visibility is multiplied by this allowing to fine-tune it based, for example, on an area player is in.
-int NoiseLevelMultiplier = 1.0; 		 // Calculated noise level is multiplied by this. This affects the value added to visibility and the alert enemises radius when player makes step sounds
+int VisibilityMultiplier = 0.5; 		 // Calculated visibility is multiplied by this allowing to fine-tune it based, for example, on an area player is in.
+int NoiseLevelMultiplier = 0.9; 		 // Calculated noise level is multiplied by this. This affects the value added to visibility and the alert enemises radius when player makes step sounds
 int PlayerDetectionVisibility = 100; // Player must be this visible to be detected by enemies
 
 //Variables. Don't touch
@@ -122,7 +122,7 @@ script "ApplyNoiseLevelMultiplier" (int baseradius)
 script "AddExtraVisibility" (int value, int override)
 {
 	If (!override)
-		extraVisibility = Min(extraVisibility + value, MAX_EXTRA_VISIBILITY);
+		extraVisibility = Clamp(extraVisibility + value, 0, 255);
 	Else
 		extraVisibility = Clamp(value, 0, MAX_EXTRA_VISIBILITY);
 }
@@ -234,7 +234,7 @@ function int GetVisibility(int tid, int noiselevel, int addedvisibility)
 	// Not hidden while at least 1 guard is alerted
 	if(alertedGuardsCount > 0) return 255;
 
-	// Get it's light level
+	// Get its light level
 	int targetlightlevel = GetActorLightLevel(tid);
 	targetlightlevel = FixedMul(targetlightlevel << 16, VisibilityMultiplier) >> 16;
 
@@ -248,10 +248,12 @@ function int GetVisibility(int tid, int noiselevel, int addedvisibility)
 	int speed = (FixedMul(x, x) + FixedMul(y, y) + FixedMul(z, z)) >> 16;
 
 	// And view height (56 when standing, 28 when crouching)
-	int viewheightmod = 28 - (GetActorViewHeight(tid) >> 16); //AFA - tweaked so that crouching has less effect
+	int viewheightmod = 0; 
+	If (speed == 0) viewheightmod = 56 - (GetActorViewHeight(tid) >> 16); 
 
 	//And game skill
-	int skillmod = speed * GameSkill() * 2 / 3; //AFA - Just enough so that you can't barrel around at full speed while crouched at skill 3 and up (HMP and NM equivalent)
+	int skillmod = (5 - GameSkill()) * -15; 
+	If (GetActorViewHeight(tid) <= 28.0) skillmod = GameSkill() * 5;
 
 	// Calculate resulting visibility level (will probably require lots of tweaking...)
 	return Clamp(targetlightlevel + speed + noiselevel + addedvisibility - viewheightmod + skillmod, 0, 255);
