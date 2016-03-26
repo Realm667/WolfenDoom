@@ -2807,7 +2807,7 @@ ACTOR MGTurretInvisible : MGTurret
 ACTOR MGTurretSoldier : MGTurret
 {
 	//$Category Monsters (Wolf3D)
-	//$Title Stationary Turret Soldier
+	//$Title Stationary Turret Soldier (Afrika Korps)
 	//$Color 4
 	Height 56
 	Radius 16
@@ -2842,6 +2842,41 @@ ACTOR MGTurretSoldier : MGTurret
 		SMGS D 6 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
 		SMGS EFG 6
 		SMGS H -1 A_NoBlocking
+		Stop
+	}
+}
+
+ACTOR MGTurretSoldierW : MGTurretSoldier
+{
+	//$Title Stationary Turret Soldier (Werhmacht)
+	States
+	{
+	Spawn:
+		SMGF A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
+		Goto Look
+	Missile: //mxd. Copied from parent cause diffetent firing offset
+		SMGF A 4 A_PlaySound("chaingun/start",CHAN_WEAPON)
+		"####" A 1 A_PlaySound("chaingun/loop",CHAN_AUTO)
+		"####" A 5 A_FaceTarget
+		"####" B 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
+		"####" C 3 LIGHT(NAZIFIRE) A_CustomMissile("EnemyChaingunTracer",34,-2,random(-11,11))
+		"####" C 0 A_SpawnItemEx("9MMCasing", 0,0,36, random(2,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" B 3 A_MonsterRefire(10,"See")
+		"####" B 0 A_FaceTarget
+		Goto Missile+3
+	Pain: //added this here because it doesn't have H frames for pain states
+		SMGF D 3
+		"####" D 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		"####" D 0 A_Jump(256,"See")
+		Stop
+	Death:
+	Crash:
+		TNT1 A 0 A_Scream
+		SMGF D 6 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
+		SMGF EFG 6
+		SMGF H -1 A_NoBlocking
 		Stop
 	}
 }
