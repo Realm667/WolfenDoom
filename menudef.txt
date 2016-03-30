@@ -87,16 +87,22 @@ OptionMenuSettings
 // Firebrand options menu ------------------------------------------------------------------------------
 OptionMenu "BOAOptionsMenu"
 {
-	StaticText "Weapon Settings", 1
-  	StaticText ""
-	Option "Auto-Reload","autoreload","OnOff"
+	StaticText "Gameplay Settings", 1
+	StaticText ""
 	Option "Strafe Camera Tilt", "cl_strafetilt", "OnOff"
-	Slider "Shell Casing Lifetime (seconds)","casinglifetime",1,180,10
-	Slider "Weapon Recoil Multiplier","recoilamount",0,20,1
-	//Option "Unlimited Stamina", "sprinttoggle", "OnOff"
+	Slider "Debris Lifetime (seconds)","debrislifetime",1,180,10
+	Slider "Blood Lifetime (seconds)","bloodlifetime",1,180,10
+	//Option "Unlimited Stamina", "sprinttoggle", "OnOff" //here for lulz
 	
 	StaticText ""
-  	StaticText "Weather Effects",	1
+	StaticText "Weapons Settings", 1
+	StaticText ""
+	Option "Auto-Reload","autoreload","OnOff"
+	Slider "Shell Casing Lifetime (seconds)","casinglifetime",1,180,10
+	Slider "Weapon Recoil Multiplier","recoilamount",0,20,1
+	
+	StaticText ""
+	StaticText "Weather Effects",	1
 	StaticText "WARNING: these settings may require level restart"
 	
 	StaticText ""
@@ -104,22 +110,13 @@ OptionMenu "BOAOptionsMenu"
 	Option "Fog","fogswitch","OnOff"
 	Option "Rain","rainswitch","OnOff"
 	Option "Snow","snowswitch","OnOff"
-	
+
 	StaticText ""
-  	StaticText "Special Effects",	1
-  
-	StaticText ""
-	Option "Cinder","cinderswitch","OnOff"
-	Option "Steam","steamswitch","OnOff"
-	Slider "Debris Lifetime (seconds)","debrislifetime",1,180,10
-	Slider "Blood Lifetime (seconds)","bloodlifetime",1,180,10
-	Option "Strafe Camera Tilt", "cl_strafetilt", "OnOff"
-	
-	StaticText ""
+	StaticText "Special Effects",	1
 	StaticText "WARNING: these settings may require level restart"
-	
+
 	StaticText ""
-	Option "Cinder","cinderswitch","OnOff"
+	Option "Cinders","cinderswitch","OnOff"
 	Option "Steam","steamswitch","OnOff"
 	Option "Flames","fireswitch","OnOff"
 	Option "Explosions","boomswitch","OnOff"
@@ -127,19 +124,19 @@ OptionMenu "BOAOptionsMenu"
 	Option "Stardust","dustswitch","OnOff"
 	Option "Underwater Bubbles","bubbleswitch","OnOff"
 	Option "Underwater Lights","litsswitch","OnOff"
-	
+
 	StaticText ""
-  	StaticText "3D Models Rendering Distance (in map units)", 1
-  
+	StaticText "3D Models Rendering Distance (in map units)", 1
+
 	StaticText ""
 	Slider "Trees","treeslod",256,16384,256
 
 	StaticText ""
 	StaticText "Controls", 1
-  	StaticTextSwitchable "ENTER to change, BACKSPACE to clear",
-                       "Press new key for control, ESC to cancel",
-                       "ControlMessage"
-  	StaticText ""
-  	Control "Throw Grenade",			"use GrenadePickup"
-  	Control "Toggle Objectives",		"pukename boaobjectives"
+	StaticTextSwitchable "ENTER to change, BACKSPACE to clear",
+                     "Press new key for control, ESC to cancel",
+                     "ControlMessage"
+	StaticText ""
+	Control "Throw Grenade",			"use GrenadePickup"
+	Control "Toggle Objectives",		"pukename boaobjectives"
 }
