@@ -66,12 +66,25 @@ ACTOR TMDog
 	}
 }
 
-ACTOR TMLightBeam : ModelBase
+ACTOR TMLightBeam : SwitchableDecoration
 {
 	//$Category Misc (Wolf3D)/Titlemap
 	//$Title Title map light beam
 	RenderStyle "Add"
+	Height 56
 	Alpha 0.4
+	+FLOORCLIP
+	+DONTSPLASH
 	+NOGRAVITY
 	+BRIGHT
+	States
+	{
+	Spawn:
+	Active:
+		SMGT A -1
+		Stop
+	Inactive:
+		TNT1 A -1
+		Stop
+	}
 }
