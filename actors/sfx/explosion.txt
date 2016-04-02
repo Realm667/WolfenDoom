@@ -22,7 +22,7 @@ ACTOR GeneralExplosion_Medium : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 NoDelay A_PlaySound("panzer/explode")
+		TNT1 A 0 NoDelay A_PlaySound("panzer/explode", 0, 0.75, 0, ATTN_IDLE)
 		TNT1 A 0 A_JumpIf(!Args[0], "Quake")
 		goto Explosion
 	Quake:
