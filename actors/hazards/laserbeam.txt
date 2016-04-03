@@ -1,22 +1,8 @@
-/*ACTOR Lasergun : Shotgun replaces Shotgun //this needs to be a new weapon instead to inherit shotgun actor - ozy81
-{
-	States
-	{
-	Fire:
-		TNT1 A 0
-		TNT1 A 0 A_FireBullets(0,0,1,0,"MeasurePuff",FBF_NORANDOMPUFFZ,999999)
-		TNT1 A 0 A_SpawnItemEx("LaserBeam",0,0,30,0,0,0,0,SXF_NOCHECKPOSITION | SXF_ISTRACER)
-		TNT1 A 0 A_SetScale(1,(GetDistance(1,AAPTR_MASTER)/33.25),AAPTR_TRACER)
-		TNT1 A 0 A_SetPitch(-pitch + 90,0,AAPTR_TRACER)
-		SHTG A 1
-		Goto Ready
-	}
-}*/
-	
-ACTOR LaserShooter : SwitchableDecoration
+//Kodi's Lazerbeam - reworked by Ozymandias81
+ACTOR LaserShooter_Red : SwitchableDecoration
 {
 	//$Category Hazards (Wolf3D)
-	//$Title Laserbeam Shooter (switchable)
+	//$Title Laserbeam Shooter (red, switchable)
 	//$Color 3
 	Radius 0
 	Height 0
@@ -27,20 +13,77 @@ ACTOR LaserShooter : SwitchableDecoration
 	Spawn:
 	Active:
 		TNT1 A 0
-		"####" A 0 A_CustomBulletAttack(0,0,1,0,"MeasurePuff",999999,CBAF_AIMFACING) //spawns the bullet puff
-		"####" A 0 A_SpawnItemEx("LaserBeam",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_ISTRACER) //spawns the beam - no need to transfer pitch, we do that later
+		"####" A 0 A_CustomBulletAttack(0,0,1,1,"MeasurePuff",999999,CBAF_AIMFACING) //spawns the bullet puff
+		"####" A 0 A_SpawnItemEx("LaserBeam_Red",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_ISTRACER) //spawns the beam - no need to transfer pitch, we do that later
 		"####" A 0 A_SetScale(1,(GetDistance(1,AAPTR_MASTER)/33.25),AAPTR_TRACER) //scales the Height by distance to the the puff. "/33.25" is just an approximation for my particular md3 model. This could be done cleaner with a 1-MU tall md3 I suspect.
 		"####" A 0 A_SetPitch(-pitch + 90,0,AAPTR_TRACER) //+90 accounts for the md3 actor facing downward in a neutral position. why -pitch instead of +pitch? Lol dunno but it werkz :^)
-		"####" A 0 A_Setangle(angle+0.1,0,AAPTR_DEFAULT) //rotates actor that fires the beam 
+		"####" A 0 A_Setangle(angle+0.1,0,AAPTR_DEFAULT) //rotates actor that fires the beam
+		"####" A 0 A_PlaySound("tesla/loop",6,1,1) 
 		TNT1 A 1
 		Loop
 	Inactive:
-		TNT1 A -1
+		TNT1 A -1 A_StopSound(6)
 		Stop
 	}
 }
 
-ACTOR Laserbeam
+ACTOR LaserShooter_Purple : SwitchableDecoration
+{
+	//$Category Hazards (Wolf3D)
+	//$Title Laserbeam Shooter (purple, switchable)
+	//$Color 3
+	Radius 0
+	Height 0
+	+NOGRAVITY
+	
+	States
+	{
+	Spawn:
+	Active:
+		TNT1 A 0
+		"####" A 0 A_CustomBulletAttack(0,0,1,1,"MeasurePuff",999999,CBAF_AIMFACING) //spawns the bullet puff
+		"####" A 0 A_SpawnItemEx("LaserBeam_Purple",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_ISTRACER) //spawns the beam - no need to transfer pitch, we do that later
+		"####" A 0 A_SetScale(1,(GetDistance(1,AAPTR_MASTER)/33.25),AAPTR_TRACER) //scales the Height by distance to the the puff. "/33.25" is just an approximation for my particular md3 model. This could be done cleaner with a 1-MU tall md3 I suspect.
+		"####" A 0 A_SetPitch(-pitch + 90,0,AAPTR_TRACER) //+90 accounts for the md3 actor facing downward in a neutral position. why -pitch instead of +pitch? Lol dunno but it werkz :^)
+		"####" A 0 A_Setangle(angle+0.1,0,AAPTR_DEFAULT) //rotates actor that fires the beam
+		"####" A 0 A_PlaySound("tesla/loop",6,1,1) 
+		TNT1 A 1
+		Loop
+	Inactive:
+		TNT1 A -1 A_StopSound(6)
+		Stop
+	}
+}
+
+ACTOR LaserShooter_Green : SwitchableDecoration
+{
+	//$Category Hazards (Wolf3D)
+	//$Title Laserbeam Shooter (green, switchable)
+	//$Color 3
+	Radius 0
+	Height 0
+	+NOGRAVITY
+	
+	States
+	{
+	Spawn:
+	Active:
+		TNT1 A 0
+		"####" A 0 A_CustomBulletAttack(0,0,1,1,"MeasurePuff",999999,CBAF_AIMFACING) //spawns the bullet puff
+		"####" A 0 A_SpawnItemEx("LaserBeam_Green",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_ISTRACER) //spawns the beam - no need to transfer pitch, we do that later
+		"####" A 0 A_SetScale(1,(GetDistance(1,AAPTR_MASTER)/33.25),AAPTR_TRACER) //scales the Height by distance to the the puff. "/33.25" is just an approximation for my particular md3 model. This could be done cleaner with a 1-MU tall md3 I suspect.
+		"####" A 0 A_SetPitch(-pitch + 90,0,AAPTR_TRACER) //+90 accounts for the md3 actor facing downward in a neutral position. why -pitch instead of +pitch? Lol dunno but it werkz :^)
+		"####" A 0 A_Setangle(angle+0.1,0,AAPTR_DEFAULT) //rotates actor that fires the beam
+		"####" A 0 A_PlaySound("tesla/loop",6,1,1) 
+		TNT1 A 1
+		Loop
+	Inactive:
+		TNT1 A -1 A_StopSound(6)
+		Stop
+	}
+}
+
+ACTOR LaserBeam_Red
 {
 	Radius 0 
 	Height 0
@@ -57,32 +100,69 @@ ACTOR Laserbeam
 	}
 }
 
+ACTOR LaserBeam_Purple : LaserBeam_Red {}
+ACTOR LaserBeam_Green : LaserBeam_Red {}
+
+ACTOR LaserSpark
+{
+	Health 1
+	Radius 0
+	Height 0
+	Mass 0
+	RenderStyle "Add"
+	Scale .3
+	BounceType Doom
+	+MISSILE
+	+FLOORCLIP
+	+DONTSPLASH
+	+NOTELEPORT
+	+FORCEXYBILLBOARD
+	States
+	{
+	Spawn:
+		PUFF A 1
+		"####" AEFGHI 2 BRIGHT A_SetTranslucent(.8,1)
+		"####" J 1 BRIGHT A_SetTranslucent(.8,1)
+		"####" K 1 BRIGHT A_SetTranslucent(.7,1)
+		"####" K 1 BRIGHT A_SetTranslucent(.6,1)
+		"####" K 1 BRIGHT A_SetTranslucent(.5,1)
+		"####" K 1 BRIGHT A_SetTranslucent(.4,1)
+		"####" K 1 BRIGHT A_SetTranslucent(.3,1)
+		"####" K 1 BRIGHT A_SetTranslucent(.2,1)
+		Stop
+	}
+}
+
 //This actor is only here for one thing: so the actor that fires the laser can measure the distance to whatever it's aiming at,
 //allowing it to scale the beam accordingly. You can also make it explode or spawn smoke or something I guess?
 ACTOR MeasurePuff : BulletPuff
 {
-	+BLOODLESSIMPACT
-	+PUFFONACTORS
-	-RANDOMIZE
-	-ALLOWPARTICLES
-	+ALWAYSPUFF
-	+PUFFGETSOWNER //originating actor becomes Target
 	Radius 0
 	Height 0
 	VSpeed 0
 	Mass 0
+	+ALWAYSPUFF
+	+NOGRAVITY
+	+PUFFGETSOWNER //originating actor becomes Target
+	+PUFFONACTORS
+	-RANDOMIZE
+	//+BLOODLESSIMPACT
+	//-ALLOWPARTICLES
+	Decal "SwordLightning"
 	States
 	{
 	Spawn:
 		TNT1 A 0 
 		"####" A 0 A_SpawnitemEx("MeasurePuffTemp",0,0,0,0,0,0,0,SXF_ISTRACER|SXF_SETMASTER|SXF_NOCHECKPOSITION)
 		"####" A 0 A_TransferPointer(AAPTR_TRACER,AAPTR_TARGET,AAPTR_MASTER,AAPTR_MASTER) //the end result of the above nonsense is that the puffs originator sets the measurepuff as it's master.
+		"####" A 0 A_SpawnItemEx("LaserSpark", random(-4,4), random(-4,4), random(-4,4), 0, 0, 3)
+		"####" A 0 A_SpawnItemEx("PuffSmoke", random(-4,4), random(-4,4), random(-4,4), 0, 0, 3)
 		TNT1 A 1 BRIGHT
 		Stop
 	}
 }	
 
-ACTOR MeasurePuffTemp //does nothing except exist for one tic :^)
+ACTOR MeasurePuffTemp : FastProjectile //does nothing except exist for one tic :^)
 {
 	States
 	{
@@ -92,3 +172,19 @@ ACTOR MeasurePuffTemp //does nothing except exist for one tic :^)
 		Stop
 	}
 }
+
+//this for lulz
+/*ACTOR Lasergun : Shotgun replaces Shotgun //needs to be a new weapon instead to inherit shotgun actor if used
+{
+	States
+	{
+	Fire:
+		TNT1 A 0
+		"####" A 0 A_FireBullets(0,0,1,0,"MeasurePuff",FBF_NORANDOMPUFFZ,999999)
+		"####" A 0 A_SpawnItemEx("LaserBeam_Green",0,0,30,0,0,0,0,SXF_NOCHECKPOSITION | SXF_ISTRACER)
+		"####" A 0 A_SetScale(1,(GetDistance(1,AAPTR_MASTER)/33.25),AAPTR_TRACER)
+		"####" A 0 A_SetPitch(-pitch + 90,0,AAPTR_TRACER)
+		SHTG A 1
+		Goto Ready
+	}
+}*/

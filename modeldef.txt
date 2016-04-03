@@ -3827,13 +3827,41 @@ Model SpotlightBeam
 }
 
 //Kodi Stuff
-Model LaserBeam
+Model LaserBeam_Red
 {
 	Path "models"
 	Model 0 "kodilazer.md3"
+	Skin 0 "kodilazer1.jpg"
 	Scale 1.0 1.0 1.0
 	InheritActorPitch
 	InheritActorRoll
+	PITCHFROMMOMENTUM
+
+	FrameIndex UNKN A 0 0
+}
+
+Model LaserBeam_Purple
+{
+	Path "models"
+	Model 0 "kodilazer.md3"
+	Skin 0 "kodilazer2.jpg"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+	PITCHFROMMOMENTUM
+
+	FrameIndex UNKN A 0 0
+}
+
+Model LaserBeam_Green
+{
+	Path "models"
+	Model 0 "kodilazer.md3"
+	Skin 0 "kodilazer3.jpg"
+	Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+	PITCHFROMMOMENTUM
 
 	FrameIndex UNKN A 0 0
 }
