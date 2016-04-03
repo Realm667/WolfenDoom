@@ -7,6 +7,7 @@ ACTOR Akten : Inventory
 	Inventory.Icon AKTTA0
 	Inventory.PickupMessage "$AKTEN"
 	Inventory.PickupSound "misc/p_pkup"
+	Inventory.MaxAmount 1
 	+INVENTORY.UNDROPPABLE
 	+INVENTORY.INVBAR
 	+INVENTORY.ALWAYSPICKUP
@@ -26,7 +27,7 @@ ACTOR AktenEisenmann : Akten
 	Tag "Eisenmann Files"
 	Inventory.Icon AKTEA0
 	Inventory.PickupMessage "$EISEN"
-	Inventory.MaxAmount 10
+	Inventory.MaxAmount 5
 	States
 	{
 	Spawn:
@@ -43,7 +44,7 @@ ACTOR ArtifactAstrostrein : Akten
 	Tag "Mayan Artifact"
 	Inventory.Icon ARTMA0
 	Inventory.PickupMessage "$MAYAN"
-	Inventory.MaxAmount 10
+	Inventory.MaxAmount 5
 	States
 	{
 	Spawn:
