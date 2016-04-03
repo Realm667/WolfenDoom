@@ -1103,7 +1103,7 @@ ACTOR RocketMan : NaziBoss
 		Goto Look
 	Missile:
 		OTTO E 10 A_FaceTarget
-		OTTO F 8 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",42,12)
+		OTTO F 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",42,12)
 		OTTO E 8
 		Goto See
 	Pain:
@@ -1362,23 +1362,23 @@ ACTOR SuperSoldier : NaziBoss
 		HANS E 1 A_PlaySound("chaingun/loop",CHAN_AUTO)
 		HANS E 10 A_FaceTarget
 		HANS F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-		HANS F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
-		HANS F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
+		HANS F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
+		HANS F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
 		HANS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		HANS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		HANS G 2 BRIGHT A_FaceTarget
+		HANS G 2 A_FaceTarget
 		HANS F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-		HANS F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
-		HANS F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
+		HANS F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
+		HANS F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
 		HANS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		HANS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		HANS G 2 BRIGHT A_FaceTarget
+		HANS G 2 A_FaceTarget
 		HANS F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-		HANS F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
-		HANS F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
+		HANS F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
+		HANS F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
 		HANS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		HANS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		HANS G 2 BRIGHT A_MonsterRefire(20,"See")
+		HANS G 2 A_MonsterRefire(20,"See")
 		HANS G 0 A_FaceTarget
  		Goto Missile+4
 	Death:
@@ -1422,19 +1422,19 @@ ACTOR SuperSoldierGirl : SuperSoldier
 		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",44,-20,frandom(-6,6))
 		WBO4 FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		WBO4 FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		WBO4 FG 2 BRIGHT LIGHT(SUPAFIRE) A_FaceTarget
+		WBO4 FG 2 LIGHT(SUPAFIRE) A_FaceTarget
 		WBO4 F 0 A_PlaySound("browning/fire",CHAN_WEAPON)
 		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",44,20,frandom(-6,6))
 		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",44,-20,frandom(-6,6))
 		WBO4 FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		WBO4 FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		WBO4 FG 2 BRIGHT LIGHT(SUPAFIRE) A_FaceTarget
+		WBO4 FG 2 LIGHT(SUPAFIRE) A_FaceTarget
 		WBO4 F 0 A_PlaySound("browning/fire",CHAN_WEAPON)
 		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",44,20,frandom(-6,6))
 		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",44,-20,frandom(-6,6))
 		WBO4 FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		WBO4 FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		WBO4 FG 2 BRIGHT LIGHT(SUPAFIRE)
+		WBO4 FG 2 LIGHT(SUPAFIRE)
 		Goto See
 	}
 }
@@ -1463,29 +1463,29 @@ ACTOR SuperSoldierElite : SuperSoldier replaces BaronOfHell
 		TRAN E 0 A_PlaySound("chaingun/loop",CHAN_AUTO)
 		TRAN E 10 A_FaceTarget
 		TRAN F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-		TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
-		TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
+		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
+		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
 		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
 		TRAN G 2 A_FaceTarget
 		TRAN F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-		TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
-		TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
+		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
+		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
 		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
 		TRAN G 2 A_FaceTarget
 		TRAN F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-		TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
-		TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
+		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
+		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
 		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
 		TRAN G 2 A_FaceTarget
 		TRAN F 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-		TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
-		TRAN F 1 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
+		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
+		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
 		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		TRAN G 2 BRIGHT A_MonsterRefire(20,"See")
+		TRAN G 2 A_MonsterRefire(20,"See")
 		TRAN G 0 A_FaceTarget
 		Goto Missile+4
 	}
@@ -1515,19 +1515,19 @@ ACTOR General : RocketMan replaces Archvile
 	Missile:
 		FETT E 10 A_FaceTarget
 		FETT E 0 A_Jump(128,"Chaingun")
-		FETT F 8 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
+		FETT F 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
 		FETT E 8 A_FaceTarget
-		FETT F 8 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
+		FETT F 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
 		FETT E 8 A_FaceTarget
-		FETT F 8 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
+		FETT F 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
 		FETT E 8
 		Goto See
 	Chaingun:
 		FETT H 0 A_FaceTarget
 		FETT H 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
-		FETT H 2 BRIGHT LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",40,-20,random(-11,11))
+		FETT H 2 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",40,-20,random(-11,11))
 		FETT F 0 A_SpawnItemEx("9MMCasing", -12,0,36, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
-		FETT G 2 BRIGHT A_MonsterRefire(10,"See")
+		FETT G 2 A_MonsterRefire(10,"See")
 		Loop
 	Pain:
 		FETT I 3
@@ -2369,13 +2369,13 @@ ACTOR FatMan : NaziBoss
 		Loop
 	Missile:
 		GOER E 10 A_FaceTarget
-		GOER F 6 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniMiniRocket",40,22)
+		GOER F 6 LIGHT(OTTOFIRE) A_CustomMissile("MiniMiniRocket",40,22)
 		GOER E 6 A_FaceTarget
-		GOER G 6 BRIGHT LIGHT(OTT2FIRE) A_CustomMissile("MiniMiniRocket",40,-18)
+		GOER G 6 LIGHT(OTT2FIRE) A_CustomMissile("MiniMiniRocket",40,-18)
 		GOER E 6 A_FaceTarget
-		GOER F 6 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("MiniMiniRocket",40,22)
+		GOER F 6 LIGHT(OTTOFIRE) A_CustomMissile("MiniMiniRocket",40,22)
 		GOER E 6 A_FaceTarget
-		GOER G 6 BRIGHT LIGHT(OTT2FIRE) A_CustomMissile("MiniMiniRocket",40,-18)
+		GOER G 6 LIGHT(OTT2FIRE) A_CustomMissile("MiniMiniRocket",40,-18)
 		Goto See
 	Pain:
 		GOER D 3
