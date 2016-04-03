@@ -1,0 +1,98 @@
+actor lasergun:shotgun replaces shotgun
+{
+states
+	{
+	fire:
+	TNT1 A 0
+	TNT1 A 0 A_FireBullets(0,0,1,0,"measurepuff",FBF_NORANDOMPUFFZ,999999)
+	TNT1 A 0 A_spawnitemex("laserbeam",0,0,30,0,0,0,0, SXF_NOCHECKPOSITION|  SXF_ISTRACER)
+	TNT1 A 0 A_setscale(1,(GetDistance(1,AAPTR_MASTER)/33.25),AAPTR_TRACER)
+	TNT1 A 0 A_SetPitch(-pitch + 90,0,AAPTR_TRACER)
+	SHTG A 1
+	Goto Ready
+	}
+}
+	
+actor lasershooter 12351 
+{
+radius 0
+height 0
++nogravity
+
+states
+	{
+	spawn:
+	TNT1 A 0
+	TNT1 A 0 A_CustomBulletAttack(0,0,1,0,"measurepuff",999999,CBAF_AIMFACING)
+	//spawns the bullet puff
+	BAL7 A 0 A_spawnitemex("laserbeam",0,0,0,0,0,0,0,   SXF_NOCHECKPOSITION|SXF_ISTRACER)
+	//spawns the beam - no need to transfer pitch, we do that later
+	TNT1 A 0 A_setscale(1,(GetDistance(1,AAPTR_MASTER)/33.25),AAPTR_TRACER)
+	//scales the Height by distance to the the puff. "/33.25" is just an approximation for my particular md3 model. This could be done cleaner with a 1-MU tall md3 I suspect.
+	TNT1 A 0 A_SetPitch(-pitch + 90,0,AAPTR_TRACER)
+	//+90 accounts for the md3 actor facing downward in a neutral position. why -pitch instead of +pitch? Lol dunno but it werkz :^)
+	
+	TNT1 A 0 A_Setangle(angle+0.1,0,AAPTR_DEFAULT)
+	//rotates actor that fires the beam 
+	BAL7 A 1
+	loop
+	}
+}
+
+actor laserbeam
+{
++nogravity
++nointeraction
++noblockmap
+radius 0 
+height 0
+renderstyle "add"
+states
+	{
+	spawn:
+	TNT1 A 0
+	LAZR A 1 BRIGHT
+	stop
+	}
+}
+
+actor measurepuff : bulletpuff
+{
+//this actor is only here for one thing: so the actor that fires the laser can 
+//measure the distance to whatever it's aiming at, allowing it to scale the beam accordingly.
+//you can also make it explode or spawn smoke or something I guess?
+
++BLOODLESSIMPACT
++PUFFONACTORS
+-RANDOMIZE
+-ALLOWPARTICLES
++ALWAYSPUFF
++PUFFGETSOWNER //originating actor becomes Target
+
+radius 0
+Height 0
+VSpeed 0
+Mass 0
+states
+	{
+	Spawn:
+	TNT1 A 0 
+	TNT1 A 0 A_SpawnitemEx("measurepufftemp",0,0,0,0,0,0,0,SXF_ISTRACER|SXF_SETMASTER|SXF_NOCHECKPOSITION)
+	TNT1 A 0 A_TransferPointer(AAPTR_TRACER,AAPTR_TARGET,AAPTR_MASTER,AAPTR_MASTER)
+	//the end result of the above nonsense is that the puffs originator sets the measurepuff as it's master.
+	BAL1 A 1 BRIGHT
+
+	stop
+	}
+}	
+
+actor measurepufftemp //does nothing except exist for one tic :^)
+{
+states
+	{
+	spawn: 
+	Tnt1 A 0
+	Tnt1 A 1
+	stop
+	}
+}
