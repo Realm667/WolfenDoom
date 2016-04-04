@@ -799,14 +799,25 @@ ACTOR ModelGMCTruck : SwitchableDecoration //ozy81
 ACTOR ModelOpelTruck : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Vehicles
-	//$Title Truck (Opel, MoH)
+	//$Title Opel Blitz Truck (Afrika Korps or Wehrmacht)
 	//$Color 3
-
+	
+	//$Arg0 "Type"
+	//$Arg0Tooltip "Pickup the desired type\nAfrika: 0\nWehrmacht: 1"
+	Radius 24
+	Height 24
+	+NOGRAVITY
 	States
 	{
-		Spawn:
-			SMGT A -1 NoDelay A_SpawnItemEx("ModelOpelTruckWindows", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
-			Stop
+	Spawn:
+		TNT1 A 0 NODELAY
+		TNT1 A 0 A_JumpIf(Args[0]==1, "Wehrmacht")
+		Random: //fall through if set at 0
+		SMGT A -1 A_SpawnItemEx("ModelOpelTruckWindows", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		Stop
+		Wehrmacht:
+		SMGT B -1 A_SpawnItemEx("ModelOpelTruckWindows", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		Stop
 	}
 }
 
