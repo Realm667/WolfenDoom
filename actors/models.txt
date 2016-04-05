@@ -1713,8 +1713,8 @@ ACTOR CODNeoLights1 : SwitchableDecoration
 	Height 24
 	Mass 0x7fffffff
 	Health -1
-	+ACTLIKEBRIDGE
-	+CANPASS
+	//+ACTLIKEBRIDGE
+	//+CANPASS
 	+DONTSPLASH
 	+NOBLOOD
 	+NOBLOODDECALS
@@ -1881,9 +1881,9 @@ ACTOR 3dSpeakers_1 : 3dObstacle
 	//$Title Tannoy Speakers (Single)
 	//$Color 3
 	
-	Radius 32
-	Height 16
-	+FIXMAPTHINGPOS
+	Radius 8
+	Height 8
+	-CANPASS
 }
 
 ACTOR 3dSpeakers_2 : 3dObstacle
