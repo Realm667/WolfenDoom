@@ -954,15 +954,16 @@ ACTOR FuelDrum : 3dObstacle
 	Height 42
 }
 
-ACTOR FuelDrumAstro : 3dObstacle
+ACTOR FuelDrumAstro : 3dObstacle //Uses JK2 3dModel
 {
 	//$Category Models (Wolf3D)/Obstacles
 	//$Title Fuel Drum (Astrostein, pushable)
 	//$Color 3
 
 	+PUSHABLE
+	+SLIDESONWALLS
 
-	Radius 16
+	Radius 24
 	Height 56
 }
 
