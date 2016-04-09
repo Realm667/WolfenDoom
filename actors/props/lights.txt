@@ -452,6 +452,63 @@ ACTOR StrobeLightRed : SwitchableDecoration
 	+DONTSPLASH
 	States
 	{
+	Spawn:
+		STRR A -1
+		Stop
+	Active:
+		"####" A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+		Emitter:
+			"####" A 0 A_SpawnItemEx ("StrobeEmitterRed")
+			Spin:
+				STRR DCBA 4 BRIGHT
+				Loop
+	Inactive:
+		STRR A -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		Stop
+	}
+}
+
+ACTOR StrobeLightYellow : SwitchableDecoration
+{
+	//$Category Light Sources (Wolf3D)
+	//$Title Strobe Light (yellow)
+	//$Color 11
+	Radius 16
+	Height 16
+	+NOGRAVITY
+	+SPAWNCEILING
+	+DONTSPLASH
+	States
+	{
+	Spawn:
+		STRY A -1
+		Stop
+	Active:
+		"####" A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+		Emitter:
+			"####" A 0 A_SpawnItem ("StrobeEmitterYellow")
+			Spin:
+				STRY DCBA 4 BRIGHT
+				Loop
+	Inactive:
+		STRY A -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		Stop
+	}
+}
+
+/*
+ACTOR StrobeLightRed : SwitchableDecoration
+{
+	//$Category Light Sources (Wolf3D)
+	//$Title Strobe Light (red)
+	//$Color 11
+	Radius 16
+	Height 16
+	+NOGRAVITY
+	+SPAWNCEILING
+	+DONTSPLASH
+	States
+	{
 	Active:
 		STRR A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 	Spawn:
@@ -588,7 +645,7 @@ ACTOR StrobeLightYellow : StrobeLightRed
 		Stop
 	}
 }
-
+*/
 ACTOR Red_Light
 {
 	//$Category Light Sources (Wolf3D)
@@ -684,6 +741,7 @@ ACTOR StrobeEmitterRed : StrobeEmitterBlue
 	{
 	Spawn:
 		TNT1 A 1
+		"####" A 0 A_TransferPointer(AAPTR_TRACER,AAPTR_TARGET,AAPTR_MASTER,AAPTR_MASTER)
 		"####" A 0 A_CustomMissile ("StrobeRayRed", 0, 0, 0, 2, -35)
 		"####" A 0 A_CustomMissile ("StrobeRayRed", 0, 0, 180, 2, -35)
 		"####" A 0 A_SetAngle(10 + angle)

@@ -1,62 +1,16 @@
-ACTOR BarrelLay
+ACTOR RadioactiveBarrel
 {
 	//$Category Props (Wolf3D)/Industrial
-	//$Title Barrel (metal, laying)
+	//$Title Radioactive Barrel
 	//$Color 3
-	Radius 16
-	Height 24
+	Radius 8
+	Height 29
 	+SOLID
 	States
 	{
 	Spawn:
-		BARL Z -1
+		SMGT A -1
 		Stop
-	}
-}
-
-ACTOR radioactivebarrel
-{
-	//$Category Props (Wolf3D)/Industrial
-	//$Title Barrel (nosound)
-	//$Color 3
-	Radius 8
-	Height 29
-	+SOLID
-	States
-	{
-	Spawn:
-		BARR ABCD 4
-		loop
-	}
-}
-
-ACTOR soundbarrel : radioactivebarrel
-{
-	//$Category Props (Wolf3D)/Industrial
-	//$Title Barrel (wih sound)
-	//$Color 3
-	States
-	{
-	Spawn:
-		BARR ABCD 4
-		//TNT1 A 0 a_playsound("radioactivebarrel/detected",0,0.2,true,attn_static)
-		loop
-	}
-}
-
-ACTOR emptybarrel
-{
-	//$Category Props (Wolf3D)/Industrial
-	//$Title Barrel (empty)
-	//$Color 3
-	Radius 8
-	Height 29
-	+SOLID
-	States
-	{
-	Spawn:
-		BARR E -1
-		stop
 	}
 }
 
