@@ -700,7 +700,6 @@ ACTOR RTCWShield : 3dObstacle
 	Radius 8
 	Height 32
 	+NOGRAVITY
-	+FIXMAPTHINGPOS
 }
 
 ACTOR RTCWParachute1 : ModelBase
@@ -835,7 +834,6 @@ ACTOR WallLight1 : 3dObstacle
 	Radius 16
 	Height 16
 	+NOGRAVITY
-	+FIXMAPTHINGPOS
 }
 
 ACTOR WallLight1Lit : WallLight1
@@ -960,6 +958,7 @@ ACTOR FuelDrumAstro : 3dObstacle //Uses JK2 3dModel
 	//$Title Fuel Drum (Astrostein, pushable)
 	//$Color 3
 
+	-NOGRAVITY //or it will move towards the void without falling
 	+PUSHABLE
 	+SLIDESONWALLS
 
