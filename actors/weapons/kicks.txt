@@ -19,7 +19,7 @@ ACTOR BJKick : Weapon
 		TNT1 A 1 A_WeaponReady
 		Loop
 	Deselect:
-		BJKK A 1 A_Lower
+		TNT1 A 1 A_Lower
 		Loop
 	Select:
 		TNT1 A 1 A_Raise
@@ -47,7 +47,7 @@ ACTOR BJKick : Weapon
 		BJKK A 0 Offset(18,36)
 		BJKK A 1 Offset(6,34)
 		BJKK A 0 Offset(4,32) A_PlaySound("knife/swing",CHAN_WEAPON) 								//fitting sound here
-		BJKK B 4 Offset(4,32) A_CustomPunch(8, TRUE, CPF_NOTURN, "KnifePuff", 70)		//CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
+		BJKK B 4 Offset(4,32) A_CustomPunch(8, TRUE, CPF_NOTURN, "KickPuff", 70)		//CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
 		BJKK A 0 Offset(4,32)
 		BJKK A 1 Offset(6,34)
 		BJKK A 0 Offset(18,36)
@@ -91,7 +91,7 @@ ACTOR BJKick : Weapon
 		BJKK A 0 Offset(18,36)
 		BJKK A 2 Offset(6,34)
 		BJKK A 0 Offset(4,32) A_PlaySound("knife/swing",CHAN_WEAPON) 								//fitting sound here
-		BJKK B 6 Offset(4,32) A_CustomPunch(16, TRUE, CPF_NOTURN, "KnifePuff", 80) 	//hit a bit far away like if the leg is stretched
+		BJKK B 6 Offset(4,32) A_CustomPunch(16, TRUE, CPF_NOTURN, "KickPuff", 80) 	//hit a bit far away like if the leg is stretched
 		BJKK A 0 Offset(4,32)
 		BJKK A 2 Offset(6,34)
 		BJKK A 0 Offset(18,36)
@@ -112,5 +112,35 @@ ACTOR BJKick : Weapon
 		BJKK A 2 Offset(82,98)
 		BJKK A 0 Offset(84,100)
 		Goto Ready
+	}
+}
+
+ACTOR KickPuff : BlastEffect
+{
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+PUFFONACTORS
+	+NOEXTREMEDEATH
+	RenderStyle "Add"
+	//ActiveSound ""
+	//AttackSound ""
+	//SeeSound ""
+	//Obituary "$OBKICKS"
+	ProjectileKickback 100
+	Scale 0.4
+	
+	States
+	{
+	Spawn:
+	Melee:
+	Crash:
+		POOF A 3 A_PlaySound("knife/stone")
+		POOF A 0 A_Blast(BF_DONTWARN|BF_NOIMPACTDAMAGE, random(56,64), random(8,16)) //prod the target away if possible
+		POOF A 0 Radius_Quake(1,random(15,20),0,8,0)
+		POOF BCDE 3
+		Stop
+	XDeath:
+		POOF A 3 A_PlaySound("knife/hit")
+		Goto Crash+1
 	}
 }
