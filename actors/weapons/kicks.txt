@@ -1,0 +1,116 @@
+ACTOR BJKick : Weapon
+{
+	//no need to add GZDB infos for this weapon
+	+WEAPON.MELEEWEAPON
+	+WEAPON.NOALERT
+	+WEAPON.WIMPY_WEAPON
+	//Tag "My Mighty Leg"
+	//Weapon.BobStyle Smooth
+	//Weapon.BobSpeed 1.5
+	//Weapon.BobRangeX 1.5
+	//Weapon.UpSound "knife/select"
+	//Inventory.PickupMessage "$KNIFE"
+	Weapon.SelectionOrder 10001
+	
+	States
+	{
+	//Spawn state is not needed afaik, legs are presumably attached to BJ body - Ozy81
+	Ready:
+		TNT1 A 1 A_WeaponReady
+		Loop
+	Deselect:
+		BJKK A 1 A_Lower
+		Loop
+	Select:
+		TNT1 A 1 A_Raise
+		Loop
+	Fire:
+		BJKK A 0 Offset(86,102) A_JumpIfInventory("Stamina",29,1) //not enough Stamina? no way to kick butts
+		Goto Deselect
+		BJKK A 1 Offset(84,100)
+		BJKK A 0 Offset(82,98) A_TakeInventory("Stamina",30)
+		BJKK A 1 Offset(80,96)
+		BJKK A 0 Offset(76,92)
+		BJKK A 1 Offset(72,88)
+		BJKK A 0 Offset(68,84)
+		BJKK A 1 Offset(64,80)
+		BJKK A 0 Offset(60,76)
+		BJKK A 1 Offset(56,72)
+		BJKK A 0 Offset(52,68)
+		BJKK A 1 Offset(48,64)
+		BJKK A 0 Offset(44,60)
+		BJKK A 1 Offset(40,56)
+		BJKK A 0 Offset(36,52)
+		BJKK A 0 Offset(28,43)
+		BJKK A 0 Offset(28,43)
+		BJKK A 1 Offset(24,39)
+		BJKK A 0 Offset(18,36)
+		BJKK A 1 Offset(6,34)
+		BJKK A 0 Offset(4,32) A_PlaySound("knife/swing",CHAN_WEAPON) 								//fitting sound here
+		BJKK B 4 Offset(4,32) A_CustomPunch(8, TRUE, CPF_NOTURN, "KnifePuff", 70)		//CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
+		BJKK A 0 Offset(4,32)
+		BJKK A 1 Offset(6,34)
+		BJKK A 0 Offset(18,36)
+		BJKK A 1 Offset(24,39)
+		BJKK A 0 Offset(28,43)
+		BJKK A 1 Offset(36,52)
+		BJKK A 0 Offset(40,56)
+		BJKK A 1 Offset(44,60)
+		BJKK A 0 Offset(48,64)
+		BJKK A 1 Offset(52,68)
+		BJKK A 0 Offset(56,72)
+		BJKK A 1 Offset(60,76)
+		BJKK A 0 Offset(64,80)
+		BJKK A 1 Offset(68,84)
+		BJKK A 0 Offset(72,88)
+		BJKK A 1 Offset(76,92)
+		BJKK A 0 Offset(80,96)
+		BJKK A 1 Offset(82,98)
+		BJKK A 0 Offset(84,100)
+		Goto Ready
+	AltFire:
+		BJKK A 0 Offset(86,102) A_JumpIfInventory("Stamina",39,1) //not enough Stamina? no way to kick butts, but you can still perform the normal attack
+		Goto Ready
+		BJKK A 2 Offset(84,100)
+		BJKK A 0 Offset(82,98) A_TakeInventory("Stamina",40)
+		BJKK A 2 Offset(80,96)
+		BJKK A 0 Offset(76,92)
+		BJKK A 2 Offset(72,88)
+		BJKK A 0 Offset(68,84)
+		BJKK A 2 Offset(64,80)
+		BJKK A 0 Offset(60,76)
+		BJKK A 2 Offset(56,72)
+		BJKK A 0 Offset(52,68)
+		BJKK A 2 Offset(48,64)
+		BJKK A 0 Offset(44,60)
+		BJKK A 2 Offset(40,56)
+		BJKK A 0 Offset(36,52)
+		BJKK A 0 Offset(28,43)
+		BJKK A 0 Offset(28,43)
+		BJKK A 2 Offset(24,39)
+		BJKK A 0 Offset(18,36)
+		BJKK A 2 Offset(6,34)
+		BJKK A 0 Offset(4,32) A_PlaySound("knife/swing",CHAN_WEAPON) 								//fitting sound here
+		BJKK B 6 Offset(4,32) A_CustomPunch(16, TRUE, CPF_NOTURN, "KnifePuff", 80) 	//hit a bit far away like if the leg is stretched
+		BJKK A 0 Offset(4,32)
+		BJKK A 2 Offset(6,34)
+		BJKK A 0 Offset(18,36)
+		BJKK A 2 Offset(24,39)
+		BJKK A 0 Offset(28,43)
+		BJKK A 2 Offset(36,52)
+		BJKK A 0 Offset(40,56)
+		BJKK A 2 Offset(44,60)
+		BJKK A 0 Offset(48,64)
+		BJKK A 2 Offset(52,68)
+		BJKK A 0 Offset(56,72)
+		BJKK A 2 Offset(60,76)
+		BJKK A 0 Offset(64,80)
+		BJKK A 2 Offset(68,84)
+		BJKK A 0 Offset(72,88)
+		BJKK A 2 Offset(76,92)
+		BJKK A 0 Offset(80,96)
+		BJKK A 2 Offset(82,98)
+		BJKK A 0 Offset(84,100)
+		Goto Ready
+	}
+}
