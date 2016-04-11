@@ -110,21 +110,19 @@ ACTOR KnifeSilent : Weapon
 	{
 	Spawn:
 		KNFE A -1
-		Loop
+		Stop
 	Ready:
 		KNFG A 1 A_WeaponReady
 		Loop
 	Deselect:
-		KNFG A 0 A_Lower
 		KNFG A 1 A_Lower
 		Loop
 	Select:
-		KNFG A 0 A_Raise
 		KNFG A 1 A_Raise
 		Loop
 	Fire:
 		KNFG A 1 A_PlaySound("knife/swing",CHAN_WEAPON)
-		KNFG B 1 A_CustomPunch(10,1,CPF_DAGGER,"KnifePuff",64)
+		KNFG B 1 A_CustomPunch(10, 1, 0, "KnifePuff", 64)
 		KNFG CDEFGHJKLMN 1
 		Goto Ready
 	}
