@@ -314,6 +314,19 @@ ACTOR BrainLab2 : BrainLab1
 	}
 }
 
+ACTOR BrainLab3 : BrainLab1
+{
+	//$Category Gore (Wolf3D)
+	//$Title Brain (3)
+	//$Color 4
+	States
+	{
+	Spawn:
+		BRNS C -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Goto Super::Spawn
+	}
+}
+
 ACTOR DripLab1
 {
 	//$Category Gore (Wolf3D)
@@ -322,6 +335,7 @@ ACTOR DripLab1
 	Radius 12
 	Height 56
 	Scale 0.6
+	ProjectilePassHeight 16
 	+SOLID
 	+NOGRAVITY
 	States
@@ -341,6 +355,19 @@ ACTOR DripLab2 : DripLab1
 	{
 	Spawn:
 		RIPD B -1
+		Stop
+	}
+}
+
+ACTOR DripLab3 : DripLab1
+{
+	//$Category Gore (Wolf3D)
+	//$Title Medical Drip (3)
+	//$Color 4
+	States
+	{
+	Spawn:
+		RIPD C -1
 		Stop
 	}
 }
