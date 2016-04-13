@@ -544,6 +544,7 @@ ACTOR CeilingGrass
 	Height 24
 	+NOGRAVITY
 	+SPAWNCEILING
+	DistanceCheck "cl_grasslod"
 	States
 	{
 	Spawn:
@@ -564,7 +565,8 @@ ACTOR Grass1
 	Mass 0x7ffffff //will never move
 	+NOBLOOD
 	+SHOOTABLE
-	+NOTAUTOAIMED	
+	+NOTAUTOAIMED
+	DistanceCheck "cl_grasslod"	
 	States
 	{
 	Spawn:
@@ -588,6 +590,7 @@ ACTOR Grass2 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 2
 	//$Color 3
+	DistanceCheck "cl_grasslod"
 	States
 	{
 	Spawn:
@@ -607,6 +610,7 @@ ACTOR Grass3 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 3
 	//$Color 3
+	DistanceCheck "cl_grasslod"
 	States
 	{
 	Spawn:
@@ -626,6 +630,7 @@ ACTOR Grass4 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 1 (desert)
 	//$Color 3
+	DistanceCheck "cl_grasslod"
 	States 
 	{ 
 	Spawn:
@@ -645,6 +650,7 @@ ACTOR Grass5 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 2 (desert)
 	//$Color 3
+	DistanceCheck "cl_grasslod"
 	States 
 	{ 
 	Spawn:
@@ -664,6 +670,7 @@ ACTOR Grass6 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 3 (desert)
 	//$Color 3
+	DistanceCheck "cl_grasslod"
 	States 
 	{ 
 	Spawn:
@@ -683,6 +690,7 @@ ACTOR Grass7 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 1 (winter)
 	//$Color 3
+	DistanceCheck "cl_grasslod"
 	States 
 	{ 
 	Spawn:
@@ -701,7 +709,8 @@ ACTOR Grass8 : Grass1
 {
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 2 (winter)
-	//$Color 3	
+	//$Color 3
+	DistanceCheck "cl_grasslod"	
 	States 
 	{ 
 	Spawn:
@@ -721,6 +730,7 @@ ACTOR Grass9 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 3 (winter)
 	//$Color 3
+	DistanceCheck "cl_grasslod"
 	States 
 	{ 
 	Spawn:
@@ -746,7 +756,8 @@ ACTOR Flower1
 	Mass 0x7ffffff //will never move
 	+NOBLOOD
 	+SHOOTABLE
-	+NOTAUTOAIMED		
+	+NOTAUTOAIMED
+	DistanceCheck "cl_grasslod"		
 	States
 	{
 	Spawn:
@@ -771,6 +782,7 @@ ACTOR Flower2 : Flower1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Flower (white)
 	//$Color 3
+	DistanceCheck "cl_grasslod"
 	States
 	{
 	Spawn:
@@ -791,6 +803,7 @@ ACTOR Flower3 : Flower1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Flower (winter)
 	//$Color 3
+	DistanceCheck "cl_grasslod"
 	States
 	{
 	Spawn:
@@ -810,6 +823,7 @@ ACTOR Rose1 : Flower1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Rose (red)
 	//$Color 3
+	DistanceCheck "cl_grasslod"
 	States
 	{
 	Spawn:
@@ -830,6 +844,7 @@ ACTOR Rose2 : Flower1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Rose (yellow)
 	//$Color 3
+	DistanceCheck "cl_grasslod"
 	States
 	{
 	Spawn:
@@ -850,6 +865,7 @@ ACTOR Rose3 : Flower1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Rose (blue-white)
 	//$Color 3
+	DistanceCheck "cl_grasslod"
 	States
 	{
 	Spawn:
@@ -870,6 +886,7 @@ ACTOR Rose4 : Flower1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Rose (winter)
 	//$Color 3
+	DistanceCheck "cl_grasslod"
 	States
 	{
 	Spawn:
@@ -893,6 +910,7 @@ ACTOR RandomRye
 	Radius 8
 	Height 32
 	Scale 0.8
+	DistanceCheck "cl_grasslod"
 	States
 	{
 	Spawn:
