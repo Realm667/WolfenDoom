@@ -113,6 +113,7 @@ ACTOR ModelIncaTrain : ModelBase
 	//$Color 3
 	Radius 4
 	Height 4
+	DistanceCheck "carslod"
 }
 
 ACTOR ModelRailBoxcar : ModelIncaTrain
@@ -120,6 +121,7 @@ ACTOR ModelRailBoxcar : ModelIncaTrain
 	//$Category Models (Wolf3D)/Vehicles
 	//$Title Train (boxcar)
 	//$Color 3
+	DistanceCheck "carslod"
 }
 
 ACTOR ModelRailBoxcar2 : ModelIncaTrain
@@ -127,6 +129,7 @@ ACTOR ModelRailBoxcar2 : ModelIncaTrain
 	//$Category Models (Wolf3D)/Vehicles
 	//$Title Train (boxcar,kz)
 	//$Color 3
+	DistanceCheck "carslod"
 }
 
 ACTOR ModelRailBoxcar3 : ModelIncaTrain
@@ -134,6 +137,7 @@ ACTOR ModelRailBoxcar3 : ModelIncaTrain
 	//$Category Models (Wolf3D)/Vehicles
 	//$Title Train (future)
 	//$Color 3
+	DistanceCheck "carslod"
 }
 
 ACTOR ModelRailBoxcar3_Projectile : ModelRailBoxcar3
@@ -153,6 +157,7 @@ ACTOR ModelRailTanker : ModelIncaTrain
 	//$Category Models (Wolf3D)/Vehicles
 	//$Title Train (tanker)
 	//$Color 3
+	DistanceCheck "carslod"
 }
 
 ACTOR ModelSandBagCurve : ModelBase
@@ -387,6 +392,7 @@ ACTOR TankPanzer3 : ModelBase
 	//$Color 3
 	Radius 4
 	Height 64
+	DistanceCheck "carslod"
 }
 
 ACTOR Cruiser : ModelBase
@@ -508,6 +514,7 @@ ACTOR RTCWCar : 3dObstacle
 
 	Radius 32
 	Height 32
+	DistanceCheck "carslod"
 	States
 	{
 		Spawn:
@@ -516,7 +523,10 @@ ACTOR RTCWCar : 3dObstacle
 	}
 }
 
-ACTOR RTCWCarGlass : 3dGlass {}
+ACTOR RTCWCarGlass : 3dGlass
+{
+	DistanceCheck "carslod"
+}
 
 ACTOR FlagWave : ModelBase
 {
@@ -806,6 +816,7 @@ ACTOR ModelOpelTruck : 3dObstacle
 	Radius 24
 	Height 24
 	+NOGRAVITY
+	DistanceCheck "carslod"
 	States
 	{
 	Spawn:
@@ -1288,6 +1299,7 @@ ACTOR MercedesLimo : 3dObstacle
 	//$Color 3
 	Radius 32
 	Height 32
+	DistanceCheck "carslod"
 	States
 	{
 	Spawn:
@@ -1296,7 +1308,10 @@ ACTOR MercedesLimo : 3dObstacle
 	}
 }
 
-ACTOR LimoGlass : 3dGlass {}
+ACTOR LimoGlass : 3dGlass
+{
+	DistanceCheck "carslod"
+}
 
 ACTOR Kubelwagen : 3dObstacle
 {
@@ -1305,6 +1320,7 @@ ACTOR Kubelwagen : 3dObstacle
 	//$Color 3
 	Radius 32
 	Height 32
+	DistanceCheck "carslod"
 	States
 	{
 	Spawn:
@@ -1313,7 +1329,10 @@ ACTOR Kubelwagen : 3dObstacle
 	}
 }
 
-ACTOR KubelGlass : 3dGlass {}
+ACTOR KubelGlass : 3dGlass
+{
+	DistanceCheck "carslod"
+}
 
 ACTOR OldCar_Spawner : 3dObstacle
 {
@@ -1326,6 +1345,7 @@ ACTOR OldCar_Spawner : 3dObstacle
 	
 	Height 64
 	+NOGRAVITY
+	DistanceCheck "carslod"
 	States
 	{
 	Spawn:
@@ -1357,6 +1377,7 @@ ACTOR Tractor : 3dObstacle
 	//$Color 3
 	Radius 32
 	Height 32
+	DistanceCheck "carslod"
 }
 
 ACTOR 3dPiano : 3dObstacle
@@ -1434,7 +1455,9 @@ ACTOR COD_Tiger1 : ModelBase
 	//$Color 3
 	Radius 4
 	Height 64
+	DistanceCheck "carslod"
 }
+
 ACTOR COD_RadioSimple : SwitchableDecoration
 {
 	//$Category Models (Wolf3D)/Scenery
@@ -1506,6 +1529,7 @@ ACTOR COD_SSHorch : 3dObstacle
 
 	Radius 12
 	Height 52
+	DistanceCheck "carslod"
 	States
 	{
 		Spawn:
@@ -1517,7 +1541,10 @@ ACTOR COD_SSHorch : 3dObstacle
 	}
 }
 
-ACTOR COD_SSHorch_Glass : 3dGlass {}
+ACTOR COD_SSHorch_Glass : 3dGlass
+{
+	DistanceCheck "carslod"
+}
 
 ACTOR COD_USJeep : 3dObstacle
 {
@@ -1530,6 +1557,7 @@ ACTOR COD_USJeep : 3dObstacle
 
 	Radius 12
 	Height 52
+	DistanceCheck "carslod"
 	States
 	{
 		Spawn:
@@ -1549,7 +1577,10 @@ ACTOR COD_USJeep : 3dObstacle
 	}
 }
 
-ACTOR COD_USJeep_Glass : 3dGlass {}
+ACTOR COD_USJeep_Glass : 3dGlass
+{
+	DistanceCheck "carslod"
+}
 
 ACTOR CODBike : 3dObstacle
 {
@@ -1563,6 +1594,7 @@ ACTOR CODBike : 3dObstacle
 	Radius 16
 	Height 32
 	+NOGRAVITY
+	DistanceCheck "carslod"
 	States
 	{
 	Spawn:
@@ -1646,6 +1678,7 @@ ACTOR CODSideCar : 3dObstacle
 	//$Color 3
 	Radius 56
 	Height 48
+	DistanceCheck "carslod"
 }
 
 ACTOR CODCivCarD_Spawner : 3dObstacle
@@ -1658,6 +1691,7 @@ ACTOR CODCivCarD_Spawner : 3dObstacle
 	//$Arg0Tooltip "Pickup the desired color\nRandom: 0\nTan: 1\nRed: 2\nBlue: 3"
 	Height 64
 	+NOGRAVITY
+	DistanceCheck "carslod"
 	States
 	{
 	Spawn:

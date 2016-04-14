@@ -6,72 +6,39 @@ ACTOR Tree1
 	Radius 32
 	Height 192
 	+SOLID
+	DistanceCheck "treeslod"
 	States
 	{
 	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
+		SMGT A -1
+		Stop
 	}
 }
 
-ACTOR Tree2
+ACTOR Tree2 : Tree1
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree (large)
 	//$Color 3
-	Radius 32
-	Height 192
-	+SOLID
-	States
-	{
-	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
-	}
+	DistanceCheck "treeslod"
 }
 
-ACTOR Tree3
+ACTOR Tree3 : Tree1
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree 1 (middle)
 	//$Color 3
-	Radius 32
 	Height 96
-	+SOLID
-	States
-	{
-	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
-	}
+	DistanceCheck "treeslod"
 }
 
-ACTOR Tree4
+ACTOR Tree4 : Tree1
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree 2 (middle)
 	//$Color 3
-	Radius 32
 	Height 96
-	+SOLID
-	States
-	{
-	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
-	}
+	DistanceCheck "treeslod"
 }
 
 ACTOR Palm1
@@ -83,35 +50,21 @@ ACTOR Palm1
 	Height 128
 	+SOLID
 	+NOGRAVITY
+	DistanceCheck "treeslod"
 	States
 	{
 	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
+		SMGT A -1
+		Stop
 	}
 }
 
-ACTOR Palm2
+ACTOR Palm2 : Palm1
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Palm (left)
 	//$Color 3
-	Radius 16
-	Height 128
-	+SOLID
-	+NOGRAVITY
-	States
-	{
-	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
-	}
+	DistanceCheck "treeslod"
 }
 
 ACTOR Palm3
@@ -119,19 +72,7 @@ ACTOR Palm3
 	//$Category Props (Wolf3D)/Trees
 	//$Title Palm (right)
 	//$Color 3
-	Radius 16
-	Height 128
-	+SOLID
-	+NOGRAVITY
-	States
-	{
-	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
-	}
+	DistanceCheck "treeslod"
 }
 
 ACTOR JungleTree1
@@ -145,191 +86,100 @@ ACTOR JungleTree1
 	States
 	{
 	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
+		SMGT A -1
+		Stop
 	}
 }
 
-ACTOR JungleTree2
+ACTOR JungleTree2 : JungleTree1
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Jungle Tree 2 (wall)
 	//$Color 3
-	Radius 16
 	Height 32
-	+SOLID
-	States
-	{
-	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
-	}
+	DistanceCheck "treeslod"
 }
 
-ACTOR JungleTree3
+ACTOR JungleTree3 : JungleTree1
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Jungle Tree 3 (bamboo)
 	//$Color 3
-	Radius 16
-	Height 128
-	+SOLID
-	States
-	{
-	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
-	}
+	DistanceCheck "treeslod"
 }
 
 ACTOR winterA
 {
 	Height 115
 	+SOLID
+	DistanceCheck "treeslod"
 	States
 	{
 	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
+		SMGT A -1
+		Stop
 	}
 }
 
-ACTOR winterB
+ACTOR winterB : winterA
 {
 	Radius 15
 	Height 90
-	+SOLID
-	States
-	{
-	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
-	}
+	DistanceCheck "treeslod"
 }
 
-ACTOR winterC
+ACTOR winterC : winterA
 {
 	Height 140
-	+SOLID
-	States
-	{
-	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
-	}
+	DistanceCheck "treeslod"
 }
 
 ACTOR winterD
 {
 	Height 60
 	+SOLID
+	DistanceCheck "treeslod"
 	States
 	{
 	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
+		SMGT A -1
+		Stop
 	}
 }
 
-ACTOR winterE
+ACTOR winterE : winterA
 {
 	Radius 10
 	Height 45
-	+SOLID
-	States
-	{
-	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
-	}
+	DistanceCheck "treeslod"
 }
 
-ACTOR winterF
+ACTOR winterF : winterA
 {
 	Radius 10
 	Height 110
-	+SOLID
-	States
-	{
-	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
-	}
+	DistanceCheck "treeslod"
 }
 
-ACTOR winterG
+ACTOR winterG : winterA
 {
 	Radius 25
 	Height 130
-	+SOLID
-	States
-	{
-	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
-	}
+	DistanceCheck "treeslod"
 }
 
-ACTOR winterH
+ACTOR winterH : winterA
 {
 	Radius 25
 	Height 130
-	+SOLID
-	States
-	{
-	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
-	}
+	DistanceCheck "treeslod"
 }
 
-ACTOR winterI
+ACTOR winterI : winterA
 {
 	Radius 25
 	Height 130
-	+SOLID
-	States
-	{
-	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
-	}
+	DistanceCheck "treeslod"
 }
 
 ACTOR SmallTree1
@@ -340,34 +190,22 @@ ACTOR SmallTree1
 	Radius 16
 	Height 96
 	+SOLID
+	DistanceCheck "treeslod"
 	States
 	{
 	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
+		SMGT A -1
+		Stop
 	}
 }
 
-ACTOR SmallTree2
+ACTOR SmallTree2 : SmallTree1
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree 5 (small)
 	//$Color 3
-	Radius 16
 	Height 64
-	+SOLID
-	States
-	{
-	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
-	}
+	DistanceCheck "treeslod"
 }
 
 //Burnt variants - Ozymandias81
@@ -379,54 +217,32 @@ ACTOR Tree2_Burnt
 	Radius 32
 	Height 192
 	+SOLID
+	DistanceCheck "treeslod"
 	States
 	{
 	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
+		SMGT A -1
+		Stop
 	}
 }
 
-ACTOR Tree3_Burnt
+ACTOR Tree3_Burnt : Tree2_Burnt
 {
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Tree 1 (burnt, middle)
 	//$Color 3
-	Radius 32
 	Height 96
-	+SOLID
 	+NOGRAVITY
-	States
-	{
-	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
-	}
+	DistanceCheck "treeslod"
 }
 
-ACTOR Tree4_Burnt
+ACTOR Tree4_Burnt : Tree2_Burnt
 {
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Tree 2 (burnt, middle)
 	//$Color 3
-	Radius 32
 	Height 96
-	+SOLID
-	States
-	{
-	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
-	}
+	DistanceCheck "treeslod"
 }
 
 ACTOR JungleTree1_Burnt
@@ -437,35 +253,23 @@ ACTOR JungleTree1_Burnt
 	Radius 16
 	Height 128
 	+SOLID
+	DistanceCheck "treeslod"
 	States
 	{
 	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
+		SMGT A -1
+		Stop
 	}
 }
 
-ACTOR JungleTree2_Burnt
+ACTOR JungleTree2_Burnt : JungleTree1_Burnt
 {
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Jungle Tree 2 (burnt, wall)
 	//$Color 3
-	Radius 16
 	Height 32
-	+SOLID
 	+NOGRAVITY
-	States
-	{
-	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
-	}
+	DistanceCheck "treeslod"
 }
 
 ACTOR SmallTree1_Burnt
@@ -476,14 +280,12 @@ ACTOR SmallTree1_Burnt
 	Radius 16
 	Height 96
 	+SOLID
+	DistanceCheck "treeslod"
 	States
 	{
 	Spawn:
-		SMGT A 1 A_CheckRange(CallACS("TreesLOD"), "Unsighted", true)
-		Loop
-	Unsighted:
-		TNT1 A 10
-		Goto Spawn
+		SMGT A -1
+		Stop
 	}
 }
 
@@ -495,6 +297,7 @@ ACTOR SmallBush1
 	-SOLID
 	Radius 16
 	Height 24
+	DistanceCheck "treeslod"
 	States
 	{
 	Spawn:
@@ -508,9 +311,8 @@ ACTOR SmallBush2
 	//$Category Props (Wolf3D)/Trees
 	//$Title Bush 2
 	//$Color 3
-	-SOLID
-	Radius 16
 	Height 40
+	DistanceCheck "treeslod"
 	States
 	{
 	Spawn:
@@ -519,14 +321,13 @@ ACTOR SmallBush2
 	}
 }
 
-ACTOR Bush
+ACTOR Bush : SmallBush1
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Bush (small)
 	//$Color 3
-	Radius 16
 	Height 32
-	-SOLID
+	DistanceCheck "treeslod"
 	States
 	{
 	Spawn:
@@ -544,7 +345,7 @@ ACTOR CeilingGrass
 	Height 24
 	+NOGRAVITY
 	+SPAWNCEILING
-	DistanceCheck "cl_grasslod"
+	DistanceCheck "grasslod"
 	States
 	{
 	Spawn:
@@ -566,7 +367,7 @@ ACTOR Grass1
 	+NOBLOOD
 	+SHOOTABLE
 	+NOTAUTOAIMED
-	DistanceCheck "cl_grasslod"	
+	DistanceCheck "grasslod"	
 	States
 	{
 	Spawn:
@@ -590,7 +391,7 @@ ACTOR Grass2 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 2
 	//$Color 3
-	DistanceCheck "cl_grasslod"
+	DistanceCheck "grasslod"
 	States
 	{
 	Spawn:
@@ -610,7 +411,7 @@ ACTOR Grass3 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 3
 	//$Color 3
-	DistanceCheck "cl_grasslod"
+	DistanceCheck "grasslod"
 	States
 	{
 	Spawn:
@@ -630,7 +431,7 @@ ACTOR Grass4 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 1 (desert)
 	//$Color 3
-	DistanceCheck "cl_grasslod"
+	DistanceCheck "grasslod"
 	States 
 	{ 
 	Spawn:
@@ -650,7 +451,7 @@ ACTOR Grass5 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 2 (desert)
 	//$Color 3
-	DistanceCheck "cl_grasslod"
+	DistanceCheck "grasslod"
 	States 
 	{ 
 	Spawn:
@@ -670,7 +471,7 @@ ACTOR Grass6 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 3 (desert)
 	//$Color 3
-	DistanceCheck "cl_grasslod"
+	DistanceCheck "grasslod"
 	States 
 	{ 
 	Spawn:
@@ -690,7 +491,7 @@ ACTOR Grass7 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 1 (winter)
 	//$Color 3
-	DistanceCheck "cl_grasslod"
+	DistanceCheck "grasslod"
 	States 
 	{ 
 	Spawn:
@@ -710,7 +511,7 @@ ACTOR Grass8 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 2 (winter)
 	//$Color 3
-	DistanceCheck "cl_grasslod"	
+	DistanceCheck "grasslod"	
 	States 
 	{ 
 	Spawn:
@@ -730,7 +531,7 @@ ACTOR Grass9 : Grass1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 3 (winter)
 	//$Color 3
-	DistanceCheck "cl_grasslod"
+	DistanceCheck "grasslod"
 	States 
 	{ 
 	Spawn:
@@ -757,7 +558,7 @@ ACTOR Flower1
 	+NOBLOOD
 	+SHOOTABLE
 	+NOTAUTOAIMED
-	DistanceCheck "cl_grasslod"		
+	DistanceCheck "grasslod"		
 	States
 	{
 	Spawn:
@@ -782,7 +583,7 @@ ACTOR Flower2 : Flower1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Flower (white)
 	//$Color 3
-	DistanceCheck "cl_grasslod"
+	DistanceCheck "grasslod"
 	States
 	{
 	Spawn:
@@ -803,7 +604,7 @@ ACTOR Flower3 : Flower1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Flower (winter)
 	//$Color 3
-	DistanceCheck "cl_grasslod"
+	DistanceCheck "grasslod"
 	States
 	{
 	Spawn:
@@ -823,7 +624,7 @@ ACTOR Rose1 : Flower1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Rose (red)
 	//$Color 3
-	DistanceCheck "cl_grasslod"
+	DistanceCheck "grasslod"
 	States
 	{
 	Spawn:
@@ -844,7 +645,7 @@ ACTOR Rose2 : Flower1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Rose (yellow)
 	//$Color 3
-	DistanceCheck "cl_grasslod"
+	DistanceCheck "grasslod"
 	States
 	{
 	Spawn:
@@ -865,7 +666,7 @@ ACTOR Rose3 : Flower1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Rose (blue-white)
 	//$Color 3
-	DistanceCheck "cl_grasslod"
+	DistanceCheck "grasslod"
 	States
 	{
 	Spawn:
@@ -886,7 +687,7 @@ ACTOR Rose4 : Flower1
 	//$Category Props (Wolf3D)/Grass
 	//$Title Rose (winter)
 	//$Color 3
-	DistanceCheck "cl_grasslod"
+	DistanceCheck "grasslod"
 	States
 	{
 	Spawn:
@@ -910,7 +711,7 @@ ACTOR RandomRye
 	Radius 8
 	Height 32
 	Scale 0.8
-	DistanceCheck "cl_grasslod"
+	DistanceCheck "grasslod"
 	States
 	{
 	Spawn:
