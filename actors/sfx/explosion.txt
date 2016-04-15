@@ -22,7 +22,7 @@ ACTOR GeneralExplosion_Medium : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 NoDelay A_PlaySound("panzer/explode", 0, 0.75, 0, ATTN_IDLE)
+		TNT1 A 0 A_PlaySound("panzer/explode", 0, 0.75, 0, ATTN_IDLE)
 		TNT1 A 0 A_JumpIf(!Args[0], "Quake")
 		goto Explosion
 	Quake:
@@ -94,14 +94,15 @@ ACTOR KD_HL2SmokeGenerator : KD_HL2GeneratorBase
 
 ACTOR KD_HL2Spark : KD_HL2ExplosionBase
 {
+	+BRIGHT
 	States
 	{
 	Spawn:
-		PAO1 A 5 BRIGHT NoDelay Light("BPUFF1") A_SetScale(FRandom(0.07, 0.1) * ScaleX)
+		PAO1 A 5 NoDelay Light("BPUFF1") A_SetScale(FRandom(0.07, 0.1) * ScaleX)
 	Drop:
 		PAO1 A 0 A_ChangeVelocity(FRandom(0.98, 0.99) * VelX,FRandom(0.98, 0.99) * VelY,VelZ - FRandom(0.2, 0.5), CVF_REPLACE)
 		PAO1 A 0 A_JumpIf(ScaleX <= 0.0, "NULL")
-		PAO1 A 1 BRIGHT A_SetScale(ScaleX - 0.002)
+		PAO1 A 1 A_SetScale(ScaleX - 0.002)
 		Loop
 	}
 }
@@ -151,7 +152,7 @@ ACTOR AstrosteinExplosion_Medium : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 NoDelay A_PlaySound("astrostein/explosion")
+		TNT1 A 0 A_PlaySound("astrostein/explosion")
 		TNT1 A 0 Radius_Quake(10,10,0,16,0)
 		TNT1 A 0 A_Explode(100, 192)
 		TNT1 A 0 A_JumpIf(CallACS("BoomSwitch")==0,"EndSpawn")
