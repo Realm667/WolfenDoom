@@ -272,11 +272,11 @@ ACTOR WGuard : Guard
 	Missile:
 		GRD2 EF 2 A_FaceTarget
 		GRD2 G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-		GRD2 G 4 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",54,1,random(-6,6))
+		GRD2 G 4 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",54,1,random(-6,6))
 		GRD2 G 0 A_SpawnItemEx("9MMCasing", 1,0,56, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		GRD2 F 4 A_FaceTarget
 		GRD2 G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-		GRD2 G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",54,1,random(-10,10))
+		GRD2 G 8 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",54,1,random(-10,10))
 		GRD2 G 0 A_SpawnItemEx("9MMCasing", 1,0,56, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		GRD2 F 8
 		Goto See
