@@ -1314,23 +1314,11 @@ ACTOR MadDoctor2 : MadDoctor
 	Health 800
 }
 
-ACTOR PoisonCloudNeedle : PoisonCloudMutant
-{
-	States
-	{
-	Spawn:
-		TNT1 A 1
-		"####" A 2 A_Explode(1,128,0,0,128)
-		"####" A 35 A_Countdown
-		Loop
-	}
-}
-
 ACTOR FlyingNeedle : MiniRocket
 {
 	Speed 10
 	DamageType MutantPoison
-	Damage (random(1,4)*6)
+	Damage (random(1,4)*8)
 	SeeSound ""
 	DeathSound "gshardnd"
 	Gravity 0.3
@@ -1341,8 +1329,7 @@ ACTOR FlyingNeedle : MiniRocket
 		NEDL ABCD 3
 		Loop
 	Death:
-		TNT1 A 0 A_CustomMissile("PoisonCloudNeedle",0,0,0,0,CMF_AIMDIRECTION)
-		"####" A 1
+		TNT1 A 1
 		Stop
 	}
 }
