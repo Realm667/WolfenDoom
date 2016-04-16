@@ -113,7 +113,7 @@ ACTOR Guard : Nazi
 	Missile:
 		"####" EF 5 A_FaceTarget
 		"####" G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-		"####" G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",54,1,random(-8,8))
+		"####" G 8 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",54,1,random(-8,8))
 		"####" F 8 A_SpawnItemEx("9MMCasing", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
 		"####" F 0 A_Jump(256,"See")
 		Stop
@@ -197,7 +197,7 @@ ACTOR GiantGuard : Guard
 	Missile: //different because tall
 		"####" EF 5 A_FaceTarget
 		"####" G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-		"####" G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",254,1,random(-8,8))
+		"####" G 8 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",254,1,random(-8,8))
 		"####" F 8 A_SpawnItemEx("9MMCasing", 1, 0, 256, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
 		"####" F 0 A_Jump(256,"See")
 		Stop
