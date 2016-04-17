@@ -38,16 +38,44 @@ script "boaobjectivesdisplay" ENTER
 	while(!objectives_on[PlayerNumber()])
 		delay(1);
 		setfont("SMALLFONT");
-	hudmessage(l:"MO_PRIMARY",
-		l:objectives[0][0],l:objectives[0][1],
-		l:objectives[1][0],l:objectives[1][1],
-		l:objectives[2][0],l:objectives[2][1],
-		l:"MO_SECONDARY",
-		l:objectives[3][0],l:objectives[3][1],
-		l:objectives[4][0],l:objectives[4][1],
-		l:objectives[5][0],l:objectives[5][1];
-		HUDMSG_PLAIN,971,CR_UNTRANSLATED,300.1,135.1,0.03);
-		setfont("OBJECTGX");
+
+	int intMsgID = 960;
+
+	int intHeaderCount = 0;
+
+	For (int i = 0; i <= 7; i++)
+	{
+		SetFont("SMALLFONT");
+		int intPosY = 135.0 + (13.0 * (intMsgID - 960)) + 0.1;
+
+		If (i == 0)
+		{
+			HudMessage(l:"MO_PRIMARY"; HUDMSG_PLAIN, intMsgID++, CR_UNTRANSLATED, 300.1, intPosY, 0.03);
+			intHeaderCount++;
+		}
+		Else If (i == 4)
+		{
+			HudMessage(l:"MO_SECONDARY"; HUDMSG_PLAIN, intMsgID++, CR_UNTRANSLATED, 300.1, intPosY, 0.03);
+			intHeaderCount++;
+		}
+		Else
+		{
+			str strOutput = StrParam(l:objectives[i - intHeaderCount][0], l:objectives[i - intHeaderCount][1]);
+
+			If (strLen(strOutput) > 0)
+			{
+				HudMessage(s:strOutput; HUDMSG_PLAIN, intMsgID++, CR_UNTRANSLATED, 310.1, intPosY, 0.03);
+
+				If (!StrCmp(StrParam(l:objectives[i - intHeaderCount][0]), StrParam(l:"MO_ICON_ACC")))
+					SetFont("OBJ_YES");
+				Else
+					SetFont("OBJ_NO");
+				HudMessage(s:"A"; HUDMSG_PLAIN, intMsgID - 10, CR_UNTRANSLATED, 300.1, intPosY + 1.0, 0.03);
+			}
+		}
+	}
+
+	setfont("OBJECTGX");
 	hudmessage(s:"A";
 		HUDMSG_PLAIN,972,CR_UNTRANSLATED,400.0,115.1,0.03);
 	delay(1);	
