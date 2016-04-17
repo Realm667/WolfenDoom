@@ -2045,7 +2045,7 @@ ACTOR Spotlight : ModelBase
 		See:
 			"####" # 0 {
 				A_AlertMonsters(1280);
-				A_FaceTarget(1, -120.0);
+				A_FaceTarget(1); //, -120.0);
 			}
 			"####" # 1 {
 				A_SetPitch(-pitch + 90);
