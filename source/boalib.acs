@@ -47,7 +47,6 @@ script "boaobjectivesdisplay" ENTER
 		l:objectives[4][0],l:objectives[4][1],
 		l:objectives[5][0],l:objectives[5][1];
 		HUDMSG_PLAIN,971,CR_UNTRANSLATED,300.1,135.1,0.03);
-		
 		setfont("OBJECTGX");
 	hudmessage(s:"A";
 		HUDMSG_PLAIN,972,CR_UNTRANSLATED,400.0,115.1,0.03);
@@ -438,4 +437,34 @@ script "CLEAR INVENTORY"(void)
 	TakeInventory("AstroRedKey",1); //Astros
 	TakeInventory("Akten",1);
 	TakeInventory("CutsceneEnabled", 1);
+}
+
+/*
+  SetMusicVolumeFactor 
+	Sets the multiplier for music volume (128 is half volume, 256 is full volume, 
+	512 is double volume, etc.), over the delay specified in tics.
+
+	Example:
+	    ACS_NamedExecuteAlways("SetMusicVolumeFactor", 0, 128, 70);
+
+	This will fade the music to half volume over 2 seconds (70 tics).
+*/
+int intSetVolume = 1.0;
+Script "SetMusicVolumeFactor" (int intTargetVolume, int intDelay)
+{
+	intTargetVolume *= 256;
+
+	If (intDelay > 0)
+	{
+		int intStepSize = (intSetVolume - intTargetVolume) / intDelay;
+
+		For (int i = 0; i <= intDelay; i++)
+		{
+			SetMusicVolume(intSetVolume - (intStepSize * i));
+			Delay(1);
+		}
+	}
+
+	SetMusicVolume(intTargetVolume);
+	intSetVolume = intTargetVolume;
 }
