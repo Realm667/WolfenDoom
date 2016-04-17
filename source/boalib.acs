@@ -131,7 +131,7 @@ script "BoADialogue"(int headtalky,int headsilent,int message)
 	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, 1, CR_UNTRANSLATED, 160.0, 24.0, 0.0, 0.0, 1.0); //mxd
 
 	//Fade out the message
-	SetHudSize(640, 400, false);
+	SetHudSize(640, 400, 1);
 	SetFont("SMALLFONT");
 	SetHudWrapWidth(540);
 	hudmessagebold(l:message; HUDMSG_FADEINOUT, 2, CR_GRAY, 100.1, 8.1, 0.0, 0.0, 1.0);
