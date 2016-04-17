@@ -107,7 +107,7 @@ script "BoADialogue"(int headtalky,int headsilent,int message)
 
 	// Show message
 	AmbientSound("RADIONOS",127);
-	SetHudSize(640, 400, false);
+	SetHudSize(640, 400, 1);
 	SetFont("SMALLFONT");
 	SetHudWrapWidth(540);
 	hudmessagebold(l:message; HUDMSG_TYPEON | HUDMSG_LOG, 2, CR_GRAY, 100.1, 8.1, 999.0, 0.03, 1.0);
