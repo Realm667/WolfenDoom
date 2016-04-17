@@ -252,7 +252,7 @@ function int GetVisibility(int tid, int noiselevel, int addedvisibility)
 	If (speed == 0) viewheightmod = 56 - (GetActorViewHeight(tid) >> 16); //View height directly affects visibility only when stationary; while moving, the crouched speed difference drives the visibility level down
 
 	//And game skill
-	int skillmod = (5 - GameSkill()) * -15; //Adjust the visibility level based on game skill
+	int skillmod = (5 - GameSkill()) * 15; //Adjust the visibility level based on game skill
 	If (GetActorViewHeight(tid) <= 28.0) skillmod = GameSkill() * 5; //Nerf crouching slightly at higher skill levels
 
 	// Calculate resulting visibility level (will probably require lots of tweaking...)

@@ -32,8 +32,8 @@ ACTOR SneakableSSMP40Guard : SSMP40Guard
 		StealthKill:
 			"####" "#" 0 A_Log("Stealth kill!")
 			"####" "#" 0 A_RemoveChildren(true, RMVF_EVERYTHING) // Despawn children
-//			"####" "#" 1 A_AlertMonsters(128) // This call crashes GZDoom for some reason...
-			"####" "#" 0 ACS_NamedExecuteAlways("AddExtraVisibility", 0, 100, 1) //...So just make the player super-visible instead
+			"####" "#" 1 A_AlertMonsters(128) 
+			"####" "#" 0 ACS_NamedExecuteAlways("AddExtraVisibility", 0, 100, 1) //...And make the player super-visible
 			"####" "#" 0 A_SetUserVar("user_stealthkilled", true)
 			"####" "#" 0 A_Die
 			Stop
