@@ -1318,11 +1318,13 @@ ACTOR FlyingNeedle : MiniRocket
 {
 	Speed 10
 	DamageType MutantPoison
-	Damage (random(1,4)*8)
+	PoisonDamage 3, 4
 	SeeSound ""
 	DeathSound "gshardnd"
 	Gravity 0.3
 	-NOGRAVITY
+	+ADDITIVEPOISONDAMAGE
+	+ADDITIVEPOISONDURATION
 	States
 	{
 	Spawn:
