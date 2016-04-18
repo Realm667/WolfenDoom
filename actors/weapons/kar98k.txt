@@ -68,12 +68,22 @@ ACTOR Kar98k : NaziWeapon
 		Goto Ready
 	ScopedFire:
 		SCO1 A 2 A_FireCustomMissile("Kar98kTracer")
+		SCO1 A 0 A_JumpIf(height<=30,"ScopedFireLowRecoil")
 		SCO1 A 2 A_SetPitch(pitch-(4.0*CallACS("RecoilAmount")))
 		SCO1 A 1 A_SetPitch(pitch-(2.0*CallACS("RecoilAmount")))
 		SCO1 A 1 A_SetPitch(pitch+(1.0*CallACS("RecoilAmount")))
 		SCO1 A 0 A_PlaySound("mauser/cock",5)
 		SCO1 A 3 A_SetPitch(pitch+(1.0*CallACS("RecoilAmount")))
 		SCO1 A 17 A_SetPitch(pitch+(0.5*CallACS("RecoilAmount")))
+		SCO1 A 1 A_CheckReload
+		Goto Ready
+	ScopedFireLowRecoil:
+		SCO1 A 2 A_SetPitch(pitch-(2.0*CallACS("RecoilAmount")))
+		SCO1 A 1 A_SetPitch(pitch-(1.0*CallACS("RecoilAmount")))
+		SCO1 A 1 A_SetPitch(pitch+(0.5*CallACS("RecoilAmount")))
+		SCO1 A 0 A_PlaySound("mauser/cock",5)
+		SCO1 A 3 A_SetPitch(pitch+(0.5*CallACS("RecoilAmount")))
+		SCO1 A 17 A_SetPitch(pitch+(0.25*CallACS("RecoilAmount")))
 		SCO1 A 1 A_CheckReload
 		Goto Ready
 	Flash:
