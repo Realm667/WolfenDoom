@@ -496,3 +496,44 @@ Script "SetMusicVolumeFactor" (int intTargetVolume, int intDelay)
 	SetMusicVolume(intTargetVolume);
 	intSetVolume = intTargetVolume;
 }
+
+Script "QuickKick" (void)
+{
+	If (
+		(CheckInventory("Stamina") < 30) || 
+		(CheckInventory("Health") < 30) ||
+		(GetSpeed(0) > 30) ||
+		(GetActorViewHeight(0) >> 16 < 56)
+	)
+		Terminate; //No kicking unless you're in good health, have stamina, aren't running, and aren't crouching
+
+	str strPrevWeapon = GetWeapon(); //Assign previous weapon name to a variable - gets "None" if there is none
+
+	SetPlayerProperty(0, 1, PROP_INSTANTWEAPONSWITCH); //Enable fast weapon switch
+
+	While (!SetWeapon("BJKickAuto")) //Give the player the auto-kick
+	{
+		GiveInventory("BJKickAuto", 1);
+		Delay(1);
+	}
+
+	Delay(25); //Wait for the animation and attack
+
+	If (StrICmp(strPrevWeapon, "None")) //Reset the old weapon
+		While (!SetWeapon(strPrevWeapon)) Delay(5);
+
+	TakeInventory("BJKickAuto", 1); //Remove the auto-kick from inventory
+
+	SetPlayerProperty(0, 0, PROP_INSTANTWEAPONSWITCH); //Disable fast weapon switch
+}
+
+Function int GetSpeed(int tid)
+{
+	int x = GetActorVelX(tid);
+	int y = GetActorVelY(tid);
+	int z = GetActorVelZ(tid);
+
+	int speed = (FixedMul(x, x) + FixedMul(y, y) + FixedMul(z, z)) >> 16;
+
+	return speed;
+}
