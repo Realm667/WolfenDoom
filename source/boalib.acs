@@ -505,7 +505,7 @@ Script "QuickKick" (void)
 		(GetSpeed(0) > 30) ||
 		(GetActorViewHeight(0) >> 16 < 56)
 	)
-		Terminate; //No kicking unless you're in good health, have stamina, aren't running, and aren't crouching
+		Terminate; //No kicking unless you're in good health, have stamina, aren't walking, and aren't crouching
 
 	str strPrevWeapon = GetWeapon(); //Assign previous weapon name to a variable - gets "None" if there is none
 
