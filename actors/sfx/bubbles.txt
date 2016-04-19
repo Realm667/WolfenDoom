@@ -52,10 +52,14 @@ ACTOR BubbleSpawner
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("BubbleSwitch")==0,"EndSpawn")
+		TNT1 A 0 A_CheckSightOrRange(1280,"Unsighted") //needed for more tweaks
 		TNT1 A 2 A_SpawnItemEx ("Bubble", random (-16, 16), 0, 0, 0, 0, 2, random (0, 360), 0, 128)
 		Loop
 	EndSpawn:
 		TNT1 A 1
 		Stop
+	Unsighted:
+		TNT1 A 25
+		Goto Spawn
 	}
 }

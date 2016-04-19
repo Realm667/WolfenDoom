@@ -322,7 +322,7 @@ script "BoA_Objectives"(void) //Call this script to activate and draw the compas
 
 script "UnderwaterBubbles" ENTER
 {
-	if(GetActorProperty(0,APROP_WATERLEVEL)>=3)
+	if(GetActorProperty(0,APROP_WATERLEVEL)>=3 && GetCVar("bubbleswitch")) //check also stored cvar for custom tweaks
 		SpawnForced("PlayerBubble",GetActorX(0)+random(4,8),GetActorY(0),GetActorZ(0)+random(48,52),0,random(0,255));
 	delay(7);
 	restart;
