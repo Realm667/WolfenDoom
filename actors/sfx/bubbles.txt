@@ -16,7 +16,6 @@ ACTOR Bubble
 	Spawn:
 		SBUB A 1
 	Rise:
-		SBUB A 0 A_JumpIf(CallACS("BubbleSwitch")==0,"EndSpawn")
 		SBUB A 0 A_JumpIf(waterlevel == 0, "Death")
 		SBUB A 1 A_Jump (32, "Jiggle")
 		Loop
@@ -27,9 +26,6 @@ ACTOR Bubble
 		Goto Rise
 	Death:
 		TNT1 A 1
-		Stop
-	EndSpawn:
-		TNT1 A -1
 		Stop
 	}
 }
@@ -55,7 +51,11 @@ ACTOR BubbleSpawner
 	States
 	{
 	Spawn:
-		TNT1 A 2 NODELAY A_SpawnItemEx ("Bubble", random (-16, 16), 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("BubbleSwitch")==0,"EndSpawn")
+		TNT1 A 2 A_SpawnItemEx ("Bubble", random (-16, 16), 0, 0, 0, 0, 2, random (0, 360), 0, 128)
 		Loop
+	EndSpawn:
+		TNT1 A 1
+		Stop
 	}
 }

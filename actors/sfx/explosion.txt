@@ -23,6 +23,7 @@ ACTOR GeneralExplosion_Medium : SwitchableDecoration
 	Spawn:
 	Active:
 		TNT1 A 0 A_PlaySound("panzer/explode", 0, 0.75, 0, ATTN_IDLE)
+		TNT1 A 0 A_CheckSight("Inactive")
 		TNT1 A 0 A_JumpIf(!Args[0], "Quake")
 		goto Explosion
 	Quake:
@@ -30,16 +31,13 @@ ACTOR GeneralExplosion_Medium : SwitchableDecoration
 		goto Explosion
 	Explosion:
 		TNT1 A 0 A_Explode(100, 192)
-		TNT1 A 0 A_JumpIf(CallACS("BoomSwitch")==0,"EndSpawn")
+		TNT1 A 0 A_JumpIf(CallACS("BoomSwitch") == 0, "Inactive")
 		TNT1 A 0 A_SpawnItemEx("KD_HL2Flash", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE)
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE)
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SparkGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE)
 	Inactive:
 		TNT1 A 350
 		Wait
-	EndSpawn:
-		TNT1 A -1
-		Stop
 	}
 }
 
@@ -62,8 +60,8 @@ ACTOR KD_HL2Flash : KD_HL2ExplosionBase
 		TNT1 A 0 A_Jump(256,1,2)
 		EXN1 AB 0 Light("FireSpawnerSmall") A_Jump(256,"Fade")
 	Fade:
-		"####" "#" 1 BRIGHT Light("FireSpawnerLarge") A_FadeOut(FRandom(0.05, 0.10))
-		Wait
+		"####" "#" 1 BRIGHT Light("FireSpawnerLarge") A_FadeOut(FRandom(0.05, 0.10) * (6 - CallACS("BoomSwitch")))
+		Loop
 	}
 }
 
@@ -75,7 +73,7 @@ ACTOR KD_HL2Smoke : KD_HL2ExplosionBase
 	{
 	Spawn:
 		TSMK A 1 A_SetScale(ScaleX + FRandom(0.005, 0.015))
-		TSMK A 0 A_FadeOut(FRandom(0.006, 0.012))
+		TSMK A 0 A_FadeOut(FRandom(0.006, 0.012) * (6 - CallACS("BoomSwitch")))
 		Loop
 	}
 }
@@ -103,6 +101,7 @@ ACTOR KD_HL2Spark : KD_HL2ExplosionBase
 		PAO1 A 0 A_ChangeVelocity(FRandom(0.98, 0.99) * VelX,FRandom(0.98, 0.99) * VelY,VelZ - FRandom(0.2, 0.5), CVF_REPLACE)
 		PAO1 A 0 A_JumpIf(ScaleX <= 0.0, "NULL")
 		PAO1 A 1 A_SetScale(ScaleX - 0.002)
+		PAO1 A 0 A_FadeOut(0.01 * (6 - CallACS("BoomSwitch")))
 		Loop
 	}
 }
@@ -163,7 +162,7 @@ ACTOR AstrosteinExplosion_Medium : SwitchableDecoration
 		TNT1 A 350
 		Wait
 	EndSpawn:
-		TNT1 A -1
+		TNT1 A 1
 		Stop
 	}
 }

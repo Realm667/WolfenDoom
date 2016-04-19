@@ -19,18 +19,22 @@ ACTOR FogCloud_Generator
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_JumpIf(ARGS[0]!=0,"MaperInput")
+		TNT1 A 0 A_JumpIf(CallACS("FogSwitch")==0,"EndSpawn")
+		TNT1 A 0 A_JumpIf(ARGS[0]!=0,"MaperInput")
 		TNT1 A 0 A_Jump(128,1,2)
 		TNT1 A 0 A_SpawnItemEx ("FogCloud_V1", random(random(-96, 96), random(-64, 64)), 0, random(0, random(32, 48)), 0, 0, 0, Random(0, 360), 129)
 		TNT1 A 0 A_SpawnItemEx ("FogCloud_V2", random(random(-96, 96), random(-64, 64)), 0, random(0, random(32, 48)), 0, 0, 0, Random(0, 360), 129)
 		TNT1 A 0 A_SpawnItemEx ("FogCloud_V3", random(random(-96, 96), random(-64, 64)), 0, random(0, random(32, 48)), 0, 0, 0, Random(0, 360), 129)
-		stop
+		Stop
 	MaperInput:
 		TNT1 A 0 A_Jump(128,1,2)
 		TNT1 A 0 A_SpawnItemEx ("FogCloud_V1", random(-ARGS[0],ARGS[0]), 0, random(0, random(32, 48)), 0, 0, 0, Random(0, 360), 129)
 		TNT1 A 0 A_SpawnItemEx ("FogCloud_V2", random(-ARGS[0],ARGS[0]), 0, random(0, random(32, 48)), 0, 0, 0, Random(0, 360), 129)
 		TNT1 A 0 A_SpawnItemEx ("FogCloud_V3", random(-ARGS[0],ARGS[0]), 0, random(0, random(32, 48)), 0, 0, 0, Random(0, 360), 129)
-		stop
+		Stop
+	EndSpawn:
+		TNT1 A 1
+		Stop
 	}
 }
 
@@ -47,7 +51,6 @@ ACTOR FogCloud_V1
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_SetScale(FRandom(2,2.25))
-		TNT1 A 0 A_JumpIf(CallACS("FogSwitch")==0,"EndSpawn")
 		TNT1 A 0 A_Jump(256,1,2,3,4)
 		AWCF ABCD 0 A_Jump(256,"Coolness")
 	Coolness:
@@ -57,10 +60,7 @@ ACTOR FogCloud_V1
 		"----" AAAAAAAAAAAAAAAAAAAA 10 A_FadeOut(0.002)
 		"----" A 0 A_Jump(256,0,1,2,3,4,5,6,7,8,9,10,11,12,13)
 		AWCF AAAAAAAAAAAAAA 4
-		loop
-	EndSpawn:
-		TNT1 A -1
-		Goto Spawn
+		Loop
 	}
 }
 
@@ -75,7 +75,7 @@ ACTOR FogCloud_V2 : FogCloud_V1
 		"----" AAAAAAAAAAAAAA 11 A_FadeOut(0.002)
 		"----" A 0 A_Jump(256,0,1,2,3,4,5,6,7,8,9,10,11,12,13)
 		"----" AAAAAAAAAAAAAA 5
-		loop
+		Loop
 	}
 }
 
@@ -90,6 +90,6 @@ ACTOR FogCloud_V3 : FogCloud_V1
 		"----" AAAAAAAAAAAAAA 12 A_FadeOut(0.002)
 		"----" A 0 A_Jump(256,0,1,2,3,4,5,6,7,8,9,10,11,12,13)
 		"----" AAAAAAAAAAAAAA 6
-		loop
+		Loop
 	}
 }

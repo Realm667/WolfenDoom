@@ -25,8 +25,8 @@ ACTOR UWLightGenerator1 : SwitchableDecoration
 		TNT1 A -1
 		Stop
 	EndSpawn:
-		TNT1 A -1
-		Goto Spawn
+		TNT1 A 1
+		Stop
 	}
 }
 
@@ -46,8 +46,8 @@ ACTOR UWLightGenerator2 : UWLightGenerator1
 		"####" A 1 A_SpawnItemEx("ULavaLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		loop
 	EndSpawn:
-		TNT1 A -1
-		Goto Spawn
+		TNT1 A 1
+		Stop
 	}
 }
 
@@ -66,8 +66,8 @@ ACTOR UWLightGenerator3 : UWLightGenerator1
 		"####" A 1 A_SpawnItemEx("UGoreLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		loop
 	EndSpawn:
-		TNT1 A -1
-		Goto Spawn
+		TNT1 A 1
+		Stop
 	}
 }
 
@@ -86,8 +86,8 @@ ACTOR UWLightGenerator4 : UWLightGenerator1
 		"####" A 1 A_SpawnItemEx("UHazardLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		loop
 	EndSpawn:
-		TNT1 A -1
-		Goto Spawn
+		TNT1 A 1
+		Stop
 	}
 }
 

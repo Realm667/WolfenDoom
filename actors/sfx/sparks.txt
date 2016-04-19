@@ -813,7 +813,7 @@ ACTOR Spark_W1
 		SPKW E 1 BRIGHT
 		Loop
 	Death:
-		"####" E 1 BRIGHT A_FadeOut(0.1)
+		"####" E 1 BRIGHT A_FadeOut(0.1 * CallACS("SparkSwitch"))
 		Loop
 	}
 }
