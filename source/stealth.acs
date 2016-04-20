@@ -240,7 +240,7 @@ function int GetVisibility(int tid, int noiselevel, int addedvisibility)
 	// And speed
 	int x = GetActorVelX(tid);
 	int y = GetActorVelY(tid);
-	int z = GetActorVelZ(tid);
+	int z = GetActorVelZ(tid) / 3; //Z-axis matters less for this calculation (and this lets you step off of ledges without becoming highly visible as you fall)
 
 	// That's squared speed actually
 	// Full speed is around 56 when running forward, around 92 when going sideways, around 200 when sprinting.

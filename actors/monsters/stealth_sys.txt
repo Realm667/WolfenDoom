@@ -86,8 +86,8 @@ ACTOR SneakableGuardEyesIdle
 			
 		Look:
 			TNT1 A 1 A_Warp(AAPTR_MASTER, 0, 0, Height) // Need a slight delay between A_Looks to prevent infinite loop
+			TNT1 A 0 A_LookEx(0, 0.0, 128.0, 256.0, 150.0, "AlertMaster") // Closer/wider range sight check to detect even hidden players 
 			TNT1 A 0 A_LookEx(0, 0.0, 1024.0, 256.0, 65.0, "PlayerSeen")
-			TNT1 A 0 A_LookEx(0, 0.0, 128.0, 256.0, 80.0, "AlertMaster") // Closer/wider range sight check to detect even hidden players 
 			TNT1 A 0 A_CountdownArg(1, "PlayIdleSound")
 			loop
 			
