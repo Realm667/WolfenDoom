@@ -10,7 +10,7 @@ ACTOR AlertLight
 			UNKN A 1 A_LookEx(LOF_NOSOUNDCHECK | LOF_DONTCHASEGOAL | LOF_NOSEESOUND, 0, args[0] * 2.0, 0, 360, "Illuminate")
 			Loop
 		Illuminate:
-			UNKN A 1 ACS_NamedExecuteAlways("AddExtraVisibility", 0, (args[0] * 2.0 - GetDistance(0)) / 1.0, 1)
+			UNKN A 1 ACS_NamedExecuteAlways("AddExtraVisibility", 0, (args[0] * 2.0 - GetDistance(0)) / 1.0 + 8, 1)
 			Goto Static
 	}
 }
