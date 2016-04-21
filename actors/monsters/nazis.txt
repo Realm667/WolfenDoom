@@ -340,7 +340,7 @@ ACTOR MP40Guard : Guard
 		Goto Reload+2
 		MGRD E 10 A_PlaySoundEx("mp40/reload", "SoundSlot7", 0)
 		MGRD E 0 A_ChangeFlag("NoPain", 0)
-		Goto See
+		"####" "#" 0 A_Jump(256, "See") //So that inheriting actors go to their own See State
 	}
 }
 
@@ -384,7 +384,7 @@ ACTOR SSMP40Guard : SSGuard
 		Goto Reload+2
 		SSMG F 10 A_PlaySoundEx("mp40/reload", "SoundSlot7", 0)
 		SSMG F 0 A_ChangeFlag("NoPain", 0)
-		Goto See
+		"####" "#" 0 A_Jump(256, "See") //So that inheriting actors go to their own See State
 	}
 }
 
