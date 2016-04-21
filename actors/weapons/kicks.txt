@@ -172,7 +172,7 @@ ACTOR BJKickAuto : BJKick //Bastardize the weapon states to make a weapon that f
 		BJKK A 1 Offset(76,92)
 		BJKK A 1 Offset(82,98)
 	ReadyLoop:
-		TNT1 A 1 A_WeaponReady(WRF_DISABLESWITCH | NO_FIRE)
+		TNT1 A 1 A_WeaponReady(WRF_DISABLESWITCH | WRF_NOFIRE)
 		Loop
 	Select:
 		TNT1 A 1 A_Raise

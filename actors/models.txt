@@ -569,6 +569,56 @@ ACTOR FlagWave_War : FlagWave
 	//$Color 3
 }
 
+ACTOR FlagWide_Flutter : ModelBase
+{
+	//$Category Models (Wolf3D)/Flags
+	//$Title Waving Flag, Wide (Swastika)
+	//$Color 3
+	Radius 1
+	Height 1
+	Mass 5
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+		POSS ABCDEFGHIJKLMNOP 8
+		Loop
+	}
+}
+
+ACTOR FlagWide_Hang : FlagWide_Flutter
+{
+	//$Category Models (Wolf3D)/Flags
+	//$Title Hanging Flag, Wide (Swastika)
+	//$Color 3
+	States
+	{
+	Spawn:
+		POSS A -1
+		Stop
+	}
+}
+
+ACTOR FlagShort_Flutter : FlagWide_Flutter
+{
+	//$Category Models (Wolf3D)/Flags
+	//$Title Waving Flag, Short (Swastika)
+	//$Color 3
+}
+
+ACTOR FlagShort_Hang : FlagWide_Flutter
+{
+	//$Category Models (Wolf3D)/Flags
+	//$Title Hanging Flag, Short (Swastika)
+	//$Color 3
+	States
+	{
+	Spawn:
+		POSS A -1
+		Stop
+	}
+}
+
 ACTOR Typewriter : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Scenery
