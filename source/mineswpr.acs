@@ -40,7 +40,7 @@ Function void HudMessageOnActor(int tid, int msgID, int Range, str Font, str tex
 
 		SetHudSize(HUDX, HUDY, 1);
 
-		int Zdist = (GetActorZ(tid)/* + GetActorProperty(tid, APROP_Height) / 2*/) - (GetActorZ(0) + GetActorProperty(0, APROP_Height)); 
+		int Zdist = GetActorZ(tid) - (GetActorZ(0) + GetActorViewHeight(0)); 
 
 		pitch = VectorAngle(dist, ZDist);
 		pitch = (pitch + GetActorPitch(0)) % 1.0;
@@ -50,8 +50,19 @@ Function void HudMessageOnActor(int tid, int msgID, int Range, str Font, str tex
 			x = HUDX/2 - ((HUDX/2) * sin(ang) / cos(ang));
 			y = HUDY/2 - ((HUDX/2) * sin(pitch) / cos(pitch));
 
+			int bob = 0;
+			int newy = y;
+
+			If (GetSpeed(0))
+			{ // Mostly negate movebob
+				int angle = (Timer() * 1.0 / 20) % 1.0;
+				bob = FixedMul(GetCvar("movebob"), sin(angle)) / 4;
+				If (bob / 1.0 > 16) bob = 16;
+				newy = y * (1.0 + bob / 4) / 1.0;
+			}
+
 			SetFont(Font);
-			HudMessage(s:text; HUDMSG_PLAIN | HUDMSG_NOTWITHFULLMAP | HUDMSG_LAYER_UNDERHUD, msgID, colour, (x << 16) + 32.0, (y << 16) + 32.0, holdTime);
+			HudMessage(s:text; HUDMSG_PLAIN | HUDMSG_NOTWITHFULLMAP | HUDMSG_LAYER_UNDERHUD, msgID, colour, (x << 16) + 32.0, (newy << 16) + 32.0, holdTime);
 		}
 	}
 }
@@ -69,9 +80,27 @@ Script "W_PlayerLoop" ENTER
 
 			For (int i = TIDIndexStart; i <= TIDIndex; ++i)
 			{
-				hudMessageonActor(i, i, 512, "MSPUC0", "A", 0.1, -1); //Range and sprite can be changed)
+				If (
+					(GetActorZ(i) < (GetActorZ(0) + GetActorViewHeight(0)) ||	//Only show the marker if it's below player view height or
+					CheckSight(0, i, CSF_NOBLOCKALL)) && 				// if the mine is still otherwise in line of sight and
+					StrCmp(GetActorClass(0), "Underwater", 10) 			// if they're not underwater mines
+				)
+				{
+					HudMessageonActor(i, i, 512, "MSPUC0", "A", 0.1, -1); //Range and sprite can be changed
+				}
 			}
 		}
 		Delay(1);
 	}
+}
+
+Function int GetSpeed(int tid)
+{
+	int x = GetActorVelX(tid);
+	int y = GetActorVelY(tid);
+	int z = GetActorVelZ(tid);
+
+	int speed = (FixedMul(x, x) + FixedMul(y, y) + FixedMul(z, z)) >> 16;
+
+	return speed;
 }
