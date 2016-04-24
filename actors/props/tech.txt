@@ -127,12 +127,18 @@ ACTOR TeslaLab4 : TeslaLab2
 	{
 	Spawn:
 	Active:
+		TNT1 A 0 A_CheckSightOrRange(256,"Unsighted")
 		TNT1 A 0 A_PlaySound("tesla/active",6,1,1)
 		TESL CDB 4 LIGHT(TESLIT2)
 		Loop
 	Inactive:
 		"####" N -1 A_StopSound(6)
 		Stop
+	Unsighted:
+		TNT1 A 0 A_StopSound(6)
+		SilentLoop:
+		TESL CDB 4 LIGHT(TESLIT2)
+		Goto Active
 	}
 }
 
