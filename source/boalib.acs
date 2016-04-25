@@ -503,7 +503,8 @@ Script "QuickKick" (void)
 		(CheckInventory("Stamina") < 30) || 
 		(CheckInventory("Health") < 30) ||
 		(GetSpeed(0) > 30) ||
-		(GetActorViewHeight(0) >> 16 < 56)
+		(GetActorViewHeight(0) >> 16 < 56) ||
+		(GetLevelInfo(LEVELINFO_LEVELNUM)==99) //let's remove the kick while on HQs - ozy81
 	)
 		Terminate; //No kicking unless you're in good health, have stamina, aren't walking, and aren't crouching
 
