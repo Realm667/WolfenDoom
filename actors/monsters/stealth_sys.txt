@@ -102,7 +102,7 @@ ACTOR SneakableGuardEyesIdle
 	States
 	{
 		Spawn:
-			TNT1 A 0 NoDelay A_SetArg(1, Random(245, 315)) // Set quote countdown time to 7 - 9 seconds
+			TNT1 A 0 NoDelay A_SetArg(1, Random(490, 630)) // Set quote countdown time to 14 - 18 seconds
 			Goto Look
 		Look:
 			TNT1 A 1 A_Warp(AAPTR_MASTER, 0, 0, Height) // Need a slight delay between A_Looks to prevent infinite loop
