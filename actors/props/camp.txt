@@ -1,0 +1,112 @@
+//Concentration Camp actors made from DoomJedi resources
+// GORE //
+ACTOR Camp_HungSkeleton
+{
+	//$Category Concentration Camp (Wolf3D)/Gore
+	//$Title Hanging Skeleton
+	//$Color 3
+	Radius 16
+	Height 60
+	+NOGRAVITY
+	+SPAWNCEILING
+	States
+	{
+	Spawn:
+		CMPG L -1
+		Stop
+	}
+}
+
+ACTOR Camp_RandomPileDead
+{
+	//$Category Concentration Camp (Wolf3D)/Gore
+	//$Title Dead Prisoners (pile, random)
+	//$Color 3
+	Radius 16
+	Height 12
+	ProjectilePassHeight 4
+	+SOLID
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
+		CMPG A -1
+		CMPG B -1
+		CMPG C -1
+		Stop
+	}
+}
+
+ACTOR Camp_RandomDead : Camp_RandomPileDead
+{
+	//$Title Dead Prisoner (random)
+	Height 8
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5)
+		CMPG D -1
+		CMPG E -1
+		CMPG F -1
+		CMPG G -1
+		CMPG H -1
+		Stop
+	}
+}
+
+ACTOR Camp_ImpaledHead : Camp_RandomPileDead
+{
+	//$Title Impaled Prisoner's Head
+	Radius 8
+	Height 44
+	States
+	{
+	Spawn:
+		CMPG I -1
+		Stop
+	}
+}
+
+ACTOR Camp_LogsDead : Camp_RandomPileDead
+{
+	//$Title Dead Prisoner, Logs
+	Height 32
+	States
+	{
+	Spawn:
+		CMPG K -1
+		Stop
+	}
+}
+
+ACTOR Camp_SnowyLogsDead : Camp_LogsDead
+{
+	//$Title Dead Prisoner, Snowy Logs
+	States
+	{
+	Spawn:
+		CMPG J -1
+		Stop
+	}
+}
+
+// SCENERY //
+ACTOR Camp_RandomUniform
+{
+	//$Category Concentration Camp (Wolf3D)/Scenery
+	//$Title Prisoner Uniform (random)
+	//$Color 3
+	Scale 1.5
+	Radius 8
+	Height 40
+	ProjectilePassHeight 8
+	+SOLID
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2)
+		CMPP A -1
+		CMPP B -1
+		Stop
+	}
+}
