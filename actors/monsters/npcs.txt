@@ -107,3 +107,126 @@ ACTOR Marine3BStatist : Marine3AStatist
 		Stop
 	}
 }
+
+//Concentration Camp NPCS
+ACTOR Camp_StaticBroom
+{
+	//$Category Concentration Camp (Wolf3D)/Static
+	//$Title Shootable Prisoner (with broom)
+	//$Color 3
+	Height 48
+	Health 10
+	Mass 600
+	+SOLID
+	+SHOOTABLE
+	+NOTAUTOAIMED
+	DeathSound "Nazi1/Death" //this will need fitting sounds I guess
+	States
+	{
+	Spawn:
+		PRSA A -1 NoDelay A_SetScale(ScaleX + frandom(0.4,0.6),ScaleY + frandom(0.4,0.6))
+		Stop
+	Death:
+		"####" A 0 A_UnSetSolid
+		"####" BC 6
+		"####" D 8 A_Scream
+		"####" E -1
+		Stop
+	}
+}
+
+ACTOR Camp_StaticShovel : Camp_StaticBroom
+{
+	//$Title Shootable Prisoner (with shovel)
+	States
+	{
+	Spawn:
+		PRSB A -1 NoDelay A_SetScale(ScaleX + frandom(0.4,0.6),ScaleY + frandom(0.4,0.6))
+		Stop
+	}
+}
+
+ACTOR Camp_StaticShovelLow : Camp_StaticBroom
+{
+	//$Title Shootable Prisoner (with shovel, low)
+	Height 24
+	States
+	{
+	Spawn:
+		PRSD A -1 NoDelay A_SetScale(ScaleX + frandom(0.4,0.6),ScaleY + frandom(0.4,0.6))
+		Stop
+	}
+}
+
+ACTOR Camp_StaticKneeing : Camp_StaticBroom
+{
+	//$Title Shootable Prisoner (kneel)
+	Height 32
+	States
+	{
+	Spawn:
+		PRSE A -1 NoDelay A_SetScale(ScaleX + frandom(0.4,0.6),ScaleY + frandom(0.4,0.6))
+		Stop
+	}
+}
+
+ACTOR Camp_StaticStandingA : Camp_StaticBroom
+{
+	//$Title Shootable Prisoner (standing, bald)
+	States
+	{
+	Spawn:
+		PRSF A -1 NoDelay A_SetScale(ScaleX + frandom(0.4,0.6),ScaleY + frandom(0.4,0.6))
+		Stop
+	}
+}
+
+ACTOR Camp_StaticStandingB : Camp_StaticBroom
+{
+	//$Title Shootable Prisoner (standing, hat)
+	States
+	{
+	Spawn:
+		PRSG A -1 NoDelay A_SetScale(ScaleX + frandom(0.4,0.6),ScaleY + frandom(0.4,0.6))
+		Stop
+	}
+}
+
+ACTOR Camp_StaticWashBroom : Camp_StaticBroom
+{
+	//$Title Shootable Prisoner (washbroom)
+	States
+	{
+	Spawn:
+		PRSH A -1 NoDelay A_SetScale(ScaleX + frandom(0.4,0.6),ScaleY + frandom(0.4,0.6))
+		Stop
+	}
+}
+ACTOR Camp_StaticShovelDig
+{
+	//$Category Concentration Camp (Wolf3D)/Static
+	//$Title Shootable Prisoner (digging with shovel)
+	//$Color 3
+	Height 48
+	Health 10
+	Mass 600
+	+SOLID
+	+SHOOTABLE
+	+NOTAUTOAIMED
+	DeathSound "Nazi1/Death" //this will need fitting sounds I guess
+	States
+	{
+	Spawn:
+		PRSC A 0 NoDelay A_SetScale(ScaleX + frandom(0.4,0.6),ScaleY + frandom(0.4,0.6))
+		SpawnLoop:
+		PRSC A 10
+		"####" BC 8
+		Loop
+	Death:
+		"####" A 0 A_UnSetSolid
+		"####" DE 6
+		"####" F 8 A_Scream
+		"####" G -1
+		Stop
+	}
+}
