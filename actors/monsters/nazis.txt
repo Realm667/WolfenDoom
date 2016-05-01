@@ -305,27 +305,27 @@ ACTOR MP40Guard : Guard
 	Missile:
 		MGRD EF 5 A_FaceTarget
 		MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
-		MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
+		MGRD G 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
 		MGRD G 0 A_GiveInventory("MP40GuardCounter", 1)
 		MGRD G 0 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		MGRD F 2 A_FaceTarget
 		MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
-		MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
+		MGRD G 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
 		MGRD G 0 A_GiveInventory("MP40GuardCounter", 1)
 		MGRD G 0 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		MGRD F 2 A_FaceTarget
 		MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
-		MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
+		MGRD G 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
 		MGRD G 0 A_GiveInventory("MP40GuardCounter", 1)
 		MGRD G 0 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		MGRD F 2 A_FaceTarget
 		MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
-		MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
+		MGRD G 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
 		MGRD G 0 A_GiveInventory("MP40GuardCounter", 1)
 		MGRD G 0 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		MGRD F 2 A_FaceTarget
 		MGRD G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
-		MGRD G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
+		MGRD G 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
 		MGRD G 0 A_GiveInventory("MP40GuardCounter", 1)
 		MGRD F 2 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		MGRD F 0 A_JumpIfInventory("MP40GuardCounter", 32, "Reload")
@@ -409,12 +409,12 @@ ACTOR WMP40Guard : MP40Guard
 	Missile:
 		MGR2 EF 2 A_FaceTarget
 		MGR2 G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
-		MGR2 G 3 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
+		MGR2 G 3 LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
 		SSMG G 0 A_GiveInventory("WMP40GuardCounter", 1)
 		MGR2 G 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		MGR2 F 1 A_FaceTarget
 		MGR2 G 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
-		MGR2 G 3 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-12,12))
+		MGR2 G 3 LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-12,12))
 		MGR2 G 0 A_GiveInventory("WMP40GuardCounter", 1)
 		MGR2 G 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		MGR2 F 0 A_JumpIfInventory("WMP40GuardCounter", 48, "Reload")
@@ -477,7 +477,7 @@ ACTOR Officer : Guard
 	Missile:
 		"####" EF 2 A_FaceTarget
 		"####" G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-		"####" G 5 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",52,1,random(-4,4))
+		"####" G 5 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",52,1,random(-4,4))
 		"####" F 4 A_SpawnItemEx("9MMCasing", 1,0,54, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 0 A_Jump(256,"See")
 		Stop
@@ -530,19 +530,19 @@ ACTOR WOfficer : Officer
 	Missile:
 		OFR2 EF 2 A_FaceTarget
 		OFR2 G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-		OFR2 G 4 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",52,1,random(-4,4))
+		OFR2 G 4 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",52,1,random(-4,4))
 		OFR2 G 0 A_SpawnItemEx("9MMCasing", 1,0,54, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		OFR2 F 3 A_FaceTarget
 		OFR2 G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-		OFR2 G 5 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",52,1,random(-6,6))
+		OFR2 G 5 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",52,1,random(-6,6))
 		OFR2 G 0 A_SpawnItemEx("9MMCasing", 1,0,54, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		OFR2 F 3 A_FaceTarget
 		OFR2 G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-		OFR2 G 5 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",52,1,random(-8,8))
+		OFR2 G 5 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",52,1,random(-8,8))
 		OFR2 G 0 A_SpawnItemEx("9MMCasing", 1,0,54, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		OFR2 F 3 A_FaceTarget
 		OFR2 G 0 A_PlaySound("nazi/pistol",CHAN_WEAPON)
-		OFR2 G 5 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",52,1,random(-8,8))
+		OFR2 G 5 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",52,1,random(-8,8))
 		OFR2 G 0 A_SpawnItemEx("9MMCasing", 1,0,54, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		OFR2 F 4
 		Goto See
@@ -566,7 +566,7 @@ ACTOR RifleGuard : MP40Guard
 	Missile:
 		RGRD EF 10 A_FaceTarget
 		RGRD G 0 A_PlaySound("mauser/fire",CHAN_WEAPON)
-		RGRD G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",40,8,random(-1,1))
+		RGRD G 8 LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",40,8,random(-1,1))
 		RGRD G 0 A_SpawnItemEx("MauserRifleCasing", 8,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		RGRD F 8
 		RGRD F 0 A_PlaySound("mauser/cock",CHAN_AUTO,0.25)
@@ -592,11 +592,11 @@ ACTOR WRifleGuard : RifleGuard
 	Missile:
 		RGR2 EF 10 A_FaceTarget
 		RGR2 G 0 A_PlaySound("mauser/fire",CHAN_WEAPON)
-		RGR2 G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",40,8,random(-1,1))
+		RGR2 G 8 LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",40,8,random(-1,1))
 		RGR2 G 0 A_SpawnItemEx("MauserRifleCasing", 8,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		RGR2 F 4 A_FaceTarget
 		RGR2 G 0 A_PlaySound("mauser/fire",CHAN_WEAPON)
-		RGR2 G 8 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",40,8,random(-5,5))
+		RGR2 G 8 LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",40,8,random(-5,5))
 		RGR2 G 0 A_SpawnItemEx("MauserRifleCasing", 8,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		RGR2 F 4
 		RGR2 F 4 A_PlaySound("mauser/cock",CHAN_AUTO,0.25)
