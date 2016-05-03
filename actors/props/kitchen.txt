@@ -82,6 +82,60 @@ ACTOR Kettle
 	}
 }
 
+ACTOR Bucket
+{
+	//$Category Props (Wolf3D)/Kitchen
+	//$Title Bucket (random, destroyable)
+	//$Color 3
+	Radius 8
+	Height 8
+	Health 1
+	+NOBLOOD
+	+SHOOTABLE
+	+NOTAUTOAIMED
+	+CANPASS
+	States
+	{
+	Spawn:
+		BCKT A 0 NoDelay A_Jump(256,1,2)
+		BCKT A -1
+		BCKT B -1
+		Stop
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("METALBRK", frandom (0.2,0.5))
+		"####" A 2 A_SpawnItemEx ("MetalFrags")
+		Stop
+	}
+}
+
+ACTOR Broom
+{
+	//$Category Props (Wolf3D)/Kitchen
+	//$Title Broom (destroyable)
+	//$Color 3
+	Radius 8
+	Height 40
+	Health 1
+	Scale 0.8
+	+SOLID
+	+NOBLOOD
+	+SHOOTABLE
+	+NOTAUTOAIMED
+	-DROPOFF
+	States
+	{
+	Spawn:
+		BROM A -1
+		Stop
+	Death: //needs death frames
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("WOODBRK", frandom (0.2,0.5))
+		"####" A 2 A_SpawnItemEx ("BarrelFrags")
+		Stop
+	}
+}
+
 ACTOR BarSeat
 {
 	//$Category Props (Wolf3D)/Kitchen

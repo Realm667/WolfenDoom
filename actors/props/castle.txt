@@ -170,6 +170,45 @@ ACTOR Table9
 	}
 }
 
+ACTOR BooksPapers
+{
+	//$Category Props (Wolf3D)/Castle
+	//$Title Books and Papers (random)
+	//$Color 3
+	Radius 8
+	Height 8
+	Scale 0.6
+	ProjectilePassHeight 2
+	+CANPASS //so it could be used for tables
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7)
+		BOKS A -1 A_SetSolid
+		BOKS B -1 A_SetSolid
+		BOKS C -1
+		BOKS D -1
+		BOKS E -1
+		BOKS F -1
+		BOKS G -1
+		Stop
+	}
+}
+
+ACTOR Ink
+{
+	//$Category Props (Wolf3D)/Castle
+	//$Title Ink
+	//$Color 3
+	+CANPASS
+	States
+	{
+	Spawn:
+		INKY A -1
+		Stop
+	}
+}
+
 ACTOR MonsterStatue
 {
 	//$Category Props (Wolf3D)/Castle
