@@ -310,16 +310,29 @@ ACTOR MacGore
 ACTOR CreepySkulls
 {
 	//$Category Gore (Wolf3D)
-	//$Title Creepy Skulls (random)
+	//$Title Creepy Skulls (args, straight or side)
 	//$Color 4
+	
+	//$Arg0 "Type"
+	//$Arg0Tooltip "Pickup the desired type\nRandom: 0\nStraight: 1\nSide: 2"
+	
 	Radius 8
 	Scale 0.7
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2)
+		TNT1 A 0 NODELAY
+		TNT1 A 0 A_JumpIf(Args[0]==1, "Straight")
+		TNT1 A 0 A_JumpIf(Args[0]==2, "Side")
+		Random: //fall through if set at 0
+		DJSK C -1 A_Jump(128,1)
+		DJSK D -1
+		Stop
+		Straight:
 		DJSK C -1
-		DJSK D -1 
+		Stop
+		Side:
+		DJSK D -1
 		Stop
 	}
 }
@@ -327,8 +340,12 @@ ACTOR CreepySkulls
 ACTOR CreepySkullsImpaled
 {
 	//$Category Gore (Wolf3D)
-	//$Title Creepy Impaled Skulls (random)
+	//$Title Creepy Impaled Skulls (args, 1 or 2 skulls)
 	//$Color 4
+	
+	//$Arg0 "Type"
+	//$Arg0Tooltip "Pickup the desired type\nRandom: 0\nOne Skull: 1\nTwo Skulls: 2"
+	
 	Radius 12
 	Height 24
 	Scale 0.7
@@ -338,9 +355,18 @@ ACTOR CreepySkullsImpaled
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2)
+		TNT1 A 0 NODELAY
+		TNT1 A 0 A_JumpIf(Args[0]==1, "OneSkull")
+		TNT1 A 0 A_JumpIf(Args[0]==2, "TwoSkulls")
+		Random: //fall through if set at 0
+		DJSK A -1 A_Jump(128,1)
+		DJSK B -1
+		Stop
+		OneSkull:
 		DJSK A -1
-		DJSK B -1 
+		Stop
+		TwoSkulls:
+		DJSK B -1
 		Stop
 	}
 }
