@@ -56,7 +56,62 @@ ACTOR Zapper
 	States
 	{
 	Spawn:
-	EZAP ABCDEFGH 3
-	loop
+		EZAP ABCDEFGH 3
+		loop
+	}
+}
+
+ACTOR Pipe1
+{
+	//$Category Props (Wolf3D)/Industrial/Pipes
+	//$Title Pipe (thick)
+	//$Color 3
+	Radius 8
+	Height 128
+	+SOLID
+	States
+	{
+	Spawn:
+		PIPE A -1
+		Stop
+	}
+}
+
+ACTOR Pipe2 : Pipe1
+{
+	//$Category Props (Wolf3D)/Industrial/Pipes
+	//$Title Pipe (middle)
+	//$Color 3
+	States
+	{
+	Spawn:
+		PIPE B -1
+		Stop
+	}
+}
+
+ACTOR Pipe3 : Pipe1
+{
+	//$Category Props (Wolf3D)/Industrial/Pipes
+	//$Title Pipe (small)
+	//$Color 3
+	States
+	{
+	Spawn:
+		PIPE C -1
+		Stop
+	}
+}
+
+ACTOR Pipe4 : Pipe1
+{
+	//$Category Props (Wolf3D)/Industrial/Pipes
+	//$Title Pipe (thin)
+	//$Color 3
+	States
+	{
+	Spawn:
+		PIPE D -1
+		Stop
 	}
 }
