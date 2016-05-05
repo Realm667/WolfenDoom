@@ -95,13 +95,14 @@ ACTOR LaserSpark
 	Gravity 0.125
 	RenderStyle "Add"
 	Scale 0.025
+	DeathSound "beam/death"
 	States
 	{
 	Spawn:
 		SPKW E 1 BRIGHT
 		Loop
 	Death:
-		"####" E 1 BRIGHT A_FadeOut(0.1)
+		"####" E 1 BRIGHT {A_FadeOut(0.1); A_Scream;}
 		Loop
 	}
 }

@@ -982,7 +982,6 @@ $Limit world/sludgegloop 4
 //Jukebox Changer sound
 JKBX_CHG JKBX_CHG
 
-
 // Toilet
 toilet/death	WCBREAK
 toilet/broken	WCFLOW
@@ -1264,6 +1263,11 @@ water/lap1 WATERLP1
 water/lap2 WATERLP2
 water/lap3 WATERLP3
 $random water/lap { water/lap1 water/lap2 water/lap3 }
+
+//Laserbeam sparks
+beam/death	fry
+$limit beam/death 1
+$rolloff beam/death 128 320
 
 /////////////////////////////////////////////////////////////////////
 //// NASHGORE SOUNDS ////////////////////////////////////////////////
