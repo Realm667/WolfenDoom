@@ -415,8 +415,11 @@ loper/death2	death2
 loper/death3	death3
 loper/wakeup	growl1
 Tesla/Attack	DSTESATK
-Tesla/Loop		DSTESLOP
+Tesla/Loop	DSTESLOP
 $random TPortalZap {TPZap1 TPZap2}
+Tesla/LoopDeath DSTESLOP
+$limit Tesla/LoopDeath 1 64
+$pitchshift Tesla/LoopDeath 7
 TPZap1	tp_zap1
 TPZap2	tp_zap2
 // Voice 1
@@ -1266,8 +1269,8 @@ $random water/lap { water/lap1 water/lap2 water/lap3 }
 
 //Laserbeam sparks
 beam/death	fry
-$limit beam/death 1
-$rolloff beam/death 128 320
+$limit beam/death 2 128
+$rolloff beam/death 64 128
 
 /////////////////////////////////////////////////////////////////////
 //// NASHGORE SOUNDS ////////////////////////////////////////////////
