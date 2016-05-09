@@ -230,13 +230,13 @@ ACTOR TableLightS : TableLightM
 	States
 	{
 	Active:
-		TLIT B 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
-		"####" B 0 A_PlaySound("SMSWITCH")
+		SMGT A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+		"####" A 0 A_PlaySound("SMSWITCH")
 	Spawn:
-		TLIT B -1 BRIGHT Light("BOATABL2")
+		SMGT A -1 BRIGHT Light("BOATABL2")
 		stop
 	Inactive:
-		TLIT B 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		SMGT B 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		"####" B -1 A_PlaySound("SMSWITCH")
 		Stop
 	}
