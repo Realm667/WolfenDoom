@@ -53,6 +53,22 @@ ACTOR Shit
 	}
 }
 
+ACTOR BucketMop
+{
+	//$Category Props (Wolf3D)/Bath
+	//$Title Mop with Bucket
+	//$Color 3
+	Radius 8
+	Height 32
+	+SOLID
+	States
+	{
+	Spawn:
+		MOPP A -1
+		Stop
+	}
+}
+
 ACTOR WashingDish
 {
 	//$Category Props (Wolf3D)/Bath
