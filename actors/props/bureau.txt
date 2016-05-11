@@ -373,19 +373,26 @@ ACTOR PaperBox2 : PaperBox1
 	}
 }
 
-ACTOR ChanGold
+ACTOR ChanGold : SwitchableDecoration //3d actor
 {
 	//$Category Props (Wolf3D)/Bureau
-	//$Title Chandelier (gold)
+	//$Title Chandelier (gold, switchable)
 	//$Color 3
-	Radius 4
-	Height 1
+	
+	Radius 16
+	Height 52
 	+NOGRAVITY
 	+SPAWNCEILING
+	
 	States
 	{
+	Active:
+		SMGT A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 	Spawn:
-		CHGL B -1 LIGHT(BAGCLITE)
+	  SMGT A -1 LIGHT("3DCHAN")
+	  Stop
+	Inactive:
+		SMGT B -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		Stop
 	}
 }
