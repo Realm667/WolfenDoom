@@ -843,3 +843,32 @@ ACTOR wintertreespawner : RandomSpawner
 	DropItem "winterH"
 	DropItem "winterI"
 }
+
+ACTOR WoodyLogs
+{
+	//$Category Props (Wolf3D)/Trees
+	//$Title Small Pack of Logs (Woods)
+	//$Color 3
+	+SOLID
+	Radius 24
+	Height 24
+	DistanceCheck "treeslod"
+	States
+	{
+	Spawn:
+		DJLG B -1
+		Stop
+	}
+}
+
+ACTOR SnowyLogs : WoodyLogs
+{
+	//$Title Small Pack of Logs (Snow)
+	DistanceCheck "treeslod"
+	States
+	{
+	Spawn:
+		DJLG A -1
+		Stop
+	}
+}

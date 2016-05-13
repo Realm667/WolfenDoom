@@ -111,9 +111,60 @@ ACTOR SSBanner
 		"####" A 0 A_PlaySound("WOODBRK", frandom (0.2,0.5))
 		"####" AAAAAA 0 A_SpawnItemEx ("Debris_FlagsD2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
 		"####" AAAAAA 0 A_SpawnItemEx ("Debris_FlagsD2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		"####" AAAAA 0 A_SpawnItemEx ("Debris_FlagsW2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAAA 0 A_SpawnItemEx ("Debris_FlagsW", random(0,32), random(0,16), random(16,48), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
 		"####" A 2 A_SpawnItemEx ("BarrelFrags")
 		SSFG B -1
+		Stop
+	}
+}
+
+ACTOR FlagWithFaces1
+{
+	//$Category Props (Wolf3D)/Flags
+	//$Title Flag with Faces (small)
+	//$Color 3
+	Radius 16
+	Height 48
+	Health 10
+	Mass 100000
+	+NOTAUTOAIMED
+	+SHOOTABLE
+	+NOBLOOD
+	+SOLID
+	States
+	{
+	Spawn:
+		DJFG B -1
+		Stop
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("WOODBRK", frandom (0.2,0.5))
+		"####" AAAAAA 0 A_SpawnItemEx ("Debris_FlagsW2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAAA 0 A_SpawnItemEx ("Debris_FlagsW2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAA 0 A_SpawnItemEx ("Debris_FlagsW", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		DJFG D -1
+		Stop
+	}
+}
+
+ACTOR FlagWithFaces2 : FlagWithFaces1
+{
+	//$Title Flag with Faces (large)
+	States
+	{
+	Spawn:
+		DJFG A -1
+		Stop
+	}
+}
+
+ACTOR FlagWithFaces3 : FlagWithFaces1
+{
+	//$Title Flag with Faces (medium)
+	States
+	{
+	Spawn:
+		DJFG C -1
 		Stop
 	}
 }
