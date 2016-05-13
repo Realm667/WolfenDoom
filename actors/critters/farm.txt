@@ -1,0 +1,24 @@
+ACTOR Cows
+{
+	//$Category Critters (Wolf3D)
+	//$Title Cows (random)
+	//$Color 0
+	Height 32
+	Radius 32
+	+RANDOMIZE
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_SetScale(ScaleX + frandom(0.1,0.3),ScaleY + frandom(0.1,0.3))
+		Randomize:
+		TNT1 A 0 A_Jump(128,"Cow2")
+		Cow1:
+		COWS BCDA 1 A_SetTics(Random(4,10))
+		COWS AA 1 A_SetTics(Random(10,40)) 
+		Loop
+		Cow2:
+		COWS FGHE 1 A_SetTics(Random(4,10))
+		COWS EE 1 A_SetTics(Random(10,40)) 
+		Loop
+	}
+}

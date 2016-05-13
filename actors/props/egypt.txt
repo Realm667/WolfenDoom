@@ -291,3 +291,33 @@ ACTOR EgyptPlant1
 		Stop
 	}
 }
+
+ACTOR AztecVase1
+{
+	//$Category Props (Wolf3D)/Egypt
+	//$Title Aztec Vase 1 (ceiling, aztec)
+	//$Color 11
+	Radius 8
+	Height 80
+	Scale 0.85
+	+SOLID
+	+NOGRAVITY
+	+SPAWNCEILING
+	States
+	{
+	Spawn:
+		DJAZ A -1
+		Stop
+	}
+}
+
+ACTOR AztecVase2 : AztecVase1
+{
+	//$Title Aztec Vase 2 (ceiling, aztec)
+	States
+	{
+	Spawn:
+		DJAZ B -1
+		Stop
+	}
+}
