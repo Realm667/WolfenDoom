@@ -118,25 +118,19 @@ ACTOR ModelIncaTrain : ModelBase
 
 ACTOR ModelRailBoxcar : ModelIncaTrain
 {
-	//$Category Models (Wolf3D)/Vehicles
 	//$Title Train (boxcar)
-	//$Color 3
 	DistanceCheck "carslod"
 }
 
 ACTOR ModelRailBoxcar2 : ModelIncaTrain
 {
-	//$Category Models (Wolf3D)/Vehicles
 	//$Title Train (boxcar,kz)
-	//$Color 3
 	DistanceCheck "carslod"
 }
 
 ACTOR ModelRailBoxcar3 : ModelIncaTrain
 {
-	//$Category Models (Wolf3D)/Vehicles
 	//$Title Train (future)
-	//$Color 3
 	DistanceCheck "carslod"
 }
 
@@ -154,9 +148,7 @@ ACTOR ModelRailBoxcar3_Projectile : ModelRailBoxcar3
 
 ACTOR ModelRailTanker : ModelIncaTrain
 {
-	//$Category Models (Wolf3D)/Vehicles
 	//$Title Train (tanker)
-	//$Color 3
 	DistanceCheck "carslod"
 }
 
@@ -229,7 +221,7 @@ ACTOR Tent : ModelBase
 ACTOR BomberVTOL3 : ModelBase
 {
 	//$Category Models (Wolf3D)/Planes
-	//$Title BomberVTOL3
+	//$Title Bomber VTOL-3
 	//$Color 3
 }
 
@@ -260,9 +252,7 @@ ACTOR Submarine : ModelBase
 
 ACTOR SubmarineIcy : Submarine
 {
-	//$Category Models (Wolf3D)/Ships
 	//$Title Submarine (congealed)
-	//$Color 3
 	+NOGRAVITY
 	-SOLID
 	Radius 64
@@ -460,7 +450,7 @@ ACTOR Luftschiff : 3dObstacle
 ACTOR RTCWChalice : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Scenery
-	//$Title Chalice (Holy Graal?)
+	//$Title Holy Graal
 	//$Color 3
 	Radius 8
 	Height 32
@@ -557,16 +547,12 @@ ACTOR FlagWave : ModelBase
 
 ACTOR FlagWave_SS : FlagWave
 {
-	//$Category Models (Wolf3D)/Flags
 	//$Title Waving Flag (SS)
-	//$Color 3
 }
 
 ACTOR FlagWave_War : FlagWave
 {
-	//$Category Models (Wolf3D)/Flags
 	//$Title Waving Flag (War Times)
-	//$Color 3
 }
 
 ACTOR FlagWide_Flutter : ModelBase
@@ -588,9 +574,7 @@ ACTOR FlagWide_Flutter : ModelBase
 
 ACTOR FlagWide_Hang : FlagWide_Flutter
 {
-	//$Category Models (Wolf3D)/Flags
 	//$Title Hanging Flag, Wide (Swastika)
-	//$Color 3
 	States
 	{
 	Spawn:
@@ -601,16 +585,12 @@ ACTOR FlagWide_Hang : FlagWide_Flutter
 
 ACTOR FlagShort_Flutter : FlagWide_Flutter
 {
-	//$Category Models (Wolf3D)/Flags
 	//$Title Waving Flag, Short (Swastika)
-	//$Color 3
 }
 
 ACTOR FlagShort_Hang : FlagWide_Flutter
 {
-	//$Category Models (Wolf3D)/Flags
 	//$Title Hanging Flag, Short (Swastika)
-	//$Color 3
 	States
 	{
 	Spawn:
@@ -747,9 +727,7 @@ ACTOR 3dBook1 : 3dObstacle
 
 ACTOR 3dBook2 : 3dBook1
 {
-	//$Category Models (Wolf3D)/Scenery
 	//$Title Book (back)
-	//$Color 3
 }
 
 ACTOR RTCWShield : 3dObstacle
@@ -793,16 +771,12 @@ ACTOR RTCW_V2_Complete : ModelBase
 
 ACTOR RTCW_V2_NoRamp : RTCW_V2_Complete
 {
-	//$Category Models (Wolf3D)/Scenery
 	//$Title V2 (Without Ramp)
-	//$Color 3
 }
 
 ACTOR RTCW_V2_Rocket : RTCW_V2_Complete
 {
-	//$Category Models (Wolf3D)/Scenery
 	//$Title V2 (Rocket Only)
-	//$Color 3
 }
 
 //MaxED stuff
@@ -899,9 +873,7 @@ ACTOR WallLight1 : 3dObstacle
 
 ACTOR WallLight1Lit : WallLight1
 {
-	//$Category Light Sources (Wolf3D)
 	//$Title Wall Light (on)
-	//$Color 11
 	States
 	{
 	Spawn:
@@ -922,9 +894,7 @@ ACTOR WallLight2 : 3dObstacle
 
 ACTOR WallLight2Lit : WallLight2
 {
-	//$Category Light Sources (Wolf3D)
 	//$Title Wall Lantern (on)
-	//$Color 11
 	States
 	{
 	Spawn:
@@ -945,9 +915,7 @@ ACTOR SimpleLight1 : 3dObstacle
 
 ACTOR SimpleLight1Lit : SimpleLight1
 {
-	//$Category Light Sources (Wolf3D)
 	//$Title Simple Light (on)
-	//$Color 11
 	States
 	{
 	Spawn:
@@ -968,9 +936,7 @@ ACTOR SlopeMe1 : 3dObstacle
 
 ACTOR SlopeMe2 : SlopeMe1
 {
-	//$Category Models (Wolf3D)/Special
 	//$Title Slopeable Glass (checker)
-	//$Color 3
 }
 
 ACTOR IntermapSkylight : 3dObstacle
@@ -987,9 +953,7 @@ ACTOR IntermapSkylight : 3dObstacle
 
 ACTOR LighthouseBeam : IntermapSkylight
 {
-	//$Category Models (Wolf3D)/Intermap
 	//$Title Lighthouse Beam
-	//$Color 3
 
 	RenderStyle "Add"
 
@@ -1067,16 +1031,12 @@ ACTOR Lion_Left : 3dObstacle
 
 ACTOR Lion_Right : Lion_Left
 {
-	//$Category Models (Wolf3D)/Statues
 	//$Title Lion Statue (Right)
-	//$Color 3
 }
 
 ACTOR NaziBannerTallFlutter512 : FlagWave
 {
-	//$Category Models (Wolf3D)/Flags
 	//$Title Nazi Banner Tall, Flutter (512)
-	//$Color 3
 	States
 	{
 	Spawn:
@@ -1087,9 +1047,7 @@ ACTOR NaziBannerTallFlutter512 : FlagWave
 
 ACTOR NaziBannerTallHang512 : FlagWave
 {
-//$Category Models (Wolf3D)/Flags
-//$Title Nazi Banner Tall, Not Moving (512)
-//$Color 3
+	//$Title Nazi Banner Tall, Not Moving (512)
 	States
 	{
 	Spawn:
@@ -1100,16 +1058,12 @@ ACTOR NaziBannerTallHang512 : FlagWave
 
 ACTOR NaziBannerTallFlutter256 : NaziBannerTallFlutter512
 {
-	//$Category Models (Wolf3D)/Flags
 	//$Title Nazi Banner Tall, Flutter (256)
-	//$Color 3
 }
 
 ACTOR NaziBannerTallHang256 : NaziBannerTallHang512
 {
-	//$Category Models (Wolf3D)/Flags
 	//$Title Nazi Banner Tall, Not Moving (256)
-	//$Color 3
 }
 
 ACTOR TrestleTable : 3dObstacle
@@ -1151,25 +1105,19 @@ ACTOR MineCartF : 3dObstacle
 
 ACTOR MineCartE : MineCartF
 {
-	//$Category Models (Wolf3D)/Scenery
 	//$Title "Mine Cart, Empty"
-	//$Color 3
 }
 
 ACTOR MineCartEMoving : MineCartF
 {
-	//$Category Models (Wolf3D)/Scenery
 	//$Title "Mine Cart, Empty (for movement sequence)"
-	//$Color 3
 	Activation THINGSPEC_MonsterTrigger
 	+BUMPSPECIAL
 }
 
 ACTOR MineCartW : MineCartF
 {
-	//$Category Models (Wolf3D)/Scenery
 	//$Title "Mine Cart, Wrecked"
-	//$Color 3
 }
 
 ACTOR 3dMinerals : 3dObstacle
@@ -1200,30 +1148,22 @@ ACTOR Cable1 : ModelBase
 
 ACTOR Cable2: Cable1
 {
-	//$Category Models (Wolf3D)/Scenery
 	//$Title Cable B
-	//$Color 3
 }
 
 ACTOR Cable3: Cable1
 {
-	//$Category Models (Wolf3D)/Scenery
 	//$Title Cable C
-	//$Color 3
 }
 
 ACTOR Cable4: Cable1
 {
-	//$Category Models (Wolf3D)/Scenery
 	//$Title Cable D
-	//$Color 3
 }
 
 ACTOR Cable5: Cable1
 {
-	//$Category Models (Wolf3D)/Scenery
 	//$Title Cable E
-	//$Color 3
 }
 
 ACTOR 3dTrolley : 3dObstacle
@@ -1248,9 +1188,7 @@ ACTOR 3dCannon : 3dObstacle
 
 ACTOR 3dCannonballs: 3dCannon
 {
-	//$Category Models (Wolf3D)/Scenery
 	//$Title Cannonballs
-	//$Color 3
 }
 
 ACTOR 3dGuillotine : 3dObstacle
@@ -1265,37 +1203,27 @@ ACTOR 3dGuillotine : 3dObstacle
 
 ACTOR 3dHeadCrusher : 3dGuillotine
 {
-	//$Category Models (Wolf3D)/Occult
 	//$Title Head Crusher
-	//$Color 3
 }
 
 ACTOR 3dJudasCrusher: 3dGuillotine
 {
-	//$Category Models (Wolf3D)/Occult
 	//$Title Judas Crusher
-	//$Color 3
 }
 
 ACTOR 3dPillory : 3dGuillotine
 {
-	//$Category Models (Wolf3D)/Occult
 	//$Title Pillory
-	//$Color 3
 }
 
 ACTOR 3dRack: 3dGuillotine
 {
-	//$Category Models (Wolf3D)/Occult
 	//$Title Rack
-	//$Color 3
 }
 
 ACTOR 3dSplitter: 3dGuillotine
 {
-	//$Category Models (Wolf3D)/Occult
 	//$Title Splitter
-	//$Color 3
 }
 
 ACTOR 3dSkeleton_Sit : 3dObstacle
@@ -1320,9 +1248,7 @@ ACTOR 3dPrometheus_L : 3dObstacle
 
 ACTOR 3dPrometheus_R: 3dPrometheus_L
 {
-	//$Category Models (Wolf3D)/Statues
 	//$Title Prometheus Statue (Right Side)
-	//$Color 3
 }
 
 //TF3DM / 3dRegenerator Models
@@ -1434,10 +1360,7 @@ ACTOR Bunk_Bed1 : 3dObstacle
 
 ACTOR Bunk_Bed2 : Bunk_Bed1
 {
-	//$Category Models (Wolf3D)/Furniture
 	//$Title Bunk Bed (double)
-	//$Color 3
-	Radius 24
 	Height 72
 }
 
@@ -1484,9 +1407,7 @@ ACTOR COD_EagleBust : COD_FemaleBust
 
 ACTOR COD_HitlerBust : COD_FemaleBust
 {
-	//$Category Models (Wolf3D)/Statues
 	//$Title Hitler's Bust (bronze or stone)
-	//$Color 3
 	
 	//$Arg0 "Material"
 	//$Arg0Tooltip "Choose the desired material\nBronze: 0\nStone: 1"
