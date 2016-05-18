@@ -596,3 +596,21 @@ ACTOR TubeFlaskSpawner : BigFlaskSpawner
 		Stop
 	}
 }
+
+ACTOR Surgery_Crab
+{
+	//$Category Props (Wolf3D)/Labs
+	//$Title Surgery Crab
+	//$Color 3
+	+SOLID
+	+NOGRAVITY
+	+SPAWNCEILING
+	Radius 20
+	Height 40
+	States
+	{
+	Spawn:
+		SURG A -1
+		Stop
+	}
+}
