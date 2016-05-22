@@ -176,6 +176,7 @@ ACTOR SSUniform
 	//$Color 3
 	Radius 8
 	Height 20
+	Scale 1.1
 	+SOLID
 	States
 	{
@@ -188,6 +189,7 @@ ACTOR SSUniform
 ACTOR Uniform : SSUniform
 {
 	//$Title Uniform
+	Scale 1.3
 	States
 	{
 	Spawn:
@@ -199,12 +201,23 @@ ACTOR Uniform : SSUniform
 ACTOR ScientistUniform : SSUniform
 {
 	//$Title Scientist Uniform
-	Scale 1.5
+	Scale 1.3
 	Height 40
 	States
 	{
 	Spawn:
 		SCUN A -1
+		Stop
+	}
+}
+
+ACTOR FoxUniform : SSUniform
+{
+	//$Title Desert Fox Uniform
+	States
+	{
+	Spawn:
+		SSUN C -1
 		Stop
 	}
 }
