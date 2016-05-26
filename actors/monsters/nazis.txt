@@ -1291,11 +1291,11 @@ ACTOR MadDoctor : RocketMan
 		SCHB A 0
 		Goto Look
 	Missile:
-		SCHB E 10 A_FaceTarget
-		SCHB F 0 A_CustomMissile("FlyingNeedle",32,12, 0, 0, random(30,50))
-		SCHB F 0 A_CustomMissile("FlyingNeedle",32,12, random(-20,20), CMF_AIMDIRECTION, random(20,40))
-		SCHB F 8 A_CustomMissile("FlyingNeedle",32,12, random(-20,20), CMF_AIMDIRECTION, random(20,40))
-		SCHB A 8
+		"####" E 10 A_FaceTarget
+		"####" F 0 A_CustomMissile("FlyingNeedle",32,12, 0, 0, random(30,50))
+		"####" F 0 A_CustomMissile("FlyingNeedle",32,12, random(-20,20), CMF_AIMDIRECTION, random(20,40))
+		"####" F 8 A_CustomMissile("FlyingNeedle",32,12, random(-20,20), CMF_AIMDIRECTION, random(20,40))
+		"####" A 8
 		Goto See
 	Pain:
 		"####" G 3
@@ -1312,8 +1312,14 @@ ACTOR MadDoctor2 : MadDoctor
 	//$Color 4
 	Obituary "$MENGELE"
 	DropItem "Medikit_Large"
-	Tag "Dr. Mengele"
+	Tag "Dr. Schabbs Sen."
 	Health 800
+	States
+	{
+	Spawn:
+		SCH2 A 0
+		Goto Look
+	}
 }
 
 ACTOR FlyingNeedle : MiniRocket
