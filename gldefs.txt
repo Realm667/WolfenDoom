@@ -269,7 +269,7 @@ PointLight Chandelier6
 	Offset 0 32 0
 }
 //end ozydefs
-Object Chandelier1Switchable //added warmy fire lights
+/*Object Chandelier1Switchable //added warmy fire lights
 {
 	frame SMGTA { light Chandelier4 }
 	frame SMGTB { light Chandelier5 }
@@ -295,7 +295,7 @@ Object Chandelier4Switchable
 	frame SMGTA { light Chandelier }
 	frame SMGTB { light Chandelier2 }
 	frame SMGTC { light Chandelier3 }
-}
+}*/
 /////////////////////////////////////////////////////
 // LAVA CAULDRON LIGHTS /////////////////////////////
 /////////////////////////////////////////////////////
@@ -742,6 +742,34 @@ PointLight SIGNLGRN
 	Size 64
 	Offset 0 128 0
 	DontLightSelf 1
+}
+
+//Defs for candle fire plumes
+FlickerLight 3DFLAME_N
+{
+	Color 0.96 0.53 0.0
+	Size 40
+	SecondarySize 32
+	Chance 0.2
+	Offset 0 -16 0
+}
+
+FlickerLight 3DFLAME_S
+{
+	Color 0.96 0.53 0.0
+	Size 30
+	SecondarySize 22
+	Chance 0.2
+	Offset 0 -16 0
+}
+
+FlickerLight 3DFLAME_T
+{
+	Color 0.96 0.53 0.0
+	Size 50
+	SecondarySize 42
+	Chance 0.2
+	Offset 0 -16 0
 }
 
 //PROPS - INDUSTRIAL//

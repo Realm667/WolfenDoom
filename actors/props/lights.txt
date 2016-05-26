@@ -21,7 +21,7 @@ ACTOR AlertLight
 ACTOR Chandelier1Switchable : SwitchableDecoration
 {
 	//$Category Light Sources (Wolf3D)
-	//$Title 3d Chandelier (1, switchable)
+	//$Title 3d Chandelier with Tall Candles (rusty, switchable)
 	//$Color 11
 	
 	//$Arg0 Sound
@@ -32,7 +32,6 @@ ACTOR Chandelier1Switchable : SwitchableDecoration
 	Height 56
 	+SPAWNCEILING
 	+NOGRAVITY
-	+RANDOMIZE
 	+SOLID
 	
 	States
@@ -41,29 +40,123 @@ ACTOR Chandelier1Switchable : SwitchableDecoration
 		SMGT A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 	Spawn:
 	  SMGT A 0 NoDelay A_PlaySound("FIRE_SMALL", CHAN_BODY, 0.6 - args[0], true)
-	ActiveLoop:
-		SMGT ABC 4
+	ActiveFlames: //ozy. let's apply these nice flames on candles first - coords be damned
+		SMGT A 0 {
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*1, 	ScaleY*33, 	ScaleX+ScaleY*14, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*1, 	ScaleY*-31, ScaleX+ScaleY*5, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*24, 	ScaleY*23, 	ScaleX+ScaleY*7, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*-22, ScaleY*-22, ScaleX+ScaleY*7, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*34, 	ScaleY*1, 	ScaleX+ScaleY*14, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*-31, ScaleY*1, 	ScaleX+ScaleY*12, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*-22, ScaleY*23, 	ScaleX+ScaleY*5, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*24, 	ScaleY*-22, ScaleX+ScaleY*8, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);}
+	Activate:
+		SMGT A 1 LIGHT ("FireSpawnerSmall")
 		Loop
 	Inactive:
-		SMGT D 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
-		"####" D -1 A_StopSound(CHAN_BODY)
+		SMGT A 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		SMGT A 0 A_RemoveChildren(TRUE, RMVF_MISC) //ozy. remove flames if deactivated
+		"####" A -1 A_StopSound(CHAN_BODY)
 		Stop
 	}
 }
 
-ACTOR Chandelier2Switchable : Chandelier1Switchable
+ACTOR Chandelier2Switchable : SwitchableDecoration
 {
-	//$Title 3d Chandelier (2, switchable)
+	//$Category Light Sources (Wolf3D)
+	//$Title 3d Chandelier with Short Candles (rusty, switchable)
+	//$Color 11
+	
+	//$Arg0 Sound
+	//$Arg0Type 11
+	//$Arg0Enum { 0 = "Yes"; 1 = "No"; }
+	
+	Radius 10
+	Height 56
+	+SPAWNCEILING
+	+NOGRAVITY
+	+SOLID
+	
+	States
+	{
+	Active:
+		SMGT A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+	Spawn:
+	  SMGT A 0 NoDelay A_PlaySound("FIRE_SMALL", CHAN_BODY, 0.6 - args[0], true)
+	ActiveFlames:
+		SMGT A 0 {
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*0,			ScaleY*26, 		ScaleX+ScaleY*10, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*0,			ScaleY*-26.5, ScaleX+ScaleY*6, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*18.7, 	ScaleY*18.2, 	ScaleX+ScaleY*7, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*-18.8, ScaleY*-18.8, ScaleX+ScaleY*7, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*26.5, 	ScaleY*-0.2, 	ScaleX+ScaleY*10, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*-26.4, ScaleY*0, 		ScaleX+ScaleY*8.8,0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*-18.8, ScaleY*18.7, 	ScaleX+ScaleY*5, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*19.2, 	ScaleY*-18.9, ScaleX+ScaleY*8, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);}
+	Activate:
+		SMGT A 1 LIGHT ("FireSpawnerSmall")
+		Loop
+	Inactive:
+		SMGT A 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		SMGT A 0 A_RemoveChildren(TRUE, RMVF_MISC) //ozy. remove flames if deactivated
+		"####" A -1 A_StopSound(CHAN_BODY)
+		Stop
+	}
 }
 
 ACTOR Chandelier3Switchable : Chandelier1Switchable
 {
-	//$Title 3d Chandelier (3, switchable)
+	//$Title 3d Chandelier with Tall Candles (black, switchable)
 }
 
-ACTOR Chandelier4Switchable : Chandelier1Switchable
+ACTOR Chandelier4Switchable : Chandelier2Switchable
 {
-	//$Title 3d Chandelier (4, switchable)
+	//$Title 3d Chandelier with Short Candles (black, switchable)
+}
+
+//needed for 3d chandeliers
+ACTOR 3dFlame_Normal
+{
+	Scale 0.06
+	+RANDOMIZE
+	+NOGRAVITY
+	+NOINTERACTION
+	+FORCEYBILLBOARD
+	Renderstyle "Add"
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_Jump(235,2) //cindeeeeeeeeeeeeeerz! Yes, I love them - ozy
+		TNT1 A 0 A_SpawnItemEx("FloatingCinder", 0, 0, random(0,2), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE)
+		3DFR ABCDEFGHIJ 2 LIGHT ("3DFLAME_N")
+		Loop
+	}
+}
+
+ACTOR 3dFlame_Short : 3dFlame_Normal
+{
+	Scale 0.03
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_Jump(250,2)
+		TNT1 A 0 A_SpawnItemEx("FloatingCinder", 0, 0, random(0,2), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE)
+		3DFR ABCDEFGHIJ 2 LIGHT ("3DFLAME_S")
+		Loop
+	}
+}
+
+ACTOR 3dFlame_Tall : 3dFlame_Normal
+{
+	Scale 0.09
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_Jump(215,2)
+		TNT1 A 0 A_SpawnItemEx("FloatingCinder", 0, 0, random(0,2), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE)
+		3DFR ABCDEFGHIJ 2 LIGHT ("3DFLAME_T")
+		Loop
+	}
 }
 
 ACTOR CeilingLightM : SwitchableDecoration
@@ -339,11 +432,11 @@ ACTOR FBarrel1
 	}
 }
 
-//CEILING LIGHTS
-ACTOR StrobeLightBlue
+//CEILING LIGHTS - Finally fixed these fnuckin strobelights! - ozy
+ACTOR StrobeLightBlue : SwitchableDecoration 
 {
 	//$Category Light Sources (Wolf3D)
-	//$Title Strobe Light (blue)
+	//$Title Strobe Light (blue, switchable)
 	//$Color 11
 	Radius 16
 	Height 16
@@ -353,36 +446,47 @@ ACTOR StrobeLightBlue
 	States
 	{
 	Spawn:
-		STRB A 0 NODELAY A_SpawnItem ("StrobeEmitterBlue")
-	Spin:
-		STRB DCBA 4 BRIGHT
-		Loop
+		STRB A -1
+		Stop
+	Active:
+		"####" A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+		Emitter:
+			"####" A 0 A_SpawnItemEx ("StrobeEmitterBlue", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER)
+			Spin:
+				STRB DCBA 4 BRIGHT
+				Loop
+	Inactive:
+		STRB A 0 A_RemoveChildren(TRUE, RMVF_MISC)
+		STRB A -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		Stop
 	}
 }
 
 ACTOR StrobeLightGreen : StrobeLightBlue
 {
-	//$Title Strobe Light (green)
+	//$Title Strobe Light (green, switchable)
 	States
 	{
 	Spawn:
-		STRG A 0 NODELAY A_SpawnItem ("StrobeEmitterGreen")
-	Spin:
-		STRG DCBA 4 BRIGHT
-		Loop
+		STRG A -1
+		Stop
+	Active:
+		"####" A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+		Emitter:
+			"####" A 0 A_SpawnItemEx ("StrobeEmitterGreen", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER)
+			Spin:
+				STRG DCBA 4 BRIGHT
+				Loop
+	Inactive:
+		STRG A 0 A_RemoveChildren(TRUE, RMVF_MISC)
+		STRG A -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		Stop
 	}
 }
 
-ACTOR StrobeLightRed : SwitchableDecoration
+ACTOR StrobeLightRed : StrobeLightBlue
 {
-	//$Category Light Sources (Wolf3D)
-	//$Title Strobe Light (red)
-	//$Color 11
-	Radius 16
-	Height 16
-	+NOGRAVITY
-	+SPAWNCEILING
-	+DONTSPLASH
+	//$Title Strobe Light (red, switchable)
 	States
 	{
 	Spawn:
@@ -391,26 +495,20 @@ ACTOR StrobeLightRed : SwitchableDecoration
 	Active:
 		"####" A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 		Emitter:
-			"####" A 0 A_SpawnItemEx ("StrobeEmitterRed")
+			"####" A 0 A_SpawnItemEx ("StrobeEmitterRed", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER)
 			Spin:
 				STRR DCBA 4 BRIGHT
 				Loop
 	Inactive:
+		STRR A 0 A_RemoveChildren(TRUE, RMVF_MISC)
 		STRR A -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		Stop
 	}
 }
 
-ACTOR StrobeLightYellow : SwitchableDecoration
+ACTOR StrobeLightYellow : StrobeLightBlue
 {
-	//$Category Light Sources (Wolf3D)
-	//$Title Strobe Light (yellow)
-	//$Color 11
-	Radius 16
-	Height 16
-	+NOGRAVITY
-	+SPAWNCEILING
-	+DONTSPLASH
+	//$Title Strobe Light (yellow, switchable)
 	States
 	{
 	Spawn:
@@ -419,166 +517,17 @@ ACTOR StrobeLightYellow : SwitchableDecoration
 	Active:
 		"####" A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 		Emitter:
-			"####" A 0 A_SpawnItem ("StrobeEmitterYellow")
+			"####" A 0 A_SpawnItemEx ("StrobeEmitterYellow", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER)
 			Spin:
 				STRY DCBA 4 BRIGHT
 				Loop
 	Inactive:
+		STRY A 0 A_RemoveChildren(TRUE, RMVF_MISC)
 		STRY A -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		Stop
 	}
 }
 
-/*
-ACTOR StrobeLightRed : SwitchableDecoration
-{
-	//$Category Light Sources (Wolf3D)
-	//$Title Strobe Light (red)
-	//$Color 11
-	Radius 16
-	Height 16
-	+NOGRAVITY
-	+SPAWNCEILING
-	+DONTSPLASH
-	States
-	{
-	Active:
-		STRR A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
-	Spawn:
-	  STRR D 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 360, 2, -35)
-		"####" D 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 0, 2, -35)
-		"####" D 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 180, 2, -35)
-		"####" D 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 10, 2, -35)
-		"####" D 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 190, 2, -35)
-		"####" D 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 20, 2, -35)
-		"####" D 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 200, 2, -35)
-		"####" D 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 30, 2, -35)
-		"####" D 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 210, 2, -35)
-		"####" D 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 40, 2, -35)
-		"####" C 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 220, 2, -35)
-		"####" C 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 50, 2, -35)
-		"####" C 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 230, 2, -35)
-		"####" C 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 60, 2, -35)
-		"####" C 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 240, 2, -35)
-		"####" C 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 70, 2, -35)
-		"####" C 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 250, 2, -35)
-		"####" C 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 80, 2, -35)
-		"####" C 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 260, 2, -35)
-		"####" B 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 90, 2, -35)
-		"####" B 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 270, 2, -35)
-		"####" B 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 100, 2, -35)
-		"####" B 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 280, 2, -35)
-		"####" B 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 110, 2, -35)
-		"####" B 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 290, 2, -35)
-		"####" B 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 120, 2, -35)
-		"####" B 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 300, 2, -35)
-		"####" B 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 130, 2, -35)
-		"####" A 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 310, 2, -35)
-		"####" A 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 140, 2, -35)
-		"####" A 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 320, 2, -35)
-		"####" A 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 150, 2, -35)
-		"####" A 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 330, 2, -35)
-		"####" A 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 160, 2, -35)
-		"####" A 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 340, 2, -35)
-		"####" A 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 170, 2, -35)
-		"####" A 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 350, 2, -35)
-		"####" D 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 180, 2, -35)
-		"####" D 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 0, 2, -35)
-		"####" D 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 190, 2, -35)
-		"####" D 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 10, 2, -35)
-		"####" D 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 200, 2, -35)
-		"####" D 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 20, 2, -35)
-		"####" D 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 210, 2, -35)
-		"####" D 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 30, 2, -35)
-		"####" D 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 220, 2, -35)
-		"####" C 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 40, 2, -35)
-		"####" C 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 230, 2, -35)
-		"####" C 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 50, 2, -35)
-		"####" C 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 240, 2, -35)
-		"####" C 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 60, 2, -35)
-		"####" C 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 250, 2, -35)
-		"####" C 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 70, 2, -35)
-		"####" C 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 260, 2, -35)
-		"####" C 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 80, 2, -35)
-		"####" B 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 270, 2, -35)
-		"####" B 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 90, 2, -35)
-		"####" B 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 280, 2, -35)
-		"####" B 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 100, 2, -35)
-		"####" B 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 290, 2, -35)
-		"####" B 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 110, 2, -35)
-		"####" B 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 300, 2, -35)
-		"####" B 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 120, 2, -35)
-		"####" B 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 310, 2, -35)
-		"####" A 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 130, 2, -35)
-		"####" A 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 320, 2, -35)
-		"####" A 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 140, 2, -35)
-		"####" A 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 330, 2, -35)
-		"####" A 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 150, 2, -35)
-		"####" A 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 340, 2, -35)
-		"####" A 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 160, 2, -35)
-		"####" A 1 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 350, 2, -35)
-		"####" A 0 BRIGHT A_CustomMissile ("StrobeRayRed", 0, 0, 170, 2, -35)
-		Loop
-	Inactive:
-		STRR A -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
-		Stop
-	}
-}
-
-ACTOR StrobeLightYellow : StrobeLightRed
-{
-	//$Category Light Sources (Wolf3D)
-	//$Title Strobe Light (yellow)
-	//$Color 11
-	States
-	{
-	Active:
-		STRY A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
-	Spawn:
-	  STRY D 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 360, 2, -35)
-		"####" C 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 0, 2, -35)
-		"####" B 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 10, 2, -35)
-		"####" A 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 20, 2, -35)
-		"####" D 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 30, 2, -35)
-		"####" C 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 40, 2, -35)
-		"####" B 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 50, 2, -35)
-		"####" A 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 60, 2, -35)
-		"####" D 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 70, 2, -35)
-		"####" C 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 80, 2, -35)
-		"####" B 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 90, 2, -35)
-		"####" A 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 100, 2, -35)
-		"####" D 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 110, 2, -35)
-		"####" C 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 120, 2, -35)
-		"####" B 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 130, 2, -35)
-		"####" A 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 140, 2, -35)
-		"####" D 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 150, 2, -35)
-		"####" C 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 160, 2, -35)
-		"####" B 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 170, 2, -35)
-		"####" A 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 180, 2, -35)
-		"####" D 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 190, 2, -35)
-		"####" C 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 200, 2, -35)
-		"####" B 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 210, 2, -35)
-		"####" A 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 220, 2, -35)
-		"####" D 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 230, 2, -35)
-		"####" C 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 240, 2, -35)
-		"####" B 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 250, 2, -35)
-		"####" A 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 260, 2, -35)
-		"####" D 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 270, 2, -35)
-		"####" C 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 280, 2, -35)
-		"####" B 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 290, 2, -35)
-		"####" A 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 300, 2, -35)
-		"####" D 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 310, 2, -35)
-		"####" C 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 320, 2, -35)
-		"####" B 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 330, 2, -35)
-		"####" A 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 340, 2, -35)
-		"####" D 1 BRIGHT A_CustomMissile ("StrobeRayYellow", 0, 0, 350, 2, -35)
-		Loop
-	Inactive:
-		STRY C -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
-		Stop
-	}
-}
-*/
 ACTOR Red_Light
 {
 	//$Category Light Sources (Wolf3D)
@@ -668,7 +617,6 @@ ACTOR StrobeEmitterRed : StrobeEmitterBlue
 	{
 	Spawn:
 		TNT1 A 1
-		"####" A 0 A_TransferPointer(AAPTR_TRACER,AAPTR_TARGET,AAPTR_MASTER,AAPTR_MASTER)
 		"####" A 0 A_CustomMissile ("StrobeRayRed", 0, 0, 0, 2, -35)
 		"####" A 0 A_CustomMissile ("StrobeRayRed", 0, 0, 180, 2, -35)
 		"####" A 0 A_SetAngle(10 + angle)
@@ -708,6 +656,7 @@ ACTOR StrobeRayBlue
 		Stop
 	}
 }
+
 ACTOR StrobeRayGreen : StrobeRayBlue
 {
 	States
@@ -717,6 +666,7 @@ ACTOR StrobeRayGreen : StrobeRayBlue
 		Stop
 	}
 }
+
 ACTOR StrobeRayRed : StrobeRayBlue
 {
 	States
@@ -726,6 +676,7 @@ ACTOR StrobeRayRed : StrobeRayBlue
 		Stop
 	}
 }
+
 ACTOR StrobeRayYellow : StrobeRayBlue
 {
 	States
