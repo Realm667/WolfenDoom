@@ -56,15 +56,29 @@ ACTOR Shit
 ACTOR BucketMop
 {
 	//$Category Props (Wolf3D)/Bath
-	//$Title Mop with Bucket
+	//$Title Mop with Bucket (destroyable)
 	//$Color 3
 	Radius 8
 	Height 32
+	Health 10
+	Mass 0x7ffffff
 	+SOLID
+	+NOBLOOD
+	+NODROPOFF
+	+SHOOTABLE
+	+NOTAUTOAIMED
+	
 	States
 	{
 	Spawn:
 		MOPP A -1
+		Stop
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("METALBRK", frandom (0.2,0.5))
+		"####" A 0 A_PlaySound("WOODBRK", frandom (0.5,0.8))
+		"####" A 2 A_SpawnItemEx ("MetalFrags")
+		MOPP B -1
 		Stop
 	}
 }
