@@ -912,14 +912,35 @@ ACTOR WallLight2Lit : WallLight2
 	}
 }
 
-ACTOR SimpleLight1 : 3dObstacle
+ACTOR SimpleLight1 : SwitchableDecoration
 {
 	//$Category Light Sources (Wolf3D)
-	//$Title Simple Light (off)
+	//$Title Simple Light (off, Set DORMANT & activate it via ACS)
 	//$Color 11
 	Radius 8
 	Height 12
+	Mass 0x7fffffff
+	Health -1
+	+DONTSPLASH
+	+NOBLOOD
+	+NOBLOODDECALS
+	+NODAMAGE
+	+NOTAUTOAIMED
+	+SHOOTABLE
 	+NOGRAVITY
+	-FLOORCLIP
+	-NOBLOCKMAP
+	States
+	{
+	Active:
+		SMGT A 0 A_ChangeFlag("DORMANT", false) //update manually on GZDB
+	Spawn:
+		SMGT A -1
+		stop
+	Inactive:
+		SMGT B -1 LIGHT(OZYSIMLT) A_ChangeFlag("DORMANT", true) //update manually on GZDB
+		Stop	
+	}
 }
 
 ACTOR SimpleLight1Lit : SimpleLight1
@@ -930,6 +951,9 @@ ACTOR SimpleLight1Lit : SimpleLight1
 	Spawn:
 		SMGT A -1 LIGHT(OZYSIMLT)
 		Stop
+	Inactive:
+		SMGT B -1 A_ChangeFlag("DORMANT", true) //update manually on GZDB
+		Stop	
 	}
 }
 
