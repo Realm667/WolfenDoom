@@ -780,15 +780,15 @@ PulseLight BOARBRL1
 	SecondarySize 20
 	Interval 0.6
 	Offset 0 8 0
+	DontLightSelf 1
 }
 
 Object RadioactiveBarrel
 {
-	//Leaving them out for now, should work well with brightmaps now - T667
-	//frame BARRA { light BOARBRL1}
-	//frame BARRB { light BOARBRL1}
-	//frame BARRC { light BOARBRL1}
-	//frame BARRD { light BOARBRL1}
+	frame BARRA { light BOARBRL1}
+	frame BARRB { light BOARBRL1}
+	frame BARRC { light BOARBRL1}
+	frame BARRD { light BOARBRL1}
 }
 
 //PROPS - TECH//
@@ -943,7 +943,7 @@ PointLight MUTNEXPL
 
 PointLight TRCRFIRE
 {
-	Color 0.5 0.5 0.0
+	Color 0.6 0.4 0.0
 	Size 4
 	Offset 0 0 0
 }
@@ -1081,7 +1081,7 @@ Object UHazardLShooter
 //////////////////////
 FlickerLight ITBURNS1
 {
-	Color 0.6 0.6 0.0
+	Color 0.8 0.5 0.0
 	Size 24
 	SecondarySize 32
 	Chance 0.2
@@ -1089,7 +1089,7 @@ FlickerLight ITBURNS1
 
 FlickerLight ITBURNS2
 {
-	Color 0.8 0.8 0.0
+	Color 0.9 0.6 0.0
 	Size 32
 	SecondarySize 36
 	Chance 0.3
@@ -1097,7 +1097,7 @@ FlickerLight ITBURNS2
 
 FlickerLight ITBURNS3
 {
-	Color 1.0 1.0 0.0
+	Color 1.0 0.7 0.0
 	Size 36
 	SecondarySize 44
 	Chance 0.4
@@ -1119,7 +1119,7 @@ Object FirebrandFireball
 //NAZI FOES//
 PointLight NAZIFIRE
 {
-	Color 0.9 0.8 0.0
+	Color 0.9 0.7 0.0
 	Size 24
 	Offset 0 24 0
 }
@@ -1390,6 +1390,7 @@ PulseLight BOAFBRL1
 	SecondarySize 20
 	Interval 0.8
 	Offset 0 16 0
+	DontLightSelf 1
 }
 
 PulseLight BOAFBRL2
@@ -1399,6 +1400,7 @@ PulseLight BOAFBRL2
 	SecondarySize 20
 	Interval 0.8
 	Offset 0 16 0
+	DontLightSelf 1
 }
 
 PulseLight BOAFBRL3
@@ -1408,6 +1410,7 @@ PulseLight BOAFBRL3
 	SecondarySize 20
 	Interval 0.8
 	Offset 0 16 0
+	DontLightSelf 1
 }
 
 PulseLight BOAFBRL4
@@ -1417,15 +1420,16 @@ PulseLight BOAFBRL4
 	SecondarySize 20
 	Interval 0.8
 	Offset 0 16 0
+	DontLightSelf 1
 }
 
 Object BarrelFutureExploding
 {
-	//uncommented for now, looks already good with the brightmap in my eyes
-	//frame BARFA { light BOAFBRL1}  
-	//frame BARFB { light BOAFBRL2}
-	//frame BARFC { light BOAFBRL3}
-	//frame BARFD { light BOAFBRL4}
+	
+	frame BARFA { light BOAFBRL1}  
+	frame BARFB { light BOAFBRL2}
+	frame BARFC { light BOAFBRL3}
+	frame BARFD { light BOAFBRL4}
 }
 
 //ASTROSTEIN - WEAPONS & AMMO
