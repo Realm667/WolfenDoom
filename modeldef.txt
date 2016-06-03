@@ -44,6 +44,30 @@ Model AstroTrail
 }
 
 //Actors
+Model CeilingFan
+{
+	Path "models"
+	Model 0 "fan_a.md3"
+	//Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
+Model WoodenBlades
+{
+	Path "models"
+	Model 0 "fan_b.md3"
+	//Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+	ROTATING
+	Rotation-Speed 6.0
+
+	FrameIndex SMGT A 0 0
+}
+
 Model Radar //ozy
 {
 	Path "Models"
