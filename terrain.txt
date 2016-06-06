@@ -1,85 +1,37 @@
-//This is where all the different Doom-compatible terrains are defined
-//note that Water, Sludge, and Lava are available already in zDoom, but these versions have some modifications from the existing ones
+///////////////////////////////////////////////////////
+// Blade of Agony Splashes & Terrain Definitions //////
+///////////////////////////////////////////////////////
 
-//the "base" and "chunk" actor classes used in each splash are the versions provided by zDoom, except for "Mud", which is a new definition
-
-//footclip value for each terrain is commented out, so actors will "stand on" the fluid like in stock Doom
-//if you want the fluids to behave like in Raven, so actors will "sink" in them, re-enable the footclip value
-
-//also, I removed the smallclip value from each splash, since they tended to get culled by the floor when the matching terrain has no footclip value defined;
-//if you put the footclip value back in, then set the smallclip value for each splash back to "12", so they look right
-
-//sludge, slime, and lava deal no damage; I assume that you'll want to handle damage through sector properties like stock Doom
-//you can easily modify this if you want, though; placeholder values are present for each terrain type, but commented out
-
-//lastly, the default zDoom (and Hexen) versions of the splashes alert monsters; I removed this property from mine
-//if you want splash noises to alert monsters, then remove "noalert" from each splash definition
-
-
-//water splash
-splash DoomWater
+splash BoA_Water
 {
-   smallclass      WaterSplashBase
-   smallclip      0
-   smallsound      world/drip
+   smallclass	BoA_WaterSplash
+   smallclip    0
+   smallsound   world/drip
 
-   baseclass      WaterSplashBase
-   chunkclass      WaterSplash
-   chunkxvelshift   8
-   chunkyvelshift   8
-   chunkzvelshift   8
-   chunkbasezvel   2
-   sound         world/watersplash
+   baseclass    BoA_WaterSplash
+   chunkclass   BoA_WaterSplash_Chunk
+   chunkxvelshift   9
+   chunkyvelshift   9
+   chunkzvelshift   7
+   chunkbasezvel    2
+   sound        world/watersplash
    noalert
 }
 
-terrain DoomWater
+terrain BoA_Water
 {
-	splash			DoomWater
-	//footclip		10
+	splash		BoA_Water
 	liquid
 }
 
-
-//sludge splash
-splash DoomSludge
+splash BoA_Lava
 {
-	smallclass		SludgeSplash
-	smallclip		0
-	smallsound		world/sludgegloop
-
-	baseclass		SludgeSplash
-	chunkclass		SludgeChunk
-	chunkxvelshift	8
-	chunkyvelshift	8
-	chunkzvelshift	8
-	chunkbasezvel	1
-	sound			world/sludgegloop
-	noalert
-}
-
-terrain DoomSludge
-{
-	splash			DoomSludge
-	//footclip		10
-	liquid
-
-	//damageamount	5
-	//damagetype		slime
-	//damagetimemask	34
-	//allowprotection
-}
-
-
-//lava
-splash DoomLava
-{
-	smallclass		LavaSplash
+	smallclass		BoA_LavaSplash
 	smallclip		0
 	smallsound		world/lavasizzle
 
-	baseclass		LavaSplash
-	chunkclass		LavaSmoke
+	baseclass		BoA_LavaSplash
+	chunkclass		BoA_LavaSplash_Chunk
 	chunkxvelshift	-1
 	chunkyvelshift	-1
 	chunkzvelshift	7
@@ -88,53 +40,21 @@ splash DoomLava
 	noalert
 }
 
-terrain DoomLava
+terrain BoA_Lava
 {
-	splash			DoomLava
-	//footclip		10
-	liquid
-
-	//damageamount	10
-	//damagetype		lava
-	//damagetimemask	34
-	//allowprotection
-}
-
-
-//blood
-splash DoomBlood
-{
-	smallclass		BloodSplashBase
-	smallclip		0
-	smallsound		world/drip
-
-	baseclass		BloodSplashBase
-	chunkclass		BloodSplash
-	chunkxvelshift	8
-	chunkyvelshift	8
-	chunkzvelshift	8
-	chunkbasezvel	2
-	sound			world/watersplash
-	noalert
-}
-
-terrain DoomBlood
-{
-	splash			DoomBlood
-	//footclip		10
+	splash			BoA_Lava
 	liquid
 }
 
 
-//nukage slime
-splash DoomSlime
+splash BoA_Slime
 {
-   smallclass      SlimeSplash
+   smallclass      BoA_SlimeSplash
    smallclip      0
    smallsound      world/sludgegloop
 
-   baseclass      SlimeSplash
-   chunkclass      SlimeChunk
+   baseclass      BoA_SlimeSplash
+   chunkclass      BoA_SlimeSplash_Chunk
    chunkxvelshift   8
    chunkyvelshift   8
    chunkzvelshift   8
@@ -143,9 +63,9 @@ splash DoomSlime
    noalert
 }
 
-terrain DoomSlime
+terrain BoA_Slime
 {
-	splash			DoomSlime
+	splash			BoA_Slime
 	//footclip		10
 	liquid
 
@@ -155,40 +75,36 @@ terrain DoomSlime
 	//allowprotection
 }
 
-
-//brown muddy slime; based off sludge
-splash DoomMud
+splash BoA_Nukage
 {
-   smallclass      MudSplash
-   smallclip      0
-   smallsound      world/sludgegloop
+   smallclass	BoA_NukageSplash
+   smallclip    0
+   smallsound   world/drip
 
-   baseclass      MudSplash
-   chunkclass      MudChunk
-   chunkxvelshift   8
-   chunkyvelshift   8
-   chunkzvelshift   8
-   chunkbasezvel   1
-   sound         world/sludgegloop
+   baseclass    BoA_NukageSplash
+   chunkclass   BoA_NukageSplash_Chunk
+   chunkxvelshift   9
+   chunkyvelshift   9
+   chunkzvelshift   7
+   chunkbasezvel    2
+   sound        world/watersplash
    noalert
 }
 
-terrain DoomMud
+terrain BoA_Nukage
 {
-	splash			DoomMud
-	//footclip		10
+	splash		BoA_Nukage
 	liquid
 }
 
 
-//sizzle effect for "hot" floors, like the glowing rock textures
-splash DoomSizzle
+splash BoA_Sizzle
 {
-	smallclass		LavaSmoke
+	smallclass		BoA_LavaSmoke
 	smallclip		0
 	smallsound		world/lavasizzle
 
-	baseclass		LavaSmoke
+	baseclass		BoA_LavaSmoke
 	chunkclass		none
 	chunkxvelshift	-1
 	chunkyvelshift	-1
@@ -198,81 +114,116 @@ splash DoomSizzle
 	noalert
 }
 
-terrain DoomSizzle
+terrain BoA_Sizzle
 {
-	splash			DoomSizzle
-
-	//damageamount	5
-	//damagetype		lava
-	//damagetimemask	34
-	//allowprotection
+	splash			BoA_Sizzle
 }
 
 
-//terrains are assigned to flats here
-//follow this template to add terrain support to your custom flats
+////////////////////////////////////////////////////
+// Assignments of splashes to terrain //////////////
+////////////////////////////////////////////////////
 
-//water
-floor fwater1 Doomwater
-floor fwater2 Doomwater
-floor fwater3 Doomwater
-floor fwater4 Doomwater
-floor watr_a01 Doomwater
-floor watr_x99 Doomwater
-//floor wfal_b01 Doomwater
-floor AZTC_WTR Doomwater
-floor AZTC_WTF Doomwater
+//Water
+floor 	fwater1		BoA_Water
+floor 	fwater2		BoA_Water
+floor 	fwater3		BoA_Water
+floor 	fwater4		BoA_Water
+floor 	watr_a01	BoA_Water
+floor 	watr_x99	BoA_Water
+//floor 	wfal_b01	BoA_Water
+floor 	AZTC_WTR	BoA_Water
+floor 	AZTC_WTF	BoA_Water
 
-//sludge
-//(note that Heretic's sludge doesn't really fit any stock Doom flats, but it's included in case you want it for custom flats
+floor HIWATR01 BoA_Water
+floor HIWATR02 BoA_Water
+floor HIWATR03 BoA_Water
+floor HIWATR04 BoA_Water
+floor HIWATR05 BoA_Water
+floor HIWATR06 BoA_Water
+floor HIWATR07 BoA_Water
+floor HIWATR08 BoA_Water
+floor HIWATR09 BoA_Water
+floor HIWATR10 BoA_Water
+floor HIWATR11 BoA_Water
+floor HIWATR12 BoA_Water
+floor HIWATR13 BoA_Water
+floor HIWATR14 BoA_Water
+floor HIWATR15 BoA_Water
+floor HIWATR16 BoA_Water
+floor HIWATR17 BoA_Water
+floor HIWATR18 BoA_Water
+floor HIWATR19 BoA_Water
+floor HIWATR20 BoA_Water
+floor HIWATR21 BoA_Water
+floor HIWATR22 BoA_Water
+floor HIWATR23 BoA_Water
+floor HIWATR24 BoA_Water
+floor HIWATR25 BoA_Water
+floor HIWATR26 BoA_Water
+floor HIWATR27 BoA_Water
+floor HIWATR28 BoA_Water
+floor HIWATR29 BoA_Water
+floor HIWATR30 BoA_Water
+floor HIWATR31 BoA_Water
+floor HIWATR32 BoA_Water
+floor HIWATR33 BoA_Water
+floor HIWATR34 BoA_Water
 
-//lava
-floor lava1 DoomLava
-floor lava2 DoomLava
-floor lava3 DoomLava
-floor lava4 DoomLava
-floor lava_a01 DoomLava
-floor lava_a02 DoomLava
+floor HIACID01 BoA_Water
+floor HIACID02 BoA_Water
+floor HIACID03 BoA_Water
+floor HIACID04 BoA_Water
+floor HIACID05 BoA_Water
+floor HIACID06 BoA_Water
+floor HIACID07 BoA_Water
+floor HIACID08 BoA_Water
+floor HIACID09 BoA_Water
+floor HIACID10 BoA_Water
+floor HIACID11 BoA_Water
+floor HIACID12 BoA_Water
+floor HIACID13 BoA_Water
+floor HIACID14 BoA_Water
+floor HIACID15 BoA_Water
+floor HIACID16 BoA_Water
+floor HIACID17 BoA_Water
+floor HIACID18 BoA_Water
+floor HIACID19 BoA_Water
+floor HIACID20 BoA_Water
+floor HIACID21 BoA_Water
+floor HIACID22 BoA_Water
+floor HIACID23 BoA_Water
+floor HIACID24 BoA_Water
+floor HIACID25 BoA_Water
+floor HIACID26 BoA_Water
+floor HIACID27 BoA_Water
+floor HIACID28 BoA_Water
+floor HIACID29 BoA_Water
+floor HIACID30 BoA_Water
+floor HIACID31 BoA_Water
+floor HIACID32 BoA_Water
+floor HIACID33 BoA_Water
+floor HIACID34 BoA_Water
 
-//blood
-floor blood1 DoomBlood
-floor blood2 DoomBlood
-floor blood3 DoomBlood
-floor blod_a01 DoomBlood
+//Lava
+floor lava1 BoA_Lava
+floor lava2 BoA_Lava
+floor lava3 BoA_Lava
+floor lava4 BoA_Lava
+floor lava_a01 BoA_Lava
+floor lava_a02 BoA_Lava
 
-//slime
-floor nukage1 DoomSlime
-floor nukage2 DoomSlime
-floor nukage3 DoomSlime
-floor nuka_a01 DoomSlime
+//Nukage
+floor WATR_X98 BoA_Nukage
 
-//muddy sludge
-floor slime01 DoomMud
-floor slime02 DoomMud
-floor slime03 DoomMud
-floor slime04 DoomMud
-floor slime05 DoomMud
-floor slime06 DoomMud
-floor slime07 DoomMud
-floor slime08 DoomMud
-floor sldg_a01 DoomSlime
+//Slime
+floor sldg_a01 BoA_Slime
 
-//sizzling hot floors
-floor rrock01 DoomSizzle
-floor rrock02 DoomSizzle
-floor rrock05 DoomSizzle
-floor rrock06 DoomSizzle
-floor rrock07 DoomSizzle
-floor rrock08 DoomSizzle
-floor slime09 DoomSizzle
-floor slime10 DoomSizzle
-floor slime11 DoomSizzle
-floor slime12 DoomSizzle
-floor WATR_X98 DoomSizzle
-
+//Sizzling
+//floor ?????? BoA_Sizzle
 
 ///////////////////////////////////////////////////
-/// STEP SOUNDS ///////////////////////////////////
+/// Blade of Agony Footstep Sounds ////////////////
 ///////////////////////////////////////////////////
 
 splash carpet
@@ -486,96 +437,82 @@ splash electric
 	NoAlert
 }
 
-//Terrains
-
-//Hard terrains
-
-terrain carpet //
+terrain carpet
 {
 	splash			carpet
 	footclip		0
-	//liquid
 }
 
-terrain dirt //
+terrain dirt 
 {
 	splash			dirt
 	footclip		0
-	//liquid
 }
 
-terrain gravel //
+terrain gravel 
 {
 	splash			gravel
 	footclip		0
-	//liquid
 }
 
-terrain metal //
+terrain metal 
 {
 	splash			metal
 	footclip		0
-	//liquid
 }
 
-terrain metal2 //
+terrain metal2 
 {
 	splash			metal2
 	footclip		0
-	//liquid
 }
 
-terrain rock //
+terrain rock 
 {
 	splash			rock
 	footclip		0
-	//liquid
 }
 
-terrain snow //
+terrain snow 
 {
 	splash			snow
 	footclip		0
-	//liquid
 }
 
-terrain slimy //
+terrain slimy
 {
 	splash			slimy
 	footclip		0
-	//liquid
 }
 
 terrain hard
 {
 	splash			hard
 	footclip		0
-	//liquid
 }
 
 terrain tile //Wodden tile
 {
 	splash			tile
 	footclip		0
-	//liquid
 }
 
 terrain tile2 //Stone tile
 {
 	splash			tile2
 	footclip		0
-	//liquid
 }
 
 terrain wood //Wood
 {
 	splash			wood
 	footclip		0
-	//liquid
-
 }
 
-//Assign which flat does what sound
+//////////////////////////////////////////////////
+// Assignments for which flat does what sound ////
+//////////////////////////////////////////////////
+
 floor BATH_T02 tile2
 floor ROCK_B61 tile2
 floor CARP_T11 carpet
@@ -976,8 +913,7 @@ floor aztc_tr4 rock
 floor aztc_w03 rock
 floor aztc_w04 rock
 
-
-//because we need it
+//long texture names, because we need it
 floor TEXTURES/WOOD_B09.PNG wood
 floor textures/BATH_T02.png tile2
 floor TEXTURES/ROCK_B61.PNG tile2

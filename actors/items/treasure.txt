@@ -159,7 +159,7 @@ ACTOR ChestKey : Inventory
 	}
 }
 
-ACTOR SupplyChest : SwitchingDecoration
+ACTOR SupplyChest : SwitchableDecoration
 {
 	//$Category Pickups (Wolf3D)
 	//$Title Treasure Chest
@@ -174,7 +174,10 @@ ACTOR SupplyChest : SwitchingDecoration
 		SUBX A -1
 		Stop
 	Active:
-		"####" B 21
+		SUBX B 21
+		Stop
+	Inactive:
+		SUBX C -1
 		Stop
 	}
 }
@@ -231,7 +234,7 @@ ACTOR SupplyChestKar98k : SupplyChest100Coins
 	States
 	{
 	Pickup:
-		TNT1 A 0 A_GiveInventory("Kar98k")
+		TNT1 A 0 A_GiveInventory("Kar98k",1)
 		Stop
 	}
 }
@@ -241,7 +244,7 @@ ACTOR SupplyChestBackpack : SupplyChest100Coins
 	States
 	{
 	Pickup:
-		TNT1 A 0 A_GiveInventory("NazisBackpack")
+		TNT1 A 0 A_GiveInventory("NazisBackpack",1)
 		Stop
 	}
 }

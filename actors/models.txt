@@ -81,6 +81,35 @@ ACTOR 3dBridge8 : InvisibleBridge
 {Radius 8 Height 24}
 
 //Models
+ACTOR CeilingFan : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Ceiling Fan
+	//$Color 3
+	Radius 32
+	Height 0
+	+NOGRAVITY
+	+SPAWNCEILING
+	Scale 0.85
+	//DistanceCheck "propslod"
+	
+	States
+	{
+	Spawn:
+		SMGT A -1 NoDelay A_SpawnItemEx("WoodenBlades", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		Stop
+	}
+}
+
+ACTOR WoodenBlades : ModelBase
+{
+	Radius 32
+	Height 0
+	+SPAWNCEILING
+	Scale 0.85
+	//DistanceCheck "propslod"
+}
+
 ACTOR ModelBeachHedgeHog : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Obstacles
