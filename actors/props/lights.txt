@@ -172,15 +172,15 @@ ACTOR CeilingLightM : SwitchableDecoration
 	+NOTAUTOAIMED
 	States
 	{
-	Active: //mxd. CLIT? No, srsly, who comes with these names?.. //ozy: that was me man, eheh... :)
-		CLIT A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+	Active:
+		SMGT A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 	Spawn:
-		CLIT A 1 NoDelay A_SpawnItemEx("AlertLight", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER)
-		CLIT A -1 Light("BOACEIL2")
+		SMGT A 1 NoDelay A_SpawnItemEx("AlertLight", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER)
+		SMGT A -1 Light("BOACEIL2")
 		stop
 	Inactive:
-		CLIT A 1 A_KillChildren
-		CLIT A -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		SMGT B 1 A_KillChildren
+		SMGT B -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		Stop	
 	}
 }
@@ -191,19 +191,6 @@ ACTOR CeilingLightM2 : CeilingLightM
 	Radius 8
 	Height 10
 	-SOLID
-	States
-	{
-	Active:
-		CLIT B 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
-	Spawn:
-		CLIT B 1 NoDelay A_SpawnItemEx("AlertLight", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER)
-		CLIT B -1 BRIGHT Light("BOACEIL1")
-		stop
-	Inactive:
-		CLIT B 1 A_KillChildren
-		CLIT B -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
-		Stop
-	}
 }
 
 ACTOR TableLightM : SwitchableDecoration
