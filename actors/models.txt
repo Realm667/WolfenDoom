@@ -86,12 +86,12 @@ ACTOR CeilingFan : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Ceiling Fan
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 32
 	Height 0
 	+NOGRAVITY
 	+SPAWNCEILING
 	Scale 0.85
-	//DistanceCheck "propslod"
 	
 	States
 	{
@@ -103,11 +103,11 @@ ACTOR CeilingFan : 3dObstacle
 
 ACTOR WoodenBlades : ModelBase
 {
+	DistanceCheck "scenelod"
 	Radius 32
 	Height 0
 	+SPAWNCEILING
 	Scale 0.85
-	//DistanceCheck "propslod"
 }
 
 ACTOR ModelBeachHedgeHog : 3dObstacle
@@ -123,6 +123,7 @@ ACTOR ModelCampBed : 3dObstacle
 	//$Category Models (Wolf3D)/Furniture
 	//$Title Camp Bed (double)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 24
 }
 
@@ -131,6 +132,7 @@ ACTOR ModelCampBed2 : 3dObstacle
 	//$Category Models (Wolf3D)/Furniture
 	//$Title Camp Bed (single)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 24
 	Height 24
 }
@@ -220,6 +222,7 @@ ACTOR WaterTower001 : ModelBase
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Watertower
 	//$Color 3
+	DistanceCheck "scenelod"
 }
 
 ACTOR Windmill : 3dObstacle
@@ -227,6 +230,7 @@ ACTOR Windmill : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Windmill
 	//$Color 3
+	DistanceCheck "scenelod"
 
 	Radius 64
 
@@ -241,6 +245,7 @@ ACTOR Windmill : 3dObstacle
 
 ACTOR WindmillWheel : ModelBase
 {
+	DistanceCheck "scenelod"
 	States
 	{
 		Spawn:
@@ -254,6 +259,7 @@ ACTOR Tent : ModelBase
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Tent
 	//$Color 3
+	DistanceCheck "scenelod"
 }
 
 ACTOR BomberVTOL3 : ModelBase
@@ -383,6 +389,7 @@ ACTOR Turret3D : ModelBase
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Turret
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 4
 	Height 4
 }
@@ -400,6 +407,7 @@ ACTOR Bunker3D : ModelBase
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Bunker
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 4
 	Height 4
 }
@@ -409,6 +417,7 @@ ACTOR FlakGun3D : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Flakgun
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 40
 	Height 64
 }
@@ -490,6 +499,7 @@ ACTOR RTCWChalice : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Holy Graal
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 8
 	Height 32
 }
@@ -499,6 +509,7 @@ ACTOR RTCWClock : 3dObstacle //fixed by mxd
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Clock
 	//$Color 3
+	DistanceCheck "scenelod"
 
 	Radius 12
 	Height 112
@@ -524,6 +535,7 @@ ACTOR RTCWClock : 3dObstacle //fixed by mxd
 
 ACTOR RTCWClockPendulum : 3dObstacle //mxd
 {
+	DistanceCheck "scenelod"
 	+SYNCHRONIZED
 
 	States
@@ -561,6 +573,7 @@ ACTOR FlagWave : ModelBase
 	//$Category Models (Wolf3D)/Flags
 	//$Title Waving Flag (Swastika)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 1
 	Height 1
 	Mass 5
@@ -586,11 +599,13 @@ ACTOR FlagWave : ModelBase
 ACTOR FlagWave_SS : FlagWave
 {
 	//$Title Waving Flag (SS)
+	DistanceCheck "scenelod"
 }
 
 ACTOR FlagWave_War : FlagWave
 {
 	//$Title Waving Flag (War Times)
+	DistanceCheck "scenelod"
 }
 
 ACTOR FlagWide_Flutter : ModelBase
@@ -598,6 +613,7 @@ ACTOR FlagWide_Flutter : ModelBase
 	//$Category Models (Wolf3D)/Flags
 	//$Title Waving Flag, Wide (Swastika)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 1
 	Height 1
 	Mass 5
@@ -613,6 +629,7 @@ ACTOR FlagWide_Flutter : ModelBase
 ACTOR FlagWide_Hang : FlagWide_Flutter
 {
 	//$Title Hanging Flag, Wide (Swastika)
+	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:
@@ -624,11 +641,13 @@ ACTOR FlagWide_Hang : FlagWide_Flutter
 ACTOR FlagShort_Flutter : FlagWide_Flutter
 {
 	//$Title Waving Flag, Short (Swastika)
+	DistanceCheck "scenelod"
 }
 
 ACTOR FlagShort_Hang : FlagWide_Flutter
 {
 	//$Title Hanging Flag, Short (Swastika)
+	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:
@@ -642,6 +661,7 @@ ACTOR Typewriter : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Typewriter
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 16
 }
@@ -651,6 +671,7 @@ ACTOR RadioModern : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Radio (modern)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 20
 }
@@ -660,6 +681,7 @@ ACTOR RTCWParlor : SwitchableDecoration
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Parlor Radio (interactive)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 8
 	Height 8
 	Mass 0x7fffffff
@@ -696,6 +718,7 @@ ACTOR RTCWPhone : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Phone
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 8
 	Height 8
 }
@@ -705,6 +728,7 @@ ACTOR RTCWGramo : SwitchableDecoration
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Gramophone (interactive)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 32
 	Mass 0x7fffffff
@@ -741,6 +765,7 @@ ACTOR EnigmaMachine : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Enigma Machine
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 8
 }
@@ -750,6 +775,7 @@ ACTOR RTCWBench : 3dObstacle
 	//$Category Models (Wolf3D)/Furniture
 	//$Title Wooden Bench
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 8
 }
@@ -759,6 +785,7 @@ ACTOR 3dBook1 : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Book (front)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 8
 }
@@ -766,6 +793,7 @@ ACTOR 3dBook1 : 3dObstacle
 ACTOR 3dBook2 : 3dBook1
 {
 	//$Title Book (back)
+	DistanceCheck "scenelod"
 }
 
 ACTOR RTCWShield : 3dObstacle
@@ -773,6 +801,7 @@ ACTOR RTCWShield : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Shield with Swords
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 8
 	Height 32
 	+NOGRAVITY
@@ -783,6 +812,7 @@ ACTOR RTCWParachute1 : ModelBase
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Parachute (Ragged One)
 	//$Color 3
+	DistanceCheck "scenelod"
 }
 
 ACTOR RTCWParachute2 : ModelBase
@@ -790,6 +820,7 @@ ACTOR RTCWParachute2 : ModelBase
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Parachute (Open One)
 	//$Color 3
+	DistanceCheck "scenelod"
 }
 
 ACTOR RTCW_V2_Complete : ModelBase
@@ -797,6 +828,7 @@ ACTOR RTCW_V2_Complete : ModelBase
 	//$Category Models (Wolf3D)/Scenery
 	//$Title V2 (Complete)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 46
 	Height 192
 	States
@@ -810,11 +842,13 @@ ACTOR RTCW_V2_Complete : ModelBase
 ACTOR RTCW_V2_NoRamp : RTCW_V2_Complete
 {
 	//$Title V2 (Without Ramp)
+	DistanceCheck "scenelod"
 }
 
 ACTOR RTCW_V2_Rocket : RTCW_V2_Complete
 {
 	//$Title V2 (Rocket Only)
+	DistanceCheck "scenelod"
 }
 
 //MaxED stuff
@@ -1070,6 +1104,7 @@ ACTOR 3dEagle : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title SS Eagle
 	//$Color 3
+	DistanceCheck "scenelod"
 	-SOLID
 }
 
@@ -1078,6 +1113,7 @@ ACTOR Harness : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Harness
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 24
 	Height 90
 }
@@ -1087,6 +1123,7 @@ ACTOR Lion_Left : 3dObstacle
 	//$Category Models (Wolf3D)/Statues
 	//$Title Lion Statue (Left)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 48
 	Height 192
 }
@@ -1094,11 +1131,13 @@ ACTOR Lion_Left : 3dObstacle
 ACTOR Lion_Right : Lion_Left
 {
 	//$Title Lion Statue (Right)
+	DistanceCheck "scenelod"
 }
 
 ACTOR NaziBannerTallFlutter512 : FlagWave
 {
 	//$Title Nazi Banner Tall, Flutter (512)
+	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:
@@ -1110,6 +1149,7 @@ ACTOR NaziBannerTallFlutter512 : FlagWave
 ACTOR NaziBannerTallHang512 : FlagWave
 {
 	//$Title Nazi Banner Tall, Not Moving (512)
+	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:
@@ -1121,11 +1161,13 @@ ACTOR NaziBannerTallHang512 : FlagWave
 ACTOR NaziBannerTallFlutter256 : NaziBannerTallFlutter512
 {
 	//$Title Nazi Banner Tall, Flutter (256)
+	DistanceCheck "scenelod"
 }
 
 ACTOR NaziBannerTallHang256 : NaziBannerTallHang512
 {
 	//$Title Nazi Banner Tall, Not Moving (256)
+	DistanceCheck "scenelod"
 }
 
 ACTOR TrestleTable : 3dObstacle
@@ -1133,6 +1175,7 @@ ACTOR TrestleTable : 3dObstacle
 	//$Category Models (Wolf3D)/Furniture
 	//$Title Trestle Table
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 40
 	Height 34
 }
@@ -1143,6 +1186,7 @@ ACTOR Caesar : 3dObstacle
 	//$Category Models (Wolf3D)/Statues
 	//$Title Caesar's Statue
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 32
 	Height 192
 }
@@ -1152,6 +1196,7 @@ ACTOR King : Caesar
 	//$Category Models (Wolf3D)/Statues
 	//$Title King's Statue
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 48
 }
 
@@ -1160,6 +1205,7 @@ ACTOR MineCartF : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title "Mine Cart, Full"
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 34
 	Height 24
 	+NOGRAVITY
@@ -1168,6 +1214,7 @@ ACTOR MineCartF : 3dObstacle
 ACTOR MineCartE : MineCartF
 {
 	//$Title "Mine Cart, Empty"
+	DistanceCheck "scenelod"
 }
 
 ACTOR MineCartEMoving : MineCartF
@@ -1180,6 +1227,7 @@ ACTOR MineCartEMoving : MineCartF
 ACTOR MineCartW : MineCartF
 {
 	//$Title "Mine Cart, Wrecked"
+	DistanceCheck "scenelod"
 }
 
 ACTOR 3dMinerals : 3dObstacle
@@ -1187,6 +1235,7 @@ ACTOR 3dMinerals : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title "Minerals"
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 16
 	+NOGRAVITY
@@ -1204,6 +1253,7 @@ ACTOR Cable1 : ModelBase
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Cable A
 	//$Color 3
+	DistanceCheck "scenelod"
 	Height 0
 	+SPAWNCEILING
 }
@@ -1211,21 +1261,25 @@ ACTOR Cable1 : ModelBase
 ACTOR Cable2: Cable1
 {
 	//$Title Cable B
+	DistanceCheck "scenelod"
 }
 
 ACTOR Cable3: Cable1
 {
 	//$Title Cable C
+	DistanceCheck "scenelod"
 }
 
 ACTOR Cable4: Cable1
 {
 	//$Title Cable D
+	DistanceCheck "scenelod"
 }
 
 ACTOR Cable5: Cable1
 {
 	//$Title Cable E
+	DistanceCheck "scenelod"
 }
 
 ACTOR 3dTrolley : 3dObstacle
@@ -1233,6 +1287,7 @@ ACTOR 3dTrolley : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Trolley
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 48
 	+NOGRAVITY
@@ -1243,6 +1298,7 @@ ACTOR 3dCannon : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Cannon
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 48
 	+NOGRAVITY
@@ -1251,6 +1307,7 @@ ACTOR 3dCannon : 3dObstacle
 ACTOR 3dCannonballs: 3dCannon
 {
 	//$Title Cannonballs
+	DistanceCheck "scenelod"
 }
 
 ACTOR 3dGuillotine : 3dObstacle
@@ -1258,6 +1315,7 @@ ACTOR 3dGuillotine : 3dObstacle
 	//$Category Models (Wolf3D)/Occult
 	//$Title Guillotine
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 48
 	+NOGRAVITY
@@ -1266,26 +1324,31 @@ ACTOR 3dGuillotine : 3dObstacle
 ACTOR 3dHeadCrusher : 3dGuillotine
 {
 	//$Title Head Crusher
+	DistanceCheck "scenelod"
 }
 
 ACTOR 3dJudasCrusher: 3dGuillotine
 {
 	//$Title Judas Crusher
+	DistanceCheck "scenelod"
 }
 
 ACTOR 3dPillory : 3dGuillotine
 {
 	//$Title Pillory
+	DistanceCheck "scenelod"
 }
 
 ACTOR 3dRack: 3dGuillotine
 {
 	//$Title Rack
+	DistanceCheck "scenelod"
 }
 
 ACTOR 3dSplitter: 3dGuillotine
 {
 	//$Title Splitter
+	DistanceCheck "scenelod"
 }
 
 ACTOR 3dSkeleton_Sit : 3dObstacle
@@ -1293,6 +1356,7 @@ ACTOR 3dSkeleton_Sit : 3dObstacle
 	//$Category Models (Wolf3D)/Occult
 	//$Title Skeleton (Sit)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 24
 	+NOGRAVITY
@@ -1304,6 +1368,7 @@ ACTOR 3dPrometheus_L : 3dObstacle
 	//$Category Models (Wolf3D)/Statues
 	//$Title Prometheus Statue (Left Side)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 32
 	Height 96
 }
@@ -1311,6 +1376,7 @@ ACTOR 3dPrometheus_L : 3dObstacle
 ACTOR 3dPrometheus_R: 3dPrometheus_L
 {
 	//$Title Prometheus Statue (Right Side)
+	DistanceCheck "scenelod"
 }
 
 //TF3DM / 3dRegenerator Models
@@ -1407,6 +1473,7 @@ ACTOR 3dPiano : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Piano
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 56
 	Height 48
 }
@@ -1416,6 +1483,7 @@ ACTOR Bunk_Bed1 : 3dObstacle
 	//$Category Models (Wolf3D)/Furniture
 	//$Title Bunk Bed (single)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 24
 	Height 24
 }
@@ -1423,15 +1491,17 @@ ACTOR Bunk_Bed1 : 3dObstacle
 ACTOR Bunk_Bed2 : Bunk_Bed1
 {
 	//$Title Bunk Bed (double)
+	DistanceCheck "scenelod"
 	Height 72
 }
 
 //CODs Stuff - Ozy81
-ACTOR COD_Gascan : 3dObstacle //for now it isn't destroyable
+ACTOR COD_Gascan : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Gascan
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 8
 	Height 32
 }
@@ -1441,6 +1511,7 @@ ACTOR COD_FemaleBust : 3dObstacle
 	//$Category Models (Wolf3D)/Statues
 	//$Title Female Bust (silver or bronze)
 	//$Color 3
+	DistanceCheck "scenelod"
 	
 	//$Arg0 "Material"
 	//$Arg0Tooltip "Choose the desired material\nSilver: 0\nBronze: 1"
@@ -1465,11 +1536,13 @@ ACTOR COD_FemaleBust : 3dObstacle
 ACTOR COD_EagleBust : COD_FemaleBust
 {
 	//$Title Eagle Bust (silver or bronze)
+	DistanceCheck "scenelod"
 }
 
 ACTOR COD_HitlerBust : COD_FemaleBust
 {
 	//$Title Hitler's Bust (bronze or stone)
+	DistanceCheck "scenelod"
 	
 	//$Arg0 "Material"
 	//$Arg0Tooltip "Choose the desired material\nBronze: 0\nStone: 1"
@@ -1503,6 +1576,7 @@ ACTOR COD_RadioSimple : SwitchableDecoration
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Radio (interactive, destroyable, simple)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 16
 	Mass 0x7fffffff
@@ -1550,6 +1624,7 @@ ACTOR COD_Radio_Tall : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Radio, Tall
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 8
 	Height 32
 	+NOGRAVITY
@@ -1559,6 +1634,7 @@ ACTOR COD_Radio_Tall : 3dObstacle
 ACTOR COD_Radio_Tall_D : COD_Radio_Tall
 {
 	//$Title Radio, Tall (Blown)
+	DistanceCheck "scenelod"
 }
 
 ACTOR COD_SSHorch : 3dObstacle
@@ -1829,6 +1905,7 @@ ACTOR CODSignal_Light : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Train Signal Light (off/red/yel/green)
 	//$Color 3
+	DistanceCheck "scenelod"
 	
 	//$Arg0 "Light"
 	//$Arg0Tooltip "Pickup the desired light\nOff: 0\nGreen: 1\nYellow: 2\nRed: 3"
@@ -1861,6 +1938,7 @@ ACTOR CODRailway_Switch : SwitchableDecoration
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Train Railway Switch (Set DORMANT & activate it via ACS)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 144
 	Mass 0x7fffffff
@@ -1896,6 +1974,7 @@ ACTOR CanyonRockSpawner : 3dObstacle //ozymandias81
 	//$Category Models (Wolf3D)/Rocks
 	//$Title Canyon Rock Spawner
 	//$Color 3
+	DistanceCheck "scenelod"
 	
 	//$Arg0 "Shape"
 	//$Arg0Tooltip "Pickup the desired shape\nRandom: 0\nLarge: 1\nMedium: 2\nSmall: 3"
@@ -1933,26 +2012,31 @@ ACTOR CanyonRockSpawner : 3dObstacle //ozymandias81
 ACTOR DryRockSpawner : CanyonRockSpawner
 {
 	//$Title Dry Rock Spawner
+	DistanceCheck "scenelod"
 }
 
 ACTOR SnowyRockSpawner : CanyonRockSpawner
 {
 	//$Title Snowy Rock Spawner
+	DistanceCheck "scenelod"
 }
 
 ACTOR MuddyRockSpawner : CanyonRockSpawner
 {
 	//$Title Muddy Rock Spawner
+	DistanceCheck "scenelod"
 }
 
 ACTOR LunarRockSpawner : CanyonRockSpawner
 {
 	//$Title Lunar Rock Spawner (Astrostein)
+	DistanceCheck "scenelod"
 }
 
 ACTOR SandRockSpawner : CanyonRockSpawner
 {
 	//$Title Sand Rock Spawner (Tunis)
+	DistanceCheck "scenelod"
 }
 
 //NOLF1 Stuff
@@ -1961,6 +2045,7 @@ ACTOR RooftopAntennae : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Rooftop Antennae
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 64
 }
@@ -1971,6 +2056,7 @@ ACTOR 3dSpeakers_1 : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Tannoy Speakers (Single)
 	//$Color 3
+	DistanceCheck "scenelod"
 	
 	Radius 8
 	Height 8
@@ -1982,6 +2068,7 @@ ACTOR 3dSpeakers_2 : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Tannoy Speakers (Double)
 	//$Color 3
+	DistanceCheck "scenelod"
 	
 	Radius 32
 	Height 96
@@ -1990,6 +2077,7 @@ ACTOR 3dSpeakers_2 : 3dObstacle
 ACTOR 3dSpeakers_4 : 3dSpeakers_2
 {
 	//$Title Tannoy Speakers (Four)
+	DistanceCheck "scenelod"
 }
 
 //AFADoomer Stuff
@@ -1998,6 +2086,7 @@ ACTOR AstroShuttle : ModelBase
 	//$Category Models (Wolf3D)/Astrostein
 	//$Title Galileo's Shuttle
 	//$Color 3
+	DistanceCheck "scenelod"
 	Height 32
 	Radius 64
 }
