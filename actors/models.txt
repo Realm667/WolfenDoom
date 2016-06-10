@@ -144,13 +144,13 @@ ACTOR ModelIncaTrain : ModelBase
 	//$Color 3
 	Radius 4
 	Height 4
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 }
 
 ACTOR ModelRailBoxcar : ModelIncaTrain
 {
 	//$Title Train (boxcar)
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 }
 
 ACTOR TrainWheels : ModelIncaTrain
@@ -165,13 +165,13 @@ ACTOR TrainWheels : ModelIncaTrain
 ACTOR ModelRailBoxcar2 : ModelIncaTrain
 {
 	//$Title Train (boxcar,kz)
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 }
 
 ACTOR ModelRailBoxcar3 : ModelIncaTrain
 {
 	//$Title Train (future)
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 }
 
 ACTOR ModelRailBoxcar3_Projectile : ModelRailBoxcar3
@@ -189,7 +189,7 @@ ACTOR ModelRailBoxcar3_Projectile : ModelRailBoxcar3
 ACTOR ModelRailTanker : ModelIncaTrain
 {
 	//$Title Train (tanker)
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 }
 
 ACTOR ModelSandBagCurve : ModelBase
@@ -429,7 +429,7 @@ ACTOR TankPanzer3 : ModelBase
 	//$Color 3
 	Radius 4
 	Height 64
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 }
 
 ACTOR Cruiser : ModelBase
@@ -446,6 +446,10 @@ ACTOR FlakVierling3D : SwitchableDecoration
 	//$Category Models (Wolf3D)/Mission
 	//$Title Flak Vierling
 	//$Color 3
+	
+	//$Arg0 "Type"
+	//$Arg0Tooltip "Pickup the desired type\nSolid: 0\nNon-Solid: 1"
+	
 	Radius 80
 	Height 88
 	Mass 0x7fffffff
@@ -467,7 +471,7 @@ ACTOR FlakVierling3D : SwitchableDecoration
 	Active:
 		SMGT A 0 A_ChangeFlag("DORMANT", false) //update manually on GZDB
 	Spawn:
-		SMGT A -1
+		SMGT A -1 NoDelay A_JumpIf(Args[0]==1, "NonSolid")
 		Stop
 	Inactive:
 		SMGT B 0 A_ChangeFlag("DORMANT", true) //update manually on GZDB
@@ -479,6 +483,11 @@ ACTOR FlakVierling3D : SwitchableDecoration
 		Destroyed:
 			SMGT B 8 A_CustomMissile("DarkSmoke2",32,0,random(0,360),2,random(70,130))
 			Loop
+	NonSolid: //Needed for Intromap - ozy81
+		SMGT A 0 A_UnsetSolid
+		SMGT A 0 {A_ChangeFlag("NOGRAVITY",false);A_ChangeFlag("CANPASS",false);A_ChangeFlag("FLOORCLIP",true);A_ChangeFlag("ACTLIKEBRIDGE",false);} //oh god.. - ozy81
+		"####" A -1 A_SetInvulnerable
+		Stop
 	}
 }
 
@@ -554,7 +563,7 @@ ACTOR RTCWCar : 3dObstacle
 
 	Radius 32
 	Height 32
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 	States
 	{
 		Spawn:
@@ -565,7 +574,7 @@ ACTOR RTCWCar : 3dObstacle
 
 ACTOR RTCWCarGlass : 3dGlass
 {
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 }
 
 ACTOR FlagWave : ModelBase
@@ -912,7 +921,7 @@ ACTOR ModelOpelTruck : 3dObstacle
 	Radius 24
 	Height 24
 	+NOGRAVITY
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:
@@ -1387,7 +1396,7 @@ ACTOR MercedesLimo : 3dObstacle
 	//$Color 3
 	Radius 32
 	Height 32
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:
@@ -1398,7 +1407,7 @@ ACTOR MercedesLimo : 3dObstacle
 
 ACTOR LimoGlass : 3dGlass
 {
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 }
 
 ACTOR Kubelwagen : 3dObstacle
@@ -1408,7 +1417,7 @@ ACTOR Kubelwagen : 3dObstacle
 	//$Color 3
 	Radius 32
 	Height 32
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:
@@ -1419,7 +1428,7 @@ ACTOR Kubelwagen : 3dObstacle
 
 ACTOR KubelGlass : 3dGlass
 {
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 }
 
 ACTOR OldCar_Spawner : 3dObstacle
@@ -1433,7 +1442,7 @@ ACTOR OldCar_Spawner : 3dObstacle
 	
 	Height 64
 	+NOGRAVITY
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:
@@ -1465,7 +1474,7 @@ ACTOR Tractor : 3dObstacle
 	//$Color 3
 	Radius 32
 	Height 32
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 }
 
 ACTOR 3dPiano : 3dObstacle
@@ -1568,7 +1577,7 @@ ACTOR COD_Tiger1 : ModelBase
 	//$Color 3
 	Radius 4
 	Height 64
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 }
 
 ACTOR COD_RadioSimple : SwitchableDecoration
@@ -1645,7 +1654,7 @@ ACTOR COD_SSHorch : 3dObstacle
 
 	Radius 12
 	Height 52
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 	States
 	{
 		Spawn:
@@ -1659,7 +1668,7 @@ ACTOR COD_SSHorch : 3dObstacle
 
 ACTOR COD_SSHorch_Glass : 3dGlass
 {
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 }
 
 ACTOR COD_USJeep : 3dObstacle
@@ -1673,7 +1682,7 @@ ACTOR COD_USJeep : 3dObstacle
 
 	Radius 12
 	Height 52
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 	States
 	{
 		Spawn:
@@ -1695,7 +1704,7 @@ ACTOR COD_USJeep : 3dObstacle
 
 ACTOR COD_USJeep_Glass : 3dGlass
 {
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 }
 
 ACTOR CODBike : 3dObstacle
@@ -1710,7 +1719,7 @@ ACTOR CODBike : 3dObstacle
 	Radius 16
 	Height 32
 	+NOGRAVITY
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:
@@ -1794,7 +1803,7 @@ ACTOR CODSideCar : 3dObstacle
 	//$Color 3
 	Radius 56
 	Height 48
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 }
 
 ACTOR CODCivCarD_Spawner : 3dObstacle
@@ -1807,7 +1816,7 @@ ACTOR CODCivCarD_Spawner : 3dObstacle
 	//$Arg0Tooltip "Pickup the desired color\nRandom: 0\nTan: 1\nRed: 2\nBlue: 3"
 	Height 64
 	+NOGRAVITY
-	DistanceCheck "carslod"
+	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:
