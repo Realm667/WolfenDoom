@@ -56,6 +56,46 @@ ACTOR HungBody
 	}
 }
 
+ACTOR HungBody2 : HungBody
+{
+	//$Category Gore (Wolf3D)
+	//$Title Hung Body (Prisoner 1)
+	//$Color 4
+	Height 48
+	States
+	{
+	Spawn:
+		HUNG B -1
+		Stop
+	}
+}
+
+ACTOR HungBody3 : HungBody2
+{
+	//$Category Gore (Wolf3D)
+	//$Title Hung Body (Prisoner 2)
+	//$Color 4
+	States
+	{
+	Spawn:
+		HUNG C -1
+		Stop
+	}
+}
+
+ACTOR HungBody4 : HungBody2
+{
+	//$Category Gore (Wolf3D)
+	//$Title Hung Body (Prisoner 3)
+	//$Color 4
+	States
+	{
+	Spawn:
+		HUNG D -1
+		Stop
+	}
+}
+
 ACTOR DeadBody
 {
 	//$Category Gore (Wolf3D)
