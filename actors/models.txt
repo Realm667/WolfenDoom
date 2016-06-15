@@ -81,6 +81,26 @@ ACTOR 3dBridge8 : InvisibleBridge
 {Radius 8 Height 24}
 
 //Models
+ACTOR TestCrate : 3dObstacle
+{
+	//$Category Props (Wolf3D)/Labs
+	//$Title Test Lab Crate
+	//$Color 3
+	DistanceCheck "scenelod"
+	Radius 32
+	Height 64
+	+SOLID
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		SMGT A -1 NoDelay A_SpawnItemEx("CrateGlass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		Stop
+	}
+}
+
+ACTOR CrateGlass : 3dGlass {DistanceCheck "scenelod"}
+
 ACTOR CeilingFan : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Scenery
