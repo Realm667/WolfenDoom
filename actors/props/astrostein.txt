@@ -391,22 +391,26 @@ ACTOR RotatingStation
 	}
 }
 
-ACTOR SkyboxAstroMoon
+ACTOR SkyboxMoon
 {
 	//$Category Props (Wolf3D)/Astrostein
-	//$Title Nazimoon (skybox)
+	//$Title Moon (skybox)
 	//$Color 3
 	Radius 16
 	Height 16
-	Scale 1.0
 	+SOLID
 	+NOGRAVITY
 	States
 	{
 	Spawn:
-		ASNM A -1
+		SMGT A -1
 		Stop
 	}
+}
+
+ACTOR SkyboxEarth : SkyboxMoon
+{
+	//$Title Earth (skybox)
 }
 
 ACTOR StripperGirl
