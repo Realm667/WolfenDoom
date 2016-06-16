@@ -44,63 +44,6 @@ Model AstroTrail
 }
 
 //Actors
-Model TestCrate
-{
-	Path "models"
-	Model 0 "lab_crate.md3"
-	Scale 1.35 1.35 1.58
-	InheritActorPitch
-	InheritActorRoll
-	
-	FrameIndex SMGT A 0 0
-}
-
-Model CrateGlass
-{
-	Path "models"
-	Model 0 "lab_glass.md3"
-	Scale 1.35 1.35 1.58
-	InheritActorPitch
-	InheritActorRoll
-	
-	FrameIndex SMGT A 0 0
-}
-
-Model CeilingFan
-{
-	Path "models"
-	Model 0 "fan_a.md3"
-	//Scale 1.0 1.0 1.0
-	InheritActorPitch
-	InheritActorRoll
-
-	FrameIndex SMGT A 0 0
-}
-
-Model WoodenBlades
-{
-	Path "models"
-	Model 0 "fan_b.md3"
-	//Scale 1.0 1.0 1.0
-	InheritActorPitch
-	InheritActorRoll
-	ROTATING
-	Rotation-Speed 6.0
-
-	FrameIndex SMGT A 0 0
-}
-
-Model Radar //ozy
-{
-	Path "Models"
-	Model 0 "mh_radar.md3"
-	InheritActorPitch
-	InheritActorRoll
-	Scale 0.4 0.4 0.4
-
-	FrameIndex SMGT A 0 0
-}
-
 Model ModelBeachHedgeHog
 {
 	Path "models"
@@ -2775,6 +2718,18 @@ Model 3dSkeleton_Sit
 	FrameIndex SMGT A 0 0
 }
 
+//MoHAAs Stuff - ozy81
+Model Radar
+{
+	Path "Models"
+	Model 0 "mh_radar.md3"
+	InheritActorPitch
+	InheritActorRoll
+	Scale 0.4 0.4 0.4
+
+	FrameIndex SMGT A 0 0
+}
+
 //CODs Stuff - ozy81
 Model ChanGold
 {
@@ -4206,7 +4161,6 @@ Model LaserBeam_Green
 ///////////////////////////////////////
 /// Special Effect Models /////////////
 ///////////////////////////////////////
-
 Model RainDropLong
 {
 	Path "models/sfx/rain"
@@ -4227,4 +4181,62 @@ Model RainDropshort
 	PITCHFROMMOMENTUM
 	
 	FrameIndex RNDR A 0 0
+}
+
+//Ozymandias81
+Model TestCrate
+{
+	Path "models"
+	Model 0 "lab_crate.md3"
+	Scale 1.35 1.35 1.58
+	InheritActorPitch
+	InheritActorRoll
+	
+	FrameIndex SMGT A 0 0
+}
+
+Model CrateGlass
+{
+	Path "models"
+	Model 0 "lab_glass.md3"
+	Scale 1.35 1.35 1.58
+	InheritActorPitch
+	InheritActorRoll
+	
+	FrameIndex SMGT A 0 0
+}
+
+Model MovableCrate1
+{
+	Path "models"
+	Model 0 "crate_base.md3"
+	Skin 0 "crate1.png"
+	Scale 0.92 0.92 1.09
+	InheritActorPitch
+	InheritActorRoll
+	
+	FrameIndex SMGT A 0 0
+}
+
+Model CeilingFan
+{
+	Path "models"
+	Model 0 "fan_a.md3"
+	InheritActorPitch
+	InheritActorRoll
+
+	FrameIndex SMGT A 0 0
+}
+
+Model WoodenBlades
+{
+	Path "models"
+	Model 0 "fan_b.md3"
+	//Scale 1.0 1.0 1.0
+	InheritActorPitch
+	InheritActorRoll
+	ROTATING
+	Rotation-Speed 6.0
+
+	FrameIndex SMGT A 0 0
 }
