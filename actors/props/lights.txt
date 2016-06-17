@@ -51,7 +51,7 @@ ACTOR Chandelier1Switchable : SwitchableDecoration
 			A_SpawnItemEx("3dFlame_Normal", ScaleX*-22, ScaleY*23, 	ScaleX+ScaleY*5, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
 			A_SpawnItemEx("3dFlame_Normal", ScaleX*24, 	ScaleY*-22, ScaleX+ScaleY*8, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);}
 	Activate:
-		SMGT A 1 LIGHT ("FireSpawnerSmall")
+		SMGT A 1 //LIGHT ("FireSpawnerSmall")
 		Loop
 	Inactive:
 		SMGT A 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
@@ -94,7 +94,7 @@ ACTOR Chandelier2Switchable : SwitchableDecoration
 			A_SpawnItemEx("3dFlame_Normal", ScaleX*-18.8, ScaleY*18.7, 	ScaleX+ScaleY*5, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
 			A_SpawnItemEx("3dFlame_Normal", ScaleX*19.2, 	ScaleY*-18.9, ScaleX+ScaleY*8, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);}
 	Activate:
-		SMGT A 1 LIGHT ("FireSpawnerSmall")
+		SMGT A 1 //LIGHT ("FireSpawnerSmall")
 		Loop
 	Inactive:
 		SMGT A 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
