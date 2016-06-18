@@ -81,6 +81,51 @@ ACTOR 3dBridge8 : InvisibleBridge
 {Radius 8 Height 24}
 
 //Models
+ACTOR SkyboxMoon
+{
+	//$Category Props (Wolf3D)/Astrostein
+	//$Title Moon (skybox)
+	//$Color 3
+	Radius 16
+	Height 16
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		SMGT A -1
+		Stop
+	}
+}
+
+ACTOR SkyboxEarth : SkyboxMoon
+{
+	//$Title Earth (skybox)
+	States
+	{
+	Spawn:
+		SMGT A -1 NoDelay {
+			A_SpawnItemEx("SkyboxPlanetShade1", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE);
+			A_SpawnItemEx("SkyboxPlanetShade2", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE);
+			A_SpawnItemEx("SkyboxPlanetShade3", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE);
+			A_SpawnItemEx("SkyboxPlanetShade4", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE);
+			A_SpawnItemEx("SkyboxPlanetShade5", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE);
+			A_SpawnItemEx("SkyboxPlanetShade6", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE);}
+		Stop
+	}
+}
+
+ACTOR SkyboxPlanetShade1 : 3dGlass //shades of darkness - ozy81
+{
+	RenderStyle "Shaded"
+	StencilColor "00 00 00"
+}
+
+ACTOR SkyboxPlanetShade2 : SkyboxPlanetShade1{}
+ACTOR SkyboxPlanetShade3 : SkyboxPlanetShade1{}
+ACTOR SkyboxPlanetShade4 : SkyboxPlanetShade1{}
+ACTOR SkyboxPlanetShade5 : SkyboxPlanetShade1{}
+ACTOR SkyboxPlanetShade6 : SkyboxPlanetShade1{}
+
 ACTOR TestCrate : 3dObstacle
 {
 	//$Category Props (Wolf3D)/Labs
