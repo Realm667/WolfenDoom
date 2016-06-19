@@ -92,7 +92,7 @@ ACTOR SkyboxMoon
 	States
 	{
 	Spawn:
-		SMGT A -1 NoDelay A_SpawnItemEx("SkyboxPlanetShade", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		SMGT A -1 NoDelay A_SpawnItemEx("SkyboxPlanetShade", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER)
 		Stop
 	}
 }
@@ -104,9 +104,9 @@ ACTOR SkyboxEarth : SkyboxMoon
 	{
 	Spawn:
 		SMGT A -1 NoDelay {
-							A_SpawnItemEx("SkyboxPlanetWeather", 0, 0, 0, 0, 0, 0, 180, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE);
-							A_SpawnItemEx("SkyboxPlanetShade", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE);
-							A_SpawnItemEx("SkyboxPlanetLights", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE);
+							A_SpawnItemEx("SkyboxPlanetWeather", 0, 0, 0, 0, 0, 0, 180, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER);
+							A_SpawnItemEx("SkyboxPlanetShade", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER);
+							A_SpawnItemEx("SkyboxPlanetLights", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER);
 						}
 		Stop
 	}
@@ -116,15 +116,25 @@ ACTOR SkyboxPlanetShade : 3dGlass //shades of darkness - ozy81, adjusted by T667
 {
 	RenderStyle "Shaded"
 	StencilColor "00 00 00"
+	
+	
+
+	States
+		{
+		Spawn:
+	      	SMGT A 1 A_Warp(AAPTR_MASTER,0,0,0,0,WARPF_NOCHECKPOSITION)
+	      	Loop
+	   	}
+
 }
 
-ACTOR SkyboxPlanetWeather : 3dGlass //adjusted by T667
+ACTOR SkyboxPlanetWeather : SkyboxPlanetShade //adjusted by T667
 {
 	RenderStyle "Shaded"
 	StencilColor "aaaaaa"
 }
 
-ACTOR SkyboxPlanetLights : 3dGlass //adjusted by T667
+ACTOR SkyboxPlanetLights : SkyboxPlanetShade //adjusted by T667
 {
 	RenderStyle "Add"
 	Alpha 0.5
@@ -1218,7 +1228,7 @@ ACTOR MovableCrate1 : FuelDrumAstro
     }	
 }
 
-ACTOR MovableCrate2 : ACTOR MovableCrate1 
+ACTOR MovableCrate2 : MovableCrate1 
 {
 	//$Title Movable Crate (paper, 32)
 
