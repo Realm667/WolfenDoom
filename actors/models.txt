@@ -1192,7 +1192,7 @@ ACTOR FuelDrumAstro //: 3dObstacle //Uses JK2 3dModel
 
 ACTOR MovableCrate1 : FuelDrumAstro
 {
-	//$Title Movable Crate (paper)
+	//$Title Movable Crate (paper, 64)
 
 	Radius 32
 	Height 64
@@ -1216,6 +1216,15 @@ ACTOR MovableCrate1 : FuelDrumAstro
             SMGT A 35 A_PlaySound("papercrate_moving", CHAN_AUTO, 0.65)
             goto Spawn
     }	
+}
+
+ACTOR MovableCrate2 : ACTOR MovableCrate1 
+{
+	//$Title Movable Crate (paper, 32)
+
+	Radius 16
+	Height 32
+	Mass 4500
 }
 
 //Easter eggs
