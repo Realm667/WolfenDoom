@@ -92,7 +92,10 @@ ACTOR SkyboxMoon
 	States
 	{
 	Spawn:
-		SMGT A -1 NoDelay A_SpawnItemEx("SkyboxPlanetShade", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER)
+		SMGT A -1 NoDelay {
+							A_SpawnItemEx("SkyboxPlanetShade", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER);
+							A_SpawnItemEx("SkyboxMoonLights", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER);
+						}
 		Stop
 	}
 }
@@ -139,6 +142,13 @@ ACTOR SkyboxPlanetLights : SkyboxPlanetShade //adjusted by T667
 	RenderStyle "Add"
 	Alpha 0.5
 }
+
+ACTOR SkyboxMoonLights : SkyboxPlanetShade //adjusted by T667
+{
+	RenderStyle "Add"
+	Alpha 0.8
+}
+
 
 ACTOR TestCrate : 3dObstacle
 {
