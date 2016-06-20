@@ -122,7 +122,7 @@ ACTOR SkyboxPlanetShade : 3dGlass //shades of darkness - ozy81, adjusted by T667
 	States
 		{
 		Spawn:
-	      	SMGT A 1 A_Warp(AAPTR_MASTER,0,0,0,0,WARPF_NOCHECKPOSITION)
+	      	SMGT A 1 A_Warp(AAPTR_MASTER,0,0,0,0,WARPF_NOCHECKPOSITION | WARPF_INTERPOLATE | WARPF_COPYVELOCITY)
 	      	Loop
 	   	}
 
