@@ -1,0 +1,26 @@
+ACTOR VolumetricLight_ConeDown : SwitchableDecoration
+{
+	//$Category Special Effects (Wolf3D)
+	//$Title Volumetic Light (white)
+	//$Color 12
+	Height 1
+	Radius 1
+	+NOINTERACTION
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+NOCLIP
+	XScale 0.3
+	YScale 0.45
+	Alpha 0.5
+	RenderStyle "Add"
+	States
+	{
+	Spawn:
+	Active:
+		VOLT A -1
+		Loop
+	Inactive:
+		TNT1 A -1
+		Loop
+	}
+}
