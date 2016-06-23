@@ -291,7 +291,7 @@ ACTOR ModelSandBagCurve : ModelBase
 	States
 	{
 	Spawn:
-		SMGT A 0 NODELAY A_SpawnItemEx("3dBridge16",0,-16,0)
+		SMGT A 0 NoDelay A_SpawnItemEx("3dBridge16",0,-16,0)
 		SMGT A -1 A_SpawnItemEx("3dBridge16",0,16,0)
 		Stop
 	}
@@ -592,6 +592,16 @@ ACTOR Luftschiff : 3dObstacle
 }
 
 //Return to Castle Wolfenstein models
+ACTOR RTCWGenerator : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Generator
+	//$Color 3
+	DistanceCheck "scenelod"
+	Radius 16
+	Height 32
+}
+
 ACTOR RTCWChalice : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Scenery
@@ -679,7 +689,7 @@ ACTOR FlagWave : ModelBase
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(64,12)
+		TNT1 A 0 NoDelay A_Jump(64,12)
 		TNT1 A 0 A_Jump(84,24)
 		TNT1 A 0 A_Jump(104,36)
 		TNT1 A 0 A_Jump(124,48)
@@ -1014,7 +1024,7 @@ ACTOR ModelOpelTruck : 3dObstacle
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY
+		TNT1 A 0 NoDelay
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Wehrmacht")
 		Random: //fall through if set at 0
 		SMGT A -1 A_SpawnItemEx("ModelOpelTruckWindows", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
@@ -1047,7 +1057,7 @@ ACTOR WallLight1Lit : WallLight1
 	States
 	{
 	Spawn:
-		SMGT A 0 NoDelay A_SpawnItemEx("VolumetricLight_ConeDown", 16, 0, 24, 0, 0, 0, 0, SXF_ISTRACER) //for Inactive states, use A_KillTracer to remove the Volumetric light again
+		SMGT A 0 NoDelay A_SpawnItemEx("VolumetricLight_ConeDown", ScaleX*16, 0, ScaleY*24, 0, 0, 0, 0, SXF_ISTRACER) //for Inactive states, use A_KillTracer to remove the Volumetric light again
 		SMGT A -1 LIGHT(OZYWALLT)
 		Stop
 	}
@@ -1096,7 +1106,7 @@ ACTOR SimpleLight1 : SwitchableDecoration
 	{
 	Active:
 		SMGT A 0 NoDelay A_ChangeFlag("DORMANT", false) //update manually on GZDB
-		SMGT A 0 NoDelay A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, 24, 0, 0, 0, 0, SXF_ISTRACER) //for Inactive states, use A_KillTracer to remove the Volumetric light again
+		SMGT A 0 NoDelay A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleY*24, 0, 0, 0, 0, SXF_ISTRACER) //for Inactive states, use A_KillTracer to remove the Volumetric light again
 	Spawn:
 		SMGT A -1
 		stop
@@ -1114,7 +1124,7 @@ ACTOR SimpleLight1Lit : SimpleLight1
 	{
 	Spawn:
 	Active: 
-		SMGT A 0 NoDelay A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, 24, 0, 0, 0, 0, SXF_ISTRACER) //for Inactive states, use A_KillTracer to remove the Volumetric light again
+		SMGT A 0 NoDelay A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleY*24, 0, 0, 0, 0, SXF_ISTRACER) //for Inactive states, use A_KillTracer to remove the Volumetric light again
 		SMGT A -1 LIGHT(OZYSIMLT)
 		Stop
 	Inactive:
@@ -1591,7 +1601,7 @@ ACTOR OldCar_Spawner : 3dObstacle
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY
+		TNT1 A 0 NoDelay
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Olive")
 		TNT1 A 0 A_JumpIf(Args[0]==2, "Red")
 		TNT1 A 0 A_JumpIf(Args[0]==2, "Cyan")
@@ -1676,7 +1686,7 @@ ACTOR COD_FemaleBust : 3dObstacle
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY
+		TNT1 A 0 NoDelay
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Bronze")
 		Silver: //fall through if set at 0
 		SMGT A -1
@@ -1704,7 +1714,7 @@ ACTOR COD_HitlerBust : COD_FemaleBust
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY
+		TNT1 A 0 NoDelay
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Stone")
 		Bronze: //fall through if set at 0
 		SMGT A -1
@@ -1803,7 +1813,7 @@ ACTOR COD_SSHorch : 3dObstacle
 	States
 	{
 		Spawn:
-		SMGT A 0 NODELAY A_SpawnItemEx("COD_SSHorch_Glass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		SMGT A 0 NoDelay A_SpawnItemEx("COD_SSHorch_Glass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
 		SMGT A 0 A_SpawnItemEx("InvisibleBridge32",-48,0,20)
 		SMGT A 0 A_SpawnItemEx("InvisibleBridge32",80,0,36)
 		SMGT A -1 A_SpawnItemEx("InvisibleBridge32",88,0,16)
@@ -1831,7 +1841,7 @@ ACTOR COD_USJeep : 3dObstacle
 	States
 	{
 		Spawn:
-		TNT1 A 0 NODELAY
+		TNT1 A 0 NoDelay
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Damaged")
 		Normal:
 		SMGT A 0 A_SpawnItemEx("COD_USJeep_Glass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
@@ -1868,7 +1878,7 @@ ACTOR CODBike : 3dObstacle
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY
+		TNT1 A 0 NoDelay
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Clean")
 		TNT1 A 0 A_JumpIf(Args[0]==2, "Broken")
 		Random: //fall through if set at 0
@@ -1965,7 +1975,7 @@ ACTOR CODCivCarD_Spawner : 3dObstacle
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY
+		TNT1 A 0 NoDelay
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Tan")
 		TNT1 A 0 A_JumpIf(Args[0]==2, "Red")
 		TNT1 A 0 A_JumpIf(Args[0]==2, "Blue")
@@ -2068,7 +2078,7 @@ ACTOR CODSignal_Light : 3dObstacle
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY
+		TNT1 A 0 NoDelay
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Green")
 		TNT1 A 0 A_JumpIf(Args[0]==2, "Yellow")
 		TNT1 A 0 A_JumpIf(Args[0]==3, "Red")
@@ -2142,7 +2152,7 @@ ACTOR CanyonRockSpawner : 3dObstacle //ozymandias81
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY
+		TNT1 A 0 NoDelay
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Large")
 		TNT1 A 0 A_JumpIf(Args[0]==2, "Medium")
 		TNT1 A 0 A_JumpIf(Args[0]==3, "Small")

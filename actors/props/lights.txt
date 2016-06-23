@@ -680,13 +680,13 @@ ACTOR LightBulb
 	//$Title Light Bulb (off)
 	//$Color 11
 	Radius 4
-	Height 12
+	Height 0
 	+NOGRAVITY
 	+SPAWNCEILING
 	States
 	{
 	Spawn:
-		BULB A -1
+		SMGT A -1
 		Stop
 	}
 }
@@ -697,7 +697,23 @@ ACTOR LightBulbOn : LightBulb
 	States
 	{
 	Spawn:
-		BULB B -1 BRIGHT LIGHT(BOACEIL5)
+		SMGT B -1 BRIGHT LIGHT(BOACEIL5)
+		Stop
+	}
+}
+
+ACTOR LightBulb_Red : LightBulb
+{
+	//$Title Light Bulb, Red (off)
+}
+
+ACTOR LightBulbOn_Red : LightBulb
+{
+	//$Title Light Bulb, Red (on)
+	States
+	{
+	Spawn:
+		SMGT B -1 BRIGHT LIGHT(BOACEIL6)
 		Stop
 	}
 }
