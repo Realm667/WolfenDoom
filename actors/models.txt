@@ -1101,7 +1101,7 @@ ACTOR SimpleLight1 : SwitchableDecoration
 		SMGT A -1
 		stop
 	Inactive:
-		SMGT B 0 NoDelay A_KillTracer //remove the light cone again
+		SMGT B 0 NoDelay A_RemoveTracer(RMVF_EVERYTHING) //remove the light cone again
 		SMGT B -1 LIGHT(OZYSIMLT) A_ChangeFlag("DORMANT", true) //update manually on GZDB
 		Stop	
 	}
@@ -1118,7 +1118,7 @@ ACTOR SimpleLight1Lit : SimpleLight1
 		SMGT A -1 LIGHT(OZYSIMLT)
 		Stop
 	Inactive:
-		SMGT B 0 NoDelay A_KillTracer //remove the light cone again
+		SMGT B 0 NoDelay A_RemoveTracer(RMVF_EVERYTHING) //remove the light cone again
 		SMGT B -1 A_ChangeFlag("DORMANT", true) //update manually on GZDB
 		Stop	
 	}
