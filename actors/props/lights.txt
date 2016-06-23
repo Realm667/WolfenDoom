@@ -174,10 +174,10 @@ ACTOR CeilingLightM : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		SMGT A 0 NoDelay A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, 24, 0, 0, 0, 0, SXF_ISTRACER) //for Inactive states, use A_KillTracer to remove the Volumetric light again
+		SMGT A 0 NoDelay A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, 12, 0, 0, 0, 0, SXF_ISTRACER) //for Inactive states, use A_KillTracer to remove the Volumetric light again
 		SMGT A 0 A_SpawnItemEx("AlertLight", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER)
 		SMGT A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
-		SMGT A -1 Light("BOACEIL2")
+		SMGT A -1 //Light ("BOACEIL2")
 		stop
 	Inactive:
 		SMGT B 0 NoDelay A_RemoveTracer(RMVF_EVERYTHING) //remove the light cone again
