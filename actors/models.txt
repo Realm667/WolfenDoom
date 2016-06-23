@@ -159,7 +159,8 @@ ACTOR TestCrate : 3dObstacle
 	Radius 32
 	Height 64
 	+SOLID
-	+NOGRAVITY
+	-NOGRAVITY
+	-NOTELEPORT
 	States
 	{
 	Spawn:
@@ -1057,7 +1058,7 @@ ACTOR WallLight1Lit : WallLight1
 	States
 	{
 	Spawn:
-		SMGT A 0 NoDelay A_SpawnItemEx("VolumetricLight_ConeDown", ScaleX*16, 0, ScaleY*24, 0, 0, 0, 0, SXF_ISTRACER) //for Inactive states, use A_KillTracer to remove the Volumetric light again
+		SMGT A 0 NoDelay A_SpawnItemEx("VolumetricLight_ConeDown", ScaleX*16, 0, 24, 0, 0, 0, 0, SXF_ISTRACER) //for Inactive states, use A_KillTracer to remove the Volumetric light again
 		SMGT A -1 LIGHT(OZYWALLT)
 		Stop
 	}
@@ -1106,7 +1107,7 @@ ACTOR SimpleLight1 : SwitchableDecoration
 	{
 	Active:
 		SMGT A 0 NoDelay A_ChangeFlag("DORMANT", false) //update manually on GZDB
-		SMGT A 0 NoDelay A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleY*24, 0, 0, 0, 0, SXF_ISTRACER) //for Inactive states, use A_KillTracer to remove the Volumetric light again
+		SMGT A 0 NoDelay A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, 24, 0, 0, 0, 0, SXF_ISTRACER) //for Inactive states, use A_KillTracer to remove the Volumetric light again
 	Spawn:
 		SMGT A -1
 		stop
@@ -1124,7 +1125,7 @@ ACTOR SimpleLight1Lit : SimpleLight1
 	{
 	Spawn:
 	Active: 
-		SMGT A 0 NoDelay A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleY*24, 0, 0, 0, 0, SXF_ISTRACER) //for Inactive states, use A_KillTracer to remove the Volumetric light again
+		SMGT A 0 NoDelay A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, 24, 0, 0, 0, 0, SXF_ISTRACER) //for Inactive states, use A_KillTracer to remove the Volumetric light again
 		SMGT A -1 LIGHT(OZYSIMLT)
 		Stop
 	Inactive:
