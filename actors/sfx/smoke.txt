@@ -9,16 +9,21 @@ ACTOR PuffSmoke
 	+CLIENTSIDEONLY
 	+WINDTHRUST
 	RenderStyle "Translucent"
-	Alpha 0.5
+	Alpha 0.1
 	Scale 0.04
 	States
 	{
 	Spawn:
+		TNT1 A 0 NODELAY A_SetScale(ScaleX*(frandom(0.7,1.0)), ScaleY*(frandom(0.7,1.0)))
 		TNT1 A 0 NODELAY A_Jump(256,1,2)
 		GRM2 A 0 A_Jump(256,"End")
 		GRM1 A 0 A_Jump(256,"End")
 	End:
-		"####" AAAAAAAAAAAAAAAA 2 A_FadeOut(0.025)
+		"####" AAAAAAAAA 1 A_FadeIn(0.04)
+		"####" AAAAAAAAAAAAAAAA 2 {
+						A_FadeOut(0.025);
+						A_SetScale(ScaleX*1.02, ScaleY*1.02);
+					  }
 		stop
 	}
 }
@@ -29,18 +34,19 @@ ACTOR PowerPlantSmokePuffSmall : PuffSmoke {Scale 0.32}
 ACTOR PowerPlantSmokeGenerator : SwitchableDecoration
 {
 	//$Category Special Effects (Wolf3D)
-	//$Title Power Plant Smoke Generator (Normal)
+	//$Title Smoke Generator (Normal)
 	//$Color 12
 	+NOGRAVITY
 	+INVULNERABLE
 	+SHOOTABLE
 	+NOINTERACTION
+	+CLIENTSIDEONLY
 	States
 	{
 	Spawn:
 	Active:
 		TNT1 A 0 A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
-		TNT1 A 70 A_SpawnItemEx("PowerPlantSmokeGeneratorFX")
+		TNT1 A 4 A_SpawnItemEx("PowerPlantSmokePuff", random(-3,3), random(-3,3), 0, 0, 0, 3)
 		loop
 	Inactive:
 		TNT1 A -1
@@ -51,6 +57,7 @@ ACTOR PowerPlantSmokeGenerator : SwitchableDecoration
 	}
 }
 
+/* removed, why so complicated? T667
 ACTOR PowerPlantSmokeGeneratorFX
 {
 	+CLIENTSIDEONLY
@@ -62,11 +69,12 @@ ACTOR PowerPlantSmokeGeneratorFX
 		stop
 	}
 }
+*/
  
 ACTOR PowerPlantSmokeGeneratorSmall : SwitchableDecoration
 {
 	//$Category Special Effects (Wolf3D)
-	//$Title Power Plant Smoke Generator (Small)
+	//$Title Smoke Generator (Small)
 	//$Color 12
 	+CLIENTSIDEONLY
 	+NOINTERACTION
@@ -75,7 +83,7 @@ ACTOR PowerPlantSmokeGeneratorSmall : SwitchableDecoration
 	Spawn:
 	Active:
 		TNT1 A 0 A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
-		TNT1 A 2 A_SpawnItemEx("PowerPlantSmokePuffSmall", random(-8,8), random(-8,8), 0, 0, 0, 3)
+		TNT1 A 4 A_SpawnItemEx("PowerPlantSmokePuffSmall", random(-8,8), random(-8,8), 0, 0, 0, 3)
 		loop
 	Inactive:
 		TNT1 A -1
@@ -89,14 +97,14 @@ ACTOR PowerPlantSmokeGeneratorSmall : SwitchableDecoration
 ACTOR PowerPlantSmokeGenerator2 : PowerPlantSmokeGenerator
 {
 	//$Category Special Effects (Wolf3D)
-	//$Title Power Plant Smoke Generator (Special)
+	//$Title Smoke Generator (Special)
 	//$Color 12
 	States
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 	Active:
-		TNT1 A 70 A_SpawnItemEx("PowerPlantSmokeGeneratorFX2")
+		TNT1 A 4 A_SpawnItemEx("PowerPlantSmokePuff", random(-32,32), random(-32,32), 0, 0, 0, -3)
 		loop
 	Inactive:
 		TNT1 A -1
@@ -107,6 +115,7 @@ ACTOR PowerPlantSmokeGenerator2 : PowerPlantSmokeGenerator
 	}
 }
 
+/* removed, why so complicated? T667
 ACTOR PowerPlantSmokeGeneratorFX2
 {
 	+CLIENTSIDEONLY
@@ -118,6 +127,7 @@ ACTOR PowerPlantSmokeGeneratorFX2
 		stop
 	}
 }
+*/
 
 /////////////////////////////
 // ACTORS FOR VOLCANO MAPS // by Tormentor667
