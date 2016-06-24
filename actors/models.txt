@@ -1044,17 +1044,18 @@ ACTOR ModelOpelTruckWindows : ModelBase
 
 ACTOR WallLight1 : 3dObstacle
 {
-	//$Category Light Sources (Wolf3D)
-	//$Title Wall Light (off)
+	//$Category Light Sources (Wolf3D)/Static
+	//$Title Wall Light (off, static)
 	//$Color 11
 	Radius 16
 	Height 16
 	+NOGRAVITY
+	-SOLID
 }
 
 ACTOR WallLight1Lit : WallLight1
 {
-	//$Title Wall Light (on)
+	//$Title Wall Light (on, static)
 	States
 	{
 	Spawn:
@@ -1066,17 +1067,18 @@ ACTOR WallLight1Lit : WallLight1
 
 ACTOR WallLight2 : 3dObstacle
 {
-	//$Category Light Sources (Wolf3D)
-	//$Title Wall Lantern (off)
+	//$Category Light Sources (Wolf3D)/Static
+	//$Title Wall Lantern (off, static)
 	//$Color 11
 	Radius 14
 	Height 48
 	+NOGRAVITY
+	-SOLID
 }
 
 ACTOR WallLight2Lit : WallLight2
 {
-	//$Title Wall Lantern (on)
+	//$Title Wall Lantern (on, static)
 	States
 	{
 	Spawn:
@@ -1106,31 +1108,40 @@ ACTOR SimpleLight1 : SwitchableDecoration
 	States
 	{
 	Active:
-		SMGT A 0 NoDelay A_ChangeFlag("DORMANT", false) //update manually on GZDB
-		SMGT A 0 NoDelay A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, 24, 0, 0, 0, 0, SXF_ISTRACER) //for Inactive states, use A_KillTracer to remove the Volumetric light again
+		SMGT A 0 A_ChangeFlag("DORMANT", false)
 	Spawn:
+	  SMGT A 0 NoDelay
+	Activate:
 		SMGT A -1
-		stop
+		Loop
 	Inactive:
-		SMGT B 0 NoDelay A_RemoveTracer(RMVF_EVERYTHING) //remove the light cone again
-		SMGT B -1 LIGHT(OZYSIMLT) A_ChangeFlag("DORMANT", true) //update manually on GZDB
+		SMGT A 0 A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*24, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+	InactiveLights:
+		SMGT A 0 A_ChangeFlag("DORMANT", true)
+		SMGT A 0 A_RemoveChildren(TRUE, RMVF_MISC)
+		SMGT B -1 LIGHT(OZYSIMLT)
 		Stop	
 	}
 }
 
 ACTOR SimpleLight1Lit : SimpleLight1
 {
-	//$Title Simple Light (on)
+	//$Title Simple Light (on, Set DORMANT & activate it via ACS)
 	States
 	{
+	Active:
+		SMGT A 0 A_ChangeFlag("DORMANT", false)
 	Spawn:
-	Active: 
-		SMGT A 0 NoDelay A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, 24, 0, 0, 0, 0, SXF_ISTRACER) //for Inactive states, use A_KillTracer to remove the Volumetric light again
-		SMGT A -1 LIGHT(OZYSIMLT)
-		Stop
+	  SMGT A 0 NoDelay
+	ActiveLights:
+		SMGT A 0 A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*24, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+	Activate:
+		SMGT A 1 LIGHT(OZYSIMLT)
+		Loop
 	Inactive:
-		SMGT B 0 NoDelay A_RemoveTracer(RMVF_EVERYTHING) //remove the light cone again
-		SMGT B -1 A_ChangeFlag("DORMANT", true) //update manually on GZDB
+		SMGT A 0 A_ChangeFlag("DORMANT", true)
+		SMGT A 0 A_RemoveChildren(TRUE, RMVF_MISC)
+		SMGT B -1
 		Stop	
 	}
 }
@@ -2035,14 +2046,12 @@ ACTOR CODScheinwerfer : SwitchableDecoration
 ACTOR CODNeoLights1 : SwitchableDecoration
 {
 	//$Category Light Sources (Wolf3D)
-	//$Title Neoclassical Wall Light A (Set DORMANT & activate it via ACS)
+	//$Title Neoclassical Wall Light (Set DORMANT & activate it via ACS)
 	//$Color 11
 	Radius 8
 	Height 24
 	Mass 0x7fffffff
 	Health -1
-	//+ACTLIKEBRIDGE
-	//+CANPASS
 	+DONTSPLASH
 	+NOBLOOD
 	+NOBLOODDECALS
