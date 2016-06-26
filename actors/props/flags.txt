@@ -44,7 +44,7 @@ ACTOR NazibannerM : SwitchableDecoration
 	States
 	{
 	Spawn:
-		SMGT A -1
+		MDLA A -1
 		Stop
 	Death:
 		TNT1 A 0 A_UnSetSolid
@@ -65,7 +65,7 @@ ACTOR NazibannerM : SwitchableDecoration
 		FLAG E -1
 		Stop
 	Inactive:
-		SMGT A 0 A_UnsetSolid
+		MDLA A 0 A_UnsetSolid
 		"####" A -1 A_SetInvulnerable
 		Stop
 	}
@@ -77,10 +77,10 @@ ACTOR NazibannerM2 : NaziBannerM
 	States
 	{
 	Spawn:
-		SMGT A -1
+		MDLA A -1
 		Stop
 	Inactive:
-		SMGT A 0 A_UnsetSolid
+		MDLA A 0 A_UnsetSolid
 		"####" A -1 A_SetInvulnerable
 		Stop
 	}

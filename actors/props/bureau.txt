@@ -152,7 +152,7 @@ ACTOR Chair1
 	States
 	{
 	Spawn:
-		SMGT A -1
+		MDLA A -1
 		Stop
 	}
 }
@@ -368,12 +368,12 @@ ACTOR ChanGold : SwitchableDecoration //3d actor
 	States
 	{
 	Active:
-		SMGT A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+		MDLA A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 	Spawn:
-	  SMGT A -1 LIGHT("3DCHAN")
+	  MDLA A -1 LIGHT("3DCHAN")
 	  Stop
 	Inactive:
-		SMGT B -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		MDLA B -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		Stop
 	}
 }

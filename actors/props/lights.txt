@@ -37,11 +37,11 @@ ACTOR Chandelier1Switchable : SwitchableDecoration
 	States
 	{
 	Active:
-		SMGT A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+		MDLA A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 	Spawn:
-	  SMGT A 0 NoDelay A_PlaySound("FIRE_SMALL", CHAN_BODY, 0.6 - args[0], true)
+	  MDLA A 0 NoDelay A_PlaySound("FIRE_SMALL", CHAN_BODY, 0.6 - args[0], true)
 	ActiveFlames: //ozy. let's apply these nice flames on candles first - coords be damned
-		SMGT A 0 {
+		MDLA A 0 {
 			A_SpawnItemEx("3dFlame_Normal", ScaleX*1, 	ScaleY*33, 	ScaleX+ScaleY*14, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
 			A_SpawnItemEx("3dFlame_Normal", ScaleX*1, 	ScaleY*-31, ScaleX+ScaleY*5, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
 			A_SpawnItemEx("3dFlame_Normal", ScaleX*24, 	ScaleY*23, 	ScaleX+ScaleY*7, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
@@ -51,11 +51,11 @@ ACTOR Chandelier1Switchable : SwitchableDecoration
 			A_SpawnItemEx("3dFlame_Normal", ScaleX*-22, ScaleY*23, 	ScaleX+ScaleY*5, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
 			A_SpawnItemEx("3dFlame_Normal", ScaleX*24, 	ScaleY*-22, ScaleX+ScaleY*8, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);}
 	Activate:
-		SMGT A 1 //LIGHT ("FireSpawnerSmall")
+		MDLA A 1 //LIGHT ("FireSpawnerSmall")
 		Loop
 	Inactive:
-		SMGT A 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
-		SMGT A 0 A_RemoveChildren(TRUE, RMVF_MISC) //ozy. remove flames if deactivated
+		MDLA A 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		MDLA A 0 A_RemoveChildren(TRUE, RMVF_MISC) //ozy. remove flames if deactivated
 		"####" A -1 A_StopSound(CHAN_BODY)
 		Stop
 	}
@@ -80,11 +80,11 @@ ACTOR Chandelier2Switchable : SwitchableDecoration
 	States
 	{
 	Active:
-		SMGT A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+		MDLA A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 	Spawn:
-	  SMGT A 0 NoDelay A_PlaySound("FIRE_SMALL", CHAN_BODY, 0.6 - args[0], true)
+	  MDLA A 0 NoDelay A_PlaySound("FIRE_SMALL", CHAN_BODY, 0.6 - args[0], true)
 	ActiveFlames:
-		SMGT A 0 {
+		MDLA A 0 {
 			A_SpawnItemEx("3dFlame_Normal", ScaleX*0,			ScaleY*26, 		ScaleX+ScaleY*10, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
 			A_SpawnItemEx("3dFlame_Normal", ScaleX*0,			ScaleY*-26.5, ScaleX+ScaleY*6, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
 			A_SpawnItemEx("3dFlame_Normal", ScaleX*18.7, 	ScaleY*18.2, 	ScaleX+ScaleY*7, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
@@ -94,11 +94,11 @@ ACTOR Chandelier2Switchable : SwitchableDecoration
 			A_SpawnItemEx("3dFlame_Normal", ScaleX*-18.8, ScaleY*18.7, 	ScaleX+ScaleY*5, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
 			A_SpawnItemEx("3dFlame_Normal", ScaleX*19.2, 	ScaleY*-18.9, ScaleX+ScaleY*8, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);}
 	Activate:
-		SMGT A 1
+		MDLA A 1
 		Loop
 	Inactive:
-		SMGT A 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
-		SMGT A 0 A_RemoveChildren(TRUE, RMVF_MISC) //ozy. remove flames if deactivated
+		MDLA A 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		MDLA A 0 A_RemoveChildren(TRUE, RMVF_MISC) //ozy. remove flames if deactivated
 		"####" A -1 A_StopSound(CHAN_BODY)
 		Stop
 	}
@@ -173,18 +173,18 @@ ACTOR CeilingLightM : SwitchableDecoration
 	States
 	{
 	Active:
-		SMGT A 0 A_ChangeFlag("DORMANT", false)
+		MDLA A 0 A_ChangeFlag("DORMANT", false)
 	Spawn:
-	  SMGT A 0 NoDelay
+	  MDLA A 0 NoDelay
 	ActiveLights:
-		SMGT A 0 A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*12, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+		MDLA A 0 A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*12, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
 	Activate:
-		SMGT A 1
+		MDLA A 1
 		Loop
 	Inactive:
-		SMGT A 0 A_ChangeFlag("DORMANT", true)
-		SMGT A 0 A_RemoveChildren(TRUE, RMVF_MISC)
-		SMGT B -1
+		MDLA A 0 A_ChangeFlag("DORMANT", true)
+		MDLA A 0 A_RemoveChildren(TRUE, RMVF_MISC)
+		MDLA B -1
 		Stop
 	}
 }
@@ -198,9 +198,9 @@ ACTOR CeilingLightM2 : CeilingLightM
 	States
 	{
 	ActiveLights:
-		SMGT A 0 A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*8, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+		MDLA A 0 A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*8, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
 	Activate:
-		SMGT A 1
+		MDLA A 1
 		Loop
 	}
 }
@@ -216,17 +216,17 @@ ACTOR StreetLight1 : SwitchableDecoration
 	States
 	{
 	Active:
-		SMGT A 0 A_ChangeFlag("DORMANT", false)
-		SMGT A 0 A_RemoveChildren(TRUE, RMVF_MISC)
+		MDLA A 0 A_ChangeFlag("DORMANT", false)
+		MDLA A 0 A_RemoveChildren(TRUE, RMVF_MISC)
 	Spawn:
-		SMGT B -1
+		MDLA B -1
 		Stop
 	Inactive:
-		SMGT A 0 A_ChangeFlag("DORMANT", true)
+		MDLA A 0 A_ChangeFlag("DORMANT", true)
 	InactiveLights:
-		SMGT A 0 A_SpawnItemEx("VolumetricLight_ConeDown", ScaleX*50, 0, ScaleX+ScaleY*128, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+		MDLA A 0 A_SpawnItemEx("VolumetricLight_ConeDown", ScaleX*50, 0, ScaleX+ScaleY*128, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
 	InactiveStop:
-		SMGT A 1 Light("LIGHTPOSTLIGHT")
+		MDLA A 1 Light("LIGHTPOSTLIGHT")
 		Loop
 	}
 }
@@ -237,18 +237,18 @@ ACTOR StreetLight1Lit : StreetLight1
 	States
 	{
 	Active:
-		SMGT A 0 A_ChangeFlag("DORMANT", false)
+		MDLA A 0 A_ChangeFlag("DORMANT", false)
 	Spawn:
-		SMGT A 0 NoDelay
+		MDLA A 0 NoDelay
 	ActiveLights:
-		SMGT A 0 A_SpawnItemEx("VolumetricLight_ConeDown", ScaleX*50, 0, ScaleX+ScaleY*128, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+		MDLA A 0 A_SpawnItemEx("VolumetricLight_ConeDown", ScaleX*50, 0, ScaleX+ScaleY*128, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
 	Activate:
-		SMGT A 1 Light("LIGHTPOSTLIGHT")
+		MDLA A 1 Light("LIGHTPOSTLIGHT")
 		Loop
 	Inactive:
-		SMGT A 0 A_ChangeFlag("DORMANT", true)
-		SMGT A 0 A_RemoveChildren(TRUE, RMVF_MISC)
-		SMGT B -1
+		MDLA A 0 A_ChangeFlag("DORMANT", true)
+		MDLA A 0 A_RemoveChildren(TRUE, RMVF_MISC)
+		MDLA B -1
 		Stop
 	}
 }
@@ -264,12 +264,12 @@ ACTOR StreetLight2 : SwitchableDecoration
 	States
 	{
 	Active:
-		SMGT C 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+		MDLA C 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 	Spawn:
-		SMGT C -1 Light("BOASTLT2")
+		MDLA C -1 Light("BOASTLT2")
 		stop
 	Inactive:
-		SMGT A -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		MDLA A -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		Stop
 	}
 }
@@ -285,12 +285,12 @@ ACTOR StreetLight3 : SwitchableDecoration
 	States
 	{
 	Active:
-		SMGT D 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+		MDLA D 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
 	Spawn:
-		SMGT D -1 Light("BOASTLT3")
+		MDLA D -1 Light("BOASTLT3")
 		stop
 	Inactive:
-		SMGT B -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		MDLA B -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		Stop
 	}
 }
@@ -307,7 +307,7 @@ ACTOR LightBulb
 	States
 	{
 	Spawn:
-		SMGT A -1
+		MDLA A -1
 		Stop
 	}
 }
@@ -318,7 +318,7 @@ ACTOR LightBulbOn : LightBulb
 	States
 	{
 	Spawn:
-		SMGT B -1 BRIGHT LIGHT(BOACEIL5)
+		MDLA B -1 BRIGHT LIGHT(BOACEIL5)
 		Stop
 	}
 }
@@ -334,7 +334,7 @@ ACTOR LightBulbOn_Red : LightBulb
 	States
 	{
 	Spawn:
-		SMGT B -1 BRIGHT LIGHT(BOACEIL6)
+		MDLA B -1 BRIGHT LIGHT(BOACEIL6)
 		Stop
 	}
 }

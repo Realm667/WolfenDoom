@@ -17,10 +17,10 @@ ACTOR ToiletShootable
 	States
 	{
 	Spawn:
-		SMGT A -1
+		MDLA A -1
 		Stop
 	Death:
-		SMGT A 2 A_Scream
+		MDLA A 2 A_Scream
 		TOIL BC 2
 	Broken:
 		TOIL D 2 A_PlaySound ("toilet/broken", 0, 1.0, 1, 5)
@@ -94,7 +94,7 @@ ACTOR WashingDish
 	States
 	{
 	Spawn:
-		SMGT A -1
+		MDLA A -1
 		Stop
 	}
 }
