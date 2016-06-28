@@ -9,15 +9,15 @@ ACTOR RollingBoulderGrey
 	BounceFactor 0.7
 	BounceType Doom
 	Obituary "$BOULDER"
-	+RIPPER
-	+DONTRIP
 	+BOUNCEONFLOORS
+	+DONTRIP
+	+DROPOFF
+	+MISSILE
 	+NOBOUNCESOUND
 	+NODAMAGETHRUST
 	+NOEXTREMEDEATH
+	+RIPPER
 	+SOLID
-	+DROPOFF
-	+MISSILE
 	DeathSound "boulder/stop"
 	States
 	{
@@ -37,14 +37,14 @@ ACTOR RollingBoulderGreyHugger : RollingBoulderGrey
 {
 	Gravity 1
 	BounceType None
-	-DONTRIP
 	-BOUNCEONFLOORS
+	-DONTRIP
 	-NOBOUNCESOUND
 	-SOLID
-	+NOBLOCKMAP
 	+ACTIVATEIMPACT
 	+ACTIVATEPCROSS
 	+FLOORHUGGER
+	+NOBLOCKMAP
 }
 
 ACTOR RollingBoulderBrown : RollingBoulderGrey
@@ -65,8 +65,8 @@ ACTOR RollingBoulderBrown : RollingBoulderGrey
 
 ACTOR RollingBoulderBrownHugger : RollingBoulderGreyHugger
 {
-  States
-  {
+	States
+	{
 	Spawn:
 		BBOL A 2 NODELAY A_PlaySound("Boulder/Roll",5,1,1)
 		"####" BCDA 2 A_Quake(1,2,0,192,"")
@@ -203,7 +203,7 @@ ACTOR NailFlame : Nail
 	States
 	{
 	Spawn:
-		DARF A 1 BRIGHT Light("Chandelier4")A_SpawnItemEx("NailBlur")
+		DARF A 1 BRIGHT Light("Chandelier4") A_SpawnItemEx("NailBlur")
 		loop
 	Crash:
 	Death:

@@ -10,7 +10,6 @@ ACTOR ExTeleportIfPlayerBelow 5998
 	Radius 16
 	Height 16
 	RenderStyle "None"
-
 	+NOGRAVITY
 	
 	States
@@ -19,12 +18,10 @@ ACTOR ExTeleportIfPlayerBelow 5998
 			TELE D 2
 			"####" D 4 A_LookEx(LOF_NOSOUNDCHECK, 0, 152, 0, 360)
 			loop
-
 		See:
 			"####" D 4 A_CheckSight("Spawn")
 			"####" D 0 A_JumpIf(CallACS("ExGetPlayerZ") < z, "Teleport")
 			loop
-
 		Teleport:
 			"####" D 0 ACS_NamedExecute("ExTeleportPlayer", 0, TID, args[0])
 			"####" D 8
@@ -49,4 +46,3 @@ ACTOR ExTeleportIfPlayerAbove : ExTeleportIfPlayerBelow 5999
 			loop
 	}
 }
-

@@ -181,6 +181,7 @@ ACTOR SupplyChest : SwitchableDecoration
 		Stop
 	}
 }
+
 ACTOR EmptySupplyChest
 {
 	States
@@ -190,6 +191,7 @@ ACTOR EmptySupplyChest
 		Stop
 	}
 }
+
 ACTOR SupplyChest100Coins : CustomInventory
 {
 	+INVENTORY.ALWAYSPICKUP
@@ -208,6 +210,7 @@ ACTOR SupplyChest100Coins : CustomInventory
 		Stop
 	}
 }
+
 ACTOR SupplyChest75Coins : SupplyChest100Coins
 {
 	Inventory.PickupMessage "$75COINS"
@@ -218,6 +221,7 @@ ACTOR SupplyChest75Coins : SupplyChest100Coins
 		Stop
 	}
 }
+
 ACTOR SupplyChest25Coins : SupplyChest100Coins
 {
 	Inventory.PickupMessage "$25COINS"
@@ -228,6 +232,7 @@ ACTOR SupplyChest25Coins : SupplyChest100Coins
 		Stop
 	}
 }
+
 ACTOR SupplyChestKar98k : SupplyChest100Coins
 {
 	Inventory.PickupMessage "$KARCHEST"
@@ -238,6 +243,7 @@ ACTOR SupplyChestKar98k : SupplyChest100Coins
 		Stop
 	}
 }
+
 ACTOR SupplyChestBackpack : SupplyChest100Coins
 {
 	Inventory.PickupMessage "$SUPCHEST"
@@ -248,6 +254,7 @@ ACTOR SupplyChestBackpack : SupplyChest100Coins
 		Stop
 	}
 }
+
 ACTOR SupplyChestGrenades : SupplyChest100Coins
 {
 	Inventory.PickupMessage "$GRECHEST"

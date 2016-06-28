@@ -15,7 +15,7 @@ ACTOR CKShikadiSoda : SingleCoin
 		CKPU AB 15 
 		loop
 	Pickup:
-		CKPU C 5 A_GiveInventory("CoinItem",1)
+		"####" C 5 A_GiveInventory("CoinItem",1)
 		stop
 	}
 }
@@ -190,7 +190,7 @@ ACTOR CKRedKey : BoARedKey
 
 ACTOR CKRedKeyPod : SwitchableDecoration
 {
-    //$Category Misc (Wolf3D)/Commander Keen
+	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Gempod, red
 	//$Color 13
 	Radius 16
@@ -201,7 +201,7 @@ ACTOR CKRedKeyPod : SwitchableDecoration
 	States
 	{
 	Spawn:
-	InActive:
+	Inactive:
 		CKKS B -1
 		Stop
 	Active:
@@ -219,7 +219,7 @@ ACTOR CKBlueKeyPod : CKRedKeyPod
 	States
 	{
 	Spawn:
-	InActive:
+	Inactive:
 		CKKS D -1
 		Stop
 	Active:
@@ -237,7 +237,7 @@ ACTOR CKYellowKeyPod : CKRedKeyPod
 	States
 	{
 	Spawn:
-	InActive:
+	Inactive:
 		CKKS F -1
 		Stop
 	Active:
