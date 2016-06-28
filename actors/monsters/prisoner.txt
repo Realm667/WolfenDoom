@@ -24,13 +24,13 @@ ACTOR PrisonerAgent
 	+JUMPDOWN
 	+LOOKALLAROUND
 	+NOBLOCKMONST
+	+NODAMAGE
 	+NOFEAR
 	+NOTAUTOAIMED
 	+NOTELEPORT
 	+NOTELESTOMP
 	+PUSHABLE
 	+SLIDESONWALLS
-	+NODAMAGE
 	-COUNTKILL
 	States
 	{
@@ -174,7 +174,6 @@ ACTOR HealingParticle
 	{
 	Spawn:
 		HELX A 0 NODELAY A_SetScale(FRandom(0.2, 0.6))
-		
 		HELX AAAAAAAAAA 1 A_FadeIn(0.07)
 		HELX AAAAAAAAAA 8 A_FadeOut(0.08)
 	Death:
@@ -200,11 +199,11 @@ ACTOR PrisonerEnemyBoss : DirtyDarren
 	Painchance 40
 	Mass 800
 	Speed 5
-	+BOSS
 	+AVOIDMELEE
-	+MISSILEMORE
-	+MISSILEEVENMORE
+	+BOSS
 	+LOOKALLAROUND
+	+MISSILEEVENMORE
+	+MISSILEMORE
 	States
 	{
 	Spawn:
@@ -315,8 +314,8 @@ ACTOR PrisonerCampMale : PrisonerAgent //this is a placeholder for now
 	+FRIGHTENED
 	+JUMPDOWN
 	+LOOKALLAROUND
-	-NOBLOCKMONST
 	-BOSSDEATH
+	-NOBLOCKMONST
 	-NODAMAGE
 	-NOFEAR
 	States

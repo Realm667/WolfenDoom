@@ -3,11 +3,6 @@ ACTOR AracnorbQueen
 	//$Category Monsters (Wolf3D)/Critters
 	//$Title Aracnorb Queen (Boss)
 	//$Color 4
-	MONSTER
-	+NOGRAVITY
-	+FLOAT
-	+FLOATBOB
-	+BOSS
 	Health 5000
 	Radius 48
 	Height 96
@@ -25,6 +20,11 @@ ACTOR AracnorbQueen
 	HitObituary "$QUEEN2"
 	Tag "???"
 	Scale 1.15
+	MONSTER
+	+BOSS
+	+FLOAT
+	+FLOATBOB
+	+NOGRAVITY
 	States
 	{
 	Spawn:

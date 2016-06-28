@@ -7,9 +7,9 @@ ACTOR TankSmoke : PuffSmoke //connections with GuardSoul smoke
 	Speed 2
 	Alpha 0.0001
 	Projectile
-	-DROPOFF
 	-ACTIVATEIMPACT
 	-ACTIVATEPCROSS
+	-DROPOFF
 	+DONTSPLASH
 	States
 	{
@@ -106,9 +106,9 @@ ACTOR NebBoom : TankBoom
 ACTOR TankFire : Nuke
 {
 	RenderStyle "Add"
-	+NOINTERACTION
 	+DONTSPLASH
 	+EXPLODEONWATER
+	+NOINTERACTION
 	Scale 0.5
 	States
 	{
@@ -361,18 +361,18 @@ actor SSTank1
 	Speed 2.66666667
 	MinMissileChance 160
 	Tag "Panther Panzer IV"
-	+SLIDESONWALLS //ozy81 - avoid incorrect clipping
-	+NOBLOODDECALS
-	+NOINFIGHTING //ozy81
-	+SYNCHRONIZED
-	+MISSILEMORE
-	+NORADIUSDMG
-	+FLOORCLIP
-	+DONTMORPH
-	+BOSSDEATH
-	+PAINLESS
-	+SOLID
 	+BOSS
+	+BOSSDEATH
+	+DONTMORPH
+	+FLOORCLIP
+	+MISSILEMORE
+	+NOBLOODDECALS
+	+NOINFIGHTING	//ozy81
+	+NORADIUSDMG
+	+PAINLESS
+	+SLIDESONWALLS	//ozy81 - avoid incorrect clipping
+	+SOLID
+	+SYNCHRONIZED	//ozy81 - added for 3dmodels synch
 	Monster
 	Obituary "$TANKS"
 	Species Nazi
@@ -447,13 +447,13 @@ ACTOR DestroyedTank1
 	Radius 88
 	Height 96
 	Mass 0x7ffffff
-	+NOBLOODDECALS
-	+NOTAUTOAIMED
-	+INVULNERABLE
-	+SHOOTABLE
 	+FLOORCLIP
-	+NODAMAGE
+	+INVULNERABLE
 	+NOBLOOD
+	+NOBLOODDECALS
+	+NODAMAGE
+	+NOTAUTOAIMED
+	+SHOOTABLE
 	+SOLID
 	BloodType "TankSpark"
 	States

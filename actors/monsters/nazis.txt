@@ -7,11 +7,11 @@ ACTOR Nazi
 	Speed 2
 	var int user_incombat;
 	Monster
-	+DONTHARMSPECIES
-	+FLOORCLIP
 	+BOSSDEATH
 	+CANBLAST //needed for kicks - ozy81
 	+DONTGIB
+	+DONTHARMSPECIES
+	+FLOORCLIP
 	States
 	{
 	Look:
@@ -1191,13 +1191,13 @@ ACTOR MutantSmoke
 	Gravity 0.3
 	Alpha 0.5
 	VSpeed 2.5
-	+FORCEXYBILLBOARD
-	+MOVEWITHSECTOR
-	+WINDTHRUST
 	+DONTSPLASH
+	+FORCEXYBILLBOARD
+	+MISSILE
+	+MOVEWITHSECTOR
 	+NOBLOCKMAP
 	+NOGRAVITY
-	+MISSILE
+	+WINDTHRUST
 	RenderStyle "Shaded"
 	StencilColor "E0 00 E0"
 	States
@@ -1564,7 +1564,7 @@ ACTOR General : RocketMan replaces Archvile
 
 ACTOR MarineGeneral : General
 {
-//$Category Monsters (Wolf3D)/Bosses
+	//$Category Monsters (Wolf3D)/Bosses
 	//$Title General Seeteufel (Boss)
 	//$Color 4
 	Obituary "$GENERAL"
@@ -1575,8 +1575,8 @@ ACTOR MarineGeneral : General
 	DropItem "NebAmmoSmall" 128
 	DropItem "NebAmmoSmall" 128
 	DropItem "NebAmmoSmall" 128
-	+MISSILEEVENMORE
 	+BOSS
+	+MISSILEEVENMORE
 	Tag "Gen. Seeteufel"
 	States
 	{
@@ -1726,10 +1726,10 @@ ACTOR HitlerGhost : Nazi
 	PainChance 24
 	DeathSound "hitlerghost/die"
 	SeeSound "hitlerghost/see"
-	+FLOAT
 	+BOSS
-	+NOGRAVITY
+	+FLOAT
 	+NOBLOOD
+	+NOGRAVITY
 	-FLOORCLIP
 	Tag "Hitler's Ghost"
 	States
@@ -1789,24 +1789,24 @@ ACTOR Geist : Nazi
 	//$Category Monsters (Wolf3D)/Occult
 	//$Title Geist
 	//$Color 4
-	+LOOKALLAROUND
-	Scale 1.2
-	Obituary "$GEIST"
 	Health 100
-	Radius 16
 	Mass 1000
+	Radius 16
+	Scale 1.2
 	Speed 5
+	FloatSpeed 1.33
+	Obituary "$GEIST"
 	PainChance 255
+	PainSound "geist/pain"
+	DeathSound "geist/die"
 	RenderStyle "Translucent"
 	Alpha .5
-	DeathSound "geist/die"
-	PainSound "geist/pain"
-	FloatSpeed 1.33
-	-FLOORCLIP
-	+FLOAT
-	+NOGRAVITY
 	+DONTFALL
+	+FLOAT
+	+LOOKALLAROUND
 	+NOBLOOD
+	+NOGRAVITY
+	-FLOORCLIP
 	States
 	{
 	Spawn:
@@ -1974,7 +1974,6 @@ ACTOR MiniShip : Nazi
 	//$Category Monsters (Wolf3D)
 	//$Title Miniship
 	//$Color 4
-	+LOOKALLAROUND
 	Obituary "$NAZISHIP"
 	Health 375
 	Speed 3.25
@@ -1983,10 +1982,11 @@ ACTOR MiniShip : Nazi
 	DeathSound "world/barrelboom"
 	PainChance 96
 	FloatSpeed .67
-	-FLOORCLIP
 	+FLOAT
-	+NOGRAVITY
+	+LOOKALLAROUND
 	+NOBLOOD
+	+NOGRAVITY
+	-FLOORCLIP
 	States
 	{
 	Spawn:
@@ -2079,7 +2079,6 @@ ACTOR DeathKnight : Nazi
 	//$Category Monsters (Wolf3D)/Bosses
 	//$Title Todesritter (Boss)
 	//$Color 4
-	+LOOKALLAROUND
 	Scale 1.5
 	Obituary "$DKNIGHT"
 	Tag "Todesritter"
@@ -2096,8 +2095,9 @@ ACTOR DeathKnight : Nazi
 	DropItem "9mmAmmo" 128
 	DropItem "NebAmmoSmall" 256
 	DropItem "9mmAmmo" 128
-	+MISSILEEVENMORE
 	+BOSS
+	+LOOKALLAROUND
+	+MISSILEEVENMORE
 	+NORADIUSDMG
 	States
 	{
@@ -2280,11 +2280,11 @@ ACTOR ChairGuy : Nazi
 	DropItem GrenadePickup,128
 	DropItem GrenadePickup,128
 	DropItem GrenadePickup,128
+	+BOSS
+	+FLOAT
 	+LOOKALLAROUND
 	+MISSILEEVENMORE
-	+BOSS
 	+NOGRAVITY
-	+FLOAT
 	States
 	{
 	Spawn:
@@ -2350,8 +2350,8 @@ ACTOR FatMan : NaziBoss
 	//$Title General Schwabbelhals (Boss)
 	//$Color 4
 	+BOSS
-	-NOGRAVITY	//we don't want him to fly, yeah? ;)
 	-FLOAT			//we don't want him to fly, yeah? ;)
+	-NOGRAVITY	//we don't want him to fly, yeah? ;)
 	PainChance 64
 	Tag "Gen. Schwabbelhals"
 	Obituary "$FATMAN"
@@ -2463,8 +2463,8 @@ ACTOR UberMutant : Mutant
 	DeathSound "baron/death"
 	Obituary "$OB_BARON"
 	HitObituary "$UBERMUTN"
-	+LOOKALLAROUND
 	+BOSS
+	+LOOKALLAROUND
 	States
 	{
 	Spawn:
@@ -2609,14 +2609,14 @@ ACTOR Sniper_Crouch : Guard
 	//$Title Afrika Korps Sniper (crouch)
 	//$Color 4
 	Obituary "$SNIPER"
-	Mass 1000 //Make it not move too far
-	SeeSound "" //Make them not cry, they are in disguise after all
+	Mass 1000		//Make it not move too far
+	SeeSound ""	//Make them not cry, they are in disguise after all
 	Health 50
 	Speed 0
 	DropItem "MauserAmmo" 192
 	DropItem "G43" 64
-	+LOOKALLAROUND
 	+DROPOFF
+	+LOOKALLAROUND
 	States
 	{
 	Spawn:
@@ -2654,9 +2654,7 @@ ACTOR Sniper_Crouch : Guard
 
 ACTOR WSniper_Crouch : Sniper_Crouch
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Wehrmacht Sniper (crouch)
-	//$Color 4
 	States
 	{
 	Spawn:
@@ -2789,12 +2787,11 @@ ACTOR MGTurretInvisible : MGTurret
 	//$Color 4
 	Obituary "$MGTHIDE"
 	Health 0
+	+NOGRAVITY //mxd
+	-COUNTKILL
 	-SHOOTABLE
 	-SOLID
-	-COUNTKILL
-	+NOGRAVITY //mxd
 	RenderStyle "None"
-
 	States
 	{
 	Missile: //mxd. Same as MGTurret, but without the dynamic light
@@ -3484,8 +3481,8 @@ ACTOR NaziLoper : Nazi
 	DeathSound "loper/death"
 	HitObituary "$LOPRHIT1"
 	Obituary "$LOPRHIT2"
-	+SHORTMISSILERANGE
 	+NORADIUSDMG //or the ZTracer will kill the Loper :D
+	+SHORTMISSILERANGE
 	Scale 1.10
 	States
 	{

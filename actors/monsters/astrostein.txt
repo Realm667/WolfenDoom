@@ -5,7 +5,6 @@ ACTOR AstroGuard : Guard
 	//$Color 4
 	DropItem AstroClipAmmo 128
 	DropItem AstroShotgunShell 32
-	//DamageFactor "AstroPoison", 0.0
 	Obituary "$AGUARD1"
 	States
 	{
@@ -138,9 +137,9 @@ ACTOR AstroDrone : Nazi
 	PainChance 128
 	-FLOORCLIP
 	+FLOAT
-	+NOGRAVITY
-	+NOBLOOD
 	+LOOKALLAROUND
+	+NOBLOOD
+	+NOGRAVITY
 	SeeSound "drone_sight"
 	PainSound "drone_pain"
 	DeathSound "astrostein/explosion"
@@ -240,8 +239,8 @@ ACTOR AstroCyborg1 : Nazi
 	Speed 2.66666667
 	Scale 1.5
 	PainChance 32
-	+NOBLOOD
 	+LOOKALLAROUND
+	+NOBLOOD
 	DropItem AstroRocketAmmo 128
 	SeeSound "astrostein/cyborg_sight"
 	PainSound "astrostein/cyborg_pain"
@@ -469,9 +468,9 @@ ACTOR AstroHitler
 	DeathSound "astrostein/hitler_dth"
 	SeeSound "astrostein/hitler_act"
 	PainSound "astrostein/hitler_pai"
-	+NOBLOOD
-	+FLOORCLIP
 	+BOSS
+	+FLOORCLIP
+	+NOBLOOD
 	Tag "Adolf Hitler"
 	Mass 99999999
 	Obituary "$AHITLER"
@@ -532,11 +531,11 @@ ACTOR AstroTurret : MGTurret
 	Height 21
 	Mass 0x7fffffff
 	PainChance 100
-	+MISSILEEVENMORE
-	+SPAWNCEILING
-	+NOGRAVITY
-	+DONTFALL
 	-FLOAT
+	+DONTFALL
+	+MISSILEEVENMORE
+	+NOGRAVITY
+	+SPAWNCEILING
 	States
 	{
 	Spawn:
@@ -569,8 +568,8 @@ ACTOR AstroTurret : MGTurret
 ACTOR BaseLine
 {
 	+MISSILE
-	+NOGRAVITY
 	+NOBLOCKMAP
+	+NOGRAVITY
 	+NOINTERACTION
 	Radius 0
 	Height 0
@@ -588,7 +587,6 @@ ACTOR BaseLine
 /////////////////////////////
 // TELEPORTFOG REPLACEMENT //
 /////////////////////////////
-
 ACTOR TeleportFog_Astro : TeleportFog replaces TeleportFog
 {
 	States

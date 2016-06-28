@@ -11,10 +11,10 @@ ACTOR BloodSkull
 	FloatSpeed 1
 	PainChance 50
 	Monster
-	+FLOAT
-	+NOGRAVITY
 	+DONTFALL
+	+FLOAT
 	+NEVERRESPAWN
+	+NOGRAVITY
 	SeeSound "BSkull/See"
 	PainSound "BSkull/Pain"
 	DeathSound "BSkull/Death"
@@ -54,8 +54,8 @@ ACTOR SkullBloodDrip
 {
 	Radius 1
 	Height 4
-	+MISSILE
 	+DONTSPLASH
+	+MISSILE
 	Scale 0.4
 	Gravity 0.7
 	States

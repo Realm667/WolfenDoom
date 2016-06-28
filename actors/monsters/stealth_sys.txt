@@ -1,19 +1,18 @@
 //mxd. Stealth-related stuff. Must be loaded after nazis.txt. Contains frightening ammount of hacks...
-
 ACTOR SneakableSSMP40Guard : SSMP40Guard
 {
 	//$Category Monsters (Wolf3D)/Sneak-friendly
 	//$Title SS Guard (MP40, sneak-friendly)
 	//$Color 4
 	
-	PainChance 256			// Otherwise our Pain states won't always work...
+	PainChance 256							// Otherwise our Pain states won't always work...
 	DropItem ""
-	var int user_chasegoal;		// Current PatrolTarget TID is stored here when the guard becomes alerted
+	var int user_chasegoal;			// Current PatrolTarget TID is stored here when the guard becomes alerted
 	var int user_stealthkilled;	// Hackity hacks...
 	var int user_attacked;
-	+FRIENDLY			// The guy is friendly. Looks like walking the patrol without immediately aquiring the player as a targer won't work otherwise...
-	+NEVERTARGET			// Prevents +FRIENDLY guards from attacking -FRIENDLY guards
-	+NOINFIGHTING			// Prevents guards from attacking other guards with same FRIENDLY flag settings
+	+FRIENDLY										// The guy is friendly. Looks like walking the patrol without immediately aquiring the player as a targer won't work otherwise...
+	+NEVERTARGET								// Prevents +FRIENDLY guards from attacking -FRIENDLY guards
+	+NOINFIGHTING								// Prevents guards from attacking other guards with same FRIENDLY flag settings
 	
 	States
 	{
@@ -95,9 +94,9 @@ ACTOR SneakableGuardEyesIdle
 	RenderStyle None
 	Height 46
 	
-	+NOGRAVITY
-	+NOCLIP
 	+NEVERTARGET
+	+NOCLIP
+	+NOGRAVITY
 	
 	States
 	{
@@ -201,11 +200,11 @@ ACTOR MGTurretStealth : Nazi
 	PainSound "metal/pain"
 	Mass 0xFFFFFFF
 	-COUNTKILL
-	+NOGRAVITY
+	+ALLOWPAIN
+	+INVULNERABLE
 	+NEVERTARGET
 	+NOBLOOD
-	+INVULNERABLE
-	+ALLOWPAIN
+	+NOGRAVITY
 	RenderStyle "None"
 
 	States

@@ -12,12 +12,12 @@ ACTOR StatistBarkeeper
 	{
 	Spawn:
 		BDKP A 80
-		BDKP B 40
-		BDKP CB 40
-		BDKP D 80
-		BDKP DACB 40
-		BDKP E 40
-		BDKP F 40
+		"####" B 40
+		"####" CB 40
+		"####" D 80
+		"####" DACB 40
+		"####" E 40
+		"####" F 40
 		Loop
 	}
 }
@@ -35,12 +35,12 @@ ACTOR StatistMedic
 	{
 	Spawn:
 		MEDC A 80
-		MEDC B 40
-		MEDC CB 40
-		MEDC D 80
-		MEDC DACB 40
-		MEDC E 40
-		MEDC F 40
+		"####" B 40
+		"####" CB 40
+		"####" D 80
+		"####" DACB 40
+		"####" E 40
+		"####" F 40
 		Loop
 	}
 }
@@ -213,19 +213,19 @@ ACTOR Camp_StaticShovelDig
 	Height 48
 	Health 10
 	Mass 600
+	+NOTAUTOAIMED
 	+SOLID
 	+SHOOTABLE
-	+NOTAUTOAIMED
 	DeathSound "Nazi1/Death" //this will need fitting sounds I guess
 	States
 	{
 	Spawn:
 		PRSC A 0 NoDelay A_SetScale(ScaleX + frandom(0.4,0.6),ScaleY + frandom(0.4,0.6))
 		SpawnLoop:
-		PRSC A 1 A_SetTics(random(12,22))
-		"####" B 0 A_PlaySound("floor/dirt",CHAN_ITEM,1.0,false)
-		"####" BC 1 A_SetTics(random(12,22))
-		Loop
+			PRSC A 1 A_SetTics(random(12,22))
+			"####" B 0 A_PlaySound("floor/dirt",CHAN_ITEM,1.0,false)
+			"####" BC 1 A_SetTics(random(12,22))
+			Loop
 	Death:
 		"####" A 0 A_UnSetSolid
 		"####" DE 6
@@ -246,11 +246,11 @@ ACTOR Camp_PrisonerBald : Nazi
 	Radius 20
 	Height 50
 	Monster
-	+NOSPLASHALERT
-	+NEVERTARGET
 	+FLOORCLIP
 	+FRIENDLY
 	+JUSTHIT
+	+NEVERTARGET
+	+NOSPLASHALERT
 	-COUNTKILL
 	MaxStepHeight 16
 	MaxDropoffHeight 32
