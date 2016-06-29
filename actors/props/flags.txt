@@ -7,9 +7,9 @@ ACTOR NaziflagS
 	Height 64
 	Health 20
 	Mass 100000
+	+NOBLOOD
 	+NOTAUTOAIMED
 	+SHOOTABLE
-	+NOBLOOD
 	+SOLID
 	States
 	{
@@ -28,7 +28,7 @@ ACTOR NaziflagS
 	}
 }
 
-ACTOR NazibannerM : SwitchableDecoration
+ACTOR NazibannerM : SwitchableDecoration //3d actor
 {
 	//$Category Props (Wolf3D)/Flags
 	//$Title Nazibanner (middle, set Dormant for non-solid/invulnerable)
@@ -37,9 +37,9 @@ ACTOR NazibannerM : SwitchableDecoration
 	Height 96
 	Health 30
 	Mass 100000
+	+NOBLOOD
 	+NOTAUTOAIMED
 	+SHOOTABLE
-	+NOBLOOD
 	+SOLID
 	States
 	{
@@ -71,7 +71,7 @@ ACTOR NazibannerM : SwitchableDecoration
 	}
 }
 
-ACTOR NazibannerM2 : NaziBannerM
+ACTOR NazibannerM2 : NaziBannerM //3d actor
 {
 	//$Title Nazibanner 2 (middle, set Dormant for non-solid/invulnerable)
 	States

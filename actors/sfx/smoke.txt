@@ -4,9 +4,9 @@
 
 ACTOR PuffSmoke
 {
-	+NOINTERACTION
-	+FORCEXYBILLBOARD
 	+CLIENTSIDEONLY
+	+FORCEXYBILLBOARD
+	+NOINTERACTION
 	+WINDTHRUST
 	RenderStyle "Translucent"
 	Alpha 0.1
@@ -23,7 +23,7 @@ ACTOR PuffSmoke
 		"####" AAAAAAAAAAAAAAAA 2 {
 						A_FadeOut(0.025);
 						A_SetScale(ScaleX*1.02, ScaleY*1.02);
-					  }
+						}
 		stop
 	}
 }
@@ -36,11 +36,11 @@ ACTOR PowerPlantSmokeGenerator : SwitchableDecoration
 	//$Category Special Effects (Wolf3D)
 	//$Title Smoke Generator (Normal)
 	//$Color 12
-	+NOGRAVITY
-	+INVULNERABLE
-	+SHOOTABLE
-	+NOINTERACTION
 	+CLIENTSIDEONLY
+	+INVULNERABLE
+	+NOGRAVITY
+	+NOINTERACTION
+	+SHOOTABLE
 	States
 	{
 	Spawn:
@@ -57,20 +57,6 @@ ACTOR PowerPlantSmokeGenerator : SwitchableDecoration
 	}
 }
 
-/* removed, why so complicated? T667
-ACTOR PowerPlantSmokeGeneratorFX
-{
-	+CLIENTSIDEONLY
-	+NOINTERACTION
-	States
-	{
-	Spawn:
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 4 A_SpawnItemEx("PowerPlantSmokePuff", random(-3,3), random(-3,3), 0, 0, 0, 3)
-		stop
-	}
-}
-*/
- 
 ACTOR PowerPlantSmokeGeneratorSmall : SwitchableDecoration
 {
 	//$Category Special Effects (Wolf3D)
@@ -115,29 +101,15 @@ ACTOR PowerPlantSmokeGenerator2 : PowerPlantSmokeGenerator
 	}
 }
 
-/* removed, why so complicated? T667
-ACTOR PowerPlantSmokeGeneratorFX2
-{
-	+CLIENTSIDEONLY
-	+NOINTERACTION
-	States
-	{
-	Spawn:
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 4 A_SpawnItemEx("PowerPlantSmokePuff", random(-32,32), random(-32,32), 0, 0, 0, -3)
-		stop
-	}
-}
-*/
-
 /////////////////////////////
 // ACTORS FOR VOLCANO MAPS // by Tormentor667
 /////////////////////////////
 
 ACTOR VolcanoPuffSmoke
 {
-	+NOINTERACTION
-	+FORCEXYBILLBOARD
 	+CLIENTSIDEONLY
+	+FORCEXYBILLBOARD
+	+NOINTERACTION
 	+WINDTHRUST
 	RenderStyle "Translucent"
 	Alpha 1.0
@@ -159,10 +131,10 @@ ACTOR VolcanoSmokeGenerator : SwitchableDecoration
 	//$Category Special Effects (Wolf3D)
 	//$Title Volcano Smoke Generator (Huge)
 	//$Color 12
-	+NOGRAVITY
 	+INVULNERABLE
-	+SHOOTABLE
+	+NOGRAVITY
 	+NOINTERACTION
+	+SHOOTABLE
 	States
 	{
 	Spawn:
@@ -185,9 +157,9 @@ ACTOR VolcanoSmokeGenerator : SwitchableDecoration
 
 ACTOR Ambientsmoke
 {
-	+NOINTERACTION
-	+FORCEXYBILLBOARD
 	+CLIENTSIDEONLY
+	+FORCEXYBILLBOARD
+	+NOINTERACTION
 	+WINDTHRUST
 	RenderStyle "Translucent"
 	Alpha 0.001

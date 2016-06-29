@@ -7,12 +7,12 @@ ACTOR HydrantShootable
 	Radius 10
 	Height 42
 	Mass 999999
-	+SOLID
-	+SHOOTABLE
-	+NOTAUTOAIMED
-	+NOBLOOD
 	+DONTGIB
+	+NOBLOOD
 	+NOICEDEATH
+	+NOTAUTOAIMED
+	+SHOOTABLE
+	+SOLID
 	DeathSound "hydrant/death"
 	States
 	{
@@ -45,7 +45,7 @@ ACTOR Tires
 	}
 }
 
-ACTOR RoadBarrier
+ACTOR RoadBarrier //3d actor
 {
 	//$Category Props (Wolf3D)/Street
 	//$Title Barrier
@@ -71,11 +71,11 @@ ACTOR StreetBin
 	Height 56
 	Health 20
 	Mass 100
-	+SOLID
-	+PUSHABLE
 	+NOBLOOD
-	+SHOOTABLE
 	+NOTAUTOAIMED
+	+PUSHABLE
+	+SHOOTABLE
+	+SOLID
 	States
 	{
 	Spawn:
@@ -107,7 +107,7 @@ ACTOR Denkmal
 	}
 }
 
-ACTOR CafeStuff
+ACTOR CafeStuff //3d actor
 {
 	//$Category Props (Wolf3D)/Street
 	//$Title Table with Umbrella and Chairs (Cafe)
@@ -160,7 +160,7 @@ ACTOR JunkPile2
 	}
 }
 
-ACTOR NTomb1
+ACTOR NTomb1 //3d actor
 {
 	//$Category Props (Wolf3D)/Street
 	//$Title Tombstone 1
@@ -176,28 +176,28 @@ ACTOR NTomb1
 	}
 }
 
-ACTOR NTomb2 : NTomb1
+ACTOR NTomb2 : NTomb1 //3d actor
 {
 	//$Title Tombstone 2
 	Radius 15
 	Height 62
 }
 
-ACTOR NTomb3 : NTomb1
+ACTOR NTomb3 : NTomb1 //3d actor
 {
 	//$Title Tombstone 3
 	Radius 15
 	Height 48
 }
 
-ACTOR NTomb4 : NTomb1
+ACTOR NTomb4 : NTomb1 //3d actor
 {
 	//$Title Tombstone 4
 	Radius 15
 	Height 43
 }
 
-ACTOR NTomb5 : NTomb1
+ACTOR NTomb5 : NTomb1 //3d actor
 {
 	//$Title Tombstone 5
 	Radius 12
@@ -229,11 +229,11 @@ ACTOR BurningBarrelBoA
 	Height 64
 	Health 35
 	Mass 0x7ffffff
-	+SOLID
-	+PUSHABLE
 	+NOBLOOD
-	+SHOOTABLE
 	+NOTAUTOAIMED
+	+PUSHABLE
+	+SHOOTABLE
+	+SOLID
 	States
 	{
 	Spawn:

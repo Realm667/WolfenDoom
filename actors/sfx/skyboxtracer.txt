@@ -1,10 +1,10 @@
-Actor SkyboxTracerTrail
+Actor SkyboxTracerTrail //3d actor
 {
 	Alpha 1.0
 	Scale 1.0
 	RenderStyle Add
-	+NOINTERACTION
 	+CLIENTSIDEONLY
+	+NOINTERACTION
 	States
 	{
 	Spawn:
@@ -16,16 +16,15 @@ Actor SkyboxTracerTrail
 	}
 }
 
-
 Actor SkyboxTracerSpawner : SwitchableDecoration
 {
 	//$Category Special Effects (Wolf3D)
 	//$Title Skyfire Tracers
 	//$Color 12
-	+NOGRAVITY
 	+INVULNERABLE
-	+SHOOTABLE
+	+NOGRAVITY
 	+NOINTERACTION
+	+SHOOTABLE
 	States
 	{
 	Spawn:

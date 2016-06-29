@@ -3,15 +3,15 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 ACTOR BoA_WaterSplash
 {
-RenderStyle "Translucent"
-Alpha 0.0
-XScale 0.1
-YScale 0.2
-+NOBLOCKMAP
-+NOCLIP
-+NOGRAVITY
-+DONTSPLASH
-States
+	RenderStyle "Translucent"
+	Alpha 0.0
+	XScale 0.1
+	YScale 0.2
+	+DONTSPLASH
+	+NOBLOCKMAP
+	+NOCLIP
+	+NOGRAVITY
+	States
 	{
 	Spawn:
 		WSPL A 0 A_SetScale(scalex+(frandom(-0.1,0.1)), scaley+(frandom(-0.1,0.1)))
@@ -51,11 +51,11 @@ ACTOR BoA_WaterSplash_Chunk : BoA_WaterSplash
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 ACTOR BoA_LavaSplash : BoA_WaterSplash
 {
-RenderStyle "Add"
-Alpha 1.0
-XScale 0.15
-YScale 0.1
-States
+	RenderStyle "Add"
+	Alpha 1.0
+	XScale 0.15
+	YScale 0.1
+	States
 	{
 	Spawn:
 		LSPL A 0 A_SetScale(scalex+(frandom(-0.1,0.1)), scaley+(frandom(-0.1,0.1)))
@@ -97,7 +97,7 @@ ACTOR BoA_LavaSplash_Chunk : BoA_LavaSplash
 
 ACTOR BoA_LavaSmoke
 {
-States
+	States
 	{
 	Spawn:
 		"####" "#" 0 A_SpawnItemEx("DarkSmoke1")
@@ -110,15 +110,15 @@ States
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 ACTOR BoA_NukageSplash
 {
-RenderStyle "Add"
-Alpha 0.0
-XScale 0.1
-YScale 0.2
-+NOBLOCKMAP
-+NOCLIP
-+NOGRAVITY
-+DONTSPLASH
-States
+	RenderStyle "Add"
+	Alpha 0.0
+	XScale 0.1
+	YScale 0.2
+	+DONTSPLASH
+	+NOBLOCKMAP
+	+NOCLIP
+	+NOGRAVITY
+	States
 	{
 	Spawn:
 		NSPL A 0 A_SetScale(scalex+(frandom(-0.1,0.1)), scaley+(frandom(-0.1,0.1)))
@@ -158,15 +158,15 @@ ACTOR BoA_NukageSplash_Chunk : BoA_NukageSplash
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 ACTOR BoA_SlimeSplash
 {
-RenderStyle "Translucent"
-Alpha 0.0
-XScale 0.2
-YScale 0.1
-+NOBLOCKMAP
-+NOCLIP
-+NOGRAVITY
-+DONTSPLASH
-States
+	RenderStyle "Translucent"
+	Alpha 0.0
+	XScale 0.2
+	YScale 0.1
+	+DONTSPLASH
+	+NOBLOCKMAP
+	+NOCLIP
+	+NOGRAVITY
+	States
 	{
 	Spawn:
 		SSPL A 0 A_SetScale(scalex+(frandom(-0.1,0.1)), scaley+(frandom(-0.1,0.1)))

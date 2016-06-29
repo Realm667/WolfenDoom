@@ -5,8 +5,8 @@ ACTOR Tracer : FastProjectile
 	Speed 75
 	Decal BulletChip
 	+BLOODSPLATTER
-	+SEEKERMISSILE
 	+NOEXTREMEDEATH
+	+SEEKERMISSILE
 	+WINDTHRUST
 	States
 	{
@@ -46,14 +46,14 @@ ACTOR TracerTrail
 	Alpha .75
 	Scale .4
 	RenderStyle "Add"
+	+CANNOTPUSH
+	+DONTSPLASH
+	+FORCEXYBILLBOARD
 	+MISSILE //mxd
 	+NOBLOCKMAP
+	+NODAMAGETHRUST
 	+NOGRAVITY
 	+NOTELEPORT
-	+CANNOTPUSH
-	+NODAMAGETHRUST
-	+FORCEXYBILLBOARD
-	+DONTSPLASH
 	States
 	{
 	Spawn:
@@ -73,11 +73,11 @@ ACTOR TracerSpark
 	Scale .3
 	Mass 0
 	BounceType Doom
-	+MISSILE
-	+FLOORCLIP
 	+DONTSPLASH
-	+NOTELEPORT
+	+FLOORCLIP
 	+FORCEXYBILLBOARD
+	+MISSILE
+	+NOTELEPORT
 	+WINDTHRUST
 	States
 	{
@@ -121,8 +121,8 @@ ACTOR TankSpark : TracerSpark //use this as blood for vehicles et similae
 ////////////////// PLAYER WEAPON TRACERS /////////////////////////
 //////////////////////////////////////////////////////////////////
 
-// The Player's variants on the tracers, so they have different speeds and damages
-// based on which weapon is being used.
+//The Player's variants on the tracers, so they have different speeds and damages based on which weapon is being used.
+
 //Muzzle velocity: 1,148-1,312 ft/s (350-400 m/s) - Wikipedia
 ACTOR LugerTracer : Tracer
 {
@@ -209,8 +209,8 @@ ACTOR 9MMCasing
 {
 	Scale .075
 	Projectile
-	-NOGRAVITY
 	-NOBLOCKMAP
+	-NOGRAVITY
 	+BOUNCEONACTORS
 	+FORCEXYBILLBOARD
 	+WINDTHRUST

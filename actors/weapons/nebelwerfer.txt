@@ -10,8 +10,8 @@ ACTOR Nebelwerfer : NaziWeapon replaces Rocketlauncher
 	Weapon.UpSound "nebelwerfer/select"
 	Tag "Klein Nebelwerfer"
 	Inventory.PickupMessage "$WERFER"
-	-WEAPON.NOALERT
 	-WEAPON.AMMO_CHECKBOTH
+	-WEAPON.NOALERT
 	States
 	{
 	Ready:
@@ -50,8 +50,8 @@ ACTOR NebRocket
 	Speed 35
 	Damage 8
 	Projectile
-	+RANDOMIZE
 	+FORCERADIUSDMG
+	+RANDOMIZE
 	+WINDTHRUST
 	DeathSound "nebelwerfer/xplode"
 	Decal Scorch
@@ -132,7 +132,6 @@ ACTOR MutnRocketTrail : MutantFlame
 		Stop
 	}
 }
-
 
 ///////////////////////
 // Truck Nebelwerfer //

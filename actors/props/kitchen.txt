@@ -6,11 +6,10 @@ ACTOR PotKitchen1
 	Radius 16
 	Height 32
 	Health 1
-	+NOBLOOD
-	+SHOOTABLE
-	+NOTAUTOAIMED
 	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
-	
+	+NOBLOOD
+	+NOTAUTOAIMED
+	+SHOOTABLE
 	States
 	{
 	Spawn:
@@ -33,11 +32,10 @@ ACTOR PotKitchen2
 	Radius 16
 	Height 32
 	Health 1
-	+NOBLOOD
-	+SHOOTABLE
-	+NOTAUTOAIMED
 	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
-	
+	+NOBLOOD
+	+NOTAUTOAIMED
+	+SHOOTABLE
 	States
 	{
 	Spawn:
@@ -63,11 +61,10 @@ ACTOR Kettle
 	Height 16
 	Scale 0.5
 	Health 1
-	+NOBLOOD
-	+SHOOTABLE
-	+NOTAUTOAIMED
 	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
-	
+	+NOBLOOD
+	+NOTAUTOAIMED
+	+SHOOTABLE
 	States
 	{
 	Spawn:
@@ -91,12 +88,12 @@ ACTOR BarSeat
 	Height 24
 	Health 20
 	Mass 100
-	+SOLID
-	+PUSHABLE
-	+NOBLOOD
-	+SHOOTABLE
-	+NOTAUTOAIMED
 	-DROPOFF
+	+NOBLOOD
+	+NOTAUTOAIMED
+	+PUSHABLE
+	+SHOOTABLE
+	+SOLID
 	States
 	{
 	Spawn:
@@ -120,11 +117,10 @@ ACTOR WineBottle
 	Height 8
 	Scale 0.75
 	Health 1
-	+SHOOTABLE
-	+NOTAUTOAIMED
-	+NOBLOOD
 	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
-	
+	+NOBLOOD
+	+NOTAUTOAIMED
+	+SHOOTABLE
 	States
 	{
 	Spawn:
@@ -148,7 +144,6 @@ ACTOR WineGlass : WineBottle
 	Radius 8
 	Height 8
 	Scale 0.4
-	
 	States
 	{
 	Spawn:
@@ -166,26 +161,26 @@ ACTOR OvenHot : SwitchableDecoration
 	Height 64
 	Health 35
 	Mass 0x7ffffff
-	+SOLID
 	+NOBLOOD
-	+SHOOTABLE
 	+NOTAUTOAIMED
+	+SHOOTABLE
+	+SOLID
 	+USESPECIAL
-	Activation THINGSPEC_Switch //no need to update the DORMANT flag and the SWITCH property because we need it destroyable
+	Activation THINGSPEC_Switch //no need to update the DORMANT flag and the SWITCH property because we need it destroyable - ozy
 	States
 	{
 	Active:
 	Spawn:
-	  OVEN A 0 NoDelay A_PlaySound("SFX/FireLoop1", CHAN_BODY, 0.7, true, ATTN_STATIC)
+		OVEN A 0 NoDelay A_PlaySound("SFX/FireLoop1", CHAN_BODY, 0.7, true, ATTN_STATIC)
 		goto Frame1
 	Frame1:
-	  OVEN A 4 A_Jump(64, "Frame3")
+		OVEN A 4 A_Jump(64, "Frame3")
 		goto Frame2
 	Frame2:
-	  OVEN B 4 A_Jump(64, "Frame4")
+		OVEN B 4 A_Jump(64, "Frame4")
 		goto Frame3
 	Frame3:
-	  OVEN C 4 A_Jump(64, "Frame1")
+		OVEN C 4 A_Jump(64, "Frame1")
 		goto Frame4
 	Frame4: 
 		OVEN D 4 A_Jump(64, "Frame2")

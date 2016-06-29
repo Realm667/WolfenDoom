@@ -21,10 +21,10 @@ ACTOR SteamSpawner : SwitchableDecoration
 	Height 2
 	Radius 1
 	Mass 0
+	+CLIENTSIDEONLY
 	+NOBLOCKMAP
 	+NOGRAVITY
 	+NOINTERACTION
-	+CLIENTSIDEONLY
 	States
 	{
 	Active:
@@ -91,13 +91,12 @@ ACTOR SteamParticle
 {
 	Height 1
 	Radius 1
-	+MISSILE
-	+NOGRAVITY
-	+NOBLOCKMAP
 	+DONTSPLASH
 	+FORCEXYBILLBOARD
+	+MISSILE
+	+NOBLOCKMAP
+	+NOGRAVITY
 	+WINDTHRUST
-	//RenderStyle "Add"
 	Scale 0.04
 	Alpha 0.65
 	States

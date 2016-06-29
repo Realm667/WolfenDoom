@@ -8,8 +8,8 @@ ACTOR Shovel : NaziWeapon
 	Weapon.UpSound "shovel/select"
 	Tag "The Shovel!"
 	Inventory.PickupMessage "$SHOVEL"
-	+WEAPON.NOAUTOFIRE
 	-WEAPON.AMMO_CHECKBOTH
+	+WEAPON.NOAUTOFIRE
 	States
 	{
 	Ready:
@@ -70,9 +70,9 @@ ACTOR Shovel : NaziWeapon
 ACTOR ShovelPuff
 {
 	+NOBLOCKMAP
+	+NOEXTREMEDEATH
 	+NOGRAVITY
 	+PUFFONACTORS
-	+NOEXTREMEDEATH
 	RenderStyle "Add"
 	ActiveSound ""
 	AttackSound "shovel/wall"

@@ -18,6 +18,7 @@ ACTOR AlertLight
 	}
 }
 
+//3d lights
 ACTOR Chandelier1Switchable : SwitchableDecoration
 {
 	//$Category Light Sources (Wolf3D)
@@ -118,10 +119,10 @@ ACTOR Chandelier4Switchable : Chandelier2Switchable
 ACTOR 3dFlame_Normal
 {
 	Scale 0.06
-	+RANDOMIZE
+	+FORCEYBILLBOARD
 	+NOGRAVITY
 	+NOINTERACTION
-	+FORCEYBILLBOARD
+	+RANDOMIZE
 	Renderstyle "Add"
 	States
 	{
@@ -166,10 +167,10 @@ ACTOR CeilingLightM : SwitchableDecoration
 	//$Color 11
 	Radius 16
 	Height 23
-	+SOLID
-	+SPAWNCEILING
 	+NOGRAVITY
 	+NOTAUTOAIMED
+	+SOLID
+	+SPAWNCEILING
 	States
 	{
 	Active:
@@ -348,9 +349,9 @@ ACTOR TableLightM : SwitchableDecoration
 	Radius 4
 	Height 32
 	ProjectilePassHeight 4
+	+NOTAUTOAIMED
 	+SOLID
 	+USESPECIAL
-	+NOTAUTOAIMED
 	Activation THINGSPEC_Switch
 	States
 	{
@@ -460,9 +461,9 @@ ACTOR CastleLight1 : SwitchableDecoration
 	//$Color 11
 	Radius 16
 	Height 38
+	+NOGRAVITY
 	+SOLID
 	+SPAWNCEILING
-	+NOGRAVITY
 	States
 	{
 	Active:
@@ -502,9 +503,9 @@ ACTOR BoAWallTorch1 : SwitchableDecoration
 	//$Category Light Sources (Wolf3D)
 	//$Title Wall Torch (switchable)
 	//$Color 11
+	+FIXMAPTHINGPOS
 	+NOBLOCKMAP
 	+NOGRAVITY
-	+FIXMAPTHINGPOS
 	Radius 10
 	States
 	{
@@ -542,8 +543,8 @@ ACTOR CreepyCandlestick
 	//$Category Light Sources (Wolf3D)/Static
 	//$Title Creepy Candlestick (on)
 	//$Color 11
-	+SOLID
 	+NOGRAVITY
+	+SOLID
 	Radius 16
 	Height 56
 	States
@@ -597,8 +598,8 @@ ACTOR CBowl1
 	//$Color 11
 	Radius 8
 	Height 80
-	+SOLID
 	+NOGRAVITY
+	+SOLID
 	+SPAWNCEILING
 	States
 	{
@@ -634,9 +635,9 @@ ACTOR StrobeLightBlue : SwitchableDecoration
 	//$Color 11
 	Radius 16
 	Height 16
+	+DONTSPLASH
 	+NOGRAVITY
 	+SPAWNCEILING
-	+DONTSPLASH
 	States
 	{
 	Active:
@@ -729,9 +730,9 @@ ACTOR Red_Light
 	//$Color 11
 	Radius 16
 	Height 16
+	+DONTSPLASH
 	+NOGRAVITY
 	+SPAWNCEILING
-	+DONTSPLASH
 	States
 	{
 	Spawn:
@@ -778,9 +779,9 @@ ACTOR StrobeEmitterBlue
 {
 	Radius 16
 	Height 16
+	+DONTSPLASH
 	+NOGRAVITY
 	+SPAWNCEILING
-	+DONTSPLASH
 	States
 	{
 	Spawn:
@@ -840,9 +841,9 @@ ACTOR StrobeRayBlue
 	Projectile
 	-ACTIVATEIMPACT
 	-ACTIVATEPCROSS
+	+DONTSPLASH
 	+PAINLESS
 	+THRUACTORS
-	+DONTSPLASH
 	States
 	{
 	Death:

@@ -4,12 +4,6 @@ ACTOR BJKick : Weapon
 	+WEAPON.MELEEWEAPON
 	+WEAPON.NOALERT
 	+WEAPON.WIMPY_WEAPON
-	//Tag "My Mighty Leg"
-	//Weapon.BobStyle Smooth
-	//Weapon.BobSpeed 1.5
-	//Weapon.BobRangeX 1.5
-	//Weapon.UpSound "knife/select"
-	//Inventory.PickupMessage "$KNIFE"
 	Weapon.SelectionOrder 10001
 	
 	States
@@ -118,9 +112,9 @@ ACTOR BJKick : Weapon
 ACTOR KickPuff : BlastEffect
 {
 	+NOBLOCKMAP
+	+NOEXTREMEDEATH
 	+NOGRAVITY
 	+PUFFONACTORS
-	+NOEXTREMEDEATH
 	RenderStyle "Add"
 	Obituary "$OBKICKS"
 	ProjectileKickback 100

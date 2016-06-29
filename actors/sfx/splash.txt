@@ -8,11 +8,11 @@ ACTOR WaterSplashGeneratorNormal : SwitchableDecoration
 	//$Arg3Type 11
 	//$Arg3Enum { 0 = "Yes"; 1 = "No"; }
 	+CLIENTSIDEONLY
-	+NOCLIP
+	+DONTSPLASH
 	+NOBLOCKMAP
+	+NOCLIP
 	+NOGRAVITY
 	+NOINTERACTION
-	+DONTSPLASH
 	States
 	{
 	Spawn:
@@ -28,21 +28,21 @@ ACTOR WaterSplashGeneratorNormal : SwitchableDecoration
 
 ACTOR WaterSplashSpawner : RandomSpawner
 {
-    DropItem "WaterSplashObject1"
-    DropItem "WaterSplashObject2"
-    DropItem "WaterSplashObject3"
-    DropItem "WaterSplashObject4"
+	DropItem "WaterSplashObject1"
+	DropItem "WaterSplashObject2"
+	DropItem "WaterSplashObject3"
+	DropItem "WaterSplashObject4"
 }
 
 ACTOR WaterSplashObject1
 {
-	+CLIENTSIDEONLY
-	+NOINTERACTION
-	-NOGRAVITY
 	Mass 100
 	Gravity 6.0
 	Alpha 0.8
 	Scale 0.3
+	-NOGRAVITY
+	+CLIENTSIDEONLY
+	+NOINTERACTION
 	States
 	{
 	Spawn:
@@ -86,13 +86,13 @@ ACTOR WaterSplashObject4 : WaterSplashObject1
 
 ACTOR WaterSplashCloud
 {
-	+CLIENTSIDEONLY
-	+NOINTERACTION
-	-NOGRAVITY
 	Mass 100
 	Gravity 6.0
 	Alpha 0.0
 	Scale 0.7
+	-NOGRAVITY
+	+CLIENTSIDEONLY
+	+NOINTERACTION
 	States
 	{
 	Spawn:
@@ -105,9 +105,6 @@ ACTOR WaterSplashCloud
 		goto Spawn+12
 	}
 }
-
-
-
 
 ACTOR WaterSplashGeneratorNormalLooping : WaterSplashGeneratorNormal
 {

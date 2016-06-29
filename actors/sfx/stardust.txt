@@ -1,9 +1,5 @@
 ACTOR StarParticle 
 {
-	+NOGRAVITY
-	+THRUACTORS
-	+MISSILE
-	+FORCEXYBILLBOARD
 	Gravity 0.125
 	Radius 1
 	Height 1
@@ -11,6 +7,10 @@ ACTOR StarParticle
 	Alpha 1.0
 	YScale 1.0
 	XScale 1.0
+	+FORCEXYBILLBOARD
+	+MISSILE
+	+NOGRAVITY
+	+THRUACTORS
 	States
 	{
 	Spawn:
@@ -26,7 +26,7 @@ ACTOR StarParticle_Spawner : SwitchableDecoration
 	//$Category Special Effects (Wolf3D)
 	//$Title Startdust Spawner (horizontal)
 	//$Color 12
-	+NOGRAVITY +NOINTERACTION +NOCLIP -SOLID +CLIENTSIDEONLY
+	+CLIENTSIDEONLY +NOCLIP +NOGRAVITY +NOINTERACTION -SOLID
 	RenderStyle "Add"
 	Alpha 1.0
 	States
@@ -51,7 +51,7 @@ ACTOR StarParticle_Spawner2 : SwitchableDecoration
 	//$Category Special Effects (Wolf3D)
 	//$Title Startdust Spawner (with pitched)
 	//$Color 12
-	+NOGRAVITY +NOINTERACTION +NOCLIP -SOLID +CLIENTSIDEONLY
+	+CLIENTSIDEONLY +NOCLIP +NOGRAVITY +NOINTERACTION -SOLID
 	RenderStyle "Add"
 	Alpha 1.0
 	States
@@ -76,7 +76,7 @@ ACTOR StarParticle_SpawnerFast : SwitchableDecoration
 	//$Category Special Effects (Wolf3D)
 	//$Title Startdust Spawner (horizontal, fast)
 	//$Color 12
-	+NOGRAVITY +NOINTERACTION +NOCLIP -SOLID +CLIENTSIDEONLY
+	+CLIENTSIDEONLY +NOCLIP +NOGRAVITY +NOINTERACTION -SOLID
 	RenderStyle "Add"
 	Alpha 1.0
 	States

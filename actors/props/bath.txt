@@ -1,4 +1,4 @@
-ACTOR ToiletShootable
+ACTOR ToiletShootable //3d actor
 {
 	//$Category Props (Wolf3D)/Bath
 	//$Title Toilet (shootable)
@@ -7,12 +7,12 @@ ACTOR ToiletShootable
 	Radius 10
 	Height 42
 	Mass 999999
-	+SOLID
-	+SHOOTABLE
-	+NOTAUTOAIMED
-	+NOBLOOD
 	+DONTGIB
+	+NOBLOOD
 	+NOICEDEATH
+	+NOTAUTOAIMED
+	+SHOOTABLE
+	+SOLID
 	DeathSound "toilet/death"
 	States
 	{
@@ -29,7 +29,7 @@ ACTOR ToiletShootable
 	}
 }
 
-ACTOR ToiletTalking : ToiletShootable
+ACTOR ToiletTalking : ToiletShootable //3d actor
 {
 	//$Category Conversation Stuff (Wolf3D)
 	//$Title Talking Toilet (shootable)
@@ -62,12 +62,11 @@ ACTOR BucketMop
 	Height 32
 	Health 10
 	Mass 0x7ffffff
-	+SOLID
 	+NOBLOOD
 	+NODROPOFF
-	+SHOOTABLE
 	+NOTAUTOAIMED
-	
+	+SHOOTABLE
+	+SOLID
 	States
 	{
 	Spawn:
@@ -83,7 +82,7 @@ ACTOR BucketMop
 	}
 }
 
-ACTOR WashingDish
+ACTOR WashingDish //3d actor
 {
 	//$Category Props (Wolf3D)/Bath
 	//$Title Washing Dish

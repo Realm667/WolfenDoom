@@ -225,11 +225,11 @@ ACTOR flaskshard1
 	Mass 1
 	RenderStyle "Translucent"
 	Alpha 0.6
-	+NOBLOCKMAP
-	+MISSILE
-	+NOTELEPORT
 	+DONTSPLASH
+	+MISSILE
+	+NOBLOCKMAP
 	+NOICEDEATH
+	+NOTELEPORT
 	States
 	{
 	Spawn:
@@ -285,7 +285,7 @@ ACTOR MagnifyGlass
 	}
 }
 
-ACTOR LabSkeletonA //there will be another variant, so that's why the A
+ACTOR LabSkeletonA //there will be another variant maybe, so let's keep this one as "A"
 {
 	//$Category Props (Wolf3D)/Labs
 	//$Title Medical Lab Skeleton Display
@@ -293,8 +293,8 @@ ACTOR LabSkeletonA //there will be another variant, so that's why the A
 	Height 64
 	Radius 16
 	ProjectilePassHeight 16
-	+SOLID
 	+NOTAUTOAIMED
+	+SOLID
 	Scale 0.8
 	States
 	{
@@ -312,18 +312,18 @@ ACTOR BrainLab1
 	Radius 16
 	Height 16
 	Scale 0.6
-	Health 1	//needs to be added for being destroyable
-	+SHOOTABLE	//needs to be added for being destroyable
+	Health 1		//needs to be added for being destroyable
+	+CANPASS		//mxd. Required to stack things on top of other things (like a kettle on a table)
+	+NOBLOOD		//needs to be added for being destroyable
 	+NOTAUTOAIMED
-	+NOBLOOD	//needs to be added for being destroyable
-	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
+	+SHOOTABLE	//needs to be added for being destroyable
 	
 	States
 	{
 	Spawn:
 		BRNS A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
-	Death:		//needs to be added for being destroyable
+	Death:			//needs to be added for being destroyable
 		TNT1 A 0 A_PlaySound("GLASS5")
 		"####" AA 0 A_SpawnItemEx ("Debris_GlassShard_Large", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
 		"####" AAAA 0 A_SpawnItemEx ("Debris_GlassShard_Medium", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
@@ -364,8 +364,8 @@ ACTOR DripLab1
 	Height 56
 	Scale 0.6
 	ProjectilePassHeight 16
-	+SOLID
 	+NOGRAVITY
+	+SOLID
 	States
 	{
 	Spawn:
@@ -411,14 +411,14 @@ ACTOR BigFlaskSpawner : SwitchableDecoration
 	Height 16 //same as sprite
 	Mass 1500
 	Scale 0.9
-	+SOLID
+	+ACTIVATEMCROSS
 	+DONTGIB
 	+NOBLOOD
 	+NODROPOFF
-	+SHOOTABLE
 	+NOICEDEATH
 	+NOTAUTOAIMED
-	+ACTIVATEMCROSS
+	+SHOOTABLE
+	+SOLID
 	DeathSound "tubes/break"
 	States
 	{
@@ -608,14 +608,14 @@ ACTOR PetriDish_Green
 	Height 16
 	Mass 1500
 	Scale 0.7
-	+SOLID
+	+ACTIVATEMCROSS
 	+DONTGIB
 	+NOBLOOD
 	+NODROPOFF
-	+SHOOTABLE
 	+NOICEDEATH
 	+NOTAUTOAIMED
-	+ACTIVATEMCROSS
+	+SHOOTABLE
+	+SOLID
 	DeathSound "tubes/break"
 	States
 	{

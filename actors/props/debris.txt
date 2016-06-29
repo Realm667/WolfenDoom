@@ -8,8 +8,8 @@ ACTOR Debris_Base
 	Height 1
 	Mass 5
 	Projectile
-	-ACTIVATEPCROSS
 	-ACTIVATEIMPACT
+	-ACTIVATEPCROSS
 	-NOGRAVITY
 	+RANDOMIZE
 	BounceType "Hexen"
@@ -333,15 +333,15 @@ ACTOR Debris_Tank
 	Mass 1
 	Scale 0.8
 	BounceFactor 0.5
-	+MISSILE
 	BounceType Doom
 	BounceSound "TANKDBRS"
+	+BOUNCEONACTORS
+	+BOUNCEONCEILINGS
+	+BOUNCEONWALLS
+	+CLIENTSIDEONLY
+	+MISSILE
 	+NOBLOCKMAP
 	+NOTELEPORT
-	+BOUNCEONWALLS
-	+BOUNCEONACTORS
-	+CLIENTSIDEONLY
-	+BOUNCEONCEILINGS
 	States
 	{
 	Spawn:
@@ -436,8 +436,8 @@ ACTOR Debris_TankShards : Debris_Tank
 	}
 }
 
-//This is here only for wall explosions debris, can't be selected from GZDB
-//Instead use function SpawnRocks while editing scripts on maps (check c1m1)
+//This is here only for wall explosions debris, can't be selected from GZDB - Instead use function SpawnRocks while editing scripts on maps
+//I this one used? It isn't used anymore on map c1m1 afaik
 ACTOR PhobosRockSmall
 {
 	Radius 1

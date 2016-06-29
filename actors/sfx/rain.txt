@@ -23,10 +23,10 @@ ACTOR RainSpawner : SwitchableDecoration
 	Height 1
 	YScale 0.1
 	
-	+NOCLIP
 	+CLIENTSIDEONLY
-	+SPAWNCEILING
+	+NOCLIP
 	+NOGRAVITY
+	+SPAWNCEILING
 	
 	States
 	{
@@ -65,19 +65,19 @@ ACTOR RainSpawner : SwitchableDecoration
 	}
 }
 
-ACTOR RainDropShort
+ACTOR RainDropShort //3d actor
 {
 	Height 1
 	Radius 4
 	RenderStyle "Translucent"
 	Alpha 0.7
 	
-	+NOGRAVITY
-	+MISSILE
 	+CLIENTSIDEONLY
-	+FORCEYBILLBOARD
-	+NOBLOCKMAP
 	+DONTSPLASH
+	+FORCEYBILLBOARD
+	+MISSILE
+	+NOBLOCKMAP
+	+NOGRAVITY
 	
 	States
 	{

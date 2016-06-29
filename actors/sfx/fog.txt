@@ -10,10 +10,10 @@ ACTOR FogCloud_Generator
 
 	//$Arg0 "Radius"
 	//$Arg0Tooltip "Radius in map units"
+	+CLIENTSIDEONLY
 	+MISSILE
 	+NOBLOCKMAP
 	+NOGRAVITY
-	+CLIENTSIDEONLY
 	Radius 1
 	Height 1
 	States
@@ -40,12 +40,11 @@ ACTOR FogCloud_Generator
 
 ACTOR FogCloud_V1
 {
-	+MISSILE
-	+NOGRAVITY
-	+NOBLOCKMAP
 	Radius 1
 	Height 1
-	//RenderStyle add
+	+MISSILE
+	+NOBLOCKMAP
+	+NOGRAVITY
 	Alpha .25
 	States
 	{

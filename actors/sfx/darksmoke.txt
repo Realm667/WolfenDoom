@@ -11,11 +11,11 @@ ACTOR DarkSmokeSpawner : SwitchableDecoration
 	Height 40
 	Radius 30
 	+CLIENTSIDEONLY
-	+NOCLIP
+	+DONTSPLASH
 	+NOBLOCKMAP
+	+NOCLIP
 	+NOGRAVITY
 	+NOINTERACTION
-	+DONTSPLASH
 	States
 	{
 	Spawn:
@@ -55,16 +55,14 @@ ACTOR DarkSmoke1
 {
 	Height 2
 	Radius 1
-	+NOGRAVITY
-	//+NOCLIP
-	+NOBLOCKMAP
-	+MISSILE
 	+CLIENTSIDEONLY
-	+NOINTERACTION
-	+ForceXYBillboard
 	+DONTSPLASH
+	+FORCEXYBILLBOARD
+	+MISSILE
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+NOINTERACTION
 	+WINDTHRUST
-	//RenderStyle "Add"
 	Alpha 0.7
 	Scale 0.3
 	States

@@ -7,9 +7,9 @@ ACTOR Firebrand : NaziWeapon replaces Chainsaw
 	Inventory.PickupMessage "$TYRF"
 	Inventory.PickupSound "sword/draw"
 	Weapon.UpSound "sword/draw"
-	+WEAPON.NOAUTOFIRE
-	+WEAPON.NOALERT
 	-WEAPON.AMMO_CHECKBOTH
+	+WEAPON.NOALERT
+	+WEAPON.NOAUTOFIRE
 	Tag "Blade of Agony"
 	States
 	{
@@ -205,9 +205,9 @@ ACTOR SwordPuffSpark
 	Scale .4
 	Mass 0
 	BounceType Doom
-	+MISSILE
-	+FLOORCLIP
 	+DONTSPLASH
+	+FLOORCLIP
+	+MISSILE
 	States
 	{
 	States:
