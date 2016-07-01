@@ -326,12 +326,12 @@ ACTOR CastleLight1 : SwitchableDecoration
 ACTOR CastleLight2 : CastleLight1
 {
 	//$Title Castle Light 2 (switchable)
-	Height 64
+	Height 56
 	States
 	{
 	Spawn:
 		MDLA A 0 NoDelay {A_SpawnItemEx("AlertLight", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
-											A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*60, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);}
+											A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*52, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);}
 		MDLA A -1 Light("BOACEIL3")
 		Stop
 	}
