@@ -129,7 +129,7 @@ ACTOR BoACompass : CustomInventory
 	}
 }
 
-ACTOR ScientistUnfiform : SwitchableDecoration
+ACTOR ScientistUniform : SwitchableDecoration
 {
 	//$Category Pickups (Wolf3D)
 	//$Title Scientist Uniform (useable)
@@ -149,7 +149,7 @@ ACTOR ScientistUnfiform : SwitchableDecoration
 		stop
 	Active:
 		SCUN B 0 A_ChangeFlag("SOLID", false)
-		"####" B 0 A_SpawnItemEx("ScientistUnfiformPickup", 0, 0, 16, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		"####" B 0 A_SpawnItemEx("ScientistUniformPickup", 0, 0, 16, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
 		"####" B 0 A_ChangeFlag("DORMANT", false)
 		"####" B 0 A_ChangeFlag("USESPECIAL", false)
 		"####" B -1
@@ -157,7 +157,7 @@ ACTOR ScientistUnfiform : SwitchableDecoration
 	}
 }
 
-ACTOR ScientistUnfiformPickup : Akten
+ACTOR ScientistUniformPickup : Akten
 {
 	//$Title Scientist Uniform (pickup)
 	Tag "Scientist Uniform"
