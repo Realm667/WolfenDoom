@@ -204,18 +204,19 @@ ACTOR NTomb5 : NTomb1 //3d actor
 	Height 35
 }
 
-ACTOR OldWagon
+ACTOR OldWagon //3d actor
 {
 	//$Category Props (Wolf3D)/Street
 	//$Title Old Wagon
 	//$Color 3
-	Radius 40
-	Height 64
+	Radius 24 //reduced for map-wise placement - ozy
+	Height 32
 	+SOLID
+	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:
-		OLWG A -1
+		MDLA A -1
 		Stop
 	}
 }
