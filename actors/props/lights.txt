@@ -449,26 +449,26 @@ ACTOR TableLightS : TableLightM
 ACTOR ColumnLight
 {
 	//$Category Light Sources (Wolf3D)/Static
-	//$Title Column Light (bright)
+	//$Title Column Light (on)
 	//$Color 11
 	Radius 8
-	Height 128
+	Height 136
 	+SOLID
 	States
 	{
 	Spawn:
-		COLL A -1
+		MDLA A -1
 		Stop
 	}
 }
 
 ACTOR ColumnLight2 : ColumnLight
 {
-	//$Title Column Light (dark)
+	//$Title Column Light (off)
 	States
 	{
 	Spawn:
-		COLL B -1
+		MDLA B -1
 		Stop
 	}
 }
