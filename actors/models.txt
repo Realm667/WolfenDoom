@@ -156,9 +156,9 @@ ACTOR TestCrate : 3dObstacle
 	//$Title Test Lab Crate
 	//$Color 3
 	DistanceCheck "scenelod"
-	Radius 32
+	Radius 24
 	Height 64
-	+SOLID
+	-SOLID
 	-NOGRAVITY
 	-NOTELEPORT
 	States
@@ -169,7 +169,16 @@ ACTOR TestCrate : 3dObstacle
 	}
 }
 
-ACTOR CrateGlass : 3dGlass {DistanceCheck "scenelod"}
+ACTOR CrateGlass : 3dGlass 
+{
+	Radius 24
+	Height 64
+	DistanceCheck "scenelod"
+	-SOLID
+	-NOGRAVITY
+	-NOTELEPORT
+	Alpha 0.5
+}
 
 ACTOR CeilingFan : 3dObstacle
 {
