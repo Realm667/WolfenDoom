@@ -284,20 +284,31 @@ ACTOR SolarPanel
 	}
 }
 
-ACTOR FutureCeilingLight
+ACTOR FutureCeilingLight : SwitchableDecoration //3d actor
 {
 	//$Category Props (Wolf3D)/Astrostein
-	//$Title Ceiling Light (modern)
+	//$Title Ceiling Light (modern, switchable)
 	//$Color 3
 	Radius 16
-	Height 16
+	Height 0
 	-SOLID
 	+NOGRAVITY
 	+SPAWNCEILING
 	States
 	{
+	Active:
+		MDLA A 0 A_ChangeFlag("DORMANT", false)
 	Spawn:
-		MCLI A -1
+	  MDLA A 0 NoDelay
+	ActiveLights:
+		MDLA A 0 A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*8, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+	Activate:
+		MDLA A 1
+		Loop
+	Inactive:
+		MDLA A 0 A_ChangeFlag("DORMANT", true)
+		MDLA A 0 A_RemoveChildren(TRUE, RMVF_MISC)
+		MDLA B -1
 		Stop
 	}
 }
