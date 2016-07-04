@@ -6,6 +6,8 @@ ACTOR Exclamation : SwitchableDecoration
 	//$Category Misc (Wolf3D)
 	//$Title Exclamation Mark
 	//$Color 1
+	Radius 32
+	Height 64
 	Scale 1.35
 	RenderStyle "Add"
 	+NOGRAVITY
@@ -21,4 +23,24 @@ ACTOR Exclamation : SwitchableDecoration
 		TNT1 A -1
 		Stop
 	}
+}
+
+ACTOR ExclamationTouchable : Exclamation
+{
+	//$Category Misc (Wolf3D)
+	//$Title Exclamation Mark (inactive on touching)
+	//$Color 1
+	States
+	{
+	Spawn:
+		//TNT1 A -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+	Active:
+		EXCL A 1 NODELAY BRIGHT A_CheckProximity("Inactive", "BoAPlayer", 72, 1)
+		Loop
+	Inactive:
+		EXCL A 35 BRIGHT
+		EXCL B -1 BRIGHT
+		Stop
+	}
+	
 }
