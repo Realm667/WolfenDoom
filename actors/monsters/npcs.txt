@@ -89,8 +89,8 @@ ACTOR Marine3AStatist : Marine1
 	Height 56
 	Mass 100
 	Scale 1.3
-	+SOLID
 	+FRIENDLY
+	+SOLID
 	States
 	{
 	Spawn:
@@ -118,9 +118,9 @@ ACTOR Camp_StaticBroom
 	Height 48
 	Health 10
 	Mass 600
-	+SOLID
-	+SHOOTABLE
 	+NOTAUTOAIMED
+	+SHOOTABLE
+	+SOLID
 	DeathSound "Nazi1/Death" //this will need fitting sounds I guess
 	States
 	{
@@ -214,8 +214,8 @@ ACTOR Camp_StaticShovelDig
 	Health 10
 	Mass 600
 	+NOTAUTOAIMED
-	+SOLID
 	+SHOOTABLE
+	+SOLID
 	DeathSound "Nazi1/Death" //this will need fitting sounds I guess
 	States
 	{
@@ -246,12 +246,12 @@ ACTOR Camp_PrisonerBald : Nazi
 	Radius 20
 	Height 50
 	Monster
+	-COUNTKILL
 	+FLOORCLIP
 	+FRIENDLY
 	+JUSTHIT
 	+NEVERTARGET
 	+NOSPLASHALERT
-	-COUNTKILL
 	MaxStepHeight 16
 	MaxDropoffHeight 32
 	PainSound "Nazi1/Pain"

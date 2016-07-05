@@ -79,9 +79,9 @@ ACTOR Nuke
 
 ACTOR TankBoom
 {
+	+FORCERADIUSDMG
 	+NOBLOCKMAP
 	+NOGRAVITY
-	+FORCERADIUSDMG
 	States
 	{
 	Spawn:
@@ -146,9 +146,9 @@ ACTOR NebFire : TankFire
 ACTOR NukeSmoke : Nuke
 {
 	Scale 1.7
-	+NOINTERACTION
 	+DONTSPLASH
 	+EXPLODEONWATER
+	+NOINTERACTION
 	Alpha 0.5
 	States
 	{

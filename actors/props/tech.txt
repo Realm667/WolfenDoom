@@ -43,8 +43,8 @@ ACTOR TeslaLab2 : SwitchableDecoration
 	Height 24
 	Mass 0x7ffffff
 	+NOGRAVITY
-	+RANDOMIZE
 	+NOTAUTOAIMED
+	+RANDOMIZE
 	States
 	{
 	Spawn:
@@ -163,13 +163,13 @@ ACTOR TeslaTurret //inspired from Tesla Coil by Captain Toenail
 	Mass 0x7ffffff
 	Speed 0
 	MONSTER
-	+NOBLOOD
-	+NOGRAVITY
-	+FLOORCLIP
 	-COUNTKILL
-	+NOTAUTOAIMED //because it's invulnerable, some ammo saved
+	+FLOORCLIP
 	+INVULNERABLE
 	+LOOKALLAROUND
+	+NOBLOOD
+	+NOGRAVITY
+	+NOTAUTOAIMED //because it's invulnerable, some ammo saved
 	+SHORTMISSILERANGE
 	Obituary "$TESLAT"
 	States

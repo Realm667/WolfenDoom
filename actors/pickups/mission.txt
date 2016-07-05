@@ -8,9 +8,9 @@ ACTOR Akten : Inventory
 	Inventory.PickupMessage "$AKTEN"
 	Inventory.PickupSound "misc/p_pkup"
 	Inventory.MaxAmount 1
-	+INVENTORY.UNDROPPABLE
-	+INVENTORY.INVBAR
 	+INVENTORY.ALWAYSPICKUP
+	+INVENTORY.INVBAR
+	+INVENTORY.UNDROPPABLE
 	States
 	{
 	Spawn:
@@ -115,9 +115,9 @@ ACTOR BoACompass : CustomInventory
 	Inventory.Icon CMPSB0
 	Inventory.PickupMessage "$COMPASS"
 	Inventory.PickupSound "misc/p_pkup"
-	+INVENTORY.UNDROPPABLE
-	+INVENTORY.INVBAR
 	+INVENTORY.ALWAYSPICKUP
+	+INVENTORY.INVBAR
+	+INVENTORY.UNDROPPABLE
 	States
 	{
 	Spawn:
@@ -136,10 +136,10 @@ ACTOR ScientistUniform : SwitchableDecoration
 	//$Color 13
 	Radius 8
 	Height 56
+	-DORMANT
+	+NOTAUTOAIMED
 	+SOLID
 	+USESPECIAL
-	+NOTAUTOAIMED
-	-DORMANT
 	Activation THINGSPEC_Switch
 	States
 	{
@@ -181,9 +181,9 @@ ACTOR Kennkarte : Inventory
 	Inventory.Icon KENKA0
 	Inventory.PickupMessage "$KENK"
 	Inventory.PickupSound "misc/p_pkup"
-	+INVENTORY.UNDROPPABLE
-	+INVENTORY.INVBAR
 	+INVENTORY.ALWAYSPICKUP
+	+INVENTORY.INVBAR
+	+INVENTORY.UNDROPPABLE
 	States
 	{
 	Spawn:

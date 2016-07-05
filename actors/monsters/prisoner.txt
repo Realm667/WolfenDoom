@@ -16,6 +16,7 @@ ACTOR PrisonerAgent
 	PainSound "Nazi1/Pain"
 	DeathSound "Nazi1/Death"
 	Monster
+	-COUNTKILL
 	+BOSSDEATH
 	+DONTGIB
 	+DONTHARMSPECIES
@@ -31,7 +32,6 @@ ACTOR PrisonerAgent
 	+NOTELESTOMP
 	+PUSHABLE
 	+SLIDESONWALLS
-	-COUNTKILL
 	States
 	{
 	Spawn:
@@ -160,11 +160,11 @@ ACTOR PrisonerFree : DirtyDarren
 
 ACTOR HealingParticle
 {
+	+DONTSPLASH
+	+FORCEXYBILLBOARD
 	+MISSILE
 	+NOBLOCKMAP
 	+NOGRAVITY
-	+DONTSPLASH
-	+FORCEXYBILLBOARD
 	Radius 0
 	Height 0
 	RenderStyle "Add"
@@ -310,14 +310,14 @@ ACTOR PrisonerCampMale : PrisonerAgent //this is a placeholder for now
 	//Obituary "$PRISONER" //needs a different obituary though
 	Health 50
 	Speed 1
-	+FRIENDLY
-	+FRIGHTENED
-	+JUMPDOWN
-	+LOOKALLAROUND
 	-BOSSDEATH
 	-NOBLOCKMONST
 	-NODAMAGE
 	-NOFEAR
+	+FRIENDLY
+	+FRIGHTENED
+	+JUMPDOWN
+	+LOOKALLAROUND
 	States
 	{
 	Death:

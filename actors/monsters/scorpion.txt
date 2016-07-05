@@ -18,12 +18,12 @@ ACTOR Scorpion
 	BloodType "ScorpionBlood"
 	BloodColor "DarkOrange1"
 	Monster
+	-COUNTKILL
 	+DONTMORPH
 	+FLOORCLIP
 	+LOOKALLAROUND
 	+NOINFIGHTING
 	+NOTRIGGER
-	-COUNTKILL
 	Species Nazi
 	MaxTargetRange 112
 	States
@@ -87,12 +87,12 @@ ACTOR ScorpionBig
 	Obituary "$SCORPBIG"
 	Species Nazi
 	Monster
+	-COUNTKILL
 	+DONTMORPH
 	+FLOORCLIP
 	+LOOKALLAROUND
 	+NOINFIGHTING
 	+NOTRIGGER
-	-COUNTKILL
 	States
 	{
 	Spawn:
@@ -183,12 +183,12 @@ ACTOR ScorpionChunk
 	Gravity 0.6
 	DeathSound "gore/splat"
 	Projectile
+	-NOGRAVITY
 	+BOUNCEAUTOOFF
 	+CANBOUNCEWATER
 	+DONTSPLASH
 	+FORCEXYBILLBOARD
 	+MOVEWITHSECTOR
-	-NOGRAVITY
 	States
 	{
 	Spawn:

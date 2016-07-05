@@ -7,10 +7,10 @@ ACTOR SharkBlocker
 	Radius 256
 	Mass 99999999
 	Species "Player"
-	+SOLID
-	+NOGRAVITY
-	+THRUSPECIES
 	+DONTSPLASH
+	+NOGRAVITY
+	+SOLID
+	+THRUSPECIES
 }
 
 //we need it smaller for narrow places/situations, not only the big one for sharks (check map c1m6)
@@ -38,10 +38,10 @@ ACTOR Shark
 	DeathSound "shark/death"
 	ActiveSound "shark/active"
 	Monster
-	+FLOORCLIP
-	+NOGRAVITY
 	+FLOAT
+	+FLOORCLIP
 	+FORCEXYBILLBOARD
+	+NOGRAVITY
 	+NOINFIGHTING
 	States
 	{
@@ -112,8 +112,8 @@ ACTOR BloodTrail
 	Radius 1
 	Height 1
 	Projectile
-	+NOCLIP
 	+CLIENTSIDEONLY
+	+NOCLIP
 	States
 	{
 	Spawn:

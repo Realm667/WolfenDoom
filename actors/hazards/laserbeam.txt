@@ -66,10 +66,10 @@ ACTOR LaserBeam_Red
 {
 	Radius 0 
 	Height 0
+	+NOBLOCKMAP
 	+NOGRAVITY
 	+NOINTERACTION
-	+NOBLOCKMAP
-	Renderstyle "Add"
+	RenderStyle "Add"
 	States
 	{
 	Spawn:
@@ -88,9 +88,9 @@ ACTOR LaserSpark
 	Radius 2
 	Mass 0
 	Speed 0.25
+	+FORCEXYBILLBOARD
 	+MISSILE
 	+NOBLOCKMAP
-	+FORCEXYBILLBOARD
 	Gravity 0.125
 	RenderStyle "Add"
 	Scale 0.025
@@ -113,11 +113,11 @@ ACTOR MeasurePuff : BulletPuff
 	Height 0
 	VSpeed 0
 	Mass 0
+	-RANDOMIZE
 	+ALWAYSPUFF
 	+NOGRAVITY
 	+PUFFGETSOWNER //originating actor becomes Target
 	+PUFFONACTORS
-	-RANDOMIZE
 	States
 	{
 	Spawn:

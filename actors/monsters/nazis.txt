@@ -264,8 +264,8 @@ ACTOR WGuard : Guard
 	Obituary "$WGUARD"
 	Health 30
 	PainChance 185
-	+MISSILEMORE
 	+MISSILEEVENMORE
+	+MISSILEMORE
 	States
 	{
 	Spawn:
@@ -401,7 +401,6 @@ ACTOR WMP40Guard : MP40Guard
 	Health 30
 	Speed 2.5
 	+MISSILEMORE
-	//+MISSILEEVENMORE
 	States
 	{
 	Spawn:
@@ -521,8 +520,8 @@ ACTOR WOfficer : Officer
 	Health 30
 	Speed 5
 	PainChance 180
-	+MISSILEMORE
 	+MISSILEEVENMORE
+	+MISSILEMORE
 	States
 	{
 	Spawn:
@@ -583,8 +582,8 @@ ACTOR WRifleGuard : RifleGuard
 	Obituary "$WRIFSOLD"
 	Health 30
 	Speed 2.5
-	+MISSILEMORE
 	+MISSILEEVENMORE
+	+MISSILEMORE
 	States
 	{
 	Spawn:
@@ -664,8 +663,8 @@ ACTOR Mutant : Guard
 	BloodType "MutantBlood"
 	DamageFactor MutantPoison, 0
 	DamageFactor Poison, 0
-	+MISSILEMORE
 	+MISSILEEVENMORE
+	+MISSILEMORE
 	DropItem "9mmAmmo" 128
 	States
 	{
@@ -1096,8 +1095,8 @@ ACTOR RocketMan : NaziBoss
 	PainSound "boss/pain"
 	DeathSound "Boss2/Death"
 	DropItem NebAmmoSmall
-	+LOOKALLAROUND
 	+BOSS
+	+LOOKALLAROUND
 	Tag "Otto Giftmacher"
 	States
 	{
@@ -1249,15 +1248,15 @@ ACTOR PoisonCloudMutant
 	Height 30
 	Mass 0x7fffffff
 	Reactiontime 5
-	+NOBLOCKMAP
-	+NOGRAVITY
-	+DROPOFF
-	+NODAMAGETHRUST
-	+DONTSPLASH
-	+FOILINVUL
-	+CANBLAST
-	+BLOODLESSIMPACT
 	+BLOCKEDBYSOLIDACTORS
+	+BLOODLESSIMPACT
+	+CANBLAST
+	+DONTSPLASH
+	+DROPOFF
+	+FOILINVUL
+	+NOBLOCKMAP
+	+NODAMAGETHRUST
+	+NOGRAVITY
 	RenderStyle "Translucent"
 	Alpha 0.6
 	DamageType MutantPoison	
@@ -1364,9 +1363,9 @@ ACTOR SuperSoldier : NaziBoss
 	SeeSound "Boss1/Sighted"
 	PainSound "boss/pain"
 	DeathSound "Boss1/Death"
+	+BOSS
 	+LOOKALLAROUND
 	+NOBLOOD
-	+BOSS
 	States
 	{
 	Spawn:
@@ -1423,9 +1422,9 @@ ACTOR SuperSoldierGirl : SuperSoldier
 	DropItem "9mmAmmo" 128
 	DropItem "9mmAmmo" 128
 	DropItem "9mmAmmo" 128
-	+MISSILEMORE
-	+MISSILEEVENMORE
 	+BOSS
+	+MISSILEEVENMORE
+	+MISSILEMORE
 	States
 	{
 	Spawn:
@@ -1520,8 +1519,8 @@ ACTOR General : RocketMan replaces Archvile
 	DropItem "NebAmmoSmall" 128
 	DropItem "NebAmmoSmall" 128
 	DropItem "NebAmmoSmall" 128
-	+MISSILEEVENMORE
 	+BOSS
+	+MISSILEEVENMORE
 	Tag "Gen. Fettgesicht"
 	States
 	{
@@ -1726,11 +1725,11 @@ ACTOR HitlerGhost : Nazi
 	PainChance 24
 	DeathSound "hitlerghost/die"
 	SeeSound "hitlerghost/see"
+	-FLOORCLIP
 	+BOSS
 	+FLOAT
 	+NOBLOOD
 	+NOGRAVITY
-	-FLOORCLIP
 	Tag "Hitler's Ghost"
 	States
 	{
@@ -1801,12 +1800,12 @@ ACTOR Geist : Nazi
 	DeathSound "geist/die"
 	RenderStyle "Translucent"
 	Alpha .5
+	-FLOORCLIP
 	+DONTFALL
 	+FLOAT
 	+LOOKALLAROUND
 	+NOBLOOD
 	+NOGRAVITY
-	-FLOORCLIP
 	States
 	{
 	Spawn:
@@ -1982,11 +1981,11 @@ ACTOR MiniShip : Nazi
 	DeathSound "world/barrelboom"
 	PainChance 96
 	FloatSpeed .67
+	-FLOORCLIP
 	+FLOAT
 	+LOOKALLAROUND
 	+NOBLOOD
 	+NOGRAVITY
-	-FLOORCLIP
 	States
 	{
 	Spawn:
@@ -2044,10 +2043,10 @@ ACTOR MGTurret : MiniShip
 	Radius 2
 	Height 32
 	Mass 0x7fffffff
-	+NOPAIN
-	+MISSILEEVENMORE
 	-FLOAT
 	-NOGRAVITY
+	+MISSILEEVENMORE
+	+NOPAIN
 	States
 	{
 	Spawn:
@@ -2349,9 +2348,9 @@ ACTOR FatMan : NaziBoss
 	//$Category Monsters (Wolf3D)/Bosses
 	//$Title General Schwabbelhals (Boss)
 	//$Color 4
-	+BOSS
 	-FLOAT			//we don't want him to fly, yeah? ;)
 	-NOGRAVITY	//we don't want him to fly, yeah? ;)
+	+BOSS
 	PainChance 64
 	Tag "Gen. Schwabbelhals"
 	Obituary "$FATMAN"
@@ -2669,8 +2668,8 @@ ACTOR UndeadMonk : HitlerGhost
 	//$Title Undead Monk
 	//$Color 4
 	Health 200
-	+LOOKALLAROUND
 	-BOSS
+	+LOOKALLAROUND
 	Obituary "$UNDEADM"
 	DeathSound "monk/death"
 	PainSound "monk/pain"
@@ -2787,10 +2786,10 @@ ACTOR MGTurretInvisible : MGTurret
 	//$Color 4
 	Obituary "$MGTHIDE"
 	Health 0
-	+NOGRAVITY //mxd
 	-COUNTKILL
 	-SHOOTABLE
 	-SOLID
+	+NOGRAVITY //mxd
 	RenderStyle "None"
 	States
 	{
@@ -3599,10 +3598,10 @@ ACTOR NaziLoper : Nazi
 
 ACTOR LoperZap
 {
-	+NOBLOCKMAP
-	+NOTELEPORT
 	+ALLOWPARTICLES
+	+NOBLOCKMAP
 	+NOGRAVITY
+	+NOTELEPORT
 	Mass 0
 	RenderStyle "Translucent"
 	Alpha 0.6
@@ -3630,8 +3629,8 @@ ACTOR ZTracer
 	RenderStyle "Add"
 	Alpha 0.67
 	Projectile
-	+FLOORHUGGER
 	-NOGRAVITY
+	+FLOORHUGGER
 	Translation "112:127=192:200"
 	Obituary "$LOPRHIT3"
 	SeeSound "electricplasma/shoot"
@@ -3667,9 +3666,9 @@ ACTOR ZTracerPuff
 	DamageType fire
 	Alpha 0.67
 	Projectile
+	-NOGRAVITY
 	+FLOORHUGGER
 	+RANDOMIZE
-	-NOGRAVITY
 	Translation "112:127=192:200"
 	States
 	{
@@ -3685,11 +3684,11 @@ ACTOR ZTracerPuff
 ACTOR VisualSpecialEffect
 {
 	+CLIENTSIDEONLY
-	+NOINTERACTION
+	+FORCEXYBILLBOARD
 	+NOBLOCKMAP
 	+NOGRAVITY
+	+NOINTERACTION
 	+NOTELEPORT
-	+FORCEXYBILLBOARD
 }
 
 ACTOR TPortLightning : VisualSpecialEffect

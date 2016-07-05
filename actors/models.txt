@@ -15,23 +15,23 @@ ACTOR ModelBase
 
 ACTOR 3dObject : ModelBase
 {
-	+SOLID
+	//+ACTLIKEBRIDGE
 	+NOBLOCKMAP
-	+ACTLIKEBRIDGE
+	+SOLID
 }
 
 ACTOR 3dObstacle : 3dObject
 {
 	Mass 0x7fffffff
 	Health -1
-	+NOBLOOD
-	+CANPASS
-	+NODAMAGE
-	+SHOOTABLE
-	+NOBLOODDECALS
-	+NOTAUTOAIMED
 	-FLOORCLIP
 	-NOBLOCKMAP
+	+CANPASS
+	+NOBLOOD
+	+NOBLOODDECALS
+	+NODAMAGE
+	+NOTAUTOAIMED
+	+SHOOTABLE
 }
 
 ACTOR 3dGlass : ModelBase
@@ -396,8 +396,8 @@ ACTOR Submarine : ModelBase
 ACTOR SubmarineIcy : Submarine
 {
 	//$Title Submarine (congealed)
-	+NOGRAVITY
 	-SOLID
+	+NOGRAVITY
 	Radius 64
 	Height 64
 }
@@ -438,12 +438,12 @@ ACTOR Nebelwerfer3D
 	Height 56
 	Health 1000
 	Mass 0x7fffffff
-	+SOLID
 	+CANPASS
-	+SHOOTABLE
-	+FLOORCLIP
 	+DONTSPLASH
+	+FLOORCLIP
 	+NOBLOODDECALS
+	+SHOOTABLE
+	+SOLID
 	BloodType "TankSpark"
 	States
 	{
@@ -468,12 +468,12 @@ ACTOR Nebelwerfer3D_Destroyed
 	Height 56
 	Health -1
 	Mass 0x7fffffff
-	+SOLID
 	+CANPASS
-	+SHOOTABLE
-	+FLOORCLIP
 	+DONTSPLASH
+	+FLOORCLIP
 	+NOBLOODDECALS
+	+SHOOTABLE
+	+SOLID
 	BloodType "TankSpark"
 	States
 	{
@@ -553,18 +553,18 @@ ACTOR FlakVierling3D : SwitchableDecoration
 	Height 88
 	Mass 0x7fffffff
 	Health -1
-	+ACTLIKEBRIDGE
+	-FLOORCLIP
+	-NOBLOCKMAP
+	//+ACTLIKEBRIDGE
 	+CANPASS
 	+DONTSPLASH
 	+NOBLOOD
 	+NOBLOODDECALS
 	+NODAMAGE
+	+NOGRAVITY
 	+NOTAUTOAIMED
 	+SHOOTABLE
 	+SOLID
-	+NOGRAVITY
-	-FLOORCLIP
-	-NOBLOCKMAP
 	States
 	{
 	Active:
@@ -595,8 +595,8 @@ ACTOR Luftschiff : 3dObstacle
 	//$Category Models (Wolf3D)/Ships
 	//$Title Luftschiff LZ130
 	//$Color 3
-	+NOGRAVITY
 	-SOLID
+	+NOGRAVITY
 	Radius 32
 	Height 32
 }
@@ -804,7 +804,9 @@ ACTOR RTCWParlor : SwitchableDecoration
 	Height 8
 	Mass 0x7fffffff
 	Health -1
-	+ACTLIKEBRIDGE
+	-FLOORCLIP
+	-NOBLOCKMAP
+	//+ACTLIKEBRIDGE
 	+CANPASS
 	+DONTSPLASH
 	+NOBLOOD
@@ -815,8 +817,6 @@ ACTOR RTCWParlor : SwitchableDecoration
 	+SOLID
 	+SYNCHRONIZED
 	+USESPECIAL
-	-FLOORCLIP
-	-NOBLOCKMAP
 	Activation THINGSPEC_Switch
 	States
 	{
@@ -851,7 +851,9 @@ ACTOR RTCWGramo : SwitchableDecoration
 	Height 32
 	Mass 0x7fffffff
 	Health -1
-	+ACTLIKEBRIDGE
+	-FLOORCLIP
+	-NOBLOCKMAP
+	//+ACTLIKEBRIDGE
 	+CANPASS
 	+DONTSPLASH
 	+NOBLOOD
@@ -862,8 +864,6 @@ ACTOR RTCWGramo : SwitchableDecoration
 	+SOLID
 	+SYNCHRONIZED
 	+USESPECIAL
-	-FLOORCLIP
-	-NOBLOCKMAP
 	Activation THINGSPEC_Switch
 	States
 	{
@@ -993,7 +993,9 @@ ACTOR ModelGMCTruck : SwitchableDecoration //ozy81
 	//$Color 3
 	Mass 0x7fffffff
 	Health -1
-	+ACTLIKEBRIDGE
+	-FLOORCLIP
+	-NOBLOCKMAP
+	//+ACTLIKEBRIDGE
 	+CANPASS
 	+DONTSPLASH
 	+NOBLOOD
@@ -1001,8 +1003,6 @@ ACTOR ModelGMCTruck : SwitchableDecoration //ozy81
 	+NODAMAGE
 	+NOTAUTOAIMED
 	+SHOOTABLE
-	-FLOORCLIP
-	-NOBLOCKMAP
 	States
 	{
 	Active:
@@ -1081,8 +1081,8 @@ ACTOR WallLight2 : 3dObstacle
 	//$Color 11
 	Radius 14
 	Height 48
-	+NOGRAVITY
 	-SOLID
+	+NOGRAVITY
 }
 
 ACTOR WallLight2Lit : WallLight2
@@ -1105,15 +1105,15 @@ ACTOR SimpleLight1 : SwitchableDecoration
 	Height 12
 	Mass 0x7fffffff
 	Health -1
+	-FLOORCLIP
+	-NOBLOCKMAP
 	+DONTSPLASH
 	+NOBLOOD
 	+NOBLOODDECALS
 	+NODAMAGE
+	+NOGRAVITY
 	+NOTAUTOAIMED
 	+SHOOTABLE
-	+NOGRAVITY
-	-FLOORCLIP
-	-NOBLOCKMAP
 	States
 	{
 	Active:
@@ -1215,15 +1215,15 @@ ACTOR FuelDrumAstro //Uses JK2 3dModel
 	//$Color 3
 
 	-NOGRAVITY 			//or it will move towards the void without falling
-	+MOVEWITHSECTOR	//I add this because we may need it for some "arcade" sequences -ozy
-	+SLIDESONWALLS	//let's prevent some weird behaviors, like being stuck in a map because the crate can't get out from an angle -ozy
-	+SHOOTABLE
-	+PUSHABLE
-	+NODAMAGE
-	+NOBLOOD
 	+CANPASS
+	+MOVEWITHSECTOR	//I add this because we may need it for some "arcade" sequences -ozy
+	+NOBLOOD
+	+NODAMAGE
+	+PUSHABLE
+	+SHOOTABLE
+	+SLIDESONWALLS	//let's prevent some weird behaviors, like being stuck in a map because the crate can't get out from an angle -ozy
 	+SOLID
-	
+
 	Radius 24
 	Height 56
 	Mass 15000
@@ -1766,7 +1766,9 @@ ACTOR COD_RadioSimple : SwitchableDecoration
 	Height 16
 	Mass 0x7fffffff
 	Health 25
-	+ACTLIKEBRIDGE
+	-FLOORCLIP
+	-NOBLOCKMAP
+	//+ACTLIKEBRIDGE
 	+CANPASS
 	+DONTSPLASH
 	+NOBLOOD
@@ -1776,8 +1778,6 @@ ACTOR COD_RadioSimple : SwitchableDecoration
 	+SOLID
 	+SYNCHRONIZED
 	+USESPECIAL
-	-FLOORCLIP
-	-NOBLOCKMAP
 	Activation THINGSPEC_Switch
 	States
 	{
@@ -1812,8 +1812,8 @@ ACTOR COD_Radio_Tall : 3dObstacle
 	DistanceCheck "scenelod"
 	Radius 8
 	Height 32
-	+NOGRAVITY
 	+FIXMAPTHINGPOS
+	+NOGRAVITY
 }
 
 ACTOR COD_Radio_Tall_D : COD_Radio_Tall
@@ -2026,18 +2026,18 @@ ACTOR CODScheinwerfer : SwitchableDecoration
 	Height 80
 	Mass 0x7fffffff
 	Health -1
-	+ACTLIKEBRIDGE
+	-FLOORCLIP
+	-NOBLOCKMAP
+	//+ACTLIKEBRIDGE
 	+CANPASS
 	+DONTSPLASH
 	+NOBLOOD
 	+NOBLOODDECALS
 	+NODAMAGE
+	+NOGRAVITY
 	+NOTAUTOAIMED
 	+SHOOTABLE
 	+SOLID
-	+NOGRAVITY
-	-FLOORCLIP
-	-NOBLOCKMAP
 	BloodType "TankSpark"
 	States
 	{
@@ -2061,15 +2061,15 @@ ACTOR CODNeoLights1 : SwitchableDecoration
 	Height 24
 	Mass 0x7fffffff
 	Health -1
+	-FLOORCLIP
+	-NOBLOCKMAP
 	+DONTSPLASH
 	+NOBLOOD
 	+NOBLOODDECALS
 	+NODAMAGE
+	+NOGRAVITY
 	+NOTAUTOAIMED
 	+SHOOTABLE
-	+NOGRAVITY
-	-FLOORCLIP
-	-NOBLOCKMAP
 	States
 	{
 	Active:
@@ -2126,18 +2126,18 @@ ACTOR CODRailway_Switch : SwitchableDecoration
 	Height 144
 	Mass 0x7fffffff
 	Health -1
-	+ACTLIKEBRIDGE
+	-FLOORCLIP
+	-NOBLOCKMAP
+	//+ACTLIKEBRIDGE
 	+CANPASS
 	+DONTSPLASH
 	+NOBLOOD
 	+NOBLOODDECALS
 	+NODAMAGE
+	+NOGRAVITY
 	+NOTAUTOAIMED
 	+SHOOTABLE
-	+NOGRAVITY
 	+SOLID
-	-FLOORCLIP
-	-NOBLOCKMAP
 	States
 	{
 	Active:
@@ -2163,11 +2163,11 @@ ACTOR CanyonRockSpawner : 3dObstacle //ozymandias81
 	//$Arg0Tooltip "Pickup the desired shape\nRandom: 0\nLarge: 1\nMedium: 2\nSmall: 3"
 	Radius 24
 	Height 24
-	+NOGRAVITY
-	+MOVEWITHSECTOR
-	+RELATIVETOFLOOR
+	//-ACTLIKEBRIDGE
 	-CANPASS
-	-ACTLIKEBRIDGE
+	+MOVEWITHSECTOR
+	+NOGRAVITY
+	+RELATIVETOFLOOR
 	States
 	{
 	Spawn:
@@ -2390,13 +2390,13 @@ ACTOR SpotlightGlow
 	Height 16
 	Radius 16
 
+	+ALWAYSPUFF
+	+BLOODLESSIMPACT
+	+INVISIBLE
 	+NOBLOCKMAP
 	+NOGRAVITY
-	+ALWAYSPUFF
-	+PUFFONACTORS
-	+BLOODLESSIMPACT
 	+PAINLESS
-	+INVISIBLE
+	+PUFFONACTORS
 
 	States
 	{
@@ -2435,10 +2435,9 @@ ACTOR SpotlightBeam : ModelBase
 {
 	RenderStyle "Add"
 	Alpha 0.4
-	+NOGRAVITY
 	+BRIGHT
 	+NOBLOCKMAP
-
+	+NOGRAVITY
 	States
 	{
 		Spawn:

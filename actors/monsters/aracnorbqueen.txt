@@ -154,9 +154,9 @@ ACTOR QueenPlasmaBlast
 	Projectile
 	DamageType Disintegrate
 	Scale .75
-	+RANDOMIZE
 	+BLOODLESSIMPACT
 	+NOEXTREMEDEATH
+	+RANDOMIZE
 	RenderStyle "Add"
 	Alpha 0.75
 	SeeSound "electricplasma/shoot"
@@ -205,7 +205,7 @@ ACTOR QueenBlastPod //From the Vore actor - Projectile sprites by Vader - Tweake
 	FastSpeed 9
 	Damage (Random(10,20))
 	Projectile
-	+SeekerMissile
+	+SEEKERMISSILE
 	RenderStyle "Add"
 	Alpha 0.9
 	SEESOUND "queen/fire"
