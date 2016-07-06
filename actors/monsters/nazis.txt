@@ -2446,6 +2446,20 @@ ACTOR Scientist2 : Guard
 	}
 }
 
+ACTOR ScientistGutenberg : Guard
+{
+	//$Category Monsters (Wolf3D)
+	//$Title Prof. Klaus Gutenberg
+	//$Color 4
+	Translation "175:191=80:111"
+	States
+	{
+	Spawn:
+		SCNT N 0
+		Goto Look
+	}
+}
+
 ACTOR UberMutant : Mutant
 {
 	//$Category Monsters (Wolf3D)/Bosses
