@@ -229,13 +229,13 @@ ACTOR Flamebolt
 		"####" A 0 A_Jump(128, "Smoke1", "Smoke2", "Smoke3")
 		Goto Death
 	Smoke1:
-		"####" A 0 A_SpawnItemEx("Smoke1A")
+		"####" A 0 A_SpawnItemEx("FlamerSmoke1")
 		Goto Death
 	Smoke2:
-		"####" A 0 A_SpawnItemEx("Smoke2A")
+		"####" A 0 A_SpawnItemEx("FlamerSmoke2")
 		Goto Death
 	Smoke3:
-		"####" A 0 A_SpawnItemEx("Smoke3A")
+		"####" A 0 A_SpawnItemEx("FlamerSmoke3")
 		Goto Death
 	Death:
 		"####" A 1 BRIGHT LIGHT(BOAFLAMW)
@@ -261,17 +261,25 @@ ACTOR Flameball : Flamebolt
 	States
 	{
 	Spawn:
-		FBAL AAA 3 BRIGHT LIGHT(BOAFLMW2) 
-		"####" A 0 A_Jump(128, "Smoke1", "Smoke2", "Smoke3")
+		FBAL A 2 BRIGHT LIGHT(BOAFLMW2) 
+			{
+				A_SpawnItemEx("TracerSpark", random(-32,32), random(-32,32), random(-32,32), random(-2,2), random(-2,2), random(-2,2), random(0,359));
+				A_SpawnItemEx("TracerSpark", random(-32,32), random(-32,32), random(-32,32), random(-2,2), random(-2,2), random(-2,2), random(0,359));
+				A_SpawnItemEx("TracerSpark", random(-32,32), random(-32,32), random(-32,32), random(-2,2), random(-2,2), random(-2,2), random(0,359));
+			}
+		"####" A 0 A_Jump(192, "Smoke1", "Smoke2", "Smoke3")
 		Loop
 	Smoke1:
-		"####" A 0 A_SpawnItemEx("Smoke1A")
+		"####" A 0 A_SpawnItemEx("FlamerSmoke1")
+		"####" A 0 A_SpawnItemEx("Flame1A")
 		Goto Spawn
 	Smoke2:
-		"####" A 0 A_SpawnItemEx("Smoke2A")
+		"####" A 0 A_SpawnItemEx("FlamerSmoke2")
+		"####" A 0 A_SpawnItemEx("Flame1B")
 		Goto Spawn
 	Smoke3:
-		"####" A 0 A_SpawnItemEx("Smoke3A")
+		"####" A 0 A_SpawnItemEx("FlamerSmoke3")
+		"####" A 0 A_SpawnItemEx("Flame1C")
 		Goto Spawn
 	Death:
 		"####" A 0 A_SpawnItemEx("NebFloor")
@@ -279,8 +287,73 @@ ACTOR Flameball : Flamebolt
 		"####" A 0 A_SpawnItemEx("NebSmokeMushroom",0,0,0)
 		"####" A 0 A_SpawnItemEx("NebSmokePillar",0,0,0,0,0,2)
 		"####" A 0 A_SetScale(1.0)
+		"####" AAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark", random(-32,32), random(-32,32), random(-32,32), random(-4,4), random(-4,4), random(-4,4), random(0,359))
 		FBLX A 2 BRIGHT LIGHT(BOAFLMW2) A_Explode(96,128)
 		FBLX BCDEFGHIJK 2 BRIGHT LIGHT(BOAFLMW2)
 		Stop
+	}
+}
+
+//Flames and particles
+ACTOR FlamerSmoke1
+{
+	Height 2
+	Radius 1
+	+CLIENTSIDEONLY
+	+DONTSPLASH
+	+FORCEXYBILLBOARD
+	+MISSILE
+	+NOBLOCKMAP
+	+NOCLIP
+	+NOGRAVITY
+	+NOINTERACTION
+	+WINDTHRUST
+	Alpha 0.1
+	Scale 0.3
+	States
+	{
+	Spawn:
+		SMOC A 0
+	FadeIn:
+		"####" A 0 ThrustThingZ(0,random(2,6),0,0)
+		"####" A 0 ThrustThing(random(0,255),random(0,1),0,0)
+		"####" AAAAAAAA 1 A_FadeIn(.05)
+	FadeOut:
+		"####" AAAA 3 A_FadeOut(.05)
+		Loop
+	}
+}
+
+ACTOR FlamerSmoke2 : FlamerSmoke1
+{
+	Scale 0.5
+	States
+	{
+	Spawn:
+		SMOC A 0
+	FadeIn:
+		"####" A 0 ThrustThingZ(0,random(2,6),0,0)
+		"####" A 0 ThrustThing(random(0,255),random(0,1),0,0)
+		"####" AAAAAAAA 1 A_FadeIn(.05)
+	FadeOut:
+		"####" AAAA 3 A_FadeOut(.05)
+		Loop
+	}	
+}
+
+ACTOR FlamerSmoke3 : FlamerSmoke1
+{
+	Scale 0.7
+	States
+	{
+	Spawn:
+		SMOC A 0
+	FadeIn:
+		"####" A 0 ThrustThingZ(0,random(2,6),0,0)
+		"####" A 0 ThrustThing(random(0,255),random(0,1),0,0)
+		"####" AAAAAAAA 1 A_FadeIn(.05)
+	FadeOut:
+		"####" AAAA 3 A_FadeOut(.05)
+		Loop
 	}
 }

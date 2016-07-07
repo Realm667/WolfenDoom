@@ -1694,14 +1694,6 @@ ACTOR HardEnemyFlamerShot : EnemyFlamerShot
 ACTOR EnemyFlamebolt : Flameball
 {
 	Damage 8
-	Scale .5
-	States
-	{
-	Death:
-		FBLX A 2 BRIGHT LIGHT(BOAFLMW2) A_Explode(8,64)
-		FBLX BCDEFGHIJK 2 BRIGHT LIGHT(BOAFLMW2)
-		Stop
-	}
 }
 
 ACTOR HardEnemyFlamebolt : EnemyFlamebolt
