@@ -271,15 +271,21 @@ ACTOR Flameball : Flamebolt
 		Loop
 	Smoke1:
 		"####" A 0 A_SpawnItemEx("FlamerSmoke1")
+		"####" A 0 A_Jump (192,1,2)
 		"####" A 0 A_SpawnItemEx("Flame1A")
+		"####" A 0 A_SpawnItemEx("Flame1B")
 		Goto Spawn
 	Smoke2:
 		"####" A 0 A_SpawnItemEx("FlamerSmoke2")
+		"####" A 0 A_Jump (192,1,2)
+		"####" A 0 A_SpawnItemEx("Flame1A")
 		"####" A 0 A_SpawnItemEx("Flame1B")
 		Goto Spawn
 	Smoke3:
 		"####" A 0 A_SpawnItemEx("FlamerSmoke3")
-		"####" A 0 A_SpawnItemEx("Flame1C")
+		"####" A 0 A_Jump (192,1,2)
+		"####" A 0 A_SpawnItemEx("Flame1A")
+		"####" A 0 A_SpawnItemEx("Flame1B")
 		Goto Spawn
 	Death:
 		"####" A 0 A_SpawnItemEx("NebFloor")

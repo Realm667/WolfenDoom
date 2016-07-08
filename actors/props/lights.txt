@@ -337,6 +337,48 @@ ACTOR CastleLight2 : CastleLight1
 	}
 }
 
+ACTOR Cell_Light : CastleLight1
+{
+	//$Title Cell Light (switchable)
+	Radius 8
+	Height 38
+	States
+	{
+	Spawn:
+		MDLA A 0 NoDelay {A_SpawnItemEx("AlertLight", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
+											A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*34, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);}
+		MDLA A -1 Light("BOACEIL2")
+		Stop
+	}
+}
+
+ACTOR ColumnLight
+{
+	//$Category Light Sources (Wolf3D)/Static
+	//$Title Column Light (on)
+	//$Color 11
+	Radius 8
+	Height 136
+	+SOLID
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
+}
+
+ACTOR ColumnLight2 : ColumnLight
+{
+	//$Title Column Light (off)
+	States
+	{
+	Spawn:
+		MDLA B -1
+		Stop
+	}
+}
+
 ACTOR LightBulb
 {
 	//$Category Light Sources (Wolf3D)/Static
@@ -442,55 +484,6 @@ ACTOR TableLightS : TableLightM
 	Inactive:
 		TLIT B 0 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		"####" B -1 A_PlaySound("SMSWITCH")
-		Stop
-	}
-}
-
-ACTOR ColumnLight
-{
-	//$Category Light Sources (Wolf3D)/Static
-	//$Title Column Light (on)
-	//$Color 11
-	Radius 8
-	Height 136
-	+SOLID
-	States
-	{
-	Spawn:
-		MDLA A -1
-		Stop
-	}
-}
-
-ACTOR ColumnLight2 : ColumnLight
-{
-	//$Title Column Light (off)
-	States
-	{
-	Spawn:
-		MDLA B -1
-		Stop
-	}
-}
-
-ACTOR CellLight2 : SwitchableDecoration
-{
-	//$Category Light Sources (Wolf3D)
-	//$Title Cell Light (switchable)
-	//$Color 11
-	Radius 4
-	Height 38
-	+NOGRAVITY
-	+SPAWNCEILING
-	States
-	{
-	Active:
-		CLLI A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
-	Spawn:
-		CLLI A -1 Light("BOACEIL2")
-		Stop
-	Inactive:
-		CLLI B -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
 		Stop
 	}
 }
