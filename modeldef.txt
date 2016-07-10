@@ -43,6 +43,17 @@ Model AstroTrail
 	FrameIndex PUFF A 0 0
 }
 
+model KTurretTracer
+{
+	path "models"
+	Model 0 "tracer.md3"
+	Skin 0 "tracer1.png"
+	Scale 2.0 1.5 1.5
+	PITCHFROMMOMENTUM
+	
+	FrameIndex PUFF A 0 0
+} 
+
 //Actors
 Model ModelBeachHedgeHog
 {
@@ -2995,6 +3006,26 @@ Model Radar
 }
 
 //CODs Stuff - ozy81
+Model Haycart
+{
+	Path "models"
+	Model 0 "haycart.md3"
+	InheritActorPitch
+	InheritActorRoll
+	
+	FrameIndex MDLA A 0 0
+}
+
+Model Haycart //destroyed
+{
+	Path "models"
+	Model 0 "haycart_d.md3"
+	InheritActorPitch
+	InheritActorRoll
+	
+	FrameIndex MDLA B 0 0
+}
+
 Model FutureCeilingLight
 {
 	Path "models"
@@ -4461,20 +4492,27 @@ Model NaziGlobe
 	FrameIndex MDLA A 0 0
 }
 
-//Rafferty
-Model OldWagon
+//Ozymandias81
+Model KTurretStand
 {
-	Path "models"
-	Model 0 "woodcart_a.md3"
-	Model 1 "woodcart_b.md3"
-	Scale 1.85 1.85 1.90
-	InheritActorPitch
-	InheritActorRoll
-	
-	FrameIndex MDLA A 0 0
+	Path "Models" 
+	Model 0 "turret_base.md3"
+	Scale 50.0 50.0 50.0
+
+	Frameindex MDLA A 0 0
 }
 
-//Ozymandias81
+Model KTurretGun
+{
+	path "models"
+	model 0 "turret_gun.md3"
+	Scale 40.0 40.0 40.0
+	offset 0.0 0.0 -32.0 //force this to prevent the object to go far from the basement
+	INHERITACTORPITCH
+	
+	Frameindex MDLA B 0 0
+}
+
 Model Cell_Light
 {
 	Path "models"

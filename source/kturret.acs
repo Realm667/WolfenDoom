@@ -1,0 +1,161 @@
+#library "kturret"
+#include "zcommon.acs"
+
+#define turret_maxturn 0.25
+#define turret_maxpitch 0.15
+
+Script "GunLoop" (void)
+{
+	int turret_tid = activatortid(); //turret stand needs to have a TID!
+	int stand_angle = getactorangle(0); //the angle of the turret stand as it appears in doom builder
+	int lc = stand_angle + turret_maxturn;
+	int rc = stand_angle - turret_maxturn;
+	int playerangle = getactorangle(0);
+	int playerpitch = getactorpitch(0);
+	setpointer(AAPTR_MASTER,0,AAPTR_TARGET); //Activation sets player as target. This copies the player to the Master pointer.
+	SetPointer(AAPTR_TARGET,0,AAPTR_NULL); //clears the Target pointer
+	setactivator(0,AAPTR_MASTER); //sets activator to player
+	SetPlayerProperty(0,1,PROP_FROZEN); //freezes player
+
+if(!angle_within(rc,playerangle,lc)) //Can't use the turret unless behind it
+	{
+	setactivator(turret_tid);
+	acs_namedexecute("Gun_UnFreeze",0);
+	setactorstate(turret_tid,"Spawn2",0);
+	thing_deactivate(0);
+	terminate;
+	}
+while(true)
+	{
+	playerangle = getactorangle(0);
+	playerpitch = getactorpitch(0);
+	int Playerinput = getplayerinput(-1, input_buttons);
+	int PlayerOldinput = getplayerinput(-1, input_oldbuttons);
+	setactivator(turret_tid,AAPTR_TRACER); //sets the turret's Gun actor as the activator
+	setpointer(AAPTR_TARGET,turret_tid,AAPTR_MASTER); //sets the player as the Gun's target - so projectiles fire from it are owned by the player!
+	if (playerpitch >= -turret_maxpitch && playerpitch <= turret_maxpitch) //clamp turret pitch
+		{
+		changeactorpitch(0,playerpitch,true);
+		}
+	if(angle_within(rc,playerangle,lc)) //clamp turret angle
+	{
+	changeactorangle(0,playerangle);
+	}
+	if(playerinput & bt_attack)
+		{
+		if(checkinventory("KTurret_Ammo"))
+			{
+			giveinventory("KTurret_Token",1);//fires the gun by giving a missile-firing custom inventory item to the turret's Gun
+ 			takeinventory("KTurret_Ammo",1); //these regenerate in the Gun actor's decorate loop
+			}
+		}	
+	if(	(playerinput & bt_forward && playeroldinput & bt_forward) ||
+		(playerinput & bt_back && playeroldinput & bt_back) ||
+		(playerinput & bt_moveleft && playeroldinput & bt_moveleft) ||
+		(playerinput & bt_moveright && playeroldinput & bt_moveright))
+		{
+		//disengages from the turret if any movement key is held
+		setactivator(turret_tid);
+		acs_namedexecute("Gun_UnFreeze",0);
+		setactorstate(turret_tid,"Spawn2",0);
+		thing_deactivate(0);
+		terminate;
+		}
+	setactivator(turret_tid);
+	setactivator(0,AAPTR_MASTER); //the player again
+	delay(1);
+	}
+}
+
+Script "Gun_UnFreeze" (void)
+{
+	int turret_tid = activatortid();
+	SetActivator(0,AAPTR_master);//the player
+	SetPlayerProperty(0,0,PROP_FROZEN);
+	setactivator(turret_tid);
+	SetPointer(AAPTR_MASTER,0,AAPTR_NULL); //turret forgets you
+}
+
+Script "TargetName" (void) //this was used for debugging. Not currently in use.
+{
+	log(s:"\n\nprojectile: ",s:getactorclass(0));
+	setactivator(0,AAPTR_TARGET);
+	log(s:"target: ",s:getactorclass(0));
+	setactivator(0,AAPTR_TARGET);
+	log(s:"target of target: ",s:getactorclass(0));
+	setactivator(0,AAPTR_MASTER);
+	log(s:"target of targets target: ",s:getactorclass(0));
+}
+
+//FUNCTIONS//
+
+function int between (int low, int val,int high)
+{
+int ret = 0;
+if(val > low && val < high) {ret = 1;}
+return ret;
+}
+
+function int fixangle (int angle)
+{
+//thank you /vr/. Can't explain what happens here though.
+angle -= (angle / 1.0) * 1.0; 
+if (angle < 0) { angle += 1.0; }
+return angle;
+}	
+
+function int angle_within (int low, int angle, int high)
+{
+//oh god what am i doing  send help
+//it works, but it's probably inefficient as all hell
+
+/*
+for the arguments, use this:
+Low: [angle to clamp to] - [offset]
+angle: the input angle
+high [angle to clamp to] + [offset]
+*/
+
+/*
+example:
+
+	if(angle_within(0.0-0.5,getactorangle(0),0.0+0.5)) { stuff;}
+
+the above will return true if the player is facing the eastern semicircle between North and South.
+*/
+int ret = 0;
+int limit_high = fixangle(high);
+int limit_low = fixangle(low);
+
+if (high > 1.0  )
+	{
+	if (between(0.0,angle,limit_high) || between(limit_low,angle,1.0 ))
+		{	
+		ret = 1;
+		}
+	}
+	
+else if (low < 0.0  )
+	{
+	if (between(limit_low,angle,1.0) || between(0.0,angle,limit_high ))
+		{	
+		ret = 1;
+		}
+	}
+
+else if(limit_high > limit_low)
+	{
+	if (between(limit_low,angle,limit_high))
+		{	
+		ret = 1;
+		}
+	}
+else 
+	{
+	if (between(limit_low,angle,1.0))
+		{	
+		ret = 1;
+		}
+	}
+return ret;
+}

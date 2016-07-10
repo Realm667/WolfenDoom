@@ -1,0 +1,160 @@
+Actor KTurretStand : SwitchableDecoration
+{
+	//$Category Weapons (Wolf3D)
+	//$Title Usable Turret (GIVE ALWAYS A TAG TO IT!)
+	//$Color 14
+	+MTHRUSPECIES
+	+NOGRAVITY
+	+SOLID
+	+THRUSPECIES
+	+USESPECIAL
+	Species "TURR"
+	Radius 32
+	Height 70
+	Activation THINGSPEC_ThingTargets | THINGSPEC_ThingActs | THINGSPEC_NoDeathSpecial | THINGSPEC_Switch 
+	
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx("KTurretGun",0,0,32,0,0,0,0,SXF_SETTARGET|SXF_ISTRACER) //let's spawn the interactive turret (tweaked from modeldef too)
+		MDLA A 1
+		Goto Spawn2
+
+	Spawn2:
+		MDLA A -1
+		Stop
+
+	Active:
+		TNT1 A 0 ACS_NamedExecute("GunLoop",0)
+		MDLA A -1
+		goto Spawn2
+
+	Inactive:
+		TNT1 A 0 ACS_NamedTerminate("GunLoop",0)
+		TNT1 A 0 ACS_NamedExecute("Gun_UnFreeze",0)
+		goto Spawn2
+	}
+}
+
+Actor KTurretGun //this needs some states in order to remove held weapon from HUD (ozy)
+{ 
+	+MISSILE
+	+MTHRUSPECIES
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+NOINTERACTION
+	+SYNCHRONIZED
+	+THRUSPECIES
+	Species "TURR"
+	Radius 2
+	Height 2
+	
+	var float user_startangle;	//this must be set if we need a different weapon (ozy)
+	
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_GiveInventory("KTurret_Ammo",1)
+		TNT1 A 0 A_SetUserVar("user_startangle",angle)
+		MDLA B 1
+		Goto Spawn2
+
+	Spawn2:
+		MDLA B 1 A_JumpIf(CountInv("KTurret_Ammo")== 0,"Recharge")
+		Loop
+
+	Recharge:
+		MDLA B 0 A_PlaySound("chaingun/fire",CHAN_WEAPON) //A_Playsound("Weapon/AAFIRE",CHAN_BODY,1.0,0,ATTN_NORM) //this must be replaced (ozy)
+		MDLA B 4 //Change this to set fire rate!!
+		MDLA B 0 A_GiveInventory("KTurret_Ammo",1)
+		Goto Spawn2
+	}
+}
+
+Actor KTurret_Token : CustomInventory //fires the turret when given to it through acs
+{
+States
+	{
+	Pickup:
+		//TNT1 A 0 A_SpawnItemEx("KTurretFlash",cos(pitch)*60.0,0,10.0+sin(-pitch)*60) //muzzle flash - we need to rework this (ozy)
+		TNT1 A 0 A_SpawnItemEx("9MMCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_CustomMissile("KTurretTracer",ScaleX*4,0,0,CMF_TRACKOWNER |CMF_AIMDIRECTION,-pitch + frandom(-1.0,1.0)) //pew pew!
+		Stop
+	}
+}
+
+Actor KTurret_Ammo: Inventory //a counter item
+{
+	Inventory.MaxAmount 1
+	-INVBAR
+	+UNDROPPABLE
+}
+
+Actor KTurretTracer : Tracer
+{
+Radius 2
+Height 2
+Damage (random(20,40))
+Speed 200
++CANNOTPUSH
++DONTSPLASH
++FORCEXYBILLBOARD
++MISSILE
++MTHRUSPECIES
++NOBLOCKMAP
++NODAMAGETHRUST
++NOGRAVITY
++NOTELEPORT
++THRUSPECIES
+Alpha .75
+Scale .6
+RenderStyle "Add"
+Species "TURR"
+
+States
+	{
+	Spawn:
+		PUFF A 0 NoDelay A_AlertMonsters(0,0) //we'll see if we need this (ozy)
+		Goto Spawn2
+	
+	Spawn2: 
+		PUFF A 1 BRIGHT
+		Loop
+
+	Death:
+	Crash:
+		TNT1 AAA 0 A_SpawnItemEx("TracerSpark", 0, 0, 0, random(-2,2), random(-2,2), random(-2,2), random(0,359)) //T667 improvements
+		TNT1 A 0 A_ChangeFlag("WINDTHRUST", 0)
+		PUFF B 3 BRIGHT LIGHT(BPUFF1) A_PlaySound("ricochet")
+		PUFF CD 3 BRIGHT LIGHT(BPUFF1)
+		Stop
+		
+	XDeath:
+		TNT1 A 0 A_ChangeFlag("WINDTHRUST", 0)
+		TNT1 A 1 A_PlaySound("hitflesh")
+		Stop
+	}
+}
+
+/*
+Actor KTurretFlash //this is a muzzle flash actor //this must be replaced (ozy)
+{
++FORCEXYBILLBOARD
++NOBLOCKMAP
++NOINTERACTION
+Radius 0 
+Height 0
+Renderstyle "Add"
+Scale 0.05
+
+States
+	{
+	Spawn:
+		TNT1 A 0
+		TFSH B 1 BRIGHT Light("BlasterFlash1") //this must be replaced (ozy)
+		TNT1 A 0 A_SetScale(Scalex+0.05)
+		TFSH B 1 BRIGHT Light("BlasterFlash2") //this must be replaced (ozy)
+		Stop
+	}
+}*/

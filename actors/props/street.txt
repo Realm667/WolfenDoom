@@ -204,11 +204,15 @@ ACTOR NTomb5 : NTomb1 //3d actor
 	Height 35
 }
 
-ACTOR OldWagon //3d actor
+ACTOR Haycart //3d actor
 {
 	//$Category Props (Wolf3D)/Street
-	//$Title Old Wagon
+	//$Title Haycart
 	//$Color 3
+	
+	//$Arg0 "Type"
+	//$Arg0Tooltip "Pickup the desired type\nNormal: 0\nDestroyed: 1"
+	
 	Radius 24 //reduced for map-wise placement - ozy
 	Height 32
 	+SOLID
@@ -216,7 +220,11 @@ ACTOR OldWagon //3d actor
 	States
 	{
 	Spawn:
+		MDLA A 0 NoDelay A_JumpIf(Args[0]==1, "Destroyed")
 		MDLA A -1
+		Stop
+		Destroyed:
+		MDLA B -1
 		Stop
 	}
 }
