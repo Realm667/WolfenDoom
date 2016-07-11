@@ -1,17 +1,19 @@
-Actor KTurretStand : SwitchableDecoration
+Actor KTurretStand : SwitchableDecoration //IMPORTANT: The TurretStand NEEDS to have a unique TID.
 {
 	//$Category Weapons (Wolf3D)
 	//$Title Usable Turret (GIVE ALWAYS A TAG TO IT!)
 	//$Color 14
+	Radius 8
+	Height 32
 	+MTHRUSPECIES
 	+NOGRAVITY
 	+SOLID
 	+THRUSPECIES
 	+USESPECIAL
 	Species "TURR"
-	Radius 32
-	Height 70
-	Activation THINGSPEC_ThingTargets | THINGSPEC_ThingActs | THINGSPEC_NoDeathSpecial | THINGSPEC_Switch 
+	
+	Activation	THINGSPEC_ThingTargets| THINGSPEC_ThingActs| THINGSPEC_NoDeathSpecial| THINGSPEC_Switch 
+	//note about THINGSPEC_ThingTargets: as soon as it's activated, the player becomes the Master of the turret instead of Target & the Target pointer is cleared.
 	
 	States
 	{
@@ -25,97 +27,126 @@ Actor KTurretStand : SwitchableDecoration
 		MDLA A -1
 		Stop
 
-	Active:
-		TNT1 A 0 ACS_NamedExecute("GunLoop",0)
-		MDLA A -1
-		goto Spawn2
+	Active:	//MP compatibility: if the target has a master, it means it's manned by another player, & thus the script below should not be executed.
+		TNT1 A 0 A_JumpIf(IsPointerEqual(AAPTR_MASTER,AAPTR_NULL),"StartLoop")
+		Goto Spawn2
+	
+	StartLoop:
+		MDLA A 0 ACS_NamedExecute("GunLoop",0)
+		Goto Spawn2
 
-	Inactive:
-		TNT1 A 0 ACS_NamedTerminate("GunLoop",0)
-		TNT1 A 0 ACS_NamedExecute("Gun_UnFreeze",0)
-		goto Spawn2
+	Inactive: //the inactive and active state do the exact same thing! Ugly, but works.
+		TNT1 A 0
+		Goto Active
 	}
 }
 
-Actor KTurretGun //this needs some states in order to remove held weapon from HUD (ozy)
-{ 
-	+MISSILE
-	+MTHRUSPECIES
-	+NOBLOCKMAP
-	+NOGRAVITY
-	+NOINTERACTION
-	+SYNCHRONIZED
-	+THRUSPECIES
-	Species "TURR"
+Actor KTurretGun 
+{
 	Radius 2
 	Height 2
+	+NOGRAVITY
+	+NOINTERACTION
+	+MISSILE //Ensures the player is the owner of turret-spawned projectiles
+	+MTHRUSPECIES
+	+NOBLOCKMAP
+	+SYNCHRONIZED //let's avoid some issues with model orientation vs sounds
+	+THRUSPECIES
+	Species "TURR"
 	
-	var float user_startangle;	//this must be set if we need a different weapon (ozy)
+	Threshold 4 //this is Z spawn offset for projectiles. Higher values for taller guns.
+	DefThreshold 30 //this is X spawn offset for projectiles. Higher values for longer barrels.
+	
+	MeleeRange 1.0 //this is accuracy. We use this because it's the only Float variable native to the actor and usable by inventory items. Higher values = more spread.
+	Accuracy 2 //Accuracy is instead the delay in tics between shots. Lower values = higher fire rate.
+	
+	var float user_startangle;
 	
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_GiveInventory("KTurret_Ammo",1)
+		TNT1 A 0 NoDelay A_GiveInventory("KTurret_ammo",1)
 		TNT1 A 0 A_SetUserVar("user_startangle",angle)
 		MDLA B 1
 		Goto Spawn2
 
 	Spawn2:
-		MDLA B 1 A_JumpIf(CountInv("KTurret_Ammo")== 0,"Recharge")
+		MDLA B 1 A_Jumpif(CountInv("KTurret_Ammo")== 0,"recharge")
 		Loop
 
 	Recharge:
-		MDLA B 0 A_PlaySound("chaingun/fire",CHAN_WEAPON) //A_Playsound("Weapon/AAFIRE",CHAN_BODY,1.0,0,ATTN_NORM) //this must be replaced (ozy)
-		MDLA B 4 //Change this to set fire rate!!
+		MDLA B 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
+		MDLA B 1 A_SetTics(Accuracy) //the duration of this frame controls fire rate.
 		MDLA B 0 A_GiveInventory("KTurret_Ammo",1)
 		Goto Spawn2
 	}
 }
 
-Actor KTurret_Token : CustomInventory //fires the turret when given to it through acs
+ACTOR KTurret_Token : CustomInventory //fires the turret when given to it through acs
 {
-States
+	States
 	{
 	Pickup:
 		//TNT1 A 0 A_SpawnItemEx("KTurretFlash",cos(pitch)*60.0,0,10.0+sin(-pitch)*60) //muzzle flash - we need to rework this (ozy)
-		TNT1 A 0 A_SpawnItemEx("9MMCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
-		TNT1 A 0 A_CustomMissile("KTurretTracer",ScaleX*4,0,0,CMF_TRACKOWNER |CMF_AIMDIRECTION,-pitch + frandom(-1.0,1.0)) //pew pew!
+		//TNT1 A 0 A_CustomMissile("KTurretTracer",ScaleX*4,0,0,CMF_TRACKOWNER |CMF_AIMDIRECTION,-pitch + frandom(-1.0,1.0)) //ozy pew pew!
+		TNT1 A 0 A_SpawnItemEx("9MMCasing",ScaleX*4,ScaleY*4,ScaleX+ScaleY*8,8,random(-2,2),random(0,4),random(50,80),SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_CustomMissile("KTurretTracer",Threshold,0,frandom(-MeleeRange,MeleeRange), CMF_TRACKOWNER | CMF_AIMDIRECTION,-pitch + frandom(-MeleeRange,MeleeRange))
 		Stop
 	}
 }
 
-Actor KTurret_Ammo: Inventory //a counter item
+ACTOR KTurret_Ammo: Inventory //a counter item
 {
 	Inventory.MaxAmount 1
 	-INVBAR
 	+UNDROPPABLE
 }
 
-Actor KTurretTracer : Tracer
+ACTOR KHolster : Weapon //dummy weapon that's pretty useful
 {
-Radius 2
-Height 2
-Damage (random(20,40))
-Speed 200
-+CANNOTPUSH
-+DONTSPLASH
-+FORCEXYBILLBOARD
-+MISSILE
-+MTHRUSPECIES
-+NOBLOCKMAP
-+NODAMAGETHRUST
-+NOGRAVITY
-+NOTELEPORT
-+THRUSPECIES
-Alpha .75
-Scale .6
-RenderStyle "Add"
-Species "TURR"
+	+WEAPON.CHEATNOTWEAPON
+	States
+	{
+	Select:
+		TNT1 A 0 A_Raise
+		Wait
+	Deselect:
+		TNT1 A 1
+		TNT1 A 0 A_Lower
+		Wait
+	Fire:
+		TNT1 A 0 A_AlertMonsters(0,0) //this will need some more tests because of stealth system and awareness-wise settings on BoA (ozy)
+	Ready:
+		TNT1 A 1 A_WeaponReady
+		Loop
+	}
+}
 
-States
+ACTOR KTurretTracer : Tracer
+{
+	Radius 2
+	Height 2
+	Damage (random(10,30))
+	Speed 200
+	+CANNOTPUSH
+	+DONTSPLASH
+	+FORCEXYBILLBOARD
+	+MISSILE
+	+MTHRUSPECIES
+	+NOBLOCKMAP
+	+NODAMAGETHRUST
+	+NOGRAVITY
+	+NOTELEPORT
+	+THRUSPECIES
+	Alpha .75
+	Scale .6
+	RenderStyle "Add"
+	Species "TURR"
+	
+	States
 	{
 	Spawn:
-		PUFF A 0 NoDelay A_AlertMonsters(0,0) //we'll see if we need this (ozy)
+		PUFF A 0 NoDelay
 		Goto Spawn2
 	
 	Spawn2: 
@@ -140,15 +171,15 @@ States
 /*
 Actor KTurretFlash //this is a muzzle flash actor //this must be replaced (ozy)
 {
-+FORCEXYBILLBOARD
-+NOBLOCKMAP
-+NOINTERACTION
-Radius 0 
-Height 0
-Renderstyle "Add"
-Scale 0.05
-
-States
+	+FORCEXYBILLBOARD
+	+NOBLOCKMAP
+	+NOINTERACTION
+	Radius 0 
+	Height 0
+	Renderstyle "Add"
+	Scale 0.05
+	
+	States
 	{
 	Spawn:
 		TNT1 A 0
