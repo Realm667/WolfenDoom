@@ -5,6 +5,7 @@ Actor KTurretStand : SwitchableDecoration //IMPORTANT: The TurretStand NEEDS to 
 	//$Color 14
 	Radius 8
 	Height 32
+	+MOVEWITHSECTOR //Added this for arcade sequences if needed - ozy
 	+MTHRUSPECIES
 	+NOGRAVITY
 	+SOLID
@@ -48,17 +49,18 @@ Actor KTurretGun
 	+NOGRAVITY
 	+NOINTERACTION
 	+MISSILE //Ensures the player is the owner of turret-spawned projectiles
+	+MOVEWITHSECTOR //Added this for arcade sequences if needed - ozy
 	+MTHRUSPECIES
 	+NOBLOCKMAP
 	+SYNCHRONIZED //let's avoid some issues with model orientation vs sounds
 	+THRUSPECIES
 	Species "TURR"
 	
-	Threshold 4 //this is Z spawn offset for projectiles. Higher values for taller guns.
-	DefThreshold 30 //this is X spawn offset for projectiles. Higher values for longer barrels.
+	Threshold 3 //this is Z spawn offset for projectiles. Higher values for taller guns.
+	DefThreshold 30 //this is X spawn offset for projectiles. Higher values for longer barrels. - it's not used atm (ozy)
 	
 	MeleeRange 1.0 //this is accuracy. We use this because it's the only Float variable native to the actor and usable by inventory items. Higher values = more spread.
-	Accuracy 2 //Accuracy is instead the delay in tics between shots. Lower values = higher fire rate.
+	Accuracy 8 //Accuracy is instead the delay in tics between shots. Lower values = higher fire rate.
 	
 	var float user_startangle;
 	
@@ -75,7 +77,7 @@ Actor KTurretGun
 		Loop
 
 	Recharge:
-		MDLA B 0 A_PlaySound("chaingun/fire",CHAN_WEAPON)
+		MDLA B 0 A_PlaySound("mp40/fire",CHAN_WEAPON)
 		MDLA B 1 A_SetTics(Accuracy) //the duration of this frame controls fire rate.
 		MDLA B 0 A_GiveInventory("KTurret_Ammo",1)
 		Goto Spawn2
@@ -88,7 +90,6 @@ ACTOR KTurret_Token : CustomInventory //fires the turret when given to it throug
 	{
 	Pickup:
 		//TNT1 A 0 A_SpawnItemEx("KTurretFlash",cos(pitch)*60.0,0,10.0+sin(-pitch)*60) //muzzle flash - we need to rework this (ozy)
-		//TNT1 A 0 A_CustomMissile("KTurretTracer",ScaleX*4,0,0,CMF_TRACKOWNER |CMF_AIMDIRECTION,-pitch + frandom(-1.0,1.0)) //ozy pew pew!
 		TNT1 A 0 A_SpawnItemEx("9MMCasing",ScaleX*4,ScaleY*4,ScaleX+ScaleY*8,8,random(-2,2),random(0,4),random(50,80),SXF_NOCHECKPOSITION)
 		TNT1 A 0 A_CustomMissile("KTurretTracer",Threshold,0,frandom(-MeleeRange,MeleeRange), CMF_TRACKOWNER | CMF_AIMDIRECTION,-pitch + frandom(-MeleeRange,MeleeRange))
 		Stop
@@ -105,6 +106,7 @@ ACTOR KTurret_Ammo: Inventory //a counter item
 ACTOR KHolster : Weapon //dummy weapon that's pretty useful
 {
 	+WEAPON.CHEATNOTWEAPON
+	Tag "Usable Turret" //this will be shown on HUD while "holding" the weapon - Ozy
 	States
 	{
 	Select:
