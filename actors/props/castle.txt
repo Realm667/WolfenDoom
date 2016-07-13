@@ -1,28 +1,24 @@
-ACTOR KnightSilver
+ACTOR HarnessSet //3d actor
 {
 	//$Category Props (Wolf3D)/Castle
-	//$Title Knight (silver,red)
+	//$Title Medieval Harness Set (silver, red)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 16
-	Height 96
+	Height 72
 	+SOLID
 	States
 	{
 	Spawn:
-		KNGH A -1
+		MDLA A -1
 		Stop
 	}
 }
 
-ACTOR KnightSilver2 : KnightSilver
+ACTOR HarnessSet2 : HarnessSet //3d actor
 {
-	//$Title Knight (silver,blue)
-	States
-	{
-	Spawn:
-		KNGH B -1
-		Stop
-	}
+	//$Title Medieval Harness Set (silver, blue)
+	DistanceCheck "scenelod"
 }
 
 ACTOR Table1
@@ -124,6 +120,7 @@ ACTOR Table8 //3d actor
 	//$Category Props (Wolf3D)/Castle
 	//$Title Table (2, no chairs)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 20
 	Height 27
 	Scale 1.15
@@ -193,6 +190,7 @@ ACTOR WellEmpty //3d actor
 	//$Category Props (Wolf3D)/Castle
 	//$Title Well (empty)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 24
 	Height 32
 	+SOLID
@@ -207,6 +205,7 @@ ACTOR WellEmpty //3d actor
 ACTOR WellWater : WellEmpty //3d actor
 {
 	//$Title Well (water)
+	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:
@@ -218,6 +217,7 @@ ACTOR WellWater : WellEmpty //3d actor
 //mxd
 ACTOR WellWaterWater //3d actor
 {
+	DistanceCheck "scenelod"
 	RenderStyle "Translucent"
 	Alpha 0.9
 	
@@ -232,6 +232,7 @@ ACTOR WellWaterWater //3d actor
 ACTOR WellBlood : WellEmpty //3d actor
 {
 	//$Title Well (blood)
+	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:
@@ -243,12 +244,14 @@ ACTOR WellBlood : WellEmpty //3d actor
 //mxd
 ACTOR WellBloodBlood : WellWaterWater //3d actor
 {
+	DistanceCheck "scenelod"
 	Alpha 0.7
 }
 
 ACTOR BarrelWine : WellEmpty //3d actor
 {
 	//$Title Barrel (wine)
+	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:

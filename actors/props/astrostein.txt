@@ -318,6 +318,7 @@ ACTOR DecorationShip : SwitchableDecoration //3d actor
 	//$Category Props (Wolf3D)/Astrostein
 	//$Title Space Ship (viper, activatable)
 	//$Color 3
+	DistanceCheck "scenelod"
 	SpawnID 211
 	Radius 8
 	Height 6
@@ -349,7 +350,7 @@ ACTOR DecorationShip : SwitchableDecoration //3d actor
 
 ACTOR DecorationShip_Steam
 {
-
+	DistanceCheck "scenelod"
 	Radius 1
 	Height 1
 	RenderStyle "Add"
@@ -375,6 +376,7 @@ ACTOR RotatingStation //3d actor
 	//$Category Props (Wolf3D)/Astrostein
 	//$Title Space Station (3d, rotating)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Height 64
 	+FLOORCLIP
 	+NOGRAVITY

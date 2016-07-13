@@ -15,7 +15,6 @@ ACTOR ModelBase
 
 ACTOR 3dObject : ModelBase
 {
-	//+ACTLIKEBRIDGE
 	+NOBLOCKMAP
 	+SOLID
 }
@@ -119,16 +118,12 @@ ACTOR SkyboxPlanetShade : 3dGlass //shades of darkness - ozy81, adjusted by T667
 {
 	RenderStyle "Shaded"
 	StencilColor "00 00 00"
-	
-	
-
 	States
-		{
-		Spawn:
-	      	MDLA A 1 A_Warp(AAPTR_MASTER,0,0,0,0,WARPF_NOCHECKPOSITION | WARPF_INTERPOLATE | WARPF_COPYVELOCITY)
-	      	Loop
-	   	}
-
+	{
+	Spawn:
+		MDLA A 1 A_Warp(AAPTR_MASTER,0,0,0,0,WARPF_NOCHECKPOSITION | WARPF_INTERPOLATE | WARPF_COPYVELOCITY)
+		Loop
+	}
 }
 
 ACTOR SkyboxPlanetWeather : SkyboxPlanetShade //adjusted by T667
@@ -148,7 +143,6 @@ ACTOR SkyboxMoonLights : SkyboxPlanetShade //adjusted by T667
 	RenderStyle "Add"
 	Alpha 0.8
 }
-
 
 ACTOR TestCrate : 3dObstacle
 {
@@ -214,6 +208,7 @@ ACTOR ModelBeachHedgeHog : 3dObstacle
 	//$Category Models (Wolf3D)/Obstacles
 	//$Title Beach Hedgehog
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 32
 }
 
@@ -256,7 +251,8 @@ ACTOR TrainWheels : ModelIncaTrain
 {
 	//$Category Models (Wolf3D)/Vehicles
 	//$Title Train Wheels
-	//$Color 3	
+	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 4
 	Height 4
 }
@@ -296,6 +292,7 @@ ACTOR ModelSandBagCurve : ModelBase
 	//$Category Models (Wolf3D)/Obstacles
 	//$Title Sandbag (curve)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 12
 	Height 16
 	States
@@ -312,6 +309,7 @@ ACTOR ModelSandBagStraight : 3dObstacle
 	//$Category Models (Wolf3D)/Obstacles
 	//$Title Sandbag (straight)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 16
 }
@@ -335,10 +333,10 @@ ACTOR Windmill : 3dObstacle
 
 	States
 	{
-		Spawn:
-			MDLA A 0 NoDelay A_PlaySound("misc/windmill", CHAN_AUTO, 0.7, true)
-			MDLA A -1 A_SpawnItemEx("WindmillWheel", 24, 0, scaleY*476) //don't scale the model more than 1.2 on GZDB
-			stop
+	Spawn:
+		MDLA A 0 NoDelay A_PlaySound("misc/windmill", CHAN_AUTO, 0.7, true)
+		MDLA A -1 A_SpawnItemEx("WindmillWheel", 24, 0, scaleY*476) //don't scale the model more than 1.2 on GZDB
+		Stop
 	}
 }
 
@@ -347,9 +345,9 @@ ACTOR WindmillWheel : ModelBase
 	DistanceCheck "scenelod"
 	States
 	{
-		Spawn:
-			MDLA A 1 A_SetRoll(roll + 0.3)
-			loop
+	Spawn:
+		MDLA A 1 A_SetRoll(roll + 0.3)
+		Loop
 	}
 }
 
@@ -373,6 +371,7 @@ ACTOR Submarine : ModelBase
 	//$Category Models (Wolf3D)/Ships
 	//$Title Submarine
 	//$Color 3
+	
 	//$Arg0 "Engine Sound"
 	//$Arg0Type 11
 	//$Arg0Enum noyes
@@ -380,22 +379,24 @@ ACTOR Submarine : ModelBase
 	-SOLID
 	Radius 64
 	Height 64
+	DistanceCheck "scenelod"
 
 	States
 	{
-		Spawn:
-			MDLA A 0 NoDelay A_JumpIf(args[0] == 1, "PlayEngineSound")
-			goto Super::Spawn
+	Spawn:
+		MDLA A 0 NoDelay A_JumpIf(args[0] == 1, "PlayEngineSound")
+		goto Super::Spawn
 
-		PlayEngineSound:
-			MDLA A 0 A_PlaySound("uboat/engine", CHAN_AUTO, 1.0, true, 0.5)
-			goto Super::Spawn
+	PlayEngineSound:
+		MDLA A 0 A_PlaySound("uboat/engine", CHAN_AUTO, 1.0, true, 0.5)
+		goto Super::Spawn
 	}
 }
 
 ACTOR SubmarineIcy : Submarine
 {
 	//$Title Submarine (congealed)
+	DistanceCheck "scenelod"
 	-SOLID
 	+NOGRAVITY
 	Radius 64
@@ -407,6 +408,7 @@ ACTOR Vidcam : 3dObstacle
 	//$Category Models (Wolf3D)/Intermap
 	//$Title Video Cam
 	//$Color 3
+	DistanceCheck "scenelod"
 	Height 64
 }
 
@@ -451,7 +453,7 @@ ACTOR Nebelwerfer3D
 		MDLA A -1
 		Stop
 	Death:
-		TNT1 A 0 A_PlaySound("weapons/explode")
+		TNT1 A 0 A_PlaySound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_NORM)
 		"####" A 0 A_Scream
 		"####" A 0 A_NoBlocking
 		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx ("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
@@ -498,6 +500,7 @@ ACTOR Wire3D : 3dObstacle
 	//$Category Models (Wolf3D)/Obstacles
 	//$Title Wire
 	//$Color 3
+	DistanceCheck "scenelod"
 	Height 32
 }
 
@@ -536,6 +539,7 @@ ACTOR Cruiser : ModelBase
 	//$Category Models (Wolf3D)/Ships
 	//$Title Battleship
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 4
 	Height 4
 }
@@ -555,7 +559,6 @@ ACTOR FlakVierling3D : SwitchableDecoration
 	Health -1
 	-FLOORCLIP
 	-NOBLOCKMAP
-	//+ACTLIKEBRIDGE
 	+CANPASS
 	+DONTSPLASH
 	+NOBLOOD
@@ -574,7 +577,7 @@ ACTOR FlakVierling3D : SwitchableDecoration
 		Stop
 	Inactive:
 		MDLA B 0 A_ChangeFlag("DORMANT", true) //update manually on GZDB
-		MDLA B 0 A_PlaySound("weapons/explode")
+		MDLA B 0 A_PlaySound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_NORM)
 		MDLA B 0 A_Scream
 		MDLA B 0 A_NoBlocking
 		MDLA BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx ("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
@@ -595,6 +598,7 @@ ACTOR Luftschiff : 3dObstacle
 	//$Category Models (Wolf3D)/Ships
 	//$Title Luftschiff LZ130
 	//$Color 3
+	DistanceCheck "scenelod"
 	-SOLID
 	+NOGRAVITY
 	Radius 32
@@ -636,18 +640,18 @@ ACTOR RTCWClock : 3dObstacle //fixed by mxd
 
 	States
 	{
-		Spawn:
-			MDLA A 0 NoDelay A_SpawnItemEx("RTCWClockPendulum", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
-			goto TickLoop
+	Spawn:
+		MDLA A 0 NoDelay A_SpawnItemEx("RTCWClockPendulum", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		Goto TickLoop
 
-		TickLoop: // Tried adding those sound effects to RTCWClockPendulum, found out that it horribly messes model interpolation...
-			MDLA A 44 A_PlaySound("oldclock/tick")
-			MDLA A 0 A_Jump(1, "Chime")
-			loop
+	TickLoop: // Tried adding those sound effects to RTCWClockPendulum, found out that it horribly messes model interpolation...
+		MDLA A 44 A_PlaySound("oldclock/tick")
+		MDLA A 0 A_Jump(1, "Chime")
+		Loop
 
-		Chime:
-			MDLA A 278 A_PlaySound("oldclock/chime", CHAN_ITEM)
-			goto TickLoop
+	Chime:
+		MDLA A 278 A_PlaySound("oldclock/chime", CHAN_ITEM)
+		Goto TickLoop
 	}
 }
 
@@ -658,9 +662,9 @@ ACTOR RTCWClockPendulum : 3dObstacle //mxd
 
 	States
 	{
-		Spawn:
-			MDLA ABCDEFGHIJKLKJIHGFEDCB 4
-			loop
+	Spawn:
+		MDLA ABCDEFGHIJKLKJIHGFEDCB 4
+		Loop
 	}
 }
 
@@ -675,9 +679,9 @@ ACTOR RTCWCar : 3dObstacle
 	DistanceCheck "scenelod"
 	States
 	{
-		Spawn:
-			MDLA A -1 NoDelay A_SpawnItemEx("RTCWCarGlass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
-			Stop
+	Spawn:
+		MDLA A -1 NoDelay A_SpawnItemEx("RTCWCarGlass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		Stop
 	}
 }
 
@@ -806,7 +810,6 @@ ACTOR RTCWParlor : SwitchableDecoration
 	Health -1
 	-FLOORCLIP
 	-NOBLOCKMAP
-	//+ACTLIKEBRIDGE
 	+CANPASS
 	+DONTSPLASH
 	+NOBLOOD
@@ -853,7 +856,6 @@ ACTOR RTCWGramo : SwitchableDecoration
 	Health -1
 	-FLOORCLIP
 	-NOBLOCKMAP
-	//+ACTLIKEBRIDGE
 	+CANPASS
 	+DONTSPLASH
 	+NOBLOOD
@@ -995,7 +997,6 @@ ACTOR ModelGMCTruck : SwitchableDecoration //ozy81
 	Health -1
 	-FLOORCLIP
 	-NOBLOCKMAP
-	//+ACTLIKEBRIDGE
 	+CANPASS
 	+DONTSPLASH
 	+NOBLOOD
@@ -1047,6 +1048,7 @@ ACTOR ModelOpelTruck : 3dObstacle
 
 ACTOR ModelOpelTruckWindows : ModelBase
 {
+	DistanceCheck "scenelod"
 	RenderStyle "Shaded"
 	StencilColor "CC CC CC"
 }
@@ -1232,19 +1234,19 @@ ACTOR FuelDrumAstro //Uses JK2 3dModel
 	{
 	Spawn:
 		MDLA A 1
-		goto Look
+		Goto Look
 	
 	Look:
 		MDLA A 8 A_LookEx(LOF_NOSOUNDCHECK, 0, 64, 0, 360) 
-		loop
+		Loop
 	
 	See:
 		MDLA A 0 A_JumpIf((velx != 0 || vely != 0), "Moving")
-		goto Spawn
+		Goto Spawn
 	
 	Moving:
 		MDLA A 35 A_PlaySound("astrodrum_moving", CHAN_AUTO, 0.65)
-		goto Spawn
+		Goto Spawn
 	}
 }
 
@@ -1260,7 +1262,7 @@ ACTOR MovableCrate1 : FuelDrumAstro
 	{
 	Moving:
 		MDLA A 35 A_PlaySound("papercrate_moving", CHAN_AUTO, 0.65)
-		goto Spawn
+		Goto Spawn
 	}	
 }
 
@@ -1291,6 +1293,8 @@ ACTOR 3dEagle : 3dObstacle
 	//$Color 3
 	DistanceCheck "scenelod"
 	-SOLID
+	-CANPASS
+	+NOBLOCKMAP
 }
 
 ACTOR Harness : 3dObstacle
@@ -1371,9 +1375,26 @@ ACTOR Caesar : 3dObstacle
 	//$Category Models (Wolf3D)/Statues
 	//$Title Caesar's Statue
 	//$Color 3
+	
+	//$Arg0 "Type"
+	//$Arg0Tooltip "Pickup the desired type\nSolid: 0\nNon-Solid: 1"
+	
 	DistanceCheck "scenelod"
 	Radius 32
 	Height 192
+	
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay
+		TNT1 A 0 A_JumpIf(Args[0]==1, "NonSolid")
+	Solid:
+		MDLA A -1
+		Stop
+	NonSolid:
+		MDLA A 1 A_UnSetSolid
+		Wait
+	}
 }
 
 ACTOR King : Caesar
@@ -1478,7 +1499,7 @@ ACTOR 3dTrolley : 3dObstacle
 	+NOGRAVITY
 }
 
-ACTOR 3dCannon : 3dObstacle
+ACTOR 3dCannon : Caesar
 {
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Cannon
@@ -1495,7 +1516,7 @@ ACTOR 3dCannonballs: 3dCannon
 	DistanceCheck "scenelod"
 }
 
-ACTOR 3dGuillotine : 3dObstacle
+ACTOR 3dGuillotine : Caesar
 {
 	//$Category Models (Wolf3D)/Occult
 	//$Title Guillotine
@@ -1536,7 +1557,7 @@ ACTOR 3dSplitter: 3dGuillotine
 	DistanceCheck "scenelod"
 }
 
-ACTOR 3dSkeleton_Sit : 3dObstacle
+ACTOR 3dSkeleton_Sit : Caesar
 {
 	//$Category Models (Wolf3D)/Occult
 	//$Title Skeleton (Sit)
@@ -1548,7 +1569,7 @@ ACTOR 3dSkeleton_Sit : 3dObstacle
 }
 
 //S.T.A.L.K.E.R. models
-ACTOR 3dPrometheus_L : 3dObstacle
+ACTOR 3dPrometheus_L : Caesar
 {
 	//$Category Models (Wolf3D)/Statues
 	//$Title Prometheus Statue (Left Side)
@@ -1768,7 +1789,6 @@ ACTOR COD_RadioSimple : SwitchableDecoration
 	Health 25
 	-FLOORCLIP
 	-NOBLOCKMAP
-	//+ACTLIKEBRIDGE
 	+CANPASS
 	+DONTSPLASH
 	+NOBLOOD
@@ -1784,7 +1804,7 @@ ACTOR COD_RadioSimple : SwitchableDecoration
 	Active:
 		MDLA A 0 A_PlaySound("SPEECH1", CHAN_ITEM)
 	Spawn:
-	  MDLA A -1
+		MDLA A -1
 		Stop
 	Inactive:
 		MDLA A 0 A_StopSound(CHAN_ITEM)
@@ -1929,7 +1949,7 @@ ACTOR CODOmahaBoat : FlakVierling3D
 		Stop
 	Inactive:
 		MDLA B 0 A_ChangeFlag("DORMANT", true) //update manually on GZDB
-		MDLA B 0 A_PlaySound("weapons/explode")
+		MDLA B 0 A_PlaySound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_NORM)
 		MDLA B 0 A_Scream
 		MDLA B 0 A_NoBlocking
 		MDLA BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx ("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
@@ -2028,7 +2048,6 @@ ACTOR CODScheinwerfer : SwitchableDecoration
 	Health -1
 	-FLOORCLIP
 	-NOBLOCKMAP
-	//+ACTLIKEBRIDGE
 	+CANPASS
 	+DONTSPLASH
 	+NOBLOOD
@@ -2128,7 +2147,6 @@ ACTOR CODRailway_Switch : SwitchableDecoration
 	Health -1
 	-FLOORCLIP
 	-NOBLOCKMAP
-	//+ACTLIKEBRIDGE
 	+CANPASS
 	+DONTSPLASH
 	+NOBLOOD
@@ -2163,7 +2181,6 @@ ACTOR CanyonRockSpawner : 3dObstacle //ozymandias81
 	//$Arg0Tooltip "Pickup the desired shape\nRandom: 0\nLarge: 1\nMedium: 2\nSmall: 3"
 	Radius 24
 	Height 24
-	//-ACTLIKEBRIDGE
 	-CANPASS
 	+MOVEWITHSECTOR
 	+NOGRAVITY
@@ -2247,7 +2264,7 @@ ACTOR 3dSpeakers_1 : 3dObstacle
 }
 
 //Hypnagogia Stuff
-ACTOR NaziGlobe : 3dObstacle
+ACTOR NaziGlobe : Caesar
 {
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Hitler's Globe
@@ -2310,78 +2327,78 @@ ACTOR Spotlight : ModelBase
 
 	States
 	{
-		Spawn:
-			MDLA A Random(1, 35)
-			"####" # 0 {
-				if (pitch == 0 && args[0] == 0 && args[1] == 0) {
-					A_SetPitch(90);
-					A_SetArg(0, 45);
-					A_SetArg(1, 45);
-				}
+	Spawn:
+		MDLA A Random(1, 35)
+		"####" # 0 {
+			if (pitch == 0 && args[0] == 0 && args[1] == 0) {
+				A_SetPitch(90);
+				A_SetArg(0, 45);
+				A_SetArg(1, 45);
 			}
-			"####" # 0 {
-					A_SetUserVar("user_minAngle", -args[1]);
-					A_SetUserVar("user_maxAngle", args[0]);
-					A_SetUserVar("user_startAngle", angle);
-					A_SetUserVar("user_startPitch", pitch);
-					A_SetUserVar("user_position", 0);
-					A_SetUserVar("user_sightRange", 1024);
-					A_SetUserVar("user_FOV", 60);
-					A_SpawnItemEx("SpotlightFlare", 5.0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION | SXF_TRANSFERPITCH);
-					A_SpawnItemEx("SpotlightBeam", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION | SXF_TRANSFERPITCH);
-			}
-			Goto Pan
-		Pan:
-			"####" # 0 {
-				A_SetAngle(user_startAngle, SPF_INTERPOLATE);
-				A_SetPitch(user_startPitch, SPF_INTERPOLATE);
-				A_SetUserVar("user_direction", RandomPick(-1, 1));
+		}
+		"####" # 0 {
+				A_SetUserVar("user_minAngle", -args[1]);
+				A_SetUserVar("user_maxAngle", args[0]);
+				A_SetUserVar("user_startAngle", angle);
+				A_SetUserVar("user_startPitch", pitch);
 				A_SetUserVar("user_position", 0);
-				A_ClearTarget;
+				A_SetUserVar("user_sightRange", 1024);
+				A_SetUserVar("user_FOV", 60);
+				A_SpawnItemEx("SpotlightFlare", 5.0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION | SXF_TRANSFERPITCH);
+				A_SpawnItemEx("SpotlightBeam", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION | SXF_TRANSFERPITCH);
+		}
+		Goto Pan
+	Pan:
+		"####" # 0 {
+			A_SetAngle(user_startAngle, SPF_INTERPOLATE);
+			A_SetPitch(user_startPitch, SPF_INTERPOLATE);
+			A_SetUserVar("user_direction", RandomPick(-1, 1));
+			A_SetUserVar("user_position", 0);
+			A_ClearTarget;
+		}
+		Pan.Hold:
+			"####" # 0 {
+				A_SetUserVar("user_holdTime", Random(0, 35));
+				A_SetUserVar("user_direction", -user_direction);
 			}
-			Pan.Hold:
-				"####" # 0 {
-					A_SetUserVar("user_holdTime", Random(0, 35));
-					A_SetUserVar("user_direction", -user_direction);
-				}
-				Pan.HoldLoop:
-					"####" # 1 {
-						A_SetPitch(-pitch + 90);
-						A_CustomRailgun(0, 0, "none", "none", RGF_SILENT | RGF_NOPIERCING, 0, 0, "SpotlightGlow", 0, 0, user_sightRange, 1);
-						A_SetPitch(-pitch + 90);
-						A_SetUserVar("user_holdTime", user_holdTime + 1);
-						return A_JumpIf(user_holdTime >= 70, "Pan.Loop");
-					}
-					"####" # 0 A_JumpIfTargetInLOS("See", user_FOV, 0, user_sightRange)
-					Loop
-			Pan.Loop:
+			Pan.HoldLoop:
 				"####" # 1 {
 					A_SetPitch(-pitch + 90);
 					A_CustomRailgun(0, 0, "none", "none", RGF_SILENT | RGF_NOPIERCING, 0, 0, "SpotlightGlow", 0, 0, user_sightRange, 1);
 					A_SetPitch(-pitch + 90);
-				}
-				"####" # 0 A_JumpIf(args[0] == 0 && args[1] == 0, "Pan.Loop")
-				"####" # 0 {
-					A_SetUserVar("user_position", user_position + user_direction);
-					A_SetAngle(angle + user_direction);
-					A_LookEx(LOF_NOSOUNDCHECK | LOF_NOSEESOUND | LOF_NOJUMP, 0, user_sightRange, 0, user_FOV, "");
+					A_SetUserVar("user_holdTime", user_holdTime + 1);
+					return A_JumpIf(user_holdTime >= 70, "Pan.Loop");
 				}
 				"####" # 0 A_JumpIfTargetInLOS("See", user_FOV, 0, user_sightRange)
-				"####" # 0 A_JumpIf(user_position >= user_maxAngle || user_position <= user_minAngle, "Pan.Hold")
 				Loop
-		See:
-			"####" # 0 {
-				A_AlertMonsters(1280);
-				A_FaceTarget(1); //, -120.0);
-			}
+		Pan.Loop:
 			"####" # 1 {
 				A_SetPitch(-pitch + 90);
 				A_CustomRailgun(0, 0, "none", "none", RGF_SILENT | RGF_NOPIERCING, 0, 0, "SpotlightGlow", 0, 0, user_sightRange, 1);
 				A_SetPitch(-pitch + 90);
 			}
-			"####" # 0 A_JumpIfTargetInLOS("See", user_FOV, JLOSF_DEADNOJUMP, user_sightRange)
-			"####" # 70
-			Goto Pan
+			"####" # 0 A_JumpIf(args[0] == 0 && args[1] == 0, "Pan.Loop")
+			"####" # 0 {
+				A_SetUserVar("user_position", user_position + user_direction);
+				A_SetAngle(angle + user_direction);
+				A_LookEx(LOF_NOSOUNDCHECK | LOF_NOSEESOUND | LOF_NOJUMP, 0, user_sightRange, 0, user_FOV, "");
+			}
+			"####" # 0 A_JumpIfTargetInLOS("See", user_FOV, 0, user_sightRange)
+			"####" # 0 A_JumpIf(user_position >= user_maxAngle || user_position <= user_minAngle, "Pan.Hold")
+			Loop
+	See:
+		"####" # 0 {
+			A_AlertMonsters(1280);
+			A_FaceTarget(1); //, -120.0);
+		}
+		"####" # 1 {
+			A_SetPitch(-pitch + 90);
+			A_CustomRailgun(0, 0, "none", "none", RGF_SILENT | RGF_NOPIERCING, 0, 0, "SpotlightGlow", 0, 0, user_sightRange, 1);
+			A_SetPitch(-pitch + 90);
+		}
+		"####" # 0 A_JumpIfTargetInLOS("See", user_FOV, JLOSF_DEADNOJUMP, user_sightRange)
+		"####" # 70
+		Goto Pan
 	}
 }
 
@@ -2400,18 +2417,18 @@ ACTOR SpotlightGlow
 
 	States
 	{
-		Spawn:
-			UNKN A 0
-			"####" # 25 Light("SpotLight")
-			"####" # 0 A_LookEx(LOF_NOSOUNDCHECK | LOF_NOSEESOUND, 0, 272.0, 0, 360.0, "Illuminate")
-			Stop
-		Illuminate:
-			"####" # 0 ACS_NamedExecuteAlways("AddExtraVisibility", 0, 100)
-			Stop
-		XDeath:
-		Crash:
-		Melee:
-			TNT1 A 0 A_Jump(256, "Spawn")
+	Spawn:
+		UNKN A 0
+		"####" # 25 Light("SpotLight")
+		"####" # 0 A_LookEx(LOF_NOSOUNDCHECK | LOF_NOSEESOUND, 0, 272.0, 0, 360.0, "Illuminate")
+		Stop
+	Illuminate:
+		"####" # 0 ACS_NamedExecuteAlways("AddExtraVisibility", 0, 100)
+		Stop
+	XDeath:
+	Crash:
+	Melee:
+		TNT1 A 0 A_Jump(256, "Spawn")
 	}
 }
 
@@ -2419,15 +2436,15 @@ ACTOR SpotlightFlare : Flare1
 {
 	States
 	{
-		Spawn:
-			TNT1 A 0 NoDelay A_SetScale(2.0)
-		Active:
-			FLAR A 1 BRIGHT
-			TNT1 A 0 A_Warp(AAPTR_MASTER, cos(pitch) * 5.0, 0, sin(pitch) * 5.0, 0, WARPF_COPYPITCH)
-			Loop
-		Inactive:
-			TNT1 A -1
-			Loop
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(2.0)
+	Active:
+		FLAR A 1 BRIGHT
+		TNT1 A 0 A_Warp(AAPTR_MASTER, cos(pitch) * 5.0, 0, sin(pitch) * 5.0, 0, WARPF_COPYPITCH)
+		Loop
+	Inactive:
+		TNT1 A -1
+		Loop
 	}
 }
 
@@ -2440,9 +2457,9 @@ ACTOR SpotlightBeam : ModelBase
 	+NOGRAVITY
 	States
 	{
-		Spawn:
-			MDLA A 1
-			TNT1 A 0 A_Warp(AAPTR_MASTER, 0, 0, 0, 0, WARPF_COPYPITCH)
-			Loop
+	Spawn:
+		MDLA A 1
+		TNT1 A 0 A_Warp(AAPTR_MASTER, 0, 0, 0, 0, WARPF_COPYPITCH)
+		Loop
 	}
 }

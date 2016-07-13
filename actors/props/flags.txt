@@ -33,6 +33,7 @@ ACTOR NazibannerM : SwitchableDecoration //3d actor
 	//$Category Props (Wolf3D)/Flags
 	//$Title Nazibanner (middle, set Dormant for non-solid/invulnerable)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 96
 	Health 30
@@ -74,6 +75,7 @@ ACTOR NazibannerM : SwitchableDecoration //3d actor
 ACTOR NazibannerM2 : NaziBannerM //3d actor
 {
 	//$Title Nazibanner 2 (middle, set Dormant for non-solid/invulnerable)
+	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:

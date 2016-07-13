@@ -1245,7 +1245,7 @@ Model FlagWave_SS
 	Skin 0 "naziflagskin_ss.jpg"
 	Scale 1.6 1.6 1.6
 
-frameindex MDLA A 0 0
+	frameindex MDLA A 0 0
 	frameindex MDLA B 0 1
 	frameindex MDLA C 0 2
 	frameindex MDLA D 0 3
@@ -1350,7 +1350,7 @@ Model FlagWave_War
 	Skin 0 "naziflagskin2.jpg"
 	Scale 1.6 1.6 1.6
 
-frameindex MDLA A 0 0
+	frameindex MDLA A 0 0
 	frameindex MDLA B 0 1
 	frameindex MDLA C 0 2
 	frameindex MDLA D 0 3
@@ -1810,12 +1810,24 @@ Model 3dEagle
 	FrameIndex MDLA A 0 0
 }
 
-Model Harness
+Model HarnessSet
 {
 	Path "models"
 	Model 0 "harness.md3"
-	Skin 0 "harness.jpg"
-	Scale 1.0 1.0 1.0
+	Skin 0 "harness_red.jpg"
+	Scale 0.7 0.7 0.7
+	InheritActorPitch
+	InheritActorRoll
+	
+	FrameIndex MDLA A 0 0
+}
+
+Model HarnessSet2
+{
+	Path "models"
+	Model 0 "harness.md3"
+	Skin 0 "harness_blue.jpg"
+	Scale 0.7 0.7 0.7
 	InheritActorPitch
 	InheritActorRoll
 	
