@@ -25,7 +25,7 @@ ACTOR RatSpawner
 		"####" A 0 A_JumpIf(Args[0]==1,5)
 		"####" AAAAA 0 A_SpawnItemEx ("ScurryRat", random (-Args[1], Args[1]), 0, 0, 0, 0, 0, random (0, 360), 0)
 		"####" A 1
-		stop
+		Stop
 	}
 }
 
@@ -52,7 +52,7 @@ ACTOR ScurryRat
 	{
 	Spawn:
 		RATS A 10 A_Look
-		loop
+		Loop
 	See:
 		PAIN A 1 A_Chase
 		"####" A 1 A_Chase("","",CHF_NOPLAYACTIVE)
@@ -78,14 +78,14 @@ ACTOR ScurryRat
 		"####" B 1 A_Chase
 		"####" B 1 A_Chase("","",CHF_NOPLAYACTIVE)
 		"####" A 0 A_CheckSight ("Vanish")
-		loop
+		Loop
 	Vanish:
 		TNT1 A 1
-		stop
+		Stop
 	Death:
 		PAIN H 3 A_ScreamAndUnblock
 		"####" IJKL 3
 		"####" M -1
-		stop
+		Stop
 	}
 }

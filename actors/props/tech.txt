@@ -178,11 +178,11 @@ ACTOR TeslaTurret //inspired from Tesla Coil by Captain Toenail
 	Spawn:
 		TSLT A 1 A_Look
 		"####" A 0 A_PlaySoundEx ("Tesla/Loop", "SoundSlot5", 1)
-		loop
+		Loop
 	See:
 		"####" A 1 A_Chase
 		"####" A 0 A_PlaySoundEx ("Tesla/Loop", "SoundSlot5", 1)
-		loop
+		Loop
 	Missile:
 		"####" A 4 A_FaceTarget
 		"####" A 0 BRIGHT A_PlaySound ("Tesla/Attack")
@@ -190,7 +190,7 @@ ACTOR TeslaTurret //inspired from Tesla Coil by Captain Toenail
 		"####" AA 0 A_SpawnItemEx("Spark_B1",0,0,92,0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,Random(157,203))
 		"####" A 0 A_SpawnItemEx("SparkFlare_B6",0,0,92,0,0,0,random(0,360),SXF_TRANSFERSCALE | SXF_CLIENTSIDE)
 		"####" A 70
-		goto See
+		Goto See
 	//no Death states because it's invulnerable
 	}
 }

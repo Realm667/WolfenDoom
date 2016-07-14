@@ -78,7 +78,7 @@ ACTOR Shark
 	Death:
 		SHRK A 0 A_Scream
 		SHRK AAAAAAAA 0 A_CustomMissile("Gibs1",random(20,40),0,random(0,360),2,random(-100,100))
-		stop
+		Stop
 	}
 }
 
@@ -137,7 +137,7 @@ ACTOR BloodFly
 	{
 	Spawn:
 		BLUD C 2 A_SpawnItemEx("BloodTrail")
-		loop
+		Loop
 	Death:
 		BLUD CBA 8
 		Stop
@@ -152,7 +152,7 @@ ACTOR BloodFly2 : BloodFly
 	{
 	Spawn:
 		BLUD C 1
-		loop
+		Loop
 	Death:
 		BLUD CBA 4
 		Stop
@@ -168,6 +168,6 @@ ACTOR BloodFlySM : BloodFly
 	{
 	Spawn:
 		BLUD C 1 A_SpawnItemEx("BloodTrailSM")
-		loop
+		Loop
 	}
 }

@@ -17,7 +17,7 @@ ACTOR UWLightGenerator1 : SwitchableDecoration
 		TNT1 A 0 A_CheckSight("Unsighted")
 		"####" A 2 A_SpawnItemEx("UWaterLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		"####" A 1 A_SpawnItemEx("UWaterLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
-		loop
+		Loop
 	Unsighted:
 		TNT1 A 1
 		"####" A 0 A_Jump(256,"Spawn")
@@ -44,7 +44,7 @@ ACTOR UWLightGenerator2 : UWLightGenerator1
 		TNT1 A 0 A_CheckSight("Unsighted")
 		"####" A 2 A_SpawnItemEx("ULavaLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		"####" A 1 A_SpawnItemEx("ULavaLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
-		loop
+		Loop
 	EndSpawn:
 		TNT1 A 1
 		Stop
@@ -62,7 +62,7 @@ ACTOR UWLightGenerator3 : UWLightGenerator1
 		TNT1 A 0 A_CheckSight("Unsighted")
 		"####" A 2 A_SpawnItemEx("UGoreLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		"####" A 1 A_SpawnItemEx("UGoreLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
-		loop
+		Loop
 	EndSpawn:
 		TNT1 A 1
 		Stop
@@ -80,7 +80,7 @@ ACTOR UWLightGenerator4 : UWLightGenerator1
 		TNT1 A 0 A_CheckSight("Unsighted")
 		"####" A 2 A_SpawnItemEx("UHazardLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		"####" A 1 A_SpawnItemEx("UHazardLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
-		loop
+		Loop
 	EndSpawn:
 		TNT1 A 1
 		Stop

@@ -29,7 +29,7 @@ ACTOR RollingBoulderGrey
 		TNT1 A 1 A_SpawnItem ("BoulderStoppedGrey")
 		"####" A 0 A_StopSound(5)
 		"####" A 0 A_PlaySound ("Boulder/Stop")
-		stop
+		Stop
 	}
 }
 
@@ -59,7 +59,7 @@ ACTOR RollingBoulderBrown : RollingBoulderGrey
 		TNT1 A 1 A_SpawnItem ("BoulderStoppedBrown")
 		"####" A 0 A_StopSound(5)
 		"####" A 0 A_PlaySound ("Boulder/Stop")
-		stop
+		Stop
 	}
 }
 
@@ -84,7 +84,7 @@ ACTOR BoulderStoppedGrey
 	{
 	Spawn:
 		GBOL A -1
-		stop
+		Stop
 	}
 }
 
@@ -94,7 +94,7 @@ ACTOR BoulderStoppedBrown : BoulderStoppedGrey
 	{
 	Spawn:
 		BBOL A -1
-		stop
+		Stop
 	}
 }
 
@@ -113,10 +113,10 @@ ACTOR BoulderStartGrey : SwitchableDecoration
 	Spawn:
 	Inactive:
 		GBOL A -1
-		stop
+		Stop
 	Active:
 		TNT1 A 1 A_SpawnItemEx("RollingBoulderGrey",0,0,0,10)
-		stop
+		Stop
 	}
 }
 
@@ -128,10 +128,10 @@ ACTOR BoulderStartBrown : BoulderStartGrey
 	Spawn:
 	Inactive:
 		BBOL A -1
-		stop
+		Stop
 	Active:
 		TNT1 A 1 A_SpawnItemEx("RollingBoulderBrown",0,0,0,10)
-		stop
+		Stop
 	}
 }
 
@@ -143,10 +143,10 @@ ACTOR BoulderStartBrownHugger : BoulderStartGrey
 	Spawn:
 	Inactive:
 		BBOL A -1
-		stop
+		Stop
 	Active:
 		TNT1 A 1 A_SpawnItemEx ("RollingBoulderBrownHugger",0,0,0,10)
-		stop
+		Stop
 	}
 }
 
@@ -168,16 +168,16 @@ ACTOR Nail
 	{
 	Spawn:
 		DART A 1 A_SpawnItemEx("NailBlur")
-		loop
+		Loop
 	Crash:
 	Death:
 		"####" B 0 A_PlaySound("NailHit")
 		"####" BCDEFG 2
-		stop
+		Stop
 	XDeath:
 		"####" B 0 A_PlaySound("NailHitBleed")
 		"####" BCDEFG 2
-		stop
+		Stop
 	}
 }
 
@@ -194,7 +194,7 @@ ACTOR NailBlur
 	{
 	Spawn:
 		DART A 1 A_FadeOut(0.2)
-		loop
+		Loop
 	}
 }
 
@@ -204,16 +204,16 @@ ACTOR NailFlame : Nail
 	{
 	Spawn:
 		DARF A 1 BRIGHT Light("Chandelier4") A_SpawnItemEx("NailBlur")
-		loop
+		Loop
 	Crash:
 	Death:
 		DART B 0 A_PlaySound("NailHit")
 		"####" BCDEFG 2
-		stop
+		Stop
 	XDeath:
 		"####" B 0 A_PlaySound("NailHitBleed")
 		"####" BCDEFG 2
-		stop
+		Stop
 	}
 }
 

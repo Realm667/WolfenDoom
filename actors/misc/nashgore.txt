@@ -4,7 +4,7 @@ const int NASHGORE_BLOODFLAGS2 = SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEVELOCITY 
 const int NASHGORE_BLOODFLAGS3 = SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE;
 
 // Base blood
-Actor NashGore_BloodBase
+ACTOR NashGore_BloodBase
 {
 	Game Doom
 	-SOLID
@@ -18,21 +18,21 @@ Actor NashGore_BloodBase
 }
 
 // Emulated regular Doom blood
-Actor NashGore_DoomBlood : Blood
+ACTOR NashGore_DoomBlood : Blood
 {
 	+DONTSPLASH
 	+FORCEXYBILLBOARD
 }
 
 // added for BoA
-Actor NashGore_RavenBlood : BloodSplatter
+ACTOR NashGore_RavenBlood : BloodSplatter
 {
 	+DONTSPLASH
 	+FORCEXYBILLBOARD
 }
 
 // Modify the internal Blood actor to spawn flying blood
-Actor NashGore_Blood : Blood replaces Blood
+ACTOR NashGore_Blood : Blood replaces Blood
 {
 	-RANDOMIZE
 	States
@@ -49,7 +49,7 @@ Actor NashGore_Blood : Blood replaces Blood
 }
 
 // added for BoA
-Actor NashGore_BloodSplatter : NashGore_Blood replaces BloodSplatter
+ACTOR NashGore_BloodSplatter : NashGore_Blood replaces BloodSplatter
 {
 	States
 	{
@@ -61,7 +61,7 @@ Actor NashGore_BloodSplatter : NashGore_Blood replaces BloodSplatter
 }
 
 // Blood actor that flies outwards and leaves trails behind
-Actor NashGore_FlyingBlood : NashGore_BloodBase
+ACTOR NashGore_FlyingBlood : NashGore_BloodBase
 {
 	Radius 8
 	Height 2
@@ -92,7 +92,7 @@ Actor NashGore_FlyingBlood : NashGore_BloodBase
 }
 
 // Blood trails spawned by FlyingBlood
-Actor NashGore_FlyingBloodTrail : NashGore_BloodBase
+ACTOR NashGore_FlyingBloodTrail : NashGore_BloodBase
 {
 	Radius 1
 	Height 1
@@ -110,7 +110,7 @@ Actor NashGore_FlyingBloodTrail : NashGore_BloodBase
 }
 
 // Blood splashers, generates Random splashes
-Actor NashGore_BloodSplasher : NashGore_BloodBase
+ACTOR NashGore_BloodSplasher : NashGore_BloodBase
 {
 	Radius 1
 	Height 1
@@ -128,7 +128,7 @@ Actor NashGore_BloodSplasher : NashGore_BloodBase
 }
 
 // Blood spots that temporarily stay on the floor
-Actor NashGore_BloodSpot : NashGore_BloodBase
+ACTOR NashGore_BloodSpot : NashGore_BloodBase
 {
 	Radius 4
 	Height 2
@@ -159,7 +159,7 @@ Actor NashGore_BloodSpot : NashGore_BloodBase
 }
 
 // Blood splashes
-Actor NashGore_BloodSplash : NashGore_BloodBase
+ACTOR NashGore_BloodSplash : NashGore_BloodBase
 {
 	Radius 1
 	Height 2
@@ -174,7 +174,7 @@ Actor NashGore_BloodSplash : NashGore_BloodBase
 }
 
 // Blood splat decal maker - This only generates red blood decals PLEASE FIX - http://forum.zdoom.org/viewtopic.php?f=15&t=46146&p=774415#p774415
-Actor NashGore_SplatMaker
+ACTOR NashGore_SplatMaker
 {
 	Radius 4
 	Height 8

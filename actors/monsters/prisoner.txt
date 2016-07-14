@@ -146,7 +146,7 @@ ACTOR PrisonerFree : DirtyDarren
 		"####" L 5 A_NoBlocking
 		"####" MN 5
 		"####" O -1
-		stop
+		Stop
 	Pain:
 		"####" I 3
 		"####" I 3 A_Pain
@@ -182,7 +182,7 @@ ACTOR HealingParticle
 	}
 }
 
-Actor PrisonerMedikitCounter : Inventory {Inventory.MaxAmount 3}
+ACTOR PrisonerMedikitCounter : Inventory {Inventory.MaxAmount 3}
 
 ACTOR PrisonerEnemyBoss : DirtyDarren
 {
@@ -243,7 +243,7 @@ ACTOR PrisonerEnemyBoss : DirtyDarren
 	Grenade:
 		"####" F 16 A_FaceTarget
 		"####" F 10 A_CustomMissile("HandGrenade",40,4,random(-8,8), CMF_OFFSETPITCH, random(0,16))	
-		goto See
+		Goto See
 	MP40:
 		"####" FG 5 A_FaceTarget
 		"####" H 0 A_PlaySound("nazi/mp40",CHAN_WEAPON)
@@ -290,7 +290,7 @@ ACTOR PrisonerEnemyBoss : DirtyDarren
 		"####" L 8 A_NoBlocking
 		"####" MN 8
 		"####" N -1
-		stop
+		Stop
 	Pain:
 		"####" I 3
 		"####" I 3 A_Pain

@@ -96,20 +96,20 @@ ACTOR CinderSpawnerSky
 	{
 	Spawn:
 		TNT1 A 0 NoDelay A_JumpIf(!CallACS("snowswitch"), "Vanish")
-		goto PickShape
+		Goto PickShape
 		
 	PickShape:
 		TNT1 A 0 A_JumpIf(Args[2], "CircleLoop")
-		goto SquareLoop
+		Goto SquareLoop
 		
 	CircleLoop:
 		TNT1 A 0 A_CheckRange(1024.0, "CircleWait", true)
 		TNT1 A 6 A_SpawnItemEx("FloatingCinder", random(-Args[0], Args[0]), 0, 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0),frandom(-1.0, -3.0), random(0, 359), 0, Args[1])
-		loop
+		Loop
 		
 	CircleWait:
 		TNT1 A 10
-		goto CircleLoop	
+		Goto CircleLoop	
 		
 	SquareLoop:
 		TNT1 A 0 A_CheckRange(1024.0, "SquareWait", true)
@@ -118,7 +118,7 @@ ACTOR CinderSpawnerSky
 		
 	SquareWait:
 		TNT1 A 10
-		goto SquareLoop
+		Goto SquareLoop
 		
 	Vanish:
 		TNT1 A 1

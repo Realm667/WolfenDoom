@@ -40,7 +40,7 @@ ACTOR SmokeMonster
 	Spawn:
 		TNT1 A 1 A_Look
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
-		loop
+		Loop
 	See:
 		TNT1 A 0 A_JumpIf(user_saw>=1,"Walk")
 		TNT1 A 0 A_PlaySound("Smoke/Tick",7,1,1)
@@ -256,7 +256,7 @@ ACTOR SmokeMonsterProjectile
 	Spawn:
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
 		TNT1 A 1
-		loop
+		Loop
 	}
 }
 

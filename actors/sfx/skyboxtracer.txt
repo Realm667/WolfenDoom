@@ -1,4 +1,4 @@
-Actor SkyboxTracerTrail //3d actor
+ACTOR SkyboxTracerTrail //3d actor
 {
 	Alpha 1.0
 	Scale 1.0
@@ -16,7 +16,7 @@ Actor SkyboxTracerTrail //3d actor
 	}
 }
 
-Actor SkyboxTracerSpawner : SwitchableDecoration
+ACTOR SkyboxTracerSpawner : SwitchableDecoration
 {
 	//$Category Special Effects (Wolf3D)
 	//$Title Skyfire Tracers
@@ -31,10 +31,10 @@ Actor SkyboxTracerSpawner : SwitchableDecoration
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 	Active:
 		TNT1 A 12 A_SpawnItemEx("SkyboxTracerTrail", 0, 0, 0, 1, 0, 8, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
-		loop
+		Loop
 	Inactive:
 		TNT1 A -1
-		stop
+		Stop
 	EndSpawn:
 		TNT1 A 1
 		Stop

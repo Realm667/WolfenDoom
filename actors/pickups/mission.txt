@@ -15,7 +15,7 @@ ACTOR Akten : Inventory
 	{
 	Spawn:
 		AKTT B -1
-		stop
+		Stop
 	}
 }
 
@@ -30,7 +30,7 @@ ACTOR AktenEisenmann : Akten
 	{
 	Spawn:
 		AKTE B -1 
-		stop
+		Stop
 	}
 }
 
@@ -45,7 +45,7 @@ ACTOR ArtifactAstrostrein : Akten
 	{
 	Spawn:
 		ARTM B -1
-		stop
+		Stop
 	}
 }
 
@@ -59,7 +59,7 @@ ACTOR SpearOfDestiny : Akten
 	{
 	Spawn:
 		SPER B -1 
-		stop
+		Stop
 	}
 }
 
@@ -73,7 +73,7 @@ ACTOR Cartridge51 : Akten
 	{
 	Spawn:
 		SNSC B -1 NODELAY 
-		stop
+		Stop
 	}
 }
 
@@ -87,7 +87,7 @@ ACTOR Cartridge52 : Akten
 	{
 	Spawn:
 		SNSC D -1 NODELAY 
-		stop
+		Stop
 	}
 }
 
@@ -101,7 +101,7 @@ ACTOR Cartridge53 : Akten
 	{
 	Spawn:
 		SNSC F -1 NODELAY 
-		stop
+		Stop
 	}
 }
 
@@ -146,7 +146,7 @@ ACTOR ScientistUniform : SwitchableDecoration
 	Spawn:
 	Inactive:
 		SCUN A -1 
-		stop
+		Stop
 	Active:
 		SCUN B 0 A_ChangeFlag("SOLID", false)
 		"####" B 0 A_SpawnItemEx("ScientistUniformPickup", 0, 0, 16, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
@@ -168,7 +168,7 @@ ACTOR ScientistUniformPickup : Akten
 	{
 	Spawn:
 		SCUN D -1 NODELAY 
-		stop
+		Stop
 	}
 }
 
@@ -188,7 +188,7 @@ ACTOR Kennkarte : Inventory
 	{
 	Spawn:
 		KENK B -1
-		stop
+		Stop
 	}
 }
 
@@ -199,6 +199,6 @@ ACTOR CutsceneEnabled : Inventory
 	{
 	Spawn:
 		TNT1 A -1
-		stop
+		Stop
 	}
 }

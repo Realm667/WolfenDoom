@@ -18,13 +18,13 @@ ACTOR SneakableSSMP40Guard : SSMP40Guard
 	{
 		Spawn:
 			TNT1 A 0 NoDelay A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION)
-			goto Super::Spawn
+			Goto Super::Spawn
 		Missile:
 			"####" "#" 0 A_AlertMonsters(512) // Something fishy is definitely going on!
-			goto Super::Missile
+			Goto Super::Missile
 		Pain: 
 			"####" "#" 0 A_CheckFlag("FRIENDLY", "BecomeAlerted") // Stop being so friendly when damaged (if not already alerted)
-			goto Super::Pain
+			Goto Super::Pain
 		Pain.SilentKnifeAttack: // Done using PainType "SilentKnifeAttack" on KnifePuff because I need this to REPLACE Pain state, not be called AFTER it
 			"####" "#" 0 A_CheckFlag("FRIENDLY", "StealthKill") // Only unalerted enemies can be stealth-killed
 			Goto Super::Pain
@@ -55,17 +55,17 @@ ACTOR SneakableSSMP40Guard : SSMP40Guard
 			"####" "#" 0 A_SetHealth(health + 1) // Compensate the loss of health
 			"####" "#" 0 A_ClearTarget
 			"####" "#" 0 ACS_NamedExecute("TryResumePatrolling") 
-			goto Spawn
+			Goto Spawn
 		Death:
 			"####" "#" 0 A_RemoveChildren(true, RMVF_EVERYTHING) // Despawn children
 			"####" "#" 0 A_CheckFlag("FRIENDLY", "Super::Death") // Don't decrease AlertedCount when friendly
 			"####" "#" 0 ACS_NamedExecute("DecreaseAlertedCount")
-			goto Super::Death
+			Goto Super::Death
 		XDeath: // Same as Death
 			"####" "#" 0 A_RemoveChildren(true, RMVF_EVERYTHING)  // Despawn children
 			"####" "#" 0 A_CheckFlag("FRIENDLY", "Super::XDeath") // Don't decrease AlertedCount when friendly
 			"####" "#" 0 ACS_NamedExecute("DecreaseAlertedCount")
-			goto Super::XDeath
+			Goto Super::XDeath
 	}
 }
 
@@ -135,33 +135,33 @@ ACTOR SneakableGuardEyesAlerted : SneakableGuardEyesIdle
 		Spawn:
 			TNT1 A 0 NoDelay ACS_NamedExecute("IncreaseAlertedCount")
 			TNT1 A 1 A_AlertMonsters(512, AMF_TARGETEMITTER) // Something fishy is going on. Alert everybody around!
-			goto ResetCounters
+			Goto ResetCounters
 		
 		ResetCounters: 
 			TNT1 A 0 A_SetArg(0, Random(280, 350)) // Set countdown time to 8 - 10 seconds
 			TNT1 A 0 A_SetArg(1, Random(140, 210))   // Set quote countdown time to 4 - 6 seconds 
-			goto Look
+			Goto Look
 			
 		Look:
 			TNT1 A 1 A_Warp(AAPTR_MASTER, 0, 0, Height) // Need a slight delay between A_Looks to prevent infinite loop
 			TNT1 A 0 A_LookEx(0, 0.0, 1024.0, 256.0, 65.0, "PlayerSeen")
 			TNT1 A 0 A_CountdownArg(0, "ResetMaster") // Sets master state to Patrol when the countdown reaches zero
 			TNT1 A 0 A_CountdownArg(1, "TryPlayLoosingTargetSound")
-			loop
+			Loop
 			
 		TryPlayLoosingTargetSound:
 			TNT1 A 0 A_JumpIf(args[0] > 220, "Look") // Too early!
 			TNT1 A 0 A_PlaySound("axis1/target_not_seen", CHAN_BODY)
-			goto ResetCounters + 1 // Reset quote countdown time only
+			Goto ResetCounters + 1 // Reset quote countdown time only
 			
 		PlayerSeen: // Clear target and reset countdown
 			TNT1 A 1 A_ClearTarget
-			goto ResetCounters
+			Goto ResetCounters
 			
 		ResetMaster:
 			TNT1 A 0 A_DamageMaster(1, "BecomeIdle") // Cause the master to enter Pain.BecomeIdle state (HAAAACKS!!!!11)
 			TNT1 A 0 ACS_NamedExecute("DecreaseAlertedCount")
-			stop
+			Stop
 	}
 }
 
@@ -177,12 +177,12 @@ ACTOR AlertMarker
 	{
 		Spawn:
 			EXCL C 1 NoDelay A_PlaySound("misc/alert", CHAN_BODY)
-			goto Fade
+			Goto Fade
 		
 		Fade:
 			EXCL C 0 A_Warp(AAPTR_MASTER, 0, 0, 64)
 			EXCL C 1 A_FadeOut(0.01)
-			loop
+			Loop
 	}
 }
 

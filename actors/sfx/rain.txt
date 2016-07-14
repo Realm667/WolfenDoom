@@ -35,11 +35,11 @@ ACTOR RainSpawner : SwitchableDecoration
 		TNT1 A 0 NoDelay A_JumpIf(!CallACS("rainswitch"), "Vanish")
 		TNT1 A 0 A_SetScale(scalex, scaley)
 		TNT1 A 0 A_JumpIf(!Args[2], "StartSound")
-		goto RainLoop
+		Goto RainLoop
 		
 	StartSound:
 		TNT1 A 0 A_PlaySound("Ambient/Rain", 7, 1.0, true)
-		goto RainLoop
+		Goto RainLoop
 		
 	RainLoop:
 		TNT1 A 0 A_CheckRange(1200.0, "RainWait", true)
@@ -54,7 +54,7 @@ ACTOR RainSpawner : SwitchableDecoration
 		
 	RainWait:
 		TNT1 A 10
-		goto RainLoop
+		Goto RainLoop
 		
 	Vanish:
 		TNT1 A 1

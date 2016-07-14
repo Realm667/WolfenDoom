@@ -20,7 +20,7 @@ ACTOR TankSmoke : PuffSmoke //connections with GuardSoul smoke
 	End:
 		"####" AAAAAAAAAA 1 A_FadeIn(0.05)
 		"####" AAAAAAAAAAAAAAAA 2 A_FadeOut(0.025)
-		stop
+		Stop
 	}
 }
 
@@ -382,20 +382,20 @@ actor SSTank1
 	{
 	Spawn:
 		MDLA A 10 A_Look
-		loop
+		Loop
 	See:
 		"####" A 1
 		"####" A 0 A_JumpIfTargetInLOS(1) // only move if we have a target
-		loop
+		Loop
 		"####" A 0 A_PlaySound("TKMOVE", CHAN_7, 1, true)
 		"####" A 0 
 		"####" A 0 A_FaceTarget(1.0)
 		"####" A 0 A_ChangeVelocity(Cos(angle) * speed, Sin(angle) * speed, velz, CVF_REPLACE)
 //only attack if our target is within 5 degrees if the top part of the tank model was separate, this behavior could potentially be removed.
 		"####" A 0 A_JumpIfTargetInLOS(1, 5)
-		loop
+		Loop
 		"####" A 0 A_Chase("Missile", "Missile", CHF_DONTTURN|CHF_NODIRECTIONTURN|CHF_DONTMOVE)
-		loop
+		Loop
 	Missile:
 		"####" A 10
 		"####" A 0 A_Jump(128, "Turret")
@@ -405,13 +405,13 @@ actor SSTank1
 		"####" FG 8
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
 		"####" A 0 A_JumpIfTargetInLOS("Missile", 1) // attack again if we're perfectly aimed
-		goto See
+		Goto See
 	Turret:
 		MDLA A 0 A_PlaySound("weapons/chaingun", CHAN_WEAPON)
 		"####" EEEE 1 light("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer", scalex * 48, scaley * 26, random(-4, 4))
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
 		MDLA A 2 A_JumpIfTargetInLOS("Turret", 45)
-		goto See
+		Goto See
 	Missile2:
 		MDLA BCD 2
 		"####" E 2 A_CustomMissile("PanzerRocket", scalex * 76, 0, angle, CMF_ABSOLUTEANGLE)
@@ -423,7 +423,7 @@ actor SSTank1
 		"####" A 20
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
 		"####" A 0 A_JumpIfTargetInLOS("Missile2", 1) // attack again if we're perfectly aimed
-		goto See
+		Goto See
 	Death:
 		TNT1 A 0 A_StopSound(CHAN_7)
 		"####" A 0 A_PlaySound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_IDLE)
@@ -435,7 +435,7 @@ actor SSTank1
 		"####" A 1 A_SpawnItemEx("KaBoomer", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS)
 		"####" A 1 A_SpawnItemEx("GeneralExplosion_Large", 56, 0, 32)
 		"####" A 20 A_SpawnItemEx("DestroyedTank1")
-		stop
+		Stop
 	}
 }
 
@@ -475,7 +475,7 @@ actor SSTank2 : SSTank1
 	{
 	Spawn:
 		MDLA A 10 A_Look
-		loop
+		Loop
 	Missile:
 		"####" A 10
 		"####" A 0 A_Jump(128, "Turret")
@@ -484,7 +484,7 @@ actor SSTank2 : SSTank1
 		"####" FG 8
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
 		"####" A 0 A_JumpIfTargetInLOS("Missile", 1) // attack again if we're perfectly aimed
-		goto See
+		Goto See
 	Turret:
 		MDLA A 0 A_PlaySound("weapons/chaingun", CHAN_WEAPON)
 		"####" EEEE 1 LIGHT("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer", scalex * 70, scaley * -16, random(-4, 4))
@@ -502,7 +502,7 @@ actor SSTank2 : SSTank1
 		"####" A 1 A_SpawnItemEx("KaBoomer", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS)
 		"####" A 1 A_SpawnItemEx("GeneralExplosion_Large", 56, 0, 32)
 		"####" A 20 A_SpawnItemEx("DestroyedTank2")
-		stop
+		Stop
 	}
 }
 
@@ -523,7 +523,7 @@ actor SSTank3 : SSTank1
 	{
 	Spawn:
 		MDLA A 10 A_Look
-		loop
+		Loop
 	Missile:
 		MDLA A 10
 		"####" A 0 A_Jump(128, "Turret")
@@ -532,13 +532,13 @@ actor SSTank3 : SSTank1
 		"####" FG 8
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
 		"####" A 0 A_JumpIfTargetInLOS("Missile", 1) // attack again if we're perfectly aimed
-		goto See
+		Goto See
 	Turret:
 		MDLA A 0 A_PlaySound("weapons/chaingun", CHAN_WEAPON)
 		"####" EEEE 1 light("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer", scalex * 48, scaley * 24, random(-4, 4))
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
 		MDLA A 2 A_JumpIfTargetInLOS("Turret", 45)
-		loop
+		Loop
 	Death:
 		TNT1 A 0 A_StopSound(CHAN_7)
 		"####" A 0 A_PlaySound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_IDLE)
@@ -550,7 +550,7 @@ actor SSTank3 : SSTank1
 		"####" A 1 A_SpawnItemEx("KaBoomer", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS)
 		"####" A 1 A_SpawnItemEx("GeneralExplosion_Large", 56, 0, 32)
 		"####" A 20 A_SpawnItemEx("DestroyedTank3")
-		stop
+		Stop
 	}
 }
 
@@ -572,7 +572,7 @@ actor SSTank4 : SSTank1
 	{
 	Spawn:
 		MDLA A 10 A_Look
-		loop
+		Loop
 	Missile:
 		"####" B 0 A_PlaySound("weapons/chaingun", CHAN_WEAPON)
 		"####" BBBB 1 LIGHT("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer", scalex * 80, scaley * 0, random(-4, 4))
@@ -590,7 +590,7 @@ actor SSTank4 : SSTank1
 		"####" A 1 A_SpawnItemEx("KaBoomer", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS)
 		"####" A 1 A_SpawnItemEx("GeneralExplosion_Large", 56, 0, 32)
 		"####" A 20 A_SpawnItemEx("DestroyedTank4")
-		stop
+		Stop
 	}
 } 
 

@@ -125,11 +125,11 @@ ACTOR PlayerStep
 	{
 	Spawn:
 		TNT1 A 1 NoDelay A_Look
-		loop
+		Loop
 	See:
 		"####" A 0 A_AlertMonsters(CallACS("ApplyNoiseLevelMultiplier", 256))
 		"####" A 3
-		goto See + 1
+		Goto See + 1
 	Crash:
 		"####" A 1
 		Stop

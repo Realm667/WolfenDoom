@@ -228,7 +228,7 @@ ACTOR 9MMCasing
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(400)
-		goto Swim
+		Goto Swim
 	Swim: //mxd. This presumes all cases have the same ammout of frames...
 		"####" A 2 A_ScaleVelocity(0.7)
 		"####" B 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)

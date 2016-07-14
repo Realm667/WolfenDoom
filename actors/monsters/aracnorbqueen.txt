@@ -167,10 +167,10 @@ ACTOR QueenPlasmaBlast
 	Spawn:
 		EBLT GH 0 BRIGHT A_CustomMissile("QueenPlasmaBlastTrail", 0, 0, 0)
 		"####" GH 2 BRIGHT A_BishopMissileWeave
-		loop
+		Loop
 	Death:
 		"####" IJK 3 bright
-		stop
+		Stop
   }
 }
 
@@ -188,10 +188,10 @@ ACTOR QueenPlasmaBlastTrail
 	{
 	Spawn:
 		EBLT ABC 3 BRIGHT A_BishopMissileWeave
-		goto death
+		Goto Death
   Death:
 		"####" DEF 4 BRIGHT A_FadeOut(0.25)
-		loop
+		Loop
 	}
 }
 
@@ -208,8 +208,8 @@ ACTOR QueenBlastPod //From the Vore actor - Projectile sprites by Vader - Tweake
 	+SEEKERMISSILE
 	RenderStyle "Add"
 	Alpha 0.9
-	SEESOUND "queen/fire"
-	DEATHSOUND "queen/hit"
+	SeeSound "queen/fire"
+	DeathSound "queen/hit"
 	Decal BFGLightning
 	Scale 2.5
 	States

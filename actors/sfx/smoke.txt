@@ -24,7 +24,7 @@ ACTOR PuffSmoke
 						A_FadeOut(0.025);
 						A_SetScale(ScaleX*1.02, ScaleY*1.02);
 						}
-		stop
+		Stop
 	}
 }
 
@@ -47,10 +47,10 @@ ACTOR PowerPlantSmokeGenerator : SwitchableDecoration
 	Active:
 		TNT1 A 0 A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 		TNT1 A 4 A_SpawnItemEx("PowerPlantSmokePuff", random(-3,3), random(-3,3), 0, 0, 0, 3)
-		loop
+		Loop
 	Inactive:
 		TNT1 A -1
-		stop
+		Stop
 	EndSpawn:
 		TNT1 A 1
 		Stop
@@ -70,10 +70,10 @@ ACTOR PowerPlantSmokeGeneratorSmall : SwitchableDecoration
 	Active:
 		TNT1 A 0 A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 		TNT1 A 4 A_SpawnItemEx("PowerPlantSmokePuffSmall", random(-8,8), random(-8,8), 0, 0, 0, 3)
-		loop
+		Loop
 	Inactive:
 		TNT1 A -1
-		stop
+		Stop
 	EndSpawn:
 		TNT1 A 1
 		Stop
@@ -91,10 +91,10 @@ ACTOR PowerPlantSmokeGenerator2 : PowerPlantSmokeGenerator
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 	Active:
 		TNT1 A 4 A_SpawnItemEx("PowerPlantSmokePuff", random(-32,32), random(-32,32), 0, 0, 0, -3)
-		loop
+		Loop
 	Inactive:
 		TNT1 A -1
-		stop
+		Stop
 	EndSpawn:
 		TNT1 A 1
 		Stop
@@ -122,7 +122,7 @@ ACTOR VolcanoPuffSmoke
 	End:
 		"####" AAAAAAAAAA 5 A_FadeIn(0.1)
 		"####" AAAAAAAAAAAAAAAA 8 A_FadeOut(0.0625)
-		stop
+		Stop
 	}
 }
 
@@ -141,10 +141,10 @@ ACTOR VolcanoSmokeGenerator : SwitchableDecoration
 	Active:
 		TNT1 A 0 A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 		TNT1 A 30 A_SpawnItemEx("VolcanoPuffSmoke", random(-128,128), random(-128,128), 0, random(1,5), random(1,5), random(10,20), random(1,359))
-		loop
+		Loop
 	Inactive:
 		TNT1 A -1
-		stop
+		Stop
 	EndSpawn:
 		TNT1 A 1
 		Stop
@@ -173,7 +173,7 @@ ACTOR Ambientsmoke
 	End:
 		"####" AAAAAAAAAAAAAAAAAA 1 A_FadeIn(0.005)
 		"####" AAAAAAAAAAAAAAAAAAA 3 A_FadeOut(0.005)
-		stop
+		Stop
 	}
 }
 
@@ -196,10 +196,10 @@ ACTOR AmbientSmokeGenerator : SwitchableDecoration
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 	Active:
 		TNT1 A 2 A_SpawnItemEx("Ambientsmoke", Random(-Args[0], Args[0]), Random(-Args[0], Args[0]), Random(0,48), 0, 0, 0.5, 0, 0, Args[1])
-		loop
+		Loop
 	Inactive:
 		TNT1 A -1
-		stop
+		Stop
 	EndSpawn:
 		TNT1 A 1
 		Stop

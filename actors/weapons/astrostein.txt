@@ -130,7 +130,7 @@ ACTOR AstroShotgunShell : Ammo
 	{
 	Spawn:
 		ASSL A -1 LIGHT(ASTRAMM1)
-		stop
+		Stop
 	}
 }
 
@@ -281,7 +281,7 @@ ACTOR AstroRocketAmmo : Ammo
 	{
 	Spawn:
 		ASRK A -1 LIGHT(ASTRAMM1)
-		stop
+		Stop
 	}
 }
 
@@ -433,7 +433,7 @@ ACTOR AstrosteinMelee : NaziAstroWeapon
 	Fire:
 		REZG AB 3 A_Saw("weapons/rezfull","weapons/rezhit",2,"ElektroshockerPuff")
 		REZG B 0 A_ReFire
-		goto Ready
+		Goto Ready
 	Spawn:
 		REZN A -1
 		Stop
@@ -503,6 +503,6 @@ ACTOR AstroHandGrenade : HandGrenade
 		TNT1 A 0 A_PlaySound("astrostein/explosion",0,1.0,0,0.1)
 		TNT1 A 1 A_SpawnItemEx("AstrosteinExplosion_Medium")
 		TNT1 A 1 Radius_Quake(10,10,0,16,0)
-		stop
+		Stop
 	}
 }
