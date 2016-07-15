@@ -309,6 +309,61 @@ ACTOR Debris_Cloth : Debris_Leaf
 	}
 }
 
+ACTOR Debris_ChipsGreen : Debris_Base
+{
+	BounceSound "casino/chips"
+	+BOUNCEONACTORS
+	+BOUNCEONCEILINGS
+	+BOUNCEONWALLS
+	+CLIENTSIDEONLY
+	+MISSILE
+	Scale 0.55
+	States
+	{
+	Spawn:
+		CHP1 FGHIJ 5 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		Loop
+	AdjustMass: //mxd
+		"####" "#" 0 A_SetMass(400)
+		Goto Swim
+	Swim: //mxd
+		"####" F 2 A_ScaleVelocity(0.7)
+		"####" G 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" H 2 A_ScaleVelocity(0.7)
+		"####" I 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" J 2 A_ScaleVelocity(0.7)
+		Loop
+	Death:
+		"####" C 0 A_Jump(256,1,2,3)
+		"####" CI 0 A_Jump(256,"Death1")
+		Stop
+	Death1:
+		"####" "#" 1 A_SetTics(35*CallACS("DebrisLifetime"))
+		"####" "#" 1 A_FadeOut(0.1)
+		Stop
+	}
+}
+
+ACTOR Debris_ChipsBlue : Debris_ChipsGreen
+{
+	States
+	{
+	Spawn:
+		CHP2 FGHIJ 5 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		Loop
+	}
+}
+
+ACTOR Debris_ChipsRed : Debris_ChipsGreen
+{
+	States
+	{
+	Spawn:
+		CHP3 FGHIJ 5 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		Loop
+	}
+}
+
 //Translated ones
 ACTOR Debris_LeafY : Debris_Translated {Translation "10:10=165:165", "112:125=160:166" }
 ACTOR Debris_LeafR : Debris_Translated {Translation "10:10=184:184", "112:125=168:181" }
