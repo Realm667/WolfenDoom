@@ -163,6 +163,20 @@ ACTOR TestCrate : 3dObstacle
 	}
 }
 
+ACTOR TestCrate2 : TestCrate
+{
+	//$Title Test Lab Crate (with random subject)
+	DistanceCheck "scenelod"
+	States
+	{
+	Spawn:
+		MDLA A -1 NoDelay {
+											A_SpawnItemEx("CrateGlass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER);
+											A_SpawnItemEx("MutantSubjectWarped", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER);}
+		Stop
+	}
+}
+
 ACTOR CrateGlass : 3dGlass 
 {
 	Radius 24

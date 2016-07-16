@@ -300,14 +300,9 @@ ACTOR MutantSubject1
 	}
 }
 
-ACTOR MutantSubject2
+ACTOR MutantSubject2 : MutantSubject1
 {
-	//$Category Gore (Wolf3D)
 	//$Title Subject (2)
-	//$Color 4
-	Radius 8
-	Height 64
-	Scale 1.1
 	States
 	{
 	Spawn:
@@ -316,14 +311,9 @@ ACTOR MutantSubject2
 	}
 }
 
-ACTOR MutantSubject3
+ACTOR MutantSubject3 : MutantSubject1
 {
-	//$Category Gore (Wolf3D)
 	//$Title Subject (3)
-	//$Color 4
-	Radius 8
-	Height 64
-	Scale 1.1
 	States
 	{
 	Spawn:
@@ -335,7 +325,7 @@ ACTOR MutantSubject3
 ACTOR MutantSubjectRandom : RandomSpawner
 {
 	//$Category Gore (Wolf3D)
-	//$Title Random Mutant Subject
+	//$Title Random Mutant Subject (Static)
 	//$Color 4
 	//$Sprite ALMUA0
 	
@@ -346,6 +336,28 @@ ACTOR MutantSubjectRandom : RandomSpawner
 	Radius 16
 	Height 64
 	Scale 1.0
+}
+
+ACTOR MutantSubjectWarped
+{
+	//$Category Gore (Wolf3D)
+	//$Title Random Mutant Subject (Special)
+	//$Color 4
+	//$Sprite ALMUA0
+	Radius 8
+	Height 64
+	Scale 1.1
+	-NOGRAVITY
+	
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
+		ALMU A -1 {A_Jump(128,1); A_Warp(AAPTR_MASTER,0,0,0,0,WARPF_NOCHECKPOSITION | WARPF_INTERPOLATE | WARPF_COPYVELOCITY);}
+		ALMU B -1	{A_Jump(128,1); A_Warp(AAPTR_MASTER,0,0,0,0,WARPF_NOCHECKPOSITION | WARPF_INTERPOLATE | WARPF_COPYVELOCITY);}
+		ALMU C -1	A_Warp(AAPTR_MASTER,0,0,0,0,WARPF_NOCHECKPOSITION | WARPF_INTERPOLATE | WARPF_COPYVELOCITY)
+		Wait
+	}
 }
 
 ACTOR CagedBody
