@@ -167,12 +167,13 @@ ACTOR TestCrate2 : TestCrate
 {
 	//$Title Test Lab Crate (with random subject)
 	DistanceCheck "scenelod"
+	+SOLID
 	States
 	{
 	Spawn:
 		MDLA A -1 NoDelay {
-											A_SpawnItemEx("CrateGlass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER);
-											A_SpawnItemEx("MutantSubjectWarped", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER);}
+		A_SpawnItemEx("CrateGlass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER);
+		A_SpawnItemEx("MutantSubjectWarped", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER);}
 		Stop
 	}
 }
