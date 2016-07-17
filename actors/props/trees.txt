@@ -97,7 +97,7 @@ ACTOR JungleTree3 : JungleTree1
 	DistanceCheck "treeslod"
 }
 
-ACTOR winterA
+ACTOR WinterA
 {
 	Height 115
 	+SOLID
@@ -110,20 +110,20 @@ ACTOR winterA
 	}
 }
 
-ACTOR winterB : winterA
+ACTOR WinterB : WinterA
 {
 	Radius 15
 	Height 90
 	DistanceCheck "treeslod"
 }
 
-ACTOR winterC : winterA
+ACTOR WinterC : WinterA
 {
 	Height 140
 	DistanceCheck "treeslod"
 }
 
-ACTOR winterD
+ACTOR WinterD
 {
 	Height 60
 	+SOLID
@@ -136,35 +136,35 @@ ACTOR winterD
 	}
 }
 
-ACTOR winterE : winterA
+ACTOR WinterE : WinterA
 {
 	Radius 10
 	Height 45
 	DistanceCheck "treeslod"
 }
 
-ACTOR winterF : winterA
+ACTOR WinterF : WinterA
 {
 	Radius 10
 	Height 110
 	DistanceCheck "treeslod"
 }
 
-ACTOR winterG : winterA
+ACTOR WinterG : WinterA
 {
 	Radius 25
 	Height 130
 	DistanceCheck "treeslod"
 }
 
-ACTOR winterH : winterA
+ACTOR WinterH : WinterA
 {
 	Radius 25
 	Height 130
 	DistanceCheck "treeslod"
 }
 
-ACTOR winterI : winterA
+ACTOR WinterI : WinterA
 {
 	Radius 25
 	Height 130
@@ -270,6 +270,7 @@ ACTOR SmallTree1_Burnt
 	}
 }
 
+//2d actors
 ACTOR SmallBush1
 {
 	//$Category Props (Wolf3D)/Trees
@@ -858,10 +859,10 @@ ACTOR BurnTreeSpawner : RandomSpawner
 	DropItem "SmallTree1_Burnt"
 }
 
-ACTOR summertreespawner : RandomSpawner
+ACTOR SummerTreeSpawner : RandomSpawner
 {
 	//$Category Props (Wolf3D)/Trees
-	//$Title Tree (summer, random spawner)
+	//$Title Tree (Summer, random spawner)
 	//$Color 3
 	DropItem "Bush"
 	DropItem "Tree2"
@@ -871,20 +872,20 @@ ACTOR summertreespawner : RandomSpawner
 	DropItem "SmallTree2"
 }
 
-ACTOR wintertreespawner : RandomSpawner
+ACTOR WinterTreeSpawner : RandomSpawner
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree (winter, random spawner)
 	//$Color 3
-	DropItem "winterA"
-	DropItem "winterB"
-	DropItem "winterC"
-	DropItem "winterD"
-	DropItem "winterE"
-	DropItem "winterF"
-	DropItem "winterG"
-	DropItem "winterH"
-	DropItem "winterI"
+	DropItem "WinterA"
+	DropItem "WinterB"
+	DropItem "WinterC"
+	DropItem "WinterD"
+	DropItem "WinterE"
+	DropItem "WinterF"
+	DropItem "WinterG"
+	DropItem "WinterH"
+	DropItem "WinterI"
 }
 
 ACTOR WoodyLogs

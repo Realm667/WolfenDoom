@@ -28,18 +28,24 @@ ACTOR BaseOrb
 
 ACTOR GreenCirclePad
 {
-//$Category Special Effects (Wolf3D)
-//$Title CirclePad (green)
-//$Color 12
-
-//$Arg0 "Nothing"
-//$Arg0Tooltip "Does nothing"
-//$Arg2 "Speed"
-//$Arg2Tooltip "Controls the speed of the rings (can also be negative if you want them to move downwards instead of upwards)"
-//$Arg1 "Radius"
-//$Arg1Tooltip "Controls the size of the area. 32, for example, spawns in a 64x64 diameter circle."
--SOLID +CLIENTSIDEONLY +NOBLOCKMAP +NOCLIP +NOGRAVITY +NOINTERACTION +NOSECTOR
-States
+	//$Category Special Effects (Wolf3D)
+	//$Title CirclePad (green)
+	//$Color 12
+	
+	//$Arg0 "Nothing"
+	//$Arg0Tooltip "Does nothing"
+	//$Arg2 "Speed"
+	//$Arg2Tooltip "Controls the speed of the rings (can also be negative if you want them to move downwards instead of upwards)"
+	//$Arg1 "Radius"
+	//$Arg1Tooltip "Controls the size of the area. 32, for example, spawns in a 64x64 diameter circle."
+	-SOLID
+	+CLIENTSIDEONLY
+	+NOBLOCKMAP
+	+NOCLIP
+	+NOGRAVITY
+	+NOINTERACTION
+	+NOSECTOR
+	States
 	{
 	Spawn:
 	Active:

@@ -57,27 +57,22 @@ ACTOR UMG43 : NaziWeapon
 		UMGG H 1 Offset(0,35) A_FireCustomMissile("ChaingunTracer",frandom(-5,5),1,0,0,0,frandom(-3,3))
 		UMGG E 1 A_Refire
 		Goto FireFinish
-		
 	Flash1A:
 		UMGF A 0 A_Jump(128, "Flash1B")
 		UMGF A 1 BRIGHT A_Light2
 		TNT1 A 1
 		TNT1 A 2 A_Light1
 		Goto LightDone
-		
 	Flash1B:
 		UMGF C 1 BRIGHT A_Light2
 		Goto Flash1A+1
-		
 	Flash2A:
 		UMGF B 0 A_Jump(128, "Flash2B")
 		UMGF B 1 BRIGHT A_Light2
 		Goto Flash1A+1
-		
 	Flash2B:
 		UMGF D 1 BRIGHT A_Light2
-		Goto Flash1A+1  
-		 
+		Goto Flash1A+1 
 	Spawn:
 		UMGP A -1
 		Stop

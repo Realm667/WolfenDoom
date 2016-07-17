@@ -26,7 +26,11 @@ ACTOR StarParticle_Spawner : SwitchableDecoration
 	//$Category Special Effects (Wolf3D)
 	//$Title Startdust Spawner (horizontal)
 	//$Color 12
-	-SOLID +CLIENTSIDEONLY +NOCLIP +NOGRAVITY +NOINTERACTION
+	-SOLID
+	+CLIENTSIDEONLY
+	+NOCLIP
+	+NOGRAVITY
+	+NOINTERACTION
 	RenderStyle "Add"
 	Alpha 1.0
 	States
@@ -46,14 +50,9 @@ ACTOR StarParticle_Spawner : SwitchableDecoration
 	}
 }
 
-ACTOR StarParticle_Spawner2 : SwitchableDecoration
+ACTOR StarParticle_Spawner2 : StarParticle_Spawner
 {
-	//$Category Special Effects (Wolf3D)
 	//$Title Startdust Spawner (with pitched)
-	//$Color 12
-	-SOLID +CLIENTSIDEONLY +NOCLIP +NOGRAVITY +NOINTERACTION
-	RenderStyle "Add"
-	Alpha 1.0
 	States
 	{
 	Spawn:
@@ -62,23 +61,12 @@ ACTOR StarParticle_Spawner2 : SwitchableDecoration
 		TNT1 A 1
 		TNT1 A 5 A_SpawnItemEx ("StarParticle", random(0,128), random(0,128), 0, 0, random(2,8), -5, 0, SXF_CLIENTSIDE, 64)
 		Loop
-	Inactive:
-		TNT1 A 10
-		Loop
-	EndSpawn:
-		TNT1 A 1
-		Stop
 	}
 }
 
-ACTOR StarParticle_SpawnerFast : SwitchableDecoration
+ACTOR StarParticle_SpawnerFast : StarParticle_Spawner
 {
-	//$Category Special Effects (Wolf3D)
 	//$Title Startdust Spawner (horizontal, fast)
-	//$Color 12
-	-SOLID +CLIENTSIDEONLY +NOCLIP +NOGRAVITY +NOINTERACTION
-	RenderStyle "Add"
-	Alpha 1.0
 	States
 	{
 	Spawn:
@@ -87,11 +75,5 @@ ACTOR StarParticle_SpawnerFast : SwitchableDecoration
 		TNT1 A 1
 		TNT1 A 5 A_SpawnItemEx ("StarParticle", random(0,128), 0, random(0,128), 0, random(20,30), 0, 0, SXF_CLIENTSIDE, 64)
 		Loop
-	Inactive:
-		TNT1 A 10
-		Loop
-	EndSpawn:
-		TNT1 A 1
-		Stop
 	}
 }
