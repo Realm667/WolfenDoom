@@ -309,15 +309,22 @@ ACTOR Debris_Cloth : Debris_Leaf
 	}
 }
 
-ACTOR Debris_ChipsGreen : Debris_Base
+ACTOR Debris_ChipsGreen 
 {
-	BounceSound "casino/chips"
+	Radius 2
+	Height 4
+	Mass 1
+	+ACTIVATEIMPACT
+	+ACTIVATEPCROSS
 	+BOUNCEONACTORS
 	+BOUNCEONCEILINGS
 	+BOUNCEONWALLS
 	+CLIENTSIDEONLY
 	+MISSILE
 	Scale 0.55
+	BounceType "Doom"
+	BounceFactor 0.5
+	BounceSound "casino/chips"
 	States
 	{
 	Spawn:
@@ -388,7 +395,7 @@ ACTOR Debris_Tank
 	Mass 1
 	Scale 0.8
 	BounceFactor 0.5
-	BounceType Doom
+	BounceType "Doom"
 	BounceSound "TANKDBRS"
 	+BOUNCEONACTORS
 	+BOUNCEONCEILINGS
