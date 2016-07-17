@@ -213,6 +213,8 @@ ACTOR 9MMCasing
 	-NOGRAVITY
 	+BOUNCEONACTORS
 	+FORCEXYBILLBOARD
+	+MTHRUSPECIES //let's avoid these to be blocked by shark blockers - ozy81
+	+THRUSPECIES //let's avoid these to be blocked by shark blockers - ozy81
 	+WINDTHRUST
 	BounceType Doom
 	BounceSound "bulletcasing/bounce"
@@ -221,6 +223,7 @@ ACTOR 9MMCasing
 	Mass 5
 	Radius 3
 	Height 3
+	Species "Player" //let's avoid these to be blocked by shark blockers - ozy81
 	States
 	{
 	Spawn:
