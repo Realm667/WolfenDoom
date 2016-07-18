@@ -483,6 +483,46 @@ ACTOR LightBulbOn_Red : LightBulb
 	}
 }
 
+ACTOR LightBulb_Grn : LightBulb
+{
+	//$Title Light Bulb, Green (off, breakable)
+	States
+	{
+	Active:
+		MDLA A 0 A_ChangeFlag("DORMANT", false)
+	Spawn:
+		MDLA A -1 NoDelay A_JumpIf(Args[0]==1, "UnBreakable")
+		Stop
+	UnBreakable:
+		"####" "#" 0 A_ChangeFlag("NOBLOCKMAP", true)
+		"####" "#" -1
+		Stop
+	Inactive:
+		MDLA B -1 BRIGHT LIGHT(BOACEIL7) A_ChangeFlag("DORMANT", true)
+		Stop
+	}
+}
+
+ACTOR LightBulbOn_Grn : LightBulb
+{
+	//$Title Light Bulb, Green (on, breakable)
+	States
+	{
+	Active:
+		MDLA B 0 A_ChangeFlag("DORMANT", false)
+	Spawn:
+		MDLA B -1 NoDelay BRIGHT LIGHT(BOACEIL7) A_JumpIf(Args[0]==1, "UnBreakable") 
+		Stop
+	UnBreakable:
+		"####" "#" 0 A_ChangeFlag("NOBLOCKMAP", true)
+		"####" "#" -1 BRIGHT LIGHT(BOACEIL7)
+		Stop
+	Inactive:
+		MDLA A -1 A_ChangeFlag("DORMANT", true)
+		Stop
+	}
+}
+
 //2d Lights
 ACTOR TableLightM : SwitchableDecoration
 {
