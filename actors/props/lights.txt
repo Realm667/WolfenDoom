@@ -433,6 +433,10 @@ ACTOR LightBulbOn : LightBulb
 	Spawn:
 		MDLA B -1 NoDelay BRIGHT LIGHT(BOACEIL5) A_JumpIf(Args[0]==1, "UnBreakable")
 		Stop
+	UnBreakable:
+		"####" "#" 0 A_ChangeFlag("NOBLOCKMAP", true)
+		"####" "#" -1 BRIGHT LIGHT(BOACEIL5)
+		Stop
 	Inactive:
 		MDLA A -1 A_ChangeFlag("DORMANT", true)
 		Stop
@@ -447,10 +451,14 @@ ACTOR LightBulb_Red : LightBulb
 	Active:
 		MDLA A 0 A_ChangeFlag("DORMANT", false)
 	Spawn:
-		MDLA B -1 NoDelay A_JumpIf(Args[0]==1, "UnBreakable")
+		MDLA A -1 NoDelay A_JumpIf(Args[0]==1, "UnBreakable")
+		Stop
+	UnBreakable:
+		"####" "#" 0 A_ChangeFlag("NOBLOCKMAP", true)
+		"####" "#" -1
 		Stop
 	Inactive:
-		MDLA A -1 BRIGHT LIGHT(BOACEIL6) A_ChangeFlag("DORMANT", true)
+		MDLA B -1 BRIGHT LIGHT(BOACEIL6) A_ChangeFlag("DORMANT", true)
 		Stop
 	}
 }
@@ -464,6 +472,10 @@ ACTOR LightBulbOn_Red : LightBulb
 		MDLA B 0 A_ChangeFlag("DORMANT", false)
 	Spawn:
 		MDLA B -1 NoDelay BRIGHT LIGHT(BOACEIL6) A_JumpIf(Args[0]==1, "UnBreakable") 
+		Stop
+	UnBreakable:
+		"####" "#" 0 A_ChangeFlag("NOBLOCKMAP", true)
+		"####" "#" -1 BRIGHT LIGHT(BOACEIL6)
 		Stop
 	Inactive:
 		MDLA A -1 A_ChangeFlag("DORMANT", true)
