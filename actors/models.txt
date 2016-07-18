@@ -1578,7 +1578,7 @@ ACTOR 3dPrometheus_R: 3dPrometheus_L
 //TF3DM / 3dRegenerator Models
 ACTOR Female_StatueA : Caesar
 {
-	//$Title Female Statue (without leaves)
+	//$Title Female Statue Left (without leaves)
 	DistanceCheck "scenelod"
 	Radius 24
 	Height 72
@@ -1586,7 +1586,17 @@ ACTOR Female_StatueA : Caesar
 
 ACTOR Female_StatueB : Female_StatueA
 {
-	//$Title Female Statue (with leaves)
+	//$Title Female Statue Left (with leaves)
+}
+
+ACTOR Female_StatueC : Female_StatueA
+{
+	//$Title Female Statue Right (without leaves)
+}
+
+ACTOR Female_StatueD : Female_StatueA
+{
+	//$Title Female Statue Right (with leaves)
 }
 
 ACTOR MercedesLimo : 3dObstacle
