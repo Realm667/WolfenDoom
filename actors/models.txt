@@ -172,6 +172,7 @@ ACTOR TestCrate2 : TestCrate
 	{
 	Spawn:
 		MDLA A -1 NoDelay {
+		A_SpawnItemEx("DummyWarper", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER);
 		A_SpawnItemEx("CrateGlass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER);
 		A_SpawnItemEx("MutantSubjectWarped", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER);}
 		Stop
@@ -187,6 +188,29 @@ ACTOR CrateGlass : 3dGlass
 	-NOGRAVITY
 	-NOTELEPORT
 	Alpha 0.5
+	States
+	{
+	Spawn:
+		MDLA A 1 A_Warp(AAPTR_MASTER,0,0,0,0)
+		Loop
+	}
+}
+
+ACTOR DummyWarper //This is here to avoid "blink effects" - ozy81
+{
+	Radius 8
+	Height 64
+	Scale 1.1
+	-NOGRAVITY
+	-SOLID
+	+NOBLOCKMAP
+	+LOOKALLAROUND
+	States
+	{
+	Spawn:
+		TNT1 A 1 A_Warp(AAPTR_MASTER,0,0,0,0,WARPF_MOVEPTR)
+		Loop
+	}
 }
 
 ACTOR CeilingFan : 3dObstacle
