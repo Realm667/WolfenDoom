@@ -18,7 +18,7 @@ script "GunLoop" (void)
 	SetActivator(0, AAPTR_MASTER); // sets activator to player
 	
 	int playerangle = GetActorAngle(0);
-	int playerpitch = GetActorPitch(0);
+	int playerpitch = -GetActorPitch(0);
 
 	if (!angle_within(rc, playerangle, lc)) // Can't use the turret unless behind it
 	{
@@ -34,7 +34,7 @@ script "GunLoop" (void)
 	while (true)
 	{
 		playerangle = GetActorAngle(0);
-		playerpitch = GetactorPitch(0);
+		playerpitch = -GetactorPitch(0);
 		int playerinput = GetPlayerInput(-1, INPUT_BUTTONS);
 		int playeroldinput = GetPlayerInput(-1, INPUT_OLDBUTTONS);
 
