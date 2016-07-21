@@ -47,6 +47,7 @@ ACTOR BoAPlayer : PlayerPawn
 		"####" ABCD 7
 		Loop
 	Pain:
+		"####" G 0 ACS_NamedExecuteWithResult("PlayerFlinch", 0)
 		"####" G 3 A_Pain
 		Goto Spawn
 	Missile:
