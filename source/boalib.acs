@@ -538,3 +538,94 @@ Function int GetSpeed(int tid)
 
 	return speed;
 }
+
+//OzyStuff... but not exactly made only by Ozy :P
+
+//fadescript for map setup
+script "Maplaunch" ENTER
+{
+	FadeRange(0,0,0,1.0,0,0,0,0.0,1.5);
+}
+
+//underwater sounds
+script "Underwater" ENTER
+{
+	if(GetActorProperty(0,APROP_WATERLEVEL)>=3)
+	{
+		delay(3);
+		localambientsound("underwtr",random(90,127));
+	}
+	delay(35*8);	//only 1 sound is 8sec long, 2 4sec & 1 2.5sec
+	restart;
+}
+
+//death script
+script "OhNoes!" DEATH
+{
+	SetHudSize(320, 240, true);
+	LocalSetMusic("THEEND");
+	
+	SetFont("fade");
+	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1000, CR_UNTRANSLATED, 160.0, 120.0, 999999.0, 6.0, 1.0);
+	
+	// [ZK] If you resurrect, the death screen should disappear immediately
+	for (int i = 0; i < 35*6; i++)
+	{
+		Delay(1);
+		
+		if (GetActorProperty(0, APROP_HEALTH) > 0)
+		{	
+			SetFont("fade");
+			HudMessage(s:""; HUDMSG_PLAIN, -1000, CR_UNTRANSLATED, 0.0, 0.0, 0.0, 0.0);
+			LocalSetMusic("*");
+			terminate;
+		}
+	}
+	
+	SetFont("youdied");
+	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1001, CR_UNTRANSLATED, 160.0, 120.0, 999999.0, 3.0, 1.0);
+	
+	// [ZK] Delay 1 tic instead of 35
+	while(GetActorProperty(0,APROP_HEALTH) <= 0) Delay(1);
+	
+	//fadeback if resurrected
+	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1001, CR_UNTRANSLATED, 160.0, 120.0, 0.0, 0.0, 0.25);	
+	SetFont("fade");
+	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1000, CR_UNTRANSLATED, 160.0, 120.0, 0.0, 0.0, 1.0);
+	
+	// [ZK] restore music
+	LocalSetMusic("*");
+}
+
+//lowhealth scripts
+script "30Health" ENTER
+{
+	if(HealthScriptDeactivate)
+		terminate;
+	if(GetActorProperty(0,APROP_HEALTH)<=30&&GetActorProperty(0,APROP_HEALTH)>20)
+	{
+		localambientsound("hbeat",130);
+		delay(21);
+		localambientsound("hbeat",130);
+		delay(34);
+	}
+	else if(GetActorProperty(0,APROP_HEALTH)<=20&&GetActorProperty(0,APROP_HEALTH)>10)
+	{
+		localambientsound("hbeat",125);
+		delay(18);
+		localambientsound("hbeat",125);
+		delay(24);
+	}
+	else if(GetActorProperty(0,APROP_HEALTH)<=10&&GetActorProperty(0,APROP_HEALTH)>0)
+	{
+		SetHudSize(640,480,0);
+		Setfont("M_INJ");
+		Hudmessage(s:"A"; HUDMSG_FADEINOUT,0,CR_WHITE,320.0,240.0,0.0,0.5,0.5);
+		localambientsound("hbeat",120);
+		delay(10);
+		localambientsound("hbeat",120);
+		delay(14);
+	}
+	delay(1);
+	restart;
+}

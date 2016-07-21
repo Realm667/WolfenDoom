@@ -1737,6 +1737,13 @@ ACTOR COD_WBarrel1 : FuelDrumAstro
 	DistanceCheck "scenelod"
 	Radius 10
 	Height 32
+	
+	States
+	{
+	Moving:
+		MDLA A 35 A_PlaySound("papercrate_moving", CHAN_AUTO, 0.65) //probably it will need to be replaced - ozy81
+		Goto Spawn
+	}	
 }
 
 ACTOR COD_Gascan : 3dObstacle
