@@ -180,6 +180,7 @@ ACTOR SSUniform
 	Radius 8
 	Height 20
 	Scale 1.1
+	ProjectilePassHeight 4
 	+SOLID
 	States
 	{
@@ -221,6 +222,19 @@ ACTOR FoxUniform : SSUniform
 	{
 	Spawn:
 		SSUN C -1
+		Stop
+	}
+}
+
+ACTOR CoatHanger : SSUniform
+{
+	//$Title Coat Hanger
+	Scale 0.8
+	Height 40
+	States
+	{
+	Spawn:
+		CTHN A -1
 		Stop
 	}
 }
