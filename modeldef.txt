@@ -1049,15 +1049,23 @@ Model Tent
 Model TMPlane
 {
 	Path "models"
-	Model 0 "stuka_a.md3"
-	Skin 0 "stuka.jpg"
-	Model 1 "stuka_b.md3"
-	Skin 1 "stuka_glass.jpg"
+	Model 0 "stukas.md3"
 	Scale 1.0 1.0 1.0
 	USEACTORPITCH
 	USEACTORROLL
 
 	FrameIndex MDLA A 0 0
+}
+
+Model TMPlane
+{
+	Path "models"
+	Model 0 "stuka1_d.md3"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA B 0 0
 }
 
 Model BomberVTOL3
@@ -3590,8 +3598,7 @@ Model CODBike
 Model CODStuka
 {
 	Path "models"
-	Model 0 "stuka_a.md3"
-	Skin 0 "stuka.jpg"
+	Model 0 "stukas.md3"
 	Scale 1.0 1.0 1.0
 	USEACTORPITCH
 	USEACTORROLL
@@ -3599,12 +3606,22 @@ Model CODStuka
 	FrameIndex MDLA A 0 0
 }
 
-Model CODStuka_Glass
+Model CODStuka
 {
 	Path "models"
-	Model 0 "stuka_b.md3"
-	Skin 0 "stuka_glass.jpg"
+	Model 0 "stuka1_d.md3"
 	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA B 0 0
+}
+
+Model CODStuka_Flight
+{
+	Path "models"
+	Model 0 "stukas.md3"
+	Scale 0.02 0.02 0.02
 	USEACTORPITCH
 	USEACTORROLL
 
@@ -3614,11 +3631,18 @@ Model CODStuka_Glass
 Model CODStuka_Flight
 {
 	Path "models"
-	Model 0 "stuka_a.md3"
-	Skin 0 "stuka.jpg"
+	Model 0 "stuka1_d.md3"
+	Scale 0.02 0.02 0.02
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA B 0 0
+}
+
+Model CODStuka_Flight_Fog
+{
 	Path "models"
-	Model 1 "stuka_b.md3"
-	Skin 1 "stuka_glass.jpg"
+	Model 0 "stukaf.md3"
 	Scale 0.02 0.02 0.02
 	USEACTORPITCH
 	USEACTORROLL
@@ -3629,16 +3653,12 @@ Model CODStuka_Flight
 Model CODStuka_Flight_Fog
 {
 	Path "models"
-	Model 0 "stuka_a.md3"
-	Skin 0 "stuka_f.jpg"
-	Path "models"
-	Model 1 "stuka_b.md3"
-	Skin 1 "stuka_glass_f.jpg"
+	Model 0 "stukaf_d.md3"
 	Scale 0.02 0.02 0.02
 	USEACTORPITCH
 	USEACTORROLL
 
-	FrameIndex MDLA A 0 0
+	FrameIndex MDLA B 0 0
 }
 
 Model FlakVierling3D
