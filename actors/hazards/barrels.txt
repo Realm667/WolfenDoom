@@ -51,6 +51,35 @@ ACTOR TNTBarrel1 : ExplosiveBarrel
 	}
 }
 
+ACTOR GoodieBarrel1 : ExplosiveBarrel
+{
+	//$Category Hazards (Wolf3D)
+	//$Title Goodie Barrel (disguise)
+	//$Color 3
+	Height 34
+	DeathSound "WOODBRK"
+	DropItem "Dogfood" 64
+	Dropitem "Medikit_Small" 16
+	DropItem "Meal" 32 1
+	DropItem "9mmAmmo" 64
+	DropItem "12GaugeAmmo" 64
+	DropItem "MauserAmmo" 64
+	DropItem "FlameAmmo" 32
+	DropItem "NebAmmo" 16
+	States
+	{
+	Spawn:
+		BARL A -1
+		Stop
+	Death:
+		BARL A 2 A_SpawnItemEx("BarrelFrags")
+		TNT1 A 0 A_SpawnItemEx("PowerPlantSmokePuff", random(-3,3), random(-3,3), 0, 0, 0, 3)
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_NoBlocking
+		Stop
+	}
+}
+
 ACTOR TNTBarrel2 : TNTBarrel1
 {
 	//$Title TNT Box
