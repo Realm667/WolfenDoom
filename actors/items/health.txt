@@ -132,3 +132,27 @@ ACTOR FieldKit : HealthPickup
 		Loop
 	}
 }
+
+ACTOR BandagesPowerup : PowerRegeneration
+{
+	Powerup.Duration -10
+	Powerup.Strength 1
+}
+
+ACTOR Bandages : PowerupGiver
+{
+	//$Category Health (Wolf3D)
+	//$Title Bandages (+10)
+	//$Color 6
+	+COUNTITEM
+	Inventory.PickupMessage "$BAID"
+	Inventory.Icon "BAIDB0"
+	Inventory.MaxAmount 5
+	Powerup.Type "BandagesPowerup"
+	States
+	{
+	Spawn:
+		BAID A -1
+		Stop
+	}
+}
