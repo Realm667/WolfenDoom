@@ -118,14 +118,19 @@ script "RecoverView" ENTER
 		hit_timer[i] = Timer();
 		SetActorRoll(0, 1.0);
 
-		while (IsAlive(0))
+		// "while" loop to allows script to work with resurrect ccmd.
+		while (true)
 		{
-			cumulative_flinch_angle[i] = RecoverAxis(cumulative_flinch_angle[i], 0);
-			cumulative_flinch_pitch[i] = RecoverAxis(cumulative_flinch_pitch[i], 1);
-			cumulative_flinch_roll[i]  = RecoverAxis(cumulative_flinch_roll[i], 2);
+			if (IsAlive(0))
+			{
+				// Only correct player's view if they're alive.
+				cumulative_flinch_angle[i] = RecoverAxis(cumulative_flinch_angle[i], 0);
+				cumulative_flinch_pitch[i] = RecoverAxis(cumulative_flinch_pitch[i], 1);
+				cumulative_flinch_roll[i]  = RecoverAxis(cumulative_flinch_roll[i], 2);
 
-			// Store player's current health so we can calculate damage in flinch script.
-			previous_health[i] = GetActorProperty(0, APROP_Health);
+				// Store player's current health so we can calculate damage in flinch script.
+				previous_health[i] = GetActorProperty(0, APROP_Health);
+			}
 
 			Delay(1);
 		}
