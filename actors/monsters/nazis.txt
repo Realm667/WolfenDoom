@@ -1246,12 +1246,12 @@ ACTOR PoisonCloudMutant
 {
 	Radius 20
 	Height 30
-	Mass 0x7fffffff
 	Reactiontime 5
 	+BLOCKEDBYSOLIDACTORS
 	+BLOODLESSIMPACT
 	+CANBLAST
 	+DONTSPLASH
+	+DONTTHRUST
 	+DROPOFF
 	+FOILINVUL
 	+NOBLOCKMAP
@@ -2028,9 +2028,9 @@ ACTOR MGTurret : MiniShip
 	Health 100
 	Radius 2
 	Height 32
-	Mass 0x7fffffff
 	-FLOAT
 	-NOGRAVITY
+	+DONTTHRUST
 	+MISSILEEVENMORE
 	+NOPAIN
 	States

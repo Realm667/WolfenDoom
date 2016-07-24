@@ -21,11 +21,11 @@ ACTOR 3dObject : ModelBase
 
 ACTOR 3dObstacle : 3dObject
 {
-	Mass 0x7fffffff
 	Health -1
 	-FLOORCLIP
 	-NOBLOCKMAP
 	+CANPASS
+	+DONTTHRUST
 	+NOBLOOD
 	+NOBLOODDECALS
 	+NODAMAGE
@@ -478,9 +478,9 @@ ACTOR Nebelwerfer3D
 	Radius 32
 	Height 56
 	Health 1000
-	Mass 0x7fffffff
 	+CANPASS
 	+DONTSPLASH
+	+DONTTHRUST
 	+FLOORCLIP
 	+NOBLOODDECALS
 	+SHOOTABLE
@@ -508,9 +508,9 @@ ACTOR Nebelwerfer3D_Destroyed
 	Radius 32
 	Height 56
 	Health -1
-	Mass 0x7fffffff
 	+CANPASS
 	+DONTSPLASH
+	+DONTTHRUST
 	+FLOORCLIP
 	+NOBLOODDECALS
 	+SHOOTABLE
@@ -594,12 +594,12 @@ ACTOR FlakVierling3D : SwitchableDecoration
 	
 	Radius 80
 	Height 88
-	Mass 0x7fffffff
 	Health -1
 	-FLOORCLIP
 	-NOBLOCKMAP
 	+CANPASS
 	+DONTSPLASH
+	+DONTTHRUST
 	+NOBLOOD
 	+NOBLOODDECALS
 	+NODAMAGE
@@ -845,12 +845,12 @@ ACTOR RTCWParlor : SwitchableDecoration
 	DistanceCheck "scenelod"
 	Radius 8
 	Height 8
-	Mass 0x7fffffff
 	Health -1
 	-FLOORCLIP
 	-NOBLOCKMAP
 	+CANPASS
 	+DONTSPLASH
+	+DONTTHRUST
 	+NOBLOOD
 	+NOBLOODDECALS
 	+NODAMAGE
@@ -891,12 +891,12 @@ ACTOR RTCWGramo : SwitchableDecoration
 	DistanceCheck "scenelod"
 	Radius 16
 	Height 32
-	Mass 0x7fffffff
 	Health -1
 	-FLOORCLIP
 	-NOBLOCKMAP
 	+CANPASS
 	+DONTSPLASH
+	+DONTTHRUST
 	+NOBLOOD
 	+NOBLOODDECALS
 	+NODAMAGE
@@ -1032,12 +1032,12 @@ ACTOR ModelGMCTruck : SwitchableDecoration //ozy81
 	//$Category Models (Wolf3D)/Vehicles
 	//$Title Truck (US, MoH)
 	//$Color 3
-	Mass 0x7fffffff
 	Health -1
 	-FLOORCLIP
 	-NOBLOCKMAP
 	+CANPASS
 	+DONTSPLASH
+	+DONTTHRUST
 	+NOBLOOD
 	+NOBLOODDECALS
 	+NODAMAGE
@@ -1144,11 +1144,11 @@ ACTOR SimpleLight1 : SwitchableDecoration
 	//$Color 11
 	Radius 8
 	Height 12
-	Mass 0x7fffffff
 	Health -1
 	-FLOORCLIP
 	-NOBLOCKMAP
 	+DONTSPLASH
+	+DONTTHRUST
 	+NOBLOOD
 	+NOBLOODDECALS
 	+NODAMAGE
@@ -1829,12 +1829,12 @@ ACTOR COD_RadioSimple : SwitchableDecoration
 	DistanceCheck "scenelod"
 	Radius 16
 	Height 16
-	Mass 0x7fffffff
 	Health 25
 	-FLOORCLIP
 	-NOBLOCKMAP
 	+CANPASS
 	+DONTSPLASH
+	+DONTTHRUST
 	+NOBLOOD
 	+NOBLOODDECALS
 	+NOTAUTOAIMED
@@ -2012,9 +2012,9 @@ ACTOR CODStuka : ModelBase
 	
 	//$Arg0 "Type"
 	//$Arg0Tooltip "Pickup the desired shape\nNormal: 0\nDestroyed: 1\nCrashed: 2"
-	
-	Mass 0x7fffffff
-	+CANPASS
+
+	+CANPASS	
+	+DONTTHRUST
 	+NOBLOODDECALS
 	+SHOOTABLE
 	+SOLID
@@ -2113,12 +2113,12 @@ ACTOR CODScheinwerfer : SwitchableDecoration
 	//$Color 3
 	Radius 64
 	Height 80
-	Mass 0x7fffffff
 	Health -1
 	-FLOORCLIP
 	-NOBLOCKMAP
 	+CANPASS
 	+DONTSPLASH
+	+DONTTHRUST
 	+NOBLOOD
 	+NOBLOODDECALS
 	+NODAMAGE
@@ -2147,11 +2147,11 @@ ACTOR CODNeoLights1 : SwitchableDecoration
 	//$Color 11
 	Radius 8
 	Height 24
-	Mass 0x7fffffff
 	Health -1
 	-FLOORCLIP
 	-NOBLOCKMAP
 	+DONTSPLASH
+	+DONTTHRUST
 	+NOBLOOD
 	+NOBLOODDECALS
 	+NODAMAGE
@@ -2212,12 +2212,12 @@ ACTOR CODRailway_Switch : SwitchableDecoration
 	DistanceCheck "scenelod"
 	Radius 16
 	Height 144
-	Mass 0x7fffffff
 	Health -1
 	-FLOORCLIP
 	-NOBLOCKMAP
 	+CANPASS
 	+DONTSPLASH
+	+DONTTHRUST
 	+NOBLOOD
 	+NOBLOODDECALS
 	+NODAMAGE
