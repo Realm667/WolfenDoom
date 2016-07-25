@@ -16,6 +16,13 @@ int cumulative_flinch_pitch[MAX_PLAYERS];	// Total amount player's pitch has fli
 int cumulative_flinch_roll[MAX_PLAYERS];	// Total amount player's roll has flinched.
 int hit_timer[MAX_PLAYERS];					// Time of last flinch.
 
+// Check whether an actor is alive.
+//
+function bool IsAlive(int tid)
+{
+	return GetActorProperty(tid, APROP_Health) > 0;
+}
+
 // Absolute value of a fixed-point number.
 //
 function int FixedAbs(int a)
@@ -111,14 +118,19 @@ script "RecoverView" ENTER
 		hit_timer[i] = Timer();
 		SetActorRoll(0, 1.0);
 
+		// "while" loop to allows script to work with resurrect ccmd.
 		while (true)
 		{
-			cumulative_flinch_angle[i] = RecoverAxis(cumulative_flinch_angle[i], 0);
-			cumulative_flinch_pitch[i] = RecoverAxis(cumulative_flinch_pitch[i], 1);
-			cumulative_flinch_roll[i]  = RecoverAxis(cumulative_flinch_roll[i], 2);
+			if (IsAlive(0))
+			{
+				// Only correct player's view if they're alive.
+				cumulative_flinch_angle[i] = RecoverAxis(cumulative_flinch_angle[i], 0);
+				cumulative_flinch_pitch[i] = RecoverAxis(cumulative_flinch_pitch[i], 1);
+				cumulative_flinch_roll[i]  = RecoverAxis(cumulative_flinch_roll[i], 2);
 
-			// Store player's current health so we can calculate damage in flinch script.
-			previous_health[i] = GetActorProperty(0, APROP_Health);
+				// Store player's current health so we can calculate damage in flinch script.
+				previous_health[i] = GetActorProperty(0, APROP_Health);
+			}
 
 			Delay(1);
 		}
@@ -147,7 +159,7 @@ function int GetFlinch(int min, int max, int base_flinch)
 script "PlayerFlinch" (void)
 {
 	int player_number = PlayerNumber();
-	if (player_number >= 0 && player_number < MAX_PLAYERS)
+	if (player_number >= 0 && player_number < MAX_PLAYERS && IsAlive(0))
 	{
 		int i = player_number;
 
