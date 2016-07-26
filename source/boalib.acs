@@ -2,6 +2,8 @@
 #include "zcommon.acs"
 #import "stealth.acs" //mxd
 
+#define MAX_VOLUME 127
+
 global int 1:disable_mutants; //mxd. When set to true, Mutant and MutantMelee will immediately despawn after spawning.
 global int 2:disable_big_mutants; //mxd. When set to true, BigMutant1 and BigMutant2 will immediately despawn after spawning.
 global int 3:disable_supermutants; //mxd. When set to true, UberMutant and SuperMutant will immediately despawn after spawning.
@@ -600,32 +602,45 @@ script "OhNoes!" DEATH
 //lowhealth scripts
 script "30Health" ENTER
 {
-	if(HealthScriptDeactivate)
-		terminate;
-	if(GetActorProperty(0,APROP_HEALTH)<=30&&GetActorProperty(0,APROP_HEALTH)>20)
+	int width = 640, height = 480;
+	SetHudSize(width, height, 0);
+	SetFont("M_INJ");
+
+	// Half width and height (in fixed-point).
+	int half_width  = (width / 2) << 16;
+	int half_height = (height / 2) << 16;
+
+	while (true)
 	{
-		localambientsound("hbeat",130);
-		delay(21);
-		localambientsound("hbeat",130);
-		delay(34);
+		int health = GetActorProperty(0, APROP_HEALTH);
+		if (!HealthScriptDeactivate && health > 0 && health <= 30)
+		{
+			HudMessage(s:"A"; HUDMSG_FADEINOUT, 0, CR_WHITE, half_width, half_height, 0.0, 0.5, 0.5);
+
+			// Volume and delay of heartbeat (faster and louder with less health).
+			int volume = MAX_VOLUME;
+			int delay1 = 10;
+			int delay2 = 14;
+
+			if (health > 20)
+			{
+				volume = MAX_VOLUME - 50;
+				delay1 = 21;
+				delay2 = 34;
+			}
+			else if (health > 10)
+			{
+				volume = MAX_VOLUME - 25;
+				delay1 = 18;
+				delay2 = 24;
+			}
+
+			LocalAmbientSound("hbeat", volume);
+			Delay(delay1);
+			LocalAmbientSound("hbeat", volume);
+			Delay(delay2);
+		}
+
+		Delay(1);
 	}
-	else if(GetActorProperty(0,APROP_HEALTH)<=20&&GetActorProperty(0,APROP_HEALTH)>10)
-	{
-		localambientsound("hbeat",125);
-		delay(18);
-		localambientsound("hbeat",125);
-		delay(24);
-	}
-	else if(GetActorProperty(0,APROP_HEALTH)<=10&&GetActorProperty(0,APROP_HEALTH)>0)
-	{
-		SetHudSize(640,480,0);
-		Setfont("M_INJ");
-		Hudmessage(s:"A"; HUDMSG_FADEINOUT,0,CR_WHITE,320.0,240.0,0.0,0.5,0.5);
-		localambientsound("hbeat",120);
-		delay(10);
-		localambientsound("hbeat",120);
-		delay(14);
-	}
-	delay(1);
-	restart;
 }
