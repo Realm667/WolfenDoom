@@ -41,6 +41,25 @@ ACTOR ExclamationTouchable : Exclamation
 		EXCL A 35 BRIGHT
 		EXCL B -1 BRIGHT
 		Stop
-	}
-	
+	}	
+}
+
+ACTOR ExclamationInteraction : Exclamation //no need of GZDB descriptions
+{
+	Height 8
+	Scale 1.0
+	-SOLID
+	+NOBLOCKMAP
+	States
+	{
+	Spawn:
+		TNT1 A 10 A_CheckProximity("Active", "BoAPlayer", 72, 1)
+		Loop
+	Active:
+		EXCL A 1 BRIGHT A_CheckProximity("Inactive", "BoAPlayer", 72, 1)
+		Loop
+	Inactive:
+		EXCL A 350
+		Goto Spawn
+	}	
 }
