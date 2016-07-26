@@ -853,7 +853,6 @@ ACTOR RTCWParlor : SwitchableDecoration
 	+DONTTHRUST
 	+NOBLOOD
 	+NOBLOODDECALS
-	+NODAMAGE
 	+NOTAUTOAIMED
 	+SHOOTABLE
 	+SOLID
@@ -864,12 +863,15 @@ ACTOR RTCWParlor : SwitchableDecoration
 	{
 	Active:
 		MDLA A 0 A_PlaySound("radios/loops", CHAN_ITEM)
+		Goto SpawnSet
 	Spawn:
-	  MDLA A -1
+	  MDLA A 0 NoDelay A_SpawnItemEx("InteractionIcon", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+		SpawnSet:
+		MDLA A -1
 		Stop
 	Inactive:
 		MDLA A 0 A_StopSound(CHAN_ITEM)
-		Goto Spawn
+		Goto SpawnSet
 	}
 }
 
@@ -899,7 +901,6 @@ ACTOR RTCWGramo : SwitchableDecoration
 	+DONTTHRUST
 	+NOBLOOD
 	+NOBLOODDECALS
-	+NODAMAGE
 	+NOTAUTOAIMED
 	+SHOOTABLE
 	+SOLID
@@ -916,11 +917,13 @@ ACTOR RTCWGramo : SwitchableDecoration
 		MDLC ABCDEFGHIJKLMNOPQRSTUVWXYZ 1
 		Loop
 	Spawn:
-	  MDLA A -1
+	  MDLA A 0 NoDelay A_SpawnItemEx("InteractionIcon", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+		SpawnSet:
+		MDLA A -1
 		Stop
 	Inactive:
 		MDLA A 0 A_StopSound(CHAN_ITEM)
-		Goto Spawn
+		Goto SpawnSet
 	}
 }
 
@@ -1734,6 +1737,16 @@ ACTOR Bunk_Bed2 : Bunk_Bed1
 }
 
 //CODs Stuff - Ozy81
+ACTOR COD_Refrigerator : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Furniture
+	//$Title Refrigerator
+	//$Color 3
+	DistanceCheck "scenelod"
+	Radius 16
+	Height 80
+}
+
 ACTOR COD_DestroyedTrain : ModelIncaTrain
 {
 	//$Title Destroyed City Train
@@ -1858,12 +1871,15 @@ ACTOR COD_RadioSimple : SwitchableDecoration
 	{
 	Active:
 		MDLA A 0 A_PlaySound("SPEECH1", CHAN_ITEM)
+		Goto SpawnSet
 	Spawn:
-		MDLA A -1 NoDelay A_SpawnItemEx("ExclamationInteraction", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+		MDLA A 0 NoDelay A_SpawnItemEx("InteractionIcon", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+		SpawnSet:
+		MDLA A -1
 		Stop
 	Inactive:
 		MDLA A 0 A_StopSound(CHAN_ITEM)
-		Goto Spawn
+		Goto SpawnSet
 	Death:
 		MDLA B 0 A_StopSound(CHAN_ITEM)
 		"####" B 0 A_PlaySound("METALBRK", frandom (0.5,0.8))

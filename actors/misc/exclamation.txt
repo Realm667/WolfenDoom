@@ -44,22 +44,25 @@ ACTOR ExclamationTouchable : Exclamation
 	}	
 }
 
-ACTOR ExclamationInteraction : Exclamation //no need of GZDB descriptions
+ACTOR InteractionIcon
 {
 	Height 8
+	Radius 64
 	Scale 1.0
+	RenderStyle "Add"
 	-SOLID
+	+CLIENTSIDEONLY
+	+FLOATBOB
 	+NOBLOCKMAP
+	+NOGRAVITY
 	States
 	{
 	Spawn:
-		TNT1 A 10 A_CheckProximity("Active", "BoAPlayer", 72, 1)
+		TNT1 A 0 NoDelay A_CheckRange(128.0, "FadeAway", true)
+		ICNI A 1 BRIGHT
 		Loop
-	Active:
-		EXCL A 1 BRIGHT A_CheckProximity("Inactive", "BoAPlayer", 72, 1)
-		Loop
-	Inactive:
-		EXCL A 350
+	FadeAway:
+		"####" A 10
 		Goto Spawn
 	}	
 }
