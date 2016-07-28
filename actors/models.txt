@@ -1760,7 +1760,7 @@ ACTOR 3dPiano : SwitchableDecoration
 		MDLA A 0 A_PlaySound("CLAIREDL", CHAN_ITEM)
 		Goto SpawnSet
 	Spawn:
-		MDLA A 0 NoDelay A_SpawnItemEx("InteractionIcon", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+		MDLA A 0 NoDelay A_SpawnItemEx("InteractionIcon", 0, 0, 64, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
 		SpawnSet:
 		MDLA A -1
 		Stop
