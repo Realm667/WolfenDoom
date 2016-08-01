@@ -39,12 +39,6 @@ script "boaobjectivesset"(int mode,int objnumber,int objtext)
 script "boaobjectivesdisplay" ENTER
 {
 	sethudsize(800,600,1);
-	If(
-		(GetLevelInfo(LEVELINFO_LEVELNUM)==98)||
-		(GetLevelInfo(LEVELINFO_LEVELNUM)==99)
-	  )
-	  Terminate;
-	  
 	while(!objectives_on[PlayerNumber()])
 		delay(1);
 		setfont("SMALLFONT");
