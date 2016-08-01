@@ -25,6 +25,12 @@ str objectives[6][2]=
 
 script "boaobjectives" (void)
 {
+	If(
+		(GetLevelInfo(LEVELINFO_LEVELNUM)==98)||
+		(GetLevelInfo(LEVELINFO_LEVELNUM)==99)
+	)
+	Terminate;
+	
 	if(objectives_on[PlayerNumber()])
 		objectives_on[PlayerNumber()]=0;
 	else
