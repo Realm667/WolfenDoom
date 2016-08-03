@@ -2,7 +2,9 @@
 #include "zcommon.acs"
 #import "stealth.acs" //mxd
 
+#define SUPPLY_CHEST_PROXY_SCRIPT 4000
 #define MAX_VOLUME 127
+#define MAX_OBJECTIVES 6
 
 global int 1:disable_mutants; //mxd. When set to true, Mutant and MutantMelee will immediately despawn after spawning.
 global int 2:disable_big_mutants; //mxd. When set to true, BigMutant1 and BigMutant2 will immediately despawn after spawning.
@@ -13,7 +15,7 @@ global int 6:mission_number;		//The variable for the mission number
 
 int objectives_on[8];			//Objective display toggle
 
-str objectives[6][2]=
+str objectives[MAX_OBJECTIVES][2]=
 {
 	{"",""},
 	{"",""},
@@ -387,34 +389,67 @@ script "ExGetPlayerZ" (void)
 	SetResultValue(GetActorZ(playerID) >> 16);
 }
 
-//Supply Chest Script
-Script "SupplyChest"(int supplychestid,int prize)
+// A proxy for the SupplyChest script that can be called from a thing's special.
+// Called by a supply chest when a player tries to open it. The chest is the
+// activator and the chest's target is the player.
+script SUPPLY_CHEST_PROXY_SCRIPT (int prize, int script_number, int objective)
 {
-	if(CheckInventory("ChestKey"))
+	ACS_NamedExecuteAlways("SupplyChest", 0, prize, script_number, objective);
+}
+
+//Supply Chest Script
+Script "SupplyChest"(int prize, int script_number, int objective_number)
+{
+	int supplychestid = ActivatorTID();
+
+	// Make the player the activator.
+	if(SetActivatorToTarget(0) && CheckInventory("ChestKey"))
 	{
-		Thing_Activate(supplychestid);
-		Delay(1);
-		ActivatorSound("misc/p_pkup",127);
 		TakeInventory("ChestKey",1);
-		if(prize==1)
-			SpawnForced("SupplyChest100Coins",GetActorX(supplychestid),GetActorY(supplychestid),GetActorZ(supplychestid));
-		else if(prize==2)
-			SpawnForced("SupplyChest75Coins",GetActorX(supplychestid),GetActorY(supplychestid),GetActorZ(supplychestid));
-		else if(prize==3)
+		ActivatorSound("misc/p_pkup",127);
+
+		// Predefined rewards.
+		str reward = "EmptySupplyChest";
+		switch (prize)
 		{
-			SpawnForced("SupplyChest25Coins",GetActorX(supplychestid),GetActorY(supplychestid),GetActorZ(supplychestid));
-			//Special event in C1M1
-			spawnspotfacing("RifleGuard",51,0);
+		case 1: reward = "SupplyChest100Coins"; break;
+		case 2: reward = "SupplyChest75Coins"; break;
+		case 3: reward = "SupplyChest25Coins"; break;
+		case 4: reward = "SupplyChestKar98k"; break;
+		case 5: reward = "SupplyChestBackpack"; break;
+		case 6: reward = "SupplyChestGrenades"; break;
+		default:
+			// No reward.
+			break;
 		}
-		else if(prize==4)
-			SpawnForced("SupplyChestKar98k",GetActorX(supplychestid),GetActorY(supplychestid),GetActorZ(supplychestid));
-		else if(prize==5)
-			SpawnForced("SupplyChestBackpack",GetActorX(supplychestid),GetActorY(supplychestid),GetActorZ(supplychestid));
-		else if(prize==6)
-			SpawnForced("SupplyChestGrenades",GetActorX(supplychestid),GetActorY(supplychestid),GetActorZ(supplychestid));
+
+		int x = GetActorX(supplychestid);
+		int y = GetActorY(supplychestid);
+		int z = GetActorZ(supplychestid);
+
+		// Remove the old chest (to prevent multiple uses).
+		Thing_Remove(supplychestid);
+
+		// Spawn reward with same TID as chest.
+		SpawnForced(reward, x, y, z, supplychestid);
+
+		// Call a custom script if specified.
+		if (script_number)
+		{
+			ACS_ExecuteAlways(script_number, 0, supplychestid);
+		}
+
+		// Update objectives if specified.
+		if (objective_number >= 0 && objective_number < MAX_OBJECTIVES)
+		{
+			ACS_NamedExecuteAlways("boaobjectivesset",0,0,objective_number,"MO_ICON_ACC");
+			ACS_NamedExecuteAlways("boaobjectiveaccomplished",0,0,0,0);
+		}
 	}
 	else
+	{
 		ActivatorSound("treasure/locked",127);
+	}
 }
 
 //Clear Inventory - now added Astrostein stuff (Ozy81)
