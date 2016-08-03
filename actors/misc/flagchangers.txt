@@ -1,0 +1,16 @@
+// These pickups provide a way for ACS to change actors' flags.
+
+// Make an item/weapon undroppable. Given to INTERMAP's training weapons.
+actor MakeUndroppable : CustomInventory
+{
+	states
+	{
+	Spawn:
+		TNT1 A 0
+		stop
+
+	Pickup:
+		TNT1 A 0 A_ChangeFlag("INVENTORY.UNDROPPABLE", TRUE)
+		stop
+	}
+}
