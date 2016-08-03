@@ -159,25 +159,33 @@ ACTOR ChestKey : Inventory
 	}
 }
 
-ACTOR SupplyChest : SwitchableDecoration
+// Numbered script that calls named "SupplyChest" script.
+const int SUPPLY_CHEST_PROXY_SCRIPT = 4000;
+
+ACTOR SupplyChest
 {
 	//$Category Pickups (Wolf3D)
 	//$Title Treasure Chest
 	//$Color 17
+	//$Arg0 "Prize"
+	//$Arg0Tooltip "Predefined chest prize:\n  1 = 100 Coins\n  2 = 75 Coins\n  3 = 25 Coins\n  4 = Kar98k\n  5 = Backpack\n  6 = Grenades"
+	//$Arg1 "Script"
+	//$Arg1Tooltip "Optional script number to run when chest is unlocked. 0 means no script."
+	//$Arg2 "Objective"
+	//$Arg2Tooltip "Optional index of objective to clear when chest is unlocked. A value less than 0 means no objective."
+	//$Arg2Default -1
 	Height 34
 	Radius 21
+	// Make the chest the activator when its special starts.
+	Activation (THINGSPEC_ThingActs | THINGSPEC_ThingTargets | THINGSPEC_NoDeathSpecial)
 	+SOLID
 	+USESPECIAL
 	States
 	{
 	Spawn:
+		// Automatically set our special to call the SupplyChest script.
+		SUBX A 0 NoDelay A_SetSpecial(84, SUPPLY_CHEST_PROXY_SCRIPT, args[0], args[1], args[2])
 		SUBX A -1
-		Stop
-	Active:
-		SUBX B 21
-		Stop
-	Inactive:
-		SUBX C -1
 		Stop
 	}
 }
@@ -187,8 +195,29 @@ ACTOR EmptySupplyChest
 	States
 	{
 	Spawn:
+		// If this chest has a master (ie. it was spawned by a reward chest),
+		// it jumps to a state where it remains invisible until the reward
+		// chest that spawned it gets picked up.
+		SUBX C 0 NoDelay {
+			if (!IsPointerEqual(AAPTR_MASTER, AAPTR_NULL))
+			{
+				return state("WaitForMaster");
+			}
+			return state("");
+		}
 		SUBX C -1
 		Stop
+	WaitForMaster:
+		// Stay invisible until the chest that spawned us is picked up.
+		TNT1 A 1
+		TNT1 A 0 {
+			if (IsPointerEqual(AAPTR_MASTER, AAPTR_NULL))
+			{
+				return state("Spawn");
+			}
+			return state("");
+		}
+		loop
 	}
 }
 
@@ -197,12 +226,25 @@ ACTOR SupplyChest100Coins : CustomInventory
 	+INVENTORY.ALWAYSPICKUP
 	Height 34
 	Radius 21
-	Inventory.PickupFlash "EmptySupplyChest"
 	Inventory.PickupMessage "$100COINS"
 	Inventory.PickupSound "treasure/pickup"
 	States
 	{
 	Spawn:
+		// Spawn an invisible, empty chest with the same TID as this chest.
+		// This reimplements the behaviour of Inventory.PickupFlash but allows
+		// the spawned actor to have a TID so it can be referenced in scripts.
+		SUBX B 0 NoDelay {
+			A_SpawnItemEx(
+				"EmptySupplyChest", // type
+				0, 0, 0,            // offset
+				0, 0, 0,            // velocity
+				0,                  // angle
+				SXF_SETMASTER | SXF_NOCHECKPOSITION,
+				0,                  // chance (always)
+				tid                 // TID
+			);
+		}
 		SUBX B -1
 		Stop
 	Pickup:
