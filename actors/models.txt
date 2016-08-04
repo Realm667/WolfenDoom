@@ -2682,3 +2682,24 @@ ACTOR LionR_Museum : Caesar_Museum
 	//$Title Lion's Statue (right, without hitbox)
 	DistanceCheck "scenelod"
 }
+
+ACTOR 2dTRoll
+{
+	Radius 8
+	Height 8
+	+FLATSPRITE
+	+DONTFLIP
+	+NOGRAVITY
+	+ROLLCENTER
+	+ROLLSPRITE
+	States
+	{
+	Spawn:
+		DJSK C 1	{
+							A_SetRoll(roll + 5.0, SPF_INTERPOLATE);
+							A_SetAngle(angle+15);
+							A_SetPitch(pitch+0.25);
+							}
+		Loop
+	}
+}
