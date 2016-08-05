@@ -114,8 +114,8 @@ ACTOR Firebrand : NaziWeapon
 		SRDG DE 1
 		SRDF F 1 A_PlaySound("flamesword/swing")
 		"####" GH 1
-		"####" I 1 Thing_Damage(0,2)
-		"####" J 1 A_FireCustomMissile("FirebrandFireball")
+		"####" I 1
+		"####" J 1 { A_FireCustomMissile("FirebrandFireball"); Thing_Damage(0,2); }
 		"####" KLM 1
 		TNT1 A 20 A_WeaponReady
 		SRDF C 1
