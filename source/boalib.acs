@@ -464,7 +464,7 @@ script "CLEAR INVENTORY"(void)
 	TakeInventory("AstroShotgunShell", 9999); //Astros
 	TakeInventory("AstroRocketAmmo", 9999); //Astros
 	TakeInventory("AstroClipAmmo", 9999); //Astros
-	Takeinventory("KnifeSilent", 9999);
+	TakeInventory("KnifeSilent", 9999);
 	TakeInventory("Shovel", 9999);
 	TakeInventory("Firebrand", 9999);
 	TakeInventory("Luger9mm", 9999);
@@ -479,8 +479,8 @@ script "CLEAR INVENTORY"(void)
 	TakeInventory("Nebelwerfer", 9999);
 	TakeInventory("Panzerschreck", 9999);
 	TakeInventory("UMG43", 9999);
-	TakeInventory("GrenadePickup", 9999); //mxd
-	TakeInventory("AstroGrenadePickup", 9999); //Astros
+	//TakeInventory("GrenadePickup", 9999); //mxd
+	//TakeInventory("AstroGrenadePickup", 9999); //Astros
 	TakeInventory("AstroShotgun", 9999); //Astros
 	TakeInventory("AstroRocketlauncher", 9999); //Astros
 	TakeInventory("AstroChaingun", 9999); //Astros
@@ -509,6 +509,12 @@ script "CLEAR INVENTORY"(void)
 	TakeInventory("AstroRedKey",1); //Astros
 	TakeInventory("Akten",1);
 	TakeInventory("CutsceneEnabled", 1);
+}
+
+script "NOGRENADES" (void) //this is actually needed for Tutorial and maybe Astro / Stealth maps
+{
+	TakeInventory("GrenadePickup", 9999);
+	TakeInventory("AstroGrenadePickup", 9999);
 }
 
 /*
