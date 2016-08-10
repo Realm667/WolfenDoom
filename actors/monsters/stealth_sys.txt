@@ -6,7 +6,9 @@ ACTOR SneakableSSMP40Guard : SSMP40Guard
 	//$Color 4
 	
 	PainChance 256							// Otherwise our Pain states won't always work...
-	DropItem ""
+	DropItem 9mmAmmo 192
+	DropItem MP40 64
+	DropItem GrenadePickup 16
 	var int user_chasegoal;			// Current PatrolTarget TID is stored here when the guard becomes alerted
 	var int user_stealthkilled;	// Hackity hacks...
 	var int user_attacked;
