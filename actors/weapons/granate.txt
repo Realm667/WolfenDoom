@@ -1,6 +1,8 @@
+ACTOR HQ_Checker : Inventory {Inventory.MaxAmount 1}
+
 ACTOR GrenadePickup : CustomInventory
 {
-	//$Category Ammo (Wolf3D)
+	//$Category Weapons (Wolf3D)
 	//$Title Grenade
 	//$Color 14
 	Inventory.PickupMessage "$GRENADE"
@@ -17,11 +19,15 @@ ACTOR GrenadePickup : CustomInventory
 		THRP A -1
 		Stop
 	Use:
+		TNT1 A 0 A_JumpIfInventory("HQ_Checker",1,"Stupid")
 		TNT1 A 0 A_JumpIf(CallACS("AstrosteinCheck"),2)
 		TNT1 A 0 A_FireCustomMissile("HandGrenade",0,0,0,0,FPF_NOAUTOAIM)
 		Stop
 		TNT1 A 0 A_FireCustomMissile("AstroHandGrenade",0,0,0,0,FPF_NOAUTOAIM)
 		Stop
+	Stupid:
+		TNT1 A 0 A_PrintBold("THAT WAS RATHER STUPID OF YOU, DON'T YOU THINK CAPTAIN?",3.5)
+		Fail
 	}
 }
 
