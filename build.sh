@@ -14,7 +14,7 @@ else
 fi
 
 # print -l **/*~*.bat~*.exe~.*~*.bak~source/*(#q.on) | zip -@ $zipname
-noglob 7z a -tzip -mmt=on -mm=$cmthd -mx=9 -ssc -x@'tools/7zExcludeList.txt' -x@'tools/7zExcludeListDir.txt' $zipname *
+noglob 7z a -tzip -mmt=on -mm=$cmthd -mx=9 -ssc -xr@'tools/7zExcludeList.txt' -x@'tools/7zExcludeListDir.txt' $zipname *
 
 mv $zipname ..
 
