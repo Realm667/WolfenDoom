@@ -26,7 +26,7 @@ ACTOR GrenadePickup : CustomInventory
 		TNT1 A 0 A_FireCustomMissile("AstroHandGrenade",0,0,0,0,FPF_NOAUTOAIM)
 		Stop
 	Stupid:
-		TNT1 A 0 A_PrintBold("THAT WAS RATHER STUPID OF YOU, DON'T YOU THINK CAPTAIN?",3.5)
+		TNT1 A 0 A_Print("THAT WAS RATHER STUPID OF YOU, DON'T YOU THINK CAPTAIN?",3.5)
 		Fail
 	}
 }
@@ -62,5 +62,62 @@ ACTOR HandGrenade
 		TNT1 A 1 A_SpawnItemEx("GeneralExplosion_Medium")
 		TNT1 A 1 Radius_Quake(10,10,0,16,0)
 		Stop
+	}
+}
+
+// Given to players when leaving INTERMAP. Restores the player's ability to
+// throw grenades returns non-training grenades to them, and clears their
+// inventory (in case they were in training area when map changed).
+ACTOR PlayerLeavingHQ : CustomInventory
+{
+	Inventory.MaxAmount 0
+	+INVENTORY.ALWAYSPICKUP
+
+	States
+	{
+	Pickup:
+		TNT1 A 0 {
+			// Return seized grenades to player
+			if (CountInv("HQ_Checker") == 0) {
+				A_TakeInventory("GrenadePickup", 0x7FFFFFFF);
+				A_GiveInventory("GrenadePickup", CountInv("NonTrainingGrenade"));
+				A_TakeInventory("NonTrainingGrenade", 0x7FFFFFFF);
+			}
+
+			// Restore player's ability to throw grenades
+			A_TakeInventory("HQ_Checker", 1);
+
+			// Clear the player's inventory (in case they're in training area)
+			ACS_NamedExecuteWithResult("CLEAR INVENTORY", 0);
+		}
+		stop
+	}
+}
+
+// Counts the grenades that were seized from the player when they entered the
+// training area. This provides support for any number of players.
+ACTOR NonTrainingGrenade : Inventory
+{
+	Inventory.MaxAmount 9
+	+INVENTORY.UNDROPPABLE
+	+INVENTORY.UNTOSSABLE
+}
+
+// Take grenades from players inside the training area.
+ACTOR ConfiscateTrainingGrenades : CustomInventory
+{
+	Inventory.MaxAmount 0
+	+INVENTORY.ALWAYSPICKUP
+
+	States
+	{
+	Pickup:
+		TNT1 A 0 {
+			// Take grenades from player if they're in the training area
+			if (CountInv("HQ_Checker") == 0) {
+				A_TakeInventory("GrenadePickup", 0x7FFFFFFF);
+			}
+		}
+		stop
 	}
 }
