@@ -71,8 +71,24 @@ IF "%STDIN%" EQU "" (
     CALL :CompactProject ZIP DEFLATE 5
     GOTO :MainMenu
 ) ELSE (
+    CALL :MainMenu_STDIN_BadInput
     GOTO :MainMenu
 )
+
+
+
+
+REM ================================================================================================
+REM Documentation
+REM     This function displays a message to the user that the STDIN was illegal and not supported
+REM ================================================================================================
+:MainMenu_STDIN_BadInput
+ECHO.
+ECHO ERROR: INVALID OPTION
+ECHO The provided input from the user is not either valid or supported.  Please select from the choices provided.
+ECHO.
+PAUSE
+GOTO :EOF
 
 
 
