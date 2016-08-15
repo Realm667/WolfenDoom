@@ -18,13 +18,19 @@ ACTOR Firebrand : NaziWeapon
 		"####" A 1 A_Raise
 		Loop
 	Deselect:
+		SRDG A 0 A_StopSound(CHAN_WEAPON)
 		SRDG A 0 A_Lower
 		"####" A 1 A_Lower
 		Loop
 	Ready:
-		TNT1 A 0 A_JumpIfInventory("PowerWeaponLevel2",1,2)
+		SRDG A 0 A_StopSound(CHAN_WEAPON)
+		TNT1 A 0 A_JumpIfInventory("PowerWeaponLevel2",1,"SoundLoop")
 		SRDG A 1 A_WeaponReady
 		Loop
+	SoundLoop:
+		SRDF A 0 A_PlaySound("SFX/FireLoop2", CHAN_WEAPON, 0.7, true, ATTN_STATIC)
+		Goto PowerLoop
+	PowerLoop:
 		SRDF A 3 A_WeaponReady
 		SRDI BC 3 A_WeaponReady
 		Loop
