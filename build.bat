@@ -206,7 +206,7 @@ REM     CompressionLevel [int]
 REM             Upholds the compression level of the archive file.  Range is from 0-9
 REM ================================================================================================
 :CompactProject_Execute
-tools\7za a -t%1 -mm=%2 -mx=%3 -x@".\tools\7zExcludeListDir.txt" -xr@".\tools\7zExcludeList.txt" ..\wolf_boa.pk3 *
+"%ProgramDirPath%\tools\7za.exe" a -t%1 -mm=%2 -mx=%3 -x@"%ProgramDirPath%\tools\7zExcludeListDir.txt" -xr@"%ProgramDirPath%\tools\7zExcludeList.txt" "%ProgramDirPath%\..\wolf_boa.pk3" "%ProgramDirPath%\*"
 EXIT /B 0
 
 
