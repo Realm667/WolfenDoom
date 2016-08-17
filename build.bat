@@ -55,22 +55,22 @@ REM     Inspect the user's input and execute their desired action
 REM ================================================================================================
 :MainMenu_STDIN
 IF "%STDIN%" EQU "1" (
-    CALL :CompactProject ZIP DEFLATE 5
+    CALL :CompactProject ZIP DEFLATE 5 NORMAL
     GOTO :MainMenu
 )
 IF "%STDIN%" EQU "2" (
-    CALL :CompactProject ZIP LZMA 9
+    CALL :CompactProject ZIP LZMA 9 NORMAL
     GOTO :MainMenu
 )
 IF "%STDIN%" EQU "3" (
-    CALL :CompactProject ZIP DEFLATE 0
+    CALL :CompactProject ZIP DEFLATE 0 NORMAL
     GOTO :MainMenu
 )
 IF /I "%STDIN%" EQU "X" (
     GOTO :EOF
 )
 IF "%STDIN%" EQU "" (
-    CALL :CompactProject ZIP DEFLATE 5
+    CALL :CompactProject ZIP DEFLATE 5 NORMAL
     GOTO :MainMenu
 ) ELSE (
     CALL :MainMenu_STDIN_BadInput
@@ -125,16 +125,18 @@ REM ============================================================================
 REM Documentation
 REM     This function well walk through the protocol before and during the compiling process.
 REM Parameters
-REM     ArchiveType [String]
+REM     ArchiveType [String] = %1
 REM             Contains the archive file type.  For example: zip [PK3] or 7zip [PK7]
-REM     ArchiveMethod [String]
+REM     ArchiveMethod [String] = %2
 REM             Contains the method type of the archive file.  For example: DEFLATE, DEFLATE64, PPMD, or LZMA.
-REM     CompressionLevel [int]
+REM     CompressionLevel [int] = %3
 REM             Upholds the compression level of the archive file.  Range is from 0-9
+REM     PriorityLevel [String] = %4
+REM             Manages how much processing time the task has within the process-ribbon managed by the OS.
 REM ================================================================================================
 :CompactProject
 CALL :CompactProject_CheckResources || EXIT /B 1
-CALL :CompactProject_Execute %1 %2 %3 || EXIT /B 1
+CALL :CompactProject_Execute %1 %2 %3 %4 || EXIT /B 1
 EXIT /B 0
 
 
@@ -175,7 +177,7 @@ REM Documentation
 REM     Display an error that some of the required dependencies that is used during the compiling process
 REM         could not be located.
 REM Parameters
-REM     ErrorMSG [String]
+REM     ErrorMSG [String] = %1
 REM             Contains the error message that is to be displayed on the screen.
 REM ================================================================================================
 :CompactProject_CheckResources_ErrMSG
@@ -197,16 +199,23 @@ GOTO :EOF
 REM ================================================================================================
 REM Documentation
 REM     Before we compile the project, first make sure that the resources exist - and that there will not be any issues.
+REM     Priorities:
+REM         LOW - BELOWNORMAL - NORMAL - ABOVENORMAL - HIGH - REALTIME [AKA Ludicrous Speed - Spaceballs reference]
 REM Parameters
-REM     ArchiveType [String]
+REM     ArchiveType [String] = %1
 REM             Contains the archive file type.  For example: zip [PK3] or 7zip [PK7]
-REM     ArchiveMethod [String]
+REM     ArchiveMethod [String] = %2
 REM             Contains the method type of the archive file.  For example: DEFLATE, DEFLATE64, PPMD, or LZMA.
-REM     CompressionLevel [int]
+REM     CompressionLevel [int] = %3
 REM             Upholds the compression level of the archive file.  Range is from 0-9
+REM     PriorityLevel [String] = %4
+REM             Manages how much processing time the task has within the process-ribbon managed by the OS.
+REM             Do note that 'Normal' is the default value, and 'RealTime' can cause the system to slow-down in favor
+REM                 of the program that has the 'RealTime' flag.  Meaning, if executed with 'RealTime', the user might
+REM                 notice that their normal activities will be greatly delayed until the program with 'RealTime' is completed.
 REM ================================================================================================
 :CompactProject_Execute
-"%ProgramDirPath%\tools\7za.exe" a -t%1 -mm=%2 -mx=%3 -x@"%ProgramDirPath%\tools\7zExcludeListDir.txt" -xr@"%ProgramDirPath%\tools\7zExcludeList.txt" "%ProgramDirPath%\..\wolf_boa.pk3" "%ProgramDirPath%\*"
+START "WolfenDoom Compile: 7Zip" /B /%4 /WAIT "%ProgramDirPath%\tools\7za.exe" a -t%1 -mm=%2 -mx=%3 -x@"%ProgramDirPath%\tools\7zExcludeListDir.txt" -xr@"%ProgramDirPath%\tools\7zExcludeList.txt" "%ProgramDirPath%\..\wolf_boa.pk3" "%ProgramDirPath%\*"
 EXIT /B 0
 
 
