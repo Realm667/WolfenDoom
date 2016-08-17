@@ -177,7 +177,7 @@ REM Documentation
 REM     Display an error that some of the required dependencies that is used during the compiling process
 REM         could not be located.
 REM Parameters
-REM     ErrorMSG [String]
+REM     ErrorMSG [String] = %1
 REM             Contains the error message that is to be displayed on the screen.
 REM ================================================================================================
 :CompactProject_CheckResources_ErrMSG
