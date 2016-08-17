@@ -1,4 +1,6 @@
 @ECHO OFF
+REM Update the terminal window title
+TITLE WolfenDoom EZBake Oven: Now with Nazi Cupcakes!
 REM Immediately retrieve the program's entire path
 SET "ProgramDirPath=%~dp0"
 REM Start the program
@@ -227,4 +229,6 @@ REM     Terminate the program without destroying the console process if invoked 
 REM ================================================================================================
 :TerminateProcess
 ECHO Closing program. . .
+REM Restore the terminal window's title to something generic
+TITLE Command Prompt
 EXIT /B 0
