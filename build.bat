@@ -139,6 +139,7 @@ REM ============================================================================
 :CompactProject
 CALL :CompactProject_CheckResources || EXIT /B 1
 CALL :CompactProject_Execute %1 %2 %3 %4 || EXIT /B 1
+CALL :CompactProject_WindowsExplorer || EXIT /B 1
 EXIT /B 0
 
 
@@ -218,6 +219,17 @@ REM                 notice that their normal activities will be greatly delayed 
 REM ================================================================================================
 :CompactProject_Execute
 START "WolfenDoom Compile: 7Zip" /B /%4 /WAIT "%ProgramDirPath%\tools\7za.exe" a -t%1 -mm=%2 -mx=%3 -x@"%ProgramDirPath%\tools\7zExcludeListDir.txt" -xr@"%ProgramDirPath%\tools\7zExcludeList.txt" "%ProgramDirPath%\..\wolf_boa.pk3" "%ProgramDirPath%\*"
+EXIT /B 0
+
+
+
+
+REM ================================================================================================
+REM Documentation
+REM     Create a new window and highlight the newly created build.
+REM ================================================================================================
+:CompactProject_WindowsExplorer
+EXPLORER /select,"%ProgramDirPath%..\wolf_boa.pk3"
 EXIT /B 0
 
 
