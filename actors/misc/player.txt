@@ -102,16 +102,21 @@ ACTOR EnemyStep
 	Radius 32
 	Height 55
 	Gravity 10
+	-DONTSPLASH
 	+CORPSE
 	+NOCLIP
 	States
 	{
 	Spawn:
+		TNT1 A 0 NODELAY A_CheckRange(1024,"Unsighted") //feel free to change this value, 768 would be sufficient imho - ozy81
 		TNT1 A 3
 		Stop
 	Crash:
 		"####" A 1
 		Stop
+	Unsighted: //let's avoid flooding sound channels - ozy81
+		TNT1 A 0 A_ChangeFlag("DONTSPLASH", TRUE)
+		Goto Spawn+1
 	}
 }
 
