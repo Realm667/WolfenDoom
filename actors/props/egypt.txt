@@ -100,12 +100,12 @@ ACTOR LavaCauldron
 	+SOLID
 	States
 	{
-	Spawn:
-		LAVC A 0 NODELAY A_PlaySound("LavaCauldron/Loop",5,1,1,ATTN_STATIC)		
-		"####" A 0 A_SpawnItemEx("LavaCauldronFire", 0, 0, Height, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+	Spawn:		
+		LAVC A 0 NODELAY A_SpawnItemEx("LavaCauldronFire", 0, 0, Height, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
 		Goto Frame1
 	Frame1:
-		LAVC A random(4, 6)
+		LAVC A 0 A_CheckRange(512,"Frame4") //tweak for sound channels - ozy81
+		"####" A random(4, 6) A_PlaySound("LavaCauldron/Loop", CHAN_5, 1.0, true, ATTN_STATIC)
 		"####" A 0 A_Jump(64, "Frame3")
 		Goto Frame2
 	Frame2:
@@ -115,6 +115,11 @@ ACTOR LavaCauldron
 	Frame3:
 		LAVC C random(4, 6)
 		"####" A 0 A_Jump(64, "Frame2")
+		Goto Frame1
+	Frame4:
+		LAVC A 0 A_StopSound(CHAN_5)
+		LAVC A random(4, 6)
+		"####" A 0 A_Jump(64, "Frame3")
 		Goto Frame1
 	}
 }
