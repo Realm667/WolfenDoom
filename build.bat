@@ -154,15 +154,15 @@ REM ============================================================================
 SET "ErrorString="
 SET "ErrorBool=False"
 REM Try to check if the resources could be found; if not - prepare an error message.
-IF NOT EXIST "%ProgramDirPath%\tools\7za.exe" (
+IF NOT EXIST "%ProgramDirPath%tools\7za.exe" (
     SET ErrorBool=True
     SET "ErrorString=%ErrorString%Could Not Find 7Zip!&ECHO."
 )
-IF NOT EXIST "%ProgramDirPath%\tools\7zExcludeListDir.txt" (
+IF NOT EXIST "%ProgramDirPath%tools\7zExcludeListDir.txt" (
     SET ErrorBool=True
     SET "ErrorString=%ErrorString%Could Not Find Exclude Directory List!&ECHO."
 )
-IF NOT EXIST "%ProgramDirPath%\tools\7zExcludeList.txt" (
+IF NOT EXIST "%ProgramDirPath%tools\7zExcludeList.txt" (
     SET ErrorBool=True
     SET "ErrorString=%ErrorString%Could Not Find Exclude List!&ECHO."
 )
