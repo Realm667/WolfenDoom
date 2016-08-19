@@ -274,14 +274,14 @@ ACTOR PrisonerEnemyBoss : DirtyDarren
 		Goto See
 	Reload:
 		"####" F 0 A_ChangeFlag("NoPain", 1)
-		"####" F 30 A_PlaySoundEx("mp40/reload", "SoundSlot7", 0)
+		"####" F 30 PlaySound("mp40/reload", CHAN_WEAPON)
 		"####" F 0 A_TakeInventory("MP40GuardCounter", 4)
 		"####" F 0 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 0 A_JumpIfInventory("MP40GuardCounter", 1, 1)
 		Goto Reload+6
 		"####" F 0
 		Goto Reload+2
-		"####" F 10 A_PlaySoundEx("mp40/reload", "SoundSlot7", 0)
+		"####" F 10 PlaySound("mp40/reload", CHAN_WEAPON)
 		"####" F 0 A_ChangeFlag("NoPain", 0)
 		"####" "#" 0 A_Jump(256, "See") //So that inheriting actors go to their own See State
 	Death:

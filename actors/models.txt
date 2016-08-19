@@ -684,12 +684,22 @@ ACTOR RTCWClock : 3dObstacle //fixed by mxd
 		Goto TickLoop
 
 	TickLoop: // Tried adding those sound effects to RTCWClockPendulum, found out that it horribly messes model interpolation...
+		MDLA A 0 A_CheckRange(512,"NoTickLoop") //tweak for sound channels - ozy81
 		MDLA A 44 A_PlaySound("oldclock/tick")
 		MDLA A 0 A_Jump(1, "Chime")
 		Loop
 
 	Chime:
 		MDLA A 278 A_PlaySound("oldclock/chime", CHAN_ITEM)
+		Goto TickLoop
+
+	NoTickLoop:
+		MDLA A 44
+		MDLA A 0 A_Jump(1, "NoChime")
+		Goto TickLoop
+
+	NoChime:
+		MDLA A 278
 		Goto TickLoop
 	}
 }
@@ -2562,6 +2572,7 @@ ACTOR SpotlightGlow
 
 	+ALWAYSPUFF
 	+BLOODLESSIMPACT
+	+DONTSPLASH
 	+INVISIBLE
 	+NOBLOCKMAP
 	+NOGRAVITY
