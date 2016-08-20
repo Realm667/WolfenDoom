@@ -148,10 +148,10 @@ ACTOR ScientistUniform : SwitchableDecoration
 		SCUN A -1 
 		Stop
 	Active:
-		SCUN B 0 A_ChangeFlag("SOLID", false)
+		SCUN B 0 A_ChangeFlag("SOLID", FALSE)
 		"####" B 0 A_SpawnItemEx("ScientistUniformPickup", 0, 0, 16, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
-		"####" B 0 A_ChangeFlag("DORMANT", false)
-		"####" B 0 A_ChangeFlag("USESPECIAL", false)
+		"####" B 0 A_ChangeFlag("DORMANT", FALSE)
+		"####" B 0 A_ChangeFlag("USESPECIAL", FALSE)
 		"####" B -1
 		Stop
 	}

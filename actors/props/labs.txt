@@ -22,8 +22,8 @@ ACTOR FlaskBlueA
 		FLKS A -1
 		Stop
 	Death:
-		TNT1 AAAAAA 0 A_SpawnItemEx ("FlaskShard1", 0, 0, random (3, 5), random (-5, 5), random (-5, 5), random (1, 2), 0, 0, 30)
-		TNT1 AAAAAA 0 A_SpawnItemEx ("FlaskShard2", 0, 0, random (3, 5), random (-5, 5), random (-5, 5), random (1, 2), 0, 0, 30)
+		TNT1 AAAAAA 0 A_SpawnItemEx("FlaskShard1", 0, 0, random (3, 5), random (-5, 5), random (-5, 5), random (1, 2), 0, 0, 30)
+		TNT1 AAAAAA 0 A_SpawnItemEx("FlaskShard2", 0, 0, random (3, 5), random (-5, 5), random (-5, 5), random (1, 2), 0, 0, 30)
 		TNT1 A 0 A_Scream
 		Stop
 	}
@@ -159,8 +159,8 @@ ACTOR GlassBlue : FlaskBlueA
 		BEAK A -1
 		Stop
 	Death:
-		TNT1 AAA 0 A_SpawnItemEx ("Flaskshard1", 0, 0, random (3, 5), random (-5, 5), random (-5, 5), random (1, 2), 0, 0, 30)
-		TNT1 AAA 0 A_SpawnItemEx ("Flaskshard2", 0, 0, random (3, 5), random (-5, 5), random (-5, 5), random (1, 2), 0, 0, 30)
+		TNT1 AAA 0 A_SpawnItemEx("Flaskshard1", 0, 0, random (3, 5), random (-5, 5), random (-5, 5), random (1, 2), 0, 0, 30)
+		TNT1 AAA 0 A_SpawnItemEx("Flaskshard2", 0, 0, random (3, 5), random (-5, 5), random (-5, 5), random (1, 2), 0, 0, 30)
 		TNT1 A 0 A_Scream
 		Stop
 	}
@@ -325,9 +325,9 @@ ACTOR BrainLab1
 		Stop
 	Death:			//needs to be added for being destroyable
 		TNT1 A 0 A_PlaySound("GLASS5")
-		"####" AA 0 A_SpawnItemEx ("Debris_GlassShard_Large", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
-		"####" AAAA 0 A_SpawnItemEx ("Debris_GlassShard_Medium", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
-		"####" AAAAAAAA 0 A_SpawnItemEx ("Debris_GlassShard_Small", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		"####" AA 0 A_SpawnItemEx("Debris_GlassShard_Large", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		"####" AAAA 0 A_SpawnItemEx("Debris_GlassShard_Medium", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
 		"####" A 0 A_UnsetSolid
 		Stop
 	}
@@ -458,8 +458,8 @@ ACTOR BigFlaskSpawner : SwitchableDecoration
 		Stop
 	Death:
 		TNT1 A 0 A_PlaySound("GLASS5")
-		"####" AAA 0 A_SpawnItemEx ("Debris_GlassShard_Medium", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
-		"####" AAAAAAAAA 0 A_SpawnItemEx ("Debris_GlassShard_Small", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		"####" AAA 0 A_SpawnItemEx("Debris_GlassShard_Medium", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
 		"####" A 0 A_UnsetSolid
 		Stop
 	}
@@ -624,7 +624,7 @@ ACTOR PetriDish_Green
 		Stop
 	Death:
 		TNT1 A 0 A_PlaySound("GLASS5")
-		"####" AAAAAAAAA 0 A_SpawnItemEx ("Debris_GlassShard_Small", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
 		"####" A 0 A_UnsetSolid
 		Stop
 	}

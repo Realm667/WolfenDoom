@@ -195,7 +195,7 @@ ACTOR NukeFloor : Nuke
 	{
 	Spawn:
 		TNT1 A 0
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * Random(0,30),0.1 * Random(0,30),0,Random(0,359),128)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * random(0,30),0.1 * random(0,30),0,random(0,359),128)
 		Stop
 	}
 }
@@ -206,7 +206,7 @@ ACTOR NebFloor : NukeFloor
 	{
 	Spawn:
 		TNT1 A 0
-		"####" AAAAAAAA 1 A_SpawnItemEx("NebFire",0,0,0,0.1 * Random(0,12),0.1 * Random(0,12),0.1 * Random(-3,3),Random(0,359),128)
+		"####" AAAAAAAA 1 A_SpawnItemEx("NebFire",0,0,0,0.1 * random(0,12),0.1 * random(0,12),0.1 * random(-3,3),random(0,359),128)
 		Stop
 	}
 }
@@ -217,7 +217,7 @@ ACTOR NukeSmokeFloor : Nuke
 	{
 	Spawn:
 		TNT1 A 0
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke",0,0,0,0.1 * Random(0,30),0.1 * Random(0,30),0,Random(0,359),128)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke",0,0,0,0.1 * random(0,30),0.1 * random(0,30),0,random(0,359),128)
 		Stop
 	}
 }
@@ -228,7 +228,7 @@ ACTOR NebSmokeFloor : NukeSmokeFloor
 	{
 	Spawn:
 		TNT1 A 0
-		"####" AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * Random(0,15),0.1 * Random(0,15),0,Random(0,359),128)
+		"####" AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * random(0,15),0.1 * random(0,15),0,random(0,359),128)
 		Stop
 	}
 }
@@ -239,9 +239,9 @@ ACTOR TankPillar : Nuke
 	{
 	Spawn:
 		TNT1 A 0
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * Random(0,10),0.1 * Random(0,10),Random(0,-3),Random(0,359),128)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * random(0,10),0.1 * random(0,10),random(0,-3),random(0,359),128)
 		"####" A 0 A_SpawnItemEx("TankSmokeRing")
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * Random(0,10),0.1 * Random(0,10),Random(0,-3),Random(0,359),128)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * random(0,10),0.1 * random(0,10),random(0,-3),random(0,359),128)
 		Stop
 	}
 }
@@ -252,7 +252,7 @@ ACTOR TankSmokePillar : Nuke
 	{
 	Spawn:
 		TNT1 A 0
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke",0,0,0,0.1 * Random(0,10),0.1 * Random(0,10),0.1 * Random(0,-40),Random(0,359),128)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke",0,0,0,0.1 * random(0,10),0.1 * random(0,10),0.1 * random(0,-40),random(0,359),128)
 		Stop
 	}
 }
@@ -263,7 +263,7 @@ ACTOR NebSmokePillar : TankSmokePillar
 	{
 	Spawn:
 		TNT1 A 0
-		"####" AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * Random(0,5),0.1 * Random(0,5),0.1 * Random(0,-20),Random(0,359),128)
+		"####" AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * random(0,5),0.1 * random(0,5),0.1 * random(0,-20),random(0,359),128)
 		Stop
 	}
 }
@@ -274,7 +274,7 @@ ACTOR TankMushroom : Nuke
 	{
 	Spawn:
 		TNT1 A 0
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * Random(0,25),0.01 * Random(0,25),0.1 * Random(-10,10),Random(0,359),128)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * random(0,25),0.01 * random(0,25),0.1 * random(-10,10),random(0,359),128)
 		Stop
 	}
 }
@@ -285,7 +285,7 @@ ACTOR TankSmokeMushroom : Nuke
 	{
 	Spawn:
 		TNT1 A 0
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke",0,0,0,0.1 * Random(0,25),0.1 * Random(0,25),0.1 * Random(-10,10),Random(0,359),128)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke",0,0,0,0.1 * random(0,25),0.1 * random(0,25),0.1 * random(-10,10),random(0,359),128)
 		Stop
 	}
 }
@@ -296,7 +296,7 @@ ACTOR NebSmokeMushroom : TankSmokeMushroom
 	{
 	Spawn:
 		TNT1 A 0
-		"####" AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * Random(0,15),0.1 * Random(0,15),0.1 * Random(-5,5),Random(0,359),128)
+		"####" AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * random(0,15),0.1 * random(0,15),0.1 * random(-5,5),random(0,359),128)
 		Stop
 	}
 }
@@ -387,7 +387,7 @@ actor SSTank1
 		"####" A 1
 		"####" A 0 A_JumpIfTargetInLOS(1) // only move if we have a target
 		Loop
-		"####" A 0 A_PlaySound("TKMOVE", CHAN_7, 1, true)
+		"####" A 0 A_PlaySound("TKMOVE", CHAN_7, 1.0, TRUE)
 		"####" A 0 
 		"####" A 0 A_FaceTarget(1.0)
 		"####" A 0 A_ChangeVelocity(Cos(angle) * speed, Sin(angle) * speed, velz, CVF_REPLACE)

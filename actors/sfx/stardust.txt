@@ -39,7 +39,7 @@ ACTOR StarParticle_Spawner : SwitchableDecoration
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("DustSwitch")==0,"EndSpawn")
 	Active:
 		TNT1 A 1
-		TNT1 A 5 A_SpawnItemEx ("StarParticle", random(0,128), 0, random(0,128), 0, random(2,8), 0, 0, SXF_CLIENTSIDE, 64)
+		TNT1 A 5 A_SpawnItemEx("StarParticle", random(0,128), 0, random(0,128), 0, random(2,8), 0, 0, SXF_CLIENTSIDE, 64)
 		Loop
 	Inactive:
 		TNT1 A 10
@@ -59,7 +59,7 @@ ACTOR StarParticle_Spawner2 : StarParticle_Spawner
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("DustSwitch")==0,"EndSpawn")
 	Active:
 		TNT1 A 1
-		TNT1 A 5 A_SpawnItemEx ("StarParticle", random(0,128), random(0,128), 0, 0, random(2,8), -5, 0, SXF_CLIENTSIDE, 64)
+		TNT1 A 5 A_SpawnItemEx("StarParticle", random(0,128), random(0,128), 0, 0, random(2,8), -5, 0, SXF_CLIENTSIDE, 64)
 		Loop
 	}
 }
@@ -73,7 +73,7 @@ ACTOR StarParticle_SpawnerFast : StarParticle_Spawner
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("DustSwitch")==0,"EndSpawn")
 	Active:
 		TNT1 A 1
-		TNT1 A 5 A_SpawnItemEx ("StarParticle", random(0,128), 0, random(0,128), 0, random(20,30), 0, 0, SXF_CLIENTSIDE, 64)
+		TNT1 A 5 A_SpawnItemEx("StarParticle", random(0,128), 0, random(0,128), 0, random(20,30), 0, 0, SXF_CLIENTSIDE, 64)
 		Loop
 	}
 }

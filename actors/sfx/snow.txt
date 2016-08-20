@@ -38,14 +38,14 @@ ACTOR SnowSpawner
 		TNT1 A 0 A_JumpIf(Args[2], "CircleLoop")
 		Goto SquareLoop
 	CircleLoop:
-		TNT1 A 0 A_CheckRange(1024.0, "CircleWait", true)
+		TNT1 A 0 A_CheckRange(1024.0, "CircleWait", TRUE)
 		TNT1 A 6 A_SpawnItemEx("SnowParticle", random(-Args[0], Args[0]), 0, 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0),frandom(-1.0, -3.0), random(0, 359), 0, Args[1])
 		Loop
 	CircleWait:
 		TNT1 A 10
 		Goto CircleLoop	
 	SquareLoop:
-		TNT1 A 0 A_CheckRange(1024.0, "SquareWait", true)
+		TNT1 A 0 A_CheckRange(1024.0, "SquareWait", TRUE)
 		TNT1 A 6 A_SpawnItemEx("SnowParticle", random(-Args[0], Args[0]), random(-Args[0], Args[0]), 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, 0, Args[1])
 		Loop
 	SquareWait:

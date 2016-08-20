@@ -28,7 +28,7 @@ ACTOR Firebrand : NaziWeapon
 		SRDG A 1 A_WeaponReady
 		Loop
 	SoundLoop:
-		SRDF A 0 A_PlaySound("SFX/FireLoop2", CHAN_WEAPON, 0.7, true, ATTN_STATIC)
+		SRDF A 0 A_PlaySound("SFX/FireLoop2", CHAN_WEAPON, 0.7, TRUE, ATTN_STATIC)
 		Goto PowerLoop
 	PowerLoop:
 		SRDF A 3 A_WeaponReady

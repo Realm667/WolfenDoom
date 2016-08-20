@@ -81,9 +81,9 @@ ACTOR BucketMop
 		Stop
 	Death:
 		TNT1 A 0 A_UnSetSolid
-		"####" A 0 A_PlaySound("METALBRK", frandom (0.2,0.5))
-		"####" A 0 A_PlaySound("WOODBRK", frandom (0.5,0.8))
-		"####" A 2 A_SpawnItemEx ("MetalFrags")
+		"####" A 0 A_PlaySound("METALBRK", CHAN_AUTO, frandom(0.2,0.5), FALSE, ATTN_NORM)
+		"####" A 0 A_PlaySound("WOODBRK", CHAN_AUTO, frandom(0.5,0.8), FALSE, ATTN_NORM)
+		"####" A 2 A_SpawnItemEx("MetalFrags")
 		MOPP B -1
 		Stop
 	}

@@ -13,7 +13,7 @@ ACTOR Bodiless_Swarm
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_PlaySound("SFX/Buzz",CHAN_BODY,1,1)
+		TNT1 A 0 NODELAY A_PlaySound("SFX/Buzz", CHAN_BODY, 1.0, TRUE)
 		"####" AAAAA 1 A_SpawnItemEx("SwarmFly",frandom(-16,16),frandom(-16,16),frandom(-16,16))
 		"####" A -1
 		Stop

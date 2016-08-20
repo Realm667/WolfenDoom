@@ -195,7 +195,7 @@ ACTOR AmbientSmokeGenerator : SwitchableDecoration
 	Spawn:
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 	Active:
-		TNT1 A 2 A_SpawnItemEx("Ambientsmoke", Random(-Args[0], Args[0]), Random(-Args[0], Args[0]), Random(0,48), 0, 0, 0.5, 0, 0, Args[1])
+		TNT1 A 2 A_SpawnItemEx("Ambientsmoke", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,48), 0, 0, 0.5, 0, 0, Args[1])
 		Loop
 	Inactive:
 		TNT1 A -1

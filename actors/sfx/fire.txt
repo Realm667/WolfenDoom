@@ -27,11 +27,11 @@ ACTOR FireSpawner : SwitchableDecoration
 	Active:
 		TNT1 A 35
 	Initialize:
-		TNT1 A 0 A_PlaySound("SFX/FireStart",7)
+		TNT1 A 0 A_PlaySound("SFX/FireStart", CHAN_7)
 		TNT1 A 0 A_JumpIf(Args[0] == 1,"Medium")
 		TNT1 A 0 A_JumpIf(Args[0] > 1,"Large")
 		TNT1 A 0 A_JumpIf(Args[1] > 0,3)
-		TNT1 A 0 A_PlaySound("SFX/FireLoop1",6,1,1)
+		TNT1 A 0 A_PlaySound("SFX/FireLoop1", CHAN_6, 1.0, TRUE)
 	SmallLoop:
 		TNT1 A 0 A_SetTics(5 - CallACS("FireSwitch"))
 		TNT1 A 0 A_SpawnItemEx("SmallFlame")
@@ -52,7 +52,7 @@ ACTOR FireSpawner : SwitchableDecoration
 		Loop
 	Medium:
 		TNT1 A 0 A_JumpIf(Args[1] > 0,3)
-		TNT1 A 0 A_PlaySound("SFX/FireLoop2",6,1,1)
+		TNT1 A 0 A_PlaySound("SFX/FireLoop2", CHAN_6, 1.0, TRUE)
 		MedLoop:
 		TNT1 A 0 A_SetTics(5 - CallACS("FireSwitch"))
 		TNT1 A 0 A_SpawnItemEx("MediumFlame")
@@ -73,7 +73,7 @@ ACTOR FireSpawner : SwitchableDecoration
 		Loop
 	Large:
 		TNT1 A 0 A_JumpIf(Args[1] > 0,3)
-		TNT1 A 0 A_PlaySound("SFX/FireLoop3",6,1,1)
+		TNT1 A 0 A_PlaySound("SFX/FireLoop3", CHAN_6, 1.0, TRUE)
 		LargeLoop:
 		TNT1 A 0 A_SetTics(5 - CallACS("FireSwitch"))
 		TNT1 A 0 A_SpawnItemEx("LargeFlame")
@@ -94,8 +94,8 @@ ACTOR FireSpawner : SwitchableDecoration
 		Loop
 	Inactive:
 		TNT1 A 0 A_JumpIf(Args[1] > 0,2)
-		TNT1 A 0 A_PlaySound("SFX/FireDie",7)
-		TNT1 A -1 A_StopSound(6)
+		TNT1 A 0 A_PlaySound("SFX/FireDie", CHAN_7)
+		TNT1 A -1 A_StopSound(CHAN_6)
 		Stop
 	EndSpawn:
 		TNT1 A 1
@@ -262,8 +262,8 @@ ACTOR Flame4A : Flame1A
 	{
 	Spawn:
 		FLM1 A 0
-		"####" A 0 ThrustThingZ(0,Random(4,12),0,0)
-		"####" A 0 ThrustThing(Random(0,255),Random(0,3),0,0)
+		"####" A 0 ThrustThingZ(0,random(4,12),0,0)
+		"####" A 0 ThrustThing(random(0,255),random(0,3),0,0)
 		"####" A 2 BRIGHT A_SetScale(scalex-0.025, scaley-0.025)
 		"####" A 0 BRIGHT A_FadeOut(.05)
 		Goto Spawn+3
@@ -327,8 +327,8 @@ ACTOR Flame7A : Flame1A
 	{
 	Spawn:
 		FLM1 A 0
-		"####" A 0 ThrustThingZ(0,Random(8,24),0,0)
-		"####" A 0 ThrustThing(Random(0,255),Random(0,4),0,0)
+		"####" A 0 ThrustThingZ(0,random(8,24),0,0)
+		"####" A 0 ThrustThing(random(0,255),random(0,4),0,0)
 		"####" A 2 BRIGHT A_SetScale(scalex-0.04, scaley-0.04)
 		"####" A 0 BRIGHT A_FadeOut(.05)
 		Goto Spawn+3
@@ -431,8 +431,8 @@ ACTOR BarrelFireSpawner
 	{
 	Spawn:
 		TNT1 A 1
-		TNT1 A 0 A_PlaySound("SFX/FireStart",7,frandom(0.4,0.8))
-		TNT1 A 0 A_PlaySound("SFX/FireLoop1",6,frandom(0.2,0.4),1)
+		TNT1 A 0 A_PlaySound("SFX/FireStart", CHAN_7, frandom(0.4,0.8), FALSE, ATTN_STATIC)
+		TNT1 A 0 A_PlaySound("SFX/FireLoop1", CHAN_6, frandom(0.2,0.4), TRUE, ATTN_STATIC)
 		TNT1 A 0 A_SpawnItemEx("SmallFlame")
 		TNT1 A 0 A_Jump(256,1,6,7,8,9,10,11)
 		TNT1 A 1 A_SpawnItemEx("Flame1A")
@@ -485,8 +485,8 @@ ACTOR BarrelFireSpawner
 		TNT1 A 0 A_Jump(192, 1)
 		Loop
 	Death:
-		TNT1 A 0 A_PlaySound("SFX/FireDie",7)
-		TNT1 A -1 A_StopSound(6)
+		TNT1 A 0 A_PlaySound("SFX/FireDie", CHAN_7)
+		TNT1 A -1 A_StopSound(CHAN_6)
 		Stop
 	}
 }

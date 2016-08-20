@@ -35,7 +35,7 @@ ACTOR BatFamiliar
 		Loop
 	Melee:
 		BFAM A 3 A_FaceTarget
-		"####" B 3 A_CustomMeleeAttack(Random(1,8)*1,"batfam/idle")
+		"####" B 3 A_CustomMeleeAttack(random(1,8)*1,"batfam/idle")
 		"####" CB 3 A_FaceTarget
 		Goto See
 	Pain:
@@ -88,7 +88,7 @@ ACTOR RatFamiliar
 		Loop
 	Melee:
 		PAIN A 3 A_FaceTarget
-		"####" B 3 A_CustomMeleeAttack(Random(1,4)*1,"batfam/idle")
+		"####" B 3 A_CustomMeleeAttack(random(1,4)*1,"batfam/idle")
 		"####" BB 3 A_FaceTarget
 		Goto See
 	Pain:

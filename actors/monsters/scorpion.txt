@@ -50,8 +50,8 @@ ACTOR Scorpion
 		TNT1 A 0 A_CheckFloor("Jump") //don't jump if mid-air
 		Goto See
 	Jump:
-		TNT1 A 0 ThrustThing(angle*256/360,Random(4,6),0,0)
-		SCRP C 15 ThrustThingZ(0,Random(30,40),0,1)
+		TNT1 A 0 ThrustThing(angle*256/360,random(4,6),0,0)
+		SCRP C 15 ThrustThingZ(0,random(30,40),0,1)
 		Goto See
 	Procrastinate:
 		SCRP "#" 35
@@ -59,7 +59,7 @@ ACTOR Scorpion
 		Goto See
 	Death:
 		TNT1 A 0 A_ScreamAndUnblock
-		TNT1 AAAAAAAA 0 A_SpawnItemEx("ScorpionChunk",0,0,4,Random(-2,2),Random(-2,2),Random(5,10),Random(0,256),0,100)
+		TNT1 AAAAAAAA 0 A_SpawnItemEx("ScorpionChunk",0,0,4,random(-2,2),random(-2,2),random(5,10),random(0,256),0,100)
 		Stop
 	}
 }
@@ -133,16 +133,16 @@ ACTOR ScorpionBig
 		TNT1 A 0 A_CheckFloor("Jump") //don't jump if mid-air
 		Goto See
 	Jump:
-		TNT1 A 0 ThrustThing(angle*256/360,Random(4,6),0,0)
-		TNT1 A 0 ThrustThingZ(0,Random(30,40),0,1)
-		SCR2 C 15 A_PlaySound("scorpion/fall",CHAN_AUTO,1.5)
+		TNT1 A 0 ThrustThing(angle*256/360,random(4,6),0,0)
+		TNT1 A 0 ThrustThingZ(0,random(30,40),0,1)
+		SCR2 C 15 A_PlaySound("scorpion/fall", CHAN_AUTO, 1.5)
 		Goto See
 	Pain:
 		SCR2 A 2 A_Pain
 		Goto See
 	Death:
 		TNT1 A 0 A_ScreamAndUnblock
-		TNT1 AAAAAAAA 0 A_SpawnItemEx("BigScorpionChunk",0,0,4,Random(-2,2),Random(-2,2),Random(5,10),Random(0,256),0,100)
+		TNT1 AAAAAAAA 0 A_SpawnItemEx("BigScorpionChunk",0,0,4,random(-2,2),random(-2,2),random(5,10),random(0,256),0,100)
 		Stop
 	}
 }
@@ -197,7 +197,7 @@ ACTOR ScorpionChunk
 		SCRG ABCDEFG 0 A_Jump(256,"Chunk")
 		Stop
 	Chunk:
-		SCRG "#" 6 A_SpawnItemEx("ScorpionFlyingBlood",Random(-1,1),Random(-1,1))
+		SCRG "#" 6 A_SpawnItemEx("ScorpionFlyingBlood",random(-1,1),random(-1,1))
 		Loop
 	Death:
 		SCRG "#" 0 A_SpawnItemEx("ScorpionBlood")
@@ -222,7 +222,7 @@ ACTOR BigScorpionChunk : ScorpionChunk
 		SC2G ABCDEFG 0 A_Jump(256,"Chunk")
 		Stop
 	Chunk:
-		SC2G "#" 6 A_SpawnItemEx("NashGore_FlyingBlood",Random(-1,1),Random(-1,1))
+		SC2G "#" 6 A_SpawnItemEx("NashGore_FlyingBlood",random(-1,1),random(-1,1))
 		Loop
 	Death:
 		SC2G "#" 0 A_SpawnItemEx("NashGore_Blood")
