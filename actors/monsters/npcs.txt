@@ -222,10 +222,16 @@ ACTOR Camp_StaticShovelDig
 	Spawn:
 		PRSC A 0 NoDelay A_SetScale(ScaleX + frandom(0.4,0.6),ScaleY + frandom(0.4,0.6))
 		SpawnLoop:
+			PRSC A 0 A_CheckRange(512,"SpawnLoopSilent")
 			PRSC A 1 A_SetTics(random(12,22))
 			"####" B 0 A_PlaySound("floor/dirt", CHAN_ITEM, 1.0, FALSE)
 			"####" BC 1 A_SetTics(random(12,22))
 			Loop
+		SpawnLoopSilent:
+			PRSC A 0 A_StopSound(CHAN_ITEM)
+			"####" A 1 A_SetTics(random(12,22))
+			"####" BC 1 A_SetTics(random(12,22))
+			Goto SpawnLoop
 	Death:
 		"####" A 0 A_UnSetSolid
 		"####" DE 6
@@ -297,7 +303,13 @@ ACTOR Camp_PrisonerBald : Nazi
 		"####" A 0 A_Jump(8, "Cough") //insert from here random sounds and give each call a separate state - ozy81
 		Loop
 	Cough:
+		"####" E 0 A_CheckRange(768,"NoCough")
 		"####" E 80 A_PlaySound("camp/cough", CHAN_ITEM, 0.8, FALSE)
+		"####" A 0 A_Jump(32, "See")
+		Loop
+	NoCough:
+		"####" E 0 A_StopSound(CHAN_ITEM)
+		"####" E 80
 		"####" A 0 A_Jump(32, "See")
 		Loop
 	Pain:
