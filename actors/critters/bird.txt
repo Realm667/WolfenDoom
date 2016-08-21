@@ -61,7 +61,7 @@ ACTOR CrowWander1L //Wandering version. Flees when player gets close and reacts 
 		TNT1 A 0 NODELAY A_Stop
 		"####" A 0 A_JumpIfInventory("CrowGroupFlee",1,"Pain")
 		"####" A 0 A_LookEx(user_type,0,310,800,0,"Pain")
-		"####" A 0 A_StopSound(5)
+		"####" A 0 A_StopSound(CHAN_5)
 		"####" A 0 A_JumpIfCloser(310,"Pain")
 		"####" A 0 A_ChangeFlag("FLOORHUGGER",1)
 		CRW1 A 25 A_Gravity

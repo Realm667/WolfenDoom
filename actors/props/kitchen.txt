@@ -174,17 +174,35 @@ ACTOR OvenHot : SwitchableDecoration
 		OVEN A 0 NoDelay A_PlaySound("SFX/FireLoop1", CHAN_BODY, 0.7, TRUE, ATTN_STATIC)
 		Goto Frame1
 	Frame1:
+		OVEN A 0 A_CheckRange(768,"NoSound")
 		OVEN A 4 A_Jump(64, "Frame3")
 		Goto Frame2
 	Frame2:
+		OVEN B 0 A_CheckRange(768,"NoSound")
 		OVEN B 4 A_Jump(64, "Frame4")
 		Goto Frame3
 	Frame3:
+		OVEN C 0 A_CheckRange(768,"NoSound")
 		OVEN C 4 A_Jump(64, "Frame1")
 		Goto Frame4
 	Frame4: 
+		OVEN D 0 A_CheckRange(768,"NoSound")
 		OVEN D 4 A_Jump(64, "Frame2")
 		Goto Frame1
+	NoSound:
+		TNT1 A 0 A_StopSound(CHAN_BODY)
+	NoFrame1:
+		OVEN A 4 A_Jump(64, "NoFrame3")
+		Goto Spawn
+	NoFrame2:
+		OVEN B 4 A_Jump(64, "NoFrame4")
+		Goto Spawn
+	NoFrame3:
+		OVEN C 4 A_Jump(64, "NoFrame1")
+		Goto Spawn
+	NoFrame4:
+		OVEN D 4 A_Jump(64, "NoFrame2")
+		Goto Spawn
 	Inactive: 
 		OVEN E -1 A_StopSound(CHAN_BODY)
 		Stop
