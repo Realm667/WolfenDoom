@@ -450,6 +450,62 @@ ACTOR CasinoChips_Red : CasinoChips_Green
 	}
 }
 
+ACTOR CasinoMoney : RandomSpawner
+{
+	//$Category Props (Wolf3D)/Bureau
+	//$Title Dollars
+	//$Color 3
+	DropItem "CasinoMoney1"
+	DropItem "CasinoMoney2"
+	DropItem "CasinoMoney3"
+}
+
+ACTOR CasinoMoney1
+{
+	Radius 2
+	Height 2
+	Damage 0
+	Projectile
+	-NOGRAVITY
+	+ROLLSPRITE
+	Scale 0.27
+	States
+	{
+	Spawn:
+		MNEY A 0 NoDelay A_SetGravity(frandom(0.0125,0.0525))
+		SpawnLoop:
+		MNEY A 5 A_SetRoll(roll+6.5, SPF_INTERPOLATE,0)
+		"####" A 5 A_SetRoll(roll-6.5, SPF_INTERPOLATE,0)
+		Loop
+	Death:
+		MNEY B 300
+		"####" "#" 6 A_FadeOut
+		Wait
+	}
+}
+
+ACTOR CasinoMoney2 : CasinoMoney1
+{
+	States
+	{
+	SpawnLoop:
+		MNEY B 5 A_SetRoll(roll+6.5, SPF_INTERPOLATE,0)
+		"####" B 5 A_SetRoll(roll-6.5, SPF_INTERPOLATE,0)
+		Loop
+	}
+}
+
+ACTOR CasinoMoney3 : CasinoMoney1
+{
+	States
+	{
+	SpawnLoop:
+		MNEY C 5 A_SetRoll(roll+6.5, SPF_INTERPOLATE,0)
+		"####" C 5 A_SetRoll(roll-6.5, SPF_INTERPOLATE,0)
+		Loop
+	}
+}
+
 ACTOR ChanGold : SwitchableDecoration //3d actor
 {
 	//$Category Props (Wolf3D)/Bureau
