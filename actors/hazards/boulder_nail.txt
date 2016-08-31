@@ -22,13 +22,13 @@ ACTOR RollingBoulderGrey
 	States
 	{
 	Spawn:
-		GBOL A 2 NODELAY A_PlaySound("Boulder/Roll",5,1,1)
+		GBOL A 2 NODELAY A_PlaySound("Boulder/Roll", CHAN_5, 1.0, TRUE)
 		"####" BCDA 2 A_Quake(1,2,0,192,"")
 		Loop
 	Death:
-		TNT1 A 1 A_SpawnItem ("BoulderStoppedGrey")
-		"####" A 0 A_StopSound(5)
-		"####" A 0 A_PlaySound ("Boulder/Stop")
+		TNT1 A 1 A_SpawnItem("BoulderStoppedGrey")
+		"####" A 0 A_StopSound(CHAN_5)
+		"####" A 0 A_PlaySound("Boulder/Stop")
 		Stop
 	}
 }
@@ -52,13 +52,13 @@ ACTOR RollingBoulderBrown : RollingBoulderGrey
 	States
 	{
 	Spawn:
-		BBOL A 2 NODELAY A_PlaySound("Boulder/Roll",5,1,1)
+		BBOL A 2 NODELAY A_PlaySound("Boulder/Roll", CHAN_5, 1.0, TRUE)
 		"####" BCDA 2 A_Quake(1,2,0,192,"")
 		Loop
 	Death:
-		TNT1 A 1 A_SpawnItem ("BoulderStoppedBrown")
-		"####" A 0 A_StopSound(5)
-		"####" A 0 A_PlaySound ("Boulder/Stop")
+		TNT1 A 1 A_SpawnItem("BoulderStoppedBrown")
+		"####" A 0 A_StopSound(CHAN_5)
+		"####" A 0 A_PlaySound("Boulder/Stop")
 		Stop
 	}
 }
@@ -68,7 +68,7 @@ ACTOR RollingBoulderBrownHugger : RollingBoulderGreyHugger
 	States
 	{
 	Spawn:
-		BBOL A 2 NODELAY A_PlaySound("Boulder/Roll",5,1,1)
+		BBOL A 2 NODELAY A_PlaySound("Boulder/Roll", CHAN_5, 1.0, TRUE)
 		"####" BCDA 2 A_Quake(1,2,0,192,"")
 		Loop
 	}
@@ -145,7 +145,7 @@ ACTOR BoulderStartBrownHugger : BoulderStartGrey
 		BBOL A -1
 		Stop
 	Active:
-		TNT1 A 1 A_SpawnItemEx ("RollingBoulderBrownHugger",0,0,0,10)
+		TNT1 A 1 A_SpawnItemEx("RollingBoulderBrownHugger",0,0,0,10)
 		Stop
 	}
 }

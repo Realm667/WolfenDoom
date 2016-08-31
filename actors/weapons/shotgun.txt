@@ -51,7 +51,7 @@ ACTOR TrenchShotgun : NaziWeapon
 		SHTG A 0 A_JumpIfInventory("TrenchShotgunLoaded",1,1)
 		Goto Dryfire
 		SHTG A 0 A_TakeInventory("TrenchShotgunLoaded",1)
-		SHTG A 0 A_PlaySound("shotgun/fire",CHAN_WEAPON)
+		SHTG A 0 A_PlaySound("shotgun/fire", CHAN_WEAPON)
 		SHTG A 0 A_AlertMonsters
 		SHTG AAAAAAAAAA 0 A_FireCustomMissile("ShotgunTracer",frandom(-2.0,2.0),0,0,0,0,frandom(-1.5,1.5))
 		SHTG F 1 A_GunFlash
@@ -62,7 +62,7 @@ ACTOR TrenchShotgun : NaziWeapon
 		SHTG F 1 Offset(0,33) A_SetPitch(pitch+(0.5*CallACS("RecoilAmount")))
 		SHTG F 7 A_WeaponReady(WRF_NOFIRE)
 		SHTG F 1 Offset(-1,33)
-		SHTG B 1 Offset(5,34) A_PlaySound("shotgun/pump",5)
+		SHTG B 1 Offset(5,34) A_PlaySound("shotgun/pump", CHAN_5)
 		SHTG B 1 Offset(2,36)
 		SHTG B 1 Offset(-1,38)
 		SHTG C 1 Offset(3,35)
@@ -93,7 +93,7 @@ ACTOR TrenchShotgun : NaziWeapon
 	ReloadLoop:
 		SHTG A 0 A_TakeInventory("12GaugeAmmo",1,TIF_NOTAKEINFINITE)
 		SHTG A 0 A_GiveInventory("TrenchShotgunLoaded")
-		SHTG C 1 Offset(-8,58) A_PlaySound("shotgun/load",CHAN_WEAPON)
+		SHTG C 1 Offset(-8,58) A_PlaySound("shotgun/load", CHAN_WEAPON)
 		SHTG C 1 Offset(-9,64)
 		SHTG C 1 Offset(-10,70)
 		SHTG C 1 Offset(-10,68)

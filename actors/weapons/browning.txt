@@ -25,7 +25,7 @@ ACTOR Browning5 : NaziWeapon
 		BA5G A 0 A_Lower
 		BA5G A 1 A_Lower
 		Loop
-		BA5G E 1 Offset(-8,58) A_PlaySound("browning/cock",5)
+		BA5G E 1 Offset(-8,58) A_PlaySound("browning/cock", CHAN_5)
 		BA5G E 1 Offset(-8,60)
 		BA5G E 1 Offset(-8,63)
 		BA5G E 1 Offset(-9,67)
@@ -51,7 +51,7 @@ ACTOR Browning5 : NaziWeapon
 		BA5G A 0 A_JumpIfInventory("ShotgunReloading",1,"ReloadFinish")
 		BA5G A 0 A_JumpIfInventory("Browning5Loaded",1,1)
 		Goto Dryfire
-		BA5G A 0 A_PlaySound("browning/fire",CHAN_WEAPON)
+		BA5G A 0 A_PlaySound("browning/fire", CHAN_WEAPON)
 		BA5G A 0 A_SpawnItemEx("ShotgunCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
 		BA5G AAAAAAAAAA 0 A_FireCustomMissile("AutoShotgunTracer",frandom(-4.0,4.0),0,0,0,0,frandom(-3,3))
 		BA5G A 0 A_TakeInventory("Browning5Loaded",1)
@@ -73,7 +73,7 @@ ACTOR Browning5 : NaziWeapon
 		ReloadLoop:
 		BA5G A 0 A_TakeInventory("12GaugeAmmo",1,TIF_NOTAKEINFINITE)
 		BA5G A 0 A_GiveInventory("Browning5Loaded")
-		BA5G E 1 Offset(-8,58) A_PlaySound("browning/load",5)
+		BA5G E 1 Offset(-8,58) A_PlaySound("browning/load", CHAN_5)
 		BA5G E 1 Offset(-9,64)
 		BA5G E 1 Offset(-10,70)
 		BA5G E 1 Offset(-10,68)
@@ -87,7 +87,7 @@ ACTOR Browning5 : NaziWeapon
 		BA5G A 0 A_JumpIfInventory("Browning5Loaded",0,"ReloadFinish")
 		BA5G A 0 A_JumpIfInventory("12GaugeAmmo",1,"ReloadLoop")
 		ReloadFinish:
-		BA5G E 1 Offset(-8,58) A_PlaySound("browning/cock",5)
+		BA5G E 1 Offset(-8,58) A_PlaySound("browning/cock", CHAN_5)
 		BA5G E 1 Offset(-8,60)
 		BA5G E 1 Offset(-8,63)
 		BA5G E 1 Offset(-9,67)

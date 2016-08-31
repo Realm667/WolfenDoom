@@ -38,22 +38,22 @@ ACTOR CloudSpawner
 		TNT1 A 0 A_JumpIf(Args[3] > 1, "LargeTan")
 		Goto SmallTan
 	SmallGrey:
-		TNT1 A 30 A_SpawnItemEx("SmallCloudGrey", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
+		TNT1 A 30 A_SpawnItemEx("SmallCloudGrey", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), random(5, 15), 0, 0, random(6, -6), 128, Args[2])
 		Loop
 	MediumGrey:
-		TNT1 A 30 A_SpawnItemEx("MediumCloudGrey", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
+		TNT1 A 30 A_SpawnItemEx("MediumCloudGrey", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), random(5, 15), 0, 0, random(6, -6), 128, Args[2])
 		Loop
 	LargeGrey:
-		TNT1 A 30 A_SpawnItemEx("LargeCloudGrey", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
+		TNT1 A 30 A_SpawnItemEx("LargeCloudGrey", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), random(5, 15), 0, 0, random(6, -6), 128, Args[2])
 		Loop
 	SmallTan:
-		TNT1 A 30 A_SpawnItemEx("SmallCloudTan", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
+		TNT1 A 30 A_SpawnItemEx("SmallCloudTan", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), random(5, 15), 0, 0, random(6, -6), 128, Args[2])
 		Loop
 	MediumTan:
-		TNT1 A 30 A_SpawnItemEx("MediumCloudTan", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
+		TNT1 A 30 A_SpawnItemEx("MediumCloudTan", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), random(5, 15), 0, 0, random(6, -6), 128, Args[2])
 		Loop
 	LargeTan:
-		TNT1 A 30 A_SpawnItemEx("LargeCloudTan", Random(Args[0]*2, -Args[0]*2), Random(Args[0]*2, -Args[0]*2), Random(0, Args[1]), Random(5, 15), 0, 0, Random(6, -6), 128, Args[2])
+		TNT1 A 30 A_SpawnItemEx("LargeCloudTan", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), random(5, 15), 0, 0, random(6, -6), 128, Args[2])
 		Loop
 	EndSpawn:
 		TNT1 A 1

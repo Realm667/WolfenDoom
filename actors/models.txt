@@ -373,7 +373,7 @@ ACTOR Windmill : 3dObstacle
 	States
 	{
 	Spawn:
-		MDLA A 0 NoDelay A_PlaySound("misc/windmill", CHAN_AUTO, 0.7, true)
+		MDLA A 0 NoDelay A_PlaySound("misc/windmill", CHAN_AUTO, 0.7, TRUE)
 		MDLA A -1 A_SpawnItemEx("WindmillWheel", 24, 0, scaleY*476) //don't scale the model more than 1.2 on GZDB
 		Stop
 	}
@@ -427,7 +427,7 @@ ACTOR Submarine : ModelBase
 		Goto Super::Spawn
 
 	PlayEngineSound:
-		MDLA A 0 A_PlaySound("uboat/engine", CHAN_AUTO, 1.0, true, 0.5)
+		MDLA A 0 A_PlaySound("uboat/engine", CHAN_AUTO, 1.0, TRUE, 0.5)
 		Goto Super::Spawn
 	}
 }
@@ -495,7 +495,7 @@ ACTOR Nebelwerfer3D
 		TNT1 A 0 A_PlaySound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_NORM)
 		"####" A 0 A_Scream
 		"####" A 0 A_NoBlocking
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx ("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
 		"####" A 0 A_SpawnItemEx("Nuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
 		"####" A 1 A_SpawnItemEx("KaBoomer",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
 		TNT1 A 5 A_SpawnItemEx("Nebelwerfer3D_Destroyed")
@@ -610,23 +610,23 @@ ACTOR FlakVierling3D : SwitchableDecoration
 	States
 	{
 	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", false) //update manually on GZDB
+		MDLA A 0 A_ChangeFlag("DORMANT", FALSE) //update manually on GZDB
 	Spawn:
 		MDLA A -1 NoDelay A_JumpIf(Args[0]==1, "NonSolid")
 		Stop
 	Inactive:
-		MDLA B 0 A_ChangeFlag("DORMANT", true) //update manually on GZDB
+		MDLA B 0 A_ChangeFlag("DORMANT", TRUE) //update manually on GZDB
 		MDLA B 0 A_PlaySound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_NORM)
 		MDLA B 0 A_Scream
 		MDLA B 0 A_NoBlocking
-		MDLA BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx ("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		MDLA BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
 		MDLA B 1 A_SpawnItemEx("Nuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
 		Destroyed:
 			MDLA B 8 A_CustomMissile("DarkSmoke2",32,0,random(0,360),2,random(70,130))
 			Loop
 	NonSolid: //Needed for Intromap - ozy81
 		MDLA A 0 A_UnsetSolid
-		MDLA A 0 {A_ChangeFlag("NOGRAVITY",false);A_ChangeFlag("CANPASS",false);A_ChangeFlag("FLOORCLIP",true);A_ChangeFlag("ACTLIKEBRIDGE",false);} //oh god.. - ozy81
+		MDLA A 0 {A_ChangeFlag("NOGRAVITY", FALSE);A_ChangeFlag("CANPASS", FALSE);A_ChangeFlag("FLOORCLIP", TRUE);A_ChangeFlag("ACTLIKEBRIDGE", FALSE);} //oh god.. - ozy81
 		"####" A -1 A_SetInvulnerable
 		Stop
 	}
@@ -1040,7 +1040,7 @@ ACTOR Trample : BlastEffect //ozy81
 	Spawn:
 		TNT1 A 0 
 	Death:
-		"####" # 20 A_Explode(5, Radius, 0, false, Radius) //100dmg
+		"####" # 20 A_Explode(5, Radius, 0, FALSE, Radius) //100dmg
 		Stop
 	}
 }
@@ -1064,7 +1064,7 @@ ACTOR ModelGMCTruck : SwitchableDecoration //ozy81
 	States
 	{
 	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", false) //mxd. DORMANT flag must be updated manually
+		MDLA A 0 A_ChangeFlag("DORMANT", FALSE) //mxd. DORMANT flag must be updated manually
 		TrampleIsOn:
 		MDLA A 1 A_SpawnItemEx("Trample", ScaleX*128, 0, Height-16, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
 		Loop
@@ -1072,7 +1072,7 @@ ACTOR ModelGMCTruck : SwitchableDecoration //ozy81
 	  MDLA A -1
 		Stop
 	Inactive:
-		MDLA A -1 A_ChangeFlag("DORMANT", true) //mxd. DORMANT flag must be updated manually
+		MDLA A -1 A_ChangeFlag("DORMANT", TRUE) //mxd. DORMANT flag must be updated manually
 		Stop
 	}
 }
@@ -1176,7 +1176,7 @@ ACTOR SimpleLight1 : SwitchableDecoration
 	States
 	{
 	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", false)
+		MDLA A 0 A_ChangeFlag("DORMANT", FALSE)
 	Spawn:
 	  MDLA A 0 NoDelay
 	Activate:
@@ -1185,7 +1185,7 @@ ACTOR SimpleLight1 : SwitchableDecoration
 	Inactive:
 		MDLA A 0 A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*24, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
 	InactiveLights:
-		MDLA A 0 A_ChangeFlag("DORMANT", true)
+		MDLA A 0 A_ChangeFlag("DORMANT", TRUE)
 		MDLA A 0 A_RemoveChildren(TRUE, RMVF_MISC)
 		MDLA B -1 LIGHT(OZYSIMLT)
 		Stop	
@@ -1198,7 +1198,7 @@ ACTOR SimpleLight1Lit : SimpleLight1
 	States
 	{
 	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", false)
+		MDLA A 0 A_ChangeFlag("DORMANT", FALSE)
 	Spawn:
 	  MDLA A 0 NoDelay
 	ActiveLights:
@@ -1207,7 +1207,7 @@ ACTOR SimpleLight1Lit : SimpleLight1
 		MDLA A 1 LIGHT(OZYSIMLT)
 		Loop
 	Inactive:
-		MDLA A 0 A_ChangeFlag("DORMANT", true)
+		MDLA A 0 A_ChangeFlag("DORMANT", TRUE)
 		MDLA A 0 A_RemoveChildren(TRUE, RMVF_MISC)
 		MDLA B -1
 		Stop	
@@ -1632,12 +1632,12 @@ ACTOR ArtDeco_WLight1 : SwitchableDecoration
 	States
 	{
 	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", false) //update manually on GZDB
+		MDLA A 0 A_ChangeFlag("DORMANT", FALSE) //update manually on GZDB
 	Spawn:
 		MDLA A -1 LIGHT(OZYWALT2)
 		Stop
 	Inactive:
-		MDLA B -1 A_ChangeFlag("DORMANT", true) //update manually on GZDB
+		MDLA B -1 A_ChangeFlag("DORMANT", TRUE) //update manually on GZDB
 		Stop	
 	}
 }
@@ -1943,14 +1943,14 @@ ACTOR COD_RadioSimple : SwitchableDecoration
 		Goto SpawnSet
 	Death:
 		MDLA B 0 A_StopSound(CHAN_ITEM)
-		"####" B 0 A_PlaySound("METALBRK", frandom (0.5,0.8))
-		"####" B 0 A_PlaySound("tesla/loop",6,1,1)
+		"####" B 0 A_PlaySound("METALBRK", CHAN_ITEM, frandom (0.5,0.8), FALSE, ATTN_STATIC)
+		"####" B 0 A_PlaySound("tesla/loop", CHAN_6, 1.0, TRUE)
 		"####" B 0 A_RemoveChildren(TRUE, RMVF_MISC)
-		"####" B 0 A_ChangeFlag("USESPECIAL", false)
+		"####" B 0 A_ChangeFlag("USESPECIAL", FALSE)
 		"####" B 0 A_UnSetSolid
 		"####" B 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0, SXF_CLIENTSIDE | SXF_TRANSFERSCALE)
 		"####" BBBBBB 3 A_SpawnItemEx("Spark_B1", ScaleX*24, frandom(-8.0,8.0), ScaleY*8, 0, frandom(-1.0,1.0), frandom(-1.0,1.0), random(0,360), SXF_CLIENTSIDE)
-		"####" B 0 A_StopSound(6)
+		"####" B 0 A_StopSound(CHAN_6)
 		"####" BBBBBB 3 A_SpawnItemEx("Spark_B1", ScaleX*24, frandom(-8.0,8.0), ScaleY*8, 0, frandom(-1.0,1.0), frandom(-1.0,1.0), random(0,360), SXF_CLIENTSIDE)
 		"####" B -1
 		Stop
@@ -2076,16 +2076,16 @@ ACTOR CODOmahaBoat : FlakVierling3D
 	States
 	{
 	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", false) //update manually on GZDB
+		MDLA A 0 A_ChangeFlag("DORMANT", FALSE) //update manually on GZDB
 	Spawn:
 		MDLA A -1
 		Stop
 	Inactive:
-		MDLA B 0 A_ChangeFlag("DORMANT", true) //update manually on GZDB
+		MDLA B 0 A_ChangeFlag("DORMANT", TRUE) //update manually on GZDB
 		MDLA B 0 A_PlaySound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_NORM)
 		MDLA B 0 A_Scream
 		MDLA B 0 A_NoBlocking
-		MDLA BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx ("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		MDLA BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
 		MDLA B 1 A_SpawnItemEx("Nuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
 		Destroyed:
 			MDLA B 8 A_CustomMissile("DarkSmoke2",32,0,random(0,360),2,random(70,130))
@@ -2130,7 +2130,7 @@ ACTOR CODStuka : ModelBase
 		"####" A 0 A_Scream
 		"####" A 0 A_NoBlocking
 		"####" A 0 A_UnSetSolid
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx ("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
 		"####" A 0 A_SpawnItemEx("Nuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
 		"####" A 1 A_SpawnItemEx("KaBoomer",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
 		Dead:
@@ -2224,12 +2224,12 @@ ACTOR CODScheinwerfer : SwitchableDecoration
 	States
 	{
 	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", false) //update manually on GZDB
+		MDLA A 0 A_ChangeFlag("DORMANT", FALSE) //update manually on GZDB
 	Spawn:
 		MDLA A -1 LIGHT(SPOTLITE) A_SpawnItemEx("Flare3d", ScaleX*28, 0, ScaleY*92, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
 		Stop
 	Inactive:
-		MDLA B -1 A_ChangeFlag("DORMANT", true) //update manually on GZDB
+		MDLA B -1 A_ChangeFlag("DORMANT", TRUE) //update manually on GZDB
 		Stop	
 	}
 }
@@ -2255,12 +2255,12 @@ ACTOR CODNeoLights1 : SwitchableDecoration
 	States
 	{
 	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", false) //update manually on GZDB
+		MDLA A 0 A_ChangeFlag("DORMANT", FALSE) //update manually on GZDB
 	Spawn:
 		MDLA A -1 LIGHT(OZYWALLT)
 		Stop
 	Inactive:
-		MDLA B -1 A_ChangeFlag("DORMANT", true) //update manually on GZDB
+		MDLA B -1 A_ChangeFlag("DORMANT", TRUE) //update manually on GZDB
 		Stop	
 	}
 }
@@ -2322,12 +2322,12 @@ ACTOR CODRailway_Switch : SwitchableDecoration
 	States
 	{
 	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", false) //update manually on GZDB
+		MDLA A 0 A_ChangeFlag("DORMANT", FALSE) //update manually on GZDB
 	Spawn:
 		MDLA A -1
 		Stop
 	Inactive:
-		MDLA B -1 A_ChangeFlag("DORMANT", true) //update manually on GZDB
+		MDLA B -1 A_ChangeFlag("DORMANT", TRUE) //update manually on GZDB
 		Stop	
 	}
 }
@@ -2491,7 +2491,7 @@ ACTOR Spotlight : ModelBase
 	States
 	{
 	Spawn:
-		MDLA A Random(1, 35)
+		MDLA A random(1, 35)
 		"####" # 0 {
 			if (pitch == 0 && args[0] == 0 && args[1] == 0) {
 				A_SetPitch(90);
@@ -2521,7 +2521,7 @@ ACTOR Spotlight : ModelBase
 		}
 		Pan.Hold:
 			"####" # 0 {
-				A_SetUserVar("user_holdTime", Random(0, 35));
+				A_SetUserVar("user_holdTime", random(0, 35));
 				A_SetUserVar("user_direction", -user_direction);
 			}
 			Pan.HoldLoop:

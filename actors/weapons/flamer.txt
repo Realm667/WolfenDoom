@@ -49,7 +49,7 @@ ACTOR Pyrolight : NaziWeapon
 		FFTR A 20 A_GunFlash
 		Goto Ready
 	Flash:
-		FFTF B 2 A_PlaySound("flamer/steam",5)
+		FFTF B 2 A_PlaySound("flamer/steam",CHAN_5)
 		FFTF CDEF 2
 		Stop
 	NoWay:
@@ -74,7 +74,7 @@ ACTOR Pyrolight : NaziWeapon
 		FFTR A 11 Offset(0,32) A_GunFlash
 		Goto Ready
 	Reload:
-		FFTR B 1 Offset(0,35) A_PlaySound("flamer/reload",5)
+		FFTR B 1 Offset(0,35) A_PlaySound("flamer/reload",CHAN_5)
 		FFTR B 1 Offset(0,38)
 		FFTR B 1 Offset(0,40)
 		FFTR B 1 Offset(0,42)

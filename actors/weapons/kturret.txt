@@ -77,7 +77,7 @@ ACTOR KTurretGun
 		Loop
 
 	Recharge:
-		MDLA B 0 A_PlaySound("mp40/fire",CHAN_WEAPON)
+		MDLA B 0 A_PlaySound("mp40/fire", CHAN_WEAPON)
 		MDLA B 1 A_SetTics(Accuracy) //the duration of this frame controls fire rate.
 		MDLA B 0 A_GiveInventory("KTurret_Ammo",1)
 		Goto Spawn2

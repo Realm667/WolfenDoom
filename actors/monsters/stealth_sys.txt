@@ -32,10 +32,10 @@ ACTOR SneakableSSMP40Guard : SSMP40Guard
 			Goto Super::Pain
 		StealthKill:
 			"####" "#" 0 A_Log("Stealth kill!")
-			"####" "#" 0 A_RemoveChildren(true, RMVF_EVERYTHING) // Despawn children
+			"####" "#" 0 A_RemoveChildren(TRUE, RMVF_EVERYTHING) // Despawn children
 			"####" "#" 1 A_AlertMonsters(128) 
 			"####" "#" 0 ACS_NamedExecuteAlways("AddExtraVisibility", 0, 200, 1) //...And make the player super-visible
-			"####" "#" 0 A_SetUserVar("user_stealthkilled", true)
+			"####" "#" 0 A_SetUserVar("user_stealthkilled", TRUE)
 			"####" "#" 0 A_Die
 			Stop
 		BecomeAlerted: // Become alerted after being attacked
@@ -43,8 +43,8 @@ ACTOR SneakableSSMP40Guard : SSMP40Guard
 			"####" "#" 0 A_PlaySound("axis1/sighted", CHAN_BODY)
 		Pain.BecomeAlerted: // Stop being friendly without visual effects when poked by PatrollingGuardEyes
 			"####" "#" 0 A_SetUserVar("user_chasegoal", CallACS("GetChaseGoal", user_chasegoal)) // Store current chase goal, if any
-			"####" "#" 0 A_ChangeFlag("FRIENDLY", false)
-			"####" "#" 0 A_RemoveChildren(true, RMVF_EVERYTHING) // Despawn children
+			"####" "#" 0 A_ChangeFlag("FRIENDLY", FALSE)
+			"####" "#" 0 A_RemoveChildren(TRUE, RMVF_EVERYTHING) // Despawn children
 			"####" "#" 0 A_AlertMonsters(512) // Something fishy is going on. Alert everybody around!
 			"####" "#" 0 A_SetHealth(health + 1) // Compensate the loss of health
 			"####" "#" 0 A_SpawnItemEx("SneakableGuardEyesAlerted", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION)
@@ -52,19 +52,19 @@ ACTOR SneakableSSMP40Guard : SSMP40Guard
 			"####" "#" 0 A_Jump(256, "See") //So that inheriting actors go to their own See State
 			Goto See
 		Pain.BecomeIdle: // Become friendly again and resume patrolling, if possible
-			"####" "#" 0 A_ChangeFlag("FRIENDLY", true)
+			"####" "#" 0 A_ChangeFlag("FRIENDLY", TRUE)
 			"####" "#" 0 A_SetUserVar("user_attacked", 0)
 			"####" "#" 0 A_SetHealth(health + 1) // Compensate the loss of health
 			"####" "#" 0 A_ClearTarget
 			"####" "#" 0 ACS_NamedExecute("TryResumePatrolling") 
 			Goto Spawn
 		Death:
-			"####" "#" 0 A_RemoveChildren(true, RMVF_EVERYTHING) // Despawn children
+			"####" "#" 0 A_RemoveChildren(TRUE, RMVF_EVERYTHING) // Despawn children
 			"####" "#" 0 A_CheckFlag("FRIENDLY", "Super::Death") // Don't decrease AlertedCount when friendly
 			"####" "#" 0 ACS_NamedExecute("DecreaseAlertedCount")
 			Goto Super::Death
 		XDeath: // Same as Death
-			"####" "#" 0 A_RemoveChildren(true, RMVF_EVERYTHING)  // Despawn children
+			"####" "#" 0 A_RemoveChildren(TRUE, RMVF_EVERYTHING)  // Despawn children
 			"####" "#" 0 A_CheckFlag("FRIENDLY", "Super::XDeath") // Don't decrease AlertedCount when friendly
 			"####" "#" 0 ACS_NamedExecute("DecreaseAlertedCount")
 			Goto Super::XDeath
@@ -103,7 +103,7 @@ ACTOR SneakableGuardEyesIdle
 	States
 	{
 		Spawn:
-			TNT1 A 0 NoDelay A_SetArg(1, Random(490, 630)) // Set quote countdown time to 14 - 18 seconds
+			TNT1 A 0 NoDelay A_SetArg(1, random(490, 630)) // Set quote countdown time to 14 - 18 seconds
 			Goto Look
 		Look:
 			TNT1 A 1 A_Warp(AAPTR_MASTER, 0, 0, Height) // Need a slight delay between A_Looks to prevent infinite loop
@@ -140,8 +140,8 @@ ACTOR SneakableGuardEyesAlerted : SneakableGuardEyesIdle
 			Goto ResetCounters
 		
 		ResetCounters: 
-			TNT1 A 0 A_SetArg(0, Random(280, 350)) // Set countdown time to 8 - 10 seconds
-			TNT1 A 0 A_SetArg(1, Random(140, 210))   // Set quote countdown time to 4 - 6 seconds 
+			TNT1 A 0 A_SetArg(0, random(280, 350)) // Set countdown time to 8 - 10 seconds
+			TNT1 A 0 A_SetArg(1, random(140, 210))   // Set quote countdown time to 4 - 6 seconds 
 			Goto Look
 			
 		Look:
@@ -213,7 +213,7 @@ ACTOR MGTurretStealth : Nazi
 	{
 		Spawn:
 			GTUR A 0
-			"####" "#" 0 A_SetUserVar("user_incombat", true) //mxd
+			"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
 			Goto Look
 		Look:
 			"####" A 10 A_LookEx(0, 0.0, 1024.0, 256.0, 65.0, "See")
@@ -228,7 +228,7 @@ ACTOR MGTurretStealth : Nazi
 		Missile: //This 'turret' fires and reloads like an MP40 Guard 
 			"####" A 5 {
 				A_FaceTarget;
-				A_PlaySound("nazi/mp40",CHAN_WEAPON);
+				A_PlaySound("nazi/mp40", CHAN_WEAPON);
 			}
 			"####" B 4 {
 				A_CustomMissile("EnemySMGTracer",24,4,random(-8,8)); 
@@ -239,11 +239,11 @@ ACTOR MGTurretStealth : Nazi
 			Loop
 		Reload:
 			"####" A 35 {
-				PlaySound("mp40/reload", CHAN_WEAPON);
+				A_PlaySound("mp40/reload", CHAN_WEAPON);
 				A_TakeInventory("SSMP40GuardCounter", 4);
 			}
 			"####" A 0 A_JumpIfInventory("SSMP40GuardCounter", 1, "Reload")
-			"####" A 10 PlaySound("mp40/reload", CHAN_WEAPON)
+			"####" A 10 A_PlaySound("mp40/reload", CHAN_WEAPON)
 			Goto See
 		Pain: //Disable for 2 seconds when shot, then go to reload
 			"####" C 70
