@@ -269,6 +269,19 @@ EXIT /B 0
 
 REM # ================================================================================================
 REM # Documentation
+REM #     Retrieves and returns the HEAD commit hash of the project.
+REM # Return
+REM #     Project's Commit Hash [String]
+REM # ================================================================================================
+:GitFeature_FetchCommitHash
+FOR /F %%a IN ('GIT --git-dir=".\.git" rev-parse --short HEAD') DO SET GitCommitHash=%%a
+EXIT /B %GitCommitHash%
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
 REM #     Terminate the program without destroying the console process if invoked via CUI.
 REM # ================================================================================================
 :TerminateProcess
