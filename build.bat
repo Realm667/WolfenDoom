@@ -270,12 +270,14 @@ EXIT /B 0
 REM # ================================================================================================
 REM # Documentation
 REM #     Retrieves and returns the HEAD commit hash of the project.
-REM # Return
-REM #     Project's Commit Hash [String]
+REM #     Sets the value of the commit hash to the variable 'GitCommitHash'.
+REM #      To use this hash in other functions, first call this function and then use the variable
+REM #      %GitCommitHash% in any function.  However, first make sure that the Git dependency is
+REM #      available on the host.
 REM # ================================================================================================
 :GitFeature_FetchCommitHash
 FOR /F %%a IN ('GIT --git-dir=".\.git" rev-parse --short HEAD') DO SET GitCommitHash=%%a
-EXIT /B %GitCommitHash%
+GOTO :EOF
 
 
 
