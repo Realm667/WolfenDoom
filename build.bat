@@ -9,10 +9,10 @@ GOTO :Main
 
 
 
-REM ================================================================================================
-REM Documentation
-REM     Spine of the program; this makes sure that the execution works as intended.
-REM ================================================================================================
+REM # ================================================================================================
+REM # Documentation
+REM #     Spine of the program; this makes sure that the execution works as intended.
+REM # ================================================================================================
 :Main
 CALL :MainMenu
 GOTO :TerminateProcess
@@ -20,13 +20,13 @@ GOTO :TerminateProcess
 
 
 
-REM ================================================================================================
-REM Documentation
-REM     Displays the main menu - which the user selects how the build is compiled into an archive file.
-REM     Default Compression = Type: ZIP ; Method: Deflate ; Compression: 5
-REM     Best Compression    = Type: ZIP ; Method: LZMA    ; Compression: 9
-REM     No Compression      = Type: ZIP ; Method: Deflate ; Compression: 0
-REM ================================================================================================
+REM # ================================================================================================
+REM # Documentation
+REM #     Displays the main menu - which the user selects how the build is compiled into an archive file.
+REM #     Default Compression = Type: ZIP ; Method: Deflate ; Compression: 5
+REM #     Best Compression    = Type: ZIP ; Method: LZMA    ; Compression: 9
+REM #     No Compression      = Type: ZIP ; Method: Deflate ; Compression: 0
+REM # ================================================================================================
 :MainMenu
 REM Thrash the terminal buffer
 CLS
@@ -51,10 +51,10 @@ GOTO :MainMenu_STDIN
 
 
 
-REM ================================================================================================
-REM Documentation
-REM     Inspect the user's input and execute their desired action
-REM ================================================================================================
+REM # ================================================================================================
+REM # Documentation
+REM #     Inspect the user's input and execute their desired action
+REM # ================================================================================================
 :MainMenu_STDIN
 IF "%STDIN%" EQU "1" (
     CALL :CompactProject ZIP DEFLATE 5 NORMAL
@@ -82,10 +82,10 @@ IF "%STDIN%" EQU "" (
 
 
 
-REM ================================================================================================
-REM Documentation
-REM     This function displays a message to the user that the STDIN was illegal and not supported
-REM ================================================================================================
+REM # ================================================================================================
+REM # Documentation
+REM #     This function displays a message to the user that the STDIN was illegal and not supported
+REM # ================================================================================================
 :MainMenu_STDIN_BadInput
 ECHO.
 ECHO ERROR: INVALID OPTION
@@ -97,10 +97,10 @@ GOTO :EOF
 
 
 
-REM ================================================================================================
-REM Documentation
-REM     This function captures the standard input from the user.
-REM ================================================================================================
+REM # ================================================================================================
+REM # Documentation
+REM #     This function captures the standard input from the user.
+REM # ================================================================================================
 :PromptUserInput
 SET /P STDIN=^>^>^>^> 
 GOTO :EOF
@@ -108,10 +108,10 @@ GOTO :EOF
 
 
 
-REM ================================================================================================
-REM Documentation
-REM     Displays the title of the program.
-REM ================================================================================================
+REM # ================================================================================================
+REM # Documentation
+REM #     Displays the title of the program.
+REM # ================================================================================================
 :BufferHeader
 ECHO WolfenDoom Compiler
 ECHO =====================
@@ -123,19 +123,19 @@ GOTO :EOF
 
 
 
-REM ================================================================================================
-REM Documentation
-REM     This function well walk through the protocol before and during the compiling process.
-REM Parameters
-REM     ArchiveType [String] = %1
-REM             Contains the archive file type.  For example: zip [PK3] or 7zip [PK7]
-REM     ArchiveMethod [String] = %2
-REM             Contains the method type of the archive file.  For example: DEFLATE, DEFLATE64, PPMD, or LZMA.
-REM     CompressionLevel [int] = %3
-REM             Upholds the compression level of the archive file.  Range is from 0-9
-REM     PriorityLevel [String] = %4
-REM             Manages how much processing time the task has within the process-ribbon managed by the OS.
-REM ================================================================================================
+REM # ================================================================================================
+REM # Documentation
+REM #     This function well walk through the protocol before and during the compiling process.
+REM # Parameters
+REM #     ArchiveType [String] = %1
+REM #             Contains the archive file type.  For example: zip [PK3] or 7zip [PK7]
+REM #     ArchiveMethod [String] = %2
+REM #             Contains the method type of the archive file.  For example: DEFLATE, DEFLATE64, PPMD, or LZMA.
+REM #     CompressionLevel [int] = %3
+REM #             Upholds the compression level of the archive file.  Range is from 0-9
+REM #     PriorityLevel [String] = %4
+REM #             Manages how much processing time the task has within the process-ribbon managed by the OS.
+REM # ================================================================================================
 :CompactProject
 CALL :CompactProject_CheckResources || EXIT /B 1
 CALL :CompactProject_Execute %1 %2 %3 %4 || EXIT /B 1
@@ -145,11 +145,11 @@ EXIT /B 0
 
 
 
-REM ================================================================================================
-REM Documentation
-REM     Before we compile the project, first make sure that the resources exist - and that there will not be any issues.
-REM     NOTE: This function does a clean scan each time this is executed.
-REM ================================================================================================
+REM # ================================================================================================
+REM # Documentation
+REM #     Before we compile the project, first make sure that the resources exist - and that there will not be any issues.
+REM #     NOTE: This function does a clean scan each time this is executed.
+REM # ================================================================================================
 :CompactProject_CheckResources
 SET "ErrorString="
 SET "ErrorBool=False"
@@ -175,14 +175,14 @@ EXIT /B 0
 
 
 
-REM ================================================================================================
-REM Documentation
-REM     Display an error that some of the required dependencies that is used during the compiling process
-REM         could not be located.
-REM Parameters
-REM     ErrorMSG [String] = %1
-REM             Contains the error message that is to be displayed on the screen.
-REM ================================================================================================
+REM # ================================================================================================
+REM # Documentation
+REM #     Display an error that some of the required dependencies that is used during the compiling process
+REM #         could not be located.
+REM # Parameters
+REM #     ErrorMSG [String] = %1
+REM #             Contains the error message that is to be displayed on the screen.
+REM # ================================================================================================
 :CompactProject_CheckResources_ErrMSG
 ECHO.
 ECHO CRITICAL ERROR: RESOURCES NOT FOUND!
@@ -199,24 +199,24 @@ GOTO :EOF
 
 
 
-REM ================================================================================================
-REM Documentation
-REM     Before we compile the project, first make sure that the resources exist - and that there will not be any issues.
-REM     Priorities:
-REM         LOW - BELOWNORMAL - NORMAL - ABOVENORMAL - HIGH - REALTIME [AKA Ludicrous Speed - Spaceballs reference]
-REM Parameters
-REM     ArchiveType [String] = %1
-REM             Contains the archive file type.  For example: zip [PK3] or 7zip [PK7]
-REM     ArchiveMethod [String] = %2
-REM             Contains the method type of the archive file.  For example: DEFLATE, DEFLATE64, PPMD, or LZMA.
-REM     CompressionLevel [int] = %3
-REM             Upholds the compression level of the archive file.  Range is from 0-9
-REM     PriorityLevel [String] = %4
-REM             Manages how much processing time the task has within the process-ribbon managed by the OS.
-REM             Do note that 'Normal' is the default value, and 'RealTime' can cause the system to slow-down in favor
-REM                 of the program that has the 'RealTime' flag.  Meaning, if executed with 'RealTime', the user might
-REM                 notice that their normal activities will be greatly delayed until the program with 'RealTime' is completed.
-REM ================================================================================================
+REM # ================================================================================================
+REM # Documentation
+REM #     Before we compile the project, first make sure that the resources exist - and that there will not be any issues.
+REM #     Priorities:
+REM #         LOW - BELOWNORMAL - NORMAL - ABOVENORMAL - HIGH - REALTIME [AKA Ludicrous Speed - Spaceballs reference]
+REM # Parameters
+REM #     ArchiveType [String] = %1
+REM #             Contains the archive file type.  For example: zip [PK3] or 7zip [PK7]
+REM #     ArchiveMethod [String] = %2
+REM #             Contains the method type of the archive file.  For example: DEFLATE, DEFLATE64, PPMD, or LZMA.
+REM #     CompressionLevel [int] = %3
+REM #             Upholds the compression level of the archive file.  Range is from 0-9
+REM #     PriorityLevel [String] = %4
+REM #             Manages how much processing time the task has within the process-ribbon managed by the OS.
+REM #             Do note that 'Normal' is the default value, and 'RealTime' can cause the system to slow-down in favor
+REM #                 of the program that has the 'RealTime' flag.  Meaning, if executed with 'RealTime', the user might
+REM #                 notice that their normal activities will be greatly delayed until the program with 'RealTime' is completed.
+REM # ================================================================================================
 :CompactProject_Execute
 START "WolfenDoom Compile: 7Zip" /B /%4 /WAIT "%ProgramDirPath%tools\7za.exe" a -t%1 -mm=%2 -mx=%3 -x@"%ProgramDirPath%tools\7zExcludeListDir.txt" -xr@"%ProgramDirPath%tools\7zExcludeList.txt" "%ProgramDirPath%..\wolf_boa.pk3" "%ProgramDirPath%*"
 REM Because I couldn't use the error-pipes with 'Start', we'll have to check the ExitCode in a conditional statement
@@ -230,13 +230,13 @@ IF %ERRORLEVEL% GEQ 1 (
 
 
 
-REM ================================================================================================
-REM Documentation
-REM     If 7Zip returned an error, let the user know that the process was terminated prematurely or failed.
-REM Parameters
-REM     ExitCode [Int] = %1
-REM             Holds the value of the ExitCode from 7Zip
-REM ================================================================================================
+REM # ================================================================================================
+REM # Documentation
+REM #     If 7Zip returned an error, let the user know that the process was terminated prematurely or failed.
+REM # Parameters
+REM #     ExitCode [Int] = %1
+REM #             Holds the value of the ExitCode from 7Zip
+REM # ================================================================================================
 :CompactProject_Execute_ErrMSG
 ECHO.
 ECHO CRITICAL ERROR: 7ZIP FAILED!
@@ -256,10 +256,10 @@ GOTO :EOF
 
 
 
-REM ================================================================================================
-REM Documentation
-REM     Create a new window and highlight the newly created build.
-REM ================================================================================================
+REM # ================================================================================================
+REM # Documentation
+REM #     Create a new window and highlight the newly created build.
+REM # ================================================================================================
 :CompactProject_WindowsExplorer
 EXPLORER /select,"%ProgramDirPath%..\wolf_boa.pk3"
 EXIT /B 0
@@ -267,10 +267,23 @@ EXIT /B 0
 
 
 
-REM ================================================================================================
-REM Documentation
-REM     Terminate the program without destroying the console process if invoked via CUI.
-REM ================================================================================================
+REM # ================================================================================================
+REM # Documentation
+REM #     Retrieves and returns the HEAD commit hash of the project.
+REM # Return
+REM #     Project's Commit Hash [String]
+REM # ================================================================================================
+:GitFeature_FetchCommitHash
+FOR /F %%a IN ('GIT --git-dir=".\.git" rev-parse --short HEAD') DO SET GitCommitHash=%%a
+EXIT /B %GitCommitHash%
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
+REM #     Terminate the program without destroying the console process if invoked via CUI.
+REM # ================================================================================================
 :TerminateProcess
 ECHO Closing program. . .
 REM Restore the terminal window's title to something generic
