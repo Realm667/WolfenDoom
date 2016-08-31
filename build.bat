@@ -284,6 +284,17 @@ GOTO :EOF
 
 REM # ================================================================================================
 REM # Documentation
+REM #     When called, this function will update the master branch of the GIT local repo.
+REM # ================================================================================================
+:GitFeature_UpdateBranch_Master
+GIT --git-dir=".\.git" pull origin master
+GOTO :EOF
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
 REM #     Terminate the program without destroying the console process if invoked via CUI.
 REM # ================================================================================================
 :TerminateProcess
