@@ -42,6 +42,11 @@ ECHO ---------------------
 ECHO  [1] Default Build
 ECHO  [2] Best Compression
 ECHO  [3] No Compression
+REM ----
+REM  Special Features
+REM   Only draw these options if its possible
+IF %featuresGit% EQU True (ECHO  [U] Update Repository)
+REM ----
 ECHO  [X] Exit
 ECHO ---------------------
 ECHO.
@@ -72,6 +77,12 @@ IF "%STDIN%" EQU "3" (
 )
 IF /I "%STDIN%" EQU "X" (
     GOTO :EOF
+)
+IF /I "%STDIN%" EQU "U" (
+    REM Try to detect if Git features is NOT available
+    IF %featuresGit% NEQ True CALL :MainMenu_STDIN_BadInput
+    IF %featuresGit% EQU True CALL :GitFeature_UpdateBranch
+    GOTO :MainMenu
 )
 IF "%STDIN%" EQU "" (
     CALL :CompactProject ZIP DEFLATE 5 NORMAL
@@ -314,6 +325,23 @@ REM # ==========================================================================
 :GitFeature_FetchCommitHash
 FOR /F %%a IN ('GIT --git-dir="%ProgramDirPath%.git" rev-parse --short HEAD') DO SET GitCommitHash=%%a
 GOTO :EOF
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
+REM #     
+REM # ================================================================================================
+:GitFeature_UpdateBranch
+CLS
+CALL :BufferHeader
+ECHO Updating project repository. . .
+ECHO -------------------------------------
+CALL :GitFeature_UpdateBranch_Master
+ECHO -------------------------------------
+PAUSE
+EXIT /B 0
 
 
 
