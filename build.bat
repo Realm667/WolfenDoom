@@ -151,6 +151,7 @@ REM #             Manages how much processing time the task has within the proce
 REM # ================================================================================================
 :CompactProject
 CALL :CompactProject_CheckResources || EXIT /B 1
+CALL :CompactProject_Execute_ProjectName
 CALL :CompactProject_Execute %1 %2 %3 %4 || EXIT /B 1
 CALL :CompactProject_WindowsExplorer || EXIT /B 1
 EXIT /B 0
@@ -231,7 +232,7 @@ REM #                 of the program that has the 'RealTime' flag.  Meaning, if 
 REM #                 notice that their normal activities will be greatly delayed until the program with 'RealTime' is completed.
 REM # ================================================================================================
 :CompactProject_Execute
-START "WolfenDoom Compile: 7Zip" /B /%4 /WAIT "%ProgramDirPath%tools\7za.exe" a -t%1 -mm=%2 -mx=%3 -x@"%ProgramDirPath%tools\7zExcludeListDir.txt" -xr@"%ProgramDirPath%tools\7zExcludeList.txt" "%ProgramDirPath%..\wolf_boa.pk3" "%ProgramDirPath%*"
+START "WolfenDoom Compile: 7Zip" /B /%4 /WAIT "%ProgramDirPath%tools\7za.exe" a -t%1 -mm=%2 -mx=%3 -x@"%ProgramDirPath%tools\7zExcludeListDir.txt" -xr@"%ProgramDirPath%tools\7zExcludeList.txt" "%ProgramDirPath%..\%projectName%.pk3" "%ProgramDirPath%*"
 REM Because I couldn't use the error-pipes with 'Start', we'll have to check the ExitCode in a conditional statement
 IF %ERRORLEVEL% GEQ 1 (
     CALL :CompactProject_Execute_ErrMSG %ERRORLEVEL%
@@ -239,6 +240,28 @@ IF %ERRORLEVEL% GEQ 1 (
 ) ELSE (
     EXIT /B 0
 )
+
+
+
+REM # ================================================================================================
+REM # Documentation
+REM #     Determine what project filename to use.
+REM #      IIF Git features are enabled, then attach the commit hash to
+REM #       the filename.
+REM #      Else use the generic file name without a hash.
+REM # ================================================================================================
+:CompactProject_Execute_ProjectName
+REM If git features is not available, then just use the generic name.
+REM  No hash will be used.
+IF %featuresGit% NEQ True (
+    SET "projectName=wolf_boa"
+    GOTO :EOF
+)
+REM Assume Git features are available for us to utilize
+REM  Attach the hash to the file name.
+CALL :GitFeature_FetchCommitHash
+SET "projectName=wolf_boa-%GitCommitHash%"
+GOTO :EOF
 
 
 
@@ -274,7 +297,7 @@ REM # Documentation
 REM #     Create a new window and highlight the newly created build.
 REM # ================================================================================================
 :CompactProject_WindowsExplorer
-EXPLORER /select,"%ProgramDirPath%..\wolf_boa.pk3"
+EXPLORER /select,"%ProgramDirPath%..\%projectName%.pk3"
 EXIT /B 0
 
 
