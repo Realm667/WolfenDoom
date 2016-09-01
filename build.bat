@@ -331,7 +331,9 @@ GOTO :EOF
 
 REM # ================================================================================================
 REM # Documentation
-REM #     
+REM #     Provide a simple interface to automatically update repository.
+REM #     The borders in between the actual update is only for readability
+REM #      to the users.
 REM # ================================================================================================
 :GitFeature_UpdateBranch
 CLS
@@ -348,7 +350,8 @@ EXIT /B 0
 
 REM # ================================================================================================
 REM # Documentation
-REM #     When called, this function will update the master branch of the GIT local repo.
+REM #     When called, this function will update the master branch of the GIT local repo.  However, first make sure that the Git dependency is
+REM #      available on the host.
 REM # ================================================================================================
 :GitFeature_UpdateBranch_Master
 GIT --git-dir="%ProgramDirPath%.git" pull origin master
