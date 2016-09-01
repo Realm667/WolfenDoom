@@ -154,10 +154,12 @@ REM #     PriorityLevel [String] = %4
 REM #             Manages how much processing time the task has within the process-ribbon managed by the OS.
 REM # ================================================================================================
 :CompactProject
+CALL :ProcessingInterface 0 "Compiling project"
 CALL :CompactProject_CheckResources || EXIT /B 1
 CALL :CompactProject_Execute_ProjectName
 CALL :CompactProject_Execute %1 %2 %3 %4 || EXIT /B 1
 CALL :CompactProject_WindowsExplorer || EXIT /B 1
+CALL :ProcessingInterface 1
 EXIT /B 0
 
 
@@ -308,6 +310,35 @@ EXIT /B 0
 
 REM # ================================================================================================
 REM # Documentation
+REM #     Provide a simple interface for incoming operations.
+REM #      The borders in between the actual update is only for readability
+REM #      to the users.
+REM # Parameters
+REM #     InterfaceHeadOrTail [Int] = %1
+REM #             Displays either the header or footer on the screen
+REM #              when processing a task.
+REM #              0 = Header
+REM #              1 = Footer
+REM #     TaskString [String] = %2
+REM #             Displays the message on the screen of the main operation.
+REM # ================================================================================================
+:ProcessingInterface
+IF %1 EQU 0 (
+    CLS
+    CALL :BufferHeader
+    ECHO %~2. . .
+    ECHO -------------------------------------
+) ELSE (
+    ECHO -------------------------------------
+    PAUSE
+)
+EXIT /B 0
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
 REM #     Make sure that the host system is able to utilize 'Git' features
 REM #      before we automatically use it.
 REM #     To perform this, we merely check if 'git' was detected during an
@@ -357,18 +388,12 @@ GOTO :EOF
 
 REM # ================================================================================================
 REM # Documentation
-REM #     Provide a simple interface to automatically update repository.
-REM #     The borders in between the actual update is only for readability
-REM #      to the users.
+REM #     Provide a simple interface and automatically update repository.
 REM # ================================================================================================
 :GitFeature_UpdateBranch
-CLS
-CALL :BufferHeader
-ECHO Updating project repository. . .
-ECHO -------------------------------------
+CALL :ProcessingInterface 0 "Updating project repository"
 CALL :GitFeature_UpdateBranch_Master
-ECHO -------------------------------------
-PAUSE
+CALL :ProcessingInterface 1
 EXIT /B 0
 
 
