@@ -79,8 +79,12 @@ IF /I "%STDIN%" EQU "X" (
     GOTO :EOF
 )
 IF /I "%STDIN%" EQU "U" (
+    REM Avoid the end-user from selecting a choice that may not be
+    REM  available to them.
+    
     REM Try to detect if Git features is NOT available
     IF %featuresGit% NEQ True CALL :MainMenu_STDIN_BadInput
+    REM Try to detect if Git features IS available
     IF %featuresGit% EQU True CALL :GitFeature_UpdateBranch
     GOTO :MainMenu
 )
