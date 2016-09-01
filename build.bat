@@ -260,7 +260,8 @@ REM # ==========================================================================
 REM If git features is not available, then just use the generic name.
 REM  No hash will be used.
 IF %featuresGit% NEQ True (
-    SET "projectName=wolf_boa"
+    REM Avoid redundancy
+    IF "%featuresGit%" NEQ "wolf_boa" SET "projectName=wolf_boa"
     GOTO :EOF
 )
 REM Assume Git features are available for us to utilize
