@@ -1,6 +1,4 @@
 @ECHO OFF
-REM Update the terminal window title
-TITLE WolfenDoom EZBake Oven: Now with Nazi Cupcakes!
 REM Immediately retrieve the program's entire path
 SET "ProgramDirPath=%~dp0"
 REM Start the program
@@ -14,6 +12,8 @@ REM # Documentation
 REM #     Spine of the program; this makes sure that the execution works as intended.
 REM # ================================================================================================
 :Main
+REM Update the terminal window title
+TITLE WolfenDoom EZBake Oven: Now with Nazi Cupcakes!
 REM Check if Git executable is available on the host
 CALL :GitFeature_DependencyCheck
 CALL :MainMenu
