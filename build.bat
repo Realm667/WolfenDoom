@@ -284,7 +284,6 @@ ECHO 7Zip was unable to complete the operation and closed with an Exit Code: %1.
 ECHO.
 ECHO Tips:
 ECHO  * Make sure you have enough permission to run applications.
-ECHO  * Does the project file already exist?  If so, please delete it and try again.
 ECHO  * Make sure that the system has enough memory to perform the operation.
 ECHO  * Make sure that the files are not locked by other applications.
 ECHO  * Examine any warning messages provided and try to address them as much as possible.
