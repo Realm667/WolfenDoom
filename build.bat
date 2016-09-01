@@ -276,7 +276,7 @@ REM #      %GitCommitHash% in any function.  However, first make sure that the G
 REM #      available on the host.
 REM # ================================================================================================
 :GitFeature_FetchCommitHash
-FOR /F %%a IN ('GIT --git-dir=".\.git" rev-parse --short HEAD') DO SET GitCommitHash=%%a
+FOR /F %%a IN ('GIT --git-dir="%ProgramDirPath%.git" rev-parse --short HEAD') DO SET GitCommitHash=%%a
 GOTO :EOF
 
 
@@ -287,7 +287,7 @@ REM # Documentation
 REM #     When called, this function will update the master branch of the GIT local repo.
 REM # ================================================================================================
 :GitFeature_UpdateBranch_Master
-GIT --git-dir=".\.git" pull origin master
+GIT --git-dir="%ProgramDirPath%.git" pull origin master
 GOTO :EOF
 
 
