@@ -14,6 +14,8 @@ REM # Documentation
 REM #     Spine of the program; this makes sure that the execution works as intended.
 REM # ================================================================================================
 :Main
+REM Check if Git executable is available on the host
+CALL :GitFeature_DependencyCheck
 CALL :MainMenu
 GOTO :TerminateProcess
 
@@ -263,6 +265,40 @@ REM # ==========================================================================
 :CompactProject_WindowsExplorer
 EXPLORER /select,"%ProgramDirPath%..\wolf_boa.pk3"
 EXIT /B 0
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
+REM #     Make sure that the host system is able to utilize 'Git' features
+REM #      before we automatically use it.
+REM #     To perform this, we merely check if 'git' was detected during an
+REM #      invoktion test - which requires 'git' to be in %PATH% within the
+REM #      environment - if git was _NOT_ detected then we can't use git
+REM #      features, but we can use the features if it was detected.
+REM #
+REM # Cautionaries:
+REM #     If git.exe is in the console's environment but failed the
+REM #      detection phase, the permissions may need to be checked
+REM #      as well as the network if routing via UNC - I doubt CMD allows
+REM #      UNC anyways.
+REM #     IIF %ERRORLEVEL% EQU 9009, then git is not available in the
+REM #      environment.
+REM #     IIF %ERRORLEVEL% EQU 1, git was invoked and it successfully
+REM #      executed by outputting the main menu to NULL.
+REM #     IIF any other exit code, see documentation for the proper
+REM #      termination fault.
+REM # ================================================================================================
+:GitFeature_DependencyCheck
+REM Silently perform an invoktion test
+GIT 2> NUL 1> NUL
+IF %ERRORLEVEL% EQU 1 (
+    SET featuresGit=True
+) ELSE (
+    SET featuresGit=False
+)
+GOTO :EOF
 
 
 
