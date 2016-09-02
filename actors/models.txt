@@ -2475,93 +2475,80 @@ ACTOR Spotlight : ModelBase
 	//$Arg0Tooltip "Radius of turn to the left in degrees\nDefault: 0"
 	//$Arg1 "Right Swing Amount"
 	//$Arg1Tooltip "Radius of turn to the right in degrees\nDefault: 0"
+	//$Arg2 "Script Number"
+	//$Arg2Tooltip "Script to run when player enters range of spotlight\nDefault: 0"
 
 	var int user_minAngle;
 	var int user_maxAngle;
-	var int user_startAngle;
-	var int user_startPitch;
 	var int user_position;
 	var int user_sightRange;
 	var int user_holdTime;
 	var int user_direction;
-	var int user_FOV;
 
 	+NOGRAVITY
+	+SHOOTABLE
+	+DONTFALL
+	+DONTTHRUST
+
+	Health 100
 
 	States
 	{
-	Spawn:
-		MDLA A random(1, 35)
-		"####" # 0 {
-			if (pitch == 0 && args[0] == 0 && args[1] == 0) {
-				A_SetPitch(90);
-				A_SetArg(0, 45);
-				A_SetArg(1, 45);
+		Spawn:
+			MDLA A random(1, 35)
+			"####" # 0 {
+				if (pitch == 0 && args[0] == 0 && args[1] == 0) {
+					A_SetPitch(90);
+					A_SetArg(0, 45);
+					A_SetArg(1, 45);
+				}
 			}
-		}
-		"####" # 0 {
-				A_SetUserVar("user_minAngle", -args[1]);
-				A_SetUserVar("user_maxAngle", args[0]);
-				A_SetUserVar("user_startAngle", angle);
-				A_SetUserVar("user_startPitch", pitch);
-				A_SetUserVar("user_position", 0);
-				A_SetUserVar("user_sightRange", 1024);
-				A_SetUserVar("user_FOV", 60);
+			"####" # 0 {
+				user_minAngle = -args[1];
+				user_maxAngle = args[0];
+				user_position = 0;
+				user_sightRange = 1024;
+				user_direction = RandomPick(-1, 1);
 				A_SpawnItemEx("SpotlightFlare", 5.0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION | SXF_TRANSFERPITCH);
 				A_SpawnItemEx("SpotlightBeam", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION | SXF_TRANSFERPITCH);
-		}
-		Goto Pan
-	Pan:
-		"####" # 0 {
-			A_SetAngle(user_startAngle, SPF_INTERPOLATE);
-			A_SetPitch(user_startPitch, SPF_INTERPOLATE);
-			A_SetUserVar("user_direction", RandomPick(-1, 1));
-			A_SetUserVar("user_position", 0);
-			A_ClearTarget;
-		}
-		Pan.Hold:
-			"####" # 0 {
-				A_SetUserVar("user_holdTime", random(0, 35));
-				A_SetUserVar("user_direction", -user_direction);
 			}
-			Pan.HoldLoop:
-				"####" # 1 {
-					A_SetPitch(-pitch + 90);
-					A_CustomRailgun(0, 0, "none", "none", RGF_SILENT | RGF_NOPIERCING, 0, 0, "SpotlightGlow", 0, 0, user_sightRange, 1);
-					A_SetPitch(-pitch + 90);
-					A_SetUserVar("user_holdTime", user_holdTime + 1);
-					return A_JumpIf(user_holdTime >= 70, "Pan.Loop");
-				}
-				"####" # 0 A_JumpIfTargetInLOS("See", user_FOV, 0, user_sightRange)
-				Loop
-		Pan.Loop:
+			Goto Pan
+		Pan:
 			"####" # 1 {
-				A_SetPitch(-pitch + 90);
-				A_CustomRailgun(0, 0, "none", "none", RGF_SILENT | RGF_NOPIERCING, 0, 0, "SpotlightGlow", 0, 0, user_sightRange, 1);
-				A_SetPitch(-pitch + 90);
+				CallACS("SpotLightCast", angle, pitch, user_sightRange); //Spawns "SpotlightGlow" actor that also sets itself as spotlight's master
 			}
-			"####" # 0 A_JumpIf(args[0] == 0 && args[1] == 0, "Pan.Loop")
 			"####" # 0 {
-				A_SetUserVar("user_position", user_position + user_direction);
-				A_SetAngle(angle + user_direction);
-				A_LookEx(LOF_NOSOUNDCHECK | LOF_NOSEESOUND | LOF_NOJUMP, 0, user_sightRange, 0, user_FOV, "");
+				if (CountProximity("PlayerPawn", 272.0, CPXF_ANCESTOR, AAPTR_MASTER)) { //Radius of 272 is based off of effective radius of the spotlight glow
+					if (args[2]) {
+						ACS_ExecuteAlways(args[2], 0);
+					} else {
+						A_AlertMonsters(1280); //Still fall back to alerting monsters if no script number supplied.
+					}
+				}
+
+				if (args[0] != 0 && args[1] != 0) {
+					if (user_position >= user_maxAngle || user_position <= user_minAngle) {
+						user_holdTime++;
+						if (user_holdTime >= 70) {
+							user_holdTime = Random(0, 35);
+							user_direction = -user_direction;
+							user_position = user_position + user_direction;
+							A_SetAngle(angle + user_direction);
+						}
+					} else {
+						user_position = user_position + user_direction;
+						A_SetAngle(angle + user_direction);
+					}
+				}
 			}
-			"####" # 0 A_JumpIfTargetInLOS("See", user_FOV, 0, user_sightRange)
-			"####" # 0 A_JumpIf(user_position >= user_maxAngle || user_position <= user_minAngle, "Pan.Hold")
 			Loop
-	See:
-		"####" # 0 {
-			A_AlertMonsters(1280);
-			A_FaceTarget(1); //, -120.0);
-		}
-		"####" # 1 {
-			A_SetPitch(-pitch + 90);
-			A_CustomRailgun(0, 0, "none", "none", RGF_SILENT | RGF_NOPIERCING, 0, 0, "SpotlightGlow", 0, 0, user_sightRange, 1);
-			A_SetPitch(-pitch + 90);
-		}
-		"####" # 0 A_JumpIfTargetInLOS("See", user_FOV, JLOSF_DEADNOJUMP, user_sightRange)
-		"####" # 70
-		Goto Pan
+		Death:
+			"####" # 0 {
+				A_RemoveChildren(TRUE, RMVF_EVERYTHING);
+				A_Scream;
+			}
+			"####" # -1
+			Stop
 	}
 }
 
@@ -2578,11 +2565,17 @@ ACTOR SpotlightGlow
 	+NOGRAVITY
 	+PAINLESS
 	+PUFFONACTORS
+	-RANDOMIZE
+	+PUFFGETSOWNER
 
 	States
 	{
 	Spawn:
 		UNKN A 0
+		"####" # 1 {
+			A_SpawnitemEx("MeasurePuffTemp", 0, 0, 0, 0, 0, 0, 0, SXF_ISTRACER | SXF_SETMASTER | SXF_NOCHECKPOSITION);
+			A_TransferPointer(AAPTR_TRACER, AAPTR_TARGET, AAPTR_MASTER, AAPTR_MASTER);
+		}
 		"####" # 25 Light("SpotLight")
 		"####" # 0 A_LookEx(LOF_NOSOUNDCHECK | LOF_NOSEESOUND, 0, 272.0, 0, 360.0, "Illuminate")
 		Stop

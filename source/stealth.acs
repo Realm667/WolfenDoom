@@ -326,3 +326,8 @@ function int Clamp(int val, int minVal, int maxVal)
 {
 	return Min(Max(val, minVal), maxVal);
 }
+
+Script "SpotLightCast" (int Angle, int Pitch, int Range) //Used intead of built-in functions because the bullet and rail attacks still do vertical autoaim whether you want them to or not
+{
+	LineAttack(0, Angle * 1.0 / 360, Pitch * 1.0 / 225, 0, "SpotlightGlow", "None", Range * 1.0, FHF_NORANDOMPUFFZ); //Not sure why the pitch is out of 225...  But that makes this look pretty close to the real DECORATE attack functions.
+}
