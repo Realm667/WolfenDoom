@@ -2477,6 +2477,11 @@ ACTOR Spotlight : ModelBase
 	//$Arg1Tooltip "Radius of turn to the right in degrees\nDefault: 0"
 	//$Arg2 "Script Number"
 	//$Arg2Tooltip "Script to run when player enters range of spotlight\nDefault: 0"
+	//$Arg3 "Script Argument 1"
+	//$Arg3Tooltip "Argument to pass to script as argument 1\nDefault: 0"
+	//$Arg4 "Script Argument 2"
+	//$Arg4Tooltip "Argument to pass to script as argument 2\nDefault: 0"
+
 
 	var int user_minAngle;
 	var int user_maxAngle;
@@ -2521,7 +2526,7 @@ ACTOR Spotlight : ModelBase
 			"####" # 0 {
 				if (CountProximity("PlayerPawn", 272.0, CPXF_ANCESTOR, AAPTR_MASTER)) { //Radius of 272 is based off of effective radius of the spotlight glow
 					if (args[2]) {
-						ACS_ExecuteAlways(args[2], 0);
+						ACS_ExecuteAlways(args[2], 0, args[3], args[4]);
 					} else {
 						A_AlertMonsters(1280); //Still fall back to alerting monsters if no script number supplied.
 					}
