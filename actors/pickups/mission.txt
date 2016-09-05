@@ -129,6 +129,10 @@ ACTOR BoACompass : CustomInventory
 	}
 }
 
+///////////////////////////////////////////////////////////////
+// DISGUISE UNIFORM ///////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+
 ACTOR ScientistUniform : SwitchableDecoration
 {
 	//$Category Pickups (Wolf3D)
@@ -157,20 +161,49 @@ ACTOR ScientistUniform : SwitchableDecoration
 	}
 }
 
-ACTOR ScientistUniformPickup : Akten
+actor ScientistUniformPickup : CustomInventory
 {
-	//$Title Scientist Uniform (pickup)
-	Tag "Scientist Uniform"
-	Inventory.Icon SCUNC0
-	Inventory.PickupMessage "$SCIENCE"
-	Inventory.PickupSound "misc/health_pkup"
-	States
-	{
-	Spawn:
-		SCUN D -1 NODELAY 
-		Stop
-	}
+    states
+    {
+    Spawn:
+        SCUN D -1
+        stop
+
+    Pickup:
+        TNT1 A 0 A_GiveInventory("NullWeapon", 1)
+        TNT1 A 0 A_SelectWeapon("NullWeapon")
+        stop
+    }
 }
+
+actor NullWeapon : Weapon
+{
+    +WEAPON.NOALERT
+    +INVENTORY.UNDROPPABLE
+
+    states
+    {
+    Select:
+        TNT1 A 0 SetPlayerProperty(0, TRUE, PROP_NOTARGET)
+    Raise:
+        TNT1 A 0 A_Raise
+        loop
+
+    Deselect:
+        TNT1 A 0 SetPlayerProperty(0, FALSE, PROP_NOTARGET)
+        TNT1 A 0 A_TakeInventory("NullWeapon", 1)
+    Lower:
+        TNT1 A 0 A_Lower
+        loop
+
+    Fire:
+    Ready:
+        TNT1 A 1 A_WeaponReady(WRF_NOFIRE)
+        loop
+    }
+} 
+
+///////////////////////////////////////////////////////////////
 
 ACTOR Kennkarte : Inventory
 {
