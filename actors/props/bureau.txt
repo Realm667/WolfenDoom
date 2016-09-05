@@ -140,20 +140,23 @@ ACTOR Plant6 : Plant1
 	}
 }
 
-ACTOR Chair1 //3d actor
+ACTOR Chair1 : Plant1 //3d actor
 {
-	//$Category Props (Wolf3D)/Bureau
-	//$Title Chair (brown)
-	//$Color 3
+	//$Title Chair (brown, destroyable)
 	DistanceCheck "scenelod"
-	Radius 8
 	Height 20
-	+SOLID
+	Mass 999999
 	+NOGRAVITY
 	States
 	{
 	Spawn:
 		MDLA A -1
+		Stop
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		TNT1 A 0 A_PlaySound("WOODBRK", CHAN_AUTO, frandom (0.5,0.8), FALSE, ATTN_NORM)
+		MDLA CDEFG 1
+		MDLA H -1
 		Stop
 	}
 }
@@ -170,7 +173,7 @@ ACTOR Chair3 : Chair1 //3d actor
 	DistanceCheck "scenelod"
 }
 
-ACTOR Chair5 : Chair1 //3d actor
+ACTOR Chair4 : Chair1 //3d actor
 {
 	//$Title Chair (grey)
 	DistanceCheck "scenelod"
