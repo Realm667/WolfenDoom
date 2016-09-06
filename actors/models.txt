@@ -2489,6 +2489,7 @@ ACTOR Spotlight : ModelBase
 	var int user_sightRange;
 	var int user_holdTime;
 	var int user_direction;
+	var int user_interval;
 
 	+NOGRAVITY
 	+SHOOTABLE
@@ -2521,7 +2522,12 @@ ACTOR Spotlight : ModelBase
 			Goto Pan
 		Pan:
 			"####" # 1 {
-				CallACS("SpotLightCast", angle, pitch, user_sightRange); //Spawns "SpotlightGlow" actor that also sets itself as spotlight's master
+				user_interval++;
+
+				if (user_interval >= 2) {
+					CallACS("SpotLightCast", angle, pitch, user_sightRange); //Spawns "SpotlightGlow" actor that also sets itself as spotlight's master
+					user_interval = 0;
+				}
 			}
 			"####" # 0 {
 				if (CountProximity("PlayerPawn", 272.0, CPXF_ANCESTOR, AAPTR_MASTER)) { //Radius of 272 is based off of effective radius of the spotlight glow
