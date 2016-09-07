@@ -142,7 +142,7 @@ ACTOR Plant6 : Plant1
 
 ACTOR Chair1 : Plant1 //3d actor
 {
-	//$Title Chair (brown, destroyable)
+	//$Title Chair (plain, wood)
 	DistanceCheck "scenelod"
 	Height 20
 	Mass 999999
@@ -163,22 +163,50 @@ ACTOR Chair1 : Plant1 //3d actor
 
 ACTOR Chair2 : Chair1 //3d actor
 {
-	//$Title Chair (office)
+	//$Title Chair (office, wood & metal)
 	DistanceCheck "scenelod"
+	States
+	{
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		TNT1 A 0 {A_PlaySound("METALBRK", CHAN_AUTO, frandom (0.5,0.8), FALSE, ATTN_NORM);
+							A_PlaySound("WOODBRK", CHAN_AUTO, frandom (0.5,0.8), FALSE, ATTN_NORM);}
+		MDLA CDEFG 1
+		MDLA H -1
+		Stop
+	}
 }
 
 ACTOR Chair3 : Chair1 //3d actor
 {
 	//$Title Chair, Detailed (office, wood)
 	DistanceCheck "scenelod"
+	States
+	{
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		TNT1 A 0 A_PlaySound("WOODBRK", CHAN_AUTO, frandom (0.5,0.8), FALSE, ATTN_NORM)
+		MDLA CDEFG 1
+		MDLA H -1
+		Stop
+	}
 }
 
 ACTOR Chair4 : Chair1 //3d actor
 {
-	//$Title Chair (grey)
+	//$Title Chair (plain, metal)
 	DistanceCheck "scenelod"
 	Radius 8
 	Height 20
+	States
+	{
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		TNT1 A 0 A_PlaySound("METALBRK", CHAN_AUTO, frandom (0.5,0.8), FALSE, ATTN_NORM)
+		MDLA CDEFG 1
+		MDLA H -1
+		Stop
+	}
 }
 
 ACTOR SSUniform
