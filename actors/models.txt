@@ -2521,6 +2521,7 @@ ACTOR Spotlight : ModelBase
 			}
 			Goto Pan
 		Pan:
+			"####" # 0 A_CheckRange(2768,"DontCastLite")
 			"####" # 1 {
 				user_interval++;
 
@@ -2554,6 +2555,40 @@ ACTOR Spotlight : ModelBase
 				}
 			}
 			Loop
+		DontCastLite: //let's avoid some lags - ozy81
+			"####" # 0
+			"####" # 1 {
+				user_interval++;
+
+				if (user_interval >= 2) {
+					user_interval = 0;
+				}
+			}
+			"####" # 0 {
+				if (CountProximity("PlayerPawn", 272.0, CPXF_ANCESTOR, AAPTR_MASTER)) { //Radius of 272 is based off of effective radius of the spotlight glow
+					if (args[2]) {
+						ACS_ExecuteAlways(args[2], 0, args[3], args[4]);
+					} else {
+						A_AlertMonsters(1280); //Still fall back to alerting monsters if no script number supplied.
+					}
+				}
+
+				if (args[0] != 0 && args[1] != 0) {
+					if (user_position >= user_maxAngle || user_position <= user_minAngle) {
+						user_holdTime++;
+						if (user_holdTime >= 70) {
+							user_holdTime = Random(0, 35);
+							user_direction = -user_direction;
+							user_position = user_position + user_direction;
+							A_SetAngle(angle + user_direction);
+						}
+					} else {
+						user_position = user_position + user_direction;
+						A_SetAngle(angle + user_direction);
+					}
+				}
+			}
+			Goto Pan
 		Death:
 			"####" B 0 {
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING);
