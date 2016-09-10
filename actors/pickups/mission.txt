@@ -129,6 +129,21 @@ ACTOR BoACompass : CustomInventory
 	}
 }
 
+ACTOR RepairKit : Akten
+{
+	//$Title Repair Kit (electric)
+	Tag "Repair Kit"
+	Inventory.Icon EKPKA0
+	Inventory.PickupMessage "$ELECPAK"
+	Inventory.MaxAmount 1
+	States
+	{
+	Spawn:
+		EKPK B -1 
+		Stop
+	}
+}
+
 ///////////////////////////////////////////////////////////////
 // DISGUISE UNIFORM ///////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
