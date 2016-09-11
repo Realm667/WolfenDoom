@@ -239,3 +239,60 @@ decal LazScorch
 }
 
 generator MeasurePuff			LazScorch
+
+//Lasershark
+Decal RedRailScorchLower1
+{
+	Pic CBALSCR1
+	Shade "00 00 00"
+	X-Scale 0.1
+	Y-Scale 0.1
+	RandomFlipX
+	RandomFlipY
+}
+
+Decal RedRailScorchLower2
+{
+	Pic CBALSCR2
+	Shade "00 00 00"
+	X-scale 0.1
+	Y-scale 0.1
+	RandomFlipX
+	RandomFlipY
+}
+
+DecalGroup RedRailScorchLower
+{
+	RedRailScorchLower1 1
+	RedRailScorchLower2 1
+}
+
+
+
+Decal RedRailScorch1
+{
+	Pic CBALSCR1
+	Shade "56 00 00"
+	FullBright
+	X-Scale 0.2
+	Y-Scale 0.2
+	Animator GoAway
+	LowerDecal RedRailScorchLower
+}
+
+Decal RedRailScorch2
+{
+	Pic CBALSCR2
+	Shade "56 00 00"
+	FullBright
+	X-Scale 0.2
+	Y-Scale 0.2
+	Animator GoAway
+	LowerDecal RedRailScorchLower
+}
+
+DecalGroup RedRailScorch
+{
+	RedRailScorch1 1
+	RedRailScorch2 1
+}

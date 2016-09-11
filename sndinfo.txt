@@ -949,6 +949,37 @@ cough1	cough1
 cough2	cough2
 
 /////////////////////////////////////////////////////////////////////
+//// RANDOM AXIS CHATTER ////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+
+chatter/axis1 axrc1
+chatter/axis2 axrc2
+chatter/axis3 axrc3
+chatter/axis4 axrc4
+chatter/axis5 axrc5
+chatter/axis6 axrc6
+chatter/axis7 axrc7
+chatter/axis8 axrc8
+chatter/axis9 axrc9
+chatter/axis10 axrc10
+chatter/axis11 axrc11
+chatter/axis12 axrc12
+chatter/axis13 axrc13
+chatter/axis14 axrc14
+chatter/axis15 axrc15
+chatter/axis16 axrc16
+chatter/axis17 axrc17
+chatter/axis18 axrc18
+chatter/axis19 axrc19
+chatter/axis20 axrc20
+chatter/axis21 axrc21
+chatter/axis22 axrc22
+chatter/axis23 axrc23
+chatter/axis24 axrc24
+
+$random CHATTER_AXIS { chatter/axis1 chatter/axis2 chatter/axis3 chatter/axis4 chatter/axis5 chatter/axis6 chatter/axis7 chatter/axis8 chatter/axis9 chatter/axis10 chatter/axis11 chatter/axis12 chatter/axis13 chatter/axis14 chatter/axis15 chatter/axis16 chatter/axis17 chatter/axis18 chatter/axis19 chatter/axis20 chatter/axis21 chatter/axis22 chatter/axis23 chatter/axis24 }
+
+/////////////////////////////////////////////////////////////////////
 //// SYSTEM/MENU SOUNDS /////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
 
@@ -1564,6 +1595,8 @@ WAR_DISTANT_3 WAR_03
 WAR_DISTANT_4 WAR_04
 $random WAR_DISTANT { WAR_DISTANT_1 WAR_DISTANT_2 WAR_DISTANT_3 WAR_DISTANT_4 }
 
+WAR_CLOSER BATTLCL
+
 ALARM_DOOD ALARM01
 ALARM_RING ALARM02
 ASTROCITYAMB SFCAMB
@@ -1620,6 +1653,8 @@ WIND_HOWLING_CITY CITYHOWL
 WIND_HOWLING_UNDERGROUND AMB24
 WIND_MEDIUM WIND_03
 WIND_SILENT WIND_04
+AIR_RAID_ALARM MECALA1
+
 
 //Thunder
 misc/thunder1 thunder1
@@ -1658,7 +1693,7 @@ $AMBIENT 23 WATER_LAPS POINT CONTINUOUS 1.0
 $AMBIENT 24 WATER_RIVER POINT CONTINUOUS 1.0
 $AMBIENT 25 WATER_SHORE POINT CONTINUOUS 1.0
 $AMBIENT 26 WIND_CAVE POINT CONTINUOUS 1.0
-$AMBIENT 27 WAR_DISTANT SURROUND CONTINUOUS 1.0
+$AMBIENT 27 WAR_DISTANT SURROUND CONTINUOUS 0.5
 $AMBIENT 28 WIND_HOWLING POINT CONTINUOUS 1.0
 $AMBIENT 29 WIND_MEDIUM POINT CONTINUOUS 1.0
 $AMBIENT 30 WIND_SILENT POINT CONTINUOUS 1.0
@@ -1697,6 +1732,9 @@ $AMBIENT 62 TRAIN POINT CONTINUOUS 0.7
 $AMBIENT 63 HEAVY_FAN POINT CONTINUOUS 1.0
 $AMBIENT 64 RAIN_LIGHT POINT CONTINUOUS 0.5
 $AMBIENT 65 SALOONKY POINT CONTINUOUS 1.0
+$AMBIENT 66 AIR_RAID_ALARM POINT CONTINUOUS 1.0
+$AMBIENT 67 WAR_CLOSER POINT CONTINUOUS 1.0
+$AMBIENT 68 CHATTER_AXIS POINT PERIODIC 9.0 1.0
 
 /////////////////////////////////////////////////////////////////////
 //// BRIEFING VOICEOVER SOUNDS //////////////////////////////////////
