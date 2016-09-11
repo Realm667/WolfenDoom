@@ -267,7 +267,8 @@ IF %featuresGit% NEQ True (
 REM Assume Git features are available for us to utilize
 REM  Attach the hash to the file name.
 CALL :GitFeature_FetchCommitHash
-SET "projectName=wolf_boa-%GitCommitHash%"
+REM Avoid redundancy
+IF "%projectName%" NEQ "wolf_boa-%GitCommitHash%" SET "projectName=wolf_boa-%GitCommitHash%"
 GOTO :EOF
 
 
