@@ -1112,15 +1112,16 @@ ACTOR ModelOpelTruckWindows : ModelBase
 	StencilColor "CC CC CC"
 }
 
-ACTOR WallLight1 : 3dObstacle
+ACTOR WallLight1 : ModelBase
 {
 	//$Category Light Sources (Wolf3D)/Static
 	//$Title Wall Light (off, static)
 	//$Color 11
-	Radius 16
+	Radius 4
 	Height 16
-	+NOGRAVITY
 	-SOLID
+	+NOBLOCKMAP
+	+NOGRAVITY
 }
 
 ACTOR WallLight1Lit : WallLight1
@@ -1135,14 +1136,15 @@ ACTOR WallLight1Lit : WallLight1
 	}
 }
 
-ACTOR WallLight2 : 3dObstacle
+ACTOR WallLight2 : ModelBase
 {
 	//$Category Light Sources (Wolf3D)/Static
 	//$Title Wall Lantern (off, static)
 	//$Color 11
-	Radius 14
-	Height 48
+	Radius 4
+	Height 24
 	-SOLID
+	+NOBLOCKMAP
 	+NOGRAVITY
 }
 
