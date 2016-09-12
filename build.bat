@@ -261,13 +261,14 @@ REM If git features is not available, then just use the generic name.
 REM  No hash will be used.
 IF %featuresGit% NEQ True (
     REM Avoid redundancy
-    IF "%featuresGit%" NEQ "wolf_boa" SET "projectName=wolf_boa"
+    IF "%projectName%" NEQ "wolf_boa" SET "projectName=wolf_boa"
     GOTO :EOF
 )
 REM Assume Git features are available for us to utilize
 REM  Attach the hash to the file name.
 CALL :GitFeature_FetchCommitHash
-SET "projectName=wolf_boa-%GitCommitHash%"
+REM Avoid redundancy
+IF "%projectName%" NEQ "wolf_boa-%GitCommitHash%" SET "projectName=wolf_boa-%GitCommitHash%"
 GOTO :EOF
 
 
