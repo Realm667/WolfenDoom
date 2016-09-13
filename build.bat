@@ -341,9 +341,32 @@ EXIT /B 0
 
 REM # ================================================================================================
 REM # Documentation
-REM #     Make sure that the host system is able to utilize 'Git' features
-REM #      before we automatically use it.
-REM #     To perform this, we merely check if 'git' was detected during an
+REM #   Check to see if we can be able to utilize Git features within this program.
+REM # ================================================================================================
+:GitFeature_DependencyCheck
+CALL :GitFeature_DependencyCheck_GitExecutable
+IF %ERRORLEVEL% EQU 1 (
+    REM Could not detect the git executable
+    SET featuresGit=False
+    GOTO :EOF
+)
+CALL :GitFeature_DependencyCheck_RepoGitDB
+IF %ERRORLEVEL% EQU 1 (
+    REM Could not find the .git directory
+    SET featuresGit=False
+    GOTO :EOF
+)
+REM Safe to use git features; found the .git directory and the git executable.
+SET featuresGit=True
+GOTO :EOF
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
+REM #      Check to see if the git executable exists within the host system.
+REM #      To do this, we merely check if 'git' was detected during an
 REM #      invoktion test - which requires 'git' to be in %PATH% within the
 REM #      environment - if git was _NOT_ detected then we can't use git
 REM #      features, but we can use the features if it was detected.
@@ -359,16 +382,43 @@ REM #     IIF %ERRORLEVEL% EQU 1, git was invoked and it successfully
 REM #      executed by outputting the main menu to NULL.
 REM #     IIF any other exit code, see documentation for the proper
 REM #      termination fault.
+REM #
+REM # Return
+REM #   ReturnCode [Bool]
+REM #       0 = Git executable detected.
+REM #       1 = Git executable not detected.
 REM # ================================================================================================
-:GitFeature_DependencyCheck
-REM Silently perform an invoktion test
+:GitFeature_DependencyCheck_GitExecutable
 GIT 2> NUL 1> NUL
 IF %ERRORLEVEL% EQU 1 (
-    SET featuresGit=True
-) ELSE (
-    SET featuresGit=False
+    REM Found the git executable
+    EXIT /B 0
 )
-GOTO :EOF
+REM Could not find the git executable
+EXIT /B 1
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
+REM #   When the end-user has the source code, it may or may not contain the .git DB directory.
+REM #   This function is designed to check wither or not the directory exists within the source code.
+REM #
+REM # Return
+REM #   ReturnCode [Bool]
+REM #       0 = .git directory found.
+REM #       1 = .git directory not found.
+REM # ================================================================================================
+:GitFeature_DependencyCheck_RepoGitDB
+REM Silently perform a check to see if the source contains the .git directory
+GIT --git-dir="%ProgramDirPath%.git" status 2> NUL 1> NUL
+IF %ERRORLEVEL% EQU 0 (
+    REM .git directory was successfully found
+    EXIT /B 0
+)
+REM Could not find the .git directory within the source.
+EXIT /B 1
 
 
 
