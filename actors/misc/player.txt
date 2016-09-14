@@ -5,7 +5,7 @@ ACTOR ScientistUniformToken : Inventory {Inventory.MaxAmount 1}
 ACTOR BoAPlayer : PlayerPawn
 {
 	Species "Player"
-	+DONTBLAST //avoid kick's blast effect
+	+DONTBLAST //avoid kick's blast effect while kicking at walls
 	+THRUSPECIES
 	Player.InvulnerabilityMode "reflective"
 	Player.StartItem "KnifeSilent"
@@ -23,7 +23,6 @@ ACTOR BoAPlayer : PlayerPawn
 	Player.StartItem "AstroRocketLauncherLoaded",5
 	Player.StartItem "AstroChaingunLoaded",30
 	Player.StartItem "Stamina", 100
-	//Player.StartItem "ScientistUniformToken", 0
 	Player.ViewHeight 56
 	Player.AttackZOffset 24
 	Player.DisplayName "William Blazkowicz"
@@ -43,9 +42,9 @@ ACTOR BoAPlayer : PlayerPawn
 	States
 	{
 	Spawn:
-		PLAY A 1 NoDelay A_JumpIfInventory("ScientistUniformToken", 1, "ScientistSkin")
+		PLAY A 1 NoDelay A_JumpIfInventory("ScientistUniformToken", 1, "Spawn.Uniform")
 		Loop
-	ScientistSkin:
+	Spawn.Uniform:
 		PLSC A 1
 		Loop
 	See:
@@ -56,10 +55,10 @@ ACTOR BoAPlayer : PlayerPawn
 		"####" G 3 A_Pain
 		Goto Spawn
 	Missile:
-		"####" E 12
+		"####" E 12 BRIGHT
 		Goto Spawn
 	Melee:
-		"####" F 6 BRIGHT
+		"####" F 6
 		Goto Missile
 	Disintegrate: //here in order to transfer properly frames if needed - ozy81
 		"####" G 0 A_Playsound("astrostein/guard_death")
@@ -75,7 +74,8 @@ ACTOR BoAPlayer : PlayerPawn
 		"####" I 1 A_PlaySound("death/bjfall")
 		"####" J 5 A_NoBlocking
 		"####" K 5
-		"####" L -1
+		"####" LM 2
+		"####" N -1
 		Stop
 	Death.Fire:
 		BURN A 5 BRIGHT LIGHT(ITBURNS1)
@@ -159,7 +159,4 @@ DamageType MutantPoison
 	ReplaceFactor
 }
 
-DamageType Trample
-{
-	NoArmor
-}
+DamageType Trample { NoArmor }
