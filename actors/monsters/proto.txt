@@ -1,0 +1,66 @@
+ACTOR ProtoDrone : Nazi
+{
+	//$Category Monsters (Wolf3D)
+	//$Title Prototype Drone
+	//$Color 4
+	Scale 1
+	Health 200
+	Radius 31
+	Mass 400
+	Speed 2.66666667
+	PainChance 128
+	-FLOORCLIP
+	+FLOAT
+	+LOOKALLAROUND
+	+NOBLOOD
+	+NOGRAVITY
+	SeeSound "drone_sight"
+	PainSound "drone_pain"
+	DeathSound "astrostein/explosion"
+	ActiveSound "drone_act"
+	//Obituary "$ADRONE"
+	States
+	{
+	Spawn:
+		PROT A 0
+		Goto Look
+	See:
+		PROT A 1 A_Chase
+		"####" AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_Chase
+		"####" BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" C 1 A_Chase
+		"####" CC 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		Loop
+	Idle:
+		PROT AAABBBCCC 1 A_Wander
+		"####" A 0 A_Look
+		Loop
+	Missile:
+		PROT H 5 A_FaceTarget
+		"####" H 0 A_PlaySound("astrochaingun/fire")
+		"####" DE 8 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-8,8))
+		"####" H 5 A_FaceTarget
+		"####" H 0 A_PlaySound("astrochaingun/fire")
+		"####" DE 5 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-8,8))
+		Goto See
+	Missile2:
+		PROT H 5 A_FaceTarget
+		"####" H 0 A_PlaySound("astrochaingun/fire")
+		"####" DE 5 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-8,8))
+		Goto See
+	Pain:
+	Pain.Dagger:
+		PROT H 3
+		"####" H 3 A_Pain
+		"####" H 6
+		Goto See
+	Death:
+		PROT JKL 5
+		"####" M 0 {A_Scream;
+							A_SpawnItemEx("AstrosteinExplosion_Medium", 0, 0, 48);
+							A_NoBlocking;}
+		"####" MNOP 5 A_SetFloorClip
+		Stop
+	}
+}
