@@ -253,3 +253,78 @@ ACTOR TeslaTurret //inspired from Tesla Coil by Captain Toenail - still not fini
 	//no Death states because it's invulnerable
 	}
 }
+
+actor Pmetal1
+{
+	//$Category Props (Wolf3D)/Tech
+	//$Title Metal Junk 1
+	//$Color 3
+	+CLIENTSIDEONLY
+	+CORPSE
+	+NOTELEPORT
+	+MOVEWITHSECTOR
+	Height 1
+	Radius 1
+	States
+	{
+	Spawn:
+ 		 MET1 A -1
+  		stop
+	}
+}
+
+actor Pmetal2 : Pmetal1
+{
+	//$Category Props (Wolf3D)/Tech
+	//$Title Metal Junk 2
+	//$Color 3
+
+	States
+	{
+	Spawn:
+  		MET2 A -1
+  		stop
+	}
+}
+
+actor Pmetal3 : Pmetal1
+{
+	//$Category Props (Wolf3D)/Tech
+	//$Title Metal Junk 3
+	//$Color 3
+
+	States
+	{
+	Spawn:
+  		MET3 A -1
+  		stop
+	}
+}
+ 
+actor Pmetal4 : Pmetal1
+{
+	//$Category Props (Wolf3D)/Tech
+	//$Title Metal Junk 4
+	//$Color 3
+
+	States
+	{
+	Spawn:
+  		MET4 A -1
+  		stop
+	}
+}
+
+actor Pmetal5 : Pmetal1
+{
+	//$Category Props (Wolf3D)/Tech
+	//$Title Metal Junk 5
+	//$Color 3
+
+	States
+	{
+	Spawn:
+  		MET5 A -1
+  		stop
+	}
+}
