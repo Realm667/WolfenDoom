@@ -4,6 +4,9 @@ ACTOR ScientistUniformToken : Inventory {Inventory.MaxAmount 1}
 
 ACTOR BoAPlayer : PlayerPawn
 {
+	var float user_crouch;
+	var float user_scaleY;
+
 	Species "Player"
 	+DONTBLAST //avoid kick's blast effect while kicking at walls
 	+THRUSPECIES
@@ -42,23 +45,57 @@ ACTOR BoAPlayer : PlayerPawn
 	States
 	{
 	Spawn:
+		PLAY A 0 NoDelay {
+			if (user_scaleY == 0) { user_scaleY = ScaleY; }
+		}
 		PLAY A 1 A_JumpIfInventory("ScientistUniformToken", 1, "Spawn.Uniform")
 		Loop
 	Spawn.Uniform:
-		PLSC A 1
-		Loop
+		PLSC A 1 A_JumpIfInventory("ScientistUniformToken", 1, "Spawn.Uniform")
+		"####" # 0 A_Jump(256, "Spawn")
 	See:
-		"####" ABCD 8
+		"####" AAAAAAABBBBBBBBCCCCCCCCDDDDDDDD 1 { //Check for change every tic, but still let each frame display for 8 tics (A is only 7 times here to account for the lead in frame set in other states)
+			user_crouch = GetCrouchFactor(AAPTR_DEFAULT);
+
+			if (CountInv("ScientistUniformToken") > 0) {
+				if (user_crouch < 0.75) { //0.75 factor taken from ZDoom source handling of crouch sprite change
+					return State("See.Scientist.Crouch");
+				} else {
+					ScaleY = user_scaleY;
+					return State("See.Scientist");
+				}
+			} else {
+				ScaleY = user_scaleY;
+				return State("");
+			}
+		}
+		PLAY A 1
 		Loop
+	See.Scientist:
+		PLSC A 1
+		"####" # 0 A_Jump(256, "See.Resume")
+	See.Scientist.Crouch:
+		CYBR A 1
+		"####" # 0 A_Jump(256, "See.Resume")
+	See.Resume:
+		"####" AAAAAAABBBBBBBBCCCCCCCCDDDDDDDD 1 {
+			ScaleY = user_scaleY / user_crouch; //Negate crouch sprite scaling
+			if ((velx + vely) == 0 || GetCrouchFactor(AAPTR_DEFAULT) != user_crouch) { //Get rid of the 'running in place' effect and check if crouch state changed
+				return State("See");
+			} else {
+				return State("");
+			}
+		}
+		"####" # 0 A_Jump(256, "See")
 	Pain:
 		"####" G 0 ACS_NamedExecuteWithResult("PlayerFlinch", 0)
 		"####" G 4 A_Pain
 		"####" # 0 A_Jump(256, "Spawn")
 	Missile:
-		"####" E 12 BRIGHT
+		PLAY E 12 BRIGHT
 		"####" # 0 A_Jump(256, "Spawn")
 	Melee:
-		"####" F 6
+		PLAY F 6
 		"####" # 0 A_Jump(256, "Missile")
 	Disintegrate: //here in order to transfer properly frames if needed - ozy81
 		"####" G 0 A_Playsound("astrostein/guard_death")
