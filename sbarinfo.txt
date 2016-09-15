@@ -7,13 +7,13 @@ InterpolateArmor true;
 statusbar Normal // Standard Doom Status bar
 {
 
-    InInventory "CutsceneEnabled"
-    {
-	// nothing to draw when using
-    }
-    else
-    {
-	//Draw Mask for Space Suit
+	InInventory "CutsceneEnabled"
+	{
+		// nothing to draw when using
+	}
+	else
+	{
+		//Draw Mask for Space Suit
 	InInventory PowerSpaceSuit, 1
 	{
 		DrawImage "STGMASK", 157, 78, center;
@@ -83,9 +83,16 @@ statusbar Normal // Standard Doom Status bar
 		IsSelected Panzerschreck
 		{drawmugshot "STF", 5, disablerampage, 76, 168;}
 		
+		//We must take in consideration the NullWeapon while wearing the
+		//Scientist uniform and to remove the grin face obviously - Ozy81
+		IsSelected not NullWeapon
+		{drawmugshot "STF", 5, 76, 168;}
+		IsSelected NullWeapon
+		{drawmugshot "STF", 5, disablerampage, 76, 168;}
+		
 	//mxd. Mugshot frame overlay
 	drawimage "HUDBROVL", 74, 168;
-    }
+	}
 }
 
 Statusbar Automap
@@ -95,13 +102,13 @@ Statusbar Automap
 
 Statusbar FullScreen, FullScreenOffsets, forcescaled
 {
-    InInventory "CutsceneEnabled"
-    {
-	// nothing to draw when using
-    }
-    else
-    {
-	//SpaceSuite Mask
+	InInventory "CutsceneEnabled"
+	{
+		// nothing to draw when using
+	}
+	else
+	{
+		//SpaceSuite Mask
 	InInventory PowerSpaceSuit, 1
 	{
 		 DrawImage "STGMASK", 0+center, 0+center, center;
@@ -153,6 +160,13 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 		{drawmugshot "STF", 5, 7, -38;}
 		IsSelected Panzerschreck
 		{drawmugshot "STF", 5, disablerampage, 7, -38;}
+	
+		//We must take in consideration the NullWeapon while wearing the
+		//Scientist uniform and to remove the grin face obviously - Ozy81
+		IsSelected not NullWeapon
+		{drawmugshot "STF", 5, 7, -38;}
+		IsSelected NullWeapon
+		{drawmugshot "STF", 5, disablerampage, 7, -38;}
 
 	//Bottom Right
 	drawimage "HUD_BR", -116, -53;
@@ -178,5 +192,5 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 	//Grenade
 	drawnumber 3, BIGFONT, untranslated, GrenadePickup, alignment(left), -83, -20;
 
-    }
+	}
 }

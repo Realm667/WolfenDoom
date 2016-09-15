@@ -42,24 +42,24 @@ ACTOR BoAPlayer : PlayerPawn
 	States
 	{
 	Spawn:
-		PLAY A 1 NoDelay A_JumpIfInventory("ScientistUniformToken", 1, "Spawn.Uniform")
+		PLAY A 1 A_JumpIfInventory("ScientistUniformToken", 1, "Spawn.Uniform")
 		Loop
 	Spawn.Uniform:
 		PLSC A 1
 		Loop
 	See:
-		"####" ABCD 7
+		"####" ABCD 8
 		Loop
 	Pain:
 		"####" G 0 ACS_NamedExecuteWithResult("PlayerFlinch", 0)
-		"####" G 3 A_Pain
-		Goto Spawn
+		"####" G 4 A_Pain
+		"####" # 0 A_Jump(256, "Spawn")
 	Missile:
 		"####" E 12 BRIGHT
-		Goto Spawn
+		"####" # 0 A_Jump(256, "Spawn")
 	Melee:
 		"####" F 6
-		Goto Missile
+		"####" # 0 A_Jump(256, "Missile")
 	Disintegrate: //here in order to transfer properly frames if needed - ozy81
 		"####" G 0 A_Playsound("astrostein/guard_death")
 		"####" G 5 A_PlayerScream
