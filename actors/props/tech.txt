@@ -1,4 +1,4 @@
-ACTOR Radar //3d actor
+ACTOR Radar //3d ACTOR
 {
 	//$Category Props (Wolf3D)/Tech
 	//$Title Radar
@@ -254,77 +254,79 @@ ACTOR TeslaTurret //inspired from Tesla Coil by Captain Toenail - still not fini
 	}
 }
 
-actor Pmetal1
+ACTOR Pmetal1
 {
 	//$Category Props (Wolf3D)/Tech
 	//$Title Metal Junk 1
 	//$Color 3
 	+CLIENTSIDEONLY
 	+CORPSE
-	+NOTELEPORT
 	+MOVEWITHSECTOR
+	+NOTELEPORT
 	Height 1
 	Radius 1
 	States
 	{
 	Spawn:
- 		 MET1 A -1
-  		stop
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
+		MTLJ A -1
+		MTLJ B -1
+		MTLJ C -1
+		Stop
 	}
 }
 
-actor Pmetal2 : Pmetal1
+ACTOR Pmetal2 : Pmetal1
 {
-	//$Category Props (Wolf3D)/Tech
 	//$Title Metal Junk 2
-	//$Color 3
-
 	States
 	{
 	Spawn:
-  		MET2 A -1
-  		stop
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
+		MTLJ D -1
+		MTLJ E -1
+		MTLJ F -1
+		Stop
 	}
 }
 
-actor Pmetal3 : Pmetal1
+ACTOR Pmetal3 : Pmetal1
 {
-	//$Category Props (Wolf3D)/Tech
 	//$Title Metal Junk 3
-	//$Color 3
-
 	States
 	{
 	Spawn:
-  		MET3 A -1
-  		stop
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
+		MTLJ G -1
+		MTLJ H -1
+		MTLJ I -1 
+		Stop
 	}
 }
  
-actor Pmetal4 : Pmetal1
+ACTOR Pmetal4 : Pmetal1
 {
-	//$Category Props (Wolf3D)/Tech
 	//$Title Metal Junk 4
-	//$Color 3
-
 	States
 	{
 	Spawn:
-  		MET4 A -1
-  		stop
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
+		MTLJ J -1
+		MTLJ K -1
+		MTLJ L -1 
+		Stop
 	}
 }
 
-actor Pmetal5 : Pmetal1
+ACTOR Pmetal5 : Pmetal1
 {
-	//$Category Props (Wolf3D)/Tech
 	//$Title Metal Junk 5
-	//$Color 3
-
 	States
 	{
 	Spawn:
-  		MET5 A -1
-  		stop
+		TNT1 A 0 NODELAY A_Jump(256,1,2)
+		MTLJ M -1
+		MTLJ N -1
+		Stop 
 	}
 }
