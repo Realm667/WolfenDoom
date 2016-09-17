@@ -4,13 +4,14 @@ ACTOR ProtoDrone : Nazi
 	//$Title Prototype Drone
 	//$Color 4
 	Scale 1
-	Health 200
-	Radius 31
+	Health 300
+	Radius 32
 	Mass 400
 	Speed 2.66666667
 	PainChance 128
 	-FLOORCLIP
 	+FLOAT
+	+FLOATBOB
 	+LOOKALLAROUND
 	+NOBLOOD
 	+NOGRAVITY
@@ -18,7 +19,7 @@ ACTOR ProtoDrone : Nazi
 	PainSound "drone_pain"
 	DeathSound "astrostein/explosion"
 	ActiveSound "drone_act"
-	//Obituary "$ADRONE"
+	//Obituary "$PDRONE"
 	States
 	{
 	Spawn:
@@ -27,40 +28,58 @@ ACTOR ProtoDrone : Nazi
 	See:
 		PROT A 1 A_Chase
 		"####" AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" B 1 A_Chase
-		"####" BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" C 1 A_Chase
-		"####" CC 1 A_Chase("","",CHF_NOPLAYACTIVE)
 		Loop
 	Idle:
-		PROT AAABBBCCC 1 A_Wander
+		PROT AAA 1 A_Wander
 		"####" A 0 A_Look
 		Loop
 	Missile:
-		PROT H 5 A_FaceTarget
-		"####" H 0 A_PlaySound("astrochaingun/fire")
-		"####" DE 8 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-8,8))
-		"####" H 5 A_FaceTarget
-		"####" H 0 A_PlaySound("astrochaingun/fire")
-		"####" DE 5 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-8,8))
+		PROT B 0 A_Jump(192,"Missile2")
+		"####" B 5 A_FaceTarget
+		"####" B 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
+		"####" CDE 8 LIGHT(PROTOFIRE) A_CustomMissile("EnemyProtoTracer",ScaleX*2,ScaleY*-16,random(-2,2))
+		"####" B 5 A_FaceTarget
+		"####" B 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
+		"####" CDE 8 LIGHT(PROTOFIRE) A_CustomMissile("EnemyProtoTracer",ScaleX*2,ScaleY*-16,random(-2,2))
 		Goto See
 	Missile2:
-		PROT H 5 A_FaceTarget
-		"####" H 0 A_PlaySound("astrochaingun/fire")
-		"####" DE 5 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-8,8))
+		PROT N 0 A_Jump(192,"Missile3")
+		"####" N 5 A_FaceTarget
+		"####" N 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
+		"####" FGHI 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",ScaleX*2,ScaleY*16,random(-2,2))
+		"####" I 0 A_SpawnItemEx("9MMCasing", 0,0,54, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" N 5 A_FaceTarget
+		"####" N 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
+		"####" FGHI 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",ScaleX*2,ScaleY*16,random(-2,2))
+		"####" I 0 A_SpawnItemEx("9MMCasing", 0,0,54, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		Goto See
+	Missile3:
+		"####" N 5 A_FaceTarget
+		"####" N 0 {A_PlaySound("chaingun/fire", CHAN_WEAPON);
+								A_PlaySound("astrochaingun/fire", CHAN_WEAPON);}
+		"####" JKLM 3 LIGHT(PROTOFIRE) {A_CustomMissile("EnemyPistolTracer",ScaleX*2,ScaleY*16,random(-2,2));
+																		A_SpawnItemEx("9MMCasing", 0,0,54, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+																		A_CustomMissile("EnemyProtoTracer",ScaleX*2,ScaleY*-16,random(-2,2));} 
+		
+		"####" N 5 A_FaceTarget
+		"####" N 0 {A_PlaySound("chaingun/fire", CHAN_WEAPON);
+								A_PlaySound("astrochaingun/fire", CHAN_WEAPON);}
+		"####" JKLM 3 LIGHT(PROTOFIRE) {A_CustomMissile("EnemyPistolTracer",ScaleX*2,ScaleY*16,random(-2,2));
+																		A_SpawnItemEx("9MMCasing", 0,0,54, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+																		A_CustomMissile("EnemyProtoTracer",ScaleX*2,ScaleY*-16,random(-2,2));}
 		Goto See
 	Pain:
 	Pain.Dagger:
-		PROT H 3
-		"####" H 3 A_Pain
-		"####" H 6
+		PROT N 3
+		"####" O 3 A_Pain
+		"####" N 6
 		Goto See
 	Death:
-		PROT JKL 5
-		"####" M 0 {A_Scream;
-							A_SpawnItemEx("AstrosteinExplosion_Medium", 0, 0, 48);
-							A_NoBlocking;}
-		"####" MNOP 5 A_SetFloorClip
+		PROT OPQRS 6
+		"####" T 1 {A_Scream;
+								A_SpawnItemEx("ProtoExplosion_Medium", 0, 0, 48);
+								A_NoBlocking;}
+		"####" U 3 A_SetFloorClip
 		Stop
 	}
 }

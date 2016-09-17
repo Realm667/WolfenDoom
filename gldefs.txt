@@ -481,6 +481,14 @@ FlickerLight AstrosteinDeathLight
 	DontLightSelf 1
 }
 
+FlickerLight ProtoExplosionSpawnerLarge
+{
+	Color 1.0 0.3 0.0
+	Size 96
+	SecondarySize 160
+	Chance 0.6
+}
+
 Object SmallFlame { frame TNT1 { light FireSpawnerSmall } }
 Object MediumFlame { frame TNT1 { light FireSpawnerMedium } }
 Object LargeFlame { frame TNT1 { light FireSpawnerLarge } }
@@ -1165,6 +1173,13 @@ PointLight MUTNROCK
 PointLight ASTROFIRE
 {
 	Color 0.3 1.0 0.0
+	Size 24
+	Offset 0 24 0
+}
+
+PointLight PROTOFIRE
+{
+	Color 1.0 0.3 0.0
 	Size 24
 	Offset 0 24 0
 }
