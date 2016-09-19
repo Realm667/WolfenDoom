@@ -201,6 +201,47 @@ ACTOR Debris_Metal3 : Debris_Base
 	}
 }
 
+ACTOR Debris_MetalJunk : Debris_Base
+{
+	+FLATSPRITE
+	+ROLLCENTER
+	+ROLLSPRITE
+	BounceSound "TANKDBRS"
+	Scale 0.6
+	States
+	{
+	Spawn:
+		MTLJ BCEL 1 NoDelay {A_SetRoll(roll + 5.0, SPF_INTERPOLATE);
+												A_SetAngle(angle+15);
+												A_SetPitch(pitch+0.25);
+												A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	AdjustMass: //mxd
+		"####" "#" 0 A_SetMass(450)
+		Goto Swim
+	Swim: //mxd
+		"####" B 2 A_ScaleVelocity(0.7)
+		"####" C 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" E 2 A_ScaleVelocity(0.7)
+		"####" L 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		Loop
+	Death:
+		"####" B 0 {
+								A_SetRoll(0); A_SetAngle(0); A_SetPitch(0);
+								A_ChangeFlag("FLATSPRITE", FALSE); A_ChangeFlag("ROLLCENTER", FALSE); A_ChangeFlag("ROLLSPRITE", FALSE);
+								}
+		"####" B 0 A_Jump(256,1,2,3,4)
+		"####" BCEL 0 A_Jump(256,"Death1")
+		Stop
+	Death1:
+		"####" "#" 0 A_ChangeFlag("BOUNCEONACTORS", FALSE)
+		Death1Wait:
+		"####" "#" 1 A_SetTics(35*CallACS("DebrisLifetime"))
+		"####" "#" 1 A_FadeOut(0.1)
+		Wait
+	}
+}
+
 ACTOR Debris_Pottery : Debris_Base
 {
 	Scale 0.9
@@ -263,7 +304,7 @@ ACTOR Debris_Leaf : Feather //inheritances with Ravens actor
 	Death:
 		"####" E 0 {
 								A_SetRoll(0); A_SetAngle(0); A_SetPitch(0);
-								A_ChangeFlag("FLATSPRITE", FALSE); A_ChangeFlag("DONTFLIP", FALSE); A_ChangeFlag("ROLLCENTER", FALSE); A_ChangeFlag("ROLLSPRITE", FALSE);
+								A_ChangeFlag("ROLLCENTER", FALSE); A_ChangeFlag("ROLLSPRITE", FALSE);
 								}
 		"####" E 0 A_Jump(256,1,2,3)
 		"####" EGJ 0 A_Jump(256,"Death1")
