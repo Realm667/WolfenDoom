@@ -33,3 +33,32 @@ ACTOR BOD_GlassShard : GlassShard
 		Stop
 	}
 }
+
+ACTOR BOD_GlassShardActivatable : SwitchableDecoration
+{
+	//$Category Special Effects (Wolf3D)
+	//$Title Glass Shard Spawner
+	//$Color 12
+
+	//$Arg0 "Height"
+	//$Arg0Tooltip "Height in map units\nDefault: 0"
+	//$Arg1 "Width"
+	//$Arg1Tooltip "Width x2 in map units\nDefault: 0"
+	Height 8
+	Radius 4
+	+CLIENTSIDEONLY
+	+NOBLOCKMAP
+	+NOCLIP
+	+NOGRAVITY
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+	Inactive:
+		TNT1 A -1
+		Loop
+	Active:
+		TNT1 AAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("BOD_GlassShardSpawner", random(-Args[1], Args[1]), 0, random(-Args[0], Args[0]), 0, random(1,3), 0, 0, 0, 0)
+		Stop
+	}
+}
