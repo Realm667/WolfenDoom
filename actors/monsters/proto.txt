@@ -70,7 +70,7 @@ ACTOR ProtoDrone : Nazi //ozy81
 		Goto See
 	Melee: //uses the same attack of LaserShark
 		PROT B 10 A_FaceTarget 
-		"####" N 5 A_CustomRailgun (random(5,10), 0, "990000", "FF0000", RGF_NOPIERCING | RGF_FULLBRIGHT, 1, 0, "MeasurePuff", 0, 0, 768, 192, 0.5, 1.5)
+		"####" N 5 A_CustomRailgun (random(5,10), 0, "990000", "FF0000", RGF_NOPIERCING | RGF_FULLBRIGHT, 1, 0, "MeasurePuff", 0, 0, 768, 35*3, 0.5, 0.8, NONE, ScaleY*14)
 		"####" B 4 A_FaceTarget 
 		Goto See 
 	Pain:
