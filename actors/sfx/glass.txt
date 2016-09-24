@@ -18,14 +18,19 @@ ACTOR BOD_GlassShard : GlassShard
 	-ACTIVATEIMPACT
 	-ACTIVATEPCROSS
 	-NOGRAVITY
-	BounceType "HexenCompat"
+	+RANDOMIZE
+	BounceType "Doom" //otherwise they'll still "jump" over 3d objects - like chairs inside the barber shop on c1m5 - ozy81
 	BounceFactor 0.3
+	WallBounceFactor 0.3
+	BounceCount 3
 	RenderStyle "Translucent"
 	Alpha 0.4
 	Gravity 0.4
 	States
 	{
 	Spawn:
+		SHAR A 0 NoDelay A_SetScale(frandom(0.5,0.8), frandom(0.5,0.8))
+		LetsShard:
 		SHAR ABCDE 4
 		Loop
 	Death:
