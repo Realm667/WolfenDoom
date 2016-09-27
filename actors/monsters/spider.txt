@@ -19,13 +19,11 @@ ACTOR BigSpider
 	+DONTGIB
 	+FLOORCLIP
 	+NEVERFAST
-	MeleeSound "spider1/melee"
 	SeeSound "spider1/sight"
 	PainSound "spider1/pain"
 	DeathSound "spider1/death"
 	ActiveSound "spider1/active"
 	HitObituary "$BSPIDER"
-	MeleeDamage 1
 	States
 	{
 	Spawn:
@@ -53,7 +51,7 @@ ACTOR BigSpider
 		Goto See	
 	Melee:
 		GAYS A 4 A_FaceTarget
-		"####" E 4 A_MeleeAttack
+		"####" E 4 A_CustomMeleeAttack(1,"spider1/melee","","Melee",TRUE)
 		"####" E 9 A_FaceTarget
 		Goto See
 	Pain:
