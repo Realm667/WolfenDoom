@@ -24,7 +24,11 @@ ACTOR ProtoDrone : Nazi //ozy81
 	{
 	Spawn:
 		PROT A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
 		Goto Look
+	Look:
+		PROT A 1 A_Look
+		Loop
 	See:
 		PROT A 1 A_Chase
 		"####" AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
