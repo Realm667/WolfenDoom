@@ -171,8 +171,45 @@ REM #     Before we compile the project, first make sure that the resources exis
 REM #     NOTE: This function does a clean scan each time this is executed.
 REM # ================================================================================================
 :CompactProject_CheckResources
+REM -----------
+REM Under construction
+EXIT /B 0
+REM -----------
 SET "ErrorString="
 SET "ErrorBool=False"
+CALL :CompactProject_CheckResources_ToolsDirExists || (EXIT /B 1)
+CALL :CompactProject_CheckResources_FilePermissions
+REM Check to see if the files exists within the project's filesystem.
+CALL :CompactProject_CheckResources_FilesExists || (EXIT /B 1)
+
+
+
+
+
+REM Try to invoke the 7Zip executable directly; this is required if the host fails in the dependency check.
+REM  This will provide more information from the host system as to why the system can not find the files.
+CALL :CompactProject_CheckResources_7ZipExecutableInternal
+SET Error7ZipInternal=%ERRORLEVEL%
+CALL :CompactProject_CheckResources_CheckPermissions_ToolsDir
+
+REM Check to see if the files exists within the project's filesystem.
+CALL :CompactProject_CheckResources_FilesExists || (EXIT /B 1)
+
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
+REM #     Check to see if the required files exists within the filesystem structure of the project.
+REM #       If one or more files were not found, then abort the entire process and display an error
+REM #       on the buffer.
+REM # Return
+REM #     CheckPass [bool]
+REM #        0 = Everything is okay; everything was located successfully
+REM #        1 = Files do not exist within the project's filesystem or not accessible
+REM # ================================================================================================
+:CompactProject_CheckResources_FilesExists
 REM Try to check if the resources could be found; if not - prepare an error message.
 IF NOT EXIST "%ProgramDirPath%tools\7za.exe" (
     SET ErrorBool=True
@@ -191,6 +228,71 @@ IF %ErrorBool% EQU True (
     EXIT /B 1
 )
 EXIT /B 0
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
+REM #     Check to see if the required files exists within the filesystem structure of the project.
+REM #       If one or more files were not found, then abort the entire process and display an error
+REM #       on the buffer.
+REM # Return
+REM #     CheckPass [bool]
+REM #        0 = Everything is okay; everything was located successfully
+REM #        1 = Files do not exist within the project's filesystem or not accessible
+REM # ================================================================================================
+:CompactProject_CheckResources_ToolsDirExists
+CALL :CompactProject_CheckResources_CheckPermissions_ToolsDir
+IF %ERRORLEVEL% NEQ 0 (
+    REM DO STUFF HERE
+    EXIT /B 1
+)
+EXIT /B 0
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
+REM #     Check to see if the required files are accessible by checking if the user can access\read\execute
+REM #        the files.
+REM # Return
+REM #     CheckPass [bool]
+REM #        0 = Everything is okay; everything was located successfully
+REM #        1 = Files do not exist within the project's filesystem or not accessible
+REM # ================================================================================================
+:CompactProject_CheckResources_FilePermissions
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
+REM #     Test the internal 7Zip program and check for possible errors.  This can be helpful to detect
+REM #      for permission issues or other ambiguous complications.
+REM # Return
+REM #     ExitCode [Int]
+REM #           Returns the exit code reported by the system or 7Zip.
+REM # ================================================================================================
+:CompactProject_CheckResources_7ZipExecutableInternal
+%ProgramDirPath%tools\7za.exe 2> NUL 1> NUL
+EXIT /B %ERRORLEVEL%
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
+REM #     Test to see if the {PROJECT_ROOT}\Tools dir. exists on the system and if the user has sufficient
+REM #       privileges to access the directory.
+REM # Return
+REM #     ExitCode [Int]
+REM #           Returns the exit code reported by the system or DIR [intCMD].
+REM # ================================================================================================
+:CompactProject_CheckResources_CheckPermissions_ToolsDir
+DIR /B %ProgramDirPath%tools 2> NUL 1> NUL
+EXIT /B %ERRORLEVEL%
 
 
 
