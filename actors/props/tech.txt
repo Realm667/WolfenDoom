@@ -1,4 +1,4 @@
-ACTOR Radar //3d actor
+ACTOR Radar //3d ACTOR
 {
 	//$Category Props (Wolf3D)/Tech
 	//$Title Radar
@@ -222,6 +222,7 @@ ACTOR TeslaTurret //inspired from Tesla Coil by Captain Toenail - still not fini
 	Height 104
 	Mass 0x7ffffff
 	Speed 0
+	MaxTargetRange 640
 	MONSTER
 	-COUNTKILL
 	+FLOORCLIP
@@ -230,7 +231,6 @@ ACTOR TeslaTurret //inspired from Tesla Coil by Captain Toenail - still not fini
 	+NOBLOOD
 	+NOGRAVITY
 	+NOTAUTOAIMED //because it's invulnerable, some ammo saved
-	+SHORTMISSILERANGE
 	Obituary "$TESLAT"
 	States
 	{
@@ -251,5 +251,82 @@ ACTOR TeslaTurret //inspired from Tesla Coil by Captain Toenail - still not fini
 		"####" A 70
 		Goto See
 	//no Death states because it's invulnerable
+	}
+}
+
+ACTOR Pmetal1
+{
+	//$Category Props (Wolf3D)/Tech
+	//$Title Metal Junk 1
+	//$Color 3
+	+CLIENTSIDEONLY
+	+CORPSE
+	+MOVEWITHSECTOR
+	+NOTELEPORT
+	Height 1
+	Radius 1
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
+		MTLJ A -1
+		MTLJ B -1
+		MTLJ C -1
+		Stop
+	}
+}
+
+ACTOR Pmetal2 : Pmetal1
+{
+	//$Title Metal Junk 2
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
+		MTLJ D -1
+		MTLJ E -1
+		MTLJ F -1
+		Stop
+	}
+}
+
+ACTOR Pmetal3 : Pmetal1
+{
+	//$Title Metal Junk 3
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
+		MTLJ G -1
+		MTLJ H -1
+		MTLJ I -1 
+		Stop
+	}
+}
+ 
+ACTOR Pmetal4 : Pmetal1
+{
+	//$Title Metal Junk 4
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
+		MTLJ J -1
+		MTLJ K -1
+		MTLJ L -1 
+		Stop
+	}
+}
+
+ACTOR Pmetal5 : Pmetal1
+{
+	//$Title Metal Junk 5
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2)
+		MTLJ M -1
+		MTLJ N -1
+		Stop 
 	}
 }

@@ -281,7 +281,6 @@ ACTOR CKArachnut : CKBaseEnemy
 	Radius 30
 	Height 56
 	Mass 400
-	MeleeDamage 10
 	+FLOORCLIP
 	+LOOKALLAROUND
 	Obituary "$CK_ARACH"
@@ -296,7 +295,7 @@ ACTOR CKArachnut : CKBaseEnemy
 		Loop
 	Melee:
 		"####" A 0 Fast A_FaceTarget
-		"####" A 1 Fast A_MeleeAttack
+		"####" A 1 Fast A_CustomMeleeAttack(10,"","","Melee",TRUE)
 		Goto See
 	Pain:
 		"####" E 0 Thing_SetSpecial(0, 0, 0, 0, 0)
@@ -355,7 +354,6 @@ ACTOR CKPoisonSlug : CKBaseEnemy
 	Radius 30
 	Height 56
 	Mass 400
-	MeleeDamage 10
 	+FLOORCLIP
 	+LOOKALLAROUND
 	Obituary "$CK_SLUG"
@@ -368,6 +366,10 @@ ACTOR CKPoisonSlug : CKBaseEnemy
 		"####" A 0 Thing_SetSpecial(0, 73, 15, 22, 0)
 		"####" AABB 4 A_Wander
 		Loop
+	Melee:
+		"####" A 0 Fast A_FaceTarget
+		"####" A 1 Fast A_CustomMeleeAttack(10,"","","Melee",TRUE)
+		Goto See
 	Missile:
 		TNT1 A 0 A_PlaySound("ckeen/slugpoo")
 		CKPS C 5 

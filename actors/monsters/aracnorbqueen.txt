@@ -13,9 +13,6 @@ ACTOR AracnorbQueen
 	ActiveSound "queen/active"
 	PainSound "queen/pain"
 	DeathSound "queen/death"
-	MeleeSound "queen/melee"
-	MeleeDamage 6
-	MissileHeight 36
 	Obituary "$QUEEN1"
 	HitObituary "$QUEEN2"
 	Tag "???"
@@ -35,7 +32,7 @@ ACTOR AracnorbQueen
 		Loop
 	Melee:
 		"####" ABC 5
-		"####" D 6 A_MeleeAttack
+		"####" D 6 A_CustomMeleeAttack(6,"queen/melee","","Melee",TRUE)
 		Goto See
 	Missile:
 		"####" A 0 A_Jump(96, "SeekerBlast")
