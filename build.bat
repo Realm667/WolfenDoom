@@ -171,10 +171,6 @@ REM #     Before we compile the project, first make sure that the resources exis
 REM #     NOTE: This function does a clean scan each time this is executed.
 REM # ================================================================================================
 :CompactProject_CheckResources
-REM -----------
-REM Under construction
-EXIT /B 0
-REM -----------
 REM Check to make sure that the 'Tools' directory exists or is accessible
 CALL :CompactProject_CheckResources_ToolsDirExists || (EXIT /B 1)
 REM Check to see if the files exists within the project's filesystem.
@@ -198,7 +194,7 @@ REM #        0 = Everything is okay; everything was located successfully
 REM #        1 = Files do not exist within the project's filesystem or not accessible
 REM # ================================================================================================
 :CompactProject_CheckResources_FilesExists
-SET "ErrorBool="
+SET ErrorBool=False
 SET "ErrorString="
 REM Try to check if the resources could be found; if not - prepare an error message.
 IF NOT EXIST "%ProgramDirPath%tools\7za.exe" (
@@ -235,13 +231,13 @@ REM # ==========================================================================
 :CompactProject_CheckResources_ToolsDirExists
 REM Does the directory exists?
 IF NOT EXIST "%ProgramDirPath%tools" (
-    CALL :CompactProject_CheckResources_ErrMSG_ToolsDirUnaccessible 0 "Unable to locate the {PROJECT_ROOT}\Tools} directory."
+    CALL :CompactProject_CheckResources_ErrMSG 0 "Unable to locate the {PROJECT_ROOT}\Tools} directory."
     EXIT /B 1
 )
 REM Is there permission issues?
 CALL :CompactProject_CheckResources_CheckPermissions_ToolsDir
 IF %ERRORLEVEL% NEQ 0 (
-    CALL :CompactProject_CheckResources_ErrMSG_ToolsDirUnaccessible 0 "Insufficent permissions or no data found in the {PROJECT_ROOT}\Tools} directory."
+    CALL :CompactProject_CheckResources_ErrMSG 0 "Insufficent permissions or no data found in the {PROJECT_ROOT}\Tools} directory."
     EXIT /B 1
 )
 EXIT /B 0
@@ -261,7 +257,7 @@ REM # ==========================================================================
 :CompactProject_CheckResources_FilePermissions
 CALL :CompactProject_CheckResources_7ZipExecutableInternal
 IF %ERRORLEVEL% NEQ 0 (
-    CALL :CompactProject_CheckResources_ErrMSG_PermissionIssue 2 "Unable to execute {PROJECT_ROOT}\Tools\7za.exe} due to insufficent privileges!"
+    CALL :CompactProject_CheckResources_ErrMSG 2 "Unable to execute {PROJECT_ROOT}\Tools\7za.exe} due to insufficent privileges!"
     EXIT /B 1
 )
 EXIT /B 0
@@ -278,7 +274,7 @@ REM #     ExitCode [Int]
 REM #           Returns the exit code reported by the system or 7Zip.
 REM # ================================================================================================
 :CompactProject_CheckResources_7ZipExecutableInternal
-%ProgramDirPath%tools\7za.exe 2> NUL 1> NUL
+"%ProgramDirPath%tools\7za.exe" 2> NUL 1> NUL
 EXIT /B %ERRORLEVEL%
 
 
@@ -293,7 +289,7 @@ REM #     ExitCode [Int]
 REM #           Returns the exit code reported by the system or DIR [intCMD].
 REM # ================================================================================================
 :CompactProject_CheckResources_CheckPermissions_ToolsDir
-DIR /B %ProgramDirPath%tools 2> NUL 1> NUL
+DIR /B "%ProgramDirPath%tools" 2> NUL 1> NUL
 EXIT /B %ERRORLEVEL%
 
 
