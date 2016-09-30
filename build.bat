@@ -261,6 +261,7 @@ REM # ==========================================================================
 :CompactProject_CheckResources_FilePermissions
 CALL :CompactProject_CheckResources_7ZipExecutableInternal
 IF %ERRORLEVEL% NEQ 0 (
+    CALL :CompactProject_CheckResources_ErrMSG_PermissionIssue 2 "Unable to execute {PROJECT_ROOT}\Tools\7za.exe} due to insufficent privileges!"
     EXIT /B 1
 )
 EXIT /B 0
@@ -357,7 +358,7 @@ ECHO.
 ECHO CRITICAL ERROR: INSUFFICIENT PERMISIONS
 ECHO %~1
 ECHO.
-ECHO Please inspect the permissions.
+ECHO Please inspect the file permissions or contact your administrator for assistance.
 ECHO.
 GOTO :EOF
 
@@ -377,7 +378,7 @@ ECHO.
 ECHO CRITICAL ERROR: TOOLS DIR. UNACCESSIBLE
 ECHO %~1
 ECHO.
-ECHO Stuff here
+ECHO Check to make sure that the path exists and that you have enough permissions.
 ECHO.
 GOTO :EOF
 
