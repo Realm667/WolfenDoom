@@ -231,13 +231,13 @@ REM # ==========================================================================
 :CompactProject_CheckResources_ToolsDirExists
 REM Does the directory exists?
 IF NOT EXIST "%ProgramDirPath%tools" (
-    CALL :CompactProject_CheckResources_ErrMSG 0 "Unable to locate the {PROJECT_ROOT}\Tools} directory."
+    CALL :CompactProject_CheckResources_ErrMSG 0 "Unable to locate the [ {PROJECT_ROOT}\Tools ] directory."
     EXIT /B 1
 )
 REM Is there permission issues?
 CALL :CompactProject_CheckResources_CheckPermissions_ToolsDir
 IF %ERRORLEVEL% NEQ 0 (
-    CALL :CompactProject_CheckResources_ErrMSG 0 "Insufficent permissions or no data found in the {PROJECT_ROOT}\Tools} directory."
+    CALL :CompactProject_CheckResources_ErrMSG 0 "Insufficent permissions or no data found in the [ {PROJECT_ROOT}\Tools ] directory."
     EXIT /B 1
 )
 EXIT /B 0
@@ -249,6 +249,9 @@ REM # ==========================================================================
 REM # Documentation
 REM #     Check to see if the required files are accessible by checking if the user can access\read\execute
 REM #        the files.
+REM # Notes
+REM #     Error Code of '5' = Permission conflictions; user must resolve this on their own or contact
+REM #       their network or IT administrator for assistance.
 REM # Return
 REM #     EvaluationStatus [bool]
 REM #        0 = Everything is okay; everything was located successfully
@@ -257,7 +260,7 @@ REM # ==========================================================================
 :CompactProject_CheckResources_FilePermissions
 CALL :CompactProject_CheckResources_7ZipExecutableInternal
 IF %ERRORLEVEL% NEQ 0 (
-    CALL :CompactProject_CheckResources_ErrMSG 2 "Unable to execute {PROJECT_ROOT}\Tools\7za.exe} due to insufficent privileges!"
+    CALL :CompactProject_CheckResources_ErrMSG 2 "Unable to execute [ {PROJECT_ROOT}\Tools\7za.exe ] due to insufficent privileges! [Error Code: %ERRORLEVEL%]"
     EXIT /B 1
 )
 EXIT /B 0
