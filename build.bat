@@ -171,8 +171,31 @@ REM #     Before we compile the project, first make sure that the resources exis
 REM #     NOTE: This function does a clean scan each time this is executed.
 REM # ================================================================================================
 :CompactProject_CheckResources
+REM Check to make sure that the 'Tools' directory exists or is accessible
+CALL :CompactProject_CheckResources_ToolsDirExists || (EXIT /B 1)
+REM Check to see if the files exists within the project's filesystem.
+CALL :CompactProject_CheckResources_FilesExists || (EXIT /B 1)
+REM Check the file permission of necessary files
+CALL :CompactProject_CheckResources_FilePermissions || (EXIT /B 1)
+EXIT /B 0
+
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
+REM #     Check to see if the required files exists within the filesystem structure of the project.
+REM #       If one or more files were not found, then abort the entire process and display an error
+REM #       on the buffer.
+REM # Return
+REM #     EvaluationStatus [bool]
+REM #        0 = Everything is okay; everything was located successfully
+REM #        1 = Files do not exist within the project's filesystem or not accessible
+REM # ================================================================================================
+:CompactProject_CheckResources_FilesExists
+SET ErrorBool=False
 SET "ErrorString="
-SET "ErrorBool=False"
 REM Try to check if the resources could be found; if not - prepare an error message.
 IF NOT EXIST "%ProgramDirPath%tools\7za.exe" (
     SET ErrorBool=True
@@ -187,7 +210,7 @@ IF NOT EXIST "%ProgramDirPath%tools\7zExcludeList.txt" (
     SET "ErrorString=%ErrorString%Could Not Find Exclude List!&ECHO."
 )
 IF %ErrorBool% EQU True (
-    CALL :CompactProject_CheckResources_ErrMSG "%ErrorString%"
+    CALL :CompactProject_CheckResources_ErrMSG 1 "%ErrorString%"
     EXIT /B 1
 )
 EXIT /B 0
@@ -197,13 +220,117 @@ EXIT /B 0
 
 REM # ================================================================================================
 REM # Documentation
+REM #     Check to make sure that the directories are accessible; we do this by viewing the inside of
+REM #        the directories which requires the user to have not only the necessary privileges but must
+REM #        also have the directory available and ready.
+REM # Return
+REM #     EvaluationStatus [bool]
+REM #        0 = Everything is okay
+REM #        1 = Directory is not accessible
+REM # ================================================================================================
+:CompactProject_CheckResources_ToolsDirExists
+REM Does the directory exists?
+IF NOT EXIST "%ProgramDirPath%tools" (
+    CALL :CompactProject_CheckResources_ErrMSG 0 "Unable to locate the [ {PROJECT_ROOT}\Tools ] directory."
+    EXIT /B 1
+)
+REM Is there permission issues?
+CALL :CompactProject_CheckResources_CheckPermissions_ToolsDir
+IF %ERRORLEVEL% NEQ 0 (
+    CALL :CompactProject_CheckResources_ErrMSG 0 "Insufficent permissions or no data found in the [ {PROJECT_ROOT}\Tools ] directory."
+    EXIT /B 1
+)
+EXIT /B 0
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
+REM #     Check to see if the required files are accessible by checking if the user can access\read\execute
+REM #        the files.
+REM # Notes
+REM #     Error Code of '5' = Permission conflictions; user must resolve this on their own or contact
+REM #       their network or IT administrator for assistance.
+REM # Return
+REM #     EvaluationStatus [bool]
+REM #        0 = Everything is okay; everything was located successfully
+REM #        1 = Files do not exist within the project's filesystem or not accessible
+REM # ================================================================================================
+:CompactProject_CheckResources_FilePermissions
+CALL :CompactProject_CheckResources_7ZipExecutableInternal
+IF %ERRORLEVEL% NEQ 0 (
+    CALL :CompactProject_CheckResources_ErrMSG 2 "Unable to execute [ {PROJECT_ROOT}\Tools\7za.exe ] due to insufficent privileges! [Error Code: %ERRORLEVEL%]"
+    EXIT /B 1
+)
+EXIT /B 0
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
+REM #     Test the internal 7Zip program and check for possible errors.  This can be helpful to detect
+REM #      for permission issues or other ambiguous complications.
+REM # Return
+REM #     ExitCode [Int]
+REM #           Returns the exit code reported by the system or 7Zip.
+REM # ================================================================================================
+:CompactProject_CheckResources_7ZipExecutableInternal
+"%ProgramDirPath%tools\7za.exe" 2> NUL 1> NUL
+EXIT /B %ERRORLEVEL%
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
+REM #     Test to see if the {PROJECT_ROOT}\Tools dir. exists on the system and if the user has sufficient
+REM #       privileges to access the directory.
+REM # Return
+REM #     ExitCode [Int]
+REM #           Returns the exit code reported by the system or DIR [intCMD].
+REM # ================================================================================================
+:CompactProject_CheckResources_CheckPermissions_ToolsDir
+DIR /B "%ProgramDirPath%tools" 2> NUL 1> NUL
+EXIT /B %ERRORLEVEL%
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
 REM #     Display an error that some of the required dependencies that is used during the compiling process
 REM #         could not be located.
+REM # Parameters
+REM #     ErrorCode [int] = %1
+REM #             Specify the error code that should be presented on the screen.
+REM #               0 = Tools Dir Unaccessible
+REM #               1 = Missing Files
+REM #               2 = Permission Issue
+REM #     ErrorMSG [String] = %2
+REM #             Contains the error message that is to be displayed on the screen.
+REM # ================================================================================================
+:CompactProject_CheckResources_ErrMSG
+REM Figure out what error message to display on the screen
+IF %1 EQU 0 CALL :CompactProject_CheckResources_ErrMSG_ToolsDirUnaccessible "%~2"
+IF %1 EQU 1 CALL :CompactProject_CheckResources_ErrMSG_MissingFiles "%~2"
+IF %1 EQU 2 CALL :CompactProject_CheckResources_ErrMSG_PermissionIssue "%~2"
+REM Allow the user to read the message
+PAUSE
+GOTO :EOF
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
+REM #     Display an error message that some of the resources were not successfully located.
 REM # Parameters
 REM #     ErrorMSG [String] = %1
 REM #             Contains the error message that is to be displayed on the screen.
 REM # ================================================================================================
-:CompactProject_CheckResources_ErrMSG
+:CompactProject_CheckResources_ErrMSG_MissingFiles
 ECHO.
 ECHO CRITICAL ERROR: RESOURCES NOT FOUND!
 ECHO %~1
@@ -213,8 +340,47 @@ ECHO.
 ECHO Please report this error to the WolfenDoom project team!
 EXPLORER https://github.com/Realm667/WolfenDoom/issues
 ECHO.
-PAUSE
 GOTO :EOF
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
+REM #     Display an error message that there is permission complications and the user needs to resolve.
+REM # Parameters
+REM #     ErrorMSG [String] = %1
+REM #             Contains the error message that is to be displayed on the screen.
+REM # ================================================================================================
+:CompactProject_CheckResources_ErrMSG_PermissionIssue
+ECHO.
+ECHO CRITICAL ERROR: INSUFFICIENT PERMISIONS
+ECHO %~1
+ECHO.
+ECHO Please inspect the file permissions or contact your administrator for assistance.
+ECHO.
+GOTO :EOF
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
+REM #     Display an error message that the {PROJECT_ROOT}\Tools} is not accessible; either the directory
+REM #       does not exist or there is a permission issue that the user needs to resolve.
+REM # Parameters
+REM #     ErrorMSG [String] = %1
+REM #             Contains the error message that is to be displayed on the screen.
+REM # ================================================================================================
+:CompactProject_CheckResources_ErrMSG_ToolsDirUnaccessible
+ECHO.
+ECHO CRITICAL ERROR: TOOLS DIR. UNACCESSIBLE
+ECHO %~1
+ECHO.
+ECHO Check to make sure that the path exists and that you have enough permissions.
+ECHO.
+GOTO :EOF
+
 
 
 
