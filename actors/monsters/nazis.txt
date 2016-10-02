@@ -3167,10 +3167,13 @@ ACTOR MadCook2 : MadCook
 
 ACTOR FlyingHack : FlyingNeedle
 {
+	DamageType None
+	+NOGRAVITY
+	+ROLLSPRITE
 	States
 	{
 	Spawn:
-		COPR ABCD 3
+		COPR A 1 A_SetRoll(roll+10, SPF_INTERPOLATE, 0)
 		Loop
 	}
 }
