@@ -72,9 +72,9 @@ Script "W_PlayerLoop" ENTER
 {
 	While (GameType() != GAME_TITLE_MAP)
 	{
-		If (CheckInventory("Batteries") && sweeperActive[playerNumber()] && TIDIndexStart > 0) //Only run if you have enough batteries, minesweeper & mines in place.
+		If (CheckInventory("Power") && sweeperActive[playerNumber()] && TIDIndexStart > 0) //Only run if you have enough batteries, minesweeper & mines in place.
 		{
-			TakeInventory("Batteries",1);
+			TakeInventory("Power",1);
 			
 			int HUDX = GetScreenWidth();
 			int HUDY = GetScreenHeight();
@@ -91,6 +91,12 @@ Script "W_PlayerLoop" ENTER
 				{
 					HudMessageonActor(i, i, 512, "MSPUC0", "A", 0.1, -1); //Range and sprite can be changed
 				}
+				If (
+					(CheckInventory("Power") < 1)
+					)
+					{
+						TakeInventory("MineSweeper",9999);
+					}
 			}
 		}
 		Delay(1);

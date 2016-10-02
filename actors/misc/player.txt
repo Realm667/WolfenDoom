@@ -1,6 +1,5 @@
 //Player
 ACTOR Stamina : Inventory {Inventory.MaxAmount 100}
-ACTOR Batteries : Inventory {Inventory.MaxAmount 3000} //1:25 mins max - ozy81
 ACTOR ScientistUniformToken : Inventory {Inventory.MaxAmount 1}
 
 ACTOR BoAPlayer : PlayerPawn
@@ -27,7 +26,7 @@ ACTOR BoAPlayer : PlayerPawn
 	Player.StartItem "AstroRocketLauncherLoaded",5
 	Player.StartItem "AstroChaingunLoaded",30
 	Player.StartItem "Stamina", 100
-	Player.StartItem "Batteries", 0
+	Player.StartItem "Power", 0
 	Player.ViewHeight 56
 	Player.AttackZOffset 24
 	Player.DisplayName "William Blazkowicz"
