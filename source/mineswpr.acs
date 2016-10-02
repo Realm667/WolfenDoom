@@ -3,6 +3,7 @@
 
 int TIDIndexStart;
 int TIDIndex = 60000; //Start for TIDs to assign to scannable things
+bool sweeperActive[8]; //code portion taken from BoA_Compass shamelessly - Ozy81
 
 /* Called by each mine (or other actor you want to scan for) */
 Script "SetRadarTID" (void)
@@ -71,8 +72,10 @@ Script "W_PlayerLoop" ENTER
 {
 	While (GameType() != GAME_TITLE_MAP)
 	{
-		If (CheckInventory("PowerMineSweeper") && TIDIndexStart > 0) //Only run if you have the mine sweeper and there are mines in the level.
+		If (CheckInventory("Batteries") && sweeperActive[playerNumber()] && TIDIndexStart > 0) //Only run if you have enough batteries, minesweeper & mines in place.
 		{
+			TakeInventory("Batteries",1);
+			
 			int HUDX = GetScreenWidth();
 			int HUDY = GetScreenHeight();
 
@@ -103,4 +106,12 @@ Function int GetSpeed(int tid)
 	int speed = (FixedMul(x, x) + FixedMul(y, y) + FixedMul(z, z)) >> 16;
 
 	return speed;
+}
+
+script "BoA_MineSweeper"(void) //code portion taken from BoA_Compass shamelessly - Ozy81
+{
+	if(sweeperActive[playerNumber()])
+		sweeperActive[playerNumber()]=0;
+	else
+		sweeperActive[playerNumber()]=1;
 }
