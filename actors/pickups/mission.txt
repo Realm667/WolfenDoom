@@ -176,7 +176,7 @@ ACTOR ScientistUniform : SwitchableDecoration
 	}
 }
 
-actor ScientistUniformPickup : CustomInventory
+ACTOR ScientistUniformPickup : CustomInventory
 {
 	Inventory.PickupMessage "$UNIFORM"
 	States
@@ -191,7 +191,7 @@ actor ScientistUniformPickup : CustomInventory
 	}
 }
 
-actor NullWeapon : Weapon
+ACTOR NullWeapon : Weapon
 {
 	+WEAPON.NOALERT
 	+INVENTORY.UNDROPPABLE

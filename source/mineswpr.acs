@@ -72,7 +72,7 @@ Script "W_PlayerLoop" ENTER
 {
 	While (GameType() != GAME_TITLE_MAP)
 	{
-		If (CheckInventory("Power") && sweeperActive[playerNumber()] && TIDIndexStart > 0) //Only run if you have enough batteries, minesweeper & mines in place.
+		If (CheckInventory("Power") && sweeperActive[playerNumber()] && TIDIndexStart > 0) //Only run if you have enough power, minesweeper & mines in place.
 		{
 			TakeInventory("Power",1);
 			

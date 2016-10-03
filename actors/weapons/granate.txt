@@ -90,7 +90,7 @@ ACTOR PlayerLeavingHQ : CustomInventory
 			// Clear the player's inventory (in case they're in training area)
 			ACS_NamedExecuteWithResult("CLEAR INVENTORY", 0);
 		}
-		stop
+		Stop
 	}
 }
 
@@ -118,6 +118,6 @@ ACTOR ConfiscateTrainingGrenades : CustomInventory
 				A_TakeInventory("GrenadePickup", 0x7FFFFFFF);
 			}
 		}
-		stop
+		Stop
 	}
 }
