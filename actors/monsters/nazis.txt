@@ -368,7 +368,7 @@ ACTOR SSMP40Guard : SSGuard
 	Missile:
 		SSMG EF 5 A_FaceTarget
 		SSMG G 0 A_PlaySound("nazi/mp40", CHAN_WEAPON)
-		SSMG G 4 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
+		SSMG G 4 LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",40,4,random(-8,8))
 		SSMG G 0 A_GiveInventory("SSMP40GuardCounter", 1)
 		SSMG G 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		SSMG G 0 A_JumpIfInventory("SSMP40GuardCounter", 40, "Reload")
@@ -1702,7 +1702,7 @@ ACTOR HardEnemyFlamebolt : EnemyFlamebolt
 ACTOR HitlerGhost : Nazi
 {
 	//$Category Monsters (Wolf3D)/Occult
-	//$Title Hitler Ghost
+	//$Title Hitler's Ghost
 	//$Color 4
 	Scale 1.25
 	Obituary "$SSGHOST"
@@ -1739,7 +1739,7 @@ ACTOR HitlerGhost : Nazi
 		Loop
 	Missile:
 		"####" A 4 A_FaceTarget
-		"####" D 4 BRIGHT LIGHT(OTTOFIRE) A_CustomMissile("EnemyFlamebolt2",36)
+		"####" D 4 LIGHT(OTTOFIRE) A_CustomMissile("EnemyFlamebolt2",36)
 		"####" A 4
 		Goto See
 	Pain:
