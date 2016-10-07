@@ -623,7 +623,7 @@ ACTOR WaffenSS : SSMP40Guard
 	Missile:
 		"####" EF 5 A_FaceTarget
 		"####" G 0 A_PlaySound("nazi/stg44", CHAN_WEAPON)
-		"####" G 2 BRIGHT LIGHT(NAZIFIRE) A_CustomMissile("EnemyStGTracer",38,6,random(-4,4))
+		"####" G 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyStGTracer",38,6,random(-4,4))
 		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 4 A_MonsterRefire(10,"See")
 		"####" F 0 A_FaceTarget
