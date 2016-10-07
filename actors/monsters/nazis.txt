@@ -2215,14 +2215,14 @@ ACTOR Hitler : DeathKnight
 		HITL F 0 A_FaceTarget
 		HITL F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
 		HITL F 0 A_CustomMissile("EnemyChaingunTracer",32,28,random(-3,3))
-		HITL F 1 BRIGHT LIGHT(HAIL3FIR) A_CustomMissile("EnemyChaingunTracer",32,-28,random(-3,3))
+		HITL F 1 LIGHT(HAIL3FIR) A_CustomMissile("EnemyChaingunTracer",32,-28,random(-3,3))
 		HITL F 0 A_SpawnItemEx("9MMCasing", 32,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		HITL F 0 A_SpawnItemEx("9MMCasing", 32,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
 		HITL F 0 A_CustomMissile("EnemyChaingunTracer",48,28,random(-3,3))
-		HITL F 1 BRIGHT LIGHT(HAIL4FIR) A_CustomMissile("EnemyChaingunTracer",48,-28,random(-3,3))
+		HITL F 1 LIGHT(HAIL4FIR) A_CustomMissile("EnemyChaingunTracer",48,-28,random(-3,3))
 		HITL F 0 A_SpawnItemEx("9MMCasing", 32,0,52, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		HITL F 0 A_SpawnItemEx("9MMCasing", 32,0,52, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		HITL G 2 BRIGHT A_MonsterRefire(20,"See")
+		HITL G 2 A_MonsterRefire(20,"See")
 		Goto Missile+5
 	Pain:
 		HITL Q 3
