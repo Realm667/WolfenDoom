@@ -2731,11 +2731,11 @@ ACTOR SuperMutant : Mutant
 	Missile:
 		SUPM F 6 A_FaceTarget
 		SUPM G 0 A_PlaySound("walther/fire", CHAN_WEAPON)
-		SUPM G 4 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyMutantTracer",40,random(-22,-20),random(-1,1))
+		SUPM G 4 LIGHT(MUTNFIRE) A_CustomMissile("EnemyMutantTracer",40,random(-22,-20),random(-1,1))
 		SUPM G 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		SUPM F 5 A_FaceTarget
 		SUPM P 0 A_PlaySound("walther/fire", CHAN_WEAPON)
-		SUPM P 4 BRIGHT LIGHT(MUTNFIRE) A_CustomMissile("EnemyMutantTracer",40,random(18,20),random(-1,1))
+		SUPM P 4 LIGHT(MUTNFIRE) A_CustomMissile("EnemyMutantTracer",40,random(18,20),random(-1,1))
 		SUPM P 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
 		SUPM H 5 A_MonsterRefire(15,"See")
 		SUPM H 0 A_FaceTarget
@@ -2752,7 +2752,7 @@ ACTOR FlamerSoldier : Guard
 	Health 100
 	DropItem "FlameAmmo" 192
 	DropItem "Pyrolight" 32
-	MaxTargetRange 384
+	MaxTargetRange 296
 	States
 	{
 	Spawn:
@@ -2761,7 +2761,7 @@ ACTOR FlamerSoldier : Guard
 	Missile:
 		"####" F 3
 		"####" G 10 A_FaceTarget
-		"####" HHHHHHHH 1 LIGHT(NAZIFIRE) A_CustomMissile("EnemyFlamerShot",38,4)
+		"####" HHHHHH 1 LIGHT(NAZIFIRE) A_CustomMissile("EnemyFlamerShot",38,4)
 		"####" G 6 A_MonsterRefire(10,"See")
 		Goto Missile+1
 	Pain: //pre-aim used here as stated on ZDForums
