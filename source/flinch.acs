@@ -27,9 +27,9 @@ function bool IsAlive(int tid)
 //
 function int FixedAbs(int a)
 {
-    if (a < 0.0) {
-        a = -a;
-    }
+	if (a < 0.0) {
+		a = -a;
+	}
 	return a;
 }
 
@@ -39,10 +39,10 @@ function int FixedClamp(int in, int min, int max)
 {
 	if (in < min) {
 		in = min;
-    }
+	}
 	else if (in > max) {
 		in = max;
-    }
+	}
 	return in;
 }
 
@@ -65,11 +65,11 @@ function int RecoverAxis(int total, int axis)
 
 		if (step < ONE_DEGREE) {
 			step = ONE_DEGREE;
-        }
+		}
 
 		if (total < 0.0) {
 			step = -step;
-        }
+		}
 
 		// Recover the current axis by a bit.
 		if (axis == 0)
@@ -91,7 +91,7 @@ function int RecoverAxis(int total, int axis)
 	}
 	else
 	{
-        total = 0.0;
+		total = 0.0;
 
 		// Ensure the roll gets reset exactly to 1.0 as it's obvious when it's off.
 		if (axis == 2) {
@@ -148,7 +148,7 @@ function int GetFlinch(int min, int max, int base_flinch)
 	int flinch_angle = Random(min, max);
 	if (flinch_angle < 0.0) {
 		base_flinch = -base_flinch;
-    }
+	}
 	flinch_angle += base_flinch;
 	return flinch_angle;
 }
