@@ -24,7 +24,11 @@ statusbar Normal // Standard Doom Status bar
 
 	InInventory MineSweeper, 1
 	{
-		drawbar "VERTBYMF", "VERTBYME", power, vertical, interpolate(2), 195, 170;
+		drawbar "VERTBYMG", "VERTBYMD", power, vertical, interpolate(2), 195, 170;
+		InInventory MineSweeperActive, 1 
+		{
+			drawbar "VERTBYMF", "VERTBYME", power, vertical, interpolate(2), 195, 170;
+		}
 	}
 	
 	//AirControl & Stamina
@@ -122,7 +126,11 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 	
 	InInventory MineSweeper, 1
 	{
-		 drawbar "VERTBYMF", "VERTBYME", power, vertical, interpolate(2), 150, -35;
+		 drawbar "VERTBYMG", "VERTBYMD", power, vertical, interpolate(2), 150, -35;
+		InInventory MineSweeperActive, 1
+		{
+			 drawbar "VERTBYMF", "VERTBYME", power, vertical, interpolate(2), 150, -35;
+		}
 	}
 
 	//AirControl & Stamina
