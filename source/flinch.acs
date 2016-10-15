@@ -10,6 +10,11 @@
 #define ONE_DEGREE 		0.002777
 #define TEN_DEGREES		0.02777
 
+// Symbolic constants used by RecoverAxis()
+#define AXIS_YAW 0
+#define AXIS_PITCH 1
+#define AXIS_ROLL 2
+
 int previous_health[MAX_PLAYERS];			// Player's health the previous tic.
 int cumulative_flinch_angle[MAX_PLAYERS];	// Total amount player's angle has flinched.
 int cumulative_flinch_pitch[MAX_PLAYERS];	// Total amount player's pitch has flinched.
@@ -21,6 +26,24 @@ int hit_timer[MAX_PLAYERS];					// Time of last flinch.
 function bool IsAlive(int tid)
 {
 	return GetActorProperty(tid, APROP_Health) > 0;
+}
+
+// Retrieve the base strength of player flinches.
+//
+// The cvar "flinchamount" is constrained between 0.0 (off) and 2.0
+// (double flinch amount) to prevent wacky spins incurred by a higher flinch
+// amount.
+//
+function int GetServerFlinchAmount(void)
+{
+	return FixedMul(FixedClamp(GetCVar("flinchamount"), 0.0, 2.0), 0.025);
+}
+
+// Convert an integer to a fixed-point number.
+//
+function int ToFixed(int n)
+{
+	return n << 16;
 }
 
 // Absolute value of a fixed-point number.
@@ -72,17 +95,17 @@ function int RecoverAxis(int total, int axis)
 		}
 
 		// Recover the current axis by a bit.
-		if (axis == 0)
+		if (axis == AXIS_YAW)
 		{
 			int angle = GetActorAngle(0);
 			SetActorAngle(0, (angle - step) % 1.0);
 		}
-		else if (axis == 1)
+		else if (axis == AXIS_PITCH)
 		{
 			int pitch = GetActorPitch(0);
 			SetActorPitch(0, FixedClamp(pitch - step, -MAX_PITCH, MAX_PITCH));
 		}
-		else if (axis == 2)
+		else if (axis == AXIS_ROLL)
 		{
 			int roll = GetActorRoll(0);
 			SetActorRoll(0, (roll - step) % 1.0);
@@ -94,7 +117,7 @@ function int RecoverAxis(int total, int axis)
 		total = 0.0;
 
 		// Ensure the roll gets reset exactly to 1.0 as it's obvious when it's off.
-		if (axis == 2) {
+		if (axis == AXIS_ROLL) {
 			SetActorRoll(0, 1.0);
 		}
 	}
@@ -121,36 +144,42 @@ script "RecoverView" ENTER
 		// "while" loop to allows script to work with resurrect ccmd.
 		while (true)
 		{
-			if (IsAlive(0))
+			// Only recover player's view if they're alive.
+			if (IsAlive(0) && GetServerFlinchAmount() > 0.0)
 			{
-				// Only correct player's view if they're alive.
-				cumulative_flinch_angle[i] = RecoverAxis(cumulative_flinch_angle[i], 0);
-				cumulative_flinch_pitch[i] = RecoverAxis(cumulative_flinch_pitch[i], 1);
-				cumulative_flinch_roll[i]  = RecoverAxis(cumulative_flinch_roll[i], 2);
-
-				// Store player's current health so we can calculate damage in flinch script.
-				previous_health[i] = GetActorProperty(0, APROP_Health);
+				cumulative_flinch_angle[i] = RecoverAxis(cumulative_flinch_angle[i], AXIS_YAW);
+				cumulative_flinch_pitch[i] = RecoverAxis(cumulative_flinch_pitch[i], AXIS_PITCH);
+				cumulative_flinch_roll[i]  = RecoverAxis(cumulative_flinch_roll[i], AXIS_ROLL);
 			}
+
+			// Store player's current health so we can calculate damage in flinch script.
+			previous_health[i] = GetActorProperty(0, APROP_Health);
 
 			Delay(1);
 		}
 	}
 }
 
-// Calcluate a random flinch strength.
+// Calculate a random flinch strength.
 //
-// min - Minimum extra random flinch amount.
-// max - Maximum extra random flinch amount.
-// base_flinch - Guranteed flinch amount. Should be positive.
+// Both arguments are expected to be positive with max larger or equal to min.
 //
-function int GetFlinch(int min, int max, int base_flinch)
+// min - Minimum flinch amount.
+// max - Maximum flinch amount.
+//
+function int RandomFlinchAmount(int min, int max)
 {
-	int flinch_angle = Random(min, max);
-	if (flinch_angle < 0.0) {
-		base_flinch = -base_flinch;
+	int difference = max - min;
+	int flinch = Random(-difference, difference);
+	if (flinch < 0.0)
+	{
+		flinch -= min;
 	}
-	flinch_angle += base_flinch;
-	return flinch_angle;
+	else
+	{
+		flinch += min;
+	}
+	return flinch;
 }
 
 // Called by player's Pain state. Jerks player's view angles based on received
@@ -158,59 +187,62 @@ function int GetFlinch(int min, int max, int base_flinch)
 //
 script "PlayerFlinch" (void)
 {
+	int flinch = GetServerFlinchAmount(); // Random flinch distance.
 	int player_number = PlayerNumber();
-	if (player_number >= 0 && player_number < MAX_PLAYERS && IsAlive(0))
+	if (flinch > 0.0 && player_number >= 0 && player_number < MAX_PLAYERS && IsAlive(0))
 	{
 		int i = player_number;
+
+		// Calculate damage received.
+		int current_health = GetActorProperty(0, APROP_Health);
+		int damage = previous_health[i] - current_health;
+
+		// Determine flinch amount based on damage recieved.
+		int min_flinch = FixedMul(flinch, 0.5);
+		int max_flinch = flinch;
+		if (damage >= 40)
+		{
+			// Big hit, flinch a lot more.
+			min_flinch = FixedMul(flinch, 2.0);
+			max_flinch = FixedMul(flinch, 4.0);
+		}
+		else if (damage >= 15)
+		{
+			// Medium hit, flinch a bit more.
+			min_flinch = flinch;
+			max_flinch = FixedMul(flinch, 2.0);
+		}
 
 		// Store the time of the flinch.
 		int last_hit_timer = hit_timer[i];
 		hit_timer[i] = Timer();
 
-		// Calculate strength of hit to determine flinch magnitude.
-		int current_health = GetActorProperty(0, APROP_Health);
-		int damage = previous_health[i] - current_health;
-
-		int flinch = 0.025;			// Random flinch distance.
-		int base_flinch = flinch;	// Guaranteed flinch distance.
-
-		if (damage >= 40)
-		{
-			// Big hit, flinch a lot more.
-			base_flinch = FixedMul(flinch, 2.0);
-			flinch = FixedMul(flinch, 4.0);
-		}
-		else if (damage >= 15)
-		{
-			// Medium hit, flinch a bit more.
-			base_flinch = flinch;
-			flinch = FixedMul(flinch, 2.0);
-		}
-
-		// Scale down consecutive flinches to give player a chance to fight back.
+		// Reduce strength of consecutive flinches to give player a chance to fight back.
 		int time_between_hits = hit_timer[i] - last_hit_timer;
 		if (time_between_hits < TICS_PER_SECOND)
 		{
-			int scalar = FixedDiv(time_between_hits << 8, TICS_PER_SECOND << 8);
-			base_flinch = FixedMul(base_flinch, scalar);
-			flinch = FixedMul(flinch, scalar);
+			int scalar = FixedDiv(ToFixed(time_between_hits), ToFixed(TICS_PER_SECOND));
+			min_flinch = FixedMul(min_flinch, scalar);
+			max_flinch = FixedMul(max_flinch, scalar);
 		}
 
-		// Generate random angle offsets for the player's yaw, pitch and roll.
-		int flinch_angle = GetFlinch(-flinch, flinch, base_flinch);
+		// Generate yaw-flinch.
+		int flinch_angle = RandomFlinchAmount(min_flinch, max_flinch);
 		int angle = (GetActorAngle(0) + flinch_angle) % 1.0;
 		ChangeActorAngle(0, angle, true);
 		cumulative_flinch_angle[i] += flinch_angle;
 
-		int flinch_pitch = -GetFlinch(flinch, FixedMul(flinch, 2.0), base_flinch);
+		// Generate pitch-flinch (upwards only).
+		int flinch_pitch = -Random(min_flinch, FixedMul(max_flinch, 2.0));
 		int original_pitch = GetActorPitch(0);
 		int pitch = original_pitch + flinch_pitch;
-		// Unlike angle and roll, pitch has a limit we need to maintain.
+		// Unlike yaw and roll, pitch has a limit we need to maintain.
 		pitch = FixedClamp(pitch, -MAX_PITCH, MAX_PITCH);
 		ChangeActorPitch(0, pitch, true);
 		cumulative_flinch_pitch[i] += FixedClamp(flinch_pitch, -MAX_PITCH - original_pitch, MAX_PITCH - original_pitch);
 
-		int flinch_roll = GetFlinch(-flinch, flinch, base_flinch);
+		// Generate roll-flinch.
+		int flinch_roll = RandomFlinchAmount(min_flinch, max_flinch);
 		int roll = (GetActorRoll(0) + flinch_roll) % 1.0;
 		ChangeActorRoll(0, roll, true);
 		cumulative_flinch_roll[i] += flinch_roll;
