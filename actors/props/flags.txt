@@ -52,7 +52,7 @@ ACTOR NazibannerM2 : NaziBannerM //3d actor
 ACTOR NaziFlagS
 {
 	//$Category Props (Wolf3D)/Flags
-	//$Title Naziflag (small)
+	//$Title Naziflag (short)
 	//$Color 3
 	Radius 8
 	Height 64
@@ -75,6 +75,28 @@ ACTOR NaziFlagS
 		"####" AAAAA 0 A_SpawnItemEx("Debris_FlagsW2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
 		"####" A 2 A_SpawnItemEx("BarrelFrags")
 		FLAG D -1
+		Stop
+	}
+}
+
+ACTOR NaziFlagT : NaziFlagS
+{
+	//$Title Naziflag (tall)
+	Height 80
+	Scale 0.70
+	States
+	{
+	Spawn:
+		FLAG B -1
+		Stop
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("WOODBRK", CHAN_AUTO, frandom (0.5,0.8), FALSE, ATTN_NORM)
+		"####" AAAAAAA 0 A_SpawnItemEx("Debris_FlagsR2", random(0,32), random(0,48), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsR2", random(0,32), random(0,48), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsW2", random(0,32), random(0,48), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" A 2 A_SpawnItemEx("BarrelFrags")
+		FLAG C -1
 		Stop
 	}
 }
