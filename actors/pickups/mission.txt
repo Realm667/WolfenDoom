@@ -49,6 +49,21 @@ ACTOR ArtifactAstrostrein : Akten
 	}
 }
 
+ACTOR ArtifactAstrostrein : Akten
+{
+	//$Title Egyptian Artifact (C1M5)
+	Tag "Solar Disc"
+	Inventory.Icon ARTEA0
+	Inventory.PickupMessage "$EGYPT"
+	Inventory.MaxAmount 5
+	States
+	{
+	Spawn:
+		ARTE B -1
+		Stop
+	}
+}
+
 ACTOR SpearOfDestiny : Akten
 {
 	//$Title Spear of Destiny
