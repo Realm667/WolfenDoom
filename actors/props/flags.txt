@@ -23,14 +23,14 @@ ACTOR NazibannerM : SwitchableDecoration //3d actor
 		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
 		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
 		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR2", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
 		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
 		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
 		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR2", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
 		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsW", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
 		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsW", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsW", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsW2", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
 		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsD", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
 		"####" A 2 A_SpawnItemEx("BarrelFrags")
 		MDLA B -1
@@ -49,7 +49,7 @@ ACTOR NazibannerM2 : NaziBannerM //3d actor
 }
 
 //2d actors
-ACTOR NaziFlagS
+ACTOR NaziFlagS : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Flags
 	//$Title Naziflag (short)
@@ -76,12 +76,16 @@ ACTOR NaziFlagS
 		"####" A 2 A_SpawnItemEx("BarrelFrags")
 		FLAG D -1
 		Stop
+	Inactive:
+		FLAG A 0 A_UnsetSolid
+		"####" A -1 A_SetInvulnerable
+		Stop
 	}
 }
 
 ACTOR NaziFlagT : NaziFlagS
 {
-	//$Title Naziflag (tall)
+	//$Title Naziflag (tall, set Dormant for non-solid/invulnerable)
 	Height 80
 	Scale 0.70
 	States
@@ -98,13 +102,65 @@ ACTOR NaziFlagT : NaziFlagS
 		"####" A 2 A_SpawnItemEx("BarrelFrags")
 		FLAG C -1
 		Stop
+	Inactive:
+		FLAG B 0 A_UnsetSolid
+		"####" B -1 A_SetInvulnerable
+		Stop
+	}
+}
+
+ACTOR UKFlagT : NaziFlagT
+{
+	//$Title UK Flag (tall, set Dormant for non-solid/invulnerable)
+	States
+	{
+	Spawn:
+		FLAG F -1
+		Stop
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("WOODBRK", CHAN_AUTO, frandom (0.5,0.8), FALSE, ATTN_NORM)
+		"####" AAAAAAA 0 A_SpawnItemEx("Debris_FlagsR2", random(0,32), random(0,48), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAAAA 0 A_SpawnItemEx("Debris_FlagsB2", random(0,32), random(0,48), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAA 0 A_SpawnItemEx("Debris_FlagsW2", random(0,32), random(0,48), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" A 2 A_SpawnItemEx("BarrelFrags")
+		FLAG C -1
+		Stop
+	Inactive:
+		FLAG F 0 A_UnsetSolid
+		"####" F -1 A_SetInvulnerable
+		Stop
+	}
+}
+
+ACTOR USFlagT : NaziFlagT
+{
+	//$Title US Flag (tall, set Dormant for non-solid/invulnerable)
+	States
+	{
+	Spawn:
+		FLAG G -1
+		Stop
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("WOODBRK", CHAN_AUTO, frandom (0.5,0.8), FALSE, ATTN_NORM)
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsR2", random(0,32), random(0,48), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsB2", random(0,32), random(0,48), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsW2", random(0,32), random(0,48), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
+		"####" A 2 A_SpawnItemEx("BarrelFrags")
+		FLAG C -1
+		Stop
+	Inactive:
+		FLAG G 0 A_UnsetSolid
+		"####" G -1 A_SetInvulnerable
+		Stop
 	}
 }
 
 ACTOR SSBanner : NaziFlagS
 {
 	//$Category Props (Wolf3D)/Flags
-	//$Title SS Banner (middle)
+	//$Title SS Banner (middle, set Dormant for non-solid/invulnerable)
 	//$Color 3
 	Radius 16
 	States
@@ -121,13 +177,17 @@ ACTOR SSBanner : NaziFlagS
 		"####" A 2 A_SpawnItemEx("BarrelFrags")
 		SSFG B -1
 		Stop
+	Inactive:
+		SSFG A 0 A_UnsetSolid
+		"####" A -1 A_SetInvulnerable
+		Stop
 	}
 }
 
 ACTOR FlagWithFaces1 : NaziFlagS
 {
 	//$Category Props (Wolf3D)/Flags
-	//$Title Flag with Faces (small)
+	//$Title Flag with Faces (small, set Dormant for non-solid/invulnerable)
 	//$Color 3
 	Radius 16
 	Height 48
@@ -145,27 +205,39 @@ ACTOR FlagWithFaces1 : NaziFlagS
 		"####" AAAAA 0 A_SpawnItemEx("Debris_FlagsW", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE)
 		DJFG D -1
 		Stop
+	Inactive:
+		DJFG B 0 A_UnsetSolid
+		"####" B -1 A_SetInvulnerable
+		Stop
 	}
 }
 
 ACTOR FlagWithFaces2 : FlagWithFaces1
 {
-	//$Title Flag with Faces (large)
+	//$Title Flag with Faces (large, set Dormant for non-solid/invulnerable)
 	States
 	{
 	Spawn:
 		DJFG A -1
+		Stop
+	Inactive:
+		DJFG A 0 A_UnsetSolid
+		"####" A -1 A_SetInvulnerable
 		Stop
 	}
 }
 
 ACTOR FlagWithFaces3 : FlagWithFaces1
 {
-	//$Title Flag with Faces (medium)
+	//$Title Flag with Faces (medium, set Dormant for non-solid/invulnerable)
 	States
 	{
 	Spawn:
 		DJFG C -1
+		Stop
+	Inactive:
+		DJFG C 0 A_UnsetSolid
+		"####" C -1 A_SetInvulnerable
 		Stop
 	}
 }

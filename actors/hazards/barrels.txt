@@ -5,19 +5,11 @@ ACTOR BarrelFrags
 	{
 	Spawn:
 		FRAG ABCDEFGHIJKLM 3
-		"####" N -1
-		Stop
-	}
-}
-
-//mxd
-ACTOR FlagFrags : BarrelFrags
-{
-	States
-	{
-	Spawn:
-		FRAG ABCDEFGHIJKLMN 3 NoDelay A_FadeOut(0.07)
-		Stop
+		"####" N 1 
+		DeathWait:
+		"####" "#" 1 A_SetTics(35*CallACS("DebrisLifetime"))
+		"####" "#" 1 A_FadeOut(0.1)
+		Wait
 	}
 }
 
