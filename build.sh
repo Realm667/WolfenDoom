@@ -1,10 +1,11 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 git checkout master
 git pull origin master
 
 zipprefix="wolf_boa"
-zipname="$zipprefix-$(git log -n 1 --date=short --format=%h-%cd | sed 's/\([[:digit:]]\{4\}\)-\([[:digit:]]\{2\}\)-\([[:digit:]]\{1,2\}\)$/\1\2\3/').pk3"
+zipcommit="$(git log -n 1 --format=%h)"
+zipname="$zipprefix-$zipcommit-$(git log -n 1 --date=short --format=%cd | sed 's/\([[:digit:]]\{4\}\)-\([[:digit:]]\{2\}\)-\([[:digit:]]\{1,2\}\)$/\1\2\3/').pk3"
 
 if [[ "$1" == "-r" || "$1" == "--release" ]]; then
   cmthd='LZMA'
