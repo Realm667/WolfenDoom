@@ -100,10 +100,17 @@ ACTOR KittySinger
 	States
 	{
 	Spawn:
-		KITY A 0 NoDelay A_PlaySound("SALOONKY", CHAN_AUTO, 1.0, TRUE, ATTN_STATIC)
-		Singing:
+		KITY A 0 NoDelay
+	SpawnLoop:
+		"####" A 0 A_CheckRange(768,"SpawnLoopSilent")
+		"####" A 1
+		"####" B 0 A_PlaySound("SALOONKY", CHAN_AUTO, 1.0, TRUE, ATTN_STATIC)
 		"####" ABCDBACDADCB 8
 		Loop
+	SpawnLoopSilent:
+		"####" A 0 A_StopSound(CHAN_AUTO)
+		"####" ABCDBACDADCB 8
+		Goto SpawnLoop
 	Death:
 		"####" E 0 A_StopSound(CHAN_AUTO)
 		"####" E 1 A_UnSetSolid
