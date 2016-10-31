@@ -180,20 +180,32 @@ int cooldown[8];
 
 script "Dashing" ENTER
 {
+	bool checksprint = GetCVar("sprintswitch");
+	
 	if(!CheckActorClass(0,"BoAPlayer"))
 		terminate;
 	int buttons = GetPlayerInput(-1,INPUT_BUTTONS);
 	if((buttons & BT_SPEED) && (buttons & BT_FORWARD) && !(buttons & BT_CROUCH) && CheckInventory("Stamina") && cooldown[PlayerNumber()] <= 0)
 	{
 		SetActorProperty(0,APROP_SPEED,2.0);
-		TakeInventory("Stamina",random(1,3)); //more stamina to use
+			if(checksprint==TRUE)
+			TakeInventory("Stamina",0); //do not deplete stamina - ozy
+			else
+				{
+				TakeInventory("Stamina",random(1,3)); //more stamina to use
+				}
 	}
 	else
 	{
 		SetActorProperty(0,APROP_SPEED,1.0);
-		cooldown[PlayerNumber()]--;
-		delay(random(1,3)); //recovery is more fast
-		GiveInventory("Stamina",1);
+			//if(checksprint==TRUE)
+			//TakeInventory("Stamina",0); //do not deplete stamina - ozy
+			//else
+				//{
+				cooldown[PlayerNumber()]--;
+				delay(random(1,3)); //recovery is more fast
+				GiveInventory("Stamina",1);
+				//}
 	}
 	if(!CheckInventory("Stamina"))
 		cooldown[PlayerNumber()]=100;
@@ -208,7 +220,7 @@ Script "Exhausted" ENTER
 	while(CheckInventory("Stamina")<25)
 	{
 		if(GetActorProperty(0,APROP_WATERLEVEL)<3)
-			PlaySound(0,"player/breathing",CHAN_VOICE);
+		PlaySound(0,"player/breathing",CHAN_VOICE);
 		Delay(50);
 	}
 	Delay(1);
