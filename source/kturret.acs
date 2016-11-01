@@ -76,65 +76,6 @@ script "GunLoop" (void)
 	}
 }
 
-/*
-script "Gun_UnFreeze" (void)
-{
-	int turret_tid = ActivatorTID();
-	SetActivator(0, AAPTR_MASTER);//the player
-	SetActivator(turret_tid);
-	SetPointer(AAPTR_MASTER, 0, AAPTR_NULL); //turret forgets you
-}
-
-script "targetname" (void) //this was used for debugging. Not currently in use.
-{
-	log(s:"\n\nprojectile: ",s:getactorclass(0));
-	setactivator(0,AAPTR_TARGET);
-	log(s:"target: ",s:getactorclass(0));
-	setactivator(0,AAPTR_TARGET);
-	log(s:"target of target: ",s:getactorclass(0));
-	setactivator(0,AAPTR_MASTER);
-	log(s:"target of targets target: ",s:getactorclass(0));
-}
-	if (lc > 1.0  )
-		{
-		if (between(0.0,playerangle,limit_lc) || between(limit_rc,playerangle,1.0 ))
-			{	
-			changeactorangle(0,playerangle);
-			}
-		}
-	else if (rc < 0.0  )
-		{
-		if (between(limit_rc,playerangle,1.0) || between(0.0,playerangle,limit_lc ))
-			{	
-			changeactorangle(0,playerangle);
-			}
-		}
-	else if(limit_lc > limit_rc)
-		{
-		if (between(limit_rc,playerangle,limit_lc))
-			{	
-			changeactorangle(0,playerangle);
-			}
-		}
-	else 
-		{
-		if (between(limit_rc,playerangle,1.0))
-			{	
-			changeactorangle(0,playerangle);
-			}
-		}
-	hudmessagebold(
-						s:"\nrc: ", f:rc,
-						s:"\nlimit_rc: ", f:limit_rc,
-						s:"\nlimit_lc: ", f:limit_lc,
-						s:"\nstand_angle: ",f:stand_angle,
-						s:"\n\nplayerangle: ",f:playerangle,
-						s:"\ncos(stand_angle): ",f:cos(stand_angle),
-						s:"\ncos(playerangle): ",f:cos(playerangle)
-						;HUDMSG_PLAIN,2,CR_UNTRANSLATED,0.5,0.7,0.1);
-//	printbold(s:"startangle: ",f:getuservariable(0,"user_startangle")>>8);
-*/
-
 /////////////
 //FUNCTIONS//
 /////////////
