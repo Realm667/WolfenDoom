@@ -314,6 +314,18 @@ function void drawdot(int tid)
 		int dist = sqrt(dx*dx + dy*dy),rdist = dist / 10;
 		if(rdist > 33)
 			rdist = 33;
+			
+		if(CheckActorClass(tid,"ObjectiveIcon"))
+		{
+			SetFont("GOAL3");
+			HUDMessage(s:"A"; HUDMSG_PLAIN, 0, CR_UNTRANSLATED, (-_cos(a) * rdist / 1.0) * 1.0 + 85.0, (_sin(a) * rdist / 1.0) * 1.0 + 170.0,0.03);
+		}
+		else if(GetActorProperty(tid,APROP_RenderStyle)!=STYLE_None)
+		{
+			SetFont("GOAL2");
+			HUDMessage(s:"A"; HUDMSG_PLAIN, 0, CR_UNTRANSLATED, (-_cos(a) * rdist / 1.0) * 1.0 + 85.0, (_sin(a) * rdist / 1.0) * 1.0 + 170.0,0.03);
+		}
+		
 		if(CheckActorClass(tid,"Akten")||CheckActorClass(tid,"AktenEisenmann")||CheckActorClass(tid,"SpearOfDestiny"))
 		{
 			SetFont("GOAL1");
@@ -324,6 +336,7 @@ function void drawdot(int tid)
 			SetFont("GOAL2");
 			HUDMessage(s:"A"; HUDMSG_PLAIN, 0, CR_UNTRANSLATED, (-_cos(a) * rdist / 1.0) * 1.0 + 85.0, (_sin(a) * rdist / 1.0) * 1.0 + 170.0,0.03);
 		}
+		
 		/*SetFont("SmallFont");
 		HUDMessage(i:dist / 32, s:" m"; HUDMSG_PLAIN, 0, CR_RED, 85.0, 240.1, 0.03);*/
 	}

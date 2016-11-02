@@ -68,3 +68,21 @@ ACTOR InteractionIcon
 		Goto Spawn
 	}	
 }
+
+ACTOR ObjectiveIcon
+{
+	//$Category Misc (Wolf3D)
+	//$Title Objective Mark
+	//$Color 1
+	//$Sprite excld0
+	Height 8
+	Radius 8
+	+CLIENTSIDEONLY
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		TNT1 A -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		Stop 
+	}
+}
