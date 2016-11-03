@@ -16,7 +16,7 @@ ACTOR Exclamation : SwitchableDecoration
 	States
 	{
 	Spawn:
-		//TNT1 A -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		EXCL A 0 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 	Active:
 		EXCL A -1 BRIGHT
 		Loop
@@ -34,9 +34,9 @@ ACTOR ExclamationTouchable : Exclamation
 	States
 	{
 	Spawn:
-		//TNT1 A -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		EXCL A 0 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 	Active:
-		EXCL A 1 NODELAY BRIGHT A_CheckProximity("Inactive", "BoAPlayer", 72, 1)
+		EXCL A 1 BRIGHT A_CheckProximity("Inactive", "BoAPlayer", 72, 1)
 		Loop
 	Inactive:
 		EXCL A 35 BRIGHT
