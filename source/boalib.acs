@@ -274,12 +274,12 @@ script "BoA_Compass" ENTER
 		int a=GetActorAngle(0);
 		int x=-_cos(a)*34/1.0,y=_sin(a)*34/1.0;
 		SetFont("COMPASS1");
-		HUDMessage(s:"N"; HUDMSG_PLAIN,0,CR_UNTRANSLATED,x * 1.0 + 85.0,y * 1.0 + 170.0,0.03);
-		HUDMessage(s:"S"; HUDMSG_PLAIN,0,CR_UNTRANSLATED,-x * 1.0 + 85.0,-y * 1.0 + 170.0,0.03);
-		HUDMessage(s:"E"; HUDMSG_PLAIN,0,CR_UNTRANSLATED,-y * 1.0 + 85.0,x * 1.0 + 170.0,0.03);
-		HUDMessage(s:"W"; HUDMSG_PLAIN,0,CR_UNTRANSLATED,y * 1.0 + 85.0,-x * 1.0 + 170.0,0.03);
+		HUDMessage(s:"N"; HUDMSG_PLAIN,-2,CR_UNTRANSLATED,x * 1.0 + 85.0,y * 1.0 + 170.0,0.03);
+		HUDMessage(s:"S"; HUDMSG_PLAIN,-3,CR_UNTRANSLATED,-x * 1.0 + 85.0,-y * 1.0 + 170.0,0.03);
+		HUDMessage(s:"E"; HUDMSG_PLAIN,-4,CR_UNTRANSLATED,-y * 1.0 + 85.0,x * 1.0 + 170.0,0.03);
+		HUDMessage(s:"W"; HUDMSG_PLAIN,-5,CR_UNTRANSLATED,y * 1.0 + 85.0,-x * 1.0 + 170.0,0.03);
 		SetFont("COMPASS");
-		HUDMessage(s:"A"; HUDMSG_PLAIN,0,CR_UNTRANSLATED,85.0,162.0,0.03);
+		HUDMessage(s:"A"; HUDMSG_PLAIN | HUDMSG_NOTWITHFULLMAP,-1,CR_UNTRANSLATED,85.0,162.0,0.03);
 		for(int i=0;i<dots;i++)
 			drawdot(4000+i);
 		for(i=0;marks[i]!=0;i++)
@@ -318,23 +318,23 @@ function void drawdot(int tid)
 		if(CheckActorClass(tid,"ObjectiveIcon"))
 		{
 			SetFont("GOAL3");
-			HUDMessage(s:"A"; HUDMSG_PLAIN, 0, CR_UNTRANSLATED, (-_cos(a) * rdist / 1.0) * 1.0 + 85.0, (_sin(a) * rdist / 1.0) * 1.0 + 170.0,0.03);
+			HUDMessage(s:"A"; HUDMSG_ALPHA, 0, CR_UNTRANSLATED, (-_cos(a) * rdist / 1.0) * 1.0 + 85.0, (_sin(a) * rdist / 1.0) * 1.0 + 170.0,0.03,0.2);
 		}
 		else if(GetActorProperty(tid,APROP_RenderStyle)!=STYLE_None)
 		{
 			SetFont("GOAL2");
-			HUDMessage(s:"A"; HUDMSG_PLAIN, 0, CR_UNTRANSLATED, (-_cos(a) * rdist / 1.0) * 1.0 + 85.0, (_sin(a) * rdist / 1.0) * 1.0 + 170.0,0.03);
+			HUDMessage(s:"A"; HUDMSG_ALPHA, 0, CR_UNTRANSLATED, (-_cos(a) * rdist / 1.0) * 1.0 + 85.0, (_sin(a) * rdist / 1.0) * 1.0 + 170.0,0.03,0.2);
 		}
 		
 		if(CheckActorClass(tid,"Akten")||CheckActorClass(tid,"AktenEisenmann")||CheckActorClass(tid,"SpearOfDestiny"))
 		{
 			SetFont("GOAL1");
-			HUDMessage(s:"A"; HUDMSG_PLAIN, 0, CR_UNTRANSLATED, (-_cos(a) * rdist / 1.0) * 1.0 + 85.0, (_sin(a) * rdist / 1.0) * 1.0 + 170.0,0.03);
+			HUDMessage(s:"A"; HUDMSG_ALPHA, 0, CR_UNTRANSLATED, (-_cos(a) * rdist / 1.0) * 1.0 + 85.0, (_sin(a) * rdist / 1.0) * 1.0 + 170.0,0.03,0.2);
 		}
 		else if(GetActorProperty(tid,APROP_RenderStyle)!=STYLE_None)
 		{
 			SetFont("GOAL2");
-			HUDMessage(s:"A"; HUDMSG_PLAIN, 0, CR_UNTRANSLATED, (-_cos(a) * rdist / 1.0) * 1.0 + 85.0, (_sin(a) * rdist / 1.0) * 1.0 + 170.0,0.03);
+			HUDMessage(s:"A"; HUDMSG_ALPHA, 0, CR_UNTRANSLATED, (-_cos(a) * rdist / 1.0) * 1.0 + 85.0, (_sin(a) * rdist / 1.0) * 1.0 + 170.0,0.03,0.2);
 		}
 		
 		/*SetFont("SmallFont");
