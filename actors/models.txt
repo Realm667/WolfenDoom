@@ -224,8 +224,7 @@ ACTOR CeilingFan : 3dObstacle
 	+NOBLOCKMAP
 	+NOGRAVITY
 	+SPAWNCEILING
-	Scale 0.85
-	
+	Scale 0.85	
 	States
 	{
 	Spawn:
@@ -369,9 +368,7 @@ ACTOR Windmill : 3dObstacle
 	//$Title Windmill
 	//$Color 3
 	DistanceCheck "scenelod"
-
 	Radius 64
-
 	States
 	{
 	Spawn:
@@ -411,23 +408,19 @@ ACTOR Submarine : ModelBase
 {
 	//$Category Models (Wolf3D)/Ships
 	//$Title Submarine
-	//$Color 3
-	
+	//$Color 3	
 	//$Arg0 "Engine Sound"
 	//$Arg0Type 11
-	//$Arg0Enum noyes
-	
+	//$Arg0Enum noyes	
 	-SOLID
 	Radius 64
 	Height 64
 	DistanceCheck "scenelod"
-
 	States
 	{
 	Spawn:
 		MDLA A 0 NoDelay A_JumpIf(args[0] == 1, "PlayEngineSound")
 		Goto Super::Spawn
-
 	PlayEngineSound:
 		MDLA A 0 A_PlaySound("uboat/engine", CHAN_AUTO, 1.0, TRUE, 0.5)
 		Goto Super::Spawn
@@ -590,10 +583,8 @@ ACTOR FlakVierling3D : SwitchableDecoration
 	//$Category Models (Wolf3D)/Mission
 	//$Title Flak Vierling
 	//$Color 3
-	
 	//$Arg0 "Type"
 	//$Arg0Tooltip "Pickup the desired type\nSolid: 0\nNon-Solid: 1"
-	
 	Radius 80
 	Height 88
 	Health -1
@@ -673,33 +664,26 @@ ACTOR RTCWClock : 3dObstacle //fixed by mxd
 	//$Title Clock
 	//$Color 3
 	DistanceCheck "scenelod"
-
 	Radius 12
 	Height 112
-
 	+SYNCHRONIZED
-
 	States
 	{
 	Spawn:
 		MDLA A 0 NoDelay A_SpawnItemEx("RTCWClockPendulum", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
 		Goto TickLoop
-
 	TickLoop: // Tried adding those sound effects to RTCWClockPendulum, found out that it horribly messes model interpolation...
 		MDLA A 0 A_CheckRange(512,"NoTickLoop") //tweak for sound channels - ozy81
 		MDLA A 44 A_PlaySound("oldclock/tick")
 		MDLA A 0 A_Jump(1, "Chime")
 		Loop
-
 	Chime:
 		MDLA A 278 A_PlaySound("oldclock/chime", CHAN_ITEM)
 		Goto TickLoop
-
 	NoTickLoop:
 		MDLA A 44
 		MDLA A 0 A_Jump(1, "NoChime")
 		Goto TickLoop
-
 	NoChime:
 		MDLA A 278
 		Goto TickLoop
@@ -710,7 +694,6 @@ ACTOR RTCWClockPendulum : 3dObstacle //mxd
 {
 	DistanceCheck "scenelod"
 	+SYNCHRONIZED
-
 	States
 	{
 	Spawn:
@@ -724,7 +707,6 @@ ACTOR RTCWCar : 3dObstacle
 	//$Category Models (Wolf3D)/Vehicles
 	//$Title Staff Car
 	//$Color 3
-
 	Radius 32
 	Height 32
 	DistanceCheck "scenelod"
@@ -1261,7 +1243,6 @@ ACTOR FuelDrumAstro //Uses JK2 3dModel
 	//$Category Models (Wolf3D)/Obstacles
 	//$Title Fuel Drum (Astrostein, pushable)
 	//$Color 3
-
 	-NOGRAVITY 			//or it will move towards the void without falling
 	+CANPASS
 	+MOVEWITHSECTOR	//I add this because we may need it for some "arcade" sequences -ozy
@@ -1271,25 +1252,20 @@ ACTOR FuelDrumAstro //Uses JK2 3dModel
 	+SHOOTABLE
 	+SLIDESONWALLS	//let's prevent some weird behaviors, like being stuck in a map because the crate can't get out from an angle -ozy
 	+SOLID
-
 	Radius 24
 	Height 56
-	Mass 15000
-	
+	Mass 15000	
 	States
 	{
 	Spawn:
 		MDLA A 1
-		Goto Look
-	
+		Goto Look	
 	Look:
 		MDLA A 8 A_LookEx(LOF_NOSOUNDCHECK, 0, 64, 0, 360) 
 		Loop
-	
 	See:
 		MDLA A 0 A_JumpIf((velx != 0 || vely != 0), "Moving")
 		Goto Spawn
-	
 	Moving:
 		MDLA A 35 A_PlaySound("astrodrum_moving", CHAN_AUTO, 0.65)
 		Goto Spawn
@@ -1299,11 +1275,9 @@ ACTOR FuelDrumAstro //Uses JK2 3dModel
 ACTOR MovableCrate1 : FuelDrumAstro
 {
 	//$Title Movable Crate (paper, 64)
-
 	Radius 32
 	Height 64
-	Mass 9000
-	
+	Mass 9000	
 	States
 	{
 	Moving:
@@ -1315,7 +1289,6 @@ ACTOR MovableCrate1 : FuelDrumAstro
 ACTOR MovableCrate2 : MovableCrate1 
 {
 	//$Title Movable Crate (paper, 32)
-
 	Radius 16
 	Height 32
 	Mass 4500
@@ -1411,14 +1384,11 @@ ACTOR Caesar : 3dObstacle
 	//$Category Models (Wolf3D)/Statues
 	//$Title Caesar's Statue
 	//$Color 3
-	
 	//$Arg0 "Type"
 	//$Arg0Tooltip "Pickup the desired type\nSolid: 0\nNon-Solid: 1"
-	
 	DistanceCheck "scenelod"
 	Radius 32
-	Height 192
-	
+	Height 192	
 	States
 	{
 	Spawn:
@@ -1706,10 +1676,8 @@ ACTOR OldCar_Spawner : 3dObstacle
 	//$Category Models (Wolf3D)/Vehicles
 	//$Title Old Car Spawner
 	//$Color 3
-	
 	//$Arg0 "Color"
 	//$Arg0Tooltip "Pickup the desired color\nRandom: 0\nOlive: 1\nRed: 2\nCyan: 3"
-	
 	Height 64
 	+NOGRAVITY
 	DistanceCheck "scenelod"
@@ -1834,8 +1802,7 @@ ACTOR COD_WBarrel1 : FuelDrumAstro
 	//$Color 3
 	DistanceCheck "scenelod"
 	Radius 10
-	Height 32
-	
+	Height 32	
 	States
 	{
 	Moving:
@@ -1859,11 +1826,9 @@ ACTOR COD_FemaleBust : 3dObstacle
 	//$Category Models (Wolf3D)/Statues
 	//$Title Female Bust (silver or bronze)
 	//$Color 3
-	DistanceCheck "scenelod"
-	
+	DistanceCheck "scenelod"	
 	//$Arg0 "Material"
-	//$Arg0Tooltip "Choose the desired material\nSilver: 0\nBronze: 1"
-	
+	//$Arg0Tooltip "Choose the desired material\nSilver: 0\nBronze: 1"	
 	Radius 8
 	Height 24
 	+NOGRAVITY
@@ -1890,11 +1855,9 @@ ACTOR COD_EagleBust : COD_FemaleBust
 ACTOR COD_HitlerBust : COD_FemaleBust
 {
 	//$Title Hitler's Bust (bronze or stone)
-	DistanceCheck "scenelod"
-	
+	DistanceCheck "scenelod"	
 	//$Arg0 "Material"
-	//$Arg0Tooltip "Choose the desired material\nBronze: 0\nStone: 1"
-	
+	//$Arg0Tooltip "Choose the desired material\nBronze: 0\nStone: 1"	
 	States
 	{
 	Spawn:
@@ -1993,13 +1956,12 @@ ACTOR COD_SSHorch : 3dObstacle
 	//$Category Models (Wolf3D)/Vehicles
 	//$Title Truck, Horch-1A (Nazi)
 	//$Color 3
-
 	Radius 12
 	Height 52
 	DistanceCheck "scenelod"
 	States
 	{
-		Spawn:
+	Spawn:
 		MDLA A 0 NoDelay A_SpawnItemEx("COD_SSHorch_Glass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
 		MDLA A 0 A_SpawnItemEx("InvisibleBridge32",-48,0,20)
 		MDLA A 0 A_SpawnItemEx("InvisibleBridge32",80,0,36)
@@ -2018,27 +1980,25 @@ ACTOR COD_USJeep : 3dObstacle
 	//$Category Models (Wolf3D)/Vehicles
 	//$Title Jeep (US)
 	//$Color 3
-	
 	//$Arg0 "Shape"
 	//$Arg0Tooltip "Change the variant\nDamaged: 1"
-
 	Radius 12
 	Height 52
 	DistanceCheck "scenelod"
 	States
 	{
-		Spawn:
+	Spawn:
 		TNT1 A 0 NoDelay
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Damaged")
-		Normal:
+	Normal:
 		MDLA A 0 A_SpawnItemEx("COD_USJeep_Glass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
 		MDLA A 0 A_SpawnItemEx("InvisibleBridge32",-48,0,20)
 		MDLA A 0 A_SpawnItemEx("InvisibleBridge32",80,0,36)
 		MDLA A -1 A_SpawnItemEx("InvisibleBridge32",88,0,16)
 		Stop
-		Damaged:
+	Damaged:
 		MDLA B 0 A_UnsetSolid
-		DmgLoop:
+	DmgLoop:
 		MDLA B 8 A_CustomMissile("DarkSmoke2",32,0,random(0,360),2,random(70,130))
 		Loop
 	}
@@ -2053,11 +2013,9 @@ ACTOR CODBike : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Vehicles
 	//$Title Old Bike
-	//$Color 3
-	
+	//$Color 3	
 	//$Arg0 "Shape"
-	//$Arg0Tooltip "Pickup the desired shape\nRandom: 0\nClean: 1\nBroken: 2"
-	
+	//$Arg0Tooltip "Pickup the desired shape\nRandom: 0\nClean: 1\nBroken: 2"	
 	Radius 16
 	Height 32
 	+NOGRAVITY
@@ -2068,14 +2026,14 @@ ACTOR CODBike : 3dObstacle
 		TNT1 A 0 NoDelay
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Clean")
 		TNT1 A 0 A_JumpIf(Args[0]==2, "Broken")
-		Random: //fall through if set at 0
+	Random: //fall through if set at 0
 		MDLA A -1 A_Jump(128,1)
 		MDLA B -1 A_UnsetSolid
 		Stop
-		Clean:
+	Clean:
 		MDLA A -1
 		Stop
-		Broken:
+	Broken:
 		MDLA B -1 A_UnsetSolid
 		Stop
 	}
@@ -2110,18 +2068,15 @@ ACTOR CODStuka : ModelBase
 {
 	//$Category Models (Wolf3D)/Planes
 	//$Title Stuka Airplane (Uses Args, Normal, Destroyed, Crashed or Boom)
-	//$Color 3
-	
+	//$Color 3	
 	//$Arg0 "Type"
 	//$Arg0Tooltip "Pickup the desired shape\nNormal: 0\nDestroyed: 1\nCrashed: 2\nBoom: 3"
-
 	+CANPASS	
 	+DONTTHRUST
 	+NOBLOODDECALS
 	+SHOOTABLE
 	+SOLID
-	BloodType "TankSpark"
-	
+	BloodType "TankSpark"	
 	States
 	{
 	Spawn:
@@ -2182,8 +2137,7 @@ ACTOR CODCivCarD_Spawner : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Vehicles
 	//$Title Civilian Car Spawner (Destroyed)
-	//$Color 3
-	
+	//$Color 3	
 	//$Arg0 "Color"
 	//$Arg0Tooltip "Pickup the desired color\nRandom: 0\nTan: 1\nRed: 2\nBlue: 3"
 	Height 64
@@ -2196,18 +2150,18 @@ ACTOR CODCivCarD_Spawner : 3dObstacle
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Tan")
 		TNT1 A 0 A_JumpIf(Args[0]==2, "Red")
 		TNT1 A 0 A_JumpIf(Args[0]==2, "Blue")
-		Random: //fall through if set at 0
+	Random: //fall through if set at 0
 		MDLA A -1 A_Jump(128,1)
 		MDLA B -1 A_Jump(128,1)
 		MDLA C -1 
 		Stop
-		Tan:
+	Tan:
 		MDLA A -1
 		Stop
-		Red:
+	Red:
 		MDLA B -1
 		Stop
-		Blue:
+	Blue:
 		MDLA C -1
 		Stop
 	}
@@ -2299,13 +2253,13 @@ ACTOR CODSignal_Light : 3dObstacle
 		Off: //fall through if set at 0
 		MDLA A -1 
 		Stop
-		Green:
+	Green:
 		MDLA B -1 LIGHT("SIGNLGRN")
 		Stop
-		Yellow:
+	Yellow:
 		MDLA C -1 LIGHT("SIGNLYEL")
 		Stop
-		Red:
+	Red:
 		MDLA D -1 LIGHT("SIGNLRED")
 		Stop
 	}
@@ -2351,8 +2305,7 @@ ACTOR CanyonRockSpawner : 3dObstacle //ozymandias81
 	//$Category Models (Wolf3D)/Rocks
 	//$Title Canyon Rock Spawner
 	//$Color 3
-	DistanceCheck "scenelod"
-	
+	DistanceCheck "scenelod"	
 	//$Arg0 "Shape"
 	//$Arg0Tooltip "Pickup the desired shape\nRandom: 0\nLarge: 1\nMedium: 2\nSmall: 3"
 	Radius 24
@@ -2368,18 +2321,18 @@ ACTOR CanyonRockSpawner : 3dObstacle //ozymandias81
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Large")
 		TNT1 A 0 A_JumpIf(Args[0]==2, "Medium")
 		TNT1 A 0 A_JumpIf(Args[0]==3, "Small")
-		Random: //fall through if set at 0
+	Random: //fall through if set at 0
 		MDLA A -1 A_Jump(128,1)
 		MDLA B -1 A_Jump(128,1)
 		MDLA C -1 
 		Stop
-		Large:
+	Large:
 		MDLA A -1
 		Stop
-		Medium:
+	Medium:
 		MDLA B -1
 		Stop
-		Small:
+	Small:
 		MDLA C -1
 		Stop
 	}
@@ -2432,8 +2385,7 @@ ACTOR 3dSpeakers_1 : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Tannoy Speakers (Single)
 	//$Color 3
-	DistanceCheck "scenelod"
-	
+	DistanceCheck "scenelod"	
 	Radius 8
 	Height 8
 	-CANPASS
@@ -2466,8 +2418,7 @@ ACTOR 3dSpeakers_2 : 3dObstacle
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Tannoy Speakers (Double)
 	//$Color 3
-	DistanceCheck "scenelod"
-	
+	DistanceCheck "scenelod"	
 	Radius 32
 	Height 96
 }
@@ -2494,7 +2445,6 @@ ACTOR Spotlight : ModelBase
 	//$Category Hazards (Wolf3D)
 	//$Title Spotlight
 	//$Color 3
-
 	//$Arg0 "Left Swing Amount"
 	//$Arg0Tooltip "Radius of turn to the left in degrees\nDefault: 0"
 	//$Arg1 "Right Swing Amount"
@@ -2505,23 +2455,18 @@ ACTOR Spotlight : ModelBase
 	//$Arg3Tooltip "Argument to pass to script as argument 1\nDefault: 0"
 	//$Arg4 "Script Argument 2"
 	//$Arg4Tooltip "Argument to pass to script as argument 2\nDefault: 0"
-
-
 	var int user_minAngle;
 	var int user_maxAngle;
 	var int user_position;
 	var int user_sightRange;
 	var int user_holdTime;
 	var int user_direction;
-
 	+NOGRAVITY
 	+SHOOTABLE
 	+DONTFALL
 	+DONTTHRUST
 	+NOBLOOD
-
 	Health 100
-
 	States
 	{
 		Spawn:
@@ -2557,7 +2502,6 @@ ACTOR Spotlight : ModelBase
 						A_AlertMonsters(1280); //Still fall back to alerting monsters if no script number supplied.
 					}
 				}
-
 				if (args[0] != 0 && args[1] != 0) {
 					if (user_position >= user_maxAngle || user_position <= user_minAngle) {
 						user_holdTime++;
@@ -2605,7 +2549,6 @@ ACTOR SpotlightGlow
 {
 	Height 16
 	Radius 16
-
 	+ALWAYSPUFF
 	+BLOODLESSIMPACT
 	+DONTSPLASH
@@ -2616,7 +2559,6 @@ ACTOR SpotlightGlow
 	+PUFFONACTORS
 	-RANDOMIZE
 	+PUFFGETSOWNER
-
 	States
 	{
 	Spawn:
