@@ -3169,14 +3169,41 @@ ACTOR MadCook2 : MadCook
 ACTOR FlyingHack : FlyingNeedle
 {
 	DamageType None
+	PoisonDamage 1, 2
 	+NOGRAVITY
 	+ROLLSPRITE
 	States
 	{
 	Spawn:
 		COPR A 0 NODELAY A_SetRoll(random(0, 360), 0, 0)
+		Rotate:
 		COPR A 1 A_SetRoll(roll+20, SPF_INTERPOLATE, 0)
-		Goto Spawn+1
+		Loop
+	Death:
+		TNT1 A 1 A_SpawnItemEx("HackPuff")
+		Stop
+	}
+}
+
+ACTOR HackPuff
+{
+	+NOBLOCKMAP
+	+NOEXTREMEDEATH
+	+NOGRAVITY
+	+PUFFONACTORS
+	RenderStyle "Add"
+	States
+	{
+	Spawn:
+	Melee:
+	Crash:
+		POOF A 3 A_PlaySound("knife/stone")
+		POOF BCDE 3
+		Stop
+	Death:
+	XDeath:
+		POOF A 3 A_PlaySound("knife/hit")
+		Goto Crash+1
 	}
 }
 

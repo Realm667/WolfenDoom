@@ -7,12 +7,16 @@ ACTOR BatFamiliar
 	Radius 12
 	Height 24
 	FloatSpeed 1.33333333
-	Speed 4.66666667
+	Speed 2.33333334
 	PainChance 200
 	MONSTER
+	-MTHRUSPECIES
+	-THRUSPECIES
 	+FLOAT
 	+NOGRAVITY
 	+NOINFIGHTING
+	+THRUGHOST
+	Species "Player"
 	SeeSound "batfam/idle"
 	PainSound "batfam/pain"
 	DeathSound "batfam/death"
@@ -44,14 +48,13 @@ ACTOR BatFamiliar
 		Goto See
 	Death:
 		BFAM D 5 A_ScreamAndUnblock
-		"####" EFD 5
+		"####" EFD 5 {A_ChangeFlag("MTHRUSPECIES", TRUE); A_ChangeFlag("THRUSPECIES", TRUE);}
 		Goto Death+1
 	Crash:
-		TNT1 A 0 A_SetFloorClip
 		BFAM G 6 A_PlaySound("batfam/crash")
 		"####" H 7
 		"####" I 8
-		"####" J -1
+		"####" J -1 {A_ChangeFlag("MTHRUSPECIES", TRUE); A_ChangeFlag("THRUSPECIES", TRUE);}
 		Stop
 	}
 }
@@ -64,7 +67,7 @@ ACTOR RatFamiliar
 	Health 10
 	Radius 12
 	Height 24
-	Speed 4.66666667
+	Speed 3.66666667
 	PainChance 200
 	MONSTER
 	-FLOAT
