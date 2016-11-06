@@ -396,12 +396,12 @@ ACTOR Cell_Light : CastleLight1
 {
 	//$Title Cell Light (switchable)
 	Radius 8
-	Height 38
+	Height 1
 	States
 	{
 	Spawn:
 		MDLA A 0 NoDelay {A_SpawnItemEx("AlertLight", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
-											A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*34, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);}
+											A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*-30, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);}
 		MDLA A -1 Light("BOACEIL2")
 		Stop
 	}
