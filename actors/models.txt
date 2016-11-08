@@ -1769,6 +1769,17 @@ ACTOR Bunk_Bed2 : Bunk_Bed1
 	Height 72
 }
 
+//Talon1024
+ACTOR Feldfernschreiber : ModelBase
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Feld Hell machine
+	//$Color 3
+	Radius 16
+	Height 32
+	DistanceCheck "scenelod"
+}
+
 //CODs Stuff - Ozy81
 ACTOR COD_LampGlassOn : 3dGlass {}
 ACTOR COD_LampGlassOff : 3dGlass {}
@@ -1948,17 +1959,6 @@ ACTOR COD_Radio_Tall : 3dObstacle
 ACTOR COD_Radio_Tall_D : COD_Radio_Tall
 {
 	//$Title Radio, Tall (Blown)
-	DistanceCheck "scenelod"
-}
-
-ACTOR Feldfernschreiber : ModelBase
-{
-	// Talon1024's Feldfernschreiber (Feld Hell machine) model
-	//$Category Models (Wolf3D)/Scenery
-	//$Title Feld Hell machine
-	//$Color 3
-	Radius 10
-	Height 40
 	DistanceCheck "scenelod"
 }
 
