@@ -15,6 +15,7 @@ global int 6:mission_number;		//The variable for the mission number
 
 int objectives_on[8];			//Objective display toggle
 
+int objectives_active = 0;
 str objectives[MAX_OBJECTIVES][2]=
 {
 	{"",""},
@@ -40,6 +41,14 @@ script "boaobjectives" (void)
 
 script "boaobjectivesset"(int mode,int objnumber,int objtext)
 {
+	if (mode == 1) { // Objective text
+		// No curly braces needed here, since there's just one statement after the if/else.
+		if (StrLen(StrParam(l:objtext)) > 0)
+			objectives_active |= (1 << objnumber);
+		else
+			// Blank objective text
+			objectives_active &= ~(1 << objnumber);
+	}
 	objectives[objnumber][mode]=objtext;
 }
 
@@ -54,30 +63,33 @@ script "boaobjectivesdisplay" ENTER
 
 	int intHeaderCount = 0;
 
-	For (int i = 0; i <= 6; i++)
+	for (int i = 0; i <= 7; i++)
 	{
 		SetFont("SMALLFONT");
 		int intPosY = 135.0 + (13.0 * (intMsgID - 960)) + 0.1;
 
-		If (i == 0)
+		if (i == 0)
 		{
 			HudMessage(l:"MO_PRIMARY"; HUDMSG_PLAIN, intMsgID++, CR_UNTRANSLATED, 300.1, intPosY, 0.03);
 			intHeaderCount++;
 		}
-		Else If (i == 4)
+		else if (i == 4)
 		{
 			HudMessage(l:"MO_SECONDARY"; HUDMSG_PLAIN, intMsgID++, CR_UNTRANSLATED, 300.1, intPosY, 0.03);
 			intHeaderCount++;
 		}
-		Else
+		else
 		{
-			str strOutput = StrParam(l:objectives[i - intHeaderCount][0], l:objectives[i - intHeaderCount][1]);
+			int objIdx = i - intHeaderCount;
+			str strOutput = StrParam(l:objectives[objIdx][0], l:objectives[objIdx][1]);
 
-			If (strLen(strOutput) > 0)
+			If (
+				strLen(strOutput) > 0 &&
+				((objectives_active >> objIdx) & 1) == 1)
 			{
 				HudMessage(s:strOutput; HUDMSG_PLAIN, intMsgID++, CR_UNTRANSLATED, 310.1, intPosY, 0.03);
 
-				If (!StrCmp(StrParam(l:objectives[i - intHeaderCount][0]), StrParam(l:"MO_ICON_ACC")))
+				If (!StrCmp(StrParam(l:objectives[objIdx][0]), StrParam(l:"MO_ICON_ACC")))
 					SetFont("OBJ_YES");
 				Else
 					SetFont("OBJ_NO");
