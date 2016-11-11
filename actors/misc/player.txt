@@ -5,7 +5,7 @@ ACTOR ScientistUniformToken : Inventory {Inventory.MaxAmount 1}
 ACTOR BoAPlayer : PlayerPawn
 {
 	var float user_crouch;
-	var float user_scaleY;
+	var float user_ScaleY;
 
 	Species "Player"
 	+DONTBLAST //avoid kick's blast effect while kicking at walls
@@ -32,7 +32,7 @@ ACTOR BoAPlayer : PlayerPawn
 	Player.CrouchSprite "PLYC"
 	Player.SideMove 1.0,0.5
 	Player.ForwardMove 1.0,0.5
-	//Player.ViewBob 0.44
+	Player.ViewBob 0.44
 	Player.WeaponSlot 1,KnifeSilent,Shovel,Firebrand,AstrosteinMelee
 	Player.WeaponSlot 2,Luger9mm,Walther9mm
 	Player.WeaponSlot 3,TrenchShotgun,Browning5,AstroShotgun
@@ -47,7 +47,7 @@ ACTOR BoAPlayer : PlayerPawn
 	{
 	Spawn:
 		PLAY A 1 NoDelay {
-			if (user_scaleY == 0) { user_scaleY = ScaleY; }
+			if (user_ScaleY == 0) { user_ScaleY = ScaleY; }
 		}
 		"####" # 0 A_JumpIfInventory("ScientistUniformToken", 1, "Spawn.Uniform")
 		Loop
@@ -62,11 +62,11 @@ ACTOR BoAPlayer : PlayerPawn
 				if (user_crouch < 0.75) { 
 					return State("See.Scientist.Crouch");
 				} else {
-					ScaleY = user_scaleY;
+					ScaleY = user_ScaleY;
 					return State("See.Scientist");
 				}
 			} else {
-				ScaleY = user_scaleY;
+				ScaleY = user_ScaleY;
 				return State("");
 			}
 		}
@@ -80,12 +80,12 @@ ACTOR BoAPlayer : PlayerPawn
 		"####" # 0 A_Jump(256, "See.Resume")
 	See.Resume:
 		"####" AAAAAAABBBBBBBBCCCCCCCCDDDDDDDD 1 {
-			ScaleY = user_scaleY / user_crouch; //Negate crouch sprite scaling
+			ScaleY = user_ScaleY / user_crouch; //Negate crouch sprite scaling
 			if ((velx + vely) == 0 || GetCrouchFactor(AAPTR_DEFAULT) != user_crouch) { //Get rid of the 'running in place' effect and check if crouch state changed
 				if (CountInv("ScientistUniformToken") > 0) {
 					return State("See");
 				} else {
-					ScaleY = user_scaleY;
+					ScaleY = user_ScaleY;
 					return State("Spawn");
 				}
 			} else {

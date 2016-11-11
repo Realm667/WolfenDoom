@@ -373,7 +373,7 @@ ACTOR Windmill : 3dObstacle
 	{
 	Spawn:
 		MDLA A 0 NoDelay A_PlaySound("misc/windmill", CHAN_AUTO, 0.7, TRUE)
-		MDLA A -1 A_SpawnItemEx("WindmillWheel", 24, 0, scaleY*476) //don't scale the model more than 1.2 on GZDB
+		MDLA A -1 A_SpawnItemEx("WindmillWheel", 24, 0, ScaleY*476) //don't scale the model more than 1.2 on GZDB
 		Stop
 	}
 }

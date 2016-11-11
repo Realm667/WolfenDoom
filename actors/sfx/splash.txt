@@ -53,7 +53,7 @@ ACTOR WaterSplashObject1
 		WTSA A 0 NODELAY
 		"####" A 0 ThrustThingZ(0,random(4,8),0,0)
 		"####" A 0 ThrustThing(random(0,255),random(0,1),0,0)
-		"####" A 1 A_SetScale(scalex+0.01, scaley+0.01)
+		"####" A 1 A_SetScale(ScaleX+0.01, ScaleY+0.01)
 		"####" A 0 A_FadeOut(.025)
 		Goto Spawn+3
 	}
@@ -104,7 +104,7 @@ ACTOR WaterSplashCloud
 		"####" A 0 ThrustThingZ(0,random(1,4),0,0)
 		"####" A 0 ThrustThing(random(0,255),random(0,1),0,0)
 		"####" AAAAAAAAA 2 A_FadeIn(.03)
-		"####" A 2 A_SetScale(scalex+0.01, scaley+0.01)
+		"####" A 2 A_SetScale(ScaleX+0.01, ScaleY+0.01)
 		"####" A 0 A_FadeOut(.03)
 		Goto Spawn+12
 	}
