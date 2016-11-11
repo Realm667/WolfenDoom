@@ -24,7 +24,7 @@ ACTOR TeslaLab1
 	Radius 32
 	Height 48
 	Scale 0.6
-	Mass 0x7ffffff
+	+DONTTHRUST
 	+NOGRAVITY
 	+NOTAUTOAIMED
 	States
@@ -42,7 +42,7 @@ ACTOR TeslaLab2 : SwitchableDecoration
 	//$Color 3
 	Radius 16
 	Height 24
-	Mass 0x7ffffff
+	+DONTTHRUST
 	+NOGRAVITY
 	+NOTAUTOAIMED
 	+RANDOMIZE
@@ -220,11 +220,11 @@ ACTOR TeslaTurret //inspired from Tesla Coil by Captain Toenail - still not fini
 	//$Color 4
 	Radius 16
 	Height 104
-	Mass 0x7ffffff
 	Speed 0
 	MaxTargetRange 640
 	MONSTER
 	-COUNTKILL
+	+DONTTHRUST
 	+FLOORCLIP
 	+INVULNERABLE
 	+LOOKALLAROUND

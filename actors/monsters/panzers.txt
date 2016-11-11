@@ -359,13 +359,13 @@ ACTOR SSTank1
 	Health 3500
 	Radius 100
 	Height 96
-	Mass 0x7ffffff
 	Speed 2.66666667
 	MinMissileChance 160
 	Tag "Panzer IV F"
 	+BOSS
 	+BOSSDEATH
 	+DONTMORPH
+	+DONTTHRUST
 	+FLOORCLIP
 	+MISSILEMORE
 	+NOBLOODDECALS
@@ -449,7 +449,7 @@ ACTOR DestroyedTank1
 	//$Color 4
 	Radius 88
 	Height 96
-	Mass 0x7ffffff
+	+DONTTHRUST
 	+FLOORCLIP
 	+INVULNERABLE
 	+NOBLOOD
