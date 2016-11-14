@@ -8,7 +8,7 @@ ACTOR Meal : Health
 	States
 	{
 	Spawn:
-		MEAL A -1 NODELAY A_Jump(128,1)
+		MEAL A -1 NoDelay A_Jump(128,1)
 		"####" B -1
 		Stop
 	}
@@ -100,9 +100,9 @@ ACTOR VitalitySerum : UpgradeStamina
 	Scale 0.9
 	Inventory.Amount 5 //this controls how much health boost you receive
 	Inventory.MaxAmount 100 //this controls how high your health can get
+	Inventory.PickupMessage "$SERUM"
 	+COUNTITEM
 	+INVENTORY.ALWAYSPICKUP
-	Inventory.PickupMessage "$SERUM"
 	States
 	{
 	Spawn:
@@ -117,14 +117,14 @@ ACTOR FieldKit : HealthPickup
 	//$Title Field Kit (max +15)
 	//$Color 6
 	Health 25
-	+COUNTITEM
-	+INVENTORY.ALWAYSPICKUP
+	HealthPickup.AutoUse 1
+	Inventory.Icon "FKITC0"
+	Inventory.MaxAmount 15
 	Inventory.PickupMessage "$FKIT"
 	Inventory.PickupSound "Misc/I_PkUp"
 	Inventory.UseSound "Misc/I_PkUp"
-	Inventory.Icon "FKITC0"
-	Inventory.MaxAmount 15
-	HealthPickup.AutoUse 1
+	+COUNTITEM
+	+INVENTORY.ALWAYSPICKUP
 	States
 	{
 	Spawn:
@@ -144,11 +144,11 @@ ACTOR Bandages : PowerupGiver
 	//$Category Health (Wolf3D)
 	//$Title Bandages (+10)
 	//$Color 6
-	+COUNTITEM
-	Inventory.PickupMessage "$BAID"
 	Inventory.Icon "BAIDB0"
 	Inventory.MaxAmount 5
+	Inventory.PickupMessage "$BAID"
 	Powerup.Type "BandagesPowerup"
+	+COUNTITEM
 	States
 	{
 	Spawn:
