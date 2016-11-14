@@ -344,6 +344,7 @@ ACTOR CoffeeMachine : SwitchableDecoration
 	Health 1
 	+DONTSPLASH
 	+DONTTHRUST
+	+LOOKALLAROUND //this is needed otherwise we can drink only while in front of it - ozy81
 	+NOBLOOD
 	+NOBLOODDECALS
 	+NOTAUTOAIMED
@@ -358,7 +359,7 @@ ACTOR CoffeeMachine : SwitchableDecoration
 		"####" A 0 A_PlaySound("misc/drink", CHAN_AUTO, 1.0, FALSE, ATTN_NORM)
 		GiveHealth:
 		"####" A 1 A_GiveInventory("CoffeeCounter", 1)
-		"####" A 1 A_RadiusGive("Health", 32, RGF_PLAYERS, 1)
+		"####" A 1 A_RadiusGive("Health", 48, RGF_PLAYERS, 1)
 		Goto SpawnSet
 	Spawn:
 		CUP2 A 0 NoDelay A_SpawnItemEx("InteractionIcon", ScaleX*4, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
