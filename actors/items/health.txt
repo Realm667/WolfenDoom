@@ -14,6 +14,25 @@ ACTOR Meal : Health
 	}
 }
 
+ACTOR StackedMeal : Meal
+{
+	Radius 1
+	Height 1
+	+CANPASS
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Jump(256,"MealA","MealB")
+		MealA:
+		MEAL A 1
+		Loop
+		MealB:
+		MEAL B 1
+		Loop
+	}
+}
+
 ACTOR Dogfood : Health
 {
 	//$Category Health (Wolf3D)
