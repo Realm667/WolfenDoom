@@ -108,7 +108,15 @@ ACTOR Medikit_Fullhealth : Health
 	}
 }
 
-ACTOR VitalitySerum : UpgradeStamina
+//As stated on ZWiki, we need to inherit the UpdateStamina first to create a custom powerup then apply it on the desired actor
+//Link: http://zdoom.org/wiki/Creating_health_items_that_increase_the_player%27s_maximum_health#Strife.27s_Stamina_Upgrades
+ACTOR UpgradeStaminaBoA: UpgradeStamina
+{
+	Inventory.Amount 5
+	Inventory.MaxAmount 50
+}
+
+ACTOR VitalitySerum : UpgradeStaminaBoA
 {
 	//$Category Health (Wolf3D)
 	//$Title Vitality Serum (max+5)
@@ -117,8 +125,6 @@ ACTOR VitalitySerum : UpgradeStamina
 	//$Title "Vitality Serum"
 	Radius 20
 	Scale 0.9
-	Inventory.Amount 5 //this controls how much health boost you receive
-	Inventory.MaxAmount 100 //this controls how high your health can get
 	Inventory.PickupMessage "$SERUM"
 	+COUNTITEM
 	+INVENTORY.ALWAYSPICKUP
