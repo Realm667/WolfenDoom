@@ -127,7 +127,6 @@ ACTOR VitalitySerum : UpgradeStaminaBoA
 	Scale 0.9
 	Inventory.PickupMessage "$SERUM"
 	+COUNTITEM
-	+INVENTORY.ALWAYSPICKUP
 	States
 	{
 	Spawn:
@@ -149,7 +148,6 @@ ACTOR FieldKit : HealthPickup
 	Inventory.PickupSound "Misc/I_PkUp"
 	Inventory.UseSound "Misc/I_PkUp"
 	+COUNTITEM
-	+INVENTORY.ALWAYSPICKUP
 	States
 	{
 	Spawn:
