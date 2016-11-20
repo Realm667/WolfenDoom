@@ -1546,7 +1546,7 @@ ACTOR General : RocketMan
 		FETT H 0 A_FaceTarget
 		FETT H 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
 		FETT H 2 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",40,-20,random(-11,11))
-		FETT F 0 A_SpawnItemEx("9MMCasing", -12,0,36, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		FETT G 0 A_SpawnItemEx("9MMCasing", -12,0,36, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		FETT G 2 A_MonsterRefire(10,"See")
 		Loop
 	Pain:
@@ -2156,8 +2156,8 @@ ACTOR DeathKnight : Nazi
 		DKGT L 8 A_MonsterRefire(15,"See")
 		Loop
 	Pain:
-		DKGT E 3
-		DKGT E 3 A_Pain
+		DKGT M 3
+		DKGT M 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	Death:
@@ -2943,7 +2943,7 @@ ACTOR EliteFlamer : Guard
 		ELTF F 0 A_FaceTarget
 		ELTF FG 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6)
 		ELTF G 0 A_MonsterRefire(20,"See")
-		FLAM E 0 A_JumpIfCloser(400,"ProperMissileStart")
+		ELTF E 0 A_JumpIfCloser(400,"ProperMissileStart")
 		Goto See
 	ProperMissile2:
 		ELTF F 0 A_FaceTarget
