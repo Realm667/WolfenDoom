@@ -116,6 +116,28 @@ ACTOR UpgradeStaminaBoA: UpgradeStamina
 	Inventory.MaxAmount 50
 }
 
+// Used to limit the amount of Vitality Serums the player can buy. - Talon1024
+ACTOR VitalityToken : CustomInventory {
+	Radius 20
+	Scale 0.9
+	Inventory.MaxAmount 10
+
+	+INVENTORY.IGNORESKILL
+	+INVENTORY.UNTOSSABLE
+	States
+	{
+		Spawn:
+			VSRM ABC 6 BRIGHT
+			Loop
+		Pickup:
+			VSRM A 0 A_GiveInventory("VitalitySerum", 5)
+			Stop
+		Use:
+			VSRM A 0
+			Fail
+	}
+}
+
 ACTOR VitalitySerum : UpgradeStaminaBoA
 {
 	//$Category Health (Wolf3D)
