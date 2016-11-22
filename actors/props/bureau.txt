@@ -357,11 +357,10 @@ ACTOR CoffeeMachine : SwitchableDecoration
 	Active:
 		CUP2 A 0 A_JumpIfHealthLower(25, 1, AAPTR_TARGET)
 		Goto SpawnSet
-		"####" A 0 A_JumpIfInventory("CoffeeCounter", 5, "Empty")
+		"####" A 0 A_GiveInventory("CoffeeCounter", 1)
+		"####" A 0 A_GiveToTarget("Health", 1)
 		"####" A 0 A_PlaySound("misc/drink", CHAN_AUTO, 1.0, FALSE, ATTN_NORM)
-		GiveHealth:
-		"####" A 1 A_GiveInventory("CoffeeCounter", 1)
-		"####" A 1 A_GiveToTarget("Health", 1)
+		"####" A 0 A_JumpIfInventory("CoffeeCounter", 5, "Empty")
 		Goto SpawnSet
 	Spawn:
 		CUP2 A 0 NoDelay A_SpawnItemEx("InteractionIcon", ScaleX*4, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
@@ -394,11 +393,10 @@ ACTOR WaterMachine : CoffeeMachine
 	Active:
 		WATR A 0 A_JumpIfHealthLower(25, 1, AAPTR_TARGET)
 		Goto SpawnSet
-		"####" A 0 A_JumpIfInventory("WaterCounter", 5, "Empty")
-		"####" A 0 A_PlaySound("misc/drink", CHAN_AUTO, 1.0, FALSE, ATTN_NORM)
-		GiveHealth:
 		"####" A 0 A_GiveInventory("WaterCounter", 1)
-		"####" A 1 A_GiveToTarget("Health", 1)
+		"####" A 0 A_GiveToTarget("Health", 1)
+		"####" A 0 A_PlaySound("misc/drink", CHAN_AUTO, 1.0, FALSE, ATTN_NORM)
+		"####" A 0 A_JumpIfInventory("WaterCounter", 5, "Empty")
 		Goto SpawnSet
 	Spawn:
 		WATR A 0 NoDelay A_SpawnItemEx("InteractionIcon", ScaleX*4, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
