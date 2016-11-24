@@ -4,7 +4,6 @@ ACTOR SneakableSSMP40Guard : SSMP40Guard
 	//$Category Monsters (Wolf3D)/Sneak-friendly
 	//$Title SS Guard (MP40, sneak-friendly)
 	//$Color 4
-	
 	PainChance 256							// Otherwise our Pain states won't always work...
 	DropItem 9mmAmmo 192
 	DropItem MP40 64
@@ -15,7 +14,6 @@ ACTOR SneakableSSMP40Guard : SSMP40Guard
 	+FRIENDLY										// The guy is friendly. Looks like walking the patrol without immediately aquiring the player as a targer won't work otherwise...
 	+NEVERTARGET								// Prevents +FRIENDLY guards from attacking -FRIENDLY guards
 	+NOINFIGHTING								// Prevents guards from attacking other guards with same FRIENDLY flag settings
-	
 	States
 	{
 		Spawn:
@@ -73,9 +71,8 @@ ACTOR SneakableSSMP40Guard : SSMP40Guard
 
 ACTOR SneakableSSMP40GuardStatic : SneakableSSMP40Guard
 {
-	var int user_angle;
-
 	//$Title SS Guard Static (MP40, sneak-friendly, doesn't move)
+	var int user_angle;
 	States
 	{
 		Spawn:
@@ -95,11 +92,9 @@ ACTOR SneakableGuardEyesIdle
 {
 	RenderStyle None
 	Height 46
-	
 	+NEVERTARGET
 	+NOCLIP
 	+NOGRAVITY
-	
 	States
 	{
 		Spawn:
@@ -138,28 +133,23 @@ ACTOR SneakableGuardEyesAlerted : SneakableGuardEyesIdle
 			TNT1 A 0 NoDelay ACS_NamedExecute("IncreaseAlertedCount")
 			TNT1 A 1 A_AlertMonsters(512, AMF_TARGETEMITTER) // Something fishy is going on. Alert everybody around!
 			Goto ResetCounters
-		
 		ResetCounters: 
 			TNT1 A 0 A_SetArg(0, random(280, 350)) // Set countdown time to 8 - 10 seconds
 			TNT1 A 0 A_SetArg(1, random(140, 210))   // Set quote countdown time to 4 - 6 seconds 
 			Goto Look
-			
 		Look:
 			TNT1 A 1 A_Warp(AAPTR_MASTER, 0, 0, Height) // Need a slight delay between A_Looks to prevent infinite loop
 			TNT1 A 0 A_LookEx(0, 0.0, 1024.0, 256.0, 65.0, "PlayerSeen")
 			TNT1 A 0 A_CountdownArg(0, "ResetMaster") // Sets master state to Patrol when the countdown reaches zero
 			TNT1 A 0 A_CountdownArg(1, "TryPlayLoosingTargetSound")
 			Loop
-			
 		TryPlayLoosingTargetSound:
 			TNT1 A 0 A_JumpIf(args[0] > 220, "Look") // Too early!
 			TNT1 A 0 A_PlaySound("axis1/target_not_seen", CHAN_BODY)
 			Goto ResetCounters + 1 // Reset quote countdown time only
-			
 		PlayerSeen: // Clear target and reset countdown
 			TNT1 A 1 A_ClearTarget
 			Goto ResetCounters
-			
 		ResetMaster:
 			TNT1 A 0 A_DamageMaster(1, "BecomeIdle") // Cause the master to enter Pain.BecomeIdle state (HAAAACKS!!!!11)
 			TNT1 A 0 ACS_NamedExecute("DecreaseAlertedCount")
@@ -171,16 +161,13 @@ ACTOR SneakableGuardEyesAlerted : SneakableGuardEyesIdle
 ACTOR AlertMarker
 {
 	Scale 2.0
-	
 	+BRIGHT
 	+NOGRAVITY
-
 	States
 	{
 		Spawn:
 			EXCL C 1 NoDelay A_PlaySound("misc/alert", CHAN_BODY)
 			Goto Fade
-		
 		Fade:
 			EXCL C 0 A_Warp(AAPTR_MASTER, 0, 0, 64)
 			EXCL C 1 A_FadeOut(0.01)
@@ -208,7 +195,6 @@ ACTOR MGTurretStealth : Nazi
 	+NOBLOOD
 	+NOGRAVITY
 	RenderStyle "None"
-
 	States
 	{
 		Spawn:
