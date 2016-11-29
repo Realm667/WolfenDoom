@@ -729,4 +729,5 @@ script "VSerum Max Health Boost" (void)
 	if (GetActorProperty(0, APROP_SpawnHealth) < MAX_PLAYER_HEALTH) {
 		SetActorProperty(0, APROP_SpawnHealth, GetActorProperty(0, APROP_SpawnHealth) + 5);
 	}
+	GiveInventory("Meal", 5);
 }
