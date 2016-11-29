@@ -108,15 +108,7 @@ ACTOR Medikit_Fullhealth : Health
 	}
 }
 
-//As stated on ZWiki, we need to inherit the UpdateStamina first to create a custom powerup then apply it on the desired actor
-//Link: http://zdoom.org/wiki/Creating_health_items_that_increase_the_player%27s_maximum_health#Strife.27s_Stamina_Upgrades
-ACTOR UpgradeStaminaBoA: UpgradeStamina
-{
-	Inventory.Amount 5
-	Inventory.MaxAmount 50
-}
-
-// Used to limit the amount of Vitality Serums the player can buy. - Talon1024
+// Re-written from scratch to limit the amount the player can buy from the shop, and to not completely restore the player's health.
 ACTOR VitalitySerum : CustomInventory {
 	//$Category Health (Wolf3D)
 	//$Title Vitality Serum (max+5)
@@ -139,17 +131,13 @@ ACTOR VitalitySerum : CustomInventory {
 		Pickup:
 			VSRM A 0
 			{
-				// Don't give the player anything if he walks over it while he is injured.
 				if (CountInv("VitalitySerum") < 10) {
-					A_GiveInventory("UpgradeStaminaBoA", 5);
-					return 1;
-				} else {
-					return 0;
+					ACS_NamedExecuteAlways("VSerum Max Health Boost");
 				}
 			}
 			Stop
 		Use:
-			// Cannot be used; this state is only here so that the item stays in the player's inventory.
+			// Does nothing except prevent the item from disappearing from the player's inventory.
 			VSRM A 0
 			Fail
 	}
