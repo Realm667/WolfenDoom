@@ -134,7 +134,7 @@ ACTOR VitalitySerum : CustomInventory {
 			{
 				// Don't give the player anything if he walks over it while he is injured.
 				ACS_NamedExecuteAlways("VSerum Max Health Boost", 0);
-				A_GiveInventory("Health", 5)
+				A_GiveInventory("Health", 5);
 			}
 			Stop
 	}
