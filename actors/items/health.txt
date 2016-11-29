@@ -150,12 +150,8 @@ ACTOR VitalitySerum : CustomInventory {
 			VSRM ABC 6 BRIGHT
 			Loop
 		Pickup:
-			VSRM A 0 {
-				if (GetSpawnHealth() < 150) {
-					ACS_NamedExecuteAlways("VSerum Max Health Boost");
-				}
-				A_GiveInventory("Meal");
-			}
+			VSRM A 0 ACS_NamedExecuteAlways("VSerum Max Health Boost")
+			VSRM A 0 A_GiveInventory("Meal")
 			Stop
 	}
 }
