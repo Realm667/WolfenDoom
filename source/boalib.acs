@@ -5,6 +5,7 @@
 #define SUPPLY_CHEST_PROXY_SCRIPT 4000
 #define MAX_VOLUME 127
 #define MAX_OBJECTIVES 6
+#define MAX_PLAYER_HEALTH 150
 
 global int 1:disable_mutants; //mxd. When set to true, Mutant and MutantMelee will immediately despawn after spawning.
 global int 2:disable_big_mutants; //mxd. When set to true, BigMutant1 and BigMutant2 will immediately despawn after spawning.
@@ -719,5 +720,13 @@ script "30Health" ENTER
 		}
 
 		Delay(1);
+	}
+}
+
+// Vitality upgrade script, modified from Trailblazer. Thanks, PillowBlaster!
+script "VSerum Max Health Boost" (void)
+{
+	if (GetActorProperty(0, APROP_SpawnHealth) < MAX_PLAYER_HEALTH) {
+		SetActorProperty(0, APROP_SpawnHealth, GetActorProperty(0, APROP_SpawnHealth) + 5);
 	}
 }
