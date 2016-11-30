@@ -1036,13 +1036,13 @@ ACTOR CTurret_Afrika : SwitchableDecoration
 		"####" X 0 //bland
 		Goto Spawn
 	SpawnEnemy:
-		TNT1 A 0 A_ChangeFlag("USESPECIAL", FALSE)
+		TNT1 A 0 A_ChangeFlag("BUMPSPECIAL", FALSE)
 		//"####" A 0 A_Remove(AAPTR_TARGET, RMVF_NOMONSTERS, "None", "Turret") //let's remove the Turret
 		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "Guard") //...then the Guard
 		"####" A 1 A_SpawnItemEx("MGTSDropper1",0,0,0) //So spawn a new MGTurretSoldier, avoid to place turrets inside places which are script sensible!
 		Stop
 	Death:
-		"####" A 0 A_ChangeFlag("USESPECIAL", FALSE)
+		"####" A 0 A_ChangeFlag("BUMPSPECIAL", FALSE)
 		"####" A 0 A_UnSetSolid
 		"####" A 0 A_Scream
 		"####" A 0 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
@@ -1061,7 +1061,7 @@ ACTOR CTurret_Wehrmacht : CTurret_Afrika
 		SMGS X 1 A_CheckProximity("SpawnEnemy", "WGuard", 64, 1, CPXF_NOZ|CPXF_EXACT) //Only Guards can activate it and only 1 of them
 		Loop
 	SpawnEnemy:
-		TNT1 A 0 A_ChangeFlag("USESPECIAL", FALSE)
+		TNT1 A 0 A_ChangeFlag("BUMPSPECIAL", FALSE)
 		//"####" A 0 A_Remove(AAPTR_TARGET, RMVF_NOMONSTERS, "None", "Turret") //let's remove the Turret
 		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "Guard") //...then the Guard
 		"####" A 1 A_SpawnItemEx("MGTSDropper2",0,0,0) //So spawn a new MGTurretSoldier, avoid to place turrets inside places which are script sensible!
