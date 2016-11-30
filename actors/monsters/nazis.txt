@@ -59,12 +59,12 @@ ACTOR Nazi
 		"####" H 0 A_Jump(256,"See")
 		Stop
 	Pain.SilentKnifeAttack: //mxd. Hacky critical hit system
-		 "####" "#" 0 A_JumpIf(user_incombat, "Pain")
-		 "####" "#" 0 A_SetUserVar("user_incombat", TRUE)
-		 "####" "#" 0 A_Log("Critical hit!")
-		 "####" "#" 0 A_AlertMonsters(128)
-		 "####" "#" 0 A_DamageSelf(health, "Melee")
-		 Goto Pain
+		"####" "#" 0 A_JumpIf(user_incombat, "Pain")
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE)
+		"####" "#" 0 A_Log("Critical hit!")
+		"####" "#" 0 A_AlertMonsters(128)
+		"####" "#" 0 A_DamageSelf(health, "Melee")
+		Goto Pain
 	}
 }
 
@@ -172,9 +172,7 @@ ACTOR Rottweiler : Nazi
 
 ACTOR GermanShepherd : Rottweiler
 {
-	//$Category Monsters (Wolf3D)/Critters
 	//$Title Dog (Shepherd)
-	//$Color 4
 	States
 	{
 	Spawn:
@@ -185,9 +183,7 @@ ACTOR GermanShepherd : Rottweiler
 
 ACTOR Doberman : Rottweiler
 {
-	//$Category Monsters (Wolf3D)/Critters
 	//$Title Dog (Doberman)
-	//$Color 4
 	States
 	{
 	Spawn:
@@ -279,9 +275,7 @@ ACTOR Guard : Nazi
 
 ACTOR GiantGuard : Guard
 {
-	//$Category Monsters (Wolf3D)
-	//$Title Afrika Corps Giant Guard (Easter Egg)
-	//$Color 4
+	//$Title Afrika Korps Giant Guard (Easter Egg)
 	DropItem 9mmAmmo 255
 	DropItem 9mmAmmo 255
 	DropItem 9mmAmmo 255
@@ -314,9 +308,7 @@ ACTOR GiantGuard : Guard
 
 ACTOR SSGuard : Guard
 {
-	//$Category Monsters (Wolf3D)
-	//$Title SS Guard
-	//$Color 4
+	//$Title SS Guard (Pistol)
 	Speed 2.67
 	Scale 1.24
 	Obituary "$SSGUARD"
@@ -362,9 +354,7 @@ ACTOR SSGuard : Guard
 
 ACTOR WGuard : Guard
 {
-	//$Category Monsters (Wolf3D)
-	//$Title Wehrmacht Guard
-	//$Color 4
+	//$Title Wehrmacht Guard (Pistol)
 	Speed 2.5
 	Scale 1.24
 	Obituary "$WGUARD"
@@ -393,9 +383,7 @@ ACTOR WGuard : Guard
 
 ACTOR MP40Guard : Guard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Afrika Korps Guard (MP40)
-	//$Color 4
 	Obituary "$MPGUARD"
 	Scale 1.24
 	SeeSound "Nazi2/Sighted"
@@ -456,9 +444,7 @@ ACTOR MP40GuardCounter : Inventory {Inventory.MaxAmount 32}
 
 ACTOR SSMP40Guard : SSGuard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title SS Guard (MP40)
-	//$Color 4
 	SeeSound "Nazi2/Sighted"
 	PainSound "Nazi2/Pain"
 	DeathSound "Nazi2/Death"
@@ -500,9 +486,7 @@ ACTOR SSMP40GuardCounter : Inventory {Inventory.MaxAmount 40}
 
 ACTOR WMP40Guard : MP40Guard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Wehrmacht Guard (MP40)
-	//$Color 4
 	Obituary "$WMPGUARD"
 	Health 30
 	Speed 2.5
@@ -546,9 +530,7 @@ ACTOR WMP40GuardCounter : Inventory {Inventory.MaxAmount 48}
 
 ACTOR Officer : Guard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Afrika Korps Officer
-	//$Color 4
 	Speed 4
 	Obituary "$OFFICER"
 	SeeSound "Nazi4/Sighted"
@@ -602,9 +584,7 @@ ACTOR Officer : Guard
 
 ACTOR SSOfficer : Officer
 {
-	//$Category Monsters (Wolf3D)
 	//$Title SS Officer
-	//$Color 4
 	Speed 5.33
 	Scale 1.24
 	Obituary "$SSOFFICE"
@@ -619,9 +599,7 @@ ACTOR SSOfficer : Officer
 
 ACTOR WOfficer : Officer
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Wehrmacht Officer
-	//$Color 4
 	Obituary "$WOFFICER"
 	Health 30
 	Speed 5
@@ -657,9 +635,7 @@ ACTOR WOfficer : Officer
 
 ACTOR RifleGuard : MP40Guard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Afrika Korps Guard (Rifle)
-	//$Color 4
 	Obituary "$RIFLSOLD"
 	SeeSound "Nazi3/Sighted"
 	DropItem MauserAmmo
@@ -682,9 +658,7 @@ ACTOR RifleGuard : MP40Guard
 
 ACTOR WRifleGuard : RifleGuard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Wehrmacht Guard (Rifle)
-	//$Color 4
 	Obituary "$WRIFSOLD"
 	Health 30
 	Speed 2.5
@@ -712,9 +686,7 @@ ACTOR WRifleGuard : RifleGuard
 
 ACTOR WaffenSS : SSMP40Guard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Waffen SS
-	//$Color 4
 	SeeSound "Nazi3/Sighted"
 	Obituary "$SSWAFFEN"
 	Health 80
@@ -739,9 +711,7 @@ ACTOR WaffenSS : SSMP40Guard
 
 ACTOR Paratrooper : WaffenSS
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Paratrooper
-	//$Color 4
 	Obituary "$PARATROP"
 	Health 90
 	DropItem "9mmAmmo" 192
@@ -756,9 +726,7 @@ ACTOR Paratrooper : WaffenSS
 
 ACTOR Sniper : Guard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Afrika Korps Sniper
-	//$Color 4
 	Obituary "$SNIPER"
 	Mass 1000 //Make it not move too far
 	SeeSound "" //Make them not cry, they are in disguise after all
@@ -805,9 +773,7 @@ ACTOR Sniper : Guard
 
 ACTOR WSniper : Sniper
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Wehrmacht Sniper
-	//$Color 4
 	States
 	{
 	Spawn:
@@ -818,9 +784,7 @@ ACTOR WSniper : Sniper
 
 ACTOR Sniper_Crouch : Guard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Afrika Korps Sniper (crouch)
-	//$Color 4
 	Obituary "$SNIPER"
 	Mass 1000		//Make it not move too far
 	SeeSound ""	//Make them not cry, they are in disguise after all
@@ -878,9 +842,7 @@ ACTOR WSniper_Crouch : Sniper_Crouch
 
 ACTOR FlamerSoldier : Guard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title SS Flamer (Soldier)
-	//$Color 4
 	Obituary "$FLAMEBOY"
 	Health 100
 	DropItem "FlameAmmo" 192
@@ -1044,41 +1006,40 @@ ACTOR MGTurretInvisible : MGTurret
 	}
 }
 
-ACTOR CTurret : SwitchableDecoration
+ACTOR CTurret_Afrika : SwitchableDecoration
 {
 	//$Category Monsters (Wolf3D)/Special
-	//$Title Controllable Turret (soldiers only)
+	//$Title Controllable Turret (Afrika Guards only)
 	//$Color 4
-	Scale 1.1
+	Scale 1.16
 	Speed 0
 	Health 100
-	Radius 2
+	Radius 8
 	Height 32
+	+BUMPSPECIAL
 	+DONTTHRUST
 	+LOOKALLAROUND
 	+NOBLOOD
 	+NOTAUTOAIMED
 	+SHOOTABLE
 	+SOLID
-	+BUMPSPECIAL
-	Species "Turret"
 	DeathSound "world/barrelboom"
-	Activation THINGSPEC_MonsterTrigger
+	Activation THINGSPEC_MonsterTrigger | THINGSPEC_ThingTargets
 	States
 	{
 	Spawn:
 		SMGS X 1
 	Active:
-		SMGS X 1 A_CheckProximity("SpawnEnemy", "Guard", 64, 1, CPXF_NOZ|CPXF_EXACT)
+		SMGS X 1 A_CheckProximity("SpawnEnemy", "Guard", 64, 1, CPXF_NOZ|CPXF_EXACT) //Only Guards can activate it and only 1 of them
 		Loop
 	Inactive:
-		"####" X 0 //atm this is bland
+		"####" X 0 //bland
 		Goto Spawn
 	SpawnEnemy:
-		"####" X 0 A_ChangeFlag("USESPECIAL", FALSE)
-		"####" X 1 A_SpawnItemEx("MGTurretSoldier",0,0,0)
-		TNT1 A 0 A_Remove(AAPTR_MASTER, "None", "Nazi")
-		TNT1 A 0 A_Remove(AAPTR_TARGET, RMVF_NOMONSTERS, "None", "Turret")
+		TNT1 A 0 A_ChangeFlag("USESPECIAL", FALSE)
+		//"####" A 0 A_Remove(AAPTR_TARGET, RMVF_NOMONSTERS, "None", "Turret") //let's remove the Turret
+		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "Guard") //...then the Guard
+		"####" A 1 A_SpawnItemEx("MGTSDropper1",0,0,0) //So spawn a new MGTurretSoldier, avoid to place turrets inside places which are script sensible!
 		Stop
 	Death:
 		"####" A 0 A_ChangeFlag("USESPECIAL", FALSE)
@@ -1089,11 +1050,34 @@ ACTOR CTurret : SwitchableDecoration
 	}
 }
 
+ACTOR CTurret_Wehrmacht : CTurret_Afrika
+{
+	//$Title Controllable Turret (Wehrmacht Guards only)
+	States
+	{
+	Spawn:
+		SMGS X 1
+	Active:
+		SMGS X 1 A_CheckProximity("SpawnEnemy", "WGuard", 64, 1, CPXF_NOZ|CPXF_EXACT) //Only Guards can activate it and only 1 of them
+		Loop
+	SpawnEnemy:
+		TNT1 A 0 A_ChangeFlag("USESPECIAL", FALSE)
+		//"####" A 0 A_Remove(AAPTR_TARGET, RMVF_NOMONSTERS, "None", "Turret") //let's remove the Turret
+		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "Guard") //...then the Guard
+		"####" A 1 A_SpawnItemEx("MGTSDropper2",0,0,0) //So spawn a new MGTurretSoldier, avoid to place turrets inside places which are script sensible!
+		Stop
+	}
+}
+
+ACTOR MGTSDropper1 : RandomSpawner { DropItem MGTurretSoldier }
+ACTOR MGTSDropper2 : RandomSpawner { DropItem MGTurretSoldierW }
+
 ACTOR MGTurretSoldier : MGTurret
 {
 	//$Title Stationary Turret Soldier (Afrika Korps)
 	Height 56
 	Radius 16
+	Scale 1.16
 	SeeSound "Nazi1/Sighted"
 	PainSound "Nazi1/Pain"
 	DeathSound "Nazi1/Death"
@@ -1170,9 +1154,7 @@ ACTOR MGTurretSoldierW : MGTurretSoldier
 
 ACTOR EliteFlamer : Guard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Elite Soldier (Flamer)
-	//$Color 4
 	Obituary "$FLAMEBOY"
 	Health 450
 	Speed 4
@@ -1266,9 +1248,7 @@ ACTOR EliteFlamer : Guard
 
 ACTOR EliteAssaulter : Guard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Elite Soldier (MP40)
-	//$Color 4
 	Obituary "$ELITASS"
 	Health 350
 	PainChance 160
@@ -1340,9 +1320,7 @@ ACTOR EliteAssaulter : Guard
 
 ACTOR EliteSoldatRifler : Guard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Elite Soldier (Rifle)
-	//$Color 4
 	Obituary "$ELITRIFL"
 	Health 65
 	Speed 4.66666667
@@ -1421,7 +1399,6 @@ ACTOR Mutant : Guard
 {
 	//$Category Monsters (Wolf3D)/Mutants
 	//$Title Mutant (Projectile)
-	//$Color 4
 	Obituary "$MUTANT"
 	Health 90
 	Scale 1.4
@@ -1509,9 +1486,7 @@ ACTOR Mutant : Guard
 
 ACTOR MutantMelee : Mutant
 {
-	//$Category Monsters (Wolf3D)/Mutants
 	//$Title Mutant (Melee)
-	//$Color 4
 	DropItem ""
 	+LOOKALLAROUND
 	States
@@ -1554,9 +1529,7 @@ ACTOR MutantMelee : Mutant
 
 ACTOR SuperMutant : Mutant
 {
-	//$Category Monsters (Wolf3D)/Mutants
-	//$Title Mutant (super)
-	//$Color 4
+	//$Title Mutant (Super)
 	Obituary "$SUPAMUTN"
 	Health 180
 	Scale 1.45
@@ -1604,9 +1577,7 @@ ACTOR SuperMutant : Mutant
 
 ACTOR BigMutant1 : Mutant
 {
-	//$Category Monsters (Wolf3D)/Mutants
 	//$Title Giant Mutant (UMG43)
-	//$Color 4
 	//$Sprite MTB1A0
 	Obituary "$GMUTANT1"
 	Health 400
@@ -1763,9 +1734,7 @@ ACTOR BigMutant1 : Mutant
 
 ACTOR BigMutant2 : BigMutant1
 {
-	//$Category Monsters (Wolf3D)/Mutants
 	//$Title Giant Mutant (NebRockets)
-	//$Color 4
 	//$Sprite MTB2A0
 	Obituary "$GMUTANT2"
 	Health 450
@@ -1811,7 +1780,6 @@ ACTOR UberMutant : Mutant
 {
 	//$Category Monsters (Wolf3D)/Bosses
 	//$Title Ubermutant (Boss)
-	//$Color 4
 	Tag "Ubermutant"
 	Health 1000
 	Radius 24
@@ -2155,9 +2123,7 @@ ACTOR FlamerMan : RocketMan
 
 ACTOR MadDoctor : RocketMan
 {
-	//$Category Monsters (Wolf3D)/Bosses
 	//$Title Dr Schabbs Jr. (Boss)
-	//$Color 4
 	Obituary "$SCHABBS"
 	DropItem "Medikit_Medium"
 	Tag "Dr. Schabbs Jr."
@@ -2186,9 +2152,7 @@ ACTOR MadDoctor : RocketMan
 
 ACTOR MadDoctor2 : MadDoctor
 {
-	//$Category Monsters (Wolf3D)/Bosses
 	//$Title Dr Schabbs Sr. (Boss)
-	//$Color 4
 	Obituary "$MENGELE"
 	DropItem "Medikit_Large"
 	Tag "Dr. Schabbs Sr."
@@ -2204,9 +2168,7 @@ ACTOR MadDoctor2 : MadDoctor
 
 ACTOR MadCook : MadDoctor
 {
-	//$Category Monsters (Wolf3D)/Bosses
 	//$Title Cook Fritz Bratwurst (Boss)
-	//$Color 4
 	Obituary "$MADCOOK"
 	Health 400
 	+BOSS
@@ -2228,9 +2190,7 @@ ACTOR MadCook : MadDoctor
 
 ACTOR MadCook2 : MadCook
 {
-	//$Category Monsters (Wolf3D)/Bosses
 	//$Title Cook Max Gulasch (Boss)
-	//$Color 4
 	Health 400
 	+BOSS
 	Tag "Max Gulasch"
@@ -2291,9 +2251,7 @@ ACTOR General : RocketMan
 
 ACTOR MarineGeneral : General
 {
-	//$Category Monsters (Wolf3D)/Bosses
 	//$Title General Seeteufel (Boss)
-	//$Color 4
 	Obituary "$GENERAL"
 	Health 800
 	Mass 1000
@@ -2308,30 +2266,30 @@ ACTOR MarineGeneral : General
 	States
 	{
 	Spawn:
-		SKEL A 0
+		SEET A 0
 		Goto Look
 	Missile:
-		SKEL J 10 A_FaceTarget
-		SKEL K 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
-		SKEL J 8 A_FaceTarget
-		SKEL K 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
-		SKEL J 8 A_FaceTarget
-		SKEL K 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
-		SKEL J 8
+		SEET J 10 A_FaceTarget
+		SEET K 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
+		SEET J 8 A_FaceTarget
+		SEET K 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
+		SEET J 8 A_FaceTarget
+		SEET K 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
+		SEET J 8
 		Goto See
 	Pain:
-		SKEL L 3
-		SKEL L 3 A_Pain
+		SEET L 3
+		SEET L 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	Death:
-		SKEL L 5
-		SKEL M 5 A_Scream
-		SKEL N 5
-		SKEL O -1 A_NoBlocking
+		SEET L 5
+		SEET M 5 A_Scream
+		SEET N 5
+		SEET O -1 A_NoBlocking
 		Stop
 	Raise:
-		SKEL ONML 5
+		SEET ONML 5
 		Goto See
 	}
 }
@@ -2441,9 +2399,7 @@ ACTOR DeathKnight : Nazi
 
 ACTOR Hitler : DeathKnight
 {
-	//$Category Monsters (Wolf3D)/Bosses
 	//$Title Adolf Hitler (Boss)
-	//$Color 4
 	Scale 1.2
 	Obituary "$HITLER"
 	Tag "Adolf Hitler"
@@ -2707,9 +2663,7 @@ ACTOR SuperSoldier : NaziBoss
 
 ACTOR SuperSoldierGirl : SuperSoldier
 {
-	//$Category Monsters (Wolf3D)/Bosses
 	//$Title Gretel Grosse (Boss)
-	//$Color 4
 	Obituary "$SUPAGIRL"
 	Tag "Female Ubersoldat" //"Gretel Grosse"
 	SeeSound "BossGirl/Sighted"
@@ -2753,7 +2707,7 @@ ACTOR SuperSoldierGirl : SuperSoldier
 
 ACTOR SuperSoldierElite : SuperSoldier
 {
-	//$Title Ubersoldat
+	//$Title Elite Ubersoldat (Boss)
 	+BOSS
 	Tag "Elite Ubersoldat" //"Hptm. Furzknall"
 	Obituary "$SUPAELIT"
@@ -2942,6 +2896,7 @@ ACTOR Geist : Nazi
 
 ACTOR NaziGeist : Geist
 {
+	//$Title Geist, Nazi Soldier
 	Scale 1.25
 	Health 400
 	Radius 31
@@ -3050,9 +3005,7 @@ ACTOR NaziGeist : Geist
 
 ACTOR UndeadMonk : HitlerGhost
 {
-	//$Category Monsters (Wolf3D)/Occult
 	//$Title Undead Monk
-	//$Color 4
 	Health 200
 	-BOSS
 	+LOOKALLAROUND
@@ -3077,8 +3030,7 @@ ACTOR UndeadMonk : HitlerGhost
 ACTOR UndeadPriest : Guard
 {
 	//$Category Monsters (Wolf3D)/Occult
-	//$Title Priest
-	//$Color 4
+	//$Title Undead Priest
 	Obituary "$UNDEADP"
 	Health 100
 	Mass 125
@@ -3190,9 +3142,7 @@ ACTOR UndeadPriest : Guard
 
 ACTOR Scientist : Guard
 {
-	//$Category Monsters (Wolf3D)
-	//$Title Scientist
-	//$Color 4
+	//$Title Scientist (young)
 	States
 	{
 	Spawn:
@@ -3203,9 +3153,7 @@ ACTOR Scientist : Guard
 
 ACTOR Scientist2 : Guard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Scientist (old)
-	//$Color 4
 	States
 	{
 	Spawn:
@@ -3216,9 +3164,8 @@ ACTOR Scientist2 : Guard
 
 ACTOR ScientistGutenberg : Guard
 {
-	//$Category Monsters (Wolf3D)
+	//$Category Monsters (Wolf3D)/NPCs
 	//$Title Prof. Klaus Gutenberg
-	//$Color 4
 	Translation "175:191=80:111"
 	States
 	{
@@ -3231,8 +3178,7 @@ ACTOR ScientistGutenberg : Guard
 ACTOR DirtyDarren : Guard
 {
 	//$Category Monsters (Wolf3D)/NPCs
-	//$Title Dirty Darren
-	//$Color 4
+	//$Title Dirty Douglas
 	Obituary "$DARREN"
 	Translation 1
 	PainChance 255
@@ -3257,9 +3203,7 @@ ACTOR DirtyDarren : Guard
 
 ACTOR Clerk : DirtyDarren
 {
-	//$Category Monsters (Wolf3D)/NPCs
 	//$Title Clerk
-	//$Color 4
 	Obituary "$CLERK"
 	Height 75 //mxd. Players shouldn't be able to jump on this guy
 	Scale 1.35 //mxd
@@ -3273,9 +3217,7 @@ ACTOR Clerk : DirtyDarren
 
 ACTOR Marine1 : DirtyDarren
 {
-	//$Category Monsters (Wolf3D)/NPCs
 	//$Title Marine (1)
-	//$Color 4
 	Obituary "$MARINE"
 	Scale 1.3 //mxd
 	States
