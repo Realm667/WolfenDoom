@@ -1030,15 +1030,14 @@ ACTOR CTurret_Afrika : SwitchableDecoration
 	Spawn:
 		SMGS X 1
 	Active:
-		SMGS X 1 A_CheckProximity("SpawnEnemy", "Guard", 64, 1, CPXF_NOZ|CPXF_EXACT) //Only Guards can activate it and only 1 of them
+		SMGS X 1 A_CheckProximity("SpawnEnemy", "Guard", 64, 1, CPXF_SETTARGET | CPXF_NOZ | CPXF_EXACT) //Only Guards can activate it and only 1 of them - thanks to yqco for proper pointers
 		Loop
 	Inactive:
 		"####" X 0 //bland
 		Goto Spawn
 	SpawnEnemy:
 		TNT1 A 0 A_ChangeFlag("BUMPSPECIAL", FALSE)
-		//"####" A 0 A_Remove(AAPTR_TARGET, RMVF_NOMONSTERS, "None", "Turret") //let's remove the Turret
-		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "Guard") //...then the Guard
+		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "Guard") //...let's remove both Turret & Guard
 		"####" A 1 A_SpawnItemEx("MGTSDropper1",0,0,0) //So spawn a new MGTurretSoldier, avoid to place turrets inside places which are script sensible!
 		Stop
 	Death:
@@ -1058,12 +1057,11 @@ ACTOR CTurret_Wehrmacht : CTurret_Afrika
 	Spawn:
 		SMGS X 1
 	Active:
-		SMGS X 1 A_CheckProximity("SpawnEnemy", "WGuard", 64, 1, CPXF_NOZ|CPXF_EXACT) //Only Guards can activate it and only 1 of them
+		SMGS X 1 A_CheckProximity("SpawnEnemy", "WGuard", 64, 1, CPXF_SETTARGET | CPXF_NOZ | CPXF_EXACT) //Only Guards can activate it and only 1 of them - thanks to yqco for proper pointers
 		Loop
 	SpawnEnemy:
 		TNT1 A 0 A_ChangeFlag("BUMPSPECIAL", FALSE)
-		//"####" A 0 A_Remove(AAPTR_TARGET, RMVF_NOMONSTERS, "None", "Turret") //let's remove the Turret
-		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "Guard") //...then the Guard
+		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "Guard") //...let's remove both Turret & Guard
 		"####" A 1 A_SpawnItemEx("MGTSDropper2",0,0,0) //So spawn a new MGTurretSoldier, avoid to place turrets inside places which are script sensible!
 		Stop
 	}
