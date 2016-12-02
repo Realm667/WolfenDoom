@@ -1061,7 +1061,7 @@ ACTOR CTurret_Wehrmacht : CTurret_Afrika
 		Loop
 	SpawnEnemy:
 		TNT1 A 0 A_ChangeFlag("BUMPSPECIAL", FALSE)
-		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "Guard") //...let's remove both Turret & Guard
+		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "WGuard") //...let's remove both Turret & Guard
 		"####" A 1 A_SpawnItemEx("MGTSDropper2",0,0,0) //So spawn a new MGTurretSoldier, avoid to place turrets inside places which are script sensible!
 		Stop
 	}
