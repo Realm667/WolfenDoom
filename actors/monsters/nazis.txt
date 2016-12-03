@@ -3160,15 +3160,15 @@ ACTOR Scientist2 : Guard
 	}
 }
 
-ACTOR ScientistGutenberg : Guard
+ACTOR ScientistGutenberg : Scientist2
 {
 	//$Category Monsters (Wolf3D)/NPCs
 	//$Title Prof. Klaus Gutenberg
-	Translation "175:191=80:111"
+	//Translation "175:191=80:111"
 	States
 	{
 	Spawn:
-		SCNT N 0
+		GUTB N 0
 		Goto Look
 	}
 }
