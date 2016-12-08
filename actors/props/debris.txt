@@ -61,9 +61,9 @@ ACTOR Debris_Trash : Debris_Base
 	{
 	Spawn:
 		SRCB BCDF 4 NoDelay NoDelay {
-							A_SetRoll(roll + random(-0.5, 0.5), SPF_INTERPOLATE);
+							A_SetRoll(roll + frandom(-0.5, 0.5), SPF_INTERPOLATE);
 							A_SetAngle(angle + random(-15, 15));
-							A_SetPitch(pitch + random(-0.25, 0.25));
+							A_SetPitch(pitch + frandom(-0.25, 0.25));
 							A_JumpIf(waterlevel == 3, "AdjustMass");
 							}
 		Loop
@@ -292,9 +292,9 @@ ACTOR Debris_Leaf : Feather //inheritances with Ravens actor
 	{
 	Spawn:
 		PLNT EFGHIJ 3 NoDelay {
-							A_SetRoll(roll + random(-0.5, 0.5), SPF_INTERPOLATE);
+							A_SetRoll(roll + frandom(-0.5, 0.5), SPF_INTERPOLATE);
 							A_SetAngle(angle + random(-15, 15));
-							A_SetPitch(pitch + random(-0.25, 0.25));
+							A_SetPitch(pitch + frandom(-0.25, 0.25));
 							A_JumpIf(waterlevel == 3, "AdjustMass");
 							}
 		Loop
@@ -396,9 +396,9 @@ ACTOR Debris_Wood : Debris_Base
 	{
 	Spawn:
 		SCDB ABCD 4 NoDelay {
-							A_SetRoll(roll + random(-0.5, 0.5), SPF_INTERPOLATE);
+							A_SetRoll(roll + frandom(-0.5, 0.5), SPF_INTERPOLATE);
 							A_SetAngle(angle + random(-15, 15));
-							A_SetPitch(pitch + random(-0.25, 0.25));
+							A_SetPitch(pitch + frandom(-0.25, 0.25));
 							A_JumpIf(waterlevel == 3, "AdjustMass");
 							}
 		Loop
@@ -496,9 +496,9 @@ ACTOR Debris_ToyHans : Debris_Base
 	{
 	Spawn:
 		TOYD ABCD 4 NoDelay  {
-							A_SetRoll(roll + random(-0.5, 0.5), SPF_INTERPOLATE);
+							A_SetRoll(roll + frandom(-0.5, 0.5), SPF_INTERPOLATE);
 							A_SetAngle(angle + random(-15, 15));
-							A_SetPitch(pitch + random(-0.25, 0.25));
+							A_SetPitch(pitch + frandom(-0.25, 0.25));
 							A_JumpIf(waterlevel == 3, "AdjustMass");
 							}
 		Loop
@@ -530,9 +530,9 @@ ACTOR Debris_ToyWaff : Debris_ToyHans
 	{
 	Spawn:
 		TOYD EFGH 4 NoDelay  {
-							A_SetRoll(roll + random(-0.5, 0.5), SPF_INTERPOLATE);
+							A_SetRoll(roll + frandom(-0.5, 0.5), SPF_INTERPOLATE);
 							A_SetAngle(angle + random(-15, 15));
-							A_SetPitch(pitch + random(-0.25, 0.25));
+							A_SetPitch(pitch + frandom(-0.25, 0.25));
 							A_JumpIf(waterlevel == 3, "AdjustMass");
 							}
 		Loop
