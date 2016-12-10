@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 
+if [[ -n "$(uname -s | grep -i 'MINGW\|CYGWIN\|MSYS')" ]]; then
+  # We're using Bash on Windows!
+  7za=./tools/7za.exe
+else
+  7za=7z
+fi
+
 separate_hires_pack=0
+cmthd='Deflate'
 
 # Parse arguments
 while [[ $# > 0 ]]; do
@@ -25,8 +33,6 @@ HELP
     cmthd='LZMA'
     shift
     continue
-  else
-    cmthd='Deflate'
   fi
 
   # Separate hi-res sprite pack
@@ -49,15 +55,15 @@ zipcommit="$(git log -n 1 --format=%h)"
 zipname="$zipprefix-$zipcommit-$(git log -n 1 --date=short --format=%cd | sed 's/\([[:digit:]]\{4\}\)-\([[:digit:]]\{2\}\)-\([[:digit:]]\{1,2\}\)$/\1\2\3/').pk3"
 
 if [[ $separate_hires_pack -eq 0 ]]; then
-  7z a -tzip -mmt=on -mm=$cmthd -mx=9 -ssc -xr@'tools/7zExcludeList.txt' -x@'tools/7zExcludeListDir.txt' $zipname *
+  $7za a -tzip -mmt=on -mm=$cmthd -mx=9 -ssc -xr@'tools/7zExcludeList.txt' -x@'tools/7zExcludeListDir.txt' $zipname *
   if [[ $? -eq 0 ]]; then mv $zipname ..; fi
 else
   # Hi-res sprite pack pk3 filename
   hzipprefix="${zipprefix}_hd"
   hzipname="$hzipprefix-$zipcommit-$(git log -n 1 --date=short --format=%cd | sed 's/\([[:digit:]]\{4\}\)-\([[:digit:]]\{2\}\)-\([[:digit:]]\{1,2\}\)$/\1\2\3/').pk3"
 
-  7z a -tzip -mmt=on -mm=$cmthd -mx=9 -ssc -xr@'tools/7zExcludeList.txt' -x@'tools/7zExcludeListDir.txt' -x!hires $zipname *
+  $7za a -tzip -mmt=on -mm=$cmthd -mx=9 -ssc -xr@'tools/7zExcludeList.txt' -x@'tools/7zExcludeListDir.txt' -x!hires $zipname *
   if [[ $? -eq 0 ]]; then mv $zipname ..; fi
-  7z a -tzip -mmt=on -mm=$cmthd -mx=9 -ssc $hzipname hires
+  $7za a -tzip -mmt=on -mm=$cmthd -mx=9 -ssc $hzipname hires
   if [[ $? -eq 0 ]]; then mv $hzipname ..; fi
 fi
