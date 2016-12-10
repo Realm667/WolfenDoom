@@ -8,6 +8,7 @@ else
 fi
 
 separate_hires_pack=0
+cmthd='Deflate'
 
 # Parse arguments
 while [[ $# > 0 ]]; do
@@ -32,8 +33,6 @@ HELP
     cmthd='LZMA'
     shift
     continue
-  else
-    cmthd='Deflate'
   fi
 
   # Separate hi-res sprite pack
