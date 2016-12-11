@@ -42,6 +42,10 @@ ECHO ---------------------
 ECHO  [1] Default Build
 ECHO  [2] Best Compression
 ECHO  [3] No Compression
+ECHO ---------------------
+ECHO.
+ECHO Other available options:
+ECHO ---------------------
 REM ----
 REM  Special Features
 REM   Only draw these options if its possible
