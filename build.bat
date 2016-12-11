@@ -87,10 +87,6 @@ IF /I "%STDIN%" EQU "U" (
     REM Try to detect if Git features IS available
     IF %featuresGit% EQU True CALL :GitFeature_UpdateBranch
     GOTO :MainMenu
-)
-IF "%STDIN%" EQU "" (
-    CALL :CompactProject ZIP DEFLATE 5 NORMAL
-    GOTO :MainMenu
 ) ELSE (
     CALL :MainMenu_STDIN_BadInput
     GOTO :MainMenu
