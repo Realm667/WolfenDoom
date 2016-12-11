@@ -288,6 +288,7 @@ grnx3 dsbarex3
 grnx4 dsbarex4
 
 // Miscellaneous
+misc/drink		DRINK
 misc/typewriter		typewrit
 misc/objective_acc	apply
 misc/objective_add	typekey
@@ -735,7 +736,7 @@ $random spider1/walk { spider1/walk1 spider1/walk2 }
 spider1/jump "sounds/monsters/spider/spi_jump.ogg"
 
 //Elite Soldats
-$random eliterifler/sight { eliterifler/sight1 eliterifler/sight2 eliterifler/sight3 eliterifler/sight4 }
+$random eliterifler/sight { eliterifler/sight1 eliterifler/sight2 eliterifler/sight3 }
 eliterifler/sight1		ELTRSI1
 eliterifler/sight2		ELTRSI2
 eliterifler/sight3		ELTRSI3
@@ -1240,7 +1241,7 @@ DIA_BEEP DIA_BEEP //Dia Beep
 RADIONOS RADIONOS //Radio Noise
 
 //Dialogue Radio
-$volume misc/chat 0.5
+//$volume misc/chat 0.5
 
 //Detonator
 DSDETON DSDETON //Detonator
@@ -1560,6 +1561,8 @@ CRY06 CRY06
 CRY07 CRY07
 $random CELLAR_CRY { CRY01 CRY02 CRY03 CRY04 CRY05 CRY06 CRY07 }
 
+world/bomb_ticker TICKTOCK 
+
 ELECTRICITY ELCLOOP
 $rolloff ELECTRICITY 64 256
 
@@ -1568,6 +1571,15 @@ EXPLOSION_LEADIN02 EXLEAD02
 EXPLOSION_LEADIN03 EXLEAD03
 EXPLOSION_LEADIN04 EXLEAD04
 $random EXPLOSION_LEADIN { EXPLOSION_LEADIN01 EXPLOSION_LEADIN02 EXPLOSION_LEADIN03 EXPLOSION_LEADIN04 }
+
+EXPLSND1 EXPLSND1
+EXPLSND2 EXPLSND2
+EXPLSND3 EXPLSND3
+EXPLSND4 EXPLSND4
+EXPLSND5 EXPLSND5
+EXPLSND6 EXPLSND6
+EXPLSND7 EXPLSND7
+$random EXPLOSION_SOUND { EXPLSND1 EXPLSND2 EXPLSND3 EXPLSND4 EXPLSND5 EXPLSND6 EXPLSND7 }
 
 FIRE_LARGE FIRE_LG
 FIRE_MEDIUM FIRE_MD

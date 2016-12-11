@@ -323,6 +323,7 @@ ACTOR CeilingGrass
 	//$Color 3
 	Radius 16
 	Height 24
+	+FORCEYBILLBOARD
 	+NOGRAVITY
 	+SPAWNCEILING
 	DistanceCheck "grasslod"
@@ -343,7 +344,7 @@ ACTOR Grass1
 	Height 16
 	Scale 0.5
 	Health 1
-	Mass 0x7ffffff //will never move
+	+DONTTHRUST
 	+NOBLOOD
 	+NOTAUTOAIMED
 	+SHOOTABLE
@@ -518,7 +519,7 @@ ACTOR Flower1
 	Radius 16
 	Height 32
 	Health 1
-	Mass 0x7ffffff //will never move
+	+DONTTHRUST
 	+NOBLOOD
 	+NOTAUTOAIMED
 	+SHOOTABLE

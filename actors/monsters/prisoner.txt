@@ -44,7 +44,7 @@ ACTOR PrisonerAgent
 		TNT1 A 0 A_JumpIfCloser(128,"Stand")
 		TORT A 0 A_FaceTarget
 		TORT BBB 1 A_Chase
-		"####" B 0 A_SpawnItemEx("PlayerStep",0,0,14,0,0,0,0,SXF_NoCheckPosition)
+		"####" B 0 A_SpawnItemEx("PlayerStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
 		TNT1 A 0 A_Recoil(-1)
 		TNT1 A 0 A_JumpIfCloser(128,"Stand")
 		TNT1 A 0 A_CheckSight("Teleporting")
@@ -53,7 +53,7 @@ ACTOR PrisonerAgent
 		TNT1 A 0 A_JumpIfCloser(128,"Stand")
 		TNT1 A 0 A_CheckSight("Teleporting")
 		TORT DDD 1 A_Chase
-		"####" D 0 A_SpawnItemEx("PlayerStep",0,0,14,0,0,0,0,SXF_NoCheckPosition)
+		"####" D 0 A_SpawnItemEx("PlayerStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
 		TNT1 A 0 A_Recoil(-1)
 		TNT1 A 0 A_JumpIfCloser(128,"Stand")
 		TNT1 A 0 A_CheckSight("Teleporting")
@@ -62,7 +62,7 @@ ACTOR PrisonerAgent
 		TNT1 A 0 A_JumpIfCloser(128,"Stand")
 		TNT1 A 0 A_CheckSight("Teleporting")
 		TORT FFF 1 A_Chase
-		"####" F 0 A_SpawnItemEx("PlayerStep",0,0,14,0,0,0,0,SXF_NoCheckPosition)
+		"####" F 0 A_SpawnItemEx("PlayerStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
 		TNT1 A 0 A_Recoil(-1)
 		TNT1 A 0 A_JumpIfCloser(128,"Stand")
 		TNT1 A 0 A_CheckSight("Teleporting")
@@ -222,7 +222,7 @@ ACTOR PrisonerEnemyBoss : DirtyDarren
 		"####" E 1 A_Chase
 		"####" EEE 1 A_Chase("","")
 		"####" B 1 A_Chase
-		"####" B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NoCheckPosition)
+		"####" B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
 		"####" BBB 1 A_Chase("","")
 		"####" B 1 A_Chase
 		"####" BBB 1 A_Chase("","")
@@ -231,7 +231,7 @@ ACTOR PrisonerEnemyBoss : DirtyDarren
 		"####" C 1 A_Chase
 		"####" CCC 1 A_Chase("","")
 		"####" D 1 A_Chase
-		"####" D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NoCheckPosition)
+		"####" D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
 		"####" DDD 1 A_Chase("","")
 		"####" D 1 A_Chase
 		"####" DDD 1 A_Chase("","")

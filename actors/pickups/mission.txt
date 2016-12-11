@@ -14,7 +14,7 @@ ACTOR Akten : Inventory
 	States
 	{
 	Spawn:
-		AKTT B -1
+		AKTT B -1 ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 		Stop
 	}
 }
@@ -29,7 +29,7 @@ ACTOR AktenEisenmann : Akten
 	States
 	{
 	Spawn:
-		AKTE B -1 
+		AKTE B -1 ACS_NamedExecuteAlways("BoA_CompassQueue",0) 
 		Stop
 	}
 }
@@ -49,6 +49,51 @@ ACTOR ArtifactAstrostrein : Akten
 	}
 }
 
+ACTOR ArtifactEgyptian : Akten
+{
+	//$Title Egyptian Artifact (C1M6)
+	Tag "Solar Disc"
+	Inventory.Icon ARTEA0
+	Inventory.PickupMessage "$EGYPT"
+	Inventory.MaxAmount 1
+	States
+	{
+	Spawn:
+		ARTE B -1
+		Stop
+	}
+}
+
+ACTOR ArtifactEgyptian_H1 : Akten
+{
+	//$Title Egyptian Artifact, 1st half (C1M5)
+	Tag "Solar Disc (first half)"
+	Inventory.Icon ARTEC0
+	Inventory.PickupMessage "$EGYPT"
+	Inventory.MaxAmount 1
+	States
+	{
+	Spawn:
+		ARTE D -1
+		Stop
+	}
+}
+
+ACTOR ArtifactEgyptian_H2 : Akten
+{
+	//$Title Egyptian Artifact, 2nd half (C1M5)
+	Tag "Solar Disc (second half)"
+	Inventory.Icon ARTEE0
+	Inventory.PickupMessage "$EGYPT"
+	Inventory.MaxAmount 1
+	States
+	{
+	Spawn:
+		ARTE F -1
+		Stop
+	}
+}
+
 ACTOR SpearOfDestiny : Akten
 {
 	//$Title Spear of Destiny
@@ -58,7 +103,7 @@ ACTOR SpearOfDestiny : Akten
 	States
 	{
 	Spawn:
-		SPER B -1 
+		SPER B -1 ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 		Stop
 	}
 }
@@ -176,7 +221,7 @@ ACTOR ScientistUniform : SwitchableDecoration
 	}
 }
 
-actor ScientistUniformPickup : CustomInventory
+ACTOR ScientistUniformPickup : CustomInventory
 {
 	Inventory.PickupMessage "$UNIFORM"
 	States
@@ -191,7 +236,7 @@ actor ScientistUniformPickup : CustomInventory
 	}
 }
 
-actor NullWeapon : Weapon
+ACTOR NullWeapon : Weapon
 {
 	+WEAPON.NOALERT
 	+INVENTORY.UNDROPPABLE

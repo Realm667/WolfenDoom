@@ -16,7 +16,7 @@ ListMenu "MainMenu"
 
   TextItem "$MNU_NEWGAME", "n", "PlayerclassMenu"
   TextItem "$MNU_OPTIONS", "o", "OptionsMenu"
-  TextItem "BOA OPTIONS", "h", "BOAOptionsMenu"
+  TextItem "$BOA_OPTIONS", "h", "BOAOptionsMenu"
   TextItem "$MNU_GAMEFILES", "g", "GameFilesMenu"
   TextItem "$MNU_INFO", "i", "ReadThisMenu"
   TextItem "$MNU_QUITGAME", "q", "QuitMenu"
@@ -84,7 +84,7 @@ OptionMenuSettings
    Linespacing 11
 }
 
-// Firebrand options menu ------------------------------------------------------------------------------
+// BoA options menu ------------------------------------------------------------------------------
 OptionMenu "BOAOptionsMenu"
 {
 	StaticText "Gameplay Settings", 1
@@ -92,7 +92,6 @@ OptionMenu "BOAOptionsMenu"
 	Option "Strafe Camera Tilt", "cl_strafetilt", "OnOff"
 	Slider "Debris Lifetime (seconds)","debrislifetime",1,180,10
 	Slider "Blood Lifetime (seconds)","bloodlifetime",1,180,10
-	//Option "Unlimited Stamina", "sprinttoggle", "OnOff" //here for lulz
 	
 	StaticText ""
 	StaticText "Weapons Settings", 1
@@ -119,6 +118,7 @@ OptionMenu "BOAOptionsMenu"
 	Option "Cinders","cinderswitch","OnOff"
 	Option "Steam","steamswitch","OnOff"
 	Option "Smoke","smokeswitch","OnOff"
+	Option "Splash","splashswitch","OnOff"
 	Option "Stardust","dustswitch","OnOff"
 	Option "Underwater Bubbles","bubbleswitch","OnOff"
 	Option "Underwater Lights","litsswitch","OnOff"
@@ -143,4 +143,14 @@ OptionMenu "BOAOptionsMenu"
 	Control "Throw Grenade",	"use GrenadePickup"
 	Control "Quick Kick",		"pukename QuickKick"
 	Control "Toggle Objectives",	"pukename boaobjectives"
+	
+	StaticText ""
+	StaticText "Cheats Settings", 1
+	StaticText "WARNING: don't change these settings while saving the game"
+	StaticText "WARNING: these settings may require level restart"
+	StaticText "WARNING: these settings may cause unhandled gameplay glitches"
+	StaticText ""
+	Option "Unlimited Sprint", "sprintswitch", "OnOff"
+	StaticText ""
+	Slider "Flinch Amount", "flinchamount", 0.0,1.0,0.1
 }

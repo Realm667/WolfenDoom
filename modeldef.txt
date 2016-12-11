@@ -350,6 +350,7 @@ Model ToiletTalking
 }
 
 //mxd. Tables and chairs
+//death anims doesn't inherit pitch/roll properties in order to avoid weird final positions - anims by Ozy81
 Model Chair1
 {
 	Path "models"
@@ -359,6 +360,14 @@ Model Chair1
 	USEACTORROLL
 
 	FrameIndex MDLA A 0 0
+}
+
+Model Chair1
+{
+	Path "models"
+	Model 0 "chair1.md3"
+	Skin 0 "chair1.jpg"
+
 	FrameIndex MDLA B 0 1
 	FrameIndex MDLA C 0 2
 	FrameIndex MDLA D 0 3
@@ -380,6 +389,30 @@ Model Chair2
 	FrameIndex MDLA A 0 0
 }
 
+Model Chair2
+{
+	Path "models"
+	Model 0 "chair2.md3"
+	Skin 0 "chair2.jpg"
+	Scale 0.95 0.95 0.95
+	
+	FrameIndex MDLA B 0 1
+	FrameIndex MDLA C 0 2
+	FrameIndex MDLA D 0 3
+	FrameIndex MDLA E 0 4
+	FrameIndex MDLA F 0 5
+	FrameIndex MDLA G 0 6
+	FrameIndex MDLA H 0 7
+	FrameIndex MDLA I 0 8
+	FrameIndex MDLA J 0 9
+	FrameIndex MDLA K 0 10
+	FrameIndex MDLA L 0 11
+	FrameIndex MDLA M 0 12
+	FrameIndex MDLA N 0 13
+	FrameIndex MDLA O 0 14
+	FrameIndex MDLA P 0 15
+}
+
 Model Chair4
 {
 	Path "models"
@@ -389,6 +422,14 @@ Model Chair4
 	USEACTORROLL
 
 	FrameIndex MDLA A 0 0
+}
+
+Model Chair4
+{
+	Path "models"
+	Model 0 "chair1.md3"
+	Skin 0 "chair4.jpg"
+	
 	FrameIndex MDLA B 0 1
 	FrameIndex MDLA C 0 2
 	FrameIndex MDLA D 0 3
@@ -1745,6 +1786,21 @@ Model RadioModern
 	FrameIndex MDLA A 0 0
 }
 
+Model RadioModern
+{
+	Path "models"
+	Model 0 "tubes.md3"
+	Skin 0 "tubes_d.jpg"
+	Scale 1.0 1.0 1.0
+	Path "models"
+	Model 1 "tuberad.md3"
+	Skin 1 "tuberad_d.jpg"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex MDLA B 0 0
+}
+
 Model RTCWChalice
 {
 	Path "models"
@@ -1823,6 +1879,18 @@ Model RTCWParlor
 	USEACTORROLL
 	
 	FrameIndex MDLA A 0 0
+}
+
+Model RTCWParlor
+{
+	Path "models"
+	Model 0 "parlor.md3"
+	Skin 0 "parlor_d.jpg"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	USEACTORROLL
+	
+	FrameIndex MDLA B 0 0
 }
 
 Model RTCWPhone
@@ -1975,7 +2043,7 @@ Model RTCW_V2_Rocket //rocket only
 
 Model RTCWGramo
 {
-Path "models"
+	Path "models"
 	Model 0 "gramo.md3"
 	Skin 0 "gramo.jpg"
 	Scale 1.0 1.0 1.0
@@ -2060,6 +2128,18 @@ Path "models"
 	FrameIndex MDLC X 0 75
 	FrameIndex MDLC Y 0 76
 	FrameIndex MDLC Z 0 77
+}
+
+Model RTCWGramo
+{
+	Path "models"
+	Model 0 "gramo_d.md3"
+	Skin 0 "gramo_d.jpg"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	USEACTORROLL
+	
+	FrameIndex MDLD A 0 0
 }
 
 //DoomJuan stuff
@@ -2482,6 +2562,30 @@ Model Chair3
 	USEACTORROLL
 
 	FrameIndex MDLA A 0 0
+}
+
+Model Chair3
+{
+	Path "models"
+	Model 0 "chair3.md3"
+	Skin 0 "chair3.jpg"
+	Scale 0.4 0.4 0.4
+	
+	FrameIndex MDLA B 0 1
+	FrameIndex MDLA C 0 2
+	FrameIndex MDLA D 0 3
+	FrameIndex MDLA E 0 4
+	FrameIndex MDLA F 0 5
+	FrameIndex MDLA G 0 6
+	FrameIndex MDLA H 0 7
+	FrameIndex MDLA I 0 8
+	FrameIndex MDLA J 0 9
+	FrameIndex MDLA K 0 10
+	FrameIndex MDLA L 0 11
+	FrameIndex MDLA M 0 12
+	FrameIndex MDLA N 0 13
+	FrameIndex MDLA O 0 14
+	FrameIndex MDLA P 0 15
 }
 
 Model SkyboxMoon
@@ -3383,6 +3487,18 @@ Model 3dSkeleton_Sit
 	FrameIndex MDLA A 0 0
 }
 
+//Talon1024 Models
+Model Feldfernschreiber
+{
+	Path "models"
+	Model 0 "FeldHell.md3"
+	Scale 1.4 1.4 1.4
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}
+
 //MoHAAs Stuff - ozy81
 Model Radar
 {
@@ -3396,6 +3512,54 @@ Model Radar
 }
 
 //CODs Stuff - ozy81
+Model COD_OilLamp
+{
+	Path "models"
+	Model 0 "lantern.md3"
+	Skin 0 "lantern_on.png"
+	Scale 1.2 1.2 1.2
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}
+
+Model COD_OilLamp
+{
+	Path "models"
+	Model 0 "lantern.md3"
+	Skin 0 "lantern_off.png"
+	Scale 1.2 1.2 1.2
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA B 0 0
+}
+
+Model COD_LampGlassOn
+{
+	Path "models"
+	Model 0 "lantern_glass.md3"
+	Skin 0 "lantern_on.png"
+	Scale 1.2 1.2 1.2
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}
+
+Model COD_LampGlassOff
+{
+	Path "models"
+	Model 0 "lantern_glass.md3"
+	Skin 0 "lantern_off.png"
+	Scale 1.2 1.2 1.2
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}
+
 Model COD_Refrigerator
 {
 	Path "models"
@@ -4956,6 +5120,20 @@ Model RainDropshort
 }
 
 //Hypnagogia
+Model OldCash
+{
+	Path "models"
+	Model 0 "oldcash_a.md3"
+	Model 1 "oldcash_b.md3"
+	Model 2 "oldcash_c.md3"
+	Model 3 "oldcash_d.md3"
+	Scale 0.5 0.5 0.5
+	USEACTORPITCH
+	USEACTORROLL
+	
+	FrameIndex MDLA A 0 0
+}
+
 Model NaziGlobe
 {
 	Path "models"

@@ -16,9 +16,13 @@ ACTOR BigSpider
 	MaxDropOffHeight 128
 	MaxStepHeight 16
 	MONSTER
+	-MTHRUSPECIES
+	-THRUSPECIES
 	+DONTGIB
 	+FLOORCLIP
 	+NEVERFAST
+	+THRUGHOST
+	Species "Player"
 	SeeSound "spider1/sight"
 	PainSound "spider1/pain"
 	DeathSound "spider1/death"
@@ -65,7 +69,7 @@ ACTOR BigSpider
 		"####" C 5
 		"####" B 5
 		"####" A 5
-		"####" A -1
+		"####" A -1 {A_ChangeFlag("MTHRUSPECIES", TRUE); A_ChangeFlag("THRUSPECIES", TRUE);}
 		Stop
 	}
 }

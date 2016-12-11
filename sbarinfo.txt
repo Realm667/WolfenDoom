@@ -22,7 +22,16 @@ statusbar Normal // Standard Doom Status bar
 	
 	drawimage "HUDBAR", -54, 152;
 
-	//AirControl, Stamina
+	InInventory MineSweeper, 1
+	{
+		drawbar "VERTBYMG", "VERTBYMD", power, vertical, interpolate(2), 195, 170;
+		InInventory MineSweeperActive, 1 
+		{
+			drawbar "VERTBYMF", "VERTBYME", power, vertical, interpolate(2), 195, 170;
+		}
+	}
+	
+	//AirControl & Stamina
 	drawbar "HORZAIRF", "HORZAIRE", airtime, horizontal, interpolate(2), 36, 160;
 	drawbar "HORZSTMF", "HORZSTME", stamina, horizontal, interpolate(2), 88, 160;
 
@@ -96,9 +105,9 @@ statusbar Normal // Standard Doom Status bar
 }
 
 Statusbar Automap
-{
-	drawimage "AMBAR", -54, 152;
-}
+	{
+		drawimage "AMBAR", -54, 152;
+	}
 
 Statusbar FullScreen, FullScreenOffsets, forcescaled
 {
@@ -114,8 +123,17 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 		 DrawImage "STGMASK", 0+center, 0+center, center;
 		 drawbar "HORZSPCF", "HORZSPCE", PowerupTime(SpaceSuit), horizontal, interpolate(2), -55+center, 16;
 	}
+	
+	InInventory MineSweeper, 1
+	{
+		 drawbar "VERTBYMG", "VERTBYMD", power, vertical, interpolate(2), 150, -35;
+		InInventory MineSweeperActive, 1
+		{
+			 drawbar "VERTBYMF", "VERTBYME", power, vertical, interpolate(2), 150, -35;
+		}
+	}
 
-	//AirControl, Stamina
+	//AirControl & Stamina
 	drawbar "VERTAIRF", "VERTAIRE", airtime, vertical, interpolate(2), 4, -174;
 	drawbar "VERTSTMF", "VERTSTME", stamina, vertical, interpolate(2), -10, -174;
 
@@ -180,14 +198,6 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 	//Ammo Icons
 	drawimage ammoicon1, -61, -21;
 	drawimage ammoicon2, -61, -37;
-
-	//Ammo
-	//drawnumber 3, THREEFIV, untranslated, ammo "9mmAmmo", 	-10, -85, 1;
-	//drawnumber 3, THREEFIV, untranslated, ammo "12GaugeAmmo", 	-10, -80, 1;
-	//drawnumber 3, THREEFIV, untranslated, ammo MauserAmmo, 	-10, -75, 1;
-	//drawnumber 3, THREEFIV, untranslated, ammo FlameAmmo, 	-10, -70, 1;
-	//drawnumber 3, THREEFIV, untranslated, ammo NebAmmo, 	-10, -65, 1;
-	//drawnumber 3, THREEFIV, untranslated, ammo PanzerAmmo, 	-10, -60, 1;
 
 	//Grenade
 	drawnumber 3, BIGFONT, untranslated, GrenadePickup, alignment(left), -83, -20;

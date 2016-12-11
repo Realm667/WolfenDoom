@@ -8,9 +8,28 @@ ACTOR Meal : Health
 	States
 	{
 	Spawn:
-		MEAL A -1 NODELAY A_Jump(128,1)
+		MEAL A -1 NoDelay A_Jump(128,1)
 		"####" B -1
 		Stop
+	}
+}
+
+ACTOR StackedMeal : Meal
+{
+	Radius 1
+	Height 1
+	+CANPASS
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Jump(256,"MealA","MealB")
+		MealA:
+		MEAL A 1
+		Loop
+		MealB:
+		MEAL B 1
+		Loop
 	}
 }
 
@@ -89,7 +108,15 @@ ACTOR Medikit_Fullhealth : Health
 	}
 }
 
-ACTOR VitalitySerum : UpgradeStamina
+//As stated on ZWiki, we need to inherit the UpdateStamina first to create a custom powerup then apply it on the desired actor
+//Link: http://zdoom.org/wiki/Creating_health_items_that_increase_the_player%27s_maximum_health#Strife.27s_Stamina_Upgrades
+ACTOR UpgradeStaminaBoA: UpgradeStamina
+{
+	Inventory.Amount 5
+	Inventory.MaxAmount 50
+}
+
+ACTOR VitalitySerum : UpgradeStaminaBoA
 {
 	//$Category Health (Wolf3D)
 	//$Title Vitality Serum (max+5)
@@ -98,11 +125,8 @@ ACTOR VitalitySerum : UpgradeStamina
 	//$Title "Vitality Serum"
 	Radius 20
 	Scale 0.9
-	Inventory.Amount 5 //this controls how much health boost you receive
-	Inventory.MaxAmount 100 //this controls how high your health can get
-	+COUNTITEM
-	+INVENTORY.ALWAYSPICKUP
 	Inventory.PickupMessage "$SERUM"
+	+COUNTITEM
 	States
 	{
 	Spawn:
@@ -117,14 +141,13 @@ ACTOR FieldKit : HealthPickup
 	//$Title Field Kit (max +15)
 	//$Color 6
 	Health 25
-	+COUNTITEM
-	+INVENTORY.ALWAYSPICKUP
+	HealthPickup.AutoUse 1
+	Inventory.Icon "FKITC0"
+	Inventory.MaxAmount 15
 	Inventory.PickupMessage "$FKIT"
 	Inventory.PickupSound "Misc/I_PkUp"
 	Inventory.UseSound "Misc/I_PkUp"
-	Inventory.Icon "FKITC0"
-	Inventory.MaxAmount 15
-	HealthPickup.AutoUse 1
+	+COUNTITEM
 	States
 	{
 	Spawn:
@@ -144,11 +167,11 @@ ACTOR Bandages : PowerupGiver
 	//$Category Health (Wolf3D)
 	//$Title Bandages (+10)
 	//$Color 6
-	+COUNTITEM
-	Inventory.PickupMessage "$BAID"
 	Inventory.Icon "BAIDB0"
 	Inventory.MaxAmount 5
+	Inventory.PickupMessage "$BAID"
 	Powerup.Type "BandagesPowerup"
+	+COUNTITEM
 	States
 	{
 	Spawn:

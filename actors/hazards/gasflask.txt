@@ -6,9 +6,9 @@ ACTOR FireExtinguisher : ExplosiveBarrel
 	Health 10
 	Height 64
 	Radius 8
-	Mass 0x7ffffff
 	DeathSound "nebelwerfer/xplode"
 	Obituary "$OBEXTING"
+	+DONTTHRUST
 	States
 	{
 	Spawn:
@@ -31,6 +31,10 @@ ACTOR GasBottle : FireExtinguisher
 		GASB A -1
 		Stop
 	Death:
+		"####" A 3 A_Jump(64,4)
+		"####" A 3 A_Jump(64,2)
+		"####" A 3 A_Jump(64,2)
+		"####" A 3 
 		"####" A 0 A_SpawnItemEx("GeneralExplosion_Medium")
 		"####" A 6 A_Scream
 		Stop

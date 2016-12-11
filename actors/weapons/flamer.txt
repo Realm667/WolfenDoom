@@ -222,7 +222,7 @@ ACTOR Flamebolt
 	Animation:
 		"####" AAAAA 3 BRIGHT LIGHT(BOAFLAMW) 
 			{
-				A_SetScale(scalex+0.05);
+				A_SetScale(ScaleX+0.05);
 				A_FadeOut(0.05);
 				A_Explode(2,16);
 			}
@@ -240,7 +240,7 @@ ACTOR Flamebolt
 	Death:
 		"####" A 1 BRIGHT LIGHT(BOAFLAMW)
 			{
-				A_SetScale(scalex+0.05);
+				A_SetScale(ScaleX+0.05);
 				A_FadeOut(0.05);
 				A_Explode(2,64);
 			}
@@ -257,7 +257,7 @@ ACTOR Flameball : Flamebolt
 	+WINDTHRUST
 	SeeSound "flamer/napalm"
 	DeathSound "nebelwerfer/xplode"
-	Renderstyle "Add"
+	RenderStyle "Add"
 	States
 	{
 	Spawn:

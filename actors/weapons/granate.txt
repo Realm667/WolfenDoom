@@ -68,6 +68,7 @@ ACTOR HandGrenade
 // Given to players when leaving INTERMAP. Restores the player's ability to
 // throw grenades returns non-training grenades to them, and clears their
 // inventory (in case they were in training area when map changed).
+// Added also MineSweeper removal for playism purposes - Ozy81
 ACTOR PlayerLeavingHQ : CustomInventory
 {
 	Inventory.MaxAmount 0
@@ -80,17 +81,23 @@ ACTOR PlayerLeavingHQ : CustomInventory
 			// Return seized grenades to player
 			if (CountInv("HQ_Checker") == 0) {
 				A_TakeInventory("GrenadePickup", 0x7FFFFFFF);
+				A_TakeInventory("MineSweeper", 0x7FFFFFFF);
+				A_TakeInventory("Power", 0x7FFFFFFF);
 				A_GiveInventory("GrenadePickup", CountInv("NonTrainingGrenade"));
+				A_GiveInventory("MineSweeper", CountInv("NonTrainingMineSweeper"));
+				A_GiveInventory("Power", CountInv("NonTrainingPower"));
 				A_TakeInventory("NonTrainingGrenade", 0x7FFFFFFF);
+				A_TakeInventory("NonTrainingMineSweeper", 0x7FFFFFFF);
+				A_TakeInventory("NonTrainingPower", 0x7FFFFFFF);
 			}
 
-			// Restore player's ability to throw grenades
+			// Restore player's ability to throw grenades & to use minesweeper
 			A_TakeInventory("HQ_Checker", 1);
 
 			// Clear the player's inventory (in case they're in training area)
 			ACS_NamedExecuteWithResult("CLEAR INVENTORY", 0);
 		}
-		stop
+		Stop
 	}
 }
 
@@ -103,8 +110,11 @@ ACTOR NonTrainingGrenade : Inventory
 	+INVENTORY.UNTOSSABLE
 }
 
-// Take grenades from players inside the training area.
-ACTOR ConfiscateTrainingGrenades : CustomInventory
+ACTOR NonTrainingMineSweeper : NonTrainingGrenade { Inventory.MaxAmount 1 }
+ACTOR NonTrainingPower : NonTrainingGrenade { Inventory.MaxAmount 2400 }
+
+// Take grenades & minesweeper from players inside the training area.
+ACTOR ConfiscateTrainingItems : CustomInventory
 {
 	Inventory.MaxAmount 0
 	+INVENTORY.ALWAYSPICKUP
@@ -116,8 +126,10 @@ ACTOR ConfiscateTrainingGrenades : CustomInventory
 			// Take grenades from player if they're in the training area
 			if (CountInv("HQ_Checker") == 0) {
 				A_TakeInventory("GrenadePickup", 0x7FFFFFFF);
+				A_TakeInventory("MineSweeper", 0x7FFFFFFF);
+				A_TakeInventory("Power", 0x7FFFFFFF);
 			}
 		}
-		stop
+		Stop
 	}
 }

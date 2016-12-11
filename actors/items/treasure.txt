@@ -1,9 +1,9 @@
 ACTOR CoinItem : Inventory
 {
+	Inventory.MaxAmount 999
 	Tag "Money"
 	+INVENTORY.KEEPDEPLETED
 	+INVENTORY.UNDROPPABLE
-	Inventory.MaxAmount 1000000
 }
 
 ACTOR SingleCoin : CustomInventory
@@ -217,7 +217,7 @@ ACTOR EmptySupplyChest
 			}
 			return state("");
 		}
-		loop
+		Loop
 	}
 }
 

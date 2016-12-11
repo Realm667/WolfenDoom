@@ -269,33 +269,6 @@ PointLight Chandelier6
 	Offset 0 32 0
 }
 //end ozydefs
-/*Object Chandelier1Switchable //added warmy fire lights
-{
-	frame SMGTA { light Chandelier4 }
-	frame SMGTB { light Chandelier5 }
-	frame SMGTC { light Chandelier6 }
-}
-
-Object Chandelier2Switchable //added warmy fire lights
-{
-	frame SMGTA { light Chandelier4 }
-	frame SMGTB { light Chandelier5 }
-	frame SMGTC { light Chandelier6 }
-}
-
-Object Chandelier3Switchable
-{
-	frame SMGTA { light Chandelier }
-	frame SMGTB { light Chandelier2 }
-	frame SMGTC { light Chandelier3 }
-}
-
-Object Chandelier4Switchable
-{
-	frame SMGTA { light Chandelier }
-	frame SMGTB { light Chandelier2 }
-	frame SMGTC { light Chandelier3 }
-}*/
 /////////////////////////////////////////////////////
 // LAVA CAULDRON LIGHTS /////////////////////////////
 /////////////////////////////////////////////////////
@@ -792,6 +765,15 @@ FlickerLight 3DFLAME_T
 	Offset 0 -16 0
 }
 
+FlickerLight 3DFLAME_L
+{
+	Color 0.76 0.63 0.05
+	Size 8
+	SecondarySize 16
+	Chance 0.2
+	Offset 0 4 0
+}
+
 //PROPS - INDUSTRIAL//
 PulseLight BOARBRL1
 {
@@ -885,6 +867,11 @@ PointLight BOACKEY
 	Color 0.2 0.6 0.8
 	Size 16
 	Offset 0 4 0
+}
+
+Object SkullKey
+{
+	frame SKLKA0 { light BOARKEY}
 }
 
 //TREASURES

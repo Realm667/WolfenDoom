@@ -30,13 +30,14 @@ ACTOR KaBoom
 	Scale 2
 	RenderStyle "Add"
 	Projectile
+	+BRIGHT
 	+NOINTERACTION
 	States
 	{
 	Spawn:
-		BFE1 ABCDE 2 BRIGHT
-		"####" FGHI 2 BRIGHT A_Explode(75,128)
-		"####" JKL 2 BRIGHT
+		BFE1 ABCDE 2
+		"####" FGHI 2 A_Explode(75,128)
+		"####" JKL 2
 		Stop
 	}
 }
@@ -106,6 +107,7 @@ ACTOR NebBoom : TankBoom
 ACTOR TankFire : Nuke
 {
 	RenderStyle "Add"
+	+BRIGHT
 	+DONTSPLASH
 	+EXPLODEONWATER
 	+NOINTERACTION
@@ -114,13 +116,13 @@ ACTOR TankFire : Nuke
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
-		FLA1 A 2 BRIGHT A_FadeOut(0.03)
+		FLA1 A 2 A_FadeOut(0.03)
 		Wait
-		FLA2 A 2 BRIGHT A_FadeOut(0.02)
+		FLA2 A 2 A_FadeOut(0.02)
 		Wait
-		FLA3 A 2 BRIGHT A_FadeOut(0.03)
+		FLA3 A 2 A_FadeOut(0.03)
 		Wait
-		FLA4 A 2 BRIGHT A_FadeOut(0.02)
+		FLA4 A 2 A_FadeOut(0.02)
 		Wait
 	}
 }
@@ -132,13 +134,13 @@ ACTOR NebFire : TankFire
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
-		FLA1 A 1 BRIGHT A_FadeOut(0.04)
+		FLA1 A 1 A_FadeOut(0.04)
 		Wait
-		FLA2 A 1 BRIGHT A_FadeOut(0.02)
+		FLA2 A 1 A_FadeOut(0.02)
 		Wait
-		FLA3 A 1 BRIGHT A_FadeOut(0.04)
+		FLA3 A 1 A_FadeOut(0.04)
 		Wait
-		FLA4 A 1 BRIGHT A_FadeOut(0.02)
+		FLA4 A 1 A_FadeOut(0.02)
 		Wait
 	}
 }
@@ -182,7 +184,7 @@ ACTOR TankFlare : TankFire
 	States
 	{
 	Spawn:
-		FLAR B 1 BRIGHT A_FadeOut(0.011)
+		FLAR B 1 A_FadeOut(0.011)
 		Wait
 	}
 }
@@ -349,7 +351,7 @@ ACTOR NebNuke : Nuke //for nebelwerfer rockets
 	}
 }
 
-actor SSTank1
+ACTOR SSTank1
 {
 	//$Category Monsters (Wolf3D)
 	//$Title Tank 1 (3500 HP - Panther Panzer IV)
@@ -360,7 +362,7 @@ actor SSTank1
 	Mass 0x7ffffff
 	Speed 2.66666667
 	MinMissileChance 160
-	Tag "Panther Panzer IV"
+	Tag "Panzer IV F"
 	+BOSS
 	+BOSSDEATH
 	+DONTMORPH
@@ -395,30 +397,31 @@ actor SSTank1
 		"####" A 0 A_JumpIfTargetInLOS(1, 5)
 		Loop
 		"####" A 0 A_Chase("Missile", "Missile", CHF_DONTTURN|CHF_NODIRECTIONTURN|CHF_DONTMOVE)
-		Loop
+		Goto See
 	Missile:
 		"####" A 10
 		"####" A 0 A_Jump(128, "Turret")
 		"####" A 0 A_Jump(96, "Missile2")
 		"####" BCD 8
-		"####" E 8 A_CustomMissile("PanzerRocket", scalex * 76, 0, angle, CMF_ABSOLUTEANGLE)
+		"####" E 8 A_CustomMissile("PanzerRocket", ScaleX * 76, 0, angle, CMF_ABSOLUTEANGLE)
 		"####" FG 8
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
 		"####" A 0 A_JumpIfTargetInLOS("Missile", 1) // attack again if we're perfectly aimed
 		Goto See
+	Melee:
 	Turret:
 		MDLA A 0 A_PlaySound("weapons/chaingun", CHAN_WEAPON)
-		"####" EEEE 1 light("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer", scalex * 48, scaley * 26, random(-4, 4))
+		"####" EEEE 1 light("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer", ScaleX * 48, ScaleY * 26, random(-4, 4))
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
 		MDLA A 2 A_JumpIfTargetInLOS("Turret", 45)
 		Goto See
 	Missile2:
 		MDLA BCD 2
-		"####" E 2 A_CustomMissile("PanzerRocket", scalex * 76, 0, angle, CMF_ABSOLUTEANGLE)
+		"####" E 2 A_CustomMissile("PanzerRocket", ScaleX * 76, 0, angle, CMF_ABSOLUTEANGLE)
 		"####" FG 2
 		"####" A 20
 		"####" BCD 4
-		"####" E 4 A_CustomMissile("PanzerRocket", scalex * 76, 0, angle, CMF_ABSOLUTEANGLE)
+		"####" E 4 A_CustomMissile("PanzerRocket", ScaleX * 76, 0, angle, CMF_ABSOLUTEANGLE)
 		"####" FG 4
 		"####" A 20
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
@@ -464,7 +467,7 @@ ACTOR DestroyedTank1
 	}
 }
 
-actor SSTank2 : SSTank1
+ACTOR SSTank2 : SSTank1
 {
 	//$Title Tank 2 (4000 HP - KFZ 251 HalfTrack)
 	Height 88
@@ -480,14 +483,15 @@ actor SSTank2 : SSTank1
 		"####" A 10
 		"####" A 0 A_Jump(128, "Turret")
 		"####" BCD 8
-		"####" E 8 A_CustomMissile("PanzerRocket", scalex * 88, 0, angle, CMF_ABSOLUTEANGLE)
+		"####" E 8 A_CustomMissile("PanzerRocket", ScaleX * 88, 0, angle, CMF_ABSOLUTEANGLE)
 		"####" FG 8
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
 		"####" A 0 A_JumpIfTargetInLOS("Missile", 1) // attack again if we're perfectly aimed
 		Goto See
+	Melee:
 	Turret:
 		MDLA A 0 A_PlaySound("weapons/chaingun", CHAN_WEAPON)
-		"####" EEEE 1 LIGHT("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer", scalex * 70, scaley * -16, random(-4, 4))
+		"####" EEEE 1 LIGHT("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer", ScaleX * 70, ScaleY * -16, random(-4, 4))
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
 		MDLA A 2 A_JumpIfTargetInLOS("Turret", 45)
 		Goto See
@@ -512,7 +516,7 @@ ACTOR DestroyedTank2 : DestroyedTank1
 	Height 88
 }
 
-actor SSTank3 : SSTank1
+ACTOR SSTank3 : SSTank1
 {
 	//$Title Tank 3 (3000 HP - Tiger I Panzer)
 	Health 3000
@@ -528,17 +532,18 @@ actor SSTank3 : SSTank1
 		MDLA A 10
 		"####" A 0 A_Jump(128, "Turret")
 		"####" BCD 8
-		"####" E 8 A_CustomMissile("PanzerRocket", scalex * 65, scaley * 4, angle, CMF_ABSOLUTEANGLE)
+		"####" E 8 A_CustomMissile("PanzerRocket", ScaleX * 65, ScaleY * 4, angle, CMF_ABSOLUTEANGLE)
 		"####" FG 8
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
 		"####" A 0 A_JumpIfTargetInLOS("Missile", 1) // attack again if we're perfectly aimed
 		Goto See
+	Melee:
 	Turret:
 		MDLA A 0 A_PlaySound("weapons/chaingun", CHAN_WEAPON)
-		"####" EEEE 1 light("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer", scalex * 48, scaley * 24, random(-4, 4))
+		"####" EEEE 1 LIGHT("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer", ScaleX * 48, ScaleY * 24, random(-4, 4))
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
 		MDLA A 2 A_JumpIfTargetInLOS("Turret", 45)
-		Loop
+		Goto See
 	Death:
 		TNT1 A 0 A_StopSound(CHAN_7)
 		"####" A 0 A_PlaySound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_IDLE)
@@ -560,7 +565,7 @@ ACTOR DestroyedTank3 : DestroyedTank1
 	Height 88
 }
 
-actor SSTank4 : SSTank1
+ACTOR SSTank4 : SSTank1
 {
 	//$Title Tank 4 (1000 HP - Light Panzer KFZ 222)
 	Health 1000
@@ -575,7 +580,7 @@ actor SSTank4 : SSTank1
 		Loop
 	Missile:
 		"####" B 0 A_PlaySound("weapons/chaingun", CHAN_WEAPON)
-		"####" BBBB 1 LIGHT("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer", scalex * 80, scaley * 0, random(-4, 4))
+		"####" BBBB 1 LIGHT("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer", ScaleX * 80, ScaleY * 0, random(-4, 4))
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
 		"####" A 2 A_JumpIfTargetInLOS("Missile", 45)
 		Goto See

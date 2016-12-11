@@ -1,3 +1,4 @@
+//Following blockers are needed to block sharks, bats, spiders & scorpions
 ACTOR SharkBlocker
 {
 	//$Category Monsters (Wolf3D)/Critters
@@ -8,13 +9,13 @@ ACTOR SharkBlocker
 	Mass 99999999
 	Species "Player"
 	+DONTSPLASH
+	+GHOST
 	+NOGRAVITY
 	+SOLID
 	+THRUSPECIES
-	+GHOST
 }
 
-//we need it smaller for narrow places/situations, not only the big one for sharks (check map c1m6)
+//we need it smaller for narrow places/situations
 ACTOR SharkBlockerMini : SharkBlocker
 {
 	//$Category Monsters (Wolf3D)/Critters
