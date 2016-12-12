@@ -42,11 +42,16 @@ ECHO ---------------------
 ECHO  [1] Default Build
 ECHO  [2] Best Compression
 ECHO  [3] No Compression
+ECHO ---------------------
+ECHO.
+ECHO Other available options:
+ECHO ---------------------
 REM ----
 REM  Special Features
 REM   Only draw these options if its possible
 IF %featuresGit% EQU True (ECHO  [U] Update Repository)
 REM ----
+ECHO  [?] Help
 ECHO  [X] Exit
 ECHO ---------------------
 ECHO.
@@ -78,6 +83,14 @@ IF "%STDIN%" EQU "3" (
 IF /I "%STDIN%" EQU "X" (
     GOTO :EOF
 )
+IF /I "%STDIN%" EQU "Help" (
+    CALL :Help
+    GOTO :MainMenu
+)
+IF "%STDIN%" EQU "?" (
+    CALL :Help
+    GOTO :MainMenu
+)
 IF /I "%STDIN%" EQU "U" (
     REM Avoid the end-user from selecting a choice that may not be
     REM  available to them.
@@ -86,10 +99,6 @@ IF /I "%STDIN%" EQU "U" (
     IF %featuresGit% NEQ True CALL :MainMenu_STDIN_BadInput
     REM Try to detect if Git features IS available
     IF %featuresGit% EQU True CALL :GitFeature_UpdateBranch
-    GOTO :MainMenu
-)
-IF "%STDIN%" EQU "" (
-    CALL :CompactProject ZIP DEFLATE 5 NORMAL
     GOTO :MainMenu
 ) ELSE (
     CALL :MainMenu_STDIN_BadInput
@@ -136,6 +145,36 @@ ECHO ---------------------
 ECHO =====================
 ECHO.&ECHO.&ECHO.
 GOTO :EOF
+
+
+
+
+REM # ================================================================================================
+REM # Documentation
+REM #       This function simply displays the help screen; why this program exists and how it works.
+REM # ================================================================================================
+:Help
+REM Thrash the terminal buffer
+CLS
+REM Display the title on the buffer
+CALL :BufferHeader
+ECHO Help
+ECHO ------------
+ECHO.
+ECHO This program is a PK3 compiler for the WolfenDoom project.  When prompted with compile options such as: Default Build, Best Compression, and No Compression, these provides different forms of compression methods that this program allows.  However, compression can also depreciate performance.
+ECHO  ^* Default Build
+ECHO        Builds the project with the default compression; what to expect for public builds.
+ECHO  ^* Best Compression
+ECHO        Provides the best possible compression, thus tighter filesize but can have an effect with performance when playing the game.
+ECHO  ^* No Compression
+ECHO        Builds the project with absolutely no compression; maximizes performance with lack of compression.
+ECHO.
+ECHO If unsure what to choose, select the default build or option [ 1 ] from the Main Menu.
+ECHO For further help is needed, please visit the official ZDoom forum thread:
+ECHO   http://forum.zdoom.org/viewtopic.php?p=813367#p813367
+ECHO.
+PAUSE
+EXIT /B 0
 
 
 
