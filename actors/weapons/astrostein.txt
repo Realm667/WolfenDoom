@@ -234,9 +234,6 @@ ACTOR AstroRocket
 	Damage 20
 	Gravity 0.125
 	RenderStyle "Add"
-	-NOGRAVITY
-	+WINDTHRUST
-	+THRUGHOST
 	BounceType "Grenade"
 	BounceFactor 0.9
 	WallBounceFactor 0.9
@@ -245,6 +242,9 @@ ACTOR AstroRocket
 	DeathSound "astrolauncher/explode"
 	BounceSound "astrolauncher/bounce"
 	Obituary "$OBASTROR"
+	-NOGRAVITY
+	+WINDTHRUST
+	+THRUGHOST
 	States
 	{
 	Spawn:

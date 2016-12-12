@@ -1,3 +1,7 @@
+///////////////
+//MAIN ACTORS//
+///////////////
+
 ACTOR Nazi
 {
 	Scale 1.2
@@ -55,12 +59,12 @@ ACTOR Nazi
 		"####" H 0 A_Jump(256,"See")
 		Stop
 	Pain.SilentKnifeAttack: //mxd. Hacky critical hit system
-		 "####" "#" 0 A_JumpIf(user_incombat, "Pain")
-		 "####" "#" 0 A_SetUserVar("user_incombat", TRUE)
-		 "####" "#" 0 A_Log("Critical hit!")
-		 "####" "#" 0 A_AlertMonsters(128)
-		 "####" "#" 0 A_DamageSelf(health, "Melee")
-		 Goto Pain
+		"####" "#" 0 A_JumpIf(user_incombat, "Pain")
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE)
+		"####" "#" 0 A_Log("Critical hit!")
+		"####" "#" 0 A_AlertMonsters(128)
+		"####" "#" 0 A_DamageSelf(health, "Melee")
+		Goto Pain
 	}
 }
 
@@ -93,6 +97,104 @@ ACTOR NaziBoss : Nazi
 		Loop
 	}
 }
+
+////////////
+//CRITTERS//
+////////////
+
+ACTOR Rottweiler : Nazi
+{
+	//$Category Monsters (Wolf3D)/Critters
+	//$Title Dog (Rottweiler)
+	//$Color 4
+	Scale 1.1
+	HitObituary "$DOGS"
+	Health 25
+	PainChance 180
+	Speed 4
+	Height 48
+	Mass 70
+	SeeSound "dog/sight"
+	PainSound "dog/pain"
+	DeathSound "dog/death"
+	ActiveSound "dog/active"
+	-CANUSEWALLS
+	+NEVERTARGET //So the dogs don't get targeted by stealth (+FRIENDLY-abusing) guards
+	States
+	{
+	Spawn:
+		DOGY A 0
+		Goto Look
+	Idle:
+		"####" A 0 A_SetSpeed(4)
+		"####" AAAAAAAA 1 A_Wander
+		"####" A 0 A_Look
+		"####" BBBBBBBB 1 A_Wander
+		"####" A 0 A_Look
+		"####" CCCCCCCC 1 A_Wander
+		"####" A 0 A_Look
+		"####" DDDDDDDD 1 A_Wander
+		"####" A 0 A_Look
+		Loop
+	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		"####" A 0 A_SetSpeed(8)
+		"####" A 1 A_Chase
+		"####" AAA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_Chase
+		"####" BBB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" C 1 A_Chase
+		"####" CCC 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" D 1 A_Chase
+		"####" DDD 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		Loop
+	Melee:
+		"####" EF 2 Fast A_FaceTarget
+		"####" G 8 Fast A_CustomMeleeAttack(random(1,8)*3,"dog/attack","dog/attack")
+		"####" FE 4 Fast
+		Goto See
+	Pain:
+		"####" M 2
+		"####" M 2 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		Goto See
+	Death:
+		"####" H 8
+		"####" I 8 A_Scream
+		"####" J 6
+		"####" K -1 A_NoBlocking
+		Stop
+	Raise:
+		"####" KJIH 6
+		Goto See
+	}
+}
+
+ACTOR GermanShepherd : Rottweiler
+{
+	//$Title Dog (Shepherd)
+	States
+	{
+	Spawn:
+		DOG2 A 0
+		Goto Look
+	}
+}
+
+ACTOR Doberman : Rottweiler
+{
+	//$Title Dog (Doberman)
+	States
+	{
+	Spawn:
+		DOG3 A 0
+		Goto Look
+	}
+}
+
+/////////
+//NAZIS//
+/////////
 
 ACTOR Guard : Nazi
 {
@@ -173,9 +275,7 @@ ACTOR Guard : Nazi
 
 ACTOR GiantGuard : Guard
 {
-	//$Category Monsters (Wolf3D)
-	//$Title Afrika Corps Giant Guard (Easter Egg)
-	//$Color 4
+	//$Title Afrika Korps Giant Guard (Easter Egg)
 	DropItem 9mmAmmo 255
 	DropItem 9mmAmmo 255
 	DropItem 9mmAmmo 255
@@ -208,9 +308,7 @@ ACTOR GiantGuard : Guard
 
 ACTOR SSGuard : Guard
 {
-	//$Category Monsters (Wolf3D)
-	//$Title SS Guard
-	//$Color 4
+	//$Title SS Guard (Pistol)
 	Speed 2.67
 	Scale 1.24
 	Obituary "$SSGUARD"
@@ -256,9 +354,7 @@ ACTOR SSGuard : Guard
 
 ACTOR WGuard : Guard
 {
-	//$Category Monsters (Wolf3D)
-	//$Title Wehrmacht Guard
-	//$Color 4
+	//$Title Wehrmacht Guard (Pistol)
 	Speed 2.5
 	Scale 1.24
 	Obituary "$WGUARD"
@@ -287,9 +383,7 @@ ACTOR WGuard : Guard
 
 ACTOR MP40Guard : Guard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Afrika Korps Guard (MP40)
-	//$Color 4
 	Obituary "$MPGUARD"
 	Scale 1.24
 	SeeSound "Nazi2/Sighted"
@@ -350,9 +444,7 @@ ACTOR MP40GuardCounter : Inventory {Inventory.MaxAmount 32}
 
 ACTOR SSMP40Guard : SSGuard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title SS Guard (MP40)
-	//$Color 4
 	SeeSound "Nazi2/Sighted"
 	PainSound "Nazi2/Pain"
 	DeathSound "Nazi2/Death"
@@ -394,9 +486,7 @@ ACTOR SSMP40GuardCounter : Inventory {Inventory.MaxAmount 40}
 
 ACTOR WMP40Guard : MP40Guard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Wehrmacht Guard (MP40)
-	//$Color 4
 	Obituary "$WMPGUARD"
 	Health 30
 	Speed 2.5
@@ -440,9 +530,7 @@ ACTOR WMP40GuardCounter : Inventory {Inventory.MaxAmount 48}
 
 ACTOR Officer : Guard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Afrika Korps Officer
-	//$Color 4
 	Speed 4
 	Obituary "$OFFICER"
 	SeeSound "Nazi4/Sighted"
@@ -496,9 +584,7 @@ ACTOR Officer : Guard
 
 ACTOR SSOfficer : Officer
 {
-	//$Category Monsters (Wolf3D)
 	//$Title SS Officer
-	//$Color 4
 	Speed 5.33
 	Scale 1.24
 	Obituary "$SSOFFICE"
@@ -513,9 +599,7 @@ ACTOR SSOfficer : Officer
 
 ACTOR WOfficer : Officer
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Wehrmacht Officer
-	//$Color 4
 	Obituary "$WOFFICER"
 	Health 30
 	Speed 5
@@ -551,9 +635,7 @@ ACTOR WOfficer : Officer
 
 ACTOR RifleGuard : MP40Guard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Afrika Korps Guard (Rifle)
-	//$Color 4
 	Obituary "$RIFLSOLD"
 	SeeSound "Nazi3/Sighted"
 	DropItem MauserAmmo
@@ -576,9 +658,7 @@ ACTOR RifleGuard : MP40Guard
 
 ACTOR WRifleGuard : RifleGuard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Wehrmacht Guard (Rifle)
-	//$Color 4
 	Obituary "$WRIFSOLD"
 	Health 30
 	Speed 2.5
@@ -606,9 +686,7 @@ ACTOR WRifleGuard : RifleGuard
 
 ACTOR WaffenSS : SSMP40Guard
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Waffen SS
-	//$Color 4
 	SeeSound "Nazi3/Sighted"
 	Obituary "$SSWAFFEN"
 	Health 80
@@ -633,9 +711,7 @@ ACTOR WaffenSS : SSMP40Guard
 
 ACTOR Paratrooper : WaffenSS
 {
-	//$Category Monsters (Wolf3D)
 	//$Title Paratrooper
-	//$Color 4
 	Obituary "$PARATROP"
 	Health 90
 	DropItem "9mmAmmo" 192
@@ -648,11 +724,679 @@ ACTOR Paratrooper : WaffenSS
 	}
 }
 
+ACTOR Sniper : Guard
+{
+	//$Title Afrika Korps Sniper
+	Obituary "$SNIPER"
+	Mass 1000 //Make it not move too far
+	SeeSound "" //Make them not cry, they are in disguise after all
+	Health 50
+	Speed 0
+	DropItem "MauserAmmo" 192
+	DropItem "Kar98k" 48
+	+LOOKALLAROUND
+	States
+	{
+	Spawn:
+		SNIP A 0
+		Goto Look
+	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		"####" A 1 A_Chase
+		Loop
+	Pain:
+		"####" I 3
+		"####" I 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		Goto See
+	Missile:
+		"####" A 32 A_FaceTarget
+		"####" B 0 A_PlaySound("browning/fire", CHAN_WEAPON)
+		"####" B 8 LIGHT(NAZIFIRE)A_CustomMissile("EnemyRifleTracer",44,5)
+		"####" B 0 A_SpawnItemEx("EnfieldRifleCasing", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
+		"####" A 32
+		"####" A 0 A_PlaySound("browning/cock", CHAN_AUTO, 0.25)
+		Goto See
+	Death:
+		"####" I 5
+		"####" J 5 A_Scream
+		"####" K 5 A_NoBlocking
+		"####" L 5
+		"####" M -1
+		Stop
+	Raise:
+		"####" MLKJI 5
+	Idle:
+		Goto Look
+	}
+}
+
+ACTOR WSniper : Sniper
+{
+	//$Title Wehrmacht Sniper
+	States
+	{
+	Spawn:
+		SNIC A 0
+		Goto Look
+	}
+}
+
+ACTOR Sniper_Crouch : Guard
+{
+	//$Title Afrika Korps Sniper (crouch)
+	Obituary "$SNIPER"
+	Mass 1000		//Make it not move too far
+	SeeSound ""	//Make them not cry, they are in disguise after all
+	Health 50
+	Speed 0
+	DropItem "MauserAmmo" 192
+	DropItem "Kar98k" 48
+	+DROPOFF
+	+LOOKALLAROUND
+	States
+	{
+	Spawn:
+		SNIP C 0
+		Goto Look
+	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		"####" C 1 A_Chase
+		Loop
+	Pain:
+		"####" I 3
+		"####" I 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		Goto See
+	Missile:
+		"####" C 28 A_FaceTarget //a bit fast than normal one
+		"####" D 0 A_PlaySound("browning/fire", CHAN_WEAPON)
+		"####" D 8 LIGHT(NAZIFIRE)A_CustomMissile("EnemyRifleTracer",34,5)
+		"####" D 0 A_SpawnItemEx("EnfieldRifleCasing", 1, 0, 34, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
+		"####" C 28
+		"####" C 0 A_PlaySound("browning/cock", CHAN_AUTO, 0.25)
+		Goto See
+	Death:
+		"####" K 7 A_Scream
+		"####" L 5 A_NoBlocking
+		"####" M -1
+		Stop
+	Raise:
+		"####" MLKJI 5
+		Goto See
+	Idle:
+		Goto Look
+	}
+}
+
+ACTOR WSniper_Crouch : Sniper_Crouch
+{
+	//$Title Wehrmacht Sniper (crouch)
+	States
+	{
+	Spawn:
+		SNIC C 0
+		Goto Look
+	}
+}
+
+ACTOR FlamerSoldier : Guard
+{
+	//$Title SS Flamer (Soldier)
+	Obituary "$FLAMEBOY"
+	Health 100
+	DropItem "FlameAmmo" 192
+	DropItem "Pyrolight" 32
+	MaxTargetRange 296
+	States
+	{
+	Spawn:
+		FLSL A 0
+		Goto Look
+	Missile:
+		"####" F 3
+		"####" G 10 A_FaceTarget
+		"####" HHHHHH 1 LIGHT(NAZIFIRE) A_CustomMissile("EnemyFlamerShot",38,4)
+		"####" G 6 A_MonsterRefire(10,"See")
+		Goto Missile+1
+	Pain: //pre-aim used here as stated on ZDForums
+		"####" F 3
+		"####" F 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		"####" F 0 A_Jump(256,"See")
+		Stop
+	Death:
+		"####" J 0 A_Jump(64, "XDeath")
+		"####" J 5
+		"####" K 5 A_Scream
+		"####" L 5 A_NoBlocking
+		"####" M 5
+		"####" N -1
+		Stop
+	XDeath:
+		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
+		Goto Death.Fire
+	}
+}
+
+ACTOR MiniShip : Nazi
+{
+	//$Category Monsters (Wolf3D)
+	//$Title Miniship
+	//$Color 4
+	Obituary "$NAZISHIP"
+	Health 375
+	Speed 3.25
+	Mass 2000
+	PainSound "metal/pain"
+	DeathSound "world/barrelboom"
+	PainChance 96
+	FloatSpeed .67
+	-FLOORCLIP
+	+FLOAT
+	+LOOKALLAROUND
+	+NOBLOOD
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		SHIP A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		Goto Look
+	See:
+		"####" A 1 A_Chase
+		"####" AAA 1 A_Chase("","")
+		Loop
+	Missile:
+		SHIP A 10 A_FaceTarget
+		"####" A 0 A_PlaySound("miniship/fire", CHAN_WEAPON)
+		"####" B 8 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",26,7,random(-11,11))
+		"####" A 8 A_FaceTarget
+		"####" A 0 A_PlaySound("miniship/fire", CHAN_WEAPON)
+		"####" C 8 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",26,-7,random(-11,11))
+		"####" A 8
+		Goto See
+	Pain:
+		SHIP A 3
+		"####" A 3 A_Pain
+		"####" A 1 ThrustThing(Angle*256/360+192, 4, 1, 0)
+		"####" A 1 ThrustThing(Angle*256/360+128, 2, 1, 0)
+		"####" A 1 ThrustThing(Angle*256/360+64, 4, 1, 0)
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		Goto See
+	Death:
+		SHIP A -1
+		Wait
+	Crash:
+		TNT1 A 0 A_SetFloorClip
+		"####" A 0 A_Scream
+		"####" AAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Tank", random(16,64), random(16,64), random(64,128), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", random(16,64), random(16,64), random(64,128), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		"####" A 0 A_SpawnItemEx("PanzerNuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
+		"####" A 0 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
+		Stop
+	Idle:
+		SHIP AAAAAAAA 1 A_Wander
+		SHIP A 0 A_Look
+		Loop
+	}
+}
+
+ACTOR MGTurret : MiniShip
+{
+	//$Title Automatic Turret (shootable)
+	Scale 1.1
+	Speed 0
+	Obituary "$MGTURRET"
+	Health 100
+	Radius 2
+	Height 32
+	-FLOAT
+	-NOGRAVITY
+	+DONTTHRUST
+	+MISSILEEVENMORE
+	+NOPAIN
+	States
+	{
+	Spawn:
+		GTUR A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		Goto Look
+	Missile:
+		"####" A 4 A_PlaySound("chaingun/start", CHAN_WEAPON)
+		"####" A 1 A_PlaySound("chaingun/loop", CHAN_WEAPON)
+		"####" A 5 A_FaceTarget
+		"####" B 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
+		"####" C 3 LIGHT(NAZIFIRE) A_CustomMissile("EnemyChaingunTracer",20,0,random(-11,11))
+		"####" B 3 A_MonsterRefire(20,"See")
+		"####" B 0 A_FaceTarget
+		Goto Missile+3
+	Death:
+	Crash:
+		TNT1 A 0 A_SetFloorClip
+		"####" A 0 A_Scream
+		"####" A 0 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
+		Stop
+	Idle:
+		Goto Look
+	}
+}
+
+ACTOR MGTurretInvisible : MGTurret
+{
+	//$Title Automatic Turret (invisible, non-shootable)
+	Obituary "$MGTHIDE"
+	Health 0
+	-COUNTKILL
+	-SHOOTABLE
+	-SOLID
+	+NOGRAVITY //mxd
+	RenderStyle "None"
+	States
+	{
+	Missile: //mxd. Same as MGTurret, but without the dynamic light
+		"####" A 4 A_PlaySound("chaingun/start", CHAN_WEAPON)
+		"####" A 1 A_PlaySound("chaingun/loop", CHAN_WEAPON)
+		"####" A 5 A_FaceTarget
+		"####" B 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
+		"####" C 3 A_CustomMissile("EnemyChaingunTracer",20,0,random(-11,11))
+		"####" B 3 A_MonsterRefire(30,"See")
+		"####" B 0 A_FaceTarget
+		Goto Missile+3
+	}
+}
+
+ACTOR CTurret_Afrika : SwitchableDecoration
+{
+	//$Category Monsters (Wolf3D)/Special
+	//$Title Controllable Turret (Afrika Guards only)
+	//$Color 4
+	Scale 1.16
+	Speed 0
+	Health 100
+	Radius 8
+	Height 32
+	+BUMPSPECIAL
+	+DONTTHRUST
+	+LOOKALLAROUND
+	+NOBLOOD
+	+NOTAUTOAIMED
+	+SHOOTABLE
+	+SOLID
+	DeathSound "world/barrelboom"
+	Activation THINGSPEC_MonsterTrigger | THINGSPEC_ThingTargets
+	States
+	{
+	Spawn:
+		SMGS X 1
+	Active:
+		SMGS X 1 A_CheckProximity("SpawnEnemy", "Guard", 64, 1, CPXF_SETTARGET | CPXF_NOZ | CPXF_EXACT) //Only Guards can activate it and only 1 of them - thanks to yqco for proper pointers
+		Loop
+	Inactive:
+		"####" X 0 //bland
+		Goto Spawn
+	SpawnEnemy:
+		TNT1 A 0 A_ChangeFlag("BUMPSPECIAL", FALSE)
+		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "Guard") //...let's remove both Turret & Guard
+		"####" A 1 A_SpawnItemEx("MGTSDropper1",0,0,0) //So spawn a new MGTurretSoldier, avoid to place turrets inside places which are script sensible!
+		Stop
+	Death:
+		"####" A 0 A_ChangeFlag("BUMPSPECIAL", FALSE)
+		"####" A 0 A_UnSetSolid
+		"####" A 0 A_Scream
+		"####" A 0 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
+		Stop
+	}
+}
+
+ACTOR CTurret_Wehrmacht : CTurret_Afrika
+{
+	//$Title Controllable Turret (Wehrmacht Guards only)
+	States
+	{
+	Spawn:
+		SMGS X 1
+	Active:
+		SMGS X 1 A_CheckProximity("SpawnEnemy", "WGuard", 64, 1, CPXF_SETTARGET | CPXF_NOZ | CPXF_EXACT) //Only Guards can activate it and only 1 of them - thanks to yqco for proper pointers
+		Loop
+	SpawnEnemy:
+		TNT1 A 0 A_ChangeFlag("BUMPSPECIAL", FALSE)
+		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "WGuard") //...let's remove both Turret & Guard
+		"####" A 1 A_SpawnItemEx("MGTSDropper2",0,0,0) //So spawn a new MGTurretSoldier, avoid to place turrets inside places which are script sensible!
+		Stop
+	}
+}
+
+ACTOR MGTSDropper1 : RandomSpawner { DropItem MGTurretSoldier }
+ACTOR MGTSDropper2 : RandomSpawner { DropItem MGTurretSoldierW }
+
+ACTOR MGTurretSoldier : MGTurret
+{
+	//$Title Stationary Turret Soldier (Afrika Korps)
+	Height 56
+	Radius 16
+	Scale 1.16
+	SeeSound "Nazi1/Sighted"
+	PainSound "Nazi1/Pain"
+	DeathSound "Nazi1/Death"
+	States
+	{
+	Spawn:
+		SMGS A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		Goto Look
+	Missile: //mxd. Copied from parent cause diffetent firing offset
+		SMGS A 4 A_PlaySound("chaingun/start", CHAN_WEAPON)
+		"####" A 1 A_PlaySound("chaingun/loop", CHAN_AUTO)
+		"####" A 5 A_FaceTarget
+		"####" B 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
+		"####" C 3 LIGHT(NAZIFIRE) A_CustomMissile("EnemyChaingunTracer",34,-2,random(-11,11))
+		"####" C 0 A_SpawnItemEx("9MMCasing", 0,0,36, random(2,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" B 3 A_MonsterRefire(10,"See")
+		"####" B 0 A_FaceTarget
+		Goto Missile+3
+	Pain: //added this here because it doesn't have H frames for pain states
+		SMGS D 3
+		"####" D 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		"####" D 0 A_Jump(256,"See")
+		Stop
+	Death:
+	Crash:
+		TNT1 A 0 A_Scream
+		SMGS D 6 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
+		SMGS EFG 6
+		SMGS H -1 A_NoBlocking
+		Stop
+	}
+}
+
+ACTOR MGTurretSoldierW : MGTurretSoldier
+{
+	//$Title Stationary Turret Soldier (Werhmacht)
+	States
+	{
+	Spawn:
+		SMGF A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		Goto Look
+	Missile: //mxd. Copied from parent cause different firing offset
+		SMGF A 4 A_PlaySound("chaingun/start", CHAN_WEAPON)
+		"####" A 1 A_PlaySound("chaingun/loop", CHAN_AUTO)
+		"####" A 5 A_FaceTarget
+		"####" B 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
+		"####" C 3 LIGHT(NAZIFIRE) A_CustomMissile("EnemyChaingunTracer",34,-2,random(-11,11))
+		"####" C 0 A_SpawnItemEx("9MMCasing", 0,0,36, random(2,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" B 3 A_MonsterRefire(10,"See")
+		"####" B 0 A_FaceTarget
+		Goto Missile+3
+	Pain: //added this here because it doesn't have H frames for pain states
+		SMGF D 3
+		"####" D 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		"####" D 0 A_Jump(256,"See")
+		Stop
+	Death:
+	Crash:
+		TNT1 A 0 A_Scream
+		SMGF D 6 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
+		SMGF EFG 6
+		SMGF H -1 A_NoBlocking
+		Stop
+	}
+}
+
+//////////
+//ELITES//
+//////////
+
+ACTOR EliteFlamer : Guard
+{
+	//$Title Elite Soldier (Flamer)
+	Obituary "$FLAMEBOY"
+	Health 450
+	Speed 4
+	SeeSound "eliteflamer/sight"
+	PainSound "eliteflamer/pain"
+	DeathSound "eliteflamer/death"
+	DropItem "FlameAmmo"
+	DropItem "Pyrolight" 32
+	+MISSILEMORE
+	MaxTargetRange 400
+	var int user_count;
+	var int user_offset; //mxd
+	States
+	{
+	Spawn:
+		ELTF A 0 A_Look
+		Goto Look
+	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		ELTF A 1 A_Chase
+		ELTF AA 1 A_Chase("","")
+		ELTF A 1 A_Chase
+		ELTF AA 1 A_Chase("","")
+		ELTF B 1 A_Chase
+		ELTF BB 1 A_Chase("","")
+		ELTF B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
+		ELTF B 1 A_Chase
+		ELTF BB 1 A_Chase("","")
+		ELTF C 1 A_Chase
+		ELTF CC 1 A_Chase("","")
+		ELTF C 1 A_Chase
+		ELTF CC 1 A_Chase("","")
+		ELTF D 1 A_Chase
+		ELTF DD 1 A_Chase("","")
+		ELTF D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
+		ELTF D 1 A_Chase("","",CHF_FASTCHASE)
+		ELTF DD 1 A_Chase("","")
+		Loop
+	Missile:
+		ELTF E 0 A_PlaySound("ammo/cell1")
+		ELTF E 15 A_FaceTarget
+		ELTF E 0 A_Jump(60,"ProperMissile2")
+	ProperMissileStart:
+		ELTF F 0 A_FaceTarget
+		ELTF FG 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6)
+		ELTF G 0 A_MonsterRefire(20,"See")
+		ELTF E 0 A_JumpIfCloser(400,"ProperMissileStart")
+		Goto See
+	ProperMissile2:
+		ELTF F 0 A_FaceTarget
+		ELTF F 0 A_SetUserVar("user_count",0)
+		ELTF F 0 A_SetUserVar("user_offset", RandomPick(-3, 3)) //mxd
+		ELTF F 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6)
+	Wave1:
+		ELTF F 0 A_SetAngle(angle + user_offset)
+		ELTF G 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
+		ELTF F 0 A_SetAngle(angle + user_offset)
+		ELTF F 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
+		ELTF F 0 A_SetUserVar("user_count",user_count+1)
+		ELTF F 0 A_JumpIf(user_count>=5,1)
+		Loop
+	Wave2:
+		ELTF F 0 A_SetAngle(angle - user_offset)
+		ELTF G 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
+		ELTF F 0 A_SetAngle(angle - user_offset)
+		ELTF F 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
+		ELTF F 0 A_SetUserVar("user_count",user_count+1)
+		ELTF F 0 A_JumpIf(user_count>=15,1)
+		Loop
+	Wave3:
+		ELTF F 0 A_SetAngle(angle + user_offset)
+		ELTF G 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
+		ELTF F 0 A_SetAngle(angle + user_offset)
+		ELTF F 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
+		ELTF F 0 A_SetUserVar("user_count",user_count+1)
+		ELTF F 0 A_JumpIf(user_count>=20,1)
+		Loop
+		ELTF E 6
+		Goto See
+	Death:
+		ELTF H 5
+		ELTF I 5 A_Scream
+		ELTF J 5 A_NoBlocking
+		ELTF K -1
+		Stop
+	Raise:
+		ELTF KJIH 5
+		Goto See
+	}
+}
+
+ACTOR EliteAssaulter : Guard
+{
+	//$Title Elite Soldier (MP40)
+	Obituary "$ELITASS"
+	Health 350
+	PainChance 160
+	Speed 4.66666667
+	SeeSound "eliteassaulter/sight"
+	PainSound "eliteassaulter/pain"
+	DeathSound "eliteassaulter/death"
+	DropItem "9mmAmmo" 192
+	DropItem "MP40" 64
+	DropItem "GrenadePickup" 16
+	+MISSILEMORE
+	States
+	{
+	Spawn:
+		ELTA N 0
+		Goto Look
+	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		ELTA A 0 A_SetSpeed(4.66666667)
+		ELTA A 0 A_ChangeFlag("FRIGHTENED",0)
+		ELTA A 1 A_Chase
+		ELTA AA 1 A_Chase("","")
+		ELTA A 1 A_Chase
+		ELTA AA 1 A_Chase("","")
+		ELTA B 1 A_Chase
+		ELTA BB 1 A_Chase("","")
+		ELTA B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
+		ELTA B 1 A_Chase
+		ELTA BB 1 A_Chase("","")
+		ELTA C 1 A_Chase
+		ELTA CC 1 A_Chase("","")
+		ELTA C 1 A_Chase
+		ELTA CC 1 A_Chase("","")
+		ELTA D 1 A_Chase
+		ELTA DD 1 A_Chase("","")
+		ELTA D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
+		ELTA D 1 A_Chase("","",CHF_FASTCHASE)
+		ELTA DD 1 A_Chase("","")
+		Loop
+	Missile:
+		ELTA E 0 A_Jump(50,"Grenada")
+		ELTA E 0 A_PlaySound("ammo/cell2")
+		ELTA EF 12 A_FaceTarget
+		ELTA G 0 A_PlaySound("nazi/stg44", CHAN_WEAPON)
+		ELTA G 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyStGTracer",39,5,random(-6,6))
+		ELTA G 0 A_SpawnItemEx("9MMCasing", 6,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		ELTA F 4 A_FaceTarget
+		ELTA G 0 A_PlaySound("nazi/stg44", CHAN_WEAPON)
+		ELTA G 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyStGTracer",39,5,random(-5,5))
+		ELTA G 0 A_SpawnItemEx("9MMCasing", 6,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		ELTA F 4 A_FaceTarget
+		ELTA G 0 A_PlaySound("nazi/stg44", CHAN_WEAPON)
+		ELTA G 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyStGTracer",39,5,random(-6,6))
+		ELTA G 0 A_SpawnItemEx("9MMCasing", 6,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		ELTA F 10 A_FaceTarget
+		ELTA F 0 A_MonsterRefire(15,"See")
+		Goto Missile+4
+	Grenada:
+		ELTA EF 7 A_FaceTarget
+		ELTA E 4 A_CustomMissile("HandGrenade")
+	Retreat:
+		ELTA A 0 A_SetSpeed(14)
+		ELTA A 0 A_ChangeFlag("FRIGHTENED",1)
+		ELTA AABBCCDDAABBCCDDAABBCCDD 1 A_Chase
+		ELTA A 0 A_ChangeFlag("FRIGHTENED",0)
+		Goto Missile
+	}
+}
+
+ACTOR EliteSoldatRifler : Guard
+{
+	//$Title Elite Soldier (Rifle)
+	Obituary "$ELITRIFL"
+	Health 65
+	Speed 4.66666667
+	PainChance 80
+	SeeSound "eliterifler/Sight"
+	PainSound "eliteassaulter/pain"
+	DeathSound "eliterifler/death"
+	DropItem "MauserAmmo" 192
+	DropItem "GrenadePickup" 16
+	DropItem "G43" 64
+	+MISSILEEVENMORE
+	States
+	{
+	Spawn:
+		ELTR N 0
+		Goto Look
+	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		ELTR A 1 A_Chase
+		ELTR AA 1 A_Chase("","")
+		ELTR A 1 A_Chase
+		ELTR AA 1 A_Chase("","")
+		ELTR B 1 A_Chase
+		ELTR BB 1 A_Chase("","")
+		ELTR B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
+		ELTR B 1 A_Chase
+		ELTR BB 1 A_Chase("","")
+		ELTR C 1 A_Chase
+		ELTR CC 1 A_Chase("","")
+		ELTR C 1 A_Chase
+		ELTR CC 1 A_Chase("","")
+		ELTR D 1 A_Chase
+		ELTR DD 1 A_Chase("","")
+		ELTR D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
+		ELTR D 1 A_Chase("","",CHF_FASTCHASE)
+		ELTR DD 1 A_Chase("","")
+		Loop
+	Missile:
+		ELTR E 0 A_JumpIfCloser(1000,"ProperMissile")
+		Goto Camping
+	ProperMissile:
+		ELTR EF 9 A_FaceTarget
+		ELTR G 0 A_PlaySound("mauser/fire", CHAN_WEAPON)
+		ELTR G 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",39,7,random(-4,4))
+		ELTR G 0 A_SpawnItemEx("MauserRifleCasing", 7,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		ELTR F 4 A_PlaySound("mauser/cock", CHAN_AUTO, 0.25)
+		ELTR E 14
+		Goto See
+	Camping:
+		ELTR O 4 A_JumpIfCloser(540,"CampingDone")
+		ELTR P 6
+	CampingContinue:
+		ELTR Q 0 A_JumpIfCloser(540,"CampingDone")
+		ELTR Q 0 A_Jump(6,"CampingDone")
+		ELTR Q 0 A_JumpIfCloser(8000,"CampingFire")
+		ELTR Q 6 A_FaceTarget
+		Loop
+	CampingFire:
+		ELTR Q 0 A_JumpIfCloser(540,"CampingDone")
+		ELTR Q 10 A_FaceTarget
+		ELTR R 0 A_PlaySound("mauser/fire", CHAN_WEAPON)
+		ELTR R 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",32,5,random(-1,1))
+		ELTR Q 20
+		Goto CampingContinue
+	CampingDone:
+		ELTR QPO 2
+		Goto See
+	}
+}
+
+///////////
+//MUTANTS//
+///////////
+
 ACTOR Mutant : Guard
 {
 	//$Category Monsters (Wolf3D)/Mutants
 	//$Title Mutant (Projectile)
-	//$Color 4
 	Obituary "$MUTANT"
 	Health 90
 	Scale 1.4
@@ -740,9 +1484,7 @@ ACTOR Mutant : Guard
 
 ACTOR MutantMelee : Mutant
 {
-	//$Category Monsters (Wolf3D)/Mutants
 	//$Title Mutant (Melee)
-	//$Color 4
 	DropItem ""
 	+LOOKALLAROUND
 	States
@@ -783,11 +1525,57 @@ ACTOR MutantMelee : Mutant
 	}
 }
 
+ACTOR SuperMutant : Mutant
+{
+	//$Title Mutant (Super)
+	Obituary "$SUPAMUTN"
+	Health 180
+	Scale 1.45
+	States
+	{
+	Spawn:
+		SUPM A 0 NoDelay ACS_NamedExecuteAlways("DisableSuperMutants",0) //mxd
+		Goto Look
+	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		"####" A 0 A_SetSpeed(5)
+		"####" B 1 A_Chase
+		"####" B 1 A_Chase("","")
+		"####" B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
+		"####" B 1 A_Chase
+		"####" B 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" C 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" C 1 A_Chase("","")
+		"####" D 1 A_Chase
+		"####" D 1 A_Chase("","")
+		"####" D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
+		"####" D 1 A_Chase
+		"####" D 1 A_Chase("","")
+		"####" E 1 A_Chase
+		"####" E 1 A_Chase("","")
+		"####" E 1 A_Chase
+		"####" E 1 A_Chase("","")
+		Loop
+	Missile:
+		SUPM F 6 A_FaceTarget
+		SUPM G 0 A_PlaySound("walther/fire", CHAN_WEAPON)
+		SUPM G 4 LIGHT(MUTNFIRE) A_CustomMissile("EnemyMutantTracer",40,random(-22,-20),random(-1,1))
+		SUPM G 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		SUPM F 5 A_FaceTarget
+		SUPM P 0 A_PlaySound("walther/fire", CHAN_WEAPON)
+		SUPM P 4 LIGHT(MUTNFIRE) A_CustomMissile("EnemyMutantTracer",40,random(18,20),random(-1,1))
+		SUPM P 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		SUPM H 5 A_MonsterRefire(15,"See")
+		SUPM H 0 A_FaceTarget
+		Goto Missile+1
+	}
+}
+
 ACTOR BigMutant1 : Mutant
 {
-	//$Category Monsters (Wolf3D)/Mutants
 	//$Title Giant Mutant (UMG43)
-	//$Color 4
 	//$Sprite MTB1A0
 	Obituary "$GMUTANT1"
 	Health 400
@@ -944,9 +1732,7 @@ ACTOR BigMutant1 : Mutant
 
 ACTOR BigMutant2 : BigMutant1
 {
-	//$Category Monsters (Wolf3D)/Mutants
 	//$Title Giant Mutant (NebRockets)
-	//$Color 4
 	//$Sprite MTB2A0
 	Obituary "$GMUTANT2"
 	Health 450
@@ -988,96 +1774,233 @@ ACTOR BigMutant2 : BigMutant1
 	}
 }
 
-ACTOR Rottweiler : Nazi
+ACTOR UberMutant : Mutant
 {
-	//$Category Monsters (Wolf3D)/Critters
-	//$Title Dog (Rottweiler)
-	//$Color 4
-	Scale 1.1
-	HitObituary "$DOGS"
-	Health 25
-	PainChance 180
-	Speed 4
-	Height 48
-	Mass 70
-	SeeSound "dog/sight"
-	PainSound "dog/pain"
-	DeathSound "dog/death"
-	ActiveSound "dog/active"
-	-CANUSEWALLS
-	+NEVERTARGET //So the dogs don't get targeted by stealth (+FRIENDLY-abusing) guards
+	//$Category Monsters (Wolf3D)/Bosses
+	//$Title Ubermutant (Boss)
+	Tag "Ubermutant"
+	Health 1000
+	Radius 24
+	Height 64
+	Mass 1000
+	Speed 2.66666667
+	PainChance 50
+	SeeSound "baron/sight"
+	DeathSound "baron/death"
+	Obituary "$OB_BARON"
+	HitObituary "$UBERMUTN"
+	+BOSS
+	+LOOKALLAROUND
 	States
 	{
 	Spawn:
-		DOGY A 0
+		UBMU A 0 NoDelay ACS_NamedExecuteAlways("DisableSuperMutants", 0) //mxd
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		Goto Look
+	Look:
+		UBMU AB 10 A_Look
+		Loop
+	See:
+		UBMU A 1 A_SetSpeed(6)
+		UBMU AA 1 A_Chase("","")
+		UBMU A 1 A_Chase
+		UBMU AA 1 A_Chase("","")
+		UBMU B 1 A_Chase
+		UBMU BB 1 A_Chase("","")
+		UBMU B 0 A_PlaySound("floor/heavy")
+		UBMU B 1 A_Chase
+		UBMU BB 1 A_Chase("","")
+		UBMU C 1 A_Chase
+		UBMU CC 1 A_Chase("","")
+		UBMU C 1 A_Chase
+		UBMU CC 1 A_Chase("","")
+		UBMU D 1 A_Chase
+		UBMU DD 1 A_Chase("","")
+		UBMU B 0 A_PlaySound("floor/heavy")
+		UBMU D 1 A_Chase
+		UBMU DD 1 A_Chase("","")
+		Loop
+	Melee:
+	Missile:
+		UBMU EF 8 A_FaceTarget
+		UBMU G 0 A_Jump(64,"Chaingun")
+		UBMU G 0 A_Jump(128,"Missile2")
+		UBMU G 0 A_Jump(192,"Missile3")
+		UBMU G 4 LIGHT(MUTNROCK) A_CustomMissile("MutantRocket",44,0,0)
+		Goto See
+	Missile2:
+		UBMU G 4 LIGHT(MUTNROCK) A_CustomMissile("MutantRocket",44,0,random(8,16))
+		UBMU EF 5 A_FaceTarget
+		UBMU G 4 LIGHT(MUTNROCK) A_CustomMissile("MutantRocket",44,0,0)
+		Goto See
+	Missile3:
+		UBMU G 0 LIGHT(MUTNROCK) A_CustomMissile("MutantRocket",44,0,random(-8,-16))
+		UBMU G 0 LIGHT(MUTNROCK) A_CustomMissile("MutantRocket",44,0, 0)
+		UBMU G 5 LIGHT(MUTNROCK) A_CustomMissile("MutantRocket",44,0,random(8,16))
+		UBMU EF 5 A_FaceTarget
+		Goto See
+	Chaingun:
+		UBMU G 0 A_FaceTarget
+		UBMU G 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
+		UBMU G 0 A_CustomMissile("EnemyMutantTracer",44,0,random(-1,1))
+		UBMU G 0 A_CustomMissile("EnemyMutantTracer",44,0,random(-4,4))
+		UBMU GGGG 0 A_SpawnItemEx("9MMCasing", 0,0,46, RandomPick(-8, 8), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		UBMU G 2 LIGHT(MUTNROCK)
+		UBMU G 2 A_MonsterRefire(20,"See")
+		Loop
+	Pain:
+		UBMU H 2
+		UBMU H 2 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		Goto See
+	Death:
+		UBMU I 6
+		UBMU I 6 A_Scream
+		UBMU J 6
+		UBMU J 6 A_NoBlocking
+		UBMU KL 6
+		UBMU M -1 A_BossDeath
+		Stop
+	Raise:
+		UBMU MLKJJII 6
+		Goto See
+	}
+}
+
+//////////
+//BOSSES//
+//////////
+
+ACTOR NaziLoper : Nazi
+{
+	//$Category Monsters (Wolf3D)/Occult
+	//$Title Nazi Loper
+	//$Color 4
+	Health 550
+	Height 64
+	Radius 32
+	Mass 300
+	Speed 14
+	Damage 2 //jump attacks
+	PainChance 64
+	MaxStepHeight 16
+	MaxDropOffHeight 128
+	MaxTargetRange 1024
+	SeeSound "loper/wakeup"
+	DeathSound "loper/death"
+	HitObituary "$LOPRHIT1"
+	Obituary "$LOPRHIT2"
+	+NORADIUSDMG //or the ZTracer will kill the Loper :D
+	Scale 1.10
+	States
+	{
+	Spawn:
+		LOPR A 0 NoDelay A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
+		"####" A 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
+		"####" AAAA 4 A_Look
 		Goto Look
 	Idle:
-		"####" A 0 A_SetSpeed(4)
-		"####" AAAAAAAA 1 A_Wander
-		"####" A 0 A_Look
 		"####" BBBBBBBB 1 A_Wander
 		"####" A 0 A_Look
 		"####" CCCCCCCC 1 A_Wander
 		"####" A 0 A_Look
 		"####" DDDDDDDD 1 A_Wander
 		"####" A 0 A_Look
+		"####" CCCCCCCC 1 A_Wander
+		"####" A 0 A_Look
 		Loop
 	See:
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
-		"####" A 0 A_SetSpeed(8)
-		"####" A 1 A_Chase
-		"####" AAA 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" B 1 A_Chase
-		"####" BBB 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" C 1 A_Chase
-		"####" CCC 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" D 1 A_Chase
-		"####" DDD 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		Loop
+		"####" BBBBCCCCDDDDCCCC 1 A_Chase
+		"####" B 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" B 0 A_Jump(random(128,192),"Missile","Missile2","Missile3")
+		Goto Look
 	Melee:
-		"####" EF 2 Fast A_FaceTarget
-		"####" G 8 Fast A_CustomMeleeAttack(random(1,8)*3,"dog/attack","dog/attack")
-		"####" FE 4 Fast
-		Goto See
+		"####" E 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
+		"####" E 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
+		"####" E 8 A_FaceTarget
+		"####" E 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" FG 8 A_CustomMeleeAttack(2*random(2,10),"loper/attack","loper/attack","Melee",TRUE)
+		Goto Look
+	Missile:
+		"####" E 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
+		"####" E 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
+		"####" E 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" E 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" E 0 A_PlaySound("tesla/attack")
+		"####" E 8 LIGHT(LOPERLIT) A_CustomRailgun(random(10,20), 0, white, cyan, RGF_NOPIERCING, 1, 2, none, 0, 0, 1500, random(24,48), 8.0, 2.0, "LoperZap", -28)
+		"####" EE 8 A_FaceTarget
+		"####" E 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
+		"####" E 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
+		"####" E 0 A_PlaySound("tesla/attack")
+		"####" E 8 LIGHT(LOPERLIT) A_CustomRailgun(random(10,20), 0, cyan, white, RGF_NOPIERCING, 1, 2, none, 0, 0, 1500, random(24,48), 8.0, 2.0, "LoperZap", -28)
+		"####" EE 8 A_FaceTarget
+		Goto Look
+	Missile2:
+		"####" A 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
+		"####" A 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
+		"####" A 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" A 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" A 0 ThrustThing(angle*256/360,random(4,6),0,0)
+		"####" AE 6 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" H 8 ThrustThingZ(0,random(30,40),0,1)
+		"####" E 6 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" FG 17 LIGHT(LOPERLIT) A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" G 1 LIGHT(LOPERLIT) A_SpawnItemEx("GeneralExplosion_Medium")
+		"####" G 1 LIGHT(LOPERLIT) Radius_Quake(10,10,0,16,0)
+		"####" G 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" F 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,0,2,0)
+		"####" G 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,20,2,0)
+		"####" F 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,40,2,0)
+		"####" G 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,60,2,0)
+		"####" F 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,80,2,0)
+		"####" G 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,100,2,0)
+		"####" F 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,120,2,0)
+		"####" G 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,140,2,0)
+		"####" F 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,160,2,0)
+		"####" G 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,180,2,0)
+		"####" F 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,200,2,0)
+		"####" G 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,220,2,0)
+		"####" F 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,240,2,0)
+		"####" G 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,260,2,0)
+		"####" F 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,280,2,0)
+		"####" G 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,300,2,0)
+		"####" F 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,320,2,0)
+		"####" G 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,340,2,0)
+		"####" G 8 A_FaceTarget
+		Goto Look
+	Missile3:
+		"####" A 0 A_JumpIfCloser(192, 2)
+		Goto Look
+		"####" CE 8 A_FaceTarget
+		"####" H 8 ThrustThingZ(0,random(30,40),0,1)
+		"####" FG 1 A_SkullAttack
+		"####" E 3 A_Gravity
+		"####" C 5
+		Goto Look
 	Pain:
-		"####" M 2
-		"####" M 2 A_Pain
+		"####" I 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
+		"####" I 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
+		"####" I 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" I 3
+		"####" I 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
-		Goto See
+		"####" I 0 A_Jump(256,"See")
+		Stop
+	Death.Fire:
 	Death:
-		"####" H 8
-		"####" I 8 A_Scream
-		"####" J 6
-		"####" K -1 A_NoBlocking
+	XDeath:
+		"####" I 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
+		"####" I 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
+		"####" I 6 A_Scream
+		"####" I 1 LIGHT(LOPERLIT) A_SpawnItemEx("GeneralExplosion_Medium")
+		"####" I 1 LIGHT(LOPERLIT) Radius_Quake(10,10,0,16,0)
+		"####" J 8 A_NoBlocking
+		"####" K 8
+		"####" L 0 A_Die
+		"####" L -1
 		Stop
 	Raise:
-		"####" KJIH 6
-		Goto See
-	}
-}
-
-ACTOR GermanShepherd : Rottweiler
-{
-	//$Category Monsters (Wolf3D)/Critters
-	//$Title Dog (Shepherd)
-	//$Color 4
-	States
-	{
-	Spawn:
-		DOG2 A 0
-		Goto Look
-	}
-}
-
-ACTOR Doberman : Rottweiler
-{
-	//$Category Monsters (Wolf3D)/Critters
-	//$Title Dog (Doberman)
-	//$Color 4
-	States
-	{
-	Spawn:
-		DOG3 A 0
+		"####" LKJIEA 8
 		Goto Look
 	}
 }
@@ -1121,494 +2044,6 @@ ACTOR RocketMan : NaziBoss
 		Stop
 	Raise:
 		"####" JIHG 5
-		Goto See
-	}
-}
-
-ACTOR MiniRocket
-{
-	Radius 11
-	Height 8
-	Speed 15
-	Damage 5
-	Projectile
-	+RANDOMIZE
-	SeeSound "nazi/missilef"
-	DeathSound "world/barrelboom"
-	States
-	{
-	Spawn:
-		NMIS A 0 NoDelay A_PlaySound("nazi/missileengine", CHAN_AUTO, 0.3, TRUE)
-		NMIS A 1 BRIGHT LIGHT(OTTOFIRE) A_SpawnItemEx("RocketFlame",random(-1,1),0,random(-1,1))
-		Wait
-	Death:
-		FRME A 1 BRIGHT LIGHT(OTTOFIRE) A_Explode(20,40)
-		FRME A 0 A_StopSound(CHAN_AUTO)
-		FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT(OTTOFIRE)
-		Stop
-	}
-}
-ACTOR HardMiniRocket : MiniRocket
-{
-	+MTHRUSPECIES
-}
-
-//Mutants stuff
-ACTOR MutantFartCloud
-{
-	Game Doom
-	Radius 2
-	Height 2
-	DamageType MutantPoison
-	+NOINTERACTION
-	+WINDTHRUST
-	RenderStyle "Translucent"
-	Alpha 0.3
-	States
-		{
-		Spawn:
-		FUGS ABCDE 2
-		Fade:
-		FUGS ABCDE 2 A_FadeOut (0.05)
-		FUGS ABCDE 2 A_FadeIn (0.05)
-		FUGS ABCDE 2 A_FadeOut (0.05)
-		FUGS ABCDE 2 A_FadeIn (0.05)
-		FUGS ABCDE 2 A_FadeOut (0.05)
-		FUGS ABCDE 2 A_FadeIn (0.05)
-		FUGS ABCDE 2 A_FadeOut (0.05)
-		FUGS ABCDE 2 A_FadeIn (0.05)
-		FUGS ABCDE 2 A_FadeOut (0.05)
-		Stop
-		}
-}
-
-ACTOR MutantSmoke
-{
-	Game Doom
-	Radius 2
-	Height 2
-	Scale 0.3
-	Gravity 0.3
-	Alpha 0.5
-	VSpeed 2.5
-	+DONTSPLASH
-	+FORCEXYBILLBOARD
-	+MISSILE
-	+MOVEWITHSECTOR
-	+NOBLOCKMAP
-	+NOGRAVITY
-	+WINDTHRUST
-	RenderStyle "Shaded"
-	StencilColor "E0 00 E0"
-	States
-		{
-		Spawn:
-		TNT1 A 0
-		CLFX A 8 A_FadeOut(0.05)
-		Wait
-		}
-}
-
-ACTOR MutantRocket
-{
-	Radius 8
-	Height 8
-	Speed 12
-	FastSpeed 14
-	Damage (random(2,6))
-	DamageType MutantPoison
-	Projectile
-	Scale 0.9
-	+RANDOMIZE
-	SeeSound "nazi/missilef"
-	DeathSound "world/barrelboom"
-	States
-	{
-	Spawn:
-		NMIS A 0 NoDelay A_PlaySound("nazi/missileengine", CHAN_AUTO, 0.3, TRUE)
-	Fly:
-		NMIS A 1 BRIGHT LIGHT(MUTNROCK) A_SpawnItemEx("MutantFlame",random(-1,1),0,random(-1,1))
-		Loop
-	Death:
-		FUGS A 1 BRIGHT LIGHT(MUTNROCK) A_Explode(10,30)
-		FUGS A 0 A_StopSound(CHAN_AUTO)
-		FUGS A 0 BRIGHT A_CustomMissile("PoisonCloudMutant",16,0,0,2,0)
-		FUGS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("MutantFartCloud",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128)
-		FUGS BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("MutantSmoke",random(-64,64),random(-64,64),random(-48,48),momx,0,random(0.5,1),0,SXF_TRANSFERTRANSLATION,160)
-		FUGS ABCDEDCBABCDE 1 BRIGHT LIGHT(MUTNROCK)
-		Stop
-	}
-}
-ACTOR HardMutantRocket : MutantRocket
-{
-	+MTHRUSPECIES
-}
-
-ACTOR PoisonCloudMutant
-{
-	Radius 20
-	Height 30
-	Reactiontime 5
-	+BLOCKEDBYSOLIDACTORS
-	+BLOODLESSIMPACT
-	+CANBLAST
-	+DONTSPLASH
-	+DONTTHRUST
-	+DROPOFF
-	+FOILINVUL
-	+NOBLOCKMAP
-	+NODAMAGETHRUST
-	+NOGRAVITY
-	RenderStyle "Translucent"
-	Alpha 0.6
-	DamageType MutantPoison	
-	States
-	{
-	Spawn:
-		TNT1 A 1
-		"####" A 2 A_Explode(5,128,0,0,128)
-		"####" A 20 A_Countdown
-		Loop
-	Death:
-		"####" A 7
-		"####" A 6
-		Stop
-	}
-}
-//End of Mutants Stuff
-
-ACTOR MadDoctor : RocketMan
-{
-	//$Category Monsters (Wolf3D)/Bosses
-	//$Title Dr Schabbs Jr. (Boss)
-	//$Color 4
-	Obituary "$SCHABBS"
-	DropItem "Medikit_Medium"
-	Tag "Dr. Schabbs Jr."
-	Health 400
-	Mass 4000
-	PainChance 96
-	States
-	{
-	Spawn:
-		SCHB A 0
-		Goto Look
-	Missile:
-		"####" E 10 A_FaceTarget
-		"####" F 0 A_CustomMissile("FlyingNeedle",32,12, 0, 0, random(30,50))
-		"####" F 0 A_CustomMissile("FlyingNeedle",32,12, random(-20,20), CMF_AIMDIRECTION, random(20,40))
-		"####" F 8 A_CustomMissile("FlyingNeedle",32,12, random(-20,20), CMF_AIMDIRECTION, random(20,40))
-		"####" A 8
-		Goto See
-	Pain:
-		"####" G 3
-		"####" G 3 A_Pain
-		"####" "#" 0 A_AlertMonsters(256) //mxd
-		Goto See
-	}
-}
-
-ACTOR MadDoctor2 : MadDoctor
-{
-	//$Category Monsters (Wolf3D)/Bosses
-	//$Title Dr Schabbs Sr. (Boss)
-	//$Color 4
-	Obituary "$MENGELE"
-	DropItem "Medikit_Large"
-	Tag "Dr. Schabbs Sr."
-	Health 800
-	+BOSS
-	States
-	{
-	Spawn:
-		SCH2 A 0
-		Goto Look
-	}
-}
-
-ACTOR FlyingNeedle : MiniRocket
-{
-	Speed 10
-	DamageType MutantPoison
-	PoisonDamage 3, 4
-	SeeSound ""
-	DeathSound "gshardnd"
-	Gravity 0.3
-	-NOGRAVITY
-	+ADDITIVEPOISONDAMAGE
-	+ADDITIVEPOISONDURATION
-	States
-	{
-	Spawn:
-		NEDL ABCD 3
-		Loop
-	Death:
-		TNT1 A 1
-		Stop
-	}
-}
-ACTOR HardFlyingNeedle : FlyingNeedle
-{
-	+MTHRUSPECIES
-}
-
-ACTOR SuperSoldier : NaziBoss
-{
-	//$Category Monsters (Wolf3D)/Bosses
-	//$Title Hans Grosse (Boss)
-	//$Color 4
-	Obituary "$SUPASOLD"
-	Tag "Ubersoldat" //"Hans Grosse"
-	Health 500
-	Radius 24
-	Height 64
-	Mass 500
-	PainChance 128
-	SeeSound "Boss1/Sighted"
-	PainSound "boss/pain"
-	DeathSound "Boss1/Death"
-	+BOSS
-	+LOOKALLAROUND
-	+NOBLOOD
-	States
-	{
-	Spawn:
-		HANS A 0
-		Goto Look
-	Missile:
-		HANS E 4 A_FaceTarget
-		HANS E 5 A_PlaySound("chaingun/start", CHAN_AUTO)
-		HANS E 1 A_PlaySound("chaingun/loop", CHAN_AUTO)
-		HANS E 10 A_FaceTarget
-		HANS F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		HANS F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
-		HANS F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
-		HANS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
-		HANS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		HANS G 2 A_FaceTarget
-		HANS F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		HANS F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
-		HANS F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
-		HANS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
-		HANS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		HANS G 2 A_FaceTarget
-		HANS F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		HANS F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
-		HANS F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
-		HANS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
-		HANS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		HANS G 2 A_MonsterRefire(20,"See")
-		HANS G 0 A_FaceTarget
- 		Goto Missile+4
-	Pain:
-		"####" H 3
-		"####" H 3 A_Pain
-		"####" "#" 0 A_AlertMonsters(256) //mxd
-		Goto See
-	Death:
-		"####" I 5
-		"####" J 5 A_Scream
-		"####" K 5
-		"####" L -1 A_NoBlocking
-		Stop
-	Raise:
-		"####" LKJI 5
-		Goto See
-	}
-}
-
-ACTOR SuperSoldierGirl : SuperSoldier
-{
-	//$Category Monsters (Wolf3D)/Bosses
-	//$Title Gretel Grosse (Boss)
-	//$Color 4
-	Obituary "$SUPAGIRL"
-	Tag "Female Ubersoldat" //"Gretel Grosse"
-	SeeSound "BossGirl/Sighted"
-	PainSound "bossGirl/pain"
-	DeathSound "BossGirl/Death"
-	DropItem "9mmAmmoBox" 128
-	DropItem "9mmAmmo" 128
-	DropItem "9mmAmmo" 128
-	DropItem "9mmAmmo" 128
-	+BOSS
-	+MISSILEEVENMORE
-	+MISSILEMORE
-	States
-	{
-	Spawn:
-		WBO4 A 0
-		Goto Look
-	Missile:
-		WBO4 E 20 A_FaceTarget
-		WBO4 F 0 A_PlaySound("browning/fire", CHAN_WEAPON)
-		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",44,20,frandom(-6,6))
-		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",44,-20,frandom(-6,6))
-		WBO4 FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
-		WBO4 FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		WBO4 FG 2 LIGHT(SUPAFIRE) A_FaceTarget
-		WBO4 F 0 A_PlaySound("browning/fire", CHAN_WEAPON)
-		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",44,20,frandom(-6,6))
-		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",44,-20,frandom(-6,6))
-		WBO4 FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
-		WBO4 FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		WBO4 FG 2 LIGHT(SUPAFIRE) A_FaceTarget
-		WBO4 F 0 A_PlaySound("browning/fire", CHAN_WEAPON)
-		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",44,20,frandom(-6,6))
-		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",44,-20,frandom(-6,6))
-		WBO4 FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
-		WBO4 FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		WBO4 FG 2 LIGHT(SUPAFIRE)
-		Goto See
-	}
-}
-
-ACTOR SuperSoldierElite : SuperSoldier
-{
-	//$Title Ubersoldat
-	+BOSS
-	Tag "Elite Ubersoldat" //"Hptm. Furzknall"
-	Obituary "$SUPAELIT"
-	Health 850
-	DropItem "9mmAmmoBox" 128
-	DropItem "9mmAmmo" 128
-	DropItem "NebAmmoSmall" 256
-	DropItem "9mmAmmo" 128
-	States
-	{
-	Spawn:
-		TRAN A 0
-		Goto Look
-	Missile:
-		TRAN E 6 A_FaceTarget
-		TRAN E 4 A_PlaySound("chaingun/start", CHAN_AUTO)
-		TRAN E 0 A_PlaySound("chaingun/loop", CHAN_AUTO)
-		TRAN E 10 A_FaceTarget
-		TRAN F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
-		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
-		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
-		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		TRAN G 2 A_FaceTarget
-		TRAN F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
-		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
-		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
-		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		TRAN G 2 A_FaceTarget
-		TRAN F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
-		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
-		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
-		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		TRAN G 2 A_FaceTarget
-		TRAN F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
-		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
-		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
-		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		TRAN G 2 A_MonsterRefire(20,"See")
-		TRAN G 0 A_FaceTarget
-		Goto Missile+4
-	}
-}
-
-ACTOR General : RocketMan
-{
-	//$Title General Fettgesicht (Boss)
-	Obituary "$GENERAL"
-	Health 800
-	Mass 1000
-	SeeSound "Boss3/Sighted"
-	DeathSound "Boss3/Death"
-	DropItem "NebAmmoSmall" 128
-	DropItem "NebAmmoSmall" 128
-	DropItem "NebAmmoSmall" 128
-	+BOSS
-	+MISSILEEVENMORE
-	Tag "Gen. Fettgesicht"
-	States
-	{
-	Spawn:
-		FETT A 0
-		Goto Look
-	Missile:
-		FETT E 10 A_FaceTarget
-		FETT E 0 A_Jump(128,"Chaingun")
-		FETT F 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
-		FETT E 8 A_FaceTarget
-		FETT F 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
-		FETT E 8 A_FaceTarget
-		FETT F 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
-		FETT E 8
-		Goto See
-	Chaingun:
-		FETT H 0 A_FaceTarget
-		FETT H 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		FETT H 2 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",40,-20,random(-11,11))
-		FETT G 0 A_SpawnItemEx("9MMCasing", -12,0,36, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
-		FETT G 2 A_MonsterRefire(10,"See")
-		Loop
-	Pain:
-		FETT I 3
-		FETT I 3 A_Pain
-		"####" "#" 0 A_AlertMonsters(256) //mxd
-		Goto See
-	Death:
-		FETT J 5
-		FETT K 5 A_Scream
-		FETT L 5
-		FETT M -1 A_NoBlocking
-		Stop
-	Raise:
-		FETT MLKJ 5
-		Goto See
-	}
-}
-
-ACTOR MarineGeneral : General
-{
-	//$Category Monsters (Wolf3D)/Bosses
-	//$Title General Seeteufel (Boss)
-	//$Color 4
-	Obituary "$GENERAL"
-	Health 800
-	Mass 1000
-	SeeSound "Boss3/Sighted"
-	DeathSound "Boss3/Death"
-	DropItem "NebAmmoSmall" 128
-	DropItem "NebAmmoSmall" 128
-	DropItem "NebAmmoSmall" 128
-	+BOSS
-	+MISSILEEVENMORE
-	Tag "Gen. Seeteufel"
-	States
-	{
-	Spawn:
-		SKEL A 0
-		Goto Look
-	Missile:
-		SKEL J 10 A_FaceTarget
-		SKEL K 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
-		SKEL J 8 A_FaceTarget
-		SKEL K 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
-		SKEL J 8 A_FaceTarget
-		SKEL K 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
-		SKEL J 8
-		Goto See
-	Pain:
-		SKEL L 3
-		SKEL L 3 A_Pain
-		"####" "#" 0 A_AlertMonsters(256) //mxd
-		Goto See
-	Death:
-		SKEL L 5
-		SKEL M 5 A_Scream
-		SKEL N 5
-		SKEL O -1 A_NoBlocking
-		Stop
-	Raise:
-		SKEL ONML 5
 		Goto See
 	}
 }
@@ -1684,388 +2119,176 @@ ACTOR FlamerMan : RocketMan
 	}
 }
 
-ACTOR EnemyFlamerShot : Flamebolt
+ACTOR MadDoctor : RocketMan
 {
-	-RIPPER
-}
-
-ACTOR HardEnemyFlamerShot : EnemyFlamerShot
-{
-	+MTHRUSPECIES
-}
-
-ACTOR EnemyFlamebolt : Flameball
-{
-	Damage 8
-}
-
-ACTOR HardEnemyFlamebolt : EnemyFlamebolt
-{
-	+MTHRUSPECIES
-}
-
-ACTOR HitlerGhost : Nazi
-{
-	//$Category Monsters (Wolf3D)/Occult
-	//$Title Hitler's Ghost
-	//$Color 4
-	Scale 1.25
-	Obituary "$SSGHOST"
-	Health 750
-	Mass 1000
-	Speed 2.167
-	RenderStyle "Translucent"
-	Alpha 0.5
-	FloatSpeed .67
-	PainChance 24
-	DeathSound "hitlerghost/die"
-	SeeSound "hitlerghost/see"
-	-FLOORCLIP
-	+BOSS
-	+FLOAT
-	+NOBLOOD
-	+NOGRAVITY
-	Tag "Hitler's Ghost"
-	States
-	{
-	Spawn:
-		HGST A 0
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
-		Goto Look
-	See:
-		"####" A 1 A_Chase("Missile","Missile",CHF_FASTCHASE)
-		"####" AAAAA 1 A_Chase("","")
-		"####" B 1 A_Chase
-		"####" BBBBB 1 A_Chase("","")
-		"####" C 1 A_Chase
-		"####" CCCCC 1 A_Chase("","")
-		"####" B 1 A_Chase
-		"####" BBBBB 1 A_Chase("","")
-		Loop
-	Missile:
-		"####" A 4 A_FaceTarget
-		"####" D 4 LIGHT(OTTOFIRE) A_CustomMissile("EnemyFlamebolt2",36)
-		"####" A 4
-		Goto See
-	Pain:
-		"####" A 4 A_Pain
-		"####" "#" 0 A_AlertMonsters(256) //mxd
-		Goto See
-	Death:
-		"####" E 6 A_Scream
-		"####" FGHI 6
-		"####" J -1 A_NoBlocking
-		Stop
-	Idle:
-		Stop
-	}
-}
-
-ACTOR EnemyFlamebolt2 : EnemyFlamebolt
-{
-	Damage (random(1,4)*5)
-	Scale .35
-	States
-	{
-	Death:
-		FBLX ABCDEFGHIJK 2 BRIGHT LIGHT(BOAFLMW2)
-		Stop
-	}
-}
-
-ACTOR HardEnemyFlamebolt2 : EnemyFlamebolt2
-{
-	+MTHRUSPECIES
-}
-
-ACTOR Geist : Nazi
-{
-	//$Category Monsters (Wolf3D)/Occult
-	//$Title Geist
-	//$Color 4
-	Health 100
-	Mass 1000
-	Radius 16
-	Scale 1.2
-	Speed 5
-	FloatSpeed 1.33
-	Obituary "$GEIST"
-	PainChance 255
-	PainSound "geist/pain"
-	DeathSound "geist/die"
-	RenderStyle "Translucent"
-	Alpha .5
-	-FLOORCLIP
-	+DONTFALL
-	+FLOAT
-	+LOOKALLAROUND
-	+NOBLOOD
-	+NOGRAVITY
-	States
-	{
-	Spawn:
-		GEST A 0
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
-		Goto Look
-	Look:
-		GEST ABCD 4 A_Look
-		Loop
-	See:
-		GEST A 0 A_PlaySound("geist/active", CHAN_VOICE, 1.0, TRUE)
-		GEST A 0 A_SetTranslucent(0.1)
-		GEST AAABBBCCCDDD 1 A_Chase
-		GEST A 0 A_SetTranslucent(0.2)
-		GEST AAABBBCCCDDD 1 A_Chase
-		GEST A 0 A_SetTranslucent(0.3)
-		GEST AAABBBCCCDDD 1 A_Chase
-		GEST A 0 A_SetTranslucent(0.4)
-		GEST AAABBBCCCDDD 1 A_Chase
-		GEST A 0 A_SetTranslucent(0.5)
-		GEST AAABBBCCCDDD 1 A_Chase
-		GEST A 0 A_SetTranslucent(0.4)
-		GEST AAABBBCCCDDD 1 A_Chase
-		GEST A 0 A_SetTranslucent(0.3)
-		GEST AAABBBCCCDDD 1 A_Chase
-		GEST A 0 A_SetTranslucent(0.2)
-		GEST AAABBBCCCDDD 1 A_Chase
-		Loop
-	Melee:
-		"####" A 1 A_SetTranslucent(0.1)
-		"####" AA 1 A_FadeIn(0.2)
-		"####" B 0 A_FaceTarget
-		"####" BCDABCD 3 A_CustomMeleeAttack(4)
-		"####" AAAA 1 A_Fadeout(0.1)
-		TNT1 A 0 A_Jump(256,"See")
-		Stop
-	Pain:
-		"####" E 1 A_Pain
-		"####" E 1 A_SetTranslucent(0.4)
-		"####" EEE 1 A_Fadeout(0.1)
-		"####" "#" 0 A_AlertMonsters(256) //mxd
-		TNT1 A 0 A_Jump(256,"See")
-		Stop
-	Death:
-		"####" E 0 A_StopSound(CHAN_VOICE)
-		"####" E 5 A_SetTranslucent(0.5)
-		"####" E 6 A_Scream
-		"####" FG 6
-		"####" H 6 A_NoBlocking
-		Stop
-	Idle:
-		Stop
-	}
-}
-
-ACTOR NaziGeist : Geist
-{
-	Scale 1.25
+	//$Title Dr Schabbs Jr. (Boss)
+	Obituary "$SCHABBS"
+	DropItem "Medikit_Medium"
+	Tag "Dr. Schabbs Jr."
 	Health 400
-	Radius 31
-	Speed 3.75
-	PainChance 128
-	States
-	{
-	Spawn:
-		GES2 A 0
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
-		Goto Look
-	Look:
-		GES2 ABCD 6 A_Look
-		Loop
-	See:
-		GES2 A 0 A_PlaySound("geist/active", CHAN_VOICE, 1.0, TRUE)
-		GES2 A 0 A_SetTranslucent(0.1)
-		GES2 A 1 A_Chase
-		GES2 AAAAA 1 A_Chase("","")
-		GES2 B 1 A_Chase
-		GES2 BBBBB 1 A_Chase("","")
-		GES2 C 1 A_Chase
-		GES2 CCCCC 1 A_Chase("","")
-		GES2 D 1 A_Chase
-		GES2 DDDDD 1 A_Chase("","")
-		GES2 A 0 A_SetTranslucent(0.2)
-		GES2 A 1 A_Chase
-		GES2 AAAAA 1 A_Chase("","")
-		GES2 B 1 A_Chase
-		GES2 BBBBB 1 A_Chase("","")
-		GES2 C 1 A_Chase
-		GES2 CCCCC 1 A_Chase("","")
-		GES2 D 1 A_Chase
-		GES2 DDDDD 1 A_Chase("","")
-		GES2 A 0 A_SetTranslucent(0.3)
-		GES2 A 1 A_Chase
-		GES2 AAAAA 1 A_Chase("","")
-		GES2 B 1 A_Chase
-		GES2 BBBBB 1 A_Chase("","")
-		GES2 C 1 A_Chase
-		GES2 CCCCC 1 A_Chase("","")
-		GES2 D 1 A_Chase
-		GES2 DDDDD 1 A_Chase("","")
-		GES2 A 0 A_SetTranslucent(0.4)
-		GES2 A 1 A_Chase
-		GES2 AAAAA 1 A_Chase("","")
-		GES2 B 1 A_Chase
-		GES2 BBBBB 1 A_Chase("","")
-		GES2 C 1 A_Chase
-		GES2 CCCCC 1 A_Chase("","")
-		GES2 D 1 A_Chase
-		GES2 DDDDD 1 A_Chase("","")
-		GES2 A 0 A_SetTranslucent(0.5)
-		GES2 A 1 A_Chase
-		GES2 AAAAA 1 A_Chase("","")
-		GES2 B 1 A_Chase
-		GES2 BBBBB 1 A_Chase("","")
-		GES2 C 1 A_Chase
-		GES2 CCCCC 1 A_Chase("","")
-		GES2 D 1 A_Chase
-		GES2 DDDDD 1 A_Chase("","")
-		GES2 A 0 A_SetTranslucent(0.4)
-		GES2 A 1 A_Chase
-		GES2 AAAAA 1 A_Chase("","")
-		GES2 B 1 A_Chase
-		GES2 BBBBB 1 A_Chase("","")
-		GES2 C 1 A_Chase
-		GES2 CCCCC 1 A_Chase("","")
-		GES2 D 1 A_Chase
-		GES2 DDDDD 1 A_Chase("","")
-		GES2 A 0 A_SetTranslucent(0.3)
-		GES2 A 1 A_Chase
-		GES2 AAAAA 1 A_Chase("","")
-		GES2 B 1 A_Chase
-		GES2 BBBBB 1 A_Chase("","")
-		GES2 C 1 A_Chase
-		GES2 CCCCC 1 A_Chase("","")
-		GES2 D 1 A_Chase
-		GES2 DDDDD 1 A_Chase("","")
-		GES2 A 0 A_SetTranslucent(0.2)
-		GES2 A 1 A_Chase
-		GES2 AAAAA 1 A_Chase("","")
-		GES2 B 1 A_Chase
-		GES2 BBBBB 1 A_Chase("","")
-		GES2 C 1 A_Chase
-		GES2 CCCCC 1 A_Chase("","")
-		GES2 D 1 A_Chase
-		GES2 DDDDD 1 A_Chase("","")
-		Loop
-	Missile:
-		GES2 A 1 BRIGHT A_SetTranslucent(0.1)
-		GES2 AAABBB 1 BRIGHT A_FadeIn(0.1)
-		GES2 B 1 BRIGHT A_SetTranslucent(1.0)
-		GES2 CD 4 BRIGHT A_FaceTarget
-		GES2 A 0 A_Jump(128,3)
-		GES2 A 4 BRIGHT A_PainAttack("Geist",0,PAF_NOSKULLATTACK,0)
-		GES2 A 0 A_Jump(256,3)
-		GES2 A 0 A_PainAttack("Geist",-45,PAF_NOSKULLATTACK,0)
-		GES2 A 4 BRIGHT A_PainAttack("Geist",45,PAF_NOSKULLATTACK,0)
-		GES2 B 3 BRIGHT
-		GES2 BCCCC 1 BRIGHT A_Fadeout(0.1)
-		GES2 D 4 BRIGHT
-		Goto See
-	}
-}
-
-ACTOR MiniShip : Nazi
-{
-	//$Category Monsters (Wolf3D)
-	//$Title Miniship
-	//$Color 4
-	Obituary "$NAZISHIP"
-	Health 375
-	Speed 3.25
-	Mass 2000
-	PainSound "metal/pain"
-	DeathSound "world/barrelboom"
+	Mass 4000
 	PainChance 96
-	FloatSpeed .67
-	-FLOORCLIP
-	+FLOAT
-	+LOOKALLAROUND
-	+NOBLOOD
-	+NOGRAVITY
 	States
 	{
 	Spawn:
-		SHIP A 0
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		SCHB A 0
 		Goto Look
-	See:
-		"####" A 1 A_Chase
-		"####" AAA 1 A_Chase("","")
-		Loop
 	Missile:
-		SHIP A 10 A_FaceTarget
-		"####" A 0 A_PlaySound("miniship/fire", CHAN_WEAPON)
-		"####" B 8 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",26,7,random(-11,11))
-		"####" A 8 A_FaceTarget
-		"####" A 0 A_PlaySound("miniship/fire", CHAN_WEAPON)
-		"####" C 8 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",26,-7,random(-11,11))
+		"####" E 10 A_FaceTarget
+		"####" F 0 A_CustomMissile("FlyingNeedle",32,12, 0, 0, random(30,50))
+		"####" F 0 A_CustomMissile("FlyingNeedle",32,12, random(-20,20), CMF_AIMDIRECTION, random(20,40))
+		"####" F 8 A_CustomMissile("FlyingNeedle",32,12, random(-20,20), CMF_AIMDIRECTION, random(20,40))
 		"####" A 8
 		Goto See
 	Pain:
-		SHIP A 3
-		"####" A 3 A_Pain
-		"####" A 1 ThrustThing(Angle*256/360+192, 4, 1, 0)
-		"####" A 1 ThrustThing(Angle*256/360+128, 2, 1, 0)
-		"####" A 1 ThrustThing(Angle*256/360+64, 4, 1, 0)
+		"####" G 3
+		"####" G 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
-	Death:
-		SHIP A -1
-		Wait
-	Crash:
-		TNT1 A 0 A_SetFloorClip
-		"####" A 0 A_Scream
-		"####" AAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Tank", random(16,64), random(16,64), random(64,128), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
-		"####" AAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", random(16,64), random(16,64), random(64,128), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
-		"####" A 0 A_SpawnItemEx("PanzerNuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
-		"####" A 0 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
-		Stop
-	Idle:
-		SHIP AAAAAAAA 1 A_Wander
-		SHIP A 0 A_Look
-		Loop
 	}
 }
 
-ACTOR MGTurret : MiniShip
+ACTOR MadDoctor2 : MadDoctor
 {
-	//$Category Monsters (Wolf3D)
-	//$Title MGTurret
-	//$Color 4
-	Scale 1.1
-	Speed 0
-	Obituary "$MGTURRET"
-	Health 100
-	Radius 2
-	Height 32
-	-FLOAT
-	-NOGRAVITY
-	+DONTTHRUST
-	+MISSILEEVENMORE
-	+NOPAIN
+	//$Title Dr Schabbs Sr. (Boss)
+	Obituary "$MENGELE"
+	DropItem "Medikit_Large"
+	Tag "Dr. Schabbs Sr."
+	Health 800
+	+BOSS
 	States
 	{
 	Spawn:
-		GTUR A 0
+		SCH2 A 0
+		Goto Look
+	}
+}
+
+ACTOR MadCook : MadDoctor
+{
+	//$Title Cook Fritz Bratwurst (Boss)
+	Obituary "$MADCOOK"
+	Health 400
+	+BOSS
+	Tag "Fritz Bratwurst"
+	States
+	{
+	Spawn:
+		COOK A 0
 		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
 		Goto Look
 	Missile:
-		"####" A 4 A_PlaySound("chaingun/start", CHAN_WEAPON)
-		"####" A 1 A_PlaySound("chaingun/loop", CHAN_WEAPON)
-		"####" A 5 A_FaceTarget
-		"####" B 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		"####" C 3 LIGHT(NAZIFIRE) A_CustomMissile("EnemyChaingunTracer",20,0,random(-11,11))
-		"####" B 3 A_MonsterRefire(20,"See")
-		"####" B 0 A_FaceTarget
-		Goto Missile+3
-	Death:
-	Crash:
-		TNT1 A 0 A_SetFloorClip
-		"####" A 0 A_Scream
-		"####" A 0 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
-		Stop
-	Idle:
+		COOK E 10 A_FaceTarget
+		COOK FF 2 A_CustomMissile("FlyingHack",32,12,random(-8,8))
+		COOK F 3 A_CustomMissile("FlyingHack",32,12)
+		COOK A 8
+		Goto See
+	}
+}
+
+ACTOR MadCook2 : MadCook
+{
+	//$Title Cook Max Gulasch (Boss)
+	Health 400
+	+BOSS
+	Tag "Max Gulasch"
+}
+
+ACTOR General : RocketMan
+{
+	//$Title General Fettgesicht (Boss)
+	Obituary "$GENERAL"
+	Health 800
+	Mass 1000
+	SeeSound "Boss3/Sighted"
+	DeathSound "Boss3/Death"
+	DropItem "NebAmmoSmall" 128
+	DropItem "NebAmmoSmall" 128
+	DropItem "NebAmmoSmall" 128
+	+BOSS
+	+MISSILEEVENMORE
+	Tag "Gen. Fettgesicht"
+	States
+	{
+	Spawn:
+		FETT A 0
 		Goto Look
+	Missile:
+		FETT E 10 A_FaceTarget
+		FETT E 0 A_Jump(128,"Chaingun")
+		FETT F 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
+		FETT E 8 A_FaceTarget
+		FETT F 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
+		FETT E 8 A_FaceTarget
+		FETT F 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
+		FETT E 8
+		Goto See
+	Chaingun:
+		FETT H 0 A_FaceTarget
+		FETT H 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
+		FETT H 2 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",40,-20,random(-11,11))
+		FETT G 0 A_SpawnItemEx("9MMCasing", -12,0,36, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		FETT G 2 A_MonsterRefire(10,"See")
+		Loop
+	Pain:
+		FETT I 3
+		FETT I 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		Goto See
+	Death:
+		FETT J 5
+		FETT K 5 A_Scream
+		FETT L 5
+		FETT M -1 A_NoBlocking
+		Stop
+	Raise:
+		FETT MLKJ 5
+		Goto See
+	}
+}
+
+ACTOR MarineGeneral : General
+{
+	//$Title General Seeteufel (Boss)
+	Obituary "$GENERAL"
+	Health 800
+	Mass 1000
+	SeeSound "Boss3/Sighted"
+	DeathSound "Boss3/Death"
+	DropItem "NebAmmoSmall" 128
+	DropItem "NebAmmoSmall" 128
+	DropItem "NebAmmoSmall" 128
+	+BOSS
+	+MISSILEEVENMORE
+	Tag "Gen. Seeteufel"
+	States
+	{
+	Spawn:
+		SEET A 0
+		Goto Look
+	Missile:
+		SEET J 10 A_FaceTarget
+		SEET K 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
+		SEET J 8 A_FaceTarget
+		SEET K 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
+		SEET J 8 A_FaceTarget
+		SEET K 8 LIGHT(OTTOFIRE) A_CustomMissile("MiniRocket",43,24)
+		SEET J 8
+		Goto See
+	Pain:
+		SEET L 3
+		SEET L 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		Goto See
+	Death:
+		SEET L 5
+		SEET M 5 A_Scream
+		SEET N 5
+		SEET O -1 A_NoBlocking
+		Stop
+	Raise:
+		SEET ONML 5
+		Goto See
 	}
 }
 
@@ -2172,30 +2395,9 @@ ACTOR DeathKnight : Nazi
 	}
 }
 
-ACTOR NebRocketEnemy : NebRocket
-{
-	Speed 15
-	-FORCERADIUSDMG
-	SeeSound "nebelwerfer/fire"
-	States
-	{
-	Death:
-		FRME A 1 BRIGHT LIGHT(NEBEXPLO) A_Explode(random(25,30))
-		FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT(NEBEXPLO)
-		Stop
-	}
-}
-
-ACTOR HardNebRocketEnemy : NebRocketEnemy
-{
-	+MTHRUSPECIES
-}
-
 ACTOR Hitler : DeathKnight
 {
-	//$Category Monsters (Wolf3D)/Bosses
 	//$Title Adolf Hitler (Boss)
-	//$Color 4
 	Scale 1.2
 	Obituary "$HITLER"
 	Tag "Adolf Hitler"
@@ -2242,19 +2444,6 @@ ACTOR Hitler : DeathKnight
 		HITL M 10 A_NoBlocking
 		HITL NO 10
 		HITL P -1
-		Stop
-	}
-}
-
-ACTOR HitlerSuitScrap
-{
-	Scale 1.2
-	+FLOORCLIP
-	States
-	{
-	Spawn:
-		HIT2 AB 20
-		HIT2 C -1
 		Stop
 	}
 }
@@ -2326,17 +2515,6 @@ ACTOR ChairGuy : Nazi
 		KRIS A 0 A_Look
 		Loop
 	}
-}
-
-ACTOR MiniMiniRocket : MiniRocket
-{
-	Scale .8
-	Damage (random(1,4)*4)
-	DeathSound "nebelwerfer/xplode"
-}
-ACTOR HardMiniMiniRocket : MiniMiniRocket
-{
-	+MTHRUSPECIES
 }
 
 ACTOR FatMan : NaziBoss
@@ -2416,267 +2594,416 @@ ACTOR FatMan : NaziBoss
 	}
 }
 
-ACTOR Scientist : Guard
-{
-	//$Category Monsters (Wolf3D)
-	//$Title Scientist
-	//$Color 4
-	States
-	{
-	Spawn:
-		SCN2 N 0
-		Goto Look
-	}
-}
-
-ACTOR Scientist2 : Guard
-{
-	//$Category Monsters (Wolf3D)
-	//$Title Scientist (old)
-	//$Color 4
-	States
-	{
-	Spawn:
-		SCNT N 0
-		Goto Look
-	}
-}
-
-ACTOR ScientistGutenberg : Guard
-{
-	//$Category Monsters (Wolf3D)
-	//$Title Prof. Klaus Gutenberg
-	//$Color 4
-	Translation "175:191=80:111"
-	States
-	{
-	Spawn:
-		SCNT N 0
-		Goto Look
-	}
-}
-
-ACTOR UberMutant : Mutant
+ACTOR SuperSoldier : NaziBoss
 {
 	//$Category Monsters (Wolf3D)/Bosses
-	//$Title Ubermutant (Boss)
+	//$Title Hans Grosse (Boss)
 	//$Color 4
-	Tag "Ubermutant"
-	Health 1000
+	Obituary "$SUPASOLD"
+	Tag "Ubersoldat" //"Hans Grosse"
+	Health 500
 	Radius 24
 	Height 64
-	Mass 1000
-	Speed 2.66666667
-	PainChance 50
-	SeeSound "baron/sight"
-	DeathSound "baron/death"
-	Obituary "$OB_BARON"
-	HitObituary "$UBERMUTN"
+	Mass 500
+	PainChance 128
+	SeeSound "Boss1/Sighted"
+	PainSound "boss/pain"
+	DeathSound "Boss1/Death"
 	+BOSS
 	+LOOKALLAROUND
+	+NOBLOOD
 	States
 	{
 	Spawn:
-		UBMU A 0 NoDelay ACS_NamedExecuteAlways("DisableSuperMutants", 0) //mxd
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		HANS A 0
 		Goto Look
-	Look:
-		UBMU AB 10 A_Look
-		Loop
-	See:
-		UBMU A 1 A_SetSpeed(6)
-		UBMU AA 1 A_Chase("","")
-		UBMU A 1 A_Chase
-		UBMU AA 1 A_Chase("","")
-		UBMU B 1 A_Chase
-		UBMU BB 1 A_Chase("","")
-		UBMU B 0 A_PlaySound("floor/heavy")
-		UBMU B 1 A_Chase
-		UBMU BB 1 A_Chase("","")
-		UBMU C 1 A_Chase
-		UBMU CC 1 A_Chase("","")
-		UBMU C 1 A_Chase
-		UBMU CC 1 A_Chase("","")
-		UBMU D 1 A_Chase
-		UBMU DD 1 A_Chase("","")
-		UBMU B 0 A_PlaySound("floor/heavy")
-		UBMU D 1 A_Chase
-		UBMU DD 1 A_Chase("","")
-		Loop
-	Melee:
 	Missile:
-		UBMU EF 8 A_FaceTarget
-		UBMU G 0 A_Jump(64,"Chaingun")
-		UBMU G 0 A_Jump(128,"Missile2")
-		UBMU G 0 A_Jump(192,"Missile3")
-		UBMU G 4 LIGHT(MUTNROCK) A_CustomMissile("MutantRocket",44,0,0)
-		Goto See
-	Missile2:
-		UBMU G 4 LIGHT(MUTNROCK) A_CustomMissile("MutantRocket",44,0,random(8,16))
-		UBMU EF 5 A_FaceTarget
-		UBMU G 4 LIGHT(MUTNROCK) A_CustomMissile("MutantRocket",44,0,0)
-		Goto See
-	Missile3:
-		UBMU G 0 LIGHT(MUTNROCK) A_CustomMissile("MutantRocket",44,0,random(-8,-16))
-		UBMU G 0 LIGHT(MUTNROCK) A_CustomMissile("MutantRocket",44,0, 0)
-		UBMU G 5 LIGHT(MUTNROCK) A_CustomMissile("MutantRocket",44,0,random(8,16))
-		UBMU EF 5 A_FaceTarget
-		Goto See
-	Chaingun:
-		UBMU G 0 A_FaceTarget
-		UBMU G 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		UBMU G 0 A_CustomMissile("EnemyMutantTracer",44,0,random(-1,1))
-		UBMU G 0 A_CustomMissile("EnemyMutantTracer",44,0,random(-4,4))
-		UBMU GGGG 0 A_SpawnItemEx("9MMCasing", 0,0,46, RandomPick(-8, 8), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		UBMU G 2 LIGHT(MUTNROCK)
-		UBMU G 2 A_MonsterRefire(20,"See")
-		Loop
+		HANS E 4 A_FaceTarget
+		HANS E 5 A_PlaySound("chaingun/start", CHAN_AUTO)
+		HANS E 1 A_PlaySound("chaingun/loop", CHAN_AUTO)
+		HANS E 10 A_FaceTarget
+		HANS F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
+		HANS F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
+		HANS F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
+		HANS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		HANS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		HANS G 2 A_FaceTarget
+		HANS F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
+		HANS F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
+		HANS F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
+		HANS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		HANS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		HANS G 2 A_FaceTarget
+		HANS F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
+		HANS F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
+		HANS F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
+		HANS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		HANS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		HANS G 2 A_MonsterRefire(20,"See")
+		HANS G 0 A_FaceTarget
+ 		Goto Missile+4
 	Pain:
-		UBMU H 2
-		UBMU H 2 A_Pain
+		"####" H 3
+		"####" H 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
-		Goto See
-	Death:
-		UBMU I 6
-		UBMU I 6 A_Scream
-		UBMU J 6
-		UBMU J 6 A_NoBlocking
-		UBMU KL 6
-		UBMU M -1 A_BossDeath
-		Stop
-	Raise:
-		UBMU MLKJJII 6
-		Goto See
-	}
-}
-
-ACTOR Sniper : Guard
-{
-	//$Category Monsters (Wolf3D)
-	//$Title Afrika Korps Sniper
-	//$Color 4
-	Obituary "$SNIPER"
-	Mass 1000 //Make it not move too far
-	SeeSound "" //Make them not cry, they are in disguise after all
-	Health 50
-	Speed 0
-	DropItem "MauserAmmo" 192
-	DropItem "Kar98k" 48
-	+LOOKALLAROUND
-	States
-	{
-	Spawn:
-		SNIP A 0
-		Goto Look
-	See:
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
-		"####" A 1 A_Chase
-		Loop
-	Pain:
-		"####" I 3
-		"####" I 3 A_Pain
-		"####" "#" 0 A_AlertMonsters(256) //mxd
-		Goto See
-	Missile:
-		"####" A 32 A_FaceTarget
-		"####" B 0 A_PlaySound("browning/fire", CHAN_WEAPON)
-		"####" B 8 LIGHT(NAZIFIRE)A_CustomMissile("EnemyRifleTracer",44,5)
-		"####" B 0 A_SpawnItemEx("EnfieldRifleCasing", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
-		"####" A 32
-		"####" A 0 A_PlaySound("browning/cock", CHAN_AUTO, 0.25)
 		Goto See
 	Death:
 		"####" I 5
 		"####" J 5 A_Scream
-		"####" K 5 A_NoBlocking
-		"####" L 5
-		"####" M -1
+		"####" K 5
+		"####" L -1 A_NoBlocking
 		Stop
 	Raise:
-		"####" MLKJI 5
-	Idle:
-		Goto Look
+		"####" LKJI 5
+		Goto See
 	}
 }
 
-ACTOR WSniper : Sniper
+ACTOR SuperSoldierGirl : SuperSoldier
 {
-	//$Category Monsters (Wolf3D)
-	//$Title Wehrmacht Sniper
-	//$Color 4
+	//$Title Gretel Grosse (Boss)
+	Obituary "$SUPAGIRL"
+	Tag "Female Ubersoldat" //"Gretel Grosse"
+	SeeSound "BossGirl/Sighted"
+	PainSound "bossGirl/pain"
+	DeathSound "BossGirl/Death"
+	DropItem "9mmAmmoBox" 128
+	DropItem "9mmAmmo" 128
+	DropItem "9mmAmmo" 128
+	DropItem "9mmAmmo" 128
+	+BOSS
+	+MISSILEEVENMORE
+	+MISSILEMORE
 	States
 	{
 	Spawn:
-		SNIC A 0
+		WBO4 A 0
 		Goto Look
+	Missile:
+		WBO4 E 20 A_FaceTarget
+		WBO4 F 0 A_PlaySound("browning/fire", CHAN_WEAPON)
+		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",44,20,frandom(-6,6))
+		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",44,-20,frandom(-6,6))
+		WBO4 FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		WBO4 FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		WBO4 FG 2 LIGHT(SUPAFIRE) A_FaceTarget
+		WBO4 F 0 A_PlaySound("browning/fire", CHAN_WEAPON)
+		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",44,20,frandom(-6,6))
+		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",44,-20,frandom(-6,6))
+		WBO4 FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		WBO4 FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		WBO4 FG 2 LIGHT(SUPAFIRE) A_FaceTarget
+		WBO4 F 0 A_PlaySound("browning/fire", CHAN_WEAPON)
+		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",44,20,frandom(-6,6))
+		WBO4 FFFF 0 A_CustomMissile("EnemyPistolTracer",44,-20,frandom(-6,6))
+		WBO4 FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		WBO4 FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		WBO4 FG 2 LIGHT(SUPAFIRE)
+		Goto See
 	}
 }
 
-ACTOR Sniper_Crouch : Guard
+ACTOR SuperSoldierElite : SuperSoldier
 {
-	//$Category Monsters (Wolf3D)
-	//$Title Afrika Korps Sniper (crouch)
-	//$Color 4
-	Obituary "$SNIPER"
-	Mass 1000		//Make it not move too far
-	SeeSound ""	//Make them not cry, they are in disguise after all
-	Health 50
-	Speed 0
-	DropItem "MauserAmmo" 192
-	DropItem "Kar98k" 48
-	+DROPOFF
-	+LOOKALLAROUND
+	//$Title Elite Ubersoldat (Boss)
+	+BOSS
+	Tag "Elite Ubersoldat" //"Hptm. Furzknall"
+	Obituary "$SUPAELIT"
+	Health 850
+	DropItem "9mmAmmoBox" 128
+	DropItem "9mmAmmo" 128
+	DropItem "NebAmmoSmall" 256
+	DropItem "9mmAmmo" 128
 	States
 	{
 	Spawn:
-		SNIP C 0
+		TRAN A 0
+		Goto Look
+	Missile:
+		TRAN E 6 A_FaceTarget
+		TRAN E 4 A_PlaySound("chaingun/start", CHAN_AUTO)
+		TRAN E 0 A_PlaySound("chaingun/loop", CHAN_AUTO)
+		TRAN E 10 A_FaceTarget
+		TRAN F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
+		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
+		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
+		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		TRAN G 2 A_FaceTarget
+		TRAN F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
+		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
+		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
+		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		TRAN G 2 A_FaceTarget
+		TRAN F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
+		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
+		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
+		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		TRAN G 2 A_FaceTarget
+		TRAN F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
+		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,20,random(-11,11))
+		TRAN F 1 LIGHT(SUPAFIRE) A_CustomMissile("EnemyChaingunTracer",44,-20,random(-11,11))
+		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		TRAN F 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		TRAN G 2 A_MonsterRefire(20,"See")
+		TRAN G 0 A_FaceTarget
+		Goto Missile+4
+	}
+}
+
+//////////
+//OCCULT//
+//////////
+
+ACTOR HitlerGhost : Nazi
+{
+	//$Category Monsters (Wolf3D)/Occult
+	//$Title Hitler's Ghost
+	//$Color 4
+	Scale 1.25
+	Obituary "$SSGHOST"
+	Health 750
+	Mass 1000
+	Speed 2.167
+	RenderStyle "Translucent"
+	Alpha 0.5
+	FloatSpeed .67
+	PainChance 24
+	DeathSound "hitlerghost/die"
+	SeeSound "hitlerghost/see"
+	-FLOORCLIP
+	+BOSS
+	+FLOAT
+	+NOBLOOD
+	+NOGRAVITY
+	Tag "Hitler's Ghost"
+	States
+	{
+	Spawn:
+		HGST A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
 		Goto Look
 	See:
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		"####" A 1 A_Chase("Missile","Missile",CHF_FASTCHASE)
+		"####" AAAAA 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" BBBBB 1 A_Chase("","")
 		"####" C 1 A_Chase
+		"####" CCCCC 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" BBBBB 1 A_Chase("","")
 		Loop
+	Missile:
+		"####" A 4 A_FaceTarget
+		"####" D 4 LIGHT(OTTOFIRE) A_CustomMissile("EnemyFlamebolt2",36)
+		"####" A 4
+		Goto See
 	Pain:
-		"####" I 3
-		"####" I 3 A_Pain
+		"####" A 4 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
-	Missile:
-		"####" C 28 A_FaceTarget //a bit fast than normal one
-		"####" D 0 A_PlaySound("browning/fire", CHAN_WEAPON)
-		"####" D 8 LIGHT(NAZIFIRE)A_CustomMissile("EnemyRifleTracer",34,5)
-		"####" D 0 A_SpawnItemEx("EnfieldRifleCasing", 1, 0, 34, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
-		"####" C 28
-		"####" C 0 A_PlaySound("browning/cock", CHAN_AUTO, 0.25)
-		Goto See
 	Death:
-		"####" K 7 A_Scream
-		"####" L 5 A_NoBlocking
-		"####" M -1
+		"####" E 6 A_Scream
+		"####" FGHI 6
+		"####" J -1 A_NoBlocking
 		Stop
-	Raise:
-		"####" MLKJI 5
-		Goto See
 	Idle:
-		Goto Look
+		Stop
 	}
 }
 
-ACTOR WSniper_Crouch : Sniper_Crouch
+ACTOR Geist : Nazi
 {
-	//$Title Wehrmacht Sniper (crouch)
+	//$Category Monsters (Wolf3D)/Occult
+	//$Title Geist
+	//$Color 4
+	Health 100
+	Mass 1000
+	Radius 16
+	Scale 1.2
+	Speed 5
+	FloatSpeed 1.33
+	Obituary "$GEIST"
+	PainChance 255
+	PainSound "geist/pain"
+	DeathSound "geist/die"
+	RenderStyle "Translucent"
+	Alpha .5
+	-FLOORCLIP
+	+DONTFALL
+	+FLOAT
+	+LOOKALLAROUND
+	+NOBLOOD
+	+NOGRAVITY
 	States
 	{
 	Spawn:
-		SNIC C 0
+		GEST A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
 		Goto Look
+	Look:
+		GEST ABCD 4 A_Look
+		Loop
+	See:
+		GEST A 0 A_PlaySound("geist/active", CHAN_VOICE, 1.0, TRUE)
+		GEST A 0 A_SetTranslucent(0.1)
+		GEST AAABBBCCCDDD 1 A_Chase
+		GEST A 0 A_SetTranslucent(0.2)
+		GEST AAABBBCCCDDD 1 A_Chase
+		GEST A 0 A_SetTranslucent(0.3)
+		GEST AAABBBCCCDDD 1 A_Chase
+		GEST A 0 A_SetTranslucent(0.4)
+		GEST AAABBBCCCDDD 1 A_Chase
+		GEST A 0 A_SetTranslucent(0.5)
+		GEST AAABBBCCCDDD 1 A_Chase
+		GEST A 0 A_SetTranslucent(0.4)
+		GEST AAABBBCCCDDD 1 A_Chase
+		GEST A 0 A_SetTranslucent(0.3)
+		GEST AAABBBCCCDDD 1 A_Chase
+		GEST A 0 A_SetTranslucent(0.2)
+		GEST AAABBBCCCDDD 1 A_Chase
+		Loop
+	Melee:
+		"####" A 1 A_SetTranslucent(0.1)
+		"####" AA 1 A_FadeIn(0.2)
+		"####" B 0 A_FaceTarget
+		"####" BCDABCD 3 A_CustomMeleeAttack(4)
+		"####" AAAA 1 A_Fadeout(0.1)
+		TNT1 A 0 A_Jump(256,"See")
+		Stop
+	Pain:
+		"####" E 1 A_Pain
+		"####" E 1 A_SetTranslucent(0.4)
+		"####" EEE 1 A_Fadeout(0.1)
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		TNT1 A 0 A_Jump(256,"See")
+		Stop
+	Death:
+		"####" E 0 A_StopSound(CHAN_VOICE)
+		"####" E 5 A_SetTranslucent(0.5)
+		"####" E 6 A_Scream
+		"####" FG 6
+		"####" H 6 A_NoBlocking
+		Stop
+	Idle:
+		Stop
+	}
+}
+
+ACTOR NaziGeist : Geist
+{
+	//$Title Geist, Nazi Soldier
+	Scale 1.25
+	Health 400
+	Radius 31
+	Speed 3.75
+	PainChance 128
+	States
+	{
+	Spawn:
+		GES2 A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		Goto Look
+	Look:
+		GES2 ABCD 6 A_Look
+		Loop
+	See:
+		GES2 A 0 A_PlaySound("geist/active", CHAN_VOICE, 1.0, TRUE)
+		GES2 A 0 A_SetTranslucent(0.1)
+		GES2 A 1 A_Chase
+		GES2 AAAAA 1 A_Chase("","")
+		GES2 B 1 A_Chase
+		GES2 BBBBB 1 A_Chase("","")
+		GES2 C 1 A_Chase
+		GES2 CCCCC 1 A_Chase("","")
+		GES2 D 1 A_Chase
+		GES2 DDDDD 1 A_Chase("","")
+		GES2 A 0 A_SetTranslucent(0.2)
+		GES2 A 1 A_Chase
+		GES2 AAAAA 1 A_Chase("","")
+		GES2 B 1 A_Chase
+		GES2 BBBBB 1 A_Chase("","")
+		GES2 C 1 A_Chase
+		GES2 CCCCC 1 A_Chase("","")
+		GES2 D 1 A_Chase
+		GES2 DDDDD 1 A_Chase("","")
+		GES2 A 0 A_SetTranslucent(0.3)
+		GES2 A 1 A_Chase
+		GES2 AAAAA 1 A_Chase("","")
+		GES2 B 1 A_Chase
+		GES2 BBBBB 1 A_Chase("","")
+		GES2 C 1 A_Chase
+		GES2 CCCCC 1 A_Chase("","")
+		GES2 D 1 A_Chase
+		GES2 DDDDD 1 A_Chase("","")
+		GES2 A 0 A_SetTranslucent(0.4)
+		GES2 A 1 A_Chase
+		GES2 AAAAA 1 A_Chase("","")
+		GES2 B 1 A_Chase
+		GES2 BBBBB 1 A_Chase("","")
+		GES2 C 1 A_Chase
+		GES2 CCCCC 1 A_Chase("","")
+		GES2 D 1 A_Chase
+		GES2 DDDDD 1 A_Chase("","")
+		GES2 A 0 A_SetTranslucent(0.5)
+		GES2 A 1 A_Chase
+		GES2 AAAAA 1 A_Chase("","")
+		GES2 B 1 A_Chase
+		GES2 BBBBB 1 A_Chase("","")
+		GES2 C 1 A_Chase
+		GES2 CCCCC 1 A_Chase("","")
+		GES2 D 1 A_Chase
+		GES2 DDDDD 1 A_Chase("","")
+		GES2 A 0 A_SetTranslucent(0.4)
+		GES2 A 1 A_Chase
+		GES2 AAAAA 1 A_Chase("","")
+		GES2 B 1 A_Chase
+		GES2 BBBBB 1 A_Chase("","")
+		GES2 C 1 A_Chase
+		GES2 CCCCC 1 A_Chase("","")
+		GES2 D 1 A_Chase
+		GES2 DDDDD 1 A_Chase("","")
+		GES2 A 0 A_SetTranslucent(0.3)
+		GES2 A 1 A_Chase
+		GES2 AAAAA 1 A_Chase("","")
+		GES2 B 1 A_Chase
+		GES2 BBBBB 1 A_Chase("","")
+		GES2 C 1 A_Chase
+		GES2 CCCCC 1 A_Chase("","")
+		GES2 D 1 A_Chase
+		GES2 DDDDD 1 A_Chase("","")
+		GES2 A 0 A_SetTranslucent(0.2)
+		GES2 A 1 A_Chase
+		GES2 AAAAA 1 A_Chase("","")
+		GES2 B 1 A_Chase
+		GES2 BBBBB 1 A_Chase("","")
+		GES2 C 1 A_Chase
+		GES2 CCCCC 1 A_Chase("","")
+		GES2 D 1 A_Chase
+		GES2 DDDDD 1 A_Chase("","")
+		Loop
+	Missile:
+		GES2 A 1 BRIGHT A_SetTranslucent(0.1)
+		GES2 AAABBB 1 BRIGHT A_FadeIn(0.1)
+		GES2 B 1 BRIGHT A_SetTranslucent(1.0)
+		GES2 CD 4 BRIGHT A_FaceTarget
+		GES2 A 0 A_Jump(128,3)
+		GES2 A 4 BRIGHT A_PainAttack("Geist",0,PAF_NOSKULLATTACK,0)
+		GES2 A 0 A_Jump(256,3)
+		GES2 A 0 A_PainAttack("Geist",-45,PAF_NOSKULLATTACK,0)
+		GES2 A 4 BRIGHT A_PainAttack("Geist",45,PAF_NOSKULLATTACK,0)
+		GES2 B 3 BRIGHT
+		GES2 BCCCC 1 BRIGHT A_Fadeout(0.1)
+		GES2 D 4 BRIGHT
+		Goto See
 	}
 }
 
 ACTOR UndeadMonk : HitlerGhost
 {
-	//$Category Monsters (Wolf3D)/Occult
 	//$Title Undead Monk
-	//$Color 4
 	Health 200
 	-BOSS
 	+LOOKALLAROUND
@@ -2698,525 +3025,10 @@ ACTOR UndeadMonk : HitlerGhost
 	}
 }
 
-ACTOR SuperMutant : Mutant
-{
-	//$Category Monsters (Wolf3D)/Mutants
-	//$Title Mutant (super)
-	//$Color 4
-	Obituary "$SUPAMUTN"
-	Health 180
-	Scale 1.45
-	States
-	{
-	Spawn:
-		SUPM A 0 NoDelay ACS_NamedExecuteAlways("DisableSuperMutants",0) //mxd
-		Goto Look
-	See:
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
-		"####" A 0 A_SetSpeed(5)
-		"####" B 1 A_Chase
-		"####" B 1 A_Chase("","")
-		"####" B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
-		"####" B 1 A_Chase
-		"####" B 1 A_Chase("","")
-		"####" C 1 A_Chase
-		"####" C 1 A_Chase("","")
-		"####" C 1 A_Chase
-		"####" C 1 A_Chase("","")
-		"####" D 1 A_Chase
-		"####" D 1 A_Chase("","")
-		"####" D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
-		"####" D 1 A_Chase
-		"####" D 1 A_Chase("","")
-		"####" E 1 A_Chase
-		"####" E 1 A_Chase("","")
-		"####" E 1 A_Chase
-		"####" E 1 A_Chase("","")
-		Loop
-	Missile:
-		SUPM F 6 A_FaceTarget
-		SUPM G 0 A_PlaySound("walther/fire", CHAN_WEAPON)
-		SUPM G 4 LIGHT(MUTNFIRE) A_CustomMissile("EnemyMutantTracer",40,random(-22,-20),random(-1,1))
-		SUPM G 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
-		SUPM F 5 A_FaceTarget
-		SUPM P 0 A_PlaySound("walther/fire", CHAN_WEAPON)
-		SUPM P 4 LIGHT(MUTNFIRE) A_CustomMissile("EnemyMutantTracer",40,random(18,20),random(-1,1))
-		SUPM P 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		SUPM H 5 A_MonsterRefire(15,"See")
-		SUPM H 0 A_FaceTarget
-		Goto Missile+1
-	}
-}
-
-ACTOR FlamerSoldier : Guard
-{
-	//$Category Monsters (Wolf3D)
-	//$Title SS Flamer (Soldier)
-	//$Color 4
-	Obituary "$FLAMEBOY"
-	Health 100
-	DropItem "FlameAmmo" 192
-	DropItem "Pyrolight" 32
-	MaxTargetRange 296
-	States
-	{
-	Spawn:
-		FLSL A 0
-		Goto Look
-	Missile:
-		"####" F 3
-		"####" G 10 A_FaceTarget
-		"####" HHHHHH 1 LIGHT(NAZIFIRE) A_CustomMissile("EnemyFlamerShot",38,4)
-		"####" G 6 A_MonsterRefire(10,"See")
-		Goto Missile+1
-	Pain: //pre-aim used here as stated on ZDForums
-		"####" F 3
-		"####" F 3 A_Pain
-		"####" "#" 0 A_AlertMonsters(256) //mxd
-		"####" F 0 A_Jump(256,"See")
-		Stop
-	Death:
-		"####" J 0 A_Jump(64, "XDeath")
-		"####" J 5
-		"####" K 5 A_Scream
-		"####" L 5 A_NoBlocking
-		"####" M 5
-		"####" N -1
-		Stop
-	XDeath:
-		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
-		Goto Death.Fire
-	}
-}
-
-ACTOR MGTurretInvisible : MGTurret
-{
-	//$Category Monsters (Wolf3D)
-	//$Title MGTurret (hidden/nokillcount)
-	//$Color 4
-	Obituary "$MGTHIDE"
-	Health 0
-	-COUNTKILL
-	-SHOOTABLE
-	-SOLID
-	+NOGRAVITY //mxd
-	RenderStyle "None"
-	States
-	{
-	Missile: //mxd. Same as MGTurret, but without the dynamic light
-		"####" A 4 A_PlaySound("chaingun/start", CHAN_WEAPON)
-		"####" A 1 A_PlaySound("chaingun/loop", CHAN_WEAPON)
-		"####" A 5 A_FaceTarget
-		"####" B 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		"####" C 3 A_CustomMissile("EnemyChaingunTracer",20,0,random(-11,11))
-		"####" B 3 A_MonsterRefire(30,"See")
-		"####" B 0 A_FaceTarget
-		Goto Missile+3
-	}
-}
-
-ACTOR MGTurretSoldier : MGTurret
-{
-	//$Category Monsters (Wolf3D)
-	//$Title Stationary Turret Soldier (Afrika Korps)
-	//$Color 4
-	Height 56
-	Radius 16
-	SeeSound "Nazi1/Sighted"
-	PainSound "Nazi1/Pain"
-	DeathSound "Nazi1/Death"
-	States
-	{
-	Spawn:
-		SMGS A 0
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
-		Goto Look
-	Missile: //mxd. Copied from parent cause diffetent firing offset
-		SMGS A 4 A_PlaySound("chaingun/start", CHAN_WEAPON)
-		"####" A 1 A_PlaySound("chaingun/loop", CHAN_AUTO)
-		"####" A 5 A_FaceTarget
-		"####" B 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		"####" C 3 LIGHT(NAZIFIRE) A_CustomMissile("EnemyChaingunTracer",34,-2,random(-11,11))
-		"####" C 0 A_SpawnItemEx("9MMCasing", 0,0,36, random(2,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" B 3 A_MonsterRefire(10,"See")
-		"####" B 0 A_FaceTarget
-		Goto Missile+3
-	Pain: //added this here because it doesn't have H frames for pain states
-		SMGS D 3
-		"####" D 3 A_Pain
-		"####" "#" 0 A_AlertMonsters(256) //mxd
-		"####" D 0 A_Jump(256,"See")
-		Stop
-	Death:
-	Crash:
-		TNT1 A 0 A_Scream
-		SMGS D 6 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
-		SMGS EFG 6
-		SMGS H -1 A_NoBlocking
-		Stop
-	}
-}
-
-ACTOR MGTurretSoldierW : MGTurretSoldier
-{
-	//$Title Stationary Turret Soldier (Werhmacht)
-	States
-	{
-	Spawn:
-		SMGF A 0
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
-		Goto Look
-	Missile: //mxd. Copied from parent cause diffetent firing offset
-		SMGF A 4 A_PlaySound("chaingun/start", CHAN_WEAPON)
-		"####" A 1 A_PlaySound("chaingun/loop", CHAN_AUTO)
-		"####" A 5 A_FaceTarget
-		"####" B 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		"####" C 3 LIGHT(NAZIFIRE) A_CustomMissile("EnemyChaingunTracer",34,-2,random(-11,11))
-		"####" C 0 A_SpawnItemEx("9MMCasing", 0,0,36, random(2,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" B 3 A_MonsterRefire(10,"See")
-		"####" B 0 A_FaceTarget
-		Goto Missile+3
-	Pain: //added this here because it doesn't have H frames for pain states
-		SMGF D 3
-		"####" D 3 A_Pain
-		"####" "#" 0 A_AlertMonsters(256) //mxd
-		"####" D 0 A_Jump(256,"See")
-		Stop
-	Death:
-	Crash:
-		TNT1 A 0 A_Scream
-		SMGF D 6 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
-		SMGF EFG 6
-		SMGF H -1 A_NoBlocking
-		Stop
-	}
-}
-
-ACTOR EliteFlamer : Guard
-{
-	//$Category Monsters (Wolf3D)
-	//$Title Elite Soldier (Flamer)
-	//$Color 4
-	Obituary "$FLAMEBOY"
-	Health 450
-	Speed 4
-	SeeSound "eliteflamer/sight"
-	PainSound "eliteflamer/pain"
-	DeathSound "eliteflamer/death"
-	DropItem "FlameAmmo"
-	DropItem "Pyrolight" 32
-	+MISSILEMORE
-	MaxTargetRange 400
-	var int user_count;
-	var int user_offset; //mxd
-	States
-	{
-	Spawn:
-		ELTF A 0 A_Look
-		Goto Look
-	See:
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
-		ELTF A 1 A_Chase
-		ELTF AA 1 A_Chase("","")
-		ELTF A 1 A_Chase
-		ELTF AA 1 A_Chase("","")
-		ELTF B 1 A_Chase
-		ELTF BB 1 A_Chase("","")
-		ELTF B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
-		ELTF B 1 A_Chase
-		ELTF BB 1 A_Chase("","")
-		ELTF C 1 A_Chase
-		ELTF CC 1 A_Chase("","")
-		ELTF C 1 A_Chase
-		ELTF CC 1 A_Chase("","")
-		ELTF D 1 A_Chase
-		ELTF DD 1 A_Chase("","")
-		ELTF D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
-		ELTF D 1 A_Chase("","",CHF_FASTCHASE)
-		ELTF DD 1 A_Chase("","")
-		Loop
-	Missile:
-		ELTF E 0 A_PlaySound("ammo/cell1")
-		ELTF E 15 A_FaceTarget
-		ELTF E 0 A_Jump(60,"ProperMissile2")
-	ProperMissileStart:
-		ELTF F 0 A_FaceTarget
-		ELTF FG 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6)
-		ELTF G 0 A_MonsterRefire(20,"See")
-		ELTF E 0 A_JumpIfCloser(400,"ProperMissileStart")
-		Goto See
-	ProperMissile2:
-		ELTF F 0 A_FaceTarget
-		ELTF F 0 A_SetUserVar("user_count",0)
-		ELTF F 0 A_SetUserVar("user_offset", RandomPick(-3, 3)) //mxd
-		ELTF F 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6)
-	Wave1:
-		ELTF F 0 A_SetAngle(angle + user_offset)
-		ELTF G 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
-		ELTF F 0 A_SetAngle(angle + user_offset)
-		ELTF F 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
-		ELTF F 0 A_SetUserVar("user_count",user_count+1)
-		ELTF F 0 A_JumpIf(user_count>=5,1)
-		Loop
-	Wave2:
-		ELTF F 0 A_SetAngle(angle - user_offset)
-		ELTF G 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
-		ELTF F 0 A_SetAngle(angle - user_offset)
-		ELTF F 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
-		ELTF F 0 A_SetUserVar("user_count",user_count+1)
-		ELTF F 0 A_JumpIf(user_count>=15,1)
-		Loop
-	Wave3:
-		ELTF F 0 A_SetAngle(angle + user_offset)
-		ELTF G 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
-		ELTF F 0 A_SetAngle(angle + user_offset)
-		ELTF F 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
-		ELTF F 0 A_SetUserVar("user_count",user_count+1)
-		ELTF F 0 A_JumpIf(user_count>=20,1)
-		Loop
-		ELTF E 6
-		Goto See
-	Death:
-		ELTF H 5
-		ELTF I 5 A_Scream
-		ELTF J 5 A_NoBlocking
-		ELTF K -1
-		Stop
-	Raise:
-		ELTF KJIH 5
-		Goto See
-	}
-}
-
-ACTOR EliteAssaulter : Guard
-{
-	//$Category Monsters (Wolf3D)
-	//$Title Elite Soldier (MP40)
-	//$Color 4
-	Obituary "$ELITASS"
-	Health 350
-	PainChance 160
-	Speed 4.66666667
-	SeeSound "eliteassaulter/sight"
-	PainSound "eliteassaulter/pain"
-	DeathSound "eliteassaulter/death"
-	DropItem "9mmAmmo" 192
-	DropItem "MP40" 64
-	DropItem "GrenadePickup" 16
-	+MISSILEMORE
-	States
-	{
-	Spawn:
-		ELTA N 0
-		Goto Look
-	See:
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
-		ELTA A 0 A_SetSpeed(4.66666667)
-		ELTA A 0 A_ChangeFlag("FRIGHTENED",0)
-		ELTA A 1 A_Chase
-		ELTA AA 1 A_Chase("","")
-		ELTA A 1 A_Chase
-		ELTA AA 1 A_Chase("","")
-		ELTA B 1 A_Chase
-		ELTA BB 1 A_Chase("","")
-		ELTA B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
-		ELTA B 1 A_Chase
-		ELTA BB 1 A_Chase("","")
-		ELTA C 1 A_Chase
-		ELTA CC 1 A_Chase("","")
-		ELTA C 1 A_Chase
-		ELTA CC 1 A_Chase("","")
-		ELTA D 1 A_Chase
-		ELTA DD 1 A_Chase("","")
-		ELTA D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
-		ELTA D 1 A_Chase("","",CHF_FASTCHASE)
-		ELTA DD 1 A_Chase("","")
-		Loop
-	Missile:
-		ELTA E 0 A_Jump(50,"Grenada")
-		ELTA E 0 A_PlaySound("ammo/cell2")
-		ELTA EF 12 A_FaceTarget
-		ELTA G 0 A_PlaySound("nazi/stg44", CHAN_WEAPON)
-		ELTA G 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyStGTracer",39,5,random(-6,6))
-		ELTA G 0 A_SpawnItemEx("9MMCasing", 6,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		ELTA F 4 A_FaceTarget
-		ELTA G 0 A_PlaySound("nazi/stg44", CHAN_WEAPON)
-		ELTA G 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyStGTracer",39,5,random(-5,5))
-		ELTA G 0 A_SpawnItemEx("9MMCasing", 6,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		ELTA F 4 A_FaceTarget
-		ELTA G 0 A_PlaySound("nazi/stg44", CHAN_WEAPON)
-		ELTA G 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyStGTracer",39,5,random(-6,6))
-		ELTA G 0 A_SpawnItemEx("9MMCasing", 6,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		ELTA F 10 A_FaceTarget
-		ELTA F 0 A_MonsterRefire(15,"See")
-		Goto Missile+4
-	Grenada:
-		ELTA EF 7 A_FaceTarget
-		ELTA E 4 A_CustomMissile("HandGrenade")
-	Retreat:
-		ELTA A 0 A_SetSpeed(14)
-		ELTA A 0 A_ChangeFlag("FRIGHTENED",1)
-		ELTA AABBCCDDAABBCCDDAABBCCDD 1 A_Chase
-		ELTA A 0 A_ChangeFlag("FRIGHTENED",0)
-		Goto Missile
-	}
-}
-
-ACTOR EliteSoldatRifler : Guard
-{
-	//$Category Monsters (Wolf3D)
-	//$Title Elite Soldier (Rifle)
-	//$Color 4
-	Obituary "$ELITRIFL"
-	Health 65
-	Speed 4.66666667
-	PainChance 80
-	SeeSound "eliterifler/Sight"
-	PainSound "eliteassaulter/pain"
-	DeathSound "eliterifler/death"
-	DropItem "MauserAmmo" 192
-	DropItem "GrenadePickup" 16
-	DropItem "G43" 64
-	+MISSILEEVENMORE
-	States
-	{
-	Spawn:
-		ELTR N 0
-		Goto Look
-	See:
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
-		ELTR A 1 A_Chase
-		ELTR AA 1 A_Chase("","")
-		ELTR A 1 A_Chase
-		ELTR AA 1 A_Chase("","")
-		ELTR B 1 A_Chase
-		ELTR BB 1 A_Chase("","")
-		ELTR B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
-		ELTR B 1 A_Chase
-		ELTR BB 1 A_Chase("","")
-		ELTR C 1 A_Chase
-		ELTR CC 1 A_Chase("","")
-		ELTR C 1 A_Chase
-		ELTR CC 1 A_Chase("","")
-		ELTR D 1 A_Chase
-		ELTR DD 1 A_Chase("","")
-		ELTR D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
-		ELTR D 1 A_Chase("","",CHF_FASTCHASE)
-		ELTR DD 1 A_Chase("","")
-		Loop
-	Missile:
-		ELTR E 0 A_JumpIfCloser(1000,"ProperMissile")
-		Goto Camping
-	ProperMissile:
-		ELTR EF 9 A_FaceTarget
-		ELTR G 0 A_PlaySound("mauser/fire", CHAN_WEAPON)
-		ELTR G 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",39,7,random(-4,4))
-		ELTR G 0 A_SpawnItemEx("MauserRifleCasing", 7,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		ELTR F 4 A_PlaySound("mauser/cock", CHAN_AUTO, 0.25)
-		ELTR E 14
-		Goto See
-	Camping:
-		ELTR O 4 A_JumpIfCloser(540,"CampingDone")
-		ELTR P 6
-	CampingContinue:
-		ELTR Q 0 A_JumpIfCloser(540,"CampingDone")
-		ELTR Q 0 A_Jump(6,"CampingDone")
-		ELTR Q 0 A_JumpIfCloser(8000,"CampingFire")
-		ELTR Q 6 A_FaceTarget
-		Loop
-	CampingFire:
-		ELTR Q 0 A_JumpIfCloser(540,"CampingDone")
-		ELTR Q 10 A_FaceTarget
-		ELTR R 0 A_PlaySound("mauser/fire", CHAN_WEAPON)
-		ELTR R 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",32,5,random(-1,1))
-		ELTR Q 20
-		Goto CampingContinue
-	CampingDone:
-		ELTR QPO 2
-		Goto See
-	}
-}
-
-ACTOR MadCook : MadDoctor
-{
-	//$Category Monsters (Wolf3D)/Bosses
-	//$Title Cook Fritz Bratwurst (Boss)
-	//$Color 4
-	Obituary "$MADCOOK"
-	Health 400
-	+BOSS
-	Tag "Fritz Bratwurst"
-	States
-	{
-	Spawn:
-		COOK A 0
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
-		Goto Look
-	Missile:
-		COOK E 10 A_FaceTarget
-		COOK FF 2 A_CustomMissile("FlyingHack",32,12,random(-8,8))
-		COOK F 3 A_CustomMissile("FlyingHack",32,12)
-		COOK A 8
-		Goto See
-	}
-}
-
-ACTOR MadCook2 : MadCook
-{
-	//$Category Monsters (Wolf3D)/Bosses
-	//$Title Cook Max Gulasch (Boss)
-	//$Color 4
-	Health 400
-	+BOSS
-	Tag "Max Gulasch"
-}
-
-ACTOR FlyingHack : FlyingNeedle
-{
-	DamageType None
-	PoisonDamage 1, 2
-	+NOGRAVITY
-	+ROLLSPRITE
-	States
-	{
-	Spawn:
-		COPR A 0 NODELAY A_SetRoll(random(0, 360), 0, 0)
-		Rotate:
-		COPR A 1 A_SetRoll(roll+20, SPF_INTERPOLATE, 0)
-		Loop
-	Death:
-		TNT1 A 1 A_SpawnItemEx("HackPuff")
-		Stop
-	}
-}
-
-ACTOR HackPuff
-{
-	+NOBLOCKMAP
-	+NOEXTREMEDEATH
-	+NOGRAVITY
-	+PUFFONACTORS
-	RenderStyle "Add"
-	States
-	{
-	Spawn:
-	Melee:
-	Crash:
-		POOF A 3 A_PlaySound("knife/stone")
-		POOF BCDE 3
-		Stop
-	Death:
-	XDeath:
-		POOF A 3 A_PlaySound("knife/hit")
-		Goto Crash+1
-	}
-}
-
 ACTOR UndeadPriest : Guard
 {
 	//$Category Monsters (Wolf3D)/Occult
-	//$Title Priest
-	//$Color 4
+	//$Title Undead Priest
 	Obituary "$UNDEADP"
 	Health 100
 	Mass 125
@@ -3322,11 +3134,49 @@ ACTOR UndeadPriest : Guard
 	}
 }
 
+///////////
+//SPECIAL//
+///////////
+
+ACTOR Scientist : Guard
+{
+	//$Title Scientist (young)
+	States
+	{
+	Spawn:
+		SCN2 N 0
+		Goto Look
+	}
+}
+
+ACTOR Scientist2 : Guard
+{
+	//$Title Scientist (old)
+	States
+	{
+	Spawn:
+		SCNT N 0
+		Goto Look
+	}
+}
+
+ACTOR ScientistGutenberg : Scientist2
+{
+	//$Category Monsters (Wolf3D)/NPCs
+	//$Title Prof. Klaus Gutenberg
+	//Translation "175:191=80:111"
+	States
+	{
+	Spawn:
+		GUTB N 0
+		Goto Look
+	}
+}
+
 ACTOR DirtyDarren : Guard
 {
 	//$Category Monsters (Wolf3D)/NPCs
-	//$Title Dirty Darren
-	//$Color 4
+	//$Title Dirty Douglas
 	Obituary "$DARREN"
 	Translation 1
 	PainChance 255
@@ -3349,11 +3199,23 @@ ACTOR DirtyDarren : Guard
 	}
 }
 
+ACTOR Clerk : DirtyDarren
+{
+	//$Title Clerk
+	Obituary "$CLERK"
+	Height 75 //mxd. Players shouldn't be able to jump on this guy
+	Scale 1.35 //mxd
+	States
+	{
+	Spawn:
+		BLCK N 0
+		Goto Look
+	}
+}
+
 ACTOR Marine1 : DirtyDarren
 {
-	//$Category Monsters (Wolf3D)/NPCs
 	//$Title Marine (1)
-	//$Color 4
 	Obituary "$MARINE"
 	Scale 1.3 //mxd
 	States
@@ -3486,158 +3348,24 @@ ACTOR Dummy_Talk2
 	+SOLID
 }
 
-ACTOR Clerk : DirtyDarren
+///////////////////////////////////////////////////
+//MISCELLANEA - Place these actors always at EOF!//
+///////////////////////////////////////////////////
+
+ACTOR HitlerSuitScrap
 {
-	//$Category Monsters (Wolf3D)/NPCs
-	//$Title Clerk
-	//$Color 4
-	Obituary "$CLERK"
-	Height 75 //mxd. Players shouldn't be able to jump on this guy
-	Scale 1.35 //mxd
+	Scale 1.2
+	+FLOORCLIP
 	States
 	{
 	Spawn:
-		BLCK N 0
-		Goto Look
+		HIT2 AB 20
+		HIT2 C -1
+		Stop
 	}
 }
 
-//NaziLoper
-ACTOR NaziLoper : Nazi
-{
-	//$Category Monsters (Wolf3D)/Occult
-	//$Title Nazi Loper
-	//$Color 4
-	Health 550
-	Height 64
-	Radius 32
-	Mass 300
-	Speed 14
-	Damage 2 //jump attacks
-	PainChance 64
-	MaxStepHeight 16
-	MaxDropOffHeight 128
-	MaxTargetRange 1024
-	SeeSound "loper/wakeup"
-	DeathSound "loper/death"
-	HitObituary "$LOPRHIT1"
-	Obituary "$LOPRHIT2"
-	+NORADIUSDMG //or the ZTracer will kill the Loper :D
-	Scale 1.10
-	States
-	{
-	Spawn:
-		LOPR A 0 NoDelay A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
-		"####" A 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
-		"####" AAAA 4 A_Look
-		Goto Look
-	Idle:
-		"####" BBBBBBBB 1 A_Wander
-		"####" A 0 A_Look
-		"####" CCCCCCCC 1 A_Wander
-		"####" A 0 A_Look
-		"####" DDDDDDDD 1 A_Wander
-		"####" A 0 A_Look
-		"####" CCCCCCCC 1 A_Wander
-		"####" A 0 A_Look
-		Loop
-	See:
-		"####" BBBBCCCCDDDDCCCC 1 A_Chase
-		"####" B 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" B 0 A_Jump(random(128,192),"Missile","Missile2","Missile3")
-		Goto Look
-	Melee:
-		"####" E 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
-		"####" E 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
-		"####" E 8 A_FaceTarget
-		"####" E 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" FG 8 A_CustomMeleeAttack(2*random(2,10),"loper/attack","loper/attack","Melee",TRUE)
-		Goto Look
-	Missile:
-		"####" E 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
-		"####" E 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
-		"####" E 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" E 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" E 0 A_PlaySound("tesla/attack")
-		"####" E 8 LIGHT(LOPERLIT) A_CustomRailgun(random(10,20), 0, white, cyan, RGF_NOPIERCING, 1, 2, none, 0, 0, 1500, random(24,48), 8.0, 2.0, "LoperZap", -28)
-		"####" EE 8 A_FaceTarget
-		"####" E 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
-		"####" E 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
-		"####" E 0 A_PlaySound("tesla/attack")
-		"####" E 8 LIGHT(LOPERLIT) A_CustomRailgun(random(10,20), 0, cyan, white, RGF_NOPIERCING, 1, 2, none, 0, 0, 1500, random(24,48), 8.0, 2.0, "LoperZap", -28)
-		"####" EE 8 A_FaceTarget
-		Goto Look
-	Missile2:
-		"####" A 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
-		"####" A 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
-		"####" A 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" A 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" A 0 ThrustThing(angle*256/360,random(4,6),0,0)
-		"####" AE 6 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" H 8 ThrustThingZ(0,random(30,40),0,1)
-		"####" E 6 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" FG 17 LIGHT(LOPERLIT) A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" G 1 LIGHT(LOPERLIT) A_SpawnItemEx("GeneralExplosion_Medium")
-		"####" G 1 LIGHT(LOPERLIT) Radius_Quake(10,10,0,16,0)
-		"####" G 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" F 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,0,2,0)
-		"####" G 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,20,2,0)
-		"####" F 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,40,2,0)
-		"####" G 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,60,2,0)
-		"####" F 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,80,2,0)
-		"####" G 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,100,2,0)
-		"####" F 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,120,2,0)
-		"####" G 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,140,2,0)
-		"####" F 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,160,2,0)
-		"####" G 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,180,2,0)
-		"####" F 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,200,2,0)
-		"####" G 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,220,2,0)
-		"####" F 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,240,2,0)
-		"####" G 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,260,2,0)
-		"####" F 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,280,2,0)
-		"####" G 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,300,2,0)
-		"####" F 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,320,2,0)
-		"####" G 0 LIGHT(LOPERLIT) A_CustomMissile("ZTracer",0,0,340,2,0)
-		"####" G 8 A_FaceTarget
-		Goto Look
-	Missile3:
-		"####" A 0 A_JumpIfCloser(192, 2)
-		Goto Look
-		"####" CE 8 A_FaceTarget
-		"####" H 8 ThrustThingZ(0,random(30,40),0,1)
-		"####" FG 1 A_SkullAttack
-		"####" E 3 A_Gravity
-		"####" C 5
-		Goto Look
-	Pain:
-		"####" I 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
-		"####" I 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
-		"####" I 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" I 3
-		"####" I 3 A_Pain
-		"####" "#" 0 A_AlertMonsters(256) //mxd
-		"####" I 0 A_Jump(256,"See")
-		Stop
-	Death.Fire:
-	Death:
-	XDeath:
-		"####" I 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
-		"####" I 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
-		"####" I 6 A_Scream
-		"####" I 1 LIGHT(LOPERLIT) A_SpawnItemEx("GeneralExplosion_Medium")
-		"####" I 1 LIGHT(LOPERLIT) Radius_Quake(10,10,0,16,0)
-		"####" J 8 A_NoBlocking
-		"####" K 8
-		"####" L 0 A_Die
-		"####" L -1
-		Stop
-	Raise:
-		"####" LKJIEA 8
-		Goto Look
-   }
-}
-
-ACTOR LoperZap
+ACTOR LoperZap //NaziLoper actors
 {
 	+ALLOWPARTICLES
 	+NOBLOCKMAP
@@ -3692,10 +3420,7 @@ ACTOR ZTracer
 	}
 }
 
-ACTOR HardZTracer : ZTracer
-{
-	+MTHRUSPECIES
-}
+ACTOR HardZTracer : ZTracer { +MTHRUSPECIES }
 
 ACTOR ZTracerPuff
 {
@@ -3783,7 +3508,142 @@ ACTOR TPortLightningWaveZap : VisualSpecialEffect
 		"####" A 0 A_SpawnItemEx("TPortLightningSmall",random(-5,5),random(-5,5),random(-5,5),0,0,0,0,0,144)
 		Stop
 	}
+} //End of NaziLoper actors
+
+ACTOR NebRocketEnemy : NebRocket
+{
+	Speed 15
+	-FORCERADIUSDMG
+	SeeSound "nebelwerfer/fire"
+	States
+	{
+	Death:
+		FRME A 1 BRIGHT LIGHT(NEBEXPLO) A_Explode(random(25,30))
+		FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT(NEBEXPLO)
+		Stop
+	}
 }
+
+ACTOR HardNebRocketEnemy : NebRocketEnemy { +MTHRUSPECIES }
+
+ACTOR MiniRocket
+{
+	Radius 11
+	Height 8
+	Speed 15
+	Damage 5
+	Projectile
+	+RANDOMIZE
+	SeeSound "nazi/missilef"
+	DeathSound "world/barrelboom"
+	States
+	{
+	Spawn:
+		NMIS A 0 NoDelay A_PlaySound("nazi/missileengine", CHAN_AUTO, 0.3, TRUE)
+		NMIS A 1 BRIGHT LIGHT(OTTOFIRE) A_SpawnItemEx("RocketFlame",random(-1,1),0,random(-1,1))
+		Wait
+	Death:
+		FRME A 1 BRIGHT LIGHT(OTTOFIRE) A_Explode(20,40)
+		FRME A 0 A_StopSound(CHAN_AUTO)
+		FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT(OTTOFIRE)
+		Stop
+	}
+}
+
+ACTOR HardMiniRocket : MiniRocket { +MTHRUSPECIES }
+
+ACTOR MiniMiniRocket : MiniRocket
+{
+	Scale .8
+	Damage (random(1,4)*4)
+	DeathSound "nebelwerfer/xplode"
+}
+
+ACTOR HardMiniMiniRocket : MiniMiniRocket { +MTHRUSPECIES }
+
+ACTOR FlyingNeedle : MiniRocket
+{
+	Speed 10
+	DamageType MutantPoison
+	PoisonDamage 3, 4
+	SeeSound ""
+	DeathSound "gshardnd"
+	Gravity 0.3
+	-NOGRAVITY
+	+ADDITIVEPOISONDAMAGE
+	+ADDITIVEPOISONDURATION
+	States
+	{
+	Spawn:
+		NEDL ABCD 3
+		Loop
+	Death:
+		TNT1 A 1
+		Stop
+	}
+}
+
+ACTOR HardFlyingNeedle : FlyingNeedle { +MTHRUSPECIES }
+
+ACTOR FlyingHack : FlyingNeedle
+{
+	DamageType None
+	PoisonDamage 1, 2
+	+NOGRAVITY
+	+ROLLSPRITE
+	States
+	{
+	Spawn:
+		COPR A 0 NODELAY A_SetRoll(random(0, 360), 0, 0)
+		Rotate:
+		COPR A 1 A_SetRoll(roll+20, SPF_INTERPOLATE, 0)
+		Loop
+	Death:
+		TNT1 A 1 A_SpawnItemEx("HackPuff")
+		Stop
+	}
+}
+
+ACTOR HackPuff
+{
+	+NOBLOCKMAP
+	+NOEXTREMEDEATH
+	+NOGRAVITY
+	+PUFFONACTORS
+	RenderStyle "Add"
+	States
+	{
+	Spawn:
+	Melee:
+	Crash:
+		POOF A 3 A_PlaySound("knife/stone")
+		POOF BCDE 3
+		Stop
+	Death:
+	XDeath:
+		POOF A 3 A_PlaySound("knife/hit")
+		Goto Crash+1
+	}
+}
+
+ACTOR EnemyFlamerShot : Flamebolt { -RIPPER }
+ACTOR HardEnemyFlamerShot : EnemyFlamerShot { +MTHRUSPECIES }
+ACTOR EnemyFlamebolt : Flameball { Damage 8 }
+ACTOR HardEnemyFlamebolt : EnemyFlamebolt { +MTHRUSPECIES }
+
+ACTOR EnemyFlamebolt2 : EnemyFlamebolt
+{
+	Damage (random(1,4)*5)
+	Scale .35
+	States
+	{
+	Death:
+		FBLX ABCDEFGHIJK 2 BRIGHT LIGHT(BOAFLMW2)
+		Stop
+	}
+}
+
+ACTOR HardEnemyFlamebolt2 : EnemyFlamebolt2 { +MTHRUSPECIES }
 
 // Spawns lightning waves
 ACTOR TPortLightningWaveSpawner : VisualSpecialEffect
@@ -3820,6 +3680,127 @@ ACTOR TPortLightningWaveSpawner2 : VisualSpecialEffect
 		"####" A 1 A_SpawnItem("TPortLightningWaveZap")
 		"####" A 2 A_SpawnItem("TPortLightningWaveZap")
 		"####" A 4 A_SpawnItem("TPortLightningWave")
+		Stop
+	}
+}
+
+//Mutants Stuff
+ACTOR MutantFartCloud
+{
+	Game Doom
+	Radius 2
+	Height 2
+	DamageType MutantPoison
+	+NOINTERACTION
+	+WINDTHRUST
+	RenderStyle "Translucent"
+	Alpha 0.3
+	States
+		{
+		Spawn:
+		FUGS ABCDE 2
+		Fade:
+		FUGS ABCDE 2 A_FadeOut (0.05)
+		FUGS ABCDE 2 A_FadeIn (0.05)
+		FUGS ABCDE 2 A_FadeOut (0.05)
+		FUGS ABCDE 2 A_FadeIn (0.05)
+		FUGS ABCDE 2 A_FadeOut (0.05)
+		FUGS ABCDE 2 A_FadeIn (0.05)
+		FUGS ABCDE 2 A_FadeOut (0.05)
+		FUGS ABCDE 2 A_FadeIn (0.05)
+		FUGS ABCDE 2 A_FadeOut (0.05)
+		Stop
+		}
+}
+
+ACTOR MutantSmoke
+{
+	Game Doom
+	Radius 2
+	Height 2
+	Scale 0.3
+	Gravity 0.3
+	Alpha 0.5
+	VSpeed 2.5
+	+DONTSPLASH
+	+FORCEXYBILLBOARD
+	+MISSILE
+	+MOVEWITHSECTOR
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+WINDTHRUST
+	RenderStyle "Shaded"
+	StencilColor "E0 00 E0"
+	States
+		{
+		Spawn:
+		TNT1 A 0
+		CLFX A 8 A_FadeOut(0.05)
+		Wait
+		}
+}
+
+ACTOR MutantRocket
+{
+	Radius 8
+	Height 8
+	Speed 12
+	FastSpeed 14
+	Damage (random(2,6))
+	DamageType MutantPoison
+	Projectile
+	Scale 0.9
+	+RANDOMIZE
+	SeeSound "nazi/missilef"
+	DeathSound "world/barrelboom"
+	States
+	{
+	Spawn:
+		NMIS A 0 NoDelay A_PlaySound("nazi/missileengine", CHAN_AUTO, 0.3, TRUE)
+	Fly:
+		NMIS A 1 BRIGHT LIGHT(MUTNROCK) A_SpawnItemEx("MutantFlame",random(-1,1),0,random(-1,1))
+		Loop
+	Death:
+		FUGS A 1 BRIGHT LIGHT(MUTNROCK) A_Explode(10,30)
+		FUGS A 0 A_StopSound(CHAN_AUTO)
+		FUGS A 0 BRIGHT A_CustomMissile("PoisonCloudMutant",16,0,0,2,0)
+		FUGS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("MutantFartCloud",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128)
+		FUGS BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("MutantSmoke",random(-64,64),random(-64,64),random(-48,48),momx,0,frandom(0.5,1),0,SXF_TRANSFERTRANSLATION,160)
+		FUGS ABCDEDCBABCDE 1 BRIGHT LIGHT(MUTNROCK)
+		Stop
+	}
+}
+
+ACTOR HardMutantRocket : MutantRocket { +MTHRUSPECIES }
+
+ACTOR PoisonCloudMutant
+{
+	Radius 20
+	Height 30
+	Reactiontime 5
+	+BLOCKEDBYSOLIDACTORS
+	+BLOODLESSIMPACT
+	+CANBLAST
+	+DONTSPLASH
+	+DONTTHRUST
+	+DROPOFF
+	+FOILINVUL
+	+NOBLOCKMAP
+	+NODAMAGETHRUST
+	+NOGRAVITY
+	RenderStyle "Translucent"
+	Alpha 0.6
+	DamageType MutantPoison	
+	States
+	{
+	Spawn:
+		TNT1 A 1
+		"####" A 2 A_Explode(5,128,0,0,128)
+		"####" A 20 A_Countdown
+		Loop
+	Death:
+		"####" A 7
+		"####" A 6
 		Stop
 	}
 }

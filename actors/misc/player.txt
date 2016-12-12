@@ -10,6 +10,7 @@ ACTOR BoAPlayer : PlayerPawn
 	Species "Player"
 	+DONTBLAST //avoid kick's blast effect while kicking at walls
 	+THRUSPECIES
+	Player.MaxHealth 100 // Needed for improved vitality serum
 	Player.InvulnerabilityMode "reflective"
 	Player.StartItem "KnifeSilent"
 	Player.StartItem "TrenchShotgunLoaded",8
@@ -76,7 +77,7 @@ ACTOR BoAPlayer : PlayerPawn
 		PLSC A 1
 		"####" # 0 A_Jump(256, "See.Resume")
 	See.Scientist.Crouch:
-		CYBR A 1
+		PLSC A 1
 		"####" # 0 A_Jump(256, "See.Resume")
 	See.Resume:
 		"####" AAAAAAABBBBBBBBCCCCCCCCDDDDDDDD 1 {

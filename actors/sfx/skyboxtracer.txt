@@ -3,15 +3,16 @@ ACTOR SkyboxTracerTrail //3d actor
 	Alpha 1.0
 	Scale 1.0
 	RenderStyle Add
+	+BRIGHT
 	+CLIENTSIDEONLY
 	+NOINTERACTION
 	States
 	{
 	Spawn:
-		MDLA A 70 BRIGHT
+		MDLA A 70
 		Goto Death
 	Death:
-		MDLA A 4 BRIGHT A_FadeOut(0.1)
+		MDLA A 4 A_FadeOut(0.1)
 		Loop
 	}
 }

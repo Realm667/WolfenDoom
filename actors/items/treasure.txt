@@ -223,11 +223,11 @@ ACTOR EmptySupplyChest
 
 ACTOR SupplyChest100Coins : CustomInventory
 {
-	+INVENTORY.ALWAYSPICKUP
 	Height 34
 	Radius 21
 	Inventory.PickupMessage "$100COINS"
 	Inventory.PickupSound "treasure/pickup"
+	+INVENTORY.ALWAYSPICKUP
 	States
 	{
 	Spawn:
