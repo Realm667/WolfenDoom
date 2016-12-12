@@ -1,4 +1,4 @@
-7-Zip Extra 16.02
+7-Zip Extra 16.04
 -----------------
 
 7-Zip Extra is package of extra modules of 7-Zip. 
