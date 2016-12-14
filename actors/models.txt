@@ -2379,10 +2379,13 @@ ACTOR CanyonRockSpawner : 3dObstacle //ozymandias81
 	//$Color 3
 	DistanceCheck "scenelod"	
 	//$Arg0 "Shape"
-	//$Arg0Tooltip "Pickup the desired shape\nRandom: 0\nLarge: 1\nMedium: 2\nSmall: 3"
+	//$Arg0Tooltip "Pickup the desired shape\nRandom: 0\nLarge: 1\nMedium: 2\nSmall: 3"	
+	//$Arg1 "Gravity"
+	//$Arg1Tooltip "Actor is affected by gravity and is solid \nNo: 0\nYes: 1"
 	Radius 24
 	Height 24
 	-CANPASS
+	+SOLID
 	+MOVEWITHSECTOR
 	+NOGRAVITY
 	+RELATIVETOFLOOR
@@ -2394,17 +2397,21 @@ ACTOR CanyonRockSpawner : 3dObstacle //ozymandias81
 		TNT1 A 0 A_JumpIf(Args[0]==2, "Medium")
 		TNT1 A 0 A_JumpIf(Args[0]==3, "Small")
 	Random: //fall through if set at 0
+		MDLA A 0 {A_ChangeFlag("NOGRAVITY", !Args[1]); A_ChangeFlag("SOLID", !Args[1]);}
 		MDLA A -1 A_Jump(128,1)
 		MDLA B -1 A_Jump(128,1)
 		MDLA C -1 
 		Stop
 	Large:
+		MDLA A 0 {A_ChangeFlag("NOGRAVITY", !Args[1]); A_ChangeFlag("SOLID", !Args[1]);}
 		MDLA A -1
 		Stop
 	Medium:
+		MDLA B 0 {A_ChangeFlag("NOGRAVITY", !Args[1]); A_ChangeFlag("SOLID", !Args[1]);}
 		MDLA B -1
 		Stop
 	Small:
+		MDLA C 0 {A_ChangeFlag("NOGRAVITY", !Args[1]); A_ChangeFlag("SOLID", !Args[1]);}
 		MDLA C -1
 		Stop
 	}
