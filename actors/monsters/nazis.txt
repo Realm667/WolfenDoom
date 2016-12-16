@@ -2156,11 +2156,19 @@ ACTOR MadDoctor2 : MadDoctor
 	Tag "Dr. Schabbs Sr."
 	Health 800
 	+BOSS
+	+MISSILEEVENMORE
 	States
 	{
 	Spawn:
 		SCH2 A 0
 		Goto Look
+	Missile:
+		"####" E 10 A_FaceTarget
+		"####" FFF 0 A_CustomMissile("FlyingNeedle",32,12, 0, 0, random(30,50))
+		"####" FFF 0 A_CustomMissile("FlyingNeedle",32,12, random(-20,20), CMF_AIMDIRECTION, random(20,40))
+		"####" F 8 A_CustomMissile("FlyingNeedle",32,12, random(-20,20), CMF_AIMDIRECTION, random(20,40))
+		"####" A 8
+		Goto See
 	}
 }
 
@@ -2171,6 +2179,9 @@ ACTOR MadCook : MadDoctor
 	Health 400
 	+BOSS
 	Tag "Fritz Bratwurst"
+	Speed 5
+	+MISSILEMORE
+	+FRIGHTENED
 	States
 	{
 	Spawn:
@@ -2674,6 +2685,7 @@ ACTOR SuperSoldierGirl : SuperSoldier
 	+BOSS
 	+MISSILEEVENMORE
 	+MISSILEMORE
+	Speed 5
 	States
 	{
 	Spawn:
@@ -3591,6 +3603,7 @@ ACTOR FlyingHack : FlyingNeedle
 	PoisonDamage 1, 2
 	+NOGRAVITY
 	+ROLLSPRITE
+	Speed 13
 	States
 	{
 	Spawn:
