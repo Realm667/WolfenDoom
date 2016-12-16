@@ -67,7 +67,7 @@ ACTOR Kar98k : NaziWeapon
 		KAR9 B 1 A_CheckReload
 		Goto Ready
 	ScopedFire:
-		SCO1 A 2 A_FireCustomMissile("Kar98kTracer")
+		SCO1 A 2 A_FireCustomMissile("Kar98kTracer2")
 		SCO1 A 0 A_JumpIf(height<=30,"ScopedFireLowRecoil")
 		SCO1 A 2 A_SetPitch(pitch-(4.0*CallACS("RecoilAmount")))
 		SCO1 A 1 A_SetPitch(pitch-(2.0*CallACS("RecoilAmount")))
