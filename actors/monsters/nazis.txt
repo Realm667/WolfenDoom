@@ -1146,6 +1146,17 @@ ACTOR MGTurretSoldierW : MGTurretSoldier
 	}
 }
 
+ACTOR Gestapo : Guard
+{
+	//$Title Gestapo Officier
+	States
+	{
+	Spawn:
+		GSAP N 0
+		Goto Look
+	}
+}
+
 //////////
 //ELITES//
 //////////
