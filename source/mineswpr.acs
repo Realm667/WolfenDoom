@@ -119,9 +119,17 @@ script "BoA_MineSweeper"(void) //code portion taken from BoA_Compass shamelessly
 	// This script is run once every time the player activates or deactivates their mine sweeper. - Talon1024
 	if(sweeperActive[playerNumber()]) {
 		TakeInventory("MineSweeperActive", 1);
-		sweeperActive[playerNumber()]=0;
+		sweeperActive[playerNumber()] = 0;
 	} else {
 		GiveInventory("MineSweeperActive", 1);
-		sweeperActive[playerNumber()]=1;
+		sweeperActive[playerNumber()] = 1;
+	}
+}
+
+script "BoA_MineSweeperOff" (void)
+{
+	if(sweeperActive[playerNumber()]) {
+		TakeInventory("MineSweeperActive", 1);
+		sweeperActive[playerNumber()] = 0;
 	}
 }
