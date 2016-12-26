@@ -363,7 +363,7 @@ ACTOR CoffeeMachine : SwitchableDecoration
 		"####" A 0 A_JumpIfInventory("CoffeeCounter", 5, "Empty")
 		Goto SpawnSet
 	Spawn:
-		CUP2 A 0 NoDelay A_SpawnItemEx("InteractionIcon", ScaleX*4, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+		CUP2 A 0 NoDelay A_SpawnItemEx("InteractionIcon25Health", ScaleX*4, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
 		SpawnSet:
 		"####" A -1
 		Stop
@@ -399,7 +399,7 @@ ACTOR WaterMachine : CoffeeMachine
 		"####" A 0 A_JumpIfInventory("WaterCounter", 5, "Empty")
 		Goto SpawnSet
 	Spawn:
-		WATR A 0 NoDelay A_SpawnItemEx("InteractionIcon", ScaleX*4, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+		WATR A 0 NoDelay A_SpawnItemEx("InteractionIcon25Health", ScaleX*4, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
 		SpawnSet:
 		"####" A -1
 		Stop
