@@ -2378,7 +2378,7 @@ ACTOR CODRailway_Switch : SwitchableDecoration
 	Active:
 		MDLA A 0 A_ChangeFlag("DORMANT", FALSE) //update manually on GZDB
 	Spawn:
-		MDLA A 0 A_ChangeFlag("NOGRAVITY", !Args[0])
+		MDLA A 0 NoDelay A_ChangeFlag("NOGRAVITY", !Args[0])
 		MDLA A -1
 		Stop
 	Inactive:
