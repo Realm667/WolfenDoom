@@ -1,14 +1,12 @@
 ACTOR RatSpawner
 {
 	//$Category Critters (Wolf3D)
-	//$Title Rats (arg1number1-5 arg2radius)
+	//$Title Rats (arg0 Amount, arg1 Radius)
 	//$Color 0
-
-	//$Arg0 "Number"
-	//$Arg0Tooltip "Number of rats, from 1-5"	
+	//$Arg0 "Amount"
+	//$Arg0Tooltip "Amount of Rats, from 1-5"	
 	//$Arg1 "Radius"
 	//$Arg1Tooltip "Radius in map units"
-
 	Radius 2
 	Height 2
 	+NOINTERACTION
@@ -48,10 +46,10 @@ ACTOR ScurryRat
 	States
 	{
 	Spawn:
-		RATS A 10 A_Look
+		MOUS A 10 A_Look
 		Loop
 	See:
-		PAIN A 1 A_Chase
+		MOUS A 1 A_Chase
 		"####" A 1 A_Chase("","",CHF_NOPLAYACTIVE)
 		"####" A 0 A_CheckSight ("Vanish")
 		"####" A 1 A_Chase
@@ -80,7 +78,7 @@ ACTOR ScurryRat
 		TNT1 A 1
 		Stop
 	Death:
-		PAIN H 3 A_ScreamAndUnblock
+		MOUS H 3 A_ScreamAndUnblock
 		"####" IJKL 3
 		"####" M -1
 		Stop
