@@ -2313,8 +2313,15 @@ ACTOR CODSignal_Light : 3dObstacle
 	
 	//$Arg0 "Light"
 	//$Arg0Tooltip "Pickup the desired light\nOff: 0\nGreen: 1\nYellow: 2\nRed: 3"
+	//$Arg1 "Gravity"
+	//$Arg1Tooltip "Actor is affected by gravity \nNo: 0\nYes: 1"
 	Radius 24
 	Height 128
+	-CANPASS
+	+MOVEWITHSECTOR
+	+NOGRAVITY
+	+RELATIVETOFLOOR
+	+SOLID
 	States
 	{
 	Spawn:
@@ -2323,15 +2330,19 @@ ACTOR CODSignal_Light : 3dObstacle
 		TNT1 A 0 A_JumpIf(Args[0]==2, "Yellow")
 		TNT1 A 0 A_JumpIf(Args[0]==3, "Red")
 		Off: //fall through if set at 0
+		MDLA A 0 A_ChangeFlag("NOGRAVITY", !Args[1])
 		MDLA A -1 
 		Stop
 	Green:
+		MDLA B 0 A_ChangeFlag("NOGRAVITY", !Args[1])
 		MDLA B -1 LIGHT("SIGNLGRN")
 		Stop
 	Yellow:
+		MDLA C 0 A_ChangeFlag("NOGRAVITY", !Args[1])
 		MDLA C -1 LIGHT("SIGNLYEL")
 		Stop
 	Red:
+		MDLA D 0 A_ChangeFlag("NOGRAVITY", !Args[1])
 		MDLA D -1 LIGHT("SIGNLRED")
 		Stop
 	}
@@ -2343,19 +2354,23 @@ ACTOR CODRailway_Switch : SwitchableDecoration
 	//$Title Train Railway Switch (Set DORMANT & activate it via ACS)
 	//$Color 3
 	DistanceCheck "scenelod"
+	
+	//$Arg0 "Gravity"
+	//$Arg0Tooltip "Actor is affected by gravity \nNo: 0\nYes: 1"
 	Radius 16
 	Height 144
 	Health -1
-	-FLOORCLIP
 	-NOBLOCKMAP
 	+CANPASS
 	+DONTSPLASH
 	+DONTTHRUST
+	+MOVEWITHSECTOR
 	+NOBLOOD
 	+NOBLOODDECALS
 	+NODAMAGE
 	+NOGRAVITY
 	+NOTAUTOAIMED
+	+RELATIVETOFLOOR
 	+SHOOTABLE
 	+SOLID
 	States
@@ -2363,6 +2378,7 @@ ACTOR CODRailway_Switch : SwitchableDecoration
 	Active:
 		MDLA A 0 A_ChangeFlag("DORMANT", FALSE) //update manually on GZDB
 	Spawn:
+		MDLA A 0 NoDelay A_ChangeFlag("NOGRAVITY", !Args[0])
 		MDLA A -1
 		Stop
 	Inactive:
@@ -2379,13 +2395,16 @@ ACTOR CanyonRockSpawner : 3dObstacle //ozymandias81
 	//$Color 3
 	DistanceCheck "scenelod"	
 	//$Arg0 "Shape"
-	//$Arg0Tooltip "Pickup the desired shape\nRandom: 0\nLarge: 1\nMedium: 2\nSmall: 3"
+	//$Arg0Tooltip "Pickup the desired shape\nRandom: 0\nLarge: 1\nMedium: 2\nSmall: 3"	
+	//$Arg1 "Gravity"
+	//$Arg1Tooltip "Actor is affected by gravity and is solid \nNo: 0\nYes: 1"
 	Radius 24
 	Height 24
 	-CANPASS
 	+MOVEWITHSECTOR
 	+NOGRAVITY
 	+RELATIVETOFLOOR
+	+SOLID
 	States
 	{
 	Spawn:
@@ -2394,17 +2413,21 @@ ACTOR CanyonRockSpawner : 3dObstacle //ozymandias81
 		TNT1 A 0 A_JumpIf(Args[0]==2, "Medium")
 		TNT1 A 0 A_JumpIf(Args[0]==3, "Small")
 	Random: //fall through if set at 0
+		MDLA A 0 {A_ChangeFlag("NOGRAVITY", !Args[1]); A_ChangeFlag("SOLID", !Args[1]);}
 		MDLA A -1 A_Jump(128,1)
 		MDLA B -1 A_Jump(128,1)
 		MDLA C -1 
 		Stop
 	Large:
+		MDLA A 0 {A_ChangeFlag("NOGRAVITY", !Args[1]); A_ChangeFlag("SOLID", !Args[1]);}
 		MDLA A -1
 		Stop
 	Medium:
+		MDLA B 0 {A_ChangeFlag("NOGRAVITY", !Args[1]); A_ChangeFlag("SOLID", !Args[1]);}
 		MDLA B -1
 		Stop
 	Small:
+		MDLA C 0 {A_ChangeFlag("NOGRAVITY", !Args[1]); A_ChangeFlag("SOLID", !Args[1]);}
 		MDLA C -1
 		Stop
 	}

@@ -70,6 +70,21 @@ ACTOR InteractionIcon
 	}	
 }
 
+actor InteractionIcon25Health : InteractionIcon
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_CheckRange(128.0, "FadeAway", TRUE)
+		TNT1 A 0 A_JumpIf(CallACS("PlayerHealthAbove25") == 1, "FadeAway")
+		ICNI A 1 BRIGHT
+		Loop
+	FadeAway:
+		TNT1 A 10
+		Goto Spawn
+	}
+}
+
 ACTOR ObjectiveIcon
 {
 	//$Category Misc (Wolf3D)

@@ -1,14 +1,8 @@
-//various replacements
+//Sprites replacements
 Sprite "BLCKH0",28,46
 {
 	Offset 14,46
 	Patch "BLCKI0",0,0
-}
-
-Sprite "SNI2I0",50,13
-{
-	Offset 25,9
-	Patch "SNIPI0",0,0
 }
 
 Sprite BJKKA0, 108, 67
@@ -22,76 +16,6 @@ Sprite BJKKB0, 87, 136
 	Offset -116, -32
 	Patch BJKKB0, 0, 0
 }
-/* //commented out due to hires sprites
-//mirroring burning sequence - ozy81
-Sprite NRUBA0, 35, 56 { Offset 17, 52 Patch BURNA0, 0, 0 { FlipX } }
-Sprite NRUBB0, 46, 59 { Offset 23, 55 Patch BURNB0, 0, 0 { FlipX } }
-Sprite NRUBC0, 46, 62 { Offset 23, 58 Patch BURNC0, 0, 0 { FlipX } }
-Sprite NRUBD0, 47, 70 { Offset 23, 66 Patch BURND0, 0, 0 { FlipX } }
-Sprite NRUBE0, 41, 67 { Offset 20, 63 Patch BURNE0, 0, 0 { FlipX } }
-Sprite NRUBF0, 38, 71 { Offset 19, 67 Patch BURNF0, 0, 0 { FlipX } }
-Sprite NRUBG0, 38, 71 { Offset 19, 67 Patch BURNG0, 0, 0 { FlipX } }
-Sprite NRUBH0, 38, 70 { Offset 19, 66 Patch BURNH0, 0, 0 { FlipX } }
-Sprite NRUBI0, 40, 68 { Offset 20, 64 Patch BURNI0, 0, 0 { FlipX } }
-Sprite NRUBJ0, 43, 68 { Offset 21, 64 Patch BURNJ0, 0, 0 { FlipX } }
-Sprite NRUBK0, 32, 66 { Offset 16, 62 Patch BURNK0, 0, 0 { FlipX } }
-Sprite NRUBL0, 36, 67 { Offset 18, 63 Patch BURNL0, 0, 0 { FlipX } }
-Sprite NRUBM0, 37, 68 { Offset 18, 64 Patch BURNM0, 0, 0 { FlipX } }
-Sprite NRUBN0, 34, 68 { Offset 17, 64 Patch BURNN0, 0, 0 { FlipX } }
-Sprite NRUBO0, 42, 67 { Offset 21, 63 Patch BURNO0, 0, 0 { FlipX } }
-Sprite NRUBP0, 45, 66 { Offset 22, 62 Patch BURNP0, 0, 0 { FlipX } }
-Sprite NRUBQ0, 47, 55 { Offset 23, 51 Patch BURNQ0, 0, 0 { FlipX } }
-Sprite NRUBR0, 48, 25 { Offset 24, 21 Patch BURNR0, 0, 0 { FlipX } }
-Sprite NRUBS0, 48, 33 { Offset 24, 29 Patch BURNS0, 0, 0 { FlipX } }
-Sprite NRUBT0, 48, 24 { Offset 24, 20 Patch BURNT0, 0, 0 { FlipX } }
-Sprite NRUBU0, 48, 15 { Offset 24, 11 Patch BURNU0, 0, 0 { FlipX } }
-Sprite NRUBV0, 48, 13 { Offset 24, 9 Patch BURNV0, 0, 0 { FlipX } }
-
-//dummy sprites for BJ's crouch frames, which will be replaced properly when ready - ozy81
-Sprite PLYCB1, 64, 56 { Offset 32, 56 Patch PLYCA1, 0, 0 }
-Sprite PLYCB2, 64, 56 { Offset 32, 56 Patch PLYCA2, 0, 0 }
-Sprite PLYCB3, 64, 56 { Offset 32, 56 Patch PLYCA3, 0, 0 }
-Sprite PLYCB4, 64, 56 { Offset 32, 56 Patch PLYCA4, 0, 0 }
-Sprite PLYCB5, 64, 56 { Offset 32, 56 Patch PLYCA5, 0, 0 }
-Sprite PLYCB6, 64, 56 { Offset 32, 56 Patch PLYCA6, 0, 0 }
-Sprite PLYCB7, 64, 56 { Offset 32, 56 Patch PLYCA7, 0, 0 }
-Sprite PLYCB8, 64, 56 { Offset 32, 56 Patch PLYCA8, 0, 0 }
-
-Sprite PLYCD1, 64, 56 { Offset 32, 56 Patch PLYCC1, 0, 0 }
-Sprite PLYCD2, 64, 56 { Offset 32, 56 Patch PLYCC2, 0, 0 }
-Sprite PLYCD3, 64, 56 { Offset 32, 56 Patch PLYCC3, 0, 0 }
-Sprite PLYCD4, 64, 56 { Offset 32, 56 Patch PLYCC4, 0, 0 }
-Sprite PLYCD5, 64, 56 { Offset 32, 56 Patch PLYCC5, 0, 0 }
-Sprite PLYCD6, 64, 56 { Offset 32, 56 Patch PLYCC6, 0, 0 }
-Sprite PLYCD7, 64, 56 { Offset 32, 56 Patch PLYCC7, 0, 0 }
-Sprite PLYCD8, 64, 56 { Offset 32, 56 Patch PLYCC8, 0, 0 }
-
-Sprite PLYCE1, 64, 56 { Offset 32, 56 Patch PLYCA1, 0, 0 }
-Sprite PLYCE2, 64, 56 { Offset 32, 56 Patch PLYCA2, 0, 0 }
-Sprite PLYCE3, 64, 56 { Offset 32, 56 Patch PLYCA3, 0, 0 }
-Sprite PLYCE4, 64, 56 { Offset 32, 56 Patch PLYCA4, 0, 0 }
-Sprite PLYCE5, 64, 56 { Offset 32, 56 Patch PLYCA5, 0, 0 }
-Sprite PLYCE6, 64, 56 { Offset 32, 56 Patch PLYCA6, 0, 0 }
-Sprite PLYCE7, 64, 56 { Offset 32, 56 Patch PLYCA7, 0, 0 }
-Sprite PLYCE8, 64, 56 { Offset 32, 56 Patch PLYCA8, 0, 0 }
-
-Sprite PLYCF1, 64, 56 { Offset 32, 56 Patch PLYCA1, 0, 0 }
-Sprite PLYCF2, 64, 56 { Offset 32, 56 Patch PLYCA2, 0, 0 }
-Sprite PLYCF3, 64, 56 { Offset 32, 56 Patch PLYCA3, 0, 0 }
-Sprite PLYCF4, 64, 56 { Offset 32, 56 Patch PLYCA4, 0, 0 }
-Sprite PLYCF5, 64, 56 { Offset 32, 56 Patch PLYCA5, 0, 0 }
-Sprite PLYCF6, 64, 56 { Offset 32, 56 Patch PLYCA6, 0, 0 }
-Sprite PLYCF7, 64, 56 { Offset 32, 56 Patch PLYCA7, 0, 0 }
-Sprite PLYCF8, 64, 56 { Offset 32, 56 Patch PLYCA8, 0, 0 }
-
-Sprite PLYCG1, 64, 56 { Offset 32, 56 Patch PLYCA1, 0, 0 }
-Sprite PLYCG2, 64, 56 { Offset 32, 56 Patch PLYCA2, 0, 0 }
-Sprite PLYCG3, 64, 56 { Offset 32, 56 Patch PLYCA3, 0, 0 }
-Sprite PLYCG4, 64, 56 { Offset 32, 56 Patch PLYCA4, 0, 0 }
-Sprite PLYCG5, 64, 56 { Offset 32, 56 Patch PLYCA5, 0, 0 }
-Sprite PLYCG6, 64, 56 { Offset 32, 56 Patch PLYCA6, 0, 0 }
-Sprite PLYCG7, 64, 56 { Offset 32, 56 Patch PLYCA7, 0, 0 }
-Sprite PLYCG8, 64, 56 { Offset 32, 56 Patch PLYCA8, 0, 0 }*/
 
 //130 dummy sprites for model frames, let's make models stand alone
 //sprite added for GZDB and showmap purposes - ozy81

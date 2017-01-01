@@ -37,6 +37,7 @@ ACTOR ScubaGearGiver : RadSuit
 	Inventory.PickupMessage "$SCUBA2"
 	Powerup.Duration -60
 	Powerup.Color 0,0,150,.125
+	DamageFactor "MutantPoison", 0.0
 	States
 	{
 	Spawn:
@@ -108,7 +109,19 @@ ACTOR MineSweeper : CustomInventory
 		MSPU A -1
 		Stop
 	Pickup:
-		"####" A 0 A_GiveInventory ("Power", 2400)
+		"####" A 0 {
+			if (CountInv("MineSweeper") == 0) {
+				A_GiveInventory ("Power", 2400);
+				return true;
+			} else if (CountInv("MineSweeper") > 0 && CountInv("Power") < 2400) {
+				ACS_NamedExecuteAlways("BoA_MineSweeperOff", 0);
+				A_GiveInventory ("Power", 2400);
+				A_TakeInventory ("MineSweeper", 1); // The player will immediately get another minesweeper.
+				return true;
+			} else {
+				return false;
+			}
+		}
 		Stop
 	Use:
 		"####" A 0 ACS_NamedExecuteAlways("BoA_MineSweeper",0)

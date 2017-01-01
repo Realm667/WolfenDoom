@@ -81,25 +81,25 @@ ACTOR RatFamiliar
 	States
 	{
 	Spawn:
-		PAIN A 3 A_Look
+		MOUS A 3 A_Look
 		Loop
 	See:
-		PAIN A 1 A_Chase
+		MOUS A 1 A_Chase
 		"####" AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
 		"####" B 1 A_Chase
 		"####" BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
 		Loop
 	Melee:
-		PAIN A 3 A_FaceTarget
+		MOUS A 3 A_FaceTarget
 		"####" B 3 A_CustomMeleeAttack(random(1,4)*1,"batfam/idle")
 		"####" BB 3 A_FaceTarget
 		Goto See
 	Pain:
-		PAIN A 2
+		MOUS A 2
 		"####" A 2 A_Pain
 		Goto See
 	Death:
-		PAIN H 5 A_ScreamAndUnblock
+		MOUS H 5 A_ScreamAndUnblock
 		"####" IJKL 5
 		"####" M -1
 		Stop

@@ -5,6 +5,8 @@ ACTOR Tree1
 	//$Color 3
 	Radius 32
 	Height 192
+	+MOVEWITHSECTOR
+	+RELATIVETOFLOOR
 	+SOLID
 	DistanceCheck "treeslod"
 	States
@@ -178,6 +180,8 @@ ACTOR SmallTree1
 	//$Color 3
 	Radius 16
 	Height 96
+	+MOVEWITHSECTOR
+	+RELATIVETOFLOOR
 	+SOLID
 	DistanceCheck "treeslod"
 	States
@@ -339,7 +343,7 @@ ACTOR Grass1
 {
 	//$Category Props (Wolf3D)/Grass
 	//$Title Grass 1
-	//$Color 3	
+	//$Color 3
 	Radius 16
 	Height 16
 	Scale 0.5
@@ -348,7 +352,7 @@ ACTOR Grass1
 	+NOBLOOD
 	+NOTAUTOAIMED
 	+SHOOTABLE
-	DistanceCheck "grasslod"	
+	DistanceCheck "grasslod"
 	States
 	{
 	Spawn:
@@ -478,7 +482,7 @@ ACTOR Grass7 : Grass1
 ACTOR Grass8 : Grass1
 {
 	//$Title Grass 2 (winter)
-	DistanceCheck "grasslod"	
+	DistanceCheck "grasslod"
 	States 
 	{ 
 	Spawn:
@@ -523,7 +527,7 @@ ACTOR Flower1
 	+NOBLOOD
 	+NOTAUTOAIMED
 	+SHOOTABLE
-	DistanceCheck "grasslod"		
+	DistanceCheck "grasslod"
 	States
 	{
 	Spawn:
@@ -678,7 +682,6 @@ ACTOR JungleGrass1 : Grass1
 ACTOR JungleGrass2 : Grass1
 {
 	//$Title Jungle Grass 2
-	Scale 0.9
 	DistanceCheck "grasslod"
 	States
 	{
@@ -697,7 +700,6 @@ ACTOR JungleGrass2 : Grass1
 ACTOR JungleGrass3 : Grass1
 {
 	//$Title Jungle Grass 3
-	Scale 0.9
 	DistanceCheck "grasslod"
 	States
 	{
@@ -716,7 +718,6 @@ ACTOR JungleGrass3 : Grass1
 ACTOR JungleGrass4 : Grass1
 {
 	//$Title Jungle Grass 4
-	Scale 0.9
 	DistanceCheck "grasslod"
 	States
 	{

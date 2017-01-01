@@ -731,3 +731,8 @@ script "VSerum Max Health Boost" (void)
 	}
 	GiveInventory("Meal", 5);
 }
+
+script "PlayerHealthAbove25" (void)
+{
+	SetResultValue(GetActorProperty(playerID, APROP_Health) >= 25);
+}
