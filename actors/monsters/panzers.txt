@@ -354,7 +354,7 @@ ACTOR NebNuke : Nuke //for nebelwerfer rockets
 ACTOR SSTank1
 {
 	//$Category Monsters (Wolf3D)/Tanks
-	//$Title Tank 1 (3500 HP - Panther Panzer IV)
+	//$Title Tank 1 (3500 HP, Panther Panzer IV, Turret + Missile)
 	//$Color 4
 	Health 3500
 	Radius 100
@@ -469,7 +469,7 @@ ACTOR DestroyedTank1
 
 ACTOR SSTank2 : SSTank1
 {
-	//$Title Tank 2 (4000 HP - KFZ 251 HalfTrack)
+	//$Title Tank 2 (4000 HP, KFZ 251 HalfTrack, Turret + Missile)
 	Height 88
 	Health 4000
 	Speed 2.33333333
@@ -518,7 +518,7 @@ ACTOR DestroyedTank2 : DestroyedTank1
 
 ACTOR SSTank3 : SSTank1
 {
-	//$Title Tank 3 (3000 HP - Tiger I Panzer)
+	//$Title Tank 3 (3000 HP, Tiger I Panzer, Missile only)
 	Health 3000
 	Height 88
 	Speed 2.55555556
@@ -530,7 +530,7 @@ ACTOR SSTank3 : SSTank1
 		Loop
 	Missile:
 		MDLA A 10
-		"####" A 0 A_Jump(128, "Turret")
+		"####" A 0 //A_Jump(128, "Turret")
 		"####" BCD 8
 		"####" E 8 A_CustomMissile("PanzerRocket", ScaleX * 65, ScaleY * 4, angle, CMF_ABSOLUTEANGLE)
 		"####" FG 8
@@ -567,7 +567,7 @@ ACTOR DestroyedTank3 : DestroyedTank1
 
 ACTOR SSTank4 : SSTank1
 {
-	//$Title Tank 4 (1000 HP - Light Panzer KFZ 222)
+	//$Title Tank 4 (1000 HP, Light Panzer KFZ 222, Turret only)
 	Health 1000
 	Radius 80
 	Height 80

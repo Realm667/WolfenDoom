@@ -34,6 +34,21 @@ ACTOR AktenEisenmann : Akten
 	}
 }
 
+ACTOR AktenV2 : Akten
+{
+	//$Title Secret Files (V2 Base)
+	Tag "Files of Secret Weaponfactory"
+	Inventory.Icon AKT2A0
+	Inventory.PickupMessage "$EISEN"
+	Inventory.MaxAmount 1
+	States
+	{
+	Spawn:
+		AKT2 B -1 ACS_NamedExecuteAlways("BoA_CompassQueue",0) 
+		Stop
+	}
+}
+
 ACTOR ArtifactAstrostrein : Akten
 {
 	//$Title Mayan Artifact (Astrostein)
