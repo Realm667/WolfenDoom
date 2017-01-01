@@ -276,7 +276,7 @@ IF NOT EXIST "%ProgramDirPath%tools" (
 REM Is there permission issues?
 CALL :CompactProject_CheckResources_CheckPermissions_ToolsDir
 IF %ERRORLEVEL% NEQ 0 (
-    CALL :CompactProject_CheckResources_ErrMSG 0 "Insufficent permissions or no data found in the [ {PROJECT_ROOT}\Tools ] directory."
+    CALL :CompactProject_CheckResources_ErrMSG 0 "Insufficient permissions or no data found in the [ {PROJECT_ROOT}\Tools ] directory."
     EXIT /B 1
 )
 EXIT /B 0
@@ -299,7 +299,7 @@ REM # ==========================================================================
 :CompactProject_CheckResources_FilePermissions
 CALL :CompactProject_CheckResources_7ZipExecutableInternal
 IF %ERRORLEVEL% NEQ 0 (
-    CALL :CompactProject_CheckResources_ErrMSG 2 "Unable to execute [ {PROJECT_ROOT}\Tools\7za.exe ] due to insufficent privileges! [Error Code: %ERRORLEVEL%]"
+    CALL :CompactProject_CheckResources_ErrMSG 2 "Unable to execute [ {PROJECT_ROOT}\Tools\7za.exe ] due to insufficient privileges! [Error Code: %ERRORLEVEL%]"
     EXIT /B 1
 )
 EXIT /B 0
