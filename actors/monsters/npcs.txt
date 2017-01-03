@@ -45,6 +45,30 @@ ACTOR StatistMedic
 	}
 }
 
+ACTOR StatistBarkeeperMale
+{
+	//$Category Monsters (Wolf3D)/NPCs
+	//$Title Male Barkeeper (NPC)
+	//$Color 4
+	Height 56
+	Mass 100
+	Scale 1.3
+	+SOLID
+	+USESPECIAL
+	States
+	{
+	Spawn:
+		TNT1 A 80
+		"####" B 40
+		"####" CB 40
+		"####" D 80
+		"####" DACB 40
+		"####" E 40
+		"####" F 40
+		Loop
+	}
+}
+
 ACTOR GeneralAllied
 {
 	//$Category Monsters (Wolf3D)/NPCs
