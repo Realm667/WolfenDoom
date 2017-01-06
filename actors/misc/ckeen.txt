@@ -126,8 +126,8 @@ ACTOR CKOneUp : Health
 
 ACTOR CKStunner : NaziWeapon
 {
-	//$Category Weapons (Wolf3D)
-	//$Title (2) Blaster
+	//$Category Misc (Wolf3D)/Commander Keen
+	//$Title (2) Neural Stunner
 	//$Color 14
 	Weapon.SelectionOrder 9998
 	Weapon.AmmoType "CKStunnerAmmo"
@@ -549,12 +549,13 @@ ACTOR CKWallShooterArrow_Down
 	Height 32
 	Damage 16
 	Speed 16
-	Seesound "ckeen/klick"
+	Seesound "ckeen/blowgun"
 	Deathsound "ckeen/klick"
 	PROJECTILE
 	States
 	{
 	Spawn:
+		CKTH A 0 NoDelay A_Playsound("ckeen/blowgun")
 		CKAR CD 8 
 		Loop
 	Death:
@@ -657,6 +658,103 @@ ACTOR CKBounder : CKBaseEnemy
 	DeathConfusion:
 		"####" C 0 A_SpawnItemEx("CKConfusion", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
 		"####" C -1
+		Stop
+	}
+}
+
+ACTOR CKThundercloud : CKBaseEnemy
+{
+	//$Category Misc (Wolf3D)/Commander Keen
+	//$Title Thundercloud
+	//$Color 4
+	Health 99999999
+	Speed 4
+	Radius 32
+	Height 32
+	Mass 400000
+	MaxTargetRange 96
+	-FLOORCLIP
+	-FLOAT
+	+NOGRAVITY
+	Obituary "$CK_TCLOUD"
+	States
+	{
+	Spawn:
+		CKCL A 10 A_Look
+		Loop
+	See:
+		"####" B 0 Thing_SetSpecial(0, 73, 15, 22, 0)
+		"####" BBBB 4 A_Chase
+		Loop
+	Missile:
+		"####" B 2 A_FaceTarget
+		"####" C 70 A_SpawnItemEx("CKThunderbolt", 0, 0, -120, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Goto See
+	}
+}
+
+ACTOR CKCloud
+{
+	//$Category Misc (Wolf3D)/Commander Keen
+	//$Title Cloud
+	//$Color 3
+	Radius 32
+	Height 32
+	Scale 2.0
+	-SOLID
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		CKCL A -1 
+		Stop
+	}
+}
+
+ACTOR CKThunderbolt : CKBaseEnemy
+{
+	Radius 70
+	Height 32
+	Speed 0
+	+DONTTHRUST
+	+NOGRAVITY
+	-SOLID
+	States
+	{
+	Spawn:
+		CKTH A 0 NoDelay A_Playsound("ckeen/shothit")
+		CKTH ABABABA 8 A_Explode
+		Stop 
+	}
+}
+
+ACTOR CKCoral1
+{
+	//$Category Misc (Wolf3D)/Commander Keen
+	//$Title Coral (large)
+	//$Color 3
+	Radius 32
+	Height 32
+	Scale 2.0
+	-SOLID
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		CKCR A -1 
+		Stop
+	}
+}
+
+ACTOR CKCoral2: CKCoral1
+{
+	//$Category Misc (Wolf3D)/Commander Keen
+	//$Title Coral (small)
+	//$Color 3
+	States
+	{
+	Spawn:
+		CKCR B -1 
 		Stop
 	}
 }
