@@ -121,6 +121,82 @@ ACTOR CKOneUp : Health
 }
 
 //////////////////////////////////////////////////
+// WEAPONS ///////////////////////////////////////
+//////////////////////////////////////////////////
+
+ACTOR CKStunner : NaziWeapon
+{
+	//$Category Weapons (Wolf3D)
+	//$Title (2) Blaster
+	//$Color 14
+	Weapon.SelectionOrder 9998
+	Weapon.AmmoType "CKStunnerAmmo"
+	Weapon.AmmoUse 1
+	Weapon.AmmoGive 5
+	Weapon.UpSound "ckeen/flag"
+	Tag "Neural Stunner"
+	Inventory.PickupMessage "$NEUST"
+	Inventory.Pickupsound "ckeen/gun"
+	+WEAPON.NOAUTOFIRE
+	States
+	{
+	Ready:
+		CKBL Q 1 A_WeaponReady
+		Loop
+	Deselect:
+		CKBL Q 0 A_Lower
+		CKBL Q 1 A_Lower
+		Loop
+	Select:
+		CKBL Q 0 A_Raise
+		CKBL Q 1 A_Raise
+		Loop
+	Fire:
+		CKBL R 8 
+		CKBL S 10 A_FireCustomMissile ("CKStunnerBall")
+		CKBL T 0 A_ReFire
+		Goto Ready
+	Spawn:
+		CKBL A 5
+		CKBL B 5
+		Loop
+	}
+}
+
+ACTOR CKStunnerBall
+{
+  Radius 11
+  Height 8
+  Speed 20
+  Damage 20
+  Projectile
+  +RANDOMIZE
+  SeeSound "ckeen/shoot"
+  DeathSound "ckeen/hit"
+  Obituary "$OB_CKBLAST" 
+  States
+  {
+  Spawn:
+    CKBL UV 5 Bright
+    Loop
+  Death:
+    CKBL W 4 Bright
+    CKBL X 4 Bright
+	CKBL Y 4 Bright
+	CKBL Z 4 Bright
+    Stop
+  }
+}
+
+ACTOR CKStunnerAmmo : Ammo
+{
+	Tag "Energy Cell"
+	+IGNORESKILL
+	Inventory.MaxAmount 5
+	Inventory.Icon CKNE01
+}
+
+//////////////////////////////////////////////////
 // KEYS & KEYPOTS ////////////////////////////////
 //////////////////////////////////////////////////
 ACTOR CKBlueKey : PuzzleItem
@@ -258,6 +334,7 @@ ACTOR CKConfusion
 {
 	Radius 1
 	Height 1
+	Scale 2.0
 	-SOLID
 	States
 	{
@@ -387,10 +464,16 @@ ACTOR CKPoisonSlug : CKBaseEnemy
 		TNT1 A 0 A_ChangeVelocity(0, 0, 5, CVF_RELATIVE)
 		TNT1 A 0 A_Jump(128, 3)
 		CKPS E 0 A_SpawnItemEx("CKConfusion", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
-		"####" E -1
-		Stop
+		"####" E 1
+		Goto DeathFloorCheck
 		CKPS F 0 A_SpawnItemEx("CKConfusion", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
-		"####" F -1
+		"####" F 1
+	DeathFloorCheck:
+		"####" "#" 1 A_CheckFloor("DeathConfusion")
+		Loop
+	DeathConfusion:
+		"####" "#" 0 A_SpawnItemEx("CKConfusion", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		"####" "#" -1
 		Stop
 	}
 }
@@ -409,5 +492,173 @@ ACTOR CKPoisonSlugPoison : CKBaseEnemy
 		CKSL Z 210
 		"####" Y 70
 		Stop 
+	}
+}
+
+ACTOR CKWallShooter : SwitchableDecoration
+{
+	//$Category Misc (Wolf3D)/Commander Keen
+	//$Title Wall Shooter (3 types)
+	//$Color 4
+	
+	//$Arg0 "Position"
+	//$Arg0Type 11
+	//$Arg0Enum { 0 = "Ceiling"; 1 = "Floor"; 2 = "Wall"; }
+	
+	Health 9999999
+	Radius 8
+	Height 16
+	Mass 40000
+	Obituary "$CK_WALSH"
+	+WALLSPRITE
+	+NOGRAVITY
+	-SOLID
+	States
+	{
+	Spawn:
+	Active:
+		TNT1 A 0 NoDelay A_JumpIf(Args[0] == 0,"APos_Ceiling")
+		TNT1 A 0 A_JumpIf(Args[0] == 1,"APos_Floor")
+		TNT1 A 0 A_JumpIf(Args[0] > 1,"APos_Wall")
+		APos_Ceiling:
+		CKWS C 70 A_SpawnItemEx("CKWallShooterArrow_Down", 0, 0, -10, 0, 0, -10, 0, SXF_NOCHECKPOSITION)
+		Loop
+		APos_Floor:
+		CKWS A 70 A_SpawnItemEx("CKWallShooterArrow_Up", 0, 0, 0, 0, 0, 10, 0, SXF_NOCHECKPOSITION)
+		Loop
+		APos_Wall:
+		CKWS B 70 A_SpawnItemEx("CKWallShooterArrow_Horizontal", 0, 0, 2, 10, 0, 0, 90, SXF_NOCHECKPOSITION)		
+		Loop
+	Inactive:
+		TNT1 A 0 A_JumpIf(Args[0] == 0,"IPos_Ceiling")
+		TNT1 A 0 A_JumpIf(Args[0] == 1,"IPos_Floor")
+		TNT1 A 0 A_JumpIf(Args[0] > 1,"IPos_Wall")
+		IPos_Ceiling:
+		CKWS C 1
+		Loop
+		IPos_Floor:
+		CKWS A 1
+		Loop
+		IPos_Wall:
+		CKWS B 1
+		Loop
+	}
+}
+
+ACTOR CKWallShooterArrow_Down
+{
+	Radius 4
+	Height 32
+	Damage 16
+	Speed 16
+	Seesound "ckeen/klick"
+	Deathsound "ckeen/klick"
+	PROJECTILE
+	States
+	{
+	Spawn:
+		CKAR CD 8 
+		Loop
+	Death:
+		TNT1 A 0
+		Stop
+	}
+}
+
+ACTOR CKWallShooterArrow_Up : CKWallShooterArrow_Down 
+{
+	States
+	{
+	Spawn:
+		CKAR AB 8 
+		Loop
+	}
+}
+
+ACTOR CKWallShooterArrow_Horizontal : CKWallShooterArrow_Down 
+{
+	Radius 8
+	Height 8
+	+WALLSPRITE
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		CKAR E 0 NoDelay A_SetAngle(angle+90)
+		CKAR EF 8 
+		Goto Spawn+1
+	}
+}
+
+ACTOR CKOracle : CKBaseEnemy
+{
+	//$Category Misc (Wolf3D)/Commander Keen
+	//$Title Oracle of Wisdom
+	//$Color 4
+	Health 40
+	PainChance 0
+	Speed 7
+	Radius 16
+	Height 64
+	Mass 400
+	+FLOORCLIP
+	+LOOKALLAROUND
+	Obituary "$CK_ORACLE"
+	States
+	{
+	Spawn:
+		CKCC A 10 A_Look
+		Loop
+	See:
+		"####" AABB 8 A_Wander
+		"####" A 0 A_Jump(48, "Stand")
+		Loop
+	Stand:
+		"####" C 70
+		Goto See
+	}
+}
+
+ACTOR CKBounder : CKBaseEnemy
+{
+	//$Category Misc (Wolf3D)/Commander Keen
+	//$Title Bounder
+	//$Color 4
+	Health 50
+	Painchance 0
+	Speed 0
+	Radius 30
+	Height 30
+	Mass 30
+	Gravity 0.7
+	Obituary "$CK_BOUND"
+	States
+	{
+	Spawn:
+	See: 
+		CKBB A 1 A_CheckFloor("Jump")
+		Loop
+	Jump:
+		"####" A 0 A_Jump(64, "JumpDirection")
+		"####" A 0 A_PlaySound("ckeen/madmushroombounce")
+		"####" B 12 ThrustThingZ(0, 50, 0, 1)
+		"####" A 12
+		Goto See
+	JumpDirection:
+		CKBB A 0 A_PlaySound("ckeen/madmushroombounce")
+		"####" B 0 ThrustThingZ(0, 50, 0, 1)
+		"####" B 12 ThrustThing(random(0,255), 8, 0, 0)
+		"####" A 12
+		Goto See
+	Death:
+		"####" C 0 A_PlaySound("ckeen/madmushroombounce")
+		"####" C 0 ThrustThingZ(0, 70, 0, 1)
+		"####" C 12 ThrustThing(random(0,255), 15, 0, 0)
+		"####" C 1 A_CheckFloor("DeathConfusion")
+		Goto Death+3
+	DeathConfusion:
+		"####" C 0 A_SpawnItemEx("CKConfusion", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		"####" C -1
+		Stop
 	}
 }
