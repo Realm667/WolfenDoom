@@ -339,7 +339,7 @@ ACTOR CKConfusion
 	States
 	{
 	Spawn:
-		CKCF ABC 12
+		CKCF ABC 10
 		Loop
 	}
 }
@@ -462,11 +462,9 @@ ACTOR CKPoisonSlug : CKBaseEnemy
 		Goto See
 	Death:
 		TNT1 A 0 A_ChangeVelocity(0, 0, 5, CVF_RELATIVE)
-		TNT1 A 0 A_Jump(128, 3)
-		CKPS E 0 A_SpawnItemEx("CKConfusion", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_Jump(128, 2)
 		"####" E 1
 		Goto DeathFloorCheck
-		CKPS F 0 A_SpawnItemEx("CKConfusion", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
 		"####" F 1
 	DeathFloorCheck:
 		"####" "#" 1 A_CheckFloor("DeathConfusion")
