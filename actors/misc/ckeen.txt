@@ -123,16 +123,18 @@ ACTOR CKOneUp : Health
 //////////////////////////////////////////////////
 // KEYS & KEYPOTS ////////////////////////////////
 //////////////////////////////////////////////////
-ACTOR CKBlueKey : BoABlueKey
+ACTOR CKBlueKey : PuzzleItem
 {
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Gem, blue (Blue Card)
 	//$Color 13
+	puzzleitem.number 101
 	Inventory.PickupMessage "$CKBGEM"
 	Inventory.Icon "CKKEYS1"
 	Inventory.PickupSound "ckeen/gem"
 	Species "BoABlueKey"
 	+BRIGHT
+	+INVENTORY.INVBAR
 	States
 	{
 	Spawn:
@@ -144,16 +146,18 @@ ACTOR CKBlueKey : BoABlueKey
 	}
 }
 
-ACTOR CKYellowKey : BoAYellowKey
+ACTOR CKYellowKey : PuzzleItem
 {
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Gem, yellow (Yellow Card)
 	//$Color 13
+	puzzleitem.number 102
 	Inventory.PickupMessage "$CKYGEM"
 	Inventory.Icon "CKKEYS0"
 	Inventory.PickupSound "ckeen/gem"
 	Species "BoAYellowKey"
 	+BRIGHT	
+	+INVENTORY.INVBAR
 	States
 	{
 	Spawn:
@@ -165,16 +169,18 @@ ACTOR CKYellowKey : BoAYellowKey
 	}
 }
 
-ACTOR CKRedKey : BoARedKey
+ACTOR CKRedKey : PuzzleItem
 {
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Gem, red (Red Card)
 	//$Color 13
+	puzzleitem.number 103
 	Inventory.PickupMessage "$CKRGEM"
 	Inventory.Icon "CKKEYS2"
 	Inventory.PickupSound "ckeen/gem"
 	Species "BoARedKey"
 	+BRIGHT
+	+INVENTORY.INVBAR
 	States
 	{
 	Spawn:
@@ -256,7 +262,7 @@ ACTOR CKConfusion
 	States
 	{
 	Spawn:
-		CKCF ABC 12 BRIGHT
+		CKCF ABC 12
 		Loop
 	}
 }
@@ -303,7 +309,8 @@ ACTOR CKArachnut : CKBaseEnemy
 		"####" AEAE 15
 		Goto See
 	Death:
-		"####" E 0 A_SpawnItemEx("CKConfusion", 0, 0, 48)
+		"####" E 0 A_ChangeVelocity(0, 0, 5, CVF_RELATIVE)
+		"####" E 0 A_SpawnItemEx("CKConfusion", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
 		"####" E -1
 		Stop
 	}
@@ -326,7 +333,7 @@ ACTOR CKMadMushroom : CKBaseEnemy
 	{
 	Spawn:
 	See: 
-		CKAC A 0 NoDelay Thing_SetSpecial(0, 73, 15, 22, 0)
+		CKMR A 0 NoDelay Thing_SetSpecial(0, 73, 15, 22, 0)
 		CKMR A 1 A_CheckFloor("Jump")
 		Goto See
 	Jump:
@@ -365,36 +372,42 @@ ACTOR CKPoisonSlug : CKBaseEnemy
 	See:
 		"####" A 0 Thing_SetSpecial(0, 73, 15, 22, 0)
 		"####" AABB 4 A_Wander
+		"####" A 0 A_Jump(48, "Pee")
 		Loop
 	Melee:
 		"####" A 0 Fast A_FaceTarget
 		"####" A 1 Fast A_CustomMeleeAttack(10,"","","Melee",TRUE)
 		Goto See
-	Missile:
+	Pee:
 		TNT1 A 0 A_PlaySound("ckeen/slugpoo")
 		CKPS C 5 
-		"####" C 30 A_SpawnItemEx("CKPoisonSlugPoison")
+		"####" C 30 A_SpawnItemEx("CKPoisonSlugPoison", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
 		Goto See
 	Death:
-		TNT1 A 0 A_Jump(128, 2)
-		CKPS E 0 A_SpawnItemEx("CKConfusion", 0, 0, 48)
+		TNT1 A 0 A_ChangeVelocity(0, 0, 5, CVF_RELATIVE)
+		TNT1 A 0 A_Jump(128, 3)
+		CKPS E 0 A_SpawnItemEx("CKConfusion", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
 		"####" E -1
 		Stop
-		"####" F 0 A_SpawnItemEx("CKConfusion", 0, 0, 48) //why these are here?
+		CKPS F 0 A_SpawnItemEx("CKConfusion", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
 		"####" F -1
+		Stop
 	}
 }
 
 ACTOR CKPoisonSlugPoison : CKBaseEnemy
 {
-	Radius 32
+	Radius 48
 	Height 2
+	Scale 3.0
+	+FLATSPRITE
 	States
 	{
 	Spawn:
 		TNT1 A 0 NoDelay Thing_SetSpecial(0, 73, 15, 22, 0)
+		TNT1 A 0 A_SetAngle(random(0,359))
 		CKSL Z 210
-		"####" Y 35
+		"####" Y 70
 		Stop 
 	}
 }
