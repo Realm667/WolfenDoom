@@ -3253,6 +3253,7 @@ ACTOR Clerk : DirtyDarren
 	}
 }
 
+//ALLIED SOLDIERS
 ACTOR Marine1 : DirtyDarren
 {
 	//$Title Dean Ascher
@@ -3263,6 +3264,14 @@ ACTOR Marine1 : DirtyDarren
 	Spawn:
 		PARS A 0
 		Goto Look
+	Missile:
+		"####" FG 5 A_FaceTarget
+		"####" H 0 A_PlaySound("nazi/stg44", CHAN_WEAPON)
+		"####" H 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyStGTracer",38,6,random(-4,4))
+		"####" H 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" G 4 A_MonsterRefire(10,"See")
+		"####" G 0 A_FaceTarget
+		Goto Missile+2
 	Death:
 		"####" J 5
 		"####" K 5 A_Scream
@@ -3271,9 +3280,9 @@ ACTOR Marine1 : DirtyDarren
 		"####" O -1
 		Stop
 	Pain:
-		"####" I 3
-		"####" I 3 A_Pain
-		"####" I 0 A_Jump(256,"See")
+		"####" J 3
+		"####" J 3 A_Pain
+		"####" J 0 A_Jump(256,"See")
 		Stop
 	Raise:
 		"####" ONMLKJ 5
@@ -3284,7 +3293,7 @@ ACTOR Marine1 : DirtyDarren
 ACTOR Marine2 : RandomSpawner
 {
 	//$Category Monsters (Wolf3D)/NPCs
-	//$Title Marine (weapon)
+	//$Title Marine (Rifle)
 	//$Color 4
 	DropItem Marine2A
 	DropItem Marine2B
@@ -3297,6 +3306,11 @@ ACTOR Marine2A : Marine1
 	Spawn:
 		ARMH A 0
 		Goto Look
+	Pain:
+		"####" I 3
+		"####" I 3 A_Pain
+		"####" I 0 A_Jump(256,"See")
+		Stop
 	}
 }
 
@@ -3313,7 +3327,7 @@ ACTOR Marine2B : Marine1
 ACTOR Marine3 : RandomSpawner
 {
 	//$Category Monsters (Wolf3D)/NPCs
-	//$Title Marine (no weapon)
+	//$Title Marine (Pistol)
 	//$Color 4
 	DropItem Marine3A
 	DropItem Marine3B
@@ -3326,6 +3340,13 @@ ACTOR Marine3A : Marine1
 	Spawn:
 		ARH2 A 0
 		Goto Look
+	Missile:
+		"####" FG 5 A_FaceTarget
+		"####" H 0 A_PlaySound("nazi/pistol", CHAN_WEAPON)
+		"####" H 8 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",54,1,random(-8,8))
+		"####" G 8 A_SpawnItemEx("9MMCasing", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
+		"####" G 0 A_Jump(256,"See")
+		Stop
 	Death:
 		"####" J 5
 		"####" K 5 A_Scream
