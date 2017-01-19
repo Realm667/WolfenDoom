@@ -28,8 +28,28 @@ ACTOR PuffSmoke
 	}
 }
 
+ACTOR WaterSmoke : PuffSmoke //needed for 3d toilet & 3d hydrants - ozy81
+{
+	Alpha 0.2
+	Scale 0.03
+	States
+		{
+		Spawn:
+			TNT1 A 0 NODELAY A_SetScale(ScaleX*(frandom(0.4,0.7)), ScaleY*(frandom(0.4,0.7)))
+			TNT1 A 0 A_Jump(256,1,2)
+			WTSA A 0 A_Jump(256,"End")
+			WTSC A 0 A_Jump(256,"End")
+		End:
+			"####" AAAAAAAA 1 A_FadeIn(0.03)
+			"####" AAAAAAAAAAAAAA 2 A_FadeOut(0.015)
+			Stop
+		}
+}
+
 ACTOR PowerPlantSmokePuff : PuffSmoke {Scale 0.64}
 ACTOR PowerPlantSmokePuffSmall : PuffSmoke {Scale 0.32}
+ACTOR WaterSmokePuff : WaterSmoke {Scale 0.18}
+ACTOR WaterSmokePuffSmall : WaterSmoke {Scale 0.10}
 
 ACTOR PowerPlantSmokeGenerator : SwitchableDecoration
 {

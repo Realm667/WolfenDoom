@@ -24,11 +24,12 @@ ACTOR ToiletShootable //3d actor
 		MDLA A 2 A_Scream
 	Broken:
 		MDLA B 0 A_CheckRange(512,"BrokenSilent")
-		"####" B 2 A_PlaySound("toilet/broken", CHAN_AUTO, 1.0, TRUE, ATTN_STATIC)
+		"####" B 0 A_PlaySound("toilet/broken", CHAN_AUTO, 1.0, TRUE, ATTN_STATIC)
+		"####" B 1 A_SpawnItemEx("WaterSmokePuffSmall", 0, 0, 1, (0.1)*random(0, 4), 0, (0.1)*random(8, 16), random(0, 360), 128)
 		Loop
 	BrokenSilent:
 		MDLA B 0 A_StopSound(CHAN_AUTO)
-		"####" B 2
+		"####" B 1 A_SpawnItemEx("WaterSmokePuffSmall", 0, 0, 1, (0.1)*random(0, 4), 0, (0.1)*random(8, 16), random(0, 360), 128)
 		Goto Broken
 	}
 }
