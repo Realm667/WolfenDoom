@@ -22,16 +22,13 @@ ACTOR ToiletShootable //3d actor
 		Stop
 	Death:
 		MDLA A 2 A_Scream
-		TOIL BC 2
 	Broken:
-		TOIL D 0 A_CheckRange(512,"BrokenSilent")
-		TOIL D 2 A_PlaySound("toilet/broken", CHAN_AUTO, 1.0, TRUE, ATTN_STATIC)
-		"####" EFG 2
+		MDLA B 0 A_CheckRange(512,"BrokenSilent")
+		"####" B 2 A_PlaySound("toilet/broken", CHAN_AUTO, 1.0, TRUE, ATTN_STATIC)
 		Loop
 	BrokenSilent:
-		TOIL D 0 A_StopSound(CHAN_AUTO)
-		TOIL D 2
-		"####" EFG 2
+		MDLA B 0 A_StopSound(CHAN_AUTO)
+		"####" B 2
 		Goto Broken
 	}
 }
