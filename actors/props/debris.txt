@@ -91,6 +91,40 @@ ACTOR Debris_Trash : Debris_Base
 
 ACTOR Debris_Trash2 : Debris_Trash { Scale 0.8 }
 
+ACTOR Debris_Hydrant : Debris_Trash
+{
+	States
+	{
+	Spawn:
+		HDBR ABCD 4 NoDelay NoDelay {
+							A_SetRoll(roll + frandom(-0.5, 0.5), SPF_INTERPOLATE);
+							A_SetAngle(angle + random(-15, 15));
+							A_SetPitch(pitch + frandom(-0.25, 0.25));
+							A_JumpIf(waterlevel == 3, "AdjustMass");
+							}
+		Loop
+	AdjustMass: //mxd
+		"####" "#" 0 A_SetMass(400)
+		Goto Swim
+	Swim: //mxd
+		"####" A 2 A_ScaleVelocity(0.7)
+		"####" B 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" C 2 A_ScaleVelocity(0.7)
+		"####" D 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		Loop
+	Death:
+		"####" A 0 A_Jump(256,1,2,3)
+		"####" ABCD 0 A_Jump(256,"Death1")
+		Stop
+	Death1:
+		"####" "#" 0 A_ChangeFlag("BOUNCEONACTORS", FALSE)
+		Death1Wait:
+		"####" "#" 1 A_SetTics(35*CallACS("DebrisLifetime"))
+		"####" "#" 1 A_FadeOut(0.1)
+		Wait
+	}
+}
+
 ACTOR Debris_Bin : Debris_Base
 {
 	Gravity 0.5
