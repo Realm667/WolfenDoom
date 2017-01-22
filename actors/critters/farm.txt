@@ -66,14 +66,15 @@ ACTOR BlackCat : BarkDog
 	{
 	Active:
 		BCAT D 0 A_StopSound(CHAN_ITEM)
+		"####" D 0 A_JumpIfInventory("HissCounter", 3, "Hiss") 
 		"####" D 0 A_PlaySound("cat/meows", CHAN_AUTO, frandom(0.7,1.0), FALSE, ATTN_NORM)
 	ActiveSet:
-		BCAT D 0 A_Jump(128,"Hiss2")
-		Hiss1:
+		"####" D 0 A_GiveInventory("HissCounter", 1)
 		"####" D 1 A_SetTics(random(10,40))
-		"####" EF 1 A_SetTics(random(20,40)) 
+		"####" D 0 A_PlaySound("cat/meows", CHAN_AUTO, 1.0, FALSE, ATTN_NORM)
+		"####" EF 1 A_SetTics(random(20,40))
 		Goto Purr
-		Hiss2:
+		Hiss:
 		"####" D 1 A_SetTics(random(10,40))
 		"####" EF 1 A_SetTics(random(4,8))
 		"####" G 0 A_PlaySound("cat/hiss", CHAN_AUTO, frandom(0.7,1.0), FALSE, ATTN_NORM)
@@ -94,11 +95,12 @@ ACTOR BlackCat : BarkDog
 		"####" AA 1 A_SetTics(random(10,40)) 
 		Goto Purr
 	Inactive:
-		"####" A 0 A_StopSound(CHAN_AUTO)
 		"####" A 0 A_StopSound(CHAN_ITEM)
 		Goto Purr
 	}
 }
+
+ACTOR HissCounter : Inventory {Inventory.MaxAmount 3}
 
 ACTOR Camel : Cows
 {
