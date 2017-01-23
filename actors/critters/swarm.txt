@@ -13,8 +13,7 @@ ACTOR Bodiless_Swarm
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_PlaySound("SFX/Buzz", CHAN_BODY, 1.0, TRUE)
-		"####" AAAAA 1 A_SpawnItemEx("SwarmFly",frandom(-16,16),frandom(-16,16),frandom(-16,16))
+		TNT1 AAAAA 1 A_SpawnItemEx("SwarmFly",frandom(-16,16),frandom(-16,16),frandom(-16,16))
 		"####" A -1
 		Stop
 	}
@@ -32,6 +31,9 @@ ACTOR SwarmFly
 	States
 	{
 	Spawn:
+		TNT1 A 0 NODELAY A_PlaySound("SFX/Buzz", CHAN_BODY, frandom(0.6,0.8), TRUE, ATTN_NORM)
+	SpawnSet:
+		TNT1 A 0 A_CheckRange(768,"SpawnSilent")
 		SFLY A 1 ThrustThingZ(0,random(-1,1),random(1,0),1)
 		TNT1 A 0 A_ChangeVelocity(frandom(-2,2),frandom(-1,1),frandom(-2,2),1)
 		SFLY B 1 ThrustThingZ(0,random(-1,1),random(1,0),1)
@@ -43,6 +45,20 @@ ACTOR SwarmFly
 		TNT1 A 0 A_ChangeVelocity(frandom(-1,1),frandom(-2,2),frandom(-1,1),1)
 		SFLY A 0 A_CountDown
 		Loop
+	SpawnSilent:
+		TNT1 A 0 A_StopSound(CHAN_BODY)
+	SilentLoop:
+		SFLY A 1 ThrustThingZ(0,random(-1,1),random(1,0),1)
+		TNT1 A 0 A_ChangeVelocity(frandom(-2,2),frandom(-1,1),frandom(-2,2),1)
+		SFLY B 1 ThrustThingZ(0,random(-1,1),random(1,0),1)
+		TNT1 A 0 A_ChangeVelocity(frandom(-1,1),frandom(-2,2),frandom(-1,1),1)
+		SFLY A 0 A_CountDown
+		SFLY C 1 ThrustThingZ(0,random(-1,1),random(1,0),1)
+		TNT1 A 0 A_ChangeVelocity(frandom(-2,2),frandom(-1,1),frandom(-2,2),1)
+		SFLY B 1 ThrustThingZ(0,random(-1,1),random(1,0),1)
+		TNT1 A 0 A_ChangeVelocity(frandom(-1,1),frandom(-2,2),frandom(-1,1),1)
+		SFLY A 0 A_CountDown
+		Goto Spawn
 	Death:
 		SFLY A 1 A_CustomMissile("SwarmFly",0,0,frandom(-20,20))
 		Stop
