@@ -8,7 +8,7 @@ ACTOR LeavesSpawner : CinderSpawner //ozy81
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("CinderSwitch")==0,"EndSpawn")
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("LeavesSwitch")==0,"EndSpawn")
 	ActiveLoop:
 		TNT1 A 0 A_CheckSightOrRange(1200.0, "LoopWait", TRUE)
 	LeafLoop: //if you need more spawn leaves, simply change above tics from 8 to a lower value, max 1
@@ -30,6 +30,7 @@ ACTOR FloatingLeaves : Debris_Leaf
 {
 	Scale 1.0
 	+WINDTHRUST
+	DistanceCheck "grasslod"
 	States
 	{
 	Spawn:
