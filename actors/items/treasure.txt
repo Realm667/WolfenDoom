@@ -168,7 +168,7 @@ ACTOR SupplyChest
 	//$Title Treasure Chest
 	//$Color 17
 	//$Arg0 "Prize"
-	//$Arg0Tooltip "Predefined chest prize:\n  1 = 100 Coins\n  2 = 75 Coins\n  3 = 25 Coins\n  4 = Kar98k\n  5 = Backpack\n  6 = Grenades"
+	//$Arg0Tooltip "Predefined chest prize:\n  1 = 100 Coins\n  2 = 75 Coins\n  3 = 25 Coins\n  4 = Kar98k\n  5 = 2 Field Kits\n  6 = Grenades"
 	//$Arg1 "Script"
 	//$Arg1Tooltip "Optional script number to run when chest is unlocked. 0 means no script."
 	//$Arg2 "Objective"
@@ -286,13 +286,13 @@ ACTOR SupplyChestKar98k : SupplyChest100Coins
 	}
 }
 
-ACTOR SupplyChestUMG43 : SupplyChest100Coins
+ACTOR SupplyChestFieldKits : SupplyChest100Coins
 {
-	Inventory.PickupMessage "$UMGCHEST"
+	Inventory.PickupMessage "$FKITCHEST"
 	States
 	{
 	Pickup:
-		TNT1 A 0 A_GiveInventory("UMG43",1)
+		TNT1 A 0 A_GiveInventory("FieldKit",2)
 		Stop
 	}
 }
