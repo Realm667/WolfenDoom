@@ -286,13 +286,13 @@ ACTOR SupplyChestKar98k : SupplyChest100Coins
 	}
 }
 
-ACTOR SupplyChestBackpack : SupplyChest100Coins
+ACTOR SupplyChestUMG43 : SupplyChest100Coins
 {
-	Inventory.PickupMessage "$SUPCHEST"
+	Inventory.PickupMessage "$UMGCHEST"
 	States
 	{
 	Pickup:
-		TNT1 A 0 A_GiveInventory("NazisBackpack",1)
+		TNT1 A 0 A_GiveInventory("UMG43",1)
 		Stop
 	}
 }
