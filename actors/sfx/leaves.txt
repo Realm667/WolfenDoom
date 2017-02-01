@@ -28,13 +28,15 @@ ACTOR LeavesSpawner : CinderSpawner //ozy81
 
 ACTOR FloatingLeaves : Debris_Leaf
 {
-	Scale 1.0
+	+DONTSPLASH
 	+WINDTHRUST
 	DistanceCheck "grasslod"
 	States
 	{
 	Spawn:
-		LEFY ABCDEFGH 6 NoDelay {
+		LEFY A 0 NODELAY A_SetScale(ScaleX + frandom(0.15,0.45),ScaleY + frandom(0.15,0.45))
+	StartLoop:
+		LEFY ABCDEFGH 6 {
 							A_SetGravity(frandom(0.0525,0.0725));
 							A_SetRoll(roll + frandom(-0.5, 0.5), SPF_INTERPOLATE);
 							A_SetAngle(angle + random(-15, 15));
@@ -60,8 +62,8 @@ ACTOR FloatingLeaves : Debris_Leaf
 								A_SetRoll(0); A_SetAngle(0); A_SetPitch(0);
 								A_ChangeFlag("ROLLCENTER", FALSE); A_ChangeFlag("ROLLSPRITE", FALSE);
 								}
-		"####" A 0 A_Jump(256,5,4,3,2,1)
-		"####" ACEGH 0 A_Jump(256,"Death1")
+		"####" A 0 A_Jump(256,8,7,6,5,4,3,2,1)
+		"####" ABCDEFGH 0 A_Jump(256,"Death1")
 		Stop
 	Death1:
 		"####" "#" 0 A_ChangeFlag("BOUNCEONACTORS", FALSE)
