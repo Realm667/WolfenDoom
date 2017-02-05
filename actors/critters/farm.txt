@@ -123,11 +123,8 @@ ACTOR HissCounter : Inventory {Inventory.MaxAmount 2}
 
 ACTOR OcherCat
 {
-	//$Category Critters (Wolf3D)
-	//$Title Ocher Cat (Not Interactive, No Sounds)
-	//$Color 0
-	Radius 8
-	Height 16
+	Radius 4
+	Height 8
 	Scale 0.9
 	+CANPASS
 	+DONTTHRUST
@@ -151,4 +148,55 @@ ACTOR OcherCat
 		"####" EE 1 A_SetTics(random(10,40)) 
 		Loop
 	}
+}
+
+ACTOR GrayCat : OcherCat
+{
+	States
+	{
+	Spawn:
+		GCAT A 0 NODELAY A_SetScale(ScaleX + frandom(0.1,0.2),ScaleY + frandom(0.1,0.2))
+		Randomize:
+		GCAT A 0 A_Jump(128,"Cat2")
+	Cat1:
+		GCAT BCAD 1 A_SetTics(random(4,10))
+		"####" AA 1 A_SetTics(random(10,40)) 
+		Loop
+	Cat2:
+		GCAT FGEH 1 A_SetTics(random(4,10))
+		"####" EE 1 A_SetTics(random(10,40)) 
+		Loop
+	}
+}
+
+ACTOR WhiteCat : OcherCat
+{
+	States
+	{
+	Spawn:
+		WCAT A 0 NODELAY A_SetScale(ScaleX + frandom(0.1,0.2),ScaleY + frandom(0.1,0.2))
+		Randomize:
+		WCAT A 0 A_Jump(128,"Cat2")
+	Cat1:
+		WCAT BCAD 1 A_SetTics(random(4,10))
+		"####" AA 1 A_SetTics(random(10,40)) 
+		Loop
+	Cat2:
+		WCAT FGEH 1 A_SetTics(random(4,10))
+		"####" EE 1 A_SetTics(random(10,40)) 
+		Loop
+	}
+}
+
+ACTOR CatSpawner : RandomSpawner
+{
+	//$Category Critters (Wolf3D)
+	//$Title Cat Spawner (Random Ocher, White & Gray Non-Interactive Cats)
+	//$Color 0
+	//$Sprite OCATA0
+	Radius 4
+	Height 8
+	DropItem "OcherCat"
+	DropItem "GrayCat"
+	DropItem "WhiteCat"
 }
