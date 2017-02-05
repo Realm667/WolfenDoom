@@ -411,7 +411,7 @@ ACTOR SSTank1
 	Melee:
 	Turret:
 		MDLA A 0 A_PlaySound("weapons/chaingun", CHAN_WEAPON)
-		"####" EEEE 1 light("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer", ScaleX * 48, ScaleY * 26, random(-4, 4))
+		"####" EEEE 1 LIGHT("SUPAFIRE") A_CustomMissile("EnemyChaingunTracer", ScaleX * 48, ScaleY * 26, random(-4, 4))
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
 		MDLA A 2 A_JumpIfTargetInLOS("Turret", 45)
 		Goto See
