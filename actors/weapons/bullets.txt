@@ -300,6 +300,17 @@ ACTOR EnfieldRifleCasing : MauserRifleCasing{}
 ACTOR GarandRifleCasing : MauserRifleCasing{}
 ACTOR STGCasing : MauserRifleCasing{}
 
+ACTOR PyroCasing : ShotgunCasing
+{
+	Scale 0.48
+	States
+	{
+	Spawn:
+		PYSC ABCDEFGH 2 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		Loop
+	}
+}
+
 /////////////////////////////////////////////////////////////
 /////////////////// MUTANT PROJECTILES //////////////////////
 /////////////////////////////////////////////////////////////
