@@ -152,30 +152,31 @@ ACTOR NebelwerferTruck : Nebelwerfer
 	States
 	{
 	Ready:
-		NEBG A 1 A_WeaponReady
+		HSML A 1 A_WeaponReady
 		Loop
 	Deselect:
-		NEBG A 0 A_Lower
-		NEBG A 1 A_Lower
+		HSML A 0 A_Lower
+		HSML A 1 A_Lower
 		Loop
 	Select:
-		NEBG A 0 A_Raise
-		NEBG A 1 A_Raise
+		HSML A 0 A_Raise
+		HSML A 1 A_Raise
 		Loop
 	Fire:
-		NEBG A 0 A_GunFlash
-		NEBG A 0 A_PlaySound("nebelwerfer/fire", CHAN_WEAPON)
-		NEBG A 2 A_FireCustomMissile("NebRocket")
-		NEBG BCDEB 1 A_SetPitch(pitch-(0.5*CallACS("RecoilAmount")))
-		NEBG A 40 
-		NEBG A 2 A_ReFire
+		HSML A 0 A_GunFlash
+		HSML A 0 A_PlaySound("nebelwerfer/fire", CHAN_WEAPON)
+		HSML BBC 1 A_SetPitch(pitch-(0.5*CallACS("RecoilAmount")))
+		HSML C 0 A_FireCustomMissile("NebRocket")
+		HSML CDD 1 A_SetPitch(pitch-(0.5*CallACS("RecoilAmount")))
+		HSML A 40 
+		HSML A 2 A_ReFire
 		Goto Ready
 	Flash:
-		NEBF A 2 BRIGHT A_Light2
+		HSML A 2 BRIGHT A_Light2
 		TNT1 A 2 A_Light1
 		Goto LightDone
 	Spawn:
-		NEBL A -1
+		HSML A -1
 		Stop
 	}
 }
