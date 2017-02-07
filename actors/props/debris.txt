@@ -295,28 +295,36 @@ ACTOR Debris_Mecha : Debris_MetalJunk
 	Spawn:
 		DMCH A 0 NODELAY A_Jump(256,"Set1","Set2","Set3","Set4","Set5","Set6","Set7","Set8")
 		Set1:
-		"####" A 1 {A_SetRoll(roll + 10, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" A 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" A 1 {A_SetRoll(roll + 25, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 		Set2:
-		"####" B 1 {A_SetRoll(roll - 10, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" B 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" B 1 {A_SetRoll(roll - 25, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 		Set3:
-		"####" C 1 {A_SetRoll(roll + 10, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" C 0 A_SpawnItemEx("Spark_R1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" C 1 {A_SetRoll(roll + 30, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 		Set4:
-		"####" D 1 {A_SetRoll(roll - 10, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" D 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" D 1 {A_SetRoll(roll - 30, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 		Set5:
-		"####" E 1 {A_SetRoll(roll + 10, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" E 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" E 1 {A_SetRoll(roll + 35, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 		Set6:
-		"####" F 1 {A_SetRoll(roll - 10, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" F 0 A_SpawnItemEx("Spark_R1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" F 1 {A_SetRoll(roll - 35, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 		Set7:
-		"####" G 1 {A_SetRoll(roll + 10, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" G 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" G 1 {A_SetRoll(roll + 40, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 		Set8:
-		"####" H 1 {A_SetRoll(roll - 10, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" H 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" H 1 {A_SetRoll(roll - 40, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 	AdjustMass:
 		DMCH "#" 0 A_SetMass(750)

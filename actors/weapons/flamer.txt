@@ -42,8 +42,8 @@ ACTOR Pyrolight : NaziWeapon
 		Goto Dryfire
 		FFTF A 0 A_Light2
 		FFTF A 0 A_AlertMonsters
-		FFTF A 1 Offset(0,35) BRIGHT A_FireCustomMissile("Flamebolt")
-		FFTF A 1 Offset(0,36) BRIGHT
+		FFTF A 1 Offset(0,35) A_FireCustomMissile("Flamebolt")
+		FFTF A 1 Offset(0,36)
 		FFTF A 0 A_Light0
 		FFTR A 0 A_Refire
 		FFTR A 20 A_GunFlash
@@ -62,7 +62,7 @@ ACTOR Pyrolight : NaziWeapon
 		FFTF A 0 A_TakeInventory("PyrolightLoaded",10,TIF_NOTAKEINFINITE)
 		FFTF A 0 A_PlaySound("flamer/napalm",CHAN_WEAPON)
 		FFTF A 0 A_AlertMonsters
-		FFTF A 1 BRIGHT A_FireCustomMissile("Flameball",0,0)
+		FFTF A 1 A_FireCustomMissile("Flameball",0,0)
 		FFTF A 1 Offset(0,34)
 		FFTF A 1 Offset(0,36)
 		FFTR A 1 Offset(0,40)
@@ -238,7 +238,7 @@ ACTOR Flamebolt
 		"####" A 0 A_SpawnItemEx("FlamerSmoke3")
 		Goto Death
 	Death:
-		"####" A 1 BRIGHT LIGHT(BOAFLAMW)
+		"####" A 1 LIGHT(BOAFLAMW)
 			{
 				A_SetScale(ScaleX+0.05);
 				A_FadeOut(0.05);

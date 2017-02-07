@@ -1,52 +1,275 @@
-/////////////////////////////////////////////////////////////////////
-//// WEAPON SOUNDS //////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////
+//////////
+//MENUES//
+//////////
+
+menu/activate	menuopen	// Activate a new menu
+menu/backup		menucls 	// Backup to previous menu
+menu/change		menuslid	// Select new value for option
+menu/choose		menupick	// Choose a menu item
+menu/clear		menucls 	// Close top menu
+menu/cursor		menumove	// Move cursor up/down
+menu/dismiss	menupick	// Dismiss a prompt message
+menu/invalid	menuslid	// Menu not available
+menu/prompt		menuopen	// Activate a prompt "menu"
+
+$pitchshift menu/activate 0
+$pitchshift menu/backup 0
+$pitchshift menu/change 0
+$pitchshift menu/choose 0
+$pitchshift menu/clear 0
+$pitchshift menu/cursor 0
+$pitchshift menu/dismiss 0
+$pitchshift menu/invalid 0
+$pitchshift menu/prompt 0
+
+///////////
+//WEAPONS//
+///////////
 
 //Astrostein
-astrolauncher/explode 	dslsfirx
-astrolauncher/fire 	dslsfir
-astrolauncher/bounce 	dslasgn3
-astroshotgun/fire	dslasgn2	
-astrochaingun/fire	dslasgun
-astroricochet		dsasrico
-astroplasmaexplode	dsasexpl
-astroricochet		astroric
-astrohitflesh		astrohf
-astrowhiz		astrowz
-weapons/rezup		dsrezup
-weapons/rezidle		dsrezidl
-$pitchshift weapons/rezidle 0 //mxd
-weapons/rezfull		dsrezful
-weapons/rezhit		dsrezhit
+astrochaingun/fire		dslasgun
+astrohitflesh					astrohf
+astrolauncher/bounce	dslasgn3
+astrolauncher/explode	dslsfirx
+astrolauncher/fire		dslsfir
+astroplasmaexplode		dsasexpl
+astroricochet					astroric
+astroricochet					dsasrico
+astroshotgun/fire			dslasgn2	
 astrostein/explosion	ASTEXP02
+$random astrostein/hitler_act {astrostein/hitler_act1 astrostein/hitler_act2 astrostein/hitler_act3}
 astrostein/hitler_act1	ashtac01
 astrostein/hitler_act2	ashtac02
 astrostein/hitler_act3	ashtac03
-$random astrostein/hitler_act {astrostein/hitler_act1 astrostein/hitler_act2 astrostein/hitler_act3}
 $rolloff astrostein/hitler_act 1280 1600
-astrostein/hitler_see   null
-astrostein/hitler_dth   null 
-astrostein/hitler_pai   null 
-pickup/armorshard	AMRSHRD
+astrostein/hitler_dth		null 
+astrostein/hitler_pai		null 
+astrostein/hitler_see		null
+astrowhiz						astrowz
+pickup/armorshard		AMRSHRD
+weapons/rezfull			dsrezful
+weapons/rezhit			dsrezhit
+weapons/rezidle			dsrezidl
+$pitchshift weapons/rezidle 0 //mxd
+weapons/rezup				dsrezup
 
 //Commander Keen
-ckeen/pickup		ckpickup
-ckeen/raindrop		ckraindr
-ckeen/starting		ckbegin
-ckeen/gun			ckgun
-ckeen/kill			ckkill
-ckeen/madmushroombounce ckmadmus
+ckeen/blowgun	ckblowg
+ckeen/flag		ckflag
 ckeen/gem			ckgem
-ckeen/life			cklife
-ckeen/gemuse		ckugem
-ckeen/slugpoo		ckslugpo
-ckeen/klick			ckklick
-ckeen/walk			ckwalk
-ckeen/shoot			ckshoot
+ckeen/gemuse	ckugem
+ckeen/gun			ckgun
 ckeen/hit			ckhit
-ckeen/flag			ckflag
+ckeen/kill		ckkill
+ckeen/klick		ckklick
+ckeen/life		cklife
+ckeen/madmushroombounce ckmadmus
+ckeen/pickup	ckpickup
+ckeen/raindrop	ckraindr
+ckeen/shoot		ckshoot
 ckeen/shothit		ckshoth
-ckeen/blowgun		ckblowg
+ckeen/slugpoo		ckslugpo
+ckeen/starting	ckbegin
+ckeen/walk		ckwalk
+
+//Shell Casings
+$random bulletcasing/bounce {bcase1 bcase2 bcase3 bcase4}
+$rolloff bulletcasing/bounce 64 512
+bcase1 bcase1
+bcase2 bcase2
+bcase3 bcase3
+bcase4 bcase4
+$random shellcasing/bounce {scasesb1 scasesb2}
+$rolloff shellcasing/bounce 64 512
+$random shellcasing/stop {scases1 scases2 scases3}
+scases1 scases1
+scases2 scases2
+scases3 scases3
+scasesb1 scasesb1
+scasesb2 scasesb2
+
+//Weapon select sounds
+select/bazooka  bazoosel
+select/heavywpn hwpnsel
+select/mg       mgsel
+select/mp44     mp44sel
+select/pistol   pstlsel
+select/rifle    riflesel
+select/shotgun  shotsel
+select/smg      smgsel
+select/knife    knifesel
+select/shovel   shovlsel
+
+//Dryfire
+weapon/dryfire click
+
+//Kick
+kick/hit	KICKHIT
+
+//Knife
+knife/swing	KNSWNG
+knife/hit	KNHITB
+knife/stone	KNSTON
+$alias knife/select select/knife
+
+//Shovel
+$random shovel/impact {shovel/impact1 shovel/impact2}
+shovel/impact1	dsshvi1
+shovel/impact2	dsshvi2
+shovel/wall			dsshvi3
+$alias shovel/select select/shovel
+
+$random shovel/miss {shovel/miss1 shovel/miss2 shovel/miss3}
+shovel/miss1	dsshvw1
+shovel/miss2	dsshvw2
+shovel/miss3	dsshvw3
+
+//Luger P-08
+luger/fire		lugrfire
+luger/reload	lugrload
+$alias luger/select	select/pistol
+
+//Walther P-38
+walther/fire	waltfir
+walther/reload	loadp38
+$alias walther/select  select/pistol
+
+//M1897 Trenchgun
+shotgun/fire	SHOTFIRE
+shotgun/load	SHOTLOAD
+shotgun/pump	SHOTPUMP
+$alias shotgun/select select/shotgun
+
+//Browning Auto-5
+browning/fire	ba5fire
+browning/load	ba5load
+browning/cock	ba5cock
+$alias browning/select select/shotgun
+
+//MP-40
+mp40/fire		mp40fire
+mp40/reload	loadmp40
+$alias mp40/select select/mp44
+
+//Sten Mk-II
+sten/fire		STENFIRE
+sten/reload	STENLOAD
+$alias sten/select select/smg
+
+//Gewehr 43
+g43/fire		m1fire
+g43/reload	loadg43
+$alias g43/select select/rifle
+
+//Karabiner 98k
+mauser/fire		DSMAUS
+mauser/cock		DSMCLACK
+mauser/open		DSPOP
+mauser/insert	DSINSERT
+mauser/shut		DSCLACK
+mauser/scope	KSCOPE1
+$alias mauser/select select/rifle
+
+//Pyrolight
+flamer/fire		dsfthrow
+flamer/steam	dssteam
+flamer/napalm	THERMFIR
+flamer/reload	THERMRLD
+$alias flamer/select select/heavywpn
+
+//Nebelwerfer
+nebelwerfer/fire		dsnebsht
+nebelwerfer/xplode	dsnebxpl
+$alias nebelwerfer/select select/heavywpn
+
+//Panzerschreck
+panzer/fire			panzfire
+panzer/load			panzload
+panzer/fly			panzfly
+panzer/explode	panzexpl
+$alias panzer/select select/bazooka
+$rolloff panzer/explode 1280 4096
+
+//UMG43
+chaingun/fire		dscgun
+chaingun/start	chaingo
+chaingun/loop		chainlp
+chaingun/stop		chainstp
+chaingun/get		p_cgun
+$alias chaingun/select select/heavywpn
+
+$random grenade/throw { grenthr1 grenthr2 grenthr3 }
+$random grenade/bounce { grenbnc1 grenbnc2 grenbnc3 grenbnc4 }
+$random grenade/explode { grenexp1 grenexp2 grenexp3 grenexp4 }
+grenthr1 grenthr1
+grenthr2 grenthr2
+grenthr3 grenthr3
+grenbnc1 grenbnc1
+grenbnc2 grenbnc2
+grenbnc3 grenbnc3
+grenbnc4 grenbnc4
+grenexp1 grenexp1
+grenexp2 grenexp2
+grenexp3 grenexp3
+grenexp4 grenexp4
+grenade/pickup grenpick
+
+//Feuerbrand
+$random sword/hit { sword1 sword2 sword3 }
+sword1 DSSWDHT1
+sword2 DSSWDHT2
+sword3 DSSWDHT3
+$random sword/wall { swordwall1 swordwall2 swordwall3 swordwall4 }
+swordwall1 DSSWDWAL
+swordwall2 DSSWDWL2
+swordwall3 DSSWDWL3
+swordwall4 DSSWDWL4
+$random sword/swing { swordswing1 swordswing2 swordswing3 }
+swordswing1 DSSHVW1
+swordswing2 DSSHVW2
+swordswing3 DSSHVW3
+sword/draw DSSWDUP
+$random flamesword/hit { fsword1 fsword2 fsword3 }
+fsword1 DSFWDHT1
+fsword2 DSFWDHT2
+fsword3 DSFWDHT3
+flamesword/swing DSFWDSWG
+
+//Bullet Whizzes & Suchwise
+$random ricochet { rico1 rico2 rico3 rico4 rico5 rico6 rico7 rico8 rico9 }
+$random whiz { whiz1 whiz2 whiz3 }
+$random hitflesh { hitflesh1 hitflesh2 hitflesh3 hitflesh4 hitflesh5 hitflesh6 hitflesh7 hitflesh8 hitflesh9 }
+rico1 trceric1
+rico2 trceric2
+rico3 trceric3
+rico4 trceric4
+rico5 trceric5
+rico6 trceric6
+rico7 trceric7
+rico8 trceric8
+rico9 trceric9
+whiz1 trcefly1
+whiz2 trcefly2
+whiz3 trcefly3
+hitflesh1 trcehit1
+hitflesh2 trcehit2
+hitflesh3 trcehit3
+hitflesh4 trcehit4
+hitflesh5 trcehit5
+hitflesh6 trcehit6
+hitflesh7 trcehit7
+hitflesh8 trcehit8
+hitflesh9 trcehit9
+
+$random world/barrelboom {grnx1 grnx2 grnx3 grnx4}
+grnx1 dsbarex1
+grnx2 dsbarex2
+grnx3 dsbarex3
+grnx4 dsbarex4
+
+//////////
+//PLAYER//
+//////////
 
 //Regular stuff
 $playersound	player	male	*death		wwdthlo
@@ -91,6 +314,21 @@ poof-3 ploof3
 poof-4 ploof4
 poof-5 ploof5
 
+//Burning
+$random death/burning { burndth1 burndth2 burndth3 burndth4 burndth5 burndth6 burndth7 burndth8 burndth9 burndtha burndthb burndthc }
+burndth1 burndth1
+burndth2 burndth2
+burndth3 burndth3
+burndth4 burndth4
+burndth5 burndth5
+burndth6 burndth6
+burndth7 burndth7
+burndth8 burndth8
+burndth9 burndth9
+burndtha burndtha
+burndthb burndthb
+burndthc burndthc
+
 //Ral22 Sprint Breathe
 player/breathing	PLAYBRTH
 
@@ -99,235 +337,128 @@ $random death/bjfall	{bjfall1 bjfall2}
 bjfall1	bjfall1
 bjfall2	bjfall2
 
-// Shell Casings
-$random bulletcasing/bounce {bcase1 bcase2 bcase3 bcase4}
-$rolloff bulletcasing/bounce 64 512
-bcase1 bcase1
-bcase2 bcase2
-bcase3 bcase3
-bcase4 bcase4
-$random shellcasing/bounce {scasesb1 scasesb2}
-$rolloff shellcasing/bounce 64 512
-$random shellcasing/stop {scases1 scases2 scases3}
-scases1 scases1
-scases2 scases2
-scases3 scases3
-scasesb1 scasesb1
-scasesb2 scasesb2
-
-// Weapon select sounds
-select/bazooka  bazoosel
-select/heavywpn hwpnsel
-select/mg       mgsel
-select/mp44     mp44sel
-select/pistol   pstlsel
-select/rifle    riflesel
-select/shotgun  shotsel
-select/smg      smgsel
-select/knife    knifesel
-select/shovel   shovlsel
-
-// Dryfire
-weapon/dryfire click
-
-//Kick
-kick/hit	KICKHIT
-
-//Knife
-knife/swing	KNSWNG
-knife/hit	KNHITB
-knife/stone	KNSTON
-$alias knife/select select/knife
-
-//Shovel
-$random shovel/impact {shovel/impact1 shovel/impact2}
-shovel/impact1          dsshvi1
-shovel/impact2          dsshvi2
-shovel/wall          dsshvi3
-$alias shovel/select select/shovel
-
-$random shovel/miss {shovel/miss1 shovel/miss2 shovel/miss3}
-shovel/miss1            dsshvw1
-shovel/miss2            dsshvw2
-shovel/miss3            dsshvw3
-
-//Luger P-08
-luger/fire		lugrfire
-luger/reload	lugrload
-$alias luger/select	select/pistol
-
-//Walther P-38
-walther/fire	waltfir
-walther/reload	loadp38
-$alias walther/select  select/pistol
-
-//M1897 Trenchgun
-shotgun/fire	SHOTFIRE
-shotgun/load	SHOTLOAD
-shotgun/pump	SHOTPUMP
-$alias shotgun/select select/shotgun
-
-//Browning Auto-5
-browning/fire	ba5fire
-browning/load	ba5load
-browning/cock	ba5cock
-$alias browning/select select/shotgun
-
-//MP-40
-mp40/fire 	mp40fire
-mp40/reload	loadmp40
-$alias mp40/select select/mp44
-
-//Sten MkII
-sten/fire	STENFIRE
-sten/reload	STENLOAD
-$alias sten/select select/smg
-
-//Gewehr 43
-g43/fire	m1fire
-g43/reload	loadg43
-$alias g43/select select/rifle
-
-//Karabiner 98k
-mauser/fire		DSMAUS
-mauser/cock		DSMCLACK
-mauser/open		DSPOP
-mauser/insert	DSINSERT
-mauser/shut		DSCLACK
-mauser/scope	KSCOPE1
-$alias mauser/select select/rifle
-
-//Pyrolight
-flamer/fire		dsfthrow
-flamer/steam	dssteam
-flamer/napalm	THERMFIR
-flamer/reload	THERMRLD
-$alias flamer/select select/heavywpn
-
-//Nebelwerfer
-nebelwerfer/fire	dsnebsht
-nebelwerfer/xplode	dsnebxpl
-$alias nebelwerfer/select select/heavywpn
-
-//Panzerschreck
-panzer/fire		panzfire
-panzer/load		panzload
-panzer/fly		panzfly
-panzer/explode	panzexpl
-$alias panzer/select select/bazooka
-$rolloff panzer/explode 1280 4096
-
-//UMG43
-chaingun/fire	dscgun
-chaingun/start	chaingo
-chaingun/loop	chainlp
-chaingun/stop	chainstp
-chaingun/get	p_cgun
-$alias chaingun/select select/heavywpn
-
-$random grenade/throw { grenthr1 grenthr2 grenthr3 }
-$random grenade/bounce { grenbnc1 grenbnc2 grenbnc3 grenbnc4 }
-$random grenade/explode { grenexp1 grenexp2 grenexp3 grenexp4 }
-grenthr1 grenthr1
-grenthr2 grenthr2
-grenthr3 grenthr3
-grenbnc1 grenbnc1
-grenbnc2 grenbnc2
-grenbnc3 grenbnc3
-grenbnc4 grenbnc4
-grenexp1 grenexp1
-grenexp2 grenexp2
-grenexp3 grenexp3
-grenexp4 grenexp4
-grenade/pickup grenpick
-
-// Feuerbrand
-$random sword/hit { sword1 sword2 sword3 }
-sword1 DSSWDHT1
-sword2 DSSWDHT2
-sword3 DSSWDHT3
-$random sword/wall { swordwall1 swordwall2 swordwall3 swordwall4 }
-swordwall1 DSSWDWAL
-swordwall2 DSSWDWL2
-swordwall3 DSSWDWL3
-swordwall4 DSSWDWL4
-$random sword/swing { swordswing1 swordswing2 swordswing3 }
-swordswing1 DSSHVW1
-swordswing2 DSSHVW2
-swordswing3 DSSHVW3
-sword/draw DSSWDUP
-$random flamesword/hit { fsword1 fsword2 fsword3 }
-fsword1 DSFWDHT1
-fsword2 DSFWDHT2
-fsword3 DSFWDHT3
-flamesword/swing DSFWDSWG
-
-// Bullet Whizzes and Suchwise
-$random ricochet { rico1 rico2 rico3 rico4 rico5 rico6 rico7 rico8 rico9 }
-$random whiz { whiz1 whiz2 whiz3 }
-$random hitflesh { hitflesh1 hitflesh2 hitflesh3 hitflesh4 hitflesh5 hitflesh6 hitflesh7 hitflesh8 hitflesh9 }
-rico1 trceric1
-rico2 trceric2
-rico3 trceric3
-rico4 trceric4
-rico5 trceric5
-rico6 trceric6
-rico7 trceric7
-rico8 trceric8
-rico9 trceric9
-whiz1 trcefly1
-whiz2 trcefly2
-whiz3 trcefly3
-hitflesh1 trcehit1
-hitflesh2 trcehit2
-hitflesh3 trcehit3
-hitflesh4 trcehit4
-hitflesh5 trcehit5
-hitflesh6 trcehit6
-hitflesh7 trcehit7
-hitflesh8 trcehit8
-hitflesh9 trcehit9
-
-$random world/barrelboom {grnx1 grnx2 grnx3 grnx4}
-grnx1 dsbarex1
-grnx2 dsbarex2
-grnx3 dsbarex3
-grnx4 dsbarex4
-
-// Miscellaneous
-misc/drink		DRINK
-misc/typewriter		typewrit
+//Miscellaneous
+misc/alert					alert //mxd
+misc/ammo_pkup			dsammoup
+misc/armor_pkup			dsgetarm
+misc/drink					DRINK
+misc/health_pkup		dsgethlt
+misc/k_pkup					dsgetkey
 misc/objective_acc	apply
 misc/objective_add	typekey
-misc/w_pkup		dsgetwep
-misc/k_pkup		dsgetkey
-misc/armor_pkup		dsgetarm
-misc/health_pkup	dsgethlt
-misc/ammo_pkup		dsammoup
-misc/secret		secret
-misc/windmill		"sounds/props/windmill.ogg" //mxd
-misc/alert		alert //mxd
+misc/secret					secret
+misc/typewriter			typewrit
+misc/w_pkup					dsgetwep
+misc/windmill				"sounds/props/windmill.ogg" //mxd
 $rolloff world/spark 64 512 //mxd
 
-/////////////////////////////////////////////////////////////////////
-//// MONSTER SOUNDS /////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////
+/////////////////
+//MAPS SPECIALS//
+/////////////////
 
-//ProtoDrone
-proto/see 	PROTOSEE
+//Train
+TRAIN_ED TRAIN_ED
+TRAIN_ST TRAIN_ST
+TRAIN_HN TRAIN_HN
 
-// Weapons
-nazi/pistol DSNLUGER
-nazi/stg44		dsstg44
-nazi/missilef	dsmissil
-nazi/missileengine DSMISLF
+//Ladder Climbing
+$random world/ladder { LADDER1 LADDER2 LADDER3 LADDER4 LADDER5 LADDER6}
+LADDER1 LADDER1
+LADDER2 LADDER2
+LADDER3 LADDER3
+LADDER4 LADDER4
+LADDER5 LADDER5
+LADDER6 LADDER6
+$limit	world/ladder 1
+
+//Small Switches
+SMSWITCH SMSWITCH
+
+//Metal Vent Destroy
+DSMETDST DSMETDST
+
+//Breaking Glass
+$random world/glassbreak { GLASS1 GLASS2 GLASS3 }
+GLASS1 GLASS1
+GLASS2 GLASS2
+GLASS3 GLASS3
+$limit	world/glassbreak 4
+GLASS4 GLASS4
+GLASS5 GLASS5
+
+//LowHealth Effects
+HBEAT	HBEAT
+$volume HBEAT 1.0
+
+//Water Shore Lap
+$random water/lap { water/lap1 water/lap2 water/lap3 }
+water/lap1 WATERLP1
+water/lap2 WATERLP2
+water/lap3 WATERLP3
+
+////////
+//FOES//
+////////
+
+//Weapons
+nazi/pistol					DSNLUGER
+nazi/stg44					dsstg44
+nazi/missilef				dsmissil
+nazi/missileengine	DSMISLF
 $rolloff nazi/missileengine 64 800
 $random nazi/mp40 {mp401 mp402}
 mp401	dsmp401
 mp402	dsmp402
-// Grosse
-boss/pain	dsbospai
-Boss1/Death Bos1Dt01
+
+//MechaNazi
+mech/wake		MECHWAKE
+$random mech/walk {mech/left mech/right}
+mech/left		MECHLEFT
+mech/right	MECHRITE
+$random mech/death {MECHEXP1 MECHEXP2 MECHEXP3}
+MECHEXP1	MECHEXP1
+MECHEXP2	MECHEXP2
+MECHEXP3	MECHEXP3
+
+//ProtoDrone
+proto/see	PROTOSEE
+
+//MiniShip
+miniship/fire mshpfire
+
+//Tanks
+//from Return To Castle Wolfenstein - NOT USED
+TKIDLE TKIDLE
+TKMOVE TKMOVE
+
+//Moving tank sounds from WW2:GI - NOT USED
+TNK1LOOP TNK1LOOP
+TNK2LOOP TNK2LOOP
+
+//Debris - From FreeSFX.co.uk
+TKDBRS1 TKDBRS1
+TKDBRS2 TKDBRS2
+TKDBRS3 TKDBRS3
+TKDBRS4 TKDBRS4
+$random TANKDBRS	{ TKDBRS1 TKDBRS2 TKDBRS3 TKDBRS4 }
+$limit	TANKDBRS 1
+
+//Smokemonster
+Smoke/See				SSee
+Smoke/Tick			Slop1
+Smoke/Die				SDIE
+$random Smoke/Charge	{ Smoke/Charge1  Smoke/Charge2 }
+Smoke/Charge1		scrg1
+Smoke/Charge2		scrg2
+$random Smoke/pain	{ Smoke/pain1  Smoke/pain2 Smoke/pain3 Smoke/pain4 }
+Smoke/pain1			Sact1
+Smoke/pain2			Sact2
+Smoke/pain3			Sact3
+Smoke/pain4			Sact4
+
+//Grosse
+boss/pain		dsbospai
+Boss1/Death	Bos1Dt01
 $random Boss1/Sighted { Bos1St01 Bos1St02 Bos1St03 Bos1St04 Bos1St05 Bos1St06 Bos1St07 Bos1St08 Bos1St09 }
 Bos1St01 Bos1St01
 Bos1St02 Bos1St02
@@ -338,7 +469,8 @@ Bos1St06 Bos1St06
 Bos1St07 Bos1St07
 Bos1St08 Bos1St08
 Bos1St09 Bos1St09
-// Gretel
+
+//Gretel
 $random BossGirl/Death { gretdt1 gretdt2 gretdt3 gretdt4 }
 gretdt1 gretdt1
 gretdt2 gretdt2
@@ -350,7 +482,8 @@ gretsee2 gretsee2
 gretsee3 gretsee3
 gretsee4 gretsee4
 BossGirl/Pain gretpain
-// Doctor
+
+//Doctors
 Boss2/Death Bos2Dt01
 $random Boss2/Sighted { bos2st01 bos2st02 bos2st03 bos2st04 bos2st05 bos2st06 bos2st07 bos2st08 }
 Bos2St01 Bos2St01
@@ -363,63 +496,74 @@ Bos2St07 Bos2St07
 Bos2St08 Bos2St08
 gshardnd gshardnd
 
-// Fat Man
+//Fat Man
 fatman/sight	dsfatsit
 fatman/death	dsfatdth
-// General
+
+//General
 Boss3/Death Bos3Dt01
 Boss3/Sighted Bos3St01
-// Chair Guy
+
+//Chair Guy
 krist/sight		dskrisit
 krist/death		dskridth
-// Death Knight
+
+//Death Knight
 deathknight/sight	dsdtksit
 deathknight/death	dsdtkdth
-// Hitler
+
+//Hitler
 hitler/sight	dshitsit
 hitler/pain		dshitpai
 hitler/death	dshitdth
 hitler/gib		hitlrgib
 hitler/walk		dshitwlk
 hitler/act		hghdie
-// Machines
+
+//Machines
 metal/pain	dsping
-// Dogs
+
+//Dogs
 $random dog/sight 	{ dog/sight1  dog/sight2  dog/sight3 }
-dog/sight1  		DSDGSIT1
-dog/sight2  		DSDGSIT2
-dog/sight3  		DSDGSIT3
+dog/sight1			DSDGSIT1
+dog/sight2			DSDGSIT2
+dog/sight3			DSDGSIT3
 $random dog/active 	{dog/act1 dog/act2}
-dog/act1  			DSDGACT1
-dog/act2 			DSDGACT2
+dog/act1				DSDGACT1
+dog/act2				DSDGACT2
 $random dog/death	{ dog/death1  dog/death2  dog/death3 }
-dog/death1  		DSDGDIE1
-dog/death2  		DSDGDIE2
-dog/death3  		DSDGDIE3
-dog/pain			dsdgpai
+dog/death1			DSDGDIE1
+dog/death2			DSDGDIE2
+dog/death3			DSDGDIE3
+dog/pain				dsdgpai
 dog/attack			dsdogatk
-// Geist
+
+//Geist
 geist/pain		geisthit
-geist/die		geistdie
+geist/die			geistdie
 geist/active	geistact
-// Mutant
+
+//Mutants
 mutant/see   mtnt_see
 mutant/pain1 mtnt_pn1
 mutant/pain2 mtnt_pn2
 mutant/pain3 mtnt_pn3
 $random mutant/pain { mutant/pain1 mutant/pain2 mutant/pain3 }
 mutant/death dsmutdt
-// Fake Hitler
+
+//Fake Hitler
 hitlerghost/see hghsee
 hitlerghost/die hghdie
-// Undead Monk
+
+//Undead Monk
 monk/see monk_see
 monk/pain1 monk_pn1
 monk/pain2 monk_pn2
 monk/pain3 monk_pn3
 $random monk/pain { monk/pain1 monk/pain2 monk/pain3 }
 monk/death monk_die
-// Nazi Loper
+
+//Nazi Loper
 $random loper/attack {loper/attack1 loper/attack2 loper/attack3 loper/attack4}
 loper/attack1	attack1
 loper/attack2	attack2
@@ -438,7 +582,9 @@ $limit Tesla/LoopDeath 1 64
 $pitchshift Tesla/LoopDeath 7
 TPZap1	tp_zap1
 TPZap2	tp_zap2
-// Voice 1
+
+//Soldiers
+//Voice 1
 $random Nazi1/Death { Naz1Dt02 Naz1Dt02 Naz1Dt03 Naz1Dt03 Naz1Dt04 Naz1Dt04 Naz1Dt05 Naz1Dt05 Naz1Dt06 Naz1Dt06 Naz1Dt07 Naz1Dt07 Naz1Dt08 Naz1Dt08 Naz1Dt09 Naz1Dt09 Naz1Dt10 Naz1Dt10 Naz1Dt11 Naz1Dt11 Naz1Dt12 Naz1Dt12 }
 $random Nazi1/Pain { Naz1Pn02 Naz1Pn02 Naz1Pn03 Naz1Pn03 Naz1Pn04 Naz1Pn04 Naz1Pn05 Naz1Pn05 Naz1Pn06 Naz1Pn06 Naz1Pn07 Naz1Pn07 Naz1Pn08 Naz1Pn08 Naz1Pn09 Naz1Pn09 }
 $random Nazi1/Sighted { Naz1St02 Naz1St02 Naz1St03 Naz1St03 Naz1St04 Naz1St04 Naz1St05 Naz1St05 Naz1St06 Naz1St06 Naz1St07 Naz1St07 Naz1St08 Naz1St08 Naz1St09 Naz1St09 Naz1St10 Naz1St10 Naz1St11 Naz1St11 Naz1St12 Naz1St12 Naz1St13 Naz1St13 Naz1St14 Naz1St14 Naz1St15 Naz1St15 Naz1St16 Naz1St16 Naz1St17 Naz1St17 Naz1St18 Naz1St18 Naz1St19 Naz1St19 Naz1St20 Naz1St20 Naz1St21 Naz1St21 Naz1St22 Naz1St22 Naz1St23 Naz1St23 Naz1St24 Naz1St24 Naz1St25 Naz1St25 Naz1St26 Naz1St26 Naz1St27 Naz1St27 Naz1St28 Naz1St28 Naz1St29 Naz1St29 Naz1St30 Naz1St30 Naz1St31 Naz1St31 Naz1St32 Naz1St32 Naz1St33 Naz1St33 Naz1St34 Naz1St34 Naz1St35 Naz1St35 Naz1St36 Naz1St36 Naz1St37 Naz1St37 Naz1St38 Naz1St38 Naz1St39 Naz1St39 }
@@ -499,7 +645,8 @@ Naz1St36 Naz1St36
 Naz1St37 Naz1St37
 Naz1St38 Naz1St38
 Naz1St39 Naz1St39
-// Voice 2
+
+//Voice 2
 $random Nazi2/Death { Naz2Dt02 Naz2Dt02 Naz2Dt03 Naz2Dt03 Naz2Dt04 Naz2Dt04 Naz2Dt05 Naz2Dt05 Naz2Dt06 Naz2Dt06 }
 $random Nazi2/Pain { Naz2Pn02 Naz2Pn02 Naz2Pn03 Naz2Pn03 Naz2Pn04 Naz2Pn04 Naz2Pn05 Naz2Pn05 Naz2Pn06 Naz2Pn06 Naz2Pn07 Naz2Pn07 Naz2Pn08 Naz2Pn08 }
 $random Nazi2/Sighted { Naz2St02 Naz2St02 Naz2St03 Naz2St03 Naz2St04 Naz2St04 Naz2St05 Naz2St05 Naz2St06 Naz2St06 Naz2St07 Naz2St07 Naz2St08 Naz2St08 Naz2St09 Naz2St09 Naz2St10 Naz2St10 Naz2St11 Naz2St11 Naz2St12 Naz2St12 Naz2St13 Naz2St13 Naz2St14 Naz2St14 Naz2St15 Naz2St15 Naz2St16 Naz2St16 Naz2St17 Naz2St17 Naz2St18 Naz2St18 Naz2St19 Naz2St19 Naz2St20 Naz2St20 Naz2St21 Naz2St21 Naz2St22 Naz2St22 Naz2St23 Naz2St23 Naz2St24 Naz2St24 Naz2St25 Naz2St25 Naz2St26 Naz2St26 Naz2St27 Naz2St27 Naz2St28 Naz2St28 Naz2St29 Naz2St29 Naz2St30 Naz2St30 Naz2St31 Naz2St31 Naz2St32 Naz2St32 Naz2St33 Naz2St33 Naz2St34 Naz2St34 Naz2St35 Naz2St35 Naz2St36 Naz2St36 Naz2St37 Naz2St37 Naz2St38 Naz2St38 Naz2St39 Naz2St39 Naz2St40 Naz2St40 Naz2St41 Naz2St41 Naz2St42 Naz2St42 Naz2St43 Naz2St43 Naz2St44 Naz2St44 Naz2St45 Naz2St45 Naz2St46 Naz2St46 Naz2St47 Naz2St47 Naz2St48 Naz2St48 Naz2St49 Naz2St49 }
@@ -563,7 +710,8 @@ Naz2St46 Naz2St46
 Naz2St47 Naz2St47
 Naz2St48 Naz2St48
 Naz2St49 Naz2St49
-// Voice 3 (Has no death/pains, use voice 2's instead)
+
+//Voice 3 (Has no death/pains, use voice 2's instead)
 $random Nazi3/Sighted { Naz3St02 Naz3St02 Naz3St03 Naz3St03 Naz3St04 Naz3St04 Naz3St05 Naz3St05 Naz3St06 Naz3St06 Naz3St07 Naz3St07 Naz3St08 Naz3St08 Naz3St09 Naz3St09 Naz3St10 Naz3St10 Naz3St11 Naz3St11 Naz3St12 Naz3St12 Naz3St13 Naz3St13 Naz3St14 Naz3St14 Naz3St15 Naz3St15 Naz3St16 Naz3St16 Naz3St17 Naz3St17 Naz3St18 Naz3St18 Naz3St19 Naz3St19 Naz3St20 Naz3St20 Naz3St21 Naz3St21 Naz3St22 Naz3St22 Naz3St23 Naz3St23 Naz3St24 Naz3St24 Naz3St25 Naz3St25 Naz3St26 Naz3St26 Naz3St27 Naz3St27 Naz3St28 Naz3St28 Naz3St29 Naz3St29 Naz3St30 Naz3St30 Naz3St31 Naz3St31 Naz3St32 Naz3St32 Naz3St33 Naz3St33 Naz3St34 Naz3St34 Naz3St35 Naz3St35 Naz3St36 Naz3St36 Naz3St37 Naz3St37 Naz3St38 Naz3St38 Naz3St39 Naz3St39 Naz3St40 Naz3St40 Naz3St41 Naz3St41 Naz3St42 Naz3St42 Naz3St43 Naz3St43 Naz3St44 Naz3St44 Naz3St45 Naz3St45 Naz3St46 Naz3St46 Naz3St47 Naz3St47 Naz3St48 Naz3St48 }
 Naz3St02 Naz3St02
 Naz3St03 Naz3St03
@@ -612,7 +760,8 @@ Naz3St45 Naz3St45
 Naz3St46 Naz3St46
 Naz3St47 Naz3St47
 Naz3St48 Naz3St48
-// Voice 4
+
+//Voice 4
 $random Nazi4/Death { Naz4Dt02 Naz4Dt02 Naz4Dt03 Naz4Dt03 Naz4Dt04 Naz4Dt04 Naz4Dt05 Naz4Dt05 Naz4Dt06 Naz4Dt06 Naz4Dt07 Naz4Dt07 Naz4Dt08 Naz4Dt08 Naz4Dt09 Naz4Dt09 Naz4Dt10 Naz4Dt10 Naz4Dt11 Naz4Dt11 Naz4Dt12 Naz4Dt12 Naz4Dt13 Naz4Dt13 }
 $random Nazi4/Pain { Naz4Pn02 Naz4Pn02 Naz4Pn03 Naz4Pn03 Naz4Pn04 Naz4Pn04 Naz4Pn05 Naz4Pn05 }
 $random Nazi4/Sighted { Naz4St02 Naz4St02 Naz4St03 Naz4St03 Naz4St04 Naz4St04 Naz4St05 Naz4St05 Naz4St06 Naz4St06 Naz4St07 Naz4St07 Naz4St08 Naz4St08 Naz4St09 Naz4St09 Naz4St10 Naz4St10 Naz4St11 Naz4St11 Naz4St12 Naz4St12 Naz4St13 Naz4St13 Naz4St14 Naz4St14 Naz4St15 Naz4St15 Naz4St16 Naz4St16 Naz4St17 Naz4St17 Naz4St18 Naz4St18 Naz4St19 Naz4St19 Naz4St20 Naz4St20 Naz4St21 Naz4St21 Naz4St22 Naz4St22 Naz4St23 Naz4St23 Naz4St24 Naz4St24 Naz4St25 Naz4St25 Naz4St26 Naz4St26 Naz4St27 Naz4St27 Naz4St28 Naz4St28 Naz4St29 Naz4St29 Naz4St30 Naz4St30 Naz4St31 Naz4St31 Naz4St32 Naz4St32 Naz4St33 Naz4St33 Naz4St34 Naz4St34 Naz4St35 Naz4St35 Naz4St36 Naz4St36 Naz4St37 Naz4St37 Naz4St38 Naz4St38 Naz4St39 Naz4St39 Naz4St40 Naz4St40 Naz4St41 Naz4St41 Naz4St42 Naz4St42 Naz4St43 Naz4St43 Naz4St44 Naz4St44 Naz4St45 Naz4St45 Naz4St46 Naz4St46 Naz4St47 Naz4St47 Naz4St48 Naz4St48 }
@@ -680,7 +829,7 @@ Naz4St46 Naz4St46
 Naz4St47 Naz4St47
 Naz4St48 Naz4St48
 
-// Prisoner
+//Prisoner
 prisoner/sight	prsit
 prisoner/death	prdeath
 prisoner/pain1 	prpain1
@@ -688,59 +837,12 @@ prisoner/pain2 	prpain2
 prisoner/pain3 	prpain3
 $random prisoner/pain { prisoner/pain1 prisoner/pain2 prisoner/pain3 }
 
-// Shark
+//Sharks
 shark/sight DETECT
 shark/death SQUISH
 shark/active ROAMING
 CHOMP CHOMP
 SWIPE SWIPE
-
-//Walltorch
-Ignite			torch2
-BellRing                bellrng
-
-// Burning
-$random death/burning { burndth1 burndth2 burndth3 burndth4 burndth5 burndth6 burndth7 burndth8 burndth9 burndtha burndthb burndthc }
-burndth1 burndth1
-burndth2 burndth2
-burndth3 burndth3
-burndth4 burndth4
-burndth5 burndth5
-burndth6 burndth6
-burndth7 burndth7
-burndth8 burndth8
-burndth9 burndth9
-burndtha burndtha
-burndthb burndthb
-burndthc burndthc
-
-//Spider
-spider1/sight1 "sounds/monsters/spider/spi_see1.ogg"
-spider1/sight2 "sounds/monsters/spider/spi_see2.ogg"
-$random spider1/sight { spider1/sight1 spider1/sight2 }
-
-spider1/active1 "sounds/monsters/spider/spi_active1.ogg"
-spider1/active2 "sounds/monsters/spider/spi_active2.ogg"
-$random spider1/active { spider1/active1 spider1/active2 }
-
-spider1/melee1 "sounds/monsters/spider/spi_attack1.ogg"
-spider1/melee2 "sounds/monsters/spider/spi_attack2.ogg"
-$random spider1/melee { spider1/melee1 spider1/melee2 }
-
-spider1/pain1 "sounds/monsters/spider/spi_pain1.ogg"
-spider1/pain2 "sounds/monsters/spider/spi_pain2.ogg"
-spider1/pain3 "sounds/monsters/spider/spi_pain3.ogg"
-$random spider1/pain { spider1/pain1 spider1/pain2 spider1/pain3 }
-
-spider1/death1 "sounds/monsters/spider/spi_death1.ogg"
-spider1/death2 "sounds/monsters/spider/spi_death2.ogg"
-$random spider1/death { spider1/death1 spider1/death2 }
-
-spider1/walk1 "sounds/monsters/spider/spi_walk1.ogg"
-spider1/walk2 "sounds/monsters/spider/spi_walk2.ogg"
-$random spider1/walk { spider1/walk1 spider1/walk2 }
-
-spider1/jump "sounds/monsters/spider/spi_jump.ogg"
 
 //Elite Soldats
 $random eliterifler/sight { eliterifler/sight1 eliterifler/sight2 eliterifler/sight3 }
@@ -790,15 +892,6 @@ eliteflamer/death7		ELTFDTH7
 eliteflamer/death8		ELTFDTH8
 eliteflamer/death9		ELTFDTH9
 
-//Bat
-$RANDOM batfam/idle { batfam/idle1 batfam/idle2 }
-batfam/idle1 batidle1
-batfam/idle2 batidle2
-
-batfam/pain batpain
-batfam/death batdie
-batfam/crash batcrash
-
 //Bloodskull
 BSkull/See		BSKULSEE
 BSkull/Pain		BSKULPIN
@@ -809,55 +902,115 @@ Blood/Impact	BLDIMPAC
 $limit Blood/Impact 0
 
 //Priest
+$random UndeadPriest/Pain	{ DSUNDPN1 DSUNDPN2 DSUNDPN3 }
 DSUNDPN1	DSUNDPN1
 DSUNDPN2	DSUNDPN2
 DSUNDPN3	DSUNDPN3
-
+$random UndeadPriest/Die	{ DSUNDIE1 DSUNDIE2 DSUNDIE3 }
 DSUNDIE1	DSUNDIE1
 DSUNDIE2	DSUNDIE2
 DSUNDIE3	DSUNDIE3
-
 DSUNDSHT	DSUNDSHT
-
 UndeadPriest/Shoot	DSUNDSHT
 UndeadPriest/Shoot2	DSUNDSHT
 $limit UndeadPriest/Shoot 0
 $limit UndeadPriest/Shoot2 0
-$random UndeadPriest/Pain	{ DSUNDPN1 DSUNDPN2 DSUNDPN3 }
-$random UndeadPriest/Die	{ DSUNDIE1 DSUNDIE2 DSUNDIE3 }
 
 //AracnorbQueen
-queen/sight quesit
-queen/pain quepain
-queen/death quedie
-queen/active queact
-//queen/scream bqegg1a
-queen/fire qbfgfire
-electricplasma/shoot		PZAPSEE	
 electricplasma/hit		PZAPHIT
-queen/hit		qbfghit
-queen/melee		quebit
+electricplasma/shoot	PZAPSEE	
+queen/active					queact
+queen/death						quedie
+queen/fire						qbfgfire
+queen/hit							qbfghit
+queen/melee						quebit
+queen/pain						quepain
+queen/sight						quesit
 
 //Astrostein
-astrostein/drone_pain	dronpain
-astrostein/drone_sight	dronsit
-astrostein/drone_act	dronact
-astrostein/drone_death	drondth
-astrostein/guard_death	astrodth
-astrostein/robot_sight	robosit
-astrostein/robot_death	robodth
-astrostein/robot_act	roboact
-astrostein/robot_pain   robopain
-astrostein/cyborg_sight	cybsit
+astrostein/cyborg_act		cybact
 astrostein/cyborg_death	cybdth
-astrostein/cyborg_pain 	cybpain
-astrostein/cyborg_act	cybact
+astrostein/cyborg_pain	cybpain
+astrostein/cyborg_sight	cybsit
+astrostein/drone_act		dronact
+astrostein/drone_death	drondth
+astrostein/drone_pain		dronpain
+astrostein/drone_sight	dronsit
+astrostein/guard_death	astrodth
+astrostein/robot_act		roboact
+astrostein/robot_death	robodth
+astrostein/robot_pain		robopain
+astrostein/robot_sight	robosit
 
-/////////////////////////////////////////////////////////////////////
-//// CHATTER ////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////
+////////////
+//CRITTERS//
+////////////
 
-// Miller
+//Bat
+$random batfam/idle { batfam/idle1 batfam/idle2 }
+batfam/idle1 batidle1
+batfam/idle2 batidle2
+batfam/pain batpain
+batfam/death batdie
+batfam/crash batcrash
+
+//Rats
+Rat/Squeek	DSRAT
+Rat/Active	DSRATIDL
+$random Rat/Death	{ DSRATDI1 DSRATDI2 }
+DSRATDI1	DSRATDI1
+DSRATDI2	DSRATDI2
+
+//Spider
+spider1/sight1 "sounds/monsters/spider/spi_see1.ogg"
+spider1/sight2 "sounds/monsters/spider/spi_see2.ogg"
+$random spider1/sight { spider1/sight1 spider1/sight2 }
+spider1/active1 "sounds/monsters/spider/spi_active1.ogg"
+spider1/active2 "sounds/monsters/spider/spi_active2.ogg"
+$random spider1/active { spider1/active1 spider1/active2 }
+spider1/melee1 "sounds/monsters/spider/spi_attack1.ogg"
+spider1/melee2 "sounds/monsters/spider/spi_attack2.ogg"
+$random spider1/melee { spider1/melee1 spider1/melee2 }
+spider1/pain1 "sounds/monsters/spider/spi_pain1.ogg"
+spider1/pain2 "sounds/monsters/spider/spi_pain2.ogg"
+spider1/pain3 "sounds/monsters/spider/spi_pain3.ogg"
+$random spider1/pain { spider1/pain1 spider1/pain2 spider1/pain3 }
+spider1/death1 "sounds/monsters/spider/spi_death1.ogg"
+spider1/death2 "sounds/monsters/spider/spi_death2.ogg"
+$random spider1/death { spider1/death1 spider1/death2 }
+spider1/walk1 "sounds/monsters/spider/spi_walk1.ogg"
+spider1/walk2 "sounds/monsters/spider/spi_walk2.ogg"
+$random spider1/walk { spider1/walk1 spider1/walk2 }
+spider1/jump "sounds/monsters/spider/spi_jump.ogg"
+
+//Scorpions
+scorpion/spit	SCORSPIT
+scorpion/sting1	STINGHIT
+scorpion/sting2	STINGDTH
+scorpion/fall 	SCORFALL
+scorpion/see	SCORSEE
+scorpion/death	SCORDETH
+$random scorpion/attacks { SCORATK1 SCORATK2 }
+SCORATK1 		SCORATK1
+SCORATK2 		SCORATK2
+$random scorpion/pains { SCORHIT1 SCORHIT2 }
+SCORHIT1 		SCORHIT1
+SCORHIT2 		SCORHIT2
+
+//Bird Critter
+CRWFLP CRWFLP
+CRWCAW1 CRWCAW1
+$limit CRWCAW1	0
+CRWCAW2 CRWCAW2
+$limit CRWCAW2	0
+CRWCAW3 CRWCAW3
+$limit CRWCAW3 0
+
+///////////
+//CHATTER//
+///////////
+
+//Miller
 miller/idle1	"sounds/chatter/miller/miller_idle1.ogg"
 miller/idle2	"sounds/chatter/miller/miller_idle2.ogg"
 miller/idle3	"sounds/chatter/miller/miller_idle3.ogg"
@@ -871,7 +1024,7 @@ miller/greet	"sounds/chatter/miller/miller_greet1.ogg"
 $pitchshift miller/greet 0
 $rolloff miller/greet 128 670
 
-// Black guy
+//Black guy
 blackguy/greet1	"sounds/chatter/blackguy/bg_greet1.ogg"
 blackguy/greet2	"sounds/chatter/blackguy/bg_greet2.ogg"
 blackguy/greet3	"sounds/chatter/blackguy/bg_greet3.ogg"
@@ -881,12 +1034,12 @@ $pitchshift blackguy/greet3 0
 $random  blackguy/greet { blackguy/greet1 blackguy/greet2 blackguy/greet3 }
 $rolloff blackguy/greet 128 670
 
-// Prof. Gutengerg
+//Prof. Gutenberg
 gutenberg/greet "sounds/chatter/gutenberg/gutenberg_greet1.ogg"
 $pitchshift gutenberg/greet 0
 $rolloff		gutenberg/greet 128 670
 
-// ALLIED 1 (British)
+//ALLIED 1 (British)
 allied1/idle1	"sounds/chatter/allied1/allied1_idle1.ogg"
 allied1/idle2	"sounds/chatter/allied1/allied1_idle2.ogg"
 allied1/idle3	"sounds/chatter/allied1/allied1_idle3.ogg"
@@ -905,7 +1058,7 @@ $pitchshift allied1/greet3 0
 $random  allied1/greet { allied1/greet1 allied1/greet2 allied1/greet3 }
 $rolloff allied1/greet 128 670
 
-// ALLIED 2 (British)
+//ALLIED 2 (British)
 allied2/idle1	"sounds/chatter/allied2/allied2_idle1.ogg"
 allied2/idle2	"sounds/chatter/allied2/allied2_idle2.ogg"
 allied2/idle3	"sounds/chatter/allied2/allied2_idle3.ogg"
@@ -924,7 +1077,7 @@ $pitchshift allied2/greet3 0
 $random  allied2/greet { allied2/greet1 allied2/greet2 allied2/greet3 }
 $rolloff allied2/greet 128 670
 
-// ALLIED 3 (US)
+//ALLIED 3 (US)
 allied3/greet	"sounds/chatter/allied3/allied3_greet1.ogg"
 $pitchshift allied3/greet 0
 $rolloff		allied3/greet 128 670
@@ -959,10 +1112,7 @@ $random camp/cough	{cough1 cough2}
 cough1	cough1
 cough2	cough2
 
-/////////////////////////////////////////////////////////////////////
-//// RANDOM AXIS CHATTER ////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////
-
+//Random AXIS chatters
 chatter/axis1 axrc1
 chatter/axis2 axrc2
 chatter/axis3 axrc3
@@ -990,71 +1140,51 @@ chatter/axis24 axrc24
 
 $random CHATTER_AXIS { chatter/axis1 chatter/axis2 chatter/axis3 chatter/axis4 chatter/axis5 chatter/axis6 chatter/axis7 chatter/axis8 chatter/axis9 chatter/axis10 chatter/axis11 chatter/axis12 chatter/axis13 chatter/axis14 chatter/axis15 chatter/axis16 chatter/axis17 chatter/axis18 chatter/axis19 chatter/axis20 chatter/axis21 chatter/axis22 chatter/axis23 chatter/axis24 }
 
-/////////////////////////////////////////////////////////////////////
-//// SYSTEM/MENU SOUNDS /////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////
-
-menu/activate	menuopen	// Activate a new menu
-menu/backup	menucls 	// Backup to previous menu
-menu/prompt	menuopen	// Activate a prompt "menu"
-menu/cursor	menumove	// Move cursor up/down
-menu/change	menuslid	// Select new value for option
-menu/invalid	menuslid	// Menu not available
-menu/dismiss	menupick	// Dismiss a prompt message
-menu/choose	menupick	// Choose a menu item
-menu/clear	menucls 	// Close top menu
-
-$pitchshift menu/activate 0
-$pitchshift menu/backup 0
-$pitchshift menu/prompt 0
-$pitchshift menu/cursor 0
-$pitchshift menu/change 0
-$pitchshift menu/invalid 0
-$pitchshift menu/dismiss 0
-$pitchshift menu/choose 0
-$pitchshift menu/clear 0
-
-/////////////////////////////////////////////////////////////////////
-//// MUSIC TO SOUND /////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////
+///////////////////
+//MUSIC AS SOUNDS//
+///////////////////
 
 D_INTRMP D_INTRMP
 
-/////////////////////////////////////////////////////////////////////
-//// TERRAIN SPLASH SOUNDS //////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////
+////////////////////
+//TERRAIN SPLASHES//
+////////////////////
 
 // Splashes
-world/drip gloop
-world/watersplash gloop
-world/lavasizzle acid5
-world/sludgegloop muck5
+world/drip				gloop
+world/lavasizzle	acid5
+world/sludgegloop	muck5
+world/watersplash	gloop
 
 //you can override the limit values so multiple splashes can play simultaneously
 //note that this sounds bad if multiple splashes play all at once (such as when firing a shotgun into liquid), so override these values at your own discretion
 
-$Limit world/drip 4
-$Limit world/watersplash 4
-$Limit world/lavasizzle 4
-$Limit world/sludgegloop 4
+$limit world/drip 4
+$limit world/watersplash 4
+$limit world/lavasizzle 4
+$limit world/sludgegloop 4
 
-/////////////////////////////////////////////////////////////////////
-//// PROP SOUNDS ////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////
+/////////
+//PROPS//
+/////////
+
+//Walltorch
+Ignite	torch2
+
+//Bell
+BellRing	bellrng
 
 //Jukebox Changer sound
-JKBX_CHG JKBX_CHG
-
+JKBX_CHG	JKBX_CHG
 
 //Black Cat
-cat/meow1 CATMEOW1
-cat/meow2 CATMEOW2
 $random cat/meows { cat/meow1 cat/meow2 }
+cat/meow1	CATMEOW1
+cat/meow2	CATMEOW2
+cat/hiss	CATHISS
+cat/purr	CATPURR
 
-cat/hiss		CATHISS
-cat/purr		CATPURR
-
-// Toilet
+//Toilet
 toilet/death	WCBREAK
 toilet/broken	WCFLOW
 toilet/flush	WCFLUSH
@@ -1064,9 +1194,9 @@ jazz/pain 	dsjazzpn
 jazz/death	dsjazzdt
 
 //Viper aircraft
+$random viper/flyby { viper/flyby1 viper/flyby2 }
 viper/flyby1 dsviper1
 viper/flyby2 dsviper2
-$random viper/flyby { viper/flyby1 viper/flyby2 }
 
 //Breaking Glass (small)
 GLSBRK01 GLSBRK01
@@ -1078,19 +1208,19 @@ METALBRK METALBRK
 WOODBRK WOODBRK
 
 //Breaking Grass (ahah "breaking")
+$random GRASBRKS {GRASBRK1 GRASBRK2 GRASBRK3 }
 GRASBRK1 GRASBRK1
 GRASBRK2 GRASBRK2
 GRASBRK3 GRASBRK3
-$random GRASBRKS {GRASBRK1 GRASBRK2 GRASBRK3 }
 
-// Treasure
+//Treasure
 supplychest/open SPBXOPEN
 
-// Hydrant
+//Hydrant
 hydrant/death	WCBREAK
 hydrant/broken	WCFLOW
 
-// Mine Cart Moving
+//Mine Cart Moving
 cartstop cartstop
 CARTROLL CARTROLL
 CARTROL0 CARTROLL
@@ -1108,24 +1238,24 @@ $singular CARTROL4
 $limit CARTSQUE 2
 $pitchshift CARTSQUE 7
 
-// Treasure
+//Treasure
 treasure/pickup	DSTRESUP
 treasure/locked DSLOCKD
 
-// Radioactive Barrel
+//Radioactive Barrel
 radioactivebarrel/detected DSDETECT
 
-// Chandelier. UNUSED! (mxd) 
+//Chandelier
 DSCHAFIR DSCHAFIR
 
 //Forcefield Zap
 forcefield/zap FFIELD
 
-// RTCWClock
+//RTCWClock
+$random oldclock/tick { ctick1 ctick2 ctick3 }
 ctick1 ctick1
 ctick2 ctick2
 ctick3 ctick3
-$random oldclock/tick { ctick1 ctick2 ctick3 }
 $pitchshift ctick1 0
 $pitchshift ctick2 0
 $pitchshift ctick3 0
@@ -1138,7 +1268,7 @@ $limit oldclock/chime 1
 $volume oldclock/chime 0.5
 $rolloff oldclock/chime 32 600
 
-// U-Boat engine
+//U-Boat engine
 uboat/engine uboateng
 
 //Lava Cauldron
@@ -1147,23 +1277,11 @@ LavaCauldron/Loop	DSLAVLOP
 //Ceramic Potery
 Pot/Break	POTBRK
 
-//Bird Critter
-CRWFLP CRWFLP
-
-CRWCAW1 CRWCAW1
-$Limit CRWCAW1	0
-
-CRWCAW2 CRWCAW2
-$Limit CRWCAW2	0
-
-CRWCAW3 CRWCAW3
-$Limit CRWCAW3 0
-
 //Bubbles
 SND_BOIL	SND_BOIL
 SND_LAVA	SND_LAVA
 
-// Rolling boulders
+//Rolling boulders
 Boulder/Roll	DSBOLROL
 Boulder/Stop	DSBOLSTP
 
@@ -1173,56 +1291,26 @@ SFX/FireLoop1	FIRELOP1
 SFX/FireLoop2	FIRELOP2
 SFX/FireLoop3	FIRELOP3
 SFX/FireDie	FIREDIE
+$limit SFX/FireStart	0
+$limit SFX/FireLoop1	1
+$limit SFX/FireLoop2	1
+$limit SFX/FireLoop3	1
+$limit SFX/FireDie	0
 
 //Swarm
 SFX/Buzz	DSBUZZ
 
-$Limit SFX/FireStart	0
-$Limit SFX/FireLoop1	1
-$Limit SFX/FireLoop2	1
-$Limit SFX/FireLoop3	1
-$Limit SFX/FireDie	0
-
 //Mine
 MINEF MINEF
-
-//Rats
-Rat/Squeek	DSRAT
-Rat/Active	DSRATIDL
-DSRATDI1	DSRATDI1
-DSRATDI2	DSRATDI2
-$random Rat/Death	{ DSRATDI1 DSRATDI2 }
-
-//Scorpions
-scorpion/spit	SCORSPIT
-scorpion/sting1	STINGHIT
-scorpion/sting2	STINGDTH
-scorpion/fall 	SCORFALL
-scorpion/see	SCORSEE
-scorpion/death	SCORDETH
-
-SCORATK1 		SCORATK1
-SCORATK2 		SCORATK2
-$random scorpion/attacks { SCORATK1 SCORATK2 }
-
-SCORHIT1 		SCORHIT1
-SCORHIT2 		SCORHIT2
-$random scorpion/pains { SCORHIT1 SCORHIT2 }
-
-//Small Switches
-SMSWITCH SMSWITCH
-
-//Metal Vent Destroy
-DSMETDST DSMETDST
 
 //Falling Rock Hazard
 misc/SRCRK1	srcrk1
 misc/SRCRK2	srcrk2
 
 //Nail Hazard
-NailHit			dsnailht
+NailHit					dsnailht
 NailHitBleed		dsnailhb
-NailFlight		dsnailnf
+NailFlight			dsnailnf
 $volume NailHit 0.4
 
 //Spike Hazard
@@ -1231,25 +1319,6 @@ $volume SpikeToggle 0.3
 
 //Lab Glasses
 tubes/break TSTTB
-
-//Breaking Glass
-GLASS1 GLASS1
-GLASS2 GLASS2
-GLASS3 GLASS3
-$random world/glassbreak { GLASS1 GLASS2 GLASS3 }
-$limit	world/glassbreak 4
-GLASS4 GLASS4
-GLASS5 GLASS5
-
-//Ladder Climbing
-LADDER1 LADDER1
-LADDER2 LADDER2
-LADDER3 LADDER3
-LADDER4 LADDER4
-LADDER5 LADDER5
-LADDER6 LADDER6
-$random world/ladder { LADDER1 LADDER2 LADDER3 LADDER4 LADDER5 LADDER6}
-$limit	world/ladder 1
 
 //Briefing
 DIA_SLID DIA_SLID //Dia Slide
@@ -1286,42 +1355,6 @@ $singular	WALKURE
 CLAIREDL CLAIREDL
 $singular	CLAIREDL
 
-//Tanks - from Return To Castle Wolfenstein - NOT USED
-TKIDLE TKIDLE
-TKMOVE TKMOVE
-//Moving tank sounds from WW2:GI - NOT USED
-TNK1LOOP TNK1LOOP
-TNK2LOOP TNK2LOOP
-//Debris -From FreeSFX.co.uk
-TKDBRS1 TKDBRS1
-TKDBRS2 TKDBRS2
-TKDBRS3 TKDBRS3
-TKDBRS4 TKDBRS4
-$random TANKDBRS	{ TKDBRS1 TKDBRS2 TKDBRS3 TKDBRS4 }
-$limit	TANKDBRS 1
-
-//Mini-ship
-miniship/fire mshpfire
-
-//Smokemonster
-Smoke/See		SSee
-
-Smoke/Tick 		Slop1
-Smoke/Die 		SDIE
-Smoke/Charge1		scrg1
-Smoke/Charge2		scrg2
-$random Smoke/Charge	{ Smoke/Charge1  Smoke/Charge2 }
-
-Smoke/pain1		Sact1
-Smoke/pain2		Sact2
-Smoke/pain3		Sact3
-Smoke/pain4		Sact4
-$random Smoke/pain	{ Smoke/pain1  Smoke/pain2 Smoke/pain3 Smoke/pain4 }
-
-//LowHealth Effects
-HBEAT	HBEAT
-$volume HBEAT 1.0
-
 //Astrostein Doors/Elevators
 astrostein/dooropen 	astrdrop
 astrostein/doorclose 	astrdrst
@@ -1337,29 +1370,22 @@ $rolloff subway/active 1024 2048
 tesla/active ELCLOOP
 $limit tesla/active 1
 
-//Water Shore Lap
-water/lap1 WATERLP1
-water/lap2 WATERLP2
-water/lap3 WATERLP3
-$random water/lap { water/lap1 water/lap2 water/lap3 }
-
 //Moving Crate (Astrostein + Paper)
+$random astrodrum_moving { astrodrum_moving1 astrodrum_moving2 astrodrum_moving3 }
 astrodrum_moving1 asdrmv01
 astrodrum_moving2 asdrmv02
 astrodrum_moving3 asdrmv03
-$random astrodrum_moving { astrodrum_moving1 astrodrum_moving2 astrodrum_moving3 }
-
+$random papercrate_moving { papercrate_moving1 papercrate_moving2 }
 papercrate_moving1 pacrmv01
 papercrate_moving2 pacrmv02
-$random papercrate_moving { papercrate_moving1 papercrate_moving2 }
 
 //Casino chips
+$random casino/chips { CHIP1 CHIP2 CHIP3 CHIP4 CHIP5 }
 CHIP1 CHIP1
 CHIP2 CHIP2
 CHIP3 CHIP3
 CHIP4 CHIP4
 CHIP5 CHIP5
-$random casino/chips { CHIP1 CHIP2 CHIP3 CHIP4 CHIP5 }
 $limit	casino/chips 1
 
 CHIP6 CHIP6
@@ -1373,51 +1399,50 @@ bloodsplat1 dsblud01
 bloodsplat2 dsblud02
 bloodsplat3 dsblud03
 
-/////////////////////////////////////////////////////////////////////
-//// SEQUENCE SOUNDS ////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////
+/////////////
+//SEQUENCES//
+/////////////
+
+BARN_CL		BARN_CL
+BARN_OP		BARN_OP
+CHAIN_SA	CHAIN_SA
+CHAIN_ST	CHAIN_ST
+CLSCRT_M	CLSCRT_M
+CLSCRT_O	CLSCRT_O
+CLSCRT_S	CLSCRT_S
+DR_MTL01	DR_MTL01
+DR_PRS01	DR_PRS01
+DR_WD01		DR_WD01
+DSSTN01		DSSTN01
+DSSTN02		DSSTN02
+ELDOR_CL	ELDOR_CL
+ELDOR_MV	ELDOR_MV
+ELDOR_OP	ELDOR_OP
+SHWR_OP		SHWR_OP
+$random switch/death	{ SWDTH1 SWDTH2 SWDTH3 }
+SWDTH1		SWDTH1
+SWDTH2		SWDTH2
+SWDTH3		SWDTH3
+SW_LIGHT	SW_LIGHT
+TRSECRET	TRSECRET
+WATDRAIN	SE_4B
 doors/dr1_move DSDORMOV
 doors/dr1_stop DSDORSTP
 $volume doors/dr1_stop 0.4
-DR_MTL01 DR_MTL01
-DR_WD01 DR_WD01
-DR_PRS01 DR_PRS01
-slift1a  slift1a
-slift1b  slift1b
-slift1c  slift1c
-SW_LIGHT SW_LIGHT
-ELDOR_OP ELDOR_OP
-ELDOR_MV ELDOR_MV
-ELDOR_CL ELDOR_CL
-DSSTN01 DSSTN01
-DSSTN02 DSSTN02
-TRSECRET TRSECRET
-CLSCRT_M CLSCRT_M
-CLSCRT_O CLSCRT_O
-CLSCRT_S CLSCRT_S
-CHAIN_SA CHAIN_SA
-CHAIN_ST CHAIN_ST
-WATDRAIN SE_4B 
-SWDTH1 SWDTH1
-SWDTH2 SWDTH2
-SWDTH3 SWDTH3
-$random switch/death	{ SWDTH1 SWDTH2 SWDTH3 }
-SHWR_OP SHWR_OP
-
-ulift1a udoor1a
-ulift1b udoor1b
-ulift1c udoor1c
-
-BARN_OP BARN_OP
-BARN_CL BARN_CL
+slift1a		slift1a
+slift1b		slift1b
+slift1c		slift1c
+ulift1a		udoor1a
+ulift1b		udoor1b
+ulift1c		udoor1c
 
 //LightOn/Off
 LightOn				lighton
 LightOff			lightoff
 
-///////////////////////////////////////////////////////////////////////
-// GROUND STEP SOUNDS /////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
+/////////
+//STEPS//
+/////////
 
 //Carpet - soft ground
 $random floor/carpet		{ floor/carpet01  floor/carpet02 floor/carpet03 }
@@ -1436,7 +1461,6 @@ floor/dirt03	dsdirt3
 floor/dirt04	dsdirt4
 floor/dirt05	dsdirt5
 floor/dirt06	dsdirt6
-
 $limit floor/dirt 2
 $volume floor/dirt 0.4
 
@@ -1446,7 +1470,6 @@ floor/grav01	dsgrav1
 floor/grav02	dsgrav2
 floor/grav03	dsgrav3
 floor/grav04	dsgrav4
-
 $limit floor/gravel 2
 $volume floor/gravel 0.4
 
@@ -1458,7 +1481,6 @@ floor/metl03	dsmet03
 floor/metl04	dsmet04
 floor/metl05	dsmet05
 floor/metl06	dsmet06
-
 $limit floor/metal 2
 $volume floor/metal 0.4
 
@@ -1468,7 +1490,6 @@ floor/met201	dsmet201
 floor/met202	dsmet202
 floor/met203	dsmet203
 floor/met204	dsmet204
-
 $limit floor/met2 2
 $volume floor/met2 0.4
 
@@ -1482,7 +1503,6 @@ floor/rock05	dsrock5
 floor/rock06	dsrock6
 floor/rock07	dsrock7
 floor/rock08	dsrock8
-
 $limit floor/rock 2
 $volume floor/rock 0.4
 
@@ -1494,7 +1514,6 @@ floor/snow03	dssnow3
 floor/snow04	dssnow4
 floor/snow05	dssnow5
 floor/snow06	dssnow6
-
 $limit floor/snow 2
 $volume floor/snow 0.4
 
@@ -1506,7 +1525,6 @@ floor/hard03	dshard3
 floor/hard04	dshard4
 floor/hard05	dshard5
 floor/hard06	dshard6
-
 $limit floor/hard 2
 $volume floor/hard 0.4
 
@@ -1518,7 +1536,6 @@ floor/tile03	dstile03
 floor/tile04	dstile04
 floor/tile05	dstile05
 floor/tile06	dstile06
-
 $limit floor/tile 2
 $volume floor/tile 0.4
 
@@ -1532,7 +1549,6 @@ floor/tile205	dstile25
 floor/tile206	dstile26
 floor/tile207	dstile27
 floor/tile208	dstile28
-
 $limit floor/tile2 2
 $volume floor/tile2 0.4
 
@@ -1542,7 +1558,6 @@ floor/wood01	dswood1
 floor/wood02	dswood2
 floor/wood03	dswood3
 floor/wood04	dswood4
-
 $limit floor/wood 2
 $volume floor/wood 0.4
 
@@ -1552,11 +1567,10 @@ floor/slimy01	dsslimy1
 floor/slimy02	dsslimy2
 floor/slimy03	dsslimy3
 floor/slimy04	dsslimy4
-
 $limit floor/slimy 2
 $volume floor/slimy 0.4
 
-// Heavy - boss footsteps
+//Heavy - boss footsteps
 $random floor/heavy { floor/heavy1 floor/heavy2 floor/heavy3 floor/heavy4 }
 floor/heavy1 STEPHVY1
 floor/heavy2 STEPHVY2
@@ -1564,16 +1578,11 @@ floor/heavy3 STEPHVY3
 floor/heavy4 STEPHVY4
 $rolloff floor/heavy 128 750
 
-// Train
-TRAIN_ED TRAIN_ED
-TRAIN_ST TRAIN_ST
-TRAIN_HN TRAIN_HN
+///////////
+//AMBIENT//
+///////////
 
-
-/////////////////////////////////////////////////////////////////////
-//// AMBIENT SOUNDS /////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////
-
+$random CELLAR_CRY { CRY01 CRY02 CRY03 CRY04 CRY05 CRY06 CRY07 }
 CRY01 CRY01
 CRY02 CRY02
 CRY03 CRY03
@@ -1581,19 +1590,19 @@ CRY04 CRY04
 CRY05 CRY05
 CRY06 CRY06
 CRY07 CRY07
-$random CELLAR_CRY { CRY01 CRY02 CRY03 CRY04 CRY05 CRY06 CRY07 }
 
 world/bomb_ticker TICKTOCK 
 
 ELECTRICITY ELCLOOP
 $rolloff ELECTRICITY 64 256
 
+$random EXPLOSION_LEADIN { EXPLOSION_LEADIN01 EXPLOSION_LEADIN02 EXPLOSION_LEADIN03 EXPLOSION_LEADIN04 }
 EXPLOSION_LEADIN01 EXLEAD01
 EXPLOSION_LEADIN02 EXLEAD02
 EXPLOSION_LEADIN03 EXLEAD03
 EXPLOSION_LEADIN04 EXLEAD04
-$random EXPLOSION_LEADIN { EXPLOSION_LEADIN01 EXPLOSION_LEADIN02 EXPLOSION_LEADIN03 EXPLOSION_LEADIN04 }
 
+$random EXPLOSION_SOUND { EXPLSND1 EXPLSND2 EXPLSND3 EXPLSND4 EXPLSND5 EXPLSND6 EXPLSND7 }
 EXPLSND1 EXPLSND1
 EXPLSND2 EXPLSND2
 EXPLSND3 EXPLSND3
@@ -1601,7 +1610,6 @@ EXPLSND4 EXPLSND4
 EXPLSND5 EXPLSND5
 EXPLSND6 EXPLSND6
 EXPLSND7 EXPLSND7
-$random EXPLOSION_SOUND { EXPLSND1 EXPLSND2 EXPLSND3 EXPLSND4 EXPLSND5 EXPLSND6 EXPLSND7 }
 
 FIRE_LARGE FIRE_LG
 FIRE_MEDIUM FIRE_MD
@@ -1612,10 +1620,10 @@ $rolloff FIRE_SMALL 64 380
 $volume FIRE_MEDIUM 0.85
 $volume FIRE_SMALL 0.7
 
+$random PLANE_FLYBY { PLANE_FLYBY_1 PLANE_FLYBY_2 PLANE_FLYBY_3 }
 PLANE_FLYBY_1 PLANE01
 PLANE_FLYBY_2 PLANE02
 PLANE_FLYBY_3 PLANE03
-$random PLANE_FLYBY { PLANE_FLYBY_1 PLANE_FLYBY_2 PLANE_FLYBY_3 }
 
 RAIN AMBRAIN
 Ambient/Rain	AMBRAIN
@@ -1626,80 +1634,79 @@ STEAM_SMALL steam2
 $rolloff STEAM_BURST 64 460
 $rolloff STEAM_SMALL 64 460
 
+$random WAR_DISTANT { WAR_DISTANT_1 WAR_DISTANT_2 WAR_DISTANT_3 WAR_DISTANT_4 }
 WAR_DISTANT_1 WAR_01
 WAR_DISTANT_2 WAR_02
 WAR_DISTANT_3 WAR_03
 WAR_DISTANT_4 WAR_04
-$random WAR_DISTANT { WAR_DISTANT_1 WAR_DISTANT_2 WAR_DISTANT_3 WAR_DISTANT_4 }
 
 WAR_CLOSER BATTLCL
 
-ALARM_DOOD ALARM01
-ALARM_RING ALARM02
-ASTROCITYAMB SFCAMB
-BABBL BABBL
-COMPUTER_ATWORK1 Compy1
-COMPUTER_ATWORK2 Compy2	// Computer System At Work
-COMPUTER_IDLE Compy4
-COMPUTER_MALFUNCTION Compy3
-CRICKET_NIGHT CRICKT01
-CRICKET_NIGHT2 CRICKT02
-FAN FAN
-FLIES FLIES
-FOREST_AMBIENCE FORSTBRD
-HEAVY_FAN hfanamb
-HUM_LIGHT_HEAVY HUM_L_H
-HUM_LIGHT_MEDIUM HUM_L_M
-HUM_LIGHT_SMALL HUM_L_S
-LAVA_BLUB amb04
-MACHINEGUN_RICOCHET MGUNRIC
-MACHINE_LOOP_1 MACH_L_1
-MACHINE_LOOP_2 MACH_L_2
-MACHINE_LOOP_3 MACH_L_3
+AIR_RAID_ALARM		MECALA1
+ALARM_DOOD				ALARM01
+ALARM_RING				ALARM02
+ASTROCITYAMB			SFCAMB
+BABBL							BABBL
+COMPUTER_ATWORK1	Compy1
+COMPUTER_ATWORK2	Compy2	// Computer System At Work
+COMPUTER_IDLE			Compy4
+COMPUTER_MALFUNCTION	Compy3
+CRICKET_NIGHT			CRICKT01
+CRICKET_NIGHT2		CRICKT02
+FAN								FAN
+FLIES							FLIES
+FOREST_AMBIENCE		FORSTBRD
+HEAVY_FAN					hfanamb
+HUM_LIGHT_HEAVY		HUM_L_H
+HUM_LIGHT_MEDIUM	HUM_L_M
+HUM_LIGHT_SMALL		HUM_L_S
+LAVA_BLUB					amb04
+MACHINEGUN_RICOCHET	MGUNRIC
+MACHINE_LOOP_1		MACH_L_1
+MACHINE_LOOP_2		MACH_L_2
+MACHINE_LOOP_3		MACH_L_3
 MACHINE_LOOP_SILENT MACH_L_4
-MARLENEDIETRICH MD_VIE
-MOTOR_JEEP MOT_01
-MOTOR_TANK MOT_02
-PORTAL_HUM PORTALHM
-RADIOBROADCAST_WAR RADIO_BC
-RADIOTRANSMISSION_WAR RADIO_TR
-RADIO_LOOP RADIO_L
-RAIN_LIGHT rainlite
-SALOONKY saloonky
-SEQ_PLANEATTACK SEQ_P_A
-SPACESHIP_HUM HIVE
-SPACESHIP_HUM_LOW AMB9
-STEEL1 STEEL1
-STEEL2 STEEL2
-SWING_SONG SWING
-TRAIN_LP TRAIN_LP
-TRAINSTATION_AMBIENT TRNSTATA
-UNDERWATER_BUBBLE UWBUBBL
-VOLCANO_AMBIENCE DSVOLC
-WAR_DISTANT_MORE WAR_05
-WATERFALL dsfalls
-WATER_BASEMENT WATR_01
-WATER_FOUNTAIN WATR_02
-WATER_LAPS WATR_03
-WATER_RIVER WATR_04
-WATER_RIVER2 amb15
-WATER_SHORE WATR_05
-WIND_CAVE WIND_01
-WIND_HOWLING WIND_02
-WIND_HOWLING_CITY CITYHOWL
-WIND_HOWLING_UNDERGROUND AMB24
-WIND_MEDIUM WIND_03
-WIND_SILENT WIND_04
-AIR_RAID_ALARM MECALA1
-
+MARLENEDIETRICH		MD_VIE
+MOTOR_JEEP				MOT_01
+MOTOR_TANK				MOT_02
+PORTAL_HUM				PORTALHM
+RADIOBROADCAST_WAR		RADIO_BC
+RADIOTRANSMISSION_WAR	RADIO_TR
+RADIO_LOOP				RADIO_L
+RAIN_LIGHT				rainlite
+SALOONKY					saloonky
+SEQ_PLANEATTACK		SEQ_P_A
+SPACESHIP_HUM			HIVE
+SPACESHIP_HUM_LOW	AMB9
+STEEL1						STEEL1
+STEEL2						STEEL2
+SWING_SONG				SWING
+TRAINSTATION_AMBIENT	TRNSTATA
+TRAIN_LP					TRAIN_LP
+UNDERWATER_BUBBLE	UWBUBBL
+VOLCANO_AMBIENCE	DSVOLC
+WAR_DISTANT_MORE	WAR_05
+WATERFALL					dsfalls
+WATER_BASEMENT		WATR_01
+WATER_FOUNTAIN		WATR_02
+WATER_LAPS				WATR_03
+WATER_RIVER				WATR_04
+WATER_RIVER2			amb15
+WATER_SHORE				WATR_05
+WIND_CAVE					WIND_01
+WIND_HOWLING			WIND_02
+WIND_HOWLING_CITY	CITYHOWL
+WIND_HOWLING_UNDERGROUND	AMB24
+WIND_MEDIUM				WIND_03
+WIND_SILENT				WIND_04
 
 //Thunder
+$random misc/thunder { misc/thunder1 misc/thunder2 misc/thunder3 misc/thunder4 misc/thunder5 }
 misc/thunder1 thunder1
 misc/thunder2 thunder2
 misc/thunder3 thunder3
 misc/thunder4 thunder4
 misc/thunder5 thunder5
-$random misc/thunder { misc/thunder1 misc/thunder2 misc/thunder3 misc/thunder4 misc/thunder5 }
 
 //Earthquake
 misc/earthquake DSQUAKE
@@ -1739,7 +1746,7 @@ $AMBIENT 32 FLIES POINT CONTINUOUS 1.0
 $AMBIENT 33 STEEL1 POINT RANDOM 10.0 30.0 1.0
 $AMBIENT 34 STEEL2 POINT RANDOM 10.0 30.0 1.0
 $AMBIENT 35 CELLAR_CRY POINT RANDOM 1.0 10.0 30.0
-$AMBIENT 36 WATERFALL POINT CONTINUOUS 1.0	
+$AMBIENT 36 WATERFALL POINT CONTINUOUS 1.0
 $AMBIENT 37 WATER_RIVER2 POINT CONTINUOUS 1.0
 $AMBIENT 38 RAIN POINT CONTINUOUS 1.0
 $AMBIENT 39 STEAM_SMALL POINT CONTINUOUS 1.0
@@ -1773,9 +1780,15 @@ $AMBIENT 66 AIR_RAID_ALARM POINT CONTINUOUS 1.0
 $AMBIENT 67 WAR_CLOSER POINT CONTINUOUS 1.0
 $AMBIENT 68 CHATTER_AXIS POINT PERIODIC 9.0 1.0
 
-/////////////////////////////////////////////////////////////////////
-//// BRIEFING VOICEOVER SOUNDS //////////////////////////////////////
-/////////////////////////////////////////////////////////////////////
+/////////////
+//BRIEFINGS//
+/////////////
+
+C1M0_1 C1M0_1
+C1M0_2 C1M0_2
+C1M0_3 C1M0_3
+C1M0_4 C1M0_4
+C1M0_5 C1M0_5
 C1M1_1 C1M1_1
 C1M1_2 C1M1_2
 C1M1_3 C1M1_3
@@ -1806,14 +1819,14 @@ C1M6_2 C1M6_2
 C1M6_3 C1M6_3
 C1M6_4 C1M6_4
 C1M6_5 C1M6_5
-C1M0_1 C1M0_1
-C1M0_2 C1M0_2
-C1M0_3 C1M0_3
-C1M0_4 C1M0_4
-C1M0_5 C1M0_5
 
 EPILOGUEC1 EPIL_1
 
+$pitchshift C0M1_1 0
+$pitchshift C0M1_2 0
+$pitchshift C0M1_3 0
+$pitchshift C0M1_4 0
+$pitchshift C0M1_5 0
 $pitchshift C1M1_1 0
 $pitchshift C1M1_2 0
 $pitchshift C1M1_3 0
@@ -1844,10 +1857,5 @@ $pitchshift C6M1_2 0
 $pitchshift C6M1_3 0
 $pitchshift C6M1_4 0
 $pitchshift C6M1_5 0
-$pitchshift C0M1_1 0
-$pitchshift C0M1_2 0
-$pitchshift C0M1_3 0
-$pitchshift C0M1_4 0
-$pitchshift C0M1_5 0
 
 $pitchshift EPILOGUEC1 0

@@ -25,23 +25,12 @@ ACTOR Panzerschreck : NaziWeapon
 		Loop
 		PANZ A 1 A_WeaponReady(WRF_ALLOWRELOAD)
 		Loop
-	ScopedReady:
-		PANZ B 0 A_JumpIfInventory("PanzerschreckLoaded",0,2)
-		PANZ B 0 A_JumpIfInventory("PanzerAmmo",1,2)
-		PANZ B 1 A_WeaponReady(WRF_NOBOB)
-		Goto Ready
-		PANZ B 1 A_WeaponReady(WRF_NOBOB|WRF_ALLOWRELOAD)
-		Goto Ready
 	Select:
 		PANZ A 1 A_Raise
 		Loop
 	Deselect:
 		PANZ A 1 A_Lower
 		Loop
-	ScopedDeselect:
-		PANZ B 0 A_TakeInventory("PanzerZoom")
-		PANZ B 1 A_ZoomFactor(1.0)
-		Goto Deselect
 	AltFire:
 		PANZ A 1 Offset(6,34)
 		PANZ A 0 Offset(14,36)
