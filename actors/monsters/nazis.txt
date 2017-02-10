@@ -466,39 +466,39 @@ ACTOR WGuard_Wounded : Nazi //ozy81
 	States
 	{
 	Spawn:
-		GRD2 O 1 A_Look
+		GRD2 O 35 A_Look
 		Loop
 	See:
-		GRD2 P 1 A_SetTics(random(1,7))
+		GRD2 PQ 1 A_SetTics(random(1,7))
 	SeeLoop:
-		GRD2 Q 1 A_Chase
-		"####" Q 1 A_SetTics(random(1,14))
+		GRD2 R 1 A_Chase
+		"####" R 1 A_SetTics(random(1,14))
 		Loop
 	Missile:
-		GRD2 R 7 A_FaceTarget
-		"####" S 0 A_PlaySound("nazi/pistol", CHAN_WEAPON)
-		"####" S 7 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",27,1,random(-8,8))
-		"####" S 0 A_GiveInventory("PistolGuardCounter", 1) //ozy81
-		"####" S 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" R 14 
-		"####" S 0 A_PlaySound("nazi/pistol", CHAN_WEAPON)
-		"####" S 7 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",27,1,random(-16,16))
-		"####" S 0 A_GiveInventory("PistolGuardCounter", 1) //ozy81
-		"####" S 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" S 0 A_JumpIfInventory("PistolGuardCounter", 8, "Reload") //ozy81
-		"####" R 14
+		GRD2 S 7 A_FaceTarget
+		"####" T 0 A_PlaySound("nazi/pistol", CHAN_WEAPON)
+		"####" T 7 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",27,1,random(-8,8))
+		"####" T 0 A_GiveInventory("PistolGuardCounter", 1) //ozy81
+		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" S 14 
+		"####" T 0 A_PlaySound("nazi/pistol", CHAN_WEAPON)
+		"####" T 7 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",27,1,random(-16,16))
+		"####" T 0 A_GiveInventory("PistolGuardCounter", 1) //ozy81
+		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" T 0 A_JumpIfInventory("PistolGuardCounter", 8, "Reload") //ozy81
+		"####" S 14
 		Goto SeeLoop
 	Reload: //ozy81
-		"####" Q 0 A_ChangeFlag("NoPain", 1)
-		"####" Q 30 A_PlaySound("luger/reload", CHAN_ITEM, frandom (0.3,0.6), FALSE, ATTN_NORM)
-		"####" Q 0 A_TakeInventory("PistolGuardCounter", 8) //ozy81
-		"####" Q 0 A_SpawnItemEx("9MMCasing", 1, 0, 56, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" Q 0 A_ChangeFlag("NoPain", 0)
+		"####" R 0 A_ChangeFlag("NoPain", 1)
+		"####" R 30 A_PlaySound("luger/reload", CHAN_ITEM, frandom (0.3,0.6), FALSE, ATTN_NORM)
+		"####" R 0 A_TakeInventory("PistolGuardCounter", 8) //ozy81
+		"####" R 0 A_SpawnItemEx("9MMCasing", 1, 0, 56, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" R 0 A_ChangeFlag("NoPain", 0)
 		"####" "#" 0 A_Jump(256, "SeeLoop")
 	Death: 
-		GRD2 T 7
-		"####" U 5
+		GRD2 U 7
 		"####" V 5
+		"####" W 5
 		"####" M -1 {A_DropItem("9mmAmmo",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
 		Stop
 	}
