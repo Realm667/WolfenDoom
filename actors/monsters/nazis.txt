@@ -1841,9 +1841,9 @@ ACTOR Mutant : Guard
 		"####" ONMLKJ 4
 		Goto See
 	XDeath:
-		SLOP ABCDEF 5 A_SpawnItemEx("MutantFlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
-		SLOP G 0 A_NoBlocking
-		SLOP G -1
+		SLMT ABCDEF 5 A_SpawnItemEx("MutantFlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
+		SLMT G 0 A_NoBlocking
+		SLMT G -1
 		Stop
 	}
 }
@@ -2088,7 +2088,7 @@ ACTOR BigMutant1 : Mutant
 		"####" V -1
 		Stop
 	XDeath:
-		SLOP A 0 A_SetScale(1.4)
+		SLMT A 0 A_SetScale(1.4)
 		"####" ABCDEF 5 A_SpawnItemEx("MutantFlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176)
 		"####" G 0 A_NoBlocking
 		"####" G -1
