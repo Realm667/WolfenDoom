@@ -871,10 +871,10 @@ ACTOR StrobeLightYellow : StrobeLightBlue
 	}
 }
 
-ACTOR Red_Light
+ACTOR Red_Light : SwitchableDecoration
 {
 	//$Category Light Sources (Wolf3D)
-	//$Title Light, Red (on)
+	//$Title Light, Red (on, switchable)
 	//$Color 11
 	Radius 16
 	Height 16
@@ -884,15 +884,20 @@ ACTOR Red_Light
 	+SPAWNCEILING
 	States
 	{
+	Active:
+		"####" A 0 A_ChangeFlag("DORMANT", FALSE) //mxd. DORMANT flag must be updated manually
 	Spawn:
 		STRR A -1 LIGHT(FIXEDRED)
+		Stop
+	Inactive:
+		"####" A -1 A_ChangeFlag("DORMANT", TRUE) //mxd. DORMANT flag must be updated manually
 		Stop
 	}
 }
 
 ACTOR Blue_Light : Red_Light
 {
-	//$Title Light, Blue (on)
+	//$Title Light, Blue (on, switchable)
 	States
 	{
 	Spawn:
@@ -903,7 +908,7 @@ ACTOR Blue_Light : Red_Light
 
 ACTOR Green_Light : Red_Light
 {
-	//$Title Light, Green (on)
+	//$Title Light, Green (on, switchable)
 	States
 	{
 	Spawn:
@@ -914,7 +919,7 @@ ACTOR Green_Light : Red_Light
 
 ACTOR Yellow_Light : Red_Light
 {
-	//$Title Light, Yellow (on)
+	//$Title Light, Yellow (on, switchable)
 	States
 	{
 	Spawn:
