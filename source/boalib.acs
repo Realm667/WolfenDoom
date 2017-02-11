@@ -402,6 +402,7 @@ script "MiniBossHealth" ENTER
 		SetFont(BossHealth[FixedDiv(GetActorProperty(actor_tid,APROP_Health),GetActorProperty(actor_tid,APROP_SpawnHealth))*10/65536]);
 		HudMessage(s:"A"; HUDMSG_PLAIN,22,CR_GRAY,320.0,40.0,0.03);
 	}
+	if (old_tid == 0) Thing_ChangeTID(actor_tid, 0);
 	delay(1);
 	restart;
 }
