@@ -149,10 +149,11 @@ ACTOR NebelwerferTruck : Nebelwerfer
 	Tag "Truck Turret"
 	-WEAPON.NOALERT
 	-WEAPON.AMMO_CHECKBOTH
+	+INVENTORY.UNDROPPABLE
 	States
 	{
 	Ready:
-		HSML A 1 A_WeaponReady
+		HSML A 1 A_WeaponReady(WRF_NOSWITCH)
 		Loop
 	Deselect:
 		HSML A 0 A_Lower
