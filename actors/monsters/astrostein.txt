@@ -116,11 +116,29 @@ ACTOR AstroElite : AstroGuard
 		ATR4 A 0
 		Goto Look
 	Missile:
-		"####" F 5 A_FaceTarget
-		"####" F 0 A_PlaySound("astrochaingun/fire")
-		"####" GGGGGGGG 1 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-8,8))
-		"####" F 5 A_MonsterRefire(30,"See")
-		Goto Missile+1
+		"####" FG 8 A_FaceTarget
+		"####" H 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
+		"####" H 3 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-8,8))
+		"####" G 2 A_FaceTarget
+		"####" H 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
+		"####" H 3 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-4,4))
+		"####" G 2 A_FaceTarget
+		"####" H 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
+		"####" H 3 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-8,8))
+		"####" G 2 A_FaceTarget
+		"####" H 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
+		"####" H 3 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-4,4))
+		Goto See
+	Pain:
+		"####" I 3
+		"####" I 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		"####" I 0 A_Jump(256,"See")
+		Stop
+	Death.Fire: //We don't want different Death sequences than the Disintegrate one for Astrosteins, yeah?
+	XDeath:
+	Death:
+		ATR4 I 0 A_Jump(256,"Disintegrate")
 	}
 }
 
