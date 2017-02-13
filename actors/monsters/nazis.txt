@@ -164,6 +164,7 @@ ACTOR Rottweiler : Nazi
 	DeathSound "dog/death"
 	ActiveSound "dog/active"
 	-CANUSEWALLS
+	-CANPUSHWALLS //dogs mustn't able to open doors imho, that's why there was -CANUSEWALLS before, but we use bumps on polys
 	+NEVERTARGET //So the dogs don't get targeted by stealth (+FRIENDLY-abusing) guards
 	States
 	{
