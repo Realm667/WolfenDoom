@@ -277,11 +277,18 @@ ACTOR Guard : Nazi
 		"####" E 0 A_ChangeFlag("NoPain", 0)
 		"####" "#" 0 A_Jump(256, "See") //So that inheriting actors go to their own See State
 	Death:
-		"####" I 5
+		"####" I 5 A_Jump(64,"Death.Alt1")
 		"####" J 5 A_Scream
 		"####" K 5 A_NoBlocking
 		"####" L 5
 		"####" M -1
+		Stop
+	Death.Alt1:
+		"####" I 5
+		"####" J 5 A_Scream
+		"####" K 5 A_NoBlocking
+		"####" L 5
+		TNT1 A 1 A_SpawnItemEx("Guard_Wounded_NoCount", 0, 0, 0)
 		Stop
 	Death.Fire:
 		TNT1 A 0 A_Jump(256,"Death.Fire.A","Death.Fire.B")
@@ -455,13 +462,11 @@ ACTOR WGuard_Wounded : Nazi //ozy81
 	//$Category Monsters (Wolf3D)/Special
 	//$Title Wounded Guard (Pistol, Wehrmacht)
 	//$Color 4
-	Height 32
 	Health 5
 	Speed 0
 	Scale 1.24
 	Obituary "$WGUARD"
 	MONSTER
-	+DONTTHRUST
 	+FLOORCLIP
 	+LOOKALLAROUND
 	States
@@ -489,7 +494,7 @@ ACTOR WGuard_Wounded : Nazi //ozy81
 		"####" T 0 A_JumpIfInventory("PistolGuardCounter", 8, "Reload") //ozy81
 		"####" S 14
 		Goto SeeLoop
-	Reload: //ozy81
+	Reload:
 		"####" R 0 A_ChangeFlag("NoPain", 1)
 		"####" R 30 A_PlaySound("luger/reload", CHAN_ITEM, frandom (0.3,0.6), FALSE, ATTN_NORM)
 		"####" R 0 A_TakeInventory("PistolGuardCounter", 8) //ozy81
@@ -511,9 +516,68 @@ ACTOR WGuard_Wounded_NoCount : WGuard_Wounded
 	States
 	{
 	Death: 
-		GRD2 T 7
-		"####" U 5
+		GRD2 U 7
 		"####" V 5
+		"####" W 5
+		"####" M -1
+		Stop
+	}
+}
+
+ACTOR Guard_Wounded : WGuard_Wounded
+{
+	//$Title Wounded Guard (Pistol, Afrika Korps)
+	Obituary "$GUARD"
+	States
+	{
+	Spawn:
+		GARD O 35 A_Look
+		Loop
+	See:
+		GARD PQ 1 A_SetTics(random(1,7))
+	SeeLoop:
+		GARD R 1 A_Chase
+		"####" R 1 A_SetTics(random(1,14))
+		Loop
+	Missile:
+		GARD S 7 A_FaceTarget
+		"####" T 0 A_PlaySound("nazi/pistol", CHAN_WEAPON)
+		"####" T 7 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",27,1,random(-8,8))
+		"####" T 0 A_GiveInventory("PistolGuardCounter", 1) //ozy81
+		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" S 14 
+		"####" T 0 A_PlaySound("nazi/pistol", CHAN_WEAPON)
+		"####" T 7 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",27,1,random(-16,16))
+		"####" T 0 A_GiveInventory("PistolGuardCounter", 1) //ozy81
+		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" T 0 A_JumpIfInventory("PistolGuardCounter", 8, "Reload") //ozy81
+		"####" S 14
+		Goto SeeLoop
+	Reload:
+		GARD R 0 A_ChangeFlag("NoPain", 1)
+		"####" R 30 A_PlaySound("luger/reload", CHAN_ITEM, frandom (0.3,0.6), FALSE, ATTN_NORM)
+		"####" R 0 A_TakeInventory("PistolGuardCounter", 8) //ozy81
+		"####" R 0 A_SpawnItemEx("9MMCasing", 1, 0, 56, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" R 0 A_ChangeFlag("NoPain", 0)
+		"####" "#" 0 A_Jump(256, "SeeLoop")
+	Death: 
+		GARD U 7
+		"####" V 5
+		"####" W 5
+		"####" M -1 {A_DropItem("9mmAmmo",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
+		Stop
+	}
+}
+
+ACTOR Guard_Wounded_NoCount : Guard_Wounded
+{
+	-COUNTKILL 
+	States
+	{
+	Death: 
+		GARD U 7
+		"####" V 5
+		"####" W 5
 		"####" M -1
 		Stop
 	}
