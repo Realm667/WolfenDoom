@@ -58,7 +58,7 @@ ACTOR SneakableSSMP40Guard : SSMP40Guard
 			Goto Spawn
 		Death:
 			"####" "#" 0 A_RemoveChildren(TRUE, RMVF_EVERYTHING) // Despawn children
-			"####" "#" 0 A_CheckFlag("FRIENDLY", "Super::Death+1") // Don't decrease AlertedCount when friendly
+			"####" "#" 0 A_CheckFlag("FRIENDLY", "Super::Death") // Don't decrease AlertedCount when friendly
 			"####" "#" 0 ACS_NamedExecute("DecreaseAlertedCount")
 			Goto Super::Death+1
 		XDeath: // Same as Death
