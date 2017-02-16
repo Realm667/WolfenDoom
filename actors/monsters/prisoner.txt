@@ -13,8 +13,6 @@ ACTOR PrisonerAgent
 	MaxDropOffHeight 16383
 	MaxTargetRange 65536
 	PainChance 255
-	//PainSound "Nazi1/Pain"
-	//DeathSound "Nazi1/Death"
 	Monster
 	Species "Player"
 	-COUNTKILL
@@ -178,10 +176,10 @@ ACTOR HealingParticle
 	{
 	Spawn:
 		HELX A 0 NODELAY A_SetScale(frandom(0.2, 0.6))
-		HELX AAAAAAAAAA 1 A_FadeIn(0.07)
-		HELX AAAAAAAAAA 8 A_FadeOut(0.08)
+		"####" AAAAAAAAAA 1 A_FadeIn(0.07)
+		"####" AAAAAAAAAA 8 A_FadeOut(0.08)
 	Death:
-		HELX A 1 BRIGHT A_FadeOut(0.1)
+		"####" A 1 BRIGHT A_FadeOut(0.1)
 		Loop
 	}
 }
@@ -326,11 +324,11 @@ ACTOR PrisonerCampMale : PrisonerAgent //this is a placeholder for now
 	{
 	Death:
 		TORT J 6 A_NoBlocking
-		TORT K 6 A_PlayerScream
+		"####" K 6 A_PlayerScream
 		TNT1 A 0 A_Log("Prisoner dead!")
-		TNT1 A 0 A_PlaySound("misc/chat2", CHAN_AUTO, 1.0, FALSE, ATTN_NONE)
+		"####" A 0 A_PlaySound("misc/chat2", CHAN_AUTO, 1.0, FALSE, ATTN_NONE)
 		TORT LM 3
-		TORT N -1
+		"####" N -1
 		Stop
 	Idle:
 		Stop

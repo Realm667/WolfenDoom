@@ -3,8 +3,8 @@ ACTOR AstroGuard : Guard
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Astrostein Guard
 	//$Color 4
-	DropItem AstroClipAmmo 128
-	DropItem AstroShotgunShell 32
+	DropItem "AstroClipAmmo" 128
+	DropItem "AstroShotgunShell" 32
 	Obituary "$AGUARD1"
 	States
 	{
@@ -107,8 +107,8 @@ ACTOR AstroElite : AstroGuard
 	//$Color 4
 	Speed 5.0
 	Health 30
-	DropItem AstroShotgun 64
-	DropItem AstroShotgunShell 192
+	DropItem "AstroShotgun" 64
+	DropItem "AstroShotgunShell" 192
 	Obituary "$AGUARD4"
 	States
 	{
@@ -259,7 +259,7 @@ ACTOR AstroCyborg1 : Nazi
 	PainChance 32
 	+LOOKALLAROUND
 	+NOBLOOD
-	DropItem AstroRocketAmmo 128
+	DropItem "AstroRocketAmmo" 128
 	SeeSound "astrostein/cyborg_sight"
 	PainSound "astrostein/cyborg_pain"
 	DeathSound "astrostein/cyborg_death"
@@ -320,8 +320,8 @@ ACTOR AstroCyborg2 : AstroCyborg1
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Astrostein Cyborg (2)
 	//$Color 4
-	DropItem AstroShotgunShell 256
-	DropItem AstroShotgunShell 256
+	DropItem "AstroShotgunShell" 256
+	DropItem "AstroShotgunShell" 256
 	States
 	{
 	Spawn:
@@ -444,7 +444,7 @@ ACTOR AstroRobot : AstroCyborg1
 	PainSound "astrostein/robot_pain"
 	DeathSound "astrostein/robot_death"
 	ActiveSound "astrostein/robot_act"
-	DropItem AstroRocketAmmo 160
+	DropItem "AstroRocketAmmo" 160
 	Obituary "$AROBOTO"
 	+BOSS
 	Tag "Tiger Roboter"

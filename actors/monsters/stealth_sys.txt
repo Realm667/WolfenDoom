@@ -5,9 +5,9 @@ ACTOR SneakableSSMP40Guard : SSMP40Guard
 	//$Title SS Guard (MP40, sneak-friendly)
 	//$Color 4
 	PainChance 256							// Otherwise our Pain states won't always work...
-	DropItem 9mmAmmo 192
-	DropItem MP40 64
-	DropItem GrenadePickup 16
+	DropItem "9mmAmmo" 192
+	DropItem "GrenadePickup" 16
+	DropItem "MP40" 64
 	var int user_chasegoal;			// Current PatrolTarget TID is stored here when the guard becomes alerted
 	var int user_stealthkilled;	// Hackity hacks...
 	var int user_attacked;
@@ -58,9 +58,9 @@ ACTOR SneakableSSMP40Guard : SSMP40Guard
 			Goto Spawn
 		Death:
 			"####" "#" 0 A_RemoveChildren(TRUE, RMVF_EVERYTHING) // Despawn children
-			"####" "#" 0 A_CheckFlag("FRIENDLY", "Super::Death") // Don't decrease AlertedCount when friendly
+			"####" "#" 0 A_CheckFlag("FRIENDLY", "Super::Death+1") // Don't decrease AlertedCount when friendly
 			"####" "#" 0 ACS_NamedExecute("DecreaseAlertedCount")
-			Goto Super::Death
+			Goto Super::Death+1
 		XDeath: // Same as Death
 			"####" "#" 0 A_RemoveChildren(TRUE, RMVF_EVERYTHING)  // Despawn children
 			"####" "#" 0 A_CheckFlag("FRIENDLY", "Super::XDeath") // Don't decrease AlertedCount when friendly
