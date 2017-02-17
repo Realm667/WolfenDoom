@@ -766,6 +766,13 @@ ACTOR Officer : Guard
 		"####" F 0 A_JumpIfInventory("PistolGuardCounter", 8, "Reload") //ozy81
 		"####" F 0 A_Jump(256,"See")
 		Stop
+	Death.Alt1:
+		"####" I 5
+		"####" J 5 A_Scream
+		"####" K 5 A_NoBlocking
+		"####" L 5
+		TNT1 A 1 A_SpawnItemEx("Officer_Wounded_NoCount", 0, 0, 0)
+		Stop
 	Idle:
 		"####" AAAA 1 A_Wander
 		"####" A 0 A_Look
@@ -776,6 +783,65 @@ ACTOR Officer : Guard
 		"####" DDDD 1 A_Wander
 		"####" A 0 A_Look
 		Loop
+	}
+}
+
+ACTOR Officer_Wounded : WGuard_Wounded
+{
+	//$Title Officer Wounded (Pistol, Afrika Korps)
+	Obituary "$OFFICER"
+	States
+	{
+	Spawn:
+		OFFI O 35 A_Look
+		Loop
+	See:
+		OFFI PQ 1 A_SetTics(random(1,7))
+	SeeLoop:
+		OFFI R 1 A_Chase
+		"####" R 1 A_SetTics(random(1,14))
+		Loop
+	Missile:
+		OFFI S 7 A_FaceTarget
+		"####" T 0 A_PlaySound("nazi/pistol", CHAN_WEAPON)
+		"####" T 7 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",27,1,random(-8,8))
+		"####" T 0 A_GiveInventory("PistolGuardCounter", 1) //ozy81
+		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" S 14 
+		"####" T 0 A_PlaySound("nazi/pistol", CHAN_WEAPON)
+		"####" T 7 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",27,1,random(-16,16))
+		"####" T 0 A_GiveInventory("PistolGuardCounter", 1) //ozy81
+		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" T 0 A_JumpIfInventory("PistolGuardCounter", 8, "Reload") //ozy81
+		"####" S 14
+		Goto SeeLoop
+	Reload:
+		OFFI R 0 A_ChangeFlag("NoPain", 1)
+		"####" R 30 A_PlaySound("luger/reload", CHAN_ITEM, frandom (0.3,0.6), FALSE, ATTN_NORM)
+		"####" R 0 A_TakeInventory("PistolGuardCounter", 8) //ozy81
+		"####" R 0 A_SpawnItemEx("9MMCasing", 1, 0, 56, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" R 0 A_ChangeFlag("NoPain", 0)
+		"####" "#" 0 A_Jump(256, "SeeLoop")
+	Death: 
+		OFFI U 7
+		"####" V 5
+		"####" W 5
+		"####" M -1 {A_DropItem("9mmAmmo",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
+		Stop
+	}
+}
+
+ACTOR Officer_Wounded_NoCount : Officer_Wounded
+{
+	-COUNTKILL 
+	States
+	{
+	Death: 
+		OFFI U 7
+		"####" V 5
+		"####" W 5
+		"####" M -1
+		Stop
 	}
 }
 
