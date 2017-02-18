@@ -355,6 +355,208 @@ ACTOR Debris_Mecha : Debris_MetalJunk
 	}
 }
 
+ACTOR Debris_Mecha2 : Debris_Mecha
+{
+	States
+	{
+	Spawn:
+		DMCI A 0 NODELAY A_Jump(256,"Set1","Set2","Set3","Set4","Set5","Set6","Set7","Set8")
+		Set1:
+		"####" A 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" A 1 {A_SetRoll(roll + 25, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set2:
+		"####" B 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" B 1 {A_SetRoll(roll - 25, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set3:
+		"####" C 0 A_SpawnItemEx("Spark_R1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" C 1 {A_SetRoll(roll + 30, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set4:
+		"####" D 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" D 1 {A_SetRoll(roll - 30, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set5:
+		"####" E 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" E 1 {A_SetRoll(roll + 35, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set6:
+		"####" F 0 A_SpawnItemEx("Spark_R1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" F 1 {A_SetRoll(roll - 35, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set7:
+		"####" G 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" G 1 {A_SetRoll(roll + 40, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set8:
+		"####" H 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" H 1 {A_SetRoll(roll - 40, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	AdjustMass:
+		DMCI "#" 0 A_SetMass(750)
+		Goto Swim
+	Swim:
+		DMCI A 2 A_ScaleVelocity(0.7)
+		"####" B 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" C 2 A_ScaleVelocity(0.7)
+		"####" D 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" E 2 A_ScaleVelocity(0.7)
+		"####" F 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" G 2 A_ScaleVelocity(0.7)
+		"####" H 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		Loop
+	Death:
+		DMCI "#" 0 {
+								A_SetRoll(0); A_SetAngle(0); A_SetPitch(0);
+								A_ChangeFlag("ROLLCENTER", FALSE); A_ChangeFlag("ROLLSPRITE", FALSE);
+								}
+		"####" "#" 0 A_Jump(256,"Death1")
+		Stop
+	Death1:
+		DMCI "#" 0 A_ChangeFlag("BOUNCEONACTORS", FALSE)
+		Death1Wait:
+		DMCI "#" 1 A_SetTics(35*CallACS("DebrisLifetime"))
+		"####" "#" 1 A_FadeOut(0.1)
+		Wait
+	}
+}
+
+ACTOR Debris_Mecha3 : Debris_Mecha
+{
+	States
+	{
+	Spawn:
+		DMCJ A 0 NODELAY A_Jump(256,"Set1","Set2","Set3","Set4","Set5","Set6","Set7","Set8")
+		Set1:
+		"####" A 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" A 1 {A_SetRoll(roll + 25, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set2:
+		"####" B 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" B 1 {A_SetRoll(roll - 25, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set3:
+		"####" C 0 A_SpawnItemEx("Spark_R1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" C 1 {A_SetRoll(roll + 30, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set4:
+		"####" D 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" D 1 {A_SetRoll(roll - 30, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set5:
+		"####" E 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" E 1 {A_SetRoll(roll + 35, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set6:
+		"####" F 0 A_SpawnItemEx("Spark_R1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" F 1 {A_SetRoll(roll - 35, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set7:
+		"####" G 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" G 1 {A_SetRoll(roll + 40, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set8:
+		"####" H 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" H 1 {A_SetRoll(roll - 40, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	AdjustMass:
+		DMCJ "#" 0 A_SetMass(750)
+		Goto Swim
+	Swim:
+		DMCJ A 2 A_ScaleVelocity(0.7)
+		"####" B 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" C 2 A_ScaleVelocity(0.7)
+		"####" D 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" E 2 A_ScaleVelocity(0.7)
+		"####" F 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" G 2 A_ScaleVelocity(0.7)
+		"####" H 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		Loop
+	Death:
+		DMCJ "#" 0 {
+								A_SetRoll(0); A_SetAngle(0); A_SetPitch(0);
+								A_ChangeFlag("ROLLCENTER", FALSE); A_ChangeFlag("ROLLSPRITE", FALSE);
+								}
+		"####" "#" 0 A_Jump(256,"Death1")
+		Stop
+	Death1:
+		DMCJ "#" 0 A_ChangeFlag("BOUNCEONACTORS", FALSE)
+		Death1Wait:
+		DMCJ "#" 1 A_SetTics(35*CallACS("DebrisLifetime"))
+		"####" "#" 1 A_FadeOut(0.1)
+		Wait
+	}
+}
+
+ACTOR Debris_Mecha4 : Debris_Mecha
+{
+	States
+	{
+	Spawn:
+		DMCK A 0 NODELAY A_Jump(256,"Set1","Set2","Set3","Set4","Set5","Set6","Set7","Set8")
+		Set1:
+		"####" A 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" A 1 {A_SetRoll(roll + 25, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set2:
+		"####" B 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" B 1 {A_SetRoll(roll - 25, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set3:
+		"####" C 0 A_SpawnItemEx("Spark_R1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" C 1 {A_SetRoll(roll + 30, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set4:
+		"####" D 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" D 1 {A_SetRoll(roll - 30, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set5:
+		"####" E 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" E 1 {A_SetRoll(roll + 35, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set6:
+		"####" F 0 A_SpawnItemEx("Spark_R1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" F 1 {A_SetRoll(roll - 35, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set7:
+		"####" G 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" G 1 {A_SetRoll(roll + 40, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+		Set8:
+		"####" H 0 A_SpawnItemEx("Spark_Y1",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203))
+		"####" H 1 {A_SetRoll(roll - 40, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	AdjustMass:
+		DMCK "#" 0 A_SetMass(750)
+		Goto Swim
+	Swim:
+		DMCK A 2 A_ScaleVelocity(0.7)
+		"####" B 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" C 2 A_ScaleVelocity(0.7)
+		"####" D 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" E 2 A_ScaleVelocity(0.7)
+		"####" F 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" G 2 A_ScaleVelocity(0.7)
+		"####" H 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		Loop
+	Death:
+		DMCK "#" 0 {
+								A_SetRoll(0); A_SetAngle(0); A_SetPitch(0);
+								A_ChangeFlag("ROLLCENTER", FALSE); A_ChangeFlag("ROLLSPRITE", FALSE);
+								}
+		"####" "#" 0 A_Jump(256,"Death1")
+		Stop
+	Death1:
+		DMCK "#" 0 A_ChangeFlag("BOUNCEONACTORS", FALSE)
+		Death1Wait:
+		DMCK "#" 1 A_SetTics(35*CallACS("DebrisLifetime"))
+		"####" "#" 1 A_FadeOut(0.1)
+		Wait
+	}
+}
+
+
 ACTOR Debris_Pottery : Debris_Base
 {
 	Scale 0.9
