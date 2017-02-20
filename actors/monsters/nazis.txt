@@ -1035,6 +1035,120 @@ ACTOR WSniper_Crouch : Sniper_Crouch
 	}
 }
 
+ACTOR ArcticSniper : Guard
+{
+	//$Title Arctic Sniper
+	Obituary "$SNIPER"
+	Mass 1000 //Make it not move too far
+	SeeSound "" //Make them not cry, they are in disguise after all
+	Health 50
+	Speed 0
+	DropItem "Kar98k" 48
+	DropItem "MauserAmmo" 192
+	+LOOKALLAROUND
+	States
+	{
+	Spawn:
+		SNSP A 0
+		Goto Look
+	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		"####" A 1 A_Chase
+		Loop
+	Pain:
+		"####" I 3
+		"####" I 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		Goto See
+	Missile:
+		"####" B 32 A_FaceTarget
+		"####" B 0 A_PlaySound("browning/fire", CHAN_WEAPON)
+		"####" C 8 LIGHT(NAZIFIRE)A_CustomMissile("EnemyRifleTracer",44,5)
+		"####" C 0 A_GiveInventory("SniperCounter", 1) //ozy81
+		"####" C 0 A_SpawnItemEx("EnfieldRifleCasing", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
+		"####" A 32
+		"####" A 0 A_JumpIfInventory("SniperCounter", 10, "Reload") //ozy81
+		"####" A 0 A_PlaySound("browning/cock", CHAN_AUTO, 0.25)
+		Goto See
+	Reload: //ozy81
+		"####" A 0 A_ChangeFlag("NoPain", 1)
+		"####" A 20 A_PlaySound("mauser/open", CHAN_ITEM, frandom (0.6,0.9), FALSE, ATTN_NORM)
+		"####" A 20 A_PlaySound("mauser/insert", CHAN_ITEM, frandom (0.3,0.6), FALSE, ATTN_NORM)
+		"####" A 0 A_TakeInventory("SniperCounter", 10) //ozy81
+		"####" A 0 A_SpawnItemEx("EnfieldRifleCasing", 8,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" A 0 A_ChangeFlag("NoPain", 0)
+		Goto See
+	Death:
+		"####" I 5
+		"####" J 5 A_Scream
+		"####" K 5 A_NoBlocking
+		"####" L 5
+		"####" M -1
+		Stop
+	Raise:
+		"####" MLKJI 5
+	Idle:
+		Goto Look
+	}
+}
+
+ACTOR ArcticSniper_Crouch : Guard
+{
+	//$Title Arctic Sniper (crouch)
+	Obituary "$SNIPER"
+	Mass 1000		//Make it not move too far
+	SeeSound ""	//Make them not cry, they are in disguise after all
+	Health 50
+	Speed 0
+	DropItem "Kar98k" 48
+	DropItem "MauserAmmo" 192
+	+DROPOFF
+	+LOOKALLAROUND
+	States
+	{
+	Spawn:
+		SNSP D 0
+		Goto Look
+	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		"####" D 1 A_Chase
+		Loop
+	Pain:
+		"####" N 3
+		"####" N 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		Goto See
+	Missile:
+		"####" E 28 A_FaceTarget //a bit fast than normal one
+		"####" E 0 A_PlaySound("browning/fire", CHAN_WEAPON)
+		"####" F 8 LIGHT(NAZIFIRE)A_CustomMissile("EnemyRifleTracer",34,5)
+		"####" F 0 A_GiveInventory("SniperCounter", 1) //ozy81
+		"####" F 0 A_SpawnItemEx("EnfieldRifleCasing", 1, 0, 34, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
+		"####" D 28
+		"####" D 0 A_JumpIfInventory("SniperCounter", 10, "Reload") //ozy81
+		"####" D 0 A_PlaySound("browning/cock", CHAN_AUTO, 0.25)
+		Goto See
+	Reload: //ozy81
+		"####" D 0 A_ChangeFlag("NoPain", 1)
+		"####" D 20 A_PlaySound("mauser/open", CHAN_ITEM, frandom (0.6,0.9), FALSE, ATTN_NORM)
+		"####" D 20 A_PlaySound("mauser/insert", CHAN_ITEM, frandom (0.3,0.6), FALSE, ATTN_NORM)
+		"####" D 0 A_TakeInventory("SniperCounter", 10) //ozy81
+		"####" D 0 A_SpawnItemEx("EnfieldRifleCasing", 8,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" D 0 A_ChangeFlag("NoPain", 0)
+		Goto See
+	Death:
+		"####" K 7 A_Scream
+		"####" L 5 A_NoBlocking
+		"####" M -1
+		Stop
+	Raise:
+		"####" MLKJI 5
+		Goto See
+	Idle:
+		Goto Look
+	}
+}
+
 ACTOR FlamerSoldier : Guard
 {
 	//$Title SS Flamer (Soldier)
