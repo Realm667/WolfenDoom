@@ -753,13 +753,13 @@ ACTOR WOfficer : Officer
 		"####" F 3
 		"####" F 0 A_Jump(256,"See")
 		Stop
-	/*Death.Alt1:
+	Death.Alt1:
 		"####" I 5
 		"####" J 5 A_Scream
 		"####" K 5 A_NoBlocking
 		"####" L 5
 		TNT1 A 1 A_SpawnItemEx("WOfficer_Wounded_NoCount", 0, 0, 0)
-		Stop*/
+		Stop
 	}
 }
 
@@ -1117,15 +1117,15 @@ ACTOR ArcticSniper : Guard
 		Goto Look
 	See:
 		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
-		"####" A 1 A_Chase
+		SNSP A 1 A_Chase
 		Loop
 	Pain:
-		"####" I 3
+		SNRF I 3
 		"####" I 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	Missile: //attack & reload are slightly fast than other snipers - ozy81
-		"####" B 28 A_FaceTarget
+		SNSP B 28 A_FaceTarget
 		"####" B 0 A_PlaySound("browning/fire", CHAN_WEAPON)
 		"####" C 7 LIGHT(NAZIFIRE)A_CustomMissile("EnemyRifleTracer",44,5)
 		"####" C 0 A_GiveInventory("SniperCounter", 1) //ozy81
@@ -1135,7 +1135,7 @@ ACTOR ArcticSniper : Guard
 		"####" A 0 A_PlaySound("browning/cock", CHAN_AUTO, 0.25)
 		Goto See
 	Reload: //ozy81
-		"####" A 0 A_ChangeFlag("NoPain", 1)
+		SNSP A 0 A_ChangeFlag("NoPain", 1)
 		"####" A 16 A_PlaySound("mauser/open", CHAN_ITEM, frandom (0.6,0.9), FALSE, ATTN_NORM)
 		"####" A 16 A_PlaySound("mauser/insert", CHAN_ITEM, frandom (0.3,0.6), FALSE, ATTN_NORM)
 		"####" A 0 A_TakeInventory("SniperCounter", 10) //ozy81
@@ -1143,7 +1143,7 @@ ACTOR ArcticSniper : Guard
 		"####" A 0 A_ChangeFlag("NoPain", 0)
 		Goto See
 	Death:
-		"####" I 5
+		SNRF I 5
 		"####" J 5 A_Scream
 		"####" K 5 A_NoBlocking
 		"####" L 5
@@ -1175,15 +1175,15 @@ ACTOR ArcticSniper_Crouch : Guard
 		Goto Look
 	See:
 		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
-		"####" D 1 A_Chase
+		SNSP D 1 A_Chase
 		Loop
 	Pain:
-		"####" N 3
+		SNSP N 3
 		"####" N 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	Missile: //attack & reload are slightly fast than other snipers - ozy81
-		"####" E 24 A_FaceTarget //a bit fast than normal one
+		SNSP E 24 A_FaceTarget //a bit fast than normal one
 		"####" E 0 A_PlaySound("browning/fire", CHAN_WEAPON)
 		"####" F 7 LIGHT(NAZIFIRE)A_CustomMissile("EnemyRifleTracer",34,5)
 		"####" F 0 A_GiveInventory("SniperCounter", 1) //ozy81
@@ -1193,7 +1193,7 @@ ACTOR ArcticSniper_Crouch : Guard
 		"####" D 0 A_PlaySound("browning/cock", CHAN_AUTO, 0.25)
 		Goto See
 	Reload: //ozy81
-		"####" D 0 A_ChangeFlag("NoPain", 1)
+		SNSP D 0 A_ChangeFlag("NoPain", 1)
 		"####" D 16 A_PlaySound("mauser/open", CHAN_ITEM, frandom (0.6,0.9), FALSE, ATTN_NORM)
 		"####" D 16 A_PlaySound("mauser/insert", CHAN_ITEM, frandom (0.3,0.6), FALSE, ATTN_NORM)
 		"####" D 0 A_TakeInventory("SniperCounter", 10) //ozy81
@@ -1201,12 +1201,12 @@ ACTOR ArcticSniper_Crouch : Guard
 		"####" D 0 A_ChangeFlag("NoPain", 0)
 		Goto See
 	Death:
-		"####" K 7 A_Scream
+		SNRF K 7 A_Scream
 		"####" L 5 A_NoBlocking
 		"####" M -1
 		Stop
 	Raise:
-		"####" MLKJI 5
+		SNRF MLKJI 5
 		Goto See
 	Idle:
 		Goto Look
@@ -1575,6 +1575,65 @@ ACTOR SSOfficer_Wounded_NoCount : SSOfficer_Wounded
 	{
 	Death: 
 		SSOF U 7
+		"####" V 5 A_NoBlocking
+		"####" W 5
+		"####" M -1
+		Stop
+	}
+}
+
+ACTOR WOfficer_Wounded : WGuard_Wounded
+{
+	//$Title Officer Wounded (Pistol, Wehrmacht)
+	Obituary "$WOFFICER"
+	States
+	{
+	Spawn:
+		OFR2 O 35 A_Look
+		Loop
+	See:
+		OFR2 PQ 1 {A_SetTics(random(1,7)); A_ChangeFlag("SOLID",TRUE);}
+	SeeLoop:
+		OFR2 R 1 A_Chase
+		"####" R 1 A_SetTics(random(1,14))
+		Loop
+	Missile:
+		OFR2 S 7 A_FaceTarget
+		"####" T 0 A_PlaySound("nazi/pistol", CHAN_WEAPON)
+		"####" T 7 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",27,1,random(-6,6))
+		"####" T 0 A_GiveInventory("PistolGuardCounter", 1) //ozy81
+		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" S 12 
+		"####" T 0 A_PlaySound("nazi/pistol", CHAN_WEAPON)
+		"####" T 7 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",27,1,random(-12,12))
+		"####" T 0 A_GiveInventory("PistolGuardCounter", 1) //ozy81
+		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" T 0 A_JumpIfInventory("PistolGuardCounter", 8, "Reload") //ozy81
+		"####" S 12
+		Goto SeeLoop
+	Reload:
+		OFR2 R 0 A_ChangeFlag("NoPain", 1)
+		"####" R 25 A_PlaySound("luger/reload", CHAN_ITEM, frandom (0.3,0.6), FALSE, ATTN_NORM)
+		"####" R 0 A_TakeInventory("PistolGuardCounter", 8) //ozy81
+		"####" R 0 A_SpawnItemEx("9MMCasing", 1, 0, 56, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" R 0 A_ChangeFlag("NoPain", 0)
+		"####" "#" 0 A_Jump(256, "SeeLoop")
+	Death: 
+		OFR2 U 7
+		"####" V 5 A_NoBlocking
+		"####" W 5
+		"####" M -1 {A_DropItem("9mmAmmo",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
+		Stop
+	}
+}
+
+ACTOR WOfficer_Wounded_NoCount : WOfficer_Wounded
+{
+	-COUNTKILL 
+	States
+	{
+	Death: 
+		OFR2 U 7
 		"####" V 5 A_NoBlocking
 		"####" W 5
 		"####" M -1
