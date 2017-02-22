@@ -829,6 +829,37 @@ ACTOR WRifleGuard : RifleGuard
 	}
 }
 
+ACTOR ArcticRifleGuard : RifleGuard
+{
+	//$Title Arctic Guard (Rifle)
+	Obituary "$ARIFSOLD"
+	Health 50
+	Speed 2
+	+MISSILEEVENMORE
+	+MISSILEMORE
+	States
+	{
+	Spawn:
+		SNRF N 0
+		Goto Look
+	Missile: //a bit slower and sharp than other ones, but it has +20hp - ozy81
+		SNRF E 15 A_FaceTarget
+		"####" F 0 A_PlaySound("mauser/fire", CHAN_WEAPON)
+		"####" F 9 LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",40,8,random(-2,2))
+		"####" F 0 A_GiveInventory("RifleGuardCounter", 1) //ozy81
+		"####" F 0 A_SpawnItemEx("MauserRifleCasing", 8,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" E 5 A_FaceTarget
+		"####" E 0 A_PlaySound("mauser/fire", CHAN_WEAPON)
+		"####" F 9 LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",40,8,random(-6,6))
+		"####" F 0 A_GiveInventory("RifleGuardCounter", 1) //ozy81
+		"####" F 0 A_SpawnItemEx("MauserRifleCasing", 8,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" E 6
+		"####" E 0 A_JumpIfInventory("RifleGuardCounter", 10, "Reload") //ozy81
+		"####" E 4 A_PlaySound("mauser/cock", CHAN_AUTO, 0.25)
+		Goto See
+	}
+}
+
 ACTOR WaffenSS : SSMP40Guard
 {
 	//$Title Waffen SS
@@ -864,6 +895,39 @@ ACTOR WaffenSS : SSMP40Guard
 }
 
 ACTOR WaffenSSCounter : Inventory {Inventory.MaxAmount 40}
+
+ACTOR ArcticWaffen : WaffenSS
+{
+	//$Title Waffen Arctic
+	Obituary "$ARWAFFEN"
+	Health 90
+	DropItem "9mmAmmo" 192
+	DropItem "GrenadePickup" 8
+	DropItem "MP40" 64
+	States
+	{
+	Spawn:
+		SNWF N 0
+		Goto Look
+	Missile: //slightly slow than the SS variant, also it has less chances to drop a grenade and +10hp
+		SNWF EF 7 A_FaceTarget
+		"####" G 0 A_PlaySound("nazi/stg44", CHAN_WEAPON, frandom (0.6,0.9), FALSE, ATTN_NORM)
+		"####" G 3 LIGHT(NAZIFIRE) A_CustomMissile("EnemyStGTracer",38,6,random(-4,4))
+		"####" G 0 A_GiveInventory("WaffenSSCounter", 1) //ozy81
+		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" G 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload") //ozy81
+		"####" F 4 A_MonsterRefire(10,"See")
+		"####" F 0 A_FaceTarget
+		Goto Missile+2
+	Reload:
+		SNWF E 0 A_ChangeFlag("NoPain", 1)
+		"####" E 28 A_PlaySound("sten/reload", CHAN_ITEM, frandom (0.6,0.9), FALSE, ATTN_NORM)
+		"####" E 0 A_TakeInventory("WaffenSSCounter", 40) //ozy81
+		"####" E 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" E 0 A_ChangeFlag("NoPain", 0)
+		Goto See
+	}
+}
 
 ACTOR Paratrooper : WaffenSS
 {
@@ -1041,7 +1105,7 @@ ACTOR ArcticSniper : Guard
 	Obituary "$SNIPER"
 	Mass 1000 //Make it not move too far
 	SeeSound "" //Make them not cry, they are in disguise after all
-	Health 50
+	Health 60
 	Speed 0
 	DropItem "Kar98k" 48
 	DropItem "MauserAmmo" 192
@@ -1060,20 +1124,20 @@ ACTOR ArcticSniper : Guard
 		"####" I 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
-	Missile:
-		"####" B 32 A_FaceTarget
+	Missile: //attack & reload are slightly fast than other snipers - ozy81
+		"####" B 28 A_FaceTarget
 		"####" B 0 A_PlaySound("browning/fire", CHAN_WEAPON)
-		"####" C 8 LIGHT(NAZIFIRE)A_CustomMissile("EnemyRifleTracer",44,5)
+		"####" C 7 LIGHT(NAZIFIRE)A_CustomMissile("EnemyRifleTracer",44,5)
 		"####" C 0 A_GiveInventory("SniperCounter", 1) //ozy81
 		"####" C 0 A_SpawnItemEx("EnfieldRifleCasing", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
-		"####" A 32
+		"####" A 28
 		"####" A 0 A_JumpIfInventory("SniperCounter", 10, "Reload") //ozy81
 		"####" A 0 A_PlaySound("browning/cock", CHAN_AUTO, 0.25)
 		Goto See
 	Reload: //ozy81
 		"####" A 0 A_ChangeFlag("NoPain", 1)
-		"####" A 20 A_PlaySound("mauser/open", CHAN_ITEM, frandom (0.6,0.9), FALSE, ATTN_NORM)
-		"####" A 20 A_PlaySound("mauser/insert", CHAN_ITEM, frandom (0.3,0.6), FALSE, ATTN_NORM)
+		"####" A 16 A_PlaySound("mauser/open", CHAN_ITEM, frandom (0.6,0.9), FALSE, ATTN_NORM)
+		"####" A 16 A_PlaySound("mauser/insert", CHAN_ITEM, frandom (0.3,0.6), FALSE, ATTN_NORM)
 		"####" A 0 A_TakeInventory("SniperCounter", 10) //ozy81
 		"####" A 0 A_SpawnItemEx("EnfieldRifleCasing", 8,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" A 0 A_ChangeFlag("NoPain", 0)
@@ -1118,20 +1182,20 @@ ACTOR ArcticSniper_Crouch : Guard
 		"####" N 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
-	Missile:
-		"####" E 28 A_FaceTarget //a bit fast than normal one
+	Missile: //attack & reload are slightly fast than other snipers - ozy81
+		"####" E 24 A_FaceTarget //a bit fast than normal one
 		"####" E 0 A_PlaySound("browning/fire", CHAN_WEAPON)
-		"####" F 8 LIGHT(NAZIFIRE)A_CustomMissile("EnemyRifleTracer",34,5)
+		"####" F 7 LIGHT(NAZIFIRE)A_CustomMissile("EnemyRifleTracer",34,5)
 		"####" F 0 A_GiveInventory("SniperCounter", 1) //ozy81
 		"####" F 0 A_SpawnItemEx("EnfieldRifleCasing", 1, 0, 34, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
-		"####" D 28
+		"####" D 24
 		"####" D 0 A_JumpIfInventory("SniperCounter", 10, "Reload") //ozy81
 		"####" D 0 A_PlaySound("browning/cock", CHAN_AUTO, 0.25)
 		Goto See
 	Reload: //ozy81
 		"####" D 0 A_ChangeFlag("NoPain", 1)
-		"####" D 20 A_PlaySound("mauser/open", CHAN_ITEM, frandom (0.6,0.9), FALSE, ATTN_NORM)
-		"####" D 20 A_PlaySound("mauser/insert", CHAN_ITEM, frandom (0.3,0.6), FALSE, ATTN_NORM)
+		"####" D 16 A_PlaySound("mauser/open", CHAN_ITEM, frandom (0.6,0.9), FALSE, ATTN_NORM)
+		"####" D 16 A_PlaySound("mauser/insert", CHAN_ITEM, frandom (0.3,0.6), FALSE, ATTN_NORM)
 		"####" D 0 A_TakeInventory("SniperCounter", 10) //ozy81
 		"####" D 0 A_SpawnItemEx("EnfieldRifleCasing", 8,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" D 0 A_ChangeFlag("NoPain", 0)
@@ -2116,70 +2180,70 @@ ACTOR EliteFlamer : Guard
 	See:
 		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
 		ELTF A 1 A_Chase
-		ELTF AA 1 A_Chase("","")
-		ELTF A 1 A_Chase
-		ELTF AA 1 A_Chase("","")
-		ELTF B 1 A_Chase
-		ELTF BB 1 A_Chase("","")
-		ELTF B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
-		ELTF B 1 A_Chase
-		ELTF BB 1 A_Chase("","")
-		ELTF C 1 A_Chase
-		ELTF CC 1 A_Chase("","")
-		ELTF C 1 A_Chase
-		ELTF CC 1 A_Chase("","")
-		ELTF D 1 A_Chase
-		ELTF DD 1 A_Chase("","")
-		ELTF D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
-		ELTF D 1 A_Chase("","",CHF_FASTCHASE)
-		ELTF DD 1 A_Chase("","")
+		"####" AA 1 A_Chase("","")
+		"####" A 1 A_Chase
+		"####" AA 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" BB 1 A_Chase("","")
+		"####" B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
+		"####" B 1 A_Chase
+		"####" BB 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" CC 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" CC 1 A_Chase("","")
+		"####" D 1 A_Chase
+		"####" DD 1 A_Chase("","")
+		"####" D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
+		"####" D 1 A_Chase("","",CHF_FASTCHASE)
+		"####" DD 1 A_Chase("","")
 		Loop
 	Missile:
 		ELTF E 0 A_PlaySound("ammo/cell1")
-		ELTF E 15 A_FaceTarget
-		ELTF E 0 A_Jump(60,"ProperMissile2")
+		"####" E 15 A_FaceTarget
+		"####" E 0 A_Jump(60,"ProperMissile2")
 	ProperMissileStart:
 		ELTF F 0 A_FaceTarget
-		ELTF FG 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6)
-		ELTF G 0 A_MonsterRefire(20,"See")
-		ELTF E 0 A_JumpIfCloser(400,"ProperMissileStart")
+		"####" FG 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6)
+		"####" G 0 A_MonsterRefire(20,"See")
+		"####" E 0 A_JumpIfCloser(400,"ProperMissileStart")
 		Goto See
 	ProperMissile2:
 		ELTF F 0 A_FaceTarget
-		ELTF F 0 A_SetUserVar("user_count",0)
-		ELTF F 0 A_SetUserVar("user_offset", RandomPick(-3, 3)) //mxd
-		ELTF F 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6)
+		"####" F 0 A_SetUserVar("user_count",0)
+		"####" F 0 A_SetUserVar("user_offset", RandomPick(-3, 3)) //mxd
+		"####" F 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6)
 	Wave1:
 		ELTF F 0 A_SetAngle(angle + user_offset)
-		ELTF G 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
-		ELTF F 0 A_SetAngle(angle + user_offset)
-		ELTF F 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
-		ELTF F 0 A_SetUserVar("user_count",user_count+1)
-		ELTF F 0 A_JumpIf(user_count>=5,1)
+		"####" G 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
+		"####" F 0 A_SetAngle(angle + user_offset)
+		"####" F 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
+		"####" F 0 A_SetUserVar("user_count",user_count+1)
+		"####" F 0 A_JumpIf(user_count>=5,1)
 		Loop
 	Wave2:
 		ELTF F 0 A_SetAngle(angle - user_offset)
-		ELTF G 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
-		ELTF F 0 A_SetAngle(angle - user_offset)
-		ELTF F 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
-		ELTF F 0 A_SetUserVar("user_count",user_count+1)
-		ELTF F 0 A_JumpIf(user_count>=15,1)
+		"####" G 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
+		"####" F 0 A_SetAngle(angle - user_offset)
+		"####" F 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
+		"####" F 0 A_SetUserVar("user_count",user_count+1)
+		"####" F 0 A_JumpIf(user_count>=15,1)
 		Loop
 	Wave3:
 		ELTF F 0 A_SetAngle(angle + user_offset)
-		ELTF G 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
-		ELTF F 0 A_SetAngle(angle + user_offset)
-		ELTF F 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
-		ELTF F 0 A_SetUserVar("user_count",user_count+1)
-		ELTF F 0 A_JumpIf(user_count>=20,1)
+		"####" G 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
+		"####" F 0 A_SetAngle(angle + user_offset)
+		"####" F 2 LIGHT(BOAFLAMW) A_CustomMissile("EnemyFlamerShot",42,6,angle,CMF_ABSOLUTEANGLE)
+		"####" F 0 A_SetUserVar("user_count",user_count+1)
+		"####" F 0 A_JumpIf(user_count>=20,1)
 		Loop
 		ELTF E 6
 		Goto See
 	Death:
 		ELTF H 5
-		ELTF I 5 A_Scream
-		ELTF J 5 A_NoBlocking
-		ELTF K -1
+		"####" I 5 A_Scream
+		"####" J 5 A_NoBlocking
+		"####" K -1
 		Stop
 	Raise:
 		ELTF KJIH 5
@@ -2209,7 +2273,7 @@ ACTOR EliteAssaulter : Guard
 	See:
 		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
 		ELTA A 0 A_SetSpeed(3.66666667)
-		ELTA A 0 A_ChangeFlag("FRIGHTENED",0)
+		"####" A 0 A_ChangeFlag("FRIGHTENED",0)
 		"####" A 1 A_Chase
 		"####" AA 1 A_Chase("","")
 		"####" A 1 A_Chase
@@ -2307,50 +2371,50 @@ ACTOR EliteSoldatRifler : Guard
 	See:
 		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
 		ELTR A 1 A_Chase
-		ELTR AA 1 A_Chase("","")
-		ELTR A 1 A_Chase
-		ELTR AA 1 A_Chase("","")
-		ELTR B 1 A_Chase
-		ELTR BB 1 A_Chase("","")
-		ELTR B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
-		ELTR B 1 A_Chase
-		ELTR BB 1 A_Chase("","")
-		ELTR C 1 A_Chase
-		ELTR CC 1 A_Chase("","")
-		ELTR C 1 A_Chase
-		ELTR CC 1 A_Chase("","")
-		ELTR D 1 A_Chase
-		ELTR DD 1 A_Chase("","")
-		ELTR D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
-		ELTR D 1 A_Chase("","",CHF_FASTCHASE)
-		ELTR DD 1 A_Chase("","")
+		"####" AA 1 A_Chase("","")
+		"####" A 1 A_Chase
+		"####" AA 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" BB 1 A_Chase("","")
+		"####" B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
+		"####" B 1 A_Chase
+		"####" BB 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" CC 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" CC 1 A_Chase("","")
+		"####" D 1 A_Chase
+		"####" DD 1 A_Chase("","")
+		"####" D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
+		"####" D 1 A_Chase("","",CHF_FASTCHASE)
+		"####" DD 1 A_Chase("","")
 		Loop
 	Missile:
 		ELTR E 0 A_JumpIfCloser(1000,"ProperMissile")
 		Goto Camping
 	ProperMissile:
 		ELTR EF 9 A_FaceTarget
-		ELTR G 0 A_PlaySound("mauser/fire", CHAN_WEAPON)
-		ELTR G 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",39,7,random(-4,4))
-		ELTR G 0 A_SpawnItemEx("MauserRifleCasing", 7,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		ELTR F 4 A_PlaySound("mauser/cock", CHAN_AUTO, 0.25)
-		ELTR E 14
+		"####" G 0 A_PlaySound("mauser/fire", CHAN_WEAPON)
+		"####" G 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",39,7,random(-4,4))
+		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 7,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" F 4 A_PlaySound("mauser/cock", CHAN_AUTO, 0.25)
+		"####" E 14
 		Goto See
 	Camping:
 		ELTR O 4 A_JumpIfCloser(540,"CampingDone")
-		ELTR P 6
+		"####" P 6
 	CampingContinue:
 		ELTR Q 0 A_JumpIfCloser(540,"CampingDone")
-		ELTR Q 0 A_Jump(6,"CampingDone")
-		ELTR Q 0 A_JumpIfCloser(8000,"CampingFire")
-		ELTR Q 6 A_FaceTarget
+		"####" Q 0 A_Jump(6,"CampingDone")
+		"####" Q 0 A_JumpIfCloser(8000,"CampingFire")
+		"####" Q 6 A_FaceTarget
 		Loop
 	CampingFire:
 		ELTR Q 0 A_JumpIfCloser(540,"CampingDone")
-		ELTR Q 10 A_FaceTarget
-		ELTR R 0 A_PlaySound("mauser/fire", CHAN_WEAPON)
-		ELTR R 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",32,5,random(-1,1))
-		ELTR Q 20
+		"####" Q 10 A_FaceTarget
+		"####" R 0 A_PlaySound("mauser/fire", CHAN_WEAPON)
+		"####" R 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyRifleTracer",32,5,random(-1,1))
+		"####" Q 20
 		Goto CampingContinue
 	CampingDone:
 		ELTR QPO 2
