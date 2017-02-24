@@ -1,14 +1,15 @@
-///////////////////////////////////////
-// POWERUP POD CIRCLE SPAWNERS ////////
-// for REALM667 	       ////////
-// by Tormentor667 	       ////////
-///////////////////////////////////////
+/////////////////////////////////
+// POWERUP POD CIRCLE SPAWNERS //
+// for REALM667								 //
+// by Tormentor667						 //
+/////////////////////////////////
 
 ACTOR BaseOrb
 {
 	Radius 0
 	Height 0
 	-SOLID
+	+BRIGHT
 	+MISSILE
 	+NOBLOCKMAP
 	+NOGRAVITY
@@ -20,8 +21,8 @@ ACTOR BaseOrb
 	States
 	{
 	Spawn:
-		LRFX AAAAA 1 BRIGHT A_FadeIn(0.2)
-		LRFX AAAAAAAAAAAAAAAA 1 BRIGHT A_FadeOut(0.07)
+		LRFX AAAAA 1 A_FadeIn(0.2)
+		"####" AAAAAAAAAAAAAAAA 1 A_FadeOut(0.07)
 		Stop
 	}
 }
@@ -30,14 +31,13 @@ ACTOR GreenCirclePad
 {
 	//$Category Special Effects (Wolf3D)
 	//$Title CirclePad (green)
-	//$Color 12
-	
+	//$Color 12	
 	//$Arg0 "Nothing"
 	//$Arg0Tooltip "Does nothing"
-	//$Arg2 "Speed"
-	//$Arg2Tooltip "Controls the speed of the rings (can also be negative if you want them to move downwards instead of upwards)"
 	//$Arg1 "Radius"
 	//$Arg1Tooltip "Controls the size of the area. 32, for example, spawns in a 64x64 diameter circle."
+	//$Arg2 "Speed"
+	//$Arg2Tooltip "Controls the speed of the rings (can also be negative if you want them to move downwards instead of upwards)"
 	-SOLID
 	+CLIENTSIDEONLY
 	+NOBLOCKMAP
@@ -95,60 +95,24 @@ ACTOR GreenCirclePad
 
 ACTOR BlueCirclePad : GreenCirclePad
 {
-	//$Category Special Effects (Wolf3D)
 	//$Title CirclePad (blue)
-	//$Color 12
-
-	//$Arg0 "Nothing"
-	//$Arg0Tooltip "Does nothing"
-	//$Arg1 "Speed"
-	//$Arg1Tooltip "Controls the speed of the rings (can also be negative if you want them to move downwards instead of upwards)"
-	//$Arg2 "Radius"
-	//$Arg2Tooltip "Controls the size of the area. 32, for example, spawns in a 64x64 diameter circle."
 	Translation "112:127=196:207"
 }
 
 ACTOR WhiteCirclePad : GreenCirclePad
 {
-	//$Category Special Effects (Wolf3D)
 	//$Title CirclePad (white)
-	//$Color 12
-
-	//$Arg0 "Nothing"
-	//$Arg0Tooltip "Does nothing"
-	//$Arg1 "Speed"
-	//$Arg1Tooltip "Controls the speed of the rings (can also be negative if you want them to move downwards instead of upwards)"
-	//$Arg2 "Radius"
-	//$Arg2Tooltip "Controls the size of the area. 32, for example, spawns in a 64x64 diameter circle."
 	Translation "112:127=80:111"
 }
 
 ACTOR RedCirclePad : GreenCirclePad
 {
-	//$Category Special Effects (Wolf3D)
 	//$Title CirclePad (red)
-	//$Color 12
-
-	//$Arg0 "Nothing"
-	//$Arg0Tooltip "Does nothing"
-	//$Arg1 "Speed"
-	//$Arg1Tooltip "Controls the speed of the rings (can also be negative if you want them to move downwards instead of upwards)"
-	//$Arg2 "Radius"
-	//$Arg2Tooltip "Controls the size of the area. 32, for example, spawns in a 64x64 diameter circle."
 	Translation "112:127=176:191"
 }
 
 ACTOR OrangeCirclePad: GreenCirclePad
 {
-	//$Category Special Effects (Wolf3D)
 	//$Title CirclePad (orange)
-	//$Color 12
-
-	//$Arg0 "Nothing"
-	//$Arg0Tooltip "Does nothing"
-	//$Arg1 "Speed"
-	//$Arg1Tooltip "Controls the speed of the rings (can also be negative if you want them to move downwards instead of upwards)"
-	//$Arg2 "Radius"
-	//$Arg2Tooltip "Controls the size of the area. 32, for example, spawns in a 64x64 diameter circle."
 	Translation "112:127=214:223"
 }
