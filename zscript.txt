@@ -89,9 +89,54 @@ class BoAConversationMenu : ConversationMenu
 		mResponses.Push(mResponseLines.Size());
 		mResponseLines.Push(goodbyestr);
 
+		int fontheight = int(OptionMenuSettings.mLinespacing * replytextscale  * 1.5);
+		int h = mResponseLines.Size() * fontheight + 4;
+
+		mYpos = 225 - h;
+
 		return 100; //Is returned by Init as the Y location (320x200) where failure messages appear
 	}
 	
+	//=============================================================================
+	//
+	// Handle mouse clicks
+	//
+	//=============================================================================
+
+	override bool MouseEvent(int type, int x, int y)
+	{
+		int sel = -1;
+		int fontheight = int(OptionMenuSettings.mLinespacing * replytextscale  * 1.5);
+		int h = mResponseLines.Size() * fontheight + 4;
+
+		// Custom equivalent to Clean(X/Y)Fac that more closely matches scaling of other screen elements (fixes a bug at odd screen sizes in the standard mouse handling)
+		double widthRatio = screen.GetWidth() / 320.;
+		double heightRatio = screen.GetHeight() / 240.;
+
+		x = ((x - (screen.GetWidth() / 2)) / widthRatio) + 160;
+		y = ((y - (screen.GetHeight() / 2)) / heightRatio) + 120;
+
+		if (x >= leftside && x <= leftside + ReplyWidth && y >= mYpos && y <= mYpos + fontheight * mResponseLines.Size() + 4)
+		{
+			sel = (y - 4 - mYpos) / fontheight;
+			for(int i = 0; i < mResponses.Size(); i++)
+			{
+				if (mResponses[i] > sel)
+				{
+					sel = i-1;
+					break;
+				}
+			}
+		}
+		mSelection = sel;
+
+		if (type == MOUSE_Release)
+		{
+			return MenuEvent(MKEY_Enter, true);
+		}
+		return true;
+	}
+
 	//============================================================================
 	//
 	// DrawConversationMenu
@@ -106,7 +151,7 @@ class BoAConversationMenu : ConversationMenu
 			return;
 		}
 
-		bool dimbg = DrawBackdrop();
+		bool dimbg = false; //DrawBackdrop();
 		DrawBackdropIcon();
 		DrawSpeakerText(dimbg);
 		DrawReplies();
@@ -243,14 +288,17 @@ class BoAConversationMenu : ConversationMenu
 	{
 		double widthRatio = screen.GetWidth() / 320.;
 		double heightRatio = screen.GetHeight() / 240.;
+		double screenRatio = widthRatio / heightRatio;
+
+		//Adjust because the text block starts to stretch at this point 
+		// (needs work - not particularly accurate, but works for all of the resolutions on my machine)
+		if (screenRatio > 1.275) { widthRatio = 4 + (widthRatio - 4) / 2; } 
 
 		double xOffset = (screen.GetWidth() - 320 * heightRatio) / 2;
 		double yOffset = (screen.GetHeight() - 240 * widthRatio) / 2;
 
-		if (widthRatio > 4) { widthRatio = 4 + (widthRatio - 4) * 2; } //Adjust because the text block starts to stretch at this point
-
 		if (xOffset < 0) { xOffset = 0; heightRatio = widthRatio; }
-		if (yOffset < 0) { yOffset = 0; widthRatio = heightRatio; }
+		else if (yOffset < 0) { yOffset = 0; widthRatio = heightRatio; }
 
 		x = int(xOffset + x * widthRatio);
 		w = int(w * widthRatio);
