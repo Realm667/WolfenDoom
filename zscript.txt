@@ -1,0 +1,262 @@
+/* New Dialog Format */
+
+class BoAConversationMenu : ConversationMenu
+{
+	double textscale, replytextscale;
+	int BulletWidth, leftside, topside;
+
+	//=============================================================================
+	//
+	// Returns the y position of the replies to position the terminal response.
+	//
+	//=============================================================================
+
+	override int Init(StrifeDialogueNode CurNode, PlayerInfo player, int activereply)
+	{
+		mCurNode = CurNode;
+		mPlayer = player;
+		mShowGold = false;
+		ConversationPauseTic = gametic + 20;
+		DontDim = true;
+
+		leftside = 74;
+		topside = 16;
+
+		textscale = 0.75;
+		replytextscale = 0.7;
+
+		ReplyWidth = 320 - leftside - 30;
+		SpeechWidth = int(ReplyWidth / textscale);
+		BulletWidth = 16;
+
+		FormatSpeakerMessage();
+		return FormatReplies(activereply);
+	}
+
+	//=============================================================================
+	//
+	// Sets up array of lines for reply values with given width
+	//
+	//=============================================================================
+	
+	override int FormatReplies(int activereply)
+	{
+		mSelection = -1;
+
+		StrifeDialogueReply reply;
+		int r = -1;
+		int i = 1,j;
+		for (reply = mCurNode.Children; reply != NULL; reply = reply.Next)
+		{
+			r++;
+			if (reply.ShouldSkipReply(mPlayer))
+			{
+				continue;
+			}
+			if (activereply == r) mSelection = i - 1;
+
+			mShowGold |= reply.NeedsGold;
+
+			let ReplyText = Stringtable.Localize(reply.Reply);
+			if (reply.NeedsGold) ReplyText.AppendFormat(" for %u", reply.PrintAmount);
+
+			let ReplyLines = SmallFont.BreakLines (ReplyText, int((ReplyWidth - BulletWidth) / replytextscale));
+
+			mResponses.Push(mResponseLines.Size());
+			for (j = 0; j < ReplyLines.Count(); ++j)
+			{
+				mResponseLines.Push(ReplyLines.StringAt(j));
+			}
+			
+			++i;
+			ReplyLines.Destroy();
+		}
+		if (mSelection == -1)
+		{
+			mSelection = r < activereply ? r + 1 : 0;
+		}
+		let goodbyestr = mCurNode.Goodbye;
+		if (goodbyestr.Length() == 0)
+		{
+			goodbyestr = String.Format("$TXT_RANDOMGOODBYE_%d", Random[RandomSpeech](1, NUM_RANDOM_GOODBYES));
+		}
+		else if (goodbyestr.Left(7) == "RANDOM_")
+		{
+			goodbyestr = String.Format("$TXT_%s_%02d", goodbyestr, Random[RandomSpeech](1, NUM_RANDOM_LINES));
+		}
+		goodbyestr = Stringtable.Localize(goodbyestr);
+		if (goodbyestr.Length() == 0 || goodbyestr.CharAt(0) == "$") goodbyestr = "Bye.";
+		mResponses.Push(mResponseLines.Size());
+		mResponseLines.Push(goodbyestr);
+
+		return 100; //Is returned by Init as the Y location (320x200) where failure messages appear
+	}
+	
+	//============================================================================
+	//
+	// DrawConversationMenu
+	//
+	//============================================================================
+
+	override void Drawer()
+	{
+		if (mCurNode == NULL)
+		{
+			Close ();
+			return;
+		}
+
+		bool dimbg = DrawBackdrop();
+		DrawBackdropIcon();
+		DrawSpeakerText(dimbg);
+		DrawReplies();
+		DrawGold();
+	}
+
+	//============================================================================
+	//
+	// Draw the backdrop, returns true if the text background should be dimmed
+	//
+	//============================================================================
+
+	override bool DrawBackdrop()
+	{
+		let tex = TexMan.CheckForTexture ("CONVBACK", TexMan.Type_MiscPatch);
+		if (tex.isValid())
+		{
+			screen.DrawTexture(tex, false, 0, 0, DTA_DestWidth, 320, DTA_DestHeight, 240, DTA_VirtualWidth, 320, DTA_VirtualHeight, 240, DTA_KeepRatio, true);
+			return false;
+		}
+		return true;
+	}
+
+	//============================================================================
+	//
+	// Draw the ZSDF-defined backdrop, fit to a square for use as a speaker icon
+	//
+	//============================================================================
+
+	void DrawBackdropIcon()
+	{
+		let tex = TexMan.CheckForTexture (mCurNode.Backdrop, TexMan.Type_MiscPatch);
+		if (tex.isValid())
+		{
+			int w = 38;
+			int h = 38;
+			int posx = leftside - 10 - w;
+			int posy = topside;
+
+			DimArea(posx, posy, w + 1, h + 3);
+
+			screen.DrawTexture(tex, false, posx + 1, posy + 3, DTA_VirtualWidth, 320, DTA_VirtualHeight, 240, DTA_DestWidth, 38, DTA_DestHeight, 38);
+		}
+	}
+
+	//============================================================================
+	//
+	// Draw the speaker text
+	//
+	//============================================================================
+
+	override void DrawSpeakerText(bool dimbg)
+	{
+		String speakerName;
+		int linesize = int(OptionMenuSettings.mLinespacing * 1.5);
+		int cnt = mDialogueLines.Count();
+
+		// Who is talking to you?
+		if (mCurNode.SpeakerName.Length() > 0)
+		{
+			speakerName = Stringtable.Localize(mCurNode.SpeakerName);
+		}
+		else
+		{
+			speakerName = players[consoleplayer].ConversationNPC.GetTag("Person");
+		}
+
+		int x = int(leftside / textscale);
+		int y = int(topside / textscale);
+
+		if (speakerName.Length() > 0)
+		{
+			screen.DrawText("SmallFnt", Font.CR_WHITE, x, y, speakerName, DTA_VirtualWidth, int(320 / textscale), DTA_VirtualHeight, int(240 / textscale));
+			y += linesize * 3 / 2;
+		}
+
+		for (int i = 0; i < cnt; ++i)
+		{
+			screen.DrawText("SmallFnt", Font.CR_GREEN, x, y, mDialogueLines.StringAt(i), DTA_VirtualWidth, int(320 / textscale), DTA_VirtualHeight, int(240 / textscale));
+
+			y += linesize;
+		}
+	}
+
+
+	//============================================================================
+	//
+	// Draw the replies
+	//
+	//============================================================================
+
+	override void DrawReplies()
+	{
+		int fontheight = int(OptionMenuSettings.mLinespacing * replytextscale  * 1.5);
+
+		int posx = leftside;
+		int h = mResponseLines.Size() * fontheight + 4;
+		int posy = 225 - h;
+		int w = ReplyWidth;
+
+		DimArea(posx, posy, w, h);
+
+		int response = 0;
+		for (int i = 0; i < mResponseLines.Size(); i++)
+		{
+			int x = int((posx + 4 + BulletWidth) / replytextscale);
+			int y = int((posy + 4 + (i * fontheight)) / replytextscale);
+
+			screen.DrawText("SmallFnt", Font.CR_GREEN, x, y, mResponseLines[i], DTA_VirtualWidth, int(320 / replytextscale), DTA_VirtualHeight, int(240 / replytextscale));
+
+			if (i == mResponses[response])
+			{
+				String tbuf;
+
+				response++;
+				tbuf = String.Format("%d.", response);
+				x = int((posx + 4) / replytextscale);
+				screen.DrawText("SmallFnt", Font.CR_GREY, x, y, tbuf, DTA_VirtualWidth, int(320 / replytextscale), DTA_VirtualHeight, int(240 / replytextscale));
+
+				if (response == mSelection + 1)
+				{
+					int colr = ((MenuTime() % 8) < 4) || GetCurrentMenu() != self ? Font.CR_RED : Font.CR_GREY;
+
+					x = int((posx + 4 + BulletWidth) / replytextscale - 6);
+					y = y + (fontheight / 2) - 4;
+
+					screen.DrawText(ConFont, colr, x, y, "\xd", DTA_VirtualWidth, int(320 / replytextscale), DTA_VirtualHeight, int(240 / replytextscale));
+				}
+			}
+		}
+	}
+
+	void DimArea(int x = 0, int y = 0, int w = 320, int h = 200, double alpha = 0.45)
+	{
+		double widthRatio = screen.GetWidth() / 320.;
+		double heightRatio = screen.GetHeight() / 240.;
+
+		double xOffset = (screen.GetWidth() - 320 * heightRatio) / 2;
+		double yOffset = (screen.GetHeight() - 240 * widthRatio) / 2;
+
+		if (widthRatio > 4) { widthRatio = 4 + (widthRatio - 4) * 2; } //Adjust because the text block starts to stretch at this point
+
+		if (xOffset < 0) { xOffset = 0; heightRatio = widthRatio; }
+		if (yOffset < 0) { yOffset = 0; widthRatio = heightRatio; }
+
+		x = int(xOffset + x * widthRatio);
+		w = int(w * widthRatio);
+		y = int(yOffset + y * heightRatio);
+		h = int(h * heightRatio);
+
+		screen.Dim(0, alpha, x, y, w, h);
+	}
+}
