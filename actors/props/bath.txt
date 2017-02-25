@@ -37,10 +37,22 @@ ACTOR ToiletShootable //3d actor
 
 ACTOR ToiletTalking : ToiletShootable //3d actor
 {
+	var int user_angle;
+
 	//$Category Conversation Stuff (Wolf3D)
 	//$Title Talking Toilet (shootable)
 	//$Color 5
 	-NOTAUTOAIMED //or it will become impossible to interact with it
+	States
+	{
+	Spawn:
+		MDLA A 1 {
+			if (!user_angle) { user_angle = angle; }
+
+			angle = user_angle;
+		}
+		Loop
+	}
 }
 
 ACTOR Shit

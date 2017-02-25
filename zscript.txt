@@ -113,8 +113,8 @@ class BoAConversationMenu : ConversationMenu
 		double widthRatio = screen.GetWidth() / 320.;
 		double heightRatio = screen.GetHeight() / 240.;
 
-		x = ((x - (screen.GetWidth() / 2)) / widthRatio) + 160;
-		y = ((y - (screen.GetHeight() / 2)) / heightRatio) + 120;
+		x = int(((x - (screen.GetWidth() / 2)) / widthRatio) + 160);
+		y = int(((y - (screen.GetHeight() / 2)) / heightRatio) + 120);
 
 		if (x >= leftside && x <= leftside + ReplyWidth && y >= mYpos && y <= mYpos + fontheight * mResponseLines.Size() + 4)
 		{
@@ -224,13 +224,13 @@ class BoAConversationMenu : ConversationMenu
 
 		if (speakerName.Length() > 0)
 		{
-			screen.DrawText("SmallFnt", Font.CR_WHITE, x, y, speakerName, DTA_VirtualWidth, int(320 / textscale), DTA_VirtualHeight, int(240 / textscale));
+			screen.DrawText(SmallFont, Font.CR_WHITE, x, y, speakerName, DTA_VirtualWidth, int(320 / textscale), DTA_VirtualHeight, int(240 / textscale));
 			y += linesize * 3 / 2;
 		}
 
 		for (int i = 0; i < cnt; ++i)
 		{
-			screen.DrawText("SmallFnt", Font.CR_GREEN, x, y, mDialogueLines.StringAt(i), DTA_VirtualWidth, int(320 / textscale), DTA_VirtualHeight, int(240 / textscale));
+			screen.DrawText(SmallFont, Font.CR_GREEN, x, y, mDialogueLines.StringAt(i), DTA_VirtualWidth, int(320 / textscale), DTA_VirtualHeight, int(240 / textscale));
 
 			y += linesize;
 		}
@@ -260,7 +260,7 @@ class BoAConversationMenu : ConversationMenu
 			int x = int((posx + 4 + BulletWidth) / replytextscale);
 			int y = int((posy + 4 + (i * fontheight)) / replytextscale);
 
-			screen.DrawText("SmallFnt", Font.CR_GREEN, x, y, mResponseLines[i], DTA_VirtualWidth, int(320 / replytextscale), DTA_VirtualHeight, int(240 / replytextscale));
+			screen.DrawText(SmallFont, Font.CR_GREEN, x, y, mResponseLines[i], DTA_VirtualWidth, int(320 / replytextscale), DTA_VirtualHeight, int(240 / replytextscale));
 
 			if (i == mResponses[response])
 			{
@@ -269,7 +269,7 @@ class BoAConversationMenu : ConversationMenu
 				response++;
 				tbuf = String.Format("%d.", response);
 				x = int((posx + 4) / replytextscale);
-				screen.DrawText("SmallFnt", Font.CR_GREY, x, y, tbuf, DTA_VirtualWidth, int(320 / replytextscale), DTA_VirtualHeight, int(240 / replytextscale));
+				screen.DrawText(SmallFont, Font.CR_GREY, x, y, tbuf, DTA_VirtualWidth, int(320 / replytextscale), DTA_VirtualHeight, int(240 / replytextscale));
 
 				if (response == mSelection + 1)
 				{
