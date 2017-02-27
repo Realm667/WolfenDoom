@@ -139,6 +139,44 @@ class BoAConversationMenu : ConversationMenu
 		mDialogueLines = SmallFont.BreakLines(toSay, SpeechWidth);
 	}
 
+
+	//=============================================================================
+	//
+	// Handle input events
+	//
+	//=============================================================================
+
+	override bool Responder(InputEventData ev)
+	{
+		if (demoplayback)
+		{ // No interaction during demo playback
+			return false;
+		}
+
+		if (ev.type == InputEventData.GUI_Event && scrollMax > 0)
+		{
+			int scrollamt;
+			if (ev.subtype == InputEventData.GUI_WheelUp)
+			{
+				scrollamt = MIN(2, scrollPosition);
+				scrollPosition -= scrollamt;
+				return true;
+			}
+			else if (ev.subtype == InputEventData.GUI_WheelDown)
+			{
+				scrollamt = MIN(2, scrollMax - scrollPosition);
+				scrollPosition += scrollamt;
+				return true;
+			}
+		}
+		else if (ev.type == InputEventData.GUI_Event && ev.subtype == InputEventData.GUI_Char && ev.data1 >= 48 && ev.data1 <= 57)
+		{ // Activate an item of type numberedmore (dialogue only)
+			mSelection = ev.data1 == 48 ? 9 : ev.data1 - 49;
+			return MenuEvent(MKEY_Enter, false);
+		}
+		return Super.Responder(ev);
+	}
+
 	//=============================================================================
 	//
 	// Handle key presses
@@ -286,6 +324,7 @@ class BoAConversationMenu : ConversationMenu
 			}
 		}
 		mSelection = sel;
+
 		if (type == MOUSE_Release)
 		{
 			if (x > leftside && x < leftside + ReplyWidth && y > scrollTop && y < scrollBottom)
