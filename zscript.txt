@@ -3,6 +3,7 @@
 
   Draws a standard graphic as the background for all conversations (CONVBACK)
   Draws the USDF/ZSDF 'panel' background image scaled to ~32x32 as a speaker icon
+  Replaces the mouse click coordinate translation algorithm (screen space to 320x200) to be more accurate (original algorithm in GZDoom doesn't take widescreen resolutions into account)
   Implements scaling text for name, speaker text, and responses
   Implements scrolling of long speaker text
 
@@ -258,9 +259,18 @@ class BoAConversationMenu : ConversationMenu
 		// Custom equivalent to Clean(X/Y)Fac that more closely matches scaling of other screen elements (fixes a bug at odd screen sizes in the standard mouse handling)
 		double widthRatio = screen.GetWidth() / 320.;
 		double heightRatio = screen.GetHeight() / 240.;
+		double screenRatio = widthRatio / heightRatio;
 
-		x = int(((x - (screen.GetWidth() / 2)) / widthRatio) + 160);
-		y = int(((y - (screen.GetHeight() / 2)) / heightRatio) + 120);
+		if (screenRatio > 1.275) { widthRatio = 4 + (widthRatio - 4) / 2; } 
+
+		double xOffset = (screen.GetWidth() - 320 * heightRatio) / 2;
+		double yOffset = (screen.GetHeight() - 240 * widthRatio) / 2;
+
+		if (xOffset < 0) { xOffset = 0; heightRatio = widthRatio; }
+		else if (yOffset < 0) { yOffset = 0; widthRatio = heightRatio; }
+
+		x = int((x - xOffset) / widthRatio);
+		y = int((y - yOffset) / heightRatio);
 
 		fontheight = int(OptionMenuSettings.mLinespacing * replytextscale  * 1.5);
 		if (x >= leftside && x <= leftside + ReplyWidth && y >= mYpos && y <= mYpos + fontheight * mResponseLines.Size() + 4)
@@ -276,7 +286,6 @@ class BoAConversationMenu : ConversationMenu
 			}
 		}
 		mSelection = sel;
-
 		if (type == MOUSE_Release)
 		{
 			if (x > leftside && x < leftside + ReplyWidth && y > scrollTop && y < scrollBottom)
