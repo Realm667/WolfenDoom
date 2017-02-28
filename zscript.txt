@@ -337,7 +337,7 @@ class BoAConversationMenu : ConversationMenu
 			{
 				//Scrollbar arrows...  Check for click within a 1-character radius of the actual arrow
 				fontheight = int(OptionMenuSettings.mLinespacing * textscale  * 1);
-				if (x >= (leftside + ReplyWidth - 8) && x < leftside + ReplyWidth + 16)
+				if (x >= (leftside + ReplyWidth - 4) && x < leftside + ReplyWidth + 16)
 				{
 					if (y > scrollTop - 8 && y < scrollTop + fontheight + 8)
 					{
@@ -493,12 +493,33 @@ class BoAConversationMenu : ConversationMenu
 
 			if (y + fontsize > scrollBottom / textscale) { break; }
 		}
-
 		if (scrollMax > 0)
 		{
-			int arrowx = int((leftside + ReplyWidth) / textscale);
+			int arrowx = int((leftside + ReplyWidth) / textscale) + 4;
 			int arrowy = int(scrollTop / textscale);
-			int arrow2y = int((scrollBottom) / textscale) - 4;
+			int arrow2y = int((scrollBottom) / textscale) - fontsize;
+
+			int scrollBarTop = int(scrollTop / textscale) + fontsize * 3 / 2;
+			int scrollBarBottom = int((scrollBottom) / textscale) - fontsize * 3 / 2;
+			int scrollBlockSize = (scrollBarBottom - scrollBarTop) / (scrollMax + 1);
+
+			//Scroll bar background
+			//DimArea(leftside + ReplyWidth + 4, scrollTop + fontsize, 3, scrollBottom - scrollTop - fontsize * 2, 0.1);
+
+			for (int b = 0; b < scrollBlockSize / fontsize; b++)
+			{
+				int blocky = scrollBarTop + scrollBlockSize * scrollPosition + b * fontsize;
+
+				let tex = TexMan.CheckForTexture ("Scroll", TexMan.Type_MiscPatch);
+
+				if (tex.isValid())
+				{
+					int scrollbarcolor = Font.CR_RED;
+					screen.DrawTexture(tex, false, arrowx + 1, blocky, DTA_VirtualWidth, int(320 / textscale), DTA_VirtualHeight, int(240 / textscale));
+					if (b == 0) { screen.DrawText(ConFont, scrollbarcolor, arrowx, blocky - fontsize * 3 / 4, "\x1a", DTA_VirtualWidth, int(320 / textscale), DTA_VirtualHeight, int(240 / textscale)); }
+					if (b == (scrollBlockSize / fontsize) - 1) { screen.DrawText(ConFont, scrollbarcolor, arrowx, blocky + fontsize * 3 / 4, "\x1b", DTA_VirtualWidth, int(320 / textscale), DTA_VirtualHeight, int(240 / textscale)); }
+				}
+			}
 
 			screen.DrawText(ConFont, color1, arrowx, arrowy, "\x1a", DTA_VirtualWidth, int(320 / textscale), DTA_VirtualHeight, int(240 / textscale));
 			screen.DrawText(ConFont, color2, arrowx, arrow2y, "\x1b", DTA_VirtualWidth, int(320 / textscale), DTA_VirtualHeight, int(240 / textscale));
