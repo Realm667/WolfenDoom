@@ -506,19 +506,15 @@ class BoAConversationMenu : ConversationMenu
 			//Scroll bar background
 			//DimArea(leftside + ReplyWidth + 4, scrollTop + fontsize, 3, scrollBottom - scrollTop - fontsize * 2, 0.1);
 
+			//Draw actual scroll bar 
 			for (int b = 0; b < scrollBlockSize / fontsize; b++)
 			{
+				int scrollbarcolor = Font.CR_DARKRED;
 				int blocky = scrollBarTop + scrollBlockSize * scrollPosition + b * fontsize;
 
-				let tex = TexMan.CheckForTexture ("Scroll", TexMan.Type_MiscPatch);
-
-				if (tex.isValid())
-				{
-					int scrollbarcolor = Font.CR_RED;
-					screen.DrawTexture(tex, false, arrowx + 1, blocky, DTA_VirtualWidth, int(320 / textscale), DTA_VirtualHeight, int(240 / textscale));
-					if (b == 0) { screen.DrawText(ConFont, scrollbarcolor, arrowx, blocky - fontsize * 3 / 4, "\x1a", DTA_VirtualWidth, int(320 / textscale), DTA_VirtualHeight, int(240 / textscale)); }
-					if (b == (scrollBlockSize / fontsize) - 1) { screen.DrawText(ConFont, scrollbarcolor, arrowx, blocky + fontsize * 3 / 4, "\x1b", DTA_VirtualWidth, int(320 / textscale), DTA_VirtualHeight, int(240 / textscale)); }
-				}
+				if (b == 0) { screen.DrawText(ConFont, scrollbarcolor, arrowx, blocky - fontsize * 3 / 4, "\x1a", DTA_VirtualWidth, int(320 / textscale), DTA_VirtualHeight, int(240 / textscale)); }
+				screen.DrawText(ConFont, scrollbarcolor, arrowx, blocky, "\x19", DTA_VirtualWidth, int(320 / textscale), DTA_VirtualHeight, int(240 / textscale));
+				if (b == (scrollBlockSize / fontsize) - 1) { screen.DrawText(ConFont, scrollbarcolor, arrowx, blocky + fontsize * 3 / 4, "\x1b", DTA_VirtualWidth, int(320 / textscale), DTA_VirtualHeight, int(240 / textscale)); }
 			}
 
 			screen.DrawText(ConFont, color1, arrowx, arrowy, "\x1a", DTA_VirtualWidth, int(320 / textscale), DTA_VirtualHeight, int(240 / textscale));
