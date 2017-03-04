@@ -1,6 +1,6 @@
-///////////////////////////////////////////////
-// SHARDS AND DEBRIS FOR DESTROYABLES /////////
-///////////////////////////////////////////////
+////////////////////////////////////////
+// SHARDS AND DEBRIS FOR DESTROYABLES //
+////////////////////////////////////////
 ACTOR Debris_Base
 {
 	Radius 1
@@ -904,9 +904,9 @@ ACTOR Debris_FlagsD2 : Debris_Cloth {Scale 0.5 Translation "10:10=245:247", "112
 ACTOR Debris_FlagsW2 : Debris_Cloth {Scale 0.5 Translation "10:10=95:95", "112:125=82:95" }
 ACTOR Debris_Metal3Dark : Debris_Metal3 {Translation "80:111=109:111"}
 
-///////////////////////////////////////////////////////
-// SHARDS AND DEBRIS FOR TANKS - SPECIAL ONES /////////
-///////////////////////////////////////////////////////
+////////////////////////////////////////////////
+// SHARDS AND DEBRIS FOR TANKS - SPECIAL ONES //
+////////////////////////////////////////////////
 ACTOR Debris_Tank
 {
 	Radius 5
@@ -1024,16 +1024,14 @@ ACTOR Debris_TankShards : Debris_Tank
 	}
 }
 
-//////////////////////////////////// Debris_Trash Debris_Trash2
-// VENT DEBRIS /////////////////////
-////////////////////////////////////
-
+/////////////////
+// VENT DEBRIS //
+/////////////////
 ACTOR Debris_Vent : SwitchableDecoration
 {
 	//$Category Special Effects (Wolf3D)
 	//$Title Vent Debris (activatable)
 	//$Color 12
-
 	+NOINTERACTION
 	States
 	{

@@ -62,6 +62,48 @@ ACTOR LaserShooter : SwitchableDecoration
 	}
 }
 
+ACTOR LaserShooterNF : LaserShooter
+{
+	//$Title Laserbeam Shooter, No Flares (switchable, 3 colors, 4 args)
+
+	States
+	{
+	RedLoop:
+		TNT1 A 0 A_CustomBulletAttack(0,0,1,100,"MeasurePuffNR",Args[2]*256,CBAF_AIMFACING | CBAF_EXPLICITANGLE)
+		TNT1 A 0 A_SpawnItemEx("LaserBeam_Red",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_ISTRACER)
+		TNT1 A 0 A_SetScale(frandom(0.95, 1.05),(GetDistance(1,AAPTR_MASTER)/33.25),AAPTR_TRACER)
+		TNT1 A 0 A_SetPitch(-pitch+90,0,AAPTR_TRACER)
+		TNT1 A 0 A_SetAngle(angle+(Args[1]*0.25),0,AAPTR_DEFAULT)
+		TNT1 A 1
+		Loop
+	PurpleLoop:
+		TNT1 A 0 A_JumpIf(Args[3] == 1,"PickLoop2")
+		TNT1 A 0 A_PlaySound("tesla/loop", CHAN_6, 0.2, TRUE)
+		PickLoop2:
+		TNT1 A 0 A_CustomBulletAttack(0,0,1,100,"MeasurePuffNP",Args[1]*256,CBAF_AIMFACING | CBAF_EXPLICITANGLE)
+		TNT1 A 0 A_SpawnItemEx("LaserBeam_Purple",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_ISTRACER)
+		TNT1 A 0 A_SetScale(frandom(0.95, 1.05),(GetDistance(1,AAPTR_MASTER)/33.25),AAPTR_TRACER)
+		TNT1 A 0 A_SetPitch(-pitch+90,0,AAPTR_TRACER)
+		TNT1 A 0 A_SetAngle(angle+(Args[0]*0.25),0,AAPTR_DEFAULT)
+		TNT1 A 1
+		Loop
+	GreenLoop:
+		TNT1 A 0 A_JumpIf(Args[3] == 1,"PickLoop3")
+		TNT1 A 0 A_PlaySound("tesla/loop", CHAN_6, 0.2, TRUE)
+		PickLoop3:
+		TNT1 A 0 A_CustomBulletAttack(0,0,1,100,"MeasurePuffNG",Args[1]*256,CBAF_AIMFACING | CBAF_EXPLICITANGLE)
+		TNT1 A 0 A_SpawnItemEx("LaserBeam_Green",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_ISTRACER)
+		TNT1 A 0 A_SetScale(frandom(0.95, 1.05),(GetDistance(1,AAPTR_MASTER)/33.25),AAPTR_TRACER)
+		TNT1 A 0 A_SetPitch(-pitch+90,0,AAPTR_TRACER)
+		TNT1 A 0 A_SetAngle(angle+(Args[0]*0.25),0,AAPTR_DEFAULT)
+		TNT1 A 1
+		Loop
+	Inactive:
+		TNT1 A -1 A_StopSound(CHAN_6)
+		Stop
+	}
+}
+
 ACTOR LaserBeam_Red
 {
 	Radius 0 
@@ -129,10 +171,58 @@ ACTOR MeasurePuff : BulletPuff
 		"####" A 0 A_SpawnItemEx("PuffSmoke", random(-4,4), random(-4,4), random(-4,4), 0, 0, 3)
 		TNT1 A 1 BRIGHT LIGHT("LAZERZ")
 		"####" E 10 A_PlaySound("tesla/loopdeath", CHAN_6, 0.2, TRUE)
-		"####" E 0  A_StopSound(CHAN_6)
+		"####" E 0 A_StopSound(CHAN_6)
 		Stop
 	}
-}	
+}
+
+ACTOR MeasurePuffNR : MeasurePuff
+{
+	-ALLOWPARTICLES
+	States
+	{
+	Spawn:
+		TNT1 A 0 
+		"####" A 0 A_SpawnitemEx("MeasurePuffTemp",0,0,0,0,0,0,0,SXF_ISTRACER|SXF_SETMASTER|SXF_NOCHECKPOSITION)
+		"####" A 0 A_TransferPointer(AAPTR_TRACER,AAPTR_TARGET,AAPTR_MASTER,AAPTR_MASTER)
+		TNT1 A 1 BRIGHT LIGHT("LAZERRED")
+		"####" E 10 A_PlaySound("tesla/loopdeath", CHAN_6, 0.2, TRUE)
+		"####" E 0 A_StopSound(CHAN_6)
+		Stop
+	}
+}
+
+ACTOR MeasurePuffNP : MeasurePuff
+{
+	-ALLOWPARTICLES
+	States
+	{
+	Spawn:
+		TNT1 A 0 
+		"####" A 0 A_SpawnitemEx("MeasurePuffTemp",0,0,0,0,0,0,0,SXF_ISTRACER|SXF_SETMASTER|SXF_NOCHECKPOSITION)
+		"####" A 0 A_TransferPointer(AAPTR_TRACER,AAPTR_TARGET,AAPTR_MASTER,AAPTR_MASTER)
+		TNT1 A 1 BRIGHT LIGHT("LAZERPUR")
+		"####" E 10 A_PlaySound("tesla/loopdeath", CHAN_6, 0.2, TRUE)
+		"####" E 0 A_StopSound(CHAN_6)
+		Stop
+	}
+}
+
+ACTOR MeasurePuffNG : MeasurePuff
+{
+	-ALLOWPARTICLES
+	States
+	{
+	Spawn:
+		TNT1 A 0 
+		"####" A 0 A_SpawnitemEx("MeasurePuffTemp",0,0,0,0,0,0,0,SXF_ISTRACER|SXF_SETMASTER|SXF_NOCHECKPOSITION)
+		"####" A 0 A_TransferPointer(AAPTR_TRACER,AAPTR_TARGET,AAPTR_MASTER,AAPTR_MASTER)
+		TNT1 A 1 BRIGHT LIGHT("LAZERGRN")
+		"####" E 10 A_PlaySound("tesla/loopdeath", CHAN_6, 0.2, TRUE)
+		"####" E 0 A_StopSound(CHAN_6)
+		Stop
+	}
+}
 
 ACTOR MeasurePuffTemp : FastProjectile //does nothing except exist for one tic :^)
 {
