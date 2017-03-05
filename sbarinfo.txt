@@ -14,22 +14,22 @@ statusbar Normal // Standard Doom Status bar
 	else
 	{
 		//Draw Mask for Space Suit
-	InInventory PowerSpaceSuit, 1
-	{
-		DrawImage "STGMASK", 157, 78, center;
-		drawbar "HORZSP2F", "HORZSP2E", PowerupTime(SpaceSuit), horizontal, interpolate(2), 135, 133;
-	}
-	
-	drawimage "HUDBAR", -54, 152;
-
-	InInventory MineSweeper, 1
-	{
-		drawbar "VERTBYMG", "VERTBYMD", power, vertical, interpolate(2), 195, 170;
-		InInventory MineSweeperActive, 1 
+		InInventory PowerSpaceSuit, 1
 		{
-			drawbar "VERTBYMF", "VERTBYME", power, vertical, interpolate(2), 195, 170;
+			DrawImage "STGMASK", 157, 78, center;
+			drawbar "HORZSP2F", "HORZSP2E", PowerupTime(SpaceSuit), horizontal, interpolate(2), 135, 133;
 		}
-	}
+		
+		drawimage "HUDBAR", -54, 152;
+	
+		InInventory MineSweeper, 1
+		{
+			drawbar "VERTBYMG", "VERTBYMD", power, vertical, interpolate(2), 195, 170;
+			InInventory MineSweeperActive, 1 
+			{
+				drawbar "VERTBYMF", "VERTBYME", power, vertical, interpolate(2), 195, 170;
+			}
+		}
 	
 	//AirControl & Stamina
 	drawbar "HORZAIRF", "HORZAIRE", airtime, horizontal, interpolate(2), 36, 160;
@@ -89,21 +89,14 @@ statusbar Normal // Standard Doom Status bar
 	drawnumber 3, THREEFIV, untranslated, "PanzerAmmo", 306, 178, 1;
 
 	drawselectedinventory THREEFIV, 156, 168;
-	
-		//We must take in consideration the alt-fire for Panzerschreck
-		//in order to not see BJ grin while holding the button - Ozy81
-		IsSelected not Panzerschreck
+
+		//Code adjusted by Talon1024 - How to apply these for other weapons?
+		//Weapons which may need these are KnifeSilent, Shovel, Firebrand, Luger9mm, TrenchShotgun, Browning5, G43 & Kar98k
+		IsSelected not Panzerschreck, NullWeapon
 		{drawmugshot "STF", 5, 76, 168;}
-		IsSelected Panzerschreck
+		IsSelected Panzerschreck, NullWeapon
 		{drawmugshot "STF", 5, disablerampage, 76, 168;}
-		
-		//We must take in consideration the NullWeapon while wearing the
-		//Scientist uniform and to remove the grin face obviously - Ozy81
-		IsSelected not NullWeapon
-		{drawmugshot "STF", 5, 76, 168;}
-		IsSelected NullWeapon
-		{drawmugshot "STF", 5, disablerampage, 76, 168;}
-		
+
 	//mxd. Mugshot frame overlay
 	drawimage "HUDBROVL", 74, 168;
 	}
@@ -180,19 +173,12 @@ Statusbar FullScreen, FullScreenOffsets, forcescaled
 
 	//Mugshot + Inventory
 	drawselectedinventory THREEFIV, 112, -38;
-	
-		//We must take in consideration the alt-fire for Panzerschreck
-		//in order to not see BJ grin while holding the button - Ozy81
-		IsSelected not Panzerschreck
+
+		//Code adjusted by Talon1024 - How to apply these for other weapons?
+		//Weapons which may need these are KnifeSilent, Shovel, Firebrand, Luger9mm, TrenchShotgun, Browning5, G43 & Kar98k
+		IsSelected not Panzerschreck, NullWeapon
 		{drawmugshot "STF", 5, 7, -38;}
-		IsSelected Panzerschreck
-		{drawmugshot "STF", 5, disablerampage, 7, -38;}
-	
-		//We must take in consideration the NullWeapon while wearing the
-		//Scientist uniform and to remove the grin face obviously - Ozy81
-		IsSelected not NullWeapon
-		{drawmugshot "STF", 5, 7, -38;}
-		IsSelected NullWeapon
+		IsSelected Panzerschreck, NullWeapon
 		{drawmugshot "STF", 5, disablerampage, 7, -38;}
 
 	//Bottom Right
