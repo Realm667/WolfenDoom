@@ -140,6 +140,54 @@ ACTOR Plant6 : Plant1
 	}
 }
 
+ACTOR BarSeat //3d actor
+{
+	//$Category Props (Wolf3D)/Bureau
+	//$Title Bar Chair (Destroyable)
+	//$Color 3
+	DistanceCheck "scenelod"
+	Radius 12
+	Height 24
+	Health 20
+	Mass 100
+	-DROPOFF
+	+NOBLOOD
+	+NOTAUTOAIMED
+	+PUSHABLE
+	+SHOOTABLE
+	+SOLID
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	Death:
+		"####" A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("WOODBRK", CHAN_AUTO, frandom (0.5,0.8), FALSE, ATTN_NORM)
+		"####" A 2 A_SpawnItemEx("BarrelFrags")
+		"####" B -1
+		Stop
+	}
+}
+
+ACTOR ChairFuture : BarSeat //3d actor
+{
+	//$Category Props (Wolf3D)/Astrostein
+	//$Title Bar Chair (Modern, Destroyable)
+	DistanceCheck "scenelod"
+	Radius 8
+	Height 16
+	States
+	{
+	Death:
+		"####" A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("METLBRK", CHAN_AUTO, frandom (0.5,0.8), FALSE, ATTN_NORM)
+		"####" A 2 A_SpawnItemEx("MetalFrags")
+		"####" B -1
+		Stop
+	}
+}
+
 ACTOR Chair1 : Plant1 //3d actor
 {
 	//$Title Chair (plain, wood)
