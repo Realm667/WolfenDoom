@@ -301,9 +301,15 @@ class DialogueComponent : Object ui
 
 class DialogueIcon : DialogueComponent
 {
+	int tic;
+	int prevChar, nextChar;
+	int delay;
+
 	override void Init()
 	{
 		Super.Init();
+
+		tic = 0;
 
 		if (w && !h) { h == w; }
 		else if (!h) { h == 32; }
@@ -312,7 +318,10 @@ class DialogueIcon : DialogueComponent
 
 	override void Draw()
 	{
+		image = Animate(parent.caption, image);
+
 		let tex = TexMan.CheckForTexture (image, TexMan.Type_MiscPatch);
+
 		if (tex.isValid())
 		{
 			vector2 s = TexMan.GetScaledSize(tex);
@@ -341,6 +350,149 @@ class DialogueIcon : DialogueComponent
 
 			screen.DrawTexture(tex, true, pos.x + xOffset, pos.y + yOffset, DTA_VirtualWidth, dialogue.targetscreenx, DTA_VirtualHeight, dialogue.targetscreeny, DTA_DestWidth, int(destw), DTA_DestHeight, int(desth), DTA_TopOffset, 0, DTA_LeftOffset, 0, DTA_Alpha, alpha * dialogue.alpha);
 		}
+
+		tic++;
+	}
+
+	//Bad lip reading...  In reverse!  Badly. Kind of.
+	// Parses the input string character by character and switches the graphic based on approximations of common English-language sounds and digraphs
+	// Assumes that passed image name is a valid frame if it ends in a number.
+	// Frames are roughly: 0 - mouth closed, 1 - mouth open narrow, 2 - mouth open normal, 3 - mouth open wide, 4 - mouth open with teeth
+	String Animate(String input, String image)
+	{
+		int animduration = 4; //tics
+
+		int lastchar = image.CharCodeAt(image.Length() - 1);
+		String imagebase = image.Left(image.Length() - 1);
+
+		if (lastChar < 48 || lastChar > 57) { return image; }
+
+		int frame = 0;
+
+		int currentChar = tic / animduration;
+
+		if (delay > 0) { image = imagebase .. "0"; delay--; }
+		else if (currentchar < input.Length())
+		{
+			int character = UCase(input.CharCodeAt(currentChar));
+
+			if (currentchar < input.Length() - 1) { nextChar = UCase(input.CharCodeAt(currentChar + 1)); }
+			if (currentchar > 0) { prevChar = UCase(input.CharCodeAt(currentChar - 1)); }
+
+			Switch (character)
+			{
+				case 69: // E
+					if (nextChar != 32) // Space
+					{
+						frame = 3;
+						break;
+					}	
+				case 72: // H
+					tic += animduration;
+					break;
+				case 75: // K
+					if (prevChar != 67) // C
+					{
+						frame = 2;
+						break;
+					}
+					tic += animduration;
+					break;
+				case 32: // Space
+					frame = 0;
+					break;
+				case 44: // ,
+				case 45: // -
+					frame = 0;
+					delay = animduration;
+					break;
+				case 33: // !
+				case 46: // .
+				case 58: // :
+				case 59: // ;
+				case 63: // ?
+					frame = 0;
+					delay = 4 * animduration;
+					break;
+				case 66: // B
+				case 77: // M
+					frame = 0;
+					break;
+				case 80: // P
+					if (nextChar == 72) // H
+					{
+						frame = 4;
+						break;
+					}
+					frame = 0;
+					break;
+				case 85: //U
+					if (prevChar == 81 || UCase(input.CharCodeAt(currentChar + 2)) == 69 || (prevChar == 79 && nextchar < 65 )) //Q or E or O and not a letter
+					{
+						frame = 1;
+						break;
+					}
+					if (prevChar == 3)
+					{
+						tic += animduration;
+						break;
+					}
+					frame = 2;
+					break;
+				case 74: // J
+				case 82: // R
+				case 87: // W
+					frame = 1;
+					break;
+				case 79: // O
+					frame = 3;
+					break;
+				case 84: // T
+					if (nextChar == 73 && (
+						UCase(input.CharCodeAt(currentChar + 2)) == 79 ||
+						UCase(input.CharCodeAt(currentChar + 2)) == 65 ||
+						UCase(input.CharCodeAt(currentChar + 2)) == 69)
+					) // I and O or A or E
+					{
+						frame = 1;
+						break;
+					}
+					if (nextChar != 72) // H
+					{
+						frame = 2;
+						break;
+					}
+				case 71: // G
+					if (nextChar != 72) // H
+					{
+						frame = 2;
+						break;
+					}
+				case 70: // F
+				case 86: // V
+					frame = 4;
+					break;
+				case 83: // S
+				case 67: // C
+					if (nextChar == 72) // H
+					{
+						frame = 1;
+						break;
+					}
+				default: //All the rest
+					frame = 2;
+					break;
+			}
+		}
+
+		if ((TexMan.CheckForTexture(image, TexMan.Type_MiscPatch)).isValid()) { return imagebase .. frame; }
+		return image;
+	}
+
+	int UCase(int input)
+	{
+		if (input >= 97 && input <= 122) { input -= 32; }
+		return input;
 	}
 }
 

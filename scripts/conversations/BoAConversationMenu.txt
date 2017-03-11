@@ -24,18 +24,6 @@ class BoAConversationMenu : ExtendedConversationMenuBase
 			Background.image = "CONVBACK";
 			Background.dim.alpha = 0.25;
 
-		let Icon = dialogue.AddNew("DialogueIcon");
-			Icon.image = mCurNode.Backdrop;
-			Icon.h = 38;
-			Icon.w = 38;
-			Icon.pos.x = int(xAlign - 10 - Icon.w);
-			Icon.pos.y = yAlign;
-			Icon.margin.left = 1;
-			Icon.margin.right = 1;
-			Icon.margin.top = 1;
-			Icon.margin.bottom = 1;
-			Icon.dim.alpha = 0.45;
-
 		let SpeakerName = dialogue.AddNew("DialogueTextBox");
 			SpeakerName.scale = 0.5;
 			SpeakerName.SetFont = "BigFont";
@@ -81,6 +69,19 @@ class BoAConversationMenu : ExtendedConversationMenuBase
 			SpeakerText.margin.right = 2;
 			SpeakerText.scale = 0.75;
 			SpeakerText.tabindex = 1;
+
+		let Icon = dialogue.AddNew("DialogueIcon");
+			Icon.parent = SpeakerText; //Link to speakertext in order to animate the icon according to what character is being "spoken"
+			Icon.image = mCurNode.Backdrop;
+			Icon.h = 38;
+			Icon.w = 38;
+			Icon.pos.x = int(xAlign - 10 - Icon.w);
+			Icon.pos.y = yAlign;
+			Icon.margin.left = 1;
+			Icon.margin.right = 1;
+			Icon.margin.top = 1;
+			Icon.margin.bottom = 1;
+			Icon.dim.alpha = 0.45;
 
 		dialogue.Initialize(self);
 
