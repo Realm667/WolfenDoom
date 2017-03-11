@@ -1,0 +1,739 @@
+struct DialogueMargin
+{
+	int left;
+	int right;
+	int top;
+	int bottom;
+}
+
+struct DialogueDim
+{
+	double alpha;
+	Color clr;
+}
+
+enum Alignment
+{
+	ALIGN_Left,
+	ALIGN_Center,
+	ALIGN_Right,
+}
+
+enum ConFontGraphics
+{
+	None,
+	Cursor,
+	All,
+}
+
+class DialogueDescriptor : Object ui
+{
+	ExtendedConversationMenuBase CurrentMenu; // Stores the menu object that this was created from
+	Array<DialogueComponent> controls; // Stores all controls created in this dialogue
+	String focus; // 'refname' value fo currently focused control
+	double alpha; // Alpha of entire dialogue (also affects controls)
+	int activecolor; // Color used for active control elements (scrollbars, etc.) - usually in hex (defaults to g_activecolor cvar)
+	int inactivecolor; // Color used for active control elements (scrollbars, etc.) - usually in hex (defaults to g_inactivecolor cvar)
+	int altcolor; // Color used for some other control elements (scrollbar handles, etc.) - usually in hex (defaults to g_altcolor cvar)
+	int selection; // Current highlighted value of the response box
+	int targetscreenx; // What is the target screen size?  Default is 320x240
+	int targetscreeny;
+	bool autofocus; // Should the dialogue automatically find the next item and switch focus when the end of a scrolling selection is reached?
+	DialogueDim SelectionDim;
+	int useconfontgraphics; // Use confont pieces for control graphics - 0 is default (use graphics), 1 uses confont for cursor only, 2 uses confont for all (pretty much requires custom confont to not look like crap)
+	int responseblockcount;
+
+	void DimScreen(double alpha = 0.45, color clr = 0)
+	{
+		screen.Dim(clr, alpha, 0, 0, screen.GetWidth(), screen.GetHeight());
+	}
+
+	void DimArea(double x = 0, double y = 0, double w = 320, double h = 240, double dimalpha = 0.45, color clr = 0)
+	{
+		//Handles its own scaling
+		double widthRatio = screen.GetWidth() / double(targetscreenx);
+		double heightRatio = screen.GetHeight() / double(targetscreeny);
+		double screenRatio = widthRatio / heightRatio;
+
+		//Adjust because the text block starts to stretch at this point 
+		// (needs work - not particularly accurate at really wide/high resolutions, but works for all of the "native" resolutions on my machine)
+		if (screenRatio > 1.275) { widthRatio = 4 + (widthRatio - 4) / 2; } 
+
+		double xOffset = (screen.GetWidth() - targetscreenx * heightRatio) / 2;
+		double yOffset = (screen.GetHeight() - targetscreeny * widthRatio) / 2;
+
+		if (xOffset < 0) { xOffset = 0; heightRatio = widthRatio; }
+		else if (yOffset < 0) { yOffset = 0; widthRatio = heightRatio; }
+
+		x = xOffset + x * widthRatio;
+		y = yOffset + y * heightRatio;
+		w = w * widthRatio;
+		h = h * heightRatio;
+
+		screen.Dim(clr, dimalpha * alpha, int(x), int(y), int(w), int(h));
+	}
+
+	void Initialize(ExtendedConversationMenuBase parentmenu)
+	{
+		currentmenu = parentmenu;
+
+		if (!targetscreenx) { targetscreenx = 320; }
+		if (!targetscreeny) { targetscreeny = 240; }
+		if (alpha == 0) { alpha = 1.0; }
+		if (!activecolor) { activecolor = g_activecolor; }
+		if (!inactivecolor) { inactivecolor = g_inactivecolor; }
+		if (!altcolor) { altcolor = g_altcolor; }
+
+		for (int c = 0; c < controls.Size(); c++)
+		{
+			if (controls[c]) { controls[c].Init(); }
+		}
+
+		selection = 0;
+	}
+
+	int Draw()
+	{
+		for (int c = 0; c < controls.Size(); c++)
+		{
+			if (!controls[c]) { return -1; }
+			if (controls[c].refname == focus)
+			{
+				DimArea(controls[c].pos.x - controls[c].margin.left, controls[c].pos.y - controls[c].margin.top, controls[c].margin.left + controls[c].w + (2 * controls[c].scale) + controls[c].margin.right, controls[c].margin.top + controls[c].h + controls[c].margin.bottom, selectiondim.alpha, selectiondim.clr);
+			}
+			controls[c].Draw();
+		}
+
+		return selection;		
+	}
+
+	void Destroy()
+	{
+		for (int c = 0; c < controls.Size(); c++)
+		{
+			if (controls[c]) { controls[c].Destroy(); }
+		}
+	}
+
+	String NextControl(bool reverse = false)
+	{
+		int index;
+		int count;
+		int targetindex;
+
+		for (int c = 0; c < controls.Size(); c++)
+		{
+			if (!controls[index]) { continue; }
+			if (controls[c].refname == focus)
+			{
+				index = c;
+				targetindex = controls[c].tabindex;
+				break;
+			}
+		}
+
+		if (reverse)
+		{
+			targetindex = targetindex - 1;
+			if (targetindex == 0) { return focus; }
+			while (count <= controls.Size())
+			{
+				count++;
+				index--;
+				if (index <= 0) { index = controls.Size() - 1; }
+				if (!controls[index]) { return focus; }
+				if (controls[index].tabindex == targetindex && controls[index].parent == null) { return controls[index].refname; }
+			}
+			return focus;
+		}
+		else
+		{
+			targetindex = targetindex + 1;
+			while (count <= controls.Size())
+			{
+				count++;
+				index++;
+				if (index >= controls.Size()) { index = 0; }
+
+				if (!controls[index]) { return focus; }
+				if (controls[index].tabindex == targetindex && controls[index].parent == null) { return controls[index].refname; }
+			}
+			return focus;
+		}
+	}
+
+	DialogueComponent AddNew(String componenttype)
+	{
+		DialogueComponent component;
+
+		component = DialogueComponent(new(componenttype));
+		component.dialogue = self;
+		component.classname = componenttype;
+		controls.Push(component);
+		if (componenttype == "DialogueResponses") { responseblockcount++; }
+		
+		return component;
+	}
+
+	void DrawElement(double x, double y, String pic, double scale = 1.0, int clr = 0)
+	{
+		bool graphical = true;
+
+		if (useconfontgraphics)
+		{
+			String glyph;
+			double glyphscale = scale;
+
+			if (pic.Left(6) == "Select") { glyph = "\xd"; }
+			else if (useconfontgraphics == All)
+			{
+				glyphscale = scale * 0.5;
+
+				if (pic == "Scroll_S") { glyph = "\x02"; }
+				else if (pic == "Scroll_T") { glyph = "\x07"; }
+				else if (pic == "Scroll_B") { glyph = "\x02"; }
+				else if (pic == "Scroll_M") { glyph = "\x04"; }
+				else if (pic == "Arrow_Up") { glyph = "\x1a"; }
+				else if (pic == "Arrow_Dn") { glyph = "\x1b"; }
+			}
+
+			if (glyph != "")
+			{
+				screen.DrawText(ConFont, Font.CR_GREY, int(x), int(y), glyph, DTA_CellX, int(8 * CleanXfac * glyphscale), DTA_CellY, int(8 * CleanYfac * glyphscale), DTA_VirtualWidth, int(targetscreenx / scale), DTA_VirtualHeight, int(targetscreeny / scale), DTA_KeepRatio, false, DTA_Alpha, alpha);
+				if (clr > 0) { screen.DrawText(ConFont, Font.CR_GREY, int(x), int(y), glyph, DTA_CellX, int(8 * CleanXfac * glyphscale), DTA_CellY, int(8 * CleanYfac * glyphscale), DTA_VirtualWidth, int(targetscreenx / scale), DTA_VirtualHeight, int(targetscreeny / scale), DTA_KeepRatio, false, DTA_FillColor, clr, DTA_Alpha, 0.5 * alpha); }
+
+				graphical = false;
+			}
+		}
+
+		if (graphical)
+		{
+			let tex = TexMan.CheckForTexture (pic, TexMan.Type_MiscPatch);
+
+			if (tex.isValid())
+			{
+				screen.DrawTexture(tex, true, int(x), int(y), DTA_DestWidth, 8, DTA_DestHeight, 8, DTA_VirtualWidth, int(targetscreenx / scale), DTA_VirtualHeight, int(targetscreeny / scale), DTA_KeepRatio, false, DTA_Alpha, alpha);
+				if (clr > 0) { screen.DrawTexture(tex, true, int(x), int(y), DTA_DestWidth, 8, DTA_DestHeight, 8, DTA_VirtualWidth, int(targetscreenx / scale), DTA_VirtualHeight, int(targetscreeny / scale), DTA_KeepRatio, false, DTA_FillColor, clr, DTA_Alpha, 0.5 * alpha); }
+			}
+		}
+	}
+
+	virtual void DrawSelector(double x, double y, double scale = 1.0)
+	{
+		bool flickertime = (Menu.MenuTime() % 8) < 4;
+
+		int colr = flickertime ? altcolor : inactivecolor;
+		String pic = flickertime ? "Select_0" : "Select_1";
+
+		DrawElement(x, y, pic, scale, colr);
+	}
+}
+
+class DialogueComponent : Object ui
+{
+	String refname; // Reference name for control.  Used by dialogue.focus
+	String classname; // Class name
+	String caption; // Text content of component.  Not used by all.
+	String image; // Image content of component.  Not used by all.
+	DialogueDescriptor dialogue; // Parent dialogue of this component
+	DialogueComponent parent; // Parent component if this component was created from within another component (e.g., scrollbars).  Null for top-level components.
+	vector2 pos; // x/y position of component
+	double w; // Width of component
+	double h; // Height of component
+	double lineheight; // Height in pixels of a text line
+	double linespacing; // Spacing of text lines (1.0  is default)
+	DialogueMargin margin; // Margins of left/right/top/bottom sides of the component
+	double scale; // Scale of text within component
+	DialogueDim dim; // Dim information for this control.  Dims area defined by x/y coordinates, w/h, and margins
+	double alpha; // Alpha of this control
+	int scrollpos; // Current scroll location (
+	int scrollmax; // Max scroll location (how many lines of overflow there are)
+	bool initial; // Used internally to flag if a component is new
+	Font SetFont; // Text font of component contents
+	int fontcolor; // Color of text
+	int fonthighlightcolor; // Alternate color of text
+	int tabindex; // If should be accessible via autofocus or Tab/Shift+Tab keys, what index order should this control have?
+	String numberformat; //List number format for response list
+	int numberwidth; // Pixel width of number portion of response list
+	int numberalign;
+	bool dragging; // Used to flag that control has mouse being dragged.
+	int textalign;
+	bool Initialized;
+
+	virtual void Init()
+	{
+		if  (!SetFont) { SetFont = SmallFont; }
+
+		if (scale == 0) { scale = 1.0; }
+		if (alpha == 0) { alpha = 1.0; }
+		if (linespacing == 0) { linespacing = 1.0; }
+		if (lineheight == 0) { lineheight = SetFont.GetHeight() * linespacing * scale; }
+
+		Initialized = True;
+	}
+
+	virtual void Draw()
+	{
+		if (!Initialized) { Init(); }
+		if (dim.alpha) { dialogue.DimArea(pos.x - margin.left, pos.y - margin.top, margin.left + w + (2 * scale) + margin.right, margin.top + h + margin.bottom, dim.alpha * alpha, dim.clr); }
+	}
+
+	virtual String Click(int x, int y)
+	{
+		return refname;
+	}
+
+	virtual String Drag(int x, int y)
+	{
+		return refname;
+	}
+
+	virtual bool OnUIEvent(UIEvent ev)
+	{ 
+		return false; 
+	}
+
+	virtual bool MenuEvent(int mkey, bool fromcontroller)
+	{
+		return false;
+	}
+}
+
+class DialogueIcon : DialogueComponent
+{
+	override void Init()
+	{
+		Super.Init();
+
+		if (w && !h) { h == w; }
+		else if (!h) { h == 32; }
+		if (!w) { w == h; }
+	}
+
+	override void Draw()
+	{
+		let tex = TexMan.CheckForTexture (image, TexMan.Type_MiscPatch);
+		if (tex.isValid())
+		{
+			vector2 s = TexMan.GetScaledSize(tex);
+			int texw = int(s.x);
+			int texh = int(s.y);
+			double desth = h;
+			double destw = w;
+			int yOffset = 0;
+			int xOffset = 0;
+
+			//Re-scales and centers image if it doesn't match the passed w/h proportions.  Currently no ability to handle offsets.
+			if (texw > texh)
+			{
+				desth = texh * w / texw;
+				yOffset = int((h - desth) / 2);
+			}
+			else if (texw < texh)
+			{
+				destw = texw * h / texh;
+				xOffset = int((w - destw) / 2);
+			}
+
+			//Handle alpha and shadow here instead of calling Super.Draw() in order to handle variable size of dim area
+			if (alpha == 0) { alpha = 1.0; }
+			if (dim.alpha) { dialogue.DimArea(pos.x + xOffset - margin.left, pos.y + yOffset - margin.top, margin.left + destw + margin.right, margin.top + desth + margin.bottom, dim.alpha * dialogue.alpha, dim.clr); }
+
+			screen.DrawTexture(tex, true, pos.x + xOffset, pos.y + yOffset, DTA_VirtualWidth, dialogue.targetscreenx, DTA_VirtualHeight, dialogue.targetscreeny, DTA_DestWidth, int(destw), DTA_DestHeight, int(desth), DTA_TopOffset, 0, DTA_LeftOffset, 0, DTA_Alpha, alpha * dialogue.alpha);
+		}
+	}
+}
+
+class DialogueBackground : DialogueComponent
+{
+	override void Draw()
+	{
+		Super.Draw();
+
+		let tex = TexMan.CheckForTexture (image, TexMan.Type_MiscPatch);
+		if (tex.isValid())
+		{
+			screen.DrawTexture(tex, false, 0, 0, DTA_320x200, true, DTA_KeepRatio, true, DTA_Alpha, alpha * dialogue.alpha);
+		}
+
+		if (dim.alpha > 0)
+		{
+			dialogue.dimscreen(dim.alpha, dim.clr);
+		}
+	}
+}
+
+class DialogueScrollBar : DialogueComponent
+{
+	double scrollBarTop, scrollBarBottom, scrollBlockSize;
+
+	override void Draw()
+	{
+		Super.Draw();
+
+		scale = 0.75;
+
+		if (dialogue.useconfontgraphics == 2) { lineheight = 4; }
+		else { lineheight = 8; }
+
+		double arrowx = (parent.pos.x + parent.w + parent.margin.right) / scale + 4;
+		double arrowy = parent.pos.y / scale + 2 - lineheight / 2;
+		double arrow2y = (parent.pos.y + parent.h) / scale - 4 - lineheight / 2;
+
+		scrollBarTop = arrowy + lineheight * 3 / 2;
+		scrollBarBottom = arrow2y - lineheight / 2;
+		scrollBlockSize = (scrollBarBottom - scrollBarTop) / (parent.scrollmax + 1);
+
+		double scrollBarSize = scrollBlockSize / lineheight;
+
+		refname = parent.refname;
+		margin.left = 2;
+		margin.right = parent.margin.right;
+		margin.top = parent.margin.top;
+		margin.bottom = parent.margin.bottom;
+		pos.x = parent.pos.x + parent.w + parent.margin.right + (2 * parent.scale) + margin.left;
+		pos.y = parent.pos.y;
+		h = parent.h;
+		w = 4;
+
+		//Draw actual scroll bar
+
+		int scrollbarcolor = parent.dialogue.inactivecolor;
+		int scrollbarcolor2 = parent.dialogue.inactivecolor;
+
+		if (parent.scrollpos == 0)
+		{
+			scrollbarcolor2 = parent.dialogue.activecolor;
+		}
+		else if (parent.scrollpos < parent.scrollmax)
+		{
+			scrollbarcolor = parent.dialogue.activecolor;
+			scrollbarcolor2 = parent.dialogue.activecolor;
+		}
+		else if (parent.scrollpos == parent.scrollmax)
+		{
+			scrollbarcolor = parent.dialogue.activecolor;
+		}
+
+		double blocky;
+
+		if (scrollBarSize < 1)
+		{
+				blocky = scrollBarTop + scrollBlockSize * parent.scrollpos;
+				dialogue.DrawElement(arrowx, blocky, "Scroll_S", scale, parent.dialogue.altcolor);
+		}
+		else
+		{
+			for (int b = 0; b < int(scrollBarSize); b++)
+			{
+				if (parent.scrollpos == parent.scrollmax) { blocky = scrollBarBottom - scrollBlockSize + b * lineheight; }
+				else { blocky = scrollBarTop + scrollBlockSize * parent.scrollpos + b * lineheight; }
+
+				if (b == 0)
+				{
+					dialogue.DrawElement(arrowx, blocky, "Scroll_T", scale, parent.dialogue.altcolor);
+					blocky += 2;
+				}
+
+				if (b == int(scrollBarSize - 1))
+				{
+					dialogue.DrawElement(arrowx, blocky, "Scroll_B", scale, parent.dialogue.altcolor);
+					blocky -= 2;
+				}
+
+				if (scrollBarSize > 2) { 
+					dialogue.DrawElement(arrowx, blocky, "Scroll_M", scale, parent.dialogue.altcolor);
+				}
+			}
+		}
+
+		dialogue.DrawElement(arrowx, arrowy, "Arrow_Up", scale, scrollbarcolor);
+		dialogue.DrawElement(arrowx, arrow2y, "Arrow_Dn", scale, scrollbarcolor2);
+	}
+
+	override String Click(int x, int y)
+	{
+		dragging = false;
+
+		if (y < scrollBarTop * scale) { if (parent.scrollpos > 0) { parent.scrollpos--; } }
+		else if (y > scrollBarBottom * scale) { if (parent.scrollpos < parent.scrollmax) { parent.scrollpos++; } }
+
+		if (y > scrollBarTop * scale && y < scrollBarBottom * scale)
+		{
+			if (y < scrollBarTop * scale + scrollBlockSize * parent.scrollpos * scale) { if (parent.scrollpos > 0) { parent.scrollpos--; } }
+			else if (y > scrollBarTop * scale + scrollBlockSize * (parent.scrollpos + 1) * scale) { if (parent.scrollpos < parent.scrollmax) { parent.scrollpos++; } }
+		}
+
+		return Super.Click(x, y);
+	}
+
+	override String Drag(int x, int y)
+	{
+		dragging = true;
+
+		int targetpos = int((y - scrollBarTop) / (scrollBlockSize * scale)) + 2;
+
+		if (targetpos >= 0 && targetpos <= parent.scrollmax)
+		{
+			parent.scrollpos = targetpos;
+		}
+
+		return refname;
+	}
+}
+
+class DialogueTextBox : DialogueComponent
+{
+	override void Init()
+	{
+		Super.Init();
+
+		if (!fontcolor) { fontcolor = Font.CR_WHITE; }
+	}
+
+	override void Draw()
+	{
+		Super.Draw();
+
+		caption = Stringtable.Localize(caption);
+
+		if (w <= 0) { w = dialogue.targetscreenx - pos.x; }
+
+		let captionLines = SetFont.BreakLines (caption, int(w / scale));
+		int count = captionLines.Count();
+
+		if (h <= 0) { h = lineheight / scale * (count - 1) + SetFont.GetHeight(); }
+
+		double liney = pos.y / scale;
+		double scrollheight = pos.y + h / scale;
+
+		double x = pos.x;
+
+		for (int l = scrollpos; l < count; l++)
+		{
+			if (textalign == ALIGN_Right) { x = (pos.x + w) / scale - SetFont.StringWidth(captionLines.StringAt(l)); }
+			else if (textalign == ALIGN_Center) { x = (pos.x + w / 2) / scale - SetFont.StringWidth(captionLines.StringAt(l)) / 2; }
+			else { x = (pos.x + 4 + numberwidth) / scale; }
+
+			screen.DrawText(SetFont, fontcolor, int(x), int(liney), captionLines.StringAt(l), DTA_VirtualWidth, int(dialogue.targetscreenx / scale), DTA_VirtualHeight, int(dialogue.targetscreeny / scale), DTA_Alpha, alpha * dialogue.alpha);
+			liney += lineheight;
+
+			if (scrollpos == 0)
+			{
+				if (liney + lineheight > scrollheight)
+				{
+					scrollmax = count - l - 1;
+					if (!initial)
+					{
+						initial = true;
+						if (scrollmax > 0)
+						{
+							let s = new("DialogueScrollBar");
+							s.dialogue = dialogue;
+							s.parent = self;
+							s.Draw();
+							dialogue.controls.Push(s);
+							dialogue.focus = self.refname;
+						}
+					}
+				}
+				else { scrollmax = 0; }
+			}
+
+			if (liney + SetFont.GetHeight() > (pos.y + h) / scale) { break; }
+		}
+
+		if (scrollmax == 0) { tabindex = 0; } //Make the text box non-selectable if it doesn't scroll.
+	}
+
+	override String Click(int x, int y)
+	{
+		if (refname != "" && scrollmax > 0) { return Super.Click(x, y); }
+		return "";
+	}
+
+	override bool OnUIEvent(UIEvent ev)
+	{
+		int scrollamt;
+		if (ev.type == UIEvent.Type_WheelUp)
+		{
+			scrollamt = MIN(2, scrollpos);
+			scrollpos -= scrollamt;
+			return true;
+		}
+		else if (ev.type == UIEvent.Type_WheelDown)
+		{
+			scrollamt = MIN(2, scrollmax - scrollpos);
+			scrollpos += scrollamt;
+			return true;
+		}
+		return false;
+	}
+
+	override bool MenuEvent(int mkey, bool fromcontroller)
+	{
+		if (mkey == Menu.MKEY_Up)
+		{
+			if (scrollpos > 0)
+			{
+				scrollpos--;
+			}
+			else
+			{
+				if (dialogue.autofocus) { dialogue.focus = dialogue.NextControl(true); }
+			}
+			return true;
+		}
+		else if (mkey == Menu.MKEY_Down)
+		{
+			if (scrollpos < scrollmax)
+			{
+				scrollpos++;
+			}
+			else
+			{
+				if (dialogue.autofocus) { dialogue.focus = dialogue.NextControl(false); }
+			}
+			return true;
+
+		}
+		return false;
+	}
+}
+
+class DialogueResponses : DialogueComponent
+{
+	Array<String> responselines;
+	Array<uint> responses;
+
+	override void Init()
+	{
+		Super.Init();
+
+		if (!fontcolor) { fontcolor = Font.CR_GREEN; }
+		if (!fonthighlightcolor) { fonthighlightcolor = Font.CR_GREY; }
+		if (numberformat == "") { numberformat = "%d."; }
+		if (!numberwidth) { numberwidth = 16; }
+
+		//Use the default arrays if none provided.
+		if (responselines.Size() == 0) { responselines.Copy(dialogue.currentmenu.mResponselines); }
+		if (responses.Size() == 0) { responses.Copy(dialogue.currentmenu.mResponses); }
+
+		if (!h) { h = (responselines.Size() - 1) * lineheight + SetFont.GetHeight() * scale; }
+	}
+
+	override void Draw()
+	{
+		Super.Draw();
+		caption = Stringtable.Localize(caption);
+
+		double x, y;
+
+		int response = 0;
+		for (int i = 0; i < ResponseLines.Size(); i++)
+		{
+			y = (pos.y + i * lineheight) / scale;
+
+			if (textalign == ALIGN_Right) { x = (pos.x + w) / scale - SetFont.StringWidth(ResponseLines[i]); }
+			else if (textalign == ALIGN_Center) { x = (pos.x + numberwidth + w / 2) / scale - SetFont.StringWidth(ResponseLines[i]) / 2; }
+			else { x = (pos.x + 4 + numberwidth) / scale; }
+
+			screen.DrawText(SetFont, fontcolor, int(x), int(y), ResponseLines[i], DTA_VirtualWidth, int(dialogue.targetscreenx / scale), DTA_VirtualHeight, int(dialogue.targetscreeny / scale), DTA_Alpha, alpha * dialogue.alpha);
+
+			if (i == Responses[response])
+			{
+				String tbuf;
+
+				response++;
+				tbuf = String.Format(numberformat, response);
+
+				if (numberalign == ALIGN_Right) { x = (pos.x + numberwidth) / scale - SetFont.StringWidth(tbuf); }
+				else if (numberalign == ALIGN_Center) { x = (pos.x + numberwidth / 2) / scale - SetFont.StringWidth(tbuf) / 2; }
+				else { x = pos.x / scale; }
+
+				screen.DrawText(SetFont, fonthighlightcolor, int(x), int(y), tbuf, DTA_VirtualWidth, int(dialogue.targetscreenx / scale), DTA_VirtualHeight, int(dialogue.targetscreeny / scale), DTA_Alpha, alpha * dialogue.alpha);
+
+				if (response == dialogue.selection + 1 && dialogue.focus == refname)
+				{
+					x = (pos.x + 4 + numberwidth) / scale - 8;
+
+					dialogue.DrawSelector(x, y, scale);
+				}
+			}
+		}
+	}
+
+	override bool OnUIEvent(UIEvent ev)
+	{
+		if (ev.type == UIEvent.Type_Char && ev.KeyChar >= 48 && ev.KeyChar <= 57)
+		{ // Activate an item of type numberedmore (dialogue only)
+			dialogue.selection = ev.KeyChar == 48 ? 9 : ev.KeyChar - 49;
+			return MenuEvent(Menu.MKEY_Enter, false);
+		}
+		return Super.OnUIEvent(ev);
+	}
+
+	override bool MenuEvent(int mkey, bool fromcontroller)
+	{
+		if (mkey == Menu.MKEY_Up)
+		{
+			if (--dialogue.selection < 0)
+			{
+				if (dialogue.autofocus) { dialogue.focus = dialogue.NextControl(true); }
+				dialogue.selection++;
+			}
+			return true;
+		}
+		else if (mkey == Menu.MKEY_Down)
+		{
+			if (++dialogue.selection >= responses.Size()) 
+			{
+				if (dialogue.autofocus) { dialogue.focus = dialogue.NextControl(false); }
+				dialogue.selection--;
+			}
+			return true;
+		}
+		else if (mkey == Menu.MKEY_Enter)
+		{
+			int replynum = dialogue.currentmenu.GetReplyNumber();
+			if (dialogue.selection >= responses.Size())
+			{
+				dialogue.currentmenu.SendConversationReply(-2, replynum);
+			}
+			else
+			{
+				// Send dialogue and reply numbers across the wire.
+				dialogue.currentmenu.SendConversationReply(dialogue.currentmenu.mCurNode.ThisNodeNum, replynum);
+			}
+			dialogue.currentmenu.CloseMenu();
+			return true;
+		}
+		return false;
+	}
+
+	override String Click(int x, int y)
+	{
+		if (dialogue.focus != refname) { return Super.Click(x, y); }
+
+		int sel = -1;
+
+		if (x >= pos.x && x <= pos.x + w && y >= pos.y && y <= pos.y + lineheight * responselines.Size())
+		{
+			sel = int((y - pos.y) / lineheight);
+
+			for(int i = 0; i < responses.Size(); i++)
+			{
+				if (responses[i] > sel)
+				{
+					sel = i-1;
+					break;
+				}
+			}
+		}
+		dialogue.selection = sel;
+
+		MenuEvent(Menu.MKEY_Enter, true);
+
+		return Super.Click(x, y);
+	}
+}
