@@ -80,9 +80,15 @@ Object GermanShepherd				{ frame DOG2 { light BOASHADOW_M } }
 Object Gestapo 							{ frame GSAP { light BOASHADOW_M } }
 Object GiantGuard 					{ frame GARD { light BOASHADOW_XL } }
 Object Guard 								{ frame GARD { light BOASHADOW_M } }
+Object Guard_Wounded 				{ frame GARD { light BOASHADOW_M } }
+Object Guard_Wounded_NoCount{ frame GARD { light BOASHADOW_M } }
 Object Hitler								{ frame HITL { light BOASHADOW_L } }
 Object KittySinger					{ frame KITY { light BOASHADOW_M } }
+Object Longinus_Hitler			{ frame SHI1 { light BOASHADOW_L } }
+Object Longinus_Hitler			{ frame SHI2 { light BOASHADOW_L } }
 Object MGTurretSoldier			{ frame SMGS { light BOASHADOW_M } }
+Object MGTurretSoldier			{ frame SMGS { light BOASHADOW_M } }
+Object MGTurretSoldierW			{ frame SMGF { light BOASHADOW_M } }
 Object MGTurretSoldierW			{ frame SMGF { light BOASHADOW_M } }
 Object MP40Guard 						{ frame MGRD { light BOASHADOW_M } }
 Object MadCook							{ frame COOK { light BOASHADOW_L } }
@@ -100,11 +106,19 @@ Object MarineGeneral				{ frame SKEL { light BOASHADOW_L } }
 Object Marine_Talk1					{ frame PARS { light BOASHADOW_M } }
 Object Marine_Talk2					{ frame ARMH { light BOASHADOW_M } }
 Object MechaNaziStanding1 	{ frame MCST { light BOASHADOW_XL } }
-Object MechaNaziWalking1 		{ frame MCNZ { light BOASHADOW_XL } }
+Object MechaNaziStanding2 	{ frame MCST { light BOASHADOW_XL } }
+Object MechaNaziStanding3 	{ frame MCST { light BOASHADOW_XL } }
+Object MechaNaziStanding4 	{ frame MCST { light BOASHADOW_XL } }
+Object MechaNaziWalking1 		{ frame MCWR { light BOASHADOW_XL } }
+Object MechaNaziWalking2 		{ frame MCAF { light BOASHADOW_XL } }
+Object MechaNaziWalking3 		{ frame MCSN { light BOASHADOW_XL } }
+Object MechaNaziWalking4 		{ frame MCSS { light BOASHADOW_XL } }
 Object Mutant 							{ frame MTNT { light BOASHADOW_S } }
 Object MutantMelee					{ frame MLMT { light BOASHADOW_S } }
 Object NaziLoper						{ frame LOPR { light BOASHADOW_M } }
 Object Officer							{ frame OFFI { light BOASHADOW_M } }
+Object Officer_Wounded			{ frame OFFI { light BOASHADOW_M } }
+Object Officer_Wounded_NoCount	{ frame OFFI { light BOASHADOW_M } }
 Object Paratrooper					{ frame PARA { light BOASHADOW_M } }
 Object PrisonerAgent				{ frame TORT { light BOASHADOW_S } }
 Object PrisonerAgentTalk		{ frame FREE { light BOASHADOW_S } }
@@ -115,8 +129,12 @@ Object RifleGuard						{ frame RGRD { light BOASHADOW_M } }
 Object RocketMan						{ frame OTTO { light BOASHADOW_L } }
 Object Rottweiler						{ frame DOGY { light BOASHADOW_M } }
 Object SSGuard 							{ frame SSPG { light BOASHADOW_M } }
+Object SSGuard_Wounded 			{ frame SSPG { light BOASHADOW_M } }
+Object SSGuard_Wounded_NoCount	{ frame SSPG { light BOASHADOW_M } }
 Object SSMP40Guard 					{ frame SSMG { light BOASHADOW_M } }
 Object SSOfficer 						{ frame SSOF { light BOASHADOW_M } }
+Object SSOfficer_Wounded 		{ frame SSOF { light BOASHADOW_M } }
+Object SSOfficer_Wounded_NoCount	{ frame SSOF { light BOASHADOW_M } }
 Object Scientist						{ frame SCN2 { light BOASHADOW_S } }
 Object Scientist2						{ frame SCNT { light BOASHADOW_S } }
 Object Scorpion							{ frame SCRP { light BOASHADOW_S } }
@@ -135,9 +153,11 @@ Object UberMutant						{ frame UBMU { light BOASHADOW_XL } }
 Object UndeadPriest					{ frame UNDP { light BOASHADOW_M } }
 Object WGuard								{ frame GRD2 { light BOASHADOW_M } }
 Object WGuard_Wounded				{ frame GRD2 { light BOASHADOW_M } }
-Object WGuard_Wounded_NoCount				{ frame GRD2 { light BOASHADOW_M } }
+Object WGuard_Wounded_NoCount	{ frame GRD2 { light BOASHADOW_M } }
 Object WMP40Guard						{ frame MGR2 { light BOASHADOW_M } }
 Object WOfficer							{ frame OFR2 { light BOASHADOW_M } }
+Object WOfficer_Wounded			{ frame OFR2 { light BOASHADOW_M } }
+Object WOfficer_Wounded_NoCount	{ frame OFR2 { light BOASHADOW_M } }
 Object WRifleGuard					{ frame RGR2 { light BOASHADOW_M } }
 Object WSniper							{ frame SNI2 { light BOASHADOW_S } }
 Object WSniper_Crouch				{ frame SNI2 { light BOASHADOW_S } }
@@ -476,9 +496,9 @@ FlickerLight ProtoExplosionSpawnerLarge
 	Chance 0.6
 }
 
-Object SmallFlame { frame TNT1 { light FireSpawnerSmall } }
-Object MediumFlame { frame TNT1 { light FireSpawnerMedium } }
 Object LargeFlame { frame TNT1 { light FireSpawnerLarge } }
+Object MediumFlame { frame TNT1 { light FireSpawnerMedium } }
+Object SmallFlame { frame TNT1 { light FireSpawnerSmall } }
 
 //PROPS - LIGHT SOURCES//
 PointLight 3DCHAN
@@ -1159,7 +1179,7 @@ PointLight NAZIFIRE
 
 PointLight MUTNFIRE
 {
-	Color 1.0 0.7 0.0
+	Color 1.0 0.0 0.7
 	Size 24
 	Offset 0 16 0
 }
