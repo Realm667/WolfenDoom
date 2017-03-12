@@ -107,29 +107,13 @@ ACTOR StripperGirl : EnergyTankLit
 	}
 }
 
-ACTOR RadioTower
-{
-	//$Category Props (Wolf3D)/Astrostein
-	//$Title Radio Tower
-	//$Color 3
-	Radius 32
-	Height 256
-	Scale 3.0
-	+SOLID
-	States
-	{
-	Spawn:
-		RATO AB 20
-		Loop
-	}
-}
-
 //3d Actors//
 ACTOR RadioSatelite
 {
 	//$Category Props (Wolf3D)/Astrostein
 	//$Title Radio Satelite
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 64
 	Height 256
 	Scale 4.0
@@ -142,9 +126,24 @@ ACTOR RadioSatelite
 	}
 }
 
+ACTOR RadioTower : RadioSatelite
+{
+	//$Title Radio Tower
+	DistanceCheck "scenelod"
+	Radius 32
+	Scale 3.0
+	States
+	{
+	Spawn:
+		MDLA AB 20
+		Loop
+	}
+}
+
 ACTOR SolarPanel : RadioSatelite
 {
 	//$Title Solar Panel
+	DistanceCheck "scenelod"
 	Height 96
 	Scale 2.0
 }
@@ -154,6 +153,7 @@ ACTOR FutureCeilingLight : SwitchableDecoration
 	//$Category Props (Wolf3D)/Astrostein
 	//$Title Ceiling Light (modern, switchable)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 0
 	-SOLID
