@@ -1373,6 +1373,9 @@ $rolloff subway/active 1024 2048
 tesla/active ELCLOOP
 $limit tesla/active 1
 
+//Flapping Flag
+flag/flap FLAPFLAG
+
 //Moving Crate (Astrostein + Paper)
 $random astrodrum_moving { astrodrum_moving1 astrodrum_moving2 astrodrum_moving3 }
 astrodrum_moving1 asdrmv01
@@ -1418,6 +1421,7 @@ DR_PRS01	DR_PRS01
 DR_WD01		DR_WD01
 DSSTN01		DSSTN01
 DSSTN02		DSSTN02
+DSSTN03		DSSTN03
 ELDOR_CL	ELDOR_CL
 ELDOR_MV	ELDOR_MV
 ELDOR_OP	ELDOR_OP
@@ -1438,6 +1442,9 @@ slift1c		slift1c
 ulift1a		udoor1a
 ulift1b		udoor1b
 ulift1c		udoor1c
+mach3S 		mach3S
+mach3L 		mach3L
+mach3E 		mach3E
 
 //LightOn/Off
 LightOn				lighton
@@ -1714,6 +1721,12 @@ misc/thunder5 thunder5
 //Earthquake
 misc/earthquake DSQUAKE
 
+//Bridge Creak
+brdcrk01 brdcrk01 
+brdcrk02 brdcrk02 
+brdcrk03 brdcrk03
+$random BRIDGE_CREAK { brdcrk01 brdcrk02 brdcrk03 }
+
 $AMBIENT 1 ALARM_DOOD POINT CONTINUOUS 1.0
 $AMBIENT 2 ALARM_RING POINT CONTINUOUS 1.0
 $AMBIENT 3 CRICKET_NIGHT POINT CONTINUOUS 1.0
@@ -1782,6 +1795,7 @@ $AMBIENT 65 SALOONKY POINT CONTINUOUS 1.0
 $AMBIENT 66 AIR_RAID_ALARM POINT CONTINUOUS 1.0
 $AMBIENT 67 WAR_CLOSER POINT CONTINUOUS 1.0
 $AMBIENT 68 CHATTER_AXIS POINT PERIODIC 9.0 1.0
+$AMBIENT 69 BRIDGE_CREAK POINT RANDOM 1.0 30.0 60.0
 
 /////////////
 //BRIEFINGS//

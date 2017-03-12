@@ -30,13 +30,13 @@ end
 :Moving_Stone_Door
    door 5
    playuntildone   DSSTN01
-   playrepeat      DSSTN01
-   stopsound	   DSSTN02
+   playrepeat      DSSTN02
+   stopsound	   DSSTN03
 end
 
 :Moving_Secret_Door
    door 6
-   play				CLSCRT_O
+   play			CLSCRT_O
    playrepeat		CLSCRT_M
    stopsound		CLSCRT_S
 end
@@ -125,4 +125,11 @@ end
 	playuntildone	WATDRAIN
 	playrepeat      null
 	stopsound	null
+end
+
+:Lift_Unreal
+	platform 6
+        playuntildone   mach3S
+        playrepeat      mach3L
+        stopsound       mach3E
 end
