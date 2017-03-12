@@ -38,11 +38,23 @@ end
    3      SwingDoor_Wood_Close
 ]
 
-:SwingDoor_Prison
-   door 3
-   playuntildone	DR_PRS01
+:SwingDoor_Prison_Open
+   play	DR_PRS01
    nostopcutoff
 end
+
+:SwingDoor_Prison_Close
+   play	DR_PRS02
+   nostopcutoff
+end
+
+[SwingingDoor_Prison
+   DOOR      3
+   0      SwingDoor_Prison_Open
+   1      SwingDoor_Prison_Close
+   2      SwingDoor_Prison_Open
+   3      SwingDoor_Prison_Close
+]
 
 :SlidingDoor_Elevator
    door 4
