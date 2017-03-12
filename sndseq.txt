@@ -2,17 +2,41 @@
 // DOORS //////////////
 ///////////////////////
 
-:SwingDoor_Metal
-   door 1
-   playuntildone	DR_MTL01
+:SwingDoor_Metal_Open
+   play	DR_MTL01
    nostopcutoff
 end
 
-:SwingDoor_Wood
-   door 2
-   playuntildone	DR_WD01
+:SwingDoor_Metal_Close
+   play	DR_MTL02
    nostopcutoff
 end
+
+[SwingingDoor_Metal
+   DOOR      1
+   0      SwingDoor_Metal_Open
+   1      SwingDoor_Metal_Close
+   2      SwingDoor_Metal_Open
+   3      SwingDoor_Metal_Close
+]
+
+:SwingDoor_Wood_Open
+   play	DR_WD01
+   nostopcutoff
+end
+
+:SwingDoor_Wood_Close
+   play	DR_WD02
+   nostopcutoff
+end
+
+[SwingingDoor_Wood
+   DOOR      2
+   0      SwingDoor_Wood_Open
+   1      SwingDoor_Wood_Close
+   2      SwingDoor_Wood_Open
+   3      SwingDoor_Wood_Close
+]
 
 :SwingDoor_Prison
    door 3
