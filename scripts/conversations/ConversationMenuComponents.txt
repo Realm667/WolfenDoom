@@ -236,7 +236,7 @@ class DialogueComponent : Object ui
 	String caption; // Text content of component.  Not used by all.
 	String image; // Image content of component.  Not used by all.
 	DialogueDescriptor dialogue; // Parent dialogue of this component
-	DialogueComponent parent; // Parent component if this component was created from within another component (e.g., scrollbars).  Null for top-level components.
+	DialogueComponent parent; // Parent component if this component was created from within another component (e.g., scrollbars), or otherwise attached (like Icons).  Null for top-level components.
 	vector2 pos; // x/y position of component
 	double w; // Width of component
 	double h; // Height of component
@@ -636,11 +636,14 @@ class DialogueScrollBar : DialogueComponent
 
 class DialogueTextBox : DialogueComponent
 {
+	int textheight;
+
 	override void Init()
 	{
 		Super.Init();
 
 		if (!fontcolor) { fontcolor = Font.CR_WHITE; }
+		textheight = SetFont.GetHeight() * scale; // Ignores extra line spacing - used to check scrollbar requirement
 	}
 
 	override void Draw()
@@ -672,9 +675,10 @@ class DialogueTextBox : DialogueComponent
 
 			if (scrollpos == 0)
 			{
-				if (liney + lineheight > scrollheight)
+				if (liney + textheight > scrollheight)
 				{
 					scrollmax = count - l - 1;
+
 					if (!initial)
 					{
 						initial = true;
