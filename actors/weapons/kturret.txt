@@ -25,7 +25,7 @@ ACTOR KTurretStand : SwitchableDecoration //IMPORTANT: The TurretStand NEEDS to 
 		Goto Spawn2
 
 	Spawn2:
-		MDLA A -1
+		MDLA A -1 Light(BOASHADOW_L)
 		Stop
 
 	Active:	//MP compatibility: if the target has a master, it means it's manned by another player, & thus the script below should not be executed.
@@ -46,12 +46,12 @@ ACTOR KTurretGun
 {
 	Radius 2
 	Height 2
-	+NOGRAVITY
-	+NOINTERACTION
 	+MISSILE //Ensures the player is the owner of turret-spawned projectiles
 	+MOVEWITHSECTOR //Added this for arcade sequences if needed - ozy
 	+MTHRUSPECIES
 	+NOBLOCKMAP
+	+NOGRAVITY
+	+NOINTERACTION
 	+SYNCHRONIZED //let's avoid some issues with model orientation vs sounds
 	+THRUSPECIES
 	Species "TURR"
@@ -151,7 +151,7 @@ ACTOR KTurretTracer : Tracer
 		Goto Spawn2
 	
 	Spawn2: 
-		PUFF A 1 BRIGHT
+		PUFF A 1 BRIGHT Light(3DCHAN) 
 		Loop
 
 	Death:
