@@ -1,0 +1,263 @@
+// Parent class that holds functions and logic
+class PlayerFollower : Actor
+{
+	Array<PathMarker> Markers;
+	Actor playerToChase, currentGoal;
+	Vector3 oldPlayerPos;
+	int index;
+
+	bool oldFriendly;
+	bool armed;
+	int shots;
+
+	Default
+	{
+		MONSTER;
+		-COUNTKILL
+		+DONTHARMSPECIES
+		+FLOORCLIP
+		+JUMPDOWN
+		+NOBLOCKMONST
+		+NODAMAGE
+		+NOTAUTOAIMED
+		+PUSHABLE
+		+SLIDESONWALLS
+		+FRIENDLY
+		Health 100;
+		Height 52;
+		Radius 6;
+		Mass 100;
+		Speed 5;
+		Scale 1.2;
+		PainChance 128;
+		MaxStepHeight 56; //Matches max player jump height with standard JumpZ of 8 and MaxStepHeight of 24
+		MaxDropOffHeight 512;
+		MaxTargetRange 1024;
+	}
+
+	States
+	{
+		Spawn:
+			PLAY A 1; // As an obvious placeholder for inheritance reasons
+			Goto Initialize;
+		Initialize:
+			"####" A 0 {
+				oldFriendly = bFriendly; // Force unfriendly, otherwise the LookForPlayers call fails, but save old value for later
+				bFriendly = False;
+			}
+		Stand: // Initial setup of actor and identificaiton of what player we want to follow
+			"####" A 1;
+			"####" A 0 {
+				if (!target)
+				{
+					LookExParams SearchParams;
+
+					SearchParams.fov = 360;
+					SearchParams.minDist = 0;
+					SearchParams.maxDist = 1024;
+					SearchParams.maxHearDist = 0; //Deaf!
+
+					LookForPlayers(true, SearchParams); // Search (visual only) for a player (pointer assigned as target)
+				}
+
+				if (target)
+				{
+					playerToChase = target; // Save the player that was targeted as who we want to follow
+					target = null; // Clear target pointer
+					bChaseGoal = True; // Always chase goal, even when firing
+					return ResolveState("Chase");
+				}
+				return ResolveState("Stand");
+			}
+		Chase: // Standard goal chasing
+			"####" BBBBBCCCCCDDDDDEEEEE 1 {
+				if (!playerToChase) { return ResolveState("Stand"); } // Make sure a player was targeted as who to chase
+
+				bFriendly = oldFriendly; // Restore original friendliness once we're sure we have a player to follow
+
+				if (playerToChase.health && Distance3d(playerToChase) > 128) { // Run away from danger, but not *too* far away
+					bFrightened = False;
+				} else {
+					bFrightened = True;
+				}
+
+				if (Level.time % 10 == 0) { // Spawn a waypoint at the player's position every 10 tics if the player has moved and push it into an array
+					if (playerToChase.pos != oldPlayerPos) {
+						Actor mo = Spawn("PathMarker", (playerToChase.pos.x + Random[Offset](-12, 12), playerToChase.pos.y, playerToChase.pos.z));
+						Markers.Push(mo);
+						oldPlayerPos = playerToChase.pos;
+					}
+				}
+
+				if (Markers.Size() - index >= 100) { // If he's far, far behind, warp halfway along the trail *if* the destination spot isn't in sight of the player.
+					if (Markers[index + 50]) {
+						if (!Markers[index + 50].IsVisible(playerToChase, True)) {
+							SetOrigin(Markers[index + 50].pos, true); // Clean up the now unused markers and array entries
+							DestroyMarkers(index, index + 50);
+							index += 50;
+/* Commenting this out until/if wanted (hi-res sprites for firing don't exist)
+							armed = True; //Pretend he picked up a pistol and some ammo, somewhere and he will act like a friendly Guard
+*/
+						}
+					}
+				}
+
+				if (index < Markers.Size()) { currentGoal = Markers[index]; } // If there's a marker spawned, set it as the goal
+
+				goal = currentGoal;
+
+				A_Chase(null, null); // Use default chase logic to go after our goal without trying to fire
+
+				if (currentGoal && Distance2d(currentGoal) <= 48) { // If within 48 units of goal, good enough - destroy that waypoint, get ready to iterate to the next
+					Markers[index].Destroy();
+					Markers.Delete(index);
+					index++;
+				}
+
+				if (currentGoal && Distance3d(playerToChase) < Distance3d(currentGoal)) { // If closer to player than to goal, destroy the old waypoints and start again fresh
+					DestroyMarkers();
+					return ResolveState(null);
+				} else if (playerToChase.health && Distance3d(playerToChase) <= 96) { // If within 96 units of the player, destroy the old waypoints and jumpt to "Close" state
+					DestroyMarkers();
+					return ResolveState("Chase.Near");
+				}
+
+				return ResolveState(null);
+			}
+			"####" A 0 { Spawn("PlayerStep", (pos.x, pos.y, pos.z + 14)); } // Spawn the playerstep actor
+			Loop;
+		Chase.Near: // Near the player, take up defensive position (if armed), otherwise stand stupidly
+			"####" AAAAA 1 {
+				if (CheckInventory("Luger9mm", 1)) { armed = True; } // Or give him a Luger via script and he will act like a friendly Guard
+
+				if (armed) { // If armed, stand in place and fire at enemies
+					bFrightened = False;
+					LookForMonsters();
+					if (target && !target.bDormant) {
+						A_Chase("Missile", "Missile", CHF_DONTMOVE);
+					}
+				}
+
+				if (playerToChase && Distance2d(playerToChase) > 128) { // If player moves too far away, go back to following
+					return ResolveState("Chase");
+				}
+
+				return ResolveState(null);
+			}
+			Loop;
+		Pain:
+			"####" I 5;
+			"####" I 0 {
+				A_Pain();
+				return ResolveState("Chase");
+			}
+		Missile: // Emulates the standard guard pistol - relatively standard
+			"####" FG 10 A_FaceTarget();
+			"####" H 8 LIGHT("NaziFire") {
+				A_PlaySound("nazi/pistol", CHAN_WEAPON);
+				A_SpawnProjectile("EnemyPistolTracer", 54, 1, Random(-8,8), CMF_BADPITCH);
+				shots++;
+			}
+			"####" G 8 A_SpawnItemEx("9MMCasing", 1, 0, 56, Random(1, 2), Random(-1, 1), Random(1, 2), Random(-55, -80), SXF_NOCHECKPOSITION);
+			"####" G 0 {
+				if (shots >= 8) {
+					return ResolveState("Reload");
+				}
+				if (target && target.health > 0) {
+					A_MonsterRefire(128, "Chase.Near"); // Re-fires half the time - more than the standard guard does
+					return ResolveState("Missile");
+				}
+				return ResolveState("Chase.Near");
+			}
+		Reload: // More emulation of the guard pistol - 8 shots, then reload
+			"####" G 0 { bNoPain = True; }
+			"####" G 30 {
+				A_PlaySound("luger/reload", CHAN_ITEM, FRandom (0.3, 0.6), FALSE, ATTN_NORM);
+				A_SpawnItemEx("9MMCasing", 1, 0, 56, Random(3, 4), Random(-1, 1), Random(2, 4), Random(-55,-80), SXF_NOCHECKPOSITION);
+				shots = 0;
+			}
+			"####" G 0 {
+				bNoPain = False;
+				return ResolveState("Chase.Near");
+			}
+		Death: // Standard Death - unused, since he's invulnerable, but here just in case needed in future
+			"####" J 8;
+			"####" K 8 A_Scream;
+			"####" L 8 A_NoBlocking;
+			"####" M 8;
+			"####" N -1;
+			Stop;
+	}
+
+	// Destroys array-linked actors in the range of the specified indices.  Default is to destroy all of the markers and clear the array.
+	void DestroyMarkers(int start = 0, int end = 0)
+	{
+		if (!end) { end = Markers.Size(); }
+
+		for (int i = start; i < end; i++)
+		{
+			Actor mo = Markers[i];
+			if (mo) { mo.Destroy(); }
+			Markers[i] = null;
+		}
+		if (start == 0 && end == Markers.Size()) {
+			Markers.Clear();
+			Markers.ShrinkToFit();
+			index = 0;
+		}
+	}
+}
+
+// Minimal actor to use as waypoints
+class PathMarker : Actor
+{
+	Default
+	{
+		+NOINTERACTION
+		+NOTONAUTOMAP 
+		Height 0;
+		Radius 0;
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 A -1;
+			Stop;
+	}
+}
+
+// Actual Prisoner Agent inherits everything from PlayerFollower
+class PrisonerAgent : PlayerFollower
+{
+	//$Category Monsters (Wolf3D)/NPCs
+	//$Title Cpt. James Ryan (Prisoner, Bleeding)
+	//$Color 4
+
+	Default
+	{
+		Speed 8; // He can't run as fast as you can, so will usually lag behind
+		Mass 50; // He's a lightweight so that if he annoyingly boxes you in, he's easy to shove out of the way
+		Obituary "$PRISONER"; 
+		Species "Player";
+	}
+
+	States
+	{
+		Spawn:
+			TORT A 1;
+			Goto Initialize;
+	}
+}
+
+// For demonstration purposes...  
+class PrisonerAgentArmed : PrisonerAgent
+{
+	States
+	{
+		Spawn:
+			TORT A 1;
+			TORT A 1 { armed = True; }
+			Goto Initialize;
+	}
+}

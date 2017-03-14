@@ -643,7 +643,7 @@ class DialogueTextBox : DialogueComponent
 		Super.Init();
 
 		if (!fontcolor) { fontcolor = Font.CR_WHITE; }
-		textheight = SetFont.GetHeight() * scale; // Ignores extra line spacing - used to check scrollbar requirement
+		textheight = int(SetFont.GetHeight() * scale); // Ignores extra line spacing - used to check scrollbar requirement
 	}
 
 	override void Draw()
