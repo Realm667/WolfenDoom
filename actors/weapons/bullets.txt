@@ -125,8 +125,23 @@ ACTOR TankSpark : TracerSpark //use this as blood for vehicles et similae
 
 //The Player's variants on the tracers, so they have different speeds and damages based on which weapon is being used.
 
+ACTOR PlayerTracer : Tracer
+{
+	Species "Player"
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay {
+				if (!multiplayer && skill < 2) { // In single-player at lower skills, allow shots to go through allies (PrisonerAgent, AgentArmed, etc.)
+					bThruSpecies = True;
+				}
+			}
+			Goto Super::Spawn
+	}
+}
+
 //Muzzle velocity: 1,148-1,312 ft/s (350-400 m/s) - Wikipedia
-ACTOR LugerTracer : Tracer
+ACTOR LugerTracer : PlayerTracer
 {
 	ProjectileKickback 60
 	Damage (random(3,17))
@@ -140,7 +155,7 @@ ACTOR WaltherTracer : LugerTracer
 	Speed 90
 }
 
-ACTOR ShotgunTracer : Tracer
+ACTOR ShotgunTracer : PlayerTracer
 {
 	Scale .3
 	Damage (random(5,15))
@@ -158,17 +173,17 @@ ACTOR ShotgunTracer : Tracer
 ACTOR AutoShotgunTracer : ShotgunTracer	{Obituary "$OBAUTOSH"}
 
 //Muzzle velocity: 1,312 ft/s (400 m/s) - Wikipedia
-ACTOR MP40Tracer : Tracer
+ACTOR MP40Tracer : PlayerTracer
 {
 	Damage (random(9,14))
 	Speed 90
 }
 
 //Muzzle velocity: 1,001 ft/s (305 m/s) - Wikipedia
-ACTOR StenTracer : Tracer	{Damage (random(9,14))}
+ACTOR StenTracer : PlayerTracer {Damage (random(9,14))}
 
 //Muzzle velocity: 935 ft/s (285 m/s) - Wikipedia
-ACTOR ThompsonTracer : Tracer
+ACTOR ThompsonTracer : PlayerTracer
 {
 	ProjectileKickback 100
 	Damage (random(14,18))
@@ -176,7 +191,7 @@ ACTOR ThompsonTracer : Tracer
 }
 
 //Muzzle velocity: 2,822 ft/s (860 m/s) - Wikipedia
-ACTOR Kar98kTracer : Tracer
+ACTOR Kar98kTracer : PlayerTracer
 {
 	ProjectileKickback 100
 	Damage (random(40,65))
@@ -197,7 +212,7 @@ ACTOR G43Tracer : Kar98kTracer
 	Obituary "$OBG43"
 }
 
-ACTOR ChaingunTracer : Tracer
+ACTOR ChaingunTracer : PlayerTracer
 {
 	Damage (random(11,15))
 	Speed 90
