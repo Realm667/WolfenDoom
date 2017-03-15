@@ -89,8 +89,8 @@ ACTOR KTurret_Token : CustomInventory //fires the turret when given to it throug
 	States
 	{
 	Pickup:
-		TNT1 A 0 A_SpawnItemEx("9MMCasing",ScaleX*4,ScaleY*4,ScaleX+ScaleY*8,8,random(-2,2),random(0,4),random(50,80),SXF_NOCHECKPOSITION)
-		TNT1 A 0 A_CustomMissile("KTurretTracer",Threshold,0,frandom(-MeleeRange,MeleeRange), CMF_TRACKOWNER | CMF_AIMDIRECTION,pitch + frandom(-MeleeRange,MeleeRange))
+		TNT1 A 0 {A_SpawnItemEx("9MMCasing",ScaleX*4,ScaleY*4,ScaleX+ScaleY*8,8,random(-2,2),random(0,4),random(50,80),SXF_NOCHECKPOSITION); A_SpawnItemEx("KTFlare",ScaleX*34,0,0,0,0,0,0, SXF_NOCHECKPOSITION | SXF_TRANSFERROLL | SXF_TRANSFERPITCH);}
+		TNT1 A 0 A_CustomMissile("KTurretTracer",Threshold,0,frandom(-MeleeRange,MeleeRange), CMF_TRACKOWNER | CMF_AIMDIRECTION,pitch + frandom(-MeleeRange,MeleeRange))//; A_CustomMissile("KTFlare",34,0,frandom(-MeleeRange,MeleeRange), CMF_TRACKOWNER | CMF_AIMDIRECTION,pitch + frandom(-MeleeRange,MeleeRange));}
 		Stop
 	}
 }
@@ -166,5 +166,24 @@ ACTOR KTurretTracer : Tracer
 		TNT1 A 0 A_ChangeFlag("WINDTHRUST", 0)
 		TNT1 A 1 A_PlaySound("hitflesh")
 		Stop
+	}
+}
+
+ACTOR KTFlare : KTurretTracer
+{
+	Damage 0
+	Speed 0
+	+ROLLSPRITE
+	+THRUGHOST
+	+THRUSPECIES
+	+WALLSPRITE
+	Scale 0.25
+	Alpha 0.5
+	States
+	{
+	Spawn:
+		FLAR B 1
+		"####" B 0 A_FadeOut(.04)
+		Loop
 	}
 }
