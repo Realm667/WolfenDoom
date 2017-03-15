@@ -151,7 +151,7 @@ ACTOR KTurretTracer : Tracer
 		Goto Spawn2
 	
 	Spawn2: 
-		PUFF A 1 BRIGHT Light(3DCHAN) 
+		PUFF A 1 BRIGHT Light(3DCHAN)
 		Loop
 
 	Death:
@@ -182,7 +182,7 @@ ACTOR KTFlare : KTurretTracer
 	States
 	{
 	Spawn:
-		FLAR B 1
+		FLAR B 1 BRIGHT Light(3DFLARE)
 		"####" B 0 A_FadeOut(.04)
 		Loop
 	}
