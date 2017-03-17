@@ -61,6 +61,13 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 		Stand: // Initial setup of actor and identification of what player we want to follow
 			"####" A 1;
 			"####" A 0 A_FindPlayer();
+		Chase.Back: // Used to push actor back when touching player
+			"####" A 1;
+			"####" A 0 {
+				double pushAngle = AngleTo(playerToChase) + 180;
+				Thrust(1, pushAngle);
+				return ResolveState("Chase");
+			}
 		Chase: // Standard goal chasing
 			"####" BBBBBCCCCCDDDDDEEEEE 1 A_ChaseGoal();
 			"####" A 0 A_SpawnStep();
@@ -74,7 +81,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 		Luger: // Emulates the standard guard pistol - relatively standard
 			"####" FG 10 A_FaceTarget();
 			Luger.Refire:
-				"####" H 8 LIGHT("NaziFire") A_FollowerFire("EnemyPistolTracer", "9MMCasing", "nazi/pistol", 54, 1);
+				"####" H 8 LIGHT("NaziFire") A_FollowerFire("LugerTracer", "9MMCasing", "nazi/pistol", 54, 1);
 				"####" G 8 A_FaceTarget();
  				"####" G 0 A_RefireReload("Luger.Refire", "Luger.Reload");
 			Luger.Reload: // More emulation of the guard pistol - 8 shots, then reload
@@ -94,7 +101,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			}
 			MP40.Refire:
 				"####" G 5 A_FaceTarget();
-				"####" H 5 LIGHT("NaziFire") A_FollowerFire("EnemySMGTracer", "9MMCasing", "nazi/mp40", 50, 4);
+				"####" H 5 LIGHT("NaziFire") A_FollowerFire("MP40Tracer", "9MMCasing", "nazi/mp40", 50, 4);
  				"####" G 0 A_RefireReload("MP40.Refire", "MP40.Reload", 0, 4, 32);
 			MP40.Reload: 
 				"####" F 0 { bNoPain = True; }
@@ -112,7 +119,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				shots = 0;
 			}
 			Rifle.Refire:
-				"####" H 5 LIGHT("NaziFire") A_FollowerFire("EnemyStGTracer", "MauserRifleCasing", "nazi/stg44", 38, 4);
+				"####" H 5 LIGHT("NaziFire") A_FollowerFire("ThompsonTracer", "MauserRifleCasing", "nazi/stg44", 38, 4);
 				"####" G 5 A_FaceTarget();
  				"####" G 0 A_RefireReload("Rifle.Refire", "Rifle.Reload", 0, 10, 40);
 			Rifle.Reload: 
@@ -246,9 +253,14 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			if (abs(angle - faceangle) > 45) { angle = faceangle; }
 		}
 
-		if (playerToChase && Distance2d(playerToChase) > 128) { // If player moves too far away, go back to following (and forget the target if forgettarget = True)
-			if (forgettarget) { target = null; }
-			return ResolveState("Chase");
+		if (playerToChase) {
+			if (Distance2d(playerToChase) > radius + 128 + playerToChase.radius) { // If player moves too far away, go back to following (and forget the target if forgettarget = True)
+				if (forgettarget) { target = null; }
+				return ResolveState("Chase");
+			} else if (Distance2d(playerToChase) < radius + 16 + playerToChase.radius) { // If too close to player, push away
+				return ResolveState("Chase.Back");
+			}
+			return ResolveState(null);			
 		}
 
 		return ResolveState(null);
@@ -257,8 +269,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 	void A_FollowerFire(class<Actor> weapontracer, class<Actor> casing, sound weaponsound = "nazi/pistol", int speed = 54, int damage = 1)
 	{
 		A_PlaySound(weaponsound, CHAN_WEAPON);
-		Actor mo = A_SpawnProjectile(weapontracer, speed, damage, Random(-8,8), CMF_BADPITCH);
-		if (mo) { mo.bMThruSpecies = True; } // Make shots pass through others of same species (should normally be "Player")
+		A_SpawnProjectile(weapontracer, speed, damage, Random(-8,8), CMF_BADPITCH);
 		A_SpawnItemEx(casing, 1, 0, 56, Random(1, 2), Random(-1, 1), Random(1, 2), Random(-55, -80), SXF_NOCHECKPOSITION);
 		shots++;
 		totalshots++;
@@ -331,7 +342,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 		Luger:
 			"####" EF 10 A_FaceTarget();
 			Luger.Refire:
-				"####" G 8 LIGHT("NaziFire") A_FollowerFire("EnemyPistolTracer", "9MMCasing", "nazi/pistol", 54, 1);
+				"####" G 8 LIGHT("NaziFire") A_FollowerFire("LugerTracer", "9MMCasing", "nazi/pistol", 54, 1);
 				"####" H 8;
  				"####" H 0 A_RefireReload("Luger.Refire", "Luger.Reload");
 			Luger.Reload: // More emulation of the guard pistol - 8 shots, then reload
@@ -352,7 +363,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 			}
 			MP40.Refire:
 				"####" F 5 A_FaceTarget();
-				"####" G 5 LIGHT("NaziFire") A_FollowerFire("EnemySMGTracer", "9MMCasing", "nazi/mp40", 50, 4);
+				"####" G 5 LIGHT("NaziFire") A_FollowerFire("MP40Tracer", "9MMCasing", "nazi/mp40", 50, 4);
  				"####" F 0 A_RefireReload("MP40.Refire", "MP40.Reload", 0, 4, 32);
 			MP40.Reload: 
 				"####" E 0 { bNoPain = True; }
@@ -371,7 +382,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 				shots = 0;
 			}
 			Rifle.Refire:
-				"####" G 5 LIGHT("NaziFire") A_FollowerFire("EnemyStGTracer", "MauserRifleCasing", "nazi/stg44", 38, 4);
+				"####" G 5 LIGHT("NaziFire") A_FollowerFire("ThompsonTracer", "MauserRifleCasing", "nazi/stg44", 38, 4);
 				"####" F 5 A_FaceTarget();
  				"####" F 0 A_RefireReload("MP40.Refire", "MP40.Reload", 0, 10, 40);
 			Rifle.Reload: 
@@ -429,7 +440,7 @@ class PrisonerAgent : PlayerFollower
 		Mass 50; // He's a lightweight so that if he annoyingly boxes you in, he's easy to shove out of the way
 		Scale 1.3;
 		Obituary "$PRISONER"; 
-		Species "Player";
+		Species "PlayerFollower";
 	}
 
 	States
@@ -499,7 +510,7 @@ class DouglasArmed : PlayerFollower2
 		Obituary "$AGENT";
 		Translation 1;
 		Scale 1.23;
-		Species "Player";
+		Species "PlayerFollower";
 	}
 
 	States
@@ -529,7 +540,7 @@ class SoldierArmed : PlayerFollower
 		Obituary "$AGENT";
 		Translation 1;
 		Scale 1.3;
-		Species "Player";
+		Species "PlayerFollower";
 	}
 
 	States
