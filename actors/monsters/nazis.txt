@@ -54,7 +54,7 @@ ACTOR Nazi
 		Loop
 	Pain:
 		"####" H 2
-		"####" H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" H 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		"####" H 0 A_Jump(256,"See")
@@ -984,7 +984,7 @@ ACTOR Sniper : Guard
 		Loop
 	Pain:
 		"####" I 2
-		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" I 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
@@ -2548,7 +2548,7 @@ ACTOR Mutant : Guard
 		MTNT F 0 A_FaceTarget
 		Goto Missile+1
 	Pain:
-		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" I 5 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
@@ -2770,7 +2770,7 @@ ACTOR BigMutant1 : Mutant
 		MTB1 EF 3 A_FaceTarget
 		Goto See
 	Pain:
-		"####" H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" H 5
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
@@ -2868,7 +2868,7 @@ ACTOR BigMutant2 : BigMutant1
 		MTB2 E 5 A_FaceTarget
 		Goto See
 	Pain:
-		MTB2 H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		MTB2 H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		MTB2 H 5
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
@@ -2951,7 +2951,7 @@ ACTOR UberMutant : Mutant
 		Loop
 	Pain:
 		UBMU H 1
-		UBMU H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		UBMU H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		UBMU H 2 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
@@ -3083,7 +3083,7 @@ ACTOR NaziLoper : Nazi
 		"####" I 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
 		"####" I 0 A_CustomMissile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
 		"####" I 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" I 2
 		"####" I 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
@@ -3135,7 +3135,7 @@ ACTOR RocketMan : NaziBoss
 		OTTO E 8
 		Goto See
 	Pain:
-		OTTO G 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		OTTO G 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		OTTO G 2
 		OTTO G 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
@@ -3200,7 +3200,7 @@ ACTOR FlamerMan : RocketMan
 		FLAM E 6 A_MonsterRefire(10,"See")
 		Goto Missile
 	Pain:
-		FLAM G 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		FLAM G 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		FLAM G 2
 		FLAM G 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
@@ -3246,7 +3246,7 @@ ACTOR MadDoctor : RocketMan
 		"####" A 8
 		Goto See
 	Pain:
-		"####" G 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" G 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" G 2
 		"####" G 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
@@ -3348,7 +3348,7 @@ ACTOR General : RocketMan
 		FETT G 2 A_MonsterRefire(10,"See")
 		Loop
 	Pain:
-		FETT I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		FETT I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		FETT I 2
 		FETT I 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
@@ -3394,7 +3394,7 @@ ACTOR MarineGeneral : General
 		SEET J 8
 		Goto See
 	Pain:
-		SEET L 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		SEET L 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		SEET L 2
 		SEET L 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
@@ -3498,7 +3498,7 @@ ACTOR DeathKnight : Nazi
 		DKGT L 8 A_MonsterRefire(15,"See")
 		Loop
 	Pain:
-		DKGT M 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		DKGT M 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		DKGT M 2
 		DKGT M 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
@@ -3698,13 +3698,13 @@ ACTOR Longinus_Hitler : Nazi
 		Loop
 	Pain:
 		"####" "#" 0 A_JumpIf(Health<2500,"Pain.Wounded")
-		SHI1 L 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		SHI1 L 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		SHI1 L 2
 		"####" L 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	Pain.Wounded:
-		SHI2 G 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		SHI2 G 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		SHI2 G 2
 		"####" G 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
@@ -3840,7 +3840,7 @@ ACTOR FatMan : NaziBoss
 		GOER G 6 LIGHT(OTT2FIRE) A_CustomMissile("MiniMiniRocket",40,-18)
 		Goto See
 	Pain:
-		GOER H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		GOER H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		GOER H 2
 		GOER H 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
@@ -3934,7 +3934,7 @@ ACTOR SuperSoldier : NaziBoss
 		HANS G 0 A_FaceTarget
  		Goto Missile+4
 	Pain:
-		"####" H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" H 2
 		"####" H 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
@@ -4399,7 +4399,7 @@ ACTOR UndeadPriest : Guard
 		UNDP E 8
 		Goto See
 	Pain:
-		UNDP G 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		UNDP G 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		UNDP G 2
 		UNDP G 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
@@ -4553,7 +4553,7 @@ ACTOR Marine1 : DirtyDarren
 		"####" O -1
 		Stop
 	Pain:
-		"####" J 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" J 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" J 2
 		"####" J 3 A_Pain
 		"####" J 0 A_Jump(256,"See")
@@ -4581,7 +4581,7 @@ ACTOR Marine2A : Marine1
 		ARMH A 0
 		Goto Look
 	Pain:
-		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" I 2
 		"####" I 3 A_Pain
 		"####" I 0 A_Jump(256,"See")
@@ -4638,7 +4638,7 @@ ACTOR Marine3A : Marine1
 		"####" N -1
 		Stop
 	Pain:
-		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" I 2
 		"####" I 3 A_Pain
 		"####" I 0 A_Jump(256,"See")

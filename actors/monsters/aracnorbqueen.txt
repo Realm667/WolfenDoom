@@ -105,12 +105,12 @@ ACTOR AracnorbQueen
 	Goto See
 	Pain:
 		TNT1 A 0 A_Jump(50, "PainSpam")
-		ARNQ F 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		ARNQ F 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		ARNQ F 3
 		"####" F 4 A_Pain
 		Goto See
 	PainSpam:
-		ARNQ F 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		ARNQ F 1 A_SpawnItemEx("Pain_Overlay", ScaleX+2, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		ARNQ F 3
 		"####" F 0 A_CustomMissile("QueenPainPlasmaBlast",75,0,5,32,0)
 		"####" F 0 A_CustomMissile("QueenPainPlasmaBlast",75,0,25,32,0)
