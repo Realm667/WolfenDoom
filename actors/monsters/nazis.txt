@@ -4387,15 +4387,19 @@ ACTOR UndeadPriest : Guard
 	Missile:
 		UNDP E 8 A_FaceTarget
 		UNDP F 0 A_PlaySound("UndeadPriest/Shoot", CHAN_6)
-		UNDP FFF 0 A_CustomMissile("EnemyChaingunTracer",58,14,random(-11,11))
-		UNDP FF 0 A_SpawnItemEx("ShotgunCasing", 16,0,60, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
-		UNDP F 4 LIGHT(ZOMBIEATK)
+		UNDP F 0 A_GiveInventory("PriestCounter", 1) //ozy81
+		UNDP F 0 A_JumpIfInventory("PriestCounter", 12, "Reload") //ozy81
+		UNDP FFF 0 A_CustomMissile("EnemyShotgunTracer",58,14,random(-11,11))
+		UNDP F 0 A_SpawnItemEx("ShotgunCasing", 16,0,60, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		UNDP F 4 LIGHT(PRIEST1)
 		UNDP E 2 A_MonsterRefire(15,"See")
 		UNDP E 8 A_FaceTarget
-		UNDP F 0 A_PlaySound("UndeadPriest/Shoot2", CHAN_7)
-		UNDP FFF 0 A_CustomMissile("EnemyChaingunTracer",52,-10,random(-11,11))
-		UNDP FF 0 A_SpawnItemEx("ShotgunCasing", 12,0,54, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		UNDP F 4 LIGHT(ZOMBIEATK)
+		UNDP O 0 A_GiveInventory("PriestCounter", 1) //ozy81
+		UNDP O 0 A_JumpIfInventory("PriestCounter", 12, "Reload") //ozy81
+		UNDP O 0 A_PlaySound("UndeadPriest/Shoot2", CHAN_7)
+		UNDP OOO 0 A_CustomMissile("EnemyShotgunTracer",52,-10,random(-11,11))
+		UNDP O 0 A_SpawnItemEx("ShotgunCasing", 12,0,54, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		UNDP O 4 LIGHT(PRIEST2)
 		UNDP E 8
 		Goto See
 	Pain:
@@ -4403,6 +4407,15 @@ ACTOR UndeadPriest : Guard
 		UNDP G 2
 		UNDP G 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
+		Goto See
+	Reload: //ozy81
+		UNDP E 0 A_ChangeFlag("NoPain", 1)
+		"####" E 8 A_PlaySound("browning/cock", CHAN_WEAPON, frandom (0.6,0.8), FALSE, ATTN_NORM)
+		"####" E 0 A_SpawnItemEx("ShotgunCasing", 16,0,60, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" E 8 A_PlaySound("browning/cock", CHAN_WEAPON, frandom (0.6,0.8), FALSE, ATTN_NORM)
+		"####" E 0 A_SpawnItemEx("ShotgunCasing", 12,0,54, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		"####" E 0 A_TakeInventory("PriestCounter", 12)
+		"####" E 0 A_ChangeFlag("NoPain", 0)
 		Goto See
 	Death:
 		UNDP H 6
@@ -4427,6 +4440,8 @@ ACTOR UndeadPriest : Guard
 		Loop
 	}
 }
+
+ACTOR PriestCounter : Inventory {Inventory.MaxAmount 12}
 
 ///////////
 //SPECIAL//
