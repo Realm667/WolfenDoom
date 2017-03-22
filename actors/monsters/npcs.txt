@@ -366,7 +366,7 @@ ACTOR Camp_PrisonerBald : Nazi
 		"####" A 0 A_Jump(32, "See")
 		Loop
 	Pain:
-		"####" H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" H 2
 		"####" H 3 A_Pain
 		Goto SpawnLoop
