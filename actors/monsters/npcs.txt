@@ -366,7 +366,8 @@ ACTOR Camp_PrisonerBald : Nazi
 		"####" A 0 A_Jump(32, "See")
 		Loop
 	Pain:
-		"####" H 3
+		"####" H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+1, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" H 2
 		"####" H 3 A_Pain
 		Goto SpawnLoop
 	XDeath: //do we need the burn state here? could be this legit or it's just useless for the taste of people? you know what I mean

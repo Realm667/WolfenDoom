@@ -18,7 +18,8 @@ ACTOR AstroGuard : Guard
 		"####" E 8 A_Jump(256,"See")
 		Stop
 	Pain:
-		"####" G 3
+		"####" G 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" G 2
 		"####" G 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		"####" G 0 A_Jump(256,"See")
@@ -130,7 +131,8 @@ ACTOR AstroElite : AstroGuard
 		"####" H 3 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-4,4))
 		Goto See
 	Pain:
-		"####" I 3
+		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" I 2
 		"####" I 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		"####" I 0 A_Jump(256,"See")

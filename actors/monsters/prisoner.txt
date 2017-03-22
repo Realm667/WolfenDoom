@@ -37,7 +37,8 @@ ACTOR PrisonerFree : DirtyDarren
 		"####" O -1
 		Stop
 	Pain:
-		"####" I 3
+		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" I 2
 		"####" I 3 A_Pain
 		"####" I 0 A_Jump(256,"See")
 		Stop
@@ -181,7 +182,8 @@ ACTOR PrisonerEnemyBoss : DirtyDarren
 		"####" N -1
 		Stop
 	Pain:
-		"####" I 3
+		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, angle, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" I 2
 		"####" I 3 A_Pain
 		"####" I 0 A_Jump(256,"See")
 		Stop

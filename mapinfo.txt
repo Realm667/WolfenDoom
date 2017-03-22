@@ -115,7 +115,7 @@ map C1M4 lookup "C1M4"	//GuardSoul
 	cluster = 1
 }
 
-map C1M5 lookup "C1M5"	//Tormentor667
+map C1M5 lookup "C1M5"		//Tormentor667 & DoomJuan
 {
 	levelnum = 5
 	music = "C1M5_INT"
@@ -175,7 +175,7 @@ map C2M4 lookup "C2M4"		//Tormentor667
 	cluster = 2
 }
 
-map C2M5 lookup "C2M5"		//?
+map C2M5 lookup "C2M5"		//Tormentor667
 {
 	levelnum = 11
 	music = "C1M2_MUS"
@@ -191,7 +191,7 @@ map C2M6_A lookup "C2M6_A"	//Tormentor667
 	next = C2M6_B
 }
 
-map C2M6_B lookup "C2M6_B"	//DoomJuan & Tormentor667
+map C2M6_B lookup "C2M6_B"	//Tormentor667 & DoomJuan
 {
 	levelnum = 13
 	music = "C2M5_MUS"
@@ -231,14 +231,14 @@ map C2M0_B lookup "C2M0_B"	//Tormentor667
 //	key = "b"
 //}
 
-map C3M1 lookup "C3M1"		//Real
+map C3M1 lookup "C3M1"		//?
 {
 	levelnum = 15
 	music = "C3M1_MUS"
 	cluster = 3
 }
 
-map C3M2 lookup "C3M2"		//Dragonfly
+map C3M2 lookup "C3M2"		//Tormentor667 & DoomJuan
 {
 	levelnum = 16
 	music = "C3M2_MUS"
@@ -313,14 +313,15 @@ skill Nazis1
 	ACSReturn = 0
 	Key = 1
 	Name = "Bund Deutscher Madel" // "German Girls" - the division of the Hitler Youth for girls aged 10-14.
-	replaceactor = "EnemyPistolTracer", "BabyEnemyPistolTracer"
-	replaceactor = "EnemySMGTracer", "BabyEnemySMGTracer"
-	replaceactor = "EnemyRifleTracer", "BabyEnemyRifleTracer"
-	replaceactor = "EnemySTGTracer", "BabyEnemySTGTracer"
+	replaceactor = "EnemyAstroTracer", "BabyEnemyAstroTracer"
 	replaceactor = "EnemyChaingunTracer", "BabyEnemyChaingunTracer"
 	replaceactor = "EnemyMutantTracer", "BabyEnemyMutantTracer"
-	replaceactor = "EnemyAstroTracer", "BabyEnemyAstroTracer"
+	replaceactor = "EnemyPistolTracer", "BabyEnemyPistolTracer"
 	replaceactor = "EnemyProtoTracer", "BabyEnemyProtoTracer"
+	replaceactor = "EnemyRifleTracer", "BabyEnemyRifleTracer"
+	replaceactor = "EnemySMGTracer", "BabyEnemySMGTracer"
+	replaceactor = "EnemyShotgunTracer", "BabyEnemyShotgunTracer"
+	replaceactor = "EnemySTGTracer", "BabyEnemySTGTracer"
 	totalinfighting
 	MustConfirm = "$NAZIS1"
 }
@@ -332,14 +333,15 @@ skill Nazis2
 	ACSReturn = 1
 	Key = 2
 	Name = "Morgenspaziergang" // "Morning Stroll" - borrowed from the title of a Kraftwerk song.
-	replaceactor = "EnemyPistolTracer", "EasyEnemyPistolTracer"
-	replaceactor = "EnemySMGTracer", "EasyEnemySMGTracer"
-	replaceactor = "EnemyRifleTracer", "EasyEnemyRifleTracer"
-	replaceactor = "EnemySTGTracer", "EasyEnemySTGTracer"
+	replaceactor = "EnemyAstroTracer", "EasyEnemyAstroTracer"
 	replaceactor = "EnemyChaingunTracer", "EasyEnemyChaingunTracer"
 	replaceactor = "EnemyMutantTracer", "EasyEnemyMutantTracer"
-	replaceactor = "EnemyAstroTracer", "EasyEnemyAstroTracer"
+	replaceactor = "EnemyPistolTracer", "EasyEnemyPistolTracer"
 	replaceactor = "EnemyProtoTracer", "EasyEnemyProtoTracer"
+	replaceactor = "EnemyRifleTracer", "EasyEnemyRifleTracer"
+	replaceactor = "EnemySMGTracer", "EasyEnemySMGTracer"
+	replaceactor = "EnemyShotgunTracer", "EasyEnemyShotgunTracer"
+	replaceactor = "EnemySTGTracer", "EasyEnemySTGTracer"
 	totalinfighting
 	MustConfirm = "$NAZIS2"
 }
@@ -360,25 +362,26 @@ skill Nazis4
 	ACSReturn = 3
 	Key = 4
 	Name = "Herrenrasse" // "Super Man"
-	replaceactor = "EnemyPistolTracer", "HardEnemyPistolTracer"
-	replaceactor = "EnemySMGTracer", "HardEnemySMGTracer"
-	replaceactor = "EnemyRifleTracer", "HardEnemyRifleTracer"
-	replaceactor = "EnemySTGTracer", "HardEnemySTGTracer"
-	replaceactor = "EnemyChaingunTracer", "HardEnemyChaingunTracer"
-	replaceactor = "EnemyMutantTracer", "HardEnemyMutantTracer"
-	replaceactor = "EnemyAstroTracer", "HardEnemyAstroTracer"
-	replaceactor = "EnemyProtoTracer", "HardEnemyProtoTracer"
-	replaceactor = "MiniRocket", "HardMiniRocket"
-	replaceactor = "FlyingNeedle", "HardFlyingNeedle"
-	replaceactor = "EnemyFlamerShot", "HardEnemyFlamerShot"
-	replaceactor = "EnemyFlamebolt", "HardEnemyFlamebolt"
-	replaceactor = "EnemyFlamebolt2", "HardEnemyFlamebolt2"
-	replaceactor = "NebRocketEnemy", "HardNebRocketEnemy"
-	replaceactor = "MiniMiniRocket", "HardMiniMiniRocket"
-	replaceactor = "MutantRocket", "HardMutantRocket"
-	replaceactor = "ZTracer", "HardZTracer"
 	replaceactor = "AstroDroneBall", "HardAstroDroneBall"
 	replaceactor = "AstroRobotSeekerBall", "HardAstroRobotSeekerBall"
+	replaceactor = "EnemyAstroTracer", "HardEnemyAstroTracer"
+	replaceactor = "EnemyChaingunTracer", "HardEnemyChaingunTracer"
+	replaceactor = "EnemyFlamebolt", "HardEnemyFlamebolt"
+	replaceactor = "EnemyFlamebolt2", "HardEnemyFlamebolt2"
+	replaceactor = "EnemyFlamerShot", "HardEnemyFlamerShot"
+	replaceactor = "EnemyMutantTracer", "HardEnemyMutantTracer"
+	replaceactor = "EnemyPistolTracer", "HardEnemyPistolTracer"
+	replaceactor = "EnemyProtoTracer", "HardEnemyProtoTracer"
+	replaceactor = "EnemyRifleTracer", "HardEnemyRifleTracer"
+	replaceactor = "EnemySMGTracer", "HardEnemySMGTracer"
+	replaceactor = "EnemyShotgunTracer", "HardEnemyShotgunTracer"
+	replaceactor = "EnemySTGTracer", "HardEnemySTGTracer"
+	replaceactor = "FlyingNeedle", "HardFlyingNeedle"
+	replaceactor = "MiniMiniRocket", "HardMiniMiniRocket"
+	replaceactor = "MiniRocket", "HardMiniRocket"
+	replaceactor = "MutantRocket", "HardMutantRocket"
+	replaceactor = "NebRocketEnemy", "HardNebRocketEnemy"
+	replaceactor = "ZTracer", "HardZTracer"
 	MustConfirm = "$NAZIS4"
 }
 
@@ -392,25 +395,26 @@ skill Nazis5
 	DisableCheats
 	FastMonsters
 	Name = "Mein Leben!!" // If you don't know this...
-	replaceactor = "EnemyPistolTracer", "HardEnemyPistolTracer"
-	replaceactor = "EnemySMGTracer", "HardEnemySMGTracer"
-	replaceactor = "EnemyRifleTracer", "HardEnemyRifleTracer"
-	replaceactor = "EnemySTGTracer", "HardEnemySTGTracer"
-	replaceactor = "EnemyChaingunTracer", "HardEnemyChaingunTracer"
-	replaceactor = "EnemyMutantTracer", "HardEnemyMutantTracer"
-	replaceactor = "EnemyAstroTracer", "HardEnemyAstroTracer"
-	replaceactor = "EnemyProtoTracer", "HardEnemyProtoTracer"
-	replaceactor = "MiniRocket", "HardMiniRocket"
-	replaceactor = "FlyingNeedle", "HardFlyingNeedle"
-	replaceactor = "EnemyFlamerShot", "HardEnemyFlamerShot"
-	replaceactor = "EnemyFlamebolt", "HardEnemyFlamebolt"
-	replaceactor = "EnemyFlamebolt2", "HardEnemyFlamebolt2"
-	replaceactor = "NebRocketEnemy", "HardNebRocketEnemy"
-	replaceactor = "MiniMiniRocket", "HardMiniMiniRocket"
-	replaceactor = "MutantRocket", "HardMutantRocket"
-	replaceactor = "ZTracer", "HardZTracer"
 	replaceactor = "AstroDroneBall", "HardAstroDroneBall"
 	replaceactor = "AstroRobotSeekerBall", "HardAstroRobotSeekerBall"
+	replaceactor = "EnemyAstroTracer", "HardEnemyAstroTracer"
+	replaceactor = "EnemyChaingunTracer", "HardEnemyChaingunTracer"
+	replaceactor = "EnemyFlamebolt", "HardEnemyFlamebolt"
+	replaceactor = "EnemyFlamebolt2", "HardEnemyFlamebolt2"
+	replaceactor = "EnemyFlamerShot", "HardEnemyFlamerShot"
+	replaceactor = "EnemyMutantTracer", "HardEnemyMutantTracer"
+	replaceactor = "EnemyPistolTracer", "HardEnemyPistolTracer"
+	replaceactor = "EnemyProtoTracer", "HardEnemyProtoTracer"
+	replaceactor = "EnemyRifleTracer", "HardEnemyRifleTracer"
+	replaceactor = "EnemySMGTracer", "HardEnemySMGTracer"
+	replaceactor = "EnemyShotgunTracer", "HardEnemyShotgunTracer"
+	replaceactor = "EnemySTGTracer", "HardEnemySTGTracer"
+	replaceactor = "FlyingNeedle", "HardFlyingNeedle"
+	replaceactor = "MiniMiniRocket", "HardMiniMiniRocket"
+	replaceactor = "MiniRocket", "HardMiniRocket"
+	replaceactor = "MutantRocket", "HardMutantRocket"
+	replaceactor = "NebRocketEnemy", "HardNebRocketEnemy"
+	replaceactor = "ZTracer", "HardZTracer"
 	MustConfirm = "$NAZIS5"
 }
 
