@@ -50,7 +50,7 @@ class BoAConversationMenu : ExtendedConversationMenuBase
 			Responses.tabindex = 2;
 			Responses.numberalign = ALIGN_Right;
 
-			ParseReplies(int(Responses.w / Responses.scale)); //ParseReplies is still basically the old parsing code - TODO: Redo more generically...
+			ParseReplies(int(Responses.w / Responses.scale), "SmallFont"); //ParseReplies is still basically the old parsing code - TODO: Redo more generically...
 			Responses.Init(); // Early direct call to Init to automatically calculate height based on response line count
 
 			Responses.pos.y = 225 - Responses.h; // 'h' calculated during Init call 
