@@ -132,32 +132,32 @@ ACTOR PrisonerEnemyBoss : DirtyDarren
 		"####" A 0 A_Jump(192, "MP40")
 	Grenade:
 		"####" F 16 A_FaceTarget
-		"####" F 10 A_CustomMissile("HandGrenade",40,4,random(-8,8), CMF_OFFSETPITCH, random(0,16))	
+		"####" F 10 A_SpawnProjectile("HandGrenade",40,4,random(-8,8), CMF_OFFSETPITCH|CMF_BADPITCH, random(0,16))	
 		Goto See
 	MP40:
 		"####" FG 5 A_FaceTarget
 		"####" H 0 A_PlaySound("nazi/mp40", CHAN_WEAPON)
-		"####" H 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",50,4,random(-8,8))
+		"####" H 2 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",50,4,random(-8,8))
 		"####" H 0 A_GiveInventory("MP40GuardCounter", 1)
 		"####" H 0 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" G 2 A_FaceTarget
 		"####" H 0 A_PlaySound("nazi/mp40", CHAN_WEAPON)
-		"####" H 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",50,4,random(-8,8))
+		"####" H 2 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",50,4,random(-8,8))
 		"####" H 0 A_GiveInventory("MP40GuardCounter", 1)
 		"####" H 0 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" G 2 A_FaceTarget
 		"####" H 0 A_PlaySound("nazi/mp40", CHAN_WEAPON)
-		"####" H 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",50,4,random(-8,8))
+		"####" H 2 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",50,4,random(-8,8))
 		"####" H 0 A_GiveInventory("MP40GuardCounter", 1)
 		"####" H 0 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" G 2 A_FaceTarget
 		"####" H 0 A_PlaySound("nazi/mp40", CHAN_WEAPON)
-		"####" H 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",50,4,random(-8,8))
+		"####" H 2 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",50,4,random(-8,8))
 		"####" H 0 A_GiveInventory("MP40GuardCounter", 1)
 		"####" H 0 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" G 2 A_FaceTarget
 		"####" H 0 A_PlaySound("nazi/mp40", CHAN_WEAPON)
-		"####" H 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemySMGTracer",50,4,random(-8,8))
+		"####" H 2 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",50,4,random(-8,8))
 		"####" H 0 A_GiveInventory("MP40GuardCounter", 1)
 		"####" G 2 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" G 0 A_JumpIfInventory("MP40GuardCounter", 32, "Reload")

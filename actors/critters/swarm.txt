@@ -60,7 +60,7 @@ ACTOR SwarmFly
 		SFLY A 0 A_CountDown
 		Goto Spawn
 	Death:
-		SFLY A 1 A_CustomMissile("SwarmFly",0,0,frandom(-20,20))
+		SFLY A 1 A_SpawnProjectile("SwarmFly",0,0,frandom(-20,20))
 		Stop
 	}
 }

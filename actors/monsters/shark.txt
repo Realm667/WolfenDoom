@@ -79,7 +79,7 @@ ACTOR Shark
 		Goto See
 	Death:
 		SHRK A 0 A_Scream
-		"####" AAAAAAAA 0 A_CustomMissile("Gibs1",random(20,40),0,random(0,360),2,random(-100,100))
+		"####" AAAAAAAA 0 A_SpawnProjectile("Gibs1",random(20,40),0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(-100,100))
 		Stop
 	}
 }
@@ -126,7 +126,7 @@ ACTOR LaserShark : Shark
 		Goto See
 	Death:
 		SHRL A 0 A_Scream
-		"####" AAAAAAAA 0 A_CustomMissile("Gibs1",random(20,40),0,random(0,360),2,random(-100,100))
+		"####" AAAAAAAA 0 A_SpawnProjectile("Gibs1",random(20,40),0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(-100,100))
 		Stop
 	}
 }
@@ -150,8 +150,8 @@ ACTOR Gibs1
 		GIB4 ABC 0 A_Jump(256,"End")
 		GIB5 ABC 0 A_Jump(256,"End")
 	End:
-		"####" "#######" 4 A_CustomMissile("BloodFlySM",0,0,random(0,360),2,random(-100,100))
-		"####" "#" 700 A_CustomMissile("BloodFlySM",0,0,random(0,360),2,random(-100,100))
+		"####" "#######" 4 A_SpawnProjectile("BloodFlySM",0,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(-100,100))
+		"####" "#" 700 A_SpawnProjectile("BloodFlySM",0,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(-100,100))
 		Stop
 	}
 }

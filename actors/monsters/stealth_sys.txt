@@ -217,7 +217,7 @@ ACTOR MGTurretStealth : Nazi
 				A_PlaySound("nazi/mp40", CHAN_WEAPON);
 			}
 			"####" B 4 {
-				A_CustomMissile("EnemySMGTracer",24,4,random(-8,8)); 
+				A_SpawnProjectile("EnemySMGTracer",24,4,random(-8,8)); 
 				A_GiveInventory("SSMP40GuardCounter", 1);
 			}
 			"####" A 0 A_JumpIfInventory("SSMP40GuardCounter", 40, "Reload")

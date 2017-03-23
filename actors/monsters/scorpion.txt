@@ -116,11 +116,11 @@ ACTOR ScorpionBig
 		SCR2 A 0 A_Jump(256,"Spit","Sting","Reach")
 	Spit:
 		SCR2 AB 4 A_FaceTarget
-		SCR2 B 8 A_CustomMissile("ScorpionSpit",8,0,0,2,3)
+		SCR2 B 8 A_SpawnProjectile("ScorpionSpit",8,0,0,2,3)
 		Goto See
 	Sting:
 		SCR2 AB 4 A_FaceTarget
-		SCR2 BBBB 4 A_CustomMissile("ScorpionNail",24,0,0)
+		SCR2 BBBB 4 A_SpawnProjectile("ScorpionNail",24,0,0)
 		Goto See
 	Reach:
 		SCR2 A 0 A_Jumpifcloser(224,2)

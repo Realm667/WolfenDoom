@@ -41,36 +41,36 @@ ACTOR ProtoDrone : Nazi //ozy81
 		PROT B 0 A_Jump(192,"Missile2")
 		"####" B 5 A_FaceTarget
 		"####" B 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
-		"####" CDE 8 LIGHT(PROTOFIRE) A_CustomMissile("EnemyProtoTracer",ScaleX*2,ScaleY*-16,random(-2,2))
+		"####" CDE 8 LIGHT(PROTOFIRE) A_SpawnProjectile("EnemyProtoTracer",ScaleX*2,ScaleY*-16,random(-2,2))
 		"####" B 5 A_FaceTarget
 		"####" B 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
-		"####" CDE 8 LIGHT(PROTOFIRE) A_CustomMissile("EnemyProtoTracer",ScaleX*2,ScaleY*-16,random(-2,2))
+		"####" CDE 8 LIGHT(PROTOFIRE) A_SpawnProjectile("EnemyProtoTracer",ScaleX*2,ScaleY*-16,random(-2,2))
 		Goto See
 	Missile2:
 		PROT N 0 A_Jump(192,"Missile3")
 		"####" N 5 A_FaceTarget
 		"####" N 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		"####" FGHI 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",ScaleX*2,ScaleY*16,random(-2,2))
+		"####" FGHI 2 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",ScaleX*2,ScaleY*16,random(-2,2))
 		"####" I 0 A_SpawnItemEx("9MMCasing", ScaleX*2, ScaleY*16, random(-2,2), RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" N 5 A_FaceTarget
 		"####" N 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		"####" FGHI 2 LIGHT(NAZIFIRE) A_CustomMissile("EnemyPistolTracer",ScaleX*2,ScaleY*16,random(-2,2))
+		"####" FGHI 2 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",ScaleX*2,ScaleY*16,random(-2,2))
 		"####" I 0 A_SpawnItemEx("9MMCasing", ScaleX*2, ScaleY*16, random(-2,2), RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		Goto See
 	Missile3:
 		"####" N 5 A_FaceTarget
 		"####" N 0 {A_PlaySound("chaingun/fire", CHAN_WEAPON);
 								A_PlaySound("astrochaingun/fire", CHAN_WEAPON);}
-		"####" JKLM 5 LIGHT(PROTOFIRE) {A_CustomMissile("EnemyPistolTracer",ScaleX*2,ScaleY*16,random(-2,2));
+		"####" JKLM 5 LIGHT(PROTOFIRE) {A_SpawnProjectile("EnemyPistolTracer",ScaleX*2,ScaleY*16,random(-2,2));
 																		A_SpawnItemEx("9MMCasing", ScaleX*2, ScaleY*16, random(-2,2), RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-																		A_CustomMissile("EnemyProtoTracer",ScaleX*2,ScaleY*-16,random(-2,2));} 
+																		A_SpawnProjectile("EnemyProtoTracer",ScaleX*2,ScaleY*-16,random(-2,2));} 
 		
 		"####" N 5 A_FaceTarget
 		"####" N 0 {A_PlaySound("chaingun/fire", CHAN_WEAPON);
 								A_PlaySound("astrochaingun/fire", CHAN_WEAPON);}
-		"####" JKLM 5 LIGHT(PROTOFIRE) {A_CustomMissile("EnemyPistolTracer",ScaleX*2,ScaleY*16,random(-2,2));
+		"####" JKLM 5 LIGHT(PROTOFIRE) {A_SpawnProjectile("EnemyPistolTracer",ScaleX*2,ScaleY*16,random(-2,2));
 																		A_SpawnItemEx("9MMCasing", ScaleX*2, ScaleY*16, random(-2,2), RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-																		A_CustomMissile("EnemyProtoTracer",ScaleX*2,ScaleY*-16,random(-2,2));}
+																		A_SpawnProjectile("EnemyProtoTracer",ScaleX*2,ScaleY*-16,random(-2,2));}
 		Goto See
 	Melee: //uses the same attack of LaserShark
 		PROT B 10 A_FaceTarget 

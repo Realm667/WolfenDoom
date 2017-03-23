@@ -14,7 +14,7 @@ ACTOR AstroGuard : Guard
 	Missile:
 		"####" E 5 A_FaceTarget
 		"####" F 0 A_PlaySound("astrochaingun/fire")
-		"####" F 8 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-8,8))
+		"####" F 8 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",48,1,random(-8,8))
 		"####" E 8 A_Jump(256,"See")
 		Stop
 	Pain:
@@ -45,13 +45,13 @@ ACTOR AstroGuard2 : AstroGuard
 	Missile:
 		"####" E 5 A_FaceTarget
 		"####" F 0 A_PlaySound("astrochaingun/fire")
-		"####" F 8 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-8,8))
+		"####" F 8 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",48,1,random(-8,8))
 		"####" E 5 A_FaceTarget
 		"####" F 0 A_PlaySound("astrochaingun/fire")
-		"####" F 8 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-8,8))
+		"####" F 8 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",48,1,random(-8,8))
 		"####" E 5 A_FaceTarget
 		"####" F 0 A_PlaySound("astrochaingun/fire")
-		"####" F 8 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-8,8))
+		"####" F 8 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",48,1,random(-8,8))
 		"####" E 8 A_Jump(256,"See")
 		Stop
 	}
@@ -72,7 +72,7 @@ ACTOR AstroCommando : AstroGuard
 	Missile:
 		"####" EF 5 A_FaceTarget
 		"####" G 0 A_PlaySound("astrochaingun/fire")
-		"####" G 8 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-8,8))
+		"####" G 8 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",48,1,random(-8,8))
 		"####" F 5 A_MonsterRefire(30,"See")
 		Goto Missile+1
 	}
@@ -94,7 +94,7 @@ ACTOR AstroOfficer : AstroGuard
 	Missile:
 		"####" G 5 A_FaceTarget
 		"####" G 0 A_PlaySound("astrochaingun/fire")
-		"####" E 8 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",32,1,random(-8,8))
+		"####" E 8 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",32,1,random(-8,8))
 		"####" F 5 A_MonsterRefire(30,"See")
 		"####" E 8 A_Jump(256,"See")
 		Stop
@@ -119,16 +119,16 @@ ACTOR AstroElite : AstroGuard
 	Missile:
 		"####" FG 8 A_FaceTarget
 		"####" H 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
-		"####" H 3 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-8,8))
+		"####" H 3 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",48,1,random(-8,8))
 		"####" G 2 A_FaceTarget
 		"####" H 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
-		"####" H 3 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-4,4))
+		"####" H 3 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",48,1,random(-4,4))
 		"####" G 2 A_FaceTarget
 		"####" H 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
-		"####" H 3 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-8,8))
+		"####" H 3 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",48,1,random(-8,8))
 		"####" G 2 A_FaceTarget
 		"####" H 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
-		"####" H 3 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",48,1,random(-4,4))
+		"####" H 3 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",48,1,random(-4,4))
 		Goto See
 	Pain:
 		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
@@ -182,7 +182,7 @@ ACTOR AstroDrone : Nazi
 		Loop
 	Missile:
 		DRON EG 5 A_FaceTarget
-		"####" E 5 A_CustomMissile("AstroDroneBall",54,1,random(-8,8))
+		"####" E 5 A_SpawnProjectile("AstroDroneBall",54,1,random(-8,8))
 		Goto See
 	Pain:
 	Pain.Dagger:
@@ -300,8 +300,8 @@ ACTOR AstroCyborg1 : Nazi
 		Loop
 	Missile:
 		CYB1 G 10 A_FaceTarget
-		"####" H 0 A_CustomMissile("AstroRocket",54,-32,random(-8,8))
-		"####" H 2 A_CustomMissile("AstroRocket",54, 32,random(-8,8))
+		"####" H 0 A_SpawnProjectile("AstroRocket",54,-32,random(-8,8))
+		"####" H 2 A_SpawnProjectile("AstroRocket",54, 32,random(-8,8))
 		Goto See
 	Pain:
 	Pain.Dagger:
@@ -365,23 +365,23 @@ ACTOR AstroCyborg2 : AstroCyborg1
 		Loop
 	Missile:
 		CYB2 E 10 A_FaceTarget
-		"####" F 0 A_CustomMissile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
-		"####" F 3 A_CustomMissile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
+		"####" F 0 A_SpawnProjectile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8))
+		"####" F 3 A_SpawnProjectile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8))
 		"####" E 3 A_FaceTarget
-		"####" F 0 A_CustomMissile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
-		"####" F 3 A_CustomMissile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
+		"####" F 0 A_SpawnProjectile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8))
+		"####" F 3 A_SpawnProjectile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8))
 		"####" E 3 A_FaceTarget
-		"####" F 0 A_CustomMissile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
-		"####" F 3 A_CustomMissile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
+		"####" F 0 A_SpawnProjectile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8))
+		"####" F 3 A_SpawnProjectile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8))
 		"####" E 3 A_FaceTarget
-		"####" F 0 A_CustomMissile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
-		"####" F 3 A_CustomMissile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
+		"####" F 0 A_SpawnProjectile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8))
+		"####" F 3 A_SpawnProjectile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8))
 		"####" E 3 A_FaceTarget
-		"####" F 0 A_CustomMissile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
-		"####" F 3 A_CustomMissile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
+		"####" F 0 A_SpawnProjectile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8))
+		"####" F 3 A_SpawnProjectile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8))
 		"####" E 3 A_FaceTarget
-		"####" F 0 A_CustomMissile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
-		"####" F 3 A_CustomMissile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION, random(-8,8))
+		"####" F 0 A_SpawnProjectile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8))
+		"####" F 3 A_SpawnProjectile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8))
 		"####" E 3 A_FaceTarget
 		Goto See
 	Pain:
@@ -415,10 +415,10 @@ ACTOR AstroSuiteGuard : AstroGuard
 	Missile:
 		"####" EF 5 A_FaceTarget
 		"####" F 0 A_PlaySound("astrochaingun/fire")
-		"####" G 0 A_CustomMissile("EnemyAstroTracer",48,-10,random(-8,8))
-		"####" G 0 A_CustomMissile("EnemyAstroTracer",40,-10,random(-8,8))
-		"####" G 0 A_CustomMissile("EnemyAstroTracer",40,10,random(-8,8))
-		"####" G 8 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",40,10,random(-8,8))
+		"####" G 0 A_SpawnProjectile("EnemyAstroTracer",48,-10,random(-8,8))
+		"####" G 0 A_SpawnProjectile("EnemyAstroTracer",40,-10,random(-8,8))
+		"####" G 0 A_SpawnProjectile("EnemyAstroTracer",40,10,random(-8,8))
+		"####" G 8 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",40,10,random(-8,8))
 		"####" E 8 A_Jump(256,"See")
 		Stop
 	Pain:
@@ -457,8 +457,8 @@ ACTOR AstroRobot : AstroCyborg1
 		Goto Look
 	Missile:
 		ROB2 HG 5 A_FaceTarget
-		"####" F 0 A_CustomMissile("AstroRobotSeekerBall",72,-36,random(-8,8))
-		"####" F 5 A_CustomMissile("AstroRobotSeekerBall",72, 36,random(-8,8))
+		"####" F 0 A_SpawnProjectile("AstroRobotSeekerBall",72,-36,random(-8,8))
+		"####" F 5 A_SpawnProjectile("AstroRobotSeekerBall",72, 36,random(-8,8))
 		Goto See
 	Pain:
 	Pain.Dagger:
@@ -565,7 +565,7 @@ ACTOR AstroTurret : MGTurret
 		"####" A 10 A_FaceTarget
 		"####" A 5 A_FaceTarget
 		"####" B 0 A_PlaySound("astrochaingun/fire")
-		"####" C 3 LIGHT(ASTROFIRE) A_CustomMissile("EnemyAstroTracer",10,0,random(-8,8))
+		"####" C 3 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",10,0,random(-8,8))
 		"####" B 3 A_MonsterRefire(40,"See")
 		"####" B 0 A_FaceTarget
 		Goto Missile+1
