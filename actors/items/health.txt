@@ -108,18 +108,16 @@ ACTOR Medikit_Fullhealth : Health
 	}
 }
 
-// Re-written from scratch to limit the amount the player can buy from the shop, and to not completely restore the player's health.
-ACTOR VitalitySerum : CustomInventory {
+// Re-written from scratch to limit the amount the player can buy from the shop, and to not completely restore the player's health. - Talon1024
+ACTOR VitalitySerum : CustomInventory
+{
 	//$Category Health (Wolf3D)
 	//$Title Vitality Serum (max+5)
 	//$Color 6
-	//$Category Powerups
-	//$Title "Vitality Serum"
 	Radius 20
 	Scale 0.9
 	Inventory.MaxAmount 10
 	Inventory.PickupMessage "$SERUM"
-
 	+INVENTORY.IGNORESKILL
 	+INVENTORY.UNTOSSABLE
 	+COUNTITEM
