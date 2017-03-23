@@ -3,6 +3,8 @@ class BoAEventHandler : StaticEventHandler
 {
 	override void PlayerEntered(PlayerEvent e)
 	{
+		if(level.levelnum!=99)
+			return;
 		let me=PlayerPawn(players[e.PlayerNumber].mo);
 		DropItem drop=me.GetDropItems();
 		//First, remove all weapons, except those with the UNDROPPABLE flag
