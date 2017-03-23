@@ -13,17 +13,19 @@ ACTOR NazisBackpack : BackpackItem
 	}
 }
 
-ACTOR NaziBerserk : Berserk
+ACTOR NaziBerserk : Berserk //warning: do not place these powerups inside maps which you are not supposed to have knives! - Ozy81
 {
 	//$Category Powerups (Wolf3D)
 	//$Title Totale Macht (Berserk)
 	//$Color 6
+	//$Sprite PSTRA0
 	Inventory.PickupMessage "$SSBERSK"
 	States
 	{
 	Pickup:
 		TNT1 A 0 A_GiveInventory("PowerStrength")
 		"####" A 0 HealThing(100, 0)
+		"####" A 0 A_SelectWeapon("KnifeSilent")
 		Stop
 	}
 }

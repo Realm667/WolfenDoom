@@ -1282,7 +1282,7 @@ ACTOR Gestapo : Guard
 
 ACTOR WGuard_Wounded : Nazi //ozy81
 {
-	//$Category Monsters (Wolf3D)/Special
+	//$Category Monsters (Wolf3D)/Wounded Soldiers
 	//$Title Wounded Guard (Pistol, Wehrmacht)
 	//$Color 4
 	Health 5
@@ -1772,7 +1772,7 @@ ACTOR MGTurretInvisible : MGTurret
 
 ACTOR CTurret_Afrika : SwitchableDecoration
 {
-	//$Category Monsters (Wolf3D)/Special
+	//$Category Monsters (Wolf3D)/Turrets
 	//$Title Controllable Turret (Afrika Guards only)
 	//$Color 4
 	Scale 1.16
@@ -1918,6 +1918,7 @@ ACTOR MGTurretSoldierW : MGTurretSoldier
 
 ACTOR MechaNaziStanding1 : CTurret_Afrika
 {
+	//$Category Monsters (Wolf3D)/Mechas
 	//$Title Empty Mecha-Nazi (Wehrmacht Guards only)
 	Radius 48
 	Height 128
@@ -2015,7 +2016,7 @@ ACTOR MechaDropper4 : RandomSpawner { DropItem MechaNaziWalking4 }
 
 ACTOR MechaNaziWalking1 : MechBoss
 {
-	//$Category Monsters (Wolf3D)/Bosses
+	//$Category Monsters (Wolf3D)/Mechas
 	//$Title Thor's Hammer Mecha-Nazi (Boss, Wehrmacht)
 	//$Color 4
 	Radius 48
@@ -3571,7 +3572,9 @@ ACTOR Hitler : DeathKnight
 //Placeholder code: not finished yet - ozy81
 ACTOR Longinus_Hitler : Nazi
 {
+	//$Category Monsters (Wolf3D)/Bosses
 	//$Title Adolf Hitler, Longinus (Boss)
+	//$Color 4
 	Scale 1.2
 	//Obituary "$LHITLER"
 	Tag "Adolf Hitler"
@@ -4584,6 +4587,7 @@ ACTOR Marine2 : RandomSpawner
 	//$Category Monsters (Wolf3D)/NPCs
 	//$Title Marine (Rifle)
 	//$Color 4
+	//$Sprite MARHA1
 	DropItem "Marine2A"
 	DropItem "Marine2B"
 }
@@ -4619,6 +4623,7 @@ ACTOR Marine3 : RandomSpawner
 	//$Category Monsters (Wolf3D)/NPCs
 	//$Title Marine (Pistol)
 	//$Color 4
+	//$Sprite MAH2A1
 	DropItem "Marine3A"
 	DropItem "Marine3B"
 }
