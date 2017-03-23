@@ -89,7 +89,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			"####" AAAAA 1 A_Defend();
 			Loop;
 		Pain:
-			"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR);
+			"####" I 1 A_SpawnItemEx("Pain_Overlay", Scale.X+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR);
 			"####" I 3 A_Pain();
 			Goto Chase;
 		Luger: // Emulates the standard guard pistol - relatively standard
@@ -262,12 +262,32 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 		if (weapon) { // If armed, stand in place and fire at enemies
 			bFrightened = False;
 
+			if (target == goal) { target = null; }
+
 			if (!target) {
 				if (playerToChase) { target = players[playerToChase.PlayerNumber()].attacker; }
 			}
 
+			ThinkerIterator Finder = ThinkerIterator.Create("Nazi");
+			Actor mo;
+
+			while ( (mo = Actor(Finder.Next())) )
+			{
+				if (
+					mo.health <= 0 || 
+					mo.bDormant || 
+					mo.bFriendly == bFriendly || 
+					mo.GetSpecies() == Species || 
+					Distance3d(mo) > 512
+				) { continue; }
+
+				if (target && Distance3d(mo) > Distance3d(target)) { continue; }
+
+				target = mo;
+			}
+
 			if (!target) {
-				LookForEnemies(atPlayer ? false : true, SearchParams);  // Find an enemy to shoot at (look all around if not at player)
+				LookForEnemies(true, SearchParams);  // In no Nazis around, fall back to default algorithm to find an enemy to shoot at
 			}
 
 			if (
@@ -280,6 +300,10 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				CheckSight(target)
 			)
 			{ // If you have a valid target and it's in line of sight...
+				if (target && Distance3d(target) < 64) { // Run away from danger if it's too close.
+					bFrightened = True;
+				}
+
 				if (Distance2d(playerToChase) > radius + 128 + playerToChase.radius && forgettarget) { // ... and you weren't supposed to forget your target when the player is away...
 					target = null;
 				} else { 
@@ -289,8 +313,10 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 		}
 
 		if (playerToChase && atPlayer) {
-			faceangle = playerToChase.angle + 135 + Random[FaceAngle](-15, 15); // Make him look like he might be able to cover your back
-			if (abs(angle - faceangle) > 45) { angle = faceangle; }
+			if (!target) {
+				faceangle = playerToChase.angle + 135 + Random[FaceAngle](-15, 15); // Make him look like he might be able to cover your back
+				if (abs(angle - faceangle) > 45) { angle = faceangle; }
+			}
 
 			if (Distance2d(playerToChase) > radius + 128 + playerToChase.radius) { // If player moves too far away, go back to following (and forget the target if forgettarget = True)
 				if (forgettarget) { target = null; }
@@ -382,7 +408,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 			"####" NNNNN 1 A_Defend();
 			Loop;
 		Pain:
-			"####" H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR);
+			"####" H 1 A_SpawnItemEx("Pain_Overlay", Scale.X+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR);
 			"####" H 3 A_Pain();
 			Goto Chase;
 		Luger:
