@@ -930,8 +930,8 @@ ACTOR StrobeEmitterBlue
 	{
 	Spawn:
 		TNT1 A 1
-		"####" A 0 A_CustomMissile ("StrobeRayBlue", 0, 0, 0, 2, -35)
-		"####" A 0 A_CustomMissile ("StrobeRayBlue", 0, 0, 180, 2, -35)
+		"####" A 0 A_SpawnProjectile ("StrobeRayBlue", 0, 0, 0, CMF_AIMDIRECTION|CMF_BADPITCH, -35)
+		"####" A 0 A_SpawnProjectile ("StrobeRayBlue", 0, 0, 180, CMF_AIMDIRECTION|CMF_BADPITCH, -35)
 		"####" A 0 A_SetAngle(10 + angle)
 		Loop
 	}
@@ -943,8 +943,8 @@ ACTOR StrobeEmitterGreen : StrobeEmitterBlue
 	{
 	Spawn:
 		TNT1 A 1
-		"####" A 0 A_CustomMissile ("StrobeRayGreen", 0, 0, 0, 2, -35)
-		"####" A 0 A_CustomMissile ("StrobeRayGreen", 0, 0, 180, 2, -35)
+		"####" A 0 A_SpawnProjectile ("StrobeRayGreen", 0, 0, 0, CMF_AIMDIRECTION|CMF_BADPITCH, -35)
+		"####" A 0 A_SpawnProjectile ("StrobeRayGreen", 0, 0, 180, CMF_AIMDIRECTION|CMF_BADPITCH, -35)
 		"####" A 0 A_SetAngle(10 + angle)
 		Loop
 	}
@@ -956,8 +956,8 @@ ACTOR StrobeEmitterRed : StrobeEmitterBlue
 	{
 	Spawn:
 		TNT1 A 1
-		"####" A 0 A_CustomMissile ("StrobeRayRed", 0, 0, 0, 2, -35)
-		"####" A 0 A_CustomMissile ("StrobeRayRed", 0, 0, 180, 2, -35)
+		"####" A 0 A_SpawnProjectile ("StrobeRayRed", 0, 0, 0, CMF_AIMDIRECTION|CMF_BADPITCH, -35)
+		"####" A 0 A_SpawnProjectile ("StrobeRayRed", 0, 0, 180, CMF_AIMDIRECTION|CMF_BADPITCH, -35)
 		"####" A 0 A_SetAngle(10 + angle)
 		Loop
 	}
@@ -969,8 +969,8 @@ ACTOR StrobeEmitterYellow : StrobeEmitterBlue
 	{
 	Spawn:
 		TNT1 A 1
-		"####" A 0 A_CustomMissile ("StrobeRayYellow", 0, 0, 0, 2, -35)
-		"####" A 0 A_CustomMissile ("StrobeRayYellow", 0, 0, 180, 2, -35)
+		"####" A 0 A_SpawnProjectile ("StrobeRayYellow", 0, 0, 0, CMF_AIMDIRECTION|CMF_BADPITCH, -35)
+		"####" A 0 A_SpawnProjectile ("StrobeRayYellow", 0, 0, 180, CMF_AIMDIRECTION|CMF_BADPITCH, -35)
 		"####" A 0 A_SetAngle(10 + angle)
 		Loop
 	}
