@@ -10,3 +10,61 @@ version "2.5"
 
 // Tracers base classes
 #include "scripts/actors/tracers.txt"
+
+class BoAEventHandler : StaticEventHandler
+{
+	override void PlayerEntered(PlayerEvent e)
+	{
+		let me=PlayerPawn(players[e.PlayerNumber].mo);
+		DropItem drop=me.GetDropItems();
+		//First, remove all weapons, except those with the UNDROPPABLE flag
+		for(int i=0;i<AllActorClasses.Size();i++)
+		{
+			let type=AllActorClasses[i];
+			if(type is "Weapon")
+			{
+				let weptype=(class<weapon>)(type);
+				let wepitem=weapon(me.FindInventory(weptype));
+				if(wepitem!=null&&!wepitem.bUNDROPPABLE)
+					me.A_TakeInventory(name(weptype));
+			}
+		}
+		//If the player has any weapons in StartItem, set them here
+		//They're not supposed to come with ammo, so clear that after this
+		if(drop!=null)
+		{
+			for(DropItem di=drop;di!=null;di=di.Next)
+			{
+				if(di.Name=='None')
+					continue;
+				let weptype=(class<weapon>)(di.Name);
+				if(weptype!=null)
+					me.A_SetInventory(di.Name,di.Amount);
+			}
+		}
+		//Remove all ammo, except that with the UNDROPPABLE flag
+		for(int i=0;i<AllActorClasses.Size();i++)
+		{
+			let type=AllActorClasses[i];
+			if(type is "Ammo")
+			{
+				let ammotype=(class<ammo>)(type);
+				let ammoitem=ammo(me.FindInventory(ammotype));
+				if(ammoitem!=null&&!ammoitem.bUNDROPPABLE)
+					me.A_TakeInventory(name(ammotype));
+			}
+		}
+		//If the player has any ammo in StartItem, set it here
+		if(drop!=null)
+		{
+			for(DropItem di=drop;di!=null;di=di.Next)
+			{
+				if(di.Name=='None')
+					continue;
+				let ammotype=(class<ammo>)(di.Name);
+				if(ammotype!=null)
+					me.A_SetInventory(di.Name,di.Amount);
+			}
+		}
+	}
+}

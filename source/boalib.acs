@@ -33,7 +33,7 @@ script "boaobjectives" (void)
 		(GetLevelInfo(LEVELINFO_LEVELNUM)==99)
 	)
 	Terminate;
-	
+
 	if(objectives_on[PlayerNumber()])
 		objectives_on[PlayerNumber()]=0;
 	else
@@ -102,7 +102,7 @@ script "boaobjectivesdisplay" ENTER
 	setfont("OBJECTGX");
 	hudmessage(s:"A";
 		HUDMSG_PLAIN,972,CR_UNTRANSLATED,400.0,115.1,0.03);
-	delay(1);	
+	delay(1);
 	restart;
 }
 
@@ -116,7 +116,7 @@ script "boaobjectiveaccomplished" (void)
 	setfont("SMALLFONT");
 	hudmessage(l:"MO_ACCOMP";
 		HUDMSG_FADEINOUT,989,CR_UNTRANSLATED,400.0,130.1,1.0,0.5,0.5);
-	
+
 }
 
 script "boaobjectiveadded" (void)
@@ -129,7 +129,7 @@ script "boaobjectiveadded" (void)
 	setfont("SMALLFONT");
 	hudmessage(l:"MO_ADDED";
 		HUDMSG_FADEINOUT,989,CR_UNTRANSLATED,400.0,130.1,1.0,0.5,0.5);
-	
+
 }
 
 script "MissionNumber" OPEN
@@ -194,7 +194,7 @@ int cooldown[8];
 script "Dashing" ENTER
 {
 	bool checksprint = GetCVar("sprintswitch");
-	
+
 	if(!CheckActorClass(0,"BoAPlayer"))
 		terminate;
 	int buttons = GetPlayerInput(-1,INPUT_BUTTONS);
@@ -327,7 +327,7 @@ function void drawdot(int tid)
 		int dist = sqrt(dx*dx + dy*dy),rdist = dist / 10;
 		if(rdist > 33)
 			rdist = 33;
-			
+
 		if(CheckActorClass(tid,"ObjectiveIcon"))
 		{
 			SetFont("GOAL3");
@@ -338,7 +338,7 @@ function void drawdot(int tid)
 			SetFont("GOAL2");
 			HUDMessage(s:"A"; HUDMSG_ALPHA, 0, CR_UNTRANSLATED, (-_cos(a) * rdist / 1.0) * 1.0 + 85.0, (_sin(a) * rdist / 1.0) * 1.0 + 170.0,0.03,0.2);
 		}
-		
+
 		if(CheckActorClass(tid,"Akten")||CheckActorClass(tid,"AktenEisenmann")||CheckActorClass(tid,"SpearOfDestiny"))
 		{
 			SetFont("GOAL1");
@@ -349,7 +349,7 @@ function void drawdot(int tid)
 			SetFont("GOAL2");
 			HUDMessage(s:"A"; HUDMSG_ALPHA, 0, CR_UNTRANSLATED, (-_cos(a) * rdist / 1.0) * 1.0 + 85.0, (_sin(a) * rdist / 1.0) * 1.0 + 170.0,0.03,0.2);
 		}
-		
+
 		/*SetFont("SmallFont");
 		HUDMessage(i:dist / 32, s:" m"; HUDMSG_PLAIN, 0, CR_RED, 85.0, 240.1, 0.03);*/
 	}
@@ -501,7 +501,9 @@ Script "SupplyChest"(int prize, int script_number, int objective_number)
 //Clear Inventory - now added Astrostein stuff (Ozy81)
 script "CLEAR INVENTORY"(void)
 {
-	TakeInventory("9mmAmmo", 9999);
+	TakeInventory("KnifeSilent", 9999);
+	//All ammo and weapons (aside from the knife) should now be handled by my EventHandler - Ed
+	/*TakeInventory("9mmAmmo", 9999);
 	TakeInventory("12GaugeAmmo", 9999);
 	TakeInventory("MauserAmmo", 9999);
 	TakeInventory("FlameAmmo", 9999);
@@ -510,7 +512,6 @@ script "CLEAR INVENTORY"(void)
 	TakeInventory("AstroShotgunShell", 9999); //Astros
 	TakeInventory("AstroRocketAmmo", 9999); //Astros
 	TakeInventory("AstroClipAmmo", 9999); //Astros
-	TakeInventory("KnifeSilent", 9999);
 	TakeInventory("Shovel", 9999);
 	TakeInventory("Firebrand", 9999);
 	TakeInventory("Luger9mm", 9999);
@@ -541,7 +542,7 @@ script "CLEAR INVENTORY"(void)
 	GiveInventory("StenLoaded",9999);
 	GiveInventory("AstroShotgunLoaded",9999); //Astros
 	GiveInventory("AstroChaingunLoaded",9999); //Astros
-	GiveInventory("AstroRocketLauncherLoaded",9999); //Astros
+	GiveInventory("AstroRocketLauncherLoaded",9999); //Astros*/
 	TakeInventory("BoABlueKey",1);
 	TakeInventory("BoAYellowKey",1);
 	TakeInventory("BoARedKey",1);
@@ -562,8 +563,8 @@ script "NOGRENADES" (void)
 	TakeInventory("AstroGrenadePickup", 9999);
 }
 /*
-  SetMusicVolumeFactor 
-	Sets the multiplier for music volume (128 is half volume, 256 is full volume, 
+  SetMusicVolumeFactor
+	Sets the multiplier for music volume (128 is half volume, 256 is full volume,
 	512 is double volume, etc.), over the delay specified in tics.
 
 	Example:
@@ -594,7 +595,7 @@ Script "SetMusicVolumeFactor" (int intTargetVolume, int intDelay)
 Script "QuickKick" (void)
 {
 	If (
-		(CheckInventory("Stamina") < 30) || 
+		(CheckInventory("Stamina") < 30) ||
 		(CheckInventory("Health") < 30) ||
 		(GetSpeed(0) > 30) ||
 		(GetActorViewHeight(0) >> 16 < 56) ||
@@ -656,35 +657,35 @@ script "OhNoes!" DEATH
 {
 	SetHudSize(320, 240, true);
 	LocalSetMusic("THEEND");
-	
+
 	SetFont("fade");
 	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1000, CR_UNTRANSLATED, 160.0, 120.0, 999999.0, 6.0, 1.0);
-	
+
 	// [ZK] If you resurrect, the death screen should disappear immediately
 	for (int i = 0; i < 35*6; i++)
 	{
 		Delay(1);
-		
+
 		if (GetActorProperty(0, APROP_HEALTH) > 0)
-		{	
+		{
 			SetFont("fade");
 			HudMessage(s:""; HUDMSG_PLAIN, -1000, CR_UNTRANSLATED, 0.0, 0.0, 0.0, 0.0);
 			LocalSetMusic("*");
 			terminate;
 		}
 	}
-	
+
 	SetFont("youdied");
 	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1001, CR_UNTRANSLATED, 160.0, 120.0, 999999.0, 3.0, 1.0);
-	
+
 	// [ZK] Delay 1 tic instead of 35
 	while(GetActorProperty(0,APROP_HEALTH) <= 0) Delay(1);
-	
+
 	//fadeback if resurrected
-	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1001, CR_UNTRANSLATED, 160.0, 120.0, 0.0, 0.0, 0.25);	
+	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1001, CR_UNTRANSLATED, 160.0, 120.0, 0.0, 0.0, 0.25);
 	SetFont("fade");
 	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1000, CR_UNTRANSLATED, 160.0, 120.0, 0.0, 0.0, 1.0);
-	
+
 	// [ZK] restore music
 	LocalSetMusic("*");
 }
