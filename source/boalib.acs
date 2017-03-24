@@ -188,6 +188,11 @@ script "BoADialogue"(int headtalky,int headsilent,int message)
 	hudmessagebold(l:message; HUDMSG_FADEINOUT, 2, CR_GRAY, 100.1, 8.1, 0.0, 0.0, 1.0);
 }
 
+script "TotaleMacht" (void) {
+	delay(35 * 30); // 30 seconds
+	TakeInventory("BerserkToken", 1);
+}
+
 //sprinting stamina
 int cooldown[8];
 

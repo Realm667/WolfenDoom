@@ -26,9 +26,8 @@ ACTOR NaziBerserk : Berserk //warning: do not place these powerups inside maps w
 		TNT1 A 0 A_GiveInventory("PowerStrength")
 		"####" A 0 HealThing(100, 0)
 		"####" A 0 A_SelectWeapon("KnifeSilent")
-		"####" A 1 A_GiveInventory("BerserkToken",1)
-		"####" A 1050
-		"####" A 1 A_TakeInventory("BerserkToken",9999)
+		"####" A 0 A_GiveInventory("BerserkToken",1)
+		"####" A 0 ACS_NamedExecuteAlways("TotaleMacht", 0)
 		Stop
 	}
 }
