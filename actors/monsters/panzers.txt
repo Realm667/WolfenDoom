@@ -359,12 +359,12 @@ ACTOR UFONuke : Nuke
 	Spawn:
 		TNT1 A 0 A_PlaySound("panzer/explode", CHAN_ITEM, 1.0, FALSE, ATTN_NORM)
 		"####" A 0 A_SpawnItemEx("UFOFlare")
-		"####" A 25 A_SpawnItemEx("UFONukeFloor")
-		"####" AA 0 A_SpawnItemEx("UFONukeSmokeFloor")
+		"####" A 15 A_SpawnItemEx("UFONukeFloor")
+		"####" AAA 0 A_SpawnItemEx("UFONukeSmokeFloor")
 		"####" A 0 A_SpawnItemEx("UFOPillar",0,0,-8,0,0,2)
-		"####" A 45 A_SpawnItemEx("UFOSmokePillar",0,0,-8,0,0,2)
+		"####" A 35 A_SpawnItemEx("UFOSmokePillar",0,0,-8,0,0,2)
 		"####" A 0 A_SpawnItemEx("UFOMushroom",0,0,-8)
-		"####" AA 0 A_SpawnItemEx("UFOSmokeMushroom",0,0,-8)
+		"####" AAA 0 A_SpawnItemEx("UFOSmokeMushroom",0,0,-8)
 		Stop
 	}
 }
@@ -376,11 +376,11 @@ ACTOR UFONukeSilent : Nuke
 	Spawn:
 		"####" A 0 A_SpawnItemEx("UFOFlare")
 		"####" A 25 A_SpawnItemEx("UFONukeFloor")
-		"####" AA 0 A_SpawnItemEx("UFONukeSmokeFloor")
+		"####" AAA 0 A_SpawnItemEx("UFONukeSmokeFloor")
 		"####" A 0 A_SpawnItemEx("UFOPillar",0,0,-8,0,0,2)
 		"####" A 45 A_SpawnItemEx("UFOSmokePillar",0,0,-8,0,0,2)
 		"####" A 0 A_SpawnItemEx("UFOMushroom",0,0,-8)
-		"####" AA 0 A_SpawnItemEx("UFOSmokeMushroom",0,0,-8)
+		"####" AAA 0 A_SpawnItemEx("UFOSmokeMushroom",0,0,-8)
 		Stop
 	}
 }
@@ -392,11 +392,11 @@ ACTOR UFOFire : TankFire
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
-		FLA1 A 2 A_FadeOut(0.03)
+		FLA1 A 2 A_FadeOut(0.01)
 		Wait
 		FLA2 A 2 A_FadeOut(0.02)
 		Wait
-		FLA3 A 2 A_FadeOut(0.03)
+		FLA3 A 2 A_FadeOut(0.01)
 		Wait
 		FLA4 A 2 A_FadeOut(0.02)
 		Wait
@@ -414,7 +414,7 @@ ACTOR UFONukeSmoke : NukeSmoke
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
 		NSMK ABCD 0 A_Jump(256,"End")
 	End:
-		NSMK "#" 2 A_FadeOut(0.008)
+		NSMK "#" 2 A_FadeOut(0.001)
 		Wait
 	}
 }
@@ -425,7 +425,7 @@ ACTOR UFONukeFloor : Nuke
 	{
 	Spawn:
 		TNT1 A 0
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,30),-0.1 * random(0,30),0,random(0,359),128)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,30),-0.1 * random(0,30),0,random(0,359),128)
 		Stop
 	}
 }
@@ -436,7 +436,7 @@ ACTOR UFONukeSmokeFloor : Nuke
 	{
 	Spawn:
 		TNT1 A 0
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFONukeSmoke",0,0,0,-0.1 * random(0,30),-0.1 * random(0,30),0,random(0,359),128)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFONukeSmoke",0,0,0,-0.1 * random(0,30),-0.1 * random(0,30),0,random(0,359),128)
 		Stop
 	}
 }
@@ -447,9 +447,9 @@ ACTOR UFOPillar : Nuke
 	{
 	Spawn:
 		TNT1 A 0
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,10),-0.1 * random(0,10),random(0,-3),random(0,359),128)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,10),-0.1 * random(0,10),random(0,-3),random(0,359),128)
 		"####" A 0 A_SpawnItemEx("UFOSmokeRing")
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,10),-0.1 * random(0,10),random(0,-3),random(0,359),128)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,10),-0.1 * random(0,10),random(0,-3),random(0,359),128)
 		Stop
 	}
 }
@@ -460,7 +460,7 @@ ACTOR UFOSmokePillar : Nuke
 	{
 	Spawn:
 		TNT1 A 0
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFONukeSmoke",0,0,0,-0.1 * random(0,10),-0.1 * random(0,10),-0.1 * random(0,-40),random(0,359),128)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFONukeSmoke",0,0,0,-0.1 * random(0,10),-0.1 * random(0,10),-0.1 * random(0,-40),random(0,359),128)
 		Stop
 	}
 }
@@ -471,7 +471,7 @@ ACTOR UFOMushroom : Nuke
 	{
 	Spawn:
 		TNT1 A 0
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,25),-0.01 * random(0,25),-0.1 * random(-10,10),random(0,359),128)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,25),-0.01 * random(0,25),-0.1 * random(-10,10),random(0,359),128)
 		Stop
 	}
 }
@@ -482,7 +482,7 @@ ACTOR UFOSmokeMushroom : Nuke
 	{
 	Spawn:
 		TNT1 A 0
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFONukeSmoke",0,0,0,-0.1 * random(0,25),-0.1 * random(0,25),-0.1 * random(-10,10),random(0,359),128)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFONukeSmoke",0,0,0,-0.1 * random(0,25),-0.1 * random(0,25),-0.1 * random(-10,10),random(0,359),128)
 		Stop
 	}
 }
@@ -494,7 +494,7 @@ ACTOR UFOSmokeRing : Nuke
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_SpawnItemEx("UFONukeSmoke",0,0,0,1,0,0,user_theta)
-		UWMR A 0 A_SetUserVar("user_theta",user_theta+40)
+		UWMR A 0 A_SetUserVar("user_theta",user_theta+10)
 		"####" A 0 A_JumpIf(user_theta==360,1)
 		Loop
 		TNT1 A 0
