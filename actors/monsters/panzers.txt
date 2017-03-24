@@ -24,7 +24,7 @@ ACTOR TankSmoke : PuffSmoke //connections with GuardSoul smoke
 	}
 }
 
-//Ka-Boom from Russian Overkill by PillowBlaster - Tweaked by Ozymandias81
+//Ka-Boom base code from Russian Overkill by PillowBlaster - Tweaked by Ozymandias81
 ACTOR KaBoom
 {
 	Scale 2
@@ -92,18 +92,6 @@ ACTOR TankBoom
 	}
 }
 
-ACTOR NebBoom : TankBoom
-{
-	-FORCERADIUSDMG
-	States
-	{
-	Spawn:
-		TNT1 A 0
-		"####" AAAAA 2 A_Explode(5,32,0)
-		Stop
-	}
-}
-
 ACTOR TankFire : Nuke
 {
 	RenderStyle "Add"
@@ -127,56 +115,6 @@ ACTOR TankFire : Nuke
 	}
 }
 
-ACTOR NebFire : TankFire
-{
-	Scale 0.15
-	States
-	{
-	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
-		FLA1 A 1 A_FadeOut(0.04)
-		Wait
-		FLA2 A 1 A_FadeOut(0.02)
-		Wait
-		FLA3 A 1 A_FadeOut(0.04)
-		Wait
-		FLA4 A 1 A_FadeOut(0.02)
-		Wait
-	}
-}
-
-ACTOR NukeSmoke : Nuke
-{
-	Scale 1.7
-	+DONTSPLASH
-	+EXPLODEONWATER
-	+NOINTERACTION
-	Alpha 0.5
-	States
-	{
-	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
-		NSMK ABCD 0 A_Jump(256,"End")
-	End:
-		NSMK "#" 2 A_FadeOut(0.008)
-		Wait
-	}
-}
-
-ACTOR NebSmoke : NukeSmoke
-{
-	Scale 0.35
-	States
-	{
-	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
-		NSMK ABCD 0 A_Jump(256,"End")
-	End:
-		NSMK "#" 1 A_FadeOut(0.008)
-		Wait
-	}
-}
-
 ACTOR TankFlare : TankFire
 {
 	Scale 0.8
@@ -189,7 +127,22 @@ ACTOR TankFlare : TankFire
 	}
 }
 
-ACTOR NebFlare : TankFlare {Scale 0.25}
+ACTOR NukeSmoke : Nuke
+{
+	Scale 1.7
+	+DONTSPLASH
+	+EXPLODEONWATER
+	Alpha 0.5
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
+		NSMK ABCD 0 A_Jump(256,"End")
+	End:
+		NSMK "#" 2 A_FadeOut(0.008)
+		Wait
+	}
+}
 
 ACTOR NukeFloor : Nuke
 {
@@ -202,17 +155,6 @@ ACTOR NukeFloor : Nuke
 	}
 }
 
-ACTOR NebFloor : NukeFloor
-{
-	States
-	{
-	Spawn:
-		TNT1 A 0
-		"####" AAAAAAAA 1 A_SpawnItemEx("NebFire",0,0,0,0.1 * random(0,12),0.1 * random(0,12),0.1 * random(-3,3),random(0,359),128)
-		Stop
-	}
-}
-
 ACTOR NukeSmokeFloor : Nuke
 {
 	States
@@ -220,17 +162,6 @@ ACTOR NukeSmokeFloor : Nuke
 	Spawn:
 		TNT1 A 0
 		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke",0,0,0,0.1 * random(0,30),0.1 * random(0,30),0,random(0,359),128)
-		Stop
-	}
-}
-
-ACTOR NebSmokeFloor : NukeSmokeFloor
-{
-	States
-	{
-	Spawn:
-		TNT1 A 0
-		"####" AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * random(0,15),0.1 * random(0,15),0,random(0,359),128)
 		Stop
 	}
 }
@@ -259,17 +190,6 @@ ACTOR TankSmokePillar : Nuke
 	}
 }
 
-ACTOR NebSmokePillar : TankSmokePillar
-{
-	States
-	{
-	Spawn:
-		TNT1 A 0
-		"####" AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * random(0,5),0.1 * random(0,5),0.1 * random(0,-20),random(0,359),128)
-		Stop
-	}
-}
-
 ACTOR TankMushroom : Nuke
 {
 	States
@@ -292,17 +212,6 @@ ACTOR TankSmokeMushroom : Nuke
 	}
 }
 
-ACTOR NebSmokeMushroom : TankSmokeMushroom
-{
-	States
-	{
-	Spawn:
-		TNT1 A 0
-		"####" AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * random(0,15),0.1 * random(0,15),0.1 * random(-5,5),random(0,359),128)
-		Stop
-	}
-}
-
 ACTOR TankSmokeRing : Nuke
 {
 	var int user_theta;
@@ -314,6 +223,113 @@ ACTOR TankSmokeRing : Nuke
 		"####" A 0 A_JumpIf(user_theta==360,1)
 		Loop
 		TNT1 A 0
+		Stop
+	}
+}
+
+//Nebelwerfers
+ACTOR NebBoom : TankBoom
+{
+	-FORCERADIUSDMG
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		"####" AAAAA 2 A_Explode(5,32,0)
+		Stop
+	}
+}
+
+ACTOR NebFire : TankFire
+{
+	Scale 0.15
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
+		FLA1 A 1 A_FadeOut(0.04)
+		Wait
+		FLA2 A 1 A_FadeOut(0.02)
+		Wait
+		FLA3 A 1 A_FadeOut(0.04)
+		Wait
+		FLA4 A 1 A_FadeOut(0.02)
+		Wait
+	}
+}
+
+ACTOR NebSmoke : NukeSmoke
+{
+	Scale 0.35
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
+		NSMK ABCD 0 A_Jump(256,"End")
+	End:
+		NSMK "#" 1 A_FadeOut(0.008)
+		Wait
+	}
+}
+
+ACTOR NebFlare : TankFlare {Scale 0.25}
+
+ACTOR NebFloor : NukeFloor
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		"####" AAAAAAAA 1 A_SpawnItemEx("NebFire",0,0,0,0.1 * random(0,12),0.1 * random(0,12),0.1 * random(-3,3),random(0,359),128)
+		Stop
+	}
+}
+
+ACTOR NebSmokeFloor : NukeSmokeFloor
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		"####" AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * random(0,15),0.1 * random(0,15),0,random(0,359),128)
+		Stop
+	}
+}
+
+ACTOR NebSmokePillar : TankSmokePillar
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		"####" AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * random(0,5),0.1 * random(0,5),0.1 * random(0,-20),random(0,359),128)
+		Stop
+	}
+}
+
+ACTOR NebSmokeMushroom : TankSmokeMushroom
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		"####" AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * random(0,15),0.1 * random(0,15),0.1 * random(-5,5),random(0,359),128)
+		Stop
+	}
+}
+
+ACTOR NebNuke : Nuke
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 Radius_Quake(3,8,0,24,0)
+		"####" A 0 A_SpawnItemEx("NebBoom",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" A 0 A_SpawnItemEx("NebFlare")
+		"####" A 3 A_SpawnItemEx("NebFloor")
+		"####" A 0 A_SpawnItemEx("NebSmokeFloor")
+		"####" A 6 A_SpawnItemEx("NebSmokePillar",0,0,0,0,0,2)
+		"####" A 0 A_SpawnItemEx("NebSmokeMushroom",0,0,0)
 		Stop
 	}
 }
@@ -335,22 +351,158 @@ ACTOR PanzerNuke : Nuke //for panzerschreck rockets
 	}
 }
 
-ACTOR NebNuke : Nuke //for nebelwerfer rockets
+//UFOs
+ACTOR UFONuke : Nuke
 {
 	States
 	{
 	Spawn:
-		TNT1 A 0 Radius_Quake(3,8,0,24,0)
-		"####" A 0 A_SpawnItemEx("NebBoom",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
-		"####" A 0 A_SpawnItemEx("NebFlare")
-		"####" A 3 A_SpawnItemEx("NebFloor")
-		"####" A 0 A_SpawnItemEx("NebSmokeFloor")
-		"####" A 6 A_SpawnItemEx("NebSmokePillar",0,0,0,0,0,2)
-		"####" A 0 A_SpawnItemEx("NebSmokeMushroom",0,0,0)
+		TNT1 A 0 A_PlaySound("panzer/explode", CHAN_ITEM, 1.0, FALSE, ATTN_NORM)
+		"####" A 0 A_SpawnItemEx("UFOFlare")
+		"####" A 25 A_SpawnItemEx("UFONukeFloor")
+		"####" AA 0 A_SpawnItemEx("UFONukeSmokeFloor")
+		"####" A 0 A_SpawnItemEx("UFOPillar",0,0,-8,0,0,2)
+		"####" A 45 A_SpawnItemEx("UFOSmokePillar",0,0,-8,0,0,2)
+		"####" A 0 A_SpawnItemEx("UFOMushroom",0,0,-8)
+		"####" AA 0 A_SpawnItemEx("UFOSmokeMushroom",0,0,-8)
 		Stop
 	}
 }
 
+ACTOR UFONukeSilent : Nuke
+{
+	States
+	{
+	Spawn:
+		"####" A 0 A_SpawnItemEx("UFOFlare")
+		"####" A 25 A_SpawnItemEx("UFONukeFloor")
+		"####" AA 0 A_SpawnItemEx("UFONukeSmokeFloor")
+		"####" A 0 A_SpawnItemEx("UFOPillar",0,0,-8,0,0,2)
+		"####" A 45 A_SpawnItemEx("UFOSmokePillar",0,0,-8,0,0,2)
+		"####" A 0 A_SpawnItemEx("UFOMushroom",0,0,-8)
+		"####" AA 0 A_SpawnItemEx("UFOSmokeMushroom",0,0,-8)
+		Stop
+	}
+}
+
+ACTOR UFOFire : TankFire
+{
+	Scale 1.5
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
+		FLA1 A 2 A_FadeOut(0.03)
+		Wait
+		FLA2 A 2 A_FadeOut(0.02)
+		Wait
+		FLA3 A 2 A_FadeOut(0.03)
+		Wait
+		FLA4 A 2 A_FadeOut(0.02)
+		Wait
+	}
+}
+
+ACTOR UFOFlare : TankFlare {Scale 1.8}
+
+ACTOR UFONukeSmoke : NukeSmoke
+{
+	Scale 3.7
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
+		NSMK ABCD 0 A_Jump(256,"End")
+	End:
+		NSMK "#" 2 A_FadeOut(0.008)
+		Wait
+	}
+}
+
+ACTOR UFONukeFloor : Nuke
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,30),-0.1 * random(0,30),0,random(0,359),128)
+		Stop
+	}
+}
+
+ACTOR UFONukeSmokeFloor : Nuke
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFONukeSmoke",0,0,0,-0.1 * random(0,30),-0.1 * random(0,30),0,random(0,359),128)
+		Stop
+	}
+}
+
+ACTOR UFOPillar : Nuke
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,10),-0.1 * random(0,10),random(0,-3),random(0,359),128)
+		"####" A 0 A_SpawnItemEx("UFOSmokeRing")
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,10),-0.1 * random(0,10),random(0,-3),random(0,359),128)
+		Stop
+	}
+}
+
+ACTOR UFOSmokePillar : Nuke
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFONukeSmoke",0,0,0,-0.1 * random(0,10),-0.1 * random(0,10),-0.1 * random(0,-40),random(0,359),128)
+		Stop
+	}
+}
+
+ACTOR UFOMushroom : Nuke
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,25),-0.01 * random(0,25),-0.1 * random(-10,10),random(0,359),128)
+		Stop
+	}
+}
+
+ACTOR UFOSmokeMushroom : Nuke
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFONukeSmoke",0,0,0,-0.1 * random(0,25),-0.1 * random(0,25),-0.1 * random(-10,10),random(0,359),128)
+		Stop
+	}
+}
+
+ACTOR UFOSmokeRing : Nuke
+{
+	var int user_theta;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_SpawnItemEx("UFONukeSmoke",0,0,0,1,0,0,user_theta)
+		UWMR A 0 A_SetUserVar("user_theta",user_theta+40)
+		"####" A 0 A_JumpIf(user_theta==360,1)
+		Loop
+		TNT1 A 0
+		Stop
+	}
+}
+
+//Tanks
 ACTOR SSTank1
 {
 	//$Category Monsters (Wolf3D)/Tanks
