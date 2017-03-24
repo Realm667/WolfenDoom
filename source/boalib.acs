@@ -201,7 +201,7 @@ script "Dashing" ENTER
 	if((buttons & BT_SPEED) && (buttons & BT_FORWARD) && !(buttons & BT_CROUCH) && CheckInventory("Stamina") && cooldown[PlayerNumber()] <= 0)
 	{
 		SetActorProperty(0,APROP_SPEED,2.0);
-			if(checksprint==TRUE||CheckInventory("PowerStrength"))
+			if(checksprint==TRUE||CheckInventory("BerserkToken"))
 			TakeInventory("Stamina",0); //do not deplete stamina - ozy
 			else
 				{
