@@ -360,34 +360,18 @@ ACTOR UFONuke : Nuke
 		TNT1 A 0 A_PlaySound("panzer/explode", CHAN_ITEM, 1.0, FALSE, ATTN_NORM)
 		"####" A 0 A_SpawnItemEx("UFOFlare")
 		"####" A 25 A_SpawnItemEx("UFONukeFloor")
-		"####" AA 0 A_SpawnItemEx("UFONukeSmokeFloor")
+		"####" A 0 A_SpawnItemEx("UFONukeSmokeFloor")
 		"####" A 0 A_SpawnItemEx("UFOPillar",0,0,-8,0,0,2)
 		"####" A 45 A_SpawnItemEx("UFOSmokePillar",0,0,-8,0,0,2)
 		"####" A 0 A_SpawnItemEx("UFOMushroom",0,0,-8)
-		"####" AA 0 A_SpawnItemEx("UFOSmokeMushroom",0,0,-8)
-		Stop
-	}
-}
-
-ACTOR UFONukeSilent : Nuke
-{
-	States
-	{
-	Spawn:
-		"####" A 0 A_SpawnItemEx("UFOFlare")
-		"####" A 25 A_SpawnItemEx("UFONukeFloor")
-		"####" AA 0 A_SpawnItemEx("UFONukeSmokeFloor")
-		"####" A 0 A_SpawnItemEx("UFOPillar",0,0,-8,0,0,2)
-		"####" A 45 A_SpawnItemEx("UFOSmokePillar",0,0,-8,0,0,2)
-		"####" A 0 A_SpawnItemEx("UFOMushroom",0,0,-8)
-		"####" AA 0 A_SpawnItemEx("UFOSmokeMushroom",0,0,-8)
+		"####" A 0 A_SpawnItemEx("UFOSmokeMushroom",0,0,-8)
 		Stop
 	}
 }
 
 ACTOR UFOFire : TankFire
 {
-	Scale 1.5
+	Scale 4.0
 	States
 	{
 	Spawn:
@@ -425,7 +409,7 @@ ACTOR UFONukeFloor : Nuke
 	{
 	Spawn:
 		TNT1 A 0
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,30),-0.1 * random(0,30),0,random(0,359),128)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,30),-0.1 * random(0,30),0,random(0,359),128)
 		Stop
 	}
 }
@@ -447,9 +431,9 @@ ACTOR UFOPillar : Nuke
 	{
 	Spawn:
 		TNT1 A 0
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,10),-0.1 * random(0,10),random(0,-3),random(0,359),128)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,10),-0.1 * random(0,10),random(0,-3),random(0,359),128)
 		"####" A 0 A_SpawnItemEx("UFOSmokeRing")
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,10),-0.1 * random(0,10),random(0,-3),random(0,359),128)
+		"####" AAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,10),-0.1 * random(0,10),random(0,-3),random(0,359),128)
 		Stop
 	}
 }
@@ -471,7 +455,7 @@ ACTOR UFOMushroom : Nuke
 	{
 	Spawn:
 		TNT1 A 0
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,25),-0.01 * random(0,25),-0.1 * random(-10,10),random(0,359),128)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,25),-0.01 * random(0,25),-0.1 * random(-10,10),random(0,359),128)
 		Stop
 	}
 }
