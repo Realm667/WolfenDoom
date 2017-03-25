@@ -448,3 +448,98 @@ ACTOR CreepySkullsImpaled
 		Stop
 	}
 }
+
+ACTOR PrisonerGuts
+{
+	//$Category Gore (Wolf3D)
+	//$Title Tortured Prisoner with severed Guts (random)
+	//$Color 4
+	Radius 8
+	Height 32
+	Scale 0.7
+	States
+		{
+		Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2)
+		GTS1 A -1
+		GTS2 A -1
+		Stop
+		}
+}
+
+ACTOR PrisonerSit1 : PrisonerGuts
+{
+	//$Title Tortured Prisoner (random, black hair)
+	//$Sprite SIT1A0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		SIT1 A -1
+		SIT1 B -1
+		SIT1 C -1
+		SIT1 D -1
+		SIT1 E -1
+		SIT1 F -1
+		SIT1 G -1
+		SIT1 H -1
+		SIT1 I -1
+		SIT1 J -1
+		Stop
+	}
+}
+
+ACTOR PrisonerSit2 : PrisonerGuts
+{
+	//$Title Tortured Prisoner (random, chestnut hair)
+	//$Sprite SIT2A0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		SIT2 A -1
+		SIT2 B -1
+		SIT2 C -1
+		SIT2 D -1
+		SIT2 E -1
+		SIT2 F -1
+		SIT2 G -1
+		SIT2 H -1
+		SIT2 I -1
+		SIT2 J -1
+		Stop
+	}
+}
+
+ACTOR PrisonerSit3 : PrisonerGuts
+{
+	//$Title Tortured Prisoner (random, blonde hair)
+	//$Sprite SIT3A0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		SIT3 A -1
+		SIT3 B -1
+		SIT3 C -1
+		SIT3 D -1
+		SIT3 E -1
+		SIT3 F -1
+		SIT3 G -1
+		SIT3 H -1
+		SIT3 I -1
+		SIT3 J -1
+		Stop
+	}
+}
+
+ACTOR PrisonerSitRandom : RandomSpawner
+{
+	//$Category Gore (Wolf3D)
+	//$Title Tortured Male Prisoner Spawner (random)
+	//$Color 4
+	//$Sprite SIT1E0
+	DropItem "PrisonerSit1"	
+	DropItem "PrisonerSit2"	
+	DropItem "PrisonerSit3"
+}
