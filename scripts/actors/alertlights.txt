@@ -1,0 +1,91 @@
+class AlertPointLight : PointLight replaces PointLight
+{
+	override void PostBeginPlay()
+	{
+		if (!bDormant) { SpawnLight(); }
+
+		Super.PostBeginPlay();
+	}
+
+	override void Activate(Actor activator)
+	{
+		Super.Activate(activator);
+
+		if (bDormant) { DestroyLight(); }
+		else { SpawnLight(); }
+	}
+
+	override void Deactivate(Actor activator)
+	{
+		Super.Deactivate(activator);
+
+		if (bDormant) { DestroyLight(); }
+		else { SpawnLight(); }
+	}
+
+	void SpawnLight()
+	{
+		A_SpawnItemEx("AlertLight", flags:SXF_SETMASTER);
+
+		bDormant = false;
+	}
+
+	void DestroyLight()
+	{
+		A_RemoveChildren(TRUE, RMVF_MISC);
+
+		bDormant = true;
+	}
+}
+
+class AlertLight : Actor
+{
+	double checkRadius;
+	double oldVisibility;
+
+	Default
+	{
+		//$Category Misc (Wolf3D)
+		//$Title Alert Light (stealth)
+		//$Color 1
+
+		+INVISIBLE
+		+NOGRAVITY
+	}
+
+	States
+	{
+		Spawn:
+			UNKN A 1;
+		CheckForPlayer:
+			UNKN A 1 A_LookEx(LOF_NOSOUNDCHECK | LOF_DONTCHASEGOAL | LOF_NOSEESOUND, 0, checkRadius * 2, 0, 360, "Illuminate");
+			Loop;
+		Illuminate:
+			UNKN A 1 A_AddVisibility();
+			Goto CheckForPlayer;
+	}
+
+	override void PostBeginPlay()
+	{
+		if (master) {
+			checkRadius = master.args[3]; // If spawned and master is set, use parent's arg[3] as check radius
+		} else {
+			checkRadius = args[0]; // Otherwise, use the actor's arg[0] 
+		}
+		if (!checkRadius) { checkRadius = 64; } // If nothing was set, use 64 map unit radius
+	}
+
+	void A_AddVisibility()
+	{
+		double brightness = 1;
+		if (master) { brightness = (master.args[0] + master.args[1] + master.args[2]) / (255. * 3) * 1.25; } // Calculate the light's overall brightness
+
+		double amount = checkRadius * 2 - Distance3d(target) + 8; // Calculate visibility based on how close the player is to the light
+
+		amount *= brightness; // Adjust based on brightness level
+
+		oldVisibility = ACS_NamedExecuteWithResult("GetVisibility"); // Get the current visibility
+
+		ACS_NamedExecuteAlways("AddExtraVisibility", 0, Max(int(amount - oldVisibility), 0));  // Set the new visibility - use delta in value instad of overriding so that multiple lights can be additive in visibility
+	}
+}

@@ -82,7 +82,7 @@ Script "PlayFootstepsSoundLoop" ENTER
 		}
 		
 		// Draw Stealth HUD?
-		if(ShowStealthHUD && GetActorProperty(playerID, APROP_HEALTH) > 0)
+		if(GetCVar("g_debugstealth") > 0 || (ShowStealthHUD && GetActorProperty(playerID, APROP_HEALTH) > 0))
 		{
 			// Convert visibility to [0.0 - 1.0] fixed point range
 			int lampalpha = 1.0;
@@ -127,6 +127,13 @@ script "AddExtraVisibility" (int value, int override)
 		extraVisibility = Clamp(extraVisibility + value, 0, 255);
 	Else
 		extraVisibility = Clamp(value, 0, MAX_EXTRA_VISIBILITY);
+
+	SetResultValue(extraVisibility);
+}
+
+script "GetVisibility" (void)
+{
+	SetResultValue(extraVisibility);
 }
 
 //mxd. Stealth-related. For this to work, each player must have unique TID.
@@ -262,7 +269,7 @@ function int GetVisibility(int tid, int noiselevel, int addedvisibility)
 	int skillmod = (SKILL_HARD - GameSkill()) * 10; //Adjust the visibility level based on game skill - Skill 3 is neutral, and what the gameplay is most balanced for
 
 	// Calculate resulting visibility level (will probably require lots of tweaking...)
-	If (GetCVar("g_debugstealth") > 0) //Use 'set g_debugstealth 1' in the console to show the component numbers use for the calculations in game...
+	If (GetCVar("g_debugstealth") > 0) //Use 'set g_debugstealth 1' in the console to show the component numbers used for the calculations in game...
 	{
 		SetHUDSize(1024, 768, 1);
 		SetFont("SmallFont");
