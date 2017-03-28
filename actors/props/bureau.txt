@@ -499,6 +499,21 @@ ACTOR PaperBox2 : PaperBox1
 	}
 }
 
+ACTOR Mike : PaperBox1
+{
+	//$Title Mike
+	Radius 2
+	Height 8
+	Scale 0.8
+	-SOLID
+	States
+	{
+	Spawn:
+		MIKE A -1
+		Stop
+	}
+}
+
 ACTOR CasinoChips_Green //the only issue there is that we'll see some chips even with the single one... but it's not a real problem - ozy
 {
 	//$Category Props (Wolf3D)/Bureau
