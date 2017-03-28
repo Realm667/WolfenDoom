@@ -213,6 +213,18 @@ ACTOR DummyWarper //This is here to avoid "blink effects" - ozy81
 	}
 }
 
+ACTOR Handrail : ModelBase
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Handrail
+	//$Color 3
+	DistanceCheck "scenelod"
+	Radius 1
+	Height 1
+	-FLOORCLIP
+	+MOVEWITHSECTOR
+}
+
 ACTOR CeilingFan : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Scenery
@@ -1179,8 +1191,19 @@ ACTOR WallLight1Lit : WallLight1
 	States
 	{
 	Spawn:
-		MDLA A 0 NoDelay A_SpawnItemEx("VolumetricLight_ConeDown", ScaleX*16, 0, 24, 0, 0, 0, 0, SXF_ISTRACER) //for Inactive states, use A_KillTracer to remove the Volumetric light again
+		MDLA A 0 NoDelay A_SpawnItemEx("VolumetricLight_ConeDown", ScaleX*16, 0, 24, 0, 0, 0, 0, SXF_ISTRACER)
 		MDLA A -1 LIGHT(OZYWALLT)
+		Stop
+	}
+}
+
+ACTOR WallLight1NoCone : WallLight1
+{
+	//$Title Wall Light (on & no cone light, static)
+	States
+	{
+	Spawn:
+		MDLA A -1 LIGHT(OZYWALT3)
 		Stop
 	}
 }
