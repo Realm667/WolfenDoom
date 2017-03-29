@@ -1746,6 +1746,42 @@ ACTOR MGTurret : MiniShip
 	}
 }
 
+ACTOR MGTurretCeiling : MGTurret
+{
+	//$Title Automatic Turret (ceiling, shootable)
+	Height 26
+	+DONTFALL
+	+NOGRAVITY
+	+SPAWNCEILING
+	States
+	{
+	Spawn:
+		GTUR D 0 NoDelay A_SetUserVar("user_incombat", TRUE) //mxd
+		Goto Look
+	See: //needs to be different
+		"####" D 1 A_Chase
+		"####" DDD 1 A_Chase("","")
+		Loop
+	Missile:
+		"####" D 4 A_PlaySound("chaingun/start", CHAN_WEAPON)
+		"####" D 1 A_PlaySound("chaingun/loop", CHAN_WEAPON)
+		"####" D 5 A_FaceTarget
+		"####" E 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
+		"####" F 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyChaingunTracer",Height-8,0,random(-11,11))
+		"####" E 3 A_MonsterRefire(20,"See")
+		"####" E 0 A_FaceTarget
+		Goto Missile+3
+	Death:
+	Crash:
+		TNT1 A 0
+		"####" A 0 A_Scream
+		"####" A 0 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
+		Stop
+	Idle:
+		Goto Look
+	}
+}
+
 ACTOR MGTurretInvisible : MGTurret
 {
 	//$Title Automatic Turret (invisible, non-shootable)
