@@ -158,24 +158,6 @@ ACTOR SneakableGuardEyesAlerted : SneakableGuardEyesIdle
 	}
 }
 
-// It's here just for lulz
-ACTOR AlertMarker
-{
-	Scale 2.0
-	+BRIGHT
-	+NOGRAVITY
-	States
-	{
-		Spawn:
-			EXCL C 1 NoDelay A_PlaySound("misc/alert", CHAN_BODY)
-			Goto Fade
-		Fade:
-			EXCL C 0 A_Warp(AAPTR_MASTER, 0, 0, 64)
-			EXCL C 1 A_FadeOut(0.01)
-			Loop
-	}
-}
-
 ACTOR MGTurretStealth : Nazi
 {
 	//$Category Monsters (Wolf3D)/Sneak-Friendly
@@ -235,5 +217,23 @@ ACTOR MGTurretStealth : Nazi
 		Pain: //Disable for 2 seconds when shot, then go to reload
 			"####" C 70
 			Goto Reload
+	}
+}
+
+// It's here just for lulz
+ACTOR AlertMarker
+{
+	Scale 2.0
+	+BRIGHT
+	+NOGRAVITY
+	States
+	{
+		Spawn:
+			EXCL C 1 NoDelay A_PlaySound("misc/alert", CHAN_BODY)
+			Goto Fade
+		Fade:
+			EXCL C 0 A_Warp(AAPTR_MASTER, 0, 0, 64)
+			EXCL C 1 A_FadeOut(0.01)
+			Loop
 	}
 }

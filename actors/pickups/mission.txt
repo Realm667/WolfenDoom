@@ -204,6 +204,22 @@ ACTOR RepairKit : Akten
 	}
 }
 
+ACTOR RadioPickup : Akten
+{
+	//$Title Field Radio
+	Tag "Field Radio"
+	Scale 0.75
+	Inventory.PickupMessage "$RADIOF"
+	Inventory.MaxAmount 1
+	-INVENTORY.INVBAR
+	States
+	{
+	Spawn:
+		RADO A -1 
+		Stop
+	}
+}
+
 ///////////////////////////////////////////////////////////////
 // DISGUISE UNIFORM ///////////////////////////////////////////
 ///////////////////////////////////////////////////////////////

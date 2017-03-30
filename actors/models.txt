@@ -1010,11 +1010,17 @@ ACTOR EnigmaMachine : 3dObstacle
 ACTOR RTCWBench : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Furniture
-	//$Title Wooden Bench
+	//$Title Bench, Wooden
 	//$Color 3
 	DistanceCheck "scenelod"
 	Radius 16
 	Height 8
+}
+
+ACTOR RTCWBench2 : RTCWBench
+{
+	//$Title Bench, Metallic
+	DistanceCheck "scenelod"
 }
 
 ACTOR 3dBook1 : 3dObstacle
