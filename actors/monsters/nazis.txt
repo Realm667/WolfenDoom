@@ -1268,6 +1268,12 @@ ACTOR FlamerCounter : Inventory {Inventory.MaxAmount 50}
 ACTOR Gestapo : Guard
 {
 	//$Title Gestapo Officer
+	Speed 3.5
+	Health 80
+	Obituary "$GESTAPO"
+	DropItem "9mmAmmo" 172
+	DropItem "9mmAmmoBox" 16
+	DropItem "Luger9mm" 88
 	States
 	{
 	Spawn:
