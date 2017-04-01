@@ -105,7 +105,7 @@ ACTOR NaziBoss : Nazi
 	}
 }
 
-//ozy - The difference here comes with quakes
+//ozy - The difference here comes with quakes & frame sequences
 ACTOR MechBoss : Nazi
 {
 	Mass 1000
@@ -141,101 +141,6 @@ ACTOR MechBoss : Nazi
 		"####" B 1 A_Chase
 		"####" BBB 1 A_Chase("","")
 		Loop
-	}
-}
-
-////////////
-//CRITTERS//
-////////////
-
-ACTOR Rottweiler : Nazi
-{
-	//$Category Monsters (Wolf3D)/Critters
-	//$Title Dog (Rottweiler)
-	//$Color 4
-	Scale 1.1
-	HitObituary "$DOGS"
-	Health 25
-	PainChance 180
-	Speed 4
-	Height 48
-	Mass 70
-	SeeSound "dog/sight"
-	PainSound "dog/pain"
-	DeathSound "dog/death"
-	ActiveSound "dog/active"
-	-CANUSEWALLS
-	-CANPUSHWALLS //dogs mustn't able to open doors imho, that's why there was -CANUSEWALLS before, but we use bumps on polys
-	+NEVERTARGET //So the dogs don't get targeted by stealth (+FRIENDLY-abusing) guards
-	States
-	{
-	Spawn:
-		DOGY A 0
-		Goto Look
-	Idle:
-		"####" A 0 A_SetSpeed(4)
-		"####" AAAAAAAA 1 A_Wander
-		"####" A 0 A_Look
-		"####" BBBBBBBB 1 A_Wander
-		"####" A 0 A_Look
-		"####" CCCCCCCC 1 A_Wander
-		"####" A 0 A_Look
-		"####" DDDDDDDD 1 A_Wander
-		"####" A 0 A_Look
-		Loop
-	See:
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
-		"####" A 0 A_SetSpeed(8)
-		"####" A 1 A_Chase
-		"####" AAA 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" B 1 A_Chase
-		"####" BBB 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" C 1 A_Chase
-		"####" CCC 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" D 1 A_Chase
-		"####" DDD 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		Loop
-	Melee:
-		"####" EF 2 Fast A_FaceTarget
-		"####" G 8 Fast A_CustomMeleeAttack(random(1,8)*3,"dog/attack","dog/attack")
-		"####" FE 4 Fast
-		Goto See
-	Pain:
-		"####" M 2
-		"####" M 2 A_Pain
-		"####" "#" 0 A_AlertMonsters(256) //mxd
-		Goto See
-	Death:
-		"####" H 8
-		"####" I 8 A_Scream
-		"####" J 6
-		"####" K -1 A_NoBlocking
-		Stop
-	Raise:
-		"####" KJIH 6
-		Goto See
-	}
-}
-
-ACTOR GermanShepherd : Rottweiler
-{
-	//$Title Dog (Shepherd)
-	States
-	{
-	Spawn:
-		DOG2 A 0
-		Goto Look
-	}
-}
-
-ACTOR Doberman : Rottweiler
-{
-	//$Title Dog (Doberman)
-	States
-	{
-	Spawn:
-		DOG3 A 0
-		Goto Look
 	}
 }
 
@@ -1951,6 +1856,113 @@ ACTOR MGTurretSoldierW : MGTurretSoldier
 		SMGF EFG 6
 		SMGF H -1 A_NoBlocking
 		Stop
+	}
+}
+
+////////////
+//CRITTERS//
+////////////
+
+ACTOR Rottweiler : Nazi
+{
+	//$Category Monsters (Wolf3D)/Critters
+	//$Title Dog (Rottweiler)
+	//$Color 4
+	Scale 1.1
+	HitObituary "$DOGS"
+	Health 30
+	PainChance 180
+	Speed 4
+	Height 48
+	Mass 70
+	SeeSound "dog/sight"
+	PainSound "dog/pain"
+	DeathSound "dog/death"
+	ActiveSound "dog/active"
+	-CANUSEWALLS
+	-CANPUSHWALLS //dogs mustn't able to open doors imho, that's why there was -CANUSEWALLS before, but we use bumps on polys
+	+NEVERTARGET //So the dogs don't get targeted by stealth (+FRIENDLY-abusing) guards
+	States
+	{
+	Spawn:
+		DOGY A 0
+		Goto Look
+	Idle:
+		"####" A 0 A_SetSpeed(4)
+		"####" AAAAAAAA 1 A_Wander
+		"####" A 0 A_Look
+		"####" BBBBBBBB 1 A_Wander
+		"####" A 0 A_Look
+		"####" CCCCCCCC 1 A_Wander
+		"####" A 0 A_Look
+		"####" DDDDDDDD 1 A_Wander
+		"####" A 0 A_Look
+		Loop
+	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		"####" A 0 A_SetSpeed(8)
+		"####" A 1 A_Chase
+		"####" AAA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_Chase
+		"####" BBB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" C 1 A_Chase
+		"####" CCC 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" D 1 A_Chase
+		"####" DDD 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		Loop
+	Melee:
+		"####" EF 2 Fast A_FaceTarget
+		"####" G 8 Fast A_CustomMeleeAttack(random(1,8)*3,"dog/attack","dog/attack")
+		"####" FE 4 Fast
+		Goto See
+	Pain:
+		"####" M 2
+		"####" M 2 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		Goto See
+	Death:
+		"####" H 8
+		"####" I 8 A_Scream
+		"####" J 6
+		"####" K -1 A_NoBlocking
+		Stop
+	Raise:
+		"####" KJIH 6
+		Goto See
+	}
+}
+
+ACTOR GermanShepherd : Rottweiler
+{
+	//$Title Dog (Shepherd)
+	Health 20
+	States
+	{
+	Spawn:
+		DOG2 A 0
+		Goto Look
+	Melee:
+		"####" EF 2 Fast A_FaceTarget
+		"####" G 8 Fast A_CustomMeleeAttack(random(1,4)*3,"dog/attack","dog/attack")
+		"####" FE 4 Fast
+		Goto See
+	}
+}
+
+ACTOR Doberman : Rottweiler
+{
+	//$Title Dog (Doberman)
+	Health 25
+	States
+	{
+	Spawn:
+		DOG3 A 0
+		Goto Look
+	Melee:
+		"####" EF 2 Fast A_FaceTarget
+		"####" G 8 Fast A_CustomMeleeAttack(random(1,6)*3,"dog/attack","dog/attack")
+		"####" FE 4 Fast
+		Goto See
 	}
 }
 
@@ -3929,7 +3941,6 @@ ACTOR FatMan2 : FatMan
 	}
 }
 
-
 ACTOR SuperSoldier : NaziBoss
 {
 	//$Category Monsters (Wolf3D)/Bosses
@@ -5180,10 +5191,10 @@ ACTOR MutantFartCloud
 	RenderStyle "Translucent"
 	Alpha 0.3
 	States
-		{
-		Spawn:
+	{
+	Spawn:
 		FUGS ABCDE 2
-		Fade:
+	Fade:
 		FUGS ABCDE 2 A_FadeOut (0.05)
 		FUGS ABCDE 2 A_FadeIn (0.05)
 		FUGS ABCDE 2 A_FadeOut (0.05)
@@ -5194,7 +5205,7 @@ ACTOR MutantFartCloud
 		FUGS ABCDE 2 A_FadeIn (0.05)
 		FUGS ABCDE 2 A_FadeOut (0.05)
 		Stop
-		}
+	}
 }
 
 ACTOR MutantSmoke
@@ -5216,12 +5227,12 @@ ACTOR MutantSmoke
 	RenderStyle "Shaded"
 	StencilColor "E0 00 E0"
 	States
-		{
-		Spawn:
+	{
+	Spawn:
 		TNT1 A 0
 		CLFX A 8 A_FadeOut(0.05)
 		Wait
-		}
+	}
 }
 
 ACTOR MutantRocket
