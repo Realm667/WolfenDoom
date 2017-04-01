@@ -267,6 +267,40 @@ ACTOR ScientistUniformPickup : CustomInventory
 	}
 }
 
+ACTOR SSBJUniform : ScientistUniform
+{
+	//$Title SS Uniform (useable)
+	States
+	{
+	Spawn:
+	Inactive:
+		SSUF A -1 
+		Stop
+	Active:
+		SSUF B 0 A_ChangeFlag("SOLID", FALSE)
+		"####" B 0 A_SpawnItemEx("SSBJUniformPickup", 0, 0, 16, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		"####" B 0 A_ChangeFlag("DORMANT", FALSE)
+		"####" B 0 A_ChangeFlag("USESPECIAL", FALSE)
+		"####" B -1
+		Stop
+	}
+}
+
+ACTOR SSBJUniformPickup : CustomInventory
+{
+	Inventory.PickupMessage "$UNIFORM2"
+	States
+	{
+	Spawn:
+		SSUF D -1
+		Stop
+	Pickup:
+		TNT1 A 0 {A_GiveInventory("NullWeapon", 1); A_GiveInventory("SSBJUniformToken", 1);}
+		TNT1 A 0 A_SelectWeapon("NullWeapon")
+		Stop
+	}
+}
+
 ACTOR NullWeapon : Weapon
 {
 	+WEAPON.NOALERT
