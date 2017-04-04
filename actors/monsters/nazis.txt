@@ -4007,6 +4007,44 @@ ACTOR SuperSoldier : NaziBoss
 	}
 }
 
+ACTOR SuperSoldier_SS : SuperSoldier
+{
+	//$Title SS Hans Grosse (Boss)
+	Tag "SS Ubersoldat"
+	Scale 0.63
+	States
+	{
+	Spawn:
+		HASS A 0
+		Goto Look
+	Missile:
+		HASS E 4 A_FaceTarget
+		HASS E 5 A_PlaySound("chaingun/start", CHAN_AUTO)
+		HASS E 1 A_PlaySound("chaingun/loop", CHAN_AUTO)
+		HASS E 10 A_FaceTarget
+		HASS F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
+		HASS F 1 LIGHT(SUPAFIRE) A_SpawnProjectile("EnemyChaingunTracer",44,20,random(-11,11))
+		HASS F 1 LIGHT(SUPAFIRE) A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11))
+		HASS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		HASS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		HASS G 2 A_FaceTarget
+		HASS F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
+		HASS F 1 LIGHT(SUPAFIRE) A_SpawnProjectile("EnemyChaingunTracer",44,20,random(-11,11))
+		HASS F 1 LIGHT(SUPAFIRE) A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11))
+		HASS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		HASS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		HASS G 2 A_FaceTarget
+		HASS F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
+		HASS F 1 LIGHT(SUPAFIRE) A_SpawnProjectile("EnemyChaingunTracer",44,20,random(-11,11))
+		HASS F 1 LIGHT(SUPAFIRE) A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11))
+		HASS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		HASS F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		HASS G 2 A_MonsterRefire(20,"See")
+		HASS G 0 A_FaceTarget
+ 		Goto Missile+4
+	}
+}
+
 ACTOR SuperSoldierGirl : SuperSoldier
 {
 	//$Title Gretel Grosse (Boss)
