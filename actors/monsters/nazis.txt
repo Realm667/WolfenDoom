@@ -4755,6 +4755,16 @@ ACTOR Marine2A : Marine1
 	Spawn:
 		ARMH A 0
 		Goto Look
+	Missile:
+		"####" F 6 A_FaceTarget
+		"####" G 0 A_PlaySound("nazi/stg44", CHAN_WEAPON)
+		"####" GH 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",38,6,random(-4,4))
+		"####" H 0 A_GiveInventory("WaffenSSCounter", 1) //ozy81
+		"####" H 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" H 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload") //ozy81
+		"####" F 4 A_MonsterRefire(10,"See")
+		"####" G 0 A_FaceTarget
+		Goto Missile+2
 	Pain:
 		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" I 2
@@ -4771,6 +4781,16 @@ ACTOR Marine2B : Marine1
 	Spawn:
 		MARH A 0
 		Goto Look
+	Missile:
+		"####" FG 6 A_FaceTarget
+		"####" H 0 A_PlaySound("nazi/stg44", CHAN_WEAPON)
+		"####" H 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",38,6,random(-4,4))
+		"####" H 0 A_GiveInventory("WaffenSSCounter", 1) //ozy81
+		"####" H 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" H 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload") //ozy81
+		"####" G 4 A_MonsterRefire(10,"See")
+		"####" G 0 A_FaceTarget
+		Goto Missile+2
 	}
 }
 
