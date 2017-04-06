@@ -1153,7 +1153,7 @@ ACTOR ModelOpelTruck : 3dObstacle
 	//$Color 3
 	
 	//$Arg0 "Type"
-	//$Arg0Tooltip "Pickup the desired type\nAfrika: 0\nWehrmacht: 1"
+	//$Arg0Tooltip "Pickup the desired type\nAfrika: 0\nWehrmacht: 1\nAfrika (Truck Seqs): 2\nWehrmacht (Truck Seqs): 3"
 	Radius 24
 	Height 24
 	+NOGRAVITY
@@ -1163,11 +1163,19 @@ ACTOR ModelOpelTruck : 3dObstacle
 	Spawn:
 		MDLA A 0 NoDelay
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Wehrmacht")
+		TNT1 A 0 A_JumpIf(Args[0]==2, "AfrikaNW")
+		TNT1 A 0 A_JumpIf(Args[0]==3, "WehrNW")
 		Random: //fall through if set at 0
 		MDLA A -1 A_SpawnItemEx("ModelOpelTruckWindows", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
 		Stop
 		Wehrmacht:
 		MDLA B -1 A_SpawnItemEx("ModelOpelTruckWindows", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		Stop
+		AfrikaNW:
+		MDLA A -1
+		Stop
+		WehrNW:
+		MDLA B -1
 		Stop
 	}
 }
