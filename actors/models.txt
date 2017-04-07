@@ -1161,30 +1161,15 @@ ACTOR ModelOpelTruck : 3dObstacle
 	States
 	{
 	Spawn:
-		MDLA A 0 NoDelay
+		MDLA A 0 NoDelay { args[0] == args[0] % 2; } // Remove check once the trucks are all fixed to not use args 2/3 (used to be windowless versions)
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Wehrmacht")
-		TNT1 A 0 A_JumpIf(Args[0]==2, "AfrikaNW")
-		TNT1 A 0 A_JumpIf(Args[0]==3, "WehrNW")
 		Random: //fall through if set at 0
-		MDLA A -1 A_SpawnItemEx("ModelOpelTruckWindows", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		MDLA A -1 A_SpawnItemEx("ModelOpelTruckWindows", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER)
 		Stop
 		Wehrmacht:
-		MDLA B -1 A_SpawnItemEx("ModelOpelTruckWindows", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
-		Stop
-		AfrikaNW:
-		MDLA A -1
-		Stop
-		WehrNW:
-		MDLA B -1
+		MDLA B -1 A_SpawnItemEx("ModelOpelTruckWindows", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER)
 		Stop
 	}
-}
-
-ACTOR ModelOpelTruckWindows : ModelBase
-{
-	DistanceCheck "scenelod"
-	RenderStyle "Shaded"
-	StencilColor "CC CC CC"
 }
 
 ACTOR WallLight1 : ModelBase

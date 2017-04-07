@@ -1,0 +1,31 @@
+class ModelOpelTruckWindows : Actor
+{
+	Default
+	{	+NOINTERACTION
+		Height 56;
+		DistanceCheck "scenelod";
+		RenderStyle "Shaded";
+		StencilColor "CC CC CC";
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+	}
+
+	override void BeginPlay()
+	{
+		ChangeStatNum(STAT_SCRIPTS + 1); // Tic after the pathfollower moves and the rail script has adjusted the truck model!
+	}
+
+	override void Tick()
+	{
+		if (master)
+		{
+			A_Warp(AAPTR_MASTER, flags:WARPF_COPYPITCH | WARPF_COPYINTERPOLATION | WARPF_NOCHECKPOSITION);
+		}
+		Super.Tick();
+	}
+}
