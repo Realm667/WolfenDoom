@@ -4,113 +4,106 @@
 
 splash BoA_Water
 {
-	smallclass	BoA_WaterSplash
-	smallclip    0
-	smallsound   world/drip
-	
-	baseclass    BoA_WaterSplash
-	chunkclass   BoA_WaterSplash_Chunk
-	chunkxvelshift   9
-	chunkyvelshift   9
-	chunkzvelshift   7
-	chunkbasezvel    2
-	sound        world/watersplash
+	smallclass			BoA_WaterSplash
+	smallclip				0
+	smallsound			world/drip
+	baseclass				BoA_WaterSplash
+	chunkclass			BoA_WaterSplash_Chunk
+	chunkxvelshift	9
+	chunkyvelshift	9
+	chunkzvelshift	7
+	chunkbasezvel		2
+	sound						world/watersplash
 	noalert
 }
 
 terrain BoA_Water
 {
-	splash		BoA_Water
+	splash	BoA_Water
 	liquid
 }
 
 splash BoA_Lava
 {
-	smallclass		BoA_LavaSplash
-	smallclip		0
-	smallsound		world/lavasizzle
-
-	baseclass		BoA_LavaSplash
-	chunkclass		BoA_LavaSplash_Chunk
+	smallclass			BoA_LavaSplash
+	smallclip				0
+	smallsound			world/lavasizzle
+	baseclass				BoA_LavaSplash
+	chunkclass			BoA_LavaSplash_Chunk
 	chunkxvelshift	-1
 	chunkyvelshift	-1
 	chunkzvelshift	7
-	chunkbasezvel	1
-	sound			world/lavasizzle
+	chunkbasezvel		1
+	sound						world/lavasizzle
 	noalert
 }
 
 terrain BoA_Lava
 {
-	splash			BoA_Lava
+	splash	BoA_Lava
 	liquid
 }
 
-
 splash BoA_Slime
 {
-	smallclass      BoA_SlimeSplash
-	smallclip      0
-	smallsound      world/sludgegloop
-	
-	baseclass      BoA_SlimeSplash
-	chunkclass      BoA_SlimeSplash_Chunk
-	chunkxvelshift   8
-	chunkyvelshift   8
-	chunkzvelshift   8
-	chunkbasezvel   1
-	sound         world/sludgegloop
+	smallclass			BoA_SlimeSplash
+	smallclip				0
+	smallsound			world/sludgegloop
+	baseclass				BoA_SlimeSplash
+	chunkclass			BoA_SlimeSplash_Chunk
+	chunkxvelshift	8
+	chunkyvelshift	8
+	chunkzvelshift	8
+	chunkbasezvel		1
+	sound						world/sludgegloop
 	noalert
 }
 
 terrain BoA_Slime
 {
-	splash			BoA_Slime
+	splash	BoA_Slime
 	liquid
 }
 
 splash BoA_Nukage
 {
-	smallclass	BoA_NukageSplash
-	smallclip    0
-	smallsound   world/drip
-	
-	baseclass    BoA_NukageSplash
-	chunkclass   BoA_NukageSplash_Chunk
-	chunkxvelshift   9
-	chunkyvelshift   9
-	chunkzvelshift   7
-	chunkbasezvel    2
-	sound        world/watersplash
+	smallclass			BoA_NukageSplash
+	smallclip				0
+	smallsound			world/drip
+	baseclass				BoA_NukageSplash
+	chunkclass			BoA_NukageSplash_Chunk
+	chunkxvelshift	9
+	chunkyvelshift	9
+	chunkzvelshift	7
+	chunkbasezvel		2
+	sound						world/watersplash
 	noalert
 }
 
 terrain BoA_Nukage
 {
-	splash		BoA_Nukage
+	splash	BoA_Nukage
 	liquid
 }
 
-
 splash BoA_Sizzle
 {
-	smallclass		BoA_LavaSmoke
-	smallclip		0
-	smallsound		world/lavasizzle
-
-	baseclass		BoA_LavaSmoke
-	chunkclass		none
+	smallclass			BoA_LavaSmoke
+	smallclip				0
+	smallsound			world/lavasizzle
+	baseclass				BoA_LavaSmoke
+	chunkclass			none
 	chunkxvelshift	-1
 	chunkyvelshift	-1
 	chunkzvelshift	7
-	chunkbasezvel	1
-	sound			world/lavasizzle
+	chunkbasezvel		1
+	sound						world/lavasizzle
 	noalert
 }
 
 terrain BoA_Sizzle
 {
-	splash			BoA_Sizzle
+	splash	BoA_Sizzle
 }
 
 ////////////////////////////////////////////////////
@@ -118,15 +111,14 @@ terrain BoA_Sizzle
 ////////////////////////////////////////////////////
 
 //Water
-floor 	AZTC_WTF	BoA_Water
-floor 	AZTC_WTR	BoA_Water
-floor 	fwater1		BoA_Water
-floor 	fwater2		BoA_Water
-floor 	fwater3		BoA_Water
-floor 	fwater4		BoA_Water
-floor 	watr_a01	BoA_Water
-floor 	watr_x99	BoA_Water
-//floor 	wfal_b01	BoA_Water
+floor	AZTC_WTF	BoA_Water
+floor	AZTC_WTR	BoA_Water
+floor	fwater1		BoA_Water
+floor	fwater2		BoA_Water
+floor	fwater3		BoA_Water
+floor	fwater4		BoA_Water
+floor	watr_a01	BoA_Water
+floor	watr_x99	BoA_Water
 
 floor HIWATR01 BoA_Water
 floor HIWATR02 BoA_Water
@@ -224,7 +216,6 @@ splash carpet
 	smallclass		None
 	smallclip		0
 	smallsound		njmt
-
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -240,7 +231,6 @@ splash dirt
 	smallclass		None
 	smallclip		0
 	smallsound		njmt
-
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -251,12 +241,11 @@ splash dirt
 	NoAlert
 }
 
-splash gravel //
+splash gravel
 {
 	smallclass		None
 	smallclip		0
 	smallsound		njmt
-
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -267,12 +256,11 @@ splash gravel //
 	NoAlert
 }
 
-splash metal //
+splash metal
 {
 	smallclass		None
 	smallclip		0
 	smallsound		njmt
-
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -288,7 +276,6 @@ splash metal2
 	smallclass		None
 	smallclip		0
 	smallsound		njmt
-
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -304,7 +291,6 @@ splash rock
 	smallclass		None
 	smallclip		0
 	smallsound		njmt
-
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -320,7 +306,6 @@ splash slimy
 	smallclass		None
 	smallclip		0
 	smallsound		njmt
-
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -336,7 +321,6 @@ splash snow
 	smallclass		None
 	smallclip		0
 	smallsound		njmt
-
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -352,7 +336,6 @@ splash hard
 	smallclass		None
 	smallclip		0
 	smallsound		njmt
-
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -368,7 +351,6 @@ splash tile
 	smallclass		None
 	smallclip		0
 	smallsound		njmt
-
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -384,7 +366,6 @@ splash tile2
 	smallclass		None
 	smallclip		0
 	smallsound		njmt
-
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -400,7 +381,6 @@ splash wood
 	smallclass		None
 	smallclip		0
 	smallsound		njmt
-
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -411,13 +391,11 @@ splash wood
 	NoAlert
 }
 
-
 splash electric
 {
 	smallclass		None
 	smallclip		0
 	smallsound		njmt
-
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -433,7 +411,6 @@ splash ckeen
 	smallclass		None
 	smallclip		0
 	smallsound		njmt
-
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -546,6 +523,7 @@ floor BRIK_G54 tile2
 floor BRIK_G57 tile2
 floor BRIK_G58 tile2
 floor BRIK_G81 tile2
+floor BRIK_G83 gravel
 floor CARP_B00 carpet
 floor CARP_T11 carpet
 floor EGYP_G05 rock
