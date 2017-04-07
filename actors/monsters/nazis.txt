@@ -484,19 +484,19 @@ ACTOR WMP40Guard : MP40Guard
 		MGR2 N 0
 		Goto Look
 	Missile:
-		MGR2 EF 6 A_FaceTarget
-		"####" G 0 A_PlaySound("nazi/mp40", CHAN_WEAPON)
-		"####" G 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",40,4,random(-8,8))
-		"####" G 0 A_GiveInventory("WMP40GuardCounter", 1) //ozy81
-		"####" G 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" F 2 A_FaceTarget
+		MGR2 E 6 A_FaceTarget
+		"####" F 0 A_PlaySound("nazi/mp40", CHAN_WEAPON)
+		"####" F 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",40,4,random(-8,8))
+		"####" F 0 A_GiveInventory("WMP40GuardCounter", 1) //ozy81
+		"####" F 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" E 2 A_FaceTarget
 		"####" G 0 A_PlaySound("nazi/mp40", CHAN_WEAPON)
 		"####" G 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",40,4,random(-12,12))
 		"####" G 0 A_GiveInventory("WMP40GuardCounter", 1) //ozy81
 		"####" G 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" F 0 A_JumpIfInventory("WMP40GuardCounter", 32, "Reload") //ozy81
-		"####" F 3 A_MonsterRefire(10,"See")
-		"####" F 0 A_FaceTarget
+		"####" E 0 A_JumpIfInventory("WMP40GuardCounter", 32, "Reload") //ozy81
+		"####" E 3 A_MonsterRefire(10,"See")
+		"####" E 0 A_FaceTarget
 		Goto Missile+2
 	Reload:
 		MGR2 E 0 A_ChangeFlag("NoPain", 1)
