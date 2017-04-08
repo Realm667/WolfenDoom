@@ -53,6 +53,8 @@ ACTOR Kar98k : NaziWeapon
 		KAR9 A 0 A_JumpIfInventory("SniperZoom", 1, "ScopedFire")
 		KAR9 A 0 A_GunFlash
 		KAR9 A 2 A_FireCustomMissile("Kar98kTracer")
+		KAR9 A 0 A_JumpIf(waterlevel > 0,2)
+		KAR9 A 0 A_FireCustomMissile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
 		KAR9 A 2 Offset(0,40) A_SetPitch(pitch-(4.0*CallACS("RecoilAmount")))
 		KAR9 A 1 Offset(0,36) A_SetPitch(pitch-(2.0*CallACS("RecoilAmount")))
 		KAR9 B 1 Offset(0,32)A_SetPitch(pitch+(1.0*CallACS("RecoilAmount")))
@@ -69,6 +71,8 @@ ACTOR Kar98k : NaziWeapon
 	ScopedFire:
 		SCO1 A 2 A_FireCustomMissile("Kar98kTracer2")
 		SCO1 A 0 A_JumpIf(height<=30,"ScopedFireLowRecoil")
+		SCO1 A 0 A_JumpIf(waterlevel > 0,2)
+		SCO1 A 0 A_FireCustomMissile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
 		SCO1 A 2 A_SetPitch(pitch-(4.0*CallACS("RecoilAmount")))
 		SCO1 A 1 A_SetPitch(pitch-(2.0*CallACS("RecoilAmount")))
 		SCO1 A 1 A_SetPitch(pitch+(1.0*CallACS("RecoilAmount")))
@@ -78,6 +82,8 @@ ACTOR Kar98k : NaziWeapon
 		SCO1 A 1 A_CheckReload
 		Goto Ready
 	ScopedFireLowRecoil:
+		SCO1 A 0 A_JumpIf(waterlevel > 0,2)
+		SCO1 A 0 A_FireCustomMissile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
 		SCO1 A 2 A_SetPitch(pitch-(2.0*CallACS("RecoilAmount")))
 		SCO1 A 1 A_SetPitch(pitch-(1.0*CallACS("RecoilAmount")))
 		SCO1 A 1 A_SetPitch(pitch+(0.5*CallACS("RecoilAmount")))

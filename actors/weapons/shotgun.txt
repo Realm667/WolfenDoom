@@ -55,6 +55,8 @@ ACTOR TrenchShotgun : NaziWeapon
 		SHTG A 0 A_AlertMonsters
 		SHTG AAAAAAAAAA 0 A_FireCustomMissile("ShotgunTracer",frandom(-2.0,2.0),0,0,0,0,frandom(-1.5,1.5))
 		SHTG F 1 A_GunFlash
+		SHTG F 0 A_JumpIf(waterlevel > 0,2)
+		SHTG F 0 A_FireCustomMissile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
 		SHTG F 1 A_SetPitch(pitch-(4.0*CallACS("RecoilAmount")))
 		SHTG F 1 Offset(0,40) A_SetPitch(pitch-(2.0*CallACS("RecoilAmount")))
 		SHTG F 1 Offset(0,36) A_SetPitch(pitch-(1.0*CallACS("RecoilAmount")))

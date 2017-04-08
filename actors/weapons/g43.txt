@@ -38,6 +38,8 @@ ACTOR G43 : NaziWeapon
 		M1GG A 0 A_SpawnItemEx("MauserRifleCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
 		M1GG A 0 A_AlertMonsters
 		M1GG A 1 A_FireCustomMissile("G43Tracer")
+		M1GG A 0 A_JumpIf(waterlevel > 0,2)
+		M1GG A 0 A_FireCustomMissile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
 		M1GG A 1 A_SetPitch(pitch-(1.4*CallACS("RecoilAmount")))
 		M1GG CDEDC 1
 		TNT1 A 0 A_CheckReload

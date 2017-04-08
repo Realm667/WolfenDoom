@@ -368,3 +368,69 @@ ACTOR HardEnemyRifleTracer : EnemyRifleTracer				{+MTHRUSPECIES Speed 90}
 ACTOR HardEnemySMGTracer : EnemySMGTracer						{+MTHRUSPECIES Speed 90}
 ACTOR HardEnemyShotgunTracer : EnemyShotgunTracer		{+MTHRUSPECIES Speed 90}
 ACTOR HardEnemyStGTracer : EnemyStGTracer						{+MTHRUSPECIES Speed 90}
+
+// SmokeSpawners for weapons //
+ACTOR PistolSmokeSpawner
+{
+	Radius 1
+	Height 1
+	Speed 25
+	PROJECTILE
+	States
+		{
+		Spawn:
+			TNT1 A 1
+			TNT1 A 0 A_Die
+			Goto Death
+		Death:
+			TNT1 A 0 A_SpawnProjectile("PistolSmoke",random(-2,2),0,0)
+			Stop
+		}
+}
+
+ACTOR PistolSmoke
+{
+	Radius 1
+	Height 1
+	RenderStyle ADD
+	Alpha 0.6
+	Scale 0.1
+	+NOCLIP
+	+NOGRAVITY
+	+NOBLOCKMAP
+	+DONTSPLASH
+	+CLIENTSIDEONLY
+	+FORCEXYBILLBOARD
+	States
+		{
+		Spawn:
+			SMSP ABCDEFGHIJKLMNOPQ 1
+			Stop
+		}
+}
+
+ACTOR ShotSmokeSpawner : PistolSmokeSpawner
+{
+	Speed 20
+	States
+		{
+		Death:
+			TNT1 A 0 A_SpawnProjectile("ShotSmoke",random(-2,2),0,0)
+			Stop
+		}
+}
+
+ACTOR ShotSmoke : PistolSmoke { Scale 0.15 }
+
+ACTOR ChainSmokeSpawner : PistolSmokeSpawner
+{
+	Speed 28
+	States
+		{
+		Death:
+			TNT1 A 0 A_SpawnProjectile("ChainSmoke",random(-2,2),0,0)
+			Stop
+		}
+}
+
+ACTOR ChainSmoke : PistolSmoke { Alpha 0.5 Scale 0.20 }

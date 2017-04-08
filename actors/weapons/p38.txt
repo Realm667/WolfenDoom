@@ -34,6 +34,8 @@ ACTOR Walther9mm : NaziWeapon
 		Goto Dryfire
 		WALG A 0 A_GunFlash
 		WALG A 0 A_SetPitch(pitch-(0.2*CallACS("RecoilAmount")))
+		WALG A 0 A_JumpIf(waterlevel > 0,2)
+		WALG A 0 A_FireCustomMissile("PistolSmokeSpawner",0,0,0,random(-4,4),0,0)
 		WALG A 0 A_PlaySound("walther/fire", CHAN_WEAPON)
 		WALG A 0 A_SpawnItemEx("9MMCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
 		WALG A 0 A_AlertMonsters

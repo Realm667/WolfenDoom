@@ -35,6 +35,8 @@ ACTOR MP40 : NaziWeapon
 		Goto Dryfire
 		RIFG A 0 A_GunFlash
 		RIFG A 0 A_SetPitch(pitch-(0.5*CallACS("RecoilAmount")))
+		RIFG A 0 A_JumpIf(waterlevel > 0,2)
+		RIFG A 0 A_FireCustomMissile("ChainSmokeSpawner",0,0,0,random(-4,4),0,0)
 		RIFG A 0 A_PlaySound("mp40/fire", CHAN_WEAPON)
 		RIFG A 0 A_SpawnItemEx("9MMCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
 		RIFG A 0 A_AlertMonsters
