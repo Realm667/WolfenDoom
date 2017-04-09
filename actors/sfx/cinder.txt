@@ -3,7 +3,6 @@ ACTOR CinderSpawner : SwitchableDecoration
 	//$Category Special Effects (Wolf3D)
 	//$Title Cinder Spawner (floor)
 	//$Color 12
-
 	//$Arg0 "Radius"
 	//$Arg0Tooltip "Radius in map units"
 	//$Arg1 "Height"
@@ -71,7 +70,6 @@ ACTOR CinderSpawnerSky
 	//$Category Special Effects (Wolf3D)
 	//$Title Cinder Spawner (ceiling)
 	//$Color 12
-
 	//$Arg0 "Radius"
 	//$Arg0Tooltip "Radius in map units\nDefault: 0"
 	//$Arg1 "Frequency"
@@ -79,10 +77,8 @@ ACTOR CinderSpawnerSky
 	//$Arg2 "Area"
 	//$Arg2Type 11
 	//$Arg2Enum { 0 = "Square"; 1 = "Circle"; }
-
 	Radius 1
 	Height 3
-	
 	+CLIENTSIDEONLY
 	+NOBLOCKMAP
 	+NOCLIP
@@ -90,35 +86,28 @@ ACTOR CinderSpawnerSky
 	+NOINTERACTION
 	+NOSECTOR
 	+SPAWNCEILING
-	
 	States
 	{
 	Spawn:
 		TNT1 A 0 NoDelay A_JumpIf(!CallACS("snowswitch"), "Vanish")
 		Goto PickShape
-		
 	PickShape:
 		TNT1 A 0 A_JumpIf(Args[2], "CircleLoop")
 		Goto SquareLoop
-		
 	CircleLoop:
 		TNT1 A 0 A_CheckRange(1024.0, "CircleWait", TRUE)
 		TNT1 A 6 A_SpawnItemEx("FloatingCinder", random(-Args[0], Args[0]), 0, 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0),frandom(-1.0, -3.0), random(0, 359), 0, Args[1])
 		Loop
-		
 	CircleWait:
 		TNT1 A 10
-		Goto CircleLoop	
-		
+		Goto CircleLoop
 	SquareLoop:
 		TNT1 A 0 A_CheckRange(1024.0, "SquareWait", TRUE)
 		TNT1 A 6 A_SpawnItemEx("FloatingCinder", random(-Args[0], Args[0]), random(-Args[0], Args[0]), 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, 0, Args[1])
 		Loop
-		
 	SquareWait:
 		TNT1 A 10
 		Goto SquareLoop
-		
 	Vanish:
 		TNT1 A 1
 		Stop

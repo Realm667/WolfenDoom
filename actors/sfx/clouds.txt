@@ -3,7 +3,6 @@ ACTOR CloudSpawner
 	//$Category Special Effects (Wolf3D)
 	//$Title Cloudstorm Spawner (arg1 xRadius, arg2 zRadius, arg3 Chance, arg4 Size, arg5 Color)
 	//$Color 12
-
 	//$Arg0 "Radius(x/y)"
 	//$Arg0Tooltip "Radius of spawn area in map units"
 	//$Arg1 "Height(z)"
@@ -98,16 +97,8 @@ ACTOR LargeCloudGrey : CloudBaseGrey  {	Scale 4.0 }
 
 
 //Base Cloud Tan
-ACTOR CloudBaseTan
+ACTOR CloudBaseTan : CloudBaseGrey
 {
-	+MISSILE
-	+NOBLOCKMAP
-	+NOGRAVITY
-	Radius 1
-	Height 1
-	RenderStyle "Translucent"
-	Alpha 0.1
-	Scale 0.5
 	States
 	{
 	Spawn:
@@ -118,13 +109,6 @@ ACTOR CloudBaseTan
 	Cloud2:
 		CLXT B 0
 		Goto Movement
-	Movement:
-		"####""###########" 3 A_FadeIn(0.05)
-		"####" "#" 1000 
-		Wait
-	Death:
-		"####" "#" 5 A_FadeOut(0.05)
-		Loop
 	}
 }
 

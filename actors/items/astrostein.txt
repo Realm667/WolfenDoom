@@ -20,10 +20,11 @@ ACTOR SuperShield : BasicArmorPickup
 	Armor.SaveAmount 100
 	Inventory.Icon "armh05"
 	Inventory.PickupMessage "$SUPASHLD"
+	+BRIGHT
 	States
 	{
 	Spawn:
-		ARMX AB 3 BRIGHT
+		ARMX AB 3
 		Loop
 	}
 }

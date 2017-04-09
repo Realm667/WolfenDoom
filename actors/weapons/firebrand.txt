@@ -140,6 +140,7 @@ ACTOR FirebrandFireball
 	Height 12
 	Speed 40
 	Damage (40)
+	+BRIGHT
 	+WINDTHRUST
 	RenderStyle "Add"
 	DeathSound "world/barrelboom"
@@ -149,14 +150,14 @@ ACTOR FirebrandFireball
 	States
 	{
 	Spawn:
-		CFFX N 0 BRIGHT LIGHT(ITBURNS3)
-		CFFX N 0 BRIGHT LIGHT(ITBURNS2)
-		CFFX N 1 BRIGHT LIGHT(ITBURNS1) A_SpawnItemEx("FirebrandFireballTrail")
+		CFFX N 0 LIGHT(ITBURNS3)
+		CFFX N 0 LIGHT(ITBURNS2)
+		CFFX N 1 LIGHT(ITBURNS1) A_SpawnItemEx("FirebrandFireballTrail")
 		Loop
 	Death:
-		CFCF Q 2 BRIGHT A_Scream
-		"####" R 2 BRIGHT A_Explode(16,128,0)
-		"####" STUVWXYZ 2 BRIGHT
+		CFCF Q 2 A_Scream
+		"####" R 2 A_Explode(16,128,0)
+		"####" STUVWXYZ 2 
 		Stop
 	}
 }
@@ -164,10 +165,11 @@ ACTOR FirebrandFireball
 ACTOR FirebrandFireballTrail
 {
 	RenderStyle "Add"
+	+BRIGHT
 	States
 	{
 	Spawn:
-		CFFX NOP 4 BRIGHT LIGHT(ITBURNS1)
+		CFFX NOP 4 LIGHT(ITBURNS1)
 		Stop
 	}
 }
