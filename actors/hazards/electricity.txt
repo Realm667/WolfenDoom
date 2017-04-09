@@ -65,6 +65,7 @@ ACTOR Electricity4 : Electricity1
 	//$Title Electricity (thin, vertical)
 	//$Sprite LABZF0
 	+FLATSPRITE
+	+ISMONSTER
 	+ROLLSPRITE
 	+NOGRAVITY
 	Renderstyle Add
@@ -78,10 +79,10 @@ ACTOR Electricity4 : Electricity1
 		"####" F 0 A_SetSolid
 		"####" F 0 A_Jump(256, 1,5,9,13,17,21,25,29,33)
 	ActiveLoop:
-		"####" GHIJKLMNOJNGIHMKOL 2
+		"####" GHIJKLMNOJNGIHMKOL 2 {A_CustomRailgun (9999, angle, none, none, RGF_SILENT | RGF_CENTERZ | RGF_NORANDOMPUFFZ, 0, 0, none, angle, pitch, 1024, 1, 2.0, 99.0, none, pitch);A_CustomRailgun (9999, -angle, none, none, RGF_SILENT | RGF_CENTERZ | RGF_NORANDOMPUFFZ, 0, 0, none, angle, pitch, 1024, 1, 2.0, 99.0, none, pitch);}
 		Loop
 	ActiveLoop2:
-		"####" GOHNIMJLKONMLKJIHG 2
+		"####" GOHNIMJLKONMLKJIHG 2 {A_CustomRailgun (9999, angle, none, none, RGF_SILENT | RGF_CENTERZ | RGF_NORANDOMPUFFZ, 0, 0, none, angle, pitch, 1024, 1, 2.0, 99.0, none, pitch);A_CustomRailgun (9999, -angle, none, none, RGF_SILENT | RGF_CENTERZ | RGF_NORANDOMPUFFZ, 0, 0, none, angle, pitch, 1024, 1, 2.0, 99.0, none, pitch);}
 		Loop
 	}
 }
