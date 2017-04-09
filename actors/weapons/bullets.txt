@@ -385,7 +385,7 @@ ACTOR PistolSmokeSpawner
 			TNT1 A 0 A_Die
 			Goto Death
 		Death:
-			TNT1 A 0 A_SpawnItemEx("PistolSmoke",24,random(-2,2),frandom(3.1,4.1),0,frandom(-0.2,0.2),frandom(0.2,0.6))
+			TNT1 A 0 A_SpawnItemEx("PistolSmoke",24,0,0,frandom(0.1,0.2),0,frandom(0.2,0.6))
 			Stop
 		EndSpawn:
 			TNT1 A 1
@@ -398,8 +398,8 @@ ACTOR PistolSmoke
 	Radius 1
 	Height 1
 	RenderStyle Translucent
-	Alpha 0.5
-	Scale 0.1
+	Alpha 0.2
+	Scale 0.03
 	+NOCLIP
 	+NOGRAVITY
 	+NOBLOCKMAP
@@ -410,6 +410,9 @@ ACTOR PistolSmoke
 	States
 		{
 		Spawn:
+			SMSP A 1 A_FadeIn
+			SMSP A 1 A_FadeIn
+		Next:
 			SMSP A 1 A_SetRoll(roll+1, SPF_INTERPOLATE)
 			SMSP A 0 A_FadeOut(0.04)
 			SMSP A 0 A_SetScale(scaleX+0.001, scaleY+0.001)
@@ -423,12 +426,12 @@ ACTOR ShotSmokeSpawner : PistolSmokeSpawner
 	States
 		{
 		Death:
-			TNT1 A 0 A_SpawnItemEx("ShotSmoke",24,random(-2,2),frandom(3.1,4.1),0,frandom(-0.2,0.2),frandom(0.2,0.6))
+			TNT1 A 0 A_SpawnItemEx("ShotSmoke",24,0,0,frandom(0.1,0.2),0,frandom(0.2,0.6))
 			Stop
 		}
 }
 
-ACTOR ShotSmoke : PistolSmoke { Scale 0.15 }
+ACTOR ShotSmoke : PistolSmoke { Alpha 0.75 Scale 1 }
 
 ACTOR ChainSmokeSpawner : PistolSmokeSpawner
 {
@@ -436,9 +439,9 @@ ACTOR ChainSmokeSpawner : PistolSmokeSpawner
 	States
 		{
 		Death:
-			TNT1 A 0 A_SpawnItemEx("ChainSmoke",24,random(-2,2),frandom(3.1,4.1),0,frandom(-0.2,0.2),frandom(0.2,0.6))
+			TNT1 A 0 A_SpawnItemEx("ChainSmoke",24,0,0,frandom(0.1,0.2),0,frandom(0.2,0.6))
 			Stop
 		}
 }
 
-ACTOR ChainSmoke : PistolSmoke { Alpha 0.5 Scale 0.20 }
+ACTOR ChainSmoke : PistolSmoke { Alpha 0.5 Scale 2 }
