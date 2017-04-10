@@ -162,6 +162,23 @@ ACTOR Radiator
 	}
 }
 
+ACTOR BlowTorch : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Furniture
+	//$Title BlowTorch
+	//$Color 3
+	DistanceCheck "scenelod"
+	Radius 4
+	Height 16
+	+SOLID
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
+}
+
 ACTOR TestCrate : 3dObstacle
 {
 	//$Category Props (Wolf3D)/Labs
