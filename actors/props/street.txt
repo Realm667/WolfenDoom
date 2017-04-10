@@ -1,8 +1,9 @@
-ACTOR HydrantShootable
+ACTOR HydrantShootable //3d Actor
 {
 	//$Category Props (Wolf3D)/Street
 	//$Title Hydrant (shootable)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Health 1
 	Radius 10
 	Height 42
@@ -35,30 +36,14 @@ ACTOR HydrantShootable
 	}
 }
 
-ACTOR Tires
+ACTOR Tires //3d Actor
 {
 	//$Category Props (Wolf3D)/Street
-	//$Title Tires (grey)
-	//$Color 3
-	Radius 16
-	Height 8
-	+SOLID
-	States
-	{
-	Spawn:
-		TIRE A -1
-		Stop
-	}
-}
-
-ACTOR RoadBarrier //3d actor
-{
-	//$Category Props (Wolf3D)/Street
-	//$Title Barrier
+	//$Title Tires (Kubelwagon)
 	//$Color 3
 	DistanceCheck "scenelod"
-	Radius 32
-	Height 64
+	Radius 16
+	Height 8
 	+SOLID
 	States
 	{
@@ -66,6 +51,14 @@ ACTOR RoadBarrier //3d actor
 		MDLA A -1
 		Stop
 	}
+}
+
+ACTOR RoadBarrier : Tires //3d actor
+{
+	//$Title Road Barrier (Small)
+	DistanceCheck "scenelod"
+	Radius 32
+	Height 64
 }
 
 ACTOR StreetBin

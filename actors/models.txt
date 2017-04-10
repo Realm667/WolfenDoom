@@ -144,6 +144,24 @@ ACTOR SkyboxMoonLights : SkyboxPlanetShade //adjusted by T667
 	Alpha 0.8
 }
 
+//Ozy models from scratch or highly revamped
+ACTOR Radiator
+{
+	//$Category Models (Wolf3D)/Furniture
+	//$Title Radiator
+	//$Color 3
+	DistanceCheck "scenelod"
+	Radius 4
+	Height 32
+	+SOLID
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
+}
+
 ACTOR TestCrate : 3dObstacle
 {
 	//$Category Props (Wolf3D)/Labs
@@ -254,6 +272,7 @@ ACTOR WoodenBlades : ModelBase
 	+SPAWNCEILING
 	Scale 0.85
 }
+//End of Ozy
 
 ACTOR ModelBeachHedgeHog : 3dObstacle
 {
