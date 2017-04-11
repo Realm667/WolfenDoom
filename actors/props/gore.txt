@@ -183,10 +183,9 @@ ACTOR Manacles  //3d actor - ozymandias81
 	//$Category Gore (Wolf3D)
 	//$Title Wall Manacles (with Type args)
 	//$Color 4
-	DistanceCheck "scenelod"
-	
 	//$Arg0 "Type"
 	//$Arg0Tooltip "Pickup the desired type\nRandom: 0\nNormal: 1\nWith Hands: 2\nRusty: 3"
+	DistanceCheck "scenelod"
 	Radius 1
 	Height 32
 	+NOGRAVITY
@@ -328,11 +327,9 @@ ACTOR MutantSubjectRandom : RandomSpawner
 	//$Title Random Mutant Subject (Static)
 	//$Color 4
 	//$Sprite ALMUA0
-	
 	DropItem "MutantSubject3"
 	DropItem "MutantSubject2"
 	DropItem "MutantSubject1"
-	
 	Radius 16
 	Height 64
 	Scale 1.0
@@ -389,10 +386,8 @@ ACTOR CreepySkulls
 	//$Title Creepy Skulls (args, straight or side)
 	//$Color 4
 	//$Sprite DJSKC0
-	
 	//$Arg0 "Type"
 	//$Arg0Tooltip "Pickup the desired type\nRandom: 0\nStraight: 1\nSide: 2"
-	
 	Radius 8
 	Scale 0.7
 	States
@@ -420,10 +415,8 @@ ACTOR CreepySkullsImpaled
 	//$Title Creepy Impaled Skulls (args, 1 or 2 skulls)
 	//$Color 4
 	//$Sprite DJSKA0
-	
 	//$Arg0 "Type"
 	//$Arg0Tooltip "Pickup the desired type\nRandom: 0\nOne Skull: 1\nTwo Skulls: 2"
-	
 	Radius 12
 	Height 24
 	Scale 0.7
@@ -445,6 +438,34 @@ ACTOR CreepySkullsImpaled
 		Stop
 		TwoSkulls:
 		DJSK B -1
+		Stop
+	}
+}
+
+ACTOR RandomBodyParts
+{
+	//$Category Gore (Wolf3D)
+	//$Title Body Parts (random)
+	//$Color 4
+	Radius 8
+	Height 4
+	Scale 0.7
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12)
+		GORE B -1
+		GORE C -1
+		GORE D -1
+		GORE E -1
+		GORE F -1
+		GORE G -1
+		GORE H -1
+		GORE I -1
+		GORE J -1
+		GORE K -1
+		GORE L -1
+		GORE M -1
 		Stop
 	}
 }
