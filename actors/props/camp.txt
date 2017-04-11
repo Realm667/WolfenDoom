@@ -90,6 +90,40 @@ ACTOR Camp_SnowyLogsDead : Camp_LogsDead
 	}
 }
 
+ACTOR Camp_RandomBodyParts
+{
+	//$Category Concentration Camp (Wolf3D)/Gore
+	//$Title Prisoners Body Parts (random)
+	//$Color 3
+	Radius 8
+	Height 4
+	Scale 0.7
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17)
+		GORC A -1
+		GORC B -1
+		GORC C -1
+		GORC D -1
+		GORC E -1
+		GORC F -1
+		GORC G -1
+		GORC H -1
+		GORC I -1
+		GORC J -1
+		GORC K -1
+		GORC L -1
+		GORC M -1
+		GORC N -1
+		GORC O -1
+		GORC P -1
+		GORC Q -1
+		GORC R -1
+		Stop
+	}
+}
+
 // SCENERY //
 ACTOR Camp_RandomUniform
 {
