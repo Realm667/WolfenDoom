@@ -29,7 +29,7 @@ ACTOR LaserShooter : SwitchableDecoration
 		TNT1 A 0 A_CustomBulletAttack(0,0,1,100,"MeasurePuff",Args[2]*256,CBAF_AIMFACING | CBAF_EXPLICITANGLE)	//spawns the bullet puff
 		TNT1 A 0 A_SpawnItemEx("LaserBeam_Red",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_ISTRACER)								//spawns the beam - no need to transfer pitch, we do that later
 		TNT1 A 0 A_SetScale(frandom(0.95, 1.05),(GetDistance(1,AAPTR_MASTER)/33.25),AAPTR_TRACER)								//scales the Height by distance to the the puff. "/33.25" is just an approximation for my particular md3 model. This could be done cleaner with a 1-MU tall md3 I suspect.
-		TNT1 A 0 A_SetPitch(-pitch+90,0,AAPTR_TRACER)																														//+90 accounts for the md3 actor facing downward in a neutral position. why -pitch instead of +pitch? Lol dunno but it werkz :^)
+		TNT1 A 0 A_SetPitch(pitch-90,0,AAPTR_TRACER)																														//+90 accounts for the md3 actor facing downward in a neutral position. why -pitch instead of +pitch? Lol dunno but it werkz :^)
 		TNT1 A 0 A_SetAngle(angle+(Args[1]*0.25),0,AAPTR_DEFAULT)																								//rotates actor that fires the beam - Args1 doesn't have a perfect floating value conversion, but it works (ozy)
 		TNT1 A 1
 		Loop
@@ -40,7 +40,7 @@ ACTOR LaserShooter : SwitchableDecoration
 		TNT1 A 0 A_CustomBulletAttack(0,0,1,100,"MeasurePuff",Args[1]*256,CBAF_AIMFACING | CBAF_EXPLICITANGLE)
 		TNT1 A 0 A_SpawnItemEx("LaserBeam_Purple",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_ISTRACER)
 		TNT1 A 0 A_SetScale(frandom(0.95, 1.05),(GetDistance(1,AAPTR_MASTER)/33.25),AAPTR_TRACER)
-		TNT1 A 0 A_SetPitch(-pitch+90,0,AAPTR_TRACER)
+		TNT1 A 0 A_SetPitch(pitch-90,0,AAPTR_TRACER)
 		TNT1 A 0 A_SetAngle(angle+(Args[0]*0.25),0,AAPTR_DEFAULT)
 		TNT1 A 1
 		Loop
@@ -51,7 +51,7 @@ ACTOR LaserShooter : SwitchableDecoration
 		TNT1 A 0 A_CustomBulletAttack(0,0,1,100,"MeasurePuff",Args[1]*256,CBAF_AIMFACING | CBAF_EXPLICITANGLE)
 		TNT1 A 0 A_SpawnItemEx("LaserBeam_Green",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_ISTRACER)
 		TNT1 A 0 A_SetScale(frandom(0.95, 1.05),(GetDistance(1,AAPTR_MASTER)/33.25),AAPTR_TRACER)
-		TNT1 A 0 A_SetPitch(-pitch+90,0,AAPTR_TRACER)
+		TNT1 A 0 A_SetPitch(pitch-90,0,AAPTR_TRACER)
 		TNT1 A 0 A_SetAngle(angle+(Args[0]*0.25),0,AAPTR_DEFAULT)
 		TNT1 A 1
 		Loop
@@ -70,7 +70,7 @@ ACTOR LaserShooterNF : LaserShooter
 		TNT1 A 0 A_CustomBulletAttack(0,0,1,100,"MeasurePuffNR",Args[2]*256,CBAF_AIMFACING | CBAF_EXPLICITANGLE)
 		TNT1 A 0 A_SpawnItemEx("LaserBeam_Red",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_ISTRACER)
 		TNT1 A 0 A_SetScale(frandom(0.95, 1.05),(GetDistance(1,AAPTR_MASTER)/33.25),AAPTR_TRACER)
-		TNT1 A 0 A_SetPitch(-pitch+90,0,AAPTR_TRACER)
+		TNT1 A 0 A_SetPitch(pitch-90,0,AAPTR_TRACER)
 		TNT1 A 0 A_SetAngle(angle+(Args[1]*0.25),0,AAPTR_DEFAULT)
 		TNT1 A 1
 		Loop
@@ -81,7 +81,7 @@ ACTOR LaserShooterNF : LaserShooter
 		TNT1 A 0 A_CustomBulletAttack(0,0,1,100,"MeasurePuffNP",Args[1]*256,CBAF_AIMFACING | CBAF_EXPLICITANGLE)
 		TNT1 A 0 A_SpawnItemEx("LaserBeam_Purple",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_ISTRACER)
 		TNT1 A 0 A_SetScale(frandom(0.95, 1.05),(GetDistance(1,AAPTR_MASTER)/33.25),AAPTR_TRACER)
-		TNT1 A 0 A_SetPitch(-pitch+90,0,AAPTR_TRACER)
+		TNT1 A 0 A_SetPitch(pitch-90,0,AAPTR_TRACER)
 		TNT1 A 0 A_SetAngle(angle+(Args[0]*0.25),0,AAPTR_DEFAULT)
 		TNT1 A 1
 		Loop
@@ -92,7 +92,7 @@ ACTOR LaserShooterNF : LaserShooter
 		TNT1 A 0 A_CustomBulletAttack(0,0,1,100,"MeasurePuffNG",Args[1]*256,CBAF_AIMFACING | CBAF_EXPLICITANGLE)
 		TNT1 A 0 A_SpawnItemEx("LaserBeam_Green",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_ISTRACER)
 		TNT1 A 0 A_SetScale(frandom(0.95, 1.05),(GetDistance(1,AAPTR_MASTER)/33.25),AAPTR_TRACER)
-		TNT1 A 0 A_SetPitch(-pitch+90,0,AAPTR_TRACER)
+		TNT1 A 0 A_SetPitch(pitch-90,0,AAPTR_TRACER)
 		TNT1 A 0 A_SetAngle(angle+(Args[0]*0.25),0,AAPTR_DEFAULT)
 		TNT1 A 1
 		Loop
@@ -128,7 +128,7 @@ ACTOR ZapShooter : SwitchableDecoration
 		HitLoop:
 		TNT1 A 0 A_CustomBulletAttack(0,0,1,100,"MeasurePuffZAP",Args[1]*256,CBAF_AIMFACING | CBAF_EXPLICITANGLE)
 		TNT1 A 0 A_SetScale(3.5,(GetDistance(1,AAPTR_MASTER)/66.50),AAPTR_TRACER)
-		TNT1 A 0 A_SetPitch(-pitch+90,0,AAPTR_TRACER)
+		TNT1 A 0 A_SetPitch(pitch-90,0,AAPTR_TRACER)
 		TNT1 A 0 A_SetAngle(angle+(Args[0]*0.25),0,AAPTR_DEFAULT)
 		TNT1 A 1
 		Loop
