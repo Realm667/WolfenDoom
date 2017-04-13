@@ -64,6 +64,22 @@ ACTOR ArtifactAstrostrein : Akten
 	}
 }
 
+ACTOR ArtifactAstrostreinIM
+{
+	//$Category Pickups (Wolf3D)
+	//$Title Mayan Artifact (Astrostein, placed)
+	//$Color 3
+	Radius 4
+	Height 8
+	-SOLID
+	States
+	{
+	Spawn:
+		ARTM B -1
+		Stop
+	}
+}
+
 ACTOR ArtifactEgyptian : Akten
 {
 	//$Title Egyptian Artifact (C1M6)
