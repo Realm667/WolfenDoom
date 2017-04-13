@@ -17,7 +17,7 @@ ACTOR Exclamation : SwitchableDecoration
 	States
 	{
 	Spawn:
-		EXCL A 0 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		EXCL A 0 //NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 	Active:
 		EXCL A -1 BRIGHT
 		Loop
@@ -33,6 +33,19 @@ ACTOR ExclamationCompass : Exclamation
 	//$Title Exclamation Mark (for Compass only)
 	//$Color 1
 	//$Sprite EXCLA0
+	Radius 4
+	Height 8
+	States
+	{
+	Spawn:
+		EXCL A 0 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+	Active:
+		EXCL A -1 BRIGHT
+		Loop
+	Inactive:
+		TNT1 A -1
+		Stop
+	}
 }
 
 ACTOR ExclamationTouchable : Exclamation
