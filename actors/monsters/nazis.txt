@@ -4764,7 +4764,9 @@ ACTOR DirtyDarren : Guard
 		"####" EF 5 A_FaceTarget
 		"####" G 0 A_PlaySound("nazi/pistol", CHAN_WEAPON)
 		"####" G 8 LIGHT(NAZIFIRE) A_SpawnProjectile("ThompsonTracer",32,0,random(-8,8))
-		"####" F 8
+		"####" G 0 A_GiveInventory("PistolGuardCounter", 1)
+		"####" F 8 A_SpawnItemEx("9MMCasing", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
+		"####" F 0 A_JumpIfInventory("PistolGuardCounter", 8, "Reload")
 		"####" F 0 A_Jump(256,"See")
 		Stop
 	Death.Alt1:
