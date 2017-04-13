@@ -56,7 +56,7 @@ ACTOR ExclamationTouchable : Exclamation
 	States
 	{
 	Spawn:
-		EXCL A 0 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		EXCL A 0 //NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 	Active:
 		EXCL A 1 BRIGHT A_CheckProximity("Inactive", "BoAPlayer", 72, 1)
 		Loop
