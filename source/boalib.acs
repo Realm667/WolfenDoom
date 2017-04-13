@@ -188,7 +188,8 @@ script "BoADialogue"(int headtalky,int headsilent,int message)
 	hudmessagebold(l:message; HUDMSG_FADEINOUT, 2, CR_GRAY, 100.1, 8.1, 0.0, 0.0, 1.0);
 }
 
-script "TotaleMacht" (void) {
+script "TotaleMacht" (void)
+{
 	delay(35 * 30); // 30 seconds
 	TakeInventory("BerserkToken", 1);
 }
@@ -344,7 +345,7 @@ function void drawdot(int tid)
 			HUDMessage(s:"A"; HUDMSG_ALPHA, 0, CR_UNTRANSLATED, (-_cos(a) * rdist / 1.0) * 1.0 + 85.0, (_sin(a) * rdist / 1.0) * 1.0 + 170.0,0.03,0.2);
 		}
 
-		if(CheckActorClass(tid,"Akten")||CheckActorClass(tid,"AktenEisenmann")||CheckActorClass(tid,"SpearOfDestiny"))
+		if(CheckActorClass(tid,"Akten")||CheckActorClass(tid,"AktenEisenmann")||CheckActorClass(tid,"SpearOfDestiny")||CheckActorClass(tid,"ExclamationCompass"))
 		{
 			SetFont("GOAL1");
 			HUDMessage(s:"A"; HUDMSG_ALPHA, 0, CR_UNTRANSLATED, (-_cos(a) * rdist / 1.0) * 1.0 + 85.0, (_sin(a) * rdist / 1.0) * 1.0 + 170.0,0.03,0.2);
