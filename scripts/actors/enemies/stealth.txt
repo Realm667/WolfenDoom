@@ -84,7 +84,7 @@ class StealthBase : Actor
 				alert.scale.x = alert.scale.y = 1 + alert.alpha;
 			} 
 
-			if (g_debugstealth) { console.printf("%.2f%%", sighttime * 100 / threshold); }
+			if (GetCVar("g_debugstealth") > 0) { console.printf("%.2f%%", sighttime * 100 / threshold); }
 		}
 
 		return ResolveState(null);
