@@ -1,0 +1,85 @@
+class Nazi : Actor
+{
+	int user_incombat;
+	int perceptionthreshold;
+	int perceptionfov;
+
+	Property PerceptionTime:perceptionthreshold; // How many tics the player has to be in sight before NOTARGET fails - 0 means never see through NoTarget
+	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
+
+	Default
+	{
+		Monster;
+		+BOSSDEATH
+		+CANBLAST //needed for kicks - ozy81
+		+DONTGIB
+		+DONTHARMSPECIES
+		+FLOORCLIP
+		Scale 1.2;
+		Height 56;
+		Mass 100;
+		PainChance 200;
+		Speed 2;
+
+		Nazi.PerceptionTime 0;
+		Nazi.PerceptionFOV 120;
+	}
+
+	States
+	{
+		Look:
+			"####" "#" 10 A_Look;
+			Loop;
+		See:
+			"####" "#" 0 { user_incombat = True; } //mxd
+			"####" A 1 A_Chase;
+			"####" AAA 1 A_Chase(null,null);
+			"####" A 1 A_Chase;
+			"####" AAA 1 A_Chase(null,null);
+			"####" B 1 A_Chase;
+			"####" B 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			"####" BBB 1 A_Chase(null,null);
+			"####" B 1 A_Chase;
+			"####" BBB 1 A_Chase(null,null);
+			"####" C 1 A_Chase;
+			"####" CCC 1 A_Chase(null,null);
+			"####" C 1 A_Chase;
+			"####" CCC 1 A_Chase(null,null);
+			"####" D 1 A_Chase;
+			"####" D 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			"####" DDD 1 A_Chase(null,null);
+			"####" D 1 A_Chase;
+			"####" DDD 1 A_Chase(null,null);
+			Loop;
+		Idle:
+			"####" AAAAAAAA 1 A_Wander;
+			"####" A 0 A_Look;
+			"####" BBBBBBBB 1 A_Wander;
+			"####" A 0 A_Look;
+			"####" CCCCCCCC 1 A_Wander;
+			"####" A 0 A_Look;
+			"####" DDDDDDDD 1 A_Wander;
+			"####" A 0 A_Look;
+			Loop;
+		Pain:
+			"####" H 2;
+			"####" H 1 A_SpawnItemEx("Pain_Overlay", scale.x + 3, 0, height - 8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR);
+			"####" H 3 A_Pain;
+			"####" "#" 0 A_AlertMonsters(256); //mxd
+			"####" H 0 A_Jump(256,"See");
+			Stop;
+		Pain.Silent:
+			"####" H 3;
+			"####" H 3 A_PlaySound("Nazi1/Pain", CHAN_AUTO, FRandom(0.2, 0.4), FALSE, ATTN_NORM);
+			"####" "#" 0 A_AlertMonsters(64); //ozy - only if near
+			"####" H 0 A_Jump(256,"See");
+			Stop;
+		Pain.SilentKnifeAttack: //mxd. Hacky critical hit system
+			"####" "#" 0 A_JumpIf(user_incombat, "Pain.Silent");
+			"####" "#" 0 { user_incombat = True; }
+			"####" "#" 0 A_Log("Critical hit!");
+			"####" "#" 0 A_AlertMonsters(128);
+			"####" "#" 0 A_DamageSelf(health, "Melee");
+			Goto Pain;
+	}
+}
