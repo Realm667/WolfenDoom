@@ -2890,18 +2890,27 @@ ACTOR LionR_Museum : Caesar_Museum
 }
 
 // Talon1024
-ACTOR Toolbox3D : ModelBase
+ACTOR Toolbox3D
 {
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Toolbox (3D)
-	+NOGRAVITY
 	DistanceCheck "scenelod"
+	Radius 4
+	Height 8
+	+NOBLOCKMAP
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
 }
 
-ACTOR Spanner3D : ModelBase
+ACTOR Spanner3D : Toolbox3D
 {
-	//$Category Models (Wolf3D)/Scenery
 	//$Title Spanner (3D)
-	+NOGRAVITY
 	DistanceCheck "scenelod"
+	Radius 2
+	Height 2
 }

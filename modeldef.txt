@@ -3843,6 +3843,28 @@ Model Feldfernschreiber
 	FrameIndex MDLA A 0 0
 }
 
+Model Spanner3D
+{
+	Path "models"
+	Model 0 "spanner.md3"
+	Scale 2.0 2.0 2.0
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}
+
+Model Toolbox3D
+{
+	Path "models"
+	Model 0 "toolbox.md3"
+	Scale 4.0 4.0 4.0
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}
+
 //MoHAAs Stuff - ozy81
 Model Radar
 {
@@ -5355,6 +5377,56 @@ Model DestroyedTank4
 }
 
 //AFADoomer Stuff
+Model WaterMachine
+{
+	Path "models"
+	Model 0 "bottle.md3"
+	USEACTORPITCH
+	USEACTORROLL
+	DONTCULLBACKFACES
+	Scale 0.65 0.65 0.65
+	Offset 0 0 1
+	
+	FrameIndex WATR A 0 0
+}
+
+Model WaterMachine
+{
+	Path "models"
+	Model 0 "bottle_broken.md3"
+	USEACTORPITCH
+	USEACTORROLL
+	DONTCULLBACKFACES
+	Scale 0.65 0.65 0.65
+	Offset 0 0 1
+
+	FrameIndex WATR B 0 0
+}
+
+Model WaterMachineWater
+{
+	Path "models"
+	Model 0 "bottle_water.md3"
+	USEACTORPITCH
+	USEACTORROLL
+	Scale 0.65 0.65 0.65
+	Offset 0 0 1
+
+	FrameIndex MDLA A 0 0
+}
+
+Model WaterMachineBrokenWater
+{
+	Path "models"
+	Model 0 "bottle_broken_water.md3"
+	USEACTORPITCH
+	USEACTORROLL
+	Scale 0.65 0.65 0.65
+	Offset 0 0 1
+
+	FrameIndex MDLA A 0 0
+}
+
 Model Crane
 {
 	Path "models"
@@ -5783,92 +5855,6 @@ Model Handrail
 	Skin 1 "scheinwerfer.png"
 	USEACTORPITCH
 	USEACTORROLL
-
-	FrameIndex MDLA A 0 0
-}
-
-Model WaterMachine
-{
-	Path "models"
-	Model 0 "bottle.md3"
-
-	USEACTORPITCH
-	USEACTORROLL
-	DONTCULLBACKFACES
-
-	Scale 0.65 0.65 0.65
-	Offset 0 0 1
-
-	FrameIndex WATR A 0 0
-}
-
-Model WaterMachine
-{
-	Path "models"
-	Model 0 "bottle_broken.md3"
-
-	USEACTORPITCH
-	USEACTORROLL
-	DONTCULLBACKFACES
-
-	Scale 0.65 0.65 0.65
-	Offset 0 0 1
-
-	FrameIndex WATR B 0 0
-}
-
-Model WaterMachineWater
-{
-	Path "models"
-	Model 0 "bottle_water.md3"
-
-	USEACTORPITCH
-	USEACTORROLL
-
-	Scale 0.65 0.65 0.65
-	Offset 0 0 1
-
-	FrameIndex MDLA A 0 0
-}
-
-Model WaterMachineBrokenWater
-{
-	Path "models"
-	Model 0 "bottle_broken_water.md3"
-
-	USEACTORPITCH
-	USEACTORROLL
-
-	Scale 0.65 0.65 0.65
-	Offset 0 0 1
-
-	FrameIndex MDLA A 0 0
-}
-
-Model Spanner3D
-{
-	Path "models"
-	Model 0 "Spanner3D.md3"
-
-	USEACTORPITCH
-	USEACTORROLL
-
-	Scale 2 2 2
-	Offset 0 0 1
-
-	FrameIndex MDLA A 0 0
-}
-
-Model Toolbox3D
-{
-	Path "models"
-	Model 0 "Toolbox3D.md3"
-
-	USEACTORPITCH
-	USEACTORROLL
-
-	Scale 2 2 2
-	Offset 0 0 1
 
 	FrameIndex MDLA A 0 0
 }
