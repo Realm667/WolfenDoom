@@ -1163,7 +1163,7 @@ ACTOR Mechanic : Guard
 		"####" A 0 A_Look
 		Loop
 	Missile: //needs E frames
-		"####" F 10 A_FaceTarget
+		"####" EF 8 A_FaceTarget
 		"####" G 0 A_PlaySound("nazi/pistol", CHAN_WEAPON)
 		"####" G 8 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",54,1,random(-8,8))
 		"####" G 0 A_GiveInventory("PistolGuardCounter", 1)
@@ -1179,7 +1179,8 @@ ACTOR Mechanic : Guard
 		"####" F 0 A_ChangeFlag("NoPain", 0)
 		"####" "#" 0 A_Jump(256, "SeeLoop")
 	Pain:
-		"####" H 3
+		"####" H 2
+		"####" H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" H 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		"####" H 0 A_Jump(256,"SeeLoop")
