@@ -320,9 +320,10 @@ ACTOR SSBJUniformPickup : CustomInventory
 
 ACTOR NullWeapon : Weapon
 {
+	Weapon.SelectionOrder 0
+	Tag "no weapon (cloaked)"
 	+WEAPON.NOALERT
 	+INVENTORY.UNDROPPABLE
-	Tag "Cloaked"
 	States
 	{
 	Select:
@@ -332,7 +333,10 @@ ACTOR NullWeapon : Weapon
 		Loop
 	Deselect:
 		TNT1 A 0 SetPlayerProperty(0, FALSE, PROP_NOTARGET)
-		TNT1 A 0 {A_TakeInventory("NullWeapon", 1); A_TakeInventory("ScientistUniformToken", 1);}
+		TNT1 A 0 {
+				//A_TakeInventory("NullWeapon", 1); 	       //remove the weapon when selecting another weapon
+				//A_TakeInventory("ScientistUniformToken", 1); //make the player look normal by removing the uniform token
+			 }
 	Lower:
 		TNT1 A 0 A_Lower
 		Loop
