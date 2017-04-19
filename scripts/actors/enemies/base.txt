@@ -85,7 +85,7 @@ class Nazi : Actor
 	// Initialize actor
 	override void BeginPlay()
 	{
-		// If it's sneakable, spawn a set of the snakeabl eyes and mark it as friendly (and make the actor never infight)
+		// If it's sneakable, spawn a set of the sneakeable eyes and mark it as friendly (and make the actor never infight)
 		if (sneakable) {
 			bFriendly = True;
 			bNeverTarget = True; // A bit of a hack, but it works...  Will cause issues if playerfollowers ever need to interact with sneakable actors
@@ -103,7 +103,7 @@ class Nazi : Actor
 		if (currentDamage ~== "SilentKnifeAttack") // If the attack was with the knife
 		{
 			if (sneakable && bFriendly) // If this is a sneakable actor who isn't active yet
-			{ // Stealth kill, remove the sneakkable eyes, alert a medium radius, and kill the actor
+			{ // Stealth kill, remove the sneakable eyes, alert a medium radius, and kill the actor
 				A_Log(StringTable.Localize("$STEALTH"));
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING);
 				A_AlertMonsters(128);
@@ -114,7 +114,7 @@ class Nazi : Actor
 				A_PlaySound("Nazi1/Pain", CHAN_AUTO, FRandom(0.2, 0.4), FALSE, ATTN_NORM); // Play quiet pain sound
 				A_AlertMonsters(64); //ozy - only if near // Alert small radius
 			}
-			else // Othwerwise, this attack was the equivalent of Stealth Kill for non-sneakable enemies
+			else // Otherwise, this attack was the equivalent of Stealth Kill for non-sneakable enemies
 			{
 				user_incombat = True;
 				A_Log(StringTable.Localize("$CRITICAL"));
@@ -153,8 +153,8 @@ class Nazi : Actor
 		A_RemoveChildren(TRUE, RMVF_EVERYTHING); // Get rid of the passive guard eyes
 		A_AlertMonsters(512); // Alert an extra-large radius
 		A_SpawnItemEx("SneakableGuardEyesAlerted", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION); // Spawn active guard eyes
-		if (target.GetSpecies() == GetSpecies()) { target = null; SetStateLabel("Spawn"); }
-		SetStateLabel("See"); // Got to See state and start chasing the player
+		if (target && target.GetSpecies() == GetSpecies()) { target = null; SetStateLabel("Spawn"); }
+		SetStateLabel("See"); // Got to See state and start chasing the player (or wandering if target wasn't set for some reason)
 	}
 
 	void BecomeIdle()

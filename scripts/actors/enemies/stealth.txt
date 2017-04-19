@@ -58,7 +58,7 @@ class StealthBase : Actor
 			if (master && !alert)
 			{  // Spawn the alert indicator
 				alert = Spawn("AlertMarkerAlpha", (master.pos.x, master.pos.y, master.pos.z + 64));
-				alert.master = master;
+				if (alert) { alert.master = master; }
 			}
 
 			if (sighttime >= threshold) // If 'threshold' amount of time has elapsed since player first seen
@@ -71,7 +71,7 @@ class StealthBase : Actor
 			}
 			else if (sighttime >= threshold / 4) // Otherwise, start looking at the currently targeted player
 			{
-				master.A_Face(target, 0.25); // (slowly...)
+				if (master) { master.A_Face(target, 0.25); } // (slowly...)
 			}
 		}
 		else { sighttime > 0 ? sighttime -= 0.05 : 0; } // If all players are out of sight, decrement the amount of time elapsed gradually to 0
