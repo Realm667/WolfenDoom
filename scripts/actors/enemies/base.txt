@@ -1,9 +1,14 @@
+// Base class for almost all enemy actors.
+// Adds handling for 
 class Nazi : Actor
 {
 	int user_incombat;
 	int perceptionthreshold;
 	int perceptionfov;
+	int user_chasegoal;
+	bool sneakable;
 
+	Property Sneakable:sneakable;
 	Property PerceptionTime:perceptionthreshold; // How many tics the player has to be in sight before NOTARGET fails - 0 means never see through NoTarget
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
 
@@ -14,13 +19,16 @@ class Nazi : Actor
 		+CANBLAST //needed for kicks - ozy81
 		+DONTGIB
 		+DONTHARMSPECIES
+		+NOINFIGHTSPECIES
 		+FLOORCLIP
 		Scale 1.2;
 		Height 56;
 		Mass 100;
 		PainChance 200;
 		Speed 2;
+		Species "Nazi";
 
+		Nazi.Sneakable False;
 		Nazi.PerceptionTime 0;
 		Nazi.PerceptionFOV 120;
 	}
@@ -28,7 +36,7 @@ class Nazi : Actor
 	States
 	{
 		Look:
-			"####" "#" 10 A_Look;
+			"####" "#" 10 A_Look();
 			Loop;
 		See:
 			"####" "#" 0 { user_incombat = True; } //mxd
@@ -62,25 +70,101 @@ class Nazi : Actor
 			"####" A 0 A_Look;
 			Loop;
 		Pain:
-			"####" H 2;
-			"####" H 1 A_SpawnItemEx("Pain_Overlay", scale.x + 3, 0, height - 8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR);
-			"####" H 3 A_Pain;
-			"####" "#" 0 A_AlertMonsters(256); //mxd
+			"####" H 6 A_NaziPain(256);
 			"####" H 0 A_Jump(256,"See");
-			Stop;
-		Pain.Silent:
-			"####" H 2;
-			"####" H 1 A_SpawnItemEx("Pain_Overlay", scale.x + 3, 0, height - 8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR);
-			"####" H 3 A_PlaySound("Nazi1/Pain", CHAN_AUTO, FRandom(0.2, 0.4), FALSE, ATTN_NORM);
-			"####" "#" 0 A_AlertMonsters(64); //ozy - only if near
-			"####" H 0 A_Jump(256,"See");
-			Stop;
-		Pain.SilentKnifeAttack: //mxd. Hacky critical hit system
-			"####" "#" 0 A_JumpIf(user_incombat, "Pain.Silent");
-			"####" "#" 0 { user_incombat = True; }
-			"####" "#" 0 A_Log("Critical hit!");
-			"####" "#" 0 A_AlertMonsters(128);
-			"####" "#" 0 A_DamageSelf(health, "Melee");
-			Goto Pain;
+	}
+
+	// Function to consolidate default pain state actions.  See use above - can be used to eliminate a lot of existing copy/paste.
+	void A_NaziPain(int alertrange = 0, bool playsound = True)
+	{
+		A_SpawnItemEx("Pain_Overlay", scale.x + 3, 0, height - 8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR); // Spawn pain overlay blood spurt
+		if (alertrange) { A_AlertMonsters(alertrange); } // Alert monsters in given range
+		if (playsound) { A_Pain(); } // Play pain sound unless passed 'false'
+	}
+
+	// Initialize actor
+	override void BeginPlay()
+	{
+		// If it's sneakable, spawn a set of the snakeabl eyes and mark it as friendly (and make the actor never infight)
+		if (sneakable) {
+			bFriendly = True;
+			bNeverTarget = True; // A bit of a hack, but it works...  Will cause issues if playerfollowers ever need to interact with sneakable actors
+			bNoInfighting = True; 
+			A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		}
+	}
+
+	// Hijack the damage calls in order to implement stealth kills and critical hits
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags = 0, double angle = 0)
+	{
+		String currentDamage = (inflictor && inflictor.paintype) ? inflictor.paintype : mod; // Get the damage type
+		int damageamt = Super.DamageMobj(inflictor, source, damage, mod, flags, angle); // Get the damage amount from the real DamageMobj function
+
+		if (currentDamage ~== "SilentKnifeAttack") // If the attack was with the knife
+		{
+			if (sneakable && bFriendly) // If this is a sneakable actor who isn't active yet
+			{ // Stealth kill, remove the sneakkable eyes, alert a medium radius, and kill the actor
+				A_Log(StringTable.Localize("$STEALTH"));
+				A_RemoveChildren(TRUE, RMVF_EVERYTHING);
+				A_AlertMonsters(128);
+				A_Die();
+			}
+			else if (user_incombat) // If the actor has already been in its See state
+			{
+				A_PlaySound("Nazi1/Pain", CHAN_AUTO, FRandom(0.2, 0.4), FALSE, ATTN_NORM); // Play quiet pain sound
+				A_AlertMonsters(64); //ozy - only if near // Alert small radius
+			}
+			else // Othwerwise, this attack was the equivalent of Stealth Kill for non-sneakable enemies
+			{
+				user_incombat = True;
+				A_Log(StringTable.Localize("$CRITICAL"));
+				A_AlertMonsters(128);
+				A_DamageSelf(health, "Melee");
+			}
+		}
+
+		ACS_NamedExecuteAlways("AddExtraVisibility", 0, 200, 1); // Attacking always makes visibility increase significantly
+
+		if (sneakable && bFriendly) // If we attacked a sneakable actor who wasn't alerted...
+		{
+			BecomeAlerted(); // Alert that actor
+		}
+
+		if (damageamt > health) // If we killed the actor...
+		{
+			if (sneakable) // and it was a sneakable actor...
+			{
+				A_RemoveChildren(TRUE, RMVF_EVERYTHING); // Remove the sneakable eyes
+				if (!bFriendly) { ACS_NamedExecute("DecreaseAlertedCount"); } // Decrement the alert counter if the actor had been alerted
+			}
+		}
+
+		return damageamt; // Function returns amount of damage received by the actor
+	}
+
+	// Handling for alerting sneakable actors
+	void BecomeAlerted(Actor newtarget = null)
+	{
+		if (health <= 0 || !bShootable) { return; } // If it's dead, don't do anything
+		if (goal) { user_chasegoal = goal.tid; } // Save the navigation goal if one was set
+
+		bFriendly = False; // Set unfriendly
+		target = newtarget; // Set target to the player the eyes saw
+		A_RemoveChildren(TRUE, RMVF_EVERYTHING); // Get rid of the passive guard eyes
+		A_AlertMonsters(512); // Alert an extra-large radius
+		A_SpawnItemEx("SneakableGuardEyesAlerted", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION); // Spawn active guard eyes
+		if (target.GetSpecies() == GetSpecies()) { target = null; SetStateLabel("Spawn"); }
+		SetStateLabel("See"); // Got to See state and start chasing the player
+	}
+
+	void BecomeIdle()
+	{
+		if (health <= 0 || !bShootable) { return; }
+
+		bFriendly = True;
+		A_ClearTarget();
+		ACS_NamedExecute("TryResumePatrolling");
+		A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		SetStateLabel("Spawn");
 	}
 }

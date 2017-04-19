@@ -133,7 +133,7 @@ script "AddExtraVisibility" (int value, int override)
 
 script "GetVisibility" (void)
 {
-	SetResultValue(extraVisibility);
+	SetResultValue(GetVisibility(1000 + PlayerNumber(), curNoiseLevel, extraVisibility));
 }
 
 //mxd. Stealth-related. For this to work, each player must have unique TID.
@@ -266,7 +266,7 @@ function int GetVisibility(int tid, int noiselevel, int addedvisibility)
 	}
 
 	//And game skill
-	int skillmod = (SKILL_HARD - GameSkill()) * 10; //Adjust the visibility level based on game skill - Skill 3 is neutral, and what the gameplay is most balanced for
+	int skillmod = (SKILL_HARD - GameSkill()) * 10; //Adjust the visibility level based on game skill - Skill 2 is neutral, and what the gameplay is most balanced for
 
 	// Calculate resulting visibility level (will probably require lots of tweaking...)
 	If (GetCVar("g_debugstealth") > 0) //Use 'set g_debugstealth 1' in the console to show the component numbers used for the calculations in game...

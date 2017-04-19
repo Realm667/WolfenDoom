@@ -18,17 +18,17 @@ class StealthBase : Actor
 			Goto Spawn;
 	}
 
-	state A_LookForNoTargetPlayer(int Range = 192)
+	state A_LookForNoTargetPlayer(int Range = 256)
 	{
-		if (master && master is "Nazi") // Get the master actor's perceptionfov and perceptionthreshold
-		{
+		if (master && master is "Nazi") // Get the master actor's perceptionfov and perceptionthreshold properties
+		{ // These become the fov parameter for visibility checks and the time threshold for how long the player must stay in view before detection
 			fov = Nazi(master).perceptionfov;
 			threshold = Nazi(master).perceptionthreshold;
 		}
 
-		if (threshold <= 0 || fov <= 0) { return ResolveState(null); } // If threshold is 0, the actor can't see through NOTARGET
+		if (threshold <= 0 || fov <= 0) { return ResolveState(null); } // If threshold is 0, the actor can't see through NOTARGET at all, so just return
 
-		target = null;
+		target = null; // Clear target, just in case
 
 		// Set up view parameters for this search
 		SearchParams.fov = fov;
@@ -36,7 +36,7 @@ class StealthBase : Actor
 		SearchParams.maxDist = Range;
 		SearchParams.maxHearDist = Range;
 
-		for (int p = 0; p < MAXPLAYERS; p++) // Iterate through all of the players and find the closest one
+		for (int p = 0; p < MAXPLAYERS; p++) // Iterate through all of the players and find one that's in range
 		{
 			Actor mo = players[p].mo;
 
@@ -51,7 +51,7 @@ class StealthBase : Actor
 			}
 		}
 
-		if (target) // If we have a player in view
+		if (target && !CallACS("TargetIsHidden")) // If we have a player in view and he can be seen (default stealth visibility behavior still applies)
 		{
 			sighttime += (Range - Distance3d(target)) / Range; // Increment sight time counter, scaled to how far away player is
 
@@ -69,19 +69,19 @@ class StealthBase : Actor
 				if (alert) { alert.Destroy(); } // Get rid of the alert indicator that was spawned here
 				return ResolveState("AlertMaster"); // Alert the actor to attack
 			}
-			else if (sighttime >= threshold / 4) // Start looking at the player
+			else if (sighttime >= threshold / 4) // Otherwise, start looking at the currently targeted player
 			{
-				master.A_Face(target, 0.25); // Slowly...
+				master.A_Face(target, 0.25); // (slowly...)
 			}
 		}
-		else { sighttime > 0 ? sighttime-- : 0; } // If out of sight, decrement the amount of time elapsed gradually to 0
+		else { sighttime > 0 ? sighttime -= 0.05 : 0; } // If all players are out of sight, decrement the amount of time elapsed gradually to 0
 
 		if (alert) {
-			if (sighttime == 0) { alert.SetStateLabel("Fade"); } // Fade out the alert indicator
-			else // Set the alpha and scale to correspond to sight time
+			if (sighttime <= 0) { alert.SetStateLabel("Fade"); } // If we've completely lost sight of the player, fade out the alert indicator
+			else // Otherwise, set the alpha and scale to correspond to sight time
 			{
 				alert.alpha = double(sighttime) / threshold;
-				alert.scale.x = alert.scale.y = 1 + alert.alpha;
+				alert.scale.x = alert.scale.y = 1 + alert.alpha; // End scale is 2.0 to match the standard alert marker
 			} 
 
 			if (GetCVar("g_debugstealth") > 0) { console.printf("%.2f%%", sighttime * 100 / threshold); }
@@ -92,6 +92,7 @@ class StealthBase : Actor
 
 }
 
+// Version of the alert marker that starts out fully translucent (alpha 0)
 class AlertMarkerAlpha : Actor
 {
 	Default
@@ -118,6 +119,7 @@ class AlertMarkerAlpha : Actor
 }
 
 // This actor follows SneakableGuard around looking for players
+// Almost directly converted from the original decorate version, with the exception of removing Damage/Pain hacks to change states and replacing them with proper state change calls
 class SneakableGuardEyesIdle : StealthBase
 {
 	Default
@@ -151,9 +153,11 @@ class SneakableGuardEyesIdle : StealthBase
 			TNT1 A 1 A_ClearTarget;
 			Goto Look;
 		AlertMaster:
-			TNT1 A 0 A_SpawnItemEx("AlertMarker", 0, 0, 64, 0, 0, 0, 0, SXF_TRANSFERPOINTERS);
-			TNT1 A 6 A_PlaySound("axis1/sighted", CHAN_BODY);
-			TNT1 A 0 { master.SetStateLabel("Pain.BecomeAlerted"); } // Cause the master to enter Pain.BecomeAlerted state
+			TNT1 A 0 { 
+				A_SpawnItemEx("AlertMarker", 0, 0, 64, 0, 0, 0, 0, SXF_TRANSFERPOINTERS);
+				A_PlaySound("axis1/sighted", CHAN_BODY);
+				Nazi(master).BecomeAlerted(target); // Cause the master to become alerted
+			} 
 			Stop;
 	}
 }
@@ -185,7 +189,7 @@ class SneakableGuardEyesAlerted : SneakableGuardEyesIdle
 			TNT1 A 1 A_ClearTarget;
 			Goto ResetCounters;
 		ResetMaster:
-			TNT1 A 0 { master.SetStateLabel("Pain.BecomeIdle"); } // Cause the master to enter Pain.BecomeIdle state
+			TNT1 A 0 { Nazi(master).BecomeIdle(); } // Cause the master to become idle
 			TNT1 A 0 ACS_NamedExecute("DecreaseAlertedCount");
 			Stop;
 	}

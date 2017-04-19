@@ -1108,6 +1108,10 @@ ACTOR Gestapo : Guard
 	DropItem "9mmAmmo" 172
 	DropItem "9mmAmmoBox" 16
 	DropItem "Luger9mm" 88
+
+	Nazi.PerceptionTime 35 // About 1 second
+	Nazi.PerceptionFOV 200 // Relatively wide view
+
 	States
 	{
 	Spawn:
@@ -4862,6 +4866,7 @@ ACTOR DirtyDarren : Guard
 	Scale 1.23 //mxd
 	DropItem ""
 	SeeSound ""
+	Species "Ally"
 	+USESPECIAL
 	States
 	{
