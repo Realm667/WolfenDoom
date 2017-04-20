@@ -51,7 +51,7 @@ class StealthBase : Actor
 			}
 		}
 
-		if (target && !CallACS("TargetIsHidden")) // If we have a player in view and he can be seen (default stealth visibility behavior still applies)
+		if (target) // If we have a player in view and he can be seen (default stealth visibility behavior still applies)
 		{
 			sighttime += (Range - Distance3d(target)) / Range; // Increment sight time counter, scaled to how far away player is
 
