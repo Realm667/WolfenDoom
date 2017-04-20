@@ -80,6 +80,9 @@ Script "PlayFootstepsSoundLoop" ENTER
 				curStepDistance = 0;
 			}
 		}
+
+		int currentVisibility = Clamp(GetVisibility(playerID, curNoiseLevel, extraVisibility), 0, PlayerDetectionVisibility);
+		SetUserVariable(0, "user_visibility", currentVisibility);
 		
 		// Draw Stealth HUD?
 		if(GetCVar("g_debugstealth") > 0 || (ShowStealthHUD && GetActorProperty(playerID, APROP_HEALTH) > 0))
@@ -88,8 +91,7 @@ Script "PlayFootstepsSoundLoop" ENTER
 			int lampalpha = 1.0;
 			if(alertedGuardsCount == 0)
 			{
-				lampalpha = Clamp(GetVisibility(playerID, curNoiseLevel, extraVisibility), 0, PlayerDetectionVisibility);
-				lampalpha = FixedDiv(lampalpha << 16, PlayerDetectionVisibility << 16);
+				lampalpha = FixedDiv(currentVisibility << 16, PlayerDetectionVisibility << 16);
 			}
 
 			If (GetCVar("g_debugstealth") > 0) GetVisibility(playerID, curNoiseLevel, extraVisibility); //Still call the GetVisibility function if debugging
@@ -107,7 +109,7 @@ Script "PlayFootstepsSoundLoop" ENTER
 		
 		curNoiseLevel = Max(curNoiseLevel - NOISE_FADE_SPEED, 0);
 		extraVisibility = Max(extraVisibility - EXTRA_VISIBILITY_FADE_SPEED, 0);
-		
+
 		Delay(1);
 	}
 }

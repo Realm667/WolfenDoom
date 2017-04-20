@@ -1,0 +1,297 @@
+class BoAStatusBar : BaseStatusBar
+{
+	HUDFont mBigFont;
+	HUDFont mSmallFont;
+	InventoryBarState diparms;
+	DynamicValueInterpolator mAirInterpolator;
+	DynamicValueInterpolator mStaminaInterpolator;
+	DynamicValueInterpolator mBatteryInterpolator;
+	DynamicValueInterpolator mSpaceSuitInterpolator;
+
+	override void Init()
+	{
+		Super.Init();
+		SetSize(32, 320, 200);
+		CompleteBorder = True;
+
+		// Create the fonts used
+		Font fnt = "BIGFONT";
+		mBigFont = HUDFont.Create(fnt, 0);
+
+		fnt = "THREEFIV";
+		mSmallFont = HUDFont.Create(fnt, 1);
+
+		diparms = InventoryBarState.Create();
+
+		mAirInterpolator = DynamicValueInterpolator.Create(0, 1.25, 1, 40);
+		mStaminaInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
+		mBatteryInterpolator = DynamicValueInterpolator.Create(0, 1.25, 1, 40);
+		mSpaceSuitInterpolator = DynamicValueInterpolator.Create(0, 1.25, 1, 40);
+	}
+
+	override void NewGame ()
+	{
+		Super.NewGame();
+
+		mAirInterpolator.Reset(0);
+		mStaminaInterpolator.Reset(0);
+		mBatteryInterpolator.Reset(0);
+		mSpaceSuitInterpolator.Reset(0);
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		mAirInterpolator.Update(GetAirTime());
+		mStaminaInterpolator.Update(GetAmount("Stamina")); // This is a custom inventory item, not CPlayer.mo.stamina!
+
+		if (CheckInventory("MineSweeper", 1)) { mBatteryInterpolator.Update(GetAmount("Power")); }
+		if (CheckInventory("PowerSpaceSuit", 1)) { mSpaceSuitInterpolator.Update(CPlayer.mo.GetEffectTicsForItem("SpaceSuit")); }
+	}
+
+	override void Draw (int state, double TicFrac)
+	{
+		Super.Draw (state, TicFrac);
+
+		if (CPlayer.mo.FindInventory("CutsceneEnabled")) { return; }
+
+		if (!automapactive)
+		{
+			//Draw Mask for Space Suit
+			if (CheckInventory("PowerSpaceSuit", 1))
+			{
+				BeginHUD(1, True);
+				DrawImage("STGMASK", (0, 0), DI_SCREEN_CENTER | DI_ITEM_CENTER);
+
+				int current, max;
+				[current, max] = CPlayer.mo.GetEffectTicsForItem("SpaceSuit");
+
+				current = mSpaceSuitInterpolator.GetValue();
+				DrawBar("HORZSP2F", "HORZSP2E", current, max, (-22, 55), 0, SHADER_HORZ, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
+				BeginHUD(1, False);
+			}
+
+			if (state == HUD_StatusBar)
+			{
+				BeginStatusBar(False);
+				DrawMainBar(TicFrac);
+			}
+			else if (state == HUD_Fullscreen)
+			{
+				BeginHUD(1, False);
+				DrawFullScreenStuff ();
+			}
+		}
+		else
+		{
+			BeginStatusBar();
+			DrawImage("AMBAR", (-54, 152), DI_ITEM_OFFSETS);
+		}
+	}
+
+	protected void DrawMainBar (double TicFrac)
+	{
+		DrawImage("HUDBAR", (-54, 152), DI_ITEM_OFFSETS);
+
+		if (CheckInventory("MineSweeper", 1))
+		{
+			int current, max;
+			current = mBatteryInterpolator.GetValue();
+			max = GetMaxAmount("Power");
+
+			DrawBar("VERTBYMG", "VERTBYMD", current, max, (195, 170), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
+
+			if (CheckInventory("MineSweeperActive", 1))
+			{
+				DrawBar("VERTBYMF", "VERTBYME", current, max, (195, 170), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
+			}
+		}
+
+		//AirControl & Stamina
+		DrawBar("HORZAIRF", "HORZAIRE", mAirInterpolator.GetValue(), level.airsupply, (36, 160), 0, SHADER_HORZ, DI_ITEM_OFFSETS);
+		DrawBar("HORZSTMF", "HORZSTME", mStaminaInterpolator.GetValue(), 100, (88, 160), 0, SHADER_HORZ, DI_ITEM_OFFSETS);
+
+		//Ammo
+		Ammo ammo1, ammo2;
+		int ammocount1, ammocount2;
+		[ammo1, ammo2, ammocount1, ammocount2] = GetCurrentAmmo();
+		if (ammo1) { DrawString(mBigFont, FormatNumber(ammocount1, 3), (225, 171), DI_TEXT_ALIGN_RIGHT); }
+		if (ammo2) { DrawString(mBigFont, FormatNumber(ammocount2, 3), (225, 185), DI_TEXT_ALIGN_RIGHT); }
+
+		//Ammo Icons
+		DrawInventoryIcon(ammo1, (231, 170), DI_ITEM_OFFSETS);
+		DrawInventoryIcon(ammo2, (231, 184), DI_ITEM_OFFSETS);
+
+		//Weapon
+		DrawString(mSmallFont, GetWeaponTag(), (190, 159), DI_TEXT_ALIGN_CENTER);
+
+		//Time
+		DrawString(mSmallFont, level.TimeFormatted(), (250, 159));
+
+		//Health
+		DrawString(mBigFont, FormatNumber(CPlayer.health, 3), (52, 171), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mBigFont, "%", (65, 171), DI_TEXT_ALIGN_RIGHT);
+
+		//Armor
+		let armor = CPlayer.mo.FindInventory("BasicArmor");
+		if (armor != null && armor.Amount > 0)
+		{
+			DrawInventoryIcon(armor, (4, 184), DI_ITEM_OFFSETS);
+			DrawString(mBigFont, FormatNumber(GetArmorAmount(), 3), (52, 185), DI_TEXT_ALIGN_RIGHT);
+			DrawString(mBigFont, "%", (65, 185), DI_TEXT_ALIGN_RIGHT);
+		}
+
+		//Money
+		DrawString(mBigFont, FormatNumber(GetAmount("CoinItem")), (138, 171), DI_TEXT_ALIGN_LEFT);
+
+		//Grenade
+		DrawString(mBigFont, FormatNumber(GetAmount("GrenadePickup")), (138, 185), DI_TEXT_ALIGN_LEFT);
+
+		//Keys
+		String image;
+		if (GetAmount("BoABlueKey")) { DrawImage("STKEYS0", (254, 171), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoAGreenKey")) { DrawImage("STKEYS3", (260, 171), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoAYellowKey")) { DrawImage("STKEYS1", (254, 180), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoAPurpleKey")) { DrawImage("STKEYS4", (260, 180), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoARedKey")) { DrawImage("STKEYS2", (254, 189), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoACyanKey")) { DrawImage("STKEYS5", (260, 189), DI_ITEM_OFFSETS); }
+
+		if (GetAmount("AstroBlueKey")) { DrawImage("ATKEYS0", (254, 171), DI_ITEM_OFFSETS); }
+		if (GetAmount("AstroYellowKey")) { DrawImage("ATKEYS1", (254, 180), DI_ITEM_OFFSETS); }
+		if (GetAmount("AstroRedKey")) { DrawImage("ATKEYS2", (254, 189), DI_ITEM_OFFSETS); }
+
+		if (GetAmount("CKBlueKey")) { DrawImage("CKKEYS1", (254, 171), DI_ITEM_OFFSETS); }
+		if (GetAmount("CKYellowKey")) { DrawImage("CKKEYS0", (254, 180), DI_ITEM_OFFSETS); }
+		if (GetAmount("CKRedKey")) { DrawImage("CKKEYS2", (254, 189), DI_ITEM_OFFSETS); }
+
+		//Ammo
+		DrawString(mSmallFont, FormatNumber(GetAmount("9mmAmmo"), 3), (284, 172), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mSmallFont, FormatNumber(GetAmount("9mmAmmo"), 3), (284, 172), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mSmallFont, FormatNumber(GetAmount("12GaugeAmmo"), 3), (284, 178), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mSmallFont, FormatNumber(GetAmount("MauserAmmo"), 3), (284, 184), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mSmallFont, FormatNumber(GetAmount("FlameAmmo"), 3), (284, 190), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mSmallFont, FormatNumber(GetAmount("NebAmmo"), 3), (307, 172), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mSmallFont, FormatNumber(GetAmount("PanzerAmmo"), 3), (307, 178), DI_TEXT_ALIGN_RIGHT);
+		
+		if (CPlayer.mo.InvSel != null && !level.NoInventoryBar)
+		{
+			DrawInventoryIcon(CPlayer.mo.InvSel, (156, 168), DI_ITEM_OFFSETS);
+			if (CPlayer.mo.InvSel.Amount > 1)
+			{
+				DrawString(mSmallFont, FormatNumber(CPlayer.mo.InvSel.Amount), (156 + 31, 168 + 30 - mSmallFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
+			}
+		}
+
+		if (CheckWeaponSelected("Panzerschreck") || CheckWeaponSelected("NullWeapon"))
+		{
+			DrawTexture(GetMugShot(5, mugshot.DISABLERAMPAGE), (76, 168), DI_ITEM_OFFSETS);
+		}
+		else
+		{
+			DrawTexture(GetMugShot(5), (76, 168), DI_ITEM_OFFSETS);
+		}
+
+		DrawImage("HUDBROVL", (74, 168), DI_ITEM_OFFSETS);
+	}
+
+	protected void DrawFullScreenStuff ()
+	{
+		if (CheckInventory("MineSweeper", 1))
+		{
+			int current, max;
+			current = mBatteryInterpolator.GetValue();
+			max = GetMaxAmount("Power");
+
+			DrawBar("VERTBYMG", "VERTBYMD", current, max, (150, -35), 0, SHADER_VERT, DI_ITEM_OFFSETS);
+
+			if (CheckInventory("MineSweeperActive", 1))
+			{
+				DrawBar("VERTBYMF", "VERTBYME", current, max, (150, -35), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
+			}
+		}
+
+		//AirControl & Stamina
+		DrawBar("VERTAIRF", "VERTAIRE", mAirInterpolator.GetValue(), level.airsupply, (4, -174), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
+		DrawBar("VERTSTMF", "VERTSTME", mStaminaInterpolator.GetValue(), 100, (-10, -174), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
+
+		//Top Left
+		DrawImage("HUD_UL", (0, 0), DI_ITEM_OFFSETS);
+		//Money
+		DrawString(mBigFont, FormatNumber(GetAmount("CoinItem")), (50, 7), DI_TEXT_ALIGN_RIGHT);
+		//Time
+		DrawString(mSmallFont, level.TimeFormatted(), (15, 21), DI_TEXT_ALIGN_LEFT);
+
+		//Top Right
+		DrawImage("HUD_UR", (-66, 0), DI_ITEM_OFFSETS);
+		//Keys
+		String image;
+		if (GetAmount("BoABlueKey")) { DrawImage("STKEYS0", (-14, 9), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoAGreenKey")) { DrawImage("STKEYS3", (-14, 19), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoAYellowKey")) { DrawImage("STKEYS1", (-24, 9), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoAPurpleKey")) { DrawImage("STKEYS4", (-24, 19), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoARedKey")) { DrawImage("STKEYS2", (-34, 9), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoACyanKey")) { DrawImage("STKEYS5", (-34, 19), DI_ITEM_OFFSETS); }
+
+		if (GetAmount("AstroBlueKey")) { DrawImage("ATKEYS0", (-14, 9), DI_ITEM_OFFSETS); }
+		if (GetAmount("AstroYellowKey")) { DrawImage("ATKEYS1", (-24, 9), DI_ITEM_OFFSETS); }
+		if (GetAmount("AstroRedKey")) { DrawImage("ATKEYS2", (-34, 9), DI_ITEM_OFFSETS); }
+
+		if (GetAmount("CKBlueKey")) { DrawImage("CKKEYS1", (-14, 9), DI_ITEM_OFFSETS); }
+		if (GetAmount("CKYellowKey")) { DrawImage("CKKEYS0", (-24, 9), DI_ITEM_OFFSETS); }
+		if (GetAmount("CKRedKey")) { DrawImage("CKKEYS2", (-34, 9), DI_ITEM_OFFSETS); }
+
+		//Bottom Left
+		DrawImage("HUD_BL", (0, -53), DI_ITEM_OFFSETS);
+		//Health
+		DrawString(mBigFont, FormatNumber(CPlayer.health, 3), (94, -36), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mBigFont, "%", (107, -36), DI_TEXT_ALIGN_RIGHT);
+
+		//Armor
+		let armor = CPlayer.mo.FindInventory("BasicArmor");
+		if (armor != null && armor.Amount > 0)
+		{
+			DrawInventoryIcon(armor, (44, -20), DI_ITEM_OFFSETS);
+			DrawString(mBigFont, FormatNumber(GetArmorAmount(), 3), (94, -20), DI_TEXT_ALIGN_RIGHT);
+			DrawString(mBigFont, "%", (107, -20), DI_TEXT_ALIGN_RIGHT);
+		}
+
+		//Mugshot + Inventory
+		if (CPlayer.mo.InvSel != null && !level.NoInventoryBar)
+		{
+			DrawInventoryIcon(CPlayer.mo.InvSel, (112, -38), DI_ITEM_OFFSETS);
+			if (CPlayer.mo.InvSel.Amount > 1)
+			{
+				DrawString(mSmallFont, FormatNumber(CPlayer.mo.InvSel.Amount), (112 + 31, -38 + 30 - mSmallFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
+			}
+		}
+
+		if (CheckWeaponSelected("Panzerschreck") || CheckWeaponSelected("NullWeapon"))
+		{
+			DrawTexture(GetMugShot(5, mugshot.DISABLERAMPAGE), (7, -38), DI_ITEM_OFFSETS);
+		}
+		else
+		{
+			DrawTexture(GetMugShot(5), (7, -38), DI_ITEM_OFFSETS);
+		}
+
+		//Bottom Right
+		DrawImage("HUD_BR", (-116, -53), DI_ITEM_OFFSETS);
+		//Weapon
+		DrawString(mSmallFont, GetWeaponTag(), (-55, -52), DI_TEXT_ALIGN_CENTER);
+
+		//Ammo
+		Ammo ammo1, ammo2;
+		int ammocount1, ammocount2;
+		[ammo1, ammo2, ammocount1, ammocount2] = GetCurrentAmmo();
+		if (ammo1) { DrawString(mBigFont, FormatNumber(ammocount1, 3), (-10, -20), DI_TEXT_ALIGN_RIGHT); }
+		if (ammo2) { DrawString(mBigFont, FormatNumber(ammocount2, 3), (-10, -36), DI_TEXT_ALIGN_RIGHT); }
+
+		//Ammo Icons
+		DrawInventoryIcon(ammo1, (-61, -21), DI_ITEM_OFFSETS);
+		DrawInventoryIcon(ammo2, (-61, -37), DI_ITEM_OFFSETS);
+
+		//Grenade
+		DrawString(mBigFont, FormatNumber(GetAmount("GrenadePickup")), (-83, -20), DI_TEXT_ALIGN_LEFT);
+	}
+}
