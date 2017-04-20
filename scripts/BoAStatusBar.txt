@@ -7,6 +7,8 @@ class BoAStatusBar : BaseStatusBar
 	DynamicValueInterpolator mStaminaInterpolator;
 	DynamicValueInterpolator mBatteryInterpolator;
 	DynamicValueInterpolator mSpaceSuitInterpolator;
+	DynamicValueInterpolator mVisibilityInterpolator;
+	DynamicValueInterpolator mSuspicionInterpolator;
 
 	override void Init()
 	{
@@ -27,6 +29,8 @@ class BoAStatusBar : BaseStatusBar
 		mStaminaInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
 		mBatteryInterpolator = DynamicValueInterpolator.Create(0, 1.25, 1, 40);
 		mSpaceSuitInterpolator = DynamicValueInterpolator.Create(0, 1.25, 1, 40);
+		mVisibilityInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
+		mSuspicionInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
 	}
 
 	override void NewGame ()
@@ -37,6 +41,8 @@ class BoAStatusBar : BaseStatusBar
 		mStaminaInterpolator.Reset(0);
 		mBatteryInterpolator.Reset(0);
 		mSpaceSuitInterpolator.Reset(0);
+		mVisibilityInterpolator.Reset(0);
+		mSuspicionInterpolator.Reset(0);
 	}
 
 	override void Tick()
@@ -48,6 +54,9 @@ class BoAStatusBar : BaseStatusBar
 
 		if (CheckInventory("MineSweeper", 1)) { mBatteryInterpolator.Update(GetAmount("Power")); }
 		if (CheckInventory("PowerSpaceSuit", 1)) { mSpaceSuitInterpolator.Update(CPlayer.mo.GetEffectTicsForItem("SpaceSuit")); }
+
+		mVisibilityInterpolator.Update(BoAPlayer(CPlayer.mo).user_visibility);
+		mSuspicionInterpolator.Update(BoAPlayer(CPlayer.mo).suspicion);
 	}
 
 	override void Draw (int state, double TicFrac)
@@ -124,7 +133,7 @@ class BoAStatusBar : BaseStatusBar
 		DrawInventoryIcon(ammo2, (231, 184), DI_ITEM_OFFSETS);
 
 		//Weapon
-		DrawString(mSmallFont, GetWeaponTag(), (190, 159), DI_TEXT_ALIGN_CENTER);
+		if (!CheckWeaponSelected("NullWeapon")) { DrawString(mSmallFont, GetWeaponTag(), (190, 159), DI_TEXT_ALIGN_CENTER); }
 
 		//Time
 		DrawString(mSmallFont, level.TimeFormatted(), (250, 159));
@@ -197,6 +206,9 @@ class BoAStatusBar : BaseStatusBar
 
 	protected void DrawFullScreenStuff ()
 	{
+		DrawString(mBigFont, FormatNumber(mVisibilityInterpolator.GetValue()) .. "%", (250, 7), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mBigFont, FormatNumber(mSuspicionInterpolator.GetValue()) .. "%", (350, 7), DI_TEXT_ALIGN_RIGHT);
+
 		if (CheckInventory("MineSweeper", 1))
 		{
 			int current, max;
@@ -278,7 +290,7 @@ class BoAStatusBar : BaseStatusBar
 		//Bottom Right
 		DrawImage("HUD_BR", (-116, -53), DI_ITEM_OFFSETS);
 		//Weapon
-		DrawString(mSmallFont, GetWeaponTag(), (-55, -52), DI_TEXT_ALIGN_CENTER);
+		if (!CheckWeaponSelected("NullWeapon")) { DrawString(mSmallFont, GetWeaponTag(), (-55, -52), DI_TEXT_ALIGN_CENTER); }
 
 		//Ammo
 		Ammo ammo1, ammo2;

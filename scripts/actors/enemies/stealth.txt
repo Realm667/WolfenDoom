@@ -66,6 +66,7 @@ class StealthBase : Actor
 				sighttime = 0; // Reset the count
 				ACS_NamedExecuteAlways("AddExtraVisibility", 0, 200, 1); // Make the player super-visible
 				players[playernum].cheats ^= CF_NOTARGET;  // Turn off the player's NOTARGET
+				if (BoAPlayer(players[playernum].mo)) { BoAPlayer(players[playernum].mo).suspicion = 0; } // Clear the player's suspicion variable
 				if (alert) { alert.Destroy(); } // Get rid of the alert indicator that was spawned here
 				return ResolveState("AlertMaster"); // Alert the actor to attack
 			}
@@ -86,6 +87,8 @@ class StealthBase : Actor
 
 			if (GetCVar("g_debugstealth") > 0) { console.printf("%.2f%%", sighttime * 100 / threshold); }
 		}
+
+		if (BoAPlayer(players[playernum].mo)) { BoAPlayer(players[playernum].mo).suspicion = sighttime * 100 / threshold; } // Write the suspicion level to the player's suspicion variable so that it can be used on the hud
 
 		return ResolveState(null);
 	}
