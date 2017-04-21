@@ -3,6 +3,7 @@ ACTOR AstroGuard : Guard
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Astrostein Guard
 	//$Color 4
+	Scale 0.70
 	DropItem "AstroClipAmmo" 128
 	DropItem "AstroShotgunShell" 32
 	Obituary "$AGUARD1"
@@ -37,6 +38,7 @@ ACTOR AstroGuard2 : AstroGuard
 	//$Title Astrostein Guard 2
 	//$Color 4
 	Health 30
+	Scale 0.70
 	States
 	{
 	Spawn:
@@ -63,6 +65,7 @@ ACTOR AstroCommando : AstroGuard
 	//$Title Astrostein Commando
 	//$Color 4
 	Health 80
+	Scale 0.65
 	Obituary "$AGUARD2"
 	States
 	{
@@ -85,6 +88,7 @@ ACTOR AstroOfficer : AstroGuard
 	//$Color 4
 	Speed 5.33
 	Health 30
+	Scale 0.67
 	Obituary "$AGUARD3"
 	States
 	{
@@ -108,6 +112,7 @@ ACTOR AstroElite : AstroGuard
 	//$Color 4
 	Speed 5.0
 	Health 30
+	Scale 0.63
 	DropItem "AstroShotgun" 64
 	DropItem "AstroShotgunShell" 192
 	Obituary "$AGUARD4"
@@ -257,7 +262,7 @@ ACTOR AstroCyborg1 : Nazi
 	Height 56
 	Mass 400
 	Speed 2.66666667
-	Scale 1.5
+	Scale 0.67
 	PainChance 32
 	+LOOKALLAROUND
 	+NOBLOOD
@@ -402,7 +407,7 @@ ACTOR AstroSuiteGuard : AstroGuard
 	//$Title Astrostein Suite Guard
 	//$Color 4
 	Speed 2
-	Scale 1.5
+	Scale 0.70
 	Health 200
 	Painchance 16
 	+LOOKALLAROUND
@@ -441,7 +446,7 @@ ACTOR AstroRobot : AstroCyborg1
 	//$Title Astrostein Robot
 	//$Color 4
 	Health 750
-	Scale 1
+	Scale 0.80
 	SeeSound "astrostein/robot_sight"
 	PainSound "astrostein/robot_pain"
 	DeathSound "astrostein/robot_death"
@@ -530,6 +535,7 @@ ACTOR AstroScientist : AstroGuard
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Astro Scientist
 	//$Color 4
+	Scale 0.67
 	States
 	{
 	Spawn:
