@@ -328,11 +328,13 @@ ACTOR NullWeapon : Weapon
 	{
 	Select:
 		TNT1 A 0 SetPlayerProperty(0, TRUE, PROP_NOTARGET)
+		TNT1 A 0 A_SetSpeed(0.1)
 	Raise:
 		TNT1 A 0 A_Raise
 		Loop
 	Deselect:
 		TNT1 A 0 SetPlayerProperty(0, FALSE, PROP_NOTARGET)
+		TNT1 A 0 A_SetSpeed(1.0)
 		TNT1 A 0 {
 				//A_TakeInventory("NullWeapon", 1); 	       //remove the weapon when selecting another weapon
 				//A_TakeInventory("ScientistUniformToken", 1); //make the player look normal by removing the uniform token
