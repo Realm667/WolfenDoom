@@ -78,6 +78,13 @@ ACTOR AstroCommando : AstroGuard
 		"####" G 8 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",48,1,random(-8,8))
 		"####" F 5 A_MonsterRefire(30,"See")
 		Goto Missile+1
+	Pain:
+		"####" H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" H 2
+		"####" H 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		"####" H 0 A_Jump(256,"See")
+		Stop
 	}
 }
 
