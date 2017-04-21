@@ -10,6 +10,8 @@ class BoAStatusBar : BaseStatusBar
 	DynamicValueInterpolator mVisibilityInterpolator;
 	DynamicValueInterpolator mSuspicionInterpolator;
 
+	double basealpha;
+
 	override void Init()
 	{
 		Super.Init();
@@ -102,6 +104,49 @@ class BoAStatusBar : BaseStatusBar
 	protected void DrawMainBar (double TicFrac)
 	{
 		DrawImage("HUDBAR", (-54, 152), DI_ITEM_OFFSETS);
+
+		int current, max;
+
+		if (LivingSneakableActors())
+		{
+			if (basealpha < 1) { basealpha += 0.05; }
+
+			current = mVisibilityInterpolator.GetValue();
+			max = 100;
+
+			DrawBarAlpha("VIS_BLKV", "VIS_BACV", current, max, (8, 104), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_CENTER, basealpha);
+
+			int suspicion = mSuspicionInterpolator.GetValue();
+			int alertedcount = CallACS("GetAlertedCount");
+
+			if (alertedcount)
+			{
+				suspicion = 100;
+				DrawImage("EYE", (16, 158), DI_ITEM_CENTER, basealpha, (-1, -1), (0.5, 0.5));
+				DrawString(mSmallFont, FormatNumber(alertedcount), (28, 157), DI_TEXT_ALIGN_RIGHT, Font.CR_GRAY);
+			}
+
+			if (CheckInventory("ScientistUniformToken", 1))
+			{
+				DrawBarAlpha("VIS_REDV", "VIS_NULV", max(current, suspicion), max, (8, 104), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_CENTER, suspicion / 100.);
+			}
+			else if (CheckInventory("SSBJUniformToken", 1))
+			{
+				DrawBarAlpha("VIS_REDV", "VIS_NULV", max(current, suspicion), max, (8, 104), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_CENTER, suspicion / 100.);
+			}
+			else
+			{
+				DrawBarAlpha("VIS_REDV", "VIS_NULV", current, max, (8, 104), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_CENTER);
+			}
+		}
+		else
+		{
+			current = mVisibilityInterpolator.GetValue();
+			max = 100;
+
+			if (basealpha > 0) { basealpha -= 0.05; }
+			DrawBarAlpha("VIS_BLKV", "VIS_BACV", current, max, (8, 104), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_CENTER, basealpha);
+		}
 
 		if (CheckInventory("MineSweeper", 1))
 		{
@@ -206,12 +251,55 @@ class BoAStatusBar : BaseStatusBar
 
 	protected void DrawFullScreenStuff ()
 	{
-		DrawString(mBigFont, FormatNumber(mVisibilityInterpolator.GetValue()) .. "%", (250, 7), DI_TEXT_ALIGN_RIGHT);
-		DrawString(mBigFont, FormatNumber(mSuspicionInterpolator.GetValue()) .. "%", (350, 7), DI_TEXT_ALIGN_RIGHT);
+		int current, max;
+
+		if (LivingSneakableActors())
+		{
+			if (basealpha < 1) { basealpha += 0.05; }
+
+			current = mVisibilityInterpolator.GetValue();
+			max = 100;
+
+			DrawBarAlpha("VIS_BLK", "VIS_BACK", current, max, (0, -20), 0, SHADER_HORZ, DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_ITEM_CENTER, basealpha);
+
+			int suspicion = mSuspicionInterpolator.GetValue();
+			int alertedcount = CallACS("GetAlertedCount");
+
+			if (alertedcount)
+			{
+				suspicion = 100;
+				DrawImage("EYE", (112, -21), DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_ITEM_CENTER, basealpha, (-1, -1), (0.5, 0.5));
+				DrawString(mSmallFont, FormatNumber(alertedcount), (124, -22), DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_TEXT_ALIGN_RIGHT, Font.CR_GRAY);
+			}
+
+			if (CheckInventory("ScientistUniformToken", 1))
+			{
+				DrawBarAlpha("VIS_RED", "VIS_NULL", max(current, suspicion), max, (0, -20), 0, SHADER_HORZ, DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_ITEM_CENTER, suspicion / 100.);
+				DrawImage("DISG_SCI", (-104, -20), DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_ITEM_CENTER, basealpha, (-1, -1), (0.25, 0.25));
+				DrawString(mSmallFont, "Disguised", (0, -24), DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, basealpha - (suspicion / 100.));
+			}
+			else if (CheckInventory("SSBJUniformToken", 1))
+			{
+				DrawBarAlpha("VIS_RED", "VIS_NULL", max(current, suspicion), max, (0, -20), 0, SHADER_HORZ, DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_ITEM_CENTER, suspicion / 100.);
+				DrawImage("DISG_SS", (-104, -20), DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_ITEM_CENTER, basealpha, (-1, -1), (0.25, 0.25));
+				DrawString(mSmallFont, "Disguised", (0, -24), DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, basealpha - (suspicion / 100.));
+			}
+			else
+			{
+				DrawBarAlpha("VIS_RED", "VIS_NULL", current, max, (0, -20), 0, SHADER_HORZ, DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_ITEM_CENTER, basealpha);
+			}
+		}
+		else
+		{
+			current = mVisibilityInterpolator.GetValue();
+			max = 100;
+
+			if (basealpha > 0) { basealpha -= 0.05; }
+			DrawBarAlpha("VIS_BLK", "VIS_BACK", current, max, (0, -20), 0, SHADER_HORZ, DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_ITEM_CENTER, basealpha);
+		}
 
 		if (CheckInventory("MineSweeper", 1))
 		{
-			int current, max;
 			current = mBatteryInterpolator.GetValue();
 			max = GetMaxAmount("Power");
 
@@ -305,5 +393,66 @@ class BoAStatusBar : BaseStatusBar
 
 		//Grenade
 		DrawString(mBigFont, FormatNumber(GetAmount("GrenadePickup")), (-83, -20), DI_TEXT_ALIGN_LEFT);
+	}
+
+	//Temporary copy/paste until alpha handling is fixed on the built-in function - https://mantis.zdoom.org/view.php?id=612
+	void DrawBarAlpha(String ongfx, String offgfx, double curval, double maxval, Vector2 position, int border, int vertical, int flags = 0, double alpha = 1.)
+	{
+		let ontex = TexMan.CheckForTexture(ongfx, TexMan.TYPE_MiscPatch);
+		if (!ontex.IsValid()) return;
+		let offtex = TexMan.CheckForTexture(offgfx, TexMan.TYPE_MiscPatch);
+
+		Vector2 texsize = TexMan.GetScaledSize(ontex);
+		[position, flags] = AdjustPosition(position, flags, texsize.X, texsize.Y);
+		
+		double value = (maxval != 0) ? clamp(curval / maxval, 0, 1) : 0;
+		if(border != 0) value = 1. - value; //invert since the new drawing method requires drawing the bg on the fg.
+		
+		// {cx, cb, cr, cy}
+		double Clip[4];
+		Clip[0] = Clip[1] = Clip[2] = Clip[3] = 0;
+		
+		bool horizontal = !(vertical & SHADER_VERT);
+		bool reverse = !!(vertical & SHADER_REVERSE);
+		double sizeOfImage = (horizontal ? texsize.X - border*2 : texsize.Y - border*2);
+		Clip[(!horizontal) | ((!reverse)<<1)] = sizeOfImage - sizeOfImage *value;
+		
+		// preserve the active clipping rectangle
+		int cx, cy, cw, ch;
+		[cx, cy, cw, ch] = screen.GetClipRect();
+
+		if(border != 0)
+		{
+			for(int i = 0; i < 4; i++) Clip[i] += border;
+
+			//Draw the whole foreground
+			DrawTexture(ontex, position, flags | DI_ITEM_LEFT_TOP, alpha);
+			SetClipRect(position.X + Clip[0], position.Y + Clip[1], texsize.X - Clip[0] - Clip[2], texsize.Y - Clip[1] - Clip[3], flags);
+		}
+		
+		if (offtex.IsValid() && TexMan.GetScaledSize(offtex) == texsize) DrawTexture(offtex, position, flags | DI_ITEM_LEFT_TOP, alpha);
+		else Fill(color(255,0,0,0), position.X + Clip[0], position.Y + Clip[1], texsize.X - Clip[0] - Clip[2], texsize.Y - Clip[1] - Clip[3]);
+		
+		if (border == 0) 
+		{
+			SetClipRect(position.X + Clip[0], position.Y + Clip[1], texsize.X - Clip[0] - Clip[2], texsize.Y - Clip[1] - Clip[3], flags);
+			DrawTexture(ontex, position, flags | DI_ITEM_LEFT_TOP, alpha);
+		}
+		// restore the previous clipping rectangle
+		screen.SetClipRect(cx, cy, cw, ch);
+	}
+
+	bool LivingSneakableActors()
+	{
+		ThinkerIterator it = ThinkerIterator.Create("Nazi");
+		Nazi mo;
+		while (mo = Nazi(it.Next(true)))
+		{
+			if (mo.health > 0 && mo.sneakable)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }

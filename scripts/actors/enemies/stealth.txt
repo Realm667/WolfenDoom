@@ -51,7 +51,7 @@ class StealthBase : Actor
 			}
 		}
 
-		if (target) // If we have a player in view and he can be seen (default stealth visibility behavior still applies)
+		if (target) // If we have a player in view
 		{
 			sighttime += (Range - Distance3d(target)) / Range; // Increment sight time counter, scaled to how far away player is
 
@@ -88,7 +88,7 @@ class StealthBase : Actor
 			if (GetCVar("g_debugstealth") > 0) { console.printf("%.2f%%", sighttime * 100 / threshold); }
 		}
 
-		if (BoAPlayer(players[playernum].mo)) { BoAPlayer(players[playernum].mo).suspicion = sighttime * 100 / threshold; } // Write the suspicion level to the player's suspicion variable so that it can be used on the hud
+		if (BoAPlayer(players[playernum].mo)) { BoAPlayer(players[playernum].mo).suspicion = int(sighttime * 100 / threshold); } // Write the suspicion level to the player's suspicion variable so that it can be used on the hud
 
 		return ResolveState(null);
 	}
@@ -171,7 +171,7 @@ class SneakableGuardEyesAlerted : SneakableGuardEyesIdle
 	States
 	{
 		Spawn:
-			TNT1 A 0 NoDelay ACS_NamedExecute("IncreaseAlertedCount");
+			TNT1 A 0 NoDelay ACS_NamedExecuteAlways("IncreaseAlertedCount");
 			TNT1 A 1 A_AlertMonsters(512, AMF_TARGETEMITTER); // Something fishy is going on. Alert everybody around!
 			Goto ResetCounters;
 		ResetCounters: 
@@ -193,7 +193,7 @@ class SneakableGuardEyesAlerted : SneakableGuardEyesIdle
 			Goto ResetCounters;
 		ResetMaster:
 			TNT1 A 0 { Nazi(master).BecomeIdle(); } // Cause the master to become idle
-			TNT1 A 0 ACS_NamedExecute("DecreaseAlertedCount");
+			TNT1 A 0 ACS_NamedExecuteAlways("DecreaseAlertedCount");
 			Stop;
 	}
 }
