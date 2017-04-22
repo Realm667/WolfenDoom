@@ -237,23 +237,7 @@ class BoAStatusBar : BaseStatusBar
 			}
 		}
 
-		if (CheckWeaponSelected("Panzerschreck") ||
-				CheckWeaponSelected("NullWeapon") ||
-				CheckWeaponSelected("KnifeSilent") ||
-				CheckWeaponSelected("Shovel") ||
-				CheckWeaponSelected("Firebrand") ||
-				CheckWeaponSelected("Luger9mm") ||
-				CheckWeaponSelected("TrenchShotgun") ||
-				CheckWeaponSelected("Browning5") ||
-				CheckWeaponSelected("G43") ||
-				CheckWeaponSelected("Kar98k"))
-		{
-			DrawTexture(GetMugShot(5, mugshot.DISABLERAMPAGE), (76, 168), DI_ITEM_OFFSETS);
-		}
-		else
-		{
-			DrawTexture(GetMugShot(5), (76, 168), DI_ITEM_OFFSETS);
-		}
+		DrawMugShot((76, 168));
 
 		DrawImage("HUDBROVL", (74, 168), DI_ITEM_OFFSETS);
 	}
@@ -375,23 +359,7 @@ class BoAStatusBar : BaseStatusBar
 			}
 		}
 
-		if (CheckWeaponSelected("Panzerschreck") ||
-				CheckWeaponSelected("NullWeapon") ||
-				CheckWeaponSelected("KnifeSilent") ||
-				CheckWeaponSelected("Shovel") ||
-				CheckWeaponSelected("Firebrand") ||
-				CheckWeaponSelected("Luger9mm") ||
-				CheckWeaponSelected("TrenchShotgun") ||
-				CheckWeaponSelected("Browning5") ||
-				CheckWeaponSelected("G43") ||
-				CheckWeaponSelected("Kar98k")))
-		{
-			DrawTexture(GetMugShot(5, mugshot.DISABLERAMPAGE), (7, -38), DI_ITEM_OFFSETS);
-		}
-		else
-		{
-			DrawTexture(GetMugShot(5), (7, -38), DI_ITEM_OFFSETS);
-		}
+		DrawMugShot((7, -38));
 
 		//Bottom Right
 		DrawImage("HUD_BR", (-116, -53), DI_ITEM_OFFSETS);
@@ -472,5 +440,28 @@ class BoAStatusBar : BaseStatusBar
 			}
 		}
 		return false;
+	}
+
+	void DrawMugShot(Vector2 position)
+	{
+		if (
+				CheckWeaponSelected("Panzerschreck") ||
+				CheckWeaponSelected("NullWeapon") ||
+				CheckWeaponSelected("KnifeSilent") ||
+				CheckWeaponSelected("Shovel") ||
+				CheckWeaponSelected("Firebrand") ||
+				CheckWeaponSelected("Luger9mm") ||
+				CheckWeaponSelected("TrenchShotgun") ||
+				CheckWeaponSelected("Browning5") ||
+				CheckWeaponSelected("G43") ||
+				CheckWeaponSelected("Kar98k")
+		)
+		{
+			DrawTexture(GetMugShot(5, mugshot.DISABLERAMPAGE), position, DI_ITEM_OFFSETS);
+		}
+		else
+		{
+			DrawTexture(GetMugShot(5), position, DI_ITEM_OFFSETS);
+		}
 	}
 }
