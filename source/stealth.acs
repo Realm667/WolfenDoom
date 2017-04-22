@@ -249,6 +249,9 @@ function int GetVisibility(int tid, int noiselevel, int addedvisibility)
 {
 	// Get its light level
 	int targetlightlevel = GetActorLightLevel(tid);
+
+	if (targetlightlevel <= 64) { return 0; } // If there's no light, don't bother with the rest...
+
 	targetlightlevel = FixedMul(targetlightlevel << 16, VisibilityMultiplier) >> 16;
 
 	// And speed
@@ -294,7 +297,7 @@ function int GetVisibility(int tid, int noiselevel, int addedvisibility)
 		HudMessage(d:alertedGuardsCount; HUDMSG_PLAIN | HUDMSG_NOWRAP | HUDMSG_NOTWITHFULLMAP, 21, CR_LIGHTBLUE, 155.0, 232.2, 0.1);
 	}
 
-	return Clamp(targetlightlevel + speed + noiselevel + addedvisibility + viewheightmod - skillmod, 0, 255);
+	return Clamp(targetlightlevel + speed + noiselevel + addedvisibility + viewheightmod - skillmod, 0, PlayerDetectionVisibility);
 }
 
 // Taken straight from the wiki (http://zdoom.org/wiki/VectorLength)

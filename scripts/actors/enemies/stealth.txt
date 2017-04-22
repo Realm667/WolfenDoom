@@ -68,9 +68,11 @@ class StealthBase : Actor
 		{
 			sighttime > 0 ? sighttime -= 0.05 : 0;  // ...decrement the amount of time elapsed gradually to 0
 
-			if (sighttime <= 0 && playernum > -1) // Once fully out of sight and 'forgotten', restore NOTARGET flag
+			if (sighttime <= 0 && playernum > -1) // Once fully out of sight and 'forgotten', restore NOTARGET flag if the player has a disguise (added check since default for playernum is 0)
 			{
-				if (!(players[playernum].cheats & CF_NOTARGET)) { players[playernum].cheats ^= CF_NOTARGET; }
+				let disguise = players[playernum].mo.FindInventory("DisguiseToken", True);
+
+				if (disguise && !(players[playernum].cheats & CF_NOTARGET)) { players[playernum].cheats ^= CF_NOTARGET; }
 				playernum = -1;
 			}
 		}
@@ -84,9 +86,9 @@ class StealthBase : Actor
 			} 
 		}
 
-		if (playernum >= 0)
+		if (playernum >= 0 && BoAPlayer(players[playernum].mo))  // Write the suspicion level to the player's suspicion variable so that it can be used on the hud
 		{
-			if (BoAPlayer(players[playernum].mo)) { BoAPlayer(players[playernum].mo).suspicion = int(sighttime * 100 / threshold); } // Write the suspicion level to the player's suspicion variable so that it can be used on the hud
+			BoAPlayer(players[playernum].mo).suspicion = int(sighttime * 100 / threshold);
 		}
 
 		return ResolveState(null);

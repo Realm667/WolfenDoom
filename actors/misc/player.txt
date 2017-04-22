@@ -1,7 +1,9 @@
 //Player
 ACTOR Stamina : Inventory {Inventory.MaxAmount 100}
-ACTOR ScientistUniformToken : Inventory {Inventory.MaxAmount 1}
-ACTOR SSBJUniformToken : Inventory {Inventory.MaxAmount 1}
+
+ACTOR DisguiseToken : Inventory { Inventory.MaxAmount 1}
+ACTOR ScientistUniformToken : DisguiseToken { Inventory.Icon "DISG_SCI" }
+ACTOR SSBJUniformToken : DisguiseToken { Inventory.Icon "DISG_SS" }
 
 ACTOR BaseLineSpawner
 {
