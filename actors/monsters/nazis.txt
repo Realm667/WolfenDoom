@@ -1132,11 +1132,11 @@ ACTOR Mechanic : Guard
 	States
 	{
 	Spawn:
-		MNIC N 0 {
-			if (!user_incombat) { return ResolveState("Look"); }
+		MNIC O 0 {
+			if (user_incombat) { return ResolveState("Look"); }
 			return ResolveState("");
 		}
-		MNIC O 0
+		MNIC N 0
 		Goto Look
 	See:
 		"####" O 8
