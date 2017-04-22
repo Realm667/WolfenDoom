@@ -229,6 +229,34 @@ BloodSmear1		6
 BloodSmear2		6
 }
 
+decal UndeadSmear1
+{
+pic BSMEAR1
+x-scale 0.625
+y-scale 0.625
+shade "00 00 00"
+randomflipx
+randomflipy
+animator BloodSmearer
+}
+
+decal UndeadSmear2
+{
+pic BSMEAR1
+x-scale 0.625
+y-scale 0.625
+shade "00 00 00"
+randomflipx
+randomflipy
+animator BloodSmearer
+}
+
+decalgroup UndeadSmear
+{
+UndeadSmear1	6
+UndeadSmear2	6
+}
+
 //LaserBeam Scorch
 decal LazScorch
 {
