@@ -173,7 +173,7 @@ ACTOR NashGore_BloodSplash : NashGore_BloodBase
 	}
 }
 
-// Blood splat decal maker - This only generates red blood decals PLEASE FIX - http://forum.zdoom.org/viewtopic.php?f=15&t=46146&p=774415#p774415
+// Blood splat decal maker
 ACTOR NashGore_SplatMaker
 {
 	Radius 4
@@ -208,6 +208,21 @@ ACTOR MutantBlood : NashGore_Blood
 ACTOR MutantFlyingBlood : NashGore_FlyingBlood
 {
 	Translation "16:47=[205,0,215]:[40,0,96]","168:191=[205,0,215]:[40,0,96]"
+}
+
+ACTOR UndeadBlood : NashGore_Blood
+{
+	Translation "16:47=[34,0,7]:[0,0,0]","168:191=[36,0,9]:[2,0,0]"
+}
+
+ACTOR UndeadFlyingBlood : NashGore_FlyingBlood
+{
+	Translation "16:47=[34,0,7]:[0,0,0]","168:191=[36,0,9]:[2,0,0]"
+}
+
+ACTOR UndeadFlyingBloodTrail : NashGore_FlyingBloodTrail
+{
+	Translation "16:47=[34,0,7]:[0,0,0]","168:191=[36,0,9]:[2,0,0]"
 }
 
 ACTOR Pain_Overlay

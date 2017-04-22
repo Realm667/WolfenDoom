@@ -35,15 +35,15 @@ astrolauncher/fire		dslsfir
 astroplasmaexplode		dsasexpl
 astroricochet					astroric
 astroricochet					dsasrico
-astroshotgun/fire			dslasgn2	
+astroshotgun/fire			dslasgn2
 astrostein/explosion	ASTEXP02
 $random astrostein/hitler_act {astrostein/hitler_act1 astrostein/hitler_act2 astrostein/hitler_act3}
 astrostein/hitler_act1	ashtac01
 astrostein/hitler_act2	ashtac02
 astrostein/hitler_act3	ashtac03
 $rolloff astrostein/hitler_act 1280 1600
-astrostein/hitler_dth		null 
-astrostein/hitler_pai		null 
+astrostein/hitler_dth		null
+astrostein/hitler_pai		null
 astrostein/hitler_see		null
 astrowhiz						astrowz
 pickup/armorshard		AMRSHRD
@@ -412,6 +412,15 @@ $rolloff nazi/missileengine 64 800
 $random nazi/mp40 {mp401 mp402}
 mp401	dsmp401
 mp402	dsmp402
+
+//ZombieKazi
+$random nazombie/sighted {ZOMBSEE1 ZOMBSEE2 ZOMBSEE3 ZOMBSEE4}
+ZOMBSEE1	ZOMBSEE1
+ZOMBSEE2	ZOMBSEE2
+ZOMBSEE3	ZOMBSEE3
+ZOMBSEE4	ZOMBSEE4
+nazombie/pain	ZOMBPAIN
+nazombie/vomit	ZOMBVOMT
 
 //MechaNazi
 mech/wake		MECHWAKE
@@ -921,7 +930,7 @@ $limit UndeadPriest/Shoot2 0
 
 //AracnorbQueen
 electricplasma/hit		PZAPHIT
-electricplasma/shoot	PZAPSEE	
+electricplasma/shoot	PZAPSEE
 queen/active					queact
 queen/death						quedie
 queen/fire						qbfgfire
@@ -1207,7 +1216,7 @@ GLSBRK01 GLSBRK01
 //Breaking Metal
 METALBRK METALBRK
 
-//UFO 
+//UFO
 UFOEXPL  UFOEXPL
 ufolnch  ufolnch
 UFOFLYBY UFOFLYBY
@@ -1615,7 +1624,7 @@ CRY05 CRY05
 CRY06 CRY06
 CRY07 CRY07
 
-world/bomb_ticker TICKTOCK 
+world/bomb_ticker TICKTOCK
 
 ELECTRICITY ELCLOOP
 $rolloff ELECTRICITY 64 256
@@ -1740,8 +1749,8 @@ misc/earthquake DSQUAKE
 GATEBCL0 GATEBCL0
 
 //Bridge Creak
-brdcrk01 brdcrk01 
-brdcrk02 brdcrk02 
+brdcrk01 brdcrk01
+brdcrk02 brdcrk02
 brdcrk03 brdcrk03
 $random BRIDGE_CREAK { brdcrk01 brdcrk02 brdcrk03 }
 
