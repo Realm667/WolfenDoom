@@ -1,4 +1,4 @@
-ACTOR BatFamiliar
+ACTOR BatFamiliar : Base
 {
 	//$Category Monsters (Wolf3D)/Critters
 	//$Title Bat
@@ -23,7 +23,7 @@ ACTOR BatFamiliar
 	States
 	{
 	Spawn:
-		BFAM ABCB 3 A_Look
+		BFAM ABCB 3 A_LookThroughDisguise
 		Loop
 	See:
 		BFAM A 1 A_Chase
@@ -62,7 +62,7 @@ ACTOR BatFamiliar
 	}
 }
 
-ACTOR RatFamiliar
+ACTOR RatFamiliar : Base
 {
 	//$Category Monsters (Wolf3D)/Critters
 	//$Title Rat (attacking)
@@ -85,7 +85,7 @@ ACTOR RatFamiliar
 	States
 	{
 	Spawn:
-		MOUS A 3 A_Look
+		MOUS A 3 A_LookThroughDisguise
 		Loop
 	See:
 		MOUS A 1 A_Chase

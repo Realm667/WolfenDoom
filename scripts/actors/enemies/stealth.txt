@@ -32,8 +32,11 @@ class StealthBase : Actor
 			if (mo) {
 				if (!mo.bShootable || mo.health <= 0) { continue; }
 				if (isFriend(mo)) { continue; }
-				if (Distance3d(mo) > Range) { continue; }
+				if (Range && Distance3d(mo) > Range) { continue; }
 				if (!IsVisible(mo, false, SearchParams)) { continue; }
+
+				let disguise = mo.FindInventory("DisguiseToken", True);
+				if (!disguise) { continue; }
 
 				target = mo;
 				playernum = p;
@@ -93,7 +96,6 @@ class StealthBase : Actor
 
 		return ResolveState(null);
 	}
-
 }
 
 // Version of the alert marker that starts out fully translucent (alpha 0)

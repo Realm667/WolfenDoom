@@ -24,7 +24,7 @@ ACTOR SharkBlockerMini : SharkBlocker
 	Radius 32
 }
 
-ACTOR Shark
+ACTOR Shark : Base
 {
 	//$Category Monsters (Wolf3D)/Critters
 	//$Title Shark
@@ -48,7 +48,7 @@ ACTOR Shark
 	States
 	{
 	Spawn:
-		SHRK BC 10 A_Look
+		SHRK BC 10 A_LookThroughDisguise
 		Loop
 	See:
 		SHRK A 0 A_JumpIf(waterlevel>=3,2)
@@ -94,7 +94,7 @@ ACTOR LaserShark : Shark
 	States
 	{
 	Spawn:
-		SHRL BC 10 A_Look
+		SHRL BC 10 A_LookThroughDisguise
 		Loop
 	See:
 		SHRL A 0 A_JumpIf(waterlevel>=3,2)

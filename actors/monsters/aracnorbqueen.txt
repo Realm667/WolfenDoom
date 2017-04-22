@@ -1,4 +1,4 @@
-ACTOR AracnorbQueen
+ACTOR AracnorbQueen : Base
 {
 	//$Category Monsters (Wolf3D)/Bosses
 	//$Title Aracnorb Queen (Boss)
@@ -25,7 +25,7 @@ ACTOR AracnorbQueen
 	States
 	{
 	Spawn:
-		ARNQ A 1 A_Look
+		ARNQ A 1 A_LookThroughDisguise
 		Loop
 	See:
 		"####" A 2 A_Chase

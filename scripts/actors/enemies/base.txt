@@ -1,6 +1,47 @@
+// Base class to add ability to see through notarget to actors (e.g., mice, sharks)
+class Base : Actor
+{
+	LookExParams SearchParams;
+
+	state A_LookThroughDisguise(int flags = 0, float minseedist = 0, float Range = 0, float maxheardist = 0, double fov = 0, statelabel label = "See")
+	{
+		// Try a normal look first!
+		A_LookEx(flags, minseedist, Range, maxheardist, fov, label);
+
+		if (!target)
+		{
+			// Set up view parameters for this search
+			SearchParams.fov = bLookAllAround ? 360 : fov;
+			SearchParams.minDist = minseedist;
+			SearchParams.maxDist = Range;
+			SearchParams.maxHearDist = Range;
+
+			for (int p = 0; p < MAXPLAYERS; p++) // Iterate through all of the players and find one that's in range, ignoring NOTARGET
+			{
+				Actor mo = players[p].mo;
+
+				if (mo) {
+					if (!mo.bShootable || mo.health <= 0) { continue; }
+					if (isFriend(mo)) { continue; }
+					if (Range && Distance3d(mo) > Range) { continue; }
+					if (!IsVisible(mo, false, SearchParams)) { continue; }
+
+					let disguise = mo.FindInventory("DisguiseToken", True);
+					if (!disguise) { continue; }
+
+					target = mo;
+					return ResolveState(label);
+				}
+			}
+		}
+
+		return ResolveState(null);
+	}
+}
+
 // Base class for almost all enemy actors.
-// Adds handling for 
-class Nazi : Actor
+// Adds handling for 'sneakable' actors and stealth/critical hit kills
+class Nazi : Base
 {
 	int user_incombat;
 	int perceptionthreshold;

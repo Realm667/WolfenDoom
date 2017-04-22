@@ -25,7 +25,7 @@ ACTOR RatSpawner
 	}
 }
 
-ACTOR ScurryRat
+ACTOR ScurryRat : Base
 {
 	Radius 8
 	Height 8
@@ -47,7 +47,7 @@ ACTOR ScurryRat
 	States
 	{
 	Spawn:
-		MOUS A 10 A_Look
+		MOUS A 10 A_LookThroughDisguise
 		Loop
 	See:
 		MOUS A 1 A_Chase

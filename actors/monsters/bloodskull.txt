@@ -1,4 +1,4 @@
-ACTOR BloodSkull
+ACTOR BloodSkull : Base
 {
 	//$Category Monsters (Wolf3D)/Occult
 	//$Title Bloodskull
@@ -22,7 +22,7 @@ ACTOR BloodSkull
 	States
 	{
 	Spawn:
-		SWBS AA 4 A_Look
+		SWBS AA 4 A_LookThroughDisguise
 		TNT1 A 0 A_SpawnItemEx("SkullBloodDrip",random(-2,2),random(-2,2),0,0,0,0,0,0)
 		Loop
 	See:
