@@ -1,6 +1,6 @@
 #library "boalib"
 #include "zcommon.acs"
-#import "stealth.acs" //mxd
+#import "stealth.acs" //mxd - Please include the WHOLE folder structure while compiling this on recent Slade builds (ozy81)
 
 #define SUPPLY_CHEST_PROXY_SCRIPT 4000
 #define MAX_VOLUME 127
@@ -201,7 +201,7 @@ script "Dashing" ENTER
 {
 	bool checksprint = GetCVar("sprintswitch");
 
-	if(!CheckActorClass(0,"BoAPlayer"))
+	if(!CheckActorClass(0,"BoAPlayer")||!CheckWeapon("NullWeapon"))
 		terminate;
 	int buttons = GetPlayerInput(-1,INPUT_BUTTONS);
 	if((buttons & BT_SPEED) && (buttons & BT_FORWARD) && !(buttons & BT_CROUCH) && CheckInventory("Stamina") && cooldown[PlayerNumber()] <= 0)
@@ -229,7 +229,7 @@ script "Dashing" ENTER
 
 Script "Exhausted" ENTER
 {
-	if(!CheckActorClass(0,"BoAPlayer")||GameType()==GAME_TITLE_MAP)
+	if(!CheckActorClass(0,"BoAPlayer")||GameType()==GAME_TITLE_MAP||!CheckWeapon("NullWeapon"))
 		terminate;
 	while(CheckInventory("Stamina")<25)
 	{
