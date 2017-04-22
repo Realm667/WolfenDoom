@@ -351,6 +351,34 @@ ACTOR PanzerNuke : Nuke //for panzerschreck rockets
 	}
 }
 
+ACTOR KaZomBoom : KaBoom //Zombie KaBoom
+{
+	States
+	{
+	Spawn:
+		BFE1 ABCDE 2
+		"####" F 0 A_Explode(random(45,65),144,TRUE,128)
+		"####" FGHIJKL 2
+		Stop
+	}
+}
+
+ACTOR ZombieNuke : Nuke //for zombiekazi
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_PlaySound("panzer/explode", CHAN_AUTO, 1.0, FALSE, ATTN_NORM)
+		"####" A 0 Radius_Quake(7,30,0,96,0)
+		"####" A 0 A_SpawnItemEx("TankFlare")
+		"####" A 1 A_SpawnItemEx("NukeFloor")
+		"####" A 1 A_SpawnItemEx("KazomBoom")
+		"####" AA 0 A_SpawnItemEx("NukeSmokeFloor")
+		"####" A 1 A_SpawnItemEx("TankSmokePillar",0,0,0,0,0,2)
+		Stop
+	}
+}
+
 //UFOs
 ACTOR UFONuke : Nuke
 {
