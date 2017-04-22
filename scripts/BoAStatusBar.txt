@@ -237,7 +237,15 @@ class BoAStatusBar : BaseStatusBar
 			}
 		}
 
-		if (CheckWeaponSelected("Panzerschreck") || CheckWeaponSelected("NullWeapon"))
+		if (CheckWeaponSelected("Panzerschreck") ||
+				CheckWeaponSelected("KnifeSilent") ||
+				CheckWeaponSelected("Shovel") ||
+				CheckWeaponSelected("Firebrand") ||
+				CheckWeaponSelected("Luger9mm") ||
+				CheckWeaponSelected("TrenchShotgun") ||
+				CheckWeaponSelected("Browning5") ||
+				CheckWeaponSelected("G43") ||
+				CheckWeaponSelected("Kar98k"))
 		{
 			DrawTexture(GetMugShot(5, mugshot.DISABLERAMPAGE), (76, 168), DI_ITEM_OFFSETS);
 		}
@@ -366,7 +374,15 @@ class BoAStatusBar : BaseStatusBar
 			}
 		}
 
-		if (CheckWeaponSelected("Panzerschreck") || CheckWeaponSelected("NullWeapon"))
+		if (CheckWeaponSelected("Panzerschreck") ||
+				CheckWeaponSelected("KnifeSilent") ||
+				CheckWeaponSelected("Shovel") ||
+				CheckWeaponSelected("Firebrand") ||
+				CheckWeaponSelected("Luger9mm") ||
+				CheckWeaponSelected("TrenchShotgun") ||
+				CheckWeaponSelected("Browning5") ||
+				CheckWeaponSelected("G43") ||
+				CheckWeaponSelected("Kar98k")))
 		{
 			DrawTexture(GetMugShot(5, mugshot.DISABLERAMPAGE), (7, -38), DI_ITEM_OFFSETS);
 		}
