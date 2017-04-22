@@ -1132,13 +1132,21 @@ ACTOR Mechanic : Guard
 	States
 	{
 	Spawn:
-		MNIC N 0
+		MNIC N 0 {
+			if (!user_incombat) { return ResolveState("Look"); }
+			return ResolveState("");
+		}
+		MNIC O 0
 		Goto Look
 	See:
-		"####" O 0 A_SpawnItemEx("ToolBox",0,-8,22,0,0,0,0,SXF_NOCHECKPOSITION)
 		"####" O 8
 	SeeLoop:
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		"####" "#" 0 {
+			if (!user_incombat) { 
+				A_SetUserVar("user_incombat", TRUE);
+				A_SpawnItemEx("ToolBox",0,-8,22,0,0,0,0,SXF_NOCHECKPOSITION);
+			}
+		}
 		"####" A 1 A_Chase
 		"####" AA 1 A_Chase("","")
 		"####" A 1 A_Chase
