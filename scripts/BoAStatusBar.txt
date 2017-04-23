@@ -12,6 +12,7 @@ class BoAStatusBar : BaseStatusBar
 
 	double basealpha;
 	int alertedcount;
+	int barstate;
 
 	override void Init()
 	{
@@ -97,6 +98,8 @@ class BoAStatusBar : BaseStatusBar
 				BeginHUD(1, False);
 			}
 
+			barstate = state;
+
 			if (state == HUD_StatusBar)
 			{
 				BeginStatusBar(False);
@@ -117,9 +120,9 @@ class BoAStatusBar : BaseStatusBar
 
 	protected void DrawMainBar (double TicFrac)
 	{
-		DrawImage("HUDBAR", (-54, 152), DI_ITEM_OFFSETS);
-
 		int current, max;
+
+		DrawImage("HUDBAR", (-54, 152), DI_ITEM_OFFSETS);
 
 		DrawVisibilityBar((85, 162), scale: 0.5);
 
@@ -402,14 +405,16 @@ class BoAStatusBar : BaseStatusBar
 	{
 		int current, max;
 
-		int x = position.x;
-		int y = position.y;
+		double x = position.x;
+		double y = position.y;
 
 		if (BoAPlayer(CPlayer.mo))
 		{
 			if (LivingSneakableActors())
 			{
 				if (basealpha < 1) { basealpha += 0.05; }
+
+				if (barstate == HUD_StatusBar) { DrawImage("VIS_BKG", (x - 4 * scale, y - 12 * scale), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (2 * scale, 2 * scale)); }
 
 				// Scale visibility to show more useful granularity
 				current = mVisibilityInterpolator.GetValue() - 50;
@@ -419,8 +424,16 @@ class BoAStatusBar : BaseStatusBar
 
 				if (alertedcount)
 				{
-					DrawImage("EYE", (x + 112 * scale, y - 21 * scale), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (0.5 * scale, 0.5 * scale));
-					DrawString(mSmallFont, FormatNumber(alertedcount), (x + 124 * scale, y - 20 * scale - 2), flags | DI_TEXT_ALIGN_RIGHT, Font.CR_GRAY);
+					if (barstate == HUD_Fullscreen)
+					{
+						DrawImage("EYE", (x + 112 * scale, y - 21 * scale), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (0.5 * scale, 0.5 * scale));
+						DrawString(mSmallFont, FormatNumber(alertedcount), (x + 124 * scale, y - 20 * scale - 2), flags | DI_TEXT_ALIGN_RIGHT, Font.CR_GRAY);
+					}
+					else
+					{
+						DrawImage("EYE", (310, 190), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (0.25, 0.25));
+						DrawString(mSmallFont, FormatNumber(alertedcount), (318, 190), flags | DI_TEXT_ALIGN_RIGHT, Font.CR_GRAY);
+					}
 				}
 
 				int suspicion = mSuspicionInterpolator.GetValue();
@@ -435,8 +448,16 @@ class BoAStatusBar : BaseStatusBar
 				{
 					DrawBarAlpha("VIS_RED", "", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, suspicion / 100., scale);
 
-					DrawInventoryIcon(disguise, (x - 104 * scale, y - 20 * scale), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (0.25 * scale, 0.25 * scale));
-					DrawString(mSmallFont, "Disguised", (x, y - 20 * scale - 4), flags | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, basealpha - (suspicion / 100.));
+					if (barstate == HUD_Fullscreen)
+					{
+						DrawInventoryIcon(disguise, (x - 104 * scale, y - 20 * scale), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (0.25 * scale, 0.25 * scale));
+						DrawString(mSmallFont, StringTable.Localize("$DISGUISED"), (x, y - 20 * scale - 4), flags | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, basealpha - (suspicion / 100.));
+					}
+					else
+					{
+						DrawInventoryIcon(disguise, (240, 184), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (0.4 * scale, 0.4 * scale));
+						DrawString(mSmallFont, StringTable.Localize("$DISGUISED"), (190, 159), DI_TEXT_ALIGN_CENTER);
+					}
 				}
 				else
 				{
