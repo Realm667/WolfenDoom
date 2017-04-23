@@ -201,10 +201,10 @@ script "Dashing" ENTER
 {
 	bool checksprint = GetCVar("sprintswitch");
 
-	if(!CheckActorClass(0,"BoAPlayer")||!CheckWeapon("NullWeapon"))
+	if(!CheckActorClass(0,"BoAPlayer"))
 		terminate;
 	int buttons = GetPlayerInput(-1,INPUT_BUTTONS);
-	if((buttons & BT_SPEED) && (buttons & BT_FORWARD) && !(buttons & BT_CROUCH) && CheckInventory("Stamina") && cooldown[PlayerNumber()] <= 0)
+	if(!CheckWeapon("NullWeapon") && (buttons & BT_SPEED) && (buttons & BT_FORWARD) && !(buttons & BT_CROUCH) && CheckInventory("Stamina") && cooldown[PlayerNumber()] <= 0)
 	{
 		SetActorProperty(0,APROP_SPEED,2.0);
 			if(checksprint==TRUE||CheckInventory("BerserkToken"))
@@ -216,10 +216,12 @@ script "Dashing" ENTER
 	}
 	else
 	{
-		SetActorProperty(0,APROP_SPEED,1.0);
-			cooldown[PlayerNumber()]--;
-			delay(random(1,3)); //recovery is more fast
-			GiveInventory("Stamina",1);
+		if (!CheckWeapon("NullWeapon")) {
+			SetActorProperty(0,APROP_SPEED,1.0);
+		}
+		cooldown[PlayerNumber()]--;
+		delay(random(1,3)); //recovery is more fast
+		GiveInventory("Stamina",1);
 	}
 	if(!CheckInventory("Stamina"))
 		cooldown[PlayerNumber()]=100;
@@ -229,7 +231,7 @@ script "Dashing" ENTER
 
 Script "Exhausted" ENTER
 {
-	if(!CheckActorClass(0,"BoAPlayer")||GameType()==GAME_TITLE_MAP||!CheckWeapon("NullWeapon"))
+	if(!CheckActorClass(0,"BoAPlayer")||GameType()==GAME_TITLE_MAP||CheckWeapon("NullWeapon"))
 		terminate;
 	while(CheckInventory("Stamina")<25)
 	{
