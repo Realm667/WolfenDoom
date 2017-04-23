@@ -121,49 +121,7 @@ class BoAStatusBar : BaseStatusBar
 
 		int current, max;
 
-		if (BoAPlayer(CPlayer.mo))
-		{
-			if (LivingSneakableActors())
-			{
-				if (basealpha < 1) { basealpha += 0.05; }
-
-				current = mVisibilityInterpolator.GetValue() - 50;
-				max = 50;
-
-				if (alertedcount)
-				{
-					DrawImage("EYE", (16, 158), DI_ITEM_CENTER, basealpha, (-1, -1), (0.5, 0.5));
-					DrawString(mSmallFont, FormatNumber(alertedcount), (28, 157), DI_TEXT_ALIGN_RIGHT, Font.CR_GRAY);
-				}
-
-				int suspicion = mSuspicionInterpolator.GetValue();
-
-				current = max(current, suspicion);
-
-				DrawBarAlpha("VIS_BLKV", "VIS_BACV", current, max, (8, 104), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_CENTER, basealpha);
-
-				let disguise = CPlayer.mo.FindInventory("DisguiseToken", True);
-
-				if (disguise && CheckWeaponSelected("NullWeapon"))
-				{
-					DrawBarAlpha("VIS_REDV", "VIS_NULV", current, max, (8, 104), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_CENTER, suspicion / 100.);
-				}
-				else
-				{
-					DrawBarAlpha("VIS_GRNV", "VIS_NULV", current, max, (8, 104), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_ITEM_CENTER, basealpha);
-					DrawBarAlpha("VIS_YELV", "VIS_NULV", current, max, (8, 104), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_ITEM_CENTER, current / 40.);
-					DrawBarAlpha("VIS_REDV", "VIS_NULV", current, max, (8, 104), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_ITEM_CENTER, current / 50.);
-				}
-			}
-			else
-			{
-				current = mVisibilityInterpolator.GetValue();
-				max = 100;
-
-				if (basealpha > 0) { basealpha -= 0.05; }
-				DrawBarAlpha("VIS_BLKV", "VIS_BACV", current, max, (8, 104), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_CENTER, basealpha);
-			}
-		}
+		DrawVisibilityBar((85, 162), scale: 0.5);
 
 		if (CheckInventory("MineSweeper", 1))
 		{
@@ -263,55 +221,7 @@ class BoAStatusBar : BaseStatusBar
 	{
 		int current, max;
 
-		if (BoAPlayer(CPlayer.mo))
-		{
-			if (LivingSneakableActors())
-			{
-				if (basealpha < 1) { basealpha += 0.05; }
-
-				// Scale visibility to show more useful granularity
-				current = mVisibilityInterpolator.GetValue() - 50;
-				max = 50;
-
-				int alertedcount = CallACS("GetAlertedCount");
-
-				if (alertedcount)
-				{
-					DrawImage("EYE", (112, -21), DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_ITEM_CENTER, basealpha, (-1, -1), (0.5, 0.5));
-					DrawString(mSmallFont, FormatNumber(alertedcount), (124, -22), DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_TEXT_ALIGN_RIGHT, Font.CR_GRAY);
-				}
-
-				int suspicion = mSuspicionInterpolator.GetValue();
-
-				current = max(current, suspicion);
-
-				DrawBarAlpha("VIS_BLK", "VIS_BACK", current, max, (0, -20), 0, SHADER_HORZ, DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_ITEM_CENTER, basealpha);
-
-				let disguise = CPlayer.mo.FindInventory("DisguiseToken", True);
-
-				if (disguise && CheckWeaponSelected("NullWeapon"))
-				{
-					DrawBarAlpha("VIS_RED", "VIS_NULL", current, max, (0, -20), 0, SHADER_HORZ, DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_ITEM_CENTER, suspicion / 100.);
-
-					DrawInventoryIcon(disguise, (-104, -20), DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_ITEM_CENTER, basealpha, (-1, -1), (0.25, 0.25));
-					DrawString(mSmallFont, "Disguised", (0, -24), DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, basealpha - (suspicion / 100.));
-				}
-				else
-				{
-					DrawBarAlpha("VIS_GRN", "VIS_NULL", current, max, (0, -20), 0, SHADER_HORZ, DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_ITEM_CENTER, basealpha);
-					DrawBarAlpha("VIS_YEL", "VIS_NULL", current, max, (0, -20), 0, SHADER_HORZ, DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_ITEM_CENTER, current / 40.);
-					DrawBarAlpha("VIS_RED", "VIS_NULL", current, max, (0, -20), 0, SHADER_HORZ, DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_ITEM_CENTER, current / 50.);
-				}
-			}
-			else
-			{
-				current = mVisibilityInterpolator.GetValue();
-				max = 100;
-
-				if (basealpha > 0) { basealpha -= 0.05; }
-				DrawBarAlpha("VIS_BLK", "VIS_BACK", current, max, (0, -20), 0, SHADER_HORZ, DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM | DI_ITEM_CENTER, basealpha);
-			}
-		}
+		DrawVisibilityBar();
 
 		if (CheckInventory("MineSweeper", 1))
 		{
@@ -403,14 +313,16 @@ class BoAStatusBar : BaseStatusBar
 		DrawString(mBigFont, FormatNumber(GetAmount("GrenadePickup")), (-83, -20), DI_TEXT_ALIGN_LEFT);
 	}
 
-	//Custom version of DrawBar that allows drawing with alpha - mostly copy/paste from original function
-	void DrawBarAlpha(String ongfx, String offgfx, double curval, double maxval, Vector2 position, int border, int vertical, int flags = 0, double alpha = 1.)
+	//Custom version of DrawBar that allows drawing with alpha - mostly copy/paste from original function, modified to allow alpha and scaling
+	void DrawBarAlpha(String ongfx, String offgfx, double curval, double maxval, Vector2 position, int border, int vertical, int flags = 0, double alpha = 1., double scale = 1.)
 	{
 		let ontex = TexMan.CheckForTexture(ongfx, TexMan.TYPE_MiscPatch);
 		if (!ontex.IsValid()) return;
 		let offtex = TexMan.CheckForTexture(offgfx, TexMan.TYPE_MiscPatch);
 
 		Vector2 texsize = TexMan.GetScaledSize(ontex);
+		texsize.x *= scale;
+		texsize.y *= scale;
 		[position, flags] = AdjustPosition(position, flags, texsize.X, texsize.Y);
 		
 		double value = (maxval != 0) ? clamp(curval / maxval, 0, 1) : 0;
@@ -423,7 +335,7 @@ class BoAStatusBar : BaseStatusBar
 		bool horizontal = !(vertical & SHADER_VERT);
 		bool reverse = !!(vertical & SHADER_REVERSE);
 		double sizeOfImage = (horizontal ? texsize.X - border*2 : texsize.Y - border*2);
-		Clip[(!horizontal) | ((!reverse)<<1)] = sizeOfImage - sizeOfImage *value;
+		Clip[(!horizontal) | ((!reverse)<<1)] = sizeOfImage - sizeOfImage * value;
 		
 		// preserve the active clipping rectangle
 		int cx, cy, cw, ch;
@@ -434,17 +346,16 @@ class BoAStatusBar : BaseStatusBar
 			for(int i = 0; i < 4; i++) Clip[i] += border;
 
 			//Draw the whole foreground
-			DrawTexture(ontex, position, flags | DI_ITEM_LEFT_TOP, alpha);
+			DrawTexture(ontex, position, flags | DI_ITEM_LEFT_TOP, alpha, scale: (scale, scale));
 			SetClipRect(position.X + Clip[0], position.Y + Clip[1], texsize.X - Clip[0] - Clip[2], texsize.Y - Clip[1] - Clip[3], flags);
 		}
 		
-		if (offtex.IsValid() && TexMan.GetScaledSize(offtex) == texsize) DrawTexture(offtex, position, flags | DI_ITEM_LEFT_TOP, alpha);
-		else Fill(color(255,0,0,0), position.X + Clip[0], position.Y + Clip[1], texsize.X - Clip[0] - Clip[2], texsize.Y - Clip[1] - Clip[3]);
+		if (offtex.IsValid()) { DrawTexture(offtex, position, flags | DI_ITEM_LEFT_TOP, alpha, scale: (scale, scale)); }
 		
 		if (border == 0) 
 		{
 			SetClipRect(position.X + Clip[0], position.Y + Clip[1], texsize.X - Clip[0] - Clip[2], texsize.Y - Clip[1] - Clip[3], flags);
-			DrawTexture(ontex, position, flags | DI_ITEM_LEFT_TOP, alpha);
+			DrawTexture(ontex, position, flags | DI_ITEM_LEFT_TOP, alpha, scale: (scale, scale));
 		}
 		// restore the previous clipping rectangle
 		screen.SetClipRect(cx, cy, cw, ch);
@@ -484,6 +395,64 @@ class BoAStatusBar : BaseStatusBar
 		else
 		{
 			DrawTexture(GetMugShot(5), position, DI_ITEM_OFFSETS);
+		}
+	}
+
+	void DrawVisibilityBar(Vector2 position = (0, 0), int flags = DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM, double scale = 1.)
+	{
+		int current, max;
+
+		int x = position.x;
+		int y = position.y;
+
+		if (BoAPlayer(CPlayer.mo))
+		{
+			if (LivingSneakableActors())
+			{
+				if (basealpha < 1) { basealpha += 0.05; }
+
+				// Scale visibility to show more useful granularity
+				current = mVisibilityInterpolator.GetValue() - 50;
+				max = 50;
+
+				int alertedcount = CallACS("GetAlertedCount");
+
+				if (alertedcount)
+				{
+					DrawImage("EYE", (x + 112 * scale, y - 21 * scale), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (0.5 * scale, 0.5 * scale));
+					DrawString(mSmallFont, FormatNumber(alertedcount), (x + 124 * scale, y - 20 * scale - 2), flags | DI_TEXT_ALIGN_RIGHT, Font.CR_GRAY);
+				}
+
+				int suspicion = mSuspicionInterpolator.GetValue();
+
+				current = max(current, suspicion);
+
+				DrawBarAlpha("VIS_BLK", "VIS_BACK", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, basealpha, scale);
+
+				let disguise = CPlayer.mo.FindInventory("DisguiseToken", True);
+
+				if (disguise && CheckWeaponSelected("NullWeapon"))
+				{
+					DrawBarAlpha("VIS_RED", "", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, suspicion / 100., scale);
+
+					DrawInventoryIcon(disguise, (x - 104 * scale, y - 20 * scale), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (0.25 * scale, 0.25 * scale));
+					DrawString(mSmallFont, "Disguised", (x, y - 20 * scale - 4), flags | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, basealpha - (suspicion / 100.));
+				}
+				else
+				{
+					DrawBarAlpha("VIS_GRN", "", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, basealpha, scale);
+					DrawBarAlpha("VIS_YEL", "", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, current / 40., scale);
+					DrawBarAlpha("VIS_RED", "", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, current / 50., scale);
+				}
+			}
+			else
+			{
+				current = mVisibilityInterpolator.GetValue();
+				max = 100;
+
+				if (basealpha > 0) { basealpha -= 0.05; }
+				DrawBarAlpha("VIS_BLK", "VIS_BACK", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, basealpha, scale);
+			}
 		}
 	}
 }
