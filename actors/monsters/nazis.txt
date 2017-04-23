@@ -5023,6 +5023,43 @@ ACTOR Marine1 : DirtyDarren
 	}
 }
 
+ACTOR Marine1B : Marine1
+{
+	//$Title Marine Paratrooper (Pistol)
+	Scale 0.67
+	States
+	{
+	Spawn:
+		PARP A 0
+		Goto Look
+	Missile:
+		"####" FG 5 A_FaceTarget
+		"####" H 0 A_PlaySound("nazi/pistol", CHAN_WEAPON)
+		"####" H 8 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",54,1,random(-8,8))
+		"####" H 0 A_GiveInventory("PistolGuardCounter", 1) //ozy81
+		"####" G 8 A_SpawnItemEx("9MMCasing", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
+		"####" F 0 A_JumpIfInventory("PistolGuardCounter", 8, "Reload") //ozy81
+		"####" G 0 A_Jump(256,"See")
+	Reload: //ozy81
+		"####" F 0 A_ChangeFlag("NoPain", 1)
+		"####" F 30 A_PlaySound("luger/reload", CHAN_ITEM, frandom (0.3,0.6), FALSE, ATTN_NORM)
+		"####" F 0 A_TakeInventory("PistolGuardCounter", 8) //ozy81
+		"####" F 0 A_SpawnItemEx("9MMCasing", 1, 0, 56, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" F 0 A_ChangeFlag("NoPain", 0)
+		"####" "#" 0 A_Jump(256, "See") //So that inheriting actors go to their own See State
+	Death:
+		"####" K 5
+		"####" L 5 A_Scream
+		"####" M 5 A_NoBlocking
+		"####" N 3
+		"####" O -1
+		Stop
+	Raise:
+		"####" ONMLKJ 5
+		Goto See
+	}
+}
+
 ACTOR Marine2 : RandomSpawner
 {
 	//$Category Monsters (Wolf3D)/NPCs
