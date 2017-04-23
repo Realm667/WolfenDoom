@@ -13,6 +13,7 @@ class BoAStatusBar : BaseStatusBar
 	double basealpha;
 	int alertedcount;
 	int barstate;
+	bool stealth;
 
 	override void Init()
 	{
@@ -63,7 +64,7 @@ class BoAStatusBar : BaseStatusBar
 		{
 			mVisibilityInterpolator.Update(BoAPlayer(CPlayer.mo).user_visibility);
 
-			int alertedcount = CallACS("GetAlertedCount");
+			alertedcount = CallACS("GetAlertedCount");
 
 			if (alertedcount)
 			{
@@ -71,7 +72,7 @@ class BoAStatusBar : BaseStatusBar
 			}
 			else  // Otherwise use actual suspicion level
 			{
-				if (BoAPlayer(CPlayer.mo)) { mSuspicionInterpolator.Update(BoAPlayer(CPlayer.mo).suspicion); }
+				mSuspicionInterpolator.Update(BoAPlayer(CPlayer.mo).suspicion);
 			}
 		}
 	}
@@ -366,16 +367,24 @@ class BoAStatusBar : BaseStatusBar
 
 	bool LivingSneakableActors()
 	{
-		ThinkerIterator it = ThinkerIterator.Create("Nazi");
-		Nazi mo;
-		while (mo = Nazi(it.Next(true)))
+		if (level.time < 35 || level.time % 35 == 0) // Cut down on how often this is run
 		{
-			if (mo.health > 0 && mo.sneakable)
+			ThinkerIterator it = ThinkerIterator.Create("Nazi");
+			Nazi mo;
+			while (mo = Nazi(it.Next(true)))
 			{
-				return true;
+				if (mo.health > 0 && mo.sneakable)
+				{
+					stealth = true;
+					return true;
+				}
 			}
+			
+			stealth - false;
+			return false;
 		}
-		return false;
+
+		return stealth;
 	}
 
 	void DrawMugShot(Vector2 position)
@@ -403,13 +412,13 @@ class BoAStatusBar : BaseStatusBar
 
 	void DrawVisibilityBar(Vector2 position = (0, 0), int flags = DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM, double scale = 1.)
 	{
-		int current, max;
-
-		double x = position.x;
-		double y = position.y;
-
 		if (BoAPlayer(CPlayer.mo))
 		{
+			int current, max;
+
+			double x = position.x;
+			double y = position.y;
+
 			if (LivingSneakableActors())
 			{
 				if (basealpha < 1) { basealpha += 0.05; }
@@ -417,10 +426,8 @@ class BoAStatusBar : BaseStatusBar
 				if (barstate == HUD_StatusBar) { DrawImage("VIS_BKG", (x - 4 * scale, y - 12 * scale), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (2 * scale, 2 * scale)); }
 
 				// Scale visibility to show more useful granularity
-				current = mVisibilityInterpolator.GetValue() - 50;
+				current = Clamp(mVisibilityInterpolator.GetValue() - 50, 0, 50);
 				max = 50;
-
-				int alertedcount = CallACS("GetAlertedCount");
 
 				if (alertedcount)
 				{
@@ -438,7 +445,7 @@ class BoAStatusBar : BaseStatusBar
 
 				int suspicion = mSuspicionInterpolator.GetValue();
 
-				current = max(current, suspicion);
+				current = max(current, suspicion - 50);
 
 				DrawBarAlpha("VIS_BLK", "VIS_BACK", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, basealpha, scale);
 
@@ -450,13 +457,17 @@ class BoAStatusBar : BaseStatusBar
 
 					if (barstate == HUD_Fullscreen)
 					{
-						DrawInventoryIcon(disguise, (x - 104 * scale, y - 20 * scale), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (0.25 * scale, 0.25 * scale));
-						DrawString(mSmallFont, StringTable.Localize("$DISGUISED"), (x, y - 20 * scale - 4), flags | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, basealpha - (suspicion / 100.));
+						String disguisetag;
+						disguisetag = disguise.GetTag();
+						if (disguisetag != "") { disguisetag = " - " .. disguisetag; }
+
+						DrawInventoryIcon(disguise, (x - 104 * scale, y - 20 * scale), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (scale, scale));
+						DrawString(mSmallFont, StringTable.Localize("$DISGUISED") .. disguisetag, (x, y - 20 * scale - 4), flags | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, basealpha - (suspicion / 100.));
 					}
 					else
 					{
-						DrawInventoryIcon(disguise, (240, 184), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (0.4 * scale, 0.4 * scale));
-						DrawString(mSmallFont, StringTable.Localize("$DISGUISED"), (190, 159), DI_TEXT_ALIGN_CENTER);
+						DrawInventoryIcon(disguise, (240, 184), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (0.75, 0.75));
+						DrawString(mSmallFont, StringTable.Localize("$DISGUISED"), (190, 159), DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, basealpha - (suspicion / 100.));
 					}
 				}
 				else

@@ -135,7 +135,7 @@ script "AddExtraVisibility" (int value, int override)
 
 script "GetVisibility" (void)
 {
-	SetResultValue(GetVisibility(1000 + PlayerNumber(), curNoiseLevel, extraVisibility));
+	SetResultValue(Clamp(GetVisibility(playerID, curNoiseLevel, extraVisibility), 0, PlayerDetectionVisibility));
 }
 
 //mxd. Stealth-related. For this to work, each player must have unique TID.

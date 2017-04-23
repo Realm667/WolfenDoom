@@ -174,7 +174,6 @@ class SneakableGuardEyesAlerted : SneakableGuardEyesIdle
 	States
 	{
 		Spawn:
-			TNT1 A 0 NoDelay ACS_NamedExecuteAlways("IncreaseAlertedCount");
 			TNT1 A 1 A_AlertMonsters(512, AMF_TARGETEMITTER); // Something fishy is going on. Alert everybody around!
 			Goto ResetCounters;
 		ResetCounters: 
@@ -196,7 +195,6 @@ class SneakableGuardEyesAlerted : SneakableGuardEyesIdle
 			Goto ResetCounters;
 		ResetMaster:
 			TNT1 A 0 { Nazi(master).BecomeIdle(); } // Cause the master to become idle
-			TNT1 A 0 ACS_NamedExecuteAlways("DecreaseAlertedCount");
 			Stop;
 	}
 }
