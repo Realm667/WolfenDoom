@@ -212,3 +212,40 @@ ACTOR RogerWilco : MrSpock
 		Stop
 	}
 }
+
+ACTOR IndianaJones
+{
+	//$Category Misc (Wolf3D)/EasterEgg
+	//$Title Indiana Jones
+	//$Color 3
+	Radius 16
+	Height 64
+	+SOLID
+	States
+	{
+	Spawn:
+		INDY A 70
+		INDY B 20
+		INDY C 70
+		INDY DEFEDBC 10
+		INDY D 20
+		Loop
+	}
+}
+
+ACTOR IndianaJonesGirl
+{
+	//$Category Misc (Wolf3D)/EasterEgg
+	//$Title Sophia Hapgood
+	//$Color 3
+	Radius 16
+	Height 64
+	+SOLID
+	States
+	{
+	Spawn:
+		INDY M 140
+		INDY GHIJKL 10
+		Loop
+	}
+}
