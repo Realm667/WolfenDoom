@@ -7,6 +7,15 @@ class StealthBase : Actor
 	LookExParams SearchParams;
 	Actor alert;
 
+	Default
+	{
+		+NEVERTARGET
+		+NOCLIP
+		+NOGRAVITY
+		RenderStyle "None";
+		Height 46;
+	}
+
 	state A_LookForNoTargetPlayer(int Range = 256)
 	{
 		if (master && master is "Nazi") // Get the master actor's perceptionfov and perceptionthreshold properties
@@ -128,15 +137,6 @@ class AlertMarkerAlpha : Actor
 // Almost directly converted from the original decorate version, with the exception of removing Damage/Pain hacks to change states and replacing them with proper state change calls
 class SneakableGuardEyesIdle : StealthBase
 {
-	Default
-	{
-		+NEVERTARGET
-		+NOCLIP
-		+NOGRAVITY
-		RenderStyle "None";
-		Height 46;
-	}
-
 	States
 	{
 		Spawn:
@@ -162,14 +162,14 @@ class SneakableGuardEyesIdle : StealthBase
 			TNT1 A 0 { 
 				A_SpawnItemEx("AlertMarker", 0, 0, 64, 0, 0, 0, 0, SXF_TRANSFERPOINTERS);
 				A_PlaySound("axis1/sighted", CHAN_BODY);
-				Nazi(master).BecomeAlerted(target); // Cause the master to become alerted
+				if (master) { Nazi(master).BecomeAlerted(target); } // Cause the master to become alerted
 			} 
 			Stop;
 	}
 }
 
 // This actor follows SneakableGuard around checking if players are no longer seen
-class SneakableGuardEyesAlerted : SneakableGuardEyesIdle
+class SneakableGuardEyesAlerted : StealthBase
 {
 	States
 	{
@@ -194,7 +194,7 @@ class SneakableGuardEyesAlerted : SneakableGuardEyesIdle
 			TNT1 A 1 A_ClearTarget;
 			Goto ResetCounters;
 		ResetMaster:
-			TNT1 A 0 { Nazi(master).BecomeIdle(); } // Cause the master to become idle
+			TNT1 A 0 { if (master) { Nazi(master).BecomeIdle(); } } // Cause the master to become idle
 			Stop;
 	}
 }
