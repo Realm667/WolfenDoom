@@ -77,7 +77,7 @@ class Nazi : Base
 	States
 	{
 		Look:
-			"####" "#" 10 A_NaziLook();
+			"####" "#" 10 A_Look();
 			Loop;
 		See:
 			"####" "#" 0 { user_incombat = True; } //mxd
@@ -129,7 +129,12 @@ class Nazi : Base
 		// If it's sneakable, spawn a set of the sneakeable eyes and mark it as friendly (and make the actor never infight)
 		if (sneakable) {
 			bFriendly = True;
+			bNeverTarget = True; // A bit of a hack, but it works...  Will cause issues if FRIENDLY actors ever need to interact with sneakable actors
 			A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		}
+		else if (SneakableActors()) // If there are sneakable actors in the level, no Nazi actors will be targetable - fixes targeting of non-sneakables by idle (friendly) sneakables
+		{ // This will break normal expected friendly monster behavior!
+			bNeverTarget = True;
 		}
 	}
 
@@ -209,125 +214,14 @@ class Nazi : Base
 		SetStateLabel("Spawn");
 	}
 
-	// ZScriptified version of A_Look that adds a check for Species so that an enemy will never attack a member of its own species, regardless of FRIENDLY flag settings
-	void A_NaziLook()
+	bool SneakableActors() // Are there sneakable actors in the level?
 	{
-		Actor targ;
-
-		if (bInConversation) { return; }
-
-		// [RH] Set goal now if appropriate
-		if (special == 229 && args[0] == 0) //Thing_SetGoal
+		ThinkerIterator it = ThinkerIterator.Create("Nazi");
+		Nazi mo;
+		while (mo = Nazi(it.Next(true)))
 		{
-			ActorIterator iterator = ActorIterator.Create(args[1], "PatrolPoint");
-			special = 0;
-			goal = iterator.Next();
-			reactiontime = args[2] * TICRATE + level.maptime;
-			if (args[3] == 0) { bChaseGoal = False; }
-			else { bChaseGoal = True; }
+			return true;
 		}
-
-		threshold = 0;		// any shot will wake up
-
-		if (TIDtoHate != 0)
-		{
-			targ = target;
-		}
-		else
-		{
-			targ = bNoSector ? CurSector.SoundTarget : LastHeard;
-
-			// [RH] If the soundtarget is dead, don't chase it
-			if (targ != NULL && targ.health <= 0)
-			{
-				targ = NULL;
-			}
-
-			if (targ && targ.player && (targ.player.cheats & CF_NOTARGET))
-			{
-				return;
-			}
-		}
-
-		// [RH] Andy Baker's stealth monsters
-		if (bStealth) { visdir = -1; }
-
-		if (targ && targ.bShootable)
-		{
-			if (IsFriend(targ))	// be a little more precise!
-			{
-				// If we find a valid target here, the wandering logic should *not*
-				// be activated! It would cause the seestate to be set twice.
-				if (LookForPlayers (bLookAllAround, NULL))
-				{
-					NaziSee();
-					return;
-				}
-
-				// Let the self wander around aimlessly looking for a fight
-				if (SeeState != NULL)
-				{
-					SetState (SeeState);
-				}
-				else
-				{
-					A_Wander();
-				}
-			}
-			else
-			{
-				target = targ;
-
-				if (bAmbush)
-				{
-					if (CheckSight (target, SF_SEEPASTBLOCKEVERYTHING))
-					{
-						NaziSee();
-						return;
-					}
-				}
-				else
-				{
-					{
-						NaziSee();
-						return;
-					}
-				}
-			}
-		}
-
-		if (!LookForPlayers(bLookAllAround, NULL)) { return; }
-
-		NaziSee();
-
-		return;
-	}
-
-	void NaziSee()
-	{
-		// go into chase state
-		// [RH] Don't start chasing after a goal if it isn't time yet.
-		if (target == goal)
-		{
-			if (reactiontime > level.maptime)
-				target = NULL;
-		}
-		else if (target && target.GetSpecies() == GetSpecies()) { target = null; } // Don't shoot at your own species, regardless of friendly or not.
-		else if (SeeSound)
-		{
-			if (bBoss)
-			{ // full volume
-				A_PlaySound(SeeSound, CHAN_VOICE, attenuation: ATTN_NONE);
-			}
-			else
-			{
-				A_PlaySound(SeeSound, CHAN_VOICE);
-			}
-		}
-
-		if (target && SeeState)
-		{
-			SetState (SeeState);
-		}
+		return false;
 	}
 }
