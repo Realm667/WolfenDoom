@@ -541,18 +541,18 @@ dog/sight1			DSDGSIT1
 dog/sight2			DSDGSIT2
 dog/sight3			DSDGSIT3
 $random dog/active 	{dog/act1 dog/act2}
-dog/act1				DSDGACT1
-dog/act2				DSDGACT2
+dog/act1			DSDGACT1
+dog/act2			DSDGACT2
 $random dog/death	{ dog/death1  dog/death2  dog/death3 }
 dog/death1			DSDGDIE1
 dog/death2			DSDGDIE2
 dog/death3			DSDGDIE3
-dog/pain				dsdgpai
+dog/pain			dsdgpai
 dog/attack			dsdogatk
 
 //Geist
 geist/pain		geisthit
-geist/die			geistdie
+geist/die		geistdie
 geist/active	geistact
 
 //Mutants
@@ -563,9 +563,9 @@ mutant/pain3 mtnt_pn3
 $random mutant/pain { mutant/pain1 mutant/pain2 mutant/pain3 }
 mutant/death dsmutdt
 
-supermutantprojectile/fire	sm_fire
-supermutantprojectile/bounce	sm_boun
-supermutantprojectile/explore	sm_expl
+supaproj/bounce		sm_boun
+supaproj/explode	sm_expl
+supaproj/fire		sm_fire
 
 //Fake Hitler
 hitlerghost/see hghsee
@@ -1334,10 +1334,14 @@ MINEF MINEF
 misc/SRCRK1	srcrk1
 misc/SRCRK2	srcrk2
 
+//Ice Dart
+IceFlight		ICEDLOOP
+$volume IceFlight 0.6
+
 //Nail Hazard
-NailHit					dsnailht
-NailHitBleed		dsnailhb
-NailFlight			dsnailnf
+NailHit			dsnailht
+NailHitBleed	dsnailhb
+NailFlight		dsnailnf
 $volume NailHit 0.4
 
 //Spike Hazard

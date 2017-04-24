@@ -224,3 +224,31 @@ ACTOR ScorpionNail : Nail
 	SeeSound "scorpion/sting1"
 	DeathSound "scorpion/sting2"
 }
+
+ACTOR PowerSlow : PowerSpeed {Powerup.Color "LightCyan2" Powerup.Duration -3 Speed 0.33}
+ACTOR SlowFreeze : PowerupGiver {+INVENTORY.AUTOACTIVATE +INVENTORY.ADDITIVETIME +INVENTORY.NOSCREENBLINK -INVENTORY.INVBAR Powerup.Type "Slow"}
+
+ACTOR IceDart
+{
+	Radius 8
+	Height 8
+	Speed 16
+	Scale 1.1
+	Projectile
+	Damage (random(5,8))
+	DamageType "IceWater"
+	SeeSound "IceFlight"
+	+BLOODSPLATTER
+	States
+	{
+	Spawn:
+	See:
+		ICED A 1 BRIGHT Light("ICEBALL") A_SpawnItemEx("NailBlur")
+		Loop
+	XDeath:
+		"####" B 0 {A_PlaySound("NailHit"); A_RadiusGive("SlowFreeze", 48, RGF_PLAYERS | RGF_CUBE, 1);}
+	Death:
+		"####" BCDEFG 2
+		Stop
+	}
+}

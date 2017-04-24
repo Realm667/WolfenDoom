@@ -2744,7 +2744,7 @@ ACTOR SuperMutant : Mutant
 	//$Title Mutant (Super)
 	Obituary "$SUPAMUTN"
 	Health 180
-	Scale 1.45
+	Scale 0.75
 	States
 	{
 	Spawn:
@@ -2774,50 +2774,16 @@ ACTOR SuperMutant : Mutant
 		Loop
 	Missile:
 		SUPM F 6 A_FaceTarget
-		SUPM G 0 A_PlaySound("supermutantprojectile/fire", CHAN_WEAPON)
+		SUPM G 0 A_PlaySound("supaproj/fire", CHAN_WEAPON)
 		SUPM G 4 LIGHT(MUTNFIRE) A_SpawnProjectile("MutantBounceBall",40,random(-22,-20),random(-1,1))
 		SUPM G 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		SUPM F 5 A_FaceTarget
-		SUPM P 0 A_PlaySound("supermutantprojectile/fire", CHAN_WEAPON)
+		SUPM P 0 A_PlaySound("supaproj/fire", CHAN_WEAPON)
 		SUPM P 4 LIGHT(MUTNFIRE) A_SpawnProjectile("MutantBounceBall",40,random(18,20),random(-1,1))
 		SUPM P 0 A_SpawnItemEx("9MMCasing", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
 		SUPM H 5 A_MonsterRefire(15,"See")
 		SUPM H 0 A_FaceTarget
 		Goto Missile+1
-	}
-}
-
-ACTOR MutantBounceBall
-{
-	Radius 4
-	Height 8
-	Scale 0.3
-	Projectile
-	Speed 12
-	Damage 3
-	Gravity 0.125
-	RenderStyle "Add"
-	BounceType "Grenade"
-	BounceFactor 0.9
-	WallBounceFactor 0.9
-	BounceCount 5
-	//SeeSound "supermutantprojectile/fire"
-	DeathSound "supermutantprojectile/explode"
-	BounceSound "supermutantprojectile/bounce"
-	Obituary "$OBASTROR"
-	-NOGRAVITY
-	+WINDTHRUST
-	+THRUGHOST
-	States
-	{
-	Spawn:
-		SMRK BC 4 BRIGHT A_SpawnItemEx("Spark_P1",0,0,0,random(1,2),random(1,2),random(1,2),random(1,360))
-		Loop
-	Death:
-		TNT1 AAAAA 0 A_SpawnItemEx("Spark_P1",0,0,0,random(1,2),random(1,2),random(1,2),random(1,360))
-		TNT1 A 0 A_SpawnItemEx("SparkFlare_P1")
-		SMRK DEF 4 BRIGHT
-		Stop
 	}
 }
 
@@ -3267,7 +3233,7 @@ ACTOR RocketMan : NaziBoss
 	Mass 200
 	Obituary "$FATMAN"
 	SeeSound "fatman/sight"
-	DeathSound "fatman/death"	
+	DeathSound "fatman/death"
 	+BOSS
 	+LOOKALLAROUND
 	Tag "General Schwabbelhals"
@@ -4150,8 +4116,6 @@ ACTOR SuperSoldier : NaziBoss
 	}
 }
 
-
-
 ACTOR SuperSoldier_SS : SuperSoldier
 {
 	//$Title Hans Grosse, SS (Boss)
@@ -4164,6 +4128,7 @@ ACTOR SuperSoldier_SS : SuperSoldier
 		Goto Look
 	Missile:
 		HASS E 4 A_FaceTarget
+		HASS E 0 A_Jump(64,"Missile2")
 		HASS E 5 A_PlaySound("chaingun/start", CHAN_AUTO)
 		HASS E 1 A_PlaySound("chaingun/loop", CHAN_AUTO)
 		HASS E 10 A_FaceTarget
@@ -4187,6 +4152,11 @@ ACTOR SuperSoldier_SS : SuperSoldier
 		HASS G 2 A_MonsterRefire(20,"See")
 		HASS G 0 A_FaceTarget
  		Goto Missile+4
+	Missile2:
+		"####" HMN 12 A_FaceTarget
+		"####" O 4 LIGHT(SUPAFIRE) //Requires code from Torm
+		"####" NMH 12
+		Goto See
 	}
 }
 
@@ -4240,6 +4210,7 @@ ACTOR SuperSoldier_Arctic : SuperSoldier
 		Goto Look
 	Missile:
 		HART E 4 A_FaceTarget
+		HART E 0 A_Jump(128,"Missile2")
 		HART E 5 A_PlaySound("chaingun/start", CHAN_AUTO)
 		HART E 1 A_PlaySound("chaingun/loop", CHAN_AUTO)
 		HART E 8 A_FaceTarget
@@ -4263,6 +4234,11 @@ ACTOR SuperSoldier_Arctic : SuperSoldier
 		HART G 2 A_MonsterRefire(20,"See")
 		HART G 0 A_FaceTarget
  		Goto Missile+4
+	Missile2:
+		"####" HMN 12 A_FaceTarget
+		"####" O 4 LIGHT(ICEBALL) A_SpawnProjectile("IceDart",50,0,0,CMF_AIMDIRECTION)
+		"####" NMH 12
+		Goto See
 	}
 }
 
@@ -5728,6 +5704,39 @@ ACTOR PoisonCloudMutant
 	Death:
 		"####" A 7
 		"####" A 6
+		Stop
+	}
+}
+
+ACTOR MutantBounceBall
+{
+	Radius 4
+	Height 8
+	Scale 0.3
+	Projectile
+	Speed 12
+	Damage 3
+	Gravity 0.125
+	RenderStyle "Add"
+	BounceType "Grenade"
+	BounceFactor 0.9
+	WallBounceFactor 0.9
+	BounceCount 5
+	DeathSound "supaproj/explode"
+	BounceSound "supaproj/bounce"
+	Obituary "$SUPABALL"
+	-NOGRAVITY
+	+THRUGHOST
+	+WINDTHRUST
+	States
+	{
+	Spawn:
+		SMBL AB 4 A_SpawnItemEx("Spark_P1",0,0,0,random(1,2),random(1,2),random(1,2),random(1,360))
+		Loop
+	Death:
+		TNT1 AAAAA 0 A_SpawnItemEx("Spark_P1",0,0,0,random(1,2),random(1,2),random(1,2),random(1,360))
+		TNT1 A 0 A_SpawnItemEx("SparkFlare_P1")
+		SMBL CDE 4
 		Stop
 	}
 }
