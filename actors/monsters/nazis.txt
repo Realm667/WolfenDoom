@@ -6,6 +6,7 @@
 ACTOR NaziBoss : Nazi
 {
 	Mass 1000
+	Scale 0.67
 	States
 	{
 	See:
@@ -3529,7 +3530,7 @@ ACTOR DeathKnight : Nazi
 	//$Category Monsters (Wolf3D)/Bosses
 	//$Title Todesritter (Boss)
 	//$Color 4
-	Scale 1.5
+	Scale 0.75
 	Obituary "$DKNIGHT"
 	Tag "Todesritter"
 	Health 3000
@@ -3894,6 +3895,7 @@ ACTOR ChairGuy : Nazi
 	Health 1200
 	Mass 100000
 	PainChance 110
+	Scale 0.67
 	SeeSound "krist/sight"
 	PainSound "boss/pain"
 	DeathSound "krist/death"
@@ -5435,6 +5437,7 @@ ACTOR MiniRocket
 	Damage 5
 	Projectile
 	+RANDOMIZE
+	Scale 0.47
 	SeeSound "nazi/missilef"
 	DeathSound "world/barrelboom"
 	States
@@ -5455,7 +5458,7 @@ ACTOR HardMiniRocket : MiniRocket { +MTHRUSPECIES }
 
 ACTOR MiniMiniRocket : MiniRocket
 {
-	Scale .8
+	Scale 0.27
 	Damage (random(1,4)*4)
 	DeathSound "nebelwerfer/xplode"
 }
@@ -5470,6 +5473,7 @@ ACTOR FlyingNeedle : MiniRocket
 	SeeSound ""
 	DeathSound "gshardnd"
 	Gravity 0.3
+	Scale 0.47
 	-NOGRAVITY
 	+ADDITIVEPOISONDAMAGE
 	+ADDITIVEPOISONDURATION
@@ -5488,11 +5492,12 @@ ACTOR HardFlyingNeedle : FlyingNeedle { +MTHRUSPECIES }
 
 ACTOR FlyingHack : FlyingNeedle
 {
+	Speed 13
+	Scale 0.27
 	DamageType None
 	PoisonDamage 1, 2
 	+NOGRAVITY
 	+ROLLSPRITE
-	Speed 13
 	States
 	{
 	Spawn:
