@@ -1,0 +1,559 @@
+////////////
+//CRITTERS//
+////////////
+
+ACTOR Rottweiler : Nazi
+{
+	//$Category Monsters (Wolf3D)/Critters
+	//$Title Dog (Rottweiler)
+	//$Color 4
+	Scale 1.1
+	HitObituary "$DOGS"
+	Health 30
+	PainChance 180
+	Speed 4
+	Height 48
+	Mass 70
+	SeeSound "dog/sight"
+	PainSound "dog/pain"
+	DeathSound "dog/death"
+	ActiveSound "dog/active"
+	-CANUSEWALLS
+	-CANPUSHWALLS //dogs mustn't able to open doors imho, that's why there was -CANUSEWALLS before, but we use bumps on polys
+	+NEVERTARGET //So the dogs don't get targeted by stealth (+FRIENDLY-abusing) guards
+	States
+	{
+	Spawn:
+		DOGY A 0
+		Goto Look
+	Idle:
+		"####" A 0 A_SetSpeed(4)
+		"####" AAAAAAAA 1 A_Wander
+		"####" A 0 A_Look
+		"####" BBBBBBBB 1 A_Wander
+		"####" A 0 A_Look
+		"####" CCCCCCCC 1 A_Wander
+		"####" A 0 A_Look
+		"####" DDDDDDDD 1 A_Wander
+		"####" A 0 A_Look
+		Loop
+	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		"####" A 0 A_SetSpeed(8)
+		"####" A 1 A_Chase
+		"####" AAA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_Chase
+		"####" BBB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" C 1 A_Chase
+		"####" CCC 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" D 1 A_Chase
+		"####" DDD 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		Loop
+	Melee:
+		"####" EF 2 Fast A_FaceTarget
+		"####" G 8 Fast A_CustomMeleeAttack(random(1,8)*3,"dog/attack","dog/attack")
+		"####" FE 4 Fast
+		Goto See
+	Pain:
+		"####" M 2
+		"####" M 2 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		Goto See
+	Death:
+		"####" H 8
+		"####" I 8 A_Scream
+		"####" J 6
+		"####" K -1 A_NoBlocking
+		Stop
+	Raise:
+		"####" KJIH 6
+		Goto See
+	}
+}
+
+ACTOR GermanShepherd : Rottweiler
+{
+	//$Title Dog (Shepherd)
+	Health 20
+	States
+	{
+	Spawn:
+		DOG2 A 0
+		Goto Look
+	Melee:
+		"####" EF 2 Fast A_FaceTarget
+		"####" G 8 Fast A_CustomMeleeAttack(random(1,4)*3,"dog/attack","dog/attack")
+		"####" FE 4 Fast
+		Goto See
+	}
+}
+
+ACTOR Doberman : Rottweiler
+{
+	//$Title Dog (Doberman)
+	Health 25
+	States
+	{
+	Spawn:
+		DOG3 A 0
+		Goto Look
+	Melee:
+		"####" EF 2 Fast A_FaceTarget
+		"####" G 8 Fast A_CustomMeleeAttack(random(1,6)*3,"dog/attack","dog/attack")
+		"####" FE 4 Fast
+		Goto See
+	}
+}
+
+//FAMILIARS
+ACTOR BatFamiliar : Base
+{
+	//$Category Monsters (Wolf3D)/Critters
+	//$Title Bat
+	//$Color 4
+	Health 10
+	Radius 12
+	Height 24
+	FloatSpeed 2.33333333
+	Speed 3.33333334
+	PainChance 200
+	MONSTER
+	-MTHRUSPECIES
+	-THRUSPECIES
+	+FLOAT
+	+NOGRAVITY
+	+NOINFIGHTING
+	SeeSound "batfam/idle"
+	PainSound "batfam/pain"
+	DeathSound "batfam/death"
+	ActiveSound "batfam/idle"
+	HitObituary "$BAT"
+	States
+	{
+	Spawn:
+		BFAM ABCB 3 A_LookThroughDisguise
+		Loop
+	See:
+		BFAM A 1 A_Chase
+		"####" AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_Chase
+		"####" BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" C 1 A_Chase
+		"####" CC 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" D 1 A_Chase
+		"####" DD 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		Loop
+	Melee:
+		BFAM A 3 A_FaceTarget
+		"####" A 0 A_Jump(64,"Missed")
+		"####" B 3 A_CustomMeleeAttack(random(1,4)*1,"batfam/idle")
+		"####" CB 3 A_FaceTarget
+		Goto See
+	Missed: //here in order to avoid looping attacks, so the critter is less threatening
+		"####" B 3
+		"####" CB 3 A_FaceTarget
+		Goto See
+	Pain:
+		BFAM A 2
+		"####" A 2 A_Pain
+		Goto See
+	Death:
+		BFAM D 5 A_ScreamAndUnblock
+		"####" EFD 5 {A_ChangeFlag("MTHRUSPECIES", TRUE); A_ChangeFlag("THRUSPECIES", TRUE);}
+		Goto Death+1
+	Crash:
+		BFAM G 6 A_PlaySound("batfam/crash")
+		"####" H 7
+		"####" I 8
+		"####" J -1 {A_ChangeFlag("MTHRUSPECIES", TRUE); A_ChangeFlag("THRUSPECIES", TRUE);}
+		Stop
+	}
+}
+
+ACTOR RatFamiliar : Base
+{
+	//$Category Monsters (Wolf3D)/Critters
+	//$Title Rat (attacking)
+	//$Color 4
+	Health 10
+	Radius 12
+	Height 24
+	Scale 0.57
+	Speed 3.66666667
+	PainChance 200
+	MONSTER
+	-FLOAT
+	-NOGRAVITY
+	+NOINFIGHTING
+	SeeSound "rat/squeek"
+	PainSound "batfam/pain"
+	DeathSound "rat/death"
+	ActiveSound "rat/active"
+	HitObituary "$RAT"
+	States
+	{
+	Spawn:
+		MOUS A 3 A_LookThroughDisguise
+		Loop
+	See:
+		MOUS A 1 A_Chase
+		"####" AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_Chase
+		"####" BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		Loop
+	Melee:
+		MOUS A 3 A_FaceTarget
+		"####" A 0 A_Jump(64,"Missed")
+		"####" B 3 A_CustomMeleeAttack(random(1,2)*1,"batfam/idle")
+		"####" BB 3 A_FaceTarget
+		Goto See
+	Missed: //here in order to avoid looping attacks, so the critter is less threatening
+		"####" B 3
+		"####" BB 3 A_FaceTarget
+		Goto See
+	Pain:
+		MOUS A 2
+		"####" A 2 A_Pain
+		Goto See
+	Death:
+		MOUS H 5 A_ScreamAndUnblock
+		"####" IJKL 5
+		"####" M -1
+		Stop
+	}
+}
+
+//SPIDERS
+ACTOR BigSpider : Base
+{
+	//$Category Monsters (Wolf3D)/Critters
+	//$Title Spider (small)
+	//$Color 4
+	Health 15
+	Radius 8
+	Height 16
+	Speed 8
+	Mass 100
+	PainChance 150
+	Scale 0.33
+	Translation "176:191=164:167" , "32:47=164:167"
+	BloodType "ScorpionBlood"
+	BloodColor "DarkOrange1"
+	MaxDropOffHeight 128
+	MaxStepHeight 16
+	MONSTER
+	-MTHRUSPECIES
+	-THRUSPECIES
+	+DONTGIB
+	+FLOORCLIP
+	+NEVERFAST
+	+THRUGHOST
+	+NOINFIGHTING
+	SeeSound "spider1/sight"
+	PainSound "spider1/pain"
+	DeathSound "spider1/death"
+	ActiveSound "spider1/active"
+	HitObituary "$BSPIDER"
+	States
+	{
+	Spawn:
+		GAYS A 0 NoDelay A_SetScale(ScaleX + frandom(-0.1, 0.05))
+		Goto Idle
+	Idle:
+		GAYS A 10 A_LookThroughDisguise
+		Loop	
+	See:
+		GAYS A 0 A_PlaySound("spider1/walk", CHAN_AUTO, 0.4)
+		"####" AABB 2 A_Chase
+		"####" B 0 A_PlaySound("spider1/walk", CHAN_AUTO, 0.4)
+		"####" CCDD 2 A_Chase
+		"####" A 0 A_JumpIf(random(1, 24) == 1, "TryJump")
+		Loop
+	TryJump:
+		GAYS A 0 A_CheckFloor("Jump") //don't jump if mid-air
+		Goto See
+	Jump:
+		GAYS A 0 A_FaceTarget
+		"####" A 0 ThrustThing(angle*256/360, random(8, 12), 0, 0)
+		"####" A 0 ThrustThingZ(0, random(30, 50), 0, 1)
+		"####" A 0 A_PlaySound("spider1/jump", CHAN_AUTO, 0.2)
+		"####" E 15
+		Goto See	
+	Melee:
+		GAYS A 4 A_FaceTarget
+		"####" E 4 A_CustomMeleeAttack(1,"spider1/melee","","Melee",TRUE)
+		"####" E 9 A_FaceTarget
+		Goto See
+	Pain:
+		GAYS C 5
+		"####" C 3 A_Pain
+		Goto See
+	Death:
+		GAYR F 5
+		"####" E 5 A_Scream
+		"####" D 5 A_Fall
+		"####" C 5
+		"####" B 5
+		"####" A 5
+		"####" A -1 {A_ChangeFlag("MTHRUSPECIES", TRUE); A_ChangeFlag("THRUSPECIES", TRUE);}
+		Stop
+	}
+}
+
+//SCORPIONS
+ACTOR Scorpion : Base
+{
+	//$Category Monsters (Wolf3D)/Critters
+	//$Title Scorpion (normal)
+	//$Color 4
+	Radius 10
+	Height 12
+	Scale 0.6
+	Mass 20
+	Speed 6
+	Health 20
+	MeleeRange 16
+	MaxStepHeight 16
+	MaxDropOffHeight 128
+	Damage 1 //jumpattacks
+	DeathSound "rat/death"
+	Obituary "$SCORPSML"
+	BloodType "ScorpionBlood"
+	BloodColor "DarkOrange1"
+	MONSTER
+	+DONTMORPH
+	+FLOORCLIP
+	+LOOKALLAROUND
+	+NOINFIGHTING
+	+NOTRIGGER
+	Species Nazi
+	MaxTargetRange 112
+	States
+	{
+	Spawn:
+		SCRP A 2
+	See:
+		SCRP AAAA 1 A_Chase
+		SCRP A 0 A_Jump(16,"Procrastinate")
+		SCRP BBBB 1 A_Chase
+		SCRP A 0 A_Jump(16,"Procrastinate")
+		SCRP A 0 A_Jump(11,"TryJump")
+		Loop
+	Melee:
+		TNT1 A 0 A_FaceTarget
+		SCRP A 0 A_Jump(64,"Procrastinate")
+		SCRP AB 6 A_CustomMeleeAttack(2*random(1,4),"scorpion/attacks","scorpion/attacks")
+		Goto See
+	Missile:
+		SCRP AB 4 A_FaceTarget
+		SCRP A 0 A_Jump(64,"Procrastinate")
+		SCRP A 8 A_SkullAttack
+		SCRP B 5 A_Gravity
+		Goto See
+	TryJump:
+		TNT1 A 0 A_CheckFloor("Jump") //don't jump if mid-air
+		Goto See
+	Jump:
+		TNT1 A 0 ThrustThing(angle*256/360,random(4,6),0,0)
+		SCRP C 15 ThrustThingZ(0,random(30,40),0,1)
+		Goto See
+	Procrastinate:
+		SCRP "#" 35
+		SCRP "#" 0 A_Jump(128,"Procrastinate")
+		Goto See
+	Death:
+		TNT1 A 0 A_ScreamAndUnblock
+		TNT1 AAAAAAAA 0 A_SpawnItemEx("ScorpionChunk",0,0,4,random(-2,2),random(-2,2),random(5,10),random(0,256),0,100)
+		Stop
+	}
+}
+
+ACTOR ScorpionBig : Base
+{
+	//$Category Monsters (Wolf3D)/Critters
+	//$Title Scorpion (big)
+	//$Color 4
+	Radius 32
+	Height 48
+	Scale 1.0
+	Mass 100
+	Speed 4
+	Health 200
+	MeleeRange 32
+	MaxStepHeight 32
+	MaxDropOffHeight 256
+	PainChance 235
+	Damage 2 //jumpattacks
+	ActiveSound "scorpion/see"
+	SeeSound "scorpion/see"
+	PainSound "scorpion/pains"
+	DeathSound "scorpion/death"
+	Obituary "$SCORPBIG"
+	Species Nazi
+	MONSTER
+	+DONTMORPH
+	+FLOORCLIP
+	+LOOKALLAROUND
+	+NOINFIGHTING
+	+NOTRIGGER
+	States
+	{
+	Spawn:
+		SCR2 A 2
+	See:
+		SCR2 A 1 A_Chase
+		SCR2 AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		SCR2 A 1 A_Chase
+		SCR2 AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		SCR2 B 1 A_Chase
+		SCR2 BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		SCR2 B 1 A_Chase
+		SCR2 BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		SCR2 A 0 A_Jump(11,"TryJump")
+		Loop
+	Melee:
+		TNT1 A 0 A_FaceTarget
+		SCR2 AB 6 A_CustomMeleeAttack(3*random(1,4),"scorpion/attacks","scorpion/attacks")
+		Goto See
+	Missile:
+		SCR2 A 0 A_Jump(256,"Spit","Sting","Reach")
+	Spit:
+		SCR2 AB 4 A_FaceTarget
+		SCR2 B 8 A_SpawnProjectile("ScorpionSpit",8,0,0,2,3)
+		Goto See
+	Sting:
+		SCR2 AB 4 A_FaceTarget
+		SCR2 BBBB 4 A_SpawnProjectile("ScorpionNail",24,0,0)
+		Goto See
+	Reach:
+		SCR2 A 0 A_Jumpifcloser(224,2)
+		Goto See
+		SCR2 AB 6 A_FaceTarget
+		SCR2 A 6 A_SkullAttack
+		SCR2 B 6 A_Gravity
+		Goto See
+	TryJump:
+		TNT1 A 0 A_CheckFloor("Jump") //don't jump if mid-air
+		Goto See
+	Jump:
+		TNT1 A 0 ThrustThing(angle*256/360,random(4,6),0,0)
+		TNT1 A 0 ThrustThingZ(0,random(30,40),0,1)
+		SCR2 C 15 A_PlaySound("scorpion/fall", CHAN_AUTO, 1.5)
+		Goto See
+	Pain:
+		SCR2 A 2 A_Pain
+		Goto See
+	Death:
+		TNT1 A 0 A_ScreamAndUnblock
+		TNT1 AAAAAAAA 0 A_SpawnItemEx("BigScorpionChunk",0,0,4,random(-2,2),random(-2,2),random(5,10),random(0,256),0,100)
+		Stop
+	}
+}
+
+//SHARKS
+ACTOR Shark : Base
+{
+	//$Category Monsters (Wolf3D)/Critters
+	//$Title Shark
+	//$Color 4
+	Obituary "$SHARK"
+	Health 100
+	Mass 120
+	Speed 2.5
+	FloatSpeed 1
+	Radius 30
+	Height 30
+	SeeSound "shark/sight"
+	DeathSound "shark/death"
+	ActiveSound "shark/active"
+	Monster
+	+FLOAT
+	+FLOORCLIP
+	+FORCEXYBILLBOARD
+	+NOGRAVITY
+	+NOINFIGHTING
+	States
+	{
+	Spawn:
+		SHRK BC 10 A_LookThroughDisguise
+		Loop
+	See:
+		SHRK A 0 A_JumpIf(waterlevel>=3,2)
+		"####" A 0 ThrustThingZ(0,4,1,1)
+		"####" A 1 A_Chase
+		"####" AAA 1 A_Chase("","")
+		"####" B 0 A_JumpIf(waterlevel>=3,2)
+		"####" B 0 ThrustThingZ(0,4,1,1)
+		"####" B 1 A_Chase
+		"####" BBB 1 A_Chase("","")
+		"####" C 0 A_JumpIf(waterlevel>=3,2)
+		"####" C 0 ThrustThingZ(0,4,1,1)
+		"####" C 1 A_Chase
+		"####" CCC 1 A_Chase("","")
+		"####" D 0 A_JumpIf(waterlevel>=3,2)
+		"####" D 0 ThrustThingZ(0,4,1,1)
+		"####" D 1 A_Chase
+		"####" DDD 1 A_Chase("","")
+		Loop
+	Missile:
+		SHRK A 10 A_FaceTarget
+		"####" A 8 A_SkullAttack
+		Wait
+	Melee:
+		SHRK A 10 A_FaceTarget
+		"####" F 8 A_CustomMeleeAttack(random(1,5)*5,"Chomp","Swipe")
+		"####" A 10
+		Goto See
+	Death:
+		SHRK A 0 A_Scream
+		"####" AAAAAAAA 0 A_SpawnProjectile("Gibs1",random(20,40),0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(-100,100))
+		Stop
+	}
+}
+
+ACTOR LaserShark : Shark
+{
+	//$Category Monsters (Wolf3D)/Critters
+	//$Title Shark (Laser)
+	//$Color 4
+	Obituary "$SHARKL"
+	Decal RedRailScorch
+	States
+	{
+	Spawn:
+		SHRL BC 10 A_LookThroughDisguise
+		Loop
+	See:
+		SHRL A 0 A_JumpIf(waterlevel>=3,2)
+		"####" A 0 ThrustThingZ(0,4,1,1)
+		"####" A 1 A_Chase
+		"####" AAA 1 A_Chase("","")
+		"####" B 0 A_JumpIf(waterlevel>=3,2)
+		"####" B 0 ThrustThingZ(0,4,1,1)
+		"####" B 1 A_Chase
+		"####" BBB 1 A_Chase("","")
+		"####" C 0 A_JumpIf(waterlevel>=3,2)
+		"####" C 0 ThrustThingZ(0,4,1,1)
+		"####" C 1 A_Chase
+		"####" CCC 1 A_Chase("","")
+		"####" D 0 A_JumpIf(waterlevel>=3,2)
+		"####" D 0 ThrustThingZ(0,4,1,1)
+		"####" D 1 A_Chase
+		"####" DDD 1 A_Chase("","")
+		Loop
+	Missile: 
+		SHRL BC 10 A_FaceTarget 
+		"####" E 5 A_CustomRailgun (random(20,30), 0, "990000", "FF0000", RGF_NOPIERCING | RGF_FULLBRIGHT, 1, 0, "MeasurePuff", 0, 0, 0, 70, 0.5, 1.5)
+		"####" B 4 A_FaceTarget 
+		Goto See 
+	Melee:
+		SHRL A 10 A_FaceTarget
+		"####" F 8 A_CustomMeleeAttack(random(1,5)*5,"Chomp","Swipe")
+		"####" A 10
+		Goto See
+	Death:
+		SHRL A 0 A_Scream
+		"####" AAAAAAAA 0 A_SpawnProjectile("Gibs1",random(20,40),0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(-100,100))
+		Stop
+	}
+}

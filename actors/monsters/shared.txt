@@ -1,0 +1,1011 @@
+////////
+//MAIN//
+////////
+
+//mxd. The only difference are footstep sounds...
+ACTOR NaziBoss : Nazi
+{
+	Mass 1000
+	Scale 0.67
+	States
+	{
+	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE)
+		"####" A 1 A_Chase
+		"####" AAA 1 A_Chase("","")
+		"####" A 1 A_Chase
+		"####" AAA 1 A_Chase("","")
+		"####" B 0 A_PlaySound("floor/heavy")
+		"####" B 1 A_Chase
+		"####" BBB 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" BBB 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" CCC 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" CCC 1 A_Chase("","")
+		"####" D 0 A_PlaySound("floor/heavy")
+		"####" D 1 A_Chase
+		"####" DDD 1 A_Chase("","")
+		"####" D 1 A_Chase
+		"####" DDD 1 A_Chase("","")
+		Loop
+	}
+}
+
+//ozy - The difference here comes with quakes & frame sequences
+ACTOR MechBoss : Nazi
+{
+	Mass 1000
+	States
+	{
+	See:
+	Idle:
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE)
+		"####" A 2 A_Chase
+		"####" AAA 1 A_Chase("","")
+		"####" A 1 A_Chase
+		"####" AAA 1 A_Chase("","")
+		"####" B 0 A_PlaySound("mech/walk", CHAN_AUTO, frandom(0.7,1.0), FALSE, ATTN_IDLE)
+		"####" B 2 {A_Chase; Radius_Quake(5,2,0,5,0);}
+		"####" BBB 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" BBB 1 A_Chase("","")
+		"####" C 2 A_Chase
+		"####" CCC 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" CCC 1 A_Chase("","")
+		"####" D 2 A_Chase
+		"####" DDD 1 A_Chase("","")
+		"####" D 1 A_Chase
+		"####" DDD 1 A_Chase("","")
+		"####" C 0 A_PlaySound("mech/walk", CHAN_AUTO, frandom(0.5,0.7), FALSE, ATTN_IDLE)
+		"####" C 2 {A_Chase; Radius_Quake(5,2,0,5,0);}
+		"####" CCC 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" CCC 1 A_Chase("","")
+		"####" B 2 A_Chase
+		"####" BBB 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" BBB 1 A_Chase("","")
+		Loop
+	}
+}
+
+//COUNTERS
+ACTOR ChainCounter : Inventory {Inventory.MaxAmount 48}
+ACTOR EliteAssaulterCounter : Inventory {Inventory.MaxAmount 32}
+ACTOR EliteGrenadeCounter : Inventory {Inventory.MaxAmount 4}
+ACTOR FlamerCounter : Inventory {Inventory.MaxAmount 50}
+ACTOR MP40GuardCounter : Inventory {Inventory.MaxAmount 32}
+ACTOR PistolGuardCounter : Inventory {Inventory.MaxAmount 8}
+ACTOR PriestCounter : Inventory {Inventory.MaxAmount 12}
+ACTOR RifleGuardCounter : Inventory {Inventory.MaxAmount 10}
+ACTOR RocketCounter : Inventory {Inventory.MaxAmount 16}
+ACTOR SSMP40GuardCounter : Inventory {Inventory.MaxAmount 32}
+ACTOR SniperCounter : Inventory {Inventory.MaxAmount 10}
+ACTOR WMP40GuardCounter : Inventory {Inventory.MaxAmount 32}
+ACTOR WaffenSSCounter : Inventory {Inventory.MaxAmount 40}
+
+//MISCELLANEA
+ACTOR HitlerChaingun
+{
+	Scale 1.2
+	+FLOORCLIP
+	States
+	{
+	Spawn:
+		SHI1 X -1
+		Stop
+	}
+}
+
+ACTOR ToolBox : HitlerChaingun
+{
+	Scale 0.65
+	States
+	{
+	Spawn:
+		TBOX A -1
+		Stop
+	}
+}
+
+ACTOR HitlerSuitScrap : HitlerChaingun
+{
+	States
+	{
+	Spawn:
+		HIT2 AB 20
+		"####" C -1
+		Stop
+	}
+}
+
+ACTOR NebRocketEnemy : NebRocket
+{
+	Speed 15
+	-FORCERADIUSDMG
+	SeeSound "nebelwerfer/fire"
+	States
+	{
+	Death:
+		FRME A 1 BRIGHT LIGHT(NEBEXPLO) A_Explode(random(25,30))
+		FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT(NEBEXPLO)
+		Stop
+	}
+}
+
+ACTOR HardNebRocketEnemy : NebRocketEnemy { +MTHRUSPECIES }
+
+ACTOR MiniRocket
+{
+	Radius 11
+	Height 8
+	Speed 15
+	Damage 5
+	Projectile
+	+RANDOMIZE
+	Scale 0.47
+	SeeSound "nazi/missilef"
+	DeathSound "world/barrelboom"
+	States
+	{
+	Spawn:
+		NMIS A 0 NoDelay A_PlaySound("nazi/missileengine", CHAN_AUTO, 0.3, TRUE)
+		NMIS A 1 BRIGHT LIGHT(OTTOFIRE) A_SpawnItemEx("RocketFlame",random(-1,1),0,random(-1,1))
+		Wait
+	Death:
+		FRME A 1 BRIGHT LIGHT(OTTOFIRE) A_Explode(20,40)
+		FRME A 0 A_StopSound(CHAN_AUTO)
+		FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT(OTTOFIRE)
+		Stop
+	}
+}
+
+ACTOR HardMiniRocket : MiniRocket { +MTHRUSPECIES }
+
+ACTOR MiniMiniRocket : MiniRocket
+{
+	Scale 0.27
+	Damage (random(1,4)*4)
+	DeathSound "nebelwerfer/xplode"
+}
+
+ACTOR HardMiniMiniRocket : MiniMiniRocket { +MTHRUSPECIES }
+
+ACTOR FlyingNeedle : MiniRocket
+{
+	Speed 10
+	DamageType MutantPoison
+	PoisonDamage 3, 4
+	SeeSound ""
+	DeathSound "gshardnd"
+	Gravity 0.3
+	Scale 0.47
+	-NOGRAVITY
+	+ADDITIVEPOISONDAMAGE
+	+ADDITIVEPOISONDURATION
+	States
+	{
+	Spawn:
+		NEDL ABCD 3
+		Loop
+	Death:
+		TNT1 A 1
+		Stop
+	}
+}
+
+ACTOR HardFlyingNeedle : FlyingNeedle { +MTHRUSPECIES }
+
+ACTOR FlyingHack : FlyingNeedle
+{
+	Speed 13
+	Scale 0.27
+	DamageType None
+	PoisonDamage 1, 2
+	+NOGRAVITY
+	+ROLLSPRITE
+	States
+	{
+	Spawn:
+		COPR A 0 NODELAY A_SetRoll(random(0, 360), 0, 0)
+		Rotate:
+		COPR A 1 A_SetRoll(roll+20, SPF_INTERPOLATE, 0)
+		Loop
+	Death:
+		TNT1 A 1 A_SpawnItemEx("HackPuff")
+		Stop
+	}
+}
+
+ACTOR HackPuff
+{
+	+NOBLOCKMAP
+	+NOEXTREMEDEATH
+	+NOGRAVITY
+	+PUFFONACTORS
+	RenderStyle "Add"
+	States
+	{
+	Spawn:
+	Melee:
+	Crash:
+		POOF A 3 A_PlaySound("knife/stone")
+		POOF BCDE 3
+		Stop
+	Death:
+	XDeath:
+		POOF A 3 A_PlaySound("knife/hit")
+		Goto Crash+1
+	}
+}
+
+ACTOR Flamerbolt : Flamebolt { Damage 1 }
+ACTOR EnemyFlamerShot : Flamerbolt { -RIPPER }
+ACTOR HardEnemyFlamerShot : EnemyFlamerShot { +MTHRUSPECIES }
+ACTOR EnemyFlamebolt : Flameball { Damage 8 }
+ACTOR HardEnemyFlamebolt : EnemyFlamebolt { +MTHRUSPECIES }
+
+ACTOR EnemyFlamebolt2 : EnemyFlamebolt
+{
+	Damage (random(1,4)*5)
+	Scale .35
+	States
+	{
+	Death:
+		FBLX ABCDEFGHIJK 2 BRIGHT LIGHT(BOAFLMW2)
+		Stop
+	}
+}
+
+ACTOR HardEnemyFlamebolt2 : EnemyFlamebolt2 { +MTHRUSPECIES }
+
+//Mutants Stuff
+ACTOR MutantFartCloud
+{
+	Game Doom
+	Radius 2
+	Height 2
+	DamageType MutantPoison
+	+NOINTERACTION
+	+WINDTHRUST
+	RenderStyle "Translucent"
+	Alpha 0.3
+	States
+	{
+	Spawn:
+		FUGS ABCDE 2
+	Fade:
+		FUGS ABCDE 2 A_FadeOut (0.05)
+		FUGS ABCDE 2 A_FadeIn (0.05)
+		FUGS ABCDE 2 A_FadeOut (0.05)
+		FUGS ABCDE 2 A_FadeIn (0.05)
+		FUGS ABCDE 2 A_FadeOut (0.05)
+		FUGS ABCDE 2 A_FadeIn (0.05)
+		FUGS ABCDE 2 A_FadeOut (0.05)
+		FUGS ABCDE 2 A_FadeIn (0.05)
+		FUGS ABCDE 2 A_FadeOut (0.05)
+		Stop
+	}
+}
+
+ACTOR MutantSmoke
+{
+	Game Doom
+	Radius 2
+	Height 2
+	Scale 0.3
+	Gravity 0.3
+	Alpha 0.5
+	VSpeed 2.5
+	+DONTSPLASH
+	+FORCEXYBILLBOARD
+	+MISSILE
+	+MOVEWITHSECTOR
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+WINDTHRUST
+	RenderStyle "Shaded"
+	StencilColor "E0 00 E0"
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		CLFX A 8 A_FadeOut(0.05)
+		Wait
+	}
+}
+
+ACTOR MutantRocket
+{
+	Radius 8
+	Height 8
+	Speed 12
+	FastSpeed 14
+	Damage (random(2,6))
+	DamageType MutantPoison
+	Projectile
+	Scale 0.4
+	+RANDOMIZE
+	SeeSound "nazi/missilef"
+	DeathSound "world/barrelboom"
+	States
+	{
+	Spawn:
+		NMIS A 0 NoDelay A_PlaySound("nazi/missileengine", CHAN_AUTO, 0.3, TRUE)
+	Fly:
+		NMIS A 1 BRIGHT LIGHT(MUTNROCK) A_SpawnItemEx("MutantFlame",random(-1,1),0,random(-1,1))
+		Loop
+	Death:
+		FUGS A 1 BRIGHT LIGHT(MUTNROCK) A_Explode(10,30)
+		FUGS A 0 A_StopSound(CHAN_AUTO)
+		FUGS A 0 BRIGHT A_SpawnProjectile("PoisonCloudMutant",16,0,0,2,0)
+		FUGS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("MutantFartCloud",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128)
+		FUGS BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("MutantSmoke",random(-64,64),random(-64,64),random(-48,48),momx,0,frandom(0.5,1),0,SXF_TRANSFERTRANSLATION,160)
+		FUGS ABCDEDCBABCDE 1 BRIGHT LIGHT(MUTNROCK)
+		Stop
+	}
+}
+
+ACTOR HardMutantRocket : MutantRocket { +MTHRUSPECIES }
+
+ACTOR PoisonCloudMutant
+{
+	Radius 20
+	Height 30
+	Reactiontime 5
+	+BLOCKEDBYSOLIDACTORS
+	+BLOODLESSIMPACT
+	+CANBLAST
+	+DONTSPLASH
+	+DONTTHRUST
+	+DROPOFF
+	+FOILINVUL
+	+NOBLOCKMAP
+	+NODAMAGETHRUST
+	+NOGRAVITY
+	RenderStyle "Translucent"
+	Alpha 0.6
+	DamageType MutantPoison
+	States
+	{
+	Spawn:
+		TNT1 A 1
+		"####" A 2 A_Explode(5,128,0,0,128)
+		"####" A 20 A_Countdown
+		Loop
+	Death:
+		"####" A 7
+		"####" A 6
+		Stop
+	}
+}
+
+ACTOR MutantBounceBall
+{
+	Radius 4
+	Height 8
+	Scale 0.3
+	Projectile
+	Speed 12
+	Damage 3
+	Gravity 0.125
+	RenderStyle "Add"
+	BounceType "Grenade"
+	BounceFactor 0.9
+	WallBounceFactor 0.9
+	BounceCount 5
+	DeathSound "supaproj/explode"
+	BounceSound "supaproj/bounce"
+	Obituary "$SUPABALL"
+	-NOGRAVITY
+	+THRUGHOST
+	+WINDTHRUST
+	States
+	{
+	Spawn:
+		SMBL AB 4 A_SpawnItemEx("Spark_P1",0,0,0,random(1,2),random(1,2),random(1,2),random(1,360))
+		Loop
+	Death:
+		TNT1 AAAAA 0 A_SpawnItemEx("Spark_P1",0,0,0,random(1,2),random(1,2),random(1,2),random(1,360))
+		TNT1 A 0 A_SpawnItemEx("SparkFlare_P1")
+		SMBL CDE 4
+		Stop
+	}
+}
+
+//OCCULT STUFF
+ACTOR QueenPlasmaBlast
+{
+	Radius 13
+	Height 8
+	Speed 25//40
+	Damage 6
+	Projectile
+	DamageType Disintegrate
+	Scale .75
+	+BLOODLESSIMPACT
+	+NOEXTREMEDEATH
+	+RANDOMIZE
+	RenderStyle "Add"
+	Alpha 0.75
+	SeeSound "electricplasma/shoot"
+	DeathSound "electricplasma/hit"
+	Decal "SwordLightning"
+	States
+	{
+	Spawn:
+		EBLT GH 0 BRIGHT A_SpawnProjectile("QueenPlasmaBlastTrail", 0, 0, 0)
+		"####" GH 2 BRIGHT A_BishopMissileWeave
+		Loop
+	Death:
+		"####" IJK 3 bright
+		Stop
+  }
+}
+
+ACTOR QueenPlasmaBlastTrail
+{
+	Radius 13
+	Height 8
+	Speed 0//35
+	Damage 0
+	Projectile
+	+RANDOMIZE
+	RenderStyle "Add"
+	Alpha 0.75
+	States
+	{
+	Spawn:
+		EBLT ABC 3 BRIGHT A_BishopMissileWeave
+		Goto Death
+  Death:
+		"####" DEF 4 BRIGHT A_FadeOut(0.25)
+		Loop
+	}
+}
+
+ACTOR QueenPainPlasmaBlast : QueenPlasmaBlast {Speed 15}
+
+ACTOR QueenBlastPod //From the Vore actor - Projectile sprites by Vader - Tweaked by Ozy81
+{
+	Radius 16
+	Height 16
+	Speed 6
+	FastSpeed 9
+	Damage (random(10,20))
+	Projectile
+	+BRIGHT
+	+SEEKERMISSILE
+	RenderStyle "Add"
+	Alpha 0.9
+	SeeSound "queen/fire"
+	DeathSound "queen/hit"
+	Decal BFGLightning
+	Scale 2.5
+	States
+	{
+	Spawn:
+		CNOB A 0 A_SpawnItemEx("QueenBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180)
+		"####" A 1 A_SpawnItemEx("QueenBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180)
+		"####" A 0 A_SpawnItemEx("QueenBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180)
+		"####" A 1 A_SpawnItemEx("QueenBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180)
+		"####" B 0 A_SpawnItemEx("QueenBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180)
+		"####" B 1 A_SpawnItemEx("QueenBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180)
+		"####" B 0 A_SpawnItemEx("QueenBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180)
+		"####" B 1 A_SpawnItemEx("QueenBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180)
+		"####" C 0 A_SpawnItemEx("QueenBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180)
+		"####" C 1 A_SpawnItemEx("QueenBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180)
+		"####" C 0 A_SpawnItemEx("QueenBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180)
+		"####" C 1 A_SpawnItemEx("QueenBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180)
+		"####" C 0 A_JumpIfTargetInLOS(1, 360, 1)
+		Loop
+		"####" A 0 A_SpawnItemEx("QueenBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180)
+		"####" A 1 A_SpawnItemEx("QueenBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180)
+		"####" A 0 A_SpawnItemEx("QueenBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180)
+		"####" A 1 A_SpawnItemEx("QueenBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180)
+		"####" C 0 A_JumpIfTargetInLOS(1, 360, 1)
+		Goto Spawn+4
+		"####" BBB 0 A_SeekerMissile(90, 90, 2)
+		Goto Spawn+4
+	Death:
+		"####" D 0 A_Explode(30, 90)
+		"####" DEFGHI 4
+		Stop
+	}
+}
+
+ACTOR QueenBlastPodTrail
+{
+	Radius 1
+	Height 1
+	Speed 0
+	Projectile
+	RenderStyle "Add"
+	Alpha 0.9
+	+NOCLIP
+	States
+	{
+	Spawn:
+	Death:
+		TNT1 A 3
+		CNOT ABCDE 3 BRIGHT
+		Stop
+  }
+}
+ACTOR SmokeMonsterProjectile
+{
+	Height 32
+	Radius 16
+	Speed 10
+	SpawnID 171
+	Projectile
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
+		TNT1 A 1
+		Loop
+	}
+}
+
+ACTOR MonsterHole
+{
+	+NOCLIP
+	+NOGRAVITY
+	+NOINTERACTION
+	+NOTIMEFREEZE
+	RenderStyle "Translucent"
+	Alpha 0.3
+	Scale .75
+	States
+	{
+	Spawn:
+		TNT1 A 2
+		SMMO ABCDEFGHIJKLMNOPQR 2
+		Stop
+	}
+}
+
+ACTOR SkullBloodDrip
+{
+	Radius 1
+	Height 4
+	+DONTSPLASH
+	+MISSILE
+	Scale 0.4
+	Gravity 0.7
+	States
+	{
+	Spawn:
+		BDR2 A 50
+		Stop
+	}
+}
+
+ACTOR BloodSpit
+{
+	Radius 6
+	Height 6
+	Speed 17
+	Damage 3
+	Scale 0.5
+	SeeSound "Blood/Spit"
+	DeathSound "Blood/Impact"
+	Projectile
+	Decal BloodSplat
+	States
+	{
+	Spawn:
+		BSHT AB 2 A_SpawnItemEx("BloodSpitTrail")
+		Loop
+	Death:
+		BSHT CD 6
+		Stop
+	}
+}
+
+ACTOR BloodSpitTrail
+{
+	Radius 1
+	Height 1
+	Projectile
+	RenderStyle "Translucent"
+	Alpha 0.8
+	Scale 0.3
+	+NOCLIP
+	States
+	{
+	Spawn:
+		BSHT CD 4
+		Stop
+	}
+}
+
+//CRITTERS STUFF
+//Following blockers are needed to block sharks, bats, spiders & scorpions
+ACTOR SharkBlocker
+{
+	//$Category Monsters (Wolf3D)/Behavior
+	//$Title Shark (blocker)
+	//$Color 4
+	Height 1
+	Radius 256
+	Mass 99999999
+	Species "Player"
+	+DONTSPLASH
+	+GHOST
+	+NOGRAVITY
+	+SOLID
+	+THRUSPECIES
+}
+
+//we need it smaller for narrow places/situations
+ACTOR SharkBlockerMini : SharkBlocker
+{
+	//$Category Monsters (Wolf3D)/Behavior
+	//$Title Shark (blocker, mini)
+	//$Color 4
+	Radius 32
+}
+
+ACTOR Gibs1
+{
+	Radius 10
+	Height 10
+	Mass 6
+	Speed 14
+	BounceType Doom
+	+CLIENTSIDEONLY
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12,13)
+		GIB1 AB 0 A_Jump(256,"End")
+		GIB2 ABC 0 A_Jump(256,"End")
+		GIB3 BC 0 A_Jump(256,"End")
+		GIB4 ABC 0 A_Jump(256,"End")
+		GIB5 ABC 0 A_Jump(256,"End")
+	End:
+		"####" "#######" 4 A_SpawnProjectile("BloodFlySM",0,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(-100,100))
+		"####" "#" 700 A_SpawnProjectile("BloodFlySM",0,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(-100,100))
+		Stop
+	}
+}
+
+ACTOR BloodTrail
+{
+	Radius 1
+	Height 1
+	Projectile
+	+CLIENTSIDEONLY
+	+NOCLIP
+	States
+	{
+	Spawn:
+		BLUD CBA 3
+		Stop
+	}
+}
+
+ACTOR BloodTrailSM : BloodTrail {Scale 0.5}
+
+ACTOR BloodFly
+{
+	Radius 0
+	Height 0
+	Mass 50
+	Speed 6
+	Projectile
+	-NOGRAVITY
+	+CLIENTSIDEONLY
+	States
+	{
+	Spawn:
+		BLUD C 2 A_SpawnItemEx("BloodTrail")
+		Loop
+	Death:
+		BLUD CBA 8
+		Stop
+	}
+}
+
+ACTOR BloodFly2 : BloodFly
+{
+	Scale 0.6
+	Speed 8
+	States
+	{
+	Spawn:
+		BLUD C 1
+		Loop
+	Death:
+		BLUD CBA 4
+		Stop
+	}
+}
+
+ACTOR BloodFlySM : BloodFly
+{
+	Scale 0.5
+	Mass 100
+	Speed 8
+	States
+	{
+	Spawn:
+		BLUD C 1 A_SpawnItemEx("BloodTrailSM")
+		Loop
+	}
+}
+
+ACTOR ScorpionSpit
+{
+	Scale 0.5
+	Radius 13
+	Height 8
+	Speed 28
+	VSpeed 20
+	Damage 6
+	Projectile
+	Gravity 0.4
+	DamageType PoisonCloud
+	PoisonDamage 20
+	SeeSound "scorpion/spit"
+	-NOGRAVITY
+	States
+	{
+	Spawn:
+		SPIT A 0 NoDelay A_SetScale(ScaleX + frandom(-0.05,0.05),ScaleY + frandom(-0.05,0.05))
+		Goto See
+	See:
+		SPIT A 3 A_SpawnItemEx("NashGore_FlyingBlood",0,0,0,0,0,0,0,128)
+		Loop
+	}
+}
+
+ACTOR ScorpionChunk
+{
+	Radius 8
+	Height 8
+	Scale 0.6
+	Mass 50
+	BounceType "Doom"
+	BounceCount 1
+	Gravity 0.6
+	DeathSound "gore/splat"
+	Projectile
+	-NOGRAVITY
+	+BOUNCEAUTOOFF
+	+CANBOUNCEWATER
+	+DONTSPLASH
+	+FORCEXYBILLBOARD
+	+MOVEWITHSECTOR
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(ScaleX + frandom(-0.1,0.1),ScaleY + frandom(-0.1,0.1))
+		TNT1 A 0 A_Jump(256,1,2,3,4,5,6,7)
+		SCRG ABCDEFG 0 A_Jump(256,"Chunk")
+		Stop
+	Chunk:
+		SCRG "#" 6 A_SpawnItemEx("ScorpionFlyingBlood",random(-1,1),random(-1,1))
+		Loop
+	Death:
+		SCRG "#" 0 A_SpawnItemEx("ScorpionBlood")
+		SCRG "#" 250 A_CheckSight("Vanish")
+		Wait
+	Vanish:
+		TNT1 A 0
+		Stop
+	}
+}
+
+ACTOR BigScorpionChunk : ScorpionChunk
+{
+	Scale 1.1
+	Mass 60
+	Gravity 0.8
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(ScaleX + frandom(-0.1,0.1),ScaleY + frandom(-0.1,0.1))
+		TNT1 A 0 A_Jump(256,1,2,3,4,5,6,7)
+		SC2G ABCDEFG 0 A_Jump(256,"Chunk")
+		Stop
+	Chunk:
+		SC2G "#" 6 A_SpawnItemEx("NashGore_FlyingBlood",random(-1,1),random(-1,1))
+		Loop
+	Death:
+		SC2G "#" 0 A_SpawnItemEx("NashGore_Blood")
+		SC2G "#" 250 A_CheckSight("Vanish")
+		Wait
+	}
+}
+
+//LOPER STUFF
+ACTOR LoperZap
+{
+	+ALLOWPARTICLES
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+NOTELEPORT
+	Mass 0
+	RenderStyle "Translucent"
+	Alpha 0.6
+	Scale 0.5
+	Translation "112:127=192:200"
+	States
+	{
+	Spawn:
+		TNT1 AA 0 A_SpawnItemEx("TPortLightningWaveSpawner2",0,0,8,0,0,0,0,0,160)
+		EBLT HIG 3 BRIGHT A_SpawnItemEx("Spark_B1",0,0,8,0,0,1,0,0,160)
+		Stop
+	}
+}
+
+ACTOR ZTracer
+{
+	Radius 5
+	Height 5
+	Speed 15
+	ReactionTime 175
+	Damage 5
+	DamageType Fire
+	RenderStyle "Add"
+	Alpha 0.67
+	Projectile
+	-NOGRAVITY
+	+BRIGHT
+	+FLOORHUGGER
+	Translation "112:127=192:200"
+	Obituary "$LOPRHIT3"
+	SeeSound "electricplasma/shoot"
+	DeathSound "electricplasma/hit"
+	Decal "SwordLightning"
+	States
+	{
+	Spawn:
+	See:
+		TNT1 A 1 LIGHT(LOPERLIT)
+		"####" A 0 A_Countdown
+		"####" A 0 A_SpawnProjectile("ZTracerPuff",0,0,0,0)
+		Loop
+	Death:
+		EBLT G 4
+		"####" H 4 A_Explode(16,16)
+		"####" IJK 3
+		Stop
+	}
+}
+
+ACTOR HardZTracer : ZTracer { +MTHRUSPECIES }
+
+ACTOR ZTracerPuff
+{
+	Radius 1
+	Height 1
+	Speed 0
+	RenderStyle "Add"
+	DamageType fire
+	Alpha 0.67
+	Projectile
+	-NOGRAVITY
+	+FLOORHUGGER
+	+RANDOMIZE
+	Translation "112:127=192:200"
+	States
+	{
+	Spawn:
+		TNT1 AA 0 A_SpawnItemEx("TPortLightningWaveSpawner2",0,0,8,0,0,0,0,0,160)
+		"####" AAAAAAAAA 0 A_SpawnItemEx("Spark_B1",0,0,8,0,0,1,0,0,160)
+		EBLT ABCDEFEDCB 3 BRIGHT A_Explode(2,4)
+		Stop
+	}
+}
+
+//Support Actors from TPortal//
+ACTOR VisualSpecialEffect
+{
+	+CLIENTSIDEONLY
+	+FORCEXYBILLBOARD
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+NOINTERACTION
+	+NOTELEPORT
+}
+
+ACTOR TPortLightning : VisualSpecialEffect
+{
+	RenderStyle "Add"
+	Alpha 0.7
+	States
+	{
+	Spawn:
+		TNT1 A 0 // Huh, that's the jump...
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72)
+	Select:
+		BLL1 ABCDEFGHIJKLMNOPQR 0 A_Jump(256,"Fade")
+		BLL2 ABCDEFGHIJKLMNOPQR 0 A_Jump(256,"Fade")
+		BLL3 ABCDEFGHIJKLMNOPQR 0 A_Jump(256,"Fade")
+		BLL4 ABCDEFGHIJKLMNOPQR 0 A_Jump(256,"Fade")
+	Fade:
+		"----" A 1 BRIGHT A_FadeOut(0.15)
+		Loop
+	}
+}
+
+ACTOR TPortLightningSmall : TPortLightning {Scale 0.1}
+ACTOR TPortLightningMedium : TPortLightning {Scale 0.2}
+ACTOR TPortLightningLarge : TPortLightning {Scale 0.3}
+ACTOR TPortLightningHuge : TPortLightning {Scale 0.4}
+
+// A wave of lightning
+ACTOR TPortLightningWave : VisualSpecialEffect
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		"####" A 0 A_SpawnItemEx("TPortLightningSmall",random(-2,2),random(-2,2),random(-2,2),0,0,0,0,0,32)
+		"####" A 0 A_SpawnItemEx("TPortLightningMedium",random(-3,3),random(-3,3),random(-3,3),0,0,0,0,0,56)
+		"####" A 0 A_SpawnItemEx("TPortLightningLarge",random(-4,4),random(-4,4),random(-3,3),0,0,0,0,0,96)
+		"####" A 0 A_SpawnItemEx("TPortLightningHuge",random(-5,5),random(-5,5),random(-5,5),0,0,0,0,0,144)
+		Stop
+	}
+}
+
+ACTOR TPortLightningWaveZap : VisualSpecialEffect
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		"####" A 0 A_SpawnItemEx("TPortLightningSmall",random(-2,2),random(-2,2),random(-2,2),0,0,0,0,0,32)
+		"####" A 0 A_SpawnItemEx("TPortLightningSmall",random(-3,3),random(-3,3),random(-3,3),0,0,0,0,0,56)
+		"####" A 0 A_SpawnItemEx("TPortLightningSmall",random(-4,4),random(-4,4),random(-3,3),0,0,0,0,0,96)
+		"####" A 0 A_SpawnItemEx("TPortLightningSmall",random(-5,5),random(-5,5),random(-5,5),0,0,0,0,0,144)
+		Stop
+	}
+}
+
+// Spawns lightning waves
+ACTOR TPortLightningWaveSpawner : VisualSpecialEffect
+{
+	+RANDOMIZE
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		"####" A 0 A_PlaySound("TPortalZap")
+		"####" A 2 Light("TPortZap") A_SpawnItem("TPortLightningWave")
+		"####" A 1 Light("TPortZap") A_SpawnItem("TPortLightningWave")
+		"####" A 3 Light("TPortZap") A_SpawnItem("TPortLightningWave")
+		"####" A 5 Light("TPortZap") A_SpawnItem("TPortLightningWave")
+		"####" A 1 Light("TPortZap") A_SpawnItem("TPortLightningWave")
+		"####" A 2 Light("TPortZap") A_SpawnItem("TPortLightningWave")
+		"####" A 4 A_SpawnItem("TPortLightningWave")
+		Stop
+	}
+}
+
+ACTOR TPortLightningWaveSpawner2 : VisualSpecialEffect
+{
+	+RANDOMIZE
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		"####" A 0 A_PlaySound("TPortalZap")
+		"####" A 2 A_SpawnItem("TPortLightningWaveZap")
+		"####" A 1 A_SpawnItem("TPortLightningWaveZap")
+		"####" A 3 A_SpawnItem("TPortLightningWaveZap")
+		"####" A 5 A_SpawnItem("TPortLightningWaveZap")
+		"####" A 1 A_SpawnItem("TPortLightningWaveZap")
+		"####" A 2 A_SpawnItem("TPortLightningWaveZap")
+		"####" A 4 A_SpawnItem("TPortLightningWave")
+		Stop
+	}
+}
