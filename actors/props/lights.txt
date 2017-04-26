@@ -1,4 +1,26 @@
 //3d lights
+ACTOR ChanGold : SwitchableDecoration //3d actor
+{
+	//$Category Light Sources (Wolf3D)
+	//$Title Chandelier (gold, switchable)
+	//$Color 11
+	Radius 16
+	Height 52
+	+NOGRAVITY
+	+SPAWNCEILING
+	States
+	{
+	Active:
+		MDLA A 0 A_ChangeFlag("DORMANT", FALSE) //mxd. DORMANT flag must be updated manually
+	Spawn:
+	  MDLA A -1 LIGHT("3DCHAN")
+	  Stop
+	Inactive:
+		MDLA B -1 A_ChangeFlag("DORMANT", TRUE) //mxd. DORMANT flag must be updated manually
+		Stop
+	}
+}
+
 ACTOR Chandelier1Switchable : SwitchableDecoration
 {
 	//$Category Light Sources (Wolf3D)

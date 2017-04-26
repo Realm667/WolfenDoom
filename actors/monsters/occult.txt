@@ -77,8 +77,7 @@ ACTOR WereWaffenSS : WaffenSS
 		"####" E 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" E 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
-		"####" E 0 A_Jump(256,"See")
-		Stop
+		Goto See
 	Missile:
 		WOFF EF 4 A_FaceTarget
 		"####" G 0 A_PlaySound("nazi/stg44", CHAN_WEAPON, frandom (0.6,0.9), FALSE, ATTN_NORM)
@@ -482,8 +481,8 @@ ACTOR UndeadPriest : Guard
 		UNDP E 8
 		Goto See
 	Pain:
-		UNDP G 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		UNDP G 2
+		UNDP G 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		UNDP G 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See

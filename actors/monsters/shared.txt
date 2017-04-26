@@ -76,6 +76,7 @@ ACTOR MechBoss : Nazi
 ACTOR ChainCounter : Inventory {Inventory.MaxAmount 48}
 ACTOR EliteAssaulterCounter : Inventory {Inventory.MaxAmount 32}
 ACTOR EliteGrenadeCounter : Inventory {Inventory.MaxAmount 4}
+ACTOR ElsaCounter : Inventory {Inventory.MaxAmount 64}
 ACTOR FlamerCounter : Inventory {Inventory.MaxAmount 50}
 ACTOR MP40GuardCounter : Inventory {Inventory.MaxAmount 32}
 ACTOR PistolGuardCounter : Inventory {Inventory.MaxAmount 8}
@@ -84,40 +85,83 @@ ACTOR RifleGuardCounter : Inventory {Inventory.MaxAmount 10}
 ACTOR RocketCounter : Inventory {Inventory.MaxAmount 16}
 ACTOR SSMP40GuardCounter : Inventory {Inventory.MaxAmount 32}
 ACTOR SniperCounter : Inventory {Inventory.MaxAmount 10}
+ACTOR UberCounter : Inventory {Inventory.MaxAmount 80}
 ACTOR WMP40GuardCounter : Inventory {Inventory.MaxAmount 32}
 ACTOR WaffenSSCounter : Inventory {Inventory.MaxAmount 40}
 
-//MISCELLANEA
-ACTOR HitlerChaingun
+//ATTACKS & UNSORTED
+ACTOR ClusterBomb
 {
-	Scale 1.2
-	+FLOORCLIP
+	Radius 4
+	Height 3
+	Speed 40
+	Damage (1)
+	DamageType "Frag"
+	Reactiontime 8 //for countdown
+	Projectile
+	-NOGRAVITY
+	-NOTELEPORT
+	+WINDTHRUST
+	Obituary "$OBGRENADE"
+	BounceType Doom
+	BounceFactor 0.4
+	WallBounceFactor 0.6
+	BounceSound "grenade/bounce"
 	States
 	{
 	Spawn:
-		SHI1 X -1
+		TRGN A 20 A_SetAngle(angle + 359, SPF_INTERPOLATE)
+		"####" A 0 A_Countdown
+		Loop
+	Death:
+		TRGN A 35
+		TNT1 A 0 A_AlertMonsters
+		"####" A 0 A_SetScale(1.75,1.75)
+		"####" A 0 A_SetTranslucent(0.75,1)
+		"####" A 0 A_PlaySound("clusterbomb/explode", CHAN_AUTO, 1.0, FALSE, 0.1)
+		"####" A 0 A_SpawnItemEx("KD_HL2SmokeGenerator")
+		"####" A 0 A_SpawnItemEx("KD_HL2SparkGenerator")
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnitemEx("ClusterBomb_Debris", 0, 0, 8, random(2,16), random(2,16), random(2,16), random(0,359), 0, 0)
+		"####" A 1 Radius_Quake(10,10,0,16,0)
 		Stop
 	}
 }
 
-ACTOR ToolBox : HitlerChaingun
+ACTOR ClusterBomb_Debris
 {
-	Scale 0.65
+	Radius 8
+	Height 16
+	Mass 20
+	Damage 2
+	Scale 0.5
+	Gravity 0.75
+	Projectile
+	-NOGRAVITY
+	+RANDOMIZE
+	+ROLLSPRITE
+	+SOLID
+	BounceType "Hexen"
+	BounceFactor 0.8
+	BounceSound "clusterbomb/debrisbounce"
+	WallBounceFactor 0.8
+	BounceCount 5
 	States
 	{
 	Spawn:
-		TBOX A -1
-		Stop
-	}
-}
-
-ACTOR HitlerSuitScrap : HitlerChaingun
-{
-	States
-	{
-	Spawn:
-		HIT2 AB 20
-		"####" C -1
+		NLPJ A 4 NoDelay NoDelay {
+							A_SetRoll(roll + 15, SPF_INTERPOLATE);
+							A_JumpIf(waterlevel == 3, "AdjustMass");
+							}
+		Loop
+	AdjustMass: //mxd
+		"####" "#" 0 A_SetMass(400)
+		Goto Swim
+	Swim: //mxd
+		"####" A 2 A_ScaleVelocity(0.7)
+		"####" A 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		Loop
+	Death:
+		"####" A 0
 		Stop
 	}
 }
@@ -1006,6 +1050,41 @@ ACTOR TPortLightningWaveSpawner2 : VisualSpecialEffect
 		"####" A 1 A_SpawnItem("TPortLightningWaveZap")
 		"####" A 2 A_SpawnItem("TPortLightningWaveZap")
 		"####" A 4 A_SpawnItem("TPortLightningWave")
+		Stop
+	}
+}
+
+//DROPPED STUFF
+ACTOR HitlerChaingun
+{
+	Scale 1.2
+	+FLOORCLIP
+	States
+	{
+	Spawn:
+		SHI1 X -1
+		Stop
+	}
+}
+
+ACTOR ToolBox : HitlerChaingun
+{
+	Scale 0.65
+	States
+	{
+	Spawn:
+		TBOX A -1
+		Stop
+	}
+}
+
+ACTOR HitlerSuitScrap : HitlerChaingun
+{
+	States
+	{
+	Spawn:
+		HIT2 AB 20
+		"####" C -1
 		Stop
 	}
 }

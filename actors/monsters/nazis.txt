@@ -927,7 +927,8 @@ ACTOR ArcticSniper_Crouch : Guard
 		SNSP D 1 A_Chase
 		Loop
 	Pain:
-		SNSP N 3
+		SNSP N 2
+		"####" N 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" N 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
@@ -991,7 +992,8 @@ ACTOR FlamerSoldier : Guard
 		"####" F 0 A_ChangeFlag("NoPain", 0)
 		Goto See
 	Pain:
-		"####" I 3
+		FLSL I 2
+		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" I 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		"####" I 0 A_Jump(256,"See")
@@ -1019,7 +1021,6 @@ ACTOR Gestapo : Guard
 	DropItem "9mmAmmo" 172
 	DropItem "9mmAmmoBox" 16
 	DropItem "Luger9mm" 88
-
 	States
 	{
 	Spawn:
@@ -1756,7 +1757,8 @@ ACTOR MGTurretSoldier : MGTurret
 		"####" B 0 A_FaceTarget
 		Goto Missile+3
 	Pain: //added this here because it doesn't have H frames for pain states
-		SMGS D 3
+		SMGS D 2
+		"####" D 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" D 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		"####" D 0 A_Jump(256,"See")
@@ -1791,7 +1793,8 @@ ACTOR MGTurretSoldierW : MGTurretSoldier
 		"####" B 0 A_FaceTarget
 		Goto Missile+3
 	Pain: //added this here because it doesn't have H frames for pain states
-		SMGF D 3
+		SMGF D 2
+		"####" D 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" D 3 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		"####" D 0 A_Jump(256,"See")
@@ -2226,8 +2229,8 @@ ACTOR Marine1 : DirtyDarren
 		"####" O -1
 		Stop
 	Pain:
-		"####" J 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" J 2
+		"####" J 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" J 3 A_Pain
 		"####" J 0 A_Jump(256,"See")
 		Stop
@@ -2302,8 +2305,8 @@ ACTOR Marine2A : Marine1
 		"####" G 0 A_FaceTarget
 		Goto Missile+2
 	Pain:
-		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" I 2
+		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" I 3 A_Pain
 		"####" I 0 A_Jump(256,"See")
 		Stop
@@ -2370,8 +2373,8 @@ ACTOR Marine3A : Marine1
 		"####" N -1
 		Stop
 	Pain:
-		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" I 2
+		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" I 3 A_Pain
 		"####" I 0 A_Jump(256,"See")
 		Stop

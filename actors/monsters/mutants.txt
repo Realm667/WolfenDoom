@@ -59,8 +59,8 @@ ACTOR Mutant : Guard
 		MTNT F 0 A_FaceTarget
 		Goto Missile+1
 	Pain:
-		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" I 5 A_Pain
+		"####" I 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	Death:
@@ -281,8 +281,8 @@ ACTOR BigMutant1 : Mutant
 		MTB1 EF 3 A_FaceTarget
 		Goto See
 	Pain:
-		"####" H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" H 5
+		"####" H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	Death:
@@ -379,8 +379,8 @@ ACTOR BigMutant2 : BigMutant1
 		MTB2 E 5 A_FaceTarget
 		Goto See
 	Pain:
-		MTB2 H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		MTB2 H 5
+		MTB2 H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	}
@@ -477,7 +477,7 @@ ACTOR UberMutant : Mutant
 		UBMU G 4 A_MonsterRefire(20,"See")
 		Goto Missile+2
 	Pain:
-		UBMU H 1
+		UBMU H 2
 		UBMU H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		UBMU H 2 A_Pain
 		"####" "#" 0 A_AlertMonsters(256) //mxd
