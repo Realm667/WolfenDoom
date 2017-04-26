@@ -4,7 +4,6 @@ ACTOR RainSpawner : SwitchableDecoration
 	//$Category Special Effects (Wolf3D)
 	//$Title Rain Spawner
 	//$Color 12
-
 	//$Arg0 "Radius"
 	//$Arg0Tooltip "Radius in map units\nDefault: 0"
 	//$Arg1 "Frequency"
@@ -18,16 +17,13 @@ ACTOR RainSpawner : SwitchableDecoration
 	//$Arg3Tooltip "Drop length, use long (0) for heavy rainfall and short (1) for a mizzle"
 	//$Arg4 "Pitch"
 	//$Arg4Tooltip "The rainfall's pitch, for maps with wind and storm, use angle for direction.\nThe higher the number, the heavier the wind.\nRange: 0 - 75, where 75 is almost horizontal rain"
-
 	Radius 1
 	Height 1
 	YScale 0.1
-	
 	+CLIENTSIDEONLY
 	+NOCLIP
 	+NOGRAVITY
 	+SPAWNCEILING
-	
 	States
 	{
 	Spawn:
@@ -36,30 +32,24 @@ ACTOR RainSpawner : SwitchableDecoration
 		TNT1 A 0 A_SetScale(ScaleX, ScaleY)
 		TNT1 A 0 A_JumpIf(!Args[2], "StartSound")
 		Goto RainLoop
-		
 	StartSound:
 		TNT1 A 0 A_PlaySound("Ambient/Rain", CHAN_7, 1.0, TRUE)
 		Goto RainLoop
-		
 	RainLoop:
 		TNT1 A 0 A_CheckRange(1200.0, "RainWait", TRUE)
 		TNT1 A 0 A_JumpIf(!Args[3], "RainLong")
-		
 	RainShort:
 		TNT1 A 1 A_SpawnItemEx("RainDropShort", random(-Args[0], Args[0]), random(-Args[0], Args[0]), -2, Args[4], 0, -20+(Args[4]/2), 0, SXF_TRANSFERPITCH, Args[1])
 		Goto RainLoop
 	RainLong:
 		TNT1 A 1 A_SpawnItemEx("RainDropLong", random(-Args[0], Args[0]), random(-Args[0], Args[0]), -2, Args[4], 0, -40+(Args[4]/2), 0, SXF_TRANSFERPITCH, Args[1])
 		Goto RainLoop
-		
 	RainWait:
 		TNT1 A 10
 		Goto RainLoop
-		
 	Vanish:
 		TNT1 A 1
 		Stop
-		
 	Inactive:
 		TNT1 A -1
 		Stop
@@ -68,18 +58,17 @@ ACTOR RainSpawner : SwitchableDecoration
 
 ACTOR RainDropShort //3d actor
 {
+	DistanceCheck "sfxlod"
 	Height 1
 	Radius 4
 	RenderStyle "Translucent"
 	Alpha 0.7
-	
 	+CLIENTSIDEONLY
 	+DONTSPLASH
 	+FORCEYBILLBOARD
 	+MISSILE
 	+NOBLOCKMAP
 	+NOGRAVITY
-	
 	States
 	{
 	Spawn:
@@ -87,7 +76,6 @@ ACTOR RainDropShort //3d actor
 		"####" A 0 A_SetScale(ScaleX+(frandom(-0.05,0.05)), ScaleY+(frandom(-0.05,0.05)))
 		"####" A 0 A_SetTranslucent(frandom(0.7,0.4))
 	Rainfall:
-		"####" A 0 A_CheckRange(1536.0, "Vanish", TRUE) //removes the rain as soon as it is out of sight
 		"####" A 4 A_JumpIf(WaterLevel > 0, "Death")
 		Loop
 	Death:
@@ -103,4 +91,4 @@ ACTOR RainDropShort //3d actor
 	}
 }
 
-ACTOR RainDropLong : RainDropShort {}
+ACTOR RainDropLong : RainDropShort {DistanceCheck "sfxlod"}

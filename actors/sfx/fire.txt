@@ -3,7 +3,6 @@ ACTOR FireSpawner : SwitchableDecoration
 	//$Category Special Effects (Wolf3D)
 	//$Title Fire Spawner
 	//$Color 12
-
 	//$Arg0 "Size"
 	//$Arg0Type 11
 	//$Arg0Enum { 0 = "Small"; 1 = "Medium"; 2 = "Large"; }
@@ -13,7 +12,6 @@ ACTOR FireSpawner : SwitchableDecoration
 	//$Arg2 "Smoke"
 	//$Arg2Type 11
 	//$Arg2Enum { 0 = "Yes"; 1 = "No"; }
-
 	Height 40
 	Radius 30
 	+CLIENTSIDEONLY
@@ -22,7 +20,6 @@ ACTOR FireSpawner : SwitchableDecoration
 	+NOCLIP
 	+NOGRAVITY
 	+NOINTERACTION
-	
 	States
 	{
 	Spawn:
@@ -132,6 +129,7 @@ ACTOR LargeFlame : SmallFlame {}
 //Flames and particles
 ACTOR Smoke1A
 {
+	DistanceCheck "sfxlod"
 	Height 2
 	Radius 1
 	+CLIENTSIDEONLY
@@ -158,6 +156,7 @@ ACTOR Smoke1A
 
 ACTOR Smoke2A : Smoke1A
 {
+	DistanceCheck "sfxlod"
 	Scale 0.75
 	States
 	{
@@ -172,6 +171,7 @@ ACTOR Smoke2A : Smoke1A
 
 ACTOR Smoke3A : Smoke1A
 {
+	DistanceCheck "sfxlod"
 	Scale 1.0
 	States
 	{
@@ -186,6 +186,7 @@ ACTOR Smoke3A : Smoke1A
 
 ACTOR Flame1A
 {
+	DistanceCheck "sfxlod"
 	Height 2
 	Radius 1
 	+CLIENTSIDEONLY
@@ -213,6 +214,7 @@ ACTOR Flame1A
 
 ACTOR Flame1B : Flame1A
 {
+	DistanceCheck "sfxlod"
 	States
 	{
 	Spawn:
@@ -223,6 +225,7 @@ ACTOR Flame1B : Flame1A
 
 ACTOR Flame2A : Flame1A
 {
+	DistanceCheck "sfxlod"
 	States
 	{
 	Spawn:
@@ -233,6 +236,7 @@ ACTOR Flame2A : Flame1A
 
 ACTOR Flame2B : Flame1A
 {
+	DistanceCheck "sfxlod"
 	States
 	{
 	Spawn:
@@ -243,6 +247,7 @@ ACTOR Flame2B : Flame1A
 
 ACTOR Flame3A : Flame1A
 {
+	DistanceCheck "sfxlod"
 	States
 	{
 	Spawn:
@@ -253,6 +258,7 @@ ACTOR Flame3A : Flame1A
 
 ACTOR Flame3B : Flame1A
 {
+	DistanceCheck "sfxlod"
 	States
 	{
 	Spawn:
@@ -263,6 +269,7 @@ ACTOR Flame3B : Flame1A
 
 ACTOR Flame4A : Flame1A
 {
+	DistanceCheck "sfxlod"
 	Scale 0.4
 	States
 	{
@@ -278,6 +285,7 @@ ACTOR Flame4A : Flame1A
 
 ACTOR Flame4B : Flame4A
 {
+	DistanceCheck "sfxlod"
 	States
 	{
 	Spawn:
@@ -288,6 +296,7 @@ ACTOR Flame4B : Flame4A
 
 ACTOR Flame5A : Flame4A
 {
+	DistanceCheck "sfxlod"
 	States
 	{
 	Spawn:
@@ -298,6 +307,7 @@ ACTOR Flame5A : Flame4A
 
 ACTOR Flame5B : Flame4A
 {
+	DistanceCheck "sfxlod"
 	States
 	{
 	Spawn:
@@ -308,6 +318,7 @@ ACTOR Flame5B : Flame4A
 
 ACTOR Flame6A : Flame4A
 {
+	DistanceCheck "sfxlod"
 	States
 	{
 	Spawn:
@@ -318,6 +329,7 @@ ACTOR Flame6A : Flame4A
 
 ACTOR Flame6B : Flame4A
 {
+	DistanceCheck "sfxlod"
 	States
 	{
 	Spawn:
@@ -328,6 +340,7 @@ ACTOR Flame6B : Flame4A
 
 ACTOR Flame7A : Flame1A
 {
+	DistanceCheck "sfxlod"
 	Scale 0.7
 	States
 	{
@@ -343,6 +356,7 @@ ACTOR Flame7A : Flame1A
 
 ACTOR Flame7B : Flame7A
 {
+	DistanceCheck "sfxlod"
 	States
 	{
 	Spawn:
@@ -353,6 +367,7 @@ ACTOR Flame7B : Flame7A
 
 ACTOR Flame8A : Flame7A
 {
+	DistanceCheck "sfxlod"
 	States
 	{
 	Spawn:
@@ -363,6 +378,7 @@ ACTOR Flame8A : Flame7A
 
 ACTOR Flame8B : Flame7A
 {
+	DistanceCheck "sfxlod"
 	States
 	{
 	Spawn:
@@ -373,6 +389,7 @@ ACTOR Flame8B : Flame7A
 
 ACTOR Flame9A : Flame7A
 {
+	DistanceCheck "sfxlod"
 	States
 	{
 	Spawn:
@@ -383,6 +400,7 @@ ACTOR Flame9A : Flame7A
 
 ACTOR Flame9B : Flame7A
 {
+	DistanceCheck "sfxlod"
 	States
 	{
 	Spawn:
@@ -393,6 +411,7 @@ ACTOR Flame9B : Flame7A
 
 ACTOR Ember1 : Flame1A
 {
+	DistanceCheck "sfxlod"
 	Scale .05
 	States
 	{
@@ -409,6 +428,7 @@ ACTOR Ember1 : Flame1A
 
 ACTOR Ember2 : Ember1
 {
+	DistanceCheck "sfxlod"
 	States
 	{
 	Spawn:

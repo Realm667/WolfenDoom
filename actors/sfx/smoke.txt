@@ -4,6 +4,7 @@
 
 ACTOR PuffSmoke
 {
+	DistanceCheck "sfxlod"
 	+CLIENTSIDEONLY
 	+FORCEXYBILLBOARD
 	+NOINTERACTION
@@ -30,6 +31,7 @@ ACTOR PuffSmoke
 
 ACTOR WaterSmoke : PuffSmoke //needed for 3d toilet & 3d hydrants - ozy81
 {
+	DistanceCheck "sfxlod"
 	Alpha 0.2
 	Scale 0.03
 	States
@@ -46,10 +48,10 @@ ACTOR WaterSmoke : PuffSmoke //needed for 3d toilet & 3d hydrants - ozy81
 		}
 }
 
-ACTOR PowerPlantSmokePuff : PuffSmoke {Scale 0.64}
-ACTOR PowerPlantSmokePuffSmall : PuffSmoke {Scale 0.32}
-ACTOR WaterSmokePuff : WaterSmoke {Scale 0.18}
-ACTOR WaterSmokePuffSmall : WaterSmoke {Scale 0.10}
+ACTOR PowerPlantSmokePuff : PuffSmoke {DistanceCheck "sfxlod" Scale 0.64}
+ACTOR PowerPlantSmokePuffSmall : PuffSmoke {DistanceCheck "sfxlod" Scale 0.32}
+ACTOR WaterSmokePuff : WaterSmoke {DistanceCheck "sfxlod" Scale 0.18}
+ACTOR WaterSmokePuffSmall : WaterSmoke {DistanceCheck "sfxlod" Scale 0.10}
 
 ACTOR PowerPlantSmokeGenerator : SwitchableDecoration
 {
@@ -65,7 +67,9 @@ ACTOR PowerPlantSmokeGenerator : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
+	ActiveLoop:
+		TNT1 A 0 A_CheckSightOrRange(1200.0, "LoopWait", TRUE)
 		TNT1 A 4 A_SpawnItemEx("PowerPlantSmokePuff", random(-3,3), random(-3,3), 0, 0, 0, 3)
 		Loop
 	Inactive:
@@ -74,6 +78,9 @@ ACTOR PowerPlantSmokeGenerator : SwitchableDecoration
 	EndSpawn:
 		TNT1 A 1
 		Stop
+	LoopWait:
+		TNT1 A 10
+		Goto ActiveLoop
 	}
 }
 
@@ -88,7 +95,9 @@ ACTOR PowerPlantSmokeGeneratorSmall : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
+	ActiveLoop:
+		TNT1 A 0 A_CheckSightOrRange(1200.0, "LoopWait", TRUE)
 		TNT1 A 4 A_SpawnItemEx("PowerPlantSmokePuffSmall", random(-8,8), random(-8,8), 0, 0, 0, 3)
 		Loop
 	Inactive:
@@ -97,19 +106,23 @@ ACTOR PowerPlantSmokeGeneratorSmall : SwitchableDecoration
 	EndSpawn:
 		TNT1 A 1
 		Stop
+	LoopWait:
+		TNT1 A 10
+		Goto ActiveLoop
 	}
 }
 
 ACTOR PowerPlantSmokeGenerator2 : PowerPlantSmokeGenerator
 {
-	//$Category Special Effects (Wolf3D)
 	//$Title Smoke Generator (Special)
 	//$Color 12
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 	Active:
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
+	ActiveLoop:
+		TNT1 A 0 A_CheckSightOrRange(1200.0, "LoopWait", TRUE)
 		TNT1 A 4 A_SpawnItemEx("PowerPlantSmokePuff", random(-32,32), random(-32,32), 0, 0, 0, -3)
 		Loop
 	Inactive:
@@ -118,6 +131,9 @@ ACTOR PowerPlantSmokeGenerator2 : PowerPlantSmokeGenerator
 	EndSpawn:
 		TNT1 A 1
 		Stop
+	LoopWait:
+		TNT1 A 10
+		Goto ActiveLoop
 	}
 }
 
@@ -175,9 +191,9 @@ ACTOR VolcanoSmokeGenerator : SwitchableDecoration
 // AMBIENT SMOKE //
 ///////////////////
 
-ACTOR Ambientsmoke
+ACTOR AmbientSmoke
 {
-	DistanceCheck "scenelod"
+	DistanceCheck "sfxlod"
 	+CLIENTSIDEONLY
 	+FORCEXYBILLBOARD
 	+NOINTERACTION
@@ -203,20 +219,20 @@ ACTOR AmbientSmokeGenerator : SwitchableDecoration
 	//$Category Special Effects (Wolf3D)
 	//$Title Ambient Smoke Generator
 	//$Color 12
-
 	//$Arg0 "Radius"
 	//$Arg0Tooltip "Radius in map units\nDefault: 0"
 	//$Arg1 "Frequency"
 	//$Arg1Tooltip "Frequency, the lower the number, the heavier the smoke\nRange: 0 - 255"
-
 	+CLIENTSIDEONLY
 	+NOINTERACTION
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 	Active:
-		TNT1 A 2 A_SpawnItemEx("Ambientsmoke", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,48), 0, 0, 0.5, 0, 0, Args[1])
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
+	ActiveLoop:
+		TNT1 A 0 A_CheckSightOrRange(1200.0, "LoopWait", TRUE)
+		TNT1 A 8 A_SpawnItemEx("AmbientSmoke", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,48), 0, 0, 0.5, 0, 0, Args[1])
 		Loop
 	Inactive:
 		TNT1 A -1
@@ -224,5 +240,8 @@ ACTOR AmbientSmokeGenerator : SwitchableDecoration
 	EndSpawn:
 		TNT1 A 1
 		Stop
+	LoopWait:
+		TNT1 A 10
+		Goto ActiveLoop
 	}
 }
