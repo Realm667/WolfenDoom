@@ -1515,21 +1515,35 @@ ACTOR SuperSoldier_Afrika : SuperSoldier
 	Missile:
 		HAFR E 12 A_FaceTarget
 		"####" E 0 A_Jump(64,"Missile2")
+		"####" E 0 A_Jump(16,"Missile3")
 		"####" F 8
-		"####" G 6 A_SpawnProjectile("HandGrenade",50,16,frandom(-2,2),CMF_AIMDIRECTION)
+		"####" G 6 A_SpawnProjectile("HandGrenade",50,16,frandom(-2,2),CMF_AIMDIRECTION) //one grenade will aim straight
 		"####" F 8
-		"####" I 6 A_SpawnProjectile("HandGrenade",50,-16,frandom(-2,2),CMF_AIMDIRECTION)
+		"####" I 6 A_SpawnProjectile("HansGrenade",50,-16,frandom(-16,16))
 		"####" I 0 A_Jump(64,"Retreat")
 		"####" I 0 A_Jump(32,"Missile2")
 		"####" E 6
 		Goto See
 	Missile2:
 		HAFR E 12 A_FaceTarget
-		"####" E 0 A_Jump(64,"Missile2")
 		"####" H 8
-		"####" I 0 A_SpawnProjectile("HandGrenade",50,16,frandom(-6,6),CMF_AIMDIRECTION)
-		"####" I 8 A_SpawnProjectile("HandGrenade",50,-16,frandom(-6,6),CMF_AIMDIRECTION)
+		"####" I 0 A_SpawnProjectile("HansGrenade",50,16,frandom(-16,16))
+		"####" I 8 A_SpawnProjectile("HandGrenade",50,-16,frandom(-16,16))
 		"####" E 10
+		"####" E 0 A_Jump(96,"Retreat")
+		Goto See
+	Missile3:
+		HAFR E 6 A_FaceTarget
+		"####" F 4
+		"####" G 6 A_SpawnProjectile("HandGrenade",50,16,frandom(-16,16))
+		"####" F 4
+		"####" I 6 A_SpawnProjectile("HandGrenade",50,-16,frandom(-16,16))
+		"####" I 0 A_Jump(64,"Retreat")
+		"####" E 3
+		"####" H 4
+		"####" I 0 A_SpawnProjectile("HansGrenade",50,16,frandom(-16,16))
+		"####" I 8 A_SpawnProjectile("HansGrenade",50,-16,frandom(-16,16))
+		"####" E 5
 		"####" E 0 A_Jump(96,"Retreat")
 		Goto See
 	Retreat:

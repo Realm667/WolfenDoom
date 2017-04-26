@@ -225,8 +225,8 @@ ACTOR ScorpionNail : Nail
 	DeathSound "scorpion/sting2"
 }
 
-ACTOR PowerSlow : PowerSpeed {Powerup.Color "LightCyan2" Powerup.Duration -4 Speed 0.33}
-ACTOR SlowFreeze : PowerupGiver {+INVENTORY.AUTOACTIVATE +INVENTORY.ADDITIVETIME +INVENTORY.NOSCREENBLINK -INVENTORY.INVBAR Powerup.Type "Slow"}
+ACTOR PowerSlow : PowerSpeed {Powerup.Duration -4 Speed 0.33}
+ACTOR SlowFreeze : PowerupGiver {+INVENTORY.AUTOACTIVATE +INVENTORY.ADDITIVETIME -INVENTORY.INVBAR Powerup.Type "Slow"}
 
 ACTOR IceDart : FastProjectile
 {
