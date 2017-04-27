@@ -6,6 +6,7 @@ ACTOR AracnorbQueen : Base
 	//$Category Monsters (Wolf3D)/Occult/Bosses
 	//$Title Aracnorb Queen (Boss)
 	//$Color 4
+	Base.BossIcon "BOSSICO3"
 	Health 5000
 	Radius 48
 	Height 96
@@ -153,6 +154,7 @@ ACTOR SmokeMonster : Base
 	//$Title Smokemonster (Boss)
 	//$Color 4
 	//$Sprite SMMOA0
+	Base.BossIcon "BOSSICO3"
 	Health 3000
 	Height 56
 	Mass 10000000
@@ -531,6 +533,7 @@ ACTOR FatMan : NaziBoss
 	//$Category Monsters (Wolf3D)/Bosses
 	//$Title General Giftmacher (Boss)
 	//$Color 4
+	Base.BossIcon "BOSSICO2"
 	-FLOAT		//we don't want him to fly, yeah? ;)
 	-NOGRAVITY	//we don't want him to fly, yeah? ;)
 	+BOSS
@@ -588,6 +591,7 @@ ACTOR RocketMan : NaziBoss
 	//$Category Monsters (Wolf3D)/Bosses
 	//$Title General Schwabbelhals (Boss)
 	//$Color 4
+	Base.BossIcon "BOSSICO2"
 	Health 300
 	PainChance 110
 	Mass 200
@@ -666,6 +670,7 @@ ACTOR RocketMan : NaziBoss
 ACTOR FlamerMan : RocketMan
 {
 	//$Title Friedhelm Hass (Boss)
+	Base.BossIcon "BOSSICO2"
 	Speed 3.67
 	Obituary "$FLAMEBOY"
 	Tag "Friedhelm Hass"
@@ -779,6 +784,7 @@ ACTOR MadDoctor2 : MadDoctor
 	Obituary "$MENGELE"
 	DropItem "Medikit_Large"
 	Tag "Dr. Schabbs Sr."
+	Base.BossIcon "BOSSICO2"
 	Health 800
 	+BOSS
 	+MISSILEEVENMORE
@@ -833,6 +839,7 @@ ACTOR MadCook2 : MadCook
 ACTOR General : RocketMan
 {
 	//$Title General Fettgesicht (Boss)
+	Base.BossIcon "BOSSICO2"
 	Obituary "$GENERAL"
 	Health 800
 	Mass 1000
@@ -887,6 +894,7 @@ ACTOR General : RocketMan
 ACTOR MarineGeneral : General
 {
 	//$Title General Seeteufel (Boss)
+	Base.BossIcon "BOSSICO2"
 	Obituary "$GENERAL"
 	Health 800
 	Mass 1000
@@ -1083,6 +1091,7 @@ ACTOR DeathKnight : Nazi
 ACTOR Hitler : DeathKnight
 {
 	//$Title Adolf Hitler (Boss)
+	Base.BossIcon "BOSSICO3"
 	Scale 1.2
 	Obituary "$HITLER"
 	Tag "Adolf Hitler"
@@ -1140,6 +1149,7 @@ ACTOR Longinus_Hitler : Nazi
 	//$Category Monsters (Wolf3D)/Bosses
 	//$Title Adolf Hitler, Longinus (Boss)
 	//$Color 4
+	Base.BossIcon "BOSSICO3"
 	Scale 1.2
 	//Obituary "$LHITLER"
 	Tag "Adolf Hitler"
@@ -1294,6 +1304,7 @@ ACTOR ChairGuy : Nazi
 	//$Category Monsters (Wolf3D)/Bosses
 	//$Title Graf Holzbein (Boss)
 	//$Color 4
+	Base.BossIcon "BOSSICO2"
 	Obituary "$CHAIRMAN"
 	Health 1750
 	Mass 100000
@@ -1746,6 +1757,7 @@ ACTOR SuperSoldierGirl : SuperSoldier
 ACTOR SuperSoldierElsa : SuperSoldierGirl
 {
 	//$Title Elsa (Boss)
+	Base.BossIcon "BOSSICO2"
 	Obituary "$SUPAELSA"
 	Tag "Elsa"
 	Health 450
