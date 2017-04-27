@@ -544,6 +544,12 @@ ACTOR AstroScientist : AstroGuard
 	Spawn:
 		SCN2 N 0
 		Goto Look
+	Missile: //different brightmap & colors - ozy81
+		"####" EF 5 A_FaceTarget
+		"####" O 0 A_PlaySound("astrochaingun/fire")
+		"####" O 8 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",48,1,random(-8,8))
+		"####" E 8 A_Jump(256,"See")
+		Stop
 	}
 }
 
