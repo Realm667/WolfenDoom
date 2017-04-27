@@ -4,6 +4,7 @@ class BoAPlayer : PlayerPawn
 	double user_ScaleY;
 	int user_visibility;
 	int suspicion;
+	Actor CrosshairTarget;
 
 	Default
 	{
@@ -150,5 +151,20 @@ class BoAPlayer : PlayerPawn
 		"####" STU 5 BRIGHT Light("ITBURNS1") A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,8), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE, 160);
 		"####" V -1;
 		Stop;
+	}
+
+	override void Tick()
+	{
+		CrosshairTarget = GetLineTarget();
+
+		Super.Tick();
+	}
+
+	Actor GetLineTarget()
+	{
+		FTranslatedLineTarget t;
+		AimLineAttack(angle, 1024, t, 0.5);
+
+		return t.linetarget;
 	}
 }

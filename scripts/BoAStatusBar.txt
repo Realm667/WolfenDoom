@@ -2,6 +2,7 @@ class BoAStatusBar : BaseStatusBar
 {
 	HUDFont mBigFont;
 	HUDFont mSmallFont;
+	HUDFont mHUDFont;
 	InventoryBarState diparms;
 	DynamicValueInterpolator mAirInterpolator;
 	DynamicValueInterpolator mStaminaInterpolator;
@@ -14,6 +15,11 @@ class BoAStatusBar : BaseStatusBar
 	int alertedcount;
 	int barstate;
 	bool stealth;
+	double healthbaralpha;
+	String LastTag;
+	int LastHealth;
+	int LastMaxHealth;
+	String LastIcon;
 
 	override void Init()
 	{
@@ -22,11 +28,9 @@ class BoAStatusBar : BaseStatusBar
 		CompleteBorder = True;
 
 		// Create the fonts used
-		Font fnt = "BIGFONT";
-		mBigFont = HUDFont.Create(fnt, 0);
-
-		fnt = "THREEFIV";
-		mSmallFont = HUDFont.Create(fnt, 1);
+		mBigFont = HUDFont.Create("BIGFONT", 0);
+		mSmallFont = HUDFont.Create("SMALLFONT", 2);
+		mHUDFont = HUDFont.Create("THREEFIV", 1);
 
 		diparms = InventoryBarState.Create();
 
@@ -85,19 +89,22 @@ class BoAStatusBar : BaseStatusBar
 
 		if (!automapactive)
 		{
-			//Draw Mask for Space Suit
-			if (CheckInventory("PowerSpaceSuit", 1))
-			{
-				BeginHUD(1, True);
-				DrawImage("STGMASK", (0, 0), DI_SCREEN_CENTER | DI_ITEM_CENTER);
+			// Draw fullscreen overlays, regardless of status bar state
+			BeginHUD(1, True);
+				DrawHealthBars();
 
-				int current, max;
-				[current, max] = CPlayer.mo.GetEffectTicsForItem("SpaceSuit");
+				//Draw Mask for Space Suit
+				if (CheckInventory("PowerSpaceSuit", 1))
+				{
+					DrawImage("STGMASK", (0, 0), DI_SCREEN_CENTER | DI_ITEM_CENTER);
 
-				current = mSpaceSuitInterpolator.GetValue();
-				DrawBar("HORZSP2F", "HORZSP2E", current, max, (-22, 55), 0, SHADER_HORZ, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
-				BeginHUD(1, False);
-			}
+					int current, max;
+					[current, max] = CPlayer.mo.GetEffectTicsForItem("SpaceSuit");
+
+					current = mSpaceSuitInterpolator.GetValue();
+					DrawBar("HORZSP2F", "HORZSP2E", current, max, (-22, 55), 0, SHADER_HORZ, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
+				}
+			BeginHUD(1, False);
 
 			barstate = state;
 
@@ -157,10 +164,10 @@ class BoAStatusBar : BaseStatusBar
 		DrawInventoryIcon(ammo2, (231, 184), DI_ITEM_OFFSETS);
 
 		//Weapon
-		if (!CheckWeaponSelected("NullWeapon")) { DrawString(mSmallFont, GetWeaponTag(), (190, 159), DI_TEXT_ALIGN_CENTER); }
+		if (!CheckWeaponSelected("NullWeapon")) { DrawString(mHUDFont, GetWeaponTag(), (190, 159), DI_TEXT_ALIGN_CENTER); }
 
 		//Time
-		DrawString(mSmallFont, level.TimeFormatted(), (250, 159));
+		DrawString(mHUDFont, level.TimeFormatted(), (250, 159));
 
 		//Health
 		DrawString(mBigFont, FormatNumber(CPlayer.health, 3), (52, 171), DI_TEXT_ALIGN_RIGHT);
@@ -199,20 +206,20 @@ class BoAStatusBar : BaseStatusBar
 		if (GetAmount("CKRedKey")) { DrawImage("CKKEYS2", (254, 189), DI_ITEM_OFFSETS); }
 
 		//Ammo
-		DrawString(mSmallFont, FormatNumber(GetAmount("9mmAmmo"), 3), (284, 172), DI_TEXT_ALIGN_RIGHT);
-		DrawString(mSmallFont, FormatNumber(GetAmount("9mmAmmo"), 3), (284, 172), DI_TEXT_ALIGN_RIGHT);
-		DrawString(mSmallFont, FormatNumber(GetAmount("12GaugeAmmo"), 3), (284, 178), DI_TEXT_ALIGN_RIGHT);
-		DrawString(mSmallFont, FormatNumber(GetAmount("MauserAmmo"), 3), (284, 184), DI_TEXT_ALIGN_RIGHT);
-		DrawString(mSmallFont, FormatNumber(GetAmount("FlameAmmo"), 3), (284, 190), DI_TEXT_ALIGN_RIGHT);
-		DrawString(mSmallFont, FormatNumber(GetAmount("NebAmmo"), 3), (307, 172), DI_TEXT_ALIGN_RIGHT);
-		DrawString(mSmallFont, FormatNumber(GetAmount("PanzerAmmo"), 3), (307, 178), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mHUDFont, FormatNumber(GetAmount("9mmAmmo"), 3), (284, 172), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mHUDFont, FormatNumber(GetAmount("9mmAmmo"), 3), (284, 172), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mHUDFont, FormatNumber(GetAmount("12GaugeAmmo"), 3), (284, 178), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mHUDFont, FormatNumber(GetAmount("MauserAmmo"), 3), (284, 184), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mHUDFont, FormatNumber(GetAmount("FlameAmmo"), 3), (284, 190), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mHUDFont, FormatNumber(GetAmount("NebAmmo"), 3), (307, 172), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mHUDFont, FormatNumber(GetAmount("PanzerAmmo"), 3), (307, 178), DI_TEXT_ALIGN_RIGHT);
 		
 		if (CPlayer.mo.InvSel != null && !level.NoInventoryBar)
 		{
 			DrawInventoryIcon(CPlayer.mo.InvSel, (156, 168), DI_ITEM_OFFSETS);
 			if (CPlayer.mo.InvSel.Amount > 1)
 			{
-				DrawString(mSmallFont, FormatNumber(CPlayer.mo.InvSel.Amount), (156 + 31, 168 + 30 - mSmallFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
+				DrawString(mHUDFont, FormatNumber(CPlayer.mo.InvSel.Amount), (156 + 31, 168 + 30 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
 			}
 		}
 
@@ -249,7 +256,7 @@ class BoAStatusBar : BaseStatusBar
 		//Money
 		DrawString(mBigFont, FormatNumber(GetAmount("CoinItem")), (50, 7), DI_TEXT_ALIGN_RIGHT);
 		//Time
-		DrawString(mSmallFont, level.TimeFormatted(), (15, 21), DI_TEXT_ALIGN_LEFT);
+		DrawString(mHUDFont, level.TimeFormatted(), (15, 21), DI_TEXT_ALIGN_LEFT);
 
 		//Top Right
 		DrawImage("HUD_UR", (-66, 0), DI_ITEM_OFFSETS);
@@ -291,7 +298,7 @@ class BoAStatusBar : BaseStatusBar
 			DrawInventoryIcon(CPlayer.mo.InvSel, (112, -38), DI_ITEM_OFFSETS);
 			if (CPlayer.mo.InvSel.Amount > 1)
 			{
-				DrawString(mSmallFont, FormatNumber(CPlayer.mo.InvSel.Amount), (112 + 31, -38 + 30 - mSmallFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
+				DrawString(mHUDFont, FormatNumber(CPlayer.mo.InvSel.Amount), (112 + 31, -38 + 30 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
 			}
 		}
 
@@ -300,7 +307,7 @@ class BoAStatusBar : BaseStatusBar
 		//Bottom Right
 		DrawImage("HUD_BR", (-116, -53), DI_ITEM_OFFSETS);
 		//Weapon
-		if (!CheckWeaponSelected("NullWeapon")) { DrawString(mSmallFont, GetWeaponTag(), (-55, -52), DI_TEXT_ALIGN_CENTER); }
+		if (!CheckWeaponSelected("NullWeapon")) { DrawString(mHUDFont, GetWeaponTag(), (-55, -52), DI_TEXT_ALIGN_CENTER); }
 
 		//Ammo
 		Ammo ammo1, ammo2;
@@ -434,12 +441,12 @@ class BoAStatusBar : BaseStatusBar
 					if (barstate == HUD_Fullscreen)
 					{
 						DrawImage("EYE", (x + 112 * scale, y - 21 * scale), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (0.5 * scale, 0.5 * scale));
-						DrawString(mSmallFont, FormatNumber(alertedcount), (x + 124 * scale, y - 20 * scale - 2), flags | DI_TEXT_ALIGN_RIGHT, Font.CR_GRAY);
+						DrawString(mHUDFont, FormatNumber(alertedcount), (x + 124 * scale, y - 20 * scale - 2), flags | DI_TEXT_ALIGN_RIGHT, Font.CR_GRAY);
 					}
 					else
 					{
 						DrawImage("EYE", (310, 190), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (0.25, 0.25));
-						DrawString(mSmallFont, FormatNumber(alertedcount), (318, 190), flags | DI_TEXT_ALIGN_RIGHT, Font.CR_GRAY);
+						DrawString(mHUDFont, FormatNumber(alertedcount), (318, 190), flags | DI_TEXT_ALIGN_RIGHT, Font.CR_GRAY);
 					}
 				}
 
@@ -462,19 +469,19 @@ class BoAStatusBar : BaseStatusBar
 						if (disguisetag != "") { disguisetag = " - " .. disguisetag; }
 
 						DrawInventoryIcon(disguise, (x - 104 * scale, y - 20 * scale), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (scale, scale));
-						DrawString(mSmallFont, StringTable.Localize("$DISGUISED") .. disguisetag, (x, y - 20 * scale - 4), flags | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, basealpha - (suspicion / 100.));
+						DrawString(mHUDFont, StringTable.Localize("$DISGUISED") .. disguisetag, (x, y - 20 * scale - 4), flags | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, basealpha - (suspicion / 100.));
 					}
 					else
 					{
 						DrawInventoryIcon(disguise, (240, 184), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (0.75, 0.75));
-						DrawString(mSmallFont, StringTable.Localize("$DISGUISED"), (190, 159), DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, basealpha - (suspicion / 100.));
+						DrawString(mHUDFont, StringTable.Localize("$DISGUISED"), (190, 159), DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, basealpha - (suspicion / 100.));
 					}
 				}
 				else
 				{
 					DrawBarAlpha("VIS_GRN", "", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, basealpha, scale);
-					DrawBarAlpha("VIS_YEL", "", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, current / 40., scale);
-					DrawBarAlpha("VIS_RED", "", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, current / 50., scale);
+					DrawBarAlpha("VIS_YEL", "", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, current / (max * .8), scale);
+					DrawBarAlpha("VIS_RED", "", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, current / double(max), scale);
 				}
 			}
 			else
@@ -486,5 +493,44 @@ class BoAStatusBar : BaseStatusBar
 				DrawBarAlpha("VIS_BLK", "VIS_BACK", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, basealpha, scale);
 			}
 		}
+	}
+
+	void DrawHealthBars()
+	{
+		if (screenblocks > 11) { return; }
+
+		actor mo = BoAPlayer(CPlayer.mo).CrosshairTarget;
+
+		if (mo && mo.bShootable && mo.health > 0 && mo.bBoss)
+		{
+			LastTag = mo.GetTag();
+			LastHealth = mo.health;
+			LastMaxHealth = mo.default.health;
+			if (Base(mo)) { LastIcon = Base(mo).BossIcon; }
+
+			if (healthbaralpha < 1) { healthbaralpha += 0.2; }
+		}
+		else
+		{
+			if (mo && mo.health <= 0) { LastHealth = 0; }
+			if (healthbaralpha > 0) { healthbaralpha -= 0.2; }
+		}
+
+		if (healthbaralpha > 0) { DrawHealthBar(LastTag, LastHealth, LastMaxHealth, LastIcon); }
+	}
+
+	void DrawHealthBar(String tag, int health, int maxhealth, String icon = "")
+	{
+		let hudscale = GetHUDScale();
+
+		double scale = 200 / (Screen.GetHeight() / hudscale.y);
+
+		DrawBarAlpha("HEALTHMX", "HEALTH00", health, maxhealth, (0, 36 * scale), 0, SHADER_HORZ, DI_SCREEN_TOP | DI_SCREEN_HCENTER | DI_ITEM_CENTER, 1.0 * healthbaralpha, scale);
+		DrawBarAlpha("HEALTH_Y", "", health, maxhealth, (0, 36 * scale), 0, SHADER_HORZ, DI_SCREEN_TOP | DI_SCREEN_HCENTER | DI_ITEM_CENTER, ((maxhealth - health) / (maxhealth * 0.25)) * healthbaralpha, scale);
+		DrawBarAlpha("HEALTH_R", "", health, maxhealth, (0, 36 * scale), 0, SHADER_HORZ, DI_SCREEN_TOP | DI_SCREEN_HCENTER | DI_ITEM_CENTER, ((maxhealth - health) / (maxhealth * 0.75)) * healthbaralpha, scale);
+
+		scale /= 2.0;
+		DrawImage(icon, (-140 * scale, 72 * scale), DI_SCREEN_TOP | DI_SCREEN_HCENTER | DI_ITEM_CENTER, healthbaralpha, (-1, -1), (scale, scale));
+		Screen.DrawText(SmallFont, Font.CR_GRAY, (Screen.GetWidth() * scale) / 2 - SmallFont.StringWidth(tag) / 2, 76 * scale + SmallFont.GetHeight() / 2, tag, DTA_Clean, true, DTA_VirtualWidth, int(Screen.GetWidth() * scale), DTA_VirtualHeight, int(Screen.GetHeight() * scale), DTA_KeepRatio, true, DTA_Alpha, healthbaralpha);
 	}
 }

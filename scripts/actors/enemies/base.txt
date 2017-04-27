@@ -2,6 +2,9 @@
 class Base : Actor
 {
 	LookExParams SearchParams;
+	String BossIcon;
+
+	Property BossIcon:BossIcon;
 
 	state A_LookThroughDisguise(int flags = 0, float minseedist = 0, float Range = 0, float maxheardist = 0, double fov = 0, statelabel label = "See")
 	{
@@ -171,7 +174,7 @@ class Nazi : Base
 
 		if (sneakable && bFriendly) // If we attacked a sneakable actor who wasn't alerted...
 		{
-			BecomeAlerted(); // Alert that actor
+			BecomeAlerted(inflictor); // Alert that actor
 		}
 
 		if (damageamt > health) // If we killed the actor...
