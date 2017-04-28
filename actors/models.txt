@@ -1976,9 +1976,9 @@ ACTOR COD_FemaleBust : 3dObstacle
 	//$Category Models (Wolf3D)/Statues
 	//$Title Female Bust (silver or bronze)
 	//$Color 3
-	DistanceCheck "scenelod"	
 	//$Arg0 "Material"
-	//$Arg0Tooltip "Choose the desired material\nSilver: 0\nBronze: 1"	
+	//$Arg0Tooltip "Choose the desired material\nSilver: 0\nBronze: 1"
+	DistanceCheck "scenelod"
 	Radius 8
 	Height 24
 	+NOGRAVITY
@@ -2000,26 +2000,6 @@ ACTOR COD_EagleBust : COD_FemaleBust
 {
 	//$Title Eagle Bust (silver or bronze)
 	DistanceCheck "scenelod"
-}
-
-ACTOR COD_HitlerBust : COD_FemaleBust
-{
-	//$Title Hitler's Bust (bronze or stone)
-	DistanceCheck "scenelod"	
-	//$Arg0 "Material"
-	//$Arg0Tooltip "Choose the desired material\nBronze: 0\nStone: 1"	
-	States
-	{
-	Spawn:
-		MDLA A 0 NoDelay
-		TNT1 A 0 A_JumpIf(Args[0]==1, "Stone")
-		Bronze: //fall through if set at 0
-		MDLA A -1
-		Stop
-		Stone:
-		MDLA B -1
-		Stop
-	}
 }
 
 ACTOR COD_Tiger1 : ModelBase
@@ -2887,6 +2867,17 @@ ACTOR LionR_Museum : Caesar_Museum
 {
 	//$Title Lion's Statue (right, without hitbox)
 	DistanceCheck "scenelod"
+}
+
+// Enjay
+ACTOR Hitler_Bust : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Statues
+	//$Title Hitler's Bronze Bust
+	//$Color 3
+	Radius 8
+	Height 24
+	+NOGRAVITY
 }
 
 // Talon1024
