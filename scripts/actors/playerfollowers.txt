@@ -583,7 +583,7 @@ class PrisonerAgent : PlayerFollower
 		+NOINFIGHTING
 		Radius 6; // Smaller than player radius
 		Speed 6; // He can't run as fast as you can, so will usually lag behind
-		Scale 1.3;
+		Scale 0.67;
 		Obituary "$PRISONER"; 
 		Species "PlayerFollower";
 		PlayerFollower.CloseFollow True;
@@ -611,7 +611,7 @@ class AgentArmed : PlayerFollower
 		+NOINFIGHTING
 		Speed 8; // A bit faster than the beat-up prisoner version
 		PainChance 64;
-		Scale 1.3;
+		Scale 0.67;
 		Obituary "$FRIENDLY";
 		Species "PlayerFollower";
 		PlayerFollower.Weapon PWEAP_Luger;
@@ -653,7 +653,7 @@ class DouglasArmed : PlayerFollower2
 		Speed 7;
 		Obituary "$FRIENDLY";
 		Translation 1;
-		Scale 1.23;
+		Scale 0.67;
 		Species "PlayerFollower";
 		PlayerFollower.Weapon PWEAP_Luger;
 		PlayerFollower.ChaseAttackChance 2;
@@ -681,7 +681,7 @@ class SoldierArmed : PlayerFollower
 		Speed 7;
 		PainChance 64;
 		Obituary "$FRIENDLY";
-		Scale 1.3;
+		Scale 0.67;
 		Species "PlayerFollower";
 		PlayerFollower.Weapon PWEAP_Luger;
 	}
