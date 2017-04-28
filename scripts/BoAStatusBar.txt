@@ -529,8 +529,10 @@ class BoAStatusBar : BaseStatusBar
 		DrawBarAlpha("HEALTH_Y", "", health, maxhealth, (0, 36 * scale), 0, SHADER_HORZ, DI_SCREEN_TOP | DI_SCREEN_HCENTER | DI_ITEM_CENTER, ((maxhealth - health) / (maxhealth * 0.25)) * healthbaralpha, scale);
 		DrawBarAlpha("HEALTH_R", "", health, maxhealth, (0, 36 * scale), 0, SHADER_HORZ, DI_SCREEN_TOP | DI_SCREEN_HCENTER | DI_ITEM_CENTER, ((maxhealth - health) / (maxhealth * 0.75)) * healthbaralpha, scale);
 
-		scale /= 2.0;
-		DrawImage(icon, (-140 * scale, 72 * scale), DI_SCREEN_TOP | DI_SCREEN_HCENTER | DI_ITEM_CENTER, healthbaralpha, (-1, -1), (scale, scale));
-		Screen.DrawText(SmallFont, Font.CR_GRAY, (Screen.GetWidth() * scale) / 2 - SmallFont.StringWidth(tag) / 2, 76 * scale + SmallFont.GetHeight() / 2, tag, DTA_Clean, true, DTA_VirtualWidth, int(Screen.GetWidth() * scale), DTA_VirtualHeight, int(Screen.GetHeight() * scale), DTA_KeepRatio, true, DTA_Alpha, healthbaralpha);
+		DrawString(mHUDFont, tag, (1, 37 * scale - mHudFont.mFont.GetHeight() / 2), DI_SCREEN_TOP | DI_SCREEN_HCENTER | DI_TEXT_ALIGN_CENTER, Font.CR_BLACK); // Shadow
+		DrawString(mHUDFont, tag, (0, 36 * scale - mHudFont.mFont.GetHeight() / 2), DI_SCREEN_TOP | DI_SCREEN_HCENTER | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY);
+
+		double iconscale = scale * 0.5;
+		DrawImage(icon, (-140 * iconscale, 72 * iconscale), DI_SCREEN_TOP | DI_SCREEN_HCENTER | DI_ITEM_CENTER, healthbaralpha, (-1, -1), (iconscale, iconscale));
 	}
 }
