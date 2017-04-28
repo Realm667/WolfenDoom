@@ -623,15 +623,29 @@ ACTOR TableLightS : TableLightM
 	-SHOOTABLE
 	States
 	{
-	Active:
-		TLIT B 0 A_ChangeFlag("DORMANT", FALSE)
-		"####" B 0 A_PlaySound("SMSWITCH")
 	Spawn:
-		TLIT B -1 BRIGHT Light("BOATABL2")
+		TLIT A 0 NODELAY A_Jump(255, "Type1", "Type2", "Type3", "Type4")
+	Type1:
+		"####" B 0
+		Goto Active
+	Type2:
+		"####" D 0
+		Goto Active
+	Type3:
+		"####" E 0
+		Goto Active
+	Type4:
+		"####" F 0
+		Goto Active
+
+	Active:
+		"####" "#" 0 A_ChangeFlag("DORMANT", FALSE)
+		"####" "#" 0 A_PlaySound("SMSWITCH")
+		"####" "#" -1 BRIGHT Light("BOATABL2")
 		Stop
 	Inactive:
-		TLIT B 0 A_ChangeFlag("DORMANT", TRUE)
-		"####" B -1 A_PlaySound("SMSWITCH")
+		"####" "#" 0 A_ChangeFlag("DORMANT", TRUE)
+		"####" "#" -1 A_PlaySound("SMSWITCH")
 		Stop
 	}
 }
