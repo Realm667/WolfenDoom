@@ -4,6 +4,7 @@ ACTOR NazisBackpack : BackpackItem
 	//$Title Backpack (Backpack)
 	//$Color 6
 	Height 26
+	Scale 0.50
 	Inventory.PickupMessage "$SSPACK"
 	States
 	{
@@ -19,7 +20,7 @@ ACTOR NaziBerserk : CustomInventory
 	//$Title Totale Macht (Berserk)
 	//$Color 6
 	//$Sprite PSTRA0
-
+	Scale 0.50
 	+COUNTITEM
 	+INVENTORY.INVBAR
 	Inventory.Icon "I_BSRK"
@@ -27,7 +28,6 @@ ACTOR NaziBerserk : CustomInventory
 	Inventory.PickupSound "misc/p_pkup"
 	Inventory.PickupMessage "$SSBERSK"
 	Tag "Berserk Pack"
-
 	States
 	{
 	Spawn:

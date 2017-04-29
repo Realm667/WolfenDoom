@@ -577,6 +577,7 @@ ACTOR TableLightM : SwitchableDecoration
 	//$Color 11
 	Radius 4
 	Height 32
+	Scale 0.50
 	ProjectilePassHeight 4
 	+NOTAUTOAIMED
 	+SOLID
@@ -600,6 +601,7 @@ ACTOR TableLightM : SwitchableDecoration
 ACTOR TableLightM2 : TableLightM
 {
 	//$Title Bureau Light 2 (middle, switchable)
+	Scale 1.0
 	States
 	{
 	Active:
@@ -619,12 +621,13 @@ ACTOR TableLightS : TableLightM
 {
 	//$Title Table Light (small, switchable)
 	Height 16
+	Scale 1.0
 	-SOLID
 	-SHOOTABLE
 	States
 	{
 	Spawn:
-		TLIT A 0 NODELAY A_Jump(255, "Type1", "Type2", "Type3", "Type4")
+		TLIT B 0 NODELAY A_Jump(255, "Type1", "Type2", "Type3", "Type4")
 	Type1:
 		"####" B 0
 		Goto Active
@@ -655,10 +658,11 @@ ACTOR BoAWallTorch1 : SwitchableDecoration
 	//$Category Light Sources (Wolf3D)
 	//$Title Wall Torch (switchable)
 	//$Color 11
+	Radius 10
+	Scale 0.50
 	+FIXMAPTHINGPOS
 	+NOBLOCKMAP
 	+NOGRAVITY
-	Radius 10
 	States
 	{
 	Active:

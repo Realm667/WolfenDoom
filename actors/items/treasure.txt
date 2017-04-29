@@ -16,7 +16,7 @@ ACTOR SingleCoin : CustomInventory
 	States
 	{
 	Spawn:
-		COIN A -1 Light(COINLITE)
+		ONEC A -1 Light(COINLITE)
 		Stop
 	Pickup:
 		TNT1 A 0 A_GiveInventory("CoinItem")
@@ -31,7 +31,7 @@ ACTOR BagOfCoins : SingleCoin
 	States
 	{
 	Spawn:
-		SACK A -1 Light(BAGCLITE)
+		BAGC A -1 Light(BAGCLITE)
 		Stop
 	Pickup:
 		TNT1 A 0 A_GiveInventory("CoinItem",10)
@@ -42,11 +42,12 @@ ACTOR BagOfCoins : SingleCoin
 ACTOR TreasureChest : SingleCoin
 {
 	//$Title Treasure (Chest, 50pts)
+	Scale 0.50
 	Inventory.PickupMessage "$CHEST"
 	States
 	{
 	Spawn:
-		TRES B -1 Light(TRESLITE)
+		TREA B -1 Light(TRESLITE)
 		Stop
 	Pickup:
 		TNT1 A 0 A_GiveInventory("CoinItem", 50)
@@ -61,7 +62,7 @@ ACTOR TreasureChest2 : SingleCoin
 	States
 	{
 	Spawn:
-		TRES C -1 Light(BIGCLITE)
+		TREA C -1 Light(BIGCLITE)
 		Stop
 	Pickup:
 		TNT1 A 0 A_GiveInventory("CoinItem",100)
@@ -76,7 +77,7 @@ ACTOR TreasureChest3 : SingleCoin
 	States
 	{
 	Spawn:
-		TRES E -1 Light(TRESLITE)
+		TREA E -1 Light(TRESLITE)
 		Stop
 	Pickup:
 		TNT1 A 0 A_GiveInventory("CoinItem",25)
@@ -87,11 +88,12 @@ ACTOR TreasureChest3 : SingleCoin
 ACTOR TreasureCross : SingleCoin
 {
 	//$Title Treasure (Cross, 15pts)
+	Scale 0.50
 	Inventory.PickupMessage "$CROSS"
 	States
 	{
 	Spawn:
-		TRES F -1 Light(COINLITE)
+		TREA F -1 Light(COINLITE)
 		Stop
 	Pickup:
 		TNT1 A 0 A_GiveInventory("CoinItem",15)
@@ -102,11 +104,12 @@ ACTOR TreasureCross : SingleCoin
 ACTOR Goblet : TreasureCross
 {
 	//$Title Treasure (Goblet, 15pts)
+	Scale 0.50
 	Inventory.PickupMessage "$CHALICE"
 	States
 	{
 	Spawn:
-		TRES G -1 Light(TRESLITE)
+		TREA G -1 Light(TRESLITE)
 		Stop
 	}
 }
@@ -114,11 +117,12 @@ ACTOR Goblet : TreasureCross
 ACTOR TreasureCrown : SingleCoin
 {
 	//$Title Treasure (Crown, 20pts)
+	Scale 0.50
 	Inventory.PickupMessage "$CROWN"
 	States
 	{
 	Spawn:
-		TRES D -1 Light(BAGCLITE)
+		TREA D -1 Light(BAGCLITE)
 		Stop
 	Pickup:
 		TNT1 A 0 A_GiveInventory("CoinItem",20)
@@ -133,7 +137,7 @@ ACTOR GoldBar : TreasureCrown
 	States
 	{
 	Spawn:
-		GOLD B -1 Light(TRESLITE)
+		TREA A -1 Light(TRESLITE)
 		Stop
 	}
 }

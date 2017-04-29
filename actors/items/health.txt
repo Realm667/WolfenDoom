@@ -3,6 +3,7 @@ ACTOR Meal : Health
 	//$Category Health (Wolf3D)
 	//$Title Meals (2 variants+5)
 	//$Color 6
+	Scale 0.50
 	Inventory.Amount 5
 	Inventory.PickupMessage "$MEAL"
 	States
@@ -18,6 +19,7 @@ ACTOR StackedMeal : Meal
 {
 	Radius 1
 	Height 1
+	Scale 0.50
 	+CANPASS
 	+NOGRAVITY
 	States
@@ -38,12 +40,18 @@ ACTOR Dogfood : Health
 	//$Category Health (Wolf3D)
 	//$Title Dog Food (+2)
 	//$Color 6
+	Scale 0.50
 	Inventory.Amount 2
 	Inventory.PickupMessage "$DOGFOOD"
 	States
 	{
 	Spawn:
-		DGFD A -1
+		TNT1 A 0 NoDelay A_Jump(256,"FoodA","FoodB")
+		FoodA:
+		DOGF A -1
+		Stop
+		FoodB:
+		DOGF B -1
 		Stop
 	}
 }
@@ -147,6 +155,7 @@ ACTOR FieldKit : HealthPickup
 	//$Title Field Kit (Item, +25)
 	//$Color 6
 	Health 25
+	Scale 0.50
 	HealthPickup.AutoUse 1
 	Inventory.Icon "FKITC0"
 	Inventory.InterHubAmount 15
@@ -174,6 +183,7 @@ ACTOR Bandages : PowerupGiver
 	//$Category Health (Wolf3D)
 	//$Title Bandages (+10)
 	//$Color 6
+	Scale 0.50
 	Inventory.Icon "BAIDB0"
 	Inventory.MaxAmount 5
 	Inventory.PickupMessage "$BAID"

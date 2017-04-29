@@ -36,6 +36,7 @@ ACTOR Plant1
 	Radius 8
 	Height 32
 	Health 10
+	Scale 0.50
 	+NOBLOOD
 	+NOTAUTOAIMED
 	+SHOOTABLE
@@ -495,7 +496,7 @@ ACTOR WaterCounter : Inventory {Inventory.MaxAmount 5}
 ACTOR PaperBox1
 {
 	//$Category Props (Wolf3D)/Bureau
-	//$Title Box (medium)
+	//$Title Box (single)
 	//$Color 3
 	Radius 8
 	Height 16
@@ -510,7 +511,8 @@ ACTOR PaperBox1
 
 ACTOR PaperBox2 : PaperBox1
 {
-	//$Title Box (small)
+	//$Title Box (pack)
+	Scale 0.50
 	States
 	{
 	Spawn:

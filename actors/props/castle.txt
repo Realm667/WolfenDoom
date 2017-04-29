@@ -40,6 +40,7 @@ ACTOR Table1
 ACTOR Table2 : Table1
 {
 	//$Title Table (2)
+	Scale 0.50
 	States
 	{
 	Spawn:
@@ -62,6 +63,7 @@ ACTOR Table3 : Table1
 ACTOR Table4 : Table1
 {
 	//$Title Table (4)
+	Scale 0.50
 	States
 	{
 	Spawn:
@@ -73,6 +75,7 @@ ACTOR Table4 : Table1
 ACTOR Table5 : Table1
 {
 	//$Title Table (5)
+	Scale 0.50
 	States
 	{
 	Spawn:
@@ -84,6 +87,7 @@ ACTOR Table5 : Table1
 ACTOR Table6 : Table1
 {
 	//$Title Table (6)
+	Scale 0.50
 	States
 	{
 	Spawn:
@@ -172,15 +176,16 @@ ACTOR Ink
 ACTOR MonsterStatue
 {
 	//$Category Props (Wolf3D)/Castle
-	//$Title Statue (monster)
+	//$Title Monster Statue
 	//$Color 3
 	Radius 24
 	Height 64
+	Scale 0.50
 	+SOLID
 	States
 	{
 	Spawn:
-		WSTA C -1
+		WSTA A -1
 		Stop
 	}
 }
