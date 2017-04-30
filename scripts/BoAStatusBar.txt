@@ -507,6 +507,7 @@ class BoAStatusBar : BaseStatusBar
 			LastHealth = mo.health;
 			LastMaxHealth = mo.default.health;
 			if (Base(mo)) { LastIcon = Base(mo).BossIcon; }
+			else { LastIcon = ""; }
 
 			if (healthbaralpha < 1) { healthbaralpha += 0.2; }
 		}
@@ -521,18 +522,14 @@ class BoAStatusBar : BaseStatusBar
 
 	void DrawHealthBar(String tag, int health, int maxhealth, String icon = "")
 	{
-		let hudscale = GetHUDScale();
+		int flags = DI_SCREEN_TOP | DI_SCREEN_HCENTER;
+		int basey = 36;
 
-		double scale = 200 / (Screen.GetHeight() / hudscale.y);
+		DrawBarAlpha("HEALTHMX", "HEALTH00", health, maxhealth, (0, basey), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, 1.0 * healthbaralpha);
+		DrawBarAlpha("HEALTH_Y", "", health, maxhealth, (0, basey), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, ((maxhealth - health) / (maxhealth * 0.25)) * healthbaralpha);
+		DrawBarAlpha("HEALTH_R", "", health, maxhealth, (0, basey), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, ((maxhealth - health) / (maxhealth * 0.75)) * healthbaralpha);
+		DrawImage(icon, (-70, basey), flags | DI_ITEM_CENTER, healthbaralpha, (-1, -1), (0.5, 0.5));
 
-		DrawBarAlpha("HEALTHMX", "HEALTH00", health, maxhealth, (0, 36 * scale), 0, SHADER_HORZ, DI_SCREEN_TOP | DI_SCREEN_HCENTER | DI_ITEM_CENTER, 1.0 * healthbaralpha, scale);
-		DrawBarAlpha("HEALTH_Y", "", health, maxhealth, (0, 36 * scale), 0, SHADER_HORZ, DI_SCREEN_TOP | DI_SCREEN_HCENTER | DI_ITEM_CENTER, ((maxhealth - health) / (maxhealth * 0.25)) * healthbaralpha, scale);
-		DrawBarAlpha("HEALTH_R", "", health, maxhealth, (0, 36 * scale), 0, SHADER_HORZ, DI_SCREEN_TOP | DI_SCREEN_HCENTER | DI_ITEM_CENTER, ((maxhealth - health) / (maxhealth * 0.75)) * healthbaralpha, scale);
-
-		DrawString(mHUDFont, tag, (1, 37 * scale - mHudFont.mFont.GetHeight() / 2), DI_SCREEN_TOP | DI_SCREEN_HCENTER | DI_TEXT_ALIGN_CENTER, Font.CR_BLACK); // Shadow
-		DrawString(mHUDFont, tag, (0, 36 * scale - mHudFont.mFont.GetHeight() / 2), DI_SCREEN_TOP | DI_SCREEN_HCENTER | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY);
-
-		double iconscale = scale * 0.5;
-		DrawImage(icon, (-140 * iconscale, 72 * iconscale), DI_SCREEN_TOP | DI_SCREEN_HCENTER | DI_ITEM_CENTER, healthbaralpha, (-1, -1), (iconscale, iconscale));
+		DrawString(mSmallFont, tag, (4, (basey + 1) - mSmallFont.mFont.GetHeight() / 2), flags | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, healthbaralpha * 0.75);
 	}
 }
