@@ -40,6 +40,7 @@ ACTOR MechBoss : Nazi
 {
 	Mass 1000
 	Scale 1.0
+	Damagefactor "Normal", 0.75
 	States
 	{
 	See:
@@ -225,7 +226,7 @@ ACTOR HardMiniMiniRocket : MiniMiniRocket { +MTHRUSPECIES }
 ACTOR FlyingNeedle : MiniRocket
 {
 	Speed 10
-	DamageType MutantPoison
+	DamageType "MutantPoison"
 	PoisonDamage 3, 4
 	SeeSound ""
 	DeathSound "gshardnd"
@@ -251,7 +252,7 @@ ACTOR FlyingHack : FlyingNeedle
 {
 	Speed 13
 	Scale 0.27
-	DamageType None
+	DamageType "None"
 	PoisonDamage 1, 2
 	+NOGRAVITY
 	+ROLLSPRITE
@@ -316,7 +317,7 @@ ACTOR MutantFartCloud
 	Game Doom
 	Radius 2
 	Height 2
-	DamageType MutantPoison
+	DamageType "MutantPoison"
 	+NOINTERACTION
 	+WINDTHRUST
 	RenderStyle "Translucent"
@@ -373,7 +374,7 @@ ACTOR MutantRocket
 	Speed 12
 	FastSpeed 14
 	Damage (random(2,6))
-	DamageType MutantPoison
+	DamageType "MutantPoison"
 	Projectile
 	Scale 0.4
 	+RANDOMIZE
@@ -416,7 +417,7 @@ ACTOR PoisonCloudMutant
 	+NOGRAVITY
 	RenderStyle "Translucent"
 	Alpha 0.6
-	DamageType MutantPoison
+	DamageType "MutantPoison"
 	States
 	{
 	Spawn:
@@ -472,7 +473,7 @@ ACTOR QueenPlasmaBlast
 	Speed 25//40
 	Damage 6
 	Projectile
-	DamageType Disintegrate
+	DamageType "Disintegrate"
 	Scale .75
 	+BLOODLESSIMPACT
 	+NOEXTREMEDEATH
@@ -799,7 +800,7 @@ ACTOR ScorpionSpit
 	Damage 6
 	Projectile
 	Gravity 0.4
-	DamageType PoisonCloud
+	DamageType "PoisonCloud"
 	PoisonDamage 20
 	SeeSound "scorpion/spit"
 	-NOGRAVITY
@@ -901,7 +902,7 @@ ACTOR ZTracer
 	Speed 15
 	ReactionTime 175
 	Damage 5
-	DamageType Fire
+	DamageType "Fire"
 	RenderStyle "Add"
 	Alpha 0.67
 	Projectile
@@ -937,7 +938,7 @@ ACTOR ZTracerPuff
 	Height 1
 	Speed 0
 	RenderStyle "Add"
-	DamageType fire
+	DamageType "Fire"
 	Alpha 0.67
 	Projectile
 	-NOGRAVITY
