@@ -7,17 +7,17 @@ ACTOR Rottweiler : Nazi
 	//$Category Monsters (Wolf3D)/Critters
 	//$Title Dog (Rottweiler)
 	//$Color 4
-	Scale 1.1
-	HitObituary "$DOGS"
-	Health 30
-	PainChance 180
-	Speed 4
 	Height 48
+	Health 30
+	Speed 4
 	Mass 70
+	PainChance 180
+	Scale 0.65
 	SeeSound "dog/sight"
 	PainSound "dog/pain"
 	DeathSound "dog/death"
 	ActiveSound "dog/active"
+	HitObituary "$DOGS"
 	-CANUSEWALLS
 	-CANPUSHWALLS //dogs mustn't able to open doors imho, that's why there was -CANUSEWALLS before, but we use bumps on polys
 	+NEVERTARGET //So the dogs don't get targeted by stealth (+FRIENDLY-abusing) guards
@@ -92,6 +92,7 @@ ACTOR Doberman : Rottweiler
 {
 	//$Title Dog (Doberman)
 	Health 25
+	Scale 0.62
 	States
 	{
 	Spawn:
@@ -117,6 +118,7 @@ ACTOR BatFamiliar : Base
 	FloatSpeed 2.33333333
 	Speed 3.33333334
 	PainChance 200
+	Scale 0.57
 	MONSTER
 	-MTHRUSPECIES
 	-THRUSPECIES
@@ -178,7 +180,7 @@ ACTOR RatFamiliar : Base
 	Health 10
 	Radius 12
 	Height 24
-	Scale 0.57
+	Scale 0.30
 	Speed 3.66666667
 	PainChance 200
 	MONSTER
