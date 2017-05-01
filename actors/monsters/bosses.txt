@@ -537,7 +537,7 @@ ACTOR FatMan : NaziBoss
 	-FLOAT		//we don't want him to fly, yeah? ;)
 	-NOGRAVITY	//we don't want him to fly, yeah? ;)
 	+BOSS
-	PainChance 64
+	PainChance 32
 	Tag "General Giftmacher"
 	Obituary "$OTTOBOSS"
 	SeeSound "Boss2/Sighted"
@@ -593,7 +593,7 @@ ACTOR RocketMan : NaziBoss
 	//$Color 4
 	Base.BossIcon "BOSSICO2"
 	Health 300
-	PainChance 110
+	PainChance 64
 	Mass 200
 	Obituary "$FATMAN"
 	SeeSound "fatman/sight"
@@ -751,7 +751,7 @@ ACTOR MadDoctor : RocketMan
 	Tag "Dr. Schabbs Jr."
 	Health 400
 	Mass 4000
-	PainChance 96
+	PainChance 64
 	States
 	{
 	Spawn:
@@ -1308,7 +1308,7 @@ ACTOR ChairGuy : Nazi
 	Obituary "$CHAIRMAN"
 	Health 1750
 	Mass 100000
-	PainChance 110
+	PainChance 64
 	Scale 0.67
 	SeeSound "krist/sight"
 	PainSound "boss/pain"
@@ -1379,7 +1379,7 @@ ACTOR SuperSoldier : NaziBoss
 	Radius 24
 	Height 64
 	Mass 500
-	PainChance 64
+	PainChance 48
 	SeeSound "Boss1/Sighted"
 	PainSound "boss/pain"
 	DeathSound "Boss1/Death"
