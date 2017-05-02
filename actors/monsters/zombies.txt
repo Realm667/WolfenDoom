@@ -7,6 +7,7 @@ ACTOR Bones_Base
 	Radius 1
 	Height 1
 	Mass 1
+	Scale 0.65
 	Projectile
 	-ACTIVATEIMPACT
 	-ACTIVATEPCROSS
@@ -20,7 +21,6 @@ ACTOR Bones_Base
 	BounceType "Doom"
 	WallBounceFactor 0.7
 	Gravity 0.3
-	Scale 0.67
 }
 
 ACTOR Debris_Bone : Bones_Base //no skull
@@ -158,7 +158,6 @@ ACTOR ZombieKazi : Nazi //Immune to poisonus damage
 	Health 100
 	Speed 8
 	PainChance 128
-	Scale 0.67
 	DropItem "9mmAmmo" 64
 	DropItem "GrenadePickup" 16
 	Obituary "$NAZOKAZI"

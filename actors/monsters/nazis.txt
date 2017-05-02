@@ -195,7 +195,6 @@ ACTOR WGuard : Guard
 {
 	//$Title Wehrmacht Guard (Pistol)
 	Speed 2.5
-	Scale 1.24
 	Obituary "$WGUARD"
 	Health 30
 	PainChance 185
@@ -234,7 +233,6 @@ ACTOR MP40Guard : Guard
 {
 	//$Title Afrika Korps Guard (MP40)
 	Obituary "$MPGUARD"
-	Scale 1.24
 	SeeSound "Nazi2/Sighted"
 	PainSound "Nazi2/Pain"
 	DeathSound "Nazi2/Death"
@@ -964,7 +962,7 @@ ACTOR ArcticSniper_Crouch : Guard
 
 ACTOR FlamerSoldier : Guard
 {
-	//$Title SS Flamer (Soldier)
+	//$Title Nazi Flamer (Soldier)
 	Obituary "$FLAMEBOY"
 	Health 100
 	DropItem "FlameAmmo" 192
@@ -1034,7 +1032,6 @@ ACTOR Mechanic : Guard
 {
 	//$Title Mechanic (Pistol)
 	Speed 2.37
-	Scale 0.65
 	Obituary "$MECHANIC"
 	Health 50
 	States
@@ -1509,15 +1506,16 @@ ACTOR MiniShip : Nazi
 	Health 375
 	Speed 3.25
 	Mass 2000
-	PainSound "metal/pain"
-	DeathSound "world/barrelboom"
 	PainChance 96
-	FloatSpeed .67
+	FloatSpeed 0.87
 	-FLOORCLIP
 	+FLOAT
 	+LOOKALLAROUND
-	+NOBLOOD
+	+NOBLOODDECALS
 	+NOGRAVITY
+	BloodType "TankSpark"
+	PainSound "metal/pain"
+	DeathSound "world/barrelboom"
 	States
 	{
 	Spawn:
@@ -1551,9 +1549,9 @@ ACTOR MiniShip : Nazi
 	Crash:
 		TNT1 A 0 A_SetFloorClip
 		"####" A 0 A_Scream
-		"####" AAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Tank", random(16,64), random(16,64), random(64,128), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
-		"####" AAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", random(16,64), random(16,64), random(64,128), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
-		"####" A 0 A_SpawnItemEx("PanzerNuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Tank", random(8,-8), random(8,-8), random(54,64), random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", random(8,-8), random(8,-8), random(54,64), random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE)
+		"####" A 0 A_SpawnItemEx("ZombieNuke",0,0,0)
 		"####" A 0 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
 		Stop
 	Idle:
@@ -1566,17 +1564,16 @@ ACTOR MiniShip : Nazi
 ACTOR MGTurret : MiniShip
 {
 	//$Title Automatic Turret (shootable)
-	Scale 1.1
-	Speed 0
-	Obituary "$MGTURRET"
 	Health 100
 	Radius 2
 	Height 32
+	Mass 9999
+	Speed 0
 	-FLOAT
 	-NOGRAVITY
-	+DONTTHRUST
 	+MISSILEEVENMORE
 	+NOPAIN
+	Obituary "$MGTURRET"
 	States
 	{
 	Spawn:
@@ -1668,13 +1665,13 @@ ACTOR CTurret_Afrika : SwitchableDecoration
 	//$Category Monsters (Wolf3D)/Turrets
 	//$Title Controllable Turret (Afrika Guards only)
 	//$Color 4
-	Scale 0.62
-	Speed 0
 	Health 100
 	Radius 8
 	Height 32
+	Mass 9999
+	Speed 0
+	Scale 0.62
 	+BUMPSPECIAL
-	+DONTTHRUST
 	+LOOKALLAROUND
 	+NOBLOOD
 	+NOTAUTOAIMED
@@ -1732,12 +1729,11 @@ ACTOR MGTurretSoldier : MGTurret
 	//$Title Stationary Turret Soldier (Afrika Korps)
 	Height 56
 	Radius 16
-	Scale 0.62
 	Mass 9999
+	Scale 0.62
 	SeeSound "Nazi1/Sighted"
 	PainSound "Nazi1/Pain"
 	DeathSound "Nazi1/Death"
-	-DONTTHRUST
 	States
 	{
 	Spawn:
@@ -1817,13 +1813,13 @@ ACTOR EliteFlamer : Guard
 	Obituary "$FLAMEBOY"
 	Health 450
 	Speed 4
+	MaxTargetRange 400
+	+MISSILEMORE
 	SeeSound "eliteflamer/sight"
 	PainSound "eliteflamer/pain"
 	DeathSound "eliteflamer/death"
 	DropItem "FlameAmmo"
 	DropItem "Pyrolight" 32
-	+MISSILEMORE
-	MaxTargetRange 400
 	var int user_count;
 	var int user_offset; //mxd
 	States
@@ -1912,13 +1908,13 @@ ACTOR EliteAssaulter : Guard
 	Health 350
 	PainChance 160
 	Speed 3.66666667
+	+MISSILEMORE
 	SeeSound "eliteassaulter/sight"
 	PainSound "eliteassaulter/pain"
 	DeathSound "eliteassaulter/death"
 	DropItem "9mmAmmo" 192
 	DropItem "GrenadePickup" 16
 	DropItem "MP40" 64
-	+MISSILEMORE
 	States
 	{
 	Spawn:
@@ -2017,15 +2013,15 @@ ACTOR EliteSoldatRifler : Guard
 	//$Title Elite Soldier (Rifle)
 	Obituary "$ELITRIFL"
 	Health 65
-	Speed 4.66666667
 	PainChance 80
+	Speed 4.66666667
+	+MISSILEEVENMORE
 	SeeSound "eliterifler/Sight"
 	PainSound "eliteassaulter/pain"
 	DeathSound "eliterifler/death"
 	DropItem "G43" 64
 	DropItem "GrenadePickup" 16
 	DropItem "MauserAmmo" 192
-	+MISSILEEVENMORE
 	States
 	{
 	Spawn:
@@ -2106,7 +2102,6 @@ ACTOR EliteSoldatRifler : Guard
 ACTOR Scientist : Guard
 {
 	//$Title Scientist (young)
-	Scale 0.67
 	States
 	{
 	Spawn:
@@ -2120,7 +2115,6 @@ ACTOR Scientist : Guard
 ACTOR Scientist2 : Guard
 {
 	//$Title Scientist (old)
-	Scale 0.67
 	States
 	{
 	Spawn:
@@ -2135,7 +2129,6 @@ ACTOR ScientistGutenberg : Scientist2
 {
 	//$Category Monsters (Wolf3D)/NPCs
 	//$Title Prof. Klaus Gutenberg
-	Scale 0.67
 	States
 	{
 	Spawn:
@@ -2153,7 +2146,6 @@ ACTOR DirtyDarren : Guard
 	Obituary "$DARREN"
 	Translation 1
 	PainChance 255
-	Scale 0.67
 	DropItem ""
 	SeeSound ""
 	Species "Ally"
@@ -2182,7 +2174,6 @@ ACTOR Clerk : DirtyDarren
 	//$Title Clerk
 	Obituary "$CLERK"
 	Height 75 //mxd. Players shouldn't be able to jump on this guy
-	Scale 0.67
 	States
 	{
 	Spawn:
@@ -2198,7 +2189,6 @@ ACTOR Marine1 : DirtyDarren
 {
 	//$Title Dean Ascher
 	Obituary "$MARINE"
-	Scale 0.67
 	States
 	{
 	Spawn:
@@ -2282,7 +2272,7 @@ ACTOR Marine2 : RandomSpawner
 	//$Title Marine (Rifle)
 	//$Color 4
 	//$Sprite MARHA1
-	Scale 0.67
+	Scale 0.65
 	DropItem "Marine2A"
 	DropItem "Marine2B"
 }
@@ -2339,7 +2329,7 @@ ACTOR Marine3 : RandomSpawner
 	//$Title Marine (Pistol)
 	//$Color 4
 	//$Sprite MAH2A1
-	Scale 0.67
+	Scale 0.65
 	DropItem "Marine3A"
 	DropItem "Marine3B"
 }
