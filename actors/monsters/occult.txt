@@ -96,16 +96,16 @@ ACTOR WereWaffenSS : WaffenSS
 		"####" E 0 A_ChangeFlag("NoPain", 0)
 		Goto See
 	Death.Fire.A:
-		BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.2)
+		BURN A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(0.62)
 		Goto Super::Death.Fire.A+1
 	Death.Fire.B:
-		NRUB A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(1.2)
+		NRUB A 5 BRIGHT LIGHT(ITBURNS1) A_SetScale(0.62)
 		Goto Super::Death.Fire.B+1
 	Raise:
 		"####" MLKJIE 5
 		Goto Super::Raise+1
 	XDeath:
-		SLOP A 1 A_SetScale(1.2)
+		SLOP A 1 A_SetScale(0.77)
 		Goto Super::XDeath+1
 	Disintegrate:
 		"####" F 0 A_Playsound("astrostein/guard_death")
