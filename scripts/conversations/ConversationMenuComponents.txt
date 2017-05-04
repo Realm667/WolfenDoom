@@ -485,7 +485,7 @@ class DialogueIcon : DialogueComponent
 			}
 		}
 
-		if ((TexMan.CheckForTexture(image, TexMan.Type_MiscPatch)).isValid()) { return imagebase .. frame; }
+		if ((TexMan.CheckForTexture(imagebase .. frame, TexMan.Type_MiscPatch)).isValid()) { return imagebase .. frame; }
 		return image;
 	}
 
