@@ -379,55 +379,7 @@ script "UnderwaterBubbles" ENTER
 	delay(7);
 	restart;
 }
-/*
-str BossHealth[11] =
-{
-	"HEALTH00","HEALTH10","HEALTH20","HEALTH30","HEALTH40","HEALTH50",
-	"HEALTH60","HEALTH70","HEALTH80","HEALTH90","HEALTHMX"
-};
 
-script "MiniBossHealth" ENTER
-{
-	SetHudSize(640,400,1);
-	while(GetActorProperty(0,APROP_Health)<=0)
-		delay(1);
-	int actor_tid = 0;
-	int new_tid = UniqueTID();
-
-	// Get TID if available
-	int old_tid = PickActor(0,GetActorAngle(0),GetActorPitch(0),2000.0,0, MF_SHOOTABLE, ML_BLOCKEVERYTHING | ML_BLOCKHITSCAN, PICKAF_RETURNTID);
-	if (old_tid == 0) {
-		// Assign new TID
-		PickActor(0,GetActorAngle(0),GetActorPitch(0),2000.0,new_tid);
-		actor_tid = new_tid;
-	} else {
-		actor_tid = old_tid;
-	}
-	if(CheckFlag(actor_tid,"BOSS"))
-	{
-		SetFont("SMALLFONT");
-		HudMessage(s:GetActorProperty(actor_tid,APROP_NameTag); HUDMSG_PLAIN,21,CR_GRAY,320.0,41.0,0.03);
-		SetFont(BossHealth[FixedDiv(GetActorProperty(actor_tid,APROP_Health),GetActorProperty(actor_tid,APROP_SpawnHealth))*10/65536]);
-		HudMessage(s:"A"; HUDMSG_PLAIN,22,CR_GRAY,320.0,40.0,0.03);
-	}
-	if (old_tid == 0) Thing_ChangeTID(actor_tid, 0);
-	delay(1);
-	restart;
-}
-
-script "BossHealth"(int tid,int maxhealth)
-{
-	SetHudSize(640,400,1);
-	while(GetActorProperty(tid,APROP_Health)>0)
-	{
-		SetFont("SMALLFONT");
-		HudMessageBold(s:GetActorProperty(tid,APROP_NameTag); HUDMSG_PLAIN,21,CR_GRAY,320.0,41.0,0.03);
-		SetFont(BossHealth[FixedDiv(GetActorProperty(tid,APROP_Health),GetActorProperty(tid,APROP_SpawnHealth))*10/65536]);
-		HudMessageBold(s:"A"; HUDMSG_PLAIN,22,CR_GRAY,320.0,40.0,0.03);
-		delay(1);
-	}
-}
-*/
 //Teleportscript from Re-Exhumed
 script "ExTeleportPlayer" (int teleportID, int destinationID)
 {
