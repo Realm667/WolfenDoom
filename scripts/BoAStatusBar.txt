@@ -454,7 +454,7 @@ class BoAStatusBar : BaseStatusBar
 
 				current = max(current, suspicion - 50);
 
-				DrawBarAlpha("VIS_BLK", "VIS_BACK", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, basealpha, scale);
+				DrawBarAlpha("VIS_BLK", barstate == HUD_StatusBar ? "VIS_BAC2" : "VIS_BACK", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, basealpha, scale);
 
 				let disguise = CPlayer.mo.FindInventory("DisguiseToken", True);
 
@@ -499,9 +499,12 @@ class BoAStatusBar : BaseStatusBar
 	{
 		if (screenblocks > 11) { return; }
 
-		actor mo = BoAPlayer(CPlayer.mo).CrosshairTarget;
+		Actor mo;
 
-		if (mo && mo.bShootable && mo.health > 0 && mo.bBoss)
+		mo = BoAPlayer(CPlayer.mo).CrosshairTarget;
+		if (!mo || mo && (!mo.bShootable || mo.health <= 0 || !mo.bBoss)) { mo = BoAPlayer(CPlayer.mo).ForcedHealthBar; } // Fall back to the "force-drawn" one, if there is one
+
+		if (mo && mo.bShootable && mo.health > 0 && (mo.bBoss || (Base(mo) && Base(mo).user_DrawHealthBar)))
 		{
 			LastTag = mo.GetTag();
 			LastHealth = mo.health;

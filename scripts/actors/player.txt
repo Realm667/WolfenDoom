@@ -5,6 +5,7 @@ class BoAPlayer : PlayerPawn
 	int user_visibility;
 	int suspicion;
 	Actor CrosshairTarget;
+	Actor ForcedHealthBar;
 
 	Default
 	{
@@ -155,6 +156,7 @@ class BoAPlayer : PlayerPawn
 
 	override void Tick()
 	{
+		ForcedHealthBar = GetClosestForcedHealthBar();
 		CrosshairTarget = GetLineTarget();
 
 		Super.Tick();
@@ -166,5 +168,27 @@ class BoAPlayer : PlayerPawn
 		AimLineAttack(angle, 1024, t, 0.5);
 
 		return t.linetarget;
+	}
+
+	Actor GetClosestForcedHealthBar()
+	{
+		ThinkerIterator Finder = ThinkerIterator.Create("NebelWerfer3D");
+		Base it;
+		Actor mo;
+
+		while ( it = Base(Finder.Next()) )
+		{
+			if (
+				it.health <= 0 ||
+				!it.bShootable ||
+				it.bDormant
+			) { continue; }
+			if (!it.user_DrawHealthBar == True) { continue; } // Only process actors with the AlwaysDrawHealthBar flag set
+			if (mo && Distance3D(it) > Distance3D(mo)) { continue; } // Only draw health bar for the closest one
+
+			mo = it;
+		}
+
+		return mo;
 	}
 }

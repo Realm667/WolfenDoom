@@ -3,8 +3,10 @@ class Base : Actor
 {
 	LookExParams SearchParams;
 	String BossIcon;
+	bool user_DrawHealthBar;
 
 	Property BossIcon:BossIcon;
+	Property AlwaysDrawHealthBar:user_DrawHealthBar;
 
 	state A_LookThroughDisguise(int flags = 0, float minseedist = 0, float Range = 0, float maxheardist = 0, double fov = 0, statelabel label = "See")
 	{
