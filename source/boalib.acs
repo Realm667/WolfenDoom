@@ -718,6 +718,30 @@ script "IcyScreen" ENTER
 	}
 }
 
+script "AdrenalineScreen" ENTER
+{
+	int width = 346, height = 256;
+	SetHudSize(width, height, 0);
+	SetFont("M_INJ");
+
+	// Half width and height (in fixed-point).
+	int half_width  = (width / 2) << 16;
+	int half_height = (height / 2) << 16;
+
+	while (true)
+	{
+		int drugs = GetActorPowerupTics(0, "PowerDrugs");
+		int factor = GetActorPowerupTics(0, "PowerFactor");
+		int goodhealth = GetActorProperty(0, APROP_HEALTH);
+		if (goodhealth > 30 && factor && drugs)
+		{
+			HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_LAYER_UNDERHUD | HUDMSG_NOTWITHFULLMAP | HUDMSG_NOTWITHOVERLAYMAP , 0, CR_UNTRANSLATED, half_width, half_height, 0.0, 0.5, drugs);
+		}
+		
+		Delay(1);
+	}
+}
+
 // Vitality upgrade script, modified from Trailblazer. Thanks, PillowBlaster!
 script "VSerum Max Health Boost" (void)
 {

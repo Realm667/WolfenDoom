@@ -67,8 +67,6 @@ ACTOR ScubaGearGiver : RadSuit
 	}
 }
 
-ACTOR PowerSpaceSuit : PowerProtection {DamageFactor "IceWater", 0.0}
-
 ACTOR SpaceSuit : PowerupGiver
 {
 	//$Category Powerups (Wolf3D)
@@ -88,10 +86,12 @@ ACTOR SpaceSuit : PowerupGiver
 	States
 	{
 	Spawn:
-	SSUT A -1
-	Stop
-  }
+		SSUT A -1
+		Stop
+	}
 }
+
+ACTOR PowerSpaceSuit : PowerProtection {DamageFactor "IceWater", 0.0}
 
 ACTOR C4 : Inventory
 {
@@ -110,6 +110,13 @@ ACTOR C4 : Inventory
 		C4__ A -1
 		Stop
 	}
+}
+
+ACTOR MineSweeperActive : Inventory { Inventory.MaxAmount 1 }
+ACTOR Power : Inventory
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 2400 //Near 1 mins maximum - ozy81
 }
 
 ACTOR MineSweeper : CustomInventory
@@ -150,10 +157,32 @@ ACTOR MineSweeper : CustomInventory
 	}
 }
 
-ACTOR MineSweeperActive : Inventory { Inventory.MaxAmount 1 }
+ACTOR AdrenalineSpeed : PowerupGiver { +INVENTORY.AUTOACTIVATE +INVENTORY.ADDITIVETIME -INVENTORY.INVBAR Inventory.MaxAmount 0 Powerup.Type "PowerDrugs" }
+ACTOR PowerDrugs : PowerDoubleFiringSpeed {Powerup.Duration -10}
+ACTOR AdrenalineFactor : PowerupGiver { +INVENTORY.AUTOACTIVATE +INVENTORY.ADDITIVETIME -INVENTORY.INVBAR Inventory.MaxAmount 0 Powerup.Type "PowerFactor" }
+ACTOR PowerFactor : PowerDamage {Powerup.Duration -10 DamageFactor "Normal", 2.0}
 
-ACTOR Power : Inventory
+ACTOR AdrenalineKit : CustomInventory
 {
-	Inventory.Amount 1
-	Inventory.MaxAmount 2400 //Near 1 mins maximum - ozy81
+	//$Category Powerups (Wolf3D)
+	//$Title Adrenaline Kit (DamageFactor & FiringSpeed augmented)
+	//$Color 6
+	Tag "Adrenaline Kit"
+	Inventory.Icon "ADRNA0"
+	Inventory.MaxAmount 3
+	Inventory.PickupMessage "$ADREN"
+	Inventory.UseSound "misc/p_pkup"
+	+COUNTITEM
+	+INVENTORY.INVBAR
+	States
+	{
+	Spawn:
+		ADRN A -1
+		Stop
+	Pickup:
+		Stop
+	Use:
+		"####" A 0 {A_GiveInventory("AdrenalineSpeed"); A_GiveInventory("AdrenalineFactor");}
+		Stop
+	}
 }
