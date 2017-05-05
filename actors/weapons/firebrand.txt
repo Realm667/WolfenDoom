@@ -128,7 +128,7 @@ ACTOR Firebrand : NaziWeapon
 		"####" B 1 A_TakeInventory("SwordSeq")
 		Goto Ready
 	Spawn:
-		SRDP ABCD 4 LIGHT(BOAFLAMW)
+		SRDP ABCD 4 LIGHT(ITBURNSOC1)
 		Loop
 	}
 }
@@ -144,15 +144,15 @@ ACTOR FirebrandFireball
 	+WINDTHRUST
 	RenderStyle "Add"
 	DeathSound "world/barrelboom"
-	DamageType Fire
+	DamageType OccultFire
 	Obituary "$OBTYRF1"
 	ProjectileKickback 30
 	States
 	{
 	Spawn:
-		CFFX N 0 LIGHT(ITBURNS3)
-		CFFX N 0 LIGHT(ITBURNS2)
-		CFFX N 1 LIGHT(ITBURNS1) A_SpawnItemEx("FirebrandFireballTrail")
+		CFFX N 0 LIGHT(ITBURNSOC3)
+		CFFX N 0 LIGHT(ITBURNSOC2)
+		CFFX N 1 LIGHT(ITBURNSOC1) A_SpawnItemEx("FirebrandFireballTrail")
 		Loop
 	Death:
 		CFCF Q 2 A_Scream
@@ -169,7 +169,7 @@ ACTOR FirebrandFireballTrail
 	States
 	{
 	Spawn:
-		CFFX NOP 4 LIGHT(ITBURNS1)
+		CFFX NOP 4 LIGHT(ITBURNSOC1)
 		Stop
 	}
 }
@@ -198,7 +198,7 @@ ACTOR SwordPuff
 
 ACTOR FireSwordPuff : SwordPuff
 {
-	DamageType Fire
+	DamageType OccultFire
 	ProjectileKickback 30
 	SeeSound "flamesword/hit"
 }
