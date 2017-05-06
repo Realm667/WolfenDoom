@@ -61,11 +61,12 @@ end
    play			ELDOR_OP
    playrepeat		ELDOR_MV
    stopsound		ELDOR_CL
+   nostopcutoff
 end
 
 :Moving_Stone_Door
    door 5
-   playuntildone   DSSTN01
+   //play	   DSSTN01
    playrepeat      DSSTN02
    stopsound	   DSSTN03
 end
@@ -138,8 +139,8 @@ end
 :Moving_Stone
 	platform        2
         playuntildone   DSSTN01
-	playrepeat      DSSTN01
-	stopsound       DSSTN02
+	playrepeat      DSSTN02
+	stopsound       DSSTN03
 end
 
 :Lift_Heavy
