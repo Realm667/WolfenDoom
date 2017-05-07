@@ -732,8 +732,7 @@ script "AdrenalineScreen" ENTER
 	{
 		int drugs = GetActorPowerupTics(0, "PowerDrugs");
 		int factor = GetActorPowerupTics(0, "PowerFactor");
-		int goodhealth = GetActorProperty(0, APROP_HEALTH);
-		if (goodhealth > 30 && factor && drugs)
+		if (factor && drugs)
 		{
 			HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_LAYER_UNDERHUD | HUDMSG_NOTWITHFULLMAP | HUDMSG_NOTWITHOVERLAYMAP , 0, CR_UNTRANSLATED, half_width, half_height, 0.0, 0.5, drugs);
 		}
