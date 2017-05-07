@@ -1,0 +1,26 @@
+class CoinItem : Ammo {
+	// Can be activated/deactivated and/or set dormant to prevent player from picking it up.
+	// Inheriting from Ammo prevents player from picking it up if player is maxed out on it.
+
+	bool AllowPickup;
+
+	Default {
+		Inventory.MaxAmount 999;
+		Ammo.BackpackAmount 0;
+		Ammo.BackpackMaxAmount 999;
+		Tag "Money";
+		+INVENTORY.KEEPDEPLETED;
+		+INVENTORY.UNDROPPABLE;
+		+INVENTORY.IGNORESKILL;
+	}
+
+	override void PostBeginPlay() {
+		Super.PostBeginPlay();
+		AllowPickup = (SpawnFlags & MTF_DORMANT) == 0;
+	}
+
+	override bool CanPickup(Actor toucher) {
+		if (AllowPickup) return Super.CanPickup(toucher);
+		return false;
+	}
+}
