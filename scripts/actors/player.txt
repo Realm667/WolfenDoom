@@ -172,18 +172,18 @@ class BoAPlayer : PlayerPawn
 
 	Actor GetClosestForcedHealthBar()
 	{
-		ThinkerIterator Finder = ThinkerIterator.Create("NebelWerfer3D");
+		ThinkerIterator Finder = ThinkerIterator.Create("Actor");
 		Base it;
 		Actor mo;
 
 		while ( it = Base(Finder.Next()) )
 		{
+			if (!it.user_DrawHealthBar == True) { continue; } // Only process actors with the AlwaysDrawHealthBar flag set
 			if (
 				it.health <= 0 ||
 				!it.bShootable ||
 				it.bDormant
 			) { continue; }
-			if (!it.user_DrawHealthBar == True) { continue; } // Only process actors with the AlwaysDrawHealthBar flag set
 			if (mo && Distance3D(it) > Distance3D(mo)) { continue; } // Only draw health bar for the closest one
 
 			mo = it;
