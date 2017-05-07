@@ -260,6 +260,7 @@ ACTOR AstroCyborg1 : Nazi
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Astrostein Cyborg (1)
 	//$Color 4
+	Base.BossIcon "BOSSICON"
 	Health 500
 	Radius 31
 	Height 56
@@ -270,13 +271,13 @@ ACTOR AstroCyborg1 : Nazi
 	+LOOKALLAROUND
 	+NOBLOOD
 	+BOSS
-	Base.BossIcon "BOSSICO1"
 	DropItem "AstroRocketAmmo" 128
 	SeeSound "astrostein/cyborg_sight"
 	PainSound "astrostein/cyborg_pain"
 	DeathSound "astrostein/cyborg_death"
 	ActiveSound "astrostein/cyborg_act"
 	Obituary "$ACYBORG"
+	Tag "Astro Cyborg"
 	States
 	{
 	Spawn:
@@ -450,6 +451,7 @@ ACTOR AstroRobot : AstroCyborg1
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Astrostein Robot
 	//$Color 4
+	Base.BossIcon "BOSSICON"
 	Health 750
 	Scale 0.80
 	SeeSound "astrostein/robot_sight"
@@ -483,11 +485,12 @@ ACTOR AstroRobot : AstroCyborg1
 	}
 }
 
-ACTOR AstroHitler
+ACTOR AstroHitler : Base
 {
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Hitler Cyborg
 	//$Color 4
+	Base.BossIcon "BOSSICO3"
 	Health 1500
 	Scale 2.0
 	Height 72
@@ -499,7 +502,6 @@ ACTOR AstroHitler
 	PainSound "astrostein/hitler_pai"
 	Monster
 	+BOSS
-	Base.BossIcon "BOSSICO3"
 	+FLOORCLIP
 	+NOBLOOD
 	Tag "Adolf Hitler"
