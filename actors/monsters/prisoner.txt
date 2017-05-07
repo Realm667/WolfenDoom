@@ -48,11 +48,12 @@ ACTOR PrisonerFree : DirtyDarren
 		FREE O random(105,175)
 		"####" P 35
 		Loop
-	ShootCapturedDarren:
+	ShootCapturedDarren: // Length is 27 tics
 		FREE Q 2 A_PlaySound("nazi/pistol")
-		"####" Q 0 A_SpawnItemEx("NashGore_Blood", 2.0, 9.0, 36.0) // Shooting Dirty Douglas
+		"####" Q 0 A_SpawnItemEx("NashGore_Blood", 2.0, 9.0, 36.0)
+		"####" Q 0 A_PlaySound("Nazi1/Death")
 		"####" RSTUV 5
-		"####" V 0 A_SpawnItemEx("DyingDarren", 2.0, 10.0, 0.0) // Dropping Dirty Douglas' dead body on the ground.
+		"####" V 0 A_SpawnItemEx("DyingDarren", 0.0, -16.0, 0.0)
 		Goto Spawn
 	}
 }
@@ -65,7 +66,7 @@ ACTOR DyingDarren
 	States
 	{
 	Spawn:
-		FREE W -1
+		DARR M -1
 		Stop
 	}
 }
