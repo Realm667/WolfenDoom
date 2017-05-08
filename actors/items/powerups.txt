@@ -179,10 +179,31 @@ ACTOR AdrenalineKit : CustomInventory
 	Spawn:
 		ADRN A -1
 		Stop
-	Pickup:
-		Stop
 	Use:
 		"####" A 0 {A_GiveInventory("AdrenalineSpeed"); A_GiveInventory("AdrenalineFactor");}
+		Stop
+	}
+}
+
+ACTOR DeployableMine : CustomInventory
+{
+	//$Category Powerups (Wolf3D)
+	//$Title Deployable Mine
+	//$Color 6
+	Tag "Deployable Mine"
+	Inventory.Icon "BOAMA0"
+	Inventory.MaxAmount 5
+	Inventory.PickupMessage "$DEPMINE"
+	Inventory.UseSound "misc/p_pkup"
+	+COUNTITEM
+	+INVENTORY.INVBAR
+	States
+	{
+	Spawn:
+		BOAM A -1
+		Stop
+	Use:
+		"####" A 0 A_SpawnItemEx("PlacedMine",radius+32,0,0)
 		Stop
 	}
 }

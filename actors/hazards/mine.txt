@@ -40,6 +40,30 @@ ACTOR MineInvisible : Mine
 	RenderStyle "None"
 }
 
+ACTOR PlacedMine : Mine
+{
+	//$Title Friendly Mine (from Deployable item)
+	Health 10
+	Mass 500
+	Obituary "$OBDMINE"
+	States
+	{
+	Spawn:
+		BOAM A 0 NoDelay A_CheckProximity("SpawnWait","BoaPlayer",128,8,CPXF_LESSOREQUAL | CPXF_SETTARGET | CPXF_CLOSEST)
+	See:
+		BOAM A 6 A_Chase
+		Loop
+	Death:
+		"####" A 8 A_PlaySound("MINEF")
+		"####" A 0 A_Scream
+		"####" A 0 A_SpawnItemEx("FriendlyExplosion_Medium")
+		Stop
+	SpawnWait:
+		"####" A 35
+		Goto Spawn
+	}
+}
+
 ACTOR UnderwaterMine : Mine
 {
 	//$Title Underwater Mine
