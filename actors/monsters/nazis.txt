@@ -115,7 +115,7 @@ ACTOR GiantGuard : Guard
 	DropItem "GrenadePickup" 255
 	Health 500
 	Height 280
-	Scale 6.24
+	Scale 2.90
 	States
 	{
 	Missile: //different because tall
@@ -133,6 +133,11 @@ ACTOR GiantGuard : Guard
 		"####" E 0 A_TakeInventory("PistolGuardCounter", 8) //ozy81
 		"####" E 0 A_SpawnItemEx("9MMCasing", 1, 0, 256, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 A_ChangeFlag("NoPain", 0)
+		Goto See
+	Pain:
+		"####" H 2
+		"####" H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-64, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR | SXF_TRANSFERSCALE)
+		"####" H 3 A_Pain
 		Goto See
 	Death.Alt1:
 		Goto Super::Death+1
