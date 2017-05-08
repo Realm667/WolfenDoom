@@ -2614,11 +2614,11 @@ ACTOR Spotlight : ModelBase
 	var int user_sightRange;
 	var int user_holdTime;
 	var int user_direction;
-	+NOGRAVITY
-	+SHOOTABLE
 	+DONTFALL
 	+DONTTHRUST
 	+NOBLOOD
+	+NOGRAVITY
+	+SHOOTABLE
 	Health 100
 	States
 	{
@@ -2644,7 +2644,7 @@ ACTOR Spotlight : ModelBase
 		Pan:
 			"####" # 0 A_CheckRange(2768, "Pan.NoLight")
 			"####" # 0 {
-				CallACS("SpotLightCast", angle, pitch, user_sightRange); //Spawns "SpotlightGlow" actor that also sets itself as spotlight's master
+				CallACS("SpotLightCast", angle, -pitch, user_sightRange); //Spawns "SpotlightGlow" actor that also sets itself as spotlight's master
 			}
 		Pan.NoLight:
 			"####" # 1 {
@@ -2702,6 +2702,7 @@ ACTOR SpotlightGlow
 {
 	Height 16
 	Radius 16
+	-RANDOMIZE
 	+ALWAYSPUFF
 	+BLOODLESSIMPACT
 	+DONTSPLASH
@@ -2709,9 +2710,8 @@ ACTOR SpotlightGlow
 	+NOBLOCKMAP
 	+NOGRAVITY
 	+PAINLESS
-	+PUFFONACTORS
-	-RANDOMIZE
 	+PUFFGETSOWNER
+	+PUFFONACTORS
 	States
 	{
 	Spawn:
