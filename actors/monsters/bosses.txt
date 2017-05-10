@@ -1,10 +1,10 @@
 //////////
 //BOSSES//
 //////////
-ACTOR AracnorbQueen : Base
+ACTOR AngelOfDeath : Base
 {
 	//$Category Monsters (Wolf3D)/Occult/Bosses
-	//$Title Aracnorb Queen (Boss)
+	//$Title Angel Of Death (Boss)
 	//$Color 4
 	Base.BossIcon "BOSSICO3"
 	Health 5000
@@ -13,137 +13,139 @@ ACTOR AracnorbQueen : Base
 	Mass 2000
 	Speed 12
 	PainChance 64
-	SeeSound "queen/sight"
-	ActiveSound "queen/active"
-	PainSound "queen/pain"
-	DeathSound "queen/death"
-	Obituary "$QUEEN1"
-	HitObituary "$QUEEN2"
+	SeeSound "aode/sight"
+	ActiveSound "aode/active"
+	PainSound "aode/pain"
+	DeathSound "aode/death"
+	Obituary "$AODE1"
+	HitObituary "$AODE2"
 	Tag "???"
-	Scale 1.15
+	Scale 1.0
 	MONSTER
 	+BOSS
 	+FLOAT
 	+FLOATBOB
 	+NOGRAVITY
+	BloodType "BossBlood"
+	BloodColor "DarkSeaGreen"
 	States
 	{
 	Spawn:
-		ARNQ A 1 A_LookThroughDisguise
+		AODE A 1 A_LookThroughDisguise
 		Loop
 	See:
-		"####" A 2 A_Chase
+		"####" ABCDCB 2 A_FastChase
 		Loop
 	Melee:
-		"####" ABC 5
-		"####" D 6 A_CustomMeleeAttack(6,"queen/melee","","Melee",TRUE)
+		"####" EF 5
+		"####" G 6 A_CustomMeleeAttack(6,"aode/melee","","Melee",TRUE)
 		Goto See
 	Missile:
-		"####" A 0 A_Jump(96, "SeekerBlast")
-		"####" A 0 A_JumpIfCloser(512, "CloseRange")
+		"####" E 0 A_Jump(96, "SeekerBlast")
+		"####" E 0 A_JumpIfCloser(512, "CloseRange")
 		Goto LongRange
 	CloseRange:
-		"####" A 0 A_Jump(176, "RapidFire")
+		"####" E 0 A_Jump(176, "RapidFire")
 		Goto SpreadFire
 	LongRange:
-		"####" A 0 A_Jump(176, "SpreadFire")
+		"####" E 0 A_Jump(176, "SpreadFire")
 		Goto RapidFire
 	SeekerBlast:
-		"####" A 0 A_PlaySound("queen/fire")
-		ARNQ D 8 A_FaceTarget
-		"####" E 8 A_SpawnProjectile("QueenBlastPod", 56, 0, random(-4,4))
-		"####" E 0 A_SpawnItemEx("SparkFlare_G1", 0, 0, random(52,58))
+		"####" E 0 A_PlaySound("aode/fire")
+		AODE F 8 A_FaceTarget
+		"####" G 8 A_SpawnProjectile("QueenBlastPod", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
 		Goto See
 	RapidFire:
-		"####" BCD 8 A_FaceTarget
-		"####" E 5 A_SpawnProjectile ("QueenPlasmaBlast", 56, 0, random(-4,4))
-		"####" D 0 A_SpawnItemEx("SparkFlare_G1", 0, 0, random(52,58))
-		"####" D 0 A_FaceTarget
-		"####" E 5 A_SpawnProjectile ("QueenPlasmaBlast", 56, 0, random(-4,4))
-		"####" D 0 A_SpawnItemEx("SparkFlare_G1", 0, 0, random(52,58))
-		"####" D 0 A_FaceTarget
-		"####" E 5 A_SpawnProjectile ("QueenPlasmaBlast", 56, 0, random(-4,4))
-		"####" D 0 A_SpawnItemEx("SparkFlare_G1", 0, 0, random(52,58))
-		"####" D 0 A_FaceTarget
-		"####" E 5 A_SpawnProjectile ("QueenPlasmaBlast", 56, 0, random(-4,4))
-		"####" D 0 A_SpawnItemEx("SparkFlare_G1", 0, 0, random(52,58))
-		"####" D 0 A_FaceTarget
-		"####" E 5 A_SpawnProjectile ("QueenPlasmaBlast", 56, 0, random(-4,4))
-		"####" D 0 A_SpawnItemEx("SparkFlare_G1", 0, 0, random(52,58))
-		"####" D 0 A_FaceTarget
-		"####" E 5 A_SpawnProjectile ("QueenPlasmaBlast", 56, 0, random(-4,4))
-		"####" D 0 A_SpawnItemEx("SparkFlare_G1", 0, 0, random(52,58))
-		"####" D 0 A_FaceTarget
-		"####" E 5 A_SpawnProjectile ("QueenPlasmaBlast", 56, 0, random(-4,4))
-		"####" D 0 A_SpawnItemEx("SparkFlare_G1", 0, 0, random(52,58))
-		"####" D 0 A_FaceTarget
-		"####" E 5 A_SpawnProjectile ("QueenPlasmaBlast", 56, 0, random(-4,4))
-		"####" D 0 A_SpawnItemEx("SparkFlare_G1", 0, 0, random(52,58))
-		"####" D 0 A_FaceTarget
-		"####" E 5 A_SpawnProjectile ("QueenPlasmaBlast", 56, 0, random(-4,4))
-		"####" D 0 A_SpawnItemEx("SparkFlare_G1", 0, 0, random(52,58))
-		"####" D 0 A_FaceTarget
-		"####" E 5 A_SpawnProjectile ("QueenPlasmaBlast", 56, 0, random(-4,4))
-		"####" D 0 A_SpawnItemEx("SparkFlare_G1", 0, 0, random(52,58))
-		"####" D 0 A_FaceTarget
-		"####" E 5 A_SpawnProjectile ("QueenPlasmaBlast", 56, 0, random(-4,4))
-		"####" D 0 A_SpawnItemEx("SparkFlare_G1", 0, 0, random(52,58))
-		"####" D 5 A_FaceTarget
+		"####" EF 8 A_FaceTarget
+		"####" G 5 A_SpawnProjectile ("QueenPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 5 A_SpawnProjectile ("QueenPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 5 A_SpawnProjectile ("QueenPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 5 A_SpawnProjectile ("QueenPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 5 A_SpawnProjectile ("QueenPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 5 A_SpawnProjectile ("QueenPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 5 A_SpawnProjectile ("QueenPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 5 A_SpawnProjectile ("QueenPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 5 A_SpawnProjectile ("QueenPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 5 A_SpawnProjectile ("QueenPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 5 A_SpawnProjectile ("QueenPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 5 A_FaceTarget
 		Goto See
 	SpreadFire:
-		ARNQ BCD 8 A_FaceTarget
-		"####" A 0 A_SpawnProjectile("QueenPlasmaBlast", 56, 0, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" A 0 A_SpawnProjectile("QueenPlasmaBlast", 56, 0, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" A 0 A_SpawnProjectile("QueenPlasmaBlast", 56, 0, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" A 0 A_SpawnProjectile("QueenPlasmaBlast", 56, 0, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" A 0 A_SpawnProjectile("QueenPlasmaBlast", 56, 0, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" E 5 A_SpawnProjectile("QueenPlasmaBlast", 40, 0, random(-4,4))
-		"####" BCD 8 A_FaceTarget
-		"####" A 0 A_SpawnProjectile("QueenPlasmaBlast", 56, 0, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" A 0 A_SpawnProjectile("QueenPlasmaBlast", 56, 0, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" A 0 A_SpawnProjectile("QueenPlasmaBlast", 56, 0, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" A 0 A_SpawnProjectile("QueenPlasmaBlast", 56, 0, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" A 0 A_SpawnProjectile("QueenPlasmaBlast", 56, 0, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" E 5 A_SpawnProjectile("QueenPlasmaBlast", 56, 0, random(-4,4))
-		"####" D 5 A_FaceTarget
+		AODE EF 8 A_FaceTarget
+		"####" G 0 A_SpawnProjectile("QueenPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 0 A_SpawnProjectile("QueenPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 0 A_SpawnProjectile("QueenPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 0 A_SpawnProjectile("QueenPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 0 A_SpawnProjectile("QueenPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 5 A_SpawnProjectile("QueenPlasmaBlast", 68, 38, random(-4,4))
+		"####" EF 8 A_FaceTarget
+		"####" G 0 A_SpawnProjectile("QueenPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 0 A_SpawnProjectile("QueenPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 0 A_SpawnProjectile("QueenPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 0 A_SpawnProjectile("QueenPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 0 A_SpawnProjectile("QueenPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 5 A_SpawnProjectile("QueenPlasmaBlast", 68, 38, random(-4,4))
+		"####" E 5 A_FaceTarget
 	Goto See
 	Pain:
 		TNT1 A 0 A_Jump(50, "PainSpam")
-		ARNQ F 2
-		ARNQ F 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
-		"####" F 4 A_Pain
+		AODE H 2
+		AODE H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-48, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR | SXF_TRANSFERSCALE)
+		"####" H 4 A_Pain
 		Goto See
 	PainSpam:
-		ARNQ F 2
-		ARNQ F 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
-		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast",75,0,5,CMF_CHECKTARGETDEAD|CMF_BADPITCH,0)
-		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast",75,0,25,CMF_CHECKTARGETDEAD|CMF_BADPITCH,0)
-		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast",75,0,45,CMF_CHECKTARGETDEAD|CMF_BADPITCH,0)
-		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast",75,0,65,CMF_CHECKTARGETDEAD|CMF_BADPITCH,0)
-		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast",75,0,85,CMF_CHECKTARGETDEAD|CMF_BADPITCH,0)
-		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast",75,0,105,CMF_CHECKTARGETDEAD|CMF_BADPITCH,0)
-		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast",75,0,125,CMF_CHECKTARGETDEAD|CMF_BADPITCH,0)
-		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast",75,0,145,CMF_CHECKTARGETDEAD|CMF_BADPITCH,0)
-		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast",75,0,165,CMF_CHECKTARGETDEAD|CMF_BADPITCH,0)
-		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast",75,0,185,CMF_CHECKTARGETDEAD|CMF_BADPITCH,0)
-		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast",75,0,205,CMF_CHECKTARGETDEAD|CMF_BADPITCH,0)
-		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast",75,0,225,CMF_CHECKTARGETDEAD|CMF_BADPITCH,0)
-		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast",75,0,245,CMF_CHECKTARGETDEAD|CMF_BADPITCH,0)
-		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast",75,0,265,CMF_CHECKTARGETDEAD|CMF_BADPITCH,0)
-		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast",75,0,285,CMF_CHECKTARGETDEAD|CMF_BADPITCH,0)
-		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast",75,0,305,CMF_CHECKTARGETDEAD|CMF_BADPITCH,0)
-		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast",75,0,325,CMF_CHECKTARGETDEAD|CMF_BADPITCH,0)
-		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast",75,0,345,CMF_CHECKTARGETDEAD|CMF_BADPITCH,0)
-		"####" F 4 A_Pain
+		AODE H 2
+		AODE H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-48, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR | SXF_TRANSFERSCALE)
+		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast", 75, 0, 5, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0)
+		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast", 75, 0, 25, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0)
+		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast", 75, 0, 45, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0)
+		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast", 75, 0, 65, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0)
+		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast", 75, 0, 85, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0)
+		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast", 75, 0, 105, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0)
+		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast", 75, 0, 125, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0)
+		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast", 75, 0, 145, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0)
+		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast", 75, 0, 165, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0)
+		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast", 75, 0, 185, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0)
+		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast", 75, 0, 205, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0)
+		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast", 75, 0, 225, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0)
+		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast", 75, 0, 245, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0)
+		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast", 75, 0, 265, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0)
+		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast", 75, 0, 285, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0)
+		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast", 75, 0, 305, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0)
+		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast", 75, 0, 325, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0)
+		"####" F 0 A_SpawnProjectile("QueenPainPlasmaBlast", 75, 0, 345, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0)
+		"####" H 4 A_Pain
 		Goto See
 	Death:
-		"####" G 0 A_ChangeFlag("FLOATBOB",0)
-		"####" G 9 A_Scream
-		"####" G 3 A_Fall
+		"####" L 0 A_ChangeFlag("FLOATBOB",0)
+		"####" L 5 A_Scream
+		"####" L 2 A_Fall
 		Wait
 	Crash:
-		"####" HIJKL 9
-		"####" M -1
+		"####" MNOPQRS 10
+		"####" T -1
 		Stop
   }
 }
