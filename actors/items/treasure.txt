@@ -219,11 +219,10 @@ ACTOR EmptySupplyChest
 	}
 }
 
-ACTOR SupplyChest100Coins : CustomInventory
+ACTOR SupplyChestGeneric : CustomInventory
 {
 	Height 34
 	Radius 21
-	Inventory.PickupMessage "$100COINS"
 	Inventory.PickupSound "treasure/pickup"
 	+INVENTORY.ALWAYSPICKUP
 	States
@@ -232,48 +231,62 @@ ACTOR SupplyChest100Coins : CustomInventory
 		// Spawn an invisible, empty chest with the same TID as this chest.
 		// This reimplements the behaviour of Inventory.PickupFlash but allows
 		// the spawned actor to have a TID so it can be referenced in scripts.
-		SUBX B 0 NoDelay {
-			A_SpawnItemEx(
-				"EmptySupplyChest", // type
-				0, 0, 0,            // offset
-				0, 0, 0,            // velocity
-				0,                  // angle
-				SXF_SETMASTER | SXF_NOCHECKPOSITION,
-				0,                  // chance (always)
-				tid                 // TID
-			);
-		}
+		SUBX B 0 NoDelay A_SpawnItemEx(	"EmptySupplyChest", // type
+						0, 0, 0,            // offset
+						0, 0, 0,            // velocity
+						0,                  // angle
+						SXF_SETMASTER | SXF_NOCHECKPOSITION,
+						0,                  // chance (always)
+						tid                 // TID
+				)
 		SUBX B -1
 		Stop
-	Pickup:
-		TNT1 A 0 A_GiveInventory("CoinItem",100)
+	}
+}
+
+// Unfortunately, I had to do this in order to get the money rewards working properly. - Talon1024
+
+ACTOR SupplyChestMoney : CoinItem
+{
+	Height 34
+	Radius 21
+	Inventory.PickupSound "treasure/pickup"
+	+INVENTORY.ALWAYSPICKUP
+	States
+	{
+	Spawn:
+		SUBX B 0 NoDelay A_SpawnItemEx(	"EmptySupplyChest", // type
+						0, 0, 0,            // offset
+						0, 0, 0,            // velocity
+						0,                  // angle
+						SXF_SETMASTER | SXF_NOCHECKPOSITION,
+						0,                  // chance (always)
+						tid                 // TID
+				)
+		SUBX B -1
 		Stop
 	}
 }
 
-ACTOR SupplyChest75Coins : SupplyChest100Coins
+ACTOR SupplyChest100Coins : SupplyChestMoney
+{
+	Inventory.PickupMessage "$100COINS"
+	Inventory.Amount 100
+}
+
+ACTOR SupplyChest75Coins : SupplyChestMoney
 {
 	Inventory.PickupMessage "$75COINS"
-	States
-	{
-	Pickup:
-		TNT1 A 0 A_GiveInventory("CoinItem",75)
-		Stop
-	}
+	Inventory.Amount 75
 }
 
-ACTOR SupplyChest25Coins : SupplyChest100Coins
+ACTOR SupplyChest25Coins : SupplyChestMoney
 {
 	Inventory.PickupMessage "$25COINS"
-	States
-	{
-	Pickup:
-		TNT1 A 0 A_GiveInventory("CoinItem",25)
-		Stop
-	}
+	Inventory.Amount 25
 }
 
-ACTOR SupplyChestKar98k : SupplyChest100Coins
+ACTOR SupplyChestKar98k : SupplyChestGeneric
 {
 	Inventory.PickupMessage "$KARCHEST"
 	States
@@ -284,7 +297,7 @@ ACTOR SupplyChestKar98k : SupplyChest100Coins
 	}
 }
 
-ACTOR SupplyChestFieldKits : SupplyChest100Coins
+ACTOR SupplyChestFieldKits : SupplyChestGeneric
 {
 	Inventory.PickupMessage "$FKITCHEST"
 	States
@@ -295,7 +308,7 @@ ACTOR SupplyChestFieldKits : SupplyChest100Coins
 	}
 }
 
-ACTOR SupplyChestGrenades : SupplyChest100Coins
+ACTOR SupplyChestGrenades : SupplyChestGeneric
 {
 	Inventory.PickupMessage "$GRECHEST"
 	States
