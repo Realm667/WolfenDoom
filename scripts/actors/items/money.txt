@@ -24,8 +24,8 @@ class CoinItem : Ammo {
 		Super.Deactivate(activator);
 	}
 
-	override void PostBeginPlay() {
-		Super.PostBeginPlay();
+	override void BeginPlay() {
+		Super.BeginPlay();
 		AllowPickup = (SpawnFlags & MTF_DORMANT) == 0;
 	}
 

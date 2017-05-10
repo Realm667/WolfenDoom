@@ -244,46 +244,34 @@ ACTOR SupplyChestGeneric : CustomInventory
 	}
 }
 
-// Unfortunately, I had to do this in order to get the money rewards working properly. - Talon1024
-
-ACTOR SupplyChestMoney : CoinItem
+ACTOR SupplyChest100Coins : SupplyChestGeneric
 {
-	Height 34
-	Radius 21
-	Inventory.PickupSound "treasure/pickup"
-	+INVENTORY.ALWAYSPICKUP
+	Inventory.PickupMessage "$100COINS"
 	States
 	{
-	Spawn:
-		SUBX B 0 NoDelay A_SpawnItemEx(	"EmptySupplyChest", // type
-						0, 0, 0,            // offset
-						0, 0, 0,            // velocity
-						0,                  // angle
-						SXF_SETMASTER | SXF_NOCHECKPOSITION,
-						0,                  // chance (always)
-						tid                 // TID
-				)
-		SUBX B -1
-		Stop
+	Pickup:
+		SUBX B 0 A_GiveInventory("CoinItem", 100)
 	}
 }
 
-ACTOR SupplyChest100Coins : SupplyChestMoney
-{
-	Inventory.PickupMessage "$100COINS"
-	Inventory.Amount 100
-}
-
-ACTOR SupplyChest75Coins : SupplyChestMoney
+ACTOR SupplyChest75Coins : SupplyChestGeneric
 {
 	Inventory.PickupMessage "$75COINS"
-	Inventory.Amount 75
+	States
+	{
+	Pickup:
+		SUBX B 0 A_GiveInventory("CoinItem", 75)
+	}
 }
 
-ACTOR SupplyChest25Coins : SupplyChestMoney
+ACTOR SupplyChest25Coins : SupplyChestGeneric
 {
 	Inventory.PickupMessage "$25COINS"
-	Inventory.Amount 25
+	States
+	{
+	Pickup:
+		SUBX B 0 A_GiveInventory("CoinItem", 25)
+	}
 }
 
 ACTOR SupplyChestKar98k : SupplyChestGeneric
