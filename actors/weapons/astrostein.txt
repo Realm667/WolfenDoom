@@ -468,6 +468,8 @@ ACTOR ElektroshockerPuff : BulletPuff
 ///////////////////////////////////////////////////////////////////////////////
 /////// ASTROSTEIN HANDGRANATE ////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+ACTOR AstroGrenadeToken : Inventory { Inventory.MaxAmount 9 }
+
 ACTOR AstroGrenadePickup : CustomInventory
 {
 	//$Category Weapons (Wolf3D)/Astrostein
@@ -485,6 +487,7 @@ ACTOR AstroGrenadePickup : CustomInventory
 	Pickup:
 		TNT1 A 0 {
 			if (CountInv("GrenadePickup") < 9) {
+				A_GiveInventory("AstroGrenadeToken");
 				A_GiveInventory("GrenadePickup");
 				return true;
 			}
