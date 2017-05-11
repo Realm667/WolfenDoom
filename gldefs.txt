@@ -1441,6 +1441,78 @@ FlickerLight BPUFF2
 	Chance 0.7
 }
 
+//Angel of Death
+FlickerLight2 OADEPLSM1
+{
+	Color 0.2 0.7 0.5
+	Size 32
+	SecondarySize 48
+	Interval 0.3
+	Offset 0 8 0
+	DontLightSelf 0
+}
+
+FlickerLight2 OADEPLSM2
+{
+	Color 0.2 0.7 0.5
+	Size 24
+	SecondarySize 16
+	Interval 0.3
+	Offset 0 8 0
+	DontLightSelf 0
+}
+
+FlickerLight2 OADEPLSM3
+{
+	Color 0.4 1.0 0.7
+	Size 48
+	SecondarySize 56
+	Interval 0.4
+	Offset 0 8 0
+	DontLightSelf 0
+}
+
+Object QueenPlasmaBlast
+{
+	frame EBLTG { light OADEPLSM1 }
+	frame EBLTH { light OADEPLSM1 }
+	frame EBLTI { light OADEPLSM1 }
+	frame EBLTJ { light OADEPLSM2 }
+	frame EBLTK { light OADEPLSM2 }
+}
+
+Object QueenPlasmaBlastTrail
+{
+	frame EBLTA { light OADEPLSM2 }
+	frame EBLTB { light OADEPLSM2 }
+	frame EBLTC { light OADEPLSM1 }
+	frame EBLTD { light OADEPLSM2 }
+	frame EBLTE { light OADEPLSM2 }
+	frame EBLTF { light OADEPLSM2 }
+}
+
+Object QueenPainPlasmaBlast
+{
+	frame EBLTA { light OADEPLSM2 }
+	frame EBLTB { light OADEPLSM2 }
+	frame EBLTC { light OADEPLSM1 }
+	frame EBLTD { light OADEPLSM2 }
+	frame EBLTE { light OADEPLSM2 }
+	frame EBLTF { light OADEPLSM2 }
+}
+
+Object QueenBlastPod
+{
+	frame CNOBA { light OADEPLSM3 }
+	frame CNOBB { light OADEPLSM3 }
+	frame CNOBC { light OADEPLSM3 }
+	frame CNOBD { light OADEPLSM3 }
+	frame CNOBE { light OADEPLSM1 }
+	frame CNOBF { light OADEPLSM1 }
+	frame CNOBG { light OADEPLSM1 }
+	frame CNOBH { light OADEPLSM2 }
+	frame CNOBI { light OADEPLSM2 }
+}
 // Zombies
 FlickerLight2 ZOMBIEATK
 {
