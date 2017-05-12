@@ -156,7 +156,7 @@ class Nazi : Base
 			{ // Stealth kill, remove the sneakable eyes, alert a medium radius, and kill the actor
 				A_Log(StringTable.Localize("$STEALTH"));
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING);
-				A_AlertMonsters(128);
+				A_AlertMonsters(160);
 				A_Die();
 			}
 			else if (user_incombat) // If the actor has already been in its See state
