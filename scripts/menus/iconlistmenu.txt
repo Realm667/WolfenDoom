@@ -1,0 +1,92 @@
+class IconListMenu : ListMenu
+{
+	double iconOffset;
+
+	override void Init(Menu parent = null, ListMenuDescriptor desc = null)
+	{
+		Super.Init(parent, desc);
+
+		// Some logic to determine the rightmost pixel point of the middle skill values
+		//  Used for default positioning a la Wolf3D
+		double maxWidth;
+		int min;
+
+		mDesc = desc;
+
+		// Find the middle skill menu entry (with rounding if odd number of entries)
+		double median = mDesc.mItems.Size() / 2;
+		if (median < int(median) + 0.5) { min = int(median); }
+		else { min = int(median) + 1; } 
+
+		// Figure out the widest skill name...
+		for (int i = min; i < min + 2; i++)
+		{
+			int width = mDesc.mItems[i].GetWidth();
+			if (width > maxWidth) { maxWidth = width; }
+		}
+
+		// ... And use it's length to calculate the default x offset
+		iconOffset = mDesc.mXPos + maxWidth;
+	}
+
+	override void Drawer()
+	{
+		Super.Drawer();
+
+		// Draw the icon for the currently selected skill
+		DrawSkillIcon(mDesc.mSelectedItem);
+
+		// Draw the text description for the currently selected skill
+		DrawSkillText(mDesc.mSelectedItem, breakWidth:200, scale:0.6);
+	}
+
+	void DrawSkillIcon(int skill, double x = -1, double y = -1, double alpha = 1.0)
+	{
+		if (skill < 0) { return; }
+
+		double fontheight = mDesc.mFont.GetHeight();
+
+		// Hard-coded, unfortunately - Icons must be named SKILL1, SKILL2, SKILL3, etc.
+		TextureID tex = TexMan.CheckForTexture("SKILL" .. skill, TexMan.Type_MiscPatch);
+		if (tex.IsValid())
+		{
+			Vector2 texsize = TexMan.GetScaledSize(tex);
+
+			// Default to Wolf3D-style positioning, roughly vertically centered on the skill list, 
+			//  horizontally centered between the screen edge and the longest of the middle skill names.
+			if (x == -1) { x = (320 + iconOffset) / 2; }
+			if (y == -1) { y = mDesc.mDisplayTop + (mDesc.mItems.Size() + 1) * (fontheight + mDesc.mLinespacing) / 2; }
+
+			// Use the center of the image for positioning
+			x -= texsize.x / 2;
+			y -= texsize.y / 2; 
+
+			screen.DrawTexture(tex, false, x, y, DTA_Clean, true, DTA_Alpha, alpha);
+		}
+	}
+
+	void DrawSkillText(int skill, double x = -1, double y = -1, double alpha = 1.0, int breakWidth = 300, double scale = 1.0)
+	{
+		if (skill < 0) { return; }
+
+		double fontheight = SmallFont.GetHeight() * scale;
+
+		// Default position is centered, 35 pixels off the bottom fo the screen
+		if (x < 0) { x = 160; }
+		if (y < 0) { y = 165; }
+
+		// Again, hard-coded, unfortunately - Descriptions must be named SKILLDESCRIPTION1, SKILLDESCRIPTION2, etc.
+		String text = StringTable.Localize("$SKILLDESCRIPTION"..skill);
+		BrokenLines message = SmallFont.BreakLines(text, int(breakWidth / scale));
+
+		int c = message.Count();
+
+		for (int i = 0; i < c; i++) { y -= fontheight / 2; }
+
+		for (int i = 0; i < c; i++)
+		{
+			screen.DrawText (SmallFont, OptionMenuSettings.mFontColor, x / scale - message.StringWidth(i) / 2, y / scale, message.StringAt(i), DTA_Clean, true, DTA_Alpha, alpha, DTA_VirtualWidthF, 320 / scale, DTA_VirtualHeightF, 200 / scale);
+			y += fontheight;
+		}
+	}
+}
