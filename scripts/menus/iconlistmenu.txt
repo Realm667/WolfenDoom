@@ -1,73 +1,37 @@
-class IconListMenu : ListMenu
+// Base class that also handles drawing informational text under menu entries
+class ExtendedListMenu : ListMenu
 {
-	double iconOffset;
+	String lookupBase;
+	int itemCount;
 
 	override void Init(Menu parent = null, ListMenuDescriptor desc = null)
 	{
 		Super.Init(parent, desc);
 
-		// Some logic to determine the rightmost pixel point of the middle skill values
-		//  Used for default positioning a la Wolf3D
-		double maxWidth;
-		int min;
-
-		mDesc = desc;
-
-		// Find the middle skill menu entry (with rounding if odd number of entries)
-		double median = mDesc.mItems.Size() / 2;
-		if (median < int(median) + 0.5) { min = int(median); }
-		else { min = int(median) + 1; } 
-
-		// Figure out the widest skill name...
-		for (int i = min; i < min + 2; i++)
-		{
-			int width = mDesc.mItems[i].GetWidth();
-			if (width > maxWidth) { maxWidth = width; }
-		}
-
-		// ... And use it's length to calculate the default x offset
-		iconOffset = mDesc.mXPos + maxWidth;
+		if (mDesc.mMenuName == "SkillMenu") { lookupBase = "SKILL"; }
+		else if (mDesc.mMenuName == "EpisodeMenu") { lookupBase = "EPISODE"; }
+		else { lookupBase = "ITEM"; }
 	}
 
 	override void Drawer()
 	{
+		// Draw the icon for the currently selected item
+		DrawItemIcon(mDesc.mSelectedItem);
+
+		// Draw the text description for the currently selected item
+		DrawItemText(mDesc.mSelectedItem, breakWidth:230, scale:0.6);
+
 		Super.Drawer();
-
-		// Draw the icon for the currently selected skill
-		DrawSkillIcon(mDesc.mSelectedItem);
-
-		// Draw the text description for the currently selected skill
-		DrawSkillText(mDesc.mSelectedItem, breakWidth:200, scale:0.6);
 	}
 
-	void DrawSkillIcon(int skill, double x = -1, double y = -1, double alpha = 1.0)
+	virtual void DrawItemIcon(int index, double x = -1, double y = -1, double alpha = 1.0)
 	{
-		if (skill < 0) { return; }
-
-		double fontheight = mDesc.mFont.GetHeight();
-
-		// Hard-coded, unfortunately - Icons must be named SKILL1, SKILL2, SKILL3, etc.
-		TextureID tex = TexMan.CheckForTexture("SKILL" .. skill, TexMan.Type_MiscPatch);
-		if (tex.IsValid())
-		{
-			Vector2 texsize = TexMan.GetScaledSize(tex);
-
-			// Default to Wolf3D-style positioning, roughly vertically centered on the skill list, 
-			//  horizontally centered between the screen edge and the longest of the middle skill names.
-			if (x == -1) { x = (320 + iconOffset) / 2; }
-			if (y == -1) { y = mDesc.mDisplayTop + (mDesc.mItems.Size() + 1) * (fontheight + mDesc.mLinespacing) / 2; }
-
-			// Use the center of the image for positioning
-			x -= texsize.x / 2;
-			y -= texsize.y / 2; 
-
-			screen.DrawTexture(tex, false, x, y, DTA_Clean, true, DTA_Alpha, alpha);
-		}
+		return;
 	}
 
-	void DrawSkillText(int skill, double x = -1, double y = -1, double alpha = 1.0, int breakWidth = 300, double scale = 1.0)
+	void DrawItemText(int index, double x = -1, double y = -1, double alpha = 1.0, int breakWidth = 300, double scale = 1.0)
 	{
-		if (skill < 0) { return; }
+		if (index < 0) { return; }
 
 		double fontheight = SmallFont.GetHeight() * scale;
 
@@ -76,7 +40,9 @@ class IconListMenu : ListMenu
 		if (y < 0) { y = 165; }
 
 		// Again, hard-coded, unfortunately - Descriptions must be named SKILLDESCRIPTION1, SKILLDESCRIPTION2, etc.
-		String text = StringTable.Localize("$SKILLDESCRIPTION"..skill);
+		String text = StringTable.Localize("$" .. lookupBase .. "DESCRIPTION"..index);
+		if (text == lookupBase .. "DESCRIPTION"..index) { return; }
+
 		BrokenLines message = SmallFont.BreakLines(text, int(breakWidth / scale));
 
 		int c = message.Count();
@@ -89,4 +55,125 @@ class IconListMenu : ListMenu
 			y += fontheight;
 		}
 	}
+}
+
+// For an icon beside the menu entry, like Wolf3D episode select
+class IconListMenu : ExtendedListMenu
+{
+	override void Init(Menu parent = null, ListMenuDescriptor desc = null)
+	{
+		Super.Init(parent, desc);
+
+		Vector2 iconSize;
+
+		for (int i = 0; i < mDesc.mItems.Size(); i++)
+		{
+			TextureID tex = TexMan.CheckForTexture(lookupBase .. i, TexMan.Type_MiscPatch);
+
+			if (tex.IsValid())
+			{
+				Vector2 texsize = TexMan.GetScaledSize(tex);
+
+				if (texsize.x > iconSize.x) { iconSize.x = int(texsize.x); }
+			}
+
+			if (mDesc.mItems[i].Selectable()) { mDesc.mItems[i].SetX(mDesc.mXpos + iconsize.x / 2); }
+		}
+
+		if (mDesc.mXpos + mDesc.mSelectOfsX > mDesc.mXpos - iconSize.x * 1.3) { mDesc.mSelectOfsX -= iconSize.x * 1.3; }
+	}
+
+	override void DrawItemIcon(int index, double x = -1, double y = -1, double alpha = 1.0)
+	{
+		if (index < 0) { return; }
+
+		double fontheight = mDesc.mFont.GetHeight();
+		double drawx = x;
+		double drawy = y;
+		int index = 0;
+
+		for (int i = 0; i < mDesc.mItems.Size(); i++)
+		{
+			if (mDesc.mItems[i].Selectable())
+			{
+				index++;
+
+				// Hard-coded, unfortunately - Icons must be named EPISODE1, EPISODE2, EPISODE3, etc.
+				TextureID tex = TexMan.CheckForTexture(lookupBase .. index, TexMan.Type_MiscPatch);
+				if (tex.IsValid())
+				{
+					Vector2 texsize = TexMan.GetScaledSize(tex);
+
+					// Default to Wolf3D-style positioning, roughly vertically centered on the episode name
+					if (x == -1) { drawx = mDesc.mItems[index].GetX() - texsize.x / 2 - 10; }
+					if (y == -1) { drawy = mDesc.mItems[index].GetY() + fontheight / 2; }
+
+					// Use the center of the image for positioning
+					drawx -= texsize.x / 2;
+					drawy -= texsize.y / 2; 
+
+					screen.DrawTexture(tex, false, drawx, drawy, DTA_Clean, true, DTA_Alpha, index != mDesc.mSelectedItem ? alpha * 0.6 : alpha);
+				}
+			}
+		}
+	}
+}
+
+// For an icon that swaps out in place, like the Wolf3D skill menu
+Class StaticIconListMenu : ExtendedListMenu
+{
+	double iconOffset;
+
+	override void Init(Menu parent = null, ListMenuDescriptor desc = null)
+	{
+		// Some logic to determine the rightmost pixel point of the middle skill values
+		//  Used for default positioning a la Wolf3D
+		double maxWidth;
+		int min;
+
+		mDesc = desc;
+
+		// Find the middle skill menu entry (with rounding if odd number of entries)
+		double median = (mDesc.mItems.Size() - 1) / 2;
+		if (median < int(median) + 0.5) { min = int(median); }
+		else { min = int(median) + 1; } 
+
+		// Figure out the widest skill name...
+		for (int i = min; i < min + 2; i++)
+		{
+			int width = mDesc.mItems[i].GetWidth();
+			if (width > maxWidth) { maxWidth = width; }
+		}
+
+		// ... And use it's length to calculate the default x offset
+		iconOffset = mDesc.mXPos + maxWidth;
+
+		Super.Init(parent, desc);
+	}
+
+	override void DrawItemIcon(int index, double x = -1, double y = -1, double alpha = 1.0)
+	{
+		if (index < 0) { return; }
+
+		double fontheight = mDesc.mFont.GetHeight();
+
+		// Hard-coded, unfortunately - Icons must be named SKILL1, SKILL2, SKILL3, etc.
+		TextureID tex = TexMan.CheckForTexture(lookupBase .. index, TexMan.Type_MiscPatch);
+		if (tex.IsValid())
+		{
+			Vector2 texsize = TexMan.GetScaledSize(tex);
+
+			// Default to Wolf3D-style positioning, roughly vertically centered on the skill list, 
+			//  horizontally centered between the screen edge and the longest of the middle skill names.
+			if (x == -1) { x = (320 + iconOffset) / 2; }
+			if (y == -1) { y = mDesc.mYpos + ((mDesc.mItems.Size() - 1) * mDesc.mLinespacing) / 2; }
+
+			// Use the center of the image for positioning
+			x -= texsize.x / 2;
+			y -= texsize.y / 2; 
+
+			screen.DrawTexture(tex, false, x, y, DTA_Clean, true, DTA_Alpha, alpha);
+		}
+	}
+
 }
