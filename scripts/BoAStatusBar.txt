@@ -380,7 +380,7 @@ class BoAStatusBar : BaseStatusBar
 			Nazi mo;
 			while (mo = Nazi(it.Next(true)))
 			{
-				if (mo.health > 0 && mo.sneakable)
+				if (mo.health > 0 && mo.user_sneakable)
 				{
 					stealth = true;
 					return true;

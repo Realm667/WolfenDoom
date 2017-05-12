@@ -52,9 +52,9 @@ class Nazi : Base
 	int perceptionthreshold;
 	int perceptionfov;
 	int user_chasegoal;
-	bool sneakable;
+	bool user_sneakable;
 
-	Property Sneakable:sneakable;
+	Property Sneakable:user_sneakable;
 	Property PerceptionTime:perceptionthreshold; // How many tics the player has to be in sight before NOTARGET fails - 0 means never see through NoTarget
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
 
@@ -133,7 +133,7 @@ class Nazi : Base
 	override void BeginPlay()
 	{
 		// If it's sneakable, spawn a set of the sneakeable eyes and mark it as friendly (and make the actor never infight)
-		if (sneakable) {
+		if (user_sneakable) {
 			bFriendly = True;
 			bNeverTarget = True; // A bit of a hack, but it works...  Will cause issues if FRIENDLY actors ever need to interact with sneakable actors
 			A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION);
@@ -152,7 +152,7 @@ class Nazi : Base
 
 		if (currentDamage ~== "SilentKnifeAttack") // If the attack was with the knife
 		{
-			if (sneakable && bFriendly) // If this is a sneakable actor who isn't active yet
+			if (user_sneakable && bFriendly) // If this is a sneakable actor who isn't active yet
 			{ // Stealth kill, remove the sneakable eyes, alert a medium radius, and kill the actor
 				A_Log(StringTable.Localize("$STEALTH"));
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING);
@@ -175,14 +175,14 @@ class Nazi : Base
 
 		ACS_NamedExecuteAlways("AddExtraVisibility", 0, 200, 1); // Attacking always makes visibility increase significantly
 
-		if (sneakable && bFriendly) // If we attacked a sneakable actor who wasn't alerted...
+		if (user_sneakable && bFriendly) // If we attacked a sneakable actor who wasn't alerted...
 		{
 			BecomeAlerted(inflictor); // Alert that actor
 		}
 
 		if (damageamt > health) // If we killed the actor...
 		{
-			if (sneakable) // and it was a sneakable actor...
+			if (user_sneakable) // and it was a sneakable actor...
 			{
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING); // Remove the sneakable eyes
 				if (!bFriendly) { ACS_NamedExecute("DecreaseAlertedCount"); } // Decrement the alert counter if the actor had been alerted
@@ -222,11 +222,13 @@ class Nazi : Base
 
 	bool SneakableActors() // Are there sneakable actors in the level?
 	{
+		int count;
+
 		ThinkerIterator it = ThinkerIterator.Create("Nazi");
 		Nazi mo;
 		while (mo = Nazi(it.Next(true)))
 		{
-			return true;
+			if (mo.health > 0 && mo.user_sneakable) { return true; } // Actually check the bool to see if the actor is sneakable
 		}
 		return false;
 	}
