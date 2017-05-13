@@ -1,4 +1,4 @@
-// Base class that also handles drawing informational text under menu entries
+// Base class that handles drawing informational text under menu entries
 class ExtendedListMenu : ListMenu
 {
 	String lookupBase;
@@ -15,9 +15,6 @@ class ExtendedListMenu : ListMenu
 
 	override void Drawer()
 	{
-		// Draw the icon for the currently selected item
-		DrawItemIcon(mDesc.mSelectedItem);
-
 		// Draw the text description for the currently selected item
 		DrawItemText(mDesc.mSelectedItem, breakWidth:230, scale:0.6);
 
@@ -35,7 +32,7 @@ class ExtendedListMenu : ListMenu
 
 		double fontheight = SmallFont.GetHeight() * scale;
 
-		// Default position is centered, 35 pixels off the bottom fo the screen
+		// Default position is centered, 35 pixels off the bottom of the screen
 		if (x < 0) { x = 160; }
 		if (y < 0) { y = 165; }
 
@@ -83,36 +80,42 @@ class IconListMenu : ExtendedListMenu
 		if (mDesc.mXpos + mDesc.mSelectOfsX > mDesc.mXpos - iconSize.x * 1.3) { mDesc.mSelectOfsX -= iconSize.x * 1.3; }
 	}
 
+	override void Drawer()
+	{
+		// Draw the icons
+		DrawItemIcon(mDesc.mSelectedItem);
+
+		Super.Drawer();
+	}
+
 	override void DrawItemIcon(int index, double x = -1, double y = -1, double alpha = 1.0)
 	{
-		if (index < 0) { return; }
-
 		double fontheight = mDesc.mFont.GetHeight();
 		double drawx = x;
 		double drawy = y;
-		int index = 0;
+		int itemindex = 0;
 
 		for (int i = 0; i < mDesc.mItems.Size(); i++)
 		{
 			if (mDesc.mItems[i].Selectable())
 			{
-				index++;
+				itemindex++;
 
 				// Hard-coded, unfortunately - Icons must be named EPISODE1, EPISODE2, EPISODE3, etc.
-				TextureID tex = TexMan.CheckForTexture(lookupBase .. index, TexMan.Type_MiscPatch);
+				TextureID tex = TexMan.CheckForTexture(lookupBase .. itemindex, TexMan.Type_MiscPatch);
 				if (tex.IsValid())
 				{
 					Vector2 texsize = TexMan.GetScaledSize(tex);
 
 					// Default to Wolf3D-style positioning, roughly vertically centered on the episode name
-					if (x == -1) { drawx = mDesc.mItems[index].GetX() - texsize.x / 2 - 10; }
-					if (y == -1) { drawy = mDesc.mItems[index].GetY() + fontheight / 2; }
+					if (x == -1) { drawx = mDesc.mItems[itemindex].GetX() - texsize.x / 2 - 10; }
+					if (y == -1) { drawy = mDesc.mItems[itemindex].GetY() + fontheight / 2; }
 
 					// Use the center of the image for positioning
 					drawx -= texsize.x / 2;
 					drawy -= texsize.y / 2; 
 
-					screen.DrawTexture(tex, false, drawx, drawy, DTA_Clean, true, DTA_Alpha, index != mDesc.mSelectedItem ? alpha * 0.6 : alpha);
+					screen.DrawTexture(tex, false, drawx, drawy, DTA_Clean, true, DTA_Alpha, itemindex != index ? alpha * 0.6 : alpha);
 				}
 			}
 		}
@@ -149,6 +152,15 @@ Class StaticIconListMenu : ExtendedListMenu
 		iconOffset = mDesc.mXPos + maxWidth;
 
 		Super.Init(parent, desc);
+	}
+
+
+	override void Drawer()
+	{
+		// Draw the icon for the currently selected item
+		DrawItemIcon(mDesc.mSelectedItem);
+
+		Super.Drawer();
 	}
 
 	override void DrawItemIcon(int index, double x = -1, double y = -1, double alpha = 1.0)
