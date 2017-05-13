@@ -198,39 +198,44 @@ ACTOR RogerWilco : MrSpock
 	}
 }
 
-ACTOR IndianaJones
+ACTOR BDDoll : Dogse
 {
-	//$Category Misc (Wolf3D)/EasterEgg
+	//$Title Brutal Doomguy Doll
+	Height 8
+	Radius 8
+	Scale 1.1
+	States
+	{
+	Spawn:
+		DDOL A -1
+		Stop
+	}
+}
+
+ACTOR IndianaJones : Dogse
+{
 	//$Title Indiana Jones
-	//$Color 3
-	Radius 16
 	Height 64
-	+SOLID
 	States
 	{
 	Spawn:
 		INDY A 70
-		INDY B 20
-		INDY C 70
-		INDY DEFEDBC 10
-		INDY D 20
+		"####" B 20
+		"####" C 70
+		"####" DEFEDBC 10
+		"####" D 20
 		Loop
 	}
 }
 
-ACTOR IndianaJonesGirl
+ACTOR IndianaJonesGirl : IndianaJones
 {
-	//$Category Misc (Wolf3D)/EasterEgg
 	//$Title Sophia Hapgood
-	//$Color 3
-	Radius 16
-	Height 64
-	+SOLID
 	States
 	{
 	Spawn:
 		INDY M 140
-		INDY GHIJKL 10
+		"####" GHIJKL 10
 		Loop
 	}
 }
