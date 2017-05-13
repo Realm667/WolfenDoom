@@ -36,6 +36,8 @@ Pointlight BOASHADOW_XL //ExtraLarge
 	DontLightSelf 1
 }
 //Floating actors and ghosts doesn't have any shadow attached
+Object AgentArmed				{ frame FREE { light BOASHADOW_M } }
+Object AgentArmedMP40			{ frame FREE { light BOASHADOW_M } }
 Object AstroCommando			{ frame ATR3 { light BOASHADOW_M } }
 Object AstroCyborg1				{ frame CYB1 { light BOASHADOW_L } }
 Object AstroCyborg2				{ frame CYB2 { light BOASHADOW_L } }
@@ -50,6 +52,11 @@ Object AstroSuiteGuard			{ frame ROB1 { light BOASHADOW_L } }
 Object BigMutant1				{ frame MTB1 { light BOASHADOW_L } }
 Object BigMutant2				{ frame MTB2 { light BOASHADOW_L } }
 Object BigSpider				{ frame GAYS { light BOASHADOW_S } }
+Object BoAPlayer				{ frame PLAB { light BOASHADOW_M } }
+Object BoAPlayer				{ frame PLAY { light BOASHADOW_M } }
+Object BoAPlayer				{ frame PLSC { light BOASHADOW_M } }
+Object BoAPlayer				{ frame PLYC { light BOASHADOW_M } }
+Object BoAPlayer				{ frame PLYS { light BOASHADOW_M } }
 Object Camp_PrisonerBald		{ frame PRSN { light BOASHADOW_M } }
 Object Camp_StaticBroom			{ frame PRSA { light BOASHADOW_M } }
 Object Camp_StaticKneeing		{ frame PRSE { light BOASHADOW_M } }
@@ -66,6 +73,8 @@ Object DestroyedTank3			{ frame MDLA { light BOASHADOW_XL } }
 Object DestroyedTank4			{ frame MDLA { light BOASHADOW_XL } }
 Object DirtyDarren				{ frame DARR { light BOASHADOW_M } }
 Object Doberman 				{ frame DOG3 { light BOASHADOW_M } }
+Object DogFollower				{ frame DOG2 { light BOASHADOW_M } }
+Object DouglasArmed				{ frame DARR { light BOASHADOW_M } }
 Object EliteAssaulter			{ frame ELTA { light BOASHADOW_M } }
 Object EliteFlamer				{ frame ELTF { light BOASHADOW_M } }
 Object EliteSoldatRifler		{ frame ELTR { light BOASHADOW_M } }
@@ -162,16 +171,18 @@ Object SneakableWRifleGuard		{ frame RGR2 { light BOASHADOW_M } }
 Object SneakableWaffenSS		{ frame WAFF { light BOASHADOW_M } }
 Object Sniper					{ frame SNIP { light BOASHADOW_S } }
 Object Sniper_Crouch			{ frame SNIP { light BOASHADOW_S } }
+Object SoldierArmed				{ frame ARH2 { light BOASHADOW_M } }
+Object SoldierArmedRifle		{ frame ARMH { light BOASHADOW_M } }
 Object StatistBarKeeper			{ frame BDKP { light BOASHADOW_S } }
 Object StatistMedic				{ frame MEDC { light BOASHADOW_S } }
 Object StatistSinger			{ frame MADI { light BOASHADOW_S } }
 Object SuperMutant				{ frame SUPM { light BOASHADOW_M } }
 Object SuperSoldier 			{ frame HANS { light BOASHADOW_L } }
+Object SuperSoldier_Afrika 		{ frame HAFR { light BOASHADOW_L } }
+Object SuperSoldier_Arctic 		{ frame HART { light BOASHADOW_L } }
 Object SuperSoldier_Elite		{ frame TRAN { light BOASHADOW_L } }
 Object SuperSoldier_Elsa		{ frame ELSA { light BOASHADOW_L } }
 Object SuperSoldier_Girl		{ frame WBO4 { light BOASHADOW_L } }
-Object SuperSoldier_Afrika 		{ frame HAFR { light BOASHADOW_L } }
-Object SuperSoldier_Arctic 		{ frame HART { light BOASHADOW_L } }
 Object SuperSoldier_SS 			{ frame HASS { light BOASHADOW_L } }
 Object SuperSoldier_Wehrmacht 	{ frame HWER { light BOASHADOW_L } }
 Object UberMutant				{ frame UBMU { light BOASHADOW_XL } }
@@ -187,6 +198,8 @@ Object WSniper					{ frame SNI2 { light BOASHADOW_S } }
 Object WSniper_Crouch			{ frame SNI2 { light BOASHADOW_S } }
 Object WaffenSS 				{ frame WAFF { light BOASHADOW_M } }
 Object WereWaffenSS 			{ frame WOFF { light BOASHADOW_M } }
+Object ZombieBrain 				{ frame ZBIT { light BOASHADOW_M } }
+Object ZombieKazi 				{ frame ZKAZ { light BOASHADOW_M } }
 
 /////////////////////////////////////////////////////
 // SPARK SPAWNERS ///////////////////////////////////
@@ -1237,6 +1250,12 @@ Object FirebrandFireball
 	frame CFCFW { light ITBURNSOC3 }
 	frame CFCFX { light ITBURNSOC3 }
 	frame CFCFY { light ITBURNSOC3 }
+}
+
+Object BoAPlayer
+{
+	frame PLAB { light ITBURNSOC3 }
+	frame PLYB { light ITBURNSOC3 }
 }
 
 //NAZI FOES//
