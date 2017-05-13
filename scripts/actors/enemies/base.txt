@@ -136,7 +136,7 @@ class Nazi : Base
 		if (user_sneakable) {
 			bFriendly = True;
 			bNeverTarget = True; // A bit of a hack, but it works...  Will cause issues if FRIENDLY actors ever need to interact with sneakable actors
-			A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid);
 		}
 		else if (SneakableActors()) // If there are sneakable actors in the level, no Nazi actors will be targetable - fixes targeting of non-sneakables by idle (friendly) sneakables
 		{ // This will break normal expected friendly monster behavior!
@@ -203,7 +203,7 @@ class Nazi : Base
 		A_RemoveChildren(TRUE, RMVF_EVERYTHING); // Get rid of the passive guard eyes
 		A_AlertMonsters(512); // Alert an extra-large radius
 		ACS_NamedExecuteAlways("IncreaseAlertedCount");
-		A_SpawnItemEx("SneakableGuardEyesAlerted", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION); // Spawn active guard eyes
+		A_SpawnItemEx("SneakableGuardEyesAlerted", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid); // Spawn active guard eyes
 		if (target && target.GetSpecies() == GetSpecies()) { target = null; SetStateLabel("Spawn"); }
 		SetStateLabel("See"); // Got to See state and start chasing the player (or wandering if target wasn't set for some reason)
 	}
@@ -216,7 +216,7 @@ class Nazi : Base
 		A_ClearTarget();
 		ACS_NamedExecute("TryResumePatrolling");
 		ACS_NamedExecuteAlways("DecreaseAlertedCount");
-		A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid);
 		SetStateLabel("Spawn");
 	}
 
