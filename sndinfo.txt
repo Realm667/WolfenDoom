@@ -1731,6 +1731,11 @@ CRY05 CRY05
 CRY06 CRY06
 CRY07 CRY07
 
+ambzomb1 ambzomb1
+ambzomb2 ambzomb2
+$random ZOMBICRY { ambzomb1 ambzomb2 }
+
+
 world/bomb_ticker TICKTOCK
 
 ELECTRICITY ELCLOOP
@@ -1853,6 +1858,19 @@ misc/thunder5 thunder5
 //Earthquake
 misc/earthquake DSQUAKE
 
+//Male screams in agony
+malscrm1 malscrm1
+malscrm2 malscrm2
+malscrm3 malscrm3
+malscrm4 malscrm4
+malscrm5 malscrm5
+malscrm6 malscrm6
+malscrm7 malscrm7
+$random MALE_SCREAM_AGONY { malscrm1 malscrm2 malscrm3 malscrm4 malscrm5 malscrm6 malscrm7 }
+
+//Scary Sound
+c2m6scar c2m6scar
+
 //Gateclose huge
 GATEBCL0 GATEBCL0
 
@@ -1933,6 +1951,7 @@ $AMBIENT 68 CHATTER_AXIS POINT PERIODIC 9.0 1.0
 $AMBIENT 69 BRIDGE_CREAK POINT RANDOM 1.0 30.0 60.0
 $AMBIENT 70 PROJECTOR_ACT POINT CONTINUOUS 0.3
 $AMBIENT 71 SCARY_CAVE POINT CONTINUOUS 1.0
+$AMBIENT 72 ZOMBICRY POINT RANDOM 1.0 30.0 60.0
 
 /////////////
 //BRIEFINGS//
