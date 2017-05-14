@@ -8,7 +8,6 @@ class Debris_Vent_FloorCeiling : SwitchableDecoration
 		//$Title Vent Debris - Floor/Ceiling (activatable, solid/walkable)
 		//$Color 12
 
-		-NOINTERACTION
 		+SOLID
 		+NOGRAVITY
 		+ACTLIKEBRIDGE
@@ -43,7 +42,7 @@ class Debris_Vent_FloorCeiling : SwitchableDecoration
 					A_SpawnItemEx("Debris_Trash2", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
 				}
 				
-				A_NoBlocking();
+				bNoInteraction = True;
 			}
 			VENT B -1;
 			Stop;
