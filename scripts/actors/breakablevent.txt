@@ -1,0 +1,52 @@
+class Debris_Vent_FloorCeiling : SwitchableDecoration
+{
+	bool broken;
+
+	Default
+	{
+		//$Category Special Effects (Wolf3D)
+		//$Title Vent Debris - Floor/Ceiling (activatable, solid/walkable)
+		//$Color 12
+
+		-NOINTERACTION
+		+SOLID
+		+NOGRAVITY
+		+ACTLIKEBRIDGE
+		+USESPECIAL
+		+FLATSPRITE
+		Height 0;
+		Radius 32;
+		Activation THINGSPEC_Switch | THINGSPEC_ThingTargets;
+	}
+
+	States
+	{
+		Spawn:
+			VENT A 1;
+		Inactive:
+		Active:
+			VENT "#" 0 {
+				if (!broken && target && abs(pos.z - target.pos.z) < 48) { return ResolveState("Unblock"); }
+				return ResolveState(null);
+			}
+		StaticLoop:
+			VENT "#" 35;
+			Wait;
+		Unblock:
+			VENT B 0 {
+				broken = True;
+
+				A_SpawnItemEx("PowerPlantSmokePuffSmall", 0, 0, 32, 0, 0, 0, 0, 0);
+
+				for (int i = 0; i < 4; i++) {
+					A_SpawnItemEx("Debris_Trash", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_Trash2", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
+				}
+				
+				A_NoBlocking();
+			}
+			VENT B -1;
+			Stop;
+	}
+
+}
