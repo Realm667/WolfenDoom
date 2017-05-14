@@ -7,6 +7,7 @@ class BoAPlayer : PlayerPawn
 	Actor CrosshairTarget;
 	Actor ForcedHealthBar;
 	SpriteID baseSprite;
+	Array<PlayerEffect> effects;
 
 	Default
 	{
@@ -117,8 +118,6 @@ class BoAPlayer : PlayerPawn
 		Stop;
 	SpriteList:
 		// Any sprite not used above that is switched to by a token check must be listed here or the game will not find it!
-		PLAB A 0;
-		PLYB A 0;
 		PLSC A 0;
 		PLYS A 0;
 		SSOF A 0;
@@ -202,17 +201,87 @@ class BoAPlayer : PlayerPawn
 		if (user_ScaleY == 0) { user_ScaleY = Scale.Y; }
 		if (!baseSprite) { baseSprite = sprite; }
 
+		// Firebrand effect handling
+		if (player.ReadyWeapon is "FireBrand" && CountInv("PowerWeaponLevel2") > 0) { SpawnEffect("FireBrandEffect"); }
+		else { RemoveEffect("FireBrandEffect"); }
+
 		// New uniform or other sprite-changing tokens should be set up here.  See CheckSpriteToken function above.
 		//  These should be listed in order of precedence - The ones at the top will take priority.
 		//  All new sprites need to be added to the 'SpriteList' state above or the engine won't be able to use them.
 		if (
-			CheckSpriteToken("PowerWeaponLevel2", "PLAB", "PLYB") ||
-			CheckSpriteToken("SSBJUniformToken", "SSOF") || 		// Temporarily using the SS Officer Sprites
+			CheckSpriteToken("SSBJUniformToken", "SSOF") || // Temporarily using the SS Officer Sprites (and just squishing them for crouch)
 			CheckSpriteToken("ScientistUniformToken", "PLSC", "PLYS")
 		) { return; }
 
 		// If no tokens found, restore the base sprite and original scale
 		sprite = baseSprite;
 		Scale.Y = user_ScaleY;
+	}
+
+	// Function to spawn no more than a single copy of an effect actor as a child of the player
+	void SpawnEffect(class<PlayerEffect> effect)
+	{
+		ThinkerIterator it = ThinkerIterator.Create("PlayerEffect");
+		PlayerEffect mo;
+
+		while (mo = PlayerEffect(it.Next(true)))
+		{
+			if (mo.master && mo.master != self) { continue; } // Only look at effects that belong to this player actor
+			if (mo is effect) { return; } // The effect already exists, so abort so we don't spawn it again
+		}
+
+		// If it wasn't already there, spawn this effect
+		Actor new = Spawn(effect);
+		if (new) { new.master = self; }
+	}
+
+	// Function to remove any spawned copy of an effect that is a child of the player
+	void RemoveEffect(class<PlayerEffect> effect)
+	{
+		ThinkerIterator it = ThinkerIterator.Create("PlayerEffect");
+		PlayerEffect mo;
+
+		while (mo = PlayerEffect(it.Next(true)))
+		{
+			if (mo.master && mo.master != self) { continue; } // Only look at effects that belong to this player actor
+			if (mo is effect) { mo.SetStateLabel('null'); } // Remove the effect, if found
+		}
+	}
+}
+
+// Base class for simple visual effects that will always follow the player until removed
+class PlayerEffect : Actor
+{
+	Default
+	{
+		+NOINTERACTION
+	}
+
+	States
+	{
+		Spawn:
+			// This state should be replaced in child classes
+			UNKN A 1;
+			Loop;
+	}
+
+	override void Tick()
+	{
+		// If a master is assigned, always move to its location
+		if (master) { A_Warp(AAPTR_MASTER, flags:WARPF_COPYPITCH | WARPF_COPYINTERPOLATION | WARPF_NOCHECKPOSITION); }
+		Super.Tick();
+	}
+}
+
+class FireBrandEffect : PlayerEffect
+{
+	States
+	{
+		Spawn:
+			TNT1 A 4 NoDelay Light("ITBURNSOC1");
+			TNT1 A 4 Light("ITBURNSOC2");
+		SpawnLoop:
+			TNT1 A 4 Light("ITBURNSOC3") A_SetTics(Random(1, 8));
+			Loop;
 	}
 }
