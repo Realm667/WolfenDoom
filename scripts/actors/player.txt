@@ -7,7 +7,6 @@ class BoAPlayer : PlayerPawn
 	Actor CrosshairTarget;
 	Actor ForcedHealthBar;
 	SpriteID baseSprite;
-	Array<PlayerEffect> effects;
 
 	Default
 	{
@@ -198,11 +197,13 @@ class BoAPlayer : PlayerPawn
 
 	void DoTokenChecks()
 	{
+		if (health <= 0) { return; } // Don't change sprites if the player is dead
+
 		if (user_ScaleY == 0) { user_ScaleY = Scale.Y; }
 		if (!baseSprite) { baseSprite = sprite; }
 
 		// Firebrand effect handling
-		if (player.ReadyWeapon is "FireBrand" && CountInv("PowerWeaponLevel2") > 0) { SpawnEffect("FireBrandEffect"); }
+		if (player && player.ReadyWeapon is "FireBrand" && CountInv("PowerWeaponLevel2") > 0) { SpawnEffect("FireBrandEffect"); }
 		else { RemoveEffect("FireBrandEffect"); }
 
 		// New uniform or other sprite-changing tokens should be set up here.  See CheckSpriteToken function above.
