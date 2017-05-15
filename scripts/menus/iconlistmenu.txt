@@ -3,14 +3,42 @@ class ExtendedListMenu : ListMenu
 {
 	String lookupBase;
 	int itemCount;
+	Name overlay;
+	Array<int> placeholders;
 
 	override void Init(Menu parent = null, ListMenuDescriptor desc = null)
 	{
 		Super.Init(parent, desc);
 
-		if (mDesc.mMenuName == "SkillMenu") { lookupBase = "SKILL"; }
-		else if (mDesc.mMenuName == "EpisodeMenu") { lookupBase = "EPISODE"; }
-		else { lookupBase = "ITEM"; }
+		int index = 0;
+		placeholders.Clear();
+
+		for (int i = 0; i < mDesc.mItems.Size(); i++)
+		{
+			if (mDesc.mItems[i].Selectable()) { index++; }
+
+			if (mDesc.mItems[i] is "ListMenuItemTextItem")
+			{
+				String temp = ListMenuItemTextItem(mDesc.mItems[i]).mText;
+				temp.Replace("[Unreleased]", "");
+
+				// If the replacement string wasn't there, then this one is good
+				if (temp == ListMenuItemTextItem(mDesc.mItems[i]).mText) { continue; }
+
+				// Otherwise, fix the text string and recolor it, and add it to the list of known placeholders
+				ListMenuItemTextItem(mDesc.mItems[i]).mText = temp;
+				ListMenuItemTextItem(mDesc.mItems[i]).mColor = Font.CR_BLACK;
+				ListMenuItemTextItem(mDesc.mItems[i]).mColorSelected = Font.CR_BLACK;
+
+				placeholders.Push(index);
+			}
+		}
+
+		// Allow generic lookups - strip "menu" off of the menu name, and use that stub as the lookup base (e.g., SKILL, EPISODE, etc.)
+		String MenuName = ToUpper(mDesc.mMenuName);
+		MenuName.Replace("MENU", "");
+
+		lookupBase = MenuName;
 	}
 
 	override void Drawer()
@@ -19,6 +47,12 @@ class ExtendedListMenu : ListMenu
 		DrawItemText(mDesc.mSelectedItem, breakWidth:230, scale:0.6);
 
 		Super.Drawer();
+
+		if (overlay)
+		{
+			TextureID tex = TexMan.CheckForTexture(overlay, TexMan.Type_MiscPatch);
+			if (tex.IsValid()) { screen.DrawTexture(tex, false, 160, 100, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true); };
+		}
 	}
 
 	virtual void DrawItemIcon(int index, double x = -1, double y = -1, double alpha = 1.0)
@@ -36,7 +70,7 @@ class ExtendedListMenu : ListMenu
 		if (x < 0) { x = 160; }
 		if (y < 0) { y = 165; }
 
-		// Again, hard-coded, unfortunately - Descriptions must be named SKILLDESCRIPTION1, SKILLDESCRIPTION2, etc.
+		// Semi-hard-coded, unfortunately - Descriptions must be named [Menu name]DESCRIPTION1, [Menu name]DESCRIPTION2, etc.
 		String text = StringTable.Localize("$" .. lookupBase .. "DESCRIPTION"..index);
 		if (text == lookupBase .. "DESCRIPTION"..index) { return; }
 
@@ -51,6 +85,48 @@ class ExtendedListMenu : ListMenu
 			screen.DrawText (SmallFont, OptionMenuSettings.mFontColor, x / scale - message.StringWidth(i) / 2, y / scale, message.StringAt(i), DTA_Clean, true, DTA_Alpha, alpha, DTA_VirtualWidthF, 320 / scale, DTA_VirtualHeightF, 200 / scale);
 			y += fontheight;
 		}
+	}
+
+	override bool MenuEvent(int mkey, bool fromcontroller)
+	{
+		if (overlay) { overlay = ""; return false; }
+
+		switch (mkey)
+		{
+			case MKEY_Enter:
+				if (mDesc.mSelectedItem >= 0)
+				{
+					if (placeholders.Find(mDesc.mSelectedItem) != placeholders.Size())
+					{
+						overlay = "NOTAVAIL";
+						MenuSound("menu/choose");
+						return false;
+					}
+					else
+					{
+						if (mDesc.mItems[mDesc.mSelectedItem].Activate()) { MenuSound("menu/choose"); }
+					}
+				}
+				return true;
+			default:
+				return Super.MenuEvent(mkey, fromcontroller);
+		}
+	}
+
+	String ToUpper(String input)
+	{
+		String output;
+
+		for (int i = 0; i < input.length(); i++)
+		{
+			int c = input.CharCodeAt(i);
+
+			if (c >= 97 && c <= 122) { c -= 32; }
+
+			output.AppendFormat("%c", c);
+		}
+
+		return output;
 	}
 }
 
@@ -101,7 +177,7 @@ class IconListMenu : ExtendedListMenu
 			{
 				itemindex++;
 
-				// Hard-coded, unfortunately - Icons must be named EPISODE1, EPISODE2, EPISODE3, etc.
+				// Again, semi-hard-coded, unfortunately - Icons must be named [Menu name]1, [Menu name]2, etc.
 				TextureID tex = TexMan.CheckForTexture(lookupBase .. itemindex, TexMan.Type_MiscPatch);
 				if (tex.IsValid())
 				{
@@ -123,7 +199,7 @@ class IconListMenu : ExtendedListMenu
 }
 
 // For an icon that swaps out in place, like the Wolf3D skill menu
-Class StaticIconListMenu : ExtendedListMenu
+class StaticIconListMenu : ExtendedListMenu
 {
 	double iconOffset;
 
@@ -169,7 +245,7 @@ Class StaticIconListMenu : ExtendedListMenu
 
 		double fontheight = mDesc.mFont.GetHeight();
 
-		// Hard-coded, unfortunately - Icons must be named SKILL1, SKILL2, SKILL3, etc.
+		// Again, semi-hard-coded, unfortunately - Icons must be named [Menu name]1, [Menu name]2, etc.
 		TextureID tex = TexMan.CheckForTexture(lookupBase .. index, TexMan.Type_MiscPatch);
 		if (tex.IsValid())
 		{
@@ -187,5 +263,4 @@ Class StaticIconListMenu : ExtendedListMenu
 			screen.DrawTexture(tex, false, x, y, DTA_Clean, true, DTA_Alpha, alpha);
 		}
 	}
-
 }
