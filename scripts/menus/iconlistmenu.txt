@@ -1,4 +1,4 @@
-// Base class that handles drawing informational text under menu entries
+// Base class that handles drawing informational text under menu entries and display of Wolf3D-style popup message on tagged menu entries
 class ExtendedListMenu : ListMenu
 {
 	String lookupBase;
@@ -11,29 +11,7 @@ class ExtendedListMenu : ListMenu
 	{
 		Super.Init(parent, desc);
 
-		int index = 0;
-		placeholders.Clear();
-
-		for (int i = 0; i < mDesc.mItems.Size(); i++)
-		{
-			if (mDesc.mItems[i].Selectable()) { index++; }
-
-			if (mDesc.mItems[i] is "ListMenuItemTextItem")
-			{
-				String temp = ListMenuItemTextItem(mDesc.mItems[i]).mText;
-				temp.Replace("[Unreleased]", "");
-
-				// If the replacement string wasn't there, then this one is good
-				if (temp == ListMenuItemTextItem(mDesc.mItems[i]).mText) { continue; }
-
-				// Otherwise, fix the text string and recolor it, and add it to the list of known placeholders
-				ListMenuItemTextItem(mDesc.mItems[i]).mText = temp;
-				ListMenuItemTextItem(mDesc.mItems[i]).mColor = Font.CR_BLACK;
-				ListMenuItemTextItem(mDesc.mItems[i]).mColorSelected = Font.CR_BLACK;
-
-				placeholders.Push(index);
-			}
-		}
+		GetPlaceholders();
 
 		// Allow generic lookups - strip "menu" off of the menu name, and use that stub as the lookup base (e.g., SKILL, EPISODE, etc.)
 		String MenuName = ToUpper(mDesc.mMenuName);
@@ -148,6 +126,39 @@ class ExtendedListMenu : ListMenu
 		}
 	}
 
+	override void OnReturn()
+	{
+		GetPlaceholders();
+	}
+
+	void GetPlaceholders()
+	{
+		int index = 0;
+
+		placeholders.Clear();
+
+		for (int i = 0; i < mDesc.mItems.Size(); i++)
+		{
+			if (mDesc.mItems[i].Selectable()) { index++; }
+
+			if (mDesc.mItems[i] is "ListMenuItemTextItem")
+			{
+				String temp = ListMenuItemTextItem(mDesc.mItems[i]).mText;
+				temp.Replace("[Unreleased]", "");
+
+				// If the replacement string wasn't there, then this one is good
+				if (temp == ListMenuItemTextItem(mDesc.mItems[i]).mText) { continue; }
+
+				// Otherwise, fix the text string and recolor it, and add it to the list of known placeholders
+				ListMenuItemTextItem(mDesc.mItems[i]).mText = temp;
+				ListMenuItemTextItem(mDesc.mItems[i]).mColor = Font.CR_BLACK;
+				ListMenuItemTextItem(mDesc.mItems[i]).mColorSelected = Font.CR_BLACK;
+
+				placeholders.Push(index);
+			}
+		}
+	}
+
 	void RestorePlaceholderMarkers()
 	{
 		// Restore the placeholder marker for popup message menus so that they will be treated correctly next time the menu is opened
@@ -155,10 +166,7 @@ class ExtendedListMenu : ListMenu
 		{
 			for (int p = 0; p < placeholders.Size(); p++)
 			{
-				String temp = "[Unreleased]";
-				temp.AppendFormat("%s", ListMenuItemTextItem(mDesc.mItems[placeholders[p]]).mText);
-
-				ListMenuItemTextItem(mDesc.mItems[placeholders[p]]).mText = temp;
+				ListMenuItemTextItem(mDesc.mItems[placeholders[p]]).mText = "[Unreleased]" .. ListMenuItemTextItem(mDesc.mItems[placeholders[p]]).mText;
 			}
 		}
 	}
