@@ -33,51 +33,51 @@ ACTOR SteamSpawner : SwitchableDecoration
 		TNT1 A 0 A_JumpIf(Args[0] > 1, "Forward")
 		TNT1 A 0 A_JumpIf(Args[1] > 0, "UpBurst")
 		TNT1 A 0 A_JumpIf(Args[3] > 0, 3)
-		TNT1 A 0 A_PlaySound("STEAM_SMALL", CHAN_7, 1.0, TRUE)
+		TNT1 A 0 A_PlaySound("STEAM_SMALL", CHAN_AUTO, 1.0, TRUE)
 		BaseLoop:
 		TNT1 A 1 A_SpawnItemEx("SteamParticle", 0, 0, 1, (0.1)*random(0, 4), 0, (0.1)*random(35, 40), random(0, 360), 128)
 		Loop
 	Down:
 		TNT1 A 0 A_JumpIf(Args[1] > 0, "DownBurst")
 		TNT1 A 0 A_JumpIf(Args[3] > 0, 3)
-		TNT1 A 0 A_PlaySound("STEAM_SMALL", CHAN_7, 1.0, TRUE)
+		TNT1 A 0 A_PlaySound("STEAM_SMALL", CHAN_AUTO, 1.0, TRUE)
 		DownLoop:
 		TNT1 A 1 A_SpawnItemEx("SteamParticle", 0, 0, 0, (0.1)*random(0, 4), 0, (-0.1)*random(35, 40), random(0, 360), 128)
 		Loop
 	Forward:
 		TNT1 A 0 A_JumpIf(Args[1] > 0, "ForwardBurst")
 		TNT1 A 0 A_JumpIf(Args[3] > 0, 3)
-		TNT1 A 0 A_PlaySound("STEAM_SMALL", CHAN_7, 1.0, TRUE)
+		TNT1 A 0 A_PlaySound("STEAM_SMALL", CHAN_AUTO, 1.0, TRUE)
 		ForwardLoop:
 		TNT1 A 1 A_SpawnItemEx("SteamParticle", 0, 0, 0, (0.1)*random(35, 40), 0, (0.1)*random(-5, 5), random(-8, 8), 128)
 		Loop
 	UpBurst:
-		TNT1 A 1 A_Jump(Args[2]/16, 1)
+		TNT1 A 1 A_Jump(Args[2]+1/16, 1)
 		Loop
 		TNT1 A 0 A_JumpIf(Args[3] > 0, 3)
-		TNT1 A 0 A_PlaySound("STEAM_BURST", CHAN_7, 1.0, TRUE)
+		TNT1 A 0 A_PlaySound("STEAM_BURST", CHAN_AUTO, 1.0, TRUE)
 		UpBLoop:
 		TNT1 A 1 A_SpawnItemEx("SteamParticle", 0, 0, 1, (0.1)*random(0, 4), 0, (0.1)*random(35, 40), random(0, 360), 128)
 		Loop
 	DownBurst:
-		TNT1 A 1 A_Jump(Args[2]/16, 1)
+		TNT1 A 1 A_Jump(Args[2]+1/16, 1)
 		Loop
 		TNT1 A 0 A_JumpIf(Args[3] > 0, 3)
-		TNT1 A 0 A_PlaySound("STEAM_BURST", CHAN_7, 1.0, TRUE)
+		TNT1 A 0 A_PlaySound("STEAM_BURST", CHAN_AUTO, 1.0, TRUE)
 		DownBLoop:
 		TNT1 A 1 A_SpawnItemEx("SteamParticle", 0, 0, 0, (0.1)*random(0, 4), 0, (-0.1)*random(35, 40), random(0, 360), 128)
 		Loop
 	ForwardBurst:
-		TNT1 A 1 A_Jump(Args[2]/16, 1)
+		TNT1 A 1 A_Jump(Args[2]+1/16, 1)
 		Loop
 		TNT1 A 0 A_JumpIf(Args[3] > 0, 3)
-		TNT1 A 0 A_PlaySound("STEAM_BURST", CHAN_7, 1.0, TRUE)
+		TNT1 A 0 A_PlaySound("STEAM_BURST", CHAN_AUTO, 1.0, TRUE)
 		ForwBLoop:
 		TNT1 A 1 A_SpawnItemEx("SteamParticle", 0, 0, 0, (0.1)*random(35, 40), 0, (0.1)*random(-5, 5), random(-8, 8), 128)
 		Loop
 	Inactive:
 		TNT1 A 0 A_ChangeFlag ("DORMANT", TRUE) //mxd. DORMANT flag must be updated manually
-		TNT1 A -1 A_StopSound(CHAN_7)
+		TNT1 A -1 A_StopSound(CHAN_AUTO)
 		Stop
 	EndSpawn:
 		TNT1 A 1
