@@ -4,6 +4,7 @@ class ExtendedListMenu : ListMenu
 	String lookupBase;
 	int itemCount;
 	Name overlay;
+	String overlaytext;
 	Array<int> placeholders;
 
 	override void Init(Menu parent = null, ListMenuDescriptor desc = null)
@@ -52,6 +53,28 @@ class ExtendedListMenu : ListMenu
 		{
 			TextureID tex = TexMan.CheckForTexture(overlay, TexMan.Type_MiscPatch);
 			if (tex.IsValid()) { screen.DrawTexture(tex, false, 160, 100, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true); };
+
+			if (overlaytext.Length())
+			{
+				double scale = 0.8;
+				double fontheight = BigFont.GetHeight() * scale;
+
+				// Default position is centered on the screen (offset slightly toward the bottom so the graphic can have a title and still be centered)
+				double x = 158;
+				double y = 108;
+
+				BrokenLines message = BigFont.BreakLines(overlaytext, int(240 / scale));
+
+				int c = message.Count();
+
+				for (int i = 0; i < c; i++) { y -= fontheight / 2; }
+
+				for (int i = 0; i < c; i++)
+				{
+					screen.DrawText (BigFont, 0, x / scale - message.StringWidth(i) / 2, y / scale, message.StringAt(i), DTA_Clean, true, DTA_KeepRatio, true, DTA_VirtualWidthF, 320 / scale, DTA_VirtualHeightF, 200 / scale);
+					y += fontheight;
+				}
+			}
 		}
 	}
 
@@ -93,12 +116,23 @@ class ExtendedListMenu : ListMenu
 
 		switch (mkey)
 		{
+			case MKEY_Back:
+				RestorePlaceholderMarkers();
+				return Super.MenuEvent(mkey, fromcontroller);
 			case MKEY_Enter:
 				if (mDesc.mSelectedItem >= 0)
 				{
 					if (placeholders.Find(mDesc.mSelectedItem) != placeholders.Size())
 					{
 						overlay = "NOTAVAIL";
+
+						overlaytext = StringTable.Localize("$" .. lookupBase .. mDesc.mSelectedItem .. "MESSAGE");
+						if (overlaytext == lookupBase .. mDesc.mSelectedItem .. "MESSAGE") // Message wasn't found
+						{
+							overlaytext = StringTable.Localize("$DEFAULTMESSAGE");
+							if (overlaytext == "DEFAULTMESSAGE") { overlaytext = ""; return false; } // Default wasn't found either
+						}
+
 						MenuSound("menu/choose");
 						return false;
 					}
@@ -107,9 +141,25 @@ class ExtendedListMenu : ListMenu
 						if (mDesc.mItems[mDesc.mSelectedItem].Activate()) { MenuSound("menu/choose"); }
 					}
 				}
+ 				RestorePlaceholderMarkers();
 				return true;
 			default:
 				return Super.MenuEvent(mkey, fromcontroller);
+		}
+	}
+
+	void RestorePlaceholderMarkers()
+	{
+		// Restore the placeholder marker for popup message menus so that they will be treated correctly next time the menu is opened
+		if (placeholders.Size())
+		{
+			for (int p = 0; p < placeholders.Size(); p++)
+			{
+				String temp = "[Unreleased]";
+				temp.AppendFormat("%s", ListMenuItemTextItem(mDesc.mItems[placeholders[p]]).mText);
+
+				ListMenuItemTextItem(mDesc.mItems[placeholders[p]]).mText = temp;
+			}
 		}
 	}
 
