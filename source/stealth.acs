@@ -237,6 +237,11 @@ script "DecreaseAlertedCount"	(void)
 	if(alertedGuardsCount > 0) alertedGuardsCount--;
 }
 
+script "SetAlertedCount" (int count)
+{
+	alertedGuardsCount = count;
+}
+
 script "GetAlertedCount" (void)
 {
 	SetResultValue(alertedGuardsCount);

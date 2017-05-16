@@ -129,6 +129,7 @@ class BoAPlayer : PlayerPawn
 		CrosshairTarget = GetLineTarget();
 
 		DoTokenChecks();
+		CountAlertedSneakables();
 
 		Super.Tick();
 	}
@@ -247,6 +248,17 @@ class BoAPlayer : PlayerPawn
 			if (mo.master && mo.master != self) { continue; } // Only look at effects that belong to this player actor
 			if (mo is effect) { mo.SetStateLabel('null'); } // Remove the effect, if found
 		}
+	}
+
+	void CountAlertedSneakables()
+	{
+		ThinkerIterator it = ThinkerIterator.Create("SneakableGuardEyesAlerted");
+		SneakableGuardEyesAlerted mo;
+
+		int count;
+		while (mo = SneakableGuardEyesAlerted(it.Next(true))) { count++; }
+
+		ACS_NamedExecuteAlways("SetAlertedCount", 0, count);
 	}
 }
 
