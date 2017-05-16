@@ -17,10 +17,12 @@ ACTOR VolumetricLight_ConeDown : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		VOLT A -1
+		VOLT A 1 NoDelay A_SpawnItemEx("AlertLight", 0, 0, -112, 0, 0, 0, 0, SXF_SETTRACER)
+	ActiveLoop:
+		VOLT A 1
 		Loop
 	Inactive:
-		TNT1 A -1
+		TNT1 A 1 A_RemoveTracer(RMVF_MISC)
 		Loop
 	}
 }

@@ -78,6 +78,7 @@ class AlertLight : Actor
 	void A_AddVisibility()
 	{
 		double brightness = 1;
+		if (tracer) { brightness = min(tracer.alpha * 1.5, 1.0); }
 		if (master) { brightness = (master.args[0] + master.args[1] + master.args[2]) / (255. * 3) * 1.25; } // Calculate the light's overall brightness
 
 		double amount = checkRadius * 2 - Distance3d(target) + 8; // Calculate visibility based on how close the player is to the light
