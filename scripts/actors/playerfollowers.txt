@@ -26,6 +26,8 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 	int fov;
 	int grenadechance;
 	bool countgrenades;
+	bool nocatchup;
+	bool nonmoving;
 
 	Property Weapon:weapon; // Weapon set based on FollowerWeapons Enum
 	Property CloseFollow:forgettarget; // If true, actor will immediately forget its target if the player moves out of range.  Behavior and following is more predictable, but more realistic for an escaping prisoner (vice a soldier in combat) 
@@ -72,7 +74,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			"####" A 0 {
 				startSpeed = Speed;
 				A_SetTics(Random[Startup](0, 15));
-				return ResolveState("Stand"); // Jump via REsolveState versus Goto for inheritance reasons
+				return ResolveState("Stand"); // Jump via ResolveState versus Goto for inheritance reasons
 			}
 		Stand: // Initial setup of actor and identification of what player we want to follow
 			"####" A 1;
@@ -90,6 +92,10 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			Loop;
 		Chase.Near: // Near the player, take up defensive position (if armed), otherwise stand stupidly
 			"####" AAAAA 1 A_Defend();
+			Loop;
+		Chase.Stand: // Wherever standing, take up defensive position (if armed), otherwise stand stupidly
+			"####" AAAAA 1 A_Defend(false);
+			"####" A 0 { if (!nonmoving) { return ResolveState("Chase"); } return ResolveState(null); }
 			Loop;
 		Pain:
 			"####" I 1 A_SpawnItemEx("Pain_Overlay", Scale.X+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR);
@@ -220,6 +226,8 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 	{
 		if (!playerToChase || playerToChase.health <= 0) { return ResolveState("Stand"); } // Make sure a player was targeted as who to chase - if he's dead target another player (multiplayer support)
 
+		if (nonmoving) { return ResolveState("Chase.Stand"); }
+
 		if (waterlevel > 1) { // Make him able to "swim" - No proper animation, but he can at least move up and down in (and get out of) deep water now
 			bFloat = True;
 			bNoGravity = True;
@@ -244,7 +252,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			}
 		}
 
-		if (Markers.Size() - index >= 100) { // If he's far, far behind, warp halfway along the trail *if* the destination spot and the actor aren't in sight of the player.
+		if (!nocatchup && Markers.Size() - index >= 100) { // If he's far, far behind, warp halfway along the trail *if* the destination spot and the actor aren't in sight of the player.
 			if (Markers[index + 50]) {
 				if (!Markers[index + 50].IsVisible(playerToChase, True) && !IsVisible(playerToChase, True)) {
 					SetOrigin(Markers[index + 50].pos, true); // Warp the the halfway point
@@ -341,7 +349,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 					bFrightened = True;
 				}
 
-				if (Distance2d(playerToChase) > radius + 128 + playerToChase.radius && forgettarget) { // ...and if you weren't supposed to forget your target when the player is away...
+				if (!nonmoving && (Distance2d(playerToChase) > radius + 128 + playerToChase.radius && forgettarget)) { // ...and if you weren't supposed to forget your target when the player is away...
 					target = null;
 					goal = playerToChase;
 				} else { 
