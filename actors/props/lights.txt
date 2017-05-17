@@ -4,6 +4,7 @@ ACTOR ChanGold : SwitchableDecoration //3d actor
 	//$Category Light Sources (Wolf3D)
 	//$Title Chandelier (gold, switchable)
 	//$Color 11
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 52
 	+NOGRAVITY
@@ -29,6 +30,7 @@ ACTOR Chandelier1Switchable : SwitchableDecoration
 	//$Arg0 Sound
 	//$Arg0Type 11
 	//$Arg0Enum { 0 = "Yes"; 1 = "No"; }
+	DistanceCheck "scenelod"
 	Radius 10
 	Height 56
 	+NOBLOCKMAP
@@ -70,6 +72,7 @@ ACTOR Chandelier2Switchable : SwitchableDecoration
 	//$Arg0 Sound
 	//$Arg0Type 11
 	//$Arg0Enum { 0 = "Yes"; 1 = "No"; }
+	DistanceCheck "scenelod"
 	Radius 10
 	Height 56
 	+NOBLOCKMAP
@@ -106,11 +109,13 @@ ACTOR Chandelier2Switchable : SwitchableDecoration
 ACTOR Chandelier3Switchable : Chandelier1Switchable
 {
 	//$Title 3d Chandelier with Tall Candles (black, switchable)
+	DistanceCheck "scenelod"
 }
 
 ACTOR Chandelier4Switchable : Chandelier2Switchable
 {
 	//$Title 3d Chandelier with Short Candles (black, switchable)
+	DistanceCheck "scenelod"
 }
 
 ACTOR COD_OilLamp : SwitchableDecoration
@@ -121,6 +126,7 @@ ACTOR COD_OilLamp : SwitchableDecoration
 	//$Arg0 Sound
 	//$Arg0Type 11
 	//$Arg0Enum { 0 = "Yes"; 1 = "No"; }
+	DistanceCheck "scenelod"
 	Radius 4
 	Height 4
 	+NOBLOCKMAP
@@ -151,6 +157,7 @@ ACTOR COD_OilLamp : SwitchableDecoration
 //needed for 3d chandeliers
 ACTOR 3dFlame_Normal
 {
+	DistanceCheck "sfxlod"
 	Scale 0.06
 	+FORCEYBILLBOARD
 	+NOBLOCKMAP
@@ -170,6 +177,7 @@ ACTOR 3dFlame_Normal
 
 ACTOR 3dFlame_Short : 3dFlame_Normal
 {
+	DistanceCheck "sfxlod"
 	Scale 0.03
 	States
 	{
@@ -183,6 +191,7 @@ ACTOR 3dFlame_Short : 3dFlame_Normal
 
 ACTOR 3dFlame_Tall : 3dFlame_Normal
 {
+	DistanceCheck "sfxlod"
 	Scale 0.09
 	States
 	{
@@ -196,6 +205,7 @@ ACTOR 3dFlame_Tall : 3dFlame_Normal
 
 ACTOR 3dFlame_Lamp : 3dFlame_Normal
 {
+	DistanceCheck "sfxlod"
 	Scale 0.02
 	States
 	{
@@ -212,10 +222,12 @@ ACTOR CeilingLightM : SwitchableDecoration
 	//$Category Light Sources (Wolf3D)
 	//$Title Ceiling Light (middle, switchable)
 	//$Color 11
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 23
 	+NOBLOCKMAP
 	+NOGRAVITY
+	+NOINTERACTION
 	+NOTAUTOAIMED
 	+SOLID
 	+SPAWNCEILING
@@ -260,6 +272,7 @@ ACTOR StreetLight1 : SwitchableDecoration
 	//$Category Light Sources (Wolf3D)
 	//$Title Street Light (off, switchable)
 	//$Color 11
+	DistanceCheck "scenelod"
 	Radius 4
 	Height 128
 	+SOLID
@@ -284,6 +297,7 @@ ACTOR StreetLight1 : SwitchableDecoration
 ACTOR StreetLight1Lit : StreetLight1
 {
 	//$Title Street Light (on, switchable)
+	DistanceCheck "scenelod"
 	States
 	{
 	Active:
@@ -308,6 +322,7 @@ ACTOR StreetLight2 : SwitchableDecoration
 	//$Category Light Sources (Wolf3D)
 	//$Title Street Light (triple, switchable)
 	//$Color 11
+	DistanceCheck "scenelod"
 	Radius 4
 	Height 128
 	+SOLID
@@ -329,6 +344,7 @@ ACTOR StreetLight3 : SwitchableDecoration
 	//$Category Light Sources (Wolf3D)
 	//$Title Street Light (single, switchable)
 	//$Color 11
+	DistanceCheck "scenelod"
 	Radius 4
 	Height 128
 	+SOLID
@@ -350,10 +366,12 @@ ACTOR CastleLight1 : SwitchableDecoration
 	//$Category Light Sources (Wolf3D)
 	//$Title Castle Light 1 (switchable)
 	//$Color 11
+	DistanceCheck "scenelod"
 	Radius 16
 	Height 32
 	+NOBLOCKMAP
 	+NOGRAVITY
+	+NOINTERACTION
 	+SOLID
 	+SPAWNCEILING
 	States
@@ -377,6 +395,7 @@ ACTOR CastleLight1 : SwitchableDecoration
 ACTOR CastleLight2 : CastleLight1
 {
 	//$Title Castle Light 2 (switchable)
+	DistanceCheck "scenelod"
 	Height 56
 	States
 	{
@@ -390,6 +409,7 @@ ACTOR CastleLight2 : CastleLight1
 ACTOR Cell_Light : CastleLight1
 {
 	//$Title Cell Light (switchable)
+	DistanceCheck "scenelod"
 	Radius 8
 	Height 1
 	States
@@ -406,6 +426,7 @@ ACTOR ColumnLight
 	//$Category Light Sources (Wolf3D)/Static
 	//$Title Column Light (on)
 	//$Color 11
+	DistanceCheck "scenelod"
 	Radius 8
 	Height 136
 	+SOLID
@@ -420,6 +441,7 @@ ACTOR ColumnLight
 ACTOR ColumnLight2 : ColumnLight
 {
 	//$Title Column Light (off)
+	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:
@@ -435,6 +457,7 @@ ACTOR LightBulb : SwitchableDecoration
 	//$Color 11
 	//$Arg0 "Type"
 	//$Arg0Tooltip "Pickup the desired type\nBreakable: 0\nUnBreakable: 1"
+	DistanceCheck "scenelod"
 	Radius 4
 	Height 1
 	Health 1
@@ -442,6 +465,7 @@ ACTOR LightBulb : SwitchableDecoration
 	+DONTTHRUST
 	+NOBLOOD
 	+NOGRAVITY
+	+NOINTERACTION
 	+NOTAUTOAIMED
 	+SHOOTABLE
 	+SOLID
@@ -473,6 +497,7 @@ ACTOR LightBulb : SwitchableDecoration
 ACTOR LightBulbOn : LightBulb
 {
 	//$Title Light Bulb (on, breakable)
+	DistanceCheck "scenelod"
 	States
 	{
 	Active:
@@ -493,6 +518,7 @@ ACTOR LightBulbOn : LightBulb
 ACTOR LightBulb_Red : LightBulb
 {
 	//$Title Light Bulb, Red (off, breakable)
+	DistanceCheck "scenelod"
 	States
 	{
 	Active:
@@ -513,6 +539,7 @@ ACTOR LightBulb_Red : LightBulb
 ACTOR LightBulbOn_Red : LightBulb
 {
 	//$Title Light Bulb, Red (on, breakable)
+	DistanceCheck "scenelod"
 	States
 	{
 	Active:
@@ -533,6 +560,7 @@ ACTOR LightBulbOn_Red : LightBulb
 ACTOR LightBulb_Grn : LightBulb
 {
 	//$Title Light Bulb, Green (off, breakable)
+	DistanceCheck "scenelod"
 	States
 	{
 	Active:
@@ -553,6 +581,7 @@ ACTOR LightBulb_Grn : LightBulb
 ACTOR LightBulbOn_Grn : LightBulb
 {
 	//$Title Light Bulb, Green (on, breakable)
+	DistanceCheck "scenelod"
 	States
 	{
 	Active:
