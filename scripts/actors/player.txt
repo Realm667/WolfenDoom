@@ -1,3 +1,49 @@
+/*
+
+  New Functions:
+	GetLineTarget()
+	- Saves reference to whatever actor is under the player's crosshair to the CrossHairTarget variable
+	- Used by Status Bar code to draw boss health bars
+
+	GetClosestForcedHealthBar()
+	- Finds the closest Nazi class descendant with the user_DrawHealthBar variable set to true and saves 
+	  a reference to that actor to the ForcedHealthBar variable
+	- Used by Status Bar code to draw always-present health bar (e.g., Nebelwerfer in Paris)
+
+	CountAlertedSneakables()
+	- Stores the number of sneakable actors that are currently alerted to an ACS variable
+	- Used internally by the status bar code to display the count of alerted sneakables
+
+	DoTokenChecks()
+	- Parent function where various inventory checks should be performed
+
+	CheckSpriteToken(token name, standing sprite, [crouching sprite])
+	- Handles sprite changing for Disguise Tokens:
+
+		CheckSpriteToken("ScientistUniformToken", "PLSC", "PLYS")
+
+	  This checks the player's inventory for the "ScientistUniformToken" token, and, if found, sets the 
+	  base sprite to PLSC if the player is standing and PLYS if the player is crouching.  Also cancels
+	  out the sprite squishing if you specify a crouch sprite
+	- If you don't specify a crouching sprite, the standing sprite is used and default squishing applies
+
+	SpawnEffect(class<PlayerEffect>)
+	RemoveEffect(class<PlayerEffect>)
+	- Used to spawn/remove an effect actor that follows the player around (e.g., glow for FireBrand)
+	- See PlayerEffect class information below
+	- Checks should be performed in DoTokenChecks:
+
+		// If current weapon is BFG9000, spawn swirlysparkles that follow the player
+		if (player && player.ReadyWeapon is "BFG9000") { SpawnEffect("SwirlySparkles"); }
+		else { RemoveEffect("SwirlySparkles"); }
+
+  New Base Classes:
+	PlayerEffect
+	- Base class for player effects, to be spawned/removed with SpawnEffect/RemoveEffect as shown above
+	- Literally just a simple actor that constantly warps to the position of its master (the player)
+  
+*/
+
 class BoAPlayer : PlayerPawn
 {
 	double user_crouch;

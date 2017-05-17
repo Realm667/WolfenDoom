@@ -1,14 +1,79 @@
+/*
+
+  An actor that will stand dormant until it sees a player, then will follow that player.
+  The actor can be set to carry a specific weapon, and 
+
+  Custom Properties:
+	PlayerFollower.Weapon
+	- Weapon that the PlayerFollower will spawn with, set based on FollowerWeapons Enum 
+	  below (e.g., PWEAP_None, PWEAP, Luger, etc.)
+
+	PlayerFollower.CloseFollow
+	- If true, actor will immediately forget its target if the player moves out of range.  
+	- This has the effect of making the actor follow the player more closely
+	- Behavior and following is more predictable, but more realistic for an escaping 
+	  prisoner (vice a soldier in combat) 
+
+	PlayerFollower.ChaseAttackChance
+	- Chance that the actor will stop while chasing to attack enemies - because of how 
+	  often this check is performed, values will need to be *very* low (e.g., 2-4) to see 
+	  any change in actor behavior.
+
+	PlayerFollower.FOV
+	- FOV used for look/search/sight calls
+
+	PlayerFollower.GrenadeChance
+	- Chance of using grenades.  By default, the actor has an infinite supply of grenades.
+	- Alternatively, if you give the actor a specific number of grenades via a script, 
+	  then the PlayerFollower will throw up to that many grenades, then no more.
+
+  Useful Variables:
+	These are intended to be set via ACS using 'SetUserVariable(tid, "variable", value);'
+
+	nocatchup (default is 0)
+	- Normally, if a PlayerFollower falls 100 pathmarkers behind the player, the actor
+	  will be warped ahead to the 50th pathmarker (if the player can't see the marker)
+	- Setting this boolean to 1 disables that behavior.  This is useful if you want to 
+	  force a PlayerFollower along a certain route in the map, and don't want him skipping 
+	  ahead.
+	- Be cautious!  If the PlayerFollower gets stuck somwhere in the level geometry while 
+	  this is set, then the PlayerFollower will never be able to become un-stuck.
+	
+	nonmoving (default is 0)
+	- Setting this boolean to 1 causes the PlayerFollower to stand in place and not 
+	  follow the player anymore. 
+	- This differs from being dormant/Deactivated in that the PlayerFollower will still
+	  look for players, look for enemies, and open fire on enemies.
+
+  Editing Tricks:
+	Block the PlayerFollower
+	- Normally the PlayerFollowers are not blocked by Monster-Blocking lines.  If you want 
+	  to limit where a PlayerFollower can go, just remove the NOBLOCKMONST flag in ACS:
+
+		SetActorFlag(tid, "NOBLOCKMONST", 0);
+
+	  Then place monster blocking lines in the map, and the PlayerFollower won't be able to 
+	  cross them.  
+
+	Change PlayerFollower Weapon
+	- You can change the weapon that a PlayerFollower is carrying by giving them a new weapon
+	  via ACS.  Note that the weapon must be one of those that is coded below... 
+	- Valid weapons are: Luger9mm, MP40, Sten, KnifeSilent (and GrenadePickup, as discussed in
+	  the PlayerFollower.GrenadeChance property section above)
+
+*/
+
 // Parent class that holds functions and logic
 class PlayerFollower : Actor //Default version - for actors like prisoner with A as standing frame and B-E walking, FGH firing, I pain, JKLMN Death 
 {
 	enum FollowerWeapons
 	{
-		PWEAP_None,
-		PWEAP_Melee,
-		PWEAP_Luger,
-		PWEAP_MP40,
-		PWEAP_Rifle,
-		PWEAP_Grenade
+		PWEAP_None, // 0
+		PWEAP_Melee, // 1
+		PWEAP_Luger, // 2
+		PWEAP_MP40, // 3
+		PWEAP_Rifle, // 4
+		PWEAP_Grenade // 5
 	};
 
 	Array<PathMarker> Markers;
@@ -294,13 +359,13 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 	{
 		bNoRadiusDmg = False;
 
+		if (CheckInventory("KnifeSilent", 1)) { weapon = PWEAP_Melee; }
 		if (CheckInventory("Luger9mm", 1)) { weapon = PWEAP_Luger; } // Or give him a weapon via script and he will act like a friendly Guard
 		if (CheckInventory("MP40", 1)) { weapon = PWEAP_MP40; }
 		if (CheckInventory("Sten", 1)) { weapon = PWEAP_Rifle; }
-		if (CheckInventory("KnifeSilent", 1)) { weapon = PWEAP_Melee; }
 
 		if (CheckInventory("GrenadePickup", 1)) { countgrenades = True; grenadechance = grenadechance ? grenadechance : 16; } // If they have a grenade, use it - if they were given as inventory, count them!
-		if (countgrenades && !CheckInventory("GrenadePickup", 1)) { grenadechance = 0; } // If they used all their grenades, don't trhow any more
+		if (countgrenades && !CheckInventory("GrenadePickup", 1)) { grenadechance = 0; } // If they used all their grenades, don't throw any more
 
 		vel = (0, 0, 0);
 
