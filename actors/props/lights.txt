@@ -227,7 +227,6 @@ ACTOR CeilingLightM : SwitchableDecoration
 	Height 23
 	+NOBLOCKMAP
 	+NOGRAVITY
-	+NOINTERACTION
 	+NOTAUTOAIMED
 	+SOLID
 	+SPAWNCEILING
@@ -371,7 +370,6 @@ ACTOR CastleLight1 : SwitchableDecoration
 	Height 32
 	+NOBLOCKMAP
 	+NOGRAVITY
-	+NOINTERACTION
 	+SOLID
 	+SPAWNCEILING
 	States
@@ -597,6 +595,39 @@ ACTOR LightBulbOn_Grn : LightBulb
 		MDLA A -1 A_ChangeFlag("DORMANT", TRUE)
 		Stop
 	}
+}
+
+//Non-Interactive variants
+ACTOR CeilingLightM_NoInt : CeilingLightM
+{
+	//$Category Light Sources (Wolf3D)/Non-Interactive
+	//$Title Non-Interactive Ceiling Light (middle, switchable)
+	DistanceCheck "scenelod"
+	+NOINTERACTION
+}
+
+ACTOR CeilingLightM2_NoInt : CeilingLightM2
+{
+	//$Category Light Sources (Wolf3D)/Non-Interactive
+	//$Title Non-Interactive Ceiling Light (small, switchable)
+	DistanceCheck "scenelod"
+	+NOINTERACTION
+}
+
+ACTOR CastleLight1_NoInt : CastleLight1
+{
+	//$Category Light Sources (Wolf3D)/Non-Interactive
+	//$Title Non-Interactive Castle Light 1 (switchable)
+	DistanceCheck "scenelod"
+	+NOINTERACTION
+}
+
+ACTOR CastleLight2_NoInt : CastleLight1
+{
+	//$Category Light Sources (Wolf3D)/Non-Interactive
+	//$Title Non-Interactive Castle Light 2 (switchable)
+	DistanceCheck "scenelod"
+	+NOINTERACTION
 }
 
 //2d Lights
