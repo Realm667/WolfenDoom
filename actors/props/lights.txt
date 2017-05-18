@@ -2,7 +2,7 @@
 ACTOR ChanGold : SwitchableDecoration //3d actor
 {
 	//$Category Light Sources (Wolf3D)
-	//$Title Chandelier (gold, switchable)
+	//$Title Gold Chandelier (switchable)
 	//$Color 11
 	DistanceCheck "scenelod"
 	Radius 16
@@ -626,6 +626,22 @@ ACTOR CastleLight2_NoInt : CastleLight1
 {
 	//$Category Light Sources (Wolf3D)/Non-Interactive
 	//$Title Non-Interactive Castle Light 2 (switchable)
+	DistanceCheck "scenelod"
+	+NOINTERACTION
+}
+
+ACTOR ChanGold_NoInt : ChanGold
+{
+	//$Category Light Sources (Wolf3D)/Non-Interactive
+	//$Title Non-Interactive Gold Chandelier (switchable)
+	DistanceCheck "scenelod"
+	+NOINTERACTION
+}
+
+ACTOR Cell_Light_NoInt : Cell_Light
+{
+	//$Category Light Sources (Wolf3D)/Non-Interactive
+	//$Title Non-Interactive Cell Light (switchable)
 	DistanceCheck "scenelod"
 	+NOINTERACTION
 }
