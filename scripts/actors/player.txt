@@ -171,7 +171,8 @@ class BoAPlayer : PlayerPawn
 
 	override void Tick()
 	{
-		ForcedHealthBar = GetClosestForcedHealthBar();
+		if (Level.time % (35 * 5) == 0) { ForcedHealthBar = GetClosestForcedHealthBar(); } // Only run this check occasionally
+		
 		CrosshairTarget = GetLineTarget();
 
 		DoTokenChecks();

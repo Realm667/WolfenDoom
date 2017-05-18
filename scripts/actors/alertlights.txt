@@ -1,8 +1,12 @@
 class AlertPointLight : PointLight replaces PointLight
 {
+	bool sneakables;
+
 	override void PostBeginPlay()
 	{
 		if (!bDormant) { SpawnLight(); }
+
+		sneakables = SneakableActors();
 
 		Super.PostBeginPlay();
 	}
@@ -25,7 +29,7 @@ class AlertPointLight : PointLight replaces PointLight
 
 	void SpawnLight()
 	{
-		A_SpawnItemEx("AlertLight", flags:SXF_SETMASTER);
+		if (sneakables) { A_SpawnItemEx("AlertLight", flags:SXF_SETMASTER); } // Only spawn AlertLight if there are sneakables in the level
 
 		bDormant = false;
 	}
@@ -35,6 +39,19 @@ class AlertPointLight : PointLight replaces PointLight
 		A_RemoveChildren(TRUE, RMVF_MISC);
 
 		bDormant = true;
+	}
+
+	bool SneakableActors() // Are there sneakable actors in the level?
+	{
+		int count;
+
+		ThinkerIterator it = ThinkerIterator.Create("Nazi");
+		Nazi mo;
+		while (mo = Nazi(it.Next(true)))
+		{
+			if (mo.health > 0 && mo.user_sneakable) { return true; } // Actually check the bool to see if the actor is sneakable
+		}
+		return false;
 	}
 }
 
