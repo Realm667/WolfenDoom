@@ -186,17 +186,25 @@ map C2M4 lookup "C2M4"	//Tormentor667
 	cluster = 1
 }
 
-map C2M5 lookup "C2M5"	//Tormentor667
+map C2M5_A lookup "C2M5_A"	//Tormentor667
 {
 	levelnum = 11
 	music = "C1M2_MUS"
+	cluster = 1
+	next = C2M5_B
+}
+
+map C2M5_B lookup "C2M5_B"	//Tormentor667
+{
+	levelnum = 12
+	music = "C2M5_LAB"
 	cluster = 1
 }
 
 
 map C2M6_A lookup "C2M6_A"	//Tormentor667
 {
-	levelnum = 12
+	levelnum = 13
 	music = "C2M4_MUS"
 	cluster = 1
 	next = C2M6_B
@@ -204,7 +212,7 @@ map C2M6_A lookup "C2M6_A"	//Tormentor667
 
 map C2M6_B lookup "C2M6_B"	//Tormentor667 & DoomJuan
 {
-	levelnum = 13
+	levelnum = 14
 	music = "C2M6B_IN" 	//"C2M5_MUS" runs after intro
 	cluster = 1
 	next = C2M6_C
@@ -212,7 +220,7 @@ map C2M6_B lookup "C2M6_B"	//Tormentor667 & DoomJuan
 
 map C2M6_C lookup "C2M6_C"	//Tormentor667
 {
-	levelnum = 14
+	levelnum = 15
 	next = EndTitle
 	music = "C2M6C_IN"	//"C2M6AMUS" runs after intro
 	cluster = 1
