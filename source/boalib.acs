@@ -40,6 +40,11 @@ script "boaobjectives" (void)
 		objectives_on[PlayerNumber()]=1;
 }
 
+/* Change an objective
+ * mode - 0 for icon, 1 for text.
+ * objnumber - 0-indexed objective number. 0-2 are primary, 3-5 are secondary.
+ * objtext - Objective text. MO_ICON_OPN or MO_ICON_ACC if mode is 0, LANGUAGE entry name if mode is 1.
+ */
 script "boaobjectivesset"(int mode,int objnumber,int objtext)
 {
 	if (mode == 1) { // Objective text
