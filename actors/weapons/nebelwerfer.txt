@@ -166,9 +166,9 @@ ACTOR NebelwerferTruck : Nebelwerfer
 	Fire:
 		HSML A 0 A_GunFlash
 		HSML A 0 A_PlaySound("nebelwerfer/fire", CHAN_WEAPON)
-		HSML BBC 1 A_SetPitch(pitch-(0.5*CallACS("RecoilAmount")))
+		HSML BBC 1 //A_SetPitch(pitch-(0.5*CallACS("RecoilAmount")))
 		HSML C 0 A_FireCustomMissile("NebRocket")
-		HSML CDD 1 A_SetPitch(pitch-(0.5*CallACS("RecoilAmount")))
+		HSML CDD 1 A_SetPitch(pitch-(0.7*CallACS("RecoilAmount")))
 		HSML A 40 
 		HSML A 2 A_ReFire
 		Goto Ready
