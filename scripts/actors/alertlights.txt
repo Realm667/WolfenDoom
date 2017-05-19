@@ -1,3 +1,12 @@
+/*
+
+  Version of standard dynamic light that spawns a helper actor that sets the 
+  visibility variable of any player in proximity to the light, based on the 
+  distance that the payer is from the center of the light
+
+  These lights automatically replace all point lights.
+
+*/
 class AlertPointLight : PointLight replaces PointLight
 {
 	bool sneakables;
@@ -45,16 +54,36 @@ class AlertPointLight : PointLight replaces PointLight
 	{
 		int count;
 
-		ThinkerIterator it = ThinkerIterator.Create("Nazi");
-		Nazi mo;
-		while (mo = Nazi(it.Next(true)))
+		ThinkerIterator it = ThinkerIterator.Create("StealthBase"); // Just iterate over the sneakable eyes - faster than all Nazi actors
+		StealthBase mo;
+		while (mo = StealthBase(it.Next(true)))
 		{
-			if (mo.health > 0 && mo.user_sneakable) { return true; } // Actually check the bool to see if the actor is sneakable
+			return true;
 		}
+
 		return false;
 	}
 }
 
+/*
+
+  Helper actor that handles changing the player's visibility value based on
+  how close the player is to the center of the light.
+
+  By default, when spawned by the point light replacement above, whihc sets 
+  itself as master to the AlertLight, this actor automatically scales itself 
+  to match the dynamic light's radius, and uses the brightness of the dynamic 
+  light to scale the visibility value that it sets for the player.  
+
+  If placed directly in-editor, argument 0 is used to set the radius of the
+  visibility increase (with a fall-back to 64 units if no value is provided, 
+  and the brightness of the light is assumed to be 100%.
+
+  If spawned by an actor that sets itself as the AlertLight's tracer, the
+  brightness of the light is scaled based on the alpha value of the tracer
+  actor.  this is used in-game by the Volumetric Light actor.
+
+*/
 class AlertLight : Actor
 {
 	double checkRadius;

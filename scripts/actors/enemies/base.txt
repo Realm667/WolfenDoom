@@ -1,3 +1,81 @@
+/*
+
+  Base class that allows for handling of Boss Icons, Always-drawn health bars, 
+  and for "indiscriminate" enemies to be able to see through player disguises.
+
+  Nazi class inherits from the Base class, so includes the same functionality,
+  but also adds properties to configure "sneakability" and "perception".  It 
+  also includes handling for Stealth/one-hit knife attacks, and the code for 
+  alerting and setting idle sneakable enemies.
+
+  Custom Properties
+	Base.BossIcon
+	- String property that is used to look up the icon image that is displayed 
+	  with the enemy's health bar	
+	- Must be used in combination with the +BOSS flag (which enables the boss 
+	  health bar to be drawn) or the Base.AlwaysDrawHealthBar property below.
+	- Has no effect if the enemy is not flagged to have health bar drawn.
+
+	Base.AlwaysDrawHealthBar
+	- Boolean value that is used to tell the game if the enemy's health bar should
+	  always be drawn.  
+	- Does not require the +BOSS flag to be set, and can alternatively be 
+	  controlled via ACS or in-editor by setting the user_DrawHealthBar variable
+
+	Nazi.Sneakable
+	- Boolean that controls if the enemy is a sneakable enemy or not.
+	- Can also be set in-editor on a per-actor basis by setting the user_sneakable
+	  variable.
+
+	Nazi.PerceptionTime
+	- Integer value that controls how many tics a disguised player must remain in 
+	  sight of this enemy before the player's disguise fails.
+	- Default value is 0, meaning "can't see through disguises"
+	- Used by SneakableEyesIdle actor (as seen on sneakable Gestapo)
+
+	Nazi.PerceptionFOV
+	- Integer value that controls the FOV of the enemy when trying to see through 
+	  player disguises.
+	- Used by SneakableEyesIdle actor (as seen on sneakable Gestapo)
+
+  New Functions (Base class)
+	A_LookThroughDisguise(int flags = 0, float minseedist = 0, float Range = 0, float maxheardist = 0, double fov = 0, statelabel label = "See")
+	- Allows enemies to always and immediately "see through" player disguises, 
+	  essentially by having those enemies ignore the NOTARGET flag when looking 
+	  for their target.
+	- Parameters are the same as for A_LookEx (https://zdoom.org/wiki/A_LookEx)
+	- Should be used in place of A_Look or A_LookEx for "indiscriminate" enemies,
+	  that wouldn't be fooled by a disguise, like rats, spiders, and possibly 
+	  paranormal creatures.
+
+  New Functions (Nazi class)
+	A_NaziPain(int alertrange = 0, bool playsound = True)	
+	- Consolidated function intended for use in Nazi class Pain states to 
+	  eliminate code duplication across actors.
+	- Spawns pain overlay, alerts actors within the passed range, and calls A_Pain
+	  if playsound is true.
+
+	BecomeAlerted(Actor newtarget = null)
+	- Sets an idle sneakable actor to alerted, spawns alerted helper actor to 
+	  continue checking the player's visibility and to manage the return-to-idle 
+	  timout counters.
+	- Takes one parameter - the new actor to target.
+	- Used internally by SneakableEyesIdle actor
+
+	BecomeIdle()
+	- Sets an alerted sneakable actor to idle, spawns idle helper actor to look
+	  for players and play idle sounds.
+	- Also sets actor back to patrolling/goal chasing if a goal had been set 
+	  before the actor was alerted
+	- Used internally by SneakableEyesAlerted actor
+
+	SneakableActors()
+	- Returns true/false if there are actors flagged as "sneakable" in the current
+	  map (Actually just counts StealthBase actors to avoid iterating over all
+	  Base or Nazi class descendants and causing huge slowdown).
+	- Used internally to set up sneakable handling
+
+*/
 // Base class to add ability to see through notarget to actors (e.g., mice, sharks)
 class Base : Actor
 {
@@ -67,6 +145,7 @@ class Nazi : Base
 		+DONTHARMSPECIES
 		+FLOORCLIP
 		+NOINFIGHTSPECIES
+		+WINDTHRUST
 		DamageFactor "Frag", 1.2; //increased damage from grenades & clusterbombs for Nazi related enemies - this fix TurretSoldiers [ozy81]
 		Scale 0.65;
 		Height 56;
@@ -185,7 +264,6 @@ class Nazi : Base
 			if (user_sneakable) // and it was a sneakable actor...
 			{
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING); // Remove the sneakable eyes
-				if (!bFriendly) { ACS_NamedExecute("DecreaseAlertedCount"); } // Decrement the alert counter if the actor had been alerted
 			}
 		}
 
@@ -220,14 +298,13 @@ class Nazi : Base
 
 	bool SneakableActors() // Are there sneakable actors in the level?
 	{
-		int count;
-
-		ThinkerIterator it = ThinkerIterator.Create("Nazi");
-		Nazi mo;
-		while (mo = Nazi(it.Next(true)))
+		ThinkerIterator it = ThinkerIterator.Create("StealthBase"); // Just iterate over the sneakable eyes - faster than all Nazi actors
+		StealthBase mo;
+		while (mo = StealthBase(it.Next(true)))
 		{
-			if (mo.health > 0 && mo.user_sneakable) { return true; } // Actually check the bool to see if the actor is sneakable
+			return true;
 		}
+
 		return false;
 	}
 }

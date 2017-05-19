@@ -17,7 +17,11 @@ class ModelOpelTruckWindows : Actor
 
 	override void BeginPlay()
 	{
-		ChangeStatNum(STAT_SCRIPTS + 1); // Tic after the pathfollower moves and the rail script has adjusted the truck model!
+		// STATNUM values set the order in which an actor is Ticked by the game loop.
+		//  This change causes this actor to Tick *after* the pathfollower moves and 
+		//  the rail script has adjusted the truck model, instead of before the 
+		//  script runs, as would be the default behavior.
+		ChangeStatNum(STAT_SCRIPTS + 1);
 	}
 
 	override void Tick()

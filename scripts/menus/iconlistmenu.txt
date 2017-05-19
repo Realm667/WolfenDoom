@@ -1,3 +1,93 @@
+/*
+
+  ListMenu extension that allows for menus in the style of Wolf3D's episode and
+  skill selection screens.
+
+  This code implements two new ListItem classes: 
+	IconListMenu
+	- Adds an image to the left of each menu entry, resulting in a menu that 
+	  looks similar to the Wolf3D episode selection menu
+	- Also handles automatically offsetting the selection cursor
+
+	StaticIconListMenu
+	- Adds an image to the center-right of the entire menu, similar to the one 
+	  seen on the Wolf3D skill selection menu
+	- Automatically calculates position and offsets based on the number and size
+	  of the entries in the menu
+
+  Both of these classes also implement the ability to add on-screen descriptive
+  text for each menu item (text appears centered below the menu).  They also 
+  add the ability to cause menu entries to generate a popup message similar to 
+  Wolf3D shareware's "Click Read This to find out how to order" message.
+
+  To use these classes, they must be set up in MENUDEF by setting the class of
+  the menu you are changing to one of these class names.  For example, if I
+  wanted to have a Wolf3D-style episode select, my EpisodeMenu definition would
+  look something like this:
+
+		ListMenu "EpisodeMenu"
+		{
+			StaticPatchCentered 160, 5, "M_EPIS"
+
+			NetgameMessage "$NEWGAME"
+			Position 70, 60
+
+			Linespacing 26
+
+			Class "IconListMenu"
+		}
+
+  Once this is done, you must add the appropriate images and/or LANGUAGE lump
+  entries to your mod. Note that if your image is taller than one line of the 
+  menu font's text, you will also need to adjost Linespacing in MENUDEFS, since
+  Episode properties aren't exported to ZScript (yet?). 
+
+  All additional menu content must follows a specific naming convention!
+
+  The name of the menu (with "Menu" removed from the end) is used as the base
+  of all lookup strings (So, "Episode", "Skill", etc.).  The number of the menu
+  item (1st item is 1, 2nd item is 2, etc.) is used as the index (this also 
+  means that if you re-order your menu items, you'll need to rename your images
+  and LANGUAGE entries as well).
+
+    Lookup Strings Used:
+	Icon Images (Texture name lookup):	
+	[Lookup Base][index] 	   	Example: EPISODE1, SKILL2, etc.
+
+	Descriptions (LANGUAGE lookup):
+	[Lookup Base]DESCRIPTION[index]	Example: EPISODEDESCRIPTION1, SKILLDESCRIPTION2
+
+	Popup Text (LANGUAGE lookup):
+	[Lookup Base][index]MESSAGE	Example: EPISODE1MESSAGE, SKILL5MESSAGE
+
+  Images and Descriptions will automatically be used if they are present.  If 
+  you do not provide an image or string for a menu item, then the menu entry 
+  will appear as it normally would in a standard ListMenu (though spacing and
+  offsets may still be affected if other icons are present).
+
+  Popup messages are handled slightly differently.  In order to set up a popup 
+  message, you must add "[Unreleased]" to the beginning of your episode's name
+  in MAPINFO:
+
+		episode C3M1
+		{
+			name = "[Unreleased]The Clash of Faith"
+		}
+
+  The "[Unreleased]" portion of the name will be stripped off when the episode 
+  select screen is rendered, but is used as a flag internally by this code.
+
+  If you add "[Unreleased]" to the episode name but do not include an 
+  EPISODExMESSAGE string in LANGUAGE, the code will attempt to look up the 
+  DEFAULTMESSAGE string as a fallback.  If that string is not found either, 
+  then no message will be displayed (but the background image will be drawn, if
+  defined - see below).
+
+  If you want the popup message to have a background, you must provide an image
+  named "NOTAVAIL".  If this image is not found, no background image will be 
+  drawn (but any defined text will still show up).
+
+*/
 // Base class that handles drawing informational text under menu entries and display of Wolf3D-style popup message on tagged menu entries
 class ExtendedListMenu : ListMenu
 {

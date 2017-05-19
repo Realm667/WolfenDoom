@@ -1,3 +1,21 @@
+/*
+
+  Base class for the helper actors that are spawned when a Nazi class 
+  descendant is flagged as "sneakable". Also handles "perceptive" enemies who
+  can see through disguises.
+
+  New Functions
+	A_LookForNoTargetPlayer()
+	- Allows enemies to "see through" player disguises, essentially by having 
+	  those enemies ignore the NOTARGET flag when looking for their target, then
+	  alerting the actor once the player has been in sight for more than the 
+	  specified modder-configured threshold  (See Nazi class declaration).
+	- Threshold increments more quickly the closer the player is the the actor
+	- Used in-game for Gestapo agents who can see through player disguises.
+	- This should not be called directly; it is configured via Nazi class 
+	  Properties and called automatically by the sneakableeyes actors.
+
+*/
 class StealthBase : Actor
 {
 	int playernum;
