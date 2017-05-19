@@ -41,6 +41,8 @@
 	PlayerEffect
 	- Base class for player effects, to be spawned/removed with SpawnEffect/RemoveEffect as shown above
 	- Literally just a simple actor that constantly warps to the position of its master (the player)
+	- Developer note: These actors have their statnum set to STAT_DEFAULT - 4 
+	  (used to limit ThinkerIterator performance hit)
   
 */
 
@@ -191,7 +193,7 @@ class BoAPlayer : PlayerPawn
 
 	Actor GetClosestForcedHealthBar()
 	{
-		ThinkerIterator Finder = ThinkerIterator.Create("Base");
+		ThinkerIterator Finder = ThinkerIterator.Create("Base", Thinker.STAT_DEFAULT - 3);
 		Base it;
 		Actor mo;
 
@@ -270,7 +272,7 @@ class BoAPlayer : PlayerPawn
 	// Function to spawn no more than a single copy of an effect actor as a child of the player
 	void SpawnEffect(class<PlayerEffect> effect)
 	{
-		ThinkerIterator it = ThinkerIterator.Create("PlayerEffect");
+		ThinkerIterator it = ThinkerIterator.Create("PlayerEffect", Thinker.STAT_DEFAULT - 4);
 		PlayerEffect mo;
 
 		while (mo = PlayerEffect(it.Next(true)))
@@ -287,7 +289,7 @@ class BoAPlayer : PlayerPawn
 	// Function to remove any spawned copy of an effect that is a child of the player
 	void RemoveEffect(class<PlayerEffect> effect)
 	{
-		ThinkerIterator it = ThinkerIterator.Create("PlayerEffect");
+		ThinkerIterator it = ThinkerIterator.Create("PlayerEffect", Thinker.STAT_DEFAULT - 4);
 		PlayerEffect mo;
 
 		while (mo = PlayerEffect(it.Next(true)))
@@ -299,7 +301,7 @@ class BoAPlayer : PlayerPawn
 
 	void CountAlertedSneakables()
 	{
-		ThinkerIterator it = ThinkerIterator.Create("SneakableGuardEyesAlerted");
+		ThinkerIterator it = ThinkerIterator.Create("SneakableGuardEyesAlerted", Thinker.STAT_DEFAULT - 2);
 		SneakableGuardEyesAlerted mo;
 
 		int count;
@@ -323,6 +325,11 @@ class PlayerEffect : Actor
 			// This state should be replaced in child classes
 			UNKN A 1;
 			Loop;
+	}
+
+	override void BeginPlay()
+	{
+		ChangeStatNum(Thinker.STAT_DEFAULT - 4);
 	}
 
 	override void Tick()

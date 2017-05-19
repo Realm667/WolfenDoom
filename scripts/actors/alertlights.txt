@@ -54,7 +54,7 @@ class AlertPointLight : PointLight replaces PointLight
 	{
 		int count;
 
-		ThinkerIterator it = ThinkerIterator.Create("StealthBase"); // Just iterate over the sneakable eyes - faster than all Nazi actors
+		ThinkerIterator it = ThinkerIterator.Create("StealthBase", STAT_DEFAULT - 2); // Just iterate over the sneakable eyes - faster than all Nazi actors
 		StealthBase mo;
 		while (mo = StealthBase(it.Next(true)))
 		{

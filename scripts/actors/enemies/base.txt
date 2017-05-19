@@ -21,11 +21,15 @@
 	  always be drawn.  
 	- Does not require the +BOSS flag to be set, and can alternatively be 
 	  controlled via ACS or in-editor by setting the user_DrawHealthBar variable
+	- Developer note: This sets the statnum to STAT_DEFAULT - 3
+	  (used to limit ThinkerIterator performance hit)
 
 	Nazi.Sneakable
 	- Boolean that controls if the enemy is a sneakable enemy or not.
 	- Can also be set in-editor on a per-actor basis by setting the user_sneakable
 	  variable.
+	- Developer note: This sets the statnum to STAT_DEFAULT - 1 
+	  (used to limit ThinkerIterator performance hit)
 
 	Nazi.PerceptionTime
 	- Integer value that controls how many tics a disguised player must remain in 
@@ -119,6 +123,12 @@ class Base : Actor
 		}
 
 		return ResolveState(null);
+	}
+
+	override void Tick()
+	{
+		if (user_DrawHealthBar) { ChangeStatNum(Thinker.STAT_DEFAULT - 3); } // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient
+		Super.Tick();
 	}
 }
 
@@ -216,6 +226,7 @@ class Nazi : Base
 			bFriendly = True;
 			bNeverTarget = True; // A bit of a hack, but it works...  Will cause issues if FRIENDLY actors ever need to interact with sneakable actors
 			A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid);
+			ChangeStatNum(Thinker.STAT_DEFAULT - 1); // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient
 		}
 		else if (SneakableActors()) // If there are sneakable actors in the level, no Nazi actors will be targetable - fixes targeting of non-sneakables by idle (friendly) sneakables
 		{ // This will break normal expected friendly monster behavior!
@@ -298,7 +309,7 @@ class Nazi : Base
 
 	bool SneakableActors() // Are there sneakable actors in the level?
 	{
-		ThinkerIterator it = ThinkerIterator.Create("StealthBase"); // Just iterate over the sneakable eyes - faster than all Nazi actors
+		ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2); // Just iterate over the sneakable eyes - faster than all Nazi actors
 		StealthBase mo;
 		while (mo = StealthBase(it.Next(true)))
 		{

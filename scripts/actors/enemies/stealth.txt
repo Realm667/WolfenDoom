@@ -4,6 +4,9 @@
   descendant is flagged as "sneakable". Also handles "perceptive" enemies who
   can see through disguises.
 
+  Developer note: These actors have their statnum set to STAT_DEFAULT - 2
+  (used to limit ThinkerIterator performance hit)
+
   New Functions
 	A_LookForNoTargetPlayer()
 	- Allows enemies to "see through" player disguises, essentially by having 
@@ -32,6 +35,11 @@ class StealthBase : Actor
 		+NOGRAVITY
 		RenderStyle "None";
 		Height 46;
+	}
+
+	override void BeginPlay()
+	{
+		ChangeStatNum(Thinker.STAT_DEFAULT - 2); // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient
 	}
 
 	state A_LookForNoTargetPlayer(int Range = 256)

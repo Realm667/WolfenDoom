@@ -378,7 +378,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				if (playerToChase) { target = players[playerToChase.PlayerNumber()].attacker; }
 			}
 
-			ThinkerIterator Finder = ThinkerIterator.Create("Nazi");
+			ThinkerIterator Finder = ThinkerIterator.Create("Nazi", STAT_DEFAULT);
 			Actor mo;
 
 			while ( (mo = Actor(Finder.Next())) )
