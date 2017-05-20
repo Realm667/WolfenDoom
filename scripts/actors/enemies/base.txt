@@ -28,8 +28,6 @@
 	- Boolean that controls if the enemy is a sneakable enemy or not.
 	- Can also be set in-editor on a per-actor basis by setting the user_sneakable
 	  variable.
-	- Developer note: This sets the statnum to STAT_DEFAULT - 1 
-	  (used to limit ThinkerIterator performance hit)
 
 	Nazi.PerceptionTime
 	- Integer value that controls how many tics a disguised player must remain in 
@@ -226,7 +224,6 @@ class Nazi : Base
 			bFriendly = True;
 			bNeverTarget = True; // A bit of a hack, but it works...  Will cause issues if FRIENDLY actors ever need to interact with sneakable actors
 			A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid);
-			ChangeStatNum(Thinker.STAT_DEFAULT - 1); // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient
 		}
 		else if (SneakableActors()) // If there are sneakable actors in the level, no Nazi actors will be targetable - fixes targeting of non-sneakables by idle (friendly) sneakables
 		{ // This will break normal expected friendly monster behavior!

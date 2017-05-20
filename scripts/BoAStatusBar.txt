@@ -374,17 +374,14 @@ class BoAStatusBar : BaseStatusBar
 
 	bool LivingSneakableActors()
 	{
-		if (level.time < 35 || level.time % 35 == 0) // Cut down on how often this is run
+		if (level.time < 5 || level.time % 35 == 0) // Cut down on how often this is run
 		{
-			ThinkerIterator it = ThinkerIterator.Create("Nazi", Thinker.STAT_DEFAULT - 1);
-			Nazi mo;
-			while (mo = Nazi(it.Next(true)))
+			ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2); // Just iterate over the sneakable eyes - faster than all Nazi actors
+			StealthBase mo;
+			while (mo = StealthBase(it.Next(true)))
 			{
-				if (mo.health > 0 && mo.user_sneakable)
-				{
-					stealth = true;
-					return true;
-				}
+				stealth = true;
+				return true;
 			}
 			
 			stealth = false;

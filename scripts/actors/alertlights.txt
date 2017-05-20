@@ -13,9 +13,9 @@ class AlertPointLight : PointLight replaces PointLight
 
 	override void PostBeginPlay()
 	{
-		if (!bDormant) { SpawnLight(); }
-
 		sneakables = SneakableActors();
+
+		if (!bDormant) { SpawnLight(); }
 
 		Super.PostBeginPlay();
 	}
@@ -52,9 +52,7 @@ class AlertPointLight : PointLight replaces PointLight
 
 	bool SneakableActors() // Are there sneakable actors in the level?
 	{
-		int count;
-
-		ThinkerIterator it = ThinkerIterator.Create("StealthBase", STAT_DEFAULT - 2); // Just iterate over the sneakable eyes - faster than all Nazi actors
+		ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2); // Just iterate over the sneakable eyes - faster than all Nazi actors
 		StealthBase mo;
 		while (mo = StealthBase(it.Next(true)))
 		{

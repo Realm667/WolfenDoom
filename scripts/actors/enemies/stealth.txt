@@ -209,7 +209,7 @@ class SneakableGuardEyesAlerted : StealthBase
 	States
 	{
 		Spawn:
-			TNT1 A 1 A_AlertMonsters(512, AMF_TARGETEMITTER); // Something fishy is going on. Alert everybody around!
+			TNT1 A 1;
 			Goto ResetCounters;
 		ResetCounters: 
 			TNT1 A 0 A_SetArg(0, random(280, 350)); // Set countdown time to 8 - 10 seconds
