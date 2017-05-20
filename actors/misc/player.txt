@@ -1,16 +1,17 @@
 //Player
 ACTOR Stamina : Inventory {Inventory.MaxAmount 100}
-
 ACTOR DisguiseToken : Inventory { Inventory.MaxAmount 1}
+
 ACTOR ScientistUniformToken : DisguiseToken
 {
 	Inventory.Icon "SCUNC0"
-	Tag "Lab coat"
+	Tag "$TAGCOATL"
 }
-ACTOR SSBJUniformToken : DisguiseToken
+
+ACTOR SSBJUniformToken : DisguiseToken //unused atm - ozy81
 {
 	Inventory.Icon "SSUFC0"
-	Tag "SS Uniform"
+	Tag "$TAGCOATS"
 }
 
 ACTOR BaseLineSpawner

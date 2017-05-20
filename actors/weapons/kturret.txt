@@ -12,10 +12,8 @@ ACTOR KTurretStand : SwitchableDecoration //IMPORTANT: The TurretStand NEEDS to 
 	+THRUSPECIES
 	+USESPECIAL
 	Species "TURR"
-	
 	Activation	THINGSPEC_ThingTargets| THINGSPEC_ThingActs| THINGSPEC_NoDeathSpecial| THINGSPEC_Switch 
 	//note about THINGSPEC_ThingTargets: as soon as it's activated, the player becomes the Master of the turret instead of Target & the Target pointer is cleared.
-	
 	States
 	{
 	Spawn:
@@ -23,19 +21,15 @@ ACTOR KTurretStand : SwitchableDecoration //IMPORTANT: The TurretStand NEEDS to 
 		TNT1 A 0 A_SpawnItemEx("KTurretGun",0,0,32,0,0,0,0,SXF_SETTARGET|SXF_ISTRACER) //let's spawn the interactive turret (tweaked from modeldef too)
 		MDLA A 1
 		Goto Spawn2
-
 	Spawn2:
 		MDLA A -1 Light(BOASHADOW_L)
 		Stop
-
 	Active:	//MP compatibility: if the target has a master, it means it's manned by another player, & thus the script below should not be executed.
 		TNT1 A 0 A_JumpIf(IsPointerEqual(AAPTR_MASTER,AAPTR_NULL),"StartLoop")
 		Goto Spawn2
-	
 	StartLoop:
 		MDLA A 0 ACS_NamedExecute("GunLoop",0)
 		Goto Spawn2
-
 	Inactive: //the inactive and active state do the exact same thing! Ugly, but works.
 		TNT1 A 0
 		Goto Active
@@ -55,15 +49,11 @@ ACTOR KTurretGun
 	+SYNCHRONIZED //let's avoid some issues with model orientation vs sounds
 	+THRUSPECIES
 	Species "TURR"
-	
 	Threshold 3 //this is Z spawn offset for projectiles. Higher values for taller guns.
 	DefThreshold 30 //this is X spawn offset for projectiles. Higher values for longer barrels. - it's not used atm (ozy)
-	
 	MeleeRange 1.0 //this is accuracy. We use this because it's the only Float variable native to the actor and usable by inventory items. Higher values = more spread.
 	Accuracy 2 //Accuracy is instead the delay in tics between shots. Lower values = higher fire rate.
-	
 	var float user_startangle;
-	
 	States
 	{
 	Spawn:
@@ -71,11 +61,9 @@ ACTOR KTurretGun
 		TNT1 A 0 A_SetUserVar("user_startangle",angle)
 		MDLA B 1
 		Goto Spawn2
-
 	Spawn2:
 		MDLA B 1 A_Jumpif(CountInv("KTurret_Ammo")== 0,"recharge")
 		Loop
-
 	Recharge:
 		MDLA B 0 A_PlaySound("mp40/fire", CHAN_WEAPON)
 		MDLA B 1 A_SetTics(Accuracy) //the duration of this frame controls fire rate.
@@ -105,7 +93,7 @@ ACTOR KTurret_Ammo: Inventory //a counter item
 ACTOR KHolster : Weapon //dummy weapon that's pretty useful
 {
 	+WEAPON.CHEATNOTWEAPON
-	Tag "Usable Turret" //this will be shown on HUD while "holding" the weapon - Ozy
+	Tag "$TAGKTURR" //this will be shown on HUD while "holding" the weapon - Ozy
 	States
 	{
 	Select:
@@ -139,21 +127,18 @@ ACTOR KTurretTracer : Tracer
 	+NOGRAVITY
 	+NOTELEPORT
 	+THRUSPECIES
-	Alpha .75
-	Scale .6
+	Alpha 0.75
+	Scale 0.6
 	RenderStyle "Add"
 	Species "TURR"
-	
 	States
 	{
 	Spawn:
 		PUFF A 0 NoDelay
 		Goto Spawn2
-	
 	Spawn2: 
 		PUFF A 1 BRIGHT Light(3DCHAN)
 		Loop
-
 	Death:
 	Crash:
 		TNT1 AAA 0 A_SpawnItemEx("TracerSpark", 0, 0, 0, random(-2,2), random(-2,2), random(-2,2), random(0,359)) //T667 improvements
@@ -161,7 +146,6 @@ ACTOR KTurretTracer : Tracer
 		PUFF B 3 BRIGHT LIGHT(BPUFF1) A_PlaySound("ricochet")
 		PUFF CD 3 BRIGHT LIGHT(BPUFF1)
 		Stop
-		
 	XDeath:
 		TNT1 A 0 A_ChangeFlag("WINDTHRUST", 0)
 		TNT1 A 1 A_PlaySound("hitflesh")

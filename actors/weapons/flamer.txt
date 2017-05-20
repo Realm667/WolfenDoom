@@ -11,8 +11,8 @@ ACTOR Pyrolight : NaziWeapon
 	Weapon.AmmoUse2 1
 	Weapon.AmmoGive2 25
 	Weapon.UpSound "flamer/select"
-	Tag "PyroLight"
-	Scale .5
+	Tag "$TAGPYROL"
+	Scale 0.5
 	States
 	{
 	Ready:
@@ -178,7 +178,7 @@ ACTOR Pyrolight : NaziWeapon
 
 ACTOR PyrolightLoaded : Ammo
 {
-	Tag "Petrol"
+	Tag "$TAGPETRO"
 	Inventory.MaxAmount 50
 	+IGNORESKILL
 	Inventory.Icon FLAM02

@@ -3,7 +3,7 @@ ACTOR Akten : Inventory
 	//$Category Pickups (Wolf3D)
 	//$Title Secret Files (Tunis)
 	//$Color 13
-	Tag "Secret Files"
+	Tag "$TAGFILES"
 	Inventory.Icon AKTTA0
 	Inventory.PickupMessage "$AKTEN"
 	Inventory.PickupSound "misc/p_pkup"
@@ -22,7 +22,7 @@ ACTOR Akten : Inventory
 ACTOR AktenEisenmann : Akten
 {
 	//$Title Secret Files (Eisenmann)
-	Tag "Eisenmann Files"
+	Tag "$TAGEISEN"
 	Inventory.Icon AKTEA0
 	Inventory.PickupMessage "$EISEN"
 	Inventory.MaxAmount 5
@@ -37,7 +37,7 @@ ACTOR AktenEisenmann : Akten
 ACTOR AktenV2 : Akten
 {
 	//$Title Secret Files (V2 Base)
-	Tag "Thor's Hammer Files"
+	Tag "$TAGTHORS"
 	Inventory.Icon AKT2A0
 	Inventory.PickupMessage "$THORS"
 	Inventory.MaxAmount 1
@@ -52,7 +52,7 @@ ACTOR AktenV2 : Akten
 ACTOR ArtifactAstrostrein : Akten
 {
 	//$Title Mayan Artifact (Astrostein)
-	Tag "Mayan Artifact"
+	Tag "$TAGMAYAN"
 	Inventory.Icon ARTMA0
 	Inventory.PickupMessage "$MAYAN"
 	Inventory.MaxAmount 5
@@ -85,7 +85,7 @@ ACTOR ArtifactAstrostreinIM
 ACTOR ArtifactEgyptian : Akten
 {
 	//$Title Egyptian Artifact (C1M6)
-	Tag "Solar Disc"
+	Tag "$TAGSUND1"
 	Inventory.Icon ARTEA0
 	Inventory.PickupMessage "$EGYPT"
 	Inventory.MaxAmount 1
@@ -100,7 +100,7 @@ ACTOR ArtifactEgyptian : Akten
 ACTOR ArtifactEgyptian_H1 : Akten
 {
 	//$Title Egyptian Artifact, 1st half (C1M5)
-	Tag "Solar Disc (first half)"
+	Tag "$TAGSUND2"
 	Inventory.Icon ARTEC0
 	Inventory.PickupMessage "$EGYPT"
 	Inventory.MaxAmount 1
@@ -115,7 +115,7 @@ ACTOR ArtifactEgyptian_H1 : Akten
 ACTOR ArtifactEgyptian_H2 : Akten
 {
 	//$Title Egyptian Artifact, 2nd half (C1M5)
-	Tag "Solar Disc (second half)"
+	Tag "$TAGSUND3"
 	Inventory.Icon ARTEE0
 	Inventory.PickupMessage "$EGYPT"
 	Inventory.MaxAmount 1
@@ -130,8 +130,8 @@ ACTOR ArtifactEgyptian_H2 : Akten
 ACTOR SpearOfDestiny : Akten
 {
 	//$Title Spear of Destiny
-	Tag "Staff of Kings"
 	Scale 0.50
+	Tag "$TAGSTAFF"
 	Inventory.Icon SPEAA0
 	Inventory.PickupMessage "$SPEAROD"
 	States
@@ -145,8 +145,8 @@ ACTOR SpearOfDestiny : Akten
 ACTOR Cartridge51 : Akten
 {
 	//$Title Cartridge (for MAP51)
-	Tag "Cartridge 51"
 	Scale 0.50
+	Tag "$TAGCART1"
 	Inventory.Icon SNSCA0
 	Inventory.PickupMessage "$KEENCART"
 	States
@@ -160,8 +160,8 @@ ACTOR Cartridge51 : Akten
 ACTOR Cartridge52 : Akten
 {
 	//$Title Cartridge (for MAP52)
-	Tag "Cartridge 52"
 	Scale 0.50
+	Tag "TAGCART2"
 	Inventory.Icon SNSCC0
 	Inventory.PickupMessage "$SNESCART"
 	States
@@ -175,8 +175,8 @@ ACTOR Cartridge52 : Akten
 ACTOR Cartridge53 : Akten
 {
 	//$Title Cartridge (for MAP53)
-	Tag "Cartridge 53"
 	Scale 0.50
+	Tag "TAGCART3"
 	Inventory.Icon SNSCE0
 	Inventory.PickupMessage "$SNESCART"
 	States
@@ -193,7 +193,7 @@ ACTOR BoACompass : CustomInventory
 	//$Title Compass
 	//$Color 13
 	Scale 0.7
-	Tag "Compass"
+	Tag "TAGCOMPS"
 	Inventory.Icon CMPSB0
 	Inventory.PickupMessage "$COMPASS"
 	Inventory.PickupSound "misc/p_pkup"
@@ -214,7 +214,7 @@ ACTOR BoACompass : CustomInventory
 ACTOR RepairKit : Akten
 {
 	//$Title Repair Kit (electric)
-	Tag "Repair Kit"
+	Tag "TAGREKIT"
 	Inventory.Icon EKPKA0
 	Inventory.PickupMessage "$ELECPAK"
 	Inventory.MaxAmount 1
@@ -229,8 +229,8 @@ ACTOR RepairKit : Akten
 ACTOR RadioPickup : Akten
 {
 	//$Title Field Radio
-	Tag "Field Radio"
 	Scale 0.75
+	Tag "TAGRADIO"
 	Inventory.PickupMessage "$RADIOF"
 	Inventory.MaxAmount 1
 	-INVENTORY.INVBAR
@@ -326,7 +326,7 @@ ACTOR SSBJUniformPickup : CustomInventory
 ACTOR NullWeapon : Weapon
 {
 	Weapon.SelectionOrder 0
-	Tag "no weapon (cloaked)"
+	Tag "TAGCLOAK"
 	+WEAPON.NOALERT
 	+INVENTORY.UNDROPPABLE
 	States
@@ -341,9 +341,8 @@ ACTOR NullWeapon : Weapon
 		TNT1 A 0 SetPlayerProperty(0, FALSE, PROP_NOTARGET)
 		TNT1 A 0 A_SetSpeed(1.0)
 		TNT1 A 0 {
-				//A_TakeInventory("NullWeapon", 1); 	       //remove the weapon when selecting another weapon
-				//A_TakeInventory("ScientistUniformToken", 1); //make the player look normal by removing the uniform token
-
+				//A_TakeInventory("NullWeapon", 1);				//remove the weapon when selecting another weapon
+				//A_TakeInventory("ScientistUniformToken", 1);	//make the player look normal by removing the uniform token
 			 }
 	Lower:
 		TNT1 A 0 A_Lower
@@ -362,7 +361,7 @@ ACTOR Kennkarte : Inventory
 	//$Category Pickups (Wolf3D)
 	//$Title Kennkarte (Scandinavia)
 	//$Color 13
-	Tag "Kennkarte"
+	Tag "TAGKARTE"
 	Inventory.Icon KENKA0
 	Inventory.PickupMessage "$KENK"
 	Inventory.PickupSound "misc/p_pkup"

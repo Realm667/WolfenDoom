@@ -3,10 +3,10 @@ ACTOR Shovel : NaziWeapon
 	//$Category Weapons (Wolf3D)
 	//$Title (1) Shovel
 	//$Color 14
-	Scale .5
+	Scale 0.5
 	Weapon.SelectionOrder 9999
 	Weapon.UpSound "shovel/select"
-	Tag "The Shovel!"
+	Tag "$TAGSHOVL"
 	Inventory.PickupMessage "$SHOVEL"
 	-WEAPON.AMMO_CHECKBOTH
 	+WEAPON.NOAUTOFIRE
@@ -99,14 +99,13 @@ ACTOR KnifeSilent : Weapon
 	+WEAPON.NOALERT
 	+WEAPON.NOAUTOFIRE
 	+WEAPON.WIMPY_WEAPON
-	Tag "Combat Knife"
+	Tag "$TAGKNIFE"
 	Weapon.BobStyle Smooth
 	Weapon.BobSpeed 1.5
 	Weapon.BobRangeX 1.5
 	Weapon.UpSound "knife/select"
 	Inventory.PickupMessage "$KNIFE"
 	Weapon.SelectionOrder 10000
-	
 	States
 	{
 	Spawn:

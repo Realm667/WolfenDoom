@@ -27,7 +27,7 @@ ACTOR NaziBerserk : CustomInventory
 	Inventory.MaxAmount 1
 	Inventory.PickupSound "misc/p_pkup"
 	Inventory.PickupMessage "$SSBERSK"
-	Tag "Berserk Pack"
+	Tag "$TAGBERSP"
 	States
 	{
 	Spawn:
@@ -72,17 +72,17 @@ ACTOR SpaceSuit : PowerupGiver
 	//$Category Powerups (Wolf3D)
 	//$Title Space Suit ("IceWater" protection)
 	//$Color 6
-	Inventory.PickupMessage "$SCUBA1"
-	Powerup.Color 100,100,100,.20
 	Inventory.MaxAmount 0
+	Inventory.PickupMessage "$SCUBA1"
+	Inventory.RespawnTics 1050 //30 seconds
 	Inventory.UseSound "pickups/suite"
-	Powerup.Type "SpaceSuit"
+	Powerup.Color 100,100,100,.20
 	Powerup.Duration -150
+	Powerup.Type "SpaceSuit"
 	+INVENTORY.ALWAYSPICKUP
 	+INVENTORY.ALWAYSRESPAWN
 	+INVENTORY.AUTOACTIVATE
 	+INVENTORY.FANCYPICKUPSOUND
-	Inventory.RespawnTics 1050 //30 seconds
 	States
 	{
 	Spawn:
@@ -125,7 +125,7 @@ ACTOR MineSweeper : CustomInventory
 	//$Title Mine Scanning Powerup (pickups)
 	//$Color 6
 	Scale 0.5
-	Tag "Mine Sweeper"
+	Tag "$TAGSWEEP"
 	Inventory.Icon MSPUB0
 	Inventory.PickupMessage "$SWEEPER"
 	Inventory.MaxAmount 1
@@ -167,7 +167,7 @@ ACTOR AdrenalineKit : CustomInventory
 	//$Category Powerups (Wolf3D)
 	//$Title Adrenaline Kit (DamageFactor & FiringSpeed augmented)
 	//$Color 6
-	Tag "Adrenaline Kit"
+	Tag "$TAGADREN"
 	Inventory.Icon "ADRNA0"
 	Inventory.MaxAmount 3
 	Inventory.PickupMessage "$ADREN"
@@ -190,7 +190,7 @@ ACTOR DeployableMine : CustomInventory
 	//$Category Powerups (Wolf3D)
 	//$Title Deployable Mine
 	//$Color 6
-	Tag "Deployable Mine"
+	Tag "$TAGMINES"
 	Inventory.Icon "I_BOAM"
 	Inventory.MaxAmount 5
 	Inventory.PickupMessage "$DEPMINE"

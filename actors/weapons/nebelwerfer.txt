@@ -8,7 +8,7 @@ ACTOR Nebelwerfer : NaziWeapon
 	Weapon.AmmoGive 10
 	Weapon.AmmoType "NebAmmo"
 	Weapon.UpSound "nebelwerfer/select"
-	Tag "Klein Nebelwerfer"
+	Tag "$TAGNEBWP"
 	Inventory.PickupMessage "$WERFER"
 	-WEAPON.AMMO_CHECKBOTH
 	-WEAPON.NOALERT
@@ -44,7 +44,6 @@ ACTOR Nebelwerfer : NaziWeapon
 
 ACTOR NebRocket
 {
-	Scale .5
 	Radius 11
 	Height 8
 	Speed 35
@@ -54,6 +53,7 @@ ACTOR NebRocket
 	+RANDOMIZE
 	+WINDTHRUST
 	+THRUGHOST
+	Scale 0.5
 	DeathSound "nebelwerfer/xplode"
 	Decal Scorch
 	ProjectileKickback 100
@@ -166,7 +166,7 @@ ACTOR NebelwerferTruck : Nebelwerfer
 	Fire:
 		HSML A 0 A_GunFlash
 		HSML A 0 A_PlaySound("nebelwerfer/fire", CHAN_WEAPON)
-		HSML BBC 1 //A_SetPitch(pitch-(0.5*CallACS("RecoilAmount")))
+		HSML BBC 1
 		HSML C 0 A_FireCustomMissile("NebRocket")
 		HSML CDD 1 A_SetPitch(pitch-(0.7*CallACS("RecoilAmount")))
 		HSML A 40 

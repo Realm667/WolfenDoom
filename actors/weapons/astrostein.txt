@@ -26,7 +26,7 @@ ACTOR AstroShotgun : NaziAstroWeapon
  	Weapon.UpSound "shotgun/select"
  	Inventory.PickupMessage "$PROTON"
 	Obituary "$OBPROTON"
-	Tag "Protonenflinte S79"
+	Tag "$TAGPROTF"
 	States
 	{
   	Select:
@@ -107,9 +107,10 @@ ACTOR AstroShotgun : NaziAstroWeapon
 		Stop
 	}
 }
+
 ACTOR AstroShotgunLoaded : Ammo
 {
-	Tag "Protonencell"
+	Tag "$TAGPROTC"
 	+IGNORESKILL
 	Inventory.MaxAmount 8
 	Inventory.Icon "AST101"
@@ -121,7 +122,7 @@ ACTOR AstroShotgunShell : Ammo
 	//$Title Protonenflinte (ammo, +5)
 	//$Color 6
 	Scale 0.50
-	Tag "Protonencell"
+	Tag "$TAGPROTC"
 	Inventory.PickupMessage "$AFLINTE"
 	Inventory.Amount 5
 	Inventory.MaxAmount 100
@@ -151,7 +152,7 @@ ACTOR AstroRocketlauncher : NaziAstroWeapon
 	Weapon.UpSound "weapons/rezup" //mxd
 	Inventory.PickupMessage "$ENERGIE"
 	Obituary "$OBENERGIE"
-	Tag "Energiegewehr B95"
+	Tag "$TAGENB95"
 	+WEAPON.NOAUTOFIRE
 	States
 	{
@@ -246,8 +247,8 @@ ACTOR AstroRocket
 	BounceSound "astrolauncher/bounce"
 	Obituary "$OBASTROR"
 	-NOGRAVITY
-	+WINDTHRUST
 	+THRUGHOST
+	+WINDTHRUST
 	States
 	{
 	Spawn:
@@ -264,7 +265,7 @@ ACTOR AstroRocket
 
 ACTOR AstroRocketLauncherLoaded : Ammo
 {
-	Tag "Energy unit"
+	Tag "$TAGENUNT"
 	+IGNORESKILL
 	Inventory.MaxAmount 5
 	Inventory.Icon "AST301"
@@ -275,7 +276,7 @@ ACTOR AstroRocketAmmo : Ammo
 	//$Category Ammo (Wolf3D)/Astrostein
 	//$Title Energiegewehr (ammo, +50)
 	//$Color 6
-	Tag "Energy unit"
+	Tag "$TAGENUNT"
 	Inventory.PickupMessage "$AENERGY"
 	Inventory.MaxAmount 50
 	Inventory.Icon "AST301"
@@ -304,7 +305,7 @@ ACTOR AstroChaingun : NaziAstroWeapon
 	Weapon.UpSound "weapons/rezup" //mxd
 	Inventory.PickupMessage "$REPETIE"
 	Obituary "$OBREPETIE"
-	Tag "Repetierlaser 0815"
+	Tag "$TAGREPLZ"
 	States
 	{
 	Select:
@@ -380,7 +381,7 @@ ACTOR AstroChaingun : NaziAstroWeapon
 
 ACTOR AstroChaingunLoaded : Ammo
 {
-	Tag "Laser rounds"
+	Tag "$TAGLAZRD"
 	+IGNORESKILL
 	Inventory.MaxAmount 30
 	Inventory.Icon "AST201"
@@ -392,7 +393,7 @@ ACTOR AstroClipAmmo : Ammo
 	//$Title Repetierlaser (ammo, +10)
 	//$Color 6
 	Scale 0.50
-	Tag "Laser rounds"
+	Tag "$TAGLAZRD"
 	Inventory.PickupMessage "$ALASER"
 	Inventory.Amount 10
 	Inventory.MaxAmount 200
@@ -417,7 +418,7 @@ ACTOR AstrosteinMelee : NaziAstroWeapon
 	Weapon.ReadySound "weapons/rezidle"
 	Inventory.PickupMessage "$ELEKTRO"
 	Obituary "$OBELEKTRO"
-	Tag "Elektroschocker"
+	Tag "$TAGSHOKR"
 	-WEAPON.AMMO_CHECKBOTH
 	-WEAPON.NOALERT
 	+WEAPON.MELEEWEAPON
@@ -476,7 +477,6 @@ ACTOR AstroGrenadePickup : CustomInventory
 	//$Title Grenade (Astrostein)
 	//$Color 14
 	Inventory.PickupMessage "$GRENADE"
-	// Tag "Astro Grenade" // Unused - Talon1024
 	Inventory.PickupSound "grenade/pickup"
 	Scale 0.25
 	States
