@@ -61,6 +61,7 @@ Script "PlayFootstepsSoundLoop" ENTER
 					}
 					else
 					{
+						SpawnForced("PlayerStep", cx, cy, cfz + 14);
 						curNoiseLevel = FixedMul(MAX_NOISE_LEVEL, NoiseLevelMultiplier) >> 16;
 					}
 
