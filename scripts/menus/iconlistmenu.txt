@@ -119,17 +119,24 @@ class ExtendedListMenu : ListMenu
 
 		if (overlay)
 		{
+			double scale = 1.0;
+			double ratio = screen.GetAspectRatio();
+
+			// Calculate width and height to keep the image at the same relative size, regardless of aspect ratio
+			double width = ratio > 1.25 ? 200 * ratio : 320;
+			double height = ratio < 1.25 ? 320 / ratio : 200;
+
 			TextureID tex = TexMan.CheckForTexture(overlay, TexMan.Type_MiscPatch);
-			if (tex.IsValid()) { screen.DrawTexture(tex, false, 160, 100, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true); };
+			if (tex.IsValid()) { screen.DrawTexture(tex, false, (width / 2) / scale, (height / 2) / scale, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidthF, width / scale, DTA_VirtualHeightF, height / scale); };
 
 			if (overlaytext.Length())
 			{
-				double scale = 0.8;
+				scale *= 0.95;
 				double fontheight = BigFont.GetHeight() * scale;
 
-				// Default position is centered on the screen (offset slightly toward the bottom so the graphic can have a title and still be centered)
-				double x = 158;
-				double y = 108;
+				// Default position is essentially centered on the screen (offset slightly toward the bottom so the graphic can have a title and still be centered)
+				double x = (width / 2);
+				double y = (height / 2) + 10 * scale;
 
 				BrokenLines message = BigFont.BreakLines(overlaytext, int(240 / scale));
 
@@ -139,7 +146,7 @@ class ExtendedListMenu : ListMenu
 
 				for (int i = 0; i < c; i++)
 				{
-					screen.DrawText (BigFont, 0, x / scale - message.StringWidth(i) / 2, y / scale, message.StringAt(i), DTA_Clean, true, DTA_KeepRatio, true, DTA_VirtualWidthF, 320 / scale, DTA_VirtualHeightF, 200 / scale);
+					screen.DrawText (BigFont, 0, x / scale - message.StringWidth(i) / 2, y / scale, message.StringAt(i), DTA_Clean, true, DTA_KeepRatio, true, DTA_VirtualWidthF, width / scale, DTA_VirtualHeightF, height / scale);
 					y += fontheight;
 				}
 			}
@@ -241,8 +248,8 @@ class ExtendedListMenu : ListMenu
 
 				// Otherwise, fix the text string and recolor it, and add it to the list of known placeholders
 				ListMenuItemTextItem(mDesc.mItems[i]).mText = temp;
-				ListMenuItemTextItem(mDesc.mItems[i]).mColor = Font.CR_BLACK;
-				ListMenuItemTextItem(mDesc.mItems[i]).mColorSelected = Font.CR_BLACK;
+				ListMenuItemTextItem(mDesc.mItems[i]).mColor = Font.FindFontColor("Disabled");
+				ListMenuItemTextItem(mDesc.mItems[i]).mColorSelected = Font.FindFontColor("Disabled");
 
 				placeholders.Push(index);
 			}
