@@ -161,7 +161,7 @@ ACTOR Cartridge52 : Akten
 {
 	//$Title Cartridge (for MAP52)
 	Scale 0.50
-	Tag "TAGCART2"
+	Tag "$TAGCART2"
 	Inventory.Icon SNSCC0
 	Inventory.PickupMessage "$SNESCART"
 	States
@@ -176,7 +176,7 @@ ACTOR Cartridge53 : Akten
 {
 	//$Title Cartridge (for MAP53)
 	Scale 0.50
-	Tag "TAGCART3"
+	Tag "$TAGCART3"
 	Inventory.Icon SNSCE0
 	Inventory.PickupMessage "$SNESCART"
 	States
@@ -193,7 +193,7 @@ ACTOR BoACompass : CustomInventory
 	//$Title Compass
 	//$Color 13
 	Scale 0.7
-	Tag "TAGCOMPS"
+	Tag "$TAGCOMPS"
 	Inventory.Icon CMPSB0
 	Inventory.PickupMessage "$COMPASS"
 	Inventory.PickupSound "misc/p_pkup"
@@ -230,7 +230,7 @@ ACTOR RadioPickup : Akten
 {
 	//$Title Field Radio
 	Scale 0.75
-	Tag "TAGRADIO"
+	Tag "$TAGRADIO"
 	Inventory.PickupMessage "$RADIOF"
 	Inventory.MaxAmount 1
 	-INVENTORY.INVBAR
@@ -326,7 +326,7 @@ ACTOR SSBJUniformPickup : CustomInventory
 ACTOR NullWeapon : Weapon
 {
 	Weapon.SelectionOrder 0
-	Tag "TAGCLOAK"
+	Tag "$TAGCLOAK"
 	+WEAPON.NOALERT
 	+INVENTORY.UNDROPPABLE
 	States
@@ -361,7 +361,7 @@ ACTOR Kennkarte : Inventory
 	//$Category Pickups (Wolf3D)
 	//$Title Kennkarte (Scandinavia)
 	//$Color 13
-	Tag "TAGKARTE"
+	Tag "$TAGKARTE"
 	Inventory.Icon KENKA0
 	Inventory.PickupMessage "$KENK"
 	Inventory.PickupSound "misc/p_pkup"
