@@ -1,44 +1,32 @@
 version "2.5"
 
-// Replacement Conversation Menus
-#include "scripts/conversations/conversationmenucomponents.txt"
-#include "scripts/conversations/conversationmenubase.txt"
-#include "scripts/conversations/boaconversationmenu.txt"
+// Menu Components
+#include "scripts/menus/iconlistmenu.txt"			// Skill Menu (with icons) Base
+#include "scripts/conversations/conversationmenucomponents.txt"	// Replacement Conversation MenuComponents
+#include "scripts/conversations/conversationmenubase.txt"	// Replacement Conversation Menu Base
+#include "scripts/conversations/boaconversationmenu.txt"	// Replacement Conversatino Menu
 
-// Skill Menu (with icons) Base
-#include "scripts/menus/iconlistmenu.txt"
-
-// Player
-#include "scripts/actors/player.txt"
-
-// Prisoner (Ryan) NPC
-#include "scripts/actors/playerfollowers.txt"
-
-// Base classes for enemies
-#include "scripts/actors/enemies/base.txt"
-#include "scripts/actors/enemies/attacks.txt"
-
-// Stealth enabling actors
-#include "scripts/actors/enemies/stealth.txt"
-
-// Tracers base classes
-#include "scripts/actors/tracers.txt"
-
-// Base class for light objects that should affect "sneaking" light level
-#include "scripts/actors/alertlights.txt"
-
-// Decorative Props
-#include "scripts/actors/truckwindows.txt"
-#include "scripts/actors/invisiblebridgeblocking.txt"
-
-// Event Handlers
-#include "scripts/eventhandlers/weaponstrip.txt"
+// Event Handler
+#include "scripts/BoAEventHandler.txt"
 
 // Status Bar
 #include "scripts/BoAStatusBar.txt"
 
-// Money (can be made dormant to prevent player from picking it up)
-#include "scripts/actors/items/money.txt"
+// Actors
+#include "scripts/actors/player.txt"				// Player
+#include "scripts/actors/playerfollowers.txt"			// Player follower NPCs
+#include "scripts/actors/enemies/base.txt"			// Base classes for enemies
+#include "scripts/actors/enemies/attacks.txt"			// Enemy projectiles
+#include "scripts/actors/tracers.txt"				// Tracers base classes
+#include "scripts/actors/enemies/stealth.txt"			// Stealth enabling actors
+#include "scripts/actors/alertlights.txt"			// Base class for light objects that should affect "sneaking" light level
 
-// Breakable Vent (blocking, walkable)
-#include "scripts/actors/breakablevent.txt"
+/// Interactive Props
+#include "scripts/actors/breakablevent.txt"			// Breakable Vent (blocking, walkable)
+
+/// Decorative Props
+#include "scripts/actors/truckwindows.txt"
+#include "scripts/actors/invisiblebridgeblocking.txt"
+
+/// Inventory
+#include "scripts/actors/items/money.txt"			// Money (can be made dormant to prevent player from picking it up)
