@@ -283,6 +283,11 @@ class Nazi : Base
 			{
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING); // Remove the sneakable eyes
 			}
+
+			if (perceptionfov > 0) // or if it was a perceptive actor...
+			{
+				if (BoAPlayer(source)) { BoAPlayer(source).suspicion = 0; } // Reset suspicion level to zero
+			}
 		}
 
 		return damageamt; // Function returns amount of damage received by the actor
