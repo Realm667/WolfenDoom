@@ -2640,7 +2640,7 @@ ACTOR Spotlight : ModelBase
 			}
 			Goto Pan
 		Pan:
-			"####" # 0 A_CheckRange(2768, "Pan.NoLight")
+			"####" # 0 A_CheckRange(2048, "Pan.NoLight")
 			"####" # 0 {
 				CallACS("SpotLightCast", angle, -pitch, user_sightRange); //Spawns "SpotlightGlow" actor that also sets itself as spotlight's master
 			}
@@ -2714,7 +2714,7 @@ ACTOR SpotlightGlow
 	States
 	{
 	Spawn:
-		UNKN A 0
+		TNT1 A 0
 		"####" # 1 {
 			A_SpawnitemEx("MeasurePuffTemp", 0, 0, 0, 0, 0, 0, 0, SXF_ISTRACER | SXF_SETMASTER | SXF_NOCHECKPOSITION);
 			A_TransferPointer(AAPTR_TRACER, AAPTR_TARGET, AAPTR_MASTER, AAPTR_MASTER);
