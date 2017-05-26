@@ -124,6 +124,8 @@ ACTOR BatFamiliar : Base
 	+FLOAT
 	+NOGRAVITY
 	+NOINFIGHTING
+	-CANUSEWALLS
+	-CANPUSHWALLS
 	SeeSound "batfam/idle"
 	PainSound "batfam/pain"
 	DeathSound "batfam/death"
@@ -186,6 +188,8 @@ ACTOR RatFamiliar : Base
 	-FLOAT
 	-NOGRAVITY
 	+NOINFIGHTING
+	-CANUSEWALLS
+	-CANPUSHWALLS
 	SeeSound "rat/squeek"
 	PainSound "batfam/pain"
 	DeathSound "rat/death"
@@ -250,6 +254,8 @@ ACTOR BigSpider : Base
 	+NEVERFAST
 	+THRUGHOST
 	+NOINFIGHTING
+	-CANUSEWALLS
+	-CANPUSHWALLS
 	SeeSound "spider1/sight"
 	PainSound "spider1/pain"
 	DeathSound "spider1/death"
@@ -473,6 +479,8 @@ ACTOR Shark : Base
 	+FORCEXYBILLBOARD
 	+NOGRAVITY
 	+NOINFIGHTING
+	-CANUSEWALLS
+	-CANPUSHWALLS
 	States
 	{
 	Spawn:

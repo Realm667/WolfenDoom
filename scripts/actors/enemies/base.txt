@@ -28,6 +28,8 @@
 	- Boolean that controls if the enemy is a sneakable enemy or not.
 	- Can also be set in-editor on a per-actor basis by setting the user_sneakable
 	  variable.
+	- Can be set in-game (e.g., after a cutscene using normal actors) by setting
+	  the actor's state to "MakeSneakable" via ACS.
 
 	Nazi.PerceptionTime
 	- Integer value that controls how many tics a disguised player must remain in 
@@ -284,7 +286,7 @@ class Nazi : Base
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING); // Remove the sneakable eyes
 			}
 
-			if (perceptionfov > 0) // or if it was a perceptive actor...
+			if (perceptiontime > 0) // or if it was a perceptive actor...
 			{
 				if (BoAPlayer(source)) { BoAPlayer(source).suspicion = 0; } // Reset suspicion level to zero
 			}
