@@ -60,7 +60,7 @@ ACTOR EnergyTankLit
 	States
 	{
 	Spawn:
-		ENTN A -1
+		MDLA A -1
 		Stop
 	}
 }
@@ -68,12 +68,7 @@ ACTOR EnergyTankLit
 ACTOR EnergyTankUnLit : EnergyTankLit
 {
 	//$Title Energy Tank (unlit)
-	States
-	{
-	Spawn:
-		ENTN B -1
-		Stop
-	}
+	// Is now a model - Talon1024
 }
 
 ACTOR StreetLightAstro : EnergyTankLit
