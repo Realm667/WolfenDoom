@@ -822,6 +822,12 @@ ACTOR MadCook : MadDoctor
 		COOK A 0
 		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
 		Goto Look
+	Pain:
+		"####" K 2
+		"####" K 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" K 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		Goto See
 	Missile:
 		COOK E 10 A_FaceTarget
 		"####" FF 2 A_SpawnProjectile("FlyingHack",32,12,random(-8,8))
