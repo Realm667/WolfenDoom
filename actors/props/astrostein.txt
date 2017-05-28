@@ -49,32 +49,14 @@ ACTOR BarrelFutureExploding : ExplosiveBarrel
 	}
 }
 
-ACTOR EnergyTankLit
+ACTOR StreetLightAstro
 {
 	//$Category Props (Wolf3D)/Astrostein
-	//$Title Energy Tank (lit)
+	//$Title Street Light (modern)
 	//$Color 3
-	Radius 32
+	Radius 8
 	Height 128
 	+SOLID
-	States
-	{
-	Spawn:
-		MDLA A -1
-		Stop
-	}
-}
-
-ACTOR EnergyTankUnLit : EnergyTankLit
-{
-	//$Title Energy Tank (unlit)
-	// Is now a model - Talon1024
-}
-
-ACTOR StreetLightAstro : EnergyTankLit
-{
-	//$Title Street Light (modern)
-	Radius 8
 	States
 	{
 	Spawn:
@@ -83,7 +65,7 @@ ACTOR StreetLightAstro : EnergyTankLit
 	}
 }
 
-ACTOR StripperGirl : EnergyTankLit
+ACTOR StripperGirl : StreetLightAstro
 {
 	//$Title Stripper Girl
 	Radius 16
@@ -103,6 +85,27 @@ ACTOR StripperGirl : EnergyTankLit
 }
 
 //3d Actors//
+ACTOR EnergyTankLit //Talon1024 model
+{
+	//$Category Props (Wolf3D)/Astrostein
+	//$Title Energy Tank (lit)
+	//$Color 3
+	Radius 32
+	Height 128
+	+SOLID
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
+}
+
+ACTOR EnergyTankUnLit : EnergyTankLit //Talon1024 model
+{
+	//$Title Energy Tank (unlit)
+}
+
 ACTOR RadioSatelite
 {
 	//$Category Props (Wolf3D)/Astrostein
