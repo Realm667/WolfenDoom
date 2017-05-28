@@ -108,6 +108,11 @@ class BoAPlayer : PlayerPawn
 		"####" A 1;
 		Loop;
 	See:
+		PLAY ABCD 8 {  // Urgh.  So that player menu preview will show up properly...  The menu code looks for the See state frames and duration, but doesn't process code - It also doesn't handle "####" frames.
+			return ResolveState("See.InGame");
+		}
+		Loop;
+	See.InGame:
 		"####" AAAAAAAABBBBBBBBCCCCCCCCDDDDDDDD 1;
 		Loop;
 	Pain:
