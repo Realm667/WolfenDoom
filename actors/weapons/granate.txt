@@ -135,23 +135,3 @@ ACTOR NonTrainingGrenade : Inventory
 
 ACTOR NonTrainingMineSweeper : NonTrainingGrenade { Inventory.MaxAmount 1 }
 ACTOR NonTrainingPower : NonTrainingGrenade { Inventory.MaxAmount 2400 }
-
-// Take grenades & minesweeper from players inside the training area.
-ACTOR ConfiscateTrainingItems : CustomInventory
-{
-	Inventory.MaxAmount 0
-	+INVENTORY.ALWAYSPICKUP
-	States
-	{
-	Pickup:
-		TNT1 A 0 {
-			// Take grenades from player if they're in the training area
-			if (CountInv("HQ_Checker") == 0) {
-				A_TakeInventory("GrenadePickup", 0x7FFFFFFF);
-				A_TakeInventory("MineSweeper", 0x7FFFFFFF);
-				A_TakeInventory("Power", 0x7FFFFFFF);
-			}
-		}
-		Stop
-	}
-}
