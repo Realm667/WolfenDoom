@@ -108,7 +108,10 @@ class BoAPlayer : PlayerPawn
 		"####" A 1;
 		Loop;
 	See:
-		PLAY ABCD 8 {  // Urgh.  So that player menu preview will show up properly...  The menu code looks for the See state frames and duration, but doesn't process code - It also doesn't handle "####" frames.
+		PLAY ABCD 8 {   // Urgh.  So that player menu preview will show up properly...  
+			// The menu code looks for the See state frames and duration, but doesn't process code - It also doesn't handle "####" frames.
+			// Since this return is processed before the frame is rendered, the actor will jump to the proper See state in-game without
+			// screwing up the handling for disguises or ever showing the wrong sprites.
 			return ResolveState("See.InGame");
 		}
 		Loop;
