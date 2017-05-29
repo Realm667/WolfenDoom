@@ -185,3 +185,35 @@ Sprite VENTB0, 64, 64
 Graphic M_LSLEFT, 8, 14 { Offset 0, 8 Patch M_LSLEFT, 0, 0 }
 Graphic M_LSRGHT, 8, 14 { Offset 0, 8 Patch M_LSRGHT, 0, 0 }
 Graphic M_LSCNTR, 8, 14 { Offset 0, 8 Patch M_LSCNTR, 0, 0 }
+
+/* Additional definitions necessary for loading as IWAD */
+// Silence parsing errors from default MENUDEF
+Graphic M_DOOM, 1, 1 { Patch BLACK, 0, 0 }
+Graphic M_NGAME, 1, 1 { Patch BLACK, 0, 0 }
+Graphic M_OPTION, 1, 1 { Patch BLACK, 0, 0 }
+Graphic M_LOADG, 1, 1 { Patch BLACK, 0, 0 }
+Graphic M_SAVEG, 1, 1 { Patch BLACK, 0, 0 }
+Graphic M_QUITG, 1, 1 { Patch BLACK, 0, 0 }
+Graphic M_EPISOD, 1, 1 { Patch BLACK, 0, 0 }
+Graphic M_NEWG, 1, 1 { Patch BLACK, 0, 0 }
+Graphic M_SKILL, 1, 1 { Patch BLACK, 0, 0 }
+Graphic M_LOADG, 1, 1 { Patch BLACK, 0, 0 }
+Graphic M_SAVEG, 1, 1 { Patch BLACK, 0, 0 }
+
+// Re-define some Doom 2 textures (since Doom 2's TEXTURE1 lump isn't present now)
+Texture PANBOOK, 64, 128 { Patch RW21_5, 0, 0 }
+Texture PANBORD1, 32, 128 { Patch RW21_1, 0, 0 }
+Texture PANBORD2, 16, 128 { Patch RW21_2, 0, 0 }
+Texture PANCASE2, 64, 128 { Patch RW21_4, 0, 0 }
+Texture WOOD10, 128, 128 { Patch RW13_1, 0, 0 }
+Texture BLOOD1, 256, 256 { Patch flor_r01, 0, 0 }
+
+// These are here to silence parsing errors that come from the Doom animation definitions in gzdoom.pk3
+Texture LAVA1, 256, 256 { Patch lava_a01, 0, 0 }
+Texture LAVA2, 256, 256 { Patch lava_a01, 0, 0 }
+Texture LAVA3, 256, 256 { Patch lava_a01, 0, 0 }
+Texture LAVA4, 256, 256 { Patch lava_a01, 0, 0 }
+Texture FWATER1, 256, 256 { Patch watr_a01, 0, 0 }
+Texture FWATER2, 256, 256 { Patch watr_a01, 0, 0 }
+Texture FWATER3, 256, 256 { Patch watr_a01, 0, 0 }
+Texture FWATER4, 256, 256 { Patch watr_a01, 0, 0 }

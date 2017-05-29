@@ -645,3 +645,25 @@ ACTOR PrisonerMaleHang3 : HungBody
 		Loop
 	}
 }
+
+ACTOR WolfBloodPool : SmallBloodPool Replaces SmallBloodPool
+{
+	Scale 0.5
+	States
+	{
+		Spawn:
+			POB2 A -1 // Modified Jaguar Wolf3D water pool sprite
+			Stop
+	}
+}
+
+ACTOR WolfColonGibs : ColonGibs Replaces ColonGibs
+{
+	Scale 0.5
+	States
+	{
+		Spawn:
+			GORE K -1 // Re-use a gore gib that's close to the original Doom sprite
+			Stop
+	}
+}
