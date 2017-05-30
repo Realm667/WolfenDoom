@@ -22,9 +22,10 @@ ACTOR Electricity1 : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		ELEC A 0 A_JumpIf(args[0] > 0, 2)
+		ELEC A 0 NoDelay A_JumpIf(args[0] > 0, 2)
 		"####" A 0 Thing_SetSpecial(0,73,0,22,0)
 		"####" A 0 A_SetSolid
+		"####" A 0 A_Jump(256, "ActiveAnim") // Goto doesn't work for inheritance - Talon1024
 	ActiveAnim:
 		ELEC A 0 A_Jump(128, 2)
 		"####" ABCD 3
@@ -32,6 +33,7 @@ ACTOR Electricity1 : SwitchableDecoration
 	Inactive:
 		TNT1 A 0 Thing_SetSpecial(0,0,0,0,0)
 		"####" A 0 A_UnSetSolid
+		"####" A 0 A_Jump(256, "OffAnim")
 	OffAnim:
 		"####" A 2
 		Loop
