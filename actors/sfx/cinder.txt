@@ -24,8 +24,13 @@ ACTOR CinderSpawner : SwitchableDecoration
 		TNT1 A 0 A_ChangeFlag ("DORMANT", FALSE) //mxd. DORMANT flag must be updated manually
 	Spawn:
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("CinderSwitch")==0,"EndSpawn")
+	SpawnLoop:
+		TNT1 A 0 A_CheckRange(1024.0, "SpawnWait", TRUE)
 		TNT1 A 5 A_SpawnItemEx("FloatingCinder", random(-Args[0],Args[0]), random(-Args[0],Args[0]), random(0,Args[1]), random(Args[2],Args[3]), 0, random(-Args[2],Args[2]), random(-4, 4), 128, Args[4])
 		Loop
+	SpawnWait:
+		TNT1 A 35
+		Goto SpawnLoop
 	Inactive:
 		TNT1 A -1 A_ChangeFlag ("DORMANT", TRUE) //mxd. DORMANT flag must be updated manually
 		Stop
@@ -37,6 +42,7 @@ ACTOR CinderSpawner : SwitchableDecoration
 
 ACTOR FloatingCinder
 {
+	DistanceCheck "sfxlod"
 	Radius 0
 	Height 0
 	+DONTSPLASH
