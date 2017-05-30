@@ -7,6 +7,10 @@ ACTOR Electricity1 : SwitchableDecoration
 	//$Title Electricity (large)
 	//$Color 3
 	//$Sprite ELECA0
+
+	//$Arg0 "Harmless"
+	//$Arg0Tooltip "Values greater than 0 make this actor harmless"
+
 	Radius 16
 	Height 128
 	+BUMPSPECIAL
@@ -18,15 +22,18 @@ ACTOR Electricity1 : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		ELEC A 0 Thing_SetSpecial(0,73,0,22,0)
+		ELEC A 0 A_JumpIf(args[0] > 0, 2)
+		"####" A 0 Thing_SetSpecial(0,73,0,22,0)
 		"####" A 0 A_SetSolid
-		"####" A 0 A_Jump(128, 2)
+	ActiveAnim:
+		ELEC A 0 A_Jump(128, 2)
 		"####" ABCD 3
 		Loop
 	Inactive:
 		TNT1 A 0 Thing_SetSpecial(0,0,0,0,0)
 		"####" A 0 A_UnSetSolid
-		"####" A 2 
+	OffAnim:
+		"####" A 2
 		Loop
 	}
 }
@@ -38,11 +45,8 @@ ACTOR Electricity2 : Electricity1
 	Height 64
 	States
 	{
-	Spawn:
-	Active:
-		ELEC E 0 Thing_SetSpecial(0,73,0,22,0)
-		"####" E 0 A_SetSolid
-		"####" EFGH 3
+	ActiveAnim:
+		ELEC EFGH 3
 		Loop
 	}
 }
@@ -55,11 +59,8 @@ ACTOR Electricity3 : Electricity1
 	Radius 64
 	States
 	{
-	Spawn:
-	Active:
-		ELEC I 0 Thing_SetSpecial(0,73,0,22,0)
-		"####" I 0 A_SetSolid
-		"####" IJKL 3
+	ActiveAnim:
+		ELEC IJKL 3
 		Loop
 	}
 }
@@ -78,11 +79,8 @@ ACTOR Electricity4 : Electricity1
 	Scale 0.2
 	States
 	{
-	Spawn:
-	Active:
-		LABZ F 0 Thing_SetSpecial(0,73,0,22,0)
-		"####" F 0 A_SetSolid
-		"####" F 0 A_Jump(256,1,5,9,13,17)
+	ActiveAnim:
+		LABZ F 0 A_Jump(256,1,5,9,13,17)
 		"####" GHIJKLMNOJNGIHMKOL 2
 		Loop
 	}
@@ -97,11 +95,8 @@ ACTOR ElectricOrb1 : Electricity1
 	+NOGRAVITY
 	States
 	{
-	Spawn:
-	Active:
-		LABZ A 0 Thing_SetSpecial(0,73,0,22,0)
-		"####" A 0 A_SetSolid
-		"####" BCDE 3
+	ActiveAnim:
+		LABZ BCDE 3
 		Loop
 	}
 }
@@ -115,11 +110,8 @@ ACTOR ElectricOrb2 : Electricity1
 	+NOGRAVITY
 	States
 	{
-	Spawn:
-	Active:
-		LABZ P 0 Thing_SetSpecial(0,73,0,22,0)
-		"####" P 0 A_SetSolid
-		"####" QRST 3
+	ActiveAnim:
+		LABZ PQRST 3
 		Loop
 	}
 }
