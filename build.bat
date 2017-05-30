@@ -1,4 +1,7 @@
 @ECHO OFF
+REM Use Setlocal in case this program is started from a working command prompt.
+REM This safely preserves the parent process's environment and working folder.
+setlocal
 REM Immediately retrieve the program's entire path
 SET "ProgramDirPath=%~dp0"
 REM Start the program
