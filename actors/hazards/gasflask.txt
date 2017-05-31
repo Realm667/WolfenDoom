@@ -6,7 +6,7 @@ ACTOR FireExtinguisher : ExplosiveBarrel
 	Health 10
 	Height 64
 	Radius 8
-	Scale 0.50
+	Scale 0.5
 	DeathSound "nebelwerfer/xplode"
 	Obituary "$OBEXTING"
 	+DONTTHRUST
@@ -25,7 +25,6 @@ ACTOR FireExtinguisher : ExplosiveBarrel
 ACTOR GasBottle : FireExtinguisher
 {
 	//$Title Gas Bottle
-	Scale 0.50
 	Obituary "$OBGASBTL"
 	States
 	{
@@ -47,7 +46,6 @@ ACTOR Bomb : GasBottle
 {
 	//$Title Bomb
 	Obituary "$OBBOMB"
-	Scale 1.0
 	States
 	{
 	Spawn:

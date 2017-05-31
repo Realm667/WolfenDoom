@@ -29,7 +29,7 @@ ACTOR AktenEisenmann : Akten
 	States
 	{
 	Spawn:
-		AKTE B -1 ACS_NamedExecuteAlways("BoA_CompassQueue",0) 
+		AKTE B -1 ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 		Stop
 	}
 }
@@ -44,7 +44,7 @@ ACTOR AktenV2 : Akten
 	States
 	{
 	Spawn:
-		AKT2 B -1 ACS_NamedExecuteAlways("BoA_CompassQueue",0) 
+		AKT2 B -1 ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 		Stop
 	}
 }
@@ -52,6 +52,7 @@ ACTOR AktenV2 : Akten
 ACTOR ArtifactAstrostrein : Akten
 {
 	//$Title Mayan Artifact (Astrostein)
+	Scale 0.25
 	Tag "$TAGMAYAN"
 	Inventory.Icon ARTMA0
 	Inventory.PickupMessage "$MAYAN"
@@ -85,6 +86,7 @@ ACTOR ArtifactAstrostreinIM
 ACTOR ArtifactEgyptian : Akten
 {
 	//$Title Egyptian Artifact (C1M6)
+	Scale 0.25
 	Tag "$TAGSUND1"
 	Inventory.Icon ARTEA0
 	Inventory.PickupMessage "$EGYPT"
@@ -100,6 +102,7 @@ ACTOR ArtifactEgyptian : Akten
 ACTOR ArtifactEgyptian_H1 : Akten
 {
 	//$Title Egyptian Artifact, 1st half (C1M5)
+	Scale 0.25
 	Tag "$TAGSUND2"
 	Inventory.Icon ARTEC0
 	Inventory.PickupMessage "$EGYPT"
@@ -115,6 +118,7 @@ ACTOR ArtifactEgyptian_H1 : Akten
 ACTOR ArtifactEgyptian_H2 : Akten
 {
 	//$Title Egyptian Artifact, 2nd half (C1M5)
+	Scale 0.25
 	Tag "$TAGSUND3"
 	Inventory.Icon ARTEE0
 	Inventory.PickupMessage "$EGYPT"
@@ -130,7 +134,7 @@ ACTOR ArtifactEgyptian_H2 : Akten
 ACTOR SpearOfDestiny : Akten
 {
 	//$Title Spear of Destiny
-	Scale 0.50
+	Scale 0.5
 	Tag "$TAGSTAFF"
 	Inventory.Icon SPEAA0
 	Inventory.PickupMessage "$SPEAROD"
@@ -145,14 +149,14 @@ ACTOR SpearOfDestiny : Akten
 ACTOR Cartridge51 : Akten
 {
 	//$Title Cartridge (for MAP51)
-	Scale 0.50
+	Scale 0.5
 	Tag "$TAGCART1"
 	Inventory.Icon SNSCA0
 	Inventory.PickupMessage "$KEENCART"
 	States
 	{
 	Spawn:
-		SNSC B -1 NODELAY 
+		SNSC B -1 NODELAY
 		Stop
 	}
 }
@@ -160,14 +164,14 @@ ACTOR Cartridge51 : Akten
 ACTOR Cartridge52 : Akten
 {
 	//$Title Cartridge (for MAP52)
-	Scale 0.50
+	Scale 0.5
 	Tag "$TAGCART2"
 	Inventory.Icon SNSCC0
 	Inventory.PickupMessage "$SNESCART"
 	States
 	{
 	Spawn:
-		SNSC D -1 NODELAY 
+		SNSC D -1 NODELAY
 		Stop
 	}
 }
@@ -175,14 +179,14 @@ ACTOR Cartridge52 : Akten
 ACTOR Cartridge53 : Akten
 {
 	//$Title Cartridge (for MAP53)
-	Scale 0.50
+	Scale 0.5
 	Tag "$TAGCART3"
 	Inventory.Icon SNSCE0
 	Inventory.PickupMessage "$SNESCART"
 	States
 	{
 	Spawn:
-		SNSC F -1 NODELAY 
+		SNSC F -1 NODELAY
 		Stop
 	}
 }
@@ -214,6 +218,7 @@ ACTOR BoACompass : CustomInventory
 ACTOR RepairKit : Akten
 {
 	//$Title Repair Kit (electric)
+	Scale 0.5
 	Tag "$TAGREKIT"
 	Inventory.Icon EKPKA0
 	Inventory.PickupMessage "$ELECPAK"
@@ -221,7 +226,7 @@ ACTOR RepairKit : Akten
 	States
 	{
 	Spawn:
-		EKPK B -1 
+		EKPK B -1
 		Stop
 	}
 }
@@ -237,7 +242,7 @@ ACTOR RadioPickup : Akten
 	States
 	{
 	Spawn:
-		RADO A -1 
+		RADO A -1
 		Stop
 	}
 }
@@ -253,6 +258,7 @@ ACTOR ScientistUniform : SwitchableDecoration
 	//$Color 13
 	Radius 8
 	Height 56
+	Scale 0.7
 	-DORMANT
 	+NOTAUTOAIMED
 	+SOLID
@@ -262,7 +268,7 @@ ACTOR ScientistUniform : SwitchableDecoration
 	{
 	Spawn:
 	Inactive:
-		SCUN A -1 
+		SCUN A -1
 		Stop
 	Active:
 		SCUN B 0 A_ChangeFlag("SOLID", FALSE)
@@ -277,6 +283,7 @@ ACTOR ScientistUniform : SwitchableDecoration
 ACTOR ScientistUniformPickup : CustomInventory
 {
 	Inventory.PickupMessage "$UNIFORM"
+	Scale 0.7
 	States
 	{
 	Spawn:
@@ -296,10 +303,10 @@ ACTOR SSBJUniform : ScientistUniform
 	{
 	Spawn:
 	Inactive:
-		SSUF A -1 
+		SSUF A -1
 		Stop
 	Active:
-		SSUF B 0 A_ChangeFlag("SOLID", FALSE)
+		SCUN B 0 A_ChangeFlag("SOLID", FALSE)
 		"####" B 0 A_SpawnItemEx("SSBJUniformPickup", 0, 0, 16, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
 		"####" B 0 A_ChangeFlag("DORMANT", FALSE)
 		"####" B 0 A_ChangeFlag("USESPECIAL", FALSE)
@@ -311,10 +318,12 @@ ACTOR SSBJUniform : ScientistUniform
 ACTOR SSBJUniformPickup : CustomInventory
 {
 	Inventory.PickupMessage "$UNIFORM2"
+	Inventory.Icon SSUFC0
+	Scale 0.7
 	States
 	{
 	Spawn:
-		SSUF D -1
+		SSUF B -1
 		Stop
 	Pickup:
 		TNT1 A 0 {A_GiveInventory("NullWeapon", 1); A_GiveInventory("SSBJUniformToken", 1);}
@@ -352,7 +361,7 @@ ACTOR NullWeapon : Weapon
 		TNT1 A 1 A_WeaponReady(WRF_NOFIRE)
 		Loop
 	}
-} 
+}
 
 ///////////////////////////////////////////////////////////////
 

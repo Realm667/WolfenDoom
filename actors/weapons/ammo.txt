@@ -42,6 +42,7 @@ ACTOR 9mmAmmoBox : 9mmAmmo
 	//$Category Ammo (Wolf3D)
 	//$Title Ammobox (x64 clips)
 	//$Color 6
+	Scale 0.5
 	Inventory.Amount 64
 	Inventory.PickupMessage "$9MMBOX"
 	Inventory.Icon WALT02
@@ -78,6 +79,7 @@ ACTOR 12GaugeAmmoBox : 12GaugeAmmo
 	//$Category Ammo (Wolf3D)
 	//$Title Shellbox (x16 shells)
 	//$Color 6
+	Scale 0.5
 	Inventory.Amount 16
 	Inventory.PickupMessage "$GAUGBOX"
 	States
@@ -93,13 +95,13 @@ ACTOR MauserAmmo : Ammo
 	//$Category Ammo (Wolf3D)
 	//$Title Clip (x5 clips)
 	//$Color 6
+	Scale 0.3
 	Tag "7.92x57mm"
 	Inventory.Amount 5
 	Inventory.MaxAmount 40
 	Ammo.BackpackAmount 5
 	Ammo.BackpackMaxAmount 100
 	Inventory.PickupMessage "$MAUSAMMO"
-	Scale .3
 	Inventory.Icon MAUS02
 	States
 	{
@@ -114,7 +116,7 @@ ACTOR MauserAmmoBox : MauserAmmo
 	//$Category Ammo (Wolf3D)
 	//$Title Clipbox (x20 clips)
 	//$Color 6
-	Scale 1
+	Scale 0.5
 	Inventory.Amount 20
 	Inventory.PickupMessage "$MAUSBOX"
 	States
@@ -171,6 +173,7 @@ ACTOR NebAmmoBox : NebAmmo
 	//$Category Ammo (Wolf3D)
 	//$Title Nebelbox (x30 rounds)
 	//$Color 6
+	Scale 0.5
 	Inventory.Amount 30
 	Inventory.PickupMessage "$NEBWBOX"
 	States

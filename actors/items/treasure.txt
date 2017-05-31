@@ -1,10 +1,10 @@
 // See ZScript for CoinItem class - Talon1024
-
 ACTOR SingleCoin : CoinItem
 {
 	//$Category Pickups (Wolf3D)
 	//$Title Treasure (Coin, 1pts)
 	//$Color 17
+	Scale 0.5
 	Inventory.Amount 1
 	Inventory.PickupMessage "$COIN"
 	Inventory.PickupSound "treasure/pickup"
@@ -32,7 +32,6 @@ ACTOR BagOfCoins : SingleCoin
 ACTOR TreasureChest : SingleCoin
 {
 	//$Title Treasure (Chest, 50pts)
-	Scale 0.50
 	Inventory.PickupMessage "$CHEST"
 	Inventory.Amount 50
 	States
@@ -46,6 +45,7 @@ ACTOR TreasureChest : SingleCoin
 ACTOR TreasureChest2 : SingleCoin
 {
 	//$Title Treasure (Large Chest, 100pts)
+	Scale 1.0
 	Inventory.PickupMessage "$CHESTBIG"
 	Inventory.Amount 100
 	States
@@ -59,6 +59,7 @@ ACTOR TreasureChest2 : SingleCoin
 ACTOR TreasureChest3 : SingleCoin
 {
 	//$Title Treasure (Chest, 25pts)
+	Scale 1.0
 	Inventory.PickupMessage "$CHESTSML"
 	Inventory.Amount 25
 	States
@@ -72,7 +73,6 @@ ACTOR TreasureChest3 : SingleCoin
 ACTOR TreasureCross : SingleCoin
 {
 	//$Title Treasure (Cross, 15pts)
-	Scale 0.50
 	Inventory.PickupMessage "$CROSS"
 	Inventory.Amount 15
 	States
@@ -86,7 +86,6 @@ ACTOR TreasureCross : SingleCoin
 ACTOR Goblet : TreasureCross
 {
 	//$Title Treasure (Goblet, 15pts)
-	Scale 0.50
 	Inventory.PickupMessage "$CHALICE"
 	States
 	{
@@ -99,7 +98,6 @@ ACTOR Goblet : TreasureCross
 ACTOR TreasureCrown : SingleCoin
 {
 	//$Title Treasure (Crown, 20pts)
-	Scale 0.50
 	Inventory.PickupMessage "$CROWN"
 	Inventory.Amount 20
 	States
@@ -113,8 +111,8 @@ ACTOR TreasureCrown : SingleCoin
 ACTOR GoldBar : TreasureCrown
 {
 	//$Title Treasure (Gold Bar, 20pts)
+	Scale 0.7
 	Inventory.PickupMessage "$GOLDBAR"
-	Scale 1.0
 	States
 	{
 	Spawn:
@@ -142,17 +140,18 @@ ACTOR ChestKey : Inventory
 	//$Category Pickups (Wolf3D)
 	//$Title Treasure Chest Key
 	//$Color 17
+	Scale 0.5
+	Tag "$TAGCHEST"
 	Inventory.Icon "I_SPBKEY"
 	Inventory.PickupMessage "$CHESTKEY"
 	Inventory.PickupSound "misc/k_pkup"
 	Inventory.UseSound "supplychest/open"
 	Inventory.MaxAmount 3
 	+INVENTORY.INVBAR
-	Tag "$TAGCHEST"
 	States
 	{
 	Spawn:
-		SBKY A -1
+		SBKY A -1 Light(TRESLITE)
 		Stop
 	}
 }
