@@ -965,6 +965,74 @@ ACTOR ArcticSniper_Crouch : Guard
 	}
 }
 
+ACTOR WGrenadeer: Sniper_Crouch
+{
+	//$Title Wehrmacht Grenadeer
+	SeeSound "Nazi1/Sighted"
+	PainSound "Nazi1/Pain"
+	DeathSound "Nazi1/Death"
+	DropItem "GrenadePickup" 32
+	States
+	{
+	Spawn:
+		WGRN A 0
+		Goto Look
+	See:
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		"####" A 1 A_Chase
+		Loop
+	Pain:
+		"####" D 2
+		"####" D 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-6, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" D 3 A_Pain
+		"####" "#" 0 A_AlertMonsters(256) //mxd
+		Goto See
+	Missile:
+		"####" B 20 A_FaceTarget
+		"####" B 0 A_JumpIfCloser(radius+384,"Missile4",TRUE)
+		"####" B 0 A_Jump(64,"Missile2")
+		"####" B 0 A_Jump(16,"Missile3")
+		"####" C 4 A_SpawnProjectile("VeryFastGrenade",32,16,frandom(-4,4),CMF_OFFSETPITCH,8)
+		"####" A 28
+		Goto See
+	Missile2:
+		"####" B 30 A_FaceTarget
+		"####" C 8 A_SpawnProjectile("HandGrenade",24,16,frandom(-4,4))
+		"####" A 15
+		"####" B 30 A_FaceTarget
+		"####" C 8 A_SpawnProjectile("VerySlowGrenade",24,16,frandom(-8,8),CMF_AIMDIRECTION)
+		Goto See
+	Missile3:
+		"####" B 25 A_FaceTarget
+		"####" C 8 A_SpawnProjectile("HandGrenade",24,16,frandom(-4,4))
+		"####" A 10
+		"####" B 30 A_FaceTarget
+		"####" C 8 A_SpawnProjectile("SlowGrenade",24,16,frandom(-8,8),CMF_AIMDIRECTION)
+		"####" A 15
+		"####" B 35 A_FaceTarget
+		"####" C 8 A_SpawnProjectile("VerySlowGrenade",24,16,frandom(-16,16))
+		Goto See
+	Missile4:
+		"####" B 10 A_FaceTarget
+		"####" C 8 A_SpawnProjectile("SlowGrenade",24,16,frandom(-4,4),CMF_AIMDIRECTION)
+		"####" A 20
+		Goto See
+	Death:
+		WGRN D 0 A_Jump(64, "XDeath")
+		"####" D 5
+		"####" E 5 A_Scream
+		"####" F 5 A_NoBlocking(!user_sneakable)
+		"####" G 5
+		"####" H -1
+		Stop
+	XDeath:
+		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
+		Goto Death.Fire
+	Idle:
+		Goto Look
+	}
+}
+
 ACTOR FlamerSoldier : Guard
 {
 	//$Title Nazi Flamer (Soldier)
