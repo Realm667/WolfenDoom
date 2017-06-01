@@ -255,19 +255,20 @@ class Nazi : Base
 			{ // Stealth kill, remove the sneakable eyes, alert a medium radius, and kill the actor
 				A_Log(StringTable.Localize("$STEALTH"));
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING);
-				A_AlertMonsters(160);
+				SoundAlert(inflictor, false, 160);
 				A_Die();
 			}
 			else if (user_incombat) // If the actor has already been in its See state
 			{
 				A_PlaySound("Nazi1/Pain", CHAN_AUTO, FRandom(0.2, 0.4), FALSE, ATTN_NORM); // Play quiet pain sound
-				A_AlertMonsters(64); //ozy - only if near // Alert small radius
+				SoundAlert(inflictor, false, 64); //ozy - only if near // Alert small radius
 			}
 			else // Otherwise, this attack was the equivalent of Stealth Kill for non-sneakable enemies
 			{
 				user_incombat = True;
 				A_Log(StringTable.Localize("$CRITICAL"));
-				A_AlertMonsters(128);
+				target = inflictor;
+				SoundAlert(inflictor, false, 128);
 				A_DamageSelf(health, "Melee");
 			}
 		}
