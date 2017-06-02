@@ -221,21 +221,19 @@ ACTOR Haycart //3d actor
 	//$Category Props (Wolf3D)/Street
 	//$Title Haycart
 	//$Color 3
-	
 	//$Arg0 "Type"
 	//$Arg0Tooltip "Pickup the desired type\nNormal: 0\nDestroyed: 1"
-	
+	DistanceCheck "scenelod"
 	Radius 24 //reduced for map-wise placement - ozy
 	Height 32
 	+SOLID
-	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:
 		MDLA A 0 NoDelay A_JumpIf(Args[0]==1, "Destroyed")
 		MDLA A -1
 		Stop
-		Destroyed:
+	Destroyed:
 		MDLA B -1
 		Stop
 	}
@@ -289,12 +287,12 @@ ACTOR ScareCrow
 	Height 48
 	Health 25
 	Mass 100000
+	Scale 0.85
 	+NOBLOOD
 	+NOTAUTOAIMED
 	+ROLLSPRITE
 	+SHOOTABLE
 	+SOLID
-	Scale 0.85
 	States
 	{
 	Spawn:

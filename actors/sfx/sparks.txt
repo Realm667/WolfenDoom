@@ -4,7 +4,7 @@ ACTOR WhiteSparkSpawner : SwitchableDecoration
 	//$Category Special Effects (Wolf3D)
 	//$Title Spark Spawner White
 	//$Color 12
-
+	//$Sprite UNKNA0
 	//$Arg0 "Direction"
 	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
 	//$Arg0Type 11
@@ -15,7 +15,6 @@ ACTOR WhiteSparkSpawner : SwitchableDecoration
 	//$Arg2Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
 	//$Arg2Type 11
 	//$Arg2Enum { 0 = "False"; 1 = "True"; }
-
 	Height 8
 	Radius 4
 	+CLIENTSIDEONLY
@@ -121,7 +120,6 @@ ACTOR RedSparkSpawner : WhiteSparkSpawner
 	//$Category Special Effects (Wolf3D)
 	//$Title Spark Spawner Red
 	//$Color 12
-
 	//$Arg0 "Direction"
 	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
 	//$Arg0Type 11
@@ -132,7 +130,6 @@ ACTOR RedSparkSpawner : WhiteSparkSpawner
 	//$Arg2Tooltip "'False' spawns it automatically (using the 2nd argument for frequency), 'True' makes it ACS-only"
 	//$Arg2Type 11
 	//$Arg2Enum { 0 = "False"; 1 = "True"; }
-
 	States
 	{
 	Spawn:
@@ -225,7 +222,6 @@ ACTOR OrangeSparkSpawner : WhiteSparkSpawner
 	//$Category Special Effects (Wolf3D)
 	//$Title Spark Spawner Orange
 	//$Color 12
-
 	//$Arg0 "Direction"
 	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
 	//$Arg0Type 11
@@ -328,7 +324,6 @@ ACTOR YellowSparkSpawner : WhiteSparkSpawner
 	//$Category Special Effects (Wolf3D)
 	//$Title Spark Spawner Yellow
 	//$Color 12
-
 	//$Arg0 "Direction"
 	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
 	//$Arg0Type 11
@@ -431,7 +426,6 @@ ACTOR GreenSparkSpawner : WhiteSparkSpawner
 	//$Category Special Effects (Wolf3D)
 	//$Title Spark Spawner Green
 	//$Color 12
-
 	//$Arg0 "Direction"
 	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
 	//$Arg0Type 11
@@ -534,7 +528,6 @@ ACTOR BlueSparkSpawner : WhiteSparkSpawner
 	//$Category Special Effects (Wolf3D)
 	//$Title Spark Spawner Blue
 	//$Color 12
-
 	//$Arg0 "Direction"
 	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
 	//$Arg0Type 11
@@ -637,7 +630,6 @@ ACTOR PurpleSparkSpawner : WhiteSparkSpawner
 	//$Category Special Effects (Wolf3D)
 	//$Title Spark Spawner Purple
 	//$Color 12
-
 	//$Arg0 "Direction"
 	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 8 map units below the ceiling)"
 	//$Arg0Type 11
@@ -741,6 +733,7 @@ ACTOR SparkFlare_W1
 	Height 0
 	Radius 0
 	Mass 0
+	+BRIGHT
 	+FORCEXYBILLBOARD
 	+MISSILE
 	+NOBLOCKMAP
@@ -752,7 +745,7 @@ ACTOR SparkFlare_W1
 	States
 	{
 	Spawn:
-		SPKW A 1 BRIGHT A_FadeOut(0.1)
+		SPKW A 1 A_FadeOut(0.1)
 		Loop
 	}
 }
@@ -812,6 +805,7 @@ ACTOR Spark_W1
 	Radius 2
 	Mass 0
 	Speed 0.25
+	+BRIGHT
 	+DONTSPLASH
 	+FORCEXYBILLBOARD
 	+MISSILE
@@ -822,10 +816,10 @@ ACTOR Spark_W1
 	States
 	{
 	Spawn:
-		SPKW E 1 BRIGHT
+		SPKW E 1
 		Loop
 	Death:
-		"####" E 1 BRIGHT A_FadeOut(0.1 * CallACS("SparkSwitch"))
+		"####" E 1 A_FadeOut(0.1 * CallACS("SparkSwitch"))
 		Loop
 	}
 }
@@ -851,7 +845,7 @@ ACTOR Spark_R1 : Spark_W1
 	States
 	{
 	Spawn:
-		SPKR E 1 bright
+		SPKR E 1
 		Loop
 	}
 }
@@ -877,7 +871,7 @@ ACTOR Spark_O1 : Spark_W1
 	States
 	{
 	Spawn:
-		SPKO E 1 bright
+		SPKO E 1
 		Loop
 	}
 }
@@ -903,7 +897,7 @@ ACTOR Spark_Y1 : Spark_W1
 	States
 	{
 	Spawn:
-		SPKY E 1 bright
+		SPKY E 1
 		Loop
 	}
 }
@@ -929,7 +923,7 @@ ACTOR Spark_G1 : Spark_W1
 	States
 	{
 	Spawn:
-		SPKG E 1 BRIGHT
+		SPKG E 1
 		Loop
 	}
 }
@@ -955,7 +949,7 @@ ACTOR Spark_B1 : Spark_W1
 	States
 	{
 	Spawn:
-		SPKB E 1 BRIGHT
+		SPKB E 1
 		Loop
 	}
 }
@@ -981,7 +975,7 @@ ACTOR Spark_P1 : Spark_W1
 	States
 	{
 	Spawn:
-		SPKP E 1 BRIGHT
+		SPKP E 1
 		Loop
 	}
 }
