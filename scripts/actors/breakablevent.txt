@@ -46,6 +46,8 @@ class Debris_Vent_FloorCeiling : SwitchableDecoration
 
 				A_SpawnItemEx("PowerPlantSmokePuffSmall", 0, 0, 32, 0, 0, 0, 0, 0);
 
+				S_Sound("DSMETDST", CHAN_AUTO, 0.5, ATTN_NORM);
+
 				for (int i = 0; i < 4; i++) {
 					A_SpawnItemEx("Debris_Trash", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
 					A_SpawnItemEx("Debris_Trash2", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
