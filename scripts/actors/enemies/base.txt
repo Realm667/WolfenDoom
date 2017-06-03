@@ -246,6 +246,8 @@ class Nazi : Base
 	// Hijack the damage calls in order to implement stealth kills and critical hits
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags = 0, double angle = 0)
 	{
+		if (user_sneakable && bDormant) { bDormant = False; } // Pain wakes up a dormant sneakable actors
+
 		String currentDamage = (inflictor && inflictor.paintype) ? inflictor.paintype : mod; // Get the damage type
 		int damageamt = Super.DamageMobj(inflictor, source, damage, mod, flags, angle); // Get the damage amount from the real DamageMobj function
 
