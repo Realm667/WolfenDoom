@@ -93,6 +93,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 	bool countgrenades;
 	bool nocatchup;
 	bool nonmoving;
+	int oldwaterlevel;
 
 	Property Weapon:weapon; // Weapon set based on FollowerWeapons Enum
 	Property CloseFollow:forgettarget; // If true, actor will immediately forget its target if the player moves out of range.  Behavior and following is more predictable, but more realistic for an escaping prisoner (vice a soldier in combat) 
@@ -152,8 +153,10 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			}
 			"####" BBBBB 1;
 		Chase: // Standard goal chasing
-			"####" BBBBBCCCCCDDDDDEEEEE 1 A_ChaseGoal();
-			"####" A 0 A_SpawnStep();
+			"####" BBBBBCCCCC 1 A_ChaseGoal();
+			"####" C 0 A_SpawnStep();
+			"####" DDDDDEEEEE 1 A_ChaseGoal();
+			"####" E 0 A_SpawnStep();
 			Loop;
 		Chase.Near: // Near the player, take up defensive position (if armed), otherwise stand stupidly
 			"####" AAAAA 1 A_Defend();
@@ -284,7 +287,10 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 
 	void A_SpawnStep()
 	{
-		Spawn("PlayerStep", (pos.x, pos.y, pos.z + 14));
+		if (waterlevel == 0)
+		{
+			Spawn("PlayerStep", (pos.x, pos.y, pos.z + 14));
+		}
 	}
 
 	state A_ChaseGoal()
@@ -468,7 +474,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			return ResolveState(Refire);
 		}
 		return ResolveState("Chase");
-	} 
+	}
 
 	void A_ThrowGrenade(int variance = 5)
 	{
@@ -509,6 +515,20 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			index = 0;
 		}
 	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (waterlevel > 0) {
+			// Only do this on entering the water
+			if (waterlevel > oldwaterlevel && waterlevel == 1) {
+				Spawn("PlayerStep", (pos.x, pos.y, pos.z + 14));
+			}	
+		}
+
+		oldwaterlevel = waterlevel;
+	}
 }
 
 class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost all actors except prisoner, with N as standing frame and A-D walking, EFG firing, H pain, IJKLM Death 
@@ -528,8 +548,10 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 				Thrust(1, pushAngle);
 			}
 		Chase:
-			"####" AAAAABBBBBCCCCCDDDDD 1 A_ChaseGoal();
-			"####" A 0 A_SpawnStep();
+			"####" AAAAABBBBB 1 A_ChaseGoal();
+			"####" B 0 A_SpawnStep();
+			"####" CCCCCDDDDD 1 A_ChaseGoal();
+			"####" D 0 A_SpawnStep();
 			Loop;
 		Chase.Near:
 			"####" NNNNN 1 A_Defend();
@@ -796,6 +818,7 @@ class DogFollower : PlayerFollower2
 		+FRIENDLY
 		+NOINFIGHTING
 		Speed 4;
+		Scale 0.67;
 
 		PlayerFollower.ChaseAttackChance 5;
 		PlayerFollower.Weapon PWEAP_Melee;
@@ -815,21 +838,26 @@ class DogFollower : PlayerFollower2
 				double pushAngle = AngleTo(playerToChase) + 180;
 				Thrust(1, pushAngle);
 			}
+		Heal: // Dogs can't heal themselves.
 		Chase:
 			"####" A 0 { Speed = 8; }
-			"####" AAAABBBBCCCCDDDD 1 A_ChaseGoal(); 
-			"####" A 0 A_SpawnStep();
+			"####" AAAABBBB 1 A_ChaseGoal();
+			"####" B 0 A_SpawnStep();
+			"####" CCCCDDDD 1 A_ChaseGoal();
+			"####" D 0 A_SpawnStep();
 			Loop;
 		Chase.Near:
 			"####" A 0 { Speed = 4; }
 			"####" A 0 A_Defend(false);
 			"####" AAA 1 A_Chase(null, null);
 			"####" A 0 A_Defend(false);
-			"####" BBB 1 A_ChaseGoal(); 
+			"####" BBB 1 A_ChaseGoal();
+			"####" B 0 A_SpawnStep();
 			"####" A 0 A_Defend(false);
 			"####" CCC 1 A_Chase(null, null);
 			"####" A 0 A_Defend(false);
-			"####" DDD 1 A_ChaseGoal(); 
+			"####" DDD 1 A_ChaseGoal();
+			"####" D 0 A_SpawnStep();
 			Loop;
 		Pain:
 			"####" M 4 A_Pain();
