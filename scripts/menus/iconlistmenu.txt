@@ -187,7 +187,13 @@ class ExtendedListMenu : ListMenu
 
 	override bool MenuEvent(int mkey, bool fromcontroller)
 	{
-		if (overlay) { overlay = ""; return false; }
+		if (overlay)
+		{
+			overlay = "";
+			MenuSound ("menu/backup");
+
+			return false;
+		}
 
 		switch (mkey)
 		{
