@@ -1,6 +1,7 @@
 ACTOR LeavesSpawner : CinderSpawner //ozy81
 {
 	//$Title Leaves Spawner
+	//$Sprite LEFYA0
 	+FLATSPRITE
 	+LOOKALLAROUND
 	+ROLLSPRITE
@@ -11,7 +12,7 @@ ACTOR LeavesSpawner : CinderSpawner //ozy81
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("LeavesSwitch")==0,"EndSpawn")
 	ActiveLoop:
 		TNT1 A 0 A_CheckSightOrRange(1200.0, "LoopWait", TRUE)
-	LeafLoop: //if you need more spawn leaves, simply change above tics from 8 to a lower value, max 1
+	LeafLoop: //if you need more spawn leaves, simply change above tics from 8 to a lower value, min 1
 		TNT1 A 8 A_SpawnItemEx("FloatingLeaves", random(-Args[0],Args[0]), random(-Args[0],Args[0]), random(0,Args[1]), random(Args[2],Args[3]), 0, random(-Args[2],Args[2]), random(-4, 4), 128, Args[4])
 		Goto ActiveLoop
 	Inactive:
