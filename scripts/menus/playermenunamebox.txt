@@ -1,0 +1,24 @@
+class ListMenuItemPlayerNameBoxColored : ListMenuItemPlayerNameBox
+{
+	override void Drawer(bool selected)
+	{
+		String text = StringTable.Localize(mText);
+		if (text.Length() > 0)
+		{
+			screen.DrawText(mFont, selected? OptionMenuSettings.mFontColorSelection : mFontColor, mXpos, mYpos, text, DTA_Clean, true);
+		}
+
+		// Draw player name box
+		double x = mXpos + mFont.StringWidth(text) + 16 + mFrameSize;
+		DrawBorder (x, mYpos - mFrameSize, MAXPLAYERNAME+1);
+		if (!mEnter)
+		{
+			screen.DrawText (SmallFont, Font.CR_GRAY, x + mFrameSize, mYpos, mPlayerName, DTA_Clean, true);
+		}
+		else
+		{
+			let printit = mEnter.GetText() .. SmallFont.GetCursor();
+			screen.DrawText (SmallFont, Font.CR_GRAY, x + mFrameSize, mYpos, printit, DTA_Clean, true);
+		}
+	}
+}
