@@ -1049,7 +1049,7 @@ ACTOR FlamerSoldier : Guard
 	Missile: //fires 10 times before reaching reload state
 		"####" F 5
 		"####" F 10 A_FaceTarget
-		"####" HHHH 1 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyFlamerShot",38,4)
+		"####" HHH 1 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyFlamerShot",38,4)
 		"####" G 0 A_GiveInventory("FlamerCounter", 5) //ozy81
 		"####" G 0 A_JumpIfInventory("FlamerCounter", 50, "Reload") //ozy81
 		"####" G 6 A_MonsterRefire(10,"See")
