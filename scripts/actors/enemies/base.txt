@@ -278,6 +278,7 @@ class Nazi : Base
 				A_Log(StringTable.Localize("$STEALTH"));
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING);
 				SoundAlert(inflictor, false, 160);
+				bFriendly = False; // Force to not friendly so that they will count as a kill.
 				A_Die();
 			}
 			else if (user_incombat) // If the actor has already been in its See state
