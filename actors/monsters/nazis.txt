@@ -522,7 +522,7 @@ ACTOR RifleGuard : MP40Guard
 	Obituary "$RIFLSOLD"
 	SeeSound "Nazi3/Sighted"
 	DropItem "G43" 64
-	DropItem "MauserAmmo" 192
+	DropItem "MauserAmmo" 192 5
 	States
 	{
 	Spawn:
@@ -720,7 +720,7 @@ ACTOR Sniper : Guard
 	Health 50
 	Speed 0
 	DropItem "Kar98k" 48
-	DropItem "MauserAmmo" 192
+	DropItem "MauserAmmo" 192 5
 	+LOOKALLAROUND
 	States
 	{
@@ -789,7 +789,7 @@ ACTOR Sniper_Crouch : Guard
 	Health 50
 	Speed 0
 	DropItem "Kar98k" 48
-	DropItem "MauserAmmo" 192
+	DropItem "MauserAmmo" 192 5
 	+DROPOFF
 	+LOOKALLAROUND
 	States
@@ -858,7 +858,7 @@ ACTOR ArcticSniper : Guard
 	Health 60
 	Speed 0
 	DropItem "Kar98k" 48
-	DropItem "MauserAmmo" 192
+	DropItem "MauserAmmo" 192 5
 	+LOOKALLAROUND
 	States
 	{
@@ -916,7 +916,7 @@ ACTOR ArcticSniper_Crouch : Guard
 	Health 50
 	Speed 0
 	DropItem "Kar98k" 48
-	DropItem "MauserAmmo" 192
+	DropItem "MauserAmmo" 192 5
 	+DROPOFF
 	+LOOKALLAROUND
 	States
@@ -2085,7 +2085,7 @@ ACTOR EliteSoldatRifler : Guard
 	DeathSound "eliterifler/death"
 	DropItem "G43" 64
 	DropItem "GrenadePickup" 16
-	DropItem "MauserAmmo" 192
+	DropItem "MauserAmmo" 192 5
 	States
 	{
 	Spawn:
