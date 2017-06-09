@@ -242,8 +242,8 @@ class SneakableGuardEyesAlerted : StealthBase
 			TNT1 A 0 A_JumpIf(args[0] > 220, "Look"); // Too early!
 			TNT1 A 0 A_PlaySound("axis1/target_not_seen", CHAN_BODY);
 			Goto ResetCounters + 1; // Reset quote countdown time only
-		PlayerSeen: // Clear target and reset countdown
-			TNT1 A 1 A_ClearTarget;
+		PlayerSeen: // Reset countdown
+			TNT1 A 1;
 			Goto ResetCounters;
 		ResetMaster:
 			TNT1 A 0 { if (master) { Nazi(master).BecomeIdle(); } } // Cause the master to become idle

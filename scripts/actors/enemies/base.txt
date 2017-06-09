@@ -277,8 +277,8 @@ class Nazi : Base
 			{ // Stealth kill, remove the sneakable eyes, alert a medium radius, and kill the actor
 				A_Log(StringTable.Localize("$STEALTH"));
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING);
-				SoundAlert(inflictor, false, 160);
 				bFriendly = False; // Force to not friendly so that they will count as a kill.
+				SoundAlert(inflictor, false, 192);
 				A_Die();
 			}
 			else if (user_incombat) // If the actor has already been in its See state
@@ -290,9 +290,8 @@ class Nazi : Base
 			{
 				user_incombat = True;
 				A_Log(StringTable.Localize("$CRITICAL"));
-				target = inflictor;
-				SoundAlert(inflictor, false, 128);
-				A_DamageSelf(health, "Melee");
+				SoundAlert(inflictor, false, 192);
+				A_Die();
 			}
 		}
 
@@ -330,7 +329,7 @@ class Nazi : Base
 		A_RemoveChildren(TRUE, RMVF_EVERYTHING); // Get rid of the passive guard eyes
 		A_AlertMonsters(512); // Alert an extra-large radius
 		A_SpawnItemEx("SneakableGuardEyesAlerted", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid); // Spawn active guard eyes
-		if (target && target.GetSpecies() == GetSpecies()) { target = null; SetStateLabel("Spawn"); }
+		if (target && target.GetSpecies() == GetSpecies()) { target = null; SetStateLabel("Spawn"); } // Don't go after same-species targets
 		SetStateLabel("See"); // Go to See state and start chasing the player (or wandering if target wasn't set for some reason)
 	}
 
