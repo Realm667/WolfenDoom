@@ -161,6 +161,7 @@ class Nazi : Base
 	int perceptionfov;
 	int user_chasegoal;
 	bool user_sneakable;
+	Actor patrolgoal;
 
 	Property Sneakable:user_sneakable;
 	Property PerceptionTime:perceptionthreshold; // How many tics the player has to be in sight before NOTARGET fails - 0 means never see through NoTarget
@@ -322,11 +323,25 @@ class Nazi : Base
 	void BecomeAlerted(Actor newtarget = null)
 	{
 		if (health <= 0 || !bShootable) { return; } // If it's dead, don't do anything
-		if (goal) { user_chasegoal = goal.tid; } // Save the navigation goal if one was set
 
+		A_RemoveChildren(TRUE, RMVF_EVERYTHING, "None", "Eyes"); // Get rid of the passive guard eyes
 		bFriendly = False; // Set unfriendly
+
+		if (goal)
+		{
+			patrolgoal = goal; // Save the navigation goal if one was set
+		}
+
+		if (!patrolgoal) // Otherwise, make a new navgoal at the actor's origin so that it can come back.
+		{
+			patrolgoal = Spawn("PatrolPoint", pos);
+			patrolgoal.args[0] = -1;
+			patrolgoal.args[1] = 0x7FFFFFFF;
+			patrolgoal.angle = angle;
+		}
+
 		target = newtarget; // Set target to the player the eyes saw
-		A_RemoveChildren(TRUE, RMVF_EVERYTHING); // Get rid of the passive guard eyes
+		reactiontime = 0; // Make the enemy respond to seeing the player right away
 		A_AlertMonsters(512); // Alert an extra-large radius
 		A_SpawnItemEx("SneakableGuardEyesAlerted", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid); // Spawn active guard eyes
 		if (target && target.GetSpecies() == GetSpecies()) { target = null; SetStateLabel("Spawn"); } // Don't go after same-species targets
@@ -337,9 +352,12 @@ class Nazi : Base
 	{
 		if (health <= 0 || !bShootable) { return; }
 
+		A_RemoveChildren(TRUE, RMVF_EVERYTHING, "None", "Eyes"); // Get rid of the active guard eyes
 		bFriendly = True;
-		A_ClearTarget();
-		ACS_NamedExecute("TryResumePatrolling");
+
+		goal = patrolgoal; // Restore any navigation goal if ther was one set
+		target = patrolgoal;
+
 		A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid);
 		SetStateLabel("Spawn");
 	}
@@ -354,5 +372,27 @@ class Nazi : Base
 		}
 
 		return false;
+	}
+
+	override void Tick()
+	{
+		// If the enemy is sneakable and idle (and not patrolling), and isn't in its original location, keep it moving toward that location.
+		//  NOTE: This doesn't work properly when the player has NOTARGET enabled (or is wearing a disguise and has no weapon raised).
+		if (user_sneakable && bFriendly && patrolgoal && patrolgoal.args[0] == -1)
+		{
+			if (Distance3D(patrolgoal) <= Radius) // If at goal, clear target and goal and go to Spawn state
+			{
+				goal = null;
+				A_ClearTarget();
+				SetStateLabel("Spawn");
+			}
+			else // Otherwise, keep trying to get there (necessary because A_Chase clears goal and target when within MeleeRange of goal)
+			{
+				goal = patrolgoal;
+				target = patrolgoal;
+			}
+		}
+
+		Super.Tick();
 	}
 }
