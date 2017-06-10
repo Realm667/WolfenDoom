@@ -290,11 +290,9 @@ ACTOR SmallBush1
 	}
 }
 
-ACTOR SmallBush2
+ACTOR SmallBush2 : SmallBush1
 {
-	//$Category Props (Wolf3D)/Trees
 	//$Title Bush 2
-	//$Color 3
 	Height 40
 	DistanceCheck "treeslod"
 	States
@@ -325,6 +323,7 @@ ACTOR CeilingGrass
 	//$Color 3
 	Radius 16
 	Height 24
+	+WALLSPRITE
 	+FORCEYBILLBOARD
 	+NOGRAVITY
 	+SPAWNCEILING
@@ -409,8 +408,8 @@ ACTOR Grass4 : Grass1
 {
 	//$Title Grass 1 (desert)
 	DistanceCheck "grasslod"
-	States 
-	{ 
+	States
+	{
 	Spawn:
 		GRS4 A 0
 		Goto Setup
@@ -427,8 +426,8 @@ ACTOR Grass5 : Grass1
 {
 	//$Title Grass 2 (desert)
 	DistanceCheck "grasslod"
-	States 
-	{ 
+	States
+	{
 	Spawn:
 		GRS5 A 0
 		Goto Setup
@@ -445,8 +444,8 @@ ACTOR Grass6 : Grass1
 {
 	//$Title Grass 3 (desert)
 	DistanceCheck "grasslod"
-	States 
-	{ 
+	States
+	{
 	Spawn:
 		GRS6 A 0
 		Goto Setup
@@ -463,8 +462,8 @@ ACTOR Grass7 : Grass1
 {
 	//$Title Grass 1 (winter)
 	DistanceCheck "grasslod"
-	States 
-	{ 
+	States
+	{
 	Spawn:
 		GRS7 A 0
 		Goto Setup
@@ -481,8 +480,8 @@ ACTOR Grass8 : Grass1
 {
 	//$Title Grass 2 (winter)
 	DistanceCheck "grasslod"
-	States 
-	{ 
+	States
+	{
 	Spawn:
 		GRS8 A 0
 		Goto Setup
@@ -499,8 +498,8 @@ ACTOR Grass9 : Grass1
 {
 	//$Title Grass 3 (winter)
 	DistanceCheck "grasslod"
-	States 
-	{ 
+	States
+	{
 	Spawn:
 		GRS9 A 0
 		Goto Setup
@@ -552,7 +551,7 @@ ACTOR Flower2 : Flower1
 	States
 	{
 	Spawn:
-		FLW2 A 0 
+		FLW2 A 0
 		Goto Setup
 	Death:
 		TNT1 A 0 A_UnSetSolid
@@ -571,7 +570,7 @@ ACTOR Flower3 : Flower1
 	States
 	{
 	Spawn:
-		FLW3 A 0 
+		FLW3 A 0
 		Goto Setup
 	Death:
 		TNT1 A 0 A_UnSetSolid
@@ -589,7 +588,7 @@ ACTOR Rose1 : Flower1
 	States
 	{
 	Spawn:
-		FLW4 A 0 
+		FLW4 A 0
 		Goto Setup
 	Death:
 		TNT1 A 0 A_UnSetSolid
@@ -608,7 +607,7 @@ ACTOR Rose2 : Flower1
 	States
 	{
 	Spawn:
-		FLW5 A 0 
+		FLW5 A 0
 		Goto Setup
 	Death:
 		TNT1 A 0 A_UnSetSolid
@@ -627,7 +626,7 @@ ACTOR Rose3 : Flower1
 	States
 	{
 	Spawn:
-		FLW6 A 0 
+		FLW6 A 0
 		Goto Setup
 	Death:
 		TNT1 A 0 A_UnSetSolid
@@ -646,7 +645,7 @@ ACTOR Rose4 : Flower1
 	States
 	{
 	Spawn:
-		FLW7 A 0 
+		FLW7 A 0
 		Goto Setup
 	Death:
 		TNT1 A 0 A_UnSetSolid
@@ -767,7 +766,7 @@ ACTOR RandomRye
 	Setup:
 		"####" "#" 0 A_SetScale(ScaleX * frandom(0.85, 1.1), ScaleY * frandom(0.85, 1.1))
 		"####" "#" -1 A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
-		Stop	
+		Stop
 	}
 }
 
@@ -852,6 +851,7 @@ ACTOR BurnTreeSpawner : RandomSpawner
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Trees (burnt, random spawner)
 	//$Color 3
+	//$Sprite MDLAA0
 	DropItem "Tree2_Burnt"
 	DropItem "Tree3_Burnt"
 	DropItem "Tree4_Burnt"
@@ -864,6 +864,7 @@ ACTOR SummerTreeSpawner : RandomSpawner
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree (Summer, random spawner)
 	//$Color 3
+	//$Sprite MDLAA0
 	DropItem "Bush"
 	DropItem "Tree2"
 	DropItem "Tree3"
@@ -877,6 +878,7 @@ ACTOR WinterTreeSpawner : RandomSpawner
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree (winter, random spawner)
 	//$Color 3
+	//$Sprite MDLAA0
 	DropItem "WinterA"
 	DropItem "WinterB"
 	DropItem "WinterC"

@@ -230,14 +230,8 @@ ACTOR SupplyChestGeneric : CustomInventory
 		// Spawn an invisible, empty chest with the same TID as this chest.
 		// This reimplements the behaviour of Inventory.PickupFlash but allows
 		// the spawned actor to have a TID so it can be referenced in scripts.
-		SUBX B 0 NoDelay A_SpawnItemEx(	"EmptySupplyChest", // type
-						0, 0, 0,            // offset
-						0, 0, 0,            // velocity
-						0,                  // angle
-						SXF_SETMASTER | SXF_NOCHECKPOSITION,
-						0,                  // chance (always)
-						tid                 // TID
-				)
+		// Format is A_SpawnItemEx(#type, #offset, #offset, #offset, #vel, #vel, #vel, #angle, #flags, #chance, #tid)
+		SUBX B 0 NoDelay A_SpawnItemEx(	"EmptySupplyChest", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid)
 		SUBX B -1
 		Stop
 	}
