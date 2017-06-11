@@ -355,11 +355,13 @@ class Nazi : Base
 		A_RemoveChildren(TRUE, RMVF_EVERYTHING, "None", "Eyes"); // Get rid of the active guard eyes
 		bFriendly = True;
 
-		goal = patrolgoal; // Restore any navigation goal if ther was one set
+		goal = patrolgoal; // Restore any navigation goal if there was one set
 		target = patrolgoal;
 
 		A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid);
-		SetStateLabel("Spawn");
+
+		if (goal && target) { SetStateLabel("See"); }
+		else { SetStateLabel("Spawn"); }
 	}
 
 	bool SneakableActors() // Are there sneakable actors in the level?
@@ -390,6 +392,7 @@ class Nazi : Base
 			{
 				goal = patrolgoal;
 				target = patrolgoal;
+				if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); }
 			}
 		}
 
