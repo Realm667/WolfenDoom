@@ -213,8 +213,6 @@ class SneakableGuardEyesIdle : StealthBase
 			Goto Look;
 		AlertMaster:
 			TNT1 A 0 { 
-				A_SpawnItemEx("AlertMarker", 0, 0, 64, 0, 0, 0, 0, SXF_TRANSFERPOINTERS);
-				A_PlaySound("axis1/sighted", CHAN_BODY);
 				if (master && !master.bDormant) { Nazi(master).BecomeAlerted(target); } // Cause the master to become alerted
 			} 
 			Stop;
@@ -244,7 +242,7 @@ class SneakableGuardEyesAlerted : StealthBase
 			TNT1 A 0 A_PlaySound("axis1/target_not_seen", CHAN_BODY);
 			Goto ResetCounters + 1; // Reset quote countdown time only
 		PlayerSeen: // Reset countdown
-			TNT1 A 1;
+			TNT1 A 1 A_ClearTarget();
 			Goto ResetCounters;
 		ResetMaster:
 			TNT1 A 0 { if (master) { Nazi(master).BecomeIdle(); } } // Cause the master to become idle

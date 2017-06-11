@@ -246,6 +246,11 @@ class Nazi : Base
 		A_SpawnItemEx("Pain_Overlay", scale.x + 3, 0, height - 8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR); // Spawn pain overlay blood spurt
 		if (alertrange) { A_AlertMonsters(alertrange); } // Alert monsters in given range
 		if (playsound) { A_Pain(); } // Play pain sound unless passed 'false'
+
+		if (user_sneakable && bFriendly) // If we attacked a sneakable actor who wasn't alerted...
+		{
+			BecomeAlerted(target); // Alert that actor
+		}
 	}
 
 	// Initialize actor
@@ -324,6 +329,9 @@ class Nazi : Base
 	{
 		if (health <= 0 || !bShootable) { return; } // If it's dead, don't do anything
 
+		A_SpawnItemEx("AlertMarker", 0, 0, 64, 0, 0, 0, 0, SXF_SETMASTER);
+		A_PlaySound("axis1/sighted", CHAN_BODY);
+
 		A_RemoveChildren(TRUE, RMVF_EVERYTHING, "None", "Eyes"); // Get rid of the passive guard eyes
 		bFriendly = False; // Set unfriendly
 
@@ -380,7 +388,7 @@ class Nazi : Base
 	{
 		// If the enemy is sneakable and idle (and not patrolling), and isn't in its original location, keep it moving toward that location.
 		//  NOTE: This doesn't work properly when the player has NOTARGET enabled (or is wearing a disguise and has no weapon raised).
-		if (user_sneakable && bFriendly && patrolgoal && patrolgoal.args[0] == -1)
+		if (user_sneakable && bFriendly && patrolgoal && patrolgoal.args[0] == -1 && health > 0 && bShootable)
 		{
 			if (Distance3D(patrolgoal) <= Radius) // If at goal, clear target and goal and go to Spawn state
 			{
