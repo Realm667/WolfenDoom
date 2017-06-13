@@ -78,6 +78,7 @@ ACTOR MechBoss : Nazi
 
 //COUNTERS
 ACTOR ChainCounter : Inventory {Inventory.MaxAmount 48}
+ACTOR CrouchCounter : Inventory {Inventory.MaxAmount 1}
 ACTOR EliteAssaulterCounter : Inventory {Inventory.MaxAmount 32}
 ACTOR EliteGrenadeCounter : Inventory {Inventory.MaxAmount 4}
 ACTOR ElsaCounter : Inventory {Inventory.MaxAmount 64}
@@ -1100,6 +1101,17 @@ ACTOR ToolBox : HitlerChaingun
 	{
 	Spawn:
 		TBOX A -1
+		Stop
+	}
+}
+
+ACTOR NaziMedicBox : HitlerChaingun
+{
+	Scale 0.65
+	States
+	{
+	Spawn:
+		MBOX A -1
 		Stop
 	}
 }
