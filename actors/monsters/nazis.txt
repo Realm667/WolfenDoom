@@ -77,7 +77,8 @@ ACTOR Guard : Nazi
 		"####" O -1
 		Stop
 	Raise:
-		"####" MLKJI 5
+		"####" M 35
+		"####" LKJI 5
 		"####" I 0 A_Jump(256,"See")
 		Stop
 	XDeath:
@@ -107,7 +108,9 @@ ACTOR NaziMedic : Nazi
 	PainSound "Nazi1/Pain"
 	DeathSound "Nazi1/Death"
 	DropItem "NaziMedicBox" 255
-	+LOOKALLAROUND
+	-FRIGHTENED
+	+AVOIDMELEE
+	+NEVERTARGET
 	States
 	{
 	Spawn:
@@ -115,6 +118,8 @@ ACTOR NaziMedic : Nazi
 		Goto Look
 	See:
 		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		"####" "#" 0 {A_SetSpeed(6); A_ChangeFlag("FRIGHTENED", FALSE);}
+		"####" "#" 0 A_JumpIfCloser (radius + 192, "Flee")
 		"####" "#" 0 A_TakeInventory("CrouchCounter", 1)
 		"####" A 1 A_Chase
 		"####" AA 1 A_Chase("","",CHF_RESURRECT)
@@ -135,11 +140,53 @@ ACTOR NaziMedic : Nazi
 		"####" D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
 		"####" DD 1 A_Chase("","",CHF_RESURRECT)
 		Loop
+	Flee:
+		"####" "#" 0 {A_SetSpeed(12); A_PlaySound("Nazi1/Sighted", CHAN_ITEM); A_ChangeFlag("FRIGHTENED", TRUE);}
+	See.Flee: //don't try to heal anybody
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
+		"####" "#" 0 A_TakeInventory("CrouchCounter", 1)
+		"####" A 1 A_Chase
+		"####" AA 1 A_Chase("","")
+		"####" A 1 A_Chase
+		"####" AA 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
+		"####" BB 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" BB 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" CC 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" CC 1 A_Chase("","")
+		"####" D 1 A_Chase
+		"####" DD 1 A_Chase("","")
+		"####" D 1 A_Chase
+		"####" D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
+		"####" DD 1 A_Chase("","")
+		"####" A 1 A_Chase
+		"####" AA 1 A_Chase("","")
+		"####" A 1 A_Chase
+		"####" AA 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
+		"####" BB 1 A_Chase("","")
+		"####" B 1 A_Chase
+		"####" BB 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" CC 1 A_Chase("","")
+		"####" C 1 A_Chase
+		"####" CC 1 A_Chase("","")
+		"####" D 1 A_Chase
+		"####" DD 1 A_Chase("","")
+		"####" D 1 A_Chase
+		"####" D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
+		"####" DD 1 A_Chase("","")
+		Goto See
 	Heal:
 		"####" E 0 A_GiveInventory("CrouchCounter", 1)
-		"####" E 35
-		"####" F 15
-		"####" E 35
+		"####" E 15
+		"####" F 5
+		"####" E 15
 		Goto See
 	Death:
 		"####" H 0 A_JumpIfInventory("CrouchCounter", 1, "Death.Crouch")
