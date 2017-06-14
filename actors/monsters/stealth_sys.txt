@@ -1,26 +1,5 @@
 //mxd. Stealth-related stuff. 
 
-//////////////
-//BASE STUFF//
-//////////////
-// Not defined for GZDB
-ACTOR AlertMarker
-{
-	Scale 2.0
-	+BRIGHT
-	+NOGRAVITY
-	States
-	{
-		Spawn:
-			EXCL C 1 NoDelay A_PlaySound("misc/alert", CHAN_BODY)
-			Goto Fade
-		Fade:
-			EXCL C 0 A_Warp(AAPTR_MASTER, 0, 0, 64)
-			EXCL C 1 A_FadeOut(0.01)
-			Loop
-	}
-}
-
 ///////////
 //ENEMIES//
 ///////////
@@ -268,6 +247,17 @@ Actor SneakableWRifleGuard : WRifleGuard
 	//$Title Wehrmacht Guard (Rifle, sneak-friendly)
 	//$Color 4
 	//$Sprite RGR2N1
+
+	Nazi.Sneakable
+	DropItem "" //no drop from sneaks
+}
+
+Actor SneakableMarineGeneral : MarineGeneral
+{
+	//$Category Monsters (Wolf3D)/Sneak-Friendly
+	//$Title General Seeteufel (Boss, sneak-friendly)
+	//$Color 4
+	//$Sprite SEETA0
 
 	Nazi.Sneakable
 	DropItem "" //no drop from sneaks

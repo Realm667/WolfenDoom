@@ -330,7 +330,8 @@ class Nazi : Base
 		if (health <= 0 || !bShootable) { return; } // If it's dead, don't do anything
 
 		A_SpawnItemEx("AlertMarker", 0, 0, 64, 0, 0, 0, 0, SXF_SETMASTER);
-		A_PlaySound("axis1/sighted", CHAN_BODY);
+		if (!bBoss) { A_PlaySound("axis1/sighted", CHAN_BODY); }
+		else { A_PlaySound(SeeSound, CHAN_BODY); }
 
 		A_RemoveChildren(TRUE, RMVF_EVERYTHING, "None", "Eyes"); // Get rid of the passive guard eyes
 		bFriendly = False; // Set unfriendly
