@@ -1,0 +1,225 @@
+class NaziMedic : NaziStandard
+{
+	bool crouched;
+	int frightenedloopcount;
+	int healloopcount;
+
+	Default
+	{
+		//$Category Monsters (Wolf3D)
+		//$Title Nazi Medic
+		//$Color 4
+		+AVOIDMELEE
+		+NEVERTARGET
+		Health 20;
+		Speed 6;
+		DropItem "NaziMedicBox", 255;
+	}
+
+	States
+	{
+		Spawn:
+			NMDC N 0;
+			Goto Look;
+		Look:
+			"####" "#" 10 A_LookForBodies();
+			Loop;
+		See:
+			"####" "#" 0 {
+				user_incombat = True;
+				crouched = false;
+				Speed = Default.Speed;
+				bChaseGoal = True;
+
+				if (frightenedloopcount > 0) { frightenedloopcount--; }
+				else { target = goal; bFrightened = False; }
+
+				target = FindClosestPlayer();
+
+				// Run away from the player if close by
+				if (target && (Distance3d(target) <= radius + 192 + target.radius || !goal)) {
+					A_PlaySound("Nazi1/Sighted", CHAN_ITEM);
+					Speed = Default.Speed * 2;
+
+					bFrightened = True;
+					frightenedloopcount = 2;
+				} else {
+					target = goal;
+				}
+			}
+			"####" AAAAAA 1 A_Chase(null, null);
+			"####" B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION);
+			"####" BBBBBB 1 A_Chase(null, null);
+			"####" CCCCCC 1 A_Chase(null, null);
+			"####" D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION);
+			"####" DDDDDD 1 A_Chase(null, null);
+			Loop;
+		Heal:
+			"####" E 0 {
+				crouched = True;
+				if (goal) {
+					healloopcount = goal.Default.Health > 25 ? min(goal.Default.Health / 25, 3) : 0;
+				}
+			}
+		Heal.Loop:
+			"####" E 15;
+			"####" F 5;
+			"####" EEEEE 3 { goal.A_SpawnItemEx("HealingParticle", random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0);}
+			"####" E 0 {
+				if (healloopcount > 0) {
+					healloopcount--;
+					return ResolveState("Heal.Loop");
+				}
+				if (Nazi(goal) && Nazi(goal).user_sneakable) { Nazi(goal).BecomeIdle(); }
+				goal = null;
+				master = null;
+				return ResolveState("See");
+			}
+			Goto See;
+		Raise:
+			"####" # 35 { A_SetTics(Default.Health > 25 ? min(Default.Health / 25, 3) * 35 : 35); } // To match the medic's healing state duration
+			"####" V 35;
+			"####" ULKJ 5;
+			"####" I 5 A_Jump(256,"See");
+			Stop;
+		Death:
+			"####" H 5 {
+				if (crouched) { return ResolveState("Death.Crouch"); }
+				return ResolveState(null);
+			}
+			"####" I 5 A_Scream();
+			"####" J 5 A_NoBlocking(!user_sneakable);
+			"####" K 5;
+			"####" L 5;
+			"####" U 5;
+			"####" V 5;
+			"####" W -1;
+			Stop;
+		Death.Crouch:
+			"####" G 5 { crouched = False; }
+			"####" Q 5 A_Scream();
+			"####" R 5 A_NoBlocking(!user_sneakable);
+			"####" S 5;
+			"####" T 5;
+			"####" U 5;
+			"####" V 5;
+			"####" W -1;
+			Stop;
+	}
+
+	Actor FindClosestPlayer() // Also sets up initial sight parameters
+	{
+		Actor ClosestPlayer;
+
+		LookExParams SearchParams;
+
+		SearchParams.fov = 120;
+		SearchParams.minDist = 0;
+		SearchParams.maxDist = 1024;
+		SearchParams.maxHearDist = 1024;
+
+		for (int p = 0; p < MAXPLAYERS; p++) { // Iterate through all of the players and find the closest one
+			Actor mo = players[p].mo;
+
+			if (mo) {
+				if (!mo.bShootable || mo.health <= 0) { continue; }
+				if (players[p].cheats & CF_NOTARGET) { continue; }
+				if (!IsVisible(mo, false, SearchParams)) { continue; }
+				if (isFriend(mo)) { continue; }
+				if (ClosestPlayer && Distance3d(mo) > Distance3d(ClosestPlayer)) { continue; }
+	
+				ClosestPlayer = mo;
+			}
+		}
+		return ClosestPlayer;
+	}
+
+	state A_LookForBodies()
+	{
+		ThinkerIterator Finder = ThinkerIterator.Create("Nazi", STAT_DEFAULT);
+		Nazi mo;
+
+		while ( (mo = Nazi(Finder.Next())) )
+		{
+			if (
+				mo.health > 0 ||
+				mo.bDormant ||
+				mo.bFriendly != bFriendly ||
+				mo.health <= mo.GetGibHealth() ||
+				mo.DeathDamageType == "Fire" ||
+				!mo.FindState("Raise") ||
+				Distance3d(mo) > 1024
+			) { continue; }
+
+			if (goal && Distance3d(mo) > Distance3d(goal)) { continue; }
+
+			goal = mo;
+		}
+
+		// A Second iterator to account for the sneakables...
+		Finder = ThinkerIterator.Create("Nazi", STAT_DEFAULT - 5);
+
+		while ( (mo = Nazi(Finder.Next())) )
+		{
+			if (
+				mo.health > 0 ||
+				mo.bDormant ||
+				mo.bFriendly != bFriendly ||
+				mo.health <= mo.GetGibHealth() ||
+				mo.DeathDamageType == "Fire" ||
+				!mo.FindState("Raise") ||
+				Distance3d(mo) > 1024
+			) { continue; }
+
+			if (goal && Distance3d(mo) > Distance3d(goal)) { continue; }
+
+			goal = mo;
+		}
+
+		return ResolveState("See");
+	}
+
+	override void Tick()
+	{
+		// If it's alive and doesn't have a goal (and isn't running away), look for dead bodies
+		if (health > 0 && bShootable)
+		{
+			if (!goal && !bFrightened) { A_LookForBodies(); }
+			else if (!bFrightened)
+			{
+				if (goal && Distance3d(goal) < 24 && goal != master) {
+					master = goal; // Why is there no direct A_Resurrect(<actor>)?
+					A_RaiseMaster(RF_NOCHECKPOSITION);
+					SetStateLabel("Heal");
+				}
+			}
+			else
+			{
+				goal = null;
+			}
+		}
+
+		Super.Tick();
+	}
+}
+
+class HealEffect : Actor
+{
+	String HealParticle;
+	Property HealParticle:HealParticle;
+
+	Default
+	{
+		+NOINTERACTION
+		HealEffect.HealParticle "HealingParticle";
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 AAAAAAAAAA 2 {
+				A_SpawnItemEx(HealParticle, random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0);
+			}
+			Stop;
+	}
+}
