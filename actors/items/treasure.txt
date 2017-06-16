@@ -133,6 +133,19 @@ ACTOR Naziward : BagOfCoins
 	}
 }
 
+ACTOR Cacoward : BagOfCoins
+{
+	//$Title Treasure (Easteregg, Cacoward, 10pts)
+	Inventory.PickupMessage "$GOLDWRD"
+	Scale 0.12
+	States
+	{
+	Spawn:
+		CACW A -1 Light(TRESLITE)
+		Stop
+	}
+}
+
 /////////////Treasure Box //////////
 ACTOR ChestKey : Inventory
 {
