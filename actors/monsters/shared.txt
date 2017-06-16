@@ -1105,13 +1105,27 @@ ACTOR ToolBox : HitlerChaingun
 	}
 }
 
-ACTOR NaziMedicBox : HitlerChaingun
+ACTOR NaziMedPow : PowerRegeneration
+{
+	Powerup.Duration -20
+	Powerup.Strength 1
+}
+
+ACTOR NaziMedicBox : PowerupGiver
 {
 	Scale 0.65
+	Inventory.MaxAmount 1
+	Inventory.PickupMessage "$NMBOX"
+	Powerup.Type "NaziMedPow"
+	-COUNTITEM
+	-INVENTORY.INVBAR
+	+INVENTORY.ALWAYSPICKUP
+	+INVENTORY.AUTOACTIVATE
 	States
 	{
 	Spawn:
-		MBOX A -1
+		MBOX A 1 NoDelay A_SetTics(35*5)
+		MBOX A 1 A_FadeOut(0.05)
 		Stop
 	}
 }
