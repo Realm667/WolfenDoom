@@ -278,7 +278,7 @@ class Nazi : Base
 		String currentDamage = (inflictor && inflictor.paintype) ? inflictor.paintype : mod; // Get the damage type
 		int damageamt = Super.DamageMobj(inflictor, source, damage, mod, flags, angle); // Get the damage amount from the real DamageMobj function
 
-		if (currentDamage ~== "SilentKnifeAttack") // If the attack was with the knife
+		if (currentDamage ~== "SilentKnifeAttack" && !bBoss) // If the attack was with the knife (and this is not a boss actor - they can't be one-hit killed!)
 		{
 			if (user_sneakable && bFriendly) // If this is a sneakable actor who isn't active yet
 			{ // Stealth kill, remove the sneakable eyes, alert a medium radius, and kill the actor

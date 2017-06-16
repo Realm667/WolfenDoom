@@ -47,6 +47,7 @@ class NaziMedic : NaziStandard
 			Goto Look;
 		Look:
 			"####" "#" 10 A_LookForBodies();
+			"####" "#" 0 A_CheckForPlayer(True);
 			Loop;
 		See:
 			"####" "#" 0 {
@@ -58,18 +59,7 @@ class NaziMedic : NaziStandard
 				if (frightenedloopcount > 0) { frightenedloopcount--; }
 				else { bFrightened = False; }
 
-				target = FindClosestPlayer();
-
-				// Run away from any player that's close by
-				if (target && (Distance3d(target) <= radius + 192 + target.radius || !goal)) {
-					A_PlaySound("Nazi1/Sighted", CHAN_ITEM);
-					Speed = Default.Speed * 2;
-
-					bFrightened = True;
-					frightenedloopcount = 2;
-				} else {
-					target = goal;
-				}
+				A_CheckForPlayer();
 			}
 			"####" AAAAAA 1 A_Chase(null, null);
 			"####" B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION);
@@ -151,6 +141,25 @@ class NaziMedic : NaziStandard
 			}
 		}
 		return ClosestPlayer;
+	}
+
+	state A_CheckForPlayer(bool jump = False)
+	{
+		target = FindClosestPlayer();
+
+		// Run away from any player that's close by
+		if (target && (Distance3d(target) <= radius + 192 + target.radius || !goal)) {
+			A_PlaySound("Nazi1/Sighted", CHAN_ITEM);
+			Speed = Default.Speed * 2;
+			bFrightened = True;
+			frightenedloopcount = 2;
+
+			if (jump) { return ResolveState("See"); }
+		} else {
+			target = goal;
+		}
+
+		return ResolveState(null);
 	}
 
 	state A_LookForBodies()
