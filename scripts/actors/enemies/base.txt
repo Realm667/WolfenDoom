@@ -413,7 +413,8 @@ class Nazi : Base
 }
 
 //Standard Nazi enemy defaults.  
-//  Handles burning and disintegration states, which shouldn't be inherited by NaziBoss class.
+//  Intended for use with 'normal' non-boss Nazi enemies.
+//  Currently handles burning, gibbing, and disintegration states
 class NaziStandard : Nazi
 {
 	Default
@@ -432,6 +433,7 @@ class NaziStandard : Nazi
 			"####" # 0 {
 				DeathDamageType = "Fire"; // Because the flamethrower guards are set to this state via jump, not damage
 				sprite = GetSpriteIndex(Random() < 128 ? "BURN" : "NRUB");
+				bCorpse = False; // Burned enemies can't be resurrected
 			}
 			"####" A 5 Bright Light("ITBURNS1") { A_Wander(); }
 			"####" BC 5 Bright Light("ITBURNS1") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE, 160); }
@@ -470,7 +472,7 @@ class NaziStandard : Nazi
 		Disintegrate.FadeLoop:
 			"####" H 1 A_FadeOut(0.02);
 			Loop;
-		SpriteLookups:
+		SpriteLookups: // Because the GetSpriteIndex function won't find sprites that aren't already used by a state in the current actor.
 			BURN A 0;
 			NRUB A 0;
 	}

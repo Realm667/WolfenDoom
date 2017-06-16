@@ -1,3 +1,27 @@
+/*
+
+  An actor that looks for dead 'Nazi' class actors to be healed.
+
+  Automatically searches for the closest visible dead 'Nazi' actor that it is allied with (that 
+  has the same FRIENDLY flag settings) that is not gibbed or burned to ash.  Once the actor is 
+  identified, the Medic sets the actor as its goal and runs to it.
+
+  Once within range of the goal actor (24 units centerpoint to centerpoint), the Medic enters its
+  "Heal" state and begins to resurrect the dead actor.  
+
+  While the dead actor is being healed, "HealingParticle" actors are spawned from the dead actor.
+  The number of particles spawned, and the number of repetitions of the "Heal" state animation that
+  are played, is based on the spawn health of the dead actor; one iteration of the heal animation
+  (5 particle spawns) for every 25 hitpoints, with a maximum of 3 iterations.
+
+  The now ressurected actor's target is cleared, and, if they are sneakable, they are set idle.
+
+  The Medic also tries to avoid the player, by running away if a player is visible within 192 
+  units.  When this happens, the medic also forgets what dead body it was going toward.
+
+  Also can work as FRIENDLY, healing only the FRIENDLY dead actors.
+
+*/
 class NaziMedic : NaziStandard
 {
 	bool crouched;
@@ -19,7 +43,7 @@ class NaziMedic : NaziStandard
 	States
 	{
 		Spawn:
-			NMDC N 0;
+			NMDC N 0; // Just sets the base sprite
 			Goto Look;
 		Look:
 			"####" "#" 10 A_LookForBodies();
@@ -32,11 +56,11 @@ class NaziMedic : NaziStandard
 				bChaseGoal = True;
 
 				if (frightenedloopcount > 0) { frightenedloopcount--; }
-				else { target = goal; bFrightened = False; }
+				else { bFrightened = False; }
 
 				target = FindClosestPlayer();
 
-				// Run away from the player if close by
+				// Run away from any player that's close by
 				if (target && (Distance3d(target) <= radius + 192 + target.radius || !goal)) {
 					A_PlaySound("Nazi1/Sighted", CHAN_ITEM);
 					Speed = Default.Speed * 2;
@@ -58,26 +82,27 @@ class NaziMedic : NaziStandard
 			"####" E 0 {
 				crouched = True;
 				if (goal) {
-					healloopcount = goal.Default.Health > 25 ? min(goal.Default.Health / 25, 3) : 0;
+					healloopcount = goal.Default.Health > 25 ? min(goal.Default.Health / 25, 3) : 0; // Set the number of Heal iterations to scale with the actor's spawnhealth (max of 3 loops)
 				}
 			}
 		Heal.Loop:
 			"####" E 15;
 			"####" F 5;
-			"####" EEEEE 3 { goal.A_SpawnItemEx("HealingParticle", random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0);}
+			"####" EEEEE 3 { goal.A_SpawnItemEx("HealingParticle", random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0);} // Spawn healing particles as the actor is ressurected
 			"####" E 0 {
 				if (healloopcount > 0) {
 					healloopcount--;
 					return ResolveState("Heal.Loop");
 				}
-				if (Nazi(goal) && Nazi(goal).user_sneakable) { Nazi(goal).BecomeIdle(); }
+				if (Nazi(goal) && Nazi(goal).user_sneakable) { Nazi(goal).BecomeIdle(); } // If it's a sneakable actor, make it idle
+				if (goal) { goal.A_ClearTarget(); goal.bFriendly = bFriendly; } // Just to be sure, make the ressurected actor allied to the Medic...
 				goal = null;
 				master = null;
 				return ResolveState("See");
 			}
 			Goto See;
 		Raise:
-			"####" # 35 { A_SetTics(Default.Health > 25 ? min(Default.Health / 25, 3) * 35 : 35); } // To match the medic's healing state duration
+			"####" # 35 { A_SetTics(Default.Health > 25 ? min(Default.Health / 25, 3) * 35 : 35); } // Delay here to match the medic's healing state duration
 			"####" V 35;
 			"####" ULKJ 5;
 			"####" I 5 A_Jump(256,"See");
@@ -89,20 +114,14 @@ class NaziMedic : NaziStandard
 			}
 			"####" I 5 A_Scream();
 			"####" J 5 A_NoBlocking(!user_sneakable);
-			"####" K 5;
-			"####" L 5;
-			"####" U 5;
-			"####" V 5;
+			"####" KLUV 5;
 			"####" W -1;
 			Stop;
 		Death.Crouch:
 			"####" G 5 { crouched = False; }
 			"####" Q 5 A_Scream();
 			"####" R 5 A_NoBlocking(!user_sneakable);
-			"####" S 5;
-			"####" T 5;
-			"####" U 5;
-			"####" V 5;
+			"####" STUV 5;
 			"####" W -1;
 			Stop;
 	}
@@ -142,11 +161,12 @@ class NaziMedic : NaziStandard
 		while ( (mo = Nazi(Finder.Next())) )
 		{
 			if (
+				!mo.bCorpse ||
 				mo.health > 0 ||
 				mo.bDormant ||
 				mo.bFriendly != bFriendly ||
 				mo.health <= mo.GetGibHealth() ||
-				mo.DeathDamageType == "Fire" ||
+				mo.DeathDamageType ~== "Fire" ||
 				!mo.FindState("Raise") ||
 				Distance3d(mo) > 1024
 			) { continue; }
@@ -162,11 +182,12 @@ class NaziMedic : NaziStandard
 		while ( (mo = Nazi(Finder.Next())) )
 		{
 			if (
+				!mo.bCorpse ||
 				mo.health > 0 ||
 				mo.bDormant ||
 				mo.bFriendly != bFriendly ||
 				mo.health <= mo.GetGibHealth() ||
-				mo.DeathDamageType == "Fire" ||
+				mo.DeathDamageType ~== "Fire" ||
 				!mo.FindState("Raise") ||
 				Distance3d(mo) > 1024
 			) { continue; }
@@ -176,17 +197,20 @@ class NaziMedic : NaziStandard
 			goal = mo;
 		}
 
-		return ResolveState("See");
+		if (goal) { return ResolveState("See"); }
+		return ResolveState(null);
 	}
 
 	override void Tick()
 	{
-		// If it's alive and doesn't have a goal (and isn't running away), look for dead bodies
+		// If the Medic is alive...
 		if (health > 0 && bShootable)
 		{
+			// If it doesn't have a goal (and isn't running away), look for dead bodies
 			if (!goal && !bFrightened) { A_LookForBodies(); }
 			else if (!bFrightened)
 			{
+				// If it's not frightened and close to a dead body that it isn't already healing, start healing it
 				if (goal && Distance3d(goal) < 24 && goal != master) {
 					master = goal; // Why is there no direct A_Resurrect(<actor>)?
 					A_RaiseMaster(RF_NOCHECKPOSITION);
@@ -194,32 +218,11 @@ class NaziMedic : NaziStandard
 				}
 			}
 			else
-			{
+			{ // If you are frightened, forget the dead body and run away
 				goal = null;
 			}
 		}
 
 		Super.Tick();
-	}
-}
-
-class HealEffect : Actor
-{
-	String HealParticle;
-	Property HealParticle:HealParticle;
-
-	Default
-	{
-		+NOINTERACTION
-		HealEffect.HealParticle "HealingParticle";
-	}
-
-	States
-	{
-		Spawn:
-			TNT1 AAAAAAAAAA 2 {
-				A_SpawnItemEx(HealParticle, random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0);
-			}
-			Stop;
 	}
 }
