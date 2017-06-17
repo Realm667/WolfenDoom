@@ -149,7 +149,7 @@ class NaziMedic : NaziStandard
 
 		// Run away from any player that's close by
 		if (target && (Distance3d(target) <= radius + 192 + target.radius || !goal)) {
-			A_PlaySound("Nazi1/Sighted", CHAN_ITEM);
+			if (Random() < 16) { A_PlaySound("Nazi1/Sighted", CHAN_ITEM); console.printf("yelled");}
 			Speed = Default.Speed * 2;
 			bFrightened = True;
 			frightenedloopcount = 2;
@@ -169,28 +169,7 @@ class NaziMedic : NaziStandard
 
 		while ( (mo = Nazi(Finder.Next())) )
 		{
-			if (
-				!mo.bCorpse ||
-				mo.health > 0 ||
-				mo.bDormant ||
-				mo.bFriendly != bFriendly ||
-				mo.health <= mo.GetGibHealth() ||
-				mo.DeathDamageType ~== "Fire" ||
-				mo.CheckClass("NaziMedic") ||
-				mo.CheckClass("Sniper") || mo.CheckClass("Sniper_Crouch") || mo.CheckClass("WSniper") || mo.CheckClass("WSniper_Crouch") ||
-				mo.CheckClass("ArcticSniper") || mo.CheckClass("ArcticSniper_Crouch") ||
-				mo.CheckClass("WGrenadeer") || mo.CheckClass("FlamerSoldier") || mo.CheckClass("Mechanic") ||
-				mo.CheckClass("Guard_Wounded") || mo.CheckClass("Guard_Wounded_NoCount") ||
-				mo.CheckClass("WGuard_Wounded") || mo.CheckClass("WGuard_Wounded_NoCount") ||
-				mo.CheckClass("SSGuard_Wounded") || mo.CheckClass("SSGuard_Wounded_NoCount") ||
-				mo.CheckClass("Officer_Wounded") || mo.CheckClass("Officer_Wounded_NoCount") ||
-				mo.CheckClass("WOfficer_Wounded") || mo.CheckClass("WOfficer_Wounded_NoCount") ||
-				mo.CheckClass("SSOfficer_Wounded") || mo.CheckClass("SSOfficer_Wounded_NoCount") ||
-				mo.CheckClass("EliteFlamer") || mo.CheckClass("EliteAssaulter") || mo.CheckClass("EliteSoldatRifler") ||
-				mo.CheckClass("ZombieBrain") || mo.CheckClass("ZombieOfficer") ||
-				!mo.FindState("Raise") ||
-				Distance3d(mo) > 1024
-			) { continue; }
+			if (!IsHealableCorpse(mo)) { continue; }
 
 			if (goal && Distance3d(mo) > Distance3d(goal)) { continue; }
 
@@ -202,28 +181,7 @@ class NaziMedic : NaziStandard
 
 		while ( (mo = Nazi(Finder.Next())) )
 		{
-			if (
-				!mo.bCorpse ||
-				mo.health > 0 ||
-				mo.bDormant ||
-				mo.bFriendly != bFriendly ||
-				mo.health <= mo.GetGibHealth() ||
-				mo.DeathDamageType ~== "Fire" ||
-				mo.CheckClass("NaziMedic") ||
-				mo.CheckClass("Sniper") || mo.CheckClass("Sniper_Crouch") || mo.CheckClass("WSniper") || mo.CheckClass("WSniper_Crouch") ||
-				mo.CheckClass("ArcticSniper") || mo.CheckClass("ArcticSniper_Crouch") ||
-				mo.CheckClass("WGrenadeer") || mo.CheckClass("FlamerSoldier") || mo.CheckClass("Mechanic") ||
-				mo.CheckClass("Guard_Wounded") || mo.CheckClass("Guard_Wounded_NoCount") ||
-				mo.CheckClass("WGuard_Wounded") || mo.CheckClass("WGuard_Wounded_NoCount") ||
-				mo.CheckClass("SSGuard_Wounded") || mo.CheckClass("SSGuard_Wounded_NoCount") ||
-				mo.CheckClass("Officer_Wounded") || mo.CheckClass("Officer_Wounded_NoCount") ||
-				mo.CheckClass("WOfficer_Wounded") || mo.CheckClass("WOfficer_Wounded_NoCount") ||
-				mo.CheckClass("SSOfficer_Wounded") || mo.CheckClass("SSOfficer_Wounded_NoCount") ||
-				mo.CheckClass("EliteFlamer") || mo.CheckClass("EliteAssaulter") || mo.CheckClass("EliteSoldatRifler") ||
-				mo.CheckClass("ZombieBrain") || mo.CheckClass("ZombieOfficer") ||
-				!mo.FindState("Raise") ||
-				Distance3d(mo) > 1024
-			) { continue; }
+			if (!IsHealableCorpse(mo)) { continue; }
 
 			if (goal && Distance3d(mo) > Distance3d(goal)) { continue; }
 
@@ -232,6 +190,35 @@ class NaziMedic : NaziStandard
 
 		if (goal) { return ResolveState("See"); }
 		return ResolveState(null);
+	}
+
+	bool IsHealableCorpse(Nazi mo)
+	{
+		if (
+			!mo.bCorpse ||
+			mo.health > 0 ||
+			mo.bDormant ||
+			mo.bFriendly != bFriendly ||
+			mo.health <= mo.GetGibHealth() ||
+			mo.DeathDamageType ~== "Fire" ||
+			mo is "WGuard_Wounded" || // Use "is" so that any class inheriting from this class is skipped
+			mo is "Sniper" ||
+			mo is "Sniper_Crouch" ||
+			mo is "ArcticSniper" ||
+			mo is "ArcticSniper_Crouch" ||
+			mo is "NaziMedic" ||
+			mo is "FlamerSoldier" || 
+			mo is "Mechanic" ||
+			mo is "EliteFlamer" ||
+			mo is "EliteAssaulter" || 
+			mo is "EliteSoldatRifler" ||
+			mo is "ZombieBrain" ||
+			mo is "WereWaffenSS" ||
+			!mo.FindState("Raise") ||
+			Distance3d(mo) > 1024
+		) { return false; }
+
+		return true;
 	}
 
 	override void Tick()
@@ -247,6 +234,8 @@ class NaziMedic : NaziStandard
 				if (goal && Distance3d(goal) < 24 && goal != master) {
 					master = goal; // Why is there no direct A_Resurrect(<actor>)?
 					A_RaiseMaster(RF_NOCHECKPOSITION);
+					goal.bCountKill = false;
+					level.total_monsters--;
 					SetStateLabel("Heal");
 				}
 			}
