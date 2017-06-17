@@ -55,6 +55,9 @@ ACTOR PrisonerFree : DirtyDarren
 		"####" RSTUV 5
 		"####" V 0 A_SpawnItemEx("DyingDarren", 0.0, -16.0, 0.0)
 		Goto Spawn
+	DreamDisappear: 
+		FREE A 1 A_FadeOut(0.01)
+		Loop
 	}
 }
 
