@@ -136,7 +136,7 @@ class NaziMedic : NaziStandard
 				if (!IsVisible(mo, false, SearchParams)) { continue; }
 				if (isFriend(mo)) { continue; }
 				if (ClosestPlayer && Distance3d(mo) > Distance3d(ClosestPlayer)) { continue; }
-	
+
 				ClosestPlayer = mo;
 			}
 		}
@@ -149,7 +149,7 @@ class NaziMedic : NaziStandard
 
 		// Run away from any player that's close by
 		if (target && (Distance3d(target) <= radius + 192 + target.radius || !goal)) {
-			if (Random() < 16) { A_PlaySound("Nazi1/Sighted", CHAN_ITEM); console.printf("yelled");}
+			if (Random() < 16 || jump) { A_PlaySound("Nazi1/Sighted", CHAN_ITEM); }
 			Speed = Default.Speed * 2;
 			bFrightened = True;
 			frightenedloopcount = 2;
