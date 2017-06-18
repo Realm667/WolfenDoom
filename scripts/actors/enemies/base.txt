@@ -276,7 +276,6 @@ class Nazi : Base
 		if (user_sneakable && bDormant) { bDormant = False; } // Pain wakes up a dormant sneakable actors
 
 		String currentDamage = (inflictor && inflictor.paintype) ? inflictor.paintype : mod; // Get the damage type
-		int damageamt = Super.DamageMobj(inflictor, source, damage, mod, flags, angle); // Get the damage amount from the real DamageMobj function
 
 		if (currentDamage ~== "SilentKnifeAttack" && !bBoss) // If the attack was with the knife (and this is not a boss actor - they can't be one-hit killed!)
 		{
@@ -284,7 +283,7 @@ class Nazi : Base
 			{ // Stealth kill, remove the sneakable eyes, alert a medium radius, and kill the actor
 				A_Log(StringTable.Localize("$STEALTH"));
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING);
-				bFriendly = False; // Force to not friendly so that they will count as a kill.
+				bFriendly = False; // Force to not friendly so that they will count as a kill and be healable.
 				SoundAlert(inflictor, false, 192);
 				A_Die();
 			}
@@ -309,6 +308,8 @@ class Nazi : Base
 			BecomeAlerted(inflictor); // Alert that actor
 		}
 
+		int damageamt = Super.DamageMobj(inflictor, source, damage, mod, flags, angle); // Get the damage amount from the real DamageMobj function
+
 		if (damageamt >= health) // If we killed the actor...
 		{
 			if (user_sneakable) // and it was a sneakable actor...
@@ -324,7 +325,7 @@ class Nazi : Base
 			DeathDamageType = currentDamage;
 		}
 
-		target = inflictor;
+		target = inflictor; // Set the attacker as the current target
 
 		return damageamt; // Function returns amount of damage received by the actor
 	}

@@ -84,7 +84,7 @@ class NaziMedic : NaziStandard
 					healloopcount--;
 					return ResolveState("Heal.Loop");
 				}
-				if (Nazi(goal) && Nazi(goal).user_sneakable) { Nazi(goal).BecomeIdle(); } // If it's a sneakable actor, make it idle
+				if (Nazi(goal) && Nazi(goal).user_sneakable) { Nazi(goal).BecomeAlerted(target); } // If it's a sneakable actor, make it alert
 				if (goal) { goal.A_ClearTarget(); goal.bFriendly = bFriendly; } // Just to be sure, make the ressurected actor allied to the Medic...
 				goal = null;
 				master = null;
