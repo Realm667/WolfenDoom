@@ -20,6 +20,7 @@ class BoAStatusBar : BaseStatusBar
 	int LastHealth;
 	int LastMaxHealth;
 	String LastIcon;
+	double velocity, oldangle;
 
 	override void Init()
 	{
@@ -83,6 +84,28 @@ class BoAStatusBar : BaseStatusBar
 
 	override void Draw (int state, double TicFrac)
 	{
+		if (CPlayer.mo.FindInventory("DreamState"))
+		{
+			TextureID tex = TexMan.CheckForTexture("DREAMING", TexMan.Type_MiscPatch);
+			if (tex.IsValid()) {
+				double targetvelocity = CPlayer.mo.vel.x * CPlayer.mo.vel.x + CPlayer.mo.vel.y * CPlayer.mo.vel.y + CPlayer.mo.vel.z * CPlayer.mo.vel.z + abs(oldangle - CPlayer.mo.angle) * 3;
+
+				if (velocity < targetvelocity) { velocity+= 2; }
+				else { velocity -= 1; }
+
+				if (velocity < 0) { velocity = 0; }
+
+				double alpha = min(sin(velocity), 0.25);
+
+				screen.DrawTexture(tex, false, 0, 0, DTA_Clean, true, DTA_KeepRatio, true, DTA_Fullscreen, true, DTA_Alpha, alpha);
+
+				Super.Draw (state, TicFrac);
+			}
+
+			if (level.time % 35) oldangle = CPlayer.mo.angle;
+		}
+
+
 		Super.Draw (state, TicFrac);
 
 		if (CPlayer.mo.FindInventory("CutsceneEnabled")) { return; }
