@@ -53,11 +53,11 @@
 	  paranormal creatures.
 
   New Functions (Nazi class)
-	A_NaziPain(int alertrange = 0, bool playsound = True)	
+	A_NaziPain(int alertrange = 0, bool playsound = True, int offset = -8)	
 	- Consolidated function intended for use in Nazi class Pain states to 
 	  eliminate code duplication across actors.
-	- Spawns pain overlay, alerts actors within the passed range, and calls A_Pain
-	  if playsound is true.
+	- Spawns pain overlay (with height offset specified, alerts actors within the
+	  passed range, and calls A_Pain if playsound is true.
 
 	BecomeAlerted(Actor newtarget = null)
 	- Sets an idle sneakable actor to alerted, spawns alerted helper actor to 
@@ -242,9 +242,9 @@ class Nazi : Base
 	}
 
 	// Function to consolidate default pain state actions.  See use above - can be used to eliminate a lot of existing copy/paste.
-	void A_NaziPain(int alertrange = 0, bool playsound = True)
+	void A_NaziPain(int alertrange = 0, bool playsound = True, int offset = -8)
 	{
-		A_SpawnItemEx("Pain_Overlay", scale.x + 3, 0, height - 8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR); // Spawn pain overlay blood spurt
+		A_SpawnItemEx("Pain_Overlay", scale.x + 3, 0, height + offset, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR); // Spawn pain overlay blood spurt
 		if (alertrange) { A_AlertMonsters(alertrange); } // Alert monsters in given range
 		if (playsound) { A_Pain(); } // Play pain sound unless passed 'false'
 
@@ -323,6 +323,8 @@ class Nazi : Base
 
 			DeathDamageType = currentDamage;
 		}
+
+		target = inflictor;
 
 		return damageamt; // Function returns amount of damage received by the actor
 	}
