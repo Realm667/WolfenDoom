@@ -49,6 +49,24 @@ ACTOR AktenV2 : Akten
 	}
 }
 
+ACTOR AktenDream : Akten
+{
+	//$Title Secret Files (Dream)
+	Tag "$TAGTHORS"
+	Inventory.Icon AKT3A0
+	Inventory.PickupMessage "$DREAM"
+	Inventory.MaxAmount 1
+	States
+	{
+	Spawn:
+		AKT3 B -1
+		Stop
+	Remove:
+		AKT3 B 1 A_FadeOut(0.05)
+		Loop
+	}
+}
+
 ACTOR ArtifactAstrostrein : Akten
 {
 	//$Title Mayan Artifact (Astrostein)
