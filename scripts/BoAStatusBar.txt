@@ -20,7 +20,7 @@ class BoAStatusBar : BaseStatusBar
 	int LastHealth;
 	int LastMaxHealth;
 	String LastIcon;
-	double velocity, oldangle;
+	double velocity, oldangle, oldpitch;
 
 	override void Init()
 	{
@@ -88,21 +88,34 @@ class BoAStatusBar : BaseStatusBar
 		{
 			TextureID tex = TexMan.CheckForTexture("DREAMING", TexMan.Type_MiscPatch);
 			if (tex.IsValid()) {
-				double targetvelocity = CPlayer.mo.vel.x * CPlayer.mo.vel.x + CPlayer.mo.vel.y * CPlayer.mo.vel.y + CPlayer.mo.vel.z * CPlayer.mo.vel.z + abs(oldangle - CPlayer.mo.angle) * 3;
+				Vector2 size = TexMan.GetScaledSize(tex);
+				double ratio = Screen.GetAspectRatio();
 
-				if (velocity < targetvelocity) { velocity+= 2; }
+				double targetvelocity = CPlayer.mo.vel.x * CPlayer.mo.vel.x + CPlayer.mo.vel.y * CPlayer.mo.vel.y + CPlayer.mo.vel.z * CPlayer.mo.vel.z + abs(oldangle - CPlayer.mo.angle) * 10 + abs(oldpitch - CPlayer.mo.pitch) * 10;
+
+				if (velocity < targetvelocity) { velocity+= 1; }
 				else { velocity -= 1; }
 
 				if (velocity < 0) { velocity = 0; }
 
 				double alpha = min(sin(velocity), 0.25);
 
-				screen.DrawTexture(tex, false, 0, 0, DTA_Clean, true, DTA_KeepRatio, true, DTA_Fullscreen, true, DTA_Alpha, alpha);
+				screen.DrawTexture(tex, false, 160, 100, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidth, 320, DTA_VirtualHeightF, 320 / ratio, DTA_Alpha, alpha);
+
+				double x = cos(level.time % 360) * 8;
+				double y = sin(level.time % 360) * 8;
+
+				screen.DrawTexture(tex, false, 160 + x, 100 + y, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidth, 320, DTA_VirtualHeightF, 320 / ratio, DTA_Alpha, alpha / 2);
+				screen.DrawTexture(tex, false, 160 - x, 100 - y, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidth, 320, DTA_VirtualHeightF, 320 / ratio, DTA_Alpha, alpha / 2);
 
 				Super.Draw (state, TicFrac);
 			}
 
-			if (level.time % 35) oldangle = CPlayer.mo.angle;
+			if (level.time % 35)
+			{
+				oldangle = CPlayer.mo.angle;
+				oldpitch = CPlayer.mo.pitch;
+			}
 		}
 
 
