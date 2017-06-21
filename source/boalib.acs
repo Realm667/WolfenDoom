@@ -766,8 +766,13 @@ script "DreamState" ENTER
 	{
 		if (CheckInventory("DreamState"))
 		{
-			SetCameraToTexture(0, "DREAMING", 90);
-			Terminate;
+			int width = GetScreenWidth();
+			int height = GetScreenHeight();
+
+			int ratio = (width * 1.0) / height;
+			int multiplier = ratio / (4.0 / 3);
+
+			SetCameraToTexture(0, "DREAMING", 90 / multiplier);
 		}
 
 		Delay(1);

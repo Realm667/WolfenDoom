@@ -88,25 +88,31 @@ class BoAStatusBar : BaseStatusBar
 		{
 			TextureID tex = TexMan.CheckForTexture("DREAMING", TexMan.Type_MiscPatch);
 			if (tex.IsValid()) {
-				Vector2 size = TexMan.GetScaledSize(tex);
-				double ratio = Screen.GetAspectRatio();
+				double ratio = screen.GetAspectRatio();
 
-				double targetvelocity = CPlayer.mo.vel.x * CPlayer.mo.vel.x + CPlayer.mo.vel.y * CPlayer.mo.vel.y + CPlayer.mo.vel.z * CPlayer.mo.vel.z + abs(oldangle - CPlayer.mo.angle) * 10 + abs(oldpitch - CPlayer.mo.pitch) * 10;
+				// Calculate width and height to keep the image at the same relative size, regardless of aspect ratio
+				double width = ratio < 1.25 ? 200 * ratio : 320;
+				double height = ratio > 1.25 ? 320 / ratio : 200;
 
-				if (velocity < targetvelocity) { velocity+= 1; }
+				double targetvelocity = CPlayer.mo.vel.x * CPlayer.mo.vel.x + CPlayer.mo.vel.y * CPlayer.mo.vel.y + CPlayer.mo.vel.z * CPlayer.mo.vel.z + abs(oldangle - CPlayer.mo.angle) * 20 + abs(oldpitch - CPlayer.mo.pitch) * 20;
+
+				if (velocity < targetvelocity) { velocity = velocity < 35 ? velocity + 1 : velocity; }
 				else { velocity -= 1; }
 
 				if (velocity < 0) { velocity = 0; }
 
 				double alpha = min(sin(velocity), 0.25);
 
-				screen.DrawTexture(tex, false, 160, 100, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidth, 320, DTA_VirtualHeightF, 320 / ratio, DTA_Alpha, alpha);
+				double x = 0;
+				double y = CPlayer.mo.pitch / 5;
 
-				double x = cos(level.time % 360) * 8;
-				double y = sin(level.time % 360) * 8;
+				screen.DrawTexture(tex, false, (width / 2) + x, (height / 2) + y, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidthF, width, DTA_VirtualHeightF, height, DTA_Alpha, alpha);
 
-				screen.DrawTexture(tex, false, 160 + x, 100 + y, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidth, 320, DTA_VirtualHeightF, 320 / ratio, DTA_Alpha, alpha / 2);
-				screen.DrawTexture(tex, false, 160 - x, 100 - y, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidth, 320, DTA_VirtualHeightF, 320 / ratio, DTA_Alpha, alpha / 2);
+				x = cos(level.time % 360) * 8;
+				y += sin(level.time % 360) * 8;
+
+				screen.DrawTexture(tex, false, (width / 2) + x, (height / 2) + y, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidthF, width, DTA_VirtualHeightF, height, DTA_Alpha, alpha / 2);
+				screen.DrawTexture(tex, false, (width / 2) - x, (height / 2) - y, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidthF, width, DTA_VirtualHeightF, height, DTA_Alpha, alpha / 2);
 
 				Super.Draw (state, TicFrac);
 			}
