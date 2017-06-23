@@ -116,33 +116,6 @@ class NaziMedic : NaziStandard
 			Stop;
 	}
 
-	Actor FindClosestPlayer() // Also sets up initial sight parameters
-	{
-		Actor ClosestPlayer;
-
-		LookExParams SearchParams;
-
-		SearchParams.fov = 120;
-		SearchParams.minDist = 0;
-		SearchParams.maxDist = 1024;
-		SearchParams.maxHearDist = 1024;
-
-		for (int p = 0; p < MAXPLAYERS; p++) { // Iterate through all of the players and find the closest one
-			Actor mo = players[p].mo;
-
-			if (mo) {
-				if (!mo.bShootable || mo.health <= 0) { continue; }
-				if (players[p].cheats & CF_NOTARGET) { continue; }
-				if (!IsVisible(mo, false, SearchParams)) { continue; }
-				if (isFriend(mo)) { continue; }
-				if (ClosestPlayer && Distance3d(mo) > Distance3d(ClosestPlayer)) { continue; }
-
-				ClosestPlayer = mo;
-			}
-		}
-		return ClosestPlayer;
-	}
-
 	state A_CheckForPlayer(bool jump = False)
 	{
 		target = FindClosestPlayer();

@@ -160,11 +160,13 @@ class Nazi : Base
 	int perceptionthreshold;
 	int perceptionfov;
 	int user_chasegoal;
+	int sneakableclosesightradius;
 	bool user_sneakable;
 	Actor patrolgoal;
 	String DeathDamageType;
 
 	Property Sneakable:user_sneakable;
+	Property SneakableCloseSightRadius:sneakableclosesightradius;
 	Property PerceptionTime:perceptionthreshold; // How many tics the player has to be in sight before NOTARGET fails - 0 means never see through NoTarget
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
 
@@ -187,6 +189,7 @@ class Nazi : Base
 		Species "Nazi";
 
 		Nazi.Sneakable False;
+		Nazi.SneakableCloseSightRadius 64;
 		Nazi.PerceptionTime 0;
 		Nazi.PerceptionFOV 120;
 	}
@@ -238,6 +241,11 @@ class Nazi : Base
 				BeginPlay();
 
 				return ResolveState("Spawn");
+			}
+		MakeAlerted:
+			"####" # 0 {
+				BecomeAlerted(target);
+				return ResolveState("See");
 			}
 	}
 
@@ -377,6 +385,33 @@ class Nazi : Base
 
 		if (goal && target) { SetStateLabel("See"); }
 		else { SetStateLabel("Spawn"); }
+	}
+
+	Actor FindClosestPlayer(int fov = 120, int dist = 1024, bool IgnoreFriendlies = True) // Also sets up initial sight parameters
+	{
+		Actor ClosestPlayer = null;
+
+		LookExParams SearchParams;
+
+		SearchParams.fov = fov;
+		SearchParams.minDist = 0;
+		SearchParams.maxDist = dist;
+		SearchParams.maxHearDist = dist;
+
+		for (int p = 0; p < MAXPLAYERS; p++) { // Iterate through all of the players and find the closest one
+			Actor mo = players[p].mo;
+
+			if (mo) {
+				if (!mo.bShootable || mo.health <= 0) { continue; }
+				if (players[p].cheats & CF_NOTARGET) { continue; }
+				if (!IsVisible(mo, false, SearchParams)) { continue; }
+				if (IgnoreFriendlies) { if (isFriend(mo)) { continue; } }
+				if (ClosestPlayer && Distance3d(mo) > Distance3d(ClosestPlayer)) { continue; }
+
+				ClosestPlayer = mo;
+			}
+		}
+		return ClosestPlayer;
 	}
 
 	bool SneakableActors() // Are there sneakable actors in the level?
