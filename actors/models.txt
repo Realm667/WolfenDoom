@@ -2720,10 +2720,10 @@ ACTOR SpotlightGlow
 			A_TransferPointer(AAPTR_TRACER, AAPTR_TARGET, AAPTR_MASTER, AAPTR_MASTER);
 		}
 		"####" # 25 Light("SpotLight")
-		"####" # 0 A_LookEx(LOF_NOSOUNDCHECK | LOF_NOSEESOUND, 0, 272.0, 0, 360.0, "Illuminate")
+		"####" # 0 A_LookEx(LOF_NOSOUNDCHECK | LOF_NOSEESOUND, 0, 256.0, 0, 360.0, "Illuminate")
 		Stop
 	Illuminate:
-		"####" # 0 ACS_NamedExecuteAlways("AddExtraVisibility", 0, 100)
+		"####" # 0 ACS_NamedExecuteAlways("AddExtraVisibility", 0, 200 - Max(GetDistance(0) / 1.0, 100))
 		Stop
 	XDeath:
 	Crash:
