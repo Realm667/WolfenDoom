@@ -86,9 +86,11 @@ class Base : Actor
 	LookExParams SearchParams;
 	String BossIcon;
 	bool user_DrawHealthBar;
+	bool swimmer;
 
 	Property BossIcon:BossIcon;
 	Property AlwaysDrawHealthBar:user_DrawHealthBar;
+	Property Swimmer:swimmer;
 
 	state A_LookThroughDisguise(int flags = 0, float minseedist = 0, float Range = 0, float maxheardist = 0, double fov = 0, statelabel label = "See")
 	{
@@ -125,9 +127,30 @@ class Base : Actor
 		return ResolveState(null);
 	}
 
+	void A_JumpAttack(int attackspeed = 20)
+	{
+		if (!target || (swimmer && target.waterlevel == 0)) { return; }
+
+		bSkullFly = true;
+		A_PlaySound(AttackSound, CHAN_VOICE);
+		A_FaceTarget();
+
+		VelFromAngle(attackspeed);
+		Vel.Z = (target.pos.Z + target.Height / 2 - pos.Z) / DistanceBySpeed(target, attackspeed);
+	}
+
 	override void Tick()
 	{
 		if (user_DrawHealthBar) { ChangeStatNum(Thinker.STAT_DEFAULT - 3); } // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient
+
+		if (!globalfreeze && !level.Frozen)
+		{
+			if (swimmer && waterlevel < 3)
+			{
+				vel.z = min(vel.z, -1);
+			}
+		}
+
 		Super.Tick();
 	}
 
