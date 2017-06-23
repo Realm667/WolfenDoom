@@ -195,7 +195,7 @@ class NaziMedic : NaziStandard
 	bool IsHealableCorpse(Nazi mo)
 	{
 		if (
-			!mo.bCorpse ||
+			!mo.bIsMonster ||
 			mo.health > 0 ||
 			mo.bDormant ||
 			mo.bFriendly != bFriendly ||
