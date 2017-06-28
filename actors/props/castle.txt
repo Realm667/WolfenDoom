@@ -192,6 +192,31 @@ ACTOR MonsterStatue
 	}
 }
 
+ACTOR BronzeStatueA : MonsterStatue
+{
+	//$Title Arno Breker's Speer Statue (Left)
+	Height 128
+	Scale 0.28
+	+FORCEYBILLBOARD
+	States
+	{
+	Spawn:
+		BRNZ A -1
+		Stop
+	}
+}
+
+ACTOR BronzeStatueB : BronzeStatueA
+{
+	//$Title Arno Breker's Speer Statue (Right)
+	States
+	{
+	Spawn:
+		BRNZ B -1
+		Stop
+	}
+}
+
 ACTOR WellEmpty //3d actor
 {
 	//$Category Props (Wolf3D)/Castle
