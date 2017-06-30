@@ -118,7 +118,7 @@ class NaziMedic : NaziStandard
 
 	state A_CheckForPlayer(bool jump = False)
 	{
-		target = FindClosestPlayer();
+		target = FindClosestPlayer(dist:1024);
 
 		// Run away from any player that's close by
 		if (target && target is "PlayerPawn" && (Distance3d(target) <= radius + 192 + target.radius || !goal)) {

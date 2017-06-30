@@ -139,6 +139,74 @@ class Base : Actor
 		Vel.Z = (target.pos.Z + target.Height / 2 - pos.Z) / DistanceBySpeed(target, attackspeed);
 	}
 
+	bool InPlayerSight()
+	{
+		for (int p = 0; p < MAXPLAYERS; p++) // Iterate through all of the players and see if any can see the spawn point
+		{
+			Actor mo = players[p].mo;
+
+			if (mo) {
+				if (mo.CheckSight(self)) { return true; }
+			}
+		}
+
+		return false;
+	}
+
+	Actor FindClosestPlayer(int fov = 120, int dist = 0, bool IgnoreFriendlies = True) // Also sets up initial sight parameters
+	{
+		Actor ClosestPlayer = null;
+
+		LookExParams SearchParams;
+
+		SearchParams.fov = fov;
+		SearchParams.minDist = 0;
+		SearchParams.maxDist = dist;
+		SearchParams.maxHearDist = dist;
+
+		for (int p = 0; p < MAXPLAYERS; p++) { // Iterate through all of the players and find the closest one
+			Actor mo = players[p].mo;
+
+			if (mo) {
+				if (!mo.bShootable || mo.health <= 0) { continue; }
+				if (players[p].cheats & CF_NOTARGET) { continue; }
+				if (!IsVisible(mo, false, SearchParams)) { continue; }
+				if (IgnoreFriendlies) { if (isFriend(mo)) { continue; } }
+				if (ClosestPlayer && Distance3d(mo) > Distance3d(ClosestPlayer)) { continue; }
+
+				ClosestPlayer = mo;
+			}
+		}
+		return ClosestPlayer;
+	}
+
+	bool SneakableActors() // Are there sneakable actors in the level?
+	{
+		ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2); // Just iterate over the sneakable eyes - faster than all Nazi actors
+		StealthBase mo;
+		while (mo = StealthBase(it.Next(true)))
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	int AlertedSneakablesCount(int range = 512)
+	{
+		ThinkerIterator it = ThinkerIterator.Create("SneakableGuardEyesAlerted", Thinker.STAT_DEFAULT - 2);
+		SneakableGuardEyesAlerted mo;
+
+		int count = 0;
+		while (mo = SneakableGuardEyesAlerted(it.Next(true)))
+		{
+			if (Distance3d(mo) > range) { continue; }
+
+			count++;
+		}
+		return count;
+	}
+
 	override void Tick()
 	{
 		if (user_DrawHealthBar) { ChangeStatNum(Thinker.STAT_DEFAULT - 3); } // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient
@@ -380,7 +448,7 @@ class Nazi : Base
 
 		if (!patrolgoal) // Otherwise, make a new navgoal at the actor's origin so that it can come back.
 		{
-			patrolgoal = Spawn("PatrolPoint", pos);
+			patrolgoal = Spawn("PatrolPoint", SpawnPoint);
 			patrolgoal.args[0] = -1;
 			patrolgoal.args[1] = 0x7FFFFFFF;
 			patrolgoal.angle = angle;
@@ -408,45 +476,6 @@ class Nazi : Base
 
 		if (goal && target) { SetStateLabel("See"); }
 		else { SetStateLabel("Spawn"); }
-	}
-
-	Actor FindClosestPlayer(int fov = 120, int dist = 1024, bool IgnoreFriendlies = True) // Also sets up initial sight parameters
-	{
-		Actor ClosestPlayer = null;
-
-		LookExParams SearchParams;
-
-		SearchParams.fov = fov;
-		SearchParams.minDist = 0;
-		SearchParams.maxDist = dist;
-		SearchParams.maxHearDist = dist;
-
-		for (int p = 0; p < MAXPLAYERS; p++) { // Iterate through all of the players and find the closest one
-			Actor mo = players[p].mo;
-
-			if (mo) {
-				if (!mo.bShootable || mo.health <= 0) { continue; }
-				if (players[p].cheats & CF_NOTARGET) { continue; }
-				if (!IsVisible(mo, false, SearchParams)) { continue; }
-				if (IgnoreFriendlies) { if (isFriend(mo)) { continue; } }
-				if (ClosestPlayer && Distance3d(mo) > Distance3d(ClosestPlayer)) { continue; }
-
-				ClosestPlayer = mo;
-			}
-		}
-		return ClosestPlayer;
-	}
-
-	bool SneakableActors() // Are there sneakable actors in the level?
-	{
-		ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2); // Just iterate over the sneakable eyes - faster than all Nazi actors
-		StealthBase mo;
-		while (mo = StealthBase(it.Next(true)))
-		{
-			return true;
-		}
-
-		return false;
 	}
 
 	override void Tick()

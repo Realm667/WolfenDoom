@@ -199,7 +199,7 @@ class SneakableGuardEyesIdle : StealthBase
 
 				A_Warp(AAPTR_MASTER, 0, 0, Height);
 
-				if (LastHeard) {
+				if (LastHeard && LastHeard is "PlayerPawn") {
 					target = LastHeard;
 					return ResolveState("AlertMaster");
 					LastHeard = null;
