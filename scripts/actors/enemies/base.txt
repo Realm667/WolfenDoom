@@ -255,6 +255,7 @@ class Nazi : Base
 	bool user_sneakable;
 	Actor patrolgoal;
 	String DeathDamageType;
+	Actor alarm;
 
 	Property Sneakable:user_sneakable;
 	Property SneakableCloseSightRadius:sneakableclosesightradius;
@@ -338,6 +339,9 @@ class Nazi : Base
 				BecomeAlerted(target);
 				return ResolveState("See");
 			}
+		Alarm:
+			"####" N 70;
+			"####" N 0 A_Jump(256, "See");
 	}
 
 	// Function to consolidate default pain state actions.  See use above - can be used to eliminate a lot of existing copy/paste.
@@ -455,6 +459,14 @@ class Nazi : Base
 		}
 
 		target = newtarget; // Set target to the player the eyes saw
+
+		if (alarm) {
+			goal = alarm;
+			target = alarm;
+			LastEnemy = newtarget;
+			bChaseGoal = True;
+		}
+
 		reactiontime = 0; // Make the enemy respond to seeing the player right away
 		A_AlertMonsters(512); // Alert an extra-large radius
 		A_SpawnItemEx("SneakableGuardEyesAlerted", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid); // Spawn active guard eyes
@@ -484,9 +496,12 @@ class Nazi : Base
 		//  NOTE: This doesn't work properly when the player has NOTARGET enabled (or is wearing a disguise and has no weapon raised).
 		if (user_sneakable && bFriendly && patrolgoal && patrolgoal.args[0] == -1 && health > 0 && bShootable)
 		{
+			alarm = null;
 			if (Distance3D(patrolgoal) <= Radius) // If at goal, clear target and goal and go to Spawn state
 			{
 				goal = null;
+				LastHeard = null;
+				LastEnemy = null;
 				A_ClearTarget();
 				SetStateLabel("Spawn");
 			}
@@ -495,6 +510,23 @@ class Nazi : Base
 				goal = patrolgoal;
 				target = patrolgoal;
 				if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); }
+			}
+		}
+		else if (!bFriendly && alarm && health > 0 && bShootable)
+		{
+			if (Distance3D(alarm) <= Radius) 
+			{
+				A_Face(alarm);
+				alarm.SetStateLabel("Activate");
+				alarm = null;
+				bChaseGoal = False;
+				SetStateLabel("Alarm");
+			}
+			else // Otherwise, keep trying to get there
+			{
+				goal = alarm;
+				bChaseGoal = True;
+				if (!InStateSequence(CurState, SeeState) && !InStateSequence(CurState, FindState("Missile"))) { SetStateLabel("See"); }
 			}
 		}
 
