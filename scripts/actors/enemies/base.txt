@@ -514,7 +514,7 @@ class Nazi : Base
 					if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); }
 				}
 			}
-			else if (!bFriendly && alarm)
+			else if (!bFriendly && alarm && user_incombat)
 			{
 				if (Distance3D(alarm) <= Radius + alarm.radius) 
 				{

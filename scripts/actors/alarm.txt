@@ -1,3 +1,45 @@
+/*
+
+  These actors allow for activatable alarms that alert actors within a 512-unit radius.  
+  Optionally, alarm activation can trigger spawn of additional enemies.
+
+  Three actors are involved:
+    AlarmPanel
+	These are usable flatsprite actors that control Alarms and Alarm Spawners that have the
+	same TID as the panel.  The Nazi-class descendant actor who is closest to the alarm panel
+	(within 1024 units) will be automatically selected as the activator, and, once alerted, 
+	will automatically walk to the alarm panel and activate it.  
+
+	Any actors with the same TID as the Alarm Panel will be set to their 'Active' or 'Inactive'
+	state, so any Alarm of Alarm Spawner actors (as well as any other switchable decorations)
+	that have the same TID as the panel can be controlled by the panel.
+
+	To silence alarms, the player must manually deactivate the alarm, or the Alarm Panel can 
+	be set to the "Deactivate" state via ACS to set inactive all controlled actors.
+
+	Players can also turn deactivated alarms on...  This would normally be dumb, but might be 
+	useful for flushing guards into a courtyard away from a key, or something similar.
+
+	Active AlarmPanel actors have a red glow on them.
+
+    Alarm
+	These are simple actors that, upon activation, alert all actors within a 512-
+	unit radius and set the actors' target to the alarm panel activator's target.
+
+    AlarmSpawner
+	These are spawn point actors that spawn up to three SneakableSSMP40Guard actors
+	when they are activated.  A maximum of three guards will be present at any time; 
+	if three guards were spawned and one guard was killed before the alarm was shut
+	off, the next time the alarm goes off, only one additional guard will spawn.
+
+	Spawning only occurs when no player can see the spawn point.
+
+  Alarms and Alarm Spawners must be given the same TID as an Alarm Panel that will control
+  them, otherwise they will not function.  You can have multiple Alarm Panels with the same
+  TID (e.g., so that the player can turn of alarms from a side office after the alarms are 
+  turned on by a guard in a main area).
+
+*/
 class Alarm : Base
 {
 	bool active;
@@ -16,7 +58,7 @@ class Alarm : Base
 	States
 	{
 		Spawn:
-			ALRM A 0;
+			ALRM A 35;
 		Inactive:
 			"####" A 35 { active = false; }
 			Loop;
@@ -32,7 +74,9 @@ class Alarm : Base
 		if (active)
 		{
 			SoundAlert(target, false, 512);
-			if (looptime-- <= 0)
+
+			looptime--;
+			if (looptime <= 0)
 			{
 				A_PlaySound("alarm_ring", CHAN_AUTO);
 				looptime = 70; // Duration of alarm loop sound in tics
@@ -44,6 +88,7 @@ class Alarm : Base
 class AlarmPanel : SwitchableDecoration
 {
 	bool active;
+	Actor activator;
 
 	Default
 	{
@@ -57,12 +102,17 @@ class AlarmPanel : SwitchableDecoration
 
 	States
 	{
+		Spawn:
+			ALRM Q 35;
 		Deactivate:
 			"####" Q 0 A_SetPeerState(false);
-		Spawn:
-			ALRM Q 0;
 		Inactive:
-			"####" Q 35 { FindActivator(); active = false; }
+			"####" Q 35 {
+				if (!activator || !activator.bShootable || !activator.health > 0) {
+					activator = FindActivator();
+				}
+				active = false;
+			}
 			Loop;
 		Activate:
 			"####" P 0 A_SetPeerState();
@@ -79,7 +129,7 @@ class AlarmPanel : SwitchableDecoration
 		return false;
 	}
 
-	void FindActivator(int range = 1024)
+	Actor FindActivator(int range = 1024)
 	{
 		NaziStandard closest;
 
@@ -99,6 +149,7 @@ class AlarmPanel : SwitchableDecoration
 		}
 
 		if (closest) { closest.alarm = self; }
+		return closest;
 	}
 
 	void A_SetPeerState(bool makeactive = true)
@@ -166,6 +217,8 @@ class AlarmSpawner : Base
 {
 	Array<Actor> Guards;
 	int guardcount;
+	int user_tid;
+	int user_goal;
 
 	Default
 	{
@@ -175,7 +228,7 @@ class AlarmSpawner : Base
 	States
 	{
 		Spawn:
-			UNKN A 1;
+			UNKN A 35;
 		Inactive:
 			UNKN A 35;
 			Loop;
@@ -210,6 +263,14 @@ class AlarmSpawner : Base
 						Actor guard = Spawn("SneakableSSMP40Guard", location);
 						guard.target = target;
 						guard.angle = angle;
+						guard.ChangeTID(user_tid);
+						if (user_goal > 0)
+						{
+							let it = ActorIterator.Create(user_goal, "PatrolPoint");
+							Actor goal;
+							if (it) { goal = it.Next(); }
+							if (goal) { guard.goal = goal; }
+						}
 						Nazi(guard).BecomeAlerted();
 						Guards.Push(guard);
 					}
