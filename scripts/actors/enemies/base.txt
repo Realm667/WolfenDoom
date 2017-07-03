@@ -452,7 +452,7 @@ class Nazi : Base
 
 		if (!patrolgoal) // Otherwise, make a new navgoal at the actor's origin so that it can come back.
 		{
-			patrolgoal = Spawn("PatrolPoint", SpawnPoint);
+			patrolgoal = Spawn("PatrolPoint", pos);
 			patrolgoal.args[0] = -1;
 			patrolgoal.args[1] = 0x7FFFFFFF;
 			patrolgoal.angle = angle;
@@ -460,7 +460,7 @@ class Nazi : Base
 
 		target = newtarget; // Set target to the player the eyes saw
 
-		if (alarm) {
+		if (alarm && newtarget && CheckSight(newtarget)) {
 			goal = alarm;
 			target = alarm;
 			LastEnemy = newtarget;
@@ -494,39 +494,42 @@ class Nazi : Base
 	{
 		// If the enemy is sneakable and idle (and not patrolling), and isn't in its original location, keep it moving toward that location.
 		//  NOTE: This doesn't work properly when the player has NOTARGET enabled (or is wearing a disguise and has no weapon raised).
-		if (user_sneakable && bFriendly && patrolgoal && patrolgoal.args[0] == -1 && health > 0 && bShootable)
+		if (health > 0 && bShootable)
 		{
-			alarm = null;
-			if (Distance3D(patrolgoal) <= Radius) // If at goal, clear target and goal and go to Spawn state
+			if (user_sneakable && bFriendly && patrolgoal && patrolgoal.args[0] == -1)
 			{
-				goal = null;
-				LastHeard = null;
-				LastEnemy = null;
-				A_ClearTarget();
-				SetStateLabel("Spawn");
-			}
-			else // Otherwise, keep trying to get there (necessary because A_Chase clears goal and target when within MeleeRange of goal)
-			{
-				goal = patrolgoal;
-				target = patrolgoal;
-				if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); }
-			}
-		}
-		else if (!bFriendly && alarm && health > 0 && bShootable)
-		{
-			if (Distance3D(alarm) <= Radius) 
-			{
-				A_Face(alarm);
-				alarm.SetStateLabel("Activate");
 				alarm = null;
-				bChaseGoal = False;
-				SetStateLabel("Alarm");
+				if (Distance3D(patrolgoal) <= Radius) // If at goal, clear target and goal and go to Spawn state
+				{
+					goal = null;
+					LastHeard = null;
+					LastEnemy = null;
+					A_ClearTarget();
+					SetStateLabel("Spawn");
+				}
+				else // Otherwise, keep trying to get there (necessary because A_Chase clears goal and target when within MeleeRange of goal)
+				{
+					goal = patrolgoal;
+					target = patrolgoal;
+					if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); }
+				}
 			}
-			else // Otherwise, keep trying to get there
+			else if (!bFriendly && alarm)
 			{
-				goal = alarm;
-				bChaseGoal = True;
-				if (!InStateSequence(CurState, SeeState) && !InStateSequence(CurState, FindState("Missile"))) { SetStateLabel("See"); }
+				if (Distance3D(alarm) <= Radius + alarm.radius) 
+				{
+					A_Face(alarm);
+					alarm.SetStateLabel("Activate");
+					alarm = null;
+					bChaseGoal = False;
+					SetStateLabel("Alarm");
+				}
+				else // Otherwise, keep trying to get there
+				{
+					goal = alarm;
+					bChaseGoal = True;
+					if (!InStateSequence(CurState, SeeState) && !InStateSequence(CurState, FindState("Missile"))) { SetStateLabel("See"); }
+				}
 			}
 		}
 
