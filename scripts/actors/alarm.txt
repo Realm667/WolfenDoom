@@ -34,6 +34,14 @@
 
 	Spawning only occurs when no player can see the spawn point.
 
+	Useful custom properties (set on Custom tab of thing properties in GZDB):
+	  user_tid
+	    Sets the TID that the spawned enemies are given.  By default they have no TID.
+
+	  user_goal
+	    Sets the goal/patrolpoint TID that the spawned enemies will walk to once they return to 
+	    being idle.  By default, they go back to their spawn point and stand still.
+
   Alarms and Alarm Spawners must be given the same TID as an Alarm Panel that will control
   them, otherwise they will not function.  You can have multiple Alarm Panels with the same
   TID (e.g., so that the player can turn of alarms from a side office after the alarms are 
@@ -97,7 +105,7 @@ class AlarmPanel : SwitchableDecoration
 		+NOGRAVITY
 		-SOLID
 		Height 48;
-		Radius 24;
+		Radius 16;
 	}
 
 	States
@@ -108,7 +116,7 @@ class AlarmPanel : SwitchableDecoration
 			"####" Q 0 A_SetPeerState(false);
 		Inactive:
 			"####" Q 35 {
-				if (!activator || !activator.bShootable || !activator.health > 0) {
+				if (!NaziStandard(activator) || !activator.bShootable || !activator.health > 0 || NaziStandard(activator).alarm != self) {
 					activator = FindActivator();
 				}
 				active = false;

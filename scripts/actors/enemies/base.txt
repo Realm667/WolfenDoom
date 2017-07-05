@@ -340,8 +340,8 @@ class Nazi : Base
 				return ResolveState("See");
 			}
 		Alarm:
-			"####" N 70;
-			"####" N 0 A_Jump(256, "See");
+			"####" H 50 A_SetTics(Random[AlarmWait](35, 70));
+			"####" H 0 A_Jump(256, "See");
 	}
 
 	// Function to consolidate default pain state actions.  See use above - can be used to eliminate a lot of existing copy/paste.
@@ -521,14 +521,20 @@ class Nazi : Base
 					A_Face(alarm);
 					alarm.SetStateLabel("Activate");
 					alarm = null;
+					target = LastEnemy;
+					LastEnemy = null;
+					bJustAttacked = False;
 					bChaseGoal = False;
+					Speed = Default.Speed;
 					SetStateLabel("Alarm");
 				}
 				else // Otherwise, keep trying to get there
 				{
-					goal = alarm;
-					bChaseGoal = True;
-					if (!InStateSequence(CurState, SeeState) && !InStateSequence(CurState, FindState("Missile"))) { SetStateLabel("See"); }
+					goal = alarm; // Set the alarm panel as the current navigation goal
+					bJustAttacked = True; // Keep the actor from attacking while chasing to the alarm panel
+					bChaseGoal = True; // Chase to the alarm panel only, not torward a target
+					Speed = Default.Speed + 1; // Walk a little faster
+					if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); } // Go to the See state if not already there
 				}
 			}
 		}
