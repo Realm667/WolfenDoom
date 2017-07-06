@@ -209,7 +209,7 @@ ACTOR Camp_RandomUniform
 	//$Category Concentration Camp (Wolf3D)/Scenery
 	//$Title Prisoner Uniform (random)
 	//$Color 3
-	Scale 1.5
+	Scale 0.65
 	Radius 8
 	Height 40
 	ProjectilePassHeight 8
@@ -217,9 +217,10 @@ ACTOR Camp_RandomUniform
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2)
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
 		CMPP A -1
 		CMPP B -1
+		CMPP C -1
 		Stop
 	}
 }
