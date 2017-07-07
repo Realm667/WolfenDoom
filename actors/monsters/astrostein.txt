@@ -174,10 +174,10 @@ ACTOR AstroDrone : Nazi
 		DRON A 0
 		Goto Look
 	See:
-		DRON A 1 A_Chase
-		"####" AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" B 1 A_Chase
-		"####" BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		DRON A 1 A_NaziChase
+		"####" AA 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_NaziChase
+		"####" BB 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
 		Loop
 	Idle:
 		DRON AAABBB 1 A_Wander
@@ -281,30 +281,30 @@ ACTOR AstroCyborg1 : NaziBoss
 		CYB1 J 0
 		Goto Look
 	See:
-		"####" A 1 A_Chase
-		"####" AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" A 1 A_Chase
-		"####" AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" A 1 A_Chase
-		"####" AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" B 1 A_Chase
-		"####" BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" B 1 A_Chase
-		"####" BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" B 1 A_Chase
-		"####" BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" C 1 A_Chase
-		"####" CC 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" C 1 A_Chase
-		"####" CC 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" C 1 A_Chase
-		"####" CC 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" D 1 A_Chase
-		"####" DD 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" D 1 A_Chase
-		"####" DD 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" D 1 A_Chase
-		"####" DD 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		"####" A 1 A_NaziChase
+		"####" AA 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" A 1 A_NaziChase
+		"####" AA 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" A 1 A_NaziChase
+		"####" AA 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_NaziChase
+		"####" BB 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_NaziChase
+		"####" BB 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_NaziChase
+		"####" BB 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" C 1 A_NaziChase
+		"####" CC 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" C 1 A_NaziChase
+		"####" CC 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" C 1 A_NaziChase
+		"####" CC 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" D 1 A_NaziChase
+		"####" DD 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" D 1 A_NaziChase
+		"####" DD 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" D 1 A_NaziChase
+		"####" DD 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
 		Loop
 	Missile:
 		CYB1 G 10 A_FaceTarget
@@ -338,38 +338,38 @@ ACTOR AstroCyborg2 : AstroCyborg1
 		CYB2 H 0
 		Goto Look
 	See:
-		CYB2 A 1 A_Chase
-		"####" AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" A 1 A_Chase
-		"####" AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" A 1 A_Chase
-		"####" AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" A 1 A_Chase
-		"####" AA 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" B 1 A_Chase
-		"####" BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" B 1 A_Chase
-		"####" BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" B 1 A_Chase
-		"####" BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" B 1 A_Chase
-		"####" BB 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" C 1 A_Chase
-		"####" CC 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" C 1 A_Chase
-		"####" CC 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" C 1 A_Chase
-		"####" CC 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" C 1 A_Chase
-		"####" CC 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" D 1 A_Chase
-		"####" DD 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" D 1 A_Chase
-		"####" DD 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" D 1 A_Chase
-		"####" DD 1 A_Chase("","",CHF_NOPLAYACTIVE)
-		"####" D 1 A_Chase
-		"####" DD 1 A_Chase("","",CHF_NOPLAYACTIVE)
+		CYB2 A 1 A_NaziChase
+		"####" AA 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" A 1 A_NaziChase
+		"####" AA 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" A 1 A_NaziChase
+		"####" AA 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" A 1 A_NaziChase
+		"####" AA 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_NaziChase
+		"####" BB 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_NaziChase
+		"####" BB 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_NaziChase
+		"####" BB 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" B 1 A_NaziChase
+		"####" BB 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" C 1 A_NaziChase
+		"####" CC 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" C 1 A_NaziChase
+		"####" CC 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" C 1 A_NaziChase
+		"####" CC 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" C 1 A_NaziChase
+		"####" CC 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" D 1 A_NaziChase
+		"####" DD 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" D 1 A_NaziChase
+		"####" DD 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" D 1 A_NaziChase
+		"####" DD 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
+		"####" D 1 A_NaziChase
+		"####" DD 1 A_NaziChase("","",CHF_NOPLAYACTIVE)
 		Loop
 	Missile:
 		CYB2 E 10 A_FaceTarget

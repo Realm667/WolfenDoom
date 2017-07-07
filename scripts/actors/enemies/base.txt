@@ -292,27 +292,187 @@ class Nazi : Base
 		Look:
 			"####" "#" 10 A_Look();
 			Loop;
-		See:
+		See: 
+		See.Normal: // Guard Walk Pattern
 			"####" "#" 0 { user_incombat = True; }
 			"####" A 1 A_NaziChase;
-			"####" AAA 1 A_NaziChase(null,null);
+			"####" AAA 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
-			"####" AAA 1 A_NaziChase(null,null);
+			"####" AAA 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
 			"####" B 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
-			"####" BBB 1 A_NaziChase(null,null);
+			"####" BBB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
-			"####" BBB 1 A_NaziChase(null,null);
+			"####" BBB 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
-			"####" CCC 1 A_NaziChase(null,null);
+			"####" CCC 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
-			"####" CCC 1 A_NaziChase(null,null);
+			"####" CCC 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
 			"####" D 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
-			"####" DDD 1 A_NaziChase(null,null);
+			"####" DDD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
-			"####" DDD 1 A_NaziChase(null,null);
-			Loop;
+			"####" DDD 1 A_NaziChase(null, null);
+			"####" A 0 { return ResolveState("See"); } // Jump to the actor's defined See state so any special handling can still happen each loop
+		See.Fast: // SS Walk Pattern
+			"####" "#" 0 { user_incombat = True; }
+			"####" A 1 A_NaziChase;
+			"####" AA 1 A_NaziChase(null, null);
+			"####" A 1 A_NaziChase;
+			"####" AA 1 A_NaziChase(null, null);
+			"####" B 1 A_NaziChase;
+			"####" B 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			"####" BB 1 A_NaziChase(null, null);
+			"####" B 1 A_NaziChase;
+			"####" BB 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" CC 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" CC 1 A_NaziChase(null, null);
+			"####" D 1 A_NaziChase;
+			"####" DD 1 A_NaziChase(null, null);
+			"####" D 1 A_NaziChase;
+			"####" D 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			"####" DD 1 A_NaziChase(null, null);
+			"####" A 0 { return ResolveState("See"); }
+		See.Faster: // Officer Walk Pattern
+			"####" "#" 0 { user_incombat = True; }
+			"####" A 1 A_NaziChase;
+			"####" A 1 A_NaziChase(null, null);
+			"####" A 1 A_NaziChase;
+			"####" A 1 A_NaziChase(null, null);
+			"####" B 1 A_NaziChase;
+			"####" B 1 A_NaziChase(null, null);
+			"####" B 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			"####" B 1 A_NaziChase;
+			"####" B 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" C 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" C 1 A_NaziChase(null, null);
+			"####" D 1 A_NaziChase;
+			"####" D 1 A_NaziChase(null, null);
+			"####" D 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			"####" D 1 A_NaziChase;
+			"####" D 1 A_NaziChase(null, null);
+			"####" A 0 { return ResolveState("See"); }
+		See.MutantFaster: // Mutant Walk Pattern (same as Faster, but with steps on opposite frames)
+			"####" "#" 0 { user_incombat = True; }
+			"####" A 1 A_NaziChase;
+			"####" A 1 A_NaziChase(null, null);
+			"####" A 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			"####" A 1 A_NaziChase;
+			"####" A 1 A_NaziChase(null, null);
+			"####" B 1 A_NaziChase;
+			"####" B 1 A_NaziChase(null, null);
+			"####" B 1 A_NaziChase;
+			"####" B 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" C 1 A_NaziChase(null, null);
+			"####" C 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			"####" C 1 A_NaziChase;
+			"####" C 1 A_NaziChase(null, null);
+			"####" D 1 A_NaziChase;
+			"####" D 1 A_NaziChase(null, null);
+			"####" D 1 A_NaziChase;
+			"####" D 1 A_NaziChase(null, null);
+			"####" A 0 { return ResolveState("See"); }
+		See.MutantFasterAlt: // Mutant Walk Pattern, offset frames (BCDE walk instead of ABCD)
+			"####" "#" 0 { user_incombat = True; }
+			"####" B 1 A_NaziChase;
+			"####" B 1 A_NaziChase(null, null);
+			"####" B 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			"####" B 1 A_NaziChase;
+			"####" B 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" C 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" C 1 A_NaziChase(null, null);
+			"####" D 1 A_NaziChase;
+			"####" D 1 A_NaziChase(null, null);
+			"####" D 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			"####" D 1 A_NaziChase;
+			"####" D 1 A_NaziChase(null, null);
+			"####" E 1 A_NaziChase;
+			"####" E 1 A_NaziChase(null, null);
+			"####" E 1 A_NaziChase;
+			"####" E 1 A_NaziChase(null, null);
+			"####" A 0 { return ResolveState("See"); }
+		See.Boss: // Almost all bosses
+			"####" "#" 0 { user_incombat = True; }
+			"####" A 1 A_NaziChase;
+			"####" AAA 1 A_NaziChase(null, null);
+			"####" A 1 A_NaziChase;
+			"####" AAA 1 A_NaziChase(null, null);
+			"####" B 0 A_PlaySound("floor/heavy");
+			"####" B 1 A_NaziChase;
+			"####" BBB 1 A_NaziChase(null, null);
+			"####" B 1 A_NaziChase;
+			"####" BBB 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" CCC 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" CCC 1 A_NaziChase(null, null);
+			"####" D 0 A_PlaySound("floor/heavy");
+			"####" D 1 A_NaziChase;
+			"####" DDD 1 A_NaziChase(null, null);
+			"####" D 1 A_NaziChase;
+			"####" DDD 1 A_NaziChase(null, null);
+			"####" A 0 { return ResolveState("See"); }
+		See.BossFast: // Faster bosses, like UberMutant
+			"####" "#" 0 { user_incombat = True; }
+			"####" A 1 A_NaziChase;
+			"####" AA 1 A_NaziChase(null, null);
+			"####" A 1 A_NaziChase;
+			"####" AA 1 A_NaziChase(null, null);
+			"####" B 0 A_PlaySound("floor/heavy");
+			"####" B 1 A_NaziChase;
+			"####" BB 1 A_NaziChase(null, null);
+			"####" B 1 A_NaziChase;
+			"####" BB 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" CC 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" CC 1 A_NaziChase(null, null);
+			"####" D 0 A_PlaySound("floor/heavy");
+			"####" D 1 A_NaziChase;
+			"####" DD 1 A_NaziChase(null, null);
+			"####" D 1 A_NaziChase;
+			"####" DD 1 A_NaziChase(null, null);
+			"####" A 0 { return ResolveState("See"); }
+		See.BossMech: // Mechs - same as Boss, but with quake and mech sound
+			"####" "#" 0 { user_incombat = True; }
+			"####" A 2 A_NaziChase;
+			"####" AAA 1 A_NaziChase(null, null);
+			"####" A 1 A_NaziChase;
+			"####" AAA 1 A_NaziChase(null, null);
+			"####" B 0 A_PlaySound("mech/walk", CHAN_AUTO, frandom(0.7,1.0), FALSE, ATTN_IDLE);
+			"####" B 2 { A_NaziChase(); Radius_Quake(5, 2, 0, 5, 0); }
+			"####" BBB 1 A_NaziChase(null, null);
+			"####" B 1 A_NaziChase;
+			"####" BBB 1 A_NaziChase(null, null);
+			"####" C 2 A_NaziChase;
+			"####" CCC 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" CCC 1 A_NaziChase(null, null);
+			"####" D 2 A_NaziChase;
+			"####" DDD 1 A_NaziChase(null, null);
+			"####" D 1 A_NaziChase;
+			"####" DDD 1 A_NaziChase(null, null);
+			"####" C 0 A_PlaySound("mech/walk", CHAN_AUTO, frandom(0.5,0.7), FALSE, ATTN_IDLE);
+			"####" C 2 { A_NaziChase(); Radius_Quake(5, 2, 0, 5, 0); }
+			"####" CCC 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" CCC 1 A_NaziChase(null, null);
+			"####" B 2 A_NaziChase;
+			"####" BBB 1 A_NaziChase(null, null);
+			"####" B 1 A_NaziChase;
+			"####" BBB 1 A_NaziChase(null, null);
+			"####" A 0 { return ResolveState("See"); }
+		See.Static: // Sniper Walk Pattern (non-moving, limited frame actor)
+			"####" "#" 0 { user_incombat = True; }
+			"####" "#" 1 A_Chase;
+			"####" A 0 { return ResolveState("See"); }
 		Idle:
 			"####" AAAAAAAA 1 A_Wander;
 			"####" A 0 A_Look;

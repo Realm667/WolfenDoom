@@ -12,26 +12,7 @@ ACTOR NaziBoss : Nazi
 	States
 	{
 	See:
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE)
-		"####" A 1 A_Chase
-		"####" AAA 1 A_Chase("","")
-		"####" A 1 A_Chase
-		"####" AAA 1 A_Chase("","")
-		"####" B 0 A_PlaySound("floor/heavy")
-		"####" B 1 A_Chase
-		"####" BBB 1 A_Chase("","")
-		"####" B 1 A_Chase
-		"####" BBB 1 A_Chase("","")
-		"####" C 1 A_Chase
-		"####" CCC 1 A_Chase("","")
-		"####" C 1 A_Chase
-		"####" CCC 1 A_Chase("","")
-		"####" D 0 A_PlaySound("floor/heavy")
-		"####" D 1 A_Chase
-		"####" DDD 1 A_Chase("","")
-		"####" D 1 A_Chase
-		"####" DDD 1 A_Chase("","")
-		Loop
+		Goto See.Boss
 	}
 }
 
@@ -45,34 +26,7 @@ ACTOR MechBoss : Nazi
 	{
 	See:
 	Idle:
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE)
-		"####" A 2 A_Chase
-		"####" AAA 1 A_Chase("","")
-		"####" A 1 A_Chase
-		"####" AAA 1 A_Chase("","")
-		"####" B 0 A_PlaySound("mech/walk", CHAN_AUTO, frandom(0.7,1.0), FALSE, ATTN_IDLE)
-		"####" B 2 {A_Chase; Radius_Quake(5,2,0,5,0);}
-		"####" BBB 1 A_Chase("","")
-		"####" B 1 A_Chase
-		"####" BBB 1 A_Chase("","")
-		"####" C 2 A_Chase
-		"####" CCC 1 A_Chase("","")
-		"####" C 1 A_Chase
-		"####" CCC 1 A_Chase("","")
-		"####" D 2 A_Chase
-		"####" DDD 1 A_Chase("","")
-		"####" D 1 A_Chase
-		"####" DDD 1 A_Chase("","")
-		"####" C 0 A_PlaySound("mech/walk", CHAN_AUTO, frandom(0.5,0.7), FALSE, ATTN_IDLE)
-		"####" C 2 {A_Chase; Radius_Quake(5,2,0,5,0);}
-		"####" CCC 1 A_Chase("","")
-		"####" C 1 A_Chase
-		"####" CCC 1 A_Chase("","")
-		"####" B 2 A_Chase
-		"####" BBB 1 A_Chase("","")
-		"####" B 1 A_Chase
-		"####" BBB 1 A_Chase("","")
-		Loop
+		Goto See.BossMech
 	}
 }
 

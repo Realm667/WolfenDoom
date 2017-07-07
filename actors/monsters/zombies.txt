@@ -291,28 +291,9 @@ ACTOR ZombieBrain : Nazi
 		ZBIT N 0
 		Goto Look
 	See:
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE)
 		"####" "#" 0 A_JumpIfCloser (radius + 320, "Run")
 		"####" "#" 0 A_SetSpeed(2)
-		"####" A 1 A_Chase
-		"####" AAA 1 A_Chase("","")
-		"####" A 1 A_Chase
-		"####" AAA 1 A_Chase("","")
-		"####" B 1 A_Chase
-		"####" B 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
-		"####" BBB 1 A_Chase("","")
-		"####" B 1 A_Chase
-		"####" BBB 1 A_Chase("","")
-		"####" C 1 A_Chase
-		"####" CCC 1 A_Chase("","")
-		"####" C 1 A_Chase
-		"####" CCC 1 A_Chase("","")
-		"####" D 1 A_Chase
-		"####" D 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
-		"####" DDD 1 A_Chase("","")
-		"####" D 1 A_Chase
-		"####" DDD 1 A_Chase("","")
-		Loop
+		Goto See.Normal
 	Run:
 		"####" "#" 0 {A_SetSpeed(6); A_PlaySound("nazombie/sighted", CHAN_ITEM);}
 	RunLoop:
@@ -414,26 +395,7 @@ ACTOR ZombieOfficer : ZombieBrain
 		ZOFF N 0
 		Goto Look
 	See:
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE)
-		"####" A 1 A_Chase
-		"####" AAA 1 A_Chase("","")
-		"####" A 1 A_Chase
-		"####" AAA 1 A_Chase("","")
-		"####" B 1 A_Chase
-		"####" B 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
-		"####" BBB 1 A_Chase("","")
-		"####" B 1 A_Chase
-		"####" BBB 1 A_Chase("","")
-		"####" C 1 A_Chase
-		"####" CCC 1 A_Chase("","")
-		"####" C 1 A_Chase
-		"####" CCC 1 A_Chase("","")
-		"####" D 1 A_Chase
-		"####" D 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
-		"####" DDD 1 A_Chase("","")
-		"####" D 1 A_Chase
-		"####" DDD 1 A_Chase("","")
-		Loop
+		Goto See.Normal
 	Melee:
 	Missile:
 		ZOFF E 15 A_FaceTarget
