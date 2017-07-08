@@ -116,7 +116,12 @@ class AlarmPanel : SwitchableDecoration
 			"####" Q 0 A_SetPeerState(false);
 		Inactive:
 			"####" Q 35 {
-				if (!NaziStandard(activator) || !activator.bShootable || !activator.health > 0 || NaziStandard(activator).alarm != self) {
+				if (
+					!NaziStandard(activator) || 
+					!activator.bShootable || 
+					!activator.health > 0 || 
+					(NaziStandard(activator).alarm && NaziStandard(activator).alarm != self)
+				) {
 					activator = FindActivator();
 				}
 				active = false;
