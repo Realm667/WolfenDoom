@@ -223,6 +223,7 @@ class Base : Actor
 
 			if (bShootable && health > 0)
 			{
+				if (loiterer && patrolgoal && !bAmbush)
 				{
 					if (goal && goal != patrolgoal) { } // Already has a goal set, so don't mess with it
 					else if (!target || (target == patrolgoal))
