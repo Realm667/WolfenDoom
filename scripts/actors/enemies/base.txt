@@ -87,13 +87,14 @@ class Base : Actor
 	String BossIcon;
 	bool user_DrawHealthBar;
 	bool swimmer;
-	bool loiterer;
+	int loiterdistance;
+	int timeout;
 	Actor patrolgoal;
 
 	Property BossIcon:BossIcon;
 	Property AlwaysDrawHealthBar:user_DrawHealthBar;
 	Property Swimmer:swimmer;
-	Property Loiterer:loiterer;
+	Property LoiterDistance:loiterdistance;
 
 	state A_LookThroughDisguise(int flags = 0, float minseedist = 0, float Range = 0, float maxheardist = 0, double fov = 0, statelabel label = "See")
 	{
@@ -223,18 +224,23 @@ class Base : Actor
 
 			if (bShootable && health > 0)
 			{
-				if (loiterer && patrolgoal && !bAmbush)
+				if (loiterdistance > 0 && patrolgoal && !bAmbush)
 				{
 					if (goal && goal != patrolgoal) { } // Already has a goal set, so don't mess with it
 					else if (!target || (target == patrolgoal))
 					{
-						if (Distance3d(patrolgoal) > 64)
+						if (Distance3d(patrolgoal) > loiterdistance)
 						{
 							goal = patrolgoal;
 							target = goal;
 
-							RandomChaseDir();
-							FaceMovementDirection();
+							if (timeout <= 0)
+							{
+								RandomChaseDir();
+								FaceMovementDirection();
+
+								timeout = 35;
+							}
 						}
 		 				else
 						{
@@ -243,6 +249,7 @@ class Base : Actor
 						}
 					}
 				}
+				timeout--;
 			}
 		}
 
@@ -268,7 +275,7 @@ class Base : Actor
 			A_SetHealth(max(newhealth, 1));
 		}
 
-		if (loiterer && !goal && !patrolgoal) // If it's a loiterer with no set goal, spawn a patrolpoint goal for it and make that the goal, then run around that point
+		if (loiterdistance > 0 && !goal && !patrolgoal) // If it's a loiterer with no set goal, spawn a patrolpoint goal for it and make that the goal, then run around that point
 		{
 			patrolgoal = Spawn("PatrolPoint", pos);
 			patrolgoal.args[0] = -1;

@@ -20,7 +20,7 @@ ACTOR Rottweiler : Nazi
 	-CANUSEWALLS
 	-CANPUSHWALLS //dogs mustn't able to open doors imho, that's why there was -CANUSEWALLS before, but we use bumps on polys
 	+NEVERTARGET //So the dogs don't get targeted by stealth (+FRIENDLY-abusing) guards
-	Base.Loiterer
+	Base.LoiterDistance 64
 	States
 	{
 	Spawn:
@@ -484,15 +484,24 @@ ACTOR Shark : Base
 	+FORCEXYBILLBOARD
 	+NOGRAVITY
 	+NOINFIGHTING
+	+NEVERTARGET
 	-CANUSEWALLS
 	-CANPUSHWALLS
 	Base.Swimmer
+	Base.LoiterDistance 128
 	States
 	{
 	Spawn:
-		SHRK BC 10 A_LookThroughDisguise
+		SHRK A 0
+		Goto Look
+	Look:
+		"####" BC 10 A_LookThroughDisguise
 		Loop
 	See:
+		"####" A 0 {
+			if (target && target != goal) { Speed = 2.5; }
+			else { Speed = 1; }
+		}
 		"####" A 1 A_Chase
 		"####" AAA 1 A_Chase("","")
 		"####" B 1 A_Chase
@@ -501,6 +510,16 @@ ACTOR Shark : Base
 		"####" CCC 1 A_Chase("","")
 		"####" D 1 A_Chase
 		"####" DDD 1 A_Chase("","")
+		Loop
+	Idle:
+		"####" AAAAAAAA 1 A_Wander
+		"####" A 0 A_LookThroughDisguise
+		"####" BBBBBBBB 1 A_Wander
+		"####" A 0 A_LookThroughDisguise
+		"####" CCCCCCCC 1 A_Wander
+		"####" A 0 A_LookThroughDisguise
+		"####" DDDDDDDD 1 A_Wander
+		"####" A 0 A_LookThroughDisguise
 		Loop
 	Missile:
 		"####" A 10
@@ -528,8 +547,8 @@ ACTOR LaserShark : Shark
 	States
 	{
 	Spawn:
-		SHRL BC 10 A_LookThroughDisguise
-		Loop
+		SHRL A 0
+		Goto Look
 	Missile: 
 		"####" BC 10 A_FaceTarget 
 		"####" E 5 A_CustomRailgun (random(20,30), 0, "990000", "FF0000", RGF_NOPIERCING | RGF_FULLBRIGHT, 1, 0, "MeasurePuff", 0, 0, 0, 70, 0.5, 1.5)
