@@ -87,10 +87,13 @@ class Base : Actor
 	String BossIcon;
 	bool user_DrawHealthBar;
 	bool swimmer;
+	bool loiterer;
+	Actor patrolgoal;
 
 	Property BossIcon:BossIcon;
 	Property AlwaysDrawHealthBar:user_DrawHealthBar;
 	Property Swimmer:swimmer;
+	Property Loiterer:loiterer;
 
 	state A_LookThroughDisguise(int flags = 0, float minseedist = 0, float Range = 0, float maxheardist = 0, double fov = 0, statelabel label = "See")
 	{
@@ -217,6 +220,29 @@ class Base : Actor
 			{
 				vel.z = min(vel.z, -1);
 			}
+
+			if (bShootable && health > 0)
+			{
+				{
+					if (goal && goal != patrolgoal) { } // Already has a goal set, so don't mess with it
+					else if (!target || (target == patrolgoal))
+					{
+						if (Distance3d(patrolgoal) > 64)
+						{
+							goal = patrolgoal;
+							target = goal;
+
+							RandomChaseDir();
+							FaceMovementDirection();
+						}
+		 				else
+						{
+							goal = null;
+							target = null;
+						}
+					}
+				}
+			}
 		}
 
 		Super.Tick();
@@ -240,6 +266,16 @@ class Base : Actor
 			// Set the actor's health - cap minimum at 1 so that they don't die, just in case
 			A_SetHealth(max(newhealth, 1));
 		}
+
+		if (loiterer && !goal && !patrolgoal) // If it's a loiterer with no set goal, spawn a patrolpoint goal for it and make that the goal, then run around that point
+		{
+			patrolgoal = Spawn("PatrolPoint", pos);
+			patrolgoal.args[0] = -1;
+			patrolgoal.args[1] = 0x7FFFFFFF;
+			patrolgoal.angle = angle;
+
+			SetStateLabel("See");
+		}
 	}
 }
 
@@ -253,7 +289,6 @@ class Nazi : Base
 	int user_chasegoal;
 	int sneakableclosesightradius;
 	bool user_sneakable;
-	Actor patrolgoal;
 	String DeathDamageType;
 	Actor alarm;
 	int user_static;

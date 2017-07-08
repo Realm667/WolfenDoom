@@ -20,6 +20,7 @@ ACTOR Rottweiler : Nazi
 	-CANUSEWALLS
 	-CANPUSHWALLS //dogs mustn't able to open doors imho, that's why there was -CANUSEWALLS before, but we use bumps on polys
 	+NEVERTARGET //So the dogs don't get targeted by stealth (+FRIENDLY-abusing) guards
+	Base.Loiterer
 	States
 	{
 	Spawn:
@@ -37,8 +38,12 @@ ACTOR Rottweiler : Nazi
 		"####" A 0 A_Look
 		Loop
 	See:
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
-		"####" A 0 A_SetSpeed(8)
+		"####" A 0 {
+			user_incombat = True;
+
+			if (target && target != goal) { Speed = 8; }
+			else { Speed = 4; }
+		}
 		"####" A 1 A_Chase
 		"####" AAA 1 A_Chase("","",CHF_NOPLAYACTIVE)
 		"####" B 1 A_Chase
@@ -481,7 +486,7 @@ ACTOR Shark : Base
 	+NOINFIGHTING
 	-CANUSEWALLS
 	-CANPUSHWALLS
-	BASE.SWIMMER
+	Base.Swimmer
 	States
 	{
 	Spawn:
