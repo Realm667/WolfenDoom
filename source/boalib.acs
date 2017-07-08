@@ -759,22 +759,3 @@ script "PlayerHealthAbove25" (void)
 {
 	SetResultValue(GetActorProperty(playerID, APROP_Health) >= 25);
 }
-
-script "DreamState" ENTER
-{
-	while(true)
-	{
-		if (CheckInventory("DreamState"))
-		{
-			int width = GetScreenWidth();
-			int height = GetScreenHeight();
-
-			int ratio = (width * 1.0) / height;
-			int multiplier = ratio / (4.0 / 3);
-
-			SetCameraToTexture(0, "DREAMING", 90 / multiplier);
-		}
-
-		Delay(1);
-	}
-}
