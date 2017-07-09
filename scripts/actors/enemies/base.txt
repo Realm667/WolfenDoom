@@ -298,7 +298,7 @@ class Nazi : Base
 	int sneakableclosesightradius;
 	bool user_sneakable;
 	String DeathDamageType;
-	Actor alarm;
+	Actor activationgoal;
 	int user_static;
 
 	Property Sneakable:user_sneakable;
@@ -682,9 +682,9 @@ class Nazi : Base
 
 		target = newtarget; // Set target to the player the eyes saw
 
-		if (alarm && newtarget && CheckSight(newtarget)) {
-			goal = alarm;
-			target = alarm;
+		if (activationgoal && newtarget && CheckSight(newtarget)) {
+			goal = activationgoal;
+			target = activationgoal;
 			LastEnemy = newtarget;
 			bChaseGoal = True;
 		}
@@ -720,7 +720,7 @@ class Nazi : Base
 		{
 			if (user_sneakable && bFriendly && patrolgoal && patrolgoal.args[0] == -1)
 			{
-				alarm = null;
+				activationgoal = null;
 				if (Distance3D(patrolgoal) <= Radius) // If at goal, clear target and goal and go to Spawn state
 				{
 					goal = null;
@@ -736,25 +736,30 @@ class Nazi : Base
 					if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); }
 				}
 			}
-			else if (!bFriendly && alarm && user_incombat)
+			else if (!bFriendly && activationgoal && user_incombat)
 			{
-				if (Distance3D(alarm) <= Radius + alarm.radius) 
+				if (Distance3D(activationgoal) <= Radius + activationgoal.radius) 
 				{
-					A_Face(alarm);
-					alarm.SetStateLabel("Activate");
-					alarm = null;
+					A_Face(activationgoal);
+
+					if (activationgoal.FindState("Activate")) { activationgoal.SetStateLabel("Activate"); }
+					else { activationgoal.Activate(self); }
+
 					target = LastEnemy;
 					LastEnemy = null;
 					bJustAttacked = False;
 					bChaseGoal = False;
 					Speed = Default.Speed;
-					SetStateLabel("Alarm");
+
+					if (activationgoal is "AlarmPanel") { SetStateLabel("Alarm"); }
+
+					activationgoal = null;
 				}
 				else // Otherwise, keep trying to get there
 				{
-					goal = alarm; // Set the alarm panel as the current navigation goal
-					bJustAttacked = True; // Keep the actor from attacking while chasing to the alarm panel
-					bChaseGoal = True; // Chase to the alarm panel only, not torward a target
+					goal = activationgoal; // Set the activation goal as the current navigation goal
+					bJustAttacked = True; // Keep the actor from attacking while chasing to the goal
+					bChaseGoal = True; // Chase to the goal only, not torward a target
 					Speed = Default.Speed + 1; // Walk a little faster
 					if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); } // Go to the See state if not already there
 				}

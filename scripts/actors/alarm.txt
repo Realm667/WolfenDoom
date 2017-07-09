@@ -120,7 +120,7 @@ class AlarmPanel : SwitchableDecoration
 					!NaziStandard(activator) || 
 					!activator.bShootable || 
 					!activator.health > 0 || 
-					(NaziStandard(activator).alarm && NaziStandard(activator).alarm != self)
+					(NaziStandard(activator).activationgoal && NaziStandard(activator).activationgoal != self)
 				) {
 					activator = FindActivator();
 				}
@@ -154,14 +154,14 @@ class AlarmPanel : SwitchableDecoration
 			mo = NaziStandard(it.thing);
 
 			if (!mo) { continue; }
-			if (!mo.bShootable || mo.health <= 0) { mo.alarm = null; continue; }
-			if (!CheckSight(mo)) { mo.alarm = null; continue; }
-			if (closest && Distance3d(mo) > Distance3d(closest)) { mo.alarm = null; continue; }
+			if (!mo.bShootable || mo.health <= 0) { mo.activationgoal = null; continue; }
+			if (!CheckSight(mo)) { mo.activationgoal = null; continue; }
+			if (closest && Distance3d(mo) > Distance3d(closest)) { mo.activationgoal = null; continue; }
 
 			closest = mo;
 		}
 
-		if (closest) { closest.alarm = self; }
+		if (closest) { closest.activationgoal = self; }
 		return closest;
 	}
 
@@ -233,22 +233,17 @@ class AlarmSpawner : Base
 	int user_tid;
 	int user_goal;
 
-	Default
-	{
-		+INVISIBLE
-	}
-
 	States
 	{
 		Spawn:
-			UNKN A 35;
+			TNT1 A 35;
 		Inactive:
-			UNKN A 35;
+			TNT1 A 35;
 			Loop;
 		Active:
-			UNKN A 35 A_SetTics(Random[Spawn](1, 3) * 35);
+			TNT1 A 35 A_SetTics(Random[Spawn](1, 3) * 35);
 		Active.Spawn:
-			UNKN A 1 {
+			TNT1 A 1 {
 				guardcount = 0;
 
 				for (int i = 0; i < Guards.Size(); i++) {
@@ -264,7 +259,7 @@ class AlarmSpawner : Base
 					}
 				}
 			}
-			UNKN A 1 {
+			TNT1 A 1 {
 				if (guardcount < 3) {
 					vector3 location = pos;
 

@@ -1,0 +1,103 @@
+class ActorSpawner : SwitchableDecoration
+{
+	Array<Actor> Spawns;
+	Class<Actor> spawntype;
+	int spawncount;
+
+	// TID to give the spawned enemy actor (default no TID)
+	int user_tid; 
+
+	// TID of goal that the enemy should walk to after spawning (default no goal)
+	int user_goal; 
+
+	// How many enemies from this spawner to maintain alive at once (default 1)
+	int user_maxactors; 
+
+	// Distance from player inside of which the spawner will stop spawning (default 512)
+	int user_minspawndistance; 
+
+	Default
+	{
+		//$Arg0Str "Actor class to spawn"
+		//$Sprite UNKNA0
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 35;
+		Active:
+			"####" "#" 35 A_SetTics(Random[Spawn](1, 3) * 35);
+		Active.Spawn:
+			"####" "#" 1 {
+				spawncount = 0;
+
+				for (int i = 0; i < Spawns.Size(); i++) {
+					Actor mo = Spawns[i];
+
+					if (mo) {
+						if (!mo.bShootable || mo.health <= 0) {
+							Spawns.Delete(i);
+							Spawns.ShrinkToFit();
+						} else {
+							spawncount++;
+						}
+					}
+				}
+
+				if (spawncount < user_maxactors) {
+					//Spawn enemies if not visible to player
+					if (!InPlayerSightorRange(user_minspawndistance)) {
+						Actor spawned = Spawn(spawntype, pos);
+						spawned.target = target;
+						spawned.angle = angle;
+						spawned.ChangeTID(user_tid);
+						if (user_goal > 0)
+						{
+							let it = ActorIterator.Create(user_goal, "PatrolPoint");
+							Actor goal;
+							if (it) { goal = it.Next(); }
+							if (goal) { spawned.goal = goal; }
+
+							if (Nazi(spawned))
+							{
+								if (Nazi(spawned).user_sneakable) { Nazi(spawned).BecomeAlerted(); }
+								Nazi(spawned).activationgoal = goal;
+							}
+
+							spawned.SetStateLabel("See");
+						}
+						Spawns.Push(spawned);
+					}
+				}
+				return ResolveState("Active");
+			}
+		Inactive:
+			"####" "#" 35;
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		spawntype = GetSpawnableType(args[0]);
+		if (!spawntype) { spawntype = "Guard"; }
+
+		if (!user_maxactors) { user_maxactors = 1; }
+		if (!user_minspawndistance) { user_minspawndistance = 512; }
+	}
+
+	bool InPlayerSightOrRange(int range = 512)
+	{
+		for (int p = 0; p < MAXPLAYERS; p++) // Iterate through all of the players and see if any can see the spawn point
+		{
+			Actor mo = players[p].mo;
+
+			if (mo) {
+				if (mo.CheckSight(self)) { return true; }
+				if (Distance3d(mo) <= range) { return true; }
+			}
+		}
+
+		return false;
+	}
+}
