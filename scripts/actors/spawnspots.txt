@@ -34,7 +34,6 @@ class ActorSpawner : SwitchableDecoration
 {
 	Array<Actor> Spawns;
 	Class<Actor> spawntype;
-	int spawncount;
 
 	// TID to give the spawned enemy actor (default no TID)
 	int user_tid; 
@@ -52,7 +51,7 @@ class ActorSpawner : SwitchableDecoration
 	{
 		//$Arg0 "Thing ID to spawn"
 		//$Arg0Str "Actor class to spawn"
-		//$Sprite UNKNA0
+		//$Sprite EXCLC0
 	}
 
 	States
@@ -61,50 +60,9 @@ class ActorSpawner : SwitchableDecoration
 			TNT1 A 35;
 		Active:
 			"####" "#" 35 A_SetTics(Random[Spawn](1, 3) * 35);
+			"####" "#" 0 { return ResolveState("Active.Spawn"); }
 		Active.Spawn:
-			"####" "#" 1 {
-				spawncount = 0;
-
-				for (int i = 0; i < Spawns.Size(); i++) {
-					Actor mo = Spawns[i];
-
-					if (mo) {
-						if (!mo.bShootable || mo.health <= 0) {
-							Spawns.Delete(i);
-							Spawns.ShrinkToFit();
-						} else {
-							spawncount++;
-						}
-					}
-				}
-
-				if (spawncount < user_maxactors) {
-					//Spawn enemies if not visible to player
-					if (!InPlayerSightorRange(user_minspawndistance)) {
-						Actor spawned = Spawn(spawntype, pos);
-						spawned.target = target;
-						spawned.angle = angle;
-						spawned.ChangeTID(user_tid);
-						if (user_goal > 0)
-						{
-							let it = ActorIterator.Create(user_goal, "PatrolPoint");
-							Actor goal;
-							if (it) { goal = it.Next(); }
-							if (goal) { spawned.goal = goal; }
-
-							if (Nazi(spawned))
-							{
-								if (Nazi(spawned).user_sneakable) { Nazi(spawned).BecomeAlerted(); }
-								Nazi(spawned).activationgoal = goal;
-							}
-
-							spawned.SetStateLabel("See");
-						}
-						Spawns.Push(spawned);
-					}
-				}
-				return ResolveState("Active");
-			}
+			"####" "#" 1 A_DoSpawns();
 		Inactive:
 			"####" "#" 35;
 			Loop;
@@ -132,5 +90,57 @@ class ActorSpawner : SwitchableDecoration
 		}
 
 		return false;
+	}
+
+	int CountSpawns()
+	{
+		int spawncount = 0;
+
+		for (int i = 0; i < Spawns.Size(); i++) {
+			Actor mo = Spawns[i];
+
+			if (mo) {
+				if (!mo.bShootable || mo.health <= 0) {
+					Spawns.Delete(i);
+					Spawns.ShrinkToFit();
+				} else {
+					spawncount++;
+				}
+			}
+		}
+
+		return spawncount;
+	}
+
+	virtual state A_DoSpawns()
+	{
+		int spawncount = CountSpawns();
+
+		if (spawncount < user_maxactors) {
+			//Spawn enemies if not visible to player
+			if (!InPlayerSightorRange(user_minspawndistance)) {
+				Actor spawned = Spawn(spawntype, pos);
+				spawned.target = target;
+				spawned.angle = angle;
+				spawned.ChangeTID(user_tid);
+				if (user_goal > 0)
+				{
+					let it = ActorIterator.Create(user_goal, "PatrolPoint");
+					Actor goal;
+					if (it) { goal = it.Next(); }
+					if (goal) { spawned.goal = goal; }
+
+					if (Nazi(spawned))
+					{
+						if (Nazi(spawned).user_sneakable) { Nazi(spawned).BecomeAlerted(); }
+						Nazi(spawned).activationgoal = goal;
+					}
+
+					spawned.SetStateLabel("See");
+				}
+				Spawns.Push(spawned);
+			}
+		}
+		return ResolveState("Active");
 	}
 }

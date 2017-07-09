@@ -793,14 +793,13 @@ class Nazi : Base
 					if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); }
 				}
 			}
-			else if (!bFriendly && activationgoal && user_incombat)
+			else if (user_sneakable && !bFriendly && activationgoal && user_incombat)
 			{
 				if (Distance3D(activationgoal) <= Radius + activationgoal.radius) 
 				{
 					A_Face(activationgoal);
 
-					if (activationgoal.FindState("Activate")) { activationgoal.SetStateLabel("Activate"); }
-					else { activationgoal.Activate(self); }
+					activationgoal.Activate(self);
 
 					target = LastEnemy;
 					LastEnemy = null;
