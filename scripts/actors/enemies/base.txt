@@ -24,6 +24,14 @@
 	- Developer note: This sets the statnum to STAT_DEFAULT - 3
 	  (used to limit ThinkerIterator performance hit)
 
+	Base.Swimmer
+	- Boolean value that sets whether the actor should be restricted to staying
+	  underwater or not.  Used by sharks.
+
+	Base.LoiterDistance
+	- Integer value that sets the range from the spawn point that this actor will
+	  wander while it is idle (normally only on spawn).  Used by dogs and sharks.
+
 	Nazi.Sneakable
 	- Boolean that controls if the enemy is a sneakable enemy or not.
 	- Can also be set in-editor on a per-actor basis by setting the user_sneakable
@@ -42,6 +50,19 @@
 	  player disguises.
 	- Used by SneakableEyesIdle actor (as seen on sneakable Gestapo)
 
+  UDMF Properties (Base Class)
+	user_drawhealthbar
+	- The underlying variable for the Base.AlwaysDrawHealthBar property above
+
+  UDMF Properties (Nazi Class)
+	user_sneakable
+	- The underlying variable for the Nazi.Sneakable property above
+
+	user_static
+	- Actor will remain at its spawn location until the player is within 256 units
+	- The actor will still aim and fire at the player, but won't walk toward him
+	  until the player is within the 256-unit range
+
   New Functions (Base class)
 	A_LookThroughDisguise(int flags = 0, float minseedist = 0, float Range = 0, float maxheardist = 0, double fov = 0, statelabel label = "See")
 	- Allows enemies to always and immediately "see through" player disguises, 
@@ -51,6 +72,28 @@
 	- Should be used in place of A_Look or A_LookEx for "indiscriminate" enemies,
 	  that wouldn't be fooled by a disguise, like rats, spiders, and possibly 
 	  paranormal creatures.
+
+	A_JumpAttack(int attackspeed = 20)
+	- A generic version of A_SkullAttack that allows you to pass in an attack speed
+	- Also handles skipping the attack if a swimmer is out of water
+
+	bool InPlayerSight()
+	- Checks each player to see if they can see this actor and returns true if any
+	  player can see the actor
+
+	actor FindClosestPlayer(int fov = 120, int dist = 0, bool IgnoreFriendlies = True)
+	- Finds the closest player within the specified parameter range, and returns
+	  the player's mapobject actor.
+
+	bool SneakableActors()
+	- Returns true if there are actors flagged as "sneakable" in the current
+	  map (Actually just counts StealthBase actors to avoid iterating over all
+	  Base or Nazi class descendants and causing huge slowdown).
+	- Used internally to set up sneakable handling
+
+	int AlertedSneakablesCount(int range = 512)
+	- Returns the number of sneakable actors within the specified range of the 
+	  calling actor
 
   New Functions (Nazi class)
 	A_NaziPain(int alertrange = 0, bool playsound = True, int offset = -8)	
@@ -73,11 +116,19 @@
 	  before the actor was alerted
 	- Used internally by SneakableEyesAlerted actor
 
-	SneakableActors()
-	- Returns true/false if there are actors flagged as "sneakable" in the current
-	  map (Actually just counts StealthBase actors to avoid iterating over all
-	  Base or Nazi class descendants and causing huge slowdown).
-	- Used internally to set up sneakable handling
+  Useful objects (Nazi Class)
+	activationgoal
+	- Nazi class descendants have special internal handling in place for when 
+	  an actor is assigned as the activationgoal.  
+	- Similar to a normal 'goal' that is usually a PatrolPoint, a Nazi will walk 
+	  to their activationgoal when it is assigned to them.  The major difference
+	  is that Nazis will walk immediately to the activationgoal without stopping
+	  to fire at the player, and, once the activationgoal is reached, the goal 
+	  actor will activated.  
+	- Alarm Panels and their descendants have special handling, where the Nazi 
+	  is set to the 'Alarm' state upon activation.
+	- After reaching the activationgoal, the Nazi automatically clears their 
+	  activationgoal and returns to normal behavior.
 
 */
 // Base class to add ability to see through notarget to actors (e.g., mice, sharks)
