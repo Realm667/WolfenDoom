@@ -27,6 +27,7 @@ server int zscriptlod = 2048;
 user bool autoreload = true;
 user bool cl_strafetilt = true;
 
-server noarchive int g_activecolor = 0x990000;
-server noarchive int g_inactivecolor = 0x444444;
-server noarchive int g_altcolor = 0xDD0000;
+// These are hex-formated RGB colors converted to decimal to silence GZDB parsing errors (the hex values work fine in GZDoom)
+server noarchive int g_activecolor = 10027008;
+server noarchive int g_inactivecolor = 4473924;
+server noarchive int g_altcolor = 14483456;
