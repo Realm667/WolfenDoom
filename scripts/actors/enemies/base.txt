@@ -614,17 +614,23 @@ class Nazi : Base
 
 	void A_NaziChase(statelabel melee = "None", statelabel missile = "None", int flags = 0)
 	{
-		if (melee == "None") { melee = "Melee"; }
-		if (missile == "None") { missile = "Missile"; }
+		if (melee == "None") { melee = "Melee.Aimed"; }
+		if (missile == "None") { missile = "Missile.Aimed"; }
 
 		if (target && Distance3D(target) < 256) { user_static = 0; }
 
 		if (user_static)
 		{
 			flags |= CHF_DONTMOVE | CHF_NODIRECTIONTURN;
-			frame = FindState("Missile").frame;
+
+			state Aim = FindState("Missile.Aimed");
+			if (!Aim) { Aim = FindState("Melee.Aimed"); }
+
+			frame = Aim.frame;
 			A_SetTics(Random[StandDelay](1, 5) * int(Speed));
+
 			A_FaceTarget();
+			reactiontime = 0;
 		}
 
 		A_Chase(melee, missile, flags);

@@ -438,31 +438,33 @@ ACTOR SSCultist : Guard
 	Run:
 		SSCT A 0 A_Jump (24, "See")
 		"####" A 0 A_SetSpeed(4.66666667)
-		"####" A 1 A_Chase
-		"####" A 1 A_Chase("","")
-		"####" A 1 A_Chase
-		"####" A 1 A_Chase("","")
-		"####" B 1 A_Chase
-		"####" B 1 A_Chase("","")
+		"####" A 1 A_NaziChase
+		"####" A 1 A_NaziChase("","")
+		"####" A 1 A_NaziChase
+		"####" A 1 A_NaziChase("","")
+		"####" B 1 A_NaziChase
+		"####" B 1 A_NaziChase("","")
 		"####" B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
-		"####" B 1 A_Chase
-		"####" B 1 A_Chase("","")
-		"####" C 1 A_Chase
-		"####" C 1 A_Chase("","")
-		"####" C 1 A_Chase
-		"####" C 1 A_Chase("","")
-		"####" D 1 A_Chase
-		"####" D 1 A_Chase("","")
+		"####" B 1 A_NaziChase
+		"####" B 1 A_NaziChase("","")
+		"####" C 1 A_NaziChase
+		"####" C 1 A_NaziChase("","")
+		"####" C 1 A_NaziChase
+		"####" C 1 A_NaziChase("","")
+		"####" D 1 A_NaziChase
+		"####" D 1 A_NaziChase("","")
 		"####" D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
-		"####" D 1 A_Chase
-		"####" D 1 A_Chase("","")
-		"####" E 1 A_Chase
-		"####" E 1 A_Chase("","")
-		"####" E 1 A_Chase
-		"####" E 1 A_Chase("","")
+		"####" D 1 A_NaziChase
+		"####" D 1 A_NaziChase("","")
+		"####" E 1 A_NaziChase
+		"####" E 1 A_NaziChase("","")
+		"####" E 1 A_NaziChase
+		"####" E 1 A_NaziChase("","")
 		Loop
 	Missile:
-		SSCT F 8 A_FaceTarget
+		"####" F 4 A_FaceTarget
+	Missile.Aimed:
+		"####" F 4 A_FaceTarget
 		"####" G 0 A_PlaySound("sscultist/shoot", CHAN_6)
 		"####" G 0 A_GiveInventory("PriestCounter", 1) //ozy81
 		"####" G 0 A_JumpIfInventory("PriestCounter", 12, "Reload") //ozy81
