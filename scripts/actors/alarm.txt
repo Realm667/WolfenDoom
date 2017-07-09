@@ -152,20 +152,21 @@ class AlarmPanel : SwitchableDecoration
 	{
 		NaziStandard closest;
 
-		BlockThingsIterator it = BlockThingsIterator.Create(self, range);
+		ThinkerIterator it = ThinkerIterator.Create("NaziStandard");
 		NaziStandard mo;
+		double dist;
 
-		while (it.Next())
+		while (mo = NaziStandard(it.Next()))
 		{
-			mo = NaziStandard(it.thing);
+			dist = Distance3d(mo);
 
-			if (!mo) { continue; }
 			if (
 				!mo.bShootable || 
 				mo.health <= 0  ||
 				mo.bDormant ||
+				dist > range ||
 				!CheckSight(mo) ||
-				(closest && Distance3d(mo) > Distance3d(closest))
+				(closest && dist > Distance3d(closest))
 			)
 			{
 				if (mo.activationgoal == self) { mo.activationgoal = null; }
