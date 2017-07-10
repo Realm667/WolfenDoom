@@ -141,6 +141,8 @@ class Base : Actor
 	int loiterdistance;
 	int timeout;
 	Actor patrolgoal;
+	bool user_conversation;
+	Actor marker;
 
 	Property BossIcon:BossIcon;
 	Property AlwaysDrawHealthBar:user_DrawHealthBar;
@@ -302,18 +304,25 @@ class Base : Actor
 				}
 				timeout--;
 			}
+
+			if (bInConversation && marker)
+			{
+				marker.SetStateLabel("Inactive");
+				marker = null;
+			}
 		}
 
 		Super.Tick();
 	}
 
-	// After initilization, handle skill level health alterations
-	//   For each each skill level below 'normal', reduce enemy health by specified percentage
-	//     So, for an enemy with 25 health normally, at the second skill level, it would have 16,
-	//     and at the first skill level it would have 10 (~66% of 16) (assuming the multiplier is 2/3)
-	//     This effectively takes a doberman from 3 hits with the knife to 2 on skill 1, to 1 on skill 0.
 	override void PostBeginPlay()
 	{
+		// After initilization, handle skill level health alterations
+		//   For each each skill level below 'normal', reduce enemy health by specified percentage
+		//     So, for an enemy with 25 health normally, at the second skill level, it would have 16,
+		//     and at the first skill level it would have 10 (~66% of 16) (assuming the multiplier is 2/3)
+		//     This effectively takes a doberman from 3 hits with the knife to 2 on skill 1, to 1 on skill 0.
+
 		double multiplier = 2. / 3; // Cut the health down to 2/3 its value for each skill level below normal
 
 		if (skill < 2) { // If skill 0 or 1
@@ -326,7 +335,8 @@ class Base : Actor
 			A_SetHealth(max(newhealth, 1));
 		}
 
-		if (loiterdistance > 0 && !goal && !patrolgoal) // If it's a loiterer with no set goal, spawn a patrolpoint goal for it and make that the goal, then run around that point
+		// If it's a loiterer with no set goal, spawn a patrolpoint goal for it and make that the goal, then run around that point
+		if (loiterdistance > 0 && !goal && !patrolgoal) 
 		{
 			patrolgoal = Spawn("PatrolPoint", pos);
 			patrolgoal.args[0] = -1;
@@ -334,6 +344,13 @@ class Base : Actor
 			patrolgoal.angle = angle;
 
 			SetStateLabel("See");
+		}
+
+		// If it's tagged with a conversation ID, spawn the conversation marker
+		if (user_conversation && !marker)
+		{
+			marker = Spawn("ConversationMarker", pos);
+			if (marker) { marker.master = self; }
 		}
 	}
 }
@@ -889,5 +906,53 @@ class NaziStandard : Nazi
 		SpriteLookups: // Because the GetSpriteIndex function won't find sprites that aren't already used by a state in the current actor.
 			BURN A 0;
 			NRUB A 0;
+	}
+}
+
+// Conversation marker that follows the actor, positioning itself above their head.
+//  For Invisible/NoBlockMap actors, the marker is placed at the base of the actor.
+class ConversationMarker : Actor
+{
+	Default
+	{
+		+BRIGHT
+		+NOBLOCKMAP
+		+NOGRAVITY
+		Height 0;
+		Radius 0;
+		Scale 1.35;
+		RenderStyle "Translucent";
+		Alpha 1.0;
+	}
+
+	States
+	{
+		Spawn:
+		Active:
+			EXCL D 1 BRIGHT;
+			Loop;
+		Inactive:
+			EXCL D 10 BRIGHT;
+			EXCL E -1 BRIGHT;
+			Stop;
+	}
+
+	override void Tick()
+	{
+		if (master)
+		{
+			if (master.health <= 0) { Destroy(); }
+			else
+			{
+				int offset;
+
+				if (master.bInvisible || master.bNoBlockMap) { offset = 12; }
+				else { offset = master.height + 12; }
+
+				SetOrigin((master.pos.x, master.pos.y, master.pos.z + offset), true);
+			}
+		}
+
+		Super.Tick();
 	}
 }

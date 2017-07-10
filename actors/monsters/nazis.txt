@@ -2442,7 +2442,7 @@ ACTOR Marine_Talk2 : Marine2A
 	//$Color 5
 }
 
-ACTOR Dummy_Talk1
+ACTOR Dummy_Talk1 : Base
 {
 	//$Category Conversation Stuff (Wolf3D)
 	//$Title Talking Dummy (1)
@@ -2450,9 +2450,10 @@ ACTOR Dummy_Talk1
 	Radius 8
 	Height 64
 	+SOLID
+	+INVISIBLE
 }
 
-ACTOR Dummy_Talk2
+ACTOR Dummy_Talk2 : Base
 {
 	//$Category Conversation Stuff (Wolf3D)
 	//$Title Talking Dummy (2)
@@ -2460,4 +2461,5 @@ ACTOR Dummy_Talk2
 	Radius 8
 	Height 64
 	+SOLID
+	+INVISIBLE
 }
