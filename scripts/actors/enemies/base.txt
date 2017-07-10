@@ -644,7 +644,7 @@ class Nazi : Base
 			if (!Aim) { Aim = FindState("Melee.Aimed"); }
 
 			frame = Aim.frame;
-			A_SetTics(Random[StandDelay](1, 5) * int(Speed));
+			A_SetTics(Random[StandDelay](1, 5));
 
 			A_FaceTarget();
 			reactiontime = 0;
@@ -683,19 +683,19 @@ class Nazi : Base
 				A_Log(StringTable.Localize("$STEALTH"));
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING);
 				bFriendly = False; // Force to not friendly so that they will count as a kill and be healable.
-				SoundAlert(inflictor, false, 192);
+				SoundAlert(source, false, 192);
 				A_Die();
 			}
 			else if (user_incombat) // If the actor has already been in its See state
 			{
 				A_PlaySound("Nazi1/Pain", CHAN_AUTO, FRandom(0.2, 0.4), FALSE, ATTN_NORM); // Play quiet pain sound
-				SoundAlert(inflictor, false, 64); //ozy - only if near // Alert small radius
+				SoundAlert(source, false, 64); //ozy - only if near // Alert small radius
 			}
 			else // Otherwise, this attack was the equivalent of Stealth Kill for non-sneakable enemies
 			{
 				user_incombat = True;
 				A_Log(StringTable.Localize("$CRITICAL"));
-				SoundAlert(inflictor, false, 192);
+				SoundAlert(source, false, 192);
 				A_Die();
 			}
 		}
@@ -704,7 +704,7 @@ class Nazi : Base
 
 		if (user_sneakable && bFriendly) // If we attacked a sneakable actor who wasn't alerted...
 		{
-			BecomeAlerted(inflictor); // Alert that actor
+			BecomeAlerted(source); // Alert that actor
 		}
 
 		int damageamt = Super.DamageMobj(inflictor, source, damage, mod, flags, angle); // Get the damage amount from the real DamageMobj function
@@ -724,7 +724,7 @@ class Nazi : Base
 			DeathDamageType = currentDamage;
 		}
 
-		target = inflictor; // Set the attacker as the current target
+		target = source; // Set the attacker as the current target
 
 		return damageamt; // Function returns amount of damage received by the actor
 	}
@@ -810,7 +810,7 @@ class Nazi : Base
 					if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); }
 				}
 			}
-			else if (user_sneakable && !bFriendly && activationgoal && user_incombat)
+			else if (!bFriendly && activationgoal && user_incombat)
 			{
 				if (Distance3D(activationgoal) <= Radius + activationgoal.radius) 
 				{
@@ -944,7 +944,7 @@ class ConversationMarker : Actor
 			if (master.health <= 0) { Destroy(); }
 			else
 			{
-				int offset;
+				double offset;
 
 				if (master.bInvisible || master.bNoBlockMap) { offset = 12; }
 				else { offset = master.height + 12; }

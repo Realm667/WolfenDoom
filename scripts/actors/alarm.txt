@@ -148,11 +148,11 @@ class AlarmPanel : SwitchableDecoration
 		Super.Deactivate(activator);
 	}
 
-	Actor FindActivator(int range = 1024)
+	Actor FindActivator(int range = 512)
 	{
 		NaziStandard closest;
 
-		ThinkerIterator it = ThinkerIterator.Create("NaziStandard");
+		ThinkerIterator it = ThinkerIterator.Create("NaziStandard", Thinker.STAT_DEFAULT - 5); // Only look for sneakable actors
 		NaziStandard mo;
 		double dist;
 
@@ -164,6 +164,7 @@ class AlarmPanel : SwitchableDecoration
 				!mo.bShootable || 
 				mo.health <= 0  ||
 				mo.bDormant ||
+				!mo.user_sneakable || 
 				dist > range ||
 				!CheckSight(mo) ||
 				(closest && dist > Distance3d(closest))
