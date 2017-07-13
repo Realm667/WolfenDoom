@@ -368,6 +368,7 @@ class Nazi : Base
 	String DeathDamageType;
 	Actor activationgoal;
 	int user_static;
+	state AimState;
 
 	Property Sneakable:user_sneakable;
 	Property SneakableCloseSightRadius:sneakableclosesightradius;
@@ -640,10 +641,13 @@ class Nazi : Base
 		{
 			flags |= CHF_DONTMOVE | CHF_NODIRECTIONTURN;
 
-			state Aim = FindState("Missile.Aimed");
-			if (!Aim) { Aim = FindState("Melee.Aimed"); }
+			if (!AimState)
+			{
+				AimState = FindState("Missile.Aimed");
+				if (!AimState) { AimState = FindState("Melee.Aimed"); }
+			}
 
-			frame = Aim.frame;
+			frame = AimState.frame;
 			A_SetTics(Random[StandDelay](1, 5));
 
 			A_FaceTarget();
