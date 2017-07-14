@@ -637,15 +637,9 @@ class Nazi : Base
 
 		if (target && Distance3D(target) < 256) { user_static = 0; }
 
-		if (user_static)
+		if (AimState && (user_static || bAmbush))
 		{
 			flags |= CHF_DONTMOVE | CHF_NODIRECTIONTURN;
-
-			if (!AimState)
-			{
-				AimState = FindState("Missile.Aimed");
-				if (!AimState) { AimState = FindState("Melee.Aimed"); }
-			}
 
 			frame = AimState.frame;
 			A_SetTics(Random[StandDelay](1, 5));
@@ -671,6 +665,18 @@ class Nazi : Base
 		{ // This will break normal expected friendly monster behavior!
 			bNeverTarget = True;
 		}
+
+		// Set the actor's aim state (first frame of attack animation) for static and AMBUSH actors
+		AimState = FindState("Missile.Aimed");
+		if (!AimState) { AimState = FindState("Melee.Aimed"); }
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		// Use the aim state frame as the initial frame if they have the AMBUSH flag
+		if (AimState && bAmbush) { frame = AimState.frame; }
 	}
 
 	// Hijack the damage calls in order to implement stealth kills and critical hits
