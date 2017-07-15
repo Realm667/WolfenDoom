@@ -73,6 +73,7 @@ ACTOR ShovelPuff
 	+NOEXTREMEDEATH
 	+NOGRAVITY
 	+PUFFONACTORS
+	+PUFFGETSOWNER
 	RenderStyle "Add"
 	ActiveSound ""
 	AttackSound "shovel/wall"
@@ -83,6 +84,7 @@ ACTOR ShovelPuff
 	{
 	Spawn:
 	Melee:
+		POOF A 0 A_AlertMonsters
 	Crash:
 		POOF ABCDE 3
 		Stop
