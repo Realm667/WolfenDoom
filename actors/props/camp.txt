@@ -25,14 +25,17 @@ ACTOR Camp_RandomPileDead
 	Radius 16
 	Height 12
 	ProjectilePassHeight 4
+	Scale 0.65
 	+SOLID
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5)
 		CMPG A -1
 		CMPG B -1
 		CMPG C -1
+		CMPG M -1
+		CMPG N -1
 		Stop
 	}
 }
