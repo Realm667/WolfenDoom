@@ -143,6 +143,7 @@ class Base : Actor
 	Actor patrolgoal;
 	bool user_conversation;
 	Actor marker;
+	bool user_ForceWeaponDrop;
 
 	Property BossIcon:BossIcon;
 	Property AlwaysDrawHealthBar:user_DrawHealthBar;
@@ -369,6 +370,7 @@ class Nazi : Base
 	Actor activationgoal;
 	int user_static;
 	state AimState;
+	bool healing;
 
 	Property Sneakable:user_sneakable;
 	Property SneakableCloseSightRadius:sneakableclosesightradius;
@@ -796,6 +798,42 @@ class Nazi : Base
 		else { SetStateLabel("Spawn"); }
 	}
 
+	void A_UnblockAndDrop()
+	{
+		if (user_ForceWeaponDrop)
+		{
+			DropItem drops = GetDropItems();
+			DropItem item;
+
+			if (drops != null)
+			{
+				for (item = drops; item != null; item = item.Next)
+				{
+					String itemName = String.Format("%s", item.Name); // Don't know why I have to do this and the Length check, but 'DropItem ""' crashes without it, even if I check for != "", != null, etc...
+					if (itemName.Length() > 0 && item.Name != 'None')
+					{
+						Actor drop = Spawn(item.Name); // See if it spawns in order to validate the name...  Since there's no FindClass function exposed?
+
+						if (drop is "Weapon") // If it is a weapon, drop the item
+						{
+							int amt = item.Amount;
+
+							A_DropItem(item.Name, amt); 
+						}
+
+						drop.Destroy(); // Destroy the placeholder spawned item
+					}
+				}
+			}
+
+			A_NoBlocking(False); // Set A_NoBlocking with no additional item drops.
+		}
+		else
+		{
+			A_NoBlocking(!user_sneakable); // Otherwise, unblock and do normal drops, excluding any drops from sneakables.
+		}
+	}
+
 	override void Tick()
 	{
 		// If the enemy is sneakable and idle (and not patrolling), and isn't in its original location, keep it moving toward that location.
@@ -882,7 +920,7 @@ class NaziStandard : Nazi
 			"####" E 5 Bright Light("ITBURNS1") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE, 160); }
 			"####" FABCD 5 Bright Light("ITBURNS2") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE, 160); }
 			"####" EFAG 5 Bright Light("ITBURNS3") A_Wander();
-			"####" H 5 Bright Light("ITBURNS3") A_NoBlocking(!user_sneakable);
+			"####" H 5 Bright Light("ITBURNS3") A_UnblockAndDrop();
 			"####" IJK 5 Bright Light("ITBURNS2") A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,16), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE, 160);
 			"####" LMN 5 Bright Light("ITBURNS1") A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,8), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE, 160);
 			"####" O -1;
@@ -900,14 +938,14 @@ class NaziStandard : Nazi
 				bIsMonster = False; // So that an exploded enemy can't be resurrected
 			}
 			"####" BCDE 5;
-			"####" F 5 A_NoBlocking(!user_sneakable);
+			"####" F 5 A_UnblockAndDrop();
 			"####" G -1;
 			Stop;
 		Disintegrate:
 			"####" H 5 {
 				A_Scream();
 				A_Playsound("astrostein/guard_death");
-				A_NoBlocking(!user_sneakable);
+				A_UnblockAndDrop();
 				A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
 			}
 		Disintegrate.FadeLoop:

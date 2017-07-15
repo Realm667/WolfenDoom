@@ -337,7 +337,7 @@ ACTOR ZombieBrain : Nazi
 	Death:
 		"####" I 5
 		"####" J 5 A_Scream
-		"####" K 5 A_NoBlocking(!user_sneakable)
+		"####" K 5 A_UnblockAndDrop
 		"####" L 5
 		"####" M -1
 		Stop
@@ -461,7 +461,7 @@ ACTOR ZombieOfficer : ZombieBrain
 	Death:
 		"####" I 5
 		"####" J 5 A_Scream
-		"####" K 5 A_NoBlocking(!user_sneakable)
+		"####" K 5 A_UnblockAndDrop
 		"####" L 5
 		"####" M 5
 		"####" O -1

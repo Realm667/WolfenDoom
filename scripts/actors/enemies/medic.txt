@@ -82,10 +82,20 @@ class NaziMedic : NaziStandard
 			"####" E 0 {
 				if (healloopcount > 0) {
 					healloopcount--;
+					if (Nazi(goal)) { Nazi(goal).healing = true; } // Set a bool so that other medics won't try to heal the same enemy
 					return ResolveState("Heal.Loop");
 				}
-				if (Nazi(goal) && Nazi(goal).user_sneakable) { Nazi(goal).BecomeAlerted(target); } // If it's a sneakable actor, make it alert
-				if (goal) { goal.A_ClearTarget(); goal.bFriendly = bFriendly; } // Just to be sure, make the ressurected actor allied to the Medic...
+
+				A_RaiseMaster(RF_NOCHECKPOSITION); // Why is there no direct P_Thing_Raise call?
+				goal.bCountKill = false;
+				level.total_monsters--;
+
+				if (Nazi(goal))
+				{
+					if (Nazi(goal).user_sneakable) { Nazi(goal).BecomeAlerted(target); } // If it's a sneakable actor, make it alert
+					Nazi(goal).healing = false; 
+				}
+				if (goal) { goal.A_ClearTarget(); goal.bFriendly = bFriendly; goal.BeginPlay(); } // Just to be sure, make the ressurected actor allied to the Medic...
 				goal = null;
 				master = null;
 				return ResolveState("See");
@@ -169,6 +179,7 @@ class NaziMedic : NaziStandard
 	{
 		if (
 			!mo.bIsMonster ||
+			mo.healing || 
 			mo.health > 0 ||
 			mo.bDormant ||
 			mo.bFriendly != bFriendly ||
@@ -207,10 +218,7 @@ class NaziMedic : NaziStandard
 			{
 				// If it's not frightened and close to a dead body that it isn't already healing, start healing it
 				if (goal && Distance3d(goal) < 24 && goal != master) {
-					master = goal; // Why is there no direct A_Resurrect(<actor>)?
-					A_RaiseMaster(RF_NOCHECKPOSITION);
-					goal.bCountKill = false;
-					level.total_monsters--;
+					master = goal;
 					SetStateLabel("Heal");
 				}
 			}
