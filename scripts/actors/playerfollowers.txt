@@ -405,6 +405,26 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				target = mo;
 			}
 
+			if (!target)
+			{
+				// Also look for sneakable actors, and ignore their friendliness attribute
+				Finder = ThinkerIterator.Create("Nazi", STAT_DEFAULT - 5);
+
+				while ( (mo = Actor(Finder.Next())) )
+				{
+					if (
+						mo.health <= 0 || 
+						mo.bDormant || 
+						mo.GetSpecies() == Species || 
+						Distance3d(mo) > 512
+					) { continue; }
+
+					if (target && Distance3d(mo) > Distance3d(target)) { continue; }
+
+					target = mo;
+				}
+			}
+
 			if (!target) {
 				LookForEnemies(true); // In no Nazis around, fall back to default algorithm to find an enemy to shoot at
 			}
@@ -738,6 +758,49 @@ class AgentArmedMP40 : AgentArmed
 		//$Color 4
 
 		PlayerFollower.Weapon PWEAP_MP40;
+	}
+}
+
+class AscherArmed : PlayerFollower
+{
+	Default
+	{
+		//$Category Monsters (Wolf3D)/NPCs
+		//$Title Sgt Ascher (Friendly Follower - Rifle)
+		//$Color 4
+
+		+FRIENDLY
+		+NOINFIGHTING
+		-NODAMAGE
+		+BUDDHA
+		Speed 8; 
+		PainChance 64;
+		Scale 0.67;
+		Obituary "$FRIENDLY";
+		Species "PlayerFollower";
+		PlayerFollower.Weapon PWEAP_Rifle;
+		PlayerFollower.ChaseAttackChance 4;
+		PlayerFollower.GrenadeChance 0;
+	}
+
+	States
+	{
+		Spawn:
+			PARS A 1;
+			Goto Initialize;
+		Pain:
+			"####" J 1 A_SpawnItemEx("Pain_Overlay", Scale.X+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR);
+			"####" J 3 {
+				A_Pain();
+				bFrightened = True;
+			}
+			Goto Chase;
+		Death:
+			"####" J 8 A_Scream;
+			"####" K 8 A_NoBlocking;
+			"####" LMN 8;
+			"####" O -1;
+			Stop;
 	}
 }
 
