@@ -59,13 +59,18 @@ ACTOR Camp_RandomDead : Camp_RandomPileDead
 
 ACTOR Camp_ImpaledHead : Camp_RandomPileDead
 {
-	//$Title Impaled Prisoner's Head
+	//$Title Impaled Prisoner's Head (random)
 	Radius 8
 	Height 44
 	States
 	{
 	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5)
 		CMPG I -1
+		CMPG O -1
+		CMPG P -1
+		CMPG Q -1
+		CMPG R -1
 		Stop
 	}
 }
@@ -159,7 +164,7 @@ ACTOR Camp_PrisonerGuts
 	States
 		{
 		Spawn:
-			GTS3 A -1
+			GORC S -1
 			Stop
 		}
 }
