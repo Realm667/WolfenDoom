@@ -89,6 +89,16 @@ class Alarm : Base
 			A_StopSound(CHAN_VOICE);
 		}
 	}
+
+	override void Activate (Actor activator)
+	{
+		SetStateLabel("Active");
+	}
+
+	override void Deactivate (Actor activator)
+	{
+		SetStateLabel("Inactive");
+	}
 }
 
 class AlarmPanel : SwitchableDecoration
@@ -136,6 +146,7 @@ class AlarmPanel : SwitchableDecoration
 
 	override void Activate (Actor activator)
 	{
+		target = activator;
 		A_SetPeerState();
 		Super.Activate(activator);
 	}
@@ -205,7 +216,7 @@ class AlarmPanel : SwitchableDecoration
 			mo.target = null;
 			mo.SoundAlert(NULL, false);
 			if (mo is "AlarmPanel") { mo.SetStateLabel("Inactive"); }
-			else { mo.Deactivate(self); }
+			else { mo.Deactivate(null); }
 		}
 		else
 		{
@@ -213,7 +224,7 @@ class AlarmPanel : SwitchableDecoration
 			if (!target) { target = FindClosestPlayer(360); }
 			mo.target = target;
 			if (mo is "AlarmPanel") { mo.SetStateLabel("Active"); }
-			else { mo.Activate(self); }
+			else { mo.Activate(target); }
 		}
 	}
 
@@ -273,8 +284,8 @@ class AlarmSpawner : ActorSpawner
 		{
 			vector3 location = pos;
 
-			if (guardcount == 1) { location += (-32, 32, 0); }
-			else if (guardcount == 2) { location += (-32, -32, 0); }
+			if (guardcount == 1) { location += (-40, 40, 0); }
+			else if (guardcount == 2) { location += (-40, -40, 0); }
 
 			//Spawn enemies if not visible to player
 			if (!InPlayerSightorRange(user_minspawndistance))

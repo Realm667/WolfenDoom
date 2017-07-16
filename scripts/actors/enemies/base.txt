@@ -864,10 +864,11 @@ class Nazi : Base
 				{
 					A_Face(activationgoal);
 
-					activationgoal.Activate(self);
-
 					target = LastEnemy;
 					LastEnemy = null;
+
+					activationgoal.Activate(target);
+
 					bJustAttacked = False;
 					bChaseGoal = False;
 					Speed = Default.Speed;
@@ -878,11 +879,14 @@ class Nazi : Base
 				}
 				else // Otherwise, keep trying to get there
 				{
-					goal = activationgoal; // Set the activation goal as the current navigation goal
-					bJustAttacked = True; // Keep the actor from attacking while chasing to the goal
-					bChaseGoal = True; // Chase to the goal only, not torward a target
-					Speed = Default.Speed + 1; // Walk a little faster
-					if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); } // Go to the See state if not already there
+					if (goal != activationgoal || (LastEnemy && CheckSight(LastEnemy)))
+					{
+						goal = activationgoal; // Set the activation goal as the current navigation goal
+						bJustAttacked = True; // Keep the actor from attacking while chasing to the goal
+						bChaseGoal = True; // Chase to the goal only, not torward a target
+						Speed = Default.Speed + 1; // Walk a little faster
+						if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); } // Go to the See state if not already there
+					}
 				}
 			}
 		}
