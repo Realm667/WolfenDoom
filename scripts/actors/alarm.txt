@@ -82,13 +82,11 @@ class Alarm : Base
 		if (active)
 		{
 			SoundAlert(target, false, 512);
-
-			looptime--;
-			if (looptime <= 0)
-			{
-				A_PlaySound("alarm_ring", CHAN_AUTO);
-				looptime = 70; // Duration of alarm loop sound in tics
-			}
+			A_PlaySound("alarm_ring", CHAN_VOICE, 1.0, true);
+		}
+		else
+		{
+			A_StopSound(CHAN_VOICE);
 		}
 	}
 }
@@ -124,7 +122,7 @@ class AlarmPanel : SwitchableDecoration
 			}
 			Loop;
 		Active:
-			"####" P 35 Light("LAZERRED") { activator = null; active = true; }
+			"####" P 1 Light("LAZERRED") { activator = null; active = true; }
 			Loop;
 	}
 
@@ -165,6 +163,7 @@ class AlarmPanel : SwitchableDecoration
 				mo.health <= 0  ||
 				mo.bDormant ||
 				mo.bAmbush ||
+				mo.Speed == 0 ||
 				dist > range ||
 				!CheckSight(mo) ||
 				(closest && dist > Distance3d(closest))
@@ -184,6 +183,7 @@ class AlarmPanel : SwitchableDecoration
 
 	void A_SetPeerState(bool makeactive = true)
 	{
+		A_PlaySound("switches/normbutn", CHAN_AUTO);
 		if (tid)
 		{ // If there's a TID, affect all actors with that TID
 			let it = ActorIterator.Create(tid, "Actor");
@@ -204,14 +204,16 @@ class AlarmPanel : SwitchableDecoration
 		{
 			mo.target = null;
 			mo.SoundAlert(NULL, false);
-			mo.SetStateLabel("Inactive");
+			if (mo is "AlarmPanel") { mo.SetStateLabel("Inactive"); }
+			else { mo.Deactivate(self); }
 		}
 		else
 		{
 			if (LastHeard && LastHeard is "PlayerPawn") { target = LastHeard; }
 			if (!target) { target = FindClosestPlayer(360); }
 			mo.target = target;
-			mo.SetStateLabel("Active");
+			if (mo is "AlarmPanel") { mo.SetStateLabel("Active"); }
+			else { mo.Activate(self); }
 		}
 	}
 
@@ -259,9 +261,8 @@ class AlarmSpawner : ActorSpawner
 	{
 		spawntype = GetSpawnableType(args[0]);
 		if (!spawntype) { spawntype = "SneakableSSMP40Guard"; }
-
-		user_maxactors = 3;
-		user_minspawndistance = 0;
+		if (!user_maxactors) { user_maxactors = 3; }
+		if (!user_minspawndistance) { user_minspawndistance = 0; }
 	}
 
 	override state A_DoSpawns()
@@ -272,8 +273,8 @@ class AlarmSpawner : ActorSpawner
 		{
 			vector3 location = pos;
 
-			if (guardcount == 1) { location += (-24, 24, 0); }
-			else if (guardcount == 2) { location += (-24, -24, 0); }
+			if (guardcount == 1) { location += (-32, 32, 0); }
+			else if (guardcount == 2) { location += (-32, -32, 0); }
 
 			//Spawn enemies if not visible to player
 			if (!InPlayerSightorRange(user_minspawndistance))
