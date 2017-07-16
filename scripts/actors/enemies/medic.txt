@@ -82,7 +82,6 @@ class NaziMedic : NaziStandard
 			"####" E 0 {
 				if (healloopcount > 0) {
 					healloopcount--;
-					if (Nazi(goal)) { Nazi(goal).healing = true; } // Set a bool so that other medics won't try to heal the same enemy
 					return ResolveState("Heal.Loop");
 				}
 
@@ -171,7 +170,11 @@ class NaziMedic : NaziStandard
 			goal = mo;
 		}
 
-		if (goal != null) { return ResolveState("See"); }
+		if (goal != null)
+		{
+			return ResolveState("See");
+			if (Nazi(goal)) { Nazi(goal).healing = true; } // Set a bool so that other medics won't try to heal the same enemy
+		}
 		return ResolveState(null);
 	}
 
@@ -224,6 +227,7 @@ class NaziMedic : NaziStandard
 			}
 			else
 			{ // If you are frightened, forget the dead body and run away
+				if (Nazi(goal)) { Nazi(goal).healing = false; }
 				goal = null;
 			}
 		}

@@ -167,7 +167,10 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			Loop;
 		Pain:
 			"####" I 1 A_SpawnItemEx("Pain_Overlay", Scale.X+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR);
-			"####" I 3 A_Pain();
+			"####" I 3 {
+				A_Pain();
+				bFrightened = True;
+			}
 			Goto Chase;
 		Luger: // Emulates the standard guard pistol - relatively standard
 			"####" FG 10 A_FaceTarget();
@@ -443,9 +446,9 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			} else if (Distance2d(playerToChase) < radius + 16 + playerToChase.radius) { // If too close to player, push away
 				return ResolveState("Chase.Back");
 			}
-		}
 
-		if (health < 75) { return ResolveState("Heal"); }
+			if (health < 75 && Random[Heal]() < 64) { return ResolveState("Heal"); }	
+		}
 
 		return ResolveState(null);
 	}
@@ -558,7 +561,10 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 			Loop;
 		Pain:
 			"####" H 1 A_SpawnItemEx("Pain_Overlay", Scale.X+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR);
-			"####" H 3 A_Pain();
+			"####" H 3 {
+				A_Pain();
+				bFrightened = True;
+			}
 			Goto Chase;
 		Luger:
 			"####" EF 10 A_FaceTarget();
@@ -703,6 +709,8 @@ class AgentArmed : PlayerFollower
 
 		+FRIENDLY
 		+NOINFIGHTING
+		-NODAMAGE
+		+BUDDHA
 		Speed 8; // A bit faster than the beat-up prisoner version
 		PainChance 64;
 		Scale 0.67;
