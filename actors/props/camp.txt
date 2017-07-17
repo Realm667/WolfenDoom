@@ -12,7 +12,7 @@ ACTOR Camp_HungSkeleton
 	States
 	{
 	Spawn:
-		CMPG L -1
+		CMPG H -1
 		Stop
 	}
 }
@@ -34,25 +34,8 @@ ACTOR Camp_RandomPileDead
 		CMPG A -1
 		CMPG B -1
 		CMPG C -1
-		CMPG M -1
-		CMPG N -1
-		Stop
-	}
-}
-
-ACTOR Camp_RandomDead : Camp_RandomPileDead
-{
-	//$Title Dead Prisoner (random)
-	Height 8
-	States
-	{
-	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5)
 		CMPG D -1
 		CMPG E -1
-		CMPG F -1
-		CMPG G -1
-		CMPG H -1
 		Stop
 	}
 }
@@ -67,10 +50,10 @@ ACTOR Camp_ImpaledHead : Camp_RandomPileDead
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5)
 		CMPG I -1
-		CMPG O -1
-		CMPG P -1
-		CMPG Q -1
-		CMPG R -1
+		CMPG J -1
+		CMPG K -1
+		CMPG L -1
+		CMPG M -1
 		Stop
 	}
 }
@@ -82,7 +65,7 @@ ACTOR Camp_LogsDead : Camp_RandomPileDead
 	States
 	{
 	Spawn:
-		CMPG K -1
+		CMPG G -1
 		Stop
 	}
 }
@@ -93,7 +76,7 @@ ACTOR Camp_SnowyLogsDead : Camp_LogsDead
 	States
 	{
 	Spawn:
-		CMPG J -1
+		CMPG F -1
 		Stop
 	}
 }
@@ -167,6 +150,28 @@ ACTOR Camp_PrisonerGuts
 			GORC S -1
 			Stop
 		}
+}
+
+ACTOR Camp_PrisonerSit : Camp_PrisonerGuts
+{
+	//$Title Tortured Camp Prisoner (random, sitting)
+	//$Sprite SIT4A0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		SIT4 A -1
+		SIT4 B -1
+		SIT4 C -1
+		SIT4 D -1
+		SIT4 E -1
+		SIT4 F -1
+		SIT4 G -1
+		SIT4 H -1
+		SIT4 I -1
+		SIT4 J -1
+		Stop
+	}
 }
 
 ACTOR Camp_PrisonerSamples
