@@ -172,6 +172,7 @@ ACTOR Camp_StaticBroom
 	Height 48
 	Health 10
 	Mass 600
+	Scale 0.65
 	+NOTAUTOAIMED
 	+SHOOTABLE
 	+SOLID
@@ -179,13 +180,13 @@ ACTOR Camp_StaticBroom
 	States
 	{
 	Spawn:
-		PRSA A -1 NoDelay A_SetScale(ScaleX + frandom(0.4,0.6),ScaleY + frandom(0.4,0.6))
+		PRSA A -1
 		Stop
 	Death:
 		"####" A 0 A_UnSetSolid
-		"####" BC 6
-		"####" D 8 A_Scream
-		"####" E -1
+		"####" BCD 6
+		"####" E 8 A_Scream
+		"####" F -1
 		Stop
 	}
 }
@@ -196,7 +197,7 @@ ACTOR Camp_StaticShovel : Camp_StaticBroom
 	States
 	{
 	Spawn:
-		PRSB A -1 NoDelay A_SetScale(ScaleX + frandom(0.4,0.6),ScaleY + frandom(0.4,0.6))
+		PRSB A -1
 		Stop
 	}
 }
@@ -209,19 +210,19 @@ ACTOR Camp_StaticShovelLow : Camp_StaticBroom
 	States
 	{
 	Spawn:
-		PRSD A -1 NoDelay A_SetScale(ScaleX + frandom(0.4,0.6),ScaleY + frandom(0.4,0.6))
+		PRSD A -1
 		Stop
 	}
 }
 
 ACTOR Camp_StaticKneeing : Camp_StaticBroom
 {
-	//$Title Shootable Prisoner (kneel)
+	//$Title Shootable Prisoner (hurt, kneel)
 	Height 32
 	States
 	{
 	Spawn:
-		PRSE A -1 NoDelay A_SetScale(ScaleX + frandom(0.4,0.6),ScaleY + frandom(0.4,0.6))
+		PRSE A -1
 		Stop
 	}
 }
@@ -232,7 +233,7 @@ ACTOR Camp_StaticStandingA : Camp_StaticBroom
 	States
 	{
 	Spawn:
-		PRSF A -1 NoDelay A_SetScale(ScaleX + frandom(0.4,0.6),ScaleY + frandom(0.4,0.6))
+		PRSF A -1
 		Stop
 	}
 }
@@ -243,7 +244,7 @@ ACTOR Camp_StaticStandingB : Camp_StaticBroom
 	States
 	{
 	Spawn:
-		PRSG A -1 NoDelay A_SetScale(ScaleX + frandom(0.4,0.6),ScaleY + frandom(0.4,0.6))
+		PRSG A -1
 		Stop
 	}
 }
@@ -254,7 +255,7 @@ ACTOR Camp_StaticWashBroom : Camp_StaticBroom
 	States
 	{
 	Spawn:
-		PRSH A -1 NoDelay A_SetScale(ScaleX + frandom(0.4,0.6),ScaleY + frandom(0.4,0.6))
+		PRSH A -1
 		Stop
 	}
 }
@@ -267,6 +268,7 @@ ACTOR Camp_StaticShovelDig
 	Height 48
 	Health 10
 	Mass 600
+	Scale 0.65
 	+NOTAUTOAIMED
 	+SHOOTABLE
 	+SOLID
@@ -274,28 +276,28 @@ ACTOR Camp_StaticShovelDig
 	States
 	{
 	Spawn:
-		PRSC A 0 NoDelay A_SetScale(ScaleX + frandom(0.4,0.6),ScaleY + frandom(0.4,0.6))
+		PRSC A 0 NoDelay
 	SpawnLoop:
 		PRSC A 0 A_CheckRange(512,"SpawnLoopSilent")
-		PRSC A 1 A_SetTics(random(12,22))
+		PRSC A 1 A_SetTics(random(24,32))
 		"####" B 0 A_PlaySound("floor/dirt", CHAN_ITEM, 1.0, FALSE)
-		"####" BC 1 A_SetTics(random(12,22))
+		"####" BCDE 1 A_SetTics(random(24,32))
 		Loop
 	SpawnLoopSilent:
 		PRSC A 0 A_StopSound(CHAN_ITEM)
-		"####" A 1 A_SetTics(random(12,22))
-		"####" BC 1 A_SetTics(random(12,22))
+		"####" A 1 A_SetTics(random(24,32))
+		"####" BCDE 1 A_SetTics(random(24,32))
 		Goto SpawnLoop
 	Death:
 		"####" A 0 A_UnSetSolid
-		"####" DE 6
-		"####" F 8 A_Scream
-		"####" G -1
+		"####" FGH 8
+		"####" I 6 A_Scream
+		"####" J -1
 		Stop
 	}
 }
 
-ACTOR Camp_PrisonerBald : Nazi
+ACTOR Camp_PrisonerBald : Nazi //it has shooting frames but actually he doesn't - ozy81
 {
 	//$Category Concentration Camp (Wolf3D)
 	//$Title Wandering Prisoner (bald)

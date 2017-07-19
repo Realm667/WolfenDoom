@@ -40,6 +40,31 @@ ACTOR Camp_RandomPileDead
 	}
 }
 
+ACTOR Camp_RandomPileBones : Camp_RandomPileDead
+{
+	//$Title Mound Of Prisoners Bones (random)
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2)
+		CMPG N -1
+		CMPG O -1
+		Stop
+	}
+}
+
+ACTOR Camp_MoundOfBodies : Camp_RandomPileDead
+{
+	//$Title Mound Of Prisoners Bodies
+	Height 24
+	States
+	{
+	Spawn:
+		CMPG P -1
+		Stop
+	}
+}
+
 ACTOR Camp_ImpaledHead : Camp_RandomPileDead
 {
 	//$Title Impaled Prisoner's Head (random)

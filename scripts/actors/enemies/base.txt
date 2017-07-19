@@ -910,6 +910,11 @@ class NaziStandard : Nazi
 
 	States
 	{
+		Salute: //special state for cinematic sequences - ozy81
+			"####" N 35;
+		SaluteLoop:
+			"####" Z 35;
+			Loop;
 		Death.Fire:
 			"####" # 0 A_SetScale(0.55);
 		Death.Fire.Random: // Jump to here if you have an actor that needs a different scale set (See WereWaffenSS)
