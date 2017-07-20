@@ -3,7 +3,7 @@
 ACTOR Camp_HungSkeleton
 {
 	//$Category Concentration Camp (Wolf3D)/Gore
-	//$Title Hanging Skeleton
+	//$Title Camp Prisoner Hanging Skeleton
 	//$Color 3
 	Radius 16
 	Height 60
@@ -14,6 +14,31 @@ ACTOR Camp_HungSkeleton
 	Spawn:
 		CMPG H -1
 		Stop
+	}
+}
+
+ACTOR Camp_PrisonerHang : Camp_HungSkeleton
+{
+	//$Title Camp Prisoner Hanging (random, bald, detailed)
+	//$Sprite HAN4A0
+	Radius 8
+	Height 56
+	Scale 0.7
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6)
+		HAN4 A -1
+		HAN4 B -1
+		HAN4 C -1
+		HAN4 D -1
+		Stop
+	Swinging:
+		HAN4 A 1 A_SetTics(Random(80,160))
+		"####" E 8
+		"####" G 8
+		"####" E 8
+		Loop
 	}
 }
 
