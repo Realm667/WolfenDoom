@@ -1,0 +1,14 @@
+//Underwater shader
+HardwareShader PostProcess scene {
+	Name "watershader"
+	Shader "shaders/Water.frag" 330
+	Uniform float waterFactor
+	Uniform float timer // placeholder?
+}
+
+HardwareShader PostProcess scene {
+	Name "waterzoomshader"
+	Shader "shaders/WaterZoom.frag" 330
+	Uniform float zoomFactor
+}
+
