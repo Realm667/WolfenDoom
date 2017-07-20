@@ -260,6 +260,24 @@ ACTOR Camp_StaticWashBroom : Camp_StaticBroom
 	}
 }
 
+ACTOR Camp_StaticSit : Camp_StaticBroom
+{
+	//$Title Shootable Prisoner (sit on a bench)
+	Height 32
+	+FORCEXYBILLBOARD
+	States
+	{
+	Spawn:
+		PRSI A -1
+		Stop
+	Death:
+		"####" A 0 A_UnSetSolid
+		"####" B 8 A_Scream
+		"####" B -1
+		Stop
+	}
+}
+
 ACTOR Camp_StaticShovelDig
 {
 	//$Category Concentration Camp (Wolf3D)/Static
@@ -281,12 +299,12 @@ ACTOR Camp_StaticShovelDig
 		PRSC A 0 A_CheckRange(512,"SpawnLoopSilent")
 		PRSC A 1 A_SetTics(random(24,32))
 		"####" B 0 A_PlaySound("floor/dirt", CHAN_ITEM, 1.0, FALSE)
-		"####" BCDE 1 A_SetTics(random(24,32))
+		"####" BCDE 1 A_SetTics(random(12,16))
 		Loop
 	SpawnLoopSilent:
 		PRSC A 0 A_StopSound(CHAN_ITEM)
 		"####" A 1 A_SetTics(random(24,32))
-		"####" BCDE 1 A_SetTics(random(24,32))
+		"####" BCDE 1 A_SetTics(random(12,16))
 		Goto SpawnLoop
 	Death:
 		"####" A 0 A_UnSetSolid
