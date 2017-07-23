@@ -151,3 +151,34 @@ ACTOR TMFanfare3 : TMFanfare2
 		Stop
 	}
 }
+
+ACTOR TMHitler : TMFanfare1
+{
+	//$Category Misc (Wolf3D)/Titlemap
+	//$Title Adolf Hitler (Speech)
+	States
+	{
+	Inactive:
+		ADFS EDCBA 20
+		ADFS A 150
+	Spawn:
+		ADFS E -1
+		Stop
+	Active:
+		"####" D 1 A_SetTics(random(40,60))
+		"####" CBDDDBCBDBCCBDD 1 A_SetTics(random(16,24))
+		Loop
+	}
+}
+
+ACTOR TMSSTank3 : TMFanfare1
+{
+	//$Title Fanfare Tank
+	Scale 1.0
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
+}
