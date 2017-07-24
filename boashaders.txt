@@ -391,3 +391,9 @@ HardwareShader PostProcess scene {
 	Shader "shaders/WaterZoom.frag" 330
 	Uniform float zoomFactor
 }
+
+HardwareShader PostProcess scene {
+	Name "shakeshader"
+	Shader "shaders/Shake.fp" 330
+	Uniform float timer
+}
