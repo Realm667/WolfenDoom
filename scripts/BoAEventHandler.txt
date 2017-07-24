@@ -1,8 +1,11 @@
-// Ed the Bat's updated weapon stripping
 class BoAEventHandler : StaticEventHandler
 {
 	override void PlayerEntered(PlayerEvent e)
 	{
+		// Give the player the camera tilt handling item (modified version of Nash's Tilt++ v1.3)
+		players[e.PlayerNumber].mo.A_GiveInventory("BoATilt", 1);
+
+		// Ed the Bat's updated weapon stripping
 		if(level.levelnum!=99)
 			return;
 		let me=PlayerPawn(players[e.PlayerNumber].mo);

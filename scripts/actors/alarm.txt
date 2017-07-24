@@ -290,7 +290,7 @@ class AlarmSpawner : ActorSpawner
 			//Spawn enemies if not visible to player
 			if (!InPlayerSightorRange(user_minspawndistance))
 			{
-				Actor guard = Spawn(spawntype, pos);
+				Actor guard = Spawn(spawntype, location);
 				guard.target = target;
 				guard.angle = angle;
 				guard.ChangeTID(user_tid);

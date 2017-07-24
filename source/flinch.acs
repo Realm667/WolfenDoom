@@ -145,7 +145,7 @@ script "RecoverView" ENTER
 		while (true)
 		{
 			// Only recover player's view if they're alive.
-			if (IsAlive(0) && GetServerFlinchAmount() > 0.0)
+			if (IsAlive(0) && GetServerFlinchAmount() > 0.0 && cumulative_flinch_roll[i] != 0)
 			{
 				cumulative_flinch_angle[i] = RecoverAxis(cumulative_flinch_angle[i], AXIS_YAW);
 				cumulative_flinch_pitch[i] = RecoverAxis(cumulative_flinch_pitch[i], AXIS_PITCH);

@@ -1,0 +1,196 @@
+// 
+//  Modified version of Nash's Tilt++ v 1.3
+//    https://forum.zdoom.org/viewtopic.php?f=43&t=55413
+//
+class BoATilt : CustomInventory
+{
+	Default
+	{
+		Inventory.MaxAmount 1;
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.UNTOSSABLE
+		+INVENTORY.AUTOACTIVATE
+	}
+
+	double strafeInput, strafeBuffer;
+	double moveTiltOsc, underwaterTiltOsc;
+	double deathTiltOsc;
+	double deathTiltAngle;
+	double lastRoll;
+
+	//===========================================================================
+	//
+	// Calculate and apply the combined tilt roll amount
+	//
+	//===========================================================================
+	void Tilt_CalcViewRoll (void)
+	{
+		// CVARS ///////////////////////////////////////////////////////////////
+		bool strafeTiltEnabled = sv_boastrafetilt;
+		bool moveTiltEnabled = true;
+		bool underwaterTiltEnabled = false;
+		bool deathTiltEnabled = true;
+		double strafeTiltSpeed = 1.0;
+		double strafeTiltAngle = 0.5;
+		double strafeTiltReversed = false;
+		double moveTiltScalar = 0.5;
+		double moveTiltAngle = 0.015;
+		double moveTiltSpeed = 15.0;
+		double underwaterTiltSpeed = 0.8;
+		double underwaterTiltAngle = 0.2;
+		double underwaterTiltScalar = 1.0;
+
+		// Shared variables we'll need later
+		double r, v;
+
+		//===========================================================================
+		//
+		// Strafe Tilting
+		//
+		//===========================================================================
+
+		// normalized strafe input
+		if (strafeTiltEnabled && ((Owner.Pos.Z == Owner.FloorZ) || (Owner.bOnMObj)) && Owner.Health > 0)
+		{
+			strafeInput = strafeTiltSpeed * (Owner.GetPlayerInput(INPUT_SIDEMOVE) / 10240.0);
+			strafeInput *= strafeTiltAngle;
+		}
+
+		// tilt!
+		lastRoll += strafeInput;
+
+		//===========================================================================
+		//
+		// Movement Tilting
+		//
+		//===========================================================================
+
+		if (moveTiltEnabled && ((Owner.Pos.Z == Owner.FloorZ) || (Owner.bOnMObj)) && Owner.Health > 0)
+		{
+			// get player's velocity
+			v = Owner.Vel.Length() * moveTiltScalar;
+
+			// increment angle
+			moveTiltOsc += moveTiltSpeed;
+
+			// clamp angle
+			if (moveTiltOsc >= 360. || moveTiltOsc < 0.)
+			{
+				moveTiltOsc = 0.;
+			}
+
+			// calculate roll
+			r = Sin(moveTiltOsc);
+			r *= moveTiltAngle;
+			r *= v;
+		}
+
+		// tilt!
+		lastRoll += r;
+
+		//===========================================================================
+		//
+		// Underwater Tilting
+		//
+		//===========================================================================
+
+		if (Owner.WaterLevel >= 3 && underwaterTiltEnabled)
+		{
+			// fixed rate of 15
+			v = 15. * underwaterTiltScalar;
+
+			// increment angle
+			underwaterTiltOsc += underwaterTiltSpeed;
+
+			// clamp angle
+			if (underwaterTiltOsc >= 360. || underwaterTiltOsc < 0.)
+			{
+				underwaterTiltOsc = 0.;
+			}
+
+			// calculate roll
+			r = Sin(underwaterTiltOsc);
+			r *= underwaterTiltAngle;
+			r *= v;
+		}
+
+		// tilt!
+		lastRoll += r;
+
+		//===========================================================================
+		//
+		// Death Tilting
+		//
+		//===========================================================================
+
+		if (!(Owner.Health > 0) && deathTiltEnabled)
+		{
+			double deathTiltSpeed = 1.0;
+
+			if (deathTiltAngle == 0)
+			{
+				// vary the angle a little
+				deathTiltAngle = -90.f;
+				deathTiltAngle += FRandom(-45.f, 45.f);
+				deathTiltAngle *= RandomPick(-1, 1);
+			}
+
+			if (deathTiltOsc < 22.5)
+			{
+				deathTiltOsc += deathTiltSpeed;
+			}
+
+			r = Sin(deathTiltOsc);
+			r *= deathTiltAngle;
+		}
+		else
+		{
+			deathTiltOsc = 0;
+			deathTiltAngle = 0;
+		}
+
+		// tilt!
+		lastRoll += r;
+
+		//===========================================================================
+		//
+		// Tilt Post Processing
+		//
+		//===========================================================================
+
+		// Stabilize tilt
+		lastRoll *= 0.75;
+
+		// Apply the sum of all rolling routines
+		// (including after stabilization)
+		Owner.A_SetRoll(lastRoll, SPF_INTERPOLATE);
+	}
+
+	override void Tick(void)
+	{
+		if (Owner && Owner is "PlayerPawn")
+		{
+			Tilt_CalcViewRoll();
+		}
+
+		Super.Tick();
+	}
+
+	//===========================================================================
+	//
+	//
+	//
+	//===========================================================================
+	States
+	{
+	Use:
+		TNT1 A 0;
+		Fail;
+	Pickup:
+		TNT1 A 0
+		{
+			return true;
+		}
+		Stop;
+	}
+}
