@@ -336,6 +336,8 @@ class Base : Actor
 			A_SetHealth(max(newhealth, 1));
 		}
 
+		if (bDormant) { loiterdistance = 0; } // Don't loiter if dormant.
+
 		// If it's a loiterer with no set goal, spawn a patrolpoint goal for it and make that the goal, then run around that point
 		if (loiterdistance > 0 && !goal && !patrolgoal) 
 		{
