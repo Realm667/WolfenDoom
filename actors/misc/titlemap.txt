@@ -1,6 +1,6 @@
 ACTOR TMBlazko
 {
-	//$Category Misc (Wolf3D)/Titlemap
+	//$Category Misc (Wolf3D)/Cutscenes
 	//$Title Titlemap Blazko
 	+CLIENTSIDEONLY
 	+NOGRAVITY
@@ -38,7 +38,7 @@ ACTOR TMBlazko3 : TMBlazko
 
 ACTOR TMGuard
 {
-	//$Category Misc (Wolf3D)/Titlemap
+	//$Category Misc (Wolf3D)/Cutscenes
 	//$Title Titlemap Soldier
 	Scale 0.65
 	+CLIENTSIDEONLY
@@ -58,7 +58,7 @@ ACTOR TMGuardWithShadow : TMGuard
 
 ACTOR TMDog
 {
-	//$Category Misc (Wolf3D)/Titlemap
+	//$Category Misc (Wolf3D)/Cutscenes
 	//$Title Titlemap Doge
 	Scale 0.65
 	+CLIENTSIDEONLY
@@ -73,7 +73,7 @@ ACTOR TMDog
 
 ACTOR TMLightBeam : SwitchableDecoration
 {
-	//$Category Misc (Wolf3D)/Titlemap
+	//$Category Misc (Wolf3D)/Cutscenes
 	//$Title Titlemap Light Beam
 	Height 56
 	Alpha 0.4
@@ -96,7 +96,7 @@ ACTOR TMLightBeam : SwitchableDecoration
 
 ACTOR TMFanfare1 : SwitchableDecoration
 {
-	//$Category Misc (Wolf3D)/Titlemap
+	//$Category Misc (Wolf3D)/Cutscenes
 	//$Title Fanfare Banner Carrier (Activate to make him walk)
 	Height 56
 	Radius 8
@@ -154,7 +154,7 @@ ACTOR TMFanfare3 : TMFanfare2
 
 ACTOR TMHitler : TMFanfare1
 {
-	//$Category Misc (Wolf3D)/Titlemap
+	//$Category Misc (Wolf3D)/Cutscenes
 	//$Title Adolf Hitler (Speech)
 	States
 	{
@@ -171,8 +171,21 @@ ACTOR TMHitler : TMFanfare1
 	}
 }
 
+ACTOR TMGauleiter : TMGuard
+{
+	//$Category Misc (Wolf3D)/Cutscenes
+	//$Title Gauleiter
+	States
+	{
+	Spawn:
+		GAUL A -1
+		Stop
+	}
+}
+
 ACTOR TMSSTank3 : TMFanfare1
 {
+	//$Category Misc (Wolf3D)/Cutscenes
 	//$Title Fanfare Tank
 	Scale 1.0
 	States
