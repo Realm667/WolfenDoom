@@ -391,3 +391,254 @@ HardwareShader PostProcess scene {
 	Shader "shaders/WaterZoom.frag" 330
 	Uniform float zoomFactor
 }
+
+HardwareShader PostProcess scene {
+	Name "shakeshader"
+	Shader "shaders/Shake.fp" 330
+	Uniform float timer
+}
+
+HardwareShader PostProcess scene {
+	Name "oldvideoshader"
+	Shader "shaders/OldVideo.fp" 330
+	Uniform float timer
+}
+
+/*
+HardwareShader Texture "textures/briefing/c1m0_1.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m0_2.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m0_3.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m0_4.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m1_1.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m1_2.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m1_3.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m1_4.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m2_1.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m2_2.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m2_3.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m2_4.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m3_1.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m3_2.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m3_3.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m3_4.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m4_1.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m4_2.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m4_3.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m4_4.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m5_1.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m5_2.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m5_3.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m5_4.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m6_1.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m6_2.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m6_3.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c1m6_4.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m0_1.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m0_2.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m0_3.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m0_4.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m2_1.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m2_2.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m2_3.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m2_4.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m3_1.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m3_2.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m3_3.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m3_4.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m4_1.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m4_2.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m4_3.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m4_4.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m5_1.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m5_2.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m5_3.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m5_4.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m6_1.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m6_2.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m6_3.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c2m6_4.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c3m3_1.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c3m3_2.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c3m3_3.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/c3m3_4.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/movi_c01.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/movi_c02.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+HardwareShader Texture "textures/briefing/movi_c03.png" {
+	Shader "shaders/OldVideo.fp"
+	Speed 1.0
+}
+*/
