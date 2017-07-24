@@ -1,7 +1,19 @@
 // 
-//  Modified version of Nash's Tilt++ v 1.3
+//  Modified version of Nash's Tilt++ v1.5
 //    https://forum.zdoom.org/viewtopic.php?f=43&t=55413
 //
+//===========================================================================
+//
+// Tilt++.pk3
+//
+// Unified player camera tilting for strafing, moving, swimming and death
+//
+// Written by Nash Muhandes
+//
+// Feel free to use this in your mods. You don't have to ask my permission!
+//
+//===========================================================================
+
 class BoATilt : CustomInventory
 {
 	Default
@@ -52,8 +64,12 @@ class BoATilt : CustomInventory
 		// normalized strafe input
 		if (strafeTiltEnabled && ((Owner.Pos.Z == Owner.FloorZ) || (Owner.bOnMObj)) && Owner.Health > 0)
 		{
+			int dir;
+			if (strafeTiltReversed) dir = -1;
+			else dir = 1;
 			strafeInput = strafeTiltSpeed * (Owner.GetPlayerInput(INPUT_SIDEMOVE) / 10240.0);
 			strafeInput *= strafeTiltAngle;
+			strafeInput *= dir;
 		}
 
 		// tilt!
@@ -158,12 +174,15 @@ class BoATilt : CustomInventory
 		//
 		//===========================================================================
 
-		// Stabilize tilt
-		lastRoll *= 0.75;
+		if (abs(lastRoll) > 0.000001)
+		{
+			// Stabilize tilt
+			lastRoll *= 0.75;
 
-		// Apply the sum of all rolling routines
-		// (including after stabilization)
-		Owner.A_SetRoll(lastRoll, SPF_INTERPOLATE);
+			// Apply the sum of all rolling routines
+			// (including after stabilization)
+			Owner.A_SetRoll(lastRoll, SPF_INTERPOLATE);
+		}
 	}
 
 	override void Tick(void)
