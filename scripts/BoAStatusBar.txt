@@ -67,9 +67,9 @@ class BoAStatusBar : BaseStatusBar
 
 		if (BoAPlayer(CPlayer.mo))
 		{
-			mVisibilityInterpolator.Update(BoAPlayer(CPlayer.mo).user_visibility);
+			mVisibilityInterpolator.Update(BoAPlayer(CPlayer.mo).visibility);
 
-			alertedcount = CallACS("GetAlertedCount");
+			alertedcount = BoAPlayer(CPlayer.mo).alertedcount; 
 
 			if (alertedcount)
 			{

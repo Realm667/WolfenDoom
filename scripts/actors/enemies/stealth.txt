@@ -92,7 +92,7 @@ class StealthBase : Actor
 			if (sighttime >= threshold) // If 'threshold' amount of time has elapsed since player first seen
 			{
 				sighttime = 0; // Reset the count
-				ACS_NamedExecuteAlways("AddExtraVisibility", 0, 200, 1); // Make the player super-visible
+				if (players[playernum].mo is "BoAPlayer") { BoAPlayer(players[playernum].mo).extravisibility = 200; }
 				players[playernum].cheats ^= CF_NOTARGET;  // Turn off the player's NOTARGET
 				if (BoAPlayer(players[playernum].mo)) { BoAPlayer(players[playernum].mo).suspicion = 0; } // Clear the player's suspicion variable
 				if (alert) { alert.Destroy(); } // Get rid of the alert indicator that was spawned here
@@ -131,6 +131,20 @@ class StealthBase : Actor
 		}
 
 		return ResolveState(null);
+	}
+
+	bool TargetIsHidden()
+	{
+		if (BoAPlayer(target))
+		{
+			if (BoAPlayer(target).alertedcount > 0) { return false; }
+
+			BoAPlayer(target).extravisibility += skill + 2;
+			if (BoAPlayer(target).visibility >= 100) { return false; }
+		}
+		else { return false; }
+		
+		return true;
 	}
 }
 
@@ -224,10 +238,16 @@ class SneakableGuardEyesIdle : StealthBase
 					if (Nazi(master)) { checkdist = Nazi(master).sneakableclosesightradius; }
 					else { checkdist = 64; }
 
-					if (dist < checkdist) { ACS_NamedExecuteAlways("AddExtraVisibility", 0, (checkdist - dist) * 2, 1); } // If you're really close, you'll be really visible
+					if (dist < checkdist)
+					{
+						if (target is "BoAPlayer") { BoAPlayer(target).extravisibility = (checkdist - dist) * 2; } // If you're really close, you'll be really visible
+					}
 				}
 			}
-			TNT1 A 0 A_JumpIf(CallACS("TargetIsHidden"), "IgnorePlayer");
+			TNT1 A 0 {
+				if (TargetIsHidden()) { return ResolveState("IgnorePlayer"); }
+				return ResolveState("AlertMaster");
+			}
 			Goto AlertMaster;
 		IgnorePlayer:
 			TNT1 A 1 A_ClearTarget;

@@ -129,8 +129,10 @@ class AlertLight : Actor
 
 		amount *= brightness; // Adjust based on brightness level
 
-		oldVisibility = ACS_NamedExecuteWithResult("GetVisibility"); // Get the current visibility
-
-		ACS_NamedExecuteAlways("AddExtraVisibility", 0, Max(int(amount - oldVisibility), 0));  // Set the new visibility - use delta in value instad of overriding so that multiple lights can be additive in visibility
+		if (target && target is "BoAPlayer")
+		{
+			oldVisibility = BoAPlayer(target).extravisibility;
+			BoAPlayer(target).extravisibility = oldvisibility + Max(int(amount - oldVisibility), 0); // Set the new visibility - use delta in value instad of overriding so that multiple lights can be additive in visibility
+		}
 	}
 }

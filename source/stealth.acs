@@ -1,32 +1,20 @@
 #library "stealth"
 #include "zcommon.acs"
-//mxd. Handles footstep sounds and ACS part of the stealth system, including HUD visibility indicator.
+//mxd. Handles footstep sounds
 
 //Constants
 #define PLAYER_STEP_DISTANCE 76 << 16 	// cause defines can't be fixed point numbers
-#define PLAYER_BUMP_DISTANCE 40 				// If a player is closer than this distance, monster will become alerted even if a player is hidden
-#define MAX_PLAYER_COUNT 4 							// Maximum number of coop players
 #define MAX_NOISE_LEVEL 10 << 16        // This value is added to current visibility level when player step sound is played
-#define NOISE_FADE_SPEED 6              // curNoiseLevel is decreased by this value every tick
 #define PLAYER_TAG_OFFSET 1000
-#define MAX_EXTRA_VISIBILITY 200
-#define EXTRA_VISIBILITY_FADE_SPEED 5   // extraVisibility is decreased by this value every tick
 
 //Options
-int ShowStealthHUD; 								 // Set to true to show Stealth HUD
-int VisibilityMultiplier = 0.35; 		 // Calculated visibility is multiplied by this allowing to fine-tune it based, for example, on an area player is in.
-int NoiseLevelMultiplier = 0.9; 		 // Calculated noise level is multiplied by this. This affects the value added to visibility and the alert enemises radius when player makes step sounds
 int PlayerDetectionVisibility = 100; // Player must be this visible to be detected by enemies
 
 //Variables. Don't touch
 int curStepDistance;
-int curNoiseLevel;
 int lastPlayerX;
 int lastPlayerY;
-int playerID;
-int alertedGuardsCount;
-int displayedVisibility;
-int extraVisibility; // Added manually to emulate dynamic lights influence
+int playerID; // Used throughout other scripts in the boalib file!
 
 ///////////////////////
 //SCRIPTS
@@ -39,7 +27,6 @@ Script "PlayFootstepsSoundLoop" ENTER
 
 	lastPlayerX = GetActorX(playerID);
 	lastPlayerY = GetActorY(playerID);
-	displayedVisibility = 50;
 
 	while(true)
 	{
@@ -62,7 +49,7 @@ Script "PlayFootstepsSoundLoop" ENTER
 					else
 					{
 						SpawnForced("PlayerStep", cx, cy, cfz + 14);
-						curNoiseLevel = FixedMul(MAX_NOISE_LEVEL, NoiseLevelMultiplier) >> 16;
+						SetUserVariable(0, "noiselevel", MAX_NOISE_LEVEL >> 16);
 					}
 
 					curStepDistance = 0;
@@ -81,272 +68,8 @@ Script "PlayFootstepsSoundLoop" ENTER
 			}
 		}
 
-		int currentVisibility = Clamp(GetVisibility(playerID, curNoiseLevel, extraVisibility), 0, PlayerDetectionVisibility);
-		SetUserVariable(0, "user_visibility", currentVisibility);
-		
-		// Draw Stealth HUD?
-		if(GetCVar("g_debugstealth") > 0 || (ShowStealthHUD && GetActorProperty(playerID, APROP_HEALTH) > 0))
-		{
-			// Convert visibility to [0.0 - 1.0] fixed point range
-			int lampalpha = 1.0;
-			if(alertedGuardsCount == 0)
-			{
-				lampalpha = FixedDiv(currentVisibility << 16, PlayerDetectionVisibility << 16);
-			}
-
-			If (GetCVar("g_debugstealth") > 0) GetVisibility(playerID, curNoiseLevel, extraVisibility); //Still call the GetVisibility function if debugging
-
-			// Draw BG
-			SetHudSize(320, 240, false);
-			SetFont("STLTH_BG");
-			HudMessage(s:"A"; HUDMSG_PLAIN | HUDMSG_NOWRAP | HUDMSG_NOTWITHFULLMAP, 20, 0, 160.0, 237.2, 0.1);
-
-			// Draw lamp (yellow when hidden, red when can be seen)
-			if(lampalpha < 1.0) SetFont("STLTH_LY");
-			else SetFont("STLTH_LR");
-			HudMessage(s:"A"; HUDMSG_PLAIN | HUDMSG_NOWRAP | HUDMSG_ALPHA | HUDMSG_NOTWITHFULLMAP, 19, 0, 160.0, 237.2, 0.1, lampalpha);
-		}
-		
-		curNoiseLevel = Max(curNoiseLevel - NOISE_FADE_SPEED, 0);
-		extraVisibility = Max(extraVisibility - EXTRA_VISIBILITY_FADE_SPEED, 0);
-
 		Delay(1);
 	}
-}
-
-//mxd. Stealth-related. Called from PlayerStep actor
-script "ApplyNoiseLevelMultiplier" (int baseradius)
-{
-	int result = FixedMul(NoiseLevelMultiplier, baseradius << 16) >> 16;
-	SetResultValue(result);
-}
-
-//mxd. Stealth-related. Called by dynamic light actors to affect player visibility
-//AFA - Second parameter of 1 tells it to set the value directly instead of adding to what's there
-script "AddExtraVisibility" (int value, int override)
-{
-	If (!override)
-		extraVisibility = Clamp(extraVisibility + value, 0, 255);
-	Else
-		extraVisibility = Clamp(value, 0, MAX_EXTRA_VISIBILITY);
-
-	SetResultValue(extraVisibility);
-}
-
-script "GetVisibility" (void)
-{
-	SetResultValue(Clamp(GetVisibility(playerID, curNoiseLevel, extraVisibility), 0, PlayerDetectionVisibility));
-}
-
-//mxd. Stealth-related. For this to work, each player must have unique TID.
-script "TargetIsHidden" (void)
-{
-		// Not hidden while at least 1 guard is alerted
-		if(alertedGuardsCount > 0)
-		{
-			SetResultValue(false);
-			terminate;
-		}
-		
-		// Get target's TID
-		int targettid = GetActorProperty(0, APROP_TargetTID);
-
-		//AFA - Add extra visibility if player is in line of sight.  Amount based on difficulty level - So guards effectively have better night vision as you play on higher skills.
-		ACS_NamedExecuteAlways("AddExtraVisibility", 0, GameSkill() + 2);
-
-		// 0 TID means that target is not a player, but something (probably PlayerStep), which called A_AlertMonsters.
-		if(targettid == 0 || !CheckActorClass(targettid, "BoAPlayer"))
-		{
-			SetResultValue(true);
-			terminate;
-		}
-		
-		// Measure distance
-		int dx = GetActorX(0) - GetActorX(playerID);
-		int dy = GetActorY(0) - GetActorY(playerID);
-		int dz = GetActorZ(0) - GetActorZ(playerID);
-		int dist = VectorLength3D(dx, dy, dz) >> 16;
-
-		// Alert when player is too close
-		if(dist < PLAYER_BUMP_DISTANCE)
-		{
-			SetResultValue(false);
-			terminate;
-		}
-
-		// Get its light level
-		int visibility = GetVisibility(targettid, curNoiseLevel, extraVisibility);
-
-		// Return the value
-		SetResultValue(visibility < PlayerDetectionVisibility);
-}
-
-script "GetChaseGoal" (int storedgoal)
-{
-	// Get it
-	int goaltid = GetActorProperty(0, APROP_TargetTID);
-	if(!CheckActorClass(goaltid, "PatrolPoint")) goaltid = storedgoal;
-	
-	// Return it
-	SetResultValue(goaltid);
-}
-
-script "TryResumePatrolling" (void)
-{
-	// Get stored PatrolPoint TID
-	int goaltid = GetUserVariable(0, "user_chasegoal");
-
-	// Try restarting the patrol logic
-	if(goaltid != 0 && CheckActorClass(goaltid, "PatrolPoint"))
-	{
-		ACS_NamedExecute("ResumePatrolling", 0, goaltid, ActivatorTID());
-	}
-}
-
-script "ResumePatrolling" (int goaltid, int enemytid)
-{
- // Wait until not seen by any player
-	while(ActorIsSeen(enemytid) || ActorIsSeen(goaltid))
-	{
-		Delay(15);
-	}
-	
-	// Target still alive?
-	if(GetActorProperty(enemytid, APROP_Health) <= 0) terminate;
-
-	// Teleport to stored PatrolPoint
-	if(SetActorPosition(enemytid, GetActorX(goaltid), GetActorY(goaltid), GetActorZ(goaltid), false))
-	{
-		// Restart patrolling
-		Thing_SetGoal(enemytid, goaltid, 2, false);
-	}
-	else
-	{
-		// Let's try again...
-		restart;
-	}
-}
-
-script "IncreaseAlertedCount" (void)
-{
-	alertedGuardsCount++;
-}
-
-script "DecreaseAlertedCount"	(void)
-{
-	if(alertedGuardsCount > 0) alertedGuardsCount--;
-}
-
-script "SetAlertedCount" (int count)
-{
-	alertedGuardsCount = count;
-}
-
-script "GetAlertedCount" (void)
-{
-	SetResultValue(alertedGuardsCount);
-}
-
-///////////////////////
-//FUNCTIONS
-///////////////////////
-function int GetVisibility(int tid, int noiselevel, int addedvisibility)
-{
-	// Get its light level
-	int targetlightlevel = GetActorLightLevel(tid);
-
-	if (targetlightlevel <= 64) { return 0; } // If there's no light, don't bother with the rest...
-
-	targetlightlevel = FixedMul(targetlightlevel << 16, VisibilityMultiplier) >> 16;
-
-	// And speed
-	int x = GetActorVelX(tid);
-	int y = GetActorVelY(tid);
-	int z = GetActorVelZ(tid);
-
-	If (z < 0) z = 0;
-
-	// That's squared speed actually
-	// Full speed is around 56 when running forward, around 92 when going sideways, around 200 when sprinting.
-	int speed = (FixedMul(x, x) + FixedMul(y, y) + FixedMul(z, z)) >> 16;
-
-	// And view height (56 when standing, 28 when crouching)
-	int viewheightmod = (GetActorViewHeight(tid) >> 16) - 28; 
-	If (speed == 0)
-		viewheightmod = (GetActorViewHeight(tid) >> 16) - 28; //View height directly affects visibility only when stationary; while moving, the crouched speed difference drives the visibility level down
-	Else
-	{
-		If (speed < viewheightmod) speed = viewheightmod; //Minimum threshold, so moving slowly doesn't hide you better than being stationary
-		viewheightmod = 0;
-	}
-
-	//And game skill
-	int skillmod = (SKILL_HARD - GameSkill()) * 10; //Adjust the visibility level based on game skill - Skill 2 is neutral, and what the gameplay is most balanced for
-
-	// Calculate resulting visibility level (will probably require lots of tweaking...)
-	If (GetCVar("g_debugstealth") > 0) //Use 'set g_debugstealth 1' in the console to show the component numbers used for the calculations in game...
-	{
-		SetHUDSize(1024, 768, 1);
-		SetFont("SmallFont");
-		HudMessage(	s:"Light Level: \cj",d:targetlightlevel + addedvisibility, 
-				s:"\nMovement Speed: \cj", d:speed, 
-				s:"\nHeight (only modified when not moving): \cj", d:viewheightmod, 
-				s:"\nSound (footsteps): \cj", d:noiselevel, 
-				s:"\nSkill Level Offset: \cj", d:-skillmod, 
-				s:"\n\nTotal Visibility: \cj", d:Clamp((targetlightlevel + speed + noiselevel + addedvisibility + viewheightmod - skillmod) * 100 / PlayerDetectionVisibility, 0, 100), s:"%";
-			HUDMSG_LOG, 9999, CR_GOLD, 10.1, 110.1, 1);
-
-		//How many guards are awake and looking for you
-		SetHudSize(320, 240, false);
-		SetFont("THREEFIV");
-		HudMessage(d:alertedGuardsCount; HUDMSG_PLAIN | HUDMSG_NOWRAP | HUDMSG_NOTWITHFULLMAP, 21, CR_LIGHTBLUE, 155.0, 232.2, 0.1);
-	}
-
-	return Clamp(targetlightlevel + speed + noiselevel + addedvisibility + viewheightmod - skillmod, 0, PlayerDetectionVisibility);
-}
-
-// Taken straight from the wiki (http://zdoom.org/wiki/VectorLength)
-function int VectorLength3D(int x, int y, int z)
-{
-	int len = VectorLength(x, y);
-	len = VectorLength(z, len);
-	return len;
-}
-
-// Checks if target is seen by any player
-function bool ActorIsSeen(int tid)
-{
-	for(int i = PLAYER_TAG_OFFSET; i < PLAYER_TAG_OFFSET + MAX_PLAYER_COUNT; i++)
-	{
-		if(CheckSight(tid, i, CSF_NOBLOCKALL)) return true;
-	}
-	
-	// Not seen by anybody
-	return false;
-}
-
-// Taken straight from the wiki (http://zdoom.org/wiki/Min_and_max)
-function int Max(int a, int b)
-{
-	if(a > b) return a;
-	return b;
-}
-
-// Taken straight from the wiki (http://zdoom.org/wiki/Min_and_max)
-function int Min(int a, int b)
-{
-	if(a < b) return a;
-	return b;
-}
-
-function int Map(int val, int a1, int a2, int b1, int b2)
-{
-	return Clamp((((val * 1.0 - a1)/(a2 - a1)) * (b2 - b1) + b1) / 1.0, a1, a2);
-}
-
-function int Clamp(int val, int minVal, int maxVal)
-{
-	return Min(Max(val, minVal), maxVal);
 }
 
 Script "SpotLightCast" (int Angle, int Pitch, int Range) //Used intead of built-in functions because the bullet and rail attacks still do vertical autoaim whether you want them to or not

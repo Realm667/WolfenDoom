@@ -714,7 +714,7 @@ class Nazi : Base
 			}
 		}
 
-		ACS_NamedExecuteAlways("AddExtraVisibility", 0, 200, 1); // Attacking always makes visibility increase significantly
+		if (inflictor is "BoAPlayer") { BoAPlayer(inflictor).extravisibility = 200; }
 
 		if (user_sneakable && bFriendly) // If we attacked a sneakable actor who wasn't alerted...
 		{
