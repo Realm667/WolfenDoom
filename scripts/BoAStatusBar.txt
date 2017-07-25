@@ -65,11 +65,12 @@ class BoAStatusBar : BaseStatusBar
 		if (CheckInventory("MineSweeper", 1)) { mBatteryInterpolator.Update(GetAmount("Power")); }
 		if (CheckInventory("PowerSpaceSuit", 1)) { mSpaceSuitInterpolator.Update(CPlayer.mo.GetEffectTicsForItem("SpaceSuit")); }
 
-		if (BoAPlayer(CPlayer.mo))
+		Inventory vis = CPlayer.mo.FindInventory("BoAVisibility");
+		if (vis)
 		{
-			mVisibilityInterpolator.Update(BoAPlayer(CPlayer.mo).visibility);
-
-			alertedcount = BoAPlayer(CPlayer.mo).alertedcount; 
+			mVisibilityInterpolator.Update(BoAVisibility(vis).visibility);
+			
+			alertedcount = BoAVisibility(vis).alertedcount; 
 
 			if (alertedcount)
 			{
@@ -77,7 +78,7 @@ class BoAStatusBar : BaseStatusBar
 			}
 			else  // Otherwise use actual suspicion level
 			{
-				mSuspicionInterpolator.Update(BoAPlayer(CPlayer.mo).suspicion);
+				mSuspicionInterpolator.Update(BoAVisibility(vis).suspicion);
 			}
 		}
 	}
@@ -460,7 +461,7 @@ class BoAStatusBar : BaseStatusBar
 
 	void DrawVisibilityBar(Vector2 position = (0, 0), int flags = DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM, double scale = 1.)
 	{
-		if (BoAPlayer(CPlayer.mo))
+		if (CPlayer.mo.FindInventory("BoAVisibility"))
 		{
 			int current, max;
 
@@ -542,8 +543,11 @@ class BoAStatusBar : BaseStatusBar
 
 		Actor mo;
 
-		mo = BoAPlayer(CPlayer.mo).CrosshairTarget;
-		if (!mo || mo && (!mo.bShootable || mo.health <= 0 || !mo.bBoss)) { mo = BoAPlayer(CPlayer.mo).ForcedHealthBar; } // Fall back to the "force-drawn" one, if there is one
+		if (BoAPlayer(CPlayer.mo))
+		{
+			mo = BoAPlayer(CPlayer.mo).CrosshairTarget;
+			if (!mo || mo && (!mo.bShootable || mo.health <= 0 || !mo.bBoss)) { mo = BoAPlayer(CPlayer.mo).ForcedHealthBar; } // Fall back to the "force-drawn" one, if there is one
+		}
 
 		if (mo && mo.bShootable && mo.health > 0 && (mo.bBoss || (Base(mo) && Base(mo).user_DrawHealthBar)))
 		{

@@ -1,0 +1,74 @@
+class BoAVisibility : CustomInventory
+{
+	int extravisibility;
+	int visibility;
+	int noiselevel;
+	int alertedcount;
+	int suspicion;
+
+	Default
+	{
+		Inventory.MaxAmount 1;
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.UNTOSSABLE
+		+INVENTORY.AUTOACTIVATE
+	}
+
+	void DoVisibility()
+	{
+		int lightlevel = Owner.CurSector.lightlevel;
+
+		if (lightlevel > 64)
+		{
+			double speed = Owner.vel.Length() * Owner.vel.Length();
+			double viewheightmod = Owner.player.crouchfactor * Owner.height - (Owner.height / 2);
+
+			if (speed > 0)
+			{
+				if (speed < viewheightmod) { speed = viewheightmod; }
+				viewheightmod = 0;
+			}
+
+			visibility = Clamp(int(CurSector.lightlevel * 0.35 + speed + noiselevel * 0.9 + extravisibility + viewheightmod - ((2 - skill) * 10)), 0, 100);
+		} else { visibility = 0; }
+
+		noiselevel = Max(0, noiselevel - 6);
+		extravisibility = Max(0, extravisibility - 5);
+	}
+
+	void CountAlertedSneakables()
+	{
+		ThinkerIterator it = ThinkerIterator.Create("SneakableGuardEyesAlerted", Thinker.STAT_DEFAULT - 2);
+		SneakableGuardEyesAlerted mo;
+
+		int count;
+		while (mo = SneakableGuardEyesAlerted(it.Next(true))) { count++; }
+
+		alertedcount = count;
+	}
+
+	override void Tick(void)
+	{
+		if (Owner && Owner is "PlayerPawn")
+		{
+			CountAlertedSneakables();
+
+			if (alertedcount <= 0) { DoVisibility(); }
+		}
+
+		Super.Tick();
+	}
+
+	States
+	{
+		Use:
+			TNT1 A 0;
+			Fail;
+		Pickup:
+			TNT1 A 0
+			{
+				return true;
+			}
+			Stop;
+	}
+}

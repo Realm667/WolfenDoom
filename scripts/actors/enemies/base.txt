@@ -686,6 +686,8 @@ class Nazi : Base
 	// Hijack the damage calls in order to implement stealth kills and critical hits
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags = 0, double angle = 0)
 	{
+		Inventory vis;
+
 		if (user_sneakable && bDormant) { bDormant = False; } // Pain wakes up a dormant sneakable actors
 
 		String currentDamage = (inflictor && inflictor.paintype) ? inflictor.paintype : mod; // Get the damage type
@@ -714,7 +716,9 @@ class Nazi : Base
 			}
 		}
 
-		if (inflictor is "BoAPlayer") { BoAPlayer(inflictor).extravisibility = 200; }
+		if (source) { vis = source.FindInventory("BoAVisibility"); }
+
+		if (vis) { BoAVisibility(vis).visibility = 200; }
 
 		if (user_sneakable && bFriendly) // If we attacked a sneakable actor who wasn't alerted...
 		{
@@ -732,7 +736,7 @@ class Nazi : Base
 
 			if (perceptionthreshold > 0) // or if it was a perceptive actor...
 			{
-				if (BoAPlayer(source)) { BoAPlayer(source).suspicion = 0; } // Reset suspicion level to zero
+				if (vis) { BoAVisibility(vis).suspicion = 0; } // Reset suspicion level to zero
 			}
 
 			DeathDamageType = currentDamage;

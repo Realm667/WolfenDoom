@@ -129,10 +129,14 @@ class AlertLight : Actor
 
 		amount *= brightness; // Adjust based on brightness level
 
-		if (target && target is "BoAPlayer")
+		if (target)
 		{
-			oldVisibility = BoAPlayer(target).extravisibility;
-			BoAPlayer(target).extravisibility = oldvisibility + Max(int(amount - oldVisibility), 0); // Set the new visibility - use delta in value instad of overriding so that multiple lights can be additive in visibility
+			Inventory vis = target.FindInventory("BoAVisibility");
+			if (vis)
+			{
+				oldVisibility = BoAVisibility(vis).extravisibility;
+				BoAVisibility(vis).extravisibility  = int(oldvisibility + Max(amount - oldVisibility, 0)); // Set the new visibility - use delta in value instad of overriding so that multiple lights can be additive in visibility
+			}
 		}
 	}
 }

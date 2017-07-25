@@ -27,6 +27,7 @@ class StealthBase : Actor
 	double sighttime;
 	LookExParams SearchParams;
 	Actor alert;
+	Inventory vis;
 
 	Default
 	{
@@ -79,6 +80,8 @@ class StealthBase : Actor
 			}
 		}
 
+		if (target) { vis = players[playernum].mo.FindInventory("BoAVisibility"); }
+
 		if (target && playernum >= 0) // If we have a player in view
 		{
 			sighttime += (Range - Distance3d(target)) / Range; // Increment sight time counter, scaled to how far away player is
@@ -92,9 +95,14 @@ class StealthBase : Actor
 			if (sighttime >= threshold) // If 'threshold' amount of time has elapsed since player first seen
 			{
 				sighttime = 0; // Reset the count
-				if (players[playernum].mo is "BoAPlayer") { BoAPlayer(players[playernum].mo).extravisibility = 200; }
+
+				if (vis)
+				{
+					BoAVisibility(vis).visibility = 200;
+					BoAVisibility(vis).suspicion = 0; // Clear the player's suspicion variable
+				}
+
 				players[playernum].cheats ^= CF_NOTARGET;  // Turn off the player's NOTARGET
-				if (BoAPlayer(players[playernum].mo)) { BoAPlayer(players[playernum].mo).suspicion = 0; } // Clear the player's suspicion variable
 				if (alert) { alert.Destroy(); } // Get rid of the alert indicator that was spawned here
 				return ResolveState("AlertMaster"); // Alert the actor to attack
 			}
@@ -125,24 +133,22 @@ class StealthBase : Actor
 			} 
 		}
 
-		if (playernum >= 0 && BoAPlayer(players[playernum].mo))  // Write the suspicion level to the player's suspicion variable so that it can be used on the hud
-		{
-			BoAPlayer(players[playernum].mo).suspicion = int(sighttime * 100 / threshold);
-		}
+		// Write the suspicion level to the player's suspicion variable so that it can be used on the hud
+		if (vis) { BoAVisibility(vis).suspicion = int(sighttime * 100 / threshold); }
 
 		return ResolveState(null);
 	}
 
 	bool TargetIsHidden()
 	{
-		if (BoAPlayer(target))
+		Inventory vis = target.FindInventory("BoAVisibility");
+		if (vis)
 		{
-			if (BoAPlayer(target).alertedcount > 0) { return false; }
+			if (BoAVisibility(vis).alertedcount > 0) { return false; }
 
-			BoAPlayer(target).extravisibility += skill + 2;
-			if (BoAPlayer(target).visibility >= 100) { return false; }
-		}
-		else { return false; }
+			BoAVisibility(vis).extravisibility += skill + 2;
+			if (BoAVisibility(vis).visibility  >= 100) { return false; }
+		} else { return false; }
 		
 		return true;
 	}
@@ -240,7 +246,11 @@ class SneakableGuardEyesIdle : StealthBase
 
 					if (dist < checkdist)
 					{
-						if (target is "BoAPlayer") { BoAPlayer(target).extravisibility = (checkdist - dist) * 2; } // If you're really close, you'll be really visible
+						if (target)
+						{
+							Inventory vis = target.FindInventory("BoAVisibility");
+							if (vis) { BoAVisibility(vis).extravisibility = (checkdist - dist) * 2; }
+						}
 					}
 				}
 			}

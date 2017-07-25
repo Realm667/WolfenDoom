@@ -4,6 +4,7 @@ class BoAEventHandler : StaticEventHandler
 	{
 		// Give the player the camera tilt handling item (modified version of Nash's Tilt++ v1.3)
 		players[e.PlayerNumber].mo.A_GiveInventory("BoATilt", 1);
+		players[e.PlayerNumber].mo.A_GiveInventory("BoAVisibility", 1);
 
 		// Ed the Bat's updated weapon stripping
 		if(level.levelnum!=99)

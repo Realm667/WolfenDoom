@@ -50,11 +50,6 @@ class BoAPlayer : PlayerPawn
 {
 	double user_crouch;
 	double user_ScaleY;
-	int extravisibility;
-	int visibility;
-	int noiselevel;
-	int suspicion;
-	int alertedcount;
 	Actor CrosshairTarget;
 	Actor ForcedHealthBar;
 	SpriteID baseSprite;
@@ -189,8 +184,6 @@ class BoAPlayer : PlayerPawn
 		CrosshairTarget = GetLineTarget();
 
 		DoTokenChecks();
-		CountAlertedSneakables();
-		DoVisibility();
 
 		Super.Tick();
 	}
@@ -281,28 +274,6 @@ class BoAPlayer : PlayerPawn
 		Scale.Y = user_ScaleY;
 	}
 
-	void DoVisibility()
-	{
-		int lightlevel = CurSector.lightlevel;
-
-		if (lightlevel > 64)
-		{
-			double speed = vel.Length() * vel.Length();
-			double viewheightmod = player.crouchfactor * height - (height / 2);
-
-			if (speed > 0)
-			{
-				if (speed < viewheightmod) { speed = viewheightmod; }
-				viewheightmod = 0;
-			}
-
-			visibility = Clamp(int(CurSector.lightlevel * 0.35 + speed + noiselevel * 0.9 + extravisibility + viewheightmod - ((2 - skill) * 10)), 0, 100);
-		} else { visibility = 0; }
-
-		noiselevel = Max(0, noiselevel - 6);
-		extravisibility = Max(0, extravisibility - 5);
-	}
-
 	// Function to spawn no more than a single copy of an effect actor as a child of the player
 	void SpawnEffect(class<PlayerEffect> effect)
 	{
@@ -331,17 +302,6 @@ class BoAPlayer : PlayerPawn
 			if (mo.master && mo.master != self) { continue; } // Only look at effects that belong to this player actor
 			if (mo is effect) { mo.SetStateLabel('null'); } // Remove the effect, if found
 		}
-	}
-
-	void CountAlertedSneakables()
-	{
-		ThinkerIterator it = ThinkerIterator.Create("SneakableGuardEyesAlerted", Thinker.STAT_DEFAULT - 2);
-		SneakableGuardEyesAlerted mo;
-
-		int count;
-		while (mo = SneakableGuardEyesAlerted(it.Next(true))) { count++; }
-
-		alertedcount = count;
 	}
 }
 
