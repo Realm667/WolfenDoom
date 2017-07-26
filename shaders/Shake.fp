@@ -1,5 +1,5 @@
 // Modified from Nash's GZDoom port of the old video shader by Talon1024
-#define MAX_SHAKE 0.005
+#define MAX_SHAKE 0.002
 #define FREQUENCY 15.0
 
 vec2 uv;
@@ -22,7 +22,7 @@ void main()
 	float t = float(int(timer * FREQUENCY));
 
 	// Get some image movement
-	vec2 suv = uv + MAX_SHAKE * vec2(rand(t), rand(t + 23.0));
+	vec2 suv = uv + speed * MAX_SHAKE * vec2(rand(t), rand(t + 23.0));
 
 	// Get the image
 	vec3 image = texture(InputTexture, vec2(suv.x, suv.y)).xyz;
