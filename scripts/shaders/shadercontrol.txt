@@ -7,19 +7,13 @@ class ShakeShaderControl : ShaderControl {
 		ShaderControl.Shader "shakeshader";
 	}
 
+	clearscope double FixedToDouble(int fixed) {
+		return fixed / 65536.0;
+	}
+
 	override void SetUniforms(PlayerInfo p, RenderEvent e) {
-		/*
-		Actor thingToGetSpeedOf;
-		if (amount == 2) {
-			thingToGetSpeedOf = p.mo;
-		} else {
-			ActorIterator it = ActorIterator.Create(amount, "Actor");
-			thingToGetSpeedOf = it.Next();
-		}
-		double speed = thingToGetSpeedOf.speed;
-		Console.printf("Thing's speed: %f", speed);
-		*/
-		double speed = 1.0;
+		double speed = FixedToDouble(amount - 2);
+		speed = speed / 4; // Make shake effect weaker
 		Shader.SetUniform1f(p, ShaderToControl, "speed", speed);
 	}
 }
