@@ -68,18 +68,18 @@ class AlertPointLight : PointLight replaces PointLight
   Helper actor that handles changing the player's visibility value based on
   how close the player is to the center of the light.
 
-  By default, when spawned by the point light replacement above, whihc sets 
+  By default, when spawned by the point light replacement above, which sets 
   itself as master to the AlertLight, this actor automatically scales itself 
   to match the dynamic light's radius, and uses the brightness of the dynamic 
   light to scale the visibility value that it sets for the player.  
 
   If placed directly in-editor, argument 0 is used to set the radius of the
-  visibility increase (with a fall-back to 64 units if no value is provided, 
+  visibility increase (with a fall-back to 64 units if no value is provided), 
   and the brightness of the light is assumed to be 100%.
 
   If spawned by an actor that sets itself as the AlertLight's tracer, the
   brightness of the light is scaled based on the alpha value of the tracer
-  actor.  this is used in-game by the Volumetric Light actor.
+  actor.  This is used in-game by the Volumetric Light actor.
 
 */
 class AlertLight : Actor
@@ -119,24 +119,70 @@ class AlertLight : Actor
 		if (!checkRadius) { checkRadius = 64; } // If nothing was set, use 64 map unit radius
 	}
 
-	void A_AddVisibility()
+	void A_AddVisibility(int minlight = 0)
 	{
-		double brightness = 1;
-		if (tracer) { brightness = min(tracer.alpha * 1.5, 1.0); }
-		if (master) { brightness = (master.args[0] + master.args[1] + master.args[2]) / (255. * 3) * 1.25; } // Calculate the light's overall brightness
-
-		double amount = checkRadius * 2 - Distance3d(target) + 8; // Calculate visibility based on how close the player is to the light
-
-		amount *= brightness; // Adjust based on brightness level
-
 		if (target)
 		{
 			Inventory vis = target.FindInventory("BoAVisibility");
 			if (vis)
 			{
+				double brightness = 1;
+				if (tracer) { brightness = min(tracer.alpha * 1.5, 1.0); }
+				if (master) { brightness = (master.args[0] + master.args[1] + master.args[2]) / (255. * 3) * 1.25; } // Calculate the light's overall brightness
+
+				double amount = checkRadius * 2 - Distance3d(target) + 8 + minlight; // Calculate visibility based on how close the player is to the light
+
+				amount *= brightness; // Adjust based on brightness level
+
 				oldVisibility = BoAVisibility(vis).extravisibility;
 				BoAVisibility(vis).extravisibility  = int(oldvisibility + Max(amount - oldVisibility, 0)); // Set the new visibility - use delta in value instad of overriding so that multiple lights can be additive in visibility
 			}
 		}
 	}
+}
+
+class SpotlightGlow : AlertLight
+{
+	Default
+	{
+		-RANDOMIZE
+		+ALWAYSPUFF
+		+BLOODLESSIMPACT
+		+DONTSPLASH
+		+INVISIBLE
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+PAINLESS
+		+PUFFGETSOWNER
+		+PUFFONACTORS
+		DistanceCheck "sfxlod";
+		Height 16;
+		Radius 16;
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 0;
+			"####" # 1 {
+				A_SpawnitemEx("MeasurePuffTemp", 0, 0, 0, 0, 0, 0, 0, SXF_ISTRACER | SXF_SETMASTER | SXF_NOCHECKPOSITION);
+				A_TransferPointer(AAPTR_TRACER, AAPTR_TARGET, AAPTR_MASTER, AAPTR_MASTER);
+			}
+			"####" # 25 Light("SpotLight");
+			"####" # 0 A_LookEx(LOF_NOSOUNDCHECK | LOF_DONTCHASEGOAL | LOF_NOSEESOUND, 0, 256, 0, 360, "Illuminate");
+			Stop;
+		Illuminate:
+			"####" # 1 A_AddVisibility(100);
+			Stop;
+		XDeath:
+		Crash:
+		Melee:
+			TNT1 A 0 A_Jump(256, "Spawn");
+	}
+
+	override void PostBeginPlay()
+	{
+		checkRadius = 60;
+	}
+
 }

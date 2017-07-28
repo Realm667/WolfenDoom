@@ -18,18 +18,18 @@ class BoAVisibility : CustomInventory
 	{
 		int lightlevel = Owner.CurSector.lightlevel;
 
-		if (lightlevel > 64)
+		if (lightlevel + extravisibility > 64)
 		{
-			double speed = Owner.vel.Length() * Owner.vel.Length();
+			double movespeed = Owner.vel.Length() * Owner.vel.Length();
 			double viewheightmod = Owner.player.crouchfactor * Owner.height - (Owner.height / 2);
 
-			if (speed > 0)
+			if (movespeed > 0)
 			{
-				if (speed < viewheightmod) { speed = viewheightmod; }
+				if (movespeed < viewheightmod) { movespeed = viewheightmod; }
 				viewheightmod = 0;
 			}
 
-			visibility = Clamp(int(CurSector.lightlevel * 0.35 + speed + noiselevel * 0.9 + extravisibility + viewheightmod - ((2 - skill) * 10)), 0, 100);
+			visibility = Clamp(int(CurSector.lightlevel * 0.35 + movespeed + noiselevel * 0.9 + extravisibility + viewheightmod - ((3 - skill) * 10)), 0, 100);
 		} else { visibility = 0; }
 
 		noiselevel = Max(0, noiselevel - 6);
