@@ -29,13 +29,10 @@ ACTOR ScurryRat : Base
 {
 	Radius 8
 	Height 8
+	Health 1
 	Mass 50
 	Speed 8
 	Scale 0.20
-	Health 1
-	SeeSound "rat/squeek"
-	ActiveSound "rat/active"
-	DeathSound "rat/death"
 	+AMBUSH
 	+FLOORCLIP
 	+FRIGHTENED
@@ -46,6 +43,9 @@ ACTOR ScurryRat : Base
 	+VULNERABLE
 	-CANUSEWALLS
 	-CANPUSHWALLS
+	ActiveSound "rat/active"
+	DeathSound "rat/death"
+	SeeSound "rat/squeek"
 	States
 	{
 	Spawn:

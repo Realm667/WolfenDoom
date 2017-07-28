@@ -8,7 +8,6 @@ ACTOR RollingBoulderGrey
 	Gravity 1.5
 	BounceFactor 0.7
 	BounceType Doom
-	Obituary "$BOULDER"
 	+BOUNCEONFLOORS
 	+DONTRIP
 	+DROPOFF
@@ -19,6 +18,7 @@ ACTOR RollingBoulderGrey
 	+RIPPER
 	+SOLID
 	DeathSound "boulder/stop"
+	Obituary "$BOULDER"
 	States
 	{
 	Spawn:
@@ -106,8 +106,8 @@ ACTOR BoulderStartGrey : SwitchableDecoration
 	Radius 24
 	Height 48
 	Scale 0.5
-	Obituary "$BOULDER"
 	+SOLID
+	Obituary "$BOULDER"
 	States
 	{
 	Spawn:
@@ -159,7 +159,7 @@ ACTOR Nail
 	Radius 4
 	Height 8
 	Speed 44
-	damage 4
+	Damage 4
 	Scale 0.5
 	+BLOODSPLATTER
 	SeeSound "NailFlight"
@@ -186,9 +186,9 @@ ACTOR NailBlur
 	Radius 1
 	Scale 0.5
 	Speed 0.2
-	RenderStyle "Translucent"
 	+NOGRAVITY
 	+DROPOFF
+	RenderStyle "Translucent"
 	States
 	{
 	Spawn:
@@ -234,17 +234,17 @@ ACTOR IceDart : FastProjectile
 	Height 8
 	Speed 32
 	Scale 1.1
-	Projectile
 	Damage (random(5,8))
 	DamageType "IceWater"
-	SeeSound "IceFlight"
-	Renderstyle "Add"
-	Alpha 0.9
+	Projectile
 	+BLOODSPLATTER
 	+BRIGHT
 	+FORCERADIUSDMG
 	+SEEKERMISSILE
+	Alpha 0.9
 	Decal "PlasmaScorchLower"
+	Renderstyle "Add"
+	SeeSound "IceFlight"
 	States
 	{
 	Spawn:
@@ -266,10 +266,10 @@ ACTOR IceTrail
 {
 	Radius 8
 	Height 8
-	Renderstyle Add
-	Alpha 0.5
 	+BRIGHT
 	+NOINTERACTION
+	Alpha 0.5
+	Renderstyle "Add"
 	States
 	{
 	Spawn:

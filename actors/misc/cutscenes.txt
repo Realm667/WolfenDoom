@@ -153,6 +153,30 @@ ACTOR TMFanfare3 : TMFanfare2
 	}
 }
 
+ACTOR TMFanfare4 : TMFanfare1
+{
+	//$Title Fanfare SSMP40 Soldier (Activate to make him walk)
+	States
+	{
+	Inactive:
+	Spawn:
+		SSMG N -1
+		Stop
+	}
+}
+
+ACTOR TMFanfare5 : TMFanfare1
+{
+	//$Title Fanfare SS Officer (Activate to make him walk)
+	States
+	{
+	Inactive:
+	Spawn:
+		SSOF N -1
+		Stop
+	}
+}
+
 ACTOR TMHitler : TMFanfare1
 {
 	//$Category Misc (Wolf3D)/Cutscenes

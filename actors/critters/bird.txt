@@ -53,8 +53,8 @@ ACTOR CrowWander1L : Base //Wandering version. Flees when player gets close and 
 	+NOTARGET
 	+NOTAUTOAIMED
 	+THRUACTORS
-	PainChance 255
 	MeleeRange 310
+	PainChance 255
 	var int user_type;
 	States
 	{
@@ -249,11 +249,9 @@ ACTOR CrowWander4R : CrowWander1R //Wandering version. Does not flee when player
 	}
 }
 
-/*
-================================================
-STATIONARY VERSIONS
-================================================
-*/
+//===================//
+//STATIONARY VERSIONS//
+//===================//
 
 ACTOR CrowStill1L : CrowWander1L //Stationary version. Flees when player is close. Reacts to sound. Faces left.
 {

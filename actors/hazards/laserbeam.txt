@@ -185,12 +185,12 @@ ACTOR LaserSpark
 	Radius 2
 	Mass 0
 	Speed 0.25
+	Scale 0.025
 	+FORCEXYBILLBOARD
 	+MISSILE
 	+NOBLOCKMAP
 	Gravity 0.125
 	RenderStyle "Add"
-	Scale 0.025
 	States
 	{
 	Spawn:
@@ -305,19 +305,3 @@ ACTOR MeasurePuffTemp : FastProjectile //does nothing except exist for one tic :
 		Stop
 	}
 }
-
-//this for lulz
-/*ACTOR Lasergun : Shotgun replaces Shotgun //needs to be a new weapon instead to inherit shotgun actor if used
-{
-	States
-	{
-	Fire:
-		TNT1 A 0
-		"####" A 0 A_FireBullets(0,0,1,0,"MeasurePuff",FBF_NORANDOMPUFFZ,999999)
-		"####" A 0 A_SpawnItemEx("LaserBeam_Green",0,0,30,0,0,0,0,SXF_NOCHECKPOSITION | SXF_ISTRACER)
-		"####" A 0 A_SetScale(1,(GetDistance(1,AAPTR_MASTER)/33.25),AAPTR_TRACER)
-		"####" A 0 A_SetPitch(-pitch + 90,0,AAPTR_TRACER)
-		SHTG A 1
-		Goto Ready
-	}
-}*/
