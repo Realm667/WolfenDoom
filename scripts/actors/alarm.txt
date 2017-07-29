@@ -284,8 +284,8 @@ class AlarmSpawner : ActorSpawner
 		{
 			vector3 location = pos;
 
-			if (guardcount == 1) { location += (-40, 40, 0); }
-			else if (guardcount == 2) { location += (-40, -40, 0); }
+			if (guardcount == 1) { location += (-32, 32, 0); }
+			else if (guardcount == 2) { location += (-32, -32, 0); }
 
 			//Spawn enemies if not visible to player
 			if (!InPlayerSightorRange(user_minspawndistance))

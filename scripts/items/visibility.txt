@@ -5,6 +5,7 @@ class BoAVisibility : CustomInventory
 	int noiselevel;
 	int alertedcount;
 	int suspicion;
+	int timeout;
 
 	Default
 	{
@@ -44,6 +45,22 @@ class BoAVisibility : CustomInventory
 		int count;
 		while (mo = SneakableGuardEyesAlerted(it.Next(true))) { count++; }
 
+		it = ThinkerIterator.Create("Nazi", Thinker.STAT_DEFAULT);
+		Nazi nmo;
+
+		while (nmo = Nazi(it.Next(true)))
+		{
+			if (
+				!nmo.user_sneakable && 
+				nmo.health > 0 && 
+				nmo.bShootable && 
+				nmo.user_incombat &&
+				nmo.target && 
+				nmo.target == Owner &&
+				(nmo.CheckSight(Owner) || Owner.Distance3d(nmo) < 256)
+			) { count++; }
+		}
+
 		alertedcount = count;
 	}
 
@@ -51,7 +68,13 @@ class BoAVisibility : CustomInventory
 	{
 		if (Owner && Owner is "PlayerPawn")
 		{
-			CountAlertedSneakables();
+			if (timeout <= 0)
+			{
+				timeout = 35; // Only do this once a second
+				CountAlertedSneakables();
+
+			}
+			timeout--;
 
 			if (alertedcount <= 0) { DoVisibility(); }
 		}
