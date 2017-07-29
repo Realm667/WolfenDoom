@@ -516,3 +516,17 @@ ACTOR SSCultist : Guard
 		Loop
 	}
 }
+
+ACTOR PlagueDoc1 : Guard
+{
+	//$Category Monsters (Wolf3D)/Occult
+	//$Title Plague Doctor (young)
+	States
+	{
+	Spawn:
+		PDOC N 0
+		Goto Look
+	Death.Alt1:
+		Goto Super::Death+1
+	}
+}
