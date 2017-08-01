@@ -1,11 +1,11 @@
 version "2.5"
 
 // Menu Components
-#include "scripts/menus/iconlistmenu.txt"			// Skill Menu (with icons) Base
-#include "scripts/menus/playermenunamebox.txt"			// Replacement player menu name box that colors name by default
+#include "scripts/menus/iconlistmenu.txt"						// Skill Menu (with icons) Base
+#include "scripts/menus/playermenunamebox.txt"					// Replacement player menu name box that colors name by default
 #include "scripts/conversations/conversationmenucomponents.txt"	// Replacement Conversation MenuComponents
-#include "scripts/conversations/conversationmenubase.txt"	// Replacement Conversation Menu Base
-#include "scripts/conversations/boaconversationmenu.txt"	// Replacement Conversatino Menu
+#include "scripts/conversations/conversationmenubase.txt"		// Replacement Conversation Menu Base
+#include "scripts/conversations/boaconversationmenu.txt"		// Replacement Conversatino Menu
 
 // Event Handler
 #include "scripts/BoAEventHandler.txt"
@@ -15,14 +15,14 @@ version "2.5"
 
 // Actors
 #include "scripts/actors/player.txt"				// Player
-#include "scripts/actors/playerfollowers.txt"			// Player follower NPCs
+#include "scripts/actors/playerfollowers.txt"		// Player follower NPCs
 #include "scripts/actors/enemies/base.txt"			// Base classes for enemies
-#include "scripts/actors/enemies/attacks.txt"			// Enemy projectiles
+#include "scripts/actors/enemies/attacks.txt"		// Enemy projectiles
 #include "scripts/actors/tracers.txt"				// Tracers base classes
-#include "scripts/actors/enemies/stealth.txt"			// Stealth enabling actors
+#include "scripts/actors/enemies/stealth.txt"		// Stealth enabling actors
 #include "scripts/actors/alertlights.txt"			// Base class for light objects that should affect "sneaking" light level
 #include "scripts/actors/spawnspots.txt"			// Enemy spawners
-#include "scripts/actors/alarm.txt"				// Alarm and Alarm Panel actors
+#include "scripts/actors/alarm.txt"					// Alarm and Alarm Panel actors
 #include "scripts/actors/enemies/medic.txt"			// Medic class
 
 /// Interactive Props
@@ -35,11 +35,12 @@ version "2.5"
 /// Inventory
 #include "scripts/actors/items/money.txt"			// Money (can be made dormant to prevent player from picking it up)
 
-/// Player Effect Inventory Items
-#include "scripts/items/tilt.txt"				// Nash's tilt implementation
+/// Player & Monsters Effects Inventory Items
+#include "scripts/items/tilt.txt"					// Nash's tilt implementation
+#include "scripts/items/nashshadows.txt"			// Nash's sprite shadows effect - since it uses dummy inventory items...
 #include "scripts/items/visibility.txt"				// Stealth visibility handling for player
 
 /// Shaders
-#include "scripts/shaders/shadercontrol_base.txt"		// Talon1024 - Generic custom shader controls
-#include "scripts/shaders/shadercontrol.txt"			// Talon1024 - Shader controllers
+#include "scripts/shaders/shadercontrol_base.txt"	// Talon1024 - Generic custom shader controls
+#include "scripts/shaders/shadercontrol.txt"		// Talon1024 - Shader controllers
 #include "scripts/shaders/underwater.txt"			// Underwater
