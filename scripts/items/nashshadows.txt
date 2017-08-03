@@ -119,12 +119,17 @@ class Z_ShadeMe : CustomInventory
 
 	override void Tick(void)
 	{
-		if (!sr)
+		bool SpriteShadowEnabled = sv_nashshadows;
+		if (!sr && SpriteShadowEnabled == 1)
 		{
 			// spawn the shadow
 			Actor sh = Spawn("Z_Shadow", Owner.Pos, NO_REPLACE);
 			sr = sh;
 			Z_Shadow(sh).ownerRef = Owner;
+		}
+		else
+		{
+			if (sr && SpriteShadowEnabled == 0) Destroy();
 		}
 
 		Super.Tick();
