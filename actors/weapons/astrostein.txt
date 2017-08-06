@@ -331,6 +331,14 @@ ACTOR AstroChaingun : NaziAstroWeapon
 		ASCG DE 4 A_FireCustomMissile("AstroTracerPlayer",random(-1.0,1.0),1,0,0,0,random(-1.0,1.0))
 		ASCG D 0 A_ReFire
 		Goto Ready
+	AltFire:
+		ASCG B 0 A_JumpIfInventory("AstroChaingunLoaded",1,1)
+		Goto Dryfire
+		ASCG D 0 A_AlertMonsters
+		ASCG D 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
+		ASCG DE 6 A_FireCustomMissile("AstroTracerPlayer",random(-0.2,0.2),1,0,0,0,random(-0.2,0.2))
+		ASCG D 0 A_ReFire
+		Goto Ready
 	Reload:
 		ASCG B 1 Offset(0,35) A_PlaySound("mp40/reload", CHAN_WEAPON)	//replace this sound?
 		ASCG B 1 Offset(0,38)
