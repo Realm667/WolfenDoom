@@ -416,6 +416,10 @@ ACTOR AstroClipAmmo : Ammo
 	}
 }
 
+///////////////////////////////////////////////////////////
+///// ASTRO SHOCKER ///////////////////////////////////////
+///////////////////////////////////////////////////////////
+
 ACTOR AstrosteinMelee : NaziAstroWeapon
 {
 	//$Category Weapons (Wolf3D)/Astrostein
@@ -472,6 +476,57 @@ ACTOR ElektroshockerPuff : BulletPuff
 		RZAP ACEGH 2 bright
 		Stop
 	}
+}
+
+///////////////////////////////////////////////////////////////////
+/////// ASTROSTEIN PISTOL /////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+
+
+ACTOR AstroPistolLoaded : Ammo
+{
+	Tag "$TAGLAZRD"
+	+IGNORESKILL
+	Inventory.MaxAmount 10
+	Inventory.Icon "AST201"
+}
+
+Actor AstroLuger : NaziAstroWeapon
+{
+  //$Category Weapons (Wolf3D)/Astrostein
+  //$Title (2) Astrostein Pistol
+  //$Color 14
+  Weapon.SelectionOrder 200
+  Weapon.AmmoType "AstroPistolLoaded"
+  Weapon.AmmoUse 1
+  Weapon.AmmoType2 "AstroClipAmmo"
+  Weapon.AmmoUse2 1
+  Weapon.AmmoGive2 20
+  Inventory.PickupMessage "You got a Energie-Luger!"
+  obituary "%o was melted by %k's Energie-Luger"
+  states
+  {
+  Spawn:
+    PLSP A -1
+    loop
+  Ready:
+    PLPI A 1 A_WeaponReady
+    loop
+  Deselect:
+    PLPI A 1 A_Lower
+    loop
+  Select:
+    PLPI A 1 A_Raise
+    loop
+  Fire:
+    PLPI A 0
+    PLPI B 3
+    PLPI C 0 A_AlertMonsters
+    PLPI C 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
+    PLPI C 3 A_FireCustomMissile("AstroTracerPlayer",frandom(-0.2,0.2),1,0,0,0,frandom(-0.2,0.2))
+    PLPI A 8
+    goto Ready
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////

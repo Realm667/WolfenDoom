@@ -182,7 +182,7 @@ ACTOR MP40Guard : Guard
 	DeathSound "Nazi2/Death"
 	DropItem "9mmAmmo" 192
 	DropItem "GrenadePickup" 16
-	DropItem "MP40" 64
+	DropItem "MP40" 96
 	States
 	{
 	Spawn:
@@ -233,7 +233,7 @@ ACTOR SSMP40Guard : SSGuard
 	DeathSound "Nazi2/Death"
 	DropItem "9mmAmmo" 192
 	DropItem "GrenadePickup" 16
-	DropItem "MP40" 64
+	DropItem "MP40" 96
 	Obituary "$SSMPGURD"
 	States
 	{
@@ -517,7 +517,7 @@ ACTOR RifleGuard : MP40Guard
 	//$Title Afrika Korps Guard (Rifle)
 	Obituary "$RIFLSOLD"
 	SeeSound "Nazi3/Sighted"
-	DropItem "G43" 64
+	DropItem "G43" 96
 	DropItem "MauserAmmo" 192 5
 	States
 	{
@@ -621,7 +621,7 @@ ACTOR WaffenSS : SSMP40Guard
 	Health 80
 	DropItem "9mmAmmo" 192
 	DropItem "GrenadePickup" 32
-	DropItem "MP40" 64
+	DropItem "MP40" 96
 	States
 	{
 	Spawn:
@@ -656,7 +656,7 @@ ACTOR ArcticWaffen : WaffenSS
 	Health 90
 	DropItem "9mmAmmo" 192
 	DropItem "GrenadePickup" 8
-	DropItem "MP40" 64
+	DropItem "MP40" 96
 	States
 	{
 	Spawn:
@@ -691,7 +691,7 @@ ACTOR Paratrooper : WaffenSS
 	Health 90
 	Scale 0.64
 	DropItem "9mmAmmo" 192
-	DropItem "MP40" 64
+	DropItem "MP40" 96
 	States
 	{
 	Spawn:
@@ -727,7 +727,7 @@ ACTOR Sniper : Guard
 	SeeSound "" //Make them not cry, they are in disguise after all
 	Health 50
 	Speed 0
-	DropItem "Kar98k" 48
+	DropItem "Kar98k" 72
 	DropItem "MauserAmmo" 192 5
 	+LOOKALLAROUND
 	States
@@ -857,7 +857,7 @@ ACTOR ArcticSniper : Guard
 	SeeSound "" //Make them not cry, they are in disguise after all
 	Health 60
 	Speed 0
-	DropItem "Kar98k" 48
+	DropItem "Kar98k" 72
 	DropItem "MauserAmmo" 192 5
 	+LOOKALLAROUND
 	States
@@ -911,7 +911,7 @@ ACTOR ArcticSniper_Crouch : Guard
 	SeeSound ""	//Make them not cry, they are in disguise after all
 	Health 50
 	Speed 0
-	DropItem "Kar98k" 48
+	DropItem "Kar98k" 72
 	DropItem "MauserAmmo" 192 5
 	+DROPOFF
 	+LOOKALLAROUND
@@ -1150,7 +1150,7 @@ ACTOR FlamerSoldier : Guard
 	Obituary "$FLAMEBOY"
 	Health 100
 	DropItem "FlameAmmo" 192
-	DropItem "Pyrolight" 32
+	DropItem "Pyrolight" 48
 	MaxTargetRange 296
 	States
 	{
@@ -1199,7 +1199,7 @@ ACTOR Gestapo : Guard
 	Obituary "$GESTAPO"
 	DropItem "9mmAmmo" 172
 	DropItem "9mmAmmoBox" 16
-	DropItem "Luger9mm" 88
+	DropItem "Luger9mm" 96
 	States
 	{
 	Spawn:
@@ -1984,7 +1984,7 @@ ACTOR EliteFlamer : Guard
 	PainSound "eliteflamer/pain"
 	DeathSound "eliteflamer/death"
 	DropItem "FlameAmmo"
-	DropItem "Pyrolight" 32
+	DropItem "Pyrolight" 48
 	var int user_count;
 	var int user_offset; //mxd
 	States
@@ -2081,7 +2081,7 @@ ACTOR EliteAssaulter : Guard
 	DeathSound "eliteassaulter/death"
 	DropItem "9mmAmmo" 192
 	DropItem "GrenadePickup" 16
-	DropItem "MP40" 64
+	DropItem "MP40" 96
 	States
 	{
 	Spawn:
@@ -2181,7 +2181,7 @@ ACTOR EliteSoldatRifler : Guard
 	SeeSound "eliterifler/Sight"
 	PainSound "eliteassaulter/pain"
 	DeathSound "eliterifler/death"
-	DropItem "G43" 64
+	DropItem "G43" 96
 	DropItem "GrenadePickup" 16
 	DropItem "MauserAmmo" 192 5
 	States
@@ -2261,6 +2261,7 @@ ACTOR EliteSoldatRifler : Guard
 ACTOR Scientist : Guard
 {
 	//$Title Scientist (young)
+	+FRIGHTENED
 	States
 	{
 	Spawn:
@@ -2274,6 +2275,7 @@ ACTOR Scientist : Guard
 ACTOR Scientist2 : Guard
 {
 	//$Title Scientist (old)
+	+FRIGHTENED
 	States
 	{
 	Spawn:

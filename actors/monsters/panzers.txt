@@ -573,7 +573,7 @@ ACTOR SSTank1
 	Melee:
 	Turret:
 		MDLA A 0 A_PlaySound("weapons/chaingun", CHAN_WEAPON)
-		"####" AAAA 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer", ScaleX * 48, ScaleY * 26, random(-4, 4))
+		"####" A 2 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer", ScaleX * 48, ScaleY * 26, random(-4, 4))
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
 		MDLA A 2 A_JumpIfTargetInLOS("Turret", 45)
 		Goto See
@@ -653,7 +653,7 @@ ACTOR SSTank2 : SSTank1
 	Melee:
 	Turret:
 		MDLA A 0 A_PlaySound("weapons/chaingun", CHAN_WEAPON)
-		"####" AAAA 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer", ScaleX * 70, ScaleY * -16, random(-4, 4))
+		"####" A 2 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer", ScaleX * 70, ScaleY * -16, random(-4, 4))
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
 		MDLA A 2 A_JumpIfTargetInLOS("Turret", 45)
 		Goto See
@@ -702,7 +702,7 @@ ACTOR SSTank3 : SSTank1
 	Melee:
 	Turret:
 		MDLA A 0 A_PlaySound("weapons/chaingun", CHAN_WEAPON)
-		"####" AAAA 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer", ScaleX * 48, ScaleY * 24, random(-4, 4))
+		"####" A 2 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer", ScaleX * 48, ScaleY * 24, random(-4, 4))
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
 		MDLA A 2 A_JumpIfTargetInLOS("Turret", 45)
 		Goto See
