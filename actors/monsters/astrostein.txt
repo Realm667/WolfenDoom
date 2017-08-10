@@ -258,6 +258,7 @@ ACTOR AstroCyborg1 : NaziBoss
 	//$Title Astrostein Cyborg (1)
 	//$Color 4
 	Base.BossIcon "BOSSICON"
+	Tag "Astro Cyborg"
 	Health 500
 	Radius 31
 	Height 56
@@ -265,16 +266,16 @@ ACTOR AstroCyborg1 : NaziBoss
 	Speed 2.66666667
 	Scale 0.67
 	PainChance 32
+	DamageFactor "Rocket", 0.2
+	+BOSS
 	+LOOKALLAROUND
 	+NOBLOOD
-	+BOSS
-	DropItem "AstroRocketAmmo" 128
+	Obituary "$ACYBORG"
 	SeeSound "astrostein/cyborg_sight"
 	PainSound "astrostein/cyborg_pain"
 	DeathSound "astrostein/cyborg_death"
 	ActiveSound "astrostein/cyborg_act"
-	Obituary "$ACYBORG"
-	Tag "Astro Cyborg"
+	DropItem "AstroRocketAmmo" 128
 	States
 	{
 	Spawn:
@@ -330,6 +331,7 @@ ACTOR AstroCyborg2 : AstroCyborg1
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Astrostein Cyborg (2)
 	//$Color 4
+	DamageFactor "Rocket", 0.2
 	DropItem "AstroShotgunShell" 256
 	DropItem "AstroShotgunShell" 256
 	States
@@ -449,17 +451,18 @@ ACTOR AstroRobot : AstroCyborg1
 	//$Title Astrostein Robot
 	//$Color 4
 	Base.BossIcon "BOSSICON"
+	Tag "Tiger Roboter"
 	Health 750
 	Scale 0.80
+	DamageFactor "Rocket", 0.2
+	+AVOIDMELEE
+	+BOSS
+	Obituary "$AROBOTO"
 	SeeSound "astrostein/robot_sight"
 	PainSound "astrostein/robot_pain"
 	DeathSound "astrostein/robot_death"
 	ActiveSound "astrostein/robot_act"
 	DropItem "AstroRocketAmmo" 160
-	Obituary "$AROBOTO"
-	+AVOIDMELEE
-	+BOSS
-	Tag "Tiger Roboter"
 	States
 	{
 	Spawn:
@@ -500,22 +503,23 @@ ACTOR AstroHitler : NaziBoss
 	//$Title Hitler Cyborg
 	//$Color 4
 	Base.BossIcon "BOSSICO3"
+	Tag "Adolf Hitler"
 	Health 1500
-	Scale 2.0
+	Mass 99999999
 	Height 72
 	Radius 36
+	Scale 2.0
 	PainChance 128
-	ActiveSound "astrostein/hitler_act"
-	DeathSound "astrostein/hitler_dth"
-	SeeSound "astrostein/hitler_act"
-	PainSound "astrostein/hitler_pai"
+	DamageFactor "Rocket", 0.2
 	Monster
 	+BOSS
 	+FLOORCLIP
 	+NOBLOOD
-	Tag "Adolf Hitler"
-	Mass 99999999
 	Obituary "$AHITLER"
+	ActiveSound "astrostein/hitler_act"
+	DeathSound "astrostein/hitler_dth"
+	SeeSound "astrostein/hitler_act"
+	PainSound "astrostein/hitler_pai"
 	States
 	{
 	Spawn:

@@ -9,15 +9,15 @@ ACTOR Mutant : NaziStandard
 	Obituary "$MUTANT"
 	Health 90
 	Scale 0.7
+	DamageFactor MutantPoison, 0
+	DamageFactor Poison, 0
+	+MISSILEEVENMORE
+	+MISSILEMORE
 	SeeSound "mutant/see"
 	PainSound "mutant/pain"
 	DeathSound "mutant/Death"
 	BloodColor "Purple"
 	BloodType "MutantBlood"
-	DamageFactor MutantPoison, 0
-	DamageFactor Poison, 0
-	+MISSILEEVENMORE
-	+MISSILEMORE
 	DropItem "9mmAmmo" 128
 	States
 	{
@@ -287,12 +287,13 @@ ACTOR UberMutant : Mutant
 	Mass 1000
 	Speed 2.66666667
 	PainChance 50
-	SeeSound "baron/sight"
-	DeathSound "baron/death"
-	Obituary "$OB_BARON"
-	HitObituary "$UBERMUTN"
+	DamageFactor "Rocket", 0.2
 	+BOSS
 	+LOOKALLAROUND
+	Obituary "$OB_BARON"
+	HitObituary "$UBERMUTN"
+	SeeSound "baron/sight"
+	DeathSound "baron/death"
 	States
 	{
 	Spawn:

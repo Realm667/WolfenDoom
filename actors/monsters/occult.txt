@@ -116,22 +116,23 @@ ACTOR HitlerGhost : Nazi
 	//$Category Monsters (Wolf3D)/Occult
 	//$Title Hitler's Ghost
 	//$Color 4
+	Tag "Hitler's Ghost"
 	Health 750
 	Mass 1000
 	Speed 2.167
 	FloatSpeed .67
 	PainChance 24
 	Scale 0.69
-	Obituary "$SSGHOST"
-	DeathSound "hitlerghost/die"
-	SeeSound "hitlerghost/see"
-	RenderStyle "Translucent"
+	DamageFactor "Rocket", 0.2
 	-FLOORCLIP
 	+BOSS
 	+FLOAT
 	+NOBLOOD
 	+NOGRAVITY
-	Tag "Hitler's Ghost"
+	Obituary "$SSGHOST"
+	DeathSound "hitlerghost/die"
+	SeeSound "hitlerghost/see"
+	RenderStyle "Translucent"
 	States
 	{
 	Spawn:
@@ -188,18 +189,18 @@ ACTOR Geist : Nazi
 	Scale 0.65
 	Speed 5
 	FloatSpeed 1.33
-	Obituary "$GEIST"
-	PainChance 255
-	PainSound "geist/pain"
-	DeathSound "geist/die"
-	RenderStyle "Translucent"
 	Alpha 0.5
+	RenderStyle "Translucent"
 	-FLOORCLIP
 	+DONTFALL
 	+FLOAT
 	+LOOKALLAROUND
 	+NOBLOOD
 	+NOGRAVITY
+	Obituary "$GEIST"
+	PainChance 255
+	PainSound "geist/pain"
+	DeathSound "geist/die"
 	States
 	{
 	Spawn:
