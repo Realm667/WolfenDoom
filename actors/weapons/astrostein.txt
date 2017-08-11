@@ -1,5 +1,6 @@
 ACTOR NaziAstroWeapon : NaziWeapon
 {
+	Scale 0.50
 	States
 	{
 	Dryfire:
@@ -16,7 +17,6 @@ ACTOR AstroShotgun : NaziAstroWeapon
 	//$Category Weapons (Wolf3D)/Astrostein
 	//$Title (3) Astrostein Shotgun
 	//$Color 14
-	Scale 0.50
 	Weapon.SelectionOrder 400
 	Weapon.AmmoType "AstroShotgunLoaded"
 	Weapon.AmmoUse 1
@@ -142,7 +142,6 @@ ACTOR AstroRocketlauncher : NaziAstroWeapon
 	//$Category Weapons (Wolf3D)/Astrostein
 	//$Title (5) Astrostein RocketLauncher
 	//$Color 14
-	Scale 0.50
 	Weapon.SelectionOrder 1400
 	Weapon.AmmoType "AstroRocketLauncherLoaded"
 	Weapon.AmmoUse 1
@@ -295,7 +294,6 @@ ACTOR AstroChaingun : NaziAstroWeapon
 	//$Category Weapons (Wolf3D)/Astrostein
 	//$Title (4) Astrostein Chaingun
 	//$Color 14
-	Scale 0.50
 	Weapon.SelectionOrder 700
 	Weapon.AmmoType "AstroChaingunLoaded"
 	Weapon.AmmoUse 1
@@ -425,12 +423,13 @@ ACTOR AstrosteinMelee : NaziAstroWeapon
 	//$Category Weapons (Wolf3D)/Astrostein
 	//$Title (1) Astrostein Melee
 	//$Color 14
+	Tag "$TAGSHOKR"
+	Scale 1.0
 	Weapon.Kickback 0
 	Weapon.SelectionOrder 2200
 	Weapon.ReadySound "weapons/rezidle"
 	Inventory.PickupMessage "$ELEKTRO"
 	Obituary "$OBELEKTRO"
-	Tag "$TAGSHOKR"
 	-WEAPON.AMMO_CHECKBOTH
 	-WEAPON.NOALERT
 	+WEAPON.MELEEWEAPON
