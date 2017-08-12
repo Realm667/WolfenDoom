@@ -303,49 +303,23 @@ ACTOR WMP40Guard : MP40Guard
 	}
 }
 
-ACTOR SleepEffect
-{
-	DistanceCheck "sfxlod"
-	+CLIENTSIDEONLY
-	+FORCEXYBILLBOARD
-	+NOINTERACTION
-	+WINDTHRUST
-	RenderStyle "Translucent"
-	Alpha 0.001
-	Scale 0.2
-	States
-	{
-	Spawn:
-		TNT1 A 0 NODELAY A_SetScale(ScaleX*(frandom(0.7,1.0)), ScaleY*(frandom(0.7,1.0)))
-		TNT1 A 0 A_Jump(256,1,2)
-		SLZZ A 0 A_Jump(256,"End")
-		SLZZ A 0 A_Jump(256,"End")
-	End:
-		"####" AAAAAAAAA 1 A_FadeIn(0.06)
-		"####" AAAAAAAAAAAAAAAAAAAAAA 2 {
-						A_FadeOut(0.03);
-						A_SetScale(ScaleX*1.02, ScaleY*1.02);
-						}
-		Stop
-	}
-}
-
 ACTOR WMP40GuardSleep : WMP40Guard
 {
 	//$Title Wehrmacht Guard, Sleeping (MP40)
 	States
 	{
 	Spawn:
-		MGR2 O 0
+		MGR2 O 0 NoDelay A_SpawnItemEx("SleepEffect", random(-2,2), random(-2,2), random(56,60), random(-2,2), random(-2,2), 1, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
 		Goto Look
 	Look:
 		"####" OP 35 A_Look()
 		Loop
 	See:
 		"####" "#" 0 { user_incombat = True; } //mxd
+		"####" "#" 0 A_RemoveChildren(TRUE, RMVF_MISC) //let's remove the SleepEffect first - ozy81
 		"####" "#" 0 A_JumpIfInventory("AwakeCounter", 1, "SeeLoop") //ozy81
 		"####" "#" 0 A_GiveInventory("AwakeCounter", 1) //ozy81
-		"####" Q 35 A_SpawnItemEx("SleepEffect", random(-2,2), random(-2,2), random(60,64), 0, 0, 1, 0)
+		"####" Q 35 
 		"####" R 8
 	SeeLoop:
 		"####" A 1 A_Chase

@@ -7,25 +7,25 @@ ACTOR AngelOfDeath : Base
 	//$Title Angel Of Death (Boss)
 	//$Color 4
 	Base.BossIcon "BOSSICO3"
+	Tag "???"
 	Health 5000
 	Radius 48
 	Height 96
 	Mass 2000
 	Speed 12
 	PainChance 64
-	SeeSound "aode/sight"
-	ActiveSound "aode/active"
-	PainSound "aode/pain"
-	DeathSound "aode/death"
-	Obituary "$AODE1"
-	HitObituary "$AODE2"
-	Tag "???"
 	Scale 1.0
-	MONSTER
+	Monster
 	+BOSS
 	+FLOAT
 	+FLOATBOB
 	+NOGRAVITY
+	Obituary "$AODE1"
+	HitObituary "$AODE2"
+	SeeSound "aode/sight"
+	ActiveSound "aode/active"
+	PainSound "aode/pain"
+	DeathSound "aode/death"
 	BloodType "BossBlood"
 	BloodColor "DarkSeaGreen"
 	DamageFactor "Rocket", 0.2
@@ -154,21 +154,22 @@ ACTOR AngelOfDeath : Base
 ACTOR SmokeMonster : Base
 {
 	//$Category Monsters (Wolf3D)/Occult/Bosses
-	//$Title Smokemonster (Boss)
+	//$Title SmokeMonster (Boss)
 	//$Color 4
 	//$Sprite SMMOA0
 	Base.BossIcon "BOSSICO3"
+	Tag "???"
 	Health 3000
 	Height 56
 	Mass 10000000
 	Speed 4
 	Damage 1
 	PainChance 64 //more chances for teleport himself now, old was 10
-	Monster
 	DamageType "Smoke"
 	DamageFactor "Smoke", 0
 	DamageFactor "Rocket", 0.2
 	MeleeThreshold 192
+	Monster
 	+BOSS
 	+BOSSDEATH
 	+DONTFALL
@@ -185,10 +186,9 @@ ACTOR SmokeMonster : Base
 	+NOGRAVITY
 	+NOICEDEATH
 	+NOTIMEFREEZE
+	Obituary "$SMOKEMO"
 	SeeSound "Smoke/See"
 	DeathSound "Smoke/Die"
-	Obituary "$SMOKEMO"
-	Tag "???"
 	var int user_saw;
 	States
 	{
@@ -408,18 +408,18 @@ ACTOR NaziLoper : Nazi
 	Mass 300
 	Speed 14
 	Damage 2 //jump attacks
-	PainChance 64
 	Scale 1.10
+	PainChance 64
+	DamageFactor "Rocket", 0.2
+	+BOSS
+	+NORADIUSDMG //or the ZTracer will kill the Loper :D
 	MaxStepHeight 16
 	MaxDropOffHeight 128
 	MaxTargetRange 1024
-	+NORADIUSDMG //or the ZTracer will kill the Loper :D
-	+BOSS
-	DamageFactor "Rocket", 0.2
+	Obituary "$LOPRHIT2"
+	HitObituary "$LOPRHIT1"
 	SeeSound "loper/wakeup"
 	DeathSound "loper/death"
-	HitObituary "$LOPRHIT1"
-	Obituary "$LOPRHIT2"
 	States
 	{
 	Spawn:
@@ -540,13 +540,11 @@ ACTOR FatMan : NaziBoss
 	Tag "General Giftmacher"
 	PainChance 32
 	-FLOAT		//we don't want him to fly, yeah? ;)
-	-NOGRAVITY	//we don't want him to fly, yeah? ;)
-	+BOSS
-	DamageFactor "Rocket", 0.2
+	-NOGRAVITY	//we don't want him to fly, yeah? 
+	Obituary "$OTTOBOSS"
 	SeeSound "Boss2/Sighted"
 	PainSound "boss/pain"
 	DeathSound "Boss2/Death"
-	Obituary "$OTTOBOSS"
 	DropItem "NebAmmo"
 	States
 	{
@@ -597,8 +595,6 @@ ACTOR RocketMan : NaziBoss
 	Health 300
 	PainChance 64
 	Mass 200
-	DamageFactor "Rocket", 0.2
-	+BOSS
 	+LOOKALLAROUND
 	Obituary "$FATMAN"
 	SeeSound "fatman/sight"
@@ -652,10 +648,9 @@ ACTOR FlamerMan : RocketMan
 {
 	//$Title Friedhelm Hass (Boss)
 	Base.BossIcon "BOSSICO2"
-	Speed 3.67
 	Tag "Friedhelm Hass"
+	Speed 3.67
 	Health 700
-	DamageFactor "Rocket", 0.2
 	Obituary "$FLAMEBOY"
 	SeeSound "Boss1/Sighted"
 	DeathSound "Boss1/Death"
@@ -712,7 +707,6 @@ ACTOR MadDoctor : RocketMan
 	Health 400
 	Mass 4000
 	PainChance 64
-	DamageFactor "Rocket", 0.2
 	Obituary "$SCHABBS"
 	DropItem "Medikit_Medium"
 	States
@@ -744,8 +738,6 @@ ACTOR MadDoctor2 : MadDoctor
 	Base.BossIcon "BOSSICO2"
 	Tag "Dr. Schabbs Sr."
 	Health 800
-	DamageFactor "Rocket", 0.2
-	+BOSS
 	+MISSILEEVENMORE
 	Obituary "$MENGELE"
 	DropItem "Medikit_Large"
@@ -771,9 +763,7 @@ ACTOR MadCook : MadDoctor
 	Tag "Fritz Bratwurst"
 	Health 400
 	Speed 5
-	DamageFactor "Rocket", 0.2
 	+AVOIDMELEE
-	+BOSS
 	+MISSILEMORE
 	States
 	{
@@ -797,8 +787,6 @@ ACTOR MadCook2 : MadCook
 {
 	//$Title Cook Max Gulasch (Boss)
 	Health 400
-	DamageFactor "Rocket", 0.2
-	+BOSS
 	Tag "Max Gulasch"
 }
 
@@ -809,8 +797,6 @@ ACTOR General : RocketMan
 	Tag "Gen. Fettgesicht"
 	Health 800
 	Mass 1000
-	DamageFactor "Rocket", 0.2
-	+BOSS
 	+MISSILEEVENMORE
 	Obituary "$GENERAL"
 	SeeSound "Boss3/Sighted"
@@ -862,8 +848,6 @@ ACTOR MarineGeneral : General
 	Tag "Gen. Seeteufel"
 	Health 800
 	Mass 1000
-	DamageFactor "Rocket", 0.2
-	+BOSS
 	+MISSILEEVENMORE
 	Obituary "$GENERAL"
 	SeeSound "Boss3/Sighted"
@@ -1102,7 +1086,7 @@ ACTOR Hitler : DeathKnight
 }
 
 //Placeholder code: not finished yet - ozy81
-ACTOR Longinus_Hitler : Nazi
+ACTOR Longinus_Hitler : NaziBoss
 {
 	//$Category Monsters (Wolf3D)/Bosses
 	//$Title Adolf Hitler, Longinus (Boss)
@@ -1115,7 +1099,6 @@ ACTOR Longinus_Hitler : Nazi
 	Height 64
 	Speed 2.5
 	Scale 1.2
-	DamageFactor "Rocket", 0.2
 	//Obituary "$LHITLER"
 	SeeSound "hitler/sight"
 	PainSound "hitler/pain"
@@ -1292,14 +1275,12 @@ ACTOR SuperSoldier : NaziBoss
 	//$Title Hans Grosse (Boss)
 	//$Color 4
 	Obituary "$SUPASOLD"
-	Tag "Ubersoldat" //"Hans Grosse"
+	Tag "Ubersoldat"
 	Health 500
 	Radius 24
 	Height 64
 	Mass 500
 	PainChance 48
-	DamageFactor "Rocket", 0.2
-	+BOSS
 	+LOOKALLAROUND
 	+NOBLOOD
 	SeeSound "Boss1/Sighted"
@@ -1370,7 +1351,6 @@ ACTOR SuperSoldier_SS : SuperSoldier
 	//$Title Hans Grosse, SS (Boss)
 	Tag "SS Ubersoldat"
 	Scale 0.63
-	DamageFactor "Rocket", 0.2
 	States
 	{
 	Spawn:
@@ -1435,7 +1415,6 @@ ACTOR SuperSoldier_Afrika : SuperSoldier
 	//$Title Hans Grosse, Afrika (Boss)
 	Tag "Afrika Ubersoldat"
 	Scale 0.63
-	DamageFactor "Rocket", 0.2
 	+AVOIDMELEE
 	States
 	{
@@ -1499,7 +1478,6 @@ ACTOR SuperSoldier_Arctic : SuperSoldier
 	//$Title Hans Grosse, Arctic (Boss)
 	Tag "Arctic Ubersoldat"
 	Scale 0.63
-	DamageFactor "Rocket", 0.2
 	States
 	{
 	Spawn:
@@ -1556,7 +1534,6 @@ ACTOR SuperSoldier_Wehrmacht : SuperSoldier
 	//$Title Hans Grosse, Wehrmacht (Boss)
 	Tag "Wehrmacht Ubersoldat"
 	Scale 0.63
-	DamageFactor "Rocket", 0.2
 	States
 	{
 	Spawn:
@@ -1619,7 +1596,6 @@ ACTOR SuperSoldier_Navy : SuperSoldier
 	//$Title Hans Grosse, Navy (Boss)
 	Tag "Navy Ubersoldat"
 	Scale 0.63
-	DamageFactor "Rocket", 0.2
 	States
 	{
 	Spawn:
@@ -1676,8 +1652,6 @@ ACTOR SuperSoldier_Girl : SuperSoldier
 	Obituary "$SUPAGIRL"
 	Tag "Female Ubersoldat" //"Gretel Grosse"
 	Speed 5
-	DamageFactor "Rocket", 0.2
-	+BOSS
 	+MISSILEEVENMORE
 	+MISSILEMORE
 	SeeSound "BossGirl/Sighted"
@@ -1734,7 +1708,6 @@ ACTOR SuperSoldier_Elsa : SuperSoldier_Girl
 	Health 450
 	Scale 0.63
 	Speed 7
-	DamageFactor "Rocket", 0.2
 	Obituary "$SUPAELSA"
 	States
 	{
@@ -1796,8 +1769,6 @@ ACTOR SuperSoldier_Elite : SuperSoldier
 	//$Title Elite Ubersoldat (Boss)
 	Tag "Elite Ubersoldat"
 	Health 850
-	DamageFactor "Rocket", 0.2
-	+BOSS
 	Obituary "$SUPAELIT"
 	DropItem "9mmAmmo" 128
 	DropItem "9mmAmmo" 128
