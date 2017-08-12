@@ -1,0 +1,40 @@
+class NullWeapon : Weapon
+{
+	Default
+	{
+		+WEAPON.NOALERT
+		+INVENTORY.UNDROPPABLE
+		Weapon.SelectionOrder 99999; // Make this absolutely last in weapon priority
+		Tag "$TAGCLOAK";
+	}
+
+	States
+	{
+		Select:
+			TNT1 A 1 {
+				if (FindInventory("DisguiseToken", true))
+				{
+					SetPlayerProperty(0, TRUE, PROP_NOTARGET);
+					A_SetSpeed(0.85);
+				}
+			}
+		Raise:
+			TNT1 A 0 A_Raise;
+			Loop;
+		Deselect:
+			TNT1 A 1 {
+				if (FindInventory("DisguiseToken", true))
+				{
+					SetPlayerProperty(0, FALSE, PROP_NOTARGET);
+					A_SetSpeed(1.0);
+				}
+			}
+		Lower:
+			TNT1 A 0 A_Lower;
+			Loop;
+		Fire:
+		Ready:
+			TNT1 A 1 A_WeaponReady(WRF_NOFIRE);
+			Loop;
+	}
+}

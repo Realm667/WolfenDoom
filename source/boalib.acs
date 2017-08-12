@@ -559,6 +559,8 @@ Script "SetMusicVolumeFactor" (int intTargetVolume, int intDelay)
 
 Script "QuickKick" (void)
 {
+	int timeout;
+
 	If (
 		//(CheckInventory("Health") < 30) ||
 		(CheckInventory("Stamina") < 30) ||
@@ -581,7 +583,13 @@ Script "QuickKick" (void)
 	Delay(25); //Wait for the animation and attack
 
 	If (StrICmp(strPrevWeapon, "None")) //Reset the old weapon
-		While (!SetWeapon(strPrevWeapon)) Delay(5);
+	{
+		While (!SetWeapon(strPrevWeapon) && timeout < 35) // Wait until the weapon is set, or a second has elapsed
+		{
+			Delay(5);
+			timeout += 5;
+		}
+	}
 
 	TakeInventory("BJKickAuto", 1); //Remove the auto-kick from inventory
 

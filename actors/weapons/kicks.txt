@@ -5,6 +5,7 @@ ACTOR BJKick : Weapon
 	+WEAPON.NOALERT
 	+WEAPON.WIMPY_WEAPON
 	Weapon.SelectionOrder 10001
+	Tag "Kick"
 	States
 	{
 	//Spawn state is not needed afaik, legs are presumably attached to BJ body - Ozy81
@@ -136,7 +137,7 @@ ACTOR KickPuff : BlastEffect
 
 ACTOR BJKickAuto : BJKick //Bastardize the weapon states to make a weapon that fires as soon as equipped, then just sits there until switched away from via script.
 {
-	Tag " "
+	Tag "Kicking"
 	States
 	{
 	Ready:

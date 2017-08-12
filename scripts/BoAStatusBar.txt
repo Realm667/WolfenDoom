@@ -209,7 +209,7 @@ class BoAStatusBar : BaseStatusBar
 		DrawInventoryIcon(ammo2, (231, 184), DI_ITEM_OFFSETS);
 
 		//Weapon
-		if (!CheckWeaponSelected("NullWeapon")) { DrawString(mHUDFont, GetWeaponTag(), (190, 159), DI_TEXT_ALIGN_CENTER); }
+		DrawString(mHUDFont, GetWeaponTag(), (190, 159), DI_TEXT_ALIGN_CENTER);
 
 		//Time
 		DrawString(mHUDFont, level.TimeFormatted(), (250, 159));
@@ -352,7 +352,7 @@ class BoAStatusBar : BaseStatusBar
 		//Bottom Right
 		DrawImage("HUD_BR", (-116, -53), DI_ITEM_OFFSETS);
 		//Weapon
-		if (!CheckWeaponSelected("NullWeapon")) { DrawString(mHUDFont, GetWeaponTag(), (-55, -52), DI_TEXT_ALIGN_CENTER); }
+		DrawString(mHUDFont, GetWeaponTag(), (-55, -52), DI_TEXT_ALIGN_CENTER);
 
 		//Ammo
 		Ammo ammo1, ammo2;
