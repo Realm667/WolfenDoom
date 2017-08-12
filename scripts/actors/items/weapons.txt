@@ -1,3 +1,47 @@
+class NaziWeapon : Weapon
+{
+	Default
+	{
+		+WEAPON.AMMO_CHECKBOTH
+		+WEAPON.NOALERT
+		Weapon.BobStyle "InverseSmooth";
+		Weapon.BobSpeed 2.2;
+		Weapon.BobRangeY 1.0;
+		Weapon.BobRangeX 1.25;
+	}
+
+	States
+	{
+		Dryfire:
+			"####" "#" 1 A_JumpIf(CallACS("Autoreload")==1,"Reload");
+			"####" "#" 1 Offset(0,35) A_PlaySound("weapon/dryfire", CHAN_WEAPON);
+			"####" "#" 9 Offset(0,34);
+			"####" "#" 0 A_Jump(256,"Ready");
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		// Allow the drop amount of the weapon to set the amount of primary ammunition that is in a pickup
+		// Default drop amount value is 1, and is interpreted as normal drop amount handling...
+		if (Amount > 1)
+		{
+			// Take skill ammo drop amounts into account when calculating amount of ammo to give
+			float dropammofactor = G_SkillPropertyFloat(SKILLP_DropAmmoFactor);
+			if (dropammofactor == -1) { dropammofactor = 0.5; }
+
+			// Default to affecting AmmoType1, with fallback to AmmoType2 if the
+			//  weapon does not give any of AmmoType1 (Nazis weapons use AmmoType1
+			//  as the current clip's amount, and give only to AmmoType2 normally.
+			if (AmmoGive1 > 0) { AmmoGive1 = int(Amount * dropammofactor); }
+			else if (AmmoGive2 > 0) { AmmoGive2 = int(Amount * dropammofactor); }
+
+			Amount = 1;
+		}
+		Super.PostBeginPlay();
+	}
+}
+
 class NullWeapon : Weapon
 {
 	Default

@@ -834,9 +834,46 @@ class Nazi : Base
 
 			A_NoBlocking(False); // Set A_NoBlocking with no additional item drops.
 		}
+		else if (user_sneakable)
+		{
+			DropItem drops = GetDropItems();
+			DropItem item;
+
+			double dropfactor = G_SkillPropertyFloat(SKILLP_DropAmmoFactor);
+			if (dropfactor < 0) { dropfactor = 0.5; }
+
+			if (drops != null)
+			{
+				for (item = drops; item != null; item = item.Next)
+				{
+					String itemName = String.Format("%s", item.Name); // Don't know why I have to do this and the Length check, but 'DropItem ""' crashes without it, even if I check for != "", != null, etc...
+					if (itemName.Length() > 0 && item.Name != 'None')
+					{
+						Actor drop = Spawn(item.Name); // See if it spawns in order to validate the name...  Since there's no FindClass function exposed?
+
+						int amt = item.Amount;
+
+						if (Weapon(drop)) // Only drop weapons, no extra ammo, grenades, etc.
+						{
+							if (amt <= 0)
+							{
+								amt = Weapon(drop).AmmoGive1 > 0 ? Weapon(drop).AmmoGive1 : Weapon(drop).AmmoGive2; // Default to affecting AmmoType1, with fallback to AmmoType2
+								amt = max(int(amt * (dropfactor / 2)), 0); // Worst case, drop a weapon with zero ammo
+							}
+
+							A_DropItem(item.Name, amt);
+						}
+
+						drop.Destroy(); // Destroy the placeholder spawned item
+					}
+				}
+			}
+
+			A_NoBlocking(False); // Set A_NoBlocking with no additional item drops.
+		}
 		else
 		{
-			A_NoBlocking(!user_sneakable); // Otherwise, unblock and do normal drops, excluding any drops from sneakables.
+			A_NoBlocking(True); // Otherwise, unblock and do normal drops
 		}
 	}
 
