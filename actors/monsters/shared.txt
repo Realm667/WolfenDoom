@@ -8,7 +8,8 @@ ACTOR NaziBoss : Nazi
 	Mass 1000
 	Scale 0.67
 	Base.BossIcon "BOSSICON"
-
+	DamageFactor "Rocket", 0.2
+	+BOSS
 	States
 	{
 	See:
@@ -287,6 +288,30 @@ ACTOR EnemyFlamebolt2 : EnemyFlamebolt
 }
 
 ACTOR HardEnemyFlamebolt2 : EnemyFlamebolt2 { +MTHRUSPECIES }
+
+ACTOR SleepEffect
+{
+	DistanceCheck "sfxlod"
+	+CLIENTSIDEONLY
+	+FORCEXYBILLBOARD
+	+NOBLOCKMAP
+	+WINDTHRUST
+	RenderStyle "Translucent"
+	Alpha 0.001
+	Scale 0.2
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_SetScale(ScaleX*(frandom(0.7,1.0)), ScaleY*(frandom(0.7,1.0)))
+		TNT1 A 0 A_Jump(256,1,2)
+		SLZZ A 0 A_Jump(256,"End")
+		SLZZ A 0 A_Jump(256,"End")
+	End:
+		"####" AAAAAAAAA 1 A_FadeIn(0.06)
+		"####" AAAAAAAAAAAAAAAAAAAAAA 2 {A_FadeOut(0.03); A_SetScale(ScaleX*1.02, ScaleY*1.02);}
+		Stop
+	}
+}
 
 //Mutants Stuff
 ACTOR MutantFartCloud

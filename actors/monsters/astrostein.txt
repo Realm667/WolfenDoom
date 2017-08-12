@@ -1,3 +1,99 @@
+///////////
+//ATTACKS//
+///////////
+
+ACTOR AstroDroneBall
+{
+	Radius 6
+	Height 8
+	Speed 10
+	FastSpeed 20
+	Damage 5
+	Projectile
+	+RANDOMIZE
+	RenderStyle "Add"
+	Scale 0.5
+	SeeSound "astrochaingun/fire"
+	DeathSound "astroplasmaexplode"
+	States
+	{
+	Spawn:
+		ROBP AB 4 A_SpawnItemEx("Spark_G1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
+		Loop
+	Death:
+		TNT1 AAAAA 0 A_SpawnItemEx("Spark_G1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
+		TNT1 A 0 A_SpawnItemEx("SparkFlare_G1")
+		ROBP CDEG 6 BRIGHT
+		Stop
+	}
+}
+
+ACTOR HardAstroDroneBall : AstroDroneBall {+MTHRUSPECIES}
+
+ACTOR AstroRobotSeekerBall : AstroDroneBall
+{
+	Radius 12
+	Height 16
+	Speed 7
+	MaxTargetRange 128
+	Scale 1.2
+	+SEEKERMISSILE
+	States
+	{
+	Spawn:
+		ROBP A 0 NODELAY A_Jump(2,"PreciseLoop")
+		"####" AB 4 A_SeekerMissile(8, random(15,30))
+		Loop
+	PreciseLoop:
+		"####" AB 4 A_SeekerMissile(8, random(60,90), SMF_PRECISE)
+		Loop
+	}
+}
+
+ACTOR HardAstroRobotSeekerBall : AstroRobotSeekerBall {+MTHRUSPECIES}
+
+////////////////
+//DEATH EFFECT//
+////////////////
+
+ACTOR BaseLine
+{
+	+BRIGHT
+	+MISSILE
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+NOINTERACTION
+	Radius 0
+	Height 0
+	RenderStyle "Add"
+	Alpha 0.01
+	States
+	{
+	Spawn:
+		SPFX AAAAA 1 Light("AstrosteinDeathLight") A_FadeIn(0.2)
+		"####" A 1 Light("AstrosteinDeathLight") A_FadeOut(0.06)
+		Wait
+	}
+}
+
+////////////////
+//REPLACEMENTS//
+////////////////
+
+ACTOR TeleportFog_Astro : TeleportFog replaces TeleportFog
+{
+	States
+	{
+	Spawn:
+		TNT1 AAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 16), 0, 0, random(1,3), 0, 129, 0)
+		Stop
+	}
+}
+
+///////////
+//ENEMIES//
+///////////
+
 ACTOR AstroGuard : Guard
 {
 	//$Category Monsters (Wolf3D)/Astrostein
@@ -147,6 +243,65 @@ ACTOR AstroElite : AstroGuard
 	}
 }
 
+ACTOR AstroSuiteGuard : AstroGuard
+{
+	//$Category Monsters (Wolf3D)/Astrostein
+	//$Title Astrostein Suite Guard
+	//$Color 4
+	Speed 2
+	Scale 0.70
+	Health 200
+	Painchance 16
+	+LOOKALLAROUND
+	+NOBLOOD
+	States
+	{
+	Spawn:
+		ROB1 A 0
+		Goto Look
+	Missile:
+		"####" EF 5 A_FaceTarget
+		"####" F 0 A_PlaySound("astrochaingun/fire")
+		"####" G 0 A_SpawnProjectile("EnemyAstroTracer",48,-10,random(-8,4))
+		"####" G 0 A_SpawnProjectile("EnemyAstroTracer",40,-10,random(-8,4))
+		"####" G 0 A_SpawnProjectile("EnemyAstroTracer",40,10,random(4,-8))
+		"####" G 8 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",48,10,random(4,-8))
+		"####" E 8 A_Jump(256,"See")
+		Stop
+	Pain:
+		"####" H 3
+		"####" H 3 A_Pain
+		"####" H 0 A_Jump(256,"See")
+		Stop
+	Disintegrate:
+		"####" I 0 A_Playsound("astrostein/guard_death")
+		"####" I 0 A_Scream
+		"####" IIIIIJJJJJKKKKKLLLLLMMMMMNNNNNOOOOO 1 A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0)
+		"####" O -1 A_NoBlocking
+		Stop
+	}
+}
+
+ACTOR AstroScientist : AstroGuard
+{
+	//$Category Monsters (Wolf3D)/Astrostein
+	//$Title Astro Scientist
+	//$Color 4
+	Scale 0.67
+	States
+	{
+	Spawn:
+		SCN2 N 0
+		Goto Look
+	Missile: //different brightmap & colors - ozy81
+		"####" EF 5 A_FaceTarget
+		"####" O 0 A_PlaySound("astrochaingun/fire")
+		"####" O 8 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",48,1,random(-8,8))
+		"####" E 8 A_Jump(256,"See")
+		Stop
+	}
+}
+
 ACTOR AstroDrone : Nazi
 {
 	//$Category Monsters (Wolf3D)/Astrostein
@@ -202,55 +357,53 @@ ACTOR AstroDrone : Nazi
 	}
 }
 
-ACTOR AstroDroneBall
+ACTOR AstroTurret : MGTurret
 {
-	Radius 6
-	Height 8
-	Speed 10
-	FastSpeed 20
-	Damage 5
-	Projectile
-	+RANDOMIZE
-	RenderStyle "Add"
-	Scale 0.5
-	SeeSound "astrochaingun/fire"
-	DeathSound "astroplasmaexplode"
+	//$Category Monsters (Wolf3D)/Astrostein
+	//$Title Astrostein Turret
+	//$Color 4
+	Scale 1.1
+	Speed 0
+	Obituary "$MGTURRET"
+	Health 100
+	Radius 15
+	Height 21
+	PainChance 100
+	-FLOAT
+	+DONTFALL
+	+DONTTHRUST
+	+MISSILEEVENMORE
+	+NOGRAVITY
+	+SPAWNCEILING
 	States
 	{
 	Spawn:
-		ROBP AB 4 A_SpawnItemEx("Spark_G1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
-		Loop
+		ASTR A 0 NODELAY A_SetUserVar("user_incombat", TRUE) //mxd
+		Goto Look
+	Missile:
+		"####" A 10 A_FaceTarget
+		"####" A 5 A_FaceTarget
+		"####" B 0 A_PlaySound("astrochaingun/fire")
+		"####" C 3 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",10,0,random(-8,8))
+		"####" B 3 A_MonsterRefire(40,"See")
+		"####" B 0 A_FaceTarget
+		Goto Missile+1
 	Death:
-		TNT1 AAAAA 0 A_SpawnItemEx("Spark_G1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
-		TNT1 A 0 A_SpawnItemEx("SparkFlare_G1")
-		ROBP CDEG 6 BRIGHT
+		TNT1 A 0 A_PlaySound("astrostein/explosion", CHAN_AUTO, 1.0, FALSE, 0.1)
+		TNT1 A 0 A_SpawnItemEx("AstrosteinExplosion_Small")
+		ASTR D -1
 		Stop
+	Crash:
+		TNT1 A 0
+		Stop
+	Idle:
+		Goto Look
 	}
 }
 
-ACTOR HardAstroDroneBall : AstroDroneBall {+MTHRUSPECIES}
-
-ACTOR AstroRobotSeekerBall : AstroDroneBall
-{
-	Radius 12
-	Height 16
-	Speed 7
-	MaxTargetRange 128
-	Scale 1.2
-	+SEEKERMISSILE
-	States
-	{
-	Spawn:
-		ROBP A 0 NODELAY A_Jump(2,"PreciseLoop")
-		"####" AB 4 A_SeekerMissile(8, random(15,30))
-		Loop
-	PreciseLoop:
-		"####" AB 4 A_SeekerMissile(8, random(60,90), SMF_PRECISE)
-		Loop
-	}
-}
-
-ACTOR HardAstroRobotSeekerBall : AstroRobotSeekerBall {+MTHRUSPECIES}
+//////////
+//BOSSES//
+//////////
 
 ACTOR AstroCyborg1 : NaziBoss
 {
@@ -266,7 +419,6 @@ ACTOR AstroCyborg1 : NaziBoss
 	Speed 2.66666667
 	Scale 0.67
 	PainChance 32
-	DamageFactor "Rocket", 0.2
 	+BOSS
 	+LOOKALLAROUND
 	+NOBLOOD
@@ -331,7 +483,6 @@ ACTOR AstroCyborg2 : AstroCyborg1
 	//$Category Monsters (Wolf3D)/Astrostein
 	//$Title Astrostein Cyborg (2)
 	//$Color 4
-	DamageFactor "Rocket", 0.2
 	DropItem "AstroShotgunShell" 256
 	DropItem "AstroShotgunShell" 256
 	States
@@ -406,45 +557,6 @@ ACTOR AstroCyborg2 : AstroCyborg1
 	}
 }
 
-ACTOR AstroSuiteGuard : AstroGuard
-{
-	//$Category Monsters (Wolf3D)/Astrostein
-	//$Title Astrostein Suite Guard
-	//$Color 4
-	Speed 2
-	Scale 0.70
-	Health 200
-	Painchance 16
-	+LOOKALLAROUND
-	+NOBLOOD
-	States
-	{
-	Spawn:
-		ROB1 A 0
-		Goto Look
-	Missile:
-		"####" EF 5 A_FaceTarget
-		"####" F 0 A_PlaySound("astrochaingun/fire")
-		"####" G 0 A_SpawnProjectile("EnemyAstroTracer",48,-10,random(-8,4))
-		"####" G 0 A_SpawnProjectile("EnemyAstroTracer",40,-10,random(-8,4))
-		"####" G 0 A_SpawnProjectile("EnemyAstroTracer",40,10,random(4,-8))
-		"####" G 8 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",48,10,random(4,-8))
-		"####" E 8 A_Jump(256,"See")
-		Stop
-	Pain:
-		"####" H 3
-		"####" H 3 A_Pain
-		"####" H 0 A_Jump(256,"See")
-		Stop
-	Disintegrate:
-		"####" I 0 A_Playsound("astrostein/guard_death")
-		"####" I 0 A_Scream
-		"####" IIIIIJJJJJKKKKKLLLLLMMMMMNNNNNOOOOO 1 A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0)
-		"####" O -1 A_NoBlocking
-		Stop
-	}
-}
-
 ACTOR AstroRobot : AstroCyborg1
 {
 	//$Category Monsters (Wolf3D)/Astrostein
@@ -453,8 +565,7 @@ ACTOR AstroRobot : AstroCyborg1
 	Base.BossIcon "BOSSICON"
 	Tag "Tiger Roboter"
 	Health 750
-	Scale 0.80
-	DamageFactor "Rocket", 0.2
+	Scale 0.
 	+AVOIDMELEE
 	+BOSS
 	Obituary "$AROBOTO"
@@ -510,7 +621,6 @@ ACTOR AstroHitler : NaziBoss
 	Radius 36
 	Scale 2.0
 	PainChance 128
-	DamageFactor "Rocket", 0.2
 	Monster
 	+BOSS
 	+FLOORCLIP
@@ -547,106 +657,6 @@ ACTOR AstroHitler : NaziBoss
 		"####" E 0 A_SpawnItemEx("GeneralExplosion_Large")
 		"####" FGHIJ 20
 		"####" J -1
-		Stop
-	}
-}
-
-ACTOR AstroScientist : AstroGuard
-{
-	//$Category Monsters (Wolf3D)/Astrostein
-	//$Title Astro Scientist
-	//$Color 4
-	Scale 0.67
-	States
-	{
-	Spawn:
-		SCN2 N 0
-		Goto Look
-	Missile: //different brightmap & colors - ozy81
-		"####" EF 5 A_FaceTarget
-		"####" O 0 A_PlaySound("astrochaingun/fire")
-		"####" O 8 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",48,1,random(-8,8))
-		"####" E 8 A_Jump(256,"See")
-		Stop
-	}
-}
-
-ACTOR AstroTurret : MGTurret
-{
-	//$Category Monsters (Wolf3D)/Astrostein
-	//$Title Astrostein Turret
-	//$Color 4
-	Scale 1.1
-	Speed 0
-	Obituary "$MGTURRET"
-	Health 100
-	Radius 15
-	Height 21
-	PainChance 100
-	-FLOAT
-	+DONTFALL
-	+DONTTHRUST
-	+MISSILEEVENMORE
-	+NOGRAVITY
-	+SPAWNCEILING
-	States
-	{
-	Spawn:
-		ASTR A 0 NODELAY A_SetUserVar("user_incombat", TRUE) //mxd
-		Goto Look
-	Missile:
-		"####" A 10 A_FaceTarget
-		"####" A 5 A_FaceTarget
-		"####" B 0 A_PlaySound("astrochaingun/fire")
-		"####" C 3 LIGHT(ASTROFIRE) A_SpawnProjectile("EnemyAstroTracer",10,0,random(-8,8))
-		"####" B 3 A_MonsterRefire(40,"See")
-		"####" B 0 A_FaceTarget
-		Goto Missile+1
-	Death:
-		TNT1 A 0 A_PlaySound("astrostein/explosion", CHAN_AUTO, 1.0, FALSE, 0.1)
-		TNT1 A 0 A_SpawnItemEx("AstrosteinExplosion_Small")
-		ASTR D -1
-		Stop
-	Crash:
-		TNT1 A 0
-		Stop
-	Idle:
-		Goto Look
-	}
-}
-
-/////////////////////////////
-// ASTROSTEIN DEATH EFFECT //
-/////////////////////////////
-ACTOR BaseLine
-{
-	+BRIGHT
-	+MISSILE
-	+NOBLOCKMAP
-	+NOGRAVITY
-	+NOINTERACTION
-	Radius 0
-	Height 0
-	RenderStyle "Add"
-	Alpha 0.01
-	States
-	{
-	Spawn:
-		SPFX AAAAA 1 Light("AstrosteinDeathLight") A_FadeIn(0.2)
-		"####" A 1 Light("AstrosteinDeathLight") A_FadeOut(0.06)
-		Wait
-	}
-}
-
-/////////////////////////////
-// TELEPORTFOG REPLACEMENT //
-/////////////////////////////
-ACTOR TeleportFog_Astro : TeleportFog replaces TeleportFog
-{
-	States
-	{
-	Spawn:
-		TNT1 AAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 16), 0, 0, random(1,3), 0, 129, 0)
 		Stop
 	}
 }
