@@ -406,7 +406,7 @@ class Nazi : Base
 	States
 	{
 		Look:
-			"####" "#" 10 A_Look();
+			"####" "#" 10 A_NaziLook();
 			Loop;
 		See: 
 		See.Normal: // Guard Walk Pattern
@@ -634,6 +634,12 @@ class Nazi : Base
 		}
 	}
 
+	void A_NaziLook()
+	{
+		A_Look();
+		if (user_sneakable && level.time > 0 && level.time % Random(35, 70) == 0) { A_LookForBodies(); }
+	}
+
 	void A_NaziChase(statelabel melee = "None", statelabel missile = "None", int flags = 0)
 	{
 		if (melee == "None") { melee = "Melee.Aimed"; }
@@ -652,7 +658,73 @@ class Nazi : Base
 			reactiontime = 0;
 		}
 
+		if (user_sneakable && level.time && level.time % Random(35, 70) == 0) { A_LookForBodies(); }
+
 		A_Chase(melee, missile, flags);
+	}
+
+	virtual state A_LookForBodies()
+	{
+		if (goal && goal is "PatrolPoint")
+		{
+			patrolgoal = goal; // Save the navigation goal if one was set
+		}
+
+		if (!patrolgoal) // Otherwise, make a new navgoal at the actor's origin so that it can come back.
+		{
+			patrolgoal = Spawn("PatrolPoint", pos);
+			patrolgoal.args[0] = -1;
+			patrolgoal.args[1] = 0x7FFFFFFF;
+			patrolgoal.angle = angle;
+		}
+
+		ThinkerIterator Finder = ThinkerIterator.Create("Nazi", STAT_DEFAULT - 5);
+		Nazi mo;
+
+		while ( (mo = Nazi(Finder.Next())) )
+		{
+			if (!IsCorpse(mo)) { continue; }
+
+			if (goal && Distance3d(mo) > Distance3d(goal)) { continue; }
+
+			goal = mo;
+		}
+
+		// A Second iterator to account for the non-sneakables...
+		Finder = ThinkerIterator.Create("Nazi", STAT_DEFAULT);
+
+		while ( (mo = Nazi(Finder.Next())) )
+		{
+			if (!IsCorpse(mo)) { continue; }
+
+			if (goal && Distance3d(mo) > Distance3d(goal)) { continue; }
+
+			goal = mo;
+		}
+
+		if (goal && !(goal is "PatrolPoint"))
+		{
+			Speed = Default.Speed + 1; // Walk a little faster
+			if (Distance3D(goal) < 96)
+			{
+				SoundAlert(goal.target, false, 512);
+				BecomeAlerted(goal.target);
+			}
+		}
+
+		return ResolveState(null);
+	}
+
+	bool IsCorpse(Actor mo)
+	{
+		if (
+			!mo.bIsMonster ||
+			mo.health > 0 ||
+			mo.bDormant ||
+			Distance3d(mo) > 512
+		) { return false; }
+
+		return true;
 	}
 
 	// Initialize actor
@@ -761,7 +833,11 @@ class Nazi : Base
 
 		if (goal)
 		{
-			patrolgoal = goal; // Save the navigation goal if one was set
+			if (goal is "PatrolPoint")
+			{
+				patrolgoal = goal; // Save the navigation goal if one was set
+			}
+			else { goal = null; }
 		}
 
 		if (!patrolgoal) // Otherwise, make a new navgoal at the actor's origin so that it can come back.
@@ -781,6 +857,7 @@ class Nazi : Base
 			bChaseGoal = True;
 		}
 
+		Speed = Default.Speed;
 		reactiontime = 0; // Make the enemy respond to seeing the player right away
 		A_AlertMonsters(512); // Alert an extra-large radius
 		A_SpawnItemEx("SneakableGuardEyesAlerted", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid); // Spawn active guard eyes

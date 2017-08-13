@@ -144,7 +144,7 @@ class NaziMedic : NaziStandard
 		return ResolveState(null);
 	}
 
-	state A_LookForBodies()
+	override state A_LookForBodies()
 	{
 		ThinkerIterator Finder = ThinkerIterator.Create("Nazi", STAT_DEFAULT);
 		Nazi mo;
