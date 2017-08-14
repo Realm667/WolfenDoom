@@ -406,7 +406,7 @@ class Nazi : Base
 	States
 	{
 		Look:
-			"####" "#" 10 A_NaziLook();
+			"####" "#" 10 A_Look();
 			Loop;
 		See: 
 		See.Normal: // Guard Walk Pattern
@@ -632,12 +632,6 @@ class Nazi : Base
 		{
 			BecomeAlerted(target); // Alert that actor
 		}
-	}
-
-	void A_NaziLook()
-	{
-		A_Look();
-		if (user_sneakable && level.time > 0 && level.time % Random(35, 70) == 0) { A_LookForBodies(); }
 	}
 
 	void A_NaziChase(statelabel melee = "None", statelabel missile = "None", int flags = 0)
@@ -1055,7 +1049,6 @@ class NaziStandard : Nazi
 			"####" O -1;
 			Stop;
 		Raise:
-			"####" # 35 { A_SetTics(Default.Health > 25 ? min(Default.Health / 25, 3) * 35 : 35); } // To match the medic's healing state duration
 			"####" M 35;
 			"####" LKJ 5;
 			"####" I 5 A_Jump(256,"See");
