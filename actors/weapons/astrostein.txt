@@ -494,6 +494,7 @@ ACTOR AstroLuger : NaziAstroWeapon //quite the same code from Luger P08 - ozy81
 	//$Title (2) Astrostein Luger
 	//$Color 14
 	Tag "Astro Luger"
+	Scale 1.0
 	Weapon.SelectionOrder 200
 	Weapon.AmmoType "AstroPistolLoaded"
 	Weapon.AmmoUse 1
@@ -501,9 +502,9 @@ ACTOR AstroLuger : NaziAstroWeapon //quite the same code from Luger P08 - ozy81
 	Weapon.AmmoUse2 1
 	Weapon.AmmoGive2 8
 	Weapon.UpSound "luger/select"
+	+WEAPON.NOAUTOFIRE
 	Obituary "$OBALUGER"
 	Inventory.PickupMessage "$ALUGER"
-	+WEAPON.NOAUTOFIRE
 	States
 	{
 	Ready:
