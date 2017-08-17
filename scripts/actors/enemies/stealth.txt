@@ -224,6 +224,7 @@ class SneakableGuardEyesIdle : StealthBase
 					return ResolveState("AlertMaster");
 					LastHeard = null;
 				}
+				else if (Nazi(master)) { Nazi(master).alerted = false; }
 
 				A_LookEx(0, 0.0, 160.0, 256.0, 120.0, "PlayerSeen"); // Wider FOV sight check for short-range
 				A_LookEx(0, 0.0, 1024.0, 256.0, master.bLookAllAround ? 360.0 : 65.0, "PlayerSeen");

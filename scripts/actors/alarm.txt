@@ -87,6 +87,7 @@ class Alarm : Base
 		else
 		{
 			A_StopSound(CHAN_VOICE);
+			SoundAlert(null, false, 512);
 		}
 	}
 
@@ -105,6 +106,8 @@ class AlarmPanel : SwitchableDecoration
 {
 	bool active;
 	Actor activator;
+	int counter;
+	Actor marker;
 
 	Default
 	{
@@ -113,7 +116,7 @@ class AlarmPanel : SwitchableDecoration
 		+NOGRAVITY
 		-SOLID
 		Height 48;
-		Radius 16;
+		Radius 24;
 	}
 
 	States
@@ -121,23 +124,47 @@ class AlarmPanel : SwitchableDecoration
 		Spawn:
 			ALRM Q 35;
 		Inactive:
-			"####" Q 175 { // Check every 5 seconds, max
-				if (
-					!NaziStandard(activator) || 
-					!activator.bShootable || 
-					!activator.health > 0 || 
-					(NaziStandard(activator).activationgoal && NaziStandard(activator).activationgoal != self)
-				) { activator = FindActivator(); }
+			"####" Q 1;
+			"####" Q 0 { 
+				counter++;
+				if (counter >= 525) { // Check after 15 seconds, max, to give alerted guards time to return to idle when the alarm is turned off, and to avoid spamming thinkeriterator calls
+					if (
+						!activator ||
+						!NaziStandard(activator) || 
+						!activator.bShootable || 
+						activator.health <= 0 || 
+						(NaziStandard(activator).activationgoal && NaziStandard(activator).activationgoal != self)
+					) { activator = FindActivator(); }
+
+					counter = 490; // Check every second after the first delay
+				}
+
+				if (GetCVar("g_debugalarms") > 0 && activator && !marker) {
+					marker = activator.Spawn("FireBrandEffect", activator.pos);
+					marker.master = activator;
+				}
+
 				active = false;
 			}
 			Loop;
 		Active:
-			"####" P 1 Light("LAZERRED") { activator = null; active = true; }
+			"####" P 1 Light("LAZERRED")
+			{
+				counter = 0;
+				if (NaziStandard(activator)) { NaziStandard(activator).activationgoal = null; }
+				activator = null;
+
+				if (marker) { marker.Destroy(); }
+
+				active = true;
+			}
 			Loop;
 	}
 
 	override bool Used(Actor user)
 	{ // Handle the player activating/deactivating the alarm
+		if (user.pos.z < pos.z - user.height || user.pos.z > pos.z + height) { return false; } // Rudimentary z-checking
+
 		target = user;
 		if (active) { Deactivate(user); }
 		else { Activate(user); }
@@ -180,7 +207,7 @@ class AlarmPanel : SwitchableDecoration
 				(closest && dist > Distance3d(closest))
 			)
 			{
-				if (mo.activationgoal == self) { mo.activationgoal = null; }
+				if (mo.activationgoal && mo.activationgoal == self) { mo.activationgoal = null; }
 				continue;
 			}
 
