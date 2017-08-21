@@ -72,6 +72,7 @@ ACTOR SpaceSuit : PowerupGiver
 	//$Category Powerups (Wolf3D)
 	//$Title Space Suit ("IceWater" protection)
 	//$Color 6
+	Scale 0.5
 	Inventory.MaxAmount 0
 	Inventory.PickupMessage "$SCUBA1"
 	Inventory.RespawnTics 1050 //30 seconds
@@ -98,8 +99,8 @@ ACTOR C4 : Inventory
 	//$Category Powerups (Wolf3D)
 	//$Title C4 Explosives (pickups)
 	//$Color 6
-	Inventory.PickupMessage "$C4PACK"
 	Scale 0.5
+	Inventory.PickupMessage "$C4PACK"
 	Inventory.Icon "I_C4"
 	Inventory.MaxAmount 10
 	+INVENTORY.INVBAR
