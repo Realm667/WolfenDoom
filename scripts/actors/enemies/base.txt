@@ -204,7 +204,7 @@ class Base : Actor
 			Actor mo = players[p].mo;
 
 			if (mo) {
-				if (mo.CheckSight(self)) { return true; }
+				if (mo.CheckSight(self, SF_SEEPASTBLOCKEVERYTHING | SF_SEEPASTSHOOTABLELINES)) { return true; }
 			}
 		}
 
@@ -365,7 +365,6 @@ class Nazi : Base
 	int user_incombat;
 	int perceptionthreshold;
 	int perceptionfov;
-	int user_chasegoal;
 	int sneakableclosesightradius;
 	bool user_sneakable;
 	String DeathDamageType;
@@ -408,7 +407,7 @@ class Nazi : Base
 	States
 	{
 		Look:
-			"####" "#" 10 A_Look();
+			"####" "#" 10 A_NaziLook();
 			Loop;
 		See: 
 		See.Normal: // Guard Walk Pattern
@@ -633,6 +632,29 @@ class Nazi : Base
 		if (user_sneakable && bFriendly) // If we attacked a sneakable actor who wasn't alerted...
 		{
 			BecomeAlerted(target); // Alert that actor
+		}
+	}
+
+	void A_NaziLook()
+	{
+		A_Look();
+
+		// Check specifically for players via CheckSight in order to "see through" block-everything lines (which are usually windows)
+		for (int p = 0; p < MAXPLAYERS; p++) // Iterate through all of the players and see if any are in sight
+		{
+			if (players[p].cheats & CF_NOTARGET) { continue; }
+
+			Actor mo = players[p].mo;
+
+			if (mo) {
+				if (IsFriend(mo)) { continue; }
+				if (Distance3d(mo) > 160.0) { continue; }
+				if (abs(deltaangle(angle, AngleTo(mo))) > 32.5) { continue; } 
+				if (!CheckSight(mo, SF_SEEPASTBLOCKEVERYTHING | SF_SEEPASTSHOOTABLELINES)) { continue; }
+
+				target = mo;
+				SetStateLabel("See");
+			}
 		}
 	}
 
@@ -969,6 +991,7 @@ class Nazi : Base
 
 				if (Distance3D(patrolgoal) <= Radius) // If at goal, clear target and goal and go to Spawn state
 				{
+					angle = patrolgoal.angle;
 					goal = null;
 					LastHeard = null;
 					LastEnemy = null;
@@ -1175,7 +1198,7 @@ class ConversationMarker : Actor
 	{
 		if (master)
 		{
-			if (master.health <= 0) { Destroy(); }
+			if (master.health <= 0 || !Base(master).user_conversation) { Destroy(); }
 			else
 			{
 				double offset;

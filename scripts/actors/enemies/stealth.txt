@@ -226,9 +226,7 @@ class SneakableGuardEyesIdle : StealthBase
 				}
 				else if (Nazi(master)) { Nazi(master).alerted = false; }
 
-				A_LookEx(0, 0.0, 160.0, 256.0, 120.0, "PlayerSeen"); // Wider FOV sight check for short-range
-				A_LookEx(0, 0.0, 1024.0, 256.0, master.bLookAllAround ? 360.0 : 65.0, "PlayerSeen");
-				A_LookForNoTargetPlayer();
+				A_SneakableLook();
 				if (master && !master.bBoss) { A_CountdownArg(1, "PlayIdleSound"); }
 				return ResolveState(null);
 			}
@@ -268,6 +266,35 @@ class SneakableGuardEyesIdle : StealthBase
 				if (master && !master.bDormant) { Nazi(master).BecomeAlerted(target); } // Cause the master to become alerted
 			} 
 			Stop;
+	}
+
+	void A_SneakableLook()
+	{
+		double closerange = 160.0;
+		double closeFOV = 120.0;
+		double farrange = 1024.0;
+		double farFOV = 65.0;
+
+		A_LookEx(0, 0.0, closerange, 256.0, closefov, "PlayerSeen"); // Wider FOV sight check for short-range
+		A_LookEx(0, 0.0, farrange, 256.0, master.bLookAllAround ? 360.0 : farFOV, "PlayerSeen");
+		A_LookForNoTargetPlayer();
+
+		// Check via CheckSight in order to "see through" double-sided walls (windows)
+		for (int p = 0; p < MAXPLAYERS; p++) // Iterate through all of the players and see if any are in sight
+		{
+			if (players[p].cheats & CF_NOTARGET) { continue; }
+
+			Actor mo = players[p].mo;
+
+			if (mo) {
+				if (Distance3d(mo) > (closerange + farrange) / 2) { continue; } // Meet in the middle of the short/close ranges above
+				if (abs(deltaangle(angle, AngleTo(mo))) > farfov / 2) { continue; } // Use the far FOV
+				if (!CheckSight(mo, SF_SEEPASTBLOCKEVERYTHING | SF_SEEPASTSHOOTABLELINES)) { continue; }
+
+				target = mo;
+				SetStateLabel("PlayerSeen");
+			}
+		}
 	}
 }
 

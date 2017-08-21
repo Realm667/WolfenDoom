@@ -197,11 +197,12 @@ class AlarmPanel : SwitchableDecoration
 			dist = Distance3d(mo);
 
 			if (
-				!mo.bShootable || 
+				!mo.bShootable ||
 				mo.health <= 0  ||
 				mo.bDormant ||
 				mo.bAmbush ||
 				mo.Speed == 0 ||
+				!mo.bCanUseWalls ||
 				dist > range ||
 				!CheckSight(mo) ||
 				(closest && dist > Distance3d(closest))
