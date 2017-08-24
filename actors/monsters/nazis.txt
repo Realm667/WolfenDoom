@@ -1681,6 +1681,7 @@ ACTOR MiniShip : Nazi
 	PainChance 96
 	FloatSpeed 0.87
 	-FLOORCLIP
+	-ISMONSTER //needed for shadows
 	+FLOAT
 	+LOOKALLAROUND
 	+NOBLOODDECALS
@@ -1903,6 +1904,7 @@ ACTOR MGTurretSoldier : MGTurret
 	Radius 16
 	Mass 9999
 	Scale 0.62
+	+ISMONSTER //needed for shadows
 	SeeSound "Nazi1/Sighted"
 	PainSound "Nazi1/Pain"
 	DeathSound "Nazi1/Death"

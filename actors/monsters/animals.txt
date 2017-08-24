@@ -123,14 +123,15 @@ ACTOR BatFamiliar : Base
 	Speed 3.33333334
 	PainChance 200
 	Scale 0.57
-	MONSTER
+	Monster
+	-CANPUSHWALLS
+	-CANUSEWALLS
+	-ISMONSTER //needed for shadows
 	-MTHRUSPECIES
 	-THRUSPECIES
 	+FLOAT
 	+NOGRAVITY
 	+NOINFIGHTING
-	-CANUSEWALLS
-	-CANPUSHWALLS
 	SeeSound "batfam/idle"
 	PainSound "batfam/pain"
 	DeathSound "batfam/death"
@@ -189,12 +190,12 @@ ACTOR RatFamiliar : Base
 	Scale 0.30
 	Speed 3.66666667
 	PainChance 200
-	MONSTER
+	Monster
+	-CANPUSHWALLS
+	-CANUSEWALLS
 	-FLOAT
 	-NOGRAVITY
 	+NOINFIGHTING
-	-CANUSEWALLS
-	-CANPUSHWALLS
 	SeeSound "rat/squeek"
 	PainSound "batfam/pain"
 	DeathSound "rat/death"
@@ -246,21 +247,21 @@ ACTOR BigSpider : Base
 	Mass 100
 	PainChance 150
 	Scale 0.33
-	Translation "176:191=164:167" , "32:47=164:167"
-	BloodType "ScorpionBlood"
-	BloodColor "DarkOrange1"
 	MaxDropOffHeight 128
 	MaxStepHeight 16
-	MONSTER
+	Monster
+	-CANPUSHWALLS
+	-CANUSEWALLS
 	-MTHRUSPECIES
 	-THRUSPECIES
 	+DONTGIB
 	+FLOORCLIP
 	+NEVERFAST
-	+THRUGHOST
 	+NOINFIGHTING
-	-CANUSEWALLS
-	-CANPUSHWALLS
+	+THRUGHOST
+	Translation "176:191=164:167" , "32:47=164:167"
+	BloodType "ScorpionBlood"
+	BloodColor "DarkOrange1"
 	SeeSound "spider1/sight"
 	PainSound "spider1/pain"
 	DeathSound "spider1/death"
@@ -324,22 +325,22 @@ ACTOR Scorpion : Base
 	Mass 20
 	Speed 6
 	Health 20
+	Damage 1 //jumpattacks
 	MeleeRange 16
+	MaxTargetRange 112
 	MaxStepHeight 16
 	MaxDropOffHeight 128
-	Damage 1 //jumpattacks
-	DeathSound "rat/death"
-	Obituary "$SCORPSML"
-	BloodType "ScorpionBlood"
-	BloodColor "DarkOrange1"
-	MONSTER
+	Monster
 	+DONTMORPH
 	+FLOORCLIP
 	+LOOKALLAROUND
 	+NOINFIGHTING
 	+NOTRIGGER
 	Species Nazi
-	MaxTargetRange 112
+	BloodType "ScorpionBlood"
+	BloodColor "DarkOrange1"
+	DeathSound "rat/death"
+	Obituary "$SCORPSML"
 	States
 	{
 	Spawn:
@@ -396,18 +397,18 @@ ACTOR ScorpionBig : Base
 	MaxDropOffHeight 256
 	PainChance 235
 	Damage 2 //jumpattacks
-	ActiveSound "scorpion/see"
-	SeeSound "scorpion/see"
-	PainSound "scorpion/pains"
-	DeathSound "scorpion/death"
-	Obituary "$SCORPBIG"
-	Species Nazi
-	MONSTER
+	Monster
 	+DONTMORPH
 	+FLOORCLIP
 	+LOOKALLAROUND
 	+NOINFIGHTING
 	+NOTRIGGER
+	Species Nazi
+	ActiveSound "scorpion/see"
+	SeeSound "scorpion/see"
+	PainSound "scorpion/pains"
+	DeathSound "scorpion/death"
+	Obituary "$SCORPBIG"
 	States
 	{
 	Spawn:
@@ -482,11 +483,12 @@ ACTOR Shark : Base
 	+FLOAT
 	+FLOORCLIP
 	+FORCEXYBILLBOARD
+	+NEVERTARGET
 	+NOGRAVITY
 	+NOINFIGHTING
-	+NEVERTARGET
-	-CANUSEWALLS
 	-CANPUSHWALLS
+	-CANUSEWALLS
+	-ISMONSTER //needed for shadows
 	Base.Swimmer
 	Base.LoiterDistance 128
 	States

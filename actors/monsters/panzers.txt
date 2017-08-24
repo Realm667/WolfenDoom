@@ -520,13 +520,16 @@ ACTOR SSTank1
 	//$Category Monsters (Wolf3D)/Tanks
 	//$Title Tank 1 (3500 HP, Panther Panzer IV, Turret + Missile)
 	//$Color 4
+	Tag "Panzer IV F"
+	Species Nazi
 	Health 3500
 	Radius 100
 	Height 96
 	Mass 0x7ffffff
 	Speed 2.66666667
 	MinMissileChance 160
-	Tag "Panzer IV F"
+	Monster
+	-ISMONSTER //needed for shadows
 	+BOSS
 	+BOSSDEATH
 	+DONTMORPH
@@ -537,9 +540,7 @@ ACTOR SSTank1
 	+PAINLESS
 	+SLIDESONWALLS	//ozy81 - avoid incorrect clipping
 	+SOLID
-	Monster
 	Obituary "$TANKS"
-	Species Nazi
 	MaxStepHeight 32
 	BloodType "TankSpark"
 	States
@@ -632,10 +633,10 @@ ACTOR DestroyedTank1
 ACTOR SSTank2 : SSTank1
 {
 	//$Title Tank 2 (4000 HP, KFZ 251 HalfTrack, Turret + Missile)
+	Tag "KFZ 251 HalfTrack"
 	Height 88
 	Health 4000
 	Speed 2.33333333
-	Tag "KFZ 251 HalfTrack"
 	States
 	{
 	Spawn:
@@ -681,10 +682,10 @@ ACTOR DestroyedTank2 : DestroyedTank1
 ACTOR SSTank3 : SSTank1
 {
 	//$Title Tank 3 (3000 HP, Tiger I Panzer, Missile only)
+	Tag "Tiger I Panzer"
 	Health 3000
 	Height 88
 	Speed 2.55555556
-	Tag "Tiger I Panzer"
 	States
 	{
 	Spawn:
@@ -730,11 +731,11 @@ ACTOR DestroyedTank3 : DestroyedTank1
 ACTOR SSTank4 : SSTank1
 {
 	//$Title Tank 4 (1000 HP, Light Panzer KFZ 222, Turret only)
+	Tag "Light Panzer KFZ 222"
 	Health 1000
 	Radius 80
 	Height 80
 	Speed 2.55555556
-	Tag "Light Panzer KFZ 222"
 	States
 	{
 	Spawn:
