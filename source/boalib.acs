@@ -209,27 +209,44 @@ script "Dashing" ENTER
 	if(!CheckActorClass(0,"BoAPlayer"))
 		terminate;
 	int buttons = GetPlayerInput(-1,INPUT_BUTTONS);
-	if(!CheckWeapon("NullWeapon") && (buttons & BT_SPEED) && (buttons & BT_FORWARD) && !(buttons & BT_CROUCH) && CheckInventory("Stamina") && cooldown[PlayerNumber()] <= 0)
+
+	// Unfortunately, we have to check for each type of disguise token here - can't check for the base DisguiseToken class in ACS
+	if (
+		!(
+			CheckWeapon("NullWeapon") &&
+			(
+				CheckInventory("SSBJUniformToken") ||
+				CheckInventory("ScientistUniformToken")
+			)
+		) && 
+		(buttons & BT_SPEED) && 
+		(buttons & BT_FORWARD) && 
+		!(buttons & BT_CROUCH) && 
+		CheckInventory("Stamina") && 
+		cooldown[PlayerNumber()] <= 0
+	)
 	{
 		SetActorProperty(0,APROP_SPEED,2.0);
-			if(checksprint==TRUE||CheckInventory("BerserkToken"))
+
+		if(checksprint==TRUE||CheckInventory("BerserkToken"))
 			TakeInventory("Stamina",0); //do not deplete stamina - ozy
-			else
-				{
-				TakeInventory("Stamina",random(1,3)); //more stamina to use
-				}
+		else
+		{
+			TakeInventory("Stamina",random(1,3)); //more stamina to use
+		}
 	}
 	else
 	{
-		if (!CheckWeapon("NullWeapon")) {
-			SetActorProperty(0,APROP_SPEED,1.0);
-		}
+		SetActorProperty(0,APROP_SPEED,1.0);
+
 		cooldown[PlayerNumber()]--;
 		delay(random(1,3)); //recovery is more fast
 		GiveInventory("Stamina",1);
 	}
+
 	if(!CheckInventory("Stamina"))
 		cooldown[PlayerNumber()]=100;
+
 	delay(1);
 	restart;
 }
