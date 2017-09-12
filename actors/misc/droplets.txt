@@ -10,7 +10,7 @@ ACTOR BleedMe : CustomInventory
 	{
 	Pickup:
 		TNT1 A 0 A_SpawnItemEx("BloodPool2",0,0,0,velx,vely,velz,0,SXF_USEBLOODCOLOR)
-		stop
+		Stop
 	}
 }
 
@@ -66,7 +66,7 @@ ACTOR GibMe : CustomInventory
 			if (health < GetGibHealth)
 			{A_SpawnItemEx("GibSpray",0,0,32,velx,vely,0,0);}
 		}
-		stop
+		Stop
 	}
 }
 
@@ -376,14 +376,14 @@ ACTOR BloodDrop1
 	States
 	{
 	Spawn:
-		BLUD A 1 NoDelay { alpha = GetCVar("blood_alpha"); }
+		DLUD A 1 NoDelay { alpha = GetCVar("blood_alpha"); }
 		TNT1 A 0 A_ScaleVelocity(0.75)
 		TNT1 A 0 A_ScaleVelocity(GetCVar("blood_rand"))
 		TNT1 A 0 A_JumpIf(waterlevel > 0, "Underwater")
 		goto Fall
 	Fall:
 		TNT1 A 0 A_JumpIf(z <= floorz, "Death")
-		BLUD ABCD 2
+		DLUD ABCD 2
 		TNT1 A 0 A_JumpIf(waterlevel > 0, "Underwater")
 		Loop
 	Death:
@@ -466,13 +466,13 @@ ACTOR BloodDrop2 : BloodDrop1
 	States
 	{
 	Spawn:
-		BLUD A 1 NoDelay { alpha = GetCVar("blood_alpha"); }
+		DLUD A 1 NoDelay { alpha = GetCVar("blood_alpha"); }
 		TNT1 A 0 A_ScaleVelocity(GetCVar("blood_rand"))
 		TNT1 A 0 A_JumpIf(waterlevel > 0, "Underwater")
 		goto Fall
 	Fall:
 		TNT1 A 0 A_JumpIf(z <= floorz, "Death")
-		BLUD ABCD 2
+		DLUD ABCD 2
 		TNT1 A 0 A_JumpIf(waterlevel > 0, "Underwater")
 		Loop
 	Death:
@@ -518,7 +518,7 @@ ACTOR DecoDrop2 : BloodDrop2
 		SPLT A 1
 		TNT1 A 0 A_JumpIf(z > floorz + 8.0, "Goodbye")
 		TNT1 A 0 A_JumpIf(CallACS("LiquidCheck"),"Fog")
-		
+
 		TNT1 A 0 A_SetAngle(frandom(0.0,360.0))
 		TNT1 A 0 A_Jump(128, 2)
 		SPLT F 1 A_SetScale(0.69 * GetCVar("blood_size"),0.1)
@@ -549,14 +549,14 @@ ACTOR BloodDrop3 : BloodDrop1
 	States
 	{
 	Spawn:
-		BLUD A 1 NoDelay { alpha = GetCVar("blood_alpha"); }
+		DLUD A 1 NoDelay { alpha = GetCVar("blood_alpha"); }
 		TNT1 A 0 A_ScaleVelocity(1.25)
 		TNT1 A 0 A_ScaleVelocity(GetCVar("blood_rand"))
 		TNT1 A 0 A_JumpIf(waterlevel > 0, "Underwater")
 		goto Fall
 	Fall:
 		TNT1 A 0 A_JumpIf(z <= floorz, "Death")
-		BLUD ABCD 2
+		DLUD ABCD 2
 		TNT1 A 0 A_JumpIf(waterlevel > 0, "Underwater")
 		Loop
 	Death:
@@ -600,7 +600,7 @@ ACTOR DecoDrop3 : BloodDrop3
 		SPLT A 1
 		TNT1 A 0 A_JumpIf(z > floorz + 8.0, "Goodbye")
 		TNT1 A 0 A_JumpIf(CallACS("LiquidCheck"),"Fog")
-		
+
 		TNT1 A 0 A_SetAngle(frandom(0.0,360.0))
 		TNT1 A 0 A_Jump(128, 2)
 		SPLT F 1 A_SetScale(0.17 * GetCVar("blood_size"),0.1)
@@ -630,19 +630,19 @@ ACTOR ExcessDroplet : BloodDrop3
 	States
 	{
 	Spawn:
-		BLUD A 1 NoDelay { alpha = GetCVar("blood_alpha"); }
+		DLUD A 1 NoDelay { alpha = GetCVar("blood_alpha"); }
 		TNT1 A 0 A_ScaleVelocity(1.5)
 		TNT1 A 0 A_ScaleVelocity(GetCVar("blood_rand"))
 		TNT1 A 0 A_JumpIf(waterlevel > 0, "Underwater")
 		goto Fall
 	Fall:
 		TNT1 A 0 A_JumpIf(z <= floorz, "Death")
-		BLUD ABCD 2
+		DLUD ABCD 2
 		TNT1 A 0 A_JumpIf(waterlevel > 0, "Underwater")
 		Loop
 	Death:
 		TNT1 A 0
-		stop
+		Stop
 	Underwater:
 		TNT1 A 0
 		Stop
@@ -653,8 +653,9 @@ ACTOR ExcessDroplet : BloodDrop3
 //SQUIRTS//
 ///////////
 
-ACTOR BloodSquirt replaces Blood
+ACTOR BloodSquirt
 {
+	Mass 5
 	+ALLOWPARTICLES
 	+DONTTHRUST
 	+NOBLOCKMAP
@@ -673,7 +674,7 @@ ACTOR BloodSquirt replaces Blood
 			A_Warp(AAPTR_DEFAULT,cos(angle)*8,sin(angle)*8,sin(pitch)*8,0,WARPF_ABSOLUTEOFFSET);
 			A_SpawnItemEx("BloodHitPuffSmall",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION);
 		}
-		stop
+		Stop
 	Spray:
 		TNT1 A 0
 		{
@@ -681,7 +682,7 @@ ACTOR BloodSquirt replaces Blood
 			A_Warp(AAPTR_DEFAULT,cos(angle)*8,sin(angle)*8,sin(pitch)*8,0,WARPF_ABSOLUTEOFFSET);
 			A_SpawnItemEx("BloodHitPuff",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION,128-GetCVar(blood_amt)*64);
 		}
-		stop
+		Stop
 	Mid:
 		TNT1 A 0
 		{
@@ -689,7 +690,7 @@ ACTOR BloodSquirt replaces Blood
 			A_Warp(AAPTR_DEFAULT,cos(angle)*8,sin(angle)*8,sin(pitch)*8,0,WARPF_ABSOLUTEOFFSET);
 			A_SpawnItemEx("BloodHitPuffMid",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION,64-GetCVar(blood_amt)*32);
 		}
-		stop
+		Stop
 	}
 }
 
@@ -790,8 +791,8 @@ ACTOR BloodHitPuffSmall : BloodHitPuff
 	}
 }
 
-ACTOR BloodSplatPuff : BloodHitPuff replaces BloodSplatter{}
-ACTOR AxeBloodPuff : BloodHitPuff replaces AxeBlood{}
+//ACTOR BloodSplatPuff : BloodHitPuff replaces BloodSplatter{}
+//ACTOR AxeBloodPuff : BloodHitPuff replaces AxeBlood{}
 
 ////////////
 //CEILINGS//
@@ -807,39 +808,39 @@ ACTOR CeilingDroplet : DecoDroplet
 	{
 	Spawn:
 		TNT1 A 1 NoDelay { alpha = GetCVar("blood_alpha"); }
-		BLUD C 6
+		DLUD C 6
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1);
 			A_SetScale(0.4,0.05);
 		}
-		BLUD C 5
+		DLUD C 5
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1);
 			A_SetScale(0.37,0.1);
 		}
-		BLUD C 4
+		DLUD C 4
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1);
 			A_SetScale(0.33,0.2);
 		}
-		BLUD C 3
+		DLUD C 3
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1);
 			A_SetScale(0.3,0.3);
 		}
-		BLUD C 2
+		DLUD C 2
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1);
 			A_SetScale(0.28,0.4);
 		}
 		TNT1 A 0 A_ChangeFlag("NOGRAVITY", false)
 		TNT1 A 0 A_SetScale(0.25,0.5)
-		BLUD ABCD 2
+		DLUD ABCD 2
 		TNT1 A 0 A_ChangeFlag("MISSILE", true)
 		goto Fall
 	Fall:
 		TNT1 A 0 A_JumpIf(z <= floorz, "Death")
-		BLUD ABCD 2
+		DLUD ABCD 2
 		TNT1 A 0 A_JumpIf(waterlevel > 0, "Underwater")
 		Loop
 	}
@@ -855,38 +856,38 @@ ACTOR CeilingDrop2 : DecoDrop2
 	{
 	Spawn:
 		TNT1 A 1 NoDelay { alpha = GetCVar("blood_alpha"); }
-		BLUD C 6
+		DLUD C 6
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1);
 			A_SetScale(0.32,0.05);
 		}
-		BLUD C 5
+		DLUD C 5
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1);
 			A_SetScale(0.29,0.08);
 		}
-		BLUD C 4
+		DLUD C 4
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1);
 			A_SetScale(0.27,0.15);
 		}
-		BLUD C 3
+		DLUD C 3
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1);
 			A_SetScale(0.24,0.23);
 		}
-		BLUD C 2
+		DLUD C 2
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1);
 			A_SetScale(0.22,0.3);
 		}
 		TNT1 A 0 A_ChangeFlag("NOGRAVITY", false)
 		TNT1 A 0 A_SetScale(0.2,0.4)
-		BLUD ABCD 2
+		DLUD ABCD 2
 		TNT1 A 0 A_ChangeFlag("MISSILE", true)
 	Fall:
 		TNT1 A 0 A_JumpIf(z <= floorz, "Death")
-		BLUD ABCD 2
+		DLUD ABCD 2
 		TNT1 A 0 A_JumpIf(waterlevel > 0, "Underwater")
 		Loop
 	}
@@ -902,38 +903,38 @@ ACTOR CeilingDrop3 : DecoDrop3
 	{
 	Spawn:
 		TNT1 A 1 NoDelay { alpha = GetCVar("blood_alpha"); }
-		BLUD C 6
+		DLUD C 6
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1);
 			A_SetScale(0.24,0.05);
 		}
-		BLUD C 5
+		DLUD C 5
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1);
 			A_SetScale(0.22,0.09);
 		}
-		BLUD C 4
+		DLUD C 4
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1);
 			A_SetScale(0.2,0.12);
 		}
-		BLUD C 3
+		DLUD C 3
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1);
 			A_SetScale(0.18,0.16);
 		}
-		BLUD C 2
+		DLUD C 2
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1);
 			A_SetScale(0.17,0.2);
 		}
 		TNT1 A 0 A_ChangeFlag("NOGRAVITY", false)
 		TNT1 A 0 A_SetScale(0.15,0.3)
-		BLUD ABCD 2
+		DLUD ABCD 2
 		TNT1 A 0 A_ChangeFlag("MISSILE", true)
 	Fall:
 		TNT1 A 0 A_JumpIf(z <= floorz, "Death")
-		BLUD ABCD 2
+		DLUD ABCD 2
 		TNT1 A 0 A_JumpIf(waterlevel > 0, "Underwater")
 		Loop
 	}
@@ -941,14 +942,14 @@ ACTOR CeilingDrop3 : DecoDrop3
 
 ACTOR CeilDripper
 {
+	DistanceCheck cl_drop1_dist
 	Radius 1
 	Height 1
-	+THRUACTORS
+	Scale 0.5
+	+NOGRAVITY
 	+NOTONAUTOMAP
 	+SPAWNCEILING
-	+NOGRAVITY
-	DistanceCheck cl_drop1_dist
-	Scale 0.5
+	+THRUACTORS
 	States
 	{
 	Spawn:
@@ -973,8 +974,8 @@ ACTOR CeilDripper
 
 ACTOR CeilDrip2 : CeilDripper
 {
-	Scale 0.33
 	DistanceCheck cl_drop2_dist
+	Scale 0.33
 	States
 	{
 	Spawn:
@@ -999,8 +1000,8 @@ ACTOR CeilDrip2 : CeilDripper
 
 ACTOR CeilDrip3 : CeilDripper
 {
-	Scale 0.17
 	DistanceCheck cl_drop3_dist
+	Scale 0.17
 	States
 	{
 	Spawn:
