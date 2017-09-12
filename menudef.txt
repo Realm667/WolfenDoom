@@ -125,20 +125,62 @@ OptionMenuSettings
 // BoA options menu ------------------------------------------------------------------------------
 OptionMenu "BOAOptionsMenu"
 {
-	StaticText "Gameplay Settings", 1
 	StaticText ""
-	Option "Strafe Camera Tilt", "sv_boastrafetilt", "OnOff"
-	Slider "Debris Lifetime (seconds)","debrislifetime",1,180,5,0
-	Slider "Blood Lifetime (seconds)","bloodlifetime",1,180,5,0
+	Submenu "Controls Settings", "BoACTRLOptions"
+	
+	StaticText " "
+	Submenu "Gameplay Options", "GameOptions"
+	
+	StaticText " "
+	Submenu "Blood Options", "BloodOptions"
 	
 	StaticText ""
-	StaticText "Weapons Settings", 1
+	Submenu "Weather Options", "WeatherOptions"
+
+	StaticText ""
+	Submenu "Effects Options", "EffectsOptions"
+
+	StaticText ""
+	Submenu "Rendering Options", "RenderOptions"
+	
+	StaticText ""
+	Submenu "Cheats Settings", "CheatsOptions"
+}
+
+OptionValue "BloodAmount"
+{
+	0, "Mild"
+	1, "Normal"
+	2, "Excessive"
+}
+
+OptionMenu "BloodOptions"
+{
+	Title "Blood Options"
+	Option "Blood Amount", "blood_amt", "BloodAmount"
+	Slider "Blood Opacity", "blood_alpha", 0.5, 1.0, 0.1
+	Slider "Blood Velocity", "blood_rand", 0.5, 1.5, 0.1
+	Slider "Blood Scale", "blood_size", 0.7, 1.3, 0.1
+	Slider "Blood Limit", "sv_corpsequeuesize", 64, 10000, 256
+	Slider "Blood Lifetime (seconds)","bloodlifetime",1,180,5,0
+	Slider "Decal Limit", "cl_maxdecals", 64, 10000, 256
+	Option "Spawn Blood Pools", "blood_pools", "onoff"
+	Option "Spawn Giblets", "blood_gibs", "onoff"
+}
+
+OptionMenu "GameOptions"
+{	
+	StaticText "Gameplay Settings", 1
 	StaticText ""
 	Option "Auto-Reload","autoreload","OnOff"
 	Slider "Shell Casing Lifetime (seconds)","casinglifetime",1,180,5,0
 	Slider "Weapon Recoil Multiplier","recoilamount",0,20,1,0
-	
-	StaticText ""
+	Option "Strafe Camera Tilt", "sv_boastrafetilt", "OnOff"
+	Slider "Debris Lifetime (seconds)","debrislifetime",1,180,5,0
+}
+
+OptionMenu "WeatherOptions"
+{
 	StaticText "Weather Effects",	1
 	StaticText "WARNING: these settings may require level restart"
 	
@@ -147,50 +189,60 @@ OptionMenu "BOAOptionsMenu"
 	Option "Fog","fogswitch","OnOff"
 	Option "Rain","rainswitch","OnOff"
 	Option "Snow","snowswitch","OnOff"
+}
 
-	StaticText ""
+OptionMenu "EffectsOptions"
+{	
 	StaticText "Special Effects",	1
 	StaticText "WARNING: these settings may require level restart"
 
 	StaticText ""
-	Option "Sprite Shadows", "sv_nashshadows","OnOff"
 	Option "Cinders","cinderswitch","OnOff"
 	Option "Leaves","leavesswitch","OnOff"
-	Option "Steam","steamswitch","OnOff"
 	Option "Smoke","smokeswitch","OnOff"
 	Option "Splash","splashswitch","OnOff"
 	Option "Stardust","dustswitch","OnOff"
+	Option "Steam","steamswitch","OnOff"
+	Option "Shadows", "sv_nashshadows","OnOff"
+	Slider "Explosion Density","boomswitch",0,5,1,0
+	Slider "Flame Density","fireswitch",0,5,1,0
+	Slider "Spark Density","sparkswitch",0,5,1,0
 	Option "Underwater Bubbles","bubbleswitch","OnOff"
 	Option "Underwater Lights","litsswitch","OnOff"
 	Slider "Underwater Effect", "uw_effectsize", 0, 0.1, 0.005, 3
-	Slider "Spark Density","sparkswitch",0,5,1,0
-	Slider "Explosion Density","boomswitch",0,5,1,0
-	Slider "Flame Density","fireswitch",0,5,1,0
+}
 
-	StaticText ""
-	StaticText "Rendering Distance (in map units)", 1
+OptionMenu "RenderOptions"
+{
+	StaticText "Rendering Options", 1
+	StaticText "Distance is applied in map units"
+	StaticText "Decrease following values to improve in-game performance"
 
 	StaticText ""
 	Slider "Grass","grasslod",256,16384,256
 	Slider "Scenery","scenelod",256,16384,256
 	Slider "Special Effects","sfxlod",1024,16384,1024
 	Slider "Trees","treeslod",256,16384,256
+}
 
-	StaticText ""
+OptionMenu "BoACTRLOptions"
+{
 	StaticText "Controls", 1
 	StaticTextSwitchable "ENTER to change, BACKSPACE to clear",
                      "Press new key for control, ESC to cancel",
                      "ControlMessage"
 	StaticText ""
-	Control "Throw Grenade",	"use GrenadePickup"
 	Control "Quick Kick",		"pukename QuickKick"
+	Control "Throw Grenade",	"use GrenadePickup"
 	Control "Toggle Objectives",	"pukename boaobjectives"
-	
-	StaticText ""
+}
+
+OptionMenu "CheatsOptions"
+{
 	StaticText "Cheats Settings", 1
 	StaticText "WARNING: don't change these settings while saving the game"
-	StaticText "WARNING: these settings may require level restart"
 	StaticText "WARNING: these settings may cause unhandled gameplay glitches"
+	StaticText "WARNING: these settings may require level restart"
 	StaticText ""
 	Option "Unlimited Sprint", "sprintswitch", "OnOff"
 	StaticText ""

@@ -1,0 +1,127 @@
+#library "droplets"
+#include "zcommon.acs"
+
+function int abs(int value)
+{
+	if (value < 0)
+	{
+		return -value;
+	}
+	return value;
+}
+
+script "BloodScale" (void)
+{
+	int mult = GetCVar("blood_rand");
+	mult = FixedMul(mult, random(0.75,1.25));
+	int velx = GetActorVelX(0);
+	int vely = GetActorVelY(0);
+	int velz = GetActorVelZ(0);
+	velx = FixedMul(velx, mult);
+	vely = FixedMul(vely, mult);
+	velz = FixedMul(velz, mult);
+	SetActorVelocity(0, velx, vely, velz, false, false);
+}
+
+script 86 KILL
+{
+	if (!CheckFlag(0, "ISMONSTER") || CheckFlag(0, "NOBLOOD"))
+		terminate;
+	if (GetCVar("blood_gibs"))
+		GiveInventory("GibMe", 1);
+	if (!GetCVar("blood_pools"))
+		terminate;
+	Delay(7);
+	while (abs(GetActorVelX(0)) + abs(GetActorVelY(0)) + abs(GetActorVelZ(0)) > 0.3)
+	{
+		Delay(7);
+	}
+	GiveInventory("BleedMe", 1);
+}
+
+script "86me" DEATH
+{
+	if (CheckFlag(0, "NOBLOOD"))
+		terminate;
+	if (GetCVar("blood_gibs"))
+		GiveInventory("GibMe", 1);
+	if (!GetCVar("blood_pools"))
+		terminate;
+	Delay(7);
+	while (abs(GetActorVelX(0)) + abs(GetActorVelY(0)) + abs(GetActorVelZ(0)) > 0.3)
+	{
+		Delay(7);
+	}
+	GiveInventory("BleedMe", 1);
+}
+
+script "SkyCheck" (void)
+{
+	SetResultValue(CheckActorCeilingTexture(0,"F_SKY1"));
+}
+
+script "LiquidCheck" (void)
+{
+	SetResultValue(CheckActorFloorTexture(0,"NUKAGE1")||
+		CheckActorFloorTexture(0,"NUKAGE2")||
+		CheckActorFloorTexture(0,"NUKAGE3")||
+		CheckActorFloorTexture(0,"BLOOD1")||
+		CheckActorFloorTexture(0,"BLOOD2")||
+		CheckActorFloorTexture(0,"BLOOD3")||
+		CheckActorFloorTexture(0,"SLIME01")||
+		CheckActorFloorTexture(0,"SLIME02")||
+		CheckActorFloorTexture(0,"SLIME03")||
+		CheckActorFloorTexture(0,"SLIME04")||
+		CheckActorFloorTexture(0,"SLIME05")||
+		CheckActorFloorTexture(0,"SLIME06")||
+		CheckActorFloorTexture(0,"SLIME07")||
+		CheckActorFloorTexture(0,"SLIME08")||
+		CheckActorFloorTexture(0,"LAVA1")||
+		CheckActorFloorTexture(0,"LAVA2")||
+		CheckActorFloorTexture(0,"LAVA3")||
+		CheckActorFloorTexture(0,"LAVA4")||
+		CheckActorFloorTexture(0,"FWATER1")||
+		CheckActorFloorTexture(0,"FWATER2")||
+		CheckActorFloorTexture(0,"FWATER3")||
+		CheckActorFloorTexture(0,"FWATER4")||
+		CheckActorFloorTexture(0,"F_HWATR1")||
+		CheckActorFloorTexture(0,"F_HWATR2")||
+		CheckActorFloorTexture(0,"F_HWATR3")||
+		CheckActorFloorTexture(0,"F_PWATR1")||
+		CheckActorFloorTexture(0,"F_PWATR2")||
+		CheckActorFloorTexture(0,"F_PWATR3")||
+		CheckActorFloorTexture(0,"P_VWATR1")||
+		CheckActorFloorTexture(0,"F_VWATR2")||
+		CheckActorFloorTexture(0,"F_VWATR3")||
+		CheckActorFloorTexture(0,"F_WATR01")||
+		CheckActorFloorTexture(0,"F_WATR02")||
+		CheckActorFloorTexture(0,"F_WATR03")||
+		CheckActorFloorTexture(0,"FLATHUH1")||
+		CheckActorFloorTexture(0,"FLATHUH2")||
+		CheckActorFloorTexture(0,"FLATHUH3")||
+		CheckActorFloorTexture(0,"FLATHUH4")||
+		CheckActorFloorTexture(0,"FLTFLWW1")||
+		CheckActorFloorTexture(0,"FLTFLWW2")||
+		CheckActorFloorTexture(0,"FLTFLWW3")||
+		CheckActorFloorTexture(0,"FLTWAWA1")||
+		CheckActorFloorTexture(0,"FLTWAWA2")||
+		CheckActorFloorTexture(0,"FLTWAWA3")||
+		CheckActorFloorTexture(0,"FLTLAVA1")||
+		CheckActorFloorTexture(0,"FLTLAVA2")||
+		CheckActorFloorTexture(0,"FLTLAVA3")||
+		CheckActorFloorTexture(0,"FLTLAVA4")||
+		CheckActorFloorTexture(0,"FLTSLUD1")||
+		CheckActorFloorTexture(0,"FLTSLUD2")||
+		CheckActorFloorTexture(0,"FLTSLUD3")||
+		CheckActorFloorTexture(0,"X_001")||
+		CheckActorFloorTexture(0,"X_002")||
+		CheckActorFloorTexture(0,"X_003")||
+		CheckActorFloorTexture(0,"X_004")||
+		CheckActorFloorTexture(0,"X_005")||
+		CheckActorFloorTexture(0,"X_006")||
+		CheckActorFloorTexture(0,"X_007")||
+		CheckActorFloorTexture(0,"X_008")||
+		CheckActorFloorTexture(0,"X_009")||
+		CheckActorFloorTexture(0,"X_010")||
+		CheckActorFloorTexture(0,"X_011"));
+}
