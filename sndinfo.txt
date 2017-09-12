@@ -1524,13 +1524,27 @@ $limit	casino/chips 1
 CHIP6 CHIP6
 
 /////////////////////////////////////////////////////////////////////
-//// NASHGORE SOUNDS ////////////////////////////////////////////////
+//// NASHGORE & DROPLETS SOUNDS /////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
 
 $random bloodsplat { bloodsplat1 bloodsplat2 bloodsplat3 }
 bloodsplat1 dsblud01
 bloodsplat2 dsblud02
 bloodsplat3 dsblud03
+
+$pitchshiftrange 3
+
+blood/bh1	bullhit1
+blood/bh2	bullhit2
+blood/bh3	bullhit3
+blood/bh4	bullhit4
+
+$limit blood/bh1 1 128
+$limit blood/bh2 1 128
+$limit blood/bh3 1 128
+$limit blood/bh4 1 128
+
+$random blood/hit { blood/bh1 blood/bh2 blood/bh3 blood/bh4 }
 
 /////////////
 //SEQUENCES//
