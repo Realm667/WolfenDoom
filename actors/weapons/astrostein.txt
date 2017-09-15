@@ -60,6 +60,22 @@ ACTOR AstroShotgun : NaziAstroWeapon
 		ASSG B 15
 		ASSG B 0 A_ReFire
 		Goto Ready
+	AltFire:
+		ASSG B 0 A_JumpIfInventory("AstroShotgunLoaded",1,1)
+		Goto Dryfire
+		ASSG C 0 A_AlertMonsters
+		ASSG C 0 A_PlaySound("astroshotgun/fire", CHAN_WEAPON)
+		ASSG C 0 A_FireCustomMissile("AstroTracerPlayer",0,-3.0)
+		ASSG C 0 A_FireCustomMissile("AstroTracerPlayer",0,-2.0)
+		ASSG C 0 A_FireCustomMissile("AstroTracerPlayer",0,-1.0)
+		ASSG C 0 A_FireCustomMissile("AstroTracerPlayer")
+		ASSG C 0 A_FireCustomMissile("AstroTracerPlayer",0,1.0)
+		ASSG C 0 A_FireCustomMissile("AstroTracerPlayer",0,2.0)
+		ASSG C 3 A_FireCustomMissile("AstroTracerPlayer",0,3.0)
+		ASSG DEF 5
+		ASSG B 15
+		ASSG B 0 A_ReFire
+		Goto Ready
 	Reload:
 		ASSG B 1 Offset(0,35) A_PlaySound("mp40/reload", CHAN_WEAPON)	//replace this sound?
 		ASSG B 1 Offset(0,38)
@@ -180,6 +196,16 @@ ACTOR AstroRocketlauncher : NaziAstroWeapon
 		ASRL C 21
 		ASRL C 0 A_ReFire
 		Goto Ready
+	AltFire:
+		ASRL B 0 A_JumpIfInventory("AstroRocketLauncherLoaded",1,1)
+		Goto Dryfire
+		ASRL CD 4
+		ASRL E 0 A_AlertMonsters
+		ASRL E 4 A_FireCustomMissile("AstroRocket_Slow")
+		ASRL D 4
+		ASRL C 21
+		ASRL C 0 A_ReFire
+		Goto Ready
 	Reload:
 		ASRL B 1 Offset(0,35) A_PlaySound("mp40/reload", CHAN_WEAPON)	//replace this sound?
 		ASRL B 1 Offset(0,38)
@@ -260,6 +286,13 @@ ACTOR AstroRocket
 		ASRK DEF 4
 		Stop
 	}
+}
+
+ACTOR AstroRocket_Slow : AstroRocket
+{
+	Speed 4
+	Damage 30
+	+NOGRAVITY
 }
 
 ACTOR AstroRocketLauncherLoaded : Ammo
