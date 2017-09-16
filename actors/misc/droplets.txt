@@ -1286,7 +1286,7 @@ ACTOR UWBloodFog
 	Speed 0.35
 	Scale 0.25
 	RenderStyle Translucent
-	Alpha 1.0
+	Alpha 0.5
 	+FORCEXYBILLBOARD
 	+MOVEWITHSECTOR
 	+NOBLOCKMAP
@@ -1300,19 +1300,19 @@ ACTOR UWBloodFog
 	Spawn:
 		HITB A 1 NoDelay A_ChangeVelocity(frandom(-2.0,2.0),frandom(-2.0,2.0),frandom(-2.0,2.0))
 		HITB A 1 A_SetScale(scalex + 0.05)
-		HITB B 1
-		HITB B 1 A_SetScale(scalex + 0.05)
-		HITB C 1
-		HITB C 2 A_SetScale(scalex + 0.05)
-		HITB D 2
-		HITB D 2 A_SetScale(scalex + 0.05)
-		HITB E 2
-		HITB E 2 A_SetScale(scalex + 0.05)
+		HITB A 1
+		HITB A 1 A_SetScale(scalex + 0.25)
+		HITB A 1
+		HITB A 2 A_SetScale(scalex + 0.50)
+		HITB A 2
+		HITB A 2 A_SetScale(scalex + 0.75)
+		HITB A 2
+		HITB A 2 A_SetScale(scalex + 1.0)
 	Cleanup:
-		HITB E 0 A_JumpIf(waterlevel < 2, "Abort")
+		HITB A 0 A_JumpIf(waterlevel < 2, "Abort")
 		TNT1 A 0 A_FadeOut(0.0125,true)
 		TNT1 A 0 A_SetScale(scalex + 0.05)
-		HITB E 3 A_Wander
+		HITB A 3 A_Wander
 		Loop
 	Abort:
 		"----" A 1 A_FadeOut(0.1,true)
