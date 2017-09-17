@@ -224,6 +224,11 @@ ACTOR Flamebolt
 				A_SetScale(ScaleX+0.05);
 				A_FadeOut(0.05);
 				A_Explode(2,16);
+				if (waterlevel > 0) {
+					A_ScaleVelocity(0.0);
+					return A_Jump(256, "Smoke1", "Smoke2", "Smoke3");
+				}
+				return state(0);
 			}
 		"####" A 0 A_Jump(128, "Smoke1", "Smoke2", "Smoke3")
 		Goto Death
@@ -265,6 +270,11 @@ ACTOR Flameball : Flamebolt
 				A_SpawnItemEx("TracerSpark", random(-32,32), random(-32,32), random(-32,32), random(-2,2), random(-2,2), random(-2,2), random(0,359));
 				A_SpawnItemEx("TracerSpark", random(-32,32), random(-32,32), random(-32,32), random(-2,2), random(-2,2), random(-2,2), random(0,359));
 				A_SpawnItemEx("TracerSpark", random(-32,32), random(-32,32), random(-32,32), random(-2,2), random(-2,2), random(-2,2), random(0,359));
+				if (waterlevel > 0) {
+					A_ScaleVelocity(0.0);
+					return State("Death");
+				}
+				return state(0);
 			}
 		"####" A 0 A_Jump(192, "Smoke1", "Smoke2", "Smoke3")
 		Loop
