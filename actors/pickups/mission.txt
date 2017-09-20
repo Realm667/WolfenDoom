@@ -350,6 +350,23 @@ ACTOR SSBJUniformPickup : CustomInventory
 	}
 }
 
+ACTOR CCampUniformPickup : CustomInventory
+{
+	Inventory.PickupMessage "$UNIFORM3"
+	Inventory.Icon SSUFC0
+	Scale 0.7
+	States
+	{
+	Spawn:
+		SSUF B -1
+		Stop
+	Pickup:
+		TNT1 A 0 {A_GiveInventory("NullWeapon", 1); A_GiveInventory("CCUniformToken", 1);}
+		TNT1 A 0 A_SelectWeapon("NullWeapon")
+		Stop
+	}
+}
+
 ///////////////////////////////////////////////////////////////
 
 ACTOR Kennkarte : Inventory
