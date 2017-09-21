@@ -77,6 +77,9 @@
 	- A generic version of A_SkullAttack that allows you to pass in an attack speed
 	- Also handles skipping the attack if a swimmer is out of water
 
+	A_WanderGoal()
+	- If the enemy has a goal assigned, go to it.  If not, wander.
+
 	bool InPlayerSight()
 	- Checks each player to see if they can see this actor and returns true if any
 	  player can see the actor
@@ -195,6 +198,21 @@ class Base : Actor
 
 		VelFromAngle(attackspeed);
 		Vel.Z = (target.pos.Z + target.Height / 2 - pos.Z) / DistanceBySpeed(target, attackspeed);
+	}
+
+	void A_WanderGoal(int flags = 0)
+	{
+		if (goal != null)
+		{
+			target = goal;
+			bChaseGoal = true;
+			A_Chase(null, null, flags);
+		}
+		else
+		{
+			bChaseGoal = Default.bChaseGoal;
+			A_Wander(flags);
+		}
 	}
 
 	bool InPlayerSight()

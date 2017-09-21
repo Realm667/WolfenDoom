@@ -342,29 +342,38 @@ ACTOR Camp_PrisonerBald : Nazi //it has shooting frames but actually he doesn't 
 		}
 	Active: //check if it's active though
 	SpawnLoop:
-		PRSN E 0 A_Look2
+		PRSN E 1 {
+			// Previously used A_Look2, but A_Look2 does NOT execute specials, so made it impossible to set navigation goals
+			// This replicates the essential bits (alert on sound only, and jump to See after a random interval)
+			A_LookEx(LOF_NOSIGHTCHECK);
+			if (Random[wander](0, 255) < 30) { return resolveState("See"); }
+			return resolveState("");
+		}
 		Loop
 	See:
 		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
 		"####" "#" 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
-		"####" AA 1 A_Wander
-		"####" AAAAA 1 A_Wander
-		"####" AA 1 A_Wander
-		"####" AAAAA 1 A_Wander
-		"####" BB 1 A_Wander
-		"####" BBBBB 1 A_Wander
-		"####" BB 1 A_Wander
-		"####" BBBBB 1 A_Wander
+		"####" AA 1 A_WanderGoal
+		"####" AAAAA 1 A_WanderGoal
+		"####" AA 1 A_WanderGoal
+		"####" AAAAA 1 A_WanderGoal
+		"####" BB 1 A_WanderGoal
+		"####" BBBBB 1 A_WanderGoal
+		"####" BB 1 A_WanderGoal
+		"####" BBBBB 1 A_WanderGoal
 		"####" "#" 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
-		"####" CC 1 A_Wander
-		"####" CCCCC 1 A_Wander
-		"####" CC 1 A_Wander
-		"####" CCCCC 1 A_Wander
-		"####" DD 1 A_Wander
-		"####" DDDDD 1 A_Wander
-		"####" DD 1 A_Wander
-		"####" DDDDD 1 A_Wander
-		"####" A 0 A_Jump(32, "LookAround")
+		"####" CC 1 A_WanderGoal
+		"####" CCCCC 1 A_WanderGoal
+		"####" CC 1 A_WanderGoal
+		"####" CCCCC 1 A_WanderGoal
+		"####" DD 1 A_WanderGoal
+		"####" DDDDD 1 A_WanderGoal
+		"####" DD 1 A_WanderGoal
+		"####" DDDDD 1 A_WanderGoal
+		"####" A 0 {
+			if (!goal && Random[lookaround](0, 255) < 32) { return resolveState("LookAround"); }
+			return resolveState("");
+		}
 		Loop
 	LookAround:
 		"####" E 10 A_SetAngle(random(-45,45)+angle)
