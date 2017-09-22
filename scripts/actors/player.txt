@@ -175,6 +175,7 @@ class BoAPlayer : PlayerPawn
 		PLSC A 0;
 		PLYS A 0;
 		SSOF A 0;
+		PRSN A 0;
 		Stop;
 	}
 
@@ -266,6 +267,7 @@ class BoAPlayer : PlayerPawn
 		//  These should be listed in order of precedence - The ones at the top will take priority.
 		//  All new sprites need to be added to the 'SpriteList' state above or the engine won't be able to use them.
 		if (
+			CheckSpriteToken("CCBJUniformToken", "PRSN") || // Temporarily using Camp Prisoner Sprites (and just squishing them for crouch)
 			CheckSpriteToken("SSBJUniformToken", "SSOF") || // Temporarily using the SS Officer Sprites (and just squishing them for crouch)
 			CheckSpriteToken("ScientistUniformToken", "PLSC", "PLYS")
 		) { return; }

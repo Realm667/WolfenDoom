@@ -1,4 +1,4 @@
-ACTOR SSUniform
+ACTOR SSUniformStatic
 {
 	//$Category Props (Wolf3D)/Bureau
 	//$Title SS Uniform
@@ -16,7 +16,7 @@ ACTOR SSUniform
 	}
 }
 
-ACTOR Uniform : SSUniform
+ACTOR UniformStatic : SSUniformStatic
 {
 	//$Title Uniform
 	Scale 1.3
@@ -28,7 +28,7 @@ ACTOR Uniform : SSUniform
 	}
 }
 
-ACTOR ScientistUniformStatic : SSUniform
+ACTOR ScientistUniformStatic : SSUniformStatic
 {
 	//$Title Scientist Uniform
 	Scale 0.7
@@ -41,7 +41,7 @@ ACTOR ScientistUniformStatic : SSUniform
 	}
 }
 
-ACTOR FoxUniform : SSUniform
+ACTOR FoxUniformStatic : SSUniformStatic
 {
 	//$Title Desert Fox Uniform
 	States
@@ -52,7 +52,7 @@ ACTOR FoxUniform : SSUniform
 	}
 }
 
-ACTOR CoatHanger : SSUniform
+ACTOR CoatHanger : SSUniformStatic
 {
 	//$Title Coat Hanger
 	Scale 0.8
