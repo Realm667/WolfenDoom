@@ -404,6 +404,9 @@ ACTOR SleepEffect
 	+FORCEXYBILLBOARD
 	+NOBLOCKMAP
 	+WINDTHRUST
+	+NOGRAVITY
+	+FLOATBOB
+	-SOLID
 	RenderStyle "Translucent"
 	Alpha 0.001
 	Scale 0.2
@@ -415,8 +418,8 @@ ACTOR SleepEffect
 		SLZZ A 0 A_Jump(256,"End")
 		SLZZ A 0 A_Jump(256,"End")
 	End:
-		"####" AAAAAAAAA 1 A_FadeIn(0.06)
-		"####" AAAAAAAAAAAAAAAAAAAAAA 2 {A_FadeOut(0.03); A_SetScale(ScaleX*1.02, ScaleY*1.02);}
+		"####" AAAAAAAAAAAAAA 1 A_FadeIn(0.05)
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAA 2 {A_FadeOut(0.03); A_SetScale(ScaleX*1.05, ScaleY*1.05);}
 		Stop
 	}
 }
