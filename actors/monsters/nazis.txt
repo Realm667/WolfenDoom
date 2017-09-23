@@ -2459,19 +2459,9 @@ ACTOR Marine1B : Marine1
 	}
 }
 
-ACTOR Marine2 : RandomSpawner
-{
-	//$Category Monsters (Wolf3D)/NPCs
-	//$Title Marine (Rifle)
-	//$Color 4
-	//$Sprite MARHA1
-	Scale 0.65
-	DropItem "Marine2A"
-	DropItem "Marine2B"
-}
-
 ACTOR Marine2A : Marine1
 {
+	//$Title Marine, Brown (Rifle)
 	States
 	{
 	Spawn:
@@ -2498,6 +2488,7 @@ ACTOR Marine2A : Marine1
 
 ACTOR Marine2B : Marine1
 {
+	//$Title Marine, Green (Rifle)
 	States
 	{
 	Spawn:
@@ -2518,19 +2509,9 @@ ACTOR Marine2B : Marine1
 	}
 }
 
-ACTOR Marine3 : RandomSpawner
-{
-	//$Category Monsters (Wolf3D)/NPCs
-	//$Title Marine (Pistol)
-	//$Color 4
-	//$Sprite MAH2A1
-	Scale 0.65
-	DropItem "Marine3A"
-	DropItem "Marine3B"
-}
-
 ACTOR Marine3A : Marine1
 {
+	//$Title Marine, Brown (Pistol)
 	States
 	{
 	Spawn:
@@ -2572,6 +2553,7 @@ ACTOR Marine3A : Marine1
 
 ACTOR Marine3B : Marine3A
 {
+	//$Title Marine, Green (Pistol)
 	States
 	{
 	Spawn:

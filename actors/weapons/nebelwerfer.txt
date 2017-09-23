@@ -48,6 +48,7 @@ ACTOR NebRocket
 	Height 8
 	Speed 35
 	Damage 6
+	DamageType "Rocket"
 	Projectile
 	+FORCERADIUSDMG
 	+RANDOMIZE
@@ -76,6 +77,8 @@ ACTOR NebRocket
 		Stop
 	}
 }
+
+ACTOR NebRocket2 : NebRocket { DamageType "Truck" }
 
 ACTOR RocketFlame
 {
@@ -152,7 +155,7 @@ ACTOR NebelwerferTruck : Nebelwerfer
 		HSML A 0 A_GunFlash
 		HSML A 0 A_PlaySound("nebelwerfer/fire", CHAN_WEAPON)
 		HSML BBC 1
-		HSML C 0 A_FireCustomMissile("NebRocket")
+		HSML C 0 A_FireCustomMissile("NebRocket2")
 		HSML CDD 1 A_SetPitch(pitch-(0.7*CallACS("RecoilAmount")))
 		HSML A 40 
 		HSML A 2 A_ReFire
