@@ -148,23 +148,29 @@ ACTOR WGuard : Guard
 		GRD2 N 0
 		Goto Look
 	See:
-		Goto See.Dodge
-	DodgeRight: //work in progress Dodge code - ozy81
-		"####" A 0 A_SetInvulnerable 							//let's avoid unwanted side effects with pain states
-		"####" A 0 A_GiveInventory("DodgeCounter", 1)			//let's limit dodges
-		GRDD A 3 A_FaceTarget 									//how could be possible setting this equal for all actors?
-		"####" A 0 A_Jump(128,"Dodgeleft")						//randomize a bit
-		"####" ABCDEA 5 ThrustThing(angle*256/360+64,-3,0,0)	//thrust the actor not much so it won't slide - but what about snowy places?
-		"####" A 2 A_FaceTarget									//reset position
-		"####" A 0 A_UnSetInvulnerable							//turn enemy shootable another time
-		GRD2 A 1												//retrieve the spawn frame
-		Goto See
-	DodgeLeft: //work in progress Dodge code - ozy81
-		GRDD AEDCBA 5 ThrustThing(angle*256/360-192,3,0,0)
-		"####" A 2 A_FaceTarget
-		"####" A 0 A_UnSetInvulnerable
+		"####" A 0 A_DoSideRoll // State changes and thrusting handled internally by the function 
+		Goto See.Fast
+	Dodge.Right:
+		"####" A 0 {
+			A_SetSize(-1, height / 2);
+			A_SetInvulnerable();
+		}		
+		GRDD ABCDEA 5
+		Goto Dodge.Resume
+	Dodge.Left:
+		"####" A 0 {
+			A_SetSize(-1, height / 2);
+			A_SetInvulnerable();
+		}		
+		GRDD AEDCBA 5 A_SetInvulnerable
+	Dodge.Resume:
+		"####" A 2 {
+			A_FaceTarget;
+			A_SetSize(-1, height * 2);
+			A_UnSetInvulnerable();
+		}
 		GRD2 A 1
-		Goto See
+		Goto Missile		
 	Missile: //slightly fast than Afrika & SS ones, also he shoot 2 rounds instead of one: this means reloading after 4 shoots - ozy81
 		"####" E 9 A_FaceTarget
 	Missile.Aimed:

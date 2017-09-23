@@ -147,6 +147,7 @@ class Base : Actor
 	bool user_conversation;
 	Actor marker;
 	bool user_ForceWeaponDrop;
+	int dodgetimeout;
 
 	Property BossIcon:BossIcon;
 	Property AlwaysDrawHealthBar:user_DrawHealthBar;
@@ -283,12 +284,71 @@ class Base : Actor
 		return count;
 	}
 
+	bool A_DoSideRoll(int dodgespeed = 10, bool checkonly = false)
+	{
+		if (dodgetimeout > 0 || target is "PatrolPoint") { return false; } // If we're still waiting after the last dodge, or are on a path, don't try to dodge right now
+
+		double dodgeangle;
+		double dodgedistance;
+
+		[dodgedistance, dodgeangle] = GetBestSideMove(); // Get the direction (left or right) that is the best to dodge, and how far you can dodge there
+
+		if (dodgedistance > -1) // If dodgedistance is less than zero, we shouldn't dodge...  That means there is no room.
+		{
+			if (checkonly) { return true; } // If this is just a logic check, stop here
+
+			// Set the actor's state based on dodging left or right
+			if (deltaangle(dodgeangle, angle) > 0) { SetStateLabel("Dodge.Right"); }
+			else { SetStateLabel("Dodge.Left"); }
+
+			// Use the dodgeangle to move the actor in the correct direction
+			VelFromAngle(dodgespeed, dodgeangle);
+
+			// Set a random timeout (5 - 10 seconds) until another dodge is allowed
+			dodgetimeout = Random(175, 350);
+		
+			return true;
+		}
+
+		return false;
+	}
+
+	double, double GetBestSideMove()
+	{
+		double left = GetMoveDistance(90);
+		double right = GetMoveDistance(-90);
+
+		if (left < 32 && right < 32) { return -1, 0; } // Don't dodge if there's not space on either side
+		if (left == right) return 0, angle + 90 * RandomPick(-1, 1); // If the space on either side is the same, pick a random side
+		if (left > right) return left, angle + 90; // If there's more space on the left, dodge left
+
+		return right, angle - 90; // Otherwise, dodge right
+	}
+
+	double GetMoveDistance(double angle, double range = 128)
+	{
+		bool blocked;
+
+		for (double i = Radius; i <= range; i += Speed)
+		{
+			tracer = null;
+
+			blocked = CheckBlock(CBF_DROPOFF | CBF_SETTRACER, AAPTR_DEFAULT, i, 0, 0, angle);
+
+			if (blocked) { return i; }
+		}
+
+		return range;
+	}
+
 	override void Tick()
 	{
 		if (user_DrawHealthBar) { ChangeStatNum(Thinker.STAT_DEFAULT - 3); } // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient
 
 		if (!globalfreeze && !level.Frozen)
 		{
+			if (dodgetimeout > 0) { dodgetimeout--; }
+
 			if (swimmer && waterlevel < 3)
 			{
 				vel.z = min(vel.z, -1);
@@ -943,6 +1003,8 @@ class Nazi : Base
 		target = patrolgoal;
 
 		A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid);
+
+		sprite = SpawnState.sprite;
 
 		if (goal && target) { SetStateLabel("See"); }
 		else { SetStateLabel("Spawn"); }
