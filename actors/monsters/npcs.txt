@@ -380,11 +380,13 @@ ACTOR Camp_PrisonerBald : Nazi //it has shooting frames but actually he doesn't 
 		"####" E 0 A_SetTics(random(35,105))
 		"####" E 0
 		"####" A 0 A_Jump(32, "See")
-		"####" A 0 A_Jump(8, "Cough") //insert from here random sounds and give each call a separate state - ozy81
+		"####" A 0 A_Jump(4, "Cough") //insert from here random sounds and give each call a separate state - ozy81
 		Loop
 	Cough:
+		"####" A 0 A_Jump(32, "See") //try to reduce coughing probabilities in a significantly way - ozy81
 		"####" E 0 A_CheckRange(768,"NoCough")
-		"####" E 80 A_PlaySound("camp/cough", CHAN_ITEM, 0.8, FALSE)
+		"####" E 0 A_PlaySound("camp/cough", CHAN_ITEM, 0.8, FALSE)
+		"####" E 80
 		"####" A 0 A_Jump(32, "See")
 		Loop
 	NoCough:
