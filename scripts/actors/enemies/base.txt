@@ -318,7 +318,7 @@ class Base : Actor
 		double left = GetMoveDistance(90);
 		double right = GetMoveDistance(-90);
 
-		if (left < 32 && right < 32) { return -1, 0; } // Don't dodge if there's not space on either side
+		if (left < 64 && right < 64) { return -1, 0; } // Don't dodge if there's not space on either side
 		if (left == right) return 0, angle + 90 * RandomPick(-1, 1); // If the space on either side is the same, pick a random side
 		if (left > right) return left, angle + 90; // If there's more space on the left, dodge left
 
@@ -666,11 +666,8 @@ class Nazi : Base
 			"####" B 1 A_NaziChase;
 			"####" BBB 1 A_NaziChase(null, null);
 			"####" A 0 { return ResolveState("See"); }
-		See.Dodge: // Dodge Pattern
-			"####" "#" 0 { user_incombat = True; }
-			"####" A 0 A_JumpIfInventory("DodgeCounter", 6, "See.Fast");
-			"####" A 0 A_Jump(192,2);
-			"####" A 0 A_JumpIfTargetInLOS("DodgeRight",45,JLOSF_DEADNOJUMP | JLOSF_ALLYNOJUMP | JLOSF_COMBATANTONLY | JLOSF_NOSIGHT | JLOSF_NOAUTOAIM ,256);
+		See.Frightened: // Prisoners Pattern
+			"####" "#" 0 { user_incombat = True; A_SetSpeed(6);}
 			"####" A 1 A_NaziChase;
 			"####" AA 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
