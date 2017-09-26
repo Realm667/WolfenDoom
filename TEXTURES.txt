@@ -5,6 +5,38 @@ Sprite "BLCKH0",28,46
 	Patch "BLCKI0",0,0
 }
 
+Sprite "ALRMA0", 64, 64
+{
+	XScale 2.000
+	YScale 2.000
+	Offset 32, 64
+	Patch "ALARM", 12, 14
+}
+
+Sprite "ALRMB0", 64, 64
+{
+	XScale 2.000
+	YScale 2.000
+	Offset 32, 64
+	Patch "ALARM2", 12, 14
+}
+
+Sprite "ALRMP0", 96, 96
+{
+	XScale 2.000
+	YScale 2.000
+	Offset 48, 96
+	Patch "ALARM3", 16, 0
+}
+
+Sprite "ALRMQ0", 96, 96
+{
+	XScale 2.000
+	YScale 2.000
+	Offset 48, 96
+	Patch "ALARM4", 16, 0
+}
+
 //130 dummy sprites for model frames, let's make models stand alone
 //sprite added for GZDB and showmap purposes - ozy81
 
@@ -143,6 +175,7 @@ Sprite MDLEX0, 30, 30 { Patch MDLSA0, 0, 0 {} }
 Sprite MDLEY0, 30, 30 { Patch MDLSA0, 0, 0 {} }
 Sprite MDLEZ0, 30, 30 { Patch MDLSA0, 0, 0 {} }
 
+//Graphical replacements (menues, HUD, etc. etc.)
 Graphic EPISODE1, 96, 48
 {
 	XScale 2
@@ -180,7 +213,44 @@ Graphic M_LSLEFT, 8, 14 { Offset 0, 8 Patch M_LSLEFT, 0, 0 }
 Graphic M_LSRGHT, 8, 14 { Offset 0, 8 Patch M_LSRGHT, 0, 0 }
 Graphic M_LSCNTR, 8, 14 { Offset 0, 8 Patch M_LSCNTR, 0, 0 }
 
-/* Additional definitions necessary for loading as IWAD */
+// Textures which doesn't have 8 chars goes here, and it works only for longnamed ones - ozy81
+Texture "textures/deco_kitchen1.png", 128, 256
+{
+	XScale 2.000
+	YScale 2.000
+	Patch "hires/textures/deco_kitchen1.png", 0, 0
+}
+
+Texture "textures/deco_kitchen2.png", 128, 256
+{
+	XScale 2.000
+	YScale 2.000
+	Patch "hires/textures/deco_kitchen1.png", 0, 0
+}
+
+Texture "textures/deco_kz07.png", 68, 108
+{
+	XScale 2.000
+	YScale 2.000
+	Patch "hires/textures/deco_kz07.png", 0, 0
+}
+
+Texture "textures/deco_kz08.png", 68, 108
+{
+	XScale 2.000
+	YScale 2.000
+	Patch "hires/textures/deco_kz08.png", 0, 0
+}
+
+Texture "textures/deco_kz09.png", 104, 26
+{
+	XScale 2.000
+	YScale 2.000
+	Patch "hires/textures/deco_kz09.png", 0, 0
+}
+
+// IWAD Fixes
+
 // Silence parsing errors from default MENUDEF
 Graphic M_DOOM, 1, 1 { Patch BLACK, 0, 0 }
 Graphic M_NGAME, 1, 1 { Patch BLACK, 0, 0 }
@@ -208,35 +278,3 @@ Texture FWATER1, 256, 256 { Patch watr_a01, 0, 0 }
 Texture FWATER2, 256, 256 { Patch watr_a01, 0, 0 }
 Texture FWATER3, 256, 256 { Patch watr_a01, 0, 0 }
 Texture FWATER4, 256, 256 { Patch watr_a01, 0, 0 }
-
-Sprite "ALRMA0", 64, 64
-{
-	XScale 2.000
-	YScale 2.000
-	Offset 32, 64
-	Patch "ALARM", 12, 14
-}
-
-Sprite "ALRMB0", 64, 64
-{
-	XScale 2.000
-	YScale 2.000
-	Offset 32, 64
-	Patch "ALARM2", 12, 14
-}
-
-Sprite "ALRMP0", 96, 96
-{
-	XScale 2.000
-	YScale 2.000
-	Offset 48, 96
-	Patch "ALARM3", 16, 0
-}
-
-Sprite "ALRMQ0", 96, 96
-{
-	XScale 2.000
-	YScale 2.000
-	Offset 48, 96
-	Patch "ALARM4", 16, 0
-}

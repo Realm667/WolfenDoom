@@ -16,6 +16,33 @@ ACTOR Guard : NaziStandard
 	Spawn:
 		GARD N 0
 		Goto Look
+	/*See:
+		"####" A 0 A_JumpIfInventory("DodgeCounter", 6, "See.Normal") //let's limit dodges - ozy81
+		"####" A 0 A_DoSideRoll // State changes and thrusting handled internally by the function 
+		Goto See.Normal
+	Dodge.Right:
+		"####" A 0 {
+			A_SetSize(-1, height / 2);
+			A_SetInvulnerable();
+			A_GiveInventory("DodgeCounter", 1); //ozy81
+		}		
+		GADD ABCDEA 5
+		Goto Dodge.Resume
+	Dodge.Left:
+		"####" A 0 {
+			A_SetSize(-1, height / 2);
+			A_SetInvulnerable();
+			A_GiveInventory("DodgeCounter", 1); //ozy81
+		}		
+		GADD AEDCBA 5 A_SetInvulnerable
+	Dodge.Resume:
+		"####" A 2 {
+			A_FaceTarget;
+			A_SetSize(-1, height * 2);
+			A_UnSetInvulnerable();
+		}
+		GARD A 1
+		Goto Missile*/
 	Missile:
 		"####" E 10 A_FaceTarget
 	Missile.Aimed:
@@ -148,12 +175,14 @@ ACTOR WGuard : Guard
 		GRD2 N 0
 		Goto Look
 	See:
-		"####" A 0 A_DoSideRoll // State changes and thrusting handled internally by the function 
+		"####" A 0 A_JumpIfInventory("DodgeCounter", 6, "See.Fast")
+		"####" A 0 A_DoSideRoll
 		Goto See.Fast
 	Dodge.Right:
 		"####" A 0 {
 			A_SetSize(-1, height / 2);
 			A_SetInvulnerable();
+			A_GiveInventory("DodgeCounter", 1);
 		}		
 		GRDD ABCDEA 5
 		Goto Dodge.Resume
@@ -161,6 +190,7 @@ ACTOR WGuard : Guard
 		"####" A 0 {
 			A_SetSize(-1, height / 2);
 			A_SetInvulnerable();
+			A_GiveInventory("DodgeCounter", 1);
 		}		
 		GRDD AEDCBA 5 A_SetInvulnerable
 	Dodge.Resume:
