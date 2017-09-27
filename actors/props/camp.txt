@@ -7,6 +7,7 @@ ACTOR Camp_HungSkeleton
 	//$Color 3
 	Radius 16
 	Height 60
+	Scale 0.65
 	+NOGRAVITY
 	+SPAWNCEILING
 	States
@@ -181,6 +182,21 @@ ACTOR Camp_LyingBodies : Camp_RandomBodyParts
 		CBED G -1
 		CBED H -1
 		CBED I -1
+		Stop
+	}
+
+}
+
+ACTOR Camp_LyingBodies2 : Camp_RandomBodyParts
+{
+	//$Title Camp Prisoner Exhausted, Lying (random)
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
+		CBED J -1
+		CBED K -1
+		CBED L -1
 		Stop
 	}
 
