@@ -166,6 +166,29 @@ ACTOR AstroGuard : Guard
 	Spawn:
 		ATR2 A 0
 		Goto Look
+	Dodge.Right:
+		"####" A 0 {
+			A_SetSize(-1, height / 2);
+			A_SetInvulnerable();
+			A_GiveInventory("DodgeCounter", 1); //ozy81
+		}		
+		ATD2 ABCDEA 5
+		Goto Dodge.Resume
+	Dodge.Left:
+		"####" A 0 {
+			A_SetSize(-1, height / 2);
+			A_SetInvulnerable();
+			A_GiveInventory("DodgeCounter", 1); //ozy81
+		}		
+		ATD2 AEDCBA 5 A_SetInvulnerable
+	Dodge.Resume:
+		"####" A 2 {
+			A_FaceTarget;
+			A_SetSize(-1, height * 2);
+			A_UnSetInvulnerable();
+		}
+		ATR2 A 1
+		Goto Missile
 	Missile:
 	Missile.Aimed:
 		"####" E 5 A_FaceTarget
@@ -196,6 +219,29 @@ ACTOR AstroGuard2 : AstroGuard
 	Spawn:
 		ATR1 A 0
 		Goto Look
+	Dodge.Right:
+		"####" A 0 {
+			A_SetSize(-1, height / 2);
+			A_SetInvulnerable();
+			A_GiveInventory("DodgeCounter", 1); //ozy81
+		}		
+		ATD1 ABCDEA 5
+		Goto Dodge.Resume
+	Dodge.Left:
+		"####" A 0 {
+			A_SetSize(-1, height / 2);
+			A_SetInvulnerable();
+			A_GiveInventory("DodgeCounter", 1); //ozy81
+		}		
+		ATD1 AEDCBA 5 A_SetInvulnerable
+	Dodge.Resume:
+		"####" A 2 {
+			A_FaceTarget;
+			A_SetSize(-1, height * 2);
+			A_UnSetInvulnerable();
+		}
+		ATR1 A 1
+		Goto Missile
 	Missile:
 		"####" E 5 A_FaceTarget
 		"####" F 0 A_PlaySound("astrochaingun/fire")
@@ -224,6 +270,29 @@ ACTOR AstroCommando : AstroGuard
 	Spawn:
 		ATR3 A 0
 		Goto Look
+	Dodge.Right:
+		"####" A 0 {
+			A_SetSize(-1, height / 2);
+			A_SetInvulnerable();
+			A_GiveInventory("DodgeCounter", 1); //ozy81
+		}		
+		ATD3 ABCDEA 5
+		Goto Dodge.Resume
+	Dodge.Left:
+		"####" A 0 {
+			A_SetSize(-1, height / 2);
+			A_SetInvulnerable();
+			A_GiveInventory("DodgeCounter", 1); //ozy81
+		}		
+		ATD3 AEDCBA 5 A_SetInvulnerable
+	Dodge.Resume:
+		"####" A 2 {
+			A_FaceTarget;
+			A_SetSize(-1, height * 2);
+			A_UnSetInvulnerable();
+		}
+		ATR3 A 1
+		Goto Missile
 	Missile:
 		"####" E 5 A_FaceTarget
 	Missile.Aimed:
@@ -253,6 +322,29 @@ ACTOR AstroOfficer : AstroGuard
 	Spawn:
 		ATR5 A 0
 		Goto Look
+	Dodge.Right:
+		"####" A 0 {
+			A_SetSize(-1, height / 2);
+			A_SetInvulnerable();
+			A_GiveInventory("DodgeCounter", 1); //ozy81
+		}		
+		ATD5 ABCDEA 5
+		Goto Dodge.Resume
+	Dodge.Left:
+		"####" A 0 {
+			A_SetSize(-1, height / 2);
+			A_SetInvulnerable();
+			A_GiveInventory("DodgeCounter", 1); //ozy81
+		}		
+		ATD5 AEDCBA 5 A_SetInvulnerable
+	Dodge.Resume:
+		"####" A 2 {
+			A_FaceTarget;
+			A_SetSize(-1, height * 2);
+			A_UnSetInvulnerable();
+		}
+		ATR5 A 1
+		Goto Missile
 	Missile:
 	Missile.Aimed:
 		"####" G 5 A_FaceTarget
@@ -280,6 +372,29 @@ ACTOR AstroElite : AstroGuard
 	Spawn:
 		ATR4 A 0
 		Goto Look
+	Dodge.Right:
+		"####" A 0 {
+			A_SetSize(-1, height / 2);
+			A_SetInvulnerable();
+			A_GiveInventory("DodgeCounter", 1); //ozy81
+		}		
+		ATD4 ABCDEA 5
+		Goto Dodge.Resume
+	Dodge.Left:
+		"####" A 0 {
+			A_SetSize(-1, height / 2);
+			A_SetInvulnerable();
+			A_GiveInventory("DodgeCounter", 1); //ozy81
+		}		
+		ATD4 AEDCBA 5 A_SetInvulnerable
+	Dodge.Resume:
+		"####" A 2 {
+			A_FaceTarget;
+			A_SetSize(-1, height * 2);
+			A_UnSetInvulnerable();
+		}
+		ATR4 A 1
+		Goto Missile
 	Missile:
 		"####" F 8 A_FaceTarget
 	Missile.Aimed:
@@ -361,6 +476,29 @@ ACTOR AstroScientist : AstroGuard
 	Spawn:
 		SCN2 N 0
 		Goto Look
+	Dodge.Right:
+		"####" A 0 {
+			A_SetSize(-1, height / 2);
+			A_SetInvulnerable();
+			A_GiveInventory("DodgeCounter", 1); //ozy81
+		}		
+		SCD2 ABCDEA 5
+		Goto Dodge.Resume
+	Dodge.Left:
+		"####" A 0 {
+			A_SetSize(-1, height / 2);
+			A_SetInvulnerable();
+			A_GiveInventory("DodgeCounter", 1); //ozy81
+		}		
+		SCD2 AEDCBA 5 A_SetInvulnerable
+	Dodge.Resume:
+		"####" A 2 {
+			A_FaceTarget;
+			A_SetSize(-1, height * 2);
+			A_UnSetInvulnerable();
+		}
+		SCN2 A 1
+		Goto Missile
 	Missile: //different brightmap & colors - ozy81
 		"####" E 5 A_FaceTarget
 	Missile.Aimed:

@@ -23,7 +23,7 @@ ACTOR SneakableSSMP40GuardStatic : SneakableSSMP40Guard
 		Spawn:
 			TNT1 A 0 NoDelay A_SetUserVar("user_angle", angle)
 			Goto Super::Spawn
-		See:
+		See: //doesn't roll - ozy81
 			"####" N 1 {
 				A_SetAngle(user_angle);
 				A_Chase("Missile", "Missile", CHF_DONTMOVE | CHF_NODIRECTIONTURN);
