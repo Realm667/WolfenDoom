@@ -205,8 +205,21 @@ class Base : Actor
 		Vel.Z = (target.pos.Z + target.Height / 2 - pos.Z) / DistanceBySpeed(target, attackspeed);
 	}
 
-	void A_WanderGoal(int flags = 0)
+	void A_WanderGoal(int flags = 0, int scarerange = 0)
 	{
+		if (scarerange > 0 && lastheard)
+		{
+			if (Distance3D(lastheard) <= scarerange)
+			{
+				bFrightened = True;
+			}
+			else
+			{
+				bFrightened = False;
+				lastheard = null;
+			}
+		}
+
 		if (goal != null)
 		{
 			target = goal;
@@ -449,7 +462,7 @@ class Base : Actor
 
 		// Initialize dodge timout delay
 		DodgeState = FindState("Dodge");
-		if (DodgeState) { dodgetimeout = Random(175, 350); }
+		dodgetimeout = Random(175, 350);
 	}
 }
 
