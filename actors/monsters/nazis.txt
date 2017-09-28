@@ -11,38 +11,18 @@ ACTOR Guard : NaziStandard
 	Obituary "$GUARD"
 	DropItem "9mmAmmo" 192
 	DropItem "Luger9mm" 64
+
 	States
 	{
 	Spawn:
-		GARD N 0
+		GARD N 1
 		Goto Look
 	See:
-		"####" A 0 A_JumpIfInventory("DodgeCounter", 6, "See.Normal") //let's limit dodges - ozy81
-		"####" A 0 A_DoSideRoll // State changes and thrusting handled internally by the function 
-		Goto See.Normal
-	Dodge.Right:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1); //ozy81
-		}		
-		GADD ABCDEA 5
-		Goto Dodge.Resume
-	Dodge.Left:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1); //ozy81
-		}		
-		GADD AEDCBA 5 A_SetInvulnerable
+		Goto See.Dodge // Use this as the See state for any actors that need to dodge/roll
+	Dodge:
+		GADD A 0 // This state is never accessed directly, but is necessary to define the sprite to be used for the dodge animation
 	Dodge.Resume:
-		"####" A 2 {
-			A_FaceTarget;
-			A_SetSize(-1, height * 2);
-			A_UnSetInvulnerable();
-		}
-		GARD A 1
-		Goto Missile
+		Goto See.Normal // This is the See variation (See.Fast, See.Normal, See.Boss, etc.) that the actor will use when not dodging
 	Missile:
 		"####" E 10 A_FaceTarget
 	Missile.Aimed:
@@ -138,35 +118,14 @@ ACTOR SSGuard : Guard
 	States
 	{
 	Spawn:
-		SSPG N 0
+		SSPG N 1
 		Goto Look
 	See:
-		"####" A 0 A_JumpIfInventory("DodgeCounter", 6, "See.Fast")
-		"####" A 0 A_DoSideRoll
-		Goto See.Fast
-	Dodge.Right:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1);
-		}		
-		SSPD ABCDEA 5
-		Goto Dodge.Resume
-	Dodge.Left:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1);
-		}		
-		SSPD AEDCBA 5 A_SetInvulnerable
+		Goto See.Dodge
+	Dodge:
+		SSPD A 0
 	Dodge.Resume:
-		"####" A 2 {
-			A_FaceTarget;
-			A_SetSize(-1, height * 2);
-			A_UnSetInvulnerable();
-		}
-		SSPG A 1
-		Goto Missile
+		Goto See.Fast
 	Idle:
 		"####" AAAAAA 1 A_Wander
 		"####" A 0 A_Look
@@ -199,35 +158,14 @@ ACTOR WGuard : Guard
 	States
 	{
 	Spawn:
-		GRD2 N 0
+		GRD2 N 1
 		Goto Look
 	See:
-		"####" A 0 A_JumpIfInventory("DodgeCounter", 6, "See.Fast")
-		"####" A 0 A_DoSideRoll
-		Goto See.Fast
-	Dodge.Right:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1);
-		}		
-		GRDD ABCDEA 5
-		Goto Dodge.Resume
-	Dodge.Left:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1);
-		}		
-		GRDD AEDCBA 5 A_SetInvulnerable
+		Goto See.Dodge
+	Dodge:
+		GRDD A 0
 	Dodge.Resume:
-		"####" A 2 {
-			A_FaceTarget;
-			A_SetSize(-1, height * 2);
-			A_UnSetInvulnerable();
-		}
-		GRD2 A 1
-		Goto Missile		
+		Goto See.Fast
 	Missile: //slightly fast than Afrika & SS ones, also he shoot 2 rounds instead of one: this means reloading after 4 shoots - ozy81
 		"####" E 9 A_FaceTarget
 	Missile.Aimed:
@@ -267,7 +205,7 @@ ACTOR MP40Guard : Guard
 	States
 	{
 	Spawn:
-		MGRD N 0
+		MGRD N 1
 		Goto Look
 	Dodge.Right:
 		"####" A 0 {
@@ -342,7 +280,7 @@ ACTOR SSMP40Guard : SSGuard
 	States
 	{
 	Spawn:
-		SSMG N 0
+		SSMG N 1
 		Goto Look
 	Dodge.Right:
 		"####" A 0 {
@@ -401,7 +339,7 @@ ACTOR WMP40Guard : MP40Guard
 	States
 	{
 	Spawn:
-		MGR2 N 0
+		MGR2 N 1
 		Goto Look
 	Dodge.Right:
 		"####" A 0 {
@@ -530,35 +468,14 @@ ACTOR Officer : Guard
 	States
 	{
 	Spawn:
-		OFFI N 0
+		OFFI N 1
 		Goto Look
 	See:
-		"####" A 0 A_JumpIfInventory("DodgeCounter", 6, "See.Faster")
-		"####" A 0 A_DoSideRoll
-		Goto See.Faster
-	Dodge.Right:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1);
-		}		
-		OFFD ABCDEA 5
-		Goto Dodge.Resume
-	Dodge.Left:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1);
-		}		
-		OFFD AEDCBA 5 A_SetInvulnerable
+		Goto See.Dodge
+	Dodge:
+		OFFD A 0
 	Dodge.Resume:
-		"####" A 2 {
-			A_FaceTarget;
-			A_SetSize(-1, height * 2);
-			A_UnSetInvulnerable();
-		}
-		OFFI A 1
-		Goto Missile
+		Goto See.Faster
 	Missile: //1 shoot x round
 		"####" E 4 A_FaceTarget
 	Missile.Aimed:
@@ -599,7 +516,7 @@ ACTOR SSOfficer : Officer
 	States
 	{
 	Spawn:
-		SSOF N 0
+		SSOF N 1
 		Goto Look
 	Dodge.Right:
 		"####" A 0 {
@@ -673,7 +590,7 @@ ACTOR WOfficer : Officer
 	States
 	{
 	Spawn:
-		OFR2 N 0
+		OFR2 N 1
 		Goto Look
 	Dodge.Right:
 		"####" A 0 {
@@ -745,7 +662,7 @@ ACTOR RifleGuard : MP40Guard
 	States
 	{
 	Spawn:
-		RGRD N 0
+		RGRD N 1
 		Goto Look
 	Dodge.Right:
 		"####" A 0 {
@@ -804,7 +721,7 @@ ACTOR WRifleGuard : RifleGuard
 	States
 	{
 	Spawn:
-		RGR2 N 0
+		RGR2 N 1
 		Goto Look
 	Dodge.Right:
 		"####" A 0 {
@@ -860,7 +777,7 @@ ACTOR ArcticRifleGuard : RifleGuard
 	States
 	{
 	Spawn:
-		SNRF N 0
+		SNRF N 1
 		Goto Look
 	Dodge.Right:
 		"####" A 0 {
@@ -917,7 +834,7 @@ ACTOR WaffenSS : SSMP40Guard
 	States
 	{
 	Spawn:
-		WAFF N 0
+		WAFF N 1
 		Goto Look
 	Dodge.Right:
 		"####" A 0 {
@@ -975,7 +892,7 @@ ACTOR ArcticWaffen : WaffenSS
 	States
 	{
 	Spawn:
-		SNWF N 0
+		SNWF N 1
 		Goto Look
 	Dodge.Right:
 		"####" A 0 {
@@ -1033,7 +950,7 @@ ACTOR Paratrooper : WaffenSS
 	States
 	{
 	Spawn:
-		PARA N 0
+		PARA N 1
 		Goto Look
 	Dodge.Right:
 		"####" A 0 {
@@ -1566,35 +1483,14 @@ ACTOR Gestapo : Guard
 	States
 	{
 	Spawn:
-		GSAP N 0
+		GSAP N 1
 		Goto Look
 	See:
-		"####" A 0 A_JumpIfInventory("DodgeCounter", 6, "See.Normal") //let's limit dodges - ozy81
-		"####" A 0 A_DoSideRoll // State changes and thrusting handled internally by the function 
-		Goto See.Normal
-	Dodge.Right:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1);
-		}		
-		GSAD ABCDEA 5
-		Goto Dodge.Resume
-	Dodge.Left:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1);
-		}		
-		GSAD AEDCBA 5 A_SetInvulnerable
+		Goto See.Dodge
+	Dodge:
+		GSAD A 0
 	Dodge.Resume:
-		"####" A 2 {
-			A_FaceTarget;
-			A_SetSize(-1, height * 2);
-			A_UnSetInvulnerable();
-		}
-		GSAP A 1
-		Goto Missile
+		Goto See.Normal
 	Death.Alt1:
 		Goto Super::Death+1
 	}
@@ -1609,17 +1505,18 @@ ACTOR Mechanic : Guard
 	States
 	{
 	Spawn:
-		MNIC O 0 {
+		MNIC O 1 {
 			if (user_incombat) { return ResolveState("Look"); }
 			return ResolveState("");
 		}
-		MNIC N 0
+		MNIC N 1
 		Goto Look
 	See:
-		"####" O 0
-	See.Dodge:
-		"####" O 0 A_JumpIfInventory("DodgeCounter", 6, "See.Loop")
-		"####" O 0 A_DoSideRoll
+		Goto See.Dodge
+	Dodge:
+		MNID A 0
+	Dodge.Resume:
+		Goto See.Loop
 	See.Loop:
 		"####" "#" 0 {
 			if (!user_incombat) { 
@@ -1656,29 +1553,6 @@ ACTOR Mechanic : Guard
 		"####" DDDDDD 1 A_Wander
 		"####" A 0 A_Look
 		Loop
-	Dodge.Right:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1);
-		}		
-		MNID ABCDEA 5
-		Goto Dodge.Resume
-	Dodge.Left:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1);
-		}		
-		MNID AEDCBA 5 A_SetInvulnerable
-	Dodge.Resume:
-		"####" A 2 {
-			A_FaceTarget;
-			A_SetSize(-1, height * 2);
-			A_UnSetInvulnerable();
-		}
-		MNIC A 1
-		Goto Missile
 	Missile:
 		"####" E 8 A_FaceTarget
 	Missile.Aimed:
@@ -2503,35 +2377,14 @@ ACTOR EliteAssaulter : Guard
 	States
 	{
 	Spawn:
-		ELTA N 0
+		ELTA N 1
 		Goto Look
 	See:
-		"####" A 0 A_JumpIfInventory("DodgeCounter", 6, "See.Loop")
-		"####" A 0 A_DoSideRoll
-		Goto See.Loop
-	Dodge.Right:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1);
-		}		
-		ELDA ABCDEA 5
-		Goto Dodge.Resume
-	Dodge.Left:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1);
-		}		
-		ELDA AEDCBA 5 A_SetInvulnerable
+		Goto See.Dodge
+	Dodge:
+		ELDA A 0
 	Dodge.Resume:
-		"####" A 2 {
-			A_FaceTarget;
-			A_SetSize(-1, height * 2);
-			A_UnSetInvulnerable();
-		}
-		ELTA A 1
-		Goto Missile.Aimed
+		Goto See.Loop
 	See.Loop:
 		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
 		ELTA A 0 A_SetSpeed(3.66666667)
@@ -2632,35 +2485,14 @@ ACTOR EliteSoldatRifler : Guard
 	States
 	{
 	Spawn:
-		ELTR N 0
+		ELTR N 1
 		Goto Look
 	See:
-		"####" A 0 A_JumpIfInventory("DodgeCounter", 6, "See.Loop")
-		"####" A 0 A_DoSideRoll
-		Goto See.Loop
-	Dodge.Right:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1);
-		}		
-		ELDR ABCDEA 5
-		Goto Dodge.Resume
-	Dodge.Left:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1);
-		}		
-		ELDR AEDCBA 5 A_SetInvulnerable
+		Goto See.Dodge
+	Dodge:
+		ELDR A 0
 	Dodge.Resume:
-		"####" A 2 {
-			A_FaceTarget;
-			A_SetSize(-1, height * 2);
-			A_UnSetInvulnerable();
-		}
-		ELTR A 1
-		Goto Missile.Aimed
+		Goto See.Loop
 	See.Loop:
 		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
 		ELTR A 1 A_NaziChase
@@ -2737,31 +2569,14 @@ ACTOR Scientist : Guard
 	States
 	{
 	Spawn:
-		SCN2 N 0
+		SCN2 N 1
 		Goto Look
-	Dodge.Right:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1);
-		}		
-		SCD2 ABCDEA 5
-		Goto Dodge.Resume
-	Dodge.Left:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1);
-		}		
-		SCD2 AEDCBA 5 A_SetInvulnerable
+	See:
+		Goto See.Dodge
+	Dodge:
+		SCD2 A 0
 	Dodge.Resume:
-		"####" A 2 {
-			A_FaceTarget;
-			A_SetSize(-1, height * 2);
-			A_UnSetInvulnerable();
-		}
-		SCN2 A 1
-		Goto Missile
+		Goto See.Normal
 	Death.Alt1:
 		Goto Super::Death+1
 	}
@@ -2774,31 +2589,14 @@ ACTOR Scientist2 : Guard
 	States
 	{
 	Spawn:
-		SCNT N 0
+		SCNT N 1
 		Goto Look
-	Dodge.Right:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1);
-		}		
-		SCND ABCDEA 5
-		Goto Dodge.Resume
-	Dodge.Left:
-		"####" A 0 {
-			A_SetSize(-1, height / 2);
-			A_SetInvulnerable();
-			A_GiveInventory("DodgeCounter", 1);
-		}		
-		SCND AEDCBA 5 A_SetInvulnerable
+	See:
+		Goto See.Dodge
+	Dodge:
+		SCND A 0
 	Dodge.Resume:
-		"####" A 2 {
-			A_FaceTarget;
-			A_SetSize(-1, height * 2);
-			A_UnSetInvulnerable();
-		}
-		SCNT A 1
-		Goto Missile
+		Goto See.Normal
 	Death.Alt1:
 		Goto Super::Death+1
 	}
@@ -2811,7 +2609,7 @@ ACTOR ScientistGutenberg : Scientist2
 	States
 	{
 	Spawn:
-		GUTB N 0
+		GUTB N 1
 		Goto Look
 	See:
 		Goto See.Normal
@@ -2834,7 +2632,7 @@ ACTOR DirtyDarren : Guard
 	States
 	{
 	Spawn:
-		DARR N 0
+		DARR N 1
 		Goto Look
 	See:
 		Goto See.Normal
@@ -2862,7 +2660,7 @@ ACTOR Clerk : DirtyDarren
 	States
 	{
 	Spawn:
-		BLCK N 0
+		BLCK N 1
 		Goto Look
 	Death.Alt1:
 		Goto Super::Death+1
