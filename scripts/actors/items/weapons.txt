@@ -78,7 +78,18 @@ class NullWeapon : Weapon
 			Loop;
 		Fire:
 		Ready:
-			TNT1 A 1 A_WeaponReady(WRF_NOFIRE);
+			TNT1 A 1 {
+				if (FindInventory("DisguiseToken", true))
+				{
+					Inventory vis = player.mo.FindInventory("BoAVisibility");
+
+					if (vis && BoAVisibility(vis).alertedcount > 0) { SetPlayerProperty(0, FALSE, PROP_NOTARGET); } // Disguise fails if there are active enemies
+					else { SetPlayerProperty(0, TRUE, PROP_NOTARGET); }
+				}
+
+				A_WeaponReady(WRF_NOFIRE);
+			}
+
 			Loop;
 	}
 }

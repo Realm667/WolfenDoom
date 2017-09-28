@@ -303,7 +303,7 @@ class Base : Actor
 
 	bool A_DoSideRoll(int dodgespeed = 10, bool checkonly = false)
 	{
-		if (dodgetimeout > 0 || target is "PatrolPoint") { return false; } // If we're still waiting after the last dodge, or are on a path, don't try to dodge right now
+		if (bFriendly || dodgetimeout > 0 || target is "PatrolPoint") { return false; } // If we're still waiting after the last dodge, or are on a path, don't try to dodge right now
 
 		double dodgeangle;
 		double dodgedistance;
@@ -729,15 +729,15 @@ class Nazi : Base
 					A_DoSideRoll();
 				}
 			}
-			"####" A 0 A_Jump(256, "Dodge.Resume");
+			"####" A 0 { return ResolveState("Dodge.Resume"); }
 		Dodge.Right:
 			"####" A 0 A_SetSize(-1, height / 2);
 			"####" ABCDEA 5;
-			"####" A 0 A_Jump(256, "Dodge.End");
+			"####" A 0 { return ResolveState("Dodge.End"); }
 		Dodge.Left:
 			"####" A 0 A_SetSize(-1, height / 2);
 			"####" AEDCBA 5;
-			"####" A 0 A_Jump(256, "Dodge.End");
+			"####" A 0 { return ResolveState("Dodge.End"); }
 		Dodge.End:
 			"####" A 2;
 			"####" A 0 {
@@ -745,13 +745,13 @@ class Nazi : Base
 				A_Face(target);
 				A_SetSize(-1, height * 2);
 				bInvulnerable = false;
+				reactiontime = 0;
 			}
 			"####" A 0 {
-				if (target && IsVisible(target, false)) { return ResolveState("Missile"); }
 				return ResolveState("Dodge.Resume");
 			}
 		Dodge.Resume:
-			"####" A 0 A_Jump(256, "See.Normal");
+			"####" A 0 { return ResolveState("See.Normal"); }
 		Idle:
 			"####" AAAAAAAA 1 A_Wander;
 			"####" A 0 A_Look;
@@ -776,6 +776,8 @@ class Nazi : Base
 			}
 		MakeAlerted:
 			"####" # 0 {
+				if (health <= 0 || !bShootable) { return ResolveState('null'); } // If it's dead, don't make a zombie, just remove it and hope no one notices...
+
 				BecomeAlerted(target);
 				return ResolveState("See");
 			}
@@ -1052,6 +1054,7 @@ class Nazi : Base
 		A_AlertMonsters(512); // Alert an extra-large radius
 		A_SpawnItemEx("SneakableGuardEyesAlerted", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid); // Spawn active guard eyes
 		if (target && target.GetSpecies() == GetSpecies()) { target = null; SetStateLabel("Spawn"); } // Don't go after same-species targets
+
 		SetStateLabel("See"); // Go to See state and start chasing the player (or wandering if target wasn't set for some reason)
 	}
 
