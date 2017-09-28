@@ -1,25 +1,25 @@
 /*
 
-  Base class that allows for handling of Boss Icons, Always-drawn health bars, 
+  Base class that allows for handling of Boss Icons, Always-drawn health bars,
   and for "indiscriminate" enemies to be able to see through player disguises.
 
   Nazi class inherits from the Base class, so includes the same functionality,
-  but also adds properties to configure "sneakability" and "perception".  It 
-  also includes handling for Stealth/one-hit knife attacks, and the code for 
+  but also adds properties to configure "sneakability" and "perception".  It
+  also includes handling for Stealth/one-hit knife attacks, and the code for
   alerting and setting idle sneakable enemies.
 
   Custom Properties
 	Base.BossIcon
-	- String property that is used to look up the icon image that is displayed 
-	  with the enemy's health bar	
-	- Must be used in combination with the +BOSS flag (which enables the boss 
+	- String property that is used to look up the icon image that is displayed
+	  with the enemy's health bar
+	- Must be used in combination with the +BOSS flag (which enables the boss
 	  health bar to be drawn) or the Base.AlwaysDrawHealthBar property below.
 	- Has no effect if the enemy is not flagged to have health bar drawn.
 
 	Base.AlwaysDrawHealthBar
 	- Boolean value that is used to tell the game if the enemy's health bar should
-	  always be drawn.  
-	- Does not require the +BOSS flag to be set, and can alternatively be 
+	  always be drawn.
+	- Does not require the +BOSS flag to be set, and can alternatively be
 	  controlled via ACS or in-editor by setting the user_DrawHealthBar variable
 	- Developer note: This sets the statnum to STAT_DEFAULT - 3
 	  (used to limit ThinkerIterator performance hit)
@@ -40,13 +40,13 @@
 	  the actor's state to "MakeSneakable" via ACS.
 
 	Nazi.PerceptionTime
-	- Integer value that controls how many tics a disguised player must remain in 
+	- Integer value that controls how many tics a disguised player must remain in
 	  sight of this enemy before the player's disguise fails.
 	- Default value is 0, meaning "can't see through disguises"
 	- Used by SneakableEyesIdle actor (as seen on sneakable Gestapo)
 
 	Nazi.PerceptionFOV
-	- Integer value that controls the FOV of the enemy when trying to see through 
+	- Integer value that controls the FOV of the enemy when trying to see through
 	  player disguises.
 	- Used by SneakableEyesIdle actor (as seen on sneakable Gestapo)
 
@@ -65,12 +65,12 @@
 
   New Functions (Base class)
 	A_LookThroughDisguise(int flags = 0, float minseedist = 0, float Range = 0, float maxheardist = 0, double fov = 0, statelabel label = "See")
-	- Allows enemies to always and immediately "see through" player disguises, 
-	  essentially by having those enemies ignore the NOTARGET flag when looking 
+	- Allows enemies to always and immediately "see through" player disguises,
+	  essentially by having those enemies ignore the NOTARGET flag when looking
 	  for their target.
 	- Parameters are the same as for A_LookEx (https://zdoom.org/wiki/A_LookEx)
 	- Should be used in place of A_Look or A_LookEx for "indiscriminate" enemies,
-	  that wouldn't be fooled by a disguise, like rats, spiders, and possibly 
+	  that wouldn't be fooled by a disguise, like rats, spiders, and possibly
 	  paranormal creatures.
 
 	A_JumpAttack(int attackspeed = 20)
@@ -95,19 +95,19 @@
 	- Used internally to set up sneakable handling
 
 	int AlertedSneakablesCount(int range = 512)
-	- Returns the number of sneakable actors within the specified range of the 
+	- Returns the number of sneakable actors within the specified range of the
 	  calling actor
 
   New Functions (Nazi class)
-	A_NaziPain(int alertrange = 0, bool playsound = True, int offset = -8)	
-	- Consolidated function intended for use in Nazi class Pain states to 
+	A_NaziPain(int alertrange = 0, bool playsound = True, int offset = -8)
+	- Consolidated function intended for use in Nazi class Pain states to
 	  eliminate code duplication across actors.
 	- Spawns pain overlay (with height offset specified, alerts actors within the
 	  passed range, and calls A_Pain if playsound is true.
 
 	BecomeAlerted(Actor newtarget = null)
-	- Sets an idle sneakable actor to alerted, spawns alerted helper actor to 
-	  continue checking the player's visibility and to manage the return-to-idle 
+	- Sets an idle sneakable actor to alerted, spawns alerted helper actor to
+	  continue checking the player's visibility and to manage the return-to-idle
 	  timout counters.
 	- Takes one parameter - the new actor to target.
 	- Used internally by SneakableEyesIdle actor
@@ -115,22 +115,22 @@
 	BecomeIdle()
 	- Sets an alerted sneakable actor to idle, spawns idle helper actor to look
 	  for players and play idle sounds.
-	- Also sets actor back to patrolling/goal chasing if a goal had been set 
+	- Also sets actor back to patrolling/goal chasing if a goal had been set
 	  before the actor was alerted
 	- Used internally by SneakableEyesAlerted actor
 
   Useful objects (Nazi Class)
 	activationgoal
-	- Nazi class descendants have special internal handling in place for when 
-	  an actor is assigned as the activationgoal.  
-	- Similar to a normal 'goal' that is usually a PatrolPoint, a Nazi will walk 
+	- Nazi class descendants have special internal handling in place for when
+	  an actor is assigned as the activationgoal.
+	- Similar to a normal 'goal' that is usually a PatrolPoint, a Nazi will walk
 	  to their activationgoal when it is assigned to them.  The major difference
 	  is that Nazis will walk immediately to the activationgoal without stopping
-	  to fire at the player, and, once the activationgoal is reached, the goal 
-	  actor will activated.  
-	- Alarm Panels and their descendants have special handling, where the Nazi 
+	  to fire at the player, and, once the activationgoal is reached, the goal
+	  actor will activated.
+	- Alarm Panels and their descendants have special handling, where the Nazi
 	  is set to the 'Alarm' state upon activation.
-	- After reaching the activationgoal, the Nazi automatically clears their 
+	- After reaching the activationgoal, the Nazi automatically clears their
 	  activationgoal and returns to normal behavior.
 
 */
@@ -443,7 +443,7 @@ class Base : Actor
 		if (bDormant) { loiterdistance = 0; } // Don't loiter if dormant.
 
 		// If it's a loiterer with no set goal, spawn a patrolpoint goal for it and make that the goal, then run around that point
-		if (loiterdistance > 0 && !goal && !patrolgoal) 
+		if (loiterdistance > 0 && !goal && !patrolgoal)
 		{
 			patrolgoal = Spawn("PatrolPoint", pos);
 			patrolgoal.args[0] = -1;
@@ -520,7 +520,7 @@ class Nazi : Base
 		Look:
 			"####" "#" 10 A_NaziLook();
 			Loop;
-		See: 
+		See:
 		See.Normal: // Guard Walk Pattern
 			"####" "#" 0 { user_incombat = True; }
 			"####" A 1 A_NaziChase;
@@ -725,7 +725,7 @@ class Nazi : Base
 		See.Dodge:
 			"####" A 0 {
 				if (!maxdodge || dodgecounter < maxdodge)
-				{ // Sprite and state changes and thrusting handled internally by the A_DoSideRoll() function 
+				{ // Sprite and state changes and thrusting handled internally by the A_DoSideRoll() function
 					A_DoSideRoll();
 				}
 			}
@@ -813,7 +813,7 @@ class Nazi : Base
 			if (mo) {
 				if (IsFriend(mo)) { continue; }
 				if (Distance3d(mo) > 160.0) { continue; }
-				if (abs(deltaangle(angle, AngleTo(mo))) > 32.5) { continue; } 
+				if (abs(deltaangle(angle, AngleTo(mo))) > 32.5) { continue; }
 				if (!CheckSight(mo, SF_SEEPASTBLOCKEVERYTHING | SF_SEEPASTSHOOTABLELINES)) { continue; }
 
 				target = mo;
@@ -1096,7 +1096,7 @@ class Nazi : Base
 						{
 							int amt = item.Amount;
 
-							A_DropItem(item.Name, amt); 
+							A_DropItem(item.Name, amt);
 						}
 
 						drop.Destroy(); // Destroy the placeholder spawned item
@@ -1180,7 +1180,7 @@ class Nazi : Base
 			{
 				MeleeRange = 0; // To bypass the internal A_Chase "goal reached" logic
 
-				if (Distance3D(activationgoal) <= Radius + activationgoal.radius) 
+				if (Distance3D(activationgoal) <= Radius + activationgoal.radius)
 				{
 					A_Face(activationgoal);
 
@@ -1214,7 +1214,7 @@ class Nazi : Base
 	}
 }
 
-//Standard Nazi enemy defaults.  
+//Standard Nazi enemy defaults.
 //  Intended for use with 'normal' non-boss Nazi enemies.
 //  Currently handles burning, gibbing, and disintegration states
 class NaziStandard : Nazi

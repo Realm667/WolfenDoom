@@ -2,12 +2,12 @@
 
   An actor that looks for dead 'Nazi' class actors to be healed.
 
-  Automatically searches for the closest visible dead 'Nazi' actor that it is allied with (that 
-  has the same FRIENDLY flag settings) that is not gibbed or burned to ash.  Once the actor is 
+  Automatically searches for the closest visible dead 'Nazi' actor that it is allied with (that
+  has the same FRIENDLY flag settings) that is not gibbed or burned to ash.  Once the actor is
   identified, the Medic sets the actor as its goal and runs to it.
 
   Once within range of the goal actor (24 units centerpoint to centerpoint), the Medic enters its
-  "Heal" state and begins to resurrect the dead actor.  
+  "Heal" state and begins to resurrect the dead actor.
 
   While the dead actor is being healed, "HealingParticle" actors are spawned from the dead actor.
   The number of particles spawned, and the number of repetitions of the "Heal" state animation that
@@ -16,7 +16,7 @@
 
   The now ressurected actor's target is cleared, and, if they are sneakable, they are set idle.
 
-  The Medic also tries to avoid the player, by running away if a player is visible within 192 
+  The Medic also tries to avoid the player, by running away if a player is visible within 192
   units.  When this happens, the medic also forgets what dead body it was going toward.
 
   Also can work as FRIENDLY, healing only the FRIENDLY dead actors.
@@ -44,13 +44,19 @@ class NaziMedic : NaziStandard
 	States
 	{
 		Spawn:
-			NMDC N 0; // Just sets the base sprite
+			NMDC N 1; // Just sets the base sprite
 			Goto Look;
 		Look:
 			"####" "#" 35 A_LookForBodies();
 			"####" "#" 0 A_CheckForPlayer(True);
 			Loop;
 		See:
+			Goto See.Dodge;
+		Dodge:
+			NMDD A 0;
+		Dodge.Resume:
+			Goto See.Heal;
+		See.Heal:
 			"####" "#" 0 {
 				user_incombat = True;
 				crouched = false;
@@ -94,9 +100,9 @@ class NaziMedic : NaziStandard
 				if (Nazi(goal))
 				{
 					if (Nazi(goal).user_sneakable) { Nazi(goal).BecomeAlerted(target); } // If it's a sneakable actor, make it alert
-					Nazi(goal).healing = false; 
+					Nazi(goal).healing = false;
 				}
-				if (goal) { goal.A_ClearTarget(); goal.bFriendly = bFriendly; goal.BeginPlay(); } // Just to be sure, make the ressurected actor allied to the Medic...
+				if (goal) { goal.A_ClearTarget(); goal.bFriendly = bFriendly; goal.BeginPlay(); } // Just to be sure, make the resurrected actor allied to the Medic...
 				body = null;
 				goal = null;
 				master = null;
@@ -179,7 +185,7 @@ class NaziMedic : NaziStandard
 	{
 		if (
 			!mo.bIsMonster ||
-			mo.healing || 
+			mo.healing ||
 			mo.health > 0 ||
 			mo.bDormant ||
 			mo.bFriendly != bFriendly ||
@@ -193,10 +199,10 @@ class NaziMedic : NaziStandard
 			mo is "ArcticSniper" ||
 			mo is "ArcticSniper_Crouch" ||
 			mo is "NaziMedic" ||
-			mo is "FlamerSoldier" || 
+			mo is "FlamerSoldier" ||
 			mo is "Mechanic" ||
 			mo is "EliteFlamer" ||
-			mo is "EliteAssaulter" || 
+			mo is "EliteAssaulter" ||
 			mo is "EliteSoldatRifler" ||
 			mo is "ZombieBrain" ||
 			mo is "WereWaffenSS" ||

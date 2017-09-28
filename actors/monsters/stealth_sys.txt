@@ -1,6 +1,6 @@
-//mxd. Stealth-related stuff. 
+//mxd. Stealth-related stuff.
 
-/////////// 
+///////////
 //ENEMIES//
 ///////////
 
@@ -54,13 +54,13 @@ ACTOR MGTurretStealth : MGTurret
 
 	States
 	{
-		Missile: //This 'turret' fires and reloads like an MP40 Guard 
+		Missile: //This 'turret' fires and reloads like an MP40 Guard
 			"####" A 5 {
 				A_FaceTarget;
 				A_PlaySound("nazi/mp40", CHAN_WEAPON);
 			}
 			"####" B 4 {
-				A_SpawnProjectile("EnemySMGTracer",24,4,random(-8,8)); 
+				A_SpawnProjectile("EnemySMGTracer",24,4,random(-8,8));
 				A_GiveInventory("SSMP40GuardCounter", 1);
 			}
 			"####" A 0 A_JumpIfInventory("SSMP40GuardCounter", 40, "Reload")
@@ -244,10 +244,10 @@ Actor SneakableMarineGeneral : MarineGeneral
 	Nazi.Sneakable
 }
 
-// This guy is pretty much custom-tailored for the watchtowers in C2M1...  He's sneakable, 
-// but has some custom handling to look all around at close range and to alert on proximity 
-// at a much larger radius than normal Nazis (because he only has one rotation and also 
-// looks like he's watching you through a scope.  
+// This guy is pretty much custom-tailored for the watchtowers in C2M1...  He's sneakable,
+// but has some custom handling to look all around at close range and to alert on proximity
+// at a much larger radius than normal Nazis (because he only has one rotation and also
+// looks like he's watching you through a scope.
 // He also still drops his weapon - mostly so the weapon balance doesn't change.
 ACTOR SneakableWSniper : WSniper
 {
@@ -269,5 +269,5 @@ ACTOR SneakableWSniper : WSniper
 			"####" L 5
 			"####" M -1
 			Stop
-	}	
+	}
 }

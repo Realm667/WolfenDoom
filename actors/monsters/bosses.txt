@@ -442,7 +442,6 @@ ACTOR NaziLoper : Nazi
 	See:
 		"####" BBBBCCCCDDDDCCCC 1 A_Chase
 		"####" B 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" B 0 A_Jump(random(128,192),"Missile","Missile2","Missile3")
 		Goto Look
 	Melee:
 		"####" E 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
@@ -452,6 +451,7 @@ ACTOR NaziLoper : Nazi
 		"####" FG 8 A_CustomMeleeAttack(2*random(2,10),"loper/attack","loper/attack","Melee",TRUE)
 		Goto Look
 	Missile:
+		"####" E 0 A_Jump(random(128,192),"Missile2","Missile3")
 		"####" E 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
 		"####" E 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0)
 		"####" E 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
@@ -542,7 +542,7 @@ ACTOR FatMan : NaziBoss
 	Tag "General Giftmacher"
 	PainChance 32
 	-FLOAT		//we don't want him to fly, yeah? ;)
-	-NOGRAVITY	//we don't want him to fly, yeah? 
+	-NOGRAVITY	//we don't want him to fly, yeah?
 	Obituary "$OTTOBOSS"
 	SeeSound "Boss2/Sighted"
 	PainSound "boss/pain"
@@ -656,7 +656,7 @@ ACTOR RocketMan : NaziBoss
 		"####" DDDDDDDD 1 A_Wander
 		"####" A 0 A_Look
 		Loop
-	
+
 	}
 }
 

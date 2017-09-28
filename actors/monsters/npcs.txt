@@ -409,9 +409,9 @@ ACTOR Camp_PrisonerBald : Nazi //it has shooting frames but actually he doesn't 
 		"####" A 0 A_Jump(4, "Cough") //insert from here random sounds and give each call a separate state - ozy81
 		Loop
 	LookAround.Frightened:
-		PSNF A 1 A_SetTics(random(12,16))
-		"####" BCBCDBA 1 A_SetTics(random(48,96))
-		PRSN E 1
+		"####" P 1 A_SetTics(random(12,16))
+		"####" QRQRSQP 1 A_SetTics(random(48,96))
+		"####" E 1
 		Goto See.Frightened
 	Cough:
 		"####" A 0 A_Jump(32, "See") //try to reduce coughing probabilities in a significantly way - ozy81

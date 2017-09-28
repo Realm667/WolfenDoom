@@ -553,7 +553,7 @@ ACTOR SSTank1
 		"####" A 0 A_JumpIfTargetInLOS(1) // only move if we have a target
 		Loop
 		"####" A 0 A_PlaySound("TKMOVE", CHAN_7, 1.0, TRUE)
-		"####" A 0 
+		"####" A 0
 		"####" A 0 A_FaceTarget(1.0)
 		"####" A 0 A_ChangeVelocity(Cos(angle) * speed, Sin(angle) * speed, velz, CVF_REPLACE)
 //only attack if our target is within 5 degrees if the top part of the tank model was separate, this behavior could potentially be removed.
@@ -760,7 +760,7 @@ ACTOR SSTank4 : SSTank1
 		"####" A 20 A_SpawnItemEx("DestroyedTank4")
 		Stop
 	}
-} 
+}
 
 ACTOR DestroyedTank4 : DestroyedTank1
 {
