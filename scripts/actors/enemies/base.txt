@@ -1011,6 +1011,9 @@ class Nazi : Base
 			if (!bBoss) { A_PlaySound("axis1/sighted", CHAN_BODY); }
 			else { A_PlaySound(SeeSound, CHAN_BODY); }
 
+			dodgetimeout = Random(175, 350);
+			dodgecounter = 0;
+
 			alerted = true;
 		}
 
