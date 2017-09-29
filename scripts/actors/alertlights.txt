@@ -1,7 +1,7 @@
 /*
 
-  Version of standard dynamic light that spawns a helper actor that sets the 
-  visibility variable of any player in proximity to the light, based on the 
+  Version of standard dynamic light that spawns a helper actor that sets the
+  visibility variable of any player in proximity to the light, based on the
   distance that the payer is from the center of the light
 
   These lights automatically replace all point lights.
@@ -68,13 +68,13 @@ class AlertPointLight : PointLight replaces PointLight
   Helper actor that handles changing the player's visibility value based on
   how close the player is to the center of the light.
 
-  By default, when spawned by the point light replacement above, which sets 
-  itself as master to the AlertLight, this actor automatically scales itself 
-  to match the dynamic light's radius, and uses the brightness of the dynamic 
-  light to scale the visibility value that it sets for the player.  
+  By default, when spawned by the point light replacement above, which sets
+  itself as master to the AlertLight, this actor automatically scales itself
+  to match the dynamic light's radius, and uses the brightness of the dynamic
+  light to scale the visibility value that it sets for the player.
 
   If placed directly in-editor, argument 0 is used to set the radius of the
-  visibility increase (with a fall-back to 64 units if no value is provided), 
+  visibility increase (with a fall-back to 64 units if no value is provided),
   and the brightness of the light is assumed to be 100%.
 
   If spawned by an actor that sets itself as the AlertLight's tracer, the
@@ -114,7 +114,7 @@ class AlertLight : Actor
 		if (master) {
 			checkRadius = master.args[3]; // If spawned and master is set, use parent's arg[3] as check radius
 		} else {
-			checkRadius = args[0]; // Otherwise, use the actor's arg[0] 
+			checkRadius = args[0]; // Otherwise, use the actor's arg[0]
 		}
 		if (!checkRadius) { checkRadius = 64; } // If nothing was set, use 64 map unit radius
 	}

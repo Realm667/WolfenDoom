@@ -1,15 +1,15 @@
 /*
 
   ActorSpawner
-    These are spawn point actors that spawn actors when active, and maintain a set 
-    number of thos actors alive (1 by default).  Actors will not be spawned if a player 
-    can see the spawn point or if a player is within a defined minimum spawn distance 
+    These are spawn point actors that spawn actors when active, and maintain a set
+    number of thos actors alive (1 by default).  Actors will not be spawned if a player
+    can see the spawn point or if a player is within a defined minimum spawn distance
     from the spawner (default 512 units).
 
-    By default, the spawner will spawn a single guard.  Once that guard is killed, the 
+    By default, the spawner will spawn a single guard.  Once that guard is killed, the
     spawner will spawn another guard, and so on.
 
-    Spawned actors can be given a TID and can be set to navigate to a specific 
+    Spawned actors can be given a TID and can be set to navigate to a specific
     PatrolPoint TID after spawn as well.
 
   Custom UDMF Properties
@@ -20,7 +20,7 @@
       Sets the TID that the spawned enemies are given.  By default they have no TID.
 
     user_goal
-      Sets the goal/patrolpoint TID that the spawned enemies will walk to once they return to 
+      Sets the goal/patrolpoint TID that the spawned enemies will walk to once they return to
       being idle.  By default, they go back to their spawn point and stand still.
 
     user_maxactors
@@ -36,16 +36,16 @@ class ActorSpawner : SwitchableDecoration
 	Class<Actor> spawntype;
 
 	// TID to give the spawned enemy actor (default no TID)
-	int user_tid; 
+	int user_tid;
 
 	// TID of goal that the enemy should walk to after spawning (default no goal)
-	int user_goal; 
+	int user_goal;
 
 	// How many enemies from this spawner to maintain alive at once (default 1)
-	int user_maxactors; 
+	int user_maxactors;
 
 	// Distance from player inside of which the spawner will stop spawning (default 512)
-	int user_minspawndistance; 
+	int user_minspawndistance;
 
 	Default
 	{

@@ -132,7 +132,7 @@ ACTOR COD_OilLamp : SwitchableDecoration
 	+NOBLOCKMAP
 	+NOGRAVITY
 	+SOLID
-	
+
 	States
 	{
 	Active:
@@ -266,7 +266,7 @@ ACTOR CeilingLightM2 : CeilingLightM
 	}
 }
 
-ACTOR StreetLight1 : SwitchableDecoration 
+ACTOR StreetLight1 : SwitchableDecoration
 {
 	//$Category Light Sources (Wolf3D)
 	//$Title Street Light (off, switchable)
@@ -543,7 +543,7 @@ ACTOR LightBulbOn_Red : LightBulb
 	Active:
 		MDLA B 0 A_ChangeFlag("DORMANT", FALSE)
 	Spawn:
-		MDLA B -1 NoDelay BRIGHT LIGHT(BOACEIL6) A_JumpIf(Args[0]==1, "UnBreakable") 
+		MDLA B -1 NoDelay BRIGHT LIGHT(BOACEIL6) A_JumpIf(Args[0]==1, "UnBreakable")
 		Stop
 	UnBreakable:
 		"####" "#" 0 A_ChangeFlag("NOBLOCKMAP", TRUE)
@@ -585,7 +585,7 @@ ACTOR LightBulbOn_Grn : LightBulb
 	Active:
 		MDLA B 0 A_ChangeFlag("DORMANT", FALSE)
 	Spawn:
-		MDLA B -1 NoDelay BRIGHT LIGHT(BOACEIL7) A_JumpIf(Args[0]==1, "UnBreakable") 
+		MDLA B -1 NoDelay BRIGHT LIGHT(BOACEIL7) A_JumpIf(Args[0]==1, "UnBreakable")
 		Stop
 	UnBreakable:
 		"####" "#" 0 A_ChangeFlag("NOBLOCKMAP", TRUE)
@@ -850,7 +850,7 @@ ACTOR FBarrel1
 }
 
 //Strobelights - fixed by ozy81
-ACTOR StrobeLightBlue : SwitchableDecoration 
+ACTOR StrobeLightBlue : SwitchableDecoration
 {
 	//$Category Light Sources (Wolf3D)
 	//$Title Strobe Light (blue, switchable)

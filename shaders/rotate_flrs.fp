@@ -9,7 +9,7 @@ vec4 Process(vec4 color)
 
 	float tcos = cos(pi * timer * speed);
 	float tsin = sin(pi * timer * speed);
-  
+
 	float tx = mod((tcos * t.x - tsin * t.y) - 0.5, 1.0);
 	float ty = mod((tsin * t.x + tcos * t.y) - 0.5, 1.0);
 

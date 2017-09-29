@@ -101,11 +101,15 @@ class NaziMedic : NaziStandard
 				{
 					if (Nazi(goal).user_sneakable) { Nazi(goal).BecomeAlerted(target); } // If it's a sneakable actor, make it alert
 					Nazi(goal).healing = false;
+					Nazi(goal).dodgetimeout = Random(175, 350); // Reset the dodge timeout
 				}
-				if (goal) { goal.A_ClearTarget(); goal.bFriendly = bFriendly; goal.BeginPlay(); } // Just to be sure, make the resurrected actor allied to the Medic...
+				if (goal) { goal.A_ClearTarget(); goal.bFriendly = bFriendly; goal.BeginPlay(); goal.bInvulnerable = false; } // Just to be sure, make the resurrected actor allied to the Medic...
 				body = null;
 				goal = null;
 				master = null;
+
+				dodgetimeout = Random(175, 350); // Reset the dodge timeout
+
 				return ResolveState("See");
 			}
 			Goto See;

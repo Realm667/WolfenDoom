@@ -51,11 +51,11 @@ class BoAVisibility : CustomInventory
 		while (nmo = Nazi(it.Next(true)))
 		{
 			if (
-				!nmo.user_sneakable && 
-				nmo.health > 0 && 
-				nmo.bShootable && 
+				!nmo.user_sneakable &&
+				nmo.health > 0 &&
+				nmo.bShootable &&
 				nmo.user_incombat &&
-				nmo.target && 
+				nmo.target &&
 				nmo.target == Owner &&
 				(nmo.CheckSight(Owner) || Owner.Distance3d(nmo) < 256)
 			) { count++; }

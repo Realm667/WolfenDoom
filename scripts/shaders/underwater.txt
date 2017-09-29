@@ -3,7 +3,7 @@ class WaterHandler : StaticEventHandler {
 		// set the player's timer up correctly (more-than-1-tick precision)
 		PlayerInfo p = players[consoleplayer];
 		Shader.SetUniform1f(p, "watershader", "timer", gametic + e.FracTic);
-		
+
 		if (p.mo.waterlevel >= 3) {
 			Shader.SetEnabled(p, "watershader", true);
 			Shader.SetEnabled(p, "waterzoomshader", true);

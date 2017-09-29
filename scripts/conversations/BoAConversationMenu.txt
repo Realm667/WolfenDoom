@@ -53,7 +53,7 @@ class BoAConversationMenu : ExtendedConversationMenuBase
 			ParseReplies(int(Responses.w / Responses.scale), "SmallFont"); //ParseReplies is still basically the old parsing code - TODO: Redo more generically...
 			Responses.Init(); // Early direct call to Init to automatically calculate height based on response line count
 
-			Responses.pos.y = 225 - Responses.h; // 'h' calculated during Init call 
+			Responses.pos.y = 225 - Responses.h; // 'h' calculated during Init call
 
 		let SpeakerText = dialogue.AddNew("DialogueTextBox");
 			SpeakerText.linespacing = 2.0;

@@ -1,23 +1,23 @@
 /*
 
-  These actors allow for activatable alarms that alert actors within a 512-unit radius.  
+  These actors allow for activatable alarms that alert actors within a 512-unit radius.
   Optionally, alarm activation can trigger spawn of additional enemies.
 
   Three actors are involved:
     AlarmPanel
 	These are usable flatsprite actors that control Alarms and Alarm Spawners that have the
 	same TID as the panel.  The Nazi-class descendant actor who is closest to the alarm panel
-	(within 1024 units) will be automatically selected as the activator, and, once alerted, 
-	will automatically walk to the alarm panel and activate it.  
+	(within 1024 units) will be automatically selected as the activator, and, once alerted,
+	will automatically walk to the alarm panel and activate it.
 
 	Any actors with the same TID as the Alarm Panel will be set to their 'Active' or 'Inactive'
 	state, so any Alarm of Alarm Spawner actors (as well as any other switchable decorations)
 	that have the same TID as the panel can be controlled by the panel.
 
-	To silence alarms, the player must manually deactivate the alarm, or the Alarm Panel can 
+	To silence alarms, the player must manually deactivate the alarm, or the Alarm Panel can
 	be deactivated via ACS to set inactive all controlled actors.
 
-	Players can also turn deactivated alarms on...  This would normally be dumb, but might be 
+	Players can also turn deactivated alarms on...  This would normally be dumb, but might be
 	useful for flushing guards into a courtyard away from a key, or something similar.
 
 	Active AlarmPanel actors have a red glow on them.
@@ -28,7 +28,7 @@
 
     AlarmSpawner
 	These are spawn point actors that spawn up to three SneakableSSMP40Guard actors
-	when they are activated.  A maximum of three guards will be present at any time; 
+	when they are activated.  A maximum of three guards will be present at any time;
 	if three guards were spawned and one guard was killed before the alarm was shut
 	off, the next time the alarm goes off, only one additional guard will spawn.
 
@@ -39,12 +39,12 @@
 	    Sets the TID that the spawned enemies are given.  By default they have no TID.
 
 	  user_goal
-	    Sets the goal/patrolpoint TID that the spawned enemies will walk to once they return to 
+	    Sets the goal/patrolpoint TID that the spawned enemies will walk to once they return to
 	    being idle.  By default, they go back to their spawn point and stand still.
 
   Alarms and Alarm Spawners must be given the same TID as an Alarm Panel that will control
   them, otherwise they will not function.  You can have multiple Alarm Panels with the same
-  TID (e.g., so that the player can turn of alarms from a side office after the alarms are 
+  TID (e.g., so that the player can turn of alarms from a side office after the alarms are
   turned on by a guard in a main area).
 
 */
@@ -125,14 +125,14 @@ class AlarmPanel : SwitchableDecoration
 			ALRM Q 35;
 		Inactive:
 			"####" Q 1;
-			"####" Q 0 { 
+			"####" Q 0 {
 				counter++;
 				if (counter >= 525) { // Check after 15 seconds, max, to give alerted guards time to return to idle when the alarm is turned off, and to avoid spamming thinkeriterator calls
 					if (
 						!activator ||
-						!NaziStandard(activator) || 
-						!activator.bShootable || 
-						activator.health <= 0 || 
+						!NaziStandard(activator) ||
+						!activator.bShootable ||
+						activator.health <= 0 ||
 						(NaziStandard(activator).activationgoal && NaziStandard(activator).activationgoal != self)
 					) { activator = FindActivator(); }
 
@@ -285,7 +285,7 @@ class AlarmPanel : SwitchableDecoration
 }
 
 // Actor spawner with some parameters hard-coded, sneakable guards as default,
-//  and customized spawn locations, so that sneakables have a place to return 
+//  and customized spawn locations, so that sneakables have a place to return
 //  to when they go back to idle
 class AlarmSpawner : ActorSpawner
 {

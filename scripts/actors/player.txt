@@ -6,7 +6,7 @@
 	- Used by Status Bar code to draw boss health bars
 
 	GetClosestForcedHealthBar()
-	- Finds the closest Nazi class descendant with the user_DrawHealthBar variable set to true and saves 
+	- Finds the closest Nazi class descendant with the user_DrawHealthBar variable set to true and saves
 	  a reference to that actor to the ForcedHealthBar variable
 	- Used by Status Bar code to draw always-present health bar (e.g., Nebelwerfer in Paris)
 
@@ -22,7 +22,7 @@
 
 		CheckSpriteToken("ScientistUniformToken", "PLSC", "PLYS")
 
-	  This checks the player's inventory for the "ScientistUniformToken" token, and, if found, sets the 
+	  This checks the player's inventory for the "ScientistUniformToken" token, and, if found, sets the
 	  base sprite to PLSC if the player is standing and PLYS if the player is crouching.  Also cancels
 	  out the sprite squishing if you specify a crouch sprite
 	- If you don't specify a crouching sprite, the standing sprite is used and default squishing applies
@@ -41,9 +41,9 @@
 	PlayerEffect
 	- Base class for player effects, to be spawned/removed with SpawnEffect/RemoveEffect as shown above
 	- Literally just a simple actor that constantly warps to the position of its master (the player)
-	- Developer note: These actors have their statnum set to STAT_DEFAULT - 4 
+	- Developer note: These actors have their statnum set to STAT_DEFAULT - 4
 	  (used to limit ThinkerIterator performance hit)
-  
+
 */
 
 class BoAPlayer : PlayerPawn
@@ -107,7 +107,7 @@ class BoAPlayer : PlayerPawn
 		"####" A 1;
 		Loop;
 	See:
-		PLAY ABCD 8 {   // Urgh.  So that player menu preview will show up properly...  
+		PLAY ABCD 8 {   // Urgh.  So that player menu preview will show up properly...
 			// The menu code looks for the See state frames and duration, but doesn't process code - It also doesn't handle "####" frames.
 			// Since this return is processed before the frame is rendered, the actor will jump to the proper See state in-game without
 			// screwing up the handling for disguises or ever showing the wrong sprites.
@@ -182,7 +182,7 @@ class BoAPlayer : PlayerPawn
 	override void Tick()
 	{
 		if (Level.time % (35 * 5) == 0) { ForcedHealthBar = GetClosestForcedHealthBar(); } // Only run this check occasionally
-		
+
 		CrosshairTarget = GetLineTarget();
 
 		DoTokenChecks();

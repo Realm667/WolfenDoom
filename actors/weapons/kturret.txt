@@ -12,7 +12,7 @@ ACTOR KTurretStand : SwitchableDecoration //IMPORTANT: The TurretStand NEEDS to 
 	+THRUSPECIES
 	+USESPECIAL
 	Species "TURR"
-	Activation	THINGSPEC_ThingTargets| THINGSPEC_ThingActs| THINGSPEC_NoDeathSpecial| THINGSPEC_Switch 
+	Activation	THINGSPEC_ThingTargets| THINGSPEC_ThingActs| THINGSPEC_NoDeathSpecial| THINGSPEC_Switch
 	//note about THINGSPEC_ThingTargets: as soon as it's activated, the player becomes the Master of the turret instead of Target & the Target pointer is cleared.
 	States
 	{
@@ -36,7 +36,7 @@ ACTOR KTurretStand : SwitchableDecoration //IMPORTANT: The TurretStand NEEDS to 
 	}
 }
 
-ACTOR KTurretGun 
+ACTOR KTurretGun
 {
 	Radius 2
 	Height 2
@@ -136,7 +136,7 @@ ACTOR KTurretTracer : Tracer
 	Spawn:
 		PUFF A 0 NoDelay
 		Goto Spawn2
-	Spawn2: 
+	Spawn2:
 		PUFF A 1 BRIGHT Light(3DCHAN)
 		Loop
 	Death:

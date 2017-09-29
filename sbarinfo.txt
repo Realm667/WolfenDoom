@@ -19,18 +19,18 @@ statusbar Normal // Standard Doom Status bar
 			DrawImage "STGMASK", 157, 78, center;
 			drawbar "HORZSP2F", "HORZSP2E", PowerupTime(SpaceSuit), horizontal, interpolate(2), 135, 133;
 		}
-		
+
 		drawimage "HUDBAR", -54, 152;
-	
+
 		InInventory MineSweeper, 1
 		{
 			drawbar "VERTBYMG", "VERTBYMD", power, vertical, interpolate(2), 195, 170;
-			InInventory MineSweeperActive, 1 
+			InInventory MineSweeperActive, 1
 			{
 				drawbar "VERTBYMF", "VERTBYME", power, vertical, interpolate(2), 195, 170;
 			}
 		}
-	
+
 	//AirControl & Stamina
 	drawbar "HORZAIRF", "HORZAIRE", airtime, horizontal, interpolate(2), 36, 160;
 	drawbar "HORZSTMF", "HORZSTME", stamina, horizontal, interpolate(2), 88, 160;
@@ -121,7 +121,7 @@ Statusbar FullScreen, FullScreenOffsets
 		 DrawImage "STGMASK", 0+center, 0+center, center;
 		 drawbar "HORZSPCF", "HORZSPCE", PowerupTime(SpaceSuit), horizontal, interpolate(2), -55+center, 16;
 	}
-	
+
 	InInventory MineSweeper, 1
 	{
 		 drawbar "VERTBYMG", "VERTBYMD", power, vertical, interpolate(2), 150, -35;

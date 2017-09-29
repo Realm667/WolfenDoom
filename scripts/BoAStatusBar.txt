@@ -69,8 +69,8 @@ class BoAStatusBar : BaseStatusBar
 		if (vis)
 		{
 			mVisibilityInterpolator.Update(BoAVisibility(vis).visibility);
-			
-			alertedcount = BoAVisibility(vis).alertedcount; 
+
+			alertedcount = BoAVisibility(vis).alertedcount;
 
 			if (alertedcount)
 			{
@@ -258,7 +258,7 @@ class BoAStatusBar : BaseStatusBar
 		DrawString(mHUDFont, FormatNumber(GetAmount("FlameAmmo"), 3), (284, 190), DI_TEXT_ALIGN_RIGHT);
 		DrawString(mHUDFont, FormatNumber(GetAmount("NebAmmo"), 3), (307, 172), DI_TEXT_ALIGN_RIGHT);
 		DrawString(mHUDFont, FormatNumber(GetAmount("PanzerAmmo"), 3), (307, 178), DI_TEXT_ALIGN_RIGHT);
-		
+
 		if (CPlayer.mo.InvSel != null && !level.NoInventoryBar)
 		{
 			DrawInventoryIcon(CPlayer.mo.InvSel, (156, 168), DI_ITEM_OFFSETS);
@@ -380,19 +380,19 @@ class BoAStatusBar : BaseStatusBar
 		texsize.x *= scale;
 		texsize.y *= scale;
 		[position, flags] = AdjustPosition(position, flags, texsize.X, texsize.Y);
-		
+
 		double value = (maxval != 0) ? clamp(curval / maxval, 0, 1) : 0;
 		if(border != 0) value = 1. - value; //invert since the new drawing method requires drawing the bg on the fg.
-		
+
 		// {cx, cb, cr, cy}
 		double Clip[4];
 		Clip[0] = Clip[1] = Clip[2] = Clip[3] = 0;
-		
+
 		bool horizontal = !(vertical & SHADER_VERT);
 		bool reverse = !!(vertical & SHADER_REVERSE);
 		double sizeOfImage = (horizontal ? texsize.X - border*2 : texsize.Y - border*2);
 		Clip[(!horizontal) | ((!reverse)<<1)] = sizeOfImage - sizeOfImage * value;
-		
+
 		// preserve the active clipping rectangle
 		int cx, cy, cw, ch;
 		[cx, cy, cw, ch] = screen.GetClipRect();
@@ -405,10 +405,10 @@ class BoAStatusBar : BaseStatusBar
 			DrawTexture(ontex, position, flags | DI_ITEM_LEFT_TOP, alpha, scale: (scale, scale));
 			SetClipRect(position.X + Clip[0], position.Y + Clip[1], texsize.X - Clip[0] - Clip[2], texsize.Y - Clip[1] - Clip[3], flags);
 		}
-		
+
 		if (offtex.IsValid()) { DrawTexture(offtex, position, flags | DI_ITEM_LEFT_TOP, alpha, scale: (scale, scale)); }
-		
-		if (border == 0) 
+
+		if (border == 0)
 		{
 			SetClipRect(position.X + Clip[0], position.Y + Clip[1], texsize.X - Clip[0] - Clip[2], texsize.Y - Clip[1] - Clip[3], flags);
 			DrawTexture(ontex, position, flags | DI_ITEM_LEFT_TOP, alpha, scale: (scale, scale));
@@ -428,7 +428,7 @@ class BoAStatusBar : BaseStatusBar
 				stealth = true;
 				return true;
 			}
-			
+
 			stealth = false;
 			return false;
 		}
