@@ -55,9 +55,9 @@ class DialogueDescriptor : Object ui
 		double heightRatio = screen.GetHeight() / double(targetscreeny);
 		double screenRatio = widthRatio / heightRatio;
 
-		//Adjust because the text block starts to stretch at this point 
+		//Adjust because the text block starts to stretch at this point
 		// (needs work - not particularly accurate at really wide/high resolutions, but works for all of the "native" resolutions on my machine)
-		if (screenRatio > 1.275) { widthRatio = 4 + (widthRatio - 4) / 2; } 
+		if (screenRatio > 1.275) { widthRatio = 4 + (widthRatio - 4) / 2; }
 
 		double xOffset = (screen.GetWidth() - targetscreenx * heightRatio) / 2;
 		double yOffset = (screen.GetHeight() - targetscreeny * widthRatio) / 2;
@@ -104,7 +104,7 @@ class DialogueDescriptor : Object ui
 			controls[c].Draw();
 		}
 
-		return selection;		
+		return selection;
 	}
 
 	void Destroy()
@@ -171,7 +171,7 @@ class DialogueDescriptor : Object ui
 		component.classname = componenttype;
 		controls.Push(component);
 		if (componenttype == "DialogueResponses") { responseblockcount++; }
-		
+
 		return component;
 	}
 
@@ -289,8 +289,8 @@ class DialogueComponent : Object ui
 	}
 
 	virtual bool OnUIEvent(UIEvent ev)
-	{ 
-		return false; 
+	{
+		return false;
 	}
 
 	virtual bool MenuEvent(int mkey, bool fromcontroller)
@@ -386,7 +386,7 @@ class DialogueIcon : DialogueComponent
 					{
 						frame = 3;
 						break;
-					}	
+					}
 				case 72: // H
 					tic += animduration;
 					break;
@@ -593,7 +593,7 @@ class DialogueScrollBar : DialogueComponent
 					blocky -= 2;
 				}
 
-				if (scrollBarSize > 2) { 
+				if (scrollBarSize > 2) {
 					dialogue.DrawElement(arrowx, blocky, "Scroll_M", scale, parent.dialogue.altcolor);
 				}
 			}
@@ -842,7 +842,7 @@ class DialogueResponses : DialogueComponent
 		}
 		else if (mkey == Menu.MKEY_Down)
 		{
-			if (++dialogue.selection >= responses.Size()) 
+			if (++dialogue.selection >= responses.Size())
 			{
 				if (dialogue.autofocus) { dialogue.focus = dialogue.NextControl(false); }
 				dialogue.selection--;

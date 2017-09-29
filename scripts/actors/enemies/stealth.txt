@@ -1,6 +1,6 @@
 /*
 
-  Base class for the helper actors that are spawned when a Nazi class 
+  Base class for the helper actors that are spawned when a Nazi class
   descendant is flagged as "sneakable". Also handles "perceptive" enemies who
   can see through disguises.
 
@@ -9,13 +9,13 @@
 
   New Functions
 	A_LookForNoTargetPlayer()
-	- Allows enemies to "see through" player disguises, essentially by having 
+	- Allows enemies to "see through" player disguises, essentially by having
 	  those enemies ignore the NOTARGET flag when looking for their target, then
-	  alerting the actor once the player has been in sight for more than the 
+	  alerting the actor once the player has been in sight for more than the
 	  specified modder-configured threshold  (See Nazi class declaration).
 	- Threshold increments more quickly the closer the player is the the actor
 	- Used in-game for Gestapo agents who can see through player disguises.
-	- This should not be called directly; it is configured via Nazi class 
+	- This should not be called directly; it is configured via Nazi class
 	  Properties and called automatically by the sneakableeyes actors.
 
 */
@@ -130,7 +130,7 @@ class StealthBase : Actor
 			{
 				alert.alpha = double(sighttime) / threshold;
 				alert.scale.x = alert.scale.y = 1 + alert.alpha; // End scale is 2.0 to match the standard alert marker
-			} 
+			}
 		}
 
 		// Write the suspicion level to the player's suspicion variable so that it can be used on the hud
@@ -149,7 +149,7 @@ class StealthBase : Actor
 			BoAVisibility(vis).extravisibility += skill + 2;
 			if (BoAVisibility(vis).visibility  >= 100) { return false; }
 		} else { return false; }
-		
+
 		return true;
 	}
 }
@@ -262,9 +262,9 @@ class SneakableGuardEyesIdle : StealthBase
 			TNT1 A 1 A_ClearTarget;
 			Goto Look;
 		AlertMaster:
-			TNT1 A 0 { 
+			TNT1 A 0 {
 				if (master && !master.bDormant) { Nazi(master).BecomeAlerted(target); } // Cause the master to become alerted
-			} 
+			}
 			Stop;
 	}
 
@@ -306,9 +306,9 @@ class SneakableGuardEyesAlerted : StealthBase
 		Spawn:
 			TNT1 A 1;
 			Goto ResetCounters;
-		ResetCounters: 
+		ResetCounters:
 			TNT1 A 0 A_SetArg(0, random(280, 350)); // Set countdown time to 8 - 10 seconds
-			TNT1 A 0 A_SetArg(1, random(140, 210));  // Set quote countdown time to 4 - 6 seconds 
+			TNT1 A 0 A_SetArg(1, random(140, 210));  // Set quote countdown time to 4 - 6 seconds
 			Goto Look;
 		Look:
 			TNT1 A 1 A_Warp(AAPTR_MASTER, 0, 0, Height); // Need a slight delay between A_Looks to prevent infinite loop
