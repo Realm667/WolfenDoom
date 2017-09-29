@@ -20,7 +20,7 @@ ACTOR LaserShooter : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 
+		TNT1 A 0
 		TNT1 A 0 A_JumpIf(Args[0] == 1,"PurpleLoop")
 		TNT1 A 0 A_JumpIf(Args[0] > 1,"GreenLoop")
 		TNT1 A 0 A_JumpIf(Args[3] == 1,"RedLoop")
@@ -120,7 +120,7 @@ ACTOR ZapShooter : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 
+		TNT1 A 0
 		TNT1 A 0 A_JumpIf(Args[2] == 1,"ZapLoop")
 		TNT1 A 0 A_PlaySound("tesla/loop", CHAN_AUTO, 0.2, TRUE)
 	ZapLoop:
@@ -144,7 +144,7 @@ ACTOR ZapShooter : SwitchableDecoration
 
 ACTOR LaserBeam_Red
 {
-	Radius 0 
+	Radius 0
 	Height 0
 	+BRIGHT
 	+NOBLOCKMAP
@@ -218,7 +218,7 @@ ACTOR MeasurePuff : BulletPuff
 	States
 	{
 	Spawn:
-		TNT1 A 0 
+		TNT1 A 0
 		"####" A 0 A_SpawnitemEx("MeasurePuffTemp",0,0,0,0,0,0,0,SXF_ISTRACER|SXF_SETMASTER|SXF_NOCHECKPOSITION)
 		"####" A 0 A_SpawnitemEx("SparkFlare_W1",random(-2,2), random(-2,2), random(-2,2), random(-2,2), random(-2,2), random(-2,2),0,SXF_ISTRACER|SXF_SETMASTER|SXF_NOCHECKPOSITION)
 		"####" A 0 A_TransferPointer(AAPTR_TRACER,AAPTR_TARGET,AAPTR_MASTER,AAPTR_MASTER) //the end result of the above nonsense is that the puffs originator sets the measurepuff as it's master.
@@ -237,7 +237,7 @@ ACTOR MeasurePuffNR : MeasurePuff
 	States
 	{
 	Spawn:
-		TNT1 A 0 
+		TNT1 A 0
 		"####" A 0 A_SpawnitemEx("MeasurePuffTemp",0,0,0,0,0,0,0,SXF_ISTRACER|SXF_SETMASTER|SXF_NOCHECKPOSITION)
 		"####" A 0 A_TransferPointer(AAPTR_TRACER,AAPTR_TARGET,AAPTR_MASTER,AAPTR_MASTER)
 		TNT1 A 1 BRIGHT LIGHT("LAZERRED")
@@ -253,7 +253,7 @@ ACTOR MeasurePuffNP : MeasurePuff
 	States
 	{
 	Spawn:
-		TNT1 A 0 
+		TNT1 A 0
 		"####" A 0 A_SpawnitemEx("MeasurePuffTemp",0,0,0,0,0,0,0,SXF_ISTRACER|SXF_SETMASTER|SXF_NOCHECKPOSITION)
 		"####" A 0 A_TransferPointer(AAPTR_TRACER,AAPTR_TARGET,AAPTR_MASTER,AAPTR_MASTER)
 		TNT1 A 1 BRIGHT LIGHT("LAZERPUR")
@@ -269,7 +269,7 @@ ACTOR MeasurePuffNG : MeasurePuff
 	States
 	{
 	Spawn:
-		TNT1 A 0 
+		TNT1 A 0
 		"####" A 0 A_SpawnitemEx("MeasurePuffTemp",0,0,0,0,0,0,0,SXF_ISTRACER|SXF_SETMASTER|SXF_NOCHECKPOSITION)
 		"####" A 0 A_TransferPointer(AAPTR_TRACER,AAPTR_TARGET,AAPTR_MASTER,AAPTR_MASTER)
 		TNT1 A 1 BRIGHT LIGHT("LAZERGRN")
@@ -285,7 +285,7 @@ ACTOR MeasurePuffZAP : MeasurePuff
 	States
 	{
 	Spawn:
-		TNT1 A 0 
+		TNT1 A 0
 		"####" A 0 A_SpawnitemEx("MeasurePuffTemp",0,0,0,0,0,0,0,SXF_ISTRACER|SXF_SETMASTER|SXF_NOCHECKPOSITION)
 		"####" A 0 A_TransferPointer(AAPTR_TRACER,AAPTR_TARGET,AAPTR_MASTER,AAPTR_MASTER)
 		TNT1 A 1 BRIGHT LIGHT("LAZERZAP")
@@ -299,7 +299,7 @@ ACTOR MeasurePuffTemp : FastProjectile //does nothing except exist for one tic :
 {
 	States
 	{
-	Spawn: 
+	Spawn:
 		TNT1 A 0
 		"####" A 1
 		Stop

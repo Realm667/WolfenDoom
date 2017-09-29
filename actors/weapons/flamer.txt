@@ -207,19 +207,19 @@ ACTOR Flamebolt
 		"####" A 0 NODELAY A_Jump(256, "Flame1", "Flame2", "Flame3", "Flame4")
 		Stop
 	Flame1:
-		FLM1 A 0 
+		FLM1 A 0
 		Goto Animation
 	Flame2:
-		FLM2 A 0 
+		FLM2 A 0
 		Goto Animation
 	Flame3:
-		FLM3 A 0 
+		FLM3 A 0
 		Goto Animation
 	Flame4:
-		FLM4 A 0 
+		FLM4 A 0
 		Goto Animation
 	Animation:
-		"####" AAAAA 3 BRIGHT LIGHT(BOAFLAMW) 
+		"####" AAAAA 3 BRIGHT LIGHT(BOAFLAMW)
 			{
 				A_SetScale(ScaleX+0.05);
 				A_FadeOut(0.05);
@@ -265,7 +265,7 @@ ACTOR Flameball : Flamebolt
 	States
 	{
 	Spawn:
-		FBAL A 2 BRIGHT LIGHT(BOAFLMW2) 
+		FBAL A 2 BRIGHT LIGHT(BOAFLMW2)
 			{
 				A_SpawnItemEx("TracerSpark", random(-32,32), random(-32,32), random(-32,32), random(-2,2), random(-2,2), random(-2,2), random(0,359));
 				A_SpawnItemEx("TracerSpark", random(-32,32), random(-32,32), random(-32,32), random(-2,2), random(-2,2), random(-2,2), random(0,359));
@@ -353,7 +353,7 @@ ACTOR FlamerSmoke2 : FlamerSmoke1
 	FadeOut:
 		"####" AAAA 3 A_FadeOut(.05)
 		Loop
-	}	
+	}
 }
 
 ACTOR FlamerSmoke3 : FlamerSmoke1

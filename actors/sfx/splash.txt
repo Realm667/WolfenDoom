@@ -59,11 +59,11 @@ ACTOR WaterSplashObject1
 	}
 }
 
-ACTOR WaterSplashObject2 : WaterSplashObject1 
+ACTOR WaterSplashObject2 : WaterSplashObject1
 {
 	States
 	{
-		Spawn: 
+		Spawn:
 			WTSB A 0 NODELAY
 			Goto Super::Spawn+1
 	}
@@ -73,16 +73,16 @@ ACTOR WaterSplashObject3 : WaterSplashObject1
 {
 	States
 	{
-		Spawn: 
+		Spawn:
 			WTSB A 0 NODELAY
 			Goto Super::Spawn+1
 	}
 }
-ACTOR WaterSplashObject4 : WaterSplashObject1 
+ACTOR WaterSplashObject4 : WaterSplashObject1
 {
 	States
 	{
-		Spawn: 
+		Spawn:
 			WTSC A 0 NODELAY
 			Goto Super::Spawn+1
 	}

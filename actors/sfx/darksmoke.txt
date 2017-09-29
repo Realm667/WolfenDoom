@@ -19,7 +19,7 @@ ACTOR DarkSmokeSpawner : SwitchableDecoration
 	Spawn:
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"Inactive")
 	Active:
-		TNT1 A 0 
+		TNT1 A 0
 		TNT1 A 0 A_JumpIf(Args[0] == 1,"Medium")
 		TNT1 A 0 A_JumpIf(Args[0] > 1,"Large")
 		SmallLoop:
@@ -67,7 +67,7 @@ ACTOR DarkSmoke1
 	{
 	Spawn:
 		DKSM A 0 NODELAY A_Jump(128, 2)
-		DKS2 A 0  
+		DKS2 A 0
 		"####" A 0 ThrustThingZ(0,random(3,6),0,0)
 		"####" A 0 ThrustThing(random(0,16),random(1,1),0,0)
 		"####" A 3 A_FadeOut(.01)
@@ -82,12 +82,12 @@ ACTOR DarkSmoke2 : DarkSmoke1
 	{
 	Spawn:
 		DKSM A 0 NODELAY A_Jump(128, 2)
-		DKS2 A 0  
+		DKS2 A 0
 		"####" A 0 ThrustThingZ(0,random(5,9),0,0)
 		"####" A 0 ThrustThing(random(0,16),random(1,2),0,0)
 		"####" A 3 A_FadeOut(.01)
 		Goto Spawn+4
-	}	
+	}
 }
 
 ACTOR DarkSmoke3 : DarkSmoke1
@@ -97,7 +97,7 @@ ACTOR DarkSmoke3 : DarkSmoke1
 	{
 	Spawn:
 		DKSM A 0 NODELAY A_Jump(128, 2)
-		DKS2 A 0  
+		DKS2 A 0
 		"####" A 0 ThrustThingZ(0,random(9,15),0,0)
 		"####" A 0 ThrustThing(random(0,16),random(2,4),0,0)
 		"####" A 3 A_FadeOut(.01)

@@ -88,7 +88,7 @@ ACTOR SteamSpawner : SwitchableDecoration
 
 ACTOR SteamParticle
 {
-	DistanceCheck "sfxlod" 
+	DistanceCheck "sfxlod"
 	Height 1
 	Radius 1
 	+DONTSPLASH
@@ -102,7 +102,7 @@ ACTOR SteamParticle
 	States
 	{
 	Spawn:
-		STEM A 0 
+		STEM A 0
 		"####" A 2 A_SetScale(ScaleX+0.013, ScaleY+0.013)
 		"####" A 0 A_FadeOut(.04)
 		Loop

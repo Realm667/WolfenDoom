@@ -11,7 +11,7 @@ ACTOR CKShikadiSoda : SingleCoin
 	States
 	{
 	Spawn:
-		CKPU AB 15 
+		CKPU AB 15
 		Loop
 	Pickup:
 		"####" C 5 A_GiveInventory("CoinItem",1)
@@ -29,7 +29,7 @@ ACTOR CKShikkersCandyBar : SingleCoin
 	States
 	{
 	Spawn:
-		CKPU DE 15 
+		CKPU DE 15
 		Loop
 	Pickup:
 		"####" F 5 A_GiveInventory("CoinItem",2)
@@ -47,7 +47,7 @@ ACTOR CKDoughnut : SingleCoin
 	States
 	{
 	Spawn:
-		CKPU GH 15 
+		CKPU GH 15
 		Loop
 	Pickup:
 		"####" I 5 A_GiveInventory("CoinItem",5)
@@ -65,7 +65,7 @@ ACTOR CKIceCreamCone : SingleCoin
 	States
 	{
 	Spawn:
-		CKPU JK 15 
+		CKPU JK 15
 		Loop
 	Pickup:
 		"####" L 5 A_GiveInventory("CoinItem",10)
@@ -152,7 +152,7 @@ ACTOR CKStunner : NaziWeapon
 		CKBL Q 1 A_Raise
 		Loop
 	Fire:
-		CKBL R 8 
+		CKBL R 8
 		CKBL S 10 A_FireCustomMissile ("CKStunnerBall")
 		CKBL T 0 A_ReFire
 		Goto Ready
@@ -173,7 +173,7 @@ ACTOR CKStunnerBall
 	+RANDOMIZE
 	SeeSound "ckeen/shoot"
 	DeathSound "ckeen/hit"
-	Obituary "$OB_CKBLAST" 
+	Obituary "$OB_CKBLAST"
 	States
 	{
 	Spawn:
@@ -232,7 +232,7 @@ ACTOR CKYellowKey : PuzzleItem
 	Inventory.Icon "CKKEYS0"
 	Inventory.PickupSound "ckeen/gem"
 	Species "BoAYellowKey"
-	+BRIGHT	
+	+BRIGHT
 	+INVENTORY.INVBAR
 	States
 	{
@@ -409,7 +409,7 @@ ACTOR CKMadMushroom : CKBaseEnemy
 	States
 	{
 	Spawn:
-	See: 
+	See:
 		CKMR A 0 NoDelay Thing_SetSpecial(0, 73, 15, 22, 0)
 		CKMR A 1 A_CheckFloor("Jump")
 		Goto See
@@ -423,7 +423,7 @@ ACTOR CKMadMushroom : CKBaseEnemy
 		TNT1 A 0 A_PlaySound("ckeen/madmushroombounce")
 		CKMR B 20 ThrustThingZ(0, 64, 0, 1)
 		"####" A 20
-		Loop	
+		Loop
 	}
 }
 
@@ -457,7 +457,7 @@ ACTOR CKPoisonSlug : CKBaseEnemy
 		Goto See
 	Pee:
 		TNT1 A 0 A_PlaySound("ckeen/slugpoo")
-		CKPS C 5 
+		CKPS C 5
 		"####" C 30 A_SpawnItemEx("CKPoisonSlugPoison", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
 		Goto See
 	Death:
@@ -489,7 +489,7 @@ ACTOR CKPoisonSlugPoison : CKBaseEnemy
 		TNT1 A 0 A_SetAngle(random(0,359))
 		CKSL Z 210
 		"####" Y 70
-		Stop 
+		Stop
 	}
 }
 
@@ -498,11 +498,11 @@ ACTOR CKWallShooter : SwitchableDecoration
 	//$Category Misc (Wolf3D)/Commander Keen
 	//$Title Wall Shooter (3 types)
 	//$Color 4
-	
+
 	//$Arg0 "Position"
 	//$Arg0Type 11
 	//$Arg0Enum { 0 = "Ceiling"; 1 = "Floor"; 2 = "Wall"; }
-	
+
 	Health 9999999
 	Radius 8
 	Height 16
@@ -556,7 +556,7 @@ ACTOR CKWallShooterArrow_Down
 	{
 	Spawn:
 		CKTH A 0 NoDelay A_Playsound("ckeen/blowgun")
-		CKAR CD 8 
+		CKAR CD 8
 		Loop
 	Death:
 		TNT1 A 0
@@ -564,17 +564,17 @@ ACTOR CKWallShooterArrow_Down
 	}
 }
 
-ACTOR CKWallShooterArrow_Up : CKWallShooterArrow_Down 
+ACTOR CKWallShooterArrow_Up : CKWallShooterArrow_Down
 {
 	States
 	{
 	Spawn:
-		CKAR AB 8 
+		CKAR AB 8
 		Loop
 	}
 }
 
-ACTOR CKWallShooterArrow_Horizontal : CKWallShooterArrow_Down 
+ACTOR CKWallShooterArrow_Horizontal : CKWallShooterArrow_Down
 {
 	Radius 8
 	Height 8
@@ -584,7 +584,7 @@ ACTOR CKWallShooterArrow_Horizontal : CKWallShooterArrow_Down
 	{
 	Spawn:
 		CKAR E 0 NoDelay A_SetAngle(angle+90)
-		CKAR EF 8 
+		CKAR EF 8
 		Goto Spawn+1
 	}
 }
@@ -634,7 +634,7 @@ ACTOR CKBounder : CKBaseEnemy
 	States
 	{
 	Spawn:
-	See: 
+	See:
 		CKBB A 1 A_CheckFloor("Jump")
 		Loop
 	Jump:
@@ -706,7 +706,7 @@ ACTOR CKCloud
 	States
 	{
 	Spawn:
-		CKCL A -1 
+		CKCL A -1
 		Stop
 	}
 }
@@ -724,7 +724,7 @@ ACTOR CKThunderbolt : CKBaseEnemy
 	Spawn:
 		CKTH A 0 NoDelay A_Playsound("ckeen/shothit")
 		CKTH ABABABA 8 A_Explode
-		Stop 
+		Stop
 	}
 }
 
@@ -741,7 +741,7 @@ ACTOR CKCoral1
 	States
 	{
 	Spawn:
-		CKCR A -1 
+		CKCR A -1
 		Stop
 	}
 }
@@ -754,7 +754,7 @@ ACTOR CKCoral2: CKCoral1
 	States
 	{
 	Spawn:
-		CKCR B -1 
+		CKCR B -1
 		Stop
 	}
 }
