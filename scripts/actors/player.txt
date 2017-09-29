@@ -174,8 +174,9 @@ class BoAPlayer : PlayerPawn
 		// Any sprite not used above that is switched to by a token check must be listed here or the game will not find it!
 		PLSC A 0;
 		PLYS A 0;
-		SSOF A 0;
-		PRSN A 0;
+		PLCP A 0; //camp
+		PLYP A 0;
+		SSOF A 0; //still not yet used nor implemented - ozy81
 		Stop;
 	}
 
@@ -267,9 +268,9 @@ class BoAPlayer : PlayerPawn
 		//  These should be listed in order of precedence - The ones at the top will take priority.
 		//  All new sprites need to be added to the 'SpriteList' state above or the engine won't be able to use them.
 		if (
-			CheckSpriteToken("CCBJUniformToken", "PRSN") || // Temporarily using Camp Prisoner Sprites (and just squishing them for crouch)
-			CheckSpriteToken("SSBJUniformToken", "SSOF") || // Temporarily using the SS Officer Sprites (and just squishing them for crouch)
-			CheckSpriteToken("ScientistUniformToken", "PLSC", "PLYS")
+			CheckSpriteToken("CCBJUniformToken", "PLCP", "PLYP") ||
+			CheckSpriteToken("ScientistUniformToken", "PLSC", "PLYS") ||
+			CheckSpriteToken("SSBJUniformToken", "SSOF") // Temporarily using the SS Officer Sprites (and just squishing them for crouch)
 		) { return; }
 
 		// If no tokens found, restore the base sprite and original scale
