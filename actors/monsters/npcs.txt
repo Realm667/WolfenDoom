@@ -322,6 +322,7 @@ ACTOR Camp_PrisonerBald : Nazi //it has shooting frames but actually he doesn't 
 	Speed 1
 	Radius 20
 	Height 50
+	Mass 80
 	Monster
 	-COUNTKILL
 	+FLOORCLIP
@@ -329,6 +330,8 @@ ACTOR Camp_PrisonerBald : Nazi //it has shooting frames but actually he doesn't 
 	+JUSTHIT
 	+NEVERTARGET
 	+NOSPLASHALERT
+	+PUSHABLE
+	+SLIDESONWALLS
 	MaxStepHeight 16
 	MaxDropoffHeight 32
 	PainSound "Nazi1/Pain"
@@ -377,7 +380,7 @@ ACTOR Camp_PrisonerBald : Nazi //it has shooting frames but actually he doesn't 
 		}
 		Loop
 	See.Frightened:
-		"####" "#" 0 { A_SetSpeed(6); }
+		"####" "#" 0 { A_SetSpeed(random(4,6)); }
 		"####" "#" 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION)
 		"####" A 1 A_WanderGoal(0, 768)
 		"####" AAA 1 A_WanderGoal(0, 768)
@@ -446,5 +449,27 @@ ACTOR Camp_PrisonerBald : Nazi //it has shooting frames but actually he doesn't 
 		"####" E 0 A_ChangeFlag ("USESPECIAL", TRUE)
 		"####" E -1
 		Stop
+	}
+}
+
+ACTOR Camp_PrisonerBaldShirtless : Camp_PrisonerBald
+{
+	//$Title Wandering Prisoner, Shirtless (bald)
+	Health 15
+	States
+	{
+	Spawn:
+		PRSS E 0 NoDelay {
+		A_ChangeFlag ("USESPECIAL", FALSE);
+		A_SetScale(ScaleX + frandom(-0.2,0.2),ScaleY + frandom(-0.2,0.2));
+		}
+	Active:
+	SpawnLoop:
+		PRSS E 1 {
+			A_LookEx(LOF_NOSIGHTCHECK);
+			if (Random[wander](0, 255) < 30) { return resolveState("See"); }
+			return resolveState("");
+		}
+		Loop
 	}
 }
