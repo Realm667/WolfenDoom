@@ -193,14 +193,17 @@ ACTOR Camp_LyingBodies : Camp_RandomBodyParts
 
 ACTOR Camp_LyingBodies2 : Camp_RandomBodyParts
 {
-	//$Title Camp Prisoner Exhausted, Lying (random)
+	//$Title Camp Prisoner Exhausted - Headshotted, Lying (random)
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6) //more chances for spawning headshot one
 		CBED J -1
 		CBED K -1
 		CBED L -1
+		CBED M -1
+		CBED M -1
+		CBED M -1
 		Stop
 	}
 
