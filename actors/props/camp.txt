@@ -118,7 +118,7 @@ ACTOR Camp_LogsDead : Camp_RandomPileDead
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2)
 		CMPG G -1
-		CMPG R -1
+		DJLG B -1
 		Stop
 	}
 }
@@ -131,7 +131,7 @@ ACTOR Camp_SnowyLogsDead : Camp_LogsDead
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2)
 		CMPG F -1
-		CMPG Q -1
+		DJLG A -1
 		Stop
 	}
 }
