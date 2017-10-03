@@ -51,6 +51,7 @@
 class Alarm : Base
 {
 	bool active;
+	bool activated;
 	int looptime;
 
 	Default
@@ -69,9 +70,13 @@ class Alarm : Base
 			ALRM A 35;
 		Inactive:
 			"####" A 35 { active = false; }
+		InactiveLoop:
+			"####" A 35;
 			Loop;
 		Active:
-			"####" AB 1 { active = true; }
+			"####" B 1 { active = true; }
+		ActiveLoop:
+			"####" AB 1;
 			Loop;
 	}
 
@@ -81,11 +86,16 @@ class Alarm : Base
 
 		if (active)
 		{
-			SoundAlert(target, false, 512);
-			A_PlaySound("alarm_ring", CHAN_VOICE, 1.0, true);
+			if (!activated)
+			{
+				activated = true;
+				A_PlaySound("alarm_ring", CHAN_VOICE, 1.0, true);
+			}
+			if (level.time % 35 == 0) { SoundAlert(target, false, 512); } // Only do the sound alert once a second for performance reasons
 		}
-		else
+		else if (!active && activated)
 		{
+			activated = false;
 			A_StopSound(CHAN_VOICE);
 			SoundAlert(null, false, 512);
 		}
@@ -127,7 +137,7 @@ class AlarmPanel : SwitchableDecoration
 			"####" Q 1;
 			"####" Q 0 {
 				counter++;
-				if (counter >= 525) { // Check after 15 seconds, max, to give alerted guards time to return to idle when the alarm is turned off, and to avoid spamming thinkeriterator calls
+				if (counter >= 525) { // Check after 15 seconds to give alerted guards time to return to idle when the alarm is turned off, and to avoid spamming thinkeriterator calls
 					if (
 						!activator ||
 						!NaziStandard(activator) ||
