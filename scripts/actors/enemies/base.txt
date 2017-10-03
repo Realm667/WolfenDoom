@@ -724,6 +724,8 @@ class Nazi : Base
 			"####" A 0 { return ResolveState("See"); }
 		See.Dodge:
 			"####" A 0 {
+				bInvulnerable = false;
+
 				if (Random[dodgeskip]() < 144 && (!maxdodge || dodgecounter < maxdodge)) //sometimes avoid rolling
 				{ // Sprite and state changes and thrusting handled internally by the A_DoSideRoll() function
 					A_DoSideRoll();
