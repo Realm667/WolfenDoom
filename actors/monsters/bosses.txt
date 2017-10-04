@@ -900,7 +900,7 @@ ACTOR MarineGeneral : General
 	}
 }
 
-ACTOR Totengraber_Healthy : RocketMan //placeholder sprites
+ACTOR Totengraber_Healthy : RocketMan
 {
 	//$Title Totengraber, healthy (Boss)
 	Base.BossIcon "BOSSICO2"
@@ -910,7 +910,7 @@ ACTOR Totengraber_Healthy : RocketMan //placeholder sprites
 	States
 	{
 	Spawn:
-		GOER A 0
+		TOTH A 0
 		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
 		Goto Look
 	See:
@@ -962,7 +962,7 @@ ACTOR Totengraber_Wounded : RocketMan //placeholder sprites, inheritances with H
 	States
 	{
 	Spawn:
-		GOER A 0
+		TOTH A 0
 		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
 		Goto Look
 	See:
