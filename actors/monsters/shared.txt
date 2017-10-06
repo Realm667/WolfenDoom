@@ -356,6 +356,36 @@ ACTOR HackPuff
 	}
 }
 
+ACTOR FlyingCleaver : MiniRocket
+{
+	Radius 8
+	Speed 15
+	Scale 0.45
+	Damage (2*random(4,6))
+	DamageType "None"
+	SeeSound ""
+	DeathSound "gshardnd"
+	-RANDOMIZE
+	+DONTFALL
+	+NOGRAVITY
+	+ROLLSPRITE
+	+WALLSPRITE
+	States
+	{
+	Spawn:
+		MUPR A 0 NODELAY A_SetAngle(-90+angle, SPF_INTERPOLATE)
+	Rotate:
+		MUPR A 1 A_SetRoll(roll+20, SPF_INTERPOLATE, 0)
+		Loop
+	Death:
+		MUPR A 1 { A_ChangeFlag("ROLLSPRITE", FALSE); A_SpawnItemEx("HackPuff"); }
+		"####" A 1 A_FadeOut(0.1)
+		Stop
+	}
+}
+
+ACTOR HardFlyingCleaver : FlyingCleaver { +MTHRUSPECIES }
+
 ACTOR Flamerbolt : Flamebolt
 {
 	Damage (random(0,1))

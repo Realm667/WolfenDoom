@@ -78,7 +78,17 @@ ACTOR MutantMelee : Mutant
 		MLMT H 5 A_CustomMeleeAttack(5*random(1,5))
 		Goto See
 	Missile:
-		Stop
+		MLMT Q 0 A_CheckLOF("Missile.Cleaver", CLOFF_SKIPOBSTACLES | CLOFF_IGNOREGHOST, 1024, 384)
+		Goto See
+	Missile.Cleaver:
+		MLMT Q 8 A_FaceTarget
+		MLMT RS 4 A_FaceTarget
+		MLMT T 4 A_SpawnProjectile("FlyingCleaver",43,8,random(-2,2))
+		MLMT UV 4 A_FaceTarget
+		MLMT W 4 A_SpawnProjectile("FlyingCleaver",43,-8,random(-2,2))
+		MLMT XY 8 A_FaceTarget
+		MLMT Q 4 A_FaceTarget
+		Goto See
 	}
 }
 

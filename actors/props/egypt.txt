@@ -137,7 +137,7 @@ ACTOR BreakableVase1
 	//$Title Vase 1 (breakable, egypt)
 	//$Color 3
 	Radius 10
-	Height 48
+	Height 40
 	Health 5
 	Scale 0.5
 	+DONTGIB
@@ -154,8 +154,8 @@ ACTOR BreakableVase1
 		Stop
 	Death:
 		TNT1 AAA 0 A_SpawnItemEx("Debris_Pottery", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
-		EGIK B 6 A_Scream
-		"####" A -1
+		EGIK A 3 A_Scream
+		"####" B -1
 		Stop
 	}
 }
@@ -163,7 +163,7 @@ ACTOR BreakableVase1
 ACTOR BreakableVase2 : BreakableVase1
 {
 	//$Title Vase 2 (breakable, egypt)
-	Height 40
+	Height 32
 	States
 	{
 	Spawn:
@@ -171,7 +171,7 @@ ACTOR BreakableVase2 : BreakableVase1
 		Stop
 	Death:
 		TNT1 AAA 0 A_SpawnItemEx("Debris_Pottery", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
-		EGIK C 6 A_Scream
+		EGIK C 3 A_Scream
 		"####" D -1
 		Stop
 	}
@@ -180,7 +180,7 @@ ACTOR BreakableVase2 : BreakableVase1
 ACTOR BreakableVase3 : BreakableVase1
 {
 	//$Title Vase 3 (breakable, egypt)
-	Height 28
+	Height 24
 	States
 	{
 	Spawn:
@@ -188,8 +188,8 @@ ACTOR BreakableVase3 : BreakableVase1
 		Stop
 	Death:
 		TNT1 AAA 0 A_SpawnItemEx("Debris_Pottery", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
-		EGIK F 6 A_Scream
-		"####" E -1
+		EGIK E 6 A_Scream
+		"####" F -1
 		Stop
 	}
 }
@@ -197,6 +197,41 @@ ACTOR BreakableVase3 : BreakableVase1
 ACTOR BreakableVase4 : BreakableVase1
 {
 	//$Title Vase 4 (breakable, egypt)
+	Radius 8
+	Height 16
+	States
+	{
+	Spawn:
+		EGIP D -1
+		Stop
+	Death:
+		TNT1 AAA 0 A_SpawnItemEx("Debris_Pottery", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		EGIK G 3 A_Scream
+		"####" H -1
+		Stop
+	}
+}
+
+ACTOR BreakableVase5 : BreakableVase1
+{
+	//$Title Vase 5 (breakable, egypt)
+	Height 24
+	States
+	{
+	Spawn:
+		EGIP E -1
+		Stop
+	Death:
+		TNT1 AAA 0 A_SpawnItemEx("Debris_Pottery", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
+		EGIK I 3 A_Scream
+		"####" J -1
+		Stop
+	}
+}
+
+ACTOR BreakableVase6 : BreakableVase1
+{
+	//$Title Vase 6 (breakable, egypt)
 	Height 32
 	States
 	{
@@ -205,46 +240,8 @@ ACTOR BreakableVase4 : BreakableVase1
 		Stop
 	Death:
 		TNT1 AAA 0 A_SpawnItemEx("Debris_Pottery", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
-		EGIK G 6 A_Scream
-		"####" G -1
-		Stop
-	}
-}
-
-ACTOR BreakableVase5 : BreakableVase1
-{
-	//$Title Vase 5 (breakable, egypt)
-	Radius 5
-	Height 16
-	+SOLID
-	States
-	{
-	Spawn:
-		EGIP D -1
-		Stop
-	Death:
-		TNT1 AAA 0 A_SpawnItemEx("Debris_Pottery", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
-		EGIK H 6 A_Scream
-		"####" I -1
-		Stop
-	}
-}
-
-ACTOR BreakableVase6 : BreakableVase1
-{
-	//$Title Vase 6 (breakable, egypt)
-	Radius 10
-	Height 32
-	+SOLID
-	States
-	{
-	Spawn:
-		EGIP E -1 //the E variant was not defined
-		Stop
-	Death:
-		TNT1 AAA 0 A_SpawnItemEx("Debris_Pottery", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
-		EGIK J 6 A_Scream
-		"####" J -1
+		EGIK K 3 A_Scream
+		"####" L -1
 		Stop
 	}
 }
@@ -275,7 +272,7 @@ ACTOR EgyptPlant1
 		TNT1 A 0 A_PlaySound("WOODBRK", CHAN_AUTO, frandom (0.5,0.8), FALSE, ATTN_NORM)
 		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
 		TNT1 AAAAA 0 A_SpawnItemEx("Debris_Pottery", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
-		EGIK C 6 A_Scream
+		EGIK C 3 A_Scream
 		"####" D -1
 		Stop
 	}
