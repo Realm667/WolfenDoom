@@ -111,7 +111,7 @@ ACTOR DeadBody
 ACTOR Skeleton1
 {
 	//$Category Gore (Wolf3D)
-	//$Title Skeleton 1
+	//$Title Skeleton with ribs
 	//$Color 4
 	Radius 16
 	Height 12
@@ -126,14 +126,16 @@ ACTOR Skeleton1
 ACTOR Skeleton2
 {
 	//$Category Gore (Wolf3D)
-	//$Title Skeleton 2
+	//$Title Skeleton (random)
 	//$Color 4
 	Radius 16
 	Height 12
 	States
 	{
 	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2)
 		SKLT A -1
+		SKLT B -1
 		Stop
 	}
 }
@@ -275,6 +277,23 @@ ACTOR RandomDeadSoldier
 		SSMG M -1
 		WAFF M -1
 		SNIP M -1
+		Stop
+	}
+}
+
+ACTOR RandomDeadMutant : RandomDeadSoldier
+{
+	//$Category Gore (Wolf3D)
+	//$Title Dead Mutant (random)
+	//$Color 4
+	Scale 0.7
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
+		MLMT P -1
+		MTNT O -1
+		SUPM O -1
 		Stop
 	}
 }
