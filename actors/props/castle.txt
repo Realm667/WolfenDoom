@@ -24,15 +24,18 @@ ACTOR HarnessSet2 : HarnessSet //3d actor
 ACTOR Table1
 {
 	//$Category Props (Wolf3D)/Castle
-	//$Title Table (1)
+	//$Title Table, random (1)
 	//$Color 3
 	Radius 24
 	Height 24
+	Scale 0.5
 	+SOLID
 	States
 	{
 	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2)
 		TBL1 A -1
+		TBL1 B -1
 		Stop
 	}
 }
@@ -40,7 +43,6 @@ ACTOR Table1
 ACTOR Table2 : Table1
 {
 	//$Title Table (2)
-	Scale 0.50
 	States
 	{
 	Spawn:
@@ -63,7 +65,6 @@ ACTOR Table3 : Table1
 ACTOR Table4 : Table1
 {
 	//$Title Table (4)
-	Scale 0.50
 	States
 	{
 	Spawn:
@@ -75,7 +76,6 @@ ACTOR Table4 : Table1
 ACTOR Table5 : Table1
 {
 	//$Title Table (5)
-	Scale 0.50
 	States
 	{
 	Spawn:
@@ -87,7 +87,6 @@ ACTOR Table5 : Table1
 ACTOR Table6 : Table1
 {
 	//$Title Table (6)
-	Scale 0.50
 	States
 	{
 	Spawn:
@@ -182,7 +181,7 @@ ACTOR MonsterStatue
 	//$Color 3
 	Radius 24
 	Height 64
-	Scale 0.50
+	Scale 0.5
 	+SOLID
 	States
 	{

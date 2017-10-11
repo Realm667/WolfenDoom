@@ -31,8 +31,8 @@ ACTOR UniformStatic : SSUniformStatic
 ACTOR ScientistUniformStatic : SSUniformStatic
 {
 	//$Title Scientist Uniform
-	Scale 0.7
 	Height 40
+	Scale 0.7
 	States
 	{
 	Spawn:
@@ -55,8 +55,8 @@ ACTOR FoxUniformStatic : SSUniformStatic
 ACTOR CoatHanger : SSUniformStatic
 {
 	//$Title Coat Hanger
-	Scale 0.8
 	Height 40
+	Scale 0.8
 	States
 	{
 	Spawn:
@@ -84,7 +84,7 @@ ACTOR PaperBox1
 ACTOR PaperBox2 : PaperBox1
 {
 	//$Title Box (pack)
-	Scale 0.50
+	Scale 0.5
 	States
 	{
 	Spawn:
@@ -98,7 +98,7 @@ ACTOR Mike : PaperBox1
 	//$Title Microphone for Tables
 	Radius 2
 	Height 8
-	Scale 0.8
+	Scale 0.3
 	-SOLID
 	States
 	{
@@ -146,7 +146,7 @@ ACTOR Plant1
 	Radius 8
 	Height 32
 	Health 10
-	Scale 0.50
+	Scale 0.5
 	+NOBLOOD
 	+NOTAUTOAIMED
 	+SHOOTABLE
@@ -315,12 +315,12 @@ ACTOR CasinoChips_Green //the only issue there is that we'll see some chips fall
 	Radius 4
 	Height 8
 	Health 1
+	Scale 0.75
 	+CANPASS
 	+NOBLOOD
 	+NOTAUTOAIMED
 	+SHOOTABLE
 	+TOUCHY
-	Scale 0.75
 	States
 	{
 	Spawn:
@@ -386,10 +386,10 @@ ACTOR Dollar
 	Radius 2
 	Height 2
 	Damage 0
+	Scale 0.1
 	Projectile
 	-NOGRAVITY
 	+ROLLSPRITE
-	Scale 0.10
 	States
 	{
 	Spawn:
