@@ -614,6 +614,7 @@ ACTOR ZyklonBBall
 	Scale 1.0
 	DamageType "UndeadPoison"
 	Projectile
+	+BRIGHT
 	+RANDOMIZE
 	+SEEKERMISSILE
 	Alpha 1.0
@@ -632,42 +633,8 @@ ACTOR ZyklonBBall
 	}
 }
 
-ACTOR ZombieDeath //fake fog without damage
-{
-	+NOINTERACTION
-	+WINDTHRUST
-	RenderStyle "Add"
-	Alpha 0.3
-	States
-	{
-	Spawn:
-		ZBGS A 2
-	Fade:
-		"####" A 3 LIGHT(QUEENPLASMATRAIL_1) A_FadeOut (0.015)
-		"####" A 0 A_SetScale(scaleX+0.01, scaleY+0.01)
-		Loop
-	}
-}
-
-ACTOR ZombieRing : ZombieDeath
-{
-	var int user_theta;
-	States
-	{
-	Spawn:
-		TNT1 A 0 NODELAY A_SpawnItemEx("ZombieDeath",0,0,0,1,0,0,user_theta)
-		ZBGS A 0 A_SetUserVar("user_theta",user_theta+20)
-		"####" A 0 A_JumpIf(user_theta==360,1)
-		Loop
-		TNT1 A 0
-		Stop
-	}
-}
-
 ACTOR ZombieSoul
 {
-	Radius 0
-	Height 0
 	+NOBLOCKMAP
 	+NOGRAVITY
 	Renderstyle "Add"
@@ -675,7 +642,7 @@ ACTOR ZombieSoul
 	States
 	{
 	Spawn:
-		ZOFX ABCD 5 LIGHT(QUEENPLASMATRAIL_3) A_FadeOut(0.006)
+		ZOFX ABCD 5 LIGHT(QUEENPLASMATRAIL_3)
 		Stop
   }
 }
