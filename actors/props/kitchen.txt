@@ -1,12 +1,13 @@
 ACTOR PotKitchen1
 {
 	//$Category Props (Wolf3D)/Kitchen
-	//$Title Pot (kitchen)
+	//$Title Sauce Pan (rusty, open)
 	//$Color 3
 	Radius 16
 	Height 32
 	Health 1
-	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
+	Scale 0.5
+	+CANPASS
 	+NOBLOOD
 	+NOTAUTOAIMED
 	+SHOOTABLE
@@ -24,18 +25,10 @@ ACTOR PotKitchen1
 	}
 }
 
-ACTOR PotKitchen2
+ACTOR PotKitchen2 : PotKitchen1
 {
-	//$Category Props (Wolf3D)/Kitchen
-	//$Title Pot (kitchen,smoking)
-	//$Color 3
-	Radius 16
-	Height 32
-	Health 1
-	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
-	+NOBLOOD
-	+NOTAUTOAIMED
-	+SHOOTABLE
+	//$Title Frying Pan (cooking)
+	Height 16
 	States
 	{
 	Spawn:
@@ -52,19 +45,46 @@ ACTOR PotKitchen2
 	}
 }
 
-ACTOR Kettle
+ACTOR PotKitchen3 : PotKitchen1
 {
-	//$Category Props (Wolf3D)/Kitchen
+	//$Title Frying Pan (empty)
+	Height 8
+	States
+	{
+	Spawn:
+		ECAN A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("METALBRK", CHAN_AUTO, frandom (0.5,0.8), FALSE, ATTN_NORM)
+		"####" A 2 A_SpawnItemEx("MetalFrags")
+		ECAN B -1
+		Stop
+	}
+}
+
+ACTOR PotKitchen4 : PotKitchen1
+{
+	//$Title Sauce Pan (rusty, closed)
+	States
+	{
+	Spawn:
+		TOPF C -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("METALBRK", CHAN_AUTO, frandom (0.5,0.8), FALSE, ATTN_NORM)
+		"####" A 2 A_SpawnItemEx("MetalFrags")
+		TOPF D -1
+		Stop
+	}
+}
+
+ACTOR Kettle : PotKitchen1
+{
 	//$Title Kettle
-	//$Color 3
 	Radius 8
 	Height 16
-	Scale 0.5
-	Health 1
-	+CANPASS //mxd. Required to stack things on top of other things (like a kettle on a table)
-	+NOBLOOD
-	+NOTAUTOAIMED
-	+SHOOTABLE
 	States
 	{
 	Spawn:
@@ -79,19 +99,12 @@ ACTOR Kettle
 	}
 }
 
-ACTOR WineBottle
+ACTOR WineBottle : PotKitchen1
 {
-	//$Category Props (Wolf3D)/Kitchen
-	//$Title Bottle (wine, random)
-	//$Color 3
+	//$Title Bottle (liquor, random)
 	Radius 8
 	Height 8
 	Scale 0.12
-	Health 1
-	+CANPASS
-	+NOBLOOD
-	+NOTAUTOAIMED
-	+SHOOTABLE
 	States
 	{
 	Spawn:
@@ -114,14 +127,14 @@ ACTOR WineBottle
 
 ACTOR WineGlass : WineBottle
 {
-	//$Title Glass (wine, destroyable)
-	Radius 8
-	Height 8
-	Scale 0.4
+	//$Title Glass (glass, random)
+	Scale 0.05
 	States
 	{
 	Spawn:
-		FLAS Z -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		TNT1 A 0 NODELAY A_Jump(256,1,2)
+		FLAS Y -1
+		FLAS Z -1
 		Stop
 	}
 }

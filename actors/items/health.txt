@@ -3,7 +3,7 @@ ACTOR Meal : Health
 	//$Category Health (Wolf3D)
 	//$Title Meals (2 variants+5)
 	//$Color 6
-	Scale 0.50
+	Scale 0.5
 	Inventory.Amount 5
 	Inventory.PickupMessage "$MEAL"
 	States
@@ -19,7 +19,6 @@ ACTOR StackedMeal : Meal
 {
 	Radius 1
 	Height 1
-	Scale 0.50
 	+CANPASS
 	+NOGRAVITY
 	States
@@ -41,18 +40,20 @@ ACTOR Dogfood : Health
 	//$Title Dog Food (+2)
 	//$Color 6
 	//$Sprite DOGFA0
-	Scale 0.50
+	Scale 0.5
 	Inventory.Amount 2
 	Inventory.PickupMessage "$DOGFOOD"
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_Jump(256,"FoodA","FoodB")
-		FoodA:
+		TNT1 A 0 NoDelay A_Jump(256,1,2,3,4,5,6,7)
 		DOGF A -1
-		Stop
-		FoodB:
 		DOGF B -1
+		DOGF C -1
+		DOGF D -1
+		DOGF E -1
+		DOGF F -1
+		DOGF G -1
 		Stop
 	}
 }
@@ -104,11 +105,8 @@ ACTOR Medikit_Large : Health
 	}
 }
 
-ACTOR Medikit_Fullhealth : Health
+ACTOR Medikit_Fullhealth : Health //needed by Halderman on HQs
 {
-	//$Category Health (Wolf3D)
-	//$Title Medikit (large+40)
-	//$Color 6
 	Inventory.Amount 200
 	Inventory.PickupMessage "$MEDBIG"
 	States
@@ -187,7 +185,7 @@ ACTOR Bandages : PowerupGiver
 	//$Category Health (Wolf3D)
 	//$Title Bandages (+10)
 	//$Color 6
-	Scale 0.50
+	Scale 0.5
 	Tag "$TAGBAIDS"
 	Inventory.Icon "BAIDB0"
 	Inventory.MaxAmount 5

@@ -169,7 +169,7 @@ ACTOR NebRocketEnemy : NebRocket
 	Death:
 		FRME A 1 BRIGHT LIGHT(NEBEXPLO) A_Explode(random(25,30))
 		FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT(NEBEXPLO)
-		
+
 		Stop
 	}
 }
@@ -589,14 +589,13 @@ ACTOR ZyklonBCloud
 	Radius 48
 	Height 32
 	Damage 2
-	PoisonDamage 20
+	Scale 1.5
+	PoisonDamage 4
 	DamageType "UndeadPoison"
-	-NOINTERACTION
-	PROJECTILE
+	Projectile
 	+WINDTHRUST
 	RenderStyle "Add"
 	Alpha 0.4
-	Scale 1.5
 	States
 	{
 	Spawn:
@@ -614,7 +613,7 @@ ACTOR ZyklonBBall
 	Height 8
 	Speed 15
 	Damage 10
-	PoisonDamage 10
+	PoisonDamage 2
 	Scale 1.0
 	DamageType "UndeadPoison"
 	Projectile

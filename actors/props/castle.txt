@@ -1,24 +1,60 @@
-ACTOR HarnessSet //3d actor
+ACTOR Ink
 {
 	//$Category Props (Wolf3D)/Castle
-	//$Title Medieval Harness Set (silver, red)
+	//$Title Ink
 	//$Color 3
-	DistanceCheck "scenelod"
-	Radius 16
-	Height 72
-	+SOLID
+	Radius 2
+	Height 2
+	Scale 0.2
+	+CANPASS
 	States
 	{
 	Spawn:
-		MDLA A -1
+		INKY A -1
 		Stop
 	}
 }
 
-ACTOR HarnessSet2 : HarnessSet //3d actor
+ACTOR MonsterStatue
 {
-	//$Title Medieval Harness Set (silver, blue)
-	DistanceCheck "scenelod"
+	//$Category Props (Wolf3D)/Castle
+	//$Title Monster Statue
+	//$Color 3
+	Radius 24
+	Height 64
+	Scale 0.5
+	+SOLID
+	States
+	{
+	Spawn:
+		WSTA A -1
+		Stop
+	}
+}
+
+ACTOR BronzeStatueA : MonsterStatue
+{
+	//$Title Arno Breker's Speer Statue (Left)
+	Height 128
+	Scale 0.28
+	+FORCEYBILLBOARD
+	States
+	{
+	Spawn:
+		BRNZ A -1
+		Stop
+	}
+}
+
+ACTOR BronzeStatueB : BronzeStatueA
+{
+	//$Title Arno Breker's Speer Statue (Right)
+	States
+	{
+	Spawn:
+		BRNZ B -1
+		Stop
+	}
 }
 
 ACTOR Table1
@@ -95,10 +131,11 @@ ACTOR Table6 : Table1
 	}
 }
 
-ACTOR Table7 //3d actor
+//3D ACTORS//
+ACTOR Table7
 {
 	//$Category Props (Wolf3D)/Castle
-	//$Title Table (1, no chairs)
+	//$Title Table (1, no chairs, meals & liquors)
 	//$Color 3
 	DistanceCheck "scenelod"
 	Radius 20
@@ -119,16 +156,10 @@ ACTOR Table7 //3d actor
 	}
 }
 
-ACTOR Table8 //3d actor
+ACTOR Table8 : Table7
 {
-	//$Category Props (Wolf3D)/Castle
-	//$Title Table (2, no chairs)
-	//$Color 3
+	//$Title Table (2, no chairs, nothing)
 	DistanceCheck "scenelod"
-	Radius 20
-	Height 27
-	Scale 1.15
-	+SOLID
 	States
 	{
 	Spawn:
@@ -137,16 +168,10 @@ ACTOR Table8 //3d actor
 	}
 }
 
-ACTOR Table9 //3d actor
+ACTOR Table9 : Table7
 {
-	//$Category Props (Wolf3D)/Castle
-	//$Title Table (3, no chairs)
-	//$Color 3
+	//$Title Table (3, no chairs, kettle & cups)
 	DistanceCheck "scenelod"
-	Radius 20
-	Height 27
-	Scale 1.15
-	+SOLID
 	States
 	{
 	Spawn:
@@ -160,63 +185,30 @@ ACTOR Table9 //3d actor
 	}
 }
 
-ACTOR Ink
+ACTOR HarnessSet
 {
 	//$Category Props (Wolf3D)/Castle
-	//$Title Ink
+	//$Title Medieval Harness Set (silver, red)
 	//$Color 3
-	+CANPASS
-	States
-	{
-	Spawn:
-		INKY A -1
-		Stop
-	}
-}
-
-ACTOR MonsterStatue
-{
-	//$Category Props (Wolf3D)/Castle
-	//$Title Monster Statue
-	//$Color 3
-	Radius 24
-	Height 64
-	Scale 0.5
+	DistanceCheck "scenelod"
+	Radius 16
+	Height 72
 	+SOLID
 	States
 	{
 	Spawn:
-		WSTA A -1
+		MDLA A -1
 		Stop
 	}
 }
 
-ACTOR BronzeStatueA : MonsterStatue
+ACTOR HarnessSet2 : HarnessSet
 {
-	//$Title Arno Breker's Speer Statue (Left)
-	Height 128
-	Scale 0.28
-	+FORCEYBILLBOARD
-	States
-	{
-	Spawn:
-		BRNZ A -1
-		Stop
-	}
+	//$Title Medieval Harness Set (silver, blue)
+	DistanceCheck "scenelod"
 }
 
-ACTOR BronzeStatueB : BronzeStatueA
-{
-	//$Title Arno Breker's Speer Statue (Right)
-	States
-	{
-	Spawn:
-		BRNZ B -1
-		Stop
-	}
-}
-
-ACTOR WellEmpty //3d actor
+ACTOR WellEmpty //mxd
 {
 	//$Category Props (Wolf3D)/Castle
 	//$Title Well (empty)
@@ -233,7 +225,7 @@ ACTOR WellEmpty //3d actor
 	}
 }
 
-ACTOR WellWater : WellEmpty //3d actor
+ACTOR WellWater : WellEmpty //mxd
 {
 	//$Title Well (water)
 	DistanceCheck "scenelod"
@@ -245,13 +237,11 @@ ACTOR WellWater : WellEmpty //3d actor
 	}
 }
 
-//mxd
-ACTOR WellWaterWater //3d actor
+ACTOR WellWaterWater //mxd
 {
 	DistanceCheck "scenelod"
 	RenderStyle "Translucent"
 	Alpha 0.9
-
 	States
 	{
 	Spawn:
@@ -260,7 +250,7 @@ ACTOR WellWaterWater //3d actor
 	}
 }
 
-ACTOR WellBlood : WellEmpty //3d actor
+ACTOR WellBlood : WellEmpty //mxd
 {
 	//$Title Well (blood)
 	DistanceCheck "scenelod"
@@ -272,14 +262,13 @@ ACTOR WellBlood : WellEmpty //3d actor
 	}
 }
 
-//mxd
-ACTOR WellBloodBlood : WellWaterWater //3d actor
+ACTOR WellBloodBlood : WellWaterWater //mxd
 {
 	DistanceCheck "scenelod"
 	Alpha 0.7
 }
 
-ACTOR BarrelWine : WellEmpty //3d actor
+ACTOR BarrelWine : WellEmpty //mxd
 {
 	//$Title Barrel (wine)
 	DistanceCheck "scenelod"
@@ -291,7 +280,7 @@ ACTOR BarrelWine : WellEmpty //3d actor
 	}
 }
 
-ACTOR CathedralBell : ZBell  //3d actor - ozy81
+ACTOR CathedralBell : ZBell
 {
 	//$Category Props (Wolf3D)/Castle
 	//$Title Bell (shootable)

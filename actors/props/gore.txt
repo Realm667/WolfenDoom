@@ -95,16 +95,30 @@ ACTOR HungBody4 : HungBody2
 ACTOR DeadBody
 {
 	//$Category Gore (Wolf3D)
-	//$Title Dead Body
+	//$Title Dead Body (random)
 	//$Color 4
 	Radius 16
 	Height 12
+	Scale 0.65
 	+SOLID
 	States
 	{
 	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,"Breathing")
 		BODY A -1
+		BODY B -1
+		BODY C -1
+		BODY D -1
+		BODY E -1
 		Stop
+	Breathing:
+		BODY E 1 A_SetTics(Random(40,80))
+		"####" F 1 A_SetTics(Random(8,16))
+		"####" G 1 A_SetTics(Random(8,16))
+		"####" H 1 A_SetTics(Random(8,16))
+		"####" G 1 A_SetTics(Random(8,16))
+		"####" F 1 A_SetTics(Random(8,16))
+		Loop
 	}
 }
 
@@ -123,13 +137,9 @@ ACTOR Skeleton1
 	}
 }
 
-ACTOR Skeleton2
+ACTOR Skeleton2 : Skeleton1
 {
-	//$Category Gore (Wolf3D)
 	//$Title Skeleton (random)
-	//$Color 4
-	Radius 16
-	Height 12
 	States
 	{
 	Spawn:
@@ -174,11 +184,9 @@ ACTOR PileOfSkulls
 	}
 }
 
-ACTOR MacSkulls
+ACTOR MacSkulls : PileOfSkulls
 {
-	//$Category Gore (Wolf3D)
 	//$Title Skulls
-	//$Color 4
 	Radius 16
 	Height 24
 	Scale 0.65
