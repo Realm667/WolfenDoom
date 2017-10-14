@@ -10,7 +10,7 @@ ACTOR Ink
 	States
 	{
 	Spawn:
-		INKY A -1
+		INKY A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
@@ -27,14 +27,14 @@ ACTOR MonsterStatue
 	States
 	{
 	Spawn:
-		WSTA A -1
+		WSTA A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
 
 ACTOR BronzeStatueA : MonsterStatue
 {
-	//$Title Arno Breker's Speer Statue (Left)
+	//$Title Arno Breker's Speer Statue (Right)
 	Height 128
 	Scale 0.28
 	+FORCEYBILLBOARD
@@ -48,11 +48,11 @@ ACTOR BronzeStatueA : MonsterStatue
 
 ACTOR BronzeStatueB : BronzeStatueA
 {
-	//$Title Arno Breker's Speer Statue (Right)
+	//$Title Arno Breker's Speer Statue (Left)
 	States
 	{
 	Spawn:
-		BRNZ B -1
+		BRNZ A -1 NoDelay A_SetScale(ScaleX * -1, ScaleY) 
 		Stop
 	}
 }

@@ -86,7 +86,7 @@ ACTOR Camp_MoundOfBodies : Camp_RandomPileDead
 	States
 	{
 	Spawn:
-		CMPG P -1
+		CMPG P -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
@@ -220,7 +220,7 @@ ACTOR Camp_PrisonerGuts
 	States
 		{
 		Spawn:
-			GORC S -1
+			GORC S -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 			Stop
 		}
 }
