@@ -314,7 +314,7 @@ class Base : Actor
 		{
 			if (checkonly) { return true; } // If this is just a logic check, stop here
 
-			bInvulnerable = true;
+			bShootable = false;
 			dodgecounter++;
 
 			// Error message if you forgot to set up the Dodge state on the actor
@@ -330,8 +330,8 @@ class Base : Actor
 			// Use the dodgeangle to move the actor in the correct direction
 			VelFromAngle(dodgespeed, dodgeangle);
 
-			// Set a random timeout (5 - 10 seconds) until another dodge is allowed
-			dodgetimeout = Random(175, 350);
+			// Set a random timeout (8 - 10 seconds) until another dodge is allowed
+			dodgetimeout = Random(280, 350);
 
 			return true;
 		}
@@ -339,19 +339,19 @@ class Base : Actor
 		return false;
 	}
 
-	double, double GetBestSideMove()
+	double, double GetBestSideMove() //there should be some occasionally events where actors gets stucked over ledges or stairs, how to fix? - ozy81
 	{
 		double left = GetMoveDistance(90);
 		double right = GetMoveDistance(-90);
 
-		if (left < 64 && right < 64) { return -1, 0; } // Don't dodge if there's not space on either side
+		if (left < radius + 128 && right < radius + 128) { return -1, 0; } // Don't dodge if there's not space on either side - augmented values to avoid stuck cases
 		if (left == right) return 0, angle + 90 * RandomPick(-1, 1); // If the space on either side is the same, pick a random side
 		if (left > right) return left, angle + 90; // If there's more space on the left, dodge left
 
 		return right, angle - 90; // Otherwise, dodge right
 	}
 
-	double GetMoveDistance(double angle, double range = 128)
+	double GetMoveDistance(double angle, double range = 256)
 	{
 		bool blocked;
 
@@ -724,7 +724,7 @@ class Nazi : Base
 			"####" A 0 { return ResolveState("See"); }
 		See.Dodge:
 			"####" A 0 {
-				bInvulnerable = false;
+				bShootable = true;
 
 				if (Random[dodgeskip]() < 144 && (!maxdodge || dodgecounter < maxdodge)) //sometimes avoid rolling
 				{ // Sprite and state changes and thrusting handled internally by the A_DoSideRoll() function
@@ -747,7 +747,7 @@ class Nazi : Base
 				sprite = SpawnState.sprite;
 				A_Face(target);
 				A_SetSize(-1, Default.height);
-				bInvulnerable = false;
+				bShootable = true;
 				reactiontime = 0;
 			}
 			"####" A 0 {
