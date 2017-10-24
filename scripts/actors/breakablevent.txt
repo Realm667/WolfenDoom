@@ -22,6 +22,11 @@ class Debris_Vent_FloorCeiling : SwitchableDecoration
 		+ACTLIKEBRIDGE
 		+USESPECIAL
 		+FLATSPRITE
+		+SHOOTABLE
+		+DONTTHRUST
+		+NOBLOOD
+		+NOTAUTOAIMED
+		Health 1;
 		Height 0;
 		Radius 32;
 		Activation THINGSPEC_Switch | THINGSPEC_ThingTargets;
@@ -32,6 +37,7 @@ class Debris_Vent_FloorCeiling : SwitchableDecoration
 		Spawn:
 			VENT A 1;
 		Inactive:
+		Death:
 		Active:
 			VENT "#" 0 {
 				if (!broken && target && abs(pos.z - target.pos.z) < 48) { return ResolveState("Unblock"); }
