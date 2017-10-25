@@ -47,9 +47,9 @@ ACTOR BloodSkull : Base
 		Goto See
 	Death:
 		SWBS C 6 A_NoBlocking
-		SWBS D 5 BRIGHT A_Scream
+		SWBS D 5 A_Scream
 		TNT1 A 0 A_SetTranslucent(0.8,0)
-		SWBS EFGH 5 BRIGHT
+		SWBS EFGH 5
 		Stop
 	}
 }
