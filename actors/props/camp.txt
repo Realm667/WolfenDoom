@@ -310,3 +310,23 @@ ACTOR Camp_RandomUniform
 		Stop
 	}
 }
+
+ACTOR Camp_RandomBags : Camp_RandomUniform
+{
+	//$Title Bags (random)
+	Height 16
+	Scale 0.45
+	ProjectilePassHeight 4
+	+CANPASS
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5)
+		CMPL A -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		CMPL B -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		CMPL C -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		CMPL D -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		CMPL E -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
