@@ -636,6 +636,8 @@ ACTOR ZyklonBBall
 	}
 }
 
+
+
 ACTOR ZombieSoul
 {
 	+NOBLOCKMAP
@@ -701,6 +703,27 @@ ACTOR ZombieVomit
 		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("ZyklonBCloud",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128)
 		"####" AAAAAAAAA 1 A_SpawnItemEx("UndeadFlyingBlood", random(2,-2), random(2,-2), random(2,2), random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE)
 		Stop
+	}
+}
+
+ACTOR BloodSkullCloud
+{
+	Game Doom
+	Radius 48
+	Height 32
+	Scale 1.1
+	Projectile
+	+WINDTHRUST
+	RenderStyle "Add"
+	Alpha 0.4
+	States
+	{
+	Spawn:
+		ZBGS B 2
+	Fade:
+		"####" B 3 LIGHT(BSKULFOG) A_FadeOut(0.01)
+		"####" B 0 A_SetScale(scaleX+0.01, scaleY+0.01)
+		Loop
 	}
 }
 
