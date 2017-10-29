@@ -59,24 +59,6 @@ ACTOR StatistBarkeeperMale : StatistBarkeeper
 	}
 }
 
-ACTOR GeneralAllied : Base
-{
-	//$Category Monsters (Wolf3D)/NPCs
-	//$Title General Miller
-	//$Color 4
-	Obituary "$MILLER"
-	Height 56
-	Mass 100
-	Scale 0.67
-	+SOLID
-	States
-	{
-	Spawn:
-		GENR O -1
-		Stop
-	}
-}
-
 ACTOR StatistSinger : SwitchableDecoration
 {
 	//$Category Monsters (Wolf3D)/NPCs
@@ -96,6 +78,78 @@ ACTOR StatistSinger : SwitchableDecoration
 	Inactive:
 		TNT1 A -1 A_UnSetSolid
 		Loop
+	}
+}
+
+ACTOR StatistDarren : StatistBarkeeper
+{
+	//$Title Dirty Douglas, Headquarters (NPC)
+	Translation 1
+	Species "Ally"
+	+FRIENDLY
+	+INVULNERABLE
+	+NONSHOOTABLE
+	States
+	{
+	Spawn:
+		DARS A 0 NoDelay A_Jump(256,"Idle1","Idle2","Idle3","Idle4","Idle5","Idle6")
+	Idle1:
+		"####" A 20
+		"####" B 40
+		"####" CB 40
+		"####" A 80
+		"####" TACB 40
+		"####" B 40
+		"####" C 40
+		"####" C 0 A_Jump(32,"Idle2","Idle3","Idle6")
+		Goto Spawn
+	Idle2:
+		"####" A 20
+		"####" D 40
+		"####" EF 40
+		"####" A 80
+		"####" DFEA 40
+		"####" F 40
+		"####" D 40
+		"####" C 0 A_Jump(32,"Idle1","Idle3","Idle6")
+		Goto Spawn
+	Idle3:
+		"####" G 20
+		"####" H 40
+		"####" IH 40
+		"####" G 80
+		"####" HIGH 40
+		"####" I 40
+		"####" G 40
+		"####" G 0 A_Jump(32,"Idle2","Idle4")
+		Goto Spawn
+	Idle4:
+		"####" J 20
+		"####" K 40
+		"####" LK 40
+		"####" J 80
+		"####" KJLK 40
+		"####" L 40
+		"####" J 40
+		"####" J 0 A_Jump(32,"Idle5","Idle6")
+		Goto Spawn
+	Idle5:
+		"####" M 20
+		"####" N 40
+		"####" MO 40
+		"####" G 80
+		"####" MNON 40
+		"####" M 40
+		"####" O 40
+		"####" O 0 A_Jump(32,"Idle2","Idle4")
+		Goto Spawn
+	Idle6:
+		"####" P 80
+		"####" QRSQ 40
+		"####" P 40
+		"####" T 40
+		"####" T 0 A_Jump(32,"Idle1","Idle2","Idle4")
+		Goto Spawn
 	}
 }
 
@@ -156,6 +210,24 @@ ACTOR Marine3BStatist : Marine3AStatist
 	{
 	Spawn:
 		MAH2 A -1
+		Stop
+	}
+}
+
+ACTOR GeneralAllied : Base
+{
+	//$Category Monsters (Wolf3D)/NPCs
+	//$Title General Miller
+	//$Color 4
+	Obituary "$MILLER"
+	Height 56
+	Mass 100
+	Scale 0.67
+	+SOLID
+	States
+	{
+	Spawn:
+		GENR O -1
 		Stop
 	}
 }
