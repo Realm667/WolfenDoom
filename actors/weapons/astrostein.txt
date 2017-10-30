@@ -207,7 +207,7 @@ ACTOR AstroRocketlauncher : NaziAstroWeapon
 		ASRL C 0 A_ReFire
 		Goto Ready
 	Reload:
-		ASRL B 1 Offset(0,35) A_PlaySound("mp40/reload", CHAN_WEAPON)	//replace this sound?
+		ASRL B 1 Offset(0,35) A_PlaySound("mp40/reload", CHAN_WEAPON)
 		ASRL B 1 Offset(0,38)
 		ASRL B 1 Offset(0,44)
 		ASRL B 1 Offset(0,52)
@@ -565,7 +565,7 @@ ACTOR AstroLuger : NaziAstroWeapon //quite the same code from Luger P08 - ozy81
 		PLPI A 0 A_JumpIf(waterlevel > 0,2)
 		PLPI A 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
 		PLPI A 0 A_AlertMonsters
-		PLPI B 1 A_FireCustomMissile("AstroTracerPlayer",frandom(-0.2,0.2),1,0,0,0,frandom(-0.2,0.2))
+		PLPI B 1 A_FireCustomMissile("AstroTracerPlayer",0,1,0,0,0,frandom(-0.2,0.2))
 		PLPI B 1
 		PLPI B 1 Offset(0,36) A_SetPitch(pitch-(0.2*CallACS("RecoilAmount")))
 		PLPI B 1 Offset(0,41) A_CheckReload
