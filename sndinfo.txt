@@ -1292,6 +1292,21 @@ scrm42 scrm43 scrm44 scrm45 scrm46 scrm47 scrm48 scrm49 scrm50 scrm51 scrm52 scr
 
 $limit creepy/screams 0
 
+//Breaking Glass (small)
+GLSBRK01 GLSBRK01
+
+//Breaking Metal
+METALBRK METALBRK
+
+//Breaking Wood
+WOODBRK WOODBRK
+
+//Breaking Grass (ahah "breaking")
+$random GRASBRKS {GRASBRK1 GRASBRK2 GRASBRK3 }
+GRASBRK1 GRASBRK1
+GRASBRK2 GRASBRK2
+GRASBRK3 GRASBRK3
+
 //Walltorch
 Ignite	torch2
 
@@ -1308,6 +1323,9 @@ cat/meow2	CATMEOW2
 cat/hiss	CATHISS
 cat/purr	CATPURR
 
+//Shit
+SHITHPNS SHITHPNS
+
 //Toilet
 toilet/death	WCBREAK
 toilet/broken	WCFLOW
@@ -1322,19 +1340,10 @@ $random viper/flyby { viper/flyby1 viper/flyby2 }
 viper/flyby1 dsviper1
 viper/flyby2 dsviper2
 
-//Breaking Glass (small)
-GLSBRK01 GLSBRK01
-
-//Breaking Metal
-METALBRK METALBRK
-
 //UFO
 UFOEXPL  UFOEXPL
 ufolnch  ufolnch
 UFOFLYBY UFOFLYBY
-
-//Breaking Wood
-WOODBRK WOODBRK
 
 //Phonecall
 PHONECAL PHONECAL
@@ -1342,13 +1351,9 @@ $random PHONETLK { PHONETL1 PHONETL2 }
 PHONETL2 PHONETL2
 PHONETL1 PHONETL1
 
-//Breaking Grass (ahah "breaking")
-$random GRASBRKS {GRASBRK1 GRASBRK2 GRASBRK3 }
-GRASBRK1 GRASBRK1
-GRASBRK2 GRASBRK2
-GRASBRK3 GRASBRK3
-
 //Treasure
+treasure/pickup	DSTRESUP
+treasure/locked DSLOCKD
 supplychest/open SPBXOPEN
 
 //Hydrant
@@ -1372,10 +1377,6 @@ $singular CARTROL3
 $singular CARTROL4
 $limit CARTSQUE 2
 $pitchshift CARTSQUE 7
-
-//Treasure
-treasure/pickup	DSTRESUP
-treasure/locked DSLOCKD
 
 //Radioactive Barrel
 radioactivebarrel/detected DSDETECT

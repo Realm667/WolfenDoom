@@ -1,16 +1,26 @@
 ACTOR Shit
 {
 	//$Category Props (Wolf3D)/Bath
-	//$Title Shitpile
+	//$Title Shitpile (squeezable)
 	//$Color 3
 	Radius 2
 	Height 4
+	Health 1
 	Scale 0.35
+	+NOBLOOD
+	+NODROPOFF
+	+NOTAUTOAIMED
+	+SHOOTABLE
 	+SOLID
+	+TOUCHY
 	States
 	{
 	Spawn:
 		SHIT A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	Death:
+		TNT1 A 0 A_UnSetSolid
+		"####" A 0 A_PlaySound("SHITHPNS", CHAN_ITEM, frandom(0.5,0.7), FALSE, ATTN_NORM)
 		Stop
 	}
 }
