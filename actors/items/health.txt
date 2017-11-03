@@ -124,7 +124,7 @@ ACTOR VitalitySerum : CustomInventory
 	//$Title Vitality Serum (max+5)
 	//$Color 6
 	Radius 20
-	Scale 0.9
+	Scale 0.45
 	Inventory.MaxAmount 10
 	Inventory.PickupMessage "$SERUM"
 	+INVENTORY.IGNORESKILL
@@ -133,7 +133,7 @@ ACTOR VitalitySerum : CustomInventory
 	States
 	{
 		Spawn:
-			VSRM ABC 6 BRIGHT
+			VSRM ABC 6
 			Loop
 		Pickup:
 			VSRM A 0
