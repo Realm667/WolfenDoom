@@ -471,28 +471,28 @@ ACTOR Shark : Base
 	//$Category Monsters (Wolf3D)/Critters
 	//$Title Shark
 	//$Color 4
-	Obituary "$SHARK"
+	Base.Swimmer
+	Base.LoiterDistance 128
+	Radius 30
+	Height 30
 	Health 100
 	Mass 120
 	Speed 2.5
 	FloatSpeed 1
-	Radius 30
-	Height 30
-	SeeSound "shark/sight"
-	DeathSound "shark/death"
-	ActiveSound "shark/active"
 	Monster
+	-CANPUSHWALLS
+	-CANUSEWALLS
+	-ISMONSTER //needed for shadows
 	+FLOAT
 	+FLOORCLIP
 	+FORCEXYBILLBOARD
 	+NEVERTARGET
 	+NOGRAVITY
 	+NOINFIGHTING
-	-CANPUSHWALLS
-	-CANUSEWALLS
-	-ISMONSTER //needed for shadows
-	Base.Swimmer
-	Base.LoiterDistance 128
+	Obituary "$SHARK"
+	SeeSound "shark/sight"
+	DeathSound "shark/death"
+	ActiveSound "shark/active"
 	States
 	{
 	Spawn:
