@@ -265,10 +265,10 @@ ACTOR Geist : Nazi
 
 ACTOR NaziGeist : Geist
 {
-	//$Title Geist, Nazi Soldier
+	//$Title Geist, Nazi Soldier (summon Geists, 6 max)
 	Scale 0.66
 	Health 400
-	Radius 31
+	Radius 32
 	Speed 3.75
 	PainChance 128
 	States
@@ -368,6 +368,12 @@ ACTOR NaziGeist : Geist
 		"####" B 3 BRIGHT
 		"####" BCCCC 1 BRIGHT A_Fadeout(0.1)
 		"####" D 4 BRIGHT
+		Goto See
+	Pain:
+		GES2 E 1 A_Pain
+		"####" E 1 A_SetTranslucent(0.4)
+		"####" EEE 1 A_Fadeout(0.1)
+		"####" "#" 0 A_AlertMonsters(256) //mxd
 		Goto See
 	Death:
 		GES2 E 0 A_StopSound(CHAN_VOICE)
