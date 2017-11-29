@@ -111,30 +111,8 @@ ACTOR SteamParticle
 
 ACTOR ZyklonBSteamSpawner : SteamSpawner
 {
-//$Category Special Effects (Wolf3D)
 	//$Title Zyklon B Steam Spawner
-	//$Color 12
-	//$Sprite STEMA0
-	//$Arg0 "Direction"
-	//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 4 map units below the ceiling)"
-	//$Arg0Type 11
-	//$Arg0Enum { 0 = "Up"; 1 = "Down"; 2 = "Forward"; }
-	//$Arg1 "Type"
-	//$Arg1Tooltip "Second argument chooses if it's a constant spawner, or spawns in bursts. Burst spawners use the third argument and play a different sound."
-	//$Arg1Type 11
-	//$Arg1Enum { 0 = "Constant"; 1 = "Bursts"; }
-	//$Arg2 "Frequency"
-	//$Arg2Tooltip "Third argument controls the frequency of the bursts (divided by 16. I.e, 128 will end up as 8). This is only used by the second argument."
-	//$Arg3 "Sound"
-	//$Arg3Type 11
-	//$Arg3Enum { 0 = "Yes"; 1 = "No"; }
-	Height 2
-	Radius 1
-	Mass 0
-	+CLIENTSIDEONLY
-	+NOBLOCKMAP
-	+NOGRAVITY
-	+NOINTERACTION
+	//$Sprite ZTEMA0
 	States
 	{
 	Active:
