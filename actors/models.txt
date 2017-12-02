@@ -126,6 +126,18 @@ ACTOR SkyboxStars : SkyboxMoon
 	}
 }
 
+Actor SkyboxDayNight : SkyboxMoon
+{
+	//$Title Sun & Moon (skybox)
+	RenderStyle "Add"
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
+}
+
 ACTOR SkyboxPlanetShade : 3dGlass //shades of darkness - ozy81, adjusted by T667
 {
 	RenderStyle "Shaded"
