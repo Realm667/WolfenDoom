@@ -169,7 +169,7 @@ ACTOR SkyboxMoonLights : SkyboxPlanetShade //adjusted by T667
 }
 
 //Ozy models from scratch or highly revamped
-ACTOR Radiator
+ACTOR Radiator //3d Model by Talon1024, just reworked skin and a couple of details
 {
 	//$Category Models (Wolf3D)/Furniture
 	//$Title Radiator
@@ -439,7 +439,7 @@ ACTOR WaterTower001 : ModelBase
 ACTOR Windmill : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Scenery
-	//$Title Windmill
+	//$Title Windmill (don't scale it more than 1.2!)
 	//$Color 3
 	DistanceCheck "scenelod"
 	Radius 64
@@ -447,7 +447,7 @@ ACTOR Windmill : 3dObstacle
 	{
 	Spawn:
 		MDLA A 0 NoDelay A_PlaySound("misc/windmill", CHAN_AUTO, 0.7, TRUE)
-		MDLA A -1 A_SpawnItemEx("WindmillWheel", 24, 0, ScaleY*476) //don't scale the model more than 1.2 on GZDB
+		MDLA A -1 A_SpawnItemEx("WindmillWheel", 24, 0, ScaleY*476)
 		Stop
 	}
 }
@@ -541,12 +541,11 @@ ACTOR 88mmFlakDestroyed : ModelBase
 	Height 80
 }
 
-ACTOR Nebelwerfer3D : Base
+ACTOR Nebelwerfer3D : Base //Never Distancheck on this! - Ozy81
 {
 	//$Category Models (Wolf3D)/Mission
 	//$Title Nebelwerfer
 	//$Color 3
-	//This mustn't have any DistanceCheck because it is a peculiar mission actor - ozy81
 	Tag "Nebelwerfer"
 	Radius 32
 	Height 56
@@ -578,7 +577,7 @@ ACTOR Nebelwerfer3D : Base
 
 ACTOR Nebelwerfer3D_Destroyed
 {
-	DistanceCheck "scenelod" //this one can have it instead - ozy81
+	DistanceCheck "scenelod"
 	Radius 32
 	Height 56
 	Health -1
@@ -657,14 +656,13 @@ ACTOR Cruiser : ModelBase
 	Height 4
 }
 
-ACTOR FlakVierling3D : SwitchableDecoration
+ACTOR FlakVierling3D : SwitchableDecoration //Never Distancecheck on this! - Ozy81
 {
 	//$Category Models (Wolf3D)/Mission
 	//$Title Flak Vierling
 	//$Color 3
 	//$Arg0 "Type"
 	//$Arg0Tooltip "Pickup the desired type\nSolid: 0\nNon-Solid: 1"
-	//This mustn't have any DistanceCheck because it is a peculiar mission actor - ozy81
 	Radius 80
 	Height 88
 	Health -1
@@ -2843,23 +2841,6 @@ ACTOR SecretUFO : SwitchableDecoration //3dRealms
 	}
 }
 
-ACTOR SlopeMe1 : 3dObstacle
-{
-	//$Category Models (Wolf3D)/Special
-	//$Title Slopeable Glass (clear)
-	//$Color 3
-	DistanceCheck "scenelod"
-	Radius 16
-	Height 4
-	+NOGRAVITY
-}
-
-ACTOR SlopeMe2 : SlopeMe1
-{
-	//$Title Slopeable Glass (checker)
-	DistanceCheck "scenelod"
-}
-
 ACTOR Caesar_Museum
 {
 	//$Category Models (Wolf3D)/Statues/Special
@@ -2907,6 +2888,23 @@ ACTOR LionL_Museum : Caesar_Museum
 ACTOR LionR_Museum : Caesar_Museum
 {
 	//$Title Lion's Statue (right, without hitbox)
+	DistanceCheck "scenelod"
+}
+
+ACTOR SlopeMe1 : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Special
+	//$Title Slopeable Glass (clear)
+	//$Color 3
+	DistanceCheck "scenelod"
+	Radius 16
+	Height 4
+	+NOGRAVITY
+}
+
+ACTOR SlopeMe2 : SlopeMe1
+{
+	//$Title Slopeable Glass (checker)
 	DistanceCheck "scenelod"
 }
 
