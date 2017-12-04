@@ -354,6 +354,7 @@ ACTOR Flamerbolt : Flamebolt
 		Goto Death
 	}
 }
+
 ACTOR EnemyFlamerShot : Flamerbolt { -RIPPER }
 ACTOR HardEnemyFlamerShot : EnemyFlamerShot { +MTHRUSPECIES }
 ACTOR EnemyFlamebolt : Flameball { Damage 8 }
@@ -758,6 +759,156 @@ ACTOR UndeadFartCloud
 }
 
 ACTOR UndeadSmoke : MutantSmoke { StencilColor "05 05 05" }
+
+ACTOR ZFlamebolt
+{
+	Damage (random(1,4))
+	Alpha 0.9
+	RenderStyle "Add"
+	Speed 25
+	Radius 16
+	Scale 0.1
+	Projectile
+	+BLOODLESSIMPACT
+	+RIPPER
+	+WINDTHRUST
+	SeeSound "flamer/fire"
+	DamageType "MutantPoison"
+	Decal Scorch
+	Obituary "$OBZYKF"
+	ProjectileKickback 20
+	States
+	{
+	Spawn:
+		"####" A 0 NODELAY A_Jump(256, "Flame1", "Flame2", "Flame3", "Flame4")
+		Stop
+	Flame1:
+		ZFLM A 0
+		Goto Animation
+	Flame2:
+		ZFLM B 0
+		Goto Animation 
+	Flame3:
+		ZFLM C 0
+		Goto Animation
+	Flame4:
+		ZFLM D 0
+		Goto Animation
+	Animation:
+		"####" "#####" 3 BRIGHT LIGHT(ZYKFLAMW)
+			{
+				A_SetScale(ScaleX+0.05);
+				A_FadeOut(0.05);
+				A_Explode(2,16);
+				if (waterlevel > 0) {
+					A_ScaleVelocity(0.0);
+					return A_Jump(256, "Smoke1", "Smoke2", "Smoke3");
+				}
+				return state(0);
+			}
+		"####" "#" 0 A_Jump(128, "Smoke1", "Smoke2", "Smoke3")
+		Goto Death
+	Smoke1:
+		"####" "#" 0 A_SpawnItemEx("FlamerSmoke1")
+		Goto Death
+	Smoke2:
+		"####" "#" 0 A_SpawnItemEx("FlamerSmoke2")
+		Goto Death
+	Smoke3:
+		"####" "#" 0 A_SpawnItemEx("FlamerSmoke3")
+		Goto Death
+	Death:
+		"####" "#" 1 LIGHT(ZYKFLAMW)
+			{
+				A_SetScale(ScaleX+0.05);
+				A_FadeOut(0.05);
+				A_Explode(2,64);
+			}
+		Goto Death
+	}
+}
+
+ACTOR ZFlameball : ZFlamebolt
+{
+	Damage 30
+	Speed 20
+	Scale 0.3
+	-RIPPER
+	+WINDTHRUST
+	SeeSound "flamer/napalm"
+	DeathSound "nebelwerfer/xplode"
+	RenderStyle "Add"
+	States
+	{
+	Spawn:
+		ZBAL A 2 BRIGHT LIGHT(BOAFLMW2)
+			{
+				A_SpawnItemEx("TracerSpark", random(-32,32), random(-32,32), random(-32,32), random(-2,2), random(-2,2), random(-2,2), random(0,359));
+				A_SpawnItemEx("TracerSpark", random(-32,32), random(-32,32), random(-32,32), random(-2,2), random(-2,2), random(-2,2), random(0,359));
+				A_SpawnItemEx("TracerSpark", random(-32,32), random(-32,32), random(-32,32), random(-2,2), random(-2,2), random(-2,2), random(0,359));
+				if (waterlevel > 0) {
+					A_ScaleVelocity(0.0);
+					return State("Death");
+				}
+				return state(0);
+			}
+		"####" A 0 A_Jump(192, "Smoke1", "Smoke2", "Smoke3")
+		Loop
+	Smoke1:
+		"####" A 0 A_SpawnItemEx("FlamerSmoke1")
+		"####" A 0 A_Jump (192,1,2)
+		"####" A 0 A_SpawnItemEx("Flame1A")
+		"####" A 0 A_SpawnItemEx("Flame1B")
+		Goto Spawn
+	Smoke2:
+		"####" A 0 A_SpawnItemEx("FlamerSmoke2")
+		"####" A 0 A_Jump (192,1,2)
+		"####" A 0 A_SpawnItemEx("Flame1A")
+		"####" A 0 A_SpawnItemEx("Flame1B")
+		Goto Spawn
+	Smoke3:
+		"####" A 0 A_SpawnItemEx("FlamerSmoke3")
+		"####" A 0 A_Jump (192,1,2)
+		"####" A 0 A_SpawnItemEx("Flame1A")
+		"####" A 0 A_SpawnItemEx("Flame1B")
+		Goto Spawn
+	Death:
+		"####" A 0 A_SpawnItemEx("NebFloor")
+		"####" A 0 A_SpawnItemEx("NebSmokeFloor")
+		"####" A 0 A_SpawnItemEx("NebSmokeMushroom",0,0,0)
+		"####" A 0 A_SpawnItemEx("NebSmokePillar",0,0,0,0,0,2)
+		"####" A 0 A_SetScale(1.0)
+		"####" AAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark", random(-32,32), random(-32,32), random(-32,32), random(-4,4), random(-4,4), random(-4,4), random(0,359))
+		ZBLX A 2 BRIGHT LIGHT(ZYKFLMW2) A_Explode(96,128)
+		ZBLX BCDEFGHIJK 2 BRIGHT LIGHT(ZYKFLMW2)
+		Stop
+	}
+}
+
+ACTOR ZFlamerbolt : ZFlamebolt
+{
+	Damage (random(0,1))
+	States
+	{
+	Animation:
+		"####" A 3 BRIGHT LIGHT(ZYKFLAMW)
+			{
+				A_SetScale(ScaleX+0.05);
+				A_FadeOut(0.05);
+			}
+		"####" A 0 A_Jump(128, "Smoke1", "Smoke2", "Smoke3")
+		Goto Death
+	Death:
+		"####" A 1 LIGHT(ZYKFLAMW)
+			{
+				A_SetScale(ScaleX+0.05);
+				A_FadeOut(0.05);
+			}
+		Goto Death
+	}
+}
+
+ACTOR ZFlamerShot : ZFlamerbolt { -RIPPER }
 
 ACTOR PoisonCloudUndead
 {
