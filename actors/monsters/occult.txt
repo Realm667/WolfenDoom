@@ -67,7 +67,9 @@ ACTOR WereWaffenSS : WaffenSS
 	Speed 4
 	PainChance 128
 	Scale 0.65
-	SeeSound "Nazi3/Sighted" //needs to be changed
+	SeeSound "wolfman/see"
+	PainSound "wolfman/pain"
+	DeathSound "wolfman/death"
 	Obituary "$WEREWAFF"
 	DropItem "9mmAmmoBox" 128
 	DropItem "GrenadePickup" 32
@@ -78,7 +80,7 @@ ACTOR WereWaffenSS : WaffenSS
 		WOFF N 0
 		Goto Look
 	See: //doesn't roll - ozy81
-		Goto See.Normal
+		Goto See.Fast
 	Pain:
 		"####" E 6 A_NaziPain(256)
 		Goto See
