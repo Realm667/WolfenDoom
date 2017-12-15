@@ -61,6 +61,7 @@ ACTOR Guard : NaziStandard
 ACTOR GiantGuard : Guard
 {
 	//$Title Afrika Korps Giant Guard (Easter Egg)
+	//$Sprite GARDF1
 	DropItem "9mmAmmo" 255
 	DropItem "9mmAmmo" 255
 	DropItem "9mmAmmo" 255
@@ -814,8 +815,8 @@ ACTOR Sniper : Guard
 {
 	//$Title Afrika Korps Sniper
 	Obituary "$SNIPER"
-	Mass 1000 //Make it not move too far
-	SeeSound "" //Make them not cry, they are in disguise after all
+	Mass 1000
+	SeeSound ""
 	Health 50
 	Speed 0
 	DropItem "Kar98k" 72
@@ -867,6 +868,7 @@ ACTOR Sniper : Guard
 ACTOR WSniper : Sniper
 {
 	//$Title Wehrmacht Sniper
+	//$Sprite SNICA0
 	States
 	{
 	Spawn:
@@ -879,8 +881,8 @@ ACTOR Sniper_Crouch : Guard
 {
 	//$Title Afrika Korps Sniper (crouch)
 	Obituary "$SNIPER"
-	Mass 1000		//Make it not move too far
-	SeeSound ""	//Make them not cry, they are in disguise after all
+	Mass 1000
+	SeeSound ""
 	Health 50
 	Speed 0
 	DropItem "Kar98k" 48
@@ -932,6 +934,7 @@ ACTOR Sniper_Crouch : Guard
 ACTOR WSniper_Crouch : Sniper_Crouch
 {
 	//$Title Wehrmacht Sniper (crouch)
+	//$Sprite SNICC0
 	States
 	{
 	Spawn:
@@ -944,8 +947,8 @@ ACTOR ArcticSniper : Guard
 {
 	//$Title Arctic Sniper
 	Obituary "$SNIPER"
-	Mass 1000 //Make it not move too far
-	SeeSound "" //Make them not cry, they are in disguise after all
+	Mass 1000
+	SeeSound ""
 	Health 60
 	Speed 0
 	DropItem "Kar98k" 72
@@ -998,8 +1001,8 @@ ACTOR ArcticSniper_Crouch : Guard
 {
 	//$Title Arctic Sniper (crouch)
 	Obituary "$SNIPER"
-	Mass 1000		//Make it not move too far
-	SeeSound ""	//Make them not cry, they are in disguise after all
+	Mass 1000
+	SeeSound ""
 	Health 50
 	Speed 0
 	DropItem "Kar98k" 72
@@ -1051,6 +1054,7 @@ ACTOR ArcticSniper_Crouch : Guard
 ACTOR WGrenadier: Sniper_Crouch
 {
 	//$Title Wehrmacht Grenadier
+	//$Sprite WGRNA0
 	SeeSound "Nazi1/Sighted"
 	PainSound "Nazi1/Pain"
 	DeathSound "Nazi1/Death"
@@ -1116,6 +1120,7 @@ ACTOR WGrenadier: Sniper_Crouch
 ACTOR AGrenadier : WGrenadier
 {
 	//$Title Afrika Korps Grenadier
+	//$Sprite AGRNA0
 	States
 	{
 	Spawn:
@@ -1177,6 +1182,7 @@ ACTOR AGrenadier : WGrenadier
 ACTOR SGrenadier : WGrenadier
 {
 	//$Title SS Grenadier
+	//$Sprite SGRNA0
 	States
 	{
 	Spawn:
