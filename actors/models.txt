@@ -1362,7 +1362,7 @@ ACTOR SimpleLight1Lit : SimpleLight1
 ACTOR IntermapSkylight : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Intermap
-	//$Title INTERMAP Skylight
+	//$Title Headquarters Skylight
 	//$Color 3
 	Radius 64
 	Height 16
@@ -1371,7 +1371,7 @@ ACTOR IntermapSkylight : 3dObstacle
 
 ACTOR LighthouseBeam : IntermapSkylight
 {
-	//$Title Lighthouse Beam)
+	//$Title Lighthouse Beam
 	DistanceCheck "scenelod"
 	RenderStyle "Add"
 	+BRIGHT
@@ -1387,7 +1387,7 @@ ACTOR FuelDrum : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Obstacles
 	//$Title Fuel Drum
-	//$Color 3)
+	//$Color 3
 	DistanceCheck "scenelod"
 	Radius 16
 	Height 42
@@ -1397,7 +1397,7 @@ ACTOR GasDrum : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Obstacles
 	//$Title Gas Drum
-	//$Color 3)
+	//$Color 3
 	DistanceCheck "scenelod"
 	Radius 16
 	Height 42
@@ -1407,7 +1407,7 @@ ACTOR FuelDrumAstro //Uses JK2 3dModel
 {
 	//$Category Models (Wolf3D)/Obstacles
 	//$Title Fuel Drum (Astrostein, pushable)
-	//$Color 3)
+	//$Color 3
 	DistanceCheck "scenelod"
 	-NOGRAVITY 			//or it will move towards the void without falling
 	+CANPASS
@@ -1467,7 +1467,7 @@ ACTOR Tie_Fighter : 3dObstacle //ozy81
 {
 	//$Category Models (Wolf3D)/Astrostein/Easteregg
 	//$Title Tie Fighter
-	//$Color 3)
+	//$Color 3
 	DistanceCheck "scenelod"
 	Radius 48
 	Height 192
@@ -2310,6 +2310,7 @@ ACTOR TMPlane : CODStuka
 {
 	//$Category Misc (Wolf3D)/Cutscenes
 	//$Title Titlemap Stuka
+	//$Color 0
 }
 
 ACTOR CODCondor : 3dObstacle
