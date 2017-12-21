@@ -14,8 +14,8 @@ ACTOR ChanGold : SwitchableDecoration //3d actor
 	Active:
 		MDLA A 0 A_ChangeFlag("DORMANT", FALSE) //mxd. DORMANT flag must be updated manually
 	Spawn:
-	  MDLA A -1 LIGHT("3DCHAN")
-	  Stop
+		MDLA A -1 LIGHT("3DCHAN")
+		Stop
 	Inactive:
 		MDLA B -1 A_ChangeFlag("DORMANT", TRUE) //mxd. DORMANT flag must be updated manually
 		Stop
