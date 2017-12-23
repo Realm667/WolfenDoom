@@ -373,3 +373,22 @@ ACTOR Camp_RandomEyeglass
 		Stop
 	}
 }
+
+ACTOR Camp_RandomBoots : Camp_RandomEyeglass
+{
+	//$Title Boots (random)
+	Scale 0.45
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7)
+		SHOS B -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		SHOS C -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		SHOS D -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		SHOS E -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		SHOS F -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		SHOS G -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		SHOS H -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
