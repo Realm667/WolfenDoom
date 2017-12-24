@@ -18,7 +18,7 @@ class SkyViewPointStatic : SkyViewPoint
 		// Save the spawn location vector for later
 		SpawnPoint = pos;
 
-		// Iterate through all of the possible players int he game
+		// Iterate through all of the possible players in the game
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
 			// If a player is in the game and has spawned...
@@ -32,23 +32,22 @@ class SkyViewPointStatic : SkyViewPoint
 
 	override void Tick()
 	{
-		if (base)
+		if (base && base.player)
 		{
-			// Account for viewpoint and player rotation angle
-			Vector2 temp = -RotateVector(base.vel.xy, deltaangle(angle, AngleTo(base)));
-			double heightdelta = (base.pos.z - base.floorz) / scaling;
+			Vector3 newvel;
 
-			// Reset the viewpoint's speed to 0 and height location, just in case
-			vel *= 0;
-			SetOrigin((pos.x, pos.y, SpawnPoint.z + heightdelta), true);
+			// Reset the viewpoint's height location
+			double heightdelta = (base.pos.z - base.floorz + base.height * base.player.crouchfactor) / scaling;
+			SetOrigin((pos.x, pos.y, (SpawnPoint.z + heightdelta + pos.z) / 2), true);
 
-			// Only move the viewpoint if the player actually is moving along an axis; otherwise stay still
-			if (basepos.x != base.pos.x) { vel.x = temp.x; }
-			if (basepos.y != base.pos.y) { vel.y = temp.y; }
-			vel.z = -base.vel.z;
+			// Only move the viewpoint on the x/y axis if the player actually is moving along that axis; otherwise stay still
+			if (basepos.x != base.pos.x) { newvel.x = base.vel.x; }
+			if (basepos.y != base.pos.y) { newvel.y = base.vel.y; }
+			newvel.z = -base.vel.z;
 
 			// Adjust the move amount by scaling value
-			vel /= scaling;
+			newvel /= scaling;
+			A_ChangeVelocity(newvel.x, newvel.y, newvel.z, CVF_RELATIVE | CVF_REPLACE);
 
 			// Save the player's old position for the move checks
 			basepos = base.pos;
