@@ -1,18 +1,21 @@
 class SkyViewPointStatic : SkyViewPoint
 {
-	PlayerPawn base;
+	Actor base;
 	Vector3 basepos;
+	double heightoffset;
 	int scaling;
 
 	Default
 	{
+		//$Title Skybox ViewPoint (Static)
 		//$Arg1 "Skybox Scene Scale"
 		//$Arg1Tooltip "The scale of the skybox's scene (default is 100).  The larger this number is, the farther away the skybox contents will appear to be."
+		//$Arg1Default 100
 	}
 
 	override void PostBeginPlay()
 	{
-		// Set the scaling value according to whatever arg 1 value is passed; use 100 if nothing provided
+		// Set the scaling value according to whatever arg 1 value is passed
 		scaling = args[1] == 0 ? 100 : args[1];
 
 		// Save the spawn location vector for later
@@ -22,9 +25,13 @@ class SkyViewPointStatic : SkyViewPoint
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
 			// If a player is in the game and has spawned...
-			if (playeringame[i] && players[i].mo)
+			if (playeringame[i] && players[i].camera)
 			{
-				if (!base) { base = players[i].mo; } // Set the skybox to follow the first player who is in the game
+				if (!base)  // Set the skybox to follow the first player who is in the game
+				{
+					base = players[i].camera;
+					heightoffset = pos.z - base.pos.z - 17.25; // To match normal skybox offset height
+				}
 				else { base = null; break; } // If there are multiple players, don't move the skybox
 			}
 		}
@@ -37,16 +44,17 @@ class SkyViewPointStatic : SkyViewPoint
 			Vector3 newvel;
 
 			// Reset the viewpoint's height location
-			double heightdelta = (base.pos.z - base.floorz + base.height * base.player.crouchfactor) / scaling;
-			SetOrigin((pos.x, pos.y, (SpawnPoint.z + heightdelta + pos.z) / 2), true);
+			double heightdelta = (base.pos.z - pos.z + base.player.mo.height * base.player.crouchfactor) / scaling;
+			SetOrigin((pos.x, pos.y, (SpawnPoint.z + heightoffset + heightdelta) / 2), true);
+			newvel.z = 0;
 
 			// Only move the viewpoint on the x/y axis if the player actually is moving along that axis; otherwise stay still
 			if (basepos.x != base.pos.x) { newvel.x = base.vel.x; }
 			if (basepos.y != base.pos.y) { newvel.y = base.vel.y; }
-			newvel.z = -base.vel.z;
 
 			// Adjust the move amount by scaling value
 			newvel /= scaling;
+
 			A_ChangeVelocity(newvel.x, newvel.y, newvel.z, CVF_RELATIVE | CVF_REPLACE);
 
 			// Save the player's old position for the move checks
