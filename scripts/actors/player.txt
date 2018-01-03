@@ -188,7 +188,7 @@ class BoAPlayer : PlayerPawn
 
 		CrosshairTarget = GetLineTarget();
 
-		if (leveltilt)
+		if (leveltilt && !(player.cheats & (CF_NOCLIP | CF_NOCLIP2)))
 		{
 			bNoGravity = leveltilt != 0;
 
