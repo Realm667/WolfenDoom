@@ -215,36 +215,3 @@ ACTOR PrisonerEnemyBoss : DirtyDarren
 		Goto See
 	}
 }
-/*
-//This was a placeholder actor used to have prisoners/hostages once freed would give us something, like on Descent
-//Commented out - still not used on 12/12/17 - ozy81
-ACTOR PrisonerCampMale : PrisonerAgent
-{
-	//$Category Concentration Camp (Wolf3D)
-	//$Title Concentration Camp Prisoner
-	//$Color 3
-	//Obituary "$PRISONER" //needs a different obituary though
-	Health 50
-	Speed 1
-	-BOSSDEATH
-	-NOBLOCKMONST
-	-NODAMAGE
-	-NOFEAR
-	+FRIENDLY
-	+FRIGHTENED
-	+JUMPDOWN
-	+LOOKALLAROUND
-	States
-	{
-	Death:
-		TORT J 6 A_NoBlocking
-		"####" K 6 A_PlayerScream
-		TNT1 A 0 A_Log("Prisoner dead!")
-		"####" A 0 A_PlaySound("misc/chat2", CHAN_AUTO, 1.0, FALSE, ATTN_NONE)
-		TORT LM 3
-		"####" N -1
-		Stop
-	Idle:
-		Stop
-	}
-}*/

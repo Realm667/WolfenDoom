@@ -11,7 +11,6 @@ ACTOR Guard : NaziStandard
 	Obituary "$GUARD"
 	DropItem "9mmAmmo" 192
 	DropItem "Luger9mm" 64
-
 	States
 	{
 	Spawn:
@@ -113,9 +112,9 @@ ACTOR GiantGuard : Guard
 ACTOR SSGuard : Guard
 {
 	//$Title SS Guard (Pistol)
+	Health 40
 	Speed 2.67
 	Obituary "$SSGUARD"
-	Health 40
 	States
 	{
 	Spawn:
@@ -150,10 +149,10 @@ ACTOR SSGuard : Guard
 ACTOR WGuard : Guard
 {
 	//$Title Wehrmacht Guard (Pistol)
-	Speed 2.5
-	Obituary "$WGUARD"
 	Health 30
+	Speed 2.5
 	PainChance 185
+	Obituary "$WGUARD"
 	+MISSILEEVENMORE
 	+MISSILEMORE
 	States
@@ -299,9 +298,9 @@ ACTOR SSMP40Guard : SSGuard
 ACTOR WMP40Guard : MP40Guard
 {
 	//$Title Wehrmacht Guard (MP40)
-	Obituary "$WMPGUARD"
 	Health 30
 	Speed 2.5
+	Obituary "$WMPGUARD"
 	+MISSILEMORE
 	States
 	{
@@ -460,9 +459,9 @@ ACTOR Officer : Guard
 ACTOR SSOfficer : Officer
 {
 	//$Title SS Officer
+	Health 40
 	Speed 4.5
 	Obituary "$SSOFFICE"
-	Health 40
 	States
 	{
 	Spawn:
@@ -514,10 +513,10 @@ ACTOR SSOfficer : Officer
 ACTOR WOfficer : Officer
 {
 	//$Title Wehrmacht Officer
-	Obituary "$WOFFICER"
 	Health 30
 	Speed 4
 	PainChance 180
+	Obituary "$WOFFICER"
 	+MISSILEEVENMORE
 	+MISSILEMORE
 	States
@@ -612,9 +611,9 @@ ACTOR RifleGuard : MP40Guard
 ACTOR WRifleGuard : RifleGuard
 {
 	//$Title Wehrmacht Guard (Rifle)
-	Obituary "$WRIFSOLD"
 	Health 30
 	Speed 2.5
+	Obituary "$WRIFSOLD"
 	+MISSILEEVENMORE
 	+MISSILEMORE
 	States
@@ -651,9 +650,9 @@ ACTOR WRifleGuard : RifleGuard
 ACTOR ArcticRifleGuard : RifleGuard
 {
 	//$Title Arctic Guard (Rifle)
-	Obituary "$ARIFSOLD"
 	Health 50
 	Speed 2
+	Obituary "$ARIFSOLD"
 	+MISSILEEVENMORE
 	+MISSILEMORE
 	States
@@ -690,9 +689,9 @@ ACTOR ArcticRifleGuard : RifleGuard
 ACTOR WaffenSS : SSMP40Guard
 {
 	//$Title Waffen SS
-	SeeSound "Nazi3/Sighted"
-	Obituary "$SSWAFFEN"
 	Health 80
+	Obituary "$SSWAFFEN"
+	SeeSound "Nazi3/Sighted"
 	DropItem "9mmAmmo" 192
 	DropItem "GrenadePickup" 32
 	DropItem "MP40" 96
@@ -732,8 +731,8 @@ ACTOR WaffenSS : SSMP40Guard
 ACTOR ArcticWaffen : WaffenSS
 {
 	//$Title Waffen Arctic
-	Obituary "$ARWAFFEN"
 	Health 90
+	Obituary "$ARWAFFEN"
 	DropItem "9mmAmmo" 192
 	DropItem "GrenadePickup" 8
 	DropItem "MP40" 96
@@ -773,9 +772,9 @@ ACTOR ArcticWaffen : WaffenSS
 ACTOR Paratrooper : WaffenSS
 {
 	//$Title Paratrooper
-	Obituary "$PARATROP"
 	Health 90
 	Scale 0.64
+	Obituary "$PARATROP"
 	DropItem "9mmAmmo" 192
 	DropItem "MP40" 96
 	States
@@ -814,11 +813,11 @@ ACTOR Paratrooper : WaffenSS
 ACTOR Sniper : Guard
 {
 	//$Title Afrika Korps Sniper
-	Obituary "$SNIPER"
-	Mass 1000
-	SeeSound ""
 	Health 50
 	Speed 0
+	Mass 1000
+	SeeSound ""
+	Obituary "$SNIPER"
 	DropItem "Kar98k" 72
 	DropItem "MauserAmmo" 192 5
 	+LOOKALLAROUND
@@ -880,11 +879,11 @@ ACTOR WSniper : Sniper
 ACTOR Sniper_Crouch : Guard
 {
 	//$Title Afrika Korps Sniper (crouch)
-	Obituary "$SNIPER"
-	Mass 1000
-	SeeSound ""
 	Health 50
 	Speed 0
+	Mass 1000
+	SeeSound ""
+	Obituary "$SNIPER"
 	DropItem "Kar98k" 48
 	DropItem "MauserAmmo" 192 5
 	+DROPOFF
@@ -946,11 +945,11 @@ ACTOR WSniper_Crouch : Sniper_Crouch
 ACTOR ArcticSniper : Guard
 {
 	//$Title Arctic Sniper
-	Obituary "$SNIPER"
-	Mass 1000
-	SeeSound ""
 	Health 60
 	Speed 0
+	Mass 1000
+	SeeSound ""
+	Obituary "$SNIPER"
 	DropItem "Kar98k" 72
 	DropItem "MauserAmmo" 192 5
 	+LOOKALLAROUND
@@ -1000,11 +999,11 @@ ACTOR ArcticSniper : Guard
 ACTOR ArcticSniper_Crouch : Guard
 {
 	//$Title Arctic Sniper (crouch)
-	Obituary "$SNIPER"
-	Mass 1000
-	SeeSound ""
 	Health 50
 	Speed 0
+	Mass 1000
+	SeeSound ""
+	Obituary "$SNIPER"
 	DropItem "Kar98k" 72
 	DropItem "MauserAmmo" 192 5
 	+DROPOFF
@@ -1244,8 +1243,8 @@ ACTOR SGrenadier : WGrenadier
 ACTOR FlamerSoldier : Guard
 {
 	//$Title Nazi Flamer (Soldier)
-	Obituary "$FLAMEBOY"
 	Health 100
+	Obituary "$FLAMEBOY"
 	DropItem "FlameAmmo" 192
 	DropItem "Pyrolight" 48
 	MaxTargetRange 296
@@ -1318,9 +1317,9 @@ ACTOR Gestapo : Guard
 ACTOR Mechanic : Guard
 {
 	//$Title Mechanic (Pistol)
+	Health 50
 	Speed 2.37
 	Obituary "$MECHANIC"
-	Health 50
 	States
 	{
 	Spawn:
@@ -1783,12 +1782,12 @@ ACTOR MiniShip : Nazi
 	//$Category Monsters (Wolf3D)
 	//$Title Miniship
 	//$Color 4
-	Obituary "$NAZISHIP"
 	Health 375
 	Speed 3.25
 	Mass 2000
 	PainChance 96
 	FloatSpeed 0.87
+	Obituary "$NAZISHIP"
 	-FLOORCLIP
 	-ISMONSTER //needed for shadows
 	+FLOAT
@@ -1921,8 +1920,8 @@ ACTOR MGTurretCeiling : MGTurret
 ACTOR MGTurretInvisible : MGTurret
 {
 	//$Title Automatic Turret (invisible, non-shootable)
-	Obituary "$MGTHIDE"
 	Health 0
+	Obituary "$MGTHIDE"
 	-COUNTKILL
 	-SHOOTABLE
 	-SOLID
@@ -2087,10 +2086,10 @@ ACTOR MGTurretSoldierW : MGTurretSoldier
 ACTOR EliteFlamer : Guard
 {
 	//$Title Elite Soldier (Flamer)
-	Obituary "$FLAMEBOY"
 	Health 450
 	Speed 4
 	MaxTargetRange 400
+	Obituary "$FLAMEBOY"
 	+MISSILEMORE
 	SeeSound "eliteflamer/sight"
 	PainSound "eliteflamer/pain"
@@ -2183,10 +2182,10 @@ ACTOR EliteFlamer : Guard
 ACTOR EliteAssaulter : Guard
 {
 	//$Title Elite Soldier (MP40)
-	Obituary "$ELITASS"
 	Health 350
 	PainChance 160
 	Speed 3.66666667
+	Obituary "$ELITASS"
 	+MISSILEMORE
 	SeeSound "eliteassaulter/sight"
 	PainSound "eliteassaulter/pain"
@@ -2291,10 +2290,10 @@ ACTOR EliteAssaulter : Guard
 ACTOR EliteSoldatRifler : Guard
 {
 	//$Title Elite Soldier (Rifle)
-	Obituary "$ELITRIFL"
 	Health 65
 	PainChance 80
 	Speed 4.66666667
+	Obituary "$ELITRIFL"
 	+MISSILEEVENMORE
 	SeeSound "eliterifler/Sight"
 	PainSound "eliteassaulter/pain"
@@ -2442,9 +2441,9 @@ ACTOR DirtyDarren : Guard
 {
 	//$Category Monsters (Wolf3D)/NPCs
 	//$Title Dirty Douglas
-	Obituary "$DARREN"
 	Translation 1
 	PainChance 255
+	Obituary "$DARREN"
 	DropItem ""
 	SeeSound ""
 	Species "Ally"
@@ -2475,8 +2474,8 @@ ACTOR DirtyDarren : Guard
 ACTOR Clerk : DirtyDarren
 {
 	//$Title Lt. Laz Rojas
-	Obituary "$CLERK"
 	Height 75 //mxd. Players shouldn't be able to jump on this guy
+	Obituary "$CLERK"
 	States
 	{
 	Spawn:

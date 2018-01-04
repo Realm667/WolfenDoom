@@ -7,8 +7,8 @@ ACTOR Mutant : MutantStandard
 	//$Category Monsters (Wolf3D)/Mutants
 	//$Title Mutant (Projectile)
 	//$Color 4
-	Obituary "$MUTANT"
 	Health 90
+	Obituary "$MUTANT"
 	+MISSILEEVENMORE
 	+MISSILEMORE
 	DropItem "9mmAmmo" 128
@@ -96,9 +96,9 @@ ACTOR MutantMelee : Mutant
 ACTOR SuperMutant : Mutant
 {
 	//$Title Mutant (Super)
-	Obituary "$SUPAMUTN"
 	Health 180
 	Scale 0.75
+	Obituary "$SUPAMUTN"
 	States
 	{
 	Spawn:
@@ -126,10 +126,10 @@ ACTOR BigMutant1 : Mutant
 {
 	//$Title Giant Mutant (UMG43)
 	//$Sprite MTB1A0
-	Obituary "$GMUTANT1"
 	Health 400
 	Scale 1.0
 	PainChance 64
+	Obituary "$GMUTANT1"
 	+NEVERFAST
 	States
 	{
@@ -239,9 +239,9 @@ ACTOR BigMutant2 : BigMutant1
 {
 	//$Title Giant Mutant (MutantRockets)
 	//$Sprite MTB2A0
-	Obituary "$GMUTANT2"
 	Health 450
 	PainChance 64
+	Obituary "$GMUTANT2"
 	+MISSILEEVENMORE
 	DropItem "NebAmmo", 128, 2
 	States
@@ -288,9 +288,9 @@ ACTOR UberMutant : Mutant
 	Speed 2.66666667
 	PainChance 50
 	DamageFactor "Rocket", 0.2
+	Obituary "$OB_BARON"
 	+BOSS
 	+LOOKALLAROUND
-	Obituary "$OB_BARON"
 	HitObituary "$UBERMUTN"
 	SeeSound "baron/sight"
 	DeathSound "baron/death"
