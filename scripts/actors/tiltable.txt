@@ -1,7 +1,10 @@
 class Tiltable : Actor
 {
-	double leveltilt, oldtilt;
-	double spawnheight, oldvel;
+	double leveltilt, oldtilt, leveltiltangle;
+	double spawnheight;
+	bool falling;
+	Vector3 oldpos;
+	double oldvel;
 
 	Default
 	{
@@ -11,6 +14,8 @@ class Tiltable : Actor
 	override void PostBeginPlay()
 	{
 		spawnheight = pos.z;
+
+		Super.PostBeginPlay();
 	}
 
 	override void Tick()
@@ -25,18 +30,21 @@ class Tiltable : Actor
 			if (playeringame[i] && BoAPlayer(mo))
 			{
 				leveltilt = BoAPlayer(mo).leveltilt;
+				leveltiltangle = BoAPlayer(mo).leveltiltangle;
 				break;
 			}
 		}
 
-		if (abs(leveltilt) > 10)
+		if (abs(leveltilt) >= min(mass, 1000) / 1000.0 * Random(20, 45)) // 45 degrees is the max for *not* sliding - so everything will slide at least some at this point
 		{
 			bNoGravity = leveltilt != 0;
+			bSolid = True;
 
 			double grav = level.gravity * CurSector.gravity * Gravity * 0.00125 * floorz == pos.z ? 100.0 / (min(Mass, 1000) * max(cos(leveltilt), 0.01)) : 1;
 
+			vel.x -= grav * sin(leveltilt) * cos(leveltiltangle);
+			vel.y -= grav * sin(leveltilt) * sin(leveltiltangle);
 			vel.z -= grav * cos(leveltilt);
-			vel.x -= grav * sin(leveltilt);
 
 			if (leveltilt != oldtilt)
 			{
@@ -56,13 +64,25 @@ class Tiltable : Actor
 				oldtilt = leveltilt;
 			}
 
-			if (oldvel != vel.Length())
+			if (pos != oldpos)
 			{
 				angle += Random(-1, 1) * vel.Length();
 			}
 
-			if (abs(spawnheight - pos.z) > 10 * Height || (abs(oldvel - vel.Length())) > FRandom(1.0, 2.0) * Mass / 100) { DamageMobj(null, null, health, "none", DMG_FORCED); }
+			if (abs(spawnheight - pos.z) >= 8) { falling = true; }
 
+			if (
+				health > 0 &&
+				(
+					(falling && pos.z == floorz) || 
+					(pos == oldpos && vel.Length() != oldvel && vel.Length() > FRandom(1.0, 2.0) * 100 / min(Mass, 500))
+				)
+			)
+			{
+				DamageMobj(null, null, health, "none", DMG_FORCED);
+			}
+
+			oldpos = pos;
 			oldvel = vel.Length();
 		}
 	}

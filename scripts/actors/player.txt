@@ -50,7 +50,7 @@ class BoAPlayer : PlayerPawn
 {
 	double user_crouch;
 	double user_ScaleY;
-	double leveltilt, oldtilt;
+	double leveltilt, oldtilt, leveltiltangle;
 	Actor CrosshairTarget;
 	Actor ForcedHealthBar;
 	SpriteID baseSprite;
@@ -188,33 +188,7 @@ class BoAPlayer : PlayerPawn
 
 		CrosshairTarget = GetLineTarget();
 
-		if (leveltilt && !(player.cheats & (CF_NOCLIP | CF_NOCLIP2)))
-		{
-			bNoGravity = leveltilt != 0;
-
-			double grav = level.gravity * CurSector.gravity * Gravity * 0.00125;
-
-			vel.z -= grav * cos(leveltilt);
-			vel.x -= grav * sin(leveltilt);
-
-			if (leveltilt != oldtilt)
-			{
-				if (leveltilt == 0)
-				{
-					A_SetSize(Default.Radius, Default.Height);
-				}
-				else
-				{
-					double abstilt = abs(leveltilt);
-					double newradius = Default.radius * cos(abstilt) + Default.height / 2 * sin(abstilt);
-					double newheight = Default.radius * sin(abstilt) + Default.height / 2 * cos(abstilt);
-
-					if (height != newheight || radius != newradius) { A_SetSize(newradius, newheight, true); }
-				}
-
-				oldtilt = leveltilt;
-			}
-		}
+		DoGravity();
 
 		DoTokenChecks();
 
@@ -285,7 +259,7 @@ class BoAPlayer : PlayerPawn
 				{
 					vel.x += forwardmove * cos(angle) * cos(leveltilt) * speed * 1.5;
 					vel.y += forwardmove * sin(angle) * speed;
-					vel.z -= forwardmove * cos(angle) * sin(leveltilt) * speed * 1.5;
+					vel.z -= forwardmove * cos(angle - leveltiltangle) * sin(leveltilt) * speed * 1.5;
 				}
 				else
 				{
@@ -301,7 +275,7 @@ class BoAPlayer : PlayerPawn
 				{
 					vel.x += sidemove * sin(angle) * cos(leveltilt) * speed * 1.75;
 					vel.y += -sidemove * cos(angle) * speed * 1.75;
-					vel.z -= sidemove * sin(angle) * sin(leveltilt) * speed * 1.75;
+					vel.z -= sidemove * sin(angle - leveltiltangle) * sin(leveltilt) * speed * 1.75;
 				}
 				else
 				{
@@ -360,8 +334,9 @@ class BoAPlayer : PlayerPawn
 				}
 				if (jumpfac > 0) jumpvelz *= jumpfac;
 
+				Vel.X += jumpvelz * sin(leveltilt) * cos(leveltiltangle);
+				Vel.Y += jumpvelz * sin(leveltilt) * sin(leveltiltangle);
 				Vel.Z += jumpvelz * cos(leveltilt);
-				Vel.X += jumpvelz * sin(leveltilt);
 				bOnMobj = false;
 				player.jumpTics = -1;
 				if (!(player.cheats & CF_PREDICTING)) A_PlaySound("*jump", CHAN_BODY);
@@ -483,6 +458,40 @@ class BoAPlayer : PlayerPawn
 		{
 			if (mo.master && mo.master != self) { continue; } // Only look at effects that belong to this player actor
 			if (mo is effect) { mo.SetStateLabel('null'); } // Remove the effect, if found
+		}
+	}
+
+	// Function to handle leveltilt-induced "gravity" effects.
+	void DoGravity()
+	{
+		// If the player isn't using NOCLIP and they are at the "tipping point" for their mass, make them slide to the new "down"
+		if (abs(leveltilt) >= min(mass, 1000) / 1000.0 * 45 && !(player.cheats & (CF_NOCLIP | CF_NOCLIP2)))
+		{
+			bNoGravity = leveltilt != 0;
+
+			double grav = level.gravity * CurSector.gravity * Gravity * 0.00125;
+
+			vel.z -= grav * cos(leveltilt);
+			vel.x -= grav * sin(leveltilt) * cos(leveltiltangle);
+			vel.y -= grav * sin(leveltilt) * sin(leveltiltangle);
+
+			if (leveltilt != oldtilt)
+			{
+				if (leveltilt == 0)
+				{
+					A_SetSize(Default.Radius, Default.Height);
+				}
+				else
+				{
+					double abstilt = abs(leveltilt);
+					double newradius = Default.radius * cos(abstilt) + Default.height / 2 * sin(abstilt);
+					double newheight = Default.radius * sin(abstilt) + Default.height / 2 * cos(abstilt);
+
+					if (height != newheight || radius != newradius) { A_SetSize(newradius, newheight, true); }
+				}
+
+				oldtilt = leveltilt;
+			}
 		}
 	}
 }
