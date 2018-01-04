@@ -1216,7 +1216,7 @@ ACTOR ModelOpelTruck : 3dObstacle
 	//$Title Opel Blitz Truck (Afrika Korps or Wehrmacht)
 	//$Color 3
 	//$Arg0 "Type"
-	//$Arg0Tooltip "Pickup the desired type\nAfrika: 0\nWehrmacht: 1\nAfrika (Truck Seqs): 2\nWehrmacht (Truck Seqs): 3")
+	//$Arg0Tooltip "Pickup the desired type\nAfrika: 0\nWehrmacht: 1\nAfrika (Truck Seqs): 2\nWehrmacht (Truck Seqs): 3"
 	DistanceCheck "scenelod"
 	Radius 24
 	Height 24
@@ -1869,7 +1869,7 @@ ACTOR OldCar_Spawner : 3dObstacle
 	//$Title Old Car Spawner
 	//$Color 3
 	//$Arg0 "Color"
-	//$Arg0Tooltip "Pickup the desired color\nRandom: 0\nOlive: 1\nRed: 2\nCyan: 3")
+	//$Arg0Tooltip "Pickup the desired color\nRandom: 0\nOlive: 1\nRed: 2\nCyan: 3"
 	DistanceCheck "scenelod"
 	Height 64
 	+NOGRAVITY
@@ -2454,7 +2454,7 @@ ACTOR TMPlane : CODStuka
 
 ACTOR CODCondor : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (Wolf3D)/Planes
 	//$Title German Condor Focke-Wulf FW200 Bomber
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -2470,6 +2470,12 @@ ACTOR CODSideCar : 3dObstacle
 	DistanceCheck "scenelod"
 	Radius 56
 	Height 48
+}
+
+ACTOR CODSideCarD : CODSideCar
+{
+	//$Title SideCar (Destroyed)
+	DistanceCheck "scenelod"
 }
 
 ACTOR CODCivCarD_Spawner : 3dObstacle
