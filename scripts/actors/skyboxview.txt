@@ -1,7 +1,7 @@
 class SkyViewPointStatic : SkyViewPoint
 {
-	Actor base;
-	Vector3 basepos;
+	Actor base, anchor;
+	Vector3 oldbasepos;
 	double heightoffset;
 	int scaling;
 
@@ -11,6 +11,9 @@ class SkyViewPointStatic : SkyViewPoint
 		//$Arg1 "Skybox Scene Scale"
 		//$Arg1Tooltip "The scale of the skybox's scene (default is 100).  The larger this number is, the farther away the skybox contents will appear to be."
 		//$Arg1Default 100
+		//$Arg2 "Anchor Object TID"
+		//$Arg2Tooltip "TID of an actor to anchor the skybox on.  Default value (0) means to anchor on player start spot."
+		//$Arg2Default 0
 		+NOCLIP
 		Height 0;
 		Radius 0;
@@ -24,6 +27,17 @@ class SkyViewPointStatic : SkyViewPoint
 		// Save the spawn location vector for later
 		SpawnPoint = pos;
 
+		if (args[2] != 0)
+		{
+			ActorIterator it = ActorIterator.Create(args[2], "Actor");
+			Actor mo;
+			while (mo = it.Next())
+			{
+				anchor = mo; // Pick the first actor with this TID
+				break;
+			}
+		}
+
 		// Iterate through all of the possible players in the game
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
@@ -33,6 +47,7 @@ class SkyViewPointStatic : SkyViewPoint
 				if (!base)  // Set the skybox to follow the first player who is in the game
 				{
 					base = players[i].camera;
+					oldbasepos = anchor ? anchor.pos : base.pos; // Use the anchor spot as the origin if there is one, otherwise fall back to player spawn position
 					heightoffset = pos.z - base.pos.z - 17.25; // To match normal skybox offset height
 				}
 				else { base = null; break; } // If there are multiple players, don't move the skybox
@@ -44,26 +59,30 @@ class SkyViewPointStatic : SkyViewPoint
 	{
 		if (base && base.player)
 		{
-			Vector3 newvel;
+			Vector2 offset;
 
 			// Reset the viewpoint's height location
 			double heightdelta = (base.pos.z - pos.z + base.player.mo.height * base.player.crouchfactor) / scaling;
 			SetOrigin((pos.x, pos.y, (SpawnPoint.z + heightoffset + heightdelta) / 2), true);
-			newvel.z = 0;
 
-			// Only move the viewpoint on the x/y axis if the player actually is moving along that axis; otherwise stay still
-			if (basepos.x != base.pos.x) { newvel.x = base.vel.x; }
-			if (basepos.y != base.pos.y) { newvel.y = base.vel.y; }
+			offset = (base.pos.xy - oldbasepos.xy) / scaling;
+			offset = RotateVector(offset, angle);
 
-			// Adjust the move amount by scaling value
-			newvel /= scaling;
+			SetOrigin(pos + offset, true);
 
-			A_ChangeVelocity(newvel.x, newvel.y, newvel.z, CVF_RELATIVE | CVF_REPLACE);
-
-			// Save the player's old position for the move checks
-			basepos = base.pos;
+			// Save the player's old position
+			oldbasepos = base.pos;
 		}
 
 		Super.Tick();
+	}
+}
+
+class SkyViewpointAnchor : MapSpot
+{
+	Default
+	{
+		//$Title Skybox ViewPoint Anchor
+		//$NotAngled
 	}
 }
