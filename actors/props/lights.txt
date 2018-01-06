@@ -703,6 +703,8 @@ ACTOR TableLightM2 : TableLightM
 ACTOR TableLightS : TableLightM
 {
 	//$Title Table Light (small, switchable)
+	//$Arg0 "Type"
+	//$Arg0Tooltip "Pickup the desired type\nRandom: 0\nClassic: 1\nBrown: 2\nFat: 3\nTall: 4"
 	Height 16
 	Scale 1.0
 	-SOLID
@@ -710,7 +712,18 @@ ACTOR TableLightS : TableLightM
 	States
 	{
 		Spawn:
-			TLIT B 0 NoDelay { frame = RandomPick(1, 3, 4, 5); } // For frame numbers, 0 = A, 1 = B, 2 = C, etc...  So this picks frame B, D, E, or F.
+			TLIT B 0 NoDelay { 
+			if (args[0] ==0 && args[0] >=5)
+				{ frame = RandomPick(1, 3, 4, 5); } // For frame numbers, 0 = A, 1 = B, 2 = C, etc...  So this picks frame B, D, E, or F.
+			if (args[0] ==1)
+				{ frame = 1; }
+			if (args[0] ==2)
+				{ frame = 3; }
+			if (args[0] ==3)
+				{ frame = 4; }
+			if (args[0] ==4)
+				{ frame = 5; }
+				}
 			Goto CheckDormant
 		On:
 			"####" "#" -1 BRIGHT Light("BOATABL2")
