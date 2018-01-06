@@ -743,3 +743,121 @@ script "PlayerHealthAbove25" (void)
 {
 	SetResultValue(GetActorProperty(playerID, APROP_Health) >= 25);
 }
+
+// Level tilt handling
+
+int leveltiltpitch, leveltiltangle;
+
+// This is the main loop that controls the player view roll and pitch alterations
+// It also controls the velocity changes that make the player slide "downhill"
+script "leveltilt" ENTER
+{
+	int True_Pitch = GetActorPitch(0);
+
+	while (1)
+	{
+		// The handling of changing the player's roll has been moved into the main Tilt++ code in ZScript.
+		// Only pitch adjusments are being made here!
+		int angle = GetActorAngle(0) - leveltiltangle / 360;
+
+		True_Pitch -= GetPlayerInput(-1, INPUT_PITCH);
+
+		int fixedpitch = FixedDiv(leveltiltpitch, 360.0);
+
+		SetActorPitch(0, True_Pitch + FixedMul(cos(angle), fixedpitch));
+
+		SetUserVariable(0, "leveltilt", leveltiltpitch);
+		SetUserVariable(0, "leveltiltangle", leveltiltangle);
+
+		Delay(1);
+	}
+}
+
+// This is the wrapper script that lets you set the level tilt smoothly
+//
+//   pitch 		integer - Desired tilt amount in degrees from vertical (so 0 is no tilt)
+//   angle		integer - Desired map angle to tilt along (0 is rotation around y axis, 90 is rotation around x axis)
+//   speed		fixed point - Controls the speed of interpolation (defaults to 5.0)
+//   override	bool - Set to non-zero to force the tilt amount to change immediately instead of being interpolated
+//
+// The tilt change amount will start out small, and increase as the tilt angle increases
+//
+script "ChangeTilt" (int pitch, int angle, int speed, int override)
+{
+	if (override) { leveltiltpitch = pitch * 1.0; leveltiltangle = angle * 1.0; Terminate; }
+
+	if (!speed) { speed = 5.0; }
+	int targetpitch = pitch * 1.0;
+	int targetangle = angle * 1.0;
+	int mintiltchange = max(FixedMul(FixedDiv(abs(leveltiltpitch), 180.0), speed), 0.001); // Base max tilt change step amount on starting tilt angle
+
+	int tiltspeed;
+
+	if (targetpitch > 180.0) { targetpitch -= 360.0; }
+	else if (targetpitch < -180.0) { targetpitch += 360.0; }
+
+	while (
+		leveltiltpitch - tiltspeed > targetpitch ||
+		leveltiltpitch + tiltspeed < targetpitch ||
+		leveltiltangle - 1.0 > targetangle ||
+		leveltiltangle + 1.0 < targetangle
+	)
+	{
+		if (leveltiltpitch > 180.0) { leveltiltpitch -= 360.0; }
+		else if (leveltiltpitch < -180.0) { leveltiltpitch += 360.0; }
+
+		if (leveltiltangle > 180.0) { leveltiltangle -= 360.0; }
+		else if (leveltiltangle < -180.0) { leveltiltangle += 360.0; }
+
+		tiltspeed = max(FixedMul(FixedDiv(abs(leveltiltpitch), 180.0), speed), mintiltchange); // Tilt faster as you get higher in angle
+
+		if (leveltiltpitch - tiltspeed > targetpitch) { leveltiltpitch -= tiltspeed; }
+		else if (leveltiltpitch + tiltspeed < targetpitch) { leveltiltpitch += tiltspeed; }
+
+		if (leveltiltangle - 1.0 > targetangle) { leveltiltangle -= 1.0; }
+		else if (leveltiltangle + 1.0 < targetangle) { leveltiltangle += 1.0; }
+
+		Delay(1);
+	}
+
+	leveltiltpitch = targetpitch;
+	leveltiltangle = targetangle;
+}
+
+// Alternate script to forceably set the tilt amount
+script "SetTilt" (int pitch, int angle)
+{
+	ACS_NamedExecute("ChangeTilt", 0, pitch, angle, 999999999);
+}
+
+// Math helper functions
+function int abs (int x)
+{
+	if (x < 0)
+		return -x;
+
+	return x;
+}
+
+function int pow (int x, int n)
+{
+	int y = 1;
+	while (n-- > 0) y *= x;
+	return y;
+}
+
+function int min (int a, int b)
+{
+	if (a < b)
+		return a;
+
+	return b;
+}
+
+function int max (int a, int b)
+{
+	if (a > b)
+		return a;
+
+	return b;
+}

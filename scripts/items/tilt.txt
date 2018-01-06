@@ -29,6 +29,7 @@ class BoATilt : CustomInventory
 	double deathTiltOsc;
 	double deathTiltAngle;
 	double lastRoll;
+	double lastLevelTilt;
 
 	//===========================================================================
 	//
@@ -54,6 +55,29 @@ class BoATilt : CustomInventory
 
 		// Shared variables we'll need later
 		double r, v;
+
+		//===========================================================================
+		//
+		// Level Tilting
+		//
+		//===========================================================================
+
+		if (owner && BoAPlayer(owner))
+		{
+			double leveltilt = BoAPlayer(owner).leveltilt;
+
+			if (leveltilt != 0) // If the level is tilted
+			{
+				double leveltiltangle = BoAPlayer(owner).leveltiltangle;
+				double offsetangle = deltaangle(leveltiltangle, owner.angle);
+
+				lastLevelTilt = sin(offsetangle) * leveltilt;
+			}
+			else
+			{
+				lastLevelTilt = 0;
+			}
+		}
 
 		//===========================================================================
 		//
@@ -181,7 +205,7 @@ class BoATilt : CustomInventory
 
 			// Apply the sum of all rolling routines
 			// (including after stabilization)
-			Owner.A_SetRoll(lastRoll, SPF_INTERPOLATE);
+			Owner.A_SetRoll(lastRoll + lastLevelTilt, SPF_INTERPOLATE);
 		}
 	}
 

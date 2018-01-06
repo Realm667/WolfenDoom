@@ -229,6 +229,7 @@ class BoAPlayer : PlayerPawn
 
 			[friction, movefactor] = GetFriction();
 			bobfactor = friction < ORIG_FRICTION ? movefactor : ORIG_FRICTION_FACTOR;
+
 			if (!player.onground && !bNoGravity && !waterlevel && !leveltilt)
 			{
 				// [RH] allow very limited movement if not on ground.
@@ -255,6 +256,7 @@ class BoAPlayer : PlayerPawn
 
 			if (forwardmove)
 			{
+				if (leveltilt <= 30) { Bob(Angle, cmd.forwardmove * bobfactor / 256., true); }
 				if (leveltilt)
 				{
 					vel.x += forwardmove * cos(angle) * cos(leveltilt) * speed * 1.5;
@@ -263,13 +265,13 @@ class BoAPlayer : PlayerPawn
 				}
 				else
 				{
-					Bob(Angle, cmd.forwardmove * bobfactor / 256., true);
 					ForwardThrust(forwardmove, Angle);
 				}
 			}
 			if (sidemove)
 			{
 				let a = Angle - 90;
+				if (leveltilt <= 30) { Bob(a, cmd.sidemove * bobfactor / 256., false); }
 
 				if (leveltilt)
 				{
@@ -279,7 +281,6 @@ class BoAPlayer : PlayerPawn
 				}
 				else
 				{
-					Bob(a, cmd.sidemove * bobfactor / 256., false);
 					Thrust(sidemove, a);
 				}
 			}
