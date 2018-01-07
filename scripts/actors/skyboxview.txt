@@ -30,12 +30,7 @@ class SkyViewPointStatic : SkyViewPoint
 		if (args[2] != 0)
 		{
 			ActorIterator it = ActorIterator.Create(args[2], "Actor");
-			Actor mo;
-			while (mo = it.Next())
-			{
-				anchor = mo; // Pick the first actor with this TID
-				break;
-			}
+			anchor = it.Next();
 		}
 
 		// Iterate through all of the possible players in the game
