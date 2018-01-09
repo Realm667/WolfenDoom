@@ -42,6 +42,22 @@ ACTOR StatistMedic : StatistBarkeeper
 	}
 }
 
+ACTOR StatistYevgeny : StatistBarkeeper
+{
+	//$Title Yevgeny (NPC)
+	Scale 0.67
+	-USESPECIAL
+	States
+	{
+	Spawn:
+		YEVG A 80
+		"####" B 40
+		"####" CB 40
+		"####" B 80
+		Loop
+	}
+}
+
 ACTOR StatistBarkeeperMale : StatistBarkeeper
 {
 	//$Title Randi Heit, Barkeeper (NPC)
