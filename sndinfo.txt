@@ -28,14 +28,14 @@ $pitchshift menu/prompt 0
 
 //Astrostein
 astrochaingun/fire		dslasgun
-astrohitflesh					astrohf
+astrohitflesh			astrohf
 astrolauncher/bounce	dslasgn3
 astrolauncher/explode	dslsfirx
 astrolauncher/fire		dslsfir
 astroplasmaexplode		dsasexpl
-astroricochet					astroric
-astroricochet					dsasrico
-astroshotgun/fire			dslasgn2
+astroricochet			astroric
+astroricochet			dsasrico
+astroshotgun/fire	dslasgn2
 astrostein/explosion	ASTEXP02
 $random astrostein/hitler_act {astrostein/hitler_act1 astrostein/hitler_act2 astrostein/hitler_act3}
 astrostein/hitler_act1	ashtac01
@@ -45,7 +45,7 @@ $rolloff astrostein/hitler_act 1280 1600
 astrostein/hitler_dth		null
 astrostein/hitler_pai		null
 astrostein/hitler_see		null
-astrowhiz						astrowz
+astrowhiz				astrowz
 pickup/armorshard		AMRSHRD
 weapons/rezfull			dsrezful
 weapons/rezhit			dsrezhit
@@ -56,10 +56,10 @@ weapons/rezup				dsrezup
 //Commander Keen
 ckeen/blowgun	ckblowg
 ckeen/flag		ckflag
-ckeen/gem			ckgem
+ckeen/gem		ckgem
 ckeen/gemuse	ckugem
-ckeen/gun			ckgun
-ckeen/hit			ckhit
+ckeen/gun		ckgun
+ckeen/hit		ckhit
 ckeen/kill		ckkill
 ckeen/klick		ckklick
 ckeen/life		cklife
@@ -67,8 +67,8 @@ ckeen/madmushroombounce ckmadmus
 ckeen/pickup	ckpickup
 ckeen/raindrop	ckraindr
 ckeen/shoot		ckshoot
-ckeen/shothit		ckshoth
-ckeen/slugpoo		ckslugpo
+ckeen/shothit	ckshoth
+ckeen/slugpoo	ckslugpo
 ckeen/starting	ckbegin
 ckeen/walk		ckwalk
 
@@ -178,7 +178,7 @@ flamer/reload	THERMRLD
 $alias flamer/select select/heavywpn
 
 //Nebelwerfer
-nebelwerfer/fire		dsnebsht
+nebelwerfer/fire	dsnebsht
 nebelwerfer/xplode	dsnebxpl
 $alias nebelwerfer/select select/heavywpn
 
@@ -343,18 +343,18 @@ bjfall1	bjfall1
 bjfall2	bjfall2
 
 //Miscellaneous
-misc/alert					alert //mxd
+misc/alert				alert //mxd
 misc/ammo_pkup			dsammoup
 misc/armor_pkup			dsgetarm
-misc/drink					DRINK
+misc/drink				DRINK
 misc/health_pkup		dsgethlt
-misc/k_pkup					dsgetkey
-misc/objective_acc	apply
-misc/objective_add	typekey
-misc/secret					secret
+misc/k_pkup				dsgetkey
+misc/objective_acc		apply
+misc/objective_add		typekey
+misc/secret				secret
 misc/typewriter			typewrit
-misc/w_pkup					dsgetwep
-misc/windmill				"sounds/props/windmill.ogg" //mxd
+misc/w_pkup				dsgetwep
+misc/windmill			"sounds/props/windmill.ogg" //mxd
 misc/mayan_pickup	mayapick
 $rolloff world/spark 64 512 //mxd
 
@@ -410,9 +410,9 @@ water/lap3 WATERLP3
 ////////
 
 //Weapons
-nazi/pistol					DSNLUGER
-nazi/stg44					dsstg44
-nazi/missilef				dsmissil
+nazi/pistol			DSNLUGER
+nazi/stg44			dsstg44
+nazi/missilef		dsmissil
 nazi/missileengine	DSMISLF
 $rolloff nazi/missileengine 64 800
 $random nazi/mp40 {mp401 mp402}
@@ -468,9 +468,9 @@ $random TANKDBRS	{ TKDBRS1 TKDBRS2 TKDBRS3 TKDBRS4 }
 $limit	TANKDBRS 1
 
 //Smokemonster
-Smoke/See				SSee
+Smoke/See			SSee
 Smoke/Tick			Slop1
-Smoke/Die				SDIE
+Smoke/Die			SDIE
 $random Smoke/Charge	{ Smoke/Charge1  Smoke/Charge2 }
 Smoke/Charge1		scrg1
 Smoke/Charge2		scrg2
@@ -603,7 +603,7 @@ loper/death2	death2
 loper/death3	death3
 loper/wakeup	growl1
 Tesla/Attack	DSTESATK
-Tesla/Loop	DSTESLOP
+Tesla/Loop		DSTESLOP
 $random TPortalZap {TPZap1 TPZap2}
 Tesla/LoopDeath DSTESLOP
 $limit Tesla/LoopDeath 1 64
@@ -887,6 +887,12 @@ RUSDETH2	RUSDETH2
 RUSDETH3	RUSDETH3
 RUSDETH4	RUSDETH4
 RUSDETH5	RUSDETH5
+urss/dragrelo	DRAGRELO
+urss/dragunov	DRAGFIRE
+urss/ppsh		PPSHFIRE
+urss/ppshrelo	PPSHRELO
+urss/tokarelo	TOKARELO //not added yet
+urss/tokarev	TOKAFIRE //not added yet
 
 //Prisoner
 prisoner/sight	prsit
@@ -970,7 +976,7 @@ DSUNDIE1	DSUNDIE1
 DSUNDIE2	DSUNDIE2
 DSUNDIE3	DSUNDIE3
 DSUNDSHT	DSUNDSHT
-sscultist/shoot	DSUNDSHT
+sscultist/shoot		DSUNDSHT
 sscultist/shoot2	DSUNDSHT
 $limit sscultist/shoot 0
 $limit sscultist/shoot2 0
@@ -987,18 +993,18 @@ aode/pain				quepain
 aode/sight				quesit
 
 //Astrostein
-astrostein/cyborg_act		cybact
+astrostein/cyborg_act	cybact
 astrostein/cyborg_death	cybdth
 astrostein/cyborg_pain	cybpain
 astrostein/cyborg_sight	cybsit
-astrostein/drone_act		dronact
+astrostein/drone_act	dronact
 astrostein/drone_death	drondth
-astrostein/drone_pain		dronpain
+astrostein/drone_pain	dronpain
 astrostein/drone_sight	dronsit
 astrostein/guard_death	astrodth
-astrostein/robot_act		roboact
+astrostein/robot_act	roboact
 astrostein/robot_death	robodth
-astrostein/robot_pain		robopain
+astrostein/robot_pain	robopain
 astrostein/robot_sight	robosit
 
 ////////////
@@ -1217,7 +1223,7 @@ D_INTRMP D_INTRMP
 ////////////////////
 
 // Splashes
-world/drip				gloop
+world/drip			gloop
 world/lavasizzle	acid5
 world/sludgegloop	muck5
 world/watersplash	gloop
@@ -1631,8 +1637,8 @@ mach3L 		mach3L
 mach3E 		mach3E
 
 //LightOn/Off
-LightOn				lighton
-LightOff			lightoff
+LightOn		lighton
+LightOff	lightoff
 
 /////////
 //STEPS//
@@ -1848,24 +1854,24 @@ WAR_DISTANT_4 WAR_04
 WAR_CLOSER BATTLCL
 
 AIR_RAID_ALARM		MECALA1
-ALARM_DOOD				ALARM01
-ALARM_RING				ALARM02
-ASTROCITYAMB			SFCAMB
-BABBL							BABBL
+ALARM_DOOD			ALARM01
+ALARM_RING			ALARM02
+ASTROCITYAMB		SFCAMB
+BABBL				BABBL
 COMPUTER_ATWORK1	Compy1
 COMPUTER_ATWORK2	Compy2	// Computer System At Work
 COMPUTER_IDLE			Compy4
 COMPUTER_MALFUNCTION	Compy3
-CRICKET_NIGHT			CRICKT01
+CRICKET_NIGHT		CRICKT01
 CRICKET_NIGHT2		CRICKT02
-FAN								FAN
-FLIES							FLIES
+FAN					FAN
+FLIES				FLIES
 FOREST_AMBIENCE		FORSTBRD
-HEAVY_FAN					hfanamb
+HEAVY_FAN			hfanamb
 HUM_LIGHT_HEAVY		HUM_L_H
 HUM_LIGHT_MEDIUM	HUM_L_M
 HUM_LIGHT_SMALL		HUM_L_S
-LAVA_BLUB					amb04
+LAVA_BLUB			amb04
 MACHINEGUN_RICOCHET	MGUNRIC
 MACHINE_LOOP_1		MACH_L_1
 MACHINE_LOOP_2		MACH_L_2
@@ -1879,33 +1885,33 @@ RADIOBROADCAST_WAR		RADIO_BC
 RADIOTRANSMISSION_WAR	RADIO_TR
 RADIO_LOOP				RADIO_L
 RAIN_LIGHT				rainlite
-SALOONKY					saloonky
+SALOONKY				saloonky
 SEQ_PLANEATTACK		SEQ_P_A
-SPACESHIP_HUM			HIVE
+SPACESHIP_HUM		HIVE
 SPACESHIP_HUM_LOW	AMB9
-STEEL1						STEEL1
-STEEL2						STEEL2
-SWING_SONG				SWING
+STEEL1				STEEL1
+STEEL2				STEEL2
+SWING_SONG			SWING
 TRAINSTATION_AMBIENT	TRNSTATA
-TRAIN_LP					TRAIN_LP
+TRAIN_LP			TRAIN_LP
 UNDERWATER_BUBBLE	UWBUBBL
 VOLCANO_AMBIENCE	DSVOLC
 WAR_DISTANT_MORE	WAR_05
-WATERFALL					dsfalls
+WATERFALL			dsfalls
 WATER_BASEMENT		WATR_01
 WATER_FOUNTAIN		WATR_02
-WATER_LAPS				WATR_03
-WATER_RIVER				WATR_04
-WATER_RIVER2			amb15
-WATER_SHORE				WATR_05
-WIND_CAVE					WIND_01
-WIND_HOWLING			WIND_02
+WATER_LAPS			WATR_03
+WATER_RIVER			WATR_04
+WATER_RIVER2		amb15
+WATER_SHORE			WATR_05
+WIND_CAVE			WIND_01
+WIND_HOWLING		WIND_02
 WIND_HOWLING_CITY	CITYHOWL
 WIND_HOWLING_UNDERGROUND	AMB24
-WIND_MEDIUM				WIND_03
-WIND_SILENT				WIND_04
-PROJECTOR_ACT	PROJECTR
-SCARY_CAVE scardig
+WIND_MEDIUM			WIND_03
+WIND_SILENT			WIND_04
+PROJECTOR_ACT		PROJECTR
+SCARY_CAVE 			scardig
 
 //Thunder
 $random misc/thunder { misc/thunder1 misc/thunder2 misc/thunder3 misc/thunder4 misc/thunder5 }

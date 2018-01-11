@@ -2328,10 +2328,10 @@ ACTOR COD_OpBlitzDestroyed : 3dObstacle
 		MDLA A 0 NoDelay
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Afrika")
 	Normal:
-		MDLA A 0 A_SpawnItemEx("COD_OpBlitzD_Glass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		MDLA A -1 A_SpawnItemEx("COD_OpBlitzD_Glass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
 		Stop
 	Afrika:
-		MDLA B 0 A_SpawnItemEx("COD_OpBlitzD_Glass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		MDLA B -1 A_SpawnItemEx("COD_OpBlitzD_Glass", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
 		Stop
 	}
 }
