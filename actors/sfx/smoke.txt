@@ -48,6 +48,12 @@ ACTOR WaterSmoke : PuffSmoke //needed for 3d toilet & 3d hydrants - ozy81
 		}
 }
 
+ACTOR BodySmoke : PuffSmoke //needed for burnt bodies - ozy81
+{
+	DistanceCheck "sfxlod"
+	Scale 0.15
+}
+
 ACTOR PowerPlantSmokePuff : PuffSmoke {DistanceCheck "sfxlod" Scale 0.64}
 ACTOR PowerPlantSmokePuffSmall : PuffSmoke {DistanceCheck "sfxlod" Scale 0.32}
 ACTOR WaterSmokePuff : WaterSmoke {DistanceCheck "sfxlod" Scale 0.18}

@@ -148,24 +148,24 @@ ACTOR Camp_RandomBodyParts
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17)
-		GORC A -1
-		GORC B -1
-		GORC C -1
-		GORC D -1
-		GORC E -1
-		GORC F -1
-		GORC G -1
-		GORC H -1
-		GORC I -1
-		GORC J -1
-		GORC K -1
-		GORC L -1
-		GORC M -1
-		GORC N -1
-		GORC O -1
-		GORC P -1
-		GORC Q -1
-		GORC R -1
+		GORC A -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		GORC B -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		GORC C -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		GORC D -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		GORC E -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		GORC F -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		GORC G -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		GORC H -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		GORC I -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		GORC J -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		GORC K -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		GORC L -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		GORC M -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		GORC N -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		GORC O -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		GORC P -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		GORC Q -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		GORC R -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
@@ -177,15 +177,15 @@ ACTOR Camp_LyingBodies : Camp_RandomBodyParts
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9)
-		CBED A -1
-		CBED B -1
-		CBED C -1
-		CBED D -1
-		CBED E -1
-		CBED F -1
-		CBED G -1
-		CBED H -1
-		CBED I -1
+		CBED A -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		CBED B -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		CBED C -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		CBED D -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		CBED E -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		CBED F -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		CBED G -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		CBED H -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		CBED I -1 A_SetScale(0.53)
 		Stop
 	}
 
@@ -198,12 +198,12 @@ ACTOR Camp_LyingBodies2 : Camp_RandomBodyParts
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6) //more chances for spawning headshot one
-		CBED J -1
-		CBED K -1
-		CBED L -1
-		CBED M -1
-		CBED M -1
-		CBED M -1
+		CBED J -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		CBED K -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		CBED L -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		CBED M -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		CBED M -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		CBED M -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 
