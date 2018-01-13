@@ -105,7 +105,8 @@ ACTOR RPG8RocketTrail : RocketFlame
 	States
 	{
 	Spawn:
-		TNT1 A 1 NODELAY A_Jump(256, "Flyloop1", "Flyloop2", "Flyloop3", "Flyloop4")
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
+		TNT1 A 1 A_Jump(256, "Flyloop1", "Flyloop2", "Flyloop3", "Flyloop4")
 	Flyloop1:
 		SMOK A 1 { A_SetScale(scaleX+0.010); A_SetTranslucent(alpha-0.008, 0); }
 		Loop
@@ -118,6 +119,9 @@ ACTOR RPG8RocketTrail : RocketFlame
 	Flyloop4:
 		SMOK D 1 { A_SetScale(scaleX+0.010); A_SetTranslucent(alpha-0.005, 0); }
 		Loop
+	EndSpawn:
+		TNT1 A 1
+		Stop
 	}
 }
 
