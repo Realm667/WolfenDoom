@@ -56,6 +56,7 @@ class TracerTrail : Actor
 {
 	Default
 	{
+		+BRIGHT
 		+CANNOTPUSH
 		+DONTSPLASH
 		+FORCEXYBILLBOARD
@@ -71,7 +72,7 @@ class TracerTrail : Actor
 	States
 	{
 		Spawn:
-			PUFF A 1 BRIGHT A_FadeOut(0.3);
+			PUFF A 1 A_FadeOut(0.3);
 			Loop;
 	}
 }
@@ -119,9 +120,9 @@ class TracerSpark_Longlive : TracerSpark
 
 	Default
 	{
+		+BRIGHT
 		Gravity .2;
 	}
-
 
 	States
 	{
@@ -129,47 +130,47 @@ class TracerSpark_Longlive : TracerSpark
 			PUFF A 0 NODELAY A_Jump(256, "Fade1", "Fade2", "Fade3", "Fade4");
 			Loop;
 		Fade1:
-			"####" AEFGHI 5 BRIGHT A_SetTranslucent(.8,1);
-			"####" J 2 BRIGHT A_SetTranslucent(.8,1);
-			"####" K 2 BRIGHT A_SetTranslucent(.7,1);
-			"####" K 2 BRIGHT A_SetTranslucent(.6,1);
-			"####" K 2 BRIGHT A_SetTranslucent(.5,1);
-			"####" K 2 BRIGHT A_SetTranslucent(.4,1);
-			"####" K 2 BRIGHT A_SetTranslucent(.3,1);
-			"####" K 2 BRIGHT A_SetTranslucent(.2,1);
+			"####" AEFGHI 5 A_SetTranslucent(.8,1);
+			"####" J 2 A_SetTranslucent(.8,1);
+			"####" K 2 A_SetTranslucent(.7,1);
+			"####" K 2 A_SetTranslucent(.6,1);
+			"####" K 2 A_SetTranslucent(.5,1);
+			"####" K 2 A_SetTranslucent(.4,1);
+			"####" K 2 A_SetTranslucent(.3,1);
+			"####" K 2 A_SetTranslucent(.2,1);
 			"####" K 0 { bWindThrust = False; }
 			Stop;
 		Fade2:
-			"####" AEFGHI 6 BRIGHT A_SetTranslucent(.8,1);
-			"####" J 3 BRIGHT A_SetTranslucent(.8,1);
-			"####" K 3 BRIGHT A_SetTranslucent(.7,1);
-			"####" K 3 BRIGHT A_SetTranslucent(.6,1);
-			"####" K 3 BRIGHT A_SetTranslucent(.5,1);
-			"####" K 3 BRIGHT A_SetTranslucent(.4,1);
-			"####" K 3 BRIGHT A_SetTranslucent(.3,1);
-			"####" K 3 BRIGHT A_SetTranslucent(.2,1);
+			"####" AEFGHI 6 A_SetTranslucent(.8,1);
+			"####" J 3 A_SetTranslucent(.8,1);
+			"####" K 3 A_SetTranslucent(.7,1);
+			"####" K 3 A_SetTranslucent(.6,1);
+			"####" K 3 A_SetTranslucent(.5,1);
+			"####" K 3 A_SetTranslucent(.4,1);
+			"####" K 3 A_SetTranslucent(.3,1);
+			"####" K 3 A_SetTranslucent(.2,1);
 			"####" K 0 { bWindThrust = False; }
 			Stop;
 		Fade3:
-			"####" AEFGHI 4 BRIGHT A_SetTranslucent(.8,1);
-			"####" J 4 BRIGHT A_SetTranslucent(.8,1);
-			"####" K 4 BRIGHT A_SetTranslucent(.7,1);
-			"####" K 4 BRIGHT A_SetTranslucent(.6,1);
-			"####" K 4 BRIGHT A_SetTranslucent(.5,1);
-			"####" K 4 BRIGHT A_SetTranslucent(.4,1);
-			"####" K 4 BRIGHT A_SetTranslucent(.3,1);
-			"####" K 4 BRIGHT A_SetTranslucent(.2,1);
+			"####" AEFGHI 4 A_SetTranslucent(.8,1);
+			"####" J 4 A_SetTranslucent(.8,1);
+			"####" K 4 A_SetTranslucent(.7,1);
+			"####" K 4 A_SetTranslucent(.6,1);
+			"####" K 4 A_SetTranslucent(.5,1);
+			"####" K 4 A_SetTranslucent(.4,1);
+			"####" K 4 A_SetTranslucent(.3,1);
+			"####" K 4 A_SetTranslucent(.2,1);
 			"####" K 0 { bWindThrust = False; }
 			Stop;
 		Fade4:
-			"####" AEFGHI 7 BRIGHT A_SetTranslucent(.8,1);
-			"####" J 2 BRIGHT A_SetTranslucent(.8,1);
-			"####" K 2 BRIGHT A_SetTranslucent(.7,1);
-			"####" K 2 BRIGHT A_SetTranslucent(.6,1);
-			"####" K 2 BRIGHT A_SetTranslucent(.5,1);
-			"####" K 2 BRIGHT A_SetTranslucent(.4,1);
-			"####" K 2 BRIGHT A_SetTranslucent(.3,1);
-			"####" K 2 BRIGHT A_SetTranslucent(.2,1);
+			"####" AEFGHI 7 A_SetTranslucent(.8,1);
+			"####" J 2 A_SetTranslucent(.8,1);
+			"####" K 2 A_SetTranslucent(.7,1);
+			"####" K 2 A_SetTranslucent(.6,1);
+			"####" K 2 A_SetTranslucent(.5,1);
+			"####" K 2 A_SetTranslucent(.4,1);
+			"####" K 2 A_SetTranslucent(.3,1);
+			"####" K 2 A_SetTranslucent(.2,1);
 			"####" K 0 { bWindThrust = False; }
 			Stop;
 	}
