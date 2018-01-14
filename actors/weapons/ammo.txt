@@ -13,7 +13,7 @@ ACTOR 9mmAmmo : Ammo
 	States
 	{
 	Spawn:
-		MCLP A -1
+		MCLP A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
@@ -50,7 +50,7 @@ ACTOR 12GaugeAmmo : Ammo
 	States
 	{
 	Spawn:
-		SHEL A -1
+		SHEL A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
@@ -87,7 +87,7 @@ ACTOR MauserAmmo : Ammo
 	States
 	{
 	Spawn:
-		792A A -1
+		792A A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }

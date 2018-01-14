@@ -3,13 +3,14 @@ ACTOR BoABlueKey : Key
 	//$Category Keys (Wolf3D)
 	//$Title Blue Key (Number 2)
 	//$Color 13
+	Scale 0.07
 	Inventory.PickupMessage "$GOTBLUEKEY"
 	Inventory.Icon "STKEYS0"
 	States
 	{
 	Spawn:
 		BKEY A 10
-		"####" A 10 LIGHT(BOABKEY)
+		"####" A 10 LIGHT(BOABKEY2)
 		Loop
 	}
 }
@@ -19,6 +20,7 @@ ACTOR BoAYellowKey : Key
 	//$Category Keys (Wolf3D)
 	//$Title Yellow Key (Number 3)
 	//$Color 13
+	Scale 0.07
 	Inventory.PickupMessage "$GOTYELLOWKEY"
 	Inventory.Icon "STKEYS1"
 	States
@@ -35,6 +37,7 @@ ACTOR BoARedKey : Key
 	//$Category Keys (Wolf3D)
 	//$Title Red Key (Number 1)
 	//$Color 13
+	Scale 0.07
 	Inventory.PickupMessage "$GOTREDKEY"
 	Inventory.Icon "STKEYS2"
 	States
@@ -51,12 +54,13 @@ ACTOR BoAGreenKey : Key
 	//$Category Keys (Wolf3D)
 	//$Title Green Key (Number 5)
 	//$Color 13
+	Scale 0.07
 	Inventory.PickupMessage "$GOTGREENKEY"
 	Inventory.Icon "STKEYS3"
 	States
 	{
 	Spawn:
-		BSKU A 10
+		GSKU A 10
 		"####" A 10 light(BOAGKEY)
 		Loop
 	}
@@ -67,12 +71,13 @@ ACTOR BoAPurpleKey : Key
 	//$Category Keys (Wolf3D)
 	//$Title Purple Key (Number 6)
 	//$Color 13
+	Scale 0.07
 	Inventory.PickupMessage "$GOTPURPLEKEY"
 	Inventory.Icon "STKEYS4"
 	States
 	{
 	Spawn:
-		YSKU A 10
+		PSKU A 10
 		"####" A 10 light(BOAPKEY)
 		Loop
 	}
@@ -83,12 +88,13 @@ ACTOR BoACyanKey : Key
 	//$Category Keys (Wolf3D)
 	//$Title Cyan Key (Number 4)
 	//$Color 13
+	Scale 0.07
 	Inventory.PickupMessage "$GOTCYANKEY"
 	Inventory.Icon "STKEYS5"
 	States
 	{
 	Spawn:
-		RSKU A 10
+		CSKU A 10
 		"####" A 10 light(BOACKEY)
 		Loop
 	}
