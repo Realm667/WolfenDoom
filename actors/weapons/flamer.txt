@@ -328,6 +328,7 @@ ACTOR FlamerSmoke1
 	States
 	{
 	Spawn:
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 		SMOC A 0
 	FadeIn:
 		"####" A 0 ThrustThingZ(0,random(2,6),0,0)
@@ -336,39 +337,11 @@ ACTOR FlamerSmoke1
 	FadeOut:
 		"####" AAAA 3 A_FadeOut(.05)
 		Loop
+	EndSpawn:
+		TNT1 A 1
+		Stop
 	}
 }
 
-ACTOR FlamerSmoke2 : FlamerSmoke1
-{
-	Scale 0.5
-	States
-	{
-	Spawn:
-		SMOC A 0
-	FadeIn:
-		"####" A 0 ThrustThingZ(0,random(2,6),0,0)
-		"####" A 0 ThrustThing(random(0,255),random(0,1),0,0)
-		"####" AAAAAAAA 1 A_FadeIn(.05)
-	FadeOut:
-		"####" AAAA 3 A_FadeOut(.05)
-		Loop
-	}
-}
-
-ACTOR FlamerSmoke3 : FlamerSmoke1
-{
-	Scale 0.7
-	States
-	{
-	Spawn:
-		SMOC A 0
-	FadeIn:
-		"####" A 0 ThrustThingZ(0,random(2,6),0,0)
-		"####" A 0 ThrustThing(random(0,255),random(0,1),0,0)
-		"####" AAAAAAAA 1 A_FadeIn(.05)
-	FadeOut:
-		"####" AAAA 3 A_FadeOut(.05)
-		Loop
-	}
-}
+ACTOR FlamerSmoke2 : FlamerSmoke1 { Scale 0.5 }
+ACTOR FlamerSmoke3 : FlamerSmoke1 { Scale 0.7 }

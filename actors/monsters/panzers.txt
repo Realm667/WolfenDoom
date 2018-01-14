@@ -14,12 +14,16 @@ ACTOR TankSmoke : PuffSmoke //connections with GuardSoul smoke
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2)
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
+		TNT1 A 0 A_Jump(256,1,2)
 		GRM2 A 0 A_Jump(256,"End")
 		GRM1 A 0 A_Jump(256,"End")
 	End:
 		"####" AAAAAAAAAA 1 A_FadeIn(0.05)
 		"####" AAAAAAAAAAAAAAAA 2 A_FadeOut(0.025)
+		Stop
+	EndSpawn:
+		TNT1 A 1
 		Stop
 	}
 }
@@ -136,11 +140,15 @@ ACTOR NukeSmoke : Nuke
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
+		TNT1 A 0 A_Jump(256,1,2,3,4)
 		NSMK ABCD 0 A_Jump(256,"End")
 	End:
 		NSMK "#" 2 A_FadeOut(0.008)
 		Wait
+	EndSpawn:
+		TNT1 A 1
+		Stop
 	}
 }
 
@@ -218,11 +226,15 @@ ACTOR TankSmokeRing : Nuke
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_SpawnItemEx("NukeSmoke",0,0,0,1,0,0,user_theta)
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
+		TNT1 A 0 A_SpawnItemEx("NukeSmoke",0,0,0,1,0,0,user_theta)
 		UWMR A 0 A_SetUserVar("user_theta",user_theta+20)
 		"####" A 0 A_JumpIf(user_theta==360,1)
 		Loop
 		TNT1 A 0
+		Stop
+	EndSpawn:
+		TNT1 A 1
 		Stop
 	}
 }
@@ -264,11 +276,15 @@ ACTOR NebSmoke : NukeSmoke
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
+		TNT1 A 0 A_Jump(256,1,2,3,4)
 		NSMK ABCD 0 A_Jump(256,"End")
 	End:
 		NSMK "#" 1 A_FadeOut(0.008)
 		Wait
+	EndSpawn:
+		TNT1 A 1
+		Stop
 	}
 }
 
@@ -423,11 +439,15 @@ ACTOR UFONukeSmoke : NukeSmoke
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
+		TNT1 A 0 A_Jump(256,1,2,3,4)
 		NSMK ABCD 0 A_Jump(256,"End")
 	End:
 		NSMK "#" 2 A_FadeOut(0.001)
 		Wait
+	EndSpawn:
+		TNT1 A 1
+		Stop
 	}
 }
 
@@ -505,11 +525,15 @@ ACTOR UFOSmokeRing : Nuke
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_SpawnItemEx("UFONukeSmoke",0,0,0,1,0,0,user_theta)
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
+		TNT1 A 0 A_SpawnItemEx("UFONukeSmoke",0,0,0,1,0,0,user_theta)
 		UWMR A 0 A_SetUserVar("user_theta",user_theta+20)
 		"####" A 0 A_JumpIf(user_theta==360,1)
 		Loop
 		TNT1 A 0
+		Stop
+	EndSpawn:
+		TNT1 A 1
 		Stop
 	}
 }
