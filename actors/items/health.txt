@@ -95,12 +95,13 @@ ACTOR Medikit_Large : Health
 	//$Category Health (Wolf3D)
 	//$Title Medikit (large+40)
 	//$Color 6
+	Scale 0.4
 	Inventory.Amount 40
 	Inventory.PickupMessage "$MEDBIG"
 	States
 	{
 	Spawn:
-		MEDI C -1
+		MEDI C -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
