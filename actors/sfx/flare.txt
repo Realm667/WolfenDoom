@@ -45,3 +45,22 @@ ACTOR Flare3d : Flare1
 	+FORCEXYBILLBOARD
 	Scale 1.2
 }
+
+ACTOR Flare_Sun : Flare1
+{
+	//$Category Special Effects (Wolf3D)
+	//$Title Flare (Sun)
+	//$Color 12
+	+FORCEXYBILLBOARD
+	Scale 1.0
+	States
+	{
+	Spawn:
+	Active:
+		SUNL A -1 BRIGHT
+		Loop
+	Inactive:
+		TNT1 A -1
+		Loop
+	}
+}
