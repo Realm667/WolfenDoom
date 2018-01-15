@@ -1,6 +1,7 @@
 ACTOR NaziAstroWeapon : NaziWeapon
 {
 	+WEAPON.ALT_USES_BOTH
+	+WEAPON.AMMO_CHECKBOTH
 	Scale 0.50
 	States
 	{
@@ -531,8 +532,10 @@ ACTOR ElektroshockerPuff : BulletPuff
 
 ACTOR AstroPistolLoaded : Ammo
 {
+	Tag "$TAGLAZRD"
 	+IGNORESKILL
 	Inventory.MaxAmount 10
+	Inventory.Icon "AST201"
 }
 
 ACTOR AstroLuger : NaziAstroWeapon //quite the same code from Luger P08 - ozy81
