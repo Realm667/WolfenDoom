@@ -128,7 +128,6 @@ ACTOR BatFamiliar : Base
 	Monster
 	-CANPUSHWALLS
 	-CANUSEWALLS
-	-ISMONSTER //needed for shadows
 	-MTHRUSPECIES
 	-THRUSPECIES
 	+FLOAT
@@ -139,6 +138,7 @@ ACTOR BatFamiliar : Base
 	DeathSound "batfam/death"
 	ActiveSound "batfam/idle"
 	HitObituary "$BAT"
+	Base.Shadow 0  //needed for shadows
 	States
 	{
 	Spawn:
@@ -482,13 +482,13 @@ ACTOR Shark : Base
 	Monster
 	-CANPUSHWALLS
 	-CANUSEWALLS
-	-ISMONSTER //needed for shadows
 	+FLOAT
 	+FLOORCLIP
 	+FORCEXYBILLBOARD
 	+NEVERTARGET
 	+NOGRAVITY
 	+NOINFIGHTING
+	Base.Shadow 0  //needed for shadows
 	Obituary "$SHARK"
 	SeeSound "shark/sight"
 	DeathSound "shark/death"

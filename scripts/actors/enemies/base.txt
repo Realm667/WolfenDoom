@@ -32,6 +32,9 @@
 	- Integer value that sets the range from the spawn point that this actor will
 	  wander while it is idle (normally only on spawn).  Used by dogs and sharks.
 
+	Base.Shadow
+	- Boolean value that sets whether or not the actor receives a sprite shadow
+
 	Nazi.Sneakable
 	- Boolean that controls if the enemy is a sneakable enemy or not.
 	- Can also be set in-editor on a per-actor basis by setting the user_sneakable
@@ -151,12 +154,14 @@ class Base : Actor
 	int dodgecounter;
 	int maxdodge;
 	State DodgeState;
+	bool shadow;
 
 	Property BossIcon:BossIcon;
 	Property AlwaysDrawHealthBar:user_DrawHealthBar;
 	Property Swimmer:swimmer;
 	Property LoiterDistance:loiterdistance;
 	Property DodgeAmount:maxdodge; // Max number of times the enemy will dodge
+	Property Shadow:shadow;
 
 	state A_LookThroughDisguise(int flags = 0, float minseedist = 0, float Range = 0, float maxheardist = 0, double fov = 0, statelabel label = "See")
 	{

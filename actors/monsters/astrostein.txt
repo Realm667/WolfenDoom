@@ -63,7 +63,6 @@ ACTOR Destroyed_AstroSuite
 	Mass 400
 	Scale 0.70
 	+FRIENDLY
-	+ISMONSTER
 	+NOBLOOD
 	+NOTAUTOAIMED
 	+SHOOTABLE
@@ -71,6 +70,7 @@ ACTOR Destroyed_AstroSuite
 	States
 	{
 	Spawn:
+		ROB1 O 0 NoDelay A_GiveInventory("Z_ShadeMe", 1)  // This does not inherit from Base, so shadow item must be added manually.
 		ROB1 O -1
 		Stop
 	Death:
@@ -420,7 +420,7 @@ ACTOR AstroDrone : Nazi
 	Speed 2.66666667
 	PainChance 128
 	-FLOORCLIP
-	-ISMONSTER //needed for shadows
+	Base.Shadow 0  //needed for shadows
 	+FLOAT
 	+LOOKALLAROUND
 	+NOBLOOD

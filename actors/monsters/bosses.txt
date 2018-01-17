@@ -16,7 +16,7 @@ ACTOR AngelOfDeath : Base
 	PainChance 64
 	Scale 1.0
 	Monster
-	-ISMONSTER //needed for shadows
+	Base.Shadow 0  // needed for shadows
 	+BOSS
 	+FLOAT
 	+FLOATBOB
@@ -171,7 +171,7 @@ ACTOR SmokeMonster : Base
 	DamageFactor "Rocket", 0.2
 	MeleeThreshold 192
 	Monster
-	-ISMONSTER //needed for shadows
+	Base.Shadow 0  //needed for shadows
 	+BOSS
 	+BOSSDEATH
 	+DONTFALL
@@ -1362,7 +1362,7 @@ ACTOR ChairGuy : Nazi
 	PainChance 64
 	Scale 0.67
 	DamageFactor "Rocket", 0.2
-	-ISMONSTER //needed for shadows
+	Base.Shadow 0  //needed for shadows
 	+BOSS
 	+FLOAT
 	+LOOKALLAROUND

@@ -553,7 +553,6 @@ ACTOR SSTank1
 	Speed 2.66666667
 	MinMissileChance 160
 	Monster
-	-ISMONSTER //needed for shadows
 	+BOSS
 	+BOSSDEATH
 	+DONTMORPH
@@ -570,6 +569,8 @@ ACTOR SSTank1
 	States
 	{
 	Spawn:
+		MDLA A 0 NoDelay A_GiveInventory("Z_DontShadeMe")
+	Idle:
 		MDLA A 10 A_Look
 		Loop
 	See:

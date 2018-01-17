@@ -149,12 +149,22 @@ class Z_ShadeMe : CustomInventory
 	}
 }
 
+class Z_DontShadeMe : Inventory {
+	Default {
+		Inventory.MaxAmount 1;
+	}
+}
+
 class SpriteShadowHandler : EventHandler
 {
 	// spawn shadows for monsters
 	override void WorldThingSpawned(WorldEvent e)
 	{
-		if (e.Thing.bIsMonster && !e.Thing.CountInv("Z_ShadeMe"))
+		if (e.Thing is "Base") {
+			Base WolfenThing = Base(e.Thing);
+			if (WolfenThing.shadow) WolfenThing.A_GiveInventory("Z_ShadeMe", 1);
+		}
+		else if (e.Thing.bIsMonster && !e.Thing.CountInv("Z_ShadeMe") && !e.Thing.CountInv("Z_DontShadeMe"))
 		{
 			e.Thing.A_GiveInventory("Z_ShadeMe", 1);
 		}

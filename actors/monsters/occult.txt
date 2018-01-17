@@ -15,7 +15,7 @@ ACTOR BloodSkull : Base
 	PainChance 50
 	Scale 0.5
 	Monster
-	-ISMONSTER //needed for shadows
+	Base.Shadow 0  //needed for shadows
 	+DONTFALL
 	+FLOAT
 	+NEVERRESPAWN
@@ -134,7 +134,7 @@ ACTOR HitlerGhost : Nazi
 	Scale 0.69
 	DamageFactor "Rocket", 0.2
 	-FLOORCLIP
-	-ISMONSTER //needed for shadows
+	Base.Shadow 0  //needed for shadows
 	+BOSS
 	+FLOAT
 	+NOBLOOD
@@ -202,7 +202,7 @@ ACTOR Geist : Nazi
 	Alpha 0.5
 	RenderStyle "Translucent"
 	-FLOORCLIP
-	-ISMONSTER //needed for shadows
+	Base.Shadow 0  //needed for shadows
 	+DONTFALL
 	+FLOAT
 	+LOOKALLAROUND
@@ -395,7 +395,7 @@ ACTOR UndeadMonk : HitlerGhost
 	Scale 0.67
 	DamageFactor "Rocket", 1.0
 	-BOSS
-	-ISMONSTER //needed for shadows
+	Base.Shadow 0  //needed for shadows
 	+LOOKALLAROUND
 	Obituary "$UNDEADM"
 	DeathSound "monk/death"

@@ -1789,7 +1789,7 @@ ACTOR MiniShip : Nazi
 	FloatSpeed 0.87
 	Obituary "$NAZISHIP"
 	-FLOORCLIP
-	-ISMONSTER //needed for shadows
+	Base.Shadow 0  //needed for shadows
 	+FLOAT
 	+LOOKALLAROUND
 	+NOBLOODDECALS
@@ -1854,7 +1854,6 @@ ACTOR MGTurret : MiniShip
 	-NOGRAVITY
 	+MISSILEEVENMORE
 	+NOPAIN
-	+ISMONSTER
 	Obituary "$MGTURRET"
 	States
 	{
@@ -2016,6 +2015,7 @@ ACTOR MGTurretSoldier : MGTurret
 	SeeSound "Nazi1/Sighted"
 	PainSound "Nazi1/Pain"
 	DeathSound "Nazi1/Death"
+	Base.Shadow 1
 	States
 	{
 	Spawn:
