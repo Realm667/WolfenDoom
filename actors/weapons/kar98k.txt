@@ -3,7 +3,7 @@ ACTOR Kar98k : NaziWeapon
 	//$Category Weapons (Wolf3D)
 	//$Title (5) Karabiner 98k
 	//$Color 14
-	Scale 0.85
+	Scale 0.45
 	Weapon.AmmoType "Kar98kLoaded"
 	Weapon.AmmoUse 1
 	Weapon.AmmoType2 "MauserAmmo"
@@ -94,8 +94,8 @@ ACTOR Kar98k : NaziWeapon
 		SCO1 A 1 A_CheckReload
 		Goto Ready
 	Flash:
-		KARF A 1 BRIGHT A_Light2
-		KARF B 1 BRIGHT
+		KARF A 1 A_Light2
+		KARF B 1
 		TNT1 A 2 A_Light1
 		Goto LightDone
 	AltFire:

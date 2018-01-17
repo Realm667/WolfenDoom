@@ -10,17 +10,17 @@ ACTOR ProtoDrone : Nazi //ozy81
 	Speed 2.66666667
 	PainChance 128
 	-FLOORCLIP
-	Base.Shadow 0  //needed for shadows
 	+FLOAT
 	+LOOKALLAROUND
 	+NOBLOOD
 	+NOGRAVITY
 	+NOINFIGHTING
+	Obituary "$PDRONE"
 	SeeSound "proto/see"
 	PainSound "drone_pain"
 	DeathSound "astrostein/explosion"
 	ActiveSound "proto/see"
-	Obituary "$PDRONE"
+	Base.Shadow 0  //needed for shadows
 	States
 	{
 	Spawn:
@@ -39,6 +39,7 @@ ACTOR ProtoDrone : Nazi //ozy81
 		"####" A 0 A_Look
 		Loop
 	Missile:
+	Missile.Aimed:
 		PROT B 0 A_Jump(192,"Missile2")
 		"####" B 5 A_FaceTarget
 		"####" B 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)

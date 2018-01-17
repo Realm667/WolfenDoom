@@ -15,15 +15,15 @@ ACTOR BloodSkull : Base
 	PainChance 50
 	Scale 0.5
 	Monster
-	Base.Shadow 0  //needed for shadows
 	+DONTFALL
 	+FLOAT
 	+NEVERRESPAWN
 	+NOGRAVITY
+	Obituary "$BLOSKULL"
 	SeeSound "BSkull/See"
 	PainSound "BSkull/Pain"
 	DeathSound "BSkull/Death"
-	Obituary "$BLOSKULL"
+	Base.Shadow 0  //needed for shadows
 	States
 	{
 	Spawn:
@@ -134,7 +134,6 @@ ACTOR HitlerGhost : Nazi
 	Scale 0.69
 	DamageFactor "Rocket", 0.2
 	-FLOORCLIP
-	Base.Shadow 0  //needed for shadows
 	+BOSS
 	+FLOAT
 	+NOBLOOD
@@ -143,6 +142,7 @@ ACTOR HitlerGhost : Nazi
 	DeathSound "hitlerghost/die"
 	SeeSound "hitlerghost/see"
 	RenderStyle "Translucent"
+	Base.Shadow 0  //needed for shadows
 	States
 	{
 	Spawn:
@@ -202,7 +202,6 @@ ACTOR Geist : Nazi
 	Alpha 0.5
 	RenderStyle "Translucent"
 	-FLOORCLIP
-	Base.Shadow 0  //needed for shadows
 	+DONTFALL
 	+FLOAT
 	+LOOKALLAROUND
@@ -212,6 +211,7 @@ ACTOR Geist : Nazi
 	PainChance 255
 	PainSound "geist/pain"
 	DeathSound "geist/die"
+	Base.Shadow 0  //needed for shadows
 	States
 	{
 	Spawn:
@@ -395,7 +395,6 @@ ACTOR UndeadMonk : HitlerGhost
 	Scale 0.67
 	DamageFactor "Rocket", 1.0
 	-BOSS
-	Base.Shadow 0  //needed for shadows
 	+LOOKALLAROUND
 	Obituary "$UNDEADM"
 	DeathSound "monk/death"

@@ -501,14 +501,14 @@ ACTOR Debris_ChipsGreen
 	+BOUNCEONWALLS
 	+CLIENTSIDEONLY
 	+MISSILE
-	Scale 0.55
+	Scale 0.15
 	BounceType "Doom"
 	BounceFactor 0.5
 	BounceSound "casino/chips"
 	States
 	{
 	Spawn:
-		CHP1 FGHIJ 5 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		CHP1 FGHIG 5 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(400)
@@ -518,7 +518,7 @@ ACTOR Debris_ChipsGreen
 		"####" G 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
 		"####" H 2 A_ScaleVelocity(0.7)
 		"####" I 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
-		"####" J 2 A_ScaleVelocity(0.7)
+		"####" G 2 A_ScaleVelocity(0.7)
 		Loop
 	Death:
 		"####" C 0 A_Jump(256,1,2,3)
@@ -538,7 +538,7 @@ ACTOR Debris_ChipsBlue : Debris_ChipsGreen
 	States
 	{
 	Spawn:
-		CHP2 FGHIJ 5 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		CHP2 FGHIG 5 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	}
 }
@@ -548,7 +548,7 @@ ACTOR Debris_ChipsRed : Debris_ChipsGreen
 	States
 	{
 	Spawn:
-		CHP3 FGHIJ 5 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		CHP3 FGHIG 5 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	}
 }

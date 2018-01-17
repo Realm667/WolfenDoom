@@ -1789,7 +1789,6 @@ ACTOR MiniShip : Nazi
 	FloatSpeed 0.87
 	Obituary "$NAZISHIP"
 	-FLOORCLIP
-	Base.Shadow 0  //needed for shadows
 	+FLOAT
 	+LOOKALLAROUND
 	+NOBLOODDECALS
@@ -1797,6 +1796,7 @@ ACTOR MiniShip : Nazi
 	BloodType "TankSpark"
 	PainSound "metal/pain"
 	DeathSound "world/barrelboom"
+	Base.Shadow 0  //needed for shadows
 	States
 	{
 	Spawn:

@@ -3,7 +3,7 @@ ACTOR G43 : NaziWeapon
 	//$Category Weapons (Wolf3D)
 	//$Title (4) Gewehr 43
 	//$Color 14
-	Scale 0.85
+	Scale 0.35
 	Weapon.SelectionOrder 750
 	Weapon.AmmoType "G43Loaded"
 	Weapon.AmmoUse 1
@@ -80,8 +80,8 @@ ACTOR G43 : NaziWeapon
 		M1GG A 1 Offset(0,32)
 		Goto Ready
 	Flash:
-		M1GF A 1 BRIGHT A_Light2
-		M1GF B 1 BRIGHT
+		M1GF A 1 A_Light2
+		M1GF B 1
 		TNT1 A 2 A_Light1
 		Goto LightDone
 	Spawn:

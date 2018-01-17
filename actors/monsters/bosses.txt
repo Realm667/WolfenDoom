@@ -7,6 +7,7 @@ ACTOR AngelOfDeath : Base
 	//$Title Angel Of Death (Boss)
 	//$Color 4
 	Base.BossIcon "BOSSICO3"
+	Base.Shadow 0  // needed for shadows
 	Tag "???"
 	Health 5000
 	Radius 48
@@ -16,7 +17,6 @@ ACTOR AngelOfDeath : Base
 	PainChance 64
 	Scale 1.0
 	Monster
-	Base.Shadow 0  // needed for shadows
 	+BOSS
 	+FLOAT
 	+FLOATBOB
@@ -159,6 +159,7 @@ ACTOR SmokeMonster : Base
 	//$Color 4
 	//$Sprite SMMOA0
 	Base.BossIcon "BOSSICO3"
+	Base.Shadow 0  //needed for shadows
 	Tag "???"
 	Health 3000
 	Height 56
@@ -171,7 +172,6 @@ ACTOR SmokeMonster : Base
 	DamageFactor "Rocket", 0.2
 	MeleeThreshold 192
 	Monster
-	Base.Shadow 0  //needed for shadows
 	+BOSS
 	+BOSSDEATH
 	+DONTFALL
@@ -1356,13 +1356,13 @@ ACTOR ChairGuy : Nazi
 	//$Title Graf Holzbein (Boss)
 	//$Color 4
 	Base.BossIcon "BOSSICO2"
+	Base.Shadow 0  //needed for shadows
 	Tag "Graf Holzbein"
 	Health 1750
 	Mass 100000
 	PainChance 64
 	Scale 0.67
 	DamageFactor "Rocket", 0.2
-	Base.Shadow 0  //needed for shadows
 	+BOSS
 	+FLOAT
 	+LOOKALLAROUND

@@ -25,7 +25,7 @@ script "BloodScale" (void)
 
 script 86 KILL
 {
-	if (!CheckFlag(0, "ISMONSTER") || CheckFlag(0, "NOBLOOD"))
+	if (!CheckFlag(0, "ISMONSTER") || CheckFlag(0, "NOBLOOD") || CheckFlag(0, "NOBLOODDECALS"))
 		terminate;
 	if (GetCVar("blood_gibs"))
 		GiveInventory("GibMe", 1);
@@ -41,7 +41,7 @@ script 86 KILL
 
 script "86me" DEATH
 {
-	if (CheckFlag(0, "NOBLOOD"))
+	if (CheckFlag(0, "NOBLOOD") || CheckFlag(0, "NOBLOODDECALS"))
 		terminate;
 	if (GetCVar("blood_gibs"))
 		GiveInventory("GibMe", 1);
@@ -123,5 +123,78 @@ script "LiquidCheck" (void)
 		CheckActorFloorTexture(0,"X_008")||
 		CheckActorFloorTexture(0,"X_009")||
 		CheckActorFloorTexture(0,"X_010")||
-		CheckActorFloorTexture(0,"X_011"));
+		CheckActorFloorTexture(0,"X_011")||
+		CheckActorFloorTexture(0,"hiacid01")||
+		CheckActorFloorTexture(0,"hiacid02")||
+		CheckActorFloorTexture(0,"hiacid03")||
+		CheckActorFloorTexture(0,"hiacid04")||
+		CheckActorFloorTexture(0,"hiacid05")||
+		CheckActorFloorTexture(0,"hiacid06")||
+		CheckActorFloorTexture(0,"hiacid07")||
+		CheckActorFloorTexture(0,"hiacid08")||
+		CheckActorFloorTexture(0,"hiacid09")||
+		CheckActorFloorTexture(0,"hiacid10")||
+		CheckActorFloorTexture(0,"hiacid11")||
+		CheckActorFloorTexture(0,"hiacid12")||
+		CheckActorFloorTexture(0,"hiacid13")||
+		CheckActorFloorTexture(0,"hiacid14")||
+		CheckActorFloorTexture(0,"hiacid15")||
+		CheckActorFloorTexture(0,"hiacid16")||
+		CheckActorFloorTexture(0,"hiacid17")||
+		CheckActorFloorTexture(0,"hiacid18")||
+		CheckActorFloorTexture(0,"hiacid19")||
+		CheckActorFloorTexture(0,"hiacid20")||
+		CheckActorFloorTexture(0,"hiacid21")||
+		CheckActorFloorTexture(0,"hiacid22")||
+		CheckActorFloorTexture(0,"hiacid23")||
+		CheckActorFloorTexture(0,"hiacid24")||
+		CheckActorFloorTexture(0,"hiacid25")||
+		CheckActorFloorTexture(0,"hiacid26")||
+		CheckActorFloorTexture(0,"hiacid27")||
+		CheckActorFloorTexture(0,"hiacid28")||
+		CheckActorFloorTexture(0,"hiacid29")||
+		CheckActorFloorTexture(0,"hiacid30")||
+		CheckActorFloorTexture(0,"hiacid31")||
+		CheckActorFloorTexture(0,"hiacid32")||
+		CheckActorFloorTexture(0,"hiacid33")||
+		CheckActorFloorTexture(0,"hiacid34")||
+		CheckActorFloorTexture(0,"hiwatr01")||
+		CheckActorFloorTexture(0,"hiwatr02")||
+		CheckActorFloorTexture(0,"hiwatr03")||
+		CheckActorFloorTexture(0,"hiwatr04")||
+		CheckActorFloorTexture(0,"hiwatr05")||
+		CheckActorFloorTexture(0,"hiwatr06")||
+		CheckActorFloorTexture(0,"hiwatr07")||
+		CheckActorFloorTexture(0,"hiwatr08")||
+		CheckActorFloorTexture(0,"hiwatr09")||
+		CheckActorFloorTexture(0,"hiwatr10")||
+		CheckActorFloorTexture(0,"hiwatr11")||
+		CheckActorFloorTexture(0,"hiwatr12")||
+		CheckActorFloorTexture(0,"hiwatr13")||
+		CheckActorFloorTexture(0,"hiwatr14")||
+		CheckActorFloorTexture(0,"hiwatr15")||
+		CheckActorFloorTexture(0,"hiwatr16")||
+		CheckActorFloorTexture(0,"hiwatr17")||
+		CheckActorFloorTexture(0,"hiwatr18")||
+		CheckActorFloorTexture(0,"hiwatr19")||
+		CheckActorFloorTexture(0,"hiwatr20")||
+		CheckActorFloorTexture(0,"hiwatr21")||
+		CheckActorFloorTexture(0,"hiwatr22")||
+		CheckActorFloorTexture(0,"hiwatr23")||
+		CheckActorFloorTexture(0,"hiwatr24")||
+		CheckActorFloorTexture(0,"hiwatr25")||
+		CheckActorFloorTexture(0,"hiwatr26")||
+		CheckActorFloorTexture(0,"hiwatr27")||
+		CheckActorFloorTexture(0,"hiwatr28")||
+		CheckActorFloorTexture(0,"hiwatr29")||
+		CheckActorFloorTexture(0,"hiwatr30")||
+		CheckActorFloorTexture(0,"hiwatr31")||
+		CheckActorFloorTexture(0,"hiwatr32")||
+		CheckActorFloorTexture(0,"hiwatr33")||
+		CheckActorFloorTexture(0,"hiwatr34")||
+		CheckActorFloorTexture(0,"aztc_wtr")||
+		CheckActorFloorTexture(0,"watr_a01")||
+		CheckActorFloorTexture(0,"watr_g98")||
+		CheckActorFloorTexture(0,"watr_x98")||
+		CheckActorFloorTexture(0,"watr_x99"));
 }
