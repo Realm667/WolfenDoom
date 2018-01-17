@@ -1854,6 +1854,7 @@ ACTOR MGTurret : MiniShip
 	-NOGRAVITY
 	+MISSILEEVENMORE
 	+NOPAIN
+	+ISMONSTER
 	Obituary "$MGTURRET"
 	States
 	{
@@ -2012,7 +2013,6 @@ ACTOR MGTurretSoldier : MGTurret
 	Radius 16
 	Mass 9999
 	Scale 0.62
-	+ISMONSTER //needed for shadows
 	SeeSound "Nazi1/Sighted"
 	PainSound "Nazi1/Pain"
 	DeathSound "Nazi1/Death"
