@@ -8,6 +8,7 @@ else
 fi
 
 cmthd='Deflate'
+updaterepo=1
 
 # Parse arguments
 while [[ $# > 0 ]]; do
@@ -18,8 +19,9 @@ while [[ $# > 0 ]]; do
 WolfenDoom sh.ake 'n baker - Linux/MacOS build script for
               WolfenDoom: Blade of Agony
 
--h    --help      Show this help
--r    --release   Use LZMA compression instead of Deflate compression
+-h  --help        Show this help
+-n  --no-update   Do not update the repo with the latest changes.
+-r  --release     Use LZMA compression instead of Deflate compression
                   Results in smaller pk3, but takes longer, and cannot be
                   read or modified using SLADE.
 HELP
@@ -32,13 +34,20 @@ HELP
     shift
     continue
   fi
+  if [[ "$1" == "-n" || "$1" == "--no-update" ]]; then
+    updaterepo=0
+    shift
+    continue
+  fi
 
   # Unrecognized argument
   shift
 done
 
-git checkout master
-git pull origin master
+if ((updaterepo)); then
+  git checkout master
+  git pull origin master
+fi
 
 # Regular pk3 filename
 zipprefix="wolf_boa"
