@@ -118,6 +118,23 @@ ACTOR Mike : PaperBox1
 	}
 }
 
+ACTOR CasinoDice : PaperBox1
+{
+	//$Title Casino Gambling Dice (random)
+	Radius 2
+	Height 2
+	Scale 0.1
+	-SOLID
+	States
+	{
+	Spawn:
+		DADO A 0 NoDelay A_Jump(256,1,2)
+		"####" A -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		"####" B -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
 ACTOR BinSilver
 {
 	//$Category Props (Wolf3D)/Bureau
@@ -323,7 +340,7 @@ ACTOR DecoVase : Cup1
 ACTOR SnookerBall : Tiltable
 {
 	//$Category Props (Wolf3D)/Bureau
-	//$Title Snooker Ball (random, mostly red)
+	//$Title Casino Snooker Ball (random, mostly red)
 	//$Color 3
 	Scale 0.1
 	Radius 4
