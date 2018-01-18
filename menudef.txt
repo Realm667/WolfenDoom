@@ -125,24 +125,14 @@ OptionMenuSettings
 // BoA options menu ------------------------------------------------------------------------------
 OptionMenu "BOAOptionsMenu"
 {
-	StaticText ""
+	Title "Enhanced Options"
+
 	Submenu "Controls Settings", "BoACTRLOptions"
-	
-	StaticText " "
 	Submenu "Gameplay Options", "GameOptions"
-	
-	StaticText " "
 	Submenu "Blood Options", "BloodOptions"
-	
-	StaticText ""
 	Submenu "Weather Options", "WeatherOptions"
-
-	StaticText ""
 	Submenu "Effects Options", "EffectsOptions"
-
-	StaticText ""
 	Submenu "Rendering Options", "RenderOptions"
-	
 	StaticText ""
 	Submenu "Cheats Settings", "CheatsOptions"
 }
@@ -170,7 +160,7 @@ OptionMenu "BloodOptions"
 
 OptionMenu "GameOptions"
 {	
-	StaticText "Gameplay Settings", 1
+	Title "Gameplay Settings"
 	StaticText ""
 	Option "Auto-Reload","autoreload","OnOff"
 	Slider "Shell Casing Lifetime (seconds)","casinglifetime",1,180,5,0
@@ -181,7 +171,7 @@ OptionMenu "GameOptions"
 
 OptionMenu "WeatherOptions"
 {
-	StaticText "Weather Effects",	1
+	Title  "Weather Effects"
 	StaticText "WARNING: these settings may require level restart"
 	
 	StaticText ""
@@ -193,7 +183,7 @@ OptionMenu "WeatherOptions"
 
 OptionMenu "EffectsOptions"
 {	
-	StaticText "Special Effects",	1
+	Title  "Special Effects"
 	StaticText "WARNING: these settings may require level restart"
 
 	StaticText ""
@@ -214,7 +204,7 @@ OptionMenu "EffectsOptions"
 
 OptionMenu "RenderOptions"
 {
-	StaticText "Rendering Options", 1
+	Title  "Rendering Options"
 	StaticText "Distance is applied in map units"
 	StaticText "Decrease following values to improve in-game performance"
 
@@ -227,7 +217,7 @@ OptionMenu "RenderOptions"
 
 OptionMenu "BoACTRLOptions"
 {
-	StaticText "Controls", 1
+	Title  "Additional Controls"
 	StaticTextSwitchable "ENTER to change, BACKSPACE to clear",
                      "Press new key for control, ESC to cancel",
                      "ControlMessage"
@@ -239,7 +229,7 @@ OptionMenu "BoACTRLOptions"
 
 OptionMenu "CheatsOptions"
 {
-	StaticText "Cheats Settings", 1
+	Title  "Cheats Settings"
 	StaticText "WARNING: don't change these settings while saving the game"
 	StaticText "WARNING: these settings may cause unhandled gameplay glitches"
 	StaticText "WARNING: these settings may require level restart"
