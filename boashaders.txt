@@ -469,6 +469,13 @@ HardwareShader PostProcess scene {
 	Uniform float timer
 }
 
+HardwareShader PostProcess scene {
+	Name "blurshader"
+	Shader "shaders/blur.fp" 330
+	Uniform float amount
+	Uniform float alpha
+}
+
 /*
 HardwareShader Texture "textures/briefing/c1m0_1.png" {
 	Shader "shaders/OldVideo.fp"

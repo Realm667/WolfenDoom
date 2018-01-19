@@ -46,6 +46,8 @@ class CustomShaderHandler : StaticEventHandler
 			if (shaderControl.amount >= 2)
 			{
 				Shader.SetUniform1f(p, shaderControl.ShaderToControl, "timer", gametic + e.FracTic);
+				Shader.SetUniform1f(p, shaderControl.ShaderToControl, "amount", shaderControl.amount - 1);
+				Shader.SetUniform1f(p, shaderControl.ShaderToControl, "alpha", shaderControl.alpha);
 				shaderControl.SetUniforms(p, e);
 				Shader.SetEnabled(p, shaderControl.ShaderToControl, true);
 			}

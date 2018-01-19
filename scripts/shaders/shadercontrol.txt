@@ -23,3 +23,35 @@ class OldVideoShaderControl : ShaderControl {
 		ShaderControl.Shader "oldvideoshader";
 	}
 }
+
+class BlurShaderControl : ShaderControl {
+	int holdTarget;
+
+	Default {
+		ShaderControl.Shader "blurshader";
+	}
+
+	override void BeginPlay()
+	{
+		alpha = 0;
+
+		Super.BeginPlay();
+	}
+
+	override void DoEffect()
+	{
+		if (amount > 1) { holdTarget = level.time + amount; }
+
+		if (holdTarget && level.time > holdTarget)
+		{
+			amount = 1;
+			holdTarget = 0;
+			alpha = 0;
+		}
+		else if (holdTarget)
+		{
+			alpha = alpha < 1.0 ? alpha += 0.057 : 1.0;
+			amount--;
+		}
+	}
+}
