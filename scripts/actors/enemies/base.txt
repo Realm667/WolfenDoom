@@ -708,25 +708,25 @@ class Nazi : Base
 			"####" A 0 { return ResolveState("See"); }
 		See.BossBleeding: // Totengraber_Wounded special one
 			"####" "#" 0 { user_incombat = True; }
-			"####" A 1 A_NaziChase;
-			"####" AAA 1 A_NaziChase(null, null);
-			"####" A 1 A_NaziChase;
-			"####" AAA 1 A_NaziChase(null, null);
+			"####" A 1 A_UndeadChase;
+			"####" AAA 1 A_UndeadChase(null, null);
+			"####" A 1 A_UndeadChase;
+			"####" AAA 1 A_UndeadChase(null, null);
 			"####" B 0 {A_PlaySound("floor/heavy"); A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(1.0, 2.0), random(0, 360), SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY, 0);}
-			"####" B 1 A_NaziChase;
-			"####" BBB 1 A_NaziChase(null, null);
-			"####" B 1 A_NaziChase;
-			"####" BBB 1 A_NaziChase(null, null);
+			"####" B 1 A_UndeadChase;
+			"####" BBB 1 A_UndeadChase(null, null);
+			"####" B 1 A_UndeadChase;
+			"####" BBB 1 A_UndeadChase(null, null);
 			"####" CCC 0 A_SpawnItemEx("SkullBloodDrip",8,random(-4,-8),56,0,0,0,0,0);
-			"####" C 1 A_NaziChase;
-			"####" CCC 1 A_NaziChase(null, null);
-			"####" C 1 A_NaziChase;
-			"####" CCC 1 A_NaziChase(null, null);
+			"####" C 1 A_UndeadChase;
+			"####" CCC 1 A_UndeadChase(null, null);
+			"####" C 1 A_UndeadChase;
+			"####" CCC 1 A_UndeadChase(null, null);
 			"####" D 0 {A_PlaySound("floor/heavy"); A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 0, frandom(0.1, 1.0) * RandomPick(-1, 1), frandom(0.1, 1.0) * RandomPick(-1, 1), frandom(0.0, 2.0), 0, SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY, 0);}
-			"####" D 1 A_NaziChase;
-			"####" DDD 1 A_NaziChase(null, null);
-			"####" D 1 A_NaziChase;
-			"####" DDD 1 A_NaziChase(null, null);
+			"####" D 1 A_UndeadChase;
+			"####" DDD 1 A_UndeadChase(null, null);
+			"####" D 1 A_UndeadChase;
+			"####" DDD 1 A_UndeadChase(null, null);
 			"####" A 0 { return ResolveState("See"); }
 		See.Frightened: // Prisoners Pattern
 			"####" "#" 0 { user_incombat = True; A_SetSpeed(6);}
@@ -877,6 +877,29 @@ class Nazi : Base
 		if (user_sneakable && bFriendly && level.time && level.time % interval == 0) { A_LookForBodies(); }
 
 		A_Chase(melee, missile, flags);
+	}
+
+	void A_UndeadChase(statelabel melee = "None", statelabel missile = "None", int flags = 0) //same as Nazi but with CHF_RESURRECT flag forced - oz81
+	{
+		if (melee == "None") { melee = "Melee.Aimed"; }
+		if (missile == "None") { missile = "Missile.Aimed"; }
+
+		if (target && Distance3D(target) < 256) { user_static = 0; }
+
+		if (AimState && (user_static || bAmbush))
+		{
+			flags |= CHF_DONTMOVE | CHF_NODIRECTIONTURN;
+
+			frame = AimState.frame;
+			A_SetTics(Random[StandDelay](1, 5));
+
+			A_FaceTarget();
+			reactiontime = 0;
+		}
+
+		if (user_sneakable && bFriendly && level.time && level.time % interval == 0) { A_LookForBodies(); }
+
+		A_Chase(melee, missile, 8);
 	}
 
 	virtual state A_LookForBodies()
