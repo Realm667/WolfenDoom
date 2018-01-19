@@ -304,6 +304,7 @@ ACTOR Flameball : Flamebolt
 		"####" A 0 A_SetScale(1.0)
 		"####" AAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark", random(-32,32), random(-32,32), random(-32,32), random(-4,4), random(-4,4), random(-4,4), random(0,359))
 		FBLX A 2 BRIGHT LIGHT(BOAFLMW2) A_Explode(96,128)
+		FBLX A 0 A_RadiusGive("BlurShaderControl", 128, RGF_PLAYERS | RGF_GIVESELF, 80)
 		FBLX BCDEFGHIJK 2 BRIGHT LIGHT(BOAFLMW2)
 		Stop
 	}
