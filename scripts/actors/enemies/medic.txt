@@ -26,8 +26,6 @@ class NaziMedic : NaziStandard
 {
 	bool crouched;
 	int frightenedloopcount;
-	int healloopcount;
-	Actor body;
 
 	Default
 	{
@@ -39,6 +37,7 @@ class NaziMedic : NaziStandard
 		Health 20;
 		Speed 6;
 		DropItem "NaziMedicBox", 255;
+		Nazi.Healer;
 	}
 
 	States
@@ -47,7 +46,7 @@ class NaziMedic : NaziStandard
 			NMDC N 1; // Just sets the base sprite
 			Goto Look;
 		Look:
-			"####" "#" 35 A_LookForBodies();
+			"####" "#" 35 A_LookForBodies(true);
 			"####" "#" 0 A_CheckForPlayer(True);
 			Loop;
 		See:
@@ -93,22 +92,7 @@ class NaziMedic : NaziStandard
 					return ResolveState("Heal.Loop");
 				}
 
-				A_RaiseMaster(RF_NOCHECKPOSITION); // Why is there no direct P_Thing_Raise call?
-				goal.bCountKill = false;
-				level.total_monsters--;
-
-				if (Nazi(goal))
-				{
-					if (Nazi(goal).user_sneakable) { Nazi(goal).BecomeAlerted(target); } // If it's a sneakable actor, make it alert
-					Nazi(goal).healing = false;
-					Nazi(goal).dodgetimeout = Random(175, 350); // Reset the dodge timeout
-				}
-				if (goal) { goal.A_ClearTarget(); goal.bFriendly = bFriendly; goal.BeginPlay(); goal.bInvulnerable = false; } // Just to be sure, make the resurrected actor allied to the Medic...
-				body = null;
-				goal = null;
-				master = null;
-
-				dodgetimeout = Random(175, 350); // Reset the dodge timeout
+				A_HealGoal();
 
 				return ResolveState("See");
 			}
@@ -153,100 +137,5 @@ class NaziMedic : NaziStandard
 		}
 
 		return ResolveState(null);
-	}
-
-	override state A_LookForBodies()
-	{
-		ThinkerIterator Finder = ThinkerIterator.Create("Nazi", STAT_DEFAULT);
-		Nazi mo;
-
-		while ( (mo = Nazi(Finder.Next())) )
-		{
-			if (!IsHealableCorpse(mo)) { continue; }
-
-			if (goal && Distance3d(mo) > Distance3d(goal)) { continue; }
-
-			goal = mo;
-		}
-
-		// A Second iterator to account for the sneakables...
-		Finder = ThinkerIterator.Create("Nazi", STAT_DEFAULT - 5);
-
-		while ( (mo = Nazi(Finder.Next())) )
-		{
-			if (!IsHealableCorpse(mo)) { continue; }
-
-			if (goal && Distance3d(mo) > Distance3d(goal)) { continue; }
-
-			goal = mo;
-		}
-
-		if (goal) { body = goal; return ResolveState("See"); }
-		return ResolveState(null);
-	}
-
-	bool IsHealableCorpse(Nazi mo)
-	{
-		if (
-			!mo.bIsMonster ||
-			mo.healing ||
-			mo.health > 0 ||
-			mo.bDormant ||
-			mo.bFriendly != bFriendly ||
-			mo.health <= mo.GetGibHealth() ||
-			mo.DeathDamageType ~== "Fire" ||
-			!IsVisible(mo, True) ||
-			mo.bBoss ||
-			mo is "WGuard_Wounded" || // Use "is" so that any class inheriting from this class is skipped
-			mo is "Sniper" ||
-			mo is "Sniper_Crouch" ||
-			mo is "ArcticSniper" ||
-			mo is "ArcticSniper_Crouch" ||
-			mo is "NaziMedic" ||
-			mo is "FlamerSoldier" ||
-			mo is "Mechanic" ||
-			mo is "EliteFlamer" ||
-			mo is "EliteAssaulter" ||
-			mo is "EliteSoldatRifler" ||
-			mo is "ZombieBrain" ||
-			mo is "WereWaffenSS" ||
-			mo is "WMP40GuardSleep" ||
-			!mo.FindState("Raise") ||
-			Distance3d(mo) > 1024
-		) { return false; }
-
-		return true;
-	}
-
-	override void Tick()
-	{
-		// If the Medic is alive...
-		if (health > 0 && bShootable)
-		{
-			// If it doesn't have a goal (and isn't running away), look for dead bodies
-			if (!goal && !bFrightened)
-			{
-				if (level.time && level.time % Random(35, 70) == 0) { A_LookForBodies(); }
-				if (Nazi(body) && !body.bShootable && !Nazi(body).healing) { goal = body; } // Keep trying to get to the body if it's still dead and isn't being healed
-				else { body = null; }
-			}
-			else if (!bFrightened)
-			{
-				// If it's not frightened and close to a dead body that it isn't already healing, start healing it
-				if (goal && Distance3d(goal) <= goal.radius + radius + 8 && goal != master) {
-					if (Nazi(goal)) { Nazi(goal).healing = true; }
-					master = goal;
-					SetStateLabel("Heal");
-				}
-			}
-			else
-			{ // If you are frightened, forget the dead body and run away
-				if (Nazi(goal)) { Nazi(goal).healing = false; }
-				body = null;
-				goal = null;
-			}
-		}
-
-		Super.Tick();
 	}
 }

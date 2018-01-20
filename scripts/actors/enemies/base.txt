@@ -53,6 +53,12 @@
 	  player disguises.
 	- Used by SneakableEyesIdle actor (as seen on sneakable Gestapo)
 
+	Nazi.Healer
+	- Tags this enemy as a medic, and uses the medic's "smart" healing code to 
+	  find allied bodies to heal.  The actor needs to have a Heal state defined
+	  for full effect, otherwise they'll just stand there while healing.
+	  See NaziMedic and TotenGraber_Wounded for examples
+
   UDMF Properties (Base Class)
 	user_drawhealthbar
 	- The underlying variable for the Base.AlwaysDrawHealthBar property above
@@ -65,6 +71,11 @@
 	- Actor will remain at its spawn location until the player is within 256 units
 	- The actor will still aim and fire at the player, but won't walk toward him
 	  until the player is within the 256-unit range
+
+	user_ForceWeaponDrop
+	- Forces the enemy's weapon to be dropped when they are killed.
+	- The enemy must call the A_UnblockAndDrop function in their Death state
+	  for this property to have any effect.
 
   New Functions (Base class)
 	A_LookThroughDisguise(int flags = 0, float minseedist = 0, float Range = 0, float maxheardist = 0, double fov = 0, statelabel label = "See")
@@ -121,6 +132,17 @@
 	- Also sets actor back to patrolling/goal chasing if a goal had been set
 	  before the actor was alerted
 	- Used internally by SneakableEyesAlerted actor
+
+	A_UnblockAndDrop()
+	- Similar to A_NoBlocking, but also implements forced weapon dropping, via
+	  the user_ForceWeaponDrop property.
+	- Also handles reduction of drop amounts for sneakable enemies; sneakables
+	  will only ever drop weapons, no ammo, grenades, etc., and the included
+	  dropped ammo amount is cut in half automatically.
+
+	A_HealGoal()
+	- Resurrects the actor's goal, with special handling to keep kill counts
+	  accurate and sneakeable alerting functional.
 
   Useful objects (Nazi Class)
 	activationgoal
@@ -487,15 +509,19 @@ class Nazi : Base
 	String DeathDamageType;
 	Actor activationgoal;
 	int user_static;
-	state AimState;
+	state AimState, HealState;
 	bool healing;
 	bool alerted;
 	int interval;
+	bool healer;
+	int healloopcount;
+	Actor body;
 
 	Property Sneakable:user_sneakable;
 	Property SneakableCloseSightRadius:sneakableclosesightradius;
 	Property PerceptionTime:perceptionthreshold; // How many tics the player has to be in sight before NOTARGET fails - 0 means never see through NoTarget
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
+	Property Healer:healer;
 
 	Default
 	{
@@ -521,6 +547,7 @@ class Nazi : Base
 		Nazi.SneakableCloseSightRadius 64;
 		Nazi.PerceptionTime 0;
 		Nazi.PerceptionFOV 120;
+		Nazi.Healer 0;
 		Base.DodgeAmount 6;
 	}
 
@@ -709,24 +736,24 @@ class Nazi : Base
 		See.BossBleeding: // Totengraber_Wounded special one
 			"####" "#" 0 { user_incombat = True; }
 			"####" A 1 A_NaziChase;
-			"####" AAA 1 A_NaziChase(null, null, CHF_RESURRECT);
+			"####" AAA 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
-			"####" AAA 1 A_NaziChase(null, null, CHF_RESURRECT);
+			"####" AAA 1 A_NaziChase(null, null);
 			"####" B 0 {A_PlaySound("floor/heavy"); A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(1.0, 2.0), random(0, 360), SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY, 0);}
 			"####" B 1 A_NaziChase;
-			"####" BBB 1 A_NaziChase(null, null, CHF_RESURRECT);
+			"####" BBB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
-			"####" BBB 1 A_NaziChase(null, null, CHF_RESURRECT);
+			"####" BBB 1 A_NaziChase(null, null);
 			"####" CCC 0 A_SpawnItemEx("SkullBloodDrip",8,random(-4,-8),56,0,0,0,0,0);
 			"####" C 1 A_NaziChase;
-			"####" CCC 1 A_NaziChase(null, null, CHF_RESURRECT);
+			"####" CCC 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
-			"####" CCC 1 A_NaziChase(null, null, CHF_RESURRECT);
+			"####" CCC 1 A_NaziChase(null, null);
 			"####" D 0 {A_PlaySound("floor/heavy"); A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 0, frandom(0.1, 1.0) * RandomPick(-1, 1), frandom(0.1, 1.0) * RandomPick(-1, 1), frandom(0.0, 2.0), 0, SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY, 0);}
 			"####" D 1 A_NaziChase;
-			"####" DDD 1 A_NaziChase(null, null, CHF_RESURRECT);
+			"####" DDD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
-			"####" DDD 1 A_NaziChase(null, null, CHF_RESURRECT);
+			"####" DDD 1 A_NaziChase(null, null);
 			"####" A 0 { return ResolveState("See"); }
 		See.Frightened: // Prisoners Pattern
 			"####" "#" 0 { user_incombat = True; A_SetSpeed(6);}
@@ -815,6 +842,11 @@ class Nazi : Base
 				BecomeAlerted(target);
 				return ResolveState("See");
 			}
+		Heal: // Placeholder state to avoid weird behavior if a healing actor isn't properly set up
+			"####" H 5 {
+				A_HealGoal();
+				return ResolveState("See");
+			}
 		Alarm:
 			"####" H 50 A_SetTics(interval);
 			"####" H 0 A_Jump(256, "See");
@@ -879,7 +911,7 @@ class Nazi : Base
 		A_Chase(melee, missile, flags);
 	}
 
-	virtual state A_LookForBodies()
+	state A_LookForBodies(bool forhealing = false)
 	{
 		if (goal && goal is "PatrolPoint")
 		{
@@ -899,7 +931,7 @@ class Nazi : Base
 
 		while ( (mo = Nazi(Finder.Next())) )
 		{
-			if (!IsCorpse(mo)) { continue; }
+			if (!IsCorpse(mo, forhealing)) { continue; }
 
 			if (goal && Distance3d(mo) > Distance3d(goal)) { continue; }
 
@@ -911,31 +943,65 @@ class Nazi : Base
 
 		while ( (mo = Nazi(Finder.Next())) )
 		{
-			if (!IsCorpse(mo)) { continue; }
+			if (!IsCorpse(mo, forhealing)) { continue; }
 
 			if (goal && Distance3d(mo) > Distance3d(goal)) { continue; }
 
 			goal = mo;
 		}
 
-		if (goal && (goal is "Nazi"))
+		if (goal)
 		{
-			Speed = Default.Speed + 1; // Walk a little faster
-			if (Distance3D(goal) < 96)
+			if (forhealing) { body = goal; return ResolveState("See"); }
+			else if (goal is "Nazi")
 			{
-				BecomeAlerted(goal.target);
+				Speed = Default.Speed + 1; // Walk a little faster
+				if (Distance3D(goal) < 96)
+				{
+					BecomeAlerted(goal.target);
+				}
 			}
 		}
 
 		return ResolveState(null);
 	}
 
-	bool IsCorpse(Actor mo)
+	bool IsCorpse(Actor mo, bool forhealing = false)
 	{
 		if (
 			!mo.bIsMonster ||
 			mo.health > 0 ||
-			mo.bDormant ||
+			mo.bDormant
+		) { return false; }
+
+		if (forhealing)
+		{
+			if (
+				Nazi(mo).healing ||
+				Nazi(mo).DeathDamageType ~== "Fire" ||
+				mo.bFriendly != bFriendly ||
+				mo.health <= mo.GetGibHealth() ||
+				!IsVisible(mo, True) ||
+				mo.bBoss ||
+				mo is "WGuard_Wounded" || // Use "is" so that any class inheriting from this class is skipped
+				mo is "Sniper" ||
+				mo is "Sniper_Crouch" ||
+				mo is "ArcticSniper" ||
+				mo is "ArcticSniper_Crouch" ||
+				mo is "NaziMedic" ||
+				mo is "FlamerSoldier" ||
+				mo is "Mechanic" ||
+				mo is "EliteFlamer" ||
+				mo is "EliteAssaulter" ||
+				mo is "EliteSoldatRifler" ||
+				mo is "ZombieBrain" ||
+				mo is "WereWaffenSS" ||
+				mo is "WMP40GuardSleep" ||
+				!mo.FindState("Raise") ||
+				Distance3d(mo) > 1024
+			) { return false; }
+		}
+		else if (
 			Distance3d(mo) > 512
 		) { return false; }
 
@@ -960,6 +1026,8 @@ class Nazi : Base
 		// Set the actor's aim state (first frame of attack animation) for static and AMBUSH actors
 		AimState = FindState("Missile.Aimed");
 		if (!AimState) { AimState = FindState("Melee.Aimed"); }
+
+		HealState = FindState("Heal");
 
 		interval = Random[pollinterval](35, 70);
 	}
@@ -1157,10 +1225,10 @@ class Nazi : Base
 					{
 						Actor drop = Spawn(item.Name); // See if it spawns in order to validate the name...  Since there's no FindClass function exposed?
 
-						int amt = item.Amount;
-
 						if (Weapon(drop)) // Only drop weapons, no extra ammo, grenades, etc.
 						{
+							int amt = item.Amount;
+
 							if (amt <= 0)
 							{
 								amt = Weapon(drop).AmmoGive1 > 0 ? Weapon(drop).AmmoGive1 : Weapon(drop).AmmoGive2; // Default to affecting AmmoType1, with fallback to AmmoType2
@@ -1181,6 +1249,30 @@ class Nazi : Base
 		{
 			A_NoBlocking(True); // Otherwise, unblock and do normal drops
 		}
+	}
+
+	void A_HealGoal()
+	{
+		Actor oldmaster = master;
+
+		master = goal;
+		A_RaiseMaster(RF_NOCHECKPOSITION); // Why is there no direct P_Thing_Raise call?
+		master = oldmaster;
+
+		goal.bCountKill = false;
+		level.total_monsters--;
+
+		if (Nazi(goal))
+		{
+			if (Nazi(goal).user_sneakable) { Nazi(goal).BecomeAlerted(target); } // If it's a sneakable actor, make it alert
+			Nazi(goal).healing = false;
+			Nazi(goal).dodgetimeout = Random(175, 350); // Reset the dodge timeout
+		}
+		if (goal) { goal.A_ClearTarget(); goal.bFriendly = bFriendly; goal.BeginPlay(); goal.bInvulnerable = false; } // Just to be sure, make the resurrected actor allied to the Medic...
+		body = null;
+		goal = null;
+
+		dodgetimeout = Random(175, 350); // Reset the dodge timeout
 	}
 
 	override void Tick()
@@ -1240,6 +1332,32 @@ class Nazi : Base
 					bChaseGoal = True; // Chase to the goal only, not toward a target
 					Speed = Default.Speed + 1; // Walk a little faster
 					if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); } // Go to the See state if not already there
+				}
+			}
+			else if (healer)
+			{
+				// If it doesn't have a goal (and isn't running away), look for dead bodies
+				if (!goal && !bFrightened)
+				{
+					if (level.time && level.time % Random(35, 70) == 0) { A_LookForBodies(true); }
+					if (Nazi(body) && !body.bShootable && !Nazi(body).healing) { bChaseGoal = true; goal = body; } // Keep trying to get to the body if it's still dead and isn't being healed
+					else { body = null; }
+				}
+				else if (!bFrightened)
+				{
+					// If it's not frightened and close to a dead body that it isn't already healing, start healing it
+					if (goal && Distance3d(goal) <= goal.radius + radius + 8 && !InStateSequence(CurState, HealState)) {
+						if (Nazi(goal)) { Nazi(goal).healing = true; }
+						bChaseGoal = Default.bChaseGoal;
+						SetStateLabel("Heal");
+					}
+				}
+				else
+				{ // If you are frightened, forget the dead body and run away
+					if (Nazi(goal)) { Nazi(goal).healing = false; }
+					body = null;
+					bChaseGoal = Default.bChaseGoal;
+					goal = null;
 				}
 			}
 		}
