@@ -523,7 +523,7 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 		"####" A 0 A_Jump(32, "See")
 		Loop
 	Pain:
-		PRSN H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
+		"####" H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" H 5 {
 				A_Pain();
 				bFrightened = True;

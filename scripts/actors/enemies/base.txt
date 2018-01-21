@@ -58,6 +58,8 @@
 	  find allied bodies to heal.  The actor needs to have a Heal state defined
 	  for full effect, otherwise they'll just stand there while healing.
 	  See NaziMedic and TotenGraber_Wounded for examples
+	- Setting this to 2 instead of 1 will only resurrect enemies that have a
+	  suitable zombie counterpart
 
   UDMF Properties (Base Class)
 	user_drawhealthbar
@@ -159,6 +161,13 @@
 	  activationgoal and returns to normal behavior.
 
 */
+// Some flags to simplify things...
+enum EHealerFlags
+{
+	HLR_ALLIES = 1,
+	HLR_ZOMBIES = 2,
+};
+
 // Base class to add ability to see through notarget to actors (e.g., mice, sharks)
 class Base : Actor
 {
@@ -398,6 +407,46 @@ class Base : Actor
 		return range;
 	}
 
+	Actor ReplaceWith(Class<Actor> cls, statelabel label = "Spawn")
+	{
+		Actor newmobj = Spawn(cls, pos);
+
+		if (newmobj)
+		{
+			// Borrowed from RandomSpawner code
+			newmobj.scale = scale;
+			newmobj.Pitch = Pitch;
+			newmobj.Roll = Roll;
+			newmobj.SpawnPoint = SpawnPoint;
+			newmobj.special = special;
+			newmobj.args[0] = args[0];
+			newmobj.args[1] = args[1];
+			newmobj.args[2] = args[2];
+			newmobj.args[3] = args[3];
+			newmobj.args[4] = args[4];
+			newmobj.special1 = special1;
+			newmobj.special2 = special2;
+			newmobj.SpawnFlags = SpawnFlags & ~MTF_SECRET;
+			newmobj.HandleSpawnFlags();
+			newmobj.SpawnFlags = SpawnFlags;
+			newmobj.bCountSecret = SpawnFlags & MTF_SECRET;
+			newmobj.ChangeTid(tid);
+			newmobj.Vel = Vel;
+			newmobj.master = master;
+			newmobj.target = target;
+			newmobj.tracer = tracer;
+			newmobj.CopyFriendliness(self, false);
+
+			newmobj.SetStateLabel(label);
+
+			self.Destroy();
+
+			return newmobj;
+		}
+
+		return self;
+	}
+
 	override void Tick()
 	{
 		if (user_DrawHealthBar) { ChangeStatNum(Thinker.STAT_DEFAULT - 3); } // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient
@@ -513,7 +562,7 @@ class Nazi : Base
 	bool healing;
 	bool alerted;
 	int interval;
-	bool healer;
+	int healflags;
 	int healloopcount;
 	Actor body;
 
@@ -521,7 +570,7 @@ class Nazi : Base
 	Property SneakableCloseSightRadius:sneakableclosesightradius;
 	Property PerceptionTime:perceptionthreshold; // How many tics the player has to be in sight before NOTARGET fails - 0 means never see through NoTarget
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
-	Property Healer:healer;
+	Property Healer:healflags;
 
 	Default
 	{
@@ -911,7 +960,7 @@ class Nazi : Base
 		A_Chase(melee, missile, flags);
 	}
 
-	state A_LookForBodies(bool forhealing = false)
+	state A_LookForBodies()
 	{
 		if (goal && goal is "PatrolPoint")
 		{
@@ -931,7 +980,7 @@ class Nazi : Base
 
 		while ( (mo = Nazi(Finder.Next())) )
 		{
-			if (!IsCorpse(mo, forhealing)) { continue; }
+			if (!IsCorpse(mo)) { continue; }
 
 			if (goal && Distance3d(mo) > Distance3d(goal)) { continue; }
 
@@ -943,7 +992,7 @@ class Nazi : Base
 
 		while ( (mo = Nazi(Finder.Next())) )
 		{
-			if (!IsCorpse(mo, forhealing)) { continue; }
+			if (!IsCorpse(mo)) { continue; }
 
 			if (goal && Distance3d(mo) > Distance3d(goal)) { continue; }
 
@@ -952,7 +1001,7 @@ class Nazi : Base
 
 		if (goal)
 		{
-			if (forhealing) { body = goal; return ResolveState("See"); }
+			if (healflags) { body = goal; return ResolveState("See"); }
 			else if (goal is "Nazi")
 			{
 				Speed = Default.Speed + 1; // Walk a little faster
@@ -966,7 +1015,7 @@ class Nazi : Base
 		return ResolveState(null);
 	}
 
-	bool IsCorpse(Actor mo, bool forhealing = false)
+	bool IsCorpse(Actor mo)
 	{
 		if (
 			!mo.bIsMonster ||
@@ -974,32 +1023,60 @@ class Nazi : Base
 			mo.bDormant
 		) { return false; }
 
-		if (forhealing)
+		if (healflags)
 		{
 			if (
 				Nazi(mo).healing ||
 				Nazi(mo).DeathDamageType ~== "Fire" ||
-				mo.bFriendly != bFriendly ||
 				mo.health <= mo.GetGibHealth() ||
 				!IsVisible(mo, True) ||
-				mo.bBoss ||
-				mo is "WGuard_Wounded" || // Use "is" so that any class inheriting from this class is skipped
-				mo is "Sniper" ||
-				mo is "Sniper_Crouch" ||
-				mo is "ArcticSniper" ||
-				mo is "ArcticSniper_Crouch" ||
-				mo is "NaziMedic" ||
-				mo is "FlamerSoldier" ||
-				mo is "Mechanic" ||
-				mo is "EliteFlamer" ||
-				mo is "EliteAssaulter" ||
-				mo is "EliteSoldatRifler" ||
-				mo is "ZombieBrain" ||
-				mo is "WereWaffenSS" ||
-				mo is "WMP40GuardSleep" ||
 				!mo.FindState("Raise") ||
 				Distance3d(mo) > 1024
 			) { return false; }
+
+			if (healflags & HLR_ALLIES)
+			{
+				if (
+					mo.bFriendly != bFriendly ||
+					mo.bBoss ||
+					mo is "WGuard_Wounded" || // Use "is" so that any class inheriting from this class is skipped
+					mo is "Sniper" ||
+					mo is "Sniper_Crouch" ||
+					mo is "ArcticSniper" ||
+					mo is "ArcticSniper_Crouch" ||
+					mo is "NaziMedic" ||
+					mo is "FlamerSoldier" ||
+					mo is "Mechanic" ||
+					mo is "EliteFlamer" ||
+					mo is "EliteAssaulter" ||
+					mo is "EliteSoldatRifler" ||
+					mo is "ZombieBrain" ||
+					mo is "WereWaffenSS" ||
+					mo is "WMP40GuardSleep"
+				) { return false; }
+			}
+
+			if (healflags & HLR_ZOMBIES)
+			{
+				String classname = mo.GetClassName();
+
+				if (!(
+					classname ~== "Camp_PrisonerBaldShirtless" || 
+					classname ~== "Camp_PrisonerZombie" || 
+					classname ~== "WGuard" || 
+					classname ~== "WMP40Guard" || 
+					classname ~== "WRifleGuard" || 
+					classname ~== "SneakableWGuard" || 
+					classname ~== "SneakableWMP40Guard" || 
+					classname ~== "SneakableWRifleGuard" || 
+					classname ~== "ZombieBrain" || 
+					classname ~== "WOfficer" || 
+					classname ~== "SneakableWOfficer" || 
+					classname ~== "ZombieOfficer" || 
+					classname ~== "General" ||
+					classname ~== "ZombieGeneral"
+				)) { return false; }
+			}
 		}
 		else if (
 			Distance3d(mo) > 512
@@ -1255,6 +1332,32 @@ class Nazi : Base
 	{
 		Actor oldmaster = master;
 
+		if (Base(goal) && healflags & HLR_ZOMBIES)
+		{
+			String replacement;
+			String classname = goal.GetClassName();
+
+			if (classname == "Camp_PrisonerBaldShirtless") { replacement = "Camp_PrisonerZombie"; }
+			else if (
+				classname == "WGuard" ||
+				classname == "WMP40Guard" ||
+				classname == "WRifleGuard" ||
+				classname == "SneakableWGuard" ||
+				classname == "SneakableWMP40Guard" ||
+				classname == "SneakableWRifleGuard"
+			) { replacement = "ZombieBrain"; }
+			else if (
+				classname == "WOfficer" ||
+				classname == "SneakableWOfficer"
+			) { replacement = "ZombieOfficer"; }
+			else if (classname == "General") { replacement = "ZombieGeneral"; }
+
+			if (replacement != "")
+			{
+				goal = Base(goal).ReplaceWith(replacement, "Raise");
+			}
+		}
+
 		master = goal;
 		A_RaiseMaster(RF_NOCHECKPOSITION); // Why is there no direct P_Thing_Raise call?
 		master = oldmaster;
@@ -1334,12 +1437,12 @@ class Nazi : Base
 					if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); } // Go to the See state if not already there
 				}
 			}
-			else if (healer)
+			else if (healflags)
 			{
 				// If it doesn't have a goal (and isn't running away), look for dead bodies
-				if (!goal && !bFrightened)
+				if ((!goal && !bFrightened) || (goal && Distance3d(goal) > 1024))
 				{
-					if (level.time && level.time % Random(35, 70) == 0) { A_LookForBodies(true); }
+					if (level.time && level.time % Random(35, 70) == 0) { A_LookForBodies(); }
 					if (Nazi(body) && !body.bShootable && !Nazi(body).healing) { bChaseGoal = true; goal = body; } // Keep trying to get to the body if it's still dead and isn't being healed
 					else { body = null; }
 				}

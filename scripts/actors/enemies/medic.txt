@@ -37,7 +37,7 @@ class NaziMedic : NaziStandard
 		Health 20;
 		Speed 6;
 		DropItem "NaziMedicBox", 255;
-		Nazi.Healer;
+		Nazi.Healer HLR_ALLIES;
 	}
 
 	States
@@ -46,7 +46,7 @@ class NaziMedic : NaziStandard
 			NMDC N 1; // Just sets the base sprite
 			Goto Look;
 		Look:
-			"####" "#" 35 A_LookForBodies(true);
+			"####" "#" 35 A_LookForBodies();
 			"####" "#" 0 A_CheckForPlayer(True);
 			Loop;
 		See:
