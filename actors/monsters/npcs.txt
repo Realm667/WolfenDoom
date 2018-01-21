@@ -439,7 +439,7 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 		}
 	Active: //check if it's active though
 	SpawnLoop:
-		PRSN E 1 {
+		"####" E 1 {
 			// Previously used A_Look2, but A_Look2 does NOT execute specials, so made it impossible to set navigation goals
 			// This replicates the essential bits (alert on sound only, and jump to See after a random interval)
 			A_LookEx(LOF_NOSIGHTCHECK);
@@ -549,6 +549,7 @@ ACTOR Camp_PrisonerBaldShirtless : Camp_PrisonerBald
 {
 	//$Title Wandering Prisoner, Shirtless (bald)
 	Health 15
+	Nazi.ZombieVariant "Camp_PrisonerZombie"
 	States
 	{
 	Spawn:

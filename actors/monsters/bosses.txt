@@ -816,6 +816,7 @@ ACTOR General : RocketMan
 	Health 800
 	Mass 1000
 	+MISSILEEVENMORE
+	Nazi.ZombieVariant "ZombieGeneral"
 	Obituary "$BGENERAL"
 	SeeSound "Boss3/Sighted"
 	DeathSound "Boss3/Death"
@@ -873,6 +874,7 @@ ACTOR MarineGeneral : General
 	DropItem "NebAmmo" 128
 	DropItem "NebAmmo" 128
 	DropItem "NebAmmo" 128
+	Nazi.ZombieVariant "" // Needed because he inherits from Fettgesicht
 	States
 	{
 	Spawn:

@@ -47,6 +47,8 @@ ACTOR ZombieBrain : ZombieStandard
 	Health 80
 	Speed 2
 	+QUICKTORETALIATE
+	Base.NoMedicHeal
+	Nazi.ZombieVariant "ZombieBrain"
 	Obituary "$NAZOBITE"
 	DropItem "9mmAmmo" 32
 	States
@@ -117,6 +119,7 @@ ACTOR ZombieOfficer : ZombieBrain
 	Speed 3
 	-QUICKTORETALIATE
 	+AVOIDMELEE
+	Nazi.ZombieVariant "ZombieOfficer"
 	DropItem "MP40" 192
 	DropItem "9mmAmmo" 32
 	States
@@ -215,6 +218,7 @@ ACTOR Camp_PrisonerZombie : NaziStandard //can't inherit ZombieBrain because of 
 	GibHealth 30
 	PainChance 64
 	Monster
+	Nazi.ZombieVariant "Camp_PrisonerZombie"
 	BloodColor "Black"
 	BloodType "UndeadBlood"
 	DamageFactor "Fire", 1.2
@@ -288,6 +292,7 @@ ACTOR ZombieGeneral : RocketMan
 	Base.BossIcon "BOSSICO2"
 	Tag "Undead Fettgesicht"
 	Health 1000
+	Nazi.ZombieVariant "ZombieGeneral"
 	Obituary "$ZGENERAL"
 	SeeSound "nazombie/sighted"
 	PainSound "nazombie/pain"

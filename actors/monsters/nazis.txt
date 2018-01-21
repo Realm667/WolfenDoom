@@ -155,6 +155,7 @@ ACTOR WGuard : Guard
 	Obituary "$WGUARD"
 	+MISSILEEVENMORE
 	+MISSILEMORE
+	Nazi.ZombieVariant "ZombieBrain"
 	States
 	{
 	Spawn:
@@ -302,6 +303,7 @@ ACTOR WMP40Guard : MP40Guard
 	Speed 2.5
 	Obituary "$WMPGUARD"
 	+MISSILEMORE
+	Nazi.ZombieVariant "ZombieBrain"
 	States
 	{
 	Spawn:
@@ -342,6 +344,7 @@ ACTOR WMP40Guard : MP40Guard
 
 ACTOR WMP40GuardSleep : WMP40Guard
 {
+	Base.NoMedicHeal
 	//$Title Wehrmacht Guard, Sleeping (MP40)
 	States
 	{
@@ -519,6 +522,7 @@ ACTOR WOfficer : Officer
 	Obituary "$WOFFICER"
 	+MISSILEEVENMORE
 	+MISSILEMORE
+	Nazi.ZombieVariant "ZombieOfficer"
 	States
 	{
 	Spawn:
@@ -616,6 +620,7 @@ ACTOR WRifleGuard : RifleGuard
 	Obituary "$WRIFSOLD"
 	+MISSILEEVENMORE
 	+MISSILEMORE
+	Nazi.ZombieVariant "ZombieBrain"
 	States
 	{
 	Spawn:
@@ -821,6 +826,7 @@ ACTOR Sniper : Guard
 	DropItem "Kar98k" 72
 	DropItem "MauserAmmo" 192 5
 	+LOOKALLAROUND
+	Base.NoMedicHeal
 	States
 	{
 	Spawn:
@@ -888,6 +894,7 @@ ACTOR Sniper_Crouch : Guard
 	DropItem "MauserAmmo" 192 5
 	+DROPOFF
 	+LOOKALLAROUND
+	Base.NoMedicHeal
 	States
 	{
 	Spawn:
@@ -953,6 +960,7 @@ ACTOR ArcticSniper : Guard
 	DropItem "Kar98k" 72
 	DropItem "MauserAmmo" 192 5
 	+LOOKALLAROUND
+	Base.NoMedicHeal
 	States
 	{
 	Spawn:
@@ -1008,6 +1016,7 @@ ACTOR ArcticSniper_Crouch : Guard
 	DropItem "MauserAmmo" 192 5
 	+DROPOFF
 	+LOOKALLAROUND
+	Base.NoMedicHeal
 	States
 	{
 	Spawn:
@@ -1248,6 +1257,7 @@ ACTOR FlamerSoldier : Guard
 	DropItem "FlameAmmo" 192
 	DropItem "Pyrolight" 48
 	MaxTargetRange 296
+	Base.NoMedicHeal
 	States
 	{
 	Spawn:
@@ -1320,6 +1330,7 @@ ACTOR Mechanic : Guard
 	Health 50
 	Speed 2.37
 	Obituary "$MECHANIC"
+	Base.NoMedicHeal
 	States
 	{
 	Spawn:
@@ -1427,6 +1438,7 @@ ACTOR WGuard_Wounded : Nazi //ozy81
 	-SOLID
 	+FLOORCLIP
 	+LOOKALLAROUND
+	Base.NoMedicHeal
 	States
 	{
 	Spawn:
@@ -2091,6 +2103,7 @@ ACTOR EliteFlamer : Guard
 	MaxTargetRange 400
 	Obituary "$FLAMEBOY"
 	+MISSILEMORE
+	Base.NoMedicHeal
 	SeeSound "eliteflamer/sight"
 	PainSound "eliteflamer/pain"
 	DeathSound "eliteflamer/death"
@@ -2187,6 +2200,7 @@ ACTOR EliteAssaulter : Guard
 	Speed 3.66666667
 	Obituary "$ELITASS"
 	+MISSILEMORE
+	Base.NoMedicHeal
 	SeeSound "eliteassaulter/sight"
 	PainSound "eliteassaulter/pain"
 	DeathSound "eliteassaulter/death"
@@ -2295,6 +2309,7 @@ ACTOR EliteSoldatRifler : Guard
 	Speed 4.66666667
 	Obituary "$ELITRIFL"
 	+MISSILEEVENMORE
+	Base.NoMedicHeal
 	SeeSound "eliterifler/Sight"
 	PainSound "eliteassaulter/pain"
 	DeathSound "eliterifler/death"

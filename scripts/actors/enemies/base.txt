@@ -186,6 +186,7 @@ class Base : Actor
 	int maxdodge;
 	State DodgeState;
 	bool shadow;
+	bool noheal;
 
 	Property BossIcon:BossIcon;
 	Property AlwaysDrawHealthBar:user_DrawHealthBar;
@@ -193,6 +194,7 @@ class Base : Actor
 	Property LoiterDistance:loiterdistance;
 	Property DodgeAmount:maxdodge; // Max number of times the enemy will dodge
 	Property Shadow:shadow;
+	Property NoMedicHeal:noheal;
 
 	Default {
 		Base.Shadow 1;
@@ -565,12 +567,14 @@ class Nazi : Base
 	int healflags;
 	int healloopcount;
 	Actor body;
+	String zombievariant;
 
 	Property Sneakable:user_sneakable;
 	Property SneakableCloseSightRadius:sneakableclosesightradius;
 	Property PerceptionTime:perceptionthreshold; // How many tics the player has to be in sight before NOTARGET fails - 0 means never see through NoTarget
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
 	Property Healer:healflags;
+	Property ZombieVariant:zombievariant;
 
 	Default
 	{
@@ -1026,8 +1030,13 @@ class Nazi : Base
 		if (healflags)
 		{
 			if (
-				Nazi(mo).healing ||
-				Nazi(mo).DeathDamageType ~== "Fire" ||
+				(
+					Nazi(mo) &&
+					(				
+						Nazi(mo).healing ||
+						Nazi(mo).DeathDamageType ~== "Fire"
+					)
+				) ||
 				mo.health <= mo.GetGibHealth() ||
 				!IsVisible(mo, True) ||
 				!mo.FindState("Raise") ||
@@ -1039,43 +1048,13 @@ class Nazi : Base
 				if (
 					mo.bFriendly != bFriendly ||
 					mo.bBoss ||
-					mo is "WGuard_Wounded" || // Use "is" so that any class inheriting from this class is skipped
-					mo is "Sniper" ||
-					mo is "Sniper_Crouch" ||
-					mo is "ArcticSniper" ||
-					mo is "ArcticSniper_Crouch" ||
-					mo is "NaziMedic" ||
-					mo is "FlamerSoldier" ||
-					mo is "Mechanic" ||
-					mo is "EliteFlamer" ||
-					mo is "EliteAssaulter" ||
-					mo is "EliteSoldatRifler" ||
-					mo is "ZombieBrain" ||
-					mo is "WereWaffenSS" ||
-					mo is "WMP40GuardSleep"
+					(Base(mo) && Base(mo).noheal)
 				) { return false; }
 			}
 
 			if (healflags & HLR_ZOMBIES)
 			{
-				String classname = mo.GetClassName();
-
-				if (!(
-					classname ~== "Camp_PrisonerBaldShirtless" || 
-					classname ~== "Camp_PrisonerZombie" || 
-					classname ~== "WGuard" || 
-					classname ~== "WMP40Guard" || 
-					classname ~== "WRifleGuard" || 
-					classname ~== "SneakableWGuard" || 
-					classname ~== "SneakableWMP40Guard" || 
-					classname ~== "SneakableWRifleGuard" || 
-					classname ~== "ZombieBrain" || 
-					classname ~== "WOfficer" || 
-					classname ~== "SneakableWOfficer" || 
-					classname ~== "ZombieOfficer" || 
-					classname ~== "General" ||
-					classname ~== "ZombieGeneral"
-				)) { return false; }
+				if (!Nazi(mo) || Nazi(mo).zombievariant == "") { return false; }
 			}
 		}
 		else if (
@@ -1330,10 +1309,9 @@ class Nazi : Base
 
 	void A_HealGoal()
 	{
-		Actor oldmaster = master;
-
-		if (Base(goal) && healflags & HLR_ZOMBIES)
+		if (Nazi(goal) && healflags & HLR_ZOMBIES)
 		{
+/*
 			String replacement;
 			String classname = goal.GetClassName();
 
@@ -1356,8 +1334,14 @@ class Nazi : Base
 			{
 				goal = Base(goal).ReplaceWith(replacement, "Raise");
 			}
+*/
+			if (Nazi(goal).zombievariant != "")
+			{
+				goal = Base(goal).ReplaceWith(Nazi(goal).zombievariant, "Raise");
+			}
 		}
 
+		Actor oldmaster = master;
 		master = goal;
 		A_RaiseMaster(RF_NOCHECKPOSITION); // Why is there no direct P_Thing_Raise call?
 		master = oldmaster;
