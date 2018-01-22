@@ -42,7 +42,7 @@ ACTOR ZombieKazi : ZombieStandard
 ACTOR ZombieBrain : ZombieStandard
 {
 	//$Category Monsters (Wolf3D)/Occult
-	//$Title Nazi Zombie, Brain Eater
+	//$Title Nazi Zombie, Brain Eater (Wehrmacht)
 	//$Color 4
 	Health 80
 	Speed 2
@@ -111,12 +111,45 @@ ACTOR ZombieBrain : ZombieStandard
 	}
 }
 
+ACTOR AKZombieBrain : ZombieBrain //these are not yet defined on "living" actors neither zscript - ozy81
+{
+	//$Title Nazi Zombie, Brain Eater (Afrika Korps)
+	-QUICKTORETALIATE
+	Nazi.ZombieVariant "AKZombieBrain"
+	States
+	{
+	Spawn:
+		ZBAF N 0
+		Goto Look
+	}
+}
+
+/*ACTOR SSZombieBrain : ZombieBrain //these are not yet defined on "living" actors neither zscript - ozy81
+{
+	//$Title Nazi Zombie, Brain Eater (SS)
+	Speed 4
+	Nazi.ZombieVariant "SSZombieBrain"
+	States
+	{
+	Spawn:
+		ZBSS N 0
+		Goto Look
+	See:
+		"####" "#" 0 A_JumpIfCloser (radius + 320, "Run")
+		"####" "#" 0 A_SetSpeed(4)
+		Goto See.Normal
+	Run:
+		"####" "#" 0 A_SetSpeed(8)
+		"####" "#" 0 A_Jump(256,"RunLoop")
+		Stop
+	}
+}*/
+
 ACTOR ZombieOfficer : ZombieBrain
 {
 	//$Title Nazi Zombie, Officer (MP40)
 	Speed 3
 	-QUICKTORETALIATE
-	+AVOIDMELEE
 	Nazi.ZombieVariant "ZombieOfficer"
 	DropItem "MP40" 192
 	DropItem "9mmAmmo" 32
