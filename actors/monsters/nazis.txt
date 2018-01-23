@@ -11,6 +11,7 @@ ACTOR Guard : NaziStandard
 	Obituary "$GUARD"
 	DropItem "9mmAmmo" 192
 	DropItem "Luger9mm" 64
+	Nazi.ZombieVariant "AKZombieBrain"
 	States
 	{
 	Spawn:
@@ -115,6 +116,7 @@ ACTOR SSGuard : Guard
 	Health 40
 	Speed 2.67
 	Obituary "$SSGUARD"
+	Nazi.ZombieVariant "SSZombieBrain"
 	States
 	{
 	Spawn:
@@ -261,6 +263,7 @@ ACTOR SSMP40Guard : SSGuard
 	DropItem "GrenadePickup" 16
 	DropItem "MP40" 96
 	Obituary "$SSMPGURD"
+	Nazi.ZombieVariant "SSZombieBrain"
 	States
 	{
 	Spawn:
@@ -417,6 +420,7 @@ ACTOR Officer : Guard
 	SeeSound "Nazi4/Sighted"
 	PainSound "Nazi4/Pain"
 	DeathSound "Nazi4/Death"
+	Nazi.ZombieVariant "AKZombieOfficer"
 	States
 	{
 	Spawn:
@@ -465,6 +469,7 @@ ACTOR SSOfficer : Officer
 	Health 40
 	Speed 4.5
 	Obituary "$SSOFFICE"
+	Nazi.ZombieVariant "SSZombieOfficer"
 	States
 	{
 	Spawn:
