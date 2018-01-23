@@ -939,6 +939,18 @@ class Nazi : Base
 				SetStateLabel("See");
 			}
 		}
+
+		if (!Default.bLookAllAround && level.time && level.time % interval == 0)
+		{
+			FLineTraceData trace;
+			if (LineTrace(angle, 256.0, pitch, TRF_THRUHITSCAN | TRF_ALLACTORS, Height * 0.9, 0.0, 0.0, trace) && trace.HitType == TRACE_HitWall)
+			{
+				// If it's a mirror, look all around...  
+				//  This isn't perfect, but will work in situations where we have a guard with his back to the
+				//  door who is facing a mirror - better than him being unresponsive to the player until hit 
+				bLookAllAround = (trace.HitLine.special == 182 || (trace.HitLine.special == 80 && trace.HitLine.args[0] == 406));
+			}
+		}
 	}
 
 	void A_NaziChase(statelabel melee = "None", statelabel missile = "None", int flags = 0)
@@ -1311,31 +1323,6 @@ class Nazi : Base
 	{
 		if (Nazi(goal) && healflags & HLR_ZOMBIES)
 		{
-/*
-			String replacement;
-			String classname = goal.GetClassName();
-
-			if (classname == "Camp_PrisonerBaldShirtless") { replacement = "Camp_PrisonerZombie"; }
-			else if (
-				classname == "WGuard" ||
-				classname == "WMP40Guard" ||
-				classname == "WRifleGuard" ||
-				classname == "SneakableWGuard" ||
-				classname == "SneakableWMP40Guard" ||
-				classname == "SneakableWRifleGuard"
-			) { replacement = "ZombieBrain"; }
-			else if (
-				classname == "WOfficer" ||
-				classname == "SneakableWOfficer"
-			) { replacement = "ZombieOfficer"; }
-			else if (classname == "General") { replacement = "ZombieGeneral"; }
-			else if (classname == "GermanShepherd") { replacement = "ZGermanShepherd"; }
-
-			if (replacement != "")
-			{
-				goal = Base(goal).ReplaceWith(replacement, "Raise");
-			}
-*/
 			if (Nazi(goal).zombievariant != "")
 			{
 				goal = Base(goal).ReplaceWith(Nazi(goal).zombievariant, "Raise");
@@ -1361,6 +1348,14 @@ class Nazi : Base
 		goal = null;
 
 		dodgetimeout = Random(175, 350); // Reset the dodge timeout
+	}
+
+	// Wrapper for A_SpawnItemEx so that items can be spawned at the actor's goal in Decorate
+	void A_SpawnAtGoal(class<Actor> itemtype, double xofs = 0, double yofs = 0, double zofs = 0, double xvel = 0, double yvel = 0, double zvel = 0, double angle = 0, int flags = 0, int failchance = 0, int tid=0)
+	{
+		Actor spawntarget = goal;
+		if (!spawntarget) { spawntarget = self; }
+		spawntarget.A_SpawnItemEx(itemtype, xofs, yofs, zofs, xvel, yvel, zvel, angle, flags, failchance, tid);
 	}
 
 	override void Tick()

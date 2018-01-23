@@ -988,7 +988,7 @@ ACTOR Totengraber_Wounded : RocketMan
 	See:
 		Goto See.BossBleeding
 	Heal: //still didn't finished - ozy81
-		"####" EEEEEE 6 A_SpawnItemEx("CreepyRaise", random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0)
+		"####" EEEEEE 6 A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0)
 		"####" E 0 A_HealGoal
 		Goto See
 	Missile:

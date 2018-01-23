@@ -221,7 +221,7 @@ ACTOR PyroCasing : ShotgunCasing
 /////////////////////////////////////////////////////////////
 
 //Nifty new mutants variations for tracers
-ACTOR MutantTracer : Tracer
+ACTOR MutantTracer : BulletTracer
 {
 	DamageType MutantPoison
 
@@ -241,7 +241,7 @@ ACTOR MutantTrail: TracerTrail {}
 /////////////////////////////////////////////////////////////
 
 //Variant for Enemies
-ACTOR AstroTracer : Tracer
+ACTOR AstroTracer : BulletTracer
 {
 	+BLOODLESSIMPACT
 	DamageType AstroPoison
@@ -292,7 +292,7 @@ ACTOR AstroTracerPlayer : AstroTracer
 }
 
 //Robots tracers
-ACTOR ProtoTracer : Tracer
+ACTOR ProtoTracer : BulletTracer
 {
 	+BLOODLESSIMPACT
 	DamageType AstroPoison
@@ -328,13 +328,13 @@ ACTOR ProtoTrail: TracerTrail{}
 /////////////////////////////////////////////////////////////
 
 // Enemy tracer variants for Normal mode.
-ACTOR EnemyChaingunTracer : Tracer 			{Damage (random(6,8))}
+ACTOR EnemyChaingunTracer : BulletTracer 			{Damage (random(6,8))}
 ACTOR EnemyMutantTracer : MutantTracer	{Damage (random(2,4))}
-ACTOR EnemyPistolTracer : Tracer				{Damage (random(4,8))}
-ACTOR EnemyRifleTracer : Tracer					{Damage (random(15,30))}
-ACTOR EnemySMGTracer : Tracer						{Damage (random(6,7))}
-ACTOR EnemyShotgunTracer : Tracer 			{Damage (random(3,7))}
-ACTOR EnemyStGTracer : Tracer						{Damage (random(7,8))}
+ACTOR EnemyPistolTracer : BulletTracer				{Damage (random(4,8))}
+ACTOR EnemyRifleTracer : BulletTracer					{Damage (random(15,30))}
+ACTOR EnemySMGTracer : BulletTracer						{Damage (random(6,7))}
+ACTOR EnemyShotgunTracer : BulletTracer 			{Damage (random(3,7))}
+ACTOR EnemyStGTracer : BulletTracer						{Damage (random(7,8))}
 
 // Enemy tracer variants for Baby mode
 ACTOR BabyEnemyAstroTracer : EnemyAstroTracer				{Speed 30}
