@@ -1385,7 +1385,7 @@ class Nazi : Base
 					if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); }
 				}
 			}
-			else if (!bFriendly && activationgoal)
+			else if (user_InCombat && !bFriendly && activationgoal)
 			{
 				MeleeRange = 0; // To bypass the internal A_Chase "goal reached" logic
 
