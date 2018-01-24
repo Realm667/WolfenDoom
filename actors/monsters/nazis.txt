@@ -2,16 +2,12 @@
 //NAZIS//
 /////////
 
-ACTOR Guard : NaziStandard
+ACTOR BasicGuard : NaziStandard
 {
-	//$Category Monsters (Wolf3D)
-	//$Title Afrika Korps Guard (Pistol)
-	//$Color 4
 	Health 20
 	Obituary "$GUARD"
 	DropItem "9mmAmmo" 192
 	DropItem "Luger9mm" 64
-	Nazi.ZombieVariant "AKZombieBrain"
 	States
 	{
 	Spawn:
@@ -56,6 +52,14 @@ ACTOR Guard : NaziStandard
 		TNT1 A 1 A_SpawnItemEx("Guard_Wounded_NoCount", 0, 0, 0)
 		Stop
 	}
+}
+
+ACTOR Guard : BasicGuard
+{
+	//$Category Monsters (Wolf3D)
+	//$Title Afrika Korps Guard (Pistol)
+	//$Color 4
+	Nazi.ZombieVariant "AKZombieBrain"
 }
 
 ACTOR GiantGuard : Guard
@@ -110,7 +114,7 @@ ACTOR GiantGuard : Guard
 	}
 }
 
-ACTOR SSGuard : Guard
+ACTOR SSGuard : BasicGuard
 {
 	//$Title SS Guard (Pistol)
 	Health 40
@@ -148,7 +152,7 @@ ACTOR SSGuard : Guard
 	}
 }
 
-ACTOR WGuard : Guard
+ACTOR WGuard : BasicGuard
 {
 	//$Title Wehrmacht Guard (Pistol)
 	Health 30
@@ -263,7 +267,6 @@ ACTOR SSMP40Guard : SSGuard
 	DropItem "GrenadePickup" 16
 	DropItem "MP40" 96
 	Obituary "$SSMPGURD"
-	Nazi.ZombieVariant "SSZombieBrain"
 	States
 	{
 	Spawn:
@@ -348,6 +351,7 @@ ACTOR WMP40Guard : MP40Guard
 ACTOR WMP40GuardSleep : WMP40Guard
 {
 	Base.NoMedicHeal
+	Nazi.ZombieVariant ""
 	//$Title Wehrmacht Guard, Sleeping (MP40)
 	States
 	{
@@ -412,7 +416,7 @@ ACTOR WMP40GuardSleep : WMP40Guard
 	}
 }
 
-ACTOR Officer : Guard
+ACTOR Officer : BasicGuard
 {
 	//$Title Afrika Korps Officer
 	Speed 3.5
@@ -665,6 +669,7 @@ ACTOR ArcticRifleGuard : RifleGuard
 	Obituary "$ARIFSOLD"
 	+MISSILEEVENMORE
 	+MISSILEMORE
+	Nazi.ZombieVariant ""
 	States
 	{
 	Spawn:
@@ -705,6 +710,7 @@ ACTOR WaffenSS : SSMP40Guard
 	DropItem "9mmAmmo" 192
 	DropItem "GrenadePickup" 32
 	DropItem "MP40" 96
+	Nazi.ZombieVariant ""
 	States
 	{
 	Spawn:
@@ -820,7 +826,7 @@ ACTOR Paratrooper : WaffenSS
 	}
 }
 
-ACTOR Sniper : Guard
+ACTOR Sniper : BasicGuard
 {
 	//$Title Afrika Korps Sniper
 	Health 50
@@ -887,7 +893,7 @@ ACTOR WSniper : Sniper
 	}
 }
 
-ACTOR Sniper_Crouch : Guard
+ACTOR Sniper_Crouch : BasicGuard
 {
 	//$Title Afrika Korps Sniper (crouch)
 	Health 50
@@ -954,7 +960,7 @@ ACTOR WSniper_Crouch : Sniper_Crouch
 	}
 }
 
-ACTOR ArcticSniper : Guard
+ACTOR ArcticSniper : BasicGuard
 {
 	//$Title Arctic Sniper
 	Health 60
@@ -1009,7 +1015,7 @@ ACTOR ArcticSniper : Guard
 	}
 }
 
-ACTOR ArcticSniper_Crouch : Guard
+ACTOR ArcticSniper_Crouch : BasicGuard
 {
 	//$Title Arctic Sniper (crouch)
 	Health 50
@@ -1254,7 +1260,7 @@ ACTOR SGrenadier : WGrenadier
 	}
 }
 
-ACTOR FlamerSoldier : Guard
+ACTOR FlamerSoldier : BasicGuard
 {
 	//$Title Nazi Flamer (Soldier)
 	Health 100
@@ -1304,7 +1310,7 @@ ACTOR FlamerSoldier : Guard
 	}
 }
 
-ACTOR Gestapo : Guard
+ACTOR Gestapo : BasicGuard
 {
 	//$Title Gestapo Officer
 	Speed 3.5
@@ -1329,7 +1335,7 @@ ACTOR Gestapo : Guard
 	}
 }
 
-ACTOR Mechanic : Guard
+ACTOR Mechanic : BasicGuard
 {
 	//$Title Mechanic (Pistol)
 	Health 50
@@ -1444,6 +1450,7 @@ ACTOR WGuard_Wounded : Nazi //ozy81
 	+FLOORCLIP
 	+LOOKALLAROUND
 	Base.NoMedicHeal
+	Nazi.ZombieVariant ""
 	States
 	{
 	Spawn:
@@ -2100,7 +2107,7 @@ ACTOR MGTurretSoldierW : MGTurretSoldier
 //ELITES//
 //////////
 
-ACTOR EliteFlamer : Guard
+ACTOR EliteFlamer : BasicGuard
 {
 	//$Title Elite Soldier (Flamer)
 	Health 450
@@ -2197,7 +2204,7 @@ ACTOR EliteFlamer : Guard
 	}
 }
 
-ACTOR EliteAssaulter : Guard
+ACTOR EliteAssaulter : BasicGuard
 {
 	//$Title Elite Soldier (MP40)
 	Health 350
@@ -2306,7 +2313,7 @@ ACTOR EliteAssaulter : Guard
 	}
 }
 
-ACTOR EliteSoldatRifler : Guard
+ACTOR EliteSoldatRifler : BasicGuard
 {
 	//$Title Elite Soldier (Rifle)
 	Health 65
@@ -2401,7 +2408,7 @@ ACTOR EliteSoldatRifler : Guard
 //SPECIAL//
 ///////////
 
-ACTOR Scientist : Guard
+ACTOR Scientist : BasicGuard
 {
 	//$Title Scientist (young)
 	+FRIGHTENED
@@ -2421,7 +2428,7 @@ ACTOR Scientist : Guard
 	}
 }
 
-ACTOR Scientist2 : Guard
+ACTOR Scientist2 : BasicGuard
 {
 	//$Title Scientist (old)
 	+FRIGHTENED
@@ -2457,7 +2464,7 @@ ACTOR ScientistGutenberg : Scientist2
 	}
 }
 
-ACTOR DirtyDarren : Guard
+ACTOR DirtyDarren : BasicGuard
 {
 	//$Category Monsters (Wolf3D)/NPCs
 	//$Title Dirty Douglas

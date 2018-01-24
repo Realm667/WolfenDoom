@@ -1360,6 +1360,8 @@ class Nazi : Base
 
 	override void Tick()
 	{
+		if (globalfreeze || level.Frozen) { return; }
+
 		// If the enemy is sneakable and idle (and not patrolling), and isn't in its original location, keep it moving toward that location.
 		//  NOTE: This doesn't work properly when the player has NOTARGET enabled (or is wearing a disguise and has no weapon raised).
 		if (health > 0 && bShootable)
