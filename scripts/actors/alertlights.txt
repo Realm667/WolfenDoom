@@ -145,50 +145,26 @@ class SpotlightGlow : AlertLight
 {
 	Default
 	{
-		-RANDOMIZE
-		+ALWAYSPUFF
-		+BLOODLESSIMPACT
-		+DONTSPLASH
-		+INVISIBLE
 		+NOBLOCKMAP
-		+NOGRAVITY
-		+PAINLESS
-		+PUFFGETSOWNER
-		+PUFFONACTORS
 		DistanceCheck "sfxlod";
-		Height 16;
-		Radius 16;
+		Height 1;
+		Radius 1;
 	}
 
 	States
 	{
 		Spawn:
-			TNT1 A 0;
-			"####" # 1 {
-				A_SpawnitemEx("MeasurePuffTemp", 0, 0, 0, 0, 0, 0, 0, SXF_ISTRACER | SXF_SETMASTER | SXF_NOCHECKPOSITION);
-				A_TransferPointer(AAPTR_TRACER, AAPTR_TARGET, AAPTR_MASTER, AAPTR_MASTER);
-			}
-			"####" # 25 Light("SpotLight");
-			"####" # 0 A_LookEx(LOF_NOSOUNDCHECK | LOF_DONTCHASEGOAL | LOF_NOSEESOUND, 0, 256, 0, 360, "Illuminate");
-			Stop;
+			UNKN A 1 A_LookEx(LOF_NOSOUNDCHECK | LOF_DONTCHASEGOAL | LOF_NOSEESOUND, 0, 256, 0, 360, "Illuminate");
+			Loop;
 		Illuminate:
 			"####" # 1 A_AddVisibility(100);
-			Stop;
-		XDeath:
-		Crash:
-		Melee:
-			TNT1 A 0 A_Jump(256, "Spawn");
+			Goto Spawn;
 	}
-
-	override void PostBeginPlay()
-	{
-		checkRadius = 60;
-	}
-
 }
 
 class SpotlightMount : Actor
 {
+	Actor light;
 	int user_minAngle;
 	int user_maxAngle;
 	int user_position;
@@ -226,54 +202,10 @@ class SpotlightMount : Actor
 	States
 	{
 		Spawn:
-			MDLA A random(1, 35);
-			"####" # 0 {
-				if (pitch == 0 && args[0] == 0 && args[1] == 0) {
-					A_SetPitch(90);
-					A_SetArg(0, 45);
-					A_SetArg(1, 45);
-				}
-			}
-			"####" # 0 {
-				user_minAngle = -args[1];
-				user_maxAngle = args[0];
-				user_position = 0;
-				user_sightRange = 1024;
-				user_direction = RandomPick(-1, 1);
-				A_SpawnItemEx("SpotlightFlare", 5.0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION | SXF_TRANSFERPITCH);
-				A_SpawnItemEx("SpotlightBeam", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION | SXF_TRANSFERPITCH);
-			}
-			Goto Pan;
-		Pan:
-			"####" # 0 A_CheckRange(2048, "Pan.NoLight");
-			"####" # 0 {
-				CallACS("SpotLightCast", int(angle), -int(pitch), user_sightRange); //Spawns "SpotlightGlow" actor that also sets itself as spotlight's master
-			}
-		Pan.NoLight:
-			"####" # 1 {
-				if (CountProximity("PlayerPawn", 272.0, CPXF_ANCESTOR, AAPTR_MASTER)) { //Radius of 272 is based off of effective radius of the spotlight glow
-					if (args[2]) {
-						ACS_ExecuteAlways(args[2], 0, args[3], args[4]);
-					} else {
-						A_AlertMonsters(1280); //Still fall back to alerting monsters if no script number supplied.
-					}
-				}
-				if (args[0] != 0 && args[1] != 0) {
-					if (user_position >= user_maxAngle || user_position <= user_minAngle) {
-						user_holdTime++;
-						if (user_holdTime >= 70) {
-							user_holdTime = Random(0, 35);
-							user_direction = -user_direction;
-							user_position = user_position + user_direction;
-							A_SetAngle(angle + user_direction);
-						}
-					} else {
-						user_position = user_position + user_direction;
-						A_SetAngle(angle + user_direction);
-					}
-				}
-			}
-			Goto Pan;
+			MDLA A Random(1, 35);
+		SpawnLoop:
+			MDLA A 1;
+			Loop;
 		Death:
 			"####" B 0 {
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING);
@@ -298,6 +230,76 @@ class SpotlightMount : Actor
 			}
 			"####" B -1;
 			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		if (pitch == 0 && args[0] == 0 && args[1] == 0)
+		{
+			pitch = 90;
+			args[0] = 45;
+			args[1] = 45;
+		}
+
+		user_minAngle = -args[1];
+		user_maxAngle = args[0];
+		user_position = 0;
+		user_sightRange = 1024;
+		user_direction = RandomPick(-1, 1);
+
+		A_SpawnItemEx("SpotlightFlare", 5.0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION | SXF_TRANSFERPITCH);
+		A_SpawnItemEx("SpotlightBeam", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION | SXF_TRANSFERPITCH);
+
+		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		if (globalfreeze || level.Frozen) { return; }
+
+		if (health && bShootable)
+		{
+			FLineTraceData trace;
+			if (LineTrace(angle, user_sightrange, pitch + 90, TRF_THRUHITSCAN | TRF_THRUACTORS | TRF_THRUBLOCK, 0.0, 0.0, 0.0, trace))
+			{
+				if (!light)
+				{
+					light = Spawn("SpotlightGlow", trace.HitLocation);
+					light.master = self;
+				}
+				else if (light)
+				{
+					light.SetOrigin(trace.HitLocation, true);
+					master = light;
+				}
+			}
+
+			if (master == light && CountProximity("PlayerPawn", 272.0, CPXF_ANCESTOR, AAPTR_MASTER)) { //Radius of 272 is based off of effective radius of the spotlight glow
+				if (args[2]) {
+					ACS_ExecuteAlways(args[2], 0, args[3], args[4]);
+				} else {
+					target = master.target;
+					A_AlertMonsters(1280); //Still fall back to alerting monsters if no script number supplied.
+				}
+			}
+
+			if (args[0] != 0 && args[1] != 0) {
+				if (user_position >= user_maxAngle || user_position <= user_minAngle) {
+					user_holdTime++;
+					if (user_holdTime >= 70) {
+						user_holdTime = Random(0, 35);
+						user_direction = -user_direction;
+						user_position += user_direction;
+						angle += user_direction;
+					}
+				} else {
+					user_position += user_direction;
+					angle += user_direction;
+				}
+			}
+		}
+
+		Super.Tick();
 	}
 }
 
@@ -332,6 +334,8 @@ class SpotlightFlare : SwitchableDecoration
 
 class SpotlightBeam : Actor
 {
+	Actor light;
+
 	Default
 	{
 		+BRIGHT
@@ -340,19 +344,66 @@ class SpotlightBeam : Actor
 		DistanceCheck "sfxlod";
 		RenderStyle "Add";
 		Alpha 0.4;
-//		DynamicLight.SpotInnerAngle 15;
-//		DynamicLight.SpotOuterAngle 20;
+	}
+
+	override void Tick()
+	{
+		if (globalfreeze || level.Frozen) { return; }
+
+		if (!light)
+		{
+			light = Spawn("SpotlightBeamLight", pos);
+			if (light) { light.master = self; }
+		}
+
+		if (master)
+		{
+			angle = master.angle;
+			pitch = master.pitch;
+
+			if (pos != master.pos) { SetOrigin(master.pos, true); }
+		}
+
+		Super.Tick();
 	}
 
 	States
 	{
 		Spawn:
-			MDLA A 1 /*Light("Spotlight")*/ {
-				angle = master.angle;
-				pitch = master.pitch;
-				SetOrigin(master.pos, true);
-			}
+			MDLA A 1;
 			Loop;
 	}
 
+}
+
+class SpotlightBeamLight : SpotLightAttenuated
+{
+	override void PostBeginPlay()
+	{
+		args[0] = 220;
+		args[1] = 220;
+		args[2] = 255;
+		args[3] = 1024;
+
+		spotinnerangle = 17;
+		spotouterangle = 18;
+
+		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		if (globalfreeze || level.Frozen) { return; }
+
+		if (master)
+		{
+			angle = master.angle;
+			pitch = master.pitch + (master is "SpotLightBeam" ? 90 : 0);
+
+			if (pos != master.pos) { SetOrigin(master.pos, true); }
+		}
+		else { Destroy(); }
+
+		Super.Tick();
+	}
 }
