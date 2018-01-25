@@ -193,7 +193,7 @@ ACTOR SSZombieBrain : ZombieBrain //faster
 
 ACTOR ZombieOfficer : ZombieBrain
 {
-	//$Title Zombie Officer (MP40, Wehrmacht)
+	//$Title Zombie Officer (Wehrmacht)
 	Speed 3
 	-QUICKTORETALIATE
 	Nazi.ZombieVariant "ZombieOfficer"
@@ -308,7 +308,7 @@ ACTOR AKZombieOfficer : ZombieOfficer //slower
 	States
 	{
 	Spawn:
-		ZOFF N 0 //ZOAF once done
+		ZOAF N 0
 		Goto Look
 	See:
 		Goto See.Normal
@@ -323,7 +323,7 @@ ACTOR SSZombieOfficer : ZombieOfficer //faster
 	States
 	{
 	Spawn:
-		ZOFF N 0 //ZOSS once done
+		ZOSS N 0
 		Goto Look
 	See:
 		Goto See.Fast
