@@ -40,9 +40,9 @@ class BlurShaderControl : ShaderControl {
 
 	override void DoEffect()
 	{
-		if (amount > 1) { holdTarget = level.time + amount; }
+		if (amount > 1) { holdTarget = level.time + amount; } // Set hold time based on amount in inventory
 
-		if (holdTarget && level.time > holdTarget)
+		if (holdTarget && level.time > holdTarget) // If we've hit the hold time, remove the effect
 		{
 			amount = 1;
 			holdTarget = 0;
@@ -50,8 +50,8 @@ class BlurShaderControl : ShaderControl {
 		}
 		else if (holdTarget)
 		{
-			alpha = alpha < 1.0 ? alpha += 0.057 : 1.0;
-			amount--;
+			alpha = alpha < 1.0 ? alpha += 0.057 : 1.0; // Fade the blur effect in over the course of roughly half a second
+			amount--; // Remove one from inventory every tick
 		}
 	}
 }
