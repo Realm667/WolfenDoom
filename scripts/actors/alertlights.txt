@@ -101,12 +101,7 @@ class AlertLight : Actor
 	{
 		Spawn:
 			UNKN A 1;
-		CheckForPlayer:
-			UNKN A 1 A_LookEx(LOF_NOSOUNDCHECK | LOF_DONTCHASEGOAL | LOF_NOSEESOUND, 0, checkRadius * 2, 0, 360, "Illuminate");
 			Loop;
-		Illuminate:
-			UNKN A 1 A_AddVisibility();
-			Goto CheckForPlayer;
 	}
 
 	override void PostBeginPlay()
@@ -135,8 +130,19 @@ class AlertLight : Actor
 				amount *= brightness; // Adjust based on brightness level
 
 				oldVisibility = BoAVisibility(vis).extravisibility;
-				BoAVisibility(vis).extravisibility  = int(oldvisibility + Max(amount - oldVisibility, 0)); // Set the new visibility - use delta in value instad of overriding so that multiple lights can be additive in visibility
+				BoAVisibility(vis).extravisibility  = int(oldvisibility + Max(amount - oldVisibility, 0)); // Set the new visibility - use delta in value instead of overriding so that multiple lights can be additive in visibility
 			}
+		}
+	}
+
+	override void Tick()
+	{
+		A_LookEx(LOF_NOSOUNDCHECK | LOF_DONTCHASEGOAL | LOF_NOSEESOUND | LOF_NOJUMP, 0, checkRadius * 2, 0, 360, null);
+
+		if (target)
+		{
+			A_AddVisibility();
+			target = null;
 		}
 	}
 }
@@ -350,8 +356,6 @@ class SpotlightBeamLight : SpotLightAttenuated
 
 	override void Tick()
 	{
-		if (globalfreeze || level.Frozen) { return; }
-
 		if (master)
 		{
 			angle = master.angle;
@@ -368,13 +372,19 @@ class SpotlightBeamLight : SpotLightAttenuated
 		if (target)
 		{
 			double relpitch = PitchTo(target, master, pitch);
-			double relangle = deltaangle(master.angle, master.AngleTo(target));
 
-			double reldist = sqrt(relpitch ** 2 + relangle ** 2);
+			// Use custom function instead of AngleTo in order to account for target actor radius
+			Vector2 posoffset = master.pos.xy - target.pos.xy; // Get offsets
+			posoffset = RotateVector(posoffset, -master.angle); // Rotate to align with 0 degrees to remove rotation from calculations
 
-			if (reldist < spotouterangle * 1.2)
+			// Calculate the angle to the left and right sides of the actor, and return whichever is smaller
+			double relangle = min(atan((posoffset.y + target.radius * 0.7) / posoffset.x), atan((posoffset.y - target.radius * 0.7) / posoffset.x));  // Radius is fudged by 0.7 since most actors's center of mass doesn't take up the whole radius
+
+			double reldist = sqrt(relpitch ** 2 + relangle ** 2); // Get the distance from light cone center using the calculated pitch and angle
+
+			if (reldist < spotouterangle * 1.5) // Use 1.5 times the outer angle so that we have wiggle room to calculate the ramp up to full light level
 			{
-				AddVisibility(reldist, 100);
+				AddVisibility(reldist); // Do the visibility calculations and addition
 
 				if (mount && mount.args[2]) { // Execute the script that is set on the spotlight base
 					ACS_ExecuteAlways(mount.args[2], 0, mount.args[3], mount.args[4]);
@@ -389,6 +399,7 @@ class SpotlightBeamLight : SpotLightAttenuated
 		Super.Tick();
 	}
 
+	// Return the aim pitch offset from the source to the target
 	double PitchTo(Actor mo, Actor source = null, double sourcepitch = 0)
 	{
 		if (source == null) { source = self; }
@@ -397,10 +408,14 @@ class SpotlightBeamLight : SpotLightAttenuated
 		double distxy = max(source.Distance2D(mo), 1);
 		double distz = source.pos.z - mo.pos.z;
 
-		return atan(distz / distxy) - sourcepitch % 360;
+		double targetheight = target.player ? target.height * target.player.crouchfactor : target.height; // Get target height, with crouching if applicable
+
+		double pitchcalc = min(atan(distz / distxy), atan((distz - targetheight) / distxy)); // Return whichever is lower: pitch to actor bottom or actor top.
+
+		return pitchcalc - sourcepitch % 360; // Normalize to 360 degree range
 	}
 
-	void AddVisibility(double amt, double minimum)
+	void AddVisibility(double amt, double max = 75)
 	{
 		if (target)
 		{
@@ -409,11 +424,21 @@ class SpotlightBeamLight : SpotLightAttenuated
 			{
 				double brightness = (args[0] + args[1] + args[2]) / (255. * 3) * 1.25; // Calculate the light's overall brightness
 
-				double amount = max(spotouterangle * 1.2 - amt, minimum);
+				double amount;
+
+				if (spotinnerangle - amt < 0) // When in between inner and outer angles...
+				{
+					amount = spotouterangle * 1.5 - amt;
+					amount = amount / max((spotouterangle * 1.5 - spotinnerangle * 1.5), 1) * max; // Ramp up intensity proportionate to distance from inner angle edge
+				}
+				else { amount = max; } // Use full amount when located inside the center radius of the spotlight
+
 				amount *= brightness; // Adjust based on brightness level
 
+				amount = clamp(amount, 0, max); // Make sure the numbers are withint he right range
+
 				double oldVisibility = BoAVisibility(vis).extravisibility;
-				BoAVisibility(vis).extravisibility  = int(oldvisibility + Max(amount - oldVisibility, 0)); // Set the new visibility - use delta in value instad of overriding so that multiple lights can be additive in visibility
+				BoAVisibility(vis).extravisibility  = int(oldvisibility + Max(amount - oldVisibility, 0)); // Set the new visibility - use delta in value instead of overriding so that multiple lights can be additive in visibility
 			}
 		}
 	}
