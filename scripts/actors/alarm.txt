@@ -308,8 +308,8 @@ class AlarmSpawner : ActorSpawner
 
 	override void PostBeginPlay()
 	{
-		spawntype = GetSpawnableType(args[0]);
-		if (!spawntype) { spawntype = "SneakableSSMP40Guard"; }
+		user_spawntype = GetSpawnableType(args[0]);
+		if (!user_spawntype) { user_spawntype = "SneakableSSMP40Guard"; }
 		if (!user_maxactors) { user_maxactors = 3; }
 		if (!user_minspawndistance) { user_minspawndistance = 0; }
 	}
@@ -318,7 +318,7 @@ class AlarmSpawner : ActorSpawner
 	{
 		int guardcount = CountSpawns();
 
-		if (guardcount < user_maxactors)
+		if (guardcount < user_maxactors || user_maxactors < 0)
 		{
 			vector3 location = pos;
 
@@ -328,7 +328,7 @@ class AlarmSpawner : ActorSpawner
 			//Spawn enemies if not visible to player
 			if (!InPlayerSightorRange(user_minspawndistance))
 			{
-				Actor guard = Spawn(spawntype, location);
+				Actor guard = Spawn(user_spawntype, location);
 				guard.target = target;
 				guard.angle = angle;
 				guard.ChangeTID(user_tid);
@@ -349,6 +349,9 @@ class AlarmSpawner : ActorSpawner
 				}
 				Spawns.Push(guard);
 			}
+
+			if (user_maxactors < 0) { user_maxactors++; }
+
 			return ResolveState("Active");
 		}
 		return ResolveState("Inactive");

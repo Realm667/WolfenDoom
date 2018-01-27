@@ -24,7 +24,7 @@
       being idle.  By default, they go back to their spawn point and stand still.
 
     user_maxactors
-      Sets how many enemies from this spawner to maintain alive at once (default 1)
+      Sets how many enemies from this spawner to maintain alive at once (default 1) - use negative numbers to set total number spawned instead of number to keep alive
 
     user_minspawndistance
       Distance from player inside of which the spawner will stop spawning (default 512)
@@ -33,7 +33,8 @@
 class ActorSpawner : SwitchableDecoration
 {
 	Array<Actor> Spawns;
-	Class<Actor> spawntype;
+	Class<Actor> user_spawntype;
+	int totalspawncount;
 
 	// TID to give the spawned enemy actor (default no TID)
 	int user_tid;
@@ -44,6 +45,9 @@ class ActorSpawner : SwitchableDecoration
 	// How many enemies from this spawner to maintain alive at once (default 1)
 	int user_maxactors;
 
+	// How many enemies from this spawner to spawn in total (defaults to infinite)
+	int user_maxspawns;
+
 	// Distance from player inside of which the spawner will stop spawning (default 512)
 	int user_minspawndistance;
 
@@ -51,13 +55,23 @@ class ActorSpawner : SwitchableDecoration
 	{
 		//$Arg0 "Thing ID to spawn"
 		//$Arg0Str "Actor class to spawn"
+		//$Arg0ToolTip "What actor to spawn.  Numeric values set Thing ID, and string values set spawn class."
+		//$Arg1 "Maximum number alive"
+		//$Arg1ToolTip "Determines the number of actors to keep alive at once (e.g., '5' will spawn a new actor every time you kill one, keeping 5 alive at all times)."
+		//$Arg2 "TID to give actor"
+		//$Arg2ToolTip "TID that will be given to the spawned actor(s).  Default is 0 (no TID)."
+		//$Arg3 "Minimum player distance"
+		//$Arg3ToolTip "Distance that the player must be away from this actor in order for spawns to take place.  A value of '0' defaults to 512."
+		//$Arg3Default 512
+		//$Arg4 "Maximum number to spawn, total"
+		//$Arg4ToolTip "Determines the number of actors to spawn in total, regardless of how many are killed. Zero means unlimited."
 		//$Sprite EXCLC0
 	}
 
 	States
 	{
 		Spawn:
-			TNT1 A 35;
+			UNKN A 35;
 		Active:
 			"####" "#" 35 A_SetTics(Random[Spawn](1, 3) * 35);
 			"####" "#" 0 { return ResolveState("Active.Spawn"); }
@@ -70,11 +84,15 @@ class ActorSpawner : SwitchableDecoration
 
 	override void PostBeginPlay()
 	{
-		spawntype = GetSpawnableType(args[0]);
-		if (!spawntype) { spawntype = "Guard"; }
+		user_spawntype = GetSpawnableType(args[0]);
+		user_maxactors = args[1];
+		user_tid = args[2];
+		user_minspawndistance = args[3];
+		user_maxspawns = args[4];
 
-		if (!user_maxactors) { user_maxactors = 1; }
-		if (!user_minspawndistance) { user_minspawndistance = 512; }
+		if (!user_spawntype) { user_spawntype = "Guard"; }
+		if (user_maxactors == 0) { user_maxactors = 1; }
+		if (user_minspawndistance == 0) { user_minspawndistance = 512; }
 	}
 
 	bool InPlayerSightOrRange(int range = 512)
@@ -92,9 +110,10 @@ class ActorSpawner : SwitchableDecoration
 		return false;
 	}
 
-	int CountSpawns()
+	int CountSpawns(Class<Actor> spawntype = "")
 	{
 		int spawncount = 0;
+		if (spawntype = "") { spawntype = user_spawntype; }
 
 		for (int i = 0; i < Spawns.Size(); i++) {
 			Actor mo = Spawns[i];
@@ -103,7 +122,7 @@ class ActorSpawner : SwitchableDecoration
 				if (!mo.bShootable || mo.health <= 0) {
 					Spawns.Delete(i);
 					Spawns.ShrinkToFit();
-				} else {
+				} else if (mo.GetClass() == spawntype) {
 					spawncount++;
 				}
 			}
@@ -112,33 +131,55 @@ class ActorSpawner : SwitchableDecoration
 		return spawncount;
 	}
 
+	int TotalSpawns()
+	{
+		int total = CountSpawns();
+
+		if (tid == 0) { return total; }
+
+		ActorIterator it = ActorIterator.Create(tid, "ActorSpawner");
+		Actor spot;
+
+		while (spot = it.Next())
+		{
+			total += ActorSpawner(spot).CountSpawns(user_spawntype);
+		}
+
+		return total;
+	}
+
 	virtual state A_DoSpawns()
 	{
-		int spawncount = CountSpawns();
+		int spawncount = TotalSpawns();
 
-		if (spawncount < user_maxactors) {
+		if (spawncount <= user_maxactors && (totalspawncount < user_maxspawns || user_maxspawns == 0)) {
 			//Spawn enemies if not visible to player
 			if (!InPlayerSightorRange(user_minspawndistance)) {
-				Actor spawned = Spawn(spawntype, pos);
-				spawned.target = target;
-				spawned.angle = angle;
-				spawned.ChangeTID(user_tid);
-				if (user_goal > 0)
+				Actor spawned = Spawn(user_spawntype, pos);
+				if (spawned)
 				{
-					let it = ActorIterator.Create(user_goal, "PatrolPoint");
-					Actor goal;
-					if (it) { goal = it.Next(); }
-					if (goal) { spawned.goal = goal; }
-
-					if (Nazi(spawned))
+					totalspawncount++;
+					spawned.master = self;
+					spawned.target = target;
+					spawned.angle = angle;
+					spawned.ChangeTID(user_tid);
+					if (user_goal > 0)
 					{
-						if (Nazi(spawned).user_sneakable) { Nazi(spawned).BecomeAlerted(); }
-						Nazi(spawned).activationgoal = goal;
-					}
+						let it = ActorIterator.Create(user_goal, "PatrolPoint");
+						Actor goal;
+						if (it) { goal = it.Next(); }
+						if (goal) { spawned.goal = goal; }
+	
+						if (Nazi(spawned))
+						{
+							if (Nazi(spawned).user_sneakable) { Nazi(spawned).BecomeAlerted(); }
+							Nazi(spawned).activationgoal = goal;
+						}	
 
-					spawned.SetStateLabel("See");
+						spawned.SetStateLabel("See");
+					}
+					Spawns.Push(spawned);
 				}
-				Spawns.Push(spawned);
 			}
 		}
 		return ResolveState("Active");
