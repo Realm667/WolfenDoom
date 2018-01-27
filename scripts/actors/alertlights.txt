@@ -141,27 +141,6 @@ class AlertLight : Actor
 	}
 }
 
-class SpotlightGlow : AlertLight
-{
-	Default
-	{
-		+NOBLOCKMAP
-		DistanceCheck "sfxlod";
-		Height 1;
-		Radius 1;
-	}
-
-	States
-	{
-		Spawn:
-			UNKN A 1 A_LookEx(LOF_NOSOUNDCHECK | LOF_DONTCHASEGOAL | LOF_NOSEESOUND, 0, 256, 0, 360, "Illuminate");
-			Loop;
-		Illuminate:
-			"####" # 1 A_AddVisibility(100);
-			Goto Spawn;
-	}
-}
-
 class SpotlightMount : Actor
 {
 	Actor light;
@@ -259,30 +238,6 @@ class SpotlightMount : Actor
 
 		if (health && bShootable)
 		{
-			FLineTraceData trace;
-			if (LineTrace(angle, user_sightrange, pitch + 90, TRF_THRUHITSCAN | TRF_THRUACTORS | TRF_THRUBLOCK, 0.0, 0.0, 0.0, trace))
-			{
-				if (!light)
-				{
-					light = Spawn("SpotlightGlow", trace.HitLocation);
-					light.master = self;
-				}
-				else if (light)
-				{
-					light.SetOrigin(trace.HitLocation, true);
-					master = light;
-				}
-			}
-
-			if (master == light && CountProximity("PlayerPawn", 272.0, CPXF_ANCESTOR, AAPTR_MASTER)) { //Radius of 272 is based off of effective radius of the spotlight glow
-				if (args[2]) {
-					ACS_ExecuteAlways(args[2], 0, args[3], args[4]);
-				} else {
-					target = master.target;
-					A_AlertMonsters(1280); //Still fall back to alerting monsters if no script number supplied.
-				}
-			}
-
 			if (args[0] != 0 && args[1] != 0) {
 				if (user_position >= user_maxAngle || user_position <= user_minAngle) {
 					user_holdTime++;
@@ -378,6 +333,8 @@ class SpotlightBeam : Actor
 
 class SpotlightBeamLight : SpotLightAttenuated
 {
+	Actor mount;
+
 	override void PostBeginPlay()
 	{
 		args[0] = 220;
@@ -400,10 +357,64 @@ class SpotlightBeamLight : SpotLightAttenuated
 			angle = master.angle;
 			pitch = master.pitch + (master is "SpotLightBeam" ? 90 : 0);
 
+			if (master.master) { mount = master.master; }
+
 			if (pos != master.pos) { SetOrigin(master.pos, true); }
 		}
 		else { Destroy(); }
 
+		A_LookEx(LOF_NOSOUNDCHECK | LOF_DONTCHASEGOAL | LOF_NOSEESOUND | LOF_NOJUMP, 0, args[3], 0, spotouterangle * 2, null);
+
+		if (target)
+		{
+			double relpitch = PitchTo(target, master, pitch);
+			double relangle = deltaangle(master.angle, master.AngleTo(target));
+
+			double reldist = sqrt(relpitch ** 2 + relangle ** 2);
+
+			if (reldist < spotouterangle * 1.2)
+			{
+				AddVisibility(reldist, 100);
+
+				if (mount && mount.args[2]) { // Execute the script that is set on the spotlight base
+					ACS_ExecuteAlways(mount.args[2], 0, mount.args[3], mount.args[4]);
+				} else {
+					A_AlertMonsters(1280); //Still fall back to alerting monsters if no script number supplied.
+				}
+			}
+		}
+
+		target = null;
+
 		Super.Tick();
+	}
+
+	double PitchTo(Actor mo, Actor source = null, double sourcepitch = 0)
+	{
+		if (source == null) { source = self; }
+		if (!sourcepitch) { sourcepitch = source.pitch; }
+
+		double distxy = max(source.Distance2D(mo), 1);
+		double distz = source.pos.z - mo.pos.z;
+
+		return atan(distz / distxy) - sourcepitch % 360;
+	}
+
+	void AddVisibility(double amt, double minimum)
+	{
+		if (target)
+		{
+			Inventory vis = target.FindInventory("BoAVisibility");
+			if (vis)
+			{
+				double brightness = (args[0] + args[1] + args[2]) / (255. * 3) * 1.25; // Calculate the light's overall brightness
+
+				double amount = max(spotouterangle * 1.2 - amt, minimum);
+				amount *= brightness; // Adjust based on brightness level
+
+				double oldVisibility = BoAVisibility(vis).extravisibility;
+				BoAVisibility(vis).extravisibility  = int(oldvisibility + Max(amount - oldVisibility, 0)); // Set the new visibility - use delta in value instad of overriding so that multiple lights can be additive in visibility
+			}
+		}
 	}
 }
