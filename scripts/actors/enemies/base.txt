@@ -532,7 +532,7 @@ class Base : Actor
 			patrolgoal.args[1] = 0x7FFFFFFF;
 			patrolgoal.angle = angle;
 
-			SetStateLabel("See");
+			if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); }
 		}
 
 		// If it's tagged with a conversation ID, spawn the conversation marker
@@ -936,7 +936,7 @@ class Nazi : Base
 				if (!CheckSight(mo, SF_SEEPASTBLOCKEVERYTHING | SF_SEEPASTSHOOTABLELINES)) { continue; }
 
 				target = mo;
-				SetStateLabel("See");
+				if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); }
 			}
 		}
 
@@ -1225,7 +1225,7 @@ class Nazi : Base
 		A_SpawnItemEx("SneakableGuardEyesAlerted", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid); // Spawn active guard eyes
 		if (target && target.GetSpecies() == GetSpecies()) { target = null; SetStateLabel("Spawn"); } // Don't go after same-species targets
 
-		SetStateLabel("See"); // Go to See state and start chasing the player (or wandering if target wasn't set for some reason)
+		if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); } // Go to See state and start chasing the player (or wandering if target wasn't set for some reason)
 	}
 
 	void BecomeIdle()
@@ -1242,7 +1242,7 @@ class Nazi : Base
 
 		sprite = SpawnState.sprite;
 
-		if (goal && target) { SetStateLabel("See"); }
+		if (goal && target) { if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); } }
 		else { SetStateLabel("Spawn"); }
 	}
 
