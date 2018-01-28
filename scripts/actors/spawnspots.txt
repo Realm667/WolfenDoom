@@ -106,7 +106,10 @@ class ActorSpawner : SwitchableDecoration
 			Actor mo = players[p].mo;
 
 			if (mo) {
-				if (mo.CheckSight(self)) { return true; }
+				LookExParams look;
+				look.fov = mo.player.fov;
+
+				if (mo.IsVisible(self, false, look)) { return true; }
 				if (Distance3d(mo) <= range) { return true; }
 			}
 		}
@@ -189,6 +192,8 @@ class ActorSpawner : SwitchableDecoration
 				}
 			}
 		}
+
+		if (bDormant) { return ResolveState("Inactive"); } // Cut out if the spawner is now dormant
 		return ResolveState("Active");
 	}
 }
@@ -285,7 +290,7 @@ class WaveSpawner : ActorSpawner
 
 		if (spawncount < user_maxactors && (totalspawncount < user_maxspawns || user_maxspawns == 0)) {
 			//Spawn enemies if not visible to player
-			if (!InPlayerSightorRange(user_minspawndistance) || CurSector.lightlevel <= 128) {
+			if (!InPlayerSightorRange(user_minspawndistance)) {
 				Actor spawned = Spawn(user_spawntype, pos);
 				if (spawned)
 				{
@@ -319,6 +324,7 @@ class WaveSpawner : ActorSpawner
 			}
 		}
 
+		if (bDormant) { return ResolveState("Inactive"); } // Cut out if the spawner is now dormant
 		return ResolveState("Active.Spawn");
 	}
 
