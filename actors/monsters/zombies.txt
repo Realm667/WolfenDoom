@@ -355,6 +355,8 @@ ACTOR ZGermanShepherd : NaziStandard
 	-CANUSEWALLS
 	-CANPUSHWALLS
 	+NEVERTARGET
+	BloodColor "MediumSeaGreen"
+	BloodType "ZombieBlood"
 	Base.LoiterDistance 64
 	Base.NoMedicHeal
 	Nazi.ZombieVariant "ZGermanShepherd"
@@ -429,9 +431,6 @@ ACTOR Camp_PrisonerZombie : NaziStandard //can't inherit ZombieBrain because of 
 	GibHealth 30
 	PainChance 64
 	Monster
-	Nazi.ZombieVariant "Camp_PrisonerZombie"
-	BloodColor "Black"
-	BloodType "UndeadBlood"
 	DamageFactor "Fire", 1.2
 	DamageFactor "MutantPoison", 0
 	DamageFactor "Normal", 0.5
@@ -443,6 +442,9 @@ ACTOR Camp_PrisonerZombie : NaziStandard //can't inherit ZombieBrain because of 
 	SeeSound "nazombie/sighted"
 	PainSound "nazombie/pain"
 	DeathSound "sscultist/die"
+	BloodColor "MediumSeaGreen"
+	BloodType "ZombieBlood"
+	Nazi.ZombieVariant "Camp_PrisonerZombie"
 	States
 	{
 	Spawn:
@@ -505,7 +507,6 @@ ACTOR ZombieGeneral : RocketMan
 	Base.BossIcon "BOSSICO2"
 	Tag "Undead Fettgesicht"
 	Health 1000
-	Nazi.ZombieVariant "ZombieGeneral"
 	Obituary "$ZGENERAL"
 	SeeSound "nazombie/sighted"
 	PainSound "nazombie/pain"
@@ -514,6 +515,7 @@ ACTOR ZombieGeneral : RocketMan
 	BloodType "UndeadBlood"
 	DropItem "NebAmmoBox" 128
 	DropItem "NebAmmoBox" 128
+	Nazi.ZombieVariant "ZombieGeneral"
 	States
 	{
 	Spawn:
