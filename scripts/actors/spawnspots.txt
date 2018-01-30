@@ -203,14 +203,16 @@ struct Wave
 	Class<Actor> enemy;
 	int count;
 	int maxspawns;
+	int round;
 }
 
 class WaveSpawner : ActorSpawner
 {
-	Wave Waves[16]; // Can't use dynamic arrays with structs, unfortunately...  If we need more waves, this number can be increased
+	Wave Waves[32]; // Can't use dynamic arrays with structs, unfortunately...  If we need more waves, this number can be increased
 	int waveindex;
 	int index;
 	int maxindex;
+	int round;
 
 	Default
 	{
@@ -221,12 +223,22 @@ class WaveSpawner : ActorSpawner
 
 	States
 	{
+		Active:
+			"####" "#" 0 { round++; } // Increment the round when activated
 		Active.Spawn:
 			"####" "#" 35 A_SetTics(Random[Spawn](1, 21) * 5);
 			"####" "#" 0 A_DoSpawns();
+		Inactive:
+			"####" "#" 0 {
+				Spawns.Clear(); // Clear the enemy spawn queue when deactivated.  This way, when re-activated, everything starts over again
+				Spawns.ShrinkToFit();
+			}
+		InactiveLoop:
+			"####" "#" 35;
+			Loop;
 	}
 
-	static void AddWaveComponent(int tid, String actorclass, int count = 1, int maxspawns = 0, int delay = 0)
+	static void AddWaveComponent(int tid, String actorclass, int count = 1, int maxspawns = 0, int round = 0)
 	{
 		if (tid)
 		{
@@ -235,18 +247,19 @@ class WaveSpawner : ActorSpawner
 
 			while (mo = WaveSpawner(it.Next()))
 			{
-				mo.NewWaveComponent(actorclass, count, maxspawns, delay);
+				mo.NewWaveComponent(actorclass, count, maxspawns, round);
 			}
 		}
 	}
 
-	void NewWaveComponent(String actorclass, int count = 1, int maxspawns = 0, int delay = 0)
+	void NewWaveComponent(String actorclass, int count = 1, int maxspawns = 0, int round = 0)
 	{
 		Waves[waveindex].enemy = actorclass;
 		Waves[waveindex].count = count;
 		Waves[waveindex].maxspawns = maxspawns;
+		Waves[waveindex].round = round;
 
-//		console.printf("%d %d => %s %d %d", tid, waveindex, Waves[waveindex].enemy.GetClassName(), Waves[waveindex].count, Waves[waveindex].maxspawns);
+//		console.printf("%d %d => %s %d %d", tid, waveindex, Waves[waveindex].enemy.GetClassName(), Waves[waveindex].count, Waves[waveindex].maxspawns, Waves[waveindex].round);
 
 		waveindex++;
 	}
@@ -254,6 +267,7 @@ class WaveSpawner : ActorSpawner
 	bool ValidSpawn(int index)
 	{
 		if (!Waves[index].enemy) { return false; }
+		if (Waves[index].round > round) { return false; }
 		if (TotalSpawns(Waves[index].enemy) >= Waves[index].count) { return false; }
 		if (
 			Waves[index].maxspawns != 0 &&
@@ -265,6 +279,8 @@ class WaveSpawner : ActorSpawner
 
 	override state A_DoSpawns()
 	{
+//		console.printf("Spawning round %d", round);
+
 		bool looped = false;
 
 		index = Random(0, waveindex - 1);
@@ -273,10 +289,10 @@ class WaveSpawner : ActorSpawner
 		{
 			index++;
 
-			if (index > 15)
+			if (index > 31)
 			{
 				index = 0;
-				if (looped) { return ResolveState("Active"); }
+				if (looped) { return ResolveState("Active.Spawn"); }
 				looped = true;
 			}
 		}
