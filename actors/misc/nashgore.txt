@@ -222,12 +222,13 @@ ACTOR Pain_Overlay
 //Zombie related variants - needed for brightmaps
 ACTOR Zombie_DoomBlood : NashGore_DoomBlood
 {
-	+BRIGHT
+	Decal "ZBloodSmear"
 	Translation "16:47=[0,112,69]:[0,112,85]","168:191=[0,112,69]:[0,112,85]"
 }
 
 ACTOR ZombieBlood : NashGore_Blood
 {
+	Decal "ZBloodSmear"
 	States
 	{
 	Spawn:
@@ -242,6 +243,7 @@ ACTOR ZombieBlood : NashGore_Blood
 
 ACTOR Zombie_BloodSplatter : NashGore_BloodSplatter
 {
+	Decal "ZBloodSmear"
 	States
 	{
 	Spawn:
@@ -250,8 +252,10 @@ ACTOR Zombie_BloodSplatter : NashGore_BloodSplatter
 		Stop
 	}
 }
+
 ACTOR Zombie_FlyingBlood : NashGore_FlyingBlood
 {
+	Decal "ZBloodSmear"
 	States
 	{
 	Spawn:
@@ -279,6 +283,7 @@ ACTOR Zombie_FlyingBlood : NashGore_FlyingBlood
 
 ACTOR Zombie_FlyingBloodTrail : NashGore_FlyingBloodTrail
 {
+	Decal "ZBloodSmear"
 	States
 	{
 	Spawn:
@@ -289,6 +294,7 @@ ACTOR Zombie_FlyingBloodTrail : NashGore_FlyingBloodTrail
 
 ACTOR Zombie_BloodSplasher : NashGore_BloodSplasher
 {
+	Decal "ZBloodSmear"
 	States
 	{
 	Spawn:
@@ -303,6 +309,7 @@ ACTOR Zombie_BloodSplasher : NashGore_BloodSplasher
 
 ACTOR Zombie_BloodSpot : NashGore_BloodSpot
 {
+	Decal "ZBloodSmear"
 	States
 	{
 	Spawn:
@@ -329,6 +336,7 @@ ACTOR Zombie_BloodSpot : NashGore_BloodSpot
 
 ACTOR Zombie_BloodSplash : NashGore_BloodSplash
 {
+	Decal "ZBloodSmear"
 	States
 	{
 	Spawn:
@@ -339,7 +347,7 @@ ACTOR Zombie_BloodSplash : NashGore_BloodSplash
 
 ACTOR Zombie_SplatMaker : NashGore_SplatMaker
 {
-	+BRIGHT
+	Decal "ZBloodSmear"
 	Translation "16:47=[0,112,69]:[0,112,85]","168:191=[0,112,69]:[0,112,85]"
 }
 

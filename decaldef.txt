@@ -18,6 +18,12 @@ fader GoAway2
 	DecayTime	3.0
 }
 
+fader GoAway3
+{
+	DecayStart	3.0
+	DecayTime	6.0
+}
+
 colorchanger ToBlack
 {
 	FadeStart	0.5
@@ -43,164 +49,6 @@ combiner BloodSmearer
 }
 
 //***** Blood decals *****//
-decal BloodSplat01
-{
-	pic SPLATR01
-	shade "60 00 00"
-	x-scale 0.5
-	y-scale 0.5
-	randomflipx
-	randomflipy
-}
-
-decal BloodSplat02
-{
-	pic SPLATR02
-	shade "60 00 00"
-	x-scale 0.5
-	y-scale 0.5
-	randomflipx
-	randomflipy
-}
-
-decal BloodSplat03
-{
-	pic SPLATR03
-	shade "60 00 00"
-	x-scale 0.5
-	y-scale 0.5
-	randomflipx
-	randomflipy
-}
-
-decal BloodSplat04
-{
-	pic SPLATR04
-	shade "60 00 00"
-	x-scale 0.5
-	y-scale 0.5
-	randomflipx
-	randomflipy
-}
-
-decal BloodSplat05
-{
-	pic SPLATR05
-	shade "60 00 00"
-	x-scale 0.5
-	y-scale 0.5
-	randomflipx
-	randomflipy
-}
-
-decal BloodSplat06
-{
-	pic SPLATR06
-	shade "60 00 00"
-	x-scale 0.5
-	y-scale 0.5
-	randomflipx
-	randomflipy
-}
-
-decal BloodSplat07
-{
-	pic SPLATR07
-	shade "60 00 00"
-	x-scale 0.5
-	y-scale 0.5
-	randomflipx
-	randomflipy
-}
-
-decal BloodSplat08
-{
-	pic SPLATR08
-	shade "60 00 00"
-	x-scale 0.5
-	y-scale 0.5
-	randomflipx
-	randomflipy
-}
-
-decal BloodSplat09
-{
-	pic SPLATR09
-	shade "60 00 00"
-	x-scale 0.5
-	y-scale 0.5
-	randomflipx
-	randomflipy
-}
-
-decal BloodSplat10
-{
-	pic SPLATR10
-	shade "60 00 00"
-	x-scale 0.5
-	y-scale 0.5
-	randomflipx
-	randomflipy
-}
-
-decal BloodSplat11
-{
-	pic SPLATR11
-	shade "60 00 00"
-	x-scale 0.5
-	y-scale 0.5
-	randomflipx
-	randomflipy
-}
-
-decal BloodSplat12
-{
-	pic SPLATR12
-	shade "60 00 00"
-	x-scale 0.5
-	y-scale 0.5
-	randomflipx
-	randomflipy
-}
-
-decal BloodSplat13
-{
-	pic SPLATR13
-	shade "60 00 00"
-	x-scale 0.5
-	y-scale 0.5
-	randomflipx
-	randomflipy
-}
-
-decal BloodSplat14
-{
-	pic SPLATR14
-	shade "60 00 00"
-	x-scale 0.5
-	y-scale 0.5
-	randomflipx
-	randomflipy
-}
-
-decalgroup BloodSplat
-{
-	BloodSplat01 6
-	BloodSplat02 6
-	BloodSplat03 6
-	BloodSplat04 6
-	BloodSplat05 6
-	BloodSplat06 6
-	BloodSplat07 6
-	BloodSplat08 6
-	BloodSplat09 6
-	BloodSplat10 6
-	BloodSplat11 6
-	BloodSplat12 6
-	BloodSplat13 6
-	BloodSplat14 6
-}
-
 decal BloodSmear1
 {
 	pic BSMEAR1
@@ -229,6 +77,7 @@ decalgroup BloodSmear
 	BloodSmear2		6
 }
 
+//OCCULT
 decal UndeadSmear1
 {
 	pic BSMEAR1
@@ -344,6 +193,42 @@ combiner DripAnimateNoOx
 {
 	DripStretcher
 	DripSlider
+}
+
+combiner ZDropletSmearA
+{
+	SmearStretchA
+	SmearSlideA
+	GoAway3
+}
+
+combiner ZDropletSmearB
+{
+	SmearStretchB
+	SmearSlideB
+	GoAway3
+}
+
+combiner ZDropletSmearC
+{
+	SmearStretchC
+	SmearSlideC
+	GoAway3
+}
+
+combiner ZDripAnimate
+{
+	DripStretcher
+	DripSlider
+	Oxidizer
+	GoAway3
+}
+
+combiner ZDripAnimateNoOx
+{
+	DripStretcher
+	DripSlider
+	GoAway3
 }
 
 decal BloodSmear1
@@ -725,6 +610,393 @@ decalgroup BloodSpotL
 	BloodSpot4l	1
 	BloodSpot5l	1
 }
+
+//ZOMBIE DROPLETS
+decal ZBloodSmear1
+{
+	pic ZSMEAR1
+	x-scale 0.30
+	y-scale 0.25
+	add 0.85
+	randomflipx
+	fullbright
+	animator ZDropletSmearA
+}
+
+decal ZBloodSmear2
+{
+	pic ZSMEAR2
+	x-scale 0.30
+	y-scale 0.25
+	add 0.85
+	randomflipx
+	fullbright
+	animator ZDropletSmearA
+}
+
+decal ZBloodSmear3
+{
+	pic ZSMEAR1
+	x-scale 0.35
+	y-scale 0.25
+	add 0.7
+	randomflipx
+	fullbright
+	animator ZDropletSmearB
+}
+
+decal ZBloodSmear4
+{
+	pic ZSMEAR2
+	x-scale 0.35
+	y-scale 0.25
+	add 0.7
+	randomflipx
+	fullbright
+	animator ZDropletSmearB
+}
+
+decal ZBloodSmear5
+{
+	pic ZSMEAR1
+	x-scale 0.25
+	y-scale 0.25
+	add 1.0
+	randomflipx
+	fullbright
+	animator ZDropletSmearC
+}
+
+decal ZBloodSmear6
+{
+	pic ZSMEAR2
+	x-scale 0.25
+	y-scale 0.25
+	add 1.0
+	randomflipx
+	fullbright
+	animator ZDropletSmearC
+}
+
+decal ZBloodSplat1
+{
+	pic ZSPLAT1
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+	animator GoAway3
+}
+
+decal ZBloodSplat2
+{
+	pic ZSPLAT2
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+	fullbright
+	animator GoAway3
+}
+
+decal ZBloodSplat3
+{
+	pic ZSPLAT3
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+	fullbright
+	animator GoAway3
+}
+
+decal ZBloodSplat4
+{
+	pic ZSPLAT4
+	x-scale 0.1
+	y-scale 0.1
+	randomflipx
+	randomflipy
+	fullbright
+	animator GoAway3
+}
+
+decal ZBloodSplat5
+{
+	pic ZSPLAT5
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+	fullbright
+	animator GoAway3
+}
+
+decal ZBloodSplat6
+{
+	pic ZSPLAT6
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+	fullbright
+	animator GoAway3
+}
+
+decal ZBloodSplat7
+{
+	pic ZSPLAT7
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+	fullbright
+	animator GoAway3
+}
+
+decal ZBloodSpot1s
+{
+	pic ZSPOT1
+	x-scale 0.05
+	y-scale 0.05
+	randomflipx
+	randomflipy
+	fullbright
+	lowerdecal ZRunnyBlood
+	animator GoAway3
+}
+
+decal ZBloodSpot2s
+{
+	pic ZSPOT2
+	x-scale 0.05
+	y-scale 0.05
+	randomflipx
+	randomflipy
+	fullbright
+	lowerdecal ZRunnyBlood
+	animator GoAway3
+}
+
+decal ZBloodSpot3s
+{
+	pic ZSPOT3
+	x-scale 0.05
+	y-scale 0.05
+	randomflipx
+	randomflipy
+	fullbright
+	lowerdecal ZRunnyBlood
+	animator GoAway3
+}
+
+decal ZBloodSpot4s
+{
+	pic ZSPOT1
+	x-scale 0.2
+	y-scale 0.2
+	randomflipx
+	randomflipy
+	fullbright
+	animator GoAway3
+}
+
+decal ZBloodSpot5s
+{
+	pic ZSPOT2
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+	fullbright
+	animator GoAway3
+}
+
+decal ZBloodSpot1m
+{
+	pic ZSPOT1
+	x-scale 0.1
+	y-scale 0.1
+	randomflipx
+	randomflipy
+	fullbright
+	lowerdecal ZRunnyBlood
+	animator GoAway3
+}
+
+decal ZBloodSpot2m
+{
+	pic ZSPOT2
+	x-scale 0.1
+	y-scale 0.1
+	randomflipx
+	randomflipy
+	fullbright
+	lowerdecal ZRunnyBlood
+	animator GoAway3
+}
+
+decal ZBloodSpot3m
+{
+	pic ZSPOT3
+	x-scale 0.1
+	y-scale 0.1
+	randomflipx
+	randomflipy
+	fullbright
+	lowerdecal ZRunnyBlood
+	animator GoAway3
+}
+
+decal ZBloodSpot4m
+{
+	pic ZSPOT1
+	x-scale 0.4
+	y-scale 0.4
+	randomflipx
+	randomflipy
+	fullbright
+	animator GoAway3
+}
+
+decal ZBloodSpot5m
+{
+	pic ZSPOT2
+	x-scale 0.3
+	y-scale 0.3
+	randomflipx
+	randomflipy
+	fullbright
+	animator GoAway3
+}
+
+decal ZRunBlood1
+{
+	pic ZRUNY1
+	x-scale 0.3
+	y-scale 0.3
+	randomflipx
+	fullbright
+	animator ZDripAnimateNoOx
+}
+
+decal ZRunBlood2
+{
+	pic ZRUNY2
+	x-scale 0.3
+	y-scale 0.3
+	randomflipx
+	fullbright
+	animator ZDripAnimateNoOx
+}
+
+decal ZRunBlood3
+{
+	pic ZRUNY3
+	x-scale 0.3
+	y-scale 0.3
+	randomflipx
+	fullbright
+	animator ZDripAnimateNoOx
+}
+
+decalgroup ZRunnyBlood
+{
+	ZRunBlood1	3
+	ZRunBlood2	2
+	ZRunBlood3	1
+}
+
+decal ZBloodSpot1l
+{
+	pic ZSPOT1
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+	fullbright
+	lowerdecal ZRunnyBlood
+	animator GoAway3
+}
+
+decal ZBloodSpot2l
+{
+	pic ZSPOT2
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+	fullbright
+	lowerdecal ZRunnyBlood
+	animator GoAway3
+}
+
+decal ZBloodSpot3l
+{
+	pic ZSPOT3
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+	fullbright
+	lowerdecal ZRunnyBlood
+	animator GoAway3
+}
+
+decal ZBloodSpot4l
+{
+	pic ZSPOT1
+	x-scale 0.6
+	y-scale 0.6
+	randomflipx
+	randomflipy
+	fullbright
+	animator GoAway3
+}
+
+decal ZBloodSpot5l
+{
+	pic ZSPOT2
+	x-scale 0.45
+	y-scale 0.45
+	randomflipx
+	randomflipy
+	fullbright
+	animator GoAway3
+}
+
+decalgroup ZBloodSmear //mix between Bloodsplat, Bloodspot & Bloodsmear, but everything fades away
+{
+	ZBloodSmear1	1
+	ZBloodSmear2	1
+	ZBloodSmear3	1
+	ZBloodSmear4	1
+	ZBloodSmear5	1
+	ZBloodSmear6	1
+	ZBloodSplat1 	1
+	ZBloodSplat2 	1
+	ZBloodSplat3 	1
+	ZBloodSplat4 	1
+	ZBloodSplat5 	1
+	ZBloodSplat6 	1
+	ZBloodSplat7 	1
+	ZBloodSpot1l	1
+	ZBloodSpot1m	1
+	ZBloodSpot1s	1
+	ZBloodSpot2l	1
+	ZBloodSpot2m	1
+	ZBloodSpot2s	1
+	ZBloodSpot3l	1
+	ZBloodSpot3m	1
+	ZBloodSpot3s	1
+	ZBloodSpot4l	1
+	ZBloodSpot4m	1
+	ZBloodSpot4s	1
+	ZBloodSpot5l	1
+	ZBloodSpot5m	1
+	ZBloodSpot5s	1
+}
+
 //**END OF DROPLETS**//
 
 //LaserBeam Scorch
