@@ -917,6 +917,18 @@ class Nazi : Base
 			BecomeAlerted(target); // Alert that actor
 		}
 	}
+	
+	void A_ZombiePain(int alertrange = 0, bool playsound = True, int offset = -8)
+	{
+		A_SpawnItemEx("ZPain_Overlay", scale.x + 3, 0, height + offset, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR); //different blood spurt for brightmaps - ozy81
+		if (alertrange) { A_AlertMonsters(alertrange); }
+		if (playsound) { A_Pain(); }
+
+		if (user_sneakable && bFriendly)
+		{
+			BecomeAlerted(target);
+		}
+	}
 
 	void A_NaziLook()
 	{
