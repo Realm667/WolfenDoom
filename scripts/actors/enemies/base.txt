@@ -906,27 +906,17 @@ class Nazi : Base
 	}
 
 	// Function to consolidate default pain state actions.  See use above - can be used to eliminate a lot of existing copy/paste.
-	void A_NaziPain(int alertrange = 0, bool playsound = True, int offset = -8)
+	void A_NaziPain(int alertrange = 0, bool playsound = True, int offset = -8, Class<Actor> bloodspurt = "")
 	{
-		A_SpawnItemEx("Pain_Overlay", scale.x + 3, 0, height + offset, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR); // Spawn pain overlay blood spurt
+		if (bloodspurt == "") { bloodspurt = "Pain_Overlay"; } // Handled here instead of in default above because spurts are in DECORATE, not ZScript, so aren't loaded until after this code, so can't be validated at load time
+
+		A_SpawnItemEx(bloodspurt, scale.x + 3, 0, height + offset, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR); // Spawn pain overlay blood spurt
 		if (alertrange) { A_AlertMonsters(alertrange); } // Alert monsters in given range
 		if (playsound) { A_Pain(); } // Play pain sound unless passed 'false'
 
 		if (user_sneakable && bFriendly) // If we attacked a sneakable actor who wasn't alerted...
 		{
 			BecomeAlerted(target); // Alert that actor
-		}
-	}
-	
-	void A_ZombiePain(int alertrange = 0, bool playsound = True, int offset = -8)
-	{
-		A_SpawnItemEx("ZPain_Overlay", scale.x + 3, 0, height + offset, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR); //different blood spurt for brightmaps - ozy81
-		if (alertrange) { A_AlertMonsters(alertrange); }
-		if (playsound) { A_Pain(); }
-
-		if (user_sneakable && bFriendly)
-		{
-			BecomeAlerted(target);
 		}
 	}
 
