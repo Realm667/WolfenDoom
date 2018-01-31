@@ -93,3 +93,42 @@ class NullWeapon : Weapon
 			Loop;
 	}
 }
+
+// The astrostein weapons have altfires that should use primary (loaded) ammo
+class NaziAstroWeapon : NaziWeapon {
+	Default
+	{
+		Scale 0.50;
+	}
+
+	// DryFire state definition removed because it was the same as the DryFire state for NaziWeapon
+
+	// Astrostein weapons use primary ammo for both fire modes.
+	override bool CheckAmmo (int firemode, bool autoSwitch, bool requireAmmo = false, int ammocount = -1) {
+		// True if player has loaded ammo, or ammo in the stockpile.
+		// For the shocker, or if player has infinite ammo powerup.
+		if (bAmmo_Optional || Owner.FindInventory("PowerInfiniteAmmo", true)) return true;
+		// Make sure player has either loaded ammo, or ammo in the stockpile.
+		if (AmmoType1 && AmmoType2 && !Owner.FindInventory(AmmoType1) && !Owner.FindInventory(AmmoType2)) return false;
+		return Super.CheckAmmo(firemode, autoSwitch, requireAmmo, ammocount);
+	}
+
+	override bool DepleteAmmo (bool altfire, bool checkEnough = true, int ammouse = -1) {
+		if (AmmoUse1 == 0 || Owner.FindInventory("PowerInfiniteAmmo", true)) return true;
+
+		bool requireAmmo = AmmoUse1 > 0 || AmmoUse2 > 0 || !bAmmo_Optional;
+
+		if (checkEnough) {
+			if (CheckAmmo(PrimaryFire, true, requireAmmo, ammouse)) {
+				if (AmmoType1) {
+					Ammo magAmmo = Ammo(Owner.FindInventory(AmmoType1));
+					if (magAmmo) {
+						magAmmo.amount -= AmmoUse1;
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+}
