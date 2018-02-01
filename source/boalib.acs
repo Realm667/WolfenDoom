@@ -748,26 +748,28 @@ script "PlayerHealthAbove25" (void)
 
 int leveltiltpitch, leveltiltangle;
 
-// This is the main loop that controls the player view roll and pitch alterations
-// It also controls the velocity changes that make the player slide "downhill"
+// This is the main loop that controls the player view pitch alterations
+// The handling of changing the player's roll and 'gravity' effect has been moved into the main Tilt++ code in ZScript.
 script "leveltilt" ENTER
 {
 	int True_Pitch = GetActorPitch(0);
 
-	while (1)
+	while (TRUE)
 	{
-		// The handling of changing the player's roll has been moved into the main Tilt++ code in ZScript.
-		// Only pitch adjusments are being made here!
-		int angle = GetActorAngle(0) - leveltiltangle / 360;
+		if (abs(leveltiltpitch) > 5.0)
+		{
+			// Only pitch adjusments are being made here!
+			int angle = GetActorAngle(0) - leveltiltangle / 360;
 
-		True_Pitch -= GetPlayerInput(-1, INPUT_PITCH);
+			True_Pitch -= GetPlayerInput(-1, INPUT_PITCH);
 
-		int fixedpitch = FixedDiv(leveltiltpitch, 360.0);
+			int fixedpitch = FixedDiv(leveltiltpitch, 360.0);
 
-		SetActorPitch(0, True_Pitch + FixedMul(cos(angle), fixedpitch));
+			SetActorPitch(0, True_Pitch + FixedMul(cos(angle), fixedpitch));
 
-		SetUserVariable(0, "leveltilt", leveltiltpitch);
-		SetUserVariable(0, "leveltiltangle", leveltiltangle);
+			SetUserVariable(0, "leveltilt", leveltiltpitch);
+			SetUserVariable(0, "leveltiltangle", leveltiltangle);
+		}
 
 		Delay(1);
 	}
