@@ -538,3 +538,16 @@ class FireBrandEffect : PlayerEffect
 			Loop;
 	}
 }
+
+class LanternEffect : PlayerEffect //just a dummy code I am working on - ozy81
+{
+	States
+	{
+		Spawn:
+			TNT1 A 4 NoDelay Light("ITBURNS1");
+			TNT1 A 4 Light("ITBURNS2");
+		SpawnLoop:
+			TNT1 A 4 Light("ITBURNS3") A_SetTics(Random(1, 4));
+			Loop;
+	}
+}

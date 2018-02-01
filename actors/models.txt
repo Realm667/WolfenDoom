@@ -1359,6 +1359,28 @@ ACTOR SimpleLight1Lit : SimpleLight1
 	}
 }
 
+ACTOR WallLight2Switch : SimpleLight1
+{
+	//$Title Wall Lantern (on, switchable)
+	DistanceCheck "scenelod"
+	Radius 4
+	Height 24
+	States
+	{
+	Active:
+		MDLA A 0 A_ChangeFlag("DORMANT", FALSE)
+	Spawn:
+	  MDLA A 0 NoDelay
+	Activate:
+		MDLA A 1 LIGHT(OZYSIMLT)
+		Loop
+	Inactive:
+		MDLA A 0 A_ChangeFlag("DORMANT", TRUE)
+		MDLA B -1
+		Stop
+	}
+}
+
 ACTOR IntermapSkylight : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Intermap
