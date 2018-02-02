@@ -863,3 +863,36 @@ function int max (int a, int b)
 
 	return b;
 }
+
+// Wave Spawner Scripts
+int maxwaves = 10; // How many waves can be set up
+int wavestarttid = 100; // Base TID for wave spawn points - wave 1 will add 1, wave 2 will add 2, etc.
+int currentwave = 0; // The currently activated wave
+int lastwave = 0; // The previous wave (used for fallback spawnpoints if it's night again and no other wave has been triggered)
+
+// Waves can be manually triggered for testing via the console with this script.
+script "SetWave" (int wave)
+{
+	currentwave = wave;
+}
+
+// Activate the specified wave and deactivate the others
+function void ActivateWave(int wave)
+{
+	lastwave = wave;
+
+	for (int i = 1; i < maxwaves; i++) 
+	{
+		if (i == wave)
+		{
+			Thing_Activate(wavestarttid + i);
+		}
+		else { Thing_Deactivate(wavestarttid + i); }
+	}
+}
+
+// Wrapper to prettify the ZScript interface
+function void AddWaveComponent(int id, str actor, int count, int maxspawns, int roundnum)
+{
+	ScriptCall("WaveSpawner", "AddWaveComponent", wavestarttid + id, actor, count, maxspawns, roundnum);
+}
