@@ -415,6 +415,10 @@ class BoAPlayer : PlayerPawn
 		// Firebrand effect handling
 		if (player && player.ReadyWeapon is "FireBrand" && CountInv("PowerWeaponLevel2") > 0) { SpawnEffect("FireBrandEffect"); }
 		else { RemoveEffect("FireBrandEffect"); }
+		
+		// Lantern effect handling
+		if (player && CountInv("LanternActive") > 0) { SpawnEffect("LanternEffect"); }
+		else { RemoveEffect("LanternEffect"); }
 
 		// New uniform or other sprite-changing tokens should be set up here.  See CheckSpriteToken function above.
 		//  These should be listed in order of precedence - The ones at the top will take priority.
@@ -537,15 +541,15 @@ class FireBrandEffect : PlayerEffect
 	}
 }
 
-class LanternEffect : PlayerEffect //just a dummy code I am working on - ozy81
+class LanternEffect : PlayerEffect
 {
 	States
 	{
 		Spawn:
-			TNT1 A 4 NoDelay Light("ITBURNS1");
-			TNT1 A 4 Light("ITBURNS2");
+			TNT1 A 4 NoDelay Light("LANT01");
+			TNT1 A 4 Light("LANT02");
 		SpawnLoop:
-			TNT1 A 4 Light("ITBURNS3") A_SetTics(Random(1, 4));
+			TNT1 A 4 Light("LANT03") A_SetTics(Random(1, 3));
 			Loop;
 	}
 }

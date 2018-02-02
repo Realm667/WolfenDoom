@@ -1,0 +1,40 @@
+#library "lantern"
+#include "zcommon.acs"
+
+bool lanternActive[8];
+
+Script "L_PlayerLoop" ENTER
+{
+	While (GameType() != GAME_TITLE_MAP)
+	{
+		If (CheckInventory("LanternOil") && lanternActive[playerNumber()] > 0) //Only run if you have enough oil & lantern is hold.
+		{
+			TakeInventory("LanternOil",1);
+//do some checks if we are underwater, which in this case douse the lantern and take all oil away - ozy81
+		}
+		Else
+		{
+			TakeInventory("LanternActive",1);
+		}
+		Delay(1);
+	}
+}
+
+script "BoA_Lantern"(void) //code portion taken from BoA_Compass shamelessly - Ozy81
+{
+	if(lanternActive[playerNumber()]) {
+		TakeInventory("LanternActive", 1);
+		lanternActive[playerNumber()] = 0;
+	} else {
+		GiveInventory("LanternActive", 1);
+		lanternActive[playerNumber()] = 1;
+	}
+}
+
+script "BoA_LanternOff" (void)
+{
+	if(lanternActive[playerNumber()]) {
+		TakeInventory("LanternActive", 1);
+		lanternActive[playerNumber()] = 0;
+	}
+}

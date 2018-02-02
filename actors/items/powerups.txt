@@ -209,3 +209,68 @@ ACTOR DeployableMine : CustomInventory
 		Stop
 	}
 }
+
+ACTOR LanternActive : Inventory { Inventory.MaxAmount 1 }
+ACTOR LanternOil : Inventory
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 12000 //Near 5 mins maximum - ozy81
+}
+
+ACTOR OilPickup : CustomInventory
+{
+	//$Category Powerups (Wolf3D)
+	//$Title Lantern Oil
+	//$Color 6
+	+COUNTITEM
+	-INVENTORY.INVBAR
+	Inventory.MaxAmount 12 //1000x12=12000
+	Inventory.PickupMessage "$OILPICK"
+	States
+	{
+	Spawn:
+		LANT C -1
+		Loop
+	Pickup:
+		TNT1 A 0 A_GiveInventory("LanternOil", 1000)
+		Stop
+	}
+}
+
+ACTOR LanternPickup : CustomInventory
+{
+	//$Category Powerups (Wolf3D)
+	//$Title Useable Lantern (requires Oil)
+	//$Color 6
+	Scale 0.5
+	Tag "$TAGLANTR"
+	Inventory.Icon LANTB0
+	Inventory.PickupMessage "$LANTERN"
+	Inventory.MaxAmount 1
+	+INVENTORY.INVBAR
+	+INVENTORY.UNDROPPABLE
+	States
+	{
+	Spawn:
+		LANT A -1
+		Stop
+	Pickup:
+		"####" A 0 {
+			if (CountInv("LanternPickup") == 0) {
+				A_TakeInventory ("LanternOil", 12000);
+				return true;
+			} else if (CountInv("LanternPickup") > 0 && CountInv("LanternOil") < 12000) {
+				ACS_NamedExecuteAlways("BoA_LanternOff", 0);
+				A_GiveInventory ("LanternOil", 12000);
+				A_TakeInventory ("LanternPickup", 1); // The player will immediately get another lantern.
+				return true;
+			} else {
+				return false;
+			}
+		}
+		Stop
+	Use:
+		"####" A 0 ACS_NamedExecuteAlways("BoA_Lantern",0)
+		Fail
+	}
+}
