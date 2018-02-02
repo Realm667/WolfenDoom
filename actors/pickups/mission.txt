@@ -7,7 +7,7 @@ ACTOR Akten : Inventory
 	Scale 0.5
 	Inventory.Icon AKTTA0
 	Inventory.PickupMessage "$AKTEN"
-	Inventory.PickupSound "misc/p_pkup"
+	Inventory.PickupSound "pickup/papers"
 	Inventory.MaxAmount 1
 	+INVENTORY.ALWAYSPICKUP
 	+INVENTORY.INVBAR
@@ -256,6 +256,7 @@ ACTOR RadioPickup : Akten
 	Scale 0.4
 	Tag "$TAGRADIO"
 	Inventory.PickupMessage "$RADIOF"
+	Inventory.PickupSound "pickup/radiopk"
 	Inventory.MaxAmount 1
 	-INVENTORY.INVBAR
 	States
@@ -275,7 +276,7 @@ ACTOR Kennkarte : Inventory
 	Scale 0.5
 	Inventory.Icon KENKA0
 	Inventory.PickupMessage "$KENK"
-	Inventory.PickupSound "misc/p_pkup"
+	Inventory.PickupSound "pickup/papers"
 	+INVENTORY.ALWAYSPICKUP
 	+INVENTORY.INVBAR
 	+INVENTORY.UNDROPPABLE
@@ -323,6 +324,7 @@ ACTOR ScientistUniform : SwitchableDecoration
 ACTOR ScientistUniformPickup : CustomInventory
 {
 	Inventory.PickupMessage "$UNIFORM1"
+	Inventory.PickupSound "pickup/uniform"
 	Scale 0.7
 	States
 	{
@@ -358,6 +360,7 @@ ACTOR SSBJUniform : ScientistUniform
 ACTOR SSBJUniformPickup : CustomInventory
 {
 	Inventory.PickupMessage "$UNIFORM2"
+	Inventory.PickupSound "pickup/uniform"
 	Scale 0.7
 	States
 	{
