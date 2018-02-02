@@ -449,6 +449,29 @@ class Base : Actor
 		return self;
 	}
 
+	int GetVisibility()
+	{
+		int visibility = 0;
+
+		ThinkerIterator it = ThinkerIterator.Create("Actor", STAT_DLIGHT);
+		Actor mo;
+
+		while (mo = Actor(it.Next()))
+		{
+			double checkRadius = mo.args[3];
+
+			if (Distance3D(mo) > checkRadius * 2) { continue; }
+
+			double brightness = (mo.args[0] + mo.args[1] + mo.args[2]) / (255. * 3) * 1.25; // Calculate the light's overall brightness
+			double amount = checkRadius * 2 - Distance2d(mo) + 8; // Calculate visibility based on how close the actor is to the light (in 2D space, so we can mostly disregard z-pos and height)
+			amount *= brightness; // Adjust based on brightness level
+
+			visibility = int(visibility + max(amount - visibility, 0)); // Set the new visibility - use delta in value instead of overriding so that multiple lights can be additive in visibility
+		}
+
+		return visibility;
+	}
+
 	override void Tick()
 	{
 		if (user_DrawHealthBar) { ChangeStatNum(Thinker.STAT_DEFAULT - 3); } // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient

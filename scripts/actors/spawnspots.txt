@@ -387,6 +387,11 @@ class WaveSpawner : ActorSpawner
 				{
 					// If the sector ahead is lighted, don't walk forward - keeps zombies in dark areas unless they are pushed out
 
+					double dlvisibility = 0;
+
+					// If the actor inherits from Base, have it avoid bright dynamic lights, too
+					if (Base(Spawns[i])) { dlvisibility = Base(Spawns[i]).GetVisibility(); }
+
 					FLineTraceData trace;
 					if (Spawns[i].LineTrace(Spawns[i].angle, 256, 45, TRF_THRUHITSCAN | TRF_THRUACTORS, Spawns[i].Height * 0.9, 0.0, 0.0, trace) && trace.HitType == TRACE_HitFloor)
 					{
@@ -394,14 +399,20 @@ class WaveSpawner : ActorSpawner
 
 						double visibility = trace.HitSector.lightlevel - (255 - (light.r + light.g + light.b) / 3) - 255 * (trace.HitSector.ColorMap.FogDensity / 510);
 
-						if (visibility > 140)
+						if (!Spawns[i].bFrightened && (visibility > 140 || visibility + dlvisibility > 150))
 						{
-							Spawns[i].movedir = (Spawns[i].movedir + 4) % 8;
-							Spawns[i].bFrightened = True;
+							Spawns[i].movedir = (Spawns[i].movedir + Random(3, 5)) % 8; // Pick a random direction away from the current chase direction 
+							Spawns[i].bFrightened = True; // Run away
+
+							if (Base(Spawns[i])) { Base(Spawns[i]).dodgetimeout = 35 + Random(0, 7) * 5; } // Use the dodgetimeout variable as a counter to keep the actor frightened for a little bit
 						}
 						else
 						{
-							Spawns[i].bFrightened = False;
+							if (Base(Spawns[i]))
+							{
+								if (Base(Spawns[i]).dodgetimeout <= 0) { Spawns[i].bFrightened = False; }
+							}
+							else { Spawns[i].bFrightened = False; }
 						}
 					}
 				}
