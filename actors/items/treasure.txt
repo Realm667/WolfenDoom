@@ -34,6 +34,7 @@ ACTOR TreasureChest : SingleCoin
 	//$Title Treasure (Chest, 50pts)
 	Inventory.PickupMessage "$CHEST"
 	Inventory.Amount 50
+	Inventory.PickupSound "treasure/chest"
 	States
 	{
 	Spawn:
@@ -48,6 +49,7 @@ ACTOR TreasureChest2 : SingleCoin
 	Scale 1.0
 	Inventory.PickupMessage "$CHESTBIG"
 	Inventory.Amount 100
+	Inventory.PickupSound "treasure/chest"
 	States
 	{
 	Spawn:
@@ -61,6 +63,7 @@ ACTOR TreasureChest3 : SingleCoin
 	//$Title Treasure (Chest, 25pts)
 	Inventory.PickupMessage "$CHESTSML"
 	Inventory.Amount 25
+	Inventory.PickupSound "treasure/chest"
 	States
 	{
 	Spawn:
@@ -74,6 +77,7 @@ ACTOR TreasureCross : SingleCoin
 	//$Title Treasure (Cross, 15pts)
 	Inventory.PickupMessage "$CROSS"
 	Inventory.Amount 15
+	Inventory.PickupSound "treasure/cross"
 	States
 	{
 	Spawn:
@@ -86,6 +90,7 @@ ACTOR Goblet : TreasureCross
 {
 	//$Title Treasure (Goblet, 15pts)
 	Inventory.PickupMessage "$CHALICE"
+	Inventory.PickupSound "treasure/cup"
 	States
 	{
 	Spawn:
@@ -98,6 +103,7 @@ ACTOR TreasureCrown : SingleCoin
 {
 	//$Title Treasure (Crown, 20pts)
 	Inventory.PickupMessage "$CROWN"
+	Inventory.PickupSound "treasure/crown"
 	Inventory.Amount 20
 	States
 	{
@@ -112,6 +118,7 @@ ACTOR GoldBar : TreasureCrown
 	//$Title Treasure (Gold Bar, 20pts)
 	Scale 0.7
 	Inventory.PickupMessage "$GOLDBAR"
+	Inventory.PickupSound "treasure/crown"
 	States
 	{
 	Spawn:
@@ -124,6 +131,7 @@ ACTOR Naziward : BagOfCoins
 {
 	//$Title Treasure (Easteregg, Naziward, 10pts)
 	Inventory.PickupMessage "$GOLDWRD"
+	Inventory.PickupSound "treasure/cup"
 	Scale 0.2
 	States
 	{
@@ -137,6 +145,7 @@ ACTOR Cacoward : BagOfCoins
 {
 	//$Title Treasure (Easteregg, Cacoward, 10pts)
 	Inventory.PickupMessage "$GOLDWRD"
+	Inventory.PickupSound "treasure/chest"
 	Scale 0.12
 	States
 	{

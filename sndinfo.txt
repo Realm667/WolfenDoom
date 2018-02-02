@@ -52,6 +52,14 @@ weapons/rezhit			dsrezhit
 weapons/rezidle			dsrezidl
 $pitchshift weapons/rezidle 0 //mxd
 weapons/rezup				dsrezup
+pickup/bandage DSBANDG
+DSPAPR1 DSPAPR1
+DSPAPR2 DSPAPR2
+DSPAPR3 DSPAPR3
+$random pickup/papers {DSPAPR1 DSPAPR2 DSPAPR3}
+pickup/radiopk DSRADPK
+pickup/mealfood DSFDPCK
+pickup/uniform DSUNIF
 
 //Commander Keen
 ckeen/blowgun	ckblowg
@@ -379,6 +387,7 @@ $limit	world/ladder 1
 
 //Small Switches
 SMSWITCH SMSWITCH
+elecsw elecsw
 
 //No sound
 NOSOUND NOSOUND
@@ -1388,6 +1397,10 @@ PHONETL2 PHONETL2
 PHONETL1 PHONETL1
 
 //Treasure
+treasure/chest T_CHEST
+treasure/cross T_CROSS
+treasure/crown T_CROWN
+treasure/cup T_CUP
 treasure/pickup	DSTRESUP
 treasure/locked DSLOCKD
 supplychest/open SPBXOPEN
