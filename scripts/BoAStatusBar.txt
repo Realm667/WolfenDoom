@@ -1,26 +1,27 @@
 class BoAStatusBar : BaseStatusBar
 {
 	HUDFont mBigFont;
-	HUDFont mSmallFont;
 	HUDFont mHUDFont;
+	HUDFont mSmallFont;
 	InventoryBarState diparms;
 	DynamicValueInterpolator mAirInterpolator;
-	DynamicValueInterpolator mStaminaInterpolator;
 	DynamicValueInterpolator mBatteryInterpolator;
+	DynamicValueInterpolator mOilInterpolator;
 	DynamicValueInterpolator mSpaceSuitInterpolator;
-	DynamicValueInterpolator mVisibilityInterpolator;
+	DynamicValueInterpolator mStaminaInterpolator;
 	DynamicValueInterpolator mSuspicionInterpolator;
+	DynamicValueInterpolator mVisibilityInterpolator;
 
+	bool stealth;
 	double basealpha;
+	double healthbaralpha;
+	double velocity, oldangle, oldpitch;
 	int alertedcount;
 	int barstate;
-	bool stealth;
-	double healthbaralpha;
-	String LastTag;
 	int LastHealth;
 	int LastMaxHealth;
 	String LastIcon;
-	double velocity, oldangle, oldpitch;
+	String LastTag;
 
 	override void Init()
 	{
@@ -36,11 +37,12 @@ class BoAStatusBar : BaseStatusBar
 		diparms = InventoryBarState.Create();
 
 		mAirInterpolator = DynamicValueInterpolator.Create(0, 1.25, 1, 40);
-		mStaminaInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
 		mBatteryInterpolator = DynamicValueInterpolator.Create(0, 1.25, 1, 40);
+		mOilInterpolator = DynamicValueInterpolator.Create(0, 1.25, 1, 40);
 		mSpaceSuitInterpolator = DynamicValueInterpolator.Create(0, 1.25, 1, 40);
-		mVisibilityInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
+		mStaminaInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
 		mSuspicionInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
+		mVisibilityInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
 	}
 
 	override void NewGame ()
@@ -48,11 +50,12 @@ class BoAStatusBar : BaseStatusBar
 		Super.NewGame();
 
 		mAirInterpolator.Reset(0);
-		mStaminaInterpolator.Reset(0);
 		mBatteryInterpolator.Reset(0);
+		mOilInterpolator.Reset(0);
 		mSpaceSuitInterpolator.Reset(0);
-		mVisibilityInterpolator.Reset(0);
+		mStaminaInterpolator.Reset(0);
 		mSuspicionInterpolator.Reset(0);
+		mVisibilityInterpolator.Reset(0);
 	}
 
 	override void Tick()
@@ -63,6 +66,7 @@ class BoAStatusBar : BaseStatusBar
 		mStaminaInterpolator.Update(GetAmount("Stamina")); // This is a custom inventory item, not CPlayer.mo.stamina!
 
 		if (CheckInventory("MineSweeper", 1)) { mBatteryInterpolator.Update(GetAmount("Power")); }
+		if (CheckInventory("LanternPickup", 1)) { mOilInterpolator.Update(GetAmount("LanternOil")); }
 		if (CheckInventory("PowerSpaceSuit", 1)) { mSpaceSuitInterpolator.Update(CPlayer.mo.GetEffectTicsForItem("SpaceSuit")); }
 
 		Inventory vis = CPlayer.mo.FindInventory("BoAVisibility");
@@ -179,6 +183,7 @@ class BoAStatusBar : BaseStatusBar
 
 		DrawVisibilityBar((85, 162), scale: 0.5);
 
+		//Minesweeper & Lantern
 		if (CheckInventory("MineSweeper", 1))
 		{
 			int current, max;
@@ -190,6 +195,20 @@ class BoAStatusBar : BaseStatusBar
 			if (CheckInventory("MineSweeperActive", 1))
 			{
 				DrawBar("VERTBYMF", "VERTBYME", current, max, (195, 170), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
+			}
+		}
+
+		if (CheckInventory("LanternPickup", 1))
+		{
+			int current, max;
+			current = mOilInterpolator.GetValue();
+			max = GetMaxAmount("LanternOil");
+
+			DrawBar("LNTRYD", "LNTRYG", current, max, (141, -432), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
+
+			if (CheckInventory("LanternActive", 1))
+			{
+				DrawBar("LNTRYF", "LNTRYE", current, max, (141, -432), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
 			}
 		}
 
@@ -279,6 +298,7 @@ class BoAStatusBar : BaseStatusBar
 
 		DrawVisibilityBar();
 
+		//Minesweeper & Lantern
 		if (CheckInventory("MineSweeper", 1))
 		{
 			current = mBatteryInterpolator.GetValue();
@@ -289,6 +309,19 @@ class BoAStatusBar : BaseStatusBar
 			if (CheckInventory("MineSweeperActive", 1))
 			{
 				DrawBar("VERTBYMF", "VERTBYME", current, max, (150, -35), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
+			}
+		}
+
+		if (CheckInventory("LanternPickup", 1))
+		{
+			current = mOilInterpolator.GetValue();
+			max = GetMaxAmount("LanternOil");
+
+			DrawBar("LNTRYD", "LNTRYG", current, max, (-20, -241), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
+
+			if (CheckInventory("LanternActive", 1))
+			{
+				DrawBar("LNTRYF", "LNTRYE", current, max, (-20, -241), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
 			}
 		}
 

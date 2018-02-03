@@ -259,19 +259,7 @@ ACTOR LanternPickup : CustomInventory
 		LANT A -1
 		Stop
 	Pickup:
-		"####" A 0 {
-			if (CountInv("LanternPickup") == 0) {
-				A_TakeInventory ("LanternOil", 12000);
-				return true;
-			} else if (CountInv("LanternPickup") > 0 && CountInv("LanternOil") < 12000) {
-				ACS_NamedExecuteAlways("BoA_LanternOff", 0);
-				A_GiveInventory ("LanternOil", 12000);
-				A_TakeInventory ("LanternPickup", 1); // The player will immediately get another lantern.
-				return true;
-			} else {
-				return false;
-			}
-		}
+		"####" A 0 A_GiveInventory("LanternOil", 1000)
 		Stop
 	Use:
 		"####" A 0 ACS_NamedExecuteAlways("BoA_Lantern",0)
