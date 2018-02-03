@@ -399,7 +399,7 @@ class WaveSpawner : ActorSpawner
 
 						double visibility = trace.HitSector.lightlevel - (255 - (light.r + light.g + light.b) / 3) - 255 * (trace.HitSector.ColorMap.FogDensity / 510);
 
-						if (!Spawns[i].bFrightened && (visibility > 140 || visibility + dlvisibility > 150))
+						if (!Spawns[i].bFrightened && (visibility > 140 || visibility + dlvisibility > 245))
 						{
 							Spawns[i].movedir = (Spawns[i].movedir + Random(3, 5)) % 8; // Pick a random direction away from the current chase direction 
 							Spawns[i].bFrightened = True; // Run away
