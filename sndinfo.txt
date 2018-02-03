@@ -353,7 +353,10 @@ bjfall2	bjfall2
 //Miscellaneous
 misc/alert				alert //mxd
 misc/ammo_pkup			dsammoup
+misc/gadget_pickup	GDPICKUP
 misc/armor_pkup			dsgetarm
+misc/armor_body		DSBARMOR
+misc/armor_head		DSHARMOR
 misc/drink				DRINK
 misc/health_pkup		dsgethlt
 misc/k_pkup				dsgetkey
@@ -439,9 +442,17 @@ ZOMBSEE1	ZOMBSEE1
 ZOMBSEE2	ZOMBSEE2
 ZOMBSEE3	ZOMBSEE3
 ZOMBSEE4	ZOMBSEE4
-nazombie/pain	ZOMBPAIN
+$random nazombie/pain {nazombie/pain1 nazombie/pain2 nazombie/pain3}
+nazombie/pain1	ZOMBPAIN
+nazombie/pain2	ZOMBPAI2
+nazombie/pain3	ZOMBPAI3
 nazombie/vomit	ZOMBVOMT
 scream2 	ZSCREAM2
+$random nazombie/die {zmdeath1 zmdeath2 zmdeath3 zmdeath4}
+zmdeath1 zmdeath1
+zmdeath2 zmdeath2
+zmdeath3 zmdeath3
+zmdeath4 zmdeath4
 
 //MechaNazi
 mech/wake		MECHWAKE
@@ -570,6 +581,14 @@ dog/death2			DSDGDIE2
 dog/death3			DSDGDIE3
 dog/pain			dsdgpai
 dog/attack			dsdogatk
+
+//Cerberus
+cerb/attack	CER_BITE
+cerb/death1	CER_CRYA
+cerb/death2	CER_CRYB
+$random cerb/death	{ cerb/death2 cerb/death1 }
+cerb/sight	CER_JKMX
+cerb/act	CER_UNAR
 
 //Geist
 geist/pain		geisthit
@@ -1404,6 +1423,12 @@ treasure/cup T_CUP
 treasure/pickup	DSTRESUP
 treasure/locked DSLOCKD
 supplychest/open SPBXOPEN
+
+//Skullkey
+key/skullkey SKKEYPK
+
+//Spear of Destiny
+misc/spearofdestiny DSGETARM
 
 //Hydrant
 hydrant/death	WCBREAK

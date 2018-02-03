@@ -57,6 +57,7 @@ ACTOR ScubaGearGiver : RadSuit
 	Height 32
 	Scale 0.5
 	Inventory.PickupMessage "$SCUBA2"
+	Inventory.PickupSound "pickup/uniform"
 	Powerup.Duration -60
 	Powerup.Color 0,0,150,.125
 	DamageFactor "MutantPoison", 0.0
@@ -197,6 +198,7 @@ ACTOR DeployableMine : CustomInventory
 	Inventory.Icon "I_BOAM"
 	Inventory.MaxAmount 5
 	Inventory.PickupMessage "$DEPMINE"
+	Inventory.PickupMessage "misc/ammo_pkup"
 	+COUNTITEM
 	+INVENTORY.INVBAR
 	States
@@ -226,6 +228,7 @@ ACTOR OilPickup : CustomInventory
 	-INVENTORY.INVBAR
 	Inventory.MaxAmount 12 //1000x12=12000
 	Inventory.PickupMessage "$OILPICK"
+	Inventory.PickupSound "misc/ammo_pkup"
 	States
 	{
 	Spawn:
@@ -247,6 +250,7 @@ ACTOR LanternPickup : CustomInventory
 	Inventory.Icon LANTB0
 	Inventory.PickupMessage "$LANTERN"
 	Inventory.MaxAmount 1
+	Inventory.PickupSound "misc/gadget_pickup"
 	+INVENTORY.INVBAR
 	+INVENTORY.UNDROPPABLE
 	States
