@@ -9,14 +9,24 @@ Script "L_PlayerLoop" ENTER
 	{
 		If (CheckInventory("LanternOil") && lanternActive[playerNumber()] > 0) //Only run if you have enough oil & lantern is hold.
 		{
-			TakeInventory("LanternOil",1);
-//do some checks if we are underwater, which in this case douse the lantern and take all oil away - ozy81
+			if(GetActorProperty(0,APROP_WATERLEVEL)>=3)
+				{
+					localambientsound("flamer/steam",random(15,45));
+					TakeInventory("LanternActive",1);
+					TakeInventory("LanternPickup",99999);
+					TakeInventory("LanternOil",99999);
+				}
+				Else
+				{
+					TakeInventory("LanternOil",1);
+				}
 		}
 		Else
 		{
 			TakeInventory("LanternActive",1);
 		}
 		Delay(1);
+		restart;
 	}
 }
 
