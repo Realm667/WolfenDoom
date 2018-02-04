@@ -22,6 +22,7 @@ class BoAStatusBar : BaseStatusBar
 	int LastMaxHealth;
 	String LastIcon;
 	String LastTag;
+	double hour, minute, second;
 
 	override void Init()
 	{
@@ -153,6 +154,8 @@ class BoAStatusBar : BaseStatusBar
 					current = mSpaceSuitInterpolator.GetValue();
 					DrawBar("HORZSP2F", "HORZSP2E", current, max, (-22, 55), 0, SHADER_HORZ, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
 				}
+
+				if (GetGlobalACSValue(60) > -1) { DrawDayNightState(); }
 			BeginHUD(1, False);
 
 			barstate = state;
@@ -231,7 +234,14 @@ class BoAStatusBar : BaseStatusBar
 		DrawString(mHUDFont, GetWeaponTag(), (190, 159), DI_TEXT_ALIGN_CENTER);
 
 		//Time
-		DrawString(mHUDFont, level.TimeFormatted(), (250, 159));
+		String time = level.TimeFormatted();
+
+		if (hour || minute || second)
+		{
+			time = FormatNumber(int(hour), 2, 2, FNF_FILLZEROS) .. ":" .. FormatNumber(int(minute), 2, 2, FNF_FILLZEROS) .. ":" .. FormatNumber(int(second), 2, 2, FNF_FILLZEROS);
+		}
+
+		DrawString(mHUDFont, time, (250, 159));
 
 		//Health
 		DrawString(mBigFont, FormatNumber(CPlayer.health, 3), (52, 171), DI_TEXT_ALIGN_RIGHT);
@@ -334,7 +344,14 @@ class BoAStatusBar : BaseStatusBar
 		//Money
 		DrawString(mBigFont, FormatNumber(GetAmount("CoinItem")), (50, 7), DI_TEXT_ALIGN_RIGHT);
 		//Time
-		DrawString(mHUDFont, level.TimeFormatted(), (15, 21), DI_TEXT_ALIGN_LEFT);
+		String time = level.TimeFormatted();
+
+		if (hour || minute || second)
+		{
+			time = FormatNumber(int(hour), 2, 2, FNF_FILLZEROS) .. ":" .. FormatNumber(int(minute), 2, 2, FNF_FILLZEROS) .. ":" .. FormatNumber(int(second), 2, 2, FNF_FILLZEROS);
+		}
+
+		DrawString(mHUDFont, time, (15, 21), DI_TEXT_ALIGN_LEFT);
 
 		//Top Right
 		DrawImage("HUD_UR", (-66, 0), DI_ITEM_OFFSETS);
@@ -400,6 +417,32 @@ class BoAStatusBar : BaseStatusBar
 
 		//Grenade
 		DrawString(mBigFont, FormatNumber(GetAmount("GrenadePickup")), (-83, -20), DI_TEXT_ALIGN_LEFT);
+	}
+
+	void DrawDayNightState()
+	{
+		double ACStime = GetGlobalACSValue(60) / 65536.0;
+
+		double secduration = 1.0 / (24 * 60 * 60);
+
+		if (ACStime == 0)
+		{
+			hour = 17;
+			minute = 15;
+			second = 0;
+		}
+		else
+		{
+			second = ACStime / secduration;
+			minute = second / 60 + 15;	// Offset these by 15 and 17 to have a start time that's not midnight (aiming for 1715 sunset, 0715 sunrise)
+			hour = minute / 60 + 17; 	// 
+
+			second %= 60;
+			minute %= 60;
+			hour %= 24;
+		}
+
+		// TODO - Handle drawing day/night hud indicator here...  Using these values for the time indicator is already handled in the time drawing code.
 	}
 
 	//Custom version of DrawBar that allows drawing with alpha - mostly copy/paste from original function, modified to allow alpha and scaling
