@@ -30,4 +30,4 @@ Blade of Agony is much more than just a pastiche of the classic shooters that in
 
 
 ## License
-This is only meant for development and testing purposes. You are NOT ALLOWED to use material from this repository for your own projects. Important: This repository is for development and testing purposes, you are NOT ALLOWED to use the copyrighted material for your own projects without our permission!
+This repository is for development and testing purposes. You are **NOT ALLOWED** to use any un-released material for your own projects without our permission!
