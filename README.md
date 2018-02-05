@@ -4,15 +4,18 @@ Blade of Agony is a story-driven FPS. The project is inspired by WWII shooters f
 ## Authors
 - Daniel "Tormentor667" Gimmer: Project Lead, Concept Design, Plot Design, Graphic Design, SFX Design, Level Design
 - Dean "DoomJuan" Ascher: Concept Design, Plot Design, Writing, Quality Assurance, Level Design
-- Virgilio "Ozymandias81" Virzo: Concept Design, Plot Design, Writing, Quality Assurance, Level Design
-- Maxim "doomjedi" Genis: Sprite Artist
-- "AFADoomer": Programmer
-- "BigDaveHadSomeToo": Sprite Artist
-- "Ed The Bat": Programmer, Quality Control
+- Virgilio "Ozymandias81" Virzo: Concept Design, Modelling, SFX Design, Quality Assurance, Level Design
+- Maxim "DoomJedi" Genis: Sprite Artist
+- "AFADoomer": Programmer, Modelling
+- "Talon1024": Balancing, Programmer, Modelling, Writing, Quality Control
 - "Guardsoul": Level Design
+- "MaxED": Concept Design, Programmer, Modelling
+- Nash Muhandes: Programmer
+- "Ed The Bat": Programmer, Quality Control
+- "Kodi": Programmer
+- "Yqco": Programmer
+- "BigDaveHadSomeToo": Sprite Artist
 - James Christian: Proofreading & Revision
-- "Talon1024": Balancing, Quality Control
-- "MaxED": Concept Design, Programmer
 - "The Zombie Killer": Programmer, Technical Support
 - "wildweasel": Programmer
 
@@ -26,7 +29,7 @@ Blade of Agony is much more than just a pastiche of the classic shooters that in
 - Devastating armaments from the battlefields of WWII
 - Interactive NPCs that support the twisted plot's progress and help you understand the game
 - Beautiful special effects (weather, elements, explosions, etc.)
-- Much, much more!
+- And Much, much more!
 
 
 ## License
