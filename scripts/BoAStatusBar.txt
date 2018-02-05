@@ -207,11 +207,10 @@ class BoAStatusBar : BaseStatusBar
 			current = mOilInterpolator.GetValue();
 			max = GetMaxAmount("LanternOil");
 
-			DrawBar("LNTRYD", "LNTRYG", current, max, (141, -432), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
-
 			if (CheckInventory("LanternActive", 1))
 			{
-				DrawBar("LNTRYF", "LNTRYE", current, max, (141, -432), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
+				DrawImage("LANT_BRD", (141, -432), DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
+				DrawBar("LANT_YEL", "LANT_BLK", current, max, (141, -432), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
 			}
 		}
 
@@ -327,11 +326,10 @@ class BoAStatusBar : BaseStatusBar
 			current = mOilInterpolator.GetValue();
 			max = GetMaxAmount("LanternOil");
 
-			DrawBar("LNTRYD", "LNTRYG", current, max, (-20, -241), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
-
 			if (CheckInventory("LanternActive", 1))
 			{
-				DrawBar("LNTRYF", "LNTRYE", current, max, (-20, -241), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
+				DrawImage("LANT_BRD", (-20, -241), DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
+				DrawBar("LANT_YEL", "LANT_BLK", current, max, (-20, -241), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
 			}
 		}
 
