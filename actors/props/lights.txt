@@ -54,7 +54,7 @@ ACTOR Chandelier1Switchable : SwitchableDecoration
 			A_SpawnItemEx("3dFlame_Normal", ScaleX*-22, ScaleY*23, 	ScaleX+ScaleY*5, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
 			A_SpawnItemEx("3dFlame_Normal", ScaleX*24, 	ScaleY*-22, ScaleX+ScaleY*8, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);}
 	Activate:
-		MDLA A 1 //LIGHT ("FireSpawnerSmall")
+		MDLA A 1
 		Loop
 	Inactive:
 		MDLA A 0 A_ChangeFlag("DORMANT", TRUE)

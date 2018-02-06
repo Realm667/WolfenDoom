@@ -1538,6 +1538,16 @@ class NaziStandard : Nazi
 			"####" F 5 A_UnblockAndDrop();
 			"####" G -1;
 			Stop;
+		XDeath.Zombie:
+			SLOZ A 5 {
+				A_SpawnItemEx("Zombie_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176);
+				A_SetScale(0.65);
+				bIsMonster = False; // So that an exploded enemy can't be resurrected
+			}
+			"####" BCDE 5;
+			"####" F 5 A_UnblockAndDrop();
+			"####" G -1;
+			Stop;
 		Disintegrate:
 			"####" H 5 {
 				A_Scream();
@@ -1707,13 +1717,25 @@ class ZombieStandard : Nazi
 			"####" O 5 Light("ITBURNS5") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), 0, 0, 0, frandom(0.2,1.0));
 			Loop;
 		Death.Fire.End:
+			"####" O 4 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3));
 			"####" O -1;
+			Stop;
+		XDeath:
+			SLOZ A 5 {
+				A_SpawnItemEx("Zombie_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176);
+				A_SetScale(0.65);
+				bIsMonster = False; // So that an exploded enemy can't be resurrected
+			}
+			"####" BCDE 5;
+			"####" F 5 {A_UnblockAndDrop(); A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3));}
+			"####" G -1;
 			Stop;
 		Disintegrate:
 			"####" H 5 {
 				A_Scream();
 				A_Playsound("astrostein/guard_death");
 				A_UnblockAndDrop();
+				A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3));
 				A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
 			}
 		Disintegrate.FadeLoop:
@@ -1726,7 +1748,7 @@ class ZombieStandard : Nazi
 }
 
 // Conversation marker that follows the actor, positioning itself above their head.
-//  For Invisible/NoBlockMap actors, the marker is placed at the base of the actor.
+// For Invisible/NoBlockMap actors, the marker is placed at the base of the actor.
 class ConversationMarker : Actor
 {
 	Default

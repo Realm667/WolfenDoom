@@ -209,8 +209,8 @@ class BoAStatusBar : BaseStatusBar
 
 			if (CheckInventory("LanternActive", 1))
 			{
-				DrawImage("LANT_BRD", (141, -432), DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
-				DrawBar("LANT_YEL", "LANT_BLK", current, max, (141, -432), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
+				DrawImage("LANT_HBK", (-6, 140), DI_SCREEN_BOTTOM | DI_SCREEN_LEFT);
+				DrawBar("LANT_HON", "LANT_HOF", current, max, (-6, 121), 0, SHADER_HORZ, DI_SCREEN_BOTTOM | DI_SCREEN_LEFT);
 			}
 		}
 
@@ -328,8 +328,8 @@ class BoAStatusBar : BaseStatusBar
 
 			if (CheckInventory("LanternActive", 1))
 			{
-				DrawImage("LANT_BRD", (-20, -241), DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
-				DrawBar("LANT_YEL", "LANT_BLK", current, max, (-20, -241), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
+				DrawImage("LANT_VBK", (70, -74), DI_SCREEN_BOTTOM | DI_SCREEN_LEFT);
+				DrawBar("LANT_VON", "LANT_VOF", current, max, (89, -86), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_BOTTOM | DI_SCREEN_LEFT);
 			}
 		}
 
