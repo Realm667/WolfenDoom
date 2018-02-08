@@ -193,11 +193,10 @@ class BoAStatusBar : BaseStatusBar
 			current = mBatteryInterpolator.GetValue();
 			max = GetMaxAmount("Power");
 
-			DrawBar("VERTBYMG", "VERTBYMD", current, max, (195, 170), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
-
 			if (CheckInventory("MineSweeperActive", 1))
 			{
-				DrawBar("VERTBYMF", "VERTBYME", current, max, (195, 170), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
+				DrawImage("SWEP_BAK", (152, 134), DI_SCREEN_OFFSETS);
+				DrawBar("SWEP_ON", "SWEP_OFF", current, max, (152, 130), 0, SHADER_HORZ, DI_SCREEN_OFFSETS);
 			}
 		}
 
@@ -209,8 +208,8 @@ class BoAStatusBar : BaseStatusBar
 
 			if (CheckInventory("LanternActive", 1))
 			{
-				DrawImage("LANT_HBK", (-6, 140), DI_SCREEN_BOTTOM | DI_SCREEN_LEFT);
-				DrawBar("LANT_HON", "LANT_HOF", current, max, (-6, 121), 0, SHADER_HORZ, DI_SCREEN_BOTTOM | DI_SCREEN_LEFT);
+				DrawImage("LANT_BAK", (152, 138), DI_SCREEN_OFFSETS);
+				DrawBar("LANT_ON", "LANT_OFF", current, max, (152, 138), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_OFFSETS);
 			}
 		}
 
@@ -313,11 +312,10 @@ class BoAStatusBar : BaseStatusBar
 			current = mBatteryInterpolator.GetValue();
 			max = GetMaxAmount("Power");
 
-			DrawBar("VERTBYMG", "VERTBYMD", current, max, (150, -35), 0, SHADER_VERT, DI_ITEM_OFFSETS);
-
 			if (CheckInventory("MineSweeperActive", 1))
 			{
-				DrawBar("VERTBYMF", "VERTBYME", current, max, (150, -35), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
+				DrawImage("SWEP_BAK", (0, -24), DI_SCREEN_CENTER_BOTTOM);
+				DrawBar("SWEP_ON", "SWEP_OFF", current, max, (0, -30), 0, SHADER_HORZ, DI_SCREEN_CENTER_BOTTOM);
 			}
 		}
 
@@ -328,8 +326,12 @@ class BoAStatusBar : BaseStatusBar
 
 			if (CheckInventory("LanternActive", 1))
 			{
-				DrawImage("LANT_VBK", (70, -74), DI_SCREEN_BOTTOM | DI_SCREEN_LEFT);
-				DrawBar("LANT_VON", "LANT_VOF", current, max, (89, -86), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_BOTTOM | DI_SCREEN_LEFT);
+				//DrawImage("LANT_BAK", (-11, -144), DI_SCREEN_CENTER | DI_SCREEN_TOP);
+				//DrawBar("LANT_ON", "LANT_OFF", current, max, (-11, -144), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER | DI_SCREEN_TOP);
+				
+				//remove - comment following lines and set above if you don't want indicator on bottom zone in fullscreen - ozy81
+				DrawImage("LANT_BAK", (0, -24), DI_SCREEN_CENTER_BOTTOM);
+				DrawBar("LANT_ON", "LANT_OFF", current, max, (0, -24), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER_BOTTOM);
 			}
 		}
 
