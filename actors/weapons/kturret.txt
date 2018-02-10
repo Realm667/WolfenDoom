@@ -22,7 +22,7 @@ ACTOR KTurretStand : SwitchableDecoration //IMPORTANT: The TurretStand NEEDS to 
 		MDLA A 1
 		Goto Spawn2
 	Spawn2:
-		MDLA A -1 Light(BOASHADOW_L)
+		MDLA A -1
 		Stop
 	Active:	//MP compatibility: if the target has a master, it means it's manned by another player, & thus the script below should not be executed.
 		TNT1 A 0 A_JumpIf(IsPointerEqual(AAPTR_MASTER,AAPTR_NULL),"StartLoop")

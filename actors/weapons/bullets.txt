@@ -216,6 +216,56 @@ ACTOR PyroCasing : ShotgunCasing
 	}
 }
 
+//Variant for Tesla
+ACTOR TeslaTracer : BulletTracer
+{
+	+BLOODLESSIMPACT
+	DamageType Electric
+	States
+	{
+	Spawn:
+		TNT1 A 1 BRIGHT A_JumpIfTracerCloser(96,"Whiz")
+		TNT1 A 0 A_SpawnItemEx("TeslaTrail", 0, 0, 0, velx, vely, velz, 0, SXF_ABSOLUTEVELOCITY) //mxd
+		Loop
+	Whiz:
+		TNT1 A -1 BRIGHT A_SpawnItemEx("TeslaWhizzer")
+		Stop
+	Death:
+	Crash:
+		TNT1 AAAAA 0 A_SpawnItemEx("Spark_P1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
+		TNT1 A 0 A_SpawnItemEx("SparkFlare_P1")
+		TNT1 A 8 A_PlaySound("astroricochet")
+		Stop
+	XDeath:
+		TNT1 AAAAA 0 A_SpawnItemEx("Spark_P1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
+		TNT1 A 0 A_SpawnItemEx("SparkFlare_P1")
+		TNT1 A 1 A_PlaySound("astrohitflesh")
+		Stop
+	}
+}
+
+ACTOR EnemyTeslaTracer : TeslaTracer {Damage (random(2,4))}
+
+ACTOR TeslaWhizzer
+{
+	States
+	{
+	Spawn:
+		TNT1 A 1 A_PlaySound("tesla/attack")
+		Stop
+	}
+}
+
+ACTOR TeslaTrail: TracerTrail{}
+
+//Variant for Players
+ACTOR TeslaTracerPlayer : TeslaTracer
+{
+	ProjectileKickback 60
+	Damage (random(3,17))
+	Speed 100
+}
+
 /////////////////////////////////////////////////////////////
 /////////////////// MUTANT PROJECTILES //////////////////////
 /////////////////////////////////////////////////////////////
