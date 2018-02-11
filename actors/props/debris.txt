@@ -751,6 +751,34 @@ ACTOR Debris_Skull : Bones_Base
 	}
 }
 
+ACTOR Debris_Loper : Debris_Skull
+{
+	Mass 500
+	States
+	{
+	Spawn:
+		LOPR O 1 {A_SetRoll(roll-random(7,15), SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	AdjustMass:
+		"####" O 0 A_SetMass(750)
+		Goto Swim
+	Swim:
+		"####" O 2 A_ScaleVelocity(0.7)
+		"####" O 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		Loop
+	Death:
+		"####" O 0 {A_SetRoll(0); A_ChangeFlag("ROLLCENTER", FALSE); A_ChangeFlag("ROLLSPRITE", FALSE);}
+		"####" "#" 0 A_Jump(256,"Death1")
+		Stop
+	Death1:
+		"####" O 0 A_ChangeFlag("BOUNCEONACTORS", FALSE)
+		"####" O 1 A_SetTics(35*CallACS("DebrisLifetime"))
+		Death1Wait:
+		"####" O 1 A_FadeOut(0.1)
+		Wait
+	}
+}
+
 ACTOR Debris_Mecha : Debris_MetalJunk
 {
 	-FLATSPRITE
