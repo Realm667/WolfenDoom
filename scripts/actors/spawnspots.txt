@@ -265,8 +265,6 @@ class WaveSpawner : ActorSpawner
 		Waves[waveindex].maxspawns = maxspawns;
 		Waves[waveindex].round = round;
 
-//		console.printf("%d %d => %s %d %d", tid, waveindex, Waves[waveindex].enemy.GetClassName(), Waves[waveindex].count, Waves[waveindex].maxspawns, Waves[waveindex].round);
-
 		waveindex++;
 	}
 
@@ -295,8 +293,6 @@ class WaveSpawner : ActorSpawner
 
 	override state A_DoSpawns()
 	{
-//		console.printf("Spawning round %d", round);
-
 		if (user_lightburns) // Chapter 3 Secret Level
 		{
 			if (GetLightLevel() > 140) { return ResolveState("Active.Spawn"); } // Don't spawn until they won't just be burned up
@@ -332,7 +328,6 @@ class WaveSpawner : ActorSpawner
 				if (spawned)
 				{
 					Spawns.Push(spawned);
-//					console.printf("%d => %s - %d/%d %d/%d", index, user_spawntype.GetClassName(), spawncount, user_maxactors, totalspawncount, user_maxspawns);
 
 					spawned.master = self;
 					spawned.target = target;
@@ -399,7 +394,13 @@ class WaveSpawner : ActorSpawner
 
 						double visibility = trace.HitSector.lightlevel - (255 - (light.r + light.g + light.b) / 3) - 255 * (trace.HitSector.ColorMap.FogDensity / 510);
 
-						if (!Spawns[i].bFrightened && (visibility > 140 || visibility + dlvisibility > 245))
+						if (
+							(
+								!Spawns[i].bFrightened && 
+								(visibility > 140 || visibility + dlvisibility > 235)
+							) &&
+							(Spawns[i].target && Spawns[i].Distance2D(Spawns[i].target) > 64)
+						)
 						{
 							Spawns[i].movedir = (Spawns[i].movedir + Random(3, 5)) % 8; // Pick a random direction away from the current chase direction 
 							Spawns[i].bFrightened = True; // Run away
