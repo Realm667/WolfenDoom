@@ -422,3 +422,51 @@ class WaveSpawner : ActorSpawner
 		Super.Tick();
 	}
 }
+
+// Base barrel actor that allows you to specify an item as args[0] in-editor that will always be dropped when the barrel/object is destroyed.
+class BarrelSpawner : ExplosiveBarrel
+{
+	Class<Actor> user_spawntype; 
+	Actor drop;
+
+	Default
+	{
+		//$Arg0 "Thing ID to spawn"
+		//$Arg0Str "Actor class to spawn"
+		//$Arg0ToolTip "What actor to spawn.  Numeric values set Thing ID, and string values set spawn class.  \nDefaults to nothing spawned, beyond any defined DropItems."
+	}
+
+	override void PostBeginPlay()
+	{
+		// Setting a special on the actor overrides the use of args[0] to specify the drop item
+		if (!special && !user_spawntype)
+		{
+			user_spawntype = GetSpawnableType(args[0]);
+		}
+
+		Super.PostBeginPlay();
+	}
+
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags = 0, double angle = 0)
+	{
+		int damageamt = Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
+
+		if (user_spawntype && health <= 0 && !drop)
+		{
+			drop = Spawn(user_spawntype, pos);
+
+			if (drop)
+			{
+				drop.SetOrigin(pos + (0, 0, 10), false);
+				drop.angle = angle;
+				drop.VelFromAngle(5, inflictor.AngleTo(self));
+				drop.vel.z = 1;
+				drop.vel += vel;
+				drop.bNoGravity = false;
+				drop.ClearCounters();
+			}
+		}
+
+		return damageamt;
+	}
+}
