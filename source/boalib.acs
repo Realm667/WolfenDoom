@@ -902,3 +902,15 @@ script "TimeReset" OPEN
 {
 	time = -1; // Reset time to -1 at start of each level.  If never changed, no display will show up on status bar
 }
+
+script "HintMessage" (int message)
+{
+	if (message == "") { Terminate; }
+
+	message = StrParam(l:message);
+
+	SetHudSize(640, 480, true);
+	hudmessagebold(s:message; HUDMSG_FADEINOUT,80,CR_GRAY,320.0,470.0,3.0,1.0,1.0);
+	delay(10);
+	AmbientSound("menu/change", 96);
+}

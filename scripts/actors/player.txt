@@ -53,7 +53,11 @@ class BoAPlayer : PlayerPawn
 	double leveltilt, oldtilt, leveltiltangle;
 	Actor CrosshairTarget;
 	Actor ForcedHealthBar;
+	Actor DragTarget;
 	SpriteID baseSprite;
+	Weapon LastWeapon;
+	Line UseTarget;
+	int crosshair;
 
 	Default
 	{
@@ -192,6 +196,8 @@ class BoAPlayer : PlayerPawn
 
 		DoTokenChecks();
 
+		DoInteractions();
+
 		Super.Tick();
 	}
 
@@ -208,6 +214,7 @@ class BoAPlayer : PlayerPawn
 		}
 		else
 		{
+			if (DragTarget) { cmd.yaw = int(cmd.yaw * 0.15); }
 			Angle += cmd.yaw * (360./65536.);
 		}
 
@@ -499,6 +506,114 @@ class BoAPlayer : PlayerPawn
 			}
 		}
 	}
+
+	void DoInteractions()
+	{
+		FLineTraceData trace;
+		LineTrace(angle, UseRange, pitch, TRF_ALLACTORS, player.viewheight, 0.0, 0.0, trace);
+
+		Actor AimActor = trace.HitActor;
+		Line AimLine = trace.HitLine;
+
+		if (AimLine && !crosshair)
+		{
+			crosshair = AimLine.GetUDMFInt("user_crosshair"); // Use the line's user_crosshair property if it has a value
+		}
+
+		if (AimLine && !AimLine.special) { AimLine = null; }
+
+		// Handle player holding down use button while looking at a repeatable line that's within use range
+		if (AimLine)
+		{
+			if (AimLine.flags & Line.ML_REPEAT_SPECIAL && player.usedown) // If repeatable and you're pressing use, then keep using it.
+			{
+				Level.ExecuteSpecial(AimLine.special, self, AimLine, true, AimLine.args[0], AimLine.args[1], AimLine.args[2], AimLine.args[3], AimLine.args[4]);
+
+				if (!LastWeapon && crosshair >= 80 && crosshair <= 90) // Only lower weapon when there's a status display
+				{
+					LastWeapon = player.ReadyWeapon;
+					player.PendingWeapon = Weapon(FindInventory("NullWeapon"));
+				}
+			}
+		}
+/*
+		// Draggable corpse handling (also lets you pull pushable actors)
+		//  Player must crouch within use range of a draggable actor and hold use, then move to drag the actor along
+		else if ((AimActor || DragTarget) && player.cmd.buttons & BT_USE && player.cmd.buttons & BT_CROUCH)
+		{
+			if (DragTarget)
+			{
+				DragTarget.Warp(self, Clamp(Distance2D(DragTarget), radius + DragTarget.radius + speed, UseRange), flags:WARPF_INTERPOLATE | WARPF_NOCHECKPOSITION);
+				Speed = Default.Speed * 0.05;
+
+				// Closed hand grab icon
+				crosshair = 99;
+			}
+			else
+			{
+				if (
+					AimActor && 
+					Distance2D(AimActor) < UseRange && 
+					(
+						IsCorpse(AimActor) ||
+						AimActor.bPushable
+					)
+				)
+				{
+					if (!LastWeapon)
+					{
+						LastWeapon = player.ReadyWeapon;
+						player.PendingWeapon = Weapon(FindInventory("NullWeapon"));
+					}
+					DragTarget = AimActor;
+				}
+			}
+		}
+*/
+		else
+		{
+			if (LastWeapon)
+			{
+				player.PendingWeapon = LastWeapon;
+				LastWeapon = null;
+			}
+
+			crosshair = 0;
+/*
+			DragTarget = null;
+			Speed = Default.Speed;
+
+			if (
+				player.cmd.buttons & BT_CROUCH &&
+				AimActor && 
+				Distance2D(AimActor) < UseRange + AimActor.Radius && 
+				(
+					IsCorpse(AimActor) ||
+					(!AimActor.bIsMonster && AimActor.bPushable)
+				)
+			)
+			{
+				// Open hand grab icon
+				crosshair = 98;
+			}
+*/
+		}
+
+		// Set the crosshair - 0 reverts to the player or weapon's default
+		player.ReadyWeapon.Crosshair = crosshair;
+	}
+
+	bool IsCorpse(Actor mo)
+	{
+		if (
+			!mo.bIsMonster ||
+			mo.health > 0 ||
+			mo.bDormant
+		) { return false; }
+
+		return true;
+	}
+
 }
 
 // Base class for simple visual effects that will always follow the player until removed
