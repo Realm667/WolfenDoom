@@ -231,6 +231,24 @@ ACTOR MeasurePuff : BulletPuff
 	}
 }
 
+ACTOR TeslaPuff : MeasurePuff
+{
+	DamageType Electric
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		"####" A 0 A_SpawnitemEx("MeasurePuffTemp",0,0,0,0,0,0,0,SXF_ISTRACER|SXF_SETMASTER|SXF_NOCHECKPOSITION)
+		"####" A 0 A_TransferPointer(AAPTR_TRACER,AAPTR_TARGET,AAPTR_MASTER,AAPTR_MASTER)
+		"####" A 0 A_SpawnitemEx("Spark_P1",random(-2,2), random(-2,2), random(-2,2), random(-2,2), random(-2,2), random(-2,2),0)
+		"####" A 0 A_SpawnItemEx("PuffSmoke", random(-4,4), random(-4,4), random(-4,4), 0, 0, 3)
+		TNT1 A 1 BRIGHT LIGHT("LAZERPUR")
+		"####" E 10 A_PlaySound("tesla/loopdeath", CHAN_AUTO, 0.2, TRUE)
+		"####" E 0 A_StopSound(CHAN_AUTO)
+		Stop
+	}
+}
+
 ACTOR MeasurePuffNR : MeasurePuff
 {
 	-ALLOWPARTICLES

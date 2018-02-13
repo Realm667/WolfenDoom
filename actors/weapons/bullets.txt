@@ -217,16 +217,60 @@ ACTOR PyroCasing : ShotgunCasing
 }
 
 //Variant for Tesla
+ACTOR TeslaRays
+{
+	+CLIENTSIDEONLY
+	+FORCEXYBILLBOARD
+	+NOINTERACTION
+	RenderStyle Add
+	Alpha 0.95
+	Scale 0.1
+	Translation "0:255=%[0.0,0.0,0.0]:[0.8,0.4,1.0]"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Jump(256,"Ray1","Ray2","Ray3","Ray4","Ray5")
+	Ray1:
+		TSL1 A 0 
+		Goto PlayOff
+	Ray2:
+		TSL2 A 0 
+		Goto PlayOff
+	Ray3:
+		TSL3 A 0 
+		Goto PlayOff
+	Ray4:
+		TSL4 A 0 
+		Goto PlayOff
+	Ray5:
+		TSL5 A 0 
+		Goto PlayOff
+	PlayOff:
+		"####" A 0 A_Jump(128,"FromL")
+		"####" A 0 A_Jump(128,"FromAV")
+	FromA:
+		"####" ABCDEFGHIJK 2 BRIGHT A_FadeOut(0.4)
+		Loop
+	FromL:
+		"####" LMNOPQRSTUV 2 BRIGHT A_FadeOut(0.4)
+		Loop
+	FromAV:
+		"####" ABCDEFGHIJKLMNOPQRSTUV 4 BRIGHT A_FadeOut(0.4)
+		Loop	
+	}
+}
+
 ACTOR TeslaTracer : BulletTracer
 {
 	+BLOODLESSIMPACT
 	DamageType Electric
+	Decal "LazScorch"
 	States
 	{
 	Spawn:
 		TNT1 A 1 BRIGHT A_JumpIfTracerCloser(96,"Whiz")
-		TNT1 A 0 A_SpawnItemEx("TeslaTrail", 0, 0, 0, velx, vely, velz, 0, SXF_ABSOLUTEVELOCITY) //mxd
-		Loop
+		TNT1 A 0 { A_SpawnItemEx("TeslaRays", 0, 0, 0, velx, vely, velz, 0, SXF_CLIENTSIDE); A_SpawnItemEx("TeslaTrail", 0, 0, 0, velx, vely, velz, 0, SXF_CLIENTSIDE); }
+		Stop
 	Whiz:
 		TNT1 A -1 BRIGHT A_SpawnItemEx("TeslaWhizzer")
 		Stop
@@ -256,7 +300,7 @@ ACTOR TeslaWhizzer
 	}
 }
 
-ACTOR TeslaTrail: TracerTrail{}
+ACTOR TeslaTrail: TracerTrail{ Scale 0.01 }
 
 //Variant for Players
 ACTOR TeslaTracerPlayer : TeslaTracer
