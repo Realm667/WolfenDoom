@@ -1,0 +1,39 @@
+///////////////////////////
+// SWIRL by TORMENTOR667 //
+///////////////////////////
+
+
+ACTOR Swirl_Normal : SwitchableDecoration
+{
+	//$Category Special Effects (Wolf3D)
+	//$Title Swirl (Wallsprite)
+	//$Color 12
+	//$Sprite SWRLA0
+	Radius 1
+	Height 1
+	+NOGRAVITY
+	-SOLID
+	Alpha 1.0
+	Scale 0.3
+	RenderStyle Add
+	States
+	{
+	Active:
+	Spawn:
+		SWRL YXWVUTSRQPONMLKJIHGFEDCBA 2 BRIGHT
+		Loop
+	Inactive:
+		TNT1 A 0
+		Stop
+	}
+}
+
+ACTOR Swirl_Wall : Swirl_Normal
+{
+	//$Category Special Effects (Wolf3D)
+	//$Title Swirl (Projectile)
+	//$Color 12
+	//$Sprite SWRLA0
+	+WALLSPRITE
+	+ROLLSPRITE
+}
