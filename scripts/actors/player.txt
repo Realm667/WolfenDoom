@@ -600,7 +600,9 @@ class BoAPlayer : PlayerPawn
 		}
 
 		// Set the crosshair - 0 reverts to the player or weapon's default
-		player.ReadyWeapon.Crosshair = crosshair;
+		if (player.ReadyWeapon) {
+			player.ReadyWeapon.Crosshair = crosshair;
+		}
 	}
 
 	bool IsCorpse(Actor mo)
