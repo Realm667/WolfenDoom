@@ -558,6 +558,73 @@ ACTOR FlyingCleaver : MiniRocket
 ACTOR HardFlyingCleaver : FlyingCleaver { +MTHRUSPECIES }
 
 //OCCULT STUFF
+ACTOR CollectibleSoul //uses existing sprites atm - ozy81
+{
+	Radius 6
+	Height 8
+	Speed 6
+	FastSpeed 8
+	Scale 0.25
+	Projectile
+	+NOBLOCKMAP
+	+SEEKERMISSILE
+	+SLIDESONWALLS
+	+VISIBILITYPULSE
+	RenderStyle Add
+	Alpha 0.7
+	SeeSound "DamnedSoul/Moan"
+	DeathSound "creepy/dies"
+	States
+		{
+		Spawn:
+			SPI1 A 0 BRIGHT A_SpawnItemEx("SoulTrail", 0, 0, 0, 0, 0, 0, 180)
+			SPI1 A 1 BRIGHT LIGHT("ZYKOFIRE") A_SpawnItemEx("SoulTrail", 0, 0, 0, 0, 0, 0, 180)
+			SPI1 A 0 BRIGHT A_SpawnItemEx("SoulTrail", 0, 0, 0, 0, 0, 0, 180)
+			SPI1 A 1 BRIGHT LIGHT("ZYKOFIRE") A_SpawnItemEx("SoulTrail", 0, 0, 0, 0, 0, 0, 180)
+			SPI1 B 0 BRIGHT A_SpawnItemEx("SoulTrail", 0, 0, 0, 0, 0, 0, 180)
+			SPI1 B 1 BRIGHT LIGHT("ZYKOFIRE") A_SpawnItemEx("SoulTrail", 0, 0, 0, 0, 0, 0, 180)
+			SPI1 B 0 BRIGHT A_SpawnItemEx("SoulTrail", 0, 0, 0, 0, 0, 0, 180)
+			SPI1 B 1 BRIGHT LIGHT("ZYKOFIRE") A_SpawnItemEx("SoulTrail", 0, 0, 0, 0, 0, 0, 180)
+			SPI1 B 0 BRIGHT A_JumpIfTargetInLOS(1, 360, 1)
+			Loop
+			SPI1 A 0 BRIGHT A_SpawnItemEx("SoulTrail", 0, 0, 0, 0, 0, 0, 180)
+			SPI1 A 1 BRIGHT LIGHT("ZYKOFIRE") A_SpawnItemEx("SoulTrail", 0, 0, 0, 0, 0, 0, 180)
+			SPI1 A 0 BRIGHT A_SpawnItemEx("SoulTrail", 0, 0, 0, 0, 0, 0, 180)
+			SPI1 A 1 BRIGHT LIGHT("ZYKOFIRE") A_SpawnItemEx("SoulTrail", 0, 0, 0, 0, 0, 0, 180)
+			SPI1 B 0 BRIGHT A_JumpIfTargetInLOS(1, 360, 1)
+			Goto Spawn+4
+			SPI1 BBB 0 BRIGHT LIGHT("ZYKOFIRE") A_SeekerMissile(90, 90, 2)
+			Goto Spawn+4
+		Death:
+			SPI1 E 1 BRIGHT LIGHT("QUEENPLASMATRAIL_1") A_RadiusGive("SoulToken",96,RGF_PLAYERS|RGF_NOSIGHT,1)
+			SPI1 FGHIJ 4 BRIGHT
+			Stop
+		}
+}
+
+ACTOR SoulTrail //uses existing sprites atm - ozy81
+{
+	Radius 1
+	Height 1
+	Speed 0
+	Scale 0.25
+	Projectile
+	RenderStyle Add
+	Alpha 0.7
+	+BRIGHT
+	+NOCLIP
+	States
+		{
+		Spawn:
+			TNT1 A 3
+			SPI1 AB 3
+		Death:
+			TNT1 E 3
+			HADE FGHIJ 3
+			Stop
+		}
+}
+
 ACTOR ZyklonBBomb : ClusterBomb
 {
 	Speed 20
