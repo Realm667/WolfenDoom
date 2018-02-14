@@ -1,0 +1,309 @@
+/*
+
+ Base actor for the gatekeeper.  These actors started life as Star Trek-style sliding doors.
+
+  On map load, these actors make whatever line they are placed on impassible.  When a player 
+  approaches, the line is made passible and the actor's state is changed.  Once the player
+  moves away, the line returns to being impassible, and the actor returns to the Spawn state.
+
+  The actor can optionally be configured to check for a specific class and amount of an 
+  inventory item that the player must be carrying in order to pass.
+
+ The GhostGate actor below uses this base actor to create an impassible swirling portal that
+ spews unfriendly ghosts that cause damage to player in range who do not carry the necessary
+ amount of the 'Soul' inventory item.  The amount of 'Soul' needed can be specified in the
+ first argument of the map object (default is 100).
+
+*/
+class GateKeeper : Actor
+{
+	int timeout, maxtimeout, activationradius, user_keyamount, linelength;
+	Line linedef;
+	Array<Actor> Activators;
+	Class<Inventory> key;
+
+	Property ActivationRadius:ActivationRadius;
+	Property Timeout:maxtimeout;
+	Property Key:key;
+	Property KeyAmount:user_keyamount;
+
+	Default
+	{
+		+SPECIAL
+		+INVISIBLE
+		-SOLID
+		Height 92;
+		Radius 8;
+		GateKeeper.ActivationRadius 92;
+		GateKeeper.Timeout 5;
+		ActiveSound "";
+	}
+
+	States
+	{
+		Spawn:
+			UNKN A -1;
+			Stop;
+		Disperse:
+			UNKN A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		// Find the line that this actor's centerpoint is closest to
+		double dist;
+
+		BlockLinesIterator it = BlockLinesIterator.Create(self);
+
+		While (it.Next())
+		{
+			Line current = it.curline;
+
+			// Discard lines that definitely don't cross the actor's center point
+			if (
+				(current.v1.p.x > pos.x + radius && current.v2.p.x > pos.x + radius) ||
+				(current.v1.p.x < pos.x - radius && current.v2.p.x < pos.x - radius) ||
+				(current.v1.p.y > pos.y + radius && current.v2.p.y > pos.y + radius) ||
+				(current.v1.p.y < pos.y - radius && current.v2.p.y < pos.y - radius) 
+			) { continue; }
+
+			// Find the line that is closest based on proximity to end vertices
+			double curdist = (current.v1.p - pos.xy + current.v2.p - pos.xy).Length();
+			if (!linedef || curdist <= dist)
+			{
+				linedef = current;
+				dist = curdist;
+			}
+		}
+
+		if (!linedef) { Destroy(); }
+
+		linedef.flags |= Line.ML_BLOCKEVERYTHING;
+		linelength = int(linedef.delta.Length());
+
+		activationradius = max(activationradius, linelength);
+
+		A_SetSize(activationradius);
+	}
+
+	override void Touch(Actor toucher)
+	{
+		if (Activators.Find(toucher) == Activators.Size()) { Activators.Push(toucher); }
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (globalfreeze || level.Frozen) { return; }
+
+		target = null;
+
+		for (int i = 0; i < Activators.Size(); i++)
+		{
+			if (Activators[i])
+			{
+				if (
+					(
+						Distance2D(Activators[i]) <= Activators[i].Radius * 2 ||
+						Distance2D(Activators[i]) <= Radius
+					) &&
+					(
+						!key || 
+						(Activators[i].FindInventory(key) && Activators[i].FindInventory(key).Amount >= user_keyamount)
+					)
+				)
+				{
+					timeout = max(maxtimeout, 1);
+					if (!target || Distance2D(Activators[i]) < Distance2D(target)) { target = Activators[i]; }
+				}
+				else { Activators.Delete(i); }
+			}
+		}
+
+		if (timeout <= 0)
+		{
+			if (!InStateSequence(CurState, SpawnState)) { SetStateLabel("Spawn"); }
+			if (linedef) { linedef.flags |= Line.ML_BLOCKEVERYTHING; }
+		}
+		else
+		{
+			if (!InStateSequence(CurState, FindState("Disperse"))) { SetStateLabel("Disperse"); }
+			if (linedef) { linedef.flags &= ~Line.ML_BLOCKEVERYTHING; }
+		}
+
+		if (timeout > 0) { timeout--; }
+	}
+}
+
+class Soul : Inventory
+{
+	Default
+	{
+		Inventory.Amount 1;
+		Inventory.MaxAmount 100;
+	}
+}
+
+Class CreepyEffect : Actor
+{
+	Vector3 offset;
+	int dir, angledelta;
+
+	Default
+	{
+		+NOCLIP
+		+NOGRAVITY
+		Height 16;
+		Radius 8;
+		RenderStyle 'Add';
+		Alpha 0.0;
+	}
+
+	States
+	{
+		Spawn:
+			SPI1 BAABBAABBAABB 2 Bright { A_FadeIn(0.05); }
+		SpawnLoop:
+			SPI1 AABB 2 Bright { A_FadeOut(0.05); }
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (master)
+		{
+			offset = pos - master.pos;
+			if (master is "GateKeeper") { angledelta = max(64 * 8 / GateKeeper(master).linelength, 1); }
+			else { angledelta = 8; }
+		}
+
+		dir = offset.x > 0 ? 1 : -1;
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (globalfreeze || level.Frozen) { return; }
+	
+		if (master)
+		{
+			Warp(master, 0, offset.x, offset.z, angle + angledelta * dir, WARPF_ABSOLUTEANGLE | WARPF_NOCHECKPOSITION | WARPF_INTERPOLATE);
+		}
+
+		if (alpha > 0.25) { A_Explode(1, 1); }
+	}
+}
+
+class GhostGate : GateKeeper
+{
+	double startalpha;
+	Array<Actor> spawns;
+	Actor swirl;
+
+	Default
+	{
+		//$Title "Soul Gate"
+		//$Arg0 "Amount of 'Soul' item required"
+		//$Arg0Default 100;
+		//$Arg0Tooltip "How many of the 'Soul' inventory item must be carried by the player to pass this gate.\nCan also be set via the 'user_keyamount' UDMF property."
+		GateKeeper.Key "Soul";
+		GateKeeper.KeyAmount 100;
+		GateKeeper.ActivationRadius 192;
+	}
+
+	States
+	{
+		Spawn:
+			UNKN A 2 {
+				if (spawns.Size() < 10)
+				{
+					tics = Random(1, 5);
+
+					bool sp;
+					Actor mo;
+	
+					[sp, mo] = A_SpawnItemEx("CreepyEffect", Random(-linelength / 2, linelength / 2), 0, Random(16, 96), 0, 0, random(1, 2), (180 - angle), SXF_NOCHECKPOSITION | SXF_SETMASTER);
+
+					if (sp)
+					{
+						mo.alpha = 0;
+						mo.Scale *= FRandom(0.4, 0.6);
+						spawns.Push(mo);
+					}
+				}
+			}
+			Loop;
+		Disperse:
+			UNKN A 1;
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (user_keyamount == 100 && args[0]) { user_keyamount = args[0]; }
+
+		swirl = Spawn("Swirl_Wall", pos + (0, 0, 64));
+
+		if (swirl)
+		{
+			swirl.angle = angle;
+			swirl.alpha = 0.85;
+		}
+
+		TextureID tex = TexMan.CheckForTexture("WATR_G98", TexMan.Type_Any);
+
+		if (tex && ceilingz - pos.z < 128)
+		{
+			linedef.sidedef[0].SetTexture(Side.mid, tex);
+			linedef.sidedef[1].SetTexture(Side.mid, tex);
+
+			linedef.sidedef[0].SetTextureXScale(Side.mid, 3);
+			linedef.sidedef[0].SetTextureYScale(Side.mid, 3);
+			linedef.sidedef[1].SetTextureXScale(Side.mid, 3);
+			linedef.sidedef[1].SetTextureYScale(Side.mid, 3);
+
+			linedef.alpha = 0.1;
+
+			linedef.flags |= Line.ML_WRAP_MIDTEX ;
+		}
+
+		startalpha = linedef.alpha;
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		double distratio = 1.0;
+
+		if (target) { distratio = clamp(sin((Distance2D(target) - 64) * 90 / activationradius), 0.001, 1.0); }
+
+		linedef.alpha = distratio * startalpha;
+
+		if (swirl)
+		{
+			swirl.scale = swirl.default.scale / distratio;
+			swirl.alpha = 0.85 * distratio ** 2;
+		}
+
+		for (int i = 0; i < spawns.Size(); i++)
+		{
+			if (spawns[i] && distratio < 1)
+			{
+				spawns[i].alpha = distratio * 0.65;
+			}
+
+			if (!spawns[i])
+			{
+				spawns.Delete(i);
+			}
+		}
+	}
+}
