@@ -9,6 +9,7 @@ ACTOR ZombieKazi : ZombieStandard
 	Obituary "$NAZOKAZI"
 	DropItem "9mmAmmo" 64
 	DropItem "GrenadePickup" 16
+	DropItem "Soul", 64, 1
 	States
 	{
 	Spawn:
@@ -96,6 +97,7 @@ ACTOR ZombieBrain : ZombieStandard
 	Nazi.ZombieVariant "ZombieBrain"
 	Obituary "$NAZOBITE"
 	DropItem "9mmAmmo" 32
+	DropItem "Soul", 64, 1
 	States
 	{
 	Spawn:
@@ -202,6 +204,7 @@ ACTOR ZombieOfficer : ZombieBrain
 	Nazi.ZombieVariant "ZombieOfficer"
 	DropItem "MP40" 192
 	DropItem "9mmAmmo" 32
+	DropItem "Soul", 64, 1
 	States
 	{
 	Spawn:
@@ -363,6 +366,7 @@ ACTOR ZGermanShepherd : NaziStandard
 	Base.LoiterDistance 64
 	Base.NoMedicHeal
 	Nazi.ZombieVariant "ZGermanShepherd"
+	DropItem "Soul", 64, 1
 	States
 	{
 	Spawn:
@@ -447,6 +451,7 @@ ACTOR Camp_PrisonerZombie : NaziStandard //can't inherit ZombieBrain because of 
 	BloodColor "00 A0 7D"
 	BloodType "ZombieBlood"
 	Nazi.ZombieVariant "Camp_PrisonerZombie"
+	DropItem "Soul", 64, 1
 	States
 	{
 	Spawn:
@@ -519,6 +524,7 @@ ACTOR ZombieGeneral : RocketMan //black blood
 	BloodType "UndeadBlood"
 	DropItem "NebAmmoBox" 128
 	DropItem "NebAmmoBox" 128
+	DropItem "Soul", 192, 5
 	Nazi.ZombieVariant "ZombieGeneral"
 	States
 	{
@@ -573,6 +579,7 @@ ACTOR ZombieZyklonstein : RocketMan //zombie blood???
 	DeathSound "sscultist/die"
 	DropItem "FlameAmmo" 128
 	DropItem "FlameAmmo" 128
+	DropItem "Soul", 192, 10
 	States
 	{
 	Spawn:
