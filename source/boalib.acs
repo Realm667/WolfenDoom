@@ -930,12 +930,13 @@ Script "Activate" (int lineid, int repairtime)
 	}
 	else // If it's fully repaired...
 	{
+		ClearLineSpecial(); // Clear the line special to prevent further activation
+
 		SetUserVariable(0, "crosshair", 90); // Show progress complete
 
 		Delay(35); // Wait a second before clearing the crosshair (so you have a chance to see the full meter)
 
 		SetUserVariable(0, "crosshair", 0); // Clear the crosshair
-		ClearLineSpecial(); // Clear the line special to prevent further activation
 
 		SetResultValue(1);
 	}

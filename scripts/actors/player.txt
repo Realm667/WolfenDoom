@@ -196,7 +196,7 @@ class BoAPlayer : PlayerPawn
 
 		DoTokenChecks();
 
-		DoInteractions(); //this seems to cause an issue on Intermap, uncomment this line in case you wanna do some tests - ozy81
+		DoInteractions();
 
 		Super.Tick();
 	}
@@ -600,9 +600,7 @@ class BoAPlayer : PlayerPawn
 		}
 
 		// Set the crosshair - 0 reverts to the player or weapon's default
-		if (player.ReadyWeapon) {
-			player.ReadyWeapon.Crosshair = crosshair;
-		}
+		if (player.ReadyWeapon) { player.ReadyWeapon.Crosshair = crosshair; }
 	}
 
 	bool IsCorpse(Actor mo)
