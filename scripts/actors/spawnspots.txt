@@ -295,7 +295,7 @@ class WaveSpawner : ActorSpawner
 	{
 		if (user_lightburns) // Chapter 3 Secret Level
 		{
-			if (GetLightLevel() > 140) { return ResolveState("Active.Spawn"); } // Don't spawn until they won't just be burned up
+			if (GetLightLevel() > 80) { return ResolveState("Active.Spawn"); } // Don't spawn until it's actually dark
 		}
 
 		bool looped = false;
@@ -371,7 +371,7 @@ class WaveSpawner : ActorSpawner
 		{
 			for (int i = 0; i < Spawns.Size(); i++)
 			{
-				if (GetLightLevel(Spawns[i]) > 140)
+				if (GetLightLevel(Spawns[i]) > 130)
 				{
 					Spawns[i].A_SetTics(Random(1, 15));
 					Spawns[i].A_Die("Fire");

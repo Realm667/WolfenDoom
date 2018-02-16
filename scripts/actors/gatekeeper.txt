@@ -141,6 +141,13 @@ class GateKeeper : Actor
 						}
 						if (!target || Distance2D(Activators[i]) < Distance2D(target)) { target = Activators[i]; }
 					}
+					else
+					{
+						if (Distance2D(Activators[i]) <= linelength * 3 / 5)
+						{
+							Activators[i].Thrust(0.5, AngleTo(Activators[i]));
+						}
+					}
 				}
 				else { Activators.Delete(i); }
 			}
@@ -274,6 +281,10 @@ class GhostGate : GateKeeper
 	Array<Actor> spawns;
 	Array<Actor> numbers;
 	Actor swirl;
+	sound loopsound, opensound;
+
+	Property LoopSound:loopsound;
+	Property OpenSound:opensound;
 
 	Default
 	{
@@ -289,6 +300,9 @@ class GhostGate : GateKeeper
 		GateKeeper.KeyAmount 25;
 		GateKeeper.ActivationRadius 192;
 		GateKeeper.Timeout -1;
+
+		GhostGate.LoopSound "creepyrift/loop";
+		GhostGate.OpenSound "creepy/born";
 	}
 
 	States
@@ -352,6 +366,8 @@ class GhostGate : GateKeeper
 		}
 
 		startalpha = linedef.alpha;
+
+		A_PlaySound(loopsound, CHAN_6, 0.35, true, ATTN_NORM);
 	}
 
 	void SpawnDigits(int number, Class<Actor> numactor)
@@ -410,6 +426,13 @@ class GhostGate : GateKeeper
 		{
 			swirl.scale = swirl.default.scale / distratio;
 			swirl.alpha = 0.85 * distratio ** 2;
+
+			if (swirl.alpha <= 0.01 && !user_keyamount)
+			{
+				A_PlaySound(opensound, CHAN_6, 0.25, false, ATTN_NORM);
+				
+				swirl.Destroy();
+			}
 		}
 
 		for (int i = 0; i < spawns.Size(); i++)
