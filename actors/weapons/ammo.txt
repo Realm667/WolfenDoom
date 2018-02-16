@@ -186,3 +186,36 @@ ACTOR PanzerAmmo : Ammo
 		Stop
 	}
 }
+
+ACTOR TeslaCell : Ammo //placeholder sprites/gldefs - ozy81
+{
+	//$Category Ammo (Wolf3D)
+	//$Title Tesla Cell (x10 cell charges)
+	//$Color 6
+	Tag "$TAGTSCELL"
+	Inventory.PickupMessage "$TESLAMMO"
+	Inventory.Amount 10
+	Inventory.MaxAmount 200
+	Ammo.BackpackAmount 20
+	Ammo.BackpackMaxAmount 200
+	Inventory.Icon TESL01
+	States
+	{
+	Spawn:
+		TCEL ABCDCB 5
+		Loop
+	}
+}
+
+ACTOR TeslaCellBox : TeslaCell
+{
+	//$Title Tesla Cell (x50 cell charges)
+	Inventory.Amount 50
+	Inventory.PickupMessage "$TESLABOX"
+	States
+	{
+	Spawn:
+		TCEL ABCDCB 5 LIGHT(BOAPKEY)
+		Loop
+	}
+}

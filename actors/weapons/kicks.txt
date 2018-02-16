@@ -19,7 +19,7 @@ ACTOR BJKick : Weapon
 		TNT1 A 1 A_Raise
 		Loop
 	Fire:
-		BJKK A 0 Offset(86,102) A_JumpIfInventory("Stamina",29,1) //not enough Stamina? no way to kick butts
+		BJKK A 0 Offset(86,102) A_JumpIfInventory("Stamina",29,1)
 		Goto Deselect
 		BJKK A 1 Offset(84,100)
 		BJKK A 0 Offset(82,98) A_TakeInventory("Stamina",30)
@@ -40,8 +40,8 @@ ACTOR BJKick : Weapon
 		BJKK A 1 Offset(24,39)
 		BJKK A 0 Offset(18,36)
 		BJKK A 1 Offset(6,34)
-		BJKK A 0 Offset(4,32) A_PlaySound("knife/swing",CHAN_WEAPON) 								//fitting sound here
-		BJKK B 2 Offset(4,32) A_CustomPunch(8, TRUE, CPF_NOTURN, "KickPuff", 70)		//CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
+		BJKK A 0 Offset(4,32) A_PlaySound("knife/swing",CHAN_WEAPON)
+		BJKK B 2 Offset(4,32) A_CustomPunch(8, TRUE, CPF_NOTURN, "KickPuff", 70)	//CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
 		BJKK A 0 Offset(4,32)
 		BJKK A 1 Offset(6,34)
 		BJKK A 0 Offset(18,36)
@@ -63,7 +63,7 @@ ACTOR BJKick : Weapon
 		BJKK A 0 Offset(84,100)
 		Goto Ready
 	AltFire:
-		BJKK A 0 Offset(86,102) A_JumpIfInventory("Stamina",39,1) //not enough Stamina? no way to kick butts, but you can still perform the normal attack
+		BJKK A 0 Offset(86,102) A_JumpIfInventory("Stamina",39,1)
 		Goto Ready
 		BJKK A 2 Offset(84,100)
 		BJKK A 0 Offset(82,98) A_TakeInventory("Stamina",40)
@@ -84,8 +84,8 @@ ACTOR BJKick : Weapon
 		BJKK A 1 Offset(24,39)
 		BJKK A 0 Offset(18,36)
 		BJKK A 2 Offset(6,34)
-		BJKK A 0 Offset(4,32) A_PlaySound("knife/swing",CHAN_WEAPON) 								//fitting sound here
-		BJKK B 3 Offset(4,32) A_CustomPunch(16, TRUE, CPF_NOTURN, "KickPuff", 80) 	//hit a bit far away like if the leg is stretched
+		BJKK A 0 Offset(4,32) A_PlaySound("knife/swing",CHAN_WEAPON)
+		BJKK B 3 Offset(4,32) A_CustomPunch(16, TRUE, CPF_NOTURN, "KickPuff", 80) //hit a bit far away like if the leg is stretched
 		BJKK A 0 Offset(4,32)
 		BJKK A 2 Offset(6,34)
 		BJKK A 0 Offset(18,36)
@@ -125,7 +125,7 @@ ACTOR KickPuff : BlastEffect
 	Melee:
 	Crash:
 		POOF A 3 A_PlaySound("kick/hit")
-		POOF A 0 A_Blast(BF_DONTWARN|BF_NOIMPACTDAMAGE, random(192,255), random(8,16), frandom(20.0,30.0)) //prod the target away if possible
+		POOF A 0 A_Blast(BF_DONTWARN|BF_NOIMPACTDAMAGE, 200, random(8,16), frandom(20.0,30.0))
 		POOF A 0 Radius_Quake(1,random(15,20),0,8,0)
 		POOF BCDE 3
 		Stop
@@ -150,8 +150,8 @@ ACTOR BJKickAuto : BJKick //Bastardize the weapon states to make a weapon that f
 		BJKK A 1 Offset(48,64)
 		BJKK A 1 Offset(40,56)
 		BJKK A 1 Offset(24,39)
-		BJKK A 1 Offset(6,34) A_PlaySound("knife/swing",CHAN_WEAPON) 				//fitting sound here
-		BJKK B 2 Offset(4,32) A_CustomPunch(20, TRUE, CPF_NOTURN, "KickPuff", 70)	//CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
+		BJKK A 1 Offset(6,34) A_PlaySound("knife/swing",CHAN_WEAPON)
+		BJKK B 2 Offset(4,32) A_CustomPunch(10, TRUE, CPF_NOTURN, "KickPuff", 70)	//CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
 		BJKK A 1 Offset(6,34)
 		BJKK A 1 Offset(24,39)
 		BJKK A 1 Offset(36,52)

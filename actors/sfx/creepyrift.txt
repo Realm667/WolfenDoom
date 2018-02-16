@@ -172,6 +172,7 @@ ACTOR CreepyGhost : Base
 	Mass 500
 	Speed 16
 	Damage 1
+	DamageType "Creepy"
 	Projectile
 	-SOLID
 	+FLOAT
@@ -182,7 +183,7 @@ ACTOR CreepyGhost : Base
 	+NOGRAVITY
 	RenderStyle "Add"
 	Alpha 0.5
-	DamageType "Creepy"
+	Base.Shadow 0  //needed for shadows
 	States
 		{
 		Spawn:
