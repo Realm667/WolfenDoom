@@ -1,0 +1,50 @@
+class Soul : StackableInventory
+{
+	Default
+	{
+		//$Category Powerups (Wolf3D)
+		//$Title Souls (+1)
+		//$Color 6
+		//$Sprite AMM3A0
+
+		+FLOATBOB
+		+FORCEXYBILLBOARD
+		+INVENTORY.INVBAR
+		Inventory.Amount 1;
+		Inventory.MaxAmount 9999;
+		Inventory.Icon "AMM3I0";
+		Inventory.PickupMessage "$SOUL_SM";
+		Inventory.PickupSound "DSSLPU";
+	}
+
+	States
+	{
+		Spawn:
+			AMM3 ABCDABCDABCDABCDABCD 5 Bright;
+			
+		Fadeout:
+			AMM3 ABCD 5 Bright A_FadeOut(0.05);
+			Loop;
+	}
+}
+
+class SoulBig : Soul
+{
+	Default
+	{
+		//$Category Powerups (Wolf3D)
+		//$Title Souls (+3)
+		//$Color 6
+		//$Sprite AMM3E0
+
+		Inventory.Amount 3;
+		Inventory.PickupMessage "$SOUL_BG";
+	}
+
+	States
+	{
+		Spawn:
+			AMM3 EFGH 4 Bright;
+			Loop;
+	}
+}

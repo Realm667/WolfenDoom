@@ -168,60 +168,6 @@ class GateKeeper : Actor
 	}
 }
 
-class Soul : Inventory
-{
-	//$Category Powerups (Wolf3D)
-	//$Title Souls (+1)
-	//$Color 6
-	//$Sprite AMM3A0
-
-	Default
-	{
-		Inventory.Amount 1;
-		Inventory.MaxAmount 9999;
-		Inventory.Icon "AMM3I0";
-		Inventory.PickupMessage "$SOUL_SM";
-		Inventory.PickupSound "DSSLPU";
-		+INVENTORY.INVBAR;
-		+FLOATBOB;
-	}
-
-	States
-	{
-		Spawn:
-			AMM3 ABCDABCDABCDABCDABCD 5 Bright;
-			
-		Fadeout:
-			AMM3 ABCD 5 Bright A_FadeOut(0.05);
-			Loop;
-	}
-}
-
-class SoulBig : CustomInventory
-{
-	//$Category Powerups (Wolf3D)
-	//$Title Souls (+3)
-	//$Color 6
-	//$Sprite AMM3E0
-
-	Default
-	{
-		Inventory.PickupMessage "$SOUL_BG";
-		Inventory.PickupSound "DSSLPU";
-		+FLOATBOB;
-	}
-
-	States
-	{
-		Spawn:
-			AMM3 EFGH 4 Bright;
-			Loop;
-		Pickup:
-			TNT1 A 0 A_GiveInventory ("Soul", 3);
-			Stop;
-	}
-}
-
 Class CreepyEffect : Actor
 {
 	Vector3 offset;
@@ -367,7 +313,7 @@ class GhostGate : GateKeeper
 
 		startalpha = linedef.alpha;
 
-		A_PlaySound(loopsound, CHAN_6, 0.35, true, ATTN_NORM);
+		A_PlaySound(loopsound, CHAN_6, 0.45, true, ATTN_NORM);
 	}
 
 	void SpawnDigits(int number, Class<Actor> numactor)
@@ -440,6 +386,7 @@ class GhostGate : GateKeeper
 			if (spawns[i] && distratio < 1)
 			{
 				spawns[i].alpha = min(spawns[i].alpha, distratio);
+				if (!swirl) { spawns[i].Destroy(); }
 			}
 
 			if (!spawns[i])
