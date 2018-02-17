@@ -59,7 +59,9 @@ ACTOR TeslaCannon : NaziAstroWeapon
 		PULS G 0 A_StopSound(CHAN_WEAPON)
 		PULS G 0 A_PlaySound("Tesla/Attack", CHAN_WEAPON)
 		PULS GE 2
-		PULS F 2 BRIGHT A_FireProjectile("TeslaTracer2Player")
+		PULS F 2 Bright A_FireCustomMissile("TeslaBeam", 0, 0, 0, 0)
+		PULS E 2 Bright A_FireCustomMissile("TeslaBeam", 0, 1, 0, 0)
+		//PULS F 2 BRIGHT A_FireProjectile("TeslaTracer2Player")
 		PULS G 0 A_ReFire
 		Goto Ready
 	AltFire:
