@@ -289,6 +289,9 @@ class GhostGate : GateKeeper
 	Array<Actor> numbers;
 	Actor swirl, light;
 	sound loopsound, opensound;
+	color textcolor, targetcolor;
+	int textspeed;
+	double pulseratio;
 
 	Property LoopSound:loopsound;
 	Property OpenSound:opensound;
@@ -345,7 +348,7 @@ class GhostGate : GateKeeper
 
 		if (user_keyamount == 25 && args[0]) { user_keyamount = args[0]; }
 
-		SpawnDigits(user_keyamount, "GreenNumber");
+		SpawnDigits(user_keyamount, "FlatNumber");
 
 		swirl = Spawn("Swirl_Wall", pos + (0, 0, 64));
 
@@ -382,6 +385,9 @@ class GhostGate : GateKeeper
 
 		startalpha = linedef.alpha;
 
+		targetcolor = "189454"; // Creepy green;
+		textspeed = 8;
+
 		A_PlaySound(loopsound, CHAN_6, 0.45, true, ATTN_NORM);
 	}
 
@@ -402,7 +408,6 @@ class GhostGate : GateKeeper
 		}
 		return ClosestPlayer;
 	}
-
 
 	void SpawnDigits(int number, Class<Actor> numactor)
 	{
@@ -431,7 +436,7 @@ class GhostGate : GateKeeper
 			if (sp)
 			{
 				numbers.Push(mo);
-				GreenNumber(mo).value = digit;
+				FlatNumber(mo).value = digit;
 				mo.master = self;
 			}
 
@@ -439,13 +444,22 @@ class GhostGate : GateKeeper
 			if (sp)
 			{
 				numbers.Push(mo);
-				GreenNumber(mo).value = digit;
+				FlatNumber(mo).value = digit;
 				mo.master = self;
 			}
 
 			number /= 10;
 			position -= width;
 		}
+	}
+
+	SpriteID LookupSprite(Name spritecheck)
+	{
+		SpriteID temp = GetSpriteIndex(spritecheck);
+		if (temp > -1) { return temp; }
+
+		console.printf("\cgERROR: \cjThe sprite name index for '\cf%s\cj' could not be found.  Did you forget to add it to one of the actor's states?", spritecheck);
+		return sprite;
 	}
 
 	override void Tick()
@@ -509,6 +523,18 @@ class GhostGate : GateKeeper
 			}
 		}
 
+		if (textcolor != targetcolor)
+		{
+			if (textcolor.r < targetcolor.r) { textcolor.r = int(min(targetcolor.r, textcolor.r + textspeed)); }
+			else if (textcolor.r > targetcolor.r) { textcolor.r = int(max(targetcolor.r, textcolor.r - textspeed)); }
+
+			if (textcolor.g < targetcolor.g) { textcolor.g = int(min(targetcolor.g, textcolor.g + textspeed)); }
+			else if (textcolor.g > targetcolor.g) { textcolor.g = int(max(targetcolor.g, textcolor.g - textspeed)); }
+
+			if (textcolor.b < targetcolor.b) { textcolor.b = int(min(targetcolor.b, textcolor.b + textspeed)); }
+			else if (textcolor.b > targetcolor.b) { textcolor.b = int(max(targetcolor.b, textcolor.b - textspeed)); }
+		}
+
 		for (int i = 0; i < numbers.Size(); i++)
 		{
 			if (numbers[i])
@@ -516,14 +542,33 @@ class GhostGate : GateKeeper
 				if (!user_keyamount) { numbers[i].Destroy(); }
 				else if (!target)
 				{
-					double sratio = p ? sin(level.time * 8) : 0; // Make the number pulse when a player is in range but doesn't have enough souls
+					double sratio = p ? sin(level.time * textspeed) : 0;
+
+					if (!p) { targetcolor = "189454"; }
+
+					if (sratio != pulseratio)
+					{
+						if (sratio > pulseratio)
+						{
+							targetcolor = "FF0000";
+						}
+						else
+						{
+							targetcolor = "189454";
+						}
+					}
+
+					pulseratio = sratio;
+
 					numbers[i].alpha = (numbers[i].alpha + (distratio * numbers[i].default.alpha + sratio * (1.0 - numbers[i].default.alpha))) / 2; // Smooth any abrupt transitions
-					numbers[i].scale = (numbers[i].default.scale.x + 0.05 * sratio, numbers[i].default.scale.y + 0.05 * sratio);
+					numbers[i].scale = (numbers[i].default.scale.x + 0.05 * sratio, numbers[i].default.scale.y + 0.05 * sratio); // Make the number pulse when a player is in range but doesn't have enough souls
 				}
 				else
 				{
 					numbers[i].alpha = distratio * numbers[i].default.alpha;
 				}
+
+				numbers[i].SetShade(textcolor);
 			}
 
 			if (!numbers[i])
@@ -540,7 +585,7 @@ class GhostGate : GateKeeper
 	}
 }
 
-class GreenNumber : Actor
+class FlatNumber : Actor
 {
 	int value;
 	Vector3 offset;
@@ -555,7 +600,8 @@ class GreenNumber : Actor
 		Height 0;
 		Alpha 0.85;
 		Scale 0.4;
-		Renderstyle 'Add';
+		Renderstyle 'AddShaded';
+		StencilColor "000000";
 		VisibleAngles -90, 90;
 		VisiblePitch -90, 90;
 	}
@@ -563,7 +609,7 @@ class GreenNumber : Actor
 	States
 	{
 		Spawn:
-			NGRN A -1 Bright;
+			FNUM A -1 Bright;
 			Stop;
 	}
 
