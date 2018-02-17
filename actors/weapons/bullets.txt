@@ -309,6 +309,142 @@ ACTOR TeslaWhizzer
 ACTOR TeslaTrail : TracerTrail { Scale 0.01 Decal "LazScorch" }
 ACTOR TeslaTrail2 : TracerTrail { Decal "LazScorch" }
 
+Actor TeslaBeam : FastProjectile //PillowBlaster Gamma-Ray gun code [taken straight & adjusted from Ghoul School 3D]
+{
+	Speed 100
+	Radius 13
+	Height 8
+	Damage 5
+	DamageType Electric
+	Scale 0.15
+	Decal LazScorch
+	Renderstyle Add
+	Alpha 0.95
+	SeeSound ""
+	-CANNOTPUSH
+	-NODAMAGETHRUST
+	+CLIENTSIDEONLY
+	+FORCEXYBILLBOARD
+	+NOEXTREMEDEATH
+	+ROLLSPRITE
+	MissileType "TeslaTrailSpawner"
+	Translation "0:255=%[0.0,0.0,0.0]:[0.8,0.4,1.0]"
+	States
+		{
+		Death:
+			TSL1 A 0 A_CustomMissile("TeslaBeam2",0,0,random(0,360),4,random(0,360))
+			"####" ABCDEFGHIJKLMNOPQRSTUV 2 BRIGHT A_SetRoll(roll+10, SPF_INTERPOLATE)
+			Stop
+		}
+	}
+
+ACTOR TeslaBeam2 : TeslaBeam
+{
+	Alpha 0.93
+	States
+		{
+		Death:
+			TSL2 A 0 A_CustomMissile("TeslaBeam3",0,0,random(0,360),4,random(0,360))
+			"####" ABCDEFGHIJKLMNOPQRSTUV 2 BRIGHT A_SetRoll(roll+10, SPF_INTERPOLATE)
+			Stop
+		}
+}
+
+ACTOR TeslaBeam3 : TeslaBeam
+{
+	Alpha 0.91
+	States
+		{
+		Death:
+			TSL3 A 0 A_CustomMissile("TeslaBeam4",0,0,random(0,360),4,random(0,360))
+			"####" ABCDEFGHIJKLMNOPQRSTUV 2 BRIGHT A_SetRoll(roll+10, SPF_INTERPOLATE)
+			Stop
+		}
+}
+
+ACTOR TeslaBeam4 : TeslaBeam
+{
+	Alpha 0.89
+	States
+		{
+		Death:
+			TSL4 A 0
+			"####" ABCDEFGHIJKLMNOPQRSTUV 2 BRIGHT A_SetRoll(roll+10, SPF_INTERPOLATE)
+			Stop
+		}
+}
+
+ACTOR TeslaSeeker : TeslaBeam
+{
+	Alpha 0.98
+	States
+		{
+		Death:
+			TSL5 A 0 A_CustomMissile("TeslaKiller",0,0,0,4,0)
+			"####" ABCDEFGHIJKLMNOPQRSTUV 2 BRIGHT A_SetRoll(roll+10, SPF_INTERPOLATE)
+			Stop
+		}
+}
+
+ACTOR TeslaKiller
+{  
+	Radius 0
+	Height 0
+	+FRIENDLY
+	+ISMONSTER
+	+LOOKALLAROUND
+	+NOBLOCKMONST
+	+NOGRAVITY
+	+NOINTERACTION
+	-COUNTKILL
+	Obituary "%o was burned by %k's volatile plasma."
+	RenderStyle None
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_Look
+	See:
+		TNT1 A 0 A_Chase
+	Missile:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 1 A_CustomMissile("TeslaBeam4",0,0,0)
+		Stop
+	}
+}
+
+ACTOR TeslaTrailSpawner
+{
+	+NOCLIP
+	+NOGRAVITY
+	States
+		{
+		Spawn:
+			TNT1 A 0
+			TNT1 AAAAA 1 A_SpawnItemEx ("TeslaTrails", random (-3, 3), 0, random (-3, 3), 0, 0, 0, 0, 160)
+			Stop
+		}
+}
+
+ACTOR TeslaTrails
+{
+	Radius 2
+	Height 2
+	Scale 0.1
+	RenderStyle Add
+	Alpha 0.95
+	+CLIENTSIDEONLY
+	+FORCEXYBILLBOARD
+	+NOINTERACTION
+	+ROLLSPRITE
+	Translation "0:255=%[0.0,0.0,0.0]:[0.8,0.4,1.0]"
+	States
+		{
+		Spawn:
+			TSL1 ABCDEFGHIJKLMNOPQRSTUV 1 { A_SetRoll(roll+10, SPF_INTERPOLATE); A_FadeOut(0.004); }
+			Stop
+		}
+}
+
 //Variant for Players
 ACTOR TeslaTracerPlayer : TeslaTracer
 {
