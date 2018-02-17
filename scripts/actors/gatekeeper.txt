@@ -9,10 +9,17 @@
   The actor can optionally be configured to check for a specific class and amount of an 
   inventory item that the player must be carrying in order to pass.
 
+  Gatekeepers can be linked together (both will deactivate if one is passed) by assigning
+  them the same TID.
+
  The GhostGate actor below uses this base actor to create an impassible swirling portal that
  spews unfriendly ghosts that cause damage to player in range who do not carry the necessary
  amount of the 'Soul' inventory item.  The amount of 'Soul' needed can be specified in the
  first argument of the map object (default is 25).
+
+ The GhostGateHelper actor is the same as the GhostGate actor, but has no swirl, light, spirits,
+ or numeric display effects.  It's intended for use when you want to block multiple linedefs
+ with a single Ghostgate - just give the helpers the same TID as the main GhostGate actor.
 
 */
 class GateKeeper : Actor
@@ -79,7 +86,11 @@ class GateKeeper : Actor
 			}
 		}
 
-		if (!linedef) { Destroy(); return; }
+		if (!linedef)
+		{
+			Destroy(); 
+			return;
+		}
 
 		linedef.flags |= Line.ML_BLOCKEVERYTHING;
 		linelength = int(linedef.delta.Length());
@@ -162,6 +173,24 @@ class GateKeeper : Actor
 		{
 			if (!InStateSequence(CurState, FindState("Disperse"))) { SetStateLabel("Disperse"); }
 			if (linedef) { linedef.flags &= ~Line.ML_BLOCKEVERYTHING; }
+
+			if (tid)
+			{ // If there's a TID, affect all Gatekeepers with that TID
+				let it = ActorIterator.Create(tid, "Gatekeeper");
+				Actor mo;
+
+				while (mo = Actor(it.Next()))
+				{
+					Gatekeeper(mo).timeout = timeout;
+					GateKeeper(mo).user_keyamount = user_keyamount;
+
+					if (GhostGate(mo))
+					{
+						if (GhostGate(mo).swirl) { GhostGate(mo).swirl.Destroy(); }
+						if (GhostGate(mo).light) { GhostGate(mo).light.Destroy(); }
+					}
+				}
+			}
 		}
 
 		if (timeout > 0) { timeout--; }
@@ -346,6 +375,16 @@ class GhostGate : GateKeeper
 	{
 		Super.PostBeginPlay();
 
+		if (!linedef)
+		{
+			console.printf("\cgERROR: \clSoul Gate actor at %d, %d, %d was not placed on a linedef!", pos.x, pos.y, pos.z);
+			return;
+		}
+		else if (!linedef.sidedef[0] || !linedef.sidedef[1])
+		{
+			console.printf("\cgERROR: \clSoul Gate actor at %d, %d, %d was placed on a one-sided line!  Unexpected behavior may result.", pos.x, pos.y, pos.z);
+		}
+
 		if (user_keyamount == 25 && args[0]) { user_keyamount = args[0]; }
 
 		SpawnDigits(user_keyamount, "FlatNumber");
@@ -370,15 +409,21 @@ class GhostGate : GateKeeper
 
 		if (tex && ceilingz - pos.z < 128)
 		{
-			linedef.sidedef[0].SetTexture(Side.mid, tex);
-			linedef.sidedef[1].SetTexture(Side.mid, tex);
+			if (linedef.sidedef[0])
+			{
+				linedef.sidedef[0].SetTexture(Side.mid, tex);
+				linedef.sidedef[0].SetTextureXScale(Side.mid, 3);
+				linedef.sidedef[0].SetTextureYScale(Side.mid, 3);
+			}
 
-			linedef.sidedef[0].SetTextureXScale(Side.mid, 3);
-			linedef.sidedef[0].SetTextureYScale(Side.mid, 3);
-			linedef.sidedef[1].SetTextureXScale(Side.mid, 3);
-			linedef.sidedef[1].SetTextureYScale(Side.mid, 3);
+			if (linedef.sidedef[1])
+			{
+				linedef.sidedef[1].SetTexture(Side.mid, tex);
+				linedef.sidedef[1].SetTextureXScale(Side.mid, 3);
+				linedef.sidedef[1].SetTextureYScale(Side.mid, 3);
+			}
 
-			linedef.alpha = 0.1;
+			linedef.alpha = 0.05;
 
 			linedef.flags |= Line.ML_WRAP_MIDTEX ;
 		}
@@ -568,7 +613,7 @@ class GhostGate : GateKeeper
 					numbers[i].alpha = distratio * numbers[i].default.alpha;
 				}
 
-				numbers[i].SetShade(textcolor);
+				if (numbers[i]) { numbers[i].SetShade(textcolor); }
 			}
 
 			if (!numbers[i])
@@ -582,6 +627,80 @@ class GhostGate : GateKeeper
 			Destroy();
 		}
 
+	}
+}
+
+// Ghost gate with no swirl, light, spirits, or numbers.
+
+class GhostGateHelper : GhostGate
+{
+	Default
+	{
+		//$Category Hazards (Wolf3D)
+		//$Title "Soul Gate (No effects)"
+		//$Color 12
+		//$Sprite SWRLA0
+		//$Arg0 "Amount of 'Soul' item required"
+		//$Arg0Default 25;
+		//$Arg0Tooltip "How many of the 'Soul' inventory item must be carried by the player to pass this gate.\nCan also be set via the 'user_keyamount' UDMF property."
+	}
+
+	States
+	{
+		Spawn:
+			UNKN A 2;
+			Loop;
+		Disperse:
+			UNKN A 1;
+			Loop;
+	}
+
+
+	override void PostBeginPlay()
+	{
+		GateKeeper.PostBeginPlay();
+
+		if (!linedef)
+		{
+			console.printf("\cgERROR: \clSoul Gate helper actor at %d, %d, %d was not placed on a linedef!", pos.x, pos.y, pos.z);
+			return;
+		}
+		else if (!linedef.sidedef[0] || !linedef.sidedef[1])
+		{
+			console.printf("\cgERROR: \clSoul Gate helper actor at %d, %d, %d was placed on a one-sided line!  Unexpected behavior may result.", pos.x, pos.y, pos.z);
+		}
+
+		if (user_keyamount == 25 && args[0]) { user_keyamount = args[0]; }
+
+		TextureID tex = TexMan.CheckForTexture("WATR_G98", TexMan.Type_Any);
+
+		if (tex && ceilingz - pos.z < 128)
+		{
+			if (linedef.sidedef[0])
+			{
+				linedef.sidedef[0].SetTexture(Side.mid, tex);
+				linedef.sidedef[0].SetTextureXScale(Side.mid, 3);
+				linedef.sidedef[0].SetTextureYScale(Side.mid, 3);
+			}
+
+			if (linedef.sidedef[1])
+			{
+				linedef.sidedef[1].SetTexture(Side.mid, tex);
+				linedef.sidedef[1].SetTextureXScale(Side.mid, 3);
+				linedef.sidedef[1].SetTextureYScale(Side.mid, 3);
+			}
+
+			linedef.alpha = 0.1;
+
+			linedef.flags |= Line.ML_WRAP_MIDTEX ;
+		}
+
+		startalpha = linedef.alpha;
+
+		targetcolor = "189454"; // Creepy green;
+		textspeed = 8;
+
+		A_PlaySound(loopsound, CHAN_6, 0.45, true, ATTN_NORM);
 	}
 }
 

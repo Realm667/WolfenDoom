@@ -360,11 +360,6 @@ class WaveSpawner : ActorSpawner
 		return ResolveState("Active.Spawn");
 	}
 
-	override void PostBeginPlay()
-	{
-		if (level.levelnum == 301) { user_lightburns = true; } // C3M0_A has special handling hard-coded for all WaveSpawners, just because
-	}
-
 	override void Tick()
 	{
 		if (user_lightburns) // Chapter 3 Secret Level
