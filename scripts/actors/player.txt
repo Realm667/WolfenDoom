@@ -523,6 +523,48 @@ class BoAPlayer : PlayerPawn
 
 		if (AimLine && !AimLine.special) { AimLine = null; }
 
+		// If line is set to block hitscans only, do some special handling
+		if (AimLine && AimLine.flags & Line.ML_BLOCKHITSCAN && !(AimLine.flags & Line.ML_BLOCKEVERYTHING) && !(AimLine.flags & Line.ML_WRAP_MIDTEX))
+		{
+			if (AimLine.flags & Line.ML_3DMIDTEX) // If it's a 3D midtex, figure out if we hit the texture or not...
+			{
+				let side = AimLine.sidedef[trace.LineSide];
+
+				if (side)
+				{
+					TextureID tex = side.GetTexture(trace.LinePart);
+
+					if (tex)
+					{
+						Vector2 texsize = TexMan.GetScaledSize(tex);
+						double scaley = side.GetTextureYScale(trace.LinePart);
+						double sizey = texsize.y / scaley;
+						double offsety = side.GetTextureYOffset(trace.LinePart) / scaley;
+
+						double topz, bottomz;
+
+						// Adjust things if lower unpegged is set...
+						if (AimLine.flags & Line.ML_DONTPEGBOTTOM) { topz = sizey; }
+						else { topz = trace.HitSector.ceilingplane.D - trace.HitSector.floorplane.D; }
+
+						topz += offsety;
+						bottomz = topz - sizey;
+
+						double hitz = trace.HitLocation.z + trace.HitSector.floorplane.D;
+
+						if (topz < hitz || bottomz > hitz) // You're not actually looking at the midtex!
+						{
+							AimLine = null; // Clear the line pointer
+						}
+					}
+					else // No texture
+					{
+						AimLine = null; // Clear the line pointer
+					}
+				}
+			}
+		}
+
 		// Handle player holding down use button while looking at a repeatable, script-executing line that's within use range
 		if (AimLine) // If we are actually looking at a line within range
 		{
