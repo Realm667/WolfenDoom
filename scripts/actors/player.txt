@@ -522,18 +522,30 @@ class BoAPlayer : PlayerPawn
 
 		if (AimLine && !AimLine.special) { AimLine = null; }
 
-		// Handle player holding down use button while looking at a repeatable line that's within use range
-		if (AimLine)
+		// Handle player holding down use button while looking at a repeatable, script-executing line that's within use range
+		if (
+			AimLine && // If we are actually looking at a line within range
+			( // And the line is running a script
+				AimLine.special == 80 || 
+				(AimLine.special >= 83 && AimLine.special <= 85) || 
+				AimLine.special == 226
+			) &&
+			( // And is flagged as repeatable and you're pressing use
+				AimLine.flags & Line.ML_REPEAT_SPECIAL && 
+				player.usedown
+			) &&
+			( // And we have the right UDMF-defined key if one was set on the line!
+				!Aimline.locknumber || 
+				CheckKeys(Aimline.locknumber, false, true)
+			)
+		)
 		{
-			if (AimLine.flags & Line.ML_REPEAT_SPECIAL && !Aimline.locknumber && player.usedown) // If repeatable and you're pressing use, then keep using it.
-			{
-				Level.ExecuteSpecial(AimLine.special, self, AimLine, true, AimLine.args[0], AimLine.args[1], AimLine.args[2], AimLine.args[3], AimLine.args[4]);
+			Level.ExecuteSpecial(AimLine.special, self, AimLine, true, AimLine.args[0], AimLine.args[1], AimLine.args[2], AimLine.args[3], AimLine.args[4]);
 
-				if (!LastWeapon && crosshair >= 80 && crosshair <= 90) // Only lower weapon when there's a status display
-				{
-					LastWeapon = player.ReadyWeapon;
-					player.PendingWeapon = Weapon(FindInventory("NullWeapon"));
-				}
+			if (!LastWeapon && crosshair >= 80 && crosshair <= 90) // Only lower weapon when there's a status display
+			{
+				LastWeapon = player.ReadyWeapon;
+				player.PendingWeapon = Weapon(FindInventory("NullWeapon"));
 			}
 		}
 /*
