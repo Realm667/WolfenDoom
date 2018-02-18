@@ -1912,11 +1912,24 @@ STEAM_SMALL steam2
 $rolloff STEAM_BURST 64 460
 $rolloff STEAM_SMALL 64 460
 
-$random WAR_DISTANT { WAR_DISTANT_1 WAR_DISTANT_2 WAR_DISTANT_3 WAR_DISTANT_4 }
+$random GRAWL_DISTAND {DISTGRL1 DISTGRL2 DISTGRL3 DISTGRL4 DISTGRL5}
+DISTGRL1 DISTGRL1
+DISTGRL2 DISTGRL2
+DISTGRL3 DISTGRL3
+DISTGRL4 DISTGRL4
+DISTGRL5 DISTGRL5
+
+$random WAR_DISTANT { WAR_DISTANT_1 WAR_DISTANT_2 WAR_DISTANT_3 WAR_DISTANT_4 WAR_DISTANT_5 WAR_DISTANT_6 WAR_DISTANT_7 }
 WAR_DISTANT_1 WAR_01
 WAR_DISTANT_2 WAR_02
 WAR_DISTANT_3 WAR_03
 WAR_DISTANT_4 WAR_04
+WAR_DISTANT_5 WAR_05
+WAR_DISTANT_6 WAR_06
+WAR_DISTANT_7 WAR_07
+
+CAVE_STRONG_AMBIENCE CRUCIALC
+CAVE_LIGHT_AMBIENCE CRUCIAL2
 
 WAR_CLOSER BATTLCL
 
@@ -1989,12 +2002,16 @@ effects/repair3		Repair3
 $random effects/repair { effects/repair1 effects/repair2 effects/repair3 }
 
 //Thunder
-$random misc/thunder { misc/thunder1 misc/thunder2 misc/thunder3 misc/thunder4 misc/thunder5 }
+$random misc/thunder { misc/thunder1 misc/thunder2 misc/thunder3 misc/thunder4 misc/thunder5 misc/thunder6 misc/thunder7 misc/thunder8 misc/thunder9 }
 misc/thunder1 thunder1
 misc/thunder2 thunder2
 misc/thunder3 thunder3
 misc/thunder4 thunder4
 misc/thunder5 thunder5
+misc/thunder6 thunder6
+misc/thunder7 thunder7
+misc/thunder8 thunder8
+misc/thunder9 thunder9
 
 //Earthquake
 misc/earthquake DSQUAKE
@@ -2008,6 +2025,13 @@ malscrm5 malscrm5
 malscrm6 malscrm6
 malscrm7 malscrm7
 $random MALE_SCREAM_AGONY { malscrm1 malscrm2 malscrm3 malscrm4 malscrm5 malscrm6 malscrm7 }
+
+//Tree Wind
+TREEWND1 TREEWND1
+TREEWND2 TREEWND2
+TREEWND3 TREEWND3
+TREEWND4 TREEWND4
+$random WIND_TREE { TREEWND1 TREEWND2 TREEWND3 TREEWND4 }
 
 //Scary Sound
 c2m6scar c2m6scar
@@ -2097,6 +2121,10 @@ $AMBIENT 73 hororamb POINT CONTINUOUS 1.0
 $AMBIENT 74 as_engn POINT CONTINUOUS 1.0
 $AMBIENT 75 FACTORY POINT CONTINUOUS 1.0
 $AMBIENT 76 WINDMILL_OLD POINT CONTINUOUS 1.0
+$AMBIENT 77 CAVE_STRONG_AMBIENCE POINT CONTINUOUS 1.0
+$AMBIENT 78 CAVE_LIGHT_AMBIENCE POINT CONTINUOUS 1.0
+$AMBIENT 79 GRAWL_DISTAND POINT RANDOM 1.0 30.0 60.0
+$AMBIENT 80 WIND_TREE POINT RANDOM 1.0 30.0 60.0
 
 /////////////
 //BRIEFINGS//
