@@ -525,7 +525,7 @@ class BoAPlayer : PlayerPawn
 		// Handle player holding down use button while looking at a repeatable line that's within use range
 		if (AimLine)
 		{
-			if (AimLine.flags & Line.ML_REPEAT_SPECIAL && player.usedown) // If repeatable and you're pressing use, then keep using it.
+			if (AimLine.flags & Line.ML_REPEAT_SPECIAL && !Aimline.locknumber && player.usedown) // If repeatable and you're pressing use, then keep using it.
 			{
 				Level.ExecuteSpecial(AimLine.special, self, AimLine, true, AimLine.args[0], AimLine.args[1], AimLine.args[2], AimLine.args[3], AimLine.args[4]);
 
