@@ -509,10 +509,11 @@ class BoAPlayer : PlayerPawn
 
 	void DoInteractions()
 	{
-		FLineTraceData trace;
-		LineTrace(angle, UseRange, pitch, TRF_ALLACTORS, player.viewheight, 0.0, 0.0, trace);
+		FLineTraceData trace; //, actortrace;
+		LineTrace(angle, UseRange, pitch, 0, player.viewheight, 0.0, 0.0, trace);
+//		LineTrace(angle, UseRange, pitch, TRF_THRUACTORS, player.viewheight, 0.0, 0.0, actortrace); // Corpse dragging needs to trace with TRF_THRUACTORS flag
 
-		Actor AimActor = trace.HitActor;
+//		Actor AimActor = trace.HitActor;
 		Line AimLine = trace.HitLine;
 
 		if (AimLine && !crosshair)
@@ -523,29 +524,31 @@ class BoAPlayer : PlayerPawn
 		if (AimLine && !AimLine.special) { AimLine = null; }
 
 		// Handle player holding down use button while looking at a repeatable, script-executing line that's within use range
-		if (
-			AimLine && // If we are actually looking at a line within range
-			( // And the line is running a script
-				AimLine.special == 80 || 
-				(AimLine.special >= 83 && AimLine.special <= 85) || 
-				AimLine.special == 226
-			) &&
-			( // And is flagged as repeatable and you're pressing use
-				AimLine.flags & Line.ML_REPEAT_SPECIAL && 
-				player.usedown
-			) &&
-			( // And we have the right UDMF-defined key if one was set on the line!
-				!Aimline.locknumber || 
-				CheckKeys(Aimline.locknumber, false, true)
-			)
-		)
+		if (AimLine) // If we are actually looking at a line within range
 		{
-			Level.ExecuteSpecial(AimLine.special, self, AimLine, true, AimLine.args[0], AimLine.args[1], AimLine.args[2], AimLine.args[3], AimLine.args[4]);
-
-			if (!LastWeapon && crosshair >= 80 && crosshair <= 90) // Only lower weapon when there's a status display
+			if (
+				( // And the line is running a script
+					AimLine.special == 80 || 
+					(AimLine.special >= 83 && AimLine.special <= 85) || 
+					AimLine.special == 226
+				) &&
+				( // And is flagged as repeatable and you're pressing use
+					AimLine.flags & Line.ML_REPEAT_SPECIAL && 
+					player.usedown
+				) &&
+				( // And we have the right UDMF-defined key if one was set on the line!
+					!Aimline.locknumber || 
+					CheckKeys(Aimline.locknumber, false, true)
+				)
+			)
 			{
-				LastWeapon = player.ReadyWeapon;
-				player.PendingWeapon = Weapon(FindInventory("NullWeapon"));
+				Level.ExecuteSpecial(AimLine.special, self, AimLine, true, AimLine.args[0], AimLine.args[1], AimLine.args[2], AimLine.args[3], AimLine.args[4]);
+
+				if (!LastWeapon && crosshair >= 80 && crosshair <= 90) // Only lower weapon when there's a status display
+				{
+					LastWeapon = player.ReadyWeapon;
+					player.PendingWeapon = Weapon(FindInventory("NullWeapon"));
+				}
 			}
 		}
 /*
