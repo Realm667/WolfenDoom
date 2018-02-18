@@ -608,6 +608,19 @@ ACTOR ZyklonBCloud
 	}
 }
 
+ACTOR ZyklonZCloud : ZyklonBCloud
+{
+	States
+	{
+	Spawn:
+		ZBGS A 2
+	Fade:
+		"####" A 3 LIGHT(ZOMBIEFOG) A_FadeOut (0.004)
+		"####" A 0 A_SetScale(scaleX+0.01, scaleY+0.01)
+		Loop
+	}
+}
+
 ACTOR ZyklonBBall
 {
 	Radius 11
@@ -648,12 +661,12 @@ ACTOR ZombieSoul
 	States
 	{
 	Spawn:
-		ZOFX ABCD 5 LIGHT(QUEENPLASMATRAIL_3)
+		ZOFX ABCD 5 LIGHT(ZOMBIEFOG)
 		Stop
   }
 }
 
-ACTOR ZombieRaise : ZyklonBCloud
+ACTOR ZombieRaise : ZyklonZCloud
 {
 	Radius 2
 	Height 32
@@ -702,20 +715,20 @@ ACTOR ZombieVomit
 	SeeSound "Blood/Spit"
 	DeathSound "Blood/Impact"
 	DamageType "UndeadPoison"
-	Decal UndeadSmear
+	Decal ZBloodSmear
 	MaxTargetRange 256
 	-NOGRAVITY
 	States
 	{
 	Spawn:
-		ZVOM A 0 A_SpawnItemEx("UndeadFlyingBloodTrail", 0, 0, 0, 1)
-		ZVOM ABCDEF 1
+		ZVOM A 0 A_SpawnItemEx("Zombie_FlyingBloodTrail", 0, 0, 0, 1)
+		ZVOM ABCDEF 1 LIGHT(ZOMBIEFOG)
 		Loop
 	Death:
 		TNT1 A 0 BRIGHT A_SpawnProjectile("PoisonCloudUndead",16,0,0,2,0)
 		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("UndeadSmoke",random(-64,64),random(-64,64),random(-48,48),momx,0,frandom(0.5,1),0,SXF_TRANSFERTRANSLATION,160)
-		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("ZyklonBCloud",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128)
-		"####" AAAAAAAAA 1 A_SpawnItemEx("UndeadFlyingBlood", random(2,-2), random(2,-2), random(2,2), random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE)
+		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("ZyklonZCloud",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128)
+		"####" AAAAAAAAA 1 A_SpawnItemEx("Zombie_FlyingBlood", random(2,-2), random(2,-2), random(2,2), random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE)
 		Stop
 	}
 }
