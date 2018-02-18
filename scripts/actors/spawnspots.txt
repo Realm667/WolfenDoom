@@ -107,7 +107,7 @@ class ActorSpawner : SwitchableDecoration
 
 			if (mo) {
 				LookExParams look;
-				look.fov = mo.player.fov;
+				look.fov = mo.player.fov * 1.4; // Plus a little extra to account for wider screen ratios...
 
 				if (mo.IsVisible(self, false, look)) { return true; }
 				if (Distance3d(mo) <= range) { return true; }
@@ -295,7 +295,11 @@ class WaveSpawner : ActorSpawner
 	{
 		if (user_lightburns) // Chapter 3 Secret Level
 		{
-			if (GetLightLevel() > 80) { return ResolveState("Active.Spawn"); } // Don't spawn until it's actually dark
+			double lightlevel = GetLightLevel();
+			bool outside = TexMan.GetName(ceilingpic) == "F_SKY1";
+
+			if (outside && lightlevel > 80) { return ResolveState("Active.Spawn"); } // Don't spawn until it's actually dark
+			else if (lightlevel > 128) { return ResolveState("Active.Spawn"); } // But be more forgiving in our definition of 'dark' if you're not under sky
 		}
 
 		bool looped = false;
