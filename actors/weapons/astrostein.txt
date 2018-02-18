@@ -271,7 +271,7 @@ ACTOR AstroRocket
 	States
 	{
 	Spawn:
-		ASRK BC 4 A_SpawnItemEx("Spark_G1",0,0,0,random(1,2),random(1,2),random(1,2),random(1,360))
+		ASRK BC 4 LIGHT(ASTRWEP1) A_SpawnItemEx("Spark_G1",0,0,0,random(1,2),random(1,2),random(1,2),random(1,360))
 		Loop
 	Death:
 		TNT1 AAAAA 0 A_SpawnItemEx("Spark_G1",0,0,0,random(1,2),random(1,2),random(1,2),random(1,360))
@@ -505,7 +505,7 @@ ACTOR ElektroshockerPuff : BulletPuff
 	Melee:
 		TNT1 AAAAA 0 A_SpawnItemEx("Spark_G1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
 		TNT1 A 0 A_SpawnItemEx("SparkFlare_G1")
-		RZAP ACEGH 2 bright
+		RZAP ACEGH 2 BRIGHT
 		Stop
 	}
 }

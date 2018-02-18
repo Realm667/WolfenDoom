@@ -1718,6 +1718,46 @@ class ZombieStandard : Nazi
 
 	States
 	{
+		RunLoop:
+			"####" O 1 A_NaziChase;
+			"####" OOO 1 A_NaziChase(null,null);
+			"####" O 1 A_NaziChase;
+			"####" OOO 1 A_NaziChase(null,null);
+			"####" P 1 A_NaziChase;
+			"####" P 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			"####" PPP 1 A_NaziChase(null,null);
+			"####" P 1 A_NaziChase;
+			"####" PPP 1 A_NaziChase(null,null);
+			"####" Q 1 A_NaziChase;
+			"####" QQQ 1 A_NaziChase(null,null);
+			"####" Q 1 A_NaziChase;
+			"####" QQQ 1 A_NaziChase(null,null);
+			"####" R 1 A_NaziChase;
+			"####" R 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			"####" RRR 1 A_NaziChase(null,null);
+			"####" R 1 A_NaziChase;
+			"####" RRR 1 A_NaziChase(null,null);
+			"####" "#" 0 A_Jump(256,"See");
+		RunLoop2:
+			"####" A 1 A_NaziChase;
+			"####" AAA 1 A_NaziChase(null,null);
+			"####" A 1 A_NaziChase;
+			"####" AAA 1 A_NaziChase(null,null);
+			"####" B 1 A_NaziChase;
+			"####" B 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			"####" BBB 1 A_NaziChase(null,null);
+			"####" B 1 A_NaziChase;
+			"####" BBB 1 A_NaziChase(null,null);
+			"####" C 1 A_NaziChase;
+			"####" CCC 1 A_NaziChase(null,null);
+			"####" C 1 A_NaziChase;
+			"####" CCC 1 A_NaziChase(null,null);
+			"####" D 1 A_NaziChase;
+			"####" D 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			"####" DDD 1 A_NaziChase(null,null);
+			"####" D 1 A_NaziChase;
+			"####" DDD 1 A_NaziChase(null,null);
+			"####" "#" 0 A_Jump(256,"See");
 		Death.Fire:
 			"####" # 0 A_SetScale(0.55);
 		Death.Fire.Random: // Jump to here if you have an actor that needs a different scale set (See WereWaffenSS)
