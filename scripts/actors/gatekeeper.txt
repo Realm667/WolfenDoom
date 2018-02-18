@@ -534,13 +534,13 @@ class GhostGate : GateKeeper
 				swirl.scale = swirl.default.scale;
 				swirl.alpha = 0.85;
 			}
+		}
 
-			if (distratio <= 0.05 && !user_keyamount)
-			{
-				A_PlaySound(opensound, CHAN_6, 0.25, false, ATTN_NORM);
+		if (distratio <= 0.05 && !user_keyamount)
+		{
+			A_PlaySound(opensound, CHAN_6, 0.25, false, ATTN_NORM);
 				
-				swirl.Destroy();
-			}
+			if (swirl) { swirl.Destroy(); }
 		}
 
 		if (light)
