@@ -97,7 +97,7 @@ class GateKeeper : Actor
 
 		if (!linedef.delta.x) { lineangle = 0; }
 		else if (!linedef.delta.y) { lineangle = 90; }
-		else { lineangle = (atan(linedef.delta.y / linedef.delta.x) + 90) % 360; }
+		else { lineangle = (atan(linedef.delta.y / linedef.delta.x) + 270) % 360; }
 
 		angle = lineangle;
 
@@ -139,7 +139,7 @@ class GateKeeper : Actor
 					{
 						if (maxtimeout < 0 && timeout > maxtimeout)
 						{
-							if (Distance2D(Activators[i]) < linelength / 2)
+							if (Distance2D(Activators[i]) < min(linelength / 2, 96))
 							{
 								Activators[i].TakeInventory(key, user_keyamount);
 								user_keyamount = 0;
@@ -154,7 +154,7 @@ class GateKeeper : Actor
 					}
 					else
 					{
-						if (Distance2D(Activators[i]) <= linelength * 3 / 5)
+						if (Distance2D(Activators[i]) <= min(linelength * 3 / 5, 192))
 						{
 							Activators[i].Thrust(0.5, AngleTo(Activators[i]));
 						}
@@ -316,11 +316,14 @@ class GhostGate : GateKeeper
 	double startalpha;
 	Array<Actor> spawns;
 	Array<Actor> numbers;
+	Array<GhostGate> peers;
 	Actor swirl, light;
 	sound loopsound, opensound;
 	color textcolor, targetcolor;
 	int textspeed;
 	double pulseratio;
+	int activationtime;
+	bool inactivation;
 
 	Property LoopSound:loopsound;
 	Property OpenSound:opensound;
@@ -330,7 +333,7 @@ class GhostGate : GateKeeper
 		//$Category Hazards (Wolf3D)
 		//$Title "Soul Gate"
 		//$Color 12
-		//$Sprite SWRLA0
+		//$Sprite SWRLZ0
 		//$Arg0 "Amount of 'Soul' item required"
 		//$Arg0Default 25;
 		//$Arg0Tooltip "How many of the 'Soul' inventory item must be carried by the player to pass this gate.\nCan also be set via the 'user_keyamount' UDMF property."
@@ -348,14 +351,14 @@ class GhostGate : GateKeeper
 	{
 		Spawn:
 			UNKN A 2 {
-				if (spawns.Size() < user_keyamount)
+				if (spawns.Size() < user_keyamount && swirl)
 				{
 					tics = Random(1, 10);
 
 					bool sp;
 					Actor mo;
 	
-					[sp, mo] = A_SpawnItemEx("CreepyEffect", 0, Random(-linelength / 2, linelength / 2), Random(16, 96), 0, 0, random(1, 2), 180 - angle, SXF_NOCHECKPOSITION | SXF_SETMASTER);
+					[sp, mo] = A_SpawnItemEx("CreepyEffect", 0, Random(-linelength / 2, linelength / 2), Random(16, int(64 + 32 * scale.x)), 0, 0, random(1, 2), angle, SXF_NOCHECKPOSITION | SXF_SETMASTER);
 
 					if (sp)
 					{
@@ -387,27 +390,30 @@ class GhostGate : GateKeeper
 
 		if (user_keyamount == 25 && args[0]) { user_keyamount = args[0]; }
 
+		FindPeers();
+
 		SpawnDigits(user_keyamount, "FlatNumber");
 
-		swirl = Spawn("Swirl_Wall", pos + (0, 0, 64));
+		swirl = Spawn("Swirl_Wall", pos + (0, 0, 32 + 32 * scale.y));
 
 		if (swirl)
 		{
 			swirl.angle = angle;
-			swirl.alpha = 0.85;
+			swirl.scale = scale;
 		}
 
-		light = Spawn("GateLight", pos + (0, 0, 64));
+		light = Spawn("GateLight", pos + (0, 0, 32 + 32 * scale.y));
 
 		if (light)
 		{
-			GateLight(light).lightradius = linelength / 2;
-			GateLight(light).targetradius = linelength / 2;
+			GateLight(light).lightradius = int(scale.x * linelength / 2);
+			GateLight(light).targetradius = int(scale.x * linelength / 2);
 		}
 
 		TextureID tex = TexMan.CheckForTexture("WATR_G98", TexMan.Type_Any);
+		bool outside = TexMan.GetName(ceilingpic) == "F_SKY1";
 
-		if (tex && ceilingz - pos.z < 128)
+		if (tex && !outside)
 		{
 			if (linedef.sidedef[0])
 			{
@@ -433,7 +439,24 @@ class GhostGate : GateKeeper
 		targetcolor = "189454"; // Creepy green;
 		textspeed = 8;
 
-		A_PlaySound(loopsound, CHAN_6, 0.45, true, ATTN_NORM);
+		A_PlaySound(loopsound, CHAN_6, 0.45 * scale.x, true, ATTN_NORM);
+	}
+
+	Actor FindPeers()
+	{
+		if (tid)
+		{
+			let it = ActorIterator.Create(tid, GetClassName());
+			Actor mo;
+
+			while (mo = Actor(it.Next()))
+			{
+				if (mo == self) { continue; }
+
+				if (mo.GetClassName() == GetClassName()) { peers.Push(mo); }
+			}
+		}
+		return null;
 	}
 
 	Actor ClosestPlayer(double dist = 0)
@@ -483,6 +506,7 @@ class GhostGate : GateKeeper
 				numbers.Push(mo);
 				FlatNumber(mo).value = digit;
 				mo.master = self;
+				mo.scale *= scale.x;
 			}
 
 			[sp, mo] = A_SpawnItemEx(numactor, -2, -position, 30, angle:180, flags: SXF_NOCHECKPOSITION);
@@ -491,6 +515,7 @@ class GhostGate : GateKeeper
 				numbers.Push(mo);
 				FlatNumber(mo).value = digit;
 				mo.master = self;
+				mo.scale *= scale.x;
 			}
 
 			number /= 10;
@@ -513,32 +538,41 @@ class GhostGate : GateKeeper
 
 		Super.Tick();
 
-		double distratio = 1.0;
 		double pratio = 1.0;
 
-		if (target) { distratio = clamp(sin((Distance2D(target) - 64) * 90 / (activationradius - 64)), 0.001, 1.0); }
+		if (target)
+		{
+			alpha = clamp(sin((Distance2D(target) - 64) * 90 / (activationradius - 64)), 0.001, 1.0);
+			activationtime = level.time;
+			inactivation = true;
+		}
+		else if (inactivation)
+		{
+			alpha = 1.0;
+			inactivation = false;
+		}
 
 		Actor p = ClosestPlayer(activationradius);
 		if (p) { pratio = Distance2D(p) / activationradius; }
 
-		linedef.alpha = distratio * startalpha;
+		linedef.alpha = alpha * startalpha;
 
 		if (swirl)
 		{
 			if (target)
 			{
-				swirl.scale = swirl.default.scale / pratio;
-				swirl.alpha = 0.85 * distratio ** 2;
+				swirl.scale = swirl.default.scale * scale.x / pratio;
 			}
-			else {
-				swirl.scale = swirl.default.scale;
-				swirl.alpha = 0.85;
+			else
+			{
+				swirl.scale = swirl.default.scale * scale.x;
 			}
+			swirl.alpha = 0.85 * alpha;
 		}
 
-		if (distratio <= 0.05 && !user_keyamount)
+		if (alpha <= 0.05 && !user_keyamount)
 		{
-			A_PlaySound(opensound, CHAN_6, 0.25, false, ATTN_NORM);
+			A_PlaySound(opensound, CHAN_6, 0.25 * scale.x, false, ATTN_NORM);
 				
 			if (swirl) { swirl.Destroy(); }
 		}
@@ -556,10 +590,9 @@ class GhostGate : GateKeeper
 
 		for (int i = 0; i < spawns.Size(); i++)
 		{
-			if (spawns[i] && distratio < 1)
+			if (spawns[i] && alpha < 1)
 			{
-				spawns[i].alpha = min(spawns[i].alpha, distratio * spawns[i].default.alpha);
-				if (!swirl) { spawns[i].Destroy(); }
+				spawns[i].alpha = min(spawns[i].alpha, alpha * spawns[i].default.alpha);
 			}
 
 			if (!spawns[i])
@@ -605,18 +638,34 @@ class GhostGate : GateKeeper
 
 					pulseratio = sratio;
 
-					numbers[i].alpha = (numbers[i].alpha + (distratio * numbers[i].default.alpha + sratio * (1.0 - numbers[i].default.alpha))) / 2; // Smooth any abrupt transitions
-					numbers[i].scale = (numbers[i].default.scale.x + 0.05 * sratio, numbers[i].default.scale.y + 0.05 * sratio); // Make the number pulse when a player is in range but doesn't have enough souls
+					numbers[i].alpha = (numbers[i].alpha + (alpha * numbers[i].default.alpha + sratio * (1.0 - numbers[i].default.alpha))) / 2; // Smooth any abrupt transitions
+					numbers[i].scale = (numbers[i].default.scale.x * scale.x + 0.05 * sratio, numbers[i].default.scale.y * scale.y + 0.05 * sratio); // Make the number pulse when a player is in range but doesn't have enough souls
 				}
 				else
 				{
-					numbers[i].alpha = distratio * numbers[i].default.alpha;
+					numbers[i].alpha = alpha * numbers[i].default.alpha;
 				}
 
 				if (numbers[i]) { numbers[i].SetShade(textcolor); }
 			}
 
 			if (!numbers[i])
+			{
+				numbers.Delete(i);
+			}
+		}
+
+		for (int i = 0; i < peers.Size(); i++)
+		{
+			if (peers[i])
+			{
+				if (peers[i].activationtime > activationtime) // Time when last approached by a player with enough souls to activate.
+				{
+					user_keyamount = peers[i].user_keyamount;
+					alpha = peers[i].alpha;
+				}
+			}
+			else
 			{
 				numbers.Delete(i);
 			}
@@ -639,10 +688,7 @@ class GhostGateHelper : GhostGate
 		//$Category Hazards (Wolf3D)
 		//$Title "Soul Gate (No effects)"
 		//$Color 12
-		//$Sprite SWRLA0
-		//$Arg0 "Amount of 'Soul' item required"
-		//$Arg0Default 25;
-		//$Arg0Tooltip "How many of the 'Soul' inventory item must be carried by the player to pass this gate.\nCan also be set via the 'user_keyamount' UDMF property."
+		//$Sprite SWRLY0
 	}
 
 	States
@@ -654,7 +700,6 @@ class GhostGateHelper : GhostGate
 			UNKN A 1;
 			Loop;
 	}
-
 
 	override void PostBeginPlay()
 	{
@@ -670,11 +715,23 @@ class GhostGateHelper : GhostGate
 			console.printf("\cgERROR: \clSoul Gate helper actor at %d, %d, %d was placed on a one-sided line!  Unexpected behavior may result.", pos.x, pos.y, pos.z);
 		}
 
-		if (user_keyamount == 25 && args[0]) { user_keyamount = args[0]; }
+		if (!master) { master = FindParent(); }
+
+		if (master)
+		{
+			user_keyamount = GhostGate(master).user_keyamount;
+			alpha = master.alpha;
+			scale = master.scale;
+		}
+		else
+		{
+			if (user_keyamount == 25 && args[0]) { user_keyamount = args[0]; } // Still support setting locally, just in case we want to use it that way in the future...
+		}
 
 		TextureID tex = TexMan.CheckForTexture("WATR_G98", TexMan.Type_Any);
+		bool outside = TexMan.GetName(ceilingpic) == "F_SKY1";
 
-		if (tex && ceilingz - pos.z < 128)
+		if (tex && !outside)
 		{
 			if (linedef.sidedef[0])
 			{
@@ -697,10 +754,32 @@ class GhostGateHelper : GhostGate
 
 		startalpha = linedef.alpha;
 
-		targetcolor = "189454"; // Creepy green;
-		textspeed = 8;
+		A_PlaySound(loopsound, CHAN_6, 0.45 * scale.x, true, ATTN_NORM);
+	}
 
-		A_PlaySound(loopsound, CHAN_6, 0.45, true, ATTN_NORM);
+	override void Tick()
+	{
+		if (master) { alpha = master.alpha; }
+
+		Super.Tick();
+	}
+
+	Actor FindParent()
+	{
+		if (tid)
+		{
+			let it = ActorIterator.Create(tid, "Gatekeeper");
+			Actor mo;
+
+			while (mo = Actor(it.Next()))
+			{
+				if (mo.GetClass() == "GhostGate")
+				{
+					return mo;
+				}
+			}
+		}
+		return null;
 	}
 }
 
