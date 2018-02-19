@@ -187,6 +187,9 @@ class Base : Actor
 	State DodgeState;
 	bool shadow;
 	bool noheal;
+	int lightthreshold;
+	bool lightkills;
+	int frighttimeout;
 
 	Property BossIcon:BossIcon;
 	Property AlwaysDrawHealthBar:user_DrawHealthBar;
@@ -195,8 +198,11 @@ class Base : Actor
 	Property DodgeAmount:maxdodge; // Max number of times the enemy will dodge
 	Property Shadow:shadow;
 	Property NoMedicHeal:noheal;
+	Property LightThreshold:lightthreshold;
+	Property LightKills:lightkills;
 
-	Default {
+	Default
+	{
 		Base.Shadow 1;
 	}
 
@@ -463,13 +469,82 @@ class Base : Actor
 			if (Distance3D(mo) > checkRadius * 2) { continue; }
 
 			double brightness = (mo.args[0] + mo.args[1] + mo.args[2]) / (255. * 3) * 1.25; // Calculate the light's overall brightness
-			double amount = checkRadius * 2 - Distance2d(mo) + 8; // Calculate visibility based on how close the actor is to the light (in 2D space, so we can mostly disregard z-pos and height)
+
+			double amount;
+
+			if (mo is "Spotlight")
+			{
+				let light = SpotLight(mo);
+
+				double amt = InBeamFrom(light);
+
+				if (amt)
+				{
+					if (SpotLight(mo).spotinnerangle - amt < 0) // When in between inner and outer angles...
+					{
+						amount = SpotLight(mo).spotouterangle * 1.5 - amt;
+						amount = amount / max((SpotLight(mo).spotouterangle * 1.5 - SpotLight(mo).spotinnerangle * 1.5), 1) * 100; // Ramp up intensity proportionate to distance from inner angle edge
+					}
+					else { amount = 100; } // Use full amount when located inside the center radius of the spotlight
+				}
+				else
+				{ amount = 0; } //  Not in the spotlight's beam!
+			}
+			else { amount = checkRadius * 2 - Distance2d(mo) + 8; } // Calculate visibility based on how close the actor is to the light (in 2D space, so we can mostly disregard z-pos and height)
+
 			amount *= brightness; // Adjust based on brightness level
 
 			visibility = int(visibility + max(amount - visibility, 0)); // Set the new visibility - use delta in value instead of overriding so that multiple lights can be additive in visibility
 		}
 
 		return visibility;
+	}
+
+	double InBeamFrom(SpotLight mo)
+	{
+		double relpitch = PitchTo(self, mo);
+
+		// Use custom function instead of AngleTo in order to account for target actor radius
+		Vector2 posoffset = mo.pos.xy - pos.xy; // Get offsets
+		posoffset = RotateVector(posoffset, -mo.angle); // Rotate to align with 0 degrees to remove rotation from calculations
+
+		// Calculate the angle to the left and right sides of the actor, and return whichever is smaller
+		double relangle = min(atan((posoffset.y + radius * 0.7) / posoffset.x), atan((posoffset.y - radius * 0.7) / posoffset.x));  // Radius is fudged by 0.7 since most actors's center of mass doesn't take up the whole radius
+
+		double reldist = sqrt(relpitch ** 2 + relangle ** 2); // Get the distance from light cone center using the calculated pitch and angle
+
+		if (reldist < mo.spotouterangle * 1.5) // Use 1.5 times the outer angle so that we have wiggle room to calculate the ramp up to full light level
+		{
+			return reldist; 
+		}
+
+		return 0;
+	}
+
+	// Return the aim pitch offset from the source to the target
+	double PitchTo(Actor mo, Actor source = null, double sourcepitch = 0)
+	{
+		if (source == null) { source = self; }
+		if (!sourcepitch) { sourcepitch = source.pitch; }
+
+		double distxy = max(source.Distance2D(mo), 1);
+		double distz = source.pos.z - mo.pos.z;
+
+		double targetheight = mo.player ? mo.height * mo.player.crouchfactor : mo.height; // Get target height, with crouching if applicable
+
+		double pitchcalc = min(atan(distz / distxy), atan((distz - targetheight) / distxy)); // Return whichever is lower: pitch to actor bottom or actor top.
+
+		return pitchcalc - sourcepitch % 360; // Normalize to 360 degree range
+	}
+
+	double GetLightLevel(Actor mo = null)
+	{
+		if (!mo) { mo = self; }
+
+		Color light = mo.CurSector.ColorMap.LightColor;
+
+		// Sector light level minus the average (inverted) RGB light level minus fog depth
+		return mo.CurSector.lightlevel - (255 - (light.r + light.g + light.b) / 3) - 255 * (mo.CurSector.ColorMap.FogDensity / 510);
 	}
 
 	override void Tick()
@@ -479,10 +554,56 @@ class Base : Actor
 		if (!globalfreeze && !level.Frozen)
 		{
 			if (dodgetimeout > 0) { dodgetimeout--; }
+			if (frighttimeout > 0) { frighttimeout--; }
 
 			if (swimmer && waterlevel < 3)
 			{
 				vel.z = min(vel.z, -1);
+			}
+
+			if (lightthreshold) // If zero, ignore light levels (so, default to normal enemy behavior)
+			{
+				double dlvisibility = GetVisibility();
+
+				FLineTraceData trace;
+				if (LineTrace(angle, 256, 45, TRF_THRUHITSCAN | TRF_THRUACTORS, Height * 0.9, 0.0, 0.0, trace) && trace.HitType == TRACE_HitFloor)
+				{
+					Color light = trace.HitSector.ColorMap.LightColor;
+
+					double visibility = trace.HitSector.lightlevel - (255 - (light.r + light.g + light.b) / 3) - 255 * (trace.HitSector.ColorMap.FogDensity / 510);
+
+					if (
+						(
+							!bFrightened && 
+							(visibility > lightthreshold || visibility + dlvisibility > lightthreshold + 105)
+						) &&
+						(target && Distance2D(target) > 64)
+					)
+					{
+						movedir = (movedir + Random(3, 5)) % 8; // Pick a random direction away from the current chase direction 
+						bFrightened = True; // Run away
+
+						frighttimeout = 35 + Random(0, 7) * 5; // Use a counter to keep the actor frightened for a little bit
+					}
+					else
+					{
+						bFrightened = frighttimeout > 0;
+					}
+				}
+
+				if (lightkills)
+				{
+					if (TexMan.GetName(ceilingpic) == "F_SKY1")
+					{
+						double lightamt = GetLightLevel();	
+
+						if (lightamt > lightthreshold) { A_Die("Fire"); }
+						else if (lightamt > lightthreshold - 15)
+						{
+							if (health > 0 && Random() < 64) { Spawn("BodySmoke", (pos.x + FRandom(-radius / 2, radius / 2), pos.y + FRandom(-radius / 2, radius / 2), pos.z + FRandom(0, height))); }
+						}
+					}
+				}
 			}
 
 			if (bShootable && health > 0)

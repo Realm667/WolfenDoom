@@ -408,7 +408,7 @@ class SpotlightBeamLight : SpotLightAttenuated
 		double distxy = max(source.Distance2D(mo), 1);
 		double distz = source.pos.z - mo.pos.z;
 
-		double targetheight = target.player ? target.height * target.player.crouchfactor : target.height; // Get target height, with crouching if applicable
+		double targetheight = mo.player ? mo.height * mo.player.crouchfactor : mo.height; // Get target height, with crouching if applicable
 
 		double pitchcalc = min(atan(distz / distxy), atan((distz - targetheight) / distxy)); // Return whichever is lower: pitch to actor bottom or actor top.
 
@@ -435,7 +435,7 @@ class SpotlightBeamLight : SpotLightAttenuated
 
 				amount *= brightness; // Adjust based on brightness level
 
-				amount = clamp(amount, 0, max); // Make sure the numbers are withint he right range
+				amount = clamp(amount, 0, max); // Make sure the numbers are within the right range
 
 				double oldVisibility = BoAVisibility(vis).extravisibility;
 				BoAVisibility(vis).extravisibility  = int(oldvisibility + Max(amount - oldVisibility, 0)); // Set the new visibility - use delta in value instead of overriding so that multiple lights can be additive in visibility

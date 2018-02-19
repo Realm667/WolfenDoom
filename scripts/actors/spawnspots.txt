@@ -233,11 +233,8 @@ class WaveSpawner : ActorSpawner
 			"####" "#" 0 A_DoSpawns();
 		Inactive:
 			"####" "#" 0 {
-				if (!user_lightburns) // C3 Secret level is handled differently
-				{
-					Spawns.Clear(); // Clear the enemy spawn queue when deactivated.  This way, when re-activated, everything starts over again
-					Spawns.ShrinkToFit();
-				}
+				Spawns.Clear(); // Clear the enemy spawn queue when deactivated.  This way, when re-activated, everything starts over again
+				Spawns.ShrinkToFit();
 			}
 		InactiveLoop:
 			"####" "#" 35;
@@ -340,6 +337,11 @@ class WaveSpawner : ActorSpawner
 					spawned.ChangeTID(user_tid);
 
 					if (Nazi(spawned)) { Nazi(spawned).dodgetimeout = 350; }
+					if (Base(spawned))
+					{
+						Base(spawned).lightthreshold = 130;
+						Base(spawned).lightkills = true;
+					}
 
 					if (user_goal > 0)
 					{
@@ -370,51 +372,10 @@ class WaveSpawner : ActorSpawner
 		{
 			for (int i = 0; i < Spawns.Size(); i++)
 			{
-				if (GetLightLevel(Spawns[i]) > 130)
+				if (!Spawns[i])
 				{
-					Spawns[i].A_SetTics(Random(1, 15));
-					Spawns[i].A_Die("Fire");
-					Spawns.Delete(i);
+ 					Spawns.Delete(i);
 					Spawns.ShrinkToFit();
-				}
-				else
-				{
-					// If the sector ahead is lighted, don't walk forward - keeps zombies in dark areas unless they are pushed out
-
-					double dlvisibility = 0;
-
-					// If the actor inherits from Base, have it avoid bright dynamic lights, too
-					if (Base(Spawns[i])) { dlvisibility = Base(Spawns[i]).GetVisibility(); }
-
-					FLineTraceData trace;
-					if (Spawns[i].LineTrace(Spawns[i].angle, 256, 45, TRF_THRUHITSCAN | TRF_THRUACTORS, Spawns[i].Height * 0.9, 0.0, 0.0, trace) && trace.HitType == TRACE_HitFloor)
-					{
-						Color light = trace.HitSector.ColorMap.LightColor;
-
-						double visibility = trace.HitSector.lightlevel - (255 - (light.r + light.g + light.b) / 3) - 255 * (trace.HitSector.ColorMap.FogDensity / 510);
-
-						if (
-							(
-								!Spawns[i].bFrightened && 
-								(visibility > 130 || visibility + dlvisibility > 235)
-							) &&
-							(Spawns[i].target && Spawns[i].Distance2D(Spawns[i].target) > 64)
-						)
-						{
-							Spawns[i].movedir = (Spawns[i].movedir + Random(3, 5)) % 8; // Pick a random direction away from the current chase direction 
-							Spawns[i].bFrightened = True; // Run away
-
-							if (Base(Spawns[i])) { Base(Spawns[i]).dodgetimeout = 35 + Random(0, 7) * 5; } // Use the dodgetimeout variable as a counter to keep the actor frightened for a little bit
-						}
-						else
-						{
-							if (Base(Spawns[i]))
-							{
-								if (Base(Spawns[i]).dodgetimeout <= 0) { Spawns[i].bFrightened = False; }
-							}
-							else { Spawns[i].bFrightened = False; }
-						}
-					}
 				}
 			}
 		}
