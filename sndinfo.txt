@@ -391,6 +391,7 @@ $limit	world/ladder 1
 //Small Switches
 SMSWITCH SMSWITCH
 elecsw elecsw
+SWMECH SWMECH
 
 //No sound
 NOSOUND NOSOUND
@@ -2000,6 +2001,11 @@ effects/repair1		Repair1
 effects/repair2		Repair2
 effects/repair3		Repair3
 $random effects/repair { effects/repair1 effects/repair2 effects/repair3 }
+
+//Chain Rotate
+effects/crank1	CHAIN1
+effects/crank2	CRANK
+$random effects/crank { effects/crank2 effects/crank1}
 
 //Thunder
 $random misc/thunder { misc/thunder1 misc/thunder2 misc/thunder3 misc/thunder4 misc/thunder5 misc/thunder6 misc/thunder7 misc/thunder8 misc/thunder9 }

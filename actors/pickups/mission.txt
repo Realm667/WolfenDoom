@@ -257,6 +257,23 @@ ACTOR RepairKit : Akten
 	}
 }
 
+ACTOR Crank : Akten
+{
+	//$Title Crank (mech)
+	Scale 0.25
+	Tag "$TAGCRANK"
+	Inventory.Icon KURBA0
+	Inventory.PickupMessage "$PUCRANK"
+	Inventory.MaxAmount 1
+	Inventory.PickupSound "misc/gadget_pickup"
+	States
+	{
+	Spawn:
+		KURB B -1
+		Stop
+	}
+}
+
 ACTOR RadioPickup : Akten
 {
 	//$Title Field Radio
