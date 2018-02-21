@@ -1,9 +1,9 @@
 #include "boadefs.bm"
 #include "boashaders.txt" //mxd
 
-/////////////////////////////////////////////////////
-// SPARK SPAWNERS ///////////////////////////////////
-/////////////////////////////////////////////////////
+//////////////////
+//SPARK SPAWNERS//
+//////////////////
 PointLight WhiteSparkFlare
 {
 	Color 1.0 1.0 1.0
@@ -95,55 +95,7 @@ Object SparkFlare_P4 { frame SPKP { light PurpleSparkFlare } }
 Object SparkFlare_P5 { frame SPKP { light PurpleSparkFlare } }
 Object SparkFlare_P6 { frame SPKP { light PurpleSparkFlare } }
 
-/////////////////////////////////////////////////////
-// CHANDELIER LIGHTS ////////////////////////////////
-/////////////////////////////////////////////////////
-
-PointLight Chandelier
-{
-	Color 1.0 1.0 1.0
-	Size 40
-	Offset 0 32 0
-}
-
-PointLight Chandelier2
-{
-	Color 1.0 1.0 1.0
-	Size 38
-	Offset 0 32 0
-}
-
-PointLight Chandelier3
-{
-	Color 1.0 1.0 1.0
-	Size 36
-	Offset 0 32 0
-}
-//some ozydefs
-PointLight Chandelier4
-{
-	Color 1.0 0.6 0.0
-	Size 44
-	Offset 0 32 0
-}
-
-PointLight Chandelier5
-{
-	Color 1.0 1.0 0.1
-	Size 40
-	Offset 0 32 0
-}
-
-PointLight Chandelier6
-{
-	Color 1.0 1.0 0.2
-	Size 36
-	Offset 0 32 0
-}
-//end ozydefs
-/////////////////////////////////////////////////////
-// LAVA CAULDRON LIGHTS /////////////////////////////
-/////////////////////////////////////////////////////
+//Lava Cauldron
 FlickerLight2 CAULDRON
 {
 	Color 1.0 0.5 0.0
@@ -159,9 +111,27 @@ Object LavaCauldron
 	frame LAVC { light CAULDRON }
 }
 
-/////////////////////////////////////////////////////
-// LIGHTNING LIGHTS /////////////////////////////////
-/////////////////////////////////////////////////////
+//Oven
+FlickerLight WolfStove
+{
+	Color 0.3 0.2 0
+	Size 22
+	SecondarySize 20
+	Chance 0.2
+	Offset 0 16 0
+}
+
+Object OvenHot
+{
+	frame OVENA { light WolfStove }
+	frame OVENB { light WolfStove }
+	frame OVENC { light WolfStove }
+	frame OVEND { light WolfStove }
+}
+////////////////////
+//LIGHTNING LIGHTS//
+////////////////////
+
 PointLight Lightning1
 {
 	Color 1.0 1.0 1.0
@@ -221,10 +191,9 @@ PointLight Lightning10
 	Color 0.5 0.5 0.5
 	Size 24
 }
-
-/////////////////////////////////////////////////////
-// STROBE LIGHTS ////////////////////////////////////
-/////////////////////////////////////////////////////
+/////////////////
+//STROBE LIGHTS//
+/////////////////
 
 //BLUE
 PointLight BLUESTROBE
@@ -281,9 +250,9 @@ PointLight FIXEDYEL
 	Color 0.87 0.43 0.0
 	Size 48
 }
-/////////////////////////////////////////////////////
-// FIRE SPAWNER LIGHTS //////////////////////////////
-/////////////////////////////////////////////////////
+///////////////////////
+//FIRE SPAWNER LIGHTS//
+///////////////////////
 
 FlickerLight FireSpawnerSmall
 {
@@ -338,7 +307,93 @@ Object LargeFlame { frame TNT1 { light FireSpawnerLarge } }
 Object MediumFlame { frame TNT1 { light FireSpawnerMedium } }
 Object SmallFlame { frame TNT1 { light FireSpawnerSmall } }
 
-//PROPS - LIGHT SOURCES//
+/////////////////
+//LIGHT SOURCES//
+/////////////////
+
+//Chandeliers//
+PointLight Chandelier
+{
+	Color 1.0 1.0 1.0
+	Size 40
+	Offset 0 32 0
+}
+
+PointLight Chandelier2
+{
+	Color 1.0 1.0 1.0
+	Size 38
+	Offset 0 32 0
+}
+
+PointLight Chandelier3
+{
+	Color 1.0 1.0 1.0
+	Size 36
+	Offset 0 32 0
+}
+
+PointLight Chandelier4 //new ozy
+{
+	Color 1.0 0.6 0.0
+	Size 44
+	Offset 0 32 0
+}
+
+PointLight Chandelier5 //new ozy
+{
+	Color 1.0 1.0 0.1
+	Size 40
+	Offset 0 32 0
+}
+
+PointLight Chandelier6 //new ozy
+{
+	Color 1.0 1.0 0.2
+	Size 36
+	Offset 0 32 0
+}
+
+//Defs for 3d Lights//
+FlickerLight 3DFLAME_N
+{
+	Color 0.86 0.73 0.15
+	Size 40
+	SecondarySize 32
+	Chance 0.2
+	Offset 0 -16 0
+	DontLightSelf 1
+}
+
+FlickerLight 3DFLAME_S
+{
+	Color 0.86 0.73 0.15
+	Size 30
+	SecondarySize 22
+	Chance 0.2
+	Offset 0 -16 0
+	DontLightSelf 1
+}
+
+FlickerLight 3DFLAME_T
+{
+	Color 0.86 0.73 0.15
+	Size 50
+	SecondarySize 42
+	Chance 0.2
+	Offset 0 -16 0
+	DontLightSelf 1
+}
+
+FlickerLight 3DFLAME_L
+{
+	Color 0.76 0.63 0.05
+	Size 8
+	SecondarySize 16
+	Chance 0.2
+	Offset 0 4 0
+	DontLightSelf 1
+}
 PointLight 3DCHAN
 {
 	Color 1.00 0.89 0.25
@@ -515,9 +570,9 @@ PointLight BOAEBWL4
 
 Object CBowl1
 {
-frame CFIRA { light BOAEBWL2}
-frame CFIRB { light BOAEBWL3}
-frame CFIRC { light BOAEBWL4}
+	frame CFIRA { light BOAEBWL2}
+	frame CFIRB { light BOAEBWL3}
+	frame CFIRC { light BOAEBWL4}
 }
 
 FlickerLight BOAEBRL1
@@ -631,47 +686,6 @@ PointLight SIGNLGRN
 	Color 0.0 1.0 0.0
 	Size 64
 	Offset 0 128 0
-	DontLightSelf 1
-}
-
-//Defs for candle fire plumes
-FlickerLight 3DFLAME_N
-{
-	Color 0.86 0.73 0.15
-	Size 40
-	SecondarySize 32
-	Chance 0.2
-	Offset 0 -16 0
-	DontLightSelf 1
-}
-
-FlickerLight 3DFLAME_S
-{
-	Color 0.86 0.73 0.15
-	Size 30
-	SecondarySize 22
-	Chance 0.2
-	Offset 0 -16 0
-	DontLightSelf 1
-}
-
-FlickerLight 3DFLAME_T
-{
-	Color 0.86 0.73 0.15
-	Size 50
-	SecondarySize 42
-	Chance 0.2
-	Offset 0 -16 0
-	DontLightSelf 1
-}
-
-FlickerLight 3DFLAME_L
-{
-	Color 0.76 0.63 0.05
-	Size 8
-	SecondarySize 16
-	Chance 0.2
-	Offset 0 4 0
 	DontLightSelf 1
 }
 
@@ -797,7 +811,7 @@ Object SkullKey
 	frame SKLKA0 { light BOARKEY}
 }
 
-//TREASURES
+//TREASURES//
 PointLight COINLITE
 {
 	Color 0.86 0.75 0.0
@@ -826,7 +840,49 @@ PointLight BIGCLITE
 	Offset 0 0 0
 }
 
-//MODELS
+//PICKUPS//
+FlickerLight2 SERUM
+{
+	Color 0.4 0.0 0.0
+	Size 16
+	SecondarySize 24
+	Interval 0.01
+	DontLightSelf 1
+}
+
+Object VitalitySerum
+{
+	frame VSRM { light SERUM }
+}
+
+FlickerLight2 LANT01
+{
+	Color 1.00 0.69 0.48
+	Size 212
+	SecondarySize 172
+	Interval 0.005
+	Offset 0 64 0
+}
+
+Flickerlight2 LANT02
+{
+	Color 0.90 0.59 0.38
+	Size 212
+	SecondarySize 167
+	Interval 0.005
+	Offset 0 64 0
+}
+
+FlickerLight2 LANT03
+{
+	Color 0.80 0.49 0.28
+	Size 212
+	SecondarySize 162
+	Interval 0.005
+	Offset 0 64 0
+}
+
+//MODELS//
 PulseLight SAPHLITE
 {
 	Color 0.0 0.0 0.7
@@ -843,7 +899,7 @@ PulseLight MINERALLITE
 	Interval 2.0
 }
 
-//WEAPONS//
+//WEAPONS or ATTACKS//
 FlickerLight2 BOAFLAMW
 {
 	Color 0.95 0.75 0.0
@@ -904,41 +960,64 @@ PointLight TRCRFIRE
 	Offset 0 0 0
 }
 
-//LANTERN
-flickerlight2 LANT01
+// Bullet puffs//
+FlickerLight BPUFF1
 {
-	Color 1.00 0.69 0.48
-	Size 212
-	SecondarySize 172
-	interval 0.005
-	Offset 0 64 0
+	Color 0.5 0.25 0.0
+	Size 4
+	SecondarySize 8
+	Chance 0.7
 }
 
-flickerlight2 LANT02
+FlickerLight BPUFF2
 {
-	Color 0.90 0.59 0.38
-	Size 212
-	SecondarySize 167
-	interval 0.005
-	Offset 0 64 0
+	Color 0.5 0.25 0.0
+	Size 3
+	SecondarySize 4
+	Chance 0.7
 }
 
-flickerlight2 LANT03
+//Firebrand//
+FlickerLight ITBURNSOC1
 {
-	Color 0.80 0.49 0.28
-	Size 212
-	SecondarySize 162
-	interval 0.005
-	Offset 0 64 0
+	Color 0.01 0.83 0.46
+	Size 24
+	SecondarySize 32
+	Chance 0.2
 }
 
+FlickerLight ITBURNSOC2
+{
+	Color 0.1 0.66 0.41
+	Size 32
+	SecondarySize 36
+	Chance 0.3
+}
 
+FlickerLight ITBURNSOC3
+{
+	Color 0.07 0.37 0.19
+	Size 36
+	SecondarySize 44
+	Chance 0.4
+}
 
+Object FirebrandFireball
+{
+	frame CFCFQ { light ITBURNSOC3 }
+	frame CFCFR { light ITBURNSOC3 }
+	frame CFCFS { light ITBURNSOC3 }
+	frame CFCFT { light ITBURNSOC2 }
+	frame CFCFU { light ITBURNSOC2 }
+	frame CFCFV { light ITBURNSOC2 }
+	frame CFCFW { light ITBURNSOC3 }
+	frame CFCFX { light ITBURNSOC3 }
+	frame CFCFY { light ITBURNSOC3 }
+}
 //////////////////////////////
 // Underwater Light Effects //
 //////////////////////////////
 
-//underwaters
 PulseLight LIGHTWATR1
 {
 	Color 0.1 0.1 0.1
@@ -1065,6 +1144,7 @@ Object UHazardLShooter
 //////////////////////
 //Death Burning Defs//
 //////////////////////
+
 FlickerLight ITBURNS1
 {
 	Color 0.8 0.5 0.0
@@ -1112,52 +1192,10 @@ FlickerLight ITBURNS6
 	SecondarySize 15
 	Chance 0.1
 }
+///////////
+//ENEMIES//
+///////////
 
-// Firebrand
-FlickerLight ITBURNSOC1
-{
-	Color 0.01 0.83 0.46
-	Size 24
-	SecondarySize 32
-	Chance 0.2
-}
-
-FlickerLight ITBURNSOC2
-{
-	Color 0.1 0.66 0.41
-	Size 32
-	SecondarySize 36
-	Chance 0.3
-}
-
-FlickerLight ITBURNSOC3
-{
-	Color 0.07 0.37 0.19
-	Size 36
-	SecondarySize 44
-	Chance 0.4
-}
-
-Object FirebrandFireball
-{
-	frame CFCFQ { light ITBURNSOC3 }
-	frame CFCFR { light ITBURNSOC3 }
-	frame CFCFS { light ITBURNSOC3 }
-	frame CFCFT { light ITBURNSOC2 }
-	frame CFCFU { light ITBURNSOC2 }
-	frame CFCFV { light ITBURNSOC2 }
-	frame CFCFW { light ITBURNSOC3 }
-	frame CFCFX { light ITBURNSOC3 }
-	frame CFCFY { light ITBURNSOC3 }
-}
-
-Object BoAPlayer
-{
-	frame PLAB { light ITBURNSOC3 }
-	frame PLYB { light ITBURNSOC3 }
-}
-
-//NAZI FOES//
 PointLight ICEBALL
 {
 	Color 0.6 0.8 0.8
@@ -1284,7 +1322,7 @@ PointLight ZYKOFIRE
 	Offset 0 24 12
 }
 
-//BloodSkull
+//BloodSkull//
 FlickerLight BLOODSKULL_X1
 {
 	Color 0.8 0.3 0.0
@@ -1334,7 +1372,23 @@ Object BloodSkull
 	frame SWBSH { light BLOODSKULL_X5 }
 }
 
-//Smoke Monster
+FlickerLight BSKULFOG
+{
+	Color 0.4 0.0 0.0
+	Size 24
+	SecondarySize 32
+	Chance 0.6
+}
+
+FlickerLight2 FIREFLY
+{
+	Color 1.00 0.79 0.48
+	Size 4
+	SecondarySize 8
+	Interval 0.1
+}
+
+//Smoke Monster//
 FlickerLight2 SmokeLight_A
 {
 	Color 1.0 1.0 1.0
@@ -1350,37 +1404,19 @@ Object SmokeMonster
 	frame TNT1A { light SmokeLight_A }
 }
 
-//Laser Shark
+//Laser Shark//
 PointLight LaserSharkAttack
 {
-Color 1.0 0.0 0.0
-Size 28
+	Color 1.0 0.0 0.0
+	Size 28
 }
 
 Object LaserShark
 {
-Frame SHRLE { Light LaserSharkAttack }
+	Frame SHRLE { Light LaserSharkAttack }
 }
 
-
-// Bullet puffs
-FlickerLight BPUFF1
-{
-	Color 0.5 0.25 0.0
-	Size 4
-	SecondarySize 8
-	Chance 0.7
-}
-
-FlickerLight BPUFF2
-{
-	Color 0.5 0.25 0.0
-	Size 3
-	SecondarySize 4
-	Chance 0.7
-}
-
-//Angel of Death
+//Angel of Death//
 FlickerLight2 OADEPLSM1
 {
 	Color 0.2 0.7 0.5
@@ -1411,6 +1447,7 @@ FlickerLight2 OADEPLSM3
 	DontLightSelf 0
 }
 
+//Defs used from AracnorbQueen//
 Object QueenPlasmaBlast
 {
 	frame EBLTG { light OADEPLSM1 }
@@ -1452,7 +1489,90 @@ Object QueenBlastPod
 	frame CNOBH { light OADEPLSM2 }
 	frame CNOBI { light OADEPLSM2 }
 }
-// Zombies
+
+PointLight QUEENPLASMA
+{
+	Color 0.0 1.0 0.1
+	Size 64
+}
+
+FlickerLight QUEENPLASMA_X1
+{
+	Color 0.0 1.0 0.0
+	Size 48
+	SecondarySize 56
+	Chance 0.4
+}
+
+FlickerLight QUEENPLASMA_X2
+{
+	Color 0.0 0.8 0.0
+	Size 32
+	SecondarySize 40
+	Chance 0.4
+}
+
+FlickerLight QUEENPLASMA_X3
+{
+	Color 0.0 0.5 0.0
+	Size 16
+	SecondarySize 24
+	Chance 0.4
+}
+
+Object QueenPlasmaBlast
+{
+	frame EBLTG { light QUEENPLASMA }
+	frame EBLTH { light QUEENPLASMA }
+	frame EBLTI { light QUEENPLASMA_X1 }
+	frame EBLTJ { light QUEENPLASMA_X2 }
+	frame EBLTK { light QUEENPLASMA_X2 }
+}
+
+Object QueenPainPlasmaBlast
+{
+	frame EBLTG { light QUEENPLASMA }
+	frame EBLTH { light QUEENPLASMA }
+	frame EBLTI { light QUEENPLASMA_X1 }
+	frame EBLTJ { light QUEENPLASMA_X2 }
+	frame EBLTK { light QUEENPLASMA_X2 }
+}
+
+FlickerLight QUEENPLASMATRAIL_1
+{
+	Color 0.0 0.4 0.1
+	Size 40
+	SecondarySize 48
+	Chance 0.6
+}
+
+FlickerLight QUEENPLASMATRAIL_2
+{
+	Color 0.0 0.3 0.1
+	Size 32
+	SecondarySize 40
+	Chance 0.6
+}
+
+FlickerLight QUEENPLASMATRAIL_3
+{
+	Color 0.0 0.2 0.0
+	Size 24
+	SecondarySize 32
+	Chance 0.6
+}
+
+Object QueenPlasmaBlastTrail
+{
+	frame EBLTA { light QUEENPLASMATRAIL_1 }
+	frame EBLTB { light QUEENPLASMATRAIL_2 }
+	frame EBLTC { light QUEENPLASMATRAIL_2 }
+	frame EBLTD { light QUEENPLASMATRAIL_3 }
+	frame EBLTE { light QUEENPLASMATRAIL_3 }
+	frame EBLTF { light QUEENPLASMATRAIL_3 }
+}
+
+//Zombies//
 FlickerLight2 ZOMBIEATK
 {
 	Color 1.0 0.8 0.2
@@ -1479,7 +1599,7 @@ FlickerLight2 PRIESTF
 	Offset 0 48 -4
 }
 
-//NaziLoper stuff - Ozy81
+//NaziLoper//
 FlickerLight2 LOPERLIT
 {
 	Color 0.7 0.5 1.0
@@ -1527,40 +1647,8 @@ Object NaziLoper
 	frame LOPRH { light TPortNormal }
 	frame LOPRI { light TPortNormal }
 }
-//end of NaziLoper stuff
 
-FlickerLight WolfStove
-{
-	Color 0.3 0.2 0
-	Size 22
-	SecondarySize 20
-	Chance 0.2
-	Offset 0 16 0
-}
-
-Object OvenHot
-{
-	frame OVENA { light WolfStove }
-	frame OVENB { light WolfStove }
-	frame OVENC { light WolfStove }
-	frame OVEND { light WolfStove }
-}
-
-FlickerLight2 SERUM
-{
-	Color 0.4 0.0 0.0
-	Size 16
-	SecondarySize 24
-	Interval 0.01
-	DontLightSelf 1
-}
-
-Object VitalitySerum
-{
-	frame VSRM { light SERUM }
-}
-
-//ASTROSTEIN - PROPS
+//ASTROSTEIN - PROPS//
 PulseLight BOAFBRL1
 {
 	Color 0.0 1.0 0.0
@@ -1610,7 +1698,7 @@ Object BarrelFutureExploding
 	frame BARFD { light BOAFBRL4}
 }
 
-//ASTROSTEIN - WEAPONS & AMMO
+//ASTROSTEIN - WEAPONS & AMMO//
 PulseLight ASTRAMM1
 {
 	Color 0.0 0.83 0.0
@@ -1665,51 +1753,6 @@ PulseLight ASTRWEP3
 	Offset 0 6 0
 }
 
-PointLight ARMORSHARD1
-{
-	Color 0.0 0.7 0.0
-	Size 6
-}
-
-PointLight ARMORSHARD2
-{
-	Color 0.0 0.7 0.0
-	Size 7
-}
-
-PointLight ARMORSHARD3
-{
-	Color 0.0 0.7 0.0
-	Size 8
-}
-
-PointLight ARMORSHARD4
-{
-	Color 0.0 0.7 0.0
-	Size 9
-}
-
-Object ArmorShard
-{
-	frame ARSDA { light ARMORSHARD1 }
-	frame ARSDB { light ARMORSHARD2 }
-	frame ARSDC { light ARMORSHARD3 }
-	frame ARSDD { light ARMORSHARD4 }
-}
-
-PulseLight SUPERSHIELD
-{
-	Color 0.6 0.6 0.6
-	Size 32
-	SecondarySize 48
-	Interval 2.5
-}
-
-Object SuperShield
-{
-	frame ARMX { light SUPERSHIELD }
-}
-
 FlickerLight2 LAZERZ
 {
 	Color 1.0 0.8 0.7
@@ -1755,8 +1798,54 @@ FlickerLight2 LAZERZAP
 	Offset 0 0 0
 }
 
-//mxd. TITLEMAP shadows
-PointLight TMDOGE_SHADOW
+//ASTROSTEIN - PICKUPS//
+PointLight ARMORSHARD1
+{
+	Color 0.0 0.7 0.0
+	Size 6
+}
+
+PointLight ARMORSHARD2
+{
+	Color 0.0 0.7 0.0
+	Size 7
+}
+
+PointLight ARMORSHARD3
+{
+	Color 0.0 0.7 0.0
+	Size 8
+}
+
+PointLight ARMORSHARD4
+{
+	Color 0.0 0.7 0.0
+	Size 9
+}
+
+Object ArmorShard
+{
+	frame ARSDA { light ARMORSHARD1 }
+	frame ARSDB { light ARMORSHARD2 }
+	frame ARSDC { light ARMORSHARD3 }
+	frame ARSDD { light ARMORSHARD4 }
+}
+
+PulseLight SUPERSHIELD
+{
+	Color 0.6 0.6 0.6
+	Size 32
+	SecondarySize 48
+	Interval 2.5
+}
+
+Object SuperShield
+{
+	frame ARMX { light SUPERSHIELD }
+}
+
+//TITLEMAP & CUTSCENES//
+PointLight TMDOGE_SHADOW //mxd
 {
 	Color 0.6 0.6 0.6
 	Offset 0 0 -4
@@ -1765,7 +1854,7 @@ PointLight TMDOGE_SHADOW
 	DontLightSelf 1
 }
 
-PointLight TMGUARD_SHADOW
+PointLight TMGUARD_SHADOW //mxd
 {
 	Color 0.4 0.4 0.4
 	Offset 0 0 -4
@@ -1782,99 +1871,4 @@ Object TMDog
 Object TMGuardWithShadow
 {
 	frame MGR2A { light TMGUARD_SHADOW }
-}
-
-//AracnorbQueen
-
-//Energy shots
-PointLight QUEENPLASMA
-{
-	Color 0.0 1.0 0.1
-	Size 64
-}
-
-FlickerLight QUEENPLASMA_X1
-{
-	Color 0.0 1.0 0.0
-	Size 48
-	SecondarySize 56
-	Chance 0.4
-}
-
-FlickerLight QUEENPLASMA_X2
-{
-	Color 0.0 0.8 0.0
-	Size 32
-	SecondarySize 40
-	Chance 0.4
-}
-
-FlickerLight QUEENPLASMA_X3
-{
-	Color 0.0 0.5 0.0
-	Size 16
-	SecondarySize 24
-	Chance 0.4
-}
-
-Object QueenPlasmaBlast
-{
-	frame EBLTG { light QUEENPLASMA }
-	frame EBLTH { light QUEENPLASMA }
-
-	frame EBLTI { light QUEENPLASMA_X1 }
-	frame EBLTJ { light QUEENPLASMA_X2 }
-	frame EBLTK { light QUEENPLASMA_X2 }
-}
-
-Object QueenPainPlasmaBlast
-{
-	frame EBLTG { light QUEENPLASMA }
-	frame EBLTH { light QUEENPLASMA }
-
-	frame EBLTI { light QUEENPLASMA_X1 }
-	frame EBLTJ { light QUEENPLASMA_X2 }
-	frame EBLTK { light QUEENPLASMA_X2 }
-}
-
-FlickerLight QUEENPLASMATRAIL_1
-{
-	Color 0.0 0.4 0.1
-	Size 40
-	SecondarySize 48
-	Chance 0.6
-}
-
-FlickerLight QUEENPLASMATRAIL_2
-{
-	Color 0.0 0.3 0.1
-	Size 32
-	SecondarySize 40
-	Chance 0.6
-}
-
-FlickerLight QUEENPLASMATRAIL_3
-{
-	Color 0.0 0.2 0.0
-	Size 24
-	SecondarySize 32
-	Chance 0.6
-}
-
-Object QueenPlasmaBlastTrail
-{
-	frame EBLTA { light QUEENPLASMATRAIL_1 }
-	frame EBLTB { light QUEENPLASMATRAIL_2 }
-	frame EBLTC { light QUEENPLASMATRAIL_2 }
-	frame EBLTD { light QUEENPLASMATRAIL_3 }
-	frame EBLTE { light QUEENPLASMATRAIL_3 }
-	frame EBLTF { light QUEENPLASMATRAIL_3 }
-}
-
-FlickerLight BSKULFOG
-{
-	Color 0.4 0.0 0.0
-	Size 24
-	SecondarySize 32
-	Chance 0.6
 }
