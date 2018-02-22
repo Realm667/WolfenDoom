@@ -35,6 +35,16 @@
 	Base.Shadow
 	- Boolean value that sets whether or not the actor receives a sprite shadow
 
+	Base.LightThreshold
+	- Integer value that determines the light level at which the actor becomes
+	  afraid and runs away from the light
+
+	Base.LightKills
+	- Boolean value that, paired with LightThreshold, kills the actor with 'Fire'
+	  death if they enter (or are caught in) an area that is brighter than their 
+	  light threshold allows them to tolerate
+	- The actor will also spawn small smoke puffs immediately before dying
+
 	Nazi.Sneakable
 	- Boolean that controls if the enemy is a sneakable enemy or not.
 	- Can also be set in-editor on a per-actor basis by setting the user_sneakable
