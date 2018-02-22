@@ -481,6 +481,11 @@ Script "SupplyChest"(int prize, int script_number, int objective_number)
 	}
 }
 
+script "CompleteObjective" (int num)
+{
+	ACS_NamedExecuteAlways("boaobjectivesset", 0, 0, num, "MO_ICON_ACC");
+}
+
 //Clear Inventory - now added Astrostein stuff (Ozy81)
 script "CLEAR INVENTORY"(void)
 {
