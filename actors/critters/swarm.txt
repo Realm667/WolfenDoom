@@ -71,14 +71,14 @@ ACTOR FireFly : SwitchableDecoration
 	Mass 5
 	Scale 0.05
 	+BLOCKEDBYSOLIDACTORS
-	+CLIENTSIDEONLY
 	+CANNOTPUSH
+	+CLIENTSIDEONLY
 	+FLOATBOB
-	+FRIENDLY
 	+NOGRAVITY
 	+NOLIFTDROP
 	+NOTARGET
-	+NOTELEFRAG
+	+NOTELEPORT
+	+NOTELESTOMP
 	+RANDOMIZE
 	+SPAWNFLOAT
 	RenderStyle "Shaded"
@@ -105,6 +105,7 @@ ACTOR FireFly : SwitchableDecoration
 	Death:
 		TNT1 A 1 A_SetTics(random(525,1050))
 		TNT1 A 5 A_Respawn(FALSE)
-		Wait
+		TNT1 A -1
+		Stop
 	}
 }

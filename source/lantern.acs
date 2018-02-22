@@ -13,8 +13,9 @@ Script "L_PlayerLoop" ENTER
 				{
 					localambientsound("flamer/steam",random(15,45));
 					TakeInventory("LanternActive",1);
-					TakeInventory("LanternPickup",99999);
-					TakeInventory("LanternOil",99999);
+					ACS_NamedExecuteWait("BoA_LanternOff",0,0,0,0);
+					//TakeInventory("LanternPickup",99999);
+					//TakeInventory("LanternOil",99999);
 				}
 				Else
 				{
