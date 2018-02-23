@@ -418,69 +418,6 @@ script "ExGetPlayerZ" (void)
 	SetResultValue(GetActorZ(playerID) >> 16);
 }
 
-// A proxy for the SupplyChest script that can be called from a thing's special.
-// Called by a supply chest when a player tries to open it. The chest is the
-// activator and the chest's target is the player.
-script SUPPLY_CHEST_PROXY_SCRIPT (int prize, int script_number, int objective)
-{
-	ACS_NamedExecuteAlways("SupplyChest", 0, prize, script_number, objective);
-}
-
-//Supply Chest Script
-Script "SupplyChest"(int prize, int script_number, int objective_number)
-{
-	int supplychestid = ActivatorTID();
-
-	// Make the player the activator.
-	if(SetActivatorToTarget(0) && CheckInventory("ChestKey"))
-	{
-		TakeInventory("ChestKey",1);
-		ActivatorSound("misc/p_pkup",127);
-
-		// Predefined rewards.
-		str reward = "EmptySupplyChest";
-		switch (prize)
-		{
-		case 1: reward = "SupplyChest100Coins"; break;
-		case 2: reward = "SupplyChest75Coins"; break;
-		case 3: reward = "SupplyChest25Coins"; break;
-		case 4: reward = "SupplyChestKar98k"; break;
-		case 5: reward = "SupplyChestFieldKits"; break;
-		case 6: reward = "SupplyChestGrenades"; break;
-		default:
-			// No reward.
-			break;
-		}
-
-		int x = GetActorX(supplychestid);
-		int y = GetActorY(supplychestid);
-		int z = GetActorZ(supplychestid);
-
-		// Remove the old chest (to prevent multiple uses).
-		Thing_Remove(supplychestid);
-
-		// Spawn reward with same TID as chest.
-		SpawnForced(reward, x, y, z, supplychestid);
-
-		// Call a custom script if specified.
-		if (script_number)
-		{
-			ACS_ExecuteAlways(script_number, 0, supplychestid);
-		}
-
-		// Update objectives if specified.
-		if (objective_number >= 0 && objective_number < MAX_OBJECTIVES)
-		{
-			ACS_NamedExecuteAlways("boaobjectivesset",0,0,objective_number,"MO_ICON_ACC");
-			ACS_NamedExecuteAlways("boaobjectiveaccomplished",0,0,0,0);
-		}
-	}
-	else
-	{
-		ActivatorSound("treasure/locked",127);
-	}
-}
-
 script "CompleteObjective" (int num)
 {
 	ACS_NamedExecuteAlways("boaobjectivesset", 0, 0, num, "MO_ICON_ACC");

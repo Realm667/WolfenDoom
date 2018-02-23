@@ -44,8 +44,12 @@ ACTOR BloodPool2
 		TNT1 A 0 A_JumpIf(user_size < 1.5, "Pool")
 		goto Done
 	Done:
-		SPLT F -1
-		Stop
+		SPLT F 1
+		SPLT F 0 A_SetTics(35*CallACS("BloodLifetime"))
+		"####" "#" 0 A_Jump(256, "FadeOut")
+	FadeOut:
+		"####" "#" 2 A_FadeOut(0.05)
+		Loop
 	Fog:
 		TNT1 A 0 A_SpawnItemEx("BloodFog", 0, 0, 0, frandom(-2.0,2.0), frandom(-2.0,2.0), 0, 0, SXF_TRANSFERTRANSLATION)
 		Stop
