@@ -566,58 +566,58 @@ class Base : Actor
 			if (dodgetimeout > 0) { dodgetimeout--; }
 			if (frighttimeout > 0) { frighttimeout--; }
 
-			if (swimmer && waterlevel < 3)
+			if (bShootable && health > 0)
 			{
-				vel.z = min(vel.z, -1);
-			}
-
-			if (lightthreshold) // If zero, ignore light levels (so, default to normal enemy behavior)
-			{
-				double dlvisibility = GetVisibility();
-
-				FLineTraceData trace;
-				if (LineTrace(angle, 256, 45, TRF_THRUHITSCAN | TRF_THRUACTORS, Height * 0.9, 0.0, 0.0, trace) && trace.HitType == TRACE_HitFloor)
+				if (swimmer && waterlevel < 3)
 				{
-					Color light = trace.HitSector.ColorMap.LightColor;
-
-					double visibility = trace.HitSector.lightlevel - (255 - (light.r + light.g + light.b) / 3) - 255 * (trace.HitSector.ColorMap.FogDensity / 510);
-
-					if (
-						(
-							!bFrightened && 
-							(visibility > lightthreshold || visibility + dlvisibility > lightthreshold + 105)
-						) &&
-						(target && Distance2D(target) > 64)
-					)
-					{
-						movedir = (movedir + Random(3, 5)) % 8; // Pick a random direction away from the current chase direction 
-						bFrightened = True; // Run away
-
-						frighttimeout = 35 + Random(0, 7) * 5; // Use a counter to keep the actor frightened for a little bit
-					}
-					else
-					{
-						bFrightened = frighttimeout > 0;
-					}
+					vel.z = min(vel.z, -1);
 				}
 
-				if (lightkills)
+				if (lightthreshold) // If zero, ignore light levels (so, default to normal enemy behavior)
 				{
-					if (TexMan.GetName(ceilingpic) == "F_SKY1")
-					{
-						double lightamt = GetLightLevel();	
+					double dlvisibility = GetVisibility();
 
-						if (lightamt > lightthreshold) { A_Die("Fire"); }
-						else if (lightamt > lightthreshold - 15)
+					FLineTraceData trace;
+					if (LineTrace(angle, 256, 45, TRF_THRUHITSCAN | TRF_THRUACTORS, Height * 0.9, 0.0, 0.0, trace) && trace.HitType == TRACE_HitFloor)
+					{
+						Color light = trace.HitSector.ColorMap.LightColor;
+
+						double visibility = trace.HitSector.lightlevel - (255 - (light.r + light.g + light.b) / 3) - 255 * (trace.HitSector.ColorMap.FogDensity / 510);
+
+						if (
+							(
+								!bFrightened && 
+								(visibility > lightthreshold || visibility + dlvisibility > lightthreshold + 105)
+							) &&
+							(target && Distance2D(target) > 64)
+						)
 						{
-							if (health > 0 && Random() < 64) { Spawn("BodySmoke", (pos.x + FRandom(-radius / 2, radius / 2), pos.y + FRandom(-radius / 2, radius / 2), pos.z + FRandom(0, height))); }
+							movedir = (movedir + Random(3, 5)) % 8; // Pick a random direction away from the current chase direction 
+							bFrightened = True; // Run away
+
+							frighttimeout = 35 + Random(0, 7) * 5; // Use a counter to keep the actor frightened for a little bit
+						}
+						else
+						{
+							bFrightened = frighttimeout > 0;
+						}
+					}
+
+					if (lightkills)
+					{
+						if (TexMan.GetName(ceilingpic) == "F_SKY1")
+						{
+							double lightamt = GetLightLevel();	
+
+							if (lightamt > lightthreshold) { A_Die("Fire"); }
+							else if (lightamt > max(128, lightthreshold - 32))
+							{
+								if (health > 0 && Random() < 64) { Spawn("BodySmoke", (pos.x + FRandom(-radius / 2, radius / 2), pos.y + FRandom(-radius / 2, radius / 2), pos.z + FRandom(0, height))); }
+							}
 						}
 					}
 				}
-			}
 
-			if (bShootable && health > 0)
-			{
 				if (loiterdistance > 0 && patrolgoal && !bAmbush)
 				{
 					if (goal && goal != patrolgoal) { } // Already has a goal set, so don't mess with it
@@ -1857,6 +1857,8 @@ class ZombieStandard : Nazi
 		BloodColor "00 A0 7D";
 		BloodType "ZombieBlood";
 		MaxStepHeight 28;
+		Base.LightThreshold 130;
+		Base.LightKills True;
 	}
 
 	States

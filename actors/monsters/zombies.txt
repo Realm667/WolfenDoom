@@ -10,6 +10,7 @@ ACTOR ZombieKazi : ZombieStandard
 	DropItem "9mmAmmo" 64
 	DropItem "GrenadePickup" 16
 	DropItem "Soul", 64, 1
+	Base.LightThreshold 135
 	States
 	{
 	Spawn:
@@ -98,6 +99,7 @@ ACTOR ZombieBrain : ZombieStandard
 	Obituary "$NAZOBITE"
 	DropItem "9mmAmmo" 32
 	DropItem "Soul", 64, 1
+	Base.LightThreshold 135
 	States
 	{
 	Spawn:
@@ -463,6 +465,7 @@ ACTOR ZombieGeneral : RocketMan //black blood
 	DropItem "NebAmmoBox" 128
 	DropItem "Soul", 192, 5
 	Nazi.ZombieVariant "ZombieGeneral"
+	Base.LightThreshold 145
 	States
 	{
 	Spawn:
@@ -517,6 +520,7 @@ ACTOR ZombieZyklonstein : RocketMan //zombie blood???
 	DropItem "FlameAmmo" 128
 	DropItem "FlameAmmo" 128
 	DropItem "Soul", 192, 10
+	Base.LightThreshold 150
 	States
 	{
 	Spawn:
