@@ -89,6 +89,25 @@ class NaziWeapon : Weapon
 
 		Super.Tick();
 	}
+
+	action void A_SpawnLightning(Class<LightningBeam> beam = "LightningBeam")
+	{
+		bool spawned;
+		Actor b;
+
+		let p = player.mo;
+
+		double pitchoffset = p.radius * -sin(p.pitch);
+
+		[spawned, b] = A_SpawnItemEx(beam, pitchoffset, 0, player.viewheight * 0.8);
+		if (spawned)
+		{
+			b.master = p;
+			b.pitch = p.pitch;
+			b.angle = p.angle;
+		}
+		A_CustomBulletAttack(0, 0, 1, 5, "LightningPuff", 64, CBAF_AIMFACING);
+	}
 }
 
 class NullWeapon : NaziWeapon

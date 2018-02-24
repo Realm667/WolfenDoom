@@ -1,0 +1,48 @@
+// Electrical emitter effects
+
+class ElectricalArc : Actor
+{
+	Vector3 aimpoint;
+	double range;
+
+	Property Range:range;
+
+	Default
+	{
+		+NOGRAVITY
+		ElectricalArc.Range 256.0;
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 1 A_LightningBeam();
+			Loop;
+	}
+
+	void A_LightningBeam(string beam = "LightningBeamArc")
+	{
+		bool spawned;
+		Actor p;
+
+		[spawned, p] = A_SpawnItemEx(beam);
+		if (LightningBeam(p)) {
+			p.master = self;
+			p.pitch = pitch;
+			p.angle = angle;
+		}
+	}
+}
+
+class ElectricalPillar : ElectricalArc
+{
+	Default
+	{
+		-NOGRAVITY
+	}
+
+	override void PostBeginPlay()
+	{
+		pitch = -90;
+	}
+}

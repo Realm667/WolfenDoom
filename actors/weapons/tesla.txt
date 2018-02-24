@@ -60,8 +60,14 @@ ACTOR TeslaCannon : NaziAstroWeapon
 		PULS B 0 A_PlaySound("electricplasma/shoot", CHAN_WEAPON)
 		PULS BC 1
 		PULS C 0 A_SetBlend("Purple",0.050,5)
-		PULS D 1 BRIGHT { A_GunFlash("Flash"); A_FireCustomMissile("TeslaBeam", 0, 1, 0, 0); }
-		PULS C 1
+//		PULS D 1 BRIGHT { A_GunFlash("Flash"); A_FireCustomMissile("TeslaBeam", 0, 1, 0, 0); }
+		PULS DC 1 Bright {
+			A_GunFlash("Flash");
+			A_SpawnLightning("LightningBeamPri");
+			A_SpawnLightning("LightningBeamPri");
+			TakeInventory("TeslaLoaded", 1);
+		}
+//		PULS C 1
 		PULS B 0 A_ReFire
 		Goto Ready
 	AltFire:
@@ -74,16 +80,38 @@ ACTOR TeslaCannon : NaziAstroWeapon
 		PULS B 0 A_JumpIfInventory("TeslaLoaded",1,1)
 		Goto Dryfire
 		PULS B 0 A_SetBlend("Purple",0.050,5)
+		PULS BCD 1 Bright {
+			A_GunFlash("Flash");
+			A_SpawnLightning("LightningBeamAlt");
+			TakeInventory("TeslaLoaded", 1);
+		}
+		PULS CDB 1 Bright { 
+			A_GunFlash("Flash");
+			A_SpawnLightning("LightningBeamAlt");
+		}
+/*
 		PULS BCD 1 Bright { A_GunFlash("Flash"); A_RailAttack(random(2,4),0,1,none,none,TESLA_FLAGS,0,"TeslaPuff",0,0,radius+192,1,1,1,"TeslaTracer",2); }
 		PULS CDB 1 Bright { A_GunFlash("Flash"); A_RailAttack(random(2,4),0,1,none,none,TESLA_FLAGS,0,"TeslaPuff",0,0,radius+192,1,1,1,"TeslaTracer",2); }
+*/
 		PULS B 0 A_Refire ("AltFire.Hold2")
 		Goto Ready
 	AltFire.Hold2:
 		PULS B 0 A_JumpIfInventory("TeslaLoaded",1,1)
 		Goto Dryfire
 		PULS B 0 A_SetBlend("Purple",0.050,5)
+		PULS CDB 1 Bright {
+			A_GunFlash("Flash");
+			A_SpawnLightning("LightningBeamAlt");
+			TakeInventory("TeslaLoaded", 1);
+		}
+		PULS BCD 1 Bright { 
+			A_GunFlash("Flash");
+			A_SpawnLightning("LightningBeamAlt");
+		}
+/*
 		PULS CDB 1 Bright { A_GunFlash("Flash"); A_RailAttack(random(2,4),0,1,none,none,TESLA_FLAGS,0,"TeslaPuff",0,0,radius+192,1,1,1,"TeslaTracer",2); }
 		PULS BCD 1 Bright { A_GunFlash("Flash"); A_RailAttack(random(2,4),0,1,none,none,TESLA_FLAGS,0,"TeslaPuff",0,0,radius+192,1,1,1,"TeslaTracer",2); }
+*/
 		PULS B 0 A_Refire("AltFire.Hold1")
 		Goto Ready
 	Reload:
@@ -132,7 +160,8 @@ ACTOR TeslaCannon : NaziAstroWeapon
 		PULS C 1 Offset(0,32) A_WeaponReady(WRF_NOBOB)
 		Goto Ready
 	Flash:
-		PULS I 1 BRIGHT A_Light2
+//		PULS I 1 BRIGHT A_Light2
+		TNT1 A 1 BRIGHT A_Light2
 		TNT1 A 1
 		TNT1 A 2 A_Light1
 		Goto LightDone

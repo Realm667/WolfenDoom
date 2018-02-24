@@ -1,0 +1,417 @@
+/// Lots of bits and pieces from D4D's Lightning Gun used originally...  Significantly modified by AFADoomer.
+
+Class LightningPuff : Actor
+{
+	Default 
+	{
+		Projectile;
+		+NOINTERACTION
+		+NOTONAUTOMAP
+		+ALWAYSPUFF
+		+PUFFONACTORS
+		+PUFFGETSOWNER
+		+BLOODLESSIMPACT
+		+SKYEXPLODE
+		+DONTSPLASH
+		Radius 0;
+		Height 0;
+		RenderStyle "None";
+		Decal "RailScorchLower";
+		DamageType "Electric";
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 1;
+			Stop;
+	}
+}
+
+// Base class that spawns the actual beam segments
+Class LightningBeam : Actor 
+{
+	Vector3 AimPoint;
+
+	double MaxDistance;
+	double AngleRandom;
+	double PitchRandom;
+	int ChokeMin;
+	int ChokeMax;
+	double StepDistance;
+	double CurDistance;
+	double MinScale;
+	double MaxScale;
+	int Choke;
+	String trail;
+	double stepfactor;
+	Actor origin;
+	int child;
+	double splitamt;
+	double faceamt;
+	int spread;
+	bool targets;
+	Actor closest;
+
+	Property MaxDistance:MaxDistance;
+	Property AngleRandom:AngleRandom;
+	Property PitchRandom:PitchRandom;
+	Property ChokeMin:ChokeMin;
+	Property ChokeMax:ChokeMax;
+	Property TrailActor:trail;
+	Property StepFactor:stepfactor;
+	Property MinScale:MinScale;
+	Property MaxScale:MaxScale;
+	Property AllowSplit:splitamt;
+	Property FaceAmount:faceamt;
+	Property Spread:spread;
+	Property targets:targets;
+
+	Default 
+	{
+		+NOINTERACTION
+		+NOBLOCKMAP
+		RenderStyle "None";
+
+		LightningBeam.MaxDistance 1024;
+		LightningBeam.AngleRandom 5;
+		LightningBeam.PitchRandom 5;
+		LightningBeam.ChokeMin 1;
+		LightningBeam.ChokeMax 3;
+		LightningBeam.TrailActor "LightningTrailBeamArc";
+		LightningBeam.StepFactor 1;
+		LightningBeam.MinScale 0.0125;
+		LightningBeam.MaxScale 0.03;
+		LightningBeam.FaceAmount 15;
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 1 NoDelay A_SpawnBeam();
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		if (master)
+		{
+			origin = master;
+		}
+
+		Choke = random(ChokeMin, ChokeMax);
+
+		StepDistance = Random[steps](5, 7) * stepfactor;
+
+		if (Scale.X == 1.0) { Scale.X = MaxScale; }
+
+		Scale.Y = StepDistance;
+
+		if (AimPoint == (0, 0, 0))
+		{
+			FLineTraceData trace;
+			LineTrace(angle, MaxDistance, pitch, TRF_THRUHITSCAN | TRF_THRUACTORS, 0.0, 0.0, 0.0, trace);
+
+			AimPoint = trace.HitLocation;
+			MaxDistance = trace.Distance;
+		}
+
+		tracer = Spawn("TargetActor", AimPoint);
+
+		Super.PostBeginPlay();
+	}
+
+	void A_SpawnBeam()
+	{
+		While (CurDistance < MaxDistance)
+		{
+			bool spawned;
+			Actor t;
+
+			if (targets)
+			{
+				closest = ClosestMonster();
+				if (closest) { tracer = closest; }
+			}
+
+			A_FaceTracer(faceamt, faceamt, 0, 0, FAF_MIDDLE);
+
+			Scale.X = MinScale + (MaxDistance - CurDistance) * (MaxScale - MinScale) / MaxDistance;
+
+			if (
+				(
+					!(master is "PlayerPawn") ||
+					CurDistance > Min(32, MaxDistance / 4)
+				) &&
+				CurDistance < (MaxDistance - StepDistance)
+			)
+			{
+				if (MaxDistance < 64)
+				{
+					AngleRandom = CurDistance / MaxDistance * 90;
+					PitchRandom = CurDistance / MaxDistance * 90;
+				}
+
+				// Randomizes the angle of the beams. 
+				if (spread)
+				{
+					AngleRandom = clamp(CurDistance / (64 / spread), AngleRandom, 20);
+					PitchRandom = clamp(CurDistance / (64 / spread), PitchRandom, 20);
+
+					if (CurDistance / MaxDistance > 0.75)
+					{
+						faceamt++;
+						StepDistance = Max(StepDistance * 0.75, 8);
+						Scale.Y = StepDistance;
+					}
+				}
+
+				// D4D Code
+				// If we're not about to reach the end, or not hitting the 
+				// Choker, randomize it. Otherwise, stay on target and go 
+				// for the puff.
+				if (Choke > 0)
+				{
+					pitch = pitch + PitchRandom * RandomPick[pitchdir](-1, 1);
+					angle = angle + AngleRandom * RandomPick[angledir](-1, 1);
+
+					Choke--;
+				}
+				else 
+				{
+					Choke = Random(ChokeMin, ChokeMax);
+				}
+
+				// Spawn a split from the main beam
+				if (splitamt > 0 && scale.x > 0.001 && Random[split]() < 10 * splitamt * (child + 1) && child < ChokeMax + 2)
+				{
+					[spawned, t] = A_SpawnItemEx(self.GetClass(), cos(pitch), 0, -sin(pitch), 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERSCALE | SXF_TRANSFERPITCH | SXF_TRANSFERPOINTERS);
+					if (spawned) {
+						t.master = master;
+						t.pitch = FRandom(pitch - PitchRandom, pitch + PitchRandom);
+						t.angle = FRandom(angle - AngleRandom, angle + AngleRandom);
+						t.tracer = tracer;
+						LightningBeam(t).AimPoint = AimPoint;
+						LightningBeam(t).MaxDistance = 32; //Random[beamsplit](4, 32);
+						LightningBeam(t).child = child + 1;
+						LightningBeam(t).StepFactor = stepfactor;
+						LightningBeam(t).StepDistance = stepdistance;
+						LightningBeam(t).MaxScale = scale.x;
+						LightningBeam(t).closest = closest;
+						t.scale.x = scale.x / (child + 1);
+					}
+				}
+			}
+
+			// D4D Code
+			// Spawn the beam with the same angle and pitch. Note that the
+			// beam is being centered so we have to take that into account
+			// and spawn it FORWARD based on half the beam's length.
+			// Then move forward by a beam's length and repeat until done.
+			[spawned, t] = A_SpawnItemEx(trail, cos(pitch) * (StepDistance / 2.0), 0, -sin(pitch) * (StepDistance / 2.0), 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERSCALE | SXF_TRANSFERPITCH | SXF_TRANSFERPOINTERS);
+			if (spawned)
+			{
+				t.master = master;
+				t.pitch = pitch + 90;
+			}
+
+			Warp(self, cos(pitch) * StepDistance, 0, -sin(pitch) * StepDistance, flags:WARPF_NOCHECKPOSITION);
+
+			if (CurDistance > 0 && origin && !CheckSight(origin, 0)) { CurDistance = MaxDistance; }
+
+			CurDistance += StepDistance;
+		}
+	}
+
+	actor ClosestMonster(void)
+	{
+		ThinkerIterator Finder = ThinkerIterator.Create("Actor", Thinker.STAT_DEFAULT);
+		Actor mo, closest;
+		while (mo = Actor(Finder.Next()))
+		{
+			if (mo == self || mo == origin || !mo.bShootable || mo.bDormant || !mo.bIsMonster) { continue; }
+			if (!origin.IsVisible(mo, true)) { continue; }
+			if (Distance3d(mo) > 256) { continue; }
+			if (closest && Distance3d(mo) > Distance3d(closest)) { continue; }
+
+			closest = mo;
+		}
+
+		return closest;
+	}
+}
+
+Class LightningBeamPri : LightningBeam
+{
+	Default 
+	{
+		LightningBeam.MaxDistance 512;
+		LightningBeam.TrailActor "LightningTrailBeam";
+		LightningBeam.AngleRandom 4;
+		LightningBeam.PitchRandom 4;
+		LightningBeam.ChokeMin 2;
+		LightningBeam.ChokeMax 3;
+		LightningBeam.StepFactor 2.5;
+		LightningBeam.MinScale 0.025;
+		LightningBeam.MaxScale 0.15;
+		LightningBeam.FaceAmount 5;
+	}
+}
+
+Class LightningBeamAlt : LightningBeam
+{
+	Default 
+	{
+		LightningBeam.MaxDistance 256;
+		LightningBeam.TrailActor "LightningTrailBeamAlt";
+		LightningBeam.AngleRandom 20;
+		LightningBeam.PitchRandom 15;
+		LightningBeam.ChokeMin 2;
+		LightningBeam.ChokeMax 4;
+		LightningBeam.StepFactor 2.5;
+		LightningBeam.MinScale 0.025;
+		LightningBeam.MaxScale 0.15;
+		LightningBeam.AllowSplit 2.5;
+		LightningBeam.FaceAmount 10;
+		LightningBeam.Targets True;
+	}
+}
+
+
+Class LightningBeamArc : LightningBeam
+{
+	Default 
+	{
+		LightningBeam.MaxDistance 256;
+		LightningBeam.TrailActor "LightningTrailBeamArc";
+		LightningBeam.AngleRandom 30;
+		LightningBeam.PitchRandom 15;
+		LightningBeam.ChokeMin 5;
+		LightningBeam.ChokeMax 5;
+		LightningBeam.StepFactor 1.5;
+		LightningBeam.MinScale 0.025;
+		LightningBeam.MaxScale 0.05;
+		LightningBeam.AllowSplit 0.5;
+		LightningBeam.FaceAmount 0;
+	}
+}
+
+// Base class for the beam segments
+Class MovingTrailBeam : Actor 
+{
+	String trail;
+	String puff;
+	Vector3 beamoffset;
+	int damage;
+
+	Property TrailActor:trail;
+	Property PuffActor:puff;
+	Property Damage:damage;
+
+	Default
+	{
+		+NOINTERACTION
+		+BRIGHT
+		RenderStyle "Add";
+		MovingTrailBeam.TrailActor "MovingTrailBeam";
+		MovingTrailBeam.PuffActor "LightningPuff";
+		MovingTrailBeam.Damage 0;
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A 0;
+			MDLA A 1 Bright Light("Lightning") A_FadeOut(0.2);
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (master && (!(master is "PlayerPawn") || Distance3D(master) > 64))
+		{
+			// Used to make all individual bolt segments leave decals and cause damage
+			A_CustomBulletAttack(0, 0, 1, damage, "LightningPuff", 24, CBAF_AIMFACING);
+		}
+
+		if (master) { beamoffset = pos - master.pos; }
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (globalfreeze || level.Frozen) { return; }
+
+		if (master && master is "PlayerPawn")
+		{ 
+			SetOrigin(master.pos + beamoffset, true);
+		}
+	}
+
+}
+
+Class LightningTrailBeam : MovingTrailBeam
+{
+	Default
+	{
+		MovingTrailBeam.TrailActor "LightningTrailBeam";
+		MovingTrailBeam.Damage 2;
+	}
+}
+
+Class LightningTrailBeamAlt : MovingTrailBeam
+{
+	Default
+	{
+		MovingTrailBeam.TrailActor "LightningTrailBeamAlt";
+		MovingTrailBeam.Damage 10;
+	}
+}
+
+Class LightningTrailBeamArc : MovingTrailBeam
+{
+	Default
+	{
+		MovingTrailBeam.TrailActor "LightningTrailBeamArc";
+		MovingTrailBeam.Damage 50;
+	}
+}
+
+class TargetActor : Actor
+{
+	Vector3 offset;
+
+	Default
+	{
+		+NOINTERACTION;
+		Height 0;
+		Radius 0;
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		if (master) { offset = pos - master.pos; }
+
+		return Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		if (master)
+		{
+			Warp(master, offset.x, offset.y, offset.z, flags:WARPF_ABSOLUTEOFFSET);
+		}
+
+		Super.Tick();
+	}
+}
