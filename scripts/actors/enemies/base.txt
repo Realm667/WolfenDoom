@@ -198,7 +198,7 @@ class Base : Actor
 	bool shadow;
 	bool noheal;
 	int lightthreshold;
-	bool lightkills;
+	bool user_lightburns;
 	int frighttimeout;
 
 	Property BossIcon:BossIcon;
@@ -209,7 +209,7 @@ class Base : Actor
 	Property Shadow:shadow;
 	Property NoMedicHeal:noheal;
 	Property LightThreshold:lightthreshold;
-	Property LightKills:lightkills;
+	Property LightKills:user_lightburns;
 
 	Default
 	{
@@ -603,7 +603,7 @@ class Base : Actor
 						}
 					}
 
-					if (lightkills)
+					if (user_lightburns)
 					{
 						if (ceilingpic == skyflatnum)
 						{
