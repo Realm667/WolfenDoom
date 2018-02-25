@@ -312,6 +312,24 @@ ACTOR Kennkarte : Inventory
 	}
 }
 
+ACTOR GrapplingHook : Akten
+{
+	//$Title Grappling Hook
+	Scale 0.4
+	Tag "$TAGHOOK"
+	Inventory.PickupMessage "$RADIOHOOKM"
+	Inventory.PickupSound "gadget_pickup"
+	Inventory.Icon ROPEB0
+	Inventory.MaxAmount 1
+	+INVENTORY.INVBAR
+	States
+	{
+	Spawn:
+		ROPE A -1
+		Stop
+	}
+}
+
 ///////////////////////////////////////////////////////////////
 // DISGUISE UNIFORM ///////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
