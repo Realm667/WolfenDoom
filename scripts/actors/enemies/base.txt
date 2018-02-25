@@ -566,16 +566,16 @@ class Base : Actor
 			if (dodgetimeout > 0) { dodgetimeout--; }
 			if (frighttimeout > 0) { frighttimeout--; }
 
-			if (bShootable && health > 0)
+			if (bShootable && health > 0 && !bDormant)
 			{
 				if (swimmer && waterlevel < 3)
 				{
 					vel.z = min(vel.z, -1);
 				}
 
-				if (lightthreshold) // If zero, ignore light levels (so, default to normal enemy behavior)
+				if (lightthreshold && level.time % 10 == 0) // If zero, ignore light levels (so, default to normal enemy behavior)
 				{
-					double dlvisibility = GetVisibility();
+					double dlvisibility = GetVisibility(); // This calls a ThinkerIterator, which is why this whole block only runs every 10 ticks
 
 					FLineTraceData trace;
 					if (LineTrace(angle, 256, 45, TRF_THRUHITSCAN | TRF_THRUACTORS, Height * 0.9, 0.0, 0.0, trace) && trace.HitType == TRACE_HitFloor)
@@ -605,12 +605,12 @@ class Base : Actor
 
 					if (lightkills)
 					{
-						if (TexMan.GetName(ceilingpic) == "F_SKY1")
+						if (ceilingpic == skyflatnum)
 						{
 							double lightamt = GetLightLevel();	
 
 							if (lightamt > lightthreshold) { A_Die("Fire"); }
-							else if (lightamt > max(128, lightthreshold - 32))
+							else if (lightamt > max(128, lightthreshold - 48))
 							{
 								if (health > 0 && Random() < 64) { Spawn("BodySmoke", (pos.x + FRandom(-radius / 2, radius / 2), pos.y + FRandom(-radius / 2, radius / 2), pos.z + FRandom(0, height))); }
 							}
