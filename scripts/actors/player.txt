@@ -173,6 +173,26 @@ class BoAPlayer : PlayerPawn
 	Death.Fire.End:
 		"####" O -1;
 		Stop;
+	Death.Electric:
+		"####" # 0 {sprite = GetSpriteIndex(Random() < 128 ? "FIZZ" : "ZZIF");}
+		"####" # 0 A_RadiusGive("BlurShaderControl", 192, RGF_PLAYERS | RGF_GIVESELF, 80);
+		"####" A 5 Bright Light("TPortNormal");
+		"####" BA 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
+		"####" B 5 Bright Light("TPortNormal") { A_PlaySound("death/burning"); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+		"####" AABAB 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
+		"####" C 7 Light("TPortNormal");
+		"####" DE 6 Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
+		"####" FG 5 A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
+	Death.Electric.Smoke:
+		"####" H 0 A_Jump(32,"Death.Electric.End");
+		"####" H 2 A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), 0, 0, 0, frandom(0.2,1.0));
+		"####" H 4 A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), 0, 0, 0, frandom(0.2,1.0));
+		"####" H 3 A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), 0, 0, 0, frandom(0.2,1.0));
+		"####" H 5 A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), 0, 0, 0, frandom(0.2,1.0));
+		Loop;
+	Death.Electric.End:
+		"####" H -1;
+		Stop;
 	SpriteList:
 		// Any sprite not used above that is switched to by a token check must be listed here or the game will not find it!
 		PLSC A 0;
@@ -184,6 +204,8 @@ class BoAPlayer : PlayerPawn
 	SpriteLookups:
 		BURN A 0;
 		NRUB A 0;
+		FIZZ A 0;
+		ZZIF A 0;
 	}
 
 	override void Tick()
