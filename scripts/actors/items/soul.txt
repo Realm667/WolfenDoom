@@ -20,8 +20,7 @@ class Soul : StackableInventory
 	States
 	{
 		Spawn:
-			AMM3 ABCDABCDABCDABCDABCD 5 Bright;
-			
+			AMM3 ABCDABCDABCDABCDABCD 5 Bright Light("Soul");
 		Fadeout:
 			AMM3 ABCD 5 Bright A_FadeOut(0.05);
 			Loop;
@@ -44,7 +43,7 @@ class SoulBig : Soul
 	States
 	{
 		Spawn:
-			AMM3 EFGH 4 Bright;
+			AMM3 EFGH 4 Bright Light("SoulBig");
 			Loop;
 	}
 }

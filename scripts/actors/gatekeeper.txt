@@ -24,7 +24,6 @@
 */
 class GateKeeper : Actor
 {
-
 	int timeout, maxtimeout, activationradius, user_keyamount, linelength;
 	double lineangle;
 	Line linedef;
@@ -388,6 +387,8 @@ class GhostGate : GateKeeper
 			console.printf("\cgERROR: \clSoul Gate actor at %d, %d, %d was placed on a one-sided line!  Unexpected behavior may result.", pos.x, pos.y, pos.z);
 		}
 
+		SpawnPoint = pos;
+
 		if (user_keyamount == 25 && args[0]) { user_keyamount = args[0]; }
 
 		FindPeers();
@@ -676,6 +677,8 @@ class GhostGate : GateKeeper
 			Destroy();
 		}
 
+		if (pos != SpawnPoint) { SetOrigin(SpawnPoint, true); }
+
 	}
 }
 
@@ -790,8 +793,8 @@ class FlatNumber : Actor
 
 	Default
 	{
+		+NOINTERACTION
 		+NOGRAVITY
-		-SOLID
 		+WALLSPRITE
 		+MASKROTATION
 		Radius 0;

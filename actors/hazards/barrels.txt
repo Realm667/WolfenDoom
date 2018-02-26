@@ -83,7 +83,7 @@ ACTOR GoodieBarrel1 : TNTBarrel1
 		TNT1 A 0 A_Scream
 		BARL A 2 A_SpawnItemEx("BarrelFrags")
 		TNT1 A 0 A_SpawnItemEx("PowerPlantSmokePuff", random(-3,3), random(-3,3), 0, 0, 0, 3)
-		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_NoBlocking(false) // DropItems handled in the BarrelSpawner actor - so that you can override drops via arg0str
 		Stop
 	}
 }

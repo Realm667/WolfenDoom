@@ -412,19 +412,26 @@ class BarrelSpawner : ExplosiveBarrel
 	{
 		int damageamt = Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
 
-		if (user_spawntype && health <= 0 && !drop)
+		if (health <= 0)
 		{
-			drop = Spawn(user_spawntype, pos);
-
-			if (drop)
+			if (user_spawntype && !drop)
 			{
-				drop.SetOrigin(pos + (0, 0, 10), false);
-				drop.angle = angle;
-				drop.VelFromAngle(5, inflictor.AngleTo(self));
-				drop.vel.z = 1;
-				drop.vel += vel;
-				drop.bNoGravity = false;
-				drop.ClearCounters();
+				drop = Spawn(user_spawntype, pos);
+
+				if (drop)
+				{
+					drop.SetOrigin(pos + (0, 0, 10), false);
+					drop.angle = angle;
+					drop.VelFromAngle(5, inflictor.AngleTo(self));
+					drop.vel.z = 1;
+					drop.vel += vel;
+					drop.bNoGravity = false;
+					drop.ClearCounters();
+				}
+			}
+			else
+			{
+				A_NoBlocking(); // Unset blocking and drop the actor's defined DropItems
 			}
 		}
 
