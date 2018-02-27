@@ -155,6 +155,8 @@ class BoAStatusBar : BaseStatusBar
 					DrawBar("HORZSP2F", "HORZSP2E", current, max, (-22, 55), 0, SHADER_HORZ, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
 				}
 
+				DrawCrosshairHint();
+
 				if (GetGlobalACSValue(60) > -1) { DrawDayNightState(); }
 			BeginHUD(1, False);
 
@@ -288,7 +290,23 @@ class BoAStatusBar : BaseStatusBar
 
 		if (CPlayer.mo.InvSel != null && !level.NoInventoryBar)
 		{
-			DrawInventoryIcon(CPlayer.mo.InvSel, (156, 168), DI_ITEM_OFFSETS);
+			Vector2 texsize = TexMan.GetScaledSize(CPlayer.mo.InvSel.Icon);
+			if (texsize.x > 32 || texsize.y > 32)
+			{
+				if (texsize.y > texsize.x)
+				{
+					texsize.y = 32.0 / texsize.y;
+					texsize.x = texsize.y;
+				}
+				else
+				{
+					texsize.x = 32.0 / texsize.x;
+					texsize.y = texsize.x;
+				}
+			}
+			else { texsize = (1.0, 1.0); }
+
+			DrawInventoryIcon(CPlayer.mo.InvSel, (156, 168), DI_ITEM_OFFSETS, scale:texsize);
 			if (CPlayer.mo.InvSel.Amount > 1)
 			{
 				DrawString(mHUDFont, FormatNumber(CPlayer.mo.InvSel.Amount), (156 + 31, 168 + 30 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
@@ -390,7 +408,24 @@ class BoAStatusBar : BaseStatusBar
 		//Mugshot + Inventory
 		if (CPlayer.mo.InvSel != null && !level.NoInventoryBar)
 		{
-			DrawInventoryIcon(CPlayer.mo.InvSel, (112, -38), DI_ITEM_OFFSETS);
+			Vector2 texsize = TexMan.GetScaledSize(CPlayer.mo.InvSel.Icon);
+
+			if (texsize.x > 32 || texsize.y > 32)
+			{
+				if (texsize.y > texsize.x)
+				{
+					texsize.y = 32.0 / texsize.y;
+					texsize.x = texsize.y;
+				}
+				else
+				{
+					texsize.x = 32.0 / texsize.x;
+					texsize.y = texsize.x;
+				}
+			}
+			else { texsize = (1.0, 1.0); }
+
+			DrawInventoryIcon(CPlayer.mo.InvSel, (112, -38), DI_ITEM_OFFSETS, scale:texsize);
 			if (CPlayer.mo.InvSel.Amount > 1)
 			{
 				DrawString(mHUDFont, FormatNumber(CPlayer.mo.InvSel.Amount), (112 + 31, -38 + 30 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
@@ -656,5 +691,110 @@ class BoAStatusBar : BaseStatusBar
 		DrawImage(icon, (-70, basey), flags | DI_ITEM_CENTER, healthbaralpha, (-1, -1), (0.5, 0.5));
 
 		DrawString(mSmallFont, tag, (4, (basey + 1) - mSmallFont.mFont.GetHeight() / 2), flags | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, healthbaralpha * 0.75);
+	}
+
+	void DrawCrosshairHint()
+	{
+		int crosshair = 0;
+		Class<Inventory> crosshairstring;
+		color clr = 0xFF8800; // Default color is orange.
+		TextureID CrosshairImage;
+		double size = 1.0;
+		Vector2 dimensions;
+		double w, h;
+
+		if (BoAPlayer(CPlayer.mo))
+		{
+			// Try to retrieve the values from the player
+			crosshair = BoAPlayer(CPlayer.mo).crosshair;
+			crosshairstring = BoAPlayer(CPlayer.mo).crosshairstring;
+		}
+
+		// Don't continue if there's no crosshair, we're in titlemap, or the player is dead
+		if (
+			(!crosshair && !crosshairstring) || 
+			CPlayer.cheats & CF_CHASECAM ||
+			gamestate == GS_TITLELEVEL || 
+			CPlayer.health <= 0
+		) { return; }
+
+		if (crosshair) // Integer values take precedence over class names
+		{
+			CrosshairImage = TexMan.CheckForTexture("XHAIRB" .. crosshair, TexMan.Type_Any);
+
+			if (crosshair >= 80 && crosshair <= 90)
+			{
+				clr = 0xDEDEDE;  // If it's a status indicator, make it white/grey
+			}
+
+			dimensions = TexMan.GetScaledSize(CrosshairImage);
+
+			// Force everything to 64 pixels at widest dimension
+			if (dimensions.x > dimensions.y)
+			{
+				dimensions.y *= 64 / dimensions.x;
+				dimensions.x = 64;
+			}
+			else
+			{
+				dimensions.x *= 64 / dimensions.y;
+				dimensions.y = 64;
+			}
+		}
+		else if (crosshairstring)
+		{
+			let def = GetDefaultByType(crosshairstring);
+
+			if (def)
+			{
+				TextureID icon = def.Icon; // First, try to use the Inventory item's icon as the crosshair
+
+				if (icon)
+				{
+					dimensions = TexMan.GetScaledSize(icon);
+
+					if (dimensions.x >= 32 || dimensions.y >= 32) // But only if it's big enough
+					{
+						CrosshairImage = icon;
+					} 
+				}
+
+				if (!CrosshairImage) // If it wasn't big enough, use the spawn state sprite
+				{
+					CrosshairImage = def.SpawnState.GetSpriteTexture(0);
+					dimensions = TexMan.GetScaledSize(CrosshairImage);
+				}
+
+				if (CPlayer.mo.FindInventory(crosshairstring))
+				{
+					clr = 0x00FF00; // Make the icon green if the item is in inventory
+				}
+				else
+				{
+					// Pulse the size of icon if you don't have it
+					size = (crosshair < 80 || (crosshair > 90 && crosshair < 98)) ? 1.0 + 0.1 * sin(level.time * 15 % 360) : 1.0;
+				}
+
+				// Force everything to 52 pixels at widest dimension
+				if (dimensions.x > dimensions.y)
+				{
+					dimensions.y *= 52 / dimensions.x;
+					dimensions.x = 52;
+				}
+				else
+				{
+					dimensions.x *= 52 / dimensions.y;
+					dimensions.y = 52;
+				}
+			}
+		}
+
+		if (!CrosshairImage) { return; }
+
+		// Handle the scaling size multiplier here
+		dimensions *= size;
+
+		// Draw centered on screen, with offsets forced to center of the icon
+		screen.DrawTexture (CrosshairImage, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true);
 	}
 }
