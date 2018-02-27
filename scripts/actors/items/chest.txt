@@ -40,6 +40,7 @@ class BoASupplyChest : Actor
 			MDLA A 1;
 			Loop;
 		Open:
+			"####" B 0 A_Playsound("CHESTOPN", 127);
 			"####" BC 5;
 			"####" D -1; // E and F frames available, but maybe opens too far then?
 			Stop;
