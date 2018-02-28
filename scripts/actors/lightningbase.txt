@@ -49,7 +49,6 @@ Class LightningBeam : Actor
 	int child;
 	double splitamt;
 	double faceamt;
-	int spread;
 	bool targets;
 	Actor closest;
 
@@ -64,7 +63,6 @@ Class LightningBeam : Actor
 	Property MaxScale:MaxScale;
 	Property AllowSplit:splitamt;
 	Property FaceAmount:faceamt;
-	Property Spread:spread;
 	Property targets:targets;
 
 	Default 
@@ -113,7 +111,6 @@ Class LightningBeam : Actor
 			LineTrace(angle, MaxDistance, pitch, TRF_THRUHITSCAN | TRF_THRUACTORS, 0.0, 0.0, 0.0, trace);
 
 			AimPoint = trace.HitLocation;
-			MaxDistance = trace.Distance;
 		}
 
 		tracer = Spawn("TargetActor", AimPoint);
@@ -123,6 +120,8 @@ Class LightningBeam : Actor
 
 	void A_SpawnBeam()
 	{
+		Actor prev;
+
 		While (CurDistance < MaxDistance)
 		{
 			bool spawned;
@@ -146,26 +145,6 @@ Class LightningBeam : Actor
 				CurDistance < (MaxDistance - StepDistance)
 			)
 			{
-				if (MaxDistance < 64)
-				{
-					AngleRandom = CurDistance / MaxDistance * 90;
-					PitchRandom = CurDistance / MaxDistance * 90;
-				}
-
-				// Randomizes the angle of the beams. 
-				if (spread)
-				{
-					AngleRandom = clamp(CurDistance / (64 / spread), AngleRandom, 20);
-					PitchRandom = clamp(CurDistance / (64 / spread), PitchRandom, 20);
-
-					if (CurDistance / MaxDistance > 0.75)
-					{
-						faceamt++;
-						StepDistance = Max(StepDistance * 0.75, 8);
-						Scale.Y = StepDistance;
-					}
-				}
-
 				// D4D Code
 				// If we're not about to reach the end, or not hitting the 
 				// Choker, randomize it. Otherwise, stay on target and go 
@@ -192,7 +171,7 @@ Class LightningBeam : Actor
 						t.angle = FRandom(angle - AngleRandom, angle + AngleRandom);
 						t.tracer = tracer;
 						LightningBeam(t).AimPoint = AimPoint;
-						LightningBeam(t).MaxDistance = 32; //Random[beamsplit](4, 32);
+						LightningBeam(t).MaxDistance = 32;
 						LightningBeam(t).child = child + 1;
 						LightningBeam(t).StepFactor = stepfactor;
 						LightningBeam(t).StepDistance = stepdistance;
@@ -211,15 +190,47 @@ Class LightningBeam : Actor
 			[spawned, t] = A_SpawnItemEx(trail, cos(pitch) * (StepDistance / 2.0), 0, -sin(pitch) * (StepDistance / 2.0), 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERSCALE | SXF_TRANSFERPITCH | SXF_TRANSFERPOINTERS);
 			if (spawned)
 			{
+				if (t.waterlevel > 0)
+				{
+					if (pitch != 0)
+					{
+						t.Destroy(); // Destroy this one and spawn a new one with flat pitch, so it goes along the surface of the water
+
+						pitch = 0;
+						PitchRandom = 0;
+						AngleRandom = 45;
+
+						[spawned, t] = A_SpawnItemEx(trail, cos(pitch) * (StepDistance / 2.0), 0, -sin(pitch) * (StepDistance / 2.0), 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERSCALE | SXF_TRANSFERPITCH | SXF_TRANSFERPOINTERS);
+					}
+
+					if (t) { ElectrifySector(t.CurSector, t.Damage); }
+				}
+
 				t.master = master;
 				t.pitch = pitch + 90;
 			}
 
 			Warp(self, cos(pitch) * StepDistance, 0, -sin(pitch) * StepDistance, flags:WARPF_NOCHECKPOSITION);
 
-			if (CurDistance > 0 && origin && !CheckSight(origin, 0)) { CurDistance = MaxDistance; }
+			if (
+				CurDistance > 0 &&
+				(
+					(origin && !CheckSight(origin, 0)) ||
+					(prev && !CheckSight(prev, 0))
+				)
+			) { CurDistance = MaxDistance; }
+
+			prev = t;
 
 			CurDistance += StepDistance;
+		}
+	}
+
+	void ElectrifySector(Sector cur, int damage = -1)
+	{
+		for (Actor mo = cur.thinglist; mo != null; mo = mo.snext)
+		{
+			if (mo.waterlevel > 0) { mo.A_DamageSelf(damage > 0 ? damage : Random(0, 2), "Electric"); }
 		}
 	}
 
@@ -278,19 +289,28 @@ Class LightningBeamAlt : LightningBeam
 }
 
 
-Class LightningBeamArc : LightningBeam
+Class LightningBeamArc : LightningBeamPri
 {
 	Default 
 	{
 		LightningBeam.MaxDistance 256;
 		LightningBeam.TrailActor "LightningTrailBeamArc";
-		LightningBeam.AngleRandom 30;
+	}
+}
+
+Class LightningBeamPillar : LightningBeam
+{
+	Default 
+	{
+		LightningBeam.MaxDistance 256;
+		LightningBeam.TrailActor "LightningTrailBeamArc";
+		LightningBeam.AngleRandom 15;
 		LightningBeam.PitchRandom 15;
 		LightningBeam.ChokeMin 5;
 		LightningBeam.ChokeMax 5;
 		LightningBeam.StepFactor 1.5;
 		LightningBeam.MinScale 0.025;
-		LightningBeam.MaxScale 0.05;
+		LightningBeam.MaxScale 0.10;
 		LightningBeam.AllowSplit 0.5;
 		LightningBeam.FaceAmount 0;
 	}
@@ -312,6 +332,8 @@ Class MovingTrailBeam : Actor
 	{
 		+NOINTERACTION
 		+BRIGHT
+		Height 1;
+		Radius 0;
 		RenderStyle "Add";
 		MovingTrailBeam.TrailActor "MovingTrailBeam";
 		MovingTrailBeam.PuffActor "LightningPuff";
@@ -367,7 +389,7 @@ Class LightningTrailBeamAlt : MovingTrailBeam
 	Default
 	{
 		MovingTrailBeam.TrailActor "LightningTrailBeamAlt";
-		MovingTrailBeam.Damage 10;
+		MovingTrailBeam.Damage 2;
 	}
 }
 

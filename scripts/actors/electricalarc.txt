@@ -1,26 +1,29 @@
 // Electrical emitter effects
 
-class ElectricalArc : Actor
+class ElectricalArc : SwitchableDecoration
 {
-	Vector3 aimpoint;
-	double range;
+	Class<LightningBeam> beam;
 
-	Property Range:range;
+	Property Beam:beam;
 
 	Default
 	{
 		+NOGRAVITY
-		ElectricalArc.Range 256.0;
+		ElectricalArc.Beam "LightningBeamArc";
 	}
 
 	States
 	{
 		Spawn:
-			TNT1 A 1 A_LightningBeam();
+		Active:
+			TNT1 A 1 A_LightningBeam(beam);
+			Loop;
+		Inactive:
+			TNT1 A 1;
 			Loop;
 	}
 
-	void A_LightningBeam(string beam = "LightningBeamArc")
+	void A_LightningBeam(Class<LightningBeam> beam = "LightningBeamArc")
 	{
 		bool spawned;
 		Actor p;
@@ -39,10 +42,19 @@ class ElectricalPillar : ElectricalArc
 	Default
 	{
 		-NOGRAVITY
+		ElectricalArc.Beam "LightningBeamPillar";
 	}
 
 	override void PostBeginPlay()
 	{
+		if (waterlevel) { beam = "LightningBeamArc"; }
 		pitch = -90;
+	}
+
+	override void Tick()
+	{
+		angle = Random(1, 360);
+
+		Super.Tick();
 	}
 }
