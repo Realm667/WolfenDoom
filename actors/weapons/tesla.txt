@@ -61,7 +61,7 @@ ACTOR TeslaCannon : NaziAstroWeapon
 		PULS E 0 A_PlaySound("tesla/fire", CHAN_WEAPON, 2.0, TRUE)
 		PULS EF 1
 		PULS F 0 A_SetBlend("Purple",0.050,5)
-		PULS GF 1 BRIGHT {
+		PULS GF 1 {
 			A_GunFlash("Flash");
 			A_SpawnLightning("LightningBeamPri");
 		}
@@ -97,12 +97,12 @@ ACTOR TeslaCannon : NaziAstroWeapon
 		PULS E 0 A_JumpIfInventory("TeslaLoaded",1,1)
 		Goto Dryfire
 		PULS E 0 A_SetBlend("Purple",0.050,5)
-		PULS EFG 1 Bright {
+		PULS EFG 1 {
 			A_GunFlash("Flash");
 			A_SpawnLightning("LightningBeamAlt");
 			TakeInventory("TeslaLoaded", 1);
 		}
-		PULS FGE 1 Bright { 
+		PULS FGE 1 { 
 			A_GunFlash("Flash");
 			A_SpawnLightning("LightningBeamAlt");
 		}
@@ -113,7 +113,7 @@ ACTOR TeslaCannon : NaziAstroWeapon
 		PULS E 0 A_JumpIfInventory("TeslaLoaded",1,1)
 		Goto Dryfire
 		PULS E 0 A_SetBlend("Purple",0.050,5)
-		PULS FGE 1 Bright {
+		PULS FGE 1 {
 			A_GunFlash("Flash");
 			A_SpawnLightning("LightningBeamAlt");
 			TakeInventory("TeslaLoaded", 1);
@@ -175,7 +175,7 @@ ACTOR TeslaCannon : NaziAstroWeapon
 		TNT1 A 2 A_Light1
 		Goto LightDone
 	Spawn:
-		PULS A -1 LIGHT(BOAPKEY)
+		PULS A -1 LIGHT(TESLAW)
 		Stop
 	}
 }

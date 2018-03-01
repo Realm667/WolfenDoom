@@ -1,5 +1,4 @@
-/// Lots of bits and pieces from D4D's Lightning Gun used originally...  Significantly modified by AFADoomer.
-
+// Lots of bits and pieces from D4D's Lightning Gun used originally... Significantly modified by AFADoomer.
 Class LightningPuff : Actor
 {
 	Default 
@@ -23,7 +22,7 @@ Class LightningPuff : Actor
 	States
 	{
 		Spawn:
-			TNT1 A 1;
+			TNT1 A 10;
 			Stop;
 	}
 }
@@ -288,7 +287,6 @@ Class LightningBeamAlt : LightningBeam
 	}
 }
 
-
 Class LightningBeamArc : LightningBeamPri
 {
 	Default 
@@ -331,7 +329,6 @@ Class MovingTrailBeam : Actor
 	Default
 	{
 		+NOINTERACTION
-		+BRIGHT
 		Height 1;
 		Radius 0;
 		RenderStyle "Add";
@@ -344,7 +341,7 @@ Class MovingTrailBeam : Actor
 	{
 		Spawn:
 			MDLA A 0;
-			MDLA A 1 Bright Light("Lightning") A_FadeOut(0.2);
+			MDLA A 1 LIGHT("Lightning") A_FadeOut(0.2);
 			Loop;
 	}
 
@@ -398,11 +395,11 @@ Class LightningTrailBeamArc : MovingTrailBeam
 	Default
 	{
 		MovingTrailBeam.TrailActor "LightningTrailBeamArc";
-		MovingTrailBeam.Damage 50;
+		MovingTrailBeam.Damage 10;
 	}
 }
 
-class TargetActor : Actor
+Class TargetActor : Actor
 {
 	Vector3 offset;
 
