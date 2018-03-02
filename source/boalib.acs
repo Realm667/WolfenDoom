@@ -868,7 +868,7 @@ Script "Activate" (int lineid, int repairtime)
 		if (repairstate[lineid] == 0) { ACS_NamedExecute("HintMessage", 0, "HINTTEXTHOLD"); } // Show hint message on first use
 
 		repairstate[lineid]++; // Increment the repair amount
-		SetUserVariable(0, "crosshair", 80 + 9 * repairstate[lineid] / (repairtime * 35));  // Show progress by changing the crosshair based on hold time
+		SetUserVariable(0, "crosshair", 80 + 11 * repairstate[lineid] / (repairtime * 35));  // Show progress by changing the crosshair based on hold time
 	}
 	else // If it's fully repaired...
 	{

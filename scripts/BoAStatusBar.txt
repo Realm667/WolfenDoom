@@ -718,14 +718,14 @@ class BoAStatusBar : BaseStatusBar
 			CPlayer.health <= 0
 		) { return; }
 
-		if (crosshair) // Integer values take precedence over class names
+		if (crosshair) // Integer values take precedence over class names (mostly for setting status via ACS)
 		{
-			CrosshairImage = TexMan.CheckForTexture("XHAIRB" .. crosshair, TexMan.Type_Any);
-
 			if (crosshair >= 80 && crosshair <= 90)
 			{
 				clr = 0xDEDEDE;  // If it's a status indicator, make it white/grey
 			}
+
+			CrosshairImage = TexMan.CheckForTexture("XHAIR" .. crosshair, TexMan.Type_Any);
 
 			dimensions = TexMan.GetScaledSize(CrosshairImage);
 
@@ -741,7 +741,8 @@ class BoAStatusBar : BaseStatusBar
 				dimensions.y = 64;
 			}
 		}
-		else if (crosshairstring)
+
+		if (!CrosshairImage && crosshairstring)
 		{
 			let def = GetDefaultByType(crosshairstring);
 
