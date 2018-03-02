@@ -336,6 +336,8 @@ class GhostGate : GateKeeper
 		//$Arg0 "Amount of 'Soul' item required"
 		//$Arg0Default 25;
 		//$Arg0Tooltip "How many of the 'Soul' inventory item must be carried by the player to pass this gate.\nCan also be set via the 'user_keyamount' UDMF property."
+		//$Arg1 "Script number to run when passed"
+		//$Arg1Tooltip "What script to call when the gate is passed.  Zero means no script. \nFirst argument passed to the script will be this actor's TID."
 
 		GateKeeper.Key "Soul";
 		GateKeeper.KeyAmount 25;
@@ -574,6 +576,11 @@ class GhostGate : GateKeeper
 		if (alpha <= 0.05 && !user_keyamount)
 		{
 			A_PlaySound(opensound, CHAN_6, 0.25 * scale.x, false, ATTN_NORM);
+
+			if (args[1] > 0)
+			{
+				Level.ExecuteSpecial(80, p, null, false, args[1], 0, tid, args[2], args[3]);
+			}
 				
 			if (swirl) { swirl.Destroy(); }
 		}
@@ -668,7 +675,7 @@ class GhostGate : GateKeeper
 			}
 			else
 			{
-				numbers.Delete(i);
+				peers.Delete(i);
 			}
 		}
 

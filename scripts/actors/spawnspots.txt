@@ -438,3 +438,59 @@ class BarrelSpawner : ExplosiveBarrel
 		return damageamt;
 	}
 }
+
+// Generic actor that can be inherited from to give an actor editor-configurable item drop
+// Used by Egyptian vases
+class DestructionSpawner : Actor
+{
+	Class<Actor> user_spawntype; 
+	Actor drop;
+
+	Default
+	{
+		//$Arg0 "Thing ID to spawn"
+		//$Arg0Str "Actor class to spawn"
+		//$Arg0ToolTip "What actor to spawn.  Numeric values set Thing ID, and string values set spawn class.  \nDefaults to nothing spawned, beyond any defined DropItems."
+	}
+
+	override void PostBeginPlay()
+	{
+		// Setting a special on the actor overrides the use of args[0] to specify the drop item
+		if (!special && !user_spawntype)
+		{
+			user_spawntype = GetSpawnableType(args[0]);
+		}
+
+		Super.PostBeginPlay();
+	}
+
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags = 0, double angle = 0)
+	{
+		int damageamt = Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
+
+		if (health <= 0)
+		{
+			if (user_spawntype && !drop)
+			{
+				drop = Spawn(user_spawntype, pos);
+
+				if (drop)
+				{
+					drop.SetOrigin(pos + (0, 0, 10), false);
+					drop.angle = angle;
+					drop.VelFromAngle(5, inflictor.AngleTo(self));
+					drop.vel.z = 1;
+					drop.vel += vel;
+					drop.bNoGravity = false;
+					drop.ClearCounters();
+				}
+			}
+			else
+			{
+				A_NoBlocking(); // Unset blocking and drop the actor's defined DropItems
+			}
+		}
+
+		return damageamt;
+	}
+}
