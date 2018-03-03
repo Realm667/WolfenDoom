@@ -1,19 +1,22 @@
 // Lots of bits and pieces from D4D's Lightning Gun used originally... Significantly modified by AFADoomer.
+
+const BEAM_FLAGS = SXF_NOCHECKPOSITION | SXF_TRANSFERSCALE | SXF_TRANSFERPITCH | SXF_TRANSFERPOINTERS;
+
 Class LightningPuff : Actor
 {
 	Default 
 	{
-		Projectile;
-		+NOINTERACTION
-		+NOTONAUTOMAP
-		+ALWAYSPUFF
-		+PUFFONACTORS
-		+PUFFGETSOWNER
-		+BLOODLESSIMPACT
-		+SKYEXPLODE
-		+DONTSPLASH
 		Radius 0;
 		Height 0;
+		Projectile;
+		+ALWAYSPUFF
+		+BLOODLESSIMPACT
+		+DONTSPLASH
+		+NOINTERACTION
+		+NOTONAUTOMAP
+		+PUFFGETSOWNER
+		+PUFFONACTORS
+		+SKYEXPLODE
 		RenderStyle "None";
 		Decal "RailScorchLower";
 		DamageType "Electric";
@@ -32,54 +35,54 @@ Class LightningBeam : Actor
 {
 	Vector3 AimPoint;
 
-	double MaxDistance;
-	double AngleRandom;
-	double PitchRandom;
-	int ChokeMin;
-	int ChokeMax;
-	double StepDistance;
-	double CurDistance;
-	double MinScale;
-	double MaxScale;
-	int Choke;
-	String trail;
-	double stepfactor;
-	Actor origin;
-	int child;
-	double splitamt;
-	double faceamt;
-	bool targets;
 	Actor closest;
+	Actor origin;
+	String trail;
+	bool targets;
+	double AngleRandom;
+	double CurDistance;
+	double MaxDistance;
+	double MaxScale;
+	double MinScale;
+	double PitchRandom;
+	double StepDistance;
+	double faceamt;
+	double splitamt;
+	double stepfactor;
+	int Choke;
+	int ChokeMax;
+	int ChokeMin;
+	int child;
 
-	Property MaxDistance:MaxDistance;
-	Property AngleRandom:AngleRandom;
-	Property PitchRandom:PitchRandom;
-	Property ChokeMin:ChokeMin;
-	Property ChokeMax:ChokeMax;
-	Property TrailActor:trail;
-	Property StepFactor:stepfactor;
-	Property MinScale:MinScale;
-	Property MaxScale:MaxScale;
 	Property AllowSplit:splitamt;
+	Property AngleRandom:AngleRandom;
+	Property ChokeMax:ChokeMax;
+	Property ChokeMin:ChokeMin;
 	Property FaceAmount:faceamt;
+	Property MaxDistance:MaxDistance;
+	Property MaxScale:MaxScale;
+	Property MinScale:MinScale;
+	Property PitchRandom:PitchRandom;
+	Property StepFactor:stepfactor;
+	Property TrailActor:trail;
 	Property targets:targets;
 
 	Default 
 	{
-		+NOINTERACTION
 		+NOBLOCKMAP
+		+NOINTERACTION
 		RenderStyle "None";
 
-		LightningBeam.MaxDistance 1024;
 		LightningBeam.AngleRandom 5;
-		LightningBeam.PitchRandom 5;
-		LightningBeam.ChokeMin 1;
 		LightningBeam.ChokeMax 3;
-		LightningBeam.TrailActor "LightningTrailBeamArc";
-		LightningBeam.StepFactor 1;
-		LightningBeam.MinScale 0.0125;
-		LightningBeam.MaxScale 0.03;
+		LightningBeam.ChokeMin 1;
 		LightningBeam.FaceAmount 15;
+		LightningBeam.MaxDistance 1024;
+		LightningBeam.MaxScale 0.03;
+		LightningBeam.MinScale 0.0125;
+		LightningBeam.PitchRandom 5;
+		LightningBeam.StepFactor 1;
+		LightningBeam.TrailActor "LightningTrailBeamArc";
 	}
 
 	States
@@ -163,7 +166,7 @@ Class LightningBeam : Actor
 				// Spawn a split from the main beam
 				if (splitamt > 0 && scale.x > 0.001 && Random[split]() < 10 * splitamt * (child + 1) && child < ChokeMax + 2)
 				{
-					[spawned, t] = A_SpawnItemEx(self.GetClass(), cos(pitch), 0, -sin(pitch), 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERSCALE | SXF_TRANSFERPITCH | SXF_TRANSFERPOINTERS);
+					[spawned, t] = A_SpawnItemEx(self.GetClass(), cos(pitch), 0, -sin(pitch), 0, 0, 0, 0, BEAM_FLAGS);
 					if (spawned) {
 						t.master = master;
 						t.pitch = FRandom(pitch - PitchRandom, pitch + PitchRandom);
@@ -186,7 +189,7 @@ Class LightningBeam : Actor
 			// beam is being centered so we have to take that into account
 			// and spawn it FORWARD based on half the beam's length.
 			// Then move forward by a beam's length and repeat until done.
-			[spawned, t] = A_SpawnItemEx(trail, cos(pitch) * (StepDistance / 2.0), 0, -sin(pitch) * (StepDistance / 2.0), 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERSCALE | SXF_TRANSFERPITCH | SXF_TRANSFERPOINTERS);
+			[spawned, t] = A_SpawnItemEx(trail, cos(pitch) * (StepDistance / 2.0), 0, -sin(pitch) * (StepDistance / 2.0), 0, 0, 0, 0, BEAM_FLAGS);
 			if (spawned)
 			{
 				if (t.waterlevel > 0)
@@ -199,7 +202,7 @@ Class LightningBeam : Actor
 						PitchRandom = 0;
 						AngleRandom = 45;
 
-						[spawned, t] = A_SpawnItemEx(trail, cos(pitch) * (StepDistance / 2.0), 0, -sin(pitch) * (StepDistance / 2.0), 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERSCALE | SXF_TRANSFERPITCH | SXF_TRANSFERPOINTERS);
+						[spawned, t] = A_SpawnItemEx(trail, cos(pitch) * (StepDistance / 2.0), 0, -sin(pitch) * (StepDistance / 2.0), 0, 0, 0, 0, BEAM_FLAGS);
 					}
 
 					if (t) { ElectrifySector(t.CurSector, t.Damage); }
@@ -255,16 +258,16 @@ Class LightningBeamPri : LightningBeam
 {
 	Default 
 	{
-		LightningBeam.MaxDistance 512;
-		LightningBeam.TrailActor "LightningTrailBeam";
 		LightningBeam.AngleRandom 4;
-		LightningBeam.PitchRandom 4;
-		LightningBeam.ChokeMin 2;
 		LightningBeam.ChokeMax 3;
-		LightningBeam.StepFactor 2.5;
-		LightningBeam.MinScale 0.025;
-		LightningBeam.MaxScale 0.15;
+		LightningBeam.ChokeMin 2;
 		LightningBeam.FaceAmount 5;
+		LightningBeam.MaxDistance 512;
+		LightningBeam.MaxScale 0.15;
+		LightningBeam.MinScale 0.025;
+		LightningBeam.PitchRandom 4;
+		LightningBeam.StepFactor 2.5;
+		LightningBeam.TrailActor "LightningTrailBeam";
 	}
 }
 
@@ -272,18 +275,18 @@ Class LightningBeamAlt : LightningBeam
 {
 	Default 
 	{
-		LightningBeam.MaxDistance 256;
-		LightningBeam.TrailActor "LightningTrailBeamAlt";
-		LightningBeam.AngleRandom 20;
-		LightningBeam.PitchRandom 15;
-		LightningBeam.ChokeMin 2;
-		LightningBeam.ChokeMax 4;
-		LightningBeam.StepFactor 2.5;
-		LightningBeam.MinScale 0.025;
-		LightningBeam.MaxScale 0.15;
 		LightningBeam.AllowSplit 2.5;
+		LightningBeam.AngleRandom 20;
+		LightningBeam.ChokeMax 4;
+		LightningBeam.ChokeMin 2;
 		LightningBeam.FaceAmount 10;
+		LightningBeam.MaxDistance 256;
+		LightningBeam.MaxScale 0.15;
+		LightningBeam.MinScale 0.025;
+		LightningBeam.PitchRandom 15;
+		LightningBeam.StepFactor 2.5;
 		LightningBeam.Targets True;
+		LightningBeam.TrailActor "LightningTrailBeamAlt";
 	}
 }
 
@@ -300,41 +303,41 @@ Class LightningBeamPillar : LightningBeam
 {
 	Default 
 	{
-		LightningBeam.MaxDistance 256;
-		LightningBeam.TrailActor "LightningTrailBeamArc";
-		LightningBeam.AngleRandom 15;
-		LightningBeam.PitchRandom 15;
-		LightningBeam.ChokeMin 5;
-		LightningBeam.ChokeMax 5;
-		LightningBeam.StepFactor 1.5;
-		LightningBeam.MinScale 0.025;
-		LightningBeam.MaxScale 0.10;
 		LightningBeam.AllowSplit 0.5;
+		LightningBeam.AngleRandom 15;
+		LightningBeam.ChokeMax 5;
+		LightningBeam.ChokeMin 5;
 		LightningBeam.FaceAmount 0;
+		LightningBeam.MaxDistance 256;
+		LightningBeam.MaxScale 0.10;
+		LightningBeam.MinScale 0.025;
+		LightningBeam.PitchRandom 15;
+		LightningBeam.StepFactor 1.5;
+		LightningBeam.TrailActor "LightningTrailBeamArc";
 	}
 }
 
 // Base class for the beam segments
 Class MovingTrailBeam : Actor 
 {
-	String trail;
 	String puff;
+	String trail;
 	Vector3 beamoffset;
 	int damage;
 
-	Property TrailActor:trail;
-	Property PuffActor:puff;
 	Property Damage:damage;
+	Property PuffActor:puff;
+	Property TrailActor:trail;
 
 	Default
 	{
-		+NOINTERACTION
 		Height 1;
 		Radius 0;
+		+NOINTERACTION
 		RenderStyle "Add";
+		MovingTrailBeam.Damage 0;
 		MovingTrailBeam.TrailActor "MovingTrailBeam";
 		MovingTrailBeam.PuffActor "LightningPuff";
-		MovingTrailBeam.Damage 0;
 	}
 
 	States
@@ -376,8 +379,8 @@ Class LightningTrailBeam : MovingTrailBeam
 {
 	Default
 	{
-		MovingTrailBeam.TrailActor "LightningTrailBeam";
 		MovingTrailBeam.Damage 2;
+		MovingTrailBeam.TrailActor "LightningTrailBeam";
 	}
 }
 
@@ -385,8 +388,8 @@ Class LightningTrailBeamAlt : MovingTrailBeam
 {
 	Default
 	{
-		MovingTrailBeam.TrailActor "LightningTrailBeamAlt";
 		MovingTrailBeam.Damage 2;
+		MovingTrailBeam.TrailActor "LightningTrailBeamAlt";
 	}
 }
 
@@ -394,8 +397,8 @@ Class LightningTrailBeamArc : MovingTrailBeam
 {
 	Default
 	{
+		MovingTrailBeam.Damage 50;
 		MovingTrailBeam.TrailActor "LightningTrailBeamArc";
-		MovingTrailBeam.Damage 10;
 	}
 }
 
@@ -405,9 +408,9 @@ Class TargetActor : Actor
 
 	Default
 	{
-		+NOINTERACTION;
 		Height 0;
 		Radius 0;
+		+NOINTERACTION;
 	}
 
 	States

@@ -2,6 +2,8 @@
 //MECHAS//
 //////////
 
+const int MECHA_FLAGS = CPXF_SETTARGET | CPXF_NOZ | CPXF_EXACT;
+
 ACTOR MechaNaziStanding1 : CTurret_Afrika
 {
 	//$Category Monsters (Wolf3D)/Mechas
@@ -16,7 +18,7 @@ ACTOR MechaNaziStanding1 : CTurret_Afrika
 	Spawn:
 		MCST A 1
 	Active:
-		MCST A 1 A_CheckProximity("SpawnEnemy", "WGuard", 128, 1, CPXF_SETTARGET | CPXF_NOZ | CPXF_EXACT)
+		MCST A 1 A_CheckProximity("SpawnEnemy", "WGuard", 128, 1, MECHA_FLAGS)
 		Loop
 	Inactive:
 		"####" A 0 //bland
@@ -38,7 +40,7 @@ ACTOR MechaNaziStanding2 : MechaNaziStanding1
 	Spawn:
 		MCST B 1
 	Active:
-		MCST B 1 A_CheckProximity("SpawnEnemy", "Guard", 128, 1, CPXF_SETTARGET | CPXF_NOZ | CPXF_EXACT)
+		MCST B 1 A_CheckProximity("SpawnEnemy", "Guard", 128, 1, MECHA_FLAGS)
 		Loop
 	Inactive:
 		"####" B 0 //bland
@@ -60,7 +62,7 @@ ACTOR MechaNaziStanding3 : MechaNaziStanding1
 	Spawn:
 		MCST C 1
 	Active:
-		MCST C 1 A_CheckProximity("SpawnEnemy", "ArcticRifleGuard", 128, 1, CPXF_SETTARGET | CPXF_NOZ | CPXF_EXACT)
+		MCST C 1 A_CheckProximity("SpawnEnemy", "ArcticRifleGuard", 128, 1, MECHA_FLAGS)
 		Loop
 	Inactive:
 		"####" C 0 //bland
@@ -82,7 +84,7 @@ ACTOR MechaNaziStanding4 : MechaNaziStanding1
 	Spawn:
 		MCST D 1
 	Active:
-		MCST D 1 A_CheckProximity("SpawnEnemy", "SSGuard", 128, 1, CPXF_SETTARGET | CPXF_NOZ | CPXF_EXACT)
+		MCST D 1 A_CheckProximity("SpawnEnemy", "SSGuard", 128, 1, MECHA_FLAGS)
 		Loop
 	Inactive:
 		"####" D 0 //bland

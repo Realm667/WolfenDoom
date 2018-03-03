@@ -10,7 +10,6 @@ ACTOR SneakableSSMP40Guard : SSMP40Guard
 	//$Title SS Guard (MP40, sneak-friendly)
 	//$Color 4
 	//$Sprite SSMGA1
-
 	Nazi.Sneakable
 }
 
@@ -37,10 +36,9 @@ ACTOR MGTurretStealth : MGTurret
 	//$Category Monsters (Wolf3D)/Sneak-Friendly
 	//$Title Automatic Turret (stealth, hidden, nokillcount)
 	//$Color 4
+	Nazi.Sneakable
 	Mass 0xFFFFFFF
 	PainChance 255
-	SeeSound ""
-	PainSound "metal/pain"
 	-COUNTKILL
 	-NOPAIN
 	+ALLOWPAIN
@@ -49,8 +47,8 @@ ACTOR MGTurretStealth : MGTurret
 	+NOBLOOD
 	+NOGRAVITY
 	RenderStyle "None"
-
-	Nazi.Sneakable
+	PainSound "metal/pain"
+	SeeSound ""
 
 	States
 	{
@@ -87,7 +85,6 @@ ACTOR SneakableSSGuard : SSGuard
 	//$Title SS Guard (Pistol, sneak-friendly)
 	//$Color 4
 	//$Sprite SSPGA1
-
 	Nazi.Sneakable
 }
 
@@ -97,7 +94,6 @@ ACTOR SneakableSSOfficer : SSOfficer
 	//$Title SS Officer (sneak-friendly)
 	//$Color 4
 	//$Sprite SSOFA1
-
 	Nazi.Sneakable
 }
 
@@ -107,7 +103,6 @@ ACTOR SneakableWaffenSS : WaffenSS
 	//$Title Waffen SS (sneak-friendly)
 	//$Color 4
 	//$Sprite WAFFA1
-
 	Nazi.Sneakable
 }
 
@@ -117,7 +112,6 @@ ACTOR SneakableMP40Guard : MP40Guard
 	//$Title Afrika Korps Guard (MP40, sneak-friendly)
 	//$Color 4
 	//$Sprite MGRDA1
-
 	Nazi.Sneakable
 }
 
@@ -127,7 +121,6 @@ ACTOR SneakableGuard : Guard
 	//$Title Afrika Korps Guard (Pistol, sneak-friendly)
 	//$Color 4
 	//$Sprite GARDA1
-
 	Nazi.Sneakable
 }
 
@@ -137,7 +130,6 @@ ACTOR SneakableOfficer : Officer
 	//$Title Afrika Korps Officer (sneak-friendly)
 	//$Color 4
 	//$Sprite OFFIA1
-
 	Nazi.Sneakable
 }
 
@@ -147,7 +139,6 @@ ACTOR SneakableWMP40Guard : WMP40Guard
 	//$Title Wehrmacht Guard (MP40, sneak-friendly)
 	//$Color 4
 	//$Sprite MGR2A1
-
 	Nazi.Sneakable
 }
 
@@ -157,7 +148,6 @@ ACTOR SneakableWGuard : WGuard
 	//$Title Wehrmacht Guard (Pistol, sneak-friendly)
 	//$Color 4
 	//$Sprite GRD2A1
-
 	Nazi.Sneakable
 }
 
@@ -167,7 +157,6 @@ ACTOR SneakableWOfficer : WOfficer
 	//$Title Wehrmacht Officer (sneak-friendly)
 	//$Color 4
 	//$Sprite OFR2A1
-
 	Nazi.Sneakable
 }
 
@@ -177,7 +166,6 @@ ACTOR SneakableWMP40GuardSleep : WMP40GuardSleep
 	//$Title Wehrmacht Guard, Sleeping (MP40, sneak-friendly)
 	//$Color 4
 	//$Sprite MGR2O0
-
 	Nazi.Sneakable
 	Dropitem ""
 }
@@ -188,7 +176,6 @@ Actor SneakableGestapo : Gestapo
 	//$Title Gestapo Officer (sneak-friendly)
 	//$Color 4
 	//$Sprite GSAPN1
-
 	Nazi.Sneakable
 	Nazi.PerceptionTime 50 // About 1,3 seconds
 	Nazi.PerceptionFOV 360 // Relatively wide view
@@ -200,7 +187,6 @@ Actor SneakableScientist : Scientist
 	//$Title Scientist (young) (sneak-friendly)
 	//$Color 4
 	//$Sprite SCN2N1
-
 	Nazi.Sneakable
 }
 
@@ -210,7 +196,6 @@ Actor SneakableScientist2 : Scientist2
 	//$Title Scientist (old) (sneak-friendly)
 	//$Color 4
 	//$Sprite SCNTN1
-
 	Nazi.Sneakable
 }
 
@@ -220,7 +205,6 @@ Actor SneakableMechanic : Mechanic
 	//$Title Mechanic (sneak-friendly)
 	//$Color 4
 	//$Sprite MNICN1
-
 	Nazi.Sneakable
 }
 
@@ -230,7 +214,6 @@ Actor SneakableWRifleGuard : WRifleGuard
 	//$Title Wehrmacht Guard (Rifle, sneak-friendly)
 	//$Color 4
 	//$Sprite RGR2N1
-
 	Nazi.Sneakable
 }
 
@@ -240,7 +223,6 @@ Actor SneakableMarineGeneral : MarineGeneral
 	//$Title General Seeteufel (Boss, sneak-friendly)
 	//$Color 4
 	//$Sprite SEETA0
-
 	Nazi.Sneakable
 }
 
@@ -255,10 +237,9 @@ ACTOR SneakableWSniper : WSniper
 	//$Title Wehrmacht Sniper (sneak-friendly)
 	//$Color 4
 	//$Sprite SNICA0
-
-	+LOOKALLAROUND
 	Nazi.Sneakable
 	Nazi.SneakableCloseSightRadius 144
+	+LOOKALLAROUND
 
 	States
 	{

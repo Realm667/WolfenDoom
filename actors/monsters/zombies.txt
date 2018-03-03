@@ -3,6 +3,7 @@ ACTOR ZombieKazi : ZombieStandard
 	//$Category Monsters (Wolf3D)/Occult
 	//$Title ZombieKazi (Wehrmacht)
 	//$Color 4
+	Base.LightThreshold 135
 	Health 100
 	Speed 8
 	+NOVERTICALMELEERANGE
@@ -10,7 +11,6 @@ ACTOR ZombieKazi : ZombieStandard
 	DropItem "9mmAmmo" 64
 	DropItem "GrenadePickup" 16
 	DropItem "Soul", 64, 1
-	Base.LightThreshold 135
 	States
 	{
 	Spawn:
@@ -31,6 +31,7 @@ ACTOR ZombieKazi : ZombieStandard
 		Goto See
 	XDeath: //what a fall through :P
 	Death.Fire:
+	Death.Electric:
 	Disintegrate:
 	Death:
 		"####" F 5 
@@ -91,15 +92,15 @@ ACTOR ZombieBrain : ZombieStandard
 	//$Category Monsters (Wolf3D)/Occult
 	//$Title Zombie Brain Eater (Wehrmacht)
 	//$Color 4
+	Base.NoMedicHeal
+	Base.LightThreshold 135
+	Nazi.ZombieVariant "ZombieBrain"
 	Health 80
 	Speed 2
 	+QUICKTORETALIATE
-	Base.NoMedicHeal
-	Nazi.ZombieVariant "ZombieBrain"
 	Obituary "$NAZOBITE"
 	DropItem "9mmAmmo" 32
 	DropItem "Soul", 64, 1
-	Base.LightThreshold 135
 	States
 	{
 	Spawn:
@@ -145,8 +146,8 @@ ACTOR ZombieBrain : ZombieStandard
 ACTOR AKZombieBrain : ZombieBrain //slower
 {
 	//$Title Zombie Brain Eater (Afrika Korps)
-	-QUICKTORETALIATE
 	Nazi.ZombieVariant "AKZombieBrain"
+	-QUICKTORETALIATE
 	States
 	{
 	Spawn:
@@ -162,8 +163,8 @@ ACTOR AKZombieBrain : ZombieBrain //slower
 ACTOR SSZombieBrain : ZombieBrain //faster
 {
 	//$Title Zombie Brain Eater (SS)
-	Speed 4
 	Nazi.ZombieVariant "SSZombieBrain"
+	Speed 4
 	States
 	{
 	Spawn:
@@ -183,9 +184,9 @@ ACTOR SSZombieBrain : ZombieBrain //faster
 ACTOR ZombieOfficer : ZombieBrain
 {
 	//$Title Zombie Officer (Wehrmacht)
+	Nazi.ZombieVariant "ZombieOfficer"
 	Speed 3
 	-QUICKTORETALIATE
-	Nazi.ZombieVariant "ZombieOfficer"
 	DropItem "MP40" 192
 	DropItem "9mmAmmo" 32
 	DropItem "Soul", 64, 1
@@ -200,75 +201,75 @@ ACTOR ZombieOfficer : ZombieBrain
 		"####" E 12 A_FaceTarget
 		"####" H 0 A_PlaySound("nazi/stg44", CHAN_WEAPON, frandom (0.6,0.9), FALSE, ATTN_NORM)
 		"####" H 8 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",30,6,30,CMF_AIMDIRECTION)
-		"####" H 0 A_GiveInventory("WaffenSSCounter", 1) //ozy81
+		"####" H 0 A_GiveInventory("WaffenSSCounter", 1)
 		"####" H 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" H 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload") //ozy81
+		"####" H 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload")
 		"####" H 0 A_PlaySound("nazi/stg44", CHAN_WEAPON, frandom (0.6,0.9), FALSE, ATTN_NORM)
 		"####" H 8 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",30,4,15,CMF_AIMDIRECTION)
-		"####" H 0 A_GiveInventory("WaffenSSCounter", 1) //ozy81
+		"####" H 0 A_GiveInventory("WaffenSSCounter", 1)
 		"####" H 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" H 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload") //ozy81
+		"####" H 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload")
 		"####" H 0 A_PlaySound("nazi/stg44", CHAN_WEAPON, frandom (0.6,0.9), FALSE, ATTN_NORM)
 		"####" H 8 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",30,2,0)
-		"####" H 0 A_GiveInventory("WaffenSSCounter", 1) //ozy81
+		"####" H 0 A_GiveInventory("WaffenSSCounter", 1)
 		"####" H 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" H 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload") //ozy81
+		"####" H 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload")
 		"####" E 4 A_FaceTarget
 		Goto See
 	Missile:
 		"####" E 10 A_FaceTarget
 		"####" F 0 A_PlaySound("nazi/stg44", CHAN_WEAPON, frandom (0.6,0.9), FALSE, ATTN_NORM)
 		"####" F 4 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",30,18,90,CMF_AIMDIRECTION)
-		"####" F 0 A_GiveInventory("WaffenSSCounter", 1) //ozy81
+		"####" F 0 A_GiveInventory("WaffenSSCounter", 1)
 		"####" F 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" F 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload") //ozy81
+		"####" F 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload")
 		"####" F 0 A_PlaySound("nazi/stg44", CHAN_WEAPON, frandom (0.6,0.9), FALSE, ATTN_NORM)
 		"####" F 4 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",30,16,80,CMF_AIMDIRECTION)
-		"####" F 0 A_GiveInventory("WaffenSSCounter", 1) //ozy81
+		"####" F 0 A_GiveInventory("WaffenSSCounter", 1)
 		"####" F 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" F 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload") //ozy81
+		"####" F 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload")
 		"####" F 0 A_PlaySound("nazi/stg44", CHAN_WEAPON, frandom (0.6,0.9), FALSE, ATTN_NORM)
 		"####" F 4 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",30,14,70,CMF_AIMDIRECTION)
-		"####" F 0 A_GiveInventory("WaffenSSCounter", 1) //ozy81
+		"####" F 0 A_GiveInventory("WaffenSSCounter", 1)
 		"####" F 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" F 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload") //ozy81
+		"####" F 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload")
 		"####" G 0 A_PlaySound("nazi/stg44", CHAN_WEAPON, frandom (0.6,0.9), FALSE, ATTN_NORM)
 		"####" G 4 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",30,12,60,CMF_AIMDIRECTION)
-		"####" G 0 A_GiveInventory("WaffenSSCounter", 1) //ozy81
+		"####" G 0 A_GiveInventory("WaffenSSCounter", 1)
 		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" G 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload") //ozy81
+		"####" G 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload")
 		"####" G 0 A_PlaySound("nazi/stg44", CHAN_WEAPON, frandom (0.6,0.9), FALSE, ATTN_NORM)
 		"####" G 4 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",30,10,50,CMF_AIMDIRECTION)
-		"####" G 0 A_GiveInventory("WaffenSSCounter", 1) //ozy81
+		"####" G 0 A_GiveInventory("WaffenSSCounter", 1)
 		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" G 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload") //ozy81
+		"####" G 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload")
 		"####" G 0 A_PlaySound("nazi/stg44", CHAN_WEAPON, frandom (0.6,0.9), FALSE, ATTN_NORM)
 		"####" G 4 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",30,8,40,CMF_AIMDIRECTION)
-		"####" G 0 A_GiveInventory("WaffenSSCounter", 1) //ozy81
+		"####" G 0 A_GiveInventory("WaffenSSCounter", 1)
 		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" G 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload") //ozy81
+		"####" G 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload")
 		"####" H 0 A_PlaySound("nazi/stg44", CHAN_WEAPON, frandom (0.6,0.9), FALSE, ATTN_NORM)
 		"####" H 4 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",30,6,30,CMF_AIMDIRECTION)
-		"####" H 0 A_GiveInventory("WaffenSSCounter", 1) //ozy81
+		"####" H 0 A_GiveInventory("WaffenSSCounter", 1)
 		"####" H 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" H 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload") //ozy81
+		"####" H 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload")
 		"####" H 0 A_PlaySound("nazi/stg44", CHAN_WEAPON, frandom (0.6,0.9), FALSE, ATTN_NORM)
 		"####" H 4 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",30,4,15,CMF_AIMDIRECTION)
-		"####" H 0 A_GiveInventory("WaffenSSCounter", 1) //ozy81
+		"####" H 0 A_GiveInventory("WaffenSSCounter", 1)
 		"####" H 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" H 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload") //ozy81
+		"####" H 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload")
 		"####" H 0 A_PlaySound("nazi/stg44", CHAN_WEAPON, frandom (0.6,0.9), FALSE, ATTN_NORM)
 		"####" H 4 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",30,2,0)
-		"####" H 0 A_GiveInventory("WaffenSSCounter", 1) //ozy81
+		"####" H 0 A_GiveInventory("WaffenSSCounter", 1)
 		"####" H 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" H 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload") //ozy81
+		"####" H 0 A_JumpIfInventory("WaffenSSCounter", 40, "Reload")
 		"####" E 8 A_MonsterRefire(10,"See")
 		"####" E 0 A_FaceTarget
 		Goto Missile+2
 	Reload:
 		"####" E 0 A_ChangeFlag("NoPain", 1)
 		"####" E 25 A_PlaySound("sten/reload", CHAN_ITEM, frandom (0.6,0.9), FALSE, ATTN_NORM)
-		"####" E 0 A_TakeInventory("WaffenSSCounter", 40) //ozy81
+		"####" E 0 A_TakeInventory("WaffenSSCounter", 40)
 		"####" E 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 A_ChangeFlag("NoPain", 0)
 		Goto See
@@ -293,8 +294,8 @@ ACTOR ZombieOfficer : ZombieBrain
 ACTOR AKZombieOfficer : ZombieOfficer //slower
 {
 	//$Title Zombie Officer (Afrika Korps)
-	Speed 2
 	Nazi.ZombieVariant "AKZombieOfficer"
+	Speed 2
 	States
 	{
 	Spawn:
@@ -308,8 +309,8 @@ ACTOR AKZombieOfficer : ZombieOfficer //slower
 ACTOR SSZombieOfficer : ZombieOfficer //faster
 {
 	//$Title Zombie Officer (SS)
-	Speed 5
 	Nazi.ZombieVariant "SSZombieOfficer"
+	Speed 5
 	States
 	{
 	Spawn:
@@ -325,6 +326,9 @@ ACTOR ZGermanShepherd : ZombieStandard
 	//$Category Monsters (Wolf3D)/Occult
 	//$Title Zombie German Shepherd
 	//$Color 4
+	Base.LoiterDistance 64
+	Base.NoMedicHeal
+	Nazi.ZombieVariant "ZGermanShepherd"
 	Height 48
 	Health 100
 	Speed 6
@@ -339,9 +343,6 @@ ACTOR ZGermanShepherd : ZombieStandard
 	-CANUSEWALLS
 	-CANPUSHWALLS
 	+NEVERTARGET
-	Base.LoiterDistance 64
-	Base.NoMedicHeal
-	Nazi.ZombieVariant "ZGermanShepherd"
 	DropItem "Soul", 64, 1
 	States
 	{
@@ -386,6 +387,7 @@ ACTOR ZGermanShepherd : ZombieStandard
 		"####" "#" 0 A_Jump(256,"See")
 	XDeath: //what a fall through :P
 	Death.Fire:
+	Death.Electric:
 	Disintegrate:
 	Death:
 		"####" H 8
@@ -405,11 +407,10 @@ ACTOR Camp_PrisonerZombie : ZombieStandard
 	//$Category Monsters (Wolf3D)/Occult
 	//$Title Zombie Prisoner
 	//$Color 4
+	Nazi.ZombieVariant "Camp_PrisonerZombie"
 	Health 30
 	Speed 3
-	Monster
 	BloodType "ZombieBlood"
-	Nazi.ZombieVariant "Camp_PrisonerZombie"
 	DropItem "Soul", 64, 1
 	States
 	{
@@ -449,10 +450,12 @@ ACTOR Camp_PrisonerZombie : ZombieStandard
 	}
 }
 
-ACTOR ZombieGeneral : RocketMan //black blood
+ACTOR ZombieGeneral : RocketMan
 {
 	//$Title General Fettgesicht, Zombiefied (Boss)
 	Base.BossIcon "BOSSICO2"
+	Base.LightThreshold 145
+	Nazi.ZombieVariant "ZombieGeneral"
 	Tag "Undead Fettgesicht"
 	Health 1000
 	Obituary "$ZGENERAL"
@@ -464,8 +467,6 @@ ACTOR ZombieGeneral : RocketMan //black blood
 	DropItem "NebAmmoBox" 128
 	DropItem "NebAmmoBox" 128
 	DropItem "Soul", 192, 5
-	Nazi.ZombieVariant "ZombieGeneral"
-	Base.LightThreshold 145
 	States
 	{
 	Spawn:
@@ -507,10 +508,11 @@ ACTOR ZombieGeneral : RocketMan //black blood
 	}
 }
 
-ACTOR ZombieZyklonstein : RocketMan //zombie blood???
+ACTOR ZombieZyklonstein : RocketMan
 {
 	//$Title Zyklonstein (Boss)
 	Base.BossIcon "BOSSICO2"
+	Base.LightThreshold 150
 	Tag "Zyklonstein"
 	Health 1200
 	Obituary "$ZZYKLON"
@@ -520,7 +522,6 @@ ACTOR ZombieZyklonstein : RocketMan //zombie blood???
 	DropItem "FlameAmmo" 128
 	DropItem "FlameAmmo" 128
 	DropItem "Soul", 192, 10
-	Base.LightThreshold 150
 	States
 	{
 	Spawn:

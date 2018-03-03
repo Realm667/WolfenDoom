@@ -32,13 +32,13 @@ class NaziMedic : NaziStandard
 		//$Category Monsters (Wolf3D)
 		//$Title Nazi Medic
 		//$Color 4
-		+AVOIDMELEE
-		+NEVERTARGET
+		Base.NoMedicHeal;
+		Nazi.Healer HLR_ALLIES;
 		Health 20;
 		Speed 6;
+		+AVOIDMELEE
+		+NEVERTARGET
 		DropItem "NaziMedicBox", 255;
-		Nazi.Healer HLR_ALLIES;
-		Base.NoMedicHeal;
 	}
 
 	States

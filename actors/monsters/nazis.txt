@@ -350,9 +350,9 @@ ACTOR WMP40Guard : MP40Guard
 
 ACTOR WMP40GuardSleep : WMP40Guard
 {
+	//$Title Wehrmacht Guard, Sleeping (MP40)
 	Base.NoMedicHeal
 	Nazi.ZombieVariant ""
-	//$Title Wehrmacht Guard, Sleeping (MP40)
 	States
 	{
 	Spawn:
@@ -2742,8 +2742,8 @@ ACTOR Dummy_Talk1 : Base
 	//$Color 5
 	Radius 8
 	Height 64
-	+SOLID
 	+INVISIBLE
+	+SOLID
 }
 
 ACTOR Dummy_Talk2 : Base
@@ -2753,8 +2753,8 @@ ACTOR Dummy_Talk2 : Base
 	//$Color 5
 	Radius 8
 	Height 64
-	+SOLID
 	+INVISIBLE
+	+SOLID
 }
 
 ACTOR Dummy_Talk3 : Base
@@ -2762,9 +2762,9 @@ ACTOR Dummy_Talk3 : Base
 	//$Category Conversation Stuff (Wolf3D)
 	//$Title Door Messages
 	//$Color 5
+	Base.Shadow 0
 	Radius 8
 	Height 64
-	-ISMONSTER
-	+SOLID
 	+INVISIBLE
+	+SOLID
 }
