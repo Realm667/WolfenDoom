@@ -1,5 +1,4 @@
 // Electrical emitter effects
-
 class ElectricalArc : SwitchableDecoration
 {
 	Class<LightningBeam> beam;
@@ -8,6 +7,9 @@ class ElectricalArc : SwitchableDecoration
 
 	Default
 	{
+		//$Category Hazards (Wolf3D)/ZScript
+		//$Title Electrical Arc
+		//$Color 3
 		+NOGRAVITY
 		ElectricalArc.Beam "LightningBeamArc";
 	}
@@ -41,6 +43,7 @@ class ElectricalPillar : ElectricalArc
 {
 	Default
 	{
+		//$Title Electrical Pillar
 		-NOGRAVITY
 		ElectricalArc.Beam "LightningBeamPillar";
 	}

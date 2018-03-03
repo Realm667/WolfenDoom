@@ -56,7 +56,7 @@ ACTOR BasicGuard : NaziStandard
 
 ACTOR Guard : BasicGuard
 {
-	//$Category Monsters (Wolf3D)
+	//$Category Monsters (Wolf3D)/Afrika Korps
 	//$Title Afrika Korps Guard (Pistol)
 	//$Color 4
 	Nazi.ZombieVariant "AKZombieBrain"
@@ -116,7 +116,9 @@ ACTOR GiantGuard : Guard
 
 ACTOR SSGuard : BasicGuard
 {
+	//$Category Monsters (Wolf3D)/SS
 	//$Title SS Guard (Pistol)
+	//$Color 4
 	Health 40
 	Speed 2.67
 	Obituary "$SSGUARD"
@@ -154,7 +156,9 @@ ACTOR SSGuard : BasicGuard
 
 ACTOR WGuard : BasicGuard
 {
+	//$Category Monsters (Wolf3D)/Wehrmacht
 	//$Title Wehrmacht Guard (Pistol)
+	//$Color 4
 	Health 30
 	Speed 2.5
 	PainChance 185
@@ -304,6 +308,7 @@ ACTOR SSMP40Guard : SSGuard
 
 ACTOR WMP40Guard : MP40Guard
 {
+	//$Category Monsters (Wolf3D)/Wehrmacht
 	//$Title Wehrmacht Guard (MP40)
 	Health 30
 	Speed 2.5
@@ -418,7 +423,9 @@ ACTOR WMP40GuardSleep : WMP40Guard
 
 ACTOR Officer : BasicGuard
 {
+	//$Category Monsters (Wolf3D)/Afrika Korps
 	//$Title Afrika Korps Officer
+	//$Color 4
 	Speed 3.5
 	Obituary "$OFFICER"
 	SeeSound "Nazi4/Sighted"
@@ -469,6 +476,7 @@ ACTOR Officer : BasicGuard
 
 ACTOR SSOfficer : Officer
 {
+	//$Category Monsters (Wolf3D)/SS
 	//$Title SS Officer
 	Health 40
 	Speed 4.5
@@ -524,6 +532,7 @@ ACTOR SSOfficer : Officer
 
 ACTOR WOfficer : Officer
 {
+	//$Category Monsters (Wolf3D)/Wehrmacht
 	//$Title Wehrmacht Officer
 	Health 30
 	Speed 4
@@ -623,6 +632,7 @@ ACTOR RifleGuard : MP40Guard
 
 ACTOR WRifleGuard : RifleGuard
 {
+	//$Category Monsters (Wolf3D)/Wehrmacht
 	//$Title Wehrmacht Guard (Rifle)
 	Health 30
 	Speed 2.5
@@ -663,6 +673,7 @@ ACTOR WRifleGuard : RifleGuard
 
 ACTOR ArcticRifleGuard : RifleGuard
 {
+	//$Category Monsters (Wolf3D)/Arctic
 	//$Title Arctic Guard (Rifle)
 	Health 50
 	Speed 2
@@ -746,6 +757,7 @@ ACTOR WaffenSS : SSMP40Guard
 
 ACTOR ArcticWaffen : WaffenSS
 {
+	//$Category Monsters (Wolf3D)/Arctic
 	//$Title Waffen Arctic
 	Health 90
 	Obituary "$ARWAFFEN"
@@ -828,7 +840,10 @@ ACTOR Paratrooper : WaffenSS
 
 ACTOR Sniper : BasicGuard
 {
+	//$Category Monsters (Wolf3D)/Afrika Korps
 	//$Title Afrika Korps Sniper
+	//$Color 4
+	Base.NoMedicHeal
 	Health 50
 	Speed 0
 	Mass 1000
@@ -837,7 +852,6 @@ ACTOR Sniper : BasicGuard
 	DropItem "Kar98k" 72
 	DropItem "MauserAmmo" 192 5
 	+LOOKALLAROUND
-	Base.NoMedicHeal
 	States
 	{
 	Spawn:
@@ -883,6 +897,7 @@ ACTOR Sniper : BasicGuard
 
 ACTOR WSniper : Sniper
 {
+	//$Category Monsters (Wolf3D)/Wehrmacht
 	//$Title Wehrmacht Sniper
 	//$Sprite SNICA0
 	States
@@ -895,7 +910,10 @@ ACTOR WSniper : Sniper
 
 ACTOR Sniper_Crouch : BasicGuard
 {
+	//$Category Monsters (Wolf3D)/Afrika Korps
 	//$Title Afrika Korps Sniper (crouch)
+	//$Color 4
+	Base.NoMedicHeal
 	Health 50
 	Speed 0
 	Mass 1000
@@ -905,7 +923,6 @@ ACTOR Sniper_Crouch : BasicGuard
 	DropItem "MauserAmmo" 192 5
 	+DROPOFF
 	+LOOKALLAROUND
-	Base.NoMedicHeal
 	States
 	{
 	Spawn:
@@ -950,6 +967,7 @@ ACTOR Sniper_Crouch : BasicGuard
 
 ACTOR WSniper_Crouch : Sniper_Crouch
 {
+	//$Category Monsters (Wolf3D)/Wehrmacht
 	//$Title Wehrmacht Sniper (crouch)
 	//$Sprite SNICC0
 	States
@@ -962,7 +980,10 @@ ACTOR WSniper_Crouch : Sniper_Crouch
 
 ACTOR ArcticSniper : BasicGuard
 {
+	//$Category Monsters (Wolf3D)/Arctic
 	//$Title Arctic Sniper
+	//$Color 4
+	Base.NoMedicHeal
 	Health 60
 	Speed 0
 	Mass 1000
@@ -971,7 +992,6 @@ ACTOR ArcticSniper : BasicGuard
 	DropItem "Kar98k" 72
 	DropItem "MauserAmmo" 192 5
 	+LOOKALLAROUND
-	Base.NoMedicHeal
 	States
 	{
 	Spawn:
@@ -1017,7 +1037,10 @@ ACTOR ArcticSniper : BasicGuard
 
 ACTOR ArcticSniper_Crouch : BasicGuard
 {
+	//$Category Monsters (Wolf3D)/Arctic
 	//$Title Arctic Sniper (crouch)
+	//$Color 4
+	Base.NoMedicHeal
 	Health 50
 	Speed 0
 	Mass 1000
@@ -1027,7 +1050,6 @@ ACTOR ArcticSniper_Crouch : BasicGuard
 	DropItem "MauserAmmo" 192 5
 	+DROPOFF
 	+LOOKALLAROUND
-	Base.NoMedicHeal
 	States
 	{
 	Spawn:
@@ -1072,6 +1094,7 @@ ACTOR ArcticSniper_Crouch : BasicGuard
 
 ACTOR WGrenadier: Sniper_Crouch
 {
+	//$Category Monsters (Wolf3D)/Wehrmacht
 	//$Title Wehrmacht Grenadier
 	//$Sprite WGRNA0
 	SeeSound "Nazi1/Sighted"
@@ -1138,6 +1161,7 @@ ACTOR WGrenadier: Sniper_Crouch
 
 ACTOR AGrenadier : WGrenadier
 {
+	//$Category Monsters (Wolf3D)/Afrika Korps
 	//$Title Afrika Korps Grenadier
 	//$Sprite AGRNA0
 	States
@@ -1200,6 +1224,7 @@ ACTOR AGrenadier : WGrenadier
 
 ACTOR SGrenadier : WGrenadier
 {
+	//$Category Monsters (Wolf3D)/SS
 	//$Title SS Grenadier
 	//$Sprite SGRNA0
 	States
@@ -1262,13 +1287,15 @@ ACTOR SGrenadier : WGrenadier
 
 ACTOR FlamerSoldier : BasicGuard
 {
+	//$Category Monsters (Wolf3D)/Others
 	//$Title Nazi Flamer (Soldier)
+	//$Color 4
+	Base.NoMedicHeal
 	Health 100
 	Obituary "$FLAMEBOY"
 	DropItem "FlameAmmo" 192
 	DropItem "Pyrolight" 48
 	MaxTargetRange 256
-	Base.NoMedicHeal
 	States
 	{
 	Spawn:
@@ -1313,7 +1340,9 @@ ACTOR FlamerSoldier : BasicGuard
 
 ACTOR Gestapo : BasicGuard
 {
+	//$Category Monsters (Wolf3D)/Others
 	//$Title Gestapo Officer
+	//$Color 4
 	Speed 3.5
 	Health 80
 	Obituary "$GESTAPO"
@@ -1338,11 +1367,13 @@ ACTOR Gestapo : BasicGuard
 
 ACTOR Mechanic : BasicGuard
 {
+	//$Category Monsters (Wolf3D)/Others
 	//$Title Mechanic (Pistol)
+	//$Color 4
+	Base.NoMedicHeal
 	Health 50
 	Speed 2.37
 	Obituary "$MECHANIC"
-	Base.NoMedicHeal
 	States
 	{
 	Spawn:
@@ -1442,16 +1473,15 @@ ACTOR WGuard_Wounded : Nazi //ozy81
 	//$Category Monsters (Wolf3D)/Wounded Soldiers
 	//$Title Wounded Guard (Pistol, Wehrmacht)
 	//$Color 4
+	Base.NoMedicHeal
+	Nazi.ZombieVariant ""
 	Health 5
 	Speed 0
 	Obituary "$WGUARD"
 	MONSTER
-	-ISMONSTER //Avoid NaziMedics resurrections - ozy81
 	-SOLID
 	+FLOORCLIP
 	+LOOKALLAROUND
-	Base.NoMedicHeal
-	Nazi.ZombieVariant ""
 	States
 	{
 	Spawn:
@@ -1804,9 +1834,11 @@ ACTOR WOfficer_Wounded_NoCount : WOfficer_Wounded
 
 ACTOR MiniShip : Nazi
 {
-	//$Category Monsters (Wolf3D)
+	//$Category Monsters (Wolf3D)/Others
 	//$Title Miniship
 	//$Color 4
+	Base.Shadow 0
+	Base.Swimmer
 	Health 375
 	Speed 3.25
 	Mass 2000
@@ -1821,8 +1853,6 @@ ACTOR MiniShip : Nazi
 	BloodType "TankSpark"
 	PainSound "metal/pain"
 	DeathSound "world/barrelboom"
-	Base.Shadow 0  //needed for shadows
-	Base.Swimmer
 	States
 	{
 	Spawn:
@@ -1870,6 +1900,7 @@ ACTOR MiniShip : Nazi
 
 ACTOR MGTurret : MiniShip
 {
+	//$Category Monsters (Wolf3D)/Defensive Devices
 	//$Title Automatic Turret (shootable)
 	Health 100
 	Radius 2
@@ -2033,7 +2064,9 @@ ACTOR MGTSDropper2 : RandomSpawner { DropItem MGTurretSoldierW }
 
 ACTOR MGTurretSoldier : MGTurret
 {
+	//$Category Monsters (Wolf3D)/Turrets
 	//$Title Stationary Turret Soldier (Afrika Korps)
+	Base.Shadow 1
 	Height 56
 	Radius 16
 	Mass 9999
@@ -2041,7 +2074,6 @@ ACTOR MGTurretSoldier : MGTurret
 	SeeSound "Nazi1/Sighted"
 	PainSound "Nazi1/Pain"
 	DeathSound "Nazi1/Death"
-	Base.Shadow 1
 	States
 	{
 	Spawn:
@@ -2111,13 +2143,15 @@ ACTOR MGTurretSoldierW : MGTurretSoldier
 
 ACTOR EliteFlamer : BasicGuard
 {
+	//$Category Monsters (Wolf3D)/Elite
 	//$Title Elite Soldier (Flamer)
+	//$Color 4
+	Base.NoMedicHeal
 	Health 450
 	Speed 4
 	MaxTargetRange 400
 	Obituary "$FLAMEBOY"
 	+MISSILEMORE
-	Base.NoMedicHeal
 	SeeSound "eliteflamer/sight"
 	PainSound "eliteflamer/pain"
 	DeathSound "eliteflamer/death"
@@ -2210,13 +2244,15 @@ ACTOR EliteFlamer : BasicGuard
 
 ACTOR EliteAssaulter : BasicGuard
 {
+	//$Category Monsters (Wolf3D)/Elite
 	//$Title Elite Soldier (MP40)
+	//$Color 4
+	Base.NoMedicHeal
 	Health 350
 	PainChance 160
 	Speed 3.66666667
 	Obituary "$ELITASS"
 	+MISSILEMORE
-	Base.NoMedicHeal
 	SeeSound "eliteassaulter/sight"
 	PainSound "eliteassaulter/pain"
 	DeathSound "eliteassaulter/death"
@@ -2319,13 +2355,15 @@ ACTOR EliteAssaulter : BasicGuard
 
 ACTOR EliteSoldatRifler : BasicGuard
 {
+	//$Category Monsters (Wolf3D)/Elite
 	//$Title Elite Soldier (Rifle)
+	//$Color 4
+	Base.NoMedicHeal
 	Health 65
 	PainChance 80
 	Speed 4.66666667
 	Obituary "$ELITRIFL"
 	+MISSILEEVENMORE
-	Base.NoMedicHeal
 	SeeSound "eliterifler/Sight"
 	PainSound "eliteassaulter/pain"
 	DeathSound "eliterifler/death"
@@ -2414,7 +2452,9 @@ ACTOR EliteSoldatRifler : BasicGuard
 
 ACTOR Scientist : BasicGuard
 {
+	//$Category Monsters (Wolf3D)/Others
 	//$Title Scientist (young)
+	//$Color 4
 	+FRIGHTENED
 	States
 	{
@@ -2434,7 +2474,9 @@ ACTOR Scientist : BasicGuard
 
 ACTOR Scientist2 : BasicGuard
 {
+	//$Category Monsters (Wolf3D)/Others
 	//$Title Scientist (old)
+	//$Color 4
 	+FRIGHTENED
 	States
 	{
@@ -2472,6 +2514,7 @@ ACTOR DirtyDarren : BasicGuard
 {
 	//$Category Monsters (Wolf3D)/NPCs
 	//$Title Dirty Douglas
+	//$Color 4
 	Translation 1
 	PainChance 255
 	Obituary "$DARREN"

@@ -24,24 +24,24 @@
 */
 class GateKeeper : Actor
 {
-	int timeout, maxtimeout, activationradius, user_keyamount, linelength;
-	double lineangle;
-	Line linedef;
 	Array<Actor> Activators;
 	Class<Inventory> key;
+	Line linedef;
+	double lineangle;
+	int timeout, maxtimeout, activationradius, user_keyamount, linelength;
 
 	Property ActivationRadius:ActivationRadius;
-	Property Timeout:maxtimeout;
 	Property Key:key;
 	Property KeyAmount:user_keyamount;
+	Property Timeout:maxtimeout;
 
 	Default
 	{
-		+SPECIAL
-		+INVISIBLE
-		-SOLID
 		Height 92;
 		Radius 8;
+		-SOLID
+		+INVISIBLE
+		+SPECIAL
 		GateKeeper.ActivationRadius 92;
 		GateKeeper.Timeout 5;
 		ActiveSound "";
@@ -203,10 +203,10 @@ Class CreepyEffect : Actor
 
 	Default
 	{
-		+NOCLIP
-		+NOGRAVITY
 		Height 16;
 		Radius 8;
+		+NOCLIP
+		+NOGRAVITY
 		RenderStyle 'Add';
 		Alpha 0.45;
 	}
@@ -312,26 +312,26 @@ class GateLight : DynamicLight
 
 class GhostGate : GateKeeper
 {
-	double startalpha;
-	Array<Actor> spawns;
-	Array<Actor> numbers;
-	Array<GhostGate> peers;
 	Actor swirl, light;
-	sound loopsound, opensound;
-	color textcolor, targetcolor;
-	int textspeed;
-	double pulseratio;
-	int activationtime;
+	Array<Actor> numbers;
+	Array<Actor> spawns;
+	Array<GhostGate> peers;
 	bool inactivation;
+	color textcolor, targetcolor;
+	double pulseratio;
+	double startalpha;
+	int activationtime;
+	int textspeed;
+	sound loopsound, opensound;
 
 	Property LoopSound:loopsound;
 	Property OpenSound:opensound;
 
 	Default
 	{
-		//$Category Hazards (Wolf3D)
+		//$Category Hazards (Wolf3D)/ZScript
 		//$Title "Soul Gate"
-		//$Color 12
+		//$Color 4
 		//$Sprite SWRLZ0
 		//$Arg0 "Amount of 'Soul' item required"
 		//$Arg0Default 25;
@@ -690,14 +690,13 @@ class GhostGate : GateKeeper
 }
 
 // Ghost gate with no swirl, light, spirits, or numbers.
-
 class GhostGateHelper : GhostGate
 {
 	Default
 	{
-		//$Category Hazards (Wolf3D)
+		//$Category Hazards (Wolf3D)/ZScript
 		//$Title "Soul Gate (No effects)"
-		//$Color 12
+		//$Color 4
 		//$Sprite SWRLY0
 	}
 
@@ -800,15 +799,15 @@ class FlatNumber : Actor
 
 	Default
 	{
-		+NOINTERACTION
-		+NOGRAVITY
-		+WALLSPRITE
-		+MASKROTATION
 		Radius 0;
 		Height 0;
-		Alpha 0.85;
 		Scale 0.4;
+		+MASKROTATION
+		+NOGRAVITY
+		+NOINTERACTION
+		+WALLSPRITE
 		Renderstyle 'AddShaded';
+		Alpha 0.85;
 		StencilColor "000000";
 		VisibleAngles -90, 90;
 		VisiblePitch -90, 90;
