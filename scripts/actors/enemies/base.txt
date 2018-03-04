@@ -1329,6 +1329,8 @@ class Nazi : Base
 			}
 
 			DeathDamageType = currentDamage;
+
+			if (master && master is "WaveSpawner") { A_QueueCorpse(); } // Queue wave spawned corpses for removal
 		}
 
 		if (source is "PlayerPawn") { target = source; } // Set the attacker as the current target
