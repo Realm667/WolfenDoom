@@ -58,8 +58,8 @@ ACTOR ExclamationTouchable : Exclamation
 	Spawn:
 		EXCL A 0 //NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 	Active:
-		EXCL A 1 BRIGHT A_CheckProximity("Inactive", "BoAPlayer", 72, 1)
-		Loop
+		EXCL A 1 BRIGHT
+		EXCL A 0 A_CheckRange(72.0, "Active") // Only loop if there's no player within 72 units
 	Inactive:
 		EXCL A 35 BRIGHT
 		EXCL B -1 BRIGHT

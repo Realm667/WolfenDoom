@@ -352,7 +352,7 @@ class GhostGate : GateKeeper
 	{
 		Spawn:
 			UNKN A 2 {
-				if (spawns.Size() < user_keyamount && swirl)
+				if (spawns.Size() < user_keyamount && swirl && !CheckSightOrRange(512))
 				{
 					tics = Random(1, 10);
 
@@ -725,6 +725,8 @@ class GhostGateHelper : GhostGate
 		}
 
 		if (!master) { master = FindParent(); }
+
+		SpawnPoint = pos;
 
 		if (master)
 		{
