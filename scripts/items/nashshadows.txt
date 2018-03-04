@@ -101,6 +101,7 @@ class Z_Shadow : Z_SpriteShadowBase
 		// clean-up
 		if (ownerRef && ownerRef.CountInv("Z_ShadeMe") <= 0) Destroy();
 		if (!ownerRef) Destroy();
+		if (CheckSightOrRange(512)) { Destroy(); }
 	}
 }
 
@@ -120,7 +121,8 @@ class Z_ShadeMe : CustomInventory
 	override void Tick(void)
 	{
 		bool SpriteShadowEnabled = sv_nashshadows;
-		if (!sr && Owner && SpriteShadowEnabled == 1)
+
+		if (!sr && Owner && SpriteShadowEnabled == 1 && !Owner.CheckSightOrRange(512))
 		{
 			// spawn the shadow
 			Actor sh = Spawn("Z_Shadow", Owner.Pos, NO_REPLACE);
