@@ -567,7 +567,7 @@ class Base : Actor
 		if (!globalfreeze && !level.Frozen)
 		{
 			if (dodgetimeout > 0) { dodgetimeout--; }
-			if (frighttimeout > 0) { frighttimeout--; }
+			if (frighttimeout > -35) { frighttimeout--; }
 
 			if (bShootable && health > 0 && !bDormant)
 			{
@@ -590,20 +590,17 @@ class Base : Actor
 						if (
 							(
 								!bFrightened && 
-								(visibility > lightthreshold || visibility + dlvisibility > lightthreshold + 105)
+								frighttimeout == -35 && // Use a counter to keep the randomness evident!
+								(visibility > lightthreshold || visibility + dlvisibility > lightthreshold + 64 + Random(0, 32)) // Add some randomness to the light reaction distance
 							) &&
-							(target && Distance2D(target) > 64)
+							(target && Distance2D(target) > 64 + target.radius + radius)
 						)
 						{
 							movedir = (movedir + Random(3, 5)) % 8; // Pick a random direction away from the current chase direction 
-							bFrightened = True; // Run away
-
 							frighttimeout = 35 + Random(0, 7) * 5; // Use a counter to keep the actor frightened for a little bit
 						}
-						else
-						{
-							bFrightened = frighttimeout > 0;
-						}
+
+						bFrightened = frighttimeout > 0;
 					}
 
 					if (user_lightburns)
@@ -1867,6 +1864,7 @@ class ZombieStandard : Nazi
 		BloodColor "00 A0 7D";
 		BloodType "ZombieBlood";
 		MaxStepHeight 28;
+		MaxDropoffHeight 28;
 	}
 
 	States

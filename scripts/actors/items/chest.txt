@@ -58,12 +58,12 @@ class BoASupplyChest : Actor
 		if (open) { return false; } // Fail if it's already open
 		if (keyclass && !user.FindInventory(keyclass, 1)) // If they don't have a key, don't open, and play a locked sound
 		{
-			A_PlaySound(failsound, CHAN_AUTO, 0.5); 
+			A_PlaySound(failsound, CHAN_AUTO, 1.0); 
 			return false;
 		}
 
 		// Take the key and play the opening sound
-		A_PlaySound(opensound, CHAN_AUTO, 0.5); 
+		A_PlaySound(opensound, CHAN_AUTO, 1.0); 
 		if (keyclass) { user.TakeInventory(keyclass, 1); }
 
 		// Tell the chest to open

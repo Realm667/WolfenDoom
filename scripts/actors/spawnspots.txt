@@ -293,9 +293,8 @@ class WaveSpawner : ActorSpawner
 		if (user_lightburns) // Chapter 3 Secret Level
 		{
 			double lightlevel = GetLightLevel();
-			bool outside = TexMan.GetName(ceilingpic) == "F_SKY1";
 
-			if (outside && lightlevel > 80) { return ResolveState("Active.Spawn"); } // Don't spawn until it's actually dark
+			if (ceilingpic == skyflatnum && lightlevel > 80) { return ResolveState("Active.Spawn"); } // Don't spawn until it's actually dark
 			else if (lightlevel > 128) { return ResolveState("Active.Spawn"); } // But be more forgiving in our definition of 'dark' if you're not under sky
 		}
 

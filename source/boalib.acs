@@ -2,7 +2,6 @@
 #include "zcommon.acs"
 #import "stealth.acs" //mxd - Please include the WHOLE folder structure while compiling this on recent Slade builds (ozy81)
 
-#define SUPPLY_CHEST_PROXY_SCRIPT 4000
 #define MAX_VOLUME 127
 #define MAX_OBJECTIVES 6
 #define MAX_PLAYER_HEALTH 150
@@ -898,7 +897,6 @@ Script "Activate" (int lineid, int repairtime)
 	SetResultValue(0);
 }
 
-int f, p; // For the demo...  
 // Generic interactive paper display script.  
 // Takes a message number as an argument, then looks up PAPERTEXT__ in LANGUAGE and displays that message
 // Paper style can be customized via the seond argument, and font style by the third argument
@@ -913,11 +911,8 @@ script "Textpaper" (int text_number, int paperstyle, int fontstyle)
 	// If a message number (0 or higher) was passed, the lookup name will be formatted as PAPERTEXTxx - PAPERTEXT00, PAPERTEXT01, etc.)
 	if (text_number > -1) { message = StrParam(s:"PAPERTEXT", s:Pad(text_number, 2)); }
 
-	str paper = "PAPERBG"; // Default background
+	str paper = "PAPERBG01"; // Default background
 	int pageoffset = 0; // Start text at the top of the page
-
-// Demo mode!
-	if (paperstyle == 999) { fontstyle = f++ % 4; paperstyle = p++ % 5; }
 
 	// Set the background image if one was specified; if the image has a letterhead, offset the text y offset
 	if (paperstyle > 0)

@@ -103,6 +103,18 @@ class GateKeeper : Actor
 		activationradius = max(activationradius, linelength);
 
 		A_SetSize(activationradius);
+
+		if (user_keyamount && skill < 2) // If skill 0-2
+		{
+			double multiplier = 2. / 3; // Cut the amount down to 2/3 its value for each skill level
+			double newamt = user_keyamount;
+
+			// Reduce the amount by 1/3 for each skill level below normal
+			for (int i = 0; i < 2 - skill; i++) { newamt *= multiplier; }
+
+			// Set the new amount - cap minimum at 1 so that the gates still have some purpose
+			user_keyamount = max(int(newamt), 1);
+		}
 	}
 
 	override void Touch(Actor toucher)
@@ -279,7 +291,7 @@ class GateLight : DynamicLight
 
 	override void Tick()
 	{
-		if (globalfreeze || level.Frozen) { return; }
+		if (globalfreeze || level.Frozen || CheckSightOrRange(512)) { return; }
 
 		scale.x = max(scale.x, 1.0);
 
@@ -352,7 +364,7 @@ class GhostGate : GateKeeper
 	{
 		Spawn:
 			UNKN A 2 {
-				if (spawns.Size() < user_keyamount && swirl && !CheckSightOrRange(512))
+				if (spawns.Size() < min(user_keyamount, 15) && swirl && !CheckSightOrRange(512))
 				{
 					tics = Random(1, 10);
 
