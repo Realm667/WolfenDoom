@@ -192,7 +192,6 @@ ACTOR TeslaCell : Ammo
 	//$Category Ammo (Wolf3D)
 	//$Title Tesla Cell (x10 cell charges)
 	//$Color 6
-	Scale 0.5
 	Tag "$TAGTCELL"
 	Inventory.PickupMessage "$TESLAMMO"
 	Inventory.Amount 10
@@ -203,8 +202,8 @@ ACTOR TeslaCell : Ammo
 	States
 	{
 	Spawn:
-		TCEL ABCBAC 5
-		Loop
+		TCEL B -1
+		Stop
 	}
 }
 
@@ -216,7 +215,7 @@ ACTOR TeslaCellBox : TeslaCell
 	States
 	{
 	Spawn:
-		TCEL ABCBAC 5 LIGHT(TESLAW)
-		Loop
+		TCEL A -1
+		Stop
 	}
 }
