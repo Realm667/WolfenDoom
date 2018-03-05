@@ -909,15 +909,15 @@ script "Textpaper" (int text_number, int paperstyle, int fontstyle)
 	str message = "";
 
 	// If a message number (0 or higher) was passed, the lookup name will be formatted as PAPERTEXTxx - PAPERTEXT00, PAPERTEXT01, etc.)
-	if (text_number > -1) { message = StrParam(s:"PAPERTEXT", s:Pad(text_number, 2)); }
+	if (text_number > 0) { message = StrParam(s:"PAPERTEXT", s:Pad(text_number, 2)); }
 
-	str paper = "PAPERBG01"; // Default background
+	str paper = "PAPER1"; // Default background
 	int pageoffset = 0; // Start text at the top of the page
 
 	// Set the background image if one was specified; if the image has a letterhead, offset the text y offset
 	if (paperstyle > 0)
 	{
-		paper = StrParam(s:"PAPERBG", d:paperstyle);
+		paper = StrParam(s:"PAPER", d:paperstyle);
 
 		switch (paperstyle) // Offset the starting y value of the text to account for the letterhead
 		{
