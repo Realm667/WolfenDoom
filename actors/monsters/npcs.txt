@@ -42,6 +42,24 @@ ACTOR StatistMedic : StatistBarkeeper
 	}
 }
 
+ACTOR StatistAFA : StatistBarkeeper
+{
+	//$Title AFADoomer, Radio Technician (NPC)
+	Scale 0.67
+	-USESPECIAL
+	States
+	{
+	Spawn:
+		AFAD A 80
+		"####" B 40
+		"####" CB 40
+		"####" B 80
+		"####" CDCB 40
+		"####" C 40
+		Loop
+	}
+}
+
 ACTOR StatistYevgeny : StatistBarkeeper
 {
 	//$Title Yevgeny (NPC)
