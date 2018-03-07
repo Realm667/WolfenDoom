@@ -1,15 +1,21 @@
 // Materials for full path textures
-
 material texture textures/tile_t06.png {
 	normal materials/normalmaps/auto/tile_t06.png
 	specular materials/specular/auto/tile_t06.png
 }
 
-
-// Uncomment this material definition when you add the AO map
 material texture textures/vent_m02.png {
+	ao materials/ao/auto/vent_m02.png
 	normal materials/normalmaps/auto/vent_m02.png
 	metallic materials/metallic/auto/vent_m02.png
 	roughness materials/roughness/auto/vent_m02.png
-	ao materials/ao/auto/vent_m02.png
+}
+
+material texture models/eagle_b.jpg {
+	ao materials/ao/auto/eagle_b.png
+	normal materials/normalmaps/auto/eagle_b.png
+	metallic materials/metallic/auto/eagle_b.png
+	roughness materials/roughness/auto/eagle_b.png
+	specular materials/specular/auto/eagle_b.png
+	specularlevel 2.5
 }
