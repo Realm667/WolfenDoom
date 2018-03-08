@@ -1,6 +1,6 @@
 ACTOR Plane1
 {
-	//$Category Props (Wolf3D)/2d Vehicles
+	//$Category Props (Wolf3D)/2D Vehicles
 	//$Title Plane (grey)
 	//$Color 3
 	Radius 96
@@ -89,6 +89,25 @@ ACTOR TankD3 : TankD1
 	{
 	Spawn:
 		PTN3 A -1
+		Stop
+	}
+}
+
+ACTOR Bomberinair
+{
+	//$Category Props (Wolf3D)/2D Vehicles
+	//$Title Bomber (flying, from below)
+	//$Color 3
+	Radius 16
+	Height 32
+	Scale 0.1
+	-SOLID
+	+FLATSPRITE
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		BMBR A -1
 		Stop
 	}
 }
