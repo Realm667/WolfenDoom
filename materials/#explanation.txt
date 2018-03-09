@@ -1,24 +1,10 @@
-AO (AMBIENT OCLUSION)
-determines which areas are inherently darkened to simulate shadows
-- black are shadows
-- whitre are no shadows
-
-METALLIC
-defines the ability of the surface to reflect the imagery around it
-- black reflects the imagery around
-- white doesn't reflect the imagery around
+WE ONLY USE NORMALS+SPECULARS, NO PBR!
+--------------------------------------
 
 NORMAL MAPS
 defines the illusion of depth and features
 - light purple color is usually the neutral color
 - more explained here: http://www.falloutsoftware.com/tutorials/gl/normal-map.html
-
-ROUGHNESS
-defines the ability of the surface to reflect or absorb white light
-- white makes the texture matte (rough)
-  (as the lights remitted in all directions, good for bland surfaces)
-- black makes the texture shiny (smooth)
-  (as the light gets reflected, good for polished surfaces)
 
 SPECULAR MAPS
 Specular maps are the maps you use to define a surface's shininess and highlight colour.
@@ -30,3 +16,5 @@ A very saturated specular map will have a very different visual effect than a gr
 If you need a more "neutral" highlight on a surface, your specular map should use the inverse of the diffuse map's colour.
 Using the same colour on the specular as on the diffuse will result in a more saturated highlight when viewed in the scene.
 You can use contrasts in specular to make a surface appear more visually interesting in the scene.
+
+
