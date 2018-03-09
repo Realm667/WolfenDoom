@@ -1,10 +1,3 @@
-ROUGHNESS
-defines the ability of the surface to reflect or absorb white light
-- white makes the texture matte (rough)
-  (as the lights remitted in all directions, good for bland surfaces)
-- black makes the texture shiny (smooth)
-  (as the light gets reflected, good for polished surfaces)
-
 AO (AMBIENT OCLUSION)
 determines which areas are inherently darkened to simulate shadows
 - black are shadows
@@ -17,4 +10,23 @@ defines the ability of the surface to reflect the imagery around it
 
 NORMAL MAPS
 defines the illusion of depth and features
-- 
+- light purple color is usually the neutral color
+- more explained here: http://www.falloutsoftware.com/tutorials/gl/normal-map.html
+
+ROUGHNESS
+defines the ability of the surface to reflect or absorb white light
+- white makes the texture matte (rough)
+  (as the lights remitted in all directions, good for bland surfaces)
+- black makes the texture shiny (smooth)
+  (as the light gets reflected, good for polished surfaces)
+
+SPECULAR MAPS
+Specular maps are the maps you use to define a surface's shininess and highlight colour.
+The higher the value of a pixel (from black to white), the shinier the surface will appear on scene.
+Therefore, surfaces such as dry stone or cotton fabric would tend to have a very dark specular map,
+while surfaces like polished chrome or plastic would tend to have lighter specular maps.
+The colour of a pixel is also used, to calculate the resulting colour of the surface.
+A very saturated specular map will have a very different visual effect than a grey specular map.
+If you need a more "neutral" highlight on a surface, your specular map should use the inverse of the diffuse map's colour.
+Using the same colour on the specular as on the diffuse will result in a more saturated highlight when viewed in the scene.
+You can use contrasts in specular to make a surface appear more visually interesting in the scene.
