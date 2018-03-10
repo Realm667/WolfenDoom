@@ -135,7 +135,16 @@ class BoAStatusBar : BaseStatusBar
 
 		Super.Draw (state, TicFrac);
 
-		if (CPlayer.mo.FindInventory("CutsceneEnabled")) { return; }
+		if (CPlayer.mo.FindInventory("CutsceneEnabled"))
+		{
+			if (automapactive || state == HUD_StatusBar)
+			{
+				BeginStatusBar();
+				DrawImage("AMBAR", (-54, 152), DI_ITEM_OFFSETS);
+			}
+
+			return;
+		}
 
 		if (!automapactive)
 		{

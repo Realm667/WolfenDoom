@@ -538,10 +538,10 @@ class BoAPlayer : PlayerPawn
 	void DoInteractions()
 	{
 		FLineTraceData trace; //, actortrace;
-		LineTrace(angle, UseRange, pitch, 0, player.viewheight, 0.0, 0.0, trace);
-//		LineTrace(angle, UseRange, pitch, TRF_THRUACTORS, player.viewheight, 0.0, 0.0, actortrace); // Corpse dragging needs to trace with TRF_THRUACTORS flag
+		LineTrace(angle, UseRange, pitch, TRF_THRUACTORS, player.viewheight, 0.0, 0.0, trace);
+//		LineTrace(angle, UseRange, pitch, TRF_ALLACTORS, player.viewheight, 0.0, 0.0, actortrace); // Corpse dragging needs to trace without TRF_THRUACTORS flag
 
-//		Actor AimActor = trace.HitActor;
+//		Actor AimActor = actortrace.HitActor;
 		Line AimLine = trace.HitLine;
 
 		if (AimLine && !crosshair)
@@ -617,15 +617,17 @@ class BoAPlayer : PlayerPawn
 
 				if (!LastWeapon && crosshair >= 80 && crosshair <= 90) // Only lower weapon when there's a status display
 				{
-					LastWeapon = player.ReadyWeapon;
-					player.PendingWeapon = Weapon(FindInventory("NullWeapon"));
+					Weapon lowered = Weapon(FindInventory("NullWeapon"));
+
+					if (player.ReadyWeapon != lowered) { LastWeapon = player.ReadyWeapon; }
+					player.PendingWeapon = lowered;
 				}
 			}
 		}
 /*
 		// Draggable corpse handling (also lets you pull pushable actors)
 		//  Player must crouch within use range of a draggable actor and hold use, then move to drag the actor along
-		else if ((AimActor || DragTarget) && player.cmd.buttons & BT_USE && player.cmd.buttons & BT_CROUCH)
+		else if ((AimActor || DragTarget) && player.usedown && player.cmd.buttons & BT_CROUCH)
 		{
 			if (DragTarget)
 			{
@@ -648,8 +650,10 @@ class BoAPlayer : PlayerPawn
 				{
 					if (!LastWeapon)
 					{
-						LastWeapon = player.ReadyWeapon;
-						player.PendingWeapon = Weapon(FindInventory("NullWeapon"));
+						Weapon lowered = Weapon(FindInventory("NullWeapon"));
+
+						if (player.ReadyWeapon != lowered) { LastWeapon = player.ReadyWeapon; }
+						player.PendingWeapon = lowered;
 					}
 					DragTarget = AimActor;
 				}
@@ -700,7 +704,6 @@ class BoAPlayer : PlayerPawn
 
 		return true;
 	}
-
 }
 
 // Base class for simple visual effects that will always follow the player until removed
