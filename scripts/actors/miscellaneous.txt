@@ -73,8 +73,10 @@ class CrankModel : Actor
 	}
 }
 
-class Textpaper : Actor
+class TextPaper : Actor
 {
+	int displaytime;
+
 	Default
 	{
 		//$Category Props (Wolf3D)/Bureau
@@ -83,9 +85,9 @@ class Textpaper : Actor
 		Radius 16;
 		Height 32;
 		Scale 0.25;
+		RenderStyle 'Translucent';
 		-SOLID
 		+FLATSPRITE
-		+USESPECIAL
 		+NOGRAVITY
 	}
 
@@ -101,5 +103,33 @@ class Textpaper : Actor
 		frame = args[3];
 
 		Super.PostBeginPlay();
+	}
+
+	override bool Used(Actor user)
+	{
+		if (special == 80)
+		{
+			if (displaytime < level.time) { Level.ExecuteSpecial(special, user, null, false, args[0], args[1], args[2], args[3], args[4]); } // Only run this when first pressed
+
+			displaytime = level.time + 1;
+			user.player.usedown = false; // Set the internal logic to think that use was not held down so that this code block will be called again
+			return true; // Return true so that the usefail sound doesn't play over and over and over again
+		}
+
+		return false;
+	}
+
+	override void Tick()
+	{
+		if (displaytime > level.time)
+		{
+			alpha = max(alpha - 0.06, 0);
+		}
+		else
+		{
+			alpha = min(alpha + 0.02, 1.0);
+		}
+
+		Super.Tick();
 	}
 }
