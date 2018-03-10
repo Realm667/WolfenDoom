@@ -1302,6 +1302,8 @@ class Nazi : Base
 			}
 		}
 
+		if (source is "MovingTrailBeam") { source = source.master; }
+
 		if (source) { vis = source.FindInventory("BoAVisibility"); }
 
 		if (vis) { BoAVisibility(vis).visibility = 200; }
@@ -1865,6 +1867,7 @@ class ZombieStandard : Nazi
 		BloodType "ZombieBlood";
 		MaxStepHeight 28;
 		MaxDropoffHeight 28;
+		Species "Zombie";
 	}
 
 	States
