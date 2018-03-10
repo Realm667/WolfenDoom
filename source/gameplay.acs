@@ -1,0 +1,267 @@
+// Map checks/actions //
+
+script "MissionNumber" OPEN
+{
+	if(GetLevelInfo(LEVELINFO_LEVELNUM)<99)				//If it's not a secret mission or the intermap
+		mission_number=GetLevelInfo(LEVELINFO_LEVELNUM);	//Set the mission number just in case we warped/started ahead
+}
+
+//fadescript for map setup
+script "Maplaunch" ENTER
+{
+	FadeRange(0,0,0,1.0,0,0,0,0.0,1.5);
+}
+
+//mxd. Mutants despawn checks
+script "DisableMutants" (void)
+{
+	if(disable_mutants) Thing_Remove(0);
+}
+
+script "DisableBigMutants" (void)
+{
+	if(disable_big_mutants) Thing_Remove(0);
+}
+
+script "DisableSuperMutants" (void)
+{
+	if(disable_supermutants) Thing_Remove(0);
+}
+
+//Astrostein check
+script "AstrosteinCheck" (void)
+{
+	SetResultValue(astrostein);
+}
+
+//Teleportscript from Re-Exhumed
+script "ExTeleportPlayer" (int teleportID, int destinationID)
+{
+	int deltaX = GetActorX(playerID) - GetActorX(teleportID);
+	int deltaY = GetActorY(playerID) - GetActorY(teleportID);
+	//mxd. Warp won't work here, because the activator is ExTeleportIfPlayerBelow or ExTeleportIfPlayerAbove and not a player.
+	//mxd. This kinda limits Warp usefulness, dont you think?..
+	SetActorPosition(playerID, GetActorX(destinationID) + deltaX, GetActorY(destinationID) + deltaY, GetActorZ(playerID), false);
+}
+
+script "ExGetPlayerZ" (void)
+{
+	SetResultValue(GetActorZ(playerID) >> 16);
+}
+
+//Clear Inventory - now added Astrostein stuff (Ozy81)
+script "CLEAR INVENTORY"(void)
+{
+	TakeInventory("KnifeSilent", 9999); //All ammo and weapons (aside from the knife) should now be handled by my EventHandler - Ed
+	TakeInventory("BoABlueKey",1);
+	TakeInventory("BoAYellowKey",1);
+	TakeInventory("BoARedKey",1);
+	TakeInventory("BoACyanKey",1);
+	TakeInventory("BoAGreenKey",1);
+	TakeInventory("BoAPurpleKey",1);
+	TakeInventory("AstroBlueKey",1); //Astros
+	TakeInventory("AstroYellowKey",1); //Astros
+	TakeInventory("AstroRedKey",1); //Astros
+	TakeInventory("Akten",1);
+	TakeInventory("AktenV2",1);
+	TakeInventory("CutsceneEnabled", 1);
+}
+
+script "NOGRENADES" (void)
+{
+	TakeInventory("GrenadePickup", 9999);
+	TakeInventory("AstroGrenadePickup", 9999);
+}
+
+int underwatersoundtimeout[MAX_PLAYERS];
+
+//script "DoUnderwaterEffects" (void)
+function void DoUnderwaterEffects(void)
+{
+	if (Timer() % 7 == 0)
+	{
+		if(GetActorProperty(0,APROP_WATERLEVEL)>=3 && GetCVar("bubbleswitch")) //check also stored cvar for custom tweaks
+			SpawnForced("PlayerBubble",GetActorX(0)+random(4,8),GetActorY(0),GetActorZ(0)+random(48,52),0,random(0,255));
+	}
+
+	int p = PlayerNumber();
+	if(GetActorProperty(0,APROP_WATERLEVEL)>=3 && underwatersoundtimeout[p] < Timer())
+	{
+		localambientsound("underwtr",random(90,127));
+		underwatersoundtimeout[p] = Timer() + (35 * 8); //only 1 sound is 8sec long, 2 4sec & 1 2.5sec
+	}
+}
+
+Script "QuickKick" (void)
+{
+	int timeout;
+
+	If (
+		//(CheckInventory("Health") < 30) ||
+		(CheckInventory("Stamina") < 30) ||
+		(GetSpeed(0) > 30) ||
+		(GetActorViewHeight(0) >> 16 < 56) ||
+		(GetLevelInfo(LEVELINFO_LEVELNUM)==99) //let's remove the kick while on HQs - ozy81
+	)
+		Terminate; //No kicking unless you have stamina, aren't walking, and aren't crouching
+
+	str strPrevWeapon = GetWeapon(); //Assign previous weapon name to a variable - gets "None" if there is none
+
+	SetPlayerProperty(0, 1, PROP_INSTANTWEAPONSWITCH); //Enable fast weapon switch
+
+	While (!SetWeapon("BJKickAuto")) //Give the player the auto-kick
+	{
+		GiveInventory("BJKickAuto", 1);
+		Delay(1);
+	}
+
+	Delay(25); //Wait for the animation and attack
+
+	If (StrICmp(strPrevWeapon, "None")) //Reset the old weapon
+	{
+		While (!SetWeapon(strPrevWeapon) && timeout < 35) // Wait until the weapon is set, or a second has elapsed
+		{
+			Delay(5);
+			timeout += 5;
+		}
+	}
+
+	TakeInventory("BJKickAuto", 1); //Remove the auto-kick from inventory
+
+	SetPlayerProperty(0, 0, PROP_INSTANTWEAPONSWITCH); //Disable fast weapon switch
+}
+
+//death script
+script "OhNoes!" DEATH
+{
+	SetHudSize(320, 240, true);
+	LocalSetMusic("THEEND");
+
+	SetFont("fade");
+	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1000, CR_UNTRANSLATED, 160.0, 120.0, 999999.0, 6.0, 1.0);
+
+	// [ZK] If you resurrect, the death screen should disappear immediately
+	for (int i = 0; i < 35*6; i++)
+	{
+		Delay(1);
+
+		if (GetActorProperty(0, APROP_HEALTH) > 0)
+		{
+			SetFont("fade");
+			HudMessage(s:""; HUDMSG_PLAIN, -1000, CR_UNTRANSLATED, 0.0, 0.0, 0.0, 0.0);
+			LocalSetMusic("*");
+			terminate;
+		}
+	}
+
+	SetFont("youdied");
+	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1001, CR_UNTRANSLATED, 160.0, 120.0, 999999.0, 3.0, 1.0);
+
+	// [ZK] Delay 1 tic instead of 35
+	while(GetActorProperty(0,APROP_HEALTH) <= 0) Delay(1);
+
+	//fadeback if resurrected
+	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1001, CR_UNTRANSLATED, 160.0, 120.0, 0.0, 0.0, 0.25);
+	SetFont("fade");
+	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1000, CR_UNTRANSLATED, 160.0, 120.0, 0.0, 0.0, 1.0);
+
+	// [ZK] restore music
+	LocalSetMusic("*");
+}
+
+// Screen overlays //
+
+function void DrawOverlay(int w, int h, int image, int outtime, int alpha)
+{
+	SetHudSize(w, h, 0);
+	SetFont(image);
+
+	// Half width and height (in fixed-point).
+	int half_width  = (w / 2) << 16;
+	int half_height = (h / 2) << 16;
+
+	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_LAYER_UNDERHUD | HUDMSG_NOTWITHFULLMAP | HUDMSG_NOTWITHOVERLAYMAP | HUDMSG_ALPHA , 0, CR_UNTRANSLATED, half_width, half_height, 0.0, 0.5, outtime, alpha);
+}
+
+int heartbeatvolume[MAX_PLAYERS], heartbeatdelay1[MAX_PLAYERS], heartbeatdelay2[MAX_PLAYERS];
+
+function void DrawScreenOverlays(void)
+{
+	int p = PlayerNumber();
+
+	// Less than or equal to 30 health
+	int health = GetActorProperty(0, APROP_HEALTH);
+	if (!HealthScriptDeactivate && health > 0 && health <= 30)
+	{
+		if (heartbeatdelay1[p] && heartbeatdelay1[p] < Timer())
+		{
+			LocalAmbientSound("hbeat", heartbeatvolume[p]);
+			heartbeatdelay1[p] = 0;
+		}
+
+		if (heartbeatdelay2[p] && heartbeatdelay2[p] < Timer())
+		{
+			LocalAmbientSound("hbeat", heartbeatvolume[p]);
+			heartbeatdelay2[p] = 0;
+		}
+
+		if (!heartbeatdelay1[p] && !heartbeatdelay2[p])
+		{
+			DrawOverlay(640, 480, "M_INJ", 0.5, 1.0);
+
+			heartbeatvolume[p] = MAX_VOLUME;
+			heartbeatdelay1[p] = Timer() + 10;
+			heartbeatdelay2[p] = Timer() + 14;	
+
+			if (health > 20)
+			{
+				heartbeatvolume[p] = MAX_VOLUME - 50;
+				heartbeatdelay1[p] = Timer() + 21;
+				heartbeatdelay2[p] = Timer() + 34;
+			}
+			else if (health > 10)
+			{
+				heartbeatvolume[p] = MAX_VOLUME - 25;
+				heartbeatdelay1[p] = Timer() + 18;
+				heartbeatdelay2[p] = Timer() + 24;
+			}
+		}
+	}
+
+	// Ice damage
+	int cold = GetActorPowerupTics(0, "PowerSlow");
+	if (!HealthScriptDeactivate && cold)
+	{
+		DrawOverlay(320, 240, "M_ICED", cold, 0.2);
+	}
+
+	// Adrenaline
+	int drugs = GetActorPowerupTics(0, "PowerDrugs");
+	int factor = GetActorPowerupTics(0, "PowerFactor");
+	if (factor && drugs)
+	{
+		DrawOverlay(346, 256, "M_INJ", drugs, 1.0);
+	}
+}
+
+// Powerups //
+
+// Vitality upgrade script, modified from Trailblazer. Thanks, PillowBlaster!
+script "VSerum Max Health Boost" (void)
+{
+	if (GetActorProperty(0, APROP_SpawnHealth) < MAX_PLAYER_HEALTH) {
+		SetActorProperty(0, APROP_SpawnHealth, GetActorProperty(0, APROP_SpawnHealth) + 5);
+	}
+	GiveInventory("Meal", 5);
+}
+
+script "TotaleMacht" (void)
+{
+	delay(35 * 30); // 30 seconds
+	TakeInventory("BerserkToken", 1);
+}
+
+script "PlayerHealthAbove25" (void)
+{
+	SetResultValue(GetActorProperty(playerID, APROP_Health) >= 25);
+}

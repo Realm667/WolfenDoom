@@ -202,7 +202,7 @@ Class LightningBeam : Actor
 						PitchRandom = 0;
 						AngleRandom = 45;
 
-						[spawned, t] = A_SpawnItemEx(trail, cos(pitch) * (StepDistance / 2.0), 0, -sin(pitch) * (StepDistance / 2.0), 0, 0, 0, 0, BEAM_FLAGS);
+						[spawned, t] = A_SpawnItemEx(trail, StepDistance / 2.0, 0, 0, 0, 0, 0, 0, BEAM_FLAGS);
 					}
 
 					if (t) { ElectrifySector(t.CurSector, t.Damage); }
@@ -359,6 +359,8 @@ Class MovingTrailBeam : Actor
 		}
 
 		if (master) { beamoffset = pos - master.pos; }
+
+		if (pos.z < floorz) { Destroy(); }
 	}
 
 	override void Tick()

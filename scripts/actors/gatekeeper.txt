@@ -849,7 +849,7 @@ class FlatNumber : Actor
 
 		frame = value;
 
-		if (level.time)
+		if (level.time && master)
 		{
 			Vector2 newpos = RotateVector((offset.x * scale.x / default.scale.x, offset.y * scale.x / default.scale.x), master.angle);
 

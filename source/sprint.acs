@@ -1,0 +1,66 @@
+//sprinting stamina
+int cooldown[MAX_PLAYERS];
+int staminarecoverytimeout[MAX_PLAYERS];
+
+function void DoSprinting(void)
+{
+	bool checksprint = GetCVar("sprintswitch");
+
+	int buttons = GetPlayerInput(-1,INPUT_BUTTONS);
+
+	// Unfortunately, we have to check for each type of disguise token here - can't check for the base DisguiseToken class in ACS
+	if (
+		!(
+			CheckWeapon("NullWeapon") &&
+			(
+				CheckInventory("SSBJUniformToken") ||
+				CheckInventory("ScientistUniformToken")
+			)
+		) && 
+		(buttons & BT_SPEED) && 
+		(buttons & BT_FORWARD) && 
+		!(buttons & BT_CROUCH) && 
+		CheckInventory("Stamina") && 
+		cooldown[PlayerNumber()] <= 0
+	)
+	{
+		SetActorProperty(0,APROP_SPEED,2.0);
+
+		if(checksprint==TRUE||CheckInventory("BerserkToken"))
+			TakeInventory("Stamina",0); //do not deplete stamina - ozy
+		else
+		{
+			TakeInventory("Stamina",random(1,3)); //more stamina to use
+		}
+	}
+	else
+	{
+		SetActorProperty(0,APROP_SPEED,1.0);
+
+		int p = PlayerNumber();
+
+		if (staminarecoverytimeout[p] < Timer())
+		{
+			cooldown[PlayerNumber()]--;
+			GiveInventory("Stamina",1);
+			staminarecoverytimeout[p] = Timer() + Random(1,3); //recovery is more fast
+		}
+	}
+
+	if(!CheckInventory("Stamina"))
+		cooldown[PlayerNumber()]=100;
+}
+
+int staminasoundtimeout[MAX_PLAYERS];
+
+function void DoStaminaCheck(void)
+{
+	int p = PlayerNumber();
+
+	if(CheckInventory("Stamina")<25 && staminasoundtimeout[p] < Timer())
+	{
+		if(GetActorProperty(0,APROP_WATERLEVEL)<3)
+		PlaySound(0,"player/breathing",CHAN_VOICE);
+		staminasoundtimeout[p] = Timer() + 50;
+	}
+}

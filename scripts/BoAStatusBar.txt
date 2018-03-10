@@ -135,7 +135,16 @@ class BoAStatusBar : BaseStatusBar
 
 		Super.Draw (state, TicFrac);
 
-		if (CPlayer.mo.FindInventory("CutsceneEnabled")) { return; }
+		if (CPlayer.mo.FindInventory("CutsceneEnabled"))
+		{
+			if (automapactive || state == HUD_StatusBar)
+			{
+				BeginStatusBar();
+				DrawImage("AMBAR", (-54, 152), DI_ITEM_OFFSETS);
+			}
+
+			return;
+		}
 
 		if (!automapactive)
 		{
@@ -195,7 +204,9 @@ class BoAStatusBar : BaseStatusBar
 			current = mBatteryInterpolator.GetValue();
 			max = GetMaxAmount("Power");
 
-			if (CheckInventory("MineSweeperActive", 1))
+			MineSweeper ms = MineSweeper(CPlayer.mo.FindInventory("MineSweeper"));
+
+			if (ms && ms.active)
 			{
 				DrawImage("SWEP_BAK", (152, 138), DI_SCREEN_OFFSETS);
 				DrawBar("SWEP_ON", "SWEP_OFF", current, max, (152, 138), 0, SHADER_HORZ, DI_SCREEN_OFFSETS);
@@ -208,7 +219,9 @@ class BoAStatusBar : BaseStatusBar
 			current = mOilInterpolator.GetValue();
 			max = GetMaxAmount("LanternOil");
 
-			if (CheckInventory("LanternActive", 1))
+			LanternPickup l = LanternPickup(CPlayer.mo.FindInventory("LanternPickup"));
+
+			if (l && l.active)
 			{
 				DrawImage("LANT_BAK", (152, 138), DI_SCREEN_OFFSETS);
 				DrawBar("LANT_ON", "LANT_OFF", current, max, (152, 138), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_OFFSETS);
@@ -330,7 +343,10 @@ class BoAStatusBar : BaseStatusBar
 			current = mBatteryInterpolator.GetValue();
 			max = GetMaxAmount("Power");
 
-			if (CheckInventory("MineSweeperActive", 1))
+			MineSweeper ms = MineSweeper(CPlayer.mo.FindInventory("MineSweeper"));
+
+			if (ms && ms.active)
+
 			{
 				DrawImage("SWEP_BAK", (0, -28), DI_SCREEN_CENTER_BOTTOM);
 				DrawBar("SWEP_ON", "SWEP_OFF", current, max, (0, -28), 0, SHADER_HORZ, DI_SCREEN_CENTER_BOTTOM);
@@ -342,7 +358,9 @@ class BoAStatusBar : BaseStatusBar
 			current = mOilInterpolator.GetValue();
 			max = GetMaxAmount("LanternOil");
 
-			if (CheckInventory("LanternActive", 1))
+			LanternPickup l = LanternPickup(CPlayer.mo.FindInventory("LanternPickup"));
+
+			if (l && l.active)
 			{
 				//DrawImage("LANT_BAK", (-11, -144), DI_SCREEN_CENTER | DI_SCREEN_TOP);
 				//DrawBar("LANT_ON", "LANT_OFF", current, max, (-11, -144), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER | DI_SCREEN_TOP);
