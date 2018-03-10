@@ -42,23 +42,10 @@ class MineSweeperHandler : EventHandler
 					p.mo.Distance2D(mo) > 512
 				) { continue; }
 
-				double anglefromcenter = (p.mo.angle % 360) - p.mo.AngleTo(mo);
-				if (anglefromcenter > 180) { anglefromcenter = 360 - anglefromcenter; }
+				Vector3 wpos = e.viewpos + level.Vec3Diff(e.viewpos, mo.pos);
+				Vector3 spos = mkCoordUtil.WorldToScreen(wpos, e.viewpos, e.viewpitch, e.viewangle, e.viewroll, p.fov);
 
-				double ratio = Screen.GetAspectRatio();
-				double fovfactor = p.fov * (ratio / 1.33333) / 90;
-
-				if (
-					mo.pos.z > p.mo.pos.z + p.viewheight / 2 ||
-					abs(anglefromcenter) > p.fov * fovfactor / 2
-				) { continue; }
-
-				Vector3 viewpos = p.mo.pos + (0, 0, p.viewheight);
-
-				Vector3 wpos = viewpos + level.Vec3Diff(viewpos, mo.pos);
-				Vector3 spos = mkCoordUtil.WorldToScreen(wpos, viewpos, p.mo.pitch, p.mo.angle, p.mo.roll, p.fov);
-
-				double da = spos dot (0.0, 0.0, -1.0) - 1.0;
+				if (spos.z > 1 || spos.z < -1) { continue; }
 
 				Vector2 drawpos = mkCoordUtil.ToViewport(spos);
 
