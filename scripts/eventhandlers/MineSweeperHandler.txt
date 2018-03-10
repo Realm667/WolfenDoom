@@ -48,11 +48,11 @@ class MineSweeperHandler : EventHandler
 				) { continue; }
 
 				Vector3 worldpos = e.viewpos + level.Vec3Diff(e.viewpos, mo.pos); // World position of object, offset from viewpoint
-				Vector3 screenpos = BoACoordUtil.WorldToScreen(worldpos, e.viewpos, e.viewpitch, e.viewangle, e.viewroll, p.fov); // Translate that to the screen, using the viewpoint's info
+				Vector3 screenpos = mkCoordUtil.WorldToScreen(worldpos, e.viewpos, e.viewpitch, e.viewangle, e.viewroll, p.fov); // Translate that to the screen, using the viewpoint's info
 
 				if (screenpos.z > 1 || screenpos.z < -1) { continue; } // If the coordinates are off the screen, then skip drawing this item
 
-				Vector2 drawpos = BoACoordUtil.ToViewport(screenpos);
+				Vector2 drawpos = mkCoordUtil.ToViewport(screenpos);
 
 				TextureID image = mo.SpawnState.GetSpriteTexture(0);
 
