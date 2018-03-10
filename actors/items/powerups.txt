@@ -122,44 +122,6 @@ ACTOR Power : Inventory
 	Inventory.MaxAmount 2400 //Near 1 mins maximum - ozy81
 }
 
-ACTOR MineSweeper : CustomInventory
-{
-	//$Category Powerups (Wolf3D)
-	//$Title Human Mine Scanning (pickups)
-	//$Color 6
-	Scale 0.5
-	Tag "$TAGSWEEP"
-	Inventory.Icon MSPUB0
-	Inventory.PickupMessage "$SWEEPER"
-	Inventory.MaxAmount 1
-	+INVENTORY.INVBAR
-	+INVENTORY.UNDROPPABLE
-	States
-	{
-	Spawn:
-		MSPU A -1
-		Stop
-	Pickup:
-		"####" A 0 {
-			if (CountInv("MineSweeper") == 0) {
-				A_GiveInventory ("Power", 2400);
-				return true;
-			} else if (CountInv("MineSweeper") > 0 && CountInv("Power") < 2400) {
-				ACS_NamedExecuteAlways("BoA_MineSweeperOff", 0);
-				A_GiveInventory ("Power", 2400);
-				A_TakeInventory ("MineSweeper", 1); // The player will immediately get another minesweeper.
-				return true;
-			} else {
-				return false;
-			}
-		}
-		Stop
-	Use:
-		"####" A 0 ACS_NamedExecuteAlways("BoA_MineSweeper",0)
-		Fail
-	}
-}
-
 ACTOR AdrenalineSpeed : PowerupGiver { +INVENTORY.AUTOACTIVATE +INVENTORY.ADDITIVETIME -INVENTORY.INVBAR Inventory.MaxAmount 0 Powerup.Type "PowerDrugs" }
 ACTOR PowerDrugs : PowerDoubleFiringSpeed {Powerup.Duration -10}
 ACTOR AdrenalineFactor : PowerupGiver { +INVENTORY.AUTOACTIVATE +INVENTORY.ADDITIVETIME -INVENTORY.INVBAR Inventory.MaxAmount 0 Powerup.Type "PowerFactor" }
@@ -238,32 +200,5 @@ ACTOR OilPickup : CustomInventory
 	Pickup:
 		TNT1 A 0 A_GiveInventory("LanternOil", 1000)
 		Stop
-	}
-}
-
-ACTOR LanternPickup : CustomInventory
-{
-	//$Category Powerups (Wolf3D)
-	//$Title Useable Lantern (requires Oil)
-	//$Color 6
-	Scale 0.5
-	Tag "$TAGLANTR"
-	Inventory.Icon LANTB0
-	Inventory.PickupMessage "$LANTERN"
-	Inventory.MaxAmount 1
-	Inventory.PickupSound "misc/gadget_pickup"
-	+INVENTORY.INVBAR
-	+INVENTORY.UNDROPPABLE
-	States
-	{
-	Spawn:
-		LANT A -1
-		Stop
-	Pickup:
-		"####" A 0 A_GiveInventory("LanternOil", 1000)
-		Stop
-	Use:
-		"####" A 0 ACS_NamedExecuteAlways("BoA_Lantern",0)
-		Fail
 	}
 }

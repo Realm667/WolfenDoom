@@ -1,0 +1,79 @@
+class MineSweeperHandler : EventHandler
+{
+	Array<Actor > ScannableThings;
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (
+			!e.Thing ||
+			!(e.Thing is "Mine") ||
+			e.Thing is "UnderwaterMine" ||
+			e.Thing.health <= 0 ||
+			e.Thing.bDormant ||
+			ScannableThings.Find(e.Thing) < ScannableThings.Size()
+		) { return; }
+
+		ScannableThings.push(e.Thing);
+	}
+
+	override void WorldThingDestroyed(WorldEvent e)
+	{
+		int i = ScannableThings.Find(e.Thing);
+
+		if (i < ScannableThings.Size())
+		{
+			ScannableThings.Delete(i);
+			ScannableThings.ShrinkToFit();
+		}
+	}
+
+	override void RenderOverlay( RenderEvent e )
+	{
+		PlayerInfo p = players[consoleplayer];
+
+		if (p && p.mo.FindInventory("MineSweeperActive"))
+		{
+			for (int i = 0; i < ScannableThings.Size(); i++)
+			{
+				Actor mo = ScannableThings[i];
+
+				if (
+					!mo ||
+					p.mo.Distance2D(mo) > 512
+				) { continue; }
+
+				double anglefromcenter = (p.mo.angle % 360) - p.mo.AngleTo(mo);
+				if (anglefromcenter > 180) { anglefromcenter = 360 - anglefromcenter; }
+
+				double ratio = Screen.GetAspectRatio();
+				double fovfactor = p.fov * (ratio / 1.33333) / 90;
+
+				if (
+					mo.pos.z > p.mo.pos.z + p.viewheight / 2 ||
+					abs(anglefromcenter) > p.fov * fovfactor / 2
+				) { continue; }
+
+				Vector3 viewpos = p.mo.pos + (0, 0, p.viewheight);
+
+				Vector3 wpos = viewpos + level.Vec3Diff(viewpos, mo.pos);
+				Vector3 spos = mkCoordUtil.WorldToScreen(wpos, viewpos, p.mo.pitch, p.mo.angle, p.mo.roll, p.fov);
+
+				double da = spos dot (0.0, 0.0, -1.0) - 1.0;
+
+				Vector2 drawpos = mkCoordUtil.ToViewport(spos);
+
+				if (drawpos.x > 0 && drawpos.y > 0)
+				{
+					TextureID image = mo.SeeState.GetSpriteTexture(0);
+					Vector2 dimensions = TexMan.GetScaledSize(image);
+					dimensions /= p.mo.Distance3D(mo) / 680 * p.fov / 90;
+
+					color clr = 0xDE1B15;
+					double alpha = max(1.0 - (p.mo.Distance3D(mo) - 256) / 256, 0);
+
+					screen.DrawTexture (image, false, drawpos.x, drawpos.y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF, DTA_Alpha, alpha);
+				}
+			}
+		}
+	}
+}

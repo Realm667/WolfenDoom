@@ -1,0 +1,180 @@
+// Original code by gutawer; modified by Marisa Kirisame, bastardized by AFADoomer
+
+Class Matrix4
+{
+	private double m[16];
+
+	Matrix4 init()
+	{
+		int i;
+		for ( i=0; i<16; i++ ) m[i] = 0;
+		return self;
+	}
+
+	static Matrix4 create()
+	{
+		return new("Matrix4").init();
+	}
+
+	static Matrix4 identity()
+	{
+		Matrix4 o = Matrix4.create();
+		for ( int i=0; i<4; i++ ) o.set(i,i,1);
+		return o;
+	}
+
+	double get( int c, int r )
+	{
+		return m[r*4+c];
+	}
+
+	void set( int c, int r, double v )
+	{
+		m[r*4+c] = v;
+	}
+
+	Matrix4 add( Matrix4 o )
+	{
+		Matrix4 r = Matrix4.create();
+		int i, j;
+		for ( i=0; i<4; i++ ) for ( j=0; j<4; j++ )
+			r.set(j,i,get(j,i)+o.get(j,i));
+		return r;
+	}
+
+	Matrix4 scale( double s )
+	{
+		Matrix4 r = Matrix4.create();
+		int i, j;
+		for ( i=0; i<4; i++ ) for ( j=0; j<4; j++ )
+			r.set(j,i,get(j,i)*s);
+		return r;
+	}
+
+	Matrix4 mul( Matrix4 o )
+	{
+		Matrix4 r = Matrix4.create();
+		int i, j;
+		for ( i=0; i<4; i++ ) for ( j=0; j<4; j++ )
+			r.set(j,i,get(0,i)*o.get(j,0)+get(1,i)*o.get(j,1)+get(2,i)*o.get(j,2)+get(3,i)*o.get(j,3));
+		return r;
+	}
+
+	Vector3 vmat( Vector3 o )
+	{
+		double x, y, z, w;
+		x = get(0,0)*o.x+get(1,0)*o.y+get(2,0)*o.z+get(3,0);
+		y = get(0,1)*o.x+get(1,1)*o.y+get(2,1)*o.z+get(3,1);
+		z = get(0,2)*o.x+get(1,2)*o.y+get(2,2)*o.z+get(3,2);
+		w = get(0,3)*o.x+get(1,3)*o.y+get(2,3)*o.z+get(3,3);
+		return (x,y,z)/w;
+	}
+
+	static Matrix4 rotate( Vector3 axis, double theta )
+	{
+		Matrix4 r = Matrix4.identity();
+		double s, c, oc;
+		s = sin(theta);
+		c = cos(theta);
+		oc = 1.0-c;
+		r.set(0,0,oc*axis.x*axis.x+c);
+		r.set(1,0,oc*axis.x*axis.y-axis.z*s);
+		r.set(2,0,oc*axis.x*axis.z+axis.y*s);
+		r.set(0,1,oc*axis.y*axis.x+axis.z*s);
+		r.set(1,1,oc*axis.y*axis.y+c);
+		r.set(2,1,oc*axis.y*axis.z-axis.x*s);
+		r.set(0,2,oc*axis.z*axis.x-axis.y*s);
+		r.set(1,2,oc*axis.z*axis.y+axis.x*s);
+		r.set(2,2,oc*axis.z*axis.z+c);
+		return r;
+	}
+
+	static Matrix4 perspective( double fov, double ar, double znear, double zfar )
+	{
+		Matrix4 r = Matrix4.create();
+		double f = 1/tan(fov*0.5);
+		r.set(0,0,f/ar);
+		r.set(1,1,f);
+		r.set(2,2,(zfar+znear)/(znear-zfar));
+		r.set(3,2,(2*zfar*znear)/(znear-zfar));
+		r.set(2,3,-1);
+		return r;
+	}
+
+	// UE-like axes from rotation
+	static Vector3, Vector3, Vector3 getaxes( double pitch, double yaw, double roll )
+	{
+		Vector3 x = (1,0,0), y = (0,-1,0), z = (0,0,1);	// y inverted for left-handed result
+		Matrix4 mRoll = Matrix4.rotate((1,0,0),roll);
+		Matrix4 mPitch = Matrix4.rotate((0,1,0),pitch);
+		Matrix4 mYaw = Matrix4.rotate((0,0,1),yaw);
+		Matrix4 mRot = mRoll.mul(mYaw);
+		mRot = mRot.mul(mPitch);
+		x = mRot.vmat(x);
+		y = mRot.vmat(y);
+		z = mRot.vmat(z);
+		return x, y, z;
+	}
+}
+
+Class mkCoordUtil
+{
+	// view matrix setup mostly pulled from gutawer's code
+	static Vector3 WorldToScreen( Vector3 vect, Vector3 eye, double pitch, double yaw, double roll, double vfov )
+	{
+		double ar = Screen.getWidth()/double(Screen.getHeight());
+		double fovr = (ar>=1.3)?1.333333:ar;
+		double fov = 2*atan(tan(clamp(vfov,5,170)*0.5)/fovr);
+		float pr = level.pixelstretch;
+		double angx = cos(pitch);
+		double angy = sin(pitch)*pr;
+		double alen = sqrt(angx*angx+angy*angy);
+		double apitch = asin(angy/alen);
+		double ayaw = yaw-90;
+		// rotations
+		Matrix4 mRoll = Matrix4.rotate((0,0,1),roll);
+		Matrix4 mPitch = Matrix4.rotate((1,0,0),apitch);
+		Matrix4 mYaw = Matrix4.rotate((0,-1,0),ayaw);
+		// scaling
+		Matrix4 mScale = Matrix4.identity();
+		mScale.set(1,1,pr);
+		// YZ swap
+		Matrix4 mYZ = Matrix4.create();
+		mYZ.set(0,0,1);
+		mYZ.set(2,1,1);
+		mYZ.set(1,2,-1);
+		mYZ.set(3,3,1);
+		// translation
+		Matrix4 mMove = Matrix4.identity();
+		mMove.set(3,0,-eye.x);
+		mMove.set(3,1,-eye.y);
+		mMove.set(3,2,-eye.z);
+		// perspective
+		Matrix4 mPerspective = Matrix4.perspective(fov,ar,5,65535);
+		// full matrix
+		Matrix4 mView = mRoll.mul(mPitch);
+		mView = mView.mul(mYaw);
+		mView = mView.mul(mScale);
+		mView = mView.mul(mYZ);
+		mView = mView.mul(mMove);
+		Matrix4 mWorldToScreen = mPerspective.mul(mView);
+		return mWorldToScreen.vmat(vect);
+	}
+
+	// thanks once again to gutawer for making this thing screenblocks-aware
+	static Vector2 ToViewport( Vector3 screenpos, bool scrblocks = true )
+	{
+		if ( scrblocks )
+		{
+			int winx, winy, winw, winh;
+			[winx,winy,winw,winh] = Screen.getViewWindow();
+			int sh = Screen.getHeight();
+			int ht = sh;
+			int screenblocks = CVar.GetCVar("screenblocks",players[consoleplayer]).getInt();
+			if ( screenblocks < 10 ) ht = (screenblocks*sh/10)&~7;
+			int bt = sh-(ht+winy-((ht-winh)/2));
+			return (winx,sh-bt-ht)+((screenpos.x+1)*winw,(-screenpos.y+1)*ht)*0.5;
+		}
+		else return ((screenpos.x+1)*Screen.getWidth(),(-screenpos.y+1)*Screen.getHeight())*0.5;
+	}
+}

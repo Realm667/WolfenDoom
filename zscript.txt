@@ -1,4 +1,4 @@
-version "2.5"
+version "3.3"
 
 // Menu Components
 #include "scripts/menus/iconlistmenu.txt"						// Skill Menu (with icons) Base
@@ -7,8 +7,12 @@ version "2.5"
 #include "scripts/conversations/conversationmenubase.txt"		// Replacement Conversation Menu Base
 #include "scripts/conversations/boaconversationmenu.txt"		// Replacement Conversatino Menu
 
+// Classes/Libraries
+#include "scripts/ScreenCoordinates.txt"			// Handles world-to-screen coordinate translation
+
 // Event Handler
-#include "scripts/BoAEventHandler.txt"
+#include "scripts/eventhandlers/InventoryClearHandler.txt"
+#include "scripts/eventhandlers/MineSweeperHandler.txt"
 
 // Status Bar
 #include "scripts/BoAStatusBar.txt"
@@ -43,6 +47,7 @@ version "2.5"
 #include "scripts/actors/items/weapons.txt"			// ZScriptified weapon components
 #include "scripts/actors/items/soul.txt"			// Soul inventory items
 #include "scripts/actors/items/chest.txt"			// Supply chest
+#include "scripts/actors/items/powerups.txt"			// Lantern and Minesweeper
 
 /// Player & Monsters Effects Inventory Items
 #include "scripts/items/tilt.txt"					// Nash's tilt implementation

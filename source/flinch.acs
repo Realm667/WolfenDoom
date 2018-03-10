@@ -1,9 +1,5 @@
-#library "flinch"
-#include "zcommon.acs"
-
 #define TICS_PER_SECOND 35
 #define MAX_PITCH 0.25
-#define MAX_PLAYERS 8
 
 // Fixed angle defines.
 #define HALF_DEGREE 	0.0013885
@@ -58,13 +54,13 @@ function int FixedAbs(int a)
 
 // Constrain a fixed-point number between a minimum and maximum.
 //
-function int FixedClamp(int in, int min, int max)
+function int FixedClamp(int in, int minimun, int maximum)
 {
-	if (in < min) {
-		in = min;
+	if (in < minimun) {
+		in = minimun;
 	}
-	else if (in > max) {
-		in = max;
+	else if (in > maximum) {
+		in = maximum;
 	}
 	return in;
 }
@@ -125,8 +121,8 @@ function int RecoverAxis(int total, int axis)
 	return total;
 }
 
-// Loops forever. Tries to restore the player's view to what it was before a flinch.
-//
+
+// Initilize flinch variables
 script "RecoverView" ENTER
 {
 	int player_number = PlayerNumber();
@@ -140,23 +136,27 @@ script "RecoverView" ENTER
 		cumulative_flinch_roll[i] = 0.0;
 		hit_timer[i] = Timer();
 		SetActorRoll(0, 1.0);
+	}
+}
 
-		// "while" loop to allows script to work with resurrect ccmd.
-		while (true)
+// Tries to restore the player's view to what it was before a flinch.
+Function void DoFlinchRecovery(void)
+{
+	int player_number = PlayerNumber();
+	if (player_number >= 0 && player_number < MAX_PLAYERS)
+	{
+		int i = player_number;
+
+		// Only recover player's view if they're alive.
+		if (IsAlive(0) && GetServerFlinchAmount() > 0.0 && cumulative_flinch_roll[i] != 0)
 		{
-			// Only recover player's view if they're alive.
-			if (IsAlive(0) && GetServerFlinchAmount() > 0.0 && cumulative_flinch_roll[i] != 0)
-			{
-				cumulative_flinch_angle[i] = RecoverAxis(cumulative_flinch_angle[i], AXIS_YAW);
-				cumulative_flinch_pitch[i] = RecoverAxis(cumulative_flinch_pitch[i], AXIS_PITCH);
-				cumulative_flinch_roll[i]  = RecoverAxis(cumulative_flinch_roll[i], AXIS_ROLL);
-			}
-
-			// Store player's current health so we can calculate damage in flinch script.
-			previous_health[i] = GetActorProperty(0, APROP_Health);
-
-			Delay(1);
+			cumulative_flinch_angle[i] = RecoverAxis(cumulative_flinch_angle[i], AXIS_YAW);
+			cumulative_flinch_pitch[i] = RecoverAxis(cumulative_flinch_pitch[i], AXIS_PITCH);
+			cumulative_flinch_roll[i]  = RecoverAxis(cumulative_flinch_roll[i], AXIS_ROLL);
 		}
+
+		// Store player's current health so we can calculate damage in flinch script.
+		previous_health[i] = GetActorProperty(0, APROP_Health);
 	}
 }
 
@@ -167,17 +167,17 @@ script "RecoverView" ENTER
 // min - Minimum flinch amount.
 // max - Maximum flinch amount.
 //
-function int RandomFlinchAmount(int min, int max)
+function int RandomFlinchAmount(int minimun, int maximum)
 {
-	int difference = max - min;
+	int difference = maximum - minimun;
 	int flinch = Random(-difference, difference);
 	if (flinch < 0.0)
 	{
-		flinch -= min;
+		flinch -= minimun;
 	}
 	else
 	{
-		flinch += min;
+		flinch += minimun;
 	}
 	return flinch;
 }

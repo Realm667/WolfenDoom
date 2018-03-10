@@ -1,0 +1,126 @@
+// Generic "hold-to-activate" script
+int repairstate[65536]; // Arbitrarily large to account for most possible line ids
+Script "Activate" (int lineid, int repairtime)
+{
+	if (!repairtime) { repairtime = 1; }
+
+	if (repairstate[lineid] < repairtime * 35) // Standard 35 use/script cycles per second
+	{
+		if (repairstate[lineid] == 0) { ACS_NamedExecute("HintMessage", 0, "HINTTEXTHOLD"); } // Show hint message on first use
+
+		repairstate[lineid]++; // Increment the repair amount
+		SetUserVariable(0, "crosshair", 80 + 11 * repairstate[lineid] / (repairtime * 35));  // Show progress by changing the crosshair based on hold time
+	}
+	else // If it's fully repaired...
+	{
+		ClearLineSpecial(); // Clear the line special to prevent further activation
+
+		SetUserVariable(0, "crosshair", 90); // Show progress complete
+
+		Delay(35); // Wait a second before clearing the crosshair (so you have a chance to see the full meter)
+
+		SetUserVariable(0, "crosshair", 0); // Clear the crosshair
+
+		SetResultValue(1);
+	}
+
+	SetResultValue(0);
+}
+
+// Generic interactive paper display script.  
+// Takes a message number as an argument, then looks up PAPERTEXT__ in LANGUAGE and displays that message
+// Paper style can be customized via the seond argument, and font style by the third argument
+//
+//	Paper Styles: 0: Worn paper, 1: Plain white paper, 2: Plain tan paper, 3:Reich letterhead, 4:Nazi party letterhead
+//	Font Styles: 0: Handwriting, 1: Set (printing press-style) type, 2: Typewriter, 3:Runes
+//
+script "Textpaper" (int text_number, int paperstyle, int fontstyle)
+{
+	str message = "";
+
+	// If a message number (0 or higher) was passed, the lookup name will be formatted as PAPERTEXTxx - PAPERTEXT00, PAPERTEXT01, etc.)
+	if (text_number > 0) { message = StrParam(s:"PAPERTEXT", s:Pad(text_number, 2)); }
+
+	str paper = "PAPER1"; // Default background
+	int pageoffset = 0; // Start text at the top of the page
+
+	// Set the background image if one was specified; if the image has a letterhead, offset the text y offset
+	if (paperstyle > 0)
+	{
+		paper = StrParam(s:"PAPER", d:paperstyle);
+
+		switch (paperstyle) // Offset the starting y value of the text to account for the letterhead
+		{
+			case 3:
+				pageoffset = 25;
+				break;
+			case 4:
+				pageoffset = 45;
+				break;
+			default:
+				break;
+		}
+	}
+
+	int fontsize = 30; // Not truly font size - sets the overall scale of the font positioning and wrapping
+
+	// Set the actual font, based on the int that was passed, and do any other necessary adjustments
+	str font;
+	switch (fontstyle)
+	{
+		default:
+		case 0: // Print handwriting
+			font = "CHICKN24"; // http://bmf.php5.cz/?font=chickn24 - will add to credits once finalized
+			fontsize = fontsize * 7 / 8;
+			break;
+		case 1: // Set Type (not fixed width)
+			font = "AMH18"; // http://bmf.php5.cz/?font=amh18
+			fontsize = fontsize * 7 / 8; // Make this one slightly smaller
+			break;
+		case 2: // Typewriter Font
+			font = "NOB16"; // http://bmf.php5.cz/?font=nob16
+			break;
+		case 3: // Runic Font
+			font = "RUN14"; // http://bmf.php5.cz/?font=run14
+			break;
+	}
+
+	// These won't change, so calculate them once here instead of during each loop
+	// This adjusts the coordinates for whatever "font size" we've set above.
+	int scale = 128.0 / fontsize;
+	int textwidth = 320 * scale / 1.0;
+	int textheight = 200 * scale / 1.0;
+	int textx = FixedMul(95.0, scale) / 1.0 * 1.0; // Get rid of trailing decimals
+	int texty = FixedMul(pageoffset * 1.0 + 20.0, scale) / 1.0 * 1.0;
+	int wrapwidth = 132 * scale / 1.0;
+
+	int flags = HUDMSG_FADEINOUT | HUDMSG_NOTWITHFULLMAP | HUDMSG_COLORSTRING | HUDMSG_ALPHA;
+
+	int fadein = 0.25;
+
+	// Paper stays on screen as long as you hold down the 'use' button
+	while (GetPlayerInput(-1, INPUT_BUTTONS) & BT_USE)
+	{
+		SetPlayerProperty(0, 1, PROP_TOTALLYFROZEN); // Freeze the player while they're reading
+
+		SetHudSize(640, 490, false);
+		SetFont(paper);
+		HudMessage(s:"A"; flags, 4, 0, 320.0, 240.0, 0.15, fadein, 1.0);
+
+		SetHudSize(textwidth, textheight, false);
+		SetHudWrapWidth(wrapwidth);
+		SetFont(font);
+		HudMessage(l:message; flags, 3, "TrueBlack", textx + 0.1, texty + 0.1, 0.15, fadein, 1.0, 0.75);
+
+		if (fadein > 0) // Only the initial display does a fade in
+		{
+			ACS_NamedExecute("HintMessage", 0, "PAPERTEXTHOLD"); 
+			Delay(35 * fadein / 1.0);
+			fadein = 0;
+		}
+
+		Delay(1);
+	}
+
+	SetPlayerProperty(0, 0, PROP_TOTALLYFROZEN);
+}

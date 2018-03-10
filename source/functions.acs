@@ -1,0 +1,153 @@
+// Get the speed of an actor (vel.length)
+Function int GetSpeed(int tid)
+{
+	int x = GetActorVelX(tid);
+	int y = GetActorVelY(tid);
+	int z = GetActorVelZ(tid);
+
+	int speed = (FixedMul(x, x) + FixedMul(y, y) + FixedMul(z, z)) >> 16;
+
+	return speed;
+}
+
+// Math helper functions
+function int abs (int x)
+{
+	if (x < 0)
+		return -x;
+
+	return x;
+}
+
+function int pow (int x, int n)
+{
+	int y = 1;
+	while (n-- > 0) y *= x;
+	return y;
+}
+
+function int min (int a, int b)
+{
+	if (a < b)
+		return a;
+
+	return b;
+}
+
+function int max (int a, int b)
+{
+	if (a > b)
+		return a;
+
+	return b;
+}
+
+Function str Pad(int Input, int Digits)
+{
+	str strTemp = "";
+
+	For (int p = 1; p <= Digits - strLen(strParam(d:Input)); p++)
+	{
+		strTemp = strParam(c:'0',s:strTemp);
+	}
+
+	return strParam(s:strTemp,d:Input);
+}
+
+function int _cos(int a)
+{
+	a%=1.0;
+	if(a<0)
+		a+=1.0;
+	if(a>0.5)
+		a=-a+1.0;
+	return cos(a);
+}
+
+function int _sin(int a)
+{
+	return _cos(a+0.25);
+}
+
+/*
+  SetMusicVolumeFactor
+	Sets the multiplier for music volume (128 is half volume, 256 is full volume,
+	512 is double volume, etc.), over the delay specified in tics.
+
+	Example:
+	    ACS_NamedExecuteAlways("SetMusicVolumeFactor", 0, 128, 70);
+
+	This will fade the music to half volume over 2 seconds (70 tics).
+*/
+int intSetVolume = 1.0;
+Script "SetMusicVolumeFactor" (int intTargetVolume, int intDelay)
+{
+	intTargetVolume *= 256;
+
+	If (intDelay > 0)
+	{
+		int intStepSize = (intSetVolume - intTargetVolume) / intDelay;
+
+		For (int i = 0; i <= intDelay; i++)
+		{
+			SetMusicVolume(intSetVolume - (intStepSize * i));
+			Delay(1);
+		}
+	}
+
+	SetMusicVolume(intTargetVolume);
+	intSetVolume = intTargetVolume;
+}
+
+/* Modified from the wiki - http://zdoom.org/wiki/Hudmessageonactor */
+Function void HudMessageOnActor(int tid, int msgID, int Range, str Font, str text, int holdTime, str colour)
+{
+	int dist, ang, vang, pitch, x, y, multiplierX, multiplierY;
+	int HUDX = 1024;
+	int HUDY = 768;
+	int ratio = 1.0;
+
+	x = GetActorX(tid) - GetActorX(0);
+	y = GetActorY(tid) - GetActorY(0); 
+
+	vang = VectorAngle(x,y);
+	ang = (vang - GetActorAngle(0) + 1.0) % 1.0;
+
+	if(((vang+0.125)%0.5) > 0.25) dist = FixedDiv(y, sin(vang));
+	else dist = FixedDiv(x, cos(vang));
+
+	if ((ang < 0.2 || ang > 0.8) && (dist >> 16 < Range))
+	{
+		ratio = (Range * 1.0 - dist) / Range;
+
+		HUDX = HUDX - (HUDX * ratio / 1.0);
+		HUDY = HUDY - (HUDY * ratio / 1.0);
+
+		SetHudSize(HUDX, HUDY, 1);
+
+		int Zdist = GetActorZ(tid) - (GetActorZ(0) + GetActorViewHeight(0)); 
+
+		pitch = VectorAngle(dist, ZDist);
+		pitch = (pitch + GetActorPitch(0)) % 1.0;
+
+		if ((hudX/2) * sin(ang) != 0 && cos(ang) != 0 && (hudX/2) * sin(pitch) != 0 && cos(pitch) != 0)
+		{
+			x = HUDX/2 - ((HUDX/2) * sin(ang) / cos(ang));
+			y = HUDY/2 - ((HUDX/2) * sin(pitch) / cos(pitch));
+
+			int bob = 0;
+			int newy = y;
+
+			If (GetSpeed(0))
+			{ // Mostly negate movebob
+				int angle = (Timer() * 1.0 / 20) % 1.0;
+				bob = FixedMul(GetCvar("movebob"), sin(angle)) / 4;
+				If (bob / 1.0 > 16) bob = 16;
+				newy = y * (1.0 + bob / 4) / 1.0;
+			}
+
+			SetFont(Font);
+			HudMessage(s:text; HUDMSG_PLAIN | HUDMSG_NOTWITHFULLMAP | HUDMSG_LAYER_UNDERHUD, msgID, colour, (x << 16) + 32.0, (newy << 16) + 32.0, holdTime);
+		}
+	}
+}

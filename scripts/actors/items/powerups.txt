@@ -1,0 +1,115 @@
+class LanternPickup : CustomInventory
+{
+	bool active;
+
+	Default
+	{
+		//$Category Powerups (Wolf3D)
+		//$Title Useable Lantern (requires Oil)
+		//$Color 6
+		Scale 0.5;
+		Tag "$TAGLANTR";
+		Inventory.Icon "LANTB0";
+		Inventory.PickupMessage "$LANTERN";
+		Inventory.MaxAmount 1;
+		Inventory.PickupSound "misc/gadget_pickup";
+		+INVENTORY.INVBAR
+		+INVENTORY.UNDROPPABLE
+	}
+
+	States
+	{
+		Spawn:
+			LANT A -1;
+			Stop;
+		Pickup:
+			"####" A 0 A_GiveInventory("LanternOil", 1000);
+			Stop;
+		Use:
+			"####" A 0 {
+				invoker.active = !invoker.active;
+
+				if (invoker.active && FindInventory("LanternOil")) { GiveInventory("LanternActive", 1); }
+				else { TakeInventory("LanternActive", 1); }
+			}
+			Fail;
+	}
+
+	override void Tick()
+	{
+		if (globalfreeze || level.Frozen) { return; }
+
+		if (owner && owner.FindInventory("LanternActive")) 
+		{
+			if (owner.waterlevel >= 3)
+			{
+				A_PlaySound("flamer/steam", CHAN_AUTO, Random(15, 45));
+				owner.TakeInventory("LanternActive", 1); 
+			}
+			else if (owner.FindInventory("LanternOil")) { owner.TakeInventory("LanternOil", 1); }
+			else { owner.TakeInventory("LanternActive", 1); }
+		}
+	}
+}
+
+class MineSweeper : CustomInventory
+{
+	bool active;
+
+	Default
+	{
+		//$Category Powerups (Wolf3D)
+		//$Title Human Mine Scanning (pickups)
+		//$Color 6
+		Scale 0.5;
+		Tag "$TAGSWEEP";
+		Inventory.Icon "MSPUB0";
+		Inventory.PickupMessage "$SWEEPER";
+		Inventory.MaxAmount 1;
+		+INVENTORY.INVBAR
+		+INVENTORY.UNDROPPABLE
+	}
+
+	States
+	{
+		Spawn:
+			MSPU A -1;
+			Stop;
+		Pickup:
+			"####" A 0 {
+				if (CountInv("MineSweeper") == 0) {
+					A_GiveInventory ("Power", 2400);
+					return true;
+				} else if (CountInv("MineSweeper") > 0 && CountInv("Power") < 2400) {
+					A_GiveInventory ("Power", 2400 - CountInv("Power"));
+					A_TakeInventory ("MineSweeper", 1); // The player will immediately get another minesweeper.
+					return true;
+				} else {
+					return false;
+				}
+			}
+			Stop;
+		Use:
+			"####" A 0 {
+				invoker.active = !invoker.active;
+
+				if (invoker.active && FindInventory("Power")) { GiveInventory("MineSweeperActive", 1); }
+				else { TakeInventory("MineSweeperActive", 1); }
+			}
+			Fail;
+	}
+
+	override void Tick()
+	{
+		if (globalfreeze || level.Frozen || !owner || !owner.player) { return; }
+
+		if (owner && owner.FindInventory("MineSweeperActive")) 
+		{
+			if (owner.FindInventory("Power"))
+			{
+				owner.TakeInventory("Power", 1);
+			}
+			else { owner.TakeInventory("MineSweeperActive", 1); }
+		}
+	}
+}
