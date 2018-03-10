@@ -93,8 +93,7 @@ class MineSweeper : CustomInventory
 			"####" A 0 {
 				invoker.active = !invoker.active;
 
-				if (invoker.active && FindInventory("Power")) { GiveInventory("MineSweeperActive", 1); }
-				else { TakeInventory("MineSweeperActive", 1); }
+				if (invoker.active && !FindInventory("Power")) { invoker.active = false; }
 			}
 			Fail;
 	}
@@ -103,13 +102,10 @@ class MineSweeper : CustomInventory
 	{
 		if (globalfreeze || level.Frozen || !owner || !owner.player) { return; }
 
-		if (owner && owner.FindInventory("MineSweeperActive")) 
+		if (owner && active) 
 		{
-			if (owner.FindInventory("Power"))
-			{
-				owner.TakeInventory("Power", 1);
-			}
-			else { owner.TakeInventory("MineSweeperActive", 1); }
+			if (owner.FindInventory("Power")) { owner.TakeInventory("Power", 1); }
+			else { active = false; }
 		}
 	}
 }

@@ -31,7 +31,11 @@ class MineSweeperHandler : EventHandler
 	{
 		PlayerInfo p = players[consoleplayer];
 
-		if (p && p.mo.FindInventory("MineSweeperActive"))
+		if (!p || !p.mo) { return; }
+
+		MineSweeper ms = MineSweeper(p.mo.FindInventory("MineSweeper"));
+
+		if (ms && ms.active)
 		{
 			for (int i = 0; i < ScannableThings.Size(); i++)
 			{
