@@ -29,8 +29,7 @@ class LanternPickup : CustomInventory
 			"####" A 0 {
 				invoker.active = !invoker.active;
 
-				if (invoker.active && FindInventory("LanternOil")) { GiveInventory("LanternActive", 1); }
-				else { TakeInventory("LanternActive", 1); }
+				if (invoker.active && !FindInventory("LanternOil")) { invoker.active = false; }
 			}
 			Fail;
 	}
@@ -39,15 +38,15 @@ class LanternPickup : CustomInventory
 	{
 		if (globalfreeze || level.Frozen) { return; }
 
-		if (owner && owner.FindInventory("LanternActive")) 
+		if (owner && active) 
 		{
 			if (owner.waterlevel >= 3)
 			{
 				A_PlaySound("flamer/steam", CHAN_AUTO, Random(15, 45));
-				owner.TakeInventory("LanternActive", 1); 
+				active = false;
 			}
 			else if (owner.FindInventory("LanternOil")) { owner.TakeInventory("LanternOil", 1); }
-			else { owner.TakeInventory("LanternActive", 1); }
+			else { active = false; }
 		}
 	}
 }

@@ -454,7 +454,9 @@ class BoAPlayer : PlayerPawn
 		else { RemoveEffect("FireBrandEffect"); }
 		
 		// Lantern effect handling
-		if (player && CountInv("LanternActive") > 0) { SpawnEffect("LanternEffect"); }
+		LanternPickup lantern = LanternPickup(FindInventory("LanternPickup"));
+
+		if (player && lantern && lantern.active) { SpawnEffect("LanternEffect"); }
 		else { RemoveEffect("LanternEffect"); }
 
 		// New uniform or other sprite-changing tokens should be set up here.  See CheckSpriteToken function above.
