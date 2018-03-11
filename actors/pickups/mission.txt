@@ -484,3 +484,39 @@ ACTOR AktenDreamClue : Akten
 		Stop
 	}
 }
+
+ACTOR ZombieHeadClue : Akten
+{
+	//$Title Zombie Arm (Clue)
+	Tag "$TAGZHED"
+	Inventory.Icon ZHEDA0
+	Inventory.PickupMessage "$ZHED"
+	Inventory.MaxAmount 1
+	
+	Inventory.PickupSound "misc/armor_body"
+	States
+	{
+	Spawn:
+		ZHED B -1
+		Stop
+
+	}
+}
+
+ACTOR MineralClue : Akten
+{
+	//$Title Mineral (Clue)
+	Tag "$TAGMINR"
+	Inventory.Icon MINRA0
+	Inventory.PickupMessage "$ZMINR"
+	Inventory.MaxAmount 2
+	
+	Inventory.PickupSound "pickup/armorshard"
+	States
+	{
+	Spawn:
+		MINR B -1
+		Stop
+
+	}
+}
