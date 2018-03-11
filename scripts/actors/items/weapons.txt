@@ -58,32 +58,39 @@ class NaziWeapon : Weapon
 
 	override void Tick()
 	{
-		if (stealth && owner && owner.FindInventory("DisguiseToken", true))
+		if (stealth && owner)
 		{
-			let psp = owner.player.GetPSprite(PSP_WEAPON);
-
-			if (psp.CurState == GetReadyState()) // If in ready state, turn notarget on unless enemies are already alerted
+			if (owner.FindInventory("DisguiseToken", true))
 			{
-				Inventory vis = owner.FindInventory("BoAVisibility");
+				let psp = owner.player.GetPSprite(PSP_WEAPON);
 
-				if (vis && BoAVisibility(vis).alertedcount > 0) { owner.player.cheats &= ~CF_NOTARGET; } // Disguise fails if there are active enemies
-				else { owner.player.cheats |= CF_NOTARGET; }
+				if (psp.CurState == GetReadyState()) // If in ready state, turn notarget on unless enemies are already alerted
+				{
+					Inventory vis = owner.FindInventory("BoAVisibility");
+
+					if (vis && BoAVisibility(vis).alertedcount > 0) { owner.player.cheats &= ~CF_NOTARGET; } // Disguise fails if there are active enemies
+					else { owner.player.cheats |= CF_NOTARGET; }
+				}
+				else if (psp.CurState == GetUpState()) // If in select state, turn notarget on and slow down your movement
+				{
+					owner.player.cheats |= CF_NOTARGET;
+					owner.speed = owner.Default.speed * 0.85;
+				}
+				else if (
+					psp.CurState == GetDownState() || // If in deselect state, turn notarget off and reset speed
+					psp.CurState == GetAtkState(false) || // or if in fire state
+					psp.CurState == GetAtkState(true) || // or if in hold state
+					psp.CurState == GetAltAtkState(false) || // or if in altfire state
+					psp.CurState == GetAltAtkState(true) // or if in althold state
+				)
+				{
+					owner.player.cheats &= ~CF_NOTARGET;
+					owner.speed = owner.Default.speed;
+				}
 			}
-			else if (psp.CurState == GetUpState()) // If in select state, turn notarget on and slow down your movement
-			{
-				owner.player.cheats |= CF_NOTARGET;
-				owner.speed = owner.Default.speed * 0.85;
-			}
-			else if (
-				psp.CurState == GetDownState() || // If in deselect state, turn notarget off and reset speed
-				psp.CurState == GetAtkState(false) || // or if in fire state
-				psp.CurState == GetAtkState(true) || // or if in hold state
-				psp.CurState == GetAltAtkState(false) || // or if in altfire state
-				psp.CurState == GetAltAtkState(true) // or if in althold state
-			)
+			else
 			{
 				owner.player.cheats &= ~CF_NOTARGET;
-				owner.speed = owner.Default.speed;
 			}
 		}
 

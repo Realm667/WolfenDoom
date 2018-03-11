@@ -1286,7 +1286,8 @@ class Nazi : Base
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING);
 				bFriendly = False; // Force to not friendly so that they will count as a kill and be healable.
 				SoundAlert(source, false, 192);
-				A_Die();
+				damage = health;
+				flags |= DMG_FORCED;
 			}
 			else if (user_incombat) // If the actor has already been in its See state
 			{
@@ -1298,13 +1299,18 @@ class Nazi : Base
 				user_incombat = True;
 				A_Log(StringTable.Localize("$CRITICAL"));
 				SoundAlert(source, false, 192);
-				A_Die();
+				damage = health;
+				flags |= DMG_FORCED;
 			}
 		}
 
-		if (source is "MovingTrailBeam") { source = source.master; }
+		if (source)
+		{
+			if (source is "MovingTrailBeam") { source = source.master; }
 
-		if (source) { vis = source.FindInventory("BoAVisibility"); }
+			vis = source.FindInventory("BoAVisibility");
+		}
+		else { source = self; }
 
 		if (vis) { BoAVisibility(vis).visibility = 200; }
 
@@ -1332,7 +1338,7 @@ class Nazi : Base
 			if (master && master is "WaveSpawner") { A_QueueCorpse(); } // Queue wave spawned corpses for removal
 		}
 
-		if (source is "PlayerPawn") { target = source; } // Set the attacker as the current target
+		target = source;
 
 		return damageamt; // Function returns amount of damage received by the actor
 	}
