@@ -451,24 +451,6 @@ ACTOR CCampUniformPickup : CustomInventory
 	}
 }
 
-ACTOR ZombieArmClue : Akten
-{
-	//$Title Zombie Arm (Clue)
-	Tag "$TAGZARM"
-	Inventory.Icon ZARMA0
-	Inventory.PickupMessage "$ZARM"
-	Inventory.MaxAmount 1
-	
-	Inventory.PickupSound "misc/armor_body"
-	States
-	{
-	Spawn:
-		ZARM B -1
-		Stop
-
-	}
-}
-
 ACTOR AktenDreamClue : Akten
 {
 	//$Title Secret Files (Clue)
@@ -485,14 +467,30 @@ ACTOR AktenDreamClue : Akten
 	}
 }
 
+ACTOR ZombieArmClue : Akten
+{
+	//$Title Zombie Arm (Clue)
+	Tag "$TAGZARM"
+	Inventory.Icon ZARMA0
+	Inventory.MaxAmount 1
+	Inventory.PickupMessage "$ZARM"
+	Inventory.PickupSound "misc/armor_body"
+	States
+	{
+	Spawn:
+		ZARM B -1
+		Stop
+
+	}
+}
+
 ACTOR ZombieHeadClue : Akten
 {
 	//$Title Zombie Arm (Clue)
 	Tag "$TAGZHED"
 	Inventory.Icon ZHEDA0
-	Inventory.PickupMessage "$ZHED"
 	Inventory.MaxAmount 1
-	
+	Inventory.PickupMessage "$ZHED"
 	Inventory.PickupSound "misc/armor_body"
 	States
 	{
@@ -508,9 +506,8 @@ ACTOR MineralClue : Akten
 	//$Title Mineral (Clue)
 	Tag "$TAGMINR"
 	Inventory.Icon MINRA0
-	Inventory.PickupMessage "$ZMINR"
 	Inventory.MaxAmount 2
-	
+	Inventory.PickupMessage "$ZMINR"
 	Inventory.PickupSound "pickup/armorshard"
 	States
 	{
