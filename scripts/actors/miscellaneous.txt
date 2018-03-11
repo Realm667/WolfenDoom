@@ -85,9 +85,10 @@ class TextPaper : Actor
 
 		//$Arg0 "Text ID"
 		//$Arg0Tooltip "Predefined texts from the LANGUAGE lump, e.g. 2 is PAPERTEXT02"
+		//$Arg0Default 0
 		//$Arg1 "Paper style"
 		//$Arg1Tooltip "Various paper styles:\n1. White empty paper\n2. Tan empty paper\n3. White with nazi head paper\n4. Tan with nazi head paper\n5. Old used paper"
-		//$Arg2Default 1
+		//$Arg1Default 1
 		//$Arg2 "Font style"
 		//$Arg2Tooltip "Various font styles:\n1. Typewriter clean\n2. Typewriter broken\n3. Occult glyphs\n4. Handwritten"
 		//$Arg2Default 1
@@ -117,9 +118,14 @@ class TextPaper : Actor
 
 	override bool Used(Actor user)
 	{
-		if (special == 80)
+		if (special == 80 || (!special && args[0]))
 		{
-			if (displaytime < level.time) { Level.ExecuteSpecial(special, user, null, false, args[0], args[1], args[2], args[3], args[4]); } // Only run this when first pressed
+			if (displaytime < level.time) // Only run this when first pressed
+			{
+				if (special == 80) { Level.ExecuteSpecial(80, user, null, false, args[0], args[1], args[2], args[3], args[4]); } // Run it the old way if that's how it's set up (also allows setting other actions to run when you use the paper, still)
+				else {  Level.ExecuteSpecial(80, user, null, false, -int(Name("TextPaper")), 0, args[0], args[1], args[2]); } // Otherwise pass the args as defined
+			} 
+			
 
 			displaytime = level.time + 1;
 			user.player.usedown = false; // Set the internal logic to think that use was not held down so that this code block will be called again
