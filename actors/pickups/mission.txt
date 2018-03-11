@@ -450,3 +450,37 @@ ACTOR CCampUniformPickup : CustomInventory
 		Stop
 	}
 }
+
+ACTOR ZombieArmClue : Akten
+{
+	//$Title Zombie Arm (Clue)
+	Tag "$TAGZARM"
+	Inventory.Icon ZARMA0
+	Inventory.PickupMessage "$ZARM"
+	Inventory.MaxAmount 1
+	
+	Inventory.PickupSound "misc/armor_body"
+	States
+	{
+	Spawn:
+		ZARM B -1
+		Stop
+
+	}
+}
+
+ACTOR AktenDreamClue : Akten
+{
+	//$Title Secret Files (Clue)
+	Tag "$TAGTHORS"
+	Inventory.Icon AKT3A0
+	Inventory.PickupMessage "$DREAM"
+	Inventory.MaxAmount 1
+
+	States
+	{
+	Spawn:
+		AKT3 B -1
+		Stop
+	}
+}
