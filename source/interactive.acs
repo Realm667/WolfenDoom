@@ -69,10 +69,6 @@ script "Textpaper" (int text_number, int paperstyle, int fontstyle)
 	switch (fontstyle)
 	{
 		default:
-		case 0: // Print handwriting
-			font = "CHICKN24"; // http://bmf.php5.cz/?font=chickn24 - will add to credits once finalized
-			fontsize = fontsize * 7 / 8;
-			break;
 		case 1: // Set Type (not fixed width)
 			font = "AMH18"; // http://bmf.php5.cz/?font=amh18
 			fontsize = fontsize * 7 / 8; // Make this one slightly smaller
@@ -82,6 +78,10 @@ script "Textpaper" (int text_number, int paperstyle, int fontstyle)
 			break;
 		case 3: // Runic Font
 			font = "RUN14"; // http://bmf.php5.cz/?font=run14
+			break;
+		case 4: // Print handwriting
+			font = "CHICKN24"; // http://bmf.php5.cz/?font=chickn24 - will add to credits once finalized
+			fontsize = fontsize * 7 / 8;
 			break;
 	}
 
