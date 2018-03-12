@@ -1078,7 +1078,8 @@ class Nazi : Base
 
 		if (user_sneakable && bFriendly) // If we attacked a sneakable actor who wasn't alerted...
 		{
-			BecomeAlerted(target); // Alert that actor
+			// If we are the same species as what shot us, then just become alert and look for a target - otherwise, return fire!
+			BecomeAlerted(target.species == species ? null : target); // Alert that actor
 		}
 	}
 

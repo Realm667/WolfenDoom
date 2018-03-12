@@ -11,9 +11,10 @@
 */
 class NaziWeapon : Weapon
 {
-	bool stealth;
+	bool allowdisguised;
+	int notargettimeout;
 
-	Property Stealth:stealth; // Weapons tagged as stealth can be carried while in disguise without breaking the disguise unless they are fired
+	Property Stealth:allowdisguised; // Weapons tagged as stealth can be carried while in disguise without breaking the disguise unless they are fired
 
 	Default
 	{
@@ -23,6 +24,7 @@ class NaziWeapon : Weapon
 		Weapon.BobSpeed 2.2;
 		Weapon.BobRangeY 1.0;
 		Weapon.BobRangeX 1.25;
+		NaziWeapon.Stealth False;
 	}
 
 	States
@@ -58,9 +60,9 @@ class NaziWeapon : Weapon
 
 	override void Tick()
 	{
-		if (stealth && owner)
+		if (allowdisguised && owner && owner.player)
 		{
-			if (owner.FindInventory("DisguiseToken", true))
+			if (owner.player.ReadyWeapon == self && owner.FindInventory("DisguiseToken", true))
 			{
 				let psp = owner.player.GetPSprite(PSP_WEAPON);
 
@@ -69,15 +71,20 @@ class NaziWeapon : Weapon
 					Inventory vis = owner.FindInventory("BoAVisibility");
 
 					if (vis && BoAVisibility(vis).alertedcount > 0) { owner.player.cheats &= ~CF_NOTARGET; } // Disguise fails if there are active enemies
-					else { owner.player.cheats |= CF_NOTARGET; }
+					else
+					{
+						owner.player.cheats |= CF_NOTARGET;
+						notargettimeout = level.time + 1;
+					}
 				}
 				else if (psp.CurState == GetUpState()) // If in select state, turn notarget on and slow down your movement
 				{
 					owner.player.cheats |= CF_NOTARGET;
 					owner.speed = owner.Default.speed * 0.85;
+					notargettimeout = level.time + 1; 
 				}
 				else if (
-					psp.CurState == GetDownState() || // If in deselect state, turn notarget off and reset speed
+					psp.CurState == GetDownState() || // If in deselect state, reset speed and turn off notarget
 					psp.CurState == GetAtkState(false) || // or if in fire state
 					psp.CurState == GetAtkState(true) || // or if in hold state
 					psp.CurState == GetAltAtkState(false) || // or if in altfire state
@@ -88,9 +95,10 @@ class NaziWeapon : Weapon
 					owner.speed = owner.Default.speed;
 				}
 			}
-			else
+			else if (notargettimeout && notargettimeout < level.time)
 			{
 				owner.player.cheats &= ~CF_NOTARGET;
+				notargettimeout = 0;
 			}
 		}
 
