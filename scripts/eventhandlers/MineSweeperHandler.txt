@@ -22,7 +22,7 @@ class MineSweeperHandler : EventHandler
 
 		if (i < ScannableThings.Size())
 		{
-			ScannableThings.Delete(i);
+			ScannableThings.Delete(i, 1);
 			ScannableThings.ShrinkToFit();
 		}
 	}
@@ -40,6 +40,7 @@ class MineSweeperHandler : EventHandler
 			for (int i = 0; i < ScannableThings.Size(); i++)
 			{
 				Actor mo = ScannableThings[i];
+				if (!mo) continue;
 				double dist = p.mo.Distance3D(mo);
 
 				if (
