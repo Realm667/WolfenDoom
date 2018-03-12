@@ -539,12 +539,19 @@ class BoAPlayer : PlayerPawn
 
 	void DoInteractions()
 	{
-		FLineTraceData trace; //, actortrace;
-		LineTrace(angle, UseRange, pitch, TRF_THRUACTORS, player.viewheight, 0.0, 0.0, trace);
-//		LineTrace(angle, UseRange, pitch, TRF_ALLACTORS, player.viewheight, 0.0, 0.0, actortrace); // Corpse dragging needs to trace without TRF_THRUACTORS flag
+		bool dodragging = false; // Set true to enable dragging of corpses and pushable actors (crouch and use)
 
-//		Actor AimActor = actortrace.HitActor;
+		FLineTraceData trace;
+		LineTrace(angle, UseRange, pitch, TRF_THRUACTORS, player.viewheight, 0.0, 0.0, trace);
 		Line AimLine = trace.HitLine;
+
+		Actor AimActor;
+		if (dodragging)
+		{
+			FLineTraceData actortrace;
+			LineTrace(angle, UseRange, pitch, TRF_ALLACTORS, player.viewheight, 0.0, 0.0, actortrace); // Corpse dragging needs to trace without TRF_THRUACTORS flag
+			AimActor = actortrace.HitActor;
+		}
 
 		if (AimLine && !crosshair)
 		{
@@ -607,7 +614,7 @@ class BoAPlayer : PlayerPawn
 				) &&
 				( // And is flagged as repeatable and you're pressing use
 					AimLine.flags & Line.ML_REPEAT_SPECIAL && 
-					player.usedown
+					player.cmd.buttons & BT_USE
 				) &&
 				( // And we have the right UDMF-defined key if one was set on the line!
 					!Aimline.locknumber || 
@@ -626,15 +633,13 @@ class BoAPlayer : PlayerPawn
 				}
 			}
 		}
-/*
 		// Draggable corpse handling (also lets you pull pushable actors)
 		//  Player must crouch within use range of a draggable actor and hold use, then move to drag the actor along
-		else if ((AimActor || DragTarget) && player.usedown && player.cmd.buttons & BT_CROUCH)
+		else if (dodragging && (AimActor || DragTarget) && player.usedown && player.cmd.buttons & BT_CROUCH)
 		{
 			if (DragTarget)
 			{
 				DragTarget.Warp(self, Clamp(Distance2D(DragTarget), radius + DragTarget.radius + speed, UseRange), flags:WARPF_INTERPOLATE | WARPF_NOCHECKPOSITION);
-				Speed = Default.Speed * 0.05;
 
 				// Closed hand grab icon
 				crosshair = 97;
@@ -658,10 +663,10 @@ class BoAPlayer : PlayerPawn
 						player.PendingWeapon = lowered;
 					}
 					DragTarget = AimActor;
+					Speed = Default.Speed * 0.05;
 				}
 			}
 		}
-*/
 		else
 		{
 			if (LastWeapon)
@@ -672,24 +677,26 @@ class BoAPlayer : PlayerPawn
 
 			crosshair = 0;
 			crosshairstring = "";
-/*
-			DragTarget = null;
-			Speed = Default.Speed;
 
-			if (
-				player.cmd.buttons & BT_CROUCH &&
-				AimActor && 
-				Distance2D(AimActor) < UseRange + AimActor.Radius && 
-				(
-					IsCorpse(AimActor) ||
-					(!AimActor.bIsMonster && AimActor.bPushable)
-				)
-			)
+			if (dodragging)
 			{
-				// Open hand grab icon
-				crosshair = 98;
+				DragTarget = null;
+				Speed = Default.Speed;
+
+				if (
+					player.cmd.buttons & BT_CROUCH &&
+					AimActor && 
+					Distance2D(AimActor) < UseRange + AimActor.Radius && 
+					(
+						IsCorpse(AimActor) ||
+						(!AimActor.bIsMonster && AimActor.bPushable)
+					)
+				)
+				{
+					// Open hand grab icon
+					crosshair = 98;
+				}
 			}
-*/
 		}
 
 		// Blank out the actual crosshair if a custom one is being used - 0 reverts to the player or weapon's default

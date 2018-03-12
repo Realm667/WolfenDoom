@@ -5,7 +5,7 @@
    See https://www.gnu.org/licenses/lgpl-3.0.txt for its terms.
 */
 
-Class mkCoordUtil
+Class BoACoordUtil
 {
 	// projects a world point onto screen
 	// view matrix setup mostly pulled from gutawer's code
@@ -21,32 +21,32 @@ Class mkCoordUtil
 		double apitch = asin(angy/alen);
 		double ayaw = yaw-90;
 		// rotations
-		Matrix4 mRoll = Matrix4.rotate((0,0,1),roll);
-		Matrix4 mPitch = Matrix4.rotate((1,0,0),apitch);
-		Matrix4 mYaw = Matrix4.rotate((0,-1,0),ayaw);
+		BoAMatrix4 mRoll = BoAMatrix4.rotate((0,0,1),roll);
+		BoAMatrix4 mPitch = BoAMatrix4.rotate((1,0,0),apitch);
+		BoAMatrix4 mYaw = BoAMatrix4.rotate((0,-1,0),ayaw);
 		// scaling
-		Matrix4 mScale = Matrix4.identity();
+		BoAMatrix4 mScale = BoAMatrix4.identity();
 		mScale.set(1,1,pr);
 		// YZ swap
-		Matrix4 mYZ = Matrix4.create();
+		BoAMatrix4 mYZ = BoAMatrix4.create();
 		mYZ.set(0,0,1);
 		mYZ.set(2,1,1);
 		mYZ.set(1,2,-1);
 		mYZ.set(3,3,1);
 		// translation
-		Matrix4 mMove = Matrix4.identity();
+		BoAMatrix4 mMove = BoAMatrix4.identity();
 		mMove.set(3,0,-eye.x);
 		mMove.set(3,1,-eye.y);
 		mMove.set(3,2,-eye.z);
 		// perspective
-		Matrix4 mPerspective = Matrix4.perspective(fov,ar,5,65535);
+		BoAMatrix4 mPerspective = BoAMatrix4.perspective(fov,ar,5,65535);
 		// full matrix
-		Matrix4 mView = mRoll.mul(mPitch);
+		BoAMatrix4 mView = mRoll.mul(mPitch);
 		mView = mView.mul(mYaw);
 		mView = mView.mul(mScale);
 		mView = mView.mul(mYZ);
 		mView = mView.mul(mMove);
-		Matrix4 mWorldToScreen = mPerspective.mul(mView);
+		BoAMatrix4 mWorldToScreen = mPerspective.mul(mView);
 		return mWorldToScreen.vmat(vect);
 	}
 

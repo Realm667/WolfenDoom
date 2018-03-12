@@ -5,25 +5,25 @@
    See https://www.gnu.org/licenses/lgpl-3.0.txt for its terms.
 */
 
-Class Matrix4
+Class BoAMatrix4
 {
 	private double m[16];
 
-	Matrix4 init()
+	BoAMatrix4 init()
 	{
 		int i;
 		for ( i=0; i<16; i++ ) m[i] = 0;
 		return self;
 	}
 
-	static Matrix4 create()
+	static BoAMatrix4 create()
 	{
-		return new("Matrix4").init();
+		return new("BoAMatrix4").init();
 	}
 
-	static Matrix4 identity()
+	static BoAMatrix4 identity()
 	{
-		Matrix4 o = Matrix4.create();
+		BoAMatrix4 o = BoAMatrix4.create();
 		for ( int i=0; i<4; i++ ) o.set(i,i,1);
 		return o;
 	}
@@ -38,27 +38,27 @@ Class Matrix4
 		m[r*4+c] = v;
 	}
 
-	Matrix4 add( Matrix4 o )
+	BoAMatrix4 add( BoAMatrix4 o )
 	{
-		Matrix4 r = Matrix4.create();
+		BoAMatrix4 r = BoAMatrix4.create();
 		int i, j;
 		for ( i=0; i<4; i++ ) for ( j=0; j<4; j++ )
 			r.set(j,i,get(j,i)+o.get(j,i));
 		return r;
 	}
 
-	Matrix4 scale( double s )
+	BoAMatrix4 scale( double s )
 	{
-		Matrix4 r = Matrix4.create();
+		BoAMatrix4 r = BoAMatrix4.create();
 		int i, j;
 		for ( i=0; i<4; i++ ) for ( j=0; j<4; j++ )
 			r.set(j,i,get(j,i)*s);
 		return r;
 	}
 
-	Matrix4 mul( Matrix4 o )
+	BoAMatrix4 mul( BoAMatrix4 o )
 	{
-		Matrix4 r = Matrix4.create();
+		BoAMatrix4 r = BoAMatrix4.create();
 		int i, j;
 		for ( i=0; i<4; i++ ) for ( j=0; j<4; j++ )
 			r.set(j,i,get(0,i)*o.get(j,0)+get(1,i)*o.get(j,1)+get(2,i)*o.get(j,2)+get(3,i)*o.get(j,3));
@@ -75,9 +75,9 @@ Class Matrix4
 		return (x,y,z)/w;
 	}
 
-	static Matrix4 rotate( Vector3 axis, double theta )
+	static BoAMatrix4 rotate( Vector3 axis, double theta )
 	{
-		Matrix4 r = Matrix4.identity();
+		BoAMatrix4 r = BoAMatrix4.identity();
 		double s, c, oc;
 		s = sin(theta);
 		c = cos(theta);
@@ -94,9 +94,9 @@ Class Matrix4
 		return r;
 	}
 
-	static Matrix4 perspective( double fov, double ar, double znear, double zfar )
+	static BoAMatrix4 perspective( double fov, double ar, double znear, double zfar )
 	{
-		Matrix4 r = Matrix4.create();
+		BoAMatrix4 r = BoAMatrix4.create();
 		double f = 1/tan(fov*0.5);
 		r.set(0,0,f/ar);
 		r.set(1,1,f);
@@ -110,10 +110,10 @@ Class Matrix4
 	static Vector3, Vector3, Vector3 getaxes( double pitch, double yaw, double roll )
 	{
 		Vector3 x = (1,0,0), y = (0,-1,0), z = (0,0,1);	// y inverted for left-handed result
-		Matrix4 mRoll = Matrix4.rotate((1,0,0),roll);
-		Matrix4 mPitch = Matrix4.rotate((0,1,0),pitch);
-		Matrix4 mYaw = Matrix4.rotate((0,0,1),yaw);
-		Matrix4 mRot = mRoll.mul(mYaw);
+		BoAMatrix4 mRoll = BoAMatrix4.rotate((1,0,0),roll);
+		BoAMatrix4 mPitch = BoAMatrix4.rotate((0,1,0),pitch);
+		BoAMatrix4 mYaw = BoAMatrix4.rotate((0,0,1),yaw);
+		BoAMatrix4 mRot = mRoll.mul(mYaw);
 		mRot = mRot.mul(mPitch);
 		x = mRot.vmat(x);
 		y = mRot.vmat(y);
