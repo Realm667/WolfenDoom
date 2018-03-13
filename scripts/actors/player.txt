@@ -555,8 +555,25 @@ class BoAPlayer : PlayerPawn
 
 		if (AimLine && !crosshair)
 		{
-			crosshair = AimLine.GetUDMFInt("user_crosshair"); // Use the line's user_crosshair property if it has a value
-			crosshairstring = AimLine.GetUDMFString("user_crosshair"); // Or try looking for a class name as a string value
+			// Only show custom crosshair if the line is running a script, is a locked door or puzzle item use line, or has a UDMF lock number
+			//  Otherwise - Why?  It's not an activation line, so what's the point of showing a hint?
+			if ( 	
+				AimLine.special == 13 || // Door_LockedRaise
+				AimLine.special == 80 || // ACS_Execute 
+				(AimLine.special >= 83 && AimLine.special <= 85) || // ACS_LockedExecute, ACS_ExecuteWithResult, ACS_LockedExecuteDoor
+				Aimline.special == 129 || // UsePuzzleItem
+				AimLine.special == 226 || // ACS_ExecuteAlways
+				Aimline.locknumber
+			)
+			{
+				crosshair = AimLine.GetUDMFInt("user_crosshair"); // Use the line's user_crosshair property if it has a value
+				crosshairstring = AimLine.GetUDMFString("user_crosshair"); // Or try looking for a class name as a string value
+			}
+			else
+			{
+				crosshair = 0;
+				crosshairstring = "";
+			}
 		}
 
 		if (AimLine && !AimLine.special) { AimLine = null; }
