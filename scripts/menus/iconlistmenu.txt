@@ -97,7 +97,7 @@ class ExtendedListMenu : ListMenu
 	String overlaytext;
 	Array<int> placeholders;
 
-	override void Init(Menu parent = null, ListMenuDescriptor desc = null)
+	override void Init(Menu parent, ListMenuDescriptor desc)
 	{
 		Super.Init(parent, desc);
 
@@ -294,7 +294,7 @@ class ExtendedListMenu : ListMenu
 // For an icon beside the menu entry, like Wolf3D episode select
 class IconListMenu : ExtendedListMenu
 {
-	override void Init(Menu parent = null, ListMenuDescriptor desc = null)
+	override void Init(Menu parent, ListMenuDescriptor desc)
 	{
 		Super.Init(parent, desc);
 
@@ -320,12 +320,12 @@ class IconListMenu : ExtendedListMenu
 	override void Drawer()
 	{
 		// Draw the icons
-		DrawItemIcon(mDesc.mSelectedItem);
+		DrawItemIcon(mDesc.mSelectedItem, -1, -1, 1.0);
 
 		Super.Drawer();
 	}
 
-	override void DrawItemIcon(int index, double x = -1, double y = -1, double alpha = 1.0)
+	override void DrawItemIcon(int index, double x, double y, double alpha)
 	{
 		double fontheight = mDesc.mFont.GetHeight();
 		double drawx = x;
@@ -364,7 +364,7 @@ class StaticIconListMenu : ExtendedListMenu
 {
 	double iconOffset;
 
-	override void Init(Menu parent = null, ListMenuDescriptor desc = null)
+	override void Init(Menu parent, ListMenuDescriptor desc)
 	{
 		// Some logic to determine the rightmost pixel point of the middle skill values
 		//  Used for default positioning a la Wolf3D
@@ -395,12 +395,12 @@ class StaticIconListMenu : ExtendedListMenu
 	override void Drawer()
 	{
 		// Draw the icon for the currently selected item
-		DrawItemIcon(mDesc.mSelectedItem);
+		DrawItemIcon(mDesc.mSelectedItem, -1, -1, 1.0);
 
 		Super.Drawer();
 	}
 
-	override void DrawItemIcon(int index, double x = -1, double y = -1, double alpha = 1.0)
+	override void DrawItemIcon(int index, double x, double y, double alpha)
 	{
 		if (index < 0) { return; }
 

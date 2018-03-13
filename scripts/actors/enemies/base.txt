@@ -720,7 +720,7 @@ class Nazi : Base
 	int healloopcount;
 	int interval;
 	int perceptionfov;
-	int perceptionthreshold;
+	int user_perceptiontime;
 	int sneakableclosesightradius;
 	int user_incombat;
 	int user_static;
@@ -728,7 +728,7 @@ class Nazi : Base
 
 	Property Healer:healflags;
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
-	Property PerceptionTime:perceptionthreshold; // How many tics the player has to be in sight before NOTARGET fails - 0 means never see through NoTarget
+	Property PerceptionTime:user_perceptiontime; // How many tics the player has to be in sight before NOTARGET fails - 0 means never see through NoTarget
 	Property Sneakable:user_sneakable;
 	Property SneakableCloseSightRadius:sneakableclosesightradius;
 	Property ZombieVariant:zombievariant;
@@ -1276,7 +1276,7 @@ class Nazi : Base
 	}
 
 	// Hijack the damage calls in order to implement stealth kills and critical hits
-	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags = 0, double angle = 0)
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
 		Inventory vis;
 
@@ -1334,7 +1334,7 @@ class Nazi : Base
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING); // Remove the sneakable eyes
 			}
 
-			if (perceptionthreshold > 0) // or if it was a perceptive actor...
+			if (user_perceptiontime > 0) // or if it was a perceptive actor...
 			{
 				if (vis) { BoAVisibility(vis).suspicion = 0; } // Reset suspicion level to zero
 			}

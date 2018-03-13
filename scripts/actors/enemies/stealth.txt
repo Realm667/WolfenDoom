@@ -46,10 +46,10 @@ class StealthBase : Actor
 
 	state A_LookForNoTargetPlayer(int Range = 256)
 	{
-		if (master && master is "Nazi") // Get the master actor's perceptionfov and perceptionthreshold properties
+		if (master && master is "Nazi") // Get the master actor's perceptionfov and perceptiontime properties
 		{ // These become the fov parameter for visibility checks and the time threshold for how long the player must stay in view before detection
 			fov = Nazi(master).perceptionfov;
-			threshold = Nazi(master).perceptionthreshold;
+			threshold = Nazi(master).user_perceptiontime;
 		}
 
 		if (threshold <= 0 || fov <= 0) { return ResolveState(null); } // If threshold is 0, the actor can't see through NOTARGET at all, so just return

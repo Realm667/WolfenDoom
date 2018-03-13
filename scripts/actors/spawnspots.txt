@@ -407,7 +407,7 @@ class BarrelSpawner : ExplosiveBarrel
 		Super.PostBeginPlay();
 	}
 
-	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags = 0, double angle = 0)
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
 		int damageamt = Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
 
@@ -463,7 +463,7 @@ class DestructionSpawner : Actor
 		Super.PostBeginPlay();
 	}
 
-	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags = 0, double angle = 0)
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
 		int damageamt = Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
 

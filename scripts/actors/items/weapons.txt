@@ -172,7 +172,7 @@ class NaziAstroWeapon : NaziWeapon {
 	// DryFire state definition removed because it was the same as the DryFire state for NaziWeapon
 
 	// Astrostein weapons use primary ammo for both fire modes.
-	override bool CheckAmmo (int firemode, bool autoSwitch, bool requireAmmo = false, int ammocount = -1) {
+	override bool CheckAmmo (int firemode, bool autoSwitch, bool requireAmmo, int ammocount) {
 		// True if player has loaded ammo, or ammo in the stockpile.
 		// For the shocker, or if player has infinite ammo powerup.
 		if (bAmmo_Optional || Owner.FindInventory("PowerInfiniteAmmo", true)) return true;
@@ -181,7 +181,7 @@ class NaziAstroWeapon : NaziWeapon {
 		return Super.CheckAmmo(firemode, autoSwitch, requireAmmo, ammocount);
 	}
 
-	override bool DepleteAmmo (bool altfire, bool checkEnough = true, int ammouse = -1) {
+	override bool DepleteAmmo (bool altfire, bool checkEnough, int ammouse) {
 		if (AmmoUse1 == 0 || Owner.FindInventory("PowerInfiniteAmmo", true)) return true;
 
 		bool requireAmmo = AmmoUse1 > 0 || AmmoUse2 > 0 || !bAmmo_Optional;
