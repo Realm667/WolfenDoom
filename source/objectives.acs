@@ -118,3 +118,8 @@ script "boaobjectiveadded" (void)
 		HUDMSG_FADEINOUT,989,CR_UNTRANSLATED,400.0,130.1,1.0,0.5,0.5);
 
 }
+
+script "CompleteObjective" (int num)
+{
+	ACS_NamedExecuteAlways("boaobjectivesset", 0, 0, num, "MO_ICON_ACC");
+}
