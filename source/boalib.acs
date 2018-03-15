@@ -1,10 +1,10 @@
 #library "boalib"
 
-#define MAX_PLAYERS 8
-#define MAX_VOLUME 127
-#define MAX_OBJECTIVES 6
-#define MAX_PLAYER_HEALTH 150
-#define PLAYER_TAG_OFFSET 1000
+#libdefine MAX_PLAYERS 8
+#libdefine MAX_VOLUME 127
+#libdefine MAX_OBJECTIVES 6
+#libdefine MAX_PLAYER_HEALTH 150
+#libdefine PLAYER_TAG_OFFSET 1000
 
 global int 1:disable_mutants; //mxd. When set to true, Mutant and MutantMelee will immediately despawn after spawning.
 global int 2:disable_big_mutants; //mxd. When set to true, BigMutant1 and BigMutant2 will immediately despawn after spawning.
@@ -15,6 +15,15 @@ global int 6:mission_number; //The variable for the mission number
 global int 60:time; // Used for day/night transition display on status bar
 
 int playerID; 
+
+// Repair action status variable
+int repairstate[65536]; // Arbitrarily large to account for most possible line ids
+
+// Wave spawner configuration variables
+int maxwaves = 10; // How many waves can be set up
+int wavestarttid = 100; // Base TID for wave spawn points - wave 1 will add 1, wave 2 will add 2, etc.
+int currentwave = 0; // The currently activated wave
+int lastwave = 0; // The previous wave (used for fallback spawnpoints if it's night again and no other wave has been triggered)
 
 #include "zcommon.acs"
 #include "functions.acs"

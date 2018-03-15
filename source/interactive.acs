@@ -1,5 +1,4 @@
 // Generic "hold-to-activate" script
-int repairstate[65536]; // Arbitrarily large to account for most possible line ids
 Script "Activate" (int lineid, int repairtime)
 {
 	if (!repairtime) { repairtime = 1; }
