@@ -98,9 +98,9 @@ ACTOR FallingMetal : RandomSpawner
 
 ACTOR FallingMetal1 : FallingRock1
 {
-	Scale 0.25
+	Scale 0.50
 	Obituary "$OBFALLMT"
-	DeathSound "DSMETDST"
+	DeathSound "DSCLANG"
 	SeeSound "floor/met2"
 	States
 	{
@@ -171,7 +171,7 @@ ACTOR FallingMetal2 : FallingMetal1
 
 ACTOR FallingMetlFrac1 : FallingRockFrac1
 {
-	Scale 0.15
+	Scale 0.35
 	States
 	{
 	Spawn:
@@ -198,6 +198,7 @@ ACTOR FallingMetlFrac1 : FallingRockFrac1
 		"####" G 1 A_SetRoll(roll+80, SPF_INTERPOLATE,0)
 		Loop
 	Death:
+		"####" "#" 1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY / 2)
 		"####" "#" 300
 		"####" "#" 6 A_FadeOut
 		Wait
