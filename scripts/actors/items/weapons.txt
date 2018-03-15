@@ -66,39 +66,46 @@ class NaziWeapon : Weapon
 			{
 				let psp = owner.player.GetPSprite(PSP_WEAPON);
 
-				if (psp.CurState == GetReadyState()) // If in ready state, turn notarget on unless enemies are already alerted
+				if ( // If in ready state, up state, or down state, turn notarget on unless enemies are already alerted
+					psp.CurState == GetReadyState() ||
+					psp.CurState == GetUpState() ||
+					psp.CurState == GetDownState()
+				) 
 				{
 					Inventory vis = owner.FindInventory("BoAVisibility");
 
-					if (vis && BoAVisibility(vis).alertedcount > 0) { owner.player.cheats &= ~CF_NOTARGET; } // Disguise fails if there are active enemies
-					else
+					if (!vis || !BoAVisibility(vis).alertedcount) // If no enemies are already alerted, turn on notarget
 					{
-						owner.player.cheats |= CF_NOTARGET;
-						notargettimeout = level.time + 1;
+						notargettimeout = level.time + 2;
 					}
 				}
-				else if (psp.CurState == GetUpState()) // If in select state, turn notarget on and slow down your movement
+				else
+				{
+					notargettimeout = level.time;
+				}
+			}
+
+			if (notargettimeout)
+			{
+				if (notargettimeout <= level.time) // Turn off notarget and reset speed
+				{
+					if (
+						owner.player.ReadyWeapon == self ||
+						(
+							!NaziWeapon(owner.player.ReadyWeapon) ||
+							!NaziWeapon(owner.player.ReadyWeapon).allowdisguised)
+						)
+					{
+						owner.player.cheats &= ~CF_NOTARGET;
+						owner.speed = owner.Default.speed;
+					}
+					notargettimeout = 0;
+				}
+				else // Turn on notarget and slow down your movement
 				{
 					owner.player.cheats |= CF_NOTARGET;
 					owner.speed = owner.Default.speed * 0.85;
-					notargettimeout = level.time + 1; 
 				}
-				else if (
-					psp.CurState == GetDownState() || // If in deselect state, reset speed and turn off notarget
-					psp.CurState == GetAtkState(false) || // or if in fire state
-					psp.CurState == GetAtkState(true) || // or if in hold state
-					psp.CurState == GetAltAtkState(false) || // or if in altfire state
-					psp.CurState == GetAltAtkState(true) // or if in althold state
-				)
-				{
-					owner.player.cheats &= ~CF_NOTARGET;
-					owner.speed = owner.Default.speed;
-				}
-			}
-			else if (notargettimeout && notargettimeout < level.time)
-			{
-				owner.player.cheats &= ~CF_NOTARGET;
-				notargettimeout = 0;
 			}
 		}
 

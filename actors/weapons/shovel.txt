@@ -17,12 +17,12 @@ ACTOR Shovel : NaziWeapon
 		SHUV A 1 A_WeaponReady
 		Loop
 	Deselect:
-		SHUV A 0 A_Lower
 		SHUV A 1 A_Lower
+		SHUV A 0 A_Lower
 		Loop
 	Select:
-		SHUV A 0 A_Raise
 		SHUV A 1 A_Raise
+		SHUV A 0 A_Raise
 		Loop
 	Fire:
 		SHUV B 2 A_JumpIfInventory("PowerStrength",1,"PowerShovel")
