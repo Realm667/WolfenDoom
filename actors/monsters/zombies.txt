@@ -410,7 +410,6 @@ ACTOR Camp_PrisonerZombie : ZombieStandard
 	Nazi.ZombieVariant "Camp_PrisonerZombie"
 	Health 30
 	Speed 3
-	BloodType "ZombieBlood"
 	DropItem "Soul", 64, 1
 	States
 	{
@@ -459,11 +458,18 @@ ACTOR ZombieGeneral : RocketMan
 	Tag "Undead Fettgesicht"
 	Health 1000
 	Obituary "$ZGENERAL"
+	ActiveSound "nazombie/act"
 	SeeSound "nazombie/sighted"
 	PainSound "nazombie/pain"
 	DeathSound "nazombie/act"
-	BloodColor "Black"
-	BloodType "UndeadBlood"
+	BloodColor "00 A0 7D"
+	BloodType "ZombieBlood"
+	DamageFactor "Electric", 0.8
+	DamageFactor "Fire", 1.2
+	DamageFactor "MutantPoison", 0
+	DamageFactor "Normal", 0.5
+	DamageFactor "Poison", 0
+	DamageFactor "UndeadPoison", 0
 	DropItem "NebAmmoBox" 128
 	DropItem "NebAmmoBox" 128
 	DropItem "Soul", 192, 5
@@ -516,9 +522,18 @@ ACTOR ZombieZyklonstein : RocketMan
 	Tag "Zyklonstein"
 	Health 1200
 	Obituary "$ZZYKLON"
+	ActiveSound "nazombie/act"
 	SeeSound "nazombie/sighted"
 	PainSound "nazombie/pain"
 	DeathSound "nazombie/act"
+	BloodColor "00 A0 7D"
+	BloodType "ZombieBlood"
+	DamageFactor "Electric", 0.8
+	DamageFactor "Fire", 1.2
+	DamageFactor "MutantPoison", 0
+	DamageFactor "Normal", 0.5
+	DamageFactor "Poison", 0
+	DamageFactor "UndeadPoison", 0
 	DropItem "FlameAmmo" 128
 	DropItem "FlameAmmo" 128
 	DropItem "Soul", 192, 10
