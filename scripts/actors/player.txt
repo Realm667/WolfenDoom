@@ -639,7 +639,7 @@ class BoAPlayer : PlayerPawn
 				)
 			)
 			{
-				Level.ExecuteSpecial(AimLine.special, self, AimLine, true, AimLine.args[0], AimLine.args[1], AimLine.args[2], AimLine.args[3], AimLine.args[4]);
+				player.usedown = false; // Pretend that the use button wasn't actually being held so that the use action will repeat as long as use is held
 
 				if (!LastWeapon && crosshair >= 80 && crosshair <= 90) // Only lower weapon when there's a status display
 				{
@@ -729,6 +729,18 @@ class BoAPlayer : PlayerPawn
 		) { return false; }
 
 		return true;
+	}
+
+	static void FireWeapon(Actor mo, bool alt = 0, bool onuse = 1)
+	{
+		if (mo.player && mo.player.ReadyWeapon && mo.player.playerstate == PST_LIVE)
+		{
+			let psp = mo.player.GetPSprite(PSP_WEAPON);
+
+			State newState = alt ? mo.player.ReadyWeapon.FindState('AltFire') : mo.player.ReadyWeapon.FindState('Fire');
+
+			psp.SetState(newState);
+		}
 	}
 }
 

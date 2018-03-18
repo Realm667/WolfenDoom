@@ -106,8 +106,8 @@
 	A_WanderGoal()
 	- If the enemy has a goal assigned, go to it.  If not, wander.
 
-	bool InPlayerSight()
-	- Checks each player to see if they can see this actor and returns true if any
+	static bool InPlayerSight(Actor caller)
+	- Checks each player to see if they can see actor caller and returns true if any
 	  player can see the actor
 
 	actor FindClosestPlayer(int fov = 120, int dist = 0, bool IgnoreFriendlies = True)
@@ -294,14 +294,14 @@ class Base : Actor
 		}
 	}
 
-	bool InPlayerSight()
+	static bool InPlayerSight(Actor caller)
 	{
 		for (int p = 0; p < MAXPLAYERS; p++) // Iterate through all of the players and see if any can see the spawn point
 		{
 			Actor mo = players[p].mo;
 
 			if (mo) {
-				if (mo.CheckSight(self, SF_SEEPASTBLOCKEVERYTHING | SF_SEEPASTSHOOTABLELINES)) { return true; }
+				if (mo.CheckSight(caller, SF_SEEPASTBLOCKEVERYTHING | SF_SEEPASTSHOOTABLELINES)) { return true; }
 			}
 		}
 

@@ -111,7 +111,8 @@ class TextPaper : Actor
 
 	override void PostBeginPlay()
 	{
-		frame = args[3];
+		if (special == 80) { frame = args[3]; }
+		else { frame = args[1]; }
 
 		Super.PostBeginPlay();
 	}
@@ -126,7 +127,6 @@ class TextPaper : Actor
 				else {  Level.ExecuteSpecial(80, user, null, false, -int(Name("TextPaper")), 0, args[0], args[1], args[2]); } // Otherwise pass the args as defined
 			} 
 			
-
 			displaytime = level.time + 1;
 			user.player.usedown = false; // Set the internal logic to think that use was not held down so that this code block will be called again
 			return true; // Return true so that the usefail sound doesn't play over and over and over again
