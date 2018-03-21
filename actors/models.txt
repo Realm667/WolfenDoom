@@ -1994,6 +1994,26 @@ ACTOR Feldfernschreiber : ModelBase
 }
 
 //CODs Stuff - Ozy81
+ACTOR US_ShermanTurret : ModelBase { +CANPASS }
+
+ACTOR US_Sherman //dummy actor, will probably need a BoAPlayer morph - ozy81
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title Driveable US M4 Sherman Tank
+	//$Color 3
+	DistanceCheck "scenelod"
+	Radius 64
+	Height 88
+	Mass 0x7ffffff
+	+SOLID
+	States
+	{
+	Spawn:
+		MDLA A -1 NoDelay A_SpawnItemEx("US_ShermanTurret", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		Stop
+	}
+}
+
 ACTOR COD_ArtDecoLight1A : SwitchableDecoration
 {
 	//$Category Light Sources (Wolf3D)/ACS Switchable
