@@ -150,6 +150,23 @@ class TextPaper : Actor
 	}
 }
 
+class US_ShermanCannon : Actor
+{
+	Default
+	{
+		+DONTSPLASH
+		+FLOORCLIP
+		+NOGRAVITY
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A 1 A_Warp(AAPTR_MASTER,0,0,0,0,WARPF_NOCHECKPOSITION | WARPF_INTERPOLATE | WARPF_COPYVELOCITY | WARPF_COPYPITCH);
+			Loop;
+	}
+}
+
 class US_ShermanTurret : Actor
 {
 	Default
@@ -165,7 +182,7 @@ class US_ShermanTurret : Actor
 	States
 	{
 		Spawn:
-			MDLA A -1;
+			MDLA A -1 NoDelay A_SpawnItemEx("US_ShermanCannon", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER);
 			Stop;
 	}
 }
