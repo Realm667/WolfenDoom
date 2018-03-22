@@ -149,3 +149,127 @@ class TextPaper : Actor
 		Super.Tick();
 	}
 }
+
+class US_ShermanTurret : Actor
+{
+	Default
+	{
+		Height 32;
+		+CANPASS
+		+DONTSPLASH
+		+FLOORCLIP
+		+NOGRAVITY
+		+SOLID
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+	}
+}
+
+class US_Sherman : Actor
+{
+	Actor turret;
+
+	Default
+	{
+		//$Category Models (Wolf3D)/Vehicles
+		//$Title Driveable US M4 Sherman Tank
+		//$Color 3
+		DistanceCheck "scenelod";
+		Radius 64;
+		Height 64;
+		Mass 0x7ffffff;
+		+SOLID
+		+CANPASS
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		bool sp = false;
+
+		while (!turret) { [sp, turret] = A_SpawnItemEx("US_ShermanTurret", 0, 0, Height, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+
+		Super.PostBeginPlay();
+	}
+
+	override bool Used(Actor user)
+	{
+		if (bDormant) { return false; }
+
+		let p = user.player;
+
+		if (p)
+		{
+			bSolid = False;
+			bInvisible = True;
+
+			if (turret)
+			{
+				turret.bSolid = False;
+				turret.bInvisible = true;
+			}
+
+			p.mo.SetOrigin(pos, false);
+			p.mo.angle = angle;
+
+			user.GiveInventory("Sherman", 1);
+			return true;
+		}
+		return false;
+	}
+}
+
+class Nothing : Actor
+{
+	Default
+	{
+		+NOBLOCKMAP
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 1;
+			Stop;
+	}
+}
+
+class Sherman : PowerMorph
+{
+	Default
+	{
+		PowerMorph.MorphStyle MRF_LOSEACTUALWEAPON;
+		PowerMorph.MorphFlash "Nothing"; // Why isn't there an option to NOT spawn fog at all?
+		PowerMorph.UnMorphFlash "Nothing";
+		PowerMorph.PlayerClass "ShermanPlayer";
+		Powerup.Duration 0x7FFFFFFF;
+	}
+
+	override void EndEffect()
+	{
+		if (MorphedPlayer)
+		{
+			let tank = ShermanPlayer(MorphedPlayer.mo);
+
+			if (tank)
+			{
+				if  (tank.treads) { tank.treads.Destroy(); }
+				if  (tank.turret) { tank.turret.Destroy(); }
+				if  (tank.turretcamera) { tank.turretcamera.Destroy(); }
+			}
+		}
+
+		Super.EndEffect();
+	}
+}
