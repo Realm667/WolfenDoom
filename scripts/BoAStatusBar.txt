@@ -135,31 +135,12 @@ class BoAStatusBar : BaseStatusBar
 
 		Super.Draw (state, TicFrac);
 
-		if (CPlayer.mo.FindInventory("CutsceneEnabled") || CPlayer.morphtics)
+		if (CPlayer.mo.FindInventory("CutsceneEnabled"))
 		{
 			if (automapactive || state == HUD_StatusBar)
 			{
 				BeginStatusBar();
 				DrawImage("AMBAR", (-54, 152), DI_ITEM_OFFSETS);
-			}
-
-			if (CPlayer.morphtics && CPlayer.mo is "ShermanPlayer")
-			{
-				Vector3 worldpos = CPlayer.camera.pos + level.Vec3Diff(CPlayer.camera.pos, ShermanPlayer(CPlayer.mo).crosshairtrace.HitLocation); // World position of object, offset from viewpoint
-				Vector3 screenpos = BoACoordUtil.WorldToScreen(worldpos, CPlayer.camera.pos, CPlayer.camera.pitch, CPlayer.camera.angle, CPlayer.camera.roll, CPlayer.fov); // Translate that to the screen, using the viewpoint's info
-
-				if (screenpos.z > 1 || screenpos.z < -1) { return; } // If the coordinates are off the screen somehow, then skip drawing
-
-				Vector2 drawpos = BoACoordUtil.ToViewport(screenpos);
-
-				TextureID image = TexMan.CheckForTexture("XHAIRB2", TexMan.Type_MiscPatch);
-
-				Vector2 dimensions = TexMan.GetScaledSize(image);
-				dimensions /= ShermanPlayer(CPlayer.mo).crosshairtrace.Distance / 680 * CPlayer.fov / 90; // Scale with fov to account for zooming
-
-				color clr = 0x890000;
-
-				screen.DrawTexture (image, false, drawpos.x, drawpos.y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF);
 			}
 
 			return;

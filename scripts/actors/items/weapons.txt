@@ -207,36 +207,3 @@ class NaziAstroWeapon : NaziWeapon {
 		return false;
 	}
 }
-
-class Cannon75mm : NaziWeapon // Quick and dirty...  Needs cleaning up
-{
-	Default
-	{
-		Weapon.SelectionOrder 1;
-		Weapon.UpSound "panzer/select";
-		+WEAPON.NOAUTOFIRE
-		+WEAPON.NOAUTOAIM
-	}
-
-	States
-	{
-		Ready:
-			PANZ A 1 A_WeaponReady;
-			Loop;
-		Select:
-			PANZ A 1 A_Raise;
-			Loop;
-		Deselect:
-			PANZ A 1 A_Lower;
-			Loop;
-		Fire:
-			PANZ A 0 A_PlaySound("panzer/fire", CHAN_WEAPON);
-			PANZ A 0 A_GunFlash;
-			PANZ A 2 BRIGHT A_FireProjectile("PanzerRocket");
-			PANZ A 20;
-			Goto Ready;
-		Spawn:
-			PANP A -1;
-			Loop;
-	}
-}

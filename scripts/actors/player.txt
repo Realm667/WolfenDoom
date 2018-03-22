@@ -216,18 +216,15 @@ class BoAPlayer : PlayerPawn
 
 	override void Tick()
 	{
-		if (player && !player.morphtics)
-		{
-			if (Level.time % (35 * 5) == 0) { ForcedHealthBar = GetClosestForcedHealthBar(); } // Only run this check occasionally
+		if (Level.time % (35 * 5) == 0) { ForcedHealthBar = GetClosestForcedHealthBar(); } // Only run this check occasionally
 
-			CrosshairTarget = GetLineTarget();
+		CrosshairTarget = GetLineTarget();
 
-			DoGravity();
+		DoGravity();
 
-			DoTokenChecks();
+		DoTokenChecks();
 
-			DoInteractions();
-		}
+		DoInteractions();
 
 		Super.Tick();
 	}
@@ -381,11 +378,6 @@ class BoAPlayer : PlayerPawn
 				if (!(player.cheats & CF_PREDICTING)) A_PlaySound("*jump", CHAN_BODY);
 			}
 		}
-	}
-
-	override void CheckUndoMorph()
-	{
-		if (player) { Super.CheckUndoMorph(); }
 	}
 
 	Actor GetLineTarget()
@@ -747,7 +739,7 @@ class BoAPlayer : PlayerPawn
 
 			State newState = alt ? mo.player.ReadyWeapon.FindState('AltFire') : mo.player.ReadyWeapon.FindState('Fire');
 
-			if (newState) { psp.SetState(newState); }
+			psp.SetState(newState);
 		}
 	}
 }
@@ -804,211 +796,5 @@ class LanternEffect : PlayerEffect
 		SpawnLoop:
 			TNT1 A 4 Light("LANT03") A_SetTics(Random(1, 3));
 			Loop;
-	}
-}
-
-class ShermanPlayerBase : Actor
-{
-	Default
-	{
-		Radius 64;
-		Height 64;
-		Mass 0x7ffffff;
-		+CANPASS
-	}
-
-	States
-	{
-		Spawn:
-			MDLA A -1;
-			Stop;
-	}
-}
-
-class ShermanPlayer : PlayerPawn
-{
-	Actor treads, turret, turretcamera;
-	Actor ForcedHealthBar;
-	FLineTraceData cameratrace, crosshairtrace;
-
-	Default
-	{
-		Health 10000; // Need to tweak, probably...
-		Height 96;
-		Mass 0x7ffffff;
-		MaxStepHeight 24;
-		Radius 64;
-		Species "Player";
-		Player.StartItem "Cannon75mm";
-		Player.WeaponSlot 1, "Cannon75mm";
-		+INVISIBLE;
-	}
-
-	States
-	{
-		Spawn:
-			UNKN A -1;
-			Stop;
-		Pain:
-			UNKN A 1 A_Pain;
-			Goto Spawn;
-		Death:
-			UNKN A 1 A_Scream;
-			UNKN A -1;
-			Stop;
-	}
-
-	override void MovePlayer ()
-	{
-		let player = self.player;
-		UserCmd cmd = player.cmd;
-
-		double moveangle = angle;
-
-		if (turret) { turret.angle += cmd.yaw * (360./65536.); }
-		if (treads) { moveangle = treads.angle; }
-
-		player.onground = (pos.z <= floorz) || bOnMobj || bMBFBouncer || (player.cheats & CF_NOCLIP2);
-
-		if (cmd.forwardmove | cmd.sidemove)
-		{
-			double forwardmove, sidemove;
-			double bobfactor;
-			double friction, movefactor;
-			double fm, sm;
-
-			[friction, movefactor] = GetFriction();
-			bobfactor = friction < ORIG_FRICTION ? movefactor : ORIG_FRICTION_FACTOR;
-
-			if (!player.onground && !bNoGravity && !waterlevel)
-			{
-				// [RH] allow very limited movement if not on ground.
-				movefactor *= level.aircontrol;
-				bobfactor*= level.aircontrol;
-			}
-
-			fm = cmd.forwardmove;
-			sm = cmd.sidemove;
-			[fm, sm] = TweakSpeeds (fm, sm);
-			fm *= Speed / 256;
-			sm *= Speed / 256;
-
-			forwardmove = fm * movefactor * (35 / TICRATE);
-			sidemove = sm * movefactor * (35 / TICRATE);
-
-			if (forwardmove)
-			{
-				ForwardThrust(forwardmove, moveangle);
-			}
-
-			if (sidemove)
-			{
-				if (forwardmove < 0)
-				{
-					angle += sidemove;
-					if (treads) { treads.angle += sidemove; }
-					if (turret) { turret.angle += sidemove; }
-				}
-				else
-				{
-					angle -= sidemove;
-					if (treads) { treads.angle -= sidemove; }
-					if (turret) { turret.angle -= sidemove; }
-				}
-			}
-
-			if (!(player.cheats & CF_PREDICTING) && (forwardmove != 0 || sidemove != 0))
-			{
-				PlayRunning ();
-			}
-
-			if (player.cheats & CF_REVERTPLEASE)
-			{
-				player.cheats &= ~CF_REVERTPLEASE;
-				player.camera = player.mo;
-			}
-		}
-	}
-
-	override void CheckJump() {} // Tanks can't jump
-
-	override void PostBeginPlay()
-	{
-		TakeInventory("BoATilt", 1);
-		GiveInventory("Cannon75mm", 1);
-
-		bool sp = false;
-
-		while (!treads) { [sp, treads] = A_SpawnItemEx("ShermanPlayerBase", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
-		treads.angle = angle;
-		treads.bSolid = false;
-
-		while (!turret) { [sp, turret] = A_SpawnItemEx("US_ShermanTurret", 0, 0, treads.height, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
-		turret.angle = angle;
-		turret.bSolid = false;
-
-		while (!turretcamera) { [sp, turretcamera] = A_SpawnItemEx("SecurityCamera", -2.5 * radius, 0, treads.height + turret.height + 96, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
-
-		Super.PostBeginPlay();
-	}
-
-	override void Tick()
-	{
-		Super.Tick();
-
-		if (Level.time % (35 * 5) == 0) { ForcedHealthBar = GetClosestForcedHealthBar(); } // Only run this check occasionally
-
-		if (treads) { treads.SetOrigin(self.pos, true); }
-		if (turret && treads)
-		{
-			turret.SetOrigin(self.pos + (0, 0, treads.height), true);
-			player.mo.angle = turret.angle;
-		}
-
-		if (turretcamera && treads && turret)
-		{
-			pitch = clamp(pitch, -33, 12);
-
-			double modifier;
-
-			if (pitch < 0) { modifier = 64 * sin(-pitch); }
-			else { modifier = 64 * sin(pitch * 2); }
-
-			LineTrace(angle + 180, 2.5 * radius, 0, TRF_THRUHITSCAN | TRF_THRUACTORS, treads.height + turret.height + 32 + modifier, 0.0, 0.0, cameratrace);
-
-			turretcamera.SetOrigin(cameratrace.HitLocation, true);
-			turretcamera.angle = angle;
-
-			player.camera = turretcamera;
-			turretcamera.CameraFOV = player.fov;
-		}
-		else
-		{
-			player.camera = player.mo;
-		}
-
-		LineTrace(angle, 1024, pitch, TRF_THRUHITSCAN | TRF_THRUACTORS, height / 2, 0.0, 0.0, crosshairtrace);
-	}
-
-	Actor GetClosestForcedHealthBar()
-	{
-		ThinkerIterator Finder = ThinkerIterator.Create("Base", Thinker.STAT_DEFAULT - 3);
-		Base it;
-		Actor mo;
-
-		while ( it = Base(Finder.Next()) )
-		{
-			if (!it.user_DrawHealthBar == True) { continue; } // Only process actors with the AlwaysDrawHealthBar flag set
-			if (
-				it.health <= 0 ||
-				!it.bShootable ||
-				it.bDormant
-			) { continue; }
-			if (mo && Distance3D(it) > Distance3D(mo)) { continue; } // Only draw health bar for the closest one
-
-			mo = it;
-		}
-
-		return mo;
 	}
 }
