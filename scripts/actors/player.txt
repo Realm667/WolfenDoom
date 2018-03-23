@@ -823,6 +823,22 @@ class ShermanPlayerBase : Actor
 			MDLA A -1;
 			Stop;
 	}
+
+	override void Tick()
+	{
+		if (master)
+		{
+			double movespeed = master.vel.length();
+
+			if (movespeed != 0)
+			{
+				int dir = movespeed > 0 ? 1 : -1; // Trample both forward and backwards, depending on which direction you're moving
+				A_SpawnItemEx("Trample", scale.x * 136 * dir, 0, height / 2 - 16, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE);
+			}
+		}
+
+		Super.Tick();
+	}
 }
 
 class ShermanPlayer : PlayerPawn
@@ -840,8 +856,10 @@ class ShermanPlayer : PlayerPawn
 		Radius 64;
 		Species "Player";
 		Player.StartItem "Cannon75mm";
+		Player.UseRange 0;
 		Player.WeaponSlot 1, "Cannon75mm";
-		+INVISIBLE;
+		+INVISIBLE
+		-PICKUP // Don't pick up powerups while in the tank
 	}
 
 	States
@@ -896,17 +914,13 @@ class ShermanPlayer : PlayerPawn
 			forwardmove = fm * movefactor * (35 / TICRATE);
 			sidemove = sm * movefactor * (35 / TICRATE);
 
-			if (forwardmove)
-			{
-				ForwardThrust(forwardmove, moveangle);
-			}
-
-			if (forwardmove && (cmd.buttons & BT_SPEED) && treads && turret && treads.angle != turret.angle) // If holding SHIFT, auto-steer the tracks to align with the turret
+			// Default to "auto-steering" the tank to wherever you are aiming the turret
+			if (forwardmove && !(cmd.buttons & BT_SPEED) && treads && turret && treads.angle != turret.angle) // If *not* holding SHIFT, auto-steer the tracks to align with the turret
 			{
 				double diff = deltaangle(treads.angle, turret.angle);
 
-				if (diff < -1) { treads.angle--; }
-				else if (diff > 1) { treads.angle++; }
+				if (diff < -1) { treads.angle--; forwardmove /= 10; }
+				else if (diff > 1) { treads.angle++; forwardmove /= 10; }
 				else { treads.angle = turret.angle; }
 			}
 			else if (sidemove) // Only do normal sidemove handling if not auto-steering
@@ -914,8 +928,14 @@ class ShermanPlayer : PlayerPawn
 				if (forwardmove >= 0) { sidemove *= -1; }
 
 				angle += sidemove;
+
 				if (treads) { treads.angle += sidemove; }
 				if (turret) { turret.angle += sidemove; }
+			}
+
+			if (forwardmove)
+			{
+				ForwardThrust(forwardmove, moveangle);
 			}
 
 			if (!(player.cheats & CF_PREDICTING) && (forwardmove != 0 || sidemove != 0))
@@ -945,14 +965,17 @@ class ShermanPlayer : PlayerPawn
 		bool sp = false;
 
 		while (!treads) { [sp, treads] = A_SpawnItemEx("ShermanPlayerBase", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+		treads.master = self;
 		treads.angle = angle;
 		treads.bSolid = false;
 
 		while (!turret) { [sp, turret] = A_SpawnItemEx("US_ShermanTurret", 16.5 * cos(angle), 16.5 * sin(angle), treads.height, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+		turret.master = self;
 		turret.angle = angle;
 		turret.bSolid = false;
 
 		while (!turretcamera) { [sp, turretcamera] = A_SpawnItemEx("SecurityCamera", -2.5 * radius, 0, treads.height + turret.height + 96, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+		turretcamera.master = self;
 
 		Super.PostBeginPlay();
 	}
