@@ -162,13 +162,15 @@ class US_ShermanCannon : Actor
 	States
 	{
 		Spawn:
-			MDLA A 1 A_Warp(AAPTR_MASTER,0,0,0,0,WARPF_NOCHECKPOSITION | WARPF_INTERPOLATE | WARPF_COPYVELOCITY | WARPF_COPYPITCH);
-			Loop;
+			MDLA A -1;
+			Stop;
 	}
 }
 
 class US_ShermanTurret : Actor
 {
+	Actor gun;
+
 	Default
 	{
 		Height 32;
@@ -182,8 +184,34 @@ class US_ShermanTurret : Actor
 	States
 	{
 		Spawn:
-			MDLA A -1 NoDelay A_SpawnItemEx("US_ShermanCannon", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER);
+			MDLA A -1;
 			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		bool sp = false;
+
+		while (!gun) { [sp, gun] = A_SpawnItemEx("US_ShermanCannon", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+
+		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		if (gun)
+		{
+			gun.angle = angle;
+			gun.SetOrigin(self.pos + (RotateVector((32, 0), angle), 18.0), true);
+
+			gun.bSolid = bSolid;
+			gun.bInvisible = bInvisible;
+		}
+	}
+
+	override void OnDestroy()
+	{
+		if (gun) { gun.Destroy(); }
 	}
 }
 
@@ -198,7 +226,7 @@ class US_Sherman : Actor
 		//$Color 3
 		DistanceCheck "scenelod";
 		Radius 64;
-		Height 64;
+		Height 56;
 		Mass 0x7ffffff;
 		+SOLID
 		+CANPASS
@@ -215,7 +243,7 @@ class US_Sherman : Actor
 	{
 		bool sp = false;
 
-		while (!turret) { [sp, turret] = A_SpawnItemEx("US_ShermanTurret", 0, 0, Height, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+		while (!turret) { [sp, turret] = A_SpawnItemEx("US_ShermanTurret", 16.5 * cos(angle), 16.5 * sin(angle), Height, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
 
 		Super.PostBeginPlay();
 	}

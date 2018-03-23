@@ -827,7 +827,7 @@ class ShermanPlayerBase : Actor
 
 class ShermanPlayer : PlayerPawn
 {
-	Actor treads, turret, turretcamera;
+	Actor treads, turret, turretcamera, gun;
 	Actor ForcedHealthBar;
 	FLineTraceData cameratrace, crosshairtrace;
 
@@ -901,20 +901,21 @@ class ShermanPlayer : PlayerPawn
 				ForwardThrust(forwardmove, moveangle);
 			}
 
-			if (sidemove)
+			if (forwardmove && (cmd.buttons & BT_SPEED) && treads && turret && treads.angle != turret.angle) // If holding SHIFT, auto-steer the tracks to align with the turret
 			{
-				if (forwardmove < 0)
-				{
-					angle += sidemove;
-					if (treads) { treads.angle += sidemove; }
-					if (turret) { turret.angle += sidemove; }
-				}
-				else
-				{
-					angle -= sidemove;
-					if (treads) { treads.angle -= sidemove; }
-					if (turret) { turret.angle -= sidemove; }
-				}
+				double diff = deltaangle(treads.angle, turret.angle);
+
+				if (diff < -1) { treads.angle--; }
+				else if (diff > 1) { treads.angle++; }
+				else { treads.angle = turret.angle; }
+			}
+			else if (sidemove) // Only do normal sidemove handling if not auto-steering
+			{
+				if (forwardmove >= 0) { sidemove *= -1; }
+
+				angle += sidemove;
+				if (treads) { treads.angle += sidemove; }
+				if (turret) { turret.angle += sidemove; }
 			}
 
 			if (!(player.cheats & CF_PREDICTING) && (forwardmove != 0 || sidemove != 0))
@@ -937,13 +938,17 @@ class ShermanPlayer : PlayerPawn
 		TakeInventory("BoATilt", 1);
 		GiveInventory("Cannon75mm", 1);
 
+		// Spawn everything in neutral orientation
+		pitch = 0;
+		roll = 0;
+
 		bool sp = false;
 
 		while (!treads) { [sp, treads] = A_SpawnItemEx("ShermanPlayerBase", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
 		treads.angle = angle;
 		treads.bSolid = false;
 
-		while (!turret) { [sp, turret] = A_SpawnItemEx("US_ShermanTurret", 0, 0, treads.height, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+		while (!turret) { [sp, turret] = A_SpawnItemEx("US_ShermanTurret", 16.5 * cos(angle), 16.5 * sin(angle), treads.height, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
 		turret.angle = angle;
 		turret.bSolid = false;
 
@@ -954,20 +959,26 @@ class ShermanPlayer : PlayerPawn
 
 	override void Tick()
 	{
-		Super.Tick();
-
 		if (Level.time % (35 * 5) == 0) { ForcedHealthBar = GetClosestForcedHealthBar(); } // Only run this check occasionally
-
-		if (treads) { treads.SetOrigin(self.pos, true); }
-		if (turret && treads)
-		{
-			turret.SetOrigin(self.pos + (0, 0, treads.height), true);
-			player.mo.angle = turret.angle;
-		}
 
 		if (turretcamera && treads && turret)
 		{
-			pitch = clamp(pitch, -33, 12);
+			treads.SetOrigin(self.pos, true);
+// TODO: Add handling for terrain-based pitch/roll calculations here...
+			treads.pitch = 0;
+			treads.roll = 0;
+
+			double delta = deltaangle(treads.angle, turret.angle);
+
+			player.MinPitch = treads.pitch * cos(delta) - 26;
+			player.MaxPitch = treads.pitch * cos(delta) + 4;
+
+			turret.SetOrigin(self.pos + (RotateVector((16.5 + treads.radius * sin(treads.pitch), 0 - treads.radius * sin(treads.roll)), treads.angle), treads.height * cos(treads.roll) - 16.5 * sin(treads.pitch)), true);
+
+			turret.pitch = treads.roll * sin(-delta) + treads.pitch * cos(delta);
+			turret.roll = treads.roll * cos(-delta) + treads.pitch * sin(delta);
+
+			angle = turret.angle;
 
 			double modifier;
 
@@ -979,6 +990,21 @@ class ShermanPlayer : PlayerPawn
 			turretcamera.SetOrigin(cameratrace.HitLocation, true);
 			turretcamera.angle = angle;
 
+			LineTrace(angle, 1024, pitch, TRF_THRUHITSCAN | TRF_THRUACTORS, height / 2, 0.0, 0.0, crosshairtrace);
+
+			if (!gun) { gun = US_ShermanTurret(turret).gun; }
+
+			if (gun)
+			{
+				double distz = crosshairtrace.HitLocation.z - gun.pos.z;
+				Vector2 dist = crosshairtrace.HitLocation.xy - gun.pos.xy;
+
+				double gunpitch = atan(distz / dist.length());
+
+				gun.pitch = turret.pitch - gunpitch;
+				gun.roll = turret.roll;
+			}
+
 			player.camera = turretcamera;
 			turretcamera.CameraFOV = player.fov;
 		}
@@ -987,7 +1013,7 @@ class ShermanPlayer : PlayerPawn
 			player.camera = player.mo;
 		}
 
-		LineTrace(angle, 1024, pitch, TRF_THRUHITSCAN | TRF_THRUACTORS, height / 2, 0.0, 0.0, crosshairtrace);
+		Super.Tick();
 	}
 
 	Actor GetClosestForcedHealthBar()
