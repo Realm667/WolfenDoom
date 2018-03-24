@@ -1161,22 +1161,6 @@ ACTOR RTCW_V2_Rocket : RTCW_V2_Complete
 }
 
 //MaxED stuff
-ACTOR Trample : BlastEffect //ozy81
-{
-	Radius 56
-	Height 56
-	DamageType Trample
-	+NOGRAVITY
-	States
-	{
-	Spawn:
-		TNT1 A 0
-	Death:
-		"####" # 20 A_Explode(5, Radius, 0, FALSE, Radius) //100dmg
-		Stop
-	}
-}
-
 ACTOR ModelGMCTruck : SwitchableDecoration //ozy81
 {
 	//$Category Models (Wolf3D)/Vehicles

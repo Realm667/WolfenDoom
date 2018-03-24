@@ -826,14 +826,27 @@ class ShermanPlayerBase : Actor
 
 	override void Tick()
 	{
-		if (master)
+		if (master && master.player)
 		{
-			double movespeed = master.vel.length();
+			double moving = master.player.cmd.forwardmove;
 
-			if (movespeed != 0)
+			if (moving != 0)
 			{
-				int dir = movespeed > 0 ? 1 : -1; // Trample both forward and backwards, depending on which direction you're moving
-				A_SpawnItemEx("Trample", scale.x * 136 * dir, 0, height / 2 - 16, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE);
+				double movespeed = master.vel.length();
+
+				int dir = moving > 0 ? 1 : -1; // Trample both forward and backwards, depending on which direction you're moving
+				double dmg = movespeed * 0.625; // Top speed gives ~100 damage
+
+				bool sp;
+				Actor t;
+
+				[sp, t] = A_SpawnItemEx("Trample", scale.x * 128 * dir, 0, height / 2 - 16, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE);
+
+				if (t)
+				{
+					t.target = master;
+					Trample(t).dmg = int(dmg);
+				}
 			}
 		}
 
@@ -861,7 +874,8 @@ class ShermanPlayer : PlayerPawn
 		Player.StartItem "Cannon75mm";
 		Player.UseRange 0;
 		Player.WeaponSlot 1, "Cannon75mm";
-		+INVULNERABLE
+		Renderstyle 'None'; // Ensure that the actual player actor stays invisible, just in case it reverts to PLAYA0 sprites
+		+NOBLOOD
 		-PICKUP // Don't pick up powerups while in the tank
 	}
 
@@ -889,6 +903,8 @@ class ShermanPlayer : PlayerPawn
 		UserCmd cmd = player.cmd;
 
 		double moveangle = angle;
+
+		cmd.yaw = clamp(cmd.yaw, -1024, 1024);
 
 		if (turret && cmd.yaw) { turret.angle += cmd.yaw * (360./65536.); A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
 		if (treads) { moveangle = treads.angle; }
@@ -943,10 +959,12 @@ class ShermanPlayer : PlayerPawn
 
 				angle += sidemove;
 
-				if (!forwardmove) { sidemove *= 2; } // Turn faster if you're not moving forward
+				if (!forwardmove) { sidemove *= 2.5; } // Turn faster if you're not moving forward
 
 				if (treads) { treads.angle += sidemove; }
 				if (turret) { turret.angle += sidemove; }
+
+				A_SetInventory("ShakeShaderControl", 1 + int(sidemove));
 
 				newsndvol += abs(sidemove);
 			}
@@ -971,7 +989,7 @@ class ShermanPlayer : PlayerPawn
 		double movespeed = vel.xy.length();
 		if (movespeed)
 		{
-			A_SetInventory("ShakeShaderControl", 2 + int(movespeed));
+			A_SetInventory("ShakeShaderControl", 1 + int(movespeed) * 65536);
 			newsndvol += movespeed;
 		}
 
@@ -1026,8 +1044,8 @@ class ShermanPlayer : PlayerPawn
 
 			double delta = deltaangle(treads.angle, turret.angle);
 
-			player.MinPitch = treads.pitch * cos(delta) - 26;
-			player.MaxPitch = treads.pitch * cos(delta) + 4;
+			player.MinPitch = treads.pitch * cos(delta) - 25;
+			player.MaxPitch = treads.pitch * cos(delta) + 10;
 
 			turret.SetOrigin(self.pos + (RotateVector((16.5 + treads.radius * sin(treads.pitch), 0 - treads.radius * sin(treads.roll)), treads.angle), treads.height * cos(treads.roll) - 16.5 * sin(treads.pitch)), true);
 
