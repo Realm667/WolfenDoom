@@ -213,7 +213,6 @@ class Cannon75mm : NaziWeapon // Quick and dirty...  Needs cleaning up
 	Default
 	{
 		Weapon.SelectionOrder 1;
-		Weapon.UpSound "panzer/select";
 		+WEAPON.NOAUTOFIRE
 	}
 
@@ -243,15 +242,20 @@ class Cannon75mm : NaziWeapon // Quick and dirty...  Needs cleaning up
 
 	action void DoCannon()
 	{
+		Actor origin = self;
+		if (origin && ShermanPlayer(origin) && ShermanPlayer(origin).treads) { origin = ShermanPlayer(origin).treads; }
+
 		A_PlaySound("Panzer/fire", CHAN_WEAPON);
 		A_GunFlash();
-		A_FireProjectile("PanzerRocket", flags:FPF_NOAUTOAIM);
+
+		double angledelta = deltaangle(angle, origin.angle);
+
+		A_FireProjectile("PanzerRocket", 0, False, -16.5 * sin(angledelta), flags:FPF_NOAUTOAIM); // Offset the firing to account for the turret's offset from center
 	}
 
 	action void DoMachineGun()
 	{
 		Actor origin = self;
-
 		if (origin && ShermanPlayer(origin) && ShermanPlayer(origin).treads) { origin = ShermanPlayer(origin).treads; }
 
 		// Nullify angle and pitch so the weapon always fires straight ahead

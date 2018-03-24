@@ -846,6 +846,8 @@ class ShermanPlayer : PlayerPawn
 	Actor treads, turret, turretcamera, gun;
 	Actor ForcedHealthBar;
 	FLineTraceData cameratrace, crosshairtrace;
+	double sndvol;
+	Vector3 cameralocation;
 
 	Default
 	{
@@ -855,24 +857,29 @@ class ShermanPlayer : PlayerPawn
 		MaxStepHeight 24;
 		Radius 64;
 		Species "Player";
+		Speed 0.5;
 		Player.StartItem "Cannon75mm";
 		Player.UseRange 0;
 		Player.WeaponSlot 1, "Cannon75mm";
-		+INVISIBLE
+		+INVULNERABLE
 		-PICKUP // Don't pick up powerups while in the tank
 	}
 
 	States
 	{
 		Spawn:
-			UNKN A -1;
+			TNT1 A -1;
 			Stop;
 		Pain:
-			UNKN A 1 A_Pain;
+			TNT1 A 1 A_Pain;
 			Goto Spawn;
 		Death:
-			UNKN A 1 A_Scream;
-			UNKN A -1;
+			TNT1 A 1 {
+				A_Scream();
+				A_StopSound(CHAN_6);
+				A_StopSound(CHAN_7);
+			}
+			TNT1 A -1;
 			Stop;
 	}
 
@@ -883,10 +890,15 @@ class ShermanPlayer : PlayerPawn
 
 		double moveangle = angle;
 
-		if (turret) { turret.angle += cmd.yaw * (360./65536.); }
+		if (turret && cmd.yaw) { turret.angle += cmd.yaw * (360./65536.); A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
 		if (treads) { moveangle = treads.angle; }
 
 		player.onground = (pos.z <= floorz) || bOnMobj || bMBFBouncer || (player.cheats & CF_NOCLIP2);
+
+		// Force pitch clamping here, since just setting min/max pitch doesn't work cleanly.
+		if (pitch >= player.MaxPitch || pitch <= player.MinPitch) { cmd.pitch = 0; }
+
+		double newsndvol = 0;
 
 		if (cmd.forwardmove | cmd.sidemove)
 		{
@@ -919,9 +931,11 @@ class ShermanPlayer : PlayerPawn
 			{
 				double diff = deltaangle(treads.angle, turret.angle);
 
-				if (diff < -1) { treads.angle--; forwardmove /= 10; }
-				else if (diff > 1) { treads.angle++; forwardmove /= 10; }
+				if (diff < -1) { treads.angle--; forwardmove /= 5; A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
+				else if (diff > 1) { treads.angle++; forwardmove /= 5; A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
 				else { treads.angle = turret.angle; }
+
+				newsndvol += 0.5;
 			}
 			else if (sidemove) // Only do normal sidemove handling if not auto-steering
 			{
@@ -929,8 +943,12 @@ class ShermanPlayer : PlayerPawn
 
 				angle += sidemove;
 
+				if (!forwardmove) { sidemove *= 2; } // Turn faster if you're not moving forward
+
 				if (treads) { treads.angle += sidemove; }
 				if (turret) { turret.angle += sidemove; }
+
+				newsndvol += abs(sidemove);
 			}
 
 			if (forwardmove)
@@ -949,6 +967,18 @@ class ShermanPlayer : PlayerPawn
 				player.camera = player.mo;
 			}
 		}
+
+		double movespeed = vel.xy.length();
+		if (movespeed)
+		{
+			A_SetInventory("ShakeShaderControl", 2 + int(movespeed));
+			newsndvol += movespeed;
+		}
+
+		if (sndvol > newsndvol) { sndvol = max(sndvol - 0.25, newsndvol); }
+		if (sndvol < newsndvol) { sndvol = min(sndvol + 0.25, newsndvol); }
+
+		A_SoundVolume(CHAN_7, sndvol);
 	}
 
 	override void CheckJump() {} // Tanks can't jump
@@ -977,6 +1007,11 @@ class ShermanPlayer : PlayerPawn
 		while (!turretcamera) { [sp, turretcamera] = A_SpawnItemEx("SecurityCamera", -2.5 * radius, 0, treads.height + turret.height + 96, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
 		turretcamera.master = self;
 
+		sndvol = 0.7;
+
+		A_PlaySound("TKIDLE", CHAN_6, 0.25, TRUE);
+		A_PlaySound("TNK1LOOP", CHAN_7, 0.7, TRUE);
+
 		Super.PostBeginPlay();
 	}
 
@@ -987,9 +1022,7 @@ class ShermanPlayer : PlayerPawn
 		if (turretcamera && treads && turret)
 		{
 			treads.SetOrigin(self.pos, true);
-// TODO: Add handling for terrain-based pitch/roll calculations here...
-			treads.pitch = 0;
-			treads.roll = 0;
+			SetPitchRoll();
 
 			double delta = deltaangle(treads.angle, turret.angle);
 
@@ -1008,10 +1041,13 @@ class ShermanPlayer : PlayerPawn
 			if (pitch < 0) { modifier = 64 * sin(-pitch); }
 			else { modifier = 64 * sin(pitch * 2); }
 
-			LineTrace(angle + 180, 2.5 * radius, 0, TRF_THRUHITSCAN | TRF_THRUACTORS, treads.height + turret.height + 32 + modifier, 0.0, 0.0, cameratrace);
+			if (turret.pitch < 0) { modifier += 96 * sin(-turret.pitch); } // Move the camera up when going uphill
 
-			turretcamera.SetOrigin(cameratrace.HitLocation, true);
+			LineTrace(angle + 180, 2.5 * radius, -turret.pitch, TRF_THRUHITSCAN | TRF_THRUACTORS, treads.height + turret.height + 32 + modifier, 0.0, 0.0, cameratrace);
+
+			turretcamera.SetOrigin(cameratrace.HitLocation + AngleToVector(angle, 2), true);
 			turretcamera.angle = angle;
+			turretcamera.pitch = turret.pitch;
 
 			LineTrace(angle, 1024, pitch, TRF_THRUHITSCAN | TRF_THRUACTORS, height / 2, 0.0, 0.0, crosshairtrace);
 
@@ -1037,6 +1073,44 @@ class ShermanPlayer : PlayerPawn
 		}
 
 		Super.Tick();
+	}
+
+	// Handling for terrain-based pitch/roll calculations...
+	void SetPitchRoll()
+	{
+		if (!treads) { return; }
+
+		double points[5], minz = 0x7FFFFFFF, maxz = -0x7FFFFFFF;
+
+		points[0] = treads.floorz;
+
+		// Get the relative z-height at the four corners of the tank
+		points[1] = treads.GetZAt(Radius, Radius) - points[0];
+		points[2] = treads.GetZAt(Radius, -Radius) - points[0];
+		points[3] = treads.GetZAt(-Radius, Radius) - points[0];
+		points[4] = treads.GetZAt(-Radius, -Radius) - points[0];
+
+		for (int i = 1; i <= 4; i++)
+		{
+			if (points[i] > MaxStepHeight) { points[i] = 0; } // Ignore the point if you can't climb that high
+		}
+
+		// Use those values to calculate the pitch.roll amounts
+		double pitchinput = (points[2] + points[1]) - (points[4] + points[3]);
+		double rollinput = (points[2] + points[4]) - (points[1] + points[3]);
+
+		pitchinput = atan(pitchinput / (Radius * 2));
+		rollinput = atan(rollinput / (Radius * 2));
+
+		treads.pitch = clamp(treads.pitch, -30, 30);
+		treads.roll = clamp(treads.roll, -30, 30);
+
+		// Interpolate to the new values
+		if (treads.pitch > -pitchinput) { treads.pitch = max(treads.pitch - 1, -pitchinput); }
+		if (treads.pitch < -pitchinput) { treads.pitch = min(treads.pitch + 1, -pitchinput); }
+
+		if (treads.roll > rollinput) { treads.roll = max(treads.roll - 1, rollinput); }
+		if (treads.roll < rollinput) { treads.roll = min(treads.roll + 1, rollinput); }
 	}
 
 	Actor GetClosestForcedHealthBar()
