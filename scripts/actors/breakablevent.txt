@@ -66,7 +66,7 @@ class Debris_Vent_FloorCeiling : SwitchableDecoration
 	}
 
 }
-/*
+
 class Debris_Wood_FloorCeiling : Debris_Vent_FloorCeiling
 {
 	Default
@@ -76,23 +76,36 @@ class Debris_Wood_FloorCeiling : Debris_Vent_FloorCeiling
 
 	States
 	{
+		Spawn:
+			VENT C 1;
+		Inactive:
+		Death:
+		Active:
+			VENT "#" 0 {
+				if (!broken && target && abs(pos.z - target.pos.z) < 48) { return ResolveState("Unblock"); }
+				return ResolveState(null);
+			}
+		StaticLoop:
+			VENT "#" 35;
+			Wait;
 		Unblock:
-			VENT B 0 {
+			VENT D 0 {
 				broken = True;
 
-				A_SpawnItemEx("PowerPlantSmokePuffSmall", 0, 0, 32, 0, 0, 0, 0, 0); //needed? - Ozy81
+				A_SpawnItemEx("PowerPlantSmokePuffSmall", 0, 0, 32, 0, 0, 0, 0, 0);
 
 				S_Sound("WOODBRK", CHAN_AUTO, 0.5, ATTN_NORM);
 
 				for (int i = 0; i < 4; i++) {
 					A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
 					A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
 				}
 
 				bNoInteraction = True;
 			}
-			VENT B -1;
+			VENT D -1;
 			Stop;
 	}
-
-}*/
+}

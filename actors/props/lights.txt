@@ -46,13 +46,13 @@ ACTOR Chandelier1Switchable : SwitchableDecoration
 	ActiveFlames: //ozy. let's apply these nice flames on candles first - coords be damned
 		MDLA A 0 {
 			A_SpawnItemEx("3dFlame_Normal", ScaleX*1, 	ScaleY*33, 	ScaleX+ScaleY*14, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
-			A_SpawnItemEx("3dFlame_Normal", ScaleX*1, 	ScaleY*-31, ScaleX+ScaleY*5, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
-			A_SpawnItemEx("3dFlame_Normal", ScaleX*24, 	ScaleY*23, 	ScaleX+ScaleY*7, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
-			A_SpawnItemEx("3dFlame_Normal", ScaleX*-22, ScaleY*-22, ScaleX+ScaleY*7, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*1, 	ScaleY*-31, ScaleX+ScaleY*5, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*24, 	ScaleY*23, 	ScaleX+ScaleY*7, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*-22, ScaleY*-22, ScaleX+ScaleY*7, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
 			A_SpawnItemEx("3dFlame_Normal", ScaleX*34, 	ScaleY*1, 	ScaleX+ScaleY*14, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
 			A_SpawnItemEx("3dFlame_Normal", ScaleX*-31, ScaleY*1, 	ScaleX+ScaleY*12, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
-			A_SpawnItemEx("3dFlame_Normal", ScaleX*-22, ScaleY*23, 	ScaleX+ScaleY*5, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
-			A_SpawnItemEx("3dFlame_Normal", ScaleX*24, 	ScaleY*-22, ScaleX+ScaleY*8, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);}
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*-22, ScaleY*23, 	ScaleX+ScaleY*5, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*24, 	ScaleY*-22, ScaleX+ScaleY*8, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);}
 	Activate:
 		MDLA A 1
 		Loop
@@ -87,14 +87,14 @@ ACTOR Chandelier2Switchable : SwitchableDecoration
 		MDLA A 0 NoDelay A_PlaySound("FIRE_SMALL", CHAN_BODY, frandom(0.2,0.4) - args[0], TRUE)
 	ActiveFlames:
 		MDLA A 0 {
-			A_SpawnItemEx("3dFlame_Normal", ScaleX*0,			ScaleY*26, 		ScaleX+ScaleY*10, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
-			A_SpawnItemEx("3dFlame_Normal", ScaleX*0,			ScaleY*-26.5, ScaleX+ScaleY*6, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
-			A_SpawnItemEx("3dFlame_Normal", ScaleX*18.7, 	ScaleY*18.2, 	ScaleX+ScaleY*7, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
-			A_SpawnItemEx("3dFlame_Normal", ScaleX*-18.8, ScaleY*-18.8, ScaleX+ScaleY*7, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
-			A_SpawnItemEx("3dFlame_Normal", ScaleX*26.5, 	ScaleY*-0.2, 	ScaleX+ScaleY*10, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
-			A_SpawnItemEx("3dFlame_Normal", ScaleX*-26.4, ScaleY*0, 		ScaleX+ScaleY*8.8,0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
-			A_SpawnItemEx("3dFlame_Normal", ScaleX*-18.8, ScaleY*18.7, 	ScaleX+ScaleY*5, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
-			A_SpawnItemEx("3dFlame_Normal", ScaleX*19.2, 	ScaleY*-18.9, ScaleX+ScaleY*8, 	0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);}
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*0, ScaleY*26, 	ScaleX+ScaleY*10, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*0, ScaleY*-26.5, ScaleX+ScaleY*6, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*18.7, ScaleY*18.2, ScaleX+ScaleY*7, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*-18.8, ScaleY*-18.8, ScaleX+ScaleY*7, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*26.5, ScaleY*-0.2, ScaleX+ScaleY*10, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*-26.4, ScaleY*0, ScaleX+ScaleY*8.8,0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*-18.8, ScaleY*18.7, 	ScaleX+ScaleY*5, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx("3dFlame_Normal", ScaleX*19.2, ScaleY*-18.9, ScaleX+ScaleY*8, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);}
 	Activate:
 		MDLA A 1
 		Loop
@@ -212,6 +212,20 @@ ACTOR 3dFlame_Lamp : 3dFlame_Normal
 	Spawn:
 		TNT1 A 0 A_Jump(250,2)
 		TNT1 A 0 A_SpawnItemEx("FloatingCinder", 0, 0, random(0,2), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE)
+		3DFR ABCDEFGHIJ 2 LIGHT ("3DFLAME_L")
+		Loop
+	}
+}
+
+ACTOR 3dFlame_Oven : 3dFlame_Normal
+{
+	DistanceCheck "sfxlod"
+	Scale 0.08
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_Jump(144,2)
+		TNT1 A 0 A_SpawnItemEx("FloatingCinder2", ScaleX*48, 0, 4, 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE)
 		3DFR ABCDEFGHIJ 2 LIGHT ("3DFLAME_L")
 		Loop
 	}

@@ -428,7 +428,7 @@ ACTOR ModelSandBagStraight : 3dObstacle
 	Height 16
 }
 
-ACTOR WaterTower001 : ModelBase
+ACTOR WaterTower : ModelBase
 {
 	//$Category Models (Wolf3D)/Scenery
 	//$Title Watertower
@@ -1037,8 +1037,8 @@ ACTOR RTCWGramo : SwitchableDecoration
 		MDLC ABCDEFGHIJKLMNOPQRSTUVWXYZ 1
 		Loop
 	Spawn:
-	  MDLA A 0 NoDelay A_SpawnItemEx("InteractionIcon", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
-		SpawnSet:
+		MDLA A 0 NoDelay A_SpawnItemEx("InteractionIcon", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+	SpawnSet:
 		MDLA A -1
 		Stop
 	Inactive:

@@ -167,6 +167,31 @@ class US_ShermanCannon : Actor
 	}
 }
 
+class US_ShermanDead : Actor
+{
+	Default
+	{
+		Radius 88;
+		Height 96;
+		Mass 0x7ffffff;
+		+FLOORCLIP
+		+NOBLOOD
+		+NOBLOODDECALS
+		+NODAMAGE
+		+NOTAUTOAIMED
+		+SHOOTABLE
+		+SOLID
+		BloodType "TankSpark";
+	}
+	
+	States
+	{
+	Spawn:
+		MDLA A 12 A_SpawnProjectile("TankSmoke",58,0,random(0,360),2,random(70,130));
+		Loop;
+	}
+}
+
 class US_ShermanTurret : Actor
 {
 	Actor gun;
