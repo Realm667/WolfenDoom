@@ -1291,6 +1291,7 @@ class Nazi : Base
 				A_Log(StringTable.Localize("$STEALTH"));
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING);
 				bFriendly = False; // Force to not friendly so that they will count as a kill and be healable.
+				DeathSound = "Nazi/Gurgle"; // Reset death sound to gurgle
 				SoundAlert(source, false, 192);
 				damage = health;
 				flags |= DMG_FORCED;
@@ -1304,6 +1305,7 @@ class Nazi : Base
 			{
 				user_incombat = True;
 				A_Log(StringTable.Localize("$CRITICAL"));
+				DeathSound = "Nazi/Gurgle"; // Reset death sound to gurgle
 				SoundAlert(source, false, 192);
 				damage = health;
 				flags |= DMG_FORCED;
