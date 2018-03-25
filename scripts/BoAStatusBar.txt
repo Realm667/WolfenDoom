@@ -155,11 +155,15 @@ class BoAStatusBar : BaseStatusBar
 				TextureID image = TexMan.CheckForTexture("XHAIRB2", TexMan.Type_MiscPatch);
 
 				Vector2 dimensions = TexMan.GetScaledSize(image);
-				dimensions /= ShermanPlayer(CPlayer.mo).crosshairtrace.Distance / 680 * CPlayer.fov / 90; // Scale with fov to account for zooming
+				double scaleamt = clamp(ShermanPlayer(CPlayer.mo).crosshairtrace.Distance / 680 * CPlayer.fov / 90, 0.5, 1.5); // Scale with fov to account for zooming
+
+				dimensions /= scaleamt;
 
 				color clr = 0x890000;
 
-				screen.DrawTexture (image, false, drawpos.x, drawpos.y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF);
+				screen.DrawTexture(image, false, drawpos.x, drawpos.y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF);
+
+				DrawTankStatusBar();
 			}
 
 			return;
@@ -834,5 +838,62 @@ class BoAStatusBar : BaseStatusBar
 
 		// Draw centered on screen, with offsets forced to center of the icon
 		screen.DrawTexture (CrosshairImage, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true);
+	}
+
+	void DrawTankStatusBar()
+	{
+		BeginHUD(1, False);
+
+		Vector2 hudscale = GetHUDScale();
+		double ratio = Screen.GetAspectRatio();
+
+		double sheight = Screen.GetHeight() / hudscale.y;
+		double swidth = Screen.GetWidth() / hudscale.x;
+
+		Color clr = GetHealthColor(0.5);
+		Color clr2 = GetHealthColor(0.95);
+
+		double healthpercent = CPlayer.health * 100. / CPlayer.mo.Default.health;
+		String healthstring = int(healthpercent) .. "%";
+
+		double pulse = healthpercent < 25 ? (sin(level.time * (26 - healthpercent)) + 1.0) / 2 : 0.5; // Start blinking at less than 25% health, faster as health decreases
+
+		TextureID tank = TexMan.CheckForTexture("TANKSTAT", TexMan.Type_Any);
+		TextureID glow = TexMan.CheckForTexture("TANKGLOW", TexMan.Type_Any);
+
+		Vector2 dimensions = TexMan.GetScaledSize(tank) / 4;
+
+		double x = dimensions.x / 2 + 8;
+		double y = sheight - dimensions.y / 2 - 16;
+
+		screen.DrawTexture(tank, false, x, y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true, DTA_Alpha, 0.85, DTA_VirtualWidth, int(swidth), DTA_VirtualHeight, int(sheight), DTA_KeepRatio, true);
+		screen.DrawTexture(glow, false, x, y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_FillColor, clr2 & 0xFFFFFF, DTA_CenterOffset, true, DTA_Alpha, pulse, DTA_VirtualWidth, int(swidth), DTA_VirtualHeight, int(sheight), DTA_KeepRatio, true);
+
+		x = dimensions.x / 2 + 8 - mBigFont.mFont.StringWidth(healthstring) / 2;
+		y = sheight - mBigFont.mFont.GetHeight() / 2 - 8;
+
+		screen.DrawText(mBigFont.mFont, Font.CR_GRAY, x, y, healthstring, DTA_Alpha, 0.8, DTA_VirtualWidth, int(swidth), DTA_VirtualHeight, int(sheight), DTA_KeepRatio, true);
+	}
+
+	int GetHealthColor(double shade = 1.0)
+	{
+		color clr;
+		int red, green;
+		int health = clamp(int(CPlayer.health * 100. / CPlayer.mo.Default.health), 0, 100);
+
+		if (health < 50)
+		{
+			red = 255;
+			green = health * 255 / 50;
+		}
+		else
+		{
+			red = (100 - health) * 255 / 50;
+			green = 255;
+		}
+
+		clr = (int(red * shade) << 16) | (int(green * shade) << 8);
+
+		return clr;
 	}
 }

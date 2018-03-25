@@ -334,9 +334,19 @@ class Sherman : PowerMorph
 
 			if (tank)
 			{
-				if  (tank.treads) { tank.treads.Destroy(); }
-				if  (tank.turret) { tank.turret.Destroy(); }
+				if  (tank.treads)
+				{
+					tank.treads.bSolid = true;
+					tank.treads.master = null;
+				}
+				if  (tank.turret)
+				{
+					tank.turret.bSolid = true;
+					tank.turret.master = null;
+				}
 				if  (tank.turretcamera) { tank.turretcamera.Destroy(); }
+
+				MorphedPlayer.mo.SetOrigin(tank.turret.pos + (0, 0, tank.turret.height), false);
 			}
 		}
 

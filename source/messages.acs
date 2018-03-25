@@ -59,3 +59,11 @@ script "HintMessage" (int message)
 	delay(10);
 	AmbientSound("menu/change", 96);
 }
+
+script "TankExitMessage" (void)
+{
+	SetHudSize(640, 480, true);
+	hudmessagebold(l:"TANKEXITHOLD"; HUDMSG_FADEINOUT,80,CR_GRAY,320.0,470.0,1.0,1.0,0.5);
+	delay(10);
+	AmbientSound("menu/change", 96);
+}

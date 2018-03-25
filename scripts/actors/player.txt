@@ -844,7 +844,7 @@ class ShermanPlayerBase : Actor
 
 				if (t)
 				{
-					t.target = master;
+					t.target = master; // Set the player as the Trample actor's target, because it uses A_Explode, which defaults to treating the actor's target as the originator (and doesn't damage it)
 					Trample(t).dmg = int(dmg);
 				}
 			}
@@ -852,6 +852,24 @@ class ShermanPlayerBase : Actor
 
 		Super.Tick();
 	}
+/*
+	override bool Used(Actor user)
+	{
+		if (bDormant || master) { return false; }
+
+		let p = user.player;
+
+		if (p)
+		{
+			p.mo.SetOrigin(pos, false);
+			p.mo.angle = angle;
+
+			user.GiveInventory("Sherman", 1);
+			return true;
+		}
+		return false;
+	}
+*/
 }
 
 class ShermanPlayer : PlayerPawn
@@ -859,8 +877,9 @@ class ShermanPlayer : PlayerPawn
 	Actor treads, turret, turretcamera, gun;
 	Actor ForcedHealthBar;
 	FLineTraceData cameratrace, crosshairtrace;
-	double sndvol;
+	double sndvol, minpitch, maxpitch;
 	Vector3 cameralocation;
+	int useholdtime;
 
 	Default
 	{
@@ -912,7 +931,7 @@ class ShermanPlayer : PlayerPawn
 		player.onground = (pos.z <= floorz) || bOnMobj || bMBFBouncer || (player.cheats & CF_NOCLIP2);
 
 		// Force pitch clamping here, since just setting min/max pitch doesn't work cleanly.
-		if (pitch >= player.MaxPitch || pitch <= player.MinPitch) { cmd.pitch = 0; }
+		if (pitch >= maxpitch || pitch <= minpitch) { cmd.pitch = 0; }
 
 		double newsndvol = 0;
 
@@ -1044,8 +1063,8 @@ class ShermanPlayer : PlayerPawn
 
 			double delta = deltaangle(treads.angle, turret.angle);
 
-			player.MinPitch = treads.pitch * cos(delta) - 25;
-			player.MaxPitch = treads.pitch * cos(delta) + 10;
+			minpitch = treads.pitch * cos(delta) - 25;
+			maxpitch = treads.pitch * cos(delta) + 10;
 
 			turret.SetOrigin(self.pos + (RotateVector((16.5 + treads.radius * sin(treads.pitch), 0 - treads.radius * sin(treads.roll)), treads.angle), treads.height * cos(treads.roll) - 16.5 * sin(treads.pitch)), true);
 
@@ -1091,6 +1110,15 @@ class ShermanPlayer : PlayerPawn
 		}
 
 		Super.Tick();
+
+		if (player.usedown)
+		{
+			useholdtime++;
+			if (useholdtime == 1) { Level.ExecuteSpecial(80, self, null, false, -int(Name("TankExitMessage")), 0); }
+		}
+		else { useholdtime = 0; }
+
+		if (useholdtime >= 70) { TakeInventory("Sherman", 1); }
 	}
 
 	// Handling for terrain-based pitch/roll calculations...
