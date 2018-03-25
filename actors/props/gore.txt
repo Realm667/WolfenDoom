@@ -671,25 +671,34 @@ ACTOR Manacles
 	}
 }
 
-//Doom Replacements (2d)
-ACTOR WolfBloodPool : SmallBloodPool Replaces SmallBloodPool
+//Doom Replacements (these were) - Had to include new actors for these since they doesn't seem to work with .ipk3 file - ozy81
+ACTOR WolfBloodPool // Modified Jaguar Wolf3D water pool sprite
 {
+	//$Category Gore (Wolf3D)
+	//$Title Replacement for BloodPool actor
+	//$Color 4
+	Radius 20
+	Height 1
+	+MOVEWITHSECTOR
+	+NOBLOCKMAP
 	Scale 0.5
 	States
 	{
 	Spawn:
-		POB2 A -1 // Modified Jaguar Wolf3D water pool sprite
+		POB2 A -1
 		Stop
 	}
 }
 
-ACTOR WolfColonGibs : ColonGibs Replaces ColonGibs
+ACTOR WolfColonGibs : WolfBloodPool // Re-use a gore gib that's close to the original Doom sprite
 {
+	//$Title Replacement for ColonGibs actor
+	Height 4
 	Scale 0.5
 	States
 	{
 	Spawn:
-		GORE K -1 // Re-use a gore gib that's close to the original Doom sprite
+		GORE K -1
 		Stop
 	}
 }
