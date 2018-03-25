@@ -807,77 +807,13 @@ class LanternEffect : PlayerEffect
 	}
 }
 
-class ShermanPlayerBase : Actor
-{
-	Default
-	{
-		Radius 64;
-		Height 64;
-		Mass 0x7ffffff;
-		+CANPASS
-	}
-
-	States
-	{
-		Spawn:
-			MDLA A -1;
-			Stop;
-	}
-
-	override void Tick()
-	{
-		if (master && master.player)
-		{
-			double moving = master.player.cmd.forwardmove;
-
-			if (moving != 0)
-			{
-				double movespeed = master.vel.length();
-
-				int dir = moving > 0 ? 1 : -1; // Trample both forward and backwards, depending on which direction you're moving
-				double dmg = movespeed * 0.625; // Top speed gives ~100 damage
-
-				bool sp;
-				Actor t;
-
-				[sp, t] = A_SpawnItemEx("Trample", scale.x * 128 * dir, 0, height / 2 - 16, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE);
-
-				if (t)
-				{
-					t.target = master; // Set the player as the Trample actor's target, because it uses A_Explode, which defaults to treating the actor's target as the originator (and doesn't damage it)
-					Trample(t).dmg = int(dmg);
-				}
-			}
-		}
-
-		Super.Tick();
-	}
-/*
-	override bool Used(Actor user)
-	{
-		if (bDormant || master) { return false; }
-
-		let p = user.player;
-
-		if (p)
-		{
-			p.mo.SetOrigin(pos, false);
-			p.mo.angle = angle;
-
-			user.GiveInventory("Sherman", 1);
-			return true;
-		}
-		return false;
-	}
-*/
-}
-
+// Sherman Tank Player Class
 class ShermanPlayer : PlayerPawn
 {
 	Actor treads, turret, turretcamera, gun;
 	Actor ForcedHealthBar;
 	FLineTraceData cameratrace, crosshairtrace;
-	double sndvol, minpitch, maxpitch;
+	double sndvol;
 	Vector3 cameralocation;
 	int useholdtime;
 
@@ -886,10 +822,12 @@ class ShermanPlayer : PlayerPawn
 		Health 10000; // Need to tweak, probably...
 		Height 96;
 		Mass 0x7ffffff;
-		MaxStepHeight 24;
 		Radius 64;
-		Species "Player";
 		Speed 0.5;
+		BloodType "TankSpark";
+		MaxStepHeight 24;
+		Species "Player";
+		Player.MorphWeapon "Cannon75mm";
 		Player.StartItem "Cannon75mm";
 		Player.UseRange 0;
 		Player.WeaponSlot 1, "Cannon75mm";
@@ -931,7 +869,7 @@ class ShermanPlayer : PlayerPawn
 		player.onground = (pos.z <= floorz) || bOnMobj || bMBFBouncer || (player.cheats & CF_NOCLIP2);
 
 		// Force pitch clamping here, since just setting min/max pitch doesn't work cleanly.
-		if (pitch >= maxpitch || pitch <= minpitch) { cmd.pitch = 0; }
+		if (pitch >= player.MaxPitch || pitch <= player.MinPitch) { cmd.pitch = 0; }
 
 		double newsndvol = 0;
 
@@ -1023,7 +961,6 @@ class ShermanPlayer : PlayerPawn
 	override void PostBeginPlay()
 	{
 		TakeInventory("BoATilt", 1);
-		GiveInventory("Cannon75mm", 1);
 
 		// Spawn everything in neutral orientation
 		pitch = 0;
@@ -1031,17 +968,17 @@ class ShermanPlayer : PlayerPawn
 
 		bool sp = false;
 
-		while (!treads) { [sp, treads] = A_SpawnItemEx("ShermanPlayerBase", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+		if (tracer && US_Sherman(tracer))
+		{
+			treads = tracer;
+			tracer = null;
+		}
+
+		while (!treads) { [sp, treads] = A_SpawnItemEx("US_Sherman", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
 		treads.master = self;
-		treads.angle = angle;
 		treads.bSolid = false;
 
-		while (!turret) { [sp, turret] = A_SpawnItemEx("US_ShermanTurret", 16.5 * cos(angle), 16.5 * sin(angle), treads.height, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
-		turret.master = self;
-		turret.angle = angle;
-		turret.bSolid = false;
-
-		while (!turretcamera) { [sp, turretcamera] = A_SpawnItemEx("SecurityCamera", -2.5 * radius, 0, treads.height + turret.height + 96, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+		while (!turretcamera) { [sp, turretcamera] = A_SpawnItemEx("SecurityCamera", -2.5 * radius, 0, treads.height + 128, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
 		turretcamera.master = self;
 
 		sndvol = 0.7;
@@ -1054,17 +991,40 @@ class ShermanPlayer : PlayerPawn
 
 	override void Tick()
 	{
+		Super.Tick();
+
+		if (health == Default.Health && US_Sherman(treads).savedhealth)
+		{
+			A_SetHealth(US_Sherman(treads).savedhealth);
+			US_Sherman(treads).savedhealth = 0;
+		}
+
+		if (!turret) // Since turret is spawned by treads actor, check for it here since it'll be spawned after PostBeginPlay is called
+		{
+			if (US_Sherman(treads))
+			{
+				turret = US_Sherman(treads).turret;
+
+				if (turret)
+				{
+					turret.master = self;
+					turret.angle = angle;
+					turret.bSolid = false;
+				}
+			}
+		}
+
 		if (Level.time % (35 * 5) == 0) { ForcedHealthBar = GetClosestForcedHealthBar(); } // Only run this check occasionally
 
-		if (turretcamera && treads && turret)
+		if (player && turretcamera && treads && turret)
 		{
 			treads.SetOrigin(self.pos, true);
 			SetPitchRoll();
 
 			double delta = deltaangle(treads.angle, turret.angle);
 
-			minpitch = treads.pitch * cos(delta) - 25;
-			maxpitch = treads.pitch * cos(delta) + 10;
+			Player.MinPitch = treads.pitch * cos(delta) - 25;
+			Player.MaxPitch = treads.pitch * cos(delta) + 10;
 
 			turret.SetOrigin(self.pos + (RotateVector((16.5 + treads.radius * sin(treads.pitch), 0 - treads.radius * sin(treads.roll)), treads.angle), treads.height * cos(treads.roll) - 16.5 * sin(treads.pitch)), true);
 
@@ -1075,8 +1035,8 @@ class ShermanPlayer : PlayerPawn
 
 			double modifier;
 
-			if (pitch < 0) { modifier = 64 * sin(-pitch); }
-			else { modifier = 64 * sin(pitch * 2); }
+			if (pitch < 0) { modifier = 48 * sin(-pitch); } // Aiming up moves the camera up so you can keep the aimpoint on screen
+			else { modifier = 64 * sin(pitch * 8); } // Aiming down actually moves the camera *up*, so that you can see the aimpoint over the top of the turret
 
 			if (turret.pitch < 0) { modifier += 96 * sin(-turret.pitch); } // Move the camera up when going uphill
 
@@ -1108,8 +1068,6 @@ class ShermanPlayer : PlayerPawn
 		{
 			player.camera = player.mo;
 		}
-
-		Super.Tick();
 
 		if (player.usedown)
 		{
