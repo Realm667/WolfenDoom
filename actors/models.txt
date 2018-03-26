@@ -2018,6 +2018,27 @@ ACTOR Feldfernschreiber : ModelBase
 }
 
 //CODs Stuff - Ozy81
+ACTOR US_ShermanTurretProp : ModelBase { +CANPASS }
+ACTOR US_ShermanCannonProp : ModelBase { +CANPASS }
+
+ACTOR US_ShermanProp : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Vehicles
+	//$Title US M4 Sherman Tank (scenery)
+	//$Color 3
+	DistanceCheck "scenelod"
+	Height 88
+	+SOLID
+	States
+	{
+	Spawn:
+		MDLA A -1 NoDelay {
+							A_SpawnItemEx("US_ShermanTurretProp", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE);
+							A_SpawnItemEx("US_ShermanCannonProp", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+		Stop
+	}
+}
+
 ACTOR COD_ArtDecoLight1A : SwitchableDecoration
 {
 	//$Category Light Sources (Wolf3D)/ACS Switchable
