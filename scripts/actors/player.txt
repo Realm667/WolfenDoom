@@ -812,10 +812,14 @@ class ShermanPlayer : PlayerPawn
 {
 	Actor treads, turret, turretcamera, gun;
 	Actor ForcedHealthBar;
-	FLineTraceData cameratrace, crosshairtrace;
+	FLineTraceData cameratrace;
+	BoAFindHitPointTracer hittracer;
 	double sndvol;
 	Vector3 cameralocation;
 	int useholdtime;
+	Vector3 CrosshairPos;
+	Actor CrosshairActor;
+	double CrosshairDist;
 
 	Default
 	{
@@ -826,7 +830,7 @@ class ShermanPlayer : PlayerPawn
 		Speed 0.5;
 		BloodType "TankSpark";
 		MaxStepHeight 24;
-		Species "Player";
+		Species "Tank";
 		Player.MorphWeapon "Cannon75mm";
 		Player.StartItem "Cannon75mm";
 		Player.UseRange 0;
@@ -861,9 +865,10 @@ class ShermanPlayer : PlayerPawn
 
 		double moveangle = angle;
 
-		cmd.yaw = clamp(cmd.yaw, -1024, 1024);
+//*		cmd.yaw = clamp(cmd.yaw, -1024, 1024);
 
-		if (turret && cmd.yaw) { turret.angle += cmd.yaw * (360./65536.); A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
+//*		if (turret && cmd.yaw) { turret.angle += cmd.yaw * (360./65536.); A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
+		if (cmd.yaw) { angle += cmd.yaw * (360./65536.); } 
 		if (treads) { moveangle = treads.angle; }
 
 		player.onground = (pos.z <= floorz) || bOnMobj || bMBFBouncer || (player.cheats & CF_NOCLIP2);
@@ -899,27 +904,40 @@ class ShermanPlayer : PlayerPawn
 			forwardmove = fm * movefactor * (35 / TICRATE);
 			sidemove = sm * movefactor * (35 / TICRATE);
 
-			// Default to "auto-steering" the tank to wherever you are aiming the turret
+			// Default to "auto-steering" the tank to wherever you are aiming
 			if (forwardmove && !(cmd.buttons & BT_SPEED) && treads && turret && treads.angle != turret.angle) // If *not* holding SHIFT, auto-steer the tracks to align with the turret
 			{
-				double diff = deltaangle(treads.angle, turret.angle);
+				double diff = deltaangle(treads.angle, angle);
 
-				if (diff < -1) { treads.angle--; forwardmove /= 5; A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
-				else if (diff > 1) { treads.angle++; forwardmove /= 5; A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
-				else { treads.angle = turret.angle; }
+				if (diff < -1)
+				{
+					treads.angle -= 2;
+					forwardmove /= 5;
+					A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE);
+				}
+				else if (diff > 1)
+				{
+					treads.angle += 2;
+					forwardmove /= 5;
+					A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE);
+				}
+				else
+				{
+					treads.angle = angle;
+				}
 
 				newsndvol += 0.5;
 			}
-			else if (sidemove) // Only do normal sidemove handling if not auto-steering
+			else if (sidemove) // Only do separate sidemove handling if not auto-steering or not moving forward
 			{
 				if (forwardmove >= 0) { sidemove *= -1; }
 
-				angle += sidemove;
-
 				if (!forwardmove) { sidemove *= 2.5; } // Turn faster if you're not moving forward
 
+				angle += sidemove;
+
 				if (treads) { treads.angle += sidemove; }
-				if (turret) { turret.angle += sidemove; }
+//*				if (turret) { turret.angle += sidemove; }
 
 				A_SetInventory("ShakeShaderControl", 1 + int(sidemove));
 
@@ -934,6 +952,13 @@ class ShermanPlayer : PlayerPawn
 			if (!(player.cheats & CF_PREDICTING) && (forwardmove != 0 || sidemove != 0))
 			{
 				PlayRunning ();
+				if (treads)
+				{
+					if (InStateSequence(treads.CurState, treads.SpawnState) && treads.FindState("Move"))
+					{
+						 treads.SetStateLabel("Move");
+					}
+				}
 			}
 
 			if (player.cheats & CF_REVERTPLEASE)
@@ -958,9 +983,17 @@ class ShermanPlayer : PlayerPawn
 
 	override void CheckJump() {} // Tanks can't jump
 
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (other is "TankBlocker") { return false; }
+		return true;
+	}
+
 	override void PostBeginPlay()
 	{
 		TakeInventory("BoATilt", 1);
+
+		hittracer = new("BoAFindHitPointTracer");
 
 		// Spawn everything in neutral orientation
 		pitch = 0;
@@ -1019,19 +1052,21 @@ class ShermanPlayer : PlayerPawn
 		if (player && turretcamera && treads && turret)
 		{
 			treads.SetOrigin(self.pos, true);
-			SetPitchRoll();
+			SetPitchRoll(treads);
 
 			double delta = deltaangle(treads.angle, turret.angle);
 
 			Player.MinPitch = treads.pitch * cos(delta) - 25;
 			Player.MaxPitch = treads.pitch * cos(delta) + 10;
 
-			turret.SetOrigin(self.pos + (RotateVector((16.5 + treads.radius * sin(treads.pitch), 0 - treads.radius * sin(treads.roll)), treads.angle), treads.height * cos(treads.roll) - 16.5 * sin(treads.pitch)), true);
+			turret.SetOrigin(self.pos + (RotateVector((treads.radius * sin(treads.pitch), -treads.radius * sin(treads.roll)), treads.angle), treads.height * cos(treads.roll)), true);
 
 			turret.pitch = treads.roll * sin(-delta) + treads.pitch * cos(delta);
 			turret.roll = treads.roll * cos(-delta) + treads.pitch * sin(delta);
 
-			angle = turret.angle;
+//*			angle = turret.angle;
+			if (turret.angle > angle) { turret.angle = max(turret.angle - 1.5, angle); A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
+			else if (turret.angle < angle) { turret.angle = min(turret.angle + 1.5, angle); A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
 
 			double modifier;
 
@@ -1040,20 +1075,24 @@ class ShermanPlayer : PlayerPawn
 
 			if (turret.pitch < 0) { modifier += 96 * sin(-turret.pitch); } // Move the camera up when going uphill
 
-			LineTrace(angle + 180, 2.5 * radius, -turret.pitch, TRF_THRUHITSCAN | TRF_THRUACTORS, treads.height + turret.height + 32 + modifier, 0.0, 0.0, cameratrace);
+			turret.LineTrace(angle + 180, 2.5 * radius, -turret.pitch, TRF_THRUHITSCAN | TRF_THRUACTORS, turret.height + 32 + modifier, 0.0, 0.0, cameratrace);
 
 			turretcamera.SetOrigin(cameratrace.HitLocation + AngleToVector(angle, 2), true);
 			turretcamera.angle = angle;
 			turretcamera.pitch = turret.pitch;
 
-			LineTrace(angle, 1024, pitch, TRF_THRUHITSCAN | TRF_THRUACTORS, height / 2, 0.0, 0.0, crosshairtrace);
+			DoTrace(turret.angle, 2048, pitch, TRF_THRUHITSCAN | TRF_THRUACTORS, height / 2, hittracer);
+
+			CrosshairPos = hittracer.Results.HitPos;
+			CrosshairActor = hittracer.Results.HitActor;
+			CrosshairDist = hittracer.Results.Distance;
 
 			if (!gun) { gun = US_ShermanTurret(turret).gun; }
 
 			if (gun)
 			{
-				double distz = crosshairtrace.HitLocation.z - gun.pos.z;
-				Vector2 dist = crosshairtrace.HitLocation.xy - gun.pos.xy;
+				double distz = hittracer.Results.HitPos.z - gun.pos.z;
+				Vector2 dist = hittracer.Results.HitPos.xy - gun.pos.xy;
 
 				double gunpitch = atan(distz / dist.length());
 
@@ -1080,19 +1119,19 @@ class ShermanPlayer : PlayerPawn
 	}
 
 	// Handling for terrain-based pitch/roll calculations...
-	void SetPitchRoll()
+	void SetPitchRoll(Actor mo)
 	{
-		if (!treads) { return; }
-
+		if (!mo) { mo = self; }
+	
 		double points[5], minz = 0x7FFFFFFF, maxz = -0x7FFFFFFF;
 
-		points[0] = treads.floorz;
+		points[0] = mo.floorz;
 
 		// Get the relative z-height at the four corners of the tank
-		points[1] = treads.GetZAt(Radius, Radius) - points[0];
-		points[2] = treads.GetZAt(Radius, -Radius) - points[0];
-		points[3] = treads.GetZAt(-Radius, Radius) - points[0];
-		points[4] = treads.GetZAt(-Radius, -Radius) - points[0];
+		points[1] = mo.GetZAt(Radius, Radius) - points[0];
+		points[2] = mo.GetZAt(Radius, -Radius) - points[0];
+		points[3] = mo.GetZAt(-Radius, Radius) - points[0];
+		points[4] = mo.GetZAt(-Radius, -Radius) - points[0];
 
 		for (int i = 1; i <= 4; i++)
 		{
@@ -1106,15 +1145,15 @@ class ShermanPlayer : PlayerPawn
 		pitchinput = atan(pitchinput / (Radius * 2));
 		rollinput = atan(rollinput / (Radius * 2));
 
-		treads.pitch = clamp(treads.pitch, -30, 30);
-		treads.roll = clamp(treads.roll, -30, 30);
+		mo.pitch = clamp(mo.pitch, -30, 30);
+		mo.roll = clamp(mo.roll, -30, 30);
 
 		// Interpolate to the new values
-		if (treads.pitch > -pitchinput) { treads.pitch = max(treads.pitch - 1, -pitchinput); }
-		if (treads.pitch < -pitchinput) { treads.pitch = min(treads.pitch + 1, -pitchinput); }
+		if (mo.pitch > -pitchinput) { mo.pitch = max(mo.pitch - 1, -pitchinput); }
+		if (mo.pitch < -pitchinput) { mo.pitch = min(mo.pitch + 1, -pitchinput); }
 
-		if (treads.roll > rollinput) { treads.roll = max(treads.roll - 1, rollinput); }
-		if (treads.roll < rollinput) { treads.roll = min(treads.roll + 1, rollinput); }
+		if (mo.roll > rollinput) { mo.roll = max(mo.roll - 1, rollinput); }
+		if (mo.roll < rollinput) { mo.roll = min(mo.roll + 1, rollinput); }
 	}
 
 	Actor GetClosestForcedHealthBar()
@@ -1137,5 +1176,47 @@ class ShermanPlayer : PlayerPawn
 		}
 
 		return mo;
+	}
+
+	void DoTrace(double angle, double dist, double pitch, int flags, double zoffset, BoAFindHitPointTracer thistracer)
+	{
+		let p = self.player;
+
+		thistracer.skipspecies = p.mo.species;
+		thistracer.skipactor = p.mo;
+		Vector3 tracedir = (cos(angle) * cos(pitch), sin(angle) * cos(pitch), -sin(pitch));
+		thistracer.Trace(p.mo.pos + (0, 0, zoffset), p.mo.CurSector, tracedir, dist, 0);
+	}
+}
+
+Class BoAFindHitPointTracer : LineTracer
+{
+	Name skipspecies;
+	Actor skipactor;
+
+	override ETraceStatus TraceCallback() // Doesn't handle 3d Floors :-/
+	{
+		if (Results.HitType == TRACE_HitActor)
+		{
+			if (
+				Results.HitActor != skipactor && 
+				Results.HitActor.species != skipspecies && 
+				(Results.HitActor.bSolid || Results.HitActor.bShootable)
+			) { return TRACE_Continue; } // Fall through, but remember the actor that you hit
+
+			return TRACE_Skip;
+		}
+		else if (Results.HitType == TRACE_HitFloor || Results.HitType == TRACE_HitCeiling)
+		{
+			return TRACE_Stop;
+		}
+		else if (Results.HitType == TRACE_HitWall)
+		{
+			if (Results.HitLine.flags & (Line.ML_BLOCKING | Line.ML_BLOCKEVERYTHING)) { return TRACE_Stop; }
+			if (Results.HitTexture) { return TRACE_Stop; }
+			return TRACE_Skip;
+		}
+
+		return TRACE_Stop;
 	}
 }

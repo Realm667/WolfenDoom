@@ -157,6 +157,7 @@ class US_ShermanCannon : Actor
 		+DONTSPLASH
 		+FLOORCLIP
 		+NOGRAVITY
+		Species "Tank";
 	}
 
 	States
@@ -199,6 +200,7 @@ class US_ShermanTurret : Actor
 	Default
 	{
 		Height 32;
+		Species "Tank";
 		+CANPASS
 		+DONTSPLASH
 		+FLOORCLIP
@@ -254,6 +256,7 @@ class US_Sherman : Actor
 		Radius 64;
 		Height 64;
 		Mass 0x7ffffff;
+		Species "Tank";
 		+SOLID
 		+CANPASS
 	}
@@ -263,6 +266,9 @@ class US_Sherman : Actor
 		Spawn:
 			MDLA A -1;
 			Stop;
+		Move:
+			MDLA AB 5;
+			Goto Spawn;
 		Death:
 			TNT1 A 1 DoDeath();
 			Stop;
@@ -272,7 +278,12 @@ class US_Sherman : Actor
 	{
 		bool sp = false;
 
-		while (!turret) { [sp, turret] = A_SpawnItemEx("US_ShermanTurret", 16.5 * cos(angle), 16.5 * sin(angle), Height, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+		while (!turret) { [sp, turret] = A_SpawnItemEx("US_ShermanTurret", 0, 0, Height, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+
+		A_SpawnItemEx("TankBlocker", 96, -32, flags: SXF_SETMASTER);
+		A_SpawnItemEx("TankBlocker", 96, 32, flags: SXF_SETMASTER);
+		A_SpawnItemEx("TankBlocker", -96, -32, flags: SXF_SETMASTER);
+		A_SpawnItemEx("TankBlocker", -96, 32, flags: SXF_SETMASTER);
 
 		Super.PostBeginPlay();
 	}
@@ -339,6 +350,8 @@ class US_Sherman : Actor
 	{
 		if (turret) { turret.Destroy(); }
 
+		A_RemoveChildren(true, RMVF_EVERYTHING);
+
 		A_PlaySound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_IDLE);
 
 		for (int i = 0; i < 20; i++)
@@ -356,6 +369,117 @@ class US_Sherman : Actor
 		dead.angle = angle;
 		dead.pitch = pitch;
 		dead.roll = roll;
+	}
+}
+
+class TankBlocker : Actor
+{
+	Vector3 spawnoffset;
+	Vector3 offset;
+	double oldpitch;
+	double oldroll;
+	double oldangle;
+
+	Default
+	{
+		+NOGRAVITY
+		+SOLID
+		+SHOOTABLE
+		+NOBLOOD
+		+NODAMAGE
+		+NOTAUTOAIMED
+		+CANPASS
+		+DONTTHRUST
+		Painchance 255;
+		Radius 32;
+		Height 64;
+		Species "Tank";
+	}
+	States
+	{
+		Spawn:
+			TNT1 A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		if (scale.x == 1.0 && scale.y == 1.0)
+		{
+			scale.x = Radius * 2; 
+			scale.y = Height;
+		}
+
+		if (master)
+		{
+			spawnoffset = pos - master.pos;
+
+			Vector2 temp = RotateVector((spawnoffset.x, spawnoffset.y), -master.angle);
+			spawnoffset = (temp.x, temp.y, spawnoffset.z);
+
+			offset = spawnoffset;
+
+			scale.x *= master.scale.x;
+			scale.y *= master.scale.y;
+
+			SetTag(master.GetTag());
+		}
+	}
+
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
+	{
+		if (master && master.master) // Ugh...
+		{
+			if (source != master.master)
+			{
+				master.master.DamageMobj(inflictor, source, damage, mod, flags, angle);  // Inflict the damage on the owner of the tank
+			}
+		}
+
+		return Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
+	}
+
+	override bool Used(Actor user)
+	{
+		if (master) { return master.Used(user); }
+		return false;
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		Rotate();
+	}
+
+	void Rotate()
+	{
+		Vector2 temp;
+
+		// Keep the blocks in the correct position, regardless of pitch/roll of the master actor
+		// Obviously not perfect, because the blocks are square, but close enough when you can't see them.
+		if (master && spawnoffset != (0, 0, 0)) {
+			temp = RotateVector((spawnoffset.y, spawnoffset.z), master.roll);
+			offset = (spawnoffset.x, temp.x, temp.y);
+
+			temp = RotateVector((offset.x, offset.z), 360 - master.pitch);
+			offset = (temp.x, offset.y, temp.y);
+
+			temp = RotateVector((offset.x, offset.y), master.angle);
+			offset = (temp.x, temp.y, offset.z);
+
+			offset.x *= master.scale.x;
+			offset.y *= master.scale.x;
+			offset.z *= master.scale.y;
+
+			SetOrigin(master.pos + offset, true);
+
+			angle = master.angle;
+
+			oldpitch = master.pitch;
+			oldroll = master.roll;
+			oldangle = master.angle;
+		}
 	}
 }
 
