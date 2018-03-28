@@ -232,3 +232,19 @@ ACTOR TMTankPanzer3 : TMFanfare1
 		Stop
 	}
 }
+
+ACTOR TMIntroLight
+{
+	//$Category Misc (Wolf3D)/Cutscenes
+	//$Title Dummy Flickerlight for Cutscenes
+	+INVISIBLE
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+		TNT1 A 1 LIGHT("INTROS")
+		Loop
+	}
+}
