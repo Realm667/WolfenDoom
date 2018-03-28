@@ -208,7 +208,7 @@ class NaziAstroWeapon : NaziWeapon {
 	}
 }
 
-class Cannon75mm : NaziWeapon // Quick and dirty...  Needs cleaning up
+class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank. 
 {
 	Default
 	{
@@ -243,13 +243,18 @@ class Cannon75mm : NaziWeapon // Quick and dirty...  Needs cleaning up
 	action void DoCannon()
 	{
 		Actor origin = self;
-		if (origin && ShermanPlayer(origin) && ShermanPlayer(origin).turret) { origin = ShermanPlayer(origin).turret; }
+		if (origin && ShermanPlayer(origin) && ShermanPlayer(origin).turret && US_ShermanTurret(ShermanPlayer(origin).turret).gun) { origin = US_ShermanTurret(ShermanPlayer(origin).turret).gun; }
 
 		double angledelta = deltaangle(angle, origin.angle);
+		double pitchdelta = deltaangle(pitch, origin.pitch);
 
 		A_PlaySound("Panzer/fire", CHAN_WEAPON);
 		A_GunFlash();
-		Actor p = A_FireProjectile("ShermanRocket", angledelta, False, 0, flags:FPF_NOAUTOAIM);
+		Actor mo = A_FireProjectile("ShermanRocket", angledelta, False, 0, 0, FPF_NOAUTOAIM, pitchdelta);
+		if (mo && origin != self)
+		{
+			mo.SetOrigin(origin.pos, false); // Move the rocket so that it flies from the model's gun
+		}
 	}
 
 	action void DoMachineGun()

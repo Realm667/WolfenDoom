@@ -196,6 +196,8 @@ class US_ShermanDead : Actor
 class US_ShermanTurret : Actor
 {
 	Actor gun;
+	Vector3 spawnoffset;
+	Vector3 offset;
 
 	Default
 	{
@@ -219,7 +221,14 @@ class US_ShermanTurret : Actor
 	{
 		bool sp = false;
 
-		while (!gun) { [sp, gun] = A_SpawnItemEx("US_ShermanCannon", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+		while (!gun) { [sp, gun] = A_SpawnItemEx("US_ShermanCannon", 0, 0, 18.0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+
+		spawnoffset = gun.pos - pos;
+
+		Vector2 temp = RotateVector((spawnoffset.x, spawnoffset.y), -angle);
+		spawnoffset = (temp.x, temp.y, spawnoffset.z);
+
+		offset = spawnoffset;
 
 		Super.PostBeginPlay();
 	}
@@ -229,7 +238,17 @@ class US_ShermanTurret : Actor
 		if (gun)
 		{
 			gun.angle = angle;
-			gun.SetOrigin(self.pos + (RotateVector((32, 0), angle), 18.0), true);
+
+			Vector2 temp = RotateVector((spawnoffset.y, spawnoffset.z), roll);
+			offset = (32, temp.x, temp.y);
+
+			temp = RotateVector((offset.x, offset.z), 360 - pitch);
+			offset = (temp.x, offset.y, temp.y);
+
+			temp = RotateVector((offset.x, offset.y), angle);
+			offset = (temp.x, temp.y, offset.z);
+
+			gun.SetOrigin(self.pos + offset, true);
 
 			gun.bSolid = bSolid;
 			gun.bInvisible = bInvisible;

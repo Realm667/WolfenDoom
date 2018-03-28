@@ -847,7 +847,7 @@ class BoAStatusBar : BaseStatusBar
 
 			color cclr = 0xDDDDDD; // Light grey by default
 
-			if (targetactor && targetactor.bShootable)
+			if (targetactor && targetactor.bShootable && targetactor != CPlayer.mo && (!targetactor.master || targetactor.master != CPlayer.mo))
 			{
 				if (targetactor.bIsMonster && CPlayer.mo.isFriend(targetactor)) { cclr = 0x00CD00; } // Green for allies
 				else if (targetactor.bIsMonster)

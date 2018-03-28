@@ -873,9 +873,6 @@ class ShermanPlayer : PlayerPawn
 
 		player.onground = (pos.z <= floorz) || bOnMobj || bMBFBouncer || (player.cheats & CF_NOCLIP2);
 
-		// Force pitch clamping here, since just setting min/max pitch doesn't work cleanly.
-		if (pitch >= player.MaxPitch || pitch <= player.MinPitch) { cmd.pitch = 0; }
-
 		double newsndvol = 0;
 
 		if (cmd.forwardmove | cmd.sidemove)
@@ -983,6 +980,52 @@ class ShermanPlayer : PlayerPawn
 
 	override void CheckJump() {} // Tanks can't jump
 
+	override void CheckPitch()
+	{
+		let player = self.player;
+		// [RH] Look up/down stuff
+		if (!level.IsFreelookAllowed())
+		{
+			Pitch = 0.;
+		}
+		else
+		{
+			// The player's view pitch is clamped between -32 and +56 degrees,
+			// which translates to about half a screen height up and (more than)
+			// one full screen height down from straight ahead when view panning
+			// is used.
+			int clook = player.cmd.pitch;
+			if (clook != 0)
+			{
+				if (clook == -32768)
+				{ // center view
+					player.centering = true;
+				}
+				else if (!player.centering)
+				{
+					// no more overflows with floating point. Yay! :)
+					Pitch = clamp(Pitch - clook * (360. / 65536.), (turret ? -turret.pitch : 0) + player.MinPitch, (turret ? -turret.pitch : 0) + player.MaxPitch);
+				}
+			}
+		}
+		if (player.centering)
+		{
+			if (abs(Pitch) > 2.)
+			{
+				Pitch *= (2. / 3.);
+			}
+			else
+			{
+				Pitch = 0.;
+				player.centering = false;
+				if (PlayerNumber() == consoleplayer)
+				{
+					LocalViewPitch = 0;
+				}
+			}
+		}
+	}
+
 	override bool CanCollideWith(Actor other, bool passive)
 	{
 		if (other is "TankBlocker") { return false; }
@@ -1068,35 +1111,37 @@ class ShermanPlayer : PlayerPawn
 			if (turret.angle > angle) { turret.angle = max(turret.angle - 1.5, angle); A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
 			else if (turret.angle < angle) { turret.angle = min(turret.angle + 1.5, angle); A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
 
-			double modifier;
+			double modifier, pitchmodifier;
 
 			if (pitch < 0) { modifier = 48 * sin(-pitch); } // Aiming up moves the camera up so you can keep the aimpoint on screen
-			else { modifier = 64 * sin(pitch * 8); } // Aiming down actually moves the camera *up*, so that you can see the aimpoint over the top of the turret
+			else { modifier = 64 * sin(pitch * 3); } // Aiming down actually moves the camera *up*, so that you can see the aimpoint over the top of the turret
 
-			if (turret.pitch < 0) { modifier += 96 * sin(-turret.pitch); } // Move the camera up when going uphill
+			modifier += (turret.pitch > 0 ? 96 : 128) * sin(turret.pitch); // Move the camera up/down when going up/downhill
+			pitchmodifier = (turret.pitch > 0 ? -15 : 10) * sin(turret.pitch); // Pitch the camera up/down when going up/downhill
 
-			turret.LineTrace(angle + 180, 2.5 * radius, -turret.pitch, TRF_THRUHITSCAN | TRF_THRUACTORS, turret.height + 32 + modifier, 0.0, 0.0, cameratrace);
+			turret.LineTrace(angle + 180, 2.5 * radius, pitchmodifier, TRF_THRUHITSCAN | TRF_THRUACTORS, turret.height + 32 + modifier, 0.0, 0.0, cameratrace);
 
 			turretcamera.SetOrigin(cameratrace.HitLocation + AngleToVector(angle, 2), true);
 			turretcamera.angle = angle;
 			turretcamera.pitch = turret.pitch;
 
-			DoTrace(turret.angle, 2048, pitch, TRF_THRUHITSCAN | TRF_THRUACTORS, height / 2, hittracer);
-
-			CrosshairPos = hittracer.Results.HitPos;
-			CrosshairActor = hittracer.Results.HitActor;
-			CrosshairDist = hittracer.Results.Distance;
+			// Force pitch clamping
+			if (turret.pitch + pitch >= player.MaxPitch || turret.pitch + pitch <= player.MinPitch)
+			{
+				player.cmd.pitch = 0;
+			}
 
 			if (!gun) { gun = US_ShermanTurret(turret).gun; }
 
 			if (gun)
 			{
-				double distz = hittracer.Results.HitPos.z - gun.pos.z;
-				Vector2 dist = hittracer.Results.HitPos.xy - gun.pos.xy;
+				DoTrace(gun, turret.angle, 2048, turret.pitch + pitch, 0, 0, hittracer);
 
-				double gunpitch = atan(distz / dist.length());
+				CrosshairPos = hittracer.Results.HitPos;
+				CrosshairActor = hittracer.Results.HitActor;
+				CrosshairDist = hittracer.Results.Distance;
 
-				gun.pitch = turret.pitch - gunpitch;
+				gun.pitch = turret.pitch + pitch;
 				gun.roll = turret.roll;
 			}
 
@@ -1178,14 +1223,14 @@ class ShermanPlayer : PlayerPawn
 		return mo;
 	}
 
-	void DoTrace(double angle, double dist, double pitch, int flags, double zoffset, BoAFindHitPointTracer thistracer)
+	void DoTrace(Actor origin, double angle, double dist, double pitch, int flags, double zoffset, BoAFindHitPointTracer thistracer)
 	{
-		let p = self.player;
+		if (!origin) { origin = self; }
 
-		thistracer.skipspecies = p.mo.species;
-		thistracer.skipactor = p.mo;
+		thistracer.skipspecies = origin.species;
+		thistracer.skipactor = origin;
 		Vector3 tracedir = (cos(angle) * cos(pitch), sin(angle) * cos(pitch), -sin(pitch));
-		thistracer.Trace(p.mo.pos + (0, 0, zoffset), p.mo.CurSector, tracedir, dist, 0);
+		thistracer.Trace(origin.pos + (0, 0, zoffset), origin.CurSector, tracedir, dist, 0);
 	}
 }
 
@@ -1199,9 +1244,11 @@ Class BoAFindHitPointTracer : LineTracer
 		if (Results.HitType == TRACE_HitActor)
 		{
 			if (
-				Results.HitActor != skipactor && 
-				Results.HitActor.species != skipspecies && 
-				(Results.HitActor.bSolid || Results.HitActor.bShootable)
+				Results.HitActor != skipactor && // Skip the player
+				!(Results.HitActor is "ShermanPlayer") &&
+				(!Results.HitActor.master || Results.HitActor.master != skipactor) && // And any children
+				Results.HitActor.species != skipspecies && // And any of the skipped species
+				(Results.HitActor.bSolid || Results.HitActor.bShootable) // And only return shootable actors
 			) { return TRACE_Continue; } // Fall through, but remember the actor that you hit
 
 			return TRACE_Skip;
@@ -1213,7 +1260,14 @@ Class BoAFindHitPointTracer : LineTracer
 		else if (Results.HitType == TRACE_HitWall)
 		{
 			if (Results.HitLine.flags & (Line.ML_BLOCKING | Line.ML_BLOCKEVERYTHING)) { return TRACE_Stop; }
-			if (Results.HitTexture) { return TRACE_Stop; }
+			if (Results.HitTexture)
+			{
+				if (Results.Tier != TIER_Middle || Results.HitLine.flags & Line.ML_3DMIDTEX) // 3D Midtex check still isn't perfect...
+				{
+					return TRACE_Stop;
+				}
+				return TRACE_Skip;
+			}
 			return TRACE_Skip;
 		}
 

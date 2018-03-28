@@ -646,6 +646,22 @@ class Base : Actor
 						}
 					}
 				}
+
+				if (target && target is "ShermanPlayer" && !bBoss) // Be frightened of the tank (if you're not a boss)
+				{
+					if (Distance2D(target) < 512) // Stay outside of 512 units and run away
+					{
+						bFrightened = true;
+						dodgetimeout = 350; // No rolling while scared and running away
+						if (Default.Speed > 0) { Speed = Default.Speed + Random(1, 2); } // Walk/run a little faster to get away
+					}
+					else // Back to normal speed and un-frighten (if light level allows)
+					{
+						if (frighttimeout == -35) { bFrightened = false; }  // Don't interfere with light sensitivity frightened flag use
+						Speed = Default.Speed;
+					}
+				}
+
 				timeout--;
 			}
 
