@@ -702,3 +702,20 @@ ACTOR WolfColonGibs : WolfBloodPool // Re-use a gore gib that's close to the ori
 		Stop
 	}
 }
+
+ACTOR CraterGrass
+{
+	//$Category Battlefield (Wolf3D)
+	//$Title Crater (Grass)
+	//$Color 4
+	Radius 128
+	Height 0
+	Scale 0.25
+	+FLATSPRITE
+	States
+	{
+	Spawn:
+		KRAT A -1
+		Stop
+	}
+}
