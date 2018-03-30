@@ -715,7 +715,7 @@ ACTOR CraterGrass
 	States
 	{
 	Spawn:
-		KRAT A -1
+		KRAT A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
