@@ -31,7 +31,7 @@ ACTOR MechBoss : Nazi
 	}
 }
 
-//COUNTERS
+//COUNTERS - Must get rid of these in the future [ozy81]
 ACTOR AwakeCounter : Inventory 			{Inventory.MaxAmount 1}
 ACTOR ChainCounter : Inventory 			{Inventory.MaxAmount 48}
 ACTOR CrouchCounter : Inventory 		{Inventory.MaxAmount 1}
@@ -52,6 +52,85 @@ ACTOR WMP40GuardCounter : Inventory 	{Inventory.MaxAmount 32}
 ACTOR WaffenSSCounter : Inventory 		{Inventory.MaxAmount 40}
 
 //ATTACKS - NAZIS
+ACTOR OccultBlazeFX1
+{
+	Radius 16
+	Height 2
+	Speed 0
+	Damage (random(0,1))
+	DamageType "Fire"
+	Renderstyle "Add"
+	Scale 0.85
+	Alpha 0.65
+	Projectile
+	+BLOODLESSIMPACT
+	+BRIGHT
+	+FLOORHUGGER
+	+THRUGHOST
+	+WINDTHRUST
+	States
+		{
+		Spawn:
+			BLAZ ABCDCBA 4
+			Stop
+		}
+}
+
+ACTOR OccultBlazeFX2 : OccultBlazeFX1
+{
+	Radius 8
+	Scale 0.65
+	Renderstyle "Translucent"
+	Alpha 0.75
+	+RIPPER
+}
+
+ACTOR OccultBlazeFlames
+{
+	Radius 16
+	Height 32
+	Speed 8
+	Damage (random(2,4))
+	DamageType "Fire"
+	Renderstyle "Add"
+	Scale 0.85
+	Alpha 0.85
+	Projectile
+	+BLOODLESSIMPACT
+	+BRIGHT
+	+FLOORHUGGER
+	+THRUGHOST
+	+WINDTHRUST
+	MaxStepHeight 4
+	Obituary "$OBLAZES"
+	SeeSound "flamer/fire"
+	DeathSound "flamer/napalm"
+	Decal Scorch
+	States
+		{
+		Spawn:
+			BLAZ ABCDCBA 3 Bright A_SpawnProjectile("OccultBlazeFX1")
+			Loop
+		Death:
+			"####" EFGHIJ 3 BRIGHT
+			"####" J 3 A_FadeOut (0.05)
+			Stop
+		}
+}
+
+ACTOR OccultBlazeFlames2 : OccultBlazeFlames
+{
+	Radius 32
+	Speed 16
+	+RIPPER
+	States
+		{
+		Spawn:
+			BLAZ ABCDCBA 3 BRIGHT A_SpawnProjectile("OccultBlazeFX2")
+			Loop
+		}
+}
+
 ACTOR ClusterBomb
 {
 	Radius 4
