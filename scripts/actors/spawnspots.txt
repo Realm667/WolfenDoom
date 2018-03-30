@@ -106,15 +106,29 @@ class ActorSpawner : SwitchableDecoration
 			Actor mo = players[p].mo;
 
 			if (mo) {
-				LookExParams look;
-				look.fov = mo.player.fov * 1.4; // Plus a little extra to account for wider screen ratios...
+				if (GetLightLevel() > 80) // Only care about the player seeing the spot if it's light enough to see
+				{
+					LookExParams look;
+					look.fov = mo.player.fov * 1.4; // Plus a little extra to account for wider screen ratios...
 
-				if (mo.IsVisible(self, false, look)) { return true; }
+					if (mo.IsVisible(self, false, look)) { return true; }
+				}
 				if (Distance3d(mo) <= range) { return true; }
 			}
 		}
 
 		return false;
+	}
+
+	double GetLightLevel(Actor mo = null)
+	{
+		if (!mo) { mo = self; }
+
+		Color light = mo.CurSector.ColorMap.LightColor;
+		Color fade = mo.CurSector.ColorMap.FadeColor;
+
+		// Sector light level minus the average (inverted) RGB light level minus fog depth
+		return mo.CurSector.lightlevel - (255 - (light.r + light.g + light.b) / 3) - (255 - (fade.r + fade.g + fade.b) / 3) - 255 * (mo.CurSector.ColorMap.FogDensity / 510);
 	}
 
 	int CountSpawns(Class<Actor> spawntype = null, bool countdead = false)
