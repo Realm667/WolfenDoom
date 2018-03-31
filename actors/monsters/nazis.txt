@@ -435,7 +435,6 @@ ACTOR WToilet : WGuard
 		Goto Look
 	See: //doesn't roll - ozy81
 		"####" "#" 0 { user_incombat = True; } //mxd
-		"####" "#" 0 A_JumpIfInventory("WCCounter", 1, "EnemySpawn")
 		"####" "#" 0 A_Jump(256,"See1","See2")
 	See1:
 		"####" A 16
