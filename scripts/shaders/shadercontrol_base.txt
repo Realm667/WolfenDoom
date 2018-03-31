@@ -38,22 +38,26 @@ class CustomShaderHandler : StaticEventHandler
 	override void RenderOverlay(RenderEvent e)
 	{
 		PlayerInfo p = players[consoleplayer];
-		ShaderControl shaderControl = ShaderControl(p.mo.FindInventory("ShaderControl", true));
+		ThinkerIterator shaderIter = ThinkerIterator.Create("ShaderControl");
 
-		if (shaderControl != null)
+		ShaderControl shaderControl;
+
+		while (shaderControl = ShaderControl(shaderIter.Next()))
 		{
-			//Console.Printf("Shader: %s", shaderControl.ShaderToControl);
-			if (shaderControl.amount >= 2)
-			{
-				Shader.SetUniform1f(p, shaderControl.ShaderToControl, "timer", gametic + e.FracTic);
-				Shader.SetUniform1f(p, shaderControl.ShaderToControl, "amount", shaderControl.amount - 1);
-				Shader.SetUniform1f(p, shaderControl.ShaderToControl, "alpha", shaderControl.alpha);
-				shaderControl.SetUniforms(p, e);
-				Shader.SetEnabled(p, shaderControl.ShaderToControl, true);
-			}
-			else
-			{
-				Shader.SetEnabled(p, shaderControl.ShaderToControl, false);
+			if (shaderControl.Owner && shaderControl.Owner == p.mo) {
+				//Console.Printf("Shader: %s", shaderControl.ShaderToControl);
+				if (shaderControl.amount >= 2)
+				{
+					Shader.SetUniform1f(p, shaderControl.ShaderToControl, "timer", gametic + e.FracTic);
+					Shader.SetUniform1f(p, shaderControl.ShaderToControl, "amount", shaderControl.amount - 1);
+					Shader.SetUniform1f(p, shaderControl.ShaderToControl, "alpha", shaderControl.alpha);
+					shaderControl.SetUniforms(p, e);
+					Shader.SetEnabled(p, shaderControl.ShaderToControl, true);
+				}
+				else
+				{
+					Shader.SetEnabled(p, shaderControl.ShaderToControl, false);
+				}
 			}
 		}
 	}
