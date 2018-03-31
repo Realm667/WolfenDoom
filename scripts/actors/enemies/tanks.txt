@@ -40,7 +40,14 @@ class VehicleBase : Actor
 		mo.pitch = clamp(mo.pitch, -cap, cap);
 		mo.roll = clamp(mo.roll, -cap, cap);
 
-		if (mo.master && mo.master.pos.z =< mo.master.floorz) { mo.SetOrigin((mo.pos.xy, mo.floorz), true); }
+		if (mo.master && mo.master.pos.z <= mo.master.floorz) { mo.SetOrigin((mo.pos.xy, mo.floorz), true); }
+	}
+
+	override void Tick()
+	{
+		SetPitchRoll(self);
+
+		Super.Tick();
 	}
 }
 
@@ -291,6 +298,10 @@ class newSSTank1 : TankBase
 		Speed 2.66666667;
 		MinMissileChance 160;
 		MaxTargetRange 2048;
+		TankBase.DeadActor "US_ShermanDead";
+		TankBase.DebrisActor "Debris_Tank";
+		TankBase.MoveSound "TKMOVE";
+		TankBase.IdleSound "TKIDLE";
 	}
 
 	override void DoRocket(Actor origin)
