@@ -58,9 +58,6 @@ class ShermanPlayer : PlayerPawn
 
 		double moveangle = angle;
 
-//*		cmd.yaw = clamp(cmd.yaw, -1024, 1024);
-
-//*		if (turret && cmd.yaw) { turret.angle += cmd.yaw * (360./65536.); A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
 		if (cmd.yaw) { angle += cmd.yaw * (360./65536.); } 
 		if (treads) { moveangle = treads.angle; }
 
@@ -103,7 +100,7 @@ class ShermanPlayer : PlayerPawn
 			CVar autosteer = CVar.FindCVar('autosteer');
 			bool shift = (player.cmd.buttons & BT_SPEED) ^ autosteer.GetInt(); // If shift is being held or autosteer cvar is true
 
-			// Default to "auto-steering" the tank to wherever you are aiming
+			// Handle "auto-steering" the tank to wherever you are aiming
 			if (forwardmove && shift && treads && turret && treads.angle != turret.angle) // If holding SHIFT, auto-steer the tracks to align with the turret
 			{
 				double diff = deltaangle(treads.angle, angle);
@@ -136,7 +133,6 @@ class ShermanPlayer : PlayerPawn
 				angle += sidemove;
 
 				if (treads) { treads.angle += sidemove; }
-//*				if (turret) { turret.angle += sidemove; }
 
 				A_SetInventory("ShakeShaderControl", 1 + int(sidemove));
 
@@ -330,19 +326,18 @@ class ShermanPlayer : PlayerPawn
 		if (player && turretcamera && treads && turret)
 		{
 			treads.SetOrigin(self.pos, true);
-			SetPitchRoll(treads);
+			VehicleBase.SetPitchRoll(treads);
 
 			double delta = deltaangle(treads.angle, turret.angle);
 
 			Player.MinPitch = treads.pitch * cos(delta) - 25;
 			Player.MaxPitch = treads.pitch * cos(delta) + 10;
 
-			turret.SetOrigin(self.pos + (RotateVector((treads.radius * sin(treads.pitch), -treads.radius * sin(treads.roll)), treads.angle), treads.height * cos(treads.roll)), true);
+			turret.SetOrigin(treads.pos + (RotateVector((treads.radius * sin(treads.pitch), -treads.radius * sin(treads.roll)), treads.angle), treads.height * cos(treads.roll)), true);
 
 			turret.pitch = treads.roll * sin(-delta) + treads.pitch * cos(delta);
 			turret.roll = treads.roll * cos(-delta) + treads.pitch * sin(delta);
 
-//*			angle = turret.angle;
 			if (turret.angle > angle) { turret.angle = max(turret.angle - 1.5, angle); A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
 			else if (turret.angle < angle) { turret.angle = min(turret.angle + 1.5, angle); A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
 
@@ -356,7 +351,7 @@ class ShermanPlayer : PlayerPawn
 
 			turret.LineTrace(angle + 180, 2.5 * radius, pitchmodifier, TRF_THRUHITSCAN | TRF_THRUACTORS, turret.height + 32 + modifier, 0.0, 0.0, cameratrace);
 
-			turretcamera.SetOrigin(cameratrace.HitLocation + AngleToVector(angle, 2), true);
+			turretcamera.SetOrigin(cameratrace.HitLocation + AngleToVector(angle, 2), false);
 			turretcamera.angle = angle;
 			turretcamera.pitch = turret.pitch;
 
@@ -395,45 +390,7 @@ class ShermanPlayer : PlayerPawn
 		}
 		else { useholdtime = 0; }
 
-		if (useholdtime >= 70) { TakeInventory("Sherman", 1); }
-	}
-
-	// Handling for terrain-based pitch/roll calculations...
-	void SetPitchRoll(Actor mo)
-	{
-		if (!mo) { mo = self; }
-	
-		double points[5], minz = 0x7FFFFFFF, maxz = -0x7FFFFFFF;
-
-		points[0] = mo.floorz;
-
-		// Get the relative z-height at the four corners of the tank
-		points[1] = mo.GetZAt(Radius, Radius) - points[0];
-		points[2] = mo.GetZAt(Radius, -Radius) - points[0];
-		points[3] = mo.GetZAt(-Radius, Radius) - points[0];
-		points[4] = mo.GetZAt(-Radius, -Radius) - points[0];
-
-		for (int i = 1; i <= 4; i++)
-		{
-			if (points[i] > MaxStepHeight) { points[i] = 0; } // Ignore the point if you can't climb that high
-		}
-
-		// Use those values to calculate the pitch.roll amounts
-		double pitchinput = (points[2] + points[1]) - (points[4] + points[3]);
-		double rollinput = (points[2] + points[4]) - (points[1] + points[3]);
-
-		pitchinput = atan(pitchinput / (Radius * 2));
-		rollinput = atan(rollinput / (Radius * 2));
-
-		mo.pitch = clamp(mo.pitch, -30, 30);
-		mo.roll = clamp(mo.roll, -30, 30);
-
-		// Interpolate to the new values
-		if (mo.pitch > -pitchinput) { mo.pitch = max(mo.pitch - 1, -pitchinput); }
-		if (mo.pitch < -pitchinput) { mo.pitch = min(mo.pitch + 1, -pitchinput); }
-
-		if (mo.roll > rollinput) { mo.roll = max(mo.roll - 1, rollinput); }
-		if (mo.roll < rollinput) { mo.roll = min(mo.roll + 1, rollinput); }
+		if (useholdtime >= 35) { TakeInventory("Sherman", 1); }
 	}
 
 	Actor GetClosestForcedHealthBar()
@@ -583,6 +540,7 @@ class US_ShermanTurret : Actor
 		bool sp = false;
 
 		while (!gun) { [sp, gun] = A_SpawnItemEx("US_ShermanCannon", 0, 0, 18.0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+		gun.Species = Species;
 
 		spawnoffset = gun.pos - pos;
 
@@ -660,10 +618,19 @@ class US_Sherman : Actor
 
 		while (!turret) { [sp, turret] = A_SpawnItemEx("US_ShermanTurret", 0, 0, Height, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
 
-		A_SpawnItemEx("TankBlocker", 96, -32, flags: SXF_SETMASTER);
-		A_SpawnItemEx("TankBlocker", 96, 32, flags: SXF_SETMASTER);
-		A_SpawnItemEx("TankBlocker", -96, -32, flags: SXF_SETMASTER);
-		A_SpawnItemEx("TankBlocker", -96, 32, flags: SXF_SETMASTER);
+		Actor tb;
+
+		[sp, tb] = A_SpawnItemEx("TankBlocker", 96, -32, flags: SXF_SETMASTER);
+		tb.Species = Species;
+
+		[sp, tb] = A_SpawnItemEx("TankBlocker", 96, 32, flags: SXF_SETMASTER);
+		tb.Species = Species;
+
+		[sp, tb] = A_SpawnItemEx("TankBlocker", -96, -32, flags: SXF_SETMASTER);
+		tb.Species = Species;
+
+		[sp, tb] = A_SpawnItemEx("TankBlocker", -96, 32, flags: SXF_SETMASTER);
+		tb.Species = Species;
 
 		Super.PostBeginPlay();
 	}
@@ -705,7 +672,7 @@ class US_Sherman : Actor
 
 	override bool Used(Actor user)
 	{
-		if (bDormant || (master && master.player)) { return false; }
+		if (bDormant || master) { return false; }
 
 		let p = user.player;
 
