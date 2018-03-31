@@ -210,16 +210,17 @@ class NaziAstroWeapon : NaziWeapon {
 
 class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank. 
 {
+	int cannontimeout;
+
 	Default
 	{
 		Weapon.SelectionOrder 1;
-		+WEAPON.NOAUTOFIRE
 	}
 
 	States
 	{
 		Ready:
-			TNT1 A 1 A_WeaponReady;
+			TNT1 A 1 A_TankRefire();
 			Loop;
 		Select:
 			TNT1 A 1 A_Raise;
@@ -229,15 +230,47 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 			Loop;
 		Fire:
 			TNT1 A 2 DoCannon();
-			TNT1 A 20;
+			TNT1 A 0 A_TankRefire();
 			Goto Ready;
 		AltFire:
 			TNT1 A 6 DoMachineGun();
-			TNT1 A 20 A_Refire();
+			TNT1 A 20 A_TankRefire();
 			Goto Ready;
 		Spawn:
 			UNKN A -1;
 			Loop;
+	}
+
+	action void A_TankReFire(statelabel flash = null)
+	{
+		let player = self.player;
+
+		if (!player) { return; }
+
+		if ((player.cmd.buttons & BT_ATTACK) && player.health > 0 && !player.refire) 
+		{
+			player.refire++;
+			player.mo.FireWeapon(ResolveState(flash));
+		}
+		else if ((player.cmd.buttons & BT_ALTATTACK) && player.health > 0)
+		{
+			if (player.mo is "ShermanPlayer") { ShermanPlayer(player.mo).altrefire++; }
+			else { player.refire++; }
+			player.mo.FireWeaponAlt(ResolveState(flash));
+		}
+		else
+		{
+			if (player.mo is "ShermanPlayer") { ShermanPlayer(player.mo).altrefire = 0; }
+			else { player.refire = 0; }
+		}
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (cannontimeout > 0) { cannontimeout--; }
+		else if (owner && owner.player && !(owner.player.cmd.buttons & BT_ATTACK)) { owner.player.refire = 0; }
 	}
 
 	action void DoCannon()
@@ -255,6 +288,8 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 		{
 			mo.SetOrigin(origin.pos, false); // Move the rocket so that it flies from the model's gun
 		}
+
+		invoker.cannontimeout = 40;
 	}
 
 	action void DoMachineGun()

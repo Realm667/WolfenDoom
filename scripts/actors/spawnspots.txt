@@ -128,7 +128,7 @@ class ActorSpawner : SwitchableDecoration
 		Color fade = mo.CurSector.ColorMap.FadeColor;
 
 		// Sector light level minus the average (inverted) RGB light level minus fog depth
-		return mo.CurSector.lightlevel - (255 - (light.r + light.g + light.b) / 3) - (255 - (fade.r + fade.g + fade.b) / 3) - 255 * (mo.CurSector.ColorMap.FogDensity / 510);
+		return mo.CurSector.lightlevel - (255 - (light.r + light.g + light.b) / 3) - ((fade.r + fade.g + fade.b) / 3) - 255 * (mo.CurSector.ColorMap.FogDensity / 510);
 	}
 
 	int CountSpawns(Class<Actor> spawntype = null, bool countdead = false)

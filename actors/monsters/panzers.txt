@@ -572,7 +572,7 @@ ACTOR SSTank1
 	Spawn:
 		MDLA A 0 NoDelay A_GiveInventory("Z_DontShadeMe")
 	Idle:
-		MDLA A 10 A_Look
+		"####" A 10 A_Look
 		Loop
 	See:
 		"####" A 1
@@ -599,13 +599,13 @@ ACTOR SSTank1
 		Goto See
 	Melee:
 	Turret:
-		MDLA A 0 A_PlaySound("weapons/chaingun", CHAN_WEAPON)
+		"####" A 0 A_PlaySound("weapons/chaingun", CHAN_WEAPON)
 		"####" A 2 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer", ScaleX * 48, ScaleY * 26, random(-4, 4))
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
-		MDLA A 2 A_JumpIfTargetInLOS("Turret", 45)
+		"####" A 2 A_JumpIfTargetInLOS("Turret", 45)
 		Goto See
 	Missile2:
-		MDLA AAA 2
+		"####" AAA 2
 		"####" A 2 A_SpawnProjectile("PanzerRocket", ScaleX * 76, 0, angle, CMF_ABSOLUTEANGLE|CMF_BADPITCH)
 		"####" AA 2
 		"####" A 20
@@ -676,10 +676,10 @@ ACTOR SSTank2 : SSTank1
 		Goto See
 	Melee:
 	Turret:
-		MDLA A 0 A_PlaySound("weapons/chaingun", CHAN_WEAPON)
+		"####" A 0 A_PlaySound("weapons/chaingun", CHAN_WEAPON)
 		"####" A 2 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer", ScaleX * 70, ScaleY * -16, random(-4, 4))
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
-		MDLA A 2 A_JumpIfTargetInLOS("Turret", 45)
+		"####" A 2 A_JumpIfTargetInLOS("Turret", 45)
 		Goto See
 	Death:
 		TNT1 A 0 A_StopSound(CHAN_7)
@@ -712,7 +712,7 @@ ACTOR SSTank3 : SSTank1
 	States
 	{
 	Missile:
-		MDLA A 10
+		"####" A 10
 		"####" A 0
 		"####" AAA 8
 		"####" A 8 A_SpawnProjectile("PanzerRocket", ScaleX * 65, ScaleY * 4, angle, CMF_ABSOLUTEANGLE|CMF_BADPITCH)
@@ -722,10 +722,10 @@ ACTOR SSTank3 : SSTank1
 		Goto See
 	Melee:
 	Turret:
-		MDLA A 0 A_PlaySound("weapons/chaingun", CHAN_WEAPON)
+		"####" A 0 A_PlaySound("weapons/chaingun", CHAN_WEAPON)
 		"####" A 2 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer", ScaleX * 48, ScaleY * 24, random(-4, 4))
 		"####" A 0 A_JumpIfHealthLower(1, "See", AAPTR_TARGET)
-		MDLA A 2 A_JumpIfTargetInLOS("Turret", 45)
+		"####" A 2 A_JumpIfTargetInLOS("Turret", 45)
 		Goto See
 	Death:
 		TNT1 A 0 A_StopSound(CHAN_7)
@@ -797,7 +797,7 @@ ACTOR T34Tank : SSTank1
 	States
 	{
 	Missile:
-		MDLA A 10
+		"####" A 10
 		"####" A 0
 		"####" AAA 8
 		"####" A 8 A_SpawnProjectile("PanzerRocket", ScaleX * 96, ScaleY * 4, angle, CMF_ABSOLUTEANGLE|CMF_BADPITCH)
