@@ -94,6 +94,14 @@ ACTOR ToiletShootable
 	}
 }
 
+ACTOR ToiletSoldier : ToiletShootable
+{
+	//$Category Monsters (Wolf3D)/Toilet Soldiers
+	//$Title Toilet TO USE WITH SOLDIERS ONLY (shootable)
+	DistanceCheck "scenelod"
+	Height 24
+}
+
 ACTOR ToiletTalking : ToiletShootable
 {
 	//$Category Conversation Stuff (Wolf3D)
