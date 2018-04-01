@@ -672,7 +672,7 @@ class US_Sherman : Actor
 
 	override bool Used(Actor user)
 	{
-		if (bDormant || master) { return false; }
+		if (bDormant || master && (master.player || master.bIsMonster)) { return false; }
 
 		let p = user.player;
 
