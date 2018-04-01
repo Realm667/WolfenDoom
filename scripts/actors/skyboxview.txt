@@ -1,7 +1,6 @@
 class SkyViewPointStatic : SkyViewPoint
 {
 	Actor base, anchor;
-	Vector3 oldbasepos;
 	double heightoffset;
 	double scaling;
 
@@ -14,9 +13,69 @@ class SkyViewPointStatic : SkyViewPoint
 		//$Arg2 "Anchor Object TID"
 		//$Arg2Tooltip "TID of an actor to anchor the skybox on.  Default value (0) means to anchor on player start spot."
 		//$Arg2Default 0
+		//$Arg3 "Make this the default sky"
+		//$Arg3Tooltip " Should this become the default sky (as if it had no TID)?\nThis allows setting a starting TID on the viewpoint, but still setting the default level sky."
+		//$Arg3Type 11
+		//$Arg3Enum { 0 = "False"; 1 = "True"; }
+		//$Arg3Default 0
 		+NOCLIP
 		Height 0;
 		Radius 0;
+	}
+
+	static void SetAnchor(int tid, int anchorid = -1)
+	{
+		if (!tid) { return; }
+
+		ActorIterator it = ActorIterator.Create(tid, "SkyViewPointStatic");
+		SkyViewPointStatic mo = SkyViewPointStatic(it.Next());
+
+		if (!mo)
+		{
+			console.printf("ERROR: Invalid SkyViewPointStatic TID.");
+			return;
+		}
+
+		if (anchorid < 0 && mo.args[2] != 0) { anchorid = mo.args[2]; }
+
+		if (anchorid > 0)
+		{
+			it = ActorIterator.Create(anchorid, "Actor");
+			mo.anchor = it.Next();
+		}
+
+		if (!mo.anchor)
+		{
+			console.printf("WARNING: Skybox anchor with TID %i not found!", anchorid);
+			mo.anchor = mo.base; // Use the anchor spot as the origin if there is one, otherwise fall back to player spawn position
+		}
+
+		mo.base = null;
+
+		// Iterate through all of the possible players in the game
+		for (int i = 0; i < MAXPLAYERS; i++)
+		{
+			// If a player is in the game and has spawned...
+			if (playeringame[i] && players[i].camera)
+			{
+				if (!mo.base)  // Set the skybox to follow the first player who is in the game
+				{
+					mo.base = players[i].camera;
+					mo.heightoffset = mo.SpawnPoint.z - mo.anchor.pos.z - 17.25; // To match normal skybox offset height
+				}
+				else  // If there are multiple players, don't move the skybox
+				{
+					mo.base = null;
+					break;
+				}
+			}
+		}
+
+		if ((mo.tid == 0 && level.sectorPortals[0].mSkybox == null) || mo.args[3] > 0)
+		{
+			level.sectorPortals[0].mSkybox = mo;
+			level.sectorPortals[0].mDestination = mo.CurSector;
+		}
 	}
 
 	override void PostBeginPlay()
@@ -27,27 +86,9 @@ class SkyViewPointStatic : SkyViewPoint
 		// Save the spawn location vector for later
 		SpawnPoint = pos;
 
-		if (args[2] != 0)
-		{
-			ActorIterator it = ActorIterator.Create(args[2], "Actor");
-			anchor = it.Next();
-		}
+		if (!tid) { ChangeTID(FindUniqueTID()); }
 
-		// Iterate through all of the possible players in the game
-		for (int i = 0; i < MAXPLAYERS; i++)
-		{
-			// If a player is in the game and has spawned...
-			if (playeringame[i] && players[i].camera)
-			{
-				if (!base)  // Set the skybox to follow the first player who is in the game
-				{
-					base = players[i].camera;
-					oldbasepos = anchor ? anchor.pos : base.pos; // Use the anchor spot as the origin if there is one, otherwise fall back to player spawn position
-					heightoffset = pos.z - oldbasepos.z - 17.25; // To match normal skybox offset height
-				}
-				else { base = null; break; } // If there are multiple players, don't move the skybox
-			}
-		}
+		SetAnchor(tid);
 	}
 
 	override void Tick()
@@ -58,18 +99,15 @@ class SkyViewPointStatic : SkyViewPoint
 		{
 			Vector2 offset;
 
-			offset = (base.pos.xy - oldbasepos.xy) / scaling;
+			offset = (base.pos.xy - anchor.pos.xy) / scaling;
 			offset = RotateVector(offset, angle);
 
-			// Reset the viewpoint's height location
-			double heightdelta = (base.pos.z - SpawnPoint.z) / scaling;
+			// Set the viewpoint's height location
+			double heightdelta = (base.pos.z - anchor.pos.z) / scaling;
 
 			heightdelta /= 2;
 
-			SetOrigin((pos.xy + offset, SpawnPoint.z + heightoffset + heightdelta), true);
-
-			// Save the player's old position
-			oldbasepos = base.pos;
+			SetOrigin((SpawnPoint.xy + offset, SpawnPoint.z + heightoffset + heightdelta), true);
 		}
 	}
 }
