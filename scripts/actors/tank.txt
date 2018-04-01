@@ -15,7 +15,7 @@ class ShermanPlayer : PlayerPawn
 
 	Default
 	{
-		Health 10000; // Need to tweak, probably...
+		Health 10000;
 		Height 96;
 		Mass 0x7ffffff;
 		Radius 64;
@@ -390,7 +390,12 @@ class ShermanPlayer : PlayerPawn
 		}
 		else { useholdtime = 0; }
 
-		if (useholdtime >= 35) { TakeInventory("Sherman", 1); }
+
+		if (useholdtime >= 35)
+		{
+			if (treads && US_Sherman(treads)) { US_Sherman(treads).usetimeout = 35; }
+			TakeInventory("Sherman", 1);
+		}
 	}
 
 	Actor GetClosestForcedHealthBar()
@@ -584,6 +589,7 @@ class US_Sherman : Actor
 {
 	Actor turret;
 	int savedhealth;
+	int usetimeout;
 
 	Default
 	{
@@ -637,6 +643,8 @@ class US_Sherman : Actor
 
 	override void Tick()
 	{
+		if (usetimeout) { usetimeout--; }
+
 		if (master && master.player)
 		{
 			double moving = master.player.cmd.forwardmove;
@@ -672,7 +680,7 @@ class US_Sherman : Actor
 
 	override bool Used(Actor user)
 	{
-		if (bDormant || master && (master.player || master.bIsMonster)) { return false; }
+		if (usetimeout || bDormant || master && (master.player || master.bIsMonster)) { return false; }
 
 		let p = user.player;
 
@@ -868,7 +876,11 @@ class Sherman : PowerMorph
 				{
 					tank.treads.bSolid = true;
 					tank.treads.master = null;
-					if (US_Sherman(tank.treads)) { US_Sherman(tank.treads).savedhealth = tank.health; }
+					if (US_Sherman(tank.treads))
+					{
+						US_Sherman(tank.treads).savedhealth = tank.health;
+						US_Sherman(tank.treads).usetimeout = 35;
+					}
 				}
 				if  (tank.turretcamera) { tank.turretcamera.Destroy(); }
 
