@@ -705,9 +705,15 @@ class US_Sherman : Actor
 	{
 		if (turret) { turret.Destroy(); }
 
-		A_RemoveChildren(true, RMVF_EVERYTHING);
-
 		A_PlaySound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_IDLE);
+
+		Actor dead = Spawn("US_ShermanDead", pos);
+
+		dead.angle = angle;
+		dead.pitch = pitch;
+		dead.roll = roll;
+
+		A_RemoveChildren(true, RMVF_EVERYTHING);
 
 		for (int i = 0; i < 20; i++)
 		{
@@ -718,13 +724,7 @@ class US_Sherman : Actor
 		A_SpawnItemEx("Nuke", 0, 0, 5, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 		A_SpawnItemEx("KaBoomer", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS);
 		A_SpawnItemEx("GeneralExplosion_Large", 56, 0, 32);
-
-		Actor dead = Spawn("US_ShermanDead", pos);
-
-		dead.angle = angle;
-		dead.pitch = pitch;
-		dead.roll = roll;
-	}
+	}		
 }
 
 class TankBlocker : Actor

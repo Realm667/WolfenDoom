@@ -1,4 +1,4 @@
-class VehicleBase : Actor
+class VehicleBase : Base
 {
 	// Handling for terrain-based pitch/roll calculations...
 	static double SetPitchRoll(Actor mo, int xoffset = 32, int yoffset = 0, int cap = 60)
@@ -19,6 +19,7 @@ class VehicleBase : Actor
 		for (int i = 0; i < 4; i++)
 		{
 			if (mo.master && mo.master.player && points[i] > mo.pos.z + mo.master.MaxStepHeight) { points[i] = 0; } // Ignore the point if you can't climb that high
+			else if (points[i] < mo.floorz - mo.MaxDropoffHeight) { points[i] = 0; } // Ignore the point if it's a dropoff
 			else { points[i] -= mo.pos.z; }
 		}
 
@@ -53,13 +54,13 @@ class VehicleBase : Actor
 	{
 		SetPitchRoll(self);
 
-		Super.Tick();
+		Actor.Tick();
 	}
 }
 
 class TankBase : VehicleBase
 {
-	Actor treads, turret, gun;
+	Actor treads, turret, gun, ally;
 	Class<Actor> body, dead, debris;
 	double minpitch, maxpitch;
 	int missilecount, missiletimeout, bulletcount, bullettimeout, chasetimeout, turrettimeout;
@@ -88,9 +89,9 @@ class TankBase : VehicleBase
 		+DONTMORPH
 		+FLOORCLIP
 		+LOOKALLAROUND
-		+MISSILEMORE
 		+NOBLOOD
 		+NOBLOODDECALS
+		+NODROPOFF
 		+NOINFIGHTING
 		+PAINLESS
 		+SLIDESONWALLS
@@ -112,7 +113,7 @@ class TankBase : VehicleBase
 			TNT1 A 1 A_TankChase();
 			Goto See;
 		Death:
-			TNT1 A 1 DoDeath();
+			TNT1 A -1 DoDeath();
 			Stop;
 	}
 
@@ -143,6 +144,13 @@ class TankBase : VehicleBase
 		A_PlaySound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_IDLE);
 		A_Scream();
 		A_NoBlocking();
+
+		Actor hulk = Spawn(dead, pos);
+
+		hulk.angle = treads.angle;
+		hulk.pitch = treads.pitch;
+		hulk.roll = treads.roll;
+
 		A_RemoveChildren(true, RMVF_EVERYTHING);
 
 		for (int i = 0; i < 30; i++)
@@ -154,12 +162,6 @@ class TankBase : VehicleBase
 		A_SpawnItemEx("Nuke", 0, 0, 5, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 		A_SpawnItemEx("KaBoomer", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS);
 		A_SpawnItemEx("GeneralExplosion_Large", 56, 0, 32);
-
-		Actor dead = Spawn(dead, pos);
-
-		dead.angle = angle;
-		dead.pitch = pitch;
-		dead.roll = roll;
 	}
 
 	override void Tick()
@@ -218,7 +220,10 @@ class TankBase : VehicleBase
 			}
 		}
 
-		if (target) { bFrightened = Distance2D(target) < 512; } // Keep distance from the player
+		if (bFriendly && !ally || ally.health <= 0) { ally = FindClosestPlayer(360, 0, false); }
+		if (ally && ally.player.attacker && ally.player.attacker != ally && ally.player.attacker.health > 0) { target = ally.player.attacker; }
+
+		if (target) { bFrightened = Distance2D(target) < 1024; } // Keep distance from the target
 	}
 
 	override bool CanCollideWith(Actor other, bool passive)
@@ -231,9 +236,11 @@ class TankBase : VehicleBase
 	{
 		if (!treads || !turret) { return; }
 
-		if (!(flags & CHF_DONTTURN))
+		A_LookEx(LOF_NOJUMP);
+
+		if (!chasetimeout && !(flags & CHF_DONTTURN))
 		{
-			double diff = deltaangle(treads.angle, turret.angle);
+			double diff = deltaangle(treads.angle, angle);
 
 			double turnamt = Speed / 5;
 
@@ -267,11 +274,11 @@ class TankBase : VehicleBase
 			missiletargeted = false;
 		}
 
-		if (!turrettimeout)
+		if (target && !turrettimeout)
 		{
 			turret.A_Face(target, 1.5);
 
-			if (turret.angle == turret.AngleTo(target) && turret.pitch > minpitch && turret.pitch < maxpitch && CheckLOF(0, maxtargetrange, offsetforward: Radius * 2))
+			if (turret.angle == turret.AngleTo(target) && turret.pitch > minpitch && turret.pitch < maxpitch && CheckLOF(CLOFF_JUMPENEMY, maxtargetrange, offsetforward: Radius * 2))
 			{
 				missiletargeted = true;
 				chasetimeout = 40;
@@ -279,9 +286,8 @@ class TankBase : VehicleBase
 			}
 		}
 
-		if (!bullettimeout && abs(deltaangle(treads.angle, treads.AngleTo(target))) <= 15 && CheckLOF(0, maxtargetrange, offsetforward: Radius * 2))
+		if (target && !bullettimeout && abs(deltaangle(treads.angle, treads.AngleTo(target))) <= 15 && CheckLOF(CLOFF_JUMPENEMY, maxtargetrange / 2, offsetforward: Radius * 2))
 		{
-			flags |= CHF_DONTMOVE | CHF_DONTTURN;
 			chasetimeout = 20;
 			missiletimeout = 20;
 			DoMachineGun(treads);
@@ -289,11 +295,10 @@ class TankBase : VehicleBase
 
 		if (chasetimeout)
 		{
-			flags |= CHF_DONTMOVE | CHF_DONTTURN | CHF_NODIRECTIONTURN;
+			flags |= CHF_DONTMOVE | CHF_DONTTURN;
 		}
 		else
 		{
-			flags |= CHF_DONTMOVE | CHF_NODIRECTIONTURN;
 			A_ChangeVelocity(cos(treads.angle) * speed, sin(treads.angle) * speed, vel.z, CVF_REPLACE);
 
 			if (InStateSequence(treads.CurState, treads.SpawnState) && treads.FindState("Move"))
@@ -322,7 +327,6 @@ class newSSTank1 : TankBase
 		Tag "Panzer IV F";
 		Health 3500;
 		Speed 2.66666667;
-		MinMissileChance 160;
 		MaxTargetRange 2048;
 		TankBase.TankActor "US_Sherman";
 		TankBase.DeadActor "US_ShermanDead";
@@ -333,6 +337,8 @@ class newSSTank1 : TankBase
 
 	override void DoRocket(Actor origin)
 	{
+		if (!origin) { return; }
+
 		Actor mo = A_SpawnProjectile("PanzerRocket", scale.x * 76, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		mo.SetOrigin(origin.pos, false);
@@ -352,16 +358,18 @@ class newSSTank1 : TankBase
 
 	override void DoMachineGun(Actor origin)
 	{
+		if (!origin) { return; }
+
 		A_PlaySound("weapons/chaingun", CHAN_WEAPON);
 
 		double gunpitch = origin.pitch;
-		if (origin.master) { gunpitch = origin.master.pitch; }
+		if (origin.master && TankBase(origin.master) && TankBase(origin.master).gun) { gunpitch = TankBase(origin.master).gun.pitch; }
 
-		Actor mo = A_SpawnProjectile("EnemyChaingunTracer", scale.x * 48, scale.y * 26, random(-4, 4), CMF_ABSOLUTEPITCH, gunpitch);
+		Actor mo = A_SpawnProjectile("EnemyChaingunTracer", scale.x * 48, scale.y * 26, random(-4, 4), CMF_ABSOLUTEPITCH, max(-gunpitch, 0));
 		mo.bMThruSpecies = true;
 
 		bulletcount++;
-		if (bulletcount > 150)
+		if (bulletcount > 75)
 		{
 			bulletcount = 0;
 			bullettimeout = 35 * Random(2, 5); // 2-5 seconds between long bursts
@@ -369,6 +377,68 @@ class newSSTank1 : TankBase
 		else
 		{
 			bullettimeout = 2; // 2 tics between shots
+		}
+	}
+}
+
+class FriendlySherman : TankBase
+{
+	Default
+	{
+		//$Category Monsters (Wolf3D)/Tanks
+		//$Title Sherman Tank, Manned (Friendly)
+		//$Color 4
+		Tag "M4 Sherman";
+		Health 3500;
+		Speed 2.66666667;
+		MaxTargetRange 2048;
+		+FRIENDLY
+		TankBase.TankActor "US_Sherman";
+		TankBase.DeadActor "US_ShermanDead";
+		TankBase.DebrisActor "Debris_Tank";
+		TankBase.MoveSound "TNK1LOOP";
+		TankBase.IdleSound "TKIDLE";
+	}
+
+	override void DoRocket(Actor origin)
+	{
+		if (!origin) { return; }
+
+		Actor mo = A_SpawnProjectile("ShermanRocket", scale.x * 76, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+
+		mo.SetOrigin(origin.pos, false);
+		mo.bMThruSpecies = true;
+
+		missilecount++;
+		if (missilecount > 1)
+		{
+			missilecount = 0;
+			missiletimeout = 35 * Random(3, 5);
+		}
+		else
+		{
+			missiletimeout = 40;
+		}
+	}
+
+	override void DoMachineGun(Actor origin)
+	{
+		if (!origin) { return; }
+
+		A_PlaySound("mauser/fire", CHAN_WEAPON);
+
+		Actor mo = A_SpawnProjectile("Kar98kTracer", scale.x * 48, scale.y * 26, Random(-2, 2), CMF_ABSOLUTEPITCH, Random(-2, 2));
+		mo.bMThruSpecies = true;
+
+		bulletcount++;
+		if (bulletcount > 50 + Random(0, 25))
+		{
+			bulletcount = 0;
+			bullettimeout = 40 + Random(0, 35);
+		}
+		else
+		{
+			bullettimeout = 6;
 		}
 	}
 }

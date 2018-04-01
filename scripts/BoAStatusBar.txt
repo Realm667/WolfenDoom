@@ -681,6 +681,9 @@ class BoAStatusBar : BaseStatusBar
 		if (BoAPlayer(CPlayer.mo))
 		{
 			mo = BoAPlayer(CPlayer.mo).CrosshairTarget;
+
+			if (mo) { while (mo.master) { mo = mo.master; } } // Use the actor's master if it has one
+
 			if (!mo || mo && (!mo.bShootable || mo.health <= 0 || !mo.bBoss)) { mo = BoAPlayer(CPlayer.mo).ForcedHealthBar; } // Fall back to the "force-drawn" one, if there is one
 		}
 

@@ -390,10 +390,9 @@ class BoAPlayer : PlayerPawn
 
 	Actor GetLineTarget()
 	{
-		FTranslatedLineTarget t;
-		AimLineAttack(angle, 1024, t, 0.5);
-
-		return t.linetarget;
+		FLineTraceData actortrace;
+		LineTrace(angle, 1024, pitch, TRF_ALLACTORS, player.viewheight, 0.0, 0.0, actortrace);
+		return actortrace.HitActor;
 	}
 
 	Actor GetClosestForcedHealthBar()
