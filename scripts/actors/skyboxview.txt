@@ -3,7 +3,7 @@ class SkyViewPointStatic : SkyViewPoint
 	Actor base, anchor;
 	Vector3 oldbasepos;
 	double heightoffset;
-	int scaling;
+	double scaling;
 
 	Default
 	{
@@ -43,7 +43,7 @@ class SkyViewPointStatic : SkyViewPoint
 				{
 					base = players[i].camera;
 					oldbasepos = anchor ? anchor.pos : base.pos; // Use the anchor spot as the origin if there is one, otherwise fall back to player spawn position
-					heightoffset = pos.z - base.pos.z - 17.25; // To match normal skybox offset height
+					heightoffset = pos.z - oldbasepos.z - 17.25; // To match normal skybox offset height
 				}
 				else { base = null; break; } // If there are multiple players, don't move the skybox
 			}
@@ -52,24 +52,25 @@ class SkyViewPointStatic : SkyViewPoint
 
 	override void Tick()
 	{
-		if (base && base.player)
+		Super.Tick();
+
+		if (base && base.player && SpawnPoint != (0, 0, 0))
 		{
 			Vector2 offset;
-
-			// Reset the viewpoint's height location
-			double heightdelta = (base.pos.z - pos.z + base.player.mo.height * base.player.crouchfactor) / scaling;
-			SetOrigin((pos.x, pos.y, (SpawnPoint.z + heightoffset + heightdelta) / 2), true);
 
 			offset = (base.pos.xy - oldbasepos.xy) / scaling;
 			offset = RotateVector(offset, angle);
 
-			SetOrigin(pos + offset, true);
+			// Reset the viewpoint's height location
+			double heightdelta = (base.pos.z - SpawnPoint.z) / scaling;
+
+			heightdelta /= 2;
+
+			SetOrigin((pos.xy + offset, SpawnPoint.z + heightoffset + heightdelta), true);
 
 			// Save the player's old position
 			oldbasepos = base.pos;
 		}
-
-		Super.Tick();
 	}
 }
 
