@@ -54,6 +54,7 @@ ACTOR KTurretGun
 	MeleeRange 1.0 //this is accuracy. We use this because it's the only Float variable native to the actor and usable by inventory items. Higher values = more spread.
 	Accuracy 2 //Accuracy is instead the delay in tics between shots. Lower values = higher fire rate.
 	var float user_startangle;
+	var int user_count;
 	States
 	{
 	Spawn:
@@ -66,7 +67,20 @@ ACTOR KTurretGun
 		Loop
 	Recharge:
 		MDLA B 0 A_PlaySound("mp40/fire", CHAN_WEAPON)
+		MDLA B 0 { 
+			user_count++;
+			if (user_count > 100)
+			{
+				user_count = 0;
+				return ResolveState("Reload");
+			}
+			return ResolveState("");
+		}
 		MDLA B 1 A_SetTics(Accuracy) //the duration of this frame controls fire rate.
+		MDLA B 0 A_GiveInventory("KTurret_Ammo",1)
+		Goto Spawn2
+	Reload:
+		MDLA B 35 A_PlaySound("mp40/reload", CHAN_WEAPON)
 		MDLA B 0 A_GiveInventory("KTurret_Ammo",1)
 		Goto Spawn2
 	}
