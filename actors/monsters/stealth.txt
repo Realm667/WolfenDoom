@@ -17,12 +17,14 @@ ACTOR SneakableSSMP40GuardStatic : SneakableSSMP40Guard
 {
 	//$Title SS Guard Static (MP40, sneak-friendly, doesn't move)
 	var int user_angle;
+	Speed 0
 	States
 	{
 		Spawn:
 			SSMG A 0 NoDelay A_SetUserVar("user_angle", angle)
 			Goto Look
 		See: //doesn't roll - ozy81
+		See.Dodge:
 			"####" N 1 {
 				A_SetAngle(user_angle);
 				A_Chase("Missile", "Missile", CHF_DONTMOVE | CHF_NODIRECTIONTURN);
