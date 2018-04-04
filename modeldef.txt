@@ -6106,10 +6106,50 @@ Model KTurretGun
 	Path "models"
 	Model 0 "turret_gun.md3"
 	Scale 0.38 0.38 0.38
-	Offset 0.0 0.0 -32.0 //force this to prevent the object to go far from the basement
+	Offset 0.0 0.0 -32.0
 	USEACTORPITCH
 
 	Frameindex MDLA B 0 0
+}
+
+Model TurretStand
+{
+	Path "models"
+	Model 0 "turret_base.md3"
+	Scale 0.38 0.38 0.38
+	USEACTORPITCH
+	USEACTORROLL
+
+	Frameindex MDLA A 0 0
+}
+
+Model TurretSwivel
+{
+	Path "models"
+	Model 0 "turret_swivel.md3"
+	Scale 0.38 0.38 0.38
+	USEACTORPITCH
+	USEACTORROLL
+
+	Frameindex MDLA A 0 0
+}
+
+Model TurretGun
+{
+	Path "models"
+	Model 0 "turret_gun2.md3"
+	Scale 0.38 0.38 0.38
+	USEACTORPITCH
+	USEACTORROLL
+	NOINTERPOLATION
+
+	Frameindex MDLA A 0 0
+	Frameindex MDLA C 0 6
+
+	SurfaceSkin 0 3 "turret2.png"
+
+	Frameindex MDLA B 0 3
+	Frameindex MDLA D 0 9
 }
 
 Model Cell_Light

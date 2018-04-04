@@ -19,6 +19,7 @@ ACTOR KTurretStand : SwitchableDecoration //IMPORTANT: The TurretStand NEEDS to 
 	Spawn:
 		TNT1 A 0
 		TNT1 A 0 A_SpawnItemEx("KTurretGun",0,0,32,0,0,0,0,SXF_SETTARGET|SXF_ISTRACER) //let's spawn the interactive turret (tweaked from modeldef too)
+		TNT1 A 0 { if (!tid) { ChangeTID(FindUniqueTID); } }
 		MDLA A 1
 		Goto Spawn2
 	Spawn2:
