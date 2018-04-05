@@ -2043,7 +2043,7 @@ ACTOR CTurret_Afrika : SwitchableDecoration
 	Spawn:
 		SMGS X 0 NODELAY //do not wait for usability or multiple turrets will spawn on Crash.Replace states - ozy81
 	Active:
-		SMGS X 1 A_CheckProximity("SpawnEnemy", "Guard", 64, 1, CPXF_SETTARGET | CPXF_NOZ | CPXF_EXACT) //Only Guards can activate it and only 1 of them - thanks to yqco for proper pointers
+		SMGS X 35 A_CheckProximity("SpawnEnemy", "Guard", 64, 1, CPXF_SETTARGET | CPXF_NOZ | CPXF_EXACT) //Only Guards can activate it and only 1 of them - thanks to yqco for proper pointers
 		Loop
 	Inactive:
 		"####" X 0 //bland
@@ -2070,7 +2070,7 @@ ACTOR CTurret_Wehrmacht : CTurret_Afrika
 	Spawn:
 		SMGS X 0 NODELAY
 	Active:
-		SMGS X 1 A_CheckProximity("SpawnEnemy", "WGuard", 64, 1, CPXF_SETTARGET | CPXF_NOZ | CPXF_EXACT) //Only Guards can activate it and only 1 of them - thanks to yqco for proper pointers
+		SMGS X 35 A_CheckProximity("SpawnEnemy", "WGuard", 64, 1, CPXF_SETTARGET | CPXF_NOZ | CPXF_EXACT) //Only Guards can activate it and only 1 of them - thanks to yqco for proper pointers
 		Loop
 	SpawnEnemy:
 		TNT1 A 0 A_ChangeFlag("BUMPSPECIAL", FALSE)
