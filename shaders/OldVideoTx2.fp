@@ -118,13 +118,13 @@ vec4 Process(vec4 color)
 
 	// Show the image modulated by the defects
 	color.xyz = oldImage * vI;
-	//color.w = 1.0 - vI;
+	color.w = 1.0 - vI;
 
 	// Add some grain (thanks, Jose!)
 	#ifdef GRAIN
 	float grainAmount = (1.0 + (rand(uv + t * 0.01) - 0.2) * 0.15);
 	color.xyz *= grainAmount;
-	//color.w *= grainAmount;
+	color.w *= grainAmount;
 	#endif
 	return color;
 }
