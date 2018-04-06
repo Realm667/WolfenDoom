@@ -168,11 +168,11 @@ ACTOR SkyboxMoonLights : SkyboxPlanetShade //adjusted by T667
 	Alpha 0.8
 }
 
-//Ozy models from scratch or highly revamped
-ACTOR Radiator //3d Model by Talon1024, just reworked skin and a couple of details
+//Ozy models from scratch or revamped
+ACTOR Radiator_Short
 {
 	//$Category Models (Wolf3D)/Furniture
-	//$Title Radiator
+	//$Title Radiator (short)
 	//$Color 3
 	DistanceCheck "scenelod"
 	Radius 4
@@ -184,6 +184,12 @@ ACTOR Radiator //3d Model by Talon1024, just reworked skin and a couple of detai
 		MDLA A -1
 		Stop
 	}
+}
+
+ACTOR Radiator_Long : Radiator_Short
+{
+	//$Title Radiator (long, use self-referenced sectors!)
+	DistanceCheck "scenelod"
 }
 
 ACTOR BlowTorch : 3dObstacle
