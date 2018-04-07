@@ -726,6 +726,17 @@ class Base : Actor
 		DodgeState = FindState("Dodge");
 		dodgetimeout = Random(175, 350);
 	}
+
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (other is "FlattenableProp")
+		{
+			other.Touch(self);
+			return false;
+		}
+
+		return true;
+	}
 }
 
 // Base class for almost all enemy actors.

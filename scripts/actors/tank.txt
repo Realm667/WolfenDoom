@@ -227,6 +227,9 @@ class ShermanPlayer : PlayerPawn
 	override bool CanCollideWith(Actor other, bool passive)
 	{
 		if (other is "TankBlocker") { return false; }
+
+		if (other.bSpecial) { other.Touch(self); }
+
 		return true;
 	}
 
@@ -896,29 +899,5 @@ class Sherman : PowerMorph
 		}
 
 		Super.EndEffect();
-	}
-}
-
-class Trample : BlastEffect
-{
-	int dmg;
-	int flags;
-
-	Default
-	{
-		DamageType 'Trample';
-		Damage 5;
-		Height 56;
-		Radius 56;
-		+NOGRAVITY
-	}
-
-	States
-	{
-		Spawn:
-			TNT1 A 0;
-		Death:
-			"####" # 20 A_Explode(dmg == 0 ? damage : dmg, int(Radius), flags, FALSE, int(Radius));
-			Stop;
 	}
 }

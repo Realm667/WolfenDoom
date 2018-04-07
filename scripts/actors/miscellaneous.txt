@@ -149,3 +149,53 @@ class TextPaper : Actor
 		Super.Tick();
 	}
 }
+
+class FlattenableProp : Actor // Tall grass/rye, etc. that can be trampled down
+{
+	int touchtime;
+	int fallpitch;
+
+	Default
+	{
+		+NOBLOOD
+		+NODAMAGE
+		+NOTAUTOAIMED
+		+SHOOTABLE
+		+SOLID
+		+SPECIAL
+	}
+
+	override void PostBeginPlay()
+	{
+		A_SetSize(Radius, 1);
+
+		Super.PostBeginPlay();
+	}
+
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
+	{
+		Touch(inflictor);
+
+		return 0; // No actual damage to the actor
+	}
+
+	override void Touch(Actor toucher)
+	{
+		if (!toucher) { return; }
+
+		touchtime++;
+		bFlatSprite = true;
+
+		if (touchtime < 5) { angle = AngleTo(toucher) + 180; }
+		if (!fallpitch) { fallpitch = Random(70, 85); }
+
+		pitch = clamp(-fallpitch + touchtime * 15, -fallpitch, 0);
+
+		if (pitch == -fallpitch)
+		{
+			bSpecial = false;
+			bSolid = false;
+			bShootable = false;
+		}
+	}
+}

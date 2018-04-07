@@ -1,5 +1,14 @@
 class VehicleBase : Base
 {
+	double trampleradius;
+
+	Property TrampleRadius:trampleradius;
+
+	Default
+	{
+		VehicleBase.TrampleRadius -1;
+	}
+
 	// Handling for terrain-based pitch/roll calculations...
 	static double SetPitchRoll(Actor mo, int xoffset = 32, int yoffset = 0, int cap = 60)
 	{
@@ -50,11 +59,42 @@ class VehicleBase : Base
 		return 0;
 	}
 
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (other is "FlattenableProp") { return false; }
+		if (other is "Trample") { return false; }
+		return true;
+	}
+
 	override void Tick()
 	{
 		SetPitchRoll(self);
+		DoTrample();
 
 		Actor.Tick();
+	}
+
+	void DoTrample(bool always = false)
+	{
+		double movespeed = vel.length();
+		if (trampleradius == -1) { trampleradius = radius; }
+
+		if (movespeed >= 1 || always)
+		{
+			double dmg = always ? 1 : movespeed * 0.625;
+
+			bool sp;
+			Actor t;
+
+			[sp, t] = A_SpawnItemEx("Trample", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE);
+
+			if (t)
+		{
+				t.target = self; // Set the vehicle as the Trample actor's target, because Trample uses A_Explode, which defaults to treating the actor's target as the originator (and doesn't damage it)
+				t.A_SetSize(trampleradius, Height / 3);
+				Trample(t).dmg = int(dmg);
+			}
+		}
 	}
 }
 
@@ -101,6 +141,7 @@ class TankBase : VehicleBase
 		TankBase.DebrisActor "Debris_Tank";
 		TankBase.MoveSound "TKMOVE";
 		TankBase.IdleSound "TKIDLE";
+		VehicleBase.TrampleRadius 96;
 	}
 
 
@@ -229,7 +270,7 @@ class TankBase : VehicleBase
 	override bool CanCollideWith(Actor other, bool passive)
 	{
 		if (other is "TankBlocker") { return false; }
-		return true;
+		return Super.CanCollideWith(other, passive);
 	}
 
 	void A_TankChase(int flags = 0)
@@ -306,6 +347,8 @@ class TankBase : VehicleBase
 				 treads.SetStateLabel("Move");
 			}
 
+			DoTrample(true);
+
 			A_PlaySound(movesound, CHAN_7, 1.0, TRUE);
 		}
 
@@ -341,18 +384,21 @@ class newSSTank1 : TankBase
 
 		Actor mo = A_SpawnProjectile("PanzerRocket", scale.x * 76, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
-		mo.SetOrigin(origin.pos, false);
-		mo.bMThruSpecies = true;
+		if (mo)
+		{
+			mo.SetOrigin(origin.pos, false);
+			mo.bMThruSpecies = true;
 
-		missilecount++;
-		if (missilecount > 1)
-		{
-			missilecount = 0;
-			missiletimeout = 35 * Random(3, 5);
-		}
-		else
-		{
-			missiletimeout = Random() < 96 ? 38 : 24; // 38 tics between shots about 40% of the time.  Otherwise, 24 tics between shots
+			missilecount++;
+			if (missilecount > 1)
+			{
+				missilecount = 0;
+				missiletimeout = 35 * Random(3, 5);
+			}
+			else
+			{
+				missiletimeout = Random() < 96 ? 38 : 24; // 38 tics between shots about 40% of the time.  Otherwise, 24 tics between shots
+			}
 		}
 	}
 
@@ -406,18 +452,21 @@ class FriendlySherman : TankBase
 
 		Actor mo = A_SpawnProjectile("ShermanRocket", scale.x * 76, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
-		mo.SetOrigin(origin.pos, false);
-		mo.bMThruSpecies = true;
+		if (mo)
+		{
+			mo.SetOrigin(origin.pos, false);
+			mo.bMThruSpecies = true;
 
-		missilecount++;
-		if (missilecount > 1)
-		{
-			missilecount = 0;
-			missiletimeout = 35 * Random(3, 5);
-		}
-		else
-		{
-			missiletimeout = 40;
+			missilecount++;
+			if (missilecount > 1)
+			{
+				missilecount = 0;
+				missiletimeout = 35 * Random(3, 5);
+			}
+			else
+			{
+				missiletimeout = 40;
+			}
 		}
 	}
 
@@ -440,5 +489,29 @@ class FriendlySherman : TankBase
 		{
 			bullettimeout = 6;
 		}
+	}
+}
+
+class Trample : BlastEffect
+{
+	int dmg;
+	int flags;
+
+	Default
+	{
+		DamageType 'Trample';
+		Damage 5;
+		Height 56;
+		Radius 56;
+		+NOGRAVITY
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 0;
+		Death:
+			"####" # 20 A_Explode(dmg == 0 ? damage : dmg, int(Radius), flags, FALSE, int(Radius));
+			Stop;
 	}
 }
