@@ -2758,6 +2758,17 @@ ACTOR CODRailway_Switch : SwitchableDecoration
 	}
 }
 
+//Sketchfab Stuff
+ACTOR GardenUrn : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Scenery
+	//$Title Garden Urn
+	//$Color 3
+	DistanceCheck "scenelod"
+	Radius 32
+	Height 72
+}
+
 //Archibase.net Stuff
 ACTOR CanyonRockSpawner : 3dObstacle //ozymandias81
 {
@@ -2992,6 +3003,13 @@ ACTOR LionL_Museum : Caesar_Museum
 ACTOR LionR_Museum : Caesar_Museum
 {
 	//$Title Lion's Statue (right, without hitbox)
+	DistanceCheck "scenelod"
+}
+
+ACTOR GardenUrn_Museum : Caesar_Museum
+{
+	//$Category Models (Wolf3D)/Scenery/Special
+	//$Title Garden Urn (without hitbox)
 	DistanceCheck "scenelod"
 }
 
