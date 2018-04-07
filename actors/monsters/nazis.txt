@@ -2168,6 +2168,11 @@ ACTOR MGTurretSoldierW : MGTurretSoldier
 	Crash:
 		SMGF A 0 A_Scream
 		"####" A 0 A_Jump(128,"Crash.Replace")
+	Crash.Explode:
+		"####" D 6 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
+		"####" EFG 6
+		"####" H -1 A_UnblockAndDrop
+		Stop
 	Crash.Replace:
 		"####" I 0 A_SpawnItemEx("CTurret_Wehrmacht",0,0,0)
 		"####" I 0 A_Jump(256,"Crash.Die")
