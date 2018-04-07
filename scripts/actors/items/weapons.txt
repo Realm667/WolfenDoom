@@ -352,7 +352,7 @@ class ShermanRocket : Actor
 	}
 }
 
-class TurretSwivel : Actor
+class TurretSwivel : ActorPositionable
 {
 	Default
 	{
@@ -373,7 +373,7 @@ class TurretSwivel : Actor
 	}
 }
 
-class TurretGun : Actor
+class TurretGun : ActorPositionable
 {
 	Actor swivel, light, light2, light3;
 	double shotcount;
@@ -434,6 +434,7 @@ class TurretGun : Actor
 	{
 		while (!swivel) { swivel = Spawn("TurretSwivel", pos); }
 		swivel.scale = scale;
+		swivel.master = master;
 
 		while (!light) { light = Spawn("AlphaLight", pos + (RotateVector((28 * scale.x, 0), angle), 8 * scale.y)); }
 		light.scale = scale;
@@ -466,7 +467,9 @@ class TurretGun : Actor
 		if (light2) { light2.alpha = clamp((heatamt - 0.75) * 3, 0, 1.0); }
 		if (light3) { light3.alpha = clamp((heatamt - 0.85) * 5.7, 0, 1.0); }
 
-		Super.Tick();
+		RotateWithMaster(ROT_MATCHROLL);
+
+		Actor.Tick();
 	}
 
 	void DoReload()
@@ -546,7 +549,7 @@ class TurretStand : Actor
 	{
 		bool sp;
 
-		while (!gun) { [sp, gun] = A_SpawnItemEx("TurretGun", 0, 0, 18); }
+		while (!gun) { [sp, gun] = A_SpawnItemEx("TurretGun", 0, 0, 26); }
 		gun.master = self;
 		gun.target = self;
 		gun.scale = scale;
@@ -556,6 +559,8 @@ class TurretStand : Actor
 
 	override void Tick()
 	{
+		VehicleBase.SetPitchRoll(self, 0);
+
 		if (shooter && shooter.player && gun)
 		{
 			if (
