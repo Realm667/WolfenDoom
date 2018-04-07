@@ -199,3 +199,63 @@ class FlattenableProp : Actor // Tall grass/rye, etc. that can be trampled down
 		}
 	}
 }
+
+class ActorPositionable : Actor
+{
+	enum RotationFlags
+	{
+		ROT_MatchAngle,
+		ROT_MatchPitch,
+		ROT_MatchRoll
+	};
+
+	Vector3 spawnoffset;
+	Vector3 offset;
+
+	override void PostBeginPlay()
+	{
+		spawnoffset = pos - master.pos;
+
+		Vector2 temp = RotateVector((spawnoffset.x, spawnoffset.y), -master.angle);
+		spawnoffset = (temp.x, temp.y, spawnoffset.z);
+
+		Super.PostBeginPlay();
+	}
+
+	void RotateWithMaster(int flags = ROT_MatchAngle | ROT_MatchPitch | ROT_MatchRoll)
+	{
+		Vector2 temp;
+
+		// Keep the actor in the correct position, regardless of pitch/roll of the master actor
+		if (master)
+		{
+			if (spawnoffset != (0, 0, 0))
+			{
+				temp = RotateVector((spawnoffset.y, spawnoffset.z), master.roll);
+				offset = (spawnoffset.x, temp.x, temp.y);
+
+				temp = RotateVector((offset.x, offset.z), 360 - master.pitch);
+				offset = (temp.x, offset.y, temp.y);
+
+				temp = RotateVector((offset.x, offset.y), master.angle);
+				offset = (temp.x, temp.y, offset.z);
+
+				SetOrigin(master.pos + offset, true);
+			}
+
+			if (flags & ROT_MATCHANGLE) { angle = master.angle; }
+
+			double delta = deltaangle(master.angle, angle);
+
+			if (flags & ROT_MATCHPITCH) { pitch = master.roll * sin(-delta) + master.pitch * cos(delta); }
+			if (flags & ROT_MATCHROLL) { roll = master.roll * cos(-delta) + master.pitch * sin(delta); }
+		}
+	}
+
+	override void Tick()
+	{
+		RotateWithMaster();
+
+		Super.Tick();
+	}
+}
