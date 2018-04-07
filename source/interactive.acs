@@ -3,14 +3,27 @@ Script "Activate" (int lineid, int repairtime)
 {
 	if (!repairtime) { repairtime = 1; }
 
+	int increment = 1;
+
+	if (repairtime < 0) // Using a negative repairtime will set the script to require a certain number of activations instead of a time duration
+	{
+		repairtime *= -1;
+		increment = 35;
+	}
+
 	if (repairstate[lineid] < repairtime * 35) // Standard 35 use/script cycles per second
 	{
-		if (repairstate[lineid] == 0) { ACS_NamedExecute("HintMessage", 0, "HINTTEXTHOLD"); } // Show hint message on first use
+		if (repairstate[lineid] == 0) // Show hint message on first use
+		{
+			if (increment == 35) { ACS_NamedExecute("HintMessage", 0, "HINTTEXTFIRE"); }
+			else { ACS_NamedExecute("HintMessage", 0, "HINTTEXTHOLD"); } 
+		}
 
-		repairstate[lineid]++; // Increment the repair amount
+		repairstate[lineid] += increment; // Increment the repair amount
 		SetUserVariable(0, "crosshair", 80 + 11 * repairstate[lineid] / (repairtime * 35));  // Show progress by changing the crosshair based on hold time
 	}
-	else // If it's fully repaired...
+
+	if (repairstate[lineid] >= repairtime * 35) // If it's fully repaired...
 	{
 		ClearLineSpecial(); // Clear the line special to prevent further activation
 
