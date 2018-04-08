@@ -259,3 +259,101 @@ class ActorPositionable : Actor
 		Super.Tick();
 	}
 }
+
+class Debris : Actor
+{
+	Default
+	{
+		Height 20;
+		Radius 25;
+		+SOLID
+		+INVISIBLE
+	}
+
+	override void PostBeginPlay()
+	{
+		SpawnRandom("DebrisGirder", Random(0, 4));
+		SpawnRandom("DebrisPipe", Random(1, 5), Radius * 1.25);
+		SpawnRandom("DebrisBeam", Random(5, 10));
+		SpawnRandom("DebrisBrick", Random(5, 10), Radius * 1.25);
+		SpawnRandom("DebrisChunk", Random(10, 15), Radius * 2);
+		SpawnRandom("DebrisBottle", Random(0, 1), Radius * 1.5);
+		SpawnRandom("DebrisBottle2", Random(0, 1), Radius * 1.5);
+
+		Super.PostBeginPlay();
+	}
+
+	void SpawnRandom(Class<Actor> debrisclass, int amt = 1, float distance = -1)
+	{
+		if (distance < 0) { distance = Radius; }
+
+		for (int c = 0; c < amt; c++)
+		{
+			Actor mo = Spawn(debrisclass, pos + (FRandom(-distance, distance), FRandom(-distance, distance), height));
+			if (mo)
+			{
+				mo.master = self;
+				mo.scale = FRandom(0.25, 1.2) * mo.scale;
+			}
+		}
+	}
+}
+
+class DebrisBase : Actor
+{
+	Default
+	{
+		Height 4;
+		Radius 2;
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		A_Face(master);
+
+		pitch = Random(0, -65);
+		roll = Random(0, 359);
+		angle = angle + Random(-30, 30);
+
+		Super.PostBeginPlay();
+	}
+}
+
+class DebrisChunk : DebrisBase
+{
+	override void PostBeginPlay()
+	{
+		frame = Random(0, 2);
+
+		bNoGravity = true;
+		SetOrigin((pos.xy, floorz + 8), false);
+
+		Super.PostBeginPlay();
+	}
+}
+
+class DebrisPipe : DebrisBase {}
+class DebrisBeam : DebrisBase {}
+class DebrisGirder : DebrisBase {}
+class DebrisBrick : DebrisBase {}
+
+class DebrisBottle : DebrisBase
+{
+	override void PostBeginPlay()
+	{
+		frame = Random(0, 1);
+
+		bNoGravity = true;
+		SetOrigin((pos.xy, floorz + 8 * cos(pitch) * cos(roll)), false);
+
+		Super.PostBeginPlay();
+	}
+}
+class DebrisBottle2 : DebrisBottle {}

@@ -1,7 +1,7 @@
 // Sherman Tank Player Class
 class ShermanPlayer : PlayerPawn
 {
-	Actor treads, turret, turretcamera, gun;
+	Actor treads, turret, turretcamera, povcamera, gun;
 	Actor ForcedHealthBar;
 	FLineTraceData cameratrace;
 	BoAFindHitPointTracer hittracer;
@@ -98,7 +98,7 @@ class ShermanPlayer : PlayerPawn
 			sidemove = sm * movefactor * (35 / TICRATE);
 
 			CVar autosteer = CVar.FindCVar('autosteer');
-			bool shift = (player.cmd.buttons & BT_SPEED) ^ autosteer.GetInt(); // If shift is being held or autosteer cvar is true
+			bool shift = !(player.cmd.buttons & BT_SPEED) != !autosteer.GetInt(); // If shift is being held or autosteer cvar is true
 
 			// Handle "auto-steering" the tank to wherever you are aiming
 			if (forwardmove && shift && treads && turret && treads.angle != turret.angle) // If holding SHIFT, auto-steer the tracks to align with the turret
@@ -303,6 +303,8 @@ class ShermanPlayer : PlayerPawn
 	{
 		Super.Tick();
 
+		bool chasecam = player.cheats & CF_CHASECAM;
+
 		if (health == Default.Health && US_Sherman(treads).savedhealth)
 		{
 			A_SetHealth(US_Sherman(treads).savedhealth);
@@ -320,13 +322,17 @@ class ShermanPlayer : PlayerPawn
 					turret.master = self;
 					turret.angle = angle;
 					turret.bSolid = false;
+
+					bool sp;
+					while (!povcamera) { [sp, povcamera] = turret.A_SpawnItemEx("SecurityCamera", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+					povcamera.master = turret;
 				}
 			}
 		}
 
 		if (Level.time % (35 * 5) == 0) { ForcedHealthBar = GetClosestForcedHealthBar(); } // Only run this check occasionally
 
-		if (player && turretcamera && treads && turret)
+		if (player && turretcamera && treads && turret && povcamera)
 		{
 			treads.SetOrigin(self.pos, true);
 			VehicleBase.SetPitchRoll(treads);
@@ -341,22 +347,11 @@ class ShermanPlayer : PlayerPawn
 			turret.pitch = treads.roll * sin(-delta) + treads.pitch * cos(delta);
 			turret.roll = treads.roll * cos(-delta) + treads.pitch * sin(delta);
 
-			if (turret.angle > angle) { turret.angle = max(turret.angle - 1.5, angle); A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
-			else if (turret.angle < angle) { turret.angle = min(turret.angle + 1.5, angle); A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
-
-			double modifier, pitchmodifier;
-
-			if (pitch < 0) { modifier = 48 * sin(-pitch); } // Aiming up moves the camera up so you can keep the aimpoint on screen
-			else { modifier = 64 * sin(pitch * 3); } // Aiming down actually moves the camera *up*, so that you can see the aimpoint over the top of the turret
-
-			modifier += (turret.pitch > 0 ? 96 : 128) * sin(turret.pitch); // Move the camera up/down when going up/downhill
-			pitchmodifier = (turret.pitch > 0 ? -15 : 10) * sin(turret.pitch); // Pitch the camera up/down when going up/downhill
-
-			turret.LineTrace(angle + 180, 2.5 * radius, pitchmodifier, TRF_THRUHITSCAN | TRF_THRUACTORS, turret.height + 32 + modifier, 0.0, 0.0, cameratrace);
-
-			turretcamera.SetOrigin(cameratrace.HitLocation + AngleToVector(angle, 2), false);
-			turretcamera.angle = angle;
-			turretcamera.pitch = turret.pitch;
+			if (turret.angle != angle)
+			{
+			 	turret.angle = !chasecam ? angle : clamp(angle, turret.angle - 1.5, turret.angle + 1.5);
+				A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE);
+			}
 
 			// Force pitch clamping
 			if (turret.pitch + pitch >= player.MaxPitch || turret.pitch + pitch <= player.MinPitch)
@@ -378,8 +373,53 @@ class ShermanPlayer : PlayerPawn
 				gun.roll = turret.roll;
 			}
 
-			player.camera = turretcamera;
-			turretcamera.CameraFOV = player.fov;
+			if (!chasecam)
+			{
+				if (povcamera)
+				{
+					Vector3 povoffset = (48, -24, turret.height);
+
+					povcamera.angle = turret.angle;
+					povcamera.pitch = gun.pitch;
+
+					Vector2 temp = RotateVector((povoffset.y, povoffset.z), turret.roll);
+					Vector3 offset = (povoffset.x, temp.x, temp.y);
+
+					temp = RotateVector((offset.x, offset.z), 360 - turret.pitch);
+					offset = (temp.x, offset.y, temp.y);
+
+					temp = RotateVector((offset.x, offset.y), turret.angle);
+					offset = (temp.x, temp.y, offset.z);
+
+					povcamera.SetOrigin(turret.pos + offset, true);
+
+					povcamera.roll = turret.roll;
+
+					povcamera.CameraFOV = player.fov * 1.2;
+
+					player.camera = povcamera;
+				}
+			}
+			else
+			{
+				double modifier, pitchmodifier;
+
+				if (pitch < 0) { modifier = 48 * sin(-pitch); } // Aiming up moves the camera up so you can keep the aimpoint on screen
+				else { modifier = 64 * sin(pitch * 3); } // Aiming down actually moves the camera *up*, so that you can see the aimpoint over the top of the turret
+
+				modifier += (turret.pitch > 0 ? 96 : 128) * sin(turret.pitch); // Move the camera up/down when going up/downhill
+				pitchmodifier = (turret.pitch > 0 ? -15 : 10) * sin(turret.pitch); // Pitch the camera up/down when going up/downhill
+
+				turret.LineTrace(angle + 180, 2.5 * radius, pitchmodifier, TRF_THRUHITSCAN | TRF_THRUACTORS, turret.height + 32 + modifier, 0.0, 0.0, cameratrace);
+
+				turretcamera.SetOrigin(cameratrace.HitLocation + AngleToVector(angle, 2), true);
+				turretcamera.angle = angle;
+				turretcamera.pitch = turret.pitch;
+
+				turretcamera.CameraFOV = player.fov;
+
+				player.camera = turretcamera;
+			}
 		}
 		else
 		{
@@ -867,6 +907,13 @@ class Sherman : PowerMorph
 		Powerup.Duration 0x7FFFFFFF;
 	}
 
+	override void InitEffect() 
+	{
+		if (owner && owner.player) { owner.player.cheats |= CF_CHASECAM; }
+
+		Super.InitEffect();
+	}
+
 	override void EndEffect()
 	{
 		if (MorphedPlayer)
@@ -886,6 +933,8 @@ class Sherman : PowerMorph
 					}
 				}
 				if  (tank.turretcamera) { tank.turretcamera.Destroy(); }
+				if  (tank.povcamera) { tank.povcamera.Destroy(); }
+				MorphedPlayer.cheats &= ~CF_CHASECAM;
 
 				// Restore pitch clamping, since this doesn't get reset otherwise
 				MorphedPlayer.MinPitch = -90;
