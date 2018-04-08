@@ -10,7 +10,7 @@ class VehicleBase : Base
 	}
 
 	// Handling for terrain-based pitch/roll calculations...
-	static double SetPitchRoll(Actor mo, int xoffset = 32, int yoffset = 0, int cap = 60)
+	static double SetPitchRoll(Actor mo, double xoffset = 32, double yoffset = 0, int cap = 60, bool force = false)
 	{
 		if (!mo) { return 0; }
 
@@ -27,8 +27,12 @@ class VehicleBase : Base
 
 		for (int i = 0; i < 4; i++)
 		{
-			if (mo.master && mo.master.player && points[i] > mo.pos.z + mo.master.MaxStepHeight) { points[i] = 0; } // Ignore the point if you can't climb that high
-			else if (points[i] < mo.floorz - mo.MaxDropoffHeight) { points[i] = 0; } // Ignore the point if it's a dropoff
+			double maxstep = mo.MaxStepHeight;
+
+			if (mo.master && mo.master.player) { maxstep = mo.master.MaxStepHeight; }
+
+			if (points[i] > mo.pos.z + maxstep) { points[i] = 0; } // Ignore the point if you can't climb that high
+			if (points[i] < mo.floorz - mo.MaxDropoffHeight) { points[i] = 0; } // Ignore the point if it's a dropoff
 			else { points[i] -= mo.pos.z; }
 		}
 
@@ -40,14 +44,23 @@ class VehicleBase : Base
 		rollinput = atan(rollinput / ((testradius + yoffset) * 2));
 
 		// Interpolate to the new values
-		if (mo.pitch > -pitchinput) { mo.pitch = max(mo.pitch - 1, -pitchinput); }
-		if (mo.pitch < -pitchinput) { mo.pitch = min(mo.pitch + 1, -pitchinput); }
+		if (force || level.time && level.time < 15)
+		{
+			mo.pitch = -pitchinput;
+			mo.roll = rollinput;
+		}
+		else
+		{
+			if (mo.pitch > -pitchinput) { mo.pitch = max(mo.pitch - 1, -pitchinput); }
+			if (mo.pitch < -pitchinput) { mo.pitch = min(mo.pitch + 1, -pitchinput); }
 
-		if (mo.roll > rollinput) { mo.roll = max(mo.roll - 1, rollinput); }
-		if (mo.roll < rollinput) { mo.roll = min(mo.roll + 1, rollinput); }
+			if (mo.roll > rollinput) { mo.roll = max(mo.roll - 1, rollinput); }
+			if (mo.roll < rollinput) { mo.roll = min(mo.roll + 1, rollinput); }
 
-		mo.pitch = clamp(mo.pitch, -cap, cap);
-		mo.roll = clamp(mo.roll, -cap, cap);
+			mo.pitch = clamp(mo.pitch, -cap, cap);
+			mo.roll = clamp(mo.roll, -cap, cap);
+		}
+
 
 		if (mo.master && mo.master.pos.z > mo.master.floorz)
 		{ // Return the amount that you need to adjust the model z position by in order to keep it looking like it's actually on the ground
@@ -142,6 +155,7 @@ class TankBase : VehicleBase
 		TankBase.MoveSound "TKMOVE";
 		TankBase.IdleSound "TKIDLE";
 		VehicleBase.TrampleRadius 96;
+		MaxDropoffHeight 40;
 	}
 
 

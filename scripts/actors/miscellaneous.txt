@@ -264,36 +264,64 @@ class Debris : Actor
 {
 	Default
 	{
-		Height 20;
-		Radius 25;
+		Height 32;
+		Radius 64;
 		+SOLID
 		+INVISIBLE
 	}
 
 	override void PostBeginPlay()
 	{
-		SpawnRandom("DebrisGirder", Random(0, 4));
-		SpawnRandom("DebrisPipe", Random(1, 5), Radius * 1.25);
-		SpawnRandom("DebrisBeam", Random(5, 10));
-		SpawnRandom("DebrisBrick", Random(5, 10), Radius * 1.25);
-		SpawnRandom("DebrisChunk", Random(10, 15), Radius * 2);
-		SpawnRandom("DebrisBottle", Random(0, 1), Radius * 1.5);
-		SpawnRandom("DebrisBottle2", Random(0, 1), Radius * 1.5);
+		scale.x = scale.x * Radius / 24;
+		scale.y = scale.y * Height / 40;
+
+		Actor mound = Spawn("DebrisMound", pos);
+		if (mound)
+		{
+			mound.master = self;
+		}
+
+		SpawnRandom("DebrisGirder", Random(2, 4));
+		SpawnRandom("DebrisPipe", Random(2, 10), Radius * 1.25, Radius * 0.75);
+		SpawnRandom("DebrisBeam", Random(10, 15), Radius, Radius * 0.75);
+		SpawnRandom("DebrisBrick", Random(10, 15), Radius * 1.5, Radius);
+		SpawnRandom("DebrisChunk", Random(10, 15), Radius * 1.5, Radius);
+		SpawnRandom("DebrisBottle", Random(0, 2), Radius * 1.5, Radius);
+		SpawnRandom("DebrisBottle2", Random(0, 2), Radius * 1.5, Radius);
 
 		Super.PostBeginPlay();
 	}
 
-	void SpawnRandom(Class<Actor> debrisclass, int amt = 1, float distance = -1)
+	void SpawnRandom(Class<Actor> debrisclass, int amt = 1, float distance = -1, float mindistance = 0, bool rescale = true)
 	{
+		if (amt <= 0) { return; }
+
 		if (distance < 0) { distance = Radius; }
+
+		distance *= 2;
+		amt = max(amt, int(amt * scale.x));
 
 		for (int c = 0; c < amt; c++)
 		{
-			Actor mo = Spawn(debrisclass, pos + (FRandom(-distance, distance), FRandom(-distance, distance), height));
+			double spawnangle = Random(0, 359);
+			double spawndist = mindistance + FRandom(0, distance - mindistance);
+			
+			Vector2 spawnpos = AngleToVector(spawnangle, spawndist);
+
+			Actor mo = Spawn(debrisclass, pos + (spawnpos, height));
 			if (mo)
 			{
 				mo.master = self;
-				mo.scale = FRandom(0.25, 1.2) * mo.scale;
+				if (rescale) { mo.scale = FRandom(0.25, 1.75) * mo.scale; } 
+
+				if (!(mo is "DebrisBase"))
+				{
+					mo.pitch = FRandom(-15, -atan(Height / Radius)); // Match the average height of the spawned items to the height of the pile
+					mo.roll = Random(-30, 30);
+					mo.angle = mo.AngleTo(self) + Random(-45, 45);
+
+					if (mo.FindState("Death")) { mo.SetStateLabel("Death"); }
+				}
 			}
 		}
 	}
@@ -301,10 +329,16 @@ class Debris : Actor
 
 class DebrisBase : Actor
 {
+	int variants;
+
+	Property VariantCount:variants;
+
 	Default
 	{
 		Height 4;
 		Radius 2;
+		Mass 50;
+		DebrisBase.VariantCount 1;
 	}
 
 	States
@@ -316,11 +350,49 @@ class DebrisBase : Actor
 
 	override void PostBeginPlay()
 	{
-		A_Face(master);
+		frame = Random(0, variants - 1);
 
-		pitch = Random(0, -65);
-		roll = Random(0, 359);
-		angle = angle + Random(-30, 30);
+		pitch = Random(0, -45);
+		roll = Random(-30, 30);
+		angle = AngleTo(master) + Random(-45, 45);
+
+		Super.PostBeginPlay();
+	}
+}
+
+class DebrisMound : Actor
+{
+	Default
+	{
+		Radius 32;
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		if (
+			floorpic == TexMan.CheckForTexture("DEBR_G01", TexMan.Type_Any) ||
+			floorpic == TexMan.CheckForTexture("textures/DEBR_G01.png", TexMan.Type_Any) ||
+			floorpic == TexMan.CheckForTexture("DEBR_G02", TexMan.Type_Any) ||
+			floorpic == TexMan.CheckForTexture("textures/DEBR_G02.png", TexMan.Type_Any)
+		)
+		{  // Only spawn the mound if we're not on a debris pile texture already
+			Destroy();
+			return;
+		}
+
+		if (master) { scale = master.scale; }
+
+		MaxStepHeight = 24 * scale.x;
+
+		double zoffset = VehicleBase.SetPitchRoll(self, Radius * (scale.x - 1), Radius * (scale.x - 1), 60, true);
+		SetOrigin((pos.xy, floorz - zoffset), false);
 
 		Super.PostBeginPlay();
 	}
@@ -328,32 +400,75 @@ class DebrisBase : Actor
 
 class DebrisChunk : DebrisBase
 {
+	Default
+	{
+		DebrisBase.VariantCount 3;
+	}
+
 	override void PostBeginPlay()
 	{
-		frame = Random(0, 2);
-
 		bNoGravity = true;
-		SetOrigin((pos.xy, floorz + 8), false);
+		SetOrigin((pos.xy, floorz + 8 * cos(pitch) * cos(roll)), false);
 
 		Super.PostBeginPlay();
 	}
 }
 
-class DebrisPipe : DebrisBase {}
-class DebrisBeam : DebrisBase {}
-class DebrisGirder : DebrisBase {}
-class DebrisBrick : DebrisBase {}
-
-class DebrisBottle : DebrisBase
+class DebrisPipe : DebrisBase
 {
+	Default
+	{
+		Mass 100;
+		DebrisBase.VariantCount 6;
+	}
+
 	override void PostBeginPlay()
 	{
-		frame = Random(0, 1);
-
-		bNoGravity = true;
-		SetOrigin((pos.xy, floorz + 8 * cos(pitch) * cos(roll)), false);
+		scale *= FRandom(0.5, 1.0);
 
 		Super.PostBeginPlay();
+	}
+}
+
+class DebrisBeam : DebrisBase
+{
+	Default { Mass 150; }
+
+	override void PostBeginPlay()
+	{
+		double dist = 32;
+
+		if (master) { dist = Distance2D(master); }
+
+		scale.x = scale.x * FRandom(0.75, dist * 2 / 64);
+		scale.y = scale.y * FRandom(0.5, 1.5);
+
+		Super.PostBeginPlay();
+	}
+}
+
+class DebrisGirder : DebrisBase
+{
+	Default
+	{
+		Mass 300;
+	}
+
+	override void PostBeginPlay()
+	{
+		scale.x = scale.x * FRandom(0.5, 1.5);
+
+		Super.PostBeginPlay();
+	}
+}
+
+class DebrisBrick : DebrisBase {}
+
+class DebrisBottle : DebrisChunk
+{
+	Default
+	{
+		DebrisBase.VariantCount 2;
 	}
 }
 class DebrisBottle2 : DebrisBottle {}

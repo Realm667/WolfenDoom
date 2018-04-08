@@ -6679,6 +6679,17 @@ Model LightningTrailBeamArc
 	FrameIndex MDLA A 0 0
 }
 
+Model DebrisMound
+{
+	USEACTORPITCH
+	USEACTORROLL
+
+	Path "models/debris"
+	Model 0 "mound.md3"
+
+	FrameIndex MDLA A 0 0
+}
+
 Model DebrisChunk
 {
 	USEACTORPITCH
@@ -6704,8 +6715,23 @@ Model DebrisPipe
 	Path "models/debris"
 	Model 0 "pipe.md3"
 
-	Skin 0 "debris_m.png"
 	FrameIndex MDLA A 0 0
+
+	Skin 0 "debris_m.png"
+	FrameIndex MDLA B 0 0
+
+	Path "models/"
+	Skin 0 "antenna.jpg"
+	FrameIndex MDLA C 0 0
+
+	Skin 0 "cod_litepost3_off.jpg"
+	FrameIndex MDLA D 0 0
+
+	Skin 0 "shackles4.jpg"
+	FrameIndex MDLA E 0 0
+
+	Skin 0 "woodtabl.jpg"
+	FrameIndex MDLA F 0 0
 }
 
 Model DebrisBeam
@@ -6744,7 +6770,6 @@ Model DebrisBrick
 
 	FrameIndex MDLA A 0 0
 }
-
 
 Model DebrisBottle
 {
