@@ -14,18 +14,18 @@ cameratexture ASTR_CVG 256 256 fit 24 22
 cameratexture ASTR_CVH 256 256 fit 24 22
 
 //WARPINGS. WARNING: long named variants of these won't work!
-warp  texture LAVA_A01
-warp  texture LAVA_A02
-warp  texture SLDG_A01
-warp2 texture WATR_A01
-warp2 texture WATR_A02
-warp2 texture NUKA_A01
-warp2 texture WATR_X98
-warp2 texture WATR_X99
+warp texture LAVA_A01
+warp texture LAVA_A02
+warp texture SLDG_A01
 warp texture WATR_G98
 warp texture WATR_G99
-warp2 texture aztc_wtr
+warp2 texture NUKA_A01
+warp2 texture WATR_A01
+warp2 texture WATR_A02
+warp2 texture WATR_X98
+warp2 texture WATR_X99
 warp2 texture aztc_wtf
+warp2 texture aztc_wtr
 
 //SPRITES
 warp2 texture HADED0 //DamnedSouls
@@ -457,9 +457,7 @@ texture "textures/CROWD_01.png"
 	pic "textures/CROWD_02.png" tics 3
 
 //SWITCHES
-switch wind_w16 on SOUND world/glassbreak pic wind_w17 tics 0
-switch wind_42 on SOUND world/glassbreak pic wind_43 tics 0
-switch win_g06 on SOUND world/glassbreak pic win_g07 tics 0
+// switch SW_OF_S1 on pic SW_ON_S1 tics 0 // Talon1024 - this texture should be handled in the script, otherwise the occult skull key won't work properly when activated from the inventory.
 switch BRK_OFSW on SOUND switch/death pic BRK_ONSW tics 0
 switch EGYP_S11 on pic EGYP_S12 tics 0
 switch METL_B12 on pic METL_B09 tics 0
@@ -479,6 +477,8 @@ switch SW_OF_12 on pic SW_ON_12 tics 0
 switch SW_OF_13 on SOUND SMSWITCH pic SW_ON_13 tics 0
 switch SW_OF_16 on pic SW_ON_16 tics 0
 switch SW_OF_17 on pic SW_ON_17 tics 0
+switch SW_OF_32 on pic SW_ON_32 tics 0
+switch SW_OF_34 on pic SW_ON_34 tics 0
 switch SW_OF_58 on pic SW_ON_58 tics 0
 switch SW_OF_59 on SOUND DSSPSWIT pic SW_ON_59 tics 0
 switch SW_OF_84 on pic SW_ON_84 tics 0
@@ -489,20 +489,20 @@ switch SW_OF_G3 on pic SW_ON_G3 tics 0
 switch SW_OF_HS on pic SW_ON_HS tics 0
 switch SW_OF_P3 on pic SW_ON_P3 tics 0
 switch SW_OF_R3 on pic SW_ON_R3 tics 0
-// switch SW_OF_S1 on pic SW_ON_S1 tics 0 // Talon1024 - this texture should be handled in the script, otherwise the occult skull key won't work properly when activated from the inventory.
-switch SW_OF_32 on pic SW_ON_32 tics 0
-switch SW_OF_34 on pic SW_ON_34 tics 0
 switch SW_ON_14 on pic SW_OF_14 tics 0
 switch SW_ON_15 on pic SW_OF_15 tics 0
 switch room_t50 on SOUND SMSWITCH pic room_t63 tics 0
 switch vent_m00 on SOUND DSMETDST pic vent_m01 tics 0
 switch vent_m00 on SOUND DSMETDST pic vent_m01 tics 0
+switch win_g06 on SOUND world/glassbreak pic win_g07 tics 0
+switch wind_42 on SOUND world/glassbreak pic wind_43 tics 0
+switch wind_w16 on SOUND world/glassbreak pic wind_w17 tics 0
 
 //mxd. Also long-named variants
-switch "TEXTURES/WIND_W16.PNG" on SOUND world/glassbreak pic "TEXTURES/WIND_W17.PNG" tics 0
-switch "TEXTURES/WIND_42.PNG" on SOUND world/glassbreak pic "TEXTURES/WIND_43.PNG" tics 0
-switch "TEXTURES/WIN_G06.PNG" on SOUND world/glassbreak pic "TEXTURES/WIN_G07.PNG" tics 0
 switch "TEXTURES/DECO_SHOOT1.PNG" on pic "TEXTURES/DECO_SHOOT2.PNG" tics 0
+switch "TEXTURES/WIND_42.PNG" on SOUND world/glassbreak pic "TEXTURES/WIND_43.PNG" tics 0
+switch "TEXTURES/WIND_W16.PNG" on SOUND world/glassbreak pic "TEXTURES/WIND_W17.PNG" tics 0
+switch "TEXTURES/WIN_G06.PNG" on SOUND world/glassbreak pic "TEXTURES/WIN_G07.PNG" tics 0
 switch "textures/BRK_OFSW.png" on SOUND switch/death pic "textures/BRK_ONSW.png" tics 0
 switch "textures/EGYP_S11.png" on pic "textures/EGYP_S12.png" tics 0
 switch "textures/METL_B12.png" on pic "textures/METL_B09.png" tics 0
@@ -515,8 +515,6 @@ switch "textures/SW_OF_05.png" on pic "textures/SW_ON_05.png" tics 0
 switch "textures/SW_OF_06.png" on pic "textures/SW_ON_06.png" tics 0
 switch "textures/SW_OF_07.png" on pic "textures/SW_ON_07.png" tics 0
 switch "textures/SW_OF_08.png" on pic "textures/SW_ON_08.png" tics 0
-switch "textures/SW_OF_84.png" on pic "textures/SW_ON_84.png" tics 0
-switch "textures/SW_OF_85.png" on pic "textures/SW_ON_85.png" tics 0
 switch "textures/SW_OF_09.png" on SOUND SMSWITCH pic "textures/SW_ON_09.png" tics 0
 switch "textures/SW_OF_10.png" on pic "textures/SW_ON_10.png" tics 0
 switch "textures/SW_OF_11.png" on pic "textures/SW_ON_11.png" tics 0
@@ -524,6 +522,10 @@ switch "textures/SW_OF_12.png" on pic "textures/SW_ON_12.png" tics 0
 switch "textures/SW_OF_13.png" on SOUND SMSWITCH pic "textures/SW_ON_13.png" tics 0
 switch "textures/SW_OF_16.png" on pic "textures/SW_ON_16.png" tics 0
 switch "textures/SW_OF_17.png" on pic "textures/SW_ON_17.png" tics 0
+switch "textures/SW_OF_32.png" on pic "textures/SW_ON_32.png" tics 0
+switch "textures/SW_OF_34.png" on pic "textures/SW_ON_34.png" tics 0
+switch "textures/SW_OF_84.png" on pic "textures/SW_ON_84.png" tics 0
+switch "textures/SW_OF_85.png" on pic "textures/SW_ON_85.png" tics 0
 switch "textures/SW_OF_B3.png" on pic "textures/SW_ON_B3.png" tics 0
 switch "textures/SW_OF_B8.png" on pic "textures/SW_ON_B8.png" tics 0
 switch "textures/SW_OF_G3.png" on pic "textures/SW_ON_G3.png" tics 0
@@ -531,8 +533,6 @@ switch "textures/SW_OF_HS.png" on pic "textures/SW_ON_HS.png" tics 0
 switch "textures/SW_OF_P3.png" on pic "textures/SW_ON_P3.png" tics 0
 switch "textures/SW_OF_R3.png" on pic "textures/SW_ON_R3.png" tics 0
 switch "textures/SW_OF_S1.png" on pic "textures/SW_ON_S1.png" tics 0
-switch "textures/SW_OF_32.png" on pic "textures/SW_ON_32.png" tics 0
-switch "textures/SW_OF_34.png" on pic "textures/SW_ON_34.png" tics 0
 switch "textures/astrostein/SW_OF_59.png" on SOUND DSSPSWIT pic "textures/astrostein/SW_ON_59.png" tics 0
 switch "textures/room_t50.png" on SOUND SMSWITCH pic "textures/room_t63.png" tics 0
 switch "textures/sw_of_58.png" on pic "textures/sw_on_58.png" tics 0
@@ -547,6 +547,19 @@ switch "textures/door_b03c.png" on SOUND NOSOUND pic "textures/door_b03c_open.pn
 switch "textures/door_b03gr.png" on SOUND NOSOUND pic "textures/door_b03gr_open.png" tics 0
 switch "textures/door_b04.png" on SOUND NOSOUND pic "textures/door_b04_open.png" tics 0
 switch "textures/door_b05.png" on SOUND NOSOUND pic "textures/door_b05_open.png" tics 0
+switch "textures/door_b14.png" on SOUND NOSOUND pic "textures/door_b14_open.png" tics 0
+switch "textures/door_b15.png" on SOUND NOSOUND pic "textures/door_b15_open.png" tics 0
+switch "textures/door_b20.png" on SOUND NOSOUND pic "textures/door_b20_open.png" tics 0
+switch "textures/door_b20b.png" on SOUND NOSOUND pic "textures/door_b20b_open.png" tics 0
+switch "textures/door_b20r.png" on SOUND NOSOUND pic "textures/door_b20r_open.png" tics 0
+switch "textures/door_b20y.png" on SOUND NOSOUND pic "textures/door_b20y_open.png" tics 0
+switch "textures/door_g04.png" on SOUND NOSOUND pic "textures/door_g04_open.png" tics 0
+switch "textures/door_g04c.png" on SOUND NOSOUND pic "textures/door_g04c_open.png" tics 0
+switch "textures/door_g04g.png" on SOUND NOSOUND pic "textures/door_g04g_open.png" tics 0
+switch "textures/door_g04gr.png" on SOUND NOSOUND pic "textures/door_g04gr_open.png" tics 0
+switch "textures/door_g04p.png" on SOUND NOSOUND pic "textures/door_g04p_open.png" tics 0
+switch "textures/door_k01.png" on SOUND NOSOUND pic "textures/door_k01_open.png" tics 0
+switch "textures/door_k02.png" on SOUND NOSOUND pic "textures/door_k02_open.png" tics 0
 switch "textures/door_l00.png" on SOUND NOSOUND pic "textures/door_l00_open.png" tics 0
 switch "textures/door_l01.png" on SOUND NOSOUND pic "textures/door_l01_open.png" tics 0
 switch "textures/door_l01b.png" on SOUND NOSOUND pic "textures/door_l01b_open.png" tics 0
@@ -563,32 +576,23 @@ switch "textures/door_m01_gr.png" on SOUND NOSOUND pic "textures/door_m01_gr_ope
 switch "textures/door_m01_p.png" on SOUND NOSOUND pic "textures/door_m01_p_open.png" tics 0
 switch "textures/door_m01_r.png" on SOUND NOSOUND pic "textures/door_m01_r_open.png" tics 0
 switch "textures/door_m01_y.png" on SOUND NOSOUND pic "textures/door_m01_y_open.png" tics 0
-switch "textures/door_b14.png" on SOUND NOSOUND pic "textures/door_b14_open.png" tics 0
-switch "textures/door_b15.png" on SOUND NOSOUND pic "textures/door_b15_open.png" tics 0
-switch "textures/door_b20.png" on SOUND NOSOUND pic "textures/door_b20_open.png" tics 0
-switch "textures/door_b20b.png" on SOUND NOSOUND pic "textures/door_b20b_open.png" tics 0
-switch "textures/door_b20r.png" on SOUND NOSOUND pic "textures/door_b20r_open.png" tics 0
-switch "textures/door_b20y.png" on SOUND NOSOUND pic "textures/door_b20y_open.png" tics 0
-switch "textures/door_g04.png" on SOUND NOSOUND pic "textures/door_g04_open.png" tics 0
-switch "textures/door_g04g.png" on SOUND NOSOUND pic "textures/door_g04g_open.png" tics 0
-switch "textures/door_g04c.png" on SOUND NOSOUND pic "textures/door_g04c_open.png" tics 0
-switch "textures/door_g04gr.png" on SOUND NOSOUND pic "textures/door_g04gr_open.png" tics 0
-switch "textures/door_g04p.png" on SOUND NOSOUND pic "textures/door_g04p_open.png" tics 0
 switch "textures/door_s20.png" on SOUND NOSOUND pic "textures/door_s20_open.png" tics 0
 
-switch door_m01 on SOUND NOSOUND pic "textures/door_b01_open.png" tics 0
 switch door_b01 on SOUND NOSOUND pic "textures/door_b01_open.png" tics 0
 switch door_b03 on SOUND NOSOUND pic "textures/door_b03_open.png" tics 0
 switch door_b04 on SOUND NOSOUND pic "textures/door_b04_open.png" tics 0
 switch door_b05 on SOUND NOSOUND pic "textures/door_b05_open.png" tics 0
 switch door_b14 on SOUND NOSOUND pic "textures/door_b14_open.png" tics 0
 switch door_b15 on SOUND NOSOUND pic "textures/door_b15_open.png" tics 0
+switch door_b20 on SOUND NOSOUND pic "textures/door_b20_open.png" tics 0
+switch door_g04 on SOUND NOSOUND pic "textures/door_g04_open.png" tics 0
+switch door_k01 on SOUND NOSOUND pic "textures/door_k01_open.png" tics 0
+switch door_k02 on SOUND NOSOUND pic "textures/door_k02_open.png" tics 0
 switch door_l00 on SOUND NOSOUND pic "textures/door_l00_open.png" tics 0
 switch door_l01 on SOUND NOSOUND pic "textures/door_l01_open.png" tics 0
 switch door_l03 on SOUND NOSOUND pic "textures/door_l03_open.png" tics 0
+switch door_m01 on SOUND NOSOUND pic "textures/door_b01_open.png" tics 0
 switch door_m01 on SOUND NOSOUND pic "textures/door_m01_open.png" tics 0
-switch door_b20 on SOUND NOSOUND pic "textures/door_b20_open.png" tics 0
-switch door_g04 on SOUND NOSOUND pic "textures/door_g04_open.png" tics 0
 switch door_s20 on SOUND NOSOUND pic "textures/door_s20_open.png" tics 0
 
 //MUGSHOT ANIMATIONS
