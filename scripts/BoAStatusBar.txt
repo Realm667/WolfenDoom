@@ -877,6 +877,12 @@ class BoAStatusBar : BaseStatusBar
 
 		BeginHUD(1, False);
 
+		if (!(CPlayer.cheats & CF_CHASECAM))
+		{
+			TextureID image = TexMan.CheckForTexture("TANKVIEW", TexMan.Type_MiscPatch);
+			screen.DrawTexture(image, false, 0, 0, DTA_Fullscreen, true, DTA_KeepRatio, true);
+		}
+
 		Vector2 hudscale = GetHUDScale();
 		double ratio = Screen.GetAspectRatio();
 
