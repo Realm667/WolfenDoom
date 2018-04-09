@@ -1770,6 +1770,17 @@ class NaziStandard : Nazi
 			"####" F 5 A_UnblockAndDrop();
 			"####" G -1;
 			Stop;
+		XDeath.Boom:
+			SLOP A 5 {
+				A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176);
+				A_SetScale(0.65);
+				bIsMonster = False; // So that an exploded enemy can't be resurrected
+			}
+			"####" A 0 A_SpawnItemEx("PanzerBoom", 0, 0, 8);
+			"####" BCDE 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176);
+			"####" F 5 A_UnblockAndDrop();
+			"####" G -1;
+			Stop;
 		Disintegrate:
 			"####" H 5 {
 				A_Scream();
