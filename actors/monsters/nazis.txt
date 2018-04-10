@@ -1368,7 +1368,7 @@ ACTOR WPanzerGuard : BasicGuard
 		Goto See
 	Reload: //ozy81
 		"####" A 0 A_ChangeFlag("NoPain", 1)
-		"####" A 70 A_PlaySound("panzer/reload", CHAN_ITEM, frandom (0.5,0.8), FALSE, ATTN_NORM)
+		"####" A 70 A_PlaySound("panzer/load", CHAN_ITEM, frandom (0.5,0.8), FALSE, ATTN_NORM)
 		"####" A 0 A_ChangeFlag("NoPain", 0)
 		Goto See
 	Death:
