@@ -79,6 +79,22 @@ ACTOR StatistYevgeny : StatistBarkeeper
 	}
 }
 
+ACTOR StatistDimitri : StatistBarkeeper
+{
+	//$Title Dimitri, Tankist Engineer (NPC)
+	Scale 0.67
+	-USESPECIAL
+	States
+	{
+	Spawn:
+		RUST A 80
+		"####" B 40
+		"####" CB 40
+		"####" B 80
+		Loop
+	}
+}
+
 ACTOR StatistBarkeeperMale : StatistBarkeeper
 {
 	//$Title Randi Heit, Barkeeper (NPC)
@@ -222,6 +238,44 @@ ACTOR KittySinger
 		"####" E 1 A_UnSetSolid
 		"####" FGHIJ 5
 		"####" K -1
+		Stop
+	}
+}
+
+ACTOR FatSinger : KittySinger
+{
+	//$Title Brunhilde "Singing Fat Lady" (NPC, Shootable)
+	Scale 0.47
+	States
+	{
+	Spawn:
+		BRUN A 0 NoDelay A_PlaySound("SALOONKY", CHAN_AUTO, 1.0, TRUE, ATTN_STATIC) //still doesn't have her song - ozy81
+	SpawnLoop:
+		"####" AAAACDEFBGBACEDFGBACEFGGDDCC 24
+		Loop
+	Death:
+		"####" H 0 A_StopSound(CHAN_AUTO)
+		"####" G 7 A_UnSetSolid
+		"####" HI 15
+		"####" JK 1 { A_SetTics(random(8,12)); ThrustThing(random(0,360),1); }
+		"####" JK 1 { A_SetTics(random(4,6)); ThrustThing(random(0,360),1); }
+		"####" JK 1 { A_SetTics(random(2,3)); ThrustThing(random(0,360),1); }
+		"####" JK 1 { A_SetTics(random(4,6)); ThrustThing(random(0,360),1); }
+		"####" JK 1 { A_SetTics(random(2,3)); ThrustThing(random(0,360),1); }
+		"####" JK 1 { A_SetTics(random(1,2)); ThrustThing(random(0,360),1); }
+		"####" JK 1 { A_SetTics(random(1,2)); ThrustThing(random(0,360),1); }
+		"####" JK 1 { A_SetTics(random(1,2)); ThrustThing(random(0,360),1); }
+		"####" JK 1 { A_SetTics(random(1,2)); ThrustThing(random(0,360),1); }
+		"####" JK 1 { A_SetTics(random(1,2)); ThrustThing(random(0,360),1); }
+		"####" JK 1 { A_SetTics(random(1,2)); ThrustThing(random(0,360),1); }
+		SLOP H 0 A_SpawnItemEx("Debris_FatAxe", 0, 12, 24, random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION)
+		"####" H 0 A_SpawnItemEx("Debris_FatShield", 0, -12, 24, random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION)
+		"####" H 0 A_SpawnItemEx("Debris_FatHelm", 0, 0, 56, random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION)
+		"####" IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII 0 A_SpawnItemEx("BloodSkullCloud",random(-16,16),random(-16,16),random(-24,24),random(1,2), random(1,2), random(1,2), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION)
+		"####" IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII 0 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 56, random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION)
+		"####" IJKL 5
+		"####" M 5
+		"####" N -1
 		Stop
 	}
 }
