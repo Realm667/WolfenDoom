@@ -13,9 +13,10 @@ class InvisibleBridgeBlocking : InvisibleBridge replaces InvisibleBridge
 class ModelOpelTruckWindows : Actor
 {
 	Default
-	{	+NOINTERACTION
+	{
 		Height 56;
-		DistanceCheck "scenelod";
+		DistanceCheck "scenelod";	
+		+NOINTERACTION
 		RenderStyle "Shaded";
 		StencilColor "CC CC CC";
 	}
@@ -339,6 +340,7 @@ class DebrisBase : Actor
 		Radius 2;
 		Mass 50;
 		DebrisBase.VariantCount 1;
+		DistanceCheck "scenelod";
 	}
 
 	States
@@ -365,6 +367,7 @@ class DebrisMound : Actor
 	Default
 	{
 		Radius 32;
+		DistanceCheck "scenelod";
 	}
 
 	States
@@ -403,6 +406,7 @@ class DebrisChunk : DebrisBase
 	Default
 	{
 		DebrisBase.VariantCount 3;
+		DistanceCheck "scenelod";
 	}
 
 	override void PostBeginPlay()
@@ -420,6 +424,7 @@ class DebrisPipe : DebrisBase
 	{
 		Mass 100;
 		DebrisBase.VariantCount 6;
+		DistanceCheck "scenelod";
 	}
 
 	override void PostBeginPlay()
@@ -432,7 +437,11 @@ class DebrisPipe : DebrisBase
 
 class DebrisBeam : DebrisBase
 {
-	Default { Mass 150; }
+	Default
+	{
+		Mass 150;
+		DistanceCheck "scenelod";
+	}
 
 	override void PostBeginPlay()
 	{
@@ -452,6 +461,7 @@ class DebrisGirder : DebrisBase
 	Default
 	{
 		Mass 300;
+		DistanceCheck "scenelod";
 	}
 
 	override void PostBeginPlay()
@@ -462,13 +472,54 @@ class DebrisGirder : DebrisBase
 	}
 }
 
-class DebrisBrick : DebrisBase {}
+class DebrisBrick : DebrisBase 
+{
+	Default
+	{
+		DistanceCheck "scenelod";
+	}
+}
 
 class DebrisBottle : DebrisChunk
 {
 	Default
 	{
 		DebrisBase.VariantCount 2;
+		DistanceCheck "scenelod";
+		RenderStyle "Translucent";
+		Alpha 0.95;
 	}
 }
-class DebrisBottle2 : DebrisBottle {}
+
+class DebrisBottle2 : DebrisBottle
+{
+	Default
+	{
+		DistanceCheck "scenelod";
+	}
+}
+
+class JunkPile1 : Debris
+{
+	Default
+	{
+		//$Category Props (Wolf3D)/Street
+		//$Title Junk Pile (middle)
+		//$Color 3
+	
+		Radius 25;
+		Height 20;
+		+SOLID
+	}
+}
+
+class JunkPile2 : JunkPile1
+{
+	Default
+	{
+		//$Title Junk Pile (large)
+		
+		Radius 28;
+		Height 28;
+	}
+}

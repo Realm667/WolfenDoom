@@ -1,35 +1,3 @@
-ACTOR JunkPile1 : Debris
-{
-	//$Category Props (Wolf3D)/Street
-	//$Title Junk Pile (middle)
-	//$Color 3
-	Radius 25
-	Height 20
-	+SOLID
-	States
-	{
-	Spawn:
-		JPIL A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
-		Stop
-	}
-}
-
-ACTOR JunkPile2 : Debris
-{
-	//$Category Props (Wolf3D)/Street
-	//$Title Junk Pile (large)
-	//$Color 3
-	Radius 28
-	Height 28
-	+SOLID
-	States
-	{
-	Spawn:
-		JPIL B -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
-		Stop
-	}
-}
-
 ACTOR Denkmal //not used - ozy81 14/10/2017
 {
 	//$Category Props (Wolf3D)/Street

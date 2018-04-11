@@ -4452,8 +4452,6 @@ Model COD_Tiger1
 	Model 1 "tiger_b.md3"
 	Path "models"
 	Model 2 "tiger_c.md3"
-	Path "models"
-	Model 3 "tiger_d.md3"
 	Scale 0.9 0.9 0.9
 	USEACTORPITCH
 	USEACTORROLL
@@ -5467,8 +5465,17 @@ Model SSTank1
 {
 	Path "models"
 	Model 0 "panzerIV_a.md3"
+	Scale 0.9 0.9 0.9
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}
+/* - ACTORS NOT INCLUDED YET - Ozy81
+Model SSTank1_Turret
+{
 	Path "models"
-	Model 1 "panzerIV_b.md3"
+	Model 0 "panzerIV_b.md3"
 	Scale 0.9 0.9 0.9
 	USEACTORPITCH
 	USEACTORROLL
@@ -5476,12 +5483,21 @@ Model SSTank1
 	FrameIndex MDLA A 0 0
 }
 
+Model SSTank1_Cannon
+{
+	Path "models"
+	Model 0 "panzerIV_c.md3"
+	Scale 0.9 0.9 0.9
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}*/
+
 Model DestroyedTank1
 {
 	Path "models"
-	Model 0 "panzerIV_a_d.md3"
-	Path "models"
-	Model 1 "panzerIV_b_d.md3"
+	Model 0 "panzerIV_d.md3"
 	Scale 0.9 0.9 0.9
 	USEACTORPITCH
 	USEACTORROLL
@@ -5496,14 +5512,23 @@ Model SSTank2
 	Model 0 "kfz251_a.md3"
 	Path "models"
 	Model 1 "kfz251_b.md3"
-	Path "models"
-	Model 2 "kfz251_c.md3"
 	Scale 1.1 1.1 1.1
 	USEACTORPITCH
 	USEACTORROLL
 
 	FrameIndex MDLA A 0 0
 }
+/* - ACTORS NOT INCLUDED YET - Ozy81
+Model SSTank2_Cannon //Turret & Cannon together
+{
+	Path "models"
+	Model 0 "kfz251_c.md3"
+	Scale 1.1 1.1 1.1
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}*/
 
 Model DestroyedTank2
 {
@@ -5511,8 +5536,6 @@ Model DestroyedTank2
 	Model 0 "kfz251_a_d.md3"
 	Path "models"
 	Model 1 "kfz251_b_d.md3"
-	Path "models"
-	Model 2 "kfz251_c_d.md3"
 	Scale 1.1 1.1 1.1
 	USEACTORPITCH
 	USEACTORROLL
@@ -5527,10 +5550,6 @@ Model SSTank3
 	Model 0 "tiger_a.md3"
 	Path "models"
 	Model 1 "tiger_b.md3"
-	Path "models"
-	Model 2 "tiger_c.md3"
-	Path "models"
-	Model 3 "tiger_d.md3"
 	Scale 0.9 0.9 0.9
 	Offset -8 0 0
 	USEACTORPITCH
@@ -5538,6 +5557,18 @@ Model SSTank3
 
 	FrameIndex MDLA A 0 0
 }
+/* - ACTORS NOT INCLUDED YET - Ozy81
+Model SSTank3_Cannon //Turret & Cannon together
+{
+	Path "models"
+	Model 0 "tiger_c.md3"
+	Scale 0.9 0.9 0.9
+	Offset -8 0 0
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}*/
 
 Model DestroyedTank3
 {
@@ -5547,8 +5578,6 @@ Model DestroyedTank3
 	Model 1 "tiger_b_d.md3"
 	Path "models"
 	Model 2 "tiger_c_d.md3"
-	Path "models"
-	Model 3 "tiger_d_d.md3"
 	Scale 0.9 0.9 0.9
 	Offset -8 0 0
 	USEACTORPITCH
@@ -5564,14 +5593,22 @@ Model SSTank4
 	Model 0 "kfz222_a.md3"
 	Path "models"
 	Model 1 "kfz222_b.md3"
-	Path "models"
-	Model 2 "kfz222_c.md3"
-	Scale 1.1 1.1 1.1
 	USEACTORPITCH
 	USEACTORROLL
 
 	FrameIndex MDLA A 0 0
 }
+/* - ACTORS NOT INCLUDED YET - Ozy81
+Model SSTank4_Cannon //Turret & Cannon together
+{
+	Path "models"
+	Model 0 "kfz222_c.md3"
+	Scale 1.1 1.1 1.1
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}*/
 
 Model DestroyedTank4
 {
@@ -5579,8 +5616,6 @@ Model DestroyedTank4
 	Model 0 "kfz222_a_d.md3"
 	Path "models"
 	Model 1 "kfz222_b_d.md3"
-	Path "models"
-	Model 2 "kfz222_c_d.md3"
 	Scale 1.1 1.1 1.1
 	USEACTORPITCH
 	USEACTORROLL
@@ -5592,13 +5627,35 @@ Model DestroyedTank4
 Model T34Tank
 {
 	Path "models"
-	Model 0 "t34_g.md3"
+	Model 0 "t34_a.md3"
 	Scale 1.1 1.1 1.1
 	USEACTORPITCH
 	USEACTORROLL
 
 	FrameIndex MDLA A 0 0
 }
+/* - ACTORS NOT INCLUDED YET - Ozy81
+Model T34Tank_Turret
+{
+	Path "models"
+	Model 0 "t34_b.md3"
+	Scale 1.1 1.1 1.1
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}
+
+Model T34Tank_Cannon
+{
+	Path "models"
+	Model 0 "t34_c.md3"
+	Scale 1.1 1.1 1.1
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}*/
 
 Model DestroyedT34Tank
 {
@@ -5721,7 +5778,6 @@ Model TMTankPanzer3
 {
 	Path "models"
 	Model 0 "tank_panzer3.md3"
-	Skin 0 "tank_panzer3.jpg"
 	Scale 1.0 1.0 1.0
 	USEACTORPITCH
 	USEACTORROLL
