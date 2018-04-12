@@ -1,0 +1,142 @@
+ACTOR ShopStand1
+{
+	//$Category Props (Wolf3D)/Shops
+	//$Title SS Shop Stand (Guard variant, random, non-solid)
+	//$Color 3
+	Radius 8
+	Height 8
+	Scale 0.67
+	-SOLID
+	+CANPASS
+	States
+	{
+	Spawn:
+		STND A 0 NODELAY A_Jump(256,"Set1","Set2")
+	Set1:
+		STND A -1
+		Stop
+	Set2:
+		STND B -1
+		Stop
+	}
+}
+
+ACTOR ShopStand2 : ShopStand1
+{
+	//$Title SS Shop Stand (Officer variant, random, non-solid)
+	States
+	{
+	Spawn:
+		STND C 0 NODELAY A_Jump(256,"Set1","Set2")
+	Set1:
+		STND C -1
+		Stop
+	Set2:
+		STND D -1
+		Stop
+	}
+}
+
+ACTOR ShopStand3 : ShopStand1
+{
+	//$Title SS Shop Stand (Small Cap variant, non-solid)
+	States
+	{
+	Spawn:
+		STND E -1
+		Stop
+	}
+}
+
+ACTOR ShopStand4 : ShopStand1
+{
+	//$Title SS Hat Mannequin (No hat, non-solid)
+	Scale 1.0
+	States
+	{
+	Spawn:
+		STND F -1
+		Stop
+	}
+}
+
+ACTOR ShopStand5 : ShopStand4
+{
+	//$Title SS Hat Mannequin (Guard helm, non-solid)
+	States
+	{
+	Spawn:
+		STND G 0 NODELAY A_Jump(256,"Set1","Set2")
+	Set1:
+		STND G -1
+		Stop
+	Set2:
+		STND H -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR ShopStand6 : ShopStand4
+{
+	//$Title SS Hat Mannequin (Officer hat, non-solid)
+	States
+	{
+	Spawn:
+		STND I -1
+		Stop
+	}
+}
+
+ACTOR ShopStand7 : ShopStand4
+{
+	//$Title SS Guard Hat (random sides)
+	States
+	{
+	Spawn:
+		STND J -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR ShopStand8 : ShopStand4
+{
+	//$Title SS Officer Hat (non-solid)
+	States
+	{
+	Spawn:
+		STND K -1
+		Stop
+	}
+}
+
+ACTOR ShopStand9 : ShopStand4
+{
+	//$Title SS Random Hat (random, non-solid)
+	States
+	{
+	Spawn:
+		STND J 0 NODELAY A_Jump(256,"Set1","Set2")
+	Set1:
+		STND J -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	Set2:
+		STND K -1
+		Stop
+	}
+}
+
+ACTOR ShopStand10 : ShopStand4
+{
+	//$Title SS Boots (random, non-solid)
+	States
+	{
+	Spawn:
+		STND L 0 NODELAY A_Jump(256,"Set1","Set2")
+	Set1:
+		STND L -1
+		Stop
+	Set2:
+		STND M -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
