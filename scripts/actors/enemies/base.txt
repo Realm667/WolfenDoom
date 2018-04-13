@@ -800,6 +800,12 @@ class Nazi : Base
 		Look:
 			"####" "#" 10 A_NaziLook();
 			Loop;
+		Look.Fart:
+			"####" "#" 0 A_PlaySound("nazi/farts", CHAN_AUTO, frandom(0.1,1.0));
+		Look.WC:
+			"####" "#" 10 A_NaziLook();
+			"####" "#" 0 A_Jump(8,"Look.Fart");
+			Loop;
 		See:
 		See.Normal: // Guard Walk Pattern
 			"####" "#" 0 { user_incombat = True; }
