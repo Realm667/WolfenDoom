@@ -5461,7 +5461,7 @@ Model ZeppelinBridge
 
 //3d enemies - ozy81
 //Panther Panzer IV
-Model SSTank1
+Model PanzerIVTreads
 {
 	Path "models"
 	Model 0 "panzerIV_a.md3"
@@ -5470,9 +5470,12 @@ Model SSTank1
 	USEACTORROLL
 
 	FrameIndex MDLA A 0 0
+
+//	Skin 0 "" // Alternate skin with offset tread pattern for simulated tread/tire movement
+	FrameIndex MDLA B 0 0
 }
-/* - ACTORS NOT INCLUDED YET - Ozy81
-Model SSTank1_Turret
+
+Model PanzerIVTurret
 {
 	Path "models"
 	Model 0 "panzerIV_b.md3"
@@ -5480,10 +5483,12 @@ Model SSTank1_Turret
 	USEACTORPITCH
 	USEACTORROLL
 
+	Offset 0.0 0.0 -64.0
+
 	FrameIndex MDLA A 0 0
 }
 
-Model SSTank1_Cannon
+Model PanzerIVCannon
 {
 	Path "models"
 	Model 0 "panzerIV_c.md3"
@@ -5491,8 +5496,10 @@ Model SSTank1_Cannon
 	USEACTORPITCH
 	USEACTORROLL
 
+	Offset -32.0 0.0 -82.0
+
 	FrameIndex MDLA A 0 0
-}*/
+}
 
 Model DestroyedTank1
 {
@@ -5506,7 +5513,7 @@ Model DestroyedTank1
 }
 
 //KFZ 251 HalfTrack
-Model SSTank2
+Model HalfTrackTreads
 {
 	Path "models"
 	Model 0 "kfz251_a.md3"
@@ -5517,9 +5524,12 @@ Model SSTank2
 	USEACTORROLL
 
 	FrameIndex MDLA A 0 0
+
+//	Skin 0 "" // Alternate skin with offset tread pattern for simulated tread/tire movement
+	FrameIndex MDLA B 0 0
 }
-/* - ACTORS NOT INCLUDED YET - Ozy81
-Model SSTank2_Cannon //Turret & Cannon together
+
+Model HalftrackTurret //Turret & Cannon together
 {
 	Path "models"
 	Model 0 "kfz251_c.md3"
@@ -5527,8 +5537,10 @@ Model SSTank2_Cannon //Turret & Cannon together
 	USEACTORPITCH
 	USEACTORROLL
 
+	Offset 0.0 0.0 -64.0
+
 	FrameIndex MDLA A 0 0
-}*/
+}
 
 Model DestroyedTank2
 {
@@ -5544,7 +5556,7 @@ Model DestroyedTank2
 }
 
 //Tiger I Panzer
-Model SSTank3
+Model TigerTreads
 {
 	Path "models"
 	Model 0 "tiger_a.md3"
@@ -5555,10 +5567,15 @@ Model SSTank3
 	USEACTORPITCH
 	USEACTORROLL
 
+	Offset -10.5 0.0 0.0
+
 	FrameIndex MDLA A 0 0
+
+//	Skin 0 "" // Alternate skin with offset tread pattern
+	FrameIndex MDLA B 0 0
 }
-/* - ACTORS NOT INCLUDED YET - Ozy81
-Model SSTank3_Cannon //Turret & Cannon together
+
+Model TigerTurret //Turret & Cannon together
 {
 	Path "models"
 	Model 0 "tiger_c.md3"
@@ -5567,8 +5584,10 @@ Model SSTank3_Cannon //Turret & Cannon together
 	USEACTORPITCH
 	USEACTORROLL
 
+	Offset -10.5 0.0 -64.0
+
 	FrameIndex MDLA A 0 0
-}*/
+}
 
 Model DestroyedTank3
 {
@@ -5587,7 +5606,7 @@ Model DestroyedTank3
 }
 
 //Light Panzer KFZ-222
-Model SSTank4
+Model LightPanzerTreads
 {
 	Path "models"
 	Model 0 "kfz222_a.md3"
@@ -5596,10 +5615,15 @@ Model SSTank4
 	USEACTORPITCH
 	USEACTORROLL
 
+	Offset -4.0 0.0 0.0
+
 	FrameIndex MDLA A 0 0
+
+//	Skin 0 "" // Alternate skin with offset tread pattern
+	FrameIndex MDLA B 0 0
 }
-/* - ACTORS NOT INCLUDED YET - Ozy81
-Model SSTank4_Cannon //Turret & Cannon together
+
+Model LightPanzerTurret //Turret & Cannon together
 {
 	Path "models"
 	Model 0 "kfz222_c.md3"
@@ -5607,8 +5631,10 @@ Model SSTank4_Cannon //Turret & Cannon together
 	USEACTORPITCH
 	USEACTORROLL
 
+	Offset -4.0 0.0 -55.0
+
 	FrameIndex MDLA A 0 0
-}*/
+}
 
 Model DestroyedTank4
 {
@@ -5624,7 +5650,7 @@ Model DestroyedTank4
 }
 
 //T-34 Soviet Tank
-Model T34Tank
+Model T34Treads
 {
 	Path "models"
 	Model 0 "t34_a.md3"
@@ -5632,10 +5658,15 @@ Model T34Tank
 	USEACTORPITCH
 	USEACTORROLL
 
+	Offset -30.0 0.0 0.0
+
 	FrameIndex MDLA A 0 0
+
+//	Skin 0 "" // Alternate skin with offset tread pattern
+	FrameIndex MDLA B 0 0
 }
-/* - ACTORS NOT INCLUDED YET - Ozy81
-Model T34Tank_Turret
+
+Model T34Turret
 {
 	Path "models"
 	Model 0 "t34_b.md3"
@@ -5643,10 +5674,12 @@ Model T34Tank_Turret
 	USEACTORPITCH
 	USEACTORROLL
 
+	Offset -30.0 0.0 -72.0
+
 	FrameIndex MDLA A 0 0
 }
 
-Model T34Tank_Cannon
+Model T34Cannon
 {
 	Path "models"
 	Model 0 "t34_c.md3"
@@ -5654,8 +5687,10 @@ Model T34Tank_Cannon
 	USEACTORPITCH
 	USEACTORROLL
 
+	Offset -72.0 0.0 -88.0
+
 	FrameIndex MDLA A 0 0
-}*/
+}
 
 Model DestroyedT34Tank
 {

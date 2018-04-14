@@ -1,3 +1,4 @@
+// Vehicle base class - handles trample effect and slope aware terrain following
 class VehicleBase : Base
 {
 	double trampleradius;
@@ -10,38 +11,39 @@ class VehicleBase : Base
 	}
 
 	// Handling for terrain-based pitch/roll calculations...
-	static double SetPitchRoll(Actor mo, double xoffset = 32, double yoffset = 0, int cap = 60, bool force = false)
+	static double SetPitchRoll(Actor mo, double xoffset = 0, double yoffset = 0, int cap = 60, bool force = false)
 	{
 		if (!mo) { return 0; }
 
-		double testradius = mo.radius;
-		if (!mo.bSolid && mo.master) { testradius = mo.master.radius; } // Use the radius of the actor that's being used for collision detection
+		double testwidth = mo.radius + yoffset;
+		double testlength;
+
+		if (mo is "TankTreadsBase") { testlength = TankTreadsBase(mo).length; }
+		if (!testlength) { testlength = mo.radius + xoffset; }
 
 		double points[4], minz = 0x7FFFFFFF, maxz = -0x7FFFFFFF;
 
 		// Get the relative z-height at the four corners of the tank
-		points[0] = mo.GetZAt(testradius + xoffset, testradius);
-		points[1] = mo.GetZAt(testradius + xoffset, -testradius);
-		points[2] = mo.GetZAt(-testradius - xoffset, testradius);
-		points[3] = mo.GetZAt(-testradius - xoffset, -testradius);
+		points[0] = mo.GetZAt(testlength, testwidth);
+		points[1] = mo.GetZAt(testlength, -testwidth);
+		points[2] = mo.GetZAt(-testlength, testwidth);
+		points[3] = mo.GetZAt(-testlength, -testwidth);
 
 		for (int i = 0; i < 4; i++)
 		{
-			double maxstep = mo.MaxStepHeight;
-
-			if (mo.master && mo.master.player) { maxstep = mo.master.MaxStepHeight; }
+			double maxstep = mo.master ? mo.master.MaxStepHeight : mo.MaxStepHeight;
 
 			if (points[i] > mo.pos.z + maxstep) { points[i] = 0; } // Ignore the point if you can't climb that high
 			if (points[i] < mo.floorz - mo.MaxDropoffHeight) { points[i] = 0; } // Ignore the point if it's a dropoff
-			else { points[i] -= mo.pos.z; }
+			else { points[i] -= mo.floorz; }
 		}
 
 		// Use those values to calculate the pitch.roll amounts
 		double pitchinput = (points[0] + points[1]) / 2 - (points[2] + points[3]) / 2;
 		double rollinput = (points[1] + points[3]) / 2 - (points[0] + points[2]) / 2;
 
-		pitchinput = atan(pitchinput / ((testradius + xoffset) * 2));
-		rollinput = atan(rollinput / ((testradius + yoffset) * 2));
+		pitchinput = atan(pitchinput / (testlength * 2));
+		rollinput = atan(rollinput / (testwidth * 2));
 
 		// Interpolate to the new values
 		if (force || level.time && level.time < 15)
@@ -62,9 +64,10 @@ class VehicleBase : Base
 		}
 
 
-		if (mo.master && mo.master.pos.z > mo.master.floorz)
-		{ // Return the amount that you need to adjust the model z position by in order to keep it looking like it's actually on the ground
-			double deltaz = (testradius + xoffset) * sin(abs(mo.pitch)) + (testradius + yoffset) * sin(abs(mo.roll));
+		if (mo.master)
+		{
+			// Return the amount that you need to adjust the model z position by in order to keep it looking like it's actually on the ground
+			double deltaz = testlength * sin(abs(mo.pitch)) + testwidth * sin(abs(mo.roll));
 
 			return deltaz; 
 		}
@@ -90,52 +93,110 @@ class VehicleBase : Base
 	void DoTrample(bool always = false)
 	{
 		double movespeed = vel.length();
-		if (trampleradius == -1) { trampleradius = radius; }
+
+		if (trampleradius == -1)
+		{
+			if (self is "TankBase" && TankTreadsBase(TankBase(self).treads))
+			{
+				trampleradius = TankBase(self).treads.radius;
+			}
+			else { trampleradius = radius; }
+		}
 
 		if (movespeed >= 1 || always)
 		{
 			double dmg = always ? 1 : movespeed * 0.625;
+			let treads = TankTreadsBase(TankBase(self).treads);
 
 			bool sp;
 			Actor t;
 
-			[sp, t] = A_SpawnItemEx("Trample", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE);
+			// The explosion should only stick out 16 units in front of the tank
+			double offset = trampleradius - radius + 16;
+			if (self is "TankBase" && treads) { offset = max(treads.length, radius) - trampleradius + 16; }
+
+			double angleoffset = treads ? treads.angle : 0;
+
+			[sp, t] = A_SpawnItemEx("Trample", offset, 0, 0, 0, 0, 0, angleoffset, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_ABSOLUTEANGLE);
 
 			if (t)
-		{
+			{
 				t.target = self; // Set the vehicle as the Trample actor's target, because Trample uses A_Explode, which defaults to treating the actor's target as the originator (and doesn't damage it)
 				t.A_SetSize(trampleradius, Height / 3);
 				Trample(t).dmg = int(dmg);
+				if (treads) { t.angle = treads.angle; }
 			}
 		}
 	}
 }
 
-class TankBase : VehicleBase
+// Trample actor - basically an explosion that simulates the spawning actor running over actors within its radius
+// Used by tanks and by rail sequences
+class Trample : Actor
 {
-	Actor treads, turret, gun, ally;
-	Class<Actor> body, dead, debris;
-	double minpitch, maxpitch;
-	int missilecount, missiletimeout, bulletcount, bullettimeout, chasetimeout, turrettimeout;
-	sound movesound, idlesound;
-	bool missiletargeted;
-	double zoffset;
-
-	Property TankActor:body;
-	Property DeadActor:dead;
-	Property DebrisActor:debris;
-	Property MoveSound:movesound;
-	Property IdleSound:idlesound;
+	int dmg;
+	int flags;
 
 	Default
 	{
+		DamageType 'Trample';
+		Damage 5;
+		Height 56;
+		Radius 56;
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+NOCLIP
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 0;
+		Death:
+			"####" # 20 {
+				A_Explode(dmg == 0 ? damage : dmg, int(Radius), flags, FALSE, int(Radius));
+			}
+			Stop;
+	}
+}
+
+// Base tank enemy actor.  Follows terrain, tramples.
+//  Calls:
+//   DoTurretTarget (when turret is aimed at the target)
+//   DoTurret (when all conditions are right to fire a turret missile)
+//   DoFrontWeapon (when conditions are right to fire straight ahead)
+//
+// See FriendlySherman below for use
+class TankBase : VehicleBase
+{
+	Actor ally, treads, turret, gun;
+	Class<Actor> body;
+	double minpitch, maxpitch, minp, maxp;
+	int missilecount, missiletimeout, bulletcount, bullettimeout, chasetimeout, turrettimeout;
+	sound movesound, idlesound;
+	bool missiletargeted, wheeled;
+	double zoffset, turretanglerange;
+
+	Property TankActor:body;
+	Property MoveSound:movesound;
+	Property IdleSound:idlesound;
+	Property TurretAngleRange:turretanglerange;
+	Property WheeledMovement:wheeled;
+	Property MaxGunPitch:maxpitch;
+	Property MinGunPitch:minpitch;
+
+	Default
+	{
+		Height 88;
 		Mass 0x7ffffff;
-		Radius 64;
+		Radius 100;
 		BloodType "TankSpark";
-		MaxStepHeight 32;
 		Monster;
+		MaxDropoffHeight 40;
+		MaxStepHeight 32;
 		Obituary "$TANKS";
 		Species "NaziTank";
+		MaxTargetRange 2048;
 		+AVOIDMELEE
 		+BOSS
 		+BOSSDEATH
@@ -150,12 +211,10 @@ class TankBase : VehicleBase
 		+SLIDESONWALLS
 		+SOLID
 		TankBase.TankActor "US_Sherman";
-		TankBase.DeadActor "US_ShermanDead";
-		TankBase.DebrisActor "Debris_Tank";
 		TankBase.MoveSound "TKMOVE";
 		TankBase.IdleSound "TKIDLE";
-		VehicleBase.TrampleRadius 96;
-		MaxDropoffHeight 40;
+		TankBase.MinGunPitch -10;
+		TankBase.MaxGunPitch 25;
 	}
 
 
@@ -180,6 +239,9 @@ class TankBase : VehicleBase
 		pitch = 0;
 		roll = 0;
 
+		if (bFriendly) { Species = "AllyTank"; }
+		else { Species = "NaziTank"; }
+
 		bool sp;
 		while (!treads) { [sp, treads] = A_SpawnItemEx(body, 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
 		treads.master = self;
@@ -200,19 +262,19 @@ class TankBase : VehicleBase
 		A_Scream();
 		A_NoBlocking();
 
-		Actor hulk = Spawn(dead, pos);
+		Actor hulk = Spawn(TankTreadsBase(treads).deadclass, pos);
 
 		hulk.angle = treads.angle;
 		hulk.pitch = treads.pitch;
 		hulk.roll = treads.roll;
 
-		A_RemoveChildren(true, RMVF_EVERYTHING);
-
 		for (int i = 0; i < 30; i++)
 		{
-			A_SpawnItemEx(debris, random(88, 96), random(88, 96), random(88, 112), random(1, 3), random(1, 3), random(1, 3), random(0, 360), SXF_CLIENTSIDE);
+			A_SpawnItemEx(TankTreadsBase(treads).debris, random(88, 96), random(88, 96), random(88, 112), random(1, 3), random(1, 3), random(1, 3), random(0, 360), SXF_CLIENTSIDE);
 			A_SpawnItemEx("Debris_GlassShard_Large", random(88, 96), random(88, 96), random(96, 128), random(1, 3), random(1, 3), random(1, 3), random(0, 360), SXF_CLIENTSIDE);
 		}
+
+		A_RemoveChildren(true, RMVF_EVERYTHING);
 		
 		A_SpawnItemEx("Nuke", 0, 0, 5, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 		A_SpawnItemEx("KaBoomer", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS);
@@ -232,9 +294,9 @@ class TankBase : VehicleBase
 
 		if (!turret)
 		{
-			if (US_Sherman(treads))
+			if (TankTreadsBase(treads))
 			{
-				turret = US_Sherman(treads).turret;
+				turret = TankTreadsBase(treads).turret;
 
 				if (turret)
 				{
@@ -248,48 +310,48 @@ class TankBase : VehicleBase
 
 		if (treads && turret)
 		{
-			zoffset = VehicleBase.SetPitchRoll(treads);
-			treads.SetOrigin((pos.xy, GetZAt(0, 0)), true);
+			double zoffset = VehicleBase.SetPitchRoll(treads);
+			treads.SetOrigin((pos.xy, GetZAt(0, 0) + zoffset), true);
 
 			double delta = deltaangle(treads.angle, turret.angle);
 
-			minpitch = treads.pitch * cos(delta) - 25;
-			maxpitch = treads.pitch * cos(delta) + 10;
+			minp = treads.pitch * cos(delta) - maxpitch;
+			maxp = treads.pitch * cos(delta) - minpitch;
 
 			turret.SetOrigin(treads.pos + (RotateVector((treads.radius * sin(treads.pitch), -treads.radius * sin(treads.roll)), treads.angle), treads.height * cos(treads.roll)), true);
 
 			turret.pitch = treads.roll * sin(-delta) + treads.pitch * cos(delta);
 			turret.roll = treads.roll * cos(-delta) + treads.pitch * sin(delta);
 
-			if (!gun) { gun = US_ShermanTurret(turret).gun; }
+			if (!gun) { gun = TankTurretBase(turret).gun; }
 
 			if (gun)
 			{
 				gun.A_Face(target, 0, 1.5, flags:FAF_MIDDLE);
 
 				// Force pitch clamping
-				if (turret.pitch + gun.pitch >= maxpitch) { gun.pitch = maxpitch; }
-				else if (turret.pitch + gun.pitch < minpitch)  { gun.pitch = minpitch; }
+				if (turret.pitch + gun.pitch >= maxp) { gun.pitch = maxp; }
+				else if (turret.pitch + gun.pitch < minp)  { gun.pitch = minp; }
 
 				gun.roll = turret.roll;
 			}
 		}
 
-		if (bFriendly && !ally || ally.health <= 0) { ally = FindClosestPlayer(360, 0, false); }
+		if (bFriendly && (!ally || ally.health <= 0)) { ally = FindClosestPlayer(360, 0, false); }
 		if (ally && ally.player.attacker && ally.player.attacker != ally && ally.player.attacker.health > 0) { target = ally.player.attacker; }
 
-		if (target) { bFrightened = Distance2D(target) < 1024; } // Keep distance from the target
+		if (target && bAvoidMelee) { bFrightened = Distance2D(target) < 256; } // Keep distance from the target
 	}
 
 	override bool CanCollideWith(Actor other, bool passive)
 	{
-		if (other is "TankBlocker") { return false; }
+		if (other is "TankBlocker" && other.Species == Species) { return false; }
 		return Super.CanCollideWith(other, passive);
 	}
 
-	void A_TankChase(int flags = 0)
+	virtual void A_TankChase(int flags = 0)
 	{
-		if (!treads || !turret) { return; }
+		if (!treads) { return; }
 
 		A_LookEx(LOF_NOJUMP);
 
@@ -318,63 +380,591 @@ class TankBase : VehicleBase
 					treads.angle = angle;
 				}
 			}
+
+			if (wheeled) { DoMove(); }
 		}
 
-		if (!missiletimeout && !turrettimeout && missiletargeted)
+		if (turret && !missiletimeout && !turrettimeout && missiletargeted)
 		{
 			flags |= CHF_DONTMOVE | CHF_DONTTURN;
-			bullettimeout = 20;
-			turrettimeout = 40;
-			DoRocket(gun);
+			DoTurret(gun ? gun : turret);
 			missiletargeted = false;
 		}
 
-		if (target && !turrettimeout)
+		if (turret && target && !turrettimeout)
 		{
-			turret.A_Face(target, 1.5);
-
-			if (turret.angle == turret.AngleTo(target) && turret.pitch > minpitch && turret.pitch < maxpitch && CheckLOF(CLOFF_JUMPENEMY, maxtargetrange, offsetforward: Radius * 2))
+			if (turretanglerange > 0)
 			{
-				missiletargeted = true;
-				chasetimeout = 40;
-				turrettimeout = 38;
+				double delta = deltaangle(treads.angle, treads.AngleTo(target));
+
+				if (abs(delta) <= turretanglerange) { turret.A_Face(target, 1.5); }
+				else { turret.angle = clamp(turret.angle, treads.angle - turretanglerange, treads.angle + turretanglerange); }
+			}
+			else { turret.A_Face(target, 1.5); }
+
+			if (turret.angle == turret.AngleTo(target))
+			{
+				if (!gun || (gun.pitch - turret.pitch > minp && gun.pitch - turret.pitch < maxp && CheckLOF(CLOFF_JUMPENEMY, maxtargetrange, offsetforward: treads.radius)))
+				{
+					DoTurretTarget(gun ? gun : turret);
+				}
 			}
 		}
 
 		if (target && !bullettimeout && abs(deltaangle(treads.angle, treads.AngleTo(target))) <= 15 && CheckLOF(CLOFF_JUMPENEMY, maxtargetrange / 2, offsetforward: Radius * 2))
 		{
-			chasetimeout = 20;
-			missiletimeout = 20;
-			DoMachineGun(treads);
+			DoFrontWeapon(treads);
 		}
 
 		if (chasetimeout)
 		{
 			flags |= CHF_DONTMOVE | CHF_DONTTURN;
+			A_StopSound(CHAN_7);
 		}
 		else
 		{
-			A_ChangeVelocity(cos(treads.angle) * speed, sin(treads.angle) * speed, vel.z, CVF_REPLACE);
-
-			if (InStateSequence(treads.CurState, treads.SpawnState) && treads.FindState("Move"))
-			{
-				 treads.SetStateLabel("Move");
-			}
-
-			DoTrample(true);
-
-			A_PlaySound(movesound, CHAN_7, 1.0, TRUE);
+			DoMove();
 		}
 
 		A_Chase(null, null, flags);
 	}
 
-	virtual void DoRocket(Actor origin) {}
+	void DoMove()
+	{
+		A_ChangeVelocity(cos(treads.angle) * speed, sin(treads.angle) * speed, vel.z, CVF_REPLACE);
 
-	virtual void DoMachineGun(Actor origin) {}
+		if (InStateSequence(treads.CurState, treads.SpawnState) && treads.FindState("Move"))
+		{
+			 treads.SetStateLabel("Move");
+		}
+
+		DoTrample(true);
+
+		A_PlaySound(movesound, CHAN_7, 1.0, TRUE);
+	}
+
+	virtual void DoTurret(Actor origin)
+	{
+		missiletargeted = false;
+		bullettimeout = 20;
+		turrettimeout = 40;
+	}
+
+	virtual void DoTurretTarget(Actor origin)
+	{
+		missiletargeted = true;
+		chasetimeout = 40;
+		turrettimeout = 38;
+	}
+
+	virtual void DoFrontWeapon(Actor origin)
+	{
+		chasetimeout = 20;
+		missiletimeout = 20;
+	}
 }
 
-class newSSTank1 : TankBase
+// Blocker object for the front and back of the tank used to keep actors from walking inside the model
+class TankBlocker : Actor
+{
+	Vector3 spawnoffset;
+	Vector3 offset;
+	double oldpitch;
+	double oldroll;
+	double oldangle;
+
+	Default
+	{
+		+CANPASS
+		+NOGRAVITY
+		+SOLID
+		+SHOOTABLE
+		+NOBLOOD
+		+NODAMAGE
+		+NOTAUTOAIMED
+		+DONTTHRUST
+		Painchance 255;
+		Radius 32;
+		Height 64;
+	}
+	States
+	{
+		Spawn:
+			TNT1 A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		if (scale.x == 1.0 && scale.y == 1.0)
+		{
+			scale.x = Radius * 2; 
+			scale.y = Height;
+		}
+
+		if (master)
+		{
+			spawnoffset = pos - master.pos;
+
+			Vector2 temp = RotateVector((spawnoffset.x, spawnoffset.y), -master.angle);
+			spawnoffset = (temp.x, temp.y, spawnoffset.z);
+
+			offset = spawnoffset;
+		}
+	}
+
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
+	{
+		if (master && master.master) // Ugh...
+		{
+			if (source != master.master)
+			{
+				master.master.DamageMobj(inflictor, source, damage, mod, flags, angle);  // Inflict the damage on the owner of the tank
+			}
+		}
+
+		return Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
+	}
+
+	override bool Used(Actor user)
+	{
+		if (master) { return master.Used(user); }
+		return false;
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (master)
+		{
+			scale.x *= master.scale.x;
+			scale.y *= master.scale.y;
+
+			SetTag(master.GetTag());
+
+			Species = master.Species;
+		}
+
+		Rotate();
+	}
+
+	void Rotate()
+	{
+		Vector2 temp;
+
+		// Keep the blocks in the correct position, regardless of pitch/roll of the master actor
+		// Obviously not perfect, because the blocks are square, but close enough when you can't see them.
+		if (master && spawnoffset != (0, 0, 0)) {
+			temp = RotateVector((spawnoffset.y, spawnoffset.z), master.roll);
+			offset = (spawnoffset.x, temp.x, temp.y);
+
+			temp = RotateVector((offset.x, offset.z), 360 - master.pitch);
+			offset = (temp.x, offset.y, temp.y);
+
+			temp = RotateVector((offset.x, offset.y), master.angle);
+			offset = (temp.x, temp.y, offset.z);
+
+			offset.x *= master.scale.x;
+			offset.y *= master.scale.x;
+			offset.z *= master.scale.y;
+
+			SetOrigin(master.pos + offset, true);
+
+			angle = master.angle;
+
+			oldpitch = master.pitch;
+			oldroll = master.roll;
+			oldangle = master.angle;
+		}
+	}
+}
+
+// Base actor for tank treads
+class TankTreadsBase : Actor
+{
+	Actor turret;
+	Class<Actor> turretclass, deadclass, debris;
+	Class<PowerMorph> morphpowerup;
+	int savedhealth;
+	int usetimeout;
+	double length;
+
+	Property TurretClass:turretclass;
+	Property Length:length;
+	Property MorphPowerup:morphpowerup;
+	Property DeadActor:deadclass;
+	Property DebrisActor:debris;
+
+	Default
+	{
+		DistanceCheck "scenelod";
+		Radius 64; // Also used as half-width of model for slope tilt calculations
+		Height 64;
+		Mass 0x7ffffff;
+		Species "NaziTank";
+		+CANPASS
+		+SOLID
+		TankTreadsBase.DeadActor "";
+		TankTreadsBase.DebrisActor "Debris_Tank";
+		TankTreadsBase.Length 96; // Half-length of model for slope calculation
+		TankTreadsBase.MorphPowerup "";
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+		Move:
+			MDLA AB 5;
+			Goto Spawn;
+		Death:
+			TNT1 A 1 DoDeath();
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		bool sp = false;
+
+		while (!turret) { [sp, turret] = A_SpawnItemEx(turretclass, 0, 0, Height, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+
+		double r = radius / 2;
+
+		A_SpawnItemEx("TankBlocker", length - r, -r, flags: SXF_SETMASTER);
+		A_SpawnItemEx("TankBlocker", length - r, r, flags: SXF_SETMASTER);
+		A_SpawnItemEx("TankBlocker", -(length - r), -r, flags: SXF_SETMASTER);
+		A_SpawnItemEx("TankBlocker", -(length - r), r, flags: SXF_SETMASTER);
+
+		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		if (usetimeout) { usetimeout--; }
+
+		if (master && master.player)
+		{
+			double moving = master.player.cmd.forwardmove;
+
+			if (moving != 0)
+			{
+				double movespeed = master.vel.length();
+
+				int dir = moving > 0 ? 1 : -1; // Trample both forward and backwards, depending on which direction you're moving
+				double dmg = movespeed * 0.625; // Top speed gives ~100 damage
+
+				bool sp;
+				Actor t;
+
+				[sp, t] = A_SpawnItemEx("Trample", scale.x * 128 * dir, 0, height / 2 - 16, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE);
+
+				if (t)
+				{
+					t.target = master; // Set the player as the Trample actor's target, because it uses A_Explode, which defaults to treating the actor's target as the originator (and doesn't damage it)
+					Trample(t).dmg = int(dmg);
+				}
+			}
+		}
+
+		if (turret)
+		{
+			turret.bSolid = bSolid;
+			turret.bInvisible = bInvisible;
+		}
+
+		Super.Tick();
+	}
+
+	override bool Used(Actor user)
+	{
+		if (!morphpowerup) { return false; }
+
+		if (usetimeout || bDormant || master && (master.player || master.bIsMonster)) { return false; }
+
+		let p = user.player;
+
+		if (p)
+		{
+			bSolid = False;
+
+			p.mo.SetOrigin(pos, false);
+
+			if (turret) { p.mo.angle = turret.angle; }
+			else { p.mo.angle = angle; }
+
+			p.mo.tracer = self;
+
+			user.GiveInventory(morphpowerup, 1);
+			return true;
+		}
+		return false;
+	}
+
+	void DoDeath()
+	{
+		if (turret) { turret.Destroy(); }
+
+		A_PlaySound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_IDLE);
+
+		Actor dead = Spawn(deadclass, pos);
+
+		dead.angle = angle;
+		dead.pitch = pitch;
+		dead.roll = roll;
+
+		A_RemoveChildren(true, RMVF_EVERYTHING);
+
+		for (int i = 0; i < 20; i++)
+		{
+			A_SpawnItemEx(debris, random(88, 96), random(88, 96), random(88, 112), random(1, 3), random(1, 3), random(1, 3), random(0, 360), SXF_CLIENTSIDE);
+			A_SpawnItemEx("Debris_GlassShard_Large", random(88, 96), random(88, 96), random(96, 128), random(1, 3), random(1, 3), random(1, 3), random(0, 360), SXF_CLIENTSIDE);
+		}
+		
+		A_SpawnItemEx("Nuke", 0, 0, 5, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
+		A_SpawnItemEx("KaBoomer", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS);
+		A_SpawnItemEx("GeneralExplosion_Large", 56, 0, 32);
+	}		
+}
+
+// Base actor for tank turret
+class TankTurretBase : Actor
+{
+	Actor gun;
+	Class<Actor> gunclass;
+	Vector3 spawnoffset;
+	Vector3 offset;
+	double gunoffsetx, gunoffsetz, turretoffsetx;
+
+	Property TurretOffsetX:turretoffsetx;
+	Property GunClass:gunclass;
+	Property GunOffsetX:gunoffsetx;
+	Property GunOffsetZ:gunoffsetz;
+
+	Default
+	{
+		Height 32;
+		Species "NaziTank";
+		+DONTSPLASH
+		+NOGRAVITY
+		+SOLID
+		TankTurretBase.GunOffsetX 32;
+		TankTurretBase.GunOffsetZ 18;
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		if (gunclass)
+		{
+			bool sp = false;
+
+			while (!gun) { [sp, gun] = A_SpawnItemEx(gunclass, gunoffsetx, 0, gunoffsetz, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+			gun.Species = Species;
+
+			spawnoffset = gun.pos - pos;
+
+			spawnoffset = (RotateVector(spawnoffset.xy, -angle), spawnoffset.z);
+		}
+
+		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		if (gun)
+		{
+			gun.angle = angle;
+
+			Vector2 temp = RotateVector((spawnoffset.y, spawnoffset.z), roll);
+			offset = (spawnoffset.x, temp.x, temp.y);
+
+			temp = RotateVector((offset.x, offset.z), 360 - pitch);
+			offset = (temp.x, offset.y, temp.y);
+
+			temp = RotateVector((offset.x, offset.y), angle);
+			offset = (temp.x, temp.y, offset.z);
+
+			gun.SetOrigin(self.pos + offset, true);
+
+			gun.bSolid = bSolid;
+			gun.bInvisible = bInvisible;
+		}
+
+		Actor.Tick();
+	}
+
+	override void OnDestroy()
+	{
+		if (gun) { gun.Destroy(); }
+	}
+}
+
+class TankCannonBase : Actor
+{
+	Default
+	{
+		+DONTSPLASH
+		+NOGRAVITY
+		Species "Tank";
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+	}
+}
+
+class TankDeadBase : Actor
+{
+	Default
+	{
+		Radius 88;
+		Height 96;
+		Mass 0x7ffffff;
+		+FLOORCLIP
+		+NOBLOOD
+		+NOBLOODDECALS
+		+NODAMAGE
+		+NOTAUTOAIMED
+		+SHOOTABLE
+		+SOLID
+		BloodType "TankSpark";
+	}
+	
+	States
+	{
+	Spawn:
+		MDLA A 12 A_SpawnProjectile("TankSmoke",58,0,random(0,360),2,random(70,130));
+		Loop;
+	}
+}
+
+// Sherman Tank components (used by both FriendlySherman and ShermanPlayer)
+class US_Sherman : TankTreadsBase
+{
+	Default
+	{
+		//$Category Models (Wolf3D)/Vehicles
+		//$Title Driveable US M4 Sherman Tank
+		//$Color 3
+		TankTreadsBase.DeadActor "US_ShermanDead";
+		TankTreadsBase.DebrisActor "Debris_Tank2";
+		TankTreadsBase.MorphPowerup "Sherman";
+		TankTreadsBase.TurretClass "US_ShermanTurret";
+	}
+}
+
+class US_ShermanTurret : TankTurretBase
+{
+	Default
+	{
+		TankTurretBase.GunClass "US_ShermanCannon";
+	}
+}
+
+class US_ShermanCannon : TankCannonBase {}
+class US_ShermanDead : TankDeadBase {}
+
+// Friendly Sherman Tank Actor
+class FriendlySherman : TankBase
+{
+	Default
+	{
+		//$Category Monsters (Wolf3D)/Tanks
+		//$Title Sherman Tank, Manned (Friendly)
+		//$Color 4
+		Tag "M4 Sherman";
+		Health 3500;
+		Speed 2.66666667;
+		Species "AllyTank";
+		MaxTargetRange 2048;
+		+FRIENDLY
+		TankBase.TankActor "US_Sherman";
+		TankBase.MoveSound "TNK1LOOP";
+		TankBase.IdleSound "TKIDLE";
+	}
+
+	override void DoTurret(Actor origin)
+	{
+		if (!origin) { return; }
+
+		Super.DoTurret(origin);
+
+		Actor mo = A_SpawnProjectile("ShermanRocket", scale.x * 76, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+
+		if (mo)
+		{
+			mo.SetOrigin(origin.pos, false);
+			mo.bMThruSpecies = true;
+
+			missilecount++;
+			if (missilecount > 1)
+			{
+				missilecount = 0;
+				missiletimeout = 35 * Random(3, 5);
+			}
+			else
+			{
+				missiletimeout = 40;
+			}
+		}
+	}
+
+	override void DoFrontWeapon(Actor origin)
+	{
+		if (!origin) { return; }
+
+		Super.DoFrontWeapon(origin);
+
+		A_PlaySound("mauser/fire", CHAN_WEAPON);
+
+		Actor mo = A_SpawnProjectile("Kar98kTracer", scale.x * 48, scale.y * 26, Random(-2, 2), CMF_ABSOLUTEPITCH, Random(-2, 2));
+		mo.bMThruSpecies = true;
+
+		bulletcount++;
+		if (bulletcount > 50 + Random(0, 25))
+		{
+			bulletcount = 0;
+			bullettimeout = 40 + Random(0, 35);
+		}
+		else
+		{
+			bullettimeout = 6;
+		}
+	}
+}
+
+// Panzer IV 
+class PanzerIVTreads : TankTreadsBase
+{
+	Default
+	{
+		TankTreadsBase.DeadActor "DestroyedTank1";
+		TankTreadsBase.TurretClass "PanzerIVTurret";
+	}
+}
+
+class PanzerIVTurret : TankTurretBase
+{
+	Default
+	{
+		TankTurretBase.GunClass "PanzerIVCannon";
+	}
+}
+
+class PanzerIVCannon : TankCannonBase {}
+
+class SSTank1 : TankBase
 {
 	Default
 	{
@@ -384,17 +974,15 @@ class newSSTank1 : TankBase
 		Tag "Panzer IV F";
 		Health 3500;
 		Speed 2.66666667;
-		MaxTargetRange 2048;
-		TankBase.TankActor "US_Sherman";
-		TankBase.DeadActor "US_ShermanDead";
-		TankBase.DebrisActor "Debris_Tank";
-		TankBase.MoveSound "TKMOVE";
-		TankBase.IdleSound "TKIDLE";
+		TankBase.TankActor "PanzerIVTreads";
+		TankBase.MinGunPitch -5;
 	}
 
-	override void DoRocket(Actor origin)
+	override void DoTurret(Actor origin)
 	{
 		if (!origin) { return; }
+
+		Super.DoTurret(origin);
 
 		Actor mo = A_SpawnProjectile("PanzerRocket", scale.x * 76, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
@@ -416,9 +1004,11 @@ class newSSTank1 : TankBase
 		}
 	}
 
-	override void DoMachineGun(Actor origin)
+	override void DoFrontWeapon(Actor origin)
 	{
 		if (!origin) { return; }
+
+		Super.DoFrontWeapon(origin);
 
 		A_PlaySound("weapons/chaingun", CHAN_WEAPON);
 
@@ -441,30 +1031,257 @@ class newSSTank1 : TankBase
 	}
 }
 
-class FriendlySherman : TankBase
+// Halftrack
+class HalftrackTreads : TankTreadsBase
+{
+	Default
+	{
+		TankTreadsBase.DebrisActor "Debris_Tank2";
+		TankTreadsBase.DeadActor "DestroyedTank2";
+		TankTreadsBase.TurretClass "HalftrackTurret";
+	}
+}
+
+class HalftrackTurret : TankTurretBase
+{
+	Default
+	{
+		Height 16;
+		TankTurretBase.TurretOffsetX -64;
+	}
+}
+
+class SSTank2 : TankBase
 {
 	Default
 	{
 		//$Category Monsters (Wolf3D)/Tanks
-		//$Title Sherman Tank, Manned (Friendly)
-		//$Color 4
-		Tag "M4 Sherman";
-		Health 3500;
-		Speed 2.66666667;
-		MaxTargetRange 2048;
-		+FRIENDLY
-		TankBase.TankActor "US_Sherman";
-		TankBase.DeadActor "US_ShermanDead";
-		TankBase.DebrisActor "Debris_Tank";
-		TankBase.MoveSound "TNK1LOOP";
-		TankBase.IdleSound "TKIDLE";
+		//$Title Tank 2 (4000 HP, KFZ 251 HalfTrack, Turret + Missile)
+		Tag "KFZ 251 HalfTrack";
+		Health 4000;
+		Speed 2.33333333;
+		MaxStepHeight 16;
+		TankBase.TankActor "HalftrackTreads";
+		TankBase.TurretAngleRange 20;
+		TankBase.WheeledMovement true;
 	}
 
-	override void DoRocket(Actor origin)
+	override void DoTurret(Actor origin)
 	{
 		if (!origin) { return; }
 
-		Actor mo = A_SpawnProjectile("ShermanRocket", scale.x * 76, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+		Super.DoTurret(origin);
+
+		Actor mo = A_SpawnProjectile("PanzerRocket", scale.x * 88, 0, origin.angle, CMF_ABSOLUTEANGLE);
+
+		if (mo)
+		{
+			mo.bMThruSpecies = true;
+
+			missilecount++;
+			missiletimeout = 40;
+		}
+	}
+
+	override void DoFrontWeapon(Actor origin)
+	{
+		if (!origin) { return; }
+
+		Super.DoFrontWeapon(origin);
+
+		A_PlaySound("weapons/chaingun", CHAN_WEAPON);
+
+		double gunpitch = origin.pitch;
+		if (origin.master && TankBase(origin.master) && TankBase(origin.master).gun) { gunpitch = TankBase(origin.master).gun.pitch; }
+
+		Actor mo = A_SpawnProjectile("EnemyChaingunTracer", scale.x * 70, scale.y * 16, random(-4, 4), CMF_ABSOLUTEPITCH, max(-gunpitch, 0));
+		mo.bMThruSpecies = true;
+
+		bulletcount++;
+		if (bulletcount > 45)
+		{
+			bulletcount = 0;
+			bullettimeout = 35 * Random(2, 5); // 2-5 seconds between long bursts
+		}
+		else
+		{
+			bullettimeout = 2; // 2 tics between shots
+		}
+	}
+}
+
+// Tiger
+class TigerTreads : TankTreadsBase
+{
+	Default
+	{
+		TankTreadsBase.DebrisActor "Debris_Tank2";
+		TankTreadsBase.DeadActor "DestroyedTank3";
+		TankTreadsBase.TurretClass "TigerTurret";
+	}
+}
+
+class TigerTurret : TankTurretBase
+{
+	Default
+	{
+		Height 16;
+	}
+}
+
+class SSTank3 : TankBase
+{
+	Default
+	{
+		//$Category Monsters (Wolf3D)/Tanks
+		//$Title Tank 3 (3000 HP, Tiger I Panzer, Missile only)
+		Tag "Tiger I Panzer";
+		Health 3000;
+		Speed 2.55555556;
+		TankBase.TankActor "TigerTreads";
+	}
+
+	override void DoTurret(Actor origin)
+	{
+		if (!origin) { return; }
+
+		Super.DoTurret(origin);
+
+		Actor mo = A_SpawnProjectile("PanzerRocket", scale.x * 65, scale.y * 4, origin.angle, CMF_ABSOLUTEANGLE);
+
+		if (mo)
+		{
+			mo.bMThruSpecies = true;
+
+			missilecount++;
+			missiletimeout = 40;
+		}
+	}
+
+	override void DoFrontWeapon(Actor origin) {}
+}
+
+// Light Panzer
+class LightPanzerTreads : TankTreadsBase
+{
+	Default
+	{
+		Height 50;
+		TankTreadsBase.DebrisActor "Debris_Tank2";
+		TankTreadsBase.DeadActor "DestroyedTank4";
+		TankTreadsBase.Length 80;
+		TankTreadsBase.TurretClass "LightPanzerTurret";
+	}
+}
+
+class LightPanzerTurret : TankTurretBase
+{
+	Default
+	{
+		Height 16;
+	}
+}
+
+class SSTank4 : TankBase
+{
+	Default
+	{
+		//$Category Monsters (Wolf3D)/Tanks
+		//$Title Tank 4 (1000 HP, Light Panzer KFZ 222, Turret only)
+		Tag "Light Panzer KFZ 222";
+		Health 1000;
+		Height 80;
+		Radius 80;
+		Speed 2.55555556;
+		MaxStepHeight 16;
+		TankBase.TankActor "LightPanzerTreads";
+		TankBase.WheeledMovement true;
+	}
+
+	override void DoTurret(Actor origin) {}
+
+	override void DoTurretTarget(Actor origin)
+	{
+		if (!origin) { return; }
+
+		chasetimeout = 40;
+		turrettimeout = -1;
+
+		A_PlaySound("weapons/chaingun", CHAN_WEAPON);
+
+		double gunpitch = origin.pitch;
+		if (origin.master && TankBase(origin.master) && TankBase(origin.master).gun) { gunpitch = TankBase(origin.master).gun.pitch; }
+
+		Actor mo = A_SpawnProjectile("EnemyChaingunTracer", scale.x * 80, 0, random(-4, 4));
+		mo.bMThruSpecies = true;
+
+		missilecount++;
+		if (missilecount > 45)
+		{
+			missilecount = 0;
+			turrettimeout = 35 * Random(2, 5); // 2-5 seconds between long bursts
+		}
+		else
+		{
+			turrettimeout = 2; // 2 tics between shots
+		}
+	}
+
+	override void DoFrontWeapon(Actor origin) {}
+}
+
+// T34
+class T34Treads : TankTreadsBase
+{
+	Default
+	{
+		Height 68;
+		TankTreadsBase.DeadActor "DestroyedT34Tank";
+		TankTreadsBase.DebrisActor "Debris_Tank2";
+		TankTreadsBase.Length 140;
+		TankTreadsBase.TurretClass "T34Turret";
+	}
+}
+
+class T34Turret : TankTurretBase
+{
+	Default
+	{
+		TankTurretBase.GunClass "T34Cannon";
+		TankTurretBase.GunOffsetX 42;
+		TankTurretBase.GunOffsetZ 14;
+	}
+}
+
+class T34Cannon : TankCannonBase {}
+
+class T34Tank : TankBase
+{
+	Default
+	{
+		//$Category Monsters (Wolf3D)/Tanks
+		//$Title T-34 Soviet Standard Tank
+		//$Color 4
+		Tag "T-34 Soviet Tank";
+		Health 950;
+		Radius 96;
+		Height 88;
+		Speed 1.7;
+		Species "AllyTank";
+		MaxTargetRange 2048;
+		+FRIENDLY
+		TankBase.MinGunPitch -5;
+		TankBase.MaxGunPitch 30;
+		TankBase.TankActor "T34Treads";
+	}
+
+	override void DoTurret(Actor origin)
+	{
+		if (!origin) { return; }
+
+		Super.DoTurret(origin);
+
+		Actor mo = A_SpawnProjectile("PanzerRocket", scale.x * 96, scale.y * 4, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
 		{
@@ -484,48 +1301,29 @@ class FriendlySherman : TankBase
 		}
 	}
 
-	override void DoMachineGun(Actor origin)
+	override void DoFrontWeapon(Actor origin)
 	{
 		if (!origin) { return; }
 
-		A_PlaySound("mauser/fire", CHAN_WEAPON);
+		Super.DoFrontWeapon(origin);
 
-		Actor mo = A_SpawnProjectile("Kar98kTracer", scale.x * 48, scale.y * 26, Random(-2, 2), CMF_ABSOLUTEPITCH, Random(-2, 2));
+		A_PlaySound("weapons/chaingun", CHAN_WEAPON);
+
+		double gunpitch = origin.pitch;
+		if (origin.master && TankBase(origin.master) && TankBase(origin.master).gun) { gunpitch = TankBase(origin.master).gun.pitch; }
+
+		Actor mo = A_SpawnProjectile("EnemyChaingunTracer", scale.x * 48, scale.y * 26, random(-4, 4), CMF_ABSOLUTEPITCH, max(-gunpitch, 0));
 		mo.bMThruSpecies = true;
 
 		bulletcount++;
-		if (bulletcount > 50 + Random(0, 25))
+		if (bulletcount > 75)
 		{
 			bulletcount = 0;
-			bullettimeout = 40 + Random(0, 35);
+			bullettimeout = 35 * Random(2, 5); // 2-5 seconds between long bursts
 		}
 		else
 		{
-			bullettimeout = 6;
+			bullettimeout = 2; // 2 tics between shots
 		}
-	}
-}
-
-class Trample : BlastEffect
-{
-	int dmg;
-	int flags;
-
-	Default
-	{
-		DamageType 'Trample';
-		Damage 5;
-		Height 56;
-		Radius 56;
-		+NOGRAVITY
-	}
-
-	States
-	{
-		Spawn:
-			TNT1 A 0;
-		Death:
-			"####" # 20 A_Explode(dmg == 0 ? damage : dmg, int(Radius), flags, FALSE, int(Radius));
-			Stop;
 	}
 }

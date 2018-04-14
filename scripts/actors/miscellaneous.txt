@@ -356,7 +356,7 @@ class DebrisBase : Actor
 
 		pitch = Random(0, -45);
 		roll = Random(-30, 30);
-		angle = AngleTo(master) + Random(-45, 45);
+		angle = master ? AngleTo(master) + Random(-45, 45) : Random(0, 259);
 
 		Super.PostBeginPlay();
 	}
