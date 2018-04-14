@@ -283,7 +283,7 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 
 		A_PlaySound("Panzer/fire", CHAN_WEAPON);
 		A_GunFlash();
-		Actor mo = A_FireProjectile("ShermanRocket", angledelta, False, 0, 0, FPF_NOAUTOAIM, pitchdelta);
+		Actor mo = A_FireProjectile("TankRocket", angledelta, False, 0, 0, FPF_NOAUTOAIM, pitchdelta);
 		if (mo && origin != self)
 		{
 			mo.SetOrigin(origin.pos, false); // Move the rocket so that it flies from the model's gun
@@ -310,7 +310,7 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 	}
 }
 
-class ShermanRocket : Actor
+class TankRocket : Actor
 {
 	Default
 	{
@@ -321,7 +321,6 @@ class ShermanRocket : Actor
 		-NOTELEPORT
 		+WINDTHRUST
 		+THRUGHOST
-		+MTHRUSPECIES
 		Damage (2500);
 		DamageType "Rocket";
 		Decal "Scorch";
@@ -348,6 +347,21 @@ class ShermanRocket : Actor
 			EXP1 A 2 Bright Light("BOAFLMW2") A_Quake(9, 15, 0, 1024, "");
 			EXP1 BCDEFGHIJKLMN 2 Bright Light("BOAFLMW2");
 			Stop;
+	}
+
+	// Handling so that rockets won't hit actors that have the rocket's origin actor set as their master (or inherit from one that does)
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (target)
+		{
+			Actor roottarget = target;
+			Actor rootmaster = other;
+			while (roottarget.master) { roottarget = roottarget.master; }
+			while (rootmaster.master) { rootmaster = rootmaster.master; }
+
+			if (roottarget && roottarget == rootmaster) { return false; }
+		}
+		return true;
 	}
 }
 

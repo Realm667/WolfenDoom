@@ -169,18 +169,19 @@ class Trample : Actor
 // See FriendlySherman below for use
 class TankBase : VehicleBase
 {
-	Actor ally, treads, turret, gun;
+	Actor ally, treads, turret, gun, gunspot, frontgunspot;
 	Class<Actor> body;
 	double minpitch, maxpitch, minp, maxp;
 	int missilecount, missiletimeout, bulletcount, bullettimeout, chasetimeout, turrettimeout;
 	sound movesound, idlesound;
 	bool missiletargeted, wheeled;
-	double zoffset, turretanglerange;
-
+	double zoffset, turretanglerange, turretspeed;
+	
 	Property TankActor:body;
 	Property MoveSound:movesound;
 	Property IdleSound:idlesound;
 	Property TurretAngleRange:turretanglerange;
+	Property TurretSpeed:turretspeed;
 	Property WheeledMovement:wheeled;
 	Property MaxGunPitch:maxpitch;
 	Property MinGunPitch:minpitch;
@@ -215,6 +216,7 @@ class TankBase : VehicleBase
 		TankBase.IdleSound "TKIDLE";
 		TankBase.MinGunPitch -10;
 		TankBase.MaxGunPitch 25;
+		TankBase.TurretSpeed 1.5;
 	}
 
 
@@ -328,7 +330,7 @@ class TankBase : VehicleBase
 
 			if (gun)
 			{
-				gun.A_Face(target, 0, 1.5, flags:FAF_MIDDLE);
+				gun.A_Face(target, 0, turretspeed, flags:FAF_MIDDLE);
 
 				// Force pitch clamping
 				if (turret.pitch + gun.pitch >= maxp) { gun.pitch = maxp; }
@@ -336,7 +338,11 @@ class TankBase : VehicleBase
 
 				gun.roll = turret.roll;
 			}
+
+			if (!gunspot) { gunspot = TankTurretBase(turret).gunspot; }
 		}
+
+		if (!frontgunspot) { frontgunspot = TankTreadsBase(treads).gunspot; }
 
 		if (bFriendly && (!ally || ally.health <= 0)) { ally = FindClosestPlayer(360, 0, false); }
 		if (ally && ally.player.attacker && ally.player.attacker != ally && ally.player.attacker.health > 0) { target = ally.player.attacker; }
@@ -360,7 +366,7 @@ class TankBase : VehicleBase
 		{
 			double diff = deltaangle(treads.angle, angle);
 
-			double turnamt = Speed / 5;
+			double turnamt = turretspeed / 5;
 
 			if (abs(diff) > turnamt + 2)
 			{
@@ -388,7 +394,8 @@ class TankBase : VehicleBase
 		if (turret && !missiletimeout && !turrettimeout && missiletargeted)
 		{
 			flags |= CHF_DONTMOVE | CHF_DONTTURN;
-			DoTurret(gun ? gun : turret);
+
+			DoTurret(gunspot ? gunspot : (gun ? gun : turret));
 			missiletargeted = false;
 		}
 
@@ -398,23 +405,23 @@ class TankBase : VehicleBase
 			{
 				double delta = deltaangle(treads.angle, treads.AngleTo(target));
 
-				if (abs(delta) <= turretanglerange) { turret.A_Face(target, 1.5); }
+				if (abs(delta) <= turretanglerange) { turret.A_Face(target, turretspeed); }
 				else { turret.angle = clamp(turret.angle, treads.angle - turretanglerange, treads.angle + turretanglerange); }
 			}
-			else { turret.A_Face(target, 1.5); }
+			else { turret.A_Face(target, turretspeed ); }
 
 			if (turret.angle == turret.AngleTo(target))
 			{
-				if (!gun || (gun.pitch - turret.pitch > minp && gun.pitch - turret.pitch < maxp && CheckLOF(CLOFF_JUMPENEMY, maxtargetrange, offsetforward: treads.radius)))
+				if (!gun || (gun.pitch - turret.pitch >= minp && gun.pitch - turret.pitch <= maxp && CheckLOF(CLOFF_JUMPENEMY, maxtargetrange, offsetforward: treads.radius)))
 				{
-					DoTurretTarget(gun ? gun : turret);
+					DoTurretTarget(gunspot ? gunspot : (gun ? gun : turret));
 				}
 			}
 		}
 
-		if (target && !bullettimeout && abs(deltaangle(treads.angle, treads.AngleTo(target))) <= 15 && CheckLOF(CLOFF_JUMPENEMY, maxtargetrange / 2, offsetforward: Radius * 2))
+		if (target && !bullettimeout && abs(deltaangle(frontgunspot.angle, frontgunspot.AngleTo(target))) <= 5 && CheckLOF(CLOFF_JUMPENEMY, maxtargetrange / 2, offsetforward: Radius * 2))
 		{
-			DoFrontWeapon(treads);
+			DoFrontWeapon(frontgunspot ? frontgunspot : treads);
 		}
 
 		if (chasetimeout)
@@ -584,18 +591,23 @@ class TankBlocker : Actor
 // Base actor for tank treads
 class TankTreadsBase : Actor
 {
-	Actor turret;
+	Actor turret, gunspot;
 	Class<Actor> turretclass, deadclass, debris;
 	Class<PowerMorph> morphpowerup;
 	int savedhealth;
 	int usetimeout;
 	double length;
+	Vector3 gunspotoffset;
+	double gunspotoffsetx, gunspotoffsety, gunspotoffsetz;
 
 	Property TurretClass:turretclass;
 	Property Length:length;
 	Property MorphPowerup:morphpowerup;
 	Property DeadActor:deadclass;
 	Property DebrisActor:debris;
+	Property GunSpotX:gunspotoffsetx;
+	Property GunSpotY:gunspotoffsety;
+	Property GunSpotZ:gunspotoffsetz;
 
 	Default
 	{
@@ -610,6 +622,9 @@ class TankTreadsBase : Actor
 		TankTreadsBase.DebrisActor "Debris_Tank";
 		TankTreadsBase.Length 96; // Half-length of model for slope calculation
 		TankTreadsBase.MorphPowerup "";
+		TankTreadsBase.GunSpotX 0;
+		TankTreadsBase.GunSpotY 0;
+		TankTreadsBase.GunSpotZ 0;
 	}
 
 	States
@@ -637,6 +652,10 @@ class TankTreadsBase : Actor
 		A_SpawnItemEx("TankBlocker", length - r, r, flags: SXF_SETMASTER);
 		A_SpawnItemEx("TankBlocker", -(length - r), -r, flags: SXF_SETMASTER);
 		A_SpawnItemEx("TankBlocker", -(length - r), r, flags: SXF_SETMASTER);
+
+		gunspotoffset = (gunspotoffsetx, gunspotoffsety, gunspotoffsetz);
+		while (!gunspot) { [sp, gunspot] = A_SpawnItemEx("WeaponSpot", gunspotoffset.x, gunspotoffset.y, gunspotoffset.z, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+		gunspot.master = self;
 
 		Super.PostBeginPlay();
 	}
@@ -732,16 +751,21 @@ class TankTreadsBase : Actor
 // Base actor for tank turret
 class TankTurretBase : Actor
 {
-	Actor gun;
+	Actor gun, gunspot;
 	Class<Actor> gunclass;
 	Vector3 spawnoffset;
 	Vector3 offset;
 	double gunoffsetx, gunoffsetz, turretoffsetx;
+	Vector3 gunspotoffset;
+	double gunspotoffsetx, gunspotoffsety, gunspotoffsetz;
 
 	Property TurretOffsetX:turretoffsetx;
 	Property GunClass:gunclass;
 	Property GunOffsetX:gunoffsetx;
 	Property GunOffsetZ:gunoffsetz;
+	Property GunSpotX:gunspotoffsetx;
+	Property GunSpotY:gunspotoffsety;
+	Property GunSpotZ:gunspotoffsetz;
 
 	Default
 	{
@@ -752,6 +776,9 @@ class TankTurretBase : Actor
 		+SOLID
 		TankTurretBase.GunOffsetX 32;
 		TankTurretBase.GunOffsetZ 18;
+		TankTurretBase.GunSpotX 0;
+		TankTurretBase.GunSpotY 0;
+		TankTurretBase.GunSpotZ 0;
 	}
 
 	States
@@ -763,10 +790,10 @@ class TankTurretBase : Actor
 
 	override void PostBeginPlay()
 	{
+		bool sp = false;
+
 		if (gunclass)
 		{
-			bool sp = false;
-
 			while (!gun) { [sp, gun] = A_SpawnItemEx(gunclass, gunoffsetx, 0, gunoffsetz, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
 			gun.Species = Species;
 
@@ -774,6 +801,11 @@ class TankTurretBase : Actor
 
 			spawnoffset = (RotateVector(spawnoffset.xy, -angle), spawnoffset.z);
 		}
+
+		gunspotoffset = (gunspotoffsetx, gunspotoffsety, gunspotoffsetz);
+		while (!gunspot) { [sp, gunspot] = A_SpawnItemEx("WeaponSpot", gunspotoffset.x, gunspotoffset.y, gunspotoffset.z, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+		if (gun) { gunspot.master = gun; }
+		else { gunspot.master = self; }
 
 		Super.PostBeginPlay();
 	}
@@ -862,6 +894,9 @@ class US_Sherman : TankTreadsBase
 		TankTreadsBase.DebrisActor "Debris_Tank2";
 		TankTreadsBase.MorphPowerup "Sherman";
 		TankTreadsBase.TurretClass "US_ShermanTurret";
+		TankTreadsBase.GunSpotX 100;
+		TankTreadsBase.GunSpotY 25;
+		TankTreadsBase.GunSpotZ 54;
 	}
 }
 
@@ -870,6 +905,9 @@ class US_ShermanTurret : TankTurretBase
 	Default
 	{
 		TankTurretBase.GunClass "US_ShermanCannon";
+		TankTurretBase.GunSpotX 120;
+		TankTurretBase.GunSpotY 0;
+		TankTurretBase.GunSpotZ 20;
 	}
 }
 
@@ -901,12 +939,11 @@ class FriendlySherman : TankBase
 
 		Super.DoTurret(origin);
 
-		Actor mo = A_SpawnProjectile("ShermanRocket", scale.x * 76, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+		Actor mo = origin.A_SpawnProjectile("TankRocket", 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
 		{
 			mo.SetOrigin(origin.pos, false);
-			mo.bMThruSpecies = true;
 
 			missilecount++;
 			if (missilecount > 1)
@@ -929,8 +966,8 @@ class FriendlySherman : TankBase
 
 		A_PlaySound("mauser/fire", CHAN_WEAPON);
 
-		Actor mo = A_SpawnProjectile("Kar98kTracer", scale.x * 48, scale.y * 26, Random(-2, 2), CMF_ABSOLUTEPITCH, Random(-2, 2));
-		mo.bMThruSpecies = true;
+		Actor mo = A_SpawnProjectile("Kar98kTracer", 0, 0, origin.angle + Random(-2, 2), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, Random(-2, 2));
+		mo.SetOrigin(origin.pos, false);
 
 		bulletcount++;
 		if (bulletcount > 50 + Random(0, 25))
@@ -953,6 +990,9 @@ class PanzerIVTreads : TankTreadsBase
 		TankTreadsBase.DebrisActor "Debris_Tank2";
 		TankTreadsBase.DeadActor "DestroyedTank1";
 		TankTreadsBase.TurretClass "PanzerIVTurret";
+		TankTreadsBase.GunSpotX 80;
+		TankTreadsBase.GunSpotY 26;
+		TankTreadsBase.GunSpotZ 52;
 	}
 }
 
@@ -961,6 +1001,9 @@ class PanzerIVTurret : TankTurretBase
 	Default
 	{
 		TankTurretBase.GunClass "PanzerIVCannon";
+		TankTurretBase.GunSpotX 155;
+		TankTurretBase.GunSpotY 0;
+		TankTurretBase.GunSpotZ 12;
 	}
 }
 
@@ -986,13 +1029,10 @@ class SSTank1 : TankBase
 
 		Super.DoTurret(origin);
 
-		Actor mo = A_SpawnProjectile("PanzerRocket", scale.x * 76, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+		Actor mo = origin.A_SpawnProjectile("TankRocket", 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
 		{
-			mo.SetOrigin(origin.pos, false);
-			mo.bMThruSpecies = true;
-
 			missilecount++;
 			if (missilecount > 1)
 			{
@@ -1017,8 +1057,8 @@ class SSTank1 : TankBase
 		double gunpitch = origin.pitch;
 		if (origin.master && TankBase(origin.master) && TankBase(origin.master).gun) { gunpitch = TankBase(origin.master).gun.pitch; }
 
-		Actor mo = A_SpawnProjectile("EnemyChaingunTracer", scale.x * 48, scale.y * 26, random(-4, 4), CMF_ABSOLUTEPITCH, max(-gunpitch, 0));
-		mo.bMThruSpecies = true;
+		Actor mo = A_SpawnProjectile("EnemyChaingunTracer", 0, 0, random(-4, 4), CMF_ABSOLUTEPITCH, max(-gunpitch, 0));
+		mo.SetOrigin(origin.pos, false);
 
 		bulletcount++;
 		if (bulletcount > 75)
@@ -1041,6 +1081,9 @@ class HalftrackTreads : TankTreadsBase
 		TankTreadsBase.DebrisActor "Debris_Tank2";
 		TankTreadsBase.DeadActor "DestroyedTank2";
 		TankTreadsBase.TurretClass "HalftrackTurret";
+		TankTreadsBase.GunSpotX 35;
+		TankTreadsBase.GunSpotY -16;
+		TankTreadsBase.GunSpotZ 62;
 	}
 }
 
@@ -1050,6 +1093,9 @@ class HalftrackTurret : TankTurretBase
 	{
 		Height 16;
 		TankTurretBase.TurretOffsetX -64;
+		TankTurretBase.GunSpotX 70;
+		TankTurretBase.GunSpotY 0;
+		TankTurretBase.GunSpotZ 16;
 	}
 }
 
@@ -1074,12 +1120,13 @@ class SSTank2 : TankBase
 
 		Super.DoTurret(origin);
 
-		Actor mo = A_SpawnProjectile("PanzerRocket", scale.x * 88, 0, origin.angle, CMF_ABSOLUTEANGLE);
+		origin.A_Face(target, 0, 0, flags:FAF_MIDDLE);
+		origin.angle = turret.angle;
+
+		Actor mo = origin.A_SpawnProjectile("TankRocket", 0, 0, origin.angle, CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
 		{
-			mo.bMThruSpecies = true;
-
 			missilecount++;
 			missiletimeout = 40;
 		}
@@ -1093,11 +1140,10 @@ class SSTank2 : TankBase
 
 		A_PlaySound("weapons/chaingun", CHAN_WEAPON);
 
-		double gunpitch = origin.pitch;
-		if (origin.master && TankBase(origin.master) && TankBase(origin.master).gun) { gunpitch = TankBase(origin.master).gun.pitch; }
+		origin.A_Face(target, 0, 0, flags:FAF_MIDDLE);
+		origin.angle = treads.angle;
 
-		Actor mo = A_SpawnProjectile("EnemyChaingunTracer", scale.x * 70, scale.y * 16, random(-4, 4), CMF_ABSOLUTEPITCH, max(-gunpitch, 0));
-		mo.bMThruSpecies = true;
+		Actor mo = origin.A_SpawnProjectile("EnemyChaingunTracer", 0, 0, origin.angle + random(-4, 4), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		bulletcount++;
 		if (bulletcount > 45)
@@ -1127,8 +1173,13 @@ class TigerTurret : TankTurretBase
 {
 	Default
 	{
-		Height 4;
+		Height 16;
 		TankTurretBase.GunClass "TigerCannon";
+		TankTurretBase.GunOffsetX 50;
+		TankTurretBase.GunOffsetZ 13;
+		TankTurretBase.GunSpotX 180;
+		TankTurretBase.GunSpotY 4;
+		TankTurretBase.GunSpotZ 5;
 	}
 }
 
@@ -1143,7 +1194,6 @@ class SSTank3 : TankBase
 		Tag "Tiger I Panzer";
 		Health 3000;
 		Speed 2.55555556;
-		TankBase.TurretAngleRange 20;
 		TankBase.TankActor "TigerTreads";
 	}
 
@@ -1153,42 +1203,16 @@ class SSTank3 : TankBase
 
 		Super.DoTurret(origin);
 
-		Actor mo = A_SpawnProjectile("PanzerRocket", scale.x * 65, scale.y * 4, origin.angle, CMF_ABSOLUTEANGLE);
+		Actor mo = origin.A_SpawnProjectile("TankRocket", 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
 		{
-			mo.bMThruSpecies = true;
-
 			missilecount++;
-			missiletimeout = 40;
+			missiletimeout = 40 + Random(0, 5) * 15;
 		}
 	}
 
-	override void DoFrontWeapon(Actor origin)
-	{
-		if (!origin) { return; }
-
-		Super.DoFrontWeapon(origin);
-
-		A_PlaySound("weapons/chaingun", CHAN_WEAPON);
-
-		double gunpitch = origin.pitch;
-		if (origin.master && TankBase(origin.master) && TankBase(origin.master).gun) { gunpitch = TankBase(origin.master).gun.pitch; }
-
-		Actor mo = A_SpawnProjectile("EnemyChaingunTracer", scale.x * 48, scale.y * 24, random(-4, 4), CMF_ABSOLUTEPITCH, max(-gunpitch, 0));
-		mo.bMThruSpecies = true;
-
-		bulletcount++;
-		if (bulletcount > 45)
-		{
-			bulletcount = 0;
-			bullettimeout = 35 * Random(2, 5); // 2-5 seconds between long bursts
-		}
-		else
-		{
-			bullettimeout = 2; // 2 tics between shots
-		}
-	}
+	override void DoFrontWeapon(Actor origin) {}
 }
 
 // Light Panzer
@@ -1209,6 +1233,9 @@ class LightPanzerTurret : TankTurretBase
 	Default
 	{
 		Height 16;
+		TankTurretBase.GunSpotX 60;
+		TankTurretBase.GunSpotY 0;
+		TankTurretBase.GunSpotZ 16;
 	}
 }
 
@@ -1225,6 +1252,7 @@ class SSTank4 : TankBase
 		Speed 2.55555556;
 		MaxStepHeight 16;
 		TankBase.TankActor "LightPanzerTreads";
+		TankBase.TurretSpeed 1.0;
 		TankBase.WheeledMovement true;
 	}
 
@@ -1239,11 +1267,10 @@ class SSTank4 : TankBase
 
 		A_PlaySound("weapons/chaingun", CHAN_WEAPON);
 
-		double gunpitch = origin.pitch;
-		if (origin.master && TankBase(origin.master) && TankBase(origin.master).gun) { gunpitch = TankBase(origin.master).gun.pitch; }
+		origin.A_Face(target, 0, 0, flags:FAF_MIDDLE);
+		origin.angle = turret.angle;
 
-		Actor mo = A_SpawnProjectile("EnemyChaingunTracer", scale.x * 80, scale.y * 0, random(-4, 4));
-		mo.bMThruSpecies = true;
+		Actor mo = origin.A_SpawnProjectile("EnemyChaingunTracer", 0, 0, origin.angle + random(-4, 4), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		missilecount++;
 		if (missilecount > 45)
@@ -1270,6 +1297,9 @@ class T34Treads : TankTreadsBase
 		TankTreadsBase.DebrisActor "Debris_Tank2";
 		TankTreadsBase.Length 140;
 		TankTreadsBase.TurretClass "T34Turret";
+		TankTreadsBase.GunSpotX 85;
+		TankTreadsBase.GunSpotY 24;
+		TankTreadsBase.GunSpotZ 52;
 	}
 }
 
@@ -1280,6 +1310,9 @@ class T34Turret : TankTurretBase
 		TankTurretBase.GunClass "T34Cannon";
 		TankTurretBase.GunOffsetX 42;
 		TankTurretBase.GunOffsetZ 14;
+		TankTurretBase.GunSpotX 230;
+		TankTurretBase.GunSpotY 0;
+		TankTurretBase.GunSpotZ 8;
 	}
 }
 
@@ -1311,13 +1344,10 @@ class T34Tank : TankBase
 
 		Super.DoTurret(origin);
 
-		Actor mo = A_SpawnProjectile("PanzerRocket", scale.x * 96, scale.y * 4, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+		Actor mo = origin.A_SpawnProjectile("TankRocket", 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
 		{
-			mo.SetOrigin(origin.pos, false);
-			mo.bMThruSpecies = true;
-
 			missilecount++;
 			if (missilecount > 1)
 			{
@@ -1342,8 +1372,8 @@ class T34Tank : TankBase
 		double gunpitch = origin.pitch;
 		if (origin.master && TankBase(origin.master) && TankBase(origin.master).gun) { gunpitch = TankBase(origin.master).gun.pitch; }
 
-		Actor mo = A_SpawnProjectile("EnemyChaingunTracer", scale.x * 48, scale.y * 26, random(-4, 4), CMF_ABSOLUTEPITCH, max(-gunpitch, 0));
-		mo.bMThruSpecies = true;
+		Actor mo = A_SpawnProjectile("EnemyChaingunTracer", 0, 0, random(-4, 4), CMF_ABSOLUTEPITCH, max(-gunpitch, 0));
+		mo.SetOrigin(origin.pos, false);
 
 		bulletcount++;
 		if (bulletcount > 75)
@@ -1355,5 +1385,32 @@ class T34Tank : TankBase
 		{
 			bullettimeout = 2; // 2 tics between shots
 		}
+	}
+}
+
+class WeaponSpot : ActorPositionable
+{
+	Default
+	{
+		Height 2;
+		Radius 1;
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+NOINTERACTION
+		+INVISIBLE
+	}
+
+	States
+	{
+		Spawn:
+			AMRK A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		if (master) { Species = master.Species; }
+
+		Super.PostBeginPlay();
 	}
 }

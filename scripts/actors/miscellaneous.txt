@@ -205,9 +205,9 @@ class ActorPositionable : Actor
 {
 	enum RotationFlags
 	{
-		ROT_MatchAngle,
-		ROT_MatchPitch,
-		ROT_MatchRoll
+		ROT_MatchAngle = 1,
+		ROT_MatchPitch = 2,
+		ROT_MatchRoll = 4,
 	};
 
 	Vector3 spawnoffset;
@@ -215,10 +215,14 @@ class ActorPositionable : Actor
 
 	override void PostBeginPlay()
 	{
+		if (!master) { Destroy(); return; }
+
 		spawnoffset = pos - master.pos;
 
 		Vector2 temp = RotateVector((spawnoffset.x, spawnoffset.y), -master.angle);
 		spawnoffset = (temp.x, temp.y, spawnoffset.z);
+
+		Species = master.Species;
 
 		Super.PostBeginPlay();
 	}
@@ -240,16 +244,16 @@ class ActorPositionable : Actor
 
 				temp = RotateVector((offset.x, offset.y), master.angle);
 				offset = (temp.x, temp.y, offset.z);
-
-				SetOrigin(master.pos + offset, true);
 			}
 
-			if (flags & ROT_MATCHANGLE) { angle = master.angle; }
+			SetOrigin(master.pos + offset, true);
+
+			if (flags & ROT_MatchAngle) { angle = master.angle; }
 
 			double delta = deltaangle(master.angle, angle);
 
-			if (flags & ROT_MATCHPITCH) { pitch = master.roll * sin(-delta) + master.pitch * cos(delta); }
-			if (flags & ROT_MATCHROLL) { roll = master.roll * cos(-delta) + master.pitch * sin(delta); }
+			if (flags & ROT_MatchPitch) { pitch = master.roll * sin(-delta) + master.pitch * cos(delta); }
+			if (flags & ROT_MatchRoll) { roll = master.roll * cos(-delta) + master.pitch * sin(delta); }
 		}
 	}
 

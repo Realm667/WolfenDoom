@@ -40,6 +40,21 @@ class BulletTracer : FastProjectile
 			}
 			Stop;
 	}
+
+	// Handling so that tracers won't hit actors that have the tracer's origin actor set as their master (or inherit from one that does)
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (target)
+		{
+			Actor roottarget = target;
+			Actor rootmaster = other;
+			while (roottarget.master) { roottarget = roottarget.master; }
+			while (rootmaster.master) { rootmaster = rootmaster.master; }
+
+			if (roottarget && roottarget == rootmaster) { return false; }
+		}
+		return true;
+	}
 }
 
 class Whizzer : Actor
@@ -191,5 +206,7 @@ class PlayerTracer : BulletTracer
 		} else if (!multiplayer && skill < 2) { // Otherwise, if it's a regular player, not in coop (or dm, hypothetically), and at lowest two skills...
 			bThruSpecies = True; // ...player shots go through PlayerFollower species, as defined in Default block
 		}
+
+		Super.PostBeginPlay();
 	}
 }
