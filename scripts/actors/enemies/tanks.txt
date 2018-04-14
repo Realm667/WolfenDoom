@@ -257,6 +257,7 @@ class TankBase : VehicleBase
 	{
 		if (turret) { turret.Destroy(); }
 
+		A_StopSound(CHAN_6); //the idle sound
 		A_StopSound(CHAN_7);
 		A_PlaySound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_IDLE);
 		A_Scream();
@@ -949,6 +950,7 @@ class PanzerIVTreads : TankTreadsBase
 {
 	Default
 	{
+		TankTreadsBase.DebrisActor "Debris_Tank2";
 		TankTreadsBase.DeadActor "DestroyedTank1";
 		TankTreadsBase.TurretClass "PanzerIVTurret";
 	}
@@ -1125,9 +1127,12 @@ class TigerTurret : TankTurretBase
 {
 	Default
 	{
-		Height 16;
+		Height 4;
+		TankTurretBase.GunClass "TigerCannon";
 	}
 }
+
+class TigerCannon : TankCannonBase {}
 
 class SSTank3 : TankBase
 {
@@ -1138,6 +1143,7 @@ class SSTank3 : TankBase
 		Tag "Tiger I Panzer";
 		Health 3000;
 		Speed 2.55555556;
+		TankBase.TurretAngleRange 20;
 		TankBase.TankActor "TigerTreads";
 	}
 
@@ -1158,7 +1164,31 @@ class SSTank3 : TankBase
 		}
 	}
 
-	override void DoFrontWeapon(Actor origin) {}
+	override void DoFrontWeapon(Actor origin)
+	{
+		if (!origin) { return; }
+
+		Super.DoFrontWeapon(origin);
+
+		A_PlaySound("weapons/chaingun", CHAN_WEAPON);
+
+		double gunpitch = origin.pitch;
+		if (origin.master && TankBase(origin.master) && TankBase(origin.master).gun) { gunpitch = TankBase(origin.master).gun.pitch; }
+
+		Actor mo = A_SpawnProjectile("EnemyChaingunTracer", scale.x * 48, scale.y * 24, random(-4, 4), CMF_ABSOLUTEPITCH, max(-gunpitch, 0));
+		mo.bMThruSpecies = true;
+
+		bulletcount++;
+		if (bulletcount > 45)
+		{
+			bulletcount = 0;
+			bullettimeout = 35 * Random(2, 5); // 2-5 seconds between long bursts
+		}
+		else
+		{
+			bullettimeout = 2; // 2 tics between shots
+		}
+	}
 }
 
 // Light Panzer
@@ -1212,7 +1242,7 @@ class SSTank4 : TankBase
 		double gunpitch = origin.pitch;
 		if (origin.master && TankBase(origin.master) && TankBase(origin.master).gun) { gunpitch = TankBase(origin.master).gun.pitch; }
 
-		Actor mo = A_SpawnProjectile("EnemyChaingunTracer", scale.x * 80, 0, random(-4, 4));
+		Actor mo = A_SpawnProjectile("EnemyChaingunTracer", scale.x * 80, scale.y * 0, random(-4, 4));
 		mo.bMThruSpecies = true;
 
 		missilecount++;

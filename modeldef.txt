@@ -5575,7 +5575,7 @@ Model TigerTreads
 	FrameIndex MDLA B 0 0
 }
 
-Model TigerTurret //Turret & Cannon together
+Model TigerTurret
 {
 	Path "models"
 	Model 0 "tiger_c.md3"
@@ -5585,6 +5585,20 @@ Model TigerTurret //Turret & Cannon together
 	USEACTORROLL
 
 	Offset -10.5 0.0 -64.0
+
+	FrameIndex MDLA A 0 0
+}
+
+Model TigerCannon
+{
+	Path "models"
+	Model 0 "tiger_d.md3"
+	Scale 0.9 0.9 0.9
+	Offset -8 0 0
+	USEACTORPITCH
+	USEACTORROLL
+
+	Offset -10.5 0.0 -74.0
 
 	FrameIndex MDLA A 0 0
 }
