@@ -86,10 +86,11 @@ class ShermanPlayer : PlayerPawn
 			sm *= Speed / 256;
 
 			// The tank always moves at normal speed, regardless of cl_run setting or shift being held
+			// This basically cancels out the run speed additions handled in g_game.cpp.
 			if (cl_run && player.cmd.buttons & BT_SPEED)
 			{
-				sm *= 2;
-				fm *= 2;
+				sm /= 1.25;
+				fm /= 1.25;
 			}
 			else if (cl_run ^ player.cmd.buttons & BT_SPEED)
 			{
@@ -135,7 +136,11 @@ class ShermanPlayer : PlayerPawn
 
 				angle += sidemove;
 
-				if (treads) { treads.angle += sidemove; }
+				if (treads)
+				{
+					treads.angle += sidemove;
+					if (turret) { turret.angle += sidemove; }
+				}
 
 				A_SetInventory("ShakeShaderControl", 1 + int(sidemove));
 

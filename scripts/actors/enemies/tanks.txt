@@ -172,7 +172,7 @@ class TankBase : VehicleBase
 	Actor ally, treads, turret, gun, gunspot, frontgunspot;
 	Class<Actor> body;
 	double minpitch, maxpitch, minp, maxp;
-	int missilecount, missiletimeout, bulletcount, bullettimeout, chasetimeout, turrettimeout;
+	int missilecount, missiletimeout, bulletcount, bullettimeout, chasetimeout, turrettimeout, reversetimeout;
 	sound movesound, idlesound;
 	bool missiletargeted, wheeled;
 	double zoffset, turretanglerange, turretspeed;
@@ -249,6 +249,7 @@ class TankBase : VehicleBase
 		treads.master = self;
 		treads.bSolid = false;
 		treads.Species = Species;
+		treads.bFriendly = bFriendly;
 
 		A_PlaySound(idlesound, CHAN_6, 0.25, TRUE);
 
@@ -294,6 +295,7 @@ class TankBase : VehicleBase
 		if (bullettimeout > 0) { bullettimeout--; }
 		if (chasetimeout > 0) { chasetimeout--; }
 		if (turrettimeout > 0) { turrettimeout--; }
+		if (reversetimeout > 0) { reversetimeout--; }
 
 		if (!turret)
 		{
@@ -362,25 +364,25 @@ class TankBase : VehicleBase
 
 		A_LookEx(LOF_NOJUMP);
 
-		if (!chasetimeout && !(flags & CHF_DONTTURN))
+		if ((!chasetimeout || !wheeled) && !(flags & CHF_DONTTURN))
 		{
 			double diff = deltaangle(treads.angle, angle);
 
-			double turnamt = turretspeed / 5;
+			double turnamt = speed / (wheeled ? 3 : 5);
 
-			if (abs(diff) > turnamt + 2)
+			if (reversetimeout) { turnamt *= -1; }
+
+			if (abs(diff) > abs(turnamt) + 2)
 			{
 				if (diff < turnamt)
 				{
 					treads.angle -= turnamt;
 					flags |= CHF_DONTMOVE;
-					A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE);
 				}
 				else if (diff > -turnamt)
 				{
 					treads.angle += turnamt;
 					flags |= CHF_DONTMOVE;
-					A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE);
 				}
 				else
 				{
@@ -391,6 +393,12 @@ class TankBase : VehicleBase
 			if (wheeled) { DoMove(); }
 		}
 
+		if (!target || !CheckSight(target, SF_SEEPASTBLOCKEVERYTHING | SF_SEEPASTSHOOTABLELINES))
+		{
+			missiletimeout = 35;
+			bullettimeout = 35;
+		}
+
 		if (turret && !missiletimeout && !turrettimeout && missiletargeted)
 		{
 			flags |= CHF_DONTMOVE | CHF_DONTTURN;
@@ -399,27 +407,36 @@ class TankBase : VehicleBase
 			missiletargeted = false;
 		}
 
-		if (turret && target && !turrettimeout)
+		if (turret && !turrettimeout)
 		{
-			if (turretanglerange > 0)
+			if (target)
 			{
-				double delta = deltaangle(treads.angle, treads.AngleTo(target));
-
-				if (abs(delta) <= turretanglerange) { turret.A_Face(target, turretspeed); }
-				else { turret.angle = clamp(turret.angle, treads.angle - turretanglerange, treads.angle + turretanglerange); }
-			}
-			else { turret.A_Face(target, turretspeed ); }
-
-			if (turret.angle == turret.AngleTo(target))
-			{
-				if (!gun || (gun.pitch - turret.pitch >= minp && gun.pitch - turret.pitch <= maxp && CheckLOF(CLOFF_JUMPENEMY, maxtargetrange, offsetforward: treads.radius)))
+				if (turretanglerange > 0)
 				{
-					DoTurretTarget(gunspot ? gunspot : (gun ? gun : turret));
+					double delta = deltaangle(treads.angle, treads.AngleTo(target));
+
+					if (abs(delta) <= turretanglerange) { turret.A_Face(target, turretspeed); A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
+					else { turret.angle = clamp(turret.angle, treads.angle - turretanglerange, treads.angle + turretanglerange); A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
 				}
+				else { turret.A_Face(target, turretspeed ); }
+
+				if (int(turret.angle) == int(turret.AngleTo(target)))
+				{
+					Actor spot = gunspot ? gunspot : (gun ? gun : turret);
+
+					if (CheckLOF(CLOFF_JUMPENEMY | CLOFF_SKIPOBJECT, maxtargetrange, offsetforward: treads.radius) && (!gun || (gun.pitch - turret.pitch >= minp && gun.pitch - turret.pitch <= maxp)))
+					{
+						DoTurretTarget(spot);
+					}
+				}
+			}
+			else
+			{
+				turret.angle = clamp(treads.angle, turret.angle - turretspeed, turret.angle + turretspeed);
 			}
 		}
 
-		if (target && !bullettimeout && abs(deltaangle(frontgunspot.angle, frontgunspot.AngleTo(target))) <= 5 && CheckLOF(CLOFF_JUMPENEMY, maxtargetrange / 2, offsetforward: Radius * 2))
+		if (target && !bullettimeout && abs(deltaangle(frontgunspot.angle, frontgunspot.AngleTo(target))) <= 5 && CheckLOF(CLOFF_JUMPENEMY | CLOFF_MUSTBESOLID, maxtargetrange / 2, offsetforward: Radius * 2))
 		{
 			DoFrontWeapon(frontgunspot ? frontgunspot : treads);
 		}
@@ -439,6 +456,20 @@ class TankBase : VehicleBase
 
 	void DoMove()
 	{
+		if (!treads) { return; }
+
+		if (reversetimeout <= 0 && speed != default.speed) { speed = Default.speed; }
+
+		if (!CheckPosition(pos.xy + RotateVector((reversetimeout ? -32 : 32, 0), treads.angle)))
+		{
+			if (wheeled || !BlockingMobj)
+			{
+				speed *= -0.5;
+				if (speed < 0) { reversetimeout = int((15 + Random(0, 35)) * Default.Speed); }
+				else { reversetimeout = 0; }
+			}
+		}
+
 		A_ChangeVelocity(cos(treads.angle) * speed, sin(treads.angle) * speed, vel.z, CVF_REPLACE);
 
 		if (InStateSequence(treads.CurState, treads.SpawnState) && treads.FindState("Move"))
@@ -456,6 +487,7 @@ class TankBase : VehicleBase
 		missiletargeted = false;
 		bullettimeout = 20;
 		turrettimeout = 40;
+		chasetimeout = 5;
 	}
 
 	virtual void DoTurretTarget(Actor origin)
@@ -924,6 +956,7 @@ class FriendlySherman : TankBase
 		//$Color 4
 		Tag "M4 Sherman";
 		Health 3500;
+		Radius 64;
 		Speed 2.66666667;
 		Species "AllyTank";
 		MaxTargetRange 2048;
@@ -943,8 +976,6 @@ class FriendlySherman : TankBase
 
 		if (mo)
 		{
-			mo.SetOrigin(origin.pos, false);
-
 			missilecount++;
 			if (missilecount > 1)
 			{
@@ -1195,6 +1226,8 @@ class SSTank3 : TankBase
 		Health 3000;
 		Speed 2.55555556;
 		TankBase.TankActor "TigerTreads";
+		TankBase.MinGunPitch -2;
+		TankBase.MaxGunPitch 25;
 	}
 
 	override void DoTurret(Actor origin)
@@ -1260,7 +1293,7 @@ class SSTank4 : TankBase
 
 	override void DoTurretTarget(Actor origin)
 	{
-		if (!origin) { return; }
+		if (!origin || bullettimeout) { return; }
 
 		chasetimeout = 40;
 		turrettimeout = -1;
@@ -1277,10 +1310,12 @@ class SSTank4 : TankBase
 		{
 			missilecount = 0;
 			turrettimeout = 35 * Random(2, 5); // 2-5 seconds between long bursts
+			chasetimeout = 35 + 5 * Random(0, 14); // 1-2 seconds between movements - so you can have back-to-back firing sometimes
 		}
 		else
 		{
 			turrettimeout = 2; // 2 tics between shots
+			chasetimeout = 40;
 		}
 	}
 
