@@ -38,9 +38,9 @@ ACTOR ExclamationCompass : Exclamation
 	States
 	{
 	Spawn:
-		EXCL A 0 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		TNT1 A 0 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 	Active:
-		EXCL A -1 BRIGHT
+		TNT1 A -1 BRIGHT
 		Loop
 	Inactive:
 		TNT1 A -1
