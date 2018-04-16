@@ -280,19 +280,50 @@ class Debris : Actor
 		scale.x = scale.x * Radius / 24;
 		scale.y = scale.y * Height / 40;
 
+		double spread = Radius * 1.25;
+
 		Actor mound = Spawn("DebrisMound", pos);
 		if (mound)
 		{
 			mound.master = self;
 		}
 
-		SpawnRandom("DebrisGirder", Random(2, 4));
-		SpawnRandom("DebrisPipe", Random(2, 10), Radius * 1.25, Radius * 0.75);
-		SpawnRandom("DebrisBeam", Random(10, 15), Radius, Radius * 0.75);
-		SpawnRandom("DebrisBrick", Random(10, 15), Radius * 1.5, Radius);
-		SpawnRandom("DebrisChunk", Random(10, 15), Radius * 1.5, Radius);
-		SpawnRandom("DebrisBottle", Random(0, 2), Radius * 1.5, Radius);
-		SpawnRandom("DebrisBottle2", Random(0, 2), Radius * 1.5, Radius);
+		SpawnRandom("DebrisGirder", Random(2, 4), spread);
+		SpawnRandom("DebrisPipe", Random(2, 10), spread * 1.25, spread * 0.75);
+		SpawnRandom("DebrisBeam", Random(10, 15), spread, spread * 0.75);
+		SpawnRandom("DebrisBrick", Random(10, 15), spread * 1.25, spread);
+		SpawnRandom("DebrisChunk", Random(10, 15), spread * 1.25, spread);
+		SpawnRandom("DebrisBottle", Random(0, 2), spread * 1.25, spread);
+		SpawnRandom("DebrisBottle2", Random(0, 2), spread * 1.25, spread);
+
+		DropItem drops = GetDropItems();
+		DropItem item = drops;
+
+		if (item)
+		{
+			while (item)
+			{
+				String itemName = String.Format("%s", item.Name);
+				if (itemName.Length() > 0 && item.Name != 'None')
+				{
+					if (Random() <= item.Probability)
+					{
+						Class<Actor> cls = item.Name;
+
+						if (cls != null)
+						{
+							Class<Actor> rep = GetReplacement(cls);
+							if (rep != null) { cls = rep; }
+						}
+
+						if (cls != null) { SpawnRandom(item.Name, max(item.Amount, 1), spread * 1.0, spread * 0.75, false); }
+						else { A_Log(TEXTCOLOR_RED .. "Unknown item class ".. item.Name .." attempted to drop from a debris spawner\n"); }
+					}
+				}
+
+				item = item.Next;
+			}
+		}
 
 		Super.PostBeginPlay();
 	}
@@ -317,15 +348,18 @@ class Debris : Actor
 			if (mo)
 			{
 				mo.master = self;
-				if (rescale) { mo.scale = FRandom(0.25, 1.75) * mo.scale; } 
+				if (rescale) { mo.scale = FRandom(0.25, 1.5) * mo.scale; } 
 
 				if (!(mo is "DebrisBase"))
 				{
+					mo.bRollSprite = true;
 					mo.pitch = FRandom(-15, -atan(Height / Radius)); // Match the average height of the spawned items to the height of the pile
 					mo.roll = Random(-30, 30);
 					mo.angle = mo.AngleTo(self) + Random(-45, 45);
+					mo.SetOrigin((mo.pos.xy, floorz), false);
+					
 
-					if (mo.FindState("Death")) { mo.SetStateLabel("Death"); }
+					if (Random() < 128 && mo.FindState("Death")) { mo.SetStateLabel("Death"); }
 				}
 			}
 		}
@@ -358,7 +392,7 @@ class DebrisBase : Actor
 	{
 		frame = Random(0, variants - 1);
 
-		pitch = Random(0, -45);
+		pitch = master ? FRandom(-15, -atan(master.Height / master.Radius)) : Random(0, -45);
 		roll = Random(-30, 30);
 		angle = master ? AngleTo(master) + Random(-45, 45) : Random(0, 259);
 
@@ -409,14 +443,14 @@ class DebrisChunk : DebrisBase
 {
 	Default
 	{
-		DebrisBase.VariantCount 3;
+		DebrisBase.VariantCount 12;
 		DistanceCheck "scenelod";
 	}
 
 	override void PostBeginPlay()
 	{
 		bNoGravity = true;
-		SetOrigin((pos.xy, floorz + 8 * cos(pitch) * cos(roll)), false);
+		SetOrigin((pos.xy, floorz + 8 * cos(pitch) - 8 * cos(roll)), false);
 
 		Super.PostBeginPlay();
 	}
@@ -517,7 +551,7 @@ class JunkPile1 : Debris
 	}
 }
 
-class JunkPile2 : JunkPile1
+class JunkPile2 : Debris
 {
 	Default
 	{
@@ -525,5 +559,24 @@ class JunkPile2 : JunkPile1
 		
 		Radius 28;
 		Height 28;
+		+SOLID
+	}
+}
+
+class JunkPile3 : Debris
+{
+	Default
+	{
+		//$Title Junk Pile (small)
+		
+		Radius 24;
+		Height 8;
+		+SOLID
+		DropItem "Radiator_Short", 128;
+		DropItem "Tires", 128;
+		DropItem "Chair3", 64;
+		DropItem "Table8", 64;
+		DropItem "Bunk_Bed1", 64;
+		DropItem "WineBottle", 255, 5;
 	}
 }
