@@ -3135,10 +3135,7 @@ Model Kubelwagen
 {
 	Path "models"
 	Model 0 "kubel_body.md3"
-	//Skin 0 "kubel_body_d.jpg"
-	Path "models"
 	Model 1 "kubel_whel.md3"
-	//Skin 1 "kubel_wheels_d.jpg"
 	Scale 28.0 28.0 28.0
 	USEACTORPITCH
 	USEACTORROLL
@@ -3150,7 +3147,6 @@ Model KubelGlass
 {
 	Path "models"
 	Model 0 "kubel_glas.md3"
-	//Skin 0 "kubel_windscreen_d.jpg"
 	Scale 28.0 28.0 27.9
 	USEACTORPITCH
 	USEACTORROLL
@@ -3229,7 +3225,6 @@ Model Tractor
 {
 	Path "models"
 	Model 0 "tractor.md3"
-	//Skin 0 "tractor_d.jpg"
 	Scale 28.0 28.0 28.0
 	USEACTORPITCH
 	USEACTORROLL
@@ -3241,7 +3236,6 @@ Model 3dPiano
 {
 	Path "models"
 	Model 0 "piano.md3"
-	//Skin 0 "piano.png"
 	Scale 48.0 48.0 48.0
 	USEACTORPITCH
 	USEACTORROLL
@@ -4717,13 +4711,9 @@ Model CODCondor
 Model FlakVierling3D
 {
 	Path "models"
-	Model 0 "flakveirling_A.md3"
+	Model 0 "flak_a.md3"
 	Path "models"
-	Model 1 "flakveirling_B.md3"
-	Path "models"
-	Model 2 "flakveirling_C.md3"
-	Path "models"
-	Model 3 "flakveirling_D.md3"
+	Model 1 "flak_b.md3"
 	Scale 1.5 1.5 1.5
 	USEACTORPITCH
 	USEACTORROLL
@@ -4734,13 +4724,31 @@ Model FlakVierling3D
 Model FlakVierling3D //Destroyed
 {
 	Path "models"
-	Model 0 "flakveirling_A_d.md3"
+	Model 0 "flak_d.md3"
+	Scale 1.5 1.5 1.5
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA B 0 0
+}
+
+Model FlakVierling3D_War
+{
 	Path "models"
-	Model 1 "flakveirling_B_d.md3"
+	Model 0 "flak_a.md3"
 	Path "models"
-	Model 2 "flakveirling_C_d.md3"
+	Model 1 "flak_b.md3"
+	Scale 1.5 1.5 1.5
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}
+
+Model FlakVierling3D_War //Destroyed
+{
 	Path "models"
-	Model 3 "flakveirling_D_d.md3"
+	Model 0 "flak_d.md3"
 	Scale 1.5 1.5 1.5
 	USEACTORPITCH
 	USEACTORROLL
