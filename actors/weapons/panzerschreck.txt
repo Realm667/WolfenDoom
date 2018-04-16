@@ -204,12 +204,12 @@ ACTOR PanzerRocket
 
 ACTOR EnemyPanzerRocket : PanzerRocket
 {
-	Speed 35
-	Damage (75)
+	Speed 25
+	Damage (random(35,75))
 }
 
-ACTOR BabyEnemyPanzerRocket : EnemyPanzerRocket	{Damage (50)}
-ACTOR HardEnemyPanzerRocket : EnemyPanzerRocket	{Damage (125)}
+ACTOR BabyEnemyPanzerRocket : EnemyPanzerRocket	{Damage (random(35,50))}
+ACTOR HardEnemyPanzerRocket : EnemyPanzerRocket	{Damage (random(50,75))}
 
 
 ACTOR PanzerBoom : EnemyPanzerRocket
@@ -222,7 +222,7 @@ ACTOR PanzerBoom : EnemyPanzerRocket
 		EXP1 A 0 A_SetScale(0.75,0.75)
 		EXP1 A 0 A_StopSound(CHAN_VOICE)
 		EXP1 A 0 A_PlaySound("panzer/explode", CHAN_VOICE, 1.0, FALSE, ATTN_NORM)
-		EXP1 A 0 A_Explode(0, 192, 0, TRUE, 320)
+		EXP1 A 0 A_Explode(0, 144, 0, TRUE, 256)
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark_Longlive", 0, 0, 0, random(-5,5), random(-5,5), random(-5,5), random(0,359)) //T667 improvements
 		TNT1 A 0 A_SpawnItemEx("PanzerNuke",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
 		TNT1 A 8 A_SpawnItemEx("GeneralExplosion_Large",56,0,32)
