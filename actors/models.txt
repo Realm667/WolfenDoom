@@ -603,14 +603,20 @@ ACTOR Nebelwerfer3D_Destroyed
 	}
 }
 
-ACTOR Turret3D : ModelBase
+ACTOR Bunker3D_A : ModelBase
 {
 	//$Category Models (Wolf3D)/Scenery
-	//$Title Turret
+	//$Title Decorative Bunker Turret A
 	//$Color 3
 	DistanceCheck "scenelod"
 	Radius 4
 	Height 4
+}
+
+ACTOR Bunker3D_B : Bunker3D_A
+{
+	//$Title Decorative Bunker Turret B
+	DistanceCheck "scenelod"
 }
 
 ACTOR Wire3D : 3dObstacle
@@ -620,16 +626,6 @@ ACTOR Wire3D : 3dObstacle
 	//$Color 3
 	DistanceCheck "scenelod"
 	Height 32
-}
-
-ACTOR Bunker3D : ModelBase
-{
-	//$Category Models (Wolf3D)/Scenery
-	//$Title Bunker
-	//$Color 3
-	DistanceCheck "scenelod"
-	Radius 4
-	Height 4
 }
 
 ACTOR FlakGun3D : 3dObstacle

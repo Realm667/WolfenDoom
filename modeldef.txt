@@ -1045,8 +1045,7 @@ Model LightBulbOn_Grn
 Model NTomb1
 {
 	Path "models/"
-	Model 0 "tombstone1.md3"
-	Skin 0 "tombstone1.jpg"
+	Model 0 "tomb1.md3"
 	ZOffset -4
 	USEACTORPITCH
 	USEACTORROLL
@@ -1057,8 +1056,7 @@ Model NTomb1
 Model NTomb2
 {
 	Path "models/"
-	Model 0 "tombstone2.md3"
-	Skin 0 "tombstone2.jpg"
+	Model 0 "tomb2.md3"
 	ZOffset -4
 	USEACTORPITCH
 	USEACTORROLL
@@ -1069,8 +1067,7 @@ Model NTomb2
 Model NTomb3
 {
 	Path "models/"
-	Model 0 "tombstone3.md3"
-	Skin 0 "tombstone3.jpg"
+	Model 0 "tomb3.md3"
 	ZOffset -4
 	USEACTORPITCH
 	USEACTORROLL
@@ -1081,8 +1078,7 @@ Model NTomb3
 Model NTomb4
 {
 	Path "models/"
-	Model 0 "tombstone4.md3"
-	Skin 0 "tombstone4.jpg"
+	Model 0 "tomb4.md3"
 	ZOffset -4
 	USEACTORPITCH
 	USEACTORROLL
@@ -1093,8 +1089,7 @@ Model NTomb4
 Model NTomb5
 {
 	Path "models/"
-	Model 0 "tombstone5.md3"
-	Skin 0 "tombstone5.jpg"
+	Model 0 "tomb5.md3"
 	ZOffset -4
 	USEACTORPITCH
 	USEACTORROLL
@@ -1152,7 +1147,6 @@ Model SkeletonChains
 {
 	Path "models/"
 	Model 0 "shackles1.md3"
-	Skin 0 "shackles1.png"
 	USEACTORPITCH
 	USEACTORROLL
 	ZOffset 41
@@ -1197,7 +1191,6 @@ Model Manacles //third frame from RTCW
 {
 	Path "models/"
 	Model 0 "shackles4.md3"
-	Skin 0 "shackles4.jpg"
 	Scale 1.2 1.2 1.2
 	USEACTORPITCH
 	USEACTORROLL
@@ -1241,8 +1234,7 @@ Model TMPlane
 Model BomberVTOL3
 {
 	Path "models/"
-	Model 0 "vtol3.md3"
-	Skin 0 "vtol3.jpg"
+	Model 0 "bvtol3.md3"
 	Scale 1.5 1.5 1.5
 	USEACTORPITCH
 	USEACTORROLL
@@ -1276,8 +1268,7 @@ Model SubmarineIcy
 Model Vidcam
 {
 	Path "models/"
-	Model 0 "camera_b.md3"
-	Model 1 "camera_a.md3"
+	Model 0 "camera.md3"
 	Scale 20.0 20.0 20.0
 	USEACTORPITCH
 	USEACTORROLL
@@ -1313,7 +1304,6 @@ Model Nebelwerfer3D
 {
 	Path "models/"
 	Model 0 "nebelwerfer.md3"
-	Skin 0 "nebelwerfer.jpg"
 	Scale 0.7 0.7 0.7
 	USEACTORPITCH
 	USEACTORROLL
@@ -1325,7 +1315,6 @@ Model Nebelwerfer3D_Destroyed
 {
 	Path "models/"
 	Model 0 "nebelwerfer_d.md3"
-	Skin 0 "nebelwerfer_d.jpg"
 	Scale 0.7 0.7 0.7
 	USEACTORPITCH
 	USEACTORROLL
@@ -1333,11 +1322,21 @@ Model Nebelwerfer3D_Destroyed
 	FrameIndex MDLA B 0 0
 }
 
-Model Turret3D
+Model Bunker3D_A
 {
 	Path "models/"
-	Model 0 "turret01.md3"
-	Skin 0 "turret01.jpg"
+	Model 0 "turret_d.md3"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}
+
+Model Bunker3D_B
+{
+	Path "models/"
+	Model 0 "bunker_d.md3"
 	Scale 1.0 1.0 1.0
 	USEACTORPITCH
 	USEACTORROLL
@@ -1348,21 +1347,8 @@ Model Turret3D
 Model Wire3D
 {
 	Path "models/"
-	Model 0 "wire01.md3"
-	Skin 0 "wire01.jpg"
+	Model 0 "wire_d.md3"
 	Scale 0.5 0.5 0.5
-	USEACTORPITCH
-	USEACTORROLL
-
-	FrameIndex MDLA A 0 0
-}
-
-Model Bunker3D
-{
-	Path "models/"
-	Model 0 "bunker01.md3"
-	Skin 0 "bunker01.jpg"
-	Scale 1.0 1.0 1.0
 	USEACTORPITCH
 	USEACTORROLL
 
@@ -1385,7 +1371,17 @@ Model TankPanzer3
 {
 	Path "models/"
 	Model 0 "tank_panzer3.md3"
-	Skin 0 "tank_panzer3.jpg"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}
+
+Model TMTankPanzer3
+{
+	Path "models/"
+	Model 0 "tank_panzer3.md3"
 	Scale 1.0 1.0 1.0
 	USEACTORPITCH
 	USEACTORROLL
@@ -5820,17 +5816,6 @@ Model US_ShermanCannonProp
 	Path "models/"
 	Model 0 "shercann.md3"
 	Scale 1.1 1.1 1.1
-	USEACTORPITCH
-	USEACTORROLL
-
-	FrameIndex MDLA A 0 0
-}
-
-Model TMTankPanzer3
-{
-	Path "models/"
-	Model 0 "tank_panzer3.md3"
-	Scale 1.0 1.0 1.0
 	USEACTORPITCH
 	USEACTORROLL
 
