@@ -11,7 +11,7 @@ class VehicleBase : Base
 	}
 
 	// Handling for terrain-based pitch/roll calculations...
-	static double SetPitchRoll(Actor mo, double xoffset = 0, double yoffset = 0, int cap = 60, bool force = false)
+	static double SetPitchRoll(Actor mo, double xoffset = 0, double yoffset = 0, int cap = 80, bool force = false)
 	{
 		if (!mo) { return 0; }
 
@@ -32,9 +32,10 @@ class VehicleBase : Base
 		for (int i = 0; i < 4; i++)
 		{
 			double maxstep = mo.master ? mo.master.MaxStepHeight : mo.MaxStepHeight;
+			double maxdrop = mo.master ? mo.master.MaxDropoffHeight : mo.MaxDropoffHeight;
 
 			if (points[i] > mo.pos.z + maxstep) { points[i] = 0; } // Ignore the point if you can't climb that high
-			if (points[i] < mo.floorz - mo.MaxDropoffHeight) { points[i] = 0; } // Ignore the point if it's a dropoff
+			if (points[i] < mo.pos.z - maxdrop) { points[i] = 0; } // Ignore the point if it's a dropoff
 			else { points[i] -= mo.floorz; }
 		}
 
@@ -316,7 +317,7 @@ class TankBase : VehicleBase
 		if (treads && turret)
 		{
 			double zoffset = VehicleBase.SetPitchRoll(treads);
-			treads.SetOrigin((pos.xy, GetZAt(0, 0) + zoffset), true);
+			treads.SetOrigin((pos.xy, GetZAt(0, 0) - zoffset), true);
 
 			double delta = deltaangle(treads.angle, turret.angle);
 
@@ -436,7 +437,7 @@ class TankBase : VehicleBase
 			}
 		}
 
-		if (target && !bullettimeout && abs(deltaangle(frontgunspot.angle, frontgunspot.AngleTo(target))) <= 5 && CheckLOF(CLOFF_JUMPENEMY | CLOFF_MUSTBESOLID, maxtargetrange / 2, offsetforward: Radius * 2))
+		if (target && !bullettimeout && frontgunspot && abs(deltaangle(frontgunspot.angle, frontgunspot.AngleTo(target))) <= 5 && CheckLOF(CLOFF_JUMPENEMY | CLOFF_MUSTBESOLID, maxtargetrange / 2, offsetforward: Radius * 2))
 		{
 			DoFrontWeapon(frontgunspot ? frontgunspot : treads);
 		}

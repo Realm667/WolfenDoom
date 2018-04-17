@@ -23,6 +23,7 @@ class ShermanPlayer : PlayerPawn
 		BloodType "TankSpark";
 		DamageFactor "Rocket", 0.5;
 		MaxStepHeight 48;
+		MaxDropoffHeight 48;
 		Species "Tank";
 		Player.MorphWeapon "Cannon75mm";
 		Player.StartItem "Cannon75mm";
@@ -344,7 +345,8 @@ class ShermanPlayer : PlayerPawn
 		if (player && turretcamera && treads && turret && povcamera)
 		{
 			double zoffset = VehicleBase.SetPitchRoll(treads);
-			treads.SetOrigin((pos.xy, GetZAt(0, 0) + zoffset), true);
+			double newz = pos.z - zoffset > GetZAt(0, 0) + MaxDropoffHeight ? pos.z - zoffset : floorz;
+			treads.SetOrigin((pos.xy, newz), true);
 
 			double delta = deltaangle(treads.angle, turret.angle);
 
