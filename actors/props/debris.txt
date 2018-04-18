@@ -364,6 +364,18 @@ ACTOR Debris_Flesh2 : Debris_Flesh
 	}
 }
 
+ACTOR Debris_FatFlesh : Debris_Flesh
+{
+	Scale 0.8
+	Gravity 0.125
+	States
+	{
+	Spawn:
+		BUTC UVW 2 NoDelay { A_JumpIf(waterlevel == 3, "AdjustMass"); A_SpawnItemEx("NashGore_FlyingBlood", random(-2,2), random(-2,2), random(-2,2), random(1,3), random(1,3), random(1,3), angle, SXF_TRANSFERTRANSLATION|SXF_USEBLOODCOLOR|SXF_TRANSFERROLL); }
+		Loop
+	}
+}
+
 ACTOR Debris_Bread : Debris_Base
 {
 	Scale 0.5
