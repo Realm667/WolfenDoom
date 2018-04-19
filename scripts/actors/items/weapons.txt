@@ -127,18 +127,6 @@ class NaziWeapon : Weapon
 			b.master = p;
 			b.pitch = p.pitch;
 			b.angle = p.angle;
-
-			// The beam segment actors handle damaging enemeis themseleves, but we must get
-			// the default properties of the actual specified beam's segment actor so we can...
-			Class<MovingTrailBeam> trail = LightningBeam(b).trail;
-			let def = GetDefaultByType(trail);
-
-			// Spawn a short-range bullet attack immediately in front to ensure that you 
-			// damage enemies that are closer to you than the first damaging beam segment,
-			// which spawns 64 units away from the player's center in order to keep from 
-			// damaging the player whenever you fire the weapon.  
-			// Uses the beam segment actor's damage amount, or defaults to Random(0, 1)
-			A_CustomBulletAttack(0, 0, 1, def ? def.Damage : Random(0, 1), "LightningPuff", 64, CBAF_AIMFACING);
 		}
 	}
 }

@@ -76,13 +76,13 @@ Class LightningBeam : Actor
 		LightningBeam.AngleRandom 5;
 		LightningBeam.ChokeMax 3;
 		LightningBeam.ChokeMin 1;
-		LightningBeam.FaceAmount 15;
-		LightningBeam.MaxDistance 1024;
+		LightningBeam.FaceAmount 5;
+		LightningBeam.MaxDistance 256;
 		LightningBeam.MaxScale 0.03;
 		LightningBeam.MinScale 0.0125;
 		LightningBeam.PitchRandom 5;
 		LightningBeam.StepFactor 1;
-		LightningBeam.TrailActor "LightningTrailBeamArc";
+		LightningBeam.TrailActor "LightningTrailBeamZap";
 	}
 
 	States
@@ -122,6 +122,13 @@ Class LightningBeam : Actor
 
 	void A_SpawnBeam()
 	{
+		// Due to how lightning damage is handled, even though the beam is drawn right next to the spawning 
+		//  actor, it doesn't do damage within 4 * Radius distance from the spawning actor.  This call below 
+		//  makes sure that damage of the correct amount and type still occurs inside of that radius...
+		Class<MovingTrailBeam> trailclass = trail;
+		let def = GetDefaultByType(trailclass);
+		master.A_CustomBulletAttack(angle - master.angle, 0, 1, def ? def.Damage : Random(0, 1), "LightningPuff", master.radius * 4, CBAF_AIMFACING | CBAF_EXPLICITANGLE);
+
 		Actor prev;
 
 		While (CurDistance < MaxDistance)
@@ -254,6 +261,38 @@ Class LightningBeam : Actor
 	}
 }
 
+Class LightningBeamZap : LightningBeam
+{
+	Default
+	{
+		LightningBeam.AllowSplit 1.5;
+		LightningBeam.AngleRandom 10;
+		LightningBeam.MaxScale 0.15;
+		LightningBeam.MinScale 0.025;
+		LightningBeam.PitchRandom 8;
+		LightningBeam.StepFactor 4.5;
+		LightningBeam.Targets True;
+		LightningBeam.TrailActor "LightningTrailBeamZap";
+	}
+}
+
+Class LightningBeamPillarZap : LightningBeam
+{
+	Default 
+	{
+		LightningBeam.AllowSplit 0.5;
+		LightningBeam.AngleRandom 15;
+		LightningBeam.ChokeMax 5;
+		LightningBeam.ChokeMin 5;
+		LightningBeam.FaceAmount 0;
+		LightningBeam.MaxScale 0.10;
+		LightningBeam.MinScale 0.025;
+		LightningBeam.PitchRandom 15;
+		LightningBeam.StepFactor 1.5;
+		LightningBeam.TrailActor "LightningTrailBeamZap";
+	}
+}
+
 Class LightningBeamPri : LightningBeam
 {
 	Default 
@@ -261,7 +300,6 @@ Class LightningBeamPri : LightningBeam
 		LightningBeam.AngleRandom 4;
 		LightningBeam.ChokeMax 3;
 		LightningBeam.ChokeMin 2;
-		LightningBeam.FaceAmount 5;
 		LightningBeam.MaxDistance 512;
 		LightningBeam.MaxScale 0.15;
 		LightningBeam.MinScale 0.025;
@@ -280,7 +318,6 @@ Class LightningBeamAlt : LightningBeam
 		LightningBeam.ChokeMax 4;
 		LightningBeam.ChokeMin 2;
 		LightningBeam.FaceAmount 10;
-		LightningBeam.MaxDistance 256;
 		LightningBeam.MaxScale 0.15;
 		LightningBeam.MinScale 0.025;
 		LightningBeam.PitchRandom 15;
@@ -294,7 +331,7 @@ Class LightningBeamArc : LightningBeamPri
 {
 	Default 
 	{
-		LightningBeam.MaxDistance 256;
+		LightningBeam.FaceAmount 15;
 		LightningBeam.TrailActor "LightningTrailBeamArc";
 	}
 }
@@ -308,7 +345,6 @@ Class LightningBeamPillar : LightningBeam
 		LightningBeam.ChokeMax 5;
 		LightningBeam.ChokeMin 5;
 		LightningBeam.FaceAmount 0;
-		LightningBeam.MaxDistance 256;
 		LightningBeam.MaxScale 0.10;
 		LightningBeam.MinScale 0.025;
 		LightningBeam.PitchRandom 15;
@@ -352,10 +388,10 @@ Class MovingTrailBeam : Actor
 	{
 		Super.PostBeginPlay();
 
-		if (master && (!(master is "PlayerPawn") || Distance3D(master) > 64))
+		if (master && Distance3D(master) > master.radius * 4)
 		{
 			// Used to make all individual bolt segments leave decals and cause damage
-			A_CustomBulletAttack(0, 0, 1, damage, "LightningPuff", 24, CBAF_AIMFACING);
+			A_CustomBulletAttack(0, 0, 1, damage, "LightningPuff", int(scale.y), CBAF_AIMFACING);
 		}
 
 		if (master) { beamoffset = pos - master.pos; }
@@ -375,6 +411,15 @@ Class MovingTrailBeam : Actor
 		}
 	}
 
+}
+
+Class LightningTrailBeamZap : MovingTrailBeam
+{
+	Default
+	{
+		MovingTrailBeam.Damage 1;
+		MovingTrailBeam.TrailActor "LightningTrailBeamZap";
+	}
 }
 
 Class LightningTrailBeam : MovingTrailBeam
