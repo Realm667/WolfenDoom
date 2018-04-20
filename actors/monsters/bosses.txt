@@ -458,7 +458,6 @@ ACTOR NaziLoper : Nazi
 			A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0);
 			A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
 			A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, random(4,8), 0, 0, false);
 			A_LightningAttack("LightningBeamZap", 0, 0, random(4,8), 0, 0, false);
 		}
 		"####" EE 8 A_FaceTarget
@@ -468,7 +467,6 @@ ACTOR NaziLoper : Nazi
 			A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0);
 			A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
 			A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, random(4,8), 0, 0, false);
 			A_LightningAttack("LightningBeamZap", 0, 0, random(4,8), 0, 0, false);
 		}
 		"####" EE 8 A_FaceTarget
@@ -483,51 +481,21 @@ ACTOR NaziLoper : Nazi
 		"####" H 8 ThrustThingZ(0,random(30,40),0,1)
 		"####" E 6 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
 		"####" FG 17 LIGHT(LOPERLIT) A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
-		"####" G 1 LIGHT(LOPERLIT) A_SpawnItemEx("GeneralExplosion_Medium")
 		"####" G 1 LIGHT(LOPERLIT) Radius_Quake(10,10,0,16,0)
 		"####" G 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160)
+		"####" G 0 A_Jump(128,"Missile4")
 		"####" GF 4 LIGHT(LOPERLIT){
 			A_PlaySound("tesla/kill");
 			A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0);
 			A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0);
 			A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
 			A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, 4, 0, 0, false);
 			A_LightningAttack("LightningBeamZap", 0, 0, 4, 0, 0, false);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, 4, 20, 0, false);
-			A_LightningAttack("LightningBeamZap", 0, 0, 4, 20, 0, false);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, 4, 40, 0, false);
-			A_LightningAttack("LightningBeamZap", 0, 0, 4, 40, 0, false);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, 4, 60, 0, false);
 			A_LightningAttack("LightningBeamZap", 0, 0, 4, 60, 0, false);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, 4, 80, 0, false);
-			A_LightningAttack("LightningBeamZap", 0, 0, 4, 80, 0, false);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, 4, 100, 0, false);
-			A_LightningAttack("LightningBeamZap", 0, 0, 4, 100, 0, false);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, 4, 120, 0, false);
 			A_LightningAttack("LightningBeamZap", 0, 0, 4, 120, 0, false);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, 4, 140, 0, false);
-			A_LightningAttack("LightningBeamZap", 0, 0, 4, 140, 0, false);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, 4, 160, 0, false);
-			A_LightningAttack("LightningBeamZap", 0, 0, 4, 160, 0, false);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, 4, 180, 0, false);
 			A_LightningAttack("LightningBeamZap", 0, 0, 4, 180, 0, false);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, 4, 200, 0, false);
-			A_LightningAttack("LightningBeamZap", 0, 0, 4, 200, 0, false);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, 4, 220, 0, false);
-			A_LightningAttack("LightningBeamZap", 0, 0, 4, 220, 0, false);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, 4, 240, 0, false);
 			A_LightningAttack("LightningBeamZap", 0, 0, 4, 240, 0, false);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, 4, 260, 0, false);
-			A_LightningAttack("LightningBeamZap", 0, 0, 4, 260, 0, false);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, 4, 280, 0, false);
-			A_LightningAttack("LightningBeamZap", 0, 0, 4, 280, 0, false);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, 4, 300, 0, false);
-			A_LightningAttack("LightningBeamZap", 0, 0, 4, 300, 0, false);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, 4, 320, 0, false);
 			A_LightningAttack("LightningBeamZap", 0, 0, 4, 320, 0, false);
-			A_LightningAttack("LightningBeamPillarZap", 0, 0, 4, 240, 0, false);
-			A_LightningAttack("LightningBeamZap", 0, 0, 4, 240, 0, false);
 		}
 		"####" G 8 A_FaceTarget
 		Goto Look
@@ -535,11 +503,24 @@ ACTOR NaziLoper : Nazi
 		"####" A 0 A_JumpIfCloser(192, 2)
 		Goto Look
 		"####" CE 8 A_FaceTarget
-		"####" H 1 LIGHT(LOPERLIT) Radius_Quake(10,10,0,16,0)
 		"####" H 8 ThrustThingZ(0,random(30,40),0,1)
 		"####" FG 1 A_SkullAttack
 		"####" E 3 A_Gravity
 		"####" C 5
+		Goto Look
+	Missile4:
+		"####" GF 4 LIGHT(LOPERLIT)
+		"####" G 0 A_LightningAttack("LightningBeamPillarZap", 0, 0, 8, 0, -90, true)
+		"####" G 0 LIGHT(LOPERLIT) A_SpawnProjectile("ZTracer",0,0,40,2,0)
+		"####" G 0 LIGHT(LOPERLIT) A_SpawnProjectile("ZTracer",0,0,80,2,0)
+		"####" G 0 LIGHT(LOPERLIT) A_SpawnProjectile("ZTracer",0,0,120,2,0)
+		"####" G 0 LIGHT(LOPERLIT) A_SpawnProjectile("ZTracer",0,0,160,2,0)
+		"####" G 0 LIGHT(LOPERLIT) A_SpawnProjectile("ZTracer",0,0,200,2,0)
+		"####" G 0 LIGHT(LOPERLIT) A_SpawnProjectile("ZTracer",0,0,240,2,0)
+		"####" G 0 LIGHT(LOPERLIT) A_SpawnProjectile("ZTracer",0,0,280,2,0)
+		"####" G 0 LIGHT(LOPERLIT) A_SpawnProjectile("ZTracer",0,0,320,2,0)
+		"####" G 0 LIGHT(LOPERLIT) A_SpawnProjectile("ZTracer",0,0,360,2,0)
+		"####" G 8 A_FaceTarget
 		Goto Look
 	Pain:
 		"####" I 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0)
