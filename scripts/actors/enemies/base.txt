@@ -567,12 +567,11 @@ class Base : Actor
 		return mo.CurSector.lightlevel - (255 - (light.r + light.g + light.b) / 3) - ((fade.r + fade.g + fade.b) / 3) - 255 * (mo.CurSector.ColorMap.FogDensity / 510);
 	}
 
-	void A_LightningAttack(Class<LightningBeam> beam = "LightningBeamZap", int xoffset = 0, int yoffset = 0, int zoffset = 0, double angleoffset = 0, double pitchoffset = 0, bool fromsky = false)
+	void A_LightningAttack(Class<LightningBeam> beam = "LightningBeamZap", int xoffset = 0, int yoffset = 0, int zoffset = -1, double angleoffset = 0, double pitchoffset = 0, bool fromsky = false)
 	{
 		if (!target) { return; }
 		if (fromsky && ceilingpic != skyflatnum) { return; }
-
-		zoffset += int(Height * 2 / 3); // Default to spawning at z-height of 2/3 the actors height
+		if (zoffset < 0) { zoffset = int(Height * 2 / 3); } // Default to spawning at z-height of 2/3 the actors height
 
 		bool spawned;
 		Actor b;
