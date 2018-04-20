@@ -69,6 +69,13 @@ ACTOR AktenDream : Akten
 	}
 }
 
+
+ACTOR AktenDreamClue : AktenDream
+{
+	//$Title Secret Files (Clue)
+	Inventory.PickupMessage "$ZOMBF"
+}
+
 ACTOR ArtifactAstrostrein : Akten
 {
 	//$Title Mayan Artifact (Astrostein)
@@ -447,22 +454,6 @@ ACTOR CCampUniformPickup : CustomInventory
 	Pickup:
 		TNT1 A 0 {A_GiveInventory("NullWeapon", 1); A_GiveInventory("CCBJUniformToken", 1);}
 		TNT1 A 0 A_SelectWeapon("NullWeapon")
-		Stop
-	}
-}
-
-ACTOR AktenDreamClue : Akten
-{
-	//$Title Secret Files (Clue)
-	Tag "$TAGTHORS"
-	Inventory.Icon AKT3A0
-	Inventory.PickupMessage "$DREAM"
-	Inventory.MaxAmount 1
-
-	States
-	{
-	Spawn:
-		AKT3 B -1
 		Stop
 	}
 }
