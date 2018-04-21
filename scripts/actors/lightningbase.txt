@@ -276,6 +276,22 @@ Class LightningBeamZap : LightningBeam
 	}
 }
 
+Class LightningBeamZapP : LightningBeam
+{
+	Default
+	{
+		LightningBeam.AllowSplit 1.5;
+		LightningBeam.AngleRandom 10;
+		LightningBeam.MaxScale 0.15;
+		LightningBeam.MinScale 0.025;
+		LightningBeam.PitchRandom 8;
+		LightningBeam.StepFactor 4.5;
+		LightningBeam.Targets True;
+		LightningBeam.TrailActor "LightningTrailBeamZapP";
+	}
+}
+
+
 Class LightningBeamPillarZap : LightningBeam
 {
 	Default 
@@ -423,6 +439,15 @@ Class LightningTrailBeamZap : MovingTrailBeam
 	{
 		MovingTrailBeam.Damage 1;
 		MovingTrailBeam.TrailActor "LightningTrailBeamZap";
+	}
+}
+
+Class LightningTrailBeamZapP : MovingTrailBeam
+{
+	Default
+	{
+		MovingTrailBeam.Damage 1;
+		MovingTrailBeam.TrailActor "LightningTrailBeamZapP";
 	}
 }
 
