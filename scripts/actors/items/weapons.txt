@@ -264,7 +264,7 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 	action void DoCannon()
 	{
 		Actor origin = self;
-		if (origin && ShermanPlayer(origin) && ShermanPlayer(origin).turret && US_ShermanTurret(ShermanPlayer(origin).turret).gun) { origin = US_ShermanTurret(ShermanPlayer(origin).turret).gun; }
+		if (origin && ShermanPlayer(origin) && ShermanPlayer(origin).turret && US_ShermanTurret(ShermanPlayer(origin).turret).gunspot) { origin = US_ShermanTurret(ShermanPlayer(origin).turret).gunspot; }
 
 		double angledelta = deltaangle(angle, origin.angle);
 		double pitchdelta = deltaangle(pitch, origin.pitch);

@@ -388,7 +388,7 @@ class ShermanPlayer : PlayerPawn
 			{
 				if (povcamera)
 				{
-					Vector3 povoffset = (48, -24, turret.height);
+					Vector3 povoffset = (48, -24, 48);
 
 					povcamera.angle = turret.angle;
 					povcamera.pitch = gun.pitch;
@@ -416,7 +416,7 @@ class ShermanPlayer : PlayerPawn
 				double modifier, pitchmodifier;
 
 				if (pitch < 0) { modifier = 48 * sin(-pitch); } // Aiming up moves the camera up so you can keep the aimpoint on screen
-				else { modifier = 64 * sin(pitch * 3); } // Aiming down actually moves the camera *up*, so that you can see the aimpoint over the top of the turret
+				else { modifier = 96 * sin(pitch * 3); } // Aiming down actually moves the camera *up*, so that you can see the aimpoint over the top of the turret
 
 				modifier += (turret.pitch > 0 ? 96 : 128) * sin(turret.pitch); // Move the camera up/down when going up/downhill
 				pitchmodifier = (turret.pitch > 0 ? -15 : 10) * sin(turret.pitch); // Pitch the camera up/down when going up/downhill

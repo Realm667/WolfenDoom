@@ -396,7 +396,7 @@ class TankBase : VehicleBase
 			if (wheeled) { DoMove(); }
 		}
 
-		if (!target || !CheckSight(target, SF_SEEPASTBLOCKEVERYTHING | SF_SEEPASTSHOOTABLELINES))
+		if (!target || (!CheckSight(target, SF_SEEPASTBLOCKEVERYTHING | SF_SEEPASTSHOOTABLELINES) && !target.player))
 		{
 			missiletimeout = 35;
 			bullettimeout = 35;
