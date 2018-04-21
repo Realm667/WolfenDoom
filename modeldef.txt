@@ -5470,7 +5470,29 @@ Model PanzerIVTreads
 
 	FrameIndex MDLA A 0 0
 
-//	Skin 0 "" // Alternate skin with offset tread pattern for simulated tread/tire movement
+	// Alternate skins with offset tread pattern for simulated tread/tire movement
+	SurfaceSkin 0 3 "panzerIV_tread2.jpg"
+	SurfaceSkin 0 4 "panzerIV_tread2.jpg"
+	SurfaceSkin 0 5 "panzer_hubback2.jpg"
+	SurfaceSkin 0 6 "panzer_hubback2.jpg"
+	SurfaceSkin 0 7 "panzer_hubmid2.jpg"
+	SurfaceSkin 0 8 "panzer_hubmid2.jpg"
+	SurfaceSkin 0 9 "panzer_hubmid2.jpg"
+	SurfaceSkin 0 10 "panzer_hubmid2.jpg"
+	SurfaceSkin 0 11 "panzer_hubmid2.jpg"
+	SurfaceSkin 0 12 "panzer_hubmid2.jpg"
+	SurfaceSkin 0 13 "panzer_hubmid2.jpg"
+	SurfaceSkin 0 14 "panzer_hubmid2.jpg"
+	SurfaceSkin 0 15 "panzer_hubmid2.jpg"
+	SurfaceSkin 0 16 "panzer_hubmid2.jpg"
+	SurfaceSkin 0 17 "panzer_hubmid2.jpg"
+	SurfaceSkin 0 18 "panzer_hubmid2.jpg"
+	SurfaceSkin 0 29 "panzer_hubmid2.jpg"
+	SurfaceSkin 0 20 "panzer_hubmid2.jpg"
+	SurfaceSkin 0 20 "panzer_hubmid2.jpg"
+	SurfaceSkin 0 22 "panzer_hubfront2.jpg"
+	SurfaceSkin 0 23 "panzer_hubfront2.jpg"
+
 	FrameIndex MDLA B 0 0
 }
 
@@ -5511,8 +5533,8 @@ Model DestroyedTank1
 	FrameIndex MDLA A 0 0
 }
 
-//KFZ 251 HalfTrack
-Model HalfTrackTreads
+//KFZ 251 Halftrack
+Model HalftrackTreads
 {
 	Path "models/"
 	Model 0 "kfz251_a.md3"
@@ -5522,10 +5544,28 @@ Model HalfTrackTreads
 	USEACTORPITCH
 	USEACTORROLL
 
+	// Hide the tires
+	SurfaceSkin 1 1 "clear.png"
+	SurfaceSkin 1 2 "clear.png"
+
 	FrameIndex MDLA A 0 0
 
-//	Skin 0 "" // Alternate skin with offset tread pattern for simulated tread/tire movement
+	// Alternate skin with offset tread pattern for simulated tread/tire movement
+	SurfaceSkin 1 6 "halftrack_tread2.png"
+	SurfaceSkin 1 3 "halftrack_base2.png"
+
 	FrameIndex MDLA B 0 0
+}
+
+Model HalftrackTire
+{
+	Path "models/"
+	Model 0 "kfz251_tire.md3"
+	Scale 1.1 1.1 1.1
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
 }
 
 Model HalftrackTurret //Turret & Cannon together
@@ -5570,7 +5610,11 @@ Model TigerTreads
 
 	FrameIndex MDLA A 0 0
 
-//	Skin 0 "" // Alternate skin with offset tread pattern
+	// Alternate skin with offset tread pattern
+	SurfaceSkin 0 1 "tiger_brush2.jpg"
+	SurfaceSkin 0 2 "tiger_tread2.png"
+	SurfaceSkin 0 3 "tiger_brush2.jpg"
+
 	FrameIndex MDLA B 0 0
 }
 
@@ -5623,17 +5667,32 @@ Model LightPanzerTreads
 {
 	Path "models/"
 	Model 0 "kfz222_a.md3"
-	Path "models/"
 	Model 1 "kfz222_b.md3"
 	USEACTORPITCH
 	USEACTORROLL
 
 	Offset -4.0 0.0 0.0
 
+	// Hide the tires...
+	SurfaceSkin 1 0 "clear.png"
+	SurfaceSkin 1 1 "clear.png"
+	SurfaceSkin 1 2 "clear.png"
+	SurfaceSkin 1 3 "clear.png"
+
 	FrameIndex MDLA A 0 0
 
 //	Skin 0 "" // Alternate skin with offset tread pattern
 	FrameIndex MDLA B 0 0
+}
+
+Model LightPanzerTire
+{
+	Path "models/"
+	Model 0 "kfz222_tire.md3"
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
 }
 
 Model LightPanzerTurret //Turret & Cannon together
@@ -5675,7 +5734,18 @@ Model T34Treads
 
 	FrameIndex MDLA A 0 0
 
-//	Skin 0 "" // Alternate skin with offset tread pattern
+	// Alternate skin with offset tread pattern
+	SurfaceSkin 0 8 "T34_tread2.jpg"
+	SurfaceSkin 0 9 "T34_tread2.jpg"
+	SurfaceSkin 0 10 "T34_tread2.jpg"
+	SurfaceSkin 0 11 "T34_wheel_a2.jpg"
+	SurfaceSkin 0 12 "T34_wheel_a2.jpg"
+	SurfaceSkin 0 13 "T34_wheel_a2.jpg"
+	SurfaceSkin 0 14 "T34_wheel_a2.jpg"
+	SurfaceSkin 0 15 "T34_wheel_a2.jpg"
+	SurfaceSkin 0 16 "T34_wheel_a2.jpg"
+	SurfaceSkin 0 17 "T34_wheel_b2.jpg"
+	SurfaceSkin 0 18 "T34_wheel_b2.jpg"
 	FrameIndex MDLA B 0 0
 }
 

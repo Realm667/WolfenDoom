@@ -379,11 +379,13 @@ class TankBase : VehicleBase
 				{
 					treads.angle -= turnamt;
 					flags |= CHF_DONTMOVE;
+					if (InStateSequence(treads.CurState, treads.SpawnState) && treads.FindState("Move")) { treads.SetStateLabel("Move"); }
 				}
 				else if (diff > -turnamt)
 				{
 					treads.angle += turnamt;
 					flags |= CHF_DONTMOVE;
+					if (InStateSequence(treads.CurState, treads.SpawnState) && treads.FindState("Move")) { treads.SetStateLabel("Move"); }
 				}
 				else
 				{
@@ -781,6 +783,90 @@ class TankTreadsBase : Actor
 	}		
 }
 
+class PairedTire : Actor
+{
+	Vector3 spawnoffset;
+	bool turning;
+	int rotated;
+
+	Default
+	{
+		+NOGRAVITY
+		+NOINTERACTION
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		if (!master) { Destroy(); return; }
+
+		spawnoffset = pos - master.pos;
+
+		bSolid = false;
+		Species = master.Species;
+		bFriendly = master.bFriendly;
+		angle = master.angle + rotated;
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (globalfreeze || level.Frozen) { return; }
+
+		if (master)
+		{
+			Vector3 offset;
+
+			if (spawnoffset != (0, 0, 0))
+			{
+				Vector2 temp = RotateVector((spawnoffset.y, spawnoffset.z), master.roll);
+				offset = (spawnoffset.x, temp.x, temp.y);
+
+				temp = RotateVector((offset.x, offset.z), 360 - master.pitch);
+				offset = (temp.x, offset.y, temp.y);
+
+				temp = RotateVector((offset.x, offset.y), master.angle);
+				offset = (temp.x, temp.y, offset.z);
+			}
+
+			SetOrigin(master.pos + offset, true);
+
+			if (master.InStateSequence(master.CurState, master.FindState("Move")))
+			{
+				let base = master.master;
+				double speed = base ? base.speed : 1;
+
+				speed *= 2;
+
+				if (rotated >= 180) { speed *= -1; }
+
+				pitch += speed;
+			}
+
+			if (master.master && turning)
+			{
+				let base = master.master;
+				double dir = base ? base.speed / abs(base.speed) : 1;
+
+				double delta = deltaangle(master.angle, base.angle);
+
+				double destangle = clamp(master.angle + rotated + delta * dir, master.angle - 30 + rotated, master.angle + 30 + rotated);
+
+				angle = clamp(destangle, angle - 5, angle + 5);
+			}
+			else { angle = master.angle + rotated; }
+		}
+		else { Destroy(); }
+	}
+}
+
 // Base actor for tank turret
 class TankTurretBase : Actor
 {
@@ -1117,7 +1203,24 @@ class HalftrackTreads : TankTreadsBase
 		TankTreadsBase.GunSpotY -16;
 		TankTreadsBase.GunSpotZ 62;
 	}
+
+	override void PostBeginPlay()
+	{
+		Actor fl, fr;
+		bool sp;
+
+		while (!fl) { [sp, fl] = A_SpawnItemEx("HalftrackTire", 100.0, -36.0, 20.0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER); }
+		PairedTire(fl).turning = true;
+		PairedTire(fl).rotated = 180;
+
+		while (!fr) { [sp, fr] = A_SpawnItemEx("HalftrackTire", 100.0, 36.0, 20.0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER); }
+		PairedTire(fr).turning = true;
+
+		Super.PostBeginPlay();
+	}
 }
+
+class HalftrackTire : PairedTire {}
 
 class HalftrackTurret : TankTurretBase
 {
@@ -1260,7 +1363,29 @@ class LightPanzerTreads : TankTreadsBase
 		TankTreadsBase.Length 80;
 		TankTreadsBase.TurretClass "LightPanzerTurret";
 	}
+
+	override void PostBeginPlay()
+	{
+		Actor fl, fr, bl, br;
+		bool sp;
+
+		while (!fl) { [sp, fl] = A_SpawnItemEx("LightPanzerTire", 64.0, -35.0, 19.0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER); }
+		PairedTire(fl).turning = true;
+		PairedTire(fl).rotated = 180;
+
+		while (!fr) { [sp, fr] = A_SpawnItemEx("LightPanzerTire", 64.0, 35.0, 19.0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER); }
+		PairedTire(fr).turning = true;
+
+		while (!bl) { [sp, bl] = A_SpawnItemEx("LightPanzerTire", -56.0, -35.0, 19.0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER); }
+		PairedTire(bl).rotated = 180;
+
+		while (!br) { [sp, br] = A_SpawnItemEx("LightPanzerTire", -56.0, 35.0, 19.0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER); }
+
+		Super.PostBeginPlay();
+	}
 }
+
+class LightPanzerTire : PairedTire {}
 
 class LightPanzerTurret : TankTurretBase
 {
