@@ -565,9 +565,11 @@ ACTOR PlagueDoc1 : Guard
 
 ACTOR SSOccult : SSOfficer
 {
-	//$Title SS Occult Officer (no weapons)
+	//$Title SS Occult Officer (Random Flame/Electric Attacks, no weapons)
 	Obituary "$SSOCCULT"
 	Nazi.ZombieVariant "SSZombieOfficer"
+	DamageFactor "Electric", 0.5
+	DamageFactor "Fire", 0.5
 	States
 	{
 	Spawn:
@@ -641,5 +643,61 @@ ACTOR SSOccult : SSOfficer
 		"####" DDDD 1 A_Wander
 		"####" A 0 A_Look
 		Loop
+	}
+}
+
+ACTOR SSOccultFire : SSOccult
+{
+	//$Title SS Occult Officer (Flame Attacks, no weapons)
+	//$Sprite SSOCE0
+	Nazi.ZombieVariant "SSZombieOfficer"
+	States
+	{
+	Missile:
+		SSOC A 5 A_FaceTarget
+	Missile.Aimed:
+		SSOC EEDD 3 A_FaceTarget
+		"####" E 4 LIGHT(OTTOFIRE) A_SpawnProjectile("OccultBlazeFlames",0,0,0,CMF_CHECKTARGETDEAD)
+		"####" E 3
+		"####" D 4 LIGHT(OTTOFIRE) A_SpawnProjectile("OccultBlazeFlames2",0,0,0,CMF_CHECKTARGETDEAD)
+		"####" D 3
+		SSOF A 0
+		Goto See
+	}
+}
+
+ACTOR SSOccultElectric : SSOccultFire
+{
+	//$Title SS Occult Officer (Thunder Attacks, no weapons)
+	//$Sprite SSOCB0
+	Nazi.ZombieVariant "SSZombieOfficer"
+	States
+	{
+	Missile:
+		SSOC A 5 A_FaceTarget
+	Missile.Aimed:
+		SSOC ABB 6 A_FaceTarget
+		"####" CC 4 {
+			A_PlaySound("tesla/kill");
+			A_SpawnProjectile("TPortLightningWaveSpawner", 50, 0, 0, 2, 0);
+			A_SpawnProjectile("TPortLightningWaveSpawner", 50, 0, 180, 2, 0);
+			A_SpawnItemEx("TPortLightningWaveSpawner",0,0,50,0,0,0,0,0,160);
+			A_SpawnItemEx("TPortLightningWaveSpawner",0,0,50,0,0,0,0,0,160);
+			A_LightningAttack("LightningBeamPillarZap", 0, 0, 32, 0, -90, true);
+			A_LightningAttack("LightningBeamZap", 0, 0, 32, 0, 0, false);
+		}
+		"####" B 6
+		"####" CC 4 {
+			A_PlaySound("tesla/kill");
+			A_SpawnProjectile("TPortLightningWaveSpawner", 50, 0, 0, 2, 0);
+			A_SpawnProjectile("TPortLightningWaveSpawner", 50, 0, 180, 2, 0);
+			A_SpawnItemEx("TPortLightningWaveSpawner",0,0,50,0,0,0,0,0,160);
+			A_SpawnItemEx("TPortLightningWaveSpawner",0,0,50,0,0,0,0,0,160);
+			A_LightningAttack("LightningBeamPillarZap", 0, 0, 32, 0, -90, true);
+			A_LightningAttack("LightningBeamZap", 0, 0, 32, 0, 0, false);
+		}
+		"####" A 6
+		SSOF A 0
+		Goto See
 	}
 }

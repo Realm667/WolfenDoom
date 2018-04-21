@@ -51,7 +51,7 @@ ACTOR OccultBlazeFX1
 	States
 		{
 		Spawn:
-			BLAZ ABCDCBA 4
+			BLZF ABCDCBA 4
 			Stop
 		}
 }
@@ -89,7 +89,7 @@ ACTOR OccultBlazeFlames
 	States
 		{
 		Spawn:
-			BLAZ ABCDCBA 3 Bright A_SpawnProjectile("OccultBlazeFX1")
+			BLZF ABCDCBA 3 Bright A_SpawnProjectile("OccultBlazeFX1")
 			Loop
 		Death:
 			"####" EFGHIJ 3 BRIGHT
@@ -106,7 +106,7 @@ ACTOR OccultBlazeFlames2 : OccultBlazeFlames
 	States
 		{
 		Spawn:
-			BLAZ ABCDCBA 3 BRIGHT A_SpawnProjectile("OccultBlazeFX2")
+			BLZF ABCDCBA 3 BRIGHT A_SpawnProjectile("OccultBlazeFX2")
 			Loop
 		}
 }
