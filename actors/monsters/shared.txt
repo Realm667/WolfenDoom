@@ -44,7 +44,6 @@ ACTOR OccultBlazeFX1
 	Alpha 0.65
 	Projectile
 	+BLOODLESSIMPACT
-	+BRIGHT
 	+FLOORHUGGER
 	+THRUGHOST
 	+WINDTHRUST
@@ -77,7 +76,6 @@ ACTOR OccultBlazeFlames
 	Alpha 0.85
 	Projectile
 	+BLOODLESSIMPACT
-	+BRIGHT
 	+FLOORHUGGER
 	+THRUGHOST
 	+WINDTHRUST
@@ -89,10 +87,10 @@ ACTOR OccultBlazeFlames
 	States
 		{
 		Spawn:
-			BLZF ABCDCBA 3 Bright A_SpawnProjectile("OccultBlazeFX1")
+			BLZF ABCDCBA 3 A_SpawnProjectile("OccultBlazeFX1")
 			Loop
 		Death:
-			"####" EFGHIJ 3 BRIGHT
+			"####" EFGHIJ 3
 			"####" J 3 A_FadeOut (0.05)
 			Stop
 		}
@@ -106,7 +104,7 @@ ACTOR OccultBlazeFlames2 : OccultBlazeFlames
 	States
 		{
 		Spawn:
-			BLZF ABCDCBA 3 BRIGHT A_SpawnProjectile("OccultBlazeFX2")
+			BLZF ABCDCBA 3 A_SpawnProjectile("OccultBlazeFX2")
 			Loop
 		}
 }
