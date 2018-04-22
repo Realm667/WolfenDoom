@@ -5460,6 +5460,23 @@ Model ZeppelinBridge
 
 //3d enemies - ozy81
 //Panther Panzer IV
+Model SSTank1 // Just for GZDB
+{
+	Path "models/"
+	Model 0 "panzerIV_a.md3"
+	Model 1 "panzerIV_b.md3"
+	Model 2 "panzerIV_c.md3"
+	Model 3 "panzerIV_d.md3"
+	Scale 0.9 0.9 0.9
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+	FrameIndex MDLA A 1 0
+	FrameIndex MDLA A 2 0
+	FrameIndex MDLA A 3 0
+}
+
 Model PanzerIVTreads
 {
 	Path "models/"
@@ -5534,11 +5551,25 @@ Model DestroyedTank1
 }
 
 //KFZ 251 Halftrack
+Model SSTank2 // Just for GZDB
+{
+	Path "models/"
+	Model 0 "kfz251_a.md3"
+	Model 1 "kfz251_b.md3"
+	Model 2 "kfz251_c.md3"
+	Scale 1.1 1.1 1.1
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+	FrameIndex MDLA A 1 0
+	FrameIndex MDLA A 2 0
+}
+
 Model HalftrackTreads
 {
 	Path "models/"
 	Model 0 "kfz251_a.md3"
-	Path "models/"
 	Model 1 "kfz251_b.md3"
 	Scale 1.1 1.1 1.1
 	USEACTORPITCH
@@ -5595,11 +5626,27 @@ Model DestroyedTank2
 }
 
 //Tiger I Panzer
+Model SSTank3 // Just for GZDB
+{
+	Path "models/"
+	Model 0 "tiger_a.md3"
+	Model 1 "tiger_b.md3"
+	Model 2 "tiger_c.md3"
+	Model 3 "tiger_d.md3"
+	Scale 0.9 0.9 0.9
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+	FrameIndex MDLA A 1 0
+	FrameIndex MDLA A 2 0
+	FrameIndex MDLA A 3 0
+}
+
 Model TigerTreads
 {
 	Path "models/"
 	Model 0 "tiger_a.md3"
-	Path "models/"
 	Model 1 "tiger_b.md3"
 	Scale 0.9 0.9 0.9
 	Offset -8 0 0
@@ -5663,6 +5710,22 @@ Model DestroyedTank3
 }
 
 //Light Panzer KFZ-222
+Model SSTank4 // Just for GZDB
+{
+	Path "models/"
+	Model 0 "kfz222_a.md3"
+	Model 1 "kfz222_b.md3"
+	Model 2 "kfz222_c.md3"
+	USEACTORPITCH
+	USEACTORROLL
+
+	Offset -4.0 0.0 0.0
+
+	FrameIndex MDLA A 0 0
+	FrameIndex MDLA A 1 0
+	FrameIndex MDLA A 2 0
+}
+
 Model LightPanzerTreads
 {
 	Path "models/"
@@ -5722,6 +5785,21 @@ Model DestroyedTank4
 }
 
 //T-34 Soviet Tank
+Model T34Tank // Just for GZDB
+{
+	Path "models/"
+	Model 0 "t34_a.md3"
+	Model 1 "t34_b.md3"
+	Model 2 "t34_c.md3"
+	Scale 1.1 1.1 1.1
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+	FrameIndex MDLA A 1 0
+	FrameIndex MDLA A 2 0
+}
+
 Model T34Treads
 {
 	Path "models/"
@@ -7011,5 +7089,21 @@ Model DebrisBottle2
 	FrameIndex MDLA A 0 0
 
 	Skin 0 "brown_t.png"
+	FrameIndex MDLA B 0 0
+}
+
+Model DebrisCorrugated
+{
+	USEACTORPITCH
+	USEACTORROLL
+
+	Path "models/debris"
+	Model 0 "corrugated.md3"
+
+	FrameIndex MDLA A 0 0
+
+	Path "textures/"
+
+	Skin 0 "barn_s01.png"
 	FrameIndex MDLA B 0 0
 }

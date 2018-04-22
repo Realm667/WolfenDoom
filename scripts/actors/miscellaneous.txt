@@ -271,6 +271,8 @@ class Debris : Actor
 	{
 		Height 32;
 		Radius 64;
+		MaxDropoffHeight 48;
+		MaxStepHeight 48;
 		+SOLID
 		+INVISIBLE
 	}
@@ -279,6 +281,9 @@ class Debris : Actor
 	{
 		scale.x = scale.x * Radius / 24;
 		scale.y = scale.y * Height / 40;
+
+		MaxStepHeight *= scale.x;
+		MaxDropoffHeight *= scale.x;
 
 		double spread = Radius * 1.25;
 
@@ -369,6 +374,7 @@ class Debris : Actor
 class DebrisBase : Actor
 {
 	int variants;
+	int user_variant;
 
 	Property VariantCount:variants;
 
@@ -390,11 +396,15 @@ class DebrisBase : Actor
 
 	override void PostBeginPlay()
 	{
-		frame = Random(0, variants - 1);
+		if (user_variant) { frame = user_variant; }
+		else { frame = Random(0, variants - 1); }
 
-		pitch = master ? FRandom(-15, -atan(master.Height / master.Radius)) : Random(0, -45);
-		roll = Random(-30, 30);
-		angle = master ? AngleTo(master) + Random(-45, 45) : Random(0, 259);
+		if (master)
+		{
+			pitch = FRandom(-15, -atan(master.Height / master.Radius));
+			roll = Random(-30, 30);
+			angle = AngleTo(master) + Random(-45, 45);
+		}
 
 		Super.PostBeginPlay();
 	}
@@ -404,7 +414,7 @@ class DebrisMound : Actor
 {
 	Default
 	{
-		Radius 32;
+		Radius 64;
 		DistanceCheck "scenelod";
 	}
 
@@ -430,8 +440,6 @@ class DebrisMound : Actor
 
 		if (master) { scale = master.scale; }
 
-		MaxStepHeight = 24 * scale.x;
-
 		double zoffset = VehicleBase.SetPitchRoll(self, Radius * (scale.x - 1), Radius * (scale.x - 1), 60, true);
 		SetOrigin((pos.xy, floorz - zoffset), false);
 
@@ -443,6 +451,10 @@ class DebrisChunk : DebrisBase
 {
 	Default
 	{
+		//$Category Props (Wolf3D)/Debris
+		//$Title Debris - Random Chunk
+		//$Color 3
+
 		DebrisBase.VariantCount 12;
 		DistanceCheck "scenelod";
 	}
@@ -460,6 +472,10 @@ class DebrisPipe : DebrisBase
 {
 	Default
 	{
+		//$Category Props (Wolf3D)/Debris
+		//$Title Debris - Pipe
+		//$Color 3
+
 		Mass 100;
 		DebrisBase.VariantCount 6;
 		DistanceCheck "scenelod";
@@ -477,6 +493,10 @@ class DebrisBeam : DebrisBase
 {
 	Default
 	{
+		//$Category Props (Wolf3D)/Debris
+		//$Title Debris - Wooden Beam
+		//$Color 3
+
 		Mass 150;
 		DistanceCheck "scenelod";
 	}
@@ -498,6 +518,10 @@ class DebrisGirder : DebrisBase
 {
 	Default
 	{
+		//$Category Props (Wolf3D)/Debris
+		//$Title Debris - Girder
+		//$Color 3
+
 		Mass 300;
 		DistanceCheck "scenelod";
 	}
@@ -514,6 +538,10 @@ class DebrisBrick : DebrisBase
 {
 	Default
 	{
+		//$Category Props (Wolf3D)/Debris
+		//$Title Debris - Brick
+		//$Color 3
+
 		DistanceCheck "scenelod";
 	}
 }
@@ -534,6 +562,20 @@ class DebrisBottle2 : DebrisBottle
 	Default
 	{
 		DistanceCheck "scenelod";
+	}
+}
+
+class DebrisCorrugated : DebrisBase
+{
+	Default
+	{
+		//$Category Props (Wolf3D)/Debris
+		//$Title Debris - Corrugated Metal
+		//$Color 3
+
+		Mass 10;
+		DistanceCheck "scenelod";
+		DebrisBase.VariantCount 2;
 	}
 }
 
@@ -578,5 +620,18 @@ class JunkPile3 : Debris
 		DropItem "Table8", 64;
 		DropItem "Bunk_Bed1", 64;
 		DropItem "WineBottle", 255, 5;
+	}
+}
+
+class JunkPile4 : Debris
+{
+	Default
+	{
+		//$Title Junk Pile (large, with corrugated sheets)
+		
+		Radius 32;
+		Height 32;
+		+SOLID
+		DropItem "DebrisCorrugated", 255, 2;
 	}
 }

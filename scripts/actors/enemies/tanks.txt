@@ -199,6 +199,7 @@ class TankBase : VehicleBase
 		Obituary "$TANKS";
 		Species "NaziTank";
 		MaxTargetRange 2048;
+		RenderStyle "None";
 		+AVOIDMELEE
 		+BOSS
 		+BOSSDEATH
@@ -224,7 +225,7 @@ class TankBase : VehicleBase
 	States
 	{
 		Spawn:
-			TNT1 A 10 A_Look();
+			MDLA A 10 A_Look();
 			Loop;
 		See:
 			TNT1 A 1 A_TankChase();
@@ -808,6 +809,8 @@ class PairedTire : Actor
 
 		spawnoffset = pos - master.pos;
 
+		spawnoffset = (RotateVector(spawnoffset.xy, -master.angle), spawnoffset.z);
+
 		bSolid = false;
 		Species = master.Species;
 		bFriendly = master.bFriendly;
@@ -1211,6 +1214,8 @@ class HalftrackTreads : TankTreadsBase
 		Actor fl, fr;
 		bool sp;
 
+		if (master) { angle = master.angle; }
+
 		while (!fl) { [sp, fl] = A_SpawnItemEx("HalftrackTire", 100.0, -36.0, 20.0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER); }
 		PairedTire(fl).turning = true;
 		PairedTire(fl).rotated = 180;
@@ -1370,6 +1375,8 @@ class LightPanzerTreads : TankTreadsBase
 	{
 		Actor fl, fr, bl, br;
 		bool sp;
+
+		if (master) { angle = master.angle; }
 
 		while (!fl) { [sp, fl] = A_SpawnItemEx("LightPanzerTire", 64.0, -35.0, 19.0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER); }
 		PairedTire(fl).turning = true;
