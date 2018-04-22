@@ -820,6 +820,8 @@ class PairedTire : Actor
 
 		if (globalfreeze || level.Frozen) { return; }
 
+		scale.x = default.scale.x / level.pixelstretch; // Forceably correct skewed models introduced by pixel ratio settings
+
 		if (master)
 		{
 			Vector3 offset;
