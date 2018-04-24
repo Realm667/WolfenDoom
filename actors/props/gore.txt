@@ -601,11 +601,29 @@ ACTOR PrisonerMaleHang3 : HungBody
 
 ACTOR HangingPara1 : HungBody
 {
-	//$Title Hanging Marine Paratrooper (random - place 3d parachute for better effect)
-	//$Sprite PARTA0
+	//$Title Hanging Marine Paratrooper (long rope, random)
+	//$Sprite PARLA0
 	Radius 8
-	Height 56
+	Height 128
 	Scale 0.67
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5)
+		PARL A -1
+		PARL B -1
+		PARL C -1
+		PARL D -1
+		PARL E -1
+		Stop
+	}
+}
+
+ACTOR HangingPara2 : HangingPara1
+{
+	//$Title Hanging Marine Paratrooper (short rope, random)
+	//$Sprite PARTA0
+	Height 56
 	States
 	{
 	Spawn:
