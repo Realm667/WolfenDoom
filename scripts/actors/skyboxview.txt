@@ -44,12 +44,6 @@ class SkyViewPointStatic : SkyViewPoint
 			mo.anchor = it.Next();
 		}
 
-		if (!mo.anchor)
-		{
-			console.printf("WARNING: Skybox anchor with TID %i not found!", anchorid);
-			mo.anchor = mo.base; // Use the anchor spot as the origin if there is one, otherwise fall back to player spawn position
-		}
-
 		mo.base = null;
 
 		// Iterate through all of the possible players in the game
@@ -61,6 +55,12 @@ class SkyViewPointStatic : SkyViewPoint
 				if (!mo.base)  // Set the skybox to follow the first player who is in the game
 				{
 					mo.base = players[i].camera;
+
+					if (!mo.anchor)
+					{
+						mo.anchor = Spawn("SkyViewPointAnchor", players[i].mo.pos); // Use player's position as a fallback anchor point if no anchor is in place
+					}
+
 					mo.heightoffset = mo.SpawnPoint.z - mo.anchor.pos.z - 17.25; // To match normal skybox offset height
 				}
 				else  // If there are multiple players, don't move the skybox
