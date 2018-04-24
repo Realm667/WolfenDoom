@@ -1,5 +1,4 @@
 // Map checks/actions //
-
 script "MissionNumber" OPEN
 {
 	if(GetLevelInfo(LEVELINFO_LEVELNUM)<99)				//If it's not a secret mission or the intermap
@@ -97,7 +96,6 @@ Script "QuickKick" (void)
 	int timeout;
 
 	If (
-		//(CheckInventory("Health") < 30) ||
 		(CheckInventory("Stamina") < 30) ||
 		(GetSpeed(0) > 30) ||
 		(GetActorViewHeight(0) >> 16 < 56) ||
