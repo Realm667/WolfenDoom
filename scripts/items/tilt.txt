@@ -30,6 +30,7 @@ class BoATilt : CustomInventory
 	double deathTiltAngle;
 	double lastRoll;
 	double lastLevelTilt;
+	double lastPitch;
 
 	//===========================================================================
 	//
@@ -72,6 +73,11 @@ class BoATilt : CustomInventory
 				double offsetangle = deltaangle(leveltiltangle, owner.angle);
 
 				lastLevelTilt = sin(offsetangle) * leveltilt;
+
+				// Level tilt pitch. Hopefully, this doesn't conflict with weapon recoil. - Talon1024
+				double curPitch = cos(offsetangle) * leveltilt;
+				Owner.A_SetPitch(Owner.pitch + (curPitch - lastPitch), SPF_INTERPOLATE);
+				lastPitch = curPitch;
 			}
 			else
 			{
