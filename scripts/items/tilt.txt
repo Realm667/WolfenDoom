@@ -208,11 +208,11 @@ class BoATilt : CustomInventory
 		{
 			// Stabilize tilt
 			lastRoll *= 0.75;
-
-			// Apply the sum of all rolling routines
-			// (including after stabilization)
-			Owner.A_SetRoll(lastRoll + lastLevelTilt, SPF_INTERPOLATE);
 		}
+
+		// Apply the sum of all rolling routines
+		// (including after stabilization)
+		Owner.A_SetRoll(lastRoll + lastLevelTilt, SPF_INTERPOLATE);
 	}
 
 	override void Tick(void)
