@@ -120,39 +120,6 @@ ACTOR Medikit_Fullhealth : Health //needed by Halderman on HQs
 	}
 }
 
-// Re-written from scratch to limit the amount the player can buy from the shop, and to not completely restore the player's health. - Talon1024
-ACTOR VitalitySerum : CustomInventory
-{
-	//$Category Health (Wolf3D)
-	//$Title Vitality Serum (max+5)
-	//$Color 6
-	Radius 20
-	Scale 0.45
-	Inventory.MaxAmount 10
-	Inventory.PickupMessage "$SERUM"
-	+INVENTORY.IGNORESKILL
-	+INVENTORY.UNTOSSABLE
-	+COUNTITEM
-	States
-	{
-		Spawn:
-			VSRM ABC 6
-			Loop
-		Pickup:
-			VSRM A 0
-			{
-				if (CountInv("VitalitySerum") < 10) {
-					ACS_NamedExecuteAlways("VSerum Max Health Boost");
-				}
-			}
-			Stop
-		Use:
-			// Does nothing except prevent the item from disappearing from the player's inventory.
-			VSRM A 0
-			Fail
-	}
-}
-
 ACTOR FieldKit : HealthPickup
 {
 	//$Category Health (Wolf3D)
