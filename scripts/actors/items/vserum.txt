@@ -1,0 +1,39 @@
+class VitalitySerum : Inventory
+{
+	int Boost;
+	Property Boost:Boost;
+
+	Default
+	{
+		//$Category Health (Wolf3D)
+		//$Title Vitality Serum (max+5)
+		//$Color 6
+		Radius 20;
+		Scale 0.45;
+		Inventory.MaxAmount 10;
+		Inventory.PickupMessage "$SERUM";
+		VitalitySerum.Boost 5;
+		+INVENTORY.IGNORESKILL;
+		+INVENTORY.UNDROPPABLE;
+		+INVENTORY.ISHEALTH;
+		+COUNTITEM;
+	}
+
+	States
+	{
+	Spawn:
+		VSRM ABC 6;
+		Loop;
+	}
+
+	override bool TryPickup(in out Actor toucher)
+	{
+		if (Super.TryPickup(toucher))
+		{
+			toucher.Stamina += Boost;
+			toucher.GiveBody(Boost);
+			return true;
+		}
+		return false;
+	}
+}
