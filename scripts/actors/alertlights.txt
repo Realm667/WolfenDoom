@@ -452,9 +452,11 @@ class StrobeEmitter : Actor
 	Color lightcolor;
 	double lightradius;
 	Class<Actor> light;
+	double range;
 
 	Property LightColor:lightcolor;
 	Property LightRadius:lightradius;
+	Property Range:range;
 
 	Default
 	{
@@ -465,6 +467,7 @@ class StrobeEmitter : Actor
 		+SPAWNCEILING
 		StrobeEmitter.LightRadius 48;
 		StrobeEmitter.LightColor 0xFFFFFF;
+		StrobeEmitter.Range 1024;
 	}
 
 	States
@@ -478,13 +481,13 @@ class StrobeEmitter : Actor
 	{
 		Super.Tick();
 
-		if (globalfreeze || level.Frozen) { return; }
+		if (globalfreeze || level.Frozen || CheckSightOrRange(range * 1.5)) { return; }
 
-		LineTrace(angle, 1024, 35.0, TRF_THRUHITSCAN | TRF_THRUACTORS, 0.0, 0.0, 0.0, trace1);
+		LineTrace(angle, range, 35.0, TRF_THRUHITSCAN | TRF_THRUACTORS, 0.0, 0.0, 0.0, trace1);
 		while (!light1)
 		{
 			light1 = Spawn("StrobeLight", trace1.HitLocation);
-			light1.master = self;
+			light1.master = master;
 			light1.args[DynamicLight.LIGHT_RED] = lightcolor.r;
 			light1.args[DynamicLight.LIGHT_GREEN] = lightcolor.g;
 			light1.args[DynamicLight.LIGHT_BLUE] = lightcolor.b;
@@ -492,11 +495,11 @@ class StrobeEmitter : Actor
 		light1.SetOrigin(trace1.HitLocation, true);
 		light1.args[DynamicLight.LIGHT_INTENSITY] = clamp(int(lightRadius * trace1.Distance / 256), 24, 128);
 
-		LineTrace(angle + 180, 1024, 35.0, TRF_THRUHITSCAN | TRF_THRUACTORS, 0.0, 0.0, 0.0, trace2);
+		LineTrace(angle + 180, range, 35.0, TRF_THRUHITSCAN | TRF_THRUACTORS, 0.0, 0.0, 0.0, trace2);
 		while (!light2)
 		{
 			light2 = Spawn("StrobeLight", trace2.HitLocation);
-			light2.master = self;
+			light2.master = master;
 			light2.args[DynamicLight.LIGHT_RED] = lightcolor.r;
 			light2.args[DynamicLight.LIGHT_GREEN] = lightcolor.g;
 			light2.args[DynamicLight.LIGHT_BLUE] = lightcolor.b;
@@ -508,10 +511,10 @@ class StrobeEmitter : Actor
 	}
 }
 
-class StrobeEmitterBlue : StrobeEmitter { Default { StrobeEmitter.LightColor 0x000066; } }
-class StrobeEmitterGreen : StrobeEmitter { Default { StrobeEmitter.LightColor 0x006600; } }
-class StrobeEmitterRed : StrobeEmitter { Default { StrobeEmitter.LightColor 0x660000; } }
-class StrobeEmitterYellow : StrobeEmitter { Default { StrobeEmitter.LightColor 0x663300; } }
+class StrobeEmitterBlue : StrobeEmitter { Default { StrobeEmitter.LightColor 0x0000CC; } }
+class StrobeEmitterGreen : StrobeEmitter { Default { StrobeEmitter.LightColor 0x00CC00; } }
+class StrobeEmitterRed : StrobeEmitter { Default { StrobeEmitter.LightColor 0xCC0000; } }
+class StrobeEmitterYellow : StrobeEmitter { Default { StrobeEmitter.LightColor 0xCC6600; } }
 
 class StrobeLight : DynamicLight
 {
