@@ -113,7 +113,7 @@ function int RecoverAxis(int total, int axis)
 		total = 0.0;
 
 		// Ensure the roll gets reset exactly to 1.0 as it's obvious when it's off.
-		if (axis == AXIS_ROLL) {
+		if (axis == AXIS_ROLL && !GetUserVariable(0, "leveltilt")) {
 			SetActorRoll(0, 1.0);
 		}
 	}
