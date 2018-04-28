@@ -30,6 +30,7 @@ class BoATilt : CustomInventory
 	double deathTiltAngle;
 	double lastRoll;
 	double lastLevelTilt;
+	double lastPitch;
 
 	//===========================================================================
 	//
@@ -55,6 +56,7 @@ class BoATilt : CustomInventory
 
 		// Shared variables we'll need later
 		double r, v;
+		double curRoll = 0, curLevelTilt = 0;
 
 		//===========================================================================
 		//
@@ -71,11 +73,16 @@ class BoATilt : CustomInventory
 				double leveltiltangle = BoAPlayer(owner).leveltiltangle;
 				double offsetangle = deltaangle(leveltiltangle, owner.angle);
 
-				lastLevelTilt = sin(offsetangle) * leveltilt;
+				curLevelTilt = sin(offsetangle) * leveltilt;
+
+				// Level tilt pitch. Hopefully, this doesn't conflict with weapon recoil. - Talon1024
+				double curPitch = cos(offsetangle) * leveltilt;
+				Owner.A_SetPitch(Owner.pitch + (curPitch - lastPitch), SPF_INTERPOLATE);
+				lastPitch = curPitch;
 			}
 			else
 			{
-				lastLevelTilt = 0;
+				curLevelTilt = 0;
 			}
 		}
 
@@ -97,7 +104,7 @@ class BoATilt : CustomInventory
 		}
 
 		// tilt!
-		lastRoll += strafeInput;
+		curRoll += strafeInput;
 
 		//===========================================================================
 		//
@@ -126,7 +133,7 @@ class BoATilt : CustomInventory
 		}
 
 		// tilt!
-		lastRoll += r;
+		curRoll += r;
 
 		//===========================================================================
 		//
@@ -155,7 +162,7 @@ class BoATilt : CustomInventory
 		}
 
 		// tilt!
-		lastRoll += r;
+		curRoll += r;
 
 		//===========================================================================
 		//
@@ -190,7 +197,7 @@ class BoATilt : CustomInventory
 		}
 
 		// tilt!
-		lastRoll += r;
+		curRoll += r;
 
 		//===========================================================================
 		//
@@ -198,15 +205,17 @@ class BoATilt : CustomInventory
 		//
 		//===========================================================================
 
-		if (abs(lastRoll) > 0.000001)
+		if (abs(curRoll) > 0.000001)
 		{
 			// Stabilize tilt
-			lastRoll *= 0.75;
-
-			// Apply the sum of all rolling routines
-			// (including after stabilization)
-			Owner.A_SetRoll(lastRoll + lastLevelTilt, SPF_INTERPOLATE);
+			curRoll *= 0.75;
 		}
+
+		// Apply the sum of all rolling routines
+		// (including after stabilization)
+		Owner.A_SetRoll(Owner.Roll + (curRoll - lastRoll) + (curLevelTilt - lastLevelTilt), SPF_INTERPOLATE);
+		lastLevelTilt = curLevelTilt;
+		lastRoll = curRoll;
 	}
 
 	override void Tick(void)

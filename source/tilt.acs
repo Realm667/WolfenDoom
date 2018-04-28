@@ -15,6 +15,9 @@ script "ChangeTilt" (int pitch, int angle, int speed, int override)
 {
 	if (override) { leveltiltpitch = pitch * 1.0; leveltiltangle = angle * 1.0; Terminate; }
 
+	pitch = pitch % 360;
+	angle = angle % 360;
+
 	if (!speed) { speed = 5.0; }
 	int targetpitch = pitch * 1.0;
 	int targetangle = angle * 1.0;
@@ -59,29 +62,10 @@ script "SetTilt" (int pitch, int angle)
 	ACS_NamedExecute("ChangeTilt", 0, pitch, angle, 999999999);
 }
 
-int True_Pitch[MAX_PLAYERS];
-
-Script "InitilizeTilt" ENTER
-{
-	True_Pitch[PlayerNumber()] = GetActorPitch(0);
-}
-
-// This is the main loop that controls the player view pitch alterations
-// The handling of changing the player's roll and 'gravity' effect has been moved into the main Tilt++ code in ZScript.
-//script "leveltilt" ENTER
+// The ACS scripts here handle the smooth transitions to new tilt pitch/angles
+// The BoATilt item makes the actual changes to the player's view
 function void DoTiltEffect(void)
 {
-	int p = PlayerNumber();
-
-	// Only pitch adjustments are being made here!
-	int angle = GetActorAngle(0) - leveltiltangle / 360;
-
-	True_Pitch[p] -= GetPlayerInput(-1, INPUT_PITCH);
-
-	int fixedpitch = FixedDiv(leveltiltpitch, 360.0);
-
-	SetActorPitch(0, True_Pitch[p] + FixedMul(cos(angle), fixedpitch));
-
 	SetUserVariable(0, "leveltilt", leveltiltpitch);
 	SetUserVariable(0, "leveltiltangle", leveltiltangle);
 }
