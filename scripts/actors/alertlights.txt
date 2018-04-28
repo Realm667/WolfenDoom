@@ -443,3 +443,89 @@ class SpotlightBeamLight : SpotLightAttenuated
 		}
 	}
 }
+
+class StrobeEmitter : Actor
+{
+	transient FLineTraceData trace1;
+	transient FLinetraceData trace2;
+	Actor light1, light2;
+	Color lightcolor;
+	double lightradius;
+	Class<Actor> light;
+
+	Property LightColor:lightcolor;
+	Property LightRadius:lightradius;
+
+	Default
+	{
+		Radius 16;
+		Height 16;
+		+DONTSPLASH
+		+NOGRAVITY
+		+SPAWNCEILING
+		StrobeEmitter.LightRadius 48;
+		StrobeEmitter.LightColor 0xFFFFFF;
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 1;
+			Loop;
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (globalfreeze || level.Frozen) { return; }
+
+		LineTrace(angle, 1024, 35.0, TRF_THRUHITSCAN | TRF_THRUACTORS, 0.0, 0.0, 0.0, trace1);
+		while (!light1)
+		{
+			light1 = Spawn("StrobeLight", trace1.HitLocation);
+			light1.master = self;
+			light1.args[DynamicLight.LIGHT_RED] = lightcolor.r;
+			light1.args[DynamicLight.LIGHT_GREEN] = lightcolor.g;
+			light1.args[DynamicLight.LIGHT_BLUE] = lightcolor.b;
+		}
+		light1.SetOrigin(trace1.HitLocation, true);
+		light1.args[DynamicLight.LIGHT_INTENSITY] = clamp(int(lightRadius * trace1.Distance / 256), 24, 128);
+
+		LineTrace(angle + 180, 1024, 35.0, TRF_THRUHITSCAN | TRF_THRUACTORS, 0.0, 0.0, 0.0, trace2);
+		while (!light2)
+		{
+			light2 = Spawn("StrobeLight", trace2.HitLocation);
+			light2.master = self;
+			light2.args[DynamicLight.LIGHT_RED] = lightcolor.r;
+			light2.args[DynamicLight.LIGHT_GREEN] = lightcolor.g;
+			light2.args[DynamicLight.LIGHT_BLUE] = lightcolor.b;
+		}
+		light2.SetOrigin(trace2.HitLocation, true);
+		light2.args[DynamicLight.LIGHT_INTENSITY] = clamp(int(lightRadius * trace2.Distance / 256), 24, 128);
+
+		angle += 10;		
+	}
+}
+
+class StrobeEmitterBlue : StrobeEmitter { Default { StrobeEmitter.LightColor 0x000066; } }
+class StrobeEmitterGreen : StrobeEmitter { Default { StrobeEmitter.LightColor 0x006600; } }
+class StrobeEmitterRed : StrobeEmitter { Default { StrobeEmitter.LightColor 0x660000; } }
+class StrobeEmitterYellow : StrobeEmitter { Default { StrobeEmitter.LightColor 0x663300; } }
+
+class StrobeLight : DynamicLight
+{
+	States
+	{
+		Spawn:
+			TNT1 A 1;
+			Loop;
+	}
+
+	override void Tick()
+	{
+		if (!master) { Destroy(); }
+
+		Super.Tick();
+	}
+}

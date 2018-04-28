@@ -3,7 +3,7 @@ class ShermanPlayer : PlayerPawn
 {
 	Actor treads, turret, turretcamera, povcamera, gun;
 	Actor ForcedHealthBar;
-	FLineTraceData cameratrace;
+	transient FLineTraceData cameratrace;
 	BoAFindHitPointTracer hittracer;
 	double sndvol;
 	Vector3 cameralocation;
