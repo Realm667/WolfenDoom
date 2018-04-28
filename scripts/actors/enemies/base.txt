@@ -1433,7 +1433,7 @@ class Nazi : Base
 			if (master && master is "WaveSpawner") { A_QueueCorpse(); } // Queue wave spawned corpses for removal
 		}
 
-		if (source && source != self) { target = source; }
+		if (source && source != self && source.bFriendly != bFriendly) { target = source; } // Target the source if it wasn't friendly
 
 		return damageamt; // Function returns amount of damage received by the actor
 	}
