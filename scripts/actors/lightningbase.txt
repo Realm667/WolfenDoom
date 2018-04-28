@@ -245,16 +245,36 @@ Class LightningBeam : Actor
 
 	actor ClosestMonster(void)
 	{
-		ThinkerIterator Finder = ThinkerIterator.Create("Actor", Thinker.STAT_DEFAULT);
 		Actor mo, closest;
-		while (mo = Actor(Finder.Next()))
-		{
-			if (mo == self || mo == origin || !mo.bShootable || mo.bDormant || !mo.bIsMonster) { continue; }
-			if (!origin.IsVisible(mo, true)) { continue; }
-			if (Distance3d(mo) > 256) { continue; }
-			if (closest && Distance3d(mo) > Distance3d(closest)) { continue; }
 
-			closest = mo;
+		if (master is "PlayerPawn" || master.bFriendly == true)
+		{
+			ThinkerIterator Finder = ThinkerIterator.Create("Actor", Thinker.STAT_DEFAULT);
+			while (mo = Actor(Finder.Next()))
+			{
+				if (mo == self || mo == origin || !mo.bShootable || mo.bDormant || !mo.bIsMonster) { continue; }
+				if (!origin.IsVisible(mo, true)) { continue; }
+				if (Distance3d(mo) > 256) { continue; }
+				if (closest && Distance3d(mo) > Distance3d(closest)) { continue; }
+
+				closest = mo;
+			}
+		}
+		else
+		{
+			for (int p = 0; p < MAXPLAYERS; p++)	
+			{ // Iterate through all of the players and find the closest one
+				mo = players[p].mo;
+
+				if (mo)
+				{
+					if (!mo.bShootable || mo.health <= 0) { continue; }
+					if (players[p].cheats & CF_NOTARGET) { continue; }
+					if (closest && Distance3d(mo) > Distance3d(closest)) { continue; }
+
+					closest = mo;
+				}
+			}
 		}
 
 		return closest;
