@@ -296,7 +296,9 @@ class AlarmPanel : SwitchableDecoration
 
 // Actor spawner with some parameters hard-coded, sneakable guards as default,
 //  and customized spawn locations, so that sneakables have a place to return
-//  to when they go back to idle
+//  to when they go back to idle.  
+// 
+// All Nazi enemies spawned by AlarmSpawners will be set as "sneakable" on spawn!
 class AlarmSpawner : ActorSpawner
 {
 	States
@@ -341,11 +343,19 @@ class AlarmSpawner : ActorSpawner
 
 					if (Nazi(guard))
 					{
-						if (Nazi(guard).user_sneakable) { Nazi(guard).BecomeAlerted(); }
 						Nazi(guard).activationgoal = goal;
-					}
 
-					guard.SetStateLabel("See");
+						if (!Nazi(guard).user_sneakable)
+						{
+							Nazi(guard).user_sneakable = true; // Always make enemies spawned by alarm points sneakable
+							guard.BeginPlay(); // Initialize sneakable handling
+						}
+						Nazi(guard).BecomeAlerted();
+					}
+					else
+					{
+						guard.SetStateLabel("See");
+					}
 				}
 				Spawns.Push(guard);
 			}

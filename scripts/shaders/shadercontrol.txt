@@ -50,7 +50,7 @@ class BlurShaderControl : ShaderControl {
 		}
 		else if (holdTarget)
 		{
-			alpha = alpha < 1.0 ? alpha += 0.057 : 1.0; // Fade the blur effect in over the course of roughly half a second
+			alpha = alpha < 1.0 ? alpha + 0.057 : 1.0; // Fade the blur effect in over the course of roughly half a second
 			amount--; // Remove one from inventory every tick
 		}
 	}

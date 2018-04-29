@@ -763,6 +763,7 @@ class Nazi : Base
 {
 	Actor activationgoal;
 	Actor body;
+	Actor eyes;
 	String DeathDamageType;
 	String zombievariant;
 	bool alerted;
@@ -777,6 +778,7 @@ class Nazi : Base
 	int user_incombat;
 	int user_static;
 	state AimState, HealState;
+	bool sp;
 
 	Property Healer:healflags;
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
@@ -1337,7 +1339,7 @@ class Nazi : Base
 		if (user_sneakable) {
 			bFriendly = True;
 			bNeverTarget = True; // A bit of a hack, but it works...  Will cause issues if FRIENDLY actors ever need to interact with sneakable actors
-			A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid);
+			[sp, eyes] = A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid);
 			ChangeStatNum(Thinker.STAT_DEFAULT - 5); // Make these tic before the alert lights for checking logic purposes
 		}
 		else if (SneakableActors()) // If there are sneakable actors in the level, no Nazi actors will be targetable - fixes targeting of non-sneakables by idle (friendly) sneakables
@@ -1488,7 +1490,7 @@ class Nazi : Base
 		Speed = Default.Speed;
 		reactiontime = 0; // Make the enemy respond to seeing the player right away
 		A_AlertMonsters(512); // Alert an extra-large radius
-		A_SpawnItemEx("SneakableGuardEyesAlerted", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid); // Spawn active guard eyes
+		[sp, eyes] = A_SpawnItemEx("SneakableGuardEyesAlerted", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid); // Spawn active guard eyes
 		if (target && target.GetSpecies() == GetSpecies()) { target = null; SetStateLabel("Spawn"); } // Don't go after same-species targets
 
 		if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); } // Go to See state and start chasing the player (or wandering if target wasn't set for some reason)
@@ -1498,13 +1500,15 @@ class Nazi : Base
 	{
 		if (health <= 0 || !bShootable) { return; }
 
+		alerted = false;
+
 		A_RemoveChildren(TRUE, RMVF_EVERYTHING, "None", "Eyes"); // Get rid of the active guard eyes
 		bFriendly = True;
 
 		goal = patrolgoal; // Restore any navigation goal if there was one set
 		target = patrolgoal;
 
-		A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid);
+		[sp, eyes] = A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid);
 
 		sprite = SpawnState.sprite;
 
@@ -1719,6 +1723,13 @@ class Nazi : Base
 					bChaseGoal = Default.bChaseGoal;
 					goal = null;
 				}
+			}
+
+			// If you're sneakable and there aren't any eyes spawned for some reason, spawn them...
+			if (user_sneakable && !eyes)
+			{
+				if (alerted) { alerted = true; BecomeAlerted(); }
+				else { BecomeIdle(); }
 			}
 		}
 
