@@ -63,6 +63,19 @@ ACTOR StatistAFA : StatistBarkeeper
 	}
 }
 
+ACTOR StatistSSAscher : StatistBarkeeper
+{
+	//$Title Sgt Ascher (SS Uniform)
+	Scale 0.67
+	-USESPECIAL
+	States
+	{
+	Spawn:
+		ASCH A -1
+		Stop
+	}
+}
+
 ACTOR StatistYevgeny : StatistBarkeeper
 {
 	//$Title Yevgeny (NPC)
