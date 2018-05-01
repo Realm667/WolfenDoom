@@ -51,18 +51,24 @@ ACTOR TMGuard
 	}
 }
 
-ACTOR TMGuardWithShadow : TMGuard
-{
-	//$Title Titlemap Soldier (shadow)
-}
-
-ACTOR TMDog
+ACTOR TMGuardWithShadow : BasicGuard
 {
 	//$Category Misc (Wolf3D)/Cutscenes
-	//$Title Titlemap Doge
+	//$Title Titlemap Soldier (with shadow)
 	Scale 0.65
 	+CLIENTSIDEONLY
 	+NOINTERACTION
+	States
+	{
+	Spawn:
+		MGR2 A -1
+		Stop
+	}
+}
+
+ACTOR TMDog : TMGuardWithShadow
+{
+	//$Title Titlemap Doge (with shadow)
 	States
 	{
 	Spawn:
@@ -225,6 +231,18 @@ ACTOR TMTankPanzer3 : TMFanfare1
 	//$Category Misc (Wolf3D)/Cutscenes
 	//$Title Fanfare Tank Panzer III
 	Scale 1.0
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
+}
+
+ACTOR TMSSTank1 : TMBlazko
+{
+	//$Category Misc (Wolf3D)/Cutscenes
+	//$Title Titlemap Panther Panzer IV
 	States
 	{
 	Spawn:
