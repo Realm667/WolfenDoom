@@ -1,0 +1,474 @@
+class Debris : Actor
+{
+	int moundstyle;
+
+	Property MoundStyle:moundstyle;
+
+	Default
+	{
+		Height 32;
+		Radius 64;
+		MaxDropoffHeight 48;
+		MaxStepHeight 48;
+		+SOLID
+		+INVISIBLE
+		Debris.MoundStyle 0;
+
+		// Hijack DropItem list for ease of customization.  
+		// If the chance (second parameter) is negative, it's treated as a chance of 255, 
+		// with the value used to bound a Random(x, y) call for the amount.  So, the 
+		// DebrisGirder actor here will spawn between 2 and 4 times, the pipe between 2 and 10, etc.
+		// Note that the random amount also scale with size, so if you make something with a 
+		// large radius (e.g., 64), or you scale the actor up in-editor, you'll end up with 
+		// that scale amount more items spawned (to fill space).
+		DropItem "DebrisGirder", -2, 4;
+		DropItem "DebrisPipe", -2, 10;
+		DropItem "DebrisBeam", -10, 15;
+		DropItem "DebrisBrick", -10, 15;
+		DropItem "DebrisChunk", -10, 15;
+		DropItem "DebrisBottle", 0, 2;
+		DropItem "DebrisBottle2", 0, 2;
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		scale.x = scale.x * Radius / 24;
+		scale.y = scale.y * Height / 40;
+
+		A_SetSize(Radius * scale.x, Height * scale.y);
+
+		double spread = min(Radius * 2, Radius + 32);
+
+		MaxStepHeight *= scale.x;
+		MaxDropoffHeight *= scale.x;
+
+		Actor mound = Spawn("DebrisMound", pos);
+		if (mound)
+		{
+			mound.master = self;
+			mound.frame = clamp(moundstyle, 0, 2);
+		}
+
+		DropItem drops = GetDropItems();
+		DropItem item = drops;
+
+		if (item)
+		{
+			while (item)
+			{
+				String itemName = String.Format("%s", item.Name);
+				if (itemName.Length() > 0 && item.Name != 'None')
+				{
+					Class<Actor> cls = item.Name;
+
+					if (cls)
+					{
+						Class<Actor> rep = GetReplacement(cls);
+						if (rep) { cls = rep; }
+					}
+
+					if (cls)
+					{
+						int amt = int(max(item.Amount, 1) * scale.x);
+						int pr = item.probability;
+
+						if (pr < 1)
+						{
+							amt = Random(int(-pr * scale.x), amt);
+							pr = 255;
+						}
+
+						SpawnRandom(item.Name, pr, max(amt, 1), spread * 1.1, spread * 0.75);
+					}
+					else { A_Log(TEXTCOLOR_RED .. "Unknown item class ".. item.Name .." attempted to drop from a debris spawner\n"); }
+				}
+
+				item = item.Next;
+			}
+		}
+
+		Super.PostBeginPlay();
+	}
+
+	void SpawnRandom(Class<Actor> debrisclass, int probability = 255, int amt = 1, float distance = -1, float mindistance = 0)
+	{
+		if (amt <= 0) { return; }
+
+		if (distance < 0) { distance = Radius; }
+
+		for (int c = 0; c < amt; c++)
+		{
+			if (Random() < probability)
+			{
+				double spawnangle = Random(0, 359);
+				double spawndist = mindistance + FRandom(0, distance - mindistance);
+			
+				Vector2 spawnpos = AngleToVector(spawnangle, spawndist);
+
+				Actor mo = Spawn(debrisclass, pos + (spawnpos, height));
+				if (mo)
+				{
+					mo.master = self;
+					if (DebrisBase(mo) && DebrisBase(mo).doscale) { mo.scale = FRandom(0.25, 1.5) * mo.scale; }
+
+					if (!(mo is "DebrisBase"))
+					{
+						mo.bRollSprite = true;
+						mo.pitch = FRandom(-15, -atan(Height / spawndist)); // Match the average height of the spawned items to the height of the pile
+						mo.roll = Random(-30, 30);
+						mo.angle = mo.AngleTo(self) + Random(-35, 35);
+						mo.SetOrigin((mo.pos.xy, floorz), false);
+					
+						if (Random() < 128 && mo.FindState("Death")) { mo.SetStateLabel("Death"); }
+					}
+				}
+			}
+		}
+	}
+}
+
+class DebrisBase : Actor
+{
+	int variants;
+	int user_variant;
+	bool doscale;
+	double maxscale;
+
+	Property VariantCount:variants;
+	Property ShouldScale:doscale;
+
+	Default
+	{
+		Height 4;
+		Radius 2;
+		Mass 50;
+		DebrisBase.ShouldScale true;
+		DebrisBase.VariantCount 1;
+		DistanceCheck "scenelod";
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		if (user_variant) { frame = user_variant; }
+		else { frame = Random(0, variants - 1); }
+
+		maxscale = 1.5;
+
+		if (master)
+		{
+			double dist = Distance2D(master);
+
+			pitch = FRandom(-15, -atan(master.Height / dist));
+			roll = Random(-30, 30);
+			angle = AngleTo(master) + Random(-35, 35);
+
+			maxscale = min((dist * 2.5) / Radius * scale.x, 3.5);
+		}
+
+		Super.PostBeginPlay();
+	}
+}
+
+class DebrisMound : Actor
+{
+	Default
+	{
+		Radius 64;
+		DistanceCheck "scenelod";
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		if (
+			floorpic == TexMan.CheckForTexture("CNCR_G99", TexMan.Type_Any) ||
+			floorpic == TexMan.CheckForTexture("textures/CNCR_G99.png", TexMan.Type_Any) ||
+			floorpic == TexMan.CheckForTexture("DEBR_G01", TexMan.Type_Any) ||
+			floorpic == TexMan.CheckForTexture("textures/DEBR_G01.png", TexMan.Type_Any) ||
+			floorpic == TexMan.CheckForTexture("DEBR_G02", TexMan.Type_Any) ||
+			floorpic == TexMan.CheckForTexture("textures/DEBR_G02.png", TexMan.Type_Any)
+		)
+		{  // Only spawn the mound if we're not on a debris pile texture already
+			Destroy();
+			return;
+		}
+
+		if (master) { scale = master.scale; }
+
+		double zoffset = VehicleBase.SetPitchRoll(self, Radius * (scale.x - 1), Radius * (scale.x - 1), 60, true);
+		SetOrigin((pos.xy, floorz - zoffset), false);
+
+		Super.PostBeginPlay();
+	}
+}
+
+class DebrisChunk : DebrisBase
+{
+	Default
+	{
+		//$Category Props (Wolf3D)/Debris
+		//$Title Debris - Random Chunk
+		//$Color 3
+
+		DebrisBase.VariantCount 12;
+		DebrisBase.ShouldScale false;
+		DistanceCheck "scenelod";
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		bNoGravity = true;
+		SetOrigin((pos.xy, floorz + 8 * cos(pitch) - 8 * cos(roll)), false);
+	}
+}
+
+class DebrisPipe : DebrisBase
+{
+	Default
+	{
+		//$Category Props (Wolf3D)/Debris
+		//$Title Debris - Pipe
+		//$Color 3
+
+		Radius 140;
+		Mass 100;
+		DebrisBase.VariantCount 6;
+		DistanceCheck "scenelod";
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		scale *= FRandom(0.5, maxscale);
+	}
+}
+
+class DebrisBeam : DebrisBase
+{
+	Default
+	{
+		//$Category Props (Wolf3D)/Debris
+		//$Title Debris - Wooden Beam
+		//$Color 3
+
+		Radius 128;
+		Mass 150;
+		DebrisBase.VariantCount 5;
+		DistanceCheck "scenelod";
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		scale.x *= FRandom(0.75, maxscale);
+		scale.y *= FRandom(0.5, maxscale);
+	}
+}
+
+class DebrisGirder : DebrisBase
+{
+	Default
+	{
+		//$Category Props (Wolf3D)/Debris
+		//$Title Debris - Girder
+		//$Color 3
+
+		Radius 116;
+		Mass 300;
+		DebrisBase.VariantCount 3;
+		DistanceCheck "scenelod";
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		scale *= FRandom(0.5, min(maxscale, 2.5));
+	}
+}
+
+class DebrisBrick : DebrisBase 
+{
+	Default
+	{
+		//$Category Props (Wolf3D)/Debris
+		//$Title Debris - Brick
+		//$Color 3
+
+		Radius 14;
+		DebrisBase.ShouldScale false;
+		DistanceCheck "scenelod";
+	}
+}
+
+class DebrisBottle : DebrisChunk
+{
+	Default
+	{
+		DebrisBase.ShouldScale false;
+		DebrisBase.VariantCount 2;
+		DistanceCheck "scenelod";
+		RenderStyle "Translucent";
+		Alpha 0.95;
+	}
+}
+
+class DebrisBottle2 : DebrisBottle
+{
+	Default
+	{
+		DistanceCheck "scenelod";
+	}
+}
+
+class DebrisCorrugated : DebrisBase
+{
+	Default
+	{
+		//$Category Props (Wolf3D)/Debris
+		//$Title Debris - Corrugated Metal
+		//$Color 3
+
+		Radius 70;
+		Mass 10;
+		DistanceCheck "scenelod";
+		DebrisBase.ShouldScale false;
+		DebrisBase.VariantCount 2;
+	}
+}
+
+class JunkPile1 : Debris
+{
+	Default
+	{
+		//$Category Props (Wolf3D)/Street
+		//$Title Junk Pile (middle)
+		//$Color 3
+	
+		Radius 25;
+		Height 20;
+		+SOLID
+
+		DropItem "DebrisGirder", -2, 4;
+		DropItem "DebrisPipe", -2, 10;
+		DropItem "DebrisBeam", -10, 15;
+		DropItem "DebrisBrick", -10, 15;
+		DropItem "DebrisChunk", -10, 15;
+		DropItem "DebrisBottle", 0, 2;
+		DropItem "DebrisBottle2", 0, 2;
+	}
+}
+
+class JunkPile2 : Debris
+{
+	Default
+	{
+		//$Title Junk Pile (large)
+		
+		Radius 28;
+		Height 28;
+		+SOLID
+
+		DropItem "DebrisGirder", -2, 4;
+		DropItem "DebrisPipe", -2, 10;
+		DropItem "DebrisBeam", -10, 15;
+		DropItem "DebrisBrick", -10, 15;
+		DropItem "DebrisChunk", -10, 15;
+		DropItem "DebrisBottle", 0, 2;
+		DropItem "DebrisBottle2", 0, 2;
+	}
+}
+
+class JunkPile3 : Debris
+{
+	Default
+	{
+		//$Title Junk Pile (small, with sprites)
+		
+		Radius 24;
+		Height 8;
+		+SOLID
+
+		DropItem "DebrisGirder", -2, 4;
+		DropItem "DebrisPipe", -2, 10;
+		DropItem "DebrisBeam", -10, 15;
+		DropItem "DebrisBrick", -10, 15;
+		DropItem "DebrisChunk", -10, 15;
+		DropItem "DebrisBottle", 0, 2;
+		DropItem "DebrisBottle2", 0, 2;
+		DropItem "Radiator_Short", 128;
+		DropItem "Tires", 128;
+		DropItem "Chair3", 64;
+		DropItem "Table8", 64;
+		DropItem "Bunk_Bed1", 64;
+		DropItem "WineBottle", 255, 5;
+	}
+}
+
+class JunkPile4 : Debris
+{
+	Default
+	{
+		//$Title Junk Pile (large, with corrugated sheets)
+		
+		Radius 32;
+		Height 32;
+		+SOLID
+
+		DropItem "DebrisGirder", -2, 4;
+		DropItem "DebrisPipe", -2, 10;
+		DropItem "DebrisBeam", -10, 15;
+		DropItem "DebrisBrick", -10, 15;
+		DropItem "DebrisChunk", -10, 15;
+		DropItem "DebrisBottle", 0, 2;
+		DropItem "DebrisBottle2", 0, 2;
+		DropItem "DebrisCorrugated", 255, 2;
+	}
+}
+
+class JunkPileAstro : Debris
+{
+	Default
+	{
+		//$Title Junk Pile (Astrostein)
+		
+		Radius 28;
+		Height 28;
+		+SOLID
+		Debris.MoundStyle 2; // Trash heap
+
+		DropItem "DebrisGirder", -2, 4;
+		DropItem "DebrisPipe", -2, 10;
+		DropItem "DebrisBeam", -10, 15;
+		DropItem "DebrisChunk", -10, 15;
+		DropItem "PMetal1", 0, 2;
+		DropItem "PMetal2", 0, 2;
+		DropItem "PMetal3", 0, 2;
+		DropItem "PMetal4", 0, 2;
+		DropItem "PMetal5", 0, 2;
+	}
+}
