@@ -9,6 +9,7 @@ class InventoryClearHandler : EventHandler
 		// Force reset of certain shader effects
 		players[e.PlayerNumber].mo.A_SetInventory("OldVideoShaderControl", 1);
 		players[e.PlayerNumber].mo.A_SetInventory("BlurShaderControl", 1);
+		players[e.PlayerNumber].mo.A_SetInventory("HeatShaderControl", 1);
 
 		// Ed the Bat's updated weapon stripping
 		if(level.levelnum!=99)

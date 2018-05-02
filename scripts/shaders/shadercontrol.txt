@@ -55,3 +55,28 @@ class BlurShaderControl : ShaderControl {
 		}
 	}
 }
+
+class HeatShaderControl : ShaderControl
+{
+	int holdTarget;
+
+	Default
+	{
+		ShaderControl.Shader "heatshader";
+	}
+
+	override void DoEffect()
+	{
+		if (amount > 1) { holdTarget = level.time + amount; } // Set hold time based on amount in inventory
+
+		if (holdTarget && level.time > holdTarget) // If we've hit the hold time, remove the effect
+		{
+			amount = 1;
+			holdTarget = 0;
+		}
+		else if (holdTarget)
+		{
+			amount = max(amount - 8, 1);
+		}
+	}
+}

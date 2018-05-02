@@ -723,6 +723,13 @@ HardwareShader PostProcess scene {
 	Uniform float alpha
 }
 
+HardwareShader PostProcess scene {
+	Name "heatshader"
+	Shader "shaders/heat.fp" 330
+	Uniform float amount
+	Uniform float timer
+}
+
 // Old video texture
 HardwareShader Texture "textures/shader/oldvideo.png" {
 	Shader "shaders/OldVideoTx2.fp"

@@ -264,3 +264,61 @@ class ActorPositionable : Actor
 		Super.Tick();
 	}
 }
+
+class HeatEffectGiver : Actor
+{
+	Array<Actor> Activators;
+
+	Default
+	{
+		Radius 128;
+		Scale 4.0;
+		+FLATSPRITE
+		+SPECIAL
+		RenderStyle "None";
+	}
+
+	States
+	{
+		Spawn:
+			PAO1 A 35;
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		A_SetSize(Radius * scale.x + 32); // Resize to the scaled size, plus 32 units to allow for a border on the edges where the value will properly be zero.
+
+		Super.PostBeginPlay();
+	}
+
+	override void Touch(Actor toucher)
+	{
+		if (Activators.Find(toucher) == Activators.Size()) { Activators.Push(toucher); }
+	}
+
+	override void Tick()
+	{
+		if (level.time % 5 == 0)
+		{
+			for (int i = 0; i < Activators.Size(); i++)
+			{
+				Actor mo = Activators[i];
+
+				if (mo && mo is "PlayerPawn")
+				{
+					int amt = clamp(Default.Radius * scale.x / Default.scale.x - Distance2D(mo), 0, 128);
+
+					Inventory control = mo.FindInventory("HeatShaderControl");
+					if (control) { amt = max(amt, control.amount); } // Don't cancel out other givers
+
+					mo.SetInventory("HeatShaderControl", 1 + amt);
+
+					if (amt < 1) { Activators.Delete(i); }
+				}
+			}
+		}
+
+		Super.Tick();
+	}
+}
