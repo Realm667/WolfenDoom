@@ -304,8 +304,8 @@ ACTOR Kennkarte : Inventory
 	//$Category Pickups (Wolf3D)
 	//$Title Kennkarte (Scandinavia)
 	//$Color 13
-	Tag "$TAGKARTE"
 	Scale 0.5
+	Tag "$TAGKARTE"
 	Inventory.Icon KENKA0
 	Inventory.PickupMessage "$KENK"
 	Inventory.PickupSound "pickup/papers"
@@ -325,7 +325,7 @@ ACTOR GrapplingHook : Akten
 	//$Title Grappling Hook
 	Scale 0.4
 	Tag "$TAGHOOK"
-	Inventory.PickupMessage "$RADIOHOOKM"
+	Inventory.PickupMessage "$HOOKM"
 	Inventory.PickupSound "gadget_pickup"
 	Inventory.Icon ROPEB0
 	Inventory.MaxAmount 1
@@ -334,6 +334,24 @@ ACTOR GrapplingHook : Akten
 	{
 	Spawn:
 		ROPE A -1
+		Stop
+	}
+}
+
+ACTOR ChutePickup : Akten
+{
+	//$Title Parachute Bag
+	Scale 0.5
+	Tag "$TAGCHUTE"
+	Inventory.Icon CHUTA0
+	Inventory.PickupMessage "$PCHUTE"
+	Inventory.PickupSound "misc/p_pkup"
+	Inventory.MaxAmount 1
+	+INVENTORY.INVBAR
+	States
+	{
+	Spawn:
+		CHUT B -1
 		Stop
 	}
 }
