@@ -71,8 +71,25 @@ ACTOR StatistSSAscher : StatistBarkeeper
 	States
 	{
 	Spawn:
-		ASCH A -1
-		Stop
+		ASCH A 0 NODELAY A_Jump(128, "SpawnLoop2")
+	SpawnLoop1:
+		"####" A 80
+		"####" B 40
+		"####" CB 40
+		"####" D 80
+		"####" A 80
+		"####" BE 40
+		"####" CA 80
+		Goto Spawn
+	SpawnLoop2:
+		"####" F 80
+		"####" G 40
+		"####" HG 40
+		"####" I 80
+		"####" F 80
+		"####" GJ 40
+		"####" HF 80
+		Goto Spawn
 	}
 }
 
