@@ -287,7 +287,12 @@ class HeatEffectGiver : Actor
 
 	override void PostBeginPlay()
 	{
-		A_SetSize(Radius * scale.x + 32); // Resize to the scaled size, plus 32 units to allow for a border on the edges where the value will properly be zero.
+		double fz = GetZAt(0, 0, 0, GZF_NO3DFLOOR);
+		double cz = GetZAt(0, 0, 0, GZF_CEILING | GZF_NO3DFLOOR);
+
+		SetOrigin((pos.xy, fz), false);
+
+		A_SetSize(Radius * scale.x + 32, cz - fz); // Resize to the scaled size, plus 32 units to allow for a border on the edges where the value will properly be zero, and fill the height of the sector.
 
 		Super.PostBeginPlay();
 	}
@@ -307,14 +312,14 @@ class HeatEffectGiver : Actor
 
 				if (mo && mo is "PlayerPawn")
 				{
-					int amt = clamp(Default.Radius * scale.x / Default.scale.x - Distance2D(mo), 0, 128);
+					int amt = clamp(int(Default.Radius * scale.x / Default.scale.x - Distance2D(mo)), 0, 128);
 
 					Inventory control = mo.FindInventory("HeatShaderControl");
 					if (control) { amt = max(amt, control.amount); } // Don't cancel out other givers
 
 					mo.SetInventory("HeatShaderControl", 1 + amt);
 
-					if (amt < 1) { Activators.Delete(i); }
+					if (amt <= 1) { Activators.Delete(i); }
 				}
 			}
 		}
