@@ -205,7 +205,8 @@ class BoAPlayer : PlayerPawn
 		PLYS A 0;
 		PLCP A 0; //camp
 		PLYP A 0;
-		SSOF A 0; //still not yet used nor implemented - ozy81
+		PLSD A 0; //SS
+		PLSS A 0;
 		Stop;
 	SpriteLookups:
 		BURN A 0;
@@ -477,7 +478,7 @@ class BoAPlayer : PlayerPawn
 		if (
 			CheckSpriteToken("CCBJUniformToken", "PLCP", "PLYP") ||
 			CheckSpriteToken("ScientistUniformToken", "PLSC", "PLYS") ||
-			CheckSpriteToken("SSBJUniformToken", "SSOF") // Temporarily using the SS Officer Sprites (and just squishing them for crouch)
+			CheckSpriteToken("SSBJUniformToken", "PLSD", "PLSS")
 		) { return; }
 
 		// If no tokens found, restore the base sprite and original scale
