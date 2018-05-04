@@ -390,9 +390,14 @@ class BoAPlayer : PlayerPawn
 
 	Actor GetLineTarget()
 	{
-		FLineTraceData actortrace;
-		LineTrace(angle, 1024, pitch, TRF_ALLACTORS, player.viewheight, 0.0, 0.0, actortrace);
-		return actortrace.HitActor;
+		CrosshairTracer actortrace;
+		actortrace = new("CrosshairTracer");
+
+		actortrace.skipactor = self;
+		Vector3 tracedir = (cos(angle) * cos(pitch), sin(angle) * cos(pitch), -sin(pitch));
+		actortrace.Trace(self.pos + (0, 0, player.viewheight), self.CurSector, tracedir, 1024, 0);
+
+		return actortrace.Results.HitActor;
 	}
 
 	Actor GetClosestForcedHealthBar()
@@ -803,5 +808,44 @@ class LanternEffect : PlayerEffect
 		SpawnLoop:
 			TNT1 A 4 Light("LANT03") A_SetTics(Random(1, 3));
 			Loop;
+	}
+}
+
+Class CrosshairTracer : LineTracer
+{
+	Actor skipactor;
+
+	override ETraceStatus TraceCallback() 
+	{
+		if (Results.HitType == TRACE_HitActor)
+		{
+			if (
+				Results.HitActor != skipactor && // Skip the player
+				(!Results.HitActor.master || Results.HitActor.master != skipactor) && // And any children
+				!Results.HitActor.bNoInteraction && // And it's actually interactive...
+				(Results.HitActor.bSolid || Results.HitActor.bShootable) // And only return shootable actors
+			) { return TRACE_Continue; } // Fall through, but remember the actor that you hit
+
+			return TRACE_Skip;
+		}
+		else if (Results.HitType == TRACE_HitFloor || Results.HitType == TRACE_HitCeiling)
+		{
+			return TRACE_Stop;
+		}
+		else if (Results.HitType == TRACE_HitWall)
+		{
+			if (Results.HitLine.flags & (Line.ML_BLOCKING | Line.ML_BLOCKEVERYTHING)) { return TRACE_Stop; }
+			if (Results.HitTexture)
+			{
+				if (Results.Tier != TIER_Middle || Results.HitLine.flags & Line.ML_3DMIDTEX) // 3D Midtex check still isn't perfect...
+				{
+					return TRACE_Stop;
+				}
+				return TRACE_Skip;
+			}
+			return TRACE_Skip;
+		}
+
+		return TRACE_Stop;
 	}
 }
