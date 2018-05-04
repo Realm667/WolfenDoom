@@ -9,7 +9,7 @@ const float bluramt = 25;
 void main()
 {
 	float amt = clamp(amount, 0.0, 128.0);
-	float t = 131.25 + mod(radians(timer * timescale), radians(90)) * 131.25;
+	float t = 131.25 + mod(radians(timer * timescale), radians(90.0)) * 131.25;
 
 	vec2 offset = vec2(0.0);
 
