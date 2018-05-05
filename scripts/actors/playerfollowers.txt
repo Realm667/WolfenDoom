@@ -695,15 +695,15 @@ class PrisonerAgent : PlayerFollower
 {
 	Default
 	{
-		//$Category Monsters (Wolf3D)/NPCs
+		//$Category Monsters (Wolf3D)/NPCs/Followers
 		//$Title Cpt. James Ryan (Friendly Follower - Prisoner)
 		//$Color 4
 
-		+FRIENDLY
-		+NOINFIGHTING
 		Radius 6; // Smaller than player radius
 		Speed 6; // He can't run as fast as you can, so will usually lag behind
 		Scale 0.67;
+		+FRIENDLY
+		+NOINFIGHTING
 		Obituary "$PRISONER";
 		Species "PlayerFollower";
 		PlayerFollower.CloseFollow True;
@@ -723,17 +723,17 @@ class AgentArmed : PlayerFollower
 {
 	Default
 	{
-		//$Category Monsters (Wolf3D)/NPCs
+		//$Category Monsters (Wolf3D)/NPCs/Followers
 		//$Title Cpt. James Ryan (Friendly Follower - Luger)
 		//$Color 4
 
-		+FRIENDLY
-		+NOINFIGHTING
-		-NODAMAGE
-		+BUDDHA
 		Speed 8; // A bit faster than the beat-up prisoner version
 		PainChance 64;
 		Scale 0.67;
+		-NODAMAGE
+		+BUDDHA
+		+FRIENDLY
+		+NOINFIGHTING
 		Obituary "$FRIENDLY";
 		Species "PlayerFollower";
 		PlayerFollower.Weapon PWEAP_Luger;
@@ -753,7 +753,7 @@ class AgentArmedMP40 : AgentArmed
 {
 	Default
 	{
-		//$Category Monsters (Wolf3D)/NPCs
+		//$Category Monsters (Wolf3D)/NPCs/Followers
 		//$Title Cpt. James Ryan (Friendly Follower - MP40)
 		//$Color 4
 
@@ -765,17 +765,17 @@ class AscherArmed : PlayerFollower
 {
 	Default
 	{
-		//$Category Monsters (Wolf3D)/NPCs
+		//$Category Monsters (Wolf3D)/NPCs/Followers
 		//$Title Sgt Ascher (Friendly Follower - Rifle)
 		//$Color 4
 
-		+FRIENDLY
-		+NOINFIGHTING
-		-NODAMAGE
-		+BUDDHA
 		Speed 8;
 		PainChance 64;
 		Scale 0.67;
+		-NODAMAGE
+		+BUDDHA
+		+FRIENDLY
+		+NOINFIGHTING
 		Obituary "$FRIENDLY";
 		Species "PlayerFollower";
 		PlayerFollower.Weapon PWEAP_Rifle;
@@ -804,21 +804,51 @@ class AscherArmed : PlayerFollower
 	}
 }
 
+class SSAscherArmed : PlayerFollower2
+{
+	Default
+	{
+		//$Category Monsters (Wolf3D)/NPCs/Followers
+		//$Title SS Sgt Ascher (Friendly Follower - Luger)
+		//$Color 4
+
+		Speed 8;
+		PainChance 64;
+		Scale 0.67;
+		-NODAMAGE
+		+BUDDHA
+		+FRIENDLY
+		+NOINFIGHTING
+		Obituary "$FRIENDLY";
+		Species "PlayerFollower";
+		PlayerFollower.Weapon PWEAP_Luger;
+		PlayerFollower.ChaseAttackChance 4;
+		PlayerFollower.GrenadeChance 0;
+	}
+
+	States
+	{
+		Spawn:
+			ASC2 A 1;
+			Goto Initialize;
+	}
+}
+
 //Not-Darren follower
 class DouglasArmed : PlayerFollower2
 {
 	Default
 	{
-		//$Category Monsters (Wolf3D)/NPCs
+		//$Category Monsters (Wolf3D)/NPCs/Followers
 		//$Title Dirty Douglas (Friendly Follower - Pistol)
 		//$Color 4
 
-		+FRIENDLY
-		+NOINFIGHTING
 		Speed 7;
 		Obituary "$FRIENDLY";
-		Translation 1;
 		Scale 0.67;
+		+FRIENDLY
+		+NOINFIGHTING
+		Translation 1;
 		Species "PlayerFollower";
 		PlayerFollower.Weapon PWEAP_Luger;
 		PlayerFollower.ChaseAttackChance 2;
@@ -837,16 +867,16 @@ class SoldierArmed : PlayerFollower
 {
 	Default
 	{
-		//$Category Monsters (Wolf3D)/NPCs
+		//$Category Monsters (Wolf3D)/NPCs/Followers
 		//$Title Soldier (Friendly Follower - Pistol)
 		//$Color 4
 
-		+FRIENDLY
-		+NOINFIGHTING
 		Speed 7;
 		PainChance 64;
-		Obituary "$FRIENDLY";
 		Scale 0.67;
+		+FRIENDLY
+		+NOINFIGHTING
+		Obituary "$FRIENDLY";
 		Species "PlayerFollower";
 		PlayerFollower.Weapon PWEAP_Luger;
 	}
@@ -863,7 +893,7 @@ class SoldierArmedRifle : SoldierArmed
 {
 	Default
 	{
-		//$Category Monsters (Wolf3D)/NPCs
+		//$Category Monsters (Wolf3D)/NPCs/Followers
 		//$Title Soldier (Friendly Follower - Machine Gun)
 		//$Color 4
 
@@ -882,15 +912,14 @@ class DogFollower : PlayerFollower2
 {
 	Default
 	{
-		//$Category Monsters (Wolf3D)/NPCs
+		//$Category Monsters (Wolf3D)/NPCs/Followers
 		//$Title German Shepherd (Friendly Follower - Melee)
 		//$Color 4
 
-		+FRIENDLY
-		+NOINFIGHTING
 		Speed 4;
 		Scale 0.67;
-
+		+FRIENDLY
+		+NOINFIGHTING
 		PlayerFollower.ChaseAttackChance 5;
 		PlayerFollower.Weapon PWEAP_Melee;
 	}
