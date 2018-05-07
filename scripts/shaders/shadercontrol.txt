@@ -76,7 +76,7 @@ class HeatShaderControl : ShaderControl
 		}
 		else if (holdTarget)
 		{
-			amount = max(amount - 8, 1);
+			amount = max(amount - 8, 1); // This effect drops off quickly, unlike blur!
 		}
 	}
 }

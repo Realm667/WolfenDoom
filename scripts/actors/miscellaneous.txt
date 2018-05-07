@@ -265,8 +265,9 @@ class ActorPositionable : Actor
 	}
 }
 
-class HeatEffectGiver : Actor
+class HeatEffectGiver : SwitchableDecoration
 {
+	bool Active;
 	Array<Actor> Activators;
 
 	Default
@@ -294,6 +295,8 @@ class HeatEffectGiver : Actor
 
 		A_SetSize(Radius * scale.x + 32, cz - fz); // Resize to the scaled size, plus 32 units to allow for a border on the edges where the value will properly be zero, and fill the height of the sector.
 
+		Active = true;
+
 		Super.PostBeginPlay();
 	}
 
@@ -304,7 +307,7 @@ class HeatEffectGiver : Actor
 
 	override void Tick()
 	{
-		if (level.time % 5 == 0)
+		if (Active && level.time % 5 == 0)
 		{
 			for (int i = 0; i < Activators.Size(); i++)
 			{
@@ -312,7 +315,9 @@ class HeatEffectGiver : Actor
 
 				if (mo && mo is "PlayerPawn")
 				{
-					int amt = clamp(int(Default.Radius * scale.x / Default.scale.x - Distance2D(mo)), 0, 128);
+					double r = Default.Radius * scale.x / Default.scale.x;
+
+					int amt = clamp(int((128 / r) * (r - Distance2D(mo) + mo.Radius)), 0, 128); // Always scale from 0 to 128, regardless of scale/radius of actor
 
 					Inventory control = mo.FindInventory("HeatShaderControl");
 					if (control) { amt = max(amt, control.amount); } // Don't cancel out other givers
@@ -326,4 +331,16 @@ class HeatEffectGiver : Actor
 
 		Super.Tick();
 	}
+
+	override void Activate (Actor activator)
+	{
+		Active = true;
+		Super.Activate(activator);
+	}
+
+	override void Deactivate (Actor activator)
+	{
+		Active = false;
+		Super.Deactivate(activator);
+	}	
 }
