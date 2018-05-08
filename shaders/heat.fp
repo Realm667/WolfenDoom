@@ -19,7 +19,7 @@ void main()
 
 	// Calculate timer-based modifier value that accounts for stepsize
 	float step = stepsize * 8750000.0; // No idea why I'm using this modifier value, but it works.  Trial and error...  
-	float t = step + mod(radians(timer * timescale), radians(90)) * step;
+	float t = step + mod(radians(timer * timescale), radians(90.0)) * step;
 
 	// Re-center the coordinates so that the edges of the screen actually distort equally
 	float coordx = mod(timer * timescale, 750.0) / 1000.0 - abs(TexCoord.x - 0.5);
