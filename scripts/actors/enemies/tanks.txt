@@ -177,6 +177,7 @@ class TankBase : VehicleBase
 	sound movesound, idlesound;
 	bool missiletargeted, wheeled;
 	double zoffset, turretanglerange, turretspeed;
+	bool user_static;
 	
 	Property TankActor:body;
 	Property MoveSound:movesound;
@@ -253,7 +254,7 @@ class TankBase : VehicleBase
 		treads.Species = Species;
 		treads.bFriendly = bFriendly;
 
-		A_PlaySound(idlesound, CHAN_6, 0.25, TRUE);
+		if (!user_static) { A_PlaySound(idlesound, CHAN_6, 0.25, TRUE); }
 
 		Super.PostBeginPlay();
 	}
@@ -291,7 +292,7 @@ class TankBase : VehicleBase
 	{
 		Actor.Tick();
 
-		if (globalfreeze || level.Frozen) { return; }
+		if (globalfreeze || level.Frozen || user_static) { return; }
 
 		if (missiletimeout > 0) { missiletimeout--; }
 		if (bullettimeout > 0) { bullettimeout--; }
@@ -362,7 +363,9 @@ class TankBase : VehicleBase
 
 	virtual void A_TankChase(int flags = 0)
 	{
-		if (!treads) { return; }
+		if (!treads || user_static) { return; }
+
+		if (bStandStill) { flags |= CHF_DONTMOVE | CHF_DONTTURN; }
 
 		A_LookEx(LOF_NOJUMP);
 
@@ -450,7 +453,7 @@ class TankBase : VehicleBase
 			flags |= CHF_DONTMOVE | CHF_DONTTURN;
 			A_StopSound(CHAN_7);
 		}
-		else
+		else if (!bStandStill)
 		{
 			DoMove();
 		}

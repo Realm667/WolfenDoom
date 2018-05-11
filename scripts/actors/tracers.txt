@@ -44,15 +44,12 @@ class BulletTracer : FastProjectile
 	// Handling so that tracers won't hit actors that have the tracer's origin actor set as their master (or inherit from one that does)
 	override bool CanCollideWith(Actor other, bool passive)
 	{
-		int recursiontarget = 10; // Max number of levels to recurse if the master has a master, has a master, etc.
-		int recursionmaster = 10;
-
 		if (target)
 		{
 			Actor roottarget = target;
 			Actor rootmaster = other;
-			while (roottarget.master && recursiontarget) { roottarget = roottarget.master; recursiontarget--; }
-			while (rootmaster.master && recursionmaster) { rootmaster = rootmaster.master; recursionmaster--; }
+			while (roottarget.master) { roottarget = roottarget.master; }
+			while (rootmaster.master) { rootmaster = rootmaster.master; }
 
 			if (roottarget && roottarget == rootmaster) { return false; }
 		}
