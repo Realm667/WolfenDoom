@@ -350,7 +350,7 @@ class ShermanPlayer : PlayerPawn
 		if (player && turretcamera && treads && turret && povcamera)
 		{
 			double zoffset = VehicleBase.SetPitchRoll(treads);
-			double newz = pos.z - zoffset > GetZAt(0, 0) + MaxDropoffHeight ? pos.z - zoffset : floorz;
+			double newz = pos.z - zoffset > GetZAt(0, 0) + MaxDropoffHeight ? pos.z - zoffset : GetZAt(0, 0);
 			treads.SetOrigin((pos.xy, newz), true);
 
 			double delta = deltaangle(treads.angle, turret.angle);

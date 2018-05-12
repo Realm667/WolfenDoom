@@ -21,6 +21,10 @@ class VehicleBase : Base
 		if (mo is "TankTreadsBase") { testlength = TankTreadsBase(mo).length; }
 		if (!testlength) { testlength = mo.radius + xoffset; }
 
+		// Account for current pitch/roll when measuring corner heights
+		testwidth *= abs(cos(mo.roll));
+		testlength *= abs(cos(mo.pitch));
+
 		double points[4], minz = 0x7FFFFFFF, maxz = -0x7FFFFFFF;
 
 		// Get the relative z-height at the four corners of the tank
@@ -195,7 +199,7 @@ class TankBase : VehicleBase
 		Radius 100;
 		BloodType "TankSpark";
 		Monster;
-		MaxDropoffHeight 40;
+		MaxDropoffHeight 48;
 		MaxStepHeight 32;
 		Obituary "$TANKS";
 		Species "NaziTank";
@@ -319,7 +323,8 @@ class TankBase : VehicleBase
 		if (treads && turret)
 		{
 			double zoffset = VehicleBase.SetPitchRoll(treads);
-			treads.SetOrigin((pos.xy, GetZAt(0, 0) - zoffset), true);
+			double newz = pos.z - zoffset > GetZAt(0, 0) + MaxDropoffHeight ? pos.z - zoffset : GetZAt(0, 0);
+			treads.SetOrigin((pos.xy, newz), true);
 
 			double delta = deltaangle(treads.angle, turret.angle);
 
