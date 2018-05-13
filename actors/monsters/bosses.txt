@@ -1416,7 +1416,7 @@ ACTOR ChairGuy : Nazi
 	Base.BossIcon "BOSSICO2"
 	Base.Shadow 0  //needed for shadows
 	Tag "Graf Holzbein"
-	Health 1750
+	Health 1000
 	Mass 100000
 	PainChance 64
 	Scale 0.67
@@ -1450,33 +1450,33 @@ ACTOR ChairGuy : Nazi
 		"####" BBB 1 A_NaziChase("","")
 		Loop
 	Missile:
-		KRIS E 10 A_FaceTarget
+		KRIS E 14 A_FaceTarget
 		KRIS E 0 A_Jump(144,"SeekerMissile","SeekerMissile2")
-		"####" F 6 LIGHT(OTTOFIRE) A_SpawnProjectile("MiniMiniRocket",66,22)
-		"####" E 6 A_FaceTarget
-		"####" G 6 LIGHT(OTT2FIRE) A_SpawnProjectile("MiniMiniRocket",66,-22)
-		"####" E 6 A_FaceTarget
-		"####" F 6 LIGHT(OTTOFIRE) A_SpawnProjectile("MiniMiniRocket",66,22)
-		"####" E 6 A_FaceTarget
-		"####" G 6 LIGHT(OTT2FIRE) A_SpawnProjectile("MiniMiniRocket",66,-22)
+		"####" F 8 LIGHT(OTTOFIRE) A_SpawnProjectile("MiniMiniRocket",66,22)
+		"####" E 8 A_FaceTarget
+		"####" G 8 LIGHT(OTT2FIRE) A_SpawnProjectile("MiniMiniRocket",66,-22)
+		"####" E 14 A_FaceTarget
+		"####" F 8 LIGHT(OTTOFIRE) A_SpawnProjectile("MiniMiniRocket",66,22)
+		"####" E 8 A_FaceTarget
+		"####" G 8 LIGHT(OTT2FIRE) A_SpawnProjectile("MiniMiniRocket",66,-22)
 		Goto See
 	SeekerMissile:
-		"####" F 6 LIGHT(OTTOFIRE) A_SpawnProjectile("SeekerRocket",66,22)
-		"####" E 6 A_FaceTarget
-		"####" G 6 LIGHT(OTT2FIRE) A_SpawnProjectile("SeekerRocket",66,-22)
-		"####" E 6 A_FaceTarget
-		"####" F 6 LIGHT(OTTOFIRE) A_SpawnProjectile("SeekerRocket",66,22)
-		"####" E 6 A_FaceTarget
-		"####" G 6 LIGHT(OTT2FIRE) A_SpawnProjectile("SeekerRocket",66,-22)
+		"####" F 10 LIGHT(OTTOFIRE) A_SpawnProjectile("SeekerRocket",66,22)
+		"####" E 8 A_FaceTarget
+		"####" G 10 LIGHT(OTT2FIRE) A_SpawnProjectile("SeekerRocket",66,-22)
+		"####" E 8 A_FaceTarget
+		"####" F 10 LIGHT(OTTOFIRE) A_SpawnProjectile("SeekerRocket",66,22)
+		"####" E 8 A_FaceTarget
+		"####" G 10 LIGHT(OTT2FIRE) A_SpawnProjectile("SeekerRocket",66,-22)
 		Goto See
 	SeekerMissile2:
-		"####" F 6 LIGHT(OTTOFIRE) A_SpawnProjectile("MiniMiniRocket",66,22)
-		"####" E 6 A_FaceTarget
-		"####" G 6 LIGHT(OTT2FIRE) A_SpawnProjectile("SeekerRocket",66,-22)
-		"####" E 6 A_FaceTarget
-		"####" F 6 LIGHT(OTTOFIRE) A_SpawnProjectile("SeekerRocket",66,22)
-		"####" E 6 A_FaceTarget
-		"####" G 6 LIGHT(OTT2FIRE) A_SpawnProjectile("MiniMiniRocket",66,-22)
+		"####" F 8 LIGHT(OTTOFIRE) A_SpawnProjectile("MiniMiniRocket",66,22)
+		"####" E 8 A_FaceTarget
+		"####" G 10 LIGHT(OTT2FIRE) A_SpawnProjectile("SeekerRocket",66,-22)
+		"####" E 8 A_FaceTarget
+		"####" F 10 LIGHT(OTTOFIRE) A_SpawnProjectile("SeekerRocket",66,22)
+		"####" E 8 A_FaceTarget
+		"####" G 8 LIGHT(OTT2FIRE) A_SpawnProjectile("MiniMiniRocket",66,-22)
 		Goto See
 	Death:
 	Death.Fire:
