@@ -2,13 +2,8 @@
 #include "boashaders.txt" //mxd
 #include "boamaterials.txt"
 
-//Dummy Actors
-FlickerLight INTROS
-{
-	Color 1.0 0.86 0.7
-	Size 150
-	SecondarySize 160
-}
+//as explained here to fix attenuate lights using old methods: https://github.com/coelckers/gzdoom/commit/e77cba1fd8ad45809d207a7c281af3e6baabef36
+lightsizefactor 0.667
 
 //////////////////
 //SPARK SPAWNERS//
@@ -17,42 +12,49 @@ PointLight WhiteSparkFlare
 {
 	Color 1.0 1.0 1.0
 	Size 12
+	Attenuate 1
 }
 
 PointLight RedSparkFlare
 {
 	Color 0.4 0.0 0.0
 	Size 12
+	Attenuate 1
 }
 
 PointLight OrangeSparkFlare
 {
 	Color 0.8 0.4 0.0
 	Size 12
+	Attenuate 1
 }
 
 PointLight YellowSparkFlare
 {
 	Color 1.0 1.0 0.0
 	Size 12
+	Attenuate 1
 }
 
 PointLight GreenSparkFlare
 {
 	Color 0.0 1.0 0.0
 	Size 12
+	Attenuate 1
 }
 
 PointLight BlueSparkFlare
 {
 	Color 0.0 0.0 0.8
 	Size 12
+	Attenuate 1
 }
 
 PointLight PurpleSparkFlare
 {
 	Color 0.5 0.0 0.5
 	Size 12
+	Attenuate 1
 }
 
 Object SparkFlare_W1 { frame SPKW { light WhiteSparkFlare } }
@@ -113,6 +115,7 @@ FlickerLight2 CAULDRON
 	Interval 0.1
 	Offset 0 40 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 Object LavaCauldron
@@ -128,15 +131,9 @@ FlickerLight WolfStove
 	SecondarySize 20
 	Chance 0.2
 	Offset 0 16 0
+	Attenuate 1
 }
 
-Object OvenHot
-{
-	frame OVENA { light WolfStove }
-	frame OVENB { light WolfStove }
-	frame OVENC { light WolfStove }
-	frame OVEND { light WolfStove }
-}
 ////////////////////
 //LIGHTNING LIGHTS//
 ////////////////////
@@ -145,60 +142,70 @@ PointLight Lightning1
 {
 	Color 1.0 1.0 1.0
 	Size 256
+	Attenuate 1
 }
 
 PointLight Lightning2
 {
 	Color 0.9 0.9 0.9
 	Size 252
+	Attenuate 1
 }
 
 PointLight Lightning3
 {
 	Color 0.9 0.9 0.9
 	Size 242
+	Attenuate 1
 }
 
 PointLight Lightning4
 {
 	Color 0.8 0.8 0.8
 	Size 225
+	Attenuate 1
 }
 
 PointLight Lightning5
 {
 	Color 0.7 0.7 0.7
 	Size 202
+	Attenuate 1
 }
 
 PointLight Lightning6
 {
 	Color 0.7 0.7 0.7
 	Size 173
+	Attenuate 1
 }
 
 PointLight Lightning7
 {
 	Color 0.6 0.6 0.6
 	Size 140
+	Attenuate 1
 }
 
 PointLight Lightning8
 {
 	Color 0.6 0.6 0.6
 	Size 103
+	Attenuate 1
 }
 
 PointLight Lightning9
 {
 	Color 0.6 0.6 0.6
 	Size 64
+	Attenuate 1
 }
 
 PointLight Lightning10
 {
 	Color 0.5 0.5 0.5
 	Size 24
+	Attenuate 1
 }
 /////////////////
 //STROBE LIGHTS//
@@ -209,6 +216,7 @@ PointLight BLUESTROBE
 {
 	Color 0.0 0.0 0.4
 	Size 48
+	Attenuate 1
 }
 
 //GREEN
@@ -216,6 +224,7 @@ PointLight GREENSTROBE
 {
 	Color 0.0 0.4 0.0
 	Size 48
+	Attenuate 1
 }
 
 //RED
@@ -223,6 +232,7 @@ PointLight REDSTROBE
 {
 	Color 0.4 0.0 0.0
 	Size 48
+	Attenuate 1
 }
 
 //YELLOW
@@ -230,6 +240,7 @@ PointLight YELLOWSTROBE
 {
 	Color 0.4 0.2 0.0
 	Size 48
+	Attenuate 1
 }
 
 //FIXED BLUE
@@ -237,6 +248,7 @@ PointLight FIXEDBLU
 {
 	Color 0.0 0.0 0.87
 	Size 48
+	Attenuate 1
 }
 
 //FIXED GREEN
@@ -244,6 +256,7 @@ PointLight FIXEDGRN
 {
 	Color 0.0 0.87 0.0
 	Size 48
+	Attenuate 1
 }
 
 //FIXED RED
@@ -251,6 +264,7 @@ PointLight FIXEDRED
 {
 	Color 0.87 0.0 0.0
 	Size 48
+	Attenuate 1
 }
 
 //FIXED YELLOW
@@ -258,6 +272,7 @@ PointLight FIXEDYEL
 {
 	Color 0.87 0.43 0.0
 	Size 48
+	Attenuate 1
 }
 ///////////////////////
 //FIRE SPAWNER LIGHTS//
@@ -269,6 +284,7 @@ FlickerLight FireSpawnerSmall
 	Size 32
 	SecondarySize 48
 	Chance 0.6
+	Attenuate 1
 }
 
 FlickerLight FireSpawnerMedium
@@ -277,6 +293,7 @@ FlickerLight FireSpawnerMedium
 	Size 56
 	SecondarySize 72
 	Chance 0.6
+	Attenuate 1
 }
 
 FlickerLight FireSpawnerLarge
@@ -285,6 +302,7 @@ FlickerLight FireSpawnerLarge
 	Size 96
 	SecondarySize 160
 	Chance 0.6
+	Attenuate 1
 }
 
 FlickerLight AstrosteinExplosionSpawnerLarge
@@ -293,6 +311,7 @@ FlickerLight AstrosteinExplosionSpawnerLarge
 	Size 96
 	SecondarySize 160
 	Chance 0.6
+	Attenuate 1
 }
 
 FlickerLight AstrosteinDeathLight
@@ -310,11 +329,12 @@ FlickerLight ProtoExplosionSpawnerLarge
 	Size 96
 	SecondarySize 160
 	Chance 0.6
+	Attenuate 1
 }
 
-Object LargeFlame { frame TNT1 { light FireSpawnerLarge } }
-Object MediumFlame { frame TNT1 { light FireSpawnerMedium } }
-Object SmallFlame { frame TNT1 { light FireSpawnerSmall } }
+Object LargeFlame 	{ frame TNT1 { light FireSpawnerLarge } }
+Object MediumFlame 	{ frame TNT1 { light FireSpawnerMedium } }
+Object SmallFlame 	{ frame TNT1 { light FireSpawnerSmall } }
 
 /////////////////
 //LIGHT SOURCES//
@@ -326,6 +346,7 @@ PointLight Chandelier
 	Color 1.0 1.0 1.0
 	Size 40
 	Offset 0 32 0
+	Attenuate 1
 }
 
 PointLight Chandelier2
@@ -333,6 +354,7 @@ PointLight Chandelier2
 	Color 1.0 1.0 1.0
 	Size 38
 	Offset 0 32 0
+	Attenuate 1
 }
 
 PointLight Chandelier3
@@ -340,6 +362,7 @@ PointLight Chandelier3
 	Color 1.0 1.0 1.0
 	Size 36
 	Offset 0 32 0
+	Attenuate 1
 }
 
 PointLight Chandelier4 //new ozy
@@ -347,6 +370,7 @@ PointLight Chandelier4 //new ozy
 	Color 1.0 0.6 0.0
 	Size 44
 	Offset 0 32 0
+	Attenuate 1
 }
 
 PointLight Chandelier5 //new ozy
@@ -354,6 +378,7 @@ PointLight Chandelier5 //new ozy
 	Color 1.0 1.0 0.1
 	Size 40
 	Offset 0 32 0
+	Attenuate 1
 }
 
 PointLight Chandelier6 //new ozy
@@ -361,6 +386,7 @@ PointLight Chandelier6 //new ozy
 	Color 1.0 1.0 0.2
 	Size 36
 	Offset 0 32 0
+	Attenuate 1
 }
 
 //Defs for 3d Lights//
@@ -382,6 +408,7 @@ FlickerLight 3DFLAME_S
 	Chance 0.2
 	Offset 0 -16 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 FlickerLight 3DFLAME_T
@@ -392,6 +419,7 @@ FlickerLight 3DFLAME_T
 	Chance 0.2
 	Offset 0 -16 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 FlickerLight 3DFLAME_L
@@ -402,12 +430,15 @@ FlickerLight 3DFLAME_L
 	Chance 0.2
 	Offset 0 4 0
 	DontLightSelf 1
+	Attenuate 1
 }
+
 PointLight 3DCHAN
 {
 	Color 1.00 0.89 0.25
 	Size 48
 	Offset 0 32 0
+	Attenuate 1
 }
 
 PointLight 3DCHAN2
@@ -415,6 +446,7 @@ PointLight 3DCHAN2
 	Color 1.00 0.89 0.25
 	Size 48
 	Offset 0 -32 0
+	Attenuate 1
 }
 
 FlickerLight 3DFLARE
@@ -425,6 +457,7 @@ FlickerLight 3DFLARE
 	Chance 0.3
 	Offset 0 32 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 PointLight BOACEIL1 //CelLitM2
@@ -432,6 +465,7 @@ PointLight BOACEIL1 //CelLitM2
 	Color 0.7 0.7 0.7
 	Size 24
 	Offset 0 -8 0
+	Attenuate 1
 }
 
 PointLight BOACEIL2 //CelLitM
@@ -439,6 +473,7 @@ PointLight BOACEIL2 //CelLitM
 	Color 0.7 0.7 0.7
 	Size 48
 	Offset 0 -8 0
+	Attenuate 1
 }
 
 PointLight BOACEIL3 //CastleLight1
@@ -446,6 +481,7 @@ PointLight BOACEIL3 //CastleLight1
 	Color 0.8 0.7 0.8
 	Size 56
 	Offset 0 -12 0
+	Attenuate 1
 }
 
 PointLight BOACEIL4 //CastleLight2
@@ -453,6 +489,7 @@ PointLight BOACEIL4 //CastleLight2
 	Color 0.8 0.7 0.8
 	Size 56
 	Offset 0 -12 0
+	Attenuate 1
 }
 
 PointLight BOACEIL5 //LightBulbOn
@@ -460,6 +497,7 @@ PointLight BOACEIL5 //LightBulbOn
 	Color 0.8 0.8 0.8
 	Size 64
 	Offset 0 -4 0
+	Attenuate 1
 }
 
 PointLight BOACEIL6 //LightBulbOn_Red
@@ -474,18 +512,21 @@ PointLight BOACEIL7 //LightBulbOn_Grn
 	Color 0.1 0.7 0.0
 	Size 56
 	Offset 0 -4 0
+	Attenuate 1
 }
 
 PointLight BOATABL1 //TabLitM
 {
 	Color 0.7 0.7 0.7
 	Size 32
+	Attenuate 1
 }
 
 PointLight BOATABL2 //TabLitS
 {
 	Color 0.7 0.7 0.7
 	Size 16
+	Attenuate 1
 }
 
 PointLight BOACLMN1
@@ -493,11 +534,7 @@ PointLight BOACLMN1
 	Color 0.8 0.8 0.8
 	Size 48
 	Offset 0 64 0
-}
-
-Object ColumnLight
-{
-	frame COLLA { light BOACLMN1}
+	Attenuate 1
 }
 
 PointLight BOACLMN2
@@ -505,11 +542,7 @@ PointLight BOACLMN2
 	Color 0.6 0.5 0.4
 	Size 48
 	Offset 0 56 0
-}
-
-Object ColumnLight2
-{
-	frame COLLB { light BOACLMN2}
+	Attenuate 1
 }
 
 PointLight BOASTLT1
@@ -517,6 +550,7 @@ PointLight BOASTLT1
 	Color 0.8 0.8 0.8
 	Size 48
 	Offset 32 16 0
+	Attenuate 1
 }
 
 PointLight LIGHTPOSTLIGHT
@@ -525,22 +559,25 @@ PointLight LIGHTPOSTLIGHT
 	Size 64
 	Offset 50 0 16
 	DontLightSelf 1
+	Attenuate 1
 }
 
-PointLight BOASTLT2 //StreetLight2
+PointLight BOASTLT2
 {
 	Color 0.95 0.90 0.77
 	Size 64
 	Offset 0 56 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
-PointLight BOASTLT3 //StreetLight3
+PointLight BOASTLT3
 {
 	Color 0.95 0.90 0.77
 	Size 40
 	Offset 0 56 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 FlickerLight BOAEBWL1
@@ -549,6 +586,7 @@ FlickerLight BOAEBWL1
 	Size 54
 	SecondarySize 56
 	Chance 0.5
+	Attenuate 1
 }
 
 Object FBowl1
@@ -561,6 +599,7 @@ PointLight BOAEBWL2
 	Color 0.95 0.59 0.38
 	Size 40
 	Offset 0 16 0
+	Attenuate 1
 }
 
 PointLight BOAEBWL3
@@ -568,6 +607,7 @@ PointLight BOAEBWL3
 	Color 1.00 0.69 0.48
 	Size 44
 	Offset 0 16 0
+	Attenuate 1
 }
 
 PointLight BOAEBWL4
@@ -575,6 +615,7 @@ PointLight BOAEBWL4
 	Color 1.0 0.7 0.5
 	Size 48
 	Offset 0 16 0
+	Attenuate 1
 }
 
 Object CBowl1
@@ -590,6 +631,7 @@ FlickerLight BOAEBRL1
 	Size 48
 	SecondarySize 52
 	Chance 0.2
+	Attenuate 1
 }
 
 Object FBarrel1
@@ -603,6 +645,7 @@ PointLight OZYWALLT
 	Size 48
 	Offset 36 0 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 PointLight OZYWALT2
@@ -611,6 +654,7 @@ PointLight OZYWALT2
 	Size 48
 	Offset 0 0 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 PointLight OZYWALT3
@@ -619,6 +663,7 @@ PointLight OZYWALT3
 	Size 32
 	Offset 36 0 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 PointLight OZYSIMLT
@@ -626,6 +671,7 @@ PointLight OZYSIMLT
 	Color 1.00 0.93 0.78
 	Size 48
 	DontLightSelf 1
+	Attenuate 1
 }
 
 FlickerLight2 WALLTORCH
@@ -635,6 +681,7 @@ FlickerLight2 WALLTORCH
 	SecondarySize 28
 	Interval 0.1
 	Offset 0 24 0
+	Attenuate 1
 }
 
 Object BoAWallTorch1
@@ -656,6 +703,7 @@ FlickerLight2 CREPLIT1
 	SecondarySize 48
 	Interval 0.3
 	Offset 0 8 0
+	Attenuate 1
 }
 
 FlickerLight2 CREPLIT2
@@ -665,6 +713,7 @@ FlickerLight2 CREPLIT2
 	SecondarySize 24
 	Interval 0.3
 	Offset 0 2 0
+	Attenuate 1
 }
 
 PointLight SPOTLITE
@@ -672,6 +721,7 @@ PointLight SPOTLITE
 	Color 1.00 0.93 0.78
 	Size 48
 	Offset 0 48 16
+	Attenuate 1
 }
 
 PointLight SIGNLRED
@@ -680,6 +730,7 @@ PointLight SIGNLRED
 	Size 64
 	Offset 0 136 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 PointLight SIGNLYEL
@@ -688,6 +739,7 @@ PointLight SIGNLYEL
 	Size 64
 	Offset 0 132 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 PointLight SIGNLGRN
@@ -696,6 +748,7 @@ PointLight SIGNLGRN
 	Size 64
 	Offset 0 128 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 //PROPS - INDUSTRIAL//
@@ -707,6 +760,7 @@ PulseLight BOARBRL1
 	Interval 1.2
 	Offset 0 8 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 Object RadioactiveBarrel
@@ -722,6 +776,7 @@ PulseLight BOARBRL5
 	Interval 1.2
 	Offset 0 32 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 Object GasDrum
@@ -737,6 +792,7 @@ PulseLight BOARBRL2
 	Interval 1.2
 	Offset 0 32 0
 	DontLightSelf 0
+	Attenuate 1
 }
 
 Object MutantSubjectWarped
@@ -753,6 +809,7 @@ FlickerLight2 TESLIT1
 	Interval 0.1
 	Offset 0 48 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 FlickerLight2 TESLIT2
@@ -763,6 +820,7 @@ FlickerLight2 TESLIT2
 	Interval 0.1
 	Offset 0 32 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 //ITEMS - KEYS//
@@ -771,6 +829,7 @@ PointLight BOABKEY
 	Color 0.8 0.8 0.8
 	Size 16
 	Offset 0 4 0
+	Attenuate 1
 }
 
 PointLight BOABKEY2
@@ -778,6 +837,7 @@ PointLight BOABKEY2
 	Color 0.0 0.1 0.7
 	Size 16
 	Offset 0 4 0
+	Attenuate 1
 }
 
 PointLight BOAYKEY
@@ -785,6 +845,7 @@ PointLight BOAYKEY
 	Color 0.8 0.8 0.0
 	Size 16
 	Offset 0 4 0
+	Attenuate 1
 }
 
 PointLight BOARKEY
@@ -792,6 +853,7 @@ PointLight BOARKEY
 	Color 0.8 0.2 0.2
 	Size 16
 	Offset 0 4 0
+	Attenuate 1
 }
 
 PointLight BOAGKEY
@@ -799,6 +861,7 @@ PointLight BOAGKEY
 	Color 0.2 0.8 0.0
 	Size 16
 	Offset 0 4 0
+	Attenuate 1
 }
 
 PointLight BOAPKEY
@@ -806,6 +869,7 @@ PointLight BOAPKEY
 	Color 0.8 0.0 0.8
 	Size 16
 	Offset 0 4 0
+	Attenuate 1
 }
 
 PointLight BOACKEY
@@ -813,6 +877,7 @@ PointLight BOACKEY
 	Color 0.2 0.6 0.8
 	Size 16
 	Offset 0 4 0
+	Attenuate 1
 }
 
 Object SkullKey
@@ -826,6 +891,7 @@ PointLight COINLITE
 	Color 0.86 0.75 0.0
 	Size 8
 	Offset 0 0 0
+	Attenuate 1
 }
 
 PointLight BAGCLITE
@@ -833,6 +899,7 @@ PointLight BAGCLITE
 	Color 1.00 0.89 0.0
 	Size 12
 	Offset 0 0 0
+	Attenuate 1
 }
 
 PointLight TRESLITE
@@ -840,6 +907,7 @@ PointLight TRESLITE
 	Color 1.0 0.8 0.0
 	Size 16
 	Offset 0 0 0
+	Attenuate 1
 }
 
 PointLight BIGCLITE
@@ -847,6 +915,7 @@ PointLight BIGCLITE
 	Color 1.0 0.9 0.0
 	Size 24
 	Offset 0 0 0
+	Attenuate 1
 }
 
 //PICKUPS//
@@ -857,6 +926,7 @@ FlickerLight2 SERUM
 	SecondarySize 24
 	Interval 0.01
 	DontLightSelf 1
+	Attenuate 1
 }
 
 Object VitalitySerum
@@ -901,6 +971,7 @@ PulseLight SAPHLITE
 	Size 32
 	SecondarySize 48
 	Interval 2.0
+	Attenuate 1
 }
 
 PulseLight MINERALLITE
@@ -909,6 +980,7 @@ PulseLight MINERALLITE
 	Size 32
 	SecondarySize 48
 	Interval 2.0
+	Attenuate 1
 }
 
 //WEAPONS or ATTACKS//
@@ -917,6 +989,7 @@ PointLight TESLAW
 	Color 0.5 0.0 0.5
 	Size 8
 	Offset 0 4 0
+	Attenuate 1
 }
 
 FlickerLight2 BOAFLAMW
@@ -925,6 +998,7 @@ FlickerLight2 BOAFLAMW
 	Size 40
 	SecondarySize 48
 	Interval 1.7
+	Attenuate 1
 }
 
 FlickerLight2 BOAFLMW2
@@ -933,6 +1007,7 @@ FlickerLight2 BOAFLMW2
 	Size 56
 	SecondarySize 64
 	Interval 1.7
+	Attenuate 1
 }
 
 FlickerLight2 ZYKFLAMW
@@ -941,6 +1016,7 @@ FlickerLight2 ZYKFLAMW
 	Size 40
 	SecondarySize 48
 	Interval 1.7
+	Attenuate 1
 }
 
 FlickerLight2 ZYKFLMW2
@@ -949,6 +1025,7 @@ FlickerLight2 ZYKFLMW2
 	Size 56
 	SecondarySize 64
 	Interval 1.7
+	Attenuate 1
 }
 
 PointLight NEBLIGHT
@@ -956,6 +1033,7 @@ PointLight NEBLIGHT
 	Color 1.0 0.9 0.8
 	Size 16
 	Offset 0 16 0
+	Attenuate 1
 }
 
 PointLight NEBEXPLO
@@ -963,6 +1041,7 @@ PointLight NEBEXPLO
 	Color 1.0 0.7 0.1
 	Size 32
 	Offset 0 16 0
+	Attenuate 1
 }
 
 PointLight MUTNEXPL
@@ -970,6 +1049,7 @@ PointLight MUTNEXPL
 	Color 1.0 0.0 1.0
 	Size 32
 	Offset 0 16 0
+	Attenuate 1
 }
 
 PointLight TRCRFIRE
@@ -977,6 +1057,7 @@ PointLight TRCRFIRE
 	Color 0.6 0.4 0.0
 	Size 4
 	Offset 0 0 0
+	Attenuate 1
 }
 
 // Bullet puffs//
@@ -986,6 +1067,7 @@ FlickerLight BPUFF1
 	Size 4
 	SecondarySize 8
 	Chance 0.7
+	Attenuate 1
 }
 
 FlickerLight BPUFF2
@@ -994,6 +1076,7 @@ FlickerLight BPUFF2
 	Size 3
 	SecondarySize 4
 	Chance 0.7
+	Attenuate 1
 }
 
 //Firebrand//
@@ -1003,6 +1086,7 @@ FlickerLight ITBURNSOC1
 	Size 24
 	SecondarySize 32
 	Chance 0.2
+	Attenuate 1
 }
 
 FlickerLight ITBURNSOC2
@@ -1011,6 +1095,7 @@ FlickerLight ITBURNSOC2
 	Size 32
 	SecondarySize 36
 	Chance 0.3
+	Attenuate 1
 }
 
 FlickerLight ITBURNSOC3
@@ -1019,6 +1104,7 @@ FlickerLight ITBURNSOC3
 	Size 36
 	SecondarySize 44
 	Chance 0.4
+	Attenuate 1
 }
 
 Object FirebrandFireball
@@ -1043,6 +1129,7 @@ PulseLight LIGHTWATR1
 	Size 32
 	SecondarySize 64
 	Interval 1
+	Attenuate 1
 }
 
 PulseLight LIGHTWATR2
@@ -1051,6 +1138,7 @@ PulseLight LIGHTWATR2
 	Size 24
 	SecondarySize 48
 	Interval 1
+	Attenuate 1
 }
 
 PulseLight LIGHTWATR3
@@ -1059,6 +1147,7 @@ PulseLight LIGHTWATR3
 	Size 16
 	SecondarySize 32
 	Interval 1
+	Attenuate 1
 }
 
 PulseLight LIGHTLAVA1
@@ -1067,6 +1156,7 @@ PulseLight LIGHTLAVA1
 	Size 32
 	SecondarySize 64
 	Interval 1
+	Attenuate 1
 }
 
 PulseLight LIGHTLAVA2
@@ -1075,6 +1165,7 @@ PulseLight LIGHTLAVA2
 	Size 24
 	SecondarySize 48
 	Interval 1
+	Attenuate 1
 }
 
 PulseLight LIGHTLAVA3
@@ -1083,6 +1174,7 @@ PulseLight LIGHTLAVA3
 	Size 16
 	SecondarySize 32
 	Interval 1
+	Attenuate 1
 }
 
 PulseLight LIGHTBLOD1
@@ -1091,6 +1183,7 @@ PulseLight LIGHTBLOD1
 	Size 32
 	SecondarySize 64
 	Interval 1
+	Attenuate 1
 }
 
 PulseLight LIGHTBLOD2
@@ -1099,6 +1192,7 @@ PulseLight LIGHTBLOD2
 	Size 24
 	SecondarySize 48
 	Interval 1
+	Attenuate 1
 }
 
 PulseLight LIGHTBLOD3
@@ -1115,6 +1209,7 @@ PulseLight LIGHTNUKE1
 	Size 32
 	SecondarySize 64
 	Interval 1
+	Attenuate 1
 }
 
 PulseLight LIGHTNUKE2
@@ -1123,6 +1218,7 @@ PulseLight LIGHTNUKE2
 	Size 24
 	SecondarySize 48
 	Interval 1
+	Attenuate 1
 }
 
 PulseLight LIGHTNUKE3
@@ -1131,6 +1227,7 @@ PulseLight LIGHTNUKE3
 	Size 16
 	SecondarySize 32
 	Interval 1
+	Attenuate 1
 }
 
 Object UWaterLShooter
@@ -1170,6 +1267,7 @@ FlickerLight ITBURNS1
 	Size 24
 	SecondarySize 32
 	Chance 0.2
+	Attenuate 1
 }
 
 FlickerLight ITBURNS2
@@ -1178,6 +1276,7 @@ FlickerLight ITBURNS2
 	Size 32
 	SecondarySize 36
 	Chance 0.3
+	Attenuate 1
 }
 
 FlickerLight ITBURNS3
@@ -1186,6 +1285,7 @@ FlickerLight ITBURNS3
 	Size 36
 	SecondarySize 44
 	Chance 0.4
+	Attenuate 1
 }
 
 FlickerLight ITBURNS4
@@ -1194,6 +1294,7 @@ FlickerLight ITBURNS4
 	Size 16
 	SecondarySize 20
 	Chance 0.1
+	Attenuate 1
 }
 
 FlickerLight ITBURNS5
@@ -1202,6 +1303,7 @@ FlickerLight ITBURNS5
 	Size 14
 	SecondarySize 18
 	Chance 0.1
+	Attenuate 1
 }
 
 FlickerLight ITBURNS6
@@ -1210,6 +1312,7 @@ FlickerLight ITBURNS6
 	Size 10
 	SecondarySize 15
 	Chance 0.1
+	Attenuate 1
 }
 ///////////
 //ENEMIES//
@@ -1220,6 +1323,7 @@ PointLight ICEBALL
 	Color 0.6 0.8 0.8
 	Size 44
 	Offset 0 32 0
+	Attenuate 1
 }
 
 PointLight NAZIFIRE
@@ -1227,6 +1331,7 @@ PointLight NAZIFIRE
 	Color 0.9 0.7 0.0
 	Size 24
 	Offset 0 24 0
+	Attenuate 1
 }
 
 PointLight MUTNFIRE
@@ -1234,6 +1339,7 @@ PointLight MUTNFIRE
 	Color 1.0 0.0 0.7
 	Size 24
 	Offset 0 16 0
+	Attenuate 1
 }
 
 PointLight MUTNROCK
@@ -1241,6 +1347,7 @@ PointLight MUTNROCK
 	Color 0.8 0.0 0.8
 	Size 24
 	Offset 0 16 0
+	Attenuate 1
 }
 
 PointLight ASTROFIRE
@@ -1248,6 +1355,7 @@ PointLight ASTROFIRE
 	Color 0.3 1.0 0.0
 	Size 24
 	Offset 0 24 0
+	Attenuate 1
 }
 
 PointLight PROTOFIRE
@@ -1255,6 +1363,7 @@ PointLight PROTOFIRE
 	Color 1.0 0.3 0.0
 	Size 24
 	Offset 0 24 0
+	Attenuate 1
 }
 
 PointLight OTTOFIRE
@@ -1262,6 +1371,7 @@ PointLight OTTOFIRE
 	Color 1.0 0.9 0.8
 	Size 32
 	Offset 0 24 12
+	Attenuate 1
 }
 
 PointLight OTT2FIRE
@@ -1269,6 +1379,7 @@ PointLight OTT2FIRE
 	Color 1.0 0.9 0.8
 	Size 32
 	Offset 0 24 -12
+	Attenuate 1
 }
 
 PointLight SUPAFIRE
@@ -1276,6 +1387,7 @@ PointLight SUPAFIRE
 	Color 1.0 0.7 0.1
 	Size 36
 	Offset 0 24 0
+	Attenuate 1
 }
 
 PointLight DEKNAFIR
@@ -1283,6 +1395,7 @@ PointLight DEKNAFIR
 	Color 1.0 0.7 0.1
 	Size 48
 	Offset 0 40 24
+	Attenuate 1
 }
 
 PointLight DEKNBFIR
@@ -1297,6 +1410,7 @@ PointLight HAILFIRE
 	Color 1.0 0.7 0.1
 	Size 36
 	Offset 0 32 24
+	Attenuate 1
 }
 
 PointLight HAIL2FIR
@@ -1304,6 +1418,7 @@ PointLight HAIL2FIR
 	Color 1.0 0.7 0.1
 	Size 36
 	Offset 0 32 -24
+	Attenuate 1
 }
 
 PointLight HAIL3FIR
@@ -1311,6 +1426,7 @@ PointLight HAIL3FIR
 	Color 1.0 0.7 0.1
 	Size 40
 	Offset 0 48 24
+	Attenuate 1
 }
 
 PointLight HAIL4FIR
@@ -1318,6 +1434,7 @@ PointLight HAIL4FIR
 	Color 1.0 0.7 0.1
 	Size 40
 	Offset 0 48 -24
+	Attenuate 1
 }
 
 PointLight TOTHFIRE
@@ -1325,6 +1442,7 @@ PointLight TOTHFIRE
 	Color 0.1 0.9 0.6
 	Size 32
 	Offset 0 24 16
+	Attenuate 1
 }
 
 PointLight TOT2FIRE
@@ -1332,6 +1450,7 @@ PointLight TOT2FIRE
 	Color 0.1 0.9 0.6
 	Size 32
 	Offset 0 24 -16
+	Attenuate 1
 }
 
 PointLight ZYKOFIRE
@@ -1339,6 +1458,7 @@ PointLight ZYKOFIRE
 	Color 0.1 0.9 0.6
 	Size 32
 	Offset 0 24 12
+	Attenuate 1
 }
 
 //BloodSkull//
@@ -1348,6 +1468,7 @@ FlickerLight BLOODSKULL_X1
 	Size 52
 	SecondarySize 60
 	Chance 0.25
+	Attenuate 1
 }
 
 FlickerLight BLOODSKULL_X2
@@ -1356,6 +1477,7 @@ FlickerLight BLOODSKULL_X2
 	Size 56
 	SecondarySize 64
 	Chance 0.25
+	Attenuate 1
 }
 
 FlickerLight BLOODSKULL_X3
@@ -1364,6 +1486,7 @@ FlickerLight BLOODSKULL_X3
 	Size 68
 	SecondarySize 76
 	Chance 0.25
+	Attenuate 1
 }
 
 FlickerLight BLOODSKULL_X4
@@ -1372,6 +1495,7 @@ FlickerLight BLOODSKULL_X4
 	Size 84
 	SecondarySize 92
 	Chance 0.25
+	Attenuate 1
 }
 
 FlickerLight BLOODSKULL_X5
@@ -1397,6 +1521,7 @@ FlickerLight BSKULFOG
 	Size 24
 	SecondarySize 32
 	Chance 0.6
+	Attenuate 1
 }
 
 FlickerLight2 FIREFLY
@@ -1405,6 +1530,7 @@ FlickerLight2 FIREFLY
 	Size 4
 	SecondarySize 8
 	Interval 0.1
+	Attenuate 1
 }
 
 //Smoke Monster//
@@ -1416,6 +1542,7 @@ FlickerLight2 SmokeLight_A
 	SecondarySize 48
 	Interval 2.0
 	Offset 0 0 0
+	Attenuate 1
 }
 
 Object SmokeMonster
@@ -1428,6 +1555,7 @@ PointLight LaserSharkAttack
 {
 	Color 1.0 0.0 0.0
 	Size 28
+	Attenuate 1
 }
 
 Object LaserShark
@@ -1444,6 +1572,7 @@ FlickerLight2 OADEPLSM1
 	Interval 0.3
 	Offset 0 8 0
 	DontLightSelf 0
+	Attenuate 1
 }
 
 FlickerLight2 OADEPLSM2
@@ -1454,6 +1583,7 @@ FlickerLight2 OADEPLSM2
 	Interval 0.3
 	Offset 0 8 0
 	DontLightSelf 0
+	Attenuate 1
 }
 
 FlickerLight2 OADEPLSM3
@@ -1464,6 +1594,7 @@ FlickerLight2 OADEPLSM3
 	Interval 0.4
 	Offset 0 8 0
 	DontLightSelf 0
+	Attenuate 1
 }
 
 //Defs used from AracnorbQueen//
@@ -1513,6 +1644,7 @@ PointLight QUEENPLASMA
 {
 	Color 0.0 1.0 0.1
 	Size 64
+	Attenuate 1
 }
 
 FlickerLight QUEENPLASMA_X1
@@ -1521,6 +1653,7 @@ FlickerLight QUEENPLASMA_X1
 	Size 48
 	SecondarySize 56
 	Chance 0.4
+	Attenuate 1
 }
 
 FlickerLight QUEENPLASMA_X2
@@ -1529,6 +1662,7 @@ FlickerLight QUEENPLASMA_X2
 	Size 32
 	SecondarySize 40
 	Chance 0.4
+	Attenuate 1
 }
 
 FlickerLight QUEENPLASMA_X3
@@ -1537,6 +1671,7 @@ FlickerLight QUEENPLASMA_X3
 	Size 16
 	SecondarySize 24
 	Chance 0.4
+	Attenuate 1
 }
 
 Object QueenPlasmaBlast
@@ -1563,6 +1698,7 @@ FlickerLight QUEENPLASMATRAIL_1
 	Size 40
 	SecondarySize 48
 	Chance 0.6
+	Attenuate 1
 }
 
 FlickerLight QUEENPLASMATRAIL_2
@@ -1571,6 +1707,7 @@ FlickerLight QUEENPLASMATRAIL_2
 	Size 32
 	SecondarySize 40
 	Chance 0.6
+	Attenuate 1
 }
 
 FlickerLight QUEENPLASMATRAIL_3
@@ -1579,6 +1716,7 @@ FlickerLight QUEENPLASMATRAIL_3
 	Size 24
 	SecondarySize 32
 	Chance 0.6
+	Attenuate 1
 }
 
 Object QueenPlasmaBlastTrail
@@ -1599,6 +1737,7 @@ FlickerLight2 ZOMBIEATK
 	SecondarySize 56
 	Interval 1
 	Offset 0 40 0
+	Attenuate 1
 }
 
 FlickerLight ZOMBIEFOG
@@ -1607,6 +1746,7 @@ FlickerLight ZOMBIEFOG
 	Size 24
 	SecondarySize 32
 	Chance 0.6
+	Attenuate 1
 }
 
 FlickerLight2 PRIESTF
@@ -1616,6 +1756,7 @@ FlickerLight2 PRIESTF
 	SecondarySize 56
 	Interval 1
 	Offset 0 48 -4
+	Attenuate 1
 }
 
 PointLight SOUL
@@ -1623,6 +1764,7 @@ PointLight SOUL
 	Color 0.47 1.0 0.45
 	Size 24
 	Offset 0 32 0
+	Attenuate 1
 }
 
 PointLight SOULBIG
@@ -1630,6 +1772,7 @@ PointLight SOULBIG
 	Color 0.47 1.0 0.45
 	Size 32
 	Offset 0 32 0
+	Attenuate 1
 }
 
 //NaziLoper//
@@ -1641,6 +1784,7 @@ FlickerLight2 LOPERLIT
 	Interval 0.3
 	Offset 0 8 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 Object ZTracer
@@ -1657,6 +1801,7 @@ FlickerLight2 TPortNormal
 	SecondarySize 56
 	Interval 0.01
 	Offset 0 32 0
+	Attenuate 1
 }
 
 FlickerLight2 TPortZap
@@ -1666,6 +1811,7 @@ FlickerLight2 TPortZap
 	SecondarySize 128
 	Interval 0.01
 	Offset 0 32 0
+	Attenuate 1
 }
 
 Object NaziLoper
@@ -1690,6 +1836,7 @@ PulseLight BOAFBRL1
 	Interval 0.8
 	Offset 0 16 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 PulseLight BOAFBRL2
@@ -1700,6 +1847,7 @@ PulseLight BOAFBRL2
 	Interval 0.8
 	Offset 0 16 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 PulseLight BOAFBRL3
@@ -1710,6 +1858,7 @@ PulseLight BOAFBRL3
 	Interval 0.8
 	Offset 0 16 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 PulseLight BOAFBRL4
@@ -1720,11 +1869,11 @@ PulseLight BOAFBRL4
 	Interval 0.8
 	Offset 0 16 0
 	DontLightSelf 1
+	Attenuate 1
 }
 
 Object BarrelFutureExploding
 {
-
 	frame BARFA { light BOAFBRL1}
 	frame BARFB { light BOAFBRL2}
 	frame BARFC { light BOAFBRL3}
@@ -1739,6 +1888,7 @@ PulseLight ASTRAMM1
 	SecondarySize 12
 	Interval 0.8
 	Offset 0 4 0
+	Attenuate 1
 }
 
 PulseLight ASTRWEP1
@@ -1748,6 +1898,7 @@ PulseLight ASTRWEP1
 	SecondarySize 20
 	Interval 0.8
 	Offset 0 6 0
+	Attenuate 1
 }
 
 PulseLight ASTRAMM2
@@ -1757,6 +1908,7 @@ PulseLight ASTRAMM2
 	SecondarySize 12
 	Interval 0.8
 	Offset 0 4 0
+	Attenuate 1
 }
 
 PulseLight ASTRWEP2
@@ -1766,6 +1918,7 @@ PulseLight ASTRWEP2
 	SecondarySize 20
 	Interval 0.8
 	Offset 0 6 0
+	Attenuate 1
 }
 
 PulseLight ASTRAMM3
@@ -1775,6 +1928,7 @@ PulseLight ASTRAMM3
 	SecondarySize 12
 	Interval 0.8
 	Offset 0 4 0
+	Attenuate 1
 }
 
 PulseLight ASTRWEP3
@@ -1784,6 +1938,7 @@ PulseLight ASTRWEP3
 	SecondarySize 20
 	Interval 0.8
 	Offset 0 6 0
+	Attenuate 1
 }
 
 FlickerLight2 LAZERZ
@@ -1793,6 +1948,7 @@ FlickerLight2 LAZERZ
 	SecondarySize 32
 	Interval 0.2
 	Offset 0 0 0
+	Attenuate 1
 }
 
 FlickerLight2 LAZERRED
@@ -1802,6 +1958,7 @@ FlickerLight2 LAZERRED
 	SecondarySize 48
 	Interval 0.2
 	Offset 0 0 0
+	Attenuate 1
 }
 
 FlickerLight2 LAZERPUR
@@ -1820,6 +1977,7 @@ FlickerLight2 LAZERGRN
 	SecondarySize 48
 	Interval 0.2
 	Offset 0 0 0
+	Attenuate 1
 }
 
 FlickerLight2 LAZERZAP
@@ -1829,6 +1987,7 @@ FlickerLight2 LAZERZAP
 	SecondarySize 32
 	Interval 0.2
 	Offset 0 0 0
+	Attenuate 1
 }
 
 FlickerLight2 Lightning
@@ -1838,6 +1997,7 @@ FlickerLight2 Lightning
 	SecondarySize 20
 	Interval 0.01
 	Offset 0 0 0
+	Attenuate 1
 }
 
 //ASTROSTEIN - PICKUPS//
@@ -1845,24 +2005,28 @@ PointLight ARMORSHARD1
 {
 	Color 0.0 0.7 0.0
 	Size 6
+	Attenuate 1
 }
 
 PointLight ARMORSHARD2
 {
 	Color 0.0 0.7 0.0
 	Size 7
+	Attenuate 1
 }
 
 PointLight ARMORSHARD3
 {
 	Color 0.0 0.7 0.0
 	Size 8
+	Attenuate 1
 }
 
 PointLight ARMORSHARD4
 {
 	Color 0.0 0.7 0.0
 	Size 9
+	Attenuate 1
 }
 
 Object ArmorShard
@@ -1879,38 +2043,10 @@ PulseLight SUPERSHIELD
 	Size 32
 	SecondarySize 48
 	Interval 2.5
+	Attenuate 1
 }
 
 Object SuperShield
 {
 	frame ARMX { light SUPERSHIELD }
-}
-
-//TITLEMAP & CUTSCENES//
-PointLight TMDOGE_SHADOW //mxd
-{
-	Color 0.6 0.6 0.6
-	Offset 0 0 -4
-	Size 6
-	Subtractive 1
-	DontLightSelf 1
-}
-
-PointLight TMGUARD_SHADOW //mxd
-{
-	Color 0.4 0.4 0.4
-	Offset 0 0 -4
-	Size 5
-	Subtractive 1
-	DontLightSelf 1
-}
-
-Object TMDog
-{
-	frame DOG3L { light TMDOGE_SHADOW }
-}
-
-Object TMGuardWithShadow
-{
-	frame MGR2A { light TMGUARD_SHADOW }
 }
