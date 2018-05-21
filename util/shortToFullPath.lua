@@ -24,21 +24,22 @@ local function strStartsWith(haystack, needle, case)
 	return false
 end
 
---[=[
 local function min(...)
-	local lowest = {...}[1]
-	for i,n in ipairs(...) do
+	local args = {...}
+	local lowest = args[1]
+	for i,n in ipairs(args) do
 		if n < lowest then lowest = n end
 	end
 	return lowest
 end
-]=]
 
+--[[
 local function min(first, second)
 	local lowest = first
 	if second < first then lowest = second end
 	return lowest
 end
+--]]
 -- Main code
 
 local function archiveByName(name)
