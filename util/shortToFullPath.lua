@@ -82,28 +82,39 @@ else
 		walls = 0;
 	}
 
+	texShortToFull["F_SKY1"] = nil -- Do not replace skies!
+
 	for i,sec in ipairs(map.sectors) do
-		if texShortToFull[sec.textureFloor] ~= nil then
-			sec:setStringProperty("texturefloor", texShortToFull[sec.textureFloor])
+		-- Just in case...
+		local floortex = string.upper(sec.textureFloor)
+		local ceiltex = string.upper(sec.textureCeiling)
+
+		if texShortToFull[floortex] ~= nil then
+			sec:setStringProperty("texturefloor", texShortToFull[floortex])
 			replaced.flats = replaced.flats + 1
 		end
-		if texShortToFull[sec.textureCeiling] ~= nil then
-			sec:setStringProperty("textureceiling", texShortToFull[sec.textureCeiling])
+		if texShortToFull[ceiltex] ~= nil then
+			sec:setStringProperty("textureceiling", texShortToFull[ceiltex])
 			replaced.flats = replaced.flats + 1
 		end
 	end
 
 	for i,side in ipairs(map.sidedefs) do
-		if texShortToFull[side.textureBottom] ~= nil then
-			side:setStringProperty("texturebottom", texShortToFull[side.textureBottom])
+		-- Again, just in case.
+		local btmtex = string.upper(side.textureBottom)
+		local midtex = string.upper(side.textureMiddle)
+		local toptex = string.upper(side.textureTop)
+
+		if texShortToFull[btmtex] ~= nil then
+			side:setStringProperty("texturebottom", texShortToFull[btmtex])
 			replaced.walls = replaced.walls + 1
 		end
-		if texShortToFull[side.textureMiddle] ~= nil then
-			side:setStringProperty("texturemiddle", texShortToFull[side.textureMiddle])
+		if texShortToFull[midtex] ~= nil then
+			side:setStringProperty("texturemiddle", texShortToFull[midtex])
 			replaced.walls = replaced.walls + 1
 		end
-		if texShortToFull[side.textureTop] ~= nil then
-			side:setStringProperty("texturetop", texShortToFull[side.textureTop])
+		if texShortToFull[toptex] ~= nil then
+			side:setStringProperty("texturetop", texShortToFull[toptex])
 			replaced.walls = replaced.walls + 1
 		end
 	end
