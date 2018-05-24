@@ -1,4 +1,21 @@
-ACTOR Tree1
+ACTOR TreeBase
+{
+	+FLATSPRITE
+	+ROLLSPRITE
+	States
+	{
+	Spawn:
+		MDLA A 0 NODELAY A_JumpIf(CallACS("BidiSwitch")==1,"BidiSpawn")
+	TridiSpawn:
+		MDLA A -1
+		Stop
+	BidiSpawn:
+		TRE2 A -1 A_SetPitch(270+pitch) //fix the pitch
+		Stop
+	}
+}
+
+ACTOR Tree1 : TreeBase
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree (snow)
@@ -9,12 +26,6 @@ ACTOR Tree1
 	+RELATIVETOFLOOR
 	+SOLID
 	DistanceCheck "treeslod"
-	States
-	{
-	Spawn:
-		MDLA A -1
-		Stop
-	}
 }
 
 ACTOR Tree2 : Tree1
@@ -37,7 +48,7 @@ ACTOR Tree4 : Tree1
 	DistanceCheck "treeslod"
 }
 
-ACTOR Palm1
+ACTOR Palm1 : TreeBase
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Palm (center)
@@ -47,12 +58,6 @@ ACTOR Palm1
 	+NOGRAVITY
 	+SOLID
 	DistanceCheck "treeslod"
-	States
-	{
-	Spawn:
-		MDLA A -1
-		Stop
-	}
 }
 
 ACTOR Palm2 : Palm1
@@ -67,7 +72,7 @@ ACTOR Palm3 : Palm1
 	DistanceCheck "treeslod"
 }
 
-ACTOR JungleTree1
+ACTOR JungleTree1 : TreeBase
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Jungle Tree 1
@@ -76,12 +81,6 @@ ACTOR JungleTree1
 	Radius 16
 	Height 128
 	+SOLID
-	States
-	{
-	Spawn:
-		MDLA A -1
-		Stop
-	}
 }
 
 ACTOR JungleTree2 : JungleTree1
@@ -97,17 +96,11 @@ ACTOR JungleTree3 : JungleTree1
 	DistanceCheck "treeslod"
 }
 
-ACTOR WinterA
+ACTOR WinterA : TreeBase
 {
 	Height 115
 	+SOLID
 	DistanceCheck "treeslod"
-	States
-	{
-	Spawn:
-		MDLA A -1
-		Stop
-	}
 }
 
 ACTOR WinterB : WinterA
@@ -123,17 +116,11 @@ ACTOR WinterC : WinterA
 	DistanceCheck "treeslod"
 }
 
-ACTOR WinterD
+ACTOR WinterD : TreeBase
 {
 	Height 60
 	+SOLID
 	DistanceCheck "treeslod"
-	States
-	{
-	Spawn:
-		MDLA A -1
-		Stop
-	}
 }
 
 ACTOR WinterE : WinterA
@@ -171,7 +158,7 @@ ACTOR WinterI : WinterA
 	DistanceCheck "treeslod"
 }
 
-ACTOR SmallTree1
+ACTOR SmallTree1 : TreeBase
 {
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree 4 (middle)
@@ -182,12 +169,6 @@ ACTOR SmallTree1
 	+RELATIVETOFLOOR
 	+SOLID
 	DistanceCheck "treeslod"
-	States
-	{
-	Spawn:
-		MDLA A -1
-		Stop
-	}
 }
 
 ACTOR SmallTree2 : SmallTree1
@@ -198,7 +179,7 @@ ACTOR SmallTree2 : SmallTree1
 }
 
 //Burnt variants - Ozymandias81
-ACTOR Tree2_Burnt
+ACTOR Tree2_Burnt : TreeBase
 {
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Tree (burnt, large)
@@ -207,12 +188,6 @@ ACTOR Tree2_Burnt
 	Height 192
 	+SOLID
 	DistanceCheck "treeslod"
-	States
-	{
-	Spawn:
-		MDLA A -1
-		Stop
-	}
 }
 
 ACTOR Tree3_Burnt : Tree2_Burnt
@@ -230,7 +205,7 @@ ACTOR Tree4_Burnt : Tree2_Burnt
 	DistanceCheck "treeslod"
 }
 
-ACTOR JungleTree1_Burnt
+ACTOR JungleTree1_Burnt : TreeBase
 {
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Jungle Tree 1 (Burnt)
@@ -239,12 +214,6 @@ ACTOR JungleTree1_Burnt
 	Height 128
 	+SOLID
 	DistanceCheck "treeslod"
-	States
-	{
-	Spawn:
-		MDLA A -1
-		Stop
-	}
 }
 
 ACTOR JungleTree2_Burnt : JungleTree1_Burnt
@@ -255,7 +224,7 @@ ACTOR JungleTree2_Burnt : JungleTree1_Burnt
 	DistanceCheck "treeslod"
 }
 
-ACTOR SmallTree1_Burnt
+ACTOR SmallTree1_Burnt : TreeBase
 {
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Tree 4 (burnt, middle)
@@ -264,12 +233,6 @@ ACTOR SmallTree1_Burnt
 	Height 96
 	+SOLID
 	DistanceCheck "treeslod"
-	States
-	{
-	Spawn:
-		MDLA A -1
-		Stop
-	}
 }
 
 //2d actors

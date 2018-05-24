@@ -207,13 +207,14 @@ OptionMenu "RenderOptions"
 	Title  "Rendering Options"
 
 	Slider "FOV", "fov", 80, 110, 2
+	Option "2d Trees","bidiswitch","OnOff"
 	StaticText ""
 	StaticText "Distance is applied in map units"
 	StaticText "Decrease following values to improve in-game performance"
-	Slider "Grass","grasslod",256,16384,256
-	Slider "Scenery","scenelod",256,16384,256
+	Slider "Grass","grasslod",1024,16384,1024
+	Slider "Scenery","scenelod",1024,16384,1024
 	Slider "Special Effects","sfxlod",1024,16384,1024
-	Slider "Trees","treeslod",256,16384,256
+	Slider "Trees","treeslod",1024,16384,1024
 }
 
 OptionMenu "BoACTRLOptions"
