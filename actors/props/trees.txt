@@ -10,7 +10,7 @@ ACTOR TreeBase
 		MDLA A -1
 		Stop
 	BidiSpawn:
-		TRE2 A -1 A_SetPitch(270+pitch) //fix the pitch
+		UNKN A -1 A_SetPitch(270+pitch) //fix the pitch, also spawn the UNKN sprite if not set, thanks to inheritances
 		Stop
 	}
 }
@@ -26,12 +26,24 @@ ACTOR Tree1 : TreeBase
 	+RELATIVETOFLOOR
 	+SOLID
 	DistanceCheck "treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE E -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR Tree2 : Tree1
 {
 	//$Title Tree (large)
 	DistanceCheck "treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE D -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR Tree3 : Tree1
@@ -39,6 +51,12 @@ ACTOR Tree3 : Tree1
 	//$Title Tree 1 (middle)
 	Height 96
 	DistanceCheck "treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE C -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR Tree4 : Tree1
@@ -46,6 +64,12 @@ ACTOR Tree4 : Tree1
 	//$Title Tree 2 (middle)
 	Height 96
 	DistanceCheck "treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE B -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR Palm1 : TreeBase
@@ -58,18 +82,36 @@ ACTOR Palm1 : TreeBase
 	+NOGRAVITY
 	+SOLID
 	DistanceCheck "treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE I -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR Palm2 : Palm1
 {
 	//$Title Palm (left)
 	DistanceCheck "treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE J -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR Palm3 : Palm1
 {
 	//$Title Palm (right)
 	DistanceCheck "treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE K -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR JungleTree1 : TreeBase
@@ -81,6 +123,12 @@ ACTOR JungleTree1 : TreeBase
 	Radius 16
 	Height 128
 	+SOLID
+	States
+	{
+	BidiSpawn:
+		DTRE F -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR JungleTree2 : JungleTree1
@@ -88,6 +136,12 @@ ACTOR JungleTree2 : JungleTree1
 	//$Title Jungle Tree 2 (wall)
 	Height 32
 	DistanceCheck "treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE G -1 //no pitch for this one
+		Stop
+	}
 }
 
 ACTOR JungleTree3 : JungleTree1
@@ -169,6 +223,12 @@ ACTOR SmallTree1 : TreeBase
 	+RELATIVETOFLOOR
 	+SOLID
 	DistanceCheck "treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE A -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR SmallTree2 : SmallTree1
@@ -176,6 +236,12 @@ ACTOR SmallTree2 : SmallTree1
 	//$Title Tree 5 (small)
 	Height 64
 	DistanceCheck "treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE H -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 //Burnt variants - Ozymandias81
@@ -188,6 +254,12 @@ ACTOR Tree2_Burnt : TreeBase
 	Height 192
 	+SOLID
 	DistanceCheck "treeslod"
+	States
+	{
+	BidiSpawn:
+		DBUR D -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR Tree3_Burnt : Tree2_Burnt
@@ -196,6 +268,12 @@ ACTOR Tree3_Burnt : Tree2_Burnt
 	Height 96
 	+NOGRAVITY
 	DistanceCheck "treeslod"
+	States
+	{
+	BidiSpawn:
+		DBUR E -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR Tree4_Burnt : Tree2_Burnt
@@ -203,6 +281,12 @@ ACTOR Tree4_Burnt : Tree2_Burnt
 	//$Title Tree 2 (burnt, middle)
 	Height 96
 	DistanceCheck "treeslod"
+	States
+	{
+	BidiSpawn:
+		DBUR F -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR JungleTree1_Burnt : TreeBase
@@ -214,6 +298,12 @@ ACTOR JungleTree1_Burnt : TreeBase
 	Height 128
 	+SOLID
 	DistanceCheck "treeslod"
+	States
+	{
+	BidiSpawn:
+		DBUR A -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR JungleTree2_Burnt : JungleTree1_Burnt
@@ -222,6 +312,12 @@ ACTOR JungleTree2_Burnt : JungleTree1_Burnt
 	Height 32
 	+NOGRAVITY
 	DistanceCheck "treeslod"
+	States
+	{
+	BidiSpawn:
+		DBUR B -1 //no pitch for this one
+		Stop
+	}
 }
 
 ACTOR SmallTree1_Burnt : TreeBase
@@ -233,6 +329,12 @@ ACTOR SmallTree1_Burnt : TreeBase
 	Height 96
 	+SOLID
 	DistanceCheck "treeslod"
+	States
+	{
+	BidiSpawn:
+		DBUR C -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 //2d actors
