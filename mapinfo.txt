@@ -99,8 +99,7 @@ map TEST_DLG lookup "TEST_DLG" // Talon1024
 // 3-digit map numbers:
 // 10x -> episode secret map
 // 15x/16x -> SNES easter egg maps
-// 20x -> additional parts of a multi-part map
-// 30x -> special maps
+// 20x -> additional parts of a multi-part map (subtract 200 for the mission number)
 //##############################
 //###### FIRST EPISODE #########
 //##############################
@@ -215,7 +214,7 @@ map C2M5_A lookup "C2M5_A"	//Tormentor667
 
 map C2M5_B lookup "C2M5_B"	//Tormentor667
 {
-	levelnum = 201
+	levelnum = 211
 	music = "C2M5_LAB"
 	cluster = 1
 }
@@ -231,7 +230,7 @@ map C2M6_A lookup "C2M6_A"	//Tormentor667
 
 map C2M6_B lookup "C2M6_B"	//Tormentor667 & DoomJuan
 {
-	levelnum = 202
+	levelnum = 212
 	music = "C2M6B_IN" 	//"C2M5_MUS" runs after intro
 	cluster = 1
 	next = C2M6_C
@@ -239,7 +238,7 @@ map C2M6_B lookup "C2M6_B"	//Tormentor667 & DoomJuan
 
 map C2M6_C lookup "C2M6_C"	//Tormentor667
 {
-	levelnum = 203
+	levelnum = 212
 	next = EndTitle
 	music = "C2M6C_IN"	//"C2M6AMUS" runs after intro
 	cluster = 1
@@ -255,7 +254,7 @@ map C2M0_A lookup "C2M0_A"	//Tormentor667
 
 map C2M0_B lookup "C2M0_B"	//Tormentor667
 {
-	levelnum = 204
+	levelnum = 211
 	music = "C2M0BMUS"
 	cluster = 1
 }
@@ -272,7 +271,7 @@ episode C3INTRO
 
 map C3INTRO lookup "C3INTRO" //Tormentor667, just a dummy
 {
-	levelnum = 301
+	levelnum = 212
 	cluster = 1
 	music = "C3INTR2"
 }
@@ -301,7 +300,7 @@ map C3M3_A lookup "C3M3_A"	//Tormentor667
 
 map C3M3_B lookup "C3M3_B"	//Tormentor667
 {
-	levelnum = 205
+	levelnum = 215
 	music = "C3M3_MUS"
 	cluster = 1
 }
@@ -318,18 +317,20 @@ map C3M5_A lookup "C3M5_A"	//??
 	levelnum = 17
 	music = "C3M5AMUS"
 	cluster = 1
+	next = C3M5_B
 }
 
 map C3M5_B lookup "C3M5_B"	//??
 {
-	levelnum = 206
+	levelnum = 217
 	music = "C3M5BMUS"
 	cluster = 1
+	next = C3M5_C
 }
 
 map C3M5_C lookup "C3M5_C"	//Tormentor667
 {
-	levelnum = 207
+	levelnum = 217
 	music = "C3M5CMS"
 	cluster = 1
 }
@@ -343,14 +344,13 @@ map C3M6_A lookup "C3M6_A"	//DoomJuan
 
 map C3M6_B lookup "C3M6_B"	//DoomJuan
 {
-	levelnum = 208
+	levelnum = 218
 	music = "C3M6BMUS"
 	cluster = 1
 }
 
 map C3M0_A lookup "C3M0_A"	//Tormentor667
 {
-	
 	levelnum = 103
 	music = "C3M0AMUS"
 	cluster = 1

@@ -6,33 +6,9 @@ script "MissionNumber" OPEN
 	{
 		mission_number = mapnum; // Set the mission number just in case we warped/started ahead
 	}
-	else if (mapnum == 201) // C2M5_B
+	else if (mapnum > 200 && mapnum < 300)
 	{
-		mission_number = 11;
-	}
-	else if (mapnum == 202 || mapnum == 203) // C2M6_B and C2M6_C
-	{
-		mission_number = 12;
-	}
-	else if (mapnum == 204) // C2M0_B
-	{
-		mission_number = 11;
-	}
-	else if (mapnum == 301) // C3 Intro
-	{
-		mission_number = 12;
-	}
-	else if (mapnum == 205) // C3M3_B
-	{
-		mission_number = 15;
-	}
-	else if (mapnum == 206 || mapnum == 207) // C3M5_B and C3M5_C
-	{
-		mission_number = 17;
-	}
-	else if (mapnum == 208) // C3M6_B
-	{
-		mission_number = 18;
+		mission_number = mapnum - 200;
 	}
 }
 
