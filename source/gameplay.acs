@@ -1,8 +1,15 @@
 // Map checks/actions //
 script "MissionNumber" OPEN
 {
-	if(GetLevelInfo(LEVELINFO_LEVELNUM)<99)				//If it's not a secret mission or the intermap
-		mission_number=GetLevelInfo(LEVELINFO_LEVELNUM);	//Set the mission number just in case we warped/started ahead
+	int mapnum = GetLevelInfo(LEVELINFO_LEVELNUM);
+	if(mapnum < 99) // If it's not a secret mission or the intermap
+	{
+		mission_number = mapnum; // Set the mission number just in case we warped/started ahead
+	}
+	else if (mapnum > 200 && mapnum < 300)
+	{
+		mission_number = mapnum - 200;
+	}
 }
 
 //fadescript for map setup
