@@ -108,16 +108,16 @@ ACTOR RPG8RocketTrail : RocketFlame
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 		TNT1 A 1 A_Jump(256, "Flyloop1", "Flyloop2", "Flyloop3", "Flyloop4")
 	Flyloop1:
-		SMOK A 1 { A_SetScale(scaleX+0.010); A_SetTranslucent(alpha-0.008, 0); }
+		SMOK A 1 { A_SetScale(scaleX+0.010); A_FadeOut(.008, FTF_REMOVE); }
 		Loop
 	Flyloop2:
-		SMOK B 1 { A_SetScale(scaleX+0.015); A_SetTranslucent(alpha-0.007, 0); }
+		SMOK B 1 { A_SetScale(scaleX+0.015); A_FadeOut(.007, FTF_REMOVE); }
 		Loop
 	Flyloop3:
-		SMOK C 1 { A_SetScale(scaleX+0.005); A_SetTranslucent(alpha-0.006, 0); }
+		SMOK C 1 { A_SetScale(scaleX+0.005); A_FadeOut(.006, FTF_REMOVE); }
 		Loop
 	Flyloop4:
-		SMOK D 1 { A_SetScale(scaleX+0.010); A_SetTranslucent(alpha-0.005, 0); }
+		SMOK D 1 { A_SetScale(scaleX+0.010); A_FadeOut(.005, FTF_REMOVE); }
 		Loop
 	EndSpawn:
 		TNT1 A 1

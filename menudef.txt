@@ -205,9 +205,11 @@ OptionMenu "EffectsOptions"
 OptionMenu "RenderOptions"
 {
 	Title  "Rendering Options"
+	StaticText "WARNING: 2d settings require level restart"
 
 	Slider "FOV", "fov", 80, 110, 2
 	Option "2d Trees","bidiswitch","OnOff"
+	Option "Reflections","gl_plane_reflection","OnOff"
 	StaticText ""
 	StaticText "Distance is applied in map units"
 	StaticText "Decrease following values to improve in-game performance"
