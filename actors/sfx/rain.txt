@@ -83,7 +83,7 @@ ACTOR RainDropShort //3d actor
 		RNDR A 0 A_SetScale(0.10,0.10)
 		"####" A 0 A_SetTranslucent(frandom(0.8,0.2))
 	RainDeath:
-		"####" A 0 A_FadeOut(0.1)
+		"####" A 0 A_FadeOut(0.1,FTF_REMOVE)
 		"####" A 1 A_SetScale(ScaleX+0.05, ScaleY+0.05)
 		Loop
 	Vanish:

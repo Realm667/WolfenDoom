@@ -74,7 +74,7 @@ ACTOR SnowParticle
 		SNOW A -1
 		Stop
 	Death:
-		SNOW A 1 A_FadeOut(0.02)
+		SNOW A 1 A_FadeOut(0.02,FTF_REMOVE)
 		Loop
 	}
 }

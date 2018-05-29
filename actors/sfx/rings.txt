@@ -1,7 +1,7 @@
 /////////////////////////////////
 // POWERUP POD CIRCLE SPAWNERS //
-// for REALM667								 //
-// by Tormentor667						 //
+// for REALM667				   //
+// by Tormentor667			   //
 /////////////////////////////////
 
 ACTOR BaseOrb
@@ -184,7 +184,7 @@ ACTOR UFOCirclePad //fixed values for SecretUFO effect
 		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,340, 129, 0)
 		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,350, 129, 0)
 		"####" A 2 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,360, 129, 0)
-		"####" "#" 2 A_FadeOut(0.04)
+		"####" "#" 2 A_FadeOut(0.04,FTF_REMOVE)
 		Loop
 	}
 }

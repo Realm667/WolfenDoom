@@ -70,7 +70,7 @@ ACTOR DarkSmoke1
 		DKS2 A 0
 		"####" A 0 ThrustThingZ(0,random(3,6),0,0)
 		"####" A 0 ThrustThing(random(0,16),random(1,1),0,0)
-		"####" A 3 A_FadeOut(.01)
+		"####" A 3 A_FadeOut(.01,FTF_REMOVE)
 		Goto Spawn+4
 	}
 }
@@ -85,7 +85,7 @@ ACTOR DarkSmoke2 : DarkSmoke1
 		DKS2 A 0
 		"####" A 0 ThrustThingZ(0,random(5,9),0,0)
 		"####" A 0 ThrustThing(random(0,16),random(1,2),0,0)
-		"####" A 3 A_FadeOut(.01)
+		"####" A 3 A_FadeOut(.01,FTF_REMOVE)
 		Goto Spawn+4
 	}
 }
@@ -100,7 +100,7 @@ ACTOR DarkSmoke3 : DarkSmoke1
 		DKS2 A 0
 		"####" A 0 ThrustThingZ(0,random(9,15),0,0)
 		"####" A 0 ThrustThing(random(0,16),random(2,4),0,0)
-		"####" A 3 A_FadeOut(.01)
+		"####" A 3 A_FadeOut(.01,FTF_REMOVE)
 		Goto Spawn+4
 	}
 }
