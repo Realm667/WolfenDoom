@@ -4,18 +4,11 @@ ACTOR ProtoDrone : Nazi //ozy81
 	//$Title Prototype Drone
 	//$Color 4
 	Scale 0.87
-<<<<<<< HEAD
 	Health 350
 	Radius 32
 	Mass 400
 	MeleeRange 256
-	Speed 2.66666667
-=======
-	Health 150
-	Radius 32
-	Mass 400
 	Speed 2
->>>>>>> origin/master
 	PainChance 128
 	-FLOORCLIP
 	+FLOAT
@@ -79,19 +72,14 @@ ACTOR ProtoDrone : Nazi //ozy81
 										A_SpawnItemEx("9MMCasing", ScaleX*2, ScaleY*16, random(-2,2), RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
 										A_SpawnProjectile("EnemyProtoTracer",ScaleX*2,ScaleY*-16,random(-24,24));}
 		Goto See
-<<<<<<< HEAD
+
 	Missile:
 		PROT N 10 BRIGHT A_FaceTarget
 		"####" N 8 BRIGHT A_VileTarget("ProtoDrone_Redpointer")
 		"####" NNNNN 14 BRIGHT A_FaceTarget
 		"####" N 8 BRIGHT A_VileAttack("astroshotgun/fire", 20, 20, 70, 0.5)
 		"####" N 0 A_CustomRailgun (0, 0, "none", "FF0000", RGF_NOPIERCING | RGF_FULLBRIGHT, 1, 32, "MeasurePuff", 0, 0, 0, 20, 0.5, 0.5, NONE, ScaleY*14)
-=======
-	Melee: //uses the same attack of LaserShark
-		PROT B 10 A_FaceTarget
-		"####" N 5 A_CustomRailgun (random(2,5), 0, "990000", "FF0000", RGF_NOPIERCING | RGF_FULLBRIGHT, 1, 0, "MeasurePuff", 0, 0, 768, 35*3, 0.5, 0.8, NONE, ScaleY*14)
-		"####" B 4 A_FaceTarget
->>>>>>> origin/master
+
 		Goto See
 	Pain:
 	Pain.Dagger:
