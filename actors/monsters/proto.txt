@@ -4,12 +4,14 @@ ACTOR ProtoDrone : Nazi //ozy81
 	//$Title Prototype Drone
 	//$Color 4
 	Scale 0.87
-	Health 350
+	Health 250
 	Radius 32
 	Mass 400
 	MeleeRange 256
+	MeleeThreshold 256 //forces the melee attack
+	MaxTargetRange 896 //same of Arch-Vile, guess it's enough
 	Speed 2
-	PainChance 128
+	PainChance 96 //it is a drone, so...
 	-FLOORCLIP
 	+FLOAT
 	+LOOKALLAROUND
@@ -40,46 +42,34 @@ ACTOR ProtoDrone : Nazi //ozy81
 		"####" A 0 A_Look
 		Loop
 	Melee:
-		PROT B 0 A_Jump(255,"Melee1","Melee2","Melee3")
-		
-	Melee1:
+		PROT B 0 A_Jump(128,"Melee2")
 		"####" B 5 A_FaceTarget
 		"####" B 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
-		"####" CDE 8 LIGHT(PROTOFIRE) A_SpawnProjectile("EnemyProtoTracer",ScaleX*2,ScaleY*-16,random(-8,8))
+		"####" CDE 8 LIGHT(PROTOFIRE) A_SpawnProjectile("EnemyProtoTracer",ScaleX*2,ScaleY*-16,random(-12,12))
 		"####" B 5 A_FaceTarget
 		"####" B 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
-		"####" CDE 8 LIGHT(PROTOFIRE) A_SpawnProjectile("EnemyProtoTracer",ScaleX*2,ScaleY*-16,random(-8,8))
+		"####" CDE 8 LIGHT(PROTOFIRE) A_SpawnProjectile("EnemyProtoTracer",ScaleX*2,ScaleY*-16,random(-12,12))
 		Goto See
 	Melee2:
 		"####" N 5 A_FaceTarget
+		"####" N 0 A_Jump(128,2)
+		"####" N 1 ThrustThing(Angle*256/360-192, 8, 1, 0)
 		"####" N 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		"####" FGHI 2 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",ScaleX*2,ScaleY*16,random(-16,16))
+		"####" FGHI 2 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",ScaleX*2,ScaleY*16,random(-24,24))
 		"####" I 0 A_SpawnItemEx("9MMCasing", ScaleX*2, ScaleY*16, random(-2,2), RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" N 5 A_FaceTarget
+		"####" N 0 A_Jump(128,2)
+		"####" N 1 ThrustThing(Angle*256/360-192, 8, 1, 0)
 		"####" N 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		"####" FGHI 2 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",ScaleX*2,ScaleY*16,random(-16,16))
+		"####" FGHI 2 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",ScaleX*2,ScaleY*16,random(-24,24))
 		"####" I 0 A_SpawnItemEx("9MMCasing", ScaleX*2, ScaleY*16, random(-2,2), RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		Goto See
-	Melee3:
-		"####" N 5 A_FaceTarget
-		"####" N 0 {A_PlaySound("chaingun/fire", CHAN_WEAPON); A_PlaySound("astrochaingun/fire", CHAN_WEAPON);}
-		"####" JKLM 5 LIGHT(PROTOFIRE) {A_SpawnProjectile("EnemyPistolTracer",ScaleX*2,ScaleY*16,random(-24,24));
-										A_SpawnItemEx("9MMCasing", ScaleX*2, ScaleY*16, random(-2,2), RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-										A_SpawnProjectile("EnemyProtoTracer",ScaleX*2,ScaleY*-16,random(-24,24));}
-		"####" N 5 A_FaceTarget
-		"####" N 0 {A_PlaySound("chaingun/fire", CHAN_WEAPON); A_PlaySound("astrochaingun/fire", CHAN_WEAPON);}
-		"####" JKLM 5 LIGHT(PROTOFIRE) {A_SpawnProjectile("EnemyPistolTracer",ScaleX*2,ScaleY*16,random(-24,24));
-										A_SpawnItemEx("9MMCasing", ScaleX*2, ScaleY*16, random(-2,2), RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-										A_SpawnProjectile("EnemyProtoTracer",ScaleX*2,ScaleY*-16,random(-24,24));}
-		Goto See
-
 	Missile:
-		PROT N 10 BRIGHT A_FaceTarget
-		"####" N 8 BRIGHT A_VileTarget("ProtoDrone_Redpointer")
-		"####" NNNNN 14 BRIGHT A_FaceTarget
-		"####" N 8 BRIGHT A_VileAttack("astroshotgun/fire", 20, 20, 70, 0.5)
-		"####" N 0 A_CustomRailgun (0, 0, "none", "FF0000", RGF_NOPIERCING | RGF_FULLBRIGHT, 1, 32, "MeasurePuff", 0, 0, 0, 20, 0.5, 0.5, NONE, ScaleY*14)
-
+		PROT N 10 A_FaceTarget
+		"####" N 8 A_VileTarget("ProtoDrone_Redpointer")
+		"####" NNNNN 14 A_FaceTarget
+		"####" N 8 A_VileAttack("astroshotgun/fire", 10, 10, 70, 0.5)
+		"####" N 0 A_CustomRailgun (0, 0, "none", "FF0000", RGF_NOPIERCING | RGF_FULLBRIGHT, 1, 32, "MeasurePuff", 0, 0, 0, 20, 0.5, 0.5, NONE, ScaleY*14, 270, 1, 2.5)
 		Goto See
 	Pain:
 	Pain.Dagger:
@@ -100,21 +90,18 @@ ACTOR ProtoDrone : Nazi //ozy81
 
 ACTOR ProtoDrone_Redpointer
 {
-  +NOBLOCKMAP
-  +NOGRAVITY
-  RenderStyle Add
-  Alpha 0.1
-  Scale 0.5
-  States
-  {
-  Spawn:
-    RLPR A 0 Bright NODELAY A_Playsound("proto/marker", CHAN_AUTO, 0.75)
-  Marker:
-    RLPR A 3 Bright 
-		    {	
-			A_Fire;
-			A_FadeIn(0.03, FTF_REMOVE);
-		    }
-    Loop
-  }
+	+BRIGHT
+	+NOBLOCKMAP
+	+NOGRAVITY
+	RenderStyle Add
+	Alpha 0.1
+	Scale 0.5
+	States
+	{
+	Spawn:
+		RLPR A 0 Bright NODELAY A_Playsound("proto/marker", CHAN_AUTO, 0.75)
+	Marker:
+		"####" A 3 { A_Fire; A_FadeIn(0.03, FTF_REMOVE);}
+		Loop
+	}
 }

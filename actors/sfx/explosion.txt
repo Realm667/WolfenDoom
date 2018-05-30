@@ -246,7 +246,7 @@ ACTOR ProtoExplosion_Medium : SwitchableDecoration
 	Active:
 		TNT1 A 0 A_PlaySound("astrostein/explosion")
 		TNT1 A 0 Radius_Quake(10,10,0,16,0)
-		TNT1 A 0 A_Explode(100, 192)
+		TNT1 A 0 A_Explode(random(10,20), 192)
 		TNT1 A 0 A_RadiusGive("BlurShaderControl", 192, RGF_PLAYERS | RGF_GIVESELF, 80)
 		TNT1 A 0 A_JumpIf(CallACS("BoomSwitch")==0,"EndSpawn")
 		TNT1 A 0 A_SpawnItemEx("KD_HL2FlashProto", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE)

@@ -1484,7 +1484,7 @@ ACTOR WPanzerGuard : BasicGuard
 		"####" A 0
 		Goto See
 	Missile.AimedBadly:
-		"####" C 8 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPanzerRocket", 34, -10, random(-16,16)) //didn't test yet, maybe excessive bad aim - ozy81
+		"####" C 8 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPanzerRocket", 34, -10, random(-12,12))
 		"####" A 40
 		"####" A 0 {user_count++; if(user_count > 1) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
 		"####" A 0
