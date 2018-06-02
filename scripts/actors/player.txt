@@ -557,6 +557,60 @@ class BoAPlayer : PlayerPawn
 		FLineTraceData trace;
 		LineTrace(angle, UseRange, pitch, TRF_THRUACTORS, player.viewheight, 0.0, 0.0, trace);
 		Line AimLine = trace.HitLine;
+		TextureID AimTexture = trace.HitTexture;
+
+		if (AimTexture)
+		{
+			// Handle texture-specific "generic" activations - really need to figure out a 
+			// good way to make this an event handler or something, so it's not tied only
+			// to the BoAPlayer player class.
+			if (player.buttons & BT_USE && !(player.oldbuttons & BT_USE)) // If the player just pressed use
+			{
+				// See what texture we are aiming at
+				String texname = TexMan.GetName(AimTexture);
+
+				if (texname.IndexOf(".") >= 0) // If it's a long filename
+				{
+					// Strip the texture name down to only the filename (basically the old-style texture name)
+					int start = texname.LastIndexOf("/") + 1;
+					texname = texname.Mid(start, texname.LastIndexOf(".") - start);
+				}
+
+				// Convert to all upper-case for comparison
+				texname.ToUpper();
+
+				if (texname == "CABN_T02") // If it's the storage shelf with medkits...
+				{
+					if (Health < MaxHealth) // ...and we're not at full health...
+					{
+						GiveInventory("Health", 15); // Heal by 15 and play the bandage tearing sound
+						A_Playsound("pickup/bandage", CHAN_VOICE);
+					}
+				}
+				// This can be expanded to include custom interaction sounds for any texture present in 
+				// the game (e.g., Ion Maiden-style 'locked door' rattles).  This does *not* override
+				// line specials that are present in the map...  If a texture with an action set here
+				// is also given a line special to be executed on player use, both actions will be run.
+				else if ( // I think this is most of the 'unusable door' textures?
+					texname == "DOOR_B09" ||
+					texname == "DOOR_B89" ||
+					texname == "DOOR_F00_X" ||
+					texname == "DOOR_G11" ||
+					texname == "DOOR_G12" ||
+					texname == "DOOR_G20" ||
+					texname == "DOOR_G21" ||
+					texname == "DOOR_G30" ||
+					texname == "DOOR_M00" ||
+					texname == "DOOR_M02D" ||
+					texname == "DOOR_SET1" ||
+					texname == "DOOR_SET2" ||
+					texname == "MIDG_M89"
+				)
+				{
+					A_Playsound("picklock/locked", CHAN_VOICE);
+				}
+			}
+		}
 
 		Actor AimActor;
 		if (dodragging)
