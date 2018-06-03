@@ -55,6 +55,8 @@ ACTOR FallingRockFrac1
 	Damage (random(0,1))
 	Projectile
 	+ROLLSPRITE
+	BounceType "Heretic"
+  	BounceFactor 0.3
 	States
 	{
 	Spawn:
@@ -110,25 +112,25 @@ ACTOR FallingMetal1 : FallingRock1
 	Spawn:
 		FMTL A 0 NODELAY A_Jump(255,"Set1","Set2","Set3","Set4","Set5","Set6","Set7")
 		Set1:
-		"####" A 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" A 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set2:
-		"####" B 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" B 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set3:
-		"####" C 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" C 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set4:
-		"####" D 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" D 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set5:
-		"####" E 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" E 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set6:
-		"####" F 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" F 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set7:
-		"####" G 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" G 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 	Death:
 		"####" "#" 2
@@ -149,25 +151,25 @@ ACTOR FallingMetal2 : FallingMetal1
 	Spawn:
 		FMTL A 0 NODELAY A_Jump(255,"Set1","Set2","Set3","Set4","Set5","Set6","Set7")
 		Set1:
-		"####" A 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" A 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set2:
-		"####" B 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" B 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set3:
-		"####" C 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" C 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set4:
-		"####" D 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" D 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set5:
-		"####" E 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" E 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set6:
-		"####" F 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" F 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set7:
-		"####" G 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" G 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 	}
 }
@@ -180,49 +182,49 @@ ACTOR FallingMetal3 : FallingMetal1
 	Spawn:
 		FMTL H 0 NODELAY A_Jump(256,"Set1","Set2","Set3","Set4","Set5","Set6","Set7","Set8","Set9","Set10","Set11","Set12","Set13","Set14","Set15")
 		Set1:
-		"####" H 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" H 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set2:
-		"####" I 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" I 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set3:
-		"####" J 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" J 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set4:
-		"####" K 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" K 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set5:
-		"####" L 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" L 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set6:
-		"####" M 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" M 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set7:
-		"####" N 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" N 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set8:
-		"####" O 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" O 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set9:
-		"####" P 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" P 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set10:
-		"####" Q 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" Q 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set11:
-		"####" R 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" R 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set12:
-		"####" S 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" S 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set13:
-		"####" T 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" T 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set14:
-		"####" U 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" U 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set15:
-		"####" V 1 A_SetRoll(roll+48, SPF_INTERPOLATE,0)
+		"####" V 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 	}
 }
@@ -235,80 +237,80 @@ ACTOR FallingMetal4 : FallingMetal1
 	Spawn:
 		FMTL H 0 NODELAY A_Jump(256,"Set1","Set2","Set3","Set4","Set5","Set6","Set7","Set8","Set9","Set10","Set11","Set12","Set13","Set14","Set15")
 		Set1:
-		"####" H 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" H 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set2:
-		"####" I 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" I 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set3:
-		"####" J 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" J 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set4:
-		"####" K 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" K 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set5:
-		"####" L 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" L 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set6:
-		"####" M 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" M 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set7:
-		"####" N 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" N 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set8:
-		"####" O 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" O 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set9:
-		"####" P 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" P 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set10:
-		"####" Q 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" Q 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set11:
-		"####" R 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" R 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set12:
-		"####" S 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" S 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set13:
-		"####" T 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" T 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set14:
-		"####" U 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" U 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set15:
-		"####" V 1 A_SetRoll(roll-48, SPF_INTERPOLATE,0)
+		"####" V 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 	}
 }
 
 ACTOR FallingMetlFrac1 : FallingRockFrac1
 {
-	Scale 1.0
+	Scale 0.75
 	States
 	{
 	Spawn:
 		FMTL A 0 NODELAY { A_Gravity; A_Jump(256,"Set1","Set2","Set3","Set4","Set5","Set6","Set7"); }
 		Set1:
-		"####" A 1 A_SetRoll(roll+80, SPF_INTERPOLATE,0)
+		"####" A 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set2:
-		"####" B 1 A_SetRoll(roll+80, SPF_INTERPOLATE,0)
+		"####" B 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set3:
-		"####" C 1 A_SetRoll(roll+80, SPF_INTERPOLATE,0)
+		"####" C 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set4:
-		"####" D 1 A_SetRoll(roll+80, SPF_INTERPOLATE,0)
+		"####" D 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set5:
-		"####" E 1 A_SetRoll(roll+80, SPF_INTERPOLATE,0)
+		"####" E 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set6:
-		"####" F 1 A_SetRoll(roll+80, SPF_INTERPOLATE,0)
+		"####" F 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 		Set7:
-		"####" G 1 A_SetRoll(roll+80, SPF_INTERPOLATE,0)
+		"####" G 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0)
 		Loop
 	Death:
 		"####" "#" 1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY / 2)
@@ -325,25 +327,25 @@ ACTOR FallingMetlFrac2 : FallingMetlFrac1
 	Spawn:
 		FMTL A 0 NODELAY { A_Gravity; A_Jump(256,"Set1","Set2","Set3","Set4","Set5","Set6","Set7"); }
 		Set1:
-		"####" A 1 A_SetRoll(roll-80, SPF_INTERPOLATE,0)
+		"####" A 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set2:
-		"####" B 1 A_SetRoll(roll-80, SPF_INTERPOLATE,0)
+		"####" B 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set3:
-		"####" C 1 A_SetRoll(roll-80, SPF_INTERPOLATE,0)
+		"####" C 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set4:
-		"####" D 1 A_SetRoll(roll-80, SPF_INTERPOLATE,0)
+		"####" D 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set5:
-		"####" E 1 A_SetRoll(roll-80, SPF_INTERPOLATE,0)
+		"####" E 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set6:
-		"####" F 1 A_SetRoll(roll-80, SPF_INTERPOLATE,0)
+		"####" F 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 		Set7:
-		"####" G 1 A_SetRoll(roll-80, SPF_INTERPOLATE,0)
+		"####" G 1 A_SetRoll(roll-8, SPF_INTERPOLATE,0)
 		Loop
 	}
 }
