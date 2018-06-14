@@ -1048,7 +1048,7 @@ ACTOR Totengraber_Wounded : RocketMan
 		Goto Look
 	See:
 		Goto See.BossBleeding
-	Heal: //still didn't finished - ozy81
+	Heal:
 		"####" EEEEEE 6 A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0)
 		"####" E 0 A_HealGoal
 		Goto See
@@ -1308,18 +1308,19 @@ ACTOR Longinus_Hitler : NaziBoss
 	Speed 2.5
 	+ALLOWPAIN
 	+INVULNERABLE
-	PainChance 96
+	PainChance 24
 	DamageFactor "OccultFire", 5.0
 	Obituary "$LHITLER"
 	SeeSound "hitler/sight"
 	PainSound "hitler/pain"
 	DeathSound "hitler/death"
 	ActiveSound "hitler/active"
+	Nazi.Healer 2
 	States
 	{
 	Spawn:
 		SHI1 A 0
-		"####" "#" 0 A_SetUserVar("user_incombat", TRUE)
+		"####" "#" 0 { A_SetUserVar("user_incombat", TRUE); A_SetUserVar("user_count", TRUE); }
 		Goto Look
 	Look:
 		"####" "#" 10 A_Look
@@ -1352,23 +1353,35 @@ ACTOR Longinus_Hitler : NaziBoss
 		"####" A 0 A_Look
 		Loop
 	Wound:
+		"####" "#" 0 {if(user_count == FALSE) {return ResolveState("Pain.Wounded");} return ResolveState("");} //not a perfect solution but works
 		SHI1 K 3
 		"####" L 3
-		"####" M 3 A_SpawnItemEx("HitlerChaingun",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION)
+		"####" M 3
+		"####" M 0 {
+			if (user_count == TRUE) {
+				A_SetUserVar("user_count", FALSE);
+				A_SpawnItemEx("HitlerChaingun",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
+			}
+		} 
 		Goto See.Wounded
+	Heal:
+		"####" HHHHHH 6 A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0)
+		"####" E 0 A_HealGoal
+		Goto See
 	Missile:
 		"####" "#" 0 A_JumpIf(Health<5000,"Missile.Wounded")
-	Chaingun:
 		"####" "#" 0 A_JumpIfCloser(radius+256,"TeslaMissile")
-		SHI1 E 0 A_Jump(128,"FireStomp")
+	Chaingun:
+		SHI1 E 0 A_Jump(128,"FireStomp")	
 		"####" E 6 A_PlaySound("chaingun/start", CHAN_AUTO)
 		"####" E 0 A_PlaySound("chaingun/loop", CHAN_AUTO)
-		"####" F 0 A_FaceTarget
-		"####" F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		"####" F 2 LIGHT(HAIL3FIR) A_SpawnProjectile("EnemyChaingunTracer",32,-28,random(-3,3))
-		"####" F 0 A_SpawnItemEx("9MMCasing", 32,0,-36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		"####" G 2 LIGHT(HAIL3FIR) A_SpawnProjectile("EnemyChaingunTracer",32,-28,random(-3,3))
-		"####" G 0 A_SpawnItemEx("9MMCasing", 32,0,-36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+	Chaingun.Loop:
+		"####" FF 2 LIGHT(HAIL3FIR) A_SpawnProjectile("EnemyChaingunTracer",32,-28,random(-11,11))
+		"####" FF 0 A_SpawnItemEx("9MMCasing", 32,0,-36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		"####" I 0 {user_count2++; if(user_count2 > 47) {user_count2 = 0; return ResolveState("See");} return ResolveState("");}
+		"####" GG 2 LIGHT(HAIL3FIR) A_SpawnProjectile("EnemyChaingunTracer",32,-28,random(-11,11))
+		"####" GG 0 A_SpawnItemEx("9MMCasing", 32,0,-36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		"####" I 0 {user_count2++; if(user_count2 > 47) {user_count2 = 0; return ResolveState("See");} return ResolveState("");}
 		"####" G 2 A_MonsterRefire(20,"See")
 		Loop
 	FireStomp:
@@ -1376,16 +1389,25 @@ ACTOR Longinus_Hitler : NaziBoss
 		"####" E 0 A_FaceTarget
 		"####" E 4
 		"####" H 8 LIGHT(OTTOFIRE)
+		"####" H 0 A_PlaySound("grenade/explode", CHAN_AUTO, 1.0, FALSE, 0.1)
+		"####" H 1 A_SpawnItemEx("GeneralExplosion_Medium")
+		"####" H 1 Radius_Quake(10,10,0,16,0)
 		"####" E 12 LIGHT(OTTOFIRE) A_SpawnProjectile("OccultBlazeFlames",0,0,0,CMF_CHECKTARGETDEAD)
 		"####" C 6
 		"####" E 0 A_FaceTarget
 		"####" E 4
 		"####" H 8 LIGHT(OTTOFIRE)
+		"####" H 0 A_PlaySound("grenade/explode", CHAN_AUTO, 1.0, FALSE, 0.1)
+		"####" H 1 A_SpawnItemEx("GeneralExplosion_Medium")
+		"####" H 1 Radius_Quake(10,10,0,16,0)
 		"####" E 12 LIGHT(OTTOFIRE) A_SpawnProjectile("OccultBlazeFlames",0,0,0,CMF_CHECKTARGETDEAD)
 		"####" C 6
 		"####" E 0 A_FaceTarget
 		"####" E 4
 		"####" H 8 LIGHT(OTTOFIRE)
+		"####" H 0 A_PlaySound("grenade/explode", CHAN_AUTO, 1.0, FALSE, 0.1)
+		"####" H 1 A_SpawnItemEx("GeneralExplosion_Medium")
+		"####" H 1 Radius_Quake(10,10,0,16,0)
 		"####" E 12 LIGHT(OTTOFIRE) A_SpawnProjectile("OccultBlazeFlames",0,0,0,CMF_CHECKTARGETDEAD)
 		"####" C 4
 		Goto See
@@ -1420,16 +1442,25 @@ ACTOR Longinus_Hitler : NaziBoss
 		"####" E 0 A_FaceTarget
 		"####" E 4
 		"####" H 8 LIGHT(OTTOFIRE)
+		"####" H 0 A_PlaySound("grenade/explode", CHAN_AUTO, 1.0, FALSE, 0.1)
+		"####" H 1 A_SpawnItemEx("GeneralExplosion_Medium")
+		"####" H 1 Radius_Quake(10,10,0,16,0)
 		"####" E 12 LIGHT(OTTOFIRE) A_SpawnProjectile("OccultBlazeFlames",0,0,0,CMF_CHECKTARGETDEAD)
 		"####" C 6
 		"####" E 0 A_FaceTarget
 		"####" E 4
 		"####" H 8 LIGHT(OTTOFIRE)
+		"####" H 0 A_PlaySound("grenade/explode", CHAN_AUTO, 1.0, FALSE, 0.1)
+		"####" H 1 A_SpawnItemEx("GeneralExplosion_Medium")
+		"####" H 1 Radius_Quake(10,10,0,16,0)
 		"####" E 12 LIGHT(OTTOFIRE) A_SpawnProjectile("OccultBlazeFlames",0,0,0,CMF_CHECKTARGETDEAD)
 		"####" C 6
 		"####" E 0 A_FaceTarget
 		"####" E 4
 		"####" H 8 LIGHT(OTTOFIRE)
+		"####" H 0 A_PlaySound("grenade/explode", CHAN_AUTO, 1.0, FALSE, 0.1)
+		"####" H 1 A_SpawnItemEx("GeneralExplosion_Medium")
+		"####" H 1 Radius_Quake(10,10,0,16,0)
 		"####" E 12 LIGHT(OTTOFIRE) A_SpawnProjectile("OccultBlazeFlames",0,0,0,CMF_CHECKTARGETDEAD)
 		"####" C 4
 		Goto See.Wounded
