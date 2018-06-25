@@ -1,6 +1,6 @@
-////////////////////////////////////////////////////
-// ITEMS & POWERUPS ////////////////////////////////
-////////////////////////////////////////////////////
+//////////////////////
+// ITEMS & POWERUPS //
+//////////////////////
 ACTOR CKShikadiSoda : SingleCoin
 {
 	//$Category Misc (Wolf3D)/Commander Keen/Pickups
@@ -120,9 +120,9 @@ ACTOR CKOneUp : Health
 	}
 }
 
-//////////////////////////////////////////////////
-// WEAPONS ///////////////////////////////////////
-//////////////////////////////////////////////////
+/////////////
+// WEAPONS //
+/////////////
 
 ACTOR CKStunner : NaziWeapon
 {
@@ -170,6 +170,7 @@ ACTOR CKStunnerBall
 	Speed 20
 	Damage 20
 	Projectile
+	+BRIGHT
 	+RANDOMIZE
 	SeeSound "ckeen/shoot"
 	DeathSound "ckeen/hit"
@@ -177,13 +178,13 @@ ACTOR CKStunnerBall
 	States
 	{
 	Spawn:
-		CKBL UV 5 Bright
+		CKBL UV 5
 		Loop
 	Death:
-		CKBL W 4 Bright
-		CKBL X 4 Bright
-		CKBL Y 4 Bright
-		CKBL Z 4 Bright
+		CKBL W 4
+		CKBL X 4
+		CKBL Y 4
+		CKBL Z 4
 		Stop
 	}
 }
@@ -196,9 +197,9 @@ ACTOR CKStunnerAmmo : Ammo
 	Inventory.Icon CKNE01
 }
 
-//////////////////////////////////////////////////
-// KEYS & KEYPOTS ////////////////////////////////
-//////////////////////////////////////////////////
+////////////////////
+// KEYS & KEYPOTS //
+////////////////////
 ACTOR CKBlueKey : PuzzleItem
 {
 	//$Category Misc (Wolf3D)/Commander Keen/Items
@@ -327,9 +328,9 @@ ACTOR CKYellowKeyPod : CKRedKeyPod
 	}
 }
 
-/////////////////////////////////////////////
-// MONSTERS /////////////////////////////////
-/////////////////////////////////////////////
+//////////////
+// MONSTERS //
+//////////////
 ACTOR CKConfusion
 {
 	Radius 1
@@ -498,11 +499,9 @@ ACTOR CKWallShooter : SwitchableDecoration
 	//$Category Misc (Wolf3D)/Commander Keen/Special
 	//$Title Wall Shooter (3 types)
 	//$Color 4
-
 	//$Arg0 "Position"
 	//$Arg0Type 11
 	//$Arg0Enum { 0 = "Ceiling"; 1 = "Floor"; 2 = "Wall"; }
-
 	Health 9999999
 	Radius 8
 	Height 16

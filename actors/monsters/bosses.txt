@@ -969,7 +969,7 @@ ACTOR Totengraber_Healthy : RocketMan
 {
 	//$Title Totengraber, healthy (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "General Totengraeber" //ä doesn't work correctly
+	Tag "General Totengraber"
 	Health 1000
 	DamageFactor "Poison", 0
 	DamageFactor "MutantPoison", 0
@@ -1362,7 +1362,7 @@ ACTOR Longinus_Hitler : NaziBoss
 				A_SetUserVar("user_count", FALSE);
 				A_SpawnItemEx("HitlerChaingun",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
 			}
-		} 
+		}
 		Goto See.Wounded
 	Heal:
 		"####" HHHHHH 6 A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0)
@@ -1372,7 +1372,7 @@ ACTOR Longinus_Hitler : NaziBoss
 		"####" "#" 0 A_JumpIf(Health<5000,"Missile.Wounded")
 		"####" "#" 0 A_JumpIfCloser(radius+256,"TeslaMissile")
 	Chaingun:
-		SHI1 E 0 A_Jump(128,"FireStomp")	
+		SHI1 E 0 A_Jump(128,"FireStomp")
 		"####" E 6 A_PlaySound("chaingun/start", CHAN_AUTO)
 		"####" E 0 A_PlaySound("chaingun/loop", CHAN_AUTO)
 	Chaingun.Loop:
@@ -1436,7 +1436,7 @@ ACTOR Longinus_Hitler : NaziBoss
 		"####" E 4
 		Goto See
 	Missile.Wounded:
-		SHI2 "#" 0 A_JumpIfCloser(radius+256,"TeslaMissileW")	
+		SHI2 "#" 0 A_JumpIfCloser(radius+256,"TeslaMissileW")
 	FireStompW:
 		SHI2 C 6
 		"####" E 0 A_FaceTarget
@@ -1813,7 +1813,7 @@ ACTOR SuperSoldier_Arctic : SuperSoldier
 		"####" F 1 LIGHT(SUPAFIRE) A_SpawnProjectile("EnemyChaingunTracer",44,20,random(-11,11))
 		"####" F 1 LIGHT(SUPAFIRE) A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11))
 		"####" F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)	
+		"####" F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
 		"####" F 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("Retreat");} return ResolveState("");}
 		"####" G 2 A_FaceTarget
 		"####" F 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)

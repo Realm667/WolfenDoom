@@ -50,7 +50,6 @@ ACTOR MechaNaziStanding2 : MechaNaziStanding1
 		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "Guard")
 		"####" A 1 A_SpawnItemEx("MechaDropper2",0,0,0)
 		Stop
-	//No Death states because it is invulnerable
 	}
 }
 
@@ -72,7 +71,6 @@ ACTOR MechaNaziStanding3 : MechaNaziStanding1
 		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "ArcticRifleGuard")
 		"####" A 1 A_SpawnItemEx("MechaDropper3",0,0,0)
 		Stop
-	//No Death states because it is invulnerable
 	}
 }
 
@@ -94,7 +92,27 @@ ACTOR MechaNaziStanding4 : MechaNaziStanding1
 		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "SSGuard")
 		"####" A 1 A_SpawnItemEx("MechaDropper4",0,0,0)
 		Stop
-	//No Death states because it is invulnerable
+	}
+}
+
+ACTOR MechaNaziStanding5 : MechaNaziStanding1
+{
+	//$Title Empty Thor's Hammer Mecha-Nazi (SS Guards only)
+	States
+	{
+	Spawn:
+		MCST E 1 NoDelay A_SetTics(Random(1, 35))
+	Active:
+		MCST E 35 A_CheckProximity("SpawnEnemy", "SSGuard", 128, 1, MECHA_FLAGS)
+		Loop
+	Inactive:
+		"####" E 0 //bland
+		Goto Spawn
+	SpawnEnemy:
+		TNT1 A 0 A_ChangeFlag("BUMPSPECIAL", FALSE)
+		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "SSGuard")
+		"####" A 1 A_SpawnItemEx("MechaDropper5",0,0,0)
+		Stop
 	}
 }
 
@@ -102,6 +120,7 @@ ACTOR MechaDropper1 : RandomSpawner { DropItem MechaNaziWalking1 }
 ACTOR MechaDropper2 : RandomSpawner { DropItem MechaNaziWalking2 }
 ACTOR MechaDropper3 : RandomSpawner { DropItem MechaNaziWalking3 }
 ACTOR MechaDropper4 : RandomSpawner { DropItem MechaNaziWalking4 }
+ACTOR MechaDropper5 : RandomSpawner { DropItem MechaNaziWalking5 }
 
 ACTOR MechaNaziWalking1 : MechBoss
 {

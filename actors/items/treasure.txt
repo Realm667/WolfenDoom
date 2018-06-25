@@ -11,7 +11,7 @@ ACTOR SingleCoin : CoinItem
 	States
 	{
 	Spawn:
-		ONEC A -1 Light(COINLITE)
+		ONEC A -1 LIGHT(COINLITE)
 		Stop
 	}
 }
@@ -24,7 +24,7 @@ ACTOR BagOfCoins : SingleCoin
 	States
 	{
 	Spawn:
-		BAGC A -1 Light(BAGCLITE)
+		BAGC A -1 LIGHT(BAGCLITE)
 		Stop
 	}
 }
@@ -38,7 +38,7 @@ ACTOR TreasureChest : SingleCoin
 	States
 	{
 	Spawn:
-		TREA B -1 Light(TRESLITE)
+		TREA B -1 LIGHT(TRESLITE)
 		Stop
 	}
 }
@@ -53,7 +53,7 @@ ACTOR TreasureChest2 : SingleCoin
 	States
 	{
 	Spawn:
-		TREA C -1 Light(BIGCLITE)
+		TREA C -1 LIGHT(BIGCLITE)
 		Stop
 	}
 }
@@ -67,7 +67,7 @@ ACTOR TreasureChest3 : SingleCoin
 	States
 	{
 	Spawn:
-		TREA E -1 Light(TRESLITE)
+		TREA E -1 LIGHT(TRESLITE)
 		Stop
 	}
 }
@@ -81,7 +81,7 @@ ACTOR TreasureCross : SingleCoin
 	States
 	{
 	Spawn:
-		TREA F -1 Light(COINLITE)
+		TREA F -1 LIGHT(COINLITE)
 		Stop
 	}
 }
@@ -94,7 +94,7 @@ ACTOR Goblet : TreasureCross
 	States
 	{
 	Spawn:
-		TREA G -1 Light(TRESLITE)
+		TREA G -1 LIGHT(TRESLITE)
 		Stop
 	}
 }
@@ -108,7 +108,7 @@ ACTOR TreasureCrown : SingleCoin
 	States
 	{
 	Spawn:
-		TREA D -1 Light(BAGCLITE)
+		TREA D -1 LIGHT(BAGCLITE)
 		Stop
 	}
 }
@@ -122,7 +122,7 @@ ACTOR GoldBar : TreasureCrown
 	States
 	{
 	Spawn:
-		TREA A -1 Light(TRESLITE)
+		TREA A -1 LIGHT(TRESLITE)
 		Stop
 	}
 }
@@ -136,7 +136,7 @@ ACTOR Naziward : BagOfCoins
 	States
 	{
 	Spawn:
-		NZWR A -1 Light(TRESLITE)
+		NZWR A -1 LIGHT(TRESLITE)
 		Stop
 	}
 }
@@ -150,7 +150,7 @@ ACTOR Cacoward : BagOfCoins
 	States
 	{
 	Spawn:
-		CACW A -1 Light(TRESLITE)
+		CACW A -1 LIGHT(TRESLITE)
 		Stop
 	}
 }
@@ -171,7 +171,7 @@ ACTOR ChestKey : Inventory
 	States
 	{
 	Spawn:
-		SBKY A -1 Light(TRESLITE)
+		SBKY A -1 LIGHT(TRESLITE)
 		Stop
 	}
 }

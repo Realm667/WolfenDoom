@@ -1,5 +1,3 @@
-//mxd. Stealth-related stuff.
-
 ///////////
 //ENEMIES//
 ///////////
@@ -25,10 +23,7 @@ ACTOR SneakableSSMP40GuardStatic : SneakableSSMP40Guard
 			Goto Look
 		See: //doesn't roll - ozy81
 		See.Dodge:
-			"####" N 1 {
-				A_SetAngle(user_angle);
-				A_Chase("Missile", "Missile", CHF_DONTMOVE | CHF_NODIRECTIONTURN);
-			}
+			"####" N 1 { A_SetAngle(user_angle); A_Chase("Missile", "Missile", CHF_DONTMOVE | CHF_NODIRECTIONTURN); }
 			Loop
 	}
 }
@@ -55,10 +50,7 @@ ACTOR MGTurretStealth : MGTurret
 	States
 	{
 		Missile: //This 'turret' fires and reloads like an MP40 Guard
-			"####" A 5 {
-				A_FaceTarget;
-				A_PlaySound("nazi/mp40", CHAN_WEAPON);
-			}
+			"####" A 5 { A_FaceTarget; A_PlaySound("nazi/mp40", CHAN_WEAPON); }
 			"####" B 4 A_SpawnProjectile("EnemySMGTracer",24,4,random(-8,8))
 			"####" A 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
 			"####" C 2 A_MonsterRefire(10, "See")
