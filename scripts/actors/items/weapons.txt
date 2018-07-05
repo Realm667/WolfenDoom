@@ -424,7 +424,7 @@ class TurretGun : ActorPositionable
 				shotcount++;
 				heatlevel++;
 
-				if (maxshotcount && shotcount > maxshotcount) { return ResolveState("Reload"); }
+				if (maxshotcount && shotcount >= maxshotcount) { return ResolveState("Reload"); }
 				if (heatthreshold && heatlevel > heatthreshold) { return ResolveState("Cooldown"); }
 				return ResolveState(null);
 			}
@@ -610,7 +610,7 @@ class TurretStand : Actor
 
 		Super.Tick();
 	}
-	
+
 	void DoInteractions()
 	{
 		shooter.SetOrigin(pos + RotateVector((-(shooter.radius + radius) * 1.5, 0), gun.angle), true); // Keep the shooter at the firing position
@@ -663,11 +663,9 @@ class TurretStand : Actor
 
 		shooter.angle = gun.angle;
 
-		if (!GunIsIdle())
-		{
-			shooter.player.cheats |= CF_FROZEN;
-		}
-		else
+		shooter.player.cheats |= CF_FROZEN;
+
+		if (CanLeaveTurret())
 		{
 			shooter.player.cheats ^= CF_FROZEN;
 		}
@@ -681,7 +679,7 @@ class TurretStand : Actor
 		}
 		else if (shooter.player.cmd.buttons & BT_RELOAD)
 		{
-			if (GunIsIdle() && gun.shotcount > 0)
+			if (!GunIsReloading() && gun.shotcount > 0)
 			{
 				gun.SetStateLabel("Reload");
 			}
@@ -699,15 +697,32 @@ class TurretStand : Actor
 		}
 		*/
 	}
-	
+
 	virtual bool GunIsIdle()
 	{
 		return gun.InStateSequence(gun.CurState, gun.SpawnState);
 	}
 
+	virtual bool GunIsCooling()
+	{
+		State CooldownState = gun.ResolveState("Cooldown");
+		return gun.InStateSequence(gun.CurState, CooldownState);
+	}
+
+	virtual bool GunIsReloading()
+	{
+		State ReloadState = gun.ResolveState("Reload");
+		return gun.InStateSequence(gun.CurState, ReloadState);
+	}
+
+	virtual bool CanLeaveTurret()
+	{
+		return !GunIsReloading();
+	}
+
 	virtual bool LeaveTurret()
 	{
-		if (gun.InStateSequence(gun.CurState, gun.ResolveState("Reload")))
+		if (!CanLeaveTurret())
 		{
 			// Lock player while reloading
 			return false;
@@ -720,9 +735,11 @@ class TurretStand : Actor
 */
 		shooter.player.viewheight = PlayerPawn(shooter).viewheight;
 
-		if (shooter.FindInventory("TurretWeapon"))
+		Inventory twepInv = shooter.FindInventory("TurretWeapon");
+
+		if (twepInv)
 		{
-			shooter.TakeInventory("TurretWeapon", twep.Amount);
+			shooter.TakeInventory("TurretWeapon", twepInv.Amount);
 		}
 
 		shooter = null;
