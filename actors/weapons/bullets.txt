@@ -694,3 +694,16 @@ ACTOR ChainSmokeSpawner : PistolSmokeSpawner
 }
 
 ACTOR ChainSmoke : PistolSmoke { Alpha 0.5 Scale 2 }
+
+ACTOR TurrSmokeSpawner : PistolSmokeSpawner
+{
+	Speed 0
+	States
+		{
+		Death:
+			TNT1 A 0 A_SpawnItemEx("TurrSmoke",24,0,0,frandom(0.1,0.2),0,frandom(0.2,0.6))
+			Stop
+		}
+}
+
+ACTOR TurrSmoke : PistolSmoke { Alpha 0.5 Scale 0.2 }
