@@ -377,7 +377,7 @@ class TurretSwivel : ActorPositionable
 class TurretGun : ActorPositionable
 {
 	Actor swivel, light, light2, light3;
-	double shotcount;
+	int shotcount;
 	int maxshotcount;
 	int cooldowntime, cooldowntimeout, heatlevel, heatthreshold;
 
@@ -486,13 +486,39 @@ class TurretGun : ActorPositionable
 	}
 }
 
+class TurretWeapon : NullWeapon
+{
+	TurretGun gun;
+
+	Default
+	{
+		Tag "$TAGTURET";
+		Weapon.AmmoType1 "TurretBulletAmmo";
+		Weapon.AmmoType2 "TurretHeatAmmo";
+		NaziWeapon.Stealth False;
+	}
+
+	override void DoEffect()
+	{
+		if (gun)
+		{
+			Ammo1.MaxAmount = gun.maxshotcount;
+			Ammo1.Amount = gun.maxshotcount - gun.shotcount;
+			Ammo2.MaxAmount = gun.heatthreshold;
+			Ammo2.Amount = gun.heatlevel;
+		}
+	}
+}
+
 class TurretStand : Actor
 {
-	Actor shooter, gun;
+	Actor shooter;
+	TurretGun gun;
 	Weapon playerlastweapon;
 	transient FLineTraceData crosshairtrace;
 	double pangle, ppitch;
 	bool freezeonreload;
+	TurretWeapon twep;
 
 	Property FreezeOnReload:freezeonreload;
 
@@ -523,13 +549,12 @@ class TurretStand : Actor
 		{
 			if (shooter == user)
 			{
-				shooter = null;
-				return true;
+				return LeaveTurret();
 			}
 
 			return false;
 		}
-		
+
 		double delta = deltaangle(angle, AngleTo(user));
 
 		if (user.player && abs(delta) > 135) // Player must be within +/-45 degrees of directly behind the gun
@@ -548,9 +573,10 @@ class TurretStand : Actor
 
 	override void PostBeginPlay()
 	{
-		bool sp;
+		vector3 gunPos = Pos;
+		gunPos.Z += 26;
+		while (!gun) { gun = TurretGun(Spawn("TurretGun", gunPos)); }
 
-		while (!gun) { [sp, gun] = A_SpawnItemEx("TurretGun", 0, 0, 26); }
 		gun.master = self;
 		gun.target = self;
 		gun.scale = scale;
@@ -571,68 +597,136 @@ class TurretStand : Actor
 				shooter.player.cmd.sidemove
 			)
 			{
-				shooter.player.PendingWeapon = playerlastweapon;
-/*
-				shooter.player.MinPitch = -90;
-				shooter.player.MaxPitch = 90;
-*/
-				shooter.player.viewheight = PlayerPawn(shooter).viewheight;
-				shooter = null;
+				if (!LeaveTurret())
+				{
+					DoInteractions();
+				}
 			}
 			else
 			{
-				shooter.SetOrigin(pos + RotateVector((-(shooter.radius + radius) * 1.5, 0), gun.angle), true); // Keep the shooter at the firing position
-
-				Weapon lowered = Weapon(shooter.FindInventory("NullWeapon"));
-
-				if (shooter.player.ReadyWeapon != lowered)
-				{
-					playerlastweapon = shooter.player.ReadyWeapon;
-					shooter.player.PendingWeapon = lowered;
-				}
-
-				shooter.player.viewheight = PlayerPawn(shooter).viewheight * 3 / 4; 
-
-/*
-				if (!freezeonreload || !gun.InStateSequence(gun.CurState, gun.FindState("Reload")))
-				{
-					gun.angle += shooter.player.cmd.yaw * (360./65536.);
-					gun.angle = clamp(gun.angle, angle - 90, angle + 90);
-
-					gun.pitch = clamp(gun.pitch - shooter.player.cmd.pitch * (360. / 65536.), -pitch - 55, -pitch + 55);
-
-					gun.LineTrace(gun.angle, 2048, gun.pitch, TRF_THRUHITSCAN | TRF_THRUBLOCK | TRF_THRUACTORS | TRF_THRUSPECIES, 8.0 * scale.y, 0.0, 0.0, crosshairtrace);
-
-					Vector3 offset = crosshairtrace.HitLocation - (shooter.player.camera.pos + (0, 0, shooter.player.viewheight));
-					offset = (RotateVector(offset.xy, -angle), offset.z);
-
-					pangle = angle - atan(-offset.y / offset.x);
-					ppitch = (pitch - atan(offset.z / offset.xy.length()));
-
-					if (ppitch > 180) { ppitch -= 360; }
-
-					ppitch = clamp(ppitch, shooter.pitch - 2, shooter.pitch + 2); // Slowly move pitch to match gun if there's a sudden jump
-					pangle = clamp(pangle, shooter.angle - 2, shooter.angle + 2); // Slowly move angle to match gun if there's a sudden jump
-				}
-
-				shooter.player.MinPitch = ppitch; // Force the pitch to wherever the gun is aiming
-				shooter.player.MaxPitch = ppitch;
-
-				shooter.angle = pangle;
-*/
-				gun.pitch = clamp(shooter.pitch, -55, 55);
-				gun.angle = clamp(shooter.angle, angle - 70, angle + 70);
-
-				shooter.angle = gun.angle;
-
-				if (shooter.player.cmd.buttons & BT_ATTACK)
-				{
-					if (gun.InStateSequence(gun.CurState, gun.SpawnState)) { gun.SetStateLabel("Fire"); }
-				}
+				DoInteractions();
 			}
 		}
 
 		Super.Tick();
+	}
+	
+	void DoInteractions()
+	{
+		shooter.SetOrigin(pos + RotateVector((-(shooter.radius + radius) * 1.5, 0), gun.angle), true); // Keep the shooter at the firing position
+
+		if (!twep)
+		{
+			twep = TurretWeapon(shooter.GiveInventoryType("TurretWeapon"));
+
+			if (!twep.gun || twep.gun != gun)
+				twep.gun = gun;
+		}
+
+		if (shooter.player.ReadyWeapon != twep)
+		{
+			playerlastweapon = shooter.player.ReadyWeapon;
+			shooter.player.PendingWeapon = twep;
+		}
+
+		shooter.player.viewheight = PlayerPawn(shooter).viewheight * 3 / 4; 
+
+	/*
+		if (!freezeonreload || !gun.InStateSequence(gun.CurState, gun.FindState("Reload")))
+		{
+			gun.angle += shooter.player.cmd.yaw * (360./65536.);
+			gun.angle = clamp(gun.angle, angle - 90, angle + 90);
+
+			gun.pitch = clamp(gun.pitch - shooter.player.cmd.pitch * (360. / 65536.), -pitch - 55, -pitch + 55);
+
+			gun.LineTrace(gun.angle, 2048, gun.pitch, TRF_THRUHITSCAN | TRF_THRUBLOCK | TRF_THRUACTORS | TRF_THRUSPECIES, 8.0 * scale.y, 0.0, 0.0, crosshairtrace);
+
+			Vector3 offset = crosshairtrace.HitLocation - (shooter.player.camera.pos + (0, 0, shooter.player.viewheight));
+			offset = (RotateVector(offset.xy, -angle), offset.z);
+
+			pangle = angle - atan(-offset.y / offset.x);
+			ppitch = (pitch - atan(offset.z / offset.xy.length()));
+
+			if (ppitch > 180) { ppitch -= 360; }
+
+			ppitch = clamp(ppitch, shooter.pitch - 2, shooter.pitch + 2); // Slowly move pitch to match gun if there's a sudden jump
+			pangle = clamp(pangle, shooter.angle - 2, shooter.angle + 2); // Slowly move angle to match gun if there's a sudden jump
+		}
+
+		shooter.player.MinPitch = ppitch; // Force the pitch to wherever the gun is aiming
+		shooter.player.MaxPitch = ppitch;
+
+		shooter.angle = pangle;
+	*/
+		gun.pitch = clamp(shooter.pitch, -55, 55);
+		gun.angle = clamp(shooter.angle, angle - 70, angle + 70);
+
+		shooter.angle = gun.angle;
+
+		if (!GunIsIdle())
+		{
+			shooter.player.cheats |= CF_FROZEN;
+		}
+		else
+		{
+			shooter.player.cheats ^= CF_FROZEN;
+		}
+
+		if (shooter.player.cmd.buttons & BT_ATTACK)
+		{
+			if (GunIsIdle())
+			{
+				gun.SetStateLabel("Fire");
+			}
+		}
+		else if (shooter.player.cmd.buttons & BT_RELOAD)
+		{
+			if (GunIsIdle() && gun.shotcount > 0)
+			{
+				gun.SetStateLabel("Reload");
+			}
+		}
+		// I'm not sure if this is a good idea, but I'll leave it here just in case
+		/*
+		else if (shooter.player.cmd.button & BT_ZOOM)
+		{
+			// Cool down weapon
+			if (gun.InStateSequence(gun.CurState, gun.SpawnState) &&
+				TurretGun(gun).heatlevel > 0)
+			{
+				gun.SetStateLabel("Cooldown");
+			}
+		}
+		*/
+	}
+	
+	virtual bool GunIsIdle()
+	{
+		return gun.InStateSequence(gun.CurState, gun.SpawnState);
+	}
+
+	virtual bool LeaveTurret()
+	{
+		if (gun.InStateSequence(gun.CurState, gun.ResolveState("Reload")))
+		{
+			// Lock player while reloading
+			return false;
+		}
+
+		shooter.player.PendingWeapon = playerlastweapon;
+/*
+		shooter.player.MinPitch = -90;
+		shooter.player.MaxPitch = 90;
+*/
+		shooter.player.viewheight = PlayerPawn(shooter).viewheight;
+
+		if (shooter.FindInventory("TurretWeapon"))
+		{
+			shooter.TakeInventory("TurretWeapon", twep.Amount);
+		}
+
+		shooter = null;
+		return true;
 	}
 }
 
