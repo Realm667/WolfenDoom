@@ -374,9 +374,54 @@ class TurretSwivel : ActorPositionable
 	}
 }
 
+class TurretGunSmoke : Actor
+{
+	int cooldowntime;
+
+	Default
+	{
+		+NOINTERACTION
+		+WALLSPRITE
+		Radius 2;
+		Height 2;
+		Scale 0.5;
+	}
+
+	States
+	{
+		Spawn:
+			FFTF ABC 7;
+		Anim:
+			FFTF DEF 7 {
+				if (cooldowntime <= 0)
+				{
+					return ResolveState("End");
+				}
+				return CurState;
+			}
+			Loop;
+		End:
+			FFTF CBA 7;
+			Stop;
+	}
+
+	override void Tick()
+	{
+		if (master)
+		{
+			Angle = master.Angle;
+		}
+		if (cooldowntime)
+		{
+			cooldowntime -= 1;
+		}
+	}
+}
+
 class TurretGun : ActorPositionable
 {
 	Actor swivel, light, light2, light3;
+	TurretGunSmoke smokefx;
 	int shotcount;
 	int maxshotcount;
 	int cooldowntime, cooldowntimeout, heatlevel, heatthreshold;
@@ -410,6 +455,10 @@ class TurretGun : ActorPositionable
 			MDLA A 35 DoReload();
 			MDLA A 5 A_PlaySound("mp40/reload", CHAN_WEAPON);
 			MDLA A 5;
+			MDLA A 0 {
+				if (cooldowntimeout > 0) return ResolveState("Cooldown");
+				return SpawnState;
+			}
 			Goto Spawn;
 		Cooldown:
 			MDLA A 0 DoCoolDown();
@@ -425,8 +474,15 @@ class TurretGun : ActorPositionable
 				shotcount++;
 				heatlevel++;
 
-				if (maxshotcount && shotcount >= maxshotcount) { return ResolveState("Reload"); }
-				if (heatthreshold && heatlevel > heatthreshold) { return ResolveState("Cooldown"); }
+				if (maxshotcount && shotcount >= maxshotcount)
+				{
+					return ResolveState("Reload");
+				}
+				if (heatthreshold && heatlevel > heatthreshold)
+				{
+					cooldowntimeout = cooldowntime;
+					return ResolveState("Cooldown");
+				}
 				return ResolveState(null);
 			}
 			Goto Spawn;
@@ -464,6 +520,8 @@ class TurretGun : ActorPositionable
 		if (swivel) { swivel.angle = angle; }
 
 		double heatamt = double(heatlevel) / heatthreshold;
+		
+		if (cooldowntimeout > 0) cooldowntimeout -= 1;
 
 		if (light) { light.alpha = clamp(heatamt * 1.25, 0, 1.0); }
 		if (light2) { light2.alpha = clamp((heatamt - 0.75) * 3, 0, 1.0); }
@@ -482,11 +540,57 @@ class TurretGun : ActorPositionable
 
 	void DoCoolDown()
 	{
-		A_SetTics(cooldowntime);
-		A_PlaySound("STEAM_BURST", CHAN_WEAPON);
+		A_SetTics(cooldowntimeout);
+
+		if (cooldowntimeout > 35)
+		{
+			A_PlaySound("STEAM_BURST", CHAN_WEAPON);
+		}
+
+		if (smokefx)
+		{
+			smokefx.Destroy();
+		}
+
+		smokefx = TurretGunSmoke(Spawn("TurretGunSmoke", Pos, NO_REPLACE));
+		smokefx.master = self;
+		smokefx.cooldowntime = cooldowntime;
+	}
+
+	static void Overheat(Actor activator)
+	{
+		TurretGun gun;
+
+		// Find the gun
+		FTranslatedLineTarget gtarg;
+		activator.AimLineAttack(activator.Angle, 512.0, gtarg, flags: ALF_CHECK3D | ALF_CHECKNONSHOOTABLE);
+
+		if (gtarg.linetarget)
+		{
+			if (gtarg.linetarget is "TurretStand")
+			{
+				TurretStand stand = TurretStand(gtarg.linetarget);
+				gun = stand.gun;
+			}
+			else if (gtarg.linetarget is "TurretGun")
+			{
+				gun = TurretGun(gtarg.linetarget);
+			}
+			else
+			{
+				if (gtarg.linetarget)
+				{
+					Console.Printf("Found a %s", gtarg.linetarget.GetClassName());
+				}
+				return;
+			}
+
+			gun.heatlevel = gun.heatthreshold;
+		}
 	}
 }
 
+// "Proxy" weapon that copies the ammo counts from the turret gun so that they can be displayed in the status bar.
 class TurretWeapon : NullWeapon
 {
 	TurretGun gun;
@@ -718,7 +822,7 @@ class TurretStand : Actor
 
 	virtual bool CanLeaveTurret()
 	{
-		return !GunIsReloading();
+		return !GunIsReloading() || GunIsCooling();
 	}
 
 	virtual bool LeaveTurret()
