@@ -374,54 +374,9 @@ class TurretSwivel : ActorPositionable
 	}
 }
 
-class TurretGunSmoke : Actor
-{
-	int cooldowntime;
-
-	Default
-	{
-		+NOINTERACTION
-		+WALLSPRITE
-		Radius 2;
-		Height 2;
-		Scale 0.5;
-	}
-
-	States
-	{
-		Spawn:
-			FFTF ABC 7;
-		Anim:
-			FFTF DEF 7 {
-				if (cooldowntime <= 0)
-				{
-					return ResolveState("End");
-				}
-				return CurState;
-			}
-			Loop;
-		End:
-			FFTF CBA 7;
-			Stop;
-	}
-
-	override void Tick()
-	{
-		if (master)
-		{
-			Angle = master.Angle;
-		}
-		if (cooldowntime)
-		{
-			cooldowntime -= 1;
-		}
-	}
-}
-
 class TurretGun : ActorPositionable
 {
 	Actor swivel, light, light2, light3;
-	TurretGunSmoke smokefx;
 	int shotcount;
 	int maxshotcount;
 	int cooldowntime, cooldowntimeout, heatlevel, heatthreshold;
@@ -542,19 +497,10 @@ class TurretGun : ActorPositionable
 	{
 		A_SetTics(cooldowntimeout);
 
-		if (cooldowntimeout > 35)
+		if (cooldowntimeout > 24)
 		{
 			A_PlaySound("STEAM_BURST", CHAN_WEAPON);
 		}
-
-		if (smokefx)
-		{
-			smokefx.Destroy();
-		}
-
-		smokefx = TurretGunSmoke(Spawn("TurretGunSmoke", Pos, NO_REPLACE));
-		smokefx.master = self;
-		smokefx.cooldowntime = cooldowntime;
 	}
 
 	static void Overheat(Actor activator)
