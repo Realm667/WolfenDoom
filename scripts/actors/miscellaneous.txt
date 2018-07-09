@@ -357,8 +357,7 @@ class GunSmokeSpawner : Actor
 		Radius 1;
 		Height 1;
 		Speed 0;
-		Projectile;
-		+NOGRAVITY
+		+NOINTERACTION
 
 		GunSmokeSpawner.SmokeClass "PistolSmoke";
 	}
@@ -366,27 +365,28 @@ class GunSmokeSpawner : Actor
 	States
 	{
 		Spawn:
-			TNT1 A 0 NoDelay A_Die();
-			Stop;
-		Death:
-			TNT1 A 0 A_SpawnSmoke();
+			TNT1 A 0 NoDelay A_SpawnSmoke();
 			Stop;
 	}
 
 	override void PostBeginPlay()
 	{
-		CVar smokeSwitch = CVar.FindCVar("smokeswitch");
-		bool smoke = smokeSwitch.GetBool();
-		if (!smoke) Destroy();
-
 		Super.PostBeginPlay();
+		CVar smokeSwitch = CVar.FindCVar("smokeswitch");
+		int smoke = smokeSwitch.GetInt();
+		if (smoke == 0)
+		{
+			Destroy();
+			return;
+		}
 	}
 
-	Actor A_SpawnSmoke()
+	Actor A_SpawnSmoke(double xPosFactor = 1.0, double xVelFactor = 1.0, double zVelFactor = 1.0)
 	{
 		bool sp;
 		Actor ac;
-		[sp, ac] = A_SpawnItemEx(smokeClass,24,0,0,frandom(0.1,0.2),0,frandom(0.2,0.6));
+		[sp, ac] = A_SpawnItemEx(smokeClass,24 * xPosFactor,0,0,frandom(0.1,0.2) * xVelFactor,0,frandom(0.2,0.6) * zVelFactor);
+		ac.Roll = frandom(0.0, 360.0);
 		return ac;
 	}
 }
