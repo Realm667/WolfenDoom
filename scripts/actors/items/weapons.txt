@@ -626,8 +626,7 @@ class TurretWeapon : NullWeapon
 		{
 			Ammo1.MaxAmount = gun.maxshotcount;
 			Ammo1.Amount = gun.maxshotcount - gun.shotcount;
-			Ammo2.MaxAmount = gun.heatthreshold;
-			Ammo2.Amount = gun.heatlevel;
+			Ammo2.Amount = int((double(gun.heatlevel) / gun.heatthreshold) * 100);
 		}
 	}
 }
