@@ -27,8 +27,10 @@ ACTOR MonsterStatue
 	States
 	{
 	Spawn:
-		WSTA A -1 NoDelay {A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY);
-			A_SetSize(Radius * ScaleX * ScaleX, Height * ScaleY * ScaleY);}
+		WSTA A -1 NoDelay {
+			A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY);
+			A_SetSize(Radius * ScaleX * ScaleX, Height * ScaleY * ScaleY);
+		}
 		Stop
 	}
 }
@@ -53,7 +55,7 @@ ACTOR BronzeStatueB : BronzeStatueA
 	States
 	{
 	Spawn:
-		BRNZ A -1 NoDelay A_SetScale(ScaleX * -1, ScaleY)
+		BRNZ A -1 NoDelay A_SetScale(ScaleX * -1, ScaleY) 
 		Stop
 	}
 }

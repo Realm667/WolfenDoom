@@ -2,8 +2,6 @@ ACTOR TreeBase
 {
 	+FLATSPRITE
 	+ROLLSPRITE
-	Radius 16
-	Height 128
 	States
 	{
 	Spawn:
@@ -79,6 +77,8 @@ ACTOR Palm1 : TreeBase
 	//$Category Props (Wolf3D)/Trees
 	//$Title Palm (center)
 	//$Color 3
+	Radius 16
+	Height 128
 	+NOGRAVITY
 	+SOLID
 	DistanceCheck "treeslod"
@@ -120,6 +120,8 @@ ACTOR JungleTree1 : TreeBase
 	//$Title Jungle Tree 1
 	//$Color 3
 	DistanceCheck "treeslod"
+	Radius 16
+	Height 128
 	+SOLID
 	States
 	{
@@ -215,6 +217,7 @@ ACTOR SmallTree1 : TreeBase
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree 4 (middle)
 	//$Color 3
+	Radius 16
 	Height 96
 	+MOVEWITHSECTOR
 	+RELATIVETOFLOOR
@@ -291,6 +294,8 @@ ACTOR JungleTree1_Burnt : TreeBase
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Jungle Tree 1 (Burnt)
 	//$Color 3
+	Radius 16
+	Height 128
 	+SOLID
 	DistanceCheck "treeslod"
 	States
@@ -320,6 +325,7 @@ ACTOR SmallTree1_Burnt : TreeBase
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Tree 4 (burnt, middle)
 	//$Color 3
+	Radius 16
 	Height 96
 	+SOLID
 	DistanceCheck "treeslod"
@@ -1233,7 +1239,7 @@ ACTOR BurnTreeSpawner : RandomSpawner
 	//$Category Props (Wolf3D)/Trees/Burnt
 	//$Title Trees (burnt, random spawner)
 	//$Color 3
-	//$Sprite DBURA0
+	//$Sprite MDLAA0
 	DropItem "Tree2_Burnt"
 	DropItem "Tree3_Burnt"
 	DropItem "Tree4_Burnt"
@@ -1246,7 +1252,7 @@ ACTOR SummerTreeSpawner : RandomSpawner
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree (Summer, random spawner)
 	//$Color 3
-	//$Sprite DTRED0
+	//$Sprite MDLAA0
 	DropItem "Bush"
 	DropItem "Tree2"
 	DropItem "Tree3"
@@ -1260,7 +1266,7 @@ ACTOR WinterTreeSpawner : RandomSpawner
 	//$Category Props (Wolf3D)/Trees
 	//$Title Tree (winter, random spawner)
 	//$Color 3
-	//$Sprite DTREE0
+	//$Sprite MDLAA0
 	DropItem "WinterA"
 	DropItem "WinterB"
 	DropItem "WinterC"
@@ -1277,11 +1283,11 @@ ACTOR WoodyLogs
 	//$Category Props (Wolf3D)/Trees
 	//$Title Small Pack of Logs (Woods)
 	//$Color 3
-	DistanceCheck "treeslod"
+	+SOLID
 	Radius 24
 	Height 24
 	Scale 0.65
-	+SOLID
+	DistanceCheck "treeslod"
 	States
 	{
 	Spawn:
