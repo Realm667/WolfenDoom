@@ -8,7 +8,10 @@ ACTOR Debris_Base
 	-ACTIVATEIMPACT
 	-ACTIVATEPCROSS
 	-NOGRAVITY
+	+FLATSPRITE
 	+RANDOMIZE
+	+ROLLCENTER
+	+ROLLSPRITE
 	BounceType "Doom"
 	BounceFactor 0.3
 	WallBounceFactor 0.3
@@ -21,6 +24,9 @@ ACTOR Debris_GlassShard_Small : Debris_Base
 	RenderStyle "Translucent"
 	Alpha 0.4
 	Scale 0.25
+	-FLATSPRITE
+	-ROLLCENTER
+	-ROLLSPRITE
 	States
 	{
 	Spawn:
@@ -58,12 +64,10 @@ ACTOR Debris_Trash : Debris_Base
 	States
 	{
 	Spawn:
-		SRCB BCDF 4 NoDelay NoDelay {
-							A_SetRoll(roll + frandom(-0.5, 0.5), SPF_INTERPOLATE);
+		SRCB BCDF 4 NoDelay {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE);
 							A_SetAngle(angle + random(-15, 15));
-							A_SetPitch(pitch + frandom(-0.25, 0.25));
-							A_JumpIf(waterlevel == 3, "AdjustMass");
-							}
+							A_SetPitch(pitch + frandom(-30.25, 30.25));
+							A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(400)
@@ -94,12 +98,10 @@ ACTOR Debris_Hydrant : Debris_Trash
 	States
 	{
 	Spawn:
-		HDBR ABCD 4 NoDelay NoDelay {
-							A_SetRoll(roll + frandom(-0.5, 0.5), SPF_INTERPOLATE);
+		HDBR ABCD 4 NoDelay {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE);
 							A_SetAngle(angle + random(-15, 15));
-							A_SetPitch(pitch + frandom(-0.25, 0.25));
-							A_JumpIf(waterlevel == 3, "AdjustMass");
-							}
+							A_SetPitch(pitch + frandom(-30.25, 30.25));
+							A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(400)
@@ -126,6 +128,9 @@ ACTOR Debris_Hydrant : Debris_Trash
 ACTOR Debris_Bin : Debris_Base
 {
 	Gravity 0.5
+	-FLATSPRITE
+	-ROLLCENTER
+	-ROLLSPRITE
 	States
 	{
 	Spawn:
@@ -155,6 +160,9 @@ ACTOR Debris_Bin : Debris_Base
 
 ACTOR Debris_Metal1 : Debris_Base
 {
+	-FLATSPRITE
+	-ROLLCENTER
+	-ROLLSPRITE
 	States
 	{
 	Spawn:
@@ -184,6 +192,9 @@ ACTOR Debris_Metal1 : Debris_Base
 
 ACTOR Debris_Metal2 : Debris_Base
 {
+	-FLATSPRITE
+	-ROLLCENTER
+	-ROLLSPRITE
 	States
 	{
 	Spawn:
@@ -214,6 +225,9 @@ ACTOR Debris_Metal2 : Debris_Base
 ACTOR Debris_Metal3 : Debris_Base
 {
 	Scale 0.7
+	-FLATSPRITE
+	-ROLLCENTER
+	-ROLLSPRITE
 	States
 	{
 	Spawn:
@@ -243,18 +257,15 @@ ACTOR Debris_Metal3 : Debris_Base
 
 ACTOR Debris_MetalJunk : Debris_Base
 {
-	+FLATSPRITE
-	+ROLLCENTER
-	+ROLLSPRITE
 	BounceSound "TANKDBRS"
 	Scale 0.6
 	States
 	{
 	Spawn:
-		MTLJ BCEL 1 NoDelay {A_SetRoll(roll + 5.0, SPF_INTERPOLATE);
-												A_SetAngle(angle+15);
-												A_SetPitch(pitch+0.25);
-												A_JumpIf(waterlevel == 3, "AdjustMass");}
+		MTLJ BCEL 1 NoDelay {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE);
+							A_SetAngle(angle + random(-15, 15));
+							A_SetPitch(pitch + frandom(-30.25, 30.25));
+							A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(450)
@@ -285,6 +296,9 @@ ACTOR Debris_MetalJunk : Debris_Base
 ACTOR Debris_Pottery : Debris_Base
 {
 	Scale 0.9
+	-FLATSPRITE
+	-ROLLCENTER
+	-ROLLSPRITE
 	States
 	{
 	Spawn:
@@ -317,6 +331,9 @@ ACTOR Debris_Pottery : Debris_Base
 ACTOR Debris_Flesh : Debris_Base
 {
 	Scale 0.5
+	-FLATSPRITE
+	-ROLLCENTER
+	-ROLLSPRITE
 	States
 	{
 	Spawn:
@@ -379,6 +396,9 @@ ACTOR Debris_FatFlesh : Debris_Flesh
 ACTOR Debris_Bread : Debris_Base
 {
 	Scale 0.5
+	-FLATSPRITE
+	-ROLLCENTER
+	-ROLLSPRITE
 	States
 	{
 	Spawn:
@@ -410,19 +430,18 @@ ACTOR Debris_Bread : Debris_Base
 
 ACTOR Debris_Leaf : Feather //inheritances with Ravens actor
 {
-	-DONTSPLASH //original one has +
+	+FLATSPRITE
 	+ROLLCENTER
 	+ROLLSPRITE
+	-DONTSPLASH //original one has +
 	Scale 0.5
 	States
 	{
 	Spawn:
-		PLNT EFGHIJ 3 NoDelay {
-							A_SetRoll(roll + frandom(-0.5, 0.5), SPF_INTERPOLATE);
+		PLNT EFGHIJ 3 NoDelay {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE);
 							A_SetAngle(angle + random(-15, 15));
-							A_SetPitch(pitch + frandom(-0.25, 0.25));
-							A_JumpIf(waterlevel == 3, "AdjustMass");
-							}
+							A_SetPitch(pitch + frandom(-5.25, 5.25));
+							A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(350)
@@ -454,6 +473,7 @@ ACTOR Debris_Leaf : Feather //inheritances with Ravens actor
 
 ACTOR Debris_Translated : Debris_Leaf //needed to fix translations
 {
+	-FLATSPRITE
 	States
 	{
 	Spawn:
@@ -487,6 +507,7 @@ ACTOR Debris_Cloth : Debris_Leaf
 {
 	Scale 0.8
 	Gravity 0.125
+	-FLATSPRITE
 	States
 	{
 	Spawn:
@@ -521,12 +542,10 @@ ACTOR Debris_Wood : Debris_Base
 	States
 	{
 	Spawn:
-		SCDB ABCD 4 NoDelay {
-							A_SetRoll(roll + frandom(-0.5, 0.5), SPF_INTERPOLATE);
+		SCDB ABCD 4 NoDelay {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE);
 							A_SetAngle(angle + random(-15, 15));
-							A_SetPitch(pitch + frandom(-0.25, 0.25));
-							A_JumpIf(waterlevel == 3, "AdjustMass");
-							}
+							A_SetPitch(pitch + frandom(-5.25, 5.25));
+							A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(400)
@@ -556,12 +575,10 @@ ACTOR Debris_Astro : Debris_Base
 	States
 	{
 	Spawn:
-		ASTD AB 2 NoDelay NoDelay {
-							A_SetRoll(roll + frandom(-0.5, 0.5), SPF_INTERPOLATE);
+		ASTD AB 2 NoDelay {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE);
 							A_SetAngle(angle + random(-15, 15));
-							A_SetPitch(pitch + frandom(-0.25, 0.25));
-							A_JumpIf(waterlevel == 3, "AdjustMass");
-							}
+							A_SetPitch(pitch + frandom(-5.25, 5.25));
+							A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(400)
@@ -654,12 +671,10 @@ ACTOR Debris_ToyHans : Debris_Base
 	States
 	{
 	Spawn:
-		TOYD ABCD 4 NoDelay  {
-							A_SetRoll(roll + frandom(-0.5, 0.5), SPF_INTERPOLATE);
+		TOYD ABCD 4 NoDelay {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE);
 							A_SetAngle(angle + random(-15, 15));
-							A_SetPitch(pitch + frandom(-0.25, 0.25));
-							A_JumpIf(waterlevel == 3, "AdjustMass");
-							}
+							A_SetPitch(pitch + frandom(-5.25, 5.25));
+							A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(400)
@@ -688,12 +703,10 @@ ACTOR Debris_ToyWaff : Debris_ToyHans
 	States
 	{
 	Spawn:
-		TOYD EFGH 4 NoDelay  {
-							A_SetRoll(roll + frandom(-0.5, 0.5), SPF_INTERPOLATE);
+		TOYD EFGH 4 NoDelay {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE);
 							A_SetAngle(angle + random(-15, 15));
-							A_SetPitch(pitch + frandom(-0.25, 0.25));
-							A_JumpIf(waterlevel == 3, "AdjustMass");
-							}
+							A_SetPitch(pitch + frandom(-5.25, 5.25));
+							A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 	Swim: //mxd
 		"####" E 2 A_ScaleVelocity(0.7)
@@ -1322,10 +1335,10 @@ ACTOR Debris_Mecha5 : Debris_Mecha
 
 ACTOR Debris_AstroSuite : Debris_MetalJunk
 {
-	-FLATSPRITE
 	BounceFactor 0.5
 	BounceType "Doom"
 	Scale 0.70
+	-FLATSPRITE
 	States
 	{
 	Spawn:

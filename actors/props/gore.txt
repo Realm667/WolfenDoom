@@ -238,13 +238,11 @@ ACTOR RandomDeadMutant : RandomDeadSoldier
 ACTOR MutantSubject1
 {
 	//$Category Gore (Wolf3D)
-	//$Title Subject (1)
+	//$Title Subject (1st variant)
 	//$Color 4
 	Radius 8
 	Height 64
 	Scale 1.1
-	-NOTELEPORT
-	-NOGRAVITY
 	States
 	{
 	Spawn:
@@ -255,7 +253,7 @@ ACTOR MutantSubject1
 
 ACTOR MutantSubject2 : MutantSubject1
 {
-	//$Title Subject (2)
+	//$Title Subject (2nd variant)
 	States
 	{
 	Spawn:
@@ -266,7 +264,7 @@ ACTOR MutantSubject2 : MutantSubject1
 
 ACTOR MutantSubject3 : MutantSubject1
 {
-	//$Title Subject (3)
+	//$Title Subject (3rd variant)
 	States
 	{
 	Spawn:
@@ -281,12 +279,12 @@ ACTOR MutantSubjectRandom : RandomSpawner
 	//$Title Random Mutant Subject (Static)
 	//$Color 4
 	//$Sprite ALMUA0
+	Radius 16
+	Height 64
+	Scale 1.1
 	DropItem "MutantSubject3"
 	DropItem "MutantSubject2"
 	DropItem "MutantSubject1"
-	Radius 16
-	Height 64
-	Scale 1.0
 }
 
 ACTOR MutantSubjectWarped
@@ -304,13 +302,13 @@ ACTOR MutantSubjectWarped
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,"TheLoop1","TheLoop2","TheLoop3")
-		TheLoop1:
+	TheLoop1:
 		ALMU A 1 A_Warp(AAPTR_MASTER,0,0,0,0)
 		Loop
-		TheLoop2:
+	TheLoop2:
 		ALMU B 1 A_Warp(AAPTR_MASTER,0,0,0,0)
 		Loop
-		TheLoop3:
+	TheLoop3:
 		ALMU C 1 A_Warp(AAPTR_MASTER,0,0,0,0)
 		Loop
 	}
@@ -350,14 +348,14 @@ ACTOR CreepySkulls
 		TNT1 A 0 NODELAY
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Straight")
 		TNT1 A 0 A_JumpIf(Args[0]==2, "Side")
-		Random: //fall through if set at 0
+	Random: //fall through if set at 0
 		DJSK C -1 A_Jump(128,1)
 		DJSK D -1
 		Stop
-		Straight:
+	Straight:
 		DJSK C -1
 		Stop
-		Side:
+	Side:
 		DJSK D -1
 		Stop
 	}
@@ -383,14 +381,14 @@ ACTOR CreepySkullsImpaled
 		TNT1 A 0 NODELAY
 		TNT1 A 0 A_JumpIf(Args[0]==1, "OneSkull")
 		TNT1 A 0 A_JumpIf(Args[0]==2, "TwoSkulls")
-		Random: //fall through if set at 0
+	Random: //fall through if set at 0
 		DJSK A -1 A_Jump(128,1)
 		DJSK B -1
 		Stop
-		OneSkull:
+	OneSkull:
 		DJSK A -1
 		Stop
-		TwoSkulls:
+	TwoSkulls:
 		DJSK B -1
 		Stop
 	}
@@ -434,13 +432,13 @@ ACTOR PrisonerGuts
 	Height 32
 	Scale 0.7
 	States
-		{
-		Spawn:
+	{
+	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2)
 		GTS1 A -1
 		GTS2 A -1
 		Stop
-		}
+	}
 }
 
 ACTOR PrisonerSit1 : PrisonerGuts
@@ -655,16 +653,11 @@ ACTOR Skeleton3
 	}
 }
 
-ACTOR SkeletonChains
+ACTOR SkeletonChains : Skeleton3
 {
-	//$Category Gore (Wolf3D)
 	//$Title Skeleton Chains
-	//$Color 4
 	DistanceCheck "scenelod"
-	Radius 16
 	Height 41
-	+NOGRAVITY
-	+SPAWNCEILING
 	States
 	{
 	Spawn:
@@ -691,18 +684,18 @@ ACTOR Manacles
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Type1")
 		TNT1 A 0 A_JumpIf(Args[0]==2, "Type2")
 		TNT1 A 0 A_JumpIf(Args[0]==3, "Type3")
-		Random: //fall through if set at 0
+	Random: //fall through if set at 0
 		MDLA A -1 A_Jump(128,1)
 		MDLA B -1 A_Jump(128,1)
 		MDLA C -1
 		Stop
-		Type1:
+	Type1:
 		MDLA A -1
 		Stop
-		Type2:
+	Type2:
 		MDLA B -1
 		Stop
-		Type3:
+	Type3:
 		MDLA C -1
 		Stop
 	}
@@ -716,9 +709,9 @@ ACTOR WolfBloodPool // Modified Jaguar Wolf3D water pool sprite
 	//$Color 4
 	Radius 20
 	Height 1
+	Scale 0.5
 	+MOVEWITHSECTOR
 	+NOBLOCKMAP
-	Scale 0.5
 	States
 	{
 	Spawn:
