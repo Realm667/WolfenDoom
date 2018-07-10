@@ -546,7 +546,7 @@ class TurretGun : ActorPositionable
 			gun.heatlevel = gun.heatthreshold;
 		}
 
-		if (goToCooldownState)
+		if (gun && goToCooldownState)
 		{
 			gun.cooldowntimeout = gun.cooldowntime;
 			gun.SetStateLabel("Cooldown");
