@@ -218,11 +218,11 @@ ACTOR Camp_PrisonerGuts
 	Height 32
 	Scale 0.7
 	States
-		{
-		Spawn:
-			GORC S -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
-			Stop
-		}
+	{
+	Spawn:
+		GORC S -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
 }
 
 ACTOR Camp_PrisonerSit : Camp_PrisonerGuts

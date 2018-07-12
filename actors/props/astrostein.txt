@@ -162,7 +162,7 @@ ACTOR FutureCeilingLight : SwitchableDecoration
 	Active:
 		MDLA A 0 A_ChangeFlag("DORMANT", FALSE)
 	Spawn:
-	  MDLA A 0 NoDelay
+		MDLA A 0 NoDelay
 	ActiveLights:
 		MDLA A 0 A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*8, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
 	Activate:

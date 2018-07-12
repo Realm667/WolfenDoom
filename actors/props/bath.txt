@@ -1,4 +1,15 @@
-ACTOR Shit
+ACTOR BathBase
+{
+	Radius 8
+	Height 32
+	+NOBLOOD
+	+NODROPOFF
+	+NOTAUTOAIMED
+	+SHOOTABLE
+	+SOLID
+}
+
+ACTOR Shit : BathBase
 {
 	//$Category Props (Wolf3D)/Bath
 	//$Title Shitpile (squeezable)
@@ -7,11 +18,6 @@ ACTOR Shit
 	Height 4
 	Health 1
 	Scale 0.35
-	+NOBLOOD
-	+NODROPOFF
-	+NOTAUTOAIMED
-	+SHOOTABLE
-	+SOLID
 	+TOUCHY
 	States
 	{
@@ -26,21 +32,14 @@ ACTOR Shit
 	}
 }
 
-ACTOR BucketMop
+ACTOR BucketMop : BathBase
 {
 	//$Category Props (Wolf3D)/Bath
 	//$Title Mop with Bucket (destroyable)
 	//$Color 3
-	Radius 8
-	Height 32
 	Health 10
 	Scale 0.45
 	+DONTTHRUST
-	+NOBLOOD
-	+NODROPOFF
-	+NOTAUTOAIMED
-	+SHOOTABLE
-	+SOLID
 	States
 	{
 	Spawn:
@@ -57,22 +56,18 @@ ACTOR BucketMop
 }
 
 //3D ACTORS//
-ACTOR ToiletShootable
+ACTOR ToiletShootable : BathBase
 {
 	//$Category Props (Wolf3D)/Bath
 	//$Title Toilet (shootable)
 	//$Color 3
 	DistanceCheck "scenelod"
-	Health 1
 	Radius 10
 	Height 42
+	Health 1
 	Mass 999999
+	-NODROPOFF
 	+DONTGIB
-	+NOBLOOD
-	+NOICEDEATH
-	+NOTAUTOAIMED
-	+SHOOTABLE
-	+SOLID
 	DeathSound "toilet/death"
 	States
 	{
@@ -114,7 +109,6 @@ ACTOR ToiletTalking : ToiletShootable
 	Spawn:
 		MDLA A 1 {
 			if (!user_angle) { user_angle = angle; }
-
 			angle = user_angle;
 		}
 		Loop
