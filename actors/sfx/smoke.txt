@@ -252,15 +252,9 @@ ACTOR AmbientSmokeGenerator : SwitchableDecoration
 	}
 }
 
-ACTOR AmbientSmoke_Large
+ACTOR AmbientSmoke_Large : AmbientSmoke
 {
 	DistanceCheck "sfxlod"
-	+CLIENTSIDEONLY
-	+FORCEXYBILLBOARD
-	+NOINTERACTION
-	+WINDTHRUST
-	RenderStyle "Translucent"
-	Alpha 0.001
 	Scale 3.0
 	States
 	{
@@ -277,15 +271,9 @@ ACTOR AmbientSmoke_Large
 
 ACTOR AmbientSmokeGenerator_Large : AmbientSmokeGenerator
 {
-	//$Category Special Effects (Wolf3D)
 	//$Title Ambient Smoke Generator (large)
-	//$Color 12
 	//$Arg0 "Radius *10"
 	//$Arg0Tooltip "Radius in map units *10\nDefault: 0"
-	//$Arg1 "Frequency"
-	//$Arg1Tooltip "Frequency, the lower the number, the heavier the smoke\nRange: 0 - 255"
-	+CLIENTSIDEONLY
-	+NOINTERACTION
 	States
 	{
 	Spawn:
