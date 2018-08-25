@@ -44,7 +44,7 @@ class StealthBase : Actor
 		ChangeStatNum(Thinker.STAT_DEFAULT - 2); // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient
 	}
 
-	state A_LookForNoTargetPlayer(int Range = 256)
+	state A_LookForNoTargetPlayer(double Range = 256.0)
 	{
 		if (master && master is "Nazi") // Get the master actor's perceptionfov and perceptiontime properties
 		{ // These become the fov parameter for visibility checks and the time threshold for how long the player must stay in view before detection
@@ -82,9 +82,9 @@ class StealthBase : Actor
 
 		if (target) { vis = players[playernum].mo.FindInventory("BoAVisibility"); }
 
-		if (target && playernum >= 0) // If we have a player in view
+		if (target && playernum >= 0 && CheckSight(target)) // If we have a player in view
 		{
-			sighttime += (Range - Distance3d(target)) / Range; // Increment sight time counter, scaled to how far away player is
+			sighttime += (Range - Distance3d(target)) / 256.0; // Increment sight time counter, scaled to how far away player is
 
 			if (master && !alert)
 			{  // Spawn the alert indicator
@@ -277,7 +277,9 @@ class SneakableGuardEyesIdle : StealthBase
 
 		A_LookEx(0, 0.0, closerange, 256.0, closefov, "PlayerSeen"); // Wider FOV sight check for short-range
 		A_LookEx(0, 0.0, farrange, 256.0, master.bLookAllAround ? 360.0 : farFOV, "PlayerSeen");
-		A_LookForNoTargetPlayer();
+
+		if (Nazi(master)) { A_LookForNoTargetPlayer(Nazi(master).perceptiondistance); }
+		else { A_LookForNoTargetPlayer(); }
 
 		// Check via CheckSight in order to "see through" double-sided walls (windows)
 		for (int p = 0; p < MAXPLAYERS; p++) // Iterate through all of the players and see if any are in sight

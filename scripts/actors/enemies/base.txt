@@ -63,6 +63,11 @@
 	  player disguises.
 	- Used by SneakableEyesIdle actor (as seen on sneakable Gestapo)
 
+	Nazi.PerceptionRange
+	- Double value that controls the distance at which a perceptive enemy will
+	  first start to see the player
+	- Used by SneakableEyesIdle actor (as seen on sneakable Gestapo)
+
 	Nazi.Healer
 	- Tags this enemy as a medic, and uses the medic's "smart" healing code to 
 	  find allied bodies to heal.  The actor needs to have a Heal state defined
@@ -774,6 +779,7 @@ class Nazi : Base
 	int interval;
 	int perceptionfov;
 	int user_perceptiontime;
+	double perceptiondistance;
 	int sneakableclosesightradius;
 	int user_incombat;
 	int user_static;
@@ -783,6 +789,7 @@ class Nazi : Base
 	Property Healer:healflags;
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
 	Property PerceptionTime:user_perceptiontime; // How many tics the player has to be in sight before NOTARGET fails - 0 means never see through NoTarget
+	Property PerceptionDistance:perceptiondistance; // Range at which a perceptive enemy will first be able to see the player
 	Property Sneakable:user_sneakable;
 	Property SneakableCloseSightRadius:sneakableclosesightradius;
 	Property ZombieVariant:zombievariant;
@@ -811,6 +818,7 @@ class Nazi : Base
 		Nazi.Healer 0;
 		Nazi.PerceptionFOV 120;
 		Nazi.PerceptionTime 0;
+		Nazi.PerceptionDistance 256.0;
 		Nazi.Sneakable False;
 		Nazi.SneakableCloseSightRadius 64;
 	}
