@@ -356,6 +356,7 @@ ACTOR ModelIncaTrain : ModelBase
 	//$Title Train
 	//$Color 3
 	DistanceCheck "scenelod"
+	RenderRadius 32
 	Radius 4
 	Height 4
 }
@@ -391,6 +392,7 @@ ACTOR ModelRailBoxcar3 : ModelIncaTrain
 ACTOR ModelRailBoxcar3_Projectile : ModelRailBoxcar3
 {
 	DistanceCheck "scenelod"
+	RenderRadius 64
 	Radius 48
 	Height 48
 	Speed 1
@@ -745,6 +747,7 @@ ACTOR Luftschiff : 3dObstacle
 	//$Title Luftschiff LZ130
 	//$Color 3
 	DistanceCheck "scenelod"
+	RenderRadius 4096
 	Radius 32
 	Height 32
 	-SOLID
@@ -2586,6 +2589,7 @@ ACTOR CODCondor : 3dObstacle
 	//$Title German Condor Focke-Wulf FW200 Bomber
 	//$Color 3
 	DistanceCheck "scenelod"
+	RenderRadius 512
 	Radius 8
 	Height 8
 }

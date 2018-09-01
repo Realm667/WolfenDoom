@@ -572,8 +572,8 @@ class BoAPlayer : PlayerPawn
 				if (texname.IndexOf(".") >= 0) // If it's a long filename
 				{
 					// Strip the texture name down to only the filename (basically the old-style texture name)
-					int start = texname.LastIndexOf("/") + 1;
-					texname = texname.Mid(start, texname.LastIndexOf(".") - start);
+					int start = texname.RightIndexOf("/") + 1;
+					texname = texname.Mid(start, texname.RightIndexOf(".") - start);
 				}
 
 				// Convert to all upper-case for comparison
