@@ -1154,16 +1154,22 @@ class Nazi : Base
 			Stop;
 		MakeSneakable:
 			"####" # 0 {
-				if (health <= 0 || !bShootable) { return ResolveState('null'); } // If it's dead, don't make a zombie, just remove it and hope no one notices...
+				if (health <= 0 || !bShootable) { return ResolveState("StaticFrame"); } // If it's dead, don't make a zombie, just freeze on the current frame and hope no one notices...
 
 				user_sneakable = true;
 				BeginPlay();
 
 				return ResolveState("Spawn");
 			}
+		See.MakeAlertedForever:
+			"####" # 0 {
+				user_sneakable = false; // Enemies alerted by setting to this state won't go back to idle
+				user_perceptiontime = 1; // And they will see through your disguise if you have one
+			}
+		See.MakeAlerted: // Naming the state like this allows you to use TID to set actors to 'See.MakeAlerted' state, and non-Nazi class actors will cleanly fall back to the See state
 		MakeAlerted:
 			"####" # 0 {
-				if (health <= 0 || !bShootable) { return ResolveState('null'); } // If it's dead, don't make a zombie, just remove it and hope no one notices...
+				if (health <= 0 || !bShootable) { return ResolveState("StaticFrame"); } // If it's dead, don't make a zombie, just freeze on the current frame and hope no one notices...
 
 				BecomeAlerted(target);
 				return ResolveState("See");
@@ -1176,6 +1182,9 @@ class Nazi : Base
 		Alarm:
 			"####" H 50 A_SetTics(interval);
 			"####" H 0 A_Jump(256, "See");
+		StaticFrame:
+			"####" # -1;
+			Stop;
 		SpriteLookups: // Because the GetSpriteIndex function won't find sprites that aren't already used by a state in the current actor.
 			BURN A 0;
 			NRUB A 0;
@@ -1529,20 +1538,23 @@ class Nazi : Base
 	{
 		if (health <= 0 || !bShootable) { return; }
 
-		alerted = false;
+		if (user_sneakable)
+		{
+			alerted = false;
 
-		A_RemoveChildren(TRUE, RMVF_EVERYTHING, "None", "Eyes"); // Get rid of the active guard eyes
-		bFriendly = True;
+			A_RemoveChildren(TRUE, RMVF_EVERYTHING, "None", "Eyes"); // Get rid of the active guard eyes
+			bFriendly = True;
 
-		goal = patrolgoal; // Restore any navigation goal if there was one set
-		target = patrolgoal;
+			goal = patrolgoal; // Restore any navigation goal if there was one set
+			target = patrolgoal;
 
-		[sp, eyes] = A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid);
+			[sp, eyes] = A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid);
 
-		sprite = SpawnState.sprite;
+			sprite = SpawnState.sprite;
 
-		if (goal && target) { if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); } }
-		else { SetStateLabel("Spawn"); }
+			if (goal && target) { if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); } }
+			else { SetStateLabel("Spawn"); }
+		}
 	}
 
 	void A_UnblockAndDrop()
