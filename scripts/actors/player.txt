@@ -273,7 +273,7 @@ class BoAPlayer : PlayerPawn
 			{
 				// [RH] allow very limited movement if not on ground.
 				movefactor *= level.aircontrol;
-				bobfactor*= level.aircontrol;
+				bobfactor *= level.aircontrol;
 			}
 
 			fm = cmd.forwardmove;
@@ -374,8 +374,8 @@ class BoAPlayer : PlayerPawn
 				}
 				if (jumpfac > 0) jumpvelz *= jumpfac;
 
-				Vel.X += jumpvelz * sin(leveltilt) * cos(leveltiltangle);
-				Vel.Y += jumpvelz * sin(leveltilt) * sin(leveltiltangle);
+				Vel.X += jumpvelz * sin(leveltilt) * cos(leveltiltangle) * level.aircontrol;
+				Vel.Y += jumpvelz * sin(leveltilt) * sin(leveltiltangle) * level.aircontrol;
 				Vel.Z += jumpvelz * cos(leveltilt);
 				bOnMobj = false;
 				player.jumpTics = -1;
