@@ -740,6 +740,17 @@ ACTOR FlakVierling3D_War
 	}
 }
 
+ACTOR FlakVierling3D_Ship : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Ships
+	//$Title Flak Vierling (ship variant)
+	//$Color 3
+	DistanceCheck "scenelod"
+	Radius 72
+	Height 88
+	+NOGRAVITY
+}
+
 ACTOR Luftschiff : 3dObstacle
 {
 	//$Category Models (Wolf3D)/Ships
@@ -3066,6 +3077,7 @@ ACTOR SlopeMe2 : SlopeMe1
 ACTOR ZeppelinBridge : SlopeMe1
 {
 	//$Title Fake Zeppelin Bridge
+	RenderRadius 256
 	Radius 1
 	Height 1
 	-SOLID
