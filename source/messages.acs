@@ -67,3 +67,87 @@ script "TankExitMessage" (void)
 	delay(10);
 	AmbientSound("menu/change", 96);
 }
+
+script "FollowerMessage" (int type, int count)
+{
+	int message = "";
+
+	switch (type)
+	{
+		case 0:
+			message = StrParam(s:"FOLLOWERSTAY", i:count);
+		break;
+		case 1:
+			message = StrParam(s:"FOLLOWERSTATIC", i:count);
+		break;
+		case 2:
+			message = StrParam(s:"FOLLOWERCOME", i:count);
+		break;
+		case 3:
+			message = StrParam(s:"FOLLOWERALWAYS", i:count);
+		break;
+		default:
+			message = "";
+		break;
+	}
+
+	message = StrParam(l:message);
+	if (message == "") { Terminate; }
+
+	str head = GetUserVariable(0, "head");
+	if (head == "") { Terminate; }
+
+//	ACS_NamedExecuteAlways("BoADialogue", 0, StrParam(s:head, i:1), StrParam(s:head, i:0), message);
+
+	// Quick message display...
+
+	str headsilent = StrParam(s:head, i:0);
+	str headtalky = StrParam(s:head, i:1);
+
+	// Fade in HUD BGs
+	SetHudSize(320, 200, true);
+	SetFont("HEADBAR");
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, 4, CR_UNTRANSLATED, 160.0, 24.0, 999.0, 1.0, 0.5);
+	SetFont("HEADBOVL"); //mxd. Frame overlay
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, 1, CR_UNTRANSLATED, 160.0, 24.0, 999.0, 1.0, 0.5); //mxd
+
+	// Fade in the portrait
+	SetFont(headsilent);
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, 3, CR_UNTRANSLATED, 21.0, 16.0, 999.0, 1.0, 0.5);
+
+	// Start talk animation
+	Delay(35);
+	SetFont(headtalky);
+	hudmessagebold(s:"A"; HUDMSG_PLAIN, 3, CR_UNTRANSLATED, 21.0, 16.0, 0.0);
+
+	// Show message
+	AmbientSound("RADIONOS",127);
+	SetHudSize(640, 400, 1);
+	SetFont("SMALLFONT");
+	SetHudWrapWidth(540);
+	hudmessagebold(l:message; HUDMSG_TYPEON | HUDMSG_LOG, 2, CR_GRAY, 100.1, 8.1, 999.0, 0.03, 0.5);
+
+	// Stop talk animation
+	delay(2*35);
+	SetHudSize(320, 200, true);
+	SetFont(headsilent);
+	hudmessagebold(s:"A"; HUDMSG_PLAIN, 3, CR_UNTRANSLATED, 21.0, 16.0, 0.0);
+
+//	delay(2*35);
+
+	// Fade out the portrait
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, 3, CR_UNTRANSLATED, 21.0, 16.0, 0.0, 0.0, 0.5);
+
+	//Fade out HUD BGs
+	SetHudSize(320, 200, true);
+	SetFont("HEADBAR");
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, 4, CR_UNTRANSLATED, 160.0, 24.0, 0.0, 0.0, 0.5);
+	SetFont("HEADBOVL"); //mxd. Frame overlay
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, 1, CR_UNTRANSLATED, 160.0, 24.0, 0.0, 0.0, 0.5); //mxd
+
+	//Fade out the message
+	SetHudSize(640, 400, 1);
+	SetFont("SMALLFONT");
+	SetHudWrapWidth(540);
+	hudmessagebold(l:message; HUDMSG_FADEINOUT, 2, CR_GRAY, 100.1, 8.1, 0.0, 0.0, 0.5);
+}

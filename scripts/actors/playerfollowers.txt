@@ -43,7 +43,7 @@
 	- Be cautious!  If the PlayerFollower gets stuck somwhere in the level geometry while
 	  this is set, then the PlayerFollower will never be able to become un-stuck.
 
-	nonmoving (default is 0)
+	user_nonmoving (default is 0)
 	- Setting this boolean to 1 causes the PlayerFollower to stand in place and not
 	  follow the player anymore.
 	- This differs from being dormant/Deactivated in that the PlayerFollower will still
@@ -96,9 +96,11 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 	int grenadechance;
 	bool countgrenades;
 	bool nocatchup;
-	bool nonmoving;
+	bool nonmoving, user_nonmoving;
 	bool allowinteraction;
 	int oldwaterlevel;
+	int activationcount;
+	String head;
 
 	Property Weapon:weapon; // Weapon set based on FollowerWeapons Enum
 	Property CloseFollow:forgettarget; // If true, actor will immediately forget its target if the player moves out of range.  Behavior and following is more predictable, but more realistic for an escaping prisoner (vice a soldier in combat)
@@ -106,6 +108,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 	Property FOV:fov; // FOV used for look/search/sight calls
 	Property GrenadeChance:grenadechance; // Chance of using grenades (and gives him grenades, so anything over 0 will throw grenades at some point)
 	Property CanBeCommanded:allowinteraction;
+	Property Head:head;
 
 	Default
 	{
@@ -129,13 +132,14 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 		PainChance 128;
 		MaxStepHeight 56; //Matches max player jump height with standard JumpZ of 8 and MaxStepHeight of 24
 		MaxDropOffHeight 512;
-		MaxTargetRange 1024;
+		MaxTargetRange 2048;
 		PlayerFollower.Weapon PWEAP_None;
 		PlayerFollower.CloseFollow False;
-		PlayerFollower.ChaseAttackChance 4; // Values must be very low to see any change in behavior because of how often this check is performed
+		PlayerFollower.ChaseAttackChance 32;
 		PlayerFollower.FOV 100;
 		PlayerFollower.GrenadeChance 0;
 		PlayerFollower.CanBeCommanded False;
+		PlayerFollower.Head "MS_SOLD";
 	}
 
 	States
@@ -360,7 +364,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			DestroyMarkers();
 			return ResolveState(null);
 		} else if (playerToChase.health && Distance3d(playerToChase) <= 64)
-		{ // If within 64 units of the player, destroy the old waypoints and jump to "Close" state
+		{ // If within 64 units of the player, destroy the old waypoints and jump to "Close" state.  Has to be this close so that he can follow you into elevators
 			DestroyMarkers();
 			return ResolveState("Chase.Near");
 		}
@@ -392,12 +396,12 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			if (target == goal) { target = null; }
 
 			if (!target) {
-				if (playerToChase) { target = players[playerToChase.PlayerNumber()].attacker; }
+				if (playerToChase && players[playerToChase.PlayerNumber()].attacker) { target = players[playerToChase.PlayerNumber()].attacker; }
 			}
 
 			if (!target || target.health <= 0) { target = null; }
 
-			ThinkerIterator Finder = ThinkerIterator.Create("Nazi", STAT_DEFAULT);
+			ThinkerIterator Finder = ThinkerIterator.Create("Nazi", Thinker.STAT_DEFAULT);
 			Actor mo;
 
 			while ( (mo = Actor(Finder.Next())) )
@@ -407,7 +411,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 					mo.bDormant ||
 					mo.bFriendly == bFriendly ||
 					mo.GetSpecies() == Species ||
-					Distance3d(mo) > 512
+					Distance3d(mo) > MaxTargetRange
 				) { continue; }
 
 				if (target && Distance3d(mo) > Distance3d(target)) { continue; }
@@ -416,24 +420,21 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				target = mo;
 			}
 
-			if (!target)
+			// Also look for sneakable actors, and ignore their friendliness attribute
+			Finder = ThinkerIterator.Create("Nazi", Thinker.STAT_DEFAULT - 5);
+
+			while ( (mo = Actor(Finder.Next())) )
 			{
-				// Also look for sneakable actors, and ignore their friendliness attribute
-				Finder = ThinkerIterator.Create("Nazi", STAT_DEFAULT - 5);
+				if (
+					mo.health <= 0 ||
+					mo.bDormant ||
+					mo.GetSpecies() == Species ||
+					Distance3d(mo) > MaxTargetRange
+				) { continue; }
 
-				while ( (mo = Actor(Finder.Next())) )
-				{
-					if (
-						mo.health <= 0 ||
-						mo.bDormant ||
-						mo.GetSpecies() == Species ||
-						Distance3d(mo) > 512
-					) { continue; }
+				if (target && Distance3d(mo) > Distance3d(target)) { continue; }
 
-					if (target && Distance3d(mo) > Distance3d(target)) { continue; }
-
-					target = mo;
-				}
+				target = mo;
 			}
 
 			if (!target) {
@@ -445,12 +446,11 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				target.health > 0 &&
 				target != goal &&
 				!target.bDormant &&
-				target.bFriendly != bFriendly &&
 				target.GetSpecies() != Species &&
 				CheckSight(target)
 			)
 			{ // If you have a valid target and it's in line of sight...
-				if (target && Distance3d(target) < 64) { // ...run away from danger if it's too close...
+				if (target && Distance3d(target) < 64 + Random(0, 128)) { // ...run away from danger if it's too close...  (with some randomness so he doesn't always park himself a set distance from an enemy)
 					bFrightened = True;
 				}
 
@@ -458,7 +458,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 					target = null;
 					goal = playerToChase;
 				} else {
-					if (weapon != PWEAP_Melee || Distance2d(target) < radius + 32 + target.radius) { // ...and you are in range...
+					if (weapon != PWEAP_Melee || Distance3d(target) < radius + 32 + target.radius) { // ...and you are in range...
 						return ResolveState(GetWeaponStateLabel()); // ...attack it
 					}
 				}
@@ -551,6 +551,13 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 		}
 	}
 
+	override void PostBeginPlay()
+	{
+		if (user_nonmoving) { nonmoving = user_nonmoving; } // For compatibility with old ACS scripts from before this variable was given the "user_" prefix
+
+		Super.PostBeginPlay();
+	}
+
 	override void Tick()
 	{
 		Super.Tick();
@@ -567,27 +574,51 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 
 	override bool Used(Actor user)
 	{
-		if (!allowinteraction) { return false; }
+		String message = "";
 
-		if (!Default.nonmoving) // If not set nonmoving by default, allow toggling...
+		if (!Default.user_nonmoving && allowinteraction) { nonmoving = !nonmoving; } // If not set nonmoving by default or disabled, allow toggling...
+
+		if (nonmoving)
 		{
-			nonmoving = !nonmoving;
-
-			String message = "";
-
-			if (nonmoving)
+			if (allowinteraction)
 			{
-				message = StringTable.Localize("$FOLLOWERSTAY" .. Random(0, 4)); // Pick a random 'stay' message
+				ACS_NamedExecute("FollowerMessage", 0, 0, Random(0, 4)); // Pick a random 'I'll stay here' message
+				activationcount = 0;
 			}
 			else
 			{
-				message = StringTable.Localize("$FOLLOWERCOME" .. Random(0, 4)); // Pick a random 'follow' message
+				ACS_NamedExecute("FollowerMessage", 0, 1, activationcount); // Pick a random 'I can't move' message
+				activationcount = min(activationcount + 1, 4);
 			}
-
-			console.printf(message); // TODO: Integrate into the standard message script
+		}
+		else
+		{
+			if (allowinteraction)
+			{
+				ACS_NamedExecute("FollowerMessage", 0, 2, Random(0, 4)); // Pick a random 'follow' message
+				activationcount = 0;
+			}
+			else
+			{
+				ACS_NamedExecute("FollowerMessage", 0, 3, activationcount); // Pick a random 'I can't leave you' message
+				activationcount = min(activationcount + 1, 4);
+			}
 		}
 
 		return false;
+	}
+
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
+	{
+		if (
+			source &&
+			source.health > 0 &&
+			source.bShootable &&
+			!IsFriend(source) &&
+			(!target || Distance3D(source) < Distance3D(target))
+		) { target = source; } // If the follower is hit by an enemy that's closer than its current target, change targets to the one that shot it
+
+		return Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
 	}
 }
 
@@ -749,6 +780,7 @@ class PrisonerAgent : PlayerFollower
 		Species "PlayerFollower";
 		PlayerFollower.CloseFollow True;
 		PlayerFollower.ChaseAttackChance 0;
+		PlayerFollower.Head "MS_PRIB";
 	}
 
 	States
@@ -778,9 +810,10 @@ class AgentArmed : PlayerFollower
 		Obituary "$FRIENDLY";
 		Species "PlayerFollower";
 		PlayerFollower.Weapon PWEAP_Luger;
-		PlayerFollower.ChaseAttackChance 4;
+		PlayerFollower.ChaseAttackChance 196;
 		PlayerFollower.GrenadeChance 0;
 		PlayerFollower.CanBeCommanded True;
+		PlayerFollower.Head "MS_PRIS";
 	}
 
 	States
@@ -821,9 +854,10 @@ class AscherArmed : PlayerFollower
 		Obituary "$FRIENDLY";
 		Species "PlayerFollower";
 		PlayerFollower.Weapon PWEAP_Rifle;
-		PlayerFollower.ChaseAttackChance 4;
+		PlayerFollower.ChaseAttackChance 128;
 		PlayerFollower.GrenadeChance 0;
 		PlayerFollower.CanBeCommanded True;
+		PlayerFollower.Head "MS_OFFC";
 	}
 
 	States
@@ -865,8 +899,9 @@ class SSAscherArmed : PlayerFollower2
 		Obituary "$FRIENDLY";
 		Species "PlayerFollower";
 		PlayerFollower.Weapon PWEAP_Luger;
-		PlayerFollower.ChaseAttackChance 4;
+		PlayerFollower.ChaseAttackChance 196;
 		PlayerFollower.GrenadeChance 0;
+		PlayerFollower.Head "MS_OFFS";
 	}
 
 	States
@@ -894,8 +929,9 @@ class DouglasArmed : PlayerFollower2
 		Translation 1;
 		Species "PlayerFollower";
 		PlayerFollower.Weapon PWEAP_Luger;
-		PlayerFollower.ChaseAttackChance 2;
+		PlayerFollower.ChaseAttackChance 96;
 		PlayerFollower.CanBeCommanded True;
+		PlayerFollower.Head "MS_DARR";
 	}
 
 	States
@@ -965,8 +1001,9 @@ class DogFollower : PlayerFollower2
 		Scale 0.67;
 		+FRIENDLY
 		+NOINFIGHTING
-		PlayerFollower.ChaseAttackChance 5;
+		PlayerFollower.ChaseAttackChance 256;
 		PlayerFollower.Weapon PWEAP_Melee;
+		PlayerFollower.Head "";
 	}
 
 	States
@@ -993,14 +1030,14 @@ class DogFollower : PlayerFollower2
 			Loop;
 		Chase.Near:
 			"####" A 0 { Speed = 4; }
-			"####" A 0 A_Defend(false);
+			"####" A 0 A_Defend();
 			"####" AAA 1 A_Chase(null, null);
-			"####" A 0 A_Defend(false);
+			"####" A 0 A_Defend();
 			"####" BBB 1 A_ChaseGoal();
 			"####" B 0 A_SpawnStep();
-			"####" A 0 A_Defend(false);
+			"####" A 0 A_Defend();
 			"####" CCC 1 A_Chase(null, null);
-			"####" A 0 A_Defend(false);
+			"####" A 0 A_Defend();
 			"####" DDD 1 A_ChaseGoal();
 			"####" D 0 A_SpawnStep();
 			Loop;
@@ -1010,6 +1047,7 @@ class DogFollower : PlayerFollower2
 		Melee:
 			"####" EF 2 Fast A_FaceTarget();
 			"####" G 8 Fast A_CustomMeleeAttack(Random[Bite](1, 8) * 3, "dog/attack", "dog/attack");
+			"####" G 0 A_AlertMonsters(0, AMF_TARGETEMITTER);
 			"####" FE 2 Fast;
 			Goto Chase;
 		Death:
