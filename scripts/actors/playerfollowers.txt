@@ -260,7 +260,13 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				String HealParticle = "HealingParticle"; // Use variable to delay actor validation because it's still in DECORATE
 				A_SpawnItemEx(HealParticle, random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0);
 			}
-			Goto Chase.Near;
+			"####" F 0 {
+				if (nonmoving) { return ResolveState("Chase.Stand"); }
+				else if (playerToChase && playerToChase.health && Distance3d(playerToChase) <= 64) { return ResolveState("Chase.Near"); }
+
+				return ResolveState("Chase");
+			}
+			Goto Chase;
 	}
 
 	state A_FindPlayer() // Also sets up initial sight parameters
@@ -320,27 +326,19 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 		} else {
 			bFloat = False;
 			bNoGravity = False;
-			Speed == startSpeed;
+			Speed = startSpeed;
 		}
 
-		if (playerToChase.health && Distance3d(playerToChase) > 128) { // Run away from danger, but not *too* far away
+		if (health > 50 && playerToChase.health && Distance3d(playerToChase) > 128) { // Run away from danger, but not *too* far away
 			bFrightened = False;
 		} else {
 			bFrightened = True;
 		}
 
-		if (Level.time % 5 == 0) { // Spawn a waypoint at the player's position every 5 tics if the player has moved and push it into an array
-			if (playerToChase.pos != oldPlayerPos) {
-				Actor mo = Spawn("PathMarker", (playerToChase.pos.x + Random[Offset](-int(playerToChase.Radius), int(playerToChase.Radius)), playerToChase.pos.y + Random[Offset](-int(playerToChase.Radius), int(playerToChase.Radius)), playerToChase.pos.z));
-				if (mo) { Markers.Push(mo); }
-				oldPlayerPos = playerToChase.pos;
-			}
-		}
-
 		if (!nocatchup && Markers.Size() - index >= 100) { // If he's far, far behind, warp halfway along the trail *if* the destination spot and the actor aren't in sight of the player.
 			if (Markers[index + 50]) {
 				if (!Markers[index + 50].IsVisible(playerToChase, True) && !IsVisible(playerToChase, True)) {
-					SetOrigin(Markers[index + 50].pos, true); // Warp the the halfway point
+					SetOrigin(Markers[index + 50].pos, true); // Warp to the halfway point
 					DestroyMarkers(index, index + 50); // Clean up the now unused markers and array entries
 					index += 50;
 					if (!weapon) { weapon = PWEAP_Luger; } //Pretend he picked up a pistol and some ammo somewhere, and he will act like a friendly Guard
@@ -369,9 +367,11 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			return ResolveState("Chase.Near");
 		}
 
-		if (weapon && Random[ShootBack]() < chaseattackchance || target && Distance2d(target) < radius + 64 + target.Radius) { // Some chance that if he's armed, he'll stop while chasing to attack
+		if (health > 25 && weapon && Random[ShootBack]() < chaseattackchance || target && Distance2d(target) < radius + 64 + target.Radius) { // Some chance that if he's armed, he'll stop while chasing to attack
 			return A_Defend(false);
 		}
+
+		if (health < 75 && Random[Heal]() < 8) { return ResolveState("Heal"); }
 
 		return ResolveState(null);
 	}
@@ -391,7 +391,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 		vel = (0, 0, 0);
 
 		if (weapon) { // If armed, stand in place and fire at enemies
-			bFrightened = False;
+			if (health > 50) { bFrightened = False; } // Keep retreating until healed if not near a player
 
 			if (target == goal) { target = null; }
 
@@ -479,7 +479,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			}
 		}
 
-		if (health < 75 && Random[Heal]() < 64) { return ResolveState("Heal"); }
+		if (!atPlayer && health < 75 && Random[Heal]() < 8) { return ResolveState("Heal"); }
 
 		return ResolveState(null);
 	}
@@ -570,10 +570,20 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 		}
 
 		oldwaterlevel = waterlevel;
+
+		if (playerToChase && Level.time % 5 == 0) { // Spawn a waypoint at the player's position every 5 tics if the player has moved and push it into an array
+			if (playerToChase.pos != oldPlayerPos) {
+				Actor mo = Spawn("PathMarker", (playerToChase.pos.x + Random[Offset](-int(playerToChase.Radius), int(playerToChase.Radius)), playerToChase.pos.y + Random[Offset](-int(playerToChase.Radius), int(playerToChase.Radius)), playerToChase.pos.z));
+				if (mo) { Markers.Push(mo); }
+				oldPlayerPos = playerToChase.pos;
+			}
+		}
 	}
 
 	override bool Used(Actor user)
 	{
+		if (!IsFriend(user)) { return false; }
+
 		String message = "";
 
 		if (!Default.user_nonmoving && allowinteraction) { nonmoving = !nonmoving; } // If not set nonmoving by default or disabled, allow toggling...
@@ -582,25 +592,27 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 		{
 			if (allowinteraction)
 			{
-				ACS_NamedExecute("FollowerMessage", 0, 0, Random(0, 4)); // Pick a random 'I'll stay here' message
+				ACS_NamedExecuteAlways("FollowerMessage", 0, 0, Random(0, 4)); // Pick a random 'I'll stay here' message
 				activationcount = 0;
 			}
 			else
 			{
-				ACS_NamedExecute("FollowerMessage", 0, 1, activationcount); // Pick a random 'I can't move' message
+				ACS_NamedExecuteAlways("FollowerMessage", 0, 1, activationcount); // Pick a random 'I can't move' message
 				activationcount = min(activationcount + 1, 4);
 			}
 		}
 		else
 		{
+			playerToChase = user;
+
 			if (allowinteraction)
 			{
-				ACS_NamedExecute("FollowerMessage", 0, 2, Random(0, 4)); // Pick a random 'follow' message
+				ACS_NamedExecuteAlways("FollowerMessage", 0, 2, Random(0, 4)); // Pick a random 'follow' message
 				activationcount = 0;
 			}
 			else
 			{
-				ACS_NamedExecute("FollowerMessage", 0, 3, activationcount); // Pick a random 'I can't leave you' message
+				ACS_NamedExecuteAlways("FollowerMessage", 0, 3, activationcount); // Pick a random 'I can't leave you' message
 				activationcount = min(activationcount + 1, 4);
 			}
 		}
