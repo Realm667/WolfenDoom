@@ -19,8 +19,13 @@ Script "Activate" (int lineid, int repairtime)
 			else { ACS_NamedExecute("HintMessage", 0, "HINTTEXTHOLD"); } 
 		}
 
+		int step = 80 + 10 * repairstate[lineid] / (repairtime * 35);
+
+		if (step < 80) { step = 80; } // Clamp between 80 and 90
+		else if (step > 90) { step = 90; } 
+
+		SetUserVariable(0, "crosshair", step);  // Show progress by changing the crosshair based on hold time
 		repairstate[lineid] += increment; // Increment the repair amount
-		SetUserVariable(0, "crosshair", 80 + 11 * repairstate[lineid] / (repairtime * 35));  // Show progress by changing the crosshair based on hold time
 	}
 
 	if (repairstate[lineid] >= repairtime * 35) // If it's fully repaired...
@@ -32,6 +37,7 @@ Script "Activate" (int lineid, int repairtime)
 		Delay(35); // Wait a second before clearing the crosshair (so you have a chance to see the full meter)
 
 		SetUserVariable(0, "crosshair", 0); // Clear the crosshair
+		SetUserVariable(0, "crosshairstring", "");
 
 		SetResultValue(1);
 	}

@@ -583,7 +583,7 @@ class BoAPlayer : PlayerPawn
 				{
 					if (Health < MaxHealth) // ...and we're not at full health...
 					{
-						GiveInventory("Health", 15); // Heal by 15 and play the bandage tearing sound
+						GiveInventory("BandagesPowerup", 1); // Heal by 10 and play the bandage tearing sound
 						A_Playsound("pickup/bandage", CHAN_VOICE);
 					}
 				}
