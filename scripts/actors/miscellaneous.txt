@@ -441,3 +441,20 @@ class GunSmokeSpawner : Actor
 		return ac;
 	}
 }
+
+class GrenadeBase : Actor // Base actor for anything we want Nazis to run away from as soon as they see it (e.g., grenades...)
+{
+	int feardistance;
+
+	Property FearDistance:feardistance;
+
+	Default
+	{
+		GrenadeBase.FearDistance 256;
+	}
+
+	override void BeginPlay()
+	{
+		ChangeStatNum(Thinker.STAT_DEFAULT - 6); // Give these their own statnum for performance reasons with enemy grenade avoidance
+	}
+}

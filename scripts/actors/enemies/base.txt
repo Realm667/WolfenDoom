@@ -1166,7 +1166,7 @@ class Nazi : Base
 				user_sneakable = false; // Enemies alerted by setting to this state won't go back to idle
 				user_perceptiontime = 1; // And they will see through your disguise if you have one
 			}
-		See.MakeAlerted: // Naming the state like this allows you to use TID to set actors to 'See.MakeAlerted' state, and non-Nazi class actors will cleanly fall back to the See state
+		See.MakeAlerted: // Naming the state like this allows you to use ACS to set actors to 'See.MakeAlerted' state, and non-Nazi class actors will cleanly fall back to the See state
 		MakeAlerted:
 			"####" # 0 {
 				if (health <= 0 || !bShootable) { return ResolveState("StaticFrame"); } // If it's dead, don't make a zombie, just freeze on the current frame and hope no one notices...
@@ -1267,7 +1267,8 @@ class Nazi : Base
 
 		if (user_sneakable && bFriendly && level.time && level.time % interval == 0) { A_LookForBodies(); }
 
-		A_Chase(melee, missile, flags);
+		if (target is "GrenadeBase") { A_Chase(null, null, flags); } // If running from a grenade, just run away and don't fire
+		else { A_Chase(melee, missile, flags); }
 	}
 
 	state A_LookForBodies()
@@ -1314,7 +1315,7 @@ class Nazi : Base
 			if (healflags) { body = goal; return ResolveState("See"); }
 			else if (goal is "Nazi")
 			{
-				Speed = Default.Speed + 1; // Walk a little faster
+				Speed = Default.Speed + Random(1, 2); // Walk a little faster
 				if (Distance3D(goal) < 96)
 				{
 					BecomeAlerted(goal.target);
@@ -1323,6 +1324,30 @@ class Nazi : Base
 		}
 
 		return ResolveState(null);
+	}
+
+	void A_LookForGrenades()
+	{
+		ThinkerIterator Finder = ThinkerIterator.Create("GrenadeBase", STAT_DEFAULT - 6);
+		GrenadeBase mo;
+
+		while ( (mo = GrenadeBase(Finder.Next())) )
+		{
+			if (Distance3d(mo) > mo.feardistance) { continue; } // feardistance default is 256 units (see GrenadeBase actor, GrenadeBase.FearDistance property)
+
+			if (target != mo)
+			{
+				target = mo;
+				if (user_sneakable && !alerted) { BecomeAlerted(target); } // If sneakable, alert them
+				else if (!bFriendly) { A_PlaySound("axis1/sighted", CHAN_BODY); } // Play a 'sighted' alert sound if the enemy isn't a friendly (this basically assumes all enemies should yell out in German)
+			}
+
+			bFrightened = true;
+			dodgetimeout = 350; // No rolling while scared and running away
+			Speed = Default.Speed + Random(1, 2); // Walk/run a little faster to get away
+
+			if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); } 
+		}
 	}
 
 	bool IsCorpse(Actor mo)
@@ -1523,9 +1548,13 @@ class Nazi : Base
 			target = activationgoal;
 			LastEnemy = newtarget;
 			bChaseGoal = True;
+			Speed = Default.Speed + Random(1, 2);
+		}
+		else
+		{
+			Speed = Default.Speed;
 		}
 
-		Speed = Default.Speed;
 		reactiontime = 0; // Make the enemy respond to seeing the player right away
 		A_AlertMonsters(512); // Alert an extra-large radius
 		[sp, eyes] = A_SpawnItemEx("SneakableGuardEyesAlerted", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid); // Spawn active guard eyes
@@ -1730,13 +1759,13 @@ class Nazi : Base
 
 					activationgoal = null;
 				}
-				else // Otherwise, keep trying to get there
+				else if (goal != activationgoal) // Otherwise, keep trying to get there
 				{
 					goal = activationgoal; // Set the activation goal as the current navigation goal
 					bJustAttacked = True; // Keep the actor from attacking while chasing to the goal
 					bChaseGoal = True; // Chase to the goal only, not toward a target
-					Speed = Default.Speed + 1; // Walk a little faster
-					if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); } // Go to the See state if not already there
+					Speed = Default.Speed + Random(1, 2); // Walk a little faster
+ 					if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); } // Go to the See state if not already there
 				}
 			}
 			else if (healflags)
@@ -1771,6 +1800,19 @@ class Nazi : Base
 			{
 				if (alerted) { alerted = true; BecomeAlerted(); }
 				else { BecomeIdle(); }
+			}
+
+			if (
+				!bBoss &&
+				!(self is "Rottweiler") && // Dogs aren't smart enought to avoid grenades
+				!(self is "MutantStandard") && // Nor are mutants
+				!(self is "ZombieStandard") && // And zombies are especailly not smart...
+				Default.Speed > 0 && 
+				level.time && 
+				level.time % (interval / 3) == 0 // Check for grenades more often than the random interval, but still only every 10-11 tics at most...
+			) 
+			{
+				A_LookForGrenades();
 			}
 		}
 
