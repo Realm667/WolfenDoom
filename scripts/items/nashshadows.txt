@@ -43,6 +43,8 @@ class Z_SpriteShadowBase : Actor
 
 class Z_Shadow : Z_SpriteShadowBase
 {
+	double heightdelta;
+
 	Default
 	{
 		RenderStyle "Stencil";
@@ -76,12 +78,14 @@ class Z_Shadow : Z_SpriteShadowBase
 			// prevent shadow from floating in the air
 			A_SetSize(1, 1);
 
+			heightdelta = max(1.0 - ((ownerRef.pos.z - FloorZ) / 128), 0.001); // Difference between z position of parent actor and the floor height, as a percentage of an arbitrary number of units (with a min value to avoid division by 0)
+
 			// set alpha
-			alpha = ownerRef.Alpha * 0.5;
+			alpha = ownerRef.Alpha * 0.5 * heightdelta; // heightdelta makes shadows that are farther from the parent actor more transparent
 
 			// sync scale
-			Scale.X = ownerRef.Scale.X;
-			Scale.Y = ownerRef.Scale.Y * 0.1;
+			Scale.X = ownerRef.Scale.X / clamp(heightdelta, 0.666, 1.0); // heightdelta makes shadows that are farther from the parent actor bigger (clamped to 1.5x size)
+			Scale.Y = ownerRef.Scale.Y * 0.1 / clamp(heightdelta, 0.666, 1.0); // heightdelta makes shadows that are farther from the parent actor bigger (clamped to 1.5x size)
 
 			// sync position
 			Vector3 sPos = (ownerRef.Pos.X, ownerRef.Pos.Y, FloorZ);
@@ -91,7 +95,7 @@ class Z_Shadow : Z_SpriteShadowBase
 			if (players[consoleplayer].camera)
 			{
 				viewOffset.X = (cos(players[consoleplayer].camera.Angle) * 0.1);
-				viewOffset.Y = (sin(players[consoleplayer].camera.Angle) * 0.1);
+				viewOffset.Y = (sin(players[consoleplayer].camera.Angle) * 0.1 / heightdelta); // heightdelta offsets shadows that are farther from their parent actor by a larger distance
 				sPos += viewOffset;
 			}
 
