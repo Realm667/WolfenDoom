@@ -50,6 +50,8 @@ Script "BoA_PlayerLoop" ENTER
 	playerID = PLAYER_TAG_OFFSET + PlayerNumber();
 	Thing_ChangeTID(0, playerID);
 
+	if (GameType() == GAME_TITLE_MAP) { Terminate; }
+
 	While (True)
 	{
 		// Do screen drawing actions
