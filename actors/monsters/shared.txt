@@ -50,11 +50,11 @@ ACTOR OccultBlazeFX1
 	+THRUSPECIES
 	+WINDTHRUST
 	States
-		{
-		Spawn:
-			BLZF ABCDCBA 4
-			Stop
-		}
+	{
+	Spawn:
+		BLZF ABCDCBA 4
+		Stop
+	}
 }
 
 ACTOR OccultBlazeFX2 : OccultBlazeFX1
@@ -89,15 +89,15 @@ ACTOR OccultBlazeFlames
 	DeathSound "flamer/napalm"
 	Decal Scorch
 	States
-		{
-		Spawn:
-			BLZF ABCDCBA 3 A_SpawnProjectile("OccultBlazeFX1")
-			Loop
-		Death:
-			"####" EFGHIJ 3
-			"####" J 3 A_FadeOut (0.05)
-			Stop
-		}
+	{
+	Spawn:
+		BLZF ABCDCBA 3 A_SpawnProjectile("OccultBlazeFX1")
+		Loop
+	Death:
+		"####" EFGHIJ 3
+		"####" J 3 A_FadeOut (0.05)
+		Stop
+	}
 }
 
 ACTOR OccultBlazeFlames2 : OccultBlazeFlames
@@ -106,11 +106,11 @@ ACTOR OccultBlazeFlames2 : OccultBlazeFlames
 	Speed 16
 	+RIPPER
 	States
-		{
-		Spawn:
-			BLZF ABCDCBA 3 A_SpawnProjectile("OccultBlazeFX2")
-			Loop
-		}
+	{
+	Spawn:
+		BLZF ABCDCBA 3 A_SpawnProjectile("OccultBlazeFX2")
+		Loop
+	}
 }
 
 ACTOR ClusterBomb
@@ -715,7 +715,7 @@ ACTOR ZombieSoul
 	Spawn:
 		ZOFX ABCD 5 LIGHT(ZOMBIEFOG)
 		Stop
-  }
+	}
 }
 
 ACTOR ZombieRaise : ZyklonZCloud
@@ -1057,7 +1057,7 @@ ACTOR QueenPlasmaBlast
 	Death:
 		"####" IJK 3
 		Stop
-  }
+	}
 }
 
 ACTOR QueenPlasmaBlastTrail
