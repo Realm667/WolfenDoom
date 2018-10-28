@@ -59,6 +59,7 @@ class BoAPlayer : PlayerPawn
 	Line UseTarget;
 	int crosshair;
 	Class<Inventory> crosshairstring;
+	bool climbing;
 
 	Default
 	{
@@ -269,7 +270,7 @@ class BoAPlayer : PlayerPawn
 			[friction, movefactor] = GetFriction();
 			bobfactor = friction < ORIG_FRICTION ? movefactor : ORIG_FRICTION_FACTOR;
 
-			if (!player.onground && !bNoGravity && !waterlevel && !leveltilt)
+			if (!player.onground && !bNoGravity && !waterlevel && !leveltilt && !climbing)
 			{
 				// [RH] allow very limited movement if not on ground.
 				movefactor *= level.aircontrol;
@@ -334,6 +335,110 @@ class BoAPlayer : PlayerPawn
 				player.cheats &= ~CF_REVERTPLEASE;
 				player.camera = player.mo;
 			}
+		}
+	}
+
+	override void CheckCheats()
+	{
+		let player = self.player;
+		// No-clip cheat
+		if ((player.cheats & (CF_NOCLIP | CF_NOCLIP2)) == CF_NOCLIP2)
+		{ // No noclip2 without noclip
+			player.cheats &= ~CF_NOCLIP2;
+		}
+		bNoClip = (player.cheats & (CF_NOCLIP | CF_NOCLIP2) || Default.bNoClip);
+		if (player.cheats & CF_NOCLIP2)
+		{
+			bNoGravity = true;
+		}
+		else if (!climbing && !bFly && !Default.bNoGravity) // Added 'climbing' check
+		{
+			bNoGravity = false;
+		}
+	}
+
+	override void PlayerThink()
+	{
+		let player = self.player;
+		UserCmd cmd = player.cmd;
+		
+		CheckFOV();
+
+		if (player.inventorytics)
+		{
+			player.inventorytics--;
+		}
+		CheckCheats();
+
+		if (bJustAttacked)
+		{ // Chainsaw/Gauntlets attack auto forward motion
+			cmd.yaw = 0;
+			cmd.forwardmove = 0xc800/2;
+			cmd.sidemove = 0;
+			bJustAttacked = false;
+		}
+
+		bool totallyfrozen = CheckFrozen();
+
+		// Handle crouching
+		CheckCrouch(totallyfrozen);
+		CheckMusicChange();
+
+		if (player.playerstate == PST_DEAD)
+		{
+			DeathThink ();
+			return;
+		}
+		if (player.jumpTics != 0)
+		{
+			player.jumpTics--;
+			if (player.onground && player.jumpTics < -18)
+			{
+				player.jumpTics = 0;
+			}
+		}
+		if (player.morphTics && !(player.cheats & CF_PREDICTING))
+		{
+			MorphPlayerThink ();
+		}
+
+		// Crouching moves down while climbing
+		if (climbing && cmd.buttons & BT_CROUCH) { vel.z -= 0.95; }
+
+		CheckPitch();
+		HandleMovement();
+
+		// Only recalculate the view position if you're not climbing or if you are climbing at speed
+		// Keeps the float bob effect from being visible to the player
+		if (!climbing || abs(vel.length()) > 1.0) { CalcHeight (); }
+
+		// Bobbing while on the ladder is caused by P_ZMovement in p_mobj.cpp and can't be altered (currently lines 3028-3035).  
+		// This flag tricks the player actor into only bobbing a tiny bit, but is an awful hack that depends on a quirk in the checks in the internal code.
+		// NOCLIP2 gets unset almost immediately after the check is made here, so never actually takes effect.
+		// Since this is just cosmetic (you only see it in chasecam or multiplayer), it may be best to comment it out, just in case internal code changes in the future.
+//		if (climbing) { player.cheats |= CF_NOCLIP2; }
+
+		if (!(player.cheats & CF_PREDICTING))
+		{
+			CheckEnvironment();
+			CheckUse();
+			CheckUndoMorph();
+			// Cycle psprites.
+			// Note that after this point the PlayerPawn may have changed due to getting unmorphed so 'self' is no longer safe to use.
+			player.mo.TickPSprites();
+			// Other Counters
+			if (player.damagecount)	player.damagecount--;
+			if (player.bonuscount) player.bonuscount--;
+
+			if (player.hazardcount)
+			{
+				player.hazardcount--;
+				if (!(level.time % player.hazardinterval) && player.hazardcount > 16*TICRATE)
+					player.mo.DamageMobj (NULL, NULL, 5, player.hazardtype);
+			}
+			player.mo.CheckPoison();
+			player.mo.CheckDegeneration();
+			player.mo.CheckAirSupply();
 		}
 	}
 

@@ -7023,3 +7023,65 @@ Model DebrisCorrugated
 	Skin 0 "barn_s01.png"
 	FrameIndex MDLA B 0 0
 }
+
+Model ClimbableZone
+{
+	USEACTORPITCH
+	USEACTORROLL
+
+	Path "Models/"
+	Model 0 "climbzone.md3"
+	Skin 0 "orange.png"
+
+	Offset -4.0 0.0 0.0
+
+	FrameIndex MDLA A 0 0
+}
+
+Model RopeSegment
+{
+	Path "Models/"
+	Model 0 "rope.md3"
+	Skin 0 "rope.png"
+
+	USEACTORPITCH
+
+	FrameIndex ROPE A 0 0
+}
+
+Model CableSegment
+{
+	Path "Models/"
+	Model 0 "rope.md3"
+	Skin 0 "rope_mtl.png"
+
+	USEACTORPITCH
+
+	Scale 1.0 0.4 1.0
+
+	FrameIndex ROPE A 0 0
+}
+
+Model RopeSpawner
+{
+	Path "Models/"
+	Model 0 "rope.md3"
+	Skin 0 "rope.png"
+
+	USEACTORPITCH
+
+	FrameIndex UNKN A 0 0
+}
+
+Model CableSpawner
+{
+	Path "Models/"
+	Model 0 "rope.md3"
+	Skin 0 "rope_mtl.png"
+
+	USEACTORPITCH
+
+	Scale 1.0 0.4 1.0
+
+	FrameIndex UNKN A 0 0
+}

@@ -101,6 +101,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 	int oldwaterlevel;
 	int activationcount;
 	String head;
+	bool climbing;
 
 	Property Weapon:weapon; // Weapon set based on FollowerWeapons Enum
 	Property CloseFollow:forgettarget; // If true, actor will immediately forget its target if the player moves out of range.  Behavior and following is more predictable, but more realistic for an escaping prisoner (vice a soldier in combat)
@@ -319,10 +320,10 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 
 		if (nonmoving) { return ResolveState("Chase.Stand"); }
 
-		if (waterlevel > 1) { // Make him able to "swim" - No proper animation, but he can at least move up and down in (and get out of) deep water now
+		if (waterlevel > 1 || climbing) { // Make him able to "swim" - No proper animation, but he can at least move up and down in (and get out of) deep water now
 			bFloat = True;
 			bNoGravity = True;
-			Speed == startSpeed / 2;
+			if (!climbing) { Speed == startSpeed / 2; }
 		} else {
 			bFloat = False;
 			bNoGravity = False;
