@@ -129,7 +129,7 @@ class LadderBase : Actor
 				continue;
 			}
 
-			if (!it.thing.bFly && !it.thing.bFloat && (!(self is "RopeSegment") || pitch > 50 && pitch < 310)) // Only affect things that aren't already flying,and rope segments that aren't horizontal
+			if (!it.thing.bFly && !it.thing.bFloat && (!(self is "RopeSegment") || pitch > 70 && pitch < 290)) // Only affect things that aren't already flying, and rope segments that aren't horizontal
 			{
 				if (Climbers.Find(it.thing) == Climbers.Size()) { Climbers.Push(it.thing); } // Add the actor to the list of climbers if it's not already there
 
@@ -242,6 +242,9 @@ class RopeSegment : LadderBase
 		Spawn:
 			ROPE A 1;
 			Loop;
+		Knot:
+			ROPE B 1;
+			Loop;
 	}
 
 	override void PostBeginPlay()
@@ -265,6 +268,8 @@ class RopeSegment : LadderBase
 
 			shotpitch = pitch;
 			position = Distance3D(target) / shotdist;
+
+			RopeSpawner(target).Segments.Push(self);
 
 			Reposition();
 		}
@@ -296,6 +301,9 @@ class RopeSpawner : Actor
 	int user_maxlength;
 	double user_sag;
 	Class<RopeSegment> seg;
+	Array<RopeSegment> Segments;
+	bool initialized;
+	int timeout;
 
 	Property SegmentActor:seg;
 	Property SoundSet:user_soundtype;
@@ -327,7 +335,10 @@ class RopeSpawner : Actor
 		LineTrace(angle, user_maxlength, pitch, TRF_THRUACTORS, 0.0, 0.0, 0.0, trace);
 		HitDistance = trace.Distance;
 
+		// Railguns trail actors are drawn starting from the hit spot back toward the origin.
 		A_CustomRailgun(0, 0, "", "", RGF_CENTERZ | RGF_NOPIERCING | RGF_FULLBRIGHT | RGF_SILENT, 0, 0, "", 0, 0, trace.Distance, 1, 3.0, 0, seg, 0);
+
+		timeout = level.time + 35;
 
 		Super.PostBeginPlay();
 	}
@@ -335,6 +346,28 @@ class RopeSpawner : Actor
 	override void Tick()
 	{
 		Super.Tick();
+
+		if (!initialized && level.time > timeout)
+		{
+			if (Segments.Size())
+			{
+				RopeSegment first = Segments[0];
+				RopeSegment last = Segments[Segments.Size() - 1];
+
+				if (pitch == 90 || abs(pitch != 90))
+				{
+					first.SetStateLabel("Knot");
+				}
+
+				if (pitch == -90 || abs(pitch != 90))
+				{
+					last.SetStateLabel("Knot");
+					last.pitch += 180;
+				}
+
+				initialized = true;	
+			}
+		}
 
 		soundtimeout = soundtimeout <= 0 ? 15 : soundtimeout - 1;
 	}
