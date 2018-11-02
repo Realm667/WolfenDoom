@@ -113,7 +113,7 @@ class LadderBase : Actor
 
 		if (passive) { return; }
 
-		BlockThingsIterator it = BlockThingsIterator.Create(self, 16);
+		BlockThingsIterator it = BlockThingsIterator.Create(self, climbradius + 16);
 
 		while (it.Next())
 		{
@@ -129,7 +129,11 @@ class LadderBase : Actor
 				continue;
 			}
 
-			if (!it.thing.bFly && !it.thing.bFloat && (!(self is "RopeSegment") || pitch > 70 && pitch < 290)) // Only affect things that aren't already flying, and rope segments that aren't horizontal
+			if (self is "RopeSegment" && (pitch < 70 || pitch > 290)) // Handle horizontal rope segments separately so they don't get the nogravity effect
+			{
+				/* No special handling right now */
+			}
+			else if (!it.thing.bFly && !it.thing.bFloat) // Only affect things that aren't already flying
 			{
 				if (Climbers.Find(it.thing) == Climbers.Size()) { Climbers.Push(it.thing); } // Add the actor to the list of climbers if it's not already there
 
@@ -232,7 +236,7 @@ class RopeSegment : LadderBase
 		Alpha 1.0;
 		LadderBase.LadderHeight 2;
 		LadderBase.DisallowMonsters False;
-		LadderBase.ClimbRadius 16;
+		LadderBase.ClimbRadius 8;
 		LadderBase.Friction 0.85; // Slower than a ladder
 		RopeSegment.Sag 1.0;
 	}
@@ -254,13 +258,13 @@ class RopeSegment : LadderBase
 		if (target && target is "RopeSpawner")
 		{
 			user_soundtype = RopeSpawner(target).user_soundtype;
-			if (RopeSpawner(target).user_sag > 0) { sag = RopeSpawner(target).user_sag; console.printf("%f", sag); }
+			if (RopeSpawner(target).user_sag > 0) { sag = RopeSpawner(target).user_sag; }
 
 			shotdist = RopeSpawner(target).HitDistance;
 
 			if (!shotdist) // Shouldn't ever happen, but just in case...
 			{
-				if (developer) { console.printf("ERROR: Rope failed to draw at %i, %i, %i.", pos.x, pos.y, pos.z); }
+				if (developer) { console.printf("\cgERROR: \cjRope failed to draw at \cf%i, %i, %i\cj.", pos.x, pos.y, pos.z); }
 				Destroy();
 
 				return;
@@ -331,6 +335,12 @@ class RopeSpawner : Actor
 
 		bInvisible = true;
 
+		if (tid)
+		{
+			target = FindTarget();
+			if (target) { A_Face(target, 0, 0); }
+		}
+
 		FLineTraceData trace;
 		LineTrace(angle, user_maxlength, pitch, TRF_THRUACTORS, 0.0, 0.0, 0.0, trace);
 		HitDistance = trace.Distance;
@@ -370,6 +380,30 @@ class RopeSpawner : Actor
 		}
 
 		soundtimeout = soundtimeout <= 0 ? 15 : soundtimeout - 1;
+	}
+
+	Actor FindTarget()
+	{
+		ThinkerIterator it = ThinkerIterator.Create("RopeSpawnerTarget", Thinker.STAT_DEFAULT - 7);
+		Actor mo;
+
+		while (mo = Actor(it.Next(true)))
+		{
+			if (mo.tid == tid)
+			{
+				return mo;
+			}
+		}
+
+		return null;
+	}
+}
+
+class RopeSpawnerTarget : MapSpot
+{
+	override void BeginPlay()
+	{
+		ChangeStatNum(Thinker.STAT_DEFAULT - 7);
 	}
 }
 
