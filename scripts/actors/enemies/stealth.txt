@@ -330,3 +330,34 @@ class SneakableGuardEyesAlerted : StealthBase
 			Stop;
 	}
 }
+
+// Give this to the player to make his disguise fail. Useful for making the player visible in certain locations while keeping the sprite. For example, inside the train station on C3M1.
+class DisguiseFailToken : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 1;
+		+INVENTORY.UNDROPPABLE
+	}
+
+	override void DoEffect()
+	{
+		if (owner is "PlayerPawn")
+		{
+			if (owner.player.cheats & CF_NOTARGET != 0)
+			{
+				owner.player.cheats &= ~CF_NOTARGET;
+			}
+		}
+	}
+
+	// Called when the item amount reaches 0
+	override void DepleteOrDestroy()
+	{
+		if (owner.FindInventory("DisguiseToken", true))
+		{
+			owner.player.cheats |= CF_NOTARGET;
+		}
+		Super.DepleteOrDestroy();
+	}
+}
