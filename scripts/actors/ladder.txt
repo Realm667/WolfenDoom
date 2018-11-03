@@ -50,6 +50,7 @@ class LadderBase : Actor
 	bool nomonsters;
 	int soundtimeout;
 	int user_soundtype;
+	int activetimeout;
 
 	Property LadderHeight:ladderheight; // Height of climbable area
 	Property DisallowMonsters:nomonsters; // Can monsters climb the ladder?
@@ -113,16 +114,20 @@ class LadderBase : Actor
 
 		if (passive) { return; }
 
+		if (self is "RopeSegment" && abs(pitch) != 90 && !activetimeout && CheckRange(48.0, true)) { return; } // Short circuit the function if there are no players within reasonable range (cuts down on processing time, especially for horizontal ropes)
+
 		BlockThingsIterator it = BlockThingsIterator.Create(self, climbradius + 16);
 
 		while (it.Next())
 		{
 			if ((nomonsters || !it.thing.bIsMonster) && !(it.thing is "PlayerPawn") && !(it.thing is "PlayerFollower")) { continue; } // Ignore everything except players and monsters
 
+			activetimeout = 350; // Set a timer so that the actor will stay active for 10 seconds after a player uses it to give playerfollowers a chance to use it...
+
 			if (
 				(Distance2D(it.thing) > climbradius + it.thing.radius || !CheckSight(it.thing)) || // Check if the actor can reach the ladder (horizontal radius check)
 				(it.thing.pos.z + it.thing.height < pos.z - ladderheight) || // Z-height check (player below ladder)
-				(it.thing.pos.z > pos.z) // Z-height check (player above ladder)
+				(it.thing.pos.z > pos.z + height) // Z-height check (player above ladder)
 			)
 			{
 				ResetActor(it.thing);
@@ -156,15 +161,16 @@ class LadderBase : Actor
 
 			if (soundtimeout <= 0 && abs(it.thing.vel.length()) >= 1.0)
 			{
-				if (user_soundtype == 1) { A_PlaySound("world/rope", CHAN_BODY, 0.71); }
-				else if (user_soundtype == 2) { A_PlaySound("floor/rock", CHAN_BODY, 0.3); }
-				else if (user_soundtype == 3) { A_PlaySound("floor/metal", CHAN_BODY, 0.1); }
-				else { A_PlaySound("world/ladder", CHAN_BODY, 0.71); }
+				if (user_soundtype == 1) { it.thing.A_PlaySound("world/rope", CHAN_BODY, 0.35); }
+				else if (user_soundtype == 2) { it.thing.A_PlaySound("floor/rock", CHAN_BODY, 0.3); }
+				else if (user_soundtype == 3) { it.thing.A_PlaySound("floor/metal", CHAN_BODY, 0.1); }
+				else { it.thing.A_PlaySound("world/ladder", CHAN_BODY, 0.4); }
 				soundtimeout = 15;
 			}
 		}
 
 		soundtimeout--;
+		activetimeout = max(activetimeout - 1, 0);
 	}
 
 	// Restores the default values of the various flags if the actor was on this ladder

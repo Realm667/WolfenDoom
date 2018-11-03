@@ -323,7 +323,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 		if (waterlevel > 1 || climbing) { // Make him able to "swim" - No proper animation, but he can at least move up and down in (and get out of) deep water now
 			bFloat = True;
 			bNoGravity = True;
-			if (!climbing) { Speed == startSpeed / 2; }
+			if (!climbing) { Speed = startSpeed / 2; }
 		} else {
 			bFloat = False;
 			bNoGravity = False;
@@ -362,7 +362,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 		if (currentGoal && Distance3d(playerToChase) < Distance3d(currentGoal)) { // If closer to player than to goal, destroy the old waypoints and start again fresh
 			DestroyMarkers();
 			return ResolveState(null);
-		} else if (playerToChase.health && Distance3d(playerToChase) <= 64)
+		} else if (playerToChase.health && Distance3d(playerToChase) <= 64 && waterlevel < 2)
 		{ // If within 64 units of the player, destroy the old waypoints and jump to "Close" state.  Has to be this close so that he can follow you into elevators
 			DestroyMarkers();
 			return ResolveState("Chase.Near");
@@ -578,6 +578,11 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				if (mo) { Markers.Push(mo); }
 				oldPlayerPos = playerToChase.pos;
 			}
+		}
+
+		if (pos.z > floorz && !bNoGravity)
+		{
+			vel.z -= level.gravity * CurSector.gravity * Gravity * 0.00125 * 20;
 		}
 	}
 
