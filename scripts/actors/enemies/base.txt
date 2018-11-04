@@ -1753,9 +1753,20 @@ class Nazi : Base
 
 					MeleeRange = Default.MeleeRange;
 
-					if (activationgoal is "AlarmPanel") { SetStateLabel("Alarm"); }
+					if (activationgoal is "AlarmPanel")
+					{
+						// Only activate the alarm if it's actually in reach.
+						if (pos.z < activationgoal.pos.z + height && pos.z + height > activationgoal.pos.z)
+						{
+							SetStateLabel("Alarm");
 
-					activationgoal.Activate(target);
+							activationgoal.Activate(target);
+						}
+					}
+					else
+					{
+						activationgoal.Activate(target);
+					}
 
 					activationgoal = null;
 				}

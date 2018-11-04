@@ -242,7 +242,7 @@ class RopeSegment : LadderBase
 		Alpha 1.0;
 		LadderBase.LadderHeight 2;
 		LadderBase.DisallowMonsters False;
-		LadderBase.ClimbRadius 8;
+		LadderBase.ClimbRadius 12;
 		LadderBase.Friction 0.85; // Slower than a ladder
 		RopeSegment.Sag 1.0;
 	}
@@ -281,6 +281,9 @@ class RopeSegment : LadderBase
 
 			RopeSpawner(target).Segments.Push(self);
 
+			scale.x *= target.scale.x;
+			scale.y *= target.scale.y;
+
 			Reposition();
 		}
 
@@ -314,9 +317,13 @@ class RopeSpawner : Actor
 	Array<RopeSegment> Segments;
 	bool initialized;
 	int timeout;
+	double zoffset;
+	double spacing;
 
 	Property SegmentActor:seg;
 	Property SoundSet:user_soundtype;
+	Property ZOffset:zoffset;
+	Property Spacing:spacing;
 
 	Default
 	{
@@ -325,6 +332,7 @@ class RopeSpawner : Actor
 
 		RopeSpawner.SegmentActor "RopeSegment";
 		RopeSpawner.SoundSet 1;
+		RopeSpawner.Spacing 3.0;
 	}
 
 	States
@@ -351,8 +359,7 @@ class RopeSpawner : Actor
 		LineTrace(angle, user_maxlength, pitch, TRF_THRUACTORS, 0.0, 0.0, 0.0, trace);
 		HitDistance = trace.Distance;
 
-		// Railguns trail actors are drawn starting from the hit spot back toward the origin.
-		A_CustomRailgun(0, 0, "", "", RGF_CENTERZ | RGF_NOPIERCING | RGF_FULLBRIGHT | RGF_SILENT, 0, 0, "", 0, 0, trace.Distance, 1, 3.0, 0, seg, 0);
+		A_CustomRailgun(0, 0, "", "", RGF_CENTERZ | RGF_NOPIERCING | RGF_SILENT, 0, 0, "", 0, 0, trace.Distance, 1, spacing * scale.x, 0, seg, zoffset * scale.y);
 
 		timeout = level.time + 35;
 
@@ -427,5 +434,54 @@ class CableSpawner : RopeSpawner
 	{
 		RopeSpawner.SegmentActor "CableSegment";
 		RopeSpawner.SoundSet 3;
+	}
+}
+
+class BridgeSegment : RopeSegment
+{
+	Default
+	{
+		+ROLLSPRITE
+		+FLATSPRITE
+		Radius 32;
+		Scale 0.75;
+		LadderBase.Friction 1.0;
+	}
+
+	States
+	{
+		Spawn:
+			BBRD A 1;
+		Knot:
+			BBRD # 1;
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Roll = Random(-5, 5);
+
+		frame = Random(0, 7);
+		Scale.X *= RandomPick(-1, 1);
+
+		Super.PostBeginPlay();
+	}
+}
+
+class BridgeSpawner : RopeSpawner
+{
+	Default
+	{
+		RopeSpawner.SegmentActor "BridgeSegment";
+		RopeSpawner.SoundSet 1;
+		RopeSpawner.Spacing 30.0;
+		RopeSpawner.ZOffset 2;
+	}
+
+	override void Tick()
+	{
+		initialized = true; // Skip knot placement for these
+
+		Super.Tick();
 	}
 }
