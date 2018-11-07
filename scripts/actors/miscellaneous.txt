@@ -378,7 +378,7 @@ class GunSmoke : Actor
 
 	override void PostBeginPlay()
 	{
-		if (GetClass() == "GunSmoke") return Super.PostBeginPlay();
+		if (GetClass() == "GunSmoke") { Super.PostBeginPlay(); }
 
 		double newScaleX = Scale.X; // set scale relatively
 		double newScaleY = Scale.Y;
@@ -393,7 +393,8 @@ class GunSmoke : Actor
 
 		Scale.X = newScaleX;
 		Scale.Y = newScaleY;
-		return Super.PostBeginPlay();
+		
+		Super.PostBeginPlay();
 	}
 }
 

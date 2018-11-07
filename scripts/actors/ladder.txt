@@ -125,7 +125,7 @@ class LadderBase : Actor
 			activetimeout = 350; // Set a timer so that the actor will stay active for 10 seconds after a player uses it to give playerfollowers a chance to use it...
 
 			if (
-				(Distance2D(it.thing) > climbradius + it.thing.radius || !CheckSight(it.thing)) || // Check if the actor can reach the ladder (horizontal radius check)
+				(Distance2D(it.thing) > climbradius + it.thing.radius/* || !CheckSight(it.thing)*/) || // Check if the actor can reach the ladder (horizontal radius check)
 				(it.thing.pos.z + it.thing.height < pos.z - ladderheight) || // Z-height check (player below ladder)
 				(it.thing.pos.z > pos.z + height) // Z-height check (player above ladder)
 			)
@@ -238,8 +238,6 @@ class RopeSegment : LadderBase
 		+SOLID
 		Radius 2;
 		Height 2;
-		RenderStyle "Translucent";
-		Alpha 1.0;
 		LadderBase.LadderHeight 2;
 		LadderBase.DisallowMonsters False;
 		LadderBase.ClimbRadius 12;
@@ -311,7 +309,7 @@ class RopeSpawner : Actor
 	double HitDistance;
 	int soundtimeout;
 	int user_soundtype;
-	int user_maxlength;
+	double user_maxlength;
 	double user_sag;
 	Class<RopeSegment> seg;
 	Array<RopeSegment> Segments;
@@ -329,7 +327,7 @@ class RopeSpawner : Actor
 	{
 		Height 0;
 		Radius 4;
-
+		Scale 1.5;
 		RopeSpawner.SegmentActor "RopeSegment";
 		RopeSpawner.SoundSet 1;
 		RopeSpawner.Spacing 3.0;
@@ -344,7 +342,12 @@ class RopeSpawner : Actor
 
 	override void PostBeginPlay()
 	{
-		if (!user_maxlength) { user_maxlength = 1024; }
+		if (!user_maxlength)
+		{
+			if (pitch == 90) { user_maxlength = pos.z - (floorz + 40); } // If it's straight down, go down to just short of the floor
+			else if (pitch == -90) { user_maxlength = ceilingz - pos.z; } // If it's straight up, fill up to the ceiling
+			else { user_maxlength = 1024; } // Otherwise, max out at 1024 units
+		}
 		if (!user_sag) { user_sag = -1.0; } // Defaults to whatever is set in the segment, but can be overriden by anything over 0;
 
 		bInvisible = true;
@@ -409,6 +412,16 @@ class RopeSpawner : Actor
 		}
 
 		return null;
+	}
+}
+
+class VerticalRopeSpawner : RopeSpawner
+{
+	override void PostBeginPlay()
+	{
+		pitch = 90;
+
+		Super.PostBeginPlay();
 	}
 }
 

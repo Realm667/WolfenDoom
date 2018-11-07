@@ -7048,10 +7048,9 @@ Model RopeSegment
 
 	FrameIndex ROPE A 0 0
 
-	Model 0 "knot.md3"
-	Skin 0 "rope.png"
+	Model 1 "knot.md3"
 
-	FrameIndex ROPE B 0 0
+	FrameIndex ROPE B 0 1
 }
 
 Model CableSegment
@@ -7072,9 +7071,10 @@ Model RopeSpawner
 {
 	Path "Models/"
 	Model 0 "knot.md3"
-	Skin 0 "rope.png"
 
 	USEACTORPITCH
+
+	Offset 4.0 0.0 -2.0
 
 	FrameIndex UNKN A 0 0
 }
