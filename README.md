@@ -20,7 +20,6 @@ Blade of Agony is a story-driven FPS. The project is inspired by WWII shooters f
 - "The Zombie Killer": Programmer, Technical Support
 - "wildweasel": Programmer
 
-
 ## Features
 Blade of Agony is much more than just a pastiche of the classic shooters that inspired it; the project will offer a unique experience. It also has many features not often seen in source port projects--Blade of Agony truly pushes GZDoom to its limits.
 - 17 playable and unique levels in Chapter 1 & 2 (over 24 in the full game)
@@ -31,7 +30,6 @@ Blade of Agony is much more than just a pastiche of the classic shooters that in
 - Interactive NPCs that support the twisted plot's progress and help you understand the game
 - Beautiful special effects (weather, elements, explosions, etc.)
 - And Much, much more!
-
 
 ## License
 This repository is for development and testing purposes. Contributions are welcome, but you are **NOT ALLOWED** to use any un-released material for your own projects without our permission!
