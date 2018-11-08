@@ -48,7 +48,7 @@ class LadderBase : Actor
 	double friction;
 	bool passive;
 	bool nomonsters;
-	int soundtimeout;
+	int soundtimeout, soundtimeout2;
 	int user_soundtype;
 	int activetimeout;
 
@@ -125,7 +125,7 @@ class LadderBase : Actor
 			activetimeout = 350; // Set a timer so that the actor will stay active for 10 seconds after a player uses it to give playerfollowers a chance to use it...
 
 			if (
-				(Distance2D(it.thing) > climbradius + it.thing.radius/* || !CheckSight(it.thing)*/) || // Check if the actor can reach the ladder (horizontal radius check)
+				(Distance2D(it.thing) > climbradius + it.thing.radius || !CheckSight(it.thing)) || // Check if the actor can reach the ladder (horizontal radius check)
 				(it.thing.pos.z + it.thing.height < pos.z - ladderheight) || // Z-height check (player below ladder)
 				(it.thing.pos.z > pos.z + height) // Z-height check (player above ladder)
 			)
@@ -134,9 +134,23 @@ class LadderBase : Actor
 				continue;
 			}
 
+			if (target && target is "RopeSpawner")
+			{
+				soundtimeout = RopeSpawner(target).soundtimeout;
+				soundtimeout2 = RopeSpawner(target).soundtimeout2;
+			}
+
 			if (self is "RopeSegment" && (pitch < 70 || pitch > 290)) // Handle horizontal rope segments separately so they don't get the nogravity effect
 			{
-				/* No special handling right now */
+				if (soundtimeout <= 0 && abs(it.thing.vel.length()) >= 1.0)
+				{
+					if (user_soundtype == 1)
+					{
+						it.thing.A_PlaySound("world/ropecreak", CHAN_BODY, 0.05); // Play quiet walking-on-rope creaking sounds
+
+						soundtimeout = 15;
+					} 
+				}
 			}
 			else if (!it.thing.bFly && !it.thing.bFloat) // Only affect things that aren't already flying
 			{
@@ -157,19 +171,36 @@ class LadderBase : Actor
 				it.thing.vel *= friction;
 			}
 
-			if (target && target is "RopeSpawner") { soundtimeout = RopeSpawner(target).soundtimeout; }
-
 			if (soundtimeout <= 0 && abs(it.thing.vel.length()) >= 1.0)
 			{
-				if (user_soundtype == 1) { it.thing.A_PlaySound("world/rope", CHAN_BODY, 0.35); }
+				if (user_soundtype == 1) { it.thing.A_PlaySound("world/rope", CHAN_BODY, 0.05); } // Very quiet climbing sounds that combine with the rope creaking
 				else if (user_soundtype == 2) { it.thing.A_PlaySound("floor/rock", CHAN_BODY, 0.3); }
 				else if (user_soundtype == 3) { it.thing.A_PlaySound("floor/metal", CHAN_BODY, 0.1); }
+				else if (user_soundtype == 4) { it.thing.A_PlaySound("floor/wood", CHAN_BODY, 0.5); }
 				else { it.thing.A_PlaySound("world/ladder", CHAN_BODY, 0.4); }
+
 				soundtimeout = 15;
+			}
+
+			if (soundtimeout2 <= 0 && abs(it.thing.vel.length()) >= 1.0)
+			{
+				if (user_soundtype == 1) // Rope creaking
+				{
+					let spawner = RopeSpawner(target);
+
+					if (spawner && spawner.first && spawner.last)
+					{
+						if (spawner.pitch == -90 || abs(spawner.pitch != 90)) { spawner.last.A_PlaySound("world/ropecreak", CHAN_BODY, 0.15); } // Play creaking sound from the mount point
+						else if (spawner.pitch == 90 || abs(spawner.pitch != 90)) { spawner.first.A_PlaySound("world/ropecreak", CHAN_BODY, 0.15); } // Or both ends, depending how the rope is spawned
+					}
+				} 
+
+				soundtimeout2 = Random(35, 70);
 			}
 		}
 
 		soundtimeout--;
+		soundtimeout2--;
 		activetimeout = max(activetimeout - 1, 0);
 	}
 
@@ -282,6 +313,8 @@ class RopeSegment : LadderBase
 			scale.x *= target.scale.x;
 			scale.y *= target.scale.y;
 
+			A_SetSize(Radius * scale.x, Height * scale.y);
+
 			Reposition();
 		}
 
@@ -307,21 +340,24 @@ class RopeSegment : LadderBase
 class RopeSpawner : Actor
 {
 	double HitDistance;
-	int soundtimeout;
+	int soundtimeout, soundtimeout2;
 	int user_soundtype;
 	double user_maxlength;
 	double user_sag;
 	Class<RopeSegment> seg;
 	Array<RopeSegment> Segments;
-	bool initialized;
-	int timeout;
+	bool initialized, knots;
+	int timeout, interval;
 	double zoffset;
 	double spacing;
+	RopeSegment first, last;
 
 	Property SegmentActor:seg;
 	Property SoundSet:user_soundtype;
 	Property ZOffset:zoffset;
 	Property Spacing:spacing;
+	Property SoundInterval:interval;
+	Property EndKnots:knots;
 
 	Default
 	{
@@ -331,6 +367,8 @@ class RopeSpawner : Actor
 		RopeSpawner.SegmentActor "RopeSegment";
 		RopeSpawner.SoundSet 1;
 		RopeSpawner.Spacing 3.0;
+		RopeSpawner.SoundInterval 15;
+		RopeSpawner.EndKnots True;
 	}
 
 	States
@@ -355,14 +393,22 @@ class RopeSpawner : Actor
 		if (tid)
 		{
 			target = FindTarget();
-			if (target) { A_Face(target, 0, 0); }
+			if (target)
+			{
+				A_Face(target, 0, 0);
+
+				HitDistance = Distance3D(target) + target.Radius * 2;
+			}
 		}
 
-		FLineTraceData trace;
-		LineTrace(angle, user_maxlength, pitch, TRF_THRUACTORS, 0.0, 0.0, 0.0, trace);
-		HitDistance = trace.Distance;
+		if (!HitDistance)
+		{
+			FLineTraceData trace;
+			LineTrace(angle, user_maxlength, pitch, TRF_THRUACTORS, 0.0, 0.0, 0.0, trace);
+			HitDistance = trace.Distance;
+		}
 
-		A_CustomRailgun(0, 0, "", "", RGF_CENTERZ | RGF_NOPIERCING | RGF_SILENT, 0, 0, "", 0, 0, trace.Distance, 1, spacing * scale.x, 0, seg, zoffset * scale.y);
+		A_CustomRailgun(0, 0, "", "", RGF_CENTERZ | RGF_NOPIERCING | RGF_SILENT, 0, 0, "", 0, 0, HitDistance, 1, spacing * scale.x, 0, seg, zoffset * scale.y);
 
 		timeout = level.time + 35;
 
@@ -377,25 +423,33 @@ class RopeSpawner : Actor
 		{
 			if (Segments.Size())
 			{
-				RopeSegment first = Segments[0];
-				RopeSegment last = Segments[Segments.Size() - 1];
+				first = Segments[0];
+				last = Segments[Segments.Size() - 1];
 
-				if (pitch == 90 || abs(pitch != 90))
+				if (knots)
 				{
-					first.SetStateLabel("Knot");
+					if (pitch == 90 || abs(pitch != 90))
+					{ 
+						first.SetStateLabel("Knot");
+					}
+
+					if (pitch == -90 || abs(pitch != 90))
+					{
+						last.SetStateLabel("Knot");
+						last.angle += 180;
+						last.pitch = -last.pitch;
+					}
 				}
 
-				if (pitch == -90 || abs(pitch != 90))
-				{
-					last.SetStateLabel("Knot");
-					last.pitch += 180;
-				}
+				first.roll = 0;
+				last.roll = 0;
 
 				initialized = true;	
 			}
 		}
 
-		soundtimeout = soundtimeout <= 0 ? 15 : soundtimeout - 1;
+		soundtimeout = soundtimeout <= 0 ? interval : soundtimeout - 1;
+		soundtimeout2 = soundtimeout2 <= 0 ? interval + Random(15, 50) : soundtimeout2 - 1; // Randomize creaking interval some
 	}
 
 	Actor FindTarget()
@@ -427,10 +481,31 @@ class VerticalRopeSpawner : RopeSpawner
 
 class RopeSpawnerTarget : MapSpot
 {
+	Default
+	{
+		Height 0;
+		Radius 4;
+		Scale 1.5;
+	}
+
 	override void BeginPlay()
 	{
 		ChangeStatNum(Thinker.STAT_DEFAULT - 7);
 	}
+
+	override void PostBeginPlay()
+	{
+		bInvisible = true;
+
+		Super.PostBeginPlay();
+	}
+
+	States
+	{
+		Spawn:
+			UNKN A 1;
+			Loop;
+	}	
 }
 
 class CableSegment : RopeSegment
@@ -459,6 +534,7 @@ class BridgeSegment : RopeSegment
 		Radius 32;
 		Scale 0.75;
 		LadderBase.Friction 1.0;
+		LadderBase.ClimbRadius 32;
 	}
 
 	States
@@ -486,15 +562,9 @@ class BridgeSpawner : RopeSpawner
 	Default
 	{
 		RopeSpawner.SegmentActor "BridgeSegment";
-		RopeSpawner.SoundSet 1;
-		RopeSpawner.Spacing 30.0;
+		RopeSpawner.SoundSet 4;
+		RopeSpawner.Spacing 32.0;
 		RopeSpawner.ZOffset 2;
-	}
-
-	override void Tick()
-	{
-		initialized = true; // Skip knot placement for these
-
-		Super.Tick();
+		RopeSpawner.EndKnots False;
 	}
 }

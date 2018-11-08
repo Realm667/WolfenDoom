@@ -397,12 +397,23 @@ LADDER6 LADDER6
 $limit	world/ladder 1
 
 //Rope Climbing
-$random world/rope { ROPE1 ROPE2 ROPE3 ROPE4 }
+$random world/rope { ROPEMOV1 ROPEMOV2 ROPEMOV3 ROPEMOV4 }
+ROPEMOV1 ROPEMOV1
+ROPEMOV2 ROPEMOV2
+ROPEMOV3 ROPEMOV3
+ROPEMOV4 ROPEMOV4
+$limit	world/rope 1
+
+$random world/ropecreak { ROPE1 ROPE2 ROPE3 ROPE4 }
 ROPE1 ROPE1
 ROPE2 ROPE2
 ROPE3 ROPE3
 ROPE4 ROPE4
-$limit	world/rope 1
+$limit	world/ropecreak 3
+$pitchshift ROPE1 7
+$pitchshift ROPE2 7
+$pitchshift ROPE3 7
+$pitchshift ROPE4 7
 
 ROPEHIT ROPEHIT
 ROPETOSS ROPETOSS
