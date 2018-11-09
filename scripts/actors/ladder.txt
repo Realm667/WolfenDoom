@@ -59,10 +59,10 @@ class LadderBase : Actor
 
 	Default
 	{
+		+DONTTHRUST
+		+NODAMAGE
 		+NOGRAVITY
 		-SOLID
-		+NODAMAGE
-		+DONTTHRUST
 		Height 8;
 		Radius 24;
 		LadderBase.LadderHeight 132; // Uses custom property vice actual actor height so that the ladder model can be submerged in the ground to make shorter ladders 
@@ -239,6 +239,28 @@ class ClimbableZone : LadderBase
 {
 	Default
 	{
+		//$Category Misc (Wolf3D)
+		RenderStyle "Stencil";
+		StencilColor "Orange";
+		Alpha 0.5;
+	}
+
+	override void PostBeginPlay()
+	{
+		bInvisible = True;
+
+		ladderheight *= scale.y;
+
+		Super.PostBeginPlay();
+	}
+}
+
+class ClimbableZone2 : LadderBase //half radius for narrow zones to let BJ open doors near ladders, but doesn't show any height on GZDB
+{
+	Default
+	{
+		//$Category Misc (Wolf3D)
+		Radius 12;
 		RenderStyle "Stencil";
 		StencilColor "Orange";
 		Alpha 0.5;
@@ -361,6 +383,7 @@ class RopeSpawner : Actor
 
 	Default
 	{
+		//$Category Misc (Wolf3D)
 		Height 0;
 		Radius 4;
 		Scale 1.5;
@@ -483,6 +506,7 @@ class RopeSpawnerTarget : MapSpot
 {
 	Default
 	{
+		//$Category Misc (Wolf3D)
 		Height 0;
 		Radius 4;
 		Scale 1.5;
