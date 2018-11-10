@@ -240,9 +240,10 @@ class ClimbableZone : LadderBase
 	Default
 	{
 		//$Category Misc (Wolf3D)
+		//$Title Climbable Zone
+		Alpha 0.5;
 		RenderStyle "Stencil";
 		StencilColor "Orange";
-		Alpha 0.5;
 	}
 
 	override void PostBeginPlay()
@@ -255,24 +256,13 @@ class ClimbableZone : LadderBase
 	}
 }
 
-class ClimbableZone2 : LadderBase //half radius for narrow zones to let BJ open doors near ladders, but doesn't show any height on GZDB
+class ClimbableZone2 : ClimbableZone //half radius for narrow zones to let BJ open doors near ladders, but doesn't show any height on GZDB
 {
 	Default
 	{
 		//$Category Misc (Wolf3D)
+		//$Title Climbable Zone (Narrow)
 		Radius 12;
-		RenderStyle "Stencil";
-		StencilColor "Orange";
-		Alpha 0.5;
-	}
-
-	override void PostBeginPlay()
-	{
-		bInvisible = True;
-
-		ladderheight *= scale.y;
-
-		Super.PostBeginPlay();
 	}
 }
 
@@ -352,10 +342,13 @@ class RopeSegment : LadderBase
 
 	void Reposition()
 	{
+		// This breaks down at steeper angles because gaps start to appear between segments...  Max sag is probably about 4 for every 128 units of rope length
+
 		offset = (shotdist * 0.018 * sag) * -sin(position * 180) * cos(-shotpitch);
 		SetOrigin((SpawnPos.x, SpawnPos.y, SpawnPos.z + offset), false);
 
-		pitch = shotpitch + (shotdist * 0.0036 * sag) * cos(position * 180) * cos(-shotpitch);
+		// Some guesstimating here...  I need to check my math.  But it's close enough.
+		pitch = shotpitch + (shotdist * tan(sag / (shotdist / 192))) * cos(position * 180) * cos(-shotpitch); 
 	}
 }
 
@@ -366,6 +359,7 @@ class RopeSpawner : Actor
 	int user_soundtype;
 	double user_maxlength;
 	double user_sag;
+	bool user_hideknots;
 	Class<RopeSegment> seg;
 	Array<RopeSegment> Segments;
 	bool initialized, knots;
@@ -406,7 +400,7 @@ class RopeSpawner : Actor
 		if (!user_maxlength)
 		{
 			if (pitch == 90) { user_maxlength = pos.z - (floorz + 40); } // If it's straight down, go down to just short of the floor
-			else if (pitch == -90) { user_maxlength = ceilingz - pos.z; } // If it's straight up, fill up to the ceiling
+			else if (pitch == -90 || pitch == 270) { user_maxlength = ceilingz - pos.z; if (pos.z == floorz) { SetOrigin((pos.xy, floorz + Radius), false); } } // If it's straight up, fill up to the ceiling
 			else { user_maxlength = 1024; } // Otherwise, max out at 1024 units
 		}
 		if (!user_sag) { user_sag = -1.0; } // Defaults to whatever is set in the segment, but can be overriden by anything over 0;
@@ -430,7 +424,6 @@ class RopeSpawner : Actor
 			LineTrace(angle, user_maxlength, pitch, TRF_THRUACTORS, 0.0, 0.0, 0.0, trace);
 			HitDistance = trace.Distance;
 		}
-
 		A_CustomRailgun(0, 0, "", "", RGF_CENTERZ | RGF_NOPIERCING | RGF_SILENT, 0, 0, "", 0, 0, HitDistance, 1, spacing * scale.x, 0, seg, zoffset * scale.y);
 
 		timeout = level.time + 35;
@@ -449,7 +442,7 @@ class RopeSpawner : Actor
 				first = Segments[0];
 				last = Segments[Segments.Size() - 1];
 
-				if (knots)
+				if (knots && !user_hideknots)
 				{
 					if (pitch == 90 || abs(pitch != 90))
 					{ 
