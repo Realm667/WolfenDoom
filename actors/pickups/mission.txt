@@ -224,30 +224,6 @@ ACTOR Cartridge53 : Akten
 	}
 }
 
-ACTOR BoACompass : CustomInventory
-{
-	//$Category Pickups (Wolf3D)
-	//$Title Compass
-	//$Color 13
-	Scale 0.2
-	Tag "$TAGCOMPS"
-	Inventory.Icon CMPSB0
-	Inventory.PickupMessage "$COMPASS"
-	Inventory.PickupSound "misc/armor_head"
-	+INVENTORY.ALWAYSPICKUP
-	+INVENTORY.INVBAR
-	+INVENTORY.UNDROPPABLE
-	States
-	{
-	Spawn:
-		CMPS A -1
-		Stop
-	Use:
-		"####" A 0 ACS_NamedExecuteAlways("BoA_Objectives",0)
-		Fail
-	}
-}
-
 ACTOR RepairKit : Akten
 {
 	//$Title Repair Kit (electric)
