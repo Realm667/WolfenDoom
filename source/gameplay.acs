@@ -1,15 +1,46 @@
 // Map checks/actions //
+// Special mission numbers - force a level number to map to a specific mission number
+#define SPECIAL_MISSION_COUNT 1
+int special_mission_numbers[SPECIAL_MISSION_COUNT][2] = {
+	{103, 13}
+};
+
+// Set mission/briefing number
 script "MissionNumber" OPEN
 {
+	bool special_misnum = false;
 	int mapnum = GetLevelInfo(LEVELINFO_LEVELNUM);
-	if(mapnum < 99) // If it's not a secret mission or the intermap
+	
+	for (int i = 0; i < SPECIAL_MISSION_COUNT; i++)
 	{
-		mission_number = mapnum; // Set the mission number just in case we warped/started ahead
+		if (mapnum == special_mission_numbers[i][0])
+		{
+			mission_number = special_mission_numbers[i][1];
+			special_misnum = true;
+		}
 	}
-	else if (mapnum > 200 && mapnum < 300)
-	{
-		mission_number = mapnum - 200;
+	
+	if (!special_misnum) {
+		if (mapnum < 99) // If it's not a secret mission or the intermap
+		{
+			mission_number = mapnum; // Set the mission number just in case we warped/started ahead
+		}
+		else if (mapnum > 100 && mapnum < 200)
+		{
+			mission_number = ((mapnum - 100) * 6) - 1; // Secret mission
+		}
+		else if (mapnum > 200)
+		{
+			// GZDoom does not accept multiple maps with the same number
+			mission_number = mapnum % 100;
+		}
 	}
+	/*
+	Print(
+		s:"Mission number: ", d:mission_number,
+		s:"\nmapnum: ", d:mapnum
+	);
+	*/
 }
 
 //fadescript for map setup
