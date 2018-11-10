@@ -298,7 +298,7 @@ class BoAPlayer : PlayerPawn
 			if (forwardmove)
 			{
 				if (leveltilt <= 30) { Bob(Angle, cmd.forwardmove * bobfactor / 256., true); }
-				if (leveltilt)
+				if (leveltilt && !climbing)
 				{
 					vel.x += forwardmove * cos(angle) * cos(leveltilt) * speed * 1.5;
 					vel.y += forwardmove * sin(angle) * speed;
@@ -314,7 +314,7 @@ class BoAPlayer : PlayerPawn
 				let a = Angle - 90;
 				if (leveltilt <= 30) { Bob(a, cmd.sidemove * bobfactor / 256., false); }
 
-				if (leveltilt)
+				if (leveltilt && !climbing)
 				{
 					vel.x += sidemove * sin(angle) * cos(leveltilt) * speed * 1.75;
 					vel.y += -sidemove * cos(angle) * speed * 1.75;
@@ -626,7 +626,7 @@ class BoAPlayer : PlayerPawn
 	void DoGravity()
 	{
 		// If the player isn't using NOCLIP and they are at the "tipping point" for their mass, make them slide to the new "down"
-		if (abs(leveltilt) >= min(mass, 1000) / 1000.0 * 45 && !(player.cheats & (CF_NOCLIP | CF_NOCLIP2)))
+		if (abs(leveltilt) >= min(mass, 1000) / 1000.0 * 45 && !(player.cheats & (CF_NOCLIP | CF_NOCLIP2)) && !climbing)
 		{
 			bNoGravity = leveltilt != 0;
 
