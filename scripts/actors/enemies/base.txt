@@ -1212,7 +1212,7 @@ class Nazi : Base
 
 	void A_NaziLook()
 	{
-		A_Look();
+		if (level.time > 35) { A_Look(); }
 
 		if (CheckSightOrRange(512)) { return; }
 
