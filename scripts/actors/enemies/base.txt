@@ -1398,16 +1398,9 @@ class Nazi : Base
 	// Initialize actor
 	override void BeginPlay()
 	{
-		// If it's sneakable, spawn a set of the sneakeable eyes and mark it as friendly (and make the actor never infight)
-		if (user_sneakable) {
-			bFriendly = True;
-			bNeverTarget = True; // A bit of a hack, but it works...  Will cause issues if FRIENDLY actors ever need to interact with sneakable actors
-			[sp, eyes] = A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid);
+		if (user_sneakable)
+		{
 			ChangeStatNum(Thinker.STAT_DEFAULT - 5); // Make these tic before the alert lights for checking logic purposes
-		}
-		else if (SneakableActors()) // If there are sneakable actors in the level, no Nazi actors will be targetable - fixes targeting of non-sneakables by idle (friendly) sneakables
-		{ // This will break normal expected friendly monster behavior!
-			bNeverTarget = True;
 		}
 
 		// Set the actor's aim state (first frame of attack animation) for static and AMBUSH actors
@@ -1421,6 +1414,18 @@ class Nazi : Base
 
 	override void PostBeginPlay()
 	{
+		// If it's sneakable, spawn a set of the sneakeable eyes and mark it as friendly (and make the actor never infight)
+		if (user_sneakable)
+		{
+			bFriendly = True;
+			bNeverTarget = True; // A bit of a hack, but it works...  Will cause issues if FRIENDLY actors ever need to interact with sneakable actors
+			[sp, eyes] = A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid);
+		}
+		else if (SneakableActors()) // If there are sneakable actors in the level, no Nazi actors will be targetable - fixes targeting of non-sneakables by idle (friendly) sneakables
+		{ // This will break normal expected friendly monster behavior!
+			bNeverTarget = True;
+		}
+
 		Super.PostBeginPlay();
 
 		// Use the aim state frame as the initial frame if they have the AMBUSH flag
