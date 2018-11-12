@@ -10,26 +10,15 @@ class CompassHandler : EventHandler
 	const minTID = 4000;
 	const distFactor = 0.1;
 
-	clearscope bool compassItem(Actor thing) const
-	{
-		return (
-			thing is "ObjectiveIcon" ||
-			thing is "Akten" ||
-			thing is "AktenEisenmann" ||
-			thing is "SpearOfDestiny" ||
-			thing is "ExclamationCompass" ||
-			thing.tid >= minTID
-		);
-	}
-
 	clearscope TextureID compassIcon(Actor thing) const
 	{
 		String txName;
+
 		if (thing is "ObjectiveIcon")
 		{
 			txName = "GOAL3";
 		}
-		else if (compassItem(thing))
+		else
 		{
 			txName = "GOAL1";
 		}
@@ -112,7 +101,7 @@ class CompassHandler : EventHandler
 				double iconX = compassX + circleCenterX + relativeLocation.X * distFactor;
 				double iconY = compassY + circleCenterY + relativeLocation.Y * distFactor;
 				screen.DrawTexture(icon, false, iconX, iconY,
-					DTA_VirtualWidth, 1024, DTA_VirtualHeight, 768);
+					DTA_VirtualWidth, 1024, DTA_VirtualHeight, 768, DTA_Alpha, 0.2);
 			}
 		}
 	}

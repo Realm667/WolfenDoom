@@ -1,4 +1,7 @@
 script "BoA_CompassQueue" (void)
 {
+	// In order to add things to the compass, set the activator to the item to
+	// add to the compass, and call ACS_NamedExecuteAlways("BoA_CompassQueue", 0);
+	// ExclamationCompass is the only actor that does this automatically.
 	ScriptCall("BoACompass", "Add");
 }
