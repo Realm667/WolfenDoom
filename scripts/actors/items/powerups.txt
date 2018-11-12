@@ -38,7 +38,7 @@ class LanternPickup : CustomInventory
 	{
 		if (globalfreeze || level.Frozen) { return; }
 
-		if (owner && active) 
+		if (owner && active)
 		{
 			if (owner.waterlevel >= 3)
 			{
@@ -143,5 +143,12 @@ class BoACompass : CustomInventory
 	{
 		active = false;
 		return Super.CreateTossable(amt);
+	}
+
+	static void Add(Actor toAdd)
+	{
+		// Console.Printf("Attempting to add a %s to the compass.", toAdd.GetClassName());
+		CompassHandler compassEvent = CompassHandler(StaticEventHandler.Find("CompassHandler"));
+		compassEvent.ScannableThings.Push(toAdd);
 	}
 }
