@@ -38,7 +38,7 @@ class LanternPickup : CustomInventory
 	{
 		if (globalfreeze || level.Frozen) { return; }
 
-		if (owner && active) 
+		if (owner && active)
 		{
 			if (owner.waterlevel >= 3)
 			{
@@ -101,10 +101,54 @@ class MineSweeper : CustomInventory
 	{
 		if (globalfreeze || level.Frozen || !owner || !owner.player) { return; }
 
-		if (owner && active) 
+		if (owner && active)
 		{
 			if (owner.FindInventory("Power")) { owner.TakeInventory("Power", 1); }
 			else { active = false; }
 		}
+	}
+}
+
+class BoACompass : CustomInventory
+{
+	bool active;
+
+	Default
+	{
+		//$Category Pickups (Wolf3D)
+		//$Title Compass
+		//$Color 13
+		Scale 0.2;
+		Tag "$TAGCOMPS";
+		Inventory.Icon "CMPSB0";
+		Inventory.PickupMessage "$COMPASS";
+		Inventory.PickupSound "misc/armor_head";
+		Inventory.MaxAmount 1;
+		+INVENTORY.INVBAR
+	}
+
+	States
+	{
+		Spawn:
+			CMPS A -1;
+			Stop;
+		Use:
+			TNT1 A 0 {
+				invoker.active = !invoker.active;
+			}
+			Fail;
+	}
+
+	override Inventory CreateTossable(int amt)
+	{
+		active = false;
+		return Super.CreateTossable(amt);
+	}
+
+	static void Add(Actor toAdd)
+	{
+		// Console.Printf("Attempting to add a %s to the compass.", toAdd.GetClassName());
+		CompassHandler compassEvent = CompassHandler(StaticEventHandler.Find("CompassHandler"));
+		compassEvent.ScannableThings.Push(toAdd);
 	}
 }

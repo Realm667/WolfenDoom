@@ -1,0 +1,108 @@
+class CompassHandler : EventHandler
+{
+	Array<Actor> ScannableThings;
+	const compassX = 85.0;
+	const compassY = 162.0;
+	const pointRadius = 34.0;
+	const circleRadius = 41.0;
+	const circleCenterX = 13.0 + circleRadius;
+	const circleCenterY = 24.0 + circleRadius;
+	const minTID = 4000;
+	const distFactor = 0.1;
+
+	clearscope TextureID compassIcon(Actor thing) const
+	{
+		String txName;
+
+		if (thing is "ObjectiveIcon")
+		{
+			txName = "GOAL3";
+		}
+		else
+		{
+			txName = "GOAL1";
+		}
+
+		if (thing.GetRenderStyle() != STYLE_None)
+		{
+			txName = "GOAL2";
+		}
+		return TexMan.CheckForTexture(txName, TexMan.Type_Any);
+	}
+
+	override void WorldThingDestroyed(WorldEvent e)
+	{
+		int i = ScannableThings.Find(e.Thing);
+
+		if (i < ScannableThings.Size())
+		{
+			ScannableThings.Delete(i, 1);
+			ScannableThings.ShrinkToFit();
+		}
+	}
+
+	override void RenderOverlay( RenderEvent e )
+	{
+		PlayerInfo p = players[consoleplayer];
+
+		if (!p || !p.mo) { return; }
+
+		BoACompass cmps = BoACompass(p.mo.FindInventory("BoACompass"));
+
+		if (cmps && cmps.active)
+		{
+			// Draw compass and points
+			TextureID north = TexMan.CheckForTexture("NORTH", TexMan.Type_Any);
+			TextureID east = TexMan.CheckForTexture("EAST", TexMan.Type_Any);
+			TextureID south = TexMan.CheckForTexture("SOUTH", TexMan.Type_Any);
+			TextureID west = TexMan.CheckForTexture("WEST", TexMan.Type_Any);
+			TextureID cmpsbg = TexMan.CheckForTexture("COMPASS", TexMan.Type_Any);
+
+			// Draw compass points
+			screen.DrawTexture(west, false,
+				-sin(e.ViewAngle) * pointRadius + compassX + circleCenterX,
+				cos(e.ViewAngle) * pointRadius + compassY + circleCenterY,
+				DTA_VirtualWidth, 1024, DTA_VirtualHeight, 768);
+			screen.DrawTexture(east, false,
+				sin(e.ViewAngle) * pointRadius + compassX + circleCenterX,
+				-cos(e.ViewAngle) * pointRadius + compassY + circleCenterY,
+				DTA_VirtualWidth, 1024, DTA_VirtualHeight, 768);
+			screen.DrawTexture(south, false,
+				cos(e.ViewAngle) * pointRadius + compassX + circleCenterX,
+				sin(e.ViewAngle) * pointRadius + compassY + circleCenterY,
+				DTA_VirtualWidth, 1024, DTA_VirtualHeight, 768);
+			screen.DrawTexture(north, false,
+				-cos(e.ViewAngle) * pointRadius + compassX + circleCenterX,
+				-sin(e.ViewAngle) * pointRadius + compassY + circleCenterY,
+				DTA_VirtualWidth, 1024, DTA_VirtualHeight, 768);
+
+			// Draw the compass itself
+			screen.DrawTexture(cmpsbg, false, compassX, compassY,
+				DTA_VirtualWidth, 1024, DTA_VirtualHeight, 768);
+
+			// Draw icons
+			for (int i = 0; i < ScannableThings.Size(); i++)
+			{
+				Actor mo = ScannableThings[i];
+				if (!mo) continue;
+				if (mo is "Inventory" && Inventory(mo).Owner) continue;
+
+				TextureID icon = compassIcon(mo);
+				Vector2 relativeLocation = LevelLocals.Vec2Diff(e.ViewPos.xy, mo.pos.xy);
+				relativeLocation.Y *= -1;
+
+				relativeLocation = Actor.RotateVector(relativeLocation, e.ViewAngle - 90);
+
+				if (relativeLocation.Length() * distFactor > pointRadius)
+				{
+					relativeLocation = relativeLocation.Unit() * pointRadius / distFactor;
+				}
+
+				double iconX = compassX + circleCenterX + relativeLocation.X * distFactor;
+				double iconY = compassY + circleCenterY + relativeLocation.Y * distFactor;
+				screen.DrawTexture(icon, false, iconX, iconY,
+					DTA_VirtualWidth, 1024, DTA_VirtualHeight, 768, DTA_Alpha, 0.2);
+			}
+		}
+	}
+}

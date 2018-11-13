@@ -32,7 +32,7 @@ gameinfo
 	borderflat = "textures/cncr_g29.jpg"
 
 	defaultconversationmenuclass = "BoAConversationMenu"
-	eventhandlers = "InventoryClearHandler", "WaterHandler", "CustomShaderHandler", "SpriteShadowHandler", "MineSweeperHandler"
+	eventhandlers = "InventoryClearHandler", "WaterHandler", "CustomShaderHandler", "SpriteShadowHandler", "MineSweeperHandler", "CompassHandler"
 	statusbarclass = "BoAStatusBar"
 
 	ForceKillScripts = true //needed for Droplets - ozy81
@@ -99,7 +99,7 @@ map TEST_DLG lookup "TEST_DLG" // Talon1024
 // 3-digit map numbers:
 // 10x -> episode secret map
 // 15x/16x -> SNES easter egg maps
-// 20x -> additional parts of a multi-part map (subtract 200 for the mission number)
+// 20x -> additional parts of a multi-part map (modulus by 100 for the mission number)
 //##############################
 //###### FIRST EPISODE #########
 //##############################
