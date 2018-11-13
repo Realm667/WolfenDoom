@@ -89,6 +89,15 @@ class CompassHandler : EventHandler
 
 				TextureID icon = compassIcon(mo);
 				Vector2 relativeLocation = LevelLocals.Vec2Diff(e.ViewPos.xy, mo.pos.xy);
+
+				// Account for chasecam
+				if (p.cheats & CF_CHASECAM != 0)
+				{
+					CVar chaseDist = CVar.FindCVar("chase_dist");
+					Vector2 chaseDiff = Actor.AngleToVector(e.ViewAngle, chaseDist.GetFloat() * cos(e.ViewPitch));
+					relativeLocation -= chaseDiff;
+				}
+
 				relativeLocation.Y *= -1;
 
 				relativeLocation = Actor.RotateVector(relativeLocation, e.ViewAngle - 90);
