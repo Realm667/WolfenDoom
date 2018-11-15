@@ -127,7 +127,7 @@ class LadderBase : Actor
 			if (
 				(Distance2D(it.thing) > climbradius + it.thing.radius || !CheckSight(it.thing)) || // Check if the actor can reach the ladder (horizontal radius check)
 				(it.thing.pos.z + it.thing.height < pos.z - ladderheight) || // Z-height check (player below ladder)
-				(it.thing.pos.z > pos.z + height) // Z-height check (player above ladder)
+				(it.thing.pos.z > pos.z + (bSolid ? height : -height)) // Z-height check (player above ladder) - if non-solid, the player will "step down" onto the ladder, so it's easier to get onto ladders that are in a hole in the ground
 			)
 			{
 				ResetActor(it.thing);
@@ -171,13 +171,17 @@ class LadderBase : Actor
 				it.thing.vel *= friction;
 			}
 
-			if (soundtimeout <= 0 && abs(it.thing.vel.length()) >= 1.0)
+			double vel = abs(it.thing.vel.length());
+
+			if (soundtimeout <= 0 && vel >= 1.0 && it.thing.pos.z != floorz)
 			{
+				double vol = min(vel - 1.0, 1.0);
+
 				if (user_soundtype == 1) { it.thing.A_PlaySound("world/rope", CHAN_BODY, 0.05); } // Very quiet climbing sounds that combine with the rope creaking
-				else if (user_soundtype == 2) { it.thing.A_PlaySound("floor/rock", CHAN_BODY, 0.3); }
-				else if (user_soundtype == 3) { it.thing.A_PlaySound("floor/metal", CHAN_BODY, 0.1); }
-				else if (user_soundtype == 4) { it.thing.A_PlaySound("floor/wood", CHAN_BODY, 0.5); }
-				else { it.thing.A_PlaySound("world/ladder", CHAN_BODY, 0.4); }
+				else if (user_soundtype == 2) { it.thing.A_PlaySound("floor/rock", CHAN_BODY, vol * 0.3); }
+				else if (user_soundtype == 3) { it.thing.A_PlaySound("floor/metal", CHAN_BODY, vol * 0.1); }
+				else if (user_soundtype == 4) { it.thing.A_PlaySound("floor/wood", CHAN_BODY, vol * 0.5); }
+				else { it.thing.A_PlaySound("world/ladder", CHAN_BODY, vol * 0.4); }
 
 				soundtimeout = 15;
 			}
