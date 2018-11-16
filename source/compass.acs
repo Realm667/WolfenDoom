@@ -5,3 +5,12 @@ script "BoA_CompassQueue" (void)
 	// ExclamationCompass is the only actor that does this automatically.
 	ScriptCall("BoACompass", "Add");
 }
+
+script "BoA_CompassAddIcon" (int icon)
+{
+	// This is an alternative script which allows you to use a custom icon to mark
+	// the activator with. Use it by setting the activator to the thing you want
+	// to add, and then calling:
+	// ACS_NamedExecuteAlways("BoA_CompassAddIcon", 0, <Icon name>);
+	ScriptCall("BoACompass", "Add", icon);
+}
