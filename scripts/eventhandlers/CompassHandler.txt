@@ -1,6 +1,7 @@
 class CompassHandler : EventHandler
 {
 	Array<Actor> ScannableThings;
+	Array<String> ThingIcons;
 	const compassX = 85.0;
 	const compassY = 162.0;
 	const pointRadius = 34.0;
@@ -10,10 +11,9 @@ class CompassHandler : EventHandler
 	const minTID = 4000;
 	const distFactor = 0.1;
 
-	clearscope TextureID compassIcon(Actor thing) const
+	static clearscope String GetDefaultIcon(Actor thing)
 	{
 		String txName;
-
 		if (thing is "ObjectiveIcon")
 		{
 			txName = "GOAL3";
@@ -22,12 +22,21 @@ class CompassHandler : EventHandler
 		{
 			txName = "GOAL1";
 		}
-
 		if (thing.GetRenderStyle() != STYLE_None)
 		{
 			txName = "GOAL2";
 		}
-		return TexMan.CheckForTexture(txName, TexMan.Type_Any);
+		return txName;
+	}
+
+	void Add(Actor thing, String iconName = "")
+	{
+		ScannableThings.Push(thing);
+		if (iconName == "")
+		{
+			iconName = CompassHandler.GetDefaultIcon(thing);
+		}
+		ThingIcons.Push(iconName);
 	}
 
 	override void WorldThingDestroyed(WorldEvent e)
@@ -37,7 +46,9 @@ class CompassHandler : EventHandler
 		if (i < ScannableThings.Size())
 		{
 			ScannableThings.Delete(i, 1);
+			ThingIcons.Delete(i, 1);
 			ScannableThings.ShrinkToFit();
+			ThingIcons.ShrinkToFit();
 		}
 	}
 
@@ -87,13 +98,13 @@ class CompassHandler : EventHandler
 				if (!mo) continue;
 				if (mo is "Inventory" && Inventory(mo).Owner) continue;
 
-				TextureID icon = compassIcon(mo);
+				TextureID icon = TexMan.CheckForTexture(ThingIcons[i], TexMan.Type_Any);
 				Vector2 relativeLocation = LevelLocals.Vec2Diff(e.ViewPos.xy, mo.pos.xy);
 
 				// Account for chasecam
 				if (p.cheats & CF_CHASECAM != 0)
 				{
-					CVar chaseDist = CVar.FindCVar("chase_dist");
+					CVar chaseDist = CVar.GetCVar("chase_dist", p);
 					Vector2 chaseDiff = Actor.AngleToVector(e.ViewAngle, chaseDist.GetFloat() * cos(e.ViewPitch));
 					relativeLocation -= chaseDiff;
 				}
