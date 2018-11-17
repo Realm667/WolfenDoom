@@ -3,12 +3,8 @@ class CompassHandler : EventHandler
 	Array<Actor> ScannableThings;
 	Array<String> ThingIcons;
 	const compassX = 85.0;
-	const compassY = 162.0;
+	const compassY = 105.0;
 	const pointRadius = 34.0;
-	const circleRadius = 41.0;
-	const circleCenterX = 13.0 + circleRadius;
-	const circleCenterY = 24.0 + circleRadius;
-	const minTID = 4000;
 	const distFactor = 0.1;
 
 	static clearscope String GetDefaultIcon(Actor thing)
@@ -60,36 +56,38 @@ class CompassHandler : EventHandler
 
 		BoACompass cmps = BoACompass(p.mo.FindInventory("BoACompass"));
 
-		if (cmps && cmps.active)
+		if (cmps && cmps.active && screenblocks < 12)
 		{
-			// Draw compass and points
-			TextureID north = TexMan.CheckForTexture("NORTH", TexMan.Type_Any);
-			TextureID east = TexMan.CheckForTexture("EAST", TexMan.Type_Any);
-			TextureID south = TexMan.CheckForTexture("SOUTH", TexMan.Type_Any);
-			TextureID west = TexMan.CheckForTexture("WEST", TexMan.Type_Any);
+			// Find compass and background textures
 			TextureID cmpsbg = TexMan.CheckForTexture("COMPASS", TexMan.Type_Any);
-
-			// Draw compass points
-			screen.DrawTexture(west, false,
-				-sin(e.ViewAngle) * pointRadius + compassX + circleCenterX,
-				cos(e.ViewAngle) * pointRadius + compassY + circleCenterY,
-				DTA_VirtualWidth, 1024, DTA_VirtualHeight, 768);
-			screen.DrawTexture(east, false,
-				sin(e.ViewAngle) * pointRadius + compassX + circleCenterX,
-				-cos(e.ViewAngle) * pointRadius + compassY + circleCenterY,
-				DTA_VirtualWidth, 1024, DTA_VirtualHeight, 768);
-			screen.DrawTexture(south, false,
-				cos(e.ViewAngle) * pointRadius + compassX + circleCenterX,
-				sin(e.ViewAngle) * pointRadius + compassY + circleCenterY,
-				DTA_VirtualWidth, 1024, DTA_VirtualHeight, 768);
-			screen.DrawTexture(north, false,
-				-cos(e.ViewAngle) * pointRadius + compassX + circleCenterX,
-				-sin(e.ViewAngle) * pointRadius + compassY + circleCenterY,
-				DTA_VirtualWidth, 1024, DTA_VirtualHeight, 768);
+			TextureID cmpsrose = TexMan.CheckForTexture("COMP_BKG", TexMan.Type_Any);
 
 			// Draw the compass itself
-			screen.DrawTexture(cmpsbg, false, compassX, compassY,
-				DTA_VirtualWidth, 1024, DTA_VirtualHeight, 768);
+			DrawToHUD.DrawTexture(cmpsbg, (compassX, compassY - 6.0));
+
+			CVar compasstype = CVar.GetCVar("oldcompass");
+			bool oldstyle = compasstype ? compasstype.GetInt() : false;
+
+			if (!oldstyle)
+			{
+				// Draw the background compass directions
+				DrawToHUD.DrawShapeTexture(cmpsrose, (compassX, compassY), 1.0, e.ViewAngle - 90); // Use player angle, offset so that 90 degrees on the map is shown as north
+			}
+			else
+			{
+				// Find compass point textures
+				TextureID north = TexMan.CheckForTexture("NORTH", TexMan.Type_Any);
+				TextureID east = TexMan.CheckForTexture("EAST", TexMan.Type_Any);
+				TextureID south = TexMan.CheckForTexture("SOUTH", TexMan.Type_Any);
+				TextureID west = TexMan.CheckForTexture("WEST", TexMan.Type_Any);
+
+				// Draw compass points
+
+				DrawToHUD.DrawTexture(west, (-sin(e.ViewAngle) * pointRadius + compassX, cos(e.ViewAngle) * pointRadius + compassY));
+				DrawToHUD.DrawTexture(east, (sin(e.ViewAngle) * pointRadius + compassX, -cos(e.ViewAngle) * pointRadius + compassY));
+				DrawToHUD.DrawTexture(south, (cos(e.ViewAngle) * pointRadius + compassX, sin(e.ViewAngle) * pointRadius + compassY));
+				DrawToHUD.DrawTexture(north, (-cos(e.ViewAngle) * pointRadius + compassX, -sin(e.ViewAngle) * pointRadius + compassY));
+			}
 
 			// Draw icons
 			for (int i = 0; i < ScannableThings.Size(); i++)
@@ -118,11 +116,14 @@ class CompassHandler : EventHandler
 					relativeLocation = relativeLocation.Unit() * pointRadius / distFactor;
 				}
 
-				double iconX = compassX + circleCenterX + relativeLocation.X * distFactor;
-				double iconY = compassY + circleCenterY + relativeLocation.Y * distFactor;
-				screen.DrawTexture(icon, false, iconX, iconY,
-					DTA_VirtualWidth, 1024, DTA_VirtualHeight, 768, DTA_Alpha, 0.2);
+				double iconX = compassX + relativeLocation.X * distFactor;
+				double iconY = compassY + relativeLocation.Y * distFactor;
+
+				DrawToHUD.DrawTexture(icon, (iconX, iconY), 0.8);
 			}
+
+			// Redraw the compass texture on top with a lower alpha so that the glass actually looks translucent
+			DrawToHUD.DrawTexture(cmpsbg, (compassX, compassY - 6.0), 0.5);
 		}
 	}
 }

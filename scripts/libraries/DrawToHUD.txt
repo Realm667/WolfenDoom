@@ -1,0 +1,65 @@
+/*
+
+	Helper function to translate HUD-style coordinates to screen-space coordinates so 
+	that you can use Screen drawing functions to draw elements that align with the HUD.
+
+	TranslatetoHUDCoordinates takes two parameters:
+	- Vector2 of the HUD x/y coordinates that you want to position something at
+	- Vector2 of the desired width/height of the image in HUD-scaled pixels
+
+	The function returns two Vector2 values:
+	- Vector2 of the x/y screen coordinates equivalent to the HUD coordinates passed in
+	- Vector2 of the screen-scaled width/height of the image
+
+
+	Also includes wrapper functions to draw textures and shape textures using the
+	coordinate translation function (both draw the texture centered at the coords).
+*/
+class DrawToHUD
+{
+	// Scale coordinates and size to screen space, using rules simliar to the hud sizing/scaling rules
+	static ui Vector2, Vector2 TranslatetoHUDCoordinates(Vector2 pos, Vector2 size)
+	{
+		// Get the scale being used by the HUD code
+		Vector2 hudscale = Statusbar.GetHudScale();
+
+		// Scale the texture and coordinates to match the HUD elements
+		Vector2 screenpos, screensize;
+
+		screenpos.x = pos.x * hudscale.x;
+		screenpos.y = pos.y * hudscale.y;
+
+		screensize.x = size.x * hudscale.x;
+		screensize.y = size.y * hudscale.y;
+
+		// Allow HUD coordinate-style positioning (not the decimal part, just that negatives mean offset from right/bottom)
+		if (pos.x < 0) { screenpos.x += Screen.GetWidth(); }
+		if (pos.y < 0) { screenpos.y += Screen.GetHeight(); }
+
+		return screenpos, screensize;
+	}
+
+	static ui void DrawTexture(TextureID tex, Vector2 pos, double alpha = 1.0)
+	{
+		// Scale the coordinates
+		Vector2 screenpos, screensize;
+		[screenpos, screensize] = TranslatetoHUDCoordinates(pos, TexMan.GetScaledSize(tex));
+
+		// Draw the texture
+		screen.DrawTexture(tex, false, screenpos.x, screenpos.y, DTA_DestWidth, int(screensize.x), DTA_DestHeight, int(screensize.y), DTA_Alpha, alpha, DTA_CenterOffset, true);
+	}
+
+	static ui void DrawShapeTexture(TextureID tex, Vector2 pos, double alpha = 1.0, double ang = 0)
+	{
+		// Scale the coordinates
+		Vector2 screenpos, screensize;
+		[screenpos, screensize] = TranslatetoHUDCoordinates(pos, TexMan.GetScaledSize(tex));
+
+		// Make 2D shape
+		let shape = ShapeUtil.MakeSquare();
+
+		// Draw rotated texture
+		ShapeUtil.MoveSquare(shape, screensize, screenpos, ang);
+		Screen.DrawShape(tex, false, shape, DTA_Alpha, alpha);
+	}
+}
