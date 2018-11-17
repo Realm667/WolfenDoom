@@ -576,7 +576,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 		if (playerToChase && Level.time % 5 == 0) { // Spawn a waypoint at the player's position every 5 tics if the player has moved and push it into an array
 			if (playerToChase.pos != oldPlayerPos) {
 				Actor mo = Spawn("PathMarker", (playerToChase.pos.x + Random[Offset](-int(playerToChase.Radius), int(playerToChase.Radius)), playerToChase.pos.y + Random[Offset](-int(playerToChase.Radius), int(playerToChase.Radius)), playerToChase.pos.z));
-				if (mo) { Markers.Push(mo); }
+				if (mo) { Markers.Push(PathMarker(mo)); }
 				oldPlayerPos = playerToChase.pos;
 			}
 		}

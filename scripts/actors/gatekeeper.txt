@@ -468,7 +468,7 @@ class GhostGate : GateKeeper
 			{
 				if (mo == self) { continue; }
 
-				if (mo.GetClassName() == GetClassName()) { peers.Push(mo); }
+				if (mo.GetClassName() == GetClassName()) { peers.Push(GhostGate(mo)); }
 			}
 		}
 		return null;
