@@ -4,6 +4,7 @@ class CompassHandler : EventHandler
 	Array<String> ThingIcons;
 	const compassX = 85.0;
 	const compassY = 105.0;
+	const compassIconSize = 12.0;
 	const pointRadius = 34.0;
 	const distFactor = 0.1;
 
@@ -119,7 +120,19 @@ class CompassHandler : EventHandler
 				double iconX = compassX + relativeLocation.X * distFactor;
 				double iconY = compassY + relativeLocation.Y * distFactor;
 
-				DrawToHUD.DrawTexture(icon, (iconX, iconY), 0.8);
+				// Get the image size and scale it down if necessary
+				Vector2 size = TexMan.GetScaledSize(icon);
+				double maxsize = max(size.x, size.y);
+				double scale = 1.0;
+
+				// Scale the image down to the max icon size set in constant above.  Smaller images will stay as they are
+				if (maxsize > compassIconSize) { scale = compassIconSize / maxsize; }
+
+				// Fade the icon the farther away the thing is
+				double alpha = clamp(2048 / p.mo.Distance3D(mo), 0.4, 0.95);
+
+				// Draw the icon
+				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale);
 			}
 
 			// Redraw the compass texture on top with a lower alpha so that the glass actually looks translucent

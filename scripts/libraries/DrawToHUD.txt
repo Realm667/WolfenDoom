@@ -18,7 +18,7 @@
 class DrawToHUD
 {
 	// Scale coordinates and size to screen space, using rules simliar to the hud sizing/scaling rules
-	static ui Vector2, Vector2 TranslatetoHUDCoordinates(Vector2 pos, Vector2 size)
+	static ui Vector2, Vector2 TranslatetoHUDCoordinates(Vector2 pos, Vector2 size = (0, 0))
 	{
 		// Get the scale being used by the HUD code
 		Vector2 hudscale = Statusbar.GetHudScale();
@@ -39,27 +39,45 @@ class DrawToHUD
 		return screenpos, screensize;
 	}
 
-	static ui void DrawTexture(TextureID tex, Vector2 pos, double alpha = 1.0)
+	static ui void DrawTexture(TextureID tex, Vector2 pos, double alpha = 1.0, double scale = 1.0, color shade = -1)
 	{
 		// Scale the coordinates
 		Vector2 screenpos, screensize;
-		[screenpos, screensize] = TranslatetoHUDCoordinates(pos, TexMan.GetScaledSize(tex));
+		[screenpos, screensize] = TranslatetoHUDCoordinates(pos, TexMan.GetScaledSize(tex) * scale);
+
+		bool alphachannel;
+		color fillcolor;
+
+		if (shade > 0)
+		{
+			alphachannel = true;
+			fillcolor = shade & 0xFFFFFF;
+		}
 
 		// Draw the texture
-		screen.DrawTexture(tex, false, screenpos.x, screenpos.y, DTA_DestWidth, int(screensize.x), DTA_DestHeight, int(screensize.y), DTA_Alpha, alpha, DTA_CenterOffset, true);
+		screen.DrawTexture(tex, false, screenpos.x, screenpos.y, DTA_DestWidth, int(screensize.x), DTA_DestHeight, int(screensize.y), DTA_Alpha, alpha, DTA_CenterOffset, true, DTA_AlphaChannel, alphachannel, DTA_FillColor, shade);
 	}
 
-	static ui void DrawShapeTexture(TextureID tex, Vector2 pos, double alpha = 1.0, double ang = 0)
+	static ui void DrawShapeTexture(TextureID tex, Vector2 pos, double alpha = 1.0, double ang = 0, double scale = 1.0, color shade = -1)
 	{
 		// Scale the coordinates
 		Vector2 screenpos, screensize;
-		[screenpos, screensize] = TranslatetoHUDCoordinates(pos, TexMan.GetScaledSize(tex));
+		[screenpos, screensize] = TranslatetoHUDCoordinates(pos, TexMan.GetScaledSize(tex) * scale);
+
+		bool alphachannel;
+		color fillcolor;
+
+		if (shade > 0)
+		{
+			alphachannel = true;
+			fillcolor = shade & 0xFFFFFF;
+		}
 
 		// Make 2D shape
 		let shape = ShapeUtil.MakeSquare();
 
 		// Draw rotated texture
 		ShapeUtil.MoveSquare(shape, screensize, screenpos, ang);
-		Screen.DrawShape(tex, false, shape, DTA_Alpha, alpha);
+		Screen.DrawShape(tex, false, shape, DTA_Alpha, alpha, DTA_AlphaChannel, alphachannel, DTA_FillColor, shade);
 	}
 }
