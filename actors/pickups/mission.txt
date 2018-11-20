@@ -15,7 +15,7 @@ ACTOR Akten : Inventory
 	States
 	{
 	Spawn:
-		AKTT B -1 ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		AKTT B -1 NoDelay ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 		Stop
 	}
 }
@@ -30,7 +30,7 @@ ACTOR AktenEisenmann : Akten
 	States
 	{
 	Spawn:
-		AKTE B -1 ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		AKTE B -1 NoDelay ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 		Stop
 	}
 }
@@ -45,7 +45,7 @@ ACTOR AktenV2 : Akten
 	States
 	{
 	Spawn:
-		AKT2 B -1 ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		AKT2 B -1 NoDelay ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 		Stop
 	}
 }
@@ -173,7 +173,7 @@ ACTOR SpearOfDestiny : Akten
 	States
 	{
 	Spawn:
-		SPEA B -1 ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		SPEA B -1 NoDelay ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 		Stop
 	}
 }

@@ -10,29 +10,48 @@ class CompassHandler : EventHandler
 
 	static clearscope String GetDefaultIcon(Actor thing)
 	{
+		if (!thing) { return ""; }
+
 		String txName;
-		if (thing is "ObjectiveIcon")
+
+		if (thing is "ObjectiveIcon" || thing is "ExclamationCompass")
 		{
-			txName = "GOAL3";
+			txName = "GOAL3"; // Orange exclamation point
 		}
-		else
+		else if (thing is "Akten" || thing is "Exclamation") // All of the folders/clues/Spear inherit from Akten
 		{
-			txName = "GOAL1";
+			// These all used to use GOAL1 (Grey dot)
+
+			// Try to use the inventory icon
+			let inv = Inventory(thing);
+			if (inv) { txName = TexMan.GetName(inv.icon); }
+
+			// Otherwise fall back to using the spawn sprite
+			if (txName == "")
+			{
+				TextureID icon = thing.CurState.GetSpriteTexture(0);
+				txName = TexMan.GetName(icon);
+			}
+
+			// Fall back to the old dot icon if it's invisible
+			if (txName == "TNT1A0") { txName = "GOAL1"; }
 		}
-		if (thing.GetRenderStyle() != STYLE_None)
+		else if (thing.GetRenderStyle() != STYLE_None)
 		{
-			txName = "GOAL2";
+			txName = "GOAL2"; // Red exclamation point
 		}
+
 		return txName;
 	}
 
 	void Add(Actor thing, String iconName = "")
 	{
+		if (!thing) { return; }
+
 		ScannableThings.Push(thing);
-		if (iconName == "")
-		{
-			iconName = CompassHandler.GetDefaultIcon(thing);
-		}
+
+		if (iconName == "BoA_CompassAddIcon") { iconName = ""; } // Necessary because if the parameter is omitted completely in ACS, the ACS script name gets passed for some reason...
+		if (iconName == "") { iconName = CompassHandler.GetDefaultIcon(thing); }
 		ThingIcons.Push(iconName);
 	}
 
@@ -66,29 +85,8 @@ class CompassHandler : EventHandler
 			// Draw the compass itself
 			DrawToHUD.DrawTexture(cmpsbg, (compassX, compassY - 6.0));
 
-			CVar compasstype = CVar.GetCVar("oldcompass");
-			bool oldstyle = compasstype ? compasstype.GetInt() : false;
-
-			if (!oldstyle)
-			{
-				// Draw the background compass directions
-				DrawToHUD.DrawShapeTexture(cmpsrose, (compassX, compassY), 1.0, e.ViewAngle - 90); // Use player angle, offset so that 90 degrees on the map is shown as north
-			}
-			else
-			{
-				// Find compass point textures
-				TextureID north = TexMan.CheckForTexture("NORTH", TexMan.Type_Any);
-				TextureID east = TexMan.CheckForTexture("EAST", TexMan.Type_Any);
-				TextureID south = TexMan.CheckForTexture("SOUTH", TexMan.Type_Any);
-				TextureID west = TexMan.CheckForTexture("WEST", TexMan.Type_Any);
-
-				// Draw compass points
-
-				DrawToHUD.DrawTexture(west, (-sin(e.ViewAngle) * pointRadius + compassX, cos(e.ViewAngle) * pointRadius + compassY));
-				DrawToHUD.DrawTexture(east, (sin(e.ViewAngle) * pointRadius + compassX, -cos(e.ViewAngle) * pointRadius + compassY));
-				DrawToHUD.DrawTexture(south, (cos(e.ViewAngle) * pointRadius + compassX, sin(e.ViewAngle) * pointRadius + compassY));
-				DrawToHUD.DrawTexture(north, (-cos(e.ViewAngle) * pointRadius + compassX, -sin(e.ViewAngle) * pointRadius + compassY));
-			}
+			// Draw the background compass directions
+			DrawToHUD.DrawShapeTexture(cmpsrose, (compassX, compassY), 1.0, e.ViewAngle - 90); // Use player angle, offset so that 90 degrees on the map is shown as north
 
 			// Draw icons
 			for (int i = 0; i < ScannableThings.Size(); i++)
@@ -130,6 +128,9 @@ class CompassHandler : EventHandler
 
 				// Fade the icon the farther away the thing is
 				double alpha = clamp(2048 / p.mo.Distance3D(mo), 0.4, 0.95);
+
+				// Dark outline/shadow effect behind the icon
+				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * 1.25, 0x111111);
 
 				// Draw the icon
 				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale);
