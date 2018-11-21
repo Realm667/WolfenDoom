@@ -150,4 +150,17 @@ class BoACompass : CustomInventory
 		CompassHandler compassEvent = CompassHandler(StaticEventHandler.Find("CompassHandler"));
 		compassEvent.Add(toAdd, iconName);
 	}
+
+	static void ForceActivate(Actor owner, bool activate)
+	{
+		if (owner && owner.player)
+		{
+			Inventory cmpsitem = owner.FindInventory("BoACompass");
+			if (cmpsitem)
+			{
+				BoACompass compass = BoACompass(cmpsitem);
+				compass.active = activate;
+			}
+		}
+	}
 }

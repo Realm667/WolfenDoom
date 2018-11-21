@@ -14,3 +14,9 @@ script "BoA_CompassAddIcon" (int icon)
 	// ACS_NamedExecuteAlways("BoA_CompassAddIcon", 0, <Icon name>);
 	ScriptCall("BoACompass", "Add", icon);
 }
+
+script "BoA_CompassActivate" (int active)
+{
+	// Forces the player's compass to activate
+	ScriptCall("BoACompass", "ForceActivate", active);
+}
