@@ -12,6 +12,8 @@ script "BoA_CompassAddIcon" (int icon)
 	// the activator with. Use it by setting the activator to the thing you want
 	// to add, and then calling:
 	// ACS_NamedExecuteAlways("BoA_CompassAddIcon", 0, <Icon name>);
+	if (!icon) { icon = ""; } // Enforce a blank string if the icon isn't passed in, because otherwise the first string in the string table gets passed in
+
 	ScriptCall("BoACompass", "Add", icon);
 }
 

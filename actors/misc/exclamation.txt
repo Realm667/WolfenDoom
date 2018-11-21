@@ -17,10 +17,14 @@ ACTOR Exclamation : SwitchableDecoration
 	States
 	{
 	Spawn:
-		EXCL A 0 //NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		EXCL A 0
 	Active:
-		EXCL A -1 BRIGHT
-		Loop
+		EXCL A 5 Bright
+		EXCL A 0 A_CheckSight("Active") // Loop if there's no player in sight
+		EXCL A 0 ACS_NamedExecuteAlways("BoA_CompassQueue",0) // If a player has seen us, add ourselves to the compass
+	OnCompass:
+		EXCL A -1 Bright
+		Stop
 	Inactive:
 		TNT1 A -1
 		Stop
@@ -41,7 +45,7 @@ ACTOR ExclamationCompass : Exclamation
 		TNT1 A 0 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 	Active:
 		TNT1 A -1 BRIGHT
-		Loop
+		Stop
 	Inactive:
 		TNT1 A -1
 		Stop
@@ -56,12 +60,16 @@ ACTOR ExclamationTouchable : Exclamation
 	States
 	{
 	Spawn:
-		EXCL A 0 //NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		EXCL A 0
 	Active:
-		EXCL A 1 BRIGHT
-		EXCL A 0 A_CheckRange(72.0, "Active") // Only loop if there's no player within 72 units
+		EXCL A 5 BRIGHT
+		EXCL A 0 A_CheckSight("Active") // Loop if there's no player in sight
+		EXCL A 0 ACS_NamedExecuteAlways("BoA_CompassQueue",0) // If a player has seen us, add ourselves to the compass
+	OnCompass:
+		EXCL A 5 Bright
+		EXCL A 0 A_CheckRange(72.0, "OnCompass") // Only loop if there's no player within 72 units
 	Inactive:
-		EXCL A 35 BRIGHT
+		EXCL A 35 BRIGHT // Otherwise change to grey
 		EXCL B -1 BRIGHT
 		Stop
 	}
@@ -120,7 +128,7 @@ ACTOR ObjectiveIcon : MapMarker
 	States
 	{
 		Spawn:
-			EXCL A -1 NoDelay ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+			EXCL D -1 NoDelay ACS_NamedExecuteAlways("BoA_CompassQueue", 0)
 			Stop
 	}
 }

@@ -44,7 +44,6 @@ class CompassHandler : EventHandler
 
 		this.ScannableThings.Push(thing);
 
-		if (iconName == "BoA_CompassAddIcon") { iconName = ""; } // Necessary because if the parameter is omitted completely in ACS, the ACS script name gets passed for some reason...
 		if (iconName == "") { iconName = CompassHandler.GetDefaultIcon(thing); }
 		this.ThingIcons.Push(iconName);
 	}
@@ -70,7 +69,7 @@ class CompassHandler : EventHandler
 
 		BoACompass cmps = BoACompass(p.mo.FindInventory("BoACompass"));
 
-		if (cmps && cmps.active && screenblocks < 12 && !p.mo.FindInventory("CutsceneEnabled") && !p.morphtics) // Hide the compass when HUD is hidden, when cutscenes are active, or when morphed
+		if (cmps && cmps.active && screenblocks < 12 && !p.mo.FindInventory("CutsceneEnabled")) // Hide the compass when HUD is hidden and when cutscenes are active
 		{
 			// Find compass and background textures
 			TextureID cmpsbg = TexMan.CheckForTexture("COMPASS", TexMan.Type_Any);
@@ -114,6 +113,9 @@ class CompassHandler : EventHandler
 
 				double iconX = compassX + relativeLocation.X * distFactor;
 				double iconY = compassY + relativeLocation.Y * distFactor;
+
+				// Handle objects that need to know if the sprite changed
+				if (mo is "Exclamation") { icon = mo.CurState.GetSpriteTexture(0); }
 
 				// Get the image size and scale it down if necessary
 				Vector2 size = TexMan.GetScaledSize(icon);
