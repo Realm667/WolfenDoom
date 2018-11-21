@@ -1,0 +1,33 @@
+class CompassItem : Inventory
+{
+	Default
+	{
+		//$Category Pickups (Wolf3D)
+		//$Color 13
+		+INVENTORY.ALWAYSPICKUP
+		+INVENTORY.INVBAR
+		+INVENTORY.UNDROPPABLE
+		Inventory.MaxAmount 1;
+		Inventory.PickupSound "pickup/papers"; // Default to sounding like paper pickup
+		Scale 0.5;
+	}
+
+	override void PostBeginPlay()
+	{
+		String iconName = "";
+
+		// Try to use the inventory icon as the compass icon
+		iconName = TexMan.GetName(icon);
+
+		// Otherwise fall back to using the spawn sprite
+		if (iconName == "")
+		{
+			TextureID iconTex = CurState.GetSpriteTexture(0);
+			iconName = TexMan.GetName(iconTex);
+		}
+
+		CompassHandler.Add(self, iconName);
+
+		Super.PostBeginPlay();
+	}
+}

@@ -8,35 +8,26 @@ class CompassHandler : EventHandler
 	const pointRadius = 34.0;
 	const distFactor = 0.1;
 
-	static clearscope String GetDefaultIcon(Actor thing)
+	static clearscope String GetDefaultIcon(Actor thing) // Icon handling for anything that doesn't have the icon set already (CompassItem actors handle their icons internally)
 	{
 		if (!thing) { return ""; }
 
 		String txName;
 
-		if (thing is "ObjectiveIcon" || thing is "ExclamationCompass")
+		if (thing is "ObjectiveIcon" || thing is "ExclamationCompass") // The indicators that have been manually placed use GOAL3
 		{
 			txName = "GOAL3"; // Orange exclamation point
 		}
-		else if (thing is "Akten" || thing is "Exclamation") // All of the folders/clues/Spear inherit from Akten
+		else if (thing is "Exclamation" || thing is "ScientistUniform") // These are the only quest items that are SwitchableDecorations, so have to be handled specially
 		{
-			// These all used to use GOAL1 (Grey dot)
-
-			// Try to use the inventory icon
-			let inv = Inventory(thing);
-			if (inv) { txName = TexMan.GetName(inv.icon); }
-
-			// Otherwise fall back to using the spawn sprite
-			if (txName == "")
-			{
-				TextureID icon = thing.CurState.GetSpriteTexture(0);
-				txName = TexMan.GetName(icon);
-			}
+			// Use the spawn sprite as the icon
+			TextureID icon = thing.CurState.GetSpriteTexture(0);
+			txName = TexMan.GetName(icon);
 
 			// Fall back to the old dot icon if it's invisible
 			if (txName == "TNT1A0") { txName = "GOAL1"; }
 		}
-		else if (thing.GetRenderStyle() != STYLE_None)
+		else if (thing.GetRenderStyle() != STYLE_None) // Anything else that is set to show up (usually via ACS) will use GOAL2 if it's not invisible
 		{
 			txName = "GOAL2"; // Red exclamation point
 		}
@@ -44,15 +35,18 @@ class CompassHandler : EventHandler
 		return txName;
 	}
 
-	void Add(Actor thing, String iconName = "")
+	static void Add(Actor thing, String iconName = "")
 	{
-		if (!thing) { return; }
+		if (!thing) { return; } // If no thing was passed, silently fail
 
-		ScannableThings.Push(thing);
+		CompassHandler this = CompassHandler(Find("CompassHandler")); // Since this is static and can be called from external actors, we have to now find the active CompassHandler
+		if (!this) { return; } // If no CompassHandler was found (somehow), silently fail
+
+		this.ScannableThings.Push(thing);
 
 		if (iconName == "BoA_CompassAddIcon") { iconName = ""; } // Necessary because if the parameter is omitted completely in ACS, the ACS script name gets passed for some reason...
 		if (iconName == "") { iconName = CompassHandler.GetDefaultIcon(thing); }
-		ThingIcons.Push(iconName);
+		this.ThingIcons.Push(iconName);
 	}
 
 	override void WorldThingDestroyed(WorldEvent e)
@@ -76,17 +70,19 @@ class CompassHandler : EventHandler
 
 		BoACompass cmps = BoACompass(p.mo.FindInventory("BoACompass"));
 
-		if (cmps && cmps.active && screenblocks < 12)
+		if (cmps && cmps.active && screenblocks < 12 && !p.mo.FindInventory("CutsceneEnabled") && !p.morphtics) // Hide the compass when HUD is hidden, when cutscenes are active, or when morphed
 		{
 			// Find compass and background textures
 			TextureID cmpsbg = TexMan.CheckForTexture("COMPASS", TexMan.Type_Any);
 			TextureID cmpsrose = TexMan.CheckForTexture("COMP_BKG", TexMan.Type_Any);
 
+			double compassalpha = (1.0 - p.BlendA); // Fade the compass if there's a screen blend/fade in effect
+
 			// Draw the compass itself
-			DrawToHUD.DrawTexture(cmpsbg, (compassX, compassY - 6.0));
+			DrawToHUD.DrawTexture(cmpsbg, (compassX, compassY - 6.0), compassalpha);
 
 			// Draw the background compass directions
-			DrawToHUD.DrawShapeTexture(cmpsrose, (compassX, compassY), 1.0, e.ViewAngle - 90); // Use player angle, offset so that 90 degrees on the map is shown as north
+			DrawToHUD.DrawShapeTexture(cmpsrose, (compassX, compassY), compassalpha, e.ViewAngle - 90); // Use player angle, offset so that 90 degrees on the map is shown as north
 
 			// Draw icons
 			for (int i = 0; i < ScannableThings.Size(); i++)
@@ -94,6 +90,7 @@ class CompassHandler : EventHandler
 				Actor mo = ScannableThings[i];
 				if (!mo) continue;
 				if (mo is "Inventory" && Inventory(mo).Owner) continue;
+				if (mo is "ScientistUniform" && !mo.bSolid) continue;
 
 				TextureID icon = TexMan.CheckForTexture(ThingIcons[i], TexMan.Type_Any);
 				Vector2 relativeLocation = LevelLocals.Vec2Diff(e.ViewPos.xy, mo.pos.xy);
@@ -127,7 +124,7 @@ class CompassHandler : EventHandler
 				if (maxsize > compassIconSize) { scale = compassIconSize / maxsize; }
 
 				// Fade the icon the farther away the thing is
-				double alpha = clamp(2048 / p.mo.Distance3D(mo), 0.4, 0.95);
+				double alpha = compassalpha * clamp(2048 / p.mo.Distance3D(mo), 0.6, 1.0);
 
 				// Dark outline/shadow effect behind the icon
 				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * 1.25, 0x111111);
@@ -137,7 +134,7 @@ class CompassHandler : EventHandler
 			}
 
 			// Redraw the compass texture on top with a lower alpha so that the glass actually looks translucent
-			DrawToHUD.DrawTexture(cmpsbg, (compassX, compassY - 6.0), 0.5);
+			DrawToHUD.DrawTexture(cmpsbg, (compassX, compassY - 6.0), compassalpha / 2);
 		}
 	}
 }

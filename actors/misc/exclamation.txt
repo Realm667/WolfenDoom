@@ -120,7 +120,7 @@ ACTOR ObjectiveIcon : MapMarker
 	States
 	{
 		Spawn:
-			EXCL A -1
+			EXCL A -1 NoDelay ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 			Stop
 	}
 }
