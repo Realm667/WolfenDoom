@@ -21,6 +21,7 @@ ACTOR Exclamation : SwitchableDecoration
 	Active:
 		EXCL A 5 Bright
 		EXCL A 0 A_CheckSight("Active") // Loop if there's no player in sight
+		EXCL A 0 A_CheckRange(2048, "Active") // Loop if we're out of range of all players
 		EXCL A 0 ACS_NamedExecuteAlways("BoA_CompassQueue",0) // If a player has seen us, add ourselves to the compass
 	OnCompass:
 		EXCL A -1 Bright
@@ -39,12 +40,13 @@ ACTOR ExclamationCompass : Exclamation
 	//$Sprite EXCLA0
 	Radius 4
 	Height 8
+	+INVISIBLE
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		EXCL C 5 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue", 0)
 	Active:
-		TNT1 A -1 BRIGHT
+		EXCL C -1 BRIGHT
 		Stop
 	Inactive:
 		TNT1 A -1
@@ -64,6 +66,7 @@ ACTOR ExclamationTouchable : Exclamation
 	Active:
 		EXCL A 5 BRIGHT
 		EXCL A 0 A_CheckSight("Active") // Loop if there's no player in sight
+		EXCL A 0 A_CheckRange(2048, "Active") // Loop if we're out of range of all players
 		EXCL A 0 ACS_NamedExecuteAlways("BoA_CompassQueue",0) // If a player has seen us, add ourselves to the compass
 	OnCompass:
 		EXCL A 5 Bright

@@ -50,6 +50,9 @@ class ActorSpawner : SwitchableDecoration
 	// Distance from player inside of which the spawner will stop spawning (default 512)
 	int user_minspawndistance;
 
+	// Should these actors show up on the compass?
+	bool user_oncompass;
+
 	Default
 	{
 		//$Arg0 "Thing ID to spawn"
@@ -202,6 +205,10 @@ class ActorSpawner : SwitchableDecoration
 						}	
 
 						spawned.SetStateLabel("See");
+					}
+					if (user_oncompass)
+					{
+						CompassHandler.Add(spawned);
 					}
 				}
 			}
