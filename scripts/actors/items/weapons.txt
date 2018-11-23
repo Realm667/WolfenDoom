@@ -695,6 +695,7 @@ class TurretStand : Actor
 		if (user.player && abs(delta) > 135) // Player must be within +/-45 degrees of directly behind the gun
 		{
 			shooter = user;
+			shooter.DamageFactor = 0.25; // Player takes quarter damage while using the turret gun
 			if (gun)
 			{
 				gun.target = user;
@@ -870,6 +871,7 @@ class TurretStand : Actor
 		shooter.player.MaxPitch = 90;
 */
 		shooter.player.viewheight = PlayerPawn(shooter).viewheight;
+		shooter.DamageFactor = shooter.Default.DamageFactor;
 
 		Inventory twepInv = shooter.FindInventory("TurretWeapon");
 

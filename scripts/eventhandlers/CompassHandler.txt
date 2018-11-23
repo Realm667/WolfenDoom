@@ -14,22 +14,22 @@ class CompassHandler : EventHandler
 
 		String txName;
 
-		if (thing is "ObjectiveIcon" || thing is "ExclamationCompass") // The indicators that have been manually placed use GOAL3
-		{
-			txName = "GOAL3"; // Orange exclamation point
-		}
-		else if (thing is "Exclamation" || thing is "ScientistUniform") // These are the only quest items that are SwitchableDecorations, so have to be handled specially
+		// The objective indicators (ObjectiveIcon and ExclamationCompass) use a red exclamation mark
+		// The other activation markers use an orange exclamation mark
+		// Mission quest items use their inventory icon (or spawn sprite if no icon is set)
+		// Miscellaneous items use a grey dot
+		if (thing is "ObjectiveIcon" || thing is "Exclamation" || thing is "ScientistUniform")
 		{
 			// Use the spawn sprite as the icon
 			TextureID icon = thing.CurState.GetSpriteTexture(0);
 			txName = TexMan.GetName(icon);
 
-			// Fall back to the old dot icon if it's invisible
-			if (txName == "TNT1A0") { txName = "GOAL1"; }
+			// Fall back to the orange exclamation point if it's invisible (this is what the Exclamations generally use)
+			if (txName == "TNT1A0") { txName = "GOAL2"; }
 		}
-		else if (thing.GetRenderStyle() != STYLE_None) // Anything else that is set to show up (usually via ACS) will use GOAL2 if it's not invisible
+		else if (thing.GetRenderStyle() != STYLE_None) // Anything else that is set to show up (usually via ACS) will use GOAL1 if it's not invisible
 		{
-			txName = "GOAL2"; // Red exclamation point
+			txName = "GOAL1"; // Grey dot
 		}
 
 		return txName;
@@ -90,6 +90,7 @@ class CompassHandler : EventHandler
 				if (!mo) continue;
 				if (mo is "Inventory" && Inventory(mo).Owner) continue;
 				if (mo is "ScientistUniform" && !mo.bSolid) continue;
+				if (mo.health <= 0) continue;
 
 				TextureID icon = TexMan.CheckForTexture(ThingIcons[i], TexMan.Type_Any);
 				Vector2 relativeLocation = LevelLocals.Vec2Diff(e.ViewPos.xy, mo.pos.xy);
