@@ -4,9 +4,11 @@ class CompassHandler : EventHandler
 	Array<String> ThingIcons;
 	const compassX = 85.0;
 	const compassY = 105.0;
+	const compassRadius = 46.0;
 	const compassIconSize = 12.0;
-	const pointRadius = 34.0;
 	const distFactor = 0.1;
+
+	ui double drawflash;
 
 	static clearscope String GetDefaultIcon(Actor thing) // Icon handling for anything that doesn't have the icon set already (CompassItem actors handle their icons internally)
 	{
@@ -27,7 +29,7 @@ class CompassHandler : EventHandler
 			// Fall back to the orange exclamation point if it's invisible (this is what the Exclamations generally use)
 			if (txName == "TNT1A0") { txName = "GOAL2"; }
 		}
-		else if (thing.GetRenderStyle() != STYLE_None) // Anything else that is set to show up (usually via ACS) will use GOAL1 if it's not invisible
+		else if (thing.GetRenderStyle() != STYLE_None || thing is "TankBase") // Anything else that is set to show up (usually via ACS) will use GOAL1 if it's not invisible
 		{
 			txName = "GOAL1"; // Grey dot
 		}
@@ -39,7 +41,7 @@ class CompassHandler : EventHandler
 	{
 		if (!thing) { return; } // If no thing was passed, silently fail
 
-		CompassHandler this = CompassHandler(Find("CompassHandler")); // Since this is static and can be called from external actors, we have to now find the active CompassHandler
+		CompassHandler this = CompassHandler(Find("CompassHandler")); // Since this function is static and can be called from external actors, we have to now find the active CompassHandler
 		if (!this) { return; } // If no CompassHandler was found (somehow), silently fail
 
 		this.ScannableThings.Push(thing);
@@ -74,6 +76,7 @@ class CompassHandler : EventHandler
 			// Find compass and background textures
 			TextureID cmpsbg = TexMan.CheckForTexture("COMPASS", TexMan.Type_Any);
 			TextureID cmpsrose = TexMan.CheckForTexture("COMP_BKG", TexMan.Type_Any);
+			TextureID cmpsflash = TexMan.CheckForTexture("COMP_FLS", TexMan.Type_Any);
 
 			double compassalpha = (1.0 - p.BlendA); // Fade the compass if there's a screen blend/fade in effect
 
@@ -107,9 +110,17 @@ class CompassHandler : EventHandler
 
 				relativeLocation = Actor.RotateVector(relativeLocation, e.ViewAngle - 90);
 
+				double pointradius = compassRadius - compassIconSize;
+
 				if (relativeLocation.Length() * distFactor > pointRadius)
 				{
 					relativeLocation = relativeLocation.Unit() * pointRadius / distFactor;
+				}
+
+				if (!mo.bDormant && (mo is "ExclamationCompass" || mo is "ObjectiveIcon") && p.mo.Distance3D(mo) <= 256.0)
+				{
+					mo.bDormant = true;
+					drawflash = level.time;
 				}
 
 				double iconX = compassX + relativeLocation.X * distFactor;
@@ -126,14 +137,30 @@ class CompassHandler : EventHandler
 				// Scale the image down to the max icon size set in constant above.  Smaller images will stay as they are
 				if (maxsize > compassIconSize) { scale = compassIconSize / maxsize; }
 
+				// If it's an enemy, scale the icon slightly based on size (radius) of the actor
+				if (mo.bIsMonster) { scale *= clamp(mo.radius / 32, 0.1, 1.0); }
+
 				// Fade the icon the farther away the thing is
-				double alpha = compassalpha * clamp(2048 / p.mo.Distance3D(mo), 0.6, 1.0);
+				double alpha = compassalpha * clamp(2048 / p.mo.Distance3D(mo), 0.5, 0.95);
 
 				// Dark outline/shadow effect behind the icon
 				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * 1.25, 0x111111);
 
 				// Draw the icon
 				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale);
+			}
+
+			if (drawflash > 0)
+			{
+				double phase = (level.time - drawflash) / 35;
+				double flashalpha;
+
+				if (phase < 0.25) { flashalpha = phase / 0.25; } // Fade in
+				else if (phase < 0.5) { flashalpha = 1.0; } // Hold
+				else { flashalpha = 1.0 - (phase - 0.5); } // Fade out
+
+				// Draw the gold flash around the perimeter of the compass if you are close to the marker
+				DrawToHUD.DrawShapeTexture(cmpsflash, (compassX, compassY), compassalpha / 2 * flashalpha * 0.75, -105 + 360 * phase);
 			}
 
 			// Redraw the compass texture on top with a lower alpha so that the glass actually looks translucent

@@ -37,8 +37,8 @@ ACTOR ExclamationCompass : Exclamation
 	//$Category Misc (Wolf3D)
 	//$Title Objective Map Marker (Compass)
 	//$Color 1
-	//$Sprite EXCLA0
-	Radius 4
+	//$Sprite EXCLC0
+	Radius 20
 	Height 8
 	+INVISIBLE
 	States
@@ -64,16 +64,23 @@ ACTOR ExclamationTouchable : Exclamation
 	Spawn:
 		EXCL A 0
 	Active:
-		EXCL A 5 BRIGHT
+		EXCL A 5 Bright
 		EXCL A 0 A_CheckSight("Active") // Loop if there's no player in sight
 		EXCL A 0 A_CheckRange(2048, "Active") // Loop if we're out of range of all players
 		EXCL A 0 ACS_NamedExecuteAlways("BoA_CompassQueue",0) // If a player has seen us, add ourselves to the compass
 	OnCompass:
-		EXCL A 5 Bright
-		EXCL A 0 A_CheckRange(72.0, "OnCompass") // Only loop if there's no player within 72 units
+		EXCL # 5 Bright
+		EXCL # 0 A_CheckRange(72.0, "OnCompass") // Only loop if there's no player within 72 units
+		Goto OnCompassInactive
 	Inactive:
 		EXCL A 35 BRIGHT // Otherwise change to grey
-		EXCL B -1 BRIGHT
+	InactiveLoop:
+		EXCL B 5
+		EXCL B 0 A_CheckSight("InactiveLoop") // Loop if there's no player in sight
+		EXCL B 0 A_CheckRange(2048, "InactiveLoop") // Loop if we're out of range of all players
+		EXCL B 0 ACS_NamedExecuteAlways("BoA_CompassQueue",0) // If a player has seen us, add ourselves to the compass
+	OnCompassInactive:
+		EXCL B -1 Bright
 		Stop
 	}
 }
@@ -131,7 +138,7 @@ ACTOR ObjectiveIcon : MapMarker
 	States
 	{
 		Spawn:
-			EXCL D -1 NoDelay ACS_NamedExecuteAlways("BoA_CompassQueue", 0)
+			EXCL C -1 NoDelay ACS_NamedExecuteAlways("BoA_CompassQueue", 0)
 			Stop
 	}
 }
