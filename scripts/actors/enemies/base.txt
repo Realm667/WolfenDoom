@@ -214,6 +214,7 @@ class Base : Actor
 	int user_count4;		//attacks counters
 	int user_offset;		//elite counter
 	int user_saw;			//smokemonster counter
+	bool user_oncompass;
 
 	Property AlwaysDrawHealthBar:user_DrawHealthBar;
 	Property BossIcon:BossIcon;
@@ -224,6 +225,7 @@ class Base : Actor
 	Property NoMedicHeal:noheal;
 	Property Shadow:shadow;
 	Property Swimmer:swimmer;
+	Property OnCompass:user_oncompass;
 
 	Default
 	{
@@ -748,6 +750,8 @@ class Base : Actor
 		// Initialize dodge timout delay
 		DodgeState = FindState("Dodge");
 		dodgetimeout = Random(175, 350);
+
+		if (user_oncompass) { CompassHandler.Add(self, "GOAL1"); }
 	}
 
 	override bool CanCollideWith(Actor other, bool passive)
