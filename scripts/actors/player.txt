@@ -696,6 +696,10 @@ class BoAPlayer : PlayerPawn
 						interactiontimeout = 350; // Set use delay of 10 seconds before re-use
 					}
 				}
+				else if (texname == "VENT_M01") // If it's a breakable vent...
+				{
+					AimLine.Activate(self, trace.LineSide, SPAC_Impact); // Pretend it was shot
+				}
 				// This can be expanded to include custom interaction sounds for any texture present in 
 				// the game (e.g., Ion Maiden-style 'locked door' rattles).  This does *not* override
 				// line specials that are present in the map...  If a texture with an action set here
@@ -710,6 +714,7 @@ class BoAPlayer : PlayerPawn
 					texname == "DOOR_G21" ||
 					texname == "DOOR_G30" ||
 					texname == "DOOR_M00" ||
+					texname == "DOOR_M02" ||
 					texname == "DOOR_M02D" ||
 					texname == "DOOR_SET1" ||
 					texname == "DOOR_SET2" ||
