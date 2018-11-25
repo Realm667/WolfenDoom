@@ -333,21 +333,6 @@ splash snow
 	NoAlert
 }
 
-splash hard
-{
-	smallclass		None
-	smallclip		0
-	smallsound		None
-	baseclass		None
-	chunkclass		None
-	chunkxvelshift	0
-	chunkyvelshift	0
-	chunkzvelshift	0
-	chunkbasezvel	0
-	sound			floor/hard
-	NoAlert
-}
-
 splash tile
 {
 	smallclass		None
@@ -390,21 +375,6 @@ splash wood
 	chunkzvelshift	0
 	chunkbasezvel	0
 	sound			floor/wood
-	NoAlert
-}
-
-splash electric
-{
-	smallclass		None
-	smallclip		0
-	smallsound		None
-	baseclass		None
-	chunkclass		None
-	chunkxvelshift	0
-	chunkyvelshift	0
-	chunkzvelshift	0
-	chunkbasezvel	0
-	sound			floor/elec1
 	NoAlert
 }
 
@@ -629,21 +599,11 @@ floor CRAT_W09 wood
 floor CRAT_W10 wood
 floor CRAT_W33 wood
 floor CRAT_WB4 wood
+floor DECO_CMP dirt //should cover all variants
 floor DIRT_B01 dirt
 floor DIRT_G01 dirt
 floor DIRT_G02 dirt
 floor DIRT_T01 dirt
-floor EGYP_A01 rock
-floor EGYP_A02 rock
-floor EGYP_A03 rock
-floor EGYP_A51 rock
-floor EGYP_G05 rock
-floor EGYP_G05 tile2
-floor EGYP_O00 tile2
-floor EGYP_O02 tile2
-floor EGYP_O05 tile2
-floor EGYP_O07 tile2
-floor EGYP_S10 rock
 floor FLOR_B01 metal
 floor FLOR_B02 gravel
 floor FLOR_B03 metal
@@ -824,8 +784,10 @@ floor PIPE_G05 metal
 floor PIPE_W01 metal
 floor PIPE_XL1 metal2
 floor POOL_G01 carpet
+floor ROCK_B00 rock
 floor ROCK_B01 rock
 floor ROCK_B02 rock
+floor ROCK_B03 rock
 floor ROCK_B10 rock
 floor ROCK_B21 rock
 floor ROCK_B22 rock
@@ -867,6 +829,7 @@ floor ROCK_G13 rock
 floor ROCK_G14 rock
 floor ROCK_G15 rock
 floor ROCK_G16 rock
+floor ROCK_G19 metal
 floor ROCK_G20 rock
 floor ROCK_G21 rock
 floor ROCK_G30 rock
@@ -1077,11 +1040,21 @@ floor AZTC_B12 rock
 floor AZTC_C01 rock
 floor AZTC_C02 rock
 floor AZTC_C04 rock
+floor AZTC_F00 rock
+floor AZTC_F01 tile
+floor AZTC_F02 tile
+floor AZTC_F03 rock
 floor AZTC_F04 tile
 floor AZTC_F05 tile
 floor AZTC_F06 rock
 floor AZTC_F07 rock
 floor AZTC_F08 rock
+floor AZTC_F09 rock
+floor AZTC_F10 rock
+floor AZTC_F11 rock
+floor AZTC_F12 rock
+floor AZTC_F13 rock
+floor AZTC_F14 rock
 floor AZTC_PR2 rock
 floor AZTC_PR3 rock
 floor AZTC_PR4 rock
@@ -1091,17 +1064,77 @@ floor AZTC_RC2 rock
 floor AZTC_RC3 rock
 floor AZTC_RC4 rock
 floor AZTC_RC5 rock
+floor AZTC_SKL gravel
 floor AZTC_T00 rock
 floor AZTC_T01 rock
 floor AZTC_T02 rock
+floor AZTC_T03 rock
 floor AZTC_TR1 rock
 floor AZTC_TR2 rock
 floor AZTC_TR3 rock
 floor AZTC_TR4 rock
+floor AZTC_VT1 metal
+floor AZTC_VT2 metal
+floor AZTC_W01 gravel
+floor AZTC_W02 gravel
 floor AZTC_W03 rock
 floor AZTC_W04 rock
+floor AZTC_W05 gravel
 
-//long texture names, because we need it
+//Egypt Textures
+floor EGYP_A01 rock
+floor EGYP_A02 rock
+floor EGYP_A03 rock
+floor EGYP_A51 rock
+floor EGYP_G02 tile2
+floor EGYP_G03 gravel
+floor EGYP_G04 gravel
+floor EGYP_G05 tile2
+floor EGYP_O00 tile2
+floor EGYP_O02 tile2
+floor EGYP_O05 tile2
+floor EGYP_O07 tile2
+floor EGYP_S10 rock
+
+//Norse Textures
+floor NORS_A02 rock
+floor NORS_A03 rock
+floor NORS_B09 rock
+floor NORS_B1 rock
+floor NORS_B10 rock
+floor NORS_C01 gravel
+floor NORS_D10 tile2
+floor NORS_D19 tile2
+floor NORS_G04 tile2
+floor NORS_G05 tile2
+floor NORS_M23 carpet
+floor NORS_M24 carpet
+floor NORS_M31 tile2
+floor NORS_M33 tile2
+floor NORS_P01 tile2
+floor NORS_PR3 gravel
+floor NORS_R01 rock
+floor NORS_S03 tile2
+floor NORS_S10 rock
+floor NORS_T01 carpet
+floor NORS_T05 tile2
+floor NORS_T11 tile2
+floor NORS_T12 tile2
+floor NORS_T14 tile2
+floor NORS_TR3 tile2
+floor NORS_TR4 tile2
+
+//Commander Keen Textures
+floor CK_DIRT1 ckeen
+floor CK_DIRT2 ckeen
+floor CK_DIRT3 ckeen
+floor CK_GRASS ckeen
+floor CK_SAND0 ckeen
+floor CK_SAND1 ckeen
+
+//////////////////
+//LONGNAMED ONES//
+//////////////////
 
 //Replacements
 floor textures/REPLACEMENTS/CEIL1_1.png wood
@@ -1176,7 +1209,6 @@ floor textures/CARP_T02.png carpet
 floor textures/CARP_T05.png carpet
 floor textures/CARP_T10.png carpet
 floor textures/CARP_T11.png carpet
-floor textures/REPLACEMENTS/CEIL5_1.png gravel
 floor textures/CNCR_G01.png tile2
 floor textures/CNCR_G02.png tile2
 floor textures/CNCR_G10.png tile2
@@ -1230,20 +1262,18 @@ floor textures/CRAT_W09.png wood
 floor textures/CRAT_W10.png wood
 floor textures/CRAT_W33.png wood
 floor textures/CRAT_WB4.png wood
+floor textures/DECO_CMP1.jpg carpet
+floor textures/DECO_CMP2.jpg carpet
+floor textures/DECO_CMP3.jpg carpet
+floor textures/DECO_CMP4.jpg carpet
+floor textures/DECO_CMP5.jpg carpet
+floor textures/DECO_CMP6.jpg carpet
+floor textures/DECO_CMP7.jpg carpet
+floor textures/DECO_CMP8.jpg carpet
 floor textures/DIRT_B01.jpg dirt
 floor textures/DIRT_G01.png dirt
 floor textures/DIRT_G02.png dirt
 floor textures/DIRT_T01.png dirt
-floor textures/EGYPT/EGYP_A01.png rock
-floor textures/EGYPT/EGYP_A02.png rock
-floor textures/EGYPT/EGYP_A03.png rock
-floor textures/EGYPT/EGYP_A51.png rock
-floor textures/EGYPT/EGYP_G05.png tile2
-floor textures/EGYPT/EGYP_O00.png tile2
-floor textures/EGYPT/EGYP_O02.png tile2
-floor textures/EGYPT/EGYP_O05.png tile2
-floor textures/EGYPT/EGYP_O07.png tile2
-floor textures/EGYPT/EGYP_S10.png rock
 floor textures/FLOR_B01.png metal
 floor textures/FLOR_B02.png gravel
 floor textures/FLOR_B03.png metal
@@ -1425,8 +1455,10 @@ floor textures/PIPE_G05.png metal
 floor textures/PIPE_W01.png metal
 floor textures/PIPE_XL1.jpg metal2
 floor textures/POOL_G01.png carpet
+floor textures/ROCK_B00.png rock
 floor textures/ROCK_B01.png rock
 floor textures/ROCK_B02.png rock
+floor textures/ROCK_B03.jpg rock
 floor textures/ROCK_B10.png rock
 floor textures/ROCK_B21.png rock
 floor textures/ROCK_B22.png rock
@@ -1468,6 +1500,7 @@ floor textures/ROCK_G13.png rock
 floor textures/ROCK_G14.png rock
 floor textures/ROCK_G15.png rock
 floor textures/ROCK_G16.png rock
+floor textures/ROCK_G19.png metal
 floor textures/ROCK_G20.png rock
 floor textures/ROCK_G21.png rock
 floor textures/ROCK_G30.png rock
@@ -1685,11 +1718,22 @@ floor textures/AZTEC/AZTC_B10.png rock
 floor textures/AZTEC/AZTC_B12.png rock
 floor textures/AZTEC/AZTC_C01.png rock
 floor textures/AZTEC/AZTC_C02.png rock
+floor textures/AZTEC/AZTC_C04.png rock
+floor textures/AZTEC/AZTC_F00.png rock
+floor textures/AZTEC/AZTC_F01.png tile
+floor textures/AZTEC/AZTC_F02.png tile
+floor textures/AZTEC/AZTC_F03.png rock
 floor textures/AZTEC/AZTC_F04.png tile
 floor textures/AZTEC/AZTC_F05.png tile
 floor textures/AZTEC/AZTC_F06.png rock
 floor textures/AZTEC/AZTC_F07.png rock
 floor textures/AZTEC/AZTC_F08.png rock
+floor textures/AZTEC/AZTC_F09.png rock
+floor textures/AZTEC/AZTC_F10.png rock
+floor textures/AZTEC/AZTC_F11.png rock
+floor textures/AZTEC/AZTC_F12.png rock
+floor textures/AZTEC/AZTC_F13.png rock
+floor textures/AZTEC/AZTC_F14.png rock
 floor textures/AZTEC/AZTC_PR2.png rock
 floor textures/AZTEC/AZTC_PR3.png rock
 floor textures/AZTEC/AZTC_PR4.png rock
@@ -1699,15 +1743,65 @@ floor textures/AZTEC/AZTC_RC2.png rock
 floor textures/AZTEC/AZTC_RC3.png rock
 floor textures/AZTEC/AZTC_RC4.png rock
 floor textures/AZTEC/AZTC_RC5.png rock
+floor textures/AZTEC/AZTC_SKL.png gravel
 floor textures/AZTEC/AZTC_T00.png rock
 floor textures/AZTEC/AZTC_T01.png rock
 floor textures/AZTEC/AZTC_T02.png rock
+floor textures/AZTEC/AZTC_T03.png rock
 floor textures/AZTEC/AZTC_TR1.png rock
 floor textures/AZTEC/AZTC_TR2.png rock
 floor textures/AZTEC/AZTC_TR3.png rock
 floor textures/AZTEC/AZTC_TR4.png rock
+floor textures/AZTEC/AZTC_VT1.png metal
+floor textures/AZTEC/AZTC_VT2.png metal
+floor textures/AZTEC/AZTC_W01.png gravel
+floor textures/AZTEC/AZTC_W02.png gravel
 floor textures/AZTEC/AZTC_W03.png rock
 floor textures/AZTEC/AZTC_W04.png rock
+floor textures/AZTEC/AZTC_W05.png gravel
+
+//Egypt Textures
+floor textures/EGYPT/EGYP_A01.png rock
+floor textures/EGYPT/EGYP_A02.png rock
+floor textures/EGYPT/EGYP_A03.png rock
+floor textures/EGYPT/EGYP_A51.png rock
+floor textures/EGYPT/EGYP_G02.png tile2
+floor textures/EGYPT/EGYP_G03.png gravel
+floor textures/EGYPT/EGYP_G04.png gravel
+floor textures/EGYPT/EGYP_G05.png tile2
+floor textures/EGYPT/EGYP_O00.png tile2
+floor textures/EGYPT/EGYP_O02.png tile2
+floor textures/EGYPT/EGYP_O05.png tile2
+floor textures/EGYPT/EGYP_O07.png tile2
+floor textures/EGYPT/EGYP_S10.png rock
+
+//Norse Textures
+floor textures/NORSE/NORS_A02.png rock
+floor textures/NORSE/NORS_A03.png rock
+floor textures/NORSE/NORS_B09.png rock
+floor textures/NORSE/NORS_B1.png rock
+floor textures/NORSE/NORS_B10.png rock
+floor textures/NORSE/NORS_C01.png gravel
+floor textures/NORSE/NORS_D10.png tile2
+floor textures/NORSE/NORS_D19.png tile2
+floor textures/NORSE/NORS_G04.png tile2
+floor textures/NORSE/NORS_G05.png tile2
+floor textures/NORSE/NORS_M23.png carpet
+floor textures/NORSE/NORS_M24.png carpet
+floor textures/NORSE/NORS_M31.png tile2
+floor textures/NORSE/NORS_M33.png tile2
+floor textures/NORSE/NORS_P01.png tile2
+floor textures/NORSE/NORS_PR3.png gravel
+floor textures/NORSE/NORS_R01.png rock
+floor textures/NORSE/NORS_S03.png tile2
+floor textures/NORSE/NORS_S10.png rock
+floor textures/NORSE/NORS_T01.png carpet
+floor textures/NORSE/NORS_T05.png tile2
+floor textures/NORSE/NORS_T11.png tile2
+floor textures/NORSE/NORS_T12.png tile2
+floor textures/NORSE/NORS_T14.png tile2
+floor textures/NORSE/NORS_TR3.png tile2
+floor textures/NORSE/NORS_TR4.png tile2
 
 //Commander Keen Textures
 floor textures/CKEEN/CK_DIRT1.png ckeen
