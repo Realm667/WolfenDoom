@@ -371,7 +371,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			bFrightened = True;
 		}
 
-		if (!nocatchup && Markers.Size() - index >= 100) { // If he's far, far behind, warp halfway along the trail *if* the destination spot and the actor aren't in sight of the player.
+		if (playertochase && !nocatchup && Markers.Size() - index >= 100) { // If he's far, far behind, warp halfway along the trail *if* the destination spot and the actor aren't in sight of the player.
 			if (Markers[index + 50]) {
 				if (!Markers[index + 50].IsVisible(playerToChase, True) && !IsVisible(playerToChase, True)) {
 					SetOrigin(Markers[index + 50].pos, true); // Warp to the halfway point
@@ -388,7 +388,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 
 		A_Chase(null, null); // Use default chase logic to go after our goal without trying to fire
 
-		if (currentGoal && Distance2d(currentGoal) <= max(radius + playerToChase.Radius, 48)) { // If within 48 units of goal, good enough - destroy that waypoint, get ready to iterate to the next
+		if (currentGoal && playerToChase && Distance2d(currentGoal) <= max(radius + playerToChase.Radius, 48)) { // If within 48 units of goal, good enough - destroy that waypoint, get ready to iterate to the next
 			Markers[index].Destroy();
 			Markers.Delete(index);
 			index++;
