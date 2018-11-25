@@ -4,16 +4,16 @@
 
 splash BoA_Water
 {
-	smallclass			BoA_WaterSplash
-	smallclip				0
-	smallsound			world/drip
-	baseclass				BoA_WaterSplash
-	chunkclass			BoA_WaterSplash_Chunk
+	smallclass		BoA_WaterSplash
+	smallclip		0
+	smallsound		world/drip
+	baseclass		BoA_WaterSplash
+	chunkclass		BoA_WaterSplash_Chunk
 	chunkxvelshift	9
 	chunkyvelshift	9
 	chunkzvelshift	7
-	chunkbasezvel		2
-	sound						world/watersplash
+	chunkbasezvel	2
+	sound			world/watersplash
 	noalert
 }
 
@@ -25,16 +25,16 @@ terrain BoA_Water
 
 splash BoA_Lava
 {
-	smallclass			BoA_LavaSplash
-	smallclip				0
-	smallsound			world/lavasizzle
-	baseclass				BoA_LavaSplash
-	chunkclass			BoA_LavaSplash_Chunk
+	smallclass		BoA_LavaSplash
+	smallclip		0
+	smallsound		world/lavasizzle
+	baseclass		BoA_LavaSplash
+	chunkclass		BoA_LavaSplash_Chunk
 	chunkxvelshift	-1
 	chunkyvelshift	-1
 	chunkzvelshift	7
-	chunkbasezvel		1
-	sound						world/lavasizzle
+	chunkbasezvel	1
+	sound			world/lavasizzle
 	noalert
 }
 
@@ -46,16 +46,16 @@ terrain BoA_Lava
 
 splash BoA_Slime
 {
-	smallclass			BoA_SlimeSplash
-	smallclip				0
-	smallsound			world/sludgegloop
-	baseclass				BoA_SlimeSplash
-	chunkclass			BoA_SlimeSplash_Chunk
+	smallclass		BoA_SlimeSplash
+	smallclip		0
+	smallsound		world/sludgegloop
+	baseclass		BoA_SlimeSplash
+	chunkclass		BoA_SlimeSplash_Chunk
 	chunkxvelshift	8
 	chunkyvelshift	8
 	chunkzvelshift	8
-	chunkbasezvel		1
-	sound						world/sludgegloop
+	chunkbasezvel	1
+	sound			world/sludgegloop
 	noalert
 }
 
@@ -67,16 +67,16 @@ terrain BoA_Slime
 
 splash BoA_Nukage
 {
-	smallclass			BoA_NukageSplash
-	smallclip				0
-	smallsound			world/drip
-	baseclass				BoA_NukageSplash
-	chunkclass			BoA_NukageSplash_Chunk
+	smallclass		BoA_NukageSplash
+	smallclip		0
+	smallsound		world/drip
+	baseclass		BoA_NukageSplash
+	chunkclass		BoA_NukageSplash_Chunk
 	chunkxvelshift	9
 	chunkyvelshift	9
 	chunkzvelshift	7
-	chunkbasezvel		2
-	sound						world/watersplash
+	chunkbasezvel	2
+	sound			world/watersplash
 	noalert
 }
 
@@ -88,16 +88,16 @@ terrain BoA_Nukage
 
 splash BoA_Sizzle
 {
-	smallclass			BoA_LavaSmoke
-	smallclip				0
-	smallsound			world/lavasizzle
-	baseclass				BoA_LavaSmoke
-	chunkclass			none
+	smallclass		BoA_LavaSmoke
+	smallclip		0
+	smallsound		world/lavasizzle
+	baseclass		BoA_LavaSmoke
+	chunkclass		none
 	chunkxvelshift	-1
 	chunkyvelshift	-1
 	chunkzvelshift	7
-	chunkbasezvel		1
-	sound						world/lavasizzle
+	chunkbasezvel	1
+	sound			world/lavasizzle
 	noalert
 }
 
@@ -113,13 +113,13 @@ terrain BoA_Sizzle
 //Water
 floor AZTC_WTF BoA_Water
 floor AZTC_WTR BoA_Water
-floor fwater1 BoA_Water
-floor fwater2 BoA_Water
-floor fwater3 BoA_Water
-floor fwater4 BoA_Water
-floor watr_a01 BoA_Water
-floor watr_x99 BoA_Water
+floor FWATER1 BoA_Water
+floor FWATER2 BoA_Water
+floor FWATER3 BoA_Water
+floor FWATER4 BoA_Water
 floor NUKA_A01 BoA_Water
+floor WATR_A01 BoA_Water
+floor WATR_X99 BoA_Water
 
 floor HIWATR01 BoA_Water
 floor HIWATR02 BoA_Water
@@ -192,21 +192,22 @@ floor HIACID33 BoA_Water
 floor HIACID34 BoA_Water
 
 //Lava
-floor lava1 BoA_Lava
-floor lava2 BoA_Lava
-floor lava3 BoA_Lava
-floor lava4 BoA_Lava
-floor lava_a01 BoA_Lava
-floor lava_a02 BoA_Lava
+floor LAVA1 BoA_Lava
+floor LAVA2 BoA_Lava
+floor LAVA3 BoA_Lava
+floor LAVA4 BoA_Lava
+floor LAVA_A01 BoA_Lava
+floor LAVA_A02 BoA_Lava
 
 //Nukage
 floor WATR_X98 BoA_Nukage
 
 //Slime
-floor sldg_a01 BoA_Slime
+floor SLDG_A01 BoA_Slime
 
 //Sizzling
-//floor ?????? BoA_Sizzle
+floor VOLCANO BoA_Sizzle
+floor WATR_G98 BoA_Sizzle
 
 ////////////////////////////////////
 // Blade of Agony Footstep Sounds //
@@ -216,7 +217,7 @@ splash carpet
 {
 	smallclass		None
 	smallclip		0
-	smallsound		njmt
+	smallsound		None
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -231,7 +232,7 @@ splash dirt
 {
 	smallclass		None
 	smallclip		0
-	smallsound		njmt
+	smallsound		None
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -246,7 +247,7 @@ splash gravel
 {
 	smallclass		None
 	smallclip		0
-	smallsound		njmt
+	smallsound		None
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -261,7 +262,7 @@ splash metal
 {
 	smallclass		None
 	smallclip		0
-	smallsound		njmt
+	smallsound		None
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -276,7 +277,7 @@ splash metal2
 {
 	smallclass		None
 	smallclip		0
-	smallsound		njmt
+	smallsound		None
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -291,7 +292,7 @@ splash rock
 {
 	smallclass		None
 	smallclip		0
-	smallsound		njmt
+	smallsound		None
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -306,7 +307,7 @@ splash slimy
 {
 	smallclass		None
 	smallclip		0
-	smallsound		njmt
+	smallsound		None
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -321,7 +322,7 @@ splash snow
 {
 	smallclass		None
 	smallclip		0
-	smallsound		njmt
+	smallsound		None
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -336,7 +337,7 @@ splash hard
 {
 	smallclass		None
 	smallclip		0
-	smallsound		njmt
+	smallsound		None
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -351,7 +352,7 @@ splash tile
 {
 	smallclass		None
 	smallclip		0
-	smallsound		njmt
+	smallsound		None
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -366,7 +367,7 @@ splash tile2
 {
 	smallclass		None
 	smallclip		0
-	smallsound		njmt
+	smallsound		None
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -381,7 +382,7 @@ splash wood
 {
 	smallclass		None
 	smallclip		0
-	smallsound		njmt
+	smallsound		None
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -396,7 +397,7 @@ splash electric
 {
 	smallclass		None
 	smallclip		0
-	smallsound		njmt
+	smallsound		None
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -411,7 +412,7 @@ splash ckeen
 {
 	smallclass		None
 	smallclip		0
-	smallsound		njmt
+	smallsound		None
 	baseclass		None
 	chunkclass		None
 	chunkxvelshift	0
@@ -476,7 +477,7 @@ terrain hard
 	footclip		0
 }
 
-terrain tile //Wodden tile
+terrain tile //Wooden tile
 {
 	splash			tile
 	footclip		0
@@ -516,10 +517,25 @@ floor REDWALL rock
 floor AFRK_T01 rock
 floor AFRK_T02 gravel
 floor AFRK_T03 gravel
-floor AZTC_C04 rock
 floor BARN_B01 dirt
+floor BATH_R00 tile2
+floor BATH_R01 tile2
+floor BATH_R02 tile2
+floor BATH_R03 tile2
+floor BATH_R04 carpet
+floor BATH_R05 carpet
 floor BATH_T01 tile2
 floor BATH_T02 tile2
+floor BATH_T99 tile2
+floor BATH_W01 tile2
+floor BATH_W02 tile2
+floor BATH_W03 tile2
+floor BATH_W04 tile2
+floor BATH_W05 tile2
+floor BATH_W06 tile2
+floor BATH_W07 tile2
+floor BATH_W08 tile2
+floor BATH_W09 tile2
 floor BATH_W09 tile2
 floor BATH_W99 tile2
 floor BED_G01 carpet
@@ -573,16 +589,46 @@ floor CNCR_G98 rock
 floor CNCR_W01 tile2
 floor CNCR_W02 tile2
 floor CNCR_W03 tile2
-floor COMP_C01 metal
-floor COMP_S01 metal
-floor COMP_S2B metal 
+floor COMP_B01 metal2
+floor COMP_B02 metal2
+floor COMP_B11 metal
+floor COMP_C01 metal2
+floor COMP_C02 metal2
+floor COMP_G10 metal2
+floor COMP_G11 metal2
+floor COMP_G20 metal2
+floor COMP_S01 metal2
+floor COMP_S02 metal2
+floor COMP_S1B metal2
+floor COMP_S1C metal2
+floor COMP_S1D metal2
+floor COMP_S2B metal2
+floor COMP_S2C metal2
+floor COMP_S2D metal2
+floor COMP_SPN metal
 floor COUCH_01 carpet
+floor CRAT_C01 metal2
+floor CRAT_C11 metal2
+floor CRAT_DYN metal
+floor CRAT_G01 metal2
+floor CRAT_G03 metal2
+floor CRAT_P03 carpet
+floor CRAT_RK wood
+floor CRAT_S10 metal2
+floor CRAT_S11 metal2
+floor CRAT_S12 metal2
 floor CRAT_W01 wood
 floor CRAT_W02 wood
 floor CRAT_W03 wood
 floor CRAT_W04 wood
 floor CRAT_W05 wood
+floor CRAT_W06 wood
+floor CRAT_W07 wood
+floor CRAT_W08 wood
+floor CRAT_W09 wood
+floor CRAT_W10 wood
 floor CRAT_W33 wood
+floor CRAT_WB4 wood
 floor DIRT_B01 dirt
 floor DIRT_G01 dirt
 floor DIRT_G02 dirt
@@ -598,7 +644,9 @@ floor EGYP_O02 tile2
 floor EGYP_O05 tile2
 floor EGYP_O07 tile2
 floor EGYP_S10 rock
+floor FLOR_B01 metal
 floor FLOR_B02 gravel
+floor FLOR_B03 metal
 floor FLOR_B04 metal
 floor FLOR_E01 rock
 floor FLOR_E02 rock
@@ -619,39 +667,57 @@ floor FLOR_E16 rock
 floor FLOR_E17 rock
 floor FLOR_G01 gravel
 floor FLOR_G02 gravel
-floor FLOR_G04 tile2
+floor FLOR_G04 metal2
 floor FLOR_G99 rock
-floor FLOR_R01 metal
+floor FLOR_R01 carpet
 floor FLOR_S01 tile2
 floor FLOR_T01 carpet
 floor FLOR_T02 tile2
+floor FLOR_W00 tile2
+floor FLOR_W01 tile2
+floor FLOR_W02 tile2
+floor GARB_B01 slimy
+floor GASS_R02 metal2
 floor GOLD_C00 gravel
+floor GOLD_C01 gravel
+floor GOLD_C02 gravel
+floor GOLD_C03 gravel
+floor GOLD_C04 gravel
 floor GRAS_B01 gravel
 floor GRAS_B10 gravel
 floor GRAS_B11 gravel
 floor GRAS_B12 gravel
 floor GRAS_B14 gravel
+floor GRAS_F00 gravel
 floor GRAS_F01 gravel
 floor GRAS_G01 gravel
 floor GRAS_G02 gravel
 floor GRAS_G03 gravel
 floor GRAS_G04 gravel
 floor GRAS_G09 gravel
+floor GRAS_G10 gravel
+floor GRAS_L00 gravel
 floor GRAS_L01 gravel
 floor GRAS_L02 gravel
 floor GRAS_L04 rock
+floor GRAS_R15 gravel
+floor GRAS_R16 gravel
 floor GRAS_T09 gravel
 floor GRAS_T10 gravel
 floor GRAS_T11 gravel
 floor GRAS_T13 gravel
-floor GRID_B00 metal
+floor GRAS_T20 gravel
+floor GRAS_T21 gravel
+floor GRID_B00 metal2
 floor GRID_B01 metal
 floor GRID_B01 metal
 floor GRID_B02 metal
 floor GRID_B03 metal
 floor GRID_B04 metal
-floor GRID_G01 metal
+floor GRID_G01 metal2
 floor GRID_G02 metal
+floor GRID_G03 metal2
+floor GRID_G04 metal
 floor MARB_B01 tile2
 floor MARB_B05 tile2
 floor MARB_B06 tile2
@@ -664,50 +730,99 @@ floor MARB_T01 tile2
 floor MARB_T02 tile2
 floor MARB_T04 tile2
 floor METL_B02 metal
+floor METL_B03 metal
+floor METL_B04 metal
+floor METL_B05 metal
+floor METL_B06 metal
 floor METL_B10 metal
+floor METL_B13 metal
+floor METL_B14 metal
+floor METL_B15 metal
 floor METL_B16 metal
 floor METL_B17 metal
 floor METL_B18 metal
 floor METL_B19 metal
+floor METL_B20 metal
+floor METL_B21 metal
+floor METL_B22 metal
 floor METL_B23 metal
-floor METL_B40 metal
-floor METL_F02 metal
-floor METL_F17 metal
+floor METL_B24 metal
+floor METL_B25 metal
+floor METL_B26 metal
+floor METL_B40 metal2
+floor METL_C60 metal2
+floor METL_D10 metal
+floor METL_F02 metal2
+floor METL_F17 metal2
 floor METL_F18 metal
+floor METL_F19 metal
+floor METL_G01 metal
+floor METL_G02 metal
+floor METL_G03 metal
+floor METL_G05 metal2
+floor METL_G06 metal2
 floor METL_G07 metal
 floor METL_G08 metal
-floor METL_G21 metal
-floor METL_G22 metal
-floor METL_G52 metal
-floor METL_G53 metal
+floor METL_G09 metal
+floor METL_G10 metal
+floor METL_G11 metal
+floor METL_G12 metal
+floor METL_G21 metal2 //both .png & .jpg files
+floor METL_G22 metal2
+floor METL_G31 gravel
+floor METL_G32 gravel
+floor METL_G33 gravel
+floor METL_G34 gravel
+floor METL_G52 metal2
+floor METL_G53 metal2
 floor METL_G54 metal
 floor METL_G55 metal
 floor METL_G70 metal
+floor METL_G71 metal
+floor METL_G80 metal2
+floor METL_G81 metal2
+floor METL_G82 metal2
+floor METL_G83 metal2
+floor METL_G84 metal2
+floor METL_G90 metal
+floor METL_G92 metal
+floor METL_GB2 metal
+floor METL_GB3 metal
 floor METL_H01 metal
+floor METL_H02 metal2
+floor METL_M01 metal2
+floor METL_M02 metal2
 floor METL_M03 metal
 floor METL_M04 metal
-floor METL_R01 metal
-floor METL_R02 metal
-floor METL_R03 metal
+floor METL_R01 metal2
+floor METL_R02 metal2
+floor METL_R03 metal2
+floor METL_T00 metal
 floor METL_T01 metal
+floor METL_T03 metal2
+floor METL_W01 metal2
 floor MIDG_B11 metal
 floor MIDG_B12 metal
 floor MIDG_C11 metal
 floor MIDG_C21 metal
-floor MIDG_GAT metal //should cover all variants
+floor MIDG_GAT metal2 //should cover all variants
 floor MIDG_W02 wood
+floor ORGN_K01 tile
+floor PIAN_W01 tile
+floor PIPE_B01 metal2
+floor PIPE_B02 metal2
 floor PIPE_B11 metal
 floor PIPE_B12 metal
-floor PIPE_BI1 metal
-floor PIPE_BI2 metal
-floor PIPE_BI3 metal
+floor PIPE_BI1 metal2
+floor PIPE_BI2 metal2
+floor PIPE_BI3 metal2
 floor PIPE_G01 metal
 floor PIPE_G02 metal
 floor PIPE_G03 metal
 floor PIPE_G04 metal
 floor PIPE_G05 metal
 floor PIPE_W01 metal
-floor PIPE_XL1 metal
+floor PIPE_XL1 metal2
 floor POOL_G01 carpet
 floor ROCK_B01 rock
 floor ROCK_B02 rock
@@ -737,6 +852,7 @@ floor ROCK_B78 rock
 floor ROCK_B79 rock
 floor ROCK_B80 rock
 floor ROCK_B99 rock
+floor ROCK_BX5 gravel
 floor ROCK_CLF rock
 floor ROCK_G01 rock
 floor ROCK_G02 rock
@@ -761,6 +877,7 @@ floor ROCK_T12 rock
 floor ROCK_T13 rock
 floor ROCK_T15 rock
 floor ROCK_T16 rock
+floor ROCK_T21 gravel
 floor ROCK_W10 rock
 floor ROCK_W11 rock
 floor ROCK_W12 rock
@@ -768,8 +885,8 @@ floor ROCK_W13 rock
 floor ROCK_W14 rock
 floor ROCK_W18 rock
 floor ROCK_Y01 rock
-floor ROOF_S01 metal
-floor ROOF_S02 metal
+floor ROOF_S01 metal2
+floor ROOF_S02 metal2
 floor ROOM_B10 rock
 floor ROOM_G06 tile
 floor ROOM_T42 carpet
@@ -851,7 +968,7 @@ floor TRIM_B12 metal
 floor TRIM_B21 gravel
 floor TRIM_B22 gravel
 floor TRIM_B23 gravel
-floor TRIM_B24 metal
+floor TRIM_B24 metal2
 floor TRIM_C01 gravel
 floor TRIM_M01 metal
 floor TRIM_M02 metal
@@ -872,10 +989,11 @@ floor TRNH_W02 wood
 floor VENT_B01 metal
 floor VENT_F01 metal
 floor VENT_G01 metal
-floor VENT_M01 metal
-floor VENT_M02 metal
-floor VENT_M03 metal
-floor VENT_M04 metal
+floor VENT_M00 metal2
+floor VENT_M01 metal2
+floor VENT_M02 metal2
+floor VENT_M03 metal2
+floor VENT_M04 metal2
 floor WARN_R01 gravel
 floor WARN_Y01 metal
 floor WOOD_B01 wood
@@ -897,93 +1015,91 @@ floor WOOD_T03 wood
 floor WOOD_T05 wood
 
 //Astrostein Textures
-floor AZTC_PR3 tile
-floor ROCK_BX5 gravel
-floor ROCK_T21 gravel
-floor astr_cr1 metal
-floor astr_cr2 metal
-floor astr_cr3 metal
-floor astr_cr4 metal
-floor astr_cr5 metal
-floor astr_f03 metal
-floor astr_f04 metal
-floor astr_f05 metal
-floor astr_f08 metal
-floor astr_f10 metal
-floor astr_f11 metal
-floor astr_f12 metal
-floor astr_f13 metal
-floor astr_f14 tile2
-floor astr_f15 tile2
-floor astr_f16 tile2
-floor astr_g00 metal
-floor astr_g01 metal
-floor astr_g32 metal
-floor astr_lc1 tile2
-floor astr_lc2 tile2
-floor astr_lc3 tile2
-floor astr_lc5 tile2
-floor astr_lc7 tile2
-floor astr_lg2 tile2
-floor astr_lr1 tile2
-floor astr_lr2 tile2
-floor astr_lr3 tile2
-floor astr_lr4 tile2
-floor astr_lw1 tile2
-floor astr_lw2 tile2
-floor astr_lw3 tile2
-floor astr_lw5 tile2
-floor astr_m10 metal
-floor astr_m11 metal
-floor astr_m15 metal
-floor astr_m19 metal
-floor astr_md3 metal
-floor astr_md4 metal
-floor astr_md5 metal
-floor astr_md6 metal
-floor astr_md8 metal
-floor astr_md9 metal
-floor astr_p01 metal
-floor astr_p02 metal
-floor astr_p03 metal
-floor astr_p04 metal
-floor astr_p08 metal
-floor astr_re1 metal
-floor astr_re2 metal
-floor astr_re3 metal
-floor astr_tk1 metal
-floor astr_tk2 metal
-floor astr_tk4 metal
+floor ASTR_CR1 metal
+floor ASTR_CR2 metal
+floor ASTR_CR3 metal
+floor ASTR_CR4 metal
+floor ASTR_CR5 metal
+floor ASTR_F03 metal
+floor ASTR_F04 metal
+floor ASTR_F05 metal
+floor ASTR_F08 metal
+floor ASTR_F10 metal
+floor ASTR_F11 metal
+floor ASTR_F12 metal
+floor ASTR_F13 metal
+floor ASTR_F14 tile2
+floor ASTR_F15 tile2
+floor ASTR_F16 tile2
+floor ASTR_G00 metal
+floor ASTR_G01 metal
+floor ASTR_G32 metal
+floor ASTR_LC1 tile2
+floor ASTR_LC2 tile2
+floor ASTR_LC3 tile2
+floor ASTR_LC5 tile2
+floor ASTR_LC7 tile2
+floor ASTR_LG2 tile2
+floor ASTR_LR1 tile2
+floor ASTR_LR2 tile2
+floor ASTR_LR3 tile2
+floor ASTR_LR4 tile2
+floor ASTR_LW1 tile2
+floor ASTR_LW2 tile2
+floor ASTR_LW3 tile2
+floor ASTR_LW5 tile2
+floor ASTR_M10 metal
+floor ASTR_M11 metal
+floor ASTR_M15 metal
+floor ASTR_M19 metal
+floor ASTR_MD3 metal
+floor ASTR_MD4 metal
+floor ASTR_MD5 metal
+floor ASTR_MD6 metal
+floor ASTR_MD8 metal
+floor ASTR_MD9 metal
+floor ASTR_P01 metal
+floor ASTR_P02 metal
+floor ASTR_P03 metal
+floor ASTR_P04 metal
+floor ASTR_P08 metal
+floor ASTR_RE1 metal
+floor ASTR_RE2 metal
+floor ASTR_RE3 metal
+floor ASTR_TK1 metal
+floor ASTR_TK2 metal
+floor ASTR_TK4 metal
 
-//Astrostein Aztec Textures
-floor aztc_b09 rock
-floor aztc_b10 rock
-floor aztc_b12 rock
-floor aztc_c01 rock
-floor aztc_c02 rock
-floor aztc_f04 tile
-floor aztc_f05 tile
-floor aztc_f06 rock
-floor aztc_f07 rock
-floor aztc_f08 rock
-floor aztc_pr2 rock
-floor aztc_pr3 rock
-floor aztc_pr4 rock
-floor aztc_prt rock
-floor aztc_rc1 rock
-floor aztc_rc2 rock
-floor aztc_rc3 rock
-floor aztc_rc4 rock
-floor aztc_rc5 rock
-floor aztc_t00 rock
-floor aztc_t01 rock
-floor aztc_t02 rock
-floor aztc_tr1 rock
-floor aztc_tr2 rock
-floor aztc_tr3 rock
-floor aztc_tr4 rock
-floor aztc_w03 rock
-floor aztc_w04 rock
+//Aztec Textures
+floor AZTC_B09 rock
+floor AZTC_B10 rock
+floor AZTC_B12 rock
+floor AZTC_C01 rock
+floor AZTC_C02 rock
+floor AZTC_C04 rock
+floor AZTC_F04 tile
+floor AZTC_F05 tile
+floor AZTC_F06 rock
+floor AZTC_F07 rock
+floor AZTC_F08 rock
+floor AZTC_PR2 rock
+floor AZTC_PR3 rock
+floor AZTC_PR4 rock
+floor AZTC_PRT rock
+floor AZTC_RC1 rock
+floor AZTC_RC2 rock
+floor AZTC_RC3 rock
+floor AZTC_RC4 rock
+floor AZTC_RC5 rock
+floor AZTC_T00 rock
+floor AZTC_T01 rock
+floor AZTC_T02 rock
+floor AZTC_TR1 rock
+floor AZTC_TR2 rock
+floor AZTC_TR3 rock
+floor AZTC_TR4 rock
+floor AZTC_W03 rock
+floor AZTC_W04 rock
 
 //long texture names, because we need it
 
@@ -1003,8 +1119,23 @@ floor textures/AFRK_T03.jpg gravel
 floor textures/AZTEC/AZTC_C04.png rock
 floor textures/AZTEC/AZTC_PR3.png tile
 floor textures/BARN_B01.png dirt
+floor textures/BATH_R00.png tile2
+floor textures/BATH_R01.png tile2
+floor textures/BATH_R02.png tile2
+floor textures/BATH_R03.png tile2
+floor textures/BATH_R04.png carpet
+floor textures/BATH_R05.png carpet
 floor textures/BATH_T01.png tile2
 floor textures/BATH_T02.png tile2
+floor textures/BATH_T99.png tile2
+floor textures/BATH_W01.png tile2
+floor textures/BATH_W02.png tile2
+floor textures/BATH_W03.png tile2
+floor textures/BATH_W04.png tile2
+floor textures/BATH_W05.png tile2
+floor textures/BATH_W06.png tile2
+floor textures/BATH_W07.png tile2
+floor textures/BATH_W08.png tile2
 floor textures/BATH_W09.png tile2
 floor textures/BATH_W99.png tile2
 floor textures/BED_G01.png carpet
@@ -1021,17 +1152,16 @@ floor textures/BRIK_G57.png tile2
 floor textures/BRIK_G58.png tile2
 floor textures/BRIK_G61.png tile2
 floor textures/BRIK_G81.png tile2
+floor textures/BRIK_G83.png gravel
 floor textures/BRIK_T02.png tile2
-floor textures/BRIK_T02.png tile2
+floor textures/BRIK_T05.png tile2
 floor textures/BUNK_G00.jpg rock
 floor textures/CABN_W10.png wood
 floor textures/CARP_B00.png carpet
 floor textures/CARP_B01.png carpet
-floor textures/CARP_B01.png carpet
 floor textures/CARP_B02.png carpet
 floor textures/CARP_B03.jpg carpet
 floor textures/CARP_B03.png carpet
-floor textures/CARP_G01.png carpet
 floor textures/CARP_G01.png carpet
 floor textures/CARP_P01.png carpet
 floor textures/CARP_R01.png carpet
@@ -1046,6 +1176,7 @@ floor textures/CARP_T02.png carpet
 floor textures/CARP_T05.png carpet
 floor textures/CARP_T10.png carpet
 floor textures/CARP_T11.png carpet
+floor textures/REPLACEMENTS/CEIL5_1.png gravel
 floor textures/CNCR_G01.png tile2
 floor textures/CNCR_G02.png tile2
 floor textures/CNCR_G10.png tile2
@@ -1059,16 +1190,46 @@ floor textures/CNCR_G98.png rock
 floor textures/CNCR_W01.jpg tile2
 floor textures/CNCR_W02.jpg tile2
 floor textures/CNCR_W03.jpg tile2
-floor textures/COMP_C01.png metal
-floor textures/COMP_S01.png metal
-floor textures/COMP_S2B.png metal
+floor textures/COMP_B01.png metal2
+floor textures/COMP_B02.png metal2
+floor textures/COMP_B11.png metal
+floor textures/COMP_C01.png metal2
+floor textures/COMP_C02.png metal2
+floor textures/COMP_G10.jpg metal2
+floor textures/COMP_G11.jpg metal2
+floor textures/COMP_G20.png metal2
+floor textures/COMP_S01.png metal2
+floor textures/COMP_S02.png metal2
+floor textures/COMP_S1B.png metal2
+floor textures/COMP_S1C.png metal2
+floor textures/COMP_S1D.png metal2
+floor textures/COMP_S2B.png metal2
+floor textures/COMP_S2C.png metal2
+floor textures/COMP_S2D.png metal2
+floor textures/COMP_SPN.png metal
 floor textures/COUCH_01.png carpet
+floor textures/CRAT_C01.png metal2
+floor textures/CRAT_C11.png metal2
+floor textures/CRAT_DYN.png metal
+floor textures/CRAT_G01.png metal2
+floor textures/CRAT_G03.png metal2
+floor textures/CRAT_P03.jpg carpet
+floor textures/CRAT_RK.png wood
+floor textures/CRAT_S10.png metal2
+floor textures/CRAT_S11.png metal2
+floor textures/CRAT_S12.png metal2
 floor textures/CRAT_W01.png wood
 floor textures/CRAT_W02.png wood
 floor textures/CRAT_W03.png wood
 floor textures/CRAT_W04.png wood
 floor textures/CRAT_W05.jpg wood
+floor textures/CRAT_W06.png wood
+floor textures/CRAT_W07.png wood
+floor textures/CRAT_W08.png wood
+floor textures/CRAT_W09.png wood
+floor textures/CRAT_W10.png wood
 floor textures/CRAT_W33.png wood
+floor textures/CRAT_WB4.png wood
 floor textures/DIRT_B01.jpg dirt
 floor textures/DIRT_G01.png dirt
 floor textures/DIRT_G02.png dirt
@@ -1077,14 +1238,15 @@ floor textures/EGYPT/EGYP_A01.png rock
 floor textures/EGYPT/EGYP_A02.png rock
 floor textures/EGYPT/EGYP_A03.png rock
 floor textures/EGYPT/EGYP_A51.png rock
-floor textures/EGYPT/EGYP_G05.png rock
 floor textures/EGYPT/EGYP_G05.png tile2
 floor textures/EGYPT/EGYP_O00.png tile2
 floor textures/EGYPT/EGYP_O02.png tile2
 floor textures/EGYPT/EGYP_O05.png tile2
 floor textures/EGYPT/EGYP_O07.png tile2
 floor textures/EGYPT/EGYP_S10.png rock
+floor textures/FLOR_B01.png metal
 floor textures/FLOR_B02.png gravel
+floor textures/FLOR_B03.png metal
 floor textures/FLOR_B04.png metal
 floor textures/FLOR_E01.png rock
 floor textures/FLOR_E02.png rock
@@ -1105,39 +1267,55 @@ floor textures/FLOR_E16.png rock
 floor textures/FLOR_E17.png rock
 floor textures/FLOR_G01.png gravel
 floor textures/FLOR_G02.png gravel
-floor textures/FLOR_G04.png tile2
+floor textures/FLOR_G04.png metal2
 floor textures/FLOR_G99.jpg rock
-floor textures/FLOR_R01.png metal
+floor textures/FLOR_R01.png carpet
 floor textures/FLOR_S01.png tile2
 floor textures/FLOR_T01.png carpet
 floor textures/FLOR_T02.png tile2
+floor textures/FLOR_W00.png tile2
+floor textures/FLOR_W01.png tile2
+floor textures/GARB_B01.jpg slimy
+floor textures/GASS_R02.png metal2
 floor textures/GOLD_C00.png gravel
+floor textures/GOLD_C01.png gravel
+floor textures/GOLD_C02.png gravel
+floor textures/GOLD_C03.png gravel
+floor textures/GOLD_C04.png gravel
 floor textures/GRAS_B01.png gravel
 floor textures/GRAS_B10.jpg gravel
 floor textures/GRAS_B11.jpg gravel
 floor textures/GRAS_B12.jpg gravel
 floor textures/GRAS_B14.jpg gravel
+floor textures/GRAS_F00.jpg gravel
 floor textures/GRAS_F01.jpg gravel
 floor textures/GRAS_G01.png gravel
 floor textures/GRAS_G02.png gravel
 floor textures/GRAS_G03.png gravel
 floor textures/GRAS_G04.png gravel
 floor textures/GRAS_G09.png gravel
+floor textures/GRAS_G10.jpg gravel
+floor textures/GRAS_L00.jpg gravel
 floor textures/GRAS_L01.jpg gravel
 floor textures/GRAS_L02.jpg gravel
 floor textures/GRAS_L04.jpg rock
+floor textures/GRAS_R15.jpg gravel
+floor textures/GRAS_R16.jpg gravel
 floor textures/GRAS_T09.jpg gravel
 floor textures/GRAS_T10.jpg gravel
 floor textures/GRAS_T11.jpg gravel
 floor textures/GRAS_T13.jpg gravel
-floor textures/GRID_B00.png metal
-floor textures/GRID_B01.png metal
+floor textures/GRAS_T20.jpg gravel
+floor textures/GRAS_T21.jpg gravel
+floor textures/GRID_B00.png metal2
 floor textures/GRID_B01.png metal
 floor textures/GRID_B02.png metal
 floor textures/GRID_B03.png metal
 floor textures/GRID_B04.png metal
-floor textures/GRID_G01.png metal
+floor textures/GRID_G01.png metal2
 floor textures/GRID_G02.png metal
+floor textures/GRID_G03.png metal2
+floor textures/GRID_G04.png metal
 floor textures/MARB_B01.png tile2
 floor textures/MARB_B05.png tile2
 floor textures/MARB_B06.png tile2
@@ -1150,50 +1328,102 @@ floor textures/MARB_T01.png tile2
 floor textures/MARB_T02.png tile2
 floor textures/MARB_T04.png tile2
 floor textures/METL_B02.png metal
+floor textures/METL_B03.png metal
+floor textures/METL_B04.png metal
+floor textures/METL_B05.png metal
+floor textures/METL_B06.png metal
 floor textures/METL_B10.png metal
+floor textures/METL_B13.png metal
+floor textures/METL_B14.png metal
+floor textures/METL_B15.png metal
 floor textures/METL_B16.png metal
 floor textures/METL_B17.png metal
 floor textures/METL_B18.png metal
 floor textures/METL_B19.png metal
+floor textures/METL_B20.png metal
+floor textures/METL_B21.png metal
+floor textures/METL_B22.png metal
 floor textures/METL_B23.png metal
-floor textures/METL_B40.png metal
-floor textures/METL_F02.png metal
-floor textures/METL_F17.png metal
+floor textures/METL_B24.png metal
+floor textures/METL_B25.png metal
+floor textures/METL_B26.png metal
+floor textures/METL_B40.png metal2
+floor textures/METL_C60.png metal2
+floor textures/METL_D10.png metal
+floor textures/METL_F02.png metal2
+floor textures/METL_F17.png metal2
 floor textures/METL_F18.png metal
+floor textures/METL_F19.png metal
+floor textures/METL_G01.png metal
+floor textures/METL_G02.png metal
+floor textures/METL_G03.png metal
+floor textures/METL_G05.png metal2
+floor textures/METL_G06.png metal2
 floor textures/METL_G07.png metal
 floor textures/METL_G08.png metal
-floor textures/METL_G21.jpg metal
-floor textures/METL_G21.png metal
-floor textures/METL_G22.jpg metal
-floor textures/METL_G52.png metal
-floor textures/METL_G53.png metal
+floor textures/METL_G09.png metal
+floor textures/METL_G10.png metal
+floor textures/METL_G11.png metal
+floor textures/METL_G12.png metal
+floor textures/METL_G21.jpg metal2
+floor textures/METL_G21.png metal2
+floor textures/METL_G22.jpg metal2
+floor textures/METL_G31.png gravel
+floor textures/METL_G32.png gravel
+floor textures/METL_G33.png gravel
+floor textures/METL_G34.png gravel
+floor textures/METL_G52.png metal2
+floor textures/METL_G53.png metal2
 floor textures/METL_G54.png metal
 floor textures/METL_G55.png metal
 floor textures/METL_G70.jpg metal
+floor textures/METL_G71.jpg metal
+floor textures/METL_G80.png metal2
+floor textures/METL_G81.png metal2
+floor textures/METL_G82.png metal2
+floor textures/METL_G83.png metal2
+floor textures/METL_G84.png metal2
+floor textures/METL_G90.jpg metal
+floor textures/METL_G92.jpg metal
+floor textures/METL_GB2.png metal
+floor textures/METL_GB3.png metal
 floor textures/METL_H01.png metal
+floor textures/METL_H02.png metal2
+floor textures/METL_M01.png metal2
+floor textures/METL_M02.png metal2
 floor textures/METL_M03.png metal
 floor textures/METL_M04.png metal
-floor textures/METL_R01.png metal
-floor textures/METL_R02.png metal
-floor textures/METL_R03.png metal
+floor textures/METL_R01.png metal2
+floor textures/METL_R02.png metal2
+floor textures/METL_R03.png metal2
+floor textures/METL_T00.png metal
 floor textures/METL_T01.png metal
+floor textures/METL_T03.png metal2
+floor textures/METL_W01.png metal2
 floor textures/MIDG_B11.png metal
 floor textures/MIDG_B12.png metal
 floor textures/MIDG_C11.png metal
-floor textures/MIDG_GAT1.png metal
+floor textures/MIDG_C21.png metal
+floor textures/MIDG_GAT1.png metal2
+floor textures/MIDG_GAT2.png metal2
+floor textures/MIDG_GAT3.png metal2
 floor textures/MIDG_W02.png wood
+floor textures/ORGN_K01.png tile
+floor textures/PIAN_W01.png tile
+floor textures/PIPE_B01.png metal2
+floor textures/PIPE_B02.png metal2
 floor textures/PIPE_B11.png metal
 floor textures/PIPE_B12.png metal
-floor textures/PIPE_BI1.jpg metal
-floor textures/PIPE_BI2.jpg metal
-floor textures/PIPE_BI3.jpg metal
+floor textures/PIPE_BI1.jpg metal2
+floor textures/PIPE_BI2.jpg metal2
+floor textures/PIPE_BI3.jpg metal2
 floor textures/PIPE_G01.png metal
 floor textures/PIPE_G02.png metal
 floor textures/PIPE_G03.png metal
 floor textures/PIPE_G04.png metal
 floor textures/PIPE_G05.png metal
 floor textures/PIPE_W01.png metal
-floor textures/PIPE_XL1.jpg metal
+floor textures/PIPE_XL1.jpg metal2
 floor textures/POOL_G01.png carpet
 floor textures/ROCK_B01.png rock
 floor textures/ROCK_B02.png rock
@@ -1222,6 +1452,7 @@ floor textures/ROCK_B77.png rock
 floor textures/ROCK_B78.png rock
 floor textures/ROCK_B79.png rock
 floor textures/ROCK_B80.png rock
+floor textures/ROCK_B99.png rock
 floor textures/ROCK_BX5.png gravel
 floor textures/ROCK_CLF.jpg rock
 floor textures/ROCK_G01.png rock
@@ -1255,8 +1486,8 @@ floor textures/ROCK_W13.png rock
 floor textures/ROCK_W14.png rock
 floor textures/ROCK_W18.png rock
 floor textures/ROCK_Y01.png rock
-floor textures/ROOF_S01.png metal
-floor textures/ROOF_S02.png metal
+floor textures/ROOF_S01.png metal2
+floor textures/ROOF_S02.png metal2
 floor textures/ROOM_B10.png rock
 floor textures/ROOM_G06.png tile
 floor textures/ROOM_T42.png carpet
@@ -1266,8 +1497,8 @@ floor textures/ROU03.png carpet
 floor textures/ROU04.png carpet
 floor textures/ROU05.png carpet
 floor textures/RRCK_T80.jpg rock
-floor textures/RRCK_T81.jpg gravel
 floor textures/RRCK_T81.jpg rock
+floor textures/RRCK_T82.jpg rock
 floor textures/SAND_BAG.png gravel
 floor textures/SAND_T02.png gravel
 floor textures/SAND_T20.png gravel
@@ -1291,9 +1522,11 @@ floor textures/TILE_B03.png tile2
 floor textures/TILE_B04.png tile
 floor textures/TILE_B06.png tile2
 floor textures/TILE_B07.png rock
+floor textures/TILE_B20.jpg tile
 floor textures/TILE_B40.png tile2
 floor textures/TILE_B50.png tile2
-floor textures/TILE_B98.jpg tile
+floor textures/TILE_B88.jpg tile2
+floor textures/TILE_B98.jpg tile2
 floor textures/TILE_E01.png tile2
 floor textures/TILE_G01.png tile2
 floor textures/TILE_G02.png tile2
@@ -1331,6 +1564,9 @@ floor textures/TILE_W02.png wood
 floor textures/TILE_W03.png tile2
 floor textures/TILE_W04.png tile2
 floor textures/TILE_W05.png tile2
+floor textures/TILE_W10.jpg tile2
+floor textures/TILE_W11.jpg tile2
+floor textures/TRIM_B01.png gravel
 floor textures/TRIM_B02.png gravel
 floor textures/TRIM_B10.png metal
 floor textures/TRIM_B11.png metal
@@ -1338,7 +1574,7 @@ floor textures/TRIM_B12.png metal
 floor textures/TRIM_B21.png gravel
 floor textures/TRIM_B22.png gravel
 floor textures/TRIM_B23.png gravel
-floor textures/TRIM_B24.png metal
+floor textures/TRIM_B24.png metal2
 floor textures/TRIM_C01.jpg gravel
 floor textures/TRIM_M01.png metal
 floor textures/TRIM_M02.png metal
@@ -1359,10 +1595,11 @@ floor textures/TRNH_W02.jpg wood
 floor textures/VENT_B01.png metal
 floor textures/VENT_F01.png metal
 floor textures/VENT_G01.png metal
-floor textures/VENT_M01.png metal
-floor textures/VENT_M02.png metal
-floor textures/VENT_M03.png metal
-floor textures/VENT_M04.png metal
+floor textures/VENT_M00.png metal2
+floor textures/VENT_M01.png metal2
+floor textures/VENT_M02.png metal2
+floor textures/VENT_M03.png metal2
+floor textures/VENT_M04.png metal2
 floor textures/WARN_R01.png gravel
 floor textures/WARN_Y01.png metal
 floor textures/WOOD_B01.png wood
@@ -1370,9 +1607,11 @@ floor textures/WOOD_B02.png wood
 floor textures/WOOD_B03.png wood
 floor textures/WOOD_B04.png wood
 floor textures/WOOD_B09.png wood
+floor textures/WOOD_B10.jpg wood
 floor textures/WOOD_B11.png wood
 floor textures/WOOD_B12.png wood
 floor textures/WOOD_B20.png wood
+floor textures/WOOD_B21.png wood
 floor textures/WOOD_B21.png wood
 floor textures/WOOD_B23.png wood
 floor textures/WOOD_B23H.png wood
@@ -1385,95 +1624,95 @@ floor textures/WOOD_T03.png wood
 floor textures/WOOD_T05.png wood
 
 //Astrostein Textures
-floor textures/astrostein/astr_cr1.png metal
-floor textures/astrostein/astr_cr2.png metal
-floor textures/astrostein/astr_cr3.png metal
-floor textures/astrostein/astr_cr4.png metal
-floor textures/astrostein/astr_cr5.png metal
-floor textures/astrostein/astr_f03.png metal
-floor textures/astrostein/astr_f04.png metal
-floor textures/astrostein/astr_f05.png metal
-floor textures/astrostein/astr_f08.png metal
-floor textures/astrostein/astr_f10.png metal
-floor textures/astrostein/astr_f11.png metal
-floor textures/astrostein/astr_f12.png metal
-floor textures/astrostein/astr_f13.png metal
-floor textures/astrostein/astr_f14.png tile2
-floor textures/astrostein/astr_f15.png tile2
-floor textures/astrostein/astr_f16.png tile2
-floor textures/astrostein/astr_g00.png metal
-floor textures/astrostein/astr_g01.png metal
-floor textures/astrostein/astr_g32.png metal
-floor textures/astrostein/astr_lc1.png tile2
-floor textures/astrostein/astr_lc2.png tile2
-floor textures/astrostein/astr_lc3.png tile2
-floor textures/astrostein/astr_lc5.png tile2
-floor textures/astrostein/astr_lc7.png tile2
-floor textures/astrostein/astr_lg2.png tile2
-floor textures/astrostein/astr_lr1.png tile2
-floor textures/astrostein/astr_lr2.png tile2
-floor textures/astrostein/astr_lr3.png tile2
-floor textures/astrostein/astr_lr4.png tile2
-floor textures/astrostein/astr_lw1.png tile2
-floor textures/astrostein/astr_lw2.png tile2
-floor textures/astrostein/astr_lw3.png tile2
-floor textures/astrostein/astr_lw5.png tile2
-floor textures/astrostein/astr_m10.png metal
-floor textures/astrostein/astr_m11.png metal
-floor textures/astrostein/astr_m15.png metal
-floor textures/astrostein/astr_m19.png metal
-floor textures/astrostein/astr_md3.png metal
-floor textures/astrostein/astr_md4.png metal
-floor textures/astrostein/astr_md5.png metal
-floor textures/astrostein/astr_md6.png metal
-floor textures/astrostein/astr_md8.png metal
-floor textures/astrostein/astr_md9.png metal
-floor textures/astrostein/astr_p01.png metal
-floor textures/astrostein/astr_p02.png metal
-floor textures/astrostein/astr_p03.png metal
-floor textures/astrostein/astr_p04.png metal
-floor textures/astrostein/astr_p08.png metal
-floor textures/astrostein/astr_re1.png metal
-floor textures/astrostein/astr_re2.png metal
-floor textures/astrostein/astr_re3.png metal
-floor textures/astrostein/astr_tk1.png metal
-floor textures/astrostein/astr_tk2.png metal
-floor textures/astrostein/astr_tk4.png metal
+floor textures/ASTROSTEIN/ASTR_CR1.png metal
+floor textures/ASTROSTEIN/ASTR_CR2.png metal
+floor textures/ASTROSTEIN/ASTR_CR3.png metal
+floor textures/ASTROSTEIN/ASTR_CR4.png metal
+floor textures/ASTROSTEIN/ASTR_CR5.png metal
+floor textures/ASTROSTEIN/ASTR_F03.png metal
+floor textures/ASTROSTEIN/ASTR_F04.png metal
+floor textures/ASTROSTEIN/ASTR_F05.png metal
+floor textures/ASTROSTEIN/ASTR_F08.png metal
+floor textures/ASTROSTEIN/ASTR_F10.png metal
+floor textures/ASTROSTEIN/ASTR_F11.png metal
+floor textures/ASTROSTEIN/ASTR_F12.png metal
+floor textures/ASTROSTEIN/ASTR_F13.png metal
+floor textures/ASTROSTEIN/ASTR_F14.png tile2
+floor textures/ASTROSTEIN/ASTR_F15.png tile2
+floor textures/ASTROSTEIN/ASTR_F16.png tile2
+floor textures/ASTROSTEIN/ASTR_G00.png metal
+floor textures/ASTROSTEIN/ASTR_G01.png metal
+floor textures/ASTROSTEIN/ASTR_G32.png metal
+floor textures/ASTROSTEIN/ASTR_LC1.png tile2
+floor textures/ASTROSTEIN/ASTR_LC2.png tile2
+floor textures/ASTROSTEIN/ASTR_LC3.png tile2
+floor textures/ASTROSTEIN/ASTR_LC5.png tile2
+floor textures/ASTROSTEIN/ASTR_LC7.png tile2
+floor textures/ASTROSTEIN/ASTR_LG2.png tile2
+floor textures/ASTROSTEIN/ASTR_LR1.png tile2
+floor textures/ASTROSTEIN/ASTR_LR2.png tile2
+floor textures/ASTROSTEIN/ASTR_LR3.png tile2
+floor textures/ASTROSTEIN/ASTR_LR4.png tile2
+floor textures/ASTROSTEIN/ASTR_LW1.png tile2
+floor textures/ASTROSTEIN/ASTR_LW2.png tile2
+floor textures/ASTROSTEIN/ASTR_LW3.png tile2
+floor textures/ASTROSTEIN/ASTR_LW5.png tile2
+floor textures/ASTROSTEIN/ASTR_M10.png metal
+floor textures/ASTROSTEIN/ASTR_M11.png metal
+floor textures/ASTROSTEIN/ASTR_M15.png metal
+floor textures/ASTROSTEIN/ASTR_M19.png metal
+floor textures/ASTROSTEIN/ASTR_MD3.png metal
+floor textures/ASTROSTEIN/ASTR_MD4.png metal
+floor textures/ASTROSTEIN/ASTR_MD5.png metal
+floor textures/ASTROSTEIN/ASTR_MD6.png metal
+floor textures/ASTROSTEIN/ASTR_MD8.png metal
+floor textures/ASTROSTEIN/ASTR_MD9.png metal
+floor textures/ASTROSTEIN/ASTR_P01.png metal
+floor textures/ASTROSTEIN/ASTR_P02.png metal
+floor textures/ASTROSTEIN/ASTR_P03.png metal
+floor textures/ASTROSTEIN/ASTR_P04.png metal
+floor textures/ASTROSTEIN/ASTR_P08.png metal
+floor textures/ASTROSTEIN/ASTR_RE1.png metal
+floor textures/ASTROSTEIN/ASTR_RE2.png metal
+floor textures/ASTROSTEIN/ASTR_RE3.png metal
+floor textures/ASTROSTEIN/ASTR_TK1.png metal
+floor textures/ASTROSTEIN/ASTR_TK2.png metal
+floor textures/ASTROSTEIN/ASTR_TK4.png metal
 
 //Astrostein Aztec Textures
-floor textures/aztec/aztc_b09.png rock
-floor textures/aztec/aztc_b10.png rock
-floor textures/aztec/aztc_b12.png rock
-floor textures/aztec/aztc_c01.png rock
-floor textures/aztec/aztc_c02.png rock
-floor textures/aztec/aztc_f04.png tile
-floor textures/aztec/aztc_f05.png tile
-floor textures/aztec/aztc_f06.png rock
-floor textures/aztec/aztc_f07.png rock
-floor textures/aztec/aztc_f08.png rock
-floor textures/aztec/aztc_pr2.png rock
-floor textures/aztec/aztc_pr3.png rock
-floor textures/aztec/aztc_pr4.png rock
-floor textures/aztec/aztc_prt.png rock
-floor textures/aztec/aztc_rc1.png rock
-floor textures/aztec/aztc_rc2.png rock
-floor textures/aztec/aztc_rc3.png rock
-floor textures/aztec/aztc_rc4.png rock
-floor textures/aztec/aztc_rc5.png rock
-floor textures/aztec/aztc_t00.png rock
-floor textures/aztec/aztc_t01.png rock
-floor textures/aztec/aztc_t02.png rock
-floor textures/aztec/aztc_tr1.png rock
-floor textures/aztec/aztc_tr2.png rock
-floor textures/aztec/aztc_tr3.png rock
-floor textures/aztec/aztc_tr4.png rock
-floor textures/aztec/aztc_w03.png rock
-floor textures/aztec/aztc_w04.png rock
+floor textures/AZTEC/AZTC_B09.png rock
+floor textures/AZTEC/AZTC_B10.png rock
+floor textures/AZTEC/AZTC_B12.png rock
+floor textures/AZTEC/AZTC_C01.png rock
+floor textures/AZTEC/AZTC_C02.png rock
+floor textures/AZTEC/AZTC_F04.png tile
+floor textures/AZTEC/AZTC_F05.png tile
+floor textures/AZTEC/AZTC_F06.png rock
+floor textures/AZTEC/AZTC_F07.png rock
+floor textures/AZTEC/AZTC_F08.png rock
+floor textures/AZTEC/AZTC_PR2.png rock
+floor textures/AZTEC/AZTC_PR3.png rock
+floor textures/AZTEC/AZTC_PR4.png rock
+floor textures/AZTEC/AZTC_PRT.png rock
+floor textures/AZTEC/AZTC_RC1.png rock
+floor textures/AZTEC/AZTC_RC2.png rock
+floor textures/AZTEC/AZTC_RC3.png rock
+floor textures/AZTEC/AZTC_RC4.png rock
+floor textures/AZTEC/AZTC_RC5.png rock
+floor textures/AZTEC/AZTC_T00.png rock
+floor textures/AZTEC/AZTC_T01.png rock
+floor textures/AZTEC/AZTC_T02.png rock
+floor textures/AZTEC/AZTC_TR1.png rock
+floor textures/AZTEC/AZTC_TR2.png rock
+floor textures/AZTEC/AZTC_TR3.png rock
+floor textures/AZTEC/AZTC_TR4.png rock
+floor textures/AZTEC/AZTC_W03.png rock
+floor textures/AZTEC/AZTC_W04.png rock
 
 //Commander Keen Textures
-floor textures/ckeen/ck_dirt1.png ckeen
-floor textures/ckeen/ck_dirt2.png ckeen
-floor textures/ckeen/ck_dirt3.png ckeen
-floor textures/ckeen/ck_grass0.png ckeen
-floor textures/ckeen/ck_sand0.png ckeen
-floor textures/ckeen/ck_sand1.png ckeen
+floor textures/CKEEN/CK_DIRT1.png ckeen
+floor textures/CKEEN/CK_DIRT2.png ckeen
+floor textures/CKEEN/CK_DIRT3.png ckeen
+floor textures/CKEEN/CK_GRASS0.png ckeen
+floor textures/CKEEN/CK_SAND0.png ckeen
+floor textures/CKEEN/CK_SAND1.png ckeen
