@@ -10,7 +10,7 @@ class CompassHandler : EventHandler
 
 	ui double drawflash;
 
-	static clearscope String GetDefaultIcon(Actor thing) // Icon handling for anything that doesn't have the icon set already (CompassItem actors handle their icons internally)
+	static clearscope String GetDefaultIcon(Actor thing, bool usesprite = false) // Icon handling for anything that doesn't have the icon set already (CompassItem actors handle their icons internally)
 	{
 		if (!thing) { return ""; }
 
@@ -20,14 +20,14 @@ class CompassHandler : EventHandler
 		// The other activation markers use an orange exclamation mark
 		// Mission quest items use their inventory icon (or spawn sprite if no icon is set)
 		// Miscellaneous items use a grey dot
-		if (thing is "ObjectiveIcon" || thing is "Exclamation" || thing is "ScientistUniform")
+		if (usesprite || thing is "ObjectiveIcon" || thing is "Exclamation" || thing is "ExclamationBase" || thing is "ScientistUniform")
 		{
 			// Use the spawn sprite as the icon
 			TextureID icon = thing.CurState.GetSpriteTexture(0);
 			txName = TexMan.GetName(icon);
 
 			// Fall back to the orange exclamation point if it's invisible (this is what the Exclamations generally use)
-			if (txName == "TNT1A0") { txName = "GOAL2"; }
+			if (txName == "TNT1A0" || txName == "MDLSA0") { txName = "GOAL2"; }
 		}
 		else if (thing.GetRenderStyle() != STYLE_None || thing is "TankBase") // Anything else that is set to show up (usually via ACS) will use GOAL1 if it's not invisible
 		{
@@ -37,17 +37,43 @@ class CompassHandler : EventHandler
 		return txName;
 	}
 
-	static void Add(Actor thing, String iconName = "")
+	static void Add(Actor thing, String iconName = "", bool usesprite = false)
 	{
 		if (!thing) { return; } // If no thing was passed, silently fail
 
 		CompassHandler this = CompassHandler(Find("CompassHandler")); // Since this function is static and can be called from external actors, we have to now find the active CompassHandler
 		if (!this) { return; } // If no CompassHandler was found (somehow), silently fail
 
-		this.ScannableThings.Push(thing);
+		if (iconName == "") { iconName = CompassHandler.GetDefaultIcon(thing, usesprite); }
 
-		if (iconName == "") { iconName = CompassHandler.GetDefaultIcon(thing); }
-		this.ThingIcons.Push(iconName);
+		int i = this.ScannableThings.Find(thing);
+		if (i < this.ScannableThings.Size()) // If it's already there, just update the icon
+		{
+			this.ThingIcons[i] = iconName;
+		}
+		else
+		{
+			this.ScannableThings.Push(thing);
+			this.ThingIcons.Push(iconName);
+		}
+	}
+
+	static void Remove(Actor thing)
+	{
+		if (!thing) { return; } // If no thing was passed, silently fail
+
+		CompassHandler this = CompassHandler(Find("CompassHandler")); // Since this function is static and can be called from external actors, we have to now find the active CompassHandler
+		if (!this) { return; } // If no CompassHandler was found (somehow), silently fail
+
+		int i = this.ScannableThings.Find(thing);
+
+		if (i < this.ScannableThings.Size())
+		{
+			this.ScannableThings.Delete(i, 1);
+			this.ThingIcons.Delete(i, 1);
+			this.ScannableThings.ShrinkToFit();
+			this.ThingIcons.ShrinkToFit();
+		}
 	}
 
 	override void WorldThingDestroyed(WorldEvent e)
@@ -90,10 +116,10 @@ class CompassHandler : EventHandler
 			for (int i = 0; i < ScannableThings.Size(); i++)
 			{
 				Actor mo = ScannableThings[i];
-				if (!mo) continue;
-				if (mo is "Inventory" && Inventory(mo).Owner) continue;
-				if (mo is "ScientistUniform" && !mo.bSolid) continue;
-				if (mo.health <= 0) continue;
+				if (!mo) { continue; }
+				if (mo is "Inventory" && Inventory(mo).Owner) { continue; }
+				if (mo is "ScientistUniform" && !mo.bSolid) { continue; }
+				if (mo.bDormant || mo.health <= 0) { if (am_cheat % 4 < 1) { continue; } }
 
 				TextureID icon = TexMan.CheckForTexture(ThingIcons[i], TexMan.Type_Any);
 				Vector2 relativeLocation = LevelLocals.Vec2Diff(e.ViewPos.xy, mo.pos.xy);
@@ -117,9 +143,9 @@ class CompassHandler : EventHandler
 					relativeLocation = relativeLocation.Unit() * pointRadius / distFactor;
 				}
 
-				if (!mo.bDormant && (mo is "ExclamationCompass" || mo is "ObjectiveIcon") && p.mo.Distance3D(mo) <= 256.0)
+				if (!mo.bBright && (mo is "ExclamationCompass" || mo is "ObjectiveIcon") && p.mo.Distance3D(mo) <= 256.0)
 				{
-					mo.bDormant = true;
+					mo.bBright = true;
 					drawflash = level.time;
 				}
 
@@ -138,13 +164,13 @@ class CompassHandler : EventHandler
 				if (maxsize > compassIconSize) { scale = compassIconSize / maxsize; }
 
 				// If it's an enemy, scale the icon slightly based on size (radius) of the actor
-				if (mo.bIsMonster) { scale *= clamp(mo.radius / 32, 0.1, 1.0); }
+				if (mo.bIsMonster) { scale *= mo.bBoss ? 1.0 : clamp(mo.radius / 32, 0.1, 1.0); }
 
 				// Fade the icon the farther away the thing is
-				double alpha = compassalpha * clamp(2048 / p.mo.Distance3D(mo), 0.5, 0.95);
+				double alpha = compassalpha * clamp(2048 / p.mo.Distance3D(mo), 0.25, 0.95);
 
 				// Dark outline/shadow effect behind the icon
-				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * 1.25, 0x111111);
+				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * 1.25, 0x050505);
 
 				// Draw the icon
 				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale);

@@ -459,3 +459,49 @@ class GrenadeBase : Actor // Base actor for anything we want Nazis to run away f
 		ChangeStatNum(Thinker.STAT_DEFAULT - 6); // Give these their own statnum for performance reasons with enemy grenade avoidance
 	}
 }
+
+// The bDormant true/false values for normal MapMarker actors are reversed in the current GZDoom version...
+// That makes no sense and breaks Thing_Activate calls...  So a workaround is included here.
+class BoAMapMarker : MapMarker
+{
+	override void PostBeginPlay()
+	{
+		CompassHandler.Add(self);
+
+		if (!(SpawnFlags & MTF_DORMANT)) { Activate(null); }
+		else { Deactivate(null); }
+	}
+
+	override void Activate (Actor activator)
+	{
+		bDormant = false; 
+	}
+
+	override void Deactivate (Actor activator)
+	{
+		bDormant = true;
+	}
+}
+
+class ExclamationBase : SwitchableDecoration
+{
+	String user_icon;
+
+	override void PostBeginPlay()
+	{
+		CompassHandler.Add(self, user_icon);
+
+		if (!(SpawnFlags & MTF_DORMANT)) { Activate(null); }
+		else { Deactivate(null); }
+	}
+
+	override void Activate (Actor activator)
+	{
+		bDormant = false; 
+	}
+
+	override void Deactivate (Actor activator)
+	{
+		bDormant = true;
+	}	
+}

@@ -32,7 +32,7 @@ ACTOR Exclamation : SwitchableDecoration
 	}
 }
 
-ACTOR ExclamationCompass : Exclamation
+ACTOR ExclamationCompass : ExclamationBase
 {
 	//$Category Misc (Wolf3D)
 	//$Title Objective Map Marker (Compass)
@@ -44,7 +44,7 @@ ACTOR ExclamationCompass : Exclamation
 	States
 	{
 	Spawn:
-		EXCL C 5 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue", 0)
+		EXCL C 5
 	Active:
 		EXCL C -1 BRIGHT
 		Stop
@@ -125,20 +125,15 @@ ACTOR InteractionIcon25Health : InteractionIcon
 	}
 }
 
-ACTOR ObjectiveIcon : MapMarker
+ACTOR ObjectiveIcon : BoAMapMarker
 {
 	//$Category Misc (Wolf3D)
-	//$Title Objective Map Marker (Automap)
+	//$Title Objective Map Marker (Automap & Compass)
 	//$Color 1
-	+NOBLOCKMAP
- 	+NOGRAVITY
-	+DONTSPLASH
-	+INVISIBLE
-	Scale 0.5
 	States
 	{
 		Spawn:
-			EXCL C -1 NoDelay ACS_NamedExecuteAlways("BoA_CompassQueue", 0)
+			EXCL C -1
 			Stop
 	}
 }
