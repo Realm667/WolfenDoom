@@ -58,6 +58,22 @@ ACTOR PrisonerFree : DirtyDarren
 	DreamDisappear:
 		FREE A 1 A_FadeOut(0.01)
 		Loop
+	// Used in C1M4 scripted scene
+	Stand:
+		FREE A -1
+		Stop
+	Draw:
+		"####" F 5
+		"####" G -1
+		Stop
+	Fire:
+		"####" H 5 LIGHT(NAZIFIRE) {
+			A_PlaySound("g43/fire");
+			A_SpawnProjectile("ThompsonTracer", 32, 0, Random(-8, 8));
+		}
+		"####" G 15
+		"####" F -1
+		Stop
 	}
 }
 
