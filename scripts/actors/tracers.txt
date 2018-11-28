@@ -1,5 +1,9 @@
 class BulletTracer : FastProjectile
 {
+	Class<TracerTrail> trail;
+
+	Property Trail:trail;
+
 	Default
 	{
 		+BLOODSPLATTER
@@ -11,6 +15,7 @@ class BulletTracer : FastProjectile
 		Height 2;
 		Speed 75;
 		Decal "BulletChip";
+		BulletTracer.Trail "TracerTrail";
 	}
 
 	States
@@ -43,7 +48,7 @@ class BulletTracer : FastProjectile
 		Super.PostBeginPlay();
 
 		// Spawn the visible tracer *once* at spawn
-		A_SpawnItemEx("TracerTrail", 0, 0, 0, vel.x, vel.y, vel.z, 0, SXF_ABSOLUTEVELOCITY); //mxd
+		A_SpawnItemEx(trail, 0, 0, 0, vel.x, vel.y, vel.z, 0, SXF_ABSOLUTEVELOCITY | SXF_SETMASTER); //mxd
 	}
 
 	// Handling so that tracers won't hit actors that have the tracer's origin actor set as their master (or inherit from one that does)
@@ -75,6 +80,10 @@ class Whizzer : Actor
 
 class TracerTrail : Actor
 {
+	double faderate;
+
+	Property FadeRate:faderate;
+
 	Default
 	{
 		+BRIGHT
@@ -89,12 +98,20 @@ class TracerTrail : Actor
 		Alpha 0.75;
 		Scale 0.4;
 		RenderStyle "Add";
+		TracerTrail.FadeRate 0.01;
 	}
 	States
 	{
 		Spawn:
-			PUFF A 1 A_FadeOut(0.01);
+			PUFF A 1 { if (faderate) { A_FadeOut(faderate); } }
 			Loop;
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (!master) { Destroy(); }
 	}
 }
 
