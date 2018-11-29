@@ -113,7 +113,7 @@ ACTOR OccultBlazeFlames2 : OccultBlazeFlames
 	}
 }
 
-ACTOR ClusterBomb
+ACTOR ClusterBomb : GrenadeBase
 {
 	Radius 4
 	Height 3
@@ -425,7 +425,7 @@ ACTOR EnemyFlamebolt2 : EnemyFlamebolt
 ACTOR HardEnemyFlamebolt2 : EnemyFlamebolt2 { +MTHRUSPECIES }
 
 //ATTACKS - MUTANTS
-ACTOR MutantFartCloud
+ACTOR MutantFartCloud : GrenadeBase
 {
 	Game Doom
 	Radius 2
@@ -512,7 +512,7 @@ ACTOR MutantRocket
 
 ACTOR HardMutantRocket : MutantRocket { +MTHRUSPECIES }
 
-ACTOR PoisonCloudMutant
+ACTOR PoisonCloudMutant : GrenadeBase
 {
 	Radius 20
 	Height 30
@@ -998,7 +998,7 @@ ACTOR UndeadFartCloud
 
 ACTOR UndeadSmoke : MutantSmoke { StencilColor "05 05 05" }
 
-ACTOR PoisonCloudUndead
+ACTOR PoisonCloudUndead : GrenadeBase
 {
 	Radius 20
 	Height 30

@@ -377,7 +377,7 @@ class Base : Actor
 
 	bool A_DoSideRoll(int dodgespeed = 10, bool checkonly = false)
 	{
-		if (bFriendly || dodgetimeout > 0 || target is "PatrolPoint") { return false; } // If we're still waiting after the last dodge, or are on a path, don't try to dodge right now
+		if (bFriendly || dodgetimeout > 0 || (target && target is "PatrolPoint")) { return false; } // If we're still waiting after the last dodge, or are on a path, don't try to dodge right now
 
 		double dodgeangle;
 		double dodgedistance;
@@ -392,7 +392,7 @@ class Base : Actor
 			dodgecounter++;
 
 			// Error message if you forgot to set up the Dodge state on the actor
-			if (!DodgeState) { console.printf("\cgNo Dodge sprite defined in actor " .. GetTag() .. "."); return false; }
+			if (developer && !DodgeState) { console.printf("\cgNo Dodge sprite defined in actor " .. GetTag() .. "."); return false; }
 
 			spriteID dodgesprite = DodgeState.sprite;
 			if (dodgesprite) { sprite = dodgesprite; }

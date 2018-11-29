@@ -259,14 +259,20 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 					return A_RefireReload("Shotgun.Refire", "Shotgun.Reload", 128, Random(1, 4), (target && target.bShootable || bFrightened) ? 1 : 8); // Quick reload if he's in trouble, otherwise wait to do all 8
 				}
 			Shotgun.Reload:
-				"####" F 0 { bNoPain = True; }
-				"####" F 15 {
+				"####" F 0 {
+					bNoPain = True;
+					bFrightened = True;
 					A_PlaySound("shotgun/load", CHAN_WEAPON);
 					reloadcount--;
 				}
-				"####" F 15 {
+				"####" BBBBBCCCCC 1 A_Chase(null, null); // Reload on the run!
+				"####" C 0 A_SpawnStep();
+				"####" DDDDDEEEEE 1 A_Chase(null, null);
+				"####" E 0 A_SpawnStep();
+				"####" F 0 {
 					if (reloadcount <= 0)
 					{
+						bFrightened = False;
 						A_PlaySound("shotgun/pump", CHAN_WEAPON);
 						bNoPain = False;
 						return ResolveState("Chase");
@@ -353,63 +359,139 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 	{
 		if (!playerToChase || playerToChase.health <= 0) { return ResolveState("Stand"); } // Make sure a player was targeted as who to chase - if he's dead target another player (multiplayer support)
 
-		if (nonmoving) { return ResolveState("Chase.Stand"); }
+		if (target && target is "GrenadeBase") // If you're running from a grenade
+		{
+			if (nonmoving && !currentGoal) // If you are standing and don't have an origin point set, spawn one
+			{
+				currentGoal = Spawn("PatrolPoint", pos);
+				currentGoal.args[0] = -1;
+				currentGoal.args[1] = 0x7FFFFFFF;
+				currentGoal.angle = angle;
+			}
 
-		if (waterlevel > 1 || climbing) { // Make him able to "swim" - No proper animation, but he can at least move up and down in (and get out of) deep water now
-			bFloat = True;
-			bNoGravity = True;
-			if (!climbing) { Speed = startSpeed / 2; }
-		} else {
-			bFloat = False;
-			bNoGravity = False;
-			Speed = startSpeed;
+			bFrightened = true;
+			target.bShootable = true; // Because A_Chase will try to find a new target if the target isn't shootable...
+			A_Chase(null, null); // Use default chase logic to run away
+			target.bShootable = target.Default.bShootable;
 		}
-
-		if (health > 50 && (!playerToChase || playerToChase.health && Distance3d(playerToChase) > 128.0) && enemycount < 3) { // Run away from danger, but not *too* far away
-			bFrightened = False;
-		} else {
-			bFrightened = True;
-		}
-
-		if (playertochase && !nocatchup && Markers.Size() - index >= 100) { // If he's far, far behind, warp halfway along the trail *if* the destination spot and the actor aren't in sight of the player.
-			if (Markers[index + 50]) {
-				if (!Markers[index + 50].IsVisible(playerToChase, True) && !IsVisible(playerToChase, True)) {
-					SetOrigin(Markers[index + 50].pos, true); // Warp to the halfway point
-					DestroyMarkers(index, index + 50); // Clean up the now unused markers and array entries
-					index += 50;
-					if (!weapon) { weapon = PWEAP_Luger; } //Pretend he picked up a pistol and some ammo somewhere, and he will act like a friendly Guard
+		else if (nonmoving) // If you're standing
+		{
+			if (currentGoal) // If you have a goal assigned, it's an origin point and you were previously running from a grenade
+			{
+				if (Distance3D(currentGoal) < Radius) // If you're at the goal, go back to standing
+				{
+					currentGoal.destroy();
+					return ResolveState("Chase.Stand");
 				}
+				else // Run back to the goal point
+				{
+					goal = currentGoal;
+					A_Chase();
+				} 
+			}
+			else
+			{
+				return ResolveState("Chase.Stand");
 			}
 		}
+		else // Normal behavior
+		{
+			if (waterlevel > 1 || climbing) // Make him able to "swim" - No proper animation, but he can at least move up and down in (and get out of) deep water now
+			{
+				bFloat = True;
+				bNoGravity = True;
+				if (!climbing) { Speed = startSpeed / 2; }
+			}
+			else
+			{
+				bFloat = False;
+				bNoGravity = False;
+				Speed = startSpeed;
+			}
 
-		if (index < Markers.Size()) { currentGoal = Markers[index]; } // If there's a marker spawned, set it as the goal
+			if (health > 50 && (!playerToChase || playerToChase.health && Distance3d(playerToChase) > 128.0) && enemycount < 3) // Run away from danger, but not *too* far away
+			{
+				bFrightened = False;
+			}
+			else
+			{
+				bFrightened = True;
+			}
 
-		goal = currentGoal;
+			if ( // If he's far, far behind, warp halfway along the trail *if* the destination spot and the actor aren't in sight of the player.
+				playertochase &&
+				!nocatchup &&
+				Markers.Size() - index >= 100 &&
+				Markers[index + 50] &&
+				!Markers[index + 50].IsVisible(playerToChase, True) &&
+				!IsVisible(playerToChase, True)
+			) 
+			{
+				SetOrigin(Markers[index + 50].pos, true); // Warp to the halfway point
+				DestroyMarkers(index, index + 50); // Clean up the now unused markers and array entries
+				index += 50;
+				if (!weapon) { weapon = PWEAP_Luger; } // Pretend he picked up a pistol and some ammo somewhere, and he will act like a friendly Guard
+			}
 
-		A_Chase(null, null); // Use default chase logic to go after our goal without trying to fire
+			if (index < Markers.Size()) { currentGoal = Markers[index]; } // If there's a marker spawned, set it as the goal
 
-		if (currentGoal && playerToChase && Distance2d(currentGoal) <= max(radius + playerToChase.Radius, 48)) { // If within 48 units of goal, good enough - destroy that waypoint, get ready to iterate to the next
-			Markers[index].Destroy();
-			Markers.Delete(index);
-			index++;
+			goal = currentGoal;
+
+			A_Chase(null, null); // Use default chase logic to go after our goal without trying to fire
+
+			if (playerToChase)
+			{
+				if (playerToChase.health && Distance3d(playerToChase) <= 64 && waterlevel < 2) // If within 64 units of the player, destroy the old waypoints and jump to "Close" state.  Has to be this close so that he can follow you into elevators
+				{
+					DestroyMarkers();
+					return ResolveState("Chase.Near");
+				}
+
+				if (currentGoal)
+				{
+					if (Distance3d(playerToChase) < Distance3d(currentGoal)) // If closer to player than to goal, destroy the old waypoints and start again fresh
+					{
+						DestroyMarkers();
+						return ResolveState(null);
+					}
+					else if (Distance2d(currentGoal) <= max(radius + playerToChase.Radius, 48)) // If within 48 units of goal, good enough - destroy that waypoint, get ready to iterate to the next
+					{
+						Markers[index].Destroy();
+						Markers.Delete(index);
+						index++;
+					}
+				}
+			}
+
+			if (health > 25 && weapon && Random[ShootBack]() < chaseattackchance || target && Distance2d(target) < radius + 64 + target.Radius) // Some chance that if he's armed, he'll stop while chasing to attack
+			{
+				return A_Defend(false);
+			}
+
+			if (health < 75 && Random[Heal]() < 8) { return ResolveState("Heal"); }
 		}
-
-		if (currentGoal && (!playerToChase || Distance3d(playerToChase) < Distance3d(currentGoal))) { // If closer to player than to goal, destroy the old waypoints and start again fresh
-			DestroyMarkers();
-			return ResolveState(null);
-		} else if (!playerToChase || (playerToChase.health && Distance3d(playerToChase) <= 64) && waterlevel < 2)
-		{ // If within 64 units of the player, destroy the old waypoints and jump to "Close" state.  Has to be this close so that he can follow you into elevators
-			DestroyMarkers();
-			return ResolveState("Chase.Near");
-		}
-
-		if (health > 25 && weapon && Random[ShootBack]() < chaseattackchance || target && Distance2d(target) < radius + 64 + target.Radius) { // Some chance that if he's armed, he'll stop while chasing to attack
-			return A_Defend(false);
-		}
-
-		if (health < 75 && Random[Heal]() < 8) { return ResolveState("Heal"); }
 
 		return ResolveState(null);
+	}
+
+	void A_LookForGrenades()
+	{
+		ThinkerIterator Finder = ThinkerIterator.Create("GrenadeBase", STAT_DEFAULT - 6);
+		GrenadeBase mo;
+
+		while ( (mo = GrenadeBase(Finder.Next())) )
+		{
+			if (Distance3d(mo) > mo.feardistance) { continue; } // feardistance default is 256 units (see GrenadeBase actor, GrenadeBase.FearDistance property)
+
+			if (target != mo)
+			{
+				target = mo;
+				bFrightened = true;
+				currentGoal = null;
+
+				return;
+			}
+		}
 	}
 
 	state A_Defend(bool atPlayer = true)
@@ -426,89 +508,95 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 
 		vel = (0, 0, 0);
 
-		if (weapon) { // If armed, stand in place and fire at enemies
-			if (health > 50) { bFrightened = False; } // Keep retreating until healed if not near a player
+		if (target && target is "GrenadeBase") { bFrightened = true; return ResolveState("Chase"); }
+		else if (health > 50) { bFrightened = False; } // Keep retreating until healed if not near a player
 
-			if (target == goal) { target = null; }
+		if (target == goal) { target = null; }
 
-			if (!target) {
-				if (playerToChase && players[playerToChase.PlayerNumber()].attacker) { target = players[playerToChase.PlayerNumber()].attacker; }
-			}
-
-			if (!target || target.health <= 0) { target = null; }
-
-			enemycount = 0;
-
-			ThinkerIterator Finder = ThinkerIterator.Create("Nazi", Thinker.STAT_DEFAULT);
-			Actor mo;
-
-			while ( (mo = Actor(Finder.Next())) )
-			{
-				if (
-					mo.health <= 0 ||
-					mo.bDormant ||
-					mo.bFriendly == bFriendly ||
-					mo.GetSpecies() == Species ||
-					Distance3d(mo) > MaxTargetRange
-				) { continue; }
-
-				if (Distance3d(mo) < 128.0) { enemycount += mo.bBoss ? 4 : 1; }
-
-				if (target && Distance3d(mo) > Distance3d(target)) { continue; }
-				if (target && target.bCountKill > mo.bCountKill) { continue; }
-
-				target = mo;
-			}
-
-			// Also look for sneakable actors, and ignore their friendliness attribute
-			Finder = ThinkerIterator.Create("Nazi", Thinker.STAT_DEFAULT - 5);
-
-			while ( (mo = Actor(Finder.Next())) )
-			{
-				if (
-					mo.health <= 0 ||
-					mo.bDormant ||
-					mo.GetSpecies() == Species ||
-					Distance3d(mo) > MaxTargetRange
-				) { continue; }
-
-				if (Distance3d(mo) < 128.0) { enemycount++; }
-
-				if (Distance3d(mo) < 128.0) { enemycount += mo.bBoss ? 4 : 1; }
-
-				target = mo;
-			}
-
-			if (!target) {
-				LookForEnemies(true); // In no Nazis around, fall back to default algorithm to find an enemy to shoot at
-			}
-
-			if (
-				target &&
-				target.health > 0 &&
-				target != goal &&
-				!target.bDormant &&
-				!target.bInvulnerable &&
-				target.GetSpecies() != Species &&
-				CheckSight(target)
-			)
-			{ // If you have a valid target and it's in line of sight...
-				if (target && Distance3d(target) < 128 + Random(0, 128)) { // ...run away from danger if it's too close...  (with some randomness so he doesn't always park himself a set distance from an enemy)
-					bFrightened = True;
-				}
-
-				if (!nonmoving && (!playerToChase || (Distance2d(playerToChase) > radius + 128 + playerToChase.radius) && forgettarget)) { // ...and if you weren't supposed to forget your target when the player is away...
-					target = null;
-					goal = playerToChase;
-				} else {
-					if (weapon != PWEAP_Melee || Distance3d(target) < radius + 32 + target.radius) { // ...and you are in range...
-						return ResolveState(GetWeaponStateLabel()); // ...attack it
-					}
-				}
-			}
-
-			if (enemycount > 3) { bFrightened = True; }
+		if (!target)
+		{
+			if (playerToChase && players[playerToChase.PlayerNumber()].attacker) { target = players[playerToChase.PlayerNumber()].attacker; }
 		}
+
+		if (target && target.health <= 0) { target = null; }
+
+		enemycount = 0;
+
+		ThinkerIterator Finder = ThinkerIterator.Create("Nazi", Thinker.STAT_DEFAULT);
+		Actor mo;
+
+		while ( (mo = Actor(Finder.Next())) )
+		{
+			if (
+				mo.health <= 0 ||
+				mo.bDormant ||
+				mo.bFriendly == bFriendly ||
+				mo.GetSpecies() == Species ||
+				Distance3d(mo) > MaxTargetRange
+			) { continue; }
+
+			if (Distance3d(mo) < 128.0) { enemycount += mo.bBoss ? 4 : 1; }
+
+			if (target && Distance3d(mo) > Distance3d(target)) { continue; }
+			if (target && target.bCountKill > mo.bCountKill) { continue; }
+
+			target = mo;
+		}
+
+		// Also look for sneakable actors, and ignore their friendliness attribute
+		Finder = ThinkerIterator.Create("Nazi", Thinker.STAT_DEFAULT - 5);
+
+		while ( (mo = Actor(Finder.Next())) )
+		{
+			if (
+				mo.health <= 0 ||
+				mo.bDormant ||
+				mo.GetSpecies() == Species ||
+				Distance3d(mo) > MaxTargetRange
+			) { continue; }
+
+			if (Distance3d(mo) < 128.0) { enemycount++; }
+
+			if (Distance3d(mo) < 128.0) { enemycount += mo.bBoss ? 4 : 1; }
+
+			target = mo;
+		}
+
+		if (!target)
+		{
+			LookForEnemies(true); // In no Nazis around, fall back to default algorithm to find an enemy to shoot at
+		}
+		
+		if (
+			weapon &&
+			target &&
+			target.health > 0 &&
+			target != goal &&
+			!target.bDormant &&
+			!target.bInvulnerable &&
+			target.GetSpecies() != Species &&
+			CheckSight(target)
+		)
+		{ // If you have weapon, have a valid target, and it's in line of sight...
+			if (target && Distance3d(target) < 128 + Random(0, 128)) // ...run away from danger if it's too close...  (with some randomness so he doesn't always park himself a set distance from an enemy)
+			{
+				bFrightened = True;
+			}
+
+			if (!nonmoving && (!playerToChase || (Distance2d(playerToChase) > radius + 128 + playerToChase.radius) && forgettarget)) // ...and if you weren't supposed to forget your target when the player is away...
+			{
+				target = null;
+				goal = playerToChase;
+			}
+			else
+			{
+				if (weapon != PWEAP_Melee || Distance3d(target) < radius + 32 + target.radius) { // ...and you are in range...
+					return ResolveState(GetWeaponStateLabel()); // ...attack it
+				}
+			}
+		}
+
+		if (enemycount > 3) { bFrightened = True; }
 
 		if (playerToChase && atPlayer) {
 			if (!target) {
@@ -555,7 +643,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			return ResolveState(Reload);
 		}
 
-		if (target && target.health > 0 && CheckSight(target) && (refireshots && shots < refireshots)) {
+		if (target && target.health > 0 && target.bShootable && CheckSight(target) && (refireshots && shots < refireshots)) {
 			A_MonsterRefire(chance, "Chase.Near"); // Re-fires half the time - more than the standard guard does
 			return ResolveState(Refire);
 		}
@@ -611,6 +699,8 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 
 	override void Tick()
 	{
+		A_LookForGrenades();
+
 		Super.Tick();
 
 		if (waterlevel > 0) {
@@ -622,7 +712,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 
 		oldwaterlevel = waterlevel;
 
-		if (playerToChase && Level.time % 5 == 0) { // Spawn a waypoint at the player's position every 5 tics if the player has moved and push it into an array
+		if (!nonmoving && playerToChase && Level.time % 5 == 0) { // Spawn a waypoint at the player's position every 5 tics if the player has moved and push it into an array
 			if (playerToChase.pos != oldPlayerPos) {
 				Actor mo = Spawn("PathMarker", (playerToChase.pos.x + Random[Offset](-int(playerToChase.Radius), int(playerToChase.Radius)), playerToChase.pos.y + Random[Offset](-int(playerToChase.Radius), int(playerToChase.Radius)), playerToChase.pos.z));
 				if (mo) { Markers.Push(PathMarker(mo)); }
@@ -804,14 +894,20 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 					return A_RefireReload("Shotgun.Refire", "Shotgun.Reload", 128, Random(1, 4), (target && target.bShootable || bFrightened) ? 1 : 8); // Quick reload if he's in trouble, otherwise wait to do all 8
 				}
 			Shotgun.Reload:
-				"####" E 0 { bNoPain = True; }
-				"####" E 15 {
+				"####" E 0 {
+					bNoPain = True;
+					bFrightened = True;
 					A_PlaySound("shotgun/load", CHAN_WEAPON);
 					reloadcount--;
 				}
-				"####" E 15 {
+				"####" AAAAABBBBB 1 A_Chase(null, null); // Reload on the run!
+				"####" B 0 A_SpawnStep();
+				"####" CCCCCDDDDD 1 A_Chase(null, null);
+				"####" D 0 A_SpawnStep();
+				"####" E 0 {
 					if (reloadcount <= 0)
 					{
+						bFrightened = false;
 						A_PlaySound("shotgun/pump", CHAN_WEAPON);
 						bNoPain = False;
 						return ResolveState("Chase");
