@@ -461,12 +461,15 @@ class GrenadeBase : Actor // Base actor for anything we want Nazis to run away f
 }
 
 // The bDormant true/false values for normal MapMarker actors are reversed in the current GZDoom version...
-// That makes no sense and breaks Thing_Activate calls...  So a workaround is included here.
+// Bug report here: https://forum.zdoom.org/viewtopic.php?f=2&t=61717
+// Since this hasn't been fixed and was identified months ago, a workaround is included here.
 class BoAMapMarker : MapMarker
 {
+	String user_icon; // This will only affect the compass icon, not the automap icon
+
 	override void PostBeginPlay()
 	{
-		CompassHandler.Add(self);
+		BoACompass.Add(self, user_icon);
 
 		if (!(SpawnFlags & MTF_DORMANT)) { Activate(null); }
 		else { Deactivate(null); }
@@ -489,7 +492,7 @@ class ExclamationBase : SwitchableDecoration
 
 	override void PostBeginPlay()
 	{
-		CompassHandler.Add(self, user_icon);
+		BoACompass.Add(self, user_icon);
 
 		if (!(SpawnFlags & MTF_DORMANT)) { Activate(null); }
 		else { Deactivate(null); }

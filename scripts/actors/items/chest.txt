@@ -48,7 +48,7 @@ class BoASupplyChest : Actor
 
 	override void PostBeginPlay()
 	{
-		CompassHandler.Add(self, "CHESTICO");
+		BoACompass.Add(self, "CHESTICO");
 
 		if (args[0] < 0) { spawnclass = GetSpawnableType(args[0]); } // If a string value was passed in, use that as the spawn class
 
@@ -130,7 +130,7 @@ class BoASupplyChest : Actor
 			ACS_NamedExecuteAlways("boaobjectiveaccomplished");
 		}
 
-		CompassHandler.Remove(self);
+		BoACompass.Remove(self);
 
 		return true;
 	}

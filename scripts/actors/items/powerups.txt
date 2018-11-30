@@ -145,10 +145,48 @@ class BoACompass : CustomInventory
 		return Super.CreateTossable(amt);
 	}
 
-	static void Add(Actor toAdd, String iconName = "")
+	static void Add(Actor thing, String iconName = "", bool usesprite = false, int actorTID = 0)
 	{
-		CompassHandler compassEvent = CompassHandler(StaticEventHandler.Find("CompassHandler"));
-		compassEvent.Add(toAdd, iconName);
+		if (!thing || actorTID)
+		{
+			if (actorTID)
+			{
+				let it = ActorIterator.Create(actorTID, "Actor");
+				Actor mo;
+
+				while (mo = Actor(it.Next()))
+				{
+					Add(mo, iconName, usesprite); // Add each thing that has a matching TID
+				}
+			}
+
+			return; // If no thing was passed, silently fail here
+		} 
+
+		CompassHandler compassEvent = CompassHandler(EventHandler.Find("CompassHandler"));
+		if (!compassEvent) { return; } // If no CompassHandler was found (somehow), silently fail
+
+		if (iconName == "") { iconName = CompassHandler.GetDefaultIcon(thing, usesprite); }
+
+		compassEvent.Add(thing, iconName);
+	}
+
+	static void Remove(Actor thing)
+	{
+		if (!thing) { return; } // If no thing was passed, silently fail
+
+		CompassHandler compassEvent = CompassHandler(EventHandler.Find("CompassHandler"));
+		if (!compassEvent) { return; }
+
+		int i = compassEvent.ScannableThings.Find(thing);
+
+		if (i < compassEvent.ScannableThings.Size())
+		{
+			compassEvent.ScannableThings.Delete(i, 1);
+			compassEvent.ThingIcons.Delete(i, 1);
+			compassEvent.ScannableThings.ShrinkToFit();
+			compassEvent.ThingIcons.ShrinkToFit();
+		}
 	}
 
 	static void ForceActivate(Actor owner, bool activate)

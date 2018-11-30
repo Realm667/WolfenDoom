@@ -392,7 +392,11 @@ class Base : Actor
 			dodgecounter++;
 
 			// Error message if you forgot to set up the Dodge state on the actor
-			if (developer && !DodgeState) { console.printf("\cgNo Dodge sprite defined in actor " .. GetTag() .. "."); return false; }
+			if (!DodgeState)
+			{
+				if (developer) { console.printf("\cgNo Dodge sprite defined in actor " .. GetClassName() .. "."); }
+				return false;
+			}
 
 			spriteID dodgesprite = DodgeState.sprite;
 			if (dodgesprite) { sprite = dodgesprite; }
@@ -751,7 +755,7 @@ class Base : Actor
 		DodgeState = FindState("Dodge");
 		dodgetimeout = Random(175, 350);
 
-		if (user_oncompass) { CompassHandler.Add(self, "GOAL1"); }
+		if (user_oncompass) { BoACompass.Add(self, "GOAL1"); }
 	}
 
 	override bool CanCollideWith(Actor other, bool passive)

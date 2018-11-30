@@ -37,42 +37,19 @@ class CompassHandler : EventHandler
 		return txName;
 	}
 
-	static void Add(Actor thing, String iconName = "", bool usesprite = false)
+	void Add(Actor thing, String iconName = "")
 	{
-		if (!thing) { return; } // If no thing was passed, silently fail
+		if (!thing) { return; }
 
-		CompassHandler this = CompassHandler(Find("CompassHandler")); // Since this function is static and can be called from external actors, we have to now find the active CompassHandler
-		if (!this) { return; } // If no CompassHandler was found (somehow), silently fail
-
-		if (iconName == "") { iconName = CompassHandler.GetDefaultIcon(thing, usesprite); }
-
-		int i = this.ScannableThings.Find(thing);
-		if (i < this.ScannableThings.Size()) // If it's already there, just update the icon
+		int i = ScannableThings.Find(thing);
+		if (i < ScannableThings.Size()) // If it's already there, just update the icon
 		{
-			this.ThingIcons[i] = iconName;
+			ThingIcons[i] = iconName;
 		}
 		else
 		{
-			this.ScannableThings.Push(thing);
-			this.ThingIcons.Push(iconName);
-		}
-	}
-
-	static void Remove(Actor thing)
-	{
-		if (!thing) { return; } // If no thing was passed, silently fail
-
-		CompassHandler this = CompassHandler(Find("CompassHandler")); // Since this function is static and can be called from external actors, we have to now find the active CompassHandler
-		if (!this) { return; } // If no CompassHandler was found (somehow), silently fail
-
-		int i = this.ScannableThings.Find(thing);
-
-		if (i < this.ScannableThings.Size())
-		{
-			this.ScannableThings.Delete(i, 1);
-			this.ThingIcons.Delete(i, 1);
-			this.ScannableThings.ShrinkToFit();
-			this.ThingIcons.ShrinkToFit();
+			ScannableThings.Push(thing);
+			ThingIcons.Push(iconName);
 		}
 	}
 
@@ -163,17 +140,32 @@ class CompassHandler : EventHandler
 				// Scale the image down to the max icon size set in constant above.  Smaller images will stay as they are
 				if (maxsize > compassIconSize) { scale = compassIconSize / maxsize; }
 
-				// If it's an enemy, scale the icon slightly based on size (radius) of the actor
-				if (mo.bIsMonster) { scale *= mo.bBoss ? 1.0 : clamp(mo.radius / 32, 0.1, 1.0); }
+				// If it's the default 'dot' icon...
+				if (ThingIcons[i] == "GOAL1")
+				{
+					// Scale the icon slightly based on size (radius) of the actor
+					scale *= clamp(mo.radius / 32.0, 0, 1.0) * 0.75 + 0.25;
+				}
 
 				// Fade the icon the farther away the thing is
-				double alpha = compassalpha * clamp(2048 / p.mo.Distance3D(mo), 0.25, 0.95);
+				double alpha = compassalpha * clamp(2048 / max(p.mo.Distance3D(mo), 0.1), 0.25, 0.95);
 
 				// Dark outline/shadow effect behind the icon
 				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * 1.25, 0x050505);
 
 				// Draw the icon
 				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale);
+
+				// If the actor has a forced health bar (e.g., the Nebelwerfer in C1M5), overlay the health color of the actor
+				if (Base(mo) && Base(mo).user_drawhealthbar)
+				{
+					double hlth = double(mo.health) / mo.SpawnHealth();
+
+					int r = int(255 * (1.0 - hlth));
+					int g = int(255 * hlth);
+
+					DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale, color(r, g, 0));
+				}
 			}
 
 			if (drawflash > 0)

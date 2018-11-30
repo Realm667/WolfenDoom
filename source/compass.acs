@@ -6,15 +6,17 @@ script "BoA_CompassQueue" (void)
 	ScriptCall("BoACompass", "Add");
 }
 
-script "BoA_CompassAddIcon" (int icon)
+script "BoA_CompassAddIcon" (int icon, int tid)
 {
 	// This is an alternative script which allows you to use a custom icon to mark
 	// the activator with. Use it by setting the activator to the thing you want
 	// to add, and then calling:
 	// ACS_NamedExecuteAlways("BoA_CompassAddIcon", 0, <Icon name>);
+	// or by calling
+	// ACS_NamedExecuteAlways("BoA_CompassAddIcon", 0, <Icon name>, <TID of things to add>);
 	if (!icon) { icon = ""; } // Enforce a blank string if the icon isn't passed in, because otherwise the first string in the string table gets passed in
 
-	ScriptCall("BoACompass", "Add", icon);
+	ScriptCall("BoACompass", "Add", icon, false, tid);
 }
 
 script "BoA_CompassActivate" (int active)
