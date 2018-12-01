@@ -8,7 +8,7 @@ class CompassHandler : EventHandler
 	const compassIconSize = 12.0;
 	const distFactor = 0.1;
 
-	ui double drawflash;
+	double drawflash;
 
 	static clearscope String GetDefaultIcon(Actor thing, bool usesprite = false) // Icon handling for anything that doesn't have the icon set already (CompassItem actors handle their icons internally)
 	{
@@ -20,7 +20,7 @@ class CompassHandler : EventHandler
 		// The other activation markers use an orange exclamation mark
 		// Mission quest items use their inventory icon (or spawn sprite if no icon is set)
 		// Miscellaneous items use a grey dot
-		if (usesprite || thing is "ObjectiveIcon" || thing is "Exclamation" || thing is "ExclamationBase" || thing is "ScientistUniform")
+		if (usesprite || thing is "ObjectiveIcon" || thing is "ExclamationBase" || thing is "ScientistUniform")
 		{
 			// Use the spawn sprite as the icon
 			TextureID icon = thing.CurState.GetSpriteTexture(0);
@@ -48,8 +48,16 @@ class CompassHandler : EventHandler
 		}
 		else
 		{
-			ScannableThings.Push(thing);
-			ThingIcons.Push(iconName);
+			if (thing is "ObjectiveIcon" || thing is "ExclamationBase")
+			{ // Push these to be drawn on top
+				ScannableThings.Push(thing);
+				ThingIcons.Push(iconName);
+			}
+			else
+			{ // Insert these to be drawn behind other objects
+				ScannableThings.Insert(0, thing);
+				ThingIcons.Insert(0, iconName);
+			}
 		}
 	}
 
@@ -120,12 +128,6 @@ class CompassHandler : EventHandler
 					relativeLocation = relativeLocation.Unit() * pointRadius / distFactor;
 				}
 
-				if (!mo.bBright && (mo is "ExclamationCompass" || mo is "ObjectiveIcon") && p.mo.Distance3D(mo) <= 256.0)
-				{
-					mo.bBright = true;
-					drawflash = level.time;
-				}
-
 				double iconX = compassX + relativeLocation.X * distFactor;
 				double iconY = compassY + relativeLocation.Y * distFactor;
 
@@ -168,17 +170,19 @@ class CompassHandler : EventHandler
 				}
 			}
 
-			if (drawflash > 0)
+			double flashduration = 35;
+
+			if (drawflash > level.time - flashduration - 35)
 			{
-				double phase = (level.time - drawflash) / 35;
+				double phase = (level.time - drawflash) / flashduration;
 				double flashalpha;
 
 				if (phase < 0.25) { flashalpha = phase / 0.25; } // Fade in
 				else if (phase < 0.5) { flashalpha = 1.0; } // Hold
 				else { flashalpha = 1.0 - (phase - 0.5); } // Fade out
 
-				// Draw the gold flash around the perimeter of the compass if you are close to the marker
-				DrawToHUD.DrawShapeTexture(cmpsflash, (compassX, compassY), compassalpha / 2 * flashalpha * 0.75, -105 + 360 * phase);
+				// Draw the gold flash around the perimeter of the compass
+				DrawToHUD.DrawShapeTexture(cmpsflash, (compassX, compassY), compassalpha / 3 * flashalpha * 0.75, -105 + 360 * phase);
 			}
 
 			// Redraw the compass texture on top with a lower alpha so that the glass actually looks translucent

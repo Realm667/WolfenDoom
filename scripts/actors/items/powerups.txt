@@ -189,6 +189,14 @@ class BoACompass : CustomInventory
 		}
 	}
 
+	static void Flash()
+	{
+		CompassHandler compassEvent = CompassHandler(EventHandler.Find("CompassHandler"));
+		if (!compassEvent) { return; }
+
+		compassEvent.drawflash = level.time;
+	}
+
 	static void ForceActivate(Actor owner, bool activate)
 	{
 		if (owner && owner.player)

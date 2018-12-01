@@ -488,11 +488,25 @@ class BoAMapMarker : MapMarker
 
 class ExclamationBase : SwitchableDecoration
 {
+	bool onCompass;
+	double touchRange;
 	String user_icon;
+
+	Property ShowOnSpawn:onCompass;
+	Property TouchRange:touchRange;
+
+	Default
+	{
+		//$Category Misc (Wolf3D)
+		//$Color 1
+
+		ExclamationBase.ShowOnSpawn false;
+		ExclamationBase.TouchRange 0;
+	}
 
 	override void PostBeginPlay()
 	{
-		BoACompass.Add(self, user_icon);
+		if (onCompass) { BoACompass.Add(self, user_icon); }
 
 		if (!(SpawnFlags & MTF_DORMANT)) { Activate(null); }
 		else { Deactivate(null); }
@@ -501,10 +515,35 @@ class ExclamationBase : SwitchableDecoration
 	override void Activate (Actor activator)
 	{
 		bDormant = false; 
+		touchRange = Default.touchRange; // Allow resetting touch deactivation by re-activating the actor
+		SetStateLabel("Active");
 	}
 
 	override void Deactivate (Actor activator)
 	{
 		bDormant = true;
-	}	
+		SetStateLabel("Inactive");
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		DoProximityChecks();
+	}
+
+	void DoProximityChecks()
+	{
+		if (!onCompass && !CheckRange(2048.0) && !CheckIfSeen())
+		{
+			BoACompass.Add(self, user_icon);
+			onCompass = true;
+		}
+
+		if (touchRange && !CheckRange(touchRange))
+		{
+			SetStateLabel("Touched");
+			touchRange = 0;
+		}
+	}
 }

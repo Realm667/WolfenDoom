@@ -1,23 +1,19 @@
 script "BoA_CompassQueue" (int tid)
 {
-	// In order to add things to the compass, call:
-	//
-	//   ACS_NamedExecuteAlways("BoA_CompassQueue", 0, <TID of things to add>);
-	//
-	// If no TID is passed, the script adds the activator to the compass.
-
+	// In order to add things to the compass, set the activator to the item to
+	// add to the compass, and call ACS_NamedExecuteAlways("BoA_CompassQueue", 0);
+	// ExclamationCompass is the only actor that does this automatically.
 	ScriptCall("BoACompass", "Add", "", false, tid);
 }
 
 script "BoA_CompassAddIcon" (int icon, int tid)
 {
 	// This is an alternative script which allows you to use a custom icon to mark
-	// the activator on the compass.  Use it by calling:
-	//
-	//   ACS_NamedExecuteAlways("BoA_CompassAddIcon", 0, <Icon name>, <TID of things to add>);
-	//
-	// If no TID is passed, the script adds the activator to the compass.
-
+	// the activator with. Use it by setting the activator to the thing you want
+	// to add, and then calling:
+	// ACS_NamedExecuteAlways("BoA_CompassAddIcon", 0, <Icon name>);
+	// or by calling
+	// ACS_NamedExecuteAlways("BoA_CompassAddIcon", 0, <Icon name>, <TID of things to add>);
 	if (!icon) { icon = ""; } // Enforce a blank string if the icon isn't passed in, because otherwise the first string in the string table gets passed in
 
 	ScriptCall("BoACompass", "Add", icon, false, tid);

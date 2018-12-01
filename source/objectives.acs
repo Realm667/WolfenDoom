@@ -96,6 +96,7 @@ function void DrawObjectives(void)
 script "boaobjectiveaccomplished" (void)
 {
 	AmbientSound("misc/objective_acc", 57);
+
 	sethudsize(800,600,1);
 	setfont("OBJICON");
 	hudmessage(s:"A";
@@ -104,6 +105,7 @@ script "boaobjectiveaccomplished" (void)
 	hudmessage(l:"MO_ACCOMP";
 		HUDMSG_FADEINOUT,989,CR_UNTRANSLATED,400.0,130.1,1.0,0.5,0.5);
 
+	ScriptCall("BoACompass", "Flash");
 }
 
 script "boaobjectiveadded" (void)
