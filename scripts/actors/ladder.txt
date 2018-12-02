@@ -125,7 +125,7 @@ class LadderBase : Actor
 			activetimeout = 350; // Set a timer so that the actor will stay active for 10 seconds after a player uses it to give playerfollowers a chance to use it...
 
 			if (
-				(Distance2D(it.thing) > climbradius + it.thing.radius || !CheckSight(it.thing)) || // Check if the actor can reach the ladder (horizontal radius check)
+				(Distance2D(it.thing) > (climbradius + it.thing.radius) * 1.34 || !CheckSight(it.thing)) || // Check if the actor can reach the ladder (horizontal radius check), with some fudging to account for square collision boxes
 				(it.thing.pos.z + it.thing.height < pos.z - ladderheight) || // Z-height check (player below ladder)
 				(it.thing.pos.z > pos.z + (bSolid ? height : -height)) // Z-height check (player above ladder) - if non-solid, the player will "step down" onto the ladder, so it's easier to get onto ladders that are in a hole in the ground
 			)
@@ -159,8 +159,8 @@ class LadderBase : Actor
 				if (it.thing.bIsMonster && !(it.thing is "PlayerFollower")) { it.thing.bFloat = True; } // If it's a monster set +FLOAT
 				else
 				{
-					if (it.thing is "BoAPlayer") { BoAPlayer(it.thing).climbing = true; }
-					else if (it.thing is "PlayerFollower") { PlayerFollower(it.thing).climbing = true; }
+					if (it.thing is "BoAPlayer") { BoAPlayer(it.thing).climbing = self; } // Store pointer to the ladder object in player variable
+					else if (it.thing is "PlayerFollower") { PlayerFollower(it.thing).climbing = true; } // Just a boolean flag for PlayerFollowers
 					else { it.thing.bFly = True; } // If it's some other class of player, use the fly cheat/powerup
 				}
 				it.thing.bNoGravity = True;
@@ -218,7 +218,7 @@ class LadderBase : Actor
 			mo.bFly = mo.Default.bFly;
 			mo.bFloat = mo.Default.bFloat;
 
-			if (mo is "BoAPlayer") { BoAPlayer(mo).climbing = false; }
+			if (mo is "BoAPlayer") { BoAPlayer(mo).climbing = null; }
 			else if (mo is "PlayerFollower") { PlayerFollower(mo).climbing = false; }
 
 			Climbers.Delete(Climbers.Find(mo)); // ...and delete if from the climbers list.  

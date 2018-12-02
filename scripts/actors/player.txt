@@ -59,7 +59,7 @@ class BoAPlayer : PlayerPawn
 	Line UseTarget;
 	int crosshair;
 	Class<Inventory> crosshairstring;
-	bool climbing;
+	Actor climbing;
 	int interactiontimeout;
 
 	Default
@@ -390,6 +390,7 @@ class BoAPlayer : PlayerPawn
 			DeathThink ();
 			return;
 		}
+
 		if (player.jumpTics != 0)
 		{
 			player.jumpTics--;
@@ -398,10 +399,8 @@ class BoAPlayer : PlayerPawn
 				player.jumpTics = 0;
 			}
 		}
-		if (player.morphTics && !(player.cheats & CF_PREDICTING))
-		{
-			MorphPlayerThink ();
-		}
+
+		if (player.morphTics && !(player.cheats & CF_PREDICTING)) { MorphPlayerThink (); }
 
 		// Crouching moves down while climbing
 		if (climbing && cmd.buttons & BT_CROUCH) { vel.z -= 0.95; }
@@ -458,9 +457,24 @@ class BoAPlayer : PlayerPawn
 			{
 				Vel.Z = 4 * Speed;
 			}
-			else if (bNoGravity && !leveltilt)
+			else if (bNoGravity && !leveltilt && !climbing)
 			{
 				Vel.Z = 3.;
+			}
+			else if (climbing && !player.onground && level.IsJumpingAllowed())
+			{
+				if (abs(deltaangle(angle, AngleTo(climbing))) > 60)
+				{
+					if (player.cmd.forwardmove > 0)
+					{
+						Thrust(Speed / 2, angle);
+						Vel.Z = 1.0;
+					}
+				}
+				else
+				{
+					Vel.Z = 3.;
+				}
 			}
 			else if (level.IsJumpingAllowed() && (player.onground || leveltilt != 0) && player.jumpTics == 0)
 			{
