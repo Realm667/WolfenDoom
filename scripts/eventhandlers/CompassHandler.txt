@@ -61,6 +61,12 @@ class CompassHandler : EventHandler
 		}
 	}
 
+	override void OnRegister()
+	{
+		ScannableThings.Clear();
+		ThingIcons.Clear();
+	}
+
 	override void WorldThingDestroyed(WorldEvent e)
 	{
 		int i = ScannableThings.Find(e.Thing);

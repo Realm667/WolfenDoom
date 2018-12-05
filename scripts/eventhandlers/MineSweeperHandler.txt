@@ -2,6 +2,11 @@ class MineSweeperHandler : EventHandler
 {
 	Array<Actor > ScannableThings;
 
+	override void OnRegister()
+	{
+		ScannableThings.Clear();
+	}
+
 	override void WorldThingSpawned(WorldEvent e)
 	{
 		if (

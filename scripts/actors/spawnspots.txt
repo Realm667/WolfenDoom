@@ -89,6 +89,8 @@ class ActorSpawner : SwitchableDecoration
 	{
 		Super.PostBeginPlay();
 
+		Spawns.Clear();
+
 		user_spawntype = GetSpawnableType(args[0]);
 		user_maxactors = args[1];
 		user_tid = args[2];

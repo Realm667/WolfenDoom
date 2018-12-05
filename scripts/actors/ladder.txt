@@ -81,6 +81,8 @@ class LadderBase : Actor
 	{
 		if (!climbradius) { climbradius = Radius; }
 
+		Climbers.Clear();
+
 		DoStackCheck();
 
 		Super.PostBeginPlay();
@@ -431,6 +433,8 @@ class RopeSpawner : Actor
 		A_CustomRailgun(0, 0, "", "", RGF_CENTERZ | RGF_NOPIERCING | RGF_SILENT, 0, 0, "", 0, 0, HitDistance, 1, spacing * scale.x, 0, seg, zoffset * scale.y);
 
 		timeout = level.time + 35;
+
+		Segments.Clear();
 
 		Super.PostBeginPlay();
 	}

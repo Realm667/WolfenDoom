@@ -766,6 +766,9 @@ class DialogueResponses : DialogueComponent
 	{
 		Super.Init();
 
+		responselines.Clear();
+		responses.Clear();
+
 		if (!fontcolor) { fontcolor = Font.CR_GREEN; }
 		if (!fonthighlightcolor) { fonthighlightcolor = Font.CR_GREY; }
 		if (numberformat == "") { numberformat = "%d."; }

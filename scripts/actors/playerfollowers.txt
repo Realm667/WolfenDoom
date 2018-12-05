@@ -694,6 +694,8 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 	{
 		if (user_nonmoving) { nonmoving = user_nonmoving; } // For compatibility with old ACS scripts from before this variable was given the "user_" prefix
 
+		Markers.Clear();
+
 		Super.PostBeginPlay();
 	}
 

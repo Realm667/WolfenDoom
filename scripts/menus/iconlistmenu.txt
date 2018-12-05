@@ -101,6 +101,8 @@ class ExtendedListMenu : ListMenu
 	{
 		Super.Init(parent, desc);
 
+		placeholders.Clear();
+
 		GetPlaceholders();
 
 		// Allow generic lookups - strip "menu" off of the menu name, and use that stub as the lookup base (e.g., SKILL, EPISODE, etc.)

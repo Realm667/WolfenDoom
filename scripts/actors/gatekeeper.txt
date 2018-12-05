@@ -115,6 +115,8 @@ class GateKeeper : Actor
 			// Set the new amount - cap minimum at 1 so that the gates still have some purpose
 			user_keyamount = max(int(newamt), 1);
 		}
+
+		Activators.Clear();
 	}
 
 	override void Touch(Actor toucher)
@@ -390,6 +392,10 @@ class GhostGate : GateKeeper
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
+
+		numbers.Clear();
+		spawns.Clear();
+		peers.Clear();
 
 		if (!linedef)
 		{
