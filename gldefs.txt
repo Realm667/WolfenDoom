@@ -2049,3 +2049,42 @@ Object SuperShield
 {
 	frame ARMX { light SUPERSHIELD }
 }
+
+////////////////////
+// POSTPROCESSING //
+////////////////////
+
+HardwareShader PostProcess Scene
+{
+	Name "lensflareshader"
+	Shader "shaders/PostProcess/LensFlare.fp" 330
+	Uniform float threshold
+	Uniform int samples
+	Uniform float distance
+	Uniform float amount
+}
+
+HardwareShader PostProcess Scene
+{
+	Name "motionblurshader"
+	Shader "shaders/PostProcess/MotionBlur.fp" 330
+	Uniform float bx
+	Uniform float by
+	Uniform int samples
+}
+
+HardwareShader PostProcess scene
+{
+	Name "vignetteshader"
+	Shader "shaders/PostProcess/Vignette.fp" 330
+	Uniform float intensity
+	Uniform float falloff
+}
+
+HardwareShader PostProcess Scene
+{
+	Name "noiseshader"
+	Shader "shaders/PostProcess/Noise.fp" 330
+	Uniform float timer
+	Uniform float amount
+}
