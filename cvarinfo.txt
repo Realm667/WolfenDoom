@@ -46,3 +46,23 @@ server int blood_amt = 1;
 user int cl_drop1_dist = 1536;
 user int cl_drop2_dist = 768;
 user int cl_drop3_dist = 384;
+
+// Postprocessing
+user bool tc_pp_lensflares = true;
+user float tc_pp_lensflares_threshold = 0.1;
+user int tc_pp_lensflares_samples = 16;
+user float tc_pp_lensflares_distance = 0.009;
+user float tc_pp_lensflares_amount = 0.2;
+
+user bool tc_pp_motionblur = true;
+user float cl_motionblur_x = 0.0;
+user float cl_motionblur_y = 0.0;
+user float tc_pp_motionblur_intensity = 0.15;
+user int tc_pp_motionblur_samples = 16;
+
+user bool tc_pp_vignette = true;
+user float tc_pp_vignette_intensity = 80.0;
+user float tc_pp_vignette_falloff = 0.3;
+
+user bool tc_pp_noise = true;
+user float tc_pp_noise_amount = 0.1;
