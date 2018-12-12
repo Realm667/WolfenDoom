@@ -80,9 +80,10 @@ class Whizzer : Actor
 
 class TracerTrail : Actor
 {
-	double faderate;
+	double faderate, stepalpha, startalpha;
 
 	Property FadeRate:faderate;
+	Property StartAlpha:startalpha;
 
 	Default
 	{
@@ -95,15 +96,16 @@ class TracerTrail : Actor
 		+NODAMAGETHRUST
 		+NOGRAVITY
 		+NOTELEPORT
-		Alpha 0.75;
+		Alpha 0.0;
 		Scale 0.4;
 		RenderStyle "Add";
 		TracerTrail.FadeRate 0.01;
+		TracerTrail.StartAlpha 0.75;
 	}
 	States
 	{
 		Spawn:
-			PUFF A 1 { if (faderate) { A_FadeOut(faderate); } }
+			PUFF A 1 DoFade();
 			Loop;
 	}
 
@@ -112,6 +114,18 @@ class TracerTrail : Actor
 		Super.Tick();
 
 		if (!master) { Destroy(); }
+	}
+
+	void DoFade()
+	{
+		if (stepalpha < startalpha)
+		{ // Quickly fade in from nothing at the very beginning...  This hides situations where the tracer would spawn and flash right in front of the player for a tick.
+			alpha += 0.25;
+			if (alpha > startalpha) { alpha = startalpha; }
+
+			stepalpha = alpha;
+		}
+		else if (faderate) { A_FadeOut(faderate); } // Fade out to nothing at the specified rate
 	}
 }
 
