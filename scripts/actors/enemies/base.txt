@@ -352,7 +352,7 @@ class Base : Actor
 	{
 		ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2); // Just iterate over the sneakable eyes - faster than all Nazi actors
 		StealthBase mo;
-		while (mo = StealthBase(it.Next(true)))
+		while (mo = StealthBase(it.Next()))
 		{
 			return true;
 		}
@@ -366,7 +366,7 @@ class Base : Actor
 		SneakableGuardEyesAlerted mo;
 
 		int count = 0;
-		while (mo = SneakableGuardEyesAlerted(it.Next(true)))
+		while (mo = SneakableGuardEyesAlerted(it.Next()))
 		{
 			if (Distance3d(mo) > range) { continue; }
 
