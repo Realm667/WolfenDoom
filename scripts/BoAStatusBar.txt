@@ -564,11 +564,10 @@ class BoAStatusBar : BaseStatusBar
 			}
 
 			stealth = false;
-
 			return false;
 		}
 
-		return stealth;
+		return stealth; // Set up like this so it basically returns last known value if it's not time to re-poll
 	}
 
 	void DrawMugShot(Vector2 position)

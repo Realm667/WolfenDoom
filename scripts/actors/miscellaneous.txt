@@ -491,7 +491,7 @@ class BoAMapMarker : MapMarker
 class ExclamationBase : SwitchableDecoration
 {
 	bool onCompass;
-	double touchRange;
+	double touchRange, targetAlpha;
 	String user_icon;
 
 	Property ShowOnSpawn:onCompass;
@@ -502,6 +502,7 @@ class ExclamationBase : SwitchableDecoration
 		//$Category Misc (Wolf3D)
 		//$Color 1
 
+		RenderStyle "Translucent";
 		ExclamationBase.ShowOnSpawn false;
 		ExclamationBase.TouchRange 0;
 	}
@@ -512,6 +513,11 @@ class ExclamationBase : SwitchableDecoration
 
 		if (!(SpawnFlags & MTF_DORMANT)) { Activate(null); }
 		else { Deactivate(null); }
+
+		if (alpha) { targetAlpha = alpha; }
+		else { targetAlpha = 1.0; }
+
+		alpha = 0.0;
 	}
 
 	override void Activate (Actor activator)
@@ -519,6 +525,11 @@ class ExclamationBase : SwitchableDecoration
 		bDormant = false; 
 		touchRange = Default.touchRange; // Allow resetting touch deactivation by re-activating the actor
 		SetStateLabel("Active");
+	}
+
+	override void OnDestroy()
+	{
+		Deactivate(null);
 	}
 
 	override void Deactivate (Actor activator)
@@ -530,6 +541,15 @@ class ExclamationBase : SwitchableDecoration
 	override void Tick()
 	{
 		Super.Tick();
+
+		if (!bDormant)
+		{
+			alpha = min(targetalpha, alpha + 0.05);
+		}
+		else
+		{
+			alpha = max(0, alpha - 0.05);
+		}
 
 		DoProximityChecks();
 	}

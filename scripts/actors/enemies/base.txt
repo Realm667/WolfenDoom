@@ -125,10 +125,6 @@
 	  Base or Nazi class descendants and causing huge slowdown).
 	- Used internally to set up sneakable handling
 
-	int AlertedSneakablesCount(int range = 512)
-	- Returns the number of sneakable actors within the specified range of the
-	  calling actor
-
   New Functions (Nazi class)
 	A_NaziPain(int alertrange = 0, bool playsound = True, int offset = -8)
 	- Consolidated function intended for use in Nazi class Pain states to
@@ -358,21 +354,6 @@ class Base : Actor
 		}
 
 		return false;
-	}
-
-	int AlertedSneakablesCount(int range = 512)
-	{
-		ThinkerIterator it = ThinkerIterator.Create("SneakableGuardEyesAlerted", Thinker.STAT_DEFAULT - 2);
-		SneakableGuardEyesAlerted mo;
-
-		int count = 0;
-		while (mo = SneakableGuardEyesAlerted(it.Next()))
-		{
-			if (Distance3d(mo) > range) { continue; }
-
-			count++;
-		}
-		return count;
 	}
 
 	bool A_DoSideRoll(int dodgespeed = 10, bool checkonly = false)

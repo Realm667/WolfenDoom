@@ -1,7 +1,8 @@
 class CompassHandler : EventHandler
 {
-	Array<Actor> ScannableThings;
+	Array<Actor> ScannableThings; // I wish we could do dynamic arrays of structs...
 	Array<String> ThingIcons;
+	Array<double> ThingAlpha;
 	const compassX = 85.0;
 	const compassY = 105.0;
 	const compassRadius = 46.0;
@@ -52,11 +53,13 @@ class CompassHandler : EventHandler
 			{ // Push these to be drawn on top
 				ScannableThings.Push(thing);
 				ThingIcons.Push(iconName);
+				ThingAlpha.Push(0.0);
 			}
 			else
 			{ // Insert these to be drawn behind other objects
 				ScannableThings.Insert(0, thing);
 				ThingIcons.Insert(0, iconName);
+				ThingAlpha.Insert(0, 0.0);
 			}
 		}
 	}
@@ -67,6 +70,21 @@ class CompassHandler : EventHandler
 		ThingIcons.Clear();
 	}
 
+	override void WorldTick()
+	{
+		Actor mo;
+
+		for (int i = 0; i < ScannableThings.Size(); i++)
+		{
+			if (mo = ScannableThings[i])
+			{
+				// Fade to the icon's alpha value
+				if (ThingAlpha[i] < mo.alpha) { ThingAlpha[i] = min(ThingAlpha[i] + 0.05, mo.alpha); }
+				else if (ThingAlpha[i] > mo.alpha) { ThingAlpha[i] = max(ThingAlpha[i] - 0.05, mo.alpha); }
+			}
+		}
+	}
+
 	override void WorldThingDestroyed(WorldEvent e)
 	{
 		int i = ScannableThings.Find(e.Thing);
@@ -75,8 +93,10 @@ class CompassHandler : EventHandler
 		{
 			ScannableThings.Delete(i, 1);
 			ThingIcons.Delete(i, 1);
+			ThingAlpha.Delete(i, 1);
 			ScannableThings.ShrinkToFit();
 			ThingIcons.ShrinkToFit();
+			ThingAlpha.ShrinkToFit();
 		}
 	}
 
@@ -138,7 +158,10 @@ class CompassHandler : EventHandler
 				double iconY = compassY + relativeLocation.Y * distFactor;
 
 				// Handle objects that need to know if the sprite changed
-				if (mo is "Exclamation") { icon = mo.CurState.GetSpriteTexture(0); }
+				if (mo is "Exclamation")
+				{
+					icon = mo.CurState.GetSpriteTexture(0);
+				}
 
 				// Get the image size and scale it down if necessary
 				Vector2 size = TexMan.GetScaledSize(icon);
@@ -156,7 +179,7 @@ class CompassHandler : EventHandler
 				}
 
 				// Fade the icon the farther away the thing is
-				double alpha = compassalpha * clamp(2048 / max(p.mo.Distance3D(mo), 0.1), 0.25, 0.95);
+				double alpha = ThingAlpha[i] * compassalpha * clamp(2048 / max(p.mo.Distance3D(mo), 0.1), 0.25, 0.95);
 
 				// Dark outline/shadow effect behind the icon
 				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * 1.25, 0x050505);

@@ -481,7 +481,7 @@ class RopeSpawner : Actor
 		ThinkerIterator it = ThinkerIterator.Create("RopeSpawnerTarget", Thinker.STAT_DEFAULT - 7);
 		Actor mo;
 
-		while (mo = Actor(it.Next(true)))
+		while (mo = Actor(it.Next()))
 		{
 			if (mo.tid == tid)
 			{
