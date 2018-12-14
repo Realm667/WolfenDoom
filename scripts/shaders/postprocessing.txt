@@ -9,9 +9,6 @@ class TcPostProcessShaderHandler : StaticEventHandler
 		if (Cvar.GetCVar("tc_pp_lensflares", p).GetInt() > 0)			EnableLensFlares();
 		else														DisableLensFlares();
 		
-		if (Cvar.GetCVar("tc_pp_motionblur", p).GetInt() > 0)			EnableMotionBlur();
-		else														DisableMotionBlur();
-		
 		if (Cvar.GetCVar("tc_pp_vignette", p).GetInt() > 0)			EnableVignette();
 		else														DisableVignette();
 		
@@ -46,30 +43,6 @@ class TcPostProcessShaderHandler : StaticEventHandler
 	{
 		PlayerInfo p = players[consoleplayer];
 		Shader.SetEnabled(p, "lensflareshader", false);
-	}
-	
-	
-	//===========================================================================
-	// MOTION BLUR
-	//===========================================================================
-	
-	ui void EnableMotionBlur(void)
-	{
-		PlayerInfo p = players[consoleplayer];
-		
-		double int = CVar.GetCVar("tc_pp_motionblur_intensity", p).GetFloat();
-		double x = CVar.GetCVar("cl_motionblur_x", p).GetFloat() * int;
-		double y = CVar.GetCVar("cl_motionblur_y", p).GetFloat() * int;
-		Shader.SetUniform1f(p, "motionblurshader", "samples", CVar.GetCVar("tc_pp_motionblur_samples", p).GetInt());
-		Shader.SetUniform1f(p, "motionblurshader", "bx", x);
-		Shader.SetUniform1f(p, "motionblurshader", "by", y);
-		Shader.SetEnabled(p, "motionblurshader", true);
-	}
-
-	ui void DisableMotionBlur(void)
-	{
-		PlayerInfo p = players[consoleplayer];
-		Shader.SetEnabled(p, "motionblurshader", false);
 	}
 	
 	//===========================================================================

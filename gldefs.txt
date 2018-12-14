@@ -2064,15 +2064,6 @@ HardwareShader PostProcess Scene
 	Uniform float amount
 }
 
-HardwareShader PostProcess Scene
-{
-	Name "motionblurshader"
-	Shader "shaders/PostProcess/MotionBlur.fp" 330
-	Uniform float bx
-	Uniform float by
-	Uniform int samples
-}
-
 HardwareShader PostProcess scene
 {
 	Name "vignetteshader"
@@ -2087,4 +2078,14 @@ HardwareShader PostProcess Scene
 	Shader "shaders/PostProcess/Noise.fp" 330
 	Uniform float timer
 	Uniform float amount
+}
+
+HardwareShader PostProcess beforebloom
+{
+	Name "MBlur"
+	Shader "shaders/MBlur.fp" 330
+	Uniform vec2 steps
+	Uniform int samples
+	Uniform float increment
+	Uniform int blendmode
 }

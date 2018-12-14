@@ -54,15 +54,19 @@ user int tc_pp_lensflares_samples = 16;
 user float tc_pp_lensflares_distance = 0.009;
 user float tc_pp_lensflares_amount = 0.2;
 
-user bool tc_pp_motionblur = true;
-user float cl_motionblur_x = 0.0;
-user float cl_motionblur_y = 0.0;
-user float tc_pp_motionblur_intensity = 0.15;
-user int tc_pp_motionblur_samples = 16;
-
 user bool tc_pp_vignette = true;
 user float tc_pp_vignette_intensity = 80.0;
 user float tc_pp_vignette_falloff = 0.3;
 
 user bool tc_pp_noise = true;
 user float tc_pp_noise_amount = 0.1;
+
+// Motion Blur
+user bool mblur = true ;
+user bool mblur_autostop = true ;
+user float mblur_recovery = 64 ;
+user float mblur_recovery2 = 90 ;
+user float mblur_strength = 64 ;
+user float mblur_threshold = 30 ;
+user int mblur_blendmode = 1 ;
+user int mblur_samples = 5 ;
