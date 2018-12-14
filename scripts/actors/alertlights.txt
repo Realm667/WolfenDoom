@@ -9,12 +9,8 @@
 */
 class AlertPointLight : PointLight replaces PointLight
 {
-	bool sneakables;
-
 	override void PostBeginPlay()
 	{
-		sneakables = SneakableActors();
-
 		if (!bDormant) { SpawnLight(); }
 
 		Super.PostBeginPlay();
@@ -38,7 +34,8 @@ class AlertPointLight : PointLight replaces PointLight
 
 	void SpawnLight()
 	{
-		if (sneakables) { A_SpawnItemEx("AlertLight", flags:SXF_SETMASTER); } // Only spawn AlertLight if there are sneakables in the level
+		Actor mo = Spawn("AlertLight", pos);
+		if (mo) { mo.master = self; }
 
 		bDormant = false;
 	}
@@ -48,18 +45,6 @@ class AlertPointLight : PointLight replaces PointLight
 		A_RemoveChildren(TRUE, RMVF_MISC);
 
 		bDormant = true;
-	}
-
-	bool SneakableActors() // Are there sneakable actors in the level?
-	{
-		ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2); // Just iterate over the sneakable eyes - faster than all Nazi actors
-		StealthBase mo;
-		while (mo = StealthBase(it.Next(true)))
-		{
-			return true;
-		}
-
-		return false;
 	}
 }
 
@@ -114,20 +99,23 @@ class AlertLight : Actor
 		if (!checkRadius) { checkRadius = 64; } // If nothing was set, use 64 map unit radius
 	}
 
-	void A_AddVisibility(int minlight = 0)
+	void A_AddVisibility(Actor lighttarget = null, int minlight = 0)
 	{
-		if (target)
+		if (!lighttarget) { lighttarget = target; } // For backwards compatibility, just in case...
+
+		if (lighttarget)
 		{
-			Inventory vis = target.FindInventory("BoAVisibility");
+			Inventory vis = lighttarget.FindInventory("BoAVisibility");
 			if (vis)
 			{
 				double brightness = 1;
 				if (tracer) { brightness = min(tracer.alpha * 1.5, 1.0); }
 				if (master) { brightness = (master.args[0] + master.args[1] + master.args[2]) / (255. * 3) * 1.25; } // Calculate the light's overall brightness
 
-				double amount = checkRadius * 2 - Distance3d(target) + 8 + minlight; // Calculate visibility based on how close the player is to the light
+				double amount = checkRadius * 2 - Distance3d(lighttarget) + 8 + minlight; // Calculate visibility based on how close the player is to the light
 
 				amount *= brightness; // Adjust based on brightness level
+				amount = max(amount, 0); // No negative visibility level
 
 				oldVisibility = BoAVisibility(vis).extravisibility;
 				BoAVisibility(vis).extravisibility  = int(oldvisibility + Max(amount - oldVisibility, 0)); // Set the new visibility - use delta in value instead of overriding so that multiple lights can be additive in visibility
@@ -137,13 +125,15 @@ class AlertLight : Actor
 
 	override void Tick()
 	{
-		A_LookEx(LOF_NOSOUNDCHECK | LOF_DONTCHASEGOAL | LOF_NOSEESOUND | LOF_NOJUMP, 0, checkRadius * 2, 0, 360, null);
-
-		if (target)
+		for (int i = 0; i < MAXPLAYERS; i++)
 		{
-			A_AddVisibility();
-			target = null;
+			if (playeringame[i])
+			{
+				if (Distance3D(players[i].mo) < checkRadius * 2) { A_AddVisibility(players[i].mo); }
+			}
 		}
+
+		Super.Tick();
 	}
 }
 
