@@ -178,10 +178,11 @@ class BoACompass : CustomInventory
 		CompassHandler compassEvent = CompassHandler(EventHandler.Find("CompassHandler"));
 		if (!compassEvent) { return; }
 
-		int i = compassEvent.CompassItems.Find(thing);
+		int i = compassEvent.FindCompassItem(thing);
 
 		if (i < compassEvent.CompassItems.Size())
 		{
+			compassEvent.CompassItems[i].Destroy();
 			compassEvent.CompassItems.Delete(i, 1);
 			compassEvent.CompassItems.ShrinkToFit();
 		}

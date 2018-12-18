@@ -98,6 +98,7 @@ class CompassHandler : EventHandler
 
 		if (i < CompassItems.Size())
 		{
+			CompassItems[i].Destroy();
 			CompassItems.Delete(i, 1);
 			CompassItems.ShrinkToFit();
 		}		
