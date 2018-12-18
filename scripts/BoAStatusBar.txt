@@ -722,7 +722,7 @@ class BoAStatusBar : BaseStatusBar
 	void DrawCrosshairHint()
 	{
 		int crosshair = 0;
-		Class<Inventory> crosshairstring;
+		String crosshairstring;
 		color clr = 0xFF8800; // Default color is orange.
 		TextureID CrosshairImage;
 		double size = 1.0;
@@ -750,6 +750,10 @@ class BoAStatusBar : BaseStatusBar
 			{
 				clr = 0xDEDEDE;  // If it's a status indicator, make it white/grey
 			}
+			else
+			{
+				clr = 0x00FF00; // Otherwise make it green (as if the item is in inventory)
+			}
 
 			CrosshairImage = TexMan.CheckForTexture("XHAIR" .. crosshair, TexMan.Type_Any);
 
@@ -770,48 +774,77 @@ class BoAStatusBar : BaseStatusBar
 
 		if (!CrosshairImage && crosshairstring)
 		{
-			let def = GetDefaultByType(crosshairstring);
+			Class<Inventory> item = crosshairstring;
 
-			if (def)
+			if (item) // If it's a valid inventory item, use the inventory actor class's info
+			{ 
+				let def = GetDefaultByType(item);
+
+				if (def)
+				{
+					TextureID icon = def.Icon; // First, try to use the Inventory item's icon as the crosshair
+
+					if (icon)
+					{
+						dimensions = TexMan.GetScaledSize(icon);
+
+						if (dimensions.x >= 32 || dimensions.y >= 32) // But only if it's big enough
+						{
+							CrosshairImage = icon;
+						} 
+					}
+
+					if (!CrosshairImage) // If it wasn't big enough, use the spawn state sprite
+					{
+						CrosshairImage = def.SpawnState.GetSpriteTexture(0);
+						dimensions = TexMan.GetScaledSize(CrosshairImage);
+					}
+
+					if (CPlayer.mo.FindInventory(crosshairstring))
+					{
+						clr = 0x00FF00; // Make the icon green if the item is in inventory
+					}
+					else
+					{
+						// Pulse the size of icon if you don't have it
+						size = (crosshair < 80 || (crosshair > 90 && crosshair < 98)) ? 1.0 + 0.1 * sin(level.time * 15 % 360) : 1.0;
+					}
+
+					// Force everything to 52 pixels at widest dimension
+					if (dimensions.x > dimensions.y)
+					{
+						dimensions.y *= 52 / dimensions.x;
+						dimensions.x = 52;
+					}
+					else
+					{
+						dimensions.x *= 52 / dimensions.y;
+						dimensions.y = 52;
+					}
+				}
+			}
+			else // Fall back to trying to use the string value as an image name
 			{
-				TextureID icon = def.Icon; // First, try to use the Inventory item's icon as the crosshair
+				TextureID icon = TexMan.CheckForTexture(crosshairstring, TexMan.Type_Any);
 
 				if (icon)
 				{
 					dimensions = TexMan.GetScaledSize(icon);
 
-					if (dimensions.x >= 32 || dimensions.y >= 32) // But only if it's big enough
+					CrosshairImage = icon;
+					clr = 0x00FF00; // Make the icon green as if the item is in inventory
+
+					// Force everything to 52 pixels at widest dimension
+					if (dimensions.x > dimensions.y)
 					{
-						CrosshairImage = icon;
-					} 
-				}
-
-				if (!CrosshairImage) // If it wasn't big enough, use the spawn state sprite
-				{
-					CrosshairImage = def.SpawnState.GetSpriteTexture(0);
-					dimensions = TexMan.GetScaledSize(CrosshairImage);
-				}
-
-				if (CPlayer.mo.FindInventory(crosshairstring))
-				{
-					clr = 0x00FF00; // Make the icon green if the item is in inventory
-				}
-				else
-				{
-					// Pulse the size of icon if you don't have it
-					size = (crosshair < 80 || (crosshair > 90 && crosshair < 98)) ? 1.0 + 0.1 * sin(level.time * 15 % 360) : 1.0;
-				}
-
-				// Force everything to 52 pixels at widest dimension
-				if (dimensions.x > dimensions.y)
-				{
-					dimensions.y *= 52 / dimensions.x;
-					dimensions.x = 52;
-				}
-				else
-				{
-					dimensions.x *= 52 / dimensions.y;
-					dimensions.y = 52;
+						dimensions.y *= 52 / dimensions.x;
+						dimensions.x = 52;
+					}
+					else
+					{
+						dimensions.x *= 52 / dimensions.y;
+						dimensions.y = 52;
+					}
 				}
 			}
 		}

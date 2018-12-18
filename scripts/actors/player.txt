@@ -54,7 +54,7 @@ class BoAPlayer : PlayerPawn
 	Weapon LastWeapon;
 	Line UseTarget;
 	int crosshair;
-	Class<Inventory> crosshairstring;
+	String crosshairstring;
 	Actor climbing;
 	int interactiontimeout;
 
@@ -744,7 +744,7 @@ class BoAPlayer : PlayerPawn
 			AimActor = actortrace.HitActor;
 		}
 
-		if (AimLine && !crosshair)
+		if (AimLine && !crosshair || AimLine.GetUDMFInt("user_forcecrosshair"))
 		{
 			// Only show custom crosshair if the line is running a script, is a locked door or puzzle item use line, or has a UDMF lock number
 			//  Otherwise - Why?  It's not an activation line, so what's the point of showing a hint?
