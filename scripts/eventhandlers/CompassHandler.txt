@@ -1,8 +1,13 @@
+class CompassIcon
+{
+	Actor mo;
+	String icon;
+	double alpha;
+}
+
 class CompassHandler : EventHandler
 {
-	Array<Actor> ScannableThings; // I wish we could do dynamic arrays of structs...
-	Array<String> ThingIcons;
-	Array<double> ThingAlpha;
+	Array<CompassIcon> CompassItems;
 	const compassX = 85.0;
 	const compassY = 105.0;
 	const compassRadius = 46.0;
@@ -10,6 +15,15 @@ class CompassHandler : EventHandler
 	const distFactor = 0.1;
 
 	double drawflash;
+
+	uint FindCompassItem(Actor mo) // Helper function to find a thing in a child class (Used in place of CompassItems.Find(mo) since the mo is nested in a CompassIcon object
+	{
+		for (int i = 0; i < CompassItems.Size(); i++)
+		{
+			if (CompassItems[i] && CompassItems[i].mo == mo) { return i; }
+		}
+		return CompassItems.Size();
+	}
 
 	static clearscope String GetDefaultIcon(Actor thing, bool usesprite = false) // Icon handling for anything that doesn't have the icon set already (CompassItem actors handle their icons internally)
 	{
@@ -27,7 +41,7 @@ class CompassHandler : EventHandler
 			TextureID icon = thing.CurState.GetSpriteTexture(0);
 			txName = TexMan.GetName(icon);
 
-			// Fall back to the orange exclamation point if it's invisible (this is what the Exclamations generally use)
+			// Fall back to the orange exclamation point if it's invisible or a model (this is what the Exclamations generally use)
 			if (txName == "TNT1A0" || txName == "MDLSA0") { txName = "GOAL2"; }
 		}
 		else if (thing.GetRenderStyle() != STYLE_None || thing is "TankBase") // Anything else that is set to show up (usually via ACS) will use GOAL1 if it's not invisible
@@ -42,62 +56,51 @@ class CompassHandler : EventHandler
 	{
 		if (!thing) { return; }
 
-		int i = ScannableThings.Find(thing);
-		if (i < ScannableThings.Size()) // If it's already there, just update the icon
+		int i = FindCompassItem(thing);
+		if (i < CompassItems.Size()) // If it's already there, just update the icon
 		{
-			ThingIcons[i] = iconName;
+			CompassItems[i].icon = iconName;
 		}
 		else
 		{
+			CompassIcon item = New("CompassIcon");
+			item.mo = thing;
+			item.icon = iconName;
+			item.alpha = 0.0;
+
 			if (thing is "ObjectiveIcon" || thing is "ExclamationBase")
 			{ // Push these to be drawn on top
-				ScannableThings.Push(thing);
-				ThingIcons.Push(iconName);
-				ThingAlpha.Push(0.0);
+				CompassItems.Push(item);
 			}
 			else
 			{ // Insert these to be drawn behind other objects
-				ScannableThings.Insert(0, thing);
-				ThingIcons.Insert(0, iconName);
-				ThingAlpha.Insert(0, 0.0);
+				CompassItems.Insert(0, item);
 			}
 		}
-	}
-
-	override void OnRegister()
-	{
-		ScannableThings.Clear();
-		ThingIcons.Clear();
 	}
 
 	override void WorldTick()
 	{
-		Actor mo;
-
-		for (int i = 0; i < ScannableThings.Size(); i++)
+		for (int i = 0; i < CompassItems.Size(); i++)
 		{
-			if (mo = ScannableThings[i])
+			if (CompassItems[i].mo)
 			{
 				// Fade to the icon's alpha value
-				if (ThingAlpha[i] < mo.alpha) { ThingAlpha[i] = min(ThingAlpha[i] + 0.05, mo.alpha); }
-				else if (ThingAlpha[i] > mo.alpha) { ThingAlpha[i] = max(ThingAlpha[i] - 0.05, mo.alpha); }
+				if (CompassItems[i].alpha < CompassItems[i].mo.alpha) { CompassItems[i].alpha = min(CompassItems[i].alpha + 0.05, CompassItems[i].mo.alpha); }
+				else if (CompassItems[i].alpha > CompassItems[i].mo.alpha) { CompassItems[i].alpha = max(CompassItems[i].alpha - 0.05, CompassItems[i].mo.alpha); }
 			}
 		}
 	}
 
 	override void WorldThingDestroyed(WorldEvent e)
 	{
-		int i = ScannableThings.Find(e.Thing);
+		int i = FindCompassItem(e.Thing);
 
-		if (i < ScannableThings.Size())
+		if (i < CompassItems.Size())
 		{
-			ScannableThings.Delete(i, 1);
-			ThingIcons.Delete(i, 1);
-			ThingAlpha.Delete(i, 1);
-			ScannableThings.ShrinkToFit();
-			ThingIcons.ShrinkToFit();
-			ThingAlpha.ShrinkToFit();
-		}
+			CompassItems.Delete(i, 1);
+			CompassItems.ShrinkToFit();
+		}		
 	}
 
 	override void RenderOverlay( RenderEvent e )
@@ -124,15 +127,15 @@ class CompassHandler : EventHandler
 			DrawToHUD.DrawShapeTexture(cmpsrose, (compassX, compassY), compassalpha, e.ViewAngle - 90); // Use player angle, offset so that 90 degrees on the map is shown as north
 
 			// Draw icons
-			for (int i = 0; i < ScannableThings.Size(); i++)
+			for (int i = 0; i < CompassItems.Size(); i++)
 			{
-				Actor mo = ScannableThings[i];
+				Actor mo = CompassItems[i].mo;
 				if (!mo) { continue; }
 				if (mo is "Inventory" && Inventory(mo).Owner) { continue; }
 				if (mo is "ScientistUniform" && !mo.bSolid) { continue; }
 				if (mo.bDormant || mo.health <= 0) { if (am_cheat % 4 < 1) { continue; } }
 
-				TextureID icon = TexMan.CheckForTexture(ThingIcons[i], TexMan.Type_Any);
+				TextureID icon = TexMan.CheckForTexture(CompassItems[i].icon, TexMan.Type_Any);
 				Vector2 relativeLocation = LevelLocals.Vec2Diff(e.ViewPos.xy, mo.pos.xy);
 
 				// Account for chasecam
@@ -172,14 +175,14 @@ class CompassHandler : EventHandler
 				if (maxsize > compassIconSize) { scale = compassIconSize / maxsize; }
 
 				// If it's the default 'dot' icon...
-				if (ThingIcons[i] == "GOAL1")
+				if (CompassItems[i].icon == "GOAL1")
 				{
 					// Scale the icon slightly based on size (radius) of the actor
 					scale *= clamp(mo.radius / 32.0, 0, 1.0) * 0.75 + 0.25;
 				}
 
 				// Fade the icon the farther away the thing is
-				double alpha = ThingAlpha[i] * compassalpha * clamp(2048 / max(p.mo.Distance3D(mo), 0.1), 0.25, 0.95);
+				double alpha = CompassItems[i].alpha * compassalpha * clamp(2048 / max(p.mo.Distance3D(mo), 0.1), 0.25, 0.95);
 
 				// Dark outline/shadow effect behind the icon
 				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * 1.25, 0x050505);
