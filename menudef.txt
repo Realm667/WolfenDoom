@@ -208,17 +208,17 @@ OptionMenu "RenderOptions"
 	Title  "Rendering Options"
 	StaticText "WARNING: 2d settings require level restart"
 
-	Slider "FOV", "fov", 80, 110, 2
+	Slider "FOV", "fov", 80, 110, 2, 0
 	Option "2d Trees","bidiswitch","OnOff"
 	Option "Reflections","gl_plane_reflection","OnOff"
 	StaticText ""
 	StaticText "Distance is applied in map units"
 	StaticText "Decrease following values to improve in-game performance"
-	Slider "Grass","grasslod",1024,16384,1024
-	Slider "Scenery","scenelod",1024,16384,1024
-	Slider "Special Effects","sfxlod",1024,16384,1024
-	Slider "Trees","treeslod",1024,16384,1024
-
+	Slider "Grass","grasslod",1024,16384,1024, 0
+	Slider "Scenery","scenelod",1024,16384,1024, 0
+	Slider "Special Effects","sfxlod",1024,16384,1024, 0
+	Slider "Trees","treeslod",1024,16384,1024, 0
+	Slider "Sprite Shadows", "cl_boaspriteshadowdistance", 0, 4096, 128, 0
 }
 
 OptionMenu "PostProcessShaderOptions"
