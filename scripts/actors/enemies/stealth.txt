@@ -172,7 +172,7 @@ class AlertMarker : Actor
 			Goto Fade;
 		Fade:
 			EXCL C 1 {
-				A_Warp(AAPTR_MASTER, 0, 0, 28 + ((master && master.bBoss) ? 84 : 64));
+				A_Warp(AAPTR_MASTER, 0, 0, 28 + (master && master.bBoss) ? 84 : 64);
 				A_FadeOut(0.01);
 			}
 			Loop;
@@ -192,7 +192,7 @@ class AlertMarkerAlpha : AlertMarker
 	States
 	{
 		Spawn:
-			EXCL C 1 A_Warp(AAPTR_MASTER, 0, 0, (master && master.bBoss) ? 84 : 64);
+			EXCL C 1 A_Warp(AAPTR_MASTER, 0, 0, 28 + (master && master.bBoss) ? 84 : 64);
 			Loop;
 	}
 }
