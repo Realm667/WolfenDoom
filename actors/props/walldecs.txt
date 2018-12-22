@@ -242,3 +242,54 @@ ACTOR Wall_CivilianFemale2 : Wall_CivilianMale4
 		Stop
 	}
 }
+
+//FLAT DECS//
+ACTOR CraterGrass
+{
+	//$Category Battlefield (Wolf3D)
+	//$Title Crater (Grass)
+	//$Color 4
+	Radius 128
+	Height 0
+	Scale 0.25
+	+FLATSPRITE
+	States
+	{
+	Spawn:
+		KRAT A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR CraterSnow : CraterGrass
+{
+	//$Title Crater (Snow)
+	States
+	{
+	Spawn:
+		KRAT B -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR CraterDirt : CraterGrass
+{
+	//$Title Crater (Dirt)
+	States
+	{
+	Spawn:
+		KRAT C -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR SnowPile1 : CraterGrass
+{
+	//$Title Snowpile Large
+	States
+	{
+	Spawn:
+		KRAT D -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
