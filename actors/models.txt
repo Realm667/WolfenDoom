@@ -764,6 +764,36 @@ ACTOR Luftschiff : 3dObstacle
 	+NOGRAVITY
 }
 
+ACTOR Luftschiff_End : SwitchableDecoration
+{
+	//$Category Models (Wolf3D)/Ships
+	//$Title Luftschiff LZ130 (Castle Wolfenstein)
+	//$Color 3
+	RenderRadius 4096
+	Radius 32
+	Height 32
+	-SOLID
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Wait
+	Active:
+		"####" A 35
+		Loop
+	Inactive:
+		MDLA A 0 A_PlaySound("UFOEXPL", CHAN_AUTO, 12.0, FALSE, ATTN_NONE)
+		"####" A 0 A_NoBlocking
+		"####" A 0 A_SpawnItemEx("LZ130Nuke", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
+		"####" A 0 A_SpawnItemEx("LZ130SmokePillar", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS)
+		"####" A 1 A_SpawnItemEx("LZ130SmokePillar", 0, 0, -512, 0, 0, 0, 0, SXF_TRANSFERPOINTERS)
+		"####" A 10
+		"####" A 1 A_FadeOut(0.0001)
+		Stop
+	}
+}
+
 //Return to Castle Wolfenstein models
 ACTOR RTCWGenerator : 3dObstacle
 {

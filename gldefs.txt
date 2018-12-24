@@ -304,6 +304,33 @@ FlickerLight FireSpawnerLarge
 	Attenuate 1
 }
 
+FlickerLight FireSpawnerHuge
+{
+	Color 1.0 0.6 0.0
+	Size 128
+	SecondarySize 180
+	Chance 0.6
+	Attenuate 1
+}
+
+FlickerLight FireSpawnerImmense
+{
+	Color 1.0 0.6 0.0
+	Size 144
+	SecondarySize 200
+	Chance 0.6
+	Attenuate 1
+}
+
+FlickerLight FireSpawnerInferno
+{
+	Color 1.0 0.6 0.0
+	Size 192
+	SecondarySize 272
+	Chance 0.6
+	Attenuate 1
+}
+
 FlickerLight AstrosteinExplosionSpawnerLarge
 {
 	Color 0.3 1.0 0.0
@@ -331,6 +358,9 @@ FlickerLight ProtoExplosionSpawnerLarge
 	Attenuate 1
 }
 
+Object HugeFlame 	{ frame TNT1 { light FireSpawnerHuge } }
+Object ImmenseFlame { frame TNT1 { light FireSpawnerImmense } }
+Object InfernoFlame { frame TNT1 { light FireSpawnerInferno } }
 Object LargeFlame 	{ frame TNT1 { light FireSpawnerLarge } }
 Object MediumFlame 	{ frame TNT1 { light FireSpawnerMedium } }
 Object SmallFlame 	{ frame TNT1 { light FireSpawnerSmall } }
