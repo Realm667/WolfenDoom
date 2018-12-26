@@ -109,3 +109,51 @@ class Debris_Wood_FloorCeiling : Debris_Vent_FloorCeiling
 			Stop;
 	}
 }
+
+// Workaround for this bug: https://forum.zdoom.org/viewtopic.php?f=2&t=62967 - Model by Talon1024
+class ManholeCover3D : Debris_Vent_FloorCeiling
+{
+	Default
+	{
+		//$Category Models (Wolf3D)/Scenery
+		//$Title Manhole Cover (3D)
+		//$Color 3
+		
+		-USESPECIAL
+		-SHOOTABLE
+		+INVULNERABLE
+		Height 2;
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A 1;
+		Active:
+			MDLA "#" 0 {
+				if (!broken && target && abs(pos.z - target.pos.z) < 48) { return ResolveState("Death"); }
+				return ResolveState(null);
+			}
+		StaticLoop:
+			MDLA "#" 35;
+			Wait;
+		Inactive:
+		Death:
+			TNT1 A 0 {
+				broken = True;
+
+				A_SpawnItemEx("PowerPlantSmokePuffSmall", 0, 0, 32, 0, 0, 0, 0, 0);
+
+				S_Sound("DSMETDST", CHAN_AUTO, 0.5, ATTN_NORM);
+
+				for (int i = 0; i < 4; i++) {
+					A_SpawnItemEx("Debris_Trash", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_Trash2", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
+				}
+
+				bNoInteraction = True;
+			}
+			TNT1 A -1;
+			Stop;
+	}
+}

@@ -99,3 +99,22 @@ ACTOR BoACyanKey : Key
 		Loop
 	}
 }
+
+ACTOR SkullKey : PuzzleItem
+{
+	//$Title Occult Skull Key (Puzzle 4)
+	Scale 0.17
+	PuzzleItem.Number 4
+	Inventory.Icon SKLKB0
+	Inventory.PickupSound "key/skullkey"
+	PuzzleItem.FailMessage "$SKULLF"
+	Inventory.PickupMessage "$SKULLP"
+	-FLOATBOB
+	-NOGRAVITY
+	States
+	{
+	Spawn:
+		SKLK A -1
+		Stop
+	}
+}
