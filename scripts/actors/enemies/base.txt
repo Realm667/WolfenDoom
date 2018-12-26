@@ -1709,7 +1709,7 @@ class Nazi : Base
 		//  NOTE: This doesn't work properly when the player has NOTARGET enabled (or is wearing a disguise and has no weapon raised).
 		if (health > 0 && bShootable)
 		{
-			if (user_sneakable && bFriendly && patrolgoal && patrolgoal.args[0] == -1)
+			if (user_sneakable && bFriendly && user_incombat && patrolgoal && patrolgoal.args[0] == -1)
 			{
 				MeleeRange = 0; // To bypass the internal A_Chase "goal reached" logic
 
@@ -1721,6 +1721,7 @@ class Nazi : Base
 					LastEnemy = null;
 					A_ClearTarget();
 					MeleeRange = Default.MeleeRange;
+					user_incombat = false;
 					SetStateLabel("Spawn");
 				}
 				else // Otherwise, keep trying to get there (necessary because A_Chase clears goal and target when within MeleeRange of goal)

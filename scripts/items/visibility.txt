@@ -43,12 +43,12 @@ class BoAVisibility : CustomInventory
 		SneakableGuardEyesAlerted mo;
 
 		int count;
-		while (mo = SneakableGuardEyesAlerted(it.Next(true))) { count++; }
+		while (mo = SneakableGuardEyesAlerted(it.Next())) { count++; }
 
 		it = ThinkerIterator.Create("Nazi", Thinker.STAT_DEFAULT);
 		Nazi nmo;
 
-		while (nmo = Nazi(it.Next(true)))
+		while (nmo = Nazi(it.Next()))
 		{
 			if (
 				!nmo.user_sneakable &&

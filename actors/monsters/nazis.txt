@@ -358,7 +358,7 @@ ACTOR WMP40GuardSleep : WMP40Guard
 		Goto Look
 	Look:
 		"####" O 0 A_Playsound("nazi/snore", CHAN_VOICE, 1.0, 0, ATTN_STATIC)
-		"####" O 40 A_Look()
+		"####" O 40 A_NaziLook
 		"####" PPP 10 A_SpawnItemEx("SleepEffect", random(-2,2), random(-2,2), random(24,32), 0, 0, 1, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
 		Loop
 	See: //doesn't roll - ozy81
