@@ -1,55 +1,47 @@
-ACTOR Rune_Fa : PuzzleItem
+ACTOR Rune_Fa : Soul
 {
 	//$Category Puzzle Items (Wolf3D)
-	//$Title Armanen Runes, Fa (Puzzle 1)
-	//$Color 5
-	PuzzleItem.Number 1
-	PuzzleItem.FailMessage "$RUNES"
+	//$Title Soul Rune, Fa (+100)
+	//$Color 6
 	Inventory.Amount 1
 	Inventory.MaxAmount 1
-	Inventory.Icon RHUDB0
 	Inventory.PickupMessage "$RUNEFA"
-	+INVENTORY.INVBAR
 	+COUNTITEM
 	+FLOATBOB
 	+NOGRAVITY
 	States
 	{
 	Spawn:
-		RUNE IHBJKKKKJBHI 8
+		RUNE A -1
 		Loop
 	}
 }
 
 ACTOR Rune_Gibor : Rune_Fa
 {
-	//$Title Armanen Runes, Gibor (Puzzle 2)
-	PuzzleItem.Number 2
-	Inventory.Icon RHUDC0
+	//$Title Soul Rune, Gibor (+100)
 	Inventory.PickupMessage "$RUNEGBR"
 	States
 	{
 	Spawn:
-		RUNE MLCNOOOONCLM 8
+		RUNE B -1
 		Loop
 	}
 }
 
 ACTOR Rune_Tyr : Rune_Fa
 {
-	//$Title Armanen Runes, Tyr (Puzzle 3)
-	PuzzleItem.Number 3
-	Inventory.Icon RHUDA0
+	//$Title Soul Rune, Tyr (+100)
 	Inventory.PickupMessage "$RUNETYR"
 	States
 	{
 	Spawn:
-		RUNE EDAFGGGGFADE 8
+		RUNE C -1
 		Loop
 	}
 }
 
-ACTOR SkullKey : Rune_Fa
+ACTOR SkullKey : PuzzleItem
 {
 	//$Title Occult Skull Key (Puzzle 4)
 	Scale 0.17
