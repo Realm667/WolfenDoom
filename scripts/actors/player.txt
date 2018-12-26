@@ -608,15 +608,15 @@ class BoAPlayer : PlayerPawn
 		ThinkerIterator it = ThinkerIterator.Create("PlayerEffect", Thinker.STAT_DEFAULT - 4);
 		PlayerEffect mo;
 
-		while (mo = PlayerEffect(it.Next(true)))
+		while (mo = PlayerEffect(it.Next()))
 		{
 			if (mo.master && mo.master != self) { continue; } // Only look at effects that belong to this player actor
 			if (mo is effect) { return; } // The effect already exists, so abort so we don't spawn it again
 		}
 
 		// If it wasn't already there, spawn this effect
-		Actor new = Spawn(effect);
-		if (new) { new.master = self; }
+		Actor newEffect = Spawn(effect);
+		if (newEffect) { newEffect.master = self; }
 	}
 
 	// Function to remove any spawned copy of an effect that is a child of the player
@@ -625,7 +625,7 @@ class BoAPlayer : PlayerPawn
 		ThinkerIterator it = ThinkerIterator.Create("PlayerEffect", Thinker.STAT_DEFAULT - 4);
 		PlayerEffect mo;
 
-		while (mo = PlayerEffect(it.Next(true)))
+		while (mo = PlayerEffect(it.Next()))
 		{
 			if (mo.master && mo.master != self) { continue; } // Only look at effects that belong to this player actor
 			if (mo is effect) { mo.SetStateLabel('null'); } // Remove the effect, if found
