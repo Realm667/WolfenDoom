@@ -414,36 +414,13 @@ class TurretGun : ActorPositionable
 			MDLA A 35 DoReload();
 			MDLA A 5 A_PlaySound("mp40/reload", CHAN_WEAPON);
 			MDLA A 5;
-			MDLA A 0 {
-				if (cooldowntimeout > 0) return ResolveState("Cooldown");
-				return SpawnState;
-			}
+			MDLA A 0 { if (cooldowntimeout > 0) { SetStateLabel("Cooldown"); } }
 			Goto Spawn;
 		Cooldown:
 			MDLA A 0 DoCoolDown();
 			Goto Spawn;
 		Fire:
-			MDLA ABCD 2 {
-				A_PlaySound("mp40/fire", CHAN_WEAPON);
-				A_SpawnItemEx("9MMCasing", 4 * scale.x, 4 * scale.x, 8 * scale.y, 8, Random(-2,2), Random(0,4), Random(50,80), SXF_NOCHECKPOSITION);
-				A_SpawnItemEx("KTFlare", 34 * scale.x * cos(-pitch), 0, 8 * scale.y + 34 * scale.x * sin(-pitch), 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERROLL | SXF_TRANSFERPITCH);
-				A_SpawnItemEx("TurrSmokeSpawner", 10 * scale.x * cos(-pitch), 0, 8 * scale.y + 34 * scale.x * sin(-pitch), 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERROLL | SXF_TRANSFERPITCH);
-				A_SpawnProjectile("KTurretTracer", 8 * scale.y, 0, angle + FRandom(-1.0, 1.0), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, pitch + FRandom(-1.0, 1.0));
-
-				shotcount++;
-				heatlevel++;
-
-				if (maxshotcount && shotcount >= maxshotcount)
-				{
-					return ResolveState("Reload");
-				}
-				if (heatthreshold && heatlevel > heatthreshold)
-				{
-					cooldowntimeout = cooldowntime;
-					return ResolveState("Cooldown");
-				}
-				return ResolveState(null);
-			}
+			MDLA ABCD 2 DoFire();
 			Goto Spawn;
 	}
 
@@ -489,6 +466,36 @@ class TurretGun : ActorPositionable
 		RotateWithMaster(ROT_MATCHROLL);
 
 		Actor.Tick();
+	}
+
+	void DoFire()
+	{
+		A_PlaySound("mp40/fire", CHAN_WEAPON);
+
+		A_SpawnItemEx("9MMCasing", 4 * scale.x, 4 * scale.x, 8 * scale.y, 8, Random(-2,2), Random(0,4), Random(50,80), SXF_NOCHECKPOSITION);
+		A_SpawnItemEx("TurrSmokeSpawner", 10 * scale.x, 0, 8 * scale.x, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERROLL | SXF_TRANSFERPITCH);
+
+		bool temp;
+		Actor origin;
+		[temp, origin] = A_SpawnItemEx("KTFlare", 34 * scale.x, 0, 8 * scale.x, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_SETMASTER);
+
+		if (!origin) { origin = self; }
+		// Spawn the tracer from the flare so that the tracer model isn't visible sticking through the turret gun body
+		origin.A_SpawnProjectile("KTurretTracer", 8 * scale.y, 0, angle + FRandom(-1.0, 1.0), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, pitch + FRandom(-1.0, 1.0));
+
+		shotcount++;
+		heatlevel++;
+
+		if (maxshotcount && shotcount >= maxshotcount)
+		{
+			SetStateLabel("Reload");
+		}
+
+		if (heatthreshold && heatlevel > heatthreshold)
+		{
+			cooldowntimeout = cooldowntime;
+			SetStateLabel("Cooldown");
+		}
 	}
 
 	void DoReload()
@@ -768,33 +775,6 @@ class TurretStand : Actor
 
 		shooter.player.viewheight = PlayerPawn(shooter).viewheight * 3 / 4; 
 
-	/*
-		if (!freezeonreload || !gun.InStateSequence(gun.CurState, gun.FindState("Reload")))
-		{
-			gun.angle += shooter.player.cmd.yaw * (360./65536.);
-			gun.angle = clamp(gun.angle, angle - 90, angle + 90);
-
-			gun.pitch = clamp(gun.pitch - shooter.player.cmd.pitch * (360. / 65536.), -pitch - 55, -pitch + 55);
-
-			gun.LineTrace(gun.angle, 2048, gun.pitch, TRF_THRUHITSCAN | TRF_THRUBLOCK | TRF_THRUACTORS | TRF_THRUSPECIES, 8.0 * scale.y, 0.0, 0.0, crosshairtrace);
-
-			Vector3 offset = crosshairtrace.HitLocation - (shooter.player.camera.pos + (0, 0, shooter.player.viewheight));
-			offset = (RotateVector(offset.xy, -angle), offset.z);
-
-			pangle = angle - atan(-offset.y / offset.x);
-			ppitch = (pitch - atan(offset.z / offset.xy.length()));
-
-			if (ppitch > 180) { ppitch -= 360; }
-
-			ppitch = clamp(ppitch, shooter.pitch - 2, shooter.pitch + 2); // Slowly move pitch to match gun if there's a sudden jump
-			pangle = clamp(pangle, shooter.angle - 2, shooter.angle + 2); // Slowly move angle to match gun if there's a sudden jump
-		}
-
-		shooter.player.MinPitch = ppitch; // Force the pitch to wherever the gun is aiming
-		shooter.player.MaxPitch = ppitch;
-
-		shooter.angle = pangle;
-	*/
 		gun.pitch = clamp(shooter.pitch, -55, 55);
 		gun.angle = clamp(shooter.angle, angle - 70, angle + 70);
 
@@ -821,18 +801,6 @@ class TurretStand : Actor
 				gun.SetStateLabel("Reload");
 			}
 		}
-		// I'm not sure if this is a good idea, but I'll leave it here just in case
-		/*
-		else if (shooter.player.cmd.button & BT_ZOOM)
-		{
-			// Cool down weapon
-			if (gun.InStateSequence(gun.CurState, gun.SpawnState) &&
-				TurretGun(gun).heatlevel > 0)
-			{
-				gun.SetStateLabel("Cooldown");
-			}
-		}
-		*/
 	}
 
 	virtual bool GunIsIdle()
@@ -866,10 +834,7 @@ class TurretStand : Actor
 		}
 
 		shooter.player.PendingWeapon = playerlastweapon;
-/*
-		shooter.player.MinPitch = -90;
-		shooter.player.MaxPitch = 90;
-*/
+
 		shooter.player.viewheight = PlayerPawn(shooter).viewheight;
 		shooter.DamageFactor = shooter.Default.DamageFactor;
 

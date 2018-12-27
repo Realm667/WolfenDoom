@@ -247,3 +247,61 @@ class PlayerTracer : BulletTracer
 		Super.PostBeginPlay();
 	}
 }
+
+class KTurretTracer : PlayerTracer
+{
+	Default
+	{
+		Speed 200.0;
+		BulletTracer.Trail "KTurretTrail";
+	}
+
+	override void PostBeginPlay()
+	{
+		SetDamage(Random(10, 30));
+
+		Super.PostBeginPlay();
+	}
+}
+
+class KTurretTrail : TracerTrail
+{
+	Default
+	{
+		Alpha 1.0; // Start out at full alpha
+	}
+}
+
+class KTFlare : ActorPositionable
+{
+	Default
+	{
+		+NOGRAVITY
+		+ROLLSPRITE
+		+FORCEXYBILLBOARD
+		Scale 0.25;
+		Alpha 0.5;
+		RenderStyle "Add";
+	}
+
+	States
+	{
+		Spawn:
+			FLAR B 1 Bright Light("3dFlare") A_FadeOut(0.075);
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		roll += Random(0, 360);
+	}
+
+	override void Tick()
+	{
+		Actor.Tick();
+
+		RotateWithMaster(ROT_MatchAngle);
+	}
+}
