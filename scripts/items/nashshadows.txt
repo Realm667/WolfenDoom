@@ -38,12 +38,20 @@ class Z_SpriteShadow : Actor
 	Inventory casterHasShadow;
 	bool bStopTicking;
 	double heightdelta;
+
 	transient CVar cvShadowDistance;
+	double shadowDist;
+
+	void UpdateShadowDistance(void)
+	{
+		if (!cvShadowDistance) return;
+		shadowDist = cvShadowDistance.GetFloat();
+	}
 
 	override void PostBeginPlay()
 	{
 		cvShadowDistance = CVar.FindCVar("cl_boaspriteshadowdistance");
-
+		UpdateShadowDistance();
 		Super.PostBeginPlay();
 	}
 
@@ -57,7 +65,7 @@ class Z_SpriteShadow : Actor
 			bStopTicking = true;
 			return;
 		}
-		else if (!cvShadowDistance.GetInt() || (caster && caster.CheckSightOrRange(cvShadowDistance.GetInt())))
+		else if (!shadowDist || (caster && caster.CheckSightOrRange(shadowDist)))
 		{
 			return;
 		}
@@ -81,8 +89,21 @@ class Z_SpriteShadow : Actor
 				}
 				else
 				{
-					// always visible for monsters
-					bInvisible = false;
+					let c = players[consoleplayer].camera;
+
+					if (c && c.CheckLocalView(consoleplayer))
+					{
+						// hide shadow if you are under the monster
+						if (c && c.Pos.Z + (c.player ? c.player.viewheight : c.GetCameraHeight()) < Pos.Z)
+							bInvisible = true;
+
+						// always visible for monsters
+						else bInvisible = false;
+					}
+					else
+					{
+						return;
+					}
 				}
 
 				heightdelta = max(1.0 - ((caster.pos.z - FloorZ) / 128), 0.001); // Difference between z position of parent actor and the floor height, as a percentage of an arbitrary number of units (with a min value to avoid division by 0)
@@ -102,7 +123,7 @@ class Z_SpriteShadow : Actor
 				alpha = caster.alpha * 0.5 * heightdelta; // heightdelta makes shadows that are farther from the parent actor more transparent
 
 				// fade the shadow out along a smooth curve as you get closer to the defined max draw distance
-				alpha *= cos(clamp(Distance2D(players[consoleplayer].mo) / cvShadowDistance.GetInt(), 0.0, 1.0) * 180) / 2 + 0.5;
+				alpha *= cos(clamp(Distance2D(players[consoleplayer].mo) / shadowDist, 0.0, 1.0) * 180) / 2 + 0.5;
 
 				// sync scale
 				Scale.X = caster.Scale.X / clamp(heightdelta, 0.666, 1.0); // heightdelta makes shadows that are farther from the parent actor bigger (clamped to 1.5x size)
@@ -182,6 +203,8 @@ class SpriteShadowHandler : EventHandler
 {
 	transient CVar cvShadowDistance;
 
+	double shadowDistOld, shadowDistNew;
+
 	override void OnRegister()
 	{
 		cvShadowDistance = CVar.FindCVar("cl_boaspriteshadowdistance");
@@ -249,6 +272,21 @@ class SpriteShadowHandler : EventHandler
 		PlayerInfo p = players[consoleplayer];
 		if (!p) return;
 
+		double shadowDist = GetShadowDistance();
+
+		// update shadow distance
+		shadowDistNew = shadowDist;
+		if (shadowDistOld != shadowDistNew)
+		{
+			ThinkerIterator it = ThinkerIterator.Create("Z_SpriteShadow");
+			Z_SpriteShadow shadow;
+			while (shadow = Z_SpriteShadow(it.Next()))
+			{
+				shadow.UpdateShadowDistance();
+			}
+			shadowDistOld = shadowDistNew;
+		}
+
 		// look for shadow casters around you
 		ThinkerIterator it = ThinkerIterator.Create("Actor");
 		Actor mo;
@@ -257,7 +295,7 @@ class SpriteShadowHandler : EventHandler
 			if (!mo.bIsMonster || mo is "PlayerPawn" || (mo is "Base" && !Base(mo).shadow) || mo.CountInv("Z_DontShadeMe")) continue;
 
 			// intentionally using 2D distance because it's faster
-			if (mo.Distance2DSquared(p.mo) > cvShadowDistance.GetInt() ** 2)
+			if (mo.Distance2DSquared(p.mo) > shadowDist ** 2)
 			{
 				let shadeMe = Z_ShadeMe(mo.FindInventory("Z_ShadeMe"));
 
@@ -278,5 +316,11 @@ class SpriteShadowHandler : EventHandler
 				mo.A_GiveInventory("Z_ShadeMe", 1);
 			}
 		}
+	}
+
+	double GetShadowDistance(void)
+	{
+		if (!cvShadowDistance) return 0;
+		return cvShadowDistance.GetFloat();
 	}
 }
