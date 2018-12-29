@@ -1,18 +1,21 @@
 class Debris : Actor
 {
 	int moundstyle;
+	bool domound;
 
 	Property MoundStyle:moundstyle;
+	Property DrawMound:domound;
 
 	Default
 	{
 		Height 32;
 		Radius 64;
-		MaxDropoffHeight 48;
 		MaxStepHeight 48;
+		MaxDropoffHeight 48;
 		+SOLID
 		+INVISIBLE
 		Debris.MoundStyle 0;
+		Debris.DrawMound true;
 
 		// Hijack DropItem list for ease of customization.  
 		// If the chance (second parameter) is negative, it's treated as a chance of 255, 
@@ -46,14 +49,15 @@ class Debris : Actor
 
 		double spread = min(Radius * 2, Radius + 32);
 
-		MaxStepHeight *= scale.x;
-		MaxDropoffHeight *= scale.x;
-
-		Actor mound = Spawn("DebrisMound", pos);
-		if (mound)
-		{
-			mound.master = self;
-			mound.frame = clamp(moundstyle, 0, 2);
+		if (domound)
+		{ 
+			Actor mound = Spawn("DebrisMound", pos);
+			if (mound)
+			{
+				mound.master = self;
+				mound.frame = clamp(moundstyle, 0, 2);
+				mound.angle = Random(1, 360);
+			}
 		}
 
 		DropItem drops = GetDropItems();
@@ -87,7 +91,7 @@ class Debris : Actor
 
 						SpawnRandom(item.Name, pr, max(amt, 1), spread * 1.1, spread * 0.75);
 					}
-					else { A_Log(TEXTCOLOR_RED .. "Unknown item class ".. item.Name .." attempted to drop from a debris spawner\n"); }
+					else if (developer) { A_Log(TEXTCOLOR_RED .. "Unknown item class ".. item.Name .." attempted to drop from a debris spawner\n"); }
 				}
 
 				item = item.Next;
@@ -113,6 +117,10 @@ class Debris : Actor
 				Vector2 spawnpos = AngleToVector(spawnangle, spawndist);
 
 				Actor mo = Spawn(debrisclass, pos + (spawnpos, height));
+
+				// Don't keep objects that are spawned on floors above or on the other side of map geometry.
+				if (mo && !CheckSight(mo)) { mo.Destroy(); }
+
 				if (mo)
 				{
 					mo.master = self;
@@ -188,6 +196,8 @@ class DebrisMound : Actor
 	Default
 	{
 		Radius 64;
+		MaxStepHeight 48;
+		MaxDropoffHeight 48;
 		DistanceCheck "scenelod";
 	}
 
@@ -213,12 +223,47 @@ class DebrisMound : Actor
 			return;
 		}
 
-		if (master) { scale = master.scale; }
+		if (master)
+		{
+			scale = master.scale;
+			A_SetSize(master.radius, master.height);
+		}
 
-		double zoffset = VehicleBase.SetPitchRoll(self, Radius * (scale.x - 1), Radius * (scale.x - 1), 60, true);
+		double distx = Radius;
+		double disty = Radius;
+
+		for (int i = 0; i <= 1; i++) { distx = GetMoveDistance(180 * i, distx); }
+		for (int i = 0; i <= 1; i++) { disty = GetMoveDistance(90 + 180 * i, disty); }
+
+		A_SetSize(0);
+
+		double zoffset = VehicleBase.SetPitchRoll(self, distx, disty, 360, true);
+
 		SetOrigin((pos.xy, floorz - zoffset), false);
 
 		Super.PostBeginPlay();
+	}
+
+	double GetMoveDistance(double angle, double range = 256)
+	{
+		Vector2 pointpos = (range, 0);
+
+		double s = sin(angle);
+		double c = cos(angle);
+		pointpos = Vec2Offset(pointpos.x * c + pointpos.y * s, pointpos.x * s - pointpos.y * c);
+
+		if (!level.IsPointInMap((pointpos, floorz))) { return range; }
+
+		bool blocked;
+
+		for (double i = 8; i <= range; i += 8)
+		{
+			blocked = CheckBlock(CBF_DROPOFF | CBF_NOLINES | CBF_NOACTORS, AAPTR_DEFAULT, i, 0, 0, angle);
+
+			if (blocked) { return i; }
+		}
+
+		return range;
 	}
 }
 
@@ -421,7 +466,6 @@ class JunkPile3 : Debris
 		DropItem "DebrisBottle", 0, 2;
 		DropItem "DebrisBottle2", 0, 2;
 		DropItem "Radiator_Short", 128;
-		DropItem "Tires", 128;
 		DropItem "Chair3", 64;
 		DropItem "Table8", 64;
 		DropItem "Bunk_Bed1", 64;

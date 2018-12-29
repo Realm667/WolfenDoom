@@ -11,7 +11,7 @@ class VehicleBase : Base
 	}
 
 	// Handling for terrain-based pitch/roll calculations...
-	static double SetPitchRoll(Actor mo, double xoffset = 0, double yoffset = 0, int cap = 80, bool force = false)
+	static double SetPitchRoll(Actor mo, double xoffset = 0, double yoffset = 0, int cap = 80, bool force = false, double centerxoffset = 0, double centeryoffset = 0)
 	{
 		if (!mo) { return 0; }
 
@@ -28,10 +28,10 @@ class VehicleBase : Base
 		double points[4], minz = 0x7FFFFFFF, maxz = -0x7FFFFFFF;
 
 		// Get the relative z-height at the four corners of the tank
-		points[0] = mo.GetZAt(testlength, testwidth);
-		points[1] = mo.GetZAt(testlength, -testwidth);
-		points[2] = mo.GetZAt(-testlength, testwidth);
-		points[3] = mo.GetZAt(-testlength, -testwidth);
+		points[0] = mo.GetZAt(centerxoffset + testlength, centeryoffset + testwidth);
+		points[1] = mo.GetZAt(centerxoffset + testlength, centeryoffset - testwidth);
+		points[2] = mo.GetZAt(centerxoffset - testlength, centeryoffset + testwidth);
+		points[3] = mo.GetZAt(centerxoffset - testlength, centeryoffset - testwidth);
 
 		for (int i = 0; i < 4; i++)
 		{
@@ -39,7 +39,7 @@ class VehicleBase : Base
 			double maxdrop = mo.master ? mo.master.MaxDropoffHeight : mo.MaxDropoffHeight;
 
 			if (points[i] > mo.pos.z + maxstep) { points[i] = 0; } // Ignore the point if you can't climb that high
-			if (points[i] < mo.pos.z - maxdrop) { points[i] = 0; } // Ignore the point if it's a dropoff
+			else if (points[i] < mo.pos.z - maxdrop) { points[i] = 0; } // Ignore the point if it's a dropoff
 			else { points[i] -= mo.floorz; }
 		}
 
@@ -53,8 +53,8 @@ class VehicleBase : Base
 		// Interpolate to the new values
 		if (force || level.time && level.time < 15)
 		{
-			mo.pitch = -pitchinput;
-			mo.roll = rollinput;
+			mo.pitch = clamp(-pitchinput, -cap, cap);
+			mo.roll = clamp(rollinput, -cap, cap);
 		}
 		else
 		{
