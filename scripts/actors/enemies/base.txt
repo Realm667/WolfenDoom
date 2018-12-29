@@ -971,6 +971,26 @@ class Nazi : Base
 			"####" D 1 A_NaziChase;
 			"####" DDD 1 A_NaziChase(null, null);
 			"####" A 0 { return ResolveState("See.Wounded"); }
+		See.Boss3: // NaziLoper
+			"####" "#" 0 { user_incombat = True; }
+			"####" B 1 A_NaziChase;
+			"####" BBB 1 A_NaziChase(null, null);
+			"####" B 1 A_NaziChase;
+			"####" BBB 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" CCC 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" CCC 1 A_NaziChase(null, null);
+			"####" D 1 A_NaziChase;
+			"####" DDD 1 A_NaziChase(null, null);
+			"####" D 1 A_NaziChase;
+			"####" DDD 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" CCC 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" CCC 1 A_NaziChase(null, null);
+			"####" B 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
+			"####" A 0 { return ResolveState("See"); }
 		See.BossFast: // Faster bosses, like UberMutant
 			"####" "#" 0 { user_incombat = True; }
 			"####" A 1 A_NaziChase;
