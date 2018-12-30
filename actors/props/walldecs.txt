@@ -244,15 +244,19 @@ ACTOR Wall_CivilianFemale2 : Wall_CivilianMale4
 }
 
 //FLAT DECS//
-ACTOR CraterGrass
+ACTOR FlatBase
 {
-	//$Category Battlefield (Wolf3D)
-	//$Title Crater (Grass)
-	//$Color 4
 	Radius 128
 	Height 0
 	Scale 0.25
 	+FLATSPRITE
+}
+
+ACTOR CraterGrass : FlatBase
+{
+	//$Category Battlefield (Wolf3D)
+	//$Title Crater (Grass)
+	//$Color 4
 	States
 	{
 	Spawn:
@@ -292,4 +296,209 @@ ACTOR SnowPile1 : CraterGrass
 		KRAT D -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
+}
+
+ACTOR GoryDecal1 : CraterGrass
+{
+	//$Category Gore (Wolf3D)/Walldecs
+	//$Title Gory Decal 01
+	Scale 1.25
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		BLOW A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR GoryDecal2 : GoryDecal1
+{
+	//$Title Gory Decal 02
+	States
+	{
+	Spawn:
+		BLOW B -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR GoryDecal3 : GoryDecal1
+{
+	//$Title Gory Decal 03
+	States
+	{
+	Spawn:
+		BLOW C -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR GoryDecal4 : GoryDecal1
+{
+	//$Title Gory Decal 04 (Big)
+	Scale 0.50
+	States
+	{
+	Spawn:
+		BLOW D -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR GoryDecal5 : GoryDecal1
+{
+	//$Title Gory Decal 05
+	States
+	{
+	Spawn:
+		BLOW E -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR GoryDecal6 : GoryDecal1
+{
+	//$Title Gory Decal 06
+	States
+	{
+	Spawn:
+		BLOW F -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR GoryDecal7 : GoryDecal1
+{
+	//$Title Gory Decal 07
+	States
+	{
+	Spawn:
+		BLOW G -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR GoryDecal8 : GoryDecal1
+{
+	//$Title Gory Decal 08
+	States
+	{
+	Spawn:
+		BLOW H -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR GoryDecal9 : GoryDecal1 //since this has Save Us it isn't mirrored randomly - ozy81
+{
+	//$Title Gory Decal 09
+	States
+	{
+	Spawn:
+		BLOW I -1
+		Stop
+	}
+}
+
+ACTOR GoryDecal10 : GoryDecal1
+{
+	//$Title Gory Decal 10
+	States
+	{
+	Spawn:
+		BLOW J -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR GoryDecal11 : GoryDecal1
+{
+	//$Title Gory Decal 11
+	States
+	{
+	Spawn:
+		BLOW K -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR GoryDecal12 : GoryDecal1
+{
+	//$Title Gory Decal 12
+	States
+	{
+	Spawn:
+		BLOW L -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR GoryDecal13 : GoryDecal1
+{
+	//$Title Gory Decal 13
+	States
+	{
+	Spawn:
+		BLOW M -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR GoryDecal14 : GoryDecal1
+{
+	//$Title Gory Decal 14
+	States
+	{
+	Spawn:
+		BLOW N -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR GoryDecal15 : GoryDecal1
+{
+	//$Title Gory Decal 15 (Small)
+	States
+	{
+	Spawn:
+		BLOW O -1
+		Stop
+	}
+}
+
+ACTOR GoryDecal16 : GoryDecal1
+{
+	//$Title Gory Decal 16 (Small)
+	States
+	{
+	Spawn:
+		BLOW P -1
+		Stop
+	}
+}
+
+ACTOR GoryDecalSpawner : RandomSpawner //4, 15 & 16 are excluded for obvious reasons - ozy81
+{
+	//$Category Gore (Wolf3D)/Walldecs
+	//$Title Gory Decal Spawner, Random
+	//$Color 4
+	//$Sprite BLOWA0
+	Radius 128
+	Height 0
+	+FLATSPRITE
+	DropItem "GoryDecal1"
+	DropItem "GoryDecal2"
+	DropItem "GoryDecal3"
+	DropItem "GoryDecal4"
+	DropItem "GoryDecal5"
+	DropItem "GoryDecal6"
+	DropItem "GoryDecal7"
+	DropItem "GoryDecal8"
+	DropItem "GoryDecal9"
+	DropItem "GoryDecal10"
+	DropItem "GoryDecal11"
+	DropItem "GoryDecal12"
+	DropItem "GoryDecal13"
+	DropItem "GoryDecal14"
 }
