@@ -91,7 +91,12 @@ ACTOR OccultBlazeFlames
 	States
 	{
 	Spawn:
-		BLZF ABCDCBA 3 A_SpawnProjectile("OccultBlazeFX1")
+		BLZF ABCDCBA 3 {
+				A_SpawnProjectile("OccultBlazeFX1");
+				A_RadiusGive("HeatShaderControl", radius+64, RGF_PLAYERS | RGF_GIVESELF, 32);
+				if (waterlevel > 0) {
+					A_ScaleVelocity(0.0);}
+				}
 		Loop
 	Death:
 		"####" EFGHIJ 3
@@ -108,7 +113,12 @@ ACTOR OccultBlazeFlames2 : OccultBlazeFlames
 	States
 	{
 	Spawn:
-		BLZF ABCDCBA 3 A_SpawnProjectile("OccultBlazeFX2")
+		BLZF ABCDCBA 3 {
+				A_SpawnProjectile("OccultBlazeFX2");
+				A_RadiusGive("HeatShaderControl", radius+64, RGF_PLAYERS | RGF_GIVESELF, 32);
+				if (waterlevel > 0) {
+					A_ScaleVelocity(0.0);}
+				}
 		Loop
 	}
 }
