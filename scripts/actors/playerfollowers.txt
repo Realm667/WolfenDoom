@@ -433,7 +433,11 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				if (!weapon) { weapon = PWEAP_Luger; } // Pretend he picked up a pistol and some ammo somewhere, and he will act like a friendly Guard
 			}
 
-			if (index < Markers.Size()) { currentGoal = Markers[index]; } // If there's a marker spawned, set it as the goal
+			while (index < Markers.Size() && !currentGoal) // If there's a marker spawned, set it as the goal
+			{
+				currentGoal = Markers[index];
+				if (!currentgoal) { index++; }
+			}
 
 			goal = currentGoal;
 
@@ -456,8 +460,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 					}
 					else if (Distance2d(currentGoal) <= max(radius + playerToChase.Radius, 48)) // If within 48 units of goal, good enough - destroy that waypoint, get ready to iterate to the next
 					{
-						Markers[index].Destroy();
-						Markers.Delete(index);
+						DestroyMarkers(0, index); // Destroy this marker and any missed markers that came before it
 						index++;
 					}
 				}
@@ -502,6 +505,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 		if (CheckInventory("Luger9mm", 1)) { weapon = PWEAP_Luger; } // Or give him a weapon via script and he will act like a friendly Guard
 		if (CheckInventory("MP40", 1)) { weapon = PWEAP_MP40; }
 		if (CheckInventory("Sten", 1)) { weapon = PWEAP_Rifle; }
+		if (CheckInventory("TrenchShotgun", 1)) { weapon = PWEAP_Shotgun; }
 
 		if (CheckInventory("GrenadePickup", 1)) { countgrenades = True; grenadechance = grenadechance ? grenadechance : 16; } // If they have a grenade, use it - if they were given as inventory, count them!
 		if (countgrenades && !CheckInventory("GrenadePickup", 1)) { grenadechance = 0; } // If they used all their grenades, don't throw any more
@@ -513,9 +517,10 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 
 		if (target == goal) { target = null; }
 
-		if (!target)
+		if (!target && playerToChase && CheckSight(playerToChase))
 		{
-			if (playerToChase && players[playerToChase.PlayerNumber()].attacker) { target = players[playerToChase.PlayerNumber()].attacker; }
+			// If you don't have a target, and you see the player being attacked by an enemy, target that enemy.
+			if (players[playerToChase.PlayerNumber()].attacker && players[playerToChase.PlayerNumber()].attacker.bIsMonster) { target = players[playerToChase.PlayerNumber()].attacker; }
 		}
 
 		if (target && target.health <= 0) { target = null; }
@@ -525,6 +530,8 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 		ThinkerIterator Finder = ThinkerIterator.Create("Nazi", Thinker.STAT_DEFAULT);
 		Actor mo;
 
+		double targetrange = MaxTargetRange;
+
 		while ( (mo = Actor(Finder.Next())) )
 		{
 			if (
@@ -532,15 +539,15 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				mo.bDormant ||
 				mo.bFriendly == bFriendly ||
 				mo.GetSpecies() == Species ||
-				Distance3d(mo) > MaxTargetRange
+				Distance3d(mo) > targetrange
 			) { continue; }
 
 			if (Distance3d(mo) < 128.0) { enemycount += mo.bBoss ? 4 : 1; }
 
-			if (target && Distance3d(mo) > Distance3d(target)) { continue; }
 			if (target && target.bCountKill > mo.bCountKill) { continue; }
 
 			target = mo;
+			targetrange = Distance3d(mo);
 		}
 
 		// Also look for sneakable actors, and ignore their friendliness attribute
@@ -552,14 +559,15 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				mo.health <= 0 ||
 				mo.bDormant ||
 				mo.GetSpecies() == Species ||
-				Distance3d(mo) > MaxTargetRange
+				Distance3d(mo) > targetrange
 			) { continue; }
-
-			if (Distance3d(mo) < 128.0) { enemycount++; }
 
 			if (Distance3d(mo) < 128.0) { enemycount += mo.bBoss ? 4 : 1; }
 
+			if (target && target.bCountKill > mo.bCountKill) { continue; }
+
 			target = mo;
+			targetrange = Distance3d(mo);
 		}
 
 		if (!target)
@@ -567,8 +575,14 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			LookForEnemies(true); // In no Nazis around, fall back to default algorithm to find an enemy to shoot at
 		}
 		
+		if (enemycount > 3) { bFrightened = True; }
+
+		double targetdist = target ? Distance3d(target) : 0;
+		double playerdist = playerToChase ? Distance2d(playerToChase) : 0;
+
 		if (
 			weapon &&
+			(atPlayer || Random(0, 255) < chaseattackchance) &&
 			target &&
 			target.health > 0 &&
 			target != goal &&
@@ -578,37 +592,49 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			CheckSight(target)
 		)
 		{ // If you have weapon, have a valid target, and it's in line of sight...
-			if (target && Distance3d(target) < 128 + Random(0, 128)) // ...run away from danger if it's too close...  (with some randomness so he doesn't always park himself a set distance from an enemy)
+			if (target && targetdist < 128 + Random(0, 128)) // ...run away from danger if it's too close...  (with some randomness so he doesn't always park himself a set distance from an enemy)
 			{
 				bFrightened = True;
 			}
 
-			if (!nonmoving && (!playerToChase || (Distance2d(playerToChase) > radius + 128 + playerToChase.radius) && forgettarget)) // ...and if you weren't supposed to forget your target when the player is away...
+			if (!nonmoving && (!playerToChase || (playerdist > radius + 128 + playerToChase.radius) && forgettarget)) // ...and if you weren't supposed to forget your target when the player is away...
 			{
 				target = null;
 				goal = playerToChase;
 			}
-			else
+			else if (atPlayer || targetdist < 1024 || Random(0, 255) < chaseattackchance) // ...and you are at the player, or the target is close, or at random chance...
 			{
-				if (weapon != PWEAP_Melee || Distance3d(target) < radius + 32 + target.radius) { // ...and you are in range...
+				if (weapon != PWEAP_Melee || targetdist < radius + 32 + target.radius) { // ...and you are in range...
 					return ResolveState(GetWeaponStateLabel()); // ...attack it
 				}
 			}
 		}
 
-		if (enemycount > 3) { bFrightened = True; }
+		if (playerToChase)
+		{
+			if (atPlayer)
+			{
+				if (!target) {
+					faceangle = playerToChase.angle + 135 + Random[FaceAngle](-15, 15); // Make him look like he might be able to cover your back
+					if (abs(angle - faceangle) > 45) { angle = faceangle; }
+				}
 
-		if (playerToChase && atPlayer) {
-			if (!target) {
-				faceangle = playerToChase.angle + 135 + Random[FaceAngle](-15, 15); // Make him look like he might be able to cover your back
-				if (abs(angle - faceangle) > 45) { angle = faceangle; }
+				if (playerdist > radius + 128 + playerToChase.radius) { // If player moves too far away, go back to following (and forget the target if forgettarget = True)
+					if (forgettarget) { target = null; }
+					return ResolveState("Chase");
+				} else if (playerdist < radius + 16 + playerToChase.radius) { // If too close to player, push away
+					return ResolveState("Chase.Back");
+				}
 			}
-
-			if (Distance2d(playerToChase) > radius + 128 + playerToChase.radius) { // If player moves too far away, go back to following (and forget the target if forgettarget = True)
-				if (forgettarget) { target = null; }
-				return ResolveState("Chase");
-			} else if (Distance2d(playerToChase) < radius + 16 + playerToChase.radius) { // If too close to player, push away
-				return ResolveState("Chase.Back");
+			else
+			{
+				// If player moves too far away, go back to following and forget the target
+				if (playerdist > radius + 1024 + playerToChase.radius)
+				{
+					target = null;
+					goal = playerToChase;
+					return ResolveState("Chase");
+				}
 			}
 		}
 
@@ -683,7 +709,9 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			if (mo) { mo.Destroy(); }
 			Markers[i] = null;
 		}
-		if (start == 0 && end == Markers.Size()) {
+
+		if (start == 0 && end == Markers.Size())
+		{
 			Markers.Clear();
 			Markers.ShrinkToFit();
 			index = 0;
@@ -717,7 +745,12 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 		if (!nonmoving && playerToChase && Level.time % 5 == 0) { // Spawn a waypoint at the player's position every 5 tics if the player has moved and push it into an array
 			if (playerToChase.pos != oldPlayerPos) {
 				Actor mo = Spawn("PathMarker", (playerToChase.pos.x + Random[Offset](-int(playerToChase.Radius), int(playerToChase.Radius)), playerToChase.pos.y + Random[Offset](-int(playerToChase.Radius), int(playerToChase.Radius)), playerToChase.pos.z));
-				if (mo) { Markers.Push(PathMarker(mo)); }
+				if (PathMarker(mo))
+				{
+					PathMarker(mo).playerToChase = PlayerPawn(playerToChase);
+					PathMarker(mo).follower = self;
+					Markers.Push(PathMarker(mo));
+				}
 				oldPlayerPos = playerToChase.pos;
 			}
 		}
@@ -746,6 +779,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			if (allowinteraction)
 			{
 				ACS_NamedExecuteAlways("FollowerMessage", 0, 0, Random(0, 4)); // Pick a random 'I'll stay here' message
+				target = null;
 				activationcount = 0;
 			}
 			else
@@ -761,6 +795,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			if (allowinteraction)
 			{
 				ACS_NamedExecuteAlways("FollowerMessage", 0, 2, Random(0, 4)); // Pick a random 'follow' message
+				target = null;
 				activationcount = 0;
 			}
 			else
@@ -779,6 +814,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			source &&
 			source.health > 0 &&
 			source.bShootable &&
+			source.bIsMonster &&
 			!IsFriend(source) &&
 			(!target || Distance3D(source) < Distance3D(target))
 		) { target = source; } // If the follower is hit by an enemy that's closer than its current target, change targets to the one that shot it
@@ -952,6 +988,9 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 // Minimal actor to use as waypoints
 class PathMarker : Actor
 {
+	PlayerPawn playerToChase;
+	PlayerFollower follower;
+
 	Default
 	{
 		+NOINTERACTION
@@ -965,6 +1004,21 @@ class PathMarker : Actor
 		Spawn:
 			TNT1 A -1;
 			Stop;
+	}	
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (!follower || !playerToChase) { Destroy(); }
+
+		int index = follower.Markers.Find(self);
+
+		// If the player crosses their own path, cut out the loop so the follower takes the most direct route after the player
+		if (index < follower.Markers.Size() - 10 && Distance3D(playerToChase) < 48)
+		{
+			follower.DestroyMarkers(index - 1);
+		}
 	}
 }
 
