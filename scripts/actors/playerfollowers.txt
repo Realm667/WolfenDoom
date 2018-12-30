@@ -36,7 +36,7 @@
 
 	nocatchup (default is 0)
 	- Normally, if a PlayerFollower falls 100 pathmarkers behind the player, the actor
-	  will be warped ahead to the 50th pathmarker (if the player can't see the marker)
+	  will be warped ahead to the halfway pathmarker (if the player can't see the marker)
 	- Setting this boolean to 1 disables that behavior.  This is useful if you want to
 	  force a PlayerFollower along a certain route in the map, and don't want him skipping
 	  ahead.
@@ -84,7 +84,6 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 	Array<PathMarker> Markers;
 	Actor playerToChase, currentGoal;
 	Vector3 oldPlayerPos;
-	int index;
 
 	int weapon;
 	int shots, totalshots;
@@ -421,23 +420,17 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			if ( // If he's far, far behind, warp halfway along the trail *if* the destination spot and the actor aren't in sight of the player.
 				playertochase &&
 				!nocatchup &&
-				Markers.Size() - index >= 100 &&
-				Markers[index + 50] &&
-				!Markers[index + 50].IsVisible(playerToChase, True) &&
+				Markers.Size() >= 100 &&
+				Markers[Markers.Size() / 2] &&
+				!Markers[Markers.Size() / 2].IsVisible(playerToChase, True) &&
 				!IsVisible(playerToChase, True)
 			) 
 			{
-				SetOrigin(Markers[index + 50].pos, true); // Warp to the halfway point
-				DestroyMarkers(index, index + 50); // Clean up the now unused markers and array entries
-				index += 50;
+				SetOrigin(Markers[Markers.Size() / 2].pos, true); // Warp to the halfway point
+				DestroyMarkers(Markers.Size() / 2); // Clean up the now unused markers and array entries
 				if (!weapon) { weapon = PWEAP_Luger; } // Pretend he picked up a pistol and some ammo somewhere, and he will act like a friendly Guard
 			}
-
-			while (index < Markers.Size() && !currentGoal) // If there's a marker spawned, set it as the goal
-			{
-				currentGoal = Markers[index];
-				if (!currentgoal) { index++; }
-			}
+			else if (Markers.Size()) { currentGoal = Markers[Markers.Size() - 1]; }
 
 			goal = currentGoal;
 
@@ -445,7 +438,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 
 			if (playerToChase)
 			{
-				if (playerToChase.health && Distance3d(playerToChase) <= 64 && waterlevel < 2) // If within 64 units of the player, destroy the old waypoints and jump to "Close" state.  Has to be this close so that he can follow you into elevators
+				if (playerToChase.health && Distance3d(playerToChase) <= 64 && waterlevel < 2 && CheckSight(playerToChase)) // If within 64 units of the player, destroy the old waypoints and jump to "Close" state.  Has to be this close so that he can follow you into elevators
 				{
 					DestroyMarkers();
 					return ResolveState("Chase.Near");
@@ -453,15 +446,14 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 
 				if (currentGoal)
 				{
-					if (Distance3d(playerToChase) < Distance3d(currentGoal)) // If closer to player than to goal, destroy the old waypoints and start again fresh
+					if (Distance3d(playerToChase) < Distance3d(currentGoal) && CheckSight(playerToChase)) // If closer to player than to goal, destroy the old waypoints and start again fresh
 					{
 						DestroyMarkers();
 						return ResolveState(null);
 					}
 					else if (Distance2d(currentGoal) <= max(radius + playerToChase.Radius, 48)) // If within 48 units of goal, good enough - destroy that waypoint, get ready to iterate to the next
 					{
-						DestroyMarkers(0, index); // Destroy this marker and any missed markers that came before it
-						index++;
+						DestroyMarkers(Markers.Find(currentGoal));
 					}
 				}
 			}
@@ -588,7 +580,6 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			target != goal &&
 			!target.bDormant &&
 			!target.bInvulnerable &&
-			target.GetSpecies() != Species &&
 			CheckSight(target)
 		)
 		{ // If you have weapon, have a valid target, and it's in line of sight...
@@ -604,8 +595,14 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			}
 			else if (atPlayer || targetdist < 1024 || Random(0, 255) < chaseattackchance) // ...and you are at the player, or the target is close, or at random chance...
 			{
-				if (weapon != PWEAP_Melee || targetdist < radius + 32 + target.radius) { // ...and you are in range...
-					return ResolveState(GetWeaponStateLabel()); // ...attack it
+				if (weapon != PWEAP_Melee || targetdist < radius + 32 + target.radius) // ...and you are in range...
+				{
+					// Do a line trace, and if the trace will hit a shootable actor, then fire
+					FLineTraceData trace;
+					if (atPlayer || LineTrace(AngleTo(target), targetdist + 128, -PitchTo(target), 0, Height * 0.9, Radius * 1.4, 0.0, trace) && trace.HitType == TRACE_HitActor)
+					{
+						return ResolveState(GetWeaponStateLabel()); // ...attack it
+					}
 				}
 			}
 		}
@@ -614,7 +611,8 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 		{
 			if (atPlayer)
 			{
-				if (!target) {
+				if (!target)
+				{
 					faceangle = playerToChase.angle + 135 + Random[FaceAngle](-15, 15); // Make him look like he might be able to cover your back
 					if (abs(angle - faceangle) > 45) { angle = faceangle; }
 				}
@@ -699,23 +697,39 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 	}
 
 	// Destroys array-linked actors in the range of the specified indices.  Default is to destroy all of the markers and clear the array.
-	void DestroyMarkers(int start = 0, int end = 0)
+	void DestroyMarkers(int start = 0, int end = -1)
 	{
-		if (!end) { end = Markers.Size(); }
+		int max = Markers.Size() - 1;
 
-		for (int i = start; i < end; i++)
+		if (start < 0 || end > max) { return; } // Error catching, just in case...
+
+		if (end < 0) { end = max; }
+
+		for (int i = start; i <= end; i++)
 		{
-			Actor mo = Markers[i];
-			if (mo) { mo.Destroy(); }
-			Markers[i] = null;
+			if (Markers[i]) { Markers[i].Destroy(); }
 		}
 
-		if (start == 0 && end == Markers.Size())
-		{
-			Markers.Clear();
-			Markers.ShrinkToFit();
-			index = 0;
-		}
+		Markers.Delete(start, end - start + 1);
+
+		if (start == 0 && end == max) { Markers.Clear(); }
+		if (end == max) { Markers.ShrinkToFit(); }
+	}
+
+	// Return the aim pitch offset from the source to the target
+	double PitchTo(Actor mo, Actor source = null, double sourcepitch = 0)
+	{
+		if (source == null) { source = self; }
+		if (!sourcepitch) { sourcepitch = source.pitch; }
+
+		double distxy = max(source.Distance2D(mo), 1);
+		double distz = source.pos.z - mo.pos.z;
+
+		double targetheight = mo.player ? mo.height * mo.player.crouchfactor : mo.height; // Get target height, with crouching if applicable
+
+		double pitchcalc = min(atan(distz / distxy), atan((distz - targetheight) / distxy)); // Return whichever is lower: pitch to actor bottom or actor top.
+
+		return pitchcalc - sourcepitch % 360; // Normalize to 360 degree range
 	}
 
 	override void PostBeginPlay()
@@ -749,7 +763,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				{
 					PathMarker(mo).playerToChase = PlayerPawn(playerToChase);
 					PathMarker(mo).follower = self;
-					Markers.Push(PathMarker(mo));
+					Markers.Insert(0, PathMarker(mo));
 				}
 				oldPlayerPos = playerToChase.pos;
 			}
@@ -779,7 +793,6 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			if (allowinteraction)
 			{
 				ACS_NamedExecuteAlways("FollowerMessage", 0, 0, Random(0, 4)); // Pick a random 'I'll stay here' message
-				target = null;
 				activationcount = 0;
 			}
 			else
@@ -795,7 +808,6 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			if (allowinteraction)
 			{
 				ACS_NamedExecuteAlways("FollowerMessage", 0, 2, Random(0, 4)); // Pick a random 'follow' message
-				target = null;
 				activationcount = 0;
 			}
 			else
@@ -816,6 +828,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			source.bShootable &&
 			source.bIsMonster &&
 			!IsFriend(source) &&
+			source.GetSpecies() != Species &&
 			(!target || Distance3D(source) < Distance3D(target))
 		) { target = source; } // If the follower is hit by an enemy that's closer than its current target, change targets to the one that shot it
 
@@ -1015,9 +1028,15 @@ class PathMarker : Actor
 		int index = follower.Markers.Find(self);
 
 		// If the player crosses their own path, cut out the loop so the follower takes the most direct route after the player
-		if (index < follower.Markers.Size() - 10 && Distance3D(playerToChase) < 48)
+		if (index > 10 && Distance3D(playerToChase) < 48)
 		{
-			follower.DestroyMarkers(index - 1);
+			follower.DestroyMarkers(0, index);
+		}
+
+		// If the follower crosses the path at a later point than their current goal, make this spot their new current goal
+		if (Distance3D(playerToChase) < 32)
+		{
+			if (index < follower.Markers.Find(follower.currentGoal)) { follower.currentGoal = self; }
 		}
 	}
 }
