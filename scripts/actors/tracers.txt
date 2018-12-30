@@ -113,7 +113,7 @@ class TracerTrail : Actor
 	{
 		Super.Tick();
 
-		if (!master) { Destroy(); }
+		if (!master || !vel.length()) { Destroy(); }
 	}
 
 	void DoFade()
