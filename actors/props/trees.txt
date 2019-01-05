@@ -242,6 +242,20 @@ ACTOR SmallTree2 : SmallTree1
 }
 
 //Burnt variants - Ozymandias81
+ACTOR Tree1_Burnt : TreeBase // changes visible only with 3d trees, this actor is special and used only on c3m5_b cyan key sequence - ozy81
+{
+	Radius 32
+	Height 192
+	+SOLID
+	DistanceCheck "treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE E -1 A_SetPitch(270+pitch)
+		Stop
+	}
+}
+
 ACTOR Tree2_Burnt : TreeBase
 {
 	//$Category Props (Wolf3D)/Trees/Burnt
