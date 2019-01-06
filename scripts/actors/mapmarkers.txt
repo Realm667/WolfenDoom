@@ -1,0 +1,107 @@
+// The bDormant true/false values for normal MapMarker actors are reversed in the current GZDoom version...
+// Bug report here: https://forum.zdoom.org/viewtopic.php?f=2&t=61717
+// Since this hasn't been fixed and was identified months ago, a workaround is included here.
+class BoAMapMarker : MapMarker
+{
+	String user_icon; // This will only affect the compass icon, not the automap icon
+
+	override void PostBeginPlay()
+	{
+		BoACompass.Add(self, user_icon);
+
+		if (!(SpawnFlags & MTF_DORMANT)) { Activate(null); }
+		else { Deactivate(null); }
+	}
+
+	override void Activate (Actor activator)
+	{
+		bDormant = false; 
+	}
+
+	override void Deactivate (Actor activator)
+	{
+		bDormant = true;
+	}
+}
+
+class ExclamationBase : SwitchableDecoration
+{
+	bool onCompass;
+	double touchRange, targetAlpha;
+	String user_icon;
+
+	Property ShowOnSpawn:onCompass;
+	Property TouchRange:touchRange;
+
+	Default
+	{
+		//$Category Misc (Wolf3D)
+		//$Color 1
+
+		RenderStyle "Translucent";
+		ExclamationBase.ShowOnSpawn false;
+		ExclamationBase.TouchRange 0;
+	}
+
+	override void PostBeginPlay()
+	{
+		if (onCompass) { BoACompass.Add(self, user_icon); }
+
+		if (!(SpawnFlags & MTF_DORMANT)) { Activate(null); }
+		else { Deactivate(null); }
+
+		if (alpha) { targetAlpha = alpha; }
+		else { targetAlpha = 1.0; }
+
+		alpha = 0.0;
+	}
+
+	override void Activate (Actor activator)
+	{
+		bDormant = false; 
+		touchRange = Default.touchRange; // Allow resetting touch deactivation by re-activating the actor
+		SetStateLabel("Active");
+	}
+
+	override void OnDestroy()
+	{
+		Deactivate(null);
+	}
+
+	override void Deactivate (Actor activator)
+	{
+		bDormant = true;
+		SetStateLabel("Inactive");
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (!bDormant)
+		{
+			alpha = min(targetalpha, alpha + 0.05);
+		}
+		else
+		{
+			alpha = max(0, alpha - 0.05);
+		}
+
+		DoProximityChecks();
+	}
+
+	void DoProximityChecks()
+	{
+		if (!onCompass && !CheckRange(2048.0) && !CheckIfSeen())
+		{
+			BoACompass.Add(self, user_icon);
+			onCompass = true;
+		}
+
+		if (touchRange && !CheckRange(touchRange))
+		{
+			SetStateLabel("Touched");
+			touchRange = 0;
+		}
+	}
+}

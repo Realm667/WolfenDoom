@@ -563,3 +563,44 @@ Sprite BBRDH0, 128, 31 {
 	Offset 64, 48
 	Graphic MIDG_W02, 0, -179 { Rotate 90 FlipY }
 }
+
+// Classic Wolf3D-style sliding textures
+// These have to be defined as twice as wide as the door texture, with the 
+// right-hand half of the texture left blank so that when the door textures 
+// are scrolled to the side, the blank portion of the image is left as the 
+// opening through which actors can pass.
+
+// Sprite for GZDB icon
+Sprite SLIDA0, 128, 128
+{
+	XScale 1.333
+	YScale 1.333
+	Patch ZDOORF1, 0, 0
+}
+
+Texture WOLFDRF, 256, 128
+{
+	Patch ZDOORF1, 0, 0
+}
+
+Texture WOLFDRB, 256, 128
+{
+	Patch ZDOORF1, 0, 0 { FlipX }
+}
+
+Texture WOLFDRF1, 256, 128
+{
+	Patch "textures/MIDG_M06.png", 0, 0 { FlipX }
+}
+
+Texture WOLFDRB1, 256, 128
+{
+	Patch "textures/MIDG_M06.png", 0, 0
+}
+
+Texture BLACKBRD, 311, 189
+{
+	XScale 2.42 // Scaled to roughly 128 units wide
+	YScale 2.42
+	Patch "graphics/hud/hud_objectives/objectgx.png", 0, 0
+}

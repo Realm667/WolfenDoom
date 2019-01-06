@@ -1,0 +1,367 @@
+class LevelData
+{
+	int totalkills, killcount;
+	int totalitems, itemcount;
+	int totalsecrets, secretcount;
+	int leveltime;
+	int levelnum;
+	String mapname, levelname;
+}
+
+class MapStatsHandler : StaticEventHandler
+{
+	Array<LevelData> Levels;
+	bool draw;
+	bool active[MAXPLAYERS];
+	const width = 640;
+	const height = 480;
+
+	uint FindLevel(String n) // Helper function to find a thing in a child class (Used in place of Levels.Find(mo) since the name is nested in a LevelData object
+	{
+		for (int i = 0; i < Levels.Size(); i++)
+		{
+			if (Levels[i] && Levels[i].mapname == n) { return i; }
+		}
+		return Levels.Size();
+	}
+
+	ui uint FindLevelNumber(int n) // Helper function to find a thing in a child class (Used in place of Levels.Find(mo) since the name is nested in a LevelData object
+	{
+		for (int i = 0; i < Levels.Size(); i++)
+		{
+			if (Levels[i] && Levels[i].levelnum == n) { return i; }
+		}
+		return Levels.Size();
+	}
+
+	void SaveLevelData()
+	{
+		int i = FindLevel(level.mapname);
+
+		LevelData l;
+
+		if (i < Levels.Size()) // If it's already there, just update the completion data
+		{
+			l = Levels[i];
+		}
+		else
+		{
+			l = New("LevelData");
+
+			if (!l) { if (developer) { console.printf("Failed to save level statistics data!"); } return; }
+
+			l.mapname = level.mapname;
+			l.levelname = level.levelname;
+			l.levelnum = level.levelnum;
+
+			Levels.Push(l);
+		}
+
+		l.totalkills = level.total_monsters;
+		l.killcount = level.killed_monsters;
+		l.totalitems = level.total_items;
+		l.itemcount = level.found_items;
+		l.totalsecrets = level.total_secrets;
+		l.secretcount = level.found_secrets;
+		l.leveltime = level.maptime;
+	}
+
+	override void WorldTick()
+	{
+		if (active[consoleplayer])
+		{
+			PlayerInfo cp = players[consoleplayer];
+
+			// Turn the stats off if you move...
+			if (
+				cp && 
+				(
+					cp.cmd.forwardmove || 
+					cp.cmd.sidemove || 
+					(
+						cp.cmd.buttons & BT_CROUCH ||
+						cp.cmd.buttons & BT_JUMP 
+					)
+				)
+			)
+			{
+				active[consoleplayer] = false;
+			}
+		}
+	}
+
+	override void WorldLoaded(WorldEvent e)
+	{
+		active[consoleplayer] = false;
+
+		SaveLevelData();
+		for (int i = 0; i < Levels.Size(); i++)
+		{
+			let l = Levels[i];
+		}
+	}
+
+	override void WorldUnloaded(WorldEvent e)
+	{
+		SaveLevelData();
+	}
+
+	override void RenderOverlay(RenderEvent e)
+	{
+		if (active[consoleplayer])
+		{
+			Array<LevelData> summary;
+
+			int screenwidth = Screen.GetWidth();
+			int screenheight = Screen.GetHeight();
+
+			// Draw background images
+			TextureID bkg = TexMan.CheckForTexture("CONVBACK", TexMan.Type_Any);
+			if (bkg) { Screen.DrawTexture(bkg, false, screenwidth / 2, screenheight / 2, DTA_DestWidth, screenwidth, DTA_DestHeight, screenheight, DTA_CenterOffset, true); }
+
+			TextureID board = TexMan.CheckForTexture("OBJECTGX", TexMan.Type_Any);
+			if (board) { Screen.DrawTexture(board, false, screenwidth / 2, screenheight / 2 + (56 * vid_scalefactor), DTA_DestWidth, screenwidth, DTA_DestHeight, int(screenwidth / 1.646), DTA_CenterOffset, true); }
+
+			for (int i = 0; i < Levels.Size(); i++)
+			{
+				let m = Levels[i];
+
+				// Filter to only show results from maps named in the CxMy format.
+				String mapname = m.mapname;
+				mapname.ToUpper();
+
+				if (mapname.Mid(0, 1) != "C" && mapname.Mid(2, 1) != "M") { continue; }
+
+				int chapter = mapname.CharCodeAt(1) - 48;
+				int mapnum = mapname.CharCodeAt(3) - 48;
+
+				int i = summary.Size();
+				for (int j = 0; j < i; j++)
+				{
+					if (summary[j] && summary[j].levelnum == mapnum) { i = j; }
+				}
+
+				LevelData c;
+
+				if (i < summary.Size())
+				{
+					c = summary[i];
+				}
+				else
+				{
+					c = New("LevelData");
+					summary.Push(c);
+				}
+
+				// Add the values for the pieces of multi-part maps together
+				c.mapname = "C" .. chapter .. "M" .. mapnum;
+				c.levelname = m.levelname;
+				c.levelnum = mapnum;
+				c.totalkills += m.totalkills;
+				c.killcount += m.killcount;
+				c.totalitems += m.totalitems;
+				c.itemcount += m.itemcount;
+				c.totalsecrets += m.totalsecrets;
+				c.secretcount += m.secretcount;
+				c.leveltime += m.leveltime;
+			}
+
+			int time = 0;
+
+			for (int i = 0; i < summary.Size(); i++)
+			{
+				let l = summary[i];
+
+//				String image = String.Format("%s_%i", l.mapname.Mid(0, 4), (level.time / (35 * 3)) % 4 + 1);
+				String imageprefix = String.Format("%s_", l.mapname.Mid(0, 4));
+
+				time += l.leveltime;
+
+				DrawSummary(imageprefix, l, 112, 92);
+			}
+
+			DrawTotalTime(time, 112, 48);
+		}
+	}
+
+	ui void DrawTotalTime(int tics, int xoffset, int yoffset)
+	{
+		xoffset = min(xoffset, width / 2 - 256 - 16);
+
+		String title = Stringtable.Localize("$STATS_TIME");
+
+		Screen.DrawText(SmallFont, Font.CR_DARKGRAY, width - SmallFont.StringWidth(title) - xoffset - 64, yoffset, title, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+
+		// Print total time in hh:mm:ss format
+		let seconds = Thinker.Tics2Seconds(tics);
+		String t = String.Format("%02i:%02i:%02i", seconds / 3600, (seconds % 3600) / 60, seconds % 60);
+		Screen.DrawText(SmallFont, Font.CR_GRAY, width - SmallFont.StringWidth(t) - 10 - xoffset, yoffset, t, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+	}
+
+	static const int drawpositions[] =
+	{
+		15, 28, -12,
+		65, 38, 5,
+		17, 30, 10,
+		60, 20, -7,
+		35, 21, -10,
+		40, 33, 8,
+		15, 26, 30,
+		37, 29, -7,
+		22, 32, -9,
+		56, 34, 4,
+		35, 21, -10,
+		60, 20, -7,
+		17, 30, 10,
+		65, 38, 5
+	};
+
+	ui void DrawSummary(String imageprefix, LevelData l, int xoffset, int yoffset)
+	{
+		int lineheight = SmallFont.GetHeight() + 1;
+
+		int index = l.levelnum ? l.levelnum : 7;
+
+		int x, y;
+
+		xoffset = min(xoffset, width / 2 - 256 - 16);
+
+		if (index <= 3) // 1-3
+		{
+			x = xoffset;
+			y = yoffset + 64 * (index - 1);
+		}
+		else if (index <= 6) // 4-6
+		{
+			x = width - xoffset - 256;
+			y = yoffset + 64 * (index - 4);
+		}
+		else // Secret map
+		{
+			x = width / 2 - 128;
+			y = yoffset + 192;
+		}
+
+		// Dim a frame around the level's info draw area
+		DimScaled(0x000000, 0.25, x - 2, y - 2, 262, 62);
+		DimScaled(0x000000, 0.25, x - 1, y - 1, 261, lineheight + 2);
+
+		// Print level title
+		Screen.DrawText(SmallFont, Font.CR_RED, x, y, l.levelname, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+
+		// Print level time in hh:mm:ss format
+		let seconds = Thinker.Tics2Seconds(l.leveltime);
+		String t = String.Format("%02i:%02i:%02i", seconds / 3600, (seconds % 3600) / 60, seconds % 60);
+		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 256 - SmallFont.StringWidth(t), y, t, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+
+		y += 2;
+
+		// Draw level images
+		DimScaled(0xAA0000, 0.75, x, y + lineheight, 80, 40); // Red frame
+
+		TextureID img = TexMan.CheckForTexture(imageprefix .. 2, TexMan.Type_Any);
+		if (img) { Screen.DrawTexture(img, false, x + 2, y + lineheight + 2, DTA_DestWidth, 76, DTA_DestHeight, 36, DTA_VirtualWidth, width, DTA_VirtualHeight, height); }
+
+		for (int i = 3; i < 5; i++)
+		{
+			int imagex = x + 2;
+			int imagey = y + lineheight + 2;
+			double angle = 0.0;
+
+			int j = (i == 3) ? (index - 1) * 2 * 3 : (index - 1) * 2 * 3 + 3;
+
+			imagex += drawpositions[j];
+			imagey += drawpositions[j + 1];
+			angle += drawpositions[j + 2];
+
+			TextureID img = TexMan.CheckForTexture(imageprefix .. i, TexMan.Type_Any);
+
+			if (img) { DrawShapeTexture(img, 1.0, imagex, imagey, angle, 0.04); }
+		}
+
+		y += lineheight;
+
+		String n, d, s;
+
+		// Print items
+		Screen.DrawText(SmallFont, Font.CR_DARKGRAY, x + 90, y, Stringtable.Localize("$AM_ITEMS"), DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+
+		n = PadString(String.Format("%i", l.itemcount), 3);
+		d = String.Format("%i", l.totalitems);
+		s = String.Format("%i%%", l.totalitems ? l.itemcount * 100 / l.totalitems : 100);
+
+		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 170 - SmallFont.StringWidth(n), y, n, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 177 - SmallFont.GetCharWidth("/") / 2, y, "/", DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 184, y, d, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 246 - SmallFont.StringWidth(s), y, s, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+
+		y += lineheight;
+
+		// Print kills
+		Screen.DrawText(SmallFont, Font.CR_DARKGRAY, x + 90, y, Stringtable.Localize("$AM_MONSTERS"), DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+
+		n = PadString(String.Format("%i", l.killcount), 3);
+		d = String.Format("%i", l.totalkills);
+		s = String.Format("%i%%", l.totalkills ? l.killcount * 100 / l.totalkills : 100);
+
+		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 170 - SmallFont.StringWidth(n), y, n, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 177 - SmallFont.GetCharWidth("/") / 2, y, "/", DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 184, y, d, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 246 - SmallFont.StringWidth(s), y, s, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+
+		y += lineheight;
+
+		// Print secrets
+		Screen.DrawText(SmallFont, Font.CR_DARKGRAY, x + 90, y, Stringtable.Localize("$AM_SECRETS"), DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+
+		n = PadString(String.Format("%i", l.secretcount), 3);
+		d = String.Format("%i", l.totalsecrets);
+		s = String.Format("%i%%", l.totalsecrets ? l.secretcount * 100 / l.totalsecrets : 100);
+
+		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 170 - SmallFont.StringWidth(n), y, n, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 177 - SmallFont.GetCharWidth("/") / 2, y, "/", DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 184, y, d, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 246 - SmallFont.StringWidth(s), y, s, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+	}
+
+	ui void DimScaled(Color clr = 0x000000, double alpha = 0.5, int x = 0, int y = 0, int w = width, int h = height)
+	{
+		double dimscale = double(Screen.GetHeight()) / height;
+		Screen.Dim(clr, alpha, int(Screen.GetWidth() / 2 - width * dimscale / 2 + x * dimscale), int(y * dimscale), int(w * dimscale), int(h * dimscale));
+	}
+
+	ui String PadString(String input, int digits)
+	{
+		While (input.Length() < digits)
+		{	
+			input = " " .. input;
+		}
+
+		return input;
+	}
+
+	ui void DrawShapeTexture(TextureID tex, double alpha = 1.0, int x = width / 2, int y = height / 2, double ang = 0, double scale = 1.0)
+	{
+		double shapescale = double(Screen.GetHeight()) / height;
+
+		let shape = ShapeUtil.MakeSquare();
+
+		x = int(Screen.GetWidth() / 2 - width * shapescale / 2 + x * shapescale);
+		y = int(y * shapescale);
+
+		// Draw rotated texture
+		ShapeUtil.MoveSquare(shape, (width * scale, height * scale), (x, y), ang);
+		Screen.DrawShape(tex, false, shape, DTA_Alpha, alpha);
+	}
+
+	static void Toggle(Actor activator, int status = -1)
+	{
+		MapStatsHandler this = MapStatsHandler(StaticEventHandler.Find("MapStatsHandler"));
+		let p = activator.player;
+
+		if (!this || !p) { return; }
+
+		if (status > -1) { this.active[activator.PlayerNumber()] = status; }
+		else { this.active[activator.PlayerNumber()] = !this.active[activator.PlayerNumber()]; }
+	}
+}

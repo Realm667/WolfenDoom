@@ -11,7 +11,7 @@ class AlertPointLight : PointLight replaces PointLight
 {
 	override void PostBeginPlay()
 	{
-		if (!bDormant) { SpawnLight(); }
+		if (!(SpawnFlags & MTF_DORMANT)) { SpawnLight(); }
 
 		Super.PostBeginPlay();
 	}

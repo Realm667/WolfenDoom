@@ -39,6 +39,43 @@ class DrawToHUD
 		return screenpos, screensize;
 	}
 
+	enum offsets
+	{
+		left,
+		right,
+		center,
+	};
+
+	static ui void DrawText(String text, Vector2 pos, Font fnt = null, double alpha = 1.0, double scale = 1.0, color shade = -1, int offset = left)
+	{
+		if (!fnt) { fnt = SmallFont; }
+
+		int width = int(Screen.GetWidth() / scale);
+		int height = int((Screen.GetHeight() - fnt.GetHeight()) / scale);
+
+		// Scale the coordinates
+		Vector2 screenpos, screensize;
+		[screenpos, screensize] = TranslatetoHUDCoordinates(pos, (640, 480) * scale);
+
+		//Do offset handling...
+		switch (offset)
+		{
+			case 1:
+				screenpos.x -= fnt.StringWidth(text);
+				break;
+			case 2:
+				screenpos.x -= fnt.StringWidth(text) / 2;
+				break;
+			default:
+				break;
+		}
+
+		screenpos /= scale;
+
+		// Draw the text
+		screen.DrawText(fnt, shade, screenpos.x, screenpos.y, text, DTA_KeepRatio, true, DTA_Alpha, alpha, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+	}
+
 	static ui void DrawTexture(TextureID tex, Vector2 pos, double alpha = 1.0, double scale = 1.0, color shade = -1)
 	{
 		// Scale the coordinates
