@@ -137,7 +137,7 @@ class CompassHandler : EventHandler
 				if (mo.bDormant || mo.health <= 0) { if (am_cheat % 4 < 1) { continue; } }
 
 				TextureID icon = TexMan.CheckForTexture(CompassItems[i].icon, TexMan.Type_Any);
-				Vector2 relativeLocation = LevelLocals.Vec2Diff(e.ViewPos.xy, mo.pos.xy);
+				Vector2 relativeLocation = level.Vec2Diff(e.ViewPos.xy, mo.pos.xy);
 
 				// Account for chasecam
 				if (p.cheats & CF_CHASECAM != 0)
