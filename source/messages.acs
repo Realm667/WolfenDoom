@@ -161,3 +161,8 @@ script "FollowerMessage" (int type, int count)
 	SetHudWrapWidth(540);
 	hudmessagebold(l:message; HUDMSG_FADEINOUT, messagelayer + 2, CR_GRAY, 100.1, 8.1, 0.0, 0.0, 0.5);
 }
+
+script "ShowStats" (void)
+{
+	ScriptCall("MapStatsHandler", "Toggle");
+}

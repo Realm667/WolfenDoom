@@ -63,6 +63,7 @@ ACTOR AktenDream : CompassItem
 ACTOR AktenDreamClue : AktenDream
 {
 	//$Title Secret Files (Clue)
+	CompassItem.ZombieClue 1
 	Inventory.PickupMessage "$ZOMBF"
 	+INVENTORY.INVBAR
 }
@@ -427,6 +428,7 @@ ACTOR ZombieArmClue : CompassItem
 {
 	//$Title Zombie Arm (Clue)
 	Tag "$TAGZARM"
+	CompassItem.ZombieClue 1
 	Inventory.Icon ZARMA0
 	Inventory.PickupMessage "$ZARM"
 	Inventory.PickupSound "misc/armor_body"
@@ -443,6 +445,7 @@ ACTOR ZombieHeadClue : CompassItem
 {
 	//$Title Zombie Head (Clue)
 	Tag "$TAGZHED"
+	CompassItem.ZombieClue 1
 	Inventory.Icon ZHEDA0
 	Inventory.PickupMessage "$ZHED"
 	Inventory.PickupSound "misc/armor_body"
@@ -459,6 +462,7 @@ ACTOR MineralClue : CompassItem
 {
 	//$Title Mineral (Clue)
 	Tag "$TAGMINR"
+	CompassItem.ZombieClue 1
 	Inventory.Icon MINRA0
 	Inventory.MaxAmount 2
 	Inventory.PickupMessage "$ZMINR"

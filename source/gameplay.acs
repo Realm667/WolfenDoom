@@ -35,6 +35,18 @@ script "MissionNumber" OPEN
 			mission_number = mapnum % 100;
 		}
 	}
+
+	int chapter = 0;
+
+	if (mission_number)
+	{
+		if (mission_number <= 6) { chapter = 1; }
+		else if (mission_number <= 11) { chapter = 2; } // 12 is really C2M6, but C3INTRO overlaps...  But we never return to INTERMAP after C2M6, so it's OK.
+		else if (mission_number <= 18) { chapter = 3; }
+
+		if (chapter != 0) { ScriptCall("MapStatsHandler", "SetChapter", chapter); }
+	}
+
 	/*
 	Print(
 		s:"Mission number: ", d:mission_number,

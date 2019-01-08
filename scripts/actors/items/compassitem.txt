@@ -1,5 +1,9 @@
 class CompassItem : Inventory
 {
+	bool zombieclue;
+
+	Property ZombieClue:zombieclue;
+
 	Default
 	{
 		//$Category Pickups (Wolf3D)
@@ -29,5 +33,17 @@ class CompassItem : Inventory
 		BoACompass.Add(self, iconName);
 
 		Super.PostBeginPlay();
+	}
+
+	override bool TryPickup(in out Actor toucher)
+	{
+		bool pickup = Super.TryPickup(toucher);
+
+		if (pickup && zombieclue)
+		{
+			MapStatsHandler.SetSpecialCount(self, 0, 1);
+		}
+
+		return pickup;
 	}
 }

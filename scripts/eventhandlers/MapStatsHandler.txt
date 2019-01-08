@@ -15,8 +15,14 @@ class MapStatsHandler : StaticEventHandler
 	bool active[MAXPLAYERS];
 	const width = 640;
 	const height = 480;
+	Font TitleFont, HeadingFont, StatFont;
+	double titlescale, headingscale, fontscale;
+	int lineheight;
+	int specialitems[3];
+	Array<String> SpecialItemPickups;
+	int chapter;
 
-	uint FindLevel(String n) // Helper function to find a thing in a child class (Used in place of Levels.Find(mo) since the name is nested in a LevelData object
+	int FindLevel(String n) // Helper function to find a thing in a child class (Used in place of Levels.Find(mo) since the name is nested in a LevelData object
 	{
 		for (int i = 0; i < Levels.Size(); i++)
 		{
@@ -25,7 +31,7 @@ class MapStatsHandler : StaticEventHandler
 		return Levels.Size();
 	}
 
-	ui uint FindLevelNumber(int n) // Helper function to find a thing in a child class (Used in place of Levels.Find(mo) since the name is nested in a LevelData object
+	ui int FindLevelNumber(int n) // Helper function to find a thing in a child class (Used in place of Levels.Find(mo) since the name is nested in a LevelData object
 	{
 		for (int i = 0; i < Levels.Size(); i++)
 		{
@@ -34,15 +40,18 @@ class MapStatsHandler : StaticEventHandler
 		return Levels.Size();
 	}
 
-	void SaveLevelData()
+	static void SaveLevelData()
 	{
-		int i = FindLevel(level.mapname);
+		MapStatsHandler this = MapStatsHandler(StaticEventHandler.Find("MapStatsHandler"));
+		if (!this) { return; }
+
+		int i = this.FindLevel(level.mapname);
 
 		LevelData l;
 
-		if (i < Levels.Size()) // If it's already there, just update the completion data
+		if (i < this.Levels.Size()) // If it's already there, just update the completion data
 		{
-			l = Levels[i];
+			l = this.Levels[i];
 		}
 		else
 		{
@@ -54,7 +63,7 @@ class MapStatsHandler : StaticEventHandler
 			l.levelname = level.levelname;
 			l.levelnum = level.levelnum;
 
-			Levels.Push(l);
+			this.Levels.Push(l);
 		}
 
 		l.totalkills = level.total_monsters;
@@ -66,10 +75,30 @@ class MapStatsHandler : StaticEventHandler
 		l.leveltime = level.maptime;
 	}
 
+	override void OnRegister()
+	{
+		TitleFont = SmallFont;
+		HeadingFont = SmallFont;
+		StatFont = Font.GetFont("chickn24");
+
+		if (!TitleFont) { TitleFont = SmallFont; }
+		if (!HeadingFont) { HeadingFont = SmallFont; }
+		if (!StatFont) { StatFont = SmallFont; }
+
+		titlescale = GetScale(TitleFont) * 1.2;
+		headingscale = GetScale(HeadingFont);
+		fontscale = GetScale(StatFont);
+
+		lineheight = int(StatFont.GetHeight() * fontscale) + 1;
+	}
+
 	override void WorldTick()
 	{
 		if (active[consoleplayer])
 		{
+			// Keep the current level data updated (just in case we decide to use it like this in the future...)
+			SaveLevelData();
+
 			PlayerInfo cp = players[consoleplayer];
 
 			// Turn the stats off if you move...
@@ -95,10 +124,6 @@ class MapStatsHandler : StaticEventHandler
 		active[consoleplayer] = false;
 
 		SaveLevelData();
-		for (int i = 0; i < Levels.Size(); i++)
-		{
-			let l = Levels[i];
-		}
 	}
 
 	override void WorldUnloaded(WorldEvent e)
@@ -119,8 +144,10 @@ class MapStatsHandler : StaticEventHandler
 			TextureID bkg = TexMan.CheckForTexture("CONVBACK", TexMan.Type_Any);
 			if (bkg) { Screen.DrawTexture(bkg, false, screenwidth / 2, screenheight / 2, DTA_DestWidth, screenwidth, DTA_DestHeight, screenheight, DTA_CenterOffset, true); }
 
-			TextureID board = TexMan.CheckForTexture("OBJECTGX", TexMan.Type_Any);
-			if (board) { Screen.DrawTexture(board, false, screenwidth / 2, screenheight / 2 + (56 * vid_scalefactor), DTA_DestWidth, screenwidth, DTA_DestHeight, int(screenwidth / 1.646), DTA_CenterOffset, true); }
+			TextureID board = TexMan.CheckForTexture("board_hd", TexMan.Type_Any);
+			if (board) { Screen.DrawTexture(board, false, screenwidth / 2, screenheight / 2, DTA_DestWidth, int(screenheight * 16 / 9), DTA_DestHeight, screenheight, DTA_CenterOffset, true); }
+
+			DrawChapter(chapter, 320, 96, center);
 
 			for (int i = 0; i < Levels.Size(); i++)
 			{
@@ -130,10 +157,12 @@ class MapStatsHandler : StaticEventHandler
 				String mapname = m.mapname;
 				mapname.ToUpper();
 
-				if (mapname.Mid(0, 1) != "C" && mapname.Mid(2, 1) != "M") { continue; }
+				if (mapname.Mid(0, 1) != "C" || mapname.Mid(2, 1) != "M") { continue; }
 
-				int chapter = mapname.CharCodeAt(1) - 48;
 				int mapnum = mapname.CharCodeAt(3) - 48;
+				int chapnum = mapname.CharCodeAt(1) - 48;
+
+				if (chapnum != chapter) { continue; }
 
 				int i = summary.Size();
 				for (int j = 0; j < i; j++)
@@ -154,7 +183,7 @@ class MapStatsHandler : StaticEventHandler
 				}
 
 				// Add the values for the pieces of multi-part maps together
-				c.mapname = "C" .. chapter .. "M" .. mapnum;
+				c.mapname = mapname.Mid(0, 4); // Only use first 4 letters of map name
 				c.levelname = m.levelname;
 				c.levelnum = mapnum;
 				c.totalkills += m.totalkills;
@@ -166,36 +195,177 @@ class MapStatsHandler : StaticEventHandler
 				c.leveltime += m.leveltime;
 			}
 
-			int time = 0;
+			LevelData totals = New("LevelData"); // This has to be initialized, or bad things happen!
+			totals.mapname = "Stat Totals";
+			totals.levelname = "Stat Totals";
+			totals.levelnum = 0;
+			totals.totalkills = 0;
+			totals.killcount  = 0;
+			totals.totalitems  = 0;
+			totals.itemcount = 0;
+			totals.totalsecrets = 0;
+			totals.secretcount = 0;
+			totals.leveltime = 0;
 
 			for (int i = 0; i < summary.Size(); i++)
 			{
 				let l = summary[i];
 
-//				String image = String.Format("%s_%i", l.mapname.Mid(0, 4), (level.time / (35 * 3)) % 4 + 1);
 				String imageprefix = String.Format("%s_", l.mapname.Mid(0, 4));
 
-				time += l.leveltime;
+				totals.totalkills += l.totalkills;
+				totals.killcount += l.killcount;
+				totals.totalitems += l.totalitems;
+				totals.itemcount += l.itemcount;
+				totals.totalsecrets += l.totalsecrets;
+				totals.secretcount += l.secretcount;
+				totals.leveltime += l.leveltime;
 
-				DrawSummary(imageprefix, l, 112, 92);
+				DrawSummary(imageprefix, l, 112, 116);
 			}
 
-			DrawTotalTime(time, 112, 48);
+			DrawTotals(totals, -112, -108);
+			DrawItems(112, -68);
 		}
 	}
 
-	ui void DrawTotalTime(int tics, int xoffset, int yoffset)
+	double GetScale(font fnt)
 	{
-		xoffset = min(xoffset, width / 2 - 256 - 16);
+		if (fnt == SmallFont) { return 1.0; }
 
-		String title = Stringtable.Localize("$STATS_TIME");
+		double scale = double(SmallFont.GetHeight()) / fnt.GetHeight();
 
-		Screen.DrawText(SmallFont, Font.CR_DARKGRAY, width - SmallFont.StringWidth(title) - xoffset - 64, yoffset, title, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+		// Use the total time clock width as a "standard" width for scaling
+		double w = fnt.StringWidth("00:00:00");
+		if (w > 52.0) { scale = 52.0 / w; }
 
-		// Print total time in hh:mm:ss format
-		let seconds = Thinker.Tics2Seconds(tics);
-		String t = String.Format("%02i:%02i:%02i", seconds / 3600, (seconds % 3600) / 60, seconds % 60);
-		Screen.DrawText(SmallFont, Font.CR_GRAY, width - SmallFont.StringWidth(t) - 10 - xoffset, yoffset, t, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+		return scale;
+	}
+
+	enum align
+	{
+		left,
+		right,
+		center
+	}
+
+	ui void DrawItems(int xoffset, int yoffset)
+	{
+		if (!chapter) { return; }
+
+		if (specialitems[chapter - 1])
+		{
+			if (xoffset < 0) { xoffset = width + xoffset; }
+			if (yoffset < 0) { yoffset = height + yoffset; }
+
+			for (int i = 0; i < specialitems[chapter - 1]; i++)
+			{
+				String image = "";
+
+				if (chapter == 1) { image = "AKTEB0"; }
+				else if (chapter == 2) { image = "ARTMB0"; }
+
+				if (!(image == ""))
+				{
+					TextureID img = TexMan.CheckForTexture(image, TexMan.Type_Any);
+
+					if (img)
+					{
+						Vector2 size;
+						size = TexMan.GetScaledSize(img);
+
+						double ratio = 32.0 / size.x;
+						size *= ratio;
+
+						Screen.DrawTexture(img, false, xoffset + 48 * i, yoffset, DTA_DestWidthF, size.x, DTA_DestHeightF, size.y, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+					}
+				}
+				else if (chapter == 3)
+				{
+					TextureID img;
+
+					// Handle drawing zombie clues
+					for (int j = 0; j < SpecialItemPickups.Size(); j++)
+					{
+						img = TexMan.CheckForTexture(SpecialItemPickups[j], TexMan.Type_Any);
+						if (img)
+						{
+							Vector2 size;
+							size = TexMan.GetScaledSize(img);
+
+							double ratio = 32.0 / size.x;
+							size *= ratio;
+
+							Screen.DrawTexture(img, false, xoffset + 48 * j, yoffset, DTA_DestWidthF, size.x, DTA_DestHeightF, size.y, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+						}
+					}
+					DrawTextScaled(TitleFont, Font.CR_GRAY, 0, 64, String.Format("Special items: %i", specialitems[chapter - 1]), titlescale);
+				}
+			}
+		}
+	}
+
+	ui void DrawChapter(int chapter, int xoffset, int yoffset, int alignment = left)
+	{
+		if (xoffset < 0) { xoffset = width + xoffset; }
+		if (yoffset < 0) { yoffset = height + yoffset; }
+
+		String chaptertitle = Stringtable.Localize("$STATS_CHAPTER");
+
+		String s;
+
+		for (int i = 0; i < chapter; i++) { s = s .. "I"; }
+
+		if (s == "")
+		{
+			yoffset += 120;
+			s = Stringtable.Localize("$STATS_NONE");
+		}
+		else { s = chaptertitle .. s; }
+
+		// Print chapter number
+		DrawTextScaled(StatFont, Font.CR_GRAY, xoffset, yoffset, s, fontscale * 1.5, alignment);
+	}
+
+	ui void DrawTotals(LevelData totals, int xoffset, int yoffset)
+	{
+		if (xoffset < 0) { xoffset = width + xoffset; }
+		if (yoffset < 0) { yoffset = height + yoffset; }
+
+		String treasuretitle = Stringtable.Localize("$STATS_ITEMS");
+		String killstitle = Stringtable.Localize("$STATS_MONSTERS");
+		String secretstitle = Stringtable.Localize("$STATS_SECRETS");
+		String timetitle = Stringtable.Localize("$STATS_TIME");
+
+		String s;
+
+		// Print total treasure
+		DrawTextScaled(HeadingFont, Font.CR_DARKGRAY, xoffset - HeadingFont.StringWidth(treasuretitle) * headingscale - 72, yoffset, treasuretitle, headingscale);
+		s = String.Format("%i%%", totals.totalitems ? totals.itemcount * 100 / totals.totalitems : 0);
+		DrawTextScaled(StatFont, Font.CR_GRAY, xoffset - StatFont.StringWidth(s) * fontscale - 10, yoffset, s);
+
+		yoffset += lineheight;
+
+		// Print total kills
+		DrawTextScaled(HeadingFont, Font.CR_DARKGRAY, xoffset - HeadingFont.StringWidth(killstitle) * headingscale - 72, yoffset, killstitle, headingscale);
+		s = String.Format("%i%%", totals.totalkills ? totals.killcount * 100 / totals.totalkills : 0);
+		DrawTextScaled(StatFont, Font.CR_GRAY, xoffset - StatFont.StringWidth(s) * fontscale - 10, yoffset, s);
+
+		yoffset += lineheight;
+
+		// Print total secrets
+
+		DrawTextScaled(HeadingFont, Font.CR_DARKGRAY, xoffset - HeadingFont.StringWidth(secretstitle) * headingscale - 72, yoffset, secretstitle, headingscale);
+		s = String.Format("%i%%", totals.totalsecrets ? totals.secretcount * 100 / totals.totalsecrets : 0);
+		DrawTextScaled(StatFont, Font.CR_GRAY, xoffset - StatFont.StringWidth(s) * fontscale - 10, yoffset, s);
+
+		yoffset += lineheight;
+
+		// Print total time
+		DrawTextScaled(HeadingFont, Font.CR_DARKGRAY, xoffset - HeadingFont.StringWidth(timetitle) * headingscale - 72, yoffset, timetitle, headingscale);
+		let seconds = Thinker.Tics2Seconds(totals.leveltime);
+		s = String.Format("%02i:%02i:%02i", seconds / 3600, (seconds % 3600) / 60, seconds % 60);
+		DrawTextScaled(StatFont, Font.CR_GRAY, xoffset - StatFont.StringWidth(s) * fontscale - 10, yoffset, s);
 	}
 
 	static const int drawpositions[] =
@@ -218,13 +388,12 @@ class MapStatsHandler : StaticEventHandler
 
 	ui void DrawSummary(String imageprefix, LevelData l, int xoffset, int yoffset)
 	{
-		int lineheight = SmallFont.GetHeight() + 1;
-
 		int index = l.levelnum ? l.levelnum : 7;
 
 		int x, y;
 
 		xoffset = min(xoffset, width / 2 - 256 - 16);
+		if (yoffset < 0) { yoffset = height + yoffset; }
 
 		if (index <= 3) // 1-3
 		{
@@ -244,15 +413,15 @@ class MapStatsHandler : StaticEventHandler
 
 		// Dim a frame around the level's info draw area
 		DimScaled(0x000000, 0.25, x - 2, y - 2, 262, 62);
-		DimScaled(0x000000, 0.25, x - 1, y - 1, 261, lineheight + 2);
+		DimScaled(0x000000, 0.25, x - 1, y - 1, 261, lineheight);
 
 		// Print level title
-		Screen.DrawText(SmallFont, Font.CR_RED, x, y, l.levelname, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+		DrawTextScaled(TitleFont, Font.CR_RED, x, y, l.levelname, titlescale);
 
 		// Print level time in hh:mm:ss format
 		let seconds = Thinker.Tics2Seconds(l.leveltime);
 		String t = String.Format("%02i:%02i:%02i", seconds / 3600, (seconds % 3600) / 60, seconds % 60);
-		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 256 - SmallFont.StringWidth(t), y, t, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+		DrawTextScaled(StatFont, Font.CR_GRAY, x + 256 - StatFont.StringWidth(t) * fontscale, y, t);
 
 		y += 2;
 
@@ -275,8 +444,7 @@ class MapStatsHandler : StaticEventHandler
 			angle += drawpositions[j + 2];
 
 			TextureID img = TexMan.CheckForTexture(imageprefix .. i, TexMan.Type_Any);
-
-			if (img) { DrawShapeTexture(img, 1.0, imagex, imagey, angle, 0.04); }
+			if (img) { DrawShapeTexture(img, 1.0, imagex, imagey, angle, 0.06 + (imagex % 10 < 5 ? 0.01 : 0)); }
 		}
 
 		y += lineheight;
@@ -284,50 +452,65 @@ class MapStatsHandler : StaticEventHandler
 		String n, d, s;
 
 		// Print items
-		Screen.DrawText(SmallFont, Font.CR_DARKGRAY, x + 90, y, Stringtable.Localize("$AM_ITEMS"), DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+		if (l.totalitems)
+		{
+			DrawTextScaled(HeadingFont, Font.CR_DARKGRAY, x + 90, y, Stringtable.Localize("$AM_ITEMS"), headingscale);
 
-		n = PadString(String.Format("%i", l.itemcount), 3);
-		d = String.Format("%i", l.totalitems);
-		s = String.Format("%i%%", l.totalitems ? l.itemcount * 100 / l.totalitems : 100);
+			n = PadString(String.Format("%i", l.itemcount), 3);
+			d = String.Format("%i", l.totalitems);
+			s = String.Format("%i%%", l.totalitems ? l.itemcount * 100 / l.totalitems : 100);
 
-		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 170 - SmallFont.StringWidth(n), y, n, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
-		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 177 - SmallFont.GetCharWidth("/") / 2, y, "/", DTA_VirtualWidth, width, DTA_VirtualHeight, height);
-		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 184, y, d, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
-		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 246 - SmallFont.StringWidth(s), y, s, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+			DrawTextScaled(StatFont, Font.CR_GRAY, x + 180 - StatFont.StringWidth(n) * fontscale, y, n);
+			DrawTextScaled(StatFont, Font.CR_GRAY, x + 187 - StatFont.GetCharWidth("/") * fontscale / 2, y, "/");
+			DrawTextScaled(StatFont, Font.CR_GRAY, x + 194, y, d);
+			DrawTextScaled(StatFont, Font.CR_GRAY, x + 246 - StatFont.StringWidth(s) * fontscale, y, s);
 
-		y += lineheight;
+			y += lineheight;
+		}
+		else { y+= lineheight / 2; }
 
 		// Print kills
-		Screen.DrawText(SmallFont, Font.CR_DARKGRAY, x + 90, y, Stringtable.Localize("$AM_MONSTERS"), DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+		if (l.totalkills)
+		{
+			DrawTextScaled(HeadingFont, Font.CR_DARKGRAY, x + 90, y, Stringtable.Localize("$AM_MONSTERS"), headingscale);
 
-		n = PadString(String.Format("%i", l.killcount), 3);
-		d = String.Format("%i", l.totalkills);
-		s = String.Format("%i%%", l.totalkills ? l.killcount * 100 / l.totalkills : 100);
+			n = PadString(String.Format("%i", l.killcount), 3);
+			d = String.Format("%i", l.totalkills);
+			s = String.Format("%i%%", l.totalkills ? l.killcount * 100 / l.totalkills : 100);
 
-		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 170 - SmallFont.StringWidth(n), y, n, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
-		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 177 - SmallFont.GetCharWidth("/") / 2, y, "/", DTA_VirtualWidth, width, DTA_VirtualHeight, height);
-		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 184, y, d, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
-		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 246 - SmallFont.StringWidth(s), y, s, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+			DrawTextScaled(StatFont, Font.CR_GRAY, x + 180 - StatFont.StringWidth(n) * fontscale, y, n);
+			DrawTextScaled(StatFont, Font.CR_GRAY, x + 187 - StatFont.GetCharWidth("/") * fontscale / 2, y, "/");
+			DrawTextScaled(StatFont, Font.CR_GRAY, x + 194, y, d);
+			DrawTextScaled(StatFont, Font.CR_GRAY, x + 246 - StatFont.StringWidth(s) * fontscale, y, s);
 
-		y += lineheight;
+			y += lineheight;
+		}
+		else { y+= lineheight / 2; }
 
 		// Print secrets
-		Screen.DrawText(SmallFont, Font.CR_DARKGRAY, x + 90, y, Stringtable.Localize("$AM_SECRETS"), DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+		if (l.totalsecrets)
+		{
+			DrawTextScaled(HeadingFont, Font.CR_DARKGRAY, x + 90, y, Stringtable.Localize("$AM_SECRETS"), headingscale);
 
-		n = PadString(String.Format("%i", l.secretcount), 3);
-		d = String.Format("%i", l.totalsecrets);
-		s = String.Format("%i%%", l.totalsecrets ? l.secretcount * 100 / l.totalsecrets : 100);
+			n = PadString(String.Format("%i", l.secretcount), 3);
+			d = String.Format("%i", l.totalsecrets);
+			s = String.Format("%i%%", l.totalsecrets ? l.secretcount * 100 / l.totalsecrets : 100);
 
-		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 170 - SmallFont.StringWidth(n), y, n, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
-		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 177 - SmallFont.GetCharWidth("/") / 2, y, "/", DTA_VirtualWidth, width, DTA_VirtualHeight, height);
-		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 184, y, d, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
-		Screen.DrawText(SmallFont, Font.CR_GRAY, x + 246 - SmallFont.StringWidth(s), y, s, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
+			DrawTextScaled(StatFont, Font.CR_GRAY, x + 180 - StatFont.StringWidth(n) * fontscale, y, n);
+			DrawTextScaled(StatFont, Font.CR_GRAY, x + 187 - StatFont.GetCharWidth("/") * fontscale / 2, y, "/");
+			DrawTextScaled(StatFont, Font.CR_GRAY, x + 194, y, d);
+			DrawTextScaled(StatFont, Font.CR_GRAY, x + 246 - StatFont.StringWidth(s) * fontscale, y, s);
+		}
 	}
 
 	ui void DimScaled(Color clr = 0x000000, double alpha = 0.5, int x = 0, int y = 0, int w = width, int h = height)
 	{
 		double dimscale = double(Screen.GetHeight()) / height;
-		Screen.Dim(clr, alpha, int(Screen.GetWidth() / 2 - width * dimscale / 2 + x * dimscale), int(y * dimscale), int(w * dimscale), int(h * dimscale));
+
+		Vector2 pos, size;
+		[pos, size] = Screen.VirtualToRealCoords((x, y), (w, h), (width, height));
+
+		Screen.Dim(clr, alpha, int(pos.x), int(pos.y), int(size.x), int(size.y));
 	}
 
 	ui String PadString(String input, int digits)
@@ -340,17 +523,28 @@ class MapStatsHandler : StaticEventHandler
 		return input;
 	}
 
+	ui void DrawTextScaled(Font fnt, int normalcolor, double x, double y, String text, double scale = 0, int alignment = left)
+	{
+		if (!scale) { scale = fontscale; }
+
+		if (alignment == center) { x -= fnt.StringWidth(text) * scale / 2; }
+		else if (alignment == right) { x -= fnt.StringWidth(text) * scale; }
+
+		Screen.DrawText(fnt, normalcolor, int(x / scale), int(y / scale), text, DTA_VirtualWidth, int(width / scale), DTA_VirtualHeight, int(height / scale));
+	}
+
 	ui void DrawShapeTexture(TextureID tex, double alpha = 1.0, int x = width / 2, int y = height / 2, double ang = 0, double scale = 1.0)
 	{
 		double shapescale = double(Screen.GetHeight()) / height;
 
+		Vector2 pos, texsize, size;
+		texsize = TexMan.GetScaledSize(tex);
+		[pos, size] = Screen.VirtualToRealCoords((x, y), (texsize.x * scale, texsize.y * scale), (width, height));
+
 		let shape = ShapeUtil.MakeSquare();
 
-		x = int(Screen.GetWidth() / 2 - width * shapescale / 2 + x * shapescale);
-		y = int(y * shapescale);
-
 		// Draw rotated texture
-		ShapeUtil.MoveSquare(shape, (width * scale, height * scale), (x, y), ang);
+		ShapeUtil.MoveSquare(shape, size, pos, ang);
 		Screen.DrawShape(tex, false, shape, DTA_Alpha, alpha);
 	}
 
@@ -363,5 +557,39 @@ class MapStatsHandler : StaticEventHandler
 
 		if (status > -1) { this.active[activator.PlayerNumber()] = status; }
 		else { this.active[activator.PlayerNumber()] = !this.active[activator.PlayerNumber()]; }
+	}
+
+	static void Clear()
+	{
+		MapStatsHandler this = MapStatsHandler(StaticEventHandler.Find("MapStatsHandler"));
+		if (!this) { return; }
+
+		this.Levels.Clear();
+	}
+
+	static void SetChapter(int val)
+	{
+		MapStatsHandler this = MapStatsHandler(StaticEventHandler.Find("MapStatsHandler"));
+		if (!this || !val) { return; }
+
+		this.chapter = val;
+	}
+
+	static void SetSpecialCount(Actor caller, int chapter, int val = 0)
+	{
+		MapStatsHandler this = MapStatsHandler(StaticEventHandler.Find("MapStatsHandler"));
+		if (!this) { return; }
+
+		if (!chapter) { chapter = this.chapter; }
+
+		if (caller)
+		{
+			TextureID tex = caller.SpawnState.GetSpriteTexture(0);
+			String texname = TexMan.GetName(tex);
+
+			this.SpecialItemPickups.Push(texname);
+		}
+
+		this.specialitems[chapter - 1] = val;
 	}
 }
