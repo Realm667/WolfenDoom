@@ -708,7 +708,10 @@ class BoAPlayer : PlayerPawn
 				}
 				else if (texname == "VENT_M01") // If it's a breakable vent...
 				{
-					AimLine.Activate(self, trace.LineSide, SPAC_Impact); // Pretend it was shot
+					if (trace.HitType == FLineTraceData.TRACE_HitWall)
+					{
+						AimLine.Activate(self, trace.LineSide, SPAC_Impact); // Pretend it was shot
+					}
 				}
 				// This can be expanded to include custom interaction sounds for any texture present in 
 				// the game (e.g., Ion Maiden-style 'locked door' rattles).  This does *not* override
