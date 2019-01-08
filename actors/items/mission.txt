@@ -2,6 +2,7 @@ ACTOR Akten : CompassItem
 {
 	//$Title Secret Files (Tunis)
 	Tag "$TAGFILES"
+	CompassItem.SpecialClue 3 // This folder gets re-used as a zombie clue in C3, so needs that special handling.  The number acts as a chapter filter for the special stats board drawing effects.
 	Inventory.Icon AKTTA0
 	Inventory.PickupMessage "$AKTEN"
 	States
@@ -16,6 +17,7 @@ ACTOR AktenEisenmann : CompassItem
 {
 	//$Title Secret Files (Eisenmann)
 	Tag "$TAGEISEN"
+	CompassItem.SpecialClue 1
 	Inventory.Icon AKTEA0
 	Inventory.PickupMessage "$EISEN"
 	Inventory.MaxAmount 5
@@ -44,7 +46,7 @@ ACTOR AktenV2 : CompassItem
 ACTOR AktenDream : CompassItem
 {
 	//$Title Secret Files (Dream)
-	Tag "$TAGTHORS"
+	Tag "$TAGZOMB"
 	Inventory.Icon AKT3A0
 	Inventory.PickupMessage "$DREAM"
 	-INVENTORY.INVBAR
@@ -60,12 +62,20 @@ ACTOR AktenDream : CompassItem
 }
 
 
-ACTOR AktenDreamClue : AktenDream
+ACTOR AktenDreamClue : CompassItem
 {
 	//$Title Secret Files (Clue)
-	CompassItem.ZombieClue 1
+	Tag "$TAGZOMBC"
+	CompassItem.SpecialClue 3
+	Inventory.Icon AKT3A0
 	Inventory.PickupMessage "$ZOMBF"
-	+INVENTORY.INVBAR
+	Inventory.MaxAmount 2
+	States
+	{
+	Spawn:
+		AKT3 B -1
+		Stop
+	}
 }
 
 ACTOR ArtifactAstrostrein : CompassItem
@@ -73,6 +83,7 @@ ACTOR ArtifactAstrostrein : CompassItem
 	//$Title Mayan Artifact (Astrostein)
 	Scale 0.25
 	Tag "$TAGMAYAN"
+	CompassItem.SpecialClue 2
 	Inventory.Icon ARTMA0
 	Inventory.PickupMessage "$MAYAN"
 	Inventory.MaxAmount 5
@@ -428,7 +439,7 @@ ACTOR ZombieArmClue : CompassItem
 {
 	//$Title Zombie Arm (Clue)
 	Tag "$TAGZARM"
-	CompassItem.ZombieClue 1
+	CompassItem.SpecialClue 3
 	Inventory.Icon ZARMA0
 	Inventory.PickupMessage "$ZARM"
 	Inventory.PickupSound "misc/armor_body"
@@ -445,7 +456,7 @@ ACTOR ZombieHeadClue : CompassItem
 {
 	//$Title Zombie Head (Clue)
 	Tag "$TAGZHED"
-	CompassItem.ZombieClue 1
+	CompassItem.SpecialClue 3
 	Inventory.Icon ZHEDA0
 	Inventory.PickupMessage "$ZHED"
 	Inventory.PickupSound "misc/armor_body"
@@ -462,7 +473,7 @@ ACTOR MineralClue : CompassItem
 {
 	//$Title Mineral (Clue)
 	Tag "$TAGMINR"
-	CompassItem.ZombieClue 1
+	CompassItem.SpecialClue 3
 	Inventory.Icon MINRA0
 	Inventory.MaxAmount 2
 	Inventory.PickupMessage "$ZMINR"

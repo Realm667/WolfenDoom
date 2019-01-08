@@ -18,7 +18,6 @@ class MapStatsHandler : StaticEventHandler
 	Font TitleFont, HeadingFont, StatFont;
 	double titlescale, headingscale, fontscale;
 	int lineheight;
-	int specialitems[3];
 	Array<String> SpecialItemPickups;
 	int chapter;
 
@@ -251,56 +250,25 @@ class MapStatsHandler : StaticEventHandler
 
 	ui void DrawItems(int xoffset, int yoffset)
 	{
-		if (!chapter) { return; }
+		if (xoffset < 0) { xoffset = width + xoffset; }
+		if (yoffset < 0) { yoffset = height + yoffset; }
 
-		if (specialitems[chapter - 1])
+		TextureID img;
+
+		// Handle drawing clue item icons
+		for (int j = 0; j < min(SpecialItemPickups.Size(), chapter < 3 ? 5 : 6); j++) // Draw up to 5 (or 6 for C3) icons
 		{
-			if (xoffset < 0) { xoffset = width + xoffset; }
-			if (yoffset < 0) { yoffset = height + yoffset; }
+			img = TexMan.CheckForTexture(SpecialItemPickups[j], TexMan.Type_Any);
 
-			for (int i = 0; i < specialitems[chapter - 1]; i++)
+			if (img)
 			{
-				String image = "";
+				Vector2 size;
+				size = TexMan.GetScaledSize(img);
 
-				if (chapter == 1) { image = "AKTEB0"; }
-				else if (chapter == 2) { image = "ARTMB0"; }
+				double ratio = 32.0 / size.x;
+				size *= ratio;
 
-				if (!(image == ""))
-				{
-					TextureID img = TexMan.CheckForTexture(image, TexMan.Type_Any);
-
-					if (img)
-					{
-						Vector2 size;
-						size = TexMan.GetScaledSize(img);
-
-						double ratio = 32.0 / size.x;
-						size *= ratio;
-
-						Screen.DrawTexture(img, false, xoffset + 48 * i, yoffset, DTA_DestWidthF, size.x, DTA_DestHeightF, size.y, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
-					}
-				}
-				else if (chapter == 3)
-				{
-					TextureID img;
-
-					// Handle drawing zombie clues
-					for (int j = 0; j < SpecialItemPickups.Size(); j++)
-					{
-						img = TexMan.CheckForTexture(SpecialItemPickups[j], TexMan.Type_Any);
-						if (img)
-						{
-							Vector2 size;
-							size = TexMan.GetScaledSize(img);
-
-							double ratio = 32.0 / size.x;
-							size *= ratio;
-
-							Screen.DrawTexture(img, false, xoffset + 48 * j, yoffset, DTA_DestWidthF, size.x, DTA_DestHeightF, size.y, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
-						}
-					}
-					DrawTextScaled(TitleFont, Font.CR_GRAY, 0, 64, String.Format("Special items: %i", specialitems[chapter - 1]), titlescale);
-				}
+				Screen.DrawTexture(img, false, xoffset + 40 * j, yoffset, DTA_DestWidthF, size.x, DTA_DestHeightF, size.y, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
 			}
 		}
 	}
@@ -564,32 +532,33 @@ class MapStatsHandler : StaticEventHandler
 		MapStatsHandler this = MapStatsHandler(StaticEventHandler.Find("MapStatsHandler"));
 		if (!this) { return; }
 
+		this.SpecialItemPickups.Clear();
 		this.Levels.Clear();
 	}
 
-	static void SetChapter(int val)
+	static void SetChapter(int val) // Called from the MissionNumber OPEN ACS script in gameplay.acs
 	{
 		MapStatsHandler this = MapStatsHandler(StaticEventHandler.Find("MapStatsHandler"));
 		if (!this || !val) { return; }
 
-		this.chapter = val;
+		if (val != this.chapter || level.totaltime < 35) // If you're changing chapters or starting a new game, then initialize the stats list
+		{
+			this.Clear();
+			this.chapter = val;
+		}
 	}
 
-	static void SetSpecialCount(Actor caller, int chapter, int val = 0)
+	static bool AddSpecialPickup(String texName, int chapter) // Called from the CompassItem base class when a CompassItem is picked up and chapter is 3.
 	{
 		MapStatsHandler this = MapStatsHandler(StaticEventHandler.Find("MapStatsHandler"));
-		if (!this) { return; }
+		if (!this) { return false; }
 
-		if (!chapter) { chapter = this.chapter; }
-
-		if (caller)
+		if (chapter == this.chapter)
 		{
-			TextureID tex = caller.SpawnState.GetSpriteTexture(0);
-			String texname = TexMan.GetName(tex);
-
-			this.SpecialItemPickups.Push(texname);
+			this.SpecialItemPickups.Push(texName);
+			return true;
 		}
 
-		this.specialitems[chapter - 1] = val;
+		return false;
 	}
 }

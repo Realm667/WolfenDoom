@@ -1,8 +1,9 @@
 class CompassItem : Inventory
 {
-	bool zombieclue;
+	String iconName;
+	int specialclue;
 
-	Property ZombieClue:zombieclue;
+	Property SpecialClue:specialclue;
 
 	Default
 	{
@@ -18,7 +19,7 @@ class CompassItem : Inventory
 
 	override void PostBeginPlay()
 	{
-		String iconName = "";
+		iconName = "";
 
 		// Try to use the inventory icon as the compass icon
 		iconName = TexMan.GetName(icon);
@@ -39,9 +40,13 @@ class CompassItem : Inventory
 	{
 		bool pickup = Super.TryPickup(toucher);
 
-		if (pickup && zombieclue)
+		if (pickup && specialclue == 3)
 		{
-			MapStatsHandler.SetSpecialCount(self, 0, 1);
+			TextureID tex = SpawnState.GetSpriteTexture(0);
+			String texName = TexMan.GetName(tex);
+
+			// If it belongs to this chapter and gets added, autosave on pickup so we don't have to deal with clearing the entries if we die.
+			if (MapStatsHandler.AddSpecialPickup(texName, specialclue)) { gameaction = ga_autosave; }
 		}
 
 		return pickup;
