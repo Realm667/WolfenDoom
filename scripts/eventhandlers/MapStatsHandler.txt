@@ -30,7 +30,7 @@ class MapStatsHandler : StaticEventHandler
 		return Levels.Size();
 	}
 
-	ui int FindLevelNumber(int n) // Helper function to find a thing in a child class (Used in place of Levels.Find(mo) since the name is nested in a LevelData object
+	ui int FindLevelNumber(int n) // Helper function to find a thing in a child class (Used in place of Levels.Find(mo) since the level number is nested in a LevelData object
 	{
 		for (int i = 0; i < Levels.Size(); i++)
 		{
@@ -300,40 +300,17 @@ class MapStatsHandler : StaticEventHandler
 		if (xoffset < 0) { xoffset = width + xoffset; }
 		if (yoffset < 0) { yoffset = height + yoffset; }
 
-		String treasuretitle = Stringtable.Localize("$STATS_ITEMS");
-		String killstitle = Stringtable.Localize("$STATS_MONSTERS");
-		String secretstitle = Stringtable.Localize("$STATS_SECRETS");
+		yoffset = DrawData(totals, xoffset - 72, yoffset, true);
+
 		String timetitle = Stringtable.Localize("$STATS_TIME");
 
 		String s;
 
-		// Print total treasure
-		DrawTextScaled(HeadingFont, Font.CR_DARKGRAY, xoffset - HeadingFont.StringWidth(treasuretitle) * headingscale - 72, yoffset, treasuretitle, headingscale);
-		s = String.Format("%i%%", totals.totalitems ? totals.itemcount * 100 / totals.totalitems : 0);
-		DrawTextScaled(StatFont, Font.CR_GRAY, xoffset - StatFont.StringWidth(s) * fontscale - 10, yoffset, s);
-
-		yoffset += lineheight;
-
-		// Print total kills
-		DrawTextScaled(HeadingFont, Font.CR_DARKGRAY, xoffset - HeadingFont.StringWidth(killstitle) * headingscale - 72, yoffset, killstitle, headingscale);
-		s = String.Format("%i%%", totals.totalkills ? totals.killcount * 100 / totals.totalkills : 0);
-		DrawTextScaled(StatFont, Font.CR_GRAY, xoffset - StatFont.StringWidth(s) * fontscale - 10, yoffset, s);
-
-		yoffset += lineheight;
-
-		// Print total secrets
-
-		DrawTextScaled(HeadingFont, Font.CR_DARKGRAY, xoffset - HeadingFont.StringWidth(secretstitle) * headingscale - 72, yoffset, secretstitle, headingscale);
-		s = String.Format("%i%%", totals.totalsecrets ? totals.secretcount * 100 / totals.totalsecrets : 0);
-		DrawTextScaled(StatFont, Font.CR_GRAY, xoffset - StatFont.StringWidth(s) * fontscale - 10, yoffset, s);
-
-		yoffset += lineheight;
-
 		// Print total time
-		DrawTextScaled(HeadingFont, Font.CR_DARKGRAY, xoffset - HeadingFont.StringWidth(timetitle) * headingscale - 72, yoffset, timetitle, headingscale);
+		DrawTextScaled(HeadingFont, Font.CR_DARKGRAY, xoffset - 72, yoffset, timetitle, headingscale, right);
 		let seconds = Thinker.Tics2Seconds(totals.leveltime);
 		s = String.Format("%02i:%02i:%02i", seconds / 3600, (seconds % 3600) / 60, seconds % 60);
-		DrawTextScaled(StatFont, Font.CR_GRAY, xoffset - StatFont.StringWidth(s) * fontscale - 10, yoffset, s);
+		DrawTextScaled(StatFont, Font.CR_GRAY, xoffset + 50, yoffset, s, fontscale, right);
 	}
 
 	static const int drawpositions[] =
@@ -353,6 +330,46 @@ class MapStatsHandler : StaticEventHandler
 		17, 30, 10,
 		65, 38, 5
 	};
+
+	ui int DrawDataLine(String title, int n, int d, int x, int y, bool isTotals)
+	{
+		if (d > 0)
+		{
+			String amt, total, percentage;
+
+			DrawTextScaled(HeadingFont, Font.CR_DARKGRAY, x, y, title, headingscale, isTotals ? right : left);
+
+			if (isTotals) { x -= 52; }
+
+			amt = PadString(String.Format("%i", n), 3);
+			total = String.Format("%i", d);
+			percentage = String.Format("%i%%", n * 100 / d);
+
+			DrawTextScaled(StatFont, Font.CR_GRAY, x + 90, y, amt, fontscale, right);
+			DrawTextScaled(StatFont, Font.CR_GRAY, x + 97, y, "/", fontscale, center);
+			DrawTextScaled(StatFont, Font.CR_GRAY, x + 104, y, total);
+			DrawTextScaled(StatFont, Font.CR_GRAY, x + (isTotals ? 175 : 160), y, percentage, fontscale, right);
+
+			return y += lineheight;
+		}
+
+		return y += lineheight / 2;
+	}
+
+	ui int DrawData(LevelData l, int x, int y, bool isTotals = false)
+	{
+		String prefix = (isTotals ? "STATS" : "AM");
+
+		String treasuretitle = Stringtable.Localize("$" .. prefix .. "_ITEMS");
+		String killstitle = Stringtable.Localize("$" .. prefix .. "_MONSTERS");
+		String secretstitle = Stringtable.Localize("$" .. prefix .. "_SECRETS");
+
+		y = DrawDataLine(treasuretitle, l.itemcount, l.totalitems, x, y, isTotals);
+		y = DrawDataLine(killstitle, l.killcount, l.totalkills, x, y, isTotals);
+		y = DrawDataLine(secretstitle, l.secretcount, l.totalsecrets, x, y, isTotals);
+
+		return y;
+	}
 
 	ui void DrawSummary(String imageprefix, LevelData l, int xoffset, int yoffset)
 	{
@@ -417,58 +434,7 @@ class MapStatsHandler : StaticEventHandler
 
 		y += lineheight;
 
-		String n, d, s;
-
-		// Print items
-		if (l.totalitems)
-		{
-			DrawTextScaled(HeadingFont, Font.CR_DARKGRAY, x + 90, y, Stringtable.Localize("$AM_ITEMS"), headingscale);
-
-			n = PadString(String.Format("%i", l.itemcount), 3);
-			d = String.Format("%i", l.totalitems);
-			s = String.Format("%i%%", l.totalitems ? l.itemcount * 100 / l.totalitems : 100);
-
-			DrawTextScaled(StatFont, Font.CR_GRAY, x + 180 - StatFont.StringWidth(n) * fontscale, y, n);
-			DrawTextScaled(StatFont, Font.CR_GRAY, x + 187 - StatFont.GetCharWidth("/") * fontscale / 2, y, "/");
-			DrawTextScaled(StatFont, Font.CR_GRAY, x + 194, y, d);
-			DrawTextScaled(StatFont, Font.CR_GRAY, x + 246 - StatFont.StringWidth(s) * fontscale, y, s);
-
-			y += lineheight;
-		}
-		else { y+= lineheight / 2; }
-
-		// Print kills
-		if (l.totalkills)
-		{
-			DrawTextScaled(HeadingFont, Font.CR_DARKGRAY, x + 90, y, Stringtable.Localize("$AM_MONSTERS"), headingscale);
-
-			n = PadString(String.Format("%i", l.killcount), 3);
-			d = String.Format("%i", l.totalkills);
-			s = String.Format("%i%%", l.totalkills ? l.killcount * 100 / l.totalkills : 100);
-
-			DrawTextScaled(StatFont, Font.CR_GRAY, x + 180 - StatFont.StringWidth(n) * fontscale, y, n);
-			DrawTextScaled(StatFont, Font.CR_GRAY, x + 187 - StatFont.GetCharWidth("/") * fontscale / 2, y, "/");
-			DrawTextScaled(StatFont, Font.CR_GRAY, x + 194, y, d);
-			DrawTextScaled(StatFont, Font.CR_GRAY, x + 246 - StatFont.StringWidth(s) * fontscale, y, s);
-
-			y += lineheight;
-		}
-		else { y+= lineheight / 2; }
-
-		// Print secrets
-		if (l.totalsecrets)
-		{
-			DrawTextScaled(HeadingFont, Font.CR_DARKGRAY, x + 90, y, Stringtable.Localize("$AM_SECRETS"), headingscale);
-
-			n = PadString(String.Format("%i", l.secretcount), 3);
-			d = String.Format("%i", l.totalsecrets);
-			s = String.Format("%i%%", l.totalsecrets ? l.secretcount * 100 / l.totalsecrets : 100);
-
-			DrawTextScaled(StatFont, Font.CR_GRAY, x + 180 - StatFont.StringWidth(n) * fontscale, y, n);
-			DrawTextScaled(StatFont, Font.CR_GRAY, x + 187 - StatFont.GetCharWidth("/") * fontscale / 2, y, "/");
-			DrawTextScaled(StatFont, Font.CR_GRAY, x + 194, y, d);
-			DrawTextScaled(StatFont, Font.CR_GRAY, x + 246 - StatFont.StringWidth(s) * fontscale, y, s);
-		}
+		y = DrawData(l, x + 90, y);
 	}
 
 	ui void DimScaled(Color clr = 0x000000, double alpha = 0.5, int x = 0, int y = 0, int w = width, int h = height)

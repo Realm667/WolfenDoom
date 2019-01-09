@@ -1,36 +1,50 @@
-class CoinItem : Ammo {
+class CoinItem : StackableInventory {
 	// Can be activated/deactivated and/or set dormant to prevent player from picking it up.
-	// Inheriting from Ammo prevents player from picking it up if player is maxed out on it.
+	// Inheriting from StackableInventory prevents player from picking it up if player is maxed out on it.
 
 	bool AllowPickup;
 
 	Default {
 		Inventory.MaxAmount 999;
-		Ammo.BackpackAmount 0;
-		Ammo.BackpackMaxAmount 999;
 		Tag "Money";
-		+INVENTORY.KEEPDEPLETED;
-		+INVENTORY.UNDROPPABLE;
-		+INVENTORY.IGNORESKILL;
+		+COUNTITEM
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.IGNORESKILL
 	}
 
-	override void Activate(Actor activator) {
+	override void Activate(Actor activator)
+	{
 		AllowPickup = true;
 		Super.Activate(activator);
 	}
 
-	override void Deactivate(Actor activator) {
+	override void Deactivate(Actor activator)
+	{
 		AllowPickup = false;
 		Super.Deactivate(activator);
 	}
 
-	override void BeginPlay() {
+	override void BeginPlay()
+	{
 		Super.BeginPlay();
-		AllowPickup = (SpawnFlags & MTF_DORMANT) == 0;
+		AllowPickup = !(SpawnFlags & MTF_DORMANT);
 	}
 
-	override bool CanPickup(Actor toucher) {
+	override bool CanPickup(Actor toucher)
+	{
 		if (AllowPickup) return Super.CanPickup(toucher);
 		return false;
+	}
+
+	override void Tick()
+	{
+		if (bCountItem != AllowPickup)
+		{
+			bCountItem = AllowPickup;
+
+			level.total_items += bCountItem ? 1 : -1;
+		}
+
+		Super.Tick();
 	}
 }

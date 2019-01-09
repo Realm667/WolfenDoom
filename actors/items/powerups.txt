@@ -21,7 +21,6 @@ ACTOR NaziBerserk : CustomInventory
 	//$Color 6
 	//$Sprite PSTRA0
 	Scale 0.50
-	+COUNTITEM
 	+INVENTORY.INVBAR
 	Inventory.Icon "I_BSRK"
 	Inventory.MaxAmount 1
@@ -137,7 +136,6 @@ ACTOR AdrenalineKit : CustomInventory
 	Inventory.MaxAmount 3
 	Inventory.PickupMessage "$ADREN"
 	Inventory.UseSound "misc/p_pkup"
-	+COUNTITEM
 	+INVENTORY.INVBAR
 	States
 	{
@@ -160,7 +158,6 @@ ACTOR DeployableMine : CustomInventory
 	Inventory.MaxAmount 5
 	Inventory.PickupMessage "$DEPMINE"
 	Inventory.PickupSound "misc/ammo_pkup"
-	+COUNTITEM
 	+INVENTORY.INVBAR
 	States
 	{
@@ -185,7 +182,6 @@ ACTOR OilPickup : CustomInventory
 	//$Title Lantern Oil
 	//$Color 6
 	Scale 0.5
-	+COUNTITEM
 	-INVENTORY.INVBAR
 	Inventory.MaxAmount 12 //1000x12=12000
 	Inventory.PickupMessage "$OILPICK"

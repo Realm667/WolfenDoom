@@ -50,7 +50,27 @@ class BoASupplyChest : Actor
 	{
 		BoACompass.Add(self, "CHESTICO");
 
-		if (args[0] < 0) { spawnclass = GetSpawnableType(args[0]); } // If a string value was passed in, use that as the spawn class
+		if (args[0] < 0) // If a string value was passed in, use that as the spawn class
+		{
+			spawnclass = GetSpawnableType(args[0]);
+
+			if (GetDefaultByType(spawnclass).bCountItem) { level.total_items++; }
+		} 
+		else if (args[0] && args[0] < 4) // Pre-increment the level's item count so that the percentages are correct
+		{
+			switch(args[0])
+			{
+				case 1: // 100 coins (6 bags and 40 coins)
+					level.total_items += 46;
+					break;
+				case 2: // 75 coins (4 bags and 35 coins)
+					level.total_items += 39;
+					break;
+				case 3: // 25 coins (1 bag and 15 coins)
+					level.total_items += 16;
+					break;
+			}
+		}
 
 		Super.PostBeginPlay();
 	}
@@ -82,6 +102,8 @@ class BoASupplyChest : Actor
 			let mo = Spawn(spawnclass, pos + (0, 0, height), ALLOW_REPLACE);
 			mo.scale *= 0.75;
 			mo.bDropped = False;
+
+			if (mo.bCountItem) { level.total_items--; }
 		}
 		else // Otherwise fall back to the hard-coded presets
 		{
@@ -91,16 +113,19 @@ class BoASupplyChest : Actor
 					Inventory.PrintPickupMessage(user.CheckLocalView(consoleplayer), StringTable.Localize("$100COINS"));
 					SpawnInBox("BagOfCoins", 6); // 60 coins
 					SpawnInBox("SingleCoin", 40); // 40 coins
+					level.total_items -= 46;
 					break;
 				case 2: // 75 coins
 					Inventory.PrintPickupMessage(user.CheckLocalView(consoleplayer), StringTable.Localize("$75COINS"));
 					SpawnInBox("BagOfCoins", 4); // 40 coins
 					SpawnInBox("SingleCoin", 35); // 35 coins
+					level.total_items -= 39;
 					break;
 				case 3: // 25 coins
 					Inventory.PrintPickupMessage(user.CheckLocalView(consoleplayer), StringTable.Localize("$25COINS"));
 					SpawnInBox("BagOfCoins", 1); // 10 coins
 					SpawnInBox("SingleCoin", 15); // 15 coins
+					level.total_items -= 16;
 					break;
 				case 4: // Karabiner
 					Inventory.PrintPickupMessage(user.CheckLocalView(consoleplayer), StringTable.Localize("$KARCHEST"));

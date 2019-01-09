@@ -135,7 +135,6 @@ ACTOR FieldKit : HealthPickup
 	Inventory.PickupMessage "$FKIT"
 	Inventory.PickupSound "Misc/I_PkUp"
 	Inventory.UseSound "Misc/I_PkUp"
-	+COUNTITEM
 	States
 	{
 	Spawn:
@@ -163,7 +162,6 @@ ACTOR Bandages : PowerupGiver
 	Inventory.UseSound "pickup/bandage"
 	Inventory.PickupSound "misc/health_pkup"
 	Powerup.Type "BandagesPowerup"
-	+COUNTITEM
 	States
 	{
 	Spawn:

@@ -67,6 +67,7 @@ class StackableInventory : Inventory
 
 			copy = Inventory(Spawn (type));
 			copy.Amount = amount;
+			copy.Deactivate(null);
 			copy.BecomeItem ();
 		}
 		else
