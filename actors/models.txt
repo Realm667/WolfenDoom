@@ -13,6 +13,20 @@ ACTOR ModelBase
 	}
 }
 
+ACTOR DecalBase
+{
+	Radius 128
+	Height 0
+	Scale 1.25
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		MDLA A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
 ACTOR 3dObject : ModelBase
 {
 	+NOBLOCKMAP
@@ -169,6 +183,132 @@ ACTOR SkyboxMoonLights : SkyboxPlanetShade //adjusted by T667
 }
 
 //Ozy models from scratch or revamped
+ACTOR GoryDecal1 : DecalBase
+{
+	//$Category Gore (Wolf3D)/3D Walldecs
+	//$Title Gory Decal 01
+	//$Color 4
+}
+
+ACTOR GoryDecal2 : GoryDecal1
+{
+	//$Title Gory Decal 02
+}
+
+ACTOR GoryDecal3 : GoryDecal1
+{
+	//$Title Gory Decal 03
+}
+
+ACTOR GoryDecal4 : GoryDecal1
+{
+	//$Title Gory Decal 04 (Big)
+	Scale 0.50
+}
+
+ACTOR GoryDecal5 : GoryDecal1
+{
+	//$Title Gory Decal 05
+}
+
+ACTOR GoryDecal6 : GoryDecal1
+{
+	//$Title Gory Decal 06
+}
+
+ACTOR GoryDecal7 : GoryDecal1
+{
+	//$Title Gory Decal 07
+}
+
+ACTOR GoryDecal8 : GoryDecal1
+{
+	//$Title Gory Decal 08
+}
+
+ACTOR GoryDecal9 : GoryDecal1 //since this has Save Us it isn't mirrored randomly - ozy81
+{
+	//$Title Gory Decal 09
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
+}
+
+ACTOR GoryDecal10 : GoryDecal1
+{
+	//$Title Gory Decal 10
+}
+
+ACTOR GoryDecal11 : GoryDecal1
+{
+	//$Title Gory Decal 11
+}
+
+ACTOR GoryDecal12 : GoryDecal1
+{
+	//$Title Gory Decal 12
+}
+
+ACTOR GoryDecal13 : GoryDecal1
+{
+	//$Title Gory Decal 13
+}
+
+ACTOR GoryDecal14 : GoryDecal1
+{
+	//$Title Gory Decal 14
+}
+
+ACTOR GoryDecal15 : GoryDecal1
+{
+	//$Title Gory Decal 15 (Small)
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
+}
+
+ACTOR GoryDecal16 : GoryDecal1
+{
+	//$Title Gory Decal 16 (Small)
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
+}
+
+ACTOR GoryDecalSpawner : RandomSpawner //15 & 16 are excluded for obvious reasons - ozy81
+{
+	//$Category Gore (Wolf3D)/3D Walldecs
+	//$Title Gory Decal Spawner, Random
+	//$Color 4
+	//$Sprite "DECLA0"
+	Radius 128
+	Height 0
+	+FLATSPRITE //needed only for gzdb
+	DropItem "GoryDecal1"
+	DropItem "GoryDecal2"
+	DropItem "GoryDecal3"
+	DropItem "GoryDecal4"
+	DropItem "GoryDecal5"
+	DropItem "GoryDecal6"
+	DropItem "GoryDecal7"
+	DropItem "GoryDecal8"
+	DropItem "GoryDecal9"
+	DropItem "GoryDecal10"
+	DropItem "GoryDecal11"
+	DropItem "GoryDecal12"
+	DropItem "GoryDecal13"
+	DropItem "GoryDecal14"
+}
+
 ACTOR Radiator_Short
 {
 	//$Category Models (Wolf3D)/Furniture
