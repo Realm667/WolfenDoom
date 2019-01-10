@@ -184,7 +184,7 @@ ACTOR PyrolightLoaded : Ammo
 	Inventory.Icon FLAM02
 }
 
-ACTOR Flamebolt
+ACTOR Flamebolt : GrenadeBase
 {
 	Damage (random(1,4))
 	Alpha 0.9
@@ -201,6 +201,7 @@ ACTOR Flamebolt
 	Decal Scorch
 	Obituary "$OBPYRO"
 	ProjectileKickback 20
+	GrenadeBase.FearDistance 64
 	States
 	{
 	Spawn:
@@ -263,6 +264,7 @@ ACTOR Flameball : Flamebolt
 	SeeSound "flamer/napalm"
 	DeathSound "nebelwerfer/xplode"
 	RenderStyle "Add"
+	GrenadeBase.FearDistance 256
 	States
 	{
 	Spawn:

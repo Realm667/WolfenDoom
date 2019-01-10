@@ -112,7 +112,7 @@ class CompassHandler : EventHandler
 
 		BoACompass cmps = BoACompass(p.mo.FindInventory("BoACompass"));
 
-		if (cmps && cmps.active && screenblocks < 12 && !p.mo.FindInventory("CutsceneEnabled")) // Hide the compass when HUD is hidden and when cutscenes are active
+		if (cmps && cmps.active && screenblocks < 12 && !automapactive && !p.mo.FindInventory("CutsceneEnabled")) // Hide the compass when HUD is hidden and when cutscenes are active or when automap is turned on
 		{
 			// Find compass and background textures
 			TextureID cmpsbg = TexMan.CheckForTexture("COMPASS", TexMan.Type_Any);
