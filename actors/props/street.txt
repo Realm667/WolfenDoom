@@ -26,6 +26,22 @@ ACTOR Denkmal //not used - ozy81 14/10/2017
 	}
 }
 
+ACTOR Dome
+{
+	//$Category Props (Wolf3D)/Street
+	//$Title Dome
+	//$Color 3
+	Radius 2
+	Height 2
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		DOME A -1
+		Stop
+	}
+}
+
 ACTOR StreetBin : StreetBase
 {
 	//$Category Props (Wolf3D)/Street
