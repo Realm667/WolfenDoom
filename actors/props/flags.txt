@@ -324,3 +324,54 @@ ACTOR Toys_NaziFlagS : Toys_UKFlag
 		Stop
 	}
 }
+
+ACTOR Maps_Pins1
+{
+	//$Category Props (Wolf3D)/Flags
+	//$Title Maps Pins - SS Flag
+	//$Color 3
+	Radius 2
+	Height 2
+	Scale 0.25
+	+NOGRAVITY
+	+WALLSPRITE
+	States
+	{
+	Spawn:
+		MAPP A -1
+		Stop
+	}
+}
+
+ACTOR Maps_Pins2 : Maps_Pins1
+{
+	//$Title Maps Pins - UK Flag
+	States
+	{
+	Spawn:
+		MAPP B -1
+		Stop
+	}
+}
+
+ACTOR Maps_Pins3 : Maps_Pins1
+{
+	//$Title Maps Pins - USA Flag
+	States
+	{
+	Spawn:
+		MAPP C -1
+		Stop
+	}
+}
+
+ACTOR Maps_Pins4 : Maps_Pins1
+{
+	//$Title Maps Pins - USSR Flag
+	States
+	{
+	Spawn:
+		MAPP D -1
+		Stop
+	}
+}
