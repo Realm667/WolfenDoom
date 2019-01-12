@@ -178,6 +178,25 @@ ACTOR FutureCeilingLight : SwitchableDecoration
 	}
 }
 
+ACTOR FutureCeilingLightNC : FutureCeilingLight
+{
+	//$Title Ceiling Light (modern, switchable, no cone)
+	States
+	{
+	Active:
+		MDLA A 0 A_ChangeFlag("DORMANT", FALSE)
+	Spawn:
+		MDLA A 0 NoDelay
+	Activate:
+		MDLA A 1
+		Loop
+	Inactive:
+		MDLA A 0 A_ChangeFlag("DORMANT", TRUE)
+		MDLA B -1
+		Stop
+	}
+}
+
 ACTOR DecorationShip : SwitchableDecoration
 {
 	//$Category Props (Wolf3D)/Astrostein
