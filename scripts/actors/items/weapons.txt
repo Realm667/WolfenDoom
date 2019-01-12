@@ -55,6 +55,9 @@ class NaziWeapon : Weapon
 
 			Amount = 1;
 		}
+
+		if (skill >= 2) { bNoAutoAim = true; } // Force autoaim off if we're on normal skill or higher
+
 		Super.PostBeginPlay();
 	}
 

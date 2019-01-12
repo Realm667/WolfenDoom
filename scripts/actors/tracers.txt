@@ -8,7 +8,6 @@ class BulletTracer : FastProjectile
 	{
 		+BLOODSPLATTER
 		+NOEXTREMEDEATH
-		+SEEKERMISSILE
 		+WINDTHRUST
 		+THRUGHOST
 		Radius 2;
@@ -21,11 +20,8 @@ class BulletTracer : FastProjectile
 	States
 	{
 		Spawn:
-			TNT1 A 1 BRIGHT A_JumpIfTracerCloser(96,"Whiz");
+			TNT1 A 1 BRIGHT;
 			Loop;
-		Whiz:
-			TNT1 A -1 BRIGHT A_SpawnItemEx("Whizzer");
-			Stop;
 		Death:
 		Crash:
 			TNT1 AAA 0 {
@@ -66,15 +62,63 @@ class BulletTracer : FastProjectile
 
 		return true;
 	}
+
+	override void Tick()
+	{
+		DoWhizChecks();
+
+		Super.Tick();
+	}
+
+	void DoWhizChecks(int radius = 96)
+	{
+		BlockThingsIterator it = BlockThingsIterator.Create(self, radius);
+
+		while (it.Next())
+		{
+			if (it.thing == target) { continue; } // Ignore the originator
+
+			if (it.thing.health > 0 && it.thing.bShootable && (Nazi(it.thing) || PlayerPawn(it.thing) || PlayerFollower(it.thing)))// Only affect living Nazis, players, and player followers
+			{
+				double dist = Distance3d(it.thing);
+
+				if (dist > radius) { continue; }
+
+				if (it.thing.lastHeard != self)
+				{
+					it.thing.lastHeard = self;
+
+					if (target && target.IsHostile(it.thing)) // Only 'whizz' at hostiles
+					{
+						Actor mo = Spawn("Whizzer", pos);
+						if (mo) { mo.master = it.thing; }
+					}
+				}
+			}
+		}
+	}
 }
 
-class Whizzer : Actor
+class Whizzer : GrenadeBase
 {
+	Default
+	{
+		+NOGRAVITY
+		GrenadeBase.FearDistance 64;
+	}
+
 	States
 	{
 		Spawn:
-			TNT1 A 1 A_PlaySound("whiz");
+			TNT1 A 15;
 			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (master && PlayerPawn(master)) { A_PlaySound("whiz"); } // Only play whiz sound if near a player that's not the originator
 	}
 }
 
@@ -96,6 +140,7 @@ class TracerTrail : Actor
 		+NODAMAGETHRUST
 		+NOGRAVITY
 		+NOTELEPORT
+		+WINDTHRUST
 		Alpha 0.0;
 		Scale 0.4;
 		RenderStyle "Add";

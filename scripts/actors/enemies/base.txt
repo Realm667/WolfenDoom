@@ -368,12 +368,10 @@ class Base : Actor
 
 	bool A_DoSideRoll(int dodgespeed = 10, bool checkonly = false, bool force = false)
 	{
+		// If we're static, still waiting after the last dodge, or are on a path, don't try to dodge right now
 		if (!speed) { return false; }
-
-		if (!force)
-		{
-			if (bFriendly || dodgetimeout > 0 || (target && target is "PatrolPoint")) { return false; } // If we're still waiting after the last dodge, or are on a path, don't try to dodge right now
-		}
+		if (dodgetimeout > 0) { return false; }
+		if (!force && (bFriendly || (target && target is "PatrolPoint"))) { return false; }
 
 		double dodgeangle;
 		double dodgedistance;
@@ -398,7 +396,7 @@ class Base : Actor
 			}
 
 			bShootable = false;
-			if (!force) { dodgecounter++; }
+			if (!force || (lastHeard && lastHeard is "Whizzer")) { dodgecounter++; }
 
 			spriteID dodgesprite = DodgeState.sprite;
 			if (dodgesprite) { sprite = dodgesprite; }
@@ -424,6 +422,7 @@ class Base : Actor
 		double left = GetMoveDistance(90);
 		double right = GetMoveDistance(-90);
 
+		if (left < radius + 16 && right < radius + 16) { return -1, 0; } // Don't dodge if there's only a little room on both sides
 		if (left < radius + 96 && right < radius + 96) { return -1, 0; } // Don't dodge if there's not space on either side - augmented values to avoid stuck cases
 		if (left == right) return 0, angle + 90 * RandomPick(-1, 1); // If the space on either side is the same, pick a random side
 		if (left > right) return left, angle + 90; // If there's more space on the left, dodge left
@@ -1250,6 +1249,9 @@ class Nazi : Base
 			// If we are the same species as what shot us, then just become alert and look for a target - otherwise, return fire!
 			BecomeAlerted(target.species == species ? null : target); // Alert that actor
 		}
+
+		if (!bBoss && (!target || Distance3D(target) > 96)) { frighttimeout += min(SpawnHealth() - health, 10); }
+		reactiontime = 0;
 	}
 
 	void A_NaziLook()
@@ -1448,16 +1450,16 @@ class Nazi : Base
 
 		while ( (mo = GrenadeBase(Finder.Next())) )
 		{
-			if (!CheckSight(mo)) { continue; }
 			if (bBoss) { continue; }
-			if (mo.bMissile && mo.target is "PlayerPawn" && absangle(mo.angle + 180, AngleTo(mo.target)) > 30) { continue; }
+			if (!CheckSight(mo)) { continue; }
+			if (mo.bMissile && mo.target == self || (mo.target is "PlayerPawn" && absangle(mo.angle + 180, AngleTo(mo.target)) > 30)) { continue; } // Ignore missiles fired from self and any from a player that aren't aimed at you
 			if (Distance3d(mo) > (mo.bMissile ? mo.feardistance * max(mo.Speed, mo.vel.length()) : mo.feardistance)) { continue; } // feardistance default is 256 units (see GrenadeBase actor, GrenadeBase.FearDistance property)
 
 			if (target != mo)
 			{
 				target = mo;
 				if (user_sneakable && !alerted) { BecomeAlerted(target); } // If sneakable, alert them
-				else if (!bFriendly) { A_PlaySound("axis1/sighted", CHAN_BODY); } // Play a 'sighted' alert sound if the enemy isn't a friendly (this basically assumes all enemies should yell out in German)
+				else if (!bFriendly && !((mo is "Whizzer") && user_incombat)) { A_PlaySound("axis1/sighted", CHAN_BODY); } // Play a 'sighted' alert sound if the enemy isn't a friendly (this basically assumes all enemies should yell out in German)
 			}
 
 			if (mo.bMissile) { movedir = (mo.movedir + RandomPick(1, 2, 6, 7)) % 8; } // Pick a random direction away from the shooter and the missile's path
