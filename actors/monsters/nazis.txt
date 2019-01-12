@@ -127,6 +127,7 @@ ACTOR SSGuard : BasicGuard
 	Health 40
 	Speed 2.67
 	Obituary "$SSGUARD"
+	Nazi.FrightMultiplier 0.9
 	Nazi.ZombieVariant "SSZombieBrain"
 	States
 	{
@@ -269,6 +270,7 @@ ACTOR SSMP40Guard : SSGuard
 	DropItem "GrenadePickup" 16
 	DropItem "MP40" 96
 	Obituary "$SSMPGURD"
+	Nazi.FrightMultiplier 0.9
 	States
 	{
 	Spawn:
@@ -414,9 +416,10 @@ ACTOR WToilet : WGuard
 {
 	//$Category Monsters (Wolf3D)/Toilet Soldiers
 	//$Title Toilet Wehrmacht Guard (Pistol)
-	Nazi.ZombieVariant ""
 	+CANPASS
 	+COUNTKILL
+	Nazi.FrightMultiplier 0.0
+	Nazi.ZombieVariant ""
 	States
 	{
 	Spawn:
@@ -597,6 +600,7 @@ ACTOR Officer : BasicGuard
 	SeeSound "Nazi4/Sighted"
 	PainSound "Nazi4/Pain"
 	DeathSound "Nazi4/Death"
+	Nazi.FrightMultiplier 0.8
 	Nazi.ZombieVariant "AKZombieOfficer"
 	States
 	{
@@ -646,6 +650,7 @@ ACTOR SSOfficer : Officer
 	Health 40
 	Speed 4.5
 	Obituary "$SSOFFICE"
+	Nazi.FrightMultiplier 0.7
 	Nazi.ZombieVariant "SSZombieOfficer"
 	States
 	{
@@ -703,6 +708,7 @@ ACTOR WOfficer : Officer
 	Obituary "$WOFFICER"
 	+MISSILEEVENMORE
 	+MISSILEMORE
+	Nazi.FrightMultiplier 0.8
 	Nazi.ZombieVariant "ZombieOfficer"
 	States
 	{
@@ -874,6 +880,7 @@ ACTOR WaffenSS : SSMP40Guard
 	DropItem "9mmAmmo" 192
 	DropItem "GrenadePickup" 32
 	DropItem "MP40" 96
+	Nazi.FrightMultiplier 0.9
 	Nazi.ZombieVariant ""
 	States
 	{
@@ -1519,12 +1526,13 @@ ACTOR FlamerSoldier : BasicGuard
 	//$Category Monsters (Wolf3D)/Others
 	//$Title Nazi Flamer (Soldier)
 	//$Color 4
-	Base.NoMedicHeal
 	Health 100
 	Obituary "$FLAMEBOY"
 	DropItem "FlameAmmo" 192
 	DropItem "Pyrolight" 48
 	MaxTargetRange 256
+	Base.NoMedicHeal
+	Nazi.FrightMultiplier 0.75
 	States
 	{
 	Spawn:
@@ -1576,6 +1584,7 @@ ACTOR Gestapo : BasicGuard
 	DropItem "9mmAmmo" 172
 	DropItem "9mmAmmoBox" 16
 	DropItem "Luger9mm" 96
+	Nazi.FrightMultiplier 0.5
 	States
 	{
 	Spawn:
@@ -1597,10 +1606,11 @@ ACTOR Mechanic : BasicGuard
 	//$Category Monsters (Wolf3D)/Others
 	//$Title Mechanic (Pistol)
 	//$Color 4
-	Base.NoMedicHeal
 	Health 50
 	Speed 2.37
 	Obituary "$MECHANIC"
+	Base.NoMedicHeal
+	Nazi.FrightMultiplier 0.5
 	States
 	{
 	Spawn:
@@ -2044,7 +2054,6 @@ ACTOR MiniShip : Nazi
 	//$Category Monsters (Wolf3D)/Others
 	//$Title Miniship
 	//$Color 4
-	Base.Swimmer 1
 	Health 375
 	Speed 3.25
 	Mass 2000
@@ -2059,6 +2068,8 @@ ACTOR MiniShip : Nazi
 	BloodType "TankSpark"
 	PainSound "metal/pain"
 	DeathSound "world/barrelboom"
+	Base.Swimmer 1
+	Nazi.FrightMultiplier 0.0
 	States
 	{
 	Spawn:
@@ -2379,7 +2390,6 @@ ACTOR EliteFlamer : BasicGuard
 	//$Category Monsters (Wolf3D)/Elite
 	//$Title Elite Soldier (Flamer)
 	//$Color 4
-	Base.NoMedicHeal
 	Health 450
 	Speed 4
 	MaxTargetRange 400
@@ -2390,6 +2400,8 @@ ACTOR EliteFlamer : BasicGuard
 	DeathSound "eliteflamer/death"
 	DropItem "FlameAmmo"
 	DropItem "Pyrolight" 48
+	Base.NoMedicHeal
+	Nazi.FrightMultiplier 0.25
 	States
 	{
 	Spawn:
@@ -2478,7 +2490,6 @@ ACTOR EliteAssaulter : BasicGuard
 	//$Category Monsters (Wolf3D)/Elite
 	//$Title Elite Soldier (MP40)
 	//$Color 4
-	Base.NoMedicHeal
 	Health 350
 	PainChance 160
 	Speed 3.66666667
@@ -2490,6 +2501,8 @@ ACTOR EliteAssaulter : BasicGuard
 	DropItem "9mmAmmo" 192
 	DropItem "GrenadePickup" 16
 	DropItem "MP40" 96
+	Base.NoMedicHeal
+	Nazi.FrightMultiplier 0.25
 	States
 	{
 	Spawn:
@@ -2585,7 +2598,6 @@ ACTOR EliteSoldatRifler : BasicGuard
 	//$Category Monsters (Wolf3D)/Elite
 	//$Title Elite Soldier (Rifle)
 	//$Color 4
-	Base.NoMedicHeal
 	Health 65
 	PainChance 80
 	Speed 4.66666667
@@ -2597,6 +2609,8 @@ ACTOR EliteSoldatRifler : BasicGuard
 	DropItem "G43" 96
 	DropItem "GrenadePickup" 16
 	DropItem "MauserAmmo" 192 5
+	Base.NoMedicHeal
+	Nazi.FrightMultiplier 0.25
 	States
 	{
 	Spawn:
