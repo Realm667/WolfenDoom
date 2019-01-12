@@ -574,6 +574,14 @@ ACTOR ModelSandBagStraight : 3dObstacle
 	DistanceCheck "scenelod"
 	Radius 16
 	Height 16
+
+	States
+	{
+	Spawn:
+		MDLA A 0 NoDelay A_SpawnItemEx("3dBridge16",0,-16,0)
+		MDLA A -1 A_SpawnItemEx("3dBridge16",0,16,0)
+		Stop
+	}
 }
 
 ACTOR WaterTower : ModelBase
