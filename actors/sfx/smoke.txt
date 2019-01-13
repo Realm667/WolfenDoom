@@ -31,7 +31,6 @@ ACTOR PuffSmoke
 
 ACTOR WaterSmoke : PuffSmoke //needed for 3d toilet & 3d hydrants - ozy81
 {
-	DistanceCheck "sfxlod"
 	Alpha 0.2
 	Scale 0.03
 	States
@@ -48,16 +47,11 @@ ACTOR WaterSmoke : PuffSmoke //needed for 3d toilet & 3d hydrants - ozy81
 		}
 }
 
-ACTOR BodySmoke : PuffSmoke //needed for burnt bodies - ozy81
-{
-	DistanceCheck "sfxlod"
-	Scale 0.15
-}
-
-ACTOR PowerPlantSmokePuff : PuffSmoke {DistanceCheck "sfxlod" Scale 0.64}
-ACTOR PowerPlantSmokePuffSmall : PuffSmoke {DistanceCheck "sfxlod" Scale 0.32}
-ACTOR WaterSmokePuff : WaterSmoke {DistanceCheck "sfxlod" Scale 0.18}
-ACTOR WaterSmokePuffSmall : WaterSmoke {DistanceCheck "sfxlod" Scale 0.10}
+ACTOR BodySmoke : PuffSmoke {Scale 0.15} //needed for burnt bodies - ozy81
+ACTOR PowerPlantSmokePuff : PuffSmoke {Scale 0.64}
+ACTOR PowerPlantSmokePuffSmall : PuffSmoke {Scale 0.32}
+ACTOR WaterSmokePuff : WaterSmoke {Scale 0.18}
+ACTOR WaterSmokePuffSmall : WaterSmoke {Scale 0.10}
 
 ACTOR PowerPlantSmokeGenerator : SwitchableDecoration
 {
@@ -90,13 +84,9 @@ ACTOR PowerPlantSmokeGenerator : SwitchableDecoration
 	}
 }
 
-ACTOR PowerPlantSmokeGeneratorSmall : SwitchableDecoration
+ACTOR PowerPlantSmokeGeneratorSmall : PowerPlantSmokeGenerator
 {
-	//$Category Special Effects (Wolf3D)
 	//$Title Smoke Generator (Small)
-	//$Color 12
-	+CLIENTSIDEONLY
-	+NOINTERACTION
 	States
 	{
 	Spawn:
@@ -252,17 +242,9 @@ ACTOR AmbientSmokeGenerator : SwitchableDecoration
 	}
 }
 
-ACTOR AmbientSmokeGeneratorDown : SwitchableDecoration
+ACTOR AmbientSmokeGeneratorDown : AmbientSmokeGenerator
 {
-	//$Category Special Effects (Wolf3D)
 	//$Title Ambient Smoke Generator (small, down)
-	//$Color 12
-	//$Arg0 "Radius"
-	//$Arg0Tooltip "Radius in map units\nDefault: 0"
-	//$Arg1 "Frequency"
-	//$Arg1Tooltip "Frequency, the lower the number, the heavier the smoke\nRange: 0 - 255"
-	+CLIENTSIDEONLY
-	+NOINTERACTION
 	States
 	{
 	Spawn:
@@ -284,10 +266,8 @@ ACTOR AmbientSmokeGeneratorDown : SwitchableDecoration
 	}
 }
 
-
 ACTOR AmbientSmoke_Large : AmbientSmoke
 {
-	DistanceCheck "sfxlod"
 	Scale 3.0
 	States
 	{
