@@ -31,6 +31,25 @@ ACTOR DecalBase
 	}
 }
 
+ACTOR MuseumBase
+{
+	//$Category Models (Wolf3D)/Statues/Special
+	//$Color 7
+	DistanceCheck "scenelod"
+	Radius 4
+	Height 4
+	-SOLID
+	+MOVEWITHSECTOR
+	+NOBLOCKMAP
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
+}
+
 ACTOR 3dObject : ModelBase
 {
 	+NOBLOCKMAP
@@ -1125,25 +1144,21 @@ ACTOR FlagWave : ModelBase
 ACTOR FlagWave_SS : FlagWave
 {
 	//$Title Waving Flag (SS)
-	DistanceCheck "scenelod"
 }
 
 ACTOR FlagWave_War : FlagWave
 {
 	//$Title Waving Flag (War Times)
-	DistanceCheck "scenelod"
 }
 
 ACTOR FlagWave_Gear : FlagWave
 {
 	//$Title Waving Flag (Gear)
-	DistanceCheck "scenelod"
 }
 
 ACTOR FlagWide_Flutter : FlagWave
 {
 	//$Title Waving Flag, Wide (Swastika)
-	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:
@@ -1155,7 +1170,6 @@ ACTOR FlagWide_Flutter : FlagWave
 ACTOR FlagWide_Hang : FlagWide_Flutter
 {
 	//$Title Hanging Flag, Wide (Swastika)
-	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:
@@ -1167,13 +1181,11 @@ ACTOR FlagWide_Hang : FlagWide_Flutter
 ACTOR FlagShort_Flutter : FlagWide_Flutter
 {
 	//$Title Waving Flag, Short (Swastika)
-	DistanceCheck "scenelod"
 }
 
 ACTOR FlagShort_Hang : FlagWide_Flutter
 {
 	//$Title Hanging Flag, Short (Swastika)
-	DistanceCheck "scenelod"
 	States
 	{
 	Spawn:
@@ -1875,7 +1887,6 @@ ACTOR Lion_Left : 3dObstacle
 ACTOR Lion_Right : Lion_Left
 {
 	//$Title Lion Statue (Right)
-	DistanceCheck "scenelod"
 }
 
 ACTOR NaziBannerTallFlutter512 : FlagWave
@@ -3249,6 +3260,26 @@ ACTOR 3dSpeakers_4 : 3dSpeakers_2
 	DistanceCheck "scenelod"
 }
 
+ACTOR CreepyStatue1R : Lion_Left
+{
+	//$Title Creepy Statue, Goro (right)
+}
+
+ACTOR CreepyStatue1L : CreepyStatue1R
+{
+	//$Title Creepy Statue, Goro (left)
+}
+
+ACTOR CreepyStatue1R_Museum : MuseumBase
+{
+	//$Title Creepy Statue, Goro (right, no hitbox)
+}
+
+ACTOR CreepyStatue1L_Museum : CreepyStatue1R_Museum
+{
+	//$Title Creepy Statue, Goro (left, no hitbox)
+}
+
 //AFADoomer Stuff
 ACTOR AstroShuttle : ModelBase
 {
@@ -3299,61 +3330,40 @@ ACTOR SecretUFO : SwitchableDecoration //3dRealms
 	}
 }
 
-ACTOR Caesar_Museum
+ACTOR Caesar_Museum : MuseumBase
 {
-	//$Category Models (Wolf3D)/Statues/Special
 	//$Title Caesar's Statue (without hitbox)
-	//$Color 7
-	DistanceCheck "scenelod"
-	Radius 4
-	Height 4
-	-SOLID
-	+MOVEWITHSECTOR
-	+NOBLOCKMAP
-	+NOGRAVITY
-	States
-	{
-	Spawn:
-		MDLA A -1
-		Stop
-	}
 }
 
 ACTOR King_Museum : Caesar_Museum
 {
 	//$Title King's Statue (without hitbox)
-	DistanceCheck "scenelod"
 }
 
 ACTOR PromL_Museum : Caesar_Museum
 {
 	//$Title Prometheus Statue (left, without hitbox)
-	DistanceCheck "scenelod"
 }
 
 ACTOR PromR_Museum : Caesar_Museum
 {
 	//$Title Prometheus Statue (right, without hitbox)
-	DistanceCheck "scenelod"
 }
 
 ACTOR LionL_Museum : Caesar_Museum
 {
 	//$Title Lion's Statue (left, without hitbox)
-	DistanceCheck "scenelod"
 }
 
 ACTOR LionR_Museum : Caesar_Museum
 {
 	//$Title Lion's Statue (right, without hitbox)
-	DistanceCheck "scenelod"
 }
 
 ACTOR GardenUrn_Museum : Caesar_Museum
 {
 	//$Category Models (Wolf3D)/Scenery/Special
 	//$Title Garden Urn (without hitbox)
-	DistanceCheck "scenelod"
 }
 
 ACTOR SlopeMe1 : 3dObstacle
