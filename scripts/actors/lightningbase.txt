@@ -304,6 +304,16 @@ Class LightningBeamZap2 : LightningBeamZap
 	}
 }
 
+Class LightningBeamZapH : LightningBeamZap
+{
+	Default
+	{
+		LightningBeam.MaxScale 1.15;
+		LightningBeam.MinScale 2.025;
+		LightningBeam.MaxDistance 384;
+	}
+}
+
 Class LightningBeamZapP : LightningBeam
 {
 	Default
@@ -342,6 +352,17 @@ Class LightningBeamPillarZap2 : LightningBeamPillarZap
 	{
 		LightningBeam.MaxDistance 640;
 		LightningBeam.TrailActor "LightningTrailBeamZapP";
+	}
+}
+
+Class LightningBeamPillarZapH : LightningBeamPillarZap
+{
+	Default 
+	{
+		LightningBeam.MaxScale 1.10;
+		LightningBeam.MinScale 2.025;
+		LightningBeam.MaxDistance 384;
+		LightningBeam.TrailActor "LightningTrailBeamZap";
 	}
 }
 

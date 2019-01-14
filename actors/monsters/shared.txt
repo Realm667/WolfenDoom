@@ -1616,6 +1616,7 @@ ACTOR TPortLightningWaveSpawner : VisualSpecialEffect
 		Stop
 	}
 }
+ACTOR TPortLightningWaveSpawnerH : TPortLightningWaveSpawner { Scale 4 }
 
 ACTOR TPortLightningWaveSpawner2 : VisualSpecialEffect
 {
@@ -1685,18 +1686,6 @@ ACTOR NaziMedicBox : PowerupGiver
 	Spawn:
 		MBOX A 1 NoDelay A_SetTics(35*5)
 		MBOX A 1 A_FadeOut(0.05)
-		Stop
-	}
-}
-
-ACTOR HitlerChaingun
-{
-	Scale 0.65
-	+FLOORCLIP
-	States
-	{
-	Spawn:
-		SHI1 X -1
 		Stop
 	}
 }

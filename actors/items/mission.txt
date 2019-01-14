@@ -182,6 +182,21 @@ ACTOR SpearOfDestiny : CompassItem
 	}
 }
 
+ACTOR SpearOfDestiny_End : CompassItem
+{
+	//$Title Spear of Destiny (Final Battle)
+	Tag "$TAGSTAFF"
+	Inventory.Icon SPEAA0
+	Inventory.PickupMessage "$SPEAROD"
+	Inventory.PickupSound "misc/spearofdestiny"
+	States
+	{
+	Spawn:
+		SPEA C -1
+		Stop
+	}
+}
+
 ACTOR Cartridge51 : CompassItem
 {
 	//$Title Cartridge (for MAP51)

@@ -998,6 +998,49 @@ class Nazi : Base
 			"####" D 1 A_NaziChase;
 			"####" DDD 1 A_NaziChase(null, null);
 			"####" A 0 { return ResolveState("See.Wounded"); }
+		See.BossGiant: // Hitler mostly
+			"####" "#" 0 { user_incombat = True; }
+			"####" "#" 0 A_JumpIfHealthLower(5000,"See.Boss2Giant");
+			"####" A 1 A_NaziChase;
+			"####" AAA 1 A_NaziChase(null, null);
+			"####" A 1 A_NaziChase;
+			"####" AAA 1 A_NaziChase(null, null);
+			"####" B 0 A_PlaySound("floor/heavy");
+			"####" B 1 { A_NaziChase(); Radius_Quake(5, 2, 0, 5, 0); }
+			"####" BBB 1 A_NaziChase(null, null);
+			"####" B 1 A_NaziChase;
+			"####" BBB 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" CCC 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" CCC 1 A_NaziChase(null, null);
+			"####" D 0 A_PlaySound("floor/heavy");
+			"####" D 1 { A_NaziChase(); Radius_Quake(5, 2, 0, 5, 0); }
+			"####" DDD 1 A_NaziChase(null, null);
+			"####" D 1 A_NaziChase;
+			"####" DDD 1 A_NaziChase(null, null);
+			"####" A 0 { return ResolveState("See"); }
+		See.Boss2Giant: // Wounded Hitler
+			SHI2 "#" 0 { user_incombat = True; }
+			"####" A 1 A_NaziChase;
+			"####" AAA 1 A_NaziChase(null, null);
+			"####" A 1 A_NaziChase;
+			"####" AAA 1 A_NaziChase(null, null);
+			"####" B 0 A_PlaySound("floor/heavy");
+			"####" B 1 { A_NaziChase(); Radius_Quake(5, 2, 0, 5, 0); }
+			"####" BBB 1 A_NaziChase(null, null);
+			"####" B 1 A_NaziChase;
+			"####" BBB 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" CCC 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" CCC 1 A_NaziChase(null, null);
+			"####" D 0 A_PlaySound("floor/heavy");
+			"####" D 1 { A_NaziChase(); Radius_Quake(5, 2, 0, 5, 0); }
+			"####" DDD 1 A_NaziChase(null, null);
+			"####" D 1 A_NaziChase;
+			"####" DDD 1 A_NaziChase(null, null);
+			"####" A 0 { return ResolveState("See.Wounded"); }
 		See.Boss3: // NaziLoper
 			"####" "#" 0 { user_incombat = True; }
 			"####" B 1 A_NaziChase;
