@@ -159,6 +159,8 @@ ACTOR 9MMCasing
 	}
 }
 
+ACTOR 9MMCasing2 : 9MMCasing { Scale 0.75}
+
 ACTOR 45ACPCasing : 9MMCasing
 {
 	Scale .1
@@ -577,6 +579,7 @@ ACTOR ProtoTrail: TracerTrail { TracerTrail.FadeRate 0.0 } // Don't fade the las
 
 // Enemy tracer variants for Normal mode.
 ACTOR EnemyChaingunTracer : BulletTracer 			{Damage (random(6,8))}
+ACTOR EnemyChaingunTracer2 : BulletTracer 			{Scale 2.0 Damage (random(6,8))}
 ACTOR EnemyMutantTracer : MutantTracer				{Damage (random(2,4))}
 ACTOR EnemyPistolTracer : BulletTracer				{Damage (random(4,8))}
 ACTOR EnemyRifleTracer : BulletTracer				{Damage (random(15,30))}
@@ -587,6 +590,7 @@ ACTOR EnemyStGTracer : BulletTracer					{Damage (random(7,8))}
 // Enemy tracer variants for Baby mode
 ACTOR BabyEnemyAstroTracer : EnemyAstroTracer		{Speed 30}
 ACTOR BabyEnemyChaingunTracer : EnemyChaingunTracer	{Speed 30}
+ACTOR BabyEnemyChaingunTracer2 : EnemyChaingunTracer2	{Scale 2.0 Speed 30}
 ACTOR BabyEnemyMutantTracer : EnemyMutantTracer		{Speed 30}
 ACTOR BabyEnemyPistolTracer : EnemyPistolTracer		{Speed 30}
 ACTOR BabyEnemyProtoTracer : EnemyProtoTracer		{Speed 30}
@@ -598,6 +602,7 @@ ACTOR BabyEnemyStGTracer : EnemyStGTracer			{Speed 30}
 // Enemy tracer variants for Easy mode
 ACTOR EasyEnemyAstroTracer : EnemyAstroTracer		{Speed 50}
 ACTOR EasyEnemyChaingunTracer : EnemyChaingunTracer	{Speed 50}
+ACTOR EasyEnemyChaingunTracer2 : EnemyChaingunTracer2	{Scale 2.0 Speed 50}
 ACTOR EasyEnemyMutantTracer : EnemyMutantTracer		{Speed 50}
 ACTOR EasyEnemyPistolTracer : EnemyPistolTracer		{Speed 50}
 ACTOR EasyEnemyProtoTracer : EnemyProtoTracer		{Speed 50}
@@ -609,6 +614,7 @@ ACTOR EasyEnemyStGTracer : EnemyStGTracer			{Speed 50}
 // Enemy tracer variants for Hard and Nightmare mode
 ACTOR HardEnemyAstroTracer : EnemyAstroTracer		{+MTHRUSPECIES Speed 90}
 ACTOR HardEnemyChaingunTracer : EnemyChaingunTracer	{+MTHRUSPECIES Speed 90}
+ACTOR HardEnemyChaingunTracer2 : EnemyChaingunTracer2	{+MTHRUSPECIES Scale 2.0 Speed 90}
 ACTOR HardEnemyMutantTracer : EnemyMutantTracer		{+MTHRUSPECIES Speed 90}
 ACTOR HardEnemyPistolTracer : EnemyPistolTracer		{+MTHRUSPECIES Speed 90}
 ACTOR HardEnemyProtoTracer : EnemyProtoTracer		{+MTHRUSPECIES Speed 90}
