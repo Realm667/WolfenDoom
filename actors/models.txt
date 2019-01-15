@@ -93,6 +93,13 @@ ACTOR 3dObstacle : 3dObject
 	+SHOOTABLE
 }
 
+ACTOR 3dFurniture : 3dObstacle
+{
+	//$Category Models (Wolf3D)/Furniture
+	//$Color 3
+	DistanceCheck "scenelod"
+}
+
 ACTOR 3dGlass : ModelBase
 {
 	RenderStyle "Shaded"
@@ -433,21 +440,12 @@ ACTOR Radiator_Long : Radiator_Short
 	//$Title Radiator (long, use self-referenced sectors!)
 }
 
-ACTOR BlowTorch : 3dObstacle
+ACTOR BlowTorch : 3dFurniture
 {
-	//$Category Models (Wolf3D)/Furniture
 	//$Title BlowTorch
-	//$Color 3
-	DistanceCheck "scenelod"
 	Radius 4
 	Height 16
 	+SOLID
-	States
-	{
-	Spawn:
-		MDLA A -1
-		Stop
-	}
 }
 
 ACTOR TestCrate : 3dObstacle
@@ -571,22 +569,15 @@ ACTOR ModelBeachHedgeHog : 3dObstacle
 	Radius 32
 }
 
-ACTOR ModelCampBed : 3dObstacle
+ACTOR ModelCampBed : 3dFurniture
 {
-	//$Category Models (Wolf3D)/Furniture
 	//$Title Camp Bed (double)
-	//$Color 3
-	DistanceCheck "scenelod"
 	Radius 24
 }
 
-ACTOR ModelCampBed2 : 3dObstacle
+ACTOR ModelCampBed2 : ModelCampBed
 {
-	//$Category Models (Wolf3D)/Furniture
 	//$Title Camp Bed (single)
-	//$Color 3
-	DistanceCheck "scenelod"
-	Radius 24
 	Height 24
 }
 
@@ -627,7 +618,6 @@ ACTOR ModelRailBoxcar3 : ModelIncaTrain
 
 ACTOR ModelRailBoxcar3_Projectile : ModelRailBoxcar3
 {
-	DistanceCheck "scenelod"
 	Radius 48
 	Height 48
 	Speed 1
@@ -668,7 +658,6 @@ ACTOR ModelSandBagStraight : 3dObstacle
 	DistanceCheck "scenelod"
 	Radius 16
 	Height 16
-
 	States
 	{
 	Spawn:
@@ -1341,12 +1330,9 @@ ACTOR EnigmaMachine : 3dObstacle
 	Height 8
 }
 
-ACTOR RTCWBench : 3dObstacle
+ACTOR RTCWBench : 3dFurniture
 {
-	//$Category Models (Wolf3D)/Furniture
 	//$Title Bench, Wooden
-	//$Color 3
-	DistanceCheck "scenelod"
 	Radius 16
 	Height 8
 }
@@ -1741,12 +1727,9 @@ ACTOR Tie_Fighter : 3dObstacle //ozy81
 }
 
 //DoomJuan Models, added & fixed a bit by Ozymandias81
-ACTOR RTCWChair1 : 3dObstacle
+ACTOR RTCWChair1 : 3dFurniture
 {
-	//$Category Models (Wolf3D)/Furniture
 	//$Title Ornated Wooden Chair
-	//$Color 3
-	DistanceCheck "scenelod"
 	Radius 8
 	Height 32
 }
@@ -1894,12 +1877,9 @@ ACTOR NaziBannerTallHang256 : NaziBannerTallHang512
 	//$Title Nazi Banner Tall, Not Moving (256)
 }
 
-ACTOR TrestleTable : 3dObstacle
+ACTOR TrestleTable : 3dFurniture
 {
-	//$Category Models (Wolf3D)/Furniture
 	//$Title Trestle Table
-	//$Color 3
-	DistanceCheck "scenelod"
 	Radius 40
 	Height 34
 }
@@ -2248,12 +2228,9 @@ ACTOR Tractor : 3dObstacle
 	Height 32
 }
 
-ACTOR Bunk_Bed1 : 3dObstacle
+ACTOR Bunk_Bed1 : 3dFurniture
 {
-	//$Category Models (Wolf3D)/Furniture
 	//$Title Bunk Bed (single)
-	//$Color 3
-	DistanceCheck "scenelod"
 	Radius 24
 	Height 24
 }
@@ -2427,12 +2404,9 @@ ACTOR COD_RustyChandelier1B : COD_ArtDecoLight1A
 ACTOR COD_LampGlassOn : 3dGlass { DistanceCheck "scenelod" }
 ACTOR COD_LampGlassOff : 3dGlass { DistanceCheck "scenelod" }
 
-ACTOR COD_Refrigerator : 3dObstacle
+ACTOR COD_Refrigerator : 3dFurniture
 {
-	//$Category Models (Wolf3D)/Furniture
 	//$Title Refrigerator
-	//$Color 3
-	DistanceCheck "scenelod"
 	Radius 16
 	Height 80
 }
@@ -2502,6 +2476,34 @@ ACTOR COD_EagleBust : COD_FemaleBust
 	//$Title Eagle Bust (silver or bronze)
 }
 
+ACTOR COD_FemaleBust_Museum : MuseumBase
+{
+	//$Title Female Bust (silver or bronze, no hitbox)
+	//$Arg0 "Material"
+	//$Arg0Tooltip "Choose the desired material\nSilver: 0\nBronze: 1"
+	DistanceCheck "scenelod"
+	Radius 8
+	Height 24
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		MDLA A 0 NoDelay
+		TNT1 A 0 A_JumpIf(Args[0]==1, "Bronze")
+		Silver: //fall through if set at 0
+		MDLA A -1
+		Stop
+		Bronze:
+		MDLA B -1
+		Stop
+	}
+}
+
+ACTOR COD_EagleBust_Museum : COD_FemaleBust_Museum
+{
+	//$Title Eagle Bust (silver or bronze, no hitbox)
+}
+
 ACTOR COD_Tiger1 : ModelBase
 {
 	//$Category Models (Wolf3D)/Vehicles
@@ -2562,6 +2564,191 @@ ACTOR COD_Radio_Tall : 3dObstacle
 ACTOR COD_Radio_Tall_D : COD_Radio_Tall
 {
 	//$Title Radio, Tall (Blown)
+}
+
+ACTOR COD_BunkerPhone : 3dFurniture
+{
+	//$Title Bunker, Phone
+	Radius 8
+	Height 32
+	+NOGRAVITY
+}
+
+ACTOR COD_BunkerSeat : 3dFurniture
+{
+	//$Title Bunker, Seat
+	Radius 8
+	Height 16
+}
+
+ACTOR COD_BunkerTable : 3dFurniture
+{
+	//$Title Bunker, Table
+	Radius 32
+	Height 32
+}
+
+ACTOR COD_Dresser1 : 3dFurniture
+{
+	//$Title Ornated Dresser
+	Radius 8
+	Height 56
+}
+
+ACTOR COD_Dresser1D : COD_Dresser1
+{
+	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Title Ornated Dresser, burnt (USE SELF-REFERENCED SECTORS)
+	Height 8
+}
+
+ACTOR COD_ArmChair : 3dFurniture
+{
+	//$Title Ornated French Chair
+	Radius 8
+	Height 32
+}
+
+ACTOR COD_WriTable1 : 3dFurniture
+{
+	//$Title Ornated Writing Table
+	Radius 32
+	Height 40
+}
+
+ACTOR COD_WriTable1D : COD_WriTable1
+{
+	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Title Ornated Writing Table, torn	
+}
+
+ACTOR COD_Piano1 : 3dFurniture
+{
+	//$Title Ornated Piano
+	Radius 32
+	Height 72
+}
+
+ACTOR COD_Piano1D : COD_Piano1
+{
+	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Title Ornated Piano, burnt	
+}
+
+ACTOR COD_SideTable1 : 3dFurniture
+{
+	//$Title Ornated Side Table
+	Radius 8
+	Height 16
+}
+
+ACTOR COD_SideTable1D : COD_SideTable1
+{
+	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Title Ornated Side Table, torn
+}
+
+ACTOR COD_LongTable1 : 3dFurniture
+{
+	//$Title Ornated Long Table (USE SELF-REFERENCED SECTORS)
+	Radius 32
+	Height 48
+}
+
+ACTOR COD_LongTable1D : COD_LongTable1
+{
+	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Title Ornated Long Table, torn (USE SELF-REFERENCED SECTORS)
+	Radius 16
+	Height 56
+}
+
+ACTOR COD_Rolltop1 : 3dFurniture
+{
+	//$Title Ornated Rolltop Desk
+	Radius 32
+	Height 48
+}
+
+ACTOR COD_Rolltop1D : COD_Rolltop1
+{
+	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Title Ornated Rolltop Desk, torn (USE SELF-REFERENCED SECTORS)
+}
+
+ACTOR COD_WallTable1 : 3dFurniture
+{
+	//$Title Ornated Wall Table 1
+	Radius 16
+	Height 32
+}
+
+ACTOR COD_WallTable1D : COD_WallTable1
+{
+	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Title Ornated Wall Table 1, torn (USE SELF-REFERENCED SECTORS)
+}
+
+ACTOR COD_WallTable2 : COD_WallTable1
+{
+	//$Title Ornated Wall Table 2
+}
+
+ACTOR COD_WallTable2D : COD_WallTable1
+{
+	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Title Ornated Wall Table 2, torn (USE SELF-REFERENCED SECTORS)
+}
+
+ACTOR COD_OrnateClock1 : 3dFurniture
+{
+	//$Title Ornated Clock
+	Radius 16
+	Height 24
+}
+
+ACTOR COD_OrnateClock2 : 3dFurniture
+{
+	//$Title Ornated Table Clock
+	Radius 8
+	Height 8
+}
+
+ACTOR COD_Cabinet1 : 3dFurniture
+{
+	//$Title Ornated Wooden Cabinet
+	Radius 16
+	Height 96
+}
+
+ACTOR COD_Cabinet1D : COD_Cabinet1
+{
+	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Title Ornated Wooden Cabinet, burnt
+}
+
+ACTOR COD_OrnateChair1 : RTCWChair1
+{
+	//$Title Ornated Chair
+}
+
+ACTOR COD_OrnateChair1D : COD_OrnateChair1
+{
+	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Title Ornated Chair, ruined
+}
+
+ACTOR COD_Shelve1 : 3dFurniture
+{
+	//$Title Wooden Shelves (USE SELF-REFERENCED SECTORS)
+	Radius 8
+	Height 8
+}
+
+ACTOR COD_Shelve1D : COD_Shelve1
+{
+	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Title Wooden Shelves, burnt (USE SELF-REFERENCED SECTORS)
 }
 
 ACTOR COD_SSHorch : 3dObstacle
