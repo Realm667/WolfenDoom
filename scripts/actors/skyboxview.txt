@@ -27,7 +27,7 @@ class SkyViewPointStatic : SkyViewPoint
 	{
 		if (!tid) { return; }
 
-		ActorIterator it = ActorIterator.Create(tid, "SkyViewPointStatic");
+		ActorIterator it = currentSession.levelInfo[0].CreateActorIterator(tid, "SkyViewPointStatic");
 		SkyViewPointStatic mo = SkyViewPointStatic(it.Next());
 
 		if (!mo)
@@ -40,7 +40,7 @@ class SkyViewPointStatic : SkyViewPoint
 
 		if (anchorid > 0)
 		{
-			it = ActorIterator.Create(anchorid, "Actor");
+			it = currentSession.levelInfo[0].CreateActorIterator(anchorid, "Actor");
 			mo.anchor = it.Next();
 		}
 
@@ -58,7 +58,7 @@ class SkyViewPointStatic : SkyViewPoint
 
 					if (!mo.anchor)
 					{
-						mo.anchor = Spawn("SkyViewPointAnchor", players[i].mo.pos); // Use player's position as a fallback anchor point if no anchor is in place
+						mo.anchor = currentSession.levelInfo[0].Spawn("SkyViewPointAnchor", players[i].mo.pos); // Use player's position as a fallback anchor point if no anchor is in place
 					}
 
 					mo.heightoffset = mo.SpawnPoint.z - mo.anchor.pos.z - 17.25; // To match normal skybox offset height
@@ -70,6 +70,8 @@ class SkyViewPointStatic : SkyViewPoint
 				}
 			}
 		}
+
+		let level = currentSession.Levelinfo[0];
 
 		if ((mo.tid == 0 && level.sectorPortals[0].mSkybox == null) || mo.args[3] > 0)
 		{
@@ -86,7 +88,7 @@ class SkyViewPointStatic : SkyViewPoint
 		// Save the spawn location vector for later
 		SpawnPoint = pos;
 
-		if (!tid) { ChangeTID(FindUniqueTID()); }
+		if (!tid) { ChangeTID(currentSession.levelInfo[0].FindUniqueTID()); }
 
 		SetAnchor(tid);
 	}

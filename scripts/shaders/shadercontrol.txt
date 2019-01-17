@@ -36,9 +36,9 @@ class BlurShaderControl : ShaderControl {
 
 	override void DoEffect()
 	{
-		if (amount > 1) { holdTarget = level.time + amount; } // Set hold time based on amount in inventory
+		if (amount > 1) { holdTarget = currentSession.time + amount; } // Set hold time based on amount in inventory
 
-		if (holdTarget && level.time > holdTarget) // If we've hit the hold time, remove the effect
+		if (holdTarget && currentSession.time > holdTarget) // If we've hit the hold time, remove the effect
 		{
 			amount = 1;
 			holdTarget = 0;
@@ -63,9 +63,9 @@ class HeatShaderControl : ShaderControl
 
 	override void DoEffect()
 	{
-		if (amount > 1) { holdTarget = level.time + amount; } // Set hold time based on amount in inventory
+		if (amount > 1) { holdTarget = currentSession.time + amount; } // Set hold time based on amount in inventory
 
-		if (holdTarget && level.time > holdTarget) // If we've hit the hold time, remove the effect
+		if (holdTarget && currentSession.time > holdTarget) // If we've hit the hold time, remove the effect
 		{
 			amount = 1;
 			holdTarget = 0;

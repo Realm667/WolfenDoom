@@ -341,7 +341,7 @@ class RopeSegment : LadderBase
 
 	override void Tick()
 	{
-		if (globalfreeze || level.Frozen) { return; }
+		if (isFrozen()) { return; }
 
 		if (shotdist) { Super.Tick(); }
 	}
@@ -432,7 +432,7 @@ class RopeSpawner : Actor
 		}
 		A_CustomRailgun(0, 0, "", "", RGF_CENTERZ | RGF_NOPIERCING | RGF_SILENT, 0, 0, "", 0, 0, HitDistance, 1, spacing * scale.x, 0, seg, zoffset * scale.y);
 
-		timeout = level.time + 35;
+		timeout = currentSession.time + 35;
 
 		Segments.Clear();
 
@@ -443,7 +443,7 @@ class RopeSpawner : Actor
 	{
 		Super.Tick();
 
-		if (!initialized && level.time > timeout)
+		if (!initialized && currentSession.time > timeout)
 		{
 			if (Segments.Size())
 			{
@@ -478,7 +478,7 @@ class RopeSpawner : Actor
 
 	Actor FindTarget()
 	{
-		ThinkerIterator it = ThinkerIterator.Create("RopeSpawnerTarget", Thinker.STAT_DEFAULT - 7);
+		ThinkerIterator it = currentSession.levelInfo[0].CreateThinkerIterator("RopeSpawnerTarget", Thinker.STAT_DEFAULT - 7);
 		Actor mo;
 
 		while (mo = Actor(it.Next()))

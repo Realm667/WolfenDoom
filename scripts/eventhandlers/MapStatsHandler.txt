@@ -44,7 +44,9 @@ class MapStatsHandler : StaticEventHandler
 		MapStatsHandler this = MapStatsHandler(StaticEventHandler.Find("MapStatsHandler"));
 		if (!this) { return; }
 
-		int i = this.FindLevel(level.mapname);
+		int i = this.FindLevel(currentSession.levelInfo[0].mapname);
+
+		let level = currentSession.levelInfo[0];
 
 		LevelData l;
 
@@ -507,7 +509,7 @@ class MapStatsHandler : StaticEventHandler
 		MapStatsHandler this = MapStatsHandler(StaticEventHandler.Find("MapStatsHandler"));
 		if (!this || !val) { return; }
 
-		if (val != this.chapter || level.totaltime < 35) // If you're changing chapters or starting a new game, then initialize the stats list
+		if (val != this.chapter || currentSession.totaltime < 35) // If you're changing chapters or starting a new game, then initialize the stats list
 		{
 			this.Clear();
 			this.chapter = val;

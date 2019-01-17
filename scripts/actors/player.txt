@@ -217,7 +217,7 @@ class BoAPlayer : PlayerPawn
 	{
 		if (player && !player.morphtics)
 		{
-			if (Level.time % (35 * 5) == 0) { ForcedHealthBar = GetClosestForcedHealthBar(); } // Only run this check occasionally
+			if (currentSession.time % (35 * 5) == 0) { ForcedHealthBar = GetClosestForcedHealthBar(); } // Only run this check occasionally
 
 			CrosshairTarget = GetLineTarget();
 
@@ -429,7 +429,7 @@ class BoAPlayer : PlayerPawn
 			if (player.hazardcount)
 			{
 				player.hazardcount--;
-				if (!(level.time % player.hazardinterval) && player.hazardcount > 16*TICRATE)
+				if (!(currentSession.time % player.hazardinterval) && player.hazardcount > 16*TICRATE)
 					player.mo.DamageMobj (NULL, NULL, 5, player.hazardtype);
 			}
 			player.mo.CheckPoison();
@@ -519,7 +519,7 @@ class BoAPlayer : PlayerPawn
 
 	Actor GetClosestForcedHealthBar()
 	{
-		ThinkerIterator Finder = ThinkerIterator.Create("Base", Thinker.STAT_DEFAULT - 3);
+		ThinkerIterator Finder = currentSession.levelInfo[0].CreateThinkerIterator("Base", Thinker.STAT_DEFAULT - 3);
 		Base it;
 		Actor mo;
 
@@ -605,7 +605,7 @@ class BoAPlayer : PlayerPawn
 	// Function to spawn no more than a single copy of an effect actor as a child of the player
 	void SpawnEffect(class<PlayerEffect> effect)
 	{
-		ThinkerIterator it = ThinkerIterator.Create("PlayerEffect", Thinker.STAT_DEFAULT - 4);
+		ThinkerIterator it = currentSession.levelInfo[0].CreateThinkerIterator("PlayerEffect", Thinker.STAT_DEFAULT - 4);
 		PlayerEffect mo;
 
 		while (mo = PlayerEffect(it.Next()))
@@ -622,7 +622,7 @@ class BoAPlayer : PlayerPawn
 	// Function to remove any spawned copy of an effect that is a child of the player
 	void RemoveEffect(class<PlayerEffect> effect)
 	{
-		ThinkerIterator it = ThinkerIterator.Create("PlayerEffect", Thinker.STAT_DEFAULT - 4);
+		ThinkerIterator it = currentSession.levelInfo[0].CreateThinkerIterator("PlayerEffect", Thinker.STAT_DEFAULT - 4);
 		PlayerEffect mo;
 
 		while (mo = PlayerEffect(it.Next()))

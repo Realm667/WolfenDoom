@@ -39,13 +39,13 @@ class BoAVisibility : CustomInventory
 
 	void CountAlertedSneakables()
 	{
-		ThinkerIterator it = ThinkerIterator.Create("SneakableGuardEyesAlerted", Thinker.STAT_DEFAULT - 2);
+		ThinkerIterator it = currentSession.levelInfo[0].CreateThinkerIterator("SneakableGuardEyesAlerted", Thinker.STAT_DEFAULT - 2);
 		SneakableGuardEyesAlerted mo;
 
 		int count;
 		while (mo = SneakableGuardEyesAlerted(it.Next())) { count++; }
 
-		it = ThinkerIterator.Create("Nazi", Thinker.STAT_DEFAULT);
+		it = currentSession.levelInfo[0].CreateThinkerIterator("Nazi", Thinker.STAT_DEFAULT);
 		Nazi nmo;
 
 		while (nmo = Nazi(it.Next()))

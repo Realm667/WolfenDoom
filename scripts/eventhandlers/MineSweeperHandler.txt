@@ -50,7 +50,7 @@ class MineSweeperHandler : EventHandler
 				double dist = p.mo.Distance3D(mo);
 				if (dist > 512 ) { continue; }
 
-				Vector3 worldpos = e.viewpos + level.Vec3Diff(e.viewpos, mo.pos); // World position of object, offset from viewpoint
+				Vector3 worldpos = e.viewpos + currentSession.levelInfo[0].Vec3Diff(e.viewpos, mo.pos); // World position of object, offset from viewpoint
 				Vector3 screenpos = BoACoordUtil.WorldToScreen(worldpos, e.viewpos, e.viewpitch, e.viewangle, e.viewroll, p.fov); // Translate that to the screen, using the viewpoint's info
 
 				if (screenpos.z > 1 || screenpos.z < -1) { continue; } // If the coordinates are off the screen, then skip drawing this item

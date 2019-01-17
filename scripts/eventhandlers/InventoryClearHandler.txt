@@ -12,13 +12,13 @@ class InventoryClearHandler : EventHandler
 		players[e.PlayerNumber].mo.A_SetInventory("HeatShaderControl", 1);
 
 		// Give the player the compass if we're in Chapter 2 or beyond
-		if (level.levelnum > 6 && level.levelnum != 101 && level.levelnum != 99) // This skips over C1M1-C1M6, C1M0 and INTERMAP
+		if (currentSession.levelInfo[0].levelnum > 6 && currentSession.levelInfo[0].levelnum != 101 && currentSession.levelInfo[0].levelnum != 99) // This skips over C1M1-C1M6, C1M0 and INTERMAP
 		{
 			players[e.PlayerNumber].mo.A_SetInventory("BoACompass", 1);
 		}
 
 		// Ed the Bat's updated weapon stripping
-		if(level.levelnum!=99)
+		if(currentSession.levelInfo[0].levelnum!=99)
 			return;
 		let me=PlayerPawn(players[e.PlayerNumber].mo);
 		DropItem drop=me.GetDropItems();

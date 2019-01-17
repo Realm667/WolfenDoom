@@ -471,7 +471,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 
 	void A_LookForGrenades()
 	{
-		ThinkerIterator Finder = ThinkerIterator.Create("GrenadeBase", STAT_DEFAULT - 6);
+		ThinkerIterator Finder = currentSession.levelInfo[0].CreateThinkerIterator("GrenadeBase", STAT_DEFAULT - 6);
 		GrenadeBase mo;
 
 		while ( (mo = GrenadeBase(Finder.Next())) )
@@ -519,7 +519,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 
 		enemycount = 0;
 
-		ThinkerIterator Finder = ThinkerIterator.Create("Nazi", Thinker.STAT_DEFAULT);
+		ThinkerIterator Finder = currentSession.levelInfo[0].CreateThinkerIterator("Nazi", Thinker.STAT_DEFAULT);
 		Actor mo;
 
 		double targetrange = MaxTargetRange;
@@ -543,7 +543,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 		}
 
 		// Also look for sneakable actors, and ignore their friendliness attribute
-		Finder = ThinkerIterator.Create("Nazi", Thinker.STAT_DEFAULT - 5);
+		Finder = currentSession.levelInfo[0].CreateThinkerIterator("Nazi", Thinker.STAT_DEFAULT - 5);
 
 		while ( (mo = Actor(Finder.Next())) )
 		{
@@ -756,7 +756,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 
 		oldwaterlevel = waterlevel;
 
-		if (!nonmoving && playerToChase && Level.time % 5 == 0) { // Spawn a waypoint at the player's position every 5 tics if the player has moved and push it into an array
+		if (!nonmoving && playerToChase && currentSession.time % 5 == 0) { // Spawn a waypoint at the player's position every 5 tics if the player has moved and push it into an array
 			if (playerToChase.pos != oldPlayerPos) {
 				Actor mo = Spawn("PathMarker", (playerToChase.pos.x + Random[Offset](-int(playerToChase.Radius), int(playerToChase.Radius)), playerToChase.pos.y + Random[Offset](-int(playerToChase.Radius), int(playerToChase.Radius)), playerToChase.pos.z));
 				if (PathMarker(mo))

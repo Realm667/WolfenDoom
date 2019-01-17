@@ -38,7 +38,7 @@ class CustomShaderHandler : StaticEventHandler
 	override void RenderOverlay(RenderEvent e)
 	{
 		PlayerInfo p = players[consoleplayer];
-		ThinkerIterator shaderIter = ThinkerIterator.Create("ShaderControl");
+		ThinkerIterator shaderIter = currentSession.levelInfo[0].CreateThinkerIterator("ShaderControl");
 
 		ShaderControl shaderControl;
 

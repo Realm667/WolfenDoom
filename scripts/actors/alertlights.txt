@@ -230,7 +230,7 @@ class SpotlightMount : Actor
 
 	override void Tick()
 	{
-		if (globalfreeze || level.Frozen) { return; }
+		if (isFrozen()) { return; }
 
 		if (health && bShootable)
 		{
@@ -299,7 +299,7 @@ class SpotlightBeam : Actor
 
 	override void Tick()
 	{
-		if (globalfreeze || level.Frozen) { return; }
+		if (isFrozen()) { return; }
 
 		if (!light)
 		{
@@ -441,7 +441,6 @@ class StrobeEmitter : Actor
 	Actor light1, light2;
 	Color lightcolor;
 	double lightradius;
-	Class<Actor> light;
 	double range;
 
 	Property LightColor:lightcolor;
@@ -471,13 +470,13 @@ class StrobeEmitter : Actor
 	{
 		Super.Tick();
 
-		if (globalfreeze || level.Frozen || CheckSightOrRange(range * 1.5)) { return; }
+		if (isFrozen() || CheckSightOrRange(range * 1.5)) { return; }
 
 		LineTrace(angle, range, 35.0, TRF_THRUHITSCAN | TRF_THRUACTORS, 0.0, 0.0, 0.0, trace1);
 		while (!light1)
 		{
 			light1 = Spawn("StrobeLight", trace1.HitLocation);
-			light1.master = master;
+			light1.master = self;
 			light1.args[DynamicLight.LIGHT_RED] = lightcolor.r;
 			light1.args[DynamicLight.LIGHT_GREEN] = lightcolor.g;
 			light1.args[DynamicLight.LIGHT_BLUE] = lightcolor.b;
@@ -489,7 +488,7 @@ class StrobeEmitter : Actor
 		while (!light2)
 		{
 			light2 = Spawn("StrobeLight", trace2.HitLocation);
-			light2.master = master;
+			light2.master = self;
 			light2.args[DynamicLight.LIGHT_RED] = lightcolor.r;
 			light2.args[DynamicLight.LIGHT_GREEN] = lightcolor.g;
 			light2.args[DynamicLight.LIGHT_BLUE] = lightcolor.b;

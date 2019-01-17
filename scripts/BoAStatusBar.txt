@@ -113,20 +113,20 @@ class BoAStatusBar : BaseStatusBar
 
 				double alpha = min(sin(velocity), 0.4);
 
-				double x = cos(level.time % 360) * 8;
-				double y = sin(level.time % 360) * 8;
+				double x = cos(currentSession.time % 360) * 8;
+				double y = sin(currentSession.time % 360) * 8;
 
 				screen.DrawTexture(tex, false, (width / 2) + x, (height / 2) + y, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidthF, width, DTA_VirtualHeightF, height, DTA_Alpha, alpha / 2);
 				screen.DrawTexture(tex, false, (width / 2) - x, (height / 2) - y, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidthF, width, DTA_VirtualHeightF, height, DTA_Alpha, alpha / 2);
 
-				x = sin(level.time % 360) * 16;
-				y = cos(level.time % 360) * 16;
+				x = sin(currentSession.time % 360) * 16;
+				y = cos(currentSession.time % 360) * 16;
 
 				screen.DrawTexture(tex, false, (width / 2) + x, (height / 2) + y, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidthF, width, DTA_VirtualHeightF, height, DTA_Alpha, max(0, alpha / 2 - .15));
 				screen.DrawTexture(tex, false, (width / 2) - x, (height / 2) - y, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidthF, width, DTA_VirtualHeightF, height, DTA_Alpha, max(0, alpha / 2 - .15));
 			}
 
-			if (level.time % 35)
+			if (currentSession.time % 35)
 			{
 				oldangle = CPlayer.mo.angle;
 				oldpitch = CPlayer.mo.pitch;
@@ -553,9 +553,9 @@ class BoAStatusBar : BaseStatusBar
 
 	bool LivingSneakableActors()
 	{
-		if (level.time < 5 || level.time % 35 == 0) // Cut down on how often this is run
+		if (currentSession.time < 5 || currentSession.time % 35 == 0) // Cut down on how often this is run
 		{
-			ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2); // Just iterate over the sneakable eyes - faster than all Nazi actors
+			ThinkerIterator it = currentSession.levelInfo[0].CreateThinkerIterator("StealthBase", Thinker.STAT_DEFAULT - 2); // Just iterate over the sneakable eyes - faster than all Nazi actors
 			StealthBase mo;
 			while (mo = StealthBase(it.Next()))
 			{
@@ -807,7 +807,7 @@ class BoAStatusBar : BaseStatusBar
 					else
 					{
 						// Pulse the size of icon if you don't have it
-						size = (crosshair < 80 || (crosshair > 90 && crosshair < 98)) ? 1.0 + 0.1 * sin(level.time * 15 % 360) : 1.0;
+						size = (crosshair < 80 || (crosshair > 90 && crosshair < 98)) ? 1.0 + 0.1 * sin(currentSession.time * 15 % 360) : 1.0;
 					}
 
 					// Force everything to 52 pixels at widest dimension
@@ -889,12 +889,12 @@ class BoAStatusBar : BaseStatusBar
 				else if (targetactor.bIsMonster)
 				{
 					cclr = 0xCD0000; // Red for enemies
-					dimensions *= 1 + (sin(level.time * 25) + 1.0) / 2;
+					dimensions *= 1 + (sin(currentSession.time * 25) + 1.0) / 2;
 				} 
 				else if (!targetactor.bNoDamage && !targetactor.bInvulnerable)
 				{
 					cclr = 0xCDCD00; // Yellow for other shootables
-					dimensions *= 1 + 0.5 * (sin(level.time * 25) + 1.0) / 2;
+					dimensions *= 1 + 0.5 * (sin(currentSession.time * 25) + 1.0) / 2;
 				} 
 			}
 
@@ -928,7 +928,7 @@ class BoAStatusBar : BaseStatusBar
 		double healthpercent = CPlayer.health * 100. / CPlayer.mo.Default.health;
 		String healthstring = int(healthpercent) .. "%";
 
-		double pulse = healthpercent < 25 ? (sin(level.time * (26 - healthpercent)) + 1.0) / 2 : 0.5; // Start blinking at less than 25% health, faster as health decreases
+		double pulse = healthpercent < 25 ? (sin(currentSession.time * (26 - healthpercent)) + 1.0) / 2 : 0.5; // Start blinking at less than 25% health, faster as health decreases
 
 		TextureID back = TexMan.CheckForTexture("TANKBACK", TexMan.Type_Any);
 		dimensions = TexMan.GetScaledSize(back) / 4;

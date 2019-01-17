@@ -345,7 +345,7 @@ class ShermanPlayer : PlayerPawn
 			}
 		}
 
-		if (Level.time % (35 * 5) == 0) { ForcedHealthBar = GetClosestForcedHealthBar(); } // Only run this check occasionally
+		if (currentSession.time % (35 * 5) == 0) { ForcedHealthBar = GetClosestForcedHealthBar(); } // Only run this check occasionally
 
 		if (player && turretcamera && treads && turret && povcamera)
 		{
@@ -459,7 +459,7 @@ class ShermanPlayer : PlayerPawn
 
 	Actor GetClosestForcedHealthBar()
 	{
-		ThinkerIterator Finder = ThinkerIterator.Create("Base", Thinker.STAT_DEFAULT - 3);
+		ThinkerIterator Finder = currentSession.levelInfo[0].CreateThinkerIterator("Base", Thinker.STAT_DEFAULT - 3);
 		Base it;
 		Actor mo;
 
