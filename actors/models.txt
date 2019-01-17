@@ -2,20 +2,6 @@ const int MODELS_FLAGS1 = SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCA
 const int MODELS_FLAGS2 = SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE;
 
 //Base stuff
-ACTOR ModelBase
-{
-	Height 56
-	+FLOORCLIP
-	+DONTSPLASH
-	+NOGRAVITY
-	States
-	{
-	Spawn:
-		MDLA A -1
-		Stop
-	}
-}
-
 ACTOR DecalBase
 {
 	DistanceCheck "scenelod"

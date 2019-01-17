@@ -2461,3 +2461,27 @@ class ConversationMarker : Actor
 		Super.Tick();
 	}
 }
+
+Class ModelBase : Actor
+{
+	Default
+	{
+		Height 56;
+		+FLOORCLIP
+		+DONTSPLASH
+		+NOGRAVITY
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		A_SetSize(radius * scale.x / Default.scale.x, height * scale.y / Default.scale.y); // If the actor is scaled from default, adjust the actual size of the actor
+
+	}
+}
