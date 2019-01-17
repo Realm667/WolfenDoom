@@ -1305,6 +1305,8 @@ class Nazi : Base
 
 	void A_NaziLook()
 	{
+		if (bDormant) { return; }
+
 		if (currentSession.time > 35) { A_Look(); }
 
 		if (CheckSightOrRange(512)) { return; }
@@ -1899,7 +1901,7 @@ class Nazi : Base
 
 		// If the enemy is sneakable and idle (and not patrolling), and isn't in its original location, keep it moving toward that location.
 		//  NOTE: This doesn't work properly when the player has NOTARGET enabled (or is wearing a disguise and has no weapon raised).
-		if (health > 0 && bShootable)
+		if (health > 0 && bShootable && !bDormant)
 		{
 			if (user_sneakable && bFriendly && user_incombat && patrolgoal && patrolgoal.args[0] == -1)
 			{
