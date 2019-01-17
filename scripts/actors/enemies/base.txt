@@ -718,7 +718,7 @@ class Base : Actor
 
 	override void PostBeginPlay()
 	{
-		A_SetSize(radius * scale.x / Default.scale.x, height * scale.y / Default.scale.y); // If the actor is scaled from default, adjust the actual size of the actor
+		if (!(self is "NaziBoss")) { A_SetSize(radius * scale.x / Default.scale.x, height * scale.y / Default.scale.y); } // If the actor is scaled from default, adjust the actual size of the actor
 		if (SpawnFlags & MTF_DORMANT) { bDormant = true; }
 
 		// After initilization, handle skill level health alterations
@@ -1003,7 +1003,6 @@ class Nazi : Base
 			"####" A 0 { return ResolveState("See.Wounded"); }
 		See.BossGiant: // Hitler mostly
 			"####" "#" 0 { user_incombat = True; }
-			"####" "#" 0 A_JumpIfHealthLower(5000,"See.Boss2Giant");
 			"####" A 1 A_NaziChase;
 			"####" AAA 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
@@ -1023,27 +1022,6 @@ class Nazi : Base
 			"####" D 1 A_NaziChase;
 			"####" DDD 1 A_NaziChase(null, null);
 			"####" A 0 { return ResolveState("See"); }
-		See.Boss2Giant: // Wounded Hitler
-			SHI2 "#" 0 { user_incombat = True; }
-			"####" A 1 A_NaziChase;
-			"####" AAA 1 A_NaziChase(null, null);
-			"####" A 1 A_NaziChase;
-			"####" AAA 1 A_NaziChase(null, null);
-			"####" B 0 A_PlaySound("floor/heavy");
-			"####" B 1 { A_NaziChase(); Radius_Quake(5, 2, 0, 5, 0); }
-			"####" BBB 1 A_NaziChase(null, null);
-			"####" B 1 A_NaziChase;
-			"####" BBB 1 A_NaziChase(null, null);
-			"####" C 1 A_NaziChase;
-			"####" CCC 1 A_NaziChase(null, null);
-			"####" C 1 A_NaziChase;
-			"####" CCC 1 A_NaziChase(null, null);
-			"####" D 0 A_PlaySound("floor/heavy");
-			"####" D 1 { A_NaziChase(); Radius_Quake(5, 2, 0, 5, 0); }
-			"####" DDD 1 A_NaziChase(null, null);
-			"####" D 1 A_NaziChase;
-			"####" DDD 1 A_NaziChase(null, null);
-			"####" A 0 { return ResolveState("See.Wounded"); }
 		See.Boss3: // NaziLoper
 			"####" "#" 0 { user_incombat = True; }
 			"####" B 1 A_NaziChase;
@@ -2464,7 +2442,7 @@ class ConversationMarker : Actor
 	}
 }
 
-Class ModelBase : Actor
+class ModelBase : Actor
 {
 	Default
 	{
@@ -2485,5 +2463,46 @@ Class ModelBase : Actor
 	{
 		A_SetSize(radius * scale.x / Default.scale.x, height * scale.y / Default.scale.y); // If the actor is scaled from default, adjust the actual size of the actor
 
+		Super.PostBeginPlay();
+	}
+}
+
+// Base class for Nazi bosses.  
+// If the boss has a WoundHealth set and a "Wounded" state label defined, then  the enemy 
+// will be forced to use the sprite that is set at that state label as long as the 'wounded' 
+// boolean is set to true.  See Longinus_Hitler for example.
+class NaziBoss : Nazi
+{
+	bool wounded;
+	State WoundedState;
+
+	Default
+	{
+		Mass 1000;
+		Scale 0.67;
+		Base.BossIcon "BOSSICON";
+		DamageFactor "Rocket", 0.2;
+		+BOSS
+	}
+
+	States
+	{
+		See:
+			Goto See.Boss;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		WoundedState = FindState("Wounded");
+		wounded = false;
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (wounded && WoundedState && WoundedState.sprite) { sprite = WoundedState.sprite; }
 	}
 }
