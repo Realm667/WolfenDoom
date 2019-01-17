@@ -1419,7 +1419,6 @@ ACTOR Longinus_Hitler : NaziBoss
 	ActiveSound "hitler/active"
 	DropItem "SpearOfDestiny_End", 256
 	Nazi.Healer 2
-
 	States
 	{
 	Spawn:
@@ -1509,7 +1508,7 @@ ACTOR Longinus_Hitler : NaziBoss
 		Goto See
 	Pain:
 		"####" N 6 {
-			A_NaziPain(256);
+			A_NaziPain(256,TRUE,-96);
 			if (wounded) { frame = 5; } // Use frame F instead of N for pain state when wounded
 		}
 		Goto See
