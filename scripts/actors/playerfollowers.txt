@@ -1023,7 +1023,11 @@ class PathMarker : Actor
 	{
 		Super.Tick();
 
-		if (!follower || !playerToChase) { Destroy(); }
+		if (!follower || !playerToChase)
+		{
+			Destroy();
+			return;
+		}
 
 		int index = follower.Markers.Find(self);
 
@@ -1034,7 +1038,7 @@ class PathMarker : Actor
 		}
 
 		// If the follower crosses the path at a later point than their current goal, make this spot their new current goal
-		if (Distance3D(playerToChase) < 32)
+		if (Distance3D(follower) < 32)
 		{
 			if (index < follower.Markers.Find(follower.currentGoal)) { follower.currentGoal = self; }
 		}
