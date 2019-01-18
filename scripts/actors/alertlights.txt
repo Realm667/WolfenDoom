@@ -436,27 +436,23 @@ class SpotlightBeamLight : SpotLightAttenuated
 
 class StrobeEmitter : Actor
 {
-	transient FLineTraceData trace1;
-	transient FLinetraceData trace2;
 	Actor light1, light2;
 	Color lightcolor;
-	double lightradius;
-	double range;
+	int range;
 
 	Property LightColor:lightcolor;
-	Property LightRadius:lightradius;
 	Property Range:range;
 
 	Default
 	{
 		Radius 16;
 		Height 16;
+		Speed 10;
 		+DONTSPLASH
 		+NOGRAVITY
 		+SPAWNCEILING
-		StrobeEmitter.LightRadius 48;
 		StrobeEmitter.LightColor 0xFFFFFF;
-		StrobeEmitter.Range 1024;
+		StrobeEmitter.Range 1024.0;
 	}
 
 	States
@@ -464,6 +460,33 @@ class StrobeEmitter : Actor
 		Spawn:
 			TNT1 A 1;
 			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		while (!light1) { light1 = Spawn("SpotLight", pos - (0, 0, height / 2)); }
+
+		light1.master = self;
+		light1.pitch = 35;
+		DynamicLight(light1).spotinnerangle = 10;
+		DynamicLight(light1).spotouterangle = 25;
+		light1.args[DynamicLight.LIGHT_INTENSITY] = range;
+		light1.args[DynamicLight.LIGHT_RED] = lightcolor.r;
+		light1.args[DynamicLight.LIGHT_GREEN] = lightcolor.g;
+		light1.args[DynamicLight.LIGHT_BLUE] = lightcolor.b;
+
+		while (!light2) { light2 = Spawn("SpotLight", pos - (0, 0, height / 2)); }
+		light2.master = self;
+		light2.angle += 180;
+		light2.pitch = 35;
+		DynamicLight(light2).spotinnerangle = 10;
+		DynamicLight(light2).spotouterangle = 25;
+		light2.args[DynamicLight.LIGHT_INTENSITY] = range;
+		light2.args[DynamicLight.LIGHT_RED] = lightcolor.r;
+		light2.args[DynamicLight.LIGHT_GREEN] = lightcolor.g;
+		light2.args[DynamicLight.LIGHT_BLUE] = lightcolor.b;
+
+		Super.PostBeginPlay();
 	}
 
 	override void Tick()
@@ -472,31 +495,8 @@ class StrobeEmitter : Actor
 
 		if (isFrozen() || CheckSightOrRange(range * 1.5)) { return; }
 
-		LineTrace(angle, range, 35.0, TRF_THRUHITSCAN | TRF_THRUACTORS, 0.0, 0.0, 0.0, trace1);
-		while (!light1)
-		{
-			light1 = Spawn("StrobeLight", trace1.HitLocation);
-			light1.master = self;
-			light1.args[DynamicLight.LIGHT_RED] = lightcolor.r;
-			light1.args[DynamicLight.LIGHT_GREEN] = lightcolor.g;
-			light1.args[DynamicLight.LIGHT_BLUE] = lightcolor.b;
-		}
-		light1.SetOrigin(trace1.HitLocation, true);
-		light1.args[DynamicLight.LIGHT_INTENSITY] = clamp(int(lightRadius * trace1.Distance / 256), 24, 128);
-
-		LineTrace(angle + 180, range, 35.0, TRF_THRUHITSCAN | TRF_THRUACTORS, 0.0, 0.0, 0.0, trace2);
-		while (!light2)
-		{
-			light2 = Spawn("StrobeLight", trace2.HitLocation);
-			light2.master = self;
-			light2.args[DynamicLight.LIGHT_RED] = lightcolor.r;
-			light2.args[DynamicLight.LIGHT_GREEN] = lightcolor.g;
-			light2.args[DynamicLight.LIGHT_BLUE] = lightcolor.b;
-		}
-		light2.SetOrigin(trace2.HitLocation, true);
-		light2.args[DynamicLight.LIGHT_INTENSITY] = clamp(int(lightRadius * trace2.Distance / 256), 24, 128);
-
-		angle += 10;		
+		light1.angle += Speed;
+		light2.angle += Speed;
 	}
 }
 
@@ -504,20 +504,3 @@ class StrobeEmitterBlue : StrobeEmitter { Default { StrobeEmitter.LightColor 0x0
 class StrobeEmitterGreen : StrobeEmitter { Default { StrobeEmitter.LightColor 0x00CC00; } }
 class StrobeEmitterRed : StrobeEmitter { Default { StrobeEmitter.LightColor 0xCC0000; } }
 class StrobeEmitterYellow : StrobeEmitter { Default { StrobeEmitter.LightColor 0xCC6600; } }
-
-class StrobeLight : DynamicLight
-{
-	States
-	{
-		Spawn:
-			TNT1 A 1;
-			Loop;
-	}
-
-	override void Tick()
-	{
-		if (!master) { Destroy(); }
-
-		Super.Tick();
-	}
-}
