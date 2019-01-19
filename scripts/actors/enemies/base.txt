@@ -1268,6 +1268,9 @@ class Nazi : Base
 		if (bloodspurt == "") { bloodspurt = "Pain_Overlay"; } // Handled here instead of in default above because spurts are in DECORATE, not ZScript, so aren't loaded until after this code, so can't be validated at load time
 
 		A_SpawnItemEx(bloodspurt, scale.x + 3, 0, height + offset, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR); // Spawn pain overlay blood spurt
+
+		if (bDormant) { return; } // Dormant actors should not do anything but bleed
+
 		if (alertrange) { A_AlertMonsters(alertrange); } // Alert monsters in given range
 		if (playsound) { A_Pain(); } // Play pain sound unless passed 'false'
 
@@ -1327,6 +1330,8 @@ class Nazi : Base
 
 	void A_NaziChase(statelabel melee = "None", statelabel missile = "None", int flags = 0)
 	{
+		if (bDormant) { SetState(SpawnState); return; } // Dormant actors should not wake up even if they're somehow placed in their See state
+
 		sprite = SpawnState.sprite; // Make sure our sprite isn't crouched or rolling
 
 		if (melee == "None") { melee = "Melee.Aimed"; }
@@ -2474,7 +2479,7 @@ class ModelBase : Actor
 class NaziBoss : Nazi
 {
 	bool wounded;
-	State WoundedState;
+	SpriteID WoundedSprite;
 
 	Default
 	{
@@ -2495,7 +2500,9 @@ class NaziBoss : Nazi
 	{
 		Super.PostBeginPlay();
 
-		WoundedState = FindState("Wounded");
+		State WoundedState = FindState("Wounded");
+		if (WoundedState) { WoundedSprite = WoundedState.sprite; }
+
 		wounded = false;
 	}
 
@@ -2503,6 +2510,6 @@ class NaziBoss : Nazi
 	{
 		Super.Tick();
 
-		if (wounded && WoundedState && WoundedState.sprite) { sprite = WoundedState.sprite; }
+		if (wounded && WoundedSprite) { sprite = WoundedSprite; }
 	}
 }
