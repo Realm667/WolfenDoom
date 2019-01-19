@@ -376,15 +376,9 @@ class Base : Actor
 		double dodgeangle;
 		double dodgedistance;
 
-		double faceangle = angle;
-
-		A_FaceTarget(); // Face the target (if there is one) so side rolls actually go to the side and don't end up being forward or backward
-
 		[dodgedistance, dodgeangle] = GetBestSideMove(); // Get the direction (left or right) that is the best to dodge, and how far you can dodge there
 
-		angle = faceangle;
-
-		if (dodgedistance > -1) // If dodgedistance is less than zero, we shouldn't dodge...  That means there is no room.
+		if (dodgedistance > 0) // If dodgedistance is less than zero, we shouldn't dodge...  That means there is no room.
 		{
 			if (checkonly) { return true; } // If this is just a logic check, stop here
 
@@ -430,15 +424,18 @@ class Base : Actor
 		return right, angle - 90; // Otherwise, dodge right
 	}
 
-	double GetMoveDistance(double angle, double range = 256)
+	double GetMoveDistance(double moveangle = 0, double range = 256)
 	{
 		bool blocked;
+		double offsetangle = 0;
+
+		if (target) { offsetangle = deltaangle(angle, AngleTo(target)); }
 
 		for (double i = Radius; i <= range; i += Speed)
 		{
 			tracer = null;
 
-			blocked = CheckBlock(CBF_DROPOFF | CBF_SETTRACER, AAPTR_DEFAULT, i, 0, 0, angle);
+			blocked = CheckBlock(CBF_DROPOFF | CBF_SETTRACER, AAPTR_DEFAULT, i, 0, 0, moveangle + offsetangle);
 
 			if (blocked) { return i; }
 		}
@@ -802,6 +799,7 @@ class Nazi : Base
 	state AimState, HealState;
 	bool sp;
 	double frightscale;
+	int crouchchance;
 
 	Property Healer:healflags;
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
@@ -811,6 +809,7 @@ class Nazi : Base
 	Property SneakableCloseSightRadius:sneakableclosesightradius;
 	Property ZombieVariant:zombievariant;
 	Property FrightMultiplier:frightscale;
+	Property CrouchChance:crouchchance;
 
 	Default
 	{
@@ -833,6 +832,7 @@ class Nazi : Base
 		DamageFactor "Truck", 1.2; //for truck sequences
 
 		Base.DodgeAmount 6;
+		Nazi.CrouchChance 4; // Chance of crouching when behind an obstacle, from 0-255
 		Nazi.FrightMultiplier 1.0;
 		Nazi.Healer 0;
 		Nazi.PerceptionFOV 120;
@@ -1162,8 +1162,9 @@ class Nazi : Base
 			"####" A 0 A_SetSize(-1, Default.height * 0.75);
 			"####" A 5;
 			"####" A 0 {
-				if (!target || (crouchtimer < 175 && Random[stand](0, 255) > 4 && !InPlayerCrosshair()))
+				if (crouchtimer < 175 && Random[stand](0, 255) > 4 && (!user_incombat || !InPlayerCrosshair()))
 				{
+					if (!target && crouchtimer % 35 == 0 ) { A_NaziLook(); } // Look for enemies periodically...
 					crouchtimeout = 70;
 					return ResolveState("Dodge.Crouch");
 				}
@@ -1180,6 +1181,7 @@ class Nazi : Base
 				reactiontime = 0;
 			}
 			"####" A 0 {
+				if (!target) { return ResolveState("Spawn"); }
 				return ResolveState("Dodge.Resume");
 			}
 		Dodge.Resume:
@@ -1290,6 +1292,8 @@ class Nazi : Base
 
 		if (currentSession.time > 35) { A_Look(); }
 
+		if (DodgeState) { A_TryHide(); }
+
 		if (CheckSightOrRange(512)) { return; }
 
 		// Check specifically for players via CheckSight in order to "see through" block-everything lines (which are usually windows)
@@ -1374,7 +1378,7 @@ class Nazi : Base
 		}
 		else { A_Chase(melee, missile, flags); }
 
-		if (candodge && !crouchtimeout && Random[duck](0, 255) < 4) { A_TryHide(); }
+		if (candodge && !crouchtimeout) { A_TryHide(); }
 	}
 
 	bool InPlayerCrosshair()
@@ -1391,30 +1395,39 @@ class Nazi : Base
 		return false;
 	}
 
-	void A_TryHide()
+	void A_TryHide(int chance = -1)
 	{
-		if (!target || !CheckSight(target)) { return; } // Only "hide" if you can see the player already
+		if (chance < 0) { chance = clamp(crouchchance + crouchchance * bFrightened, 0, 255); }
 
-		A_FaceTarget();
+		if (Random[duck](0, 255) > chance) { return; }
 
-		if (CheckForBarrier() && IsHostile(target)) { DoCrouch(); }
+		if (CheckForBarrier()) { DoCrouch(); }
 	}
 
 	bool CheckForBarrier(double height = 16.0, double range = 64.0)
 	{
 		FLineTraceData trace;
-		LineTrace(angle, range, -pitch, TRF_SOLIDACTORS, height, 0.0, 0.0, trace);
 
-		if (trace.HitType == TRACE_HitActor)
+		double destangle = angle;
+		double destpitch = pitch;
+
+		if (target) // If you have a target, check between you and your target
 		{
-			// Check if there's a solid actor in front of you...
-			if (trace.HitActor && !IsHostile(trace.HitActor)) { return true; }
+			angle = AngleTo(target);
+			pitch = PitchTo(target);
 		}
-		else if (trace.HitType == TRACE_HitWall)
+
+		LineTrace(angle, range, pitch, TRF_THRUACTORS | TRF_THRUHITSCAN, height, 0.0, 0.0, trace);
+		// If it's a wall, it must be solid...  But don't crouch in front of 1-sided walls...
+		if (trace.HitType == TRACE_HitWall && trace.HitLine && !(trace.HitLine.flags & line.ML_BLOCKING))
 		{
-			// If it's a wall, it must be solid...  But don't crouch in front of 1-sided walls...
-			if (trace.HitLine && !(trace.HitLine.flags & line.ML_BLOCKING)) { return true; }
+			// And only duck if the other side of the blocking wall (or a good enough approximation) is inside the map...
+			if (currentSession.levelInfo[0].IsPointInMap(pos + (RotateVector((range + 32.0, 0), angle), height))) { return true; }
 		}
+
+		LineTrace(angle, range, pitch, TRF_SOLIDACTORS | TRF_THRUHITSCAN, height, 0.0, 0.0, trace);
+		// Check if there's a solid actor (that's not an enemy) in front of you...
+		if (trace.HitType == TRACE_HitActor && trace.HitActor && !IsHostile(trace.HitActor)) { return true; }
 
 		return false;
 	}
@@ -1594,6 +1607,8 @@ class Nazi : Base
 		if (frightscale && !speed) { frightscale = 0.0; }
 
 		Super.PostBeginPlay();
+
+		if (DodgeState) { A_TryHide(255); }
 	}
 
 	// Hijack the damage calls in order to implement stealth kills and critical hits
