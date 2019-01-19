@@ -1,6 +1,6 @@
 ACTOR NazisBackpack : BackpackItem
 {
-	//$Category Items (Wolf3D)
+	//$Category Items (BoA)
 	//$Title Backpack (Backpack)
 	//$Color 1
 	Height 26
@@ -14,13 +14,17 @@ ACTOR NazisBackpack : BackpackItem
 	}
 }
 
-ACTOR NaziBerserk : CustomInventory
+ACTOR CustomInvBase : CustomInventory
 {
-	//$Category Powerups (Wolf3D)
-	//$Title Totale Macht (Berserk)
+	//$Category Powerups (BoA)
 	//$Color 6
-	//$Sprite PSTRA0
 	Scale 0.50
+}
+
+ACTOR NaziBerserk : CustomInvBase
+{
+	//$Title Totale Macht (Berserk)
+	//$Sprite PSTRA0
 	+INVENTORY.INVBAR
 	Inventory.Icon "I_BSRK"
 	Inventory.MaxAmount 1
@@ -50,11 +54,10 @@ ACTOR BerserkToken : Inventory {Inventory.MaxAmount 1}
 
 ACTOR ScubaGearGiver : RadSuit
 {
-	//$Category Powerups (Wolf3D)
+	//$Category Powerups (BoA)
 	//$Title Scuba Gear ("Underwater" protection)
 	//$Color 6
 	Height 32
-	Scale 0.5
 	Inventory.PickupMessage "$SCUBA2"
 	Inventory.PickupSound "pickup/uniform"
 	Powerup.Duration -60
@@ -70,10 +73,10 @@ ACTOR ScubaGearGiver : RadSuit
 
 ACTOR SpaceSuit : PowerupGiver
 {
-	//$Category Powerups (Wolf3D)
+	//$Category Powerups (BoA)
 	//$Title Space Suit ("IceWater" protection)
 	//$Color 6
-	Scale 0.5
+	Scale 0.50
 	Inventory.MaxAmount 0
 	Inventory.PickupMessage "$SCUBA1"
 	Inventory.RespawnTics 1050 //30 seconds
@@ -97,10 +100,10 @@ ACTOR PowerSpaceSuit : PowerProtection {DamageFactor "IceWater", 0.0}
 
 ACTOR C4 : CompassItem
 {
-	//$Category Powerups (Wolf3D)
+	//$Category Powerups (BoA)
 	//$Title C4 Explosives (pickups)
 	//$Color 6
-	Scale 0.5
+	Scale 0.50
 	Inventory.PickupMessage "$C4PACK"
 	Inventory.Icon "I_C4"
 	Inventory.MaxAmount 10
@@ -125,12 +128,9 @@ ACTOR PowerDrugs : PowerDoubleFiringSpeed {Powerup.Duration -10}
 ACTOR AdrenalineFactor : PowerupGiver { +INVENTORY.AUTOACTIVATE +INVENTORY.ADDITIVETIME -INVENTORY.INVBAR Inventory.MaxAmount 0 Powerup.Type "PowerFactor" }
 ACTOR PowerFactor : PowerDamage {Powerup.Duration -10 DamageFactor "Normal", 2.0}
 
-ACTOR AdrenalineKit : CustomInventory
+ACTOR AdrenalineKit : CustomInvBase
 {
-	//$Category Powerups (Wolf3D)
 	//$Title Adrenaline Kit (DamageFactor & FiringSpeed augmented)
-	//$Color 6
-	Scale 0.5
 	Tag "$TAGADREN"
 	Inventory.Icon "ADRNB0"
 	Inventory.MaxAmount 3
@@ -148,11 +148,10 @@ ACTOR AdrenalineKit : CustomInventory
 	}
 }
 
-ACTOR DeployableMine : CustomInventory
+ACTOR DeployableMine : CustomInvBase
 {
-	//$Category Powerups (Wolf3D)
 	//$Title Deployable Mine
-	//$Color 6
+	Scale 1.0
 	Tag "$TAGMINES"
 	Inventory.Icon "I_BOAM"
 	Inventory.MaxAmount 5
@@ -176,12 +175,9 @@ ACTOR LanternOil : Inventory
 	Inventory.MaxAmount 12000 //Near 5 mins maximum - ozy81
 }
 
-ACTOR OilPickup : CustomInventory
+ACTOR OilPickup : CustomInvBase
 {
-	//$Category Powerups (Wolf3D)
 	//$Title Lantern Oil
-	//$Color 6
-	Scale 0.5
 	-INVENTORY.INVBAR
 	Inventory.MaxAmount 12 //1000x12=12000
 	Inventory.PickupMessage "$OILPICK"
@@ -199,9 +195,8 @@ ACTOR OilPickup : CustomInventory
 
 ACTOR Rune_Fa : Soul
 {
-	//$Category Puzzle Items (Wolf3D)
 	//$Title Soul Rune, Fa (+100)
-	//$Color 6
+	Scale 1.0
 	Inventory.Amount 100
 	Inventory.MaxAmount 1
 	Inventory.PickupMessage "$RUNEFA"

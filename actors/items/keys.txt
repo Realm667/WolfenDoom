@@ -1,9 +1,13 @@
-ACTOR BoABlueKey : Key
+ACTOR KeyBase : Key
 {
-	//$Category Keys (Wolf3D)
-	//$Title Blue Key (Number 2)
+	//$Category Keys (BoA)
 	//$Color 13
 	Scale 0.07
+}
+
+ACTOR BoABlueKey : KeyBase
+{
+	//$Title Blue Key (Number 2)
 	Inventory.PickupMessage "$GOTBLUEKEY"
 	Inventory.Icon "STKEYS0"
 	States
@@ -15,12 +19,9 @@ ACTOR BoABlueKey : Key
 	}
 }
 
-ACTOR BoAYellowKey : Key
+ACTOR BoAYellowKey : KeyBase
 {
-	//$Category Keys (Wolf3D)
 	//$Title Yellow Key (Number 3)
-	//$Color 13
-	Scale 0.07
 	Inventory.PickupMessage "$GOTYELLOWKEY"
 	Inventory.Icon "STKEYS1"
 	States
@@ -32,12 +33,9 @@ ACTOR BoAYellowKey : Key
 	}
 }
 
-ACTOR BoARedKey : Key
+ACTOR BoARedKey : KeyBase
 {
-	//$Category Keys (Wolf3D)
 	//$Title Red Key (Number 1)
-	//$Color 13
-	Scale 0.07
 	Inventory.PickupMessage "$GOTREDKEY"
 	Inventory.Icon "STKEYS2"
 	States
@@ -49,12 +47,9 @@ ACTOR BoARedKey : Key
 	}
 }
 
-ACTOR BoAGreenKey : Key
+ACTOR BoAGreenKey : KeyBase
 {
-	//$Category Keys (Wolf3D)
 	//$Title Green Key (Number 5)
-	//$Color 13
-	Scale 0.07
 	Inventory.PickupMessage "$GOTGREENKEY"
 	Inventory.Icon "STKEYS3"
 	States
@@ -68,10 +63,7 @@ ACTOR BoAGreenKey : Key
 
 ACTOR BoAPurpleKey : Key
 {
-	//$Category Keys (Wolf3D)
 	//$Title Purple Key (Number 6)
-	//$Color 13
-	Scale 0.07
 	Inventory.PickupMessage "$GOTPURPLEKEY"
 	Inventory.Icon "STKEYS4"
 	States
@@ -85,10 +77,7 @@ ACTOR BoAPurpleKey : Key
 
 ACTOR BoACyanKey : Key
 {
-	//$Category Keys (Wolf3D)
 	//$Title Cyan Key (Number 4)
-	//$Color 13
-	Scale 0.07
 	Inventory.PickupMessage "$GOTCYANKEY"
 	Inventory.Icon "STKEYS5"
 	States
@@ -102,7 +91,9 @@ ACTOR BoACyanKey : Key
 
 ACTOR SkullKey : PuzzleItem
 {
+	//$Category Keys (BoA)
 	//$Title Occult Skull Key (Puzzle 4)
+	//$Color 13
 	Scale 0.17
 	PuzzleItem.Number 4
 	Inventory.Icon SKLKB0

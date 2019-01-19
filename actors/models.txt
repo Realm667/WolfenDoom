@@ -19,7 +19,7 @@ ACTOR DecalBase
 
 ACTOR MuseumBase
 {
-	//$Category Models (Wolf3D)/Statues/Special
+	//$Category Models (BoA)/No Hitbox
 	//$Color 7
 	DistanceCheck "scenelod"
 	Radius 4
@@ -38,7 +38,7 @@ ACTOR MuseumBase
 
 ACTOR InteractionBase : SwitchableDecoration
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Color 3
 	DistanceCheck "scenelod"
 	Radius 8
@@ -81,7 +81,7 @@ ACTOR 3dObstacle : 3dObject
 
 ACTOR 3dFurniture : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Furniture
+	//$Category Models (BoA)/Furniture
 	//$Color 3
 	DistanceCheck "scenelod"
 }
@@ -135,7 +135,7 @@ ACTOR 3dBridge8 : InvisibleBridge
 //Models
 ACTOR SkyboxMoon
 {
-	//$Category Props (Wolf3D)/Astrostein
+	//$Category Skyboxes (BoA)
 	//$Title Moon (skybox)
 	//$Color 3
 	Radius 16
@@ -222,9 +222,30 @@ ACTOR SkyboxMoonLights : SkyboxPlanetShade //adjusted by T667
 }
 
 //Ozy models from scratch or revamped
+ACTOR 3dDoor_A1 : MuseumBase
+{
+	//$Category Models (BoA)/No Hitbox
+	//$Title 3d Wooden Door (complete, no hitbox)
+}
+
+ACTOR 3dDoor_B1 : 3dDoor_A1
+{
+	//$Title 3d Wooden Door (half, no hitbox)
+}
+
+ACTOR 3dDoor_A2 : 3dDoor_A1
+{
+	//$Title 3d Wooden Door (greyed, complete, no hitbox)
+}
+
+ACTOR 3dDoor_B2 : 3dDoor_A1
+{
+	//$Title 3d Wooden Door (greyed, half, no hitbox)
+}
+
 ACTOR GoryDecal1 : DecalBase
 {
-	//$Category Gore (Wolf3D)/3D Walldecs
+	//$Category Gore (BoA)/3D Walldecs
 	//$Title Gory Decal 01
 	//$Color 4
 }
@@ -325,7 +346,7 @@ ACTOR GoryDecal16 : GoryDecal1
 
 ACTOR GoryDecalSpawner : RandomSpawner //15 & 16 are excluded for obvious reasons - ozy81
 {
-	//$Category Gore (Wolf3D)/3D Walldecs
+	//$Category Gore (BoA)/3D Walldecs
 	//$Title Gory Decal Spawner, Random
 	//$Color 4
 	//$Sprite "DECLA0"
@@ -350,7 +371,7 @@ ACTOR GoryDecalSpawner : RandomSpawner //15 & 16 are excluded for obvious reason
 
 ACTOR SootDecal1 : GoryDecal1
 {
-	//$Category Battlefield (Wolf3D)
+	//$Category Battlefield (BoA)
 	//$Title Grease Soot Decal 01
 	RenderStyle "Translucent"
 	Alpha 0.90
@@ -358,7 +379,7 @@ ACTOR SootDecal1 : GoryDecal1
 
 ACTOR SootDecal2 : GoryDecal1
 {
-	//$Category Battlefield (Wolf3D)
+	//$Category Battlefield (BoA)
 	//$Title Grease Soot Decal 02
 	RenderStyle "Translucent"
 	Alpha 0.90
@@ -366,7 +387,7 @@ ACTOR SootDecal2 : GoryDecal1
 
 ACTOR SootDecal3 : GoryDecal1
 {
-	//$Category Battlefield (Wolf3D)
+	//$Category Battlefield (BoA)
 	//$Title Grease Soot Decal 03
 	RenderStyle "Translucent"
 	Alpha 0.90
@@ -374,7 +395,7 @@ ACTOR SootDecal3 : GoryDecal1
 
 ACTOR SootDecal4 : GoryDecal1
 {
-	//$Category Battlefield (Wolf3D)
+	//$Category Battlefield (BoA)
 	//$Title Grease Soot Decal 04 (wall)
 	RenderStyle "Translucent"
 	Alpha 0.90
@@ -382,7 +403,7 @@ ACTOR SootDecal4 : GoryDecal1
 
 ACTOR SootDecal5 : GoryDecal1
 {
-	//$Category Battlefield (Wolf3D)
+	//$Category Battlefield (BoA)
 	//$Title Grease Soot Decal 05 (wall)
 	RenderStyle "Translucent"
 	Alpha 0.90
@@ -390,7 +411,7 @@ ACTOR SootDecal5 : GoryDecal1
 
 ACTOR SootDecal6 : GoryDecal1
 {
-	//$Category Battlefield (Wolf3D)
+	//$Category Battlefield (BoA)
 	//$Title Grease Soot Decal 06 (wall)
 	RenderStyle "Translucent"
 	Alpha 0.90
@@ -398,7 +419,7 @@ ACTOR SootDecal6 : GoryDecal1
 
 ACTOR SootDecal7 : GoryDecal1
 {
-	//$Category Battlefield (Wolf3D)
+	//$Category Battlefield (BoA)
 	//$Title Grease Soot Decal 07 (wall)
 	RenderStyle "Translucent"
 	Alpha 0.90
@@ -406,7 +427,7 @@ ACTOR SootDecal7 : GoryDecal1
 
 ACTOR Radiator_Short
 {
-	//$Category Models (Wolf3D)/Furniture
+	//$Category Models (BoA)/Furniture
 	//$Title Radiator (short)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -436,7 +457,7 @@ ACTOR BlowTorch : 3dFurniture
 
 ACTOR TestCrate : 3dObstacle
 {
-	//$Category Props (Wolf3D)/Labs
+	//$Category Props (BoA)/Labs
 	//$Title Test Lab Crate
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -505,7 +526,7 @@ ACTOR DummyWarper //This is here to avoid "blink effects" - ozy81
 
 ACTOR Handrail : ModelBase
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Handrail
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -517,7 +538,7 @@ ACTOR Handrail : ModelBase
 
 ACTOR CeilingFan : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Ceiling Fan
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -548,7 +569,7 @@ ACTOR WoodenBlades : ModelBase
 
 ACTOR ModelBeachHedgeHog : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Obstacles
+	//$Category Models (BoA)/Obstacles
 	//$Title Beach Hedgehog
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -569,7 +590,7 @@ ACTOR ModelCampBed2 : ModelCampBed
 
 ACTOR ModelIncaTrain : ModelBase
 {
-	//$Category Models (Wolf3D)/Vehicles
+	//$Category Models (BoA)/Vehicles
 	//$Title Train
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -585,7 +606,7 @@ ACTOR ModelRailBoxcar : ModelIncaTrain
 
 ACTOR TrainWheels : ModelIncaTrain
 {
-	//$Category Models (Wolf3D)/Vehicles
+	//$Category Models (BoA)/Vehicles
 	//$Title Train Wheels
 	//$Color 3
 	Radius 4
@@ -620,7 +641,7 @@ ACTOR ModelRailTanker : ModelIncaTrain
 
 ACTOR ModelSandBagCurve : ModelBase
 {
-	//$Category Models (Wolf3D)/Obstacles
+	//$Category Models (BoA)/Obstacles
 	//$Title Sandbag (curve)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -638,7 +659,7 @@ ACTOR ModelSandBagCurve : ModelBase
 
 ACTOR ModelSandBagStraight : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Obstacles
+	//$Category Models (BoA)/Obstacles
 	//$Title Sandbag (straight)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -655,7 +676,7 @@ ACTOR ModelSandBagStraight : 3dObstacle
 
 ACTOR WaterTower : ModelBase
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Watertower
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -663,7 +684,7 @@ ACTOR WaterTower : ModelBase
 
 ACTOR Windmill : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Windmill (don't scale it more than 1.2!)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -690,7 +711,7 @@ ACTOR WindmillWheel : ModelBase
 
 ACTOR Tent : ModelBase
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Tent
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -698,7 +719,7 @@ ACTOR Tent : ModelBase
 
 ACTOR BomberVTOL3 : ModelBase
 {
-	//$Category Models (Wolf3D)/Planes
+	//$Category Models (BoA)/Planes
 	//$Title Bomber VTOL-3
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -706,7 +727,7 @@ ACTOR BomberVTOL3 : ModelBase
 
 ACTOR Submarine : ModelBase
 {
-	//$Category Models (Wolf3D)/Ships
+	//$Category Models (BoA)/Ships
 	//$Title Submarine
 	//$Color 3
 	//$Arg0 "Engine Sound"
@@ -734,7 +755,7 @@ ACTOR SubmarineIcy : Submarine
 
 ACTOR Vidcam : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Intermap
+	//$Category Models (BoA)/Intermap
 	//$Title Video Cam
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -743,7 +764,7 @@ ACTOR Vidcam : 3dObstacle
 
 ACTOR 88mmFlak : ModelBase
 {
-	//$Category Models (Wolf3D)/Mission
+	//$Category Models (BoA)/Mission
 	//$Title 88mm Flak
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -753,7 +774,7 @@ ACTOR 88mmFlak : ModelBase
 
 ACTOR 88mmFlakDestroyed : ModelBase
 {
-	//$Category Models (Wolf3D)/Mission
+	//$Category Models (BoA)/Mission
 	//$Title 88mm Flak (destroyed)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -763,7 +784,7 @@ ACTOR 88mmFlakDestroyed : ModelBase
 
 ACTOR Nebelwerfer3D : Base
 {
-	//$Category Models (Wolf3D)/Mission
+	//$Category Models (BoA)/Mission
 	//$Title Nebelwerfer
 	//$Color 3
 	Tag "Nebelwerfer"
@@ -819,7 +840,7 @@ ACTOR Nebelwerfer3D_Destroyed
 
 ACTOR Bunker3D_A : ModelBase
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Decorative Bunker Turret A
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -834,7 +855,7 @@ ACTOR Bunker3D_B : Bunker3D_A
 
 ACTOR Wire3D : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Obstacles
+	//$Category Models (BoA)/Obstacles
 	//$Title Wire
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -843,7 +864,7 @@ ACTOR Wire3D : 3dObstacle
 
 ACTOR FlakGun3D : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Flakgun
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -853,7 +874,7 @@ ACTOR FlakGun3D : 3dObstacle
 
 ACTOR TankPanzer3 : ModelBase
 {
-	//$Category Models (Wolf3D)/Vehicles
+	//$Category Models (BoA)/Vehicles
 	//$Title Tank (Panzer III)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -863,7 +884,7 @@ ACTOR TankPanzer3 : ModelBase
 
 ACTOR Cruiser : ModelBase
 {
-	//$Category Models (Wolf3D)/Ships
+	//$Category Models (BoA)/Ships
 	//$Title Battleship
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -873,7 +894,7 @@ ACTOR Cruiser : ModelBase
 
 ACTOR FlakVierling3D : SwitchableDecoration
 {
-	//$Category Models (Wolf3D)/Mission
+	//$Category Models (BoA)/Mission
 	//$Title Flak Vierling
 	//$Color 3
 	//$Arg0 "Type"
@@ -920,7 +941,7 @@ ACTOR FlakVierling3D : SwitchableDecoration
 
 ACTOR FlakVierling3D_War
 {
-	//$Category Battlefield (Wolf3D)
+	//$Category Battlefield (BoA)
 	//$Title Flak Vierling (destroyable)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -954,7 +975,7 @@ ACTOR FlakVierling3D_War
 
 ACTOR FlakVierling3D_Ship : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Ships
+	//$Category Models (BoA)/Ships
 	//$Title Flak Vierling (ship variant)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -965,7 +986,7 @@ ACTOR FlakVierling3D_Ship : 3dObstacle
 
 ACTOR Luftschiff : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Ships
+	//$Category Models (BoA)/Ships
 	//$Title Luftschiff LZ130
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -978,7 +999,7 @@ ACTOR Luftschiff : 3dObstacle
 
 ACTOR Luftschiff_End : SwitchableDecoration
 {
-	//$Category Models (Wolf3D)/Ships
+	//$Category Models (BoA)/Ships
 	//$Title Luftschiff LZ130 (Castle Wolfenstein)
 	//$Color 3
 	RenderRadius 4096
@@ -1009,7 +1030,7 @@ ACTOR Luftschiff_End : SwitchableDecoration
 //Return to Castle Wolfenstein models
 ACTOR RTCWGenerator : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Generator
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1019,7 +1040,7 @@ ACTOR RTCWGenerator : 3dObstacle
 
 ACTOR RTCWChalice : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Holy Graal
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1029,7 +1050,7 @@ ACTOR RTCWChalice : 3dObstacle
 
 ACTOR RTCWClock : 3dObstacle //fixed by mxd
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Clock
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1073,7 +1094,7 @@ ACTOR RTCWClockPendulum : 3dObstacle //mxd
 
 ACTOR RTCWCar : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Vehicles
+	//$Category Models (BoA)/Vehicles
 	//$Title Staff Car
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1091,7 +1112,7 @@ ACTOR RTCWCarGlass : 3dGlass { DistanceCheck "scenelod" }
 
 ACTOR FlagWave : ModelBase
 {
-	//$Category Models (Wolf3D)/Flags
+	//$Category Models (BoA)/Flags
 	//$Title Waving Flag (Swastika)
 	//$Color 3
 	//$Arg0 "Flap Sound"
@@ -1186,7 +1207,7 @@ ACTOR FlagShort_Hang : FlagWide_Flutter
 
 ACTOR Typewriter : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Typewriter
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1196,7 +1217,7 @@ ACTOR Typewriter : 3dObstacle
 
 ACTOR RadioModern
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Radio (modern, destroyable, not interactive)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1303,7 +1324,7 @@ ACTOR RTCWGramo : InteractionBase
 
 ACTOR RTCWPhone : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Phone
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1313,7 +1334,7 @@ ACTOR RTCWPhone : 3dObstacle
 
 ACTOR EnigmaMachine : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Enigma Machine
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1335,7 +1356,7 @@ ACTOR RTCWBench2 : RTCWBench
 
 ACTOR 3dBook1 : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Book (front)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1350,7 +1371,7 @@ ACTOR 3dBook2 : 3dBook1
 
 ACTOR RTCWShield : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Shield with Swords
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1364,7 +1385,7 @@ ACTOR RTCWShield : 3dObstacle
 
 ACTOR RTCWParachute1 : ModelBase
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Parachute (Ragged One)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1372,7 +1393,7 @@ ACTOR RTCWParachute1 : ModelBase
 
 ACTOR RTCWParachute2 : ModelBase
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Parachute (Open One)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1380,7 +1401,7 @@ ACTOR RTCWParachute2 : ModelBase
 
 ACTOR RTCW_V2_Complete : ModelBase
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title V2 (Complete)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1407,7 +1428,7 @@ ACTOR RTCW_V2_Rocket : RTCW_V2_Complete
 //MaxED stuff
 ACTOR ModelGMCTruck : SwitchableDecoration //ozy81
 {
-	//$Category Models (Wolf3D)/Vehicles
+	//$Category Models (BoA)/Vehicles
 	//$Title Truck (US, MoH)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1440,7 +1461,7 @@ ACTOR ModelGMCTruck : SwitchableDecoration //ozy81
 
 ACTOR ModelOpelTruck : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Vehicles
+	//$Category Models (BoA)/Vehicles
 	//$Title Opel Blitz Truck (Afrika Korps or Wehrmacht)
 	//$Color 3
 	//$Arg0 "Type"
@@ -1466,7 +1487,7 @@ ACTOR ModelOpelTruck : 3dObstacle
 
 ACTOR WallLight1 : ModelBase
 {
-	//$Category Light Sources (Wolf3D)/Static
+	//$Category Light Sources (BoA)/Static
 	//$Title Wall Light (off, static)
 	//$Color 11
 	DistanceCheck "scenelod"
@@ -1502,7 +1523,7 @@ ACTOR WallLight1NoCone : WallLight1
 
 ACTOR WallLight2 : ModelBase
 {
-	//$Category Light Sources (Wolf3D)/Static
+	//$Category Light Sources (BoA)/Static
 	//$Title Wall Lantern (off, static)
 	//$Color 11
 	DistanceCheck "scenelod"
@@ -1526,7 +1547,7 @@ ACTOR WallLight2Lit : WallLight2
 
 ACTOR SimpleLight1 : SwitchableDecoration
 {
-	//$Category Light Sources (Wolf3D)/ACS Switchable
+	//$Category Light Sources (BoA)/ACS Switchable
 	//$Title Simple Light (off, Set DORMANT & activate it via ACS)
 	//$Color 11
 	DistanceCheck "scenelod"
@@ -1607,7 +1628,7 @@ ACTOR WallLight2Switch : SimpleLight1
 
 ACTOR IntermapSkylight : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Intermap
+	//$Category Models (BoA)/Intermap
 	//$Title Headquarters Skylight
 	//$Color 3
 	Radius 64
@@ -1631,7 +1652,7 @@ ACTOR LighthouseBeam : IntermapSkylight
 
 ACTOR FuelDrum : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Obstacles
+	//$Category Models (BoA)/Obstacles
 	//$Title Fuel Drum
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1641,7 +1662,7 @@ ACTOR FuelDrum : 3dObstacle
 
 ACTOR GasDrum : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Obstacles
+	//$Category Models (BoA)/Obstacles
 	//$Title Gas Drum
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1651,7 +1672,7 @@ ACTOR GasDrum : 3dObstacle
 
 ACTOR FuelDrumAstro //Uses JK2 3dModel
 {
-	//$Category Models (Wolf3D)/Obstacles
+	//$Category Models (BoA)/Obstacles
 	//$Title Fuel Drum (Astrostein, pushable)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1709,7 +1730,7 @@ ACTOR MovableCrate2 : MovableCrate1
 //Easter eggs
 ACTOR Tie_Fighter : 3dObstacle //ozy81
 {
-	//$Category Models (Wolf3D)/Astrostein/Easteregg
+	//$Category Models (BoA)/Astrostein/Easteregg
 	//$Title Tie Fighter
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1727,7 +1748,7 @@ ACTOR RTCWChair1 : 3dFurniture
 
 ACTOR RTCWChair1D : RTCWChair1
 {
-	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Category Models (BoA)/Furniture/Wartorn
 	//$Title Ornated Wooden Chair (wartorn)
 }
 
@@ -1738,7 +1759,7 @@ ACTOR RTCWChair2 : RTCWChair1
 
 ACTOR RTCWChair2D : RTCWChair1
 {
-	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Category Models (BoA)/Furniture/Wartorn
 	//$Title Herr Direktor Chair (wartorn)
 }
 
@@ -1749,7 +1770,7 @@ ACTOR RTCWChair3 : RTCWChair1
 
 ACTOR RTCWChair3D : RTCWChair1
 {
-	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Category Models (BoA)/Furniture/Wartorn
 	//$Title Ornated Wooden Seat (wartorn)
 }
 
@@ -1760,7 +1781,7 @@ ACTOR RTCWCouch1 : RTCWChair1
 
 ACTOR RTCWCouch1D : RTCWChair1
 {
-	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Category Models (BoA)/Furniture/Wartorn
 	//$Title Ornated Wooden Chat Couch (wartorn)
 }
 
@@ -1771,7 +1792,7 @@ ACTOR RTCWTable1 : RTCWChair1
 
 ACTOR RTCWTable1D : RTCWChair1
 {
-	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Category Models (BoA)/Furniture/Wartorn
 	//$Title Ornated Wooden Chat Table (wartorn)
 }
 
@@ -1782,7 +1803,7 @@ ACTOR RTCWTable2 : RTCWChair1
 
 ACTOR RTCWTable2D : RTCWChair1
 {
-	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Category Models (BoA)/Furniture/Wartorn
 	//$Title Ornated Wooden Side Table (wartorn)
 }
 
@@ -1793,13 +1814,13 @@ ACTOR RTCWTable3 : RTCWChair1
 
 ACTOR RTCWTable3D : RTCWChair1
 {
-	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Category Models (BoA)/Furniture/Wartorn
 	//$Title Ornated Wooden Wall Table (wartorn)
 }
 
 ACTOR 3dEagle : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title SS Eagle
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1812,7 +1833,7 @@ ACTOR 3dEagle : 3dObstacle
 
 ACTOR Lion_Left : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Statues
+	//$Category Models (BoA)/Statues
 	//$Title Lion Statue (Left)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1878,7 +1899,7 @@ ACTOR TrestleTable : 3dFurniture
 //HERETIC II, HEXEN II and JEDI KNIGHT 3 MODELS - From Gore - Ozymandias81
 ACTOR Caesar : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Statues
+	//$Category Models (BoA)/Statues
 	//$Title Caesar's Statue
 	//$Color 3
 	//$Arg0 "Type"
@@ -1902,7 +1923,7 @@ ACTOR Caesar : 3dObstacle
 
 ACTOR King : Caesar
 {
-	//$Category Models (Wolf3D)/Statues
+	//$Category Models (BoA)/Statues
 	//$Title King's Statue
 	//$Color 3
 	Radius 48
@@ -1910,7 +1931,7 @@ ACTOR King : Caesar
 
 ACTOR MineCartF : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title "Mine Cart, Full"
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1938,7 +1959,7 @@ ACTOR MineCartW : MineCartF
 
 ACTOR 3dMinerals : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title "Minerals"
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1956,7 +1977,7 @@ ACTOR 3dMinerals : 3dObstacle
 //Sitters models
 ACTOR Cable1 : ModelBase
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Cable A
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1986,7 +2007,7 @@ ACTOR Cable5: Cable1
 
 ACTOR 3dTrolley : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Trolley
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -1997,7 +2018,7 @@ ACTOR 3dTrolley : 3dObstacle
 
 ACTOR 3dCannon : Caesar
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Cannon
 	//$Color 3
 	Radius 16
@@ -2012,7 +2033,7 @@ ACTOR 3dCannonballs: 3dCannon
 
 ACTOR 3dGuillotine : Caesar
 {
-	//$Category Models (Wolf3D)/Occult
+	//$Category Models (BoA)/Occult
 	//$Title Guillotine
 	//$Color 3
 	Radius 16
@@ -2047,7 +2068,7 @@ ACTOR 3dSplitter: 3dGuillotine
 
 ACTOR 3dSkeleton_Sit : Caesar
 {
-	//$Category Models (Wolf3D)/Occult
+	//$Category Models (BoA)/Occult
 	//$Title Skeleton (Sit)
 	//$Color 3
 	Radius 16
@@ -2058,7 +2079,7 @@ ACTOR 3dSkeleton_Sit : Caesar
 //S.T.A.L.K.E.R. models
 ACTOR 3dPrometheus_L : Caesar
 {
-	//$Category Models (Wolf3D)/Statues
+	//$Category Models (BoA)/Statues
 	//$Title Prometheus Statue (Left Side)
 	//$Color 3
 	Radius 32
@@ -2104,7 +2125,7 @@ ACTOR ParkBench2 : RTCWBench
 
 ACTOR ArtDeco_WLight1 : SwitchableDecoration
 {
-	//$Category Light Sources (Wolf3D)/ACS Switchable
+	//$Category Light Sources (BoA)/ACS Switchable
 	//$Title Art Deco Wall Light 1 (Set DORMANT & activate it via ACS)
 	//$Color 11
 	DistanceCheck "scenelod"
@@ -2141,7 +2162,7 @@ ACTOR Female_StatueB : Female_StatueA
 
 ACTOR MercedesLimo : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Vehicles
+	//$Category Models (BoA)/Vehicles
 	//$Title Mercedes Nazi Limo
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -2159,7 +2180,7 @@ ACTOR LimoGlass : 3dGlass { DistanceCheck "scenelod" }
 
 ACTOR Kubelwagen : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Vehicles
+	//$Category Models (BoA)/Vehicles
 	//$Title Kubelwagen
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -2177,7 +2198,7 @@ ACTOR KubelGlass : 3dGlass { DistanceCheck "scenelod" }
 
 ACTOR OldCar_Spawner : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Vehicles
+	//$Category Models (BoA)/Vehicles
 	//$Title Old Car Spawner
 	//$Color 3
 	//$Arg0 "Color"
@@ -2211,7 +2232,7 @@ ACTOR OldCar_Spawner : 3dObstacle
 
 ACTOR Tractor : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Vehicles
+	//$Category Models (BoA)/Vehicles
 	//$Title Tractor
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -2235,7 +2256,7 @@ ACTOR Bunk_Bed2 : Bunk_Bed1
 //Talon1024
 ACTOR Feldfernschreiber : ModelBase
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Feld Hell machine
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -2249,7 +2270,7 @@ ACTOR US_ShermanCannonProp : ModelBase { +CANPASS }
 
 ACTOR US_ShermanProp : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Vehicles
+	//$Category Models (BoA)/Vehicles
 	//$Title US M4 Sherman Tank (scenery)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -2267,7 +2288,7 @@ ACTOR US_ShermanProp : 3dObstacle
 
 ACTOR COD_ArtDecoLight1A : SwitchableDecoration
 {
-	//$Category Light Sources (Wolf3D)/ACS Switchable
+	//$Category Light Sources (BoA)/ACS Switchable
 	//$Title Art Deco Ceiling Light (OFF, Set DORMANT & activate it via ACS)
 	//$Color 11
 	DistanceCheck "scenelod"
@@ -2414,7 +2435,7 @@ ACTOR COD_DestroyedTrainSnow : ModelIncaTrain
 
 ACTOR COD_WBarrel1 : FuelDrumAstro
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Wooden Barrel (1st variant, movable)
 	//$Color 3
 	Radius 10
@@ -2429,7 +2450,7 @@ ACTOR COD_WBarrel1 : FuelDrumAstro
 
 ACTOR COD_Gascan : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Gascan
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -2439,7 +2460,7 @@ ACTOR COD_Gascan : 3dObstacle
 
 ACTOR COD_FemaleBust : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Statues
+	//$Category Models (BoA)/Statues
 	//$Title Female Bust (silver or bronze)
 	//$Color 3
 	//$Arg0 "Material"
@@ -2497,7 +2518,7 @@ ACTOR COD_EagleBust_Museum : COD_FemaleBust_Museum
 
 ACTOR COD_Tiger1 : ModelBase
 {
-	//$Category Models (Wolf3D)/Vehicles
+	//$Category Models (BoA)/Vehicles
 	//$Title Tank (Tiger I)
 	//$Color 3
 	Radius 4
@@ -2542,7 +2563,7 @@ ACTOR COD_RadioSimple : InteractionBase
 
 ACTOR COD_Radio_Tall : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Radio, Tall
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -2588,7 +2609,7 @@ ACTOR COD_Dresser1 : 3dFurniture
 
 ACTOR COD_Dresser1D : COD_Dresser1
 {
-	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Category Models (BoA)/Furniture/Wartorn
 	//$Title Ornated Dresser, burnt (USE SELF-REFERENCED SECTORS)
 	Height 8
 }
@@ -2602,7 +2623,7 @@ ACTOR COD_ArmChair : 3dFurniture
 
 ACTOR COD_ArmChairD : COD_ArmChair
 {
-	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Category Models (BoA)/Furniture/Wartorn
 	//$Title Ornated French Chair, burnt
 	Height 24
 }
@@ -2616,7 +2637,7 @@ ACTOR COD_WriTable1 : 3dFurniture
 
 ACTOR COD_WriTable1D : COD_WriTable1
 {
-	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Category Models (BoA)/Furniture/Wartorn
 	//$Title Ornated Writing Table, torn	
 }
 
@@ -2629,7 +2650,7 @@ ACTOR COD_Piano1 : 3dFurniture
 
 ACTOR COD_Piano1D : COD_Piano1
 {
-	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Category Models (BoA)/Furniture/Wartorn
 	//$Title Ornated Piano, burnt	
 }
 
@@ -2642,7 +2663,7 @@ ACTOR COD_SideTable1 : 3dFurniture
 
 ACTOR COD_SideTable1D : COD_SideTable1
 {
-	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Category Models (BoA)/Furniture/Wartorn
 	//$Title Ornated Side Table, torn
 }
 
@@ -2655,7 +2676,7 @@ ACTOR COD_LongTable1 : 3dFurniture
 
 ACTOR COD_LongTable1D : COD_LongTable1
 {
-	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Category Models (BoA)/Furniture/Wartorn
 	//$Title Ornated Long Table, torn (USE SELF-REFERENCED SECTORS)
 	Radius 16
 	Height 56
@@ -2670,7 +2691,7 @@ ACTOR COD_Rolltop1 : 3dFurniture
 
 ACTOR COD_Rolltop1D : COD_Rolltop1
 {
-	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Category Models (BoA)/Furniture/Wartorn
 	//$Title Ornated Rolltop Desk, torn (USE SELF-REFERENCED SECTORS)
 }
 
@@ -2683,7 +2704,7 @@ ACTOR COD_WallTable1 : 3dFurniture
 
 ACTOR COD_WallTable1D : COD_WallTable1
 {
-	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Category Models (BoA)/Furniture/Wartorn
 	//$Title Ornated Wall Table 1, torn (USE SELF-REFERENCED SECTORS)
 }
 
@@ -2694,7 +2715,7 @@ ACTOR COD_WallTable2 : COD_WallTable1
 
 ACTOR COD_WallTable2D : COD_WallTable1
 {
-	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Category Models (BoA)/Furniture/Wartorn
 	//$Title Ornated Wall Table 2, torn (USE SELF-REFERENCED SECTORS)
 }
 
@@ -2721,7 +2742,7 @@ ACTOR COD_Cabinet1 : 3dFurniture
 
 ACTOR COD_Cabinet1D : COD_Cabinet1
 {
-	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Category Models (BoA)/Furniture/Wartorn
 	//$Title Ornated Wooden Cabinet, burnt
 }
 
@@ -2732,7 +2753,7 @@ ACTOR COD_OrnateChair1 : RTCWChair1
 
 ACTOR COD_OrnateChair1D : COD_OrnateChair1
 {
-	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Category Models (BoA)/Furniture/Wartorn
 	//$Title Ornated Chair, ruined
 }
 
@@ -2745,13 +2766,13 @@ ACTOR COD_Shelve1 : 3dFurniture
 
 ACTOR COD_Shelve1D : COD_Shelve1
 {
-	//$Category Models (Wolf3D)/Furniture/Wartorn
+	//$Category Models (BoA)/Furniture/Wartorn
 	//$Title Wooden Shelves, burnt (USE SELF-REFERENCED SECTORS)
 }
 
 ACTOR COD_SSHorch : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Vehicles
+	//$Category Models (BoA)/Vehicles
 	//$Title Truck, Horch-1A (Nazi)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -2772,7 +2793,7 @@ ACTOR COD_SSHorch_Glass : 3dGlass { DistanceCheck "scenelod" }
 
 ACTOR COD_USJeep : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Vehicles
+	//$Category Models (BoA)/Vehicles
 	//$Title Jeep (US)
 	//$Color 3
 	//$Arg0 "Shape"
@@ -2803,7 +2824,7 @@ ACTOR COD_USJeep_Glass : 3dGlass { DistanceCheck "scenelod" }
 
 ACTOR COD_OpBlitzDestroyed : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Vehicles
+	//$Category Models (BoA)/Vehicles
 	//$Title Destroyed Opel Blitz (Set ARGs, 2 variants)
 	//$Color 3
 	//$Arg0 "Type"
@@ -2829,7 +2850,7 @@ ACTOR COD_OpBlitzD_Glass : 3dGlass { DistanceCheck "scenelod" }
 
 ACTOR CODBike : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Vehicles
+	//$Category Models (BoA)/Vehicles
 	//$Title Old Bike
 	//$Color 3
 	//$Arg0 "Shape"
@@ -2859,7 +2880,7 @@ ACTOR CODBike : 3dObstacle
 
 ACTOR CODOmahaBoat : FlakVierling3D
 {
-	//$Category Models (Wolf3D)/Ships
+	//$Category Models (BoA)/Ships
 	//$Title Landing Boat
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -2885,7 +2906,7 @@ ACTOR CODOmahaBoat : FlakVierling3D
 
 ACTOR CODPTBoat : COD_USJeep
 {
-	//$Category Models (Wolf3D)/Ships
+	//$Category Models (BoA)/Ships
 	//$Title Higgins PT Boat 109
 	States
 	{
@@ -2905,7 +2926,7 @@ ACTOR CODPTBoat : COD_USJeep
 
 ACTOR CODStuka : ModelBase
 {
-	//$Category Models (Wolf3D)/Planes
+	//$Category Models (BoA)/Planes
 	//$Title Stuka Airplane (Uses Args, Normal, Destroyed, Crashed or Boom)
 	//$Color 3
 	//$Arg0 "Type"
@@ -2959,14 +2980,14 @@ ACTOR CODStuka_Flight_Fog : CODStuka_Flight { DistanceCheck "scenelod" }
 
 ACTOR TMPlane : CODStuka
 {
-	//$Category Misc (Wolf3D)/Cutscenes
+	//$Category Misc (BoA)/Cutscenes
 	//$Title Titlemap Stuka
 	//$Color 0
 }
 
 ACTOR CODCondor : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Planes
+	//$Category Models (BoA)/Planes
 	//$Title German Condor Focke-Wulf FW200 Bomber
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -2977,7 +2998,7 @@ ACTOR CODCondor : 3dObstacle
 
 ACTOR CODSideCar : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Vehicles
+	//$Category Models (BoA)/Vehicles
 	//$Title SideCar
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -2992,7 +3013,7 @@ ACTOR CODSideCarD : CODSideCar
 
 ACTOR CODCivCarD_Spawner : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Vehicles
+	//$Category Models (BoA)/Vehicles
 	//$Title Civilian Car Spawner (Destroyed)
 	//$Color 3
 	//$Arg0 "Color"
@@ -3026,7 +3047,7 @@ ACTOR CODCivCarD_Spawner : 3dObstacle
 
 ACTOR CODScheinwerfer : SwitchableDecoration
 {
-	//$Category Models (Wolf3D)/Vehicles
+	//$Category Models (BoA)/Vehicles
 	//$Title Scheinwerfer (Set DORMANT & activate it via ACS)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -3061,7 +3082,7 @@ ACTOR CODScheinwerfer : SwitchableDecoration
 
 ACTOR CODNeoLights1 : SwitchableDecoration
 {
-	//$Category Light Sources (Wolf3D)/ACS Switchable
+	//$Category Light Sources (BoA)/ACS Switchable
 	//$Title Neoclassical Wall Light (Set DORMANT & activate it via ACS)
 	//$Color 11
 	DistanceCheck "scenelod"
@@ -3109,7 +3130,7 @@ ACTOR CODNeoLights2 : CODNeoLights1
 
 ACTOR CODSignal_Light : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Train Signal Light (off/red/yel/green)
 	//$Color 3
 	//$Arg0 "Light"
@@ -3152,7 +3173,7 @@ ACTOR CODSignal_Light : 3dObstacle
 
 ACTOR CODRailway_Switch : SwitchableDecoration
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Train Railway Switch (Set DORMANT & activate it via ACS)
 	//$Color 3
 	//$Arg0 "Gravity"
@@ -3191,7 +3212,7 @@ ACTOR CODRailway_Switch : SwitchableDecoration
 //Sketchfab Stuff
 ACTOR GardenUrn : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Garden Urn
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -3202,7 +3223,7 @@ ACTOR GardenUrn : 3dObstacle
 //Archibase.net Stuff
 ACTOR CanyonRockSpawner : 3dObstacle //ozymandias81
 {
-	//$Category Models (Wolf3D)/Rocks
+	//$Category Models (BoA)/Rocks
 	//$Title Canyon Rock Spawner
 	//$Color 3
 	//$Arg0 "Shape"
@@ -3274,7 +3295,7 @@ ACTOR SandRockSpawner : CanyonRockSpawner
 //NOLF1 Stuff
 ACTOR RooftopAntennae : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Rooftop Antennae
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -3285,7 +3306,7 @@ ACTOR RooftopAntennae : 3dObstacle
 //Mohofoz Stuff
 ACTOR 3dSpeakers_1 : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Tannoy Speakers (Single)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -3297,7 +3318,7 @@ ACTOR 3dSpeakers_1 : 3dObstacle
 //Hypnagogia Stuff
 ACTOR OldCash : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Antique Cash
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -3308,7 +3329,7 @@ ACTOR OldCash : 3dObstacle
 
 ACTOR NaziGlobe : Caesar
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Hitler's Globe
 	//$Color 3
 	Radius 24
@@ -3317,7 +3338,7 @@ ACTOR NaziGlobe : Caesar
 
 ACTOR 3dSpeakers_2 : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Tannoy Speakers (Double)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -3353,7 +3374,7 @@ ACTOR CreepyStatue1L_Museum : CreepyStatue1R_Museum
 //AFADoomer Stuff
 ACTOR AstroShuttle : ModelBase
 {
-	//$Category Models (Wolf3D)/Astrostein
+	//$Category Models (BoA)/Astrostein
 	//$Title Galileo's Shuttle
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -3364,7 +3385,7 @@ ACTOR AstroShuttle : ModelBase
 //Special Stuff
 ACTOR SecretUFO : SwitchableDecoration //3dRealms
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Secret UFO
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -3432,13 +3453,13 @@ ACTOR LionR_Museum : Caesar_Museum
 
 ACTOR GardenUrn_Museum : Caesar_Museum
 {
-	//$Category Models (Wolf3D)/Scenery/Special
+	//$Category Models (BoA)/No Hitbox
 	//$Title Garden Urn (without hitbox)
 }
 
 ACTOR SlopeMe1 : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Special
+	//$Category Misc (BoA)
 	//$Title Slopeable Glass (clear)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -3464,7 +3485,7 @@ ACTOR ZeppelinBridge : SlopeMe1
 // Enjay
 ACTOR Hitler_Bust : 3dObstacle
 {
-	//$Category Models (Wolf3D)/Statues
+	//$Category Models (BoA)/Statues
 	//$Title Hitler's Bronze Bust
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -3476,7 +3497,7 @@ ACTOR Hitler_Bust : 3dObstacle
 // Talon1024
 ACTOR Toolbox3D
 {
-	//$Category Models (Wolf3D)/Scenery
+	//$Category Models (BoA)/Scenery
 	//$Title Toolbox (3D)
 	//$Color 3
 	DistanceCheck "scenelod"
@@ -3501,7 +3522,7 @@ ACTOR Spanner3D : Toolbox3D
 
 ACTOR PlainsSun3D : ModelBase
 {
-	//$Category Models (Wolf3D)/Special
+	//$Category Skyboxes (BoA)
 	//$Title Sunny Morning SkyBox (PlainsSun, Special)
 	//$Color 3
 }
