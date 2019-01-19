@@ -1,8 +1,6 @@
 ACTOR AstroShotgun : NaziAstroWeapon
 {
-	//$Category Weapons (BoA)/Astrostein
 	//$Title (3) Astrostein Shotgun
-	//$Color 14
 	Weapon.SelectionOrder 400
 	Weapon.AmmoType "AstroShotgunLoaded"
 	Weapon.AmmoUse 1
@@ -125,7 +123,7 @@ ACTOR AstroShotgunLoaded : Ammo
 
 ACTOR AstroShotgunShell : Ammo
 {
-	//$Category Ammo (BoA)/Astrostein
+	//$Category Astrostein (BoA)/Ammo
 	//$Title Protonenflinte (ammo, +5)
 	//$Color 6
 	Scale 0.50
@@ -146,9 +144,7 @@ ACTOR AstroShotgunShell : Ammo
 
 ACTOR AstroRocketlauncher : NaziAstroWeapon
 {
-	//$Category Weapons (BoA)/Astrostein
 	//$Title (5) Astrostein RocketLauncher
-	//$Color 14
 	Weapon.SelectionOrder 1400
 	Weapon.AmmoType "AstroRocketLauncherLoaded"
 	Weapon.AmmoUse 1
@@ -301,7 +297,7 @@ ACTOR AstroRocketLauncherLoaded : Ammo
 
 ACTOR AstroRocketAmmo : Ammo
 {
-	//$Category Ammo (BoA)/Astrostein
+	//$Category Astrostein (BoA)/Ammo
 	//$Title Energiegewehr (ammo, +50)
 	//$Color 6
 	Tag "$TAGENUNT"
@@ -320,9 +316,7 @@ ACTOR AstroRocketAmmo : Ammo
 
 ACTOR AstroChaingun : NaziAstroWeapon
 {
-	//$Category Weapons (BoA)/Astrostein
 	//$Title (4) Astrostein Chaingun
-	//$Color 14
 	Weapon.SelectionOrder 700
 	Weapon.AmmoType "AstroChaingunLoaded"
 	Weapon.AmmoUse 1
@@ -427,7 +421,7 @@ ACTOR AstroChaingunLoaded : Ammo
 
 ACTOR AstroClipAmmo : Ammo
 {
-	//$Category Ammo (BoA)/Astrostein
+	//$Category Astrostein (BoA)/Ammo
 	//$Title Repetierlaser (ammo, +10)
 	//$Color 6
 	Scale 0.50
@@ -452,9 +446,7 @@ ACTOR AstroClipAmmo : Ammo
 
 ACTOR AstrosteinMelee : NaziAstroWeapon
 {
-	//$Category Weapons (BoA)/Astrostein
 	//$Title (1) Astrostein Melee
-	//$Color 14
 	Tag "$TAGSHOKR"
 	Scale 1.0
 	Weapon.Kickback 0
@@ -525,9 +517,7 @@ ACTOR AstroPistolLoaded : Ammo
 
 ACTOR AstroLuger : NaziAstroWeapon //quite the same code from Luger P08 - ozy81
 {
-	//$Category Weapons (BoA)/Astrostein
 	//$Title (2) Astrostein Luger
-	//$Color 14
 	Tag "Astro Luger"
 	Scale 1.0
 	Weapon.SelectionOrder 200
@@ -616,7 +606,7 @@ ACTOR AstroGrenadeToken : Inventory { Inventory.MaxAmount 9 }
 
 ACTOR AstroGrenadePickup : CustomInventory
 {
-	//$Category Weapons (BoA)/Astrostein
+	//$Category Astrostein (BoA)/Weapons
 	//$Title Grenade (Astrostein)
 	//$Color 14
 	Inventory.PickupMessage "$GRENADE"

@@ -154,6 +154,8 @@ class DebrisBase : Actor
 
 	Default
 	{
+		//$Category Props (BoA)/Debris
+		//$Color 3
 		Height 4;
 		Radius 2;
 		Mass 50;
@@ -271,10 +273,7 @@ class DebrisChunk : DebrisBase
 {
 	Default
 	{
-		//$Category Props (BoA)/Debris
 		//$Title Debris - Random Chunk
-		//$Color 3
-
 		DebrisBase.VariantCount 12;
 		DebrisBase.ShouldScale false;
 		DistanceCheck "scenelod";
@@ -293,10 +292,7 @@ class DebrisPipe : DebrisBase
 {
 	Default
 	{
-		//$Category Props (BoA)/Debris
 		//$Title Debris - Pipe
-		//$Color 3
-
 		Radius 140;
 		Mass 100;
 		DebrisBase.VariantCount 6;
@@ -315,10 +311,7 @@ class DebrisBeam : DebrisBase
 {
 	Default
 	{
-		//$Category Props (BoA)/Debris
 		//$Title Debris - Wooden Beam
-		//$Color 3
-
 		Radius 128;
 		Mass 150;
 		DebrisBase.VariantCount 5;
@@ -338,10 +331,7 @@ class DebrisGirder : DebrisBase
 {
 	Default
 	{
-		//$Category Props (BoA)/Debris
 		//$Title Debris - Girder
-		//$Color 3
-
 		Radius 116;
 		Mass 300;
 		DebrisBase.VariantCount 3;
@@ -360,10 +350,7 @@ class DebrisBrick : DebrisBase
 {
 	Default
 	{
-		//$Category Props (BoA)/Debris
 		//$Title Debris - Brick
-		//$Color 3
-
 		Radius 14;
 		DebrisBase.ShouldScale false;
 		DistanceCheck "scenelod";
@@ -394,10 +381,7 @@ class DebrisCorrugated : DebrisBase
 {
 	Default
 	{
-		//$Category Props (BoA)/Debris
 		//$Title Debris - Corrugated Metal
-		//$Color 3
-
 		Radius 70;
 		Mass 10;
 		DistanceCheck "scenelod";
@@ -410,14 +394,11 @@ class JunkPile1 : Debris
 {
 	Default
 	{
-		//$Category Props (BoA)/Street
+		//$Category Props (BoA)/Debris
 		//$Title Junk Pile (middle)
-		//$Color 3
-	
 		Radius 25;
 		Height 20;
 		+SOLID
-
 		DropItem "DebrisGirder", -2, 4;
 		DropItem "DebrisPipe", -2, 10;
 		DropItem "DebrisBeam", -10, 15;
@@ -432,12 +413,11 @@ class JunkPile2 : Debris
 {
 	Default
 	{
+		//$Category Props (BoA)/Debris
 		//$Title Junk Pile (large)
-		
 		Radius 28;
 		Height 28;
 		+SOLID
-
 		DropItem "DebrisGirder", -2, 4;
 		DropItem "DebrisPipe", -2, 10;
 		DropItem "DebrisBeam", -10, 15;
@@ -452,12 +432,11 @@ class JunkPile3 : Debris
 {
 	Default
 	{
+		//$Category Props (BoA)/Debris
 		//$Title Junk Pile (small, with sprites)
-		
 		Radius 24;
 		Height 8;
 		+SOLID
-
 		DropItem "DebrisGirder", -2, 4;
 		DropItem "DebrisPipe", -2, 10;
 		DropItem "DebrisBeam", -10, 15;
@@ -477,12 +456,11 @@ class JunkPile4 : Debris
 {
 	Default
 	{
+		//$Category Props (BoA)/Debris
 		//$Title Junk Pile (large, with corrugated sheets)
-		
 		Radius 32;
 		Height 32;
 		+SOLID
-
 		DropItem "DebrisGirder", -2, 4;
 		DropItem "DebrisPipe", -2, 10;
 		DropItem "DebrisBeam", -10, 15;
@@ -498,13 +476,12 @@ class JunkPileAstro : Debris
 {
 	Default
 	{
+		//$Category Astrostein (BoA)/Props
 		//$Title Junk Pile (Astrostein)
-		
 		Radius 28;
 		Height 28;
 		+SOLID
 		Debris.MoundStyle 2; // Trash heap
-
 		DropItem "DebrisGirder", -2, 4;
 		DropItem "DebrisPipe", -2, 10;
 		DropItem "DebrisBeam", -10, 15;
