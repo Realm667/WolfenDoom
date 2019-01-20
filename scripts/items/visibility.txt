@@ -30,7 +30,7 @@ class BoAVisibility : CustomInventory
 				viewheightmod = 0;
 			}
 
-			visibility = Clamp(int(CurSector.lightlevel * 0.35 + movespeed + noiselevel * 0.9 + extravisibility + viewheightmod - ((3 - skill) * 10)), 0, 100);
+			visibility = Clamp(int(lightlevel * 0.35 + movespeed + noiselevel * 0.9 + extravisibility + viewheightmod - ((3 - skill) * 10)), 0, 100);
 		} else { visibility = 0; }
 
 		noiselevel = Max(0, noiselevel - 6);
@@ -42,7 +42,7 @@ class BoAVisibility : CustomInventory
 		ThinkerIterator it = currentSession.levelInfo[0].CreateThinkerIterator("SneakableGuardEyesAlerted", Thinker.STAT_DEFAULT - 2);
 		SneakableGuardEyesAlerted mo;
 
-		int count;
+		int count = 0;
 		while (mo = SneakableGuardEyesAlerted(it.Next())) { count++; }
 
 		it = currentSession.levelInfo[0].CreateThinkerIterator("Nazi", Thinker.STAT_DEFAULT);
