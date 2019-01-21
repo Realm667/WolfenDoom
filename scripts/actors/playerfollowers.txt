@@ -188,10 +188,10 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			}
 			Goto Chase;
 		Luger: // Emulates the standard guard pistol - relatively standard
-			"####" FG 10 A_FaceTarget();
+			"####" FG 10 A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
 			Luger.Refire:
 				"####" H 8 LIGHT("NaziFire") A_FollowerFire("LugerTracer", "9MMCasing", "nazi/pistol", 54, 1);
-				"####" G 8 A_FaceTarget();
+				"####" G 8 A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
  				"####" G 0 A_RefireReload("Luger.Refire", "Luger.Reload");
 			Luger.Reload: // More emulation of the guard pistol - 8 shots, then reload
 				"####" G 0 { bNoPain = True; }
@@ -205,11 +205,11 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				}
 		MP40: // Emulates the MP40.  Firing pattern similar to the original Wolf3D SS, just because...
 			"####" FG 10 {
-				A_FaceTarget();
+				A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
 				shots = 0;
 			}
 			MP40.Refire:
-				"####" G 5 A_FaceTarget();
+				"####" G 5 A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
 				"####" H 5 LIGHT("NaziFire") A_FollowerFire("MP40Tracer", "9MMCasing", "nazi/mp40", 50, 4);
  				"####" G 0 A_RefireReload("MP40.Refire", "MP40.Reload", 128, 4, 32);
 			MP40.Reload:
@@ -224,12 +224,12 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				}
 		Rifle:
 			"####" FG 6 {
-				A_FaceTarget();
+				A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
 				shots = 0;
 			}
 			Rifle.Refire:
 				"####" H 5 LIGHT("NaziFire") A_FollowerFire("ThompsonTracer", "MauserRifleCasing", "nazi/stg44", 40, 4);
-				"####" G 5 A_FaceTarget();
+				"####" G 5 A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
  				"####" G 0 A_RefireReload("Rifle.Refire", "Rifle.Reload", 128, 10, 40);
 			Rifle.Reload:
 				"####" F 0 { bNoPain = True; }
@@ -243,14 +243,14 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				}
 		Shotgun:
 			"####" F 4 {
-				A_FaceTarget();
+				A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
 				shots = 0;
 			}
 			Shotgun.Refire:
 				"####" H 5 LIGHT("NaziFire") A_FollowerFire("ShotgunTracer", "ShotgunCasing", "shotgun/fire", 35, Random(5, 15), 2.0, 1.5, 10);
 				"####" G 5;
  				"####" F 15 {
-					A_FaceTarget();
+					A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
 					A_PlaySound("shotgun/pump", CHAN_WEAPON);
 				}
 				"####" F 0 {
@@ -279,7 +279,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 					return ResolveState("Shotgun.Reload");
 				}
 		Grenade:
-			"####" F 16 A_FaceTarget();
+			"####" F 16 A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
 			"####" F 10 A_ThrowGrenade();
 		Melee:
 			"####" FG 2;
@@ -599,7 +599,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				{
 					// Do a line trace, and if the trace will hit a shootable actor, then fire
 					FLineTraceData trace;
-					if (atPlayer || LineTrace(AngleTo(target), targetdist + 128, -PitchTo(target), 0, Height * 0.9, Radius * 1.4, 0.0, trace) && trace.HitType == TRACE_HitActor)
+					if (atPlayer || LineTrace(AngleTo(target), targetdist + 128, PitchTo(target), 0, Height * 0.9, Radius * 1.4, 0.0, trace) && trace.HitType == TRACE_HitActor)
 					{
 						return ResolveState(GetWeaponStateLabel()); // ...attack it
 					}
@@ -652,7 +652,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			angleoffset = FRandom(-angleoffset, angleoffset);
 			pitchoffset = FRandom(-pitchoffset, pitchoffset);
 
-			A_SpawnProjectile(weapontracer, speed, damage, angleoffset, CMF_BADPITCH | CMF_OFFSETPITCH, pitchoffset);
+			A_SpawnProjectile(weapontracer, speed, damage, angleoffset, CMF_OFFSETPITCH, pitchoffset);
 		}
 		A_SpawnItemEx(casing, 1, 0, 56, Random(1, 2), Random(-1, 1), Random(1, 2), Random(-55, -80), SXF_NOCHECKPOSITION);
 		shots++;
@@ -873,7 +873,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 			}
 			Goto Chase;
 		Luger:
-			"####" EF 10 A_FaceTarget();
+			"####" EF 10 A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
 			Luger.Refire:
 				"####" G 8 LIGHT("NaziFire") A_FollowerFire("LugerTracer", "9MMCasing", "nazi/pistol", 54, 1);
 				"####" F 8;
@@ -891,11 +891,11 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 				}
 		MP40:
 			"####" EF 10 {
-				A_FaceTarget();
+				A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
 				shots = 0;
 			}
 			MP40.Refire:
-				"####" F 5 A_FaceTarget();
+				"####" F 5 A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
 				"####" G 5 LIGHT("NaziFire") A_FollowerFire("MP40Tracer", "9MMCasing", "nazi/mp40", 50, 4);
  				"####" F 0 A_RefireReload("MP40.Refire", "MP40.Reload", 128, 4, 32);
 			MP40.Reload:
@@ -911,12 +911,12 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 				}
 		Rifle:
 			"####" EF 6 {
-				A_FaceTarget();
+				A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
 				shots = 0;
 			}
 			Rifle.Refire:
 				"####" G 5 LIGHT("NaziFire") A_FollowerFire("ThompsonTracer", "MauserRifleCasing", "nazi/stg44", 38, 4);
-				"####" F 5 A_FaceTarget();
+				"####" F 5 A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
  				"####" F 0 A_RefireReload("MP40.Refire", "MP40.Reload", 128, 10, 40);
 			Rifle.Reload:
 				"####" E 0 { bNoPain = True; }
@@ -930,14 +930,14 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 				}
 		Shotgun:
 			"####" E 4 {
-				A_FaceTarget();
+				A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
 				shots = 0;
 			}
 			Shotgun.Refire:
 				"####" G 5 LIGHT("NaziFire") A_FollowerFire("ShotgunTracer", "ShotgunCasing", "shotgun/fire", 35, Random(5, 15), 2.0, 1.5, 10);
 				"####" F 5;
  				"####" E 15 {
-					A_FaceTarget();
+					A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
 					A_PlaySound("shotgun/pump", CHAN_WEAPON);
 				}
 				"####" E 0 {
@@ -966,7 +966,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 					return ResolveState("Shotgun.Reload");
 				}
 		Grenade:
-			"####" E 16 A_FaceTarget();
+			"####" E 16 A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
 			"####" E 10 A_ThrowGrenade();
 		Melee:
 			"####" EF 2;
@@ -1125,11 +1125,11 @@ class AgentArmedMP40 : AgentArmed
 	{
 		MP40: // Matches PrisonerEnemyBoss firing pattern (just slower firing for balance reasons).
 			"####" FG 5 {
-				A_FaceTarget();
+				A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
 				shots = 0;
 			}
 			MP40.Refire:
-				"####" G 4 A_FaceTarget();
+				"####" G 4 A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
 				"####" H 4 LIGHT("NaziFire") A_FollowerFire("MP40Tracer", "9MMCasing", "nazi/mp40", 50, 4);
  				"####" G 0 A_RefireReload("MP40.Refire", "MP40.Reload", 192, 4, 40);
 			MP40.Reload:
@@ -1375,7 +1375,7 @@ class DogFollower : PlayerFollower2
 			"####" M 4 A_Pain();
 			Goto Chase;
 		Melee:
-			"####" EF 2 Fast A_FaceTarget();
+			"####" EF 2 Fast A_FaceTarget(0,0);
 			"####" G 8 Fast A_CustomMeleeAttack(Random[Bite](1, 8) * 3, "dog/attack", "dog/attack");
 			"####" G 0 A_AlertMonsters(0, AMF_TARGETEMITTER);
 			"####" FE 2 Fast;
