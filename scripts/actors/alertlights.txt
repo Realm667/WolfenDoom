@@ -464,7 +464,7 @@ class StrobeEmitter : Actor
 
 	override void PostBeginPlay()
 	{
-		while (!light1) { light1 = Spawn("SpotLight", pos - (0, 0, height / 2)); }
+		while (!light1) { light1 = Spawn("SpotLightBoA", pos - (0, 0, height / 2)); }
 
 		light1.master = self;
 		light1.pitch = 35;
@@ -475,7 +475,7 @@ class StrobeEmitter : Actor
 		light1.args[DynamicLight.LIGHT_GREEN] = lightcolor.g;
 		light1.args[DynamicLight.LIGHT_BLUE] = lightcolor.b;
 
-		while (!light2) { light2 = Spawn("SpotLight", pos - (0, 0, height / 2)); }
+		while (!light2) { light2 = Spawn("SpotLightBoA", pos - (0, 0, height / 2)); }
 		light2.master = self;
 		light2.angle += 180;
 		light2.pitch = 35;
@@ -497,6 +497,16 @@ class StrobeEmitter : Actor
 
 		light1.angle += Speed;
 		light2.angle += Speed;
+	}
+}
+
+class SpotLightBoA : SpotLight
+{
+	override void Tick()
+	{
+		if (!master) { Destroy(); }
+
+		Super.Tick();
 	}
 }
 
