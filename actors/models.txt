@@ -86,12 +86,6 @@ ACTOR 3dFurniture : 3dObstacle
 	DistanceCheck "scenelod"
 }
 
-ACTOR 3dGlass : ModelBase
-{
-	RenderStyle "Shaded"
-	StencilColor "CC CC CC"
-}
-
 //some smart bridges
 ACTOR 3dBridge256 : InvisibleBridge
 {Radius 256 Height 256}
@@ -1485,147 +1479,6 @@ ACTOR ModelOpelTruck : 3dObstacle
 	}
 }
 
-ACTOR WallLight1 : ModelBase
-{
-	//$Category Light Sources (BoA)/Static
-	//$Title Wall Light (off, static)
-	//$Color 11
-	DistanceCheck "scenelod"
-	Radius 4
-	Height 16
-	-SOLID
-	+NOBLOCKMAP
-	+NOGRAVITY
-}
-
-ACTOR WallLight1Lit : WallLight1
-{
-	//$Title Wall Light (on, static)
-	States
-	{
-	Spawn:
-		MDLA A 0 NoDelay A_SpawnItemEx("VolumetricLight_ConeDown", ScaleX*16, 0, 24, 0, 0, 0, 0, SXF_ISTRACER)
-		MDLA A -1 LIGHT(OZYWALLT)
-		Stop
-	}
-}
-
-ACTOR WallLight1NoCone : WallLight1
-{
-	//$Title Wall Light (on & no cone light, static)
-	States
-	{
-	Spawn:
-		MDLA A -1 LIGHT(OZYWALT3)
-		Stop
-	}
-}
-
-ACTOR WallLight2 : ModelBase
-{
-	//$Category Light Sources (BoA)/Static
-	//$Title Wall Lantern (off, static)
-	//$Color 11
-	DistanceCheck "scenelod"
-	Radius 4
-	Height 24
-	-SOLID
-	+NOBLOCKMAP
-	+NOGRAVITY
-}
-
-ACTOR WallLight2Lit : WallLight2
-{
-	//$Title Wall Lantern (on, static)
-	States
-	{
-	Spawn:
-		MDLA A -1 LIGHT(OZYWALLT)
-		Stop
-	}
-}
-
-ACTOR SimpleLight1 : SwitchableDecoration
-{
-	//$Category Light Sources (BoA)/ACS Switchable
-	//$Title Simple Light (off, Set DORMANT & activate it via ACS)
-	//$Color 11
-	DistanceCheck "scenelod"
-	Radius 8
-	Height 12
-	Health -1
-	-FLOORCLIP
-	-NOBLOCKMAP
-	+DONTSPLASH
-	+DONTTHRUST
-	+NOBLOOD
-	+NOBLOODDECALS
-	+NODAMAGE
-	+NOGRAVITY
-	+NOTAUTOAIMED
-	+SHOOTABLE
-	States
-	{
-	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", FALSE)
-	Spawn:
-	  MDLA A 0 NoDelay
-	Activate:
-		MDLA A -1
-		Loop
-	Inactive:
-		MDLA A 0 A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*24, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
-	InactiveLights:
-		MDLA A 0 A_ChangeFlag("DORMANT", TRUE)
-		MDLA A 0 A_RemoveChildren(TRUE, RMVF_MISC)
-		MDLA B -1 LIGHT(OZYSIMLT)
-		Stop
-	}
-}
-
-ACTOR SimpleLight1Lit : SimpleLight1
-{
-	//$Title Simple Light (on, Set DORMANT & activate it via ACS)
-	States
-	{
-	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", FALSE)
-	Spawn:
-	  MDLA A 0 NoDelay
-	ActiveLights:
-		MDLA A 0 A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*24, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
-	Activate:
-		MDLA A 1 LIGHT(OZYSIMLT)
-		Loop
-	Inactive:
-		MDLA A 0 A_ChangeFlag("DORMANT", TRUE)
-		MDLA A 0 A_RemoveChildren(TRUE, RMVF_MISC)
-		MDLA B -1
-		Stop
-	}
-}
-
-ACTOR WallLight2Switch : SimpleLight1
-{
-	//$Title Wall Lantern (on, switchable)
-	Radius 4
-	Height 24
-	States
-	{
-	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", FALSE)
-	Spawn:
-	  MDLA A 0 NoDelay
-	Activate:
-		MDLA A 1 LIGHT(OZYSIMLT)
-		Loop
-	Inactive:
-		MDLA A 0 A_ChangeFlag("DORMANT", TRUE)
-		MDLA B -1
-		Stop
-	}
-}
-
 ACTOR IntermapSkylight : 3dObstacle
 {
 	//$Category Models (BoA)/Intermap
@@ -1829,6 +1682,11 @@ ACTOR 3dEagle : 3dObstacle
 	-SOLID
 	-CANPASS
 	+NOBLOCKMAP
+}
+
+ACTOR 3dEagle2 : 3dEagle
+{
+	//$Title Berlin SS Eagle
 }
 
 ACTOR Lion_Left : 3dObstacle
@@ -2123,31 +1981,6 @@ ACTOR ParkBench2 : RTCWBench
 	//$Title Park / City Street Bench B
 }
 
-ACTOR ArtDeco_WLight1 : SwitchableDecoration
-{
-	//$Category Light Sources (BoA)/ACS Switchable
-	//$Title Art Deco Wall Light 1 (Set DORMANT & activate it via ACS)
-	//$Color 11
-	DistanceCheck "scenelod"
-	Radius 1
-	Height 1
-	-FLOORCLIP
-	+NOBLOCKMAP
-	+DONTTHRUST
-	+NOGRAVITY
-	States
-	{
-	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", FALSE) //update manually on GZDB
-	Spawn:
-		MDLA A -1 LIGHT(OZYWALT2)
-		Stop
-	Inactive:
-		MDLA B -1 A_ChangeFlag("DORMANT", TRUE) //update manually on GZDB
-		Stop
-	}
-}
-
 ACTOR Female_StatueA : Caesar
 {
 	//$Title Female Statue (right side)
@@ -2285,136 +2118,6 @@ ACTOR US_ShermanProp : 3dObstacle
 		Stop
 	}
 }
-
-ACTOR COD_ArtDecoLight1A : SwitchableDecoration
-{
-	//$Category Light Sources (BoA)/ACS Switchable
-	//$Title Art Deco Ceiling Light (OFF, Set DORMANT & activate it via ACS)
-	//$Color 11
-	DistanceCheck "scenelod"
-	Radius 8
-	Height 0
-	+NOBLOCKMAP
-	+NOGRAVITY
-	States
-	{
-	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", FALSE)
-	Spawn:
-		MDLA A 0 NoDelay
-	Activate:
-		MDLA A -1
-		Loop
-	Inactive:
-		MDLA A 0 A_ChangeFlag("DORMANT", TRUE)
-		MDLA B -1 LIGHT(OZYSIMLT)
-		Stop
-	}
-}
-
-ACTOR COD_ArtDecoLight1B : COD_ArtDecoLight1A
-{
-	//$Title Art Deco Ceiling Light (ON, Set DORMANT & activate it via ACS)
-	States
-	{
-	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", FALSE)
-	Spawn:
-		MDLA A 0 NoDelay
-	Activate:
-		MDLA A -1 LIGHT(OZYSIMLT)
-		Loop
-	Inactive:
-		MDLA A 0 A_ChangeFlag("DORMANT", TRUE)
-		MDLA B -1
-		Stop
-	}
-}
-
-ACTOR COD_StationLight1A : COD_ArtDecoLight1A
-{
-	//$Title Train Station Ceiling Light (OFF, Set DORMANT & activate it via ACS)
-	States
-	{
-	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", FALSE)
-	Spawn:
-		MDLA A 0 NoDelay
-	Activate:
-		MDLA A -1
-		Loop
-	Inactive:
-		MDLA A 0 A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*1, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
-	InactiveLights:
-		MDLA A 0 A_ChangeFlag("DORMANT", TRUE)
-		MDLA A 0 A_RemoveChildren(TRUE, RMVF_MISC)
-		MDLA B -1 LIGHT(OZYSIMLT)
-		Stop
-	}
-}
-
-ACTOR COD_StationLight1B : COD_ArtDecoLight1A
-{
-	//$Title Train Station Ceiling Light (ON, Set DORMANT & activate it via ACS)
-	States
-	{
-	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", FALSE)
-	Spawn:
-		MDLA A 0 NoDelay
-	ActiveLights:
-		MDLA A 0 A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*1, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
-	Activate:
-		MDLA A 1 LIGHT(OZYSIMLT)
-		Loop
-	Inactive:
-		MDLA A 0 A_ChangeFlag("DORMANT", TRUE)
-		MDLA A 0 A_RemoveChildren(TRUE, RMVF_MISC)
-		MDLA B -1
-		Stop
-	}
-}
-
-ACTOR COD_RustyChandelier1A : COD_ArtDecoLight1A
-{
-	//$Title Rusty Chandelier (OFF, Set DORMANT & activate it via ACS)
-	States
-	{
-	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", FALSE)
-	Spawn:
-		MDLA A 0 NoDelay
-	Activate:
-		MDLA A -1
-		Loop
-	Inactive:
-		MDLA A 0 A_ChangeFlag("DORMANT", TRUE)
-		MDLA B -1 LIGHT(3DCHAN2)
-		Stop
-	}
-}
-
-ACTOR COD_RustyChandelier1B : COD_ArtDecoLight1A
-{
-	//$Title Rusty Chandelier (ON, Set DORMANT & activate it via ACS)
-	States
-	{
-	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", FALSE)
-	Spawn:
-		MDLA A 0 NoDelay
-	Activate:
-		MDLA A -1 LIGHT(3DCHAN2)
-		Loop
-	Inactive:
-		MDLA A 0 A_ChangeFlag("DORMANT", TRUE)
-		MDLA B -1
-		Stop
-	}
-}
-
-ACTOR COD_LampGlassOn : 3dGlass { DistanceCheck "scenelod" }
-ACTOR COD_LampGlassOff : 3dGlass { DistanceCheck "scenelod" }
 
 ACTOR COD_Refrigerator : 3dFurniture
 {
@@ -3073,54 +2776,6 @@ ACTOR CODScheinwerfer : SwitchableDecoration
 		MDLA A 0 A_ChangeFlag("DORMANT", FALSE) //update manually on GZDB
 	Spawn:
 		MDLA A -1 LIGHT(SPOTLITE) A_SpawnItemEx("Flare3d", ScaleX*28, 0, ScaleY*92, 0, 0, 0, 0, MODELS_FLAGS2)
-		Stop
-	Inactive:
-		MDLA B -1 A_ChangeFlag("DORMANT", TRUE) //update manually on GZDB
-		Stop
-	}
-}
-
-ACTOR CODNeoLights1 : SwitchableDecoration
-{
-	//$Category Light Sources (BoA)/ACS Switchable
-	//$Title Neoclassical Wall Light (Set DORMANT & activate it via ACS)
-	//$Color 11
-	DistanceCheck "scenelod"
-	Radius 8
-	Height 24
-	Health -1
-	-FLOORCLIP
-	-NOBLOCKMAP
-	+DONTSPLASH
-	+DONTTHRUST
-	+NOBLOOD
-	+NOBLOODDECALS
-	+NODAMAGE
-	+NOGRAVITY
-	+NOTAUTOAIMED
-	+SHOOTABLE
-	States
-	{
-	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", FALSE) //update manually on GZDB
-	Spawn:
-		MDLA A -1 LIGHT(OZYWALLT)
-		Stop
-	Inactive:
-		MDLA B -1 A_ChangeFlag("DORMANT", TRUE) //update manually on GZDB
-		Stop
-	}
-}
-
-ACTOR CODNeoLights2 : CODNeoLights1
-{
-	//$Title Neoclassical Wartorn Wall Light (Set DORMANT & activate it via ACS)
-	States
-	{
-	Active:
-		MDLA A 0 A_ChangeFlag("DORMANT", FALSE) //update manually on GZDB
-	Spawn:
-		MDLA A -1 LIGHT(OZYWALT4)
 		Stop
 	Inactive:
 		MDLA B -1 A_ChangeFlag("DORMANT", TRUE) //update manually on GZDB

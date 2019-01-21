@@ -1,9 +1,14 @@
-This is here as a reminder of the issues we notice from time to time.
-Remove the problem from this list once it got fixed - OZY81
+This is here as a reminder of the issues / to-do we notice from time to time.
+Remove the problem / to-do from this list once it is done - OZY81
 
 **WHILE TYPING THIS LIST, I WAS UNDER GZDoom g3.7pre-12-g2ba614883**
 
+- Check all graphics / sprites / textures which may use some pngcrush
+- Find a way to stitch together INTROMA2-3 maps and where to use them (TITLEMAP? C1M5?)
 - Get rid of all .md2 models and replace them with .md3 (animated banners)
 - Optimize INTERMAP, C2M1 and C3M1 intros: while 80% of the slowdown comes with actors shown and portals (c3m1 could use a separate map for that IMHO, so also we won't be able to run over prisoners heads - they'll start to walk near the red door for example), is it possible to improve moving cameras code somehow? Not sure
+- Remove redundant / unused resources (Denkmal actor is still unused for example)
+- Test all brightmaps, some actors seems to use too many spawned lights which can be removed (specially during attacks)
 - Turn the whole project .ipk3 compatible
+- VM abort can happen when you kill yourself or type endgame from console, mostly shaders are the culprit here
 - Verify every situation on maps where models disappear and use RenderRadius if needed
