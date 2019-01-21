@@ -284,11 +284,10 @@ class Base : Actor
 		{
 			if (Distance3D(lastheard) <= scarerange)
 			{
-				bFrightened = True;
+				frighttimeout = 35 + Random(0, 7) * 5; 
 			}
 			else
 			{
-				bFrightened = False;
 				lastheard = null;
 			}
 		}
@@ -657,7 +656,7 @@ class Base : Actor
 					}
 				}
 
-				bFrightened = Default.bFrightened || frighttimeout > 0; // If frighttimeout was set, or we've been set to frightened by default, be afraid...
+				bFrightened = !bBoss && (Default.bFrightened || frighttimeout > 0); // If frighttimeout was set, or we've been set to frightened by default, be afraid...
 
 				if (loiterdistance > 0 && patrolgoal && !bAmbush)
 				{
@@ -689,7 +688,7 @@ class Base : Actor
 				{
 					if (Distance2D(target) < 512) // Stay outside of 512 units and run away
 					{
-						bFrightened = true;
+						frighttimeout = 70;
 						dodgetimeout = 350; // No rolling while scared and running away
 						Speed = Default.Speed + Random(1, 2); // Walk/run a little faster to get away
 					}
@@ -1855,13 +1854,7 @@ class Nazi : Base
 			}
 		}
 
-		Actor oldmaster = master;
-		master = goal;
-		A_RaiseMaster(RF_NOCHECKPOSITION); // Why is there no direct P_Thing_Raise call?
-		master = oldmaster;
-
-		goal.bCountKill = false;
-		level.total_monsters--;
+		if (goal) { RaiseActor(goal, RF_NOCHECKPOSITION | RF_TRANSFERFRIENDLINESS); }
 
 		if (Nazi(goal))
 		{
@@ -1876,7 +1869,12 @@ class Nazi : Base
 			goal.bInvulnerable = false;
 			goal.species = species;
 			goal.master = self;
-			goal.CopyFriendliness(self, true);
+			goal.target = null;
+			goal.CopyFriendliness(self, false);
+
+			// And make the actor not count toward kills anymore
+			goal.bCountKill = false;
+			level.total_monsters--;
 		}
 
 		body = null;
@@ -1969,13 +1967,14 @@ class Nazi : Base
 			else if (healflags)
 			{
 				// If it doesn't have a goal (and isn't running away), look for dead bodies
-				if ((!goal && !bFrightened) || (goal && Distance3d(goal) > 1024))
+				if (!bFrightened && (!goal || (goal && Distance3d(goal) > 1024)))
 				{
-					if (currentSession.time && currentSession.time % Random(35, 70) == 0) { A_LookForBodies(); }
+					if (currentSession.time && currentSession.time % interval == 0) { A_LookForBodies(); }
 					if (Nazi(body) && !body.bShootable && !Nazi(body).healing) { bChaseGoal = true; goal = body; } // Keep trying to get to the body if it's still dead and isn't being healed
 					else { body = null; }
 				}
-				else if (!bFrightened)
+
+				if (!bFrightened)
 				{
 					// If it's not frightened and close to a dead body that it isn't already healing, start healing it
 					if (goal && Distance3d(goal) <= goal.radius + radius + 8 && !InStateSequence(CurState, HealState)) {

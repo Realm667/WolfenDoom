@@ -25,7 +25,6 @@
 class NaziMedic : NaziStandard
 {
 	bool crouched;
-	int frightenedloopcount;
 
 	Default
 	{
@@ -64,9 +63,6 @@ class NaziMedic : NaziStandard
 				bChaseGoal = True;
 				bSolid = True;
 
-				if (frightenedloopcount > 0) { frightenedloopcount--; }
-				else { bFrightened = False; }
-
 				A_CheckForPlayer();
 			}
 			"####" AAAAAA 1 A_Chase(null, null);
@@ -86,7 +82,7 @@ class NaziMedic : NaziStandard
 		Heal.Loop:
 			"####" E 15;
 			"####" F 5;
-			"####" EEEEE 3 { goal.A_SpawnItemEx("HealingParticle", random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0);} // Spawn healing particles as the actor is ressurected
+			"####" EEEEE 3 { if (goal) { goal.A_SpawnItemEx("HealingParticle", random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0); } } // Spawn healing particles as the actor is ressurected
 			"####" E 0 {
 				if (healloopcount > 0) {
 					healloopcount--;
@@ -119,23 +115,24 @@ class NaziMedic : NaziStandard
 
 	state A_CheckForPlayer(bool jump = False)
 	{
-		target = FindClosestPlayer(dist:1024);
+		Actor p = FindClosestPlayer(dist:int(192 + radius));
 
 		// Run away from any player that's close by
-		if (target && target is "PlayerPawn" && (Distance3d(target) <= radius + 192 + target.radius || !goal)) {
-			if (Random() < 16 || jump) { A_PlaySound("Nazi1/Sighted", CHAN_ITEM); }
+		if (p)
+		{
+			if (Random(0, 255) < 16 || jump) { A_PlaySound("Nazi1/Sighted", CHAN_ITEM); }
 			Speed = Default.Speed * 2;
-			bFrightened = True;
-			frightenedloopcount = 2;
 
-			if (jump)
+			if (Distance3D(p) < 128 + radius)
 			{
-				if (!InStateSequence(CurState, SeeState)) { return ResolveState("See"); }
+				target = p;
+				body = null;
+				goal = null;
+				frighttimeout = 35 + Random(0, 14) * 5;
 			}
-		} else {
-			bFrightened = false;
-			target = goal;
-		}
+
+			if (jump && !InStateSequence(CurState, SeeState)) { return ResolveState("See"); }
+		} else if (goal) { target = goal; }
 
 		return ResolveState(null);
 	}
