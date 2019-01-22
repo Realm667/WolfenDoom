@@ -230,7 +230,7 @@ class SpotlightMount : Actor
 
 	override void Tick()
 	{
-		if (isFrozen()) { return; }
+		if (globalfreeze || level.Frozen) { return; }
 
 		if (health && bShootable)
 		{
@@ -299,7 +299,7 @@ class SpotlightBeam : Actor
 
 	override void Tick()
 	{
-		if (isFrozen()) { return; }
+		if (globalfreeze || level.Frozen) { return; }
 
 		if (!light)
 		{
@@ -438,6 +438,7 @@ class StrobeEmitter : Actor
 {
 	Actor light1, light2;
 	Color lightcolor;
+	double lightradius;
 	int range;
 
 	Property LightColor:lightcolor;
@@ -493,7 +494,7 @@ class StrobeEmitter : Actor
 	{
 		Super.Tick();
 
-		if (isFrozen() || CheckSightOrRange(range * 1.5)) { return; }
+		if (globalfreeze || level.Frozen || CheckSightOrRange(range * 1.5)) { return; }
 
 		light1.angle += Speed;
 		light2.angle += Speed;

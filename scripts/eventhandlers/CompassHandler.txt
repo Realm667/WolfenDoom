@@ -137,7 +137,7 @@ class CompassHandler : EventHandler
 				if (mo.bDormant || mo.health <= 0) { if (am_cheat % 4 < 1) { continue; } }
 
 				TextureID icon = TexMan.CheckForTexture(CompassItems[i].icon, TexMan.Type_Any);
-				Vector2 relativeLocation = currentSession.levelInfo[0].Vec2Diff(e.ViewPos.xy, mo.pos.xy);
+				Vector2 relativeLocation = level.Vec2Diff(e.ViewPos.xy, mo.pos.xy);
 
 				// Account for chasecam
 				if (p.cheats & CF_CHASECAM != 0)
@@ -205,9 +205,9 @@ class CompassHandler : EventHandler
 
 			double flashduration = 35;
 
-			if (drawflash > currentSession.time - flashduration - 35)
+			if (drawflash > level.time - flashduration - 35)
 			{
-				double phase = (currentSession.time - drawflash) / flashduration;
+				double phase = (level.time - drawflash) / flashduration;
 				double flashalpha;
 
 				if (phase < 0.25) { flashalpha = phase / 0.25; } // Fade in

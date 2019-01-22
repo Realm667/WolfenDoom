@@ -14,7 +14,7 @@ Class BoACoordUtil
 		double ar = Screen.getWidth()/double(Screen.getHeight());
 		double fovr = (ar>=1.3)?1.333333:ar;
 		double fov = 2*atan(tan(clamp(vfov,5,170)*0.5)/fovr);
-		float pr = currentSession.levelInfo[0].pixelstretch;
+		float pr = level.pixelstretch;
 		double angx = cos(pitch);
 		double angy = sin(pitch)*pr;
 		double alen = sqrt(angx*angx+angy*angy);

@@ -93,7 +93,7 @@ class Alarm : Base
 				activated = true;
 				A_PlaySound("alarm_ring", CHAN_VOICE, 1.0, true);
 			}
-			if (currentSession.time % 35 == 0) { SoundAlert(target, false, 512); } // Only do the sound alert once a second for performance reasons
+			if (level.time % 35 == 0) { SoundAlert(target, false, 512); } // Only do the sound alert once a second for performance reasons
 		}
 		else if (!active && activated)
 		{
@@ -153,7 +153,7 @@ class AlarmPanel : SwitchableDecoration
 				}
 
 				if (GetCVar("g_debugalarms") > 0 && activator && !marker) {
-					marker = currentSession.levelInfo[0].Spawn("FireBrandEffect", activator.pos);
+					marker = activator.Spawn("FireBrandEffect", activator.pos);
 					marker.master = activator;
 				}
 
@@ -201,7 +201,7 @@ class AlarmPanel : SwitchableDecoration
 	{
 		NaziStandard closest;
 
-		ThinkerIterator it = currentSession.levelInfo[0].CreateThinkerIterator("NaziStandard");
+		ThinkerIterator it = ThinkerIterator.Create("NaziStandard");
 		NaziStandard mo;
 		double dist;
 
@@ -238,7 +238,7 @@ class AlarmPanel : SwitchableDecoration
 		A_PlaySound("switches/normbutn", CHAN_AUTO);
 		if (tid)
 		{ // If there's a TID, affect all actors with that TID
-			let it = currentSession.levelInfo[0].CreateActorIterator(tid, "Actor");
+			let it = ActorIterator.Create(tid, "Actor");
 			Actor mo;
 
 			while (mo = Actor(it.Next()))
@@ -344,7 +344,7 @@ class AlarmSpawner : ActorSpawner
 				guard.ChangeTID(user_tid);
 				if (user_goal > 0)
 				{
-					let it = currentSession.levelInfo[0].CreateActorIterator(user_goal, "PatrolPoint");
+					let it = ActorIterator.Create(user_goal, "PatrolPoint");
 					Actor goal;
 					if (it) { goal = it.Next(); }
 					if (goal) { guard.goal = goal; }

@@ -126,7 +126,7 @@ class GateKeeper : Actor
 
 	override void Tick()
 	{
-		if (isFrozen()) { return; }
+		if (globalfreeze || level.Frozen) { return; }
 
 		Super.Tick();
 
@@ -189,7 +189,7 @@ class GateKeeper : Actor
 
 			if (tid)
 			{ // If there's a TID, affect all Gatekeepers with that TID
-				let it = currentSession.levelInfo[0].CreateActorIterator(tid, "Gatekeeper");
+				let it = ActorIterator.Create(tid, "Gatekeeper");
 				Actor mo;
 
 				while (mo = Actor(it.Next()))
@@ -257,7 +257,7 @@ Class CreepyEffect : Actor
 	{
 		Super.Tick();
 
-		if (isFrozen()) { return; }
+		if (globalfreeze || level.Frozen) { return; }
 	
 		if (master)
 		{
@@ -293,7 +293,7 @@ class GateLight : DynamicLight
 
 	override void Tick()
 	{
-		if (isFrozen() || CheckSightOrRange(512)) { return; }
+		if (globalfreeze || level.Frozen || CheckSightOrRange(512)) { return; }
 
 		scale.x = max(scale.x, 1.0);
 
@@ -304,7 +304,7 @@ class GateLight : DynamicLight
 		if (lightradius > 64) { lightradius = 64; }
 		if (targetradius > 64) { targetradius = 64; }
 
-		if (currentSession.time)
+		if (level.time)
 		{
 			if (args[LIGHT_INTENSITY] == targetradius)
 			{
@@ -467,7 +467,7 @@ class GhostGate : GateKeeper
 	{
 		if (tid)
 		{
-			let it = currentSession.levelInfo[0].CreateActorIterator(tid, GetClassName());
+			let it = ActorIterator.Create(tid, GetClassName());
 			Actor mo;
 
 			while (mo = Actor(it.Next()))
@@ -555,7 +555,7 @@ class GhostGate : GateKeeper
 
 	override void Tick()
 	{
-		if (isFrozen()) { return; }
+		if (globalfreeze || level.Frozen) { return; }
 
 		Super.Tick();
 
@@ -564,7 +564,7 @@ class GhostGate : GateKeeper
 		if (target)
 		{
 			alpha = clamp(sin((Distance2D(target) - 64) * 90 / (activationradius - 64)), 0.001, 1.0);
-			activationtime = currentSession.time;
+			activationtime = level.time;
 			inactivation = true;
 		}
 		else if (inactivation)
@@ -646,7 +646,7 @@ class GhostGate : GateKeeper
 				if (!user_keyamount) { numbers[i].Destroy(); }
 				else if (!target)
 				{
-					double sratio = p ? sin(currentSession.time * textspeed) : 0;
+					double sratio = p ? sin(level.time * textspeed) : 0;
 
 					if (!p) { targetcolor = "189454"; }
 
@@ -797,7 +797,7 @@ class GhostGateHelper : GhostGate
 	{
 		if (tid)
 		{
-			let it = currentSession.levelInfo[0].CreateActorIterator(tid, "Gatekeeper");
+			let it = ActorIterator.Create(tid, "Gatekeeper");
 			Actor mo;
 
 			while (mo = Actor(it.Next()))
@@ -851,15 +851,15 @@ class FlatNumber : Actor
 
 	override void Tick()
 	{
-		if (isFrozen()) { return; }
+		if (globalfreeze || level.Frozen) { return; }
 
 		frame = value;
 
-		if (currentSession.time && master)
+		if (level.time && master)
 		{
 			Vector2 newpos = RotateVector((offset.x * scale.x / default.scale.x, offset.y * scale.x / default.scale.x), master.angle);
 
-			SetOrigin((master.pos.x + newpos.x, master.pos.y + newpos.y, master.pos.z + offset.z + 2 * sin(currentSession.time) / 2), true);
+			SetOrigin((master.pos.x + newpos.x, master.pos.y + newpos.y, master.pos.z + offset.z + 2 * sin(level.time) / 2), true);
 		}
 
 		Super.Tick();
@@ -995,7 +995,7 @@ class DoorHandler : Actor
 
 		if (tid && !master)
 		{ // If there's a TID, find the actor with that TID to also move
-			let it = currentSession.levelInfo[0].CreateActorIterator(tid, "Actor");
+			let it = ActorIterator.Create(tid, "Actor");
 			Actor mo;			
 
 			while (mo = Actor(it.Next()))

@@ -57,7 +57,7 @@ class Z_SpriteShadow : Actor
 
 	override void Tick(void)
 	{
-		if (!cvShadowDistance || isFrozen()) return;
+		if (!cvShadowDistance || !bNoTimeFreeze && (globalfreeze || level.Frozen)) return;
 
 		if (!bStopTicking)
 		{
@@ -278,7 +278,7 @@ class SpriteShadowHandler : EventHandler
 		shadowDistNew = shadowDist;
 		if (shadowDistOld != shadowDistNew)
 		{
-			ThinkerIterator it = currentSession.levelInfo[0].CreateThinkerIterator("Z_SpriteShadow");
+			ThinkerIterator it = ThinkerIterator.Create("Z_SpriteShadow");
 			Z_SpriteShadow shadow;
 			while (shadow = Z_SpriteShadow(it.Next()))
 			{
@@ -288,7 +288,7 @@ class SpriteShadowHandler : EventHandler
 		}
 
 		// look for shadow casters around you
-		ThinkerIterator it = currentSession.levelInfo[0].CreateThinkerIterator("Actor");
+		ThinkerIterator it = ThinkerIterator.Create("Actor");
 		Actor mo;
 		while (mo = Actor(it.Next()))
 		{
