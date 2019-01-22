@@ -79,18 +79,18 @@ class NaziWeapon : Weapon
 
 					if (!vis || !BoAVisibility(vis).alertedcount) // If no enemies are already alerted, turn on notarget
 					{
-						notargettimeout = currentSession.time + 2;
+						notargettimeout = level.time + 2;
 					}
 				}
 				else
 				{
-					notargettimeout = currentSession.time;
+					notargettimeout = level.time;
 				}
 			}
 
 			if (notargettimeout)
 			{
-				if (notargettimeout <= currentSession.time) // Turn off notarget and reset speed
+				if (notargettimeout <= level.time) // Turn off notarget and reset speed
 				{
 					if (
 						owner.player.ReadyWeapon == self ||
@@ -456,7 +456,7 @@ class TurretGun : ActorPositionable
 
 	override void Tick()
 	{
-		if (heatlevel && currentSession.time && currentSession.time % 4 == 0) { heatlevel--; }
+		if (heatlevel && level.time && level.time % 4 == 0) { heatlevel--; }
 
 		if (swivel) { swivel.angle = angle; }
 

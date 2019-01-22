@@ -249,7 +249,7 @@ Class LightningBeam : Actor
 
 		if (master is "PlayerPawn" || master.bFriendly == true)
 		{
-			ThinkerIterator Finder = currentSession.levelInfo[0].CreateThinkerIterator("Actor", Thinker.STAT_DEFAULT);
+			ThinkerIterator Finder = ThinkerIterator.Create("Actor", Thinker.STAT_DEFAULT);
 			while (mo = Actor(Finder.Next()))
 			{
 				if (mo == self || mo == origin || !mo.bShootable || mo.bDormant || !mo.bIsMonster) { continue; }
@@ -500,7 +500,7 @@ Class MovingTrailBeam : Actor
 	{
 		Super.Tick();
 
-		if (isFrozen()) { return; }
+		if (globalfreeze || level.Frozen) { return; }
 
 		if (master && master is "PlayerPawn")
 		{ 

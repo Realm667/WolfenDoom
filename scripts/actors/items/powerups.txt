@@ -36,7 +36,7 @@ class LanternPickup : CustomInventory
 
 	override void Tick()
 	{
-		if (isFrozen()) { return; }
+		if (globalfreeze || level.Frozen) { return; }
 
 		if (owner && active)
 		{
@@ -99,7 +99,7 @@ class MineSweeper : CustomInventory
 
 	override void Tick()
 	{
-		if (isFrozen() || !owner || !owner.player) { return; }
+		if (globalfreeze || level.Frozen || !owner || !owner.player) { return; }
 
 		if (owner && active)
 		{
@@ -151,7 +151,7 @@ class BoACompass : CustomInventory
 		{
 			if (actorTID)
 			{
-				let it = currentSession.levelInfo[0].CreateActorIterator(actorTID, "Actor");
+				let it = ActorIterator.Create(actorTID, "Actor");
 				Actor mo;
 
 				while (mo = Actor(it.Next()))
@@ -193,7 +193,7 @@ class BoACompass : CustomInventory
 		CompassHandler compassEvent = CompassHandler(EventHandler.Find("CompassHandler"));
 		if (!compassEvent) { return; }
 
-		compassEvent.drawflash = currentSession.time;
+		compassEvent.drawflash = level.time;
 	}
 
 	static void ForceActivate(Actor owner, bool activate)

@@ -51,7 +51,7 @@ class VehicleBase : Base
 		rollinput = atan(rollinput / (testwidth * 2));
 
 		// Interpolate to the new values
-		if (force || currentSession.time && currentSession.time < 15)
+		if (force || level.time && level.time < 15)
 		{
 			mo.pitch = clamp(-pitchinput, -cap, cap);
 			mo.roll = clamp(rollinput, -cap, cap);
@@ -296,7 +296,7 @@ class TankBase : VehicleBase
 	{
 		Actor.Tick();
 
-		if (isFrozen() || user_static) { return; }
+		if (globalfreeze || level.Frozen || user_static) { return; }
 
 		if (missiletimeout > 0) { missiletimeout--; }
 		if (bullettimeout > 0) { bullettimeout--; }
@@ -829,7 +829,7 @@ class PairedTire : Actor
 	{
 		Super.Tick();
 
-		if (isFrozen()) { return; }
+		if (globalfreeze || level.Frozen) { return; }
 
 		scale.x = default.scale.x / level.pixelstretch; // Forceably correct skewed models introduced by pixel ratio settings
 

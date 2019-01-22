@@ -348,7 +348,7 @@ class Base : Actor
 
 	bool SneakableActors() // Are there sneakable actors in the level?
 	{
-		ThinkerIterator it = currentSession.levelInfo[0].CreateThinkerIterator("StealthBase", Thinker.STAT_DEFAULT - 2); // Just iterate over the sneakable eyes - faster than all Nazi actors
+		ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2); // Just iterate over the sneakable eyes - faster than all Nazi actors
 		StealthBase mo;
 		while (mo = StealthBase(it.Next()))
 		{
@@ -486,7 +486,7 @@ class Base : Actor
 	{
 		int visibility = 0;
 
-		ThinkerIterator it = currentSession.levelInfo[0].CreateThinkerIterator("Actor", STAT_DLIGHT);
+		ThinkerIterator it = ThinkerIterator.Create("Actor", STAT_DLIGHT);
 		Actor mo;
 
 		while (mo = Actor(it.Next()))
@@ -597,7 +597,7 @@ class Base : Actor
 	{
 		if (user_DrawHealthBar) { ChangeStatNum(Thinker.STAT_DEFAULT - 3); } // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient
 
-		if (!isFrozen())
+		if (!globalfreeze && !level.Frozen)
 		{
 			if (dodgetimeout > 0) { dodgetimeout--; }
 			if (crouchtimeout == 70) { crouchtimer++; }
@@ -613,7 +613,7 @@ class Base : Actor
 					vel.z = min(vel.z, -1);
 				}
 
-				if (lightthreshold && currentSession.time % 10 == 0) // If zero, ignore light levels (so, default to normal enemy behavior)
+				if (lightthreshold && level.time % 10 == 0) // If zero, ignore light levels (so, default to normal enemy behavior)
 				{
 					if (ReactionTime == 0) // This is only checked when the enemy is active and not standing still or attacking
 					{
@@ -1159,7 +1159,7 @@ class Nazi : Base
 			"####" A 0 { return ResolveState("Dodge.End"); }
 		Dodge.Crouch:
 			"####" A 0 A_SetSize(-1, Default.height * 0.75);
-			"####" A 5;
+			"####" A 5 A_Look();
 			"####" A 0 {
 				if (crouchtimer < 175 && Random[stand](0, 255) > 4 && (!user_incombat || !InPlayerCrosshair()))
 				{
@@ -1289,7 +1289,7 @@ class Nazi : Base
 	{
 		if (bDormant) { return; }
 
-		if (currentSession.time > 35) { A_Look(); }
+		if (level.time > 35) { A_Look(); }
 
 		if (DodgeState) { A_TryHide(); }
 
@@ -1318,7 +1318,7 @@ class Nazi : Base
 			}
 		}
 
-		if (!Default.bLookAllAround && currentSession.time && currentSession.time % interval == 0)
+		if (!Default.bLookAllAround && level.time && level.time % interval == 0)
 		{
 			FLineTraceData trace;
 			if (LineTrace(angle, 256.0, pitch, TRF_THRUHITSCAN | TRF_ALLACTORS, Height * 0.9, 0.0, 0.0, trace) && trace.HitType == TRACE_HitWall)
@@ -1368,7 +1368,7 @@ class Nazi : Base
 			}
 		}
 
-		if (user_sneakable && bFriendly && currentSession.time && currentSession.time % interval == 0) { A_LookForBodies(); }
+		if (user_sneakable && bFriendly && level.time && level.time % interval == 0) { A_LookForBodies(); }
 
 		if (target is "GrenadeBase")
 		{
@@ -1421,7 +1421,7 @@ class Nazi : Base
 		if (trace.HitType == TRACE_HitWall && trace.HitLine && !(trace.HitLine.flags & line.ML_BLOCKING))
 		{
 			// And only duck if the other side of the blocking wall (or a good enough approximation) is inside the map...
-			if (currentSession.levelInfo[0].IsPointInMap(pos + (RotateVector((range + 32.0, 0), angle), height))) { return true; }
+			if (level.IsPointInMap(pos + (RotateVector((range + 32.0, 0), angle), height))) { return true; }
 		}
 
 		LineTrace(angle, range, pitch, TRF_SOLIDACTORS | TRF_THRUHITSCAN, height, 0.0, 0.0, trace);
@@ -1457,7 +1457,7 @@ class Nazi : Base
 			patrolgoal.angle = angle;
 		}
 
-		ThinkerIterator Finder = currentSession.levelInfo[0].CreateThinkerIterator("Nazi", STAT_DEFAULT - 5);
+		ThinkerIterator Finder = ThinkerIterator.Create("Nazi", STAT_DEFAULT - 5);
 		Nazi mo;
 
 		while ( (mo = Nazi(Finder.Next())) )
@@ -1470,7 +1470,7 @@ class Nazi : Base
 		}
 
 		// A Second iterator to account for the non-sneakables...
-		Finder = currentSession.levelInfo[0].CreateThinkerIterator("Nazi", STAT_DEFAULT);
+		Finder = ThinkerIterator.Create("Nazi", STAT_DEFAULT);
 
 		while ( (mo = Nazi(Finder.Next())) )
 		{
@@ -1499,7 +1499,7 @@ class Nazi : Base
 
 	void A_LookForGrenades()
 	{
-		ThinkerIterator Finder = currentSession.levelInfo[0].CreateThinkerIterator("GrenadeBase", STAT_DEFAULT - 6);
+		ThinkerIterator Finder = ThinkerIterator.Create("GrenadeBase", STAT_DEFAULT - 6);
 		GrenadeBase mo;
 
 		while ( (mo = GrenadeBase(Finder.Next())) )
@@ -1893,7 +1893,7 @@ class Nazi : Base
 
 	override void Tick()
 	{
-		if (isFrozen()) { return; }
+		if (globalfreeze || level.Frozen) { return; }
 
 		// If the enemy is sneakable and idle (and not patrolling), and isn't in its original location, keep it moving toward that location.
 		//  NOTE: This doesn't work properly when the player has NOTARGET enabled (or is wearing a disguise and has no weapon raised).
@@ -1969,7 +1969,8 @@ class Nazi : Base
 				// If it doesn't have a goal (and isn't running away), look for dead bodies
 				if (!bFrightened && (!goal || (goal && Distance3d(goal) > 1024)))
 				{
-					if (currentSession.time && currentSession.time % interval == 0) { A_LookForBodies(); }
+					if (level.time && level.time % interval == 0) { A_LookForBodies(); }
+
 					if (Nazi(body) && !body.bShootable && !Nazi(body).healing) { bChaseGoal = true; goal = body; } // Keep trying to get to the body if it's still dead and isn't being healed
 					else { body = null; }
 				}
@@ -2005,8 +2006,8 @@ class Nazi : Base
 				!(self is "MutantStandard") && // Nor are mutants
 				!(self is "ZombieStandard") && // And zombies are especially not smart...
 				Default.Speed > 0 && 
-				currentSession.time && 
-				currentSession.time % (interval / 3) == 0 // Check for grenades more often than the random interval, but still only every 10-11 tics at most...
+				level.time && 
+				level.time % (interval / 3) == 0 // Check for grenades more often than the random interval, but still only every 10-11 tics at most...
 			) 
 			{
 				A_LookForGrenades();
