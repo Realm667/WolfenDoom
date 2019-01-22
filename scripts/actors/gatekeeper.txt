@@ -868,22 +868,24 @@ class FlatNumber : Actor
 
 class DoorHandler : Actor
 {
-	bool walkablemidtex, closed;
-	int moveamt, maxmoveamt, movetimeout, activationradius, locknumber, closedelay, offsetstart[2];
-	double movespeed, olddir, lineangle;
+	bool walkablemidtex, active, closed;
+	int moveamt, maxmoveamt, movetimeout, activationradius, locknumber, closedelay, offsetstart[2], maxoffset;
+	double movespeed, olddir, lineangle, texscale;
 	Line linedef;
 	Array<Actor> Activators;
 	Sound opensound, closesound;
+	Array<Actor> doorthings;
 
 	Property MoveSpeed:movespeed;
 	Property ActivationRadius:ActivationRadius;
 	Property MidTex:walkablemidtex;
 	Property CloseDelay:closedelay;
+	Property HandleWidth:maxoffset;
 
 	Default
 	{
 		//$Category Doors (BoA)
-		//$Title "Sliding Door"
+		//$Title "Sliding Door (Line-based)"
 		//$Sprite SLIDA0
 		//$Arg0 "Key"
 		//$Arg0ToolTip "What key should this door use (default none)?"
@@ -901,16 +903,17 @@ class DoorHandler : Actor
 		//$Arg3Type 11
 		//$Arg3Enum { 0 = "Classic Wolf3D"; 1 = "Metal"; 2 = "Mechanical"; 3 = "Prison"; 4 = "Elevator"; 5 = "Astrostein"; }
 
-		+INVISIBLE
 		-SOLID
 		+WALLSPRITE // Modified render style, etc. for GZDB appearance...
 		RenderStyle "Translucent";
-		Alpha 0.1;
+		Alpha 0.25;
 		Height 92;
-		Radius 48;
+		Radius 24;
+		Scale 0.5;
 		DoorHandler.MoveSpeed 6;
 		DoorHandler.ActivationRadius 72;
 		DoorHandler.CloseDelay 150; // Includes the time that the door takes to open!
+		DoorHandler.HandleWidth 2;
 	}
 
 	States
@@ -960,17 +963,15 @@ class DoorHandler : Actor
 		else if (!linedef.delta.y) { lineangle = 90; }
 		else { lineangle = (atan(linedef.delta.y / linedef.delta.x) + 270) % 360; }
 
-		angle = lineangle;
+//		if (angle != lineangle && angle != lineangle + 180 && angle != lineangle - 180) { angle = lineangle; }
 
 		double linelength = linedef.delta.length();
 		TextureID tex = linedef.sidedef[0].GetTexture(Side.mid);
-		double texscale = linedef.sidedef[0].GetTextureXScale(Side.mid);
+		texscale = linedef.sidedef[0].GetTextureXScale(Side.mid);
 		offsetstart[0] = int(linedef.sidedef[0].GetTextureXOffset(Side.mid));
 		offsetstart[1] = int(linedef.sidedef[1].GetTextureXOffset(Side.mid));
 
 		if (!linedef.special) { linedef.special = 121; } // Give it a useless special so that the NOWAY sound doesn't play (121 is Line_SetIdentification)
-
-		if (!tex) { Destroy(); return; }
 
 		if (walkablemidtex) // If you want the door to be passable in 3D space, it needs to be a 3D midtex - some blocking issues, unfortunately...  Doesn't stop hitscans.
 		{
@@ -981,28 +982,58 @@ class DoorHandler : Actor
 		{
 			linedef.flags |= Line.ML_BLOCKING;
 			linedef.flags |= Line.ML_BLOCKEVERYTHING;
+			linedef.flags |= Line.ML_SOUNDBLOCK;
 		}
 
 		locknumber = args[0];
+		active = false;
 		closed = true;
-		maxmoveamt = int(max(TexMan.GetSize(tex) / 2, linelength * texscale));
+		if (!tex) { texscale = 1.0; }
+		maxmoveamt = int(linelength - maxoffset);
 
 		movespeed = (args[2] ? args[2] : movespeed);
+
+		if (tid && !master)
+		{ // If there's a TID, find the actor with that TID to also move
+			let it = currentSession.levelInfo[0].CreateActorIterator(tid, "Actor");
+			Actor mo;			
+
+			while (mo = Actor(it.Next()))
+			{
+				if (mo == self) { continue; }
+
+				mo.master = self;
+				mo.SpawnPoint = mo.pos;
+				doorthings.Push(mo);
+			}
+		}
+
+		SpawnPoint = pos;
+
+		if (alpha == Default.alpha)
+		{
+			if (sprite == GetSpriteIndex("UNKN")) { bInvisible = true; }
+			else { alpha = 1.0; }
+		}
 	}
 
-	void Move(double dir)
+	void Move(double dir, Actor activator = null)
 	{
 		if (dir < 0 && moveamt <= 0)
 		{
 			// Fully closed
+			active = false;
 			closed = true;
 			return;
 		}
 		else if (dir > 0 && moveamt > maxmoveamt)
 		{
 			// Fully open
+			active = false;
 			return;
 		}
+
+		active = true;
 
 		dir = dir * movespeed;
 
@@ -1019,22 +1050,21 @@ class DoorHandler : Actor
 			{
 				linedef.flags |= Line.ML_BLOCKING;
 				linedef.flags |= Line.ML_BLOCKEVERYTHING;
+				linedef.flags |= Line.ML_SOUNDBLOCK;
 			}
 		}
 		else if (dir > 0 && moveamt > maxmoveamt / 2) // Door is closing
 		{
-			if (linedef)
+			if (walkablemidtex)
 			{
-				if (walkablemidtex)
-				{
-					linedef.flags &= ~Line.ML_3DMIDTEX;
-					linedef.flags &= ~Line.ML_BLOCKSIGHT;
-				}
-				else
-				{
-					linedef.flags &= ~Line.ML_BLOCKING;
-					linedef.flags &= ~Line.ML_BLOCKEVERYTHING;
-				}
+				linedef.flags &= ~Line.ML_3DMIDTEX;
+				linedef.flags &= ~Line.ML_BLOCKSIGHT;
+			}
+			else
+			{
+				linedef.flags &= ~Line.ML_BLOCKING;
+				linedef.flags &= ~Line.ML_BLOCKEVERYTHING;
+				linedef.flags &= ~Line.ML_SOUNDBLOCK;
 			}
 		}
 
@@ -1064,8 +1094,8 @@ class DoorHandler : Actor
 					CloseSound = "astrostein/doorclose";
 					break;
 				default:
-					OpenSound = "door/classic/open";
-					CloseSound = "door/classic/close";
+					if (OpenSound == "") { OpenSound = "door/classic/open"; }
+					if (CloseSound == "") { CloseSound = "door/classic/close"; }
 					break;
 			}
 
@@ -1075,8 +1105,32 @@ class DoorHandler : Actor
 
 		moveamt = int(clamp(moveamt + dir, 0, maxmoveamt));
 
-		linedef.sidedef[0].SetTextureXOffset(Side.mid, int(clamp(offsetstart[0] - moveamt, -maxmoveamt, 0)));
-		linedef.sidedef[1].SetTextureXOffset(Side.mid, int(clamp(offsetstart[1] + moveamt, 0, maxmoveamt)));
+		Actor controller = self;
+		while (controller.master) { controller = controller.master; }
+
+		// Move the door thing and any attached objects.
+		SetOrigin(SpawnPoint + (RotateVector((moveamt, 0), angle + 90), 0), true);
+
+		linedef.sidedef[0].SetTextureXOffset(Side.mid, int(clamp(offsetstart[0] - moveamt * texscale, -maxmoveamt * texscale, 0)));
+		linedef.sidedef[1].SetTextureXOffset(Side.mid, int(clamp(offsetstart[1] + moveamt * texscale, 0, maxmoveamt * texscale)));
+
+		for (int i = 0; i < doorthings.Size(); i++)
+		{
+			let door = doorthings[i];
+
+			if (door is "DoorHandler") // If it's a DoorHandler, move it with its own internal code
+			{
+				continue;
+			}
+			else if (door) // If it's just a tagged object, move it over
+			{
+				door.SetOrigin(door.SpawnPoint + (RotateVector((moveamt, 0), angle + 90), 0), true);
+			}
+			else // Otherwise it's a bad entry that shouldn't be here...
+			{
+				doorthings.Delete(i);
+			}
+		}
 
 		olddir = dir;
 	}
@@ -1141,6 +1195,8 @@ class DoorHandler : Actor
 				let mo = Activators[i];
 				let p = mo.player;
 
+				if (mo.health <= 0 || !mo.bShootable) { Activators.Delete(i); continue; }
+
 				double offsetangle = absangle(angle, mo.angle);
 				if (offsetangle > 90) { offsetangle = 180 - offsetangle; }
 
@@ -1198,5 +1254,47 @@ class DoorHandler : Actor
 		if (movetimeout > 0) { movetimeout--; }
 
 		Super.Tick();
+	}
+}
+
+class ClassicSlidingDoor : DoorHandler
+{
+	Default
+	{
+		//$Title "Classic Wolf3D Sliding Door (Line-based)"
+		Radius 48;
+		Scale 1.0;
+	}
+
+	States
+	{
+		Spawn:
+			SLID A -1;
+			Loop;
+	}
+}
+
+class SlidingDoor : DoorHandler
+{
+	Default
+	{
+		//$Title "Wooden Sliding Door (Line-based)"
+		//$Sprite ""
+		DoorHandler.HandleWidth 6;
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		OpenSound = "ELDOR_OP";
+		CloseSound = "ELDOR_CL";
+
+		Super.PostBeginPlay();
 	}
 }
