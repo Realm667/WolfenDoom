@@ -34,9 +34,8 @@ ACTOR MonsterStatue
 
 ACTOR BronzeStatueA : MonsterStatue
 {
-	//$Title Arno Breker's Speer Statue (Right)
+	//$Title Arno Breker's Speer Statue, Bronze (Torch)
 	Height 128
-	Scale 0.28
 	+FORCEYBILLBOARD
 	States
 	{
@@ -48,11 +47,55 @@ ACTOR BronzeStatueA : MonsterStatue
 
 ACTOR BronzeStatueB : BronzeStatueA
 {
-	//$Title Arno Breker's Speer Statue (Left)
+	//$Title Arno Breker's Speer Statue, Bronze (Sword)
 	States
 	{
 	Spawn:
-		BRNZ A -1 NoDelay A_SetScale(ScaleX * -1, ScaleY)
+		BRNZ B -1
+		Stop
+	}
+}
+
+ACTOR BronzeStatueC : BronzeStatueA
+{
+	//$Title Arno Breker's Speer Statue, Gold (Torch)
+	States
+	{
+	Spawn:
+		BRNZ C -1
+		Stop
+	}
+}
+
+ACTOR BronzeStatueD : BronzeStatueA
+{
+	//$Title Arno Breker's Speer Statue, Gold (Sword)
+	States
+	{
+	Spawn:
+		BRNZ D -1
+		Stop
+	}
+}
+
+ACTOR BronzeStatueE : BronzeStatueA
+{
+	//$Title Arno Breker's Speer Statue, Stone (Torch)
+	States
+	{
+	Spawn:
+		BRNZ E -1
+		Stop
+	}
+}
+
+ACTOR BronzeStatueF : BronzeStatueA
+{
+	//$Title Arno Breker's Speer Statue, Stone (Sword)
+	States
+	{
+	Spawn:
+		BRNZ F -1
 		Stop
 	}
 }
