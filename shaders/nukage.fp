@@ -1,5 +1,6 @@
 // Adapted by AFADoomer from https://github.com/prideout/recipes/blob/master/demo-Lava.glsl
-uniform float fogDensity = 0.3;
+// Same as lava.fp, but favors green channel instead of red, with no brightmap-style handling
+uniform float fogDensity = 0.4;
 uniform vec3 fogColor = vec3(0, 0, 0);
 uniform float timer;
 
@@ -13,15 +14,10 @@ vec4 Process(vec4 color)
 				
 	color = getTexel(T2 * 2.0);
 	FragColor = color * (vec4(p, p, p, p) * 2.0) + (color * color - 0.1);
-
-	if(FragColor.r > 1.0) { FragColor.bg += clamp(FragColor.r - 2.0, 0.0, 100.0); }
-	if(FragColor.g > 1.0) { FragColor.rb += FragColor.g - 1.0; }
+				
+	if(FragColor.r > 1.0) { FragColor.bg += FragColor.r - 1.0; }
+	if(FragColor.g > 1.0) { FragColor.rb += clamp(FragColor.g - 2.0, 0.0, 100.0); }
 	if(FragColor.b > 1.0) { FragColor.rg += FragColor.b - 1.0; }
-
-	// Use the composited image as its own brightmap
-	vec4 brightpix = desaturate(FragColor);
-
-	FragColor = vec4(min(FragColor.rgb + brightpix.rgb, 100.0), FragColor.a);
-
+		
 	return mix(FragColor, vec4(fogColor, FragColor.a), fogDensity);
 }
