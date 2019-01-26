@@ -726,6 +726,37 @@ ACTOR ZyklonZCloud : ZyklonBCloud
 	}
 }
 
+ACTOR ZyklonZCloud2 : ZyklonZCloud
+{
+	Scale 1.0
+	Damage (random(0,1))
+	PoisonDamage 1
+	States
+	{
+	Spawn:
+		ZBGS C 1
+	Fade:
+		"####" C 3 LIGHT(ZOMBIEFOG) A_FadeOut(0.004)
+		"####" C 0 A_SetScale(scaleX+0.01, scaleY+0.01)
+		Loop
+	}
+}
+
+ACTOR ZyklonZCloud3 : ZyklonZCloud2
+{
+	Damage 0
+	PoisonDamage 0
+	States
+	{
+	Spawn:
+		ZBGS C 1
+	Fade:
+		"####" C 3 LIGHT(ZOMBIEFOG) A_FadeOut(0.04)
+		"####" C 0 A_SetScale(scaleX+0.01, scaleY+0.01)
+		Loop
+	}
+}
+
 ACTOR ZyklonBBall
 {
 	Radius 11
@@ -1236,6 +1267,23 @@ ACTOR MonsterHole
 	Spawn:
 		TNT1 A 2
 		SMMO ABCDEFGHIJKLMNOPQR 2
+		Stop
+	}
+}
+
+ACTOR MonsterHole2 : MonsterHole
+{
+	Scale .85
+	States
+	{
+	Spawn:
+		TNT1 A 2 A_Jump(64,"SpawnAlt") //prevent doing huge amount of damage - ozy81
+		TNT1 A 0 A_SpawnItemEx("ZyklonZCloud2",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128)
+		ZMMO ABCDEFGHIJKLMNOPQR 2
+		Stop
+	Spawn.Alt:
+		TNT1 A 0 A_SpawnItemEx("ZyklonZCloud3",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128)
+		ZMMO ABCDEFGHIJKLMNOPQR 2
 		Stop
 	}
 }
