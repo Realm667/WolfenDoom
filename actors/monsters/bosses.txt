@@ -1661,7 +1661,7 @@ ACTOR Totengraber_Wounded : RocketMan
 	See:
 		Goto See.BossBleeding
 	Heal:
-		"####" EEEEEE 6 A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0)
+		"####" E 6 A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), 64, 0, 0, 0, 0)
 		"####" E 0 A_HealGoal
 		Goto See
 	Missile:
@@ -1949,7 +1949,7 @@ ACTOR Longinus_Hitler : NaziBoss
 		}
 		Goto See
 	Heal:
-		"####" HHHHHH 6 A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0)
+		"####" H 6 A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), 64, 0, 0, 0, 0)
 		"####" E 0 A_HealGoal
 		Goto See
 	Missile:
@@ -1984,7 +1984,7 @@ ACTOR Longinus_Hitler : NaziBoss
 		"####" H 0 A_PlaySound("grenade/explode", CHAN_AUTO, 1.0, FALSE, 0.1)
 		"####" H 1 A_SpawnItemEx("GeneralExplosion_Medium")
 		"####" H 1 Radius_Quake(10,10,0,16,0)
-		"####" E 12 LIGHT(ZYKOFIR2) A_SpawnProjectile("ZyklonBlazeFlames",0,0,0,CMF_CHECKTARGETDEAD)
+		"####" E 12 LIGHT(ZYKOFIR2) A_SpawnProjectile("ZyklonBlazeFlames",0,0,10,CMF_CHECKTARGETDEAD)
 		"####" C 6
 		"####" E 0 A_FaceTarget
 		"####" E 4
@@ -1992,7 +1992,7 @@ ACTOR Longinus_Hitler : NaziBoss
 		"####" H 0 A_PlaySound("grenade/explode", CHAN_AUTO, 1.0, FALSE, 0.1)
 		"####" H 1 A_SpawnItemEx("GeneralExplosion_Medium")
 		"####" H 1 Radius_Quake(10,10,0,16,0)
-		"####" E 12 LIGHT(ZYKOFIR2) A_SpawnProjectile("ZyklonBlazeFlames",0,0,0,CMF_CHECKTARGETDEAD)
+		"####" E 12 LIGHT(ZYKOFIR2) A_SpawnProjectile("ZyklonBlazeFlames",0,0,-10,CMF_CHECKTARGETDEAD)
 		"####" C 4
 		Goto See
 	TeslaMissile:
