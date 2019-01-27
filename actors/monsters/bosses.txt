@@ -1974,7 +1974,7 @@ ACTOR Longinus_Hitler : NaziBoss
 		"####" E 4
 		"####" H 8 LIGHT(ZYKOFIR2)
 		"####" H 0 A_PlaySound("grenade/explode", CHAN_AUTO, 1.0, FALSE, 0.1)
-		"####" H 1 A_SpawnItemEx("GeneralExplosion_Medium")
+		"####" H 1 A_SpawnItemEx("GeneralExplosion_Medium") // A regular explosion doesn't make sense here
 		"####" H 1 Radius_Quake(10,10,0,16,0)
 		"####" E 12 LIGHT(ZYKOFIR2) A_SpawnProjectile("ZyklonBlazeFlames",0,0,0,CMF_CHECKTARGETDEAD)
 		"####" C 6
