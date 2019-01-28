@@ -90,13 +90,13 @@ ACTOR OccultBlazeFlames
 	}
 }
 
-ACTOR ZyklonBlazeFX1 : OccultBlazeFX1
+ACTOR RumbleFX1 : OccultBlazeFX1
 {
-	DamageType "UndeadPoison"
 	Radius 8
+	Scale 0.1
+	DamageType "UndeadPoison"
 	Renderstyle "Translucent"
 	Alpha 0.8
-	Scale 0.1
 	+RIPPER
 	States
 	{
@@ -110,14 +110,8 @@ ACTOR ZyklonBlazeFX1 : OccultBlazeFX1
 	}
 }
 
-ACTOR ZyklonBlazeFX2 : OccultBlazeFX1
+ACTOR RumbleFX2 : RumbleFX1
 {
-	DamageType "UndeadPoison"
-	Radius 8
-	Renderstyle "Translucent"
-	Alpha 0.8
-	Scale 0.1
-	+RIPPER
 	States
 	{
 	Spawn:
@@ -130,7 +124,7 @@ ACTOR ZyklonBlazeFX2 : OccultBlazeFX1
 	}
 }
 
-ACTOR ZyklonBlazeFlames
+ACTOR RumbleWaves
 {
 	Radius 40
 	Height 64
@@ -144,7 +138,7 @@ ACTOR ZyklonBlazeFlames
 	+THRUGHOST
 	+THRUSPECIES
 	MaxStepHeight 4
-	Obituary "$ZBLAZES"
+	Obituary "$OBRUMBLE"
 	SeeSound "flamer/fire"
 	DeathSound "flamer/napalm"
 	Decal Scorch
@@ -155,7 +149,7 @@ ACTOR ZyklonBlazeFlames
 		"####" A 0 A_Jump(128, "Dirt2")
 	Dirt1:
 		"####" A 4      {
-				A_SpawnProjectile("ZyklonBlazeFX2");
+				A_SpawnProjectile("RumbleFX1");
 				A_RadiusGive("HeatShaderControl", radius+64, RGF_PLAYERS | RGF_GIVESELF, 32);
 				if (waterlevel > 0) {
 					A_ScaleVelocity(0.0);}
@@ -163,7 +157,7 @@ ACTOR ZyklonBlazeFlames
 	Goto Spawn
 	Dirt2:
 		"####" A 4      {
-				A_SpawnProjectile("ZyklonBlazeFX2");
+				A_SpawnProjectile("RumbleFX2");
 				A_RadiusGive("HeatShaderControl", radius+64, RGF_PLAYERS | RGF_GIVESELF, 32);
 				if (waterlevel > 0) {
 					A_ScaleVelocity(0.0);}
@@ -1051,7 +1045,6 @@ ACTOR ZFlameball : ZFlamebolt
 		ZBAL A 1 BRIGHT LIGHT(ZYKFLMW2)
 			{
 				A_SpawnItemEx("Spark_G1", random(-32,32), random(-32,32), random(-32,32), random(-2,2), random(-2,2), random(-2,2), random(0,359));
-				//A_SpawnItemEx("Spark_G1", random(-32,32), random(-32,32), random(-32,32), random(-2,2), random(-2,2), random(-2,2), random(0,359));
 				A_SetRoll(Roll+24, SPF_INTERPOLATE);
 				if (waterlevel > 0) {
 					A_ScaleVelocity(0.0);
@@ -1816,7 +1809,7 @@ ACTOR ReflectiveOrb : VisualSpecialEffect
 	{
 	Spawn:
 		TNT1 A 0 A_SetTranslucent(0.1,1)
-		//TNT1 A 0 A_PlaySound("TPortalAppear")
+		TNT1 A 0 A_PlaySound("hitler/orbapp", CHAN_AUTO, 1.0, TRUE)
 		ORBP ABCDCB 1 BRIGHT 
 		TNT1 A 0 A_SetTranslucent(0.2,1)
 		ORBP ABCDCB 1 BRIGHT 
@@ -1838,8 +1831,8 @@ ACTOR ReflectiveOrb : VisualSpecialEffect
 		ORBP ABCDCB 1 BRIGHT A_Countdown
 		Loop
 	Death:
-		//TNT1 A 0 A_StopSound(5)
-		//TNT1 A 0 A_PlaySound("TPortalFade")
+		TNT1 A 0 A_StopSound(CHAN_AUTO)
+		TNT1 A 0 A_PlaySound("hitler/orbfade", CHAN_AUTO, 1.0, FALSE)
 		ORBP ABCDCB 1 BRIGHT
 		TNT1 A 0 A_SetTranslucent(0.8,1)
 		ORBP ABCDCB 1 BRIGHT
@@ -1855,10 +1848,10 @@ ACTOR ReflectiveOrb : VisualSpecialEffect
 		ORBP ABCDCB 1 BRIGHT
 		TNT1 A 0 A_SetTranslucent(0.2,1)
 		ORBP ABCDCB 1 BRIGHT
-		ORBP A 0 A_RemoveChildren(TRUE, RMVF_MISC)
+		ORBP A 1 A_RemoveChildren(TRUE, RMVF_MISC)
 		TNT1 A 0 A_SetTranslucent(0.1,1)
 		TNT1 A 1
-		Loop
+		Stop
 	}
 }
 
