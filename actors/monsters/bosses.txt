@@ -1949,6 +1949,8 @@ ACTOR Longinus_Hitler : NaziBoss
 	Tag "Adolf Hitler"
 	Health 10000
 	WoundHealth 5000
+	Mass 16000
+	Painchance 16
 	Radius 64
 	Height 192
 	Speed 2.5
@@ -2027,14 +2029,14 @@ ACTOR Longinus_Hitler : NaziBoss
 		"####" H 8 LIGHT(ZYKOFIR2)
 		"####" H 0 A_PlaySound("grenade/explode", CHAN_AUTO, 1.0, FALSE, 0.1)
 		"####" H 1 Radius_Quake(10,10,0,16,0)
-		"####" E 12 A_SpawnProjectile("RumbleWaves",0,0,10,CMF_CHECKTARGETDEAD)
+		"####" E 12 A_SpawnProjectile("RumbleWaves",0,0,random(-10,10),CMF_CHECKTARGETDEAD)
 		"####" C 6
 		"####" E 0 A_FaceTarget
 		"####" E 4
 		"####" H 8 LIGHT(ZYKOFIR2)
 		"####" H 0 A_PlaySound("grenade/explode", CHAN_AUTO, 1.0, FALSE, 0.1)
 		"####" H 1 Radius_Quake(10,10,0,16,0)
-		"####" E 12 A_SpawnProjectile("RumbleWaves",0,0,-10,CMF_CHECKTARGETDEAD)
+		"####" E 12 A_SpawnProjectile("RumbleWaves",0,0,random(-10,10),CMF_CHECKTARGETDEAD)
 		"####" C 4
 		Goto See
 	TeslaMissile:
