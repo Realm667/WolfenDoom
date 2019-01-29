@@ -1953,6 +1953,7 @@ ACTOR Longinus_Hitler : NaziBoss
 	Height 192
 	Speed 2.5
 	Scale 2.0
+	-NODAMAGE //for ReflectiveOrb
 	+ALLOWPAIN
 	+INVULNERABLE
 	+NOFEAR
@@ -1970,7 +1971,8 @@ ACTOR Longinus_Hitler : NaziBoss
 	States
 	{
 	Spawn:
-		SHI1 A 1
+		SHI1 A 0
+		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
 		Goto Look
 	See:
 		Goto See.BossGiant
@@ -1989,7 +1991,7 @@ ACTOR Longinus_Hitler : NaziBoss
 		Goto See
 	Missile:
 		"####" "#" 0 A_JumpIfCloser(radius + 256, "TeslaMissile")
-		"####" "#" 0 A_JumpIf(wounded, "RumbleStomp")
+		"####" "#" 0 A_JumpIf(wounded, "ReflectiveOrb")
 	Chaingun:
 		"####" E 0 A_Jump(128,"RumbleStomp")
 		"####" E 6 A_PlaySound("chaingun/start", CHAN_AUTO)
@@ -2005,14 +2007,13 @@ ACTOR Longinus_Hitler : NaziBoss
 		"####" G 2 A_MonsterRefire(20,"See")
 		Loop
 	ReflectiveOrb:
-		"####" H 1 {A_SetReflective(); A_ChangeFlag("ALLOWPAIN",FALSE);}
+		"####" H 1 {A_ChangeFlag("NODAMAGE",TRUE); A_SetReflective(); A_ChangeFlag("ALLOWPAIN",FALSE);}
 		"####" H 1 A_SpawnItemEx("ReflectiveOrb",0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
 		"####" H 1 A_SetTics(35*5)
-		"####" H 1 {A_UnSetReflective(); A_ChangeFlag("ALLOWPAIN",TRUE);}
+		"####" H 1 {A_ChangeFlag("NODAMAGE",FALSE); A_UnSetReflective(); A_ChangeFlag("ALLOWPAIN",TRUE);}
 		"####" H 1 A_RemoveChildren(TRUE, RMVF_MISC)
 		Goto See
 	RumbleStomp:
-		"####" H 0 A_Jump(96,"ReflectiveOrb")
 		"####" C 6
 		"####" E 0 A_FaceTarget
 		"####" E 4
