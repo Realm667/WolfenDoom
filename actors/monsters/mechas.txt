@@ -24,7 +24,7 @@ ACTOR MechaNaziStanding1 : CTurret_Afrika
 		"####" A 0 //bland
 		Goto Spawn
 	SpawnEnemy:
-		TNT1 A 0 A_ChangeFlag("BUMPSPECIAL", FALSE)
+		TNT1 A 0 {bBumpSpecial = FALSE;}
 		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "WGuard")
 		"####" A 1 A_SpawnItemEx("MechaDropper1",0,0,0)
 		Stop
@@ -46,7 +46,7 @@ ACTOR MechaNaziStanding2 : MechaNaziStanding1
 		"####" B 0 //bland
 		Goto Spawn
 	SpawnEnemy:
-		TNT1 A 0 A_ChangeFlag("BUMPSPECIAL", FALSE)
+		TNT1 A 0 {bBumpSpecial = FALSE;}
 		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "Guard")
 		"####" A 1 A_SpawnItemEx("MechaDropper2",0,0,0)
 		Stop
@@ -67,7 +67,7 @@ ACTOR MechaNaziStanding3 : MechaNaziStanding1
 		"####" C 0 //bland
 		Goto Spawn
 	SpawnEnemy:
-		TNT1 A 0 A_ChangeFlag("BUMPSPECIAL", FALSE)
+		TNT1 A 0 {bBumpSpecial = FALSE;}
 		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "ArcticRifleGuard")
 		"####" A 1 A_SpawnItemEx("MechaDropper3",0,0,0)
 		Stop
@@ -88,7 +88,7 @@ ACTOR MechaNaziStanding4 : MechaNaziStanding1
 		"####" D 0 //bland
 		Goto Spawn
 	SpawnEnemy:
-		TNT1 A 0 A_ChangeFlag("BUMPSPECIAL", FALSE)
+		TNT1 A 0 {bBumpSpecial = FALSE;}
 		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "SSGuard")
 		"####" A 1 A_SpawnItemEx("MechaDropper4",0,0,0)
 		Stop
@@ -109,7 +109,7 @@ ACTOR MechaNaziStanding5 : MechaNaziStanding1
 		"####" E 0 //bland
 		Goto Spawn
 	SpawnEnemy:
-		TNT1 A 0 A_ChangeFlag("BUMPSPECIAL", FALSE)
+		TNT1 A 0 {bBumpSpecial = FALSE;}
 		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "SSGuard")
 		"####" A 1 A_SpawnItemEx("MechaDropper5",0,0,0)
 		Stop

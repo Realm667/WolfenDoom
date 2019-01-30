@@ -172,13 +172,13 @@ ACTOR BatFamiliar : Base
 		Goto See
 	Death:
 		BFAM D 5 A_ScreamAndUnblock
-		"####" EFD 5 {A_ChangeFlag("MTHRUSPECIES", TRUE); A_ChangeFlag("THRUSPECIES", TRUE);}
+		"####" EFD 5 {bMThruSpecies = TRUE; bThruSpecies = TRUE;}
 		Goto Death+1
 	Crash:
 		BFAM G 6 A_PlaySound("batfam/crash")
 		"####" H 7
 		"####" I 8
-		"####" J -1 {A_ChangeFlag("MTHRUSPECIES", TRUE); A_ChangeFlag("THRUSPECIES", TRUE);}
+		"####" J -1 {bMThruSpecies = TRUE; bThruSpecies = TRUE;}
 		Stop
 	}
 }
@@ -312,7 +312,7 @@ ACTOR BigSpider : Base
 		"####" C 5
 		"####" B 5
 		"####" A 5
-		"####" A -1 {A_ChangeFlag("MTHRUSPECIES", TRUE); A_ChangeFlag("THRUSPECIES", TRUE);}
+		"####" A -1 {bMThruSpecies = TRUE; bThruSpecies = TRUE;}
 		Stop
 	}
 }

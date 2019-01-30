@@ -540,7 +540,7 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 	{
 	Spawn:
 		PRSN E 0 NoDelay {
-		A_ChangeFlag ("USESPECIAL", FALSE); //let's pretend when the actor is active we can't interact with it
+		bUseSpecial = FALSE; //let's pretend when the actor is active we can't interact with it
 		A_SetScale(ScaleX + frandom(-0.2,0.2),ScaleY + frandom(-0.2,0.2));
 		}
 	Active: //check if it's active though
@@ -645,7 +645,7 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 		"####" O -1
 		Stop
 	Inactive:
-		"####" E 0 A_ChangeFlag ("USESPECIAL", TRUE)
+		"####" E 0 {bUseSpecial = TRUE;}
 		"####" E -1
 		Stop
 	}
@@ -659,10 +659,7 @@ ACTOR Camp_PrisonerBaldShirtless : Camp_PrisonerBald
 	States
 	{
 	Spawn:
-		PRSS E 0 NoDelay {
-		A_ChangeFlag ("USESPECIAL", FALSE);
-		A_SetScale(ScaleX + frandom(-0.2,0.2),ScaleY + frandom(-0.2,0.2));
-		}
+		PRSS E 0 NoDelay { bUseSpecial = FALSE; A_SetScale(ScaleX + frandom(-0.2,0.2),ScaleY + frandom(-0.2,0.2)); }
 	Active:
 	SpawnLoop:
 		PRSS E 1 {

@@ -356,10 +356,8 @@ ACTOR ScientistUniform : SwitchableDecoration
 		SCUN A -1 NoDelay ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 		Stop
 	Active:
-		SCUN B 0 A_ChangeFlag("SOLID", FALSE)
+		SCUN B 0 {bSolid = FALSE; bDormant = FALSE; bUseSpecial = FALSE;}
 		"####" B 0 A_SpawnItemEx("ScientistUniformPickup", 0, 0, 16, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
-		"####" B 0 A_ChangeFlag("DORMANT", FALSE)
-		"####" B 0 A_ChangeFlag("USESPECIAL", FALSE)
 		"####" B -1
 		Stop
 	}
@@ -392,10 +390,8 @@ ACTOR SSBJUniform : ScientistUniform
 		SSUF A -1 NoDelay ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 		Stop
 	Active:
-		SCUN B 0 A_ChangeFlag("SOLID", FALSE)
+		SCUN B 0 {bSolid = FALSE; bDormant = FALSE; bUseSpecial = FALSE;}
 		"####" B 0 A_SpawnItemEx("SSBJUniformPickup", 0, 0, 16, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
-		"####" B 0 A_ChangeFlag("DORMANT", FALSE)
-		"####" B 0 A_ChangeFlag("USESPECIAL", FALSE)
 		"####" B -1
 		Stop
 	}
@@ -428,10 +424,8 @@ ACTOR CCBJUniform : ScientistUniform
 		CCUF A -1 NoDelay ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 		Stop
 	Active:
-		CCUF B 0 A_ChangeFlag("SOLID", FALSE)
+		CCUF B 0 {bSolid = FALSE; bDormant = FALSE; bUseSpecial = FALSE;}
 		"####" B 0 A_SpawnItemEx("CCampUniformPickup", 0, 0, 16, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
-		"####" B 0 A_ChangeFlag("DORMANT", FALSE)
-		"####" B 0 A_ChangeFlag("USESPECIAL", FALSE)
 		"####" B -1
 		Stop
 	}
@@ -466,32 +460,27 @@ ACTOR ZombieArmClue : CompassItem
 	Spawn:
 		ZARM B -1
 		Stop
-
 	}
 }
 
-ACTOR ZombieHeadClue : CompassItem
+ACTOR ZombieHeadClue : ZombieArmClue
 {
 	//$Title Zombie Head (Clue)
 	Tag "$TAGZHED"
-	CompassItem.SpecialClue 3
 	Inventory.Icon ZHEDA0
 	Inventory.PickupMessage "$ZHED"
-	Inventory.PickupSound "misc/armor_body"
 	States
 	{
 	Spawn:
 		ZHED B -1
 		Stop
-
 	}
 }
 
-ACTOR MineralClue : CompassItem
+ACTOR MineralClue : ZombieArmClue
 {
 	//$Title Mineral (Clue)
 	Tag "$TAGMINR"
-	CompassItem.SpecialClue 3
 	Inventory.Icon MINRA0
 	Inventory.MaxAmount 2
 	Inventory.PickupMessage "$ZMINR"
@@ -501,6 +490,5 @@ ACTOR MineralClue : CompassItem
 	Spawn:
 		MINR B -1
 		Stop
-
 	}
 }

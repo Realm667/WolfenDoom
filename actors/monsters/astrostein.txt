@@ -446,7 +446,7 @@ ACTOR AstroDrone : Nazi
 	Death:
 		DRON M 0 A_Scream
 		"####" M 0 A_SpawnItemEx("AstrosteinExplosion_Medium", 0, 0, 48)
-		"####" M 0 {A_NoBlocking; A_ChangeFlag("NOGRAVITY",FALSE);}
+		"####" M 0 {A_NoBlocking; bNoGravity = FALSE;}
 		"####" M -1
 		Stop
 	}

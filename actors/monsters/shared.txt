@@ -680,7 +680,7 @@ ACTOR FlyingCleaver : MiniRocket
 		MUPR A 1 A_SetRoll(roll+20, SPF_INTERPOLATE, 0)
 		Loop
 	Death:
-		MUPR A 1 { A_ChangeFlag("ROLLSPRITE", FALSE); A_SpawnItemEx("HackPuff"); }
+		MUPR A 1 { bRollSprite = FALSE; A_SpawnItemEx("HackPuff"); }
 		"####" A 1 A_FadeOut(0.1)
 		Stop
 	}
