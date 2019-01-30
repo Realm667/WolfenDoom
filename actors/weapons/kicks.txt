@@ -152,8 +152,8 @@ ACTOR BJKickAuto : BJKick //Bastardize the weapon states to make a weapon that f
 		BJKK A 1 Offset(24,39)
 		BJKK A 1 Offset(6,34) A_PlaySound("knife/swing",CHAN_WEAPON)
 		BJKK B 2 Offset(4,32) A_CustomPunch(10, TRUE, CPF_NOTURN, "KickPuff", 70)	//CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
-		BJKK A 1 Offset(6,34)
-		BJKK A 1 Offset(24,39)
+		BJKK A 1 Offset(6,34) { bDontBlast = true; }
+		BJKK A 1 Offset(24,39) { bDontBlast = false; } //KickPuff blast happens 3 tics after spawning
 		BJKK A 1 Offset(36,52)
 		BJKK A 1 Offset(44,60)
 		BJKK A 1 Offset(52,68)
