@@ -2009,6 +2009,7 @@ ACTOR Longinus_Hitler : NaziBoss
 		"####" G 2 A_MonsterRefire(20,"See")
 		Loop
 	ReflectiveOrb:
+		"####" H 0 A_Jump(64,"RumbleStomp")
 		"####" H 1 {bNoDamage = TRUE; A_SetReflective(); bAllowPain = FALSE;}
 		"####" H 1 A_SpawnItemEx("ReflectiveOrb",0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
 		"####" H 1 A_SetTics(35*5)
@@ -2043,22 +2044,22 @@ ACTOR Longinus_Hitler : NaziBoss
 		"####" EHH 6 A_FaceTarget
 		"####" IJ 4 {
 			A_PlaySound("tesla/kill");
-			A_SpawnProjectile("TPortLightningWaveSpawnerH", 160, 0, 0, CMF_AIMDIRECTION, 0);
-			A_SpawnProjectile("TPortLightningWaveSpawnerH", 160, 0, 180, CMF_AIMDIRECTION, 0);
-			A_SpawnItemEx("TPortLightningWaveSpawnerH",0,0,160,0,0,0,0,0,160);
-			A_SpawnItemEx("TPortLightningWaveSpawnerH",0,0,160,0,0,0,0,0,160);
-			A_LightningAttack("LightningBeamPillarZapPH", 0, 0, 160, 0, -90, false);
-			A_LightningAttack("LightningBeamZapPH", 0, 0, 160, 0, 0, false);
+			A_SpawnItemEx("MouthLightning",0,0,160,0,0,0,0,0,160);
+			A_LightningAttack("LightningBeamPillarZap2", 0, 0, 160, 0, -90, false);
+			A_LightningAttack("LightningBeamZap2", 0, 0, 160, 0, 0, false);
+			A_LightningAttack("LightningBeamAlt2", 0, 0, 160, 0, 0, false);
+			A_LightningAttack("LightningBeamAlt2", 0, 0, 160, 0, 0, false);
+			A_LightningAttack("LightningBeamAlt2", 0, 0, 160, 0, 0, false);
 		}
 		"####" H 6
 		"####" JI 4 {
 			A_PlaySound("tesla/kill");
-			A_SpawnProjectile("TPortLightningWaveSpawnerH", 160, 0, 0, CMF_AIMDIRECTION, 0);
-			A_SpawnProjectile("TPortLightningWaveSpawnerH", 160, 0, 180, CMF_AIMDIRECTION, 0);
-			A_SpawnItemEx("TPortLightningWaveSpawnerH",0,0,160,0,0,0,0,0,160);
-			A_SpawnItemEx("TPortLightningWaveSpawnerH",0,0,160,0,0,0,0,0,160);
-			A_LightningAttack("LightningBeamPillarZapPH", 0, 0, 160, 0, -90, false);
-			A_LightningAttack("LightningBeamZapPH", 0, 0, 160, 0, 0, false);
+			A_SpawnItemEx("MouthLightning",0,0,160,0,0,0,0,0,160);
+			A_LightningAttack("LightningBeamPillarZap2", 0, 0, 160, 0, -90, false);
+			A_LightningAttack("LightningBeamZap2", 0, 0, 160, 0, 0, false);
+			A_LightningAttack("LightningBeamAlt2", 0, 0, 160, 0, 0, false);
+			A_LightningAttack("LightningBeamAlt2", 0, 0, 160, 0, 0, false);
+			A_LightningAttack("LightningBeamAlt2", 0, 0, 160, 0, 0, false);
 		}
 		"####" H 6
 		"####" E 4

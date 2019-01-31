@@ -420,6 +420,16 @@ Class LightningBeamAlt : LightningBeam
 	}
 }
 
+Class LightningBeamAlt2 : LightningBeamAlt
+{
+	States
+	{
+		Spawn:
+			TNT1 A 1 NoDelay { A_SpawnBeam(); A_RadiusThrust(1500, 128); }
+			Stop;
+	}
+}
+
 Class LightningBeamArc : LightningBeamPri
 {
 	Default 
