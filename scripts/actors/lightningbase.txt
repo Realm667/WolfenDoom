@@ -127,7 +127,7 @@ Class LightningBeam : Actor
 		//  makes sure that damage of the correct amount and type still occurs inside of that radius...
 		Class<MovingTrailBeam> trailclass = trail;
 		let def = GetDefaultByType(trailclass);
-		master.A_CustomBulletAttack(angle - master.angle, 0, 1, def ? def.Damage : Random(0, 1), "LightningPuff", master.radius * 4, CBAF_AIMFACING | CBAF_EXPLICITANGLE);
+		master.A_CustomBulletAttack(angle - master.angle, 0, 1, def ? def.Damage : Random(0, 1), MovingTrailBeam(def) ? MovingTrailBeam(def).puff : "LightningPuff", master.radius * 4, CBAF_AIMFACING | CBAF_EXPLICITANGLE);
 
 		Actor prev;
 
@@ -136,7 +136,7 @@ Class LightningBeam : Actor
 			bool spawned;
 			Actor t;
 
-			if (targets)
+			if (targets && !closest || level.time % 15 == 0) // Only run this every fifteen tics, or on first iteration
 			{
 				closest = ClosestMonster();
 				if (closest) { tracer = closest; }
@@ -249,10 +249,13 @@ Class LightningBeam : Actor
 
 		if (master is "PlayerPawn" || master.bFriendly == true)
 		{
-			ThinkerIterator Finder = ThinkerIterator.Create("Actor", Thinker.STAT_DEFAULT);
-			while (mo = Actor(Finder.Next()))
+			BlockThingsIterator it = BlockThingsIterator.Create(self, 256);
+
+			while (it.Next())
 			{
-				if (mo == self || mo == origin || !mo.bShootable || mo.bDormant || !mo.bIsMonster) { continue; }
+				mo = it.thing;
+
+				if (mo == self || mo == origin || !mo.bShootable || mo.bDormant) { continue; }
 				if (!origin.IsVisible(mo, true)) { continue; }
 				if (Distance3d(mo) > 256) { continue; }
 				if (closest && Distance3d(mo) > Distance3d(closest)) { continue; }
@@ -460,13 +463,11 @@ Class LightningBeamPillar : LightningBeam
 Class MovingTrailBeam : Actor 
 {
 	String puff;
-	String trail;
 	Vector3 beamoffset;
 	int damage;
 
 	Property Damage:damage;
 	Property PuffActor:puff;
-	Property TrailActor:trail;
 
 	Default
 	{
@@ -475,20 +476,19 @@ Class MovingTrailBeam : Actor
 		+NOINTERACTION
 		RenderStyle "Add";
 		MovingTrailBeam.Damage 0;
-		MovingTrailBeam.TrailActor "MovingTrailBeam";
 		MovingTrailBeam.PuffActor "LightningPuff";
 	}
 
 	States
 	{
 		Spawn:
-			MDLA A 0 A_Jump(16,"Spawn.Light");
+			MDLA A 0 A_Jump(16,"Fade.Light");
+		Fade:
 			MDLA A 1 A_FadeOut(0.2);
-			Loop;
-		Spawn.Light:
-			MDLA A 1 LIGHT("Lightning") A_FadeOut(0.2);
-			MDLA A 0 A_Jump(128,"Spawn+1");
-			Loop;
+			Goto Spawn;
+		Fade.Light:
+			MDLA A 1 Light("Lightning") A_FadeOut(0.2);
+			Goto Spawn;
 	}
 
 	override void PostBeginPlay()
@@ -498,7 +498,7 @@ Class MovingTrailBeam : Actor
 		if (master && Distance3D(master) > master.radius * 4)
 		{
 			// Used to make all individual bolt segments leave decals and cause damage
-			A_CustomBulletAttack(0, 0, 1, damage, "LightningPuff", int(scale.y), CBAF_AIMFACING);
+			A_CustomBulletAttack(0, 0, 1, damage, puff, int(scale.y), CBAF_AIMFACING);
 		}
 
 		if (master) { beamoffset = pos - master.pos; }
@@ -525,7 +525,6 @@ Class LightningTrailBeamZap : MovingTrailBeam
 	Default
 	{
 		MovingTrailBeam.Damage 1;
-		MovingTrailBeam.TrailActor "LightningTrailBeamZap";
 	}
 }
 
@@ -534,7 +533,6 @@ Class LightningTrailBeamZapP : MovingTrailBeam
 	Default
 	{
 		MovingTrailBeam.Damage 1;
-		MovingTrailBeam.TrailActor "LightningTrailBeamZapP";
 	}
 }
 
@@ -543,7 +541,6 @@ Class LightningTrailBeam : MovingTrailBeam
 	Default
 	{
 		MovingTrailBeam.Damage 2;
-		MovingTrailBeam.TrailActor "LightningTrailBeam";
 	}
 }
 
@@ -552,7 +549,6 @@ Class LightningTrailBeamAlt : MovingTrailBeam
 	Default
 	{
 		MovingTrailBeam.Damage 2;
-		MovingTrailBeam.TrailActor "LightningTrailBeamAlt";
 	}
 }
 
@@ -561,7 +557,6 @@ Class LightningTrailBeamArc : MovingTrailBeam
 	Default
 	{
 		MovingTrailBeam.Damage 50;
-		MovingTrailBeam.TrailActor "LightningTrailBeamArc";
 	}
 }
 
