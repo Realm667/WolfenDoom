@@ -206,6 +206,43 @@ PointLight Lightning10
 	Size 24
 	Attenuate 1
 }
+
+FlickerLight Lightning11
+{
+	Color 1.0 1.0 1.0
+	Size 20
+	SecondarySize 150
+	Chance 0.4
+	Attenuate 1
+}
+
+FlickerLight Lightning12
+{
+	Color 0.3 0.2 0.5
+	Size 200
+	SecondarySize 400
+	Chance 0.3
+	Attenuate 1
+}
+
+FlickerLight Lightning13
+{
+	Color 0.6 0.4 1.0
+	Size 200
+	SecondarySize 400
+	Chance 0.3
+	Attenuate 1
+}
+
+Object MouthLightning
+{
+	frame TESHA0 {light Lightning11}
+	frame TESHB0 {light Lightning12}
+	frame TESHA0 {light Lightning13}
+	frame TESHB0 {light Lightning11}
+	frame TESHA0 {light Lightning12}
+	frame TESHB0 {light Lightning13}
+}
 /////////////////
 //STROBE LIGHTS//
 /////////////////
