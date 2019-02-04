@@ -125,6 +125,25 @@ ACTOR StatistDimitri : StatistBarkeeper
 	}
 }
 
+ACTOR StatistZhukov : StatistBarkeeper
+{
+	//$Title Marshal Zhukov (NPC)
+	Scale 0.67
+	-USESPECIAL
+	States
+	{
+	Spawn:
+		ZHUK E 80
+		"####" F 40
+		"####" GH 40
+		"####" A 80
+		"####" BDCA 40
+		"####" CA 40
+		"####" FE 40
+		Loop
+	}
+}
+
 ACTOR StatistBarkeeperMale : StatistBarkeeper
 {
 	//$Title Randi Heit, Barkeeper (NPC)
