@@ -170,6 +170,7 @@ ACTOR SpearOfDestiny : CompassItem
 {
 	//$Title Spear of Destiny
 	Tag "$TAGSTAFF"
+	Scale 0.67
 	+COUNTITEM
 	Inventory.Icon SPEAA0
 	Inventory.PickupMessage "$SPEAROD"
@@ -186,13 +187,27 @@ ACTOR SpearOfDestiny_End : CompassItem
 {
 	//$Title Spear of Destiny (Final Battle)
 	Tag "$TAGSTAFF"
+	Scale 2.0 //since it gets dropped from Longinus_Hitler, which is tall
 	Inventory.Icon SPEAA0
 	Inventory.PickupMessage "$SPEAROD"
 	Inventory.PickupSound "misc/spearofdestiny"
 	States
 	{
 	Spawn:
-		SPEA C -1
+		SPEA CC 1 A_SetScale(1.9)
+		"####" CC 1 A_SetScale(1.8)
+		"####" CC 1 A_SetScale(1.7)
+		"####" CC 1 A_SetScale(1.6)
+		"####" CC 1 A_SetScale(1.5)
+		"####" CC 1 A_SetScale(1.4)
+		"####" CC 1 A_SetScale(1.3)
+		"####" CC 1 A_SetScale(1.2)
+		"####" CC 1 A_SetScale(1.1)
+		"####" CC 1 A_SetScale(1.0)
+		"####" CC 1 A_SetScale(0.9)
+		"####" CC 1 A_SetScale(0.8)
+		"####" CC 1 A_SetScale(0.7)
+		"####" C -1 A_SetScale(0.67)
 		Stop
 	}
 }
