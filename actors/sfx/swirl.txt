@@ -42,6 +42,7 @@ ACTOR Swirl_XL1 : Swirl_Wall
 	//$Sprite SWRXA0
 	-WALLSPRITE
 	+FLATSPRITE
+	Health 1
 	Alpha 1.0
 	Scale 1.0
 	States
@@ -51,9 +52,11 @@ ACTOR Swirl_XL1 : Swirl_Wall
 		SWRX A 3 BRIGHT
 		Loop
 	Inactive:
-		SWRX AAAAAAAAAAAAAAAAAAAA 5 A_Fadeout(0.05)
 		TNT1 A 1
 		Wait
+	Death:
+		SWRX AAAAAAAAAAAAAAAAAAAA 5 A_Fadeout(0.05)
+		Stop
 	}
 }
 
@@ -68,9 +71,11 @@ ACTOR Swirl_XL2 : Swirl_XL1
 		SWRX B 3 BRIGHT
 		Loop
 	Inactive:
-		SWRX BBBBBBBBBBBBBBBBBBBB 5 A_Fadeout(0.05)
 		TNT1 A 1
 		Wait
+	Death:
+		SWRX BBBBBBBBBBBBBBBBBBBB 5 A_Fadeout(0.05)
+		Stop
 	}
 }
 
@@ -85,9 +90,11 @@ ACTOR Swirl_XL3 : Swirl_XL1
 		SWRX C 3 BRIGHT
 		Loop
 	Inactive:
-		SWRX CCCCCCCCCCCCCCCCCCCC 5 A_Fadeout(0.05)
 		TNT1 A 1
 		Wait
+	Death:
+		SWRX CCCCCCCCCCCCCCCCCCCC 5 A_Fadeout(0.05)
+		Stop
 	}
 }
 
@@ -104,5 +111,8 @@ ACTOR Swirl_XL4 : Swirl_XL1
 	Inactive:
 		TNT1 A 1
 		Wait
+	Death:
+		SWRX DDDDDDDDDDDDDDDDDDDD 5 A_Fadeout(0.05)
+		Stop
 	}
 }
