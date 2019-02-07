@@ -86,6 +86,12 @@ ACTOR 3dFurniture : 3dObstacle
 	DistanceCheck "scenelod"
 }
 
+ACTOR 3dFurnitureFloat : 3dFurniture
+{
+	+FLOAT
+	+FLOATBOB
+}
+
 //some smart bridges
 ACTOR 3dBridge256 : InvisibleBridge
 {Radius 256 Height 256}
@@ -2447,6 +2453,12 @@ ACTOR COD_Cabinet1D : COD_Cabinet1
 {
 	//$Category Furniture (BoA)/Wartorn
 	//$Title Ornated Wooden Cabinet, burnt
+}
+
+ACTOR COD_Cabinet1DF : 3dFurnitureFloat
+{
+	//$Category Furniture (BoA)/Floating
+	//$Title Ornated Wooden Cabinet, burnt (floating)
 }
 
 ACTOR COD_OrnateChair1 : RTCWChair1
