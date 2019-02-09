@@ -86,10 +86,22 @@ ACTOR 3dFurniture : 3dObstacle
 	DistanceCheck "scenelod"
 }
 
-ACTOR 3dFurniture_End : 3dObstacle //this doesn't have scenelod to force needed effect on c3m6_b battle - ozy81
+ACTOR 3dFurniture_End  //this doesn't have scenelod to force needed effect on c3m6_b battle - ozy81
 {
 	//$Category Final Battle (BoA)
 	//$Color 3
+	Height 2
+	Radius 2
+	+CANPASS
+	+MOVEWITHSECTOR
+	+NOGRAVITY
+	+SOLID
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
 }
 
 //some smart bridges
@@ -751,9 +763,6 @@ ACTOR Submarine : ModelBase
 ACTOR SubmarineF : 3dFurniture_End
 {
 	//$Title Submarine (no lod)
-	Radius 64
-	Height 64
-	-SOLID
 }
 
 ACTOR SubmarineIcy : Submarine
@@ -1979,15 +1988,36 @@ ACTOR 3dPrometheus_R: 3dPrometheus_L
 
 ACTOR 3dPrometheus_LF : 3dFurniture_End
 {
-	//$Title Prometheus Statue (Left Side, no lod)
+	//$Title Prometheus Statue, Floating Flame (Left Side, no lod)
 	Radius 32
 	Height 96
+	States
+	{
+	Spawn:
+		MDLA A -1 NoDelay A_SpawnItemEx("PrometheusFireA", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		Stop
+	}
 }
 
 ACTOR 3dPrometheus_RF: 3dPrometheus_LF
 {
-	//$Title Prometheus Statue (Right Side, no lod)
+	//$Title Prometheus Statue, Floating Flame (Right Side, no lod)
+	States
+	{
+	Spawn:
+		MDLA A -1 NoDelay A_SpawnItemEx("PrometheusFireB", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		Stop
+	}
 }
+
+ACTOR PrometheusFireA : ModelBase
+{
+	+FLOAT
+	+FLOATBOB
+	-SOLID
+}
+
+ACTOR PrometheusFireB : PrometheusFireA {}
 
 //TF3DM / 3dRegenerator Models
 ACTOR 3dPiano : InteractionBase
@@ -2360,7 +2390,6 @@ ACTOR COD_Dresser1D : COD_Dresser1
 ACTOR COD_Dresser1DF : 3dFurniture_End
 {
 	//$Title Ornated Dresser, burnt (no lod)
-	Radius 8
 }
 
 ACTOR COD_ArmChair : 3dFurniture
@@ -2380,7 +2409,6 @@ ACTOR COD_ArmChairD : COD_ArmChair
 ACTOR COD_ArmChairDF : 3dFurniture_End
 {
 	//$Title Ornated French Chair, burnt (no lod)
-	Height 24
 }
 
 ACTOR COD_WriTable1 : 3dFurniture
@@ -2404,6 +2432,7 @@ ACTOR COD_WriTable1DF : 3dFurniture_End
 ACTOR COD_Piano1 : 3dFurniture
 {
 	//$Title Ornated Piano
+	RenderRadius 128
 	Radius 32
 	Height 72
 }
@@ -2411,12 +2440,13 @@ ACTOR COD_Piano1 : 3dFurniture
 ACTOR COD_Piano1D : COD_Piano1
 {
 	//$Category Furniture (BoA)/Wartorn
-	//$Title Ornated Piano, burnt	
+	//$Title Ornated Piano, burnt
 }
 
 ACTOR COD_Piano1DF : 3dFurniture_End
 {
-	//$Title Ornated Piano, burnt (no lod)	
+	//$Title Ornated Piano, burnt (no lod)
+	RenderRadius 128
 }
 
 ACTOR COD_SideTable1 : 3dFurniture
