@@ -61,3 +61,23 @@ class ElectricalPillar : ElectricalArc
 		Super.Tick();
 	}
 }
+
+Class ElectricalArc2 : ElectricalArc
+{
+	Default
+	{
+		//$Title Green Electrical Arc
+		ElectricalArc.Beam "LightningBeamArc2";
+	}
+}
+
+Class ElectricalPillar2 : ElectricalPillar
+{
+	Default
+	{
+		//$Title Green Electrical Pillar
+		+NOGRAVITY
+		+SPAWNCEILING
+		ElectricalArc.Beam "LightningBeamPillar2";
+	}
+}
