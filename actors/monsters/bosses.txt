@@ -219,8 +219,8 @@ ACTOR AngelOfDeath_End : AngelOfDeath
 		"####" C 2 A_SetTranslucent(0.15, STYLE_TRANSLUCENT)
 		"####" B 2 A_SetTranslucent(0.10, STYLE_TRANSLUCENT)
 	Cloak.Loop:
-		"####" A 0 A_SpawnItemEx("ZyklonZCloud2",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128)
-		"####" A 0 {user_count++; if(user_count > 7) {user_count = 0; return ResolveState("Cloak.Stop");} return ResolveState("");}
+		"####" A 0 A_SpawnItemEx("ZyklonZCloud2",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,0)
+		"####" A 0 {user_count++; if(user_count > 4) {user_count = 0; return ResolveState("Cloak.Stop");} return ResolveState("");}
 		"####" ABCDCB 2 A_Wander
 		Loop
 	Cloak.Stop:
@@ -250,43 +250,18 @@ ACTOR AngelOfDeath_End : AngelOfDeath
 		"####" EF 4
 		"####" G 5 A_CustomMeleeAttack(6,"aode/melee","","Melee",TRUE)
 		Goto See
-	Melee.Wound:
-		"####" EF 4
-		"####" G 5 A_CustomMeleeAttack(6,"aode/melee","","Melee",TRUE)
-		Goto See.Wound
 	Missile:
 		"####" "#" 0 A_JumpIf(health<3000, "Missile.Wound")
 		"####" E 0 A_Jump(96, "SeekerBlast")
 		"####" E 0 A_JumpIfCloser(512, "CloseRange")
 		Goto LongRange
-	Missile.Wound:
-		"####" E 0 A_Jump(32, "See.Cloak")
-		"####" E 0 A_Jump(96, "SeekerBlast.Wound")
-		"####" E 0 A_JumpIfCloser(384, "ZyklonBursts")
-		Goto LongRange.Wound
 	CloseRange:
 		"####" E 0 A_Jump(176, "RapidFire")
-		Goto SpreadFire
-	ZyklonBursts:
-		AODE UUUUU 1 A_SpawnProjectile("ZFlamebolt",56,0)
-		"####" E 6 A_MonsterRefire(10,"See.Wound")
-		Goto Missile.Wound
-	CloseRange.Wound:
-		"####" E 0 A_Jump(176, "RapidFire.Wound")
 		Goto SpreadFire
 	LongRange:
 		"####" E 0 A_Jump(176, "SpreadFire")
 		Goto RapidFire
-	LongRange.Wound:
-		"####" E 0 A_Jump(176, "SpreadFire.Wound")
-		Goto RapidFire.Wound
 	SeekerBlast:
-		"####" E 0 A_PlaySound("aode/fire")
-		AODE F 8 A_FaceTarget
-		"####" G 8 A_SpawnProjectile("AODEBlastPod", 68, 38, random(-4,4))
-		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
-		Goto See
-	SeekerBlast.Wound:
 		"####" E 0 A_PlaySound("aode/fire")
 		AODE F 8 A_FaceTarget
 		"####" G 8 A_SpawnProjectile("AODEBlastPod", 68, 38, random(-4,4))
@@ -328,42 +303,6 @@ ACTOR AngelOfDeath_End : AngelOfDeath
 		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
 		"####" G 4 A_FaceTarget
 		Goto See
-	RapidFire.Wound:
-		"####" EF 6 A_FaceTarget
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
-		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
-		"####" G 0 A_FaceTarget
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
-		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
-		"####" G 0 A_FaceTarget
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
-		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
-		"####" G 0 A_FaceTarget
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
-		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
-		"####" G 0 A_FaceTarget
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
-		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
-		"####" G 0 A_FaceTarget
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
-		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
-		"####" G 0 A_FaceTarget
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
-		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
-		"####" G 0 A_FaceTarget
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
-		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
-		"####" G 0 A_FaceTarget
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
-		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
-		"####" G 0 A_FaceTarget
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
-		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
-		"####" G 0 A_FaceTarget
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
-		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
-		"####" G 4 A_FaceTarget
-		Goto See.Wound
 	SpreadFire:
 		AODE EF 6 A_FaceTarget
 		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
@@ -381,23 +320,6 @@ ACTOR AngelOfDeath_End : AngelOfDeath
 		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
 		"####" E 4 A_FaceTarget
 		Goto See
-	SpreadFire.Wound:
-		AODE EF 6 A_FaceTarget
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
-		"####" EF 6 A_FaceTarget
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
-		"####" E 4 A_FaceTarget
-		Goto See.Wound
 	Pain:
 		TNT1 A 0 A_JumpIf(health<3000, "Pain.Wound")
 		TNT1 A 0 A_Jump(50, "PainSpam")
@@ -429,6 +351,84 @@ ACTOR AngelOfDeath_End : AngelOfDeath
 		"####" F 0 A_SpawnProjectile("AODEPainPlasmaBlast", 75, 0, 345, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0)
 		"####" H 3 A_Pain
 		Goto See
+	ZyklonBursts:
+		AODE UUUUU 1 A_SpawnProjectile("ZFlamebolt",56,0)
+		"####" E 6 A_MonsterRefire(10,"See.Wound")
+		Goto Missile.Wound
+	SeekerBlast.Wound:
+		"####" E 0 A_PlaySound("aode/fire")
+		AODE F 8 A_FaceTarget
+		"####" G 8 A_SpawnProjectile("AODEBlastPod", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		Goto See.Wound
+	Melee.Wound:
+		"####" EF 3
+		"####" G 4 A_CustomMeleeAttack(12,"aode/melee","","Melee",TRUE)
+		Goto See.Wound
+	Missile.Wound:
+		"####" E 0 A_Jump(32, "See.Cloak")
+		"####" E 0 A_Jump(96, "SeekerBlast.Wound")
+		"####" E 0 A_JumpIfCloser(384, "ZyklonBursts")
+		Goto LongRange.Wound
+	CloseRange.Wound:
+		"####" E 0 A_Jump(176, "RapidFire.Wound")
+		Goto SpreadFire.Wound
+	LongRange.Wound:
+		"####" E 0 A_Jump(176, "SpreadFire.Wound")
+		Goto RapidFire.Wound
+	RapidFire.Wound:
+		"####" EF 5 A_FaceTarget
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 0 A_FaceTarget
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
+		"####" G 0 A_SpawnItemEx("SparkFlare_G1", 68, 38, random(52,58))
+		"####" G 3 A_FaceTarget
+		Goto See.Wound
+	SpreadFire.Wound:
+		AODE EF 4 A_FaceTarget
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
+		"####" EF 4 A_FaceTarget
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3))
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4))
+		"####" E 3 A_FaceTarget
+		Goto See.Wound
 	Pain.Wound:
 		"####" "#" 0 A_Jump(50, "PainSpam.Wound")
 		AODE H 2
