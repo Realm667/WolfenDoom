@@ -8,6 +8,11 @@ class LevelData
 	String mapname, levelname;
 }
 
+class PersistentMapStatsHandler : EventHandler
+{
+	Array<LevelData> Levels;
+}
+
 class MapStatsHandler : StaticEventHandler
 {
 	Array<LevelData> Levels;
@@ -20,6 +25,7 @@ class MapStatsHandler : StaticEventHandler
 	int lineheight;
 	Array<String> SpecialItemPickups;
 	int chapter;
+	PersistentMapStatsHandler persistent;
 
 	int FindLevel(String n) // Helper function to find a thing in a child class (Used in place of Levels.Find(mo) since the name is nested in a LevelData object
 	{
@@ -72,6 +78,10 @@ class MapStatsHandler : StaticEventHandler
 		l.totalsecrets = level.total_secrets;
 		l.secretcount = level.found_secrets;
 		l.leveltime = level.maptime;
+
+		// Save the copy of the data that will persist across saves...
+		if (!this.persistent) { this.persistent = PersistentMapStatsHandler(EventHandler.Find("PersistentMapStatsHandler")); }
+		if (this.persistent) { this.persistent.Levels.Copy(this.Levels); }
 	}
 
 	override void OnRegister()
@@ -120,6 +130,12 @@ class MapStatsHandler : StaticEventHandler
 
 	override void WorldLoaded(WorldEvent e)
 	{
+		if (e.IsSaveGame) // If loading a save, check for saved stats and copy them over if found
+		{
+			if (!persistent) { persistent = PersistentMapStatsHandler(EventHandler.Find("PersistentMapStatsHandler")); }
+			if (persistent) { Levels.Copy(persistent.Levels); }
+		}
+
 		active[consoleplayer] = false;
 
 		SaveLevelData();
@@ -148,9 +164,9 @@ class MapStatsHandler : StaticEventHandler
 
 			DrawChapter(chapter, 320, 96, center);
 
-			for (int i = 0; i < Levels.Size(); i++)
+			for (int i = 0; i < persistent.Levels.Size(); i++)
 			{
-				let m = Levels[i];
+				let m = persistent.Levels[i];
 
 				// Filter to only show results from maps named in the CxMy format.
 				String mapname = m.mapname;
