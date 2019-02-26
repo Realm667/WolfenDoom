@@ -351,30 +351,54 @@ class HeatEffectGiver : SwitchableDecoration
 
 class Tornado : Actor
 {
+	class<Actor> segment;
+	int skinframe;
+	class<Actor> lightning;
+	class<Actor> dust;
+
+	Property Segment:segment;
+	Property SegmentSkin:skinframe;
+	Property Lightning:lightning;
+	Property Dust:dust;
+
 	Default
 	{
 		+NOINTERACTION
 
 		Scale 3.5;
 		Speed 1.0;
+		Alpha 1.0;
+
+		Tornado.Segment "TornadoSegment";
+		Tornado.SegmentSkin 0; // 0-4 uses the various waterfall textures as the model skin
+		Tornado.Lightning "LightningBeamArc2";
+		Tornado.Dust "ZyklonBCloud";
 	}
 
 	override void PostBeginPlay()
 	{
-		scale *= (ceilingz - floorz) / 512.;
+		double factor = (ceilingz - floorz) / 896.;
+
+		scale *= factor;
 
 		Actor prev;
 		double spawnscale = scale.x;
 		double spawnspeed = speed;
 
-		for (double i = ceilingz; i >= floorz; i -= 48)
+		for (double i = ceilingz; i >= floorz; i -= 48 * factor)
 		{
-			Actor mo = Spawn("TornadoSegment", (pos.xy, i));
+			Actor mo = Spawn(segment, (pos.xy, i));
 
 			if (mo)
 			{
 				TornadoSegment(mo).destscale = spawnscale;
+				TornadoSegment(mo).skinframe = skinframe;
+				TornadoSegment(mo).dust = dust;
+				TornadoSegment(mo).lightning = lightning;
+				mo.bBright = bBright;
+				mo.alpha = alpha;
 				mo.speed = spawnspeed;
+				mo.scale.y = factor;
 				if (prev) { prev.master = mo; }
 
 				prev = mo;
@@ -400,6 +424,9 @@ class TornadoSegment : Actor
 	Vector3 offset;
 	double destscale;
 	int timeoffset;
+	class<Actor> lightning;
+	class<Actor> dust;
+	int skinframe;
 
 	Default
 	{
@@ -407,18 +434,17 @@ class TornadoSegment : Actor
 		+NOGRAVITY
 
 		Renderstyle "Add";
-		Alpha 0.15;
 		Scale 0.05;
 	}
 
 	States
 	{
 		Spawn:
-			MDLA A 0;
-			MDLA A 105 Bright;
+			MDLA # 0;
+			MDLA # 70;
 		Disperse:
-			MDLA A 5 Bright {
-				A_FadeOut(0.005);
+			MDLA # 5 {
+				A_FadeOut(0.025);
 				scale.x *= 1.0125;
 			}
 			Loop;
@@ -427,9 +453,8 @@ class TornadoSegment : Actor
 	override void PostBeginPlay()
 	{
 		angle = Random(0, 359);
-		scale.y = 1.0;
 		timeoffset = Random(0, 359);
-
+		frame = skinframe;
 		SpawnPoint = pos;
 
 		if (master)
@@ -445,7 +470,7 @@ class TornadoSegment : Actor
 		if (isFrozen()) { return; }
 
 		angle += speed;
-		roll = 5 * sin((level.time + timeoffset) * 2);
+		roll = 5 * sin((level.time + timeoffset) * 2) * scale.y;
 
 		if (master)
 		{
@@ -466,18 +491,24 @@ class TornadoSegment : Actor
 
 		int radius = int(64 * scale.x);
 
-		if (level.time && level.time % (timeoffset * 2.5) == 0)
+		if (level && level.time && level.time % (timeoffset * 2) == 0)
 		{
-			Actor cloud = Spawn("ZyklonBCloud", (SpawnPoint.xy + (Random(-radius, radius), Random(-radius, radius)), floorz));
-			if (cloud) { cloud.scale *= FRandom(0.5, 1.2); }
-
-			Actor l = Spawn("LightningBeamArc2", pos + (Random(-radius, radius), Random(-radius, radius), 0));
-			if (l)
+			if (dust)
 			{
-				l.master = self;
-				l.angle = Random(0, 359);
-				l.pitch = Random(0, 359);
-				LightningBeam(l).maxdistance = 256 * scale.x;
+				Actor cloud = Spawn(dust, (SpawnPoint.xy + (Random(-radius, radius), Random(-radius, radius)), floorz));
+				if (cloud) { cloud.scale *= FRandom(0.5, 1.2); }
+			}
+
+			if (lightning)
+			{
+				Actor l = Spawn(lightning, pos + (Random(-radius, radius), Random(-radius, radius), 0));
+				if (l)
+				{
+					l.master = self;
+					l.angle = Random(0, 359);
+					l.pitch = Random(0, 359);
+					LightningBeam(l).maxdistance = 256 * scale.x;
+				}
 			}
 		}
 
