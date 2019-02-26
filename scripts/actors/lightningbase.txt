@@ -151,7 +151,7 @@ Class LightningBeam : Actor
 		//  makes sure that damage of the correct amount and type still occurs inside of that radius...
 		Class<MovingTrailBeam> trailclass = trail;
 		let def = GetDefaultByType(trailclass);
-		master.A_CustomBulletAttack(angle - master.angle, 0, 1, def ? def.Damage : Random(0, 1), MovingTrailBeam(def) ? MovingTrailBeam(def).puff : "LightningPuff", master.radius * 4, CBAF_AIMFACING | CBAF_EXPLICITANGLE);
+		if (master) { master.A_CustomBulletAttack(angle - master.angle, 0, 1, def ? def.Damage : Random(0, 1), MovingTrailBeam(def) ? MovingTrailBeam(def).puff : "LightningPuff", master.radius * 4, CBAF_AIMFACING | CBAF_EXPLICITANGLE); }
 
 		Actor prev;
 
@@ -160,7 +160,7 @@ Class LightningBeam : Actor
 			bool spawned;
 			Actor t;
 
-			if (targets && !closest || level.time % 15 == 0) // Only run this every fifteen tics, or on first iteration
+			if (targets && (!closest || level.time % 15 == 0)) // Only run this every fifteen tics, or on first iteration
 			{
 				closest = ClosestMonster();
 				if (closest) { tracer = closest; }
@@ -519,6 +519,7 @@ Class LightningBeamArc2 : LightningBeamPri2
 	{
 		LightningBeam.FaceAmount 15;
 		LightningBeam.TrailActor "LightningTrailBeamArc2";
+		LightningBeam.Targets False;
 	}
 }
 
