@@ -348,3 +348,139 @@ class HeatEffectGiver : SwitchableDecoration
 		Super.Deactivate(activator);
 	}
 }
+
+class Tornado : Actor
+{
+	Default
+	{
+		+NOINTERACTION
+
+		Scale 3.5;
+		Speed 1.0;
+	}
+
+	override void PostBeginPlay()
+	{
+		scale *= (ceilingz - floorz) / 512.;
+
+		Actor prev;
+		double spawnscale = scale.x;
+		double spawnspeed = speed;
+
+		for (double i = ceilingz; i >= floorz; i -= 48)
+		{
+			Actor mo = Spawn("TornadoSegment", (pos.xy, i));
+
+			if (mo)
+			{
+				TornadoSegment(mo).destscale = spawnscale;
+				mo.speed = spawnspeed;
+				if (prev) { prev.master = mo; }
+
+				prev = mo;
+			}
+
+			spawnscale *= 0.85;
+			spawnspeed *= 1.2;
+		}
+
+		Destroy();
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 1;
+			Loop;
+	}
+}
+
+class TornadoSegment : Actor
+{
+	Vector3 offset;
+	double destscale;
+	int timeoffset;
+
+	Default
+	{
+		+NOINTERACTION
+		+NOGRAVITY
+
+		Renderstyle "Add";
+		Alpha 0.15;
+		Scale 0.05;
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A 0;
+			MDLA A 105 Bright;
+		Disperse:
+			MDLA A 5 Bright {
+				A_FadeOut(0.005);
+				scale.x *= 1.0125;
+			}
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		angle = Random(0, 359);
+		scale.y = 1.0;
+		timeoffset = Random(0, 359);
+
+		SpawnPoint = pos;
+
+		if (master)
+		{
+			offset = pos - master.pos;
+		}
+
+		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		if (isFrozen()) { return; }
+
+		angle += speed;
+		roll = 5 * sin((level.time + timeoffset) * 2);
+
+		if (master)
+		{
+			if (scale.x < destscale)
+			{
+				scale.x = min(destscale, scale.x * 1.05);
+				master.scale.x = scale.x * 0.85;
+
+				master.alpha = min(alpha, scale.x / destscale);
+			}
+
+			Vector3 offsetalt = offset;
+
+			offsetalt.x += 16 * scale.x * sin(level.time);
+			offsetalt.y += 16 * scale.x * cos(level.time);
+			SetOrigin(master.pos + offsetalt, true);
+		}
+
+		int radius = int(64 * scale.x);
+
+		if (level.time && level.time % (timeoffset * 2.5) == 0)
+		{
+			Actor cloud = Spawn("ZyklonBCloud", (SpawnPoint.xy + (Random(-radius, radius), Random(-radius, radius)), floorz));
+			if (cloud) { cloud.scale *= FRandom(0.5, 1.2); }
+
+			Actor l = Spawn("LightningBeamArc2", pos + (Random(-radius, radius), Random(-radius, radius), 0));
+			if (l)
+			{
+				l.master = self;
+				l.angle = Random(0, 359);
+				l.pitch = Random(0, 359);
+				LightningBeam(l).maxdistance = 256 * scale.x;
+			}
+		}
+
+		Super.Tick();
+	}
+}
