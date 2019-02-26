@@ -249,11 +249,6 @@ class ShermanPlayer : PlayerPawn
 
 	override void FireWeaponAlt (State stat)
 	{
-		if (player.Bot == null && bot_observer)
-		{
-			return;
-		}
-
 		let weapn = player.ReadyWeapon;
 		if (weapn == null || weapn.FindState('AltFire') == null || !weapn.CheckAmmo (Weapon.AltFire, true))
 		{

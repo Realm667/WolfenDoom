@@ -46,7 +46,8 @@ class CompassItem : Inventory
 			String texName = TexMan.GetName(tex);
 
 			// If it belongs to this chapter and gets added, autosave on pickup so we don't have to deal with clearing the entries if we die.
-			if (MapStatsHandler.AddSpecialPickup(texName, specialclue)) { gameaction = ga_autosave; }
+//			if (MapStatsHandler.AddSpecialPickup(texName, specialclue)) { gameaction = ga_autosave; }
+// This autosave functionality was arbitrarily broken by Graf in a recent engine change.  Will have to readdress long-term.
 		}
 
 		return pickup;

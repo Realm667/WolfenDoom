@@ -10,7 +10,7 @@ class ListMenuItemPlayerNameBoxColored : ListMenuItemPlayerNameBox
 
 		// Draw player name box
 		double x = mXpos + mFont.StringWidth(text) + 16 + mFrameSize;
-		DrawBorder (x, mYpos - mFrameSize, MAXPLAYERNAME+1);
+		DrawBorder (x, mYpos - mFrameSize, 16);
 		if (!mEnter)
 		{
 			screen.DrawText (SmallFont, Font.CR_GRAY, x + mFrameSize, mYpos, mPlayerName, DTA_Clean, true);
