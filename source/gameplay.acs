@@ -61,6 +61,12 @@ script "Maplaunch" ENTER
 	FadeRange(0,0,0,1.0,0,0,0,0.0,1.5);
 }
 
+//autosaves
+script "Autosave" (void)
+{
+	Autosave();
+}
+
 //mxd. Mutants despawn checks
 script "DisableMutants" (void)
 {
@@ -293,7 +299,6 @@ function void DrawScreenOverlays(void)
 }
 
 // Powerups //
-
 script "TotaleMacht" (void)
 {
 	delay(35 * 30); // 30 seconds
