@@ -627,7 +627,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 			else
 			{
 				// If player moves too far away, go back to following and forget the target
-				if (playerdist > radius + 1024 + playerToChase.radius)
+				if (!nonmoving && playerdist > radius + 1024 + playerToChase.radius)
 				{
 					target = null;
 					goal = playerToChase;
