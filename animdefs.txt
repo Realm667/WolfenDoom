@@ -28,18 +28,18 @@ texture HIACID01
 	range HIACID34 rand 1 3
 
 //ANIMATIONS
-texture TURB_A31 range TURB_A34 tics 2
-texture VENT_A01 range VENT_A04 tics 1
-texture RADA_A01 range RADA_A06 tics 8
-texture COMP_A11 range COMP_A12 tics 8
-texture ENGI_A21 range ENGI_A32 tics 3
-texture LITE_S01 range LITE_S14 tics 3 OSCILLATE
-texture C4_01 range C4_02 tics 8
-texture ASTR_X12 range ASTR_X22 tics 3 OSCILLATE
 texture ASTR_CV1 range ASTR_CV5 tics 3
 texture ASTR_TW1 range ASTR_TW5 tics 8 OSCILLATE
+texture ASTR_X12 range ASTR_X22 tics 3 OSCILLATE
+texture C4_01 range C4_02 tics 8
+texture COMP_A11 range COMP_A12 tics 8
+texture ENGI_A21 range ENGI_A32 tics 3
 texture KINO_H01 range KINO_H31 tics 3
-texture fanwall1 range fanwall4 tics 1
+texture LITE_S01 range LITE_S14 tics 3 OSCILLATE
+texture RADA_A01 range RADA_A06 tics 8
+texture TURB_A31 range TURB_A34 tics 2
+texture VENT_A01 range VENT_A04 tics 1
+texture FANWALL1 range FANWALL4 tics 1
 
 texture sign_c10
 	 RANDOM
@@ -496,27 +496,23 @@ switch SW_OF_P3 on pic SW_ON_P3 tics 0
 switch SW_OF_R3 on pic SW_ON_R3 tics 0
 switch SW_ON_14 on pic SW_OF_14 tics 0
 switch SW_ON_15 on pic SW_OF_15 tics 0
-switch room_t50 on SOUND SMSWITCH pic room_t63 tics 0
-switch vent_m00 on SOUND DSMETDST pic vent_m01 tics 0
-switch vent_m00 on SOUND DSMETDST pic vent_m01 tics 0
-switch win_g06 on SOUND world/glassbreak pic win_g07 tics 0
-switch wind_42 on SOUND world/glassbreak pic wind_43 tics 0
-switch wind_w16 on SOUND world/glassbreak pic wind_w17 tics 0
+switch ROOM_T50 on SOUND SMSWITCH pic room_t63 tics 0
+switch VENT_M00 on SOUND DSMETDST pic vent_m01 tics 0
+switch WIN_G06 on SOUND world/glassbreak pic WIN_G07 tics 0
+switch WIND_42 on SOUND world/glassbreak pic WIND_43 tics 0
+switch WIND_W16 on SOUND world/glassbreak pic WIND_W17 tics 0
 
 //mxd. Also long-named variants
-switch "TEXTURES/DECO_SHOOT1.PNG" on pic "TEXTURES/DECO_SHOOT2.PNG" tics 0
-switch "TEXTURES/WIND_42.PNG" on SOUND world/glassbreak pic "TEXTURES/WIND_43.PNG" tics 0
-switch "TEXTURES/WIND_W16.PNG" on SOUND world/glassbreak pic "TEXTURES/WIND_W17.PNG" tics 0
-switch "TEXTURES/WIN_G06.PNG" on SOUND world/glassbreak pic "TEXTURES/WIN_G07.PNG" tics 0
 switch "textures/BRK_OFSW.png" on SOUND switch/death pic "textures/BRK_ONSW.png" tics 0
+switch "textures/DECO_SHOOT1.PNG" on pic "textures/DECO_SHOOT2.PNG" tics 0
 switch "textures/EGYP_S11.png" on pic "textures/EGYP_S12.png" tics 0
 switch "textures/METL_B12.png" on pic "textures/METL_B09.png" tics 0
 switch "textures/MIRR_W02.png" on pic "textures/MIRR_W04.png" tics 0
+switch "textures/ROOM_T50.png" on SOUND SMSWITCH pic "textures/ROOM_T63.png" tics 0
 switch "textures/SW_OF_01.png" on pic "textures/SW_ON_01.png" tics 0
 switch "textures/SW_OF_02.png" on pic "textures/SW_ON_02.png" tics 0
 switch "textures/SW_OF_03.png" on pic "textures/SW_ON_03.png" tics 0
 switch "textures/SW_OF_04.png" on pic "textures/SW_ON_04.png" tics 0
-switch "textures/SW_OF_94.png" on pic "textures/SW_ON_94.png" tics 0
 switch "textures/SW_OF_05.png" on pic "textures/SW_ON_05.png" tics 0
 switch "textures/SW_OF_06.png" on pic "textures/SW_ON_06.png" tics 0
 switch "textures/SW_OF_07.png" on pic "textures/SW_ON_07.png" tics 0
@@ -530,8 +526,10 @@ switch "textures/SW_OF_16.png" on pic "textures/SW_ON_16.png" tics 0
 switch "textures/SW_OF_17.png" on pic "textures/SW_ON_17.png" tics 0
 switch "textures/SW_OF_32.png" on pic "textures/SW_ON_32.png" tics 0
 switch "textures/SW_OF_34.png" on pic "textures/SW_ON_34.png" tics 0
+switch "textures/SW_OF_58.png" on pic "textures/SW_ON_58.png" tics 0
 switch "textures/SW_OF_84.png" on pic "textures/SW_ON_84.png" tics 0
 switch "textures/SW_OF_85.png" on pic "textures/SW_ON_85.png" tics 0
+switch "textures/SW_OF_94.png" on pic "textures/SW_ON_94.png" tics 0
 switch "textures/SW_OF_B3.png" on pic "textures/SW_ON_B3.png" tics 0
 switch "textures/SW_OF_B8.png" on pic "textures/SW_ON_B8.png" tics 0
 switch "textures/SW_OF_G3.png" on pic "textures/SW_ON_G3.png" tics 0
@@ -539,12 +537,13 @@ switch "textures/SW_OF_HS.png" on pic "textures/SW_ON_HS.png" tics 0
 switch "textures/SW_OF_P3.png" on pic "textures/SW_ON_P3.png" tics 0
 switch "textures/SW_OF_R3.png" on pic "textures/SW_ON_R3.png" tics 0
 switch "textures/SW_OF_S1.png" on pic "textures/SW_ON_S1.png" tics 0
+switch "textures/SW_ON_14.png" on pic "textures/SW_OF_14.png" tics 0
+switch "textures/SW_ON_15.png" on pic "textures/SW_OF_15.png" tics 0
+switch "textures/VENT_M00.png" on SOUND DSMETDST pic "textures/VENT_M01.png" tics 0
+switch "textures/WIND_42.PNG" on SOUND world/glassbreak pic "textures/WIND_43.PNG" tics 0
+switch "textures/WIND_W16.PNG" on SOUND world/glassbreak pic "textures/WIND_W17.PNG" tics 0
+switch "textures/WIN_G06.PNG" on SOUND world/glassbreak pic "textures/WIN_G07.PNG" tics 0
 switch "textures/astrostein/SW_OF_59.png" on SOUND DSSPSWIT pic "textures/astrostein/SW_ON_59.png" tics 0
-switch "textures/room_t50.png" on SOUND SMSWITCH pic "textures/room_t63.png" tics 0
-switch "textures/sw_of_58.png" on pic "textures/sw_on_58.png" tics 0
-switch "textures/sw_on_14.png" on pic "textures/sw_of_14.png" tics 0
-switch "textures/sw_on_15.png" on pic "textures/sw_of_15.png" tics 0
-switch "textures/vent_m00.png" on SOUND DSMETDST pic "textures/vent_m01.png" tics 0
 
 //Door Switches
 switch "textures/door_b01.png" on SOUND NOSOUND pic "textures/door_b01_open.png" tics 0
