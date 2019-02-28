@@ -453,7 +453,7 @@ class TornadoSegment : Actor
 	override void PostBeginPlay()
 	{
 		angle = Random(0, 359);
-		timeoffset = Random(0, 359);
+		timeoffset = Random(1, 360);
 		frame = skinframe;
 		SpawnPoint = pos;
 
@@ -461,6 +461,8 @@ class TornadoSegment : Actor
 		{
 			offset = pos - master.pos;
 		}
+
+		A_PlaySound("WIND_SILENT", CHAN_6, 1.0, true, ATTN_NONE);
 
 		Super.PostBeginPlay();
 	}
@@ -511,6 +513,8 @@ class TornadoSegment : Actor
 				}
 			}
 		}
+
+		A_SoundVolume(CHAN_6, alpha * 0.75);
 
 		Super.Tick();
 	}
