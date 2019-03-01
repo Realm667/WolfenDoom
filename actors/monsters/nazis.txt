@@ -1533,6 +1533,7 @@ ACTOR FlamerSoldier : BasicGuard
 	MaxTargetRange 256
 	Base.NoMedicHeal
 	Nazi.FrightMultiplier 0.75
+	Nazi.CrouchChance 0
 	States
 	{
 	Spawn:
@@ -2384,7 +2385,6 @@ ACTOR MGTurretSoldierW : MGTurretSoldier
 //////////
 //ELITES//
 //////////
-
 ACTOR EliteFlamer : BasicGuard
 {
 	//$Category Monsters (BoA)/Elite
@@ -2402,6 +2402,7 @@ ACTOR EliteFlamer : BasicGuard
 	DropItem "Pyrolight" 48
 	Base.NoMedicHeal
 	Nazi.FrightMultiplier 0.25
+	Nazi.CrouchChance 0
 	States
 	{
 	Spawn:
