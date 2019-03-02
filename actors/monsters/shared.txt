@@ -1349,16 +1349,19 @@ ACTOR MonsterHole
 ACTOR MonsterHole2 : MonsterHole
 {
 	Scale .85
+	+VISIBILITYPULSE
 	States
 	{
 	Spawn:
 		TNT1 A 2 A_Jump(64,"SpawnAlt") //prevent doing huge amount of damage - ozy81
 		TNT1 A 0 A_SpawnItemEx("ZyklonZCloud2",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128)
-		ZMMO ABCDEFGHIJKLMNOPQR 2
+		SMMO ABCDEFGHIJKLMNOPQR 2
+		ZMMO ABCDEFGHIJKLMNOPQR 2 BRIGHT
 		Stop
 	Spawn.Alt:
 		TNT1 A 0 A_SpawnItemEx("ZyklonZCloud3",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128)
-		ZMMO ABCDEFGHIJKLMNOPQR 2
+		SMMO ABCDEFGHIJKLMNOPQR 2
+		ZMMO ABCDEFGHIJKLMNOPQR 2 BRIGHT
 		Stop
 	}
 }
