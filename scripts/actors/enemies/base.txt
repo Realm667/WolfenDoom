@@ -415,8 +415,7 @@ class Base : Actor
 		double left = GetMoveDistance(90);
 		double right = GetMoveDistance(-90);
 
-		if (left < radius + 16 && right < radius + 16) { return -1, 0; } // Don't dodge if there's only a little room on both sides
-		if (left < radius + 96 && right < radius + 96) { return -1, 0; } // Don't dodge if there's not space on either side - augmented values to avoid stuck cases
+		if (left < radius + 64 && right < radius + 64) { return -1, 0; } // Don't dodge if there's not space on either side - augmented values to avoid stuck cases
 		if (left == right) return 0, angle + 90 * RandomPick(-1, 1); // If the space on either side is the same, pick a random side
 		if (left > right) return left, angle + 90; // If there's more space on the left, dodge left
 
@@ -645,7 +644,7 @@ class Base : Actor
 					{
 						if (ceilingpic == skyflatnum)
 						{
-							double lightamt = GetLightLevel();	
+							double lightamt = GetLightLevel();
 
 							if (lightamt > lightthreshold) { A_Die("Fire"); }
 							else if (health > 0 && Random() < 64 && lightamt > max(128, lightthreshold - 48) && !CheckSightOrRange(64))
@@ -2412,6 +2411,17 @@ class ZombieStandard : Nazi
 			"####" H 1 A_FadeOut(0.02);
 			Loop;
 	}
+
+	static void DestroyAll()
+	{
+		ThinkerIterator it = ThinkerIterator.Create("ZombieStandard", Thinker.STAT_DEFAULT);
+		ZombieStandard mo;
+
+		while (mo = ZombieStandard(it.Next()))
+		{
+			mo.A_Die("Fire");
+		}
+	}
 }
 
 // Conversation marker that follows the actor, positioning itself above their head.
@@ -2503,6 +2513,7 @@ class NaziBoss : Nazi
 		Base.BossIcon "BOSSICON";
 		DamageFactor "Rocket", 0.2;
 		+BOSS
+		+DONTTHRUST
 	}
 
 	States

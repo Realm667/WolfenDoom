@@ -519,3 +519,105 @@ class TornadoSegment : Actor
 		Super.Tick();
 	}
 }
+
+class ExplosionLight : AlertPointLight
+{
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (master)
+		{
+			args[DynamicLight.LIGHT_INTENSITY] = int(master.scale.x * 2048 * master.alpha);
+		}
+		else
+		{
+			args[DynamicLight.LIGHT_INTENSITY]--;
+		}
+
+		if (args[DynamicLight.LIGHT_INTENSITY] <= 0) { Destroy(); }
+	}
+}
+
+class ExplosionSphere : Actor
+{
+	Actor light;
+
+	Default
+	{
+		+NOGRAVITY
+		+BRIGHT
+		RenderStyle "AddStencil";
+		StencilColor "BBBBFF";
+		Scale 0.01;
+		Alpha 0.7;
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A 1;
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		light = Spawn("ExplosionLight", pos);
+		light.args[DynamicLight.LIGHT_RED] = 0xBB;
+		light.args[DynamicLight.LIGHT_GREEN] = 0xBB;
+		light.args[DynamicLight.LIGHT_BLUE] = 0xFF;
+		light.master = self;
+	}
+
+	override void Tick()
+	{
+		if (IsFrozen()) { return; }
+
+		scale.x = scale.y = (scale.x + 0.2);
+		alpha = max(0, alpha - 0.05);
+
+		if (alpha == 0.0)
+		{
+			Destroy();
+		}
+
+		Super.Tick();
+	}
+}
+
+class ExplosionCore : Actor
+{
+	Default
+	{
+		+NOGRAVITY
+		+BRIGHT
+		RenderStyle "AddStencil";
+		StencilColor "005500";
+
+		Alpha 0.0;
+		Scale 10.0;
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A 1;
+			Loop;
+	}
+
+	override void Tick()
+	{
+		if (IsFrozen()) { return; }
+
+		scale.x = scale.y = (scale.x - 0.4);
+		alpha = min(0.7, alpha + 0.005);
+
+		if (scale.x <= 0.0)
+		{
+			Spawn("ExplosionSphere", pos);
+			Destroy();
+		}
+
+		Super.Tick();
+	}
+}
