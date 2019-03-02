@@ -228,7 +228,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				shots = 0;
 			}
 			Rifle.Refire:
-				"####" H 5 LIGHT("NaziFire") A_FollowerFire("ThompsonTracer", "MauserRifleCasing", "nazi/stg44", 40, 4);
+				"####" H 5 LIGHT("NaziFire") A_FollowerFire("ThompsonTracer", "MauserRifleCasing", "nazi/stg44", 40, 4, 2, 2);
 				"####" G 5 A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
  				"####" G 0 A_RefireReload("Rifle.Refire", "Rifle.Reload", 128, 10, 40);
 			Rifle.Reload:
@@ -305,7 +305,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				if (nonmoving) { return ResolveState("Chase.Stand"); }
 				else if (playerToChase && playerToChase.health && Distance3d(playerToChase) <= 64) { return ResolveState("Chase.Near"); }
 
-				return ResolveState("Chase");
+				return ResolveState("Chase.Stand");
 			}
 			Goto Chase;
 	}
@@ -588,7 +588,7 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				bFrightened = True;
 			}
 
-			if (!nonmoving && (!playerToChase || (playerdist > radius + 128 + playerToChase.radius) && forgettarget)) // ...and if you weren't supposed to forget your target when the player is away...
+			if (!nonmoving && (!playerToChase || ((playerdist > radius + 128 + playerToChase.radius) && forgettarget))) // ...and if you weren't supposed to forget your target when the player is away...
 			{
 				target = null;
 				goal = playerToChase;
@@ -915,7 +915,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 				shots = 0;
 			}
 			Rifle.Refire:
-				"####" G 5 LIGHT("NaziFire") A_FollowerFire("ThompsonTracer", "MauserRifleCasing", "nazi/stg44", 38, 4);
+				"####" G 5 LIGHT("NaziFire") A_FollowerFire("ThompsonTracer", "MauserRifleCasing", "nazi/stg44", 40, 4, 2, 2);
 				"####" F 5 A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
  				"####" F 0 A_RefireReload("MP40.Refire", "MP40.Reload", 128, 10, 40);
 			Rifle.Reload:
@@ -992,7 +992,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 				if (nonmoving) { return ResolveState("Chase.Stand"); }
 				else if (playerToChase && playerToChase.health && Distance3d(playerToChase) <= 64) { return ResolveState("Chase.Near"); }
 
-				return ResolveState("Chase");
+				return ResolveState("Chase.Stand");
 			}
 			Goto Chase;
 	}
@@ -1154,7 +1154,7 @@ class AscherArmed : PlayerFollower
 		//$Color 4
 
 		Speed 8;
-		PainChance 64;
+		PainChance 32;
 		Scale 0.67;
 		-NODAMAGE
 		+BUDDHA
