@@ -1882,6 +1882,7 @@ ACTOR Totengraber_Wounded : RocketMan
 	DamageFactor "UndeadPoison", 0
 	Obituary "$TOTENS"
 	Nazi.Healer 2 //HLR_ZOMBIES value as defined in ZScript, not sure why the enum isn't recognized in Decorate...
+	Nazi.HealSound "creepy/born"
 	States
 	{
 	Spawn:
@@ -2166,6 +2167,7 @@ ACTOR Longinus_Hitler : NaziBoss
 	ActiveSound "hitler/active"
 	DropItem "SpearOfDestiny_End" 256
 	Nazi.Healer 2
+	Nazi.HealSound "creepy/born"
 	States
 	{
 	Spawn:

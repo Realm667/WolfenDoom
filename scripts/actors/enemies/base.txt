@@ -814,6 +814,7 @@ class Nazi : Base
 	bool sp;
 	double frightscale;
 	int crouchchance;
+	String healsound;
 
 	Property Healer:healflags;
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
@@ -824,6 +825,7 @@ class Nazi : Base
 	Property ZombieVariant:zombievariant;
 	Property FrightMultiplier:frightscale;
 	Property CrouchChance:crouchchance;
+	Property HealSound:healsound;
 
 	Default
 	{
@@ -979,7 +981,7 @@ class Nazi : Base
 			"####" AAA 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
 			"####" AAA 1 A_NaziChase(null, null);
-			"####" B 0 A_PlaySound("floor/heavy");
+			"####" B 0 A_PlaySound("floor/heavy", CHAN_AUTO);
 			"####" B 1 A_NaziChase;
 			"####" BBB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
@@ -988,7 +990,7 @@ class Nazi : Base
 			"####" CCC 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
 			"####" CCC 1 A_NaziChase(null, null);
-			"####" D 0 A_PlaySound("floor/heavy");
+			"####" D 0 A_PlaySound("floor/heavy", CHAN_AUTO);
 			"####" D 1 A_NaziChase;
 			"####" DDD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
@@ -1000,7 +1002,7 @@ class Nazi : Base
 			"####" AAA 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
 			"####" AAA 1 A_NaziChase(null, null);
-			"####" B 0 A_PlaySound("floor/heavy");
+			"####" B 0 A_PlaySound("floor/heavy", CHAN_AUTO);
 			"####" B 1 A_NaziChase;
 			"####" BBB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
@@ -1009,7 +1011,7 @@ class Nazi : Base
 			"####" CCC 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
 			"####" CCC 1 A_NaziChase(null, null);
-			"####" D 0 A_PlaySound("floor/heavy");
+			"####" D 0 A_PlaySound("floor/heavy", CHAN_AUTO);
 			"####" D 1 A_NaziChase;
 			"####" DDD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
@@ -1021,7 +1023,7 @@ class Nazi : Base
 			"####" AAA 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
 			"####" AAA 1 A_NaziChase(null, null);
-			"####" B 0 A_PlaySound("floor/heavy");
+			"####" B 0 A_PlaySound("floor/heavy", CHAN_AUTO);
 			"####" B 1 { A_NaziChase(); Radius_Quake(5, 2, 0, 5, 0); }
 			"####" BBB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
@@ -1030,7 +1032,7 @@ class Nazi : Base
 			"####" CCC 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
 			"####" CCC 1 A_NaziChase(null, null);
-			"####" D 0 A_PlaySound("floor/heavy");
+			"####" D 0 A_PlaySound("floor/heavy", CHAN_AUTO);
 			"####" D 1 { A_NaziChase(); Radius_Quake(5, 2, 0, 5, 0); }
 			"####" DDD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
@@ -1062,7 +1064,7 @@ class Nazi : Base
 			"####" AA 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
 			"####" AA 1 A_NaziChase(null, null);
-			"####" B 0 A_PlaySound("floor/heavy");
+			"####" B 0 A_PlaySound("floor/heavy", CHAN_AUTO);
 			"####" B 1 A_NaziChase;
 			"####" BB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
@@ -1071,7 +1073,7 @@ class Nazi : Base
 			"####" CC 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
 			"####" CC 1 A_NaziChase(null, null);
-			"####" D 0 A_PlaySound("floor/heavy");
+			"####" D 0 A_PlaySound("floor/heavy", CHAN_AUTO);
 			"####" D 1 A_NaziChase;
 			"####" DD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
@@ -1112,7 +1114,7 @@ class Nazi : Base
 			"####" AAA 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
 			"####" AAA 1 A_NaziChase(null, null);
-			"####" B 0 {A_PlaySound("floor/heavy"); A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(1.0, 2.0), random(0, 360), SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY, 0);}
+			"####" B 0 {A_PlaySound("floor/heavy", CHAN_AUTO); A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(1.0, 2.0), random(0, 360), SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY, 0);}
 			"####" B 1 A_NaziChase;
 			"####" BBB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
@@ -1122,7 +1124,7 @@ class Nazi : Base
 			"####" CCC 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
 			"####" CCC 1 A_NaziChase(null, null);
-			"####" D 0 {A_PlaySound("floor/heavy"); A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 0, frandom(0.1, 1.0) * RandomPick(-1, 1), frandom(0.1, 1.0) * RandomPick(-1, 1), frandom(0.0, 2.0), 0, SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY, 0);}
+			"####" D 0 {A_PlaySound("floor/heavy", CHAN_AUTO); A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 0, frandom(0.1, 1.0) * RandomPick(-1, 1), frandom(0.1, 1.0) * RandomPick(-1, 1), frandom(0.0, 2.0), 0, SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY, 0);}
 			"####" D 1 A_NaziChase;
 			"####" DDD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
@@ -1861,6 +1863,8 @@ class Nazi : Base
 
 	void A_HealGoal()
 	{
+		if (healsound.length()) { A_Playsound(healsound, CHAN_AUTO); }
+
 		if (Nazi(goal) && healflags & HLR_ZOMBIES)
 		{
 			if (Nazi(goal).zombievariant != "")
