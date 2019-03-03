@@ -308,32 +308,39 @@ class BoAStatusBar : BaseStatusBar
 
 		if (CPlayer.mo.InvSel != null && !level.NoInventoryBar)
 		{
-			Vector2 texsize = TexMan.GetScaledSize(CPlayer.mo.InvSel.Icon);
-			if (texsize.x > 32 || texsize.y > 32)
-			{
-				if (texsize.y > texsize.x)
-				{
-					texsize.y = 32.0 / texsize.y;
-					texsize.x = texsize.y;
-				}
-				else
-				{
-					texsize.x = 32.0 / texsize.x;
-					texsize.y = texsize.x;
-				}
-			}
-			else { texsize = (1.0, 1.0); }
-
-			DrawInventoryIcon(CPlayer.mo.InvSel, (156, 168), DI_ITEM_OFFSETS, scale:texsize);
-			if (CPlayer.mo.InvSel.Amount > 1)
-			{
-				DrawString(mHUDFont, FormatNumber(CPlayer.mo.InvSel.Amount), (156 + 31, 168 + 30 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
-			}
+			DrawInventorySelection(94, 184, 28);
+		}
+		else
+		{
+			DrawMugShot((76, 168));
 		}
 
-		DrawMugShot((76, 168));
-
 		DrawImage("HUDBROVL", (74, 168), DI_ITEM_OFFSETS);
+	}
+
+	void DrawInventorySelection(int x, int y, int size = 32)
+	{
+		Vector2 texsize = TexMan.GetScaledSize(CPlayer.mo.InvSel.Icon);
+		if (texsize.x > size || texsize.y > size)
+		{
+			if (texsize.y > texsize.x)
+			{
+				texsize.y = size * 1.0 / texsize.y;
+				texsize.x = texsize.y;
+			}
+			else
+			{
+				texsize.x = size * 1.0 / texsize.x;
+				texsize.y = texsize.x;
+			}
+		}
+		else { texsize = (1.0, 1.0); }
+
+		DrawInventoryIcon(CPlayer.mo.InvSel, (x, y), DI_ITEM_CENTER, scale:texsize);
+		if (CPlayer.mo.InvSel.Amount > 1)
+		{
+			DrawString(mHUDFont, FormatNumber(CPlayer.mo.InvSel.Amount), (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
+		}
 	}
 
 	protected void DrawFullScreenStuff ()
@@ -383,7 +390,7 @@ class BoAStatusBar : BaseStatusBar
 		//Top Left
 		DrawImage("HUD_UL", (0, 0), DI_ITEM_OFFSETS);
 		//Money
-		DrawString(mBigFont, FormatNumber(GetAmount("CoinItem")), (50, 7), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mBigFont, FormatNumber(GetAmount("CoinItem")), (60, 7), DI_TEXT_ALIGN_RIGHT);
 		//Time
 		String time = level.TimeFormatted();
 
@@ -392,7 +399,7 @@ class BoAStatusBar : BaseStatusBar
 			time = FormatNumber(int(hour), 2, 2, FNF_FILLZEROS) .. ":" .. FormatNumber(int(minute), 2, 2, FNF_FILLZEROS) .. ":" .. FormatNumber(int(second), 2, 2, FNF_FILLZEROS);
 		}
 
-		DrawString(mHUDFont, time, (15, 21), DI_TEXT_ALIGN_LEFT);
+		DrawString(mHUDFont, time, (20, 21), DI_TEXT_ALIGN_LEFT);
 
 		//Top Right
 		DrawImage("HUD_UR", (-66, 0), DI_ITEM_OFFSETS);
@@ -431,28 +438,7 @@ class BoAStatusBar : BaseStatusBar
 		//Mugshot + Inventory
 		if (CPlayer.mo.InvSel != null && !level.NoInventoryBar)
 		{
-			Vector2 texsize = TexMan.GetScaledSize(CPlayer.mo.InvSel.Icon);
-
-			if (texsize.x > 32 || texsize.y > 32)
-			{
-				if (texsize.y > texsize.x)
-				{
-					texsize.y = 32.0 / texsize.y;
-					texsize.x = texsize.y;
-				}
-				else
-				{
-					texsize.x = 32.0 / texsize.x;
-					texsize.y = texsize.x;
-				}
-			}
-			else { texsize = (1.0, 1.0); }
-
-			DrawInventoryIcon(CPlayer.mo.InvSel, (112, -38), DI_ITEM_OFFSETS, scale:texsize);
-			if (CPlayer.mo.InvSel.Amount > 1)
-			{
-				DrawString(mHUDFont, FormatNumber(CPlayer.mo.InvSel.Amount), (112 + 31, -38 + 30 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
-			}
+			DrawInventorySelection(128, -22, 32);
 		}
 
 		DrawMugShot((7, -38));
