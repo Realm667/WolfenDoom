@@ -592,6 +592,22 @@ class Base : Actor
 		}
 	}
 
+	static void DestroyAll(String classname, String damagetype = "Fire", color clr = 0)
+	{
+		ThinkerIterator it = ThinkerIterator.Create(classname, Thinker.STAT_DEFAULT);
+		Actor mo;
+
+		while (mo = Actor(it.Next()))
+		{
+			mo.A_Die(damagetype);
+			if (clr)
+			{
+				mo.A_SetRenderStyle(1.0, STYLE_SHADED);
+				mo.SetShade(clr);
+			}
+		}
+	}
+
 	override void Tick()
 	{
 		if (user_DrawHealthBar) { ChangeStatNum(Thinker.STAT_DEFAULT - 3); } // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient
@@ -1544,7 +1560,6 @@ class Nazi : Base
 						Nazi(mo).DeathDamageType ~== "Fire"
 					)
 				) ||
-				mo.health <= mo.GetGibHealth() ||
 				!IsVisible(mo, True) ||
 				!mo.FindState("Raise") ||
 				Distance3d(mo) > 1024
@@ -1553,6 +1568,7 @@ class Nazi : Base
 			if (healflags & HLR_ALLIES)
 			{
 				if (
+					mo.health <= mo.GetGibHealth() ||
 					mo.bFriendly != bFriendly ||
 					mo.bBoss ||
 					(Base(mo) && Base(mo).noheal)
@@ -2410,17 +2426,6 @@ class ZombieStandard : Nazi
 		Disintegrate.FadeLoop:
 			"####" H 1 A_FadeOut(0.02);
 			Loop;
-	}
-
-	static void DestroyAll()
-	{
-		ThinkerIterator it = ThinkerIterator.Create("ZombieStandard", Thinker.STAT_DEFAULT);
-		ZombieStandard mo;
-
-		while (mo = ZombieStandard(it.Next()))
-		{
-			mo.A_Die("Fire");
-		}
 	}
 }
 
