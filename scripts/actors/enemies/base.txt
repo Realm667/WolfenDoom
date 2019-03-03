@@ -589,6 +589,7 @@ class Base : Actor
 			b.master = self;
 			b.pitch = pitch + pitchoffset;
 			b.angle = angle + angleoffset;
+			LightningBeam(b).AimPoint = target.pos;
 		}
 	}
 
@@ -815,6 +816,7 @@ class Nazi : Base
 	double frightscale;
 	int crouchchance;
 	String healsound;
+	int healdistance;
 
 	Property Healer:healflags;
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
@@ -826,6 +828,7 @@ class Nazi : Base
 	Property FrightMultiplier:frightscale;
 	Property CrouchChance:crouchchance;
 	Property HealSound:healsound;
+	Property HealDistance:healdistance;
 
 	Default
 	{
@@ -856,6 +859,7 @@ class Nazi : Base
 		Nazi.PerceptionDistance 256.0;
 		Nazi.Sneakable False;
 		Nazi.SneakableCloseSightRadius 64;
+		Nazi.HealDistance 8;
 	}
 
 	States
@@ -1997,7 +2001,7 @@ class Nazi : Base
 				if (!bFrightened)
 				{
 					// If it's not frightened and close to a dead body that it isn't already healing, start healing it
-					if (goal && Distance3d(goal) <= goal.radius + radius + 8 && !InStateSequence(CurState, HealState)) {
+					if (goal && Distance3d(goal) <= goal.radius + radius + healdistance && !InStateSequence(CurState, HealState)) {
 						if (Nazi(goal)) { Nazi(goal).healing = true; }
 						bChaseGoal = Default.bChaseGoal;
 						SetStateLabel("Heal");

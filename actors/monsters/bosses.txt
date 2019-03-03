@@ -2168,6 +2168,7 @@ ACTOR Longinus_Hitler : NaziBoss
 	DropItem "SpearOfDestiny_End" 256
 	Nazi.Healer 2
 	Nazi.HealSound "creepy/born"
+	Nazi.HealDistance 256
 	States
 	{
 	Spawn:
@@ -2186,8 +2187,8 @@ ACTOR Longinus_Hitler : NaziBoss
 		Goto See
 	Heal:
 		"####" H 0 {bNoDamage = FALSE; A_UnsetReflective(); bAllowPain = TRUE;} //force Invulnerability removal - Ozy81
-		"####" H 6 A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), 64, 0, 0, 0, 0)
-		"####" E 0 A_HealGoal
+		"####" E 18  A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), 64, 0, 0, 0, 0)
+		"####" S 18 A_HealGoal
 		Goto See
 	Missile:
 		"####" "#" 0 A_JumpIfCloser(radius + 256, "TeslaMissile")
@@ -2213,7 +2214,6 @@ ACTOR Longinus_Hitler : NaziBoss
 		"####" S 1 A_SpawnItemEx("ReflectiveOrb",0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
 		"####" S 1 A_SetTics(35*3)
 		"####" S 1 {bNoDamage = FALSE; A_UnsetReflective(); bAllowPain = TRUE;}
-		"####" S 1 A_RemoveChildren(TRUE, RMVF_MISC)
 		Goto See
 	RumbleStomp:
 		"####" C 6

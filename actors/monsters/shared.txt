@@ -1907,7 +1907,7 @@ ACTOR ReflectiveOrb : VisualSpecialEffect
 		TNT1 A 0 A_SetTranslucent(0.2,1)
 		ORBP ABCDCB 1 BRIGHT
 		TNT1 A 0 A_SetTranslucent(0.1,1)
-		TNT1 A 1
+		TNT1 A 1 A_RemoveChildren(TRUE, RMVF_MISC)
 		Stop
 	}
 }
