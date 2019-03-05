@@ -542,6 +542,7 @@ class ExplosionLight : AlertPointLight
 class ExplosionSphere : Actor
 {
 	Actor light;
+	Array<Actor> sparks;
 
 	Default
 	{
@@ -567,6 +568,35 @@ class ExplosionSphere : Actor
 		light.args[DynamicLight.LIGHT_GREEN] = 0xBB;
 		light.args[DynamicLight.LIGHT_BLUE] = 0xFF;
 		light.master = self;
+
+		for (int i = 1; i <= 6; i++)
+		{
+			Class<Actor> sparkclass = "SparkFlare_W" .. i;
+
+			Actor spark;
+
+			for (int j = 0; j < 32; j++)
+			{
+				spark = Spawn(sparkclass, pos);
+
+				if (spark)
+				{
+					spark.A_SetRenderStyle(alpha, STYLE_AddShaded);
+					spark.SetShade(fillcolor);
+					spark.bMissile = true;
+					spark.A_SetTics(Random(30, 280));
+					spark.scale *= FRandom(0.125, 0.5);
+					spark.alpha *= FRandom(0.25, 1.0);
+					spark.speed = FRandom(1, 32);
+					spark.angle = FRandom(0, 359);
+					spark.pitch = FRandom(-30, 0);
+
+					spark.Vel3DFromAngle(spark.speed, spark.angle, spark.pitch);
+
+					sparks.push(spark);
+				}
+			}
+		}
 	}
 
 	override void Tick()
@@ -576,7 +606,19 @@ class ExplosionSphere : Actor
 		scale.x = scale.y = (scale.x + 0.2);
 		alpha = max(0, alpha - 0.05);
 
-		if (alpha == 0.0)
+		for (int s = 0; s < sparks.Size(); s++)
+		{
+			if (!sparks[s]) { sparks.Delete(s); continue; }
+
+			sparks[s].angle += 2;
+			sparks[s].pitch -= 0.5;
+
+			sparks[s].Vel3DFromAngle(sparks[s].speed, sparks[s].angle, sparks[s].pitch);
+		}
+
+		if (light && alpha == 0.0) { light.master = null; }
+
+		if (!sparks.Size())
 		{
 			Destroy();
 		}
