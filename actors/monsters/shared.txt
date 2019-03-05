@@ -1379,10 +1379,9 @@ Actor ZyklonCritter
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_Jump(255,1,2,3)
-		TNT1 A -1 A_SpawnItemEx("BatFamiliar",random(-4,4),random(-4,4),0,0,SXF_NOCHECKPOSITION,0)
-		TNT1 A -1 A_SpawnItemEx("BigSpider",random(-4,4),random(-4,4),0,0,SXF_NOCHECKPOSITION,0)
-		TNT1 A -1 A_SpawnItemEx("BloodSkull",random(-4,4),random(-4,4),0,0,SXF_NOCHECKPOSITION,0) //atm these die when spawned by ZykMonster, needs variant
+		TNT1 A 0 NoDelay A_Jump(255,1,2)
+		TNT1 A -1 A_SpawnItemEx("ZBatFamiliar",random(-4,4),random(-4,4),0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A -1 A_SpawnItemEx("ZyklonSkull",random(-4,4),random(-4,4),0,0,SXF_NOCHECKPOSITION,0)
 		Stop
 	}
 }
@@ -1438,6 +1437,43 @@ ACTOR BloodSpitTrail
 	{
 	Spawn:
 		BSHT CD 4
+		Stop
+	}
+}
+
+ACTOR ZSkullBloodDrip : SkullBloodDrip
+{
+	States
+	{
+	Spawn:
+		BDR3 A 50
+		Stop
+	}
+}
+
+ACTOR ZBloodSpit : BloodSpit
+{
+	Speed 24
+	PoisonDamage 2
+	DamageType "UndeadPoison"
+	Decal ZBloodSplat
+	States
+	{
+	Spawn:
+		BSHZ AB 2 A_SpawnItemEx("ZBloodSpitTrail")
+		Loop
+	Death:
+		BSHZ CD 6
+		Stop
+	}
+}
+
+ACTOR ZBloodSpitTrail : BloodSpitTrail
+{
+	States
+	{
+	Spawn:
+		BSHZ CD 4
 		Stop
 	}
 }
