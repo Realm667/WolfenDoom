@@ -1574,7 +1574,7 @@ class Nazi : Base
 			if (healflags & HLR_ALLIES)
 			{
 				if (
-					mo.health <= mo.GetGibHealth() ||
+					(!bDontGib && mo.health < mo.GetGibHealth()) ||
 					mo.bFriendly != bFriendly ||
 					mo.bBoss ||
 					(Base(mo) && Base(mo).noheal)
