@@ -161,7 +161,7 @@ ACTOR AngelOfDeath_End : AngelOfDeath
 	-NODAMAGE
 	+ALLOWPAIN
 	PainChance "Fire", 8
-	PainChance "Normal", 0
+	PainChance "Normal", 4
 	PainChance "OccultFire", 48
 	PainChance "Rocket", 4
 	PainChance "MutantPoison", 0
@@ -497,7 +497,6 @@ ACTOR SmokeMonster : Base
 	MeleeThreshold 192
 	Monster
 	+BOSS
-	+BOSSDEATH
 	+DONTFALL
 	+DONTHARMCLASS
 	+DONTMORPH
@@ -721,9 +720,9 @@ ACTOR SmokeMonster : Base
 	}
 }
 
-ACTOR SmokeMonster_End : SmokeMonster
+ACTOR ZyklonMonster : SmokeMonster
 {
-	//$Title SmokeMonster, Final Battle (Boss)
+	//$Title ZyklonMonster, Final Battle (Boss)
 	//$Sprite ZMMOA0
 	Health 4500
 	WoundHealth 2500
@@ -762,6 +761,7 @@ ACTOR SmokeMonster_End : SmokeMonster
 		Loop
 	Missile:
 		TNT1 A 0 A_PlaySound("Smoke/charge")
+		TNT1 A 1 A_SpawnItemEx("ZyklonCritter",random(-4,4),random(-4,4),0,0,SXF_NOCHECKPOSITION,0)
 	Melee:
 		TNT1 A 1 A_SkullAttack
 		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
