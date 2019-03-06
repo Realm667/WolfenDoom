@@ -785,6 +785,9 @@ ACTOR ZyklonZCloud3 : ZyklonZCloud2
 	}
 }
 
+ACTOR ZyklonZCloud4 : ZyklonZCloud2 {Scale 0.5}
+ACTOR ZyklonZCloud5 : ZyklonZCloud3 {Scale 0.5}
+
 ACTOR ZyklonBBall
 {
 	Radius 11
@@ -1333,7 +1336,6 @@ ACTOR MonsterHole
 	+NOCLIP
 	+NOGRAVITY
 	+NOINTERACTION
-	+NOTIMEFREEZE
 	RenderStyle "Translucent"
 	Alpha 0.3
 	Scale .75
@@ -1341,27 +1343,45 @@ ACTOR MonsterHole
 	{
 	Spawn:
 		TNT1 A 2
-		SMMO ABCDEFGHIJKLMNOPQR 2
+		SMMO ABCDEFGHIJKLMNOPQ 2
 		Stop
 	}
 }
 
 ACTOR MonsterHole2 : MonsterHole
 {
-	Scale .85
-	+VISIBILITYPULSE
+	Scale 1.0
+	+RANDOMIZE
 	States
 	{
 	Spawn:
 		TNT1 A 2 A_Jump(64,"SpawnAlt") //prevent doing huge amount of damage - ozy81
-		TNT1 A 0 A_SpawnItemEx("ZyklonZCloud2",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128)
-		SMMO ABCDEFGHIJKLMNOPQR 2
-		ZMMO ABCDEFGHIJKLMNOPQR 2 BRIGHT
+		TNT1 A 0 A_SpawnItemEx("ZyklonZCloud4",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360),128)
+		ZMMO ABCDEFGHIJKLMNOPQ 2
 		Stop
 	Spawn.Alt:
-		TNT1 A 0 A_SpawnItemEx("ZyklonZCloud3",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128)
-		SMMO ABCDEFGHIJKLMNOPQR 2
-		ZMMO ABCDEFGHIJKLMNOPQR 2 BRIGHT
+		TNT1 A 0 A_SpawnItemEx("ZyklonZCloud5",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360),128)
+		ZMMO ABCDEFGHIJKLMNOPQ 2
+		Stop
+	}
+}
+
+Actor ZyklonCritter
+{
+	+DONTSQUASH
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+NOLIFTDROP
+	+NONSHOOTABLE
+	+NOTARGET
+	+NOTELEOTHER
+	+NOTIMEFREEZE
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Jump(255,1,2)
+		TNT1 A -1 A_SpawnItemEx("ZBatFamiliar",random(-4,4),random(-4,4),0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A -1 A_SpawnItemEx("ZyklonSkull",random(-4,4),random(-4,4),0,0,SXF_NOCHECKPOSITION,0)
 		Stop
 	}
 }
@@ -1417,6 +1437,43 @@ ACTOR BloodSpitTrail
 	{
 	Spawn:
 		BSHT CD 4
+		Stop
+	}
+}
+
+ACTOR ZSkullBloodDrip : SkullBloodDrip
+{
+	States
+	{
+	Spawn:
+		BDR3 A 50
+		Stop
+	}
+}
+
+ACTOR ZBloodSpit : BloodSpit
+{
+	Speed 24
+	PoisonDamage 2
+	DamageType "UndeadPoison"
+	Decal ZBloodSplat
+	States
+	{
+	Spawn:
+		BSHZ AB 2 A_SpawnItemEx("ZBloodSpitTrail")
+		Loop
+	Death:
+		BSHZ CD 6
+		Stop
+	}
+}
+
+ACTOR ZBloodSpitTrail : BloodSpitTrail
+{
+	States
+	{
+	Spawn:
+		BSHZ CD 4
 		Stop
 	}
 }

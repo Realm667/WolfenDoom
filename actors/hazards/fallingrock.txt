@@ -15,6 +15,7 @@ ACTOR FallingRock1
 	Projectile
 	-NOGRAVITY
 	+ROLLSPRITE
+	+TOUCHY
 	Obituary "$OBFALLRK"
 	DeathSound "misc/SRCRK2"
 	SeeSound "misc/SRCRK1"
@@ -26,12 +27,14 @@ ACTOR FallingRock1
 		Goto Spawn+1
 	Death:
 		"####" A 2
-		TNT1 A 0 A_SpawnProjectile("FallingRockFrac1",0,0,60,2,40)
-		"####" A 0 A_SpawnProjectile("FallingRockFrac2",0,0,120,2,40)
-		"####" A 0 A_SpawnProjectile("FallingRockFrac3",0,0,180,2,40)
-		"####" A 0 A_SpawnProjectile("FallingRockFrac1",0,0,240,2,40)
-		"####" A 0 A_SpawnProjectile("FallingRockFrac2",0,0,300,2,40)
-		"####" A 1 A_SpawnProjectile("FallingRockFrac3",0,0,0,2,40)
+		TNT1 A 0 A_SpawnProjectile("FallingRockFrac1",0,random(-2,2),0,2,CMF_AIMDIRECTION|CMF_BADPITCH)
+		"####" A 0 A_SpawnProjectile("FallingRockFrac2",0,random(-4,4),45,2,CMF_AIMDIRECTION|CMF_BADPITCH)
+		"####" A 0 A_SpawnProjectile("FallingRockFrac3",0,random(-8,8),90,2,CMF_AIMDIRECTION|CMF_BADPITCH)
+		"####" A 0 A_SpawnProjectile("FallingRockFrac1",0,random(-2,2),135,2,CMF_AIMDIRECTION|CMF_BADPITCH)
+		"####" A 0 A_SpawnProjectile("FallingRockFrac2",0,random(-4,4),180,2,CMF_AIMDIRECTION|CMF_BADPITCH)
+		"####" A 1 A_SpawnProjectile("FallingRockFrac3",0,random(-8,8),225,2,CMF_AIMDIRECTION|CMF_BADPITCH)
+		"####" A 0 A_SpawnProjectile("FallingRockFrac1",0,random(-2,2),270,2,CMF_AIMDIRECTION|CMF_BADPITCH)
+		"####" A 0 A_SpawnProjectile("FallingRockFrac2",0,random(-4,4),315,2,CMF_AIMDIRECTION|CMF_BADPITCH)
 		Stop
 	}
 }
@@ -55,8 +58,8 @@ ACTOR FallingRockFrac1
 	Damage (random(0,1))
 	Projectile
 	+ROLLSPRITE
-	BounceType "Heretic"
-  	BounceFactor 0.3
+	BounceType "Doom"
+  	BounceFactor 0.4
 	States
 	{
 	Spawn:
