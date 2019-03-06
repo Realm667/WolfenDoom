@@ -163,8 +163,11 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 		Chase.Back: // Used to push actor back when touching player
 			"####" EEEEE 1;
 			"####" DDDDDCCCCC 1 {
-				double pushAngle = AngleTo(playerToChase) + 180;
-				Thrust(1, pushAngle);
+				if (playerToChase)
+				{
+					double pushAngle = AngleTo(playerToChase) + 180;
+					Thrust(1, pushAngle);
+				}
 			}
 			"####" BBBBB 1;
 		Chase: // Standard goal chasing
@@ -849,8 +852,11 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 		Chase.Back:
 			"####" DDDDD 1;
 			"####" CCCCCBBBBB 1 {
-				double pushAngle = AngleTo(playerToChase) + 180;
-				Thrust(1, pushAngle);
+				if (playerToChase)
+				{
+					double pushAngle = AngleTo(playerToChase) + 180;
+					Thrust(1, pushAngle);
+				}
 			}
 		Chase:
 			"####" AAAAABBBBB 1 A_ChaseGoal();
