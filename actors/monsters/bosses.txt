@@ -2278,9 +2278,10 @@ ACTOR Longinus_Hitler : NaziBoss
 		SHI2 MN 10
 		SHI2 O 5 A_PlaySound("hitler/gib")
 		SHI2 P 7 A_NoBlocking
-		SHI2 Q 9
-		SHI2 R -1
-		Stop
+		SHI2 Q 9 A_SpawnItemEx("3dBridge24")
+	Dead:
+		SHI2 R 4 A_SetScale(max(scalex * 0.98, 1.0))
+		Loop
 	Appear:
 		"####" A 0 A_Playsound("hitlerghost/die", CHAN_AUTO, 1.0)
 		"####" A 5 A_SetTranslucent(0.01, STYLE_TRANSLUCENT)
