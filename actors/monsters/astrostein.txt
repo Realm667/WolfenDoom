@@ -132,6 +132,11 @@ ACTOR BaseLine
 	}
 }
 
+ACTOR BaseLineXL : BaseLine
+{
+	Scale 5.0
+}
+
 ////////////////
 //REPLACEMENTS//
 ////////////////
@@ -145,6 +150,17 @@ ACTOR TeleportFog_Astro : TeleportFog replaces TeleportFog
 		Stop
 	}
 }
+
+ACTOR TeleportFog_AstroLarge : TeleportFog_Astro
+{
+	States
+	{
+	Spawn:
+		TNT1 AAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("BaseLineXL", random(512, -512), random(512, -512), random(128, -128), 0, 0, random(1,3), 0, 129, 0)
+		Stop
+	}
+}
+
 
 ///////////
 //ENEMIES//
