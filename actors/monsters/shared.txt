@@ -27,7 +27,7 @@ ACTOR OccultBlazeFX1
 	Renderstyle "Add"
 	Species "Nazi"
 	Scale 0.85
-	Alpha 0.65
+	Alpha 0.35
 	Projectile
 	+BLOODLESSIMPACT
 	+FLOORHUGGER
@@ -45,7 +45,7 @@ ACTOR OccultBlazeFX1
 ACTOR OccultBlazeFX2 : OccultBlazeFX1
 {
 	Radius 8
-	Scale 0.65
+	Scale 0.35
 	Renderstyle "Translucent"
 	Alpha 0.75
 	+RIPPER
@@ -61,7 +61,7 @@ ACTOR OccultBlazeFlames
 	Renderstyle "Add"
 	Species "Nazi"
 	Scale 0.85
-	Alpha 0.85
+	Alpha 0.45
 	Projectile
 	+BLOODLESSIMPACT
 	+FLOORHUGGER
@@ -424,7 +424,31 @@ ACTOR FlyingNeedle : MiniRocket
 	}
 }
 
+ACTOR FlyingNeedleNoGrav : MiniRocket
+{
+	Speed 10
+	DamageType "MutantPoison"
+	PoisonDamage 3, 4
+	SeeSound ""
+	DeathSound "gshardnd"
+	Scale 0.55
+	+NOGRAVITY
+	+ADDITIVEPOISONDAMAGE
+	+ADDITIVEPOISONDURATION
+	States
+	{
+	Spawn:
+		NEDL ABCD 3
+		Loop
+	Death:
+		TNT1 A 1
+		Stop
+	}
+}
+
 ACTOR HardFlyingNeedle : FlyingNeedle { +MTHRUSPECIES }
+
+ACTOR HardFlyingNeedleNoGrav : FlyingNeedleNoGrav { +MTHRUSPECIES }
 
 ACTOR FlyingHack : FlyingNeedle
 {
