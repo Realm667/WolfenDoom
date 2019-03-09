@@ -424,13 +424,13 @@ class PlayerFollower : Actor //Default version - for actors like prisoner with A
 				playertochase &&
 				!nocatchup &&
 				Markers.Size() >= 100 &&
-				Markers[Markers.Size() / 2] &&
-				!Markers[Markers.Size() / 2].IsVisible(playerToChase, True) &&
+				Markers[50] &&
+				!Markers[50].IsVisible(playerToChase, True) &&
 				!IsVisible(playerToChase, True)
 			) 
 			{
-				SetOrigin(Markers[Markers.Size() / 2].pos, true); // Warp to the halfway point
-				DestroyMarkers(Markers.Size() / 2); // Clean up the now unused markers and array entries
+				SetOrigin(Markers[50].pos, true); // Warp to the halfway point
+				currentGoal = Markers[50];
 				if (!weapon) { weapon = PWEAP_Luger; } // Pretend he picked up a pistol and some ammo somewhere, and he will act like a friendly Guard
 			}
 			else if (Markers.Size()) { currentGoal = Markers[Markers.Size() - 1]; }
@@ -1036,6 +1036,7 @@ class PathMarker : Actor
 		}
 
 		int index = follower.Markers.Find(self);
+		if (index == follower.Markers.Size()) { Destroy(); }
 
 		// If the player crosses their own path, cut out the loop so the follower takes the most direct route after the player
 		if (index > 10 && Distance3D(playerToChase) < 48)
@@ -1046,7 +1047,7 @@ class PathMarker : Actor
 		// If the follower crosses the path at a later point than their current goal, make this spot their new current goal
 		if (Distance3D(follower) < 32)
 		{
-			if (index < follower.Markers.Find(follower.currentGoal)) { follower.currentGoal = self; }
+			if (!follower.currentGoal || index < follower.Markers.Find(follower.currentGoal)) { follower.currentGoal = self; }
 		}
 	}
 }
