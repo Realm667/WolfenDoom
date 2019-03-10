@@ -721,30 +721,60 @@ ACTOR SmokeMonster : Base
 	}
 }
 
-ACTOR ZyklonMonster : SmokeMonster
+ACTOR ZyklonMonster : Nazi
 {
+	//$Category Monsters (BoA)/Occult/Bosses
 	//$Title ZyklonMonster, Final Battle (Boss)
 	//$Sprite ZMMOA0
+	//$Color 4
+	Base.BossIcon "BOSSICO3"
+	Base.Shadow 0  //needed for shadows
+	Tag "???"
 	Health 4500
 	WoundHealth 2500
+	Height 56
+	Mass 10000000
+	Damage 1
 	Speed 6
 	+ALLOWPAIN
+	+BOSS
+	+DONTFALL
+	+DONTHARMCLASS
+	+DONTMORPH
+	+EXTREMEDEATH
+	+FLOAT
+	+FLOATBOB
+	+FLOORCLIP
+	+FORCERADIUSDMG
 	+LOOKALLAROUND
-	PainChance "Fire", 8
-	PainChance "Normal", 0
-	PainChance "OccultFire", 48
-	PainChance "Rocket", 4
-	PainChance "MutantPoison", 0
-	PainChance "Poison", 0
-	PainChance "UndeadPoison", 0
+	+NEVERRESPAWN
+	+NOBLOOD
+	+NOBLOODDECALS
+	+NOGRAVITY
+	+NOICEDEATH
+	DamageType "Smoke"
+	DamageFactor "Electric", 0.2
+	DamageFactor "Fire", 0.2
+	DamageFactor "Normal", 0.2
+	DamageFactor "OccultFire", 2.0
+	DamageFactor "Rocket", 0.2
+	DamageFactor "Smoke", 0
 	DamageFactor "MutantPoison", 0
 	DamageFactor "Poison", 0
 	DamageFactor "UndeadPoison", 0
-	DamageFactor "Normal", 0.2
-	DamageFactor "Fire", 0.2
-	DamageFactor "OccultFire", 2.0
+	PainChance "Electric", 8
+	PainChance "Fire", 8
+	PainChance "Normal", 8
+	PainChance "OccultFire", 48
+	PainChance "Rocket", 8
+	PainChance "MutantPoison", 0
+	PainChance "Poison", 0
+	PainChance "UndeadPoison", 0
+	DeathSound "Smoke/Die"
+	SeeSound "Smoke/See"
+	Obituary "$ZMOKEMO"
 	Species "Zombie"
-	DropItem "Rune_Tyr" 256
+	DropItem "Rune_Tyr" 256, 1
 	States
 	{
 	Spawn:
@@ -756,15 +786,26 @@ ACTOR ZyklonMonster : SmokeMonster
 		TNT1 A 0 A_PlaySound("Smoke/Tick", CHAN_7, 1.0, TRUE)
 		TNT1 A 0 A_SetUserVar("user_saw",1)
 	Walk:
-		TNT1 A 1 A_Chase("Melee", "Missile", CHF_FASTCHASE)
+		TNT1 A 1 A_NaziChase
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
-		TNT1 A 1 A_Chase("Melee", "Missile", CHF_FASTCHASE)
+		TNT1 A 1 A_NaziChase
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
 		Loop
 	Missile:
 		TNT1 A 0 A_PlaySound("Smoke/charge")
-		TNT1 A 0 A_Jump(8,2)
-		TNT1 A 1 A_SpawnItemEx("ZyklonCritter",random(-4,4),random(-4,4),0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_Jump(96,"Missile.Monsters")
+		TNT1 A 1 { A_SpawnAtGoal("CreepyRaise", 0, 0, 0, 0, 0, 0, 0); A_SpawnProjectile("ZyklonBBall",-16,16,-16,16,random(-16,16)); }
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
+		TNT1 A 1 { A_SpawnAtGoal("CreepyRaise", 0, 0, 0, 0, 0, 0, 0); A_SpawnProjectile("ZyklonBBall",-16,16,-16,16,random(-16,16)); }
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
+		TNT1 A 1 { A_SpawnAtGoal("CreepyRaise", 0, 0, 0, 0, 0, 0, 0); A_SpawnProjectile("ZyklonBBall",-16,16,-16,16,random(-16,16)); }
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360))
+		TNT1 A 1 { A_SpawnAtGoal("CreepyRaise", 0, 0, 0, 0, 0, 0, 0); A_SpawnProjectile("ZyklonBBall",-16,16,-16,16,random(-16,16)); }
+		Goto See
+	Missile.Monsters:
+		TNT1 A 0 A_Jump(256,1,2)
+		TNT1 A 1 { A_SpawnAtGoal("CreepyRaise", 0, 0, 0, 0, 0, 0, 0); A_PainAttack("ZyklonSkull",random(0,360),PAF_NOSKULLATTACK | PAF_NOTARGET,3); }
+		TNT1 A 1 { A_SpawnAtGoal("CreepyRaise", 0, 0, 0, 0, 0, 0, 0); A_PainAttack("ZBatFamiliar",random(0,360),PAF_NOSKULLATTACK | PAF_NOTARGET,3); }
 		Goto See
 	Melee:
 		TNT1 A 0 A_PlaySound("Smoke/charge")
@@ -853,7 +894,7 @@ ACTOR ZyklonMonster : SmokeMonster
 		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360))
 		TNT1 A 1
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360))
-		TNT1 A 1 A_SpawnItemEx("ZyklonCritter",random(-4,4),random(-4,4),0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 1 A_SpawnItemEx("ZyklonCritter",random(-4,4),random(-4,4),0,0,SXF_NOCHECKPOSITION,0) //sometimes can spawn a monster
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360))
 		TNT1 A 1
 		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360))
@@ -2209,7 +2250,7 @@ ACTOR Longinus_Hitler : NaziBoss
 		Goto See
 	Heal:
 		"####" H 0 {bNoDamage = FALSE; A_UnsetReflective(); bAllowPain = TRUE;} //force Invulnerability removal - Ozy81
-		"####" E 18  A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), 64, 0, 0, 0, 0)
+		"####" E 18 A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), 64, 0, 0, 0, 0)
 		"####" S 18 A_HealGoal
 		Goto See
 	Missile:

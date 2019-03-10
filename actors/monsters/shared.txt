@@ -27,8 +27,9 @@ ACTOR OccultBlazeFX1
 	Renderstyle "Add"
 	Species "Nazi"
 	Scale 0.85
-	Alpha 0.35
+	Alpha 0.75
 	Projectile
+	MaxStepHeight 12
 	+BLOODLESSIMPACT
 	+FLOORHUGGER
 	+THRUGHOST
@@ -45,6 +46,16 @@ ACTOR OccultBlazeFX1
 ACTOR OccultBlazeFX2 : OccultBlazeFX1
 {
 	Radius 8
+	Scale 0.55
+	Renderstyle "Translucent"
+	Alpha 0.75
+	+RIPPER
+}
+
+ACTOR OccultBlazeFX3 : OccultBlazeFX1
+{
+	Radius 4
+	Damage 0
 	Scale 0.35
 	Renderstyle "Translucent"
 	Alpha 0.75
@@ -65,10 +76,10 @@ ACTOR OccultBlazeFlames
 	Projectile
 	+BLOODLESSIMPACT
 	+FLOORHUGGER
+	+NODROPOFF
 	+THRUGHOST
 	+THRUSPECIES
 	+WINDTHRUST
-	MaxStepHeight 4
 	Obituary "$OBLAZES"
 	SeeSound "flamer/fire"
 	DeathSound "flamer/napalm"
@@ -78,14 +89,35 @@ ACTOR OccultBlazeFlames
 	Spawn:
 		BLZF ABCDCBA 3 {
 				A_SpawnProjectile("OccultBlazeFX1");
+				A_SpawnProjectile("OccultBlazeFX3");
 				A_RadiusGive("HeatShaderControl", radius+64, RGF_PLAYERS | RGF_GIVESELF, 32);
 				if (waterlevel > 0) {
 					A_ScaleVelocity(0.0);}
 				}
 		Loop
 	Death:
-		FLA1 AAA 3 A_FadeOut(0.005)
+		"####" EFGHIJ 3
+		"####" J 3 A_FadeOut (0.05)
 		Stop
+	}
+}
+
+ACTOR OccultBlazeFlames2 : OccultBlazeFlames
+{
+	Radius 32
+	Speed 16
+	+RIPPER
+	States
+	{
+	Spawn:
+		BLZF ABCDCBA 3 {
+				A_SpawnProjectile("OccultBlazeFX2");
+				A_SpawnProjectile("OccultBlazeFX3");
+				A_RadiusGive("HeatShaderControl", radius+64, RGF_PLAYERS | RGF_GIVESELF, 32);
+				if (waterlevel > 0) {
+					A_ScaleVelocity(0.0);}
+				}
+		Loop
 	}
 }
 
@@ -172,24 +204,6 @@ ACTOR RumbleWaves
 		TNT1 A 0 A_RadiusThrust(3000, 128)
 		TNT1 A 0 A_RadiusThrust(256, 128, RTF_THRUSTZ)
 		Stop
-	}
-}
-
-ACTOR OccultBlazeFlames2 : OccultBlazeFlames
-{
-	Radius 32
-	Speed 16
-	+RIPPER
-	States
-	{
-	Spawn:
-		BLZF ABCDCBA 3 {
-				A_SpawnProjectile("OccultBlazeFX2");
-				A_RadiusGive("HeatShaderControl", radius+64, RGF_PLAYERS | RGF_GIVESELF, 32);
-				if (waterlevel > 0) {
-					A_ScaleVelocity(0.0);}
-				}
-		Loop
 	}
 }
 
@@ -1117,17 +1131,17 @@ ACTOR UndeadFartCloud
 	States
 	{
 	Spawn:
-		FUGZ ABCDE 2
+		ZBGS DDDDD 2
 	Fade:
-		"####" ABCDE 2 A_FadeOut (0.05)
-		"####" ABCDE 2 A_FadeIn (0.05)
-		"####" ABCDE 2 A_FadeOut (0.05)
-		"####" ABCDE 2 A_FadeIn (0.05)
-		"####" ABCDE 2 A_FadeOut (0.05)
-		"####" ABCDE 2 A_FadeIn (0.05)
-		"####" ABCDE 2 A_FadeOut (0.05)
-		"####" ABCDE 2 A_FadeIn (0.05)
-		"####" ABCDE 2 A_FadeOut (0.05)
+		"####" DDDDD 2 A_FadeOut (0.05)
+		"####" DDDDD 2 A_FadeIn (0.05)
+		"####" DDDDD 2 A_FadeOut (0.05)
+		"####" DDDDD 2 A_FadeIn (0.05)
+		"####" DDDDD 2 A_FadeOut (0.05)
+		"####" DDDDD 2 A_FadeIn (0.05)
+		"####" DDDDD 2 A_FadeOut (0.05)
+		"####" DDDDD 2 A_FadeIn (0.05)
+		"####" DDDDD 2 A_FadeOut (0.05)
 		Stop
 	}
 }
