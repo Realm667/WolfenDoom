@@ -214,6 +214,7 @@ class Base : Actor
 	int user_saw;			//smokemonster counter
 	bool user_oncompass;
 	bool candodge;
+	bool nofear;
 
 	Property AlwaysDrawHealthBar:user_DrawHealthBar;
 	Property BossIcon:BossIcon;
@@ -225,6 +226,7 @@ class Base : Actor
 	Property Shadow:shadow;
 	Property Swimmer:swimmer;
 	Property OnCompass:user_oncompass;
+	Property NoFear:nofear;
 
 	Default
 	{
@@ -672,7 +674,7 @@ class Base : Actor
 					}
 				}
 
-				bFrightened = !bBoss && (Default.bFrightened || frighttimeout > 0); // If frighttimeout was set, or we've been set to frightened by default, be afraid...
+				bFrightened = !bBoss && !NoFear && (Default.bFrightened || frighttimeout > 0); // If frighttimeout was set, or we've been set to frightened by default, be afraid...
 
 				if (loiterdistance > 0 && patrolgoal && !bAmbush)
 				{

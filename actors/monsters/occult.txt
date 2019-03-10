@@ -23,6 +23,7 @@ ACTOR BloodSkull : Base
 	SeeSound "BSkull/See"
 	PainSound "BSkull/Pain"
 	DeathSound "BSkull/Death"
+	Base.NoFear
 	States
 	{
 	Spawn:
@@ -263,6 +264,7 @@ ACTOR Geist : Nazi
 	PainSound "geist/pain"
 	DeathSound "geist/die"
 	Base.Shadow 0  //needed for shadows
+	Base.NoFear
 	States
 	{
 	Spawn:
@@ -451,6 +453,7 @@ ACTOR UndeadMonk : HitlerGhost
 	DeathSound "monk/death"
 	PainSound "monk/pain"
 	SeeSound "monk/see"
+	Base.NoFear
 	States
 	{
 	Spawn:
