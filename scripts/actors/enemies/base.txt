@@ -819,6 +819,7 @@ class Nazi : Base
 	int crouchchance;
 	String healsound;
 	int healdistance;
+	int user_noaltdeath;
 
 	Property Healer:healflags;
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
@@ -1401,6 +1402,13 @@ class Nazi : Base
 		else { A_Chase(melee, missile, flags); }
 
 		if (candodge && !crouchtimeout) { A_TryHide(); }
+	}
+
+	state A_CheckAltDeath(int chance = 16)
+	{
+		if (!user_noaltdeath && Random[altdeath](0, 255) < chance) { return ResolveState("Death.Alt1"); }
+
+		return ResolveState(null);
 	}
 
 	bool InPlayerCrosshair()

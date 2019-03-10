@@ -36,17 +36,14 @@ ACTOR BasicGuard : NaziStandard
 		"####" E 0 {bNoPain = FALSE;}
 		"####" "#" 0 A_Jump(256, "See") //So that inheriting actors go to their own See State
 	Death:
-		"####" I 5 A_Jump(16,"Death.Alt1")
-		"####" J 5 A_Scream
-		"####" K 5 A_UnblockAndDrop
-		"####" L 5
-		"####" M -1
-		Stop
-	Death.Alt1:
 		"####" I 5
 		"####" J 5 A_Scream
 		"####" K 5 A_UnblockAndDrop
 		"####" L 5
+		"####" M 5 A_CheckAltDeath
+		"####" M -1
+		Stop
+	Death.Alt1:
 		TNT1 A 1 A_SpawnItemEx("Guard_Wounded_NoCount", 0, 0, 0)
 		Stop
 	}
@@ -151,10 +148,6 @@ ACTOR SSGuard : BasicGuard
 		"####" A 0 A_Look
 		Loop
 	Death.Alt1:
-		"####" I 5
-		"####" J 5 A_Scream
-		"####" K 5 A_UnblockAndDrop
-		"####" L 5
 		TNT1 A 1 A_SpawnItemEx("SSGuard_Wounded_NoCount", 0, 0, 0)
 		Stop
 	}
@@ -198,10 +191,6 @@ ACTOR WGuard : BasicGuard
 		"####" F 8
 		Goto See
 	Death.Alt1:
-		GRD2 I 5
-		"####" J 5 A_Scream
-		"####" K 5 A_UnblockAndDrop
-		"####" L 5
 		TNT1 A 1 A_SpawnItemEx("WGuard_Wounded_NoCount", 0, 0, 0)
 		Stop
 	}
@@ -462,19 +451,15 @@ ACTOR WToilet : WGuard
 		"####" "#" 0 A_Jump(192, "LeaveWC")
 		Goto See
 	Death:
-		"####" F 5 A_Jump(128,"Death.Alt1")
-		"####" G 5 A_Scream
-		"####" H 5 A_UnblockAndDrop
-		"####" I 5
-		"####" I 0 A_PlaySound("nazi/farts", CHAN_AUTO, frandom(0.5,1.0))
-		"####" J -1
-		Stop
-	Death.Alt1:
 		"####" F 5
 		"####" G 5 A_Scream
 		"####" H 5 A_UnblockAndDrop
 		"####" I 5
 		"####" I 0 A_PlaySound("nazi/farts", CHAN_AUTO, frandom(0.5,1.0))
+		"####" J 5 A_CheckAltDeath
+		"####" J -1
+		Stop
+	Death.Alt1:
 		"####" J -1 A_SpawnItemEx("Shit", random(-16,16), 0, 0)
 		Stop
 	Death.WC:
@@ -624,10 +609,6 @@ ACTOR Officer : BasicGuard
 		"####" F 0 A_Jump(256,"See")
 		Stop
 	Death.Alt1:
-		"####" I 5
-		"####" J 5 A_Scream
-		"####" K 5 A_UnblockAndDrop
-		"####" L 5
 		TNT1 A 1 A_SpawnItemEx("Officer_Wounded_NoCount", 0, 0, 0)
 		Stop
 	Idle:
@@ -679,10 +660,6 @@ ACTOR SSOfficer : Officer
 		"####" F 0 A_Jump(256,"See")
 		Stop
 	Death.Alt1:
-		"####" I 5
-		"####" J 5 A_Scream
-		"####" K 5 A_UnblockAndDrop
-		"####" L 5
 		TNT1 A 1 A_SpawnItemEx("SSOfficer_Wounded_NoCount", 0, 0, 0)
 		Stop
 	Idle:
@@ -745,10 +722,6 @@ ACTOR WOfficer : Officer
 		"####" F 0 A_Jump(256,"See")
 		Stop
 	Death.Alt1:
-		"####" I 5
-		"####" J 5 A_Scream
-		"####" K 5 A_UnblockAndDrop
-		"####" L 5
 		TNT1 A 1 A_SpawnItemEx("WOfficer_Wounded_NoCount", 0, 0, 0)
 		Stop
 	}
@@ -1052,6 +1025,7 @@ ACTOR WSniper : Sniper
 	//$Category Monsters (BoA)/Wehrmacht
 	//$Title Wehrmacht Sniper
 	//$Sprite RGR2F1
+	Nazi.ZombieVariant "ZombieBrain"
 	States
 	{
 	Spawn:
