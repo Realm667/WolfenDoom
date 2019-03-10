@@ -151,7 +151,9 @@ Class LightningBeam : Actor
 		//  makes sure that damage of the correct amount and type still occurs inside of that radius...
 		Class<MovingTrailBeam> trailclass = trail;
 		let def = GetDefaultByType(trailclass);
-		if (master) { master.A_CustomBulletAttack(angle - master.angle, 0, 1, def ? def.Damage : Random(0, 1), MovingTrailBeam(def) ? MovingTrailBeam(def).puff : "LightningPuff", master.radius * 4, CBAF_AIMFACING | CBAF_EXPLICITANGLE); }
+		if (!def) { return; }
+
+		if (master && def.damage) { master.A_CustomBulletAttack(angle - master.angle, 0, 1, def ? def.Damage : Random(0, 1), MovingTrailBeam(def) ? MovingTrailBeam(def).puff : "LightningPuff", master.radius * 4, CBAF_AIMFACING | CBAF_EXPLICITANGLE); }
 
 		Actor prev;
 
@@ -172,7 +174,7 @@ Class LightningBeam : Actor
 
 			if (
 				(
-					!(master is "PlayerPawn") ||
+					!master || !(master is "PlayerPawn") ||
 					CurDistance > Min(32, MaxDistance / 4)
 				) &&
 				CurDistance < (MaxDistance - StepDistance)
@@ -520,6 +522,7 @@ Class LightningBeamArc2 : LightningBeamPri2
 		LightningBeam.FaceAmount 15;
 		LightningBeam.TrailActor "LightningTrailBeamArc2";
 		LightningBeam.Targets False;
+		LightningBeam.StepFactor 10;
 	}
 }
 
@@ -571,7 +574,7 @@ Class MovingTrailBeam : Actor
 	States
 	{
 		Spawn:
-			MDLA A 0 A_Jump(16,"Fade.Light");
+			MDLA A 0 A_Jump(8,"Fade.Light");
 		Fade:
 			MDLA A 1 A_FadeOut(0.2);
 			Goto Spawn;
@@ -584,13 +587,16 @@ Class MovingTrailBeam : Actor
 	{
 		Super.PostBeginPlay();
 
-		if (master && Distance3D(master) > master.radius * 4)
-		{
-			// Used to make all individual bolt segments leave decals and cause damage
-			A_CustomBulletAttack(0, 0, 1, damage, puff, int(scale.y), CBAF_AIMFACING);
-		}
+		if (master)
+		{ 
+			if (damage > 0 && Distance3D(master) > master.radius * 4)
+			{
+				// Used to make all individual bolt segments leave decals and cause damage
+				A_CustomBulletAttack(0, 0, 1, damage, puff, int(scale.y), CBAF_AIMFACING);
+			}
 
-		if (master) { beamoffset = pos - master.pos; }
+			beamoffset = pos - master.pos;
+		}
 
 		if (pos.z < floorz) { Destroy(); }
 	}
@@ -624,7 +630,7 @@ Class FakeMovingTrailBeam : MovingTrailBeam
 			MDLA A 1 A_FadeOut(0.2);
 			Goto Spawn;
 		Fade.Light:
-			MDLA A 1 A_FadeOut(0.2); //Light("GLightning") 
+			MDLA A 1 Light("GLightning") A_FadeOut(0.2);
 			Goto Spawn;
 	}
 }
