@@ -695,6 +695,27 @@ ACTOR MutantBounceBall
 	}
 }
 
+ACTOR RedBounceBall : MutantBounceBall
+{
+	Speed 16
+	Damage 4
+	BounceFactor 1.0
+	WallBounceFactor 1.0
+	BounceCount 7
+	Obituary "$ELSABALL"
+	States
+	{
+	Spawn:
+		EMBL AB 4 A_SpawnItemEx("Spark_R1",0,0,0,random(1,2),random(1,2),random(1,2),random(1,360))
+		Loop
+	Death:
+		TNT1 AAAAA 0 A_SpawnItemEx("Spark_R1",0,0,0,random(1,2),random(1,2),random(1,2),random(1,360))
+		TNT1 A 0 A_SpawnItemEx("SparkFlare_R1")
+		EMBL CDE 4
+		Stop
+	}
+}
+
 ACTOR FlyingCleaver : MiniRocket
 {
 	Radius 8
