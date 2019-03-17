@@ -553,6 +553,7 @@ ACTOR MutantFartCloud : GrenadeBase
 	+WINDTHRUST
 	RenderStyle "Translucent"
 	Alpha 0.3
+	GrenadeBase.FearDistance 128
 	States
 	{
 	Spawn:
@@ -648,6 +649,7 @@ ACTOR PoisonCloudMutant : GrenadeBase
 	RenderStyle "Translucent"
 	Alpha 0.6
 	DamageType "MutantPoison"
+	GrenadeBase.FearDistance 128
 	States
 	{
 	Spawn:
@@ -1187,6 +1189,7 @@ ACTOR PoisonCloudUndead : GrenadeBase
 	+NOBLOCKMAP
 	+NODAMAGETHRUST
 	+NOGRAVITY
+	GrenadeBase.FearDistance 96
 	States
 	{
 	Spawn:
