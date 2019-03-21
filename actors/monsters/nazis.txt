@@ -80,6 +80,7 @@ ACTOR GiantGuard : Guard
 	Height 280
 	Mass 9999
 	Scale 2.90
+	Nazi.NoAltDeath 1
 	States
 	{
 	See:
@@ -109,8 +110,6 @@ ACTOR GiantGuard : Guard
 	Death.Electric:
 		"####" # 0 A_SetScale(2.80)
 		Goto Death.Electric.Random
-	Death.Alt1:
-		Goto Super::Death+1
 	XDeath:
 		Goto XDeath.Giant
 	}
@@ -206,6 +205,7 @@ ACTOR MP40Guard : Guard
 	DropItem "9mmAmmo" 192
 	DropItem "GrenadePickup" 16
 	DropItem "MP40" 96
+	Nazi.NoAltDeath 1
 	States
 	{
 	Spawn:
@@ -244,8 +244,6 @@ ACTOR MP40Guard : Guard
 		"####" E 0 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See
-	Death.Alt1:
-		Goto Super::Death+1
 	}
 }
 
@@ -260,6 +258,7 @@ ACTOR SSMP40Guard : SSGuard
 	DropItem "MP40" 96
 	Obituary "$SSMPGURD"
 	Nazi.FrightMultiplier 0.9
+	Nazi.NoAltDeath 1
 	States
 	{
 	Spawn:
@@ -288,8 +287,6 @@ ACTOR SSMP40Guard : SSGuard
 		"####" E 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See
-	Death.Alt1:
-		Goto Super::Death+1
 	}
 }
 
@@ -1560,6 +1557,7 @@ ACTOR Gestapo : BasicGuard
 	DropItem "9mmAmmoBox" 16
 	DropItem "Luger9mm" 96
 	Nazi.FrightMultiplier 0.5
+	Nazi.NoAltDeath 1
 	States
 	{
 	Spawn:
@@ -1571,8 +1569,6 @@ ACTOR Gestapo : BasicGuard
 		GSAD A 0
 	Dodge.Resume:
 		Goto See.Normal
-	Death.Alt1:
-		Goto Super::Death+1
 	}
 }
 
@@ -2477,6 +2473,7 @@ ACTOR EliteAssaulter : BasicGuard
 	DropItem "MP40" 96
 	Base.NoMedicHeal
 	Nazi.FrightMultiplier 0.25
+	Nazi.NoAltDeath 1
 	States
 	{
 	Spawn:
@@ -2562,8 +2559,6 @@ ACTOR EliteAssaulter : BasicGuard
 		"####" E 0 A_SpawnItemEx("9MMCasing", 6,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See
-	Death.Alt1:
-		Goto Super::Death+1
 	}
 }
 
@@ -2585,6 +2580,7 @@ ACTOR EliteSoldatRifler : BasicGuard
 	DropItem "MauserAmmo" 192 5
 	Base.NoMedicHeal
 	Nazi.FrightMultiplier 0.25
+	Nazi.NoAltDeath 1
 	States
 	{
 	Spawn:
@@ -2656,8 +2652,6 @@ ACTOR EliteSoldatRifler : BasicGuard
 	CampingDone:
 		ELTR QPO 2
 		Goto See
-	Death.Alt1:
-		Goto Super::Death+1
 	}
 }
 
@@ -2671,6 +2665,7 @@ ACTOR Scientist : BasicGuard
 	//$Title Scientist (young)
 	//$Color 4
 	+FRIGHTENED
+	Nazi.NoAltDeath 1
 	States
 	{
 	Spawn:
@@ -2682,8 +2677,6 @@ ACTOR Scientist : BasicGuard
 		SCD2 A 0
 	Dodge.Resume:
 		Goto See.Normal
-	Death.Alt1:
-		Goto Super::Death+1
 	}
 }
 
@@ -2693,6 +2686,7 @@ ACTOR Scientist2 : BasicGuard
 	//$Title Scientist (old)
 	//$Color 4
 	+FRIGHTENED
+	Nazi.NoAltDeath 1
 	States
 	{
 	Spawn:
@@ -2704,8 +2698,6 @@ ACTOR Scientist2 : BasicGuard
 		SCND A 0
 	Dodge.Resume:
 		Goto See.Normal
-	Death.Alt1:
-		Goto Super::Death+1
 	}
 }
 
@@ -2720,8 +2712,6 @@ ACTOR ScientistGutenberg : Scientist2
 		Goto Look
 	See:
 		Goto See.Normal
-	Death.Alt1:
-		Goto Super::Death+1
 	}
 }
 
@@ -2738,6 +2728,7 @@ ACTOR DirtyDarren : BasicGuard
 	Species "Ally"
 	+FRIENDLY
 	+USESPECIAL
+	Nazi.NoAltDeath 1
 	States
 	{
 	Spawn:
@@ -2755,8 +2746,6 @@ ACTOR DirtyDarren : BasicGuard
 		"####" F 0 {user_count++; if(user_count > 7) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
 		"####" F 0 A_Jump(256,"See")
 		Stop
-	Death.Alt1:
-		Goto Super::Death+1
 	}
 }
 
@@ -2770,8 +2759,6 @@ ACTOR Clerk : DirtyDarren
 	Spawn:
 		BLCK N 1
 		Goto Look
-	Death.Alt1:
-		Goto Super::Death+1
 	}
 }
 
