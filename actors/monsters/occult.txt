@@ -598,7 +598,6 @@ ACTOR PlagueDoc1 : Guard
 {
 	//$Category Monsters (BoA)/Occult
 	//$Title Plague Doctor (young)
-	Nazi.NoAltDeath 1
 	States
 	{
 	Spawn:
@@ -610,6 +609,8 @@ ACTOR PlagueDoc1 : Guard
 		PDOD A 0
 	Dodge.Resume:
 		Goto See.Fast //more fast now - ozy81
+	Death.Alt1:
+		Goto Super::Death+1
 	}
 }
 

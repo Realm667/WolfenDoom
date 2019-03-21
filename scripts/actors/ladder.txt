@@ -162,11 +162,7 @@ class LadderBase : Actor
 				else
 				{
 					if (it.thing is "BoAPlayer") { BoAPlayer(it.thing).climbing = self; } // Store pointer to the ladder object in player variable
-					else if (it.thing is "PlayerFollower")  // Just a boolean flag for PlayerFollowers, but also toggle FLOAT
-					{
-						PlayerFollower(it.thing).climbing = true;
-						it.thing.bFloat = true;
-					}
+					else if (it.thing is "PlayerFollower") { PlayerFollower(it.thing).climbing = true; } // Just a boolean flag for PlayerFollowers
 					else { it.thing.bFly = True; } // If it's some other class of player, use the fly cheat/powerup
 				}
 				it.thing.bNoGravity = True;
