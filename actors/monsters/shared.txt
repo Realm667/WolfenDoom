@@ -121,6 +121,80 @@ ACTOR OccultBlazeFlames2 : OccultBlazeFlames
 	}
 }
 
+ACTOR ZyklonBlazeFX1 : OccultBlazeFX1
+{
+	DamageType "UndeadPoison"
+	Species "Zombie"
+	States
+	{
+	Spawn:
+		ZYZF ABCDCBA 4
+		Stop
+	}
+}
+
+ACTOR ZyklonBlazeFX2 : ZyklonBlazeFX1
+{
+	Radius 8
+	Scale 0.55
+	Renderstyle "Translucent"
+	Alpha 0.75
+	+RIPPER
+}
+
+ACTOR ZyklonBlazeFX3 : ZyklonBlazeFX1
+{
+	Radius 4
+	Damage 0
+	Scale 0.35
+	Renderstyle "Translucent"
+	Alpha 0.75
+	+RIPPER
+}
+
+ACTOR OccultZyklonFlames : OccultBlazeFlames
+{
+	Speed 12
+	DamageType "UndeadPoison"
+	Species "Zombie"
+	Obituary "$ZBLAZES"
+	States
+	{
+	Spawn:
+		ZYZF ABCDCBA 3 {
+				A_SpawnProjectile("ZyklonBlazeFX1");
+				A_SpawnProjectile("ZyklonBlazeFX3");
+				A_RadiusGive("HeatShaderControl", radius+64, RGF_PLAYERS | RGF_GIVESELF, 32);
+				if (waterlevel > 0) {
+					A_ScaleVelocity(0.0);}
+				}
+		Loop
+	Death:
+		"####" EFGHIJ 3
+		"####" J 3 A_FadeOut (0.05)
+		Stop
+	}
+}
+
+ACTOR OccultZyklonFlames2 : OccultZyklonFlames
+{
+	Radius 32
+	Speed 16
+	+RIPPER
+	States
+	{
+	Spawn:
+		ZYZF ABCDCBA 3 {
+				A_SpawnProjectile("ZyklonBlazeFX2");
+				A_SpawnProjectile("ZyklonBlazeFX3");
+				A_RadiusGive("HeatShaderControl", radius+64, RGF_PLAYERS | RGF_GIVESELF, 32);
+				if (waterlevel > 0) {
+					A_ScaleVelocity(0.0);}
+				}
+		Loop
+	}
+}
+
 ACTOR RumbleFX1 : OccultBlazeFX1
 {
 	Radius 8
