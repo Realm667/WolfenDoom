@@ -2249,8 +2249,8 @@ ACTOR Longinus_Hitler : NaziBoss
 			wounded = true; } // Set to true so that NaziBoss code will force the new sprite from here on
 		Goto See
 	Heal:
-		"####" H 0 {bNoDamage = FALSE; A_UnsetReflective(); bAllowPain = TRUE;} //force Invulnerability removal - Ozy81
-		"####" E 18 A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), 64, 0, 0, 0, 0)
+		"####" E 1 {bNoDamage = FALSE; A_UnsetReflective(); bAllowPain = TRUE;} //force Invulnerability removal - Ozy81
+		"####" E 17 A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), 64, 0, 0, 0, 0)
 		"####" S 18 A_HealGoal
 		Goto See
 	Missile:
@@ -2279,6 +2279,7 @@ ACTOR Longinus_Hitler : NaziBoss
 		"####" S 1 {bNoDamage = FALSE; A_UnsetReflective(); bAllowPain = TRUE;}
 		Goto See
 	RumbleStomp:
+		"####" C 1 {bNoDamage = FALSE; A_UnsetReflective(); bAllowPain = TRUE;} //force Invulnerability removal - Ozy81
 		"####" C 6
 		"####" E 0 { user_count4 == 0; A_FaceTarget; }
 		"####" E 4
