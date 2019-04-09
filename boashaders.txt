@@ -906,6 +906,17 @@ HardwareShader PostProcess scene {
 	Uniform float timer
 }
 
+//Color Grading hardware shader
+HardwareShader PostProcess Scene {
+  Name "ColorGrade"
+  Shader "shaders/colorgrade.fp" 330
+  Texture lut "PPLUT"
+  Uniform int lutA
+  Uniform int lutB
+  Uniform float alpha
+  Enabled
+}
+
 // Old video texture
 HardwareShader Texture "textures/shader/oldvideo.png" {
 	Shader "shaders/OldVideoTx2.fp"

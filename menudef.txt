@@ -241,6 +241,9 @@ OptionMenu "PostProcessShaderOptions"
 	StaticText "Noise"
 	Option "Enabled", "tc_pp_noise", "YesNo"
 	Slider "Intensity", "tc_pp_noise_amount", 0, 5, 0.05
+	StaticText ""
+	StaticText "Color Grading"
+	Option "$GLPREFMNU_COLORGRADEENABLED", r_colorgrading, "OnOff"
 }
 
 OptionValue "MBlurBlendModes"
