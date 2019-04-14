@@ -1,0 +1,33 @@
+/**
+ * Trigger a color grade transition between the front or back of the line,
+ * depending on which side the line was triggered from.
+ *
+ * Speed is measured in tics. If speed is 0, a default speed is used (see colorgrade.zs).
+ */
+script "ColorGradeBetween" (int lutFront, int lutBack, int speed)
+{
+	int newLut = lutBack;
+	if (LineSide() == 1)
+	{
+		newLut = lutFront;
+	}
+	ScriptCall("ColorGradeThinker", "TransitionTo", PlayerNumber(), newLut, speed);
+}
+
+/**
+ * Trigger a color grade transition to a specific LUT.
+ *
+ * Speed is measured in tics.
+ */
+script "ColorGradeTo" (int lut, int speed)
+{
+	ScriptCall("ColorGradeThinker", "TransitionTo", PlayerNumber(), lut, speed);
+}
+
+/**
+ * Immediately set a color grade.
+ */
+script "ColorGradeSet" (int lut)
+{
+	ScriptCall("ColorGradeThinker", "Set", PlayerNumber(), lut);
+}
