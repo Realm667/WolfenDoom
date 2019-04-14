@@ -679,7 +679,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 		if (target) { DoTrace(self, AngleTo(target), MaxTargetRange, PitchTo(target), 0, Height * 0.9, trace); }
 
-		if (target && target.health > 0 && target.bShootable && trace.Results.HitActor && trace.Results.HitActor.bIsMonster && (refireshots && shots < refireshots))
+		if (target && target.health > 0 && target.bShootable && Distance3D(target) > 0 && trace.Results.HitActor && trace.Results.HitActor.bIsMonster && (refireshots && shots < refireshots))
 		{
 			chance = int(chance / (Distance3D(target) / MissileRanges[weapon]));
 
