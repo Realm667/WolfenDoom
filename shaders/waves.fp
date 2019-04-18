@@ -30,7 +30,7 @@ Material ProcessMaterial()
 	vec2 warpoffset = GetWarpOffset(texCoord);
 
 	Material material;
-	material.Base = getTexel(texCoord + rippleoffset) * 0.85 + texture2D(background, texCoord + warpoffset) * 0.05;
+	material.Base = getTexel(texCoord + rippleoffset) * 0.85 + texture(background, texCoord + warpoffset) * 0.05;
 	material.Normal = ApplyNormalMap(texCoord + rippleoffset);
 #if defined(SPECULAR)
 	material.Specular = texture(texture3, texCoord + rippleoffset).rgb;

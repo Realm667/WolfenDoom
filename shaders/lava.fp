@@ -1,11 +1,10 @@
 // Adapted by AFADoomer from https://github.com/prideout/recipes/blob/master/demo-Lava.glsl
-uniform float fogDensity = 0.3;
-uniform vec3 fogColor = vec3(0, 0, 0);
-uniform float timer;
+const float fogDensity = 0.3;
+const vec3 fogColor = vec3(0, 0, 0);
 
 vec4 ProcessTexel()
 {
-	vec4 noise = texture2D(foreground, vTexCoord.st);
+	vec4 noise = texture(foreground, vTexCoord.st);
 	vec2 T1 = vTexCoord.st + vec2(1.5, -1.5) * mod(timer, 1024) * 0.02 + noise.xy * 2.0;
 	vec2 T2 = vTexCoord.st + vec2(-0.5, 2.0) * mod(timer, 1024) * 0.01 + noise.xy * 2.0;
 				
