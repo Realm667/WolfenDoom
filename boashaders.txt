@@ -40,19 +40,67 @@ HardwareShader PostProcess beforebloom
 	Uniform int blendmode
 }
 
-//Water/Lava/etc.
-HardwareShader Texture LAVA_A01
+//Liquids
+HardwareShader Texture "LAVA_A01"
 {
 	Shader "shaders/lava.fp"
 	Texture foreground "textures/shader/cloud.png"
 	Speed 0.6
 }
 
-HardwareShader Texture LAVA_A02
+HardwareShader Texture "textures/LAVA_A01.png"
 {
 	Shader "shaders/lava.fp"
 	Texture foreground "textures/shader/cloud.png"
 	Speed 0.6
+}
+
+HardwareShader Texture "LAVA_A02"
+{
+	Shader "shaders/lava.fp"
+	Texture foreground "textures/shader/cloud.png"
+	Speed 0.6
+}
+
+HardwareShader Texture "textures/LAVA_A02.png"
+{
+	Shader "shaders/lava.fp"
+	Texture foreground "textures/shader/cloud.png"
+	Speed 0.6
+}
+
+HardwareShader Texture "NUKA_A01"
+{
+	Shader "shaders/nukage.fp"
+	Texture foreground "textures/shader/cloud2.png"
+	Speed 1.0
+}
+
+HardwareShader Texture "textures/NUKA_A01.png"
+{
+	Shader "shaders/nukage.fp"
+	Texture foreground "textures/shader/cloud2.png"
+	Speed 1.0
+}
+
+Material Texture "AZTC_WTR"
+{
+	normal "materials/normalmaps/AZTC_WTR.png"
+	specular "materials/specular/AZTC_WTR.png"
+	specularlevel 2.0
+	shader "shaders/waves.fp"
+	Texture background "textures/shader/water.png"
+	speed 0.65
+}
+
+Material Texture "textures/aztec/AZTC_WTR.png"
+{
+	normal "materials/normalmaps/AZTC_WTR.png"
+	specular "materials/specular/AZTC_WTR.png"
+	specularlevel 2.0
+	shader "shaders/waves.fp"
+	Texture background "textures/shader/water.png"
+	speed 0.65
 }
 
 Material Texture "SLDG_A01"
@@ -65,7 +113,47 @@ Material Texture "SLDG_A01"
 	speed 0.5
 }
 
+Material Texture "textures/SLDG_A01.png"
+{
+	normal "materials/normalmaps/water.png"
+	specular "materials/specular/water.png"
+	specularlevel 1.0
+	shader "shaders/waves.fp"
+	Texture background "textures/shader/water.png"
+	speed 0.5
+}
+				
+Material Texture "WATR_A01"
+{
+	normal "materials/normalmaps/water.png"
+	specular "materials/specular/water.png"
+	specularlevel 2.0
+	shader "shaders/waves.fp"
+	Texture background "textures/shader/water.png"
+	speed 1.0
+}
+				
+Material Texture "textures/WATR_A01.png"
+{
+	normal "materials/normalmaps/water.png"
+	specular "materials/specular/water.png"
+	specularlevel 2.0
+	shader "shaders/waves.fp"
+	Texture background "textures/shader/water.png"
+	speed 1.0
+}
+
 Material Texture "WATR_G97"
+{
+	normal "materials/normalmaps/water.png"
+	specular "materials/specular/water.png"
+	specularlevel 2.0
+	shader "shaders/waves.fp"
+	Texture background "textures/shader/water.png"
+	speed 1.0
+}
+
+Material Texture "textures/WATR_G97.png"
 {
 	normal "materials/normalmaps/water.png"
 	specular "materials/specular/water.png"
@@ -85,24 +173,27 @@ Material Texture "WATR_G98"
 	speed 0.75
 }
 
-HardwareShader Texture NUKA_A01
-{
-	Shader "shaders/nukage.fp"
-	Texture foreground "textures/shader/cloud2.png"
-	Speed 1.0
-}
-
-Material Texture "WATR_A01"
+Material Texture "textures/WATR_G98.png"
 {
 	normal "materials/normalmaps/water.png"
 	specular "materials/specular/water.png"
 	specularlevel 2.0
 	shader "shaders/waves.fp"
 	Texture background "textures/shader/water.png"
-	speed 1.0
+	speed 0.75
 }
 
 Material Texture "WATR_X98"
+{
+	normal "materials/normalmaps/water.png"
+	specular "materials/specular/water.png"
+	specularlevel 2.0
+	shader "shaders/waves.fp"
+	Texture background "textures/shader/water.png"
+	speed 0.75
+}
+
+Material Texture "textures/WATR_X98.png"
 {
 	normal "materials/normalmaps/water.png"
 	specular "materials/specular/water.png"
@@ -122,14 +213,1048 @@ Material Texture "WATR_X99"
 	speed 0.6
 }
 
-Material Texture "AZTC_WTR"
+Material Texture "textures/WATR_X99.png"
 {
-	normal "materials/normalmaps/AZTC_WTR.png"
-	specular "materials/specular/AZTC_WTR.png"
+	normal "materials/normalmaps/water.png"
+	specular "materials/specular/water.png"
 	specularlevel 2.0
 	shader "shaders/waves.fp"
 	Texture background "textures/shader/water.png"
-	speed 0.65
+	speed 0.6
+}
+
+//WATERFALLS - needs a different shader/shader textures since WARP doesn't support materials and waves aren't suitable
+Material Texture "AZTC_WTF"
+{
+	normal "materials/normalmaps/WFALL.png"
+	specular "materials/specular/WFALL.png"
+	specularlevel 2.0
+	//shader "shaders/waves.fp"
+	//Texture background "textures/shader/water.png"
+	//speed 1.0
+}
+
+Material Texture "textures/aztec/AZTC_WTF.png"
+{
+	normal "materials/normalmaps/WFALL.png"
+	specular "materials/specular/WFALL.png"
+	specularlevel 2.0
+	//shader "shaders/waves.fp"
+	//Texture background "textures/shader/water.png"
+	//speed 1.0
+}
+
+Material Texture "WATR_A00"
+{
+	normal "materials/normalmaps/WFALL.png"
+	specular "materials/specular/WFALL.png"
+	specularlevel 2.0
+	//shader "shaders/waves.fp"
+	//Texture background "textures/shader/water.png"
+	//speed 1.0
+}
+
+Material Texture "textures/WATR_A00.png"
+{
+	normal "materials/normalmaps/WFALL.png"
+	specular "materials/specular/WFALL.png"
+	specularlevel 2.0
+	//shader "shaders/waves.fp"
+	//Texture background "textures/shader/water.png"
+	//speed 1.0
+}
+
+Material Texture "WFAL_G98"
+{
+	normal "materials/normalmaps/WFALL.png"
+	specular "materials/specular/WFALL.png"
+	specularlevel 2.0
+	//shader "shaders/waves.fp"
+	//Texture background "textures/shader/water.png"
+	//speed 1.0
+}
+
+Material Texture "textures/WFAL_G98.png"
+{
+	normal "materials/normalmaps/WFALL.png"
+	specular "materials/specular/WFALL.png"
+	specularlevel 2.0
+	//shader "shaders/waves.fp"
+	//Texture background "textures/shader/water.png"
+	//speed 1.0
+}
+
+Material Texture "WFAL_X98"
+{
+	normal "materials/normalmaps/WFALL.png"
+	specular "materials/specular/WFALL.png"
+	specularlevel 2.0
+	//shader "shaders/waves.fp"
+	//Texture background "textures/shader/water.png"
+	//speed 1.0
+}
+
+Material Texture "textures/WFAL_X98.png"
+{
+	normal "materials/normalmaps/WFALL.png"
+	specular "materials/specular/WFALL.png"
+	specularlevel 2.0
+	//shader "shaders/waves.fp"
+	//Texture background "textures/shader/water.png"
+	speed 1.0
+}
+
+//ANIMATED - no shaders needed
+Material Texture "HIACID01"
+{
+	normal "materials/normalmaps/HIACID01.png"
+	specular "materials/specular/HIACID01.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID01.png"
+{
+	normal "materials/normalmaps/HIACID01.png"
+	specular "materials/specular/HIACID01.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID02"
+{
+	normal "materials/normalmaps/HIACID02.png"
+	specular "materials/specular/HIACID02.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID02.png"
+{
+	normal "materials/normalmaps/HIACID02.png"
+	specular "materials/specular/HIACID02.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID03"
+{
+	normal "materials/normalmaps/HIACID03.png"
+	specular "materials/specular/HIACID03.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID03.png"
+{
+	normal "materials/normalmaps/HIACID03.png"
+	specular "materials/specular/HIACID03.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID04"
+{
+	normal "materials/normalmaps/HIACID04.png"
+	specular "materials/specular/HIACID04.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID04.png"
+{
+	normal "materials/normalmaps/HIACID04.png"
+	specular "materials/specular/HIACID04.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID05"
+{
+	normal "materials/normalmaps/HIACID05.png"
+	specular "materials/specular/HIACID05.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID05.png"
+{
+	normal "materials/normalmaps/HIACID05.png"
+	specular "materials/specular/HIACID05.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID06"
+{
+	normal "materials/normalmaps/HIACID06.png"
+	specular "materials/specular/HIACID06.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID06.png"
+{
+	normal "materials/normalmaps/HIACID06.png"
+	specular "materials/specular/HIACID06.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID07"
+{
+	normal "materials/normalmaps/HIACID07.png"
+	specular "materials/specular/HIACID07.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID07.png"
+{
+	normal "materials/normalmaps/HIACID07.png"
+	specular "materials/specular/HIACID07.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID08"
+{
+	normal "materials/normalmaps/HIACID08.png"
+	specular "materials/specular/HIACID08.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID08.png"
+{
+	normal "materials/normalmaps/HIACID08.png"
+	specular "materials/specular/HIACID08.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID09"
+{
+	normal "materials/normalmaps/HIACID09.png"
+	specular "materials/specular/HIACID09.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID09.png"
+{
+	normal "materials/normalmaps/HIACID09.png"
+	specular "materials/specular/HIACID09.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID10"
+{
+	normal "materials/normalmaps/HIACID10.png"
+	specular "materials/specular/HIACID10.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID10.png"
+{
+	normal "materials/normalmaps/HIACID10.png"
+	specular "materials/specular/HIACID10.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID11"
+{
+	normal "materials/normalmaps/HIACID11.png"
+	specular "materials/specular/HIACID11.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID11.png"
+{
+	normal "materials/normalmaps/HIACID11.png"
+	specular "materials/specular/HIACID11.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID12"
+{
+	normal "materials/normalmaps/HIACID12.png"
+	specular "materials/specular/HIACID12.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID12.png"
+{
+	normal "materials/normalmaps/HIACID12.png"
+	specular "materials/specular/HIACID12.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID13"
+{
+	normal "materials/normalmaps/HIACID13.png"
+	specular "materials/specular/HIACID13.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID13.png"
+{
+	normal "materials/normalmaps/HIACID13.png"
+	specular "materials/specular/HIACID13.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID14"
+{
+	normal "materials/normalmaps/HIACID14.png"
+	specular "materials/specular/HIACID14.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID14.png"
+{
+	normal "materials/normalmaps/HIACID14.png"
+	specular "materials/specular/HIACID14.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID15"
+{
+	normal "materials/normalmaps/HIACID15.png"
+	specular "materials/specular/HIACID15.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID15.png"
+{
+	normal "materials/normalmaps/HIACID15.png"
+	specular "materials/specular/HIACID15.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID16"
+{
+	normal "materials/normalmaps/HIACID16.png"
+	specular "materials/specular/HIACID16.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID16.png"
+{
+	normal "materials/normalmaps/HIACID16.png"
+	specular "materials/specular/HIACID16.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID17"
+{
+	normal "materials/normalmaps/HIACID17.png"
+	specular "materials/specular/HIACID17.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID17.png"
+{
+	normal "materials/normalmaps/HIACID17.png"
+	specular "materials/specular/HIACID17.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID18"
+{
+	normal "materials/normalmaps/HIACID18.png"
+	specular "materials/specular/HIACID18.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID18.png"
+{
+	normal "materials/normalmaps/HIACID18.png"
+	specular "materials/specular/HIACID18.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID19"
+{
+	normal "materials/normalmaps/HIACID19.png"
+	specular "materials/specular/HIACID19.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID19.png"
+{
+	normal "materials/normalmaps/HIACID19.png"
+	specular "materials/specular/HIACID19.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID20"
+{
+	normal "materials/normalmaps/HIACID20.png"
+	specular "materials/specular/HIACID20.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID20.png"
+{
+	normal "materials/normalmaps/HIACID20.png"
+	specular "materials/specular/HIACID20.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID21"
+{
+	normal "materials/normalmaps/HIACID21.png"
+	specular "materials/specular/HIACID21.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID21.png"
+{
+	normal "materials/normalmaps/HIACID21.png"
+	specular "materials/specular/HIACID21.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID22"
+{
+	normal "materials/normalmaps/HIACID22.png"
+	specular "materials/specular/HIACID22.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID22.png"
+{
+	normal "materials/normalmaps/HIACID22.png"
+	specular "materials/specular/HIACID22.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID23"
+{
+	normal "materials/normalmaps/HIACID23.png"
+	specular "materials/specular/HIACID23.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID23.png"
+{
+	normal "materials/normalmaps/HIACID23.png"
+	specular "materials/specular/HIACID23.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID24"
+{
+	normal "materials/normalmaps/HIACID24.png"
+	specular "materials/specular/HIACID24.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID24.png"
+{
+	normal "materials/normalmaps/HIACID24.png"
+	specular "materials/specular/HIACID24.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID25"
+{
+	normal "materials/normalmaps/HIACID25.png"
+	specular "materials/specular/HIACID25.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID25.png"
+{
+	normal "materials/normalmaps/HIACID25.png"
+	specular "materials/specular/HIACID25.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID26"
+{
+	normal "materials/normalmaps/HIACID26.png"
+	specular "materials/specular/HIACID26.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID26.png"
+{
+	normal "materials/normalmaps/HIACID26.png"
+	specular "materials/specular/HIACID26.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID27"
+{
+	normal "materials/normalmaps/HIACID27.png"
+	specular "materials/specular/HIACID27.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID27.png"
+{
+	normal "materials/normalmaps/HIACID27.png"
+	specular "materials/specular/HIACID27.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID28"
+{
+	normal "materials/normalmaps/HIACID28.png"
+	specular "materials/specular/HIACID28.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID28.png"
+{
+	normal "materials/normalmaps/HIACID28.png"
+	specular "materials/specular/HIACID28.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID29"
+{
+	normal "materials/normalmaps/HIACID29.png"
+	specular "materials/specular/HIACID29.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID29.png"
+{
+	normal "materials/normalmaps/HIACID29.png"
+	specular "materials/specular/HIACID29.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID30"
+{
+	normal "materials/normalmaps/HIACID30.png"
+	specular "materials/specular/HIACID30.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID30.png"
+{
+	normal "materials/normalmaps/HIACID30.png"
+	specular "materials/specular/HIACID30.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID31"
+{
+	normal "materials/normalmaps/HIACID31.png"
+	specular "materials/specular/HIACID31.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID31.png"
+{
+	normal "materials/normalmaps/HIACID31.png"
+	specular "materials/specular/HIACID31.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID32"
+{
+	normal "materials/normalmaps/HIACID32.png"
+	specular "materials/specular/HIACID32.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID32.png"
+{
+	normal "materials/normalmaps/HIACID32.png"
+	specular "materials/specular/HIACID32.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID33"
+{
+	normal "materials/normalmaps/HIACID33.png"
+	specular "materials/specular/HIACID33.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID33.png"
+{
+	normal "materials/normalmaps/HIACID33.png"
+	specular "materials/specular/HIACID33.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIACID34"
+{
+	normal "materials/normalmaps/HIACID34.png"
+	specular "materials/specular/HIACID34.png"
+	specularlevel 8.0
+}
+
+Material Texture "textures/liquids/HIACID34.png"
+{
+	normal "materials/normalmaps/HIACID34.png"
+	specular "materials/specular/HIACID34.png"
+	specularlevel 8.0
+}
+
+Material Texture "HIWATR01"
+{
+	normal "materials/normalmaps/HIACID01.png"
+	specular "materials/specular/HIACID01.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR01.png"
+{
+	normal "materials/normalmaps/HIACID01.png"
+	specular "materials/specular/HIACID01.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR02"
+{
+	normal "materials/normalmaps/HIACID02.png"
+	specular "materials/specular/HIACID02.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR02.png"
+{
+	normal "materials/normalmaps/HIACID02.png"
+	specular "materials/specular/HIACID02.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR03"
+{
+	normal "materials/normalmaps/HIACID03.png"
+	specular "materials/specular/HIACID03.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR03.png"
+{
+	normal "materials/normalmaps/HIACID03.png"
+	specular "materials/specular/HIACID03.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR04"
+{
+	normal "materials/normalmaps/HIACID04.png"
+	specular "materials/specular/HIACID04.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR04.png"
+{
+	normal "materials/normalmaps/HIACID04.png"
+	specular "materials/specular/HIACID04.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR05"
+{
+	normal "materials/normalmaps/HIACID05.png"
+	specular "materials/specular/HIACID05.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR05.png"
+{
+	normal "materials/normalmaps/HIACID05.png"
+	specular "materials/specular/HIACID05.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR06"
+{
+	normal "materials/normalmaps/HIACID06.png"
+	specular "materials/specular/HIACID06.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR06.png"
+{
+	normal "materials/normalmaps/HIACID06.png"
+	specular "materials/specular/HIACID06.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR07"
+{
+	normal "materials/normalmaps/HIACID07.png"
+	specular "materials/specular/HIACID07.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR07.png"
+{
+	normal "materials/normalmaps/HIACID07.png"
+	specular "materials/specular/HIACID07.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR08"
+{
+	normal "materials/normalmaps/HIACID08.png"
+	specular "materials/specular/HIACID08.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR08.png"
+{
+	normal "materials/normalmaps/HIACID08.png"
+	specular "materials/specular/HIACID08.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR09"
+{
+	normal "materials/normalmaps/HIACID09.png"
+	specular "materials/specular/HIACID09.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR09.png"
+{
+	normal "materials/normalmaps/HIACID09.png"
+	specular "materials/specular/HIACID09.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR10"
+{
+	normal "materials/normalmaps/HIACID10.png"
+	specular "materials/specular/HIACID10.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR10.png"
+{
+	normal "materials/normalmaps/HIACID10.png"
+	specular "materials/specular/HIACID10.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR11"
+{
+	normal "materials/normalmaps/HIACID11.png"
+	specular "materials/specular/HIACID11.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR11.png"
+{
+	normal "materials/normalmaps/HIACID11.png"
+	specular "materials/specular/HIACID11.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR12"
+{
+	normal "materials/normalmaps/HIACID12.png"
+	specular "materials/specular/HIACID12.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR12.png"
+{
+	normal "materials/normalmaps/HIACID12.png"
+	specular "materials/specular/HIACID12.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR13"
+{
+	normal "materials/normalmaps/HIACID13.png"
+	specular "materials/specular/HIACID13.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR13.png"
+{
+	normal "materials/normalmaps/HIACID13.png"
+	specular "materials/specular/HIACID13.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR14"
+{
+	normal "materials/normalmaps/HIACID14.png"
+	specular "materials/specular/HIACID14.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR14.png"
+{
+	normal "materials/normalmaps/HIACID14.png"
+	specular "materials/specular/HIACID14.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR15"
+{
+	normal "materials/normalmaps/HIACID15.png"
+	specular "materials/specular/HIACID15.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR15.png"
+{
+	normal "materials/normalmaps/HIACID15.png"
+	specular "materials/specular/HIACID15.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR16"
+{
+	normal "materials/normalmaps/HIACID16.png"
+	specular "materials/specular/HIACID16.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR16.png"
+{
+	normal "materials/normalmaps/HIACID16.png"
+	specular "materials/specular/HIACID16.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR17"
+{
+	normal "materials/normalmaps/HIACID17.png"
+	specular "materials/specular/HIACID17.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR17.png"
+{
+	normal "materials/normalmaps/HIACID17.png"
+	specular "materials/specular/HIACID17.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR18"
+{
+	normal "materials/normalmaps/HIACID18.png"
+	specular "materials/specular/HIACID18.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR18.png"
+{
+	normal "materials/normalmaps/HIACID18.png"
+	specular "materials/specular/HIACID18.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR19"
+{
+	normal "materials/normalmaps/HIACID19.png"
+	specular "materials/specular/HIACID19.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR19.png"
+{
+	normal "materials/normalmaps/HIACID19.png"
+	specular "materials/specular/HIACID19.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR20"
+{
+	normal "materials/normalmaps/HIACID20.png"
+	specular "materials/specular/HIACID20.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR20.png"
+{
+	normal "materials/normalmaps/HIACID20.png"
+	specular "materials/specular/HIACID20.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR21"
+{
+	normal "materials/normalmaps/HIACID21.png"
+	specular "materials/specular/HIACID21.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR21.png"
+{
+	normal "materials/normalmaps/HIACID21.png"
+	specular "materials/specular/HIACID21.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR22"
+{
+	normal "materials/normalmaps/HIACID22.png"
+	specular "materials/specular/HIACID22.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR22.png"
+{
+	normal "materials/normalmaps/HIACID22.png"
+	specular "materials/specular/HIACID22.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR23"
+{
+	normal "materials/normalmaps/HIACID23.png"
+	specular "materials/specular/HIACID23.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR23.png"
+{
+	normal "materials/normalmaps/HIACID23.png"
+	specular "materials/specular/HIACID23.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR24"
+{
+	normal "materials/normalmaps/HIACID24.png"
+	specular "materials/specular/HIACID24.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR24.png"
+{
+	normal "materials/normalmaps/HIACID24.png"
+	specular "materials/specular/HIACID24.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR25"
+{
+	normal "materials/normalmaps/HIACID25.png"
+	specular "materials/specular/HIACID25.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR25.png"
+{
+	normal "materials/normalmaps/HIACID25.png"
+	specular "materials/specular/HIACID25.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR26"
+{
+	normal "materials/normalmaps/HIACID26.png"
+	specular "materials/specular/HIACID26.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR26.png"
+{
+	normal "materials/normalmaps/HIACID26.png"
+	specular "materials/specular/HIACID26.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR27"
+{
+	normal "materials/normalmaps/HIACID27.png"
+	specular "materials/specular/HIACID27.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR27.png"
+{
+	normal "materials/normalmaps/HIACID27.png"
+	specular "materials/specular/HIACID27.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR28"
+{
+	normal "materials/normalmaps/HIACID28.png"
+	specular "materials/specular/HIACID28.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR28.png"
+{
+	normal "materials/normalmaps/HIACID28.png"
+	specular "materials/specular/HIACID28.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR29"
+{
+	normal "materials/normalmaps/HIACID29.png"
+	specular "materials/specular/HIACID29.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR29.png"
+{
+	normal "materials/normalmaps/HIACID29.png"
+	specular "materials/specular/HIACID29.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR30"
+{
+	normal "materials/normalmaps/HIACID30.png"
+	specular "materials/specular/HIACID30.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR30.png"
+{
+	normal "materials/normalmaps/HIACID30.png"
+	specular "materials/specular/HIACID30.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR31"
+{
+	normal "materials/normalmaps/HIACID31.png"
+	specular "materials/specular/HIACID31.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR31.png"
+{
+	normal "materials/normalmaps/HIACID31.png"
+	specular "materials/specular/HIACID31.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR32"
+{
+	normal "materials/normalmaps/HIACID32.png"
+	specular "materials/specular/HIACID32.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR32.png"
+{
+	normal "materials/normalmaps/HIACID32.png"
+	specular "materials/specular/HIACID32.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR33"
+{
+	normal "materials/normalmaps/HIACID33.png"
+	specular "materials/specular/HIACID33.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR33.png"
+{
+	normal "materials/normalmaps/HIACID33.png"
+	specular "materials/specular/HIACID33.png"
+	specularlevel 6.0
+}
+
+Material Texture "HIWATR34"
+{
+	normal "materials/normalmaps/HIACID34.png"
+	specular "materials/specular/HIACID34.png"
+	specularlevel 6.0
+}
+
+Material Texture "textures/liquids/HIWATR34.png"
+{
+	normal "materials/normalmaps/HIACID34.png"
+	specular "materials/specular/HIACID34.png"
+	specularlevel 6.0
 }
 
 //Blood
