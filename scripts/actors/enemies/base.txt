@@ -820,6 +820,7 @@ class Nazi : Base
 	int crouchchance;
 	String healsound;
 	int healdistance;
+	bool user_fadedeath;
 	int user_noaltdeath;
 
 	Property Healer:healflags;
@@ -833,6 +834,7 @@ class Nazi : Base
 	Property CrouchChance:crouchchance;
 	Property HealSound:healsound;
 	Property HealDistance:healdistance;
+	Property FadeDeath:user_fadedeath;
 	Property NoAltDeath:user_noaltdeath;
 
 	Default
@@ -1404,6 +1406,13 @@ class Nazi : Base
 		else { A_Chase(melee, missile, flags); }
 
 		if (candodge && !crouchtimeout) { A_TryHide(); }
+	}
+
+	state A_CheckFadeDeath()
+	{
+		if (user_fadedeath == TRUE) { return ResolveState("Death.Fade"); }
+
+		return ResolveState(null);
 	}
 
 	state A_CheckAltDeath(int chance = 16)
