@@ -2733,6 +2733,7 @@ ACTOR DirtyDarren : BasicGuard
 	+FRIENDLY
 	+USESPECIAL
 	Nazi.NoAltDeath 1
+	Nazi.CrouchChance 0
 	States
 	{
 	Spawn:
@@ -2758,6 +2759,7 @@ ACTOR Clerk : DirtyDarren
 	//$Title Lt. Laz Rojas
 	Height 75 //mxd. Players shouldn't be able to jump on this guy
 	Obituary "$CLERK"
+	Nazi.CrouchChance 0
 	States
 	{
 	Spawn:
@@ -2771,6 +2773,7 @@ ACTOR Marine1 : DirtyDarren
 {
 	//$Title Sgt Ascher (Marine Uniform)
 	Obituary "$MARINE"
+	Nazi.CrouchChance 0
 	States
 	{
 	Spawn:

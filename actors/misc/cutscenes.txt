@@ -36,6 +36,17 @@ ACTOR TMBlazko3 : TMBlazko
 	}
 }
 
+ACTOR TMBlazko4 : TMBlazko
+{
+	//$Title The End Blazko
+	States
+	{
+	Spawn:
+		BLAZ D -1
+		Stop
+	}
+}
+
 ACTOR TMGuard
 {
 	//$Category Cutscenes (BoA)
@@ -270,5 +281,82 @@ ACTOR TMRUFlag : TMBlazko
 	Spawn:
 		RUSF A -1
 		Stop
+	}
+}
+
+ACTOR TMMarine1
+{
+	//$Category Cutscenes (BoA)
+	//$Title Random Happy Marine 1 (brown hair)
+	Scale 0.65
+	Translation 1
+	States
+	{
+	Spawn:
+		FIN1 A 0 NODELAY A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
+	Randomize:
+		FIN1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose17","Pose17")
+	Pose1:
+		"####" AABBDD 1 A_SetTics(random(10,20))
+		"####" CC 1 A_SetTics(random(80,160))
+		Loop
+	Pose2:
+		"####" AABBDD 1 A_SetTics(random(10,20))
+		"####" EEDDDDBB 1 A_SetTics(random(40,60))
+		Loop
+	Pose3:
+		"####" FFGG 1 A_SetTics(random(5,10))
+		"####" HHIHIHG 1 A_SetTics(random(20,50))
+		Loop
+	Pose4:
+		"####" HHIHIHIHH 1 A_SetTics(random(20,50))
+		Loop
+	Pose5:
+		"####" FFFF 1 A_SetTics(random(5,10))
+		"####" JJKJKJKJJ 1 A_SetTics(random(10,20))
+		Loop
+	Pose6:
+		"####" L -1
+		Stop
+	Pose7:
+		"####" LLMM 1 A_SetTics(random(10,20))
+		"####" NN 1 A_SetTics(random(80,160))
+		Loop
+	Pose8:
+		"####" N -1
+		Stop
+	Pose9:
+		"####" NN 1 A_SetTics(random(10,20))
+		"####" OOPPOPOPO 1 A_SetTics(random(40,60))
+		Loop
+	Pose10:
+		"####" QQRR 1 A_SetTics(random(10,20))
+		"####" SS 1 A_SetTics(random(80,160))
+		Loop
+	Pose11:
+		"####" S -1
+		Stop
+	Pose12:
+		"####" SS 1 A_SetTics(random(10,20))
+		"####" TTUUTUTUT 1 A_SetTics(random(40,60))
+		Loop
+	Pose14:
+		"####" V -1
+		Stop
+	Pose14:
+		"####" VVWW 1 A_SetTics(random(10,20))
+		"####" XX 1 A_SetTics(random(80,160))
+		Loop
+	Pose15:
+		"####" X -1
+		Stop
+	Pose16:
+		"####" XX 1 A_SetTics(random(10,20))
+		"####" YYZZYZYZY 1 A_SetTics(random(40,60))
+		Loop
+	Pose17:
+		FIN1 LLFG 1 A_SetTics(random(5,10))
+		FIJ1 AABCDAA 1 A_SetTics(random(5,10))
+		Loop
 	}
 }
