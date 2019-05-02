@@ -1,8 +1,8 @@
 //Motion blur shader taken from https://forum.zdoom.org/viewtopic.php?f=103&t=62772
 void main()
 {
-	vec4 C	;
-	int i ;
+	vec4 C = vec4(0,0,0,0);
+	int i;
 	
 	if( blendmode == 1 )
 	{
