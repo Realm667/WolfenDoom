@@ -105,44 +105,19 @@ ACTOR 3dFurniture_End  //this doesn't have scenelod to force needed effect on c3
 }
 
 //some smart bridges
-ACTOR 3dBridge256 : InvisibleBridge
-{Radius 256 Height 256}
-
-ACTOR 3dBridge192 : InvisibleBridge
-{Radius 192 Height 192}
-
-ACTOR 3dBridge176 : InvisibleBridge
-{Radius 176 Height 176}
-
-ACTOR 3dBridge144 : InvisibleBridge
-{Radius 144 Height 144}
-
-ACTOR 3dBridge128 : InvisibleBridge
-{Radius 128 Height 128}
-
-ACTOR 3dBridge96 : InvisibleBridge
-{Radius 96 Height 96}
-
-ACTOR 3dBridge64 : InvisibleBridge
-{Radius 64 Height 64}
-
-ACTOR 3dBridge56 : InvisibleBridge
-{Radius 56 Height 56}
-
-ACTOR 3dBridge48 : InvisibleBridge
-{Radius 48 Height 48}
-
-ACTOR 3dBridge32 : InvisibleBridge
-{Radius 32 Height 32}
-
-ACTOR 3dBridge24 : InvisibleBridge
-{Radius 24 Height 24}
-
-ACTOR 3dBridge16 : InvisibleBridge
-{Radius 16 Height 16}
-
-ACTOR 3dBridge8 : InvisibleBridge
-{Radius 8 Height 24}
+ACTOR 3dBridge256 : InvisibleBridge {Radius 256 Height 256}
+ACTOR 3dBridge192 : InvisibleBridge {Radius 192 Height 192}
+ACTOR 3dBridge176 : InvisibleBridge {Radius 176 Height 176}
+ACTOR 3dBridge144 : InvisibleBridge {Radius 144 Height 144}
+ACTOR 3dBridge128 : InvisibleBridge {Radius 128 Height 128}
+ACTOR 3dBridge96 : InvisibleBridge {Radius 96 Height 96}
+ACTOR 3dBridge64 : InvisibleBridge {Radius 64 Height 64}
+ACTOR 3dBridge56 : InvisibleBridge {Radius 56 Height 56}
+ACTOR 3dBridge48 : InvisibleBridge {Radius 48 Height 48}
+ACTOR 3dBridge32 : InvisibleBridge {Radius 32 Height 32}
+ACTOR 3dBridge24 : InvisibleBridge {Radius 24 Height 24}
+ACTOR 3dBridge16 : InvisibleBridge {Radius 16 Height 16}
+ACTOR 3dBridge8 : InvisibleBridge {Radius 8 Height 24}
 
 //Models
 ACTOR SkyboxMoon
@@ -925,9 +900,9 @@ ACTOR FlakVierling3D : SwitchableDecoration
 		MDLA B 0 A_NoBlocking
 		MDLA BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE)
 		MDLA B 1 A_SpawnItemEx("Nuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
-		Destroyed:
-			MDLA B 8 A_SpawnProjectile("DarkSmoke2",32,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(70,130))
-			Loop
+	Destroyed:
+		MDLA B 8 A_SpawnProjectile("DarkSmoke2",32,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(70,130))
+		Loop
 	NonSolid: //Needed for Intromap - ozy81
 		MDLA A 0 A_UnsetSolid
 		MDLA A 0 {bNoGravity = FALSE; bCanPass = FALSE; bFloorClip = TRUE; bActLikeBridge = FALSE;} //oh god.. - ozy81
@@ -1132,7 +1107,7 @@ ACTOR FlagWave : ModelBase
 		TNT1 A 0 A_Jump(84,24)
 		TNT1 A 0 A_Jump(104,36)
 		TNT1 A 0 A_Jump(124,48)
-		SpawnLoop:
+	SpawnLoop:
 		MDLA ABCDEFGHIJKLMNOPQRSTU 1
 		MDLA VWXYZ 1
 		MDLB ABCDEFGHIJKLMNOPQRSTUV 1
@@ -1454,11 +1429,11 @@ ACTOR ModelGMCTruck : SwitchableDecoration //ozy81
 	{
 	Active:
 		MDLA A 0 {bDormant = FALSE;} //mxd. DORMANT flag must be updated manually
-		TrampleIsOn:
+	TrampleIsOn:
 		MDLA A 1 A_SpawnItemEx("Trample", ScaleX*128, 0, Height-16, 0, 0, 0, 0, MODELS_FLAGS2)
 		Loop
 	Spawn:
-	  MDLA A -1
+		MDLA A -1
 		Stop
 	Inactive:
 		MDLA A -1 {bDormant = TRUE;} //mxd. DORMANT flag must be updated manually
@@ -1483,10 +1458,10 @@ ACTOR ModelOpelTruck : 3dObstacle
 	Spawn:
 		MDLA A 0 NoDelay { args[0] == args[0] % 2; } // Remove check once the trucks are all fixed to not use args 2/3 (used to be windowless versions)
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Wehrmacht")
-		Random: //fall through if set at 0
+	Random: //fall through if set at 0
 		MDLA A -1 A_SpawnItemEx("ModelOpelTruckWindows", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS1)
 		Stop
-		Wehrmacht:
+	Wehrmacht:
 		MDLA B -1 A_SpawnItemEx("ModelOpelTruckWindows", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS1)
 		Stop
 	}
@@ -2035,7 +2010,7 @@ ACTOR 3dPiano : InteractionBase
 		Goto SpawnSet
 	Spawn:
 		MDLA A 0 NoDelay A_SpawnItemEx("InteractionIcon", 0, 0, 64, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
-		SpawnSet:
+	SpawnSet:
 		MDLA A -1
 		Stop
 	Inactive:
@@ -2271,10 +2246,10 @@ ACTOR COD_FemaleBust : 3dObstacle
 	Spawn:
 		MDLA A 0 NoDelay
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Bronze")
-		Silver: //fall through if set at 0
+	Silver: //fall through if set at 0
 		MDLA A -1
 		Stop
-		Bronze:
+	Bronze:
 		MDLA B -1
 		Stop
 	}
@@ -2299,10 +2274,10 @@ ACTOR COD_FemaleBust_Museum : MuseumBase
 	Spawn:
 		MDLA A 0 NoDelay
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Bronze")
-		Silver: //fall through if set at 0
+	Silver: //fall through if set at 0
 		MDLA A -1
 		Stop
-		Bronze:
+	Bronze:
 		MDLA B -1
 		Stop
 	}
@@ -2336,7 +2311,7 @@ ACTOR COD_RadioSimple : InteractionBase
 		Goto SpawnSet
 	Spawn:
 		MDLA A 0 NoDelay A_SpawnItemEx("InteractionIcon", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
-		SpawnSet:
+	SpawnSet:
 		MDLA A -1
 		Stop
 	Inactive:
@@ -2944,7 +2919,7 @@ ACTOR CODSignal_Light : 3dObstacle
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Green")
 		TNT1 A 0 A_JumpIf(Args[0]==2, "Yellow")
 		TNT1 A 0 A_JumpIf(Args[0]==3, "Red")
-		Off: //fall through if set at 0
+	Off: //fall through if set at 0
 		MDLA A 0 {bNoGravity = !Args[1];}
 		MDLA A -1
 		Stop
@@ -3202,7 +3177,7 @@ ACTOR SecretUFO : SwitchableDecoration //3dRealms
 	Active:
 		"####" A 35 //just wait 1 sec before spawning effects
 		"####" A 0 A_PlaySound("UFOLNCH", CHAN_AUTO, 1.0, FALSE, ATTN_NONE)
-		ActiveLoop:
+	ActiveLoop:
 		MDLA A 0 A_SpawnItemEx("UFOCirclePad",0,0,-8,0,0,random(1,8), SXF_SETMASTER | SXF_NOCHECKPOSITION)
 		"####" A 15
 		Loop
