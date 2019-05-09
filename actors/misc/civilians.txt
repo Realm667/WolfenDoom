@@ -1,0 +1,85 @@
+ACTOR TMCivFemale1
+{
+	//$Category Cutscenes (BoA)
+	//$Title Random Female Civilian (brown hair)
+	Scale 0.65
+	States
+	{
+	Spawn:
+		FEM1 A 0 NODELAY A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
+	Randomize:
+		FEM1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9")
+		Stop
+	Pose1:
+		"####" AABBCC 1 A_SetTics(random(10,20))
+		"####" DD 1 A_SetTics(random(80,160))
+		Loop
+	Pose2:
+		"####" DDEEFF 1 A_SetTics(random(10,20))
+		"####" EEDD 1 A_SetTics(random(40,60))
+		Loop
+	Pose3:
+		"####" G -1
+		Stop
+	Pose4:
+		"####" H -1
+		Stop
+	Pose5:
+		"####" I -1
+		Stop
+	Pose6:
+		"####" FEFEFFE 1 A_SetTics(random(80,160))
+		Stop
+	Pose7:
+		"####" JKJKJJK 1 A_SetTics(random(80,160))
+		Loop
+	Pose8:
+		"####" AADD 1 A_SetTics(random(10,20))
+		"####" JKJKJKDA 1 A_SetTics(random(80,160))
+		Loop
+	Pose9:
+		"####" AADL 1 A_SetTics(random(8,14))
+		"####" MNO 1 A_SetTics(random(5,10))
+		"####" LLD 1 A_SetTics(random(8,14))
+		Loop
+	}
+}
+
+ACTOR TMCivFemale2 : TMCivFemale1
+{
+	//$Title Random Female Civilian (red hair)
+	States
+	{
+	Spawn:
+		FEM2 A 0 NODELAY A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
+	Randomize:
+		FEM2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9")
+		Stop
+	}
+}
+
+ACTOR TMCivFemale3 : TMCivFemale1
+{
+	//$Title Random Female Civilian (black hair)
+	States
+	{
+	Spawn:
+		FEM3 A 0 NODELAY A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
+	Randomize:
+		FEM3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9")
+		Stop
+	}
+}
+
+ACTOR TMCivFemale4 : TMCivFemale1
+{
+	//$Title Random Female Civilian (blonde hair)
+	States
+	{
+	Spawn:
+		FEM4 A 0 NODELAY A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
+	Randomize:
+		FEM4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9")
+		Stop
+	}
+}
