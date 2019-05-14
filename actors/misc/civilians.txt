@@ -2,11 +2,11 @@ ACTOR TMCivFemale1
 {
 	//$Category Cutscenes (BoA)
 	//$Title Random Female Civilian (brown hair)
-	Scale 0.65
+	Scale 0.63
 	States
 	{
 	Spawn:
-		FEM1 A 0 NODELAY A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
+		FEM1 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY); A_GiveInventory("Z_ShadeMe",0); }
 	Randomize:
 		FEM1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9")
 		Stop
@@ -51,7 +51,7 @@ ACTOR TMCivFemale2 : TMCivFemale1
 	States
 	{
 	Spawn:
-		FEM2 A 0 NODELAY A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
+		FEM2 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY); A_GiveInventory("Z_ShadeMe",0); }
 	Randomize:
 		FEM2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9")
 		Stop
@@ -64,7 +64,7 @@ ACTOR TMCivFemale3 : TMCivFemale1
 	States
 	{
 	Spawn:
-		FEM3 A 0 NODELAY A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
+		FEM3 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY); A_GiveInventory("Z_ShadeMe",0); }
 	Randomize:
 		FEM3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9")
 		Stop
@@ -77,9 +77,56 @@ ACTOR TMCivFemale4 : TMCivFemale1
 	States
 	{
 	Spawn:
-		FEM4 A 0 NODELAY A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY)
+		FEM4 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY); A_GiveInventory("Z_ShadeMe",0); }
 	Randomize:
 		FEM4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9")
 		Stop
 	}
 }
+/*
+ACTOR TMCivMale1
+{
+	//$Category Cutscenes (BoA)
+	//$Title Random Male Civilian (brown hair)
+	Scale 0.65
+	States
+	{
+	Spawn:
+		MAL1 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		MAL1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9")
+		Stop
+	Pose1:
+		"####" AABBCC 1 A_SetTics(random(10,20))
+		"####" DD 1 A_SetTics(random(80,160))
+		Loop
+	Pose2:
+		"####" AAEEFF 1 A_SetTics(random(10,20))
+		"####" GGFF 1 A_SetTics(random(40,60))
+		Loop
+	Pose3:
+		"####" A -1
+		Stop
+	Pose4:
+		"####" FGFGFFG 1 A_SetTics(random(80,160))
+		Stop
+	Pose5:
+		"####" HIHIHHI 1 A_SetTics(random(80,160))
+		Stop
+	Pose6:
+		"####" FEFEFFE 1 A_SetTics(random(80,160))
+		Stop
+	Pose7:
+		"####" JKJKJJK 1 A_SetTics(random(80,160))
+		Loop
+	Pose8:
+		"####" AADD 1 A_SetTics(random(10,20))
+		"####" JKJKJKDA 1 A_SetTics(random(80,160))
+		Loop
+	Pose9:
+		"####" AADL 1 A_SetTics(random(8,14))
+		"####" MNO 1 A_SetTics(random(5,10))
+		"####" LLD 1 A_SetTics(random(8,14))
+		Loop
+	}
+}*/

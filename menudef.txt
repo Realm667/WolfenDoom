@@ -204,6 +204,16 @@ OptionMenu "EffectsOptions"
 	Slider "Underwater Effect", "uw_effectsize", 0, 0.1, 0.005, 3
 }
 
+OptionValue "ShadowDist"
+{
+	0, "None"
+	512, "Nearest"
+	1024, "Default"
+	4096, "Far"
+	8192, "Very Far"
+	16384, "Ultra"
+}
+
 OptionMenu "RenderOptions"
 {
 	Title  "Rendering Options"
@@ -213,6 +223,7 @@ OptionMenu "RenderOptions"
 	Option "2d Trees","bidiswitch","OnOff"
 	Option "Mirrors","gl_mirrors","OnOff"
 	Option "Reflections","gl_plane_reflection","OnOff"
+	Option "Sprite Shadows", "cl_boaspriteshadowdistance", "ShadowDist"
 	StaticText ""
 	StaticText "Distance is applied in map units"
 	StaticText "Decrease following values to improve in-game performance"
@@ -220,7 +231,6 @@ OptionMenu "RenderOptions"
 	Slider "Scenery","scenelod",1024,16384,1024, 0
 	Slider "Special Effects","sfxlod",1024,16384,1024, 0
 	Slider "Trees","treeslod",1024,16384,1024, 0
-	Slider "Sprite Shadows", "cl_boaspriteshadowdistance", 0, 4096, 128, 0
 }
 
 OptionMenu "PostProcessShaderOptions"

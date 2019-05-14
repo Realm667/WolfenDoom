@@ -123,7 +123,7 @@ class Z_SpriteShadow : Actor
 				alpha = caster.alpha * 0.5 * heightdelta; // heightdelta makes shadows that are farther from the parent actor more transparent
 
 				// fade the shadow out along a smooth curve as you get closer to the defined max draw distance
-				alpha *= cos(clamp(Distance2D(players[consoleplayer].mo) / shadowDist, 0.0, 1.0) * 180) / 2 + 0.5;
+				alpha *= cos(clamp(Distance2D(players[consoleplayer].camera) / shadowDist, 0.0, 1.0) * 180) / 2 + 0.5;
 
 				// sync scale
 				Scale.X = caster.Scale.X / clamp(heightdelta, 0.666, 1.0); // heightdelta makes shadows that are farther from the parent actor bigger (clamped to 1.5x size)
@@ -295,7 +295,7 @@ class SpriteShadowHandler : EventHandler
 			if (!mo.bIsMonster || mo is "PlayerPawn" || (mo is "Base" && !Base(mo).shadow) || mo.CountInv("Z_DontShadeMe")) continue;
 
 			// intentionally using 2D distance because it's faster
-			if (mo.Distance2DSquared(p.mo) > shadowDist ** 2)
+			if (mo.Distance2DSquared(p.camera) > shadowDist ** 2)
 			{
 				let shadeMe = Z_ShadeMe(mo.FindInventory("Z_ShadeMe"));
 

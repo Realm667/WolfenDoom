@@ -396,7 +396,7 @@ REM #             Contains the error message that is to be displayed on the scre
 REM # ================================================================================================
 :CompactProject_CheckResources_ErrMSG_PermissionIssue
 ECHO.
-ECHO CRITICAL ERROR: INSUFFICIENT PERMISIONS
+ECHO CRITICAL ERROR: INSUFFICIENT PERMISSIONS
 ECHO %~1
 ECHO.
 ECHO Please inspect the file permissions or contact your administrator for assistance.
