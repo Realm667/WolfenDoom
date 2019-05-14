@@ -2120,3 +2120,50 @@ Object SuperShield
 {
 	frame ARMX { light SUPERSHIELD }
 }
+
+//////////////////////
+// Fireworks Lights //
+//////////////////////
+
+FlickerLight FireWorks_Explosion
+{
+	Color 1.0 0.8 0.2
+	Size 640
+	SecondarySize 384
+	Chance 0.5
+	Attenuate 1
+}
+
+Object Fireworks_Rocket
+{
+	frame FRWXO { light FireWorks_Explosion }
+}
+
+FlickerLight FireWorks_Ember_Blue
+{
+	Color 0.0 0.0 0.8
+	Size 640
+	SecondarySize 384
+	Chance 0.5
+	Attenuate 1
+}
+
+FlickerLight FireWorks_Ember_Red
+{
+	Color 0.8 0.0 0.0
+	Size 640
+	SecondarySize 384
+	Chance 0.5
+	Attenuate 1
+}
+
+Object Fireworks_LightDummy_Red
+{
+	frame TNT1A { light FireWorks_Ember_Red }
+}
+
+Object Fireworks_LightDummy_Blue
+{
+	frame TNT1A { light FireWorks_Ember_Blue }
+}
+
