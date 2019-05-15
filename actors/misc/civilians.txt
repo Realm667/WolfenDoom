@@ -6,7 +6,7 @@ ACTOR TMCivFemale1
 	States
 	{
 	Spawn:
-		FEM1 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY); A_GiveInventory("Z_ShadeMe",0); }
+		FEM1 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.58, 0.63) ); A_GiveInventory("Z_ShadeMe",0); }
 	Randomize:
 		FEM1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9")
 		Stop
@@ -51,7 +51,7 @@ ACTOR TMCivFemale2 : TMCivFemale1
 	States
 	{
 	Spawn:
-		FEM2 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY); A_GiveInventory("Z_ShadeMe",0); }
+		FEM2 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.58, 0.63) ); A_GiveInventory("Z_ShadeMe",0); }
 	Randomize:
 		FEM2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9")
 		Stop
@@ -64,7 +64,7 @@ ACTOR TMCivFemale3 : TMCivFemale1
 	States
 	{
 	Spawn:
-		FEM3 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY); A_GiveInventory("Z_ShadeMe",0); }
+		FEM3 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.58, 0.63) ); A_GiveInventory("Z_ShadeMe",0); }
 	Randomize:
 		FEM3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9")
 		Stop
@@ -77,13 +77,13 @@ ACTOR TMCivFemale4 : TMCivFemale1
 	States
 	{
 	Spawn:
-		FEM4 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY); A_GiveInventory("Z_ShadeMe",0); }
+		FEM4 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.58, 0.63) ); A_GiveInventory("Z_ShadeMe",0); }
 	Randomize:
 		FEM4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9")
 		Stop
 	}
 }
-/*
+
 ACTOR TMCivMale1
 {
 	//$Category Cutscenes (BoA)
@@ -92,9 +92,9 @@ ACTOR TMCivMale1
 	States
 	{
 	Spawn:
-		MAL1 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY); A_GiveInventory("Z_ShadeMe",0); }
+		MAL1 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
 	Randomize:
-		MAL1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9")
+		MAL1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13")
 		Stop
 	Pose1:
 		"####" AABBCC 1 A_SetTics(random(10,20))
@@ -106,27 +106,234 @@ ACTOR TMCivMale1
 		Loop
 	Pose3:
 		"####" A -1
-		Stop
+		Loop
 	Pose4:
 		"####" FGFGFFG 1 A_SetTics(random(80,160))
-		Stop
+		Loop
 	Pose5:
 		"####" HIHIHHI 1 A_SetTics(random(80,160))
-		Stop
+		Loop
 	Pose6:
 		"####" FEFEFFE 1 A_SetTics(random(80,160))
-		Stop
+		Loop
 	Pose7:
-		"####" JKJKJJK 1 A_SetTics(random(80,160))
+		"####" AABJ 1 A_SetTics(random(8,14))
+		"####" KLM 1 A_SetTics(random(5,10))
+		"####" JJA 1 A_SetTics(random(8,14))
 		Loop
 	Pose8:
-		"####" AADD 1 A_SetTics(random(10,20))
-		"####" JKJKJKDA 1 A_SetTics(random(80,160))
+		"####" NNOOPP 1 A_SetTics(random(10,20))
+		"####" QQ 1 A_SetTics(random(80,160))
 		Loop
 	Pose9:
-		"####" AADL 1 A_SetTics(random(8,14))
-		"####" MNO 1 A_SetTics(random(5,10))
-		"####" LLD 1 A_SetTics(random(8,14))
+		"####" NNRRSS 1 A_SetTics(random(10,20))
+		"####" TTSS 1 A_SetTics(random(40,60))
+		Loop
+	Pose10:
+		"####" N -1
+		Stop
+	Pose11:
+		"####" STSTSST 1 A_SetTics(random(80,160))
+		Loop
+	Pose12:
+		"####" UVUVUUV 1 A_SetTics(random(80,160))
+		Loop
+	Pose13:
+		"####" NNWWXX 1 A_SetTics(random(10,20))
+		"####" YY 1 A_SetTics(random(80,160))
 		Loop
 	}
-}*/
+}
+
+ACTOR TMCivMale2 : TMCivMale1
+{
+	//$Title Random Male Civilian (black hair)
+	States
+	{
+	Spawn:
+		MAL2 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		MAL2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13")
+		Stop
+	}
+}
+
+ACTOR TMCivMale3 : TMCivMale1
+{
+	//$Title Random Male Civilian (red hair)
+	States
+	{
+	Spawn:
+		MAL3 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		MAL3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13")
+		Stop
+	}
+}
+
+ACTOR TMCivMale4 : TMCivMale1
+{
+	//$Title Random Male Civilian (blonde hair)
+	States
+	{
+	Spawn:
+		MAL4 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		MAL4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13")
+		Stop
+	}
+}
+
+ACTOR TMCivMale5 : TMCivMale1
+{
+	//$Title Random Male Civilian (bald)
+	States
+	{
+	Spawn:
+		MAL5 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		MAL5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13")
+		Stop
+	}
+}
+
+ACTOR TMCivMale6
+{
+	//$Category Cutscenes (BoA)
+	//$Title Random Male Civilian with Hat (brown hair)
+	Scale 0.65
+	States
+	{
+	Spawn:
+		MHA1 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		MHA1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11")
+		Stop
+	Pose1:
+		"####" NNAABB 1 A_SetTics(random(10,20))
+		"####" CCB 1 A_SetTics(random(80,160))
+		Loop
+	Pose2:
+		"####" NNDDEE 1 A_SetTics(random(10,20))
+		"####" FFEE 1 A_SetTics(random(40,60))
+		Loop
+	Pose3:
+		"####" NNAAGG 1 A_SetTics(random(10,20))
+		"####" HHG 1 A_SetTics(random(80,160))
+		"####" I 1 A_SetTics(random(10,20))
+		Loop
+	Pose4:
+		"####" N -1
+		Stop
+	Pose5:
+		"####" NNII 1 A_SetTics(random(10,20))
+		"####" OO 1 A_SetTics(random(80,160))
+		"####" I 1 A_SetTics(random(10,20))
+		Loop
+	Pose6:
+		"####" NNII 1 A_SetTics(random(10,20))
+		"####" OO 1 A_SetTics(random(80,160))
+		"####" PQRRQP 1 A_SetTics(random(40,60))
+		"####" OI 1 A_SetTics(random(10,20))
+		Loop
+	Pose7:
+		"####" NTAA 1 A_SetTics(random(10,20))
+		"####" UUOO 1 A_SetTics(random(80,160))
+		"####" I 1 A_SetTics(random(10,20))
+		Loop
+	Pose8:
+		"####" NTAA 1 A_SetTics(random(10,20))
+		"####" UUOO 1 A_SetTics(random(80,160))
+		"####" PQRRQP 1 A_SetTics(random(40,60))
+		"####" OI 1 A_SetTics(random(10,20))
+		Loop
+	Pose9:
+		"####" PQRRQP 1 A_SetTics(random(40,60))
+		Loop
+	Pose10:
+		"####" S -1
+		Stop
+	Pose11:
+		"####" NABJ 1 A_SetTics(random(8,14))
+		"####" KLM 1 A_SetTics(random(5,10))
+		"####" JJA 1 A_SetTics(random(8,14))
+		Loop
+	}
+}
+
+ACTOR TMCivMale7 : TMCivMale6
+{
+	//$Title Random Male Civilian with Hat (black hair)
+	States
+	{
+	Spawn:
+		MHA2 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		MHA2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11")
+		Stop
+	}
+}
+
+ACTOR TMCivMale8 : TMCivMale6
+{
+	//$Title Random Male Civilian with Hat (red hair)
+	States
+	{
+	Spawn:
+		MHA3 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		MHA3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11")
+		Stop
+	}
+}
+
+ACTOR TMCivMale9 : TMCivMale6
+{
+	//$Title Random Male Civilian with Hat (blonde hair)
+	States
+	{
+	Spawn:
+		MHA4 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		MHA4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11")
+		Stop
+	}
+}
+
+ACTOR TMCivMale10 : TMCivMale6
+{
+	//$Title Random Male Civilian with Hat (bald)
+	//$Sprite MHA5S0
+	States
+	{
+	Spawn:
+		MHA1 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		MHA1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11")
+		Stop
+	Pose6:
+		"####" NNII 1 A_SetTics(random(10,20))
+		"####" OO 1 A_SetTics(random(80,160))
+		MHA5 PQRRQP 1 A_SetTics(random(40,60))
+		MHA1 OI 1 A_SetTics(random(10,20))
+		Loop
+	Pose8:
+		"####" NTAA 1 A_SetTics(random(10,20))
+		"####" UUOO 1 A_SetTics(random(80,160))
+		MHA5 PQRRQP 1 A_SetTics(random(40,60))
+		MHA1 OI 1 A_SetTics(random(10,20))
+		Loop
+	Pose9:
+		MHA5 PQRRQP 1 A_SetTics(random(40,60))
+		Loop
+	Pose10:
+		MHA5 S -1
+		Stop
+	Pose11:
+		"####" NABJ 1 A_SetTics(random(8,14))
+		"####" KL 1 A_SetTics(random(5,7))
+		MHA5 M 1 A_SetTics(random(2,3))
+		MHA1 JJA 1 A_SetTics(random(8,14))
+		Loop
+	}
+}
