@@ -115,10 +115,7 @@ ACTOR TMFanfare1 : SwitchableDecoration
 	Height 56
 	Radius 8
 	Scale 0.65
-	+CLIENTSIDEONLY
-	-SOLID
 	+NOBLOCKMAP
-	+WINDTHRUST
 	States
 	{
 	Inactive:
@@ -173,7 +170,6 @@ ACTOR TMFanfare4 : TMFanfare1
 	//$Title Fanfare SSMP40 Soldier (Activate to make him walk)
 	States
 	{
-	Inactive:
 	Spawn:
 		SSMG N -1 //NODELAY A_GiveInventory("Z_ShadeMe",0)
 		Stop
@@ -185,7 +181,6 @@ ACTOR TMFanfare5 : TMFanfare1
 	//$Title Fanfare SS Officer (Activate to make him walk)
 	States
 	{
-	Inactive:
 	Spawn:
 		SSOF N -1 //NODELAY A_GiveInventory("Z_ShadeMe",0)
 		Stop
@@ -217,6 +212,17 @@ ACTOR TMGauleiter : TMGuard
 	{
 	Spawn:
 		GAUL A -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
+		Stop
+	}
+}
+
+ACTOR TMGauleiterNS : TMGauleiter
+{
+	//$Title Gauleiter (No Shadow)
+	States
+	{
+	Spawn:
+		GAUL A -1
 		Stop
 	}
 }
