@@ -227,6 +227,18 @@ ACTOR TMGauleiterNS : TMGauleiter
 	}
 }
 
+ACTOR TMMiller : TMGuard
+{
+	//$Title General Miller for HQs
+	Scale 0.67
+	States
+	{
+	Spawn:
+		GENR O -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
+		Stop
+	}
+}
+
 ACTOR TMHitler2 : TMGuard
 {
 	//$Title Adolf Hitler (Downfall)
@@ -294,6 +306,7 @@ ACTOR TMMarine1
 	//$Title Random Happy Marine 1 (brown hair)
 	Scale 0.65
 	Translation 1
+	+NOBLOCKMAP
 	States
 	{
 	Spawn:
@@ -588,6 +601,7 @@ ACTOR TMMarine4
 	//$Category Cutscenes (BoA)
 	//$Title Random Happy Soviet 1 (brown hair)
 	Scale 0.65
+	+NOBLOCKMAP
 	States
 	{
 	Spawn:

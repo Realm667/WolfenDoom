@@ -46,21 +46,21 @@ Actor Fireworks_LightDummy_Blue : Fireworks_Base
 	}
 }
 
-Actor Fireworks_Rocket : Fireworks_Base
+Actor Fireworks_Rocket : Fireworks_Base //removed reactiontime 50 to improve performance - ozy81
 {
 	Scale 0.06
 	Gravity 0.02
 	Renderstyle Add
-	Reactiontime 50
 	-NOGRAVITY
 	+BRIGHT
 	+FORCEXYBILLBOARD
 	+MISSILE
+	var int user_die;
 	States
 	{
 	Spawn:
 		FRWX Z 0 NODELAY
-		FRWX Z 0 A_CountDown
+		FRWX Z 0 {user_die++; if(user_die > 49) {user_die = 0; return ResolveState("Death");} return ResolveState("");}
 		FRWX Z 0 A_PlaySound("fireworks/scream", CHAN_AUTO, frandom(0.45,1.0), FALSE, ATTN_IDLE)
 		FRWX Z 1 { A_SpawnItemEx("Fireworks_Sparkle", random(-2,2), random(-2,2), 0, frandom(0.0,0.1), frandom(0.0,0.1), 0, random(0,359), 0, 0); A_SpawnItemEx("Fireworks_Sparkle", random(0,8), random(0,8), 0, frandom(0.0,0.1), frandom(0.0,0.1), 0, random(0,359), 0, 0); }
 		FRWX Y 1 { A_SpawnItemEx("Fireworks_Sparkle", random(-2,2), random(-2,2), 0, frandom(0.0,0.1), frandom(0.0,0.1), 0, random(0,359), 0, 0); A_SpawnItemEx("Fireworks_Sparkle", random(0,8), random(0,8), 0, frandom(0.0,0.1), frandom(0.0,0.1), 0, random(0,359), 0, 0); }
