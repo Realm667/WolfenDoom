@@ -26,7 +26,6 @@ ListMenu "MainMenu"
 
 ListMenu "EpisodeMenu"
 {
-  //StaticTextCentered 160, -10, "Choose your episode"
   StaticPatchCentered 160, 5, "M_EPIS"
 
   NetgameMessage "$NEWGAME"
@@ -41,7 +40,6 @@ ListMenu "EpisodeMenu"
 
 ListMenu "SkillMenu"
 {
-  //StaticPatchCentered 160, 5, "Choose your skill level"
   StaticPatchCentered 160, 5, "M_SKILL"
 
   Position 70, 60
@@ -98,7 +96,6 @@ ListMenu "PlayerMenu"
 ListMenu "LoadGameMenu"
 {
   NetgameMessage "$LOADNET"
-  //StaticPatchCentered 160, 5, "M_LOADG"
   StaticTextCentered 160, -10, "$MNU_LOADGAME"
 
   Position 80, 60
@@ -109,7 +106,6 @@ ListMenu "LoadGameMenu"
 
 ListMenu "SaveGameMenu"
 {
-  //StaticPatchCentered 160, 5, "M_SAVEG"
   StaticTextCentered 160, -10, "$MNU_SAVEGAME"
 
   Position 80, 60
@@ -125,196 +121,191 @@ OptionMenuSettings
 // BoA options menu ------------------------------------------------------------------------------
 OptionMenu "BOAOptionsMenu"
 {
-	/*Title "Predefined Settings"
-	StaticText "WARNING: these settings may require level restart"
-	StaticText "NOTE: these settings will be unloaded at exit"
+	Title "$ENHOPT"
+	StaticText "$WARNING1"
+	StaticText "$NOTEOPT"
 	StaticText ""
-	SafeCommand "Potato Mode On", 	"boa_verylow"
-	SafeCommand "Low Mode On", 		"boa_low"
-	SafeCommand "Normal Mode On", 	"boa_normal"
-	SafeCommand "Default Mode On", 	"boa_default"
-	SafeCommand "High Mode On", 	"boa_high"
-	SafeCommand "Hitler Mode On", 	"boa_veryhigh"
+	/*SafeCommand "$OPT_VLOW", 	"boa_verylow"
+	SafeCommand "$OPT_LOW", 	"boa_low"
+	SafeCommand "$OPT_NORM", 	"boa_normal"
+	SafeCommand "$OPT_DEFA", 	"boa_default"
+	SafeCommand "$OPT_HI", 		"boa_high"
+	SafeCommand "$OPT_VHI", 	"boa_veryhigh"
+	StaticText ""
 	StaticText ""*/
-	Title "Enhanced Options"
+	Submenu "$OPT_CONTR", "BoACTRLOptions"
+	Submenu "$OPT_GAME", "GameOptions"
+	Submenu "$OPT_BLOOD", "BloodOptions"
+	Submenu "$OPT_WEAT", "WeatherOptions"
+	Submenu "$OPT_SFX", "EffectsOptions"
+	Submenu "$OPT_REND", "RenderOptions"
+	Submenu "$OPT_PROC", "PostProcessShaderOptions"
 	StaticText ""
-	Submenu "Controls Settings", "BoACTRLOptions"
-	Submenu "Gameplay Options", "GameOptions"
-	Submenu "Blood Options", "BloodOptions"
-	Submenu "Weather Options", "WeatherOptions"
-	Submenu "Effects Options", "EffectsOptions"
-	Submenu "Rendering Options", "RenderOptions"
-	Submenu "Post Process Options", "PostProcessShaderOptions"
-	StaticText ""
-	Submenu "Cheats Settings", "CheatsOptions"
+	Submenu "$OPT_CHEAT", "CheatsOptions"
 }
 
 OptionValue "BloodAmount"
 {
-	0, "Mild"
-	1, "Normal"
-	2, "Excessive"
+	0, "$BL_LOW"
+	1, "$BL_MED"
+	2, "$BL_HIGH"
 }
 
 OptionMenu "BloodOptions"
 {
-	Title "Blood Options"
-	Option "Blood Amount", "blood_amt", "BloodAmount"
-	Slider "Blood Opacity", "blood_alpha", 0.5, 1.0, 0.1
-	Slider "Blood Velocity", "blood_rand", 0.5, 1.5, 0.1
-	Slider "Blood Scale", "blood_size", 0.7, 1.3, 0.1
-	Slider "Blood Limit", "sv_corpsequeuesize", 64, 10000, 256
-	Slider "Blood Lifetime (seconds)","bloodlifetime",1,180,5,0
-	Slider "Decal Limit", "cl_maxdecals", 64, 10000, 256
-	Option "Spawn Blood Pools", "blood_pools", "onoff"
-	Option "Spawn Giblets", "blood_gibs", "onoff"
+	Title "$OPT_BLOOD"
+	Option "$BL_AM", "blood_amt", "BloodAmount"
+	Slider "$BL_OP", "blood_alpha", 0.5, 1.0, 0.1
+	Slider "$BL_VEL", "blood_rand", 0.5, 1.5, 0.1
+	Slider "$BL_SC", "blood_size", 0.7, 1.3, 0.1
+	Slider "$BL_LIM", "sv_corpsequeuesize", 64, 10000, 256
+	Slider "$BL_LIF","bloodlifetime",1,180,5,0
+	Slider "$BL_DEC", "cl_maxdecals", 64, 10000, 256
+	Option "$BL_POOLS", "blood_pools", "onoff"
+	Option "$BL_GIBS", "blood_gibs", "onoff"
 }
 
 OptionMenu "GameOptions"
 {	
-	Title "Gameplay Settings"
+	Title "$OPT_GAME"
 	StaticText ""
-	Option "Auto-Reload","autoreload","OnOff"
-	Slider "Shell Casing Lifetime (seconds)","casinglifetime",1,180,5,0
-	Slider "Weapon Recoil Multiplier","recoilamount",0,20,1,0
-	Option "Strafe Camera Tilt", "sv_boastrafetilt", "OnOff"
-	Slider "Debris Lifetime (seconds)","debrislifetime",1,180,5,0
+	Option "$GA_REL","autoreload","OnOff"
+	Slider "$GA_SHELLS","casinglifetime",1,180,5,0
+	Slider "$GA_RECOIL","recoilamount",0,20,1,0
+	Option "$GA_SCAM", "sv_boastrafetilt", "OnOff"
+	Slider "$GA_DEBRIS","debrislifetime",1,180,5,0
 }
 
 OptionMenu "WeatherOptions"
 {
-	Title  "Weather Effects"
-	StaticText "WARNING: these settings may require level restart"
-	
+	Title  "$OPT_WEAT"
+	StaticText "$WARNING1"
 	StaticText ""
-	Option "Clouds","cloudswitch","OnOff"
-	Option "Fog","fogswitch","OnOff"
-	Option "Rain","rainswitch","OnOff"
-	Option "Snow","snowswitch","OnOff"
+	Option "$WE_CLOUD","cloudswitch","OnOff"
+	Option "$WE_FOG","fogswitch","OnOff"
+	Option "$WE_RAIN","rainswitch","OnOff"
+	Option "$WE_SNOW","snowswitch","OnOff"
 }
 
 OptionMenu "EffectsOptions"
 {	
-	Title  "Special Effects"
-	StaticText "WARNING: these settings may require level restart"
-
+	Title  "$OPT_SFX"
+	StaticText "$WARNING1"
 	StaticText ""
-	Option "Cinders","cinderswitch","OnOff"
-	Option "Leaves","leavesswitch","OnOff"
-	Option "Smoke","smokeswitch","OnOff"
-	Option "Splash","splashswitch","OnOff"
-	Option "Stardust","dustswitch","OnOff"
-	Option "Steam","steamswitch","OnOff"
-	Slider "Explosion Density","boomswitch",0,5,1,0
-	Slider "Flame Density","fireswitch",0,5,1,0
-	Slider "Spark Density","sparkswitch",0,5,1,0
-	Slider "Lightning Density", "lightningdensity", 1, 10, 1, 0
-	Option "Underwater Bubbles","bubbleswitch","OnOff"
-	Option "Underwater Lights","litsswitch","OnOff"
-	Slider "Underwater Effect", "uw_effectsize", 0, 0.1, 0.005, 3
+	Option "$SF_CIND","cinderswitch","OnOff"
+	Option "$SF_LEAV","leavesswitch","OnOff"
+	Option "$SF_SMOK","smokeswitch","OnOff"
+	Option "$SF_SPLA","splashswitch","OnOff"
+	Option "$SF_STAR","dustswitch","OnOff"
+	Option "$SF_STEM","steamswitch","OnOff"
+	Slider "$SF_EXPD","boomswitch",0,5,1,0
+	Slider "$SF_FLAD","fireswitch",0,5,1,0
+	Slider "$SF_SPRK","sparkswitch",0,5,1,0
+	Slider "$SF_LITD", "lightningdensity", 1, 10, 1, 0
+	Option "$SF_BUBL","bubbleswitch","OnOff"
+	Option "$SF_LITS","litsswitch","OnOff"
+	Slider "$SF_WATF", "uw_effectsize", 0, 0.1, 0.005, 3
 }
 
 OptionValue "ShadowDist"
 {
-	0, "None"
-	512, "Nearest"
-	1024, "Default"
-	4096, "Far"
-	8192, "Very Far"
-	16384, "Ultra"
+	0, "$SH_NONE"
+	512, "$SH_NEAR"
+	1024, "$SH_DEFA"
+	4096, "$SH_FAR"
+	8192, "$SH_VFAR"
+	16384, "$SH_ULTR"
 }
 
 OptionMenu "RenderOptions"
 {
-	Title  "Rendering Options"
-	StaticText "WARNING: 2d settings require level restart"
-
-	Slider "FOV", "fov", 80, 110, 2, 0
-	Option "2d Trees","bidiswitch","OnOff"
-	Option "Mirrors","gl_mirrors","OnOff"
-	Option "Reflections","gl_plane_reflection","OnOff"
-	Option "Sprite Shadows", "cl_boaspriteshadowdistance", "ShadowDist"
+	Title  "$OPT_REND"
+	StaticText "$WARNING4"
 	StaticText ""
-	StaticText "Distance is applied in map units"
-	StaticText "Decrease following values to improve in-game performance"
-	Slider "Grass","grasslod",1024,16384,1024, 0
-	Slider "Scenery","scenelod",1024,16384,1024, 0
-	Slider "Special Effects","sfxlod",1024,16384,1024, 0
-	Slider "Trees","treeslod",1024,16384,1024, 0
+	Slider "FOV", "fov", 80, 110, 2, 0
+	Option "$RE_2DTR","bidiswitch","OnOff"
+	Option "$RE_MIRR","gl_mirrors","OnOff"
+	Option "$RE_REFL","gl_plane_reflection","OnOff"
+	Option "$RE_SHAD", "cl_boaspriteshadowdistance", "ShadowDist"
+	StaticText ""
+	StaticText "$DISTANCE"
+	StaticText "$DECREASE"
+	StaticText ""
+	Slider "$RE_GRAS","grasslod",1024,16384,1024, 0
+	Slider "$RE_SCEN","scenelod",1024,16384,1024, 0
+	Slider "$RE_SFX","sfxlod",1024,16384,1024, 0
+	Slider "$RE_TREE","treeslod",1024,16384,1024, 0
 }
 
 OptionMenu "PostProcessShaderOptions"
 {
-	Title "Post Process Shader Options"
+	Position -15
+	Title "$OPT_PROC"
 	StaticText ""
-	Submenu "Motion Blur", "MBlurOpts"
+	Submenu "$PP_MOTI", "MBlurOpts"
 	StaticText ""
-	StaticText "Vignette"
-	Option "Enabled", "tc_pp_vignette", "YesNo"
-	Slider "Intensity", "tc_pp_vignette_intensity", 0, 500, 0.05, 3
-	Slider "Falloff", "tc_pp_vignette_falloff", 0, 10, 0.05, 3
+	StaticText "$PP_VIGN"
+	Option "$PP_OPT1", "tc_pp_vignette", "YesNo"
+	Slider "$PP_OPT2", "tc_pp_vignette_intensity", 0, 500, 0.05, 3
+	Slider "$PP_OPT3", "tc_pp_vignette_falloff", 0, 10, 0.05, 3
 	StaticText ""
-	StaticText "Lens Flares"
-	Option "Enabled", "tc_pp_lensflares", "YesNo"
-	Slider "Intensity", "tc_pp_lensflares_amount", 0, 5, 0.05
-	Slider "Threshold", "tc_pp_lensflares_threshold", 0, 5, 0.05
+	StaticText "$PP_LENS"
+	Option "$PP_OPT1", "tc_pp_lensflares", "YesNo"
+	Slider "$PP_OPT2", "tc_pp_lensflares_amount", 0, 5, 0.05
+	Slider "$PP_OPT4", "tc_pp_lensflares_threshold", 0, 5, 0.05
 	StaticText ""
-	StaticText "Noise"
-	Option "Enabled", "tc_pp_noise", "YesNo"
-	Slider "Intensity", "tc_pp_noise_amount", 0, 5, 0.05
+	StaticText "$PP_NOIS"
+	Option "$PP_OPT1", "tc_pp_noise", "YesNo"
+	Slider "$PP_OPT2", "tc_pp_noise_amount", 0, 5, 0.05
 	StaticText ""
-	StaticText "Color Grading"
-	Option "$GLPREFMNU_COLORGRADEENABLED", r_colorgrading, "OnOff"
+	StaticText "$PP_GRADE"
+	Option "$PP_GRADE", r_colorgrading, "OnOff"
 }
 
 OptionValue "MBlurBlendModes"
 {
-	0, "Normal"
-	1, "Lighten"
-}
-
-OptionMenu "MBlurAdvOpts"
-{
-	Position -15
-	Title "Advanced Settings"
-	Option "Auto Stop", "mblur_autostop", OnOff
-	Slider "Stop Recovery", "mblur_recovery2", 0, 100, 5, 2
-	Slider "Stop Threshold", "mblur_threshold", 0, 100, 10, 2
+	0, "$MB_OPT1"
+	1, "$MB_OPT2"
 }
 
 OptionMenu "MBlurOpts"
 {
 	Position -15
-	Title "Motion Blur"
-	Option "Enabled", "mblur", "YesNo"
-	Option "Blend Mode", "mblur_blendmode", "MBlurBlendModes"
-	statictext ""
-	Slider "Samples", "mblur_samples", 1, 100, 1, 0
-	Slider "Strength", "mblur_strength", 1, 500, 8, 2
-	Slider "Recovery", "mblur_recovery", 4, 100, 4, 1
-	Submenu "Advanced", "MBlurAdvOpts"
+	Title "$PP_MOTI"
+	Option "$PP_OPT1", "mblur", "YesNo"
+	Option "$MB_OPT6", "mblur_blendmode", "MBlurBlendModes"
+	StaticText ""
+	Slider "$MB_OPT7", "mblur_samples", 1, 100, 1, 0
+	Slider "$MB_OPT8", "mblur_strength", 1, 500, 8, 2
+	Slider "$MB_OPT9", "mblur_recovery", 4, 100, 4, 1
+	StaticText ""
+	StaticText "$MB_ADV"
+	StaticText ""
+	Option "$MB_OPT3", "mblur_autostop", OnOff
+	Slider "$MB_OPT4", "mblur_recovery2", 0, 100, 5, 2
+	Slider "$MB_OPT5", "mblur_threshold", 0, 100, 10, 2
 }
 
 OptionMenu "BoACTRLOptions"
 {
-	Title  "Additional Controls"
-	StaticTextSwitchable "ENTER to change, BACKSPACE to clear",
-                     "Press new key for control, ESC to cancel",
+	Title  "$OPT_CONTR"
+	StaticTextSwitchable "$CO_MESS1",
+                     "$CO_MESS2",
                      "ControlMessage"
 	StaticText ""
-	Control "Quick Kick",		"pukename QuickKick"
-	Control "Throw Grenade",	"use GrenadePickup"
-	Control "Toggle Objectives",	"pukename boaobjectives"
+	Control "$CO_KICK",	"pukename QuickKick"
+	Control "$CO_GREN",	"use GrenadePickup"
+	Control "$CO_OBJS",	"pukename boaobjectives"
 }
 
 OptionMenu "CheatsOptions"
 {
-	Title  "Cheats Settings"
-	StaticText "WARNING: don't change these settings while saving the game"
-	StaticText "WARNING: these settings may cause unhandled gameplay glitches"
-	StaticText "WARNING: these settings may require level restart"
+	Title  "$OPT_CHEAT"
+	StaticText "$WARNING3"
+	StaticText "$WARNING2"
+	StaticText "$WARNING1"
 	StaticText ""
-	Option "Unlimited Sprint", "sprintswitch", "OnOff"
+	Option "$CH_OPT1", "sprintswitch", "OnOff"
 	StaticText ""
-	Slider "Flinch Amount", "flinchamount", 0.0,1.0,0.1
+	Slider "$CH_OPT2", "flinchamount", 0.0,1.0,0.1
 }
