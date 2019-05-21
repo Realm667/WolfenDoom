@@ -574,3 +574,152 @@ ACTOR TMCivBoy4 : TMCivGirl1
 		Stop
 	}
 }
+
+ACTOR TMCivExtra1 : TMCivBase
+{
+	//$Title Random Sleeveless Civilian (thin)
+	States
+	{
+	Spawn:
+		XTR1 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		XTR1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16")
+		Stop
+	Pose1:
+		"####" A -1
+		Stop
+	Pose2:
+		"####" B -1
+		Stop
+	Pose3:
+		"####" C -1
+		Stop
+	Pose4:
+		"####" D -1
+		Stop
+	Pose5:
+		"####" E -1
+		Stop
+	Pose6:
+		"####" F -1
+		Stop
+	Pose7:
+		"####" G -1
+		Stop
+	Pose8:
+		"####" H -1
+		Stop
+	Pose9:
+		"####" I -1
+		Stop
+	Pose10:
+		"####" J -1
+		Stop
+	Pose11:
+		"####" K -1
+		Stop
+	Pose12:
+		"####" L -1
+		Stop
+	Pose13:
+		"####" M -1
+		Stop
+	Pose14:
+		"####" N -1
+		Stop
+	Pose15:
+		"####" O -1
+		Stop
+	Pose16:
+		"####" P -1
+		Stop
+	}
+}
+
+ACTOR TMCivExtra2 : TMCivExtra1
+{
+	//$Title Random Sleeveless Civilian (fat)
+	States
+	{
+	Spawn:
+		XTR2 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		XTR2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16")
+		Stop
+	}
+}
+
+ACTOR TMCivExtra3 : TMCivExtra1
+{
+	//$Title Random Sleeveless Civilian (crossed arms)
+	States
+	{
+	Spawn:
+		XTR3 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		XTR3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose18","Pose19","Pose20")
+		Stop
+	Pose17:
+		"####" Q -1
+		Stop
+	Pose18:
+		"####" R -1
+		Stop
+	Pose19:
+		"####" S -1
+		Stop
+	Pose20:
+		"####" T -1
+		Stop
+	}
+}
+
+ACTOR TMCivExtra4 : TMCivExtra1
+{
+	//$Title Random Sleeveless Civilian (with wrench)
+	States
+	{
+	Spawn:
+		XTR4 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		XTR4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose18","Pose19","Pose20")
+		Stop
+	Pose17:
+		"####" Q -1
+		Stop
+	Pose18:
+		"####" R -1
+		Stop
+	Pose19:
+		"####" S -1
+		Stop
+	Pose20:
+		"####" T -1
+		Stop
+	}
+}
+
+ACTOR TMCivExtra5 : TMCivExtra1
+{
+	//$Title Random Sleeveless Civilian (toolbox & wrench)
+	States
+	{
+	Spawn:
+		XTR5 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		XTR5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose18","Pose19","Pose20")
+		Stop
+	Pose17:
+		"####" Q -1
+		Stop
+	Pose18:
+		"####" R -1
+		Stop
+	Pose19:
+		"####" S -1
+		Stop
+	Pose20:
+		"####" T -1
+		Stop
+	}
+}
