@@ -239,6 +239,151 @@ ACTOR TMMiller : TMGuard
 	}
 }
 
+ACTOR TMMarineHQ1 : TMCivBase
+{
+	//$Title Marine, Brown, Cutscenes
+	Translation 1
+	States
+	{
+	Spawn:
+		ARMH A -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
+		Stop
+	}
+}
+
+ACTOR TMAscher : TMMarineHQ1
+{
+	//$Title Sgt. Ascher, Cutscenes
+	States
+	{
+	Spawn:
+		PARS A -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
+		Stop
+	}
+}
+
+ACTOR TMClerk : TMMarineHQ1
+{
+	//$Title Lt. Laz Rojas, Cutscenes
+	States
+	{
+	Spawn:
+		BLCK N -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
+		Stop
+	}
+}
+
+ACTOR TMStatistBarkeeper : TMCivBase
+{
+	//$Title Juliette Bertrand, Cutscenes
+	States
+	{
+	Spawn:
+		BDKP A 0 NODELAY A_GiveInventory("Z_ShadeMe",0)
+	SpawnLoop:
+		BDKP A 80
+		"####" B 40
+		"####" CB 40
+		"####" D 80
+		"####" DACB 40
+		"####" E 40
+		"####" F 40
+		Loop
+	}
+}
+
+ACTOR TMStatistBarkeeperMale : TMStatistBarkeeper
+{
+	//$Title Randi Heit, Cutscenes
+	States
+	{
+	Spawn:
+		BDK2 A 0 NODELAY A_GiveInventory("Z_ShadeMe",0)
+	SpawnLoop:
+		BDK2 A 80
+		"####" B 40
+		"####" CB 40
+		"####" D 80
+		"####" DACB 40
+		"####" E 40
+		"####" F 40
+		Loop
+	}
+}
+
+ACTOR TMStatistMedic : TMStatistBarkeeper
+{
+	//$Title Ty Halderman, Cutscenes
+	Scale 0.67
+	States
+	{
+	Spawn:
+		MEDC A 0 NODELAY A_GiveInventory("Z_ShadeMe",0)
+	SpawnLoop:
+		MEDC A 80
+		"####" B 40
+		"####" CB 40
+		"####" D 80
+		"####" DACB 40
+		"####" E 40
+		"####" F 40
+		Loop
+	}
+}
+
+ACTOR TMStatistAFA : TMStatistMedic
+{
+	//$Title AFADoomer, Cutscenes
+	States
+	{
+	Spawn:
+		AFAD A 0 NODELAY A_GiveInventory("Z_ShadeMe",0)
+	SpawnLoop:
+		AFAD A 80
+		"####" B 40
+		"####" CB 40
+		"####" F 80
+		"####" A 80
+		"####" DE 40
+		"####" DA 80
+		"####" GABC 40
+		"####" B 40
+		Loop
+	}
+}
+
+ACTOR TMStatistDimitri : TMStatistMedic
+{
+	//$Title Dimitri, Cutscenes
+	States
+	{
+	Spawn:
+		RUST A 0 NODELAY A_GiveInventory("Z_ShadeMe",0)
+	SpawnLoop:
+		RUST A 80
+		"####" B 40
+		"####" CB 40
+		"####" B 80
+		Loop
+	}
+}
+
+ACTOR TMStatistYevgeny : TMStatistMedic
+{
+	//$Title Yevgeny, Cutscenes
+	States
+	{
+	Spawn:
+		YEVG A 0 NODELAY A_GiveInventory("Z_ShadeMe",0)
+	SpawnLoop:
+		YEVG A 80
+		"####" B 40
+		"####" CB 40
+		"####" B 80
+		Loop
+	}
+}
+
 ACTOR TMHitler2 : TMGuard
 {
 	//$Title Adolf Hitler (Downfall)
