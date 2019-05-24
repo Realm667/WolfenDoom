@@ -3170,12 +3170,11 @@ ACTOR AstroShuttle : ModelBase
 }
 
 //Special Stuff
-ACTOR SecretUFO : SwitchableDecoration //3dRealms
+ACTOR SecretUFO : SwitchableDecoration //3dRealms - no distancecheck for this
 {
 	//$Category Models (BoA)/Scenery
 	//$Title Secret UFO
 	//$Color 3
-	DistanceCheck "scenelod"
 	+MOVEWITHSECTOR
 	States
 	{
