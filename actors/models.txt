@@ -2154,8 +2154,8 @@ ACTOR Feldfernschreiber : ModelBase
 }
 
 //CODs Stuff - Ozy81
-ACTOR US_ShermanTurretProp : ModelBase { +CANPASS }
-ACTOR US_ShermanCannonProp : ModelBase { +CANPASS }
+ACTOR US_ShermanTurretProp : ModelBase {DistanceCheck "scenelod" +CANPASS }
+ACTOR US_ShermanCannonProp : ModelBase {DistanceCheck "scenelod" +CANPASS }
 
 ACTOR US_ShermanProp : 3dObstacle
 {
@@ -2169,8 +2169,8 @@ ACTOR US_ShermanProp : 3dObstacle
 	{
 	Spawn:
 		MDLA A -1 NoDelay {
-		A_SpawnItemEx("US_ShermanTurretProp", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2);
-		A_SpawnItemEx("US_ShermanCannonProp", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2); }
+		A_SpawnItemEx("US_ShermanTurretProp", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid);
+		A_SpawnItemEx("US_ShermanCannonProp", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid); }
 		Stop
 	}
 }
@@ -2593,10 +2593,10 @@ ACTOR COD_SSHorch : 3dObstacle
 	States
 	{
 	Spawn:
-		MDLA A 0 NoDelay A_SpawnItemEx("COD_SSHorch_Glass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2)
-		MDLA A 0 A_SpawnItemEx("InvisibleBridge32",-48,0,20)
-		MDLA A 0 A_SpawnItemEx("InvisibleBridge32",80,0,36)
-		MDLA A -1 A_SpawnItemEx("InvisibleBridge32",88,0,16)
+		MDLA A 0 NoDelay A_SpawnItemEx("COD_SSHorch_Glass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid)
+		MDLA A 0 A_SpawnItemEx("InvisibleBridge32",-48,0,20,0,0,0,0,0,0,tid)
+		MDLA A 0 A_SpawnItemEx("InvisibleBridge32",80,0,36,0,0,0,0,0,0,tid)
+		MDLA A -1 A_SpawnItemEx("InvisibleBridge32",88,0,16,0,0,0,0,0,0,tid)
 		Stop
 	}
 }
@@ -2619,10 +2619,10 @@ ACTOR COD_USJeep : 3dObstacle
 		MDLA A 0 NoDelay
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Damaged")
 	Normal:
-		MDLA A 0 A_SpawnItemEx("COD_USJeep_Glass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2)
-		MDLA A 0 A_SpawnItemEx("InvisibleBridge32",-48,0,20)
-		MDLA A 0 A_SpawnItemEx("InvisibleBridge32",80,0,36)
-		MDLA A -1 A_SpawnItemEx("InvisibleBridge32",88,0,16)
+		MDLA A 0 A_SpawnItemEx("COD_USJeep_Glass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid)
+		MDLA A 0 A_SpawnItemEx("InvisibleBridge32",-48,0,20,0,0,0,0,0,0,tid)
+		MDLA A 0 A_SpawnItemEx("InvisibleBridge32",80,0,36,0,0,0,0,0,0,tid)
+		MDLA A -1 A_SpawnItemEx("InvisibleBridge32",88,0,16,0,0,0,0,0,0,tid)
 		Stop
 	Damaged:
 		MDLA B 0 A_UnsetSolid
@@ -2650,10 +2650,10 @@ ACTOR COD_OpBlitzDestroyed : 3dObstacle
 		MDLA A 0 NoDelay
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Afrika")
 	Normal:
-		MDLA A -1 A_SpawnItemEx("COD_OpBlitzD_Glass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2)
+		MDLA A -1 A_SpawnItemEx("COD_OpBlitzD_Glass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid)
 		Stop
 	Afrika:
-		MDLA B -1 A_SpawnItemEx("COD_OpBlitzD_Glass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2)
+		MDLA B -1 A_SpawnItemEx("COD_OpBlitzD_Glass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid)
 		Stop
 	}
 }
@@ -2895,7 +2895,7 @@ ACTOR CODScheinwerfer : SwitchableDecoration
 	Active:
 		MDLA A 0 {bDormant = FALSE;} //update manually on GZDB
 	Spawn:
-		MDLA A -1 LIGHT(SPOTLITE) A_SpawnItemEx("Flare3d", ScaleX*28, 0, ScaleY*92, 0, 0, 0, 0, MODELS_FLAGS2)
+		MDLA A -1 LIGHT(SPOTLITE) A_SpawnItemEx("Flare3d", ScaleX*28, 0, ScaleY*92, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid)
 		Stop
 	Inactive:
 		MDLA B -1 {bDormant = TRUE;} //update manually on GZDB
