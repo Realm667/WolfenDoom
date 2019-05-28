@@ -899,3 +899,147 @@ ACTOR TMMarine4Y : TMMarine4B
 		Stop
 	}
 }
+
+ACTOR TMWound1
+{
+	//$Category Cutscenes (BoA)
+	//$Title Random Wounded Marine (brown hair, random country)
+	DistanceCheck "scenelod"
+	Scale 0.65
+	+NOBLOCKMAP
+	States
+	{
+	Spawn:
+		FIN5 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		FIN5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4")
+		Stop
+	Pose1:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIN5 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	Pose2:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIN6 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	Pose3:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIN7 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	Pose4:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIN8 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	SetPose:
+		"####" "#" -1
+		Stop
+	}
+}
+
+ACTOR TMWound2 : TMWound1
+{
+	//$Title Random Wounded Marine (black hair, random country)
+	States
+	{
+	Spawn:
+		FIB5 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		FIB5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4")
+		Stop
+	Pose1:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIB5 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	Pose2:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIB6 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	Pose3:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIB7 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	Pose4:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIB8 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	SetPose:
+		"####" "#" -1
+		Stop
+	}
+}
+
+ACTOR TMWound3 : TMWound1
+{
+	//$Title Random Wounded Marine (gray hair, random country)
+	States
+	{
+	Spawn:
+		FIG5 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		FIG5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4")
+		Stop
+	Pose1:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIG5 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	Pose2:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIG6 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	Pose3:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIG7 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	Pose4:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIG8 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	SetPose:
+		"####" "#" -1
+		Stop
+	}
+}
+
+ACTOR TMWound4 : TMWound1
+{
+	//$Title Random Wounded Marine (red hair, random country)
+	States
+	{
+	Spawn:
+		FIR5 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		FIR5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4")
+		Stop
+	Pose1:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIR5 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	Pose2:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIR6 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	Pose3:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIR7 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	Pose4:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIR8 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	SetPose:
+		"####" "#" -1
+		Stop
+	}
+}
+
+ACTOR TMWound5 : TMWound1
+{
+	//$Title Random Wounded Marine (blonde hair, random country)
+	States
+	{
+	Spawn:
+		FIY5 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		FIY5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4")
+		Stop
+	Pose1:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIY5 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	Pose2:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIY6 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	Pose3:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIY7 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	Pose4:
+		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		FIY8 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+	SetPose:
+		"####" "#" -1
+		Stop
+	}
+}

@@ -444,7 +444,7 @@ ACTOR TestCrate : 3dObstacle
 	States
 	{
 	Spawn:
-		MDLA A -1 NoDelay A_SpawnItemEx("CrateGlass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2)
+		MDLA A -1 NoDelay A_SpawnItemEx("CrateGlass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid)
 		Stop
 	}
 }
@@ -457,9 +457,9 @@ ACTOR TestCrate2 : TestCrate
 	{
 	Spawn:
 		MDLA A -1 NoDelay {
-		A_SpawnItemEx("DummyWarper", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS1);
-		A_SpawnItemEx("CrateGlass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS1);
-		A_SpawnItemEx("MutantSubjectWarped", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS1);}
+		A_SpawnItemEx("DummyWarper", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS1, 0, tid);
+		A_SpawnItemEx("CrateGlass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS1, 0, tid);
+		A_SpawnItemEx("MutantSubjectWarped", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS1, 0, tid);}
 		Stop
 	}
 }
@@ -1083,7 +1083,7 @@ ACTOR RTCWCar : 3dObstacle
 	States
 	{
 	Spawn:
-		MDLA A -1 NoDelay A_SpawnItemEx("RTCWCarGlass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2)
+		MDLA A -1 NoDelay A_SpawnItemEx("RTCWCarGlass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid)
 		Stop
 	}
 }
@@ -2060,7 +2060,7 @@ ACTOR MercedesLimo : 3dObstacle
 	States
 	{
 	Spawn:
-		MDLA A -1 NoDelay A_SpawnItemEx("LimoGlass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2)
+		MDLA A -1 NoDelay A_SpawnItemEx("LimoGlass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid)
 		Stop
 	}
 }
@@ -2078,7 +2078,7 @@ ACTOR Kubelwagen : 3dObstacle
 	States
 	{
 	Spawn:
-		MDLA A -1 NoDelay A_SpawnItemEx("KubelGlass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2)
+		MDLA A -1 NoDelay A_SpawnItemEx("KubelGlass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid)
 		Stop
 	}
 }
