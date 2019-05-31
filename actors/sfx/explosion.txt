@@ -86,9 +86,9 @@ ACTOR KD_HL2Flash : KD_HL2ExplosionBase
 	Spawn:
 		TNT1 A 0 NODELAY A_SetScale(frandom(0.5, 0.8) * ScaleX)
 		TNT1 A 0 A_Jump(256,1,2)
-		EXN1 AB 0 Light("FireSpawnerSmall") A_Jump(256,"Fade")
+		EXN1 AB 0 LIGHT("FireSpawnerSmall") A_Jump(256,"Fade")
 	Fade:
-		"####" "#" 1 BRIGHT Light("FireSpawnerLarge") A_FadeOut(frandom(0.05, 0.10) * (6 - CallACS("BoomSwitch")))
+		"####" "#" 1 BRIGHT LIGHT("FireSpawnerLarge") A_FadeOut(frandom(0.05, 0.10) * (6 - CallACS("BoomSwitch")))
 		Loop
 	}
 }
@@ -123,7 +123,7 @@ ACTOR KD_HL2Spark : KD_HL2ExplosionBase
 	States
 	{
 	Spawn:
-		PAO1 A 5 NoDelay Light("BOACLMN1") A_SetScale(frandom(0.07, 0.1) * ScaleX)
+		PAO1 A 5 NoDelay LIGHT("BOACLMN1") A_SetScale(frandom(0.07, 0.1) * ScaleX)
 	Drop:
 		PAO1 A 0 A_ChangeVelocity(frandom(0.98, 0.99) * VelX,frandom(0.98, 0.99) * VelY,VelZ - frandom(0.2, 0.5), CVF_REPLACE)
 		PAO1 A 1 A_SetScale(ScaleX - 0.002)
@@ -159,9 +159,9 @@ ACTOR KD_HL2FlashAstrostein : KD_HL2ExplosionBase
 	Spawn:
 		TNT1 A 0 NODELAY A_SetScale(frandom(0.5, 0.8) * ScaleX)
 		TNT1 A 0 A_Jump(256,1,2)
-		EXN2 AB 0 Light("FireSpawnerSmall") A_Jump(256,"Fade")
+		EXN2 AB 0 LIGHT("FireSpawnerSmall") A_Jump(256,"Fade")
 	Fade:
-		"####" "#" 1 BRIGHT Light("AstrosteinExplosionSpawnerLarge") A_FadeOut(frandom(0.05, 0.10),FTF_REMOVE)
+		"####" "#" 1 BRIGHT LIGHT("AstrosteinExplosionSpawnerLarge") A_FadeOut(frandom(0.05, 0.10),FTF_REMOVE)
 		Wait
 	}
 }
@@ -229,9 +229,9 @@ ACTOR KD_HL2FlashProto : KD_HL2ExplosionBase
 	Spawn:
 		TNT1 A 0 NODELAY A_SetScale(frandom(0.5, 0.8) * ScaleX)
 		TNT1 A 0 A_Jump(256,1,2)
-		EXN3 AB 0 Light("FireSpawnerSmall") A_Jump(256,"Fade")
+		EXN3 AB 0 LIGHT("FireSpawnerSmall") A_Jump(256,"Fade")
 	Fade:
-		"####" "#" 1 BRIGHT Light("ProtoExplosionSpawnerLarge") A_FadeOut(frandom(0.05, 0.10),FTF_REMOVE)
+		"####" "#" 1 BRIGHT LIGHT("ProtoExplosionSpawnerLarge") A_FadeOut(frandom(0.05, 0.10),FTF_REMOVE)
 		Wait
 	}
 }
@@ -306,7 +306,7 @@ ACTOR KD_LagsFlash : KD_HL2Flash
 	States
 	{
 	Fade:
-		"####" "#" 1 BRIGHT Light("FireSpawnerLarge") A_FadeOut(frandom(0.05, 0.10) * 1,FTF_REMOVE)
+		"####" "#" 1 BRIGHT LIGHT("FireSpawnerLarge") A_FadeOut(frandom(0.05, 0.10) * 1,FTF_REMOVE)
 		Loop
 	}
 }
