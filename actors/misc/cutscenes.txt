@@ -241,12 +241,76 @@ ACTOR TMMiller : TMGuard
 
 ACTOR TMMarineHQ1 : TMCivBase
 {
-	//$Title Marine, Brown, Cutscenes
+	//$Title Marine, Ocher, Cutscenes
 	Translation 1
 	States
 	{
 	Spawn:
 		ARMH A -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
+		Stop
+	}
+}
+
+ACTOR TMMarineHQ2 : TMMarineHQ1
+{
+	//$Title Marine, Green, Cutscenes
+	States
+	{
+	Spawn:
+		MARH A -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
+		Stop
+	}
+}
+
+ACTOR TMMarineHQ3 : TMMarineHQ1
+{
+	//$Title Marine, Brown, Cutscenes
+	States
+	{
+	Spawn:
+		PARS A -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
+		Stop
+	}
+}
+
+ACTOR TMMarineHQ4 : TMMarineHQ1
+{
+	//$Title Random Marine, Weaponless, Cutscenes
+	States
+	{
+	Spawn:
+		RNDM A 0 NODELAY A_GiveInventory("Z_ShadeMe",0)
+	Randomize:
+		RNDM A 0 A_Jump(256,"Pose1","Pose2","Pose3")
+	Pose1:
+		PARP A -1
+		Stop
+	Pose2:
+		ARH2 A -1
+		Stop
+	Pose3:
+		MAH2 A -1
+		Stop
+	}
+}
+
+ACTOR TMMarineHQ5 : TMMarineHQ1
+{
+	//$Title Random Marine, Armed, Cutscenes
+	States
+	{
+	Spawn:
+		RNDM B 0 NODELAY A_GiveInventory("Z_ShadeMe",0)
+	Randomize:
+		RNDM B 0 A_Jump(256,"Pose1","Pose2","Pose3")
+	Pose1:
+		PAR2 A -1
+		Stop
+	Pose2:
+		ARMH A -1
+		Stop
+	Pose3:
+		MARH A -1
 		Stop
 	}
 }
