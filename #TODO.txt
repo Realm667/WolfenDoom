@@ -1,35 +1,21 @@
 This is here as a reminder of the issues / to-do we notice from time to time.
 Remove the problem / to-do from this list once it is done - OZY81
 
-- Check all graphics / sprites / textures which may use some pngcrush (not much left for sure)
-- Find a way to stitch together INTROMA2-3 maps and where to use them (TITLEMAP? C1M5?)
+- Check all graphics / sprites / textures which may use some pngcrush (not much left for sure, Calinou may help us though: https://github.com/Realm667/WolfenDoom/pull/168)
 - Fix actors crouching even if unaware of you: to test it simply play c3m1 and when you kill the guard near redkey door, confront enemies always crouched and killing them with the shovel
+- Fix INTERMAP shop: when you buy the Sten gun, weapon gets raised and so you can shoot everywhere
 - Fix strobe lights: StrobeEmitter & SpotLightBoA doesn't clamp geometry (noticeable since GZDoom 3.7.2)
 - Get rid of nazibannertall.md2 model and replace it with a .md3 (problem is that it gets skin offsets messed up during conversion atm)
 - Get some different sounds for bosses to turn each more distinct (not easy, should check on Wolf3d websites)
 - Improve ENDOOM.ans
+- Improve INTERMAP shop system as suggested by Talon1024 - https://github.com/Realm667/WolfenDoom/issues/166
 - Optimize INTERMAP, C2M1 and C3M1 intros
 - Remove redundant / unused resources (Denkmal & Mecha Hitler [HITL## frames] are still unused for example)
 - Test all brightmaps, some actors seems to use too many spawned lights which can be removed (specially during attacks)
-- Turn the whole project .ipk3 compatible
-- Verify actors behavior, mainly props and enemies (don't forget to check LightBulb on maps)
+- Turn the whole project .ipk3 compatible (INTERMAP issue: if we watch the INTROMAP without skipping it, we can hear the HQs song once INTERMAP is loaded for a while, doesn't happen as .pk3 - Tested with GZDoom 4.1.3 Official)
+- Verify actors behavior, mainly props and enemies (don't forget to check LightBulb on maps and optimize lasers)
 - Verify every situation on maps where models disappear and use RenderRadius if needed
 
 ========================================================================================================================================================
 
 Reminder for Bosses by Tormentor667 (https://github.com/Realm667/WolfenDoom/commit/14066cd87a58d2456bcc4439e9dcd7b6d2eeb771#commitcomment-31973735)
-
-_SMOKE MONSTER_
-* Additionally to the black smoke, make it emerge a few "Zyklon Smoke" particles so the monster seems to get into a rage mode powered by the evil powers of the Zyklon C stuff. (the zyklon c smoke should also glow with dynlights)
-* Make the monster drop static non-moving "Zyklon C Clouds" or maybe liquid "Zyklon C Pools" behind it that stay for 30 seconds and hurt the player when he touches them (could be recycled from Totengräber of C3M1 somehow maybe)
-* It should be able to spawn some additional enemies with a very low possibility, I thought about a "Zyklon C Ghost Variant" or something else that is very "occult" and "supernatural". It shouldn't be hard to kill but simply annoying.
-
-_GARGOYLE BOSS_
-* He should spawn little Zyklon C effect clouds around him when flying (also something that makes you know "Okay, he is in rage mode now"
-* He should have a "other dimension" capability somehow, where he fades out a bit (translucency lower) and isn't able to be attacked (projectiles simply fly through him). This should only be for a short moment (3-4 seconds)
-* The very slow projectile that is homing you should itself shoot little projectiles towards you every 70 tics when it is flying, so attacks come not only from the enemy but also from the homing projectile.
-
-_JAMES RYAN ENEMY_
-* Having a zombie variant of him would be amazing, maybe Maxim can do that, it would be brilliant for a final battle
-* He should be able to spawn "Clones" of himself that are just "fakes" (no damage and only 100 hitpoints) that simply disappear when you shoot them (consider this to be some kind of "mirror spell" similar to Diablo 2)
-* He should have also a supernatural attack that goes beyond throwing grenades, maybe something that we can reuse from the zombies.
