@@ -66,28 +66,62 @@ ACTOR DSA1Pillar : Dogse
 	}
 }
 
-ACTOR DSA1Mage : Dogse
+ACTOR DSA1Female : Dogse
 {
-	//$Title Arkania's Mage (Easteregg)
+	//$Title Arkania's Female Characters (Easteregg)
 	Height 75
-	Scale 0.25
+	Scale 0.13
 	States
 	{
 	Spawn:
-		ARKA A -1 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY); A_GiveInventory("Z_ShadeMe",0); }
+		ARKA A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		ARKA A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5")
+		Stop
+	Pose1:
+		"####" A -1
+		Stop
+	Pose2:
+		"####" D -1
+		Stop
+	Pose3:
+		"####" E -1
+		Stop
+	Pose4:
+		"####" H -1
+		Stop
+	Pose5:
+		"####" J -1
 		Stop
 	}
 }
 
-ACTOR DSA1Pirate : Dogse
+ACTOR DSA1Male : Dogse
 {
-	//$Title Arkania's Pirate (Easteregg)
+	//$Title Arkania's Male Characters (Easteregg)
 	Height 75
-	Scale 0.25
+	Scale 0.13
 	States
 	{
 	Spawn:
-		ARKA B -1 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY); A_GiveInventory("Z_ShadeMe",0); }
+		ARKA B 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		ARKA B 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5")
+		Stop
+	Pose1:
+		"####" B -1
+		Stop
+	Pose2:
+		"####" C -1
+		Stop
+	Pose3:
+		"####" F -1
+		Stop
+	Pose4:
+		"####" G -1
+		Stop
+	Pose5:
+		"####" I -1
 		Stop
 	}
 }
