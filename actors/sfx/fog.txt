@@ -94,16 +94,13 @@ ACTOR FogCloud_V3 : FogCloud_V1
 	}
 }
 
-
 ////////////////////////////////
 // ZYKLON FOG by TORMENTOR667 //
 ////////////////////////////////
-
 ACTOR ZyklonFogCloud_Generator : FogCloud_Generator
 {
-	//$Category Special Effects (BoA)
 	//$Title Fog Spawner (Zyklon C)
-
+	//$Sprite "GZDBB0"
 	States
 	{
 	Spawn:
@@ -126,15 +123,8 @@ ACTOR ZyklonFogCloud_Generator : FogCloud_Generator
 	}
 }
 
-ACTOR ZyklonFogCloud_V1
+ACTOR ZyklonFogCloud_V1 : FogCloud_V1
 {
-	DistanceCheck "scenelod"
-	Radius 1
-	Height 1
-	+MISSILE
-	+NOBLOCKMAP
-	+NOGRAVITY
-	Alpha .25
 	States
 	{
 	Spawn:
