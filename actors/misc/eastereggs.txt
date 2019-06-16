@@ -76,7 +76,7 @@ ACTOR DSA1Female : Dogse
 	Spawn:
 		ARKA A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY); A_GiveInventory("Z_ShadeMe",0); }
 	Randomize:
-		ARKA A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10") //,"Pose11","Pose12")
+		ARKA A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12")
 		Stop
 	Pose1:
 		"####" A -1
@@ -108,6 +108,12 @@ ACTOR DSA1Female : Dogse
 	Pose10:
 		"####" T -1
 		Stop
+	Pose11:
+		"####" V -1
+		Stop
+	Pose12:
+		"####" X -1
+		Stop
 	}
 }
 
@@ -121,7 +127,7 @@ ACTOR DSA1Male : Dogse
 	Spawn:
 		ARKA B 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), ScaleY); A_GiveInventory("Z_ShadeMe",0); }
 	Randomize:
-		ARKA B 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10") //,"Pose11","Pose12")
+		ARKA B 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12")
 		Stop
 	Pose1:
 		"####" B -1
@@ -152,6 +158,12 @@ ACTOR DSA1Male : Dogse
 		Stop
 	Pose10:
 		"####" S -1
+		Stop
+	Pose11:
+		"####" U -1
+		Stop
+	Pose12:
+		"####" W -1
 		Stop
 	}
 }
