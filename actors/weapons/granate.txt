@@ -30,7 +30,7 @@ ACTOR GrenadePickup : CustomInventory
 		}
 		Stop
 	Stupid:
-		TNT1 A 0 A_Print("THAT WAS RATHER STUPID OF YOU, DON'T YOU THINK CAPTAIN?",3.5)
+		TNT1 A 0 A_Print("$STUPID1",3.5)
 		Fail
 	}
 }
@@ -164,12 +164,18 @@ ACTOR PlayerLeavingHQ : CustomInventory
 				A_TakeInventory("GrenadePickup", 0x7FFFFFFF);
 				A_TakeInventory("MineSweeper", 0x7FFFFFFF);
 				A_TakeInventory("Power", 0x7FFFFFFF);
+				A_TakeInventory("Sten", 0x7FFFFFFF);
+				A_TakeInventory("9mmAmmo", 0x7FFFFFFF);
 				A_GiveInventory("GrenadePickup", CountInv("NonTrainingGrenade"));
 				A_GiveInventory("MineSweeper", CountInv("NonTrainingMineSweeper"));
 				A_GiveInventory("Power", CountInv("NonTrainingPower"));
+				A_GiveInventory("Sten", CountInv("NonTrainingSten"));
+				A_GiveInventory("9mmAmmo", CountInv("NonTraining9mmAmmo"));
 				A_TakeInventory("NonTrainingGrenade", 0x7FFFFFFF);
 				A_TakeInventory("NonTrainingMineSweeper", 0x7FFFFFFF);
 				A_TakeInventory("NonTrainingPower", 0x7FFFFFFF);
+				A_TakeInventory("NonTrainingSten", 0x7FFFFFFF);
+				A_TakeInventory("NonTraining9mmAmmo", 0x7FFFFFFF);
 			}
 
 			// Restore player's ability to throw grenades & to use minesweeper
@@ -192,4 +198,6 @@ ACTOR NonTrainingGrenade : Inventory
 }
 
 ACTOR NonTrainingMineSweeper : NonTrainingGrenade { Inventory.MaxAmount 1 }
+ACTOR NonTrainingSten : NonTrainingGrenade { Inventory.MaxAmount 1 }
+ACTOR NonTraining9mmAmmo : NonTrainingGrenade { Inventory.MaxAmount 256 }
 ACTOR NonTrainingPower : NonTrainingGrenade { Inventory.MaxAmount 2400 }

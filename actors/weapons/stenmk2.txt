@@ -16,6 +16,7 @@ ACTOR Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 	States
 	{
 	Ready:
+		STEN A 0 A_JumpIfInventory("HQ_Checker",1,"Lower")
 		STEN A 0 A_JumpIfInventory("StenLoaded",0,2)
 		STEN A 0 A_JumpIfInventory("9mmAmmo",1,2)
 		STEN A 1 A_WeaponReady
@@ -31,7 +32,6 @@ ACTOR Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 		STEN A 1 A_Raise
 		Loop
 	Fire:
-		STEN A 0 A_JumpIfInventory("HQ_Checker",1,"Stupid")
 		STEN A 0 A_JumpIfInventory("StenLoaded",1,1)
 		Goto Dryfire
 		STEN A 0 A_PlaySound("sten/fire", CHAN_WEAPON)
@@ -91,9 +91,10 @@ ACTOR Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 	Spawn:
 		STEN Z -1
 		Stop
-	Stupid:
-		TNT1 A 0 A_Print("THAT WAS RATHER STUPID OF YOU, DON'T YOU THINK CAPTAIN?",3.5)
-		Goto Deselect
+	Lower:
+		STEN A 0 A_Lower
+		STEN A 1 A_Lower
+		Stop
 	}
 }
 
