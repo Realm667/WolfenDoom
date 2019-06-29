@@ -418,7 +418,7 @@ class Base : Actor
 		double left = GetMoveDistance(90);
 		double right = GetMoveDistance(-90);
 
-		if (left < radius + 64 && right < radius + 64) { return -1, 0; } // Don't dodge if there's not space on either side - augmented values to avoid stuck cases
+		if (left < radius + 96 && right < radius + 96) { return -1, 0; } // Don't dodge if there's not space on either side - augmented values to avoid stuck cases
 		if (left == right) return 0, angle + 90 * RandomPick(-1, 1); // If the space on either side is the same, pick a random side
 		if (left > right) return left, angle + 90; // If there's more space on the left, dodge left
 
@@ -1442,7 +1442,10 @@ class Nazi : Base
 
 		if (Random[duck](0, 255) > chance) { return; }
 
-		if (CheckForBarrier()) { DoCrouch(); }
+		for (int r = 0; r <= 64; r += 16)
+		{
+			if (CheckForBarrier(height / 4, radius + r)) { DoCrouch(); return; }
+		}
 	}
 
 	bool CheckForBarrier(double height = 16.0, double range = 64.0)
