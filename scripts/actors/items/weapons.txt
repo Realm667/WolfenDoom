@@ -13,6 +13,8 @@ class NaziWeapon : Weapon
 {
 	bool allowdisguised;
 	int notargettimeout;
+	int lowertimeout;
+	float lowerstart, lowerspeed;
 
 	Property Stealth:allowdisguised; // Weapons tagged as stealth can be carried while in disguise without breaking the disguise unless they are fired
 
@@ -63,51 +65,80 @@ class NaziWeapon : Weapon
 
 	override void Tick()
 	{
-		if (allowdisguised && owner && owner.player)
+		if (owner && owner.player)
 		{
-			if (owner.player.ReadyWeapon == self && owner.FindInventory("DisguiseToken", true) && !owner.FindInventory("DisguiseFailToken", true))
+			if (owner.player.ReadyWeapon == self && owner.FindInventory("HQ_Checker", true))
 			{
+				lowertimeout++;
+
 				let psp = owner.player.GetPSprite(PSP_WEAPON);
+				let downstate = GetDownState();
 
-				if ( // If in ready state, up state, or down state, turn notarget on unless enemies are already alerted
-					psp.CurState == GetReadyState() ||
-					psp.CurState == GetUpState() ||
-					psp.CurState == GetDownState()
-				) 
+				if (psp.CurState.InStateSequence(GetUpState()) || lowertimeout < 35) { return; }
+				else if (!psp.CurState.InStateSequence(downstate))
 				{
-					Inventory vis = owner.FindInventory("BoAVisibility");
-
-					if (!vis || !BoAVisibility(vis).alertedcount) // If no enemies are already alerted, turn on notarget
-					{
-						notargettimeout = level.time + 2;
-					}
+					owner.player.SetPsprite(PSP_WEAPON, downstate);
+					lowerstart = psp.y;
 				}
 				else
 				{
-					notargettimeout = level.time;
+					if (!lowerspeed) { lowerspeed = psp.y - lowerstart; }
+
+					if (psp.y >= WEAPONBOTTOM - lowerspeed)
+					{
+						owner.player.ReadyWeapon = null;
+						owner.player.PendingWeapon = WP_NOCHANGE;
+						lowertimeout = 0;
+					}
 				}
 			}
 
-			if (notargettimeout)
+			if (allowdisguised)
 			{
-				if (notargettimeout <= level.time) // Turn off notarget and reset speed
+				if (owner.player.ReadyWeapon == self && owner.FindInventory("DisguiseToken", true) && !owner.FindInventory("DisguiseFailToken", true))
 				{
-					if (
-						owner.player.ReadyWeapon == self ||
-						(
-							!NaziWeapon(owner.player.ReadyWeapon) ||
-							!NaziWeapon(owner.player.ReadyWeapon).allowdisguised)
-						)
+					let psp = owner.player.GetPSprite(PSP_WEAPON);
+
+					if ( // If in ready state, up state, or down state, turn notarget on unless enemies are already alerted
+						psp.CurState == GetReadyState() ||
+						psp.CurState == GetUpState() ||
+						psp.CurState == GetDownState()
+					) 
 					{
-						owner.player.cheats &= ~CF_NOTARGET;
-						owner.speed = owner.Default.speed;
+						Inventory vis = owner.FindInventory("BoAVisibility");
+
+						if (!vis || !BoAVisibility(vis).alertedcount) // If no enemies are already alerted, turn on notarget
+						{
+							notargettimeout = level.time + 2;
+						}
 					}
-					notargettimeout = 0;
+					else
+					{
+						notargettimeout = level.time;
+					}
 				}
-				else // Turn on notarget and slow down your movement
+
+				if (notargettimeout)
 				{
-					owner.player.cheats |= CF_NOTARGET;
-					owner.speed = owner.Default.speed * 0.85;
+					if (notargettimeout <= level.time) // Turn off notarget and reset speed
+					{
+						if (
+							owner.player.ReadyWeapon == self ||
+							(
+								!NaziWeapon(owner.player.ReadyWeapon) ||
+								!NaziWeapon(owner.player.ReadyWeapon).allowdisguised)
+							)
+						{
+							owner.player.cheats &= ~CF_NOTARGET;
+							owner.speed = owner.Default.speed;
+						}
+						notargettimeout = 0;
+					}
+					else // Turn on notarget and slow down your movement
+					{
+						owner.player.cheats |= CF_NOTARGET;
+						owner.speed = owner.Default.speed * 0.85;
+					}
 				}
 			}
 		}

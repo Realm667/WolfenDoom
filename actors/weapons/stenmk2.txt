@@ -16,7 +16,6 @@ ACTOR Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 	States
 	{
 	Ready:
-		STEN A 0 A_JumpIfInventory("HQ_Checker",1,"Lower")
 		STEN A 0 A_JumpIfInventory("StenLoaded",0,2)
 		STEN A 0 A_JumpIfInventory("9mmAmmo",1,2)
 		STEN A 1 A_WeaponReady
@@ -90,10 +89,6 @@ ACTOR Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 		Goto Ready
 	Spawn:
 		STEN Z -1
-		Stop
-	Lower:
-		STEN A 0 A_Lower
-		STEN A 1 A_Lower
 		Stop
 	}
 }
