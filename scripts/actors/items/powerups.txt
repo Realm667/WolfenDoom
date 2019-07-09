@@ -109,6 +109,68 @@ class MineSweeper : CustomInventory
 	}
 }
 
+class ZyklonMask : CustomInventory
+{
+	bool active;
+
+	Default
+	{
+		//$Category Powerups (BoA)
+		//$Title Zyklon Mask (any poison protection)
+		//$Color 6
+		Scale 0.5;
+		Tag "$TAGZMASK";
+		Inventory.Icon "ZASKB0";
+		Inventory.PickupMessage "$ZMASK";
+		Inventory.MaxAmount 1;
+		+INVENTORY.INVBAR
+		+INVENTORY.UNDROPPABLE
+	}
+
+	States
+	{
+		Spawn:
+			ZASK A -1;
+			Stop;
+		Pickup:
+			"####" A 0 A_GiveInventory("PowerZyklonMask", 0x7ffffff);
+			Stop;
+		Use:
+			"####" A 0 {
+				invoker.active = !invoker.active;
+
+				if (invoker.active && !FindInventory("PowerZyklonMask")) { invoker.active = false; }
+			}
+			Fail;
+	}
+
+	override void Tick() //play mask sound - ozy81
+	{
+		if (globalfreeze || level.Frozen) { return; }
+
+		if (owner && active)
+		{
+			if (owner.waterlevel >= 3)
+			{
+				A_PlaySound("flamer/steam", CHAN_AUTO, Random(15, 45));
+				active = false;
+			}
+			else if (owner.FindInventory("PowerZyklonMask")) { owner.TakeInventory("PowerZyklonMask", 1); }
+			else { active = false; }
+		}
+	}
+}
+
+class PowerZyklonMask : PowerProtection
+{
+	Default
+	{
+		DamageFactor "MutantPoison", 0;
+		DamageFactor "UndeadPoison", 0;
+		DamageFactor "Poison", 0;
+	}
+}
+
 class BoACompass : CustomInventory
 {
 	bool active;

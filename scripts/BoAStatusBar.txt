@@ -8,6 +8,7 @@ class BoAStatusBar : BaseStatusBar
 	DynamicValueInterpolator mBatteryInterpolator;
 	DynamicValueInterpolator mOilInterpolator;
 	DynamicValueInterpolator mSpaceSuitInterpolator;
+	DynamicValueInterpolator mZyklonMaskInterpolator;
 	DynamicValueInterpolator mStaminaInterpolator;
 	DynamicValueInterpolator mSuspicionInterpolator;
 	DynamicValueInterpolator mVisibilityInterpolator;
@@ -41,6 +42,7 @@ class BoAStatusBar : BaseStatusBar
 		mBatteryInterpolator = DynamicValueInterpolator.Create(0, 1.25, 1, 40);
 		mOilInterpolator = DynamicValueInterpolator.Create(0, 1.25, 1, 40);
 		mSpaceSuitInterpolator = DynamicValueInterpolator.Create(0, 1.25, 1, 40);
+		mZyklonMaskInterpolator = DynamicValueInterpolator.Create(0, 1.25, 1, 40);
 		mStaminaInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
 		mSuspicionInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
 		mVisibilityInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
@@ -54,6 +56,7 @@ class BoAStatusBar : BaseStatusBar
 		mBatteryInterpolator.Reset(0);
 		mOilInterpolator.Reset(0);
 		mSpaceSuitInterpolator.Reset(0);
+		mZyklonMaskInterpolator.Reset(0);
 		mStaminaInterpolator.Reset(0);
 		mSuspicionInterpolator.Reset(0);
 		mVisibilityInterpolator.Reset(0);
@@ -69,6 +72,7 @@ class BoAStatusBar : BaseStatusBar
 		if (CheckInventory("MineSweeper", 1)) { mBatteryInterpolator.Update(GetAmount("Power")); }
 		if (CheckInventory("LanternPickup", 1)) { mOilInterpolator.Update(GetAmount("LanternOil")); }
 		if (CheckInventory("PowerSpaceSuit", 1)) { mSpaceSuitInterpolator.Update(CPlayer.mo.GetEffectTicsForItem("SpaceSuit")); }
+		if (CheckInventory("PowerZyklonMask", 1)) { mZyklonMaskInterpolator.Update(CPlayer.mo.GetEffectTicsForItem("ZyklonMask")); }
 
 		Inventory vis = CPlayer.mo.FindInventory("BoAVisibility");
 		if (vis)
@@ -166,6 +170,18 @@ class BoAStatusBar : BaseStatusBar
 					[current, max] = CPlayer.mo.GetEffectTicsForItem("SpaceSuit");
 
 					current = mSpaceSuitInterpolator.GetValue();
+					DrawBar("HORZSP2F", "HORZSP2E", current, max, (-22, 55), 0, SHADER_HORZ, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
+				}
+				
+				//Draw Mask for Zyklon Mask
+				if (CheckInventory("PowerZyklonMask", 1))
+				{
+					DrawImage("STGZASK", (0, 0), DI_SCREEN_CENTER | DI_ITEM_CENTER);
+
+					int current, max;
+					[current, max] = CPlayer.mo.GetEffectTicsForItem("ZyklonMask");
+
+					current = mZyklonMaskInterpolator.GetValue();
 					DrawBar("HORZSP2F", "HORZSP2E", current, max, (-22, 55), 0, SHADER_HORZ, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
 				}
 
