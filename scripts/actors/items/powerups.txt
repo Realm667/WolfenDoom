@@ -109,10 +109,114 @@ class MineSweeper : CustomInventory
 	}
 }
 
-class ZyklonMask : CustomInventory
+class PowerupToggler : PowerupGiver
 {
 	bool active;
+	Inventory powerinv;
 
+	override void Tick() //play mask sound - ozy81
+	{
+		if (globalfreeze || level.Frozen) { return; }
+		if (owner)
+		{
+			if (powerinv)
+			{
+				active = true;
+				if (powerinv is "Powerup")
+				{
+					EffectTics = Powerup(powerinv).EffectTics;
+				}
+			}
+			if (active && powerinv && owner.waterlevel >= 3)
+			{
+				A_PlaySound("flamer/steam", CHAN_AUTO, Random(15, 45));
+				powerinv.Destroy();
+				active = false;
+			}
+		}
+		if (EffectTics == 1)
+		{
+			Destroy();
+		}
+	}
+
+	override void PostBeginPlay()
+	{
+		// Ensure item gets removed properly
+		EffectTics += 1;
+	}
+
+	override bool Use(bool pickup)
+	{
+		if (powerinv)
+		{
+			powerinv.Destroy();
+			active = false;
+		}
+		else
+		{
+			Super.Use(pickup);
+			Class<Inventory> PowerType = PowerupType.GetClassName();
+			if (PowerType)
+			{
+				powerinv = Owner.FindInventory(PowerType);
+			}
+		}
+		return false;
+	}
+
+	override bool TryPickup(in out Actor toucher)
+	{
+		// Picking up another of the same item
+		PowerupGiver existing = PowerupGiver(toucher.FindInventory(GetClass()));
+		if (existing)
+		{
+			Class<Inventory> PowerType = PowerupType.GetClassName();
+			if (PowerType)
+			{
+				Powerup curPower = Powerup(toucher.FindInventory(PowerType, true));
+				// If powerup is active, modify powerup EffectTics
+				if (curPower)
+				{
+					if (curPower.EffectTics < Default.EffectTics)
+					{
+						if (bAdditiveTime)
+						{
+							curPower.EffectTics += Default.EffectTics;
+						}
+						else
+						{
+							curPower.EffectTics = Default.EffectTics;
+						}
+						GoAwayAndDie();
+						return true;
+					}
+				}
+				else
+				{
+					// Powerup is not active, modify toggler EffectTics
+					if (existing.EffectTics < Default.EffectTics)
+					{
+						if (bAdditiveTime)
+						{
+							existing.EffectTics += Default.EffectTics;
+						}
+						else
+						{
+							existing.EffectTics = Default.EffectTics;
+						}
+						GoAwayAndDie();
+						return true;
+					}
+				}
+			}
+		}
+		return Super.TryPickup(toucher);
+	}
+}
+
+class ZyklonMask : PowerupToggler
+{
 	Default
 	{
 		//$Category Powerups (BoA)
@@ -123,41 +227,17 @@ class ZyklonMask : CustomInventory
 		Inventory.Icon "ZASKB0";
 		Inventory.PickupMessage "$ZMASK";
 		Inventory.MaxAmount 1;
+		Powerup.Duration -60;
+		Powerup.Type "PowerZyklonMask";
 		+INVENTORY.INVBAR
 		+INVENTORY.UNDROPPABLE
 	}
 
 	States
 	{
-		Spawn:
-			ZASK A -1;
-			Stop;
-		Pickup:
-			"####" A 0 A_GiveInventory("PowerZyklonMask", 0x7ffffff);
-			Stop;
-		Use:
-			"####" A 0 {
-				invoker.active = !invoker.active;
-
-				if (invoker.active && !FindInventory("PowerZyklonMask")) { invoker.active = false; }
-			}
-			Fail;
-	}
-
-	override void Tick() //play mask sound - ozy81
-	{
-		if (globalfreeze || level.Frozen) { return; }
-
-		if (owner && active)
-		{
-			if (owner.waterlevel >= 3)
-			{
-				A_PlaySound("flamer/steam", CHAN_AUTO, Random(15, 45));
-				active = false;
-			}
-			else if (owner.FindInventory("PowerZyklonMask")) { owner.TakeInventory("PowerZyklonMask", 1); }
-			else { active = false; }
-		}
+	Spawn:
+		ZASK A -1;
+		Stop;
 	}
 }
 
@@ -168,6 +248,14 @@ class PowerZyklonMask : PowerProtection
 		DamageFactor "MutantPoison", 0;
 		DamageFactor "UndeadPoison", 0;
 		DamageFactor "Poison", 0;
+	}
+
+	override void Tick()
+	{
+		if (Owner == null || EffectTics == 0)
+		{
+			Destroy();
+		}
 	}
 }
 
