@@ -84,7 +84,7 @@ ACTOR ZBodySamples : Camp_PrisonerSamples
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12,13,14)
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12,13)
 		CJAR A -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		CJAR B -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		CJAR C -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
@@ -108,10 +108,11 @@ ACTOR ZImpaledHeads : Camp_RandomPileDead
 	//$Title Zyklon Contaminated Impaled Heads (random)
 	//$Color 4
 	//$Sprite ZPRPA0
+	Height 88
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5)
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
 		ZPRP A -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZPRP B -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZPRP C -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
