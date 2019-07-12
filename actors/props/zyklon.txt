@@ -11,13 +11,13 @@ ACTOR ZSkeletons
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7)
+		ZPRP D -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZPRP E -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZPRP F -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZPRP G -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZPRP H -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZPRP I -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZPRP J -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
-		ZPRP K -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
-		ZPRP L -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
@@ -49,23 +49,10 @@ ACTOR ZRandomBodyParts1 : RandomBodyParts
 		ZCOR P -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZCOR Q -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZCOR R -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
-		ZCOR U -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
-		ZCOR V -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
-		ZCOR W -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
-		ZCOR X -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
-		Stop
-	}
-}
-
-ACTOR ZPrisonerGuts : PrisonerGuts
-{
-	//$Title Prisoner with severed Zyklon Guts (male, random)
-	States
-	{
-	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2)
 		ZCOR S -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZCOR T -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZCOR U -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZCOR V -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
@@ -111,7 +98,6 @@ ACTOR ZBodySamples : Camp_PrisonerSamples
 		ZJAR G -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZJAR H -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZJAR I -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
-		ZJAR J -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
@@ -129,8 +115,6 @@ ACTOR ZImpaledHeads : Camp_RandomPileDead
 		ZPRP A -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZPRP B -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZPRP C -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
-		ZPRP D -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
-		ZPRP E -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
