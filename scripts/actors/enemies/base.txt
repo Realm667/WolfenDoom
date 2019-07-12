@@ -1438,6 +1438,8 @@ class Nazi : Base
 
 	void A_TryHide(int chance = -1)
 	{
+		if (!user_incombat) { return; }
+
 		if (chance < 0) { chance = clamp(crouchchance + crouchchance * bFrightened, 0, 255); }
 
 		if (Random[duck](0, 255) > chance) { return; }
