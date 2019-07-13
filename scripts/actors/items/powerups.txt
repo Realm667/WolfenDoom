@@ -1,6 +1,5 @@
 class PowerupToggler : PowerupGiver
 {
-	bool active;
 	Inventory powerinv;
 
 	override void Tick()
@@ -8,19 +7,9 @@ class PowerupToggler : PowerupGiver
 		if (globalfreeze || level.Frozen) { return; }
 		if (owner)
 		{
-			if (powerinv)
+			if (powerinv && powerinv is "Powerup")
 			{
-				active = true;
-				if (powerinv is "Powerup")
-				{
-					EffectTics = Powerup(powerinv).EffectTics;
-				}
-			}
-			if (active && powerinv && owner.waterlevel >= 3)
-			{
-				A_PlaySound("flamer/steam", CHAN_AUTO, Random(15, 45));
-				powerinv.Destroy();
-				active = false;
+				EffectTics = Powerup(powerinv).EffectTics;
 			}
 		}
 		if (EffectTics == 1)
@@ -40,7 +29,6 @@ class PowerupToggler : PowerupGiver
 		if (powerinv)
 		{
 			powerinv.Destroy();
-			active = false;
 		}
 		else
 		{
@@ -127,6 +115,18 @@ class ZyklonMask : PowerupToggler
 	Spawn:
 		ZASK A -1;
 		Stop;
+	}
+
+	override void Tick()
+	{
+		if (globalfreeze || level.Frozen) { return; }
+		// Zyklon mask cannot be used underwater
+		if (powerinv && owner.waterlevel >= 3)
+		{
+			A_PlaySound("flamer/steam", CHAN_AUTO, Random(15, 45));
+			powerinv.Destroy();
+		}
+		Super.Tick();
 	}
 }
 

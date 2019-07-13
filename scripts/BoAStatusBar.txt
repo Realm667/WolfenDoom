@@ -160,19 +160,11 @@ class BoAStatusBar : BaseStatusBar
 				//Draw Mask for Space Suit
 				if (CheckInventory("PowerSpaceSuit", 1))
 				{
-					// DrawImage("STGMASK", (0, 0), DI_SCREEN_CENTER | DI_ITEM_CENTER);
-
 					int current, max;
 					[current, max] = CPlayer.mo.GetEffectTicsForItem("SpaceSuit");
 
 					current = mSpaceSuitInterpolator.GetValue();
 					DrawBar("HORZSP2F", "HORZSP2E", current, max, (-18, 73), 0, SHADER_HORZ, DI_SCREEN_CENTER | DI_ITEM_OFFSETS);
-				}
-				
-				//Draw Mask for Zyklon Mask
-				if (CheckInventory("PowerZyklonMask", 1))
-				{
-					// DrawImage("STGZASK", (0, 0), DI_SCREEN_CENTER | DI_ITEM_CENTER);
 				}
 
 				DrawCrosshairHint();
