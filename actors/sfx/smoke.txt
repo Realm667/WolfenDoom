@@ -21,8 +21,16 @@ ACTOR PuffSmoke
 		GRM2 A 0 A_Jump(256,"End")
 		GRM1 A 0 A_Jump(256,"End")
 	End:
+		"####" A 0 A_JumpIf(!CallACS("SmokeType"),"End2") 
 		"####" AAAAAAAAAAAAAAA 1 A_FadeIn(0.04)
 		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 {
+						A_FadeOut(0.025);
+						A_SetScale(ScaleX*1.02, ScaleY*1.02);
+						}
+		Stop
+	End2:
+		"####" AAAAAAAAA 1 A_FadeIn(0.04)
+		"####" AAAAAAAAAAAAAAAA 2 {
 						A_FadeOut(0.025);
 						A_SetScale(ScaleX*1.02, ScaleY*1.02);
 						}
@@ -58,13 +66,8 @@ ACTOR PowerPlantSmokePuff : PuffSmoke
 	Scale 0.64
 	States
 	{
-	Spawn:
-		TNT1 A 0 NODELAY A_SetScale(ScaleX*(frandom(0.7,1.0)), ScaleY*(frandom(0.7,1.0)))
-		TNT1 A 0 A_Jump(256,1,2,3)
-		GRM3 A 0 A_Jump(256,"End")
-		GRM2 A 0 A_Jump(256,"End")
-		GRM1 A 0 A_Jump(256,"End")
 	End:
+		"####" A 0 A_JumpIf(!CallACS("SmokeType"),"End2")
 		"####" AAAAAAAAAAAAAAA 1 A_FadeIn(0.04)
 		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 {
 						A_FadeOut(0.025);
@@ -79,13 +82,8 @@ ACTOR PowerPlantSmokePuffSmall : PuffSmoke
 	Scale 0.32
 	States
 	{
-	Spawn:
-		TNT1 A 0 NODELAY A_SetScale(ScaleX*(frandom(0.7,1.0)), ScaleY*(frandom(0.7,1.0)))
-		TNT1 A 0 A_Jump(256,1,2,3)
-		GRM3 A 0 A_Jump(256,"End")
-		GRM2 A 0 A_Jump(256,"End")
-		GRM1 A 0 A_Jump(256,"End")
 	End:
+		"####" A 0 A_JumpIf(!CallACS("SmokeType"),"End2")
 		"####" AAAAAAAAAAA 1 A_FadeIn(0.1)
 		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 {
 						A_FadeOut(0.025);
@@ -106,6 +104,7 @@ ACTOR PowerPlantSmokePuffLarge : PuffSmoke
 		GRM2 A 0 A_Jump(256,"End")
 		GRM1 A 0 A_Jump(256,"End")
 	End:
+		"####" A 0 A_JumpIf(!CallACS("SmokeType"),"End2")
 		"####" AAAAAAAAAAAAAAA 1 A_FadeIn(0.04)
 		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 4 {
 						A_FadeOut(0.02);

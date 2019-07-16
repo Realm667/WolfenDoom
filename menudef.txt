@@ -192,6 +192,12 @@ OptionMenu "WeatherOptions"
 	Option "$WE_SNOW","snowswitch","OnOff"
 }
 
+OptionValue "SmokeStyle"
+{
+	0, "$SM_OLD"
+	1, "$SM_NEW"
+}
+
 OptionMenu "EffectsOptions"
 {	
 	Title  "$OPT_SFX"
@@ -199,6 +205,7 @@ OptionMenu "EffectsOptions"
 	StaticText ""
 	Option "$SF_CIND","cinderswitch","OnOff"
 	Option "$SF_LEAV","leavesswitch","OnOff"
+	Option "$SF_SMOD","smoketype","SmokeStyle"
 	Option "$SF_SMOK","smokeswitch","OnOff"
 	Option "$SF_SPLA","splashswitch","OnOff"
 	Option "$SF_STAR","dustswitch","OnOff"
