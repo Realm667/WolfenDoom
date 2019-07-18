@@ -467,6 +467,27 @@ ACTOR UndeadMonk : HitlerGhost
 	}
 }
 
+ACTOR ZyklonMonk : UndeadMonk
+{
+	//$Title Zyklon Monk
+	Health 250
+	DamageFactor "MutantPoison", 0.0
+	DamageFactor "UndeadPoison", 0.0
+	DamageFactor "Poison", 1.0
+	Obituary "$UNDEADZ"
+	States
+	{
+	Spawn:
+		MONZ A 0
+		Goto Look
+	Missile:
+		"####" A 6 A_FaceTarget
+		"####" D 6 A_SpawnProjectile("ZFlameBall",68)
+		"####" A 6
+		Goto See
+	}
+}
+
 ACTOR SSCultist : Guard
 {
 	//$Category Monsters (BoA)/Occult

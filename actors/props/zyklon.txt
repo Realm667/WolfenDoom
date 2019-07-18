@@ -65,12 +65,16 @@ ACTOR ZLyingBodies1 : RandomBodyParts
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5)
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9)
 		ZBED A -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZBED B -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZBED C -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZBED D -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
-		ZBED E -1 A_SetScale(0.53)
+		ZBED E -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZBED F -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZBED G -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZBED H -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZBED I -1 A_SetScale(0.53)
 		Stop
 	}
 }
