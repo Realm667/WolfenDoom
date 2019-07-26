@@ -170,3 +170,19 @@ ACTOR ZDeadBody : DeadBody
 		Loop
 	}
 }
+
+ACTOR ZRandomAnimalParts1 : RandomBodyParts
+{
+	//$Title Zyklon Body Parts (animals, random)
+	//$Color 4
+	//$Sprite ZANIA0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
+		ZANI A -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZANI B -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZANI C -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
