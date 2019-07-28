@@ -30,12 +30,10 @@ ACTOR ZombieKazi : ZombieStandard
 		"####" E 8
 		Goto See
 	XDeath: //what a fall through :P
-	Death.Fire:
-	Death.Electric:
 	Disintegrate:
 	Death:
 		"####" F 5
-		"####" I 0 A_SpawnItemEx("ZombieNuke",0,0,0)
+		"####" I 0 { A_SpawnItemEx("ZombieNuke",0,0,0); A_SpawnItemEx("KaZomBoom",0,0,0); }
 		"####" IIIIIIIIIIIIIIII 0 A_SpawnItemEx("Debris_Bone", random(8,-8), random(8,-8), random(54,64), random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE)
 		"####" I 1 {A_SpawnItemEx("Debris_Skull", random(8,-8), random(8,-8), random(54,64), random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE); A_NoBlocking;}
 		"####" J 4 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3))
