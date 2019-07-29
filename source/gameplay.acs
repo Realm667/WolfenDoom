@@ -238,6 +238,7 @@ function void DrawOverlay(int w, int h, int image, int outtime, int alpha)
 }
 
 int heartbeatvolume[MAX_PLAYERS], heartbeatdelay1[MAX_PLAYERS], heartbeatdelay2[MAX_PLAYERS];
+int maskbreathvolume[MAX_PLAYERS], masksoundtimeout[MAX_PLAYERS];
 
 function void DrawScreenOverlays(void)
 {
@@ -296,6 +297,21 @@ function void DrawScreenOverlays(void)
 	{
 		DrawOverlay(346, 256, "M_INJ", drugs, 1.0);
 	}
+
+	// GaMask and SpaceSuit sounds
+	int mask1 = GetActorPowerupTics(0, "PowerSpaceSuit");
+	if (mask1 && masksoundtimeout[p] < Timer())
+	{
+		localambientsound("player/gasmask",random(90,127));
+		masksoundtimeout[p] = Timer() + (35 * 8);
+	}
+	
+	int mask2 = GetActorPowerupTics(0, "PowerZyklonMask");
+	if (mask2 && masksoundtimeout[p] < Timer())
+	{
+		localambientsound("player/gasmask",random(90,127));
+		masksoundtimeout[p] = Timer() + (35 * 8);
+	}
 }
 
 // Powerups //
@@ -309,7 +325,6 @@ script "PlayerHealthAbove25" (void)
 {
 	SetResultValue(GetActorProperty(playerID, APROP_Health) >= 25);
 }
-
 
 // Compatibility placeholders (old functions that aren't needed any more, but might be referenced in old maps)
 script "BossHealth" (void) {}
