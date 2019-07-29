@@ -171,18 +171,87 @@ ACTOR ZDeadBody : DeadBody
 	}
 }
 
-ACTOR ZRandomAnimalParts1 : RandomBodyParts
+ACTOR ZDogsBodies : DogsBodies
 {
-	//$Title Zyklon Body Parts (animals, random)
-	//$Color 4
-	//$Sprite ZANIA0
+	//$Title Zyklon Contaminated Dead Dogs (random)
+	//$Sprite ZARKD0
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
-		ZANI A -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
-		ZANI B -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
-		ZANI C -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9,10)
+		ZARK D -1 A_SetScale(0.9)
+		ZARK E -1 A_SetScale(0.9)
+		ZYDO D -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZYDO E -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZYDO F -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZYDO G -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZYDO H -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZYDO I -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZYDO K -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZDOG K -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR ZCatsBodies : CatsBodies //recolors not included yet - ozy81
+{
+	//$Title Zyklon Contaminated Dead Cats (random)
+	//$Sprite ZCATD0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2)
+		ZCAT D -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZCAT E -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR ZCowsBodies : CowsBodies
+{
+	//$Title Zyklon Contaminated Dead Cows (random)
+	//$Sprite ZCOWG0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6)
+		ZCOW G -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZCOW H -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZCOW I -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZCOW J -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZCOW K -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZCOW L -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR ZPigsBodies : PigsBodies
+{
+	//$Title Zyklon Contaminated Dead Pigs (random)
+	//$Sprite ZPIGJ0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8)
+		ZPIG J -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZPIG K -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZPIG L -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZPIG M -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZPIG N -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZPIG O -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZPIG P -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZPIG Q -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR ZDeadBear : DeadBear
+{
+	//$Title Zyklon Contaminated Dead Bear (random sides)
+	States
+	{
+	Spawn:
+		ZBER B -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
