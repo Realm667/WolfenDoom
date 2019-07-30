@@ -435,6 +435,110 @@ ACTOR Camp_PrisonerZombie : ZombieStandard
 	}
 }
 
+ACTOR CivilianZombie1 : Camp_PrisonerZombie
+{
+	//$Title Civilian Zombie (brown trousers)
+	Nazi.ZombieVariant "CivilianZombie1"
+	Health 20
+	Speed 2
+	States
+	{
+	Spawn:
+		CIBZ N 0
+		Goto Look
+	See:
+		CIBZ "#" 0 A_JumpIfCloser (radius + 160, "Run")
+		"####" "#" 0 A_SetSpeed(2)
+		Goto See.Normal
+	Run:
+		"####" "#" 0 A_SetSpeed(5)
+		"####" "#" 0 A_Jump(256,"RunLoop2")
+		Stop
+	Melee:
+		"####" EF 4 A_FaceTarget
+		"####" G 5 A_CustomMeleeAttack(4*random(1,3), "nazombie/pain", "", UndeadPoison, TRUE)
+		"####" F 4 A_FaceTarget
+		"####" G 5 A_CustomMeleeAttack(4*random(1,3), "nazombie/pain", "", UndeadPoison, TRUE)
+		Goto See
+	Pain:
+		CIBZ H 6 A_NaziPain(256, True, -8, "ZPain_Overlay")
+		"####" H 0 A_Jump(256,"See")
+		Goto Spawn
+	Death:
+		"####" I 5 A_Scream
+		"####" J 6
+		"####" K 5 A_NoBlocking
+		"####" LM 4
+		"####" O 5 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3))
+		"####" P -1
+		Stop
+	Raise:
+		"####" POMLKJI 7
+		"####" I 0 A_Jump(256,"See")
+		Stop
+	}
+}
+
+ACTOR CivilianZombie2 : CivilianZombie1
+{
+	//$Title Civilian Zombie (blue trousers)
+	Nazi.ZombieVariant "CivilianZombie2"
+	States
+	{
+	Spawn:
+		CICZ N 0
+		Goto Look
+	See:
+		CICZ "#" 0 A_JumpIfCloser (radius + 160, "Run")
+		"####" "#" 0 A_SetSpeed(2)
+		Goto See.Normal
+	Pain:
+		CICZ H 6 A_NaziPain(256, True, -8, "ZPain_Overlay")
+		"####" H 0 A_Jump(256,"See")
+		Goto Spawn
+	}
+}
+
+ACTOR CivilianZombie3 : CivilianZombie1
+{
+	//$Title Civilian Zombie (green trousers)
+	Nazi.ZombieVariant "CivilianZombie3"
+	States
+	{
+	Spawn:
+		CIGZ N 0
+		Goto Look
+	See:
+		CIGZ "#" 0 A_JumpIfCloser (radius + 160, "Run")
+		"####" "#" 0 A_SetSpeed(2)
+		Goto See.Normal
+	Pain:
+		CIGZ H 6 A_NaziPain(256, True, -8, "ZPain_Overlay")
+		"####" H 0 A_Jump(256,"See")
+		Goto Spawn
+	}
+}
+
+ACTOR CivilianZombie4 : CivilianZombie1
+{
+	//$Title Civilian Zombie (red trousers)
+	Nazi.ZombieVariant "CivilianZombie4"
+	States
+	{
+	Spawn:
+		CIRZ N 0
+		Goto Look
+	See:
+		CIRZ "#" 0 A_JumpIfCloser (radius + 160, "Run")
+		"####" "#" 0 A_SetSpeed(2)
+		Goto See.Normal
+	Pain:
+		CIRZ H 6 A_NaziPain(256, True, -8, "ZPain_Overlay")
+		"####" H 0 A_Jump(256,"See")
+		Goto Spawn
+	}
+}
+
 ACTOR ZombieGeneral : RocketMan
 {
 	//$Title General Fettgesicht, Zombiefied (Boss)
