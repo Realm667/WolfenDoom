@@ -214,13 +214,14 @@ ACTOR ZCowsBodies : CowsBodies
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6)
-		ZCOW G -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7)
 		ZCOW H -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZCOW I -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZCOW J -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZCOW K -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZCOW L -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZCOW M -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZCOW N -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }

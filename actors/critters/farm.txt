@@ -246,17 +246,18 @@ ACTOR CowsBodies : DogsBodies
 {
 	//$Title Dead Cows (random)
 	//$Sprite ZCOWA0
-	Scale 0.8
+	Scale 0.9
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6)
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7)
 		ZCOW A -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZCOW B -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZCOW C -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZCOW D -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZCOW E -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		ZCOW F -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ZCOW G -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
@@ -286,7 +287,7 @@ ACTOR PigsBodies : DogsBodies
 ACTOR DeadBear : DogsBodies
 {
 	//$Title Dead Bear (random sides)
-	Scale 0.8
+	Scale 0.75
 	States
 	{
 	Spawn:
