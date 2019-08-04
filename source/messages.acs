@@ -28,6 +28,9 @@ script "BoADialogue"(int headtalky,int headsilent,int message)
 	SetFont(headtalky);
 	hudmessagebold(s:"A"; HUDMSG_PLAIN, messagelayer + 3, CR_UNTRANSLATED, 21.0, 16.0, 0.0);
 
+	// Play the audio (if it's there)
+	PlayMessageSound(0, message);
+
 	// Show message
 	AmbientSound("RADIONOS",127);
 	SetHudSize(640, 400, 1);
@@ -83,8 +86,8 @@ script "TankExitMessage" (void)
 script "FollowerMessage" (int type, int count)
 {
 	int messagelayer = GetMessageStart();
-
 	int message = "";
+	int messagestr = "";
 
 	switch (type)
 	{
@@ -105,8 +108,8 @@ script "FollowerMessage" (int type, int count)
 		break;
 	}
 
-	message = StrParam(l:message);
-	if (message == "") { Terminate; }
+	messagestr = StrParam(l:message);
+	if (messagestr == "") { Terminate; }
 
 	str head = GetUserVariable(0, "head");
 	if (head == "") { Terminate; }
@@ -132,12 +135,15 @@ script "FollowerMessage" (int type, int count)
 	SetFont(headtalky);
 	hudmessagebold(s:"A"; HUDMSG_PLAIN, messagelayer + 3, CR_UNTRANSLATED, 21.0, 16.0, 0.0);
 
+	// Play the audio (if it's there)
+	PlayMessageSound(0, message);
+
 	// Show message
 	AmbientSound("RADIONOS",127);
 	SetHudSize(640, 400, 1);
 	SetFont("SMALLFONT");
 	SetHudWrapWidth(540);
-	hudmessagebold(l:message; HUDMSG_TYPEON | HUDMSG_LOG, messagelayer + 2, CR_GRAY, 100.1, 8.1, 999.0, 0.03, 0.5);
+	hudmessagebold(s:messagestr; HUDMSG_TYPEON | HUDMSG_LOG, messagelayer + 2, CR_GRAY, 100.1, 8.1, 999.0, 0.03, 0.5);
 
 	// Stop talk animation
 	delay(2*35);
@@ -159,7 +165,7 @@ script "FollowerMessage" (int type, int count)
 	SetHudSize(640, 400, 1);
 	SetFont("SMALLFONT");
 	SetHudWrapWidth(540);
-	hudmessagebold(l:message; HUDMSG_FADEINOUT, messagelayer + 2, CR_GRAY, 100.1, 8.1, 0.0, 0.0, 0.5);
+	hudmessagebold(s:messagestr; HUDMSG_FADEINOUT, messagelayer + 2, CR_GRAY, 100.1, 8.1, 0.0, 0.0, 0.5);
 }
 
 script "ShowStats" (void)

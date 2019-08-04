@@ -79,3 +79,20 @@ Script "BoA_PlayerLoop" ENTER
 		Delay(1);
 	}
 }
+
+// Uses ZScript to check that a sound exists
+function bool PlayMessageSound(int tid, int message)
+{
+	int length = ScriptCall("Object", "S_GetLength", message);
+
+	if (length == 0)
+	{
+		if (GetCVar("developer")) { Log(s:"\cgMissing voiceover: \cjCheck SNDINFO entry and audio file for \cf", s:message, s:"\cj!"); }
+
+		return false;
+	}
+
+	PlaySound(tid, message, CHAN_BODY, 1.0, false, ATTN_NONE, false);
+
+	return true;
+}
