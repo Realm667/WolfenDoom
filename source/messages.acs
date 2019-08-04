@@ -86,30 +86,40 @@ script "TankExitMessage" (void)
 script "FollowerMessage" (int type, int count)
 {
 	int messagelayer = GetMessageStart();
+	int messagetype = "";
 	int message = "";
 	int messagestr = "";
 
 	switch (type)
 	{
 		case 0:
-			message = StrParam(s:"FOLLOWERSTAY", i:count);
+			messagetype = StrParam(s:"STAY", i:count);
 		break;
 		case 1:
-			message = StrParam(s:"FOLLOWERSTATIC", i:count);
+			messagetype = StrParam(s:"STATIC", i:count);
 		break;
 		case 2:
-			message = StrParam(s:"FOLLOWERCOME", i:count);
+			messagetype = StrParam(s:"COME", i:count);
 		break;
 		case 3:
-			message = StrParam(s:"FOLLOWERALWAYS", i:count);
+			messagetype = StrParam(s:"ALWAYS", i:count);
 		break;
 		default:
-			message = "";
+			messagetype = "";
 		break;
 	}
 
+	// Try to get the message string, prepending the actor's class name
+	message = StrParam(s:GetActorClass(0), l:messagetype);
 	messagestr = StrParam(l:message);
-	if (messagestr == "") { Terminate; }
+	if (messagestr == message)
+	{
+		if (GetCVar("developer")) { Log(s:"\cgMissing voiceover: \cjCheck SNDINFO entry and audio file for \cf", s:message, s:"\cj! Falling back to \cf", s:StrParam(s:"FOLLOWER", l:messagetype), s:"\cj."); }
+		// If not found, fall back to the generic messages
+		message = StrParam(s:"FOLLOWER", l:messagetype);
+		messagestr = StrParam(l:message);
+		if (messagestr == message) { Terminate; }
+	}
 
 	str head = GetUserVariable(0, "head");
 	if (head == "") { Terminate; }
