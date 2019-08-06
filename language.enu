@@ -342,9 +342,10 @@ MO_C3M3_P3 = "Kill James Ryan\n";
 MO_C3M3_S1 = "Find and open the supply chest\n";
 
 MO_C3M4_P1 = "Enter the Wolfsschanze\n";
-MO_C3M4_P2 = "Reach the underground tunnel\n";
-MO_C3M4_P3 = "Reach the town of Rastenburg\n";
+MO_C3M4_P2 = "Reach the city of Rastenburg\n";
+MO_C3M4_P3 = "Survive until the Soviets arrive\n";
 MO_C3M4_S1 = "Find and open the supply chest\n";
+MO_C3M4_S2 = "Collect at least 15 big souls\n";
 
 MO_C3M5C_P1 = "Find the repair kit\n";
 MO_C3M5C_P2 = "Find two parachutes\n";
@@ -361,12 +362,12 @@ MO_C3M6A_S2 = "Find the tesla cannon\n";
 // Key Messages ////////////////
 ////////////////////////////////
 
-GOTBLUEKEY = "Picked up a \cHblue \cAkey.";
-GOTCYANKEY = "Picked up a \cVcyan \cAkey.";
-GOTGREENKEY = "Picked up a \cDgreen \cAkey.";
-GOTPURPLEKEY = "Picked up a \cTpurple \cAkey.";
-GOTREDKEY = "Picked up a \cGred \cAkey.";
-GOTYELLOWKEY = "Picked up a \cKyellow \cAkey.";
+GOTBLUEKEY = "Picked up a \cHblue \cRkey.";
+GOTCYANKEY = "Picked up a \cVcyan \cRkey.";
+GOTGREENKEY = "Picked up a \cDgreen \cRkey.";
+GOTPURPLEKEY = "Picked up a \cTpurple \cRkey.";
+GOTREDKEY = "Picked up a \cGred \cRkey.";
+GOTYELLOWKEY = "Picked up a \cKyellow \cRkey.";
 
 PD_BLUEW = "\cCYou need a \cHblue \cCkey to open this door";					// W for WolfenDoom
 PD_BLUEWO = "\cCYou need a \cHblue \cCkey to activate this object";
@@ -815,7 +816,7 @@ C2M0 = "Operation: Astrostein";
 C3M1 = "Operation: Geheimnisträger";
 C3M2 = "Operation: Eisenherz";
 C3M3 = "Operation: Blutrache";
-C3M4 = "Operation: #";
+C3M4 = "Operation: Wiedergeburt";
 C3M5 = "Operation: Zentralflughafen Berlin-Tempelhof";
 C3M6 = "Operation: Wolfenstein";
 C3M0 = "Operation: #";
@@ -1009,13 +1010,13 @@ BRIEFINGC3M3_5 = "\cCIntelligence intercepted a transmission from \cRJames Ryan\
 BRIEFINGC3M3_6 = "\cCI know \cQGeneral Miller\cC usually wants traitors to be brought back to HQ alive for questioning... but, may I be upfront with you, \cPCaptain\cC?";
 BRIEFINGC3M3_7 = "\cRJames Ryan\cC is a monster! For the death of \cQCpt. Douglas\cC, for betraying the cause of a free world, and for all the lives lost to his treason, make him rue the day he said he would serve your head to the \cRFührer\cC!";
 
-BRIEFINGC3M4_1 = "\cCInsert Dialogue Here";
-BRIEFINGC3M4_2 = "\cCInsert Dialogue Here";
-BRIEFINGC3M4_3 = "\cCInsert Dialogue Here";
-BRIEFINGC3M4_4 = "\cCInsert Dialogue Here";
-BRIEFINGC3M4_5 = "\cCInsert Dialogue Here";
-BRIEFINGC3M4_6 = "\cCInsert Dialogue Here";
-BRIEFINGC3M4_7 = "\cCInsert Dialogue Here";
+BRIEFINGC3M4_1 = "\cCCongratulations, \cPWilliam\cC. We all know what you have done and we all know despite the treason and his cruelties, \cRJames Ryan \cCwas a friend and a companion to you. But he chose the wrong side, and he betrayed the wrong people. Anyway, war isn't over, it still rages on!";
+BRIEFINGC3M4_2 = "\cCOur intelligences lead by \cQProf. Gutenberg \cCand \cQLt. Arlow \cChave analysed the clues and transmissions you brought from \cBArnheim \cCand it seems that it was high time. The occult powers within the \cFSpear of Destiny \cCare more dangerous than we have thought.";
+BRIEFINGC3M4_3 = "\cCGerman scientists combined their power with their newest bio weapon, the Zyklon C. It is not only killing people, it is turning them into something strange. We are not sure yet if it is some kind of control mechanism or worse and the \cRNazis \cCdon't seem to know that either.";
+BRIEFINGC3M4_4 = "\cCAccording to radio transmissions we intercepted, \cRHitler\cC's cruelest brains have prepared a test at the city of \cBRasternburg \cC, the local population isn't aware of the plans and the nazi regime doesn't care anymore about german casualties. Surprisingly, the Communists do!";
+BRIEFINGC3M4_5 = "\cCThe Soviets are pushing back the eastern front, and we are close to our first handshake. \cQLt. Ascher \cCwill drop you near the Führerbunker \cBWolfsschanze \cCand then bypass the area to meet up with the Soviets. As soon as you have infiltrated the bunker and taken control, expect the rendezvous. Let's go!";
+BRIEFINGC3M4_6 = "\cPCaptain\cC, you have done an outstanding job in \cBArnheim\cC - if I can speak frankly - I am glad that you killed the traitor. For remembering \cQCpt. Douglas\cC.";
+BRIEFINGC3M4_7 = "\cCLet's get on the road now, I will drop you close to the Führerbunker and proceed to the rendezvous... strange feeling, I have no idea what to expect from the Soviets. But as long as we share the same enemy, we share the same sides.";
 
 BRIEFINGC3M5_1 = "\cCInsert Dialogue Here";
 BRIEFINGC3M5_2 = "\cCInsert Dialogue Here";
@@ -1365,7 +1366,8 @@ ASCHERCONV34 = "\cCWell, we need to get off the airship before it lands, but the
 ASCHERCONV35 = "\cCHow can we do that?";
 ASCHERCONV36 = "\cCI think I have an idea, and I am sure you like that kind of distraction.\n\nIn any case the heavy armored airship is a threat for us, so we need to get rid of that as well. So as soon as we are close enough to the Castle, we need to destroy the engines of the airship with appropriate \cFtools\cC and make it crash nearby - but surely not before we got our hands on \cFtwo parachutes\cC so we can leave before that happens.\n\nThe big explosion will make a big part of the enemy resistance move towards the crash site. In the meantime we will be able to approach the Castle through the forests unsighted.\n\nSo all we need now are a \cFrepair kit\cC, \cF2 parachutes\cC and then destroy the \cFengine control\cC to produce some action. So, are you ready \cPCpt.\cC?";
 ASCHERCONV37 = "\cCCan you please repeat that?";
-ASCHERCONV38 = "\cPCpt., \cCI am already proceeding to the meeting point. The russians are already informed but to be honest, I am not sure how thrustworthy the communists are. Be careful, and expect the worst - you won't be disappointed then. Good luck!";
+ASCHERCONV38 = "\cPCpt., \cCtake care of the area surrounding the bunker, it's heavily guarded with traps and ... oh ...can you see that strange green glow in the distance? ...let's hope we are not too late. Quick now, and best of luck to you, we will meet again later.";
+ASCHERCONV39 = "\cPCpt., \cCI will stop radio transmissions to make sure the Krauts won't smell a rat. Proceeding to the meeting point with the soviet forces now near the village of \cBRastenburg\cC, contacting you later. Over and out!";
 
 // Juliette Shotglass ingame dialouges
 BARKEEPERCONV01 = "\cQJuliette 'Shotglass' Bertrand";
@@ -1510,6 +1512,7 @@ CLERKCONV50 = "\cCMEDS DESCRIPTIONS 4";
 
 // Yevgeni ingame dialogues
 YEVGENIMESSAGE01 = "\cPCpt.\cC, russian rescue team here! Catch up with us at the north-western entrance of the town, we are here to get you out. Yevgeni over!";
+YEVGENIMESSAGE02 = "\cU*KrrrrZzzz...*\cPCpt.\cC can you hear us...\cU*krzzzZzzz...*\cCgot your position\cUZzzzzzkkrrr*...\cCtown is being overrun, we \cU...*krzzzZzzz*...\cC bomb your location with an airstrike...\cU...*krzzzZzzz*...\cCget you out in 5 minutes, hold your pos...\cU...";
 
 // Camp prisoner Itzhak Stern ingame dialogues
 CAMPPRISCONV01 = "\cQItzhak Stern";
@@ -1746,9 +1749,9 @@ PAPERTEXT09 = "Doktor Schabbs Jr., \n\n The research results on the new mutant b
 PAPERTEXT10 = "William my friend, \n\n I write this letter as a reminder of what I need to tell you after we return from Trondheim. I have no idea, maybe I am oversuspicious but I want you to listen: Don't trust Cpt. Ryan. Or at least stay wake.\n\nI know I am not allowed to read the protocols at the hq, but I did...\n\nRemember the surprising ambushes, the randomly activated alarms during your missions? Every single time, Cpt. Ryan was involved in the briefing or part of the mission... this is no surprise, I fear the worst, my friend.\n\nI can't reveal that information now, the Operation Hades is too important, but Will, we need to talk to the General as soon as we are back. Ryan is dangerous, William, we must not underestimate him, not even if we really reveal his true identity...\n\nI hope this all is over soon, I want those lazy days so hard... both of us in rocking chairs on a porch in rural South Carolina.\n\n  - Sincerely Douglas";
 PAPERTEXT11 = "Mon ami,\n\nI have left to ren-dez-vous with Allied reinforcements. Remember: you're looking for an ancient solar disc. The mysterious door next to my hideout leads to the Paris catacombs.\n\nOnce you've opened that door, scour the catacombs, and look for a way into the casino. You should then be able to finish securing the buildings around the plaza.\n\nAlso, I had better see you defending the Nebelwerfer once I come back, or else I will have Gen. Miller court martial you for insubordination!\n\n  - J. Bertrand"; // Juliette, C1M5
 PAPERTEXT12 = "General Eisenhimmel, \n\n report from the communication central: The issue still couldn't be resolved. Neither can we receive incoming messages nor send any information from the airship to Castle Wolfenstein. All the radios are broken, engineers are already trying to find a solution to repair the devices but it's more complicated than expected. Maier has already stated that to him it looks less like a spontaneous defect but more like a planned sabotage. I suppose keeping calm for now with any details until further investigation has been made. The Gestapo are already looking for suspicious actions on the airship.  \n\n - Obersturmbandfuehrer Winter";
-PAPERTEXT13 = "General Totengräber, \n\n I hope that this messages reaches you in time to Dachau before you proceed with further active tests.\n\n The test subject here in Rastenburg was a total failure. \n\nWe infested the city with the Zyklon C powered by the staff through the underground laboratory which is reachable through the lower levels of the bunker as planned without being noticed by the local population. \n\nWe were not able to control the infected civilians and soldiers of the city though. The whole sealed area is contaminated and out of control. We were able to hold them in quarantene here for a while by fortificating the city but we need to destroy this place as soon as possible before the infested people can escape. \n\nJust to be clear: Zyklon C is not ready for usage! It's power is NOT controllable. \n\n - Prof. Dr. Schabbs Jr. XII";
+PAPERTEXT13 = "General Totengräber, \n\n I hope that this messages reaches you in time to Dachau before you proceed with further active tests.\n\n The test subject here in Rastenburg was a total failure. \n\nWe successfully infested the city with the Zyklon C - powered by the staff - the laboratory wasn't uncovered from the local population, not even when we installed the gas injectors in the whole city.  \n\nThough we were not able to control the infected civilians. They started to rage through the city, hungry and mindsick, attacking the Wehrmacht soldiers that remained in the manor above the labs. As a last step, we sealed the secret entrance and withdrew the remaining forces. \n\nThe whole area is contaminated and out of control, we shut the place down. We were able to hold them in quarantene here for a while by fortificating the city but we need to destroy this place as soon as possible before the undead can escape. \n\nJust to be clear: Zyklon C is not ready for usage! It's power is NOT controllable. It CAN be used though for the burned-ground-philosophy of our Führer as a final solution.\n\n - Prof. Dr. Schabbs Jr. XII";
 PAPERTEXT14 = "Important notice for the staff members: \n\nEntering the secured area and also the city of Rastenburg without a filtering gas mask is not recommended. Free Zyklon C particles might damage your brain cells irrepairable. Caution! \n\n - Prof. Dr. Schabbs Jr. XII";
-PAPERTEXT15 = "Prof. Dr. Schabbs Jr. XII, \n\nRastenburg is out of control. The undead are walking through the streets and we have no chance of leaving this building.\n\nThe secret passage behind the bookshelfs is sealed from the other side. The only thing we can wait for is help from the SS or death - hopefully without turning into zombies.\n\n\The city streets are full of ammo, health and equipment, but also full of undead people if we take a look at our radar compass. If we just had one of the gas masks with us to get out and collect that stuff.\n\nIf I don't make it out here alive, tell my Schatzl, I love her Sauerkraut with Kartoffelsalat! \n\n - Leutnant Friedhelm Bauer";
+PAPERTEXT15 = "Prof. Dr. Schabbs Jr. XII, \n\nRastenburg isn't under the control of Thule anymore! The undead are walking through the streets and we have no chance of leaving this building.\n\nThe secret passage behind the bookshelfs is sealed from the other side, from high command most likely. The only thing we can wait for is help from the SS or death - hopefully without turning into zombies.\n\n\When the Wehrmacht units were fearfully retrating, they left their complete equipment behind. Therefore the city streets are full of ammo and medipacks, but also full of undead people if we take a look at our radar compass. If we just had one of the gas masks with us to get out and collect that stuff, chances are higher to make it out alive.\n\nIf I don't make it out here alive, tell my Schatzl, I love her Sauerkraut with Kartoffelsalat! \n\n - Leutnant Friedhelm Bauer";
 
 //////////////////////////////////
 // Stats in the hq texts /////////
