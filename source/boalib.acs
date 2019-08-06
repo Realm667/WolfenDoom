@@ -92,6 +92,8 @@ function bool PlayMessageSound(int tid, int message)
 		return false;
 	}
 
+	if (!tid) { tid = playerID; }
+
 	PlaySound(tid, message, CHAN_BODY, 1.0, false, ATTN_NONE, false);
 
 	return true;
