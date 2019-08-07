@@ -71,7 +71,7 @@ class Z_SpriteShadow : Actor
 		}
 		else
 		{
-			if (caster)
+			if (caster && players[consoleplayer].camera)
 			{
 				casterHasShadow = caster.FindInventory("Z_ShadeMe");
 
