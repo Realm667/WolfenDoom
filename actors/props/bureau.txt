@@ -112,7 +112,7 @@ ACTOR CoatHanger4 : CoatHanger
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6)
 		CTHN H -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		CTHN I -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		CTHN J -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
@@ -136,6 +136,138 @@ ACTOR CoatHanger5 : RandomSpawner
 	DropItem "CoatHanger2"
 	DropItem "CoatHanger3"
 	DropItem "CoatHanger4"
+}
+
+ACTOR CoatHangerA1 : CoatHanger
+{
+	//$Title Coat Hanger (full, A1)
+	States
+	{
+	Spawn:
+		CTHN B -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR CoatHangerB1 : CoatHanger
+{
+	//$Title Coat Hanger (full, B1)
+	States
+	{
+	Spawn:
+		CTHN C -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR CoatHangerC1 : CoatHanger
+{
+	//$Title Coat Hanger (full, C1)
+	States
+	{
+	Spawn:
+		CTHN D -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR CoatHangerA2 : CoatHanger
+{
+	//$Title Coat Hanger (coat only, A2)
+	States
+	{
+	Spawn:
+		CTHN E -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR CoatHangerB2 : CoatHanger
+{
+	//$Title Coat Hanger (coat only, B2)
+	States
+	{
+	Spawn:
+		CTHN F -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR CoatHangerC2 : CoatHanger
+{
+	//$Title Coat Hanger (coat only, C2)
+	States
+	{
+	Spawn:
+		CTHN G -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR CoatHangerA3 : CoatHanger
+{
+	//$Title Coat Hanger (hat only, A3)
+	States
+	{
+	Spawn:
+		CTHN H -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR CoatHangerB3 : CoatHanger
+{
+	//$Title Coat Hanger (hat only, B3)
+	States
+	{
+	Spawn:
+		CTHN I -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR CoatHangerC3 : CoatHanger
+{
+	//$Title Coat Hanger (hat only, C3)
+	States
+	{
+	Spawn:
+		CTHN J -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR CoatHangerD3 : CoatHanger
+{
+	//$Title Coat Hanger (hat only, D3)
+	States
+	{
+	Spawn:
+		CTHN K -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR CoatHangerE3 : CoatHanger
+{
+	//$Title Coat Hanger (hat only, E3)
+	States
+	{
+	Spawn:
+		CTHN L -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR CoatHangerF3 : CoatHanger
+{
+	//$Title Coat Hanger (hat only, F3)
+	States
+	{
+	Spawn:
+		CTHN M -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
 }
 
 ACTOR PaperBox1
