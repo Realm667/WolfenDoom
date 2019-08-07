@@ -287,6 +287,17 @@ ACTOR CraterDirt : CraterGrass
 	}
 }
 
+ACTOR CraterConcrete : CraterGrass
+{
+	//$Title Crater (Cocnrete)
+	States
+	{
+	Spawn:
+		KRAT E -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
 ACTOR SnowPile1 : CraterGrass
 {
 	//$Title Snowpile Large
