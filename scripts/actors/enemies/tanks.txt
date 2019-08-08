@@ -1639,11 +1639,11 @@ class T34Tank : TankBase
 
 		A_PlaySound("weapons/chaingun", CHAN_WEAPON);
 
-		double gunpitch = origin.pitch;
-		if (origin.master && TankBase(origin.master) && TankBase(origin.master).gun) { gunpitch = TankBase(origin.master).gun.pitch; }
+		origin.A_Face(target, 0, 0, flags:FAF_MIDDLE);
+		origin.angle = treads.angle;
 
-		Actor mo = A_SpawnProjectile("Kar98kTracer", 0, 0, origin.angle + random(-4, 4), CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, max(-gunpitch, 0));
-		mo.SetOrigin(origin.pos, false);
+		Actor mo = origin.A_SpawnProjectile("Kar98kTracer", 0, 0, origin.angle + random(-4, 4), CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, clamp(origin.pitch, -5, 5));
+		mo.SetOrigin(origin.pos + RotateVector((8.0, 0), angle), false);
 
 		bulletcount++;
 		if (bulletcount > 75)

@@ -155,9 +155,16 @@ class TracerTrail : Actor
 			Loop;
 	}
 
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+	}
+
 	override void Tick()
 	{
 		Super.Tick();
+
+		if (TestMobjLocation()) { bNoInteraction  = false; }
 
 		if (!master || !vel.length()) { Destroy(); }
 	}
@@ -171,11 +178,7 @@ class TracerTrail : Actor
 
 			stepalpha = alpha;
 		}
-		else if (faderate)
-		{
-			bNoInteraction  = false;
-			A_FadeOut(faderate);
-		} // Fade out to nothing at the specified rate
+		else if (faderate) { A_FadeOut(faderate); } // Fade out to nothing at the specified rate
 	}
 }
 
