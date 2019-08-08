@@ -177,7 +177,7 @@ class TankBase : VehicleBase
 	Actor ally, treads, turret, gun, gunspot, frontgunspot;
 	Class<Actor> body;
 	double minpitch, maxpitch, minp, maxp;
-	int missilecount, missiletimeout, bulletcount, bullettimeout, chasetimeout, turrettimeout, reversetimeout;
+	int missilecount, missiletimeout, bulletcount, bullettimeout, chasetimeout, turrettimeout, reversetimeout, targettimeout;
 	sound movesound, idlesound;
 	bool missiletargeted, wheeled;
 	double zoffset, turretanglerange, turretspeed;
@@ -210,6 +210,7 @@ class TankBase : VehicleBase
 		+BOSSDEATH
 		+DONTMORPH
 		+FLOORCLIP
+		+ISMONSTER
 		+LOOKALLAROUND
 		+NOBLOOD
 		+NOBLOODDECALS
@@ -230,7 +231,10 @@ class TankBase : VehicleBase
 	States
 	{
 		Spawn:
-			MDLA A 10 A_Look();
+			MDLA A 35 {
+				target = FindEnemy();
+				if (target) { SetStateLabel("See"); }
+			}
 			Loop;
 		See:
 			TNT1 A 1 A_TankChase();
@@ -259,6 +263,8 @@ class TankBase : VehicleBase
 		treads.bFriendly = bFriendly;
 
 		if (!user_static) { A_PlaySound(idlesound, CHAN_6, 0.25, TRUE); }
+
+		targettimeout = Random(0, 35);
 
 		Super.PostBeginPlay();
 	}
@@ -303,6 +309,7 @@ class TankBase : VehicleBase
 		if (chasetimeout > 0) { chasetimeout--; }
 		if (turrettimeout > 0) { turrettimeout--; }
 		if (reversetimeout > 0) { reversetimeout--; }
+		if (targettimeout > 0) { targettimeout--; }
 
 		if (!turret)
 		{
@@ -355,7 +362,6 @@ class TankBase : VehicleBase
 		if (!frontgunspot) { frontgunspot = TankTreadsBase(treads).gunspot; }
 
 		if (bFriendly && (!ally || ally.health <= 0)) { ally = FindClosestPlayer(360, 0, false); }
-		if (ally && ally.player.attacker && ally.player.attacker != ally && ally.player.attacker.health > 0) { target = ally.player.attacker; }
 
 		if (target && bAvoidMelee) { bFrightened = Distance2D(target) < 256; } // Keep distance from the target
 	}
@@ -366,13 +372,96 @@ class TankBase : VehicleBase
 		return Super.CanCollideWith(other, passive);
 	}
 
+	Actor FindEnemy()
+	{
+		Actor enemy = null;
+
+		if (bFriendly)
+		{
+			if (ally && ally.player.attacker && ally.player.attacker != ally && ally.player.attacker.health > 0)
+			{
+				if (Distance3D(ally.player.attacker) < MaxTargetRange) { enemy = ally.player.attacker; }
+			}
+		}
+		else
+		{
+			for (int p = 0; p < MAXPLAYERS; p++)
+			{ // Iterate through all of the players and find the closest one
+				Actor pl = players[p].mo;
+
+				if (pl)
+				{
+					if (!pl.bShootable || pl.health <= 0) { continue; }
+					if (players[p].cheats & CF_NOTARGET) { continue; }
+					if (isFriend(pl)) { continue; }
+					if (Distance3D(pl) > MaxTargetRange) { continue; }
+					if (enemy && Distance3d(pl) > Distance3d(enemy)) { continue; }
+
+					enemy = pl;
+				}
+			}
+		}
+
+		ThinkerIterator Finder = ThinkerIterator.Create("Base", STAT_DEFAULT - 5);
+		Base mo;
+
+		while ( (mo = Base(Finder.Next())) )
+		{
+			if (!IsValidTarget(mo)) { continue; }
+			if (enemy && Distance3d(mo) > Distance3d(enemy)) { continue; }
+
+			enemy = mo;
+		}
+
+		// A Second iterator to account for the non-sneakables...
+		Finder = ThinkerIterator.Create("Base", STAT_DEFAULT);
+
+		while ( (mo = Base(Finder.Next())) )
+		{
+			if (!IsValidTarget(mo)) { continue; }
+			if (enemy && Distance3d(mo) > Distance3d(enemy)) { continue; }
+
+			enemy = mo;
+		}
+
+		// A third iterator to account for the player followers...
+		Finder = ThinkerIterator.Create("PlayerFollower", STAT_DEFAULT);
+		PlayerFollower pf;
+
+		while ( (pf = PlayerFollower(Finder.Next())) )
+		{
+			if (!IsValidTarget(pf)) { continue; }
+			if (enemy && Distance3d(mo) > Distance3d(enemy)) { continue; }
+
+			enemy = pf;
+		}
+
+		return enemy;
+	}
+
+	bool IsValidTarget(Actor mo)
+	{
+		if (
+			!mo.bIsMonster ||
+			mo.health <= 0 ||
+			mo.bDormant ||
+			!IsHostile(mo) ||
+			mo == self ||
+			!CheckSight(mo) ||
+			Distance3D(mo) > MaxTargetRange || 
+			mo is "StatistBarkeeper" // Ignore NPCs...
+		) { return false; }
+
+		return true;
+	}
+
 	virtual void A_TankChase(int flags = 0)
 	{
 		if (!treads || user_static) { return; }
 
 		if (bStandStill) { flags |= CHF_DONTMOVE | CHF_DONTTURN; }
 
-		A_LookEx(LOF_NOJUMP);
+		if (!targettimeout && (!target || target.health <= 0 || !CheckLOF(CLOFF_JUMPENEMY | CLOFF_SKIPOBJECT, maxtargetrange) || !IsValidTarget(target))) { target = FindEnemy(); targettimeout = 70; }
 
 		if ((!chasetimeout || !wheeled) && !(flags & CHF_DONTTURN))
 		{
@@ -405,13 +494,13 @@ class TankBase : VehicleBase
 			if (wheeled) { DoMove(); }
 		}
 
-		if (!target || (!CheckSight(target, SF_SEEPASTBLOCKEVERYTHING | SF_SEEPASTSHOOTABLELINES) && !target.player))
+		if (!target || !CheckLOF(CLOFF_JUMPENEMY | CLOFF_SKIPOBJECT, maxtargetrange, offsetforward: treads.radius))
 		{
 			missiletimeout = 35;
 			bullettimeout = 35;
 		}
 
-		if (turret && !missiletimeout && !turrettimeout && missiletargeted)
+		if (turret && !missiletimeout && !turrettimeout && missiletargeted && CheckLOF(CLOFF_JUMPENEMY | CLOFF_SKIPOBJECT, maxtargetrange, offsetforward: treads.radius))
 		{
 			flags |= CHF_DONTMOVE | CHF_DONTTURN;
 
@@ -430,7 +519,7 @@ class TankBase : VehicleBase
 					if (abs(delta) <= turretanglerange) { turret.A_Face(target, turretspeed); A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
 					else { turret.angle = clamp(turret.angle, treads.angle - turretanglerange, treads.angle + turretanglerange); A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
 				}
-				else { turret.A_Face(target, turretspeed ); }
+				else { turret.A_Face(target, turretspeed); }
 
 				if (int(turret.angle) == int(turret.AngleTo(target)))
 				{
@@ -448,7 +537,7 @@ class TankBase : VehicleBase
 			}
 		}
 
-		if (target && !bullettimeout && frontgunspot && abs(deltaangle(frontgunspot.angle, frontgunspot.AngleTo(target))) <= 5 && CheckLOF(CLOFF_JUMPENEMY | CLOFF_MUSTBESOLID, maxtargetrange / 2, offsetforward: Radius * 2))
+		if (!bullettimeout && frontgunspot && abs(deltaangle(frontgunspot.angle, frontgunspot.AngleTo(target))) <= 5 && CheckLOF(CLOFF_JUMPENEMY | CLOFF_MUSTBESOLID, maxtargetrange * 2 / 3, offsetforward: Radius * 2))
 		{
 			DoFrontWeapon(frontgunspot ? frontgunspot : treads);
 		}
@@ -1553,7 +1642,7 @@ class T34Tank : TankBase
 		double gunpitch = origin.pitch;
 		if (origin.master && TankBase(origin.master) && TankBase(origin.master).gun) { gunpitch = TankBase(origin.master).gun.pitch; }
 
-		Actor mo = A_SpawnProjectile("EnemyChaingunTracer", 0, 0, random(-4, 4), CMF_ABSOLUTEPITCH, max(-gunpitch, 0));
+		Actor mo = A_SpawnProjectile("Kar98kTracer", 0, 0, origin.angle + random(-4, 4), CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, max(-gunpitch, 0));
 		mo.SetOrigin(origin.pos, false);
 
 		bulletcount++;

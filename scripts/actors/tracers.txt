@@ -137,6 +137,7 @@ class TracerTrail : Actor
 		+FORCEXYBILLBOARD
 		+MISSILE //mxd
 		+NOBLOCKMAP
+		+NOINTERACTION
 		+NODAMAGETHRUST
 		+NOGRAVITY
 		+NOTELEPORT
@@ -170,7 +171,11 @@ class TracerTrail : Actor
 
 			stepalpha = alpha;
 		}
-		else if (faderate) { A_FadeOut(faderate); } // Fade out to nothing at the specified rate
+		else if (faderate)
+		{
+			bNoInteraction  = false;
+			A_FadeOut(faderate);
+		} // Fade out to nothing at the specified rate
 	}
 }
 
