@@ -78,7 +78,7 @@ class ActorSpawner : SwitchableDecoration
 			TNT1 A 1;
 			Loop;
 		Active:
-			"####" "#" 35 A_SetTics(Random[Spawn](1, 7) * 5);
+			"####" "#" 35 A_SetTics(Random[Spawn](1, 12 - skill) * 5);
 			"####" "#" 0 { return ResolveState("Active.Spawn"); }
 		Active.Spawn:
 			"####" "#" 1 A_DoSpawns();
@@ -190,29 +190,33 @@ class ActorSpawner : SwitchableDecoration
 				Actor spawned = Spawn(user_spawntype, pos);
 				if (spawned)
 				{
-					Spawns.Push(spawned);
-//					spawned.master = self;
-					spawned.target = target;
-					spawned.angle = angle;
-					spawned.ChangeTID(user_tid);
-					if (user_goal > 0)
+					if (!spawned.TestMobjLocation()) { spawned.Destroy(); }
+					else
 					{
-						let it = ActorIterator.Create(user_goal, "PatrolPoint");
-						Actor goal;
-						if (it) { goal = it.Next(); }
-						if (goal) { spawned.goal = goal; }
-	
-						if (Nazi(spawned))
+						Spawns.Push(spawned);
+//						spawned.master = self;
+						spawned.target = target;
+						spawned.angle = angle;
+						spawned.ChangeTID(user_tid);
+						if (user_goal > 0)
 						{
-							if (Nazi(spawned).user_sneakable) { Nazi(spawned).BecomeAlerted(); }
-							Nazi(spawned).activationgoal = goal;
-						}	
+							let it = ActorIterator.Create(user_goal, "PatrolPoint");
+							Actor goal;
+							if (it) { goal = it.Next(); }
+							if (goal) { spawned.goal = goal; }
+	
+							if (Nazi(spawned))
+							{
+								if (Nazi(spawned).user_sneakable) { Nazi(spawned).BecomeAlerted(); }
+								Nazi(spawned).activationgoal = goal;
+							}	
 
-						spawned.SetStateLabel("See");
-					}
-					if (user_oncompass)
-					{
-						BoACompass.Add(spawned);
+							spawned.SetStateLabel("See");
+						}
+						if (user_oncompass)
+						{
+							BoACompass.Add(spawned);
+						}
 					}
 				}
 			}
@@ -354,35 +358,39 @@ class WaveSpawner : ActorSpawner
 				Actor spawned = Spawn(user_spawntype, pos);
 				if (spawned)
 				{
-					Spawns.Push(spawned);
-
-//					spawned.master = self;
-					spawned.target = target;
-					spawned.angle = angle;
-
-					spawned.ChangeTID(user_tid);
-
-					if (Nazi(spawned)) { Nazi(spawned).dodgetimeout = 350; }
-					if (Base(spawned))
+					if (!spawned.TestMobjLocation()) { spawned.Destroy(); }
+					else
 					{
-						Base(spawned).lightthreshold = 130;
-						Base(spawned).user_lightburns = true;
-					}
+						Spawns.Push(spawned);
 
-					if (user_goal > 0)
-					{
-						let it = ActorIterator.Create(user_goal, "PatrolPoint");
-						Actor goal;
-						if (it) { goal = it.Next(); }
-						if (goal) { spawned.goal = goal; }
-	
-						if (Nazi(spawned) && !(spawned is "ZombieStandard"))
+//						spawned.master = self;
+						spawned.target = target;
+						spawned.angle = angle;
+
+						spawned.ChangeTID(user_tid);
+
+						if (Nazi(spawned)) { Nazi(spawned).dodgetimeout = 350; }
+						if (Base(spawned))
 						{
-							if (Nazi(spawned).user_sneakable) { Nazi(spawned).BecomeAlerted(); }
-							Nazi(spawned).activationgoal = goal;
-						}	
+							Base(spawned).lightthreshold = 130;
+							Base(spawned).user_lightburns = true;
+						}
 
-						spawned.SetStateLabel("See");
+						if (user_goal > 0)
+						{
+							let it = ActorIterator.Create(user_goal, "PatrolPoint");
+							Actor goal;
+							if (it) { goal = it.Next(); }
+							if (goal) { spawned.goal = goal; }
+	
+							if (Nazi(spawned) && !(spawned is "ZombieStandard"))
+							{
+								if (Nazi(spawned).user_sneakable) { Nazi(spawned).BecomeAlerted(); }
+								Nazi(spawned).activationgoal = goal;
+							}	
+
+							spawned.SetStateLabel("See");
+						}
 					}
 				}
 			}
