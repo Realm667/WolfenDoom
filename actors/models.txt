@@ -661,6 +661,46 @@ ACTOR Wheelbarrow : 3dObstacle
 	Radius 16
 	Height 16
 }
+
+ACTOR Hammer1 : MuseumBase
+{
+	//$Category Models (BoA)/Scenery
+	//$Title Hammer, simple
+	//$Color 3
+	DistanceCheck "scenelod"
+	Radius 2
+	Height 2
+}
+
+ACTOR Hammer2 : Hammer1
+{
+	//$Title Hammer, sledge
+}
+
+ACTOR Hammer3 : Hammer1
+{
+	//$Title Hammer, detailed
+}
+
+ACTOR Saw1 : Hammer1
+{
+	//$Title Saw 1
+}
+
+ACTOR Saw2 : Hammer1
+{
+	//$Title Saw 2
+}
+
+ACTOR Tongs : Hammer1
+{
+	//$Title Tongs
+}
+
+ACTOR Wrench : Hammer1
+{
+	//$Title Wrench
+}
 //End of Ozy
 
 ACTOR ModelBeachHedgeHog : 3dObstacle
