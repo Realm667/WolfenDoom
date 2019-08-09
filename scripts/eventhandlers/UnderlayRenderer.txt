@@ -15,7 +15,7 @@ class UnderlayRenderer : EventHandler
         PlayerInfo p = players[consoleplayer];
         if ((p.cheats & CF_CHASECAM) == 0)
         {
-            int vWidth = 200 * Screen.GetAspectRatio();
+            int vWidth = int(200 * Screen.GetAspectRatio());
             int vXOffset = 320 - vWidth / 2;
             Inventory SpaceSuit = p.mo.FindInventory("PowerSpaceSuit");
             if (SpaceSuit)
