@@ -667,7 +667,6 @@ ACTOR Hammer1 : MuseumBase
 	//$Category Models (BoA)/Scenery
 	//$Title Hammer, simple
 	//$Color 3
-	DistanceCheck "scenelod"
 	Radius 2
 	Height 2
 }
@@ -699,7 +698,7 @@ ACTOR Tongs : Hammer1
 
 ACTOR Wrench : Hammer1
 {
-	//$Title Wrench
+	//$Title Wrench, complex
 }
 //End of Ozy
 
@@ -2344,6 +2343,57 @@ ACTOR US_ShermanProp : 3dObstacle
 		A_SpawnItemEx("US_ShermanCannonProp", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid); }
 		Stop
 	}
+}
+
+ACTOR COD_Boiler : 3dObstacle
+{
+	//$Category Models (BoA)/Scenery
+	//$Title "Bunker Boiler"
+	//$Color 3
+	DistanceCheck "scenelod"
+	Radius 24
+	Height 48
+	+NOGRAVITY
+}
+
+ACTOR COD_Stove : COD_Boiler
+{
+	//$Title "Bunker Stove"
+}
+
+ACTOR COD_Drafting : 3dFurniture
+{
+	//$Title "Drafting Table"
+	Radius 32
+	Height 32
+	+NOGRAVITY
+}
+
+ACTOR COD_Crowbar : MuseumBase
+{
+	//$Category Models (BoA)/Scenery
+	//$Title "Crowbar"
+	//$Color 3
+}
+
+ACTOR COD_Hammer : COD_Crowbar
+{
+	//$Title "Hammer, gross"
+}
+
+ACTOR COD_Screwdriver : MuseumBase
+{
+	//$Title "Screwdriver"
+}
+
+ACTOR COD_Toolbox : MuseumBase
+{
+	//$Title "Toolbox, full"
+}
+
+ACTOR COD_Wrench : MuseumBase
+{
+	//$Title "Wrench, simple"
 }
 
 ACTOR COD_Popcorn : 3dObstacle
