@@ -1,0 +1,20 @@
+// Miscellaneous ACS tools
+
+class ACSTools
+{
+    static int LastMessageFor(String prefix, int start)
+    {
+        String suffix = start < 10 ? "0" .. start : "" .. start;
+        String lookup = prefix .. suffix;
+        String entry = StringTable.Localize(lookup, false);
+        int current = start;
+        while (entry != lookup)
+        {
+            current++;
+            suffix = current < 10 ? "0" .. current : "" .. current;
+            lookup = prefix .. suffix;
+            entry = StringTable.Localize(lookup, false);
+        }
+        return current - 1;
+    }
+}
