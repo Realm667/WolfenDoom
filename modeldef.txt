@@ -4635,6 +4635,26 @@ Model 3dSkeleton_Sit
 }
 
 //Talon1024 Models
+Model TrainLever3D
+{
+    Path "models"
+    Model 0 "TrainLever.md3"
+	Scale 2.0 2.0 2.0
+    FrameIndex MDLA A 0 4
+}
+
+Model TrainLever3DSwitch
+{
+    Path "models"
+    Model 0 "TrainLever.md3"
+	Scale 2.0 2.0 2.0
+    FrameIndex MDLA A 0 0
+    FrameIndex MDLA B 0 1
+    FrameIndex MDLA C 0 2
+    FrameIndex MDLA D 0 3
+    FrameIndex MDLA E 0 4
+}
+
 Model EnergyTankLit
 {
 	Path "models/astrostein"
@@ -9395,24 +9415,4 @@ Model ExplosionCore
 	DONTCULLBACKFACES
 
 	FrameIndex MDLA A 0 0
-}
-
-Model TrainLever3D
-{
-    Path "models"
-    Model 0 "TrainLever.md3"
-
-    FrameIndex MDLA A 0 4
-}
-
-Model TrainLever3DSwitch
-{
-    Path "models"
-    Model 0 "TrainLever.md3"
-
-    FrameIndex MDLA A 0 0
-    FrameIndex MDLA B 0 1
-    FrameIndex MDLA C 0 2
-    FrameIndex MDLA D 0 3
-    FrameIndex MDLA E 0 4
 }
