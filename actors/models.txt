@@ -3597,14 +3597,16 @@ ACTOR TrainLever3DSwitch : InteractionBase
 	States
 	{
 	Active:
-		MDLA ABCDE 2
+		MDLA A 0 A_PlaySound("SWMECH")
+		MDLA ABCDE 3
 		MDLA E -1
 		Stop
 	Spawn:
 		MDLA A -1
 		Stop
 	Inactive:
-		MDLA EDCBA 2
+		MDLA E 0 A_PlaySound("SWMECH")
+		MDLA EDCBA 3
 		MDLA A -1
 		Stop
 	Death:
