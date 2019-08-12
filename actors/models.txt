@@ -3580,3 +3580,35 @@ ACTOR MountainsSun3D : PlainsSun3D
 {
 	//$Title Mountain Day SkyBox (MountainDay, Special)
 }
+
+ACTOR TrainLever3D : ModelBase
+{
+	//$Category Models (BoA)/Scenery
+	//$Title Train Lever
+	//$Color 3
+}
+
+ACTOR TrainLever3DSwitch : InteractionBase
+{
+	//$Category Models (BoA)/Scenery
+	//$Title Train Lever
+	//$Color 3
+	+NODAMAGE
+	States
+	{
+	Active:
+		MDLA ABCDE 2
+		MDLA E -1
+		Stop
+	Spawn:
+		MDLA A -1
+		Stop
+	Inactive:
+		MDLA EDCBA 2
+		MDLA A -1
+		Stop
+	Death:
+		MDLA A 1
+		Stop
+	}
+}
