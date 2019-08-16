@@ -22,12 +22,13 @@ HardwareShader PostProcess scene
 	Uniform float falloff
 }
 
-HardwareShader PostProcess Scene
+HardwareShader PostProcess scene
 {
-	Name "noiseshader"
-	Shader "shaders/PostProcess/Noise.fp" 330
+	Name "filmgrainshader"
+	Shader "shaders/PostProcess/FilmGrain.fp" 330
 	Uniform float timer
 	Uniform float amount
+	Uniform float pixelSize
 }
 
 HardwareShader PostProcess beforebloom

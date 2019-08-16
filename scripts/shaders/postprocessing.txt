@@ -11,12 +11,14 @@ class TcPostProcessShaderHandler : StaticEventHandler
 		if (Cvar.GetCVar("tc_pp_vignette", p).GetInt() > 0)			EnableVignette();
 		else														DisableVignette();
 		
-		if (Cvar.GetCVar("tc_pp_noise", p).GetInt() > 0)
+		if (Cvar.GetCVar("cl_filmgrain", p).GetBool() == true)
 		{
-			Shader.SetUniform1f(p, "noiseshader", "timer", gametic + e.FracTic);
-			EnableNoise();
+			EnableFilmGrain(p, gametic + e.FracTic);
 		}
-		else														DisableNoise();
+		else
+		{
+			DisableFilmGrain(p);
+		}
 	}
 
 	//===========================================================================
@@ -65,21 +67,23 @@ class TcPostProcessShaderHandler : StaticEventHandler
 	}
 	
 	//===========================================================================
-	// NOISE
+	// FILM GRAIN
 	//===========================================================================
 	
-	ui void EnableNoise(void)
+	ui void EnableFilmGrain(PlayerInfo p, double fracTic)
 	{
-		PlayerInfo p = players[consoleplayer];
-		double i = CVar.GetCVar("tc_pp_noise_amount", p).GetFloat();
-		Shader.SetUniform1f(p, "noiseshader", "amount", i);
-		Shader.SetEnabled(p, "noiseshader", true);
+		CVar acv = CVar.GetCVar("cl_filmgrain_amount", p);
+		double a = (acv ? CVar.GetCVar("cl_filmgrain_amount", p).GetFloat() : 0);
+		int px = (acv ? CVar.GetCVar("cl_filmgrain_pixelsize", p).GetInt() : 0);
+		Shader.SetUniform1f(p, "filmgrainshader", "timer", fracTic);
+		Shader.SetUniform1f(p, "filmgrainshader", "amount", a);
+		Shader.SetUniform1f(p, "filmgrainshader", "pixelSize", double(px));
+		Shader.SetEnabled(p, "filmgrainshader", true);
 	}
 
-	ui void DisableNoise(void)
+	ui void DisableFilmGrain(PlayerInfo p)
 	{
-		PlayerInfo p = players[consoleplayer];
-		Shader.SetEnabled(p, "noiseshader", false);
+		Shader.SetEnabled(p, "filmgrainshader", false);
 	}
 	
 	//===========================================================================
