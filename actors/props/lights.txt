@@ -1000,6 +1000,31 @@ ACTOR FutureCeilingLightNC2 : LightBase2
 		Stop
 	}
 }
+
+ACTOR MedicalLight : LightBase2
+{
+	//$Category Lights (BoA)/No Cones
+	//$Title Medical Operating Light, no hitbox (SWITCHABLE)
+	Radius 32
+	Height 0
+	-SOLID
+	+SPAWNCEILING
+	States
+	{
+	Active:
+		MDLA A 0 {bDormant = FALSE;}
+	Spawn:
+		MDLA A 0 NoDelay
+	Activate:
+		MDLA A 1
+		Loop
+	Inactive:
+		MDLA A 0 {bDormant = TRUE;}
+		MDLA B -1
+		Stop
+	}
+}
+
 ACTOR LightBulb : SwitchableDecoration
 {
 	//$Category Lights (BoA)/ARGs

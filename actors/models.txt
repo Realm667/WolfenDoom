@@ -1757,6 +1757,26 @@ ACTOR Tie_Fighter : 3dObstacle //ozy81
 	Height 192
 }
 
+//Fallout 3 Models - ripped & fixed by Ozymandias81
+ACTOR Gurney1 : 3dObstacle
+{
+	//$Category Models (BoA)/Scenery
+	//$Title Old Gurney
+	//$Color 3
+	DistanceCheck "scenelod"
+	Radius 32
+	Height 32
+	+NOGRAVITY
+}
+
+ACTOR Gurney2 : Gurney1
+{
+	//$Title Old Gurney, destroyed
+	-SOLID
+	-CANPASS
+	+NOBLOCKMAP
+}
+
 //DoomJuan Models, added & fixed a bit by Ozymandias81
 ACTOR RTCWChair1 : 3dFurniture
 {
@@ -3233,6 +3253,79 @@ ACTOR CODRailway_Switch : SwitchableDecoration
 		MDLA B -1 {bDormant = TRUE;} //update manually on GZDB
 		Stop
 	}
+}
+
+ACTOR CODPipe1 : MuseumBase
+{
+	//$Title Decorative Pipe 1
+}
+ACTOR CODPipe2 : MuseumBase
+{
+	//$Title Decorative Pipe 2
+}
+ACTOR CODPipe3 : MuseumBase
+{
+	//$Title Decorative Pipe 3
+}
+ACTOR CODPipe4 : MuseumBase
+{
+	//$Title Decorative Pipe 4
+}
+ACTOR CODPipe5 : MuseumBase
+{
+	//$Title Decorative Pipe 5
+}
+ACTOR CODPipe6 : MuseumBase
+{
+	//$Title Decorative Pipe 6
+}
+ACTOR CODPipe7 : MuseumBase
+{
+	//$Title Decorative Pipe 7
+}
+ACTOR CODPipe8 : MuseumBase
+{
+	//$Title Decorative Pipe 8
+}
+ACTOR CODPipe9 : MuseumBase
+{
+	//$Title Decorative Pipe 9
+}
+ACTOR CODPipe10 : MuseumBase
+{
+	//$Title Decorative Pipe 10
+}
+ACTOR CODPipe11 : MuseumBase
+{
+	//$Title Decorative Pipe 11
+}
+ACTOR CODPipe12 : MuseumBase
+{
+	//$Title Decorative Pipe 12
+}
+ACTOR CODPipe13 : MuseumBase
+{
+	//$Title Decorative Pipe 13
+}
+ACTOR CODPipe14 : MuseumBase
+{
+	//$Title Decorative Pipe 14
+}
+ACTOR CODPipe15 : MuseumBase
+{
+	//$Title Decorative Pipe 15
+}
+ACTOR CODPipe16 : MuseumBase
+{
+	//$Title Decorative Pipe 16
+}
+ACTOR CODPipe17 : MuseumBase
+{
+	//$Title Decorative Pipe 17
+}
+ACTOR CODPipe18 : MuseumBase
+{
+	//$Title Decorative Pipe 18
 }
 
 //Sketchfab Stuff
