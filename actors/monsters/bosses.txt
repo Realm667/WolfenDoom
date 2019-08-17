@@ -1264,11 +1264,11 @@ ACTOR RocketMan : NaziBoss
 	}
 }
 
-ACTOR GoeringBoss : RocketMan //still placeholder code
+ACTOR GoeringBoss : RocketMan
 {
 	//$Title General Goering (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "General Goering"
+	Tag "Hermann Göring"
 	Health 600
 	PainChance 64
 	Mass 200
@@ -1322,11 +1322,11 @@ ACTOR GoeringBoss : RocketMan //still placeholder code
 	}
 }
 
-ACTOR HimmlerBoss : RocketMan //still placeholder code
+ACTOR HimmlerBoss : RocketMan
 {
 	//$Title Himmler (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "Reichsfuhrer Himmler"
+	Tag "Heinrich Himmler"
 	Health 800
 	PainChance 8 //prevent UMG43 and nebelwerfer to stop the Boss attacking player, needs to be applied to many bosses - ozy81
 	Mass 200
@@ -1372,11 +1372,11 @@ ACTOR HimmlerBoss : RocketMan //still placeholder code
 	}
 }
 
-ACTOR GoebbelsBoss : RocketMan //still placeholder code
+ACTOR GoebbelsBoss : RocketMan
 {
 	//$Title Goebbels (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "Gauleiter Goebbels"
+	Tag "Joseph Goebbels"
 	Health 1200
 	PainChance 64
 	Mass 200
@@ -1411,18 +1411,18 @@ ACTOR GoebbelsBoss : RocketMan //still placeholder code
 		GOEB H 6 A_NaziPain(256)
 		Goto See
 	Raise:
-		GOEB JHIE 5
+		GOEB JIGH 5
 		Goto See
 	Death:
-		GOEB I 5
-		"####" H 5 A_Scream
-		"####" J 5
+		GOEB H 5
+		"####" G 5 A_Scream
+		"####" I 5
 		"####" J -1 A_NoBlocking
 		Stop
 	}
 }
 
-ACTOR BattonBoss : RocketMan //still placeholder code
+ACTOR BattonBoss : RocketMan
 {
 	//$Title Berlin Feldmarschall with Batton (Boss)
 	Base.BossIcon "BOSSICO2"
@@ -2821,7 +2821,7 @@ ACTOR SuperSoldier_Girl : SuperSoldier
 {
 	//$Title Gretel Grosse (Boss)
 	Obituary "$SUPAGIRL"
-	Tag "Gretel Grosse Jr." //"Gretel Grosse"
+	Tag "Gretel Grosse Jr."
 	Speed 5
 	+MISSILEEVENMORE
 	+MISSILEMORE
