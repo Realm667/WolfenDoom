@@ -701,6 +701,36 @@ ACTOR Manacles
 	}
 }
 
+ACTOR CyanideProp1
+{
+	//$Category Gore (BoA)
+	//$Title Brass Cyanide Pill Flute (side)
+	//$Color 4
+	Radius 2
+	Height 2
+	Scale 0.14
+	+MOVEWITHSECTOR
+	+NOBLOCKMAP
+	States
+	{
+	Spawn:
+		CYAN A -1
+		Stop
+	}
+}
+
+ACTOR CyanideProp2 : CyanideProp1
+{
+	//$Title Brass Cyanide Pill Flute (front)
+	Scale 0.18
+	States
+	{
+	Spawn:
+		CYAN B -1
+		Stop
+	}
+}
+
 //Doom Replacements (these were) - Had to include new actors for these since they doesn't seem to work with .ipk3 file - ozy81
 ACTOR WolfBloodPool // Modified Jaguar Wolf3D water pool sprite
 {
