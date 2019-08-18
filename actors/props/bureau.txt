@@ -270,6 +270,17 @@ ACTOR CoatHangerF3 : CoatHanger
 	}
 }
 
+ACTOR CoatHanger6 : CoatHanger
+{
+	//$Title Medical Coat Hanger
+	States
+	{
+	Spawn:
+		CTHN O -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
 ACTOR PaperBox1
 {
 	//$Category Props (BoA)/Bureau

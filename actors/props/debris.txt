@@ -112,6 +112,96 @@ ACTOR Debris_MetalJunk : Debris_Base
 	}
 }
 
+ACTOR Debris_Statue1 : Debris_Base
+{
+	BounceSound "misc/SRCRK2"
+	Gravity 0.325
+	Scale 0.5
+	States
+	{
+	Spawn:
+		STAT A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7)
+		"####" ABCDEFG 0 A_Jump(256,"SpawnLoop","SpawnLoop2")
+	SpawnLoop:
+		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	SpawnLoop2:
+		"####" "#" 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	AdjustMass: //mxd
+		"####" "#" 0 A_SetMass(450)
+		Goto Swim
+	Swim: //mxd
+		"####" "#" 2 A_ScaleVelocity(0.7)
+		"####" "#" 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		Loop
+	Death:
+		"####" "#" 0 {A_SetRoll(0); A_SetAngle(0); A_SetPitch(0); bFlatSprite = FALSE; bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
+		"####" "#" 1 A_SetTics(35*CallACS("DebrisLifetime"))
+	DeathWait:
+		"####" "#" 1 A_FadeOut(0.1)
+		Wait
+	}
+}
+
+ACTOR Debris_Statue2 : Debris_Statue1
+{
+	States
+	{
+	Spawn:
+		STAT H 0 NODELAY A_Jump(256,1,2,3,4,5,6,7)
+		"####" HIJKLMN 0 A_Jump(256,"SpawnLoop","SpawnLoop2")
+	SpawnLoop:
+		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	SpawnLoop2:
+		"####" "#" 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	AdjustMass: //mxd
+		"####" "#" 0 A_SetMass(450)
+		Goto Swim
+	Swim: //mxd
+		"####" "#" 2 A_ScaleVelocity(0.7)
+		"####" "#" 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		Loop
+	Death:
+		"####" "#" 0 {A_SetRoll(0); A_SetAngle(0); A_SetPitch(0); bFlatSprite = FALSE; bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
+		"####" "#" 1 A_SetTics(35*CallACS("DebrisLifetime"))
+	DeathWait:
+		"####" "#" 1 A_FadeOut(0.1)
+		Wait
+	}
+}
+
+ACTOR Debris_Statue3 : Debris_Statue1
+{
+	States
+	{
+	Spawn:
+		STAT O 0 NODELAY A_Jump(256,1,2,3,4,5,6,7)
+		"####" OPQRSTU 0 A_Jump(256,"SpawnLoop","SpawnLoop2")
+	SpawnLoop:
+		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	SpawnLoop2:
+		"####" "#" 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	AdjustMass: //mxd
+		"####" "#" 0 A_SetMass(450)
+		Goto Swim
+	Swim: //mxd
+		"####" "#" 2 A_ScaleVelocity(0.7)
+		"####" "#" 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		Loop
+	Death:
+		"####" "#" 0 {A_SetRoll(0); A_SetAngle(0); A_SetPitch(0); bFlatSprite = FALSE; bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
+		"####" "#" 1 A_SetTics(35*CallACS("DebrisLifetime"))
+	DeathWait:
+		"####" "#" 1 A_FadeOut(0.1)
+		Wait
+	}
+}
+
 ACTOR Debris_Wood : Debris_Base
 {
 	Scale 0.65
