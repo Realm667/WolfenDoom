@@ -115,18 +115,28 @@ ACTOR Debris_MetalJunk : Debris_Base
 ACTOR Debris_Statue1 : Debris_Base
 {
 	BounceSound "misc/SRCRK2"
-	Gravity 0.325
-	Scale 0.5
+	BounceFactor 0.5
+	WallBounceFactor 0.5
+	Gravity 0.425
+	Scale 0.3
 	States
 	{
 	Spawn:
-		STAT A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7)
-		"####" ABCDEFG 0 A_Jump(256,"SpawnLoop","SpawnLoop2")
-	SpawnLoop:
-		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRB1 A 0 NODELAY A_Jump(256,"Set1","Set2","Set3","Set4","Set5")
+	Set1:
+		SRB1 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
-	SpawnLoop2:
-		"####" "#" 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+	Set2:
+		SRB2 A 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	Set3:
+		SRB3 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	Set4:
+		SRB4 A 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	Set5:
+		SRB5 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(450)
@@ -149,13 +159,21 @@ ACTOR Debris_Statue2 : Debris_Statue1
 	States
 	{
 	Spawn:
-		STAT H 0 NODELAY A_Jump(256,1,2,3,4,5,6,7)
-		"####" HIJKLMN 0 A_Jump(256,"SpawnLoop","SpawnLoop2")
-	SpawnLoop:
-		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRG1 A 0 NODELAY A_Jump(256,"Set1","Set2","Set3","Set4","Set5")
+	Set1:
+		SRG1 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
-	SpawnLoop2:
-		"####" "#" 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+	Set2:
+		SRG2 A 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	Set3:
+		SRG3 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	Set4:
+		SRG4 A 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	Set5:
+		SRG5 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(450)
@@ -178,13 +196,58 @@ ACTOR Debris_Statue3 : Debris_Statue1
 	States
 	{
 	Spawn:
-		STAT O 0 NODELAY A_Jump(256,1,2,3,4,5,6,7)
-		"####" OPQRSTU 0 A_Jump(256,"SpawnLoop","SpawnLoop2")
-	SpawnLoop:
-		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRS1 A 0 NODELAY A_Jump(256,"Set1","Set2","Set3","Set4","Set5")
+	Set1:
+		SRS1 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
-	SpawnLoop2:
-		"####" "#" 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+	Set2:
+		SRS2 A 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	Set3:
+		SRS3 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	Set4:
+		SRS4 A 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	Set5:
+		SRS5 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	AdjustMass: //mxd
+		"####" "#" 0 A_SetMass(450)
+		Goto Swim
+	Swim: //mxd
+		"####" "#" 2 A_ScaleVelocity(0.7)
+		"####" "#" 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		Loop
+	Death:
+		"####" "#" 0 {A_SetRoll(0); A_SetAngle(0); A_SetPitch(0); bFlatSprite = FALSE; bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
+		"####" "#" 1 A_SetTics(35*CallACS("DebrisLifetime"))
+	DeathWait:
+		"####" "#" 1 A_FadeOut(0.1)
+		Wait
+	}
+}
+
+ACTOR Debris_Statue4 : Debris_Statue1
+{
+	States
+	{
+	Spawn:
+		SRW1 A 0 NODELAY A_Jump(256,"Set1","Set2","Set3","Set4","Set5")
+	Set1:
+		SRW1 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	Set2:
+		SRW2 A 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	Set3:
+		SRW3 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	Set4:
+		SRW4 A 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		Loop
+	Set5:
+		SRW5 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(450)
@@ -516,6 +579,37 @@ ACTOR Debris_Pottery : Debris_Base
 	Death:
 		"####" B 0 A_Jump(256,1,2,3)
 		"####" BDF 0 A_Jump(256,"Death1")
+		Stop
+	Death1:
+		"####" "#" 0 {bBounceOnActors = FALSE;}
+		"####" "#" 1 A_SetTics(35*CallACS("DebrisLifetime"))
+		Death1Wait:
+		"####" "#" 1 A_FadeOut(0.1)
+		Wait
+	}
+}
+
+ACTOR Debris_Porcelain : Debris_Pottery
+{
+	States
+	{
+	Spawn:
+		POTR GHIJKL 2 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		Loop
+	AdjustMass: //mxd
+		"####" "#" 0 A_SetMass(350)
+		Goto Swim
+	Swim: //mxd
+		"####" G 2 A_ScaleVelocity(0.7)
+		"####" H 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" I 2 A_ScaleVelocity(0.7)
+		"####" J 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		"####" K 2 A_ScaleVelocity(0.7)
+		"####" L 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		Loop
+	Death:
+		"####" H 0 A_Jump(256,1,2,3)
+		"####" HJL 0 A_Jump(256,"Death1")
 		Stop
 	Death1:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
