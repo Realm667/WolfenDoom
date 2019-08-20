@@ -511,31 +511,48 @@ ACTOR FlyingNeedle : MiniRocket
 	}
 }
 
-ACTOR FlyingNeedleNoGrav : MiniRocket
+ACTOR FlyingNeedleNoGrav : FlyingNeedle
 {
-	Speed 10
-	DamageType "MutantPoison"
-	PoisonDamage 3, 4
-	SeeSound ""
-	DeathSound "gshardnd"
 	Scale 0.55
 	+NOGRAVITY
-	+ADDITIVEPOISONDAMAGE
-	+ADDITIVEPOISONDURATION
-	States
-	{
-	Spawn:
-		NEDL ABCD 3
-		Loop
-	Death:
-		TNT1 A 1
-		Stop
-	}
 }
 
 ACTOR HardFlyingNeedle : FlyingNeedle { +MTHRUSPECIES }
 
 ACTOR HardFlyingNeedleNoGrav : FlyingNeedleNoGrav { +MTHRUSPECIES }
+
+ACTOR FlyingNeedleZ : MiniRocket
+{
+	Speed 12
+	DamageType "UndeadPoison"
+	PoisonDamage 4, 5
+	SeeSound ""
+	DeathSound "gshardnd"
+	Gravity 0.3
+	Scale 0.47
+	-NOGRAVITY
+	+ADDITIVEPOISONDAMAGE
+	+ADDITIVEPOISONDURATION
+	States
+	{
+	Spawn:
+		NEDL EFGH 3
+		Loop
+	Death:
+		TNT1 AA 0 A_SpawnItemEx("ZyklonBCloud",random(-4,4),random(-4,4),random(4,4),frandom(-2.0,2.0),frandom(-2.0,2.0),frandom(0.0,1.0),0,128)
+		Stop
+	}
+}
+
+ACTOR FlyingNeedleZNoGrav : FlyingNeedleZ
+{
+	Scale 0.55
+	+NOGRAVITY
+}
+
+ACTOR HardFlyingNeedleZ : FlyingNeedleZ { +MTHRUSPECIES }
+
+ACTOR HardFlyingNeedleZNoGrav : FlyingNeedleZNoGrav { +MTHRUSPECIES }
 
 ACTOR FlyingHack : FlyingNeedle
 {
@@ -868,7 +885,7 @@ ACTOR ZyklonBCloud
 	Spawn:
 		ZBGS A 2
 	Fade:
-		"####" A 3 A_FadeOut(0.004) //removed "LIGHT(AODEPLASMATRAIL_3)"
+		"####" A 3 A_FadeOut(0.004)
 		"####" A 0 A_SetScale(scaleX+0.01, scaleY+0.01)
 		Loop
 	}
@@ -883,7 +900,7 @@ ACTOR ZyklonZCloud : ZyklonBCloud
 	Spawn:
 		ZBGS C 2
 	Fade:
-		"####" C 3 A_FadeOut(0.004) //removed "LIGHT(ZOMBIEFOG)"
+		"####" C 3 A_FadeOut(0.004)
 		"####" C 0 A_SetScale(scaleX+0.01, scaleY+0.01)
 		Loop
 	}
@@ -899,7 +916,7 @@ ACTOR ZyklonZCloud2 : ZyklonZCloud
 	Spawn:
 		ZBGS C 1
 	Fade:
-		"####" C 3 A_FadeOut(0.004) //removed "LIGHT(ZOMBIEFOG)"
+		"####" C 3 A_FadeOut(0.004)
 		"####" C 0 A_SetScale(scaleX+0.01, scaleY+0.01)
 		Loop
 	}
@@ -914,7 +931,7 @@ ACTOR ZyklonZCloud3 : ZyklonZCloud2
 	Spawn:
 		ZBGS C 1
 	Fade:
-		"####" C 3 A_FadeOut(0.04) //removed "LIGHT(ZOMBIEFOG)"
+		"####" C 3 A_FadeOut(0.04)
 		"####" C 0 A_SetScale(scaleX+0.01, scaleY+0.01)
 		Loop
 	}

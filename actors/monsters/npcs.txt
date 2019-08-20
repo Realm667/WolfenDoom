@@ -535,6 +535,65 @@ ACTOR Camp_StaticShovelDig
 	}
 }
 
+ACTOR Camp_StaticHammeringL : Camp_StaticShovelDig
+{
+	//$Title Shootable Prisoner (hammering, left)
+	States
+	{
+	Spawn:
+		HAMM A 0 NODELAY A_GiveInventory("Z_ShadeMe",0)
+	SpawnLoop:
+		HAMM A 0 A_CheckRange(512,"SpawnLoopSilent")
+		HAMM A 1 A_SetTics(random(24,32))
+		"####" B 0 A_PlaySound("floor/gravel", CHAN_ITEM, 1.0, FALSE)
+		"####" BCD 1 A_SetTics(random(12,16))
+		"####" CDCD 1 A_SetTics(random(12,16))
+		"####" BB 1 A_SetTics(random(12,16))
+		Loop
+	SpawnLoopSilent:
+		PRSC A 0 A_StopSound(CHAN_ITEM)
+		"####" A 1 A_SetTics(random(24,32))
+		"####" BCD 1 A_SetTics(random(12,16))
+		"####" CDCD 1 A_SetTics(random(12,16))
+		"####" BB 1 A_SetTics(random(12,16))
+		Goto SpawnLoop
+	Death:
+		PRSN I 5 A_Scream
+		"####" J 6
+		"####" K 5 A_NoBlocking
+		"####" L 5 A_Jump(1,2,3)
+		"####" M -1
+		"####" N -1
+		"####" O -1
+		Stop
+	}
+}
+
+ACTOR Camp_StaticHammeringR : Camp_StaticHammeringL
+{
+	//$Title Shootable Prisoner (hammering, right)
+	States
+	{
+	Spawn:
+		HAMM A 0 NODELAY { A_GiveInventory("Z_ShadeMe",0); A_SetScale(ScaleX * -1, ScaleY); }
+	SpawnLoop:
+		HAMM A 0 A_CheckRange(512,"SpawnLoopSilent")
+		HAMM A 1 A_SetTics(random(24,32))
+		"####" B 0 A_PlaySound("floor/gravel", CHAN_ITEM, 1.0, FALSE)
+		"####" BCD 1 A_SetTics(random(12,16))
+		"####" CDCD 1 A_SetTics(random(12,16))
+		"####" BB 1 A_SetTics(random(12,16))
+		Loop
+	SpawnLoopSilent:
+		HAMM A 0 A_StopSound(CHAN_ITEM)
+		"####" A 1 A_SetTics(random(24,32))
+		"####" BCD 1 A_SetTics(random(12,16))
+		"####" CDCD 1 A_SetTics(random(12,16))
+		"####" BB 1 A_SetTics(random(12,16))
+		Goto SpawnLoop
+	}
+}
+
 ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he doesn't - ozy81
 {
 	//$Category Concentration Camp (BoA)
