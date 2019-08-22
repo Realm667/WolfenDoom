@@ -543,6 +543,9 @@ class Nothing : Actor
 
 class Sherman : PowerMorph
 {
+	int armor;
+	double savepercent;
+
 	Default
 	{
 		PowerMorph.MorphStyle MRF_LOSEACTUALWEAPON | MRF_NEWTIDBEHAVIOUR | MRF_UNDOBYDEATHSAVES;
@@ -554,7 +557,18 @@ class Sherman : PowerMorph
 
 	override void InitEffect() 
 	{
-		if (owner && owner.player) { owner.player.cheats |= CF_CHASECAM; }
+		if (owner && owner.player)
+		{
+			owner.player.cheats |= CF_CHASECAM;
+
+			// Save the standard Doom-style armor values.  Doesn't support Hexen armor.
+			BasicArmor a = BasicArmor(owner.FindInventory("BasicArmor"));
+			if (a)
+			{
+				armor = a.Amount;
+				savepercent = a.SavePercent;
+			}
+		}
 
 		Super.InitEffect();
 	}
@@ -589,9 +603,15 @@ class Sherman : PowerMorph
 
 				if (tank.turret) { MorphedPlayer.mo.SetOrigin(tank.turret.pos + (0, 0, tank.turret.height), false); } // Dump the player on top of the turret
 				else { MorphedPlayer.mo.SetOrigin(tank.pos + (0, 0, tank.height), false); } // Dump the player on top of the body of the tank
+
+				// Restore armor amount and savepercent
+				MorphedPlayer.mo.SetInventory("BasicArmor", armor);
+
+				BasicArmor a = BasicArmor(MorphedPlayer.mo.FindInventory("BasicArmor"));
+				if (a) { a.SavePercent = savepercent; }
 			}
 		}
-
+ 
 		Super.EndEffect();
 	}
 }
