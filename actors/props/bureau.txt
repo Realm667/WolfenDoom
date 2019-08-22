@@ -342,20 +342,6 @@ ACTOR CasinoDice : PaperBox1
 	}
 }
 
-ACTOR DecoMiniTree : PaperBox1
-{
-	//$Title Decorative Mini Tree
-	Radius 1
-	Height 1
-	-SOLID
-	States
-	{
-	Spawn:
-		DECT A -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
-		Stop
-	}
-}
-
 ACTOR BinWhite
 {
 	//$Category Props (BoA)/Bureau
