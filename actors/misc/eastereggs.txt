@@ -363,3 +363,23 @@ ACTOR LaraCroft : Dogse
 		Stop
 	}
 }
+
+ACTOR NaziCakeBabe : Dogse
+{
+	//$Title Nazi Birthday Cake Babe
+	Radius 4
+	Height 32
+	States
+	{
+	Spawn:
+		BAB3 A 1 A_SetTics(Random(80,160))
+		"####" B 8
+		"####" C 8
+		"####" BD 8
+		"####" BD 8
+		"####" EFEF 8
+		"####" EF 8
+		"####" B 8
+		Loop
+	}
+}
