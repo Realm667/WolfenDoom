@@ -276,9 +276,59 @@ ACTOR CoatHanger6 : CoatHanger
 	States
 	{
 	Spawn:
+		CTHN Z -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR CoatHanger7A : CoatHanger
+{
+	//$Title Tall Coat Hanger, 1st Variant
+	Scale 0.35
+	States
+	{
+	Spawn:
+		CTHN N -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR CoatHanger7B : CoatHanger
+{
+	//$Title Tall Coat Hanger, 2nd Variant
+	Scale 0.35
+	States
+	{
+	Spawn:
 		CTHN O -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
+}
+
+ACTOR CoatHanger7C : CoatHanger
+{
+	//$Title Tall Coat Hanger, 3rd Variant
+	Scale 0.35
+	States
+	{
+	Spawn:
+		CTHN P -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR CoatHanger7S : RandomSpawner
+{
+	//$Category Props (BoA)/Bureau
+	//$Title Tall Coat Hanger (random type)
+	//$Color 3
+	//$Sprite CTHNN0
+	Radius 8
+	Height 40
+	Scale 0.35
+	DropItem "CoatHanger7A"
+	DropItem "CoatHanger7B"
+	DropItem "CoatHanger7C"
 }
 
 ACTOR PaperBox1

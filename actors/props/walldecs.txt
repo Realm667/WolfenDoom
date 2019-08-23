@@ -243,6 +243,27 @@ ACTOR Wall_CivilianFemale2 : Wall_CivilianMale4
 	}
 }
 
+ACTOR Wall_CakeBabe : Wall_CampMalePrisoner
+{
+	//$Category Wall Decorations (BoA)
+	//$Title Nazi Birthday Cake Babe
+	-NOGRAVITY
+	+MOVEWITHSECTOR
+	States
+	{
+	Spawn:
+		BAB3 A 1 A_SetTics(Random(80,160))
+		"####" B 8
+		"####" C 8
+		"####" BD 8
+		"####" BD 8
+		"####" EFEF 8
+		"####" EF 8
+		"####" B 8
+		Loop
+	}
+}
+
 //FLAT DECS//
 ACTOR FlatBase
 {
