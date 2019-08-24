@@ -801,3 +801,83 @@ ACTOR Bakery1D
 		Stop
 	}
 }
+
+ACTOR CupCake1 : Bakery1D
+{
+	//$Title Cupcake, Pink (random)
+	Scale 0.08
+	States
+	{
+	Spawn:
+		CUPK A 0 NODELAY A_Jump(256,"Set1","Set2","Set3")
+	Set1:
+		CUPK A -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	Set2:
+		CUPK B -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	Set3:
+		CUPK C -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR CupCake2 : Bakery1D
+{
+	//$Title Cupcake, White (random)
+	Scale 0.08
+	States
+	{
+	Spawn:
+		CUPK D 0 NODELAY A_Jump(256,"Set1","Set2","Set3")
+	Set1:
+		CUPK D -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	Set2:
+		CUPK E -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	Set3:
+		CUPK F -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR CupCake3 : Bakery1D
+{
+	//$Title Cupcake, Azure (random)
+	Scale 0.08
+	States
+	{
+	Spawn:
+		CUPK G 0 NODELAY A_Jump(256,"Set1","Set2","Set3")
+	Set1:
+		CUPK G -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	Set2:
+		CUPK H -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	Set3:
+		CUPK I -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR CupCake4 : Bakery1D
+{
+	//$Title Cupcake, Yellow (random)
+	Scale 0.08
+	States
+	{
+	Spawn:
+		CUPK J 0 NODELAY A_Jump(256,"Set1","Set2","Set3")
+	Set1:
+		CUPK J -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	Set2:
+		CUPK K -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	Set3:
+		CUPK L -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
