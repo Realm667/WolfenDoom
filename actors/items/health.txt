@@ -10,7 +10,7 @@ ACTOR Meal : Health
 	States
 	{
 	Spawn:
-		MEAL A -1 NoDelay A_Jump(128,1)
+		MEAL A -1 NODELAY A_Jump(128,1)
 		"####" B -1
 		Stop
 	}
@@ -25,12 +25,67 @@ ACTOR StackedMeal : Meal
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_Jump(256,"MealA","MealB")
+		TNT1 A 0 NODELAY A_Jump(256,"MealA","MealB")
 	MealA:
 		MEAL A 1
 		Loop
 	MealB:
 		MEAL B 1
+		Loop
+	}
+}
+
+ACTOR PartyMeal : Meal
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9)
+		PMEL A -1
+		PMEL B -1
+		PMEL C -1
+		PMEL D -1
+		PMEL E -1
+		PMEL F -1
+		PMEL G -1
+		PMEL H -1
+		PMEL I -1
+		Stop
+	}
+}
+
+ACTOR StackedPartyMeal : StackedMeal
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,"MealA","MealB","MealC","MealD","MealE","MealF","MealG","MealH","MealI")
+	MealA:
+		PMEL A 1
+		Loop
+	MealB:
+		PMEL B 1
+		Loop
+	MealC:
+		PMEL C 1
+		Loop
+	MealD:
+		PMEL D 1
+		Loop
+	MealE:
+		PMEL E 1
+		Loop
+	MealF:
+		PMEL F 1
+		Loop
+	MealG:
+		PMEL G 1
+		Loop
+	MealH:
+		PMEL H 1
+		Loop
+	MealI:
+		PMEL I 1
 		Loop
 	}
 }
@@ -154,7 +209,7 @@ ACTOR Dogfood : Health
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_Jump(256,1,2,3,4,5,6,7)
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7)
 		DOGF A -1
 		DOGF B -1
 		DOGF C -1
@@ -209,7 +264,7 @@ ACTOR Medikit_Large : Health
 	States
 	{
 	Spawn:
-		MEDI C -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		MEDI C -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
