@@ -86,7 +86,7 @@ ACTOR Camp_MoundOfBodies : Camp_RandomPileDead
 	States
 	{
 	Spawn:
-		CMPG P -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		CMPG P -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
@@ -116,9 +116,7 @@ ACTOR Camp_LogsDead : Camp_RandomPileDead
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2)
 		CMPG G -1
-		DJLG B -1
 		Stop
 	}
 }
@@ -129,9 +127,7 @@ ACTOR Camp_SnowyLogsDead : Camp_LogsDead
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2)
 		CMPG F -1
-		DJLG A -1
 		Stop
 	}
 }
@@ -188,25 +184,31 @@ ACTOR Camp_LyingBodies : Camp_RandomBodyParts
 		CBED I -1 A_SetScale(0.53)
 		Stop
 	}
-
 }
 
 ACTOR Camp_LyingBodies2 : Camp_RandomBodyParts
 {
-	//$Title Camp Prisoner Exhausted - Headshotted, Lying (random)
+	//$Title Camp Prisoner Exhausted, Lying (random)
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6) //more chances for spawning headshot one
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
 		CBED J -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		CBED K -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		CBED L -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
-		CBED M -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
-		CBED M -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
+ACTOR Camp_LyingBodies3 : Camp_RandomBodyParts
+{
+	//$Title Camp Prisoner Headshotted, Lying
+	States
+	{
+	Spawn:
 		CBED M -1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
-
 }
 
 ACTOR Camp_PrisonerGuts
@@ -220,7 +222,7 @@ ACTOR Camp_PrisonerGuts
 	States
 	{
 	Spawn:
-		GORC S -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		GORC S -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
@@ -289,6 +291,160 @@ ACTOR Camp_PrisonerSamples
 	}
 }
 
+ACTOR Camp_PrisonerSample1 : Camp_PrisonerSamples
+{
+	//$Title Camp Prisoner Empty Sample 1
+	States
+	{
+	Spawn:
+		CJAR A -1
+		Stop
+	}
+}
+
+ACTOR Camp_PrisonerSample2 : Camp_PrisonerSamples
+{
+	//$Title Camp Prisoner Empty Sample 2
+	States
+	{
+	Spawn:
+		CJAR B -1
+		Stop
+	}
+}
+
+ACTOR Camp_PrisonerSample3 : Camp_PrisonerSamples
+{
+	//$Title Camp Prisoner Empty Sample 3
+	States
+	{
+	Spawn:
+		CJAR C -1
+		Stop
+	}
+}
+
+ACTOR Camp_PrisonerSample4 : Camp_PrisonerSamples
+{
+	//$Title Camp Prisoner Empty Sample 4
+	States
+	{
+	Spawn:
+		CJAR D -1
+		Stop
+	}
+}
+
+ACTOR Camp_PrisonerSample5 : Camp_PrisonerSamples
+{
+	//$Title Camp Prisoner Body Sample 1
+	States
+	{
+	Spawn:
+		CJAR E -1
+		Stop
+	}
+}
+
+ACTOR Camp_PrisonerSample6 : Camp_PrisonerSamples
+{
+	//$Title Camp Prisoner Body Sample 2
+	States
+	{
+	Spawn:
+		CJAR F -1
+		Stop
+	}
+}
+
+ACTOR Camp_PrisonerSample7 : Camp_PrisonerSamples
+{
+	//$Title Camp Prisoner Body Sample 3
+	States
+	{
+	Spawn:
+		CJAR G -1
+		Stop
+	}
+}
+
+ACTOR Camp_PrisonerSample8 : Camp_PrisonerSamples
+{
+	//$Title Camp Prisoner Body Sample 4
+	States
+	{
+	Spawn:
+		CJAR H -1
+		Stop
+	}
+}
+
+ACTOR Camp_PrisonerSample9 : Camp_PrisonerSamples
+{
+	//$Title Camp Prisoner Body Sample 5
+	States
+	{
+	Spawn:
+		CJAR I -1
+		Stop
+	}
+}
+
+ACTOR Camp_PrisonerSample10 : Camp_PrisonerSamples
+{
+	//$Title Camp Prisoner Body Sample 6
+	States
+	{
+	Spawn:
+		CJAR J -1
+		Stop
+	}
+}
+
+ACTOR Camp_PrisonerSample11 : Camp_PrisonerSamples
+{
+	//$Title Camp Prisoner Body Sample 7
+	States
+	{
+	Spawn:
+		CJAR K -1
+		Stop
+	}
+}
+
+ACTOR Camp_PrisonerSample12 : Camp_PrisonerSamples
+{
+	//$Title Camp Prisoner Body Sample 8
+	States
+	{
+	Spawn:
+		CJAR L -1
+		Stop
+	}
+}
+
+ACTOR Camp_PrisonerSample13 : Camp_PrisonerSamples
+{
+	//$Title Camp Prisoner Body Sample 9
+	States
+	{
+	Spawn:
+		CJAR M -1
+		Stop
+	}
+}
+
+ACTOR Camp_PrisonerSample14 : Camp_PrisonerSamples
+{
+	//$Title Camp Prisoner Body Sample 10
+	States
+	{
+	Spawn:
+		CJAR N -1
+		Stop
+	}
+}
+
 // SCENERY //
 ACTOR Camp_RandomUniform
 {
@@ -341,7 +497,7 @@ ACTOR Camp_Eyeglass : Cup1
 	States
 	{
 	Spawn:
-		EGLS A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		EGLS A -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	Death:
 		TNT1 A 0 A_PlaySound("GLASS5")

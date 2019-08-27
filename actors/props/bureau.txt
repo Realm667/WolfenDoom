@@ -738,7 +738,7 @@ ACTOR NaziPlant8 : Plant1
 	}
 }
 
-ACTOR SnookerBall : Tiltable
+ACTOR SnookerBallSpawner : Tiltable
 {
 	//$Category Props (BoA)/Bureau
 	//$Title Casino Snooker Ball (random, mostly red)
@@ -762,6 +762,61 @@ ACTOR SnookerBall : Tiltable
 		"####" C -1 A_Jump(128,1)
 		"####" D -1 A_Jump(32,1) //white one very rare
 		"####" E -1
+		Stop
+	}
+}
+
+ACTOR SnookerBall1 : SnookerBallSpawner
+{
+	//$Title Casino Snooker Ball, red
+	States
+	{
+	Spawn:
+		SNKR A -1
+		Stop
+	}
+}
+
+ACTOR SnookerBall2 : SnookerBallSpawner
+{
+	//$Title Casino Snooker Ball, yellow
+	States
+	{
+	Spawn:
+		SNKR B -1
+		Stop
+	}
+}
+
+ACTOR SnookerBall3 : SnookerBallSpawner
+{
+	//$Title Casino Snooker Ball, black
+	States
+	{
+	Spawn:
+		SNKR C -1
+		Stop
+	}
+}
+
+ACTOR SnookerBall4 : SnookerBallSpawner
+{
+	//$Title Casino Snooker Ball, blue
+	States
+	{
+	Spawn:
+		SNKR D -1
+		Stop
+	}
+}
+
+ACTOR SnookerBall5 : SnookerBallSpawner
+{
+	//$Title Casino Snooker Ball, white
+	States
+	{
+	Spawn:
+		SNKR E -1
 		Stop
 	}
 }

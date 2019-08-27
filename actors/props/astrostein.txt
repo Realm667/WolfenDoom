@@ -67,13 +67,16 @@ ACTOR StreetLightAstro
 	}
 }
 
-ACTOR StripperGirl : StreetLightAstro
+ACTOR StripperGirl1
 {
-	//$Title Stripper Girl
+	//$Category Astrostein (BoA)/Props
+	//$Title Stripper Girl, Purple
+	//$Color 3
 	Radius 16
 	Height 56
 	Scale 0.6
 	+RANDOMIZE
+	+SOLID
 	States
 	{
 	Spawn:
@@ -86,12 +89,68 @@ ACTOR StripperGirl : StreetLightAstro
 	}
 }
 
+ACTOR StripperGirl1NH : StripperGirl1
+{
+	//$Title Stripper Girl, Purple (decorative)
+	//$Color 3
+	Radius 2
+	Height 2
+	Scale 0.6
+	-SOLID
+	+NOBLOCKMAP
+}
+
+ACTOR StripperGirl2 : StripperGirl1
+{
+	//$Title Stripper Girl, Black
+	States
+	{
+	Spawn:
+		STR2 A 0 A_Jump(64, 9)
+		STR2 A 0 A_Jump(64, 5)
+		STR2 A 0 A_Jump(64, 2)
+		STR2 ABCDEDCBA 3
+		STR2 FGHGHF 6
+		Loop
+	}
+}
+
+ACTOR StripperGirl3 : StripperGirl1
+{
+	//$Title Stripper Girl, Red
+	States
+	{
+	Spawn:
+		STR3 A 0 A_Jump(64, 9)
+		STR3 A 0 A_Jump(64, 5)
+		STR3 A 0 A_Jump(64, 2)
+		STR3 ABCDEDCBA 3
+		STR3 FGHGHF 6
+		Loop
+	}
+}
+
+ACTOR StripperGirls : RandomSpawner
+{
+	//$Category Astrostein (BoA)/Props
+	//$Title Stripper Girl, Random
+	//$Color 3
+	//$Sprite STRPH0
+	Radius 16
+	Height 56
+	Scale 0.6
+	DropItem "StripperGirl1"
+	DropItem "StripperGirl2"
+	DropItem "StripperGirl3"
+}
+
 //3d Actors//
 ACTOR EnergyTankLit //Talon1024 model
 {
 	//$Category Astrostein (BoA)/Props
 	//$Title Energy Tank (lit)
 	//$Color 3
+	DistanceCheck "scenelod"
 	Radius 32
 	Height 128
 	+SOLID
@@ -129,7 +188,6 @@ ACTOR RadioSatelite
 ACTOR RadioTower : RadioSatelite
 {
 	//$Title Radio Tower
-	DistanceCheck "scenelod"
 	Radius 32
 	Scale 3.0
 	States
@@ -143,7 +201,6 @@ ACTOR RadioTower : RadioSatelite
 ACTOR SolarPanel : RadioSatelite
 {
 	//$Title Solar Panel
-	DistanceCheck "scenelod"
 	Height 96
 	Scale 2.0
 }
