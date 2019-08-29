@@ -14,7 +14,7 @@ ACTOR PotKitchen1 : Tiltable
 	States
 	{
 	Spawn:
-		TOPF A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		TOPF A -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	Death:
 		TNT1 A 0 A_UnSetSolid
@@ -32,7 +32,7 @@ ACTOR PotKitchen2 : PotKitchen1
 	States
 	{
 	Spawn:
-		FCAN A 0 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		FCAN A 0 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 	Cook:
 		FCAN ABC 5
 		Loop
@@ -52,7 +52,7 @@ ACTOR PotKitchen3 : PotKitchen1
 	States
 	{
 	Spawn:
-		ECAN A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		ECAN A -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	Death:
 		TNT1 A 0 A_UnSetSolid
@@ -69,7 +69,7 @@ ACTOR PotKitchen4 : PotKitchen1
 	States
 	{
 	Spawn:
-		TOPF C -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		TOPF C -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	Death:
 		TNT1 A 0 A_UnSetSolid
@@ -88,7 +88,7 @@ ACTOR Kettle : PotKitchen1
 	States
 	{
 	Spawn:
-		KETL A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		KETL A -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	Death:
 		TNT1 A 0 A_UnSetSolid
@@ -109,7 +109,7 @@ ACTOR Teapot1 : PotKitchen1
 	States
 	{
 	Spawn:
-		TEAZ A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		TEAZ A -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	Death:
 		TNT1 A 0 { A_UnSetSolid; A_Scream; }
@@ -125,7 +125,7 @@ ACTOR Teapot2 : Teapot1
 	States
 	{
 	Spawn:
-		TEAZ B -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		TEAZ B -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	Death:
 		TNT1 A 0 { A_UnSetSolid; A_Scream; }
@@ -143,7 +143,7 @@ ACTOR TeaCup1 : Teapot1
 	States
 	{
 	Spawn:
-		TEAZ C -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		TEAZ C -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	Death:
 		TNT1 A 0 { A_UnSetSolid; A_Scream; }
@@ -161,7 +161,7 @@ ACTOR TeaCup2 : Teapot1
 	States
 	{
 	Spawn:
-		TEAZ D -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		TEAZ D -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	Death:
 		TNT1 A 0 { A_UnSetSolid; A_Scream; }
@@ -179,7 +179,7 @@ ACTOR TeaCup3 : Teapot1
 	States
 	{
 	Spawn:
-		TEAZ E -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		TEAZ E -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	Death:
 		TNT1 A 0 { A_UnSetSolid; A_Scream; }
@@ -197,7 +197,7 @@ ACTOR TeaCup4 : Teapot1
 	States
 	{
 	Spawn:
-		TEAZ F -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		TEAZ F -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	Death:
 		TNT1 A 0 { A_UnSetSolid; A_Scream; }

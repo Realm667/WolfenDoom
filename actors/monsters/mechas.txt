@@ -16,7 +16,7 @@ ACTOR MechaNaziStanding1 : CTurret_Afrika
 	States
 	{
 	Spawn:
-		MCST A 1 NoDelay A_SetTics(Random(1, 35))
+		MCST A 1 NODELAY A_SetTics(Random(1, 35))
 	Active:
 		MCST A 35 A_CheckProximity("SpawnEnemy", "WGuard", 128, 1, MECHA_FLAGS)
 		Loop
@@ -38,7 +38,7 @@ ACTOR MechaNaziStanding2 : MechaNaziStanding1
 	States
 	{
 	Spawn:
-		MCST B 1 NoDelay A_SetTics(Random(1, 35))
+		MCST B 1 NODELAY A_SetTics(Random(1, 35))
 	Active:
 		MCST B 35 A_CheckProximity("SpawnEnemy", "Guard", 128, 1, MECHA_FLAGS)
 		Loop
@@ -59,7 +59,7 @@ ACTOR MechaNaziStanding3 : MechaNaziStanding1
 	States
 	{
 	Spawn:
-		MCST C 1 NoDelay A_SetTics(Random(1, 35))
+		MCST C 1 NODELAY A_SetTics(Random(1, 35))
 	Active:
 		MCST C 35 A_CheckProximity("SpawnEnemy", "ArcticRifleGuard", 128, 1, MECHA_FLAGS)
 		Loop
@@ -80,7 +80,7 @@ ACTOR MechaNaziStanding4 : MechaNaziStanding1
 	States
 	{
 	Spawn:
-		MCST D 1 NoDelay A_SetTics(Random(1, 35))
+		MCST D 1 NODELAY A_SetTics(Random(1, 35))
 	Active:
 		MCST D 35 A_CheckProximity("SpawnEnemy", "SSGuard", 128, 1, MECHA_FLAGS)
 		Loop
@@ -101,7 +101,7 @@ ACTOR MechaNaziStanding5 : MechaNaziStanding1
 	States
 	{
 	Spawn:
-		MCST E 1 NoDelay A_SetTics(Random(1, 35))
+		MCST E 1 NODELAY A_SetTics(Random(1, 35))
 	Active:
 		MCST E 35 A_CheckProximity("SpawnEnemy", "SSGuard", 128, 1, MECHA_FLAGS)
 		Loop

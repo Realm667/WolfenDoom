@@ -19,7 +19,7 @@ ACTOR SneakableSSMP40GuardStatic : SneakableSSMP40Guard
 	States
 	{
 		Spawn:
-			SSMG A 0 NoDelay A_SetUserVar("user_angle", angle)
+			SSMG A 0 NODELAY A_SetUserVar("user_angle", angle)
 			Goto Look
 		See: //doesn't roll - ozy81
 		See.Dodge:

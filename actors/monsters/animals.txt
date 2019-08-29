@@ -329,7 +329,7 @@ ACTOR BigSpider : Base
 	States
 	{
 	Spawn:
-		GAYS A 0 NoDelay A_SetScale(ScaleX + frandom(-0.1, 0.05))
+		GAYS A 0 NODELAY A_SetScale(ScaleX + frandom(-0.1, 0.05))
 		Goto Idle
 	Idle:
 		GAYS A 10 A_LookThroughDisguise

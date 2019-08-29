@@ -97,7 +97,7 @@ ACTOR CinderSpawnerSky
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_JumpIf(!CallACS("snowswitch"), "Vanish")
+		TNT1 A 0 NODELAY A_JumpIf(!CallACS("snowswitch"), "Vanish")
 		Goto PickShape
 	PickShape:
 		TNT1 A 0 A_JumpIf(Args[2], "CircleLoop")

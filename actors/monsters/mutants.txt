@@ -15,7 +15,7 @@ ACTOR Mutant : MutantStandard
 	States
 	{
 	Spawn:
-		MTNT A 0 NoDelay ACS_NamedExecuteAlways("DisableMutants",0) //mxd
+		MTNT A 0 NODELAY ACS_NamedExecuteAlways("DisableMutants",0) //mxd
 		Goto Look
 	See:
 		"####" A 0 A_SetSpeed(4)
@@ -67,7 +67,7 @@ ACTOR MutantMelee : Mutant
 	States
 	{
 	Spawn:
-		MLMT A 0 NoDelay ACS_NamedExecuteAlways("DisableMutants",0) //mxd
+		MLMT A 0 NODELAY ACS_NamedExecuteAlways("DisableMutants",0) //mxd
 		Goto Look
 	See:
 		"####" A 0 A_SetSpeed(6)
@@ -102,7 +102,7 @@ ACTOR SuperMutant : Mutant
 	States
 	{
 	Spawn:
-		SUPM A 0 NoDelay ACS_NamedExecuteAlways("DisableSuperMutants",0) //mxd
+		SUPM A 0 NODELAY ACS_NamedExecuteAlways("DisableSuperMutants",0) //mxd
 		Goto Look
 	See:
 		"####" A 0 A_SetSpeed(5)
@@ -134,7 +134,7 @@ ACTOR BigMutant1 : Mutant
 	States
 	{
 	Spawn:
-		MTB1 A 0 NoDelay ACS_NamedExecuteAlways("DisableBigMutants", 0) //mxd
+		MTB1 A 0 NODELAY ACS_NamedExecuteAlways("DisableBigMutants", 0) //mxd
 		Goto Look
 	See:
 		"####" A 0 A_SetSpeed(5)
@@ -247,7 +247,7 @@ ACTOR BigMutant2 : BigMutant1
 	States
 	{
 	Spawn:
-		MTB2 A 0 NoDelay ACS_NamedExecuteAlways("DisableBigMutants", 0) //mxd
+		MTB2 A 0 NODELAY ACS_NamedExecuteAlways("DisableBigMutants", 0) //mxd
 		Goto Look
 	Melee:
 		MTB2 E 4 A_FaceTarget
@@ -296,7 +296,7 @@ ACTOR UberMutant : Mutant
 	States
 	{
 	Spawn:
-		UBMU A 0 NoDelay ACS_NamedExecuteAlways("DisableSuperMutants", 0) //mxd
+		UBMU A 0 NODELAY ACS_NamedExecuteAlways("DisableSuperMutants", 0) //mxd
 		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
 		Goto Look
 	Look:

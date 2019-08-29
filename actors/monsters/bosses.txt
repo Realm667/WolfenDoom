@@ -1025,7 +1025,7 @@ ACTOR NaziLoper : Nazi
 	States
 	{
 	Spawn:
-		LOPR A 0 NoDelay A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, CMF_AIMDIRECTION, 0)
+		LOPR A 0 NODELAY A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, CMF_AIMDIRECTION, 0)
 		"####" A 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, CMF_AIMDIRECTION, 0)
 		"####" A 1
 		Goto Look

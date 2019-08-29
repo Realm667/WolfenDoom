@@ -409,7 +409,7 @@ ACTOR CKMadMushroom : CKBaseEnemy
 	{
 	Spawn:
 	See:
-		CKMR A 0 NoDelay Thing_SetSpecial(0, 73, 15, 22, 0)
+		CKMR A 0 NODELAY Thing_SetSpecial(0, 73, 15, 22, 0)
 		CKMR A 1 A_CheckFloor("Jump")
 		Goto See
 	Jump:
@@ -484,7 +484,7 @@ ACTOR CKPoisonSlugPoison : CKBaseEnemy
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay Thing_SetSpecial(0, 73, 15, 22, 0)
+		TNT1 A 0 NODELAY Thing_SetSpecial(0, 73, 15, 22, 0)
 		TNT1 A 0 A_SetAngle(random(0,359))
 		CKSL Z 210
 		"####" Y 70
@@ -512,7 +512,7 @@ ACTOR CKWallShooter : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 NoDelay A_JumpIf(Args[0] == 0,"APos_Ceiling")
+		TNT1 A 0 NODELAY A_JumpIf(Args[0] == 0,"APos_Ceiling")
 		TNT1 A 0 A_JumpIf(Args[0] == 1,"APos_Floor")
 		TNT1 A 0 A_JumpIf(Args[0] > 1,"APos_Wall")
 		APos_Ceiling:
@@ -552,7 +552,7 @@ ACTOR CKWallShooterArrow_Down
 	States
 	{
 	Spawn:
-		CKTH A 0 NoDelay A_Playsound("ckeen/blowgun")
+		CKTH A 0 NODELAY A_Playsound("ckeen/blowgun")
 		CKAR CD 8
 		Loop
 	Death:
@@ -580,7 +580,7 @@ ACTOR CKWallShooterArrow_Horizontal : CKWallShooterArrow_Down
 	States
 	{
 	Spawn:
-		CKAR E 0 NoDelay A_SetAngle(angle+90)
+		CKAR E 0 NODELAY A_SetAngle(angle+90)
 		CKAR EF 8
 		Goto Spawn+1
 	}
@@ -719,7 +719,7 @@ ACTOR CKThunderbolt : CKBaseEnemy
 	States
 	{
 	Spawn:
-		CKTH A 0 NoDelay A_Playsound("ckeen/shothit")
+		CKTH A 0 NODELAY A_Playsound("ckeen/shothit")
 		CKTH ABABABA 8 A_Explode
 		Stop
 	}

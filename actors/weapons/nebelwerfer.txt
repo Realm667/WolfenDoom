@@ -61,7 +61,7 @@ ACTOR NebRocket : GrenadeBase
 	States
 	{
 	Spawn:
-		MNSS A 0 NoDelay A_PlaySound("nazi/missileengine", CHAN_AUTO, 0.3, TRUE)
+		MNSS A 0 NODELAY A_PlaySound("nazi/missileengine", CHAN_AUTO, 0.3, TRUE)
 	Fly:
 		MNSS A 1 BRIGHT LIGHT(NEBLIGHT) A_SpawnItemEx("RocketFlame",random(-1,1),0,random(-1,1))
 		Loop

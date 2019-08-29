@@ -28,7 +28,7 @@ ACTOR SnowSpawner
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_JumpIf(!CallACS("snowswitch"), "Vanish")
+		TNT1 A 0 NODELAY A_JumpIf(!CallACS("snowswitch"), "Vanish")
 		Goto PickShape
 	PickShape:
 		TNT1 A 0 A_JumpIf(Args[2], "CircleLoop")
@@ -87,7 +87,7 @@ ACTOR ConfettiSpawner : SnowSpawner
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_JumpIf(!CallACS("snowswitch"), "Vanish")
+		TNT1 A 0 NODELAY A_JumpIf(!CallACS("snowswitch"), "Vanish")
 		Goto PickShape
 	PickShape:
 		TNT1 A 0 A_JumpIf(Args[2], "CircleLoop")
@@ -124,7 +124,7 @@ ACTOR ConfettiParticle
 	States
 	{
 	Spawn:
-		CONF A 0 NoDelay A_SetGravity(frandom(0.0005,0.0225))
+		CONF A 0 NODELAY A_SetGravity(frandom(0.0005,0.0225))
 	SetSpawn:
 		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12)
 		"####" ABCDEFFEDCBA 0 A_Jump(256,"SpawnLoop","SpawnLoop2")

@@ -2141,7 +2141,7 @@ ACTOR MGTurretCeiling : MGTurret
 	States
 	{
 	Spawn:
-		GTUR D 0 NoDelay A_SetUserVar("user_incombat", TRUE) //mxd
+		GTUR D 0 NODELAY A_SetUserVar("user_incombat", TRUE) //mxd
 		Goto Look
 	See: //needs to be different
 		"####" D 1 A_Chase

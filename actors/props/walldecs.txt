@@ -260,7 +260,7 @@ ACTOR CraterGrass : FlatBase
 	States
 	{
 	Spawn:
-		KRAT A -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		KRAT A -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
@@ -271,7 +271,7 @@ ACTOR CraterSnow : CraterGrass
 	States
 	{
 	Spawn:
-		KRAT B -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		KRAT B -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
@@ -282,7 +282,7 @@ ACTOR CraterDirt : CraterGrass
 	States
 	{
 	Spawn:
-		KRAT C -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		KRAT C -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
@@ -293,7 +293,7 @@ ACTOR CraterConcrete : CraterGrass
 	States
 	{
 	Spawn:
-		KRAT E -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		KRAT E -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }
@@ -304,7 +304,7 @@ ACTOR SnowPile1 : CraterGrass
 	States
 	{
 	Spawn:
-		KRAT D -1 NoDelay A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		KRAT D -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
 		Stop
 	}
 }

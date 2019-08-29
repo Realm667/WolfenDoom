@@ -26,7 +26,7 @@ ACTOR Debris_Trash : Debris_Base
 	States
 	{
 	Spawn:
-		SRCB B 0 NoDelay A_Jump(256,1,2,3,4)
+		SRCB B 0 NODELAY A_Jump(256,1,2,3,4)
 		"####" BCDF 0 A_Jump(256,"SpawnLoop","SpawnLoop2")
 	SpawnLoop:
 		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
@@ -57,7 +57,7 @@ ACTOR Debris_Hydrant : Debris_Trash
 	States
 	{
 	Spawn:
-		HDBR A 0 NoDelay A_Jump(256,1,2,3,4)
+		HDBR A 0 NODELAY A_Jump(256,1,2,3,4)
 		"####" ABCD 0 A_Jump(256,"SpawnLoop","SpawnLoop2")
 	SpawnLoop:
 		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
@@ -88,7 +88,7 @@ ACTOR Debris_MetalJunk : Debris_Base
 	States
 	{
 	Spawn:
-		MTLJ B 0 NoDelay A_Jump(256,1,2,3,4)
+		MTLJ B 0 NODELAY A_Jump(256,1,2,3,4)
 		"####" BCEL 0 A_Jump(256,"SpawnLoop","SpawnLoop2")
 	SpawnLoop:
 		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
@@ -272,7 +272,7 @@ ACTOR Debris_Wood : Debris_Base
 	States
 	{
 	Spawn:
-		SCDB A 0 NoDelay A_Jump(256,1,2,3,4)
+		SCDB A 0 NODELAY A_Jump(256,1,2,3,4)
 		"####" ABCD 0 A_Jump(256,"SpawnLoop","SpawnLoop2")
 	SpawnLoop:
 		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
@@ -303,7 +303,7 @@ ACTOR Debris_ToyHans : Debris_Base
 	States
 	{
 	Spawn:
-		TOYD A 0 NoDelay A_Jump(256,1,2,3,4)
+		TOYD A 0 NODELAY A_Jump(256,1,2,3,4)
 		"####" ABCD 0 A_Jump(256,"SpawnLoop","SpawnLoop2")
 	SpawnLoop:
 		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
@@ -332,7 +332,7 @@ ACTOR Debris_ToyWaff : Debris_ToyHans
 	States
 	{
 	Spawn:
-		TOYD E 0 NoDelay A_Jump(256,1,2,3,4)
+		TOYD E 0 NODELAY A_Jump(256,1,2,3,4)
 		"####" EFGH 0 A_Jump(256,"SpawnLoop","SpawnLoop2")
 	SpawnLoop:
 		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
@@ -362,7 +362,7 @@ ACTOR Debris_Astro : Debris_Base
 	States
 	{
 	Spawn:
-		ASTD A 0 NoDelay A_Jump(256,1,2)
+		ASTD A 0 NODELAY A_Jump(256,1,2)
 		"####" AB 0 A_Jump(256,"SpawnLoop","SpawnLoop2")
 	SpawnLoop:
 		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
@@ -397,7 +397,7 @@ ACTOR Debris_GlassShard_Small : Debris_Base
 	States
 	{
 	Spawn:
-		GLAS ABCD 4 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		GLAS ABCD 4 NODELAY A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(400)
@@ -433,7 +433,7 @@ ACTOR Debris_Bin : Debris_Base
 	States
 	{
 	Spawn:
-		BINS CDE 4 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		BINS CDE 4 NODELAY A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(400)
@@ -465,7 +465,7 @@ ACTOR Debris_Metal1 : Debris_Base
 	States
 	{
 	Spawn:
-		MDB1 BCDA 4 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		MDB1 BCDA 4 NODELAY A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(450)
@@ -497,7 +497,7 @@ ACTOR Debris_Metal2 : Debris_Base
 	States
 	{
 	Spawn:
-		MDB2 BCDA 4 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		MDB2 BCDA 4 NODELAY A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(450)
@@ -530,7 +530,7 @@ ACTOR Debris_Metal3 : Debris_Base
 	States
 	{
 	Spawn:
-		MDB3 BCDFGHIA 2 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		MDB3 BCDFGHIA 2 NODELAY A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(450)
@@ -563,7 +563,7 @@ ACTOR Debris_Pottery : Debris_Base
 	States
 	{
 	Spawn:
-		POTR ABCDEF 2 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		POTR ABCDEF 2 NODELAY A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(350)
@@ -594,7 +594,7 @@ ACTOR Debris_Porcelain : Debris_Pottery
 	States
 	{
 	Spawn:
-		POTR GHIJKL 2 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		POTR GHIJKL 2 NODELAY A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(350)
@@ -629,7 +629,7 @@ ACTOR Debris_Flesh : Debris_Base
 	States
 	{
 	Spawn:
-		BUTC UVW 2 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		BUTC UVW 2 NODELAY A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(350)
@@ -680,7 +680,7 @@ ACTOR Debris_FatFlesh : Debris_Flesh
 	States
 	{
 	Spawn:
-		BUTC UVW 2 NoDelay { A_JumpIf(waterlevel == 3, "AdjustMass"); A_SpawnItemEx("NashGore_FlyingBlood", random(-2,2), random(-2,2), random(-2,2), random(1,3), random(1,3), random(1,3), angle, SXF_TRANSFERTRANSLATION|SXF_USEBLOODCOLOR|SXF_TRANSFERROLL); }
+		BUTC UVW 2 NODELAY { A_JumpIf(waterlevel == 3, "AdjustMass"); A_SpawnItemEx("NashGore_FlyingBlood", random(-2,2), random(-2,2), random(-2,2), random(1,3), random(1,3), random(1,3), angle, SXF_TRANSFERTRANSLATION|SXF_USEBLOODCOLOR|SXF_TRANSFERROLL); }
 		Loop
 	}
 }
@@ -694,7 +694,7 @@ ACTOR Debris_Bread : Debris_Base
 	States
 	{
 	Spawn:
-		BAGU DEF 2 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		BAGU DEF 2 NODELAY A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(350)
@@ -730,7 +730,7 @@ ACTOR Debris_Leaf : Feather //inheritances with Ravens actor
 	States
 	{
 	Spawn:
-		PLNT EFGHIJ 3 NoDelay {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		PLNT EFGHIJ 3 NODELAY {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(350)
@@ -763,7 +763,7 @@ ACTOR Debris_Translated : Debris_Leaf //needed to fix translations
 	States
 	{
 	Spawn:
-		TDBR ABCDEF 3 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		TDBR ABCDEF 3 NODELAY A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(350)
@@ -797,7 +797,7 @@ ACTOR Debris_Cloth : Debris_Leaf
 	States
 	{
 	Spawn:
-		TDBR ADE 3 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		TDBR ADE 3 NODELAY A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(250)
@@ -840,7 +840,7 @@ ACTOR Debris_ChipsGreen
 	States
 	{
 	Spawn:
-		CHP1 FGHIG 5 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		CHP1 FGHIG 5 NODELAY A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(400)
@@ -870,7 +870,7 @@ ACTOR Debris_ChipsBlue : Debris_ChipsGreen
 	States
 	{
 	Spawn:
-		CHP2 FGHIG 5 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		CHP2 FGHIG 5 NODELAY A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	}
 }
@@ -880,7 +880,7 @@ ACTOR Debris_ChipsRed : Debris_ChipsGreen
 	States
 	{
 	Spawn:
-		CHP3 FGHIG 5 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		CHP3 FGHIG 5 NODELAY A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	}
 }
@@ -927,7 +927,7 @@ ACTOR Debris_Bone : Bones_Base //no skull
 	States
 	{
 	Spawn:
-		ZBON A 0 NoDelay A_Jump(256,1,2,3,4,5,6,7)
+		ZBON A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7)
 		"####" ABCDEFG 0 A_Jump(256,"SpawnLoop","SpawnLoop2")
 	SpawnLoop:
 		"####" "#" 1 {A_SetRoll(roll+random(15,30), SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
@@ -1512,7 +1512,7 @@ ACTOR Debris_Tank
 	States
 	{
 	Spawn:
-		BRKP AB 0 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		BRKP AB 0 NODELAY A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		BRKP AB 2 A_SetScale(ScaleX+frandom(-0.1,0.1),ScaleY+frandom(-0.1,0.1))
 		Loop
 	AdjustMass: //mxd
@@ -1544,7 +1544,7 @@ ACTOR Debris_Tank2 : Debris_Tank
 	States
 	{
 	Spawn:
-		MDB1 ABCD 0 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		MDB1 ABCD 0 NODELAY A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		MDB1 ABCD 2 A_SetScale(ScaleX+frandom(-0.1,0.1),ScaleY+frandom(-0.1,0.1))
 		Loop
 	AdjustMass: //mxd
@@ -1579,7 +1579,7 @@ ACTOR Debris_TankShards : Debris_Tank
 	States
 	{
 	Spawn:
-		PBIT ABCDEFGHIJ 1 NoDelay A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
+		PBIT ABCDEFGHIJ 1 NODELAY A_JumpIf(waterlevel == 3, "AdjustMass") //mxd
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(400)

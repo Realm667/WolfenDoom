@@ -371,7 +371,7 @@ ACTOR ScientistUniform : SwitchableDecoration
 	{
 	Spawn:
 	Inactive:
-		SCUN A -1 NoDelay ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		SCUN A -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 		Stop
 	Active:
 		SCUN B 0 {bSolid = FALSE; bDormant = FALSE; bUseSpecial = FALSE;}
@@ -405,7 +405,7 @@ ACTOR SSBJUniform : ScientistUniform
 	{
 	Spawn:
 	Inactive:
-		SSUF A -1 NoDelay ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		SSUF A -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 		Stop
 	Active:
 		SCUN B 0 {bSolid = FALSE; bDormant = FALSE; bUseSpecial = FALSE;}
@@ -439,7 +439,7 @@ ACTOR CCBJUniform : ScientistUniform
 	{
 	Spawn:
 	Inactive:
-		CCUF A -1 NoDelay ACS_NamedExecuteAlways("BoA_CompassQueue",0)
+		CCUF A -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
 		Stop
 	Active:
 		CCUF B 0 {bSolid = FALSE; bDormant = FALSE; bUseSpecial = FALSE;}

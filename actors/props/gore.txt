@@ -634,6 +634,36 @@ ACTOR HangingPara2 : HangingPara1
 	}
 }
 
+ACTOR CyanideProp1
+{
+	//$Category Gore (BoA)
+	//$Title Brass Cyanide Container (side)
+	//$Color 4
+	Radius 2
+	Height 2
+	Scale 0.14
+	+MOVEWITHSECTOR
+	+NOBLOCKMAP
+	States
+	{
+	Spawn:
+		CYAN A -1
+		Stop
+	}
+}
+
+ACTOR CyanideProp2 : CyanideProp1
+{
+	//$Title Brass Cyanide Container (front)
+	Scale 0.18
+	States
+	{
+	Spawn:
+		CYAN B -1
+		Stop
+	}
+}
+
 //3d Actors
 ACTOR Skeleton3
 {
@@ -680,7 +710,7 @@ ACTOR Manacles
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY
+		MDLA A 0 NODELAY
 		TNT1 A 0 A_JumpIf(Args[0]==1, "Type1")
 		TNT1 A 0 A_JumpIf(Args[0]==2, "Type2")
 		TNT1 A 0 A_JumpIf(Args[0]==3, "Type3")
@@ -697,36 +727,6 @@ ACTOR Manacles
 		Stop
 	Type3:
 		MDLA C -1
-		Stop
-	}
-}
-
-ACTOR CyanideProp1
-{
-	//$Category Gore (BoA)
-	//$Title Brass Cyanide Container (side)
-	//$Color 4
-	Radius 2
-	Height 2
-	Scale 0.14
-	+MOVEWITHSECTOR
-	+NOBLOCKMAP
-	States
-	{
-	Spawn:
-		CYAN A -1
-		Stop
-	}
-}
-
-ACTOR CyanideProp2 : CyanideProp1
-{
-	//$Title Brass Cyanide Container (front)
-	Scale 0.18
-	States
-	{
-	Spawn:
-		CYAN B -1
 		Stop
 	}
 }

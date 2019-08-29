@@ -28,7 +28,7 @@ ACTOR BloodPool2
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_JumpIf(CallACS("LiquidCheck"),"Fog")
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("LiquidCheck"),"Fog")
 		TNT1 A 0
 		{
 			user_size = 0.02;
@@ -92,7 +92,7 @@ ACTOR GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_ScaleVelocity(frandom(0.5, 2.0))
+		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0))
 		GIBL A random(2,4)
 		{
 			A_SpawnItemEx("BloodDrop1",0,0,0,velx,vely,velz+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
@@ -111,7 +111,7 @@ ACTOR GibletB : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_ScaleVelocity(frandom(0.5, 2.0))
+		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0))
 		GIBL B random(2,4)
 		{
 			A_SpawnItemEx("BloodDrop1",0,0,0,velx,vely,velz+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
@@ -127,7 +127,7 @@ ACTOR GibletC : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_ScaleVelocity(frandom(0.5, 2.0))
+		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0))
 		GIBL C random(2,4)
 		{
 			A_SpawnItemEx("BloodDrop1",0,0,0,velx,vely,velz+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
@@ -143,7 +143,7 @@ ACTOR GibletD : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_ScaleVelocity(frandom(0.5, 2.0))
+		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0))
 		GIBL D random(2,4)
 		{
 			A_SpawnItemEx("BloodDrop1",0,0,0,velx,vely,velz+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
@@ -159,7 +159,7 @@ ACTOR GibletE : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_ScaleVelocity(frandom(0.5, 2.0))
+		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0))
 		GIBL E random(2,4)
 		{
 			A_SpawnItemEx("BloodDrop1",0,0,0,velx,vely,velz+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
@@ -175,7 +175,7 @@ ACTOR GibletF : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_ScaleVelocity(frandom(0.5, 2.0))
+		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0))
 		GIBL F random(2,4)
 		{
 			A_SpawnItemEx("BloodDrop1",0,0,0,velx,vely,velz+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
@@ -191,7 +191,7 @@ ACTOR GibletG : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_ScaleVelocity(frandom(0.5, 2.0))
+		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0))
 		GIBL G random(2,4)
 		{
 			A_SpawnItemEx("BloodDrop1",0,0,0,velx,vely,velz+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
@@ -207,7 +207,7 @@ ACTOR GibletH : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_ScaleVelocity(frandom(0.5, 2.0))
+		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0))
 		GIBL H random(2,4)
 		{
 			A_SpawnItemEx("BloodDrop1",0,0,0,velx,vely,velz+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
@@ -223,7 +223,7 @@ ACTOR GibletI : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_ScaleVelocity(frandom(0.5, 2.0))
+		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0))
 		GIBL I random(2,4)
 		{
 			A_SpawnItemEx("BloodDrop1",0,0,0,velx,vely,velz+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
@@ -239,7 +239,7 @@ ACTOR GibletJ : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_ScaleVelocity(frandom(0.5, 2.0))
+		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0))
 		GIBL J random(2,4)
 		{
 			A_SpawnItemEx("BloodDrop1",0,0,0,velx,vely,velz+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
@@ -255,7 +255,7 @@ ACTOR GibletK : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_ScaleVelocity(frandom(0.5, 2.0))
+		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0))
 		GIBL K random(2,4)
 		{
 			A_SpawnItemEx("BloodDrop1",0,0,0,velx,vely,velz+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
@@ -271,7 +271,7 @@ ACTOR GibletL : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_ScaleVelocity(frandom(0.5, 2.0))
+		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0))
 		GIBL L random(2,4)
 		{
 			A_SpawnItemEx("BloodDrop1",0,0,0,velx,vely,velz+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
@@ -287,7 +287,7 @@ ACTOR GibletM : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_ScaleVelocity(frandom(0.5, 2.0))
+		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0))
 		GIBL M random(2,4)
 		{
 			A_SpawnItemEx("BloodDrop1",0,0,0,velx,vely,velz+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
@@ -303,7 +303,7 @@ ACTOR RandGiblet : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_Jump(236,1,2,3,4,5,6,7,8,9,10,11,12,13)
+		TNT1 A 0 NODELAY A_Jump(236,1,2,3,4,5,6,7,8,9,10,11,12,13)
 		GIBL A 0 A_Jump(256,13)
 		GIBL B 0 A_Jump(256,12)
 		GIBL C 0 A_Jump(256,11)
@@ -380,7 +380,7 @@ ACTOR BloodDrop1
 	States
 	{
 	Spawn:
-		DLUD A 1 NoDelay { alpha = GetCVar("blood_alpha"); }
+		DLUD A 1 NODELAY { alpha = GetCVar("blood_alpha"); }
 		TNT1 A 0 A_ScaleVelocity(0.75)
 		TNT1 A 0 A_ScaleVelocity(GetCVar("blood_rand"))
 		TNT1 A 0 A_JumpIf(waterlevel > 0, "Underwater")
@@ -470,7 +470,7 @@ ACTOR BloodDrop2 : BloodDrop1
 	States
 	{
 	Spawn:
-		DLUD A 1 NoDelay { alpha = GetCVar("blood_alpha"); }
+		DLUD A 1 NODELAY { alpha = GetCVar("blood_alpha"); }
 		TNT1 A 0 A_ScaleVelocity(GetCVar("blood_rand"))
 		TNT1 A 0 A_JumpIf(waterlevel > 0, "Underwater")
 		goto Fall
@@ -553,7 +553,7 @@ ACTOR BloodDrop3 : BloodDrop1
 	States
 	{
 	Spawn:
-		DLUD A 1 NoDelay { alpha = GetCVar("blood_alpha"); }
+		DLUD A 1 NODELAY { alpha = GetCVar("blood_alpha"); }
 		TNT1 A 0 A_ScaleVelocity(1.25)
 		TNT1 A 0 A_ScaleVelocity(GetCVar("blood_rand"))
 		TNT1 A 0 A_JumpIf(waterlevel > 0, "Underwater")
@@ -634,7 +634,7 @@ ACTOR ExcessDroplet : BloodDrop3
 	States
 	{
 	Spawn:
-		DLUD A 1 NoDelay { alpha = GetCVar("blood_alpha"); }
+		DLUD A 1 NODELAY { alpha = GetCVar("blood_alpha"); }
 		TNT1 A 0 A_ScaleVelocity(1.5)
 		TNT1 A 0 A_ScaleVelocity(GetCVar("blood_rand"))
 		TNT1 A 0 A_JumpIf(waterlevel > 0, "Underwater")
@@ -673,7 +673,7 @@ ACTOR BloodHitPuff
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay
+		TNT1 A 0 NODELAY
 		{
 			user_force = frandom(6.0,12.0);
 			user_angmom = frandom(-4.5,4.5);
@@ -704,7 +704,7 @@ ACTOR BloodHitPuffMid : BloodHitPuff
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay
+		TNT1 A 0 NODELAY
 		{
 			user_force = frandom(6.0,12.0);
 			user_angmom = frandom(-6.0,6.0);
@@ -733,7 +733,7 @@ ACTOR BloodHitPuffSmall : BloodHitPuff
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay
+		TNT1 A 0 NODELAY
 		{
 			user_force = frandom(6.0,12.0);
 			user_angmom = frandom(-9.0,9.0);
@@ -767,7 +767,7 @@ ACTOR BloodSquirt
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_Jump(256,"Spray")
+		TNT1 A 0 NODELAY A_Jump(256,"Spray")
 		TNT1 A 0 A_Jump(256,"Mid")
 		TNT1 A 0
 		{
@@ -808,7 +808,7 @@ ACTOR CeilingDroplet : DecoDroplet
 	States
 	{
 	Spawn:
-		TNT1 A 1 NoDelay { alpha = GetCVar("blood_alpha"); }
+		TNT1 A 1 NODELAY { alpha = GetCVar("blood_alpha"); }
 		DLUD C 6
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1);
@@ -856,7 +856,7 @@ ACTOR CeilingDrop2 : DecoDrop2
 	States
 	{
 	Spawn:
-		TNT1 A 1 NoDelay { alpha = GetCVar("blood_alpha"); }
+		TNT1 A 1 NODELAY { alpha = GetCVar("blood_alpha"); }
 		DLUD C 6
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1);
@@ -903,7 +903,7 @@ ACTOR CeilingDrop3 : DecoDrop3
 	States
 	{
 	Spawn:
-		TNT1 A 1 NoDelay { alpha = GetCVar("blood_alpha"); }
+		TNT1 A 1 NODELAY { alpha = GetCVar("blood_alpha"); }
 		DLUD C 6
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1);
@@ -954,7 +954,7 @@ ACTOR CeilDripper
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1)
+		TNT1 A 0 NODELAY A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1)
 		TNT1 A 0 A_QueueCorpse
 		SPLT F 0 A_Jump(128, 2)
 		SPLT G 0
@@ -980,7 +980,7 @@ ACTOR CeilDrip2 : CeilDripper
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1)
+		TNT1 A 0 NODELAY A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1)
 		TNT1 A 0 A_QueueCorpse
 		SPLT F 0 A_Jump(128, 2)
 		SPLT G 0
@@ -1006,7 +1006,7 @@ ACTOR CeilDrip3 : CeilDripper
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1)
+		TNT1 A 0 NODELAY A_Warp(AAPTR_DEFAULT,0,0,ceilingz - z - 1)
 		TNT1 A 0 A_QueueCorpse
 		SPLT F 0 A_Jump(128, 2)
 		SPLT G 0
@@ -1048,7 +1048,7 @@ ACTOR BloodFog
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_QueueCorpse
+		TNT1 A 0 NODELAY A_QueueCorpse
 		TNT1 A 0
 		{
 			user_size = frandom(0.05,0.1);
@@ -1128,7 +1128,7 @@ ACTOR BloodFog2 : BloodFog
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_QueueCorpse
+		TNT1 A 0 NODELAY A_QueueCorpse
 		TNT1 A 0
 		{
 			user_size = frandom(0.025,0.05);
@@ -1208,7 +1208,7 @@ ACTOR BloodFog3 : BloodFog
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_QueueCorpse
+		TNT1 A 0 NODELAY A_QueueCorpse
 		TNT1 A 0
 		{
 			user_size = frandom(0.0125,0.025);
@@ -1302,7 +1302,7 @@ ACTOR UWBloodFog
 	States
 	{
 	Spawn:
-		HITB A 1 NoDelay A_ChangeVelocity(frandom(-2.0,2.0),frandom(-2.0,2.0),frandom(-2.0,2.0))
+		HITB A 1 NODELAY A_ChangeVelocity(frandom(-2.0,2.0),frandom(-2.0,2.0),frandom(-2.0,2.0))
 		HITB A 1 A_SetScale(scalex + 0.05)
 		HITB A 1
 		HITB A 1 A_SetScale(scalex + 0.25)

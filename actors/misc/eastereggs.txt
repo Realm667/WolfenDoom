@@ -407,3 +407,18 @@ ACTOR NaziCakeBabe : Dogse
 		Goto Spawn
 	}
 }
+
+//3d actors
+ACTOR Tie_Fighter : Dogse //ozy81
+{
+	//$Title Tie Fighter (Easteregg)
+	DistanceCheck "scenelod"
+	Radius 48
+	Height 192
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
+}
