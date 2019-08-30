@@ -1016,7 +1016,7 @@ class FireBrandEffect : PlayerEffect
 	States
 	{
 		Spawn:
-			TNT1 A 4 NoDelay Light("ITBURNSOC1");
+			TNT1 A 4 NODELAY Light("ITBURNSOC1");
 			TNT1 A 4 Light("ITBURNSOC2");
 		SpawnLoop:
 			TNT1 A 4 Light("ITBURNSOC3") A_SetTics(Random(1, 8));
@@ -1029,7 +1029,7 @@ class LanternEffect : PlayerEffect
 	States
 	{
 		Spawn:
-			TNT1 A 4 NoDelay Light("LANT01");
+			TNT1 A 4 NODELAY Light("LANT01");
 			TNT1 A 4 Light("LANT02");
 		SpawnLoop:
 			TNT1 A 4 Light("LANT03") A_SetTics(Random(1, 3));

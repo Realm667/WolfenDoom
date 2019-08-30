@@ -112,7 +112,7 @@ Class LightningBeam : Actor
 	States
 	{
 		Spawn:
-			TNT1 A 1 NoDelay A_SpawnBeam();
+			TNT1 A 1 NODELAY A_SpawnBeam();
 			Stop;
 	}
 
@@ -501,7 +501,7 @@ Class LightningBeamAlt2 : LightningBeamAlt
 	States
 	{
 		Spawn:
-			TNT1 A 1 NoDelay { A_SpawnBeam(); A_RadiusThrust(1500, 128); }
+			TNT1 A 1 NODELAY { A_SpawnBeam(); A_RadiusThrust(1500, 128); }
 			Stop;
 	}
 }

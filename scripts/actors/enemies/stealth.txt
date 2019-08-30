@@ -168,7 +168,7 @@ class AlertMarker : Actor
 	States
 	{
 		Spawn:
-			EXCL C 1 NoDelay A_PlaySound("misc/alert", CHAN_BODY);
+			EXCL C 1 NODELAY A_PlaySound("misc/alert", CHAN_BODY);
 			Goto Fade;
 		Fade:
 			EXCL C 1 {
@@ -203,7 +203,7 @@ class SneakableGuardEyesIdle : StealthBase
 	States
 	{
 		Spawn:
-			TNT1 A 0 NoDelay A_SetArg(1, random(490, 630)); // Set quote countdown time to 14 - 18 seconds
+			TNT1 A 0 NODELAY A_SetArg(1, random(490, 630)); // Set quote countdown time to 14 - 18 seconds
 			TNT1 A 0 {
 				if (master) {
 					if (!master.target || (master.target && master.target != master.goal)) {
