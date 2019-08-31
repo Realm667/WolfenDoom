@@ -155,6 +155,33 @@ ACTOR Cacoward : BagOfCoins
 	}
 }
 
+ACTOR GraalHoly : TreasureCross
+{
+	//$Title Treasure (Easteregg, Holy Graal, 15pts)
+	Inventory.PickupMessage "$GRAAL1"
+	Inventory.PickupSound "treasure/cup"
+	States
+	{
+	Spawn:
+		GRAL A -1 LIGHT(TRESLITE)
+		Stop
+	}
+}
+
+ACTOR GraalHelm : SingleCoin
+{
+	//$Title Treasure (Easteregg, Graal Helm, 1pts)
+	Inventory.PickupMessage "$GRAAL2"
+	Inventory.PickupSound "treasure/crown"
+	Scale 0.65
+	States
+	{
+	Spawn:
+		GRAL B -1 LIGHT(TRESLITE)
+		Stop
+	}
+}
+
 ACTOR ChestKey : CompassItem
 {
 	//$Category Pickups (BoA)/Treasures
