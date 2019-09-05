@@ -1,0 +1,30 @@
+ACTOR FakeID : NaziWeapon
+{
+	-WEAPON.AMMO_CHECKBOTH
+	+WEAPON.CHEATNOTWEAPON
+	+WEAPON.MELEEWEAPON
+	+WEAPON.NOALERT
+	+WEAPON.NOAUTOFIRE
+	+WEAPON.WIMPY_WEAPON
+	Tag "$TAGKARTE"
+	Weapon.SelectionOrder 10002
+	NaziWeapon.Stealth 1
+	States
+	{
+	Ready:
+		TNT1 A 1 A_WeaponReady
+		Loop
+	Deselect:
+		TNT1 F 1 A_Lower
+		Loop
+	Select:
+		TNT1 A 1 A_Raise
+		Loop
+	Fire:
+		FKID AABC 4
+		FKID DDEF 6
+		FKID F 12
+		FKID CCBA 4
+		Goto Ready
+	}
+}
