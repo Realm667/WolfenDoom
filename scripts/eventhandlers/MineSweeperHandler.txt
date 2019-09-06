@@ -2,6 +2,17 @@ class MineSweeperHandler : EventHandler
 {
 	Array<Actor > ScannableThings;
 
+	// Libeye things
+	protected Le_GlScreen			gl_proj;
+	protected Le_Viewport			viewport;
+
+	// kd: This prepares the projector and text, which we have to align
+	// ourselves. You have to new the projector, otherwise, you may get a
+	// vm-abort, if you're unfamiliar.
+	override void OnRegister () {
+		gl_proj = new("Le_GlScreen");
+	}
+
 	override void WorldThingSpawned(WorldEvent e)
 	{
 		if (
@@ -33,6 +44,12 @@ class MineSweeperHandler : EventHandler
 
 		if (!p || !p.mo) { return; }
 
+		viewport.FromHud();
+		gl_proj.CacheResolution();
+		gl_proj.CacheFov(p.fov);
+		gl_proj.OrientForRenderOverlay(e);
+		gl_proj.BeginProjection();
+
 		MineSweeper ms = MineSweeper(p.mo.FindInventory("MineSweeper"));
 
 		if (ms && ms.active)
@@ -46,11 +63,11 @@ class MineSweeperHandler : EventHandler
 				if (dist > 512 ) { continue; }
 
 				Vector3 worldpos = e.viewpos + level.Vec3Diff(e.viewpos, mo.pos); // World position of object, offset from viewpoint
-				Vector3 screenpos = BoACoordUtil.WorldToScreen(worldpos, e.viewpos, e.viewpitch, e.viewangle, e.viewroll, p.fov); // Translate that to the screen, using the viewpoint's info
+				gl_proj.ProjectWorldPos(worldpos); // Translate that to the screen, using the viewpoint's info
 
-				if (screenpos.z > 1 || screenpos.z < -1) { continue; } // If the coordinates are off the screen, then skip drawing this item
+				if (!gl_proj.IsInScreen()) { continue; } // If the coordinates are off the screen, then skip drawing this item
 
-				Vector2 drawpos = BoACoordUtil.ToViewport(screenpos);
+				Vector2 drawpos = viewport.SceneToWindow(gl_proj.ProjectToNormal());
 
 				TextureID image = mo.SpawnState.GetSpriteTexture(0);
 
