@@ -24,9 +24,13 @@ class BoAStatusBar : BaseStatusBar
 	String LastTag;
 	double hour, minute, second;
 
+	protected Le_GlScreen gl_proj;
+	protected Le_Viewport viewport;
+
 	override void Init()
 	{
 		Super.Init();
+		gl_proj = new("Le_GlScreen");
 		SetSize(32, 320, 200);
 		CompleteBorder = True;
 
@@ -845,6 +849,11 @@ class BoAStatusBar : BaseStatusBar
 
 	void DrawTankStatusBar()
 	{
+		gl_proj.CacheResolution();
+		gl_proj.CacheFov(CPlayer.fov);
+		gl_proj.OrientForPlayer(CPlayer);
+		gl_proj.BeginProjection();
+
 		Vector2 dimensions;
 
 		let tankplayer = ShermanPlayer(CPlayer.mo);
@@ -853,11 +862,12 @@ class BoAStatusBar : BaseStatusBar
 		let targetactor = tankplayer.CrosshairActor;
 
 		Vector3 worldpos = CPlayer.camera.pos + level.Vec3Diff(CPlayer.camera.pos, hitlocation); // World position of object, offset from viewpoint
-		Vector3 screenpos = BoACoordUtil.WorldToScreen(worldpos, CPlayer.camera.pos, CPlayer.camera.pitch, CPlayer.camera.angle, CPlayer.camera.roll, CPlayer.fov); // Translate that to the screen, using the viewpoint's info
+		gl_proj.ProjectWorldPos(worldpos); // Translate that to the screen, using the viewpoint's info
 
-		if (screenpos.z <= 1 && screenpos.z >= -1) // If the coordinates are off the screen somehow, then skip drawing
+		if (gl_proj.IsInScreen()) // If the coordinates are off the screen somehow, then skip drawing
 		{
-			Vector2 drawpos = BoACoordUtil.ToViewport(screenpos);
+			viewport.FromHud();
+			Vector2 drawpos = viewport.SceneToWindow(gl_proj.ProjectToNormal());
 
 			TextureID image = TexMan.CheckForTexture("XHAIRB2", TexMan.Type_MiscPatch);
 
