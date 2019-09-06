@@ -11,7 +11,7 @@
 */
 class NaziWeapon : Weapon
 {
-	bool allowdisguised;
+	int allowdisguised; // Set to 1 or True for normal behavior (can carry, but alerts if you fire).  Set to 2 to never alert 
 	int notargettimeout;
 	int lowertimeout;
 	float lowerstart, lowerspeed;
@@ -100,6 +100,7 @@ class NaziWeapon : Weapon
 					let psp = owner.player.GetPSprite(PSP_WEAPON);
 
 					if ( // If in ready state, up state, or down state, turn notarget on unless enemies are already alerted
+						allowdisguised > 1 ||
 						psp.CurState == GetReadyState() ||
 						psp.CurState == GetUpState() ||
 						psp.CurState == GetDownState()
