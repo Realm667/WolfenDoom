@@ -851,7 +851,11 @@ class BoAStatusBar : BaseStatusBar
 	{
 		gl_proj.CacheResolution();
 		gl_proj.CacheFov(CPlayer.fov);
-		gl_proj.OrientForPlayer(CPlayer);
+		//gl_proj.OrientForPlayer(CPlayer);
+		gl_proj.Reorient(CPlayer.camera.pos,(
+						CPlayer.camera.angle,
+						CPlayer.camera.pitch,
+						CPlayer.camera.roll));
 		gl_proj.BeginProjection();
 
 		Vector2 dimensions;
