@@ -717,6 +717,7 @@ class BoAStatusBar : BaseStatusBar
 		double size = 1.0;
 		Vector2 dimensions;
 		double w, h;
+		double maxwidth = max(52.0, int(crosshairscale * screen.GetWidth() / 20));
 
 		if (BoAPlayer(CPlayer.mo))
 		{
@@ -799,16 +800,16 @@ class BoAStatusBar : BaseStatusBar
 						size = (crosshair < 80 || (crosshair > 90 && crosshair < 98)) ? 1.0 + 0.1 * sin(level.time * 15 % 360) : 1.0;
 					}
 
-					// Force everything to 52 pixels at widest dimension
+					// Force everything to maxwidth pixels at widest dimension
 					if (dimensions.x > dimensions.y)
 					{
-						dimensions.y *= 52 / dimensions.x;
-						dimensions.x = 52;
+						dimensions.y *= maxwidth / dimensions.x;
+						dimensions.x = maxwidth;
 					}
 					else
 					{
-						dimensions.x *= 52 / dimensions.y;
-						dimensions.y = 52;
+						dimensions.x *= maxwidth / dimensions.y;
+						dimensions.y = maxwidth;
 					}
 				}
 			}
@@ -823,16 +824,16 @@ class BoAStatusBar : BaseStatusBar
 					CrosshairImage = icon;
 					clr = 0x00FF00; // Make the icon green as if the item is in inventory
 
-					// Force everything to 52 pixels at widest dimension
+					// Force everything to maxwidth pixels at widest dimension
 					if (dimensions.x > dimensions.y)
 					{
-						dimensions.y *= 52 / dimensions.x;
-						dimensions.x = 52;
+						dimensions.y *= maxwidth / dimensions.x;
+						dimensions.x = maxwidth;
 					}
 					else
 					{
-						dimensions.x *= 52 / dimensions.y;
-						dimensions.y = 52;
+						dimensions.x *= maxwidth / dimensions.y;
+						dimensions.y = maxwidth;
 					}
 				}
 			}
