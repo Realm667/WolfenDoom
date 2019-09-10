@@ -13,6 +13,7 @@ script "BoADialogue"(int headtalky,int headsilent,int message)
 	int messagelayer = GetMessageStart();
 
 	// Fade in HUD BGs
+	GiveInventory("IncomingMessage", 1);
 	SetHudSize(320, 200, true);
 	SetFont("HEADBAR");
 	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, messagelayer + 4, CR_UNTRANSLATED, 160.0, 24.0, 999.0, 1.0, 1.0);
@@ -61,6 +62,7 @@ script "BoADialogue"(int headtalky,int headsilent,int message)
 	SetFont("SMALLFONT");
 	SetHudWrapWidth(540);
 	hudmessagebold(l:message; HUDMSG_FADEINOUT, messagelayer + 2, CR_GRAY, 100.1, 8.1, 0.0, 0.0, 1.0);
+	TakeInventory("IncomingMessage", 9999);
 }
 
 script "HintMessage" (int message)
@@ -130,6 +132,7 @@ script "FollowerMessage" (int type, int count)
 	str headtalky = StrParam(s:head, i:1);
 
 	// Fade in HUD BGs
+	GiveInventory("IncomingMessage", 1);
 	SetHudSize(320, 200, true);
 	SetFont("HEADBAR");
 	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, messagelayer + 4, CR_UNTRANSLATED, 160.0, 24.0, 999.0, 1.0, 0.5);
@@ -176,6 +179,7 @@ script "FollowerMessage" (int type, int count)
 	SetFont("SMALLFONT");
 	SetHudWrapWidth(540);
 	hudmessagebold(s:messagestr; HUDMSG_FADEINOUT, messagelayer + 2, CR_GRAY, 100.1, 8.1, 0.0, 0.0, 0.5);
+	TakeInventory("IncomingMessage", 9999);
 }
 
 script "ShowStats" (void)
