@@ -79,9 +79,9 @@ ACTOR Palm1 : TreeBase
 	//$Category Flora (BoA)
 	//$Title Palm (center)
 	//$Color 3
+	DistanceCheck "treeslod"
 	+NOGRAVITY
 	+SOLID
-	DistanceCheck "treeslod"
 	States
 	{
 	BidiSpawn:
@@ -93,7 +93,6 @@ ACTOR Palm1 : TreeBase
 ACTOR Palm2 : Palm1
 {
 	//$Title Palm (left)
-	DistanceCheck "treeslod"
 	States
 	{
 	BidiSpawn:
@@ -105,7 +104,46 @@ ACTOR Palm2 : Palm1
 ACTOR Palm3 : Palm1
 {
 	//$Title Palm (right)
-	DistanceCheck "treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE K -1 A_SetPitch(270+pitch)
+		Stop
+	}
+}	
+
+ACTOR Palm1NH : TreeBase //needed for INTERMAP - ozy81
+{
+	//$Category Flora (BoA)/No Hitbox
+	//$Title Palm (center, no hitbox)
+	//$Color 3
+	Radius 4
+	Height 4
+	-SOLID
+	+NOBLOCKMAP
+	+NOGRAVITY
+	States
+	{
+	BidiSpawn:
+		DTRE I -1 A_SetPitch(270+pitch)
+		Stop
+	}
+}
+
+ACTOR Palm2NH : Palm1NH
+{
+	//$Title Palm (left, no hitbox)
+	States
+	{
+	BidiSpawn:
+		DTRE J -1 A_SetPitch(270+pitch)
+		Stop
+	}
+}
+
+ACTOR Palm3NH : Palm1NH
+{
+	//$Title Palm (right, no hitbox)
 	States
 	{
 	BidiSpawn:
