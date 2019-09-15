@@ -134,7 +134,7 @@ ACTOR SimpleLight1 : LightBaseInt
 		MDLA A -1
 		Loop
 	Inactive:
-		MDLA A 0 A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*24, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
+		MDLA A 0 A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX-ScaleY-Height/24, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
 	InactiveLights:
 		MDLA A 0 {bDormant = TRUE;}
 		MDLA A 0 A_RemoveChildren(TRUE, RMVF_MISC)
@@ -153,7 +153,7 @@ ACTOR SimpleLight1Lit : SimpleLight1
 	Spawn:
 		MDLA A 0 NODELAY
 	ActiveLights:
-		MDLA A 0 A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX+ScaleY*24, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
+		MDLA A 0 A_SpawnItemEx("VolumetricLight_ConeDown", 0, 0, ScaleX-ScaleY-Height/24, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
 	Activate:
 		MDLA A 1 LIGHT(OZYSIMLT)
 		Loop
