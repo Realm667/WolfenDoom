@@ -72,23 +72,27 @@ ACTOR UnderwaterMine : Mine
 	Radius 16
 	Height 128
 	Health 300
+	+DONTFALL
 	+NOGRAVITY
 	var int user_theta;
 	States
 	{
 	Spawn:
 	See:
-		UWMR ABCDE 6 A_Chase
+		UWMI HIJKL 6 A_Chase
 		Loop
 	Death:
 		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Medium",0,0,64)
-		UWMR A 12 A_Scream
+		UWMI H 12 A_Scream
 	Shock:
-		UWMR A 0 A_SpawnProjectile("Bubble",random(64,76),0,user_theta,2)
-		"####" A 0 A_SetUserVar("user_theta",user_theta+20)
-		"####" A 0 A_JumpIf(user_theta==360,1)
+		UWMI H 0 A_SpawnProjectile("Bubble",random(64,76),0,user_theta,2)
+		"####" H 0 A_SetUserVar("user_theta",user_theta+20)
+		"####" H 0 A_JumpIf(user_theta==360,1)
 		Loop
-		UWMI H -1
+		"####" H 1 A_RemoveTarget(RMVF_EVERYTHING, "UnderwaterMineChain")
+		UWMI A 0 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		"####" ABCDE 6
+		"####" F -1
 		Stop
 	}
 }
@@ -105,7 +109,7 @@ ACTOR UnderwaterMineChain
 	States
 	{
 	Spawn:
-		UWMI I -1
+		UWMI G -1
 		Stop
 	}
 }
