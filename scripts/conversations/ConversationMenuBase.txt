@@ -21,7 +21,7 @@ class ExtendedConversationMenuBase : ConversationMenu
 	override void OnDestroy()
 	{
 		SetMusicVolume(1);
-		dialogue.Destroy();
+		if (dialogue) { dialogue.Destroy(); }
 		Menu.OnDestroy();
 	}
 
