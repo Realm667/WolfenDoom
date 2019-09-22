@@ -425,6 +425,7 @@ ACTOR WToilet : WGuard
 	See2:
 		"####" B 16
 		"####" B 8
+		"####" "#" 0 A_Jump(256, "Missile")
 	Missile:
 		"####" A 10 A_FaceTarget
 	Missile.Aimed:
@@ -465,7 +466,7 @@ ACTOR WToilet : WGuard
 		Stop
 	Death.WC:
 		"####" A 8
-		TNT1 A 0 A_SpawnItemEx("WGuard", 0, 0, 0)
+		TNT1 A 0 A_SpawnItemEx("WGuard", 0, 0, 0, SXF_NOCHECKPOSITION)
 		Stop
 	}
 }
@@ -495,7 +496,7 @@ ACTOR WToilet2 : WToilet
 		"####" "#" 0 A_Jump(256, "LeaveWC")
 	Death.WC:
 		"####" "#" 1
-		TNT1 A 0 A_SpawnItemEx("WGuard", 0, 0, 0)
+		TNT1 A 0 A_SpawnItemEx("WGuard", 0, 0, 0, SXF_NOCHECKPOSITION)
 		Stop
 	Death:
 		GRD2 I 5
@@ -534,7 +535,7 @@ ACTOR SSToilet : WToilet
 		"####" "#" 0 A_Jump(256, "See")
 	Death.WC:
 		"####" A 8
-		TNT1 A 0 A_SpawnItemEx("SSOfficer", 0, 0, 0)
+		TNT1 A 0 A_SpawnItemEx("SSOfficer", 0, 0, 0, SXF_NOCHECKPOSITION)
 		Stop
 	}
 }
@@ -564,7 +565,7 @@ ACTOR SSToilet2 : WToilet
 		"####" "#" 0 A_Jump(256, "LeaveWC")
 	Death.WC:
 		"####" "#" 2
-		TNT1 A 0 A_SpawnItemEx("SSOfficer", 0, 0, 0)
+		TNT1 A 0 A_SpawnItemEx("SSOfficer", 0, 0, 0, SXF_NOCHECKPOSITION)
 		Stop
 	Death:
 		SSOF I 5
