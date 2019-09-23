@@ -391,7 +391,12 @@ class Base : Actor
 				return false;
 			}
 
-			bShootable = false;
+			//bShootable = false;
+			// Take 50% damage instead, and prevent pain
+			if (developer) Console.Printf("Starting to dodge");
+			bNoPain = true;
+			DamageFactor = Default.DamageFactor * 0.5;
+
 			if (!force || (lastHeard && lastHeard is "Whizzer")) { dodgecounter++; }
 
 			spriteID dodgesprite = DodgeState.sprite;
@@ -411,6 +416,22 @@ class Base : Actor
 		}
 
 		return false;
+	}
+
+	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
+	{
+		// Fix sprite if actor dies when dodging - most actors use different sprite prefixes for their dodge states
+		State RightDodge = FindState("Dodge.Right");
+		State LeftDodge = FindState("Dodge.Left");
+		State CrouchDodge = FindState("Dodge.Crouch");
+		if (
+			((RightDodge && CurState.InStateSequence(RightDodge)) ||
+			(LeftDodge && CurState.InStateSequence(LeftDodge)) ||
+			(CrouchDodge && CurState.InStateSequence(CrouchDodge))) && Sprite != SpawnState.Sprite)
+		{
+			Sprite = SpawnState.Sprite;
+		}
+		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
 	}
 
 	double, double GetBestSideMove() //there should be some occasionally events where actors gets stucked over ledges or stairs, how to fix? - ozy81
@@ -1201,10 +1222,13 @@ class Nazi : Base
 		Dodge.End:
 			"####" A 2;
 			"####" A 0 {
+				if (developer) Console.Printf("Done dodging");
 				sprite = SpawnState.sprite;
 				A_Face(target);
 				A_SetSize(-1, Default.height);
-				bShootable = true;
+				//bShootable = true;
+				bNoPain = Default.bNoPain;
+				DamageFactor = Default.DamageFactor;
 				reactiontime = 0;
 			}
 			"####" A 0 {
@@ -1664,8 +1688,9 @@ class Nazi : Base
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
 		Inventory vis;
-
-		if (DodgeState && sprite == DodgeState.sprite) { sprite = SpawnState.sprite; } // Make sure our sprite isn't crouched or rolling
+	
+		// I think this was breaking being able to hurt enemies while they are dodging - Talon1024
+		// if (DodgeState && sprite == DodgeState.sprite) { sprite = SpawnState.sprite; } // Make sure our sprite isn't crouched or rolling
 
 		if (user_sneakable && bDormant) { bDormant = False; } // Pain wakes up a dormant sneakable actors
 
