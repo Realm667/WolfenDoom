@@ -1,6 +1,40 @@
 7-Zip Extra history
 -------------------
 
+This file contains only information about changes related to that package exclusively.
+The full history of changes is listed in history.txt in main 7-Zip program.
+
+
+19.00          2019-02-21
+-------------------------
+- Encryption strength for 7z archives was increased:
+  the size of random initialization vector was increased from 64-bit to 128-bit,
+  and the pseudo-random number generator was improved.
+- Some bugs were fixed.
+
+
+18.06          2018-12-30
+-------------------------
+- The speed for LZMA/LZMA2 compressing was increased by 3-10%,
+  and there are minor changes in compression ratio.
+- Some bugs were fixed.
+
+
+18.05          2018-04-30
+-------------------------
+- The speed for LZMA/LZMA2 compressing was increased 
+    by 8% for fastest/fast compression levels and 
+    by 3% for normal/maximum compression levels.
+
+
+18.03 beta     2018-03-04
+-------------------------
+- The speed for single-thread LZMA/LZMA2 decoding
+  was increased  by 30% in x64 version and by 3% in x86 version.
+- 7-Zip now can use multi-threading for 7z/LZMA2 decoding,
+  if there are multiple independent data chunks in LZMA2 stream.
+
+
 9.35 beta           2014-12-07
 ------------------------------
   - SFX modules were moved to LZMA SDK package.
