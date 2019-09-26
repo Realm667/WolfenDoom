@@ -262,7 +262,7 @@ ACTOR TeslaRays
 ACTOR TeslaTracer : BulletTracer
 {
 	+BLOODLESSIMPACT
-	DamageType Electric
+	DamageType "Electric"
 	Decal "LazScorch"
 	States
 	{
@@ -319,7 +319,7 @@ Actor TeslaBeam : FastProjectile //PillowBlaster Gamma-Ray gun code [taken strai
 	Radius 13
 	Height 8
 	Damage 5
-	DamageType Electric
+	DamageType "Electric"
 	Scale 0.15
 	Decal LazScorch
 	Renderstyle Add
@@ -474,7 +474,7 @@ ACTOR TeslaTracer2Player : TeslaTracer2
 //Nifty new mutants variations for tracers
 ACTOR MutantTracer : BulletTracer
 {
-	DamageType MutantPoison
+	DamageType "MutantPoison"
 	BulletTracer.Trail "MutantTrail"
 	States
 	{
@@ -494,7 +494,7 @@ ACTOR MutantTrail: TracerTrail {}
 ACTOR AstroTracer : BulletTracer
 {
 	+BLOODLESSIMPACT
-	DamageType AstroPoison
+	DamageType "AstroPoison"
 	DeathType Disintegrate
 	BulletTracer.Trail "AstroTrail"
 	States
@@ -545,7 +545,7 @@ ACTOR AstroTracerPlayer : AstroTracer
 ACTOR ProtoTracer : BulletTracer
 {
 	+BLOODLESSIMPACT
-	DamageType AstroPoison
+	DamageType "AstroPoison"
 	DeathType Disintegrate
 	BulletTracer.Trail "ProtoTrail"
 	States

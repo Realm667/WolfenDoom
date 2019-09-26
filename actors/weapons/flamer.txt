@@ -197,7 +197,7 @@ ACTOR Flamebolt : GrenadeBase
 	+RIPPER
 	+WINDTHRUST
 	SeeSound "flamer/fire"
-	DamageType Fire
+	DamageType "Fire"
 	Decal Scorch
 	Obituary "$OBPYRO"
 	ProjectileKickback 20
@@ -316,6 +316,7 @@ ACTOR Flameball : Flamebolt
 
 ACTOR Flameball_Neb : Flameball
 {
+	Scale 0.1
 	States
 	{
 	Death:

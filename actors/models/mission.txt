@@ -7,6 +7,16 @@ ACTOR Vidcam : 3dObstacle //Ozy81
 	Height 64
 }
 
+ACTOR COD_DogHouse : 3dObstacle
+{
+	//$Category Models (BoA)/Intermap
+	//$Title Dog House
+	//$Color 3
+	DistanceCheck "scenelod"
+	Radius 24
+	Height 48
+}
+
 ACTOR 88mmFlak : ModelBase //MaxED
 {
 	//$Category Models (BoA)/Mission
@@ -30,7 +40,7 @@ ACTOR 88mmFlakDestroyed : ModelBase //Ozy81
 ACTOR Nebelwerfer3D : Base //MaxED
 {
 	//$Category Models (BoA)/Mission
-	//$Title Nebelwerfer (mission only)
+	//$Title Nebelwerfer 41 Mortar Launcher (mission only)
 	//$Color 3
 	Tag "Nebelwerfer"
 	Radius 32
@@ -43,12 +53,20 @@ ACTOR Nebelwerfer3D : Base //MaxED
 	+NOBLOODDECALS
 	+SHOOTABLE
 	+SOLID
+	+SYNCHRONIZED
 	BloodType "TankSpark"
+	DamageFactor "Frag", 0
+	DamageFactor "Poison", 0
+	DamageFactor "MutantPoison", 0
+	DamageFactor "UndeadPoison", 0
 	States
 	{
 	Spawn:
 		MDLA A -1
 		Stop
+	Fire:
+		MDLA BCDEFGH 1
+		Goto Spawn
 	Death:
 		TNT1 A 0 A_PlaySound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_NORM)
 		"####" A 0 A_Scream
@@ -81,6 +99,26 @@ ACTOR Nebelwerfer3D_Destroyed //Ozy81
 		MDLA B 8 A_SpawnProjectile("DarkSmoke2",32,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(70,130))
 		Loop
 	}
+}
+
+ACTOR COD_Mortars1 : MuseumBase //Ozy81
+{
+	//$Category Models (BoA)/Mission
+	//$Title Nebelwerfer Mortars Box
+	//$Color 7
+	DistanceCheck "scenelod"
+	Radius 16
+	Height 8
+}
+
+ACTOR COD_Mortars2 : MuseumBase //Ozy81
+{
+	//$Category Models (BoA)/Mission
+	//$Title Nebelwerfer Mortars Crate
+	//$Color 7
+	DistanceCheck "scenelod"
+	Radius 32
+	Height 32
 }
 
 ACTOR FlakVierling3D : SwitchableDecoration

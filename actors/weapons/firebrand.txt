@@ -10,7 +10,7 @@ ACTOR FirebrandFireball
 	+WINDTHRUST
 	RenderStyle "Add"
 	DeathSound "world/barrelboom"
-	DamageType OccultFire
+	DamageType "OccultFire"
 	Obituary "$OBTYRF1"
 	ProjectileKickback 30
 	States
@@ -65,7 +65,7 @@ ACTOR SwordPuff
 ACTOR FireSwordPuff : SwordPuff
 {
 	+FOILINVUL
-	DamageType OccultFire
+	DamageType "OccultFire"
 	ProjectileKickback 30
 	SeeSound "flamesword/hit"
 }
