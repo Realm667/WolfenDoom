@@ -1587,7 +1587,7 @@ class Nazi : Base
 			{
 				target = mo;
 				if (user_sneakable && !alerted) { BecomeAlerted(target); } // If sneakable, alert them
-				else if (!bFriendly && !((mo is "Whizzer") && user_incombat)) { A_PlaySound("axis1/sighted", CHAN_BODY); } // Play a 'sighted' alert sound if the enemy isn't a friendly (this basically assumes all enemies should yell out in German)
+				else if (!bFriendly && !((mo is "Whizzer") && user_incombat)) { A_PlaySound(SeeSound, CHAN_BODY); } // Play a 'sighted' alert sound if the enemy isn't a friendly (this basically assumes all enemies should yell out in German)
 			}
 
 			if (mo.bMissile) { movedir = (mo.movedir + RandomPick(1, 2, 6, 7)) % 8; } // Pick a random direction away from the shooter and the missile's path
