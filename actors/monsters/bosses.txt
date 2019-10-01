@@ -1875,62 +1875,58 @@ ACTOR BerlinGeneral1 : General
 
 ACTOR BerlinGeneral2 : BerlinGeneral1
 {
-	//$Title Berlin Officer, Bullets (Boss)
+	//$Title Berlin Officer, Chaingun (Boss)
 	DropItem "9mmAmmoBox" 128
 	States
 	{
 	Spawn:
-		BOFF A 0
+		BOF2 A 0
 		Goto Look
 	Missile:
-		BOFF E 4 A_FaceTarget
+		BOF2 E 4 A_FaceTarget
 		"####" E 0 A_Jump(64,"Missile2")
 		"####" E 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
 		"####" F 2 A_SpawnProjectile("EnemyChaingunTracer",43,24,random(-3,3))
 		"####" E 0 A_SpawnItemEx("9MMCasing", 20,0,40, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("See");} return ResolveState("");}
-		"####" E 4 A_FaceTarget
 		"####" E 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		"####" F 2 A_SpawnProjectile("EnemyChaingunTracer",43,24,random(-6,6))
+		"####" G 2 A_SpawnProjectile("EnemyChaingunTracer",43,24,random(-6,6))
 		"####" E 0 A_SpawnItemEx("9MMCasing", 20,0,40, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("See");} return ResolveState("");}
 		"####" E 2 A_MonsterRefire(10,"See")
 		Loop
 	Missile2:
-		BOFF E 0 A_FaceTarget
+		BOF2 E 0 A_FaceTarget
 		"####" E 0 A_Jump(64,"Missile2")
 		"####" E 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
 		"####" F 2 A_SpawnProjectile("EnemyChaingunTracer",43,24,random(-3,3))
 		"####" E 0 A_SpawnItemEx("9MMCasing", 20,0,40, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("See");} return ResolveState("");}
-		"####" E 4 A_FaceTarget
 		"####" E 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		"####" F 2 A_SpawnProjectile("EnemyChaingunTracer",43,24,random(-6,6))
+		"####" G 2 A_SpawnProjectile("EnemyChaingunTracer",43,24,random(-6,6))
 		"####" E 0 A_SpawnItemEx("9MMCasing", 20,0,40, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("See");} return ResolveState("");}
-		"####" E 4 A_FaceTarget
 		"####" E 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
 		"####" F 2 A_SpawnProjectile("EnemyChaingunTracer",43,24,random(-9,9))
 		"####" E 0 A_SpawnItemEx("9MMCasing", 20,0,40, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("See");} return ResolveState("");}
-		"####" E 4 A_FaceTarget
 		"####" E 0 A_PlaySound("chaingun/fire", CHAN_WEAPON)
-		"####" F 2 A_SpawnProjectile("EnemyChaingunTracer",43,24,random(-12,12))
+		"####" G 2 A_SpawnProjectile("EnemyChaingunTracer",43,24,random(-12,12))
 		"####" E 0 A_SpawnItemEx("9MMCasing", 20,0,40, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("See");} return ResolveState("");}
 		"####" E 2 A_MonsterRefire(10,"See")
 		Loop
 	Pain:
-		BOFF H 6 A_NaziPain(256)
+		BOF2 I 6 A_NaziPain(256)
 		Goto See
 	Death:
-		BOFF H 5
-		"####" G 5 A_Scream
-		"####" I 5
-		"####" J -1 A_NoBlocking
+		BOF2 I 5
+		"####" H 5 A_Scream
+		"####" J 5
+		"####" K -1 A_NoBlocking
 		Stop
 	Raise:
-		BOFF MLKJ 5
+		BOF2 KJHIE 5
 		Goto See
 	}
 }
