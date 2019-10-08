@@ -14,17 +14,37 @@ ACTOR SneakableSSMP40Guard : SSMP40Guard
 ACTOR SneakableSSMP40GuardStatic : SneakableSSMP40Guard
 {
 	//$Title SS Guard Static (MP40, sneak-friendly, doesn't move)
+	//$Sprite SSMGE1
 	var int user_angle;
 	Speed 0
 	States
 	{
-		Spawn:
-			SSMG A 0 NODELAY A_SetUserVar("user_angle", angle)
-			Goto Look
-		See: //doesn't roll - ozy81
-		See.Dodge:
-			"####" N 1 { A_SetAngle(user_angle); A_Chase("Missile", "Missile", CHF_DONTMOVE | CHF_NODIRECTIONTURN); }
-			Loop
+	Spawn:
+		SSMG A 0 NODELAY A_SetUserVar("user_angle", angle)
+		Goto Look
+	See: //doesn't roll - ozy81
+	See.Dodge:
+		"####" N 1 { A_SetAngle(user_angle); A_Chase("Missile", "Missile", CHF_DONTMOVE | CHF_NODIRECTIONTURN); }
+		Loop
+	}
+}
+
+ACTOR SneakableSSMP40GuardStatic2 : SneakableSSMP40Guard
+{
+	//$Title SS Guard Static for Turrets (MP40, sneak-friendly, silent, doesn't move)
+	//$Sprite SSMGG1
+	SeeSound ""
+	var int user_angle;
+	Speed 0
+	States
+	{
+	Spawn:
+		SSMG A 0 NODELAY A_SetUserVar("user_angle", angle)
+		Goto Look
+	See: //doesn't roll - ozy81
+	See.Dodge:
+		"####" N 1 { A_SetAngle(user_angle); A_Chase("Missile", "Missile", CHF_DONTMOVE | CHF_NODIRECTIONTURN); }
+		Loop
 	}
 }
 
@@ -49,18 +69,18 @@ ACTOR MGTurretStealth : MGTurret
 
 	States
 	{
-		Missile: //This 'turret' fires and reloads like an MP40 Guard
-			"####" A 5 { A_FaceTarget; A_PlaySound("nazi/mp40", CHAN_WEAPON); }
-			"####" B 4 A_SpawnProjectile("EnemySMGTracer",24,4,random(-8,8))
-			"####" A 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
-			"####" C 2 A_MonsterRefire(10, "See")
-			Loop
-		Reload:
-			"####" A 35 A_PlaySound("mp40/reload", CHAN_WEAPON)
-			Goto See
-		Pain: //Disable for 2 seconds when shot, then go to reload
-			"####" C 70
-			Goto Reload
+	Missile: //This 'turret' fires and reloads like an MP40 Guard
+		"####" A 5 { A_FaceTarget; A_PlaySound("nazi/mp40", CHAN_WEAPON); }
+		"####" B 4 A_SpawnProjectile("EnemySMGTracer",24,4,random(-8,8))
+		"####" A 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
+		"####" C 2 A_MonsterRefire(10, "See")
+		Loop
+	Reload:
+		"####" A 35 A_PlaySound("mp40/reload", CHAN_WEAPON)
+		Goto See
+	Pain: //Disable for 2 seconds when shot, then go to reload
+		"####" C 70
+		Goto Reload
 	}
 }
 
@@ -272,15 +292,14 @@ ACTOR SneakableWSniper : WSniper
 	Nazi.Sneakable
 	Nazi.SneakableCloseSightRadius 144
 	+LOOKALLAROUND
-
 	States
 	{
-		Death:
-			"####" I 5
-			"####" J 5 A_Scream
-			"####" K 5 A_NoBlocking // Keep the drops for weapon balance
-			"####" L 5
-			"####" M -1
-			Stop
+	Death:
+		"####" I 5
+		"####" J 5 A_Scream
+		"####" K 5 A_NoBlocking // Keep the drops for weapon balance
+		"####" L 5
+		"####" M -1
+		Stop
 	}
 }
