@@ -118,6 +118,19 @@ ACTOR TestCrate2 : TestCrate //Ozy81
 	}
 }
 
+ACTOR TestCrate3 : TestCrate //Ozy81
+{
+	//$Title Test Lab Crate, stackable
+	+SOLID
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		MDLA A -1 NODELAY A_SpawnItemEx("CrateGlass2", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid)
+		Stop
+	}
+}
+
 ACTOR CrateGlass : 3dGlass //Ozy81
 {
 	DistanceCheck "scenelod"
@@ -134,6 +147,8 @@ ACTOR CrateGlass : 3dGlass //Ozy81
 		Loop
 	}
 }
+
+ACTOR CrateGlass2 : CrateGlass { +NOGRAVITY }
 
 ACTOR DummyWarper //This is here to avoid "blink effects" - ozy81
 {

@@ -62,6 +62,14 @@ ACTOR FuelDrum : 3dObstacle //MaxED
 	Height 42
 }
 
+//this actor is needed on rare occasions where we can stay below them when crouch then stand up, it doesn't move the drum, like on c2m1
+ACTOR FuelDrumFix : FuelDrum
+{
+	//$Title Fuel Drum, non-solid for players
+	+THRUSPECIES
+	Species "Player"
+}
+
 ACTOR GasDrum : 3dObstacle //MaxED
 {
 	//$Category Models (BoA)/Obstacles
@@ -82,11 +90,11 @@ ACTOR FuelDrumAstro //Ozy81
 	+MOVEWITHSECTOR	//I add this because we may need it for some "arcade" sequences -ozy
 	+NOBLOOD
 	+NODAMAGE
+	+NOTAUTOAIMED
 	+PUSHABLE
 	+SHOOTABLE
 	+SLIDESONWALLS	//let's prevent some weird behaviors, like being stuck in a map because the crate can't get out from an angle -ozy
 	+SOLID
-	+NOTAUTOAIMED
 	Radius 24
 	Height 56
 	Mass 15000

@@ -218,6 +218,17 @@ ACTOR RandomDeadSoldier
 	}
 }
 
+ACTOR DeadSSGuardPistol : RandomDeadSoldier
+{
+	//$Title Dead SS Guard with Pistol (for C2M1)
+	States
+	{
+	Spawn:
+		SSMG M -1
+		Stop
+	}
+}
+
 ACTOR RandomDeadMutant : RandomDeadSoldier
 {
 	//$Category Gore (BoA)
