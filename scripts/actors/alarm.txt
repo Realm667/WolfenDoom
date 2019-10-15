@@ -127,9 +127,12 @@ class AlarmPanel : SwitchableDecoration
 		+WALLSPRITE
 		+ROLLSPRITE
 		+NOGRAVITY
+		+SHOOTABLE
+		+NOBLOOD
 		-SOLID
 		Height 48;
 		Radius 24;
+		Health 35;
 	}
 
 	States
@@ -172,10 +175,29 @@ class AlarmPanel : SwitchableDecoration
 				active = true;
 			}
 			Loop;
+		Death:
+			ALRM R 0;
+			ALRM # 5 {
+				if (!active) { frame++; } // If it wasn't active, show frame S, which is broken with switch in off position
+				A_PlaySound("World/Spark", CHAN_AUTO, 0.15);
+				A_SpawnItemEx("SparkFlare_Y1", 0, 0, 40);
+				A_PlaySound("METALBRK", CHAN_AUTO, 0.25);
+			}
+			ALRM # 2 {
+				for (int s = 1; s < 17; s++)
+				{
+					// Spawn 16 random orange, white, or yellow sparks
+			 		A_SpawnProjectile(String.Format("Spark_%c%i", RandomPick("O", "W", "Y"), s), 40 + Random(-12, 12), Random(-16, 16), 0, CMF_AIMDIRECTION | CMF_BADPITCH, Random(157,203));
+				}
+			}
+			ALRM # -1;
+			Stop;
 	}
 
 	override bool Used(Actor user)
 	{ // Handle the player activating/deactivating the alarm
+		if (health <= 0) { return false; }
+
 		if (user.pos.z < pos.z - user.height || user.pos.z > pos.z + height) { return false; } // Rudimentary z-checking
 
 		target = user;
@@ -195,6 +217,19 @@ class AlarmPanel : SwitchableDecoration
 	{
 		A_SetPeerState(false);
 		Super.Deactivate(activator);
+	}
+
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
+	{
+		int dmg = Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
+
+		if (health <= 0 && active)
+		{
+			A_SetPeerState(false);
+			SetStateLabel("Death");
+		}
+
+		return dmg;
 	}
 
 	Actor FindActivator(int range = 256)
