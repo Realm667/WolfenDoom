@@ -14,15 +14,15 @@ ACTOR Exclamation : ExclamationBase
 	+NOGRAVITY
 	States
 	{
-		Spawn:
-			EXCL A 0
-			Goto Active
-		Active:
-			EXCL A -1 Bright
-			Stop
-		Inactive:
-			TNT1 A -1
-			Stop
+	Spawn:
+		EXCL A 0
+		Goto Active
+	Active:
+		EXCL A -1 Bright
+		Stop
+	Inactive:
+		TNT1 A -1
+		Stop
 	}
 }
 
@@ -36,15 +36,15 @@ ACTOR ExclamationCompass : ExclamationBase
 	ExclamationBase.ShowOnSpawn 1
 	States
 	{
-		Spawn:
-			EXCL C 0
-			Goto Active
-		Active:
-			EXCL C -1 BRIGHT
-			Stop
-		Inactive:
-			TNT1 A -1
-			Stop
+	Spawn:
+		EXCL C 0
+		Goto Active
+	Active:
+		EXCL C -1 BRIGHT
+		Stop
+	Inactive:
+		TNT1 A -1
+		Stop
 	}
 }
 
@@ -54,11 +54,11 @@ ACTOR ExclamationTouchable : Exclamation
 	ExclamationBase.TouchRange 72.0
 	States
 	{
-		Touched:
-			EXCL A 35 Bright
-		TouchLoop:
-			EXCL B -1
-			Stop
+	Touched:
+		EXCL A 35 Bright
+	TouchLoop:
+		EXCL B -1
+		Stop
 	}
 }
 
@@ -109,8 +109,8 @@ ACTOR ObjectiveIcon : BoAMapMarker
 	//$Color 1
 	States
 	{
-		Spawn:
-			EXCL C -1
-			Stop
+	Spawn:
+		EXCL C -1
+		Stop
 	}
 }
