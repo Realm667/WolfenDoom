@@ -129,10 +129,12 @@ class AlarmPanel : SwitchableDecoration
 		+NOGRAVITY
 		+SHOOTABLE
 		+NOBLOOD
+		+DONTFALL
 		-SOLID
 		Height 48;
 		Radius 24;
-		Health 35;
+		Health 1; //make sure that a minimum of damage destroys it...
+		Mass 0x7ffffff; //...in order to not move from where it is if hit but not enough - ozy81
 	}
 
 	States
