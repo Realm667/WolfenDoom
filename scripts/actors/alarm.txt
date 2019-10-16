@@ -180,6 +180,10 @@ class AlarmPanel : SwitchableDecoration
 		Death:
 			ALRM R 0;
 			ALRM # 5 {
+				// Clear the activator
+				if (NaziStandard(activator)) { NaziStandard(activator).activationgoal = null; }
+				activator = null;
+
 				if (!active) { frame++; } // If it wasn't active, show frame S, which is broken with switch in off position
 				A_PlaySound("World/Spark", CHAN_AUTO, 0.15);
 				A_SpawnItemEx("SparkFlare_Y1", 0, 0, 40);
