@@ -185,9 +185,10 @@ function int RandomFlinchAmount(int minimun, int maximum)
 // Called by player's Pain state. Jerks player's view angles based on received
 // damage.
 //
-script "PlayerFlinch" (void)
+script "PlayerFlinch" (int amt)
 {
-	int flinch = GetServerFlinchAmount(); // Random flinch distance.
+	int flinch = GetServerFlinchAmount() * max(min(amt, 255), 0) / 255; // Random flinch distance.
+
 	int player_number = PlayerNumber();
 	if (flinch > 0.0 && player_number >= 0 && player_number < MAX_PLAYERS && IsAlive(0))
 	{
