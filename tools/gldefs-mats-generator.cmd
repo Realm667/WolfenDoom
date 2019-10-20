@@ -3,7 +3,7 @@ setlocal EnableDelayedExpansion
 
 cd %~dp0\..
 
-for /R %%I in (textures\*) do call :process "%%~I"
+for /F %%I in ('dir /a /s /b textures\') do call :process "%%~I"
 goto :eof
 
 :process
