@@ -59,6 +59,17 @@ ACTOR Ink5 : Ink1
 	}
 }
 
+ACTOR Ink6 : Ink1
+{
+	//$Title Stilo Pen with Holder
+	States
+	{
+	Spawn:
+		PENS A -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
+
 ACTOR MonsterStatue
 {
 	//$Category Props (BoA)/Castle
