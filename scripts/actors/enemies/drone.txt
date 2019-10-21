@@ -1,6 +1,7 @@
 Class ProtoDrone : Nazi //ozy81
 {
 	LaserFindHitPointTracer HitPointTracer;
+	LaserBeam beam;
 	int firecount;
 
 	Default
@@ -72,17 +73,16 @@ Class ProtoDrone : Nazi //ozy81
 			Goto See;
 		Missile:
 			PROT A 10 {
-				A_FaceTarget(0, 180, flags:FAF_MIDDLE);
 				A_Playsound("proto/marker", CHAN_AUTO, 0.75);
 				firecount = 0;
 			}
 		Missile.Sight:
 			PROT A 1;
 			PROT A 0 {
-				A_FaceTarget(0, 180, flags:FAF_MIDDLE);
+				A_FaceTarget(1.0, 180, flags:FAF_MIDDLE);
 				A_FireLaser(0, "", 46, 0, 0.1);
 
-				if (firecount++ < 70) { SetStateLabel("Missile.Sight"); }
+				if (firecount++ < 70 || (!hitpointtracer.Results.HitActor || hitpointtracer.Results.HitActor != target)) { SetStateLabel("Missile.Sight"); }
 				else { firecount = 0; }
 			}
 		Missile.Loop:
@@ -92,12 +92,12 @@ Class ProtoDrone : Nazi //ozy81
 				A_FireLaser(firecount % 3 == 0, "tesla/loop", 46, firecount % 10 == 0, laseralpha, laseralpha);
 
 				if (firecount++ < 35) { SetStateLabel("Missile.Loop"); }
-				else { A_StopSound(CHAN_6); }
+				else { A_StopSound(CHAN_6); if (beam) { beam.Destroy(); } }
 			}
 			Goto See;
 		Pain:
 		Pain.Dagger:
-			PROT N 3;
+			PROT N 3 { if (beam) { beam.Destroy(); } }
 			"####" O 3 A_Pain();
 			"####" N 6;
 			Goto See;
@@ -130,7 +130,7 @@ Class ProtoDrone : Nazi //ozy81
 			A_SoundVolume(CHAN_6, volume);
 		}
 		DoTrace(self, angle, 2048, pitch, 0, zoffset, hitpointtracer);
-		DrawLaser(hitpointtracer.Results, "LaserBeam", "LaserPuff", damage, zoffset, drawdecal, alpha);
+		beam = Laser.DrawLaser(self, beam, hitpointtracer.Results, "LaserBeam", "LaserPuff", damage, zoffset, drawdecal, alpha);
 	}
 
 	action void DoTrace(Actor origin, double angle, double dist, double pitch, int flags, double zoffset, LaserFindHitPointTracer thistracer)
@@ -143,66 +143,6 @@ Class ProtoDrone : Nazi //ozy81
 
 		Vector3 tracedir = (cos(angle) * cos(pitch), sin(angle) * cos(pitch), -sin(pitch));
 		thistracer.Trace(origin.pos + (0, 0, zoffset), origin.CurSector, tracedir, dist, 0);
-	}
-
-	void DrawLaser(TraceResults traceresults, Class<Actor> spawnclass = "LaserBeam", Class<Actor> puffclass = "LaserPuff", int damage = 0, double zoffset = 0, bool drawdecal = true, double alpha = 1.0)
-	{
-		if (!traceresults) { return; }
-
-		double dist  = (pos + (0, 0, zoffset) - traceresults.HitPos).length();
-
-		//Laser beam
-		Actor mo = Spawn(spawnclass, pos + (0, 0, zoffset) + traceresults.HitVector * (dist / 2), ALLOW_REPLACE);
-		if (mo)
-		{
-			mo.master = self;
-			mo.target = self;
-			mo.pitch = pitch - 90;
-			mo.angle = angle;
-			mo.scale.x = FRandom(0.5, 0.75);
-			mo.scale.y = dist * 2.225;
-			mo.alpha *= alpha;
-		}
-
-		Actor flash = Spawn("SparkFlare_R" .. Random(1, 6), traceresults.HitPos, ALLOW_REPLACE);
-		if (flash)
-		{
-			flash.scale *= 0.15;
-			flash.alpha = 0.6 * alpha;
-		}
-
-		Actor puff;
-
-		if (traceresults.HitActor && !traceresults.HitActor.bNoBlood)
-		{
-			traceresults.HitActor.DamageMobj(mo, self, damage, "Laser");
-			if (drawdecal)
-			{
-				puff = Spawn("BodySmoke", traceresults.HitPos, ALLOW_REPLACE);
-				if (puff)
-				{
-					puff.scale *= 0.25;
-					puff.angle = puff.AngleTo(self);
-				}
-			}
-		}
-		else if (traceresults.HitType == TRACE_HitFloor || traceresults.HitType == TRACE_HitCeiling || traceresults.HitType == TRACE_HitWall)
-		{
-			// Spawn bullet puff
-			if (puffclass != "")
-			{
-				puff = Spawn(puffclass, traceresults.HitPos, ALLOW_REPLACE);
-				if (puff)
-				{
-					if (drawdecal)
-					{
-						puff.angle = self.AngleTo(puff);
-						puff.A_SprayDecal("LaserBeamScorch", 24.0);
-					}
-					puff.angle = puff.AngleTo(self);
-				}
-			}
-		}
 	}
 }
 
@@ -259,11 +199,9 @@ class LaserBeam : Actor
 	States
 	{
 		Spawn:
-			TNT1 A 0;
 			MDLA A 1;
-			Stop;
+			Loop;
 	}
-
 
 	override void Tick()
 	{
@@ -296,5 +234,80 @@ class LaserPuff : Actor
 		 		A_SpawnProjectile(String.Format("Spark_%c%i", RandomPick("W", "Y"), Random(1, 16)), 0, 0, 0, CMF_AIMDIRECTION | CMF_BADPITCH, Random(157,203));
 			}
 			Stop;
+	}
+}
+
+class Laser : Actor
+{
+	static LaserBeam DrawLaser(Actor origin, LaserBeam beam, TraceResults traceresults, Class<Actor> spawnclass = "LaserBeam", Class<Actor> puffclass = "LaserPuff", int damage = 0, double zoffset = 0, bool drawdecal = true, double alpha = 1.0)
+	{
+		if (!traceresults) { return beam; }
+		if (!origin) { return beam; }
+
+		Vector3 beamoffset = origin.pos + (0, 0, zoffset);
+		double dist  = (beamoffset - traceresults.HitPos).length();
+
+		//Laser beam
+		Vector3 beampos = beamoffset + traceresults.HitVector * (dist / 2);
+		if (!beam)
+		{
+			beam = LaserBeam(Spawn(spawnclass, beampos, ALLOW_REPLACE));
+			if (beam)
+			{
+				beam.master = origin;
+				beam.target = origin;
+			}
+		}
+
+		if (beam)
+		{
+			beam.SetOrigin(beampos, true);
+
+			beam.pitch = origin.pitch - 90;
+			beam.angle = origin.angle;
+			beam.scale.x = FRandom(0.5, 0.75);
+			beam.scale.y = dist * 2.225;
+			beam.alpha = beam.Default.alpha * alpha;
+		}
+
+		Actor flash = Spawn("SparkFlare_R" .. Random(1, 6), traceresults.HitPos, ALLOW_REPLACE);
+		if (flash)
+		{
+			flash.scale *= 0.15;
+			flash.alpha = max(0.25, 0.6 * alpha);
+		}
+
+		Actor puff;
+
+		if (traceresults.HitActor)
+		{
+			traceresults.HitActor.DamageMobj(beam, origin, damage, "Laser");
+			if (drawdecal && !traceresults.HitActor.bNoBlood)
+			{
+				puff = Spawn("BodySmoke", traceresults.HitPos, ALLOW_REPLACE);
+				if (puff)
+				{
+					puff.scale *= 0.25;
+					puff.angle = puff.AngleTo(origin);
+				}
+			}
+		}
+		else if (traceresults.HitType == TRACE_HitFloor || traceresults.HitType == TRACE_HitCeiling || traceresults.HitType == TRACE_HitWall)
+		{
+			// Spawn bullet puff
+			if (puffclass != "" && drawdecal)
+			{
+				puff = Spawn(puffclass, traceresults.HitPos - traceresults.HitVector * 3.0, ALLOW_REPLACE);
+
+				if (puff)
+				{
+						puff.angle = origin.AngleTo(puff);
+						puff.A_SprayDecal("LaserBeamScorch", 24.0);
+						puff.angle = puff.AngleTo(origin);
+				}
+			}
+		}
+
+		return beam;
 	}
 }
