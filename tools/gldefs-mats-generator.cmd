@@ -13,13 +13,15 @@ set texfullname=%~dpnx1
 set texfullname=!texfullname:*%cd%\=!
 set texfullname=%texfullname:\=/%
 
-set texbasename=%~n1%
-set texbasename=%texbasename:~,8%
+set texbasenameo=%~n1%
+set texbasename=%texbasenameo:~,8%
 
 for %%J in ("materials\displacement\%~n1.*") do set texmaterial=%%J
+set texmaterial=%texmaterial:\=/%
 
 call :output "%texfullname%" "%texmaterial%"
-call :output "%texbasename%" "%texmaterial%"
+rem -- only do base texture name if less than 8 characters
+if "%texbasenameo%"=="%texbasename%" call :output "%texbasename%" "%texmaterial%"
 goto :eof
 
 :output
