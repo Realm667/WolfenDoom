@@ -2,6 +2,7 @@ Class ProtoDrone : Nazi //ozy81
 {
 	LaserFindHitPointTracer HitPointTracer;
 	LaserBeam beam;
+	Actor flare;
 	int firecount;
 
 	Default
@@ -130,7 +131,7 @@ Class ProtoDrone : Nazi //ozy81
 			A_SoundVolume(CHAN_6, volume);
 		}
 		DoTrace(self, angle, 2048, pitch, 0, zoffset, hitpointtracer);
-		beam = Laser.DrawLaser(self, beam, hitpointtracer.Results, "LaserBeam", "LaserPuff", damage, zoffset, drawdecal, alpha);
+		[beam, flare] = Laser.DrawLaser(self, beam, flare, hitpointtracer.Results, "LaserBeam", "LaserPuff", damage, zoffset, drawdecal, alpha);
 	}
 
 	action void DoTrace(Actor origin, double angle, double dist, double pitch, int flags, double zoffset, LaserFindHitPointTracer thistracer)
@@ -189,6 +190,7 @@ class LaserBeam : Actor
 		+NOINTERACTION
 		+NOBLOCKMAP
 		+BRIGHT
+		+INTERPOLATEANGLES
 		Radius 0;
 		Height 0;
 		RenderStyle "Add";
@@ -239,10 +241,10 @@ class LaserPuff : Actor
 
 class Laser : Actor
 {
-	static LaserBeam DrawLaser(Actor origin, LaserBeam beam, TraceResults traceresults, Class<Actor> spawnclass = "LaserBeam", Class<Actor> puffclass = "LaserPuff", int damage = 0, double zoffset = 0, bool drawdecal = true, double alpha = 1.0)
+	static LaserBeam, Actor DrawLaser(Actor origin, LaserBeam beam, Actor flare, TraceResults traceresults, Class<Actor> spawnclass = "LaserBeam", Class<Actor> puffclass = "LaserPuff", int damage = 0, double zoffset = 0, bool drawdecal = true, double alpha = 1.0)
 	{
-		if (!traceresults) { return beam; }
-		if (!origin) { return beam; }
+		if (!traceresults) { return beam, flare; }
+		if (!origin) { return beam, flare; }
 
 		Vector3 beamoffset = origin.pos + (0, 0, zoffset);
 		double dist  = (beamoffset - traceresults.HitPos).length();
@@ -261,7 +263,7 @@ class Laser : Actor
 
 		if (beam)
 		{
-			beam.SetOrigin(beampos, true);
+			beam.SetXYZ(beampos);
 
 			beam.pitch = origin.pitch - 90;
 			beam.angle = origin.angle;
@@ -270,17 +272,26 @@ class Laser : Actor
 			beam.alpha = beam.Default.alpha * alpha;
 		}
 
-		Actor flash = Spawn("SparkFlare_R" .. Random(1, 6), traceresults.HitPos, ALLOW_REPLACE);
-		if (flash)
+		if (!flare)
 		{
-			flash.scale *= 0.15;
-			flash.alpha = max(0.25, 0.6 * alpha);
+			flare = Spawn("LaserFlare", traceresults.HitPos, ALLOW_REPLACE);
+			if (flare)
+			{
+				flare.master = beam;
+			}
+		}
+		if (flare)
+		{
+			flare.SetXYZ(traceresults.HitPos);
+
+			flare.frame = Random(0, 5);
+			flare.alpha = flare.Default.alpha * alpha;
 		}
 
 		Actor puff;
 
 		if (traceresults.HitActor)
-		{
+ 		{
 			traceresults.HitActor.DamageMobj(beam, origin, damage, "Laser");
 			if (drawdecal && !traceresults.HitActor.bNoBlood)
 			{
@@ -308,6 +319,41 @@ class Laser : Actor
 			}
 		}
 
-		return beam;
+		return beam, flare;
+	}
+}
+
+class LaserFlare : Actor
+{
+	Default
+	{
+		Height 0;
+		Radius 0;
+		Mass 0;
+		+BRIGHT
+		+FORCEXYBILLBOARD
+		+MISSILE
+		+NOBLOCKMAP
+		+NOCLIP
+		+NOGRAVITY
+		+NOINTERACTION
+		+INTERPOLATEANGLES
+		RenderStyle "Add";
+		Scale 0.0375;
+		Alpha 2.5; // Overbright so they show up better
+	}
+
+	States
+	{
+		Spawn:
+			SPKR # 1;
+			Loop;
+	}
+
+	override void Tick()
+	{
+		if (!master) { Destroy(); }
+
+		Super.Tick();
 	}
 }
