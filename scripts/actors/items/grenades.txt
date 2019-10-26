@@ -1,6 +1,7 @@
 class GrenadeBase : Actor // Base actor for anything we want Nazis to run away from as soon as they see it (e.g., grenades...)
 {
 	int feardistance;
+	bool hasHitEnemy;
 
 	Property FearDistance:feardistance;
 
@@ -12,5 +13,28 @@ class GrenadeBase : Actor // Base actor for anything we want Nazis to run away f
 	override void BeginPlay()
 	{
 		ChangeStatNum(Thinker.STAT_DEFAULT - 6); // Give these their own statnum for performance reasons with enemy grenade avoidance
+	}
+
+	override void PostBeginPlay()
+	{
+		hasHitEnemy = false;
+	}
+
+	override int SpecialMissileHit(Actor victim)
+	{
+		if (victim != target && victim.bSolid && victim.bShootable)
+		{
+			hasHitEnemy = true;
+		}
+		return Super.SpecialMissileHit(victim);
+	}
+
+	void A_SkipIfHit()
+	{
+		// Different than A_Countdown because it modifies the current state's duration
+		if (hasHitEnemy)
+		{
+			tics = 0;
+		}
 	}
 }
