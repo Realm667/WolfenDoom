@@ -13,11 +13,13 @@ class GrenadeBase : Actor // Base actor for anything we want Nazis to run away f
 	override void BeginPlay()
 	{
 		ChangeStatNum(Thinker.STAT_DEFAULT - 6); // Give these their own statnum for performance reasons with enemy grenade avoidance
+		Super.BeginPlay();
 	}
 
 	override void PostBeginPlay()
 	{
 		hasHitEnemy = false;
+		Super.PostBeginPlay();
 	}
 
 	override int SpecialMissileHit(Actor victim)
