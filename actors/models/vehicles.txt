@@ -125,10 +125,9 @@ ACTOR FlakVierling3D_Ship : 3dObstacle
 ACTOR Luftschiff : 3dObstacle
 {
 	//$Category Models (BoA)/Ships
-	//$Title Luftschiff LZ130
+	//$Title Luftschiff LZ127
 	//$Color 3
 	DistanceCheck "scenelod"
-	RenderRadius 4096
 	Radius 32
 	Height 32
 	-SOLID
@@ -138,9 +137,8 @@ ACTOR Luftschiff : 3dObstacle
 ACTOR Luftschiff_End : SwitchableDecoration
 {
 	//$Category Models (BoA)/Ships
-	//$Title Luftschiff LZ130 (Castle Wolfenstein)
+	//$Title Luftschiff LZ127 (Castle Wolfenstein)
 	//$Color 3
-	RenderRadius 4096
 	Radius 32
 	Height 32
 	-SOLID
@@ -159,8 +157,7 @@ ACTOR Luftschiff_End : SwitchableDecoration
 		"####" A 0 A_SpawnItemEx("LZ130Nuke", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
 		"####" A 0 A_SpawnItemEx("LZ130SmokePillar", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS)
 		"####" A 1 A_SpawnItemEx("LZ130SmokePillar", 0, 0, -512, 0, 0, 0, 0, SXF_TRANSFERPOINTERS)
-		"####" A 10
-		"####" A 1 A_FadeOut(0.0001)
+		"####" B -1
 		Stop
 	}
 }
