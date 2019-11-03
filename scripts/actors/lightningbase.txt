@@ -95,6 +95,7 @@ Class LightningBeam : Actor
 	{
 		+NOBLOCKMAP
 		+NOINTERACTION
+		+INTERPOLATEANGLES
 		RenderStyle "None";
 
 		LightningBeam.AngleRandom 5;
@@ -107,6 +108,8 @@ Class LightningBeam : Actor
 		LightningBeam.PitchRandom 5;
 		LightningBeam.StepFactor 1;
 		LightningBeam.TrailActor "LightningTrailBeamZap";
+
+		Obituary "$ELECTROCUTION";
 	}
 
 	States
@@ -157,8 +160,10 @@ Class LightningBeam : Actor
 
 		Actor prev;
 
-		While (CurDistance < MaxDistance)
+		While (CurDistance < MaxDistance - StepDistance)
 		{
+			if (CurDistance > 0 && !level.IsPointInLevel(pos)) { return; }
+
 			bool spawned;
 			Actor t;
 
@@ -168,7 +173,7 @@ Class LightningBeam : Actor
 				if (closest) { tracer = closest; }
 			}
 
-			A_FaceTracer(faceamt, faceamt, 0, 0, FAF_MIDDLE);
+			A_FaceTracer(faceamt, 0, 0, 0, FAF_MIDDLE);
 
 			Scale.X = MinScale + (MaxDistance - CurDistance) * (MaxScale - MinScale) / MaxDistance;
 
@@ -189,9 +194,9 @@ Class LightningBeam : Actor
 					pitch = pitch + PitchRandom * RandomPick[pitchdir](-1, 1);
 					angle = angle + AngleRandom * RandomPick[angledir](-1, 1);
 
-					Choke--;
+					Choke = max(0, Choke -1);
 				}
-				else 
+				else if (CurDistance < (MaxDistance - StepDistance * 3))
 				{
 					Choke = Random(ChokeMin, ChokeMax);
 				}
@@ -199,8 +204,8 @@ Class LightningBeam : Actor
 				// Spawn a split from the main beam
 				if (splitamt > 0 && scale.x > 0.001 && Random[split]() < 10 * splitamt * (child + 1) && child < ChokeMax + 2)
 				{
-					[spawned, t] = A_SpawnItemEx(self.GetClass(), cos(pitch), 0, -sin(pitch), 0, 0, 0, 0, BEAM_FLAGS);
-					if (spawned) {
+					t = Spawn(GetClass(), pos + (RotateVector((cos(pitch), 0), angle), -sin(pitch)));
+					if (t) {
 						t.master = master;
 						t.pitch = FRandom(pitch - PitchRandom, pitch + PitchRandom);
 						t.angle = FRandom(angle - AngleRandom, angle + AngleRandom);
@@ -213,17 +218,18 @@ Class LightningBeam : Actor
 						LightningBeam(t).MaxScale = scale.x;
 						LightningBeam(t).closest = closest;
 						t.scale.x = scale.x / (child + 1);
+						t.target = target;
 					}
 				}
 			}
 
-			// D4D Code
+			// Spawn call here was originally D4D Code using A_SpawnItemEx
 			// Spawn the beam with the same angle and pitch. Note that the
 			// beam is being centered so we have to take that into account
 			// and spawn it FORWARD based on half the beam's length.
 			// Then move forward by a beam's length and repeat until done.
-			[spawned, t] = A_SpawnItemEx(trail, cos(pitch) * (StepDistance / 2.0), 0, -sin(pitch) * (StepDistance / 2.0), 0, 0, 0, 0, BEAM_FLAGS);
-			if (spawned)
+			t = Spawn(trail, pos + (RotateVector((cos(-pitch) * StepDistance / 2.0, 0), angle), sin(-pitch) * StepDistance / 2.0));
+			if (t)
 			{
 				if (t.waterlevel > 0)
 				{
@@ -235,25 +241,21 @@ Class LightningBeam : Actor
 						PitchRandom = 0;
 						AngleRandom = 45;
 
-						[spawned, t] = A_SpawnItemEx(trail, StepDistance / 2.0, 0, 0, 0, 0, 0, 0, BEAM_FLAGS);
+						t = Spawn(trail, pos + (RotateVector((StepDistance / 2.0, 0), angle), 0));
 					}
 
 					if (t) { ElectrifySector(t.CurSector, t.Damage); }
 				}
 
 				t.master = master;
+				t.angle = angle;
 				t.pitch = pitch + 90;
+				t.scale = scale;
+				t.target = target;
+				t.tracer = tracer;
 			}
 
-			Warp(self, cos(pitch) * StepDistance, 0, -sin(pitch) * StepDistance, flags:WARPF_NOCHECKPOSITION);
-
-			if (
-				CurDistance > 0 &&
-				(
-					(origin && !CheckSight(origin, 0)) ||
-					(prev && !CheckSight(prev, 0))
-				)
-			) { CurDistance = MaxDistance; }
+			SetXYZ(pos + (RotateVector((cos(-pitch) * StepDistance, 0), angle), sin(-pitch) * StepDistance));
 
 			prev = t;
 
@@ -265,7 +267,7 @@ Class LightningBeam : Actor
 	{
 		for (Actor mo = cur.thinglist; mo != null; mo = mo.snext)
 		{
-			if (mo.waterlevel > 0) { mo.A_DamageSelf(damage > 0 ? damage : Random(0, 2), "Electric"); }
+			if (mo.waterlevel > 0 && mo.bShootable) { mo.DamageMobj(self, self, damage > 0 ? damage : Random(0, 2), "Electric"); }
 		}
 	}
 
@@ -609,7 +611,7 @@ Class MovingTrailBeam : Actor
 
 		if (master && master is "PlayerPawn")
 		{ 
-			SetOrigin(master.pos + beamoffset, true);
+			SetXYZ(master.pos + beamoffset);
 		}
 	}
 
@@ -720,7 +722,7 @@ Class TargetActor : Actor
 	{
 		if (master)
 		{
-			Warp(master, offset.x, offset.y, offset.z, flags:WARPF_ABSOLUTEOFFSET);
+			SetXYZ(master.pos + offset);
 		}
 
 		Super.Tick();

@@ -9,8 +9,11 @@ class ElectricalArc : SwitchableDecoration
 	{
 		//$Category Hazards (BoA)/ZScript
 		//$Title Electrical Arc
+		//$Sprite AMRKA0
 		//$Color 3
 		+NOGRAVITY
+		Height 0;
+		Radius 0;
 		ElectricalArc.Beam "LightningBeamArc";
 	}
 
@@ -30,8 +33,9 @@ class ElectricalArc : SwitchableDecoration
 		bool spawned;
 		Actor p;
 
-		[spawned, p] = A_SpawnItemEx(beam);
-		if (LightningBeam(p)) {
+		p = Spawn(beam, pos);
+		if (LightningBeam(p))
+		{
 			p.master = self;
 			p.pitch = pitch;
 			p.angle = angle;
@@ -54,6 +58,7 @@ class ElectricalPillar : ElectricalArc
 	{
 		if (waterlevel) { beam = "LightningBeamArc"; }
 		pitch = -90;
+		Super.PostBeginPlay();
 	}
 
 	override void Tick()

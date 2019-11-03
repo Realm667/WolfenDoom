@@ -154,10 +154,8 @@ class NaziWeapon : Weapon
 
 		let p = player.mo;
 
-		double pitchoffset = p.radius * -sin(p.pitch);
-
-		[spawned, b] = A_SpawnItemEx(beam, pitchoffset, 0, player.viewheight * 0.8);
-		if (spawned)
+		b = Spawn(beam, pos + (RotateVector((max(4, cos(p.pitch) * p.radius), 0), angle), player.viewheight * 0.8));
+		if (b)
 		{
 			b.master = p;
 			b.pitch = p.pitch;
