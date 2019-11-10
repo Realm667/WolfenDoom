@@ -28,7 +28,7 @@ ACTOR Nebelwerfer : NaziWeapon
 	Fire:
 		NEBG A 0 A_GunFlash
 		NEBG A 0 A_PlaySound("nebelwerfer/fire", CHAN_WEAPON)
-		NEBG A 2 A_FireCustomMissile("NebRocket")
+		NEBG A 2 A_FireProjectile("NebRocket")
 		NEBG BCDEB 1 A_SetPitch(pitch-(0.5*CallACS("RecoilAmount")))
 		NEBG A 2 A_ReFire
 		Goto Ready
@@ -66,13 +66,14 @@ ACTOR NebRocket : GrenadeBase
 		MNSS A 1 BRIGHT LIGHT(NEBLIGHT) A_SpawnItemEx("RocketFlame",random(-1,1),0,random(-1,1))
 		Loop
 	Death:
+	Crash:
 		EXP1 A 0 A_SetScale(0.85,0.95)
 		EXP1 A 0 A_AlertMonsters
 		EXP1 A 0 A_StopSound(CHAN_AUTO)
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark_Longlive", 0, 0, 0, frandom(-5.0,5.0), frandom(-5.0,5.0), frandom(-5.0,5.0), random(0,359)) //T667 improvements
 		TNT1 A 0 A_SpawnItemEx("NebNuke",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
 		TNT1 A 8 A_SpawnItemEx("GeneralExplosion_Small",56,0,32)
-		FRME A 1 BRIGHT LIGHT(NEBEXPLO) A_Explode(64,56)
+		FRME A 1 BRIGHT LIGHT(NEBEXPLO) { A_Explode(64,56); A_SpawnItemEx("ZScorch");}
 		FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT(NEBEXPLO)
 		Stop
 	}
@@ -172,7 +173,7 @@ ACTOR NebelwerferTruck : Nebelwerfer
 		HSML A 0 A_GunFlash
 		HSML A 0 A_PlaySound("nebelwerfer/fire", CHAN_WEAPON)
 		HSML BBC 1
-		HSML C 0 A_FireCustomMissile("NebRocket2")
+		HSML C 0 A_FireProjectile("NebRocket2")
 		HSML CDD 1 A_SetPitch(pitch-(0.7*CallACS("RecoilAmount")))
 		HSML A 40
 		HSML A 2 A_ReFire
@@ -181,7 +182,7 @@ ACTOR NebelwerferTruck : Nebelwerfer
 		HSML A 0 A_GunFlash
 		HSML A 0 A_PlaySound("nebelwerfer/fire", CHAN_WEAPON)
 		HSML BBC 1
-		HSML C 0 A_FireCustomMissile("NebRocket2")
+		HSML C 0 A_FireProjectile("NebRocket2")
 		HSML CDD 1 A_SetPitch(pitch-(0.35*CallACS("RecoilAmount")))
 		HSML A 40
 		HSML A 2 A_ReFire

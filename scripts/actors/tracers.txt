@@ -191,6 +191,20 @@ class ZBulletChip : ZFlatDecal
     }
 }
 
+class ZScorch : ZBulletChip
+{
+    States
+    {
+    Spawn:
+        TNT1 A 0 NODELAY
+        {
+            return curState + 1;
+        }
+        ZSCO A -1;
+        Stop;
+    }
+}
+
 class ZFlatDecalKiller : EventHandler
 {
     Array<ZFlatDecal> flatDecals;

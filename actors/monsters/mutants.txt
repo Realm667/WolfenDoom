@@ -111,11 +111,11 @@ ACTOR SuperMutant : Mutant
 		SUPM F 6 A_FaceTarget
 		SUPM G 0 A_PlaySound("supaproj/fire", CHAN_WEAPON)
 		SUPM G 4 LIGHT(MUTNFIRE) A_SpawnProjectile("MutantBounceBall",40,random(-22,-20),random(-1,1))
-		SUPM G 0 {user_count++; if(user_count > 7) {user_count = 0; return ResolveState("See.MutantFasterAlt");} return ResolveState("");}
+		SUPM G 0 {user_count++; if(user_count > 3) {user_count = 0; return ResolveState("See.MutantFasterAlt");} return ResolveState("");}
 		SUPM F 5 A_FaceTarget
 		SUPM P 0 A_PlaySound("supaproj/fire", CHAN_WEAPON)
 		SUPM P 4 LIGHT(MUTNFIRE) A_SpawnProjectile("MutantBounceBall",40,random(18,20),random(-1,1))
-		SUPM P 0 {user_count++; if(user_count > 7) {user_count = 0; return ResolveState("See.MutantFasterAlt");} return ResolveState("");}
+		SUPM P 0 {user_count++; if(user_count > 3) {user_count = 0; return ResolveState("See.MutantFasterAlt");} return ResolveState("");}
 		SUPM H 5 A_MonsterRefire(15,"See")
 		SUPM H 0 A_FaceTarget
 		Goto Missile+1
@@ -242,7 +242,6 @@ ACTOR BigMutant2 : BigMutant1
 	Health 450
 	PainChance 64
 	Obituary "$GMUTANT2"
-	+MISSILEEVENMORE
 	DropItem "NebAmmo", 128, 2
 	States
 	{
@@ -256,21 +255,21 @@ ACTOR BigMutant2 : BigMutant1
 		MTB2 G 5 A_CustomMeleeAttack(8*random(1,5))
 		Goto See
 	Missile:
-		MTB2 E 9 A_FaceTarget
+		MTB2 E 20 A_FaceTarget
 		MTB2 E 0 A_Jump(96,"Missile2")
 		MTB2 E 0 A_Jump(192,"Missile3")
-		MTB2 F 4 A_SpawnProjectile("MutantRocket",62,0,random(-8,-16))
-		MTB2 E 9 A_FaceTarget
+		MTB2 F 6 A_SpawnProjectile("MutantRocket",62,0,random(-8,-16))
+		MTB2 E 8 A_FaceTarget
 		Goto See
 	Missile2:
-		MTB2 G 4 A_SpawnProjectile("MutantRocket",62,0,random(8,16))
-		MTB2 E 9 A_FaceTarget
+		MTB2 G 8 A_SpawnProjectile("MutantRocket",62,0,random(8,16))
+		MTB2 E 20 A_FaceTarget
 		Goto See
 	Missile3:
 		MTB2 F 0 A_SpawnProjectile("MutantRocket", 62,0,random(-8,-16))
 		MTB2 F 0
-		MTB2 G 5 A_SpawnProjectile("MutantRocket", 62,0, 0)
-		MTB2 E 9 A_FaceTarget
+		MTB2 G 8 A_SpawnProjectile("MutantRocket", 62,0, 0)
+		MTB2 E 20 A_FaceTarget
 		Goto See
 	}
 }
