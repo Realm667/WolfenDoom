@@ -205,6 +205,43 @@ class ZScorch : ZBulletChip
     }
 }
 
+class ZScorchLower : ZBulletChip
+{
+	Default
+	{
+		Scale 0.5;
+	}
+	
+    States
+    {
+    Spawn:
+        TNT1 A 0 NODELAY
+        {
+            return curState + Random (1,2);
+        }
+        ZSCO BC -1;
+        Stop;
+    }
+}
+
+class ZPlasma : ZBulletChip
+{
+	Default
+	{
+		Scale 1.5;
+	}
+    States
+    {
+    Spawn:
+        TNT1 A 0 NODELAY
+        {
+            return curState + Random (1,2);
+        }
+        ZSCO DE -1;
+        Stop;
+    }
+}
+
 class ZFlatDecalKiller : EventHandler
 {
     Array<ZFlatDecal> flatDecals;

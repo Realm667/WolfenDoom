@@ -260,6 +260,7 @@ ACTOR AstroRocket
 	SeeSound "astrolauncher/fire"
 	DeathSound "astrolauncher/explode"
 	BounceSound "astrolauncher/bounce"
+	Decal BFGScorch
 	Obituary "$OBASTROR"
 	-NOGRAVITY
 	+THRUGHOST
@@ -271,7 +272,7 @@ ACTOR AstroRocket
 		Loop
 	Death:
 		TNT1 AAAAA 0 A_SpawnItemEx("Spark_G1",0,0,0,random(1,2),random(1,2),random(1,2),random(1,360))
-		TNT1 A 0 A_SpawnItemEx("SparkFlare_G1")
+		TNT1 A 0 { A_SpawnItemEx("SparkFlare_G1"); A_SpawnItemEx("ZPlasma"); }
 		TNT1 A 0 A_Explode
 		ASRK DEF 4
 		Stop

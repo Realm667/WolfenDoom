@@ -27,6 +27,10 @@ Class LightningPuff : Actor
 		Spawn:
 			TNT1 A 10;
 			Stop;
+		Death:
+		Crash:
+			TNT1 A 1 A_SpawnItemEx("ZScorchLower");
+			Stop;
 	}
 }
 
@@ -50,6 +54,10 @@ Class LightningPuff2 : Actor
 	{
 		Spawn:
 			TNT1 A 20;
+			Stop;
+		Death:
+		Crash:
+			TNT1 A 1 A_SpawnItemEx("ZScorchLower");
 			Stop;
 	}
 }
