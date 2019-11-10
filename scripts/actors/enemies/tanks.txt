@@ -431,7 +431,7 @@ class TankBase : VehicleBase
 		while ( (pf = PlayerFollower(Finder.Next())) )
 		{
 			if (!IsValidTarget(pf)) { continue; }
-			if (enemy && Distance3d(mo) > Distance3d(enemy)) { continue; }
+			if (enemy && Distance3d(pf) > Distance3d(enemy)) { continue; }
 
 			enemy = pf;
 		}
