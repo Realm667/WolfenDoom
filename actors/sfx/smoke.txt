@@ -21,7 +21,7 @@ ACTOR PuffSmoke
 		GRM2 A 0 A_Jump(256,"End")
 		GRM1 A 0 A_Jump(256,"End")
 	End:
-		"####" A 0 A_JumpIf(!CallACS("SmokeType"),"End2") 
+		"####" A 0 A_JumpIf(!CallACS("SmokeType"),"End2")
 		"####" AAAAAAAAAAAAAAA 1 A_FadeIn(0.04)
 		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 {
 						A_FadeOut(0.025);
@@ -61,7 +61,7 @@ ACTOR WaterSmokePuff : WaterSmoke {Scale 0.18}
 ACTOR WaterSmokePuffSmall : WaterSmoke {Scale 0.10}
 
 
-ACTOR PowerPlantSmokePuff : PuffSmoke 
+ACTOR PowerPlantSmokePuff : PuffSmoke
 {
 	Scale 0.64
 	States
@@ -77,7 +77,7 @@ ACTOR PowerPlantSmokePuff : PuffSmoke
 	}
 }
 
-ACTOR PowerPlantSmokePuffSmall : PuffSmoke 
+ACTOR PowerPlantSmokePuffSmall : PuffSmoke
 {
 	Scale 0.32
 	States
@@ -93,7 +93,7 @@ ACTOR PowerPlantSmokePuffSmall : PuffSmoke
 	}
 }
 
-ACTOR PowerPlantSmokePuffLarge : PuffSmoke 
+ACTOR PowerPlantSmokePuffLarge : PuffSmoke
 {
 	Scale 1.00
 	States
