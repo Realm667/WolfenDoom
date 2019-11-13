@@ -1340,7 +1340,7 @@ ACTOR GoeringProjectile : NebRocket
 	Spawn:
 		MNSS A 0 NODELAY A_PlaySound("nazi/missileengine", CHAN_AUTO, 0.3, TRUE)
 	Fly:
-		MNSS AAAAAAAAAAAAAA 10 BRIGHT LIGHT(NEBLIGHT)
+		MNSS AAAAAAAAAA 8 BRIGHT LIGHT(NEBLIGHT)
 			{
 				A_SpawnItemEx("TracerSpark", random(-8,8), random(-8,8), random(-8,8), random(-2,2), random(-2,2), random(-2,2), random(0,359));
 				A_SpawnItemEx("TracerSpark", random(-8,8), random(-8,8), random(-8,8), random(-2,2), random(-2,2), random(-2,2), random(0,359));
