@@ -250,6 +250,8 @@ OptionMenu "RenderOptions"
 	Slider "$RE_SCEN","scenelod",1024,16384,1024, 0
 	Slider "$RE_SFX","sfxlod",1024,16384,1024, 0
 	Slider "$RE_TREE","treeslod",1024,16384,1024, 0
+	SafeCommand "$OPT_PORT1", "boa_portalsN", "$OPT_PORTS1"
+	SafeCommand "$OPT_PORT2", "boa_portalsY", "$OPT_PORTS2"
 }
 
 OptionMenu "PostProcessShaderOptions"
