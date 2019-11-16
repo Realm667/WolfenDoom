@@ -1,4 +1,4 @@
-//////////
+﻿//////////
 //BOSSES// 
 //////////
 ACTOR AngelOfDeath : Base
@@ -1328,7 +1328,7 @@ ACTOR HimmlerBoss : RocketMan
 	//$Title Himmler (Boss)
 	Base.BossIcon "BOSSICO2"
 	Tag "Heinrich Himmler"
-	Health 2000
+	Health 1600
 	PainChance 8 //prevent UMG43 and nebelwerfer to stop the Boss attacking player, needs to be applied to many bosses - ozy81
 	Mass 200
 	+LOOKALLAROUND
@@ -1624,7 +1624,8 @@ ACTOR MadDoctor3 : MadDoctor
 	//$Title Dr Mengele (Boss)
 	Base.BossIcon "BOSSICO2"
 	Tag "Dr. Mengele"
-	Health 2000
+	Health 1600
+	PainChance 48
 	DamageFactor "MutantPoison", 0
 	DamageFactor "Normal", 0.5
 	DamageFactor "Poison", 0
