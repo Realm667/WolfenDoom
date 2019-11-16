@@ -36,7 +36,7 @@ class GrenadeBase : Actor // Base actor for anything we want Nazis to run away f
 		// Different than A_Countdown because it modifies the current state's duration
 		if (hasHitEnemy)
 		{
-			tics = 0;
+			SetState(CurState.NextState);
 		}
 	}
 }
