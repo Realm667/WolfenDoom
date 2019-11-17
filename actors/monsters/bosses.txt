@@ -1332,6 +1332,7 @@ ACTOR HimmlerBoss : RocketMan
 	PainChance 8 //prevent UMG43 and nebelwerfer to stop the Boss attacking player, needs to be applied to many bosses - ozy81
 	Mass 200
 	+LOOKALLAROUND
+	+MISSILEMORE
 	Obituary "$HIMMLER"
 	SeeSound "Boss1/Sighted"
 	DeathSound "Boss1/Death"
@@ -1625,7 +1626,7 @@ ACTOR MadDoctor3 : MadDoctor
 	Base.BossIcon "BOSSICO2"
 	Tag "Dr. Mengele"
 	Health 1600
-	PainChance 48
+	PainChance 0
 	DamageFactor "MutantPoison", 0
 	DamageFactor "Normal", 0.5
 	DamageFactor "Poison", 0
