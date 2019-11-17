@@ -295,7 +295,7 @@ class SpriteShadowHandler : EventHandler
 			if (!mo.bIsMonster || mo is "PlayerPawn" || (mo is "Base" && !Base(mo).shadow) || mo.CountInv("Z_DontShadeMe")) continue;
 
 			// intentionally using 2D distance because it's faster
-			if (mo.Distance2DSquared(p.camera) > shadowDist ** 2)
+			if (p.camera && mo.Distance2DSquared(p.camera) > shadowDist ** 2)
 			{
 				let shadeMe = Z_ShadeMe(mo.FindInventory("Z_ShadeMe"));
 

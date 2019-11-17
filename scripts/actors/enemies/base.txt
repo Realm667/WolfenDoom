@@ -393,7 +393,7 @@ class Base : Actor
 
 			//bShootable = false;
 			// Take 50% damage instead, and prevent pain
-			if (developer) Console.Printf("Starting to dodge");
+			//if (developer) Console.Printf("Starting to dodge");
 			bNoPain = true;
 			DamageFactor = Default.DamageFactor * 0.5;
 
@@ -843,6 +843,7 @@ class Nazi : Base
 	int healdistance;
 	bool user_fadedeath;
 	int user_noaltdeath;
+	Actor closestplayer;
 
 	Property Healer:healflags;
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
@@ -1186,11 +1187,11 @@ class Nazi : Base
 			"####" A 0 { return ResolveState("See"); }
 		See.Static: // Static Walk Pattern (non-moving, limited frame actor)
 			"####" "#" 0 { user_incombat = True; }
-			"####" "#" 1 A_Chase;
+			"####" "#" 1 A_NaziChase("Melee", "Missile");
 			"####" A 0 { return ResolveState("See"); }
 		See.Sniper: // Sniper Walk Pattern (non-moving)
 			"####" "#" 0 { user_incombat = True; }
-			"####" "#" 1 A_Chase(null, "Missile", CHF_NODIRECTIONTURN);
+			"####" "#" 1 A_NaziChase("Melee", "Missile", CHF_NODIRECTIONTURN);
 			"####" F 0 { return ResolveState("See"); }
 		See.Dodge:
 			"####" A 0 {
@@ -1223,7 +1224,7 @@ class Nazi : Base
 		Dodge.End:
 			"####" A 2;
 			"####" A 0 {
-				if (developer) Console.Printf("Done dodging");
+				//if (developer) Console.Printf("Done dodging");
 				sprite = SpawnState.sprite;
 				A_Face(target);
 				A_SetSize(-1, Default.height);
@@ -1431,7 +1432,11 @@ class Nazi : Base
 			if (candodge && Distance3D(target) < radius + 64 + target.radius) { A_DoSideRoll(force:true); } // Roll away if it's close
 			else { A_Chase(null, null, flags); } // If running from a grenade, just run away and don't fire
 		}
-		else { A_Chase(melee, missile, flags); }
+		else
+		{
+			if (closestplayer && target && closestplayer != target && Random[switchtarget](0, 100) < 20 && CheckSight(closestplayer) && Distance3D(closestplayer) < Distance3D(target)) { target = closestplayer; }
+			A_Chase(melee, missile, flags);
+		}
 
 		if (candodge && !crouchtimeout) { A_TryHide(); }
 	}
@@ -2090,6 +2095,8 @@ class Nazi : Base
 			{
 				A_LookForGrenades();
 			}
+
+			if (level.time && level.time % interval) { closestplayer = FindClosestPlayer(); }
 		}
 
 		Super.Tick();

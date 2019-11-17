@@ -326,7 +326,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		{
 			LookExParams SearchParams;
 
-			SearchParams.fov = fov;
+			SearchParams.fov = 360; // Always look all around for a player to follow
 			SearchParams.minDist = 0;
 			SearchParams.maxDist = 1024; // Far less than max distance so they don't just open fire from the other side of the map
 			SearchParams.maxHearDist = 1024;
@@ -344,6 +344,8 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 					target = mo;
 				}
 			}
+
+			SearchParams.fov = fov; // Set default fov for future searches
 		}
 
 		if (target)
@@ -527,6 +529,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			if (
 				mo.health <= 0 ||
 				mo.bDormant ||
+				!mo.bShootable ||
 				mo.bFriendly == bFriendly ||
 				mo.GetSpecies() == Species ||
 				Distance3d(mo) > targetrange ||
