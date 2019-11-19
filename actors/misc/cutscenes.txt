@@ -504,8 +504,9 @@ ACTOR TMRUFlag : TMBlazko
 	States
 	{
 	Spawn:
-		RUSF A -1
-		Stop
+		RUSF AB 1 A_SetTics(random(20,80))
+		"####" BA 1 A_SetTics(random(20,80))
+		Loop
 	}
 }
 
