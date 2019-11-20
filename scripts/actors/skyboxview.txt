@@ -104,11 +104,11 @@ class SkyViewPointStatic : SkyViewPoint
 			offset = RotateVector(offset, angle);
 
 			// Set the viewpoint's height location
-			double heightdelta = (base.pos.z - anchor.pos.z) / scaling;
+			double heightdelta = (base.player.viewz - anchor.pos.z) / scaling;
 
 			heightdelta /= 2;
 
-			SetOrigin((SpawnPoint.xy + offset, SpawnPoint.z + heightoffset + heightdelta), true);
+			SetXYZ((SpawnPoint.xy + offset, SpawnPoint.z + heightoffset + heightdelta));
 		}
 	}
 }

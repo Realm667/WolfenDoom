@@ -1370,7 +1370,9 @@ class Nazi : Base
 				if (abs(deltaangle(angle, AngleTo(mo))) > 32.5) { continue; }
 				if (!CheckSight(mo, SF_SEEPASTBLOCKEVERYTHING | SF_SEEPASTSHOOTABLELINES)) { continue; }
 
-				target = mo;
+				if (mo is "ShermanPlayer") { target = ShermanPlayer(mo).turret; }
+				else { target = mo; }
+
 				if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); }
 			}
 		}
@@ -1435,6 +1437,8 @@ class Nazi : Base
 		else
 		{
 			if (closestplayer && target && closestplayer != target && Random[switchtarget](0, 100) < 20 && CheckSight(closestplayer) && Distance3D(closestplayer) < Distance3D(target)) { target = closestplayer; }
+			if (target is "ShermanPlayer") { target = Random(0, 1) ? ShermanPlayer(target).turret : ShermanPlayer(target).treads; }
+
 			A_Chase(melee, missile, flags);
 		}
 
