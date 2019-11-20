@@ -460,7 +460,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			}
 
 			if (health > 25 && weapon) { return A_Defend(false); }
-			if (health < 75 && Random[Heal]() < 8) { return ResolveState("Heal"); }
+			if (health < (SpawnHealth() * 3 / 4) && Random[Heal]() < 8) { return ResolveState("Heal"); }
 		}
 
 		return ResolveState(null);
@@ -597,6 +597,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 					A_Playsound("misc/health_pkup");
 					playerhealtime = 2;
 					playerToChase.player.health += 10;
+					playerToChase.health += 10;
 				}
 			}
 		}
@@ -630,7 +631,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			}
 		}
 
-		if (!atPlayer && health < 75 && Random[Heal]() < 8) { return ResolveState("Heal"); }
+		if (!atPlayer && health < (SpawnHealth() * 3 / 4) && Random[Heal]() < 8) { return ResolveState("Heal"); }
 
 		return ResolveState(null);
 	}
