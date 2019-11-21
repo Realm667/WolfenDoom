@@ -2,6 +2,7 @@ class Debris : Actor
 {
 	int moundstyle;
 	bool domound;
+	Array<DebrisBase> debrislist;
 
 	Property MoundStyle:moundstyle;
 	Property DrawMound:domound;
@@ -99,6 +100,12 @@ class Debris : Actor
 		}
 
 		Super.PostBeginPlay();
+
+		// Directly call PostBeginPlay for all spawned debris actors to set their orientation and position
+		for (int d = 0; d < debrislist.Size(); d++)
+		{
+			if (debrislist[d]) { debrislist[d].PostBeginPlay(); }
+		}
 	}
 
 	void SpawnRandom(Class<Actor> debrisclass, int probability = 255, int amt = 1, float distance = -1, float mindistance = 0)
@@ -116,7 +123,7 @@ class Debris : Actor
 			
 				Vector2 spawnpos = AngleToVector(spawnangle, spawndist);
 
-				Actor mo = Spawn(debrisclass, pos + (spawnpos, height));
+				Actor mo = Spawn(debrisclass, ((pos.xy + spawnpos), GetZAt(pos.x + spawnpos.x, pos.y + spawnpos.y, 0, GZF_ABSOLUTEPOS)));
 
 				// Don't keep objects that are spawned on floors above or on the other side of map geometry.
 				if (mo && !CheckSight(mo)) { mo.Destroy(); }
@@ -136,6 +143,10 @@ class Debris : Actor
 					
 						if (Random() < 128 && mo.FindState("Death")) { mo.SetStateLabel("Death"); }
 					}
+					else
+					{
+						debrislist.Push(DebrisBase(mo));
+					}
 				}
 			}
 		}
@@ -148,6 +159,7 @@ class DebrisBase : Actor
 	int user_variant;
 	bool doscale;
 	double maxscale;
+	Vector3 oldpos;
 
 	Property VariantCount:variants;
 	Property ShouldScale:doscale;
@@ -169,6 +181,11 @@ class DebrisBase : Actor
 		Spawn:
 			MDLA A -1;
 			Stop;
+	}
+
+	override void BeginPlay()
+	{
+		ChangeStatNum(STAT_STATIC); // Don't tick debris actors.  Note: PostBeginPlay must now be called manually for these actors!
 	}
 
 	override void PostBeginPlay()
@@ -228,6 +245,7 @@ class DebrisMound : Actor
 		if (master)
 		{
 			scale = master.scale;
+			scale.y = min(scale.y, scale.x / 3); // Don't make tall, pointy mounds
 			A_SetSize(master.radius, master.height);
 		}
 
