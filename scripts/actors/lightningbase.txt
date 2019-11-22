@@ -7,14 +7,10 @@ Class LightningPuff : Actor
 		Radius 0;
 		Height 0;
 		Projectile;
-		+ALWAYSPUFF
 		+BLOODLESSIMPACT
 		+DONTSPLASH
 		+NOINTERACTION
 		+NOTONAUTOMAP
-		+PUFFGETSOWNER
-		+PUFFONACTORS
-		+SKYEXPLODE
 		RenderStyle "None";
 		Decal "RailScorchLower";
 		DamageType "Electric";
@@ -28,7 +24,20 @@ Class LightningPuff : Actor
 		Death:
 		Crash:
 			TNT1 A 1 A_SpawnItemEx("ZScorchLower");
+			TNT1 A 10 A_SpawnSparks();
 			Stop;
+	}
+
+	void A_SpawnSparks()
+	{
+		if (Random(0, 6)) { return; }
+
+		for (int s = 1; s < Random(2, 5); s++)
+		{
+			// Spawn random white or yellow sparks
+	 		Actor mo = A_SpawnProjectile(String.Format("Spark_%c%i", RandomPick("W", "Y"), s), -1, 0, Random(-45, 45), CMF_AIMDIRECTION, 270 - pitch + FRandom(-45, 45));
+			if (mo) { mo.scale *= FRandom(0.5, 1.0); }
+		}
 	}
 }
 
@@ -103,6 +112,7 @@ Class LightningBeam : Actor
 		+NOINTERACTION
 		+INTERPOLATEANGLES
 		RenderStyle "None";
+		ActiveSound "electrical/shock";
 
 		LightningBeam.AngleRandom 5;
 		LightningBeam.ChokeMax 3;
@@ -162,9 +172,11 @@ Class LightningBeam : Actor
 		let def = GetDefaultByType(trailclass);
 		if (!def) { return; }
 
-		if (master && def.damage) { master.A_CustomBulletAttack(angle - master.angle, 0, 1, def ? def.Damage : Random(0, 1), MovingTrailBeam(def) ? MovingTrailBeam(def).puff : "LightningPuff", master.radius * 4, CBAF_AIMFACING | CBAF_EXPLICITANGLE); }
+		if (master && master.radius && def.damage) { master.A_CustomBulletAttack(angle - master.angle, 0, 1, def ? def.Damage : Random(0, 1), MovingTrailBeam(def) ? MovingTrailBeam(def).puff : "LightningPuff", master.radius * 4, CBAF_AIMFACING | CBAF_EXPLICITANGLE); }
 
 		Actor prev;
+
+		A_PlaySound(ActiveSound, CHAN_AUTO | CHAN_NOSTOP, 0.5, false, ATTN_STATIC);
 
 		While (CurDistance < MaxDistance - StepDistance)
 		{
@@ -197,8 +209,8 @@ Class LightningBeam : Actor
 				// for the puff.
 				if (Choke > 0)
 				{
-					pitch = pitch + PitchRandom * RandomPick[pitchdir](-1, 1);
-					angle = angle + AngleRandom * RandomPick[angledir](-1, 1);
+					pitch = pitch + FRandom[pitch](0, PitchRandom) * RandomPick[pitchdir](-1, 1);
+					angle = angle + FRandom[angle](0, AngleRandom) * RandomPick[angledir](-1, 1);
 
 					Choke = max(0, Choke -1);
 				}
@@ -600,7 +612,7 @@ Class MovingTrailBeam : Actor
 			if (damage > 0 && Distance3D(master) > master.radius * 4)
 			{
 				// Used to make all individual bolt segments leave decals and cause damage
-				A_CustomBulletAttack(0, 0, 1, damage, puff, int(scale.y), CBAF_AIMFACING);
+				LineAttack(angle, scale.y, pitch - 90, damage, "Electric", puff, 0, null, -8.5);
 			}
 
 			beamoffset = pos - master.pos;
@@ -749,5 +761,15 @@ Class TargetActor2 : Actor
 		Spawn:
 			TNT1 A 1;
 			Stop;
+	}
+}
+
+class SparkBase : Actor
+{
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (waterlevel) { Destroy(); }
 	}
 }

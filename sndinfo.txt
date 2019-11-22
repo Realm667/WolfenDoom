@@ -256,6 +256,15 @@ tesla/alt	TESLA_SM
 tesla/hum	TESLA
 tesla/raise	TESLASEL
 
+// Electrical Arc
+$random electrical/shock { electrical/shock1 electrical/shock2 electrical/shock3 electrical/shock4 }
+electrical/shock1		elec1
+electrical/shock2		elec2
+electrical/shock3		elec3
+electrical/shock4		elec4
+$limit electrical/shock 1 512
+$volume electrical/shock 0.125
+
 //Bullet Whizzes & Suchwise
 $random ricochet { rico1 rico2 rico3 rico4 rico5 rico6 rico7 rico8 rico9 }
 $random whiz { whiz1 whiz2 whiz3 }
