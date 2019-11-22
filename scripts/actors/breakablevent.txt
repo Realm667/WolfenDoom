@@ -9,8 +9,6 @@
 */
 class Debris_Vent_FloorCeiling : SwitchableDecoration
 {
-	bool broken;
-
 	Default
 	{
 		//$Category Special Effects (BoA)
@@ -20,7 +18,6 @@ class Debris_Vent_FloorCeiling : SwitchableDecoration
 		+SOLID
 		+NOGRAVITY
 		+ACTLIKEBRIDGE
-		+USESPECIAL
 		+FLATSPRITE
 		+SHOOTABLE
 		+DONTTHRUST
@@ -29,27 +26,18 @@ class Debris_Vent_FloorCeiling : SwitchableDecoration
 		Health 1;
 		Height 0;
 		Radius 32;
-		Activation THINGSPEC_Switch | THINGSPEC_ThingTargets;
 	}
 
 	States
 	{
 		Spawn:
 			VENT A 1;
-		Inactive:
-		Death:
 		Active:
-			VENT "#" 0 {
-				if (!broken && target && abs(pos.z - target.pos.z) < 48) { return ResolveState("Unblock"); }
-				return ResolveState(null);
-			}
-		StaticLoop:
 			VENT "#" 35;
 			Wait;
-		Unblock:
+		Inactive:
+		Death:
 			VENT B 0 {
-				broken = True;
-
 				A_SpawnItemEx("PowerPlantSmokePuffSmall", 0, 0, 32, 0, 0, 0, 0, 0);
 
 				S_Sound("DSMETDST", CHAN_AUTO, 0.5, ATTN_NORM);
@@ -65,6 +53,12 @@ class Debris_Vent_FloorCeiling : SwitchableDecoration
 			Stop;
 	}
 
+	override bool Used(Actor user)
+	{
+		SetStateLabel("Death");
+
+		return Super.Used(user);
+	}
 }
 
 class Debris_Wood_FloorCeiling : Debris_Vent_FloorCeiling
@@ -78,20 +72,12 @@ class Debris_Wood_FloorCeiling : Debris_Vent_FloorCeiling
 	{
 		Spawn:
 			VENT C 1;
-		Inactive:
-		Death:
 		Active:
-			VENT "#" 0 {
-				if (!broken && target && abs(pos.z - target.pos.z) < 48) { return ResolveState("Unblock"); }
-				return ResolveState(null);
-			}
-		StaticLoop:
 			VENT "#" 35;
 			Wait;
-		Unblock:
+		Inactive:
+		Death:
 			VENT D 0 {
-				broken = True;
-
 				A_SpawnItemEx("PowerPlantSmokePuffSmall", 0, 0, 32, 0, 0, 0, 0, 0);
 
 				S_Sound("WOODBRK", CHAN_AUTO, 0.5, ATTN_NORM);
@@ -119,7 +105,6 @@ class ManholeCover3D : Debris_Vent_FloorCeiling
 		//$Title Manhole Cover (3D)
 		//$Color 3
 		
-		-USESPECIAL
 		-SHOOTABLE
 		+INVULNERABLE
 		Height 2;
@@ -130,18 +115,11 @@ class ManholeCover3D : Debris_Vent_FloorCeiling
 		Spawn:
 			MDLA A 1;
 		Active:
-			MDLA "#" 0 {
-				if (!broken && target && abs(pos.z - target.pos.z) < 48) { return ResolveState("Death"); }
-				return ResolveState(null);
-			}
-		StaticLoop:
 			MDLA "#" 35;
 			Wait;
 		Inactive:
 		Death:
 			TNT1 A 0 {
-				broken = True;
-
 				A_SpawnItemEx("PowerPlantSmokePuffSmall", 0, 0, 32, 0, 0, 0, 0, 0);
 
 				S_Sound("DSMETDST", CHAN_AUTO, 0.5, ATTN_NORM);
@@ -155,5 +133,11 @@ class ManholeCover3D : Debris_Vent_FloorCeiling
 			}
 			TNT1 A -1;
 			Stop;
+	}
+
+	// Only break these when shot, not when used.
+	override bool Used(Actor user)
+	{
+		return false;
 	}
 }
