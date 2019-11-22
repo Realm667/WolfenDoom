@@ -298,7 +298,7 @@ class HeatEffectGiver : SwitchableDecoration
 
 		A_SetSize(Radius * scale.x + 32, cz - fz); // Resize to the scaled size, plus 32 units to allow for a border on the edges where the value will properly be zero, and fill the height of the sector.
 
-		Active = true;
+		Active = !(SpawnFlags & ~MTF_DORMANT);
 
 		Activators.Clear();
 
