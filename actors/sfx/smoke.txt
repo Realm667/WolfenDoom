@@ -368,3 +368,29 @@ ACTOR AmbientSmokeGenerator_Large : AmbientSmokeGenerator
 		Goto ActiveLoop
 	}
 }
+
+ACTOR AmbientSmokeGeneratorDown_Large : AmbientSmokeGeneratorDown
+{
+	//$Title Ambient Smoke Generator (large)
+	//$Arg0 "Radius *10"
+	//$Arg0Tooltip "Radius in map units *10\nDefault: 0"
+	States
+	{
+	Spawn:
+	Active:
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
+	ActiveLoop:
+		TNT1 A 0 A_CheckSightOrRange(1200.0, "LoopWait", TRUE)
+		TNT1 A 8 A_SpawnItemEx("AmbientSmoke_Large", random(-Args[0]*10, Args[0]*10), random(-Args[0]*10, Args[0]*10), random(-64,-128),   0, 0, random(-1,-4), 0, 0, Args[1])
+		Loop
+	Inactive:
+		TNT1 A -1
+		Stop
+	EndSpawn:
+		TNT1 A 1
+		Stop
+	LoopWait:
+		TNT1 A 10
+		Goto ActiveLoop
+	}
+}
