@@ -271,6 +271,29 @@ ACTOR AmbientSmoke
 	}
 }
 
+ACTOR AmbientSmokeSB : AmbientSmoke
+{
+	Skip_Super
+	+CLIENTSIDEONLY
+	+FORCEXYBILLBOARD
+	+NOINTERACTION
+	+WINDTHRUST
+	RenderStyle "Translucent"
+	Alpha 0.001
+	Scale 0.3
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2)
+		GRM2 A 0 A_Jump(256,"End")
+		GRM1 A 0 A_Jump(256,"End")
+	End:
+		"####" AAAAAAAAAAAAAAAAAA 1 A_FadeIn(0.005)
+		"####" AAAAAAAAAAAAAAAAAAA 3 A_FadeOut(0.005)
+		Stop
+	}
+}
+
 ACTOR AmbientSmokeGenerator : SwitchableDecoration
 {
 	//$Category Special Effects (BoA)
@@ -280,6 +303,10 @@ ACTOR AmbientSmokeGenerator : SwitchableDecoration
 	//$Arg0Tooltip "Radius in map units\nDefault: 0"
 	//$Arg1 "Frequency"
 	//$Arg1Tooltip "Frequency, the lower the number, the heavier the smoke\nRange: 0 - 255"
+	//$Arg2 "Type"
+	//$Arg2Tooltip "Set SkyBox to have variant which doesn't have LOS"
+	//$Arg2Type 11
+	//$Arg2Enum { 0 = "Normal"; 1 = "SkyBox"; }
 	+CLIENTSIDEONLY
 	+NOINTERACTION
 	States
@@ -288,9 +315,14 @@ ACTOR AmbientSmokeGenerator : SwitchableDecoration
 	Active:
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 	ActiveLoop:
+		TNT1 A 0 A_JumpIf(Args[2] == 1, "SkyboxLoop")
 		TNT1 A 0 A_CheckSightOrRange(1200.0, "LoopWait", TRUE)
 		TNT1 A 8 A_SpawnItemEx("AmbientSmoke", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,48), 0, 0, 0.5, 0, 0, Args[1])
 		Loop
+	SkyboxLoop:
+		TNT1 A 8 A_SpawnItemEx("AmbientSmokeSB", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,48), 0, 0, 0.5, 0, 0, Args[1])
+		TNT1 A 0 A_Jump(256,"ActiveLoop")
+		Stop
 	Inactive:
 		TNT1 A -1
 		Stop
