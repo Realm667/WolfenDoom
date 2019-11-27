@@ -141,7 +141,6 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		Radius 16;
 		Mass 100;
 		Speed 5;
-		DamageFactor "Falling", 0.0; // No falling damage by default
 		MaxStepHeight 56; //Matches max player jump height with standard JumpZ of 8 and MaxStepHeight of 24
 		MaxDropOffHeight 512;
 		MaxTargetRange 3072; // Because we have long corridors that are more than 2048 units long, and PlayerFollowers would stand there stupidly even though enemies are in sight
@@ -530,6 +529,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		}
 
 		if (target && target.health <= 0) { target = null; }
+		if (target is "TankBase" && TankBase(target).treads) { target = TankBase(target).treads; }
 
 		enemycount = 0;
 
@@ -540,6 +540,8 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 		while ( (mo = Actor(Finder.Next())) )
 		{
+			if (mo is "TankBase" && TankBase(mo).treads) { mo = TankBase(mo).treads; }
+
 			if (
 				mo.health <= 0 ||
 				mo.bDormant ||
@@ -637,7 +639,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 				{
 					// Do a line trace, and if the trace will hit a shootable actor, then fire
 					DoTrace(self, AngleTo(target), MaxTargetRange, PitchTo(target), 0, Height * 3 / 4, trace);
-					if (trace.Results.HitActor && trace.Results.HitActor.bIsMonster)
+					if (trace.Results.HitActor && (trace.Results.HitActor.bIsMonster || trace.Results.HitActor.Species == "NaziTank"))
 					{
 						return ResolveState(GetWeaponStateLabel()); // ...attack it
 					}
@@ -877,7 +879,35 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			target = source; // If the follower is hit by an enemy that's closer than its current target, change targets to the one that shot it
 		}
 
+		// Manually handle falling damage calculation here, since P_MonsterFallingDamage is useless (It literally 
+		// calculates the correct damage value, then ignores that and sets damage to Telefrag amount - blame Hexen's devs)
+		// https://github.com/coelckers/gzdoom/blob/777798ede4b68cc71d1e1313d491e70c0eef9593/src/playsim/p_mobj.cpp#L2357
+		// https://forum.zdoom.org/viewtopic.php?f=18&t=32702
+		if (mod == "Falling") { damage = CalculateFallDamage(); }
+
 		return Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
+	}
+
+	// Derived from ZDoom-style damage calculations in player's P_FallingDamage function of p_mobj.cpp
+	int CalculateFallDamage()
+	{
+		int damage;
+		double vel = abs(vel.z);
+
+		if (vel <= 19 || level.time < spawntime + 70) // Not fast enough to hurt - Or they were just spawned, so make sure they survive accidental in-air spawning
+		{ 
+			damage = 0;
+		}
+		if (vel >= 84) // Automatic death
+		{ 
+			damage = TELEFRAG_DAMAGE;
+		}
+		else
+		{
+			damage = int(max((vel ** 2 * (11.0 / 128) - 30) / 2, 1));
+		}
+
+		return damage;
 	}
 }
 

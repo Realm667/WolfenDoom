@@ -137,7 +137,7 @@ class VehicleBase : Base
 
 // Trample actor - basically an explosion that simulates the spawning actor running over actors within its radius
 // Used by tanks and by rail sequences
-class Trample : Actor
+class Trample : GrenadeBase
 {
 	int dmg;
 	int flags;
@@ -444,6 +444,8 @@ class TankBase : VehicleBase
 
 	bool IsValidTarget(Actor mo)
 	{
+		if (mo is "TankBase" && TankBase(mo).treads) { mo = TankBase(mo).treads; }
+
 		if (
 			!mo.bIsMonster ||
 			mo.health <= 0 ||
