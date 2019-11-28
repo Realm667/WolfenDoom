@@ -755,3 +755,184 @@ ACTOR CKCoral2: CKCoral1
 		Stop
 	}
 }
+
+ACTOR CKAlge1
+{
+	//$Category Commander Keen (BoA)/Props
+	//$Title Alge (single)
+	//$Color 3
+	Radius 32
+	Height 32
+	Scale 2.0
+	-SOLID
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		CKAL ABCD 10
+		Loop
+	}
+}
+
+ACTOR CKAlge2 : CKAlge1
+{
+	//$Category Commander Keen (BoA)/Props
+	//$Title Alge (triple)
+	//$Color 3
+	States
+	{
+	Spawn:
+		CKAL EFGH 10
+		Loop
+	}
+}
+
+ACTOR CKFireplace
+{
+	//$Category Commander Keen (BoA)/Props
+	//$Title Fireplace
+	//$Color 3
+	Radius 32
+	Height 32
+	Scale 2.0
+	-SOLID
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		CKFR ABCD 10
+		Loop
+	}
+}
+
+ACTOR CKWallSlug
+{
+	//$Category Commander Keen (BoA)/Props
+	//$Title Wall Slug
+	//$Color 3
+	Radius 8
+	Height 32
+	Scale 2.0
+	-SOLID
+	+NOGRAVITY
+	+WALLSPRITE
+	States
+	{
+	Spawn:
+		CKWS YZ 30
+		Loop
+	}
+}
+
+ACTOR CKCaveEyes
+{
+	//$Category Commander Keen (BoA)/Props
+	//$Title Wall Eyes
+	//$Color 3
+	Radius 8
+	Height 32
+	Scale 2.0
+	-SOLID
+	+NOGRAVITY
+	+WALLSPRITE
+	States
+	{
+	Spawn:
+		CKCE ABB 35
+		Loop
+	}
+}
+
+ACTOR CKFireBowl
+{
+	//$Category Commander Keen (BoA)/Props
+	//$Title Fire Bowl
+	//$Color 3
+	Radius 32
+	Height 32
+	Scale 2.0
+	-SOLID
+	+NOGRAVITY
+	+WALLSPRITE
+	States
+	{
+	Spawn:
+		CKFB A -1
+		Stop
+	}
+}
+
+ACTOR CKExitSign1
+{
+	//$Category Commander Keen (BoA)/Props
+	//$Title ExitSign (1)
+	//$Color 3
+	Radius 32
+	Height 32
+	Scale 2.0
+	-SOLID
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		CKEX A -1
+		Stop
+	}
+}
+
+ACTOR CKExitSign2
+{
+	//$Category Commander Keen (BoA)/Props
+	//$Title ExitSign (2)
+	//$Color 3
+	Radius 32
+	Height 32
+	Scale 2.0
+	-SOLID
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		CKEX B -1
+		Stop
+	}
+}
+
+ACTOR CKFireColumn
+{
+	//$Category Commander Keen (BoA)/Props
+	//$Title Fire Column
+	//$Color 3
+	Radius 32
+	Height 32
+	Scale 2.0
+	-SOLID
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		CKFC ABC 10
+		Loop
+	}
+}
+
+ACTOR CKAquaDrop
+{
+	//$Category Commander Keen (BoA)/Props
+	//$Title Aqua Drop
+	//$Color 3
+	Radius 8
+	Height 32
+	Scale 2.0
+	-SOLID
+	+NOGRAVITY
+	+FLATSPRITE
+	States
+	{
+	Spawn:
+		CKDR ABCDE 10
+	Waiter:
+		TNT1 A 10 A_Jump(80, "Spawn")
+		loop
+	}
+}

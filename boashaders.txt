@@ -1268,6 +1268,31 @@ Material Texture "textures/liquids/HIWATR34.png"
 	specularlevel 6.0
 }
 
+Material Texture "CK_WATR0"
+{
+	normal "materials/normalmaps/water.png"
+	specular "materials/specular/water.png"
+	specularlevel 2.0
+	shader "shaders/waves.fp"
+	Texture background "textures/shader/water.png"
+	speed 0.75
+}
+
+Material Texture "CK_TAR0"
+{
+	shader "shaders/waves.fp"
+	Texture background "textures/shader/water.png"
+	speed 0.25
+}
+
+Material Texture "CK_POS0"
+{
+	shader "shaders/waves.fp"
+	Texture background "textures/shader/water.png"
+	speed 0.50
+}
+
+
 //Blood
 HardwareShader Sprite HITBA0
 {
