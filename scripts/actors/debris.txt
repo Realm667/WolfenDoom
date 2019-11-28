@@ -2,7 +2,6 @@ class Debris : Actor
 {
 	int moundstyle;
 	bool domound;
-	Array<DebrisBase> debrislist;
 
 	Property MoundStyle:moundstyle;
 	Property DrawMound:domound;
@@ -100,12 +99,6 @@ class Debris : Actor
 		}
 
 		Super.PostBeginPlay();
-
-		// Directly call PostBeginPlay for all spawned debris actors to set their orientation and position
-		for (int d = 0; d < debrislist.Size(); d++)
-		{
-			if (debrislist[d]) { debrislist[d].PostBeginPlay(); }
-		}
 	}
 
 	void SpawnRandom(Class<Actor> debrisclass, int probability = 255, int amt = 1, float distance = -1, float mindistance = 0)
@@ -143,17 +136,13 @@ class Debris : Actor
 					
 						if (Random() < 128 && mo.FindState("Death")) { mo.SetStateLabel("Death"); }
 					}
-					else
-					{
-						debrislist.Push(DebrisBase(mo));
-					}
 				}
 			}
 		}
 	}
 }
 
-class DebrisBase : Actor
+class DebrisBase : StaticActor
 {
 	int variants;
 	int user_variant;
@@ -183,11 +172,6 @@ class DebrisBase : Actor
 			Stop;
 	}
 
-	override void BeginPlay()
-	{
-		ChangeStatNum(STAT_STATIC); // Don't tick debris actors.  Note: PostBeginPlay must now be called manually for these actors!
-	}
-
 	override void PostBeginPlay()
 	{
 		if (user_variant) { frame = user_variant; }
@@ -199,11 +183,11 @@ class DebrisBase : Actor
 		{
 			double dist = Distance2D(master);
 
-			pitch = FRandom(-15, -atan(master.Height / dist));
+			pitch = -atan((master.pos.z + master.Height - pos.z) / dist) + FRandom(-5, 15);
 			roll = Random(-30, 30);
 			angle = AngleTo(master) + Random(-35, 35);
 
-			maxscale = min((dist * 2.5) / Radius * scale.x, 3.5);
+			maxscale = (dist * 2.5) / (Radius * scale.x);
 		}
 
 		Super.PostBeginPlay();
@@ -217,6 +201,7 @@ class DebrisMound : Actor
 		Radius 64;
 		MaxStepHeight 48;
 		MaxDropoffHeight 48;
+		RenderRadius 512;
 		DistanceCheck "scenelod";
 	}
 
@@ -245,7 +230,7 @@ class DebrisMound : Actor
 		if (master)
 		{
 			scale = master.scale;
-			scale.y = min(scale.y, scale.x / 3); // Don't make tall, pointy mounds
+			scale.y = min(scale.y, scale.x / 3.5); // Don't make tall, pointy mounds
 			A_SetSize(master.radius, master.height);
 		}
 

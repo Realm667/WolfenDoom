@@ -666,3 +666,14 @@ class ExplosionCore : Actor
 		Super.Tick();
 	}
 }
+
+class StaticActor : Actor
+{
+	override void Tick()
+	{
+		Super.Tick();
+
+		// If the actor stops animating (tics of -1) and isn't shootable and alive or moving, then stop ticking the actor.
+		if (tics == -1 && (!bShootable || health <= 0) && (vel == (0, 0, 0))) { ChangeStatNum(STAT_STATIC); }
+	}
+}
