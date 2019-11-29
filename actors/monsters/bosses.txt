@@ -1353,19 +1353,20 @@ ACTOR HimmlerBoss : RocketMan
 		HIMM E 10 A_FaceTarget
 		"####" E 0 A_Jump(128,"DropMine", "Mortar")
 	Rocket:
-		"####" F 0 A_SpawnProjectile("NebRocketEnemy",44,18)
-		"####" F 4 A_SpawnProjectile("NebRocketEnemy",44,-18, 12)
+		"####" F 4 A_SpawnProjectile("NebRocketEnemy",44,18)
 		"####" E 12
-		"####" F 0 A_SpawnProjectile("NebRocketEnemy",44,18)
-		"####" F 4 A_SpawnProjectile("NebRocketEnemy",44,-18, -12)
+		"####" G 4 A_SpawnProjectile("NebRocketEnemy",44,-18)
 		"####" E 12
+		"####" P 0 A_SpawnProjectile("NebRocketEnemy",44,18)
+		"####" P 4 A_SpawnProjectile("NebRocketEnemy",44,-18)
 		Goto See
 	Mortar:
-		HIMM O 8 A_SpawnProjectile("HimmlerMortar",40,-36,0,CMF_AIMDIRECTION|CMF_ABSOLUTEPITCH|CMF_SAVEPITCH,random(-20,-35))
+		HIMM O 8 A_SpawnProjectile("HimmlerMortar",40,28,0,CMF_AIMDIRECTION|CMF_ABSOLUTEPITCH|CMF_SAVEPITCH,random(-30,-45))
 		"####" N 6
 		Goto See
 	DropMine:
-		HIMM M 12 A_SpawnItemEx("BossEnemyPlacedMine", -32, 32, 32, 0, 0, random(1,2), 0, SXF_SETMASTER)
+		"####" E 0 A_PlaySound("grenade/bounce", CHAN_WEAPON)
+		HIMM M 12 A_SpawnItemEx("BossEnemyPlacedMine", 32, 0, 0, random(20,80), 0, 0, 0, SXF_SETMASTER)
 		"####" L 6
 		Goto See
 	Pain:
