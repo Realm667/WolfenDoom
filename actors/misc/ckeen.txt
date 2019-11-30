@@ -805,6 +805,24 @@ ACTOR CKFireplace
 	}
 }
 
+ACTOR CKGroundfire
+{
+	//$Category Commander Keen (BoA)/Props
+	//$Title Groundfire
+	//$Color 3
+	Radius 32
+	Height 32
+	Scale 2.0
+	-SOLID
+	-NOGRAVITY
+	States
+	{
+	Spawn:
+		CKFR EFGH 10
+		Loop
+	}
+}
+
 ACTOR CKWallSlug
 {
 	//$Category Commander Keen (BoA)/Props
@@ -934,5 +952,23 @@ ACTOR CKAquaDrop
 	Waiter:
 		TNT1 A 10 A_Jump(80, "Spawn")
 		loop
+	}
+}
+
+ACTOR CKSpike
+{
+	//$Category Commander Keen (BoA)/Props
+	//$Title Spike
+	//$Color 3
+	Radius 16
+	Height 48
+	Scale 2.0
+	+SOLID
+	-NOGRAVITY
+	States
+	{
+	Spawn:
+		CKSK A -1
+		Stop
 	}
 }
