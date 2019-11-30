@@ -405,15 +405,21 @@ class TankBase : VehicleBase
 			}
 		}
 
-		ThinkerIterator Finder = ThinkerIterator.Create("Base", STAT_DEFAULT - 5);
+		ThinkerIterator Finder;
 		Base mo;
 
-		while ( (mo = Base(Finder.Next())) )
+		// Only target sneakable actors if you are a friendly tank (so that enemy tanks won't target sneakable enemies)
+		if (bFriendly)
 		{
-			if (!IsValidTarget(mo)) { continue; }
-			if (enemy && Distance3d(mo) > Distance3d(enemy)) { continue; }
+			Finder = ThinkerIterator.Create("Base", STAT_DEFAULT - 5);
 
-			enemy = mo;
+			while ( (mo = Base(Finder.Next())) )
+			{
+				if (!IsValidTarget(mo)) { continue; }
+				if (enemy && Distance3d(mo) > Distance3d(enemy)) { continue; }
+
+				enemy = mo;
+			}
 		}
 
 		// A Second iterator to account for the non-sneakables...
@@ -454,7 +460,9 @@ class TankBase : VehicleBase
 			mo == self ||
 			!CheckSight(mo) ||
 			Distance3D(mo) > MaxTargetRange || 
-			mo is "StatistBarkeeper" // Ignore NPCs...
+			mo is "StatistBarkeeper" || // Ignore NPCs...
+			mo is "Camp_PrisonerBald" || // Ignore Camp Prisoners...
+			(!bFriendly && Nazi(mo) && Nazi(mo).user_sneakable) // Ignore sneakables who are set via editor property
 		) { return false; }
 
 		return true;

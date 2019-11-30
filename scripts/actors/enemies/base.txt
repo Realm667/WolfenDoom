@@ -2088,6 +2088,7 @@ class Nazi : Base
 			}
 
 			if (
+				(!user_sneakable || alerted) && // Sneakable enemies only care about grenades if they're alerted
 				!bBoss &&
 				!(self is "Rottweiler") && // Dogs aren't smart enought to avoid grenades
 				!(self is "MutantStandard") && // Nor are mutants
