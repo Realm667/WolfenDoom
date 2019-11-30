@@ -1,0 +1,190 @@
+class ClassicMessageBox : MessageBoxMenu
+{
+	String prefix;
+	Color fillcolor;
+	TextureID top, bottom, left, right;
+	TextureID topleft, topright, bottomleft, bottomright;
+	TextureID graphic;
+
+	String message;
+
+	String cursor;
+	int blinktime;
+	int width, height;
+
+	Font fnt;
+	int alignment;
+	int graphicalign;
+
+	override void Init(Menu parent, String msg, int messagemode, bool playsound, Name cmd, voidptr native_handler)
+	{
+		// Initialize everything through the real message box code
+		Super.Init(parent, msg, messagemode, playsound, cmd, native_handler);
+
+		message = msg;
+
+		message.Replace("\n\n" .. Stringtable.Localize("$DOSY"), "");
+		message.Replace("\n\n" .. Stringtable.Localize("$PRESSKEY"), "");
+		message.Replace("\n\n" .. Stringtable.Localize("$PRESSYN"), "");
+		message.Replace(Stringtable.Localize("$PRESSYN"), ""); // For the save deletion prompt
+
+		if (!prefix.Length()) { prefix = "BG_"; fillcolor = 0x0; }
+		if (!fnt) { fnt = BigFont; }
+
+		top = TexMan.CheckForTexture(prefix .. "T", TexMan.Type_Any);
+		bottom = TexMan.CheckForTexture(prefix .. "B", TexMan.Type_Any);
+		left = TexMan.CheckForTexture(prefix .. "L", TexMan.Type_Any);
+		right = TexMan.CheckForTexture(prefix .. "R", TexMan.Type_Any);
+		topleft = TexMan.CheckForTexture(prefix .. "TL", TexMan.Type_Any);
+		topright = TexMan.CheckForTexture(prefix .. "TR", TexMan.Type_Any);
+		bottomleft = TexMan.CheckForTexture(prefix .. "BL", TexMan.Type_Any);
+		bottomright = TexMan.CheckForTexture(prefix .. "BR", TexMan.Type_Any);
+
+		if (messagemode > 0) { blinktime = -1; }
+	}
+
+	static ClassicMessageBox PrintMessage(String text, String prefix = "B_", Color fillcolor = 0xFFFFFF, int style = 0, int width = -1, int height = -1, bool nocursor = true, int align = 2, String graphic = "", int graphicalign = 0)
+	{
+		StartMessage(text, nocursor);
+
+		ClassicMessageBox msg = ClassicMessageBox(GetCurrentMenu());
+		if (!msg) { msg = New("ClassicMessageBox"); }
+
+		msg.prefix = prefix;
+		msg.fillcolor = fillcolor;
+
+		switch (style)
+		{
+			case 1:
+				msg.fnt = BigFont;
+				break;
+			case 2:
+				msg.fnt = ConFont;
+				break;
+			default:
+				msg.fnt = Font.GetFont("Classic");
+				break;
+		}
+
+		if (width > 0) { msg.width = width * 8 + 16; }
+		if (height > 0) { msg.height = height * 8 + 16; }
+
+		if (graphic.length()) { msg.graphic = TexMan.CheckForTexture(graphic, TexMan.Type_Any); }
+
+		msg.alignment = align;
+		msg.graphicalign = graphicalign;
+
+		msg.Init(msg.mParentMenu, text, msg.mMessagemode);
+
+		msg.DontDim = true;
+		msg.DontBlur = true;
+
+		return msg;
+	}
+
+	override void Drawer()
+	{
+		if (mParentMenu) { mParentMenu.Drawer(); }
+		DrawMessage(message, 8, fillcolor);
+	}
+
+	void DrawMessage(String text, int size = 8, color clr = 0x0)
+	{
+		if (!top || !bottom || !left || !right || !topleft || !topright || !bottomleft || !bottomright) { return; }
+
+		int w = 0, h = 0, gw = 0;
+		text = StringTable.Localize(text);
+
+		Vector2 graphicsize;
+
+		if (graphic)
+		{
+			graphicsize = TexMan.GetScaledSize(graphic);
+			gw = int(graphicsize.x * CleanXFac);
+		}
+
+		BrokenLines message = fnt.BreakLines(text, (width > 0 ? width : 316) - int(graphicsize.x) - 20);
+
+		int c = message.Count();
+
+		int fontheight = fnt.GetHeight();
+
+		for (int i = 0; i < c; i++)
+		{
+			w = max(w, message.StringWidth(i) + (i == (c - 1) ? blinktime > -1 ? fnt.StringWidth("_") : 0 : 0));
+			h += fontheight;
+		}
+
+		int textheight = h;
+
+		w += 24;
+		h += 24;
+
+		w = max(w, width);// - 2 * size;
+		h = max(h, height);// - 2 * size;
+
+		int ws = w * CleanXfac;
+		int hs = h * CleanYfac;
+
+		int x = Screen.GetWidth() / 2 - ws / 2;
+		int y = Screen.GetHeight() / 2 - hs / 2;
+
+		x += int(size * CleanXfac);
+		y += int(size * CleanYfac);
+		ws -= int(2 * size * CleanXfac);
+		hs -= int(2 * size * CleanYfac);
+
+		screen.Dim(clr, 1.0, x, y, ws, hs);
+
+		screen.DrawTexture(top, true, x, y - int(size * CleanYfac), DTA_CleanNoMove, true, DTA_DestWidth, ws, DTA_DestHeight, int(size * CleanYfac));
+		screen.DrawTexture(bottom, true, x, y + hs, DTA_CleanNoMove, true, DTA_DestWidth, ws, DTA_DestHeight, int(size * CleanYfac));
+		screen.DrawTexture(left, true, x - int(size * CleanXfac), y, DTA_CleanNoMove, true, DTA_DestWidth, int(size * CleanXfac), DTA_DestHeight, hs);
+		screen.DrawTexture(right, true, x + ws, y, DTA_CleanNoMove, true, DTA_DestWidth, int(size * CleanXfac), DTA_DestHeight, hs);
+
+		screen.DrawTexture(topleft, true, x - int(size * CleanXfac), y - int(size * CleanYfac), DTA_CleanNoMove, true, DTA_DestWidth, int(size * CleanXfac), DTA_DestHeight, int(size * CleanYfac));
+		screen.DrawTexture(topright, true, x + ws, y - int(size * CleanYfac), DTA_CleanNoMove, true, DTA_DestWidth, int(size * CleanXfac), DTA_DestHeight, int(size * CleanYfac));
+		screen.DrawTexture(bottomleft, true, x - int(size * CleanXfac), y + hs, DTA_CleanNoMove, true, DTA_DestWidth, int(size * CleanXfac), DTA_DestHeight, int(size * CleanYfac));
+		screen.DrawTexture(bottomright, true, x + ws, y + hs, DTA_CleanNoMove, true, DTA_DestWidth, int(size * CleanXfac), DTA_DestHeight, int(size * CleanYfac));
+
+		int xoffset = 0;
+
+		if (graphic)
+		{
+			int drawx = x;
+
+			if (graphicalign == 2) { drawx += ws / 2 - gw / 2; }
+			else if (graphicalign == 1) { drawx += ws - gw; if (alignment) { xoffset -= int(graphicsize.x + 8) / alignment; } }
+			else
+			{
+				if (alignment == 0) { xoffset += int(graphicsize.x) + 8; }
+				else if (alignment == 2) { xoffset += int(graphicsize.x + 8) / 3; }
+			}
+
+			screen.DrawTexture(graphic, true, drawx, y, DTA_CleanNoMove, true);
+		}
+
+		if (blinktime > -1 && gametic > blinktime)
+		{
+			if (cursor == "_") { cursor = ""; }
+			else { cursor = "_"; }	
+
+			blinktime = gametic + 5;
+		}
+
+		int drawx = 160 + xoffset;
+		int drawy = 100 - textheight / 2;
+		for (int i = 0; i < c; i++)
+		{
+			int size = fnt.StringWidth(message.StringAt(i) .. (i == (c - 1) ? cursor : ""));
+
+			if (alignment == 2) { drawx -= size / 2; }
+			else if (alignment == 1) { drawx += w / 2 - size - 8; }
+			else { drawx -= w / 2 - 8; }
+
+			screen.DrawText(fnt, 0, drawx, drawy, "\c[TrueBlack]" .. message.StringAt(i) .. (i == (c - 1) ? cursor : ""), DTA_Clean, true);
+
+			drawx = 160 + xoffset;
+			drawy += fontheight;
+		}
+	}
+}
