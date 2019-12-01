@@ -1,0 +1,605 @@
+class CKBaseEnemy : Actor
+{
+	bool stunned, stunframes, wakeontouch;
+	int stuntime, stuncounter, counter, counter2;
+	Actor confusion;
+	State StunState, ReviveState, AttackState;
+
+	Property StunTime:stuntime;
+	Property StunFrames:stunframes;
+	Property WakeOnTouch:wakeontouch;
+
+	Default
+	{
+		Monster;
+		Damage 15;
+		Scale 2.0;
+		PainSound "ckeen/kill";
+		DeathSound "ckeen/kill";
+		+DONTTHRUST
+		+FLOORCLIP
+		+LOOKALLAROUND
+		+NODAMAGE
+		+NOBLOOD
+
+		CKBaseEnemy.StunTime -1; // Default to staying stunned forever
+		CKBaseEnemy.StunFrames 2; // Default to two possible frames for stun state (some actors only have 1)
+	}
+
+	States
+	{
+		Stunned:
+			TNT1 A -1;
+			Stop;
+		Revive:
+			TNT1 A 0 { SetState(SpawnState); }
+	}
+
+	override void PostBeginPlay()
+	{
+		StunState = FindState("Stunned");
+		ReviveState = FindState("Revive");
+		AttackState = FindState("Missile");
+		if (!AttackState) { AttackState = FindState("Melee"); }
+
+		Super.PostBeginPlay();
+	}
+
+	// Don't take damage, only stun if stunnable (and the player is the one that shot you)
+	// Be nice and let the 'kill monsters' cheat still work (won't stop enemies from reviving, though)
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
+	{
+		if (((source && source.player || source is "PlayerFollower") || mod == "Massacre") && stuntime != 0 && !stunned) { DoStun(true); }
+
+		return 0;
+	}
+
+	// Handles other actor touching this actor
+	// If wake on touch is set, set this actor to See state
+	// Otherwise, damage any player that is touched
+	// Unless damage is set 0, then fall back to executing the actor's special
+ 	override void Touch(Actor toucher)
+	{
+		if (wakeontouch)
+		{
+			wakeontouch = false;
+			SetStateLabel("See");
+		}
+		else if (damage && toucher && toucher.player)
+		{
+			if (!stunned) { toucher.DamageMobj(self, self, damage, "Melee"); }
+		}
+		else if (special) { Level.ExecuteSpecial(special, self, null, false, args[0], args[1], args[2], args[3], args[4]); }
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (stunned) { DoStun(); }
+	}
+
+	// Force calling of the Touch function for players without resorting to using 
+	// the SPECIAL flag, which changes other things with collision and interaction
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (bShootable && other.player)
+		{
+			Touch(other);
+			return true;
+		}
+		else if (!bShootable)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	// Generic function for handling stunning of enemies
+	void DoStun(bool initial = false)
+	{
+		if (!InStateSequence(CurState, StunState)) { SetState(StunState); }
+
+		if (initial)
+		{
+			frame += Random(0, stunframes - 1); // Pick a random frame within set range
+			stuncounter = stuntime;
+			A_SetSize(Default.Radius, Default.Height / 2);
+
+			stunned = true;
+		}
+		else
+		{
+			// Spawn confusion ring once the actor has hit the floor
+			if (!confusion && (pos.z == floorz || bOnMobj))
+			{
+				vel *= 0;
+				confusion = Spawn("CKConfusion", pos);
+			}
+
+			if (stuncounter > 0)
+			{
+				stuncounter--;
+			}
+			else if (stuncounter == 0)
+			{
+				stunned = false;
+				if (confusion) { confusion.Destroy(); }
+
+				A_SetSize(Default.Radius, Default.Height);
+
+				SetState(ReviveState);
+			}
+		}
+	}
+
+	// Function to handle Mad Mushroom bouncing pattern
+	void CK_MushroomBounce()
+	{
+		if (pos.z == floorz || bOnMobj)
+		{
+			counter = (counter + 1) % 3;
+
+			if (counter == 0)
+			{
+				vel.z = 17.0;
+			}
+			else
+			{
+				vel.z = 10.0;
+			}
+
+			A_PlaySound("ckeen/madmushroombounce");
+		}
+	}
+
+	// Function to handle Bounder bounce pattern, re-imagined in 3D space
+	void CK_BounderBounce()
+	{
+		LookforPlayers(true);
+
+		bool blocked = (BlockingMobj || BlockingLine);
+
+		if (pos.z == floorz || bOnMobj || blocked)
+		{
+			counter++;
+			A_PlaySound("ckeen/madmushroombounce");
+			if (!blocked) { vel.z = 12.0; }
+
+			// Really should be able to steer and ride these around to match original code...  TODO?
+			if (target && Distance2D(target) < radius && target.pos.z == pos.z + height)
+			{
+				counter = 0;
+
+				angle = target.angle;
+				vel.xy = RotateVector((Speed, 0), angle);
+			}
+			else if (counter > 2 && counter2)
+			{
+				counter2 = 0;
+
+				if (Random() < 200)
+				{
+					angle = Random(0, 359);
+					vel.xy = RotateVector((Speed, 0), angle);
+				}
+			}
+			else
+			{
+				counter2 = 1;
+				vel.xy *= 0;
+			}
+		}
+	}
+
+	// Function to move an actor in a straight line until it hits something, then change directions randomly, with preference for moving toward player.
+	void CK_Glide(int maxstep = 0)
+	{
+		LookforPlayers(true);
+
+		if (BlockingMobj || BlockingLine || SpawnTime == level.time || (maxstep && counter >= maxstep))
+		{
+			if (target && IsVisible(target, true))
+			{
+				if (angle != AngleTo(target)) { angle = AngleTo(target); }
+				else { angle += 180; }
+			}
+			else { angle = Random(0, 359); }
+
+			counter = 0;
+		}
+
+		vel.xy = RotateVector((Speed, 0), angle);
+
+		if (AttackState && Distance2D(target) <= Radius + MaxTargetRange)
+		{
+			SetState(AttackState);
+		}
+
+		counter++;
+	}
+}
+
+class CKPlatform : Actor
+{
+	Array<Actor> touchers;
+	Vector3[64] offsets;
+
+	Actor thrust;
+	Class<Actor> ExhaustActor;
+
+	double moveangle, moved, user_movedist;
+
+	Property Exhaust:ExhaustActor;
+
+	Default
+	{
+		//$Category Commander Keen (BoA)/Props
+		//$Title Platform (Moving)
+		//$Color 8
+
+		Radius 46;
+		Height 12;
+		MaxStepHeight 0;
+		Speed 4;
+		+CANPASS
+		+DONTTHRUST
+		+NOGRAVITY
+		+SOLID
+		CKPlatform.Exhaust "CKPlatformThrust";
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+		Active:
+			MDLA A -1;
+			Stop;
+		Inactive:
+			MDLA A -1;
+			Stop;
+	}
+
+	override void Touch(Actor toucher)
+	{
+		if (toucher == self || toucher.bNoGravity || toucher is "CKPlatform") { return; }
+		if (toucher.pos.z > pos.z + 32.0 || toucher.pos.z < pos.z - 16) { return; }
+		if (touchers.Find(toucher) == touchers.Size()) { touchers.Push(toucher); }
+	}
+
+	override void PostBeginPlay()
+	{
+		moveangle = angle;
+
+		bDormant = SpawnFlags & MTF_DORMANT;
+
+		if (bDormant) { Deactivate(self); }
+		else { Activate(self); }
+
+		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		if (IsFrozen() || bDormant)
+		{
+			Actor.Tick();
+
+			return;
+		}
+
+		CheckTouchers();
+
+		Vector2 newpos = pos.xy + RotateVector((Speed, 0), moveangle);
+		moved += Speed;
+
+		FCheckPosition checkpos;
+
+		if (CheckMove(newpos, 0, checkpos) && (user_movedist <= 0 || moved <= user_movedist))
+		{
+			SetOrigin((newpos, pos.z), true);
+
+			MatchMovement();
+			Actor.Tick();
+		}
+		else
+		{
+			moveangle = (moveangle + 180) % 360;
+			moved = 0;
+			Actor.Tick();
+		}
+	}
+
+	void CheckTouchers()
+	{
+		ThinkerIterator it = ThinkerIterator.Create("Actor", Thinker.STAT_DEFAULT);
+		Actor mo;
+
+		while (mo = Actor(it.Next(false)))
+		{
+			if (Distance2D(mo) <= Radius + mo.Radius)
+			{
+				Touch(mo);
+			}
+		}
+
+		it = ThinkerIterator.Create("Actor", Thinker.STAT_PLAYER);
+
+		while (mo = Actor(it.Next(false)))
+		{
+			if (Distance2D(mo) <= Radius + mo.Radius)
+			{
+				Touch(mo);
+			}
+		}
+
+		for (int i = 0; i < min(touchers.Size(), 64); i++)
+		{
+			if (touchers[i])
+			{
+				if (
+					Distance3D(touchers[i]) > (Radius + touchers[i].radius) * 1.4 ||
+					touchers[i].pos.z + touchers[i].height < pos.z ||
+					!touchers[i].bOnMobj
+				) { touchers.Delete(i); }
+				else { offsets[i] = touchers[i].pos - pos; }
+			}
+			else { touchers.Delete(i); touchers.ShrinkToFit(); }
+		}
+	}
+
+	void MatchMovement()
+	{
+		for (int i = 0; i < min(touchers.Size(), 64); i++)
+		{
+			if (
+				touchers[i] && 
+				(
+					(Distance2D(touchers[i]) < (Radius + touchers[i].radius) * 1.4 && touchers[i].pos.z == pos.z + height) ||
+					deltaangle(angle, AngleTo(touchers[i])) < 45 ||
+					((touchers[i].bOnMobj || (touchers[i].player && touchers[i].player.jumptics == 0)) && Distance3D(touchers[i]) < radius * 2)
+				)
+			)
+			{
+				if (touchers[i].CheckMove(pos.xy + offsets[i].xy)) { touchers[i].SetOrigin(pos + offsets[i], true); }
+			}
+		}
+	}
+
+	override void Activate(Actor activator)
+	{
+		bDormant = false;
+		if (ExhaustActor) { thrust = Spawn(ExhaustActor); }
+		if (thrust) { thrust.master = self; }
+		Super.Activate(activator);
+	}
+
+	override void Deactivate(Actor activator)
+	{
+		bDormant = true;
+		if (thrust) { thrust.Destroy(); }
+		Super.Deactivate(activator);
+	}
+}
+
+class CKPlatformFalling : CKPlatform
+{
+	int movetimer;
+	double movez;
+	bool hitbottom;
+
+	Default
+	{
+		//$Title Platform (Falling)
+		+INTERPOLATEANGLES
+		CKPlatform.Exhaust "";
+	}
+
+	override void PostBeginPlay()
+	{
+		SpawnPoint = pos;
+
+		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		if (IsFrozen() || bDormant)
+		{
+			Actor.Tick();
+
+			return;
+		}
+
+		CheckTouchers();
+
+		if (movetimer == 16)
+		{
+			if (pos.z == floorz)
+			{
+				if (touchers.Size()) { movez = 0;}
+				else { movez = Speed; hitbottom = true; }
+			}
+			else
+			{
+				if (touchers.Size() || !hitbottom) { movez = -Speed; hitbottom = false; }
+				else if (pos.z < SpawnPoint.z && hitbottom) { movez = Speed; }
+				else { movez = 0; movetimer = 0; }
+			}
+		}
+		else if (touchers.Size()) { movetimer++; }
+		else if (level.time % 20 == 0) { movetimer = max(movetimer - 1, 0); }
+
+		SetOrigin(pos + (0, 0, movez), true);
+
+		MatchMovement();
+		Actor.Tick();
+	}
+}
+
+class CKPlatformVertical : CKPlatform
+{
+	double movedist, movez;
+	bool hitbottom;
+
+	Default
+	{
+		//$Title Platform (Vertical)
+		Speed 2;
+		+INTERPOLATEANGLES
+		CKPlatform.Exhaust "CKPlatformEnergy";
+	}
+
+	override void PostBeginPlay()
+	{
+		SpawnPoint = pos;
+
+		movedist = user_movedist ? user_movedist : 256;
+
+		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		if (IsFrozen() || bDormant)
+		{
+			Actor.Tick();
+
+			return;
+		}
+
+		CheckTouchers();
+
+		if (pos.z == SpawnPoint.z - movedist || pos.z == floorz || pos.z + 64.0 == ceilingz)
+		{
+			movez = Speed;
+			hitbottom = true;
+		}
+		else
+		{
+			if (!hitbottom)
+			{
+				movez = -Speed;
+			}
+			else if (pos.z < SpawnPoint.z && hitbottom)
+			{
+				movez = Speed;
+			}
+			else
+			{
+				movez = 0; hitbottom = false;
+			}
+		}
+
+		SetOrigin(pos + (0, 0, movez), true);
+
+		MatchMovement();
+		Actor.Tick();
+	}
+}
+
+class CKPlatformThrust : Actor
+{
+	Default
+	{
+		+BRIGHT
+		+FORCEXYBILLBOARD
+		+NOGRAVITY
+		+NOINTERACTION
+		Scale 2.0;
+	}
+
+	States
+	{
+		Spawn:
+			CKPT AB 2;
+			Loop;
+	}
+
+	override void Tick()
+	{
+		if (CKPlatform(master) && !master.bDormant) { SetXYZ((master.pos.xy - RotateVector((master.Radius, 0), CKPlatform(master).moveangle), master.pos.z + master.height / 2)); }
+		else { Destroy(); }
+
+		Super.Tick();
+	}
+}
+
+class CKPlatformEnergy : CKPlatformThrust
+{
+	Default
+	{
+		Scale 1.0;
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A 1;
+			Loop;
+	}
+
+	override void Tick()
+	{
+		if (CKPlatform(master) && !master.bDormant) { SetXYZ(master.pos); }
+		else { Destroy(); }
+
+		Actor.Tick();
+	}
+}
+
+class CKPlatformGlass : Actor
+{
+	int phasecounter, user_phaseoffset; // user_phaseoffset controls which phase of transparency the actor stars in.  Default is 0 (solid).
+
+	Default
+	{
+		//$Category Commander Keen (BoA)/Props
+		//$Title Platform (Glass, Disappearing)
+		//$Color 8
+
+		Radius 46;
+		Height 12;
+		MaxStepHeight 0;
+		+CANPASS
+		+DONTTHRUST
+		+NOGRAVITY
+		+SOLID
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		frame = min(user_phaseoffset, 3);
+
+		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		if (IsFrozen() || bDormant) { return; }
+
+		if (phasecounter < 85) { phasecounter++; }
+		else
+		{
+			phasecounter = 0;
+
+			frame++;
+
+			if (frame > 3) { frame = 0; } // Rotate through A, B, C only
+
+			bSolid = (frame != 2); // Solid on frame A, B, and D
+		}
+
+		Super.Tick();
+	}
+}
