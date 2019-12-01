@@ -1,9 +1,13 @@
 class CKBaseEnemy : Actor
 {
 	bool stunned, stunframes, wakeontouch;
-	int stuntime, stuncounter, counter, counter2;
+	int stuntime, stuncounter;
 	Actor confusion;
 	State StunState, ReviveState, AttackState;
+
+	// Some generic variables for CK_ internal functions.  I'd rather put these functions all in the actual classes, but DECORATE...
+	int counter, counter2;
+	Vector3 offset;
 
 	Property StunTime:stuntime;
 	Property StunFrames:stunframes;
@@ -28,6 +32,7 @@ class CKBaseEnemy : Actor
 
 	States
 	{
+		// Generic placeholder states, just in case something doesn't get defined properly
 		Stunned:
 			TNT1 A -1;
 			Stop;
@@ -70,6 +75,16 @@ class CKBaseEnemy : Actor
 			if (!stunned) { toucher.DamageMobj(self, self, damage, "Melee"); }
 		}
 		else if (special) { Level.ExecuteSpecial(special, self, null, false, args[0], args[1], args[2], args[3], args[4]); }
+	}
+
+	override bool Used(Actor user)
+	{
+		if (self is "CKBounder")
+		{
+			if (!target || target != user) { user.SetOrigin(pos + (0, 0, height), true); return true; }
+		}
+
+		return false;
 	}
 
 	override void Tick()
@@ -159,21 +174,58 @@ class CKBaseEnemy : Actor
 	{
 		LookforPlayers(true);
 
-		bool blocked = (BlockingMobj || BlockingLine);
+		bool blocked = BlockingLine;
 
-		if (pos.z == floorz || bOnMobj || blocked)
+		if (
+			target &&
+			(
+				(Distance2D(target) < (Radius + target.radius) * 1.4 && target.pos.z >= pos.z + height && target.pos.z <= pos.z + height + 16) ||
+				(
+					target.pos.z >= pos.z + height &&
+					(target.bOnMobj || (target.player && target.player.jumptics == 0)) && 
+					Distance3D(target) < radius * 2
+				)
+			)
+		)
+		{ offset = target.pos - pos; }
+		else { target = null; }
+
+		if (!blocked && BlockingMobj)
 		{
-			counter++;
-			A_PlaySound("ckeen/madmushroombounce");
-			if (!blocked) { vel.z = 12.0; }
+			if (BlockingMobj != target) { blocked = true; }
+		}
 
-			// Really should be able to steer and ride these around to match original code...  TODO?
-			if (target && Distance2D(target) < radius && target.pos.z == pos.z + height)
+		if (bOnMobj)
+		{
+			Actor onmo = FindOnMobj();
+			if (!onmo || onmo == target) { bOnMobj = false; }
+		}
+
+		if (pos.z == floorz || blocked || waterlevel || bOnMobj)
+		{
+			if (pos.z == floorz || waterlevel || bOnMobj)
+			{
+				counter++;
+				A_PlaySound("ckeen/madmushroombounce");
+				vel.z = 12.0;
+			}
+
+			if (target)
 			{
 				counter = 0;
 
 				angle = target.angle;
-				vel.xy = RotateVector((Speed, 0), angle);
+
+				double scale = 1.0 - (abs(target.pitch) / 90);
+				scale *= 0.75;
+				scale -= 0.25;
+				
+				vel.xy = RotateVector((Speed * scale, 0), angle);
+
+				if (!CheckMove(pos.xy + vel.xy))
+				{
+					vel.xy *= 0;
+				}
 			}
 			else if (counter > 2 && counter2)
 			{
@@ -190,6 +242,11 @@ class CKBaseEnemy : Actor
 				counter2 = 1;
 				vel.xy *= 0;
 			}
+		}
+
+		if (target)
+		{
+			if (target.CheckMove(pos.xy + offset.xy) && CheckMove(pos.xy + vel.xy)) { target.SetOrigin(pos + (vel.xy, vel.z * gravity) + offset, true); }
 		}
 	}
 
@@ -218,6 +275,25 @@ class CKBaseEnemy : Actor
 		}
 
 		counter++;
+	}
+
+	Actor FindOnMObj()
+	{
+		BlockThingsIterator it = BlockThingsIterator.Create(self, 1);
+
+		while (it.Next())
+		{
+			let mo = it.thing;
+
+			if (mo == self) { continue; } // Ignore itself
+
+			if (mo.bSolid && pos.z == mo.pos.z + mo.height)
+			{
+				return mo;
+			}
+		}
+
+		return null;
 	}
 }
 
