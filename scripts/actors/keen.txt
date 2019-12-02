@@ -679,3 +679,43 @@ class CKPlatformGlass : Actor
 		Super.Tick();
 	}
 }
+
+class CKPipe : LadderBase
+{
+	Default
+	{
+		//$Category Commander Keen (BoA)/Props
+		Radius 1;
+		Height 0;
+		-NOINTERACTION
+		+SOLID
+		LadderBase.ClimbRadius 24;
+		LadderBase.Friction 0.75;
+		LadderBase.LadderHeight -1;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		SetOrigin((pos.xy, floorz + 32), false);
+		A_SetSize(-1, ladderheight);
+		scale.y = -ladderheight / 132.0;
+	}
+}
+
+class CKPipeBlue : CKPipe
+{
+	Default
+	{
+		//$Title Climbable Pipe (Blue)
+	}
+}
+
+class CKPipePink : CKPipe
+{
+	Default
+	{
+		//$Title Climbable Pipe (Pink)
+	}
+}

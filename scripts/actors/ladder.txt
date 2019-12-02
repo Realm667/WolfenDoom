@@ -80,6 +80,7 @@ class LadderBase : Actor
 	override void PostBeginPlay()
 	{
 		if (!climbradius) { climbradius = Radius; }
+		if (ladderheight <= 0) { ladderheight = pos.z - floorz; }
 
 		Climbers.Clear();
 
@@ -100,7 +101,7 @@ class LadderBase : Actor
 			{ // If there are other ladders immediately above or below, handle setting up transfer logic so that players don't get dropped mid-ladder if there are multiple stacked ladders
 				if (Distance2d(it.thing) > 0) { continue; } // Only check ladders that are directly above/below this one
 
-				if (it.thing.pos.z >= pos.z && pos.z - ladderheight <= it.thing.pos.z) { passive = true; } // This ladder is not the top, so make it decorative only
+				if (it.thing.pos.z >= pos.z && pos.z - ladderheight <= it.thing.pos.z && it.thing.curSector == curSector) { passive = true; } // This ladder is not the top, so make it decorative only
 				else if (it.thing.pos.z < pos.z && pos.z - ladderheight > it.thing.pos.z) // This ladder is the top, so make its height check logic handle the entire stack
 				{
 					double heightcheck = pos.z - it.thing.pos.z + LadderBase(it.thing).ladderheight;
