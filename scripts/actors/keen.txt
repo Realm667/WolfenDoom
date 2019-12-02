@@ -18,6 +18,7 @@ class CKBaseEnemy : Actor
 		Monster;
 		Damage 15;
 		Scale 2.0;
+		Gravity 1.2;
 		PainSound "ckeen/kill";
 		DeathSound "ckeen/kill";
 		+DONTTHRUST
@@ -27,7 +28,7 @@ class CKBaseEnemy : Actor
 		+NOBLOOD
 
 		CKBaseEnemy.StunTime -1; // Default to staying stunned forever
-		CKBaseEnemy.StunFrames 2; // Default to two possible frames for stun state (some actors only have 1)
+		CKBaseEnemy.StunFrames 1; // Default to one possible frames for stun state (some actors have 2)
 	}
 
 	States
@@ -44,7 +45,8 @@ class CKBaseEnemy : Actor
 	{
 		StunState = FindState("Stunned");
 		ReviveState = FindState("Revive");
-		AttackState = FindState("Missile");
+		AttackState = FindState("Attack");
+		if (!AttackState) { AttackState = FindState("Missile"); }
 		if (!AttackState) { AttackState = FindState("Melee"); }
 
 		Super.PostBeginPlay();
@@ -54,7 +56,7 @@ class CKBaseEnemy : Actor
 	// Be nice and let the 'kill monsters' cheat still work (won't stop enemies from reviving, though)
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
-		if (((source && source.player || source is "PlayerFollower") || mod == "Massacre") && stuntime != 0 && !stunned) { DoStun(true); }
+		if (bSolid && ((source && source.player || source is "PlayerFollower") || mod == "Massacre") && stuntime != 0 && !stunned) { DoStun(true); }
 
 		return 0;
 	}
@@ -435,7 +437,7 @@ class CKPlatform : Actor
 				touchers[i] && 
 				(
 					(Distance2D(touchers[i]) < (Radius + touchers[i].radius) * 1.4 && touchers[i].pos.z == pos.z + height) ||
-					deltaangle(angle, AngleTo(touchers[i])) < 45 ||
+					absangle(angle, AngleTo(touchers[i])) < 45 ||
 					((touchers[i].bOnMobj || (touchers[i].player && touchers[i].player.jumptics == 0)) && Distance3D(touchers[i]) < radius * 2)
 				)
 			)
@@ -717,5 +719,179 @@ class CKPipePink : CKPipe
 	Default
 	{
 		//$Title Climbable Pipe (Pink)
+	}
+}
+
+class CKLick : CKBaseEnemy
+{
+	Default
+	{
+		//$Category Commander Keen (BoA)/Monsters
+		//$Title Lick
+		//$Color 4
+
+		Speed 8;
+		Radius 18;
+		Height 36;
+		Damage 0; // Damages on touch only during attack state
+		Obituary "$CK_LICK";
+	}
+
+	States
+	{
+		Spawn:
+			CKLC AAAAABBBBB 1 CK_LickBounce();
+		See:
+			CKLC CCCCCDDDDD 1 CK_LickBounce();
+			Goto Spawn;
+		Stunned:
+			CKLC H 1 A_ChangeVelocity(0, 0, 4, CVF_RELATIVE);
+			CKLC H -1;
+			Stop;
+		Attack:
+			CKLC E 2
+			{
+				A_PlaySound("ckeen/lick/attack");
+				vel.xy = RotateVector((1, 0), angle);
+				SetDamage(15);
+			}
+			CKLC FGFEFGF 2;
+			CKLC F 0 { SetDamage(0); }
+			Goto See; // Original code sent actor back to thirds state (C frame), which is why Spawn and See are split the way they are above.
+	}
+
+	void CK_LickBounce()
+	{
+		LookforPlayers(true);
+
+		double dist = target ? Distance2D(target) - target.radius * 1.4 : 0;
+
+		bool blocked = BlockingLine || BlockingMobj;
+
+		if (!CheckMove(pos.xy + vel.xy)) { blocked = true; }
+
+		if (pos.z == floorz || blocked || bOnMobj)
+		{
+			if (pos.z == floorz || bOnMobj)
+			{
+				if (target && dist < 32)
+				{
+					SetState(AttackState);
+					return;
+				}
+
+				if (dist > 48) { vel.z = 8.0; }
+				else { vel.z = 4.0; }
+			}
+
+			if (target) { angle = AngleTo(target); }
+			else if (blocked) { angle = Random(0, 359); }
+
+			vel.xy = RotateVector((dist > 48 ? Speed : Speed / 2, 0), angle);
+		}
+	}
+
+	override void Tick()
+	{
+		// They would jump into tar originally and fall off of the map...  I think this is the best way to handle that.
+		if (waterlevel && !stunned) { DoStun(true); }
+
+		Super.Tick();
+	}
+}
+
+class CKWormouth : CKBaseEnemy
+{
+	Default
+	{
+		//$Category Commander Keen (BoA)/Monsters
+		//$Title Wormouth
+		//$Color 4
+
+		Speed 4;
+		Radius 18;
+		Height 36;
+		Damage 0; // Damages on touch only during attack state
+		Obituary "$CK_LICK";
+		-SOLID
+	}
+
+	States
+	{
+		Spawn:
+			CKSN A 1;
+		See:
+			CKSN AA 1 CK_WormMove();
+			Loop;
+		LookAround:  // There are frames missing here...  Eyes blink (the 4-tic frames) in original.
+			// This will need to be redone once we have a full set of sprites for all look angles
+			CKSN C 10;
+			CKSN C 4; // <--
+			CKSN C 10 CK_Look(90);
+			CKSN A 4;
+			CKSN B 10;
+			CKSN B 4; // <--
+			CKSN B 10 CK_Look(-90);
+			CKSN A 4 A_Face(target);
+			Goto See;
+		Stunned:
+			CKSN G -1;
+			Stop;
+		Attack:
+			CKSN D 4
+			{
+				A_Face(target);
+				vel.xy = RotateVector((1, 0), angle);
+				bSolid = true;
+				A_PlaySound("ckeen/wormmouth/attack");
+				SetDamage(15);
+			}
+			CKSN E 4;
+			CKSN F 8;
+			CKSN ED 4;
+			CKLC F 0
+			{
+				if (target && Distance2D(target) < 16) { SetState(AttackState); return; }
+				bSolid = false;
+				SetDamage(0);
+			}
+			Goto See;
+	}
+
+	void CK_WormMove()
+	{
+		LookforPlayers(true);
+
+		double dist = target ? Distance2D(target) - target.radius * 1.4 : 0;
+
+		if (target && dist < 128 && Random() < 6) // Range is ~48 in original code
+		{
+			vel.xy *= 0;
+			SetStateLabel("LookAround");
+			return;
+		}
+
+		if (target && dist < 16)
+		{
+			SetState(AttackState);
+			return;
+		}
+
+		bool blocked = BlockingLine || BlockingMobj;
+
+		if (!TryMove(pos.xy + RotateVector((Speed, 0), angle), false)) { blocked = true; }
+
+		if (blocked) { angle = Random(0, 359); }
+	}
+
+	void CK_Look(int angleoffset = 0, int anglerange = 30)
+	{
+		if (!target) { return; }
+
+		if (absangle(angle + angleoffset, AngleTo(target)) < anglerange)
+		{
+			A_Face(target);
+			SetState(SeeState);
+		}
 	}
 }

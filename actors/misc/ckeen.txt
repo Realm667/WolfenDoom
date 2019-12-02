@@ -356,7 +356,6 @@ ACTOR CKArachnut : CKBaseEnemy
 	+FLOORCLIP
 	+LOOKALLAROUND
 	Obituary "$CK_ARACH"
-	CKBaseEnemy.StunFrames 1
 	CKBaseEnemy.StunTime 120
 
 	States
@@ -383,7 +382,6 @@ ACTOR CKMadMushroom : CKBaseEnemy
 	//$Color 4
 	Radius 30
 	Height 56
-	Gravity 1.2
 	Obituary "$CK_MUSH"
 	CKBaseEnemy.StunTime 0
 
@@ -404,6 +402,7 @@ ACTOR CKPoisonSlug : CKBaseEnemy
 	Radius 16
 	Height 32
 	Obituary "$CK_SLUG"
+	CKBaseEnemy.StunFrames 2
 
 	States
 	{
@@ -420,7 +419,6 @@ ACTOR CKPoisonSlug : CKBaseEnemy
 		Goto See
 	Stunned:
 		CKPS E 1 A_ChangeVelocity(2, 0, 6, CVF_RELATIVE)
-	StunLoop:
 		CKPS E -1
 		Stop
 	}
@@ -574,7 +572,6 @@ ACTOR CKBounder : CKBaseEnemy
 	Radius 18
 	Height 36
 	Damage 0
-	Gravity 1.2
 	Obituary "$CK_BOUND"
 
 	States
