@@ -6,6 +6,7 @@ ACTOR CKShikadiSoda : SingleCoin
 	//$Category Commander Keen (BoA)/Pickups
 	//$Title Pickup (Shikadi Soda, 1pts)
 	//$Color 17
+	+NOGRAVITY
 	Inventory.PickupMessage "$CKSODA"
 	Inventory.PickupSound "ckeen/pickup"
 	States
@@ -24,6 +25,7 @@ ACTOR CKShikkersCandyBar : SingleCoin
 	//$Category Commander Keen (BoA)/Pickups
 	//$Title Pickup (Shikkers Candy Bar, 5pts)
 	//$Color 17
+	+NOGRAVITY
 	Inventory.PickupMessage "$CKCANDY"
 	Inventory.PickupSound "ckeen/pickup"
 	States
@@ -42,6 +44,7 @@ ACTOR CKDoughnut : SingleCoin
 	//$Category Commander Keen (BoA)/Pickups
 	//$Title Pickup (Dougnut, 20pts)
 	//$Color 17
+	+NOGRAVITY
 	Inventory.PickupMessage "$CKDNUT"
 	Inventory.PickupSound "ckeen/pickup"
 	States
@@ -60,6 +63,7 @@ ACTOR CKIceCreamCone : SingleCoin
 	//$Category Commander Keen (BoA)/Pickups
 	//$Title Pickup (IceCreamCone, 50pts)
 	//$Color 17
+	+NOGRAVITY
 	Inventory.PickupMessage "$CKCONE"
 	Inventory.PickupSound "ckeen/pickup"
 	States
@@ -78,6 +82,7 @@ ACTOR CKRaindrop : Health
 	//$Category Commander Keen (BoA)/Pickups
 	//$Title Health (Raindrop, +1)
 	//$Color 17
+	+NOGRAVITY
 	+INVENTORY.ALWAYSPICKUP
 	Inventory.Amount 1
 	Inventory.MaxAmount 200
@@ -99,6 +104,7 @@ ACTOR CKOneUp : Health
 	//$Category Commander Keen (BoA)/Pickups
 	//$Title Health (Lifewater Flask, +100)
 	//$Color 17
+	+NOGRAVITY
 	+INVENTORY.ALWAYSPICKUP
 	+INVENTORY.AUTOACTIVATE
 	Inventory.Amount 100
@@ -210,6 +216,7 @@ ACTOR CKBlueKey : PuzzleItem
 	Inventory.PickupSound "ckeen/gem"
 	Species "BoABlueKey"
 	+BRIGHT
+	+NOGRAVITY
 	+INVENTORY.INVBAR
 	States
 	{
@@ -233,6 +240,7 @@ ACTOR CKYellowKey : PuzzleItem
 	Inventory.PickupSound "ckeen/gem"
 	Species "BoAYellowKey"
 	+BRIGHT
+	+NOGRAVITY
 	+INVENTORY.INVBAR
 	States
 	{
@@ -256,6 +264,7 @@ ACTOR CKRedKey : PuzzleItem
 	Inventory.PickupSound "ckeen/gem"
 	Species "BoARedKey"
 	+BRIGHT
+	+NOGRAVITY
 	+INVENTORY.INVBAR
 	States
 	{
@@ -398,7 +407,7 @@ ACTOR CKPoisonSlug : CKBaseEnemy
 	//$Category Commander Keen (BoA)/Monsters
 	//$Title Poison Slug
 	//$Color 4
-	Speed 10
+	Speed 16
 	Radius 16
 	Height 32
 	Obituary "$CK_SLUG"
@@ -539,9 +548,9 @@ ACTOR CKWallShooterArrow_Horizontal : CKWallShooterArrow_Down
 ACTOR CKOracle : CKBaseEnemy
 {
 	//$Category Commander Keen (BoA)/Monsters
-	//$Title Oracle of Wisdom
+	//$Title Oracle of Wisdom (Council Member)
 	//$Color 4
-	Speed 7
+	Speed 16
 	Radius 16
 	Height 64
 	Damage 0
@@ -551,11 +560,10 @@ ACTOR CKOracle : CKBaseEnemy
 	States
 	{
 	Spawn:
-		CKCC A 10 A_Look
-		Loop
+		CKCC A 1
 	See:
 		"####" AB 5 A_Wander
-		"####" A 0 A_Jump(48, "Stand")
+		"####" A 0 A_Jump(24, "Stand")
 		Loop
 	Stand:
 		"####" C 60
@@ -577,6 +585,8 @@ ACTOR CKBounder : CKBaseEnemy
 	States
 	{
 	Spawn:
+		CKBB A 1
+	See:
 		CKBB AAAAAAAAAABBBBBBBBBB 1 CK_BounderBounce
 		Loop
 	Stunned:
@@ -654,7 +664,7 @@ ACTOR CKThunderbolt
 	{
 	Spawn:
 		CKTH A 0 NODELAY A_Playsound("ckeen/shothit")
-		CKTH ABABABA 8 A_Explode
+		CKTH ABABAB 8 A_Explode
 		Stop
 	}
 }
@@ -885,7 +895,7 @@ ACTOR CKAquaDrop
 		CKDR ABCDE 10
 	Waiter:
 		TNT1 A 10 A_Jump(80, "Spawn")
-		loop
+		Loop
 	}
 }
 

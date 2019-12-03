@@ -120,7 +120,7 @@ class CKBaseEnemy : Actor
 
 		if (initial)
 		{
-			frame += Random(0, stunframes - 1); // Pick a random frame within set range
+			if (stunframes > 1) { frame += Random(0, stunframes - 1); } // Pick a random frame within set range
 			stuncounter = stuntime;
 			A_SetSize(Default.Radius, Default.Height / 2);
 
@@ -374,9 +374,8 @@ class CKPlatform : Actor
 		Vector2 newpos = pos.xy + RotateVector((Speed, 0), moveangle);
 		moved += Speed;
 
-		FCheckPosition checkpos;
 
-		if (CheckMove(newpos, 0, checkpos) && (user_movedist <= 0 || moved <= user_movedist))
+		if (CheckMove(newpos, 0) && (user_movedist <= 0 || moved <= user_movedist))
 		{
 			SetOrigin((newpos, pos.z), true);
 
@@ -812,7 +811,7 @@ class CKWormouth : CKBaseEnemy
 		Radius 18;
 		Height 36;
 		Damage 0; // Damages on touch only during attack state
-		Obituary "$CK_LICK";
+		Obituary "$CK_WORMOUTH";
 		-SOLID
 	}
 
@@ -843,7 +842,7 @@ class CKWormouth : CKBaseEnemy
 				A_Face(target);
 				vel.xy = RotateVector((1, 0), angle);
 				bSolid = true;
-				A_PlaySound("ckeen/wormmouth/attack");
+				A_PlaySound("ckeen/wormouth/attack");
 				SetDamage(15);
 			}
 			CKSN E 4;
@@ -893,5 +892,297 @@ class CKWormouth : CKBaseEnemy
 			A_Face(target);
 			SetState(SeeState);
 		}
+	}
+}
+
+class CKMine : CKBaseEnemy
+{
+	double moveangle, moved, user_movedist;
+
+	Default
+	{
+		//$Category Commander Keen (BoA)/Monsters
+		//$Title Mine
+		//$Color 4
+
+		Radius 24;
+		Height 50;
+		Speed 4;
+		MaxStepHeight 0;
+		+NOGRAVITY
+		+FORCEXYBILLBOARD
+	}
+
+	States
+	{
+		Spawn:
+			CKMN A -1;
+			Stop;
+		Explode:
+			CKMN B 0 A_PlaySound("ckeen/mine/explode");
+			CKMN BD 15 Bright A_Explode();
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		moveangle = angle;
+
+		bDormant = SpawnFlags & MTF_DORMANT;
+
+		if (bDormant) { Deactivate(self); }
+		else { Activate(self); }
+
+		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		if (IsFrozen() || bDormant)
+		{
+			Actor.Tick();
+
+			return;
+		}
+
+		Vector2 newpos = pos.xy + RotateVector((Speed * cos(abs(pitch)), 0), moveangle);
+		moved += Speed;
+
+		if (CheckMove(newpos, 0) && (user_movedist <= 0 || moved <= user_movedist) && waterlevel == 3 && pos.z > floorz && !bOnMobj) // Keep them underwater if they move up and down
+		{
+
+			SetOrigin((newpos, pos.z + Speed * sin(pitch)), true);
+		}
+		else // Swap directions
+		{
+
+			Speed = -Speed;
+			moved = 0;
+
+			SetOrigin((newpos, pos.z + Speed * sin(pitch)), true);
+		}
+
+		Super.Tick();
+	}
+
+	override void Touch(Actor toucher)
+	{
+		if (toucher && toucher.player && !InStateSequence(CurState, FindState("Explode")))
+		{
+			vel *= 0;
+			bDormant = true;
+			SetStateLabel("Explode");
+		}
+	}
+
+	override void Activate(Actor activator)
+	{
+		bDormant = false;
+		Super.Activate(activator);
+	}
+
+	override void Deactivate(Actor activator)
+	{
+		bDormant = true;
+		Super.Deactivate(activator);
+	}
+}
+
+class CKSmirky : CKBaseEnemy
+{
+	double teleportcounter;
+
+	Default
+	{
+		//$Category Commander Keen (BoA)/Monsters
+		//$Title Treasure Eater
+		//$Color 4
+
+		Speed 5;
+		Radius 40;
+		Height 64;
+		Damage 0; 
+		Obituary "$CK_SMIRKY";
+	}
+
+	States
+	{
+		Spawn:
+			CKGN AAAAAAAAAABBBBBBBBBB 1;
+			CKGN B 0 CK_SmirkyLook();
+		See:
+			CKGN CCCDDDEEEDDD 1 CK_SmirkyBounce();
+			CKGN D 0 A_Stop();
+			Goto Spawn;
+		Stunned:
+			CKGN C 3;
+			CKGN F -1;
+			Stop;
+		Teleport:
+			CKGN J 10 A_PlaySound("ckeen/smirky/teleport");
+			CKGN IHG 10;
+			CKGN G 10 CK_WarpToItem();
+			CKGN HIJ 10 CK_CheckPickup();
+			Goto See;
+	}
+
+	void CK_SmirkyLook()
+	{
+		if (CheckIfSeen()) { SetState(SpawnState); } // Don't do any thieving unless a player is in sight (otherwise he'll clean the level out)
+	}
+
+	void CK_SmirkyBounce()
+	{
+		LookForItem();
+
+		CK_CheckPickup();
+
+		double dist = goal ? Distance2D(goal) : 0;
+
+		bool blocked = BlockingLine || BlockingMobj;
+
+		if (!CheckMove(pos.xy + vel.xy)) { blocked = true; }
+
+		if (pos.z == floorz || blocked || bOnMobj)
+		{
+			if (pos.z == floorz || bOnMobj)
+			{
+				if ((!dist || dist > radius) && teleportcounter >= 12)
+				{
+					vel *= 0;
+					SetStateLabel("Teleport"); 
+					return;
+				}
+
+				vel.z = 12.0;
+			}
+
+			if (!blocked && goal && IsVisible(goal, true)) { angle = AngleTo(goal); }
+			else
+			{
+				angle = Random(0, 359);
+				teleportcounter++;
+			}
+
+			if (dist && dist < radius) { vel.xy *= 0; } // Stop if you're at the item so that you can jump to grab it next loop
+			else { vel.xy = RotateVector((Speed, 0), angle); }
+
+			if (CheckMove(pos.xy + vel.xy)) { return; }
+
+			if (pos.z == floorz || bOnMobj)
+			{
+				if (teleportcounter++ == 12)
+				{
+					vel *= 0;
+					SetStateLabel("Teleport");
+					return;
+				}
+			}
+		}
+	}
+
+	void CK_CheckPickup()
+	{
+		if (!goal) { return; }
+
+		if (goal && Distance2D(goal) < radius && Distance3D(goal) < height)
+		{
+			Vector3 goalpos = goal.pos;
+
+			if (Inventory(goal).CallTryPickup(self))
+			{
+				Spawn("CKStolenItem", goalpos);
+				A_PlaySound("ckeen/smirky/steal");
+			}
+		}
+	}
+
+	void CK_WarpToItem()
+	{
+		teleportcounter = 0;
+
+		if (!goal) { LookForItem(); } // Last chance to check for remaining items
+		if (!goal) { Destroy(); return; } // Teleport away forever if no more items are in the level to steal
+
+		Vector2 targetpos = goal.pos.xy;
+
+		if (!CheckMove(targetpos))
+		{
+			// If stuck in a line, try one time to move him out.  Otherwise he'll get out on his own next time he teleports
+			if (BlockingLine)
+			{
+				int s = PointOnLineSide(targetpos.x, targetpos.y, BlockingLine);
+
+				double lineangle = 0;
+
+				if (!BlockingLine.delta.x) { lineangle = 0; }
+				else if (!BlockingLine.delta.y) { lineangle = 90; }
+				else { lineangle = (atan(BlockingLine.delta.y / BlockingLine.delta.x) + 270) % 360; }
+
+				if (s) { lineangle += 180; }
+
+				targetpos += RotateVector((Radius, 0), lineangle);
+			}
+		}
+
+		SetOrigin((targetpos, (goal.pos.z - goal.floorz < 128 ? goal.floorz : goal.pos.z)), false);
+	}
+
+	int PointOnLineSide(double x, double y, line l)
+	{
+		return (y - l.v1.p.y) * l.delta.x + (l.v1.p.x - x) * l.delta.y > (1.0 / 65536);
+	}
+
+	void LookForItem()
+	{
+		ThinkerIterator it = ThinkerIterator.Create("Actor", Thinker.STAT_DEFAULT);
+		Actor mo;
+		int count;
+
+		while (mo = Actor(it.Next()))
+		{
+			if (mo is "Health" || mo is "SingleCoin") // Look for health and coin items first
+			{
+				count++;
+
+				if (mo.pos.z - mo.floorz >= 128) { continue; } // Only go after items within jumping reach!
+
+				if (!goal || Distance2D(mo) < Distance2D(goal))
+				{
+					goal = mo;
+				}
+			}
+		}
+
+		if (count) { return; } // If you found treasure left in the level, stop looking here
+
+		it.Reinit();
+
+		while (mo = Actor(it.Next())) // Otherwise, look for key gems and steal those instead so that we can't complete the map!
+		{
+			if (mo is "PuzzleItem")
+			{
+				if (!goal || Distance2D(mo) < Distance2D(goal))
+				{
+					goal = mo;
+				}
+			}
+		}
+	}
+}
+
+class CKStolenItem : Actor
+{
+	Default
+	{
+		+NOINTERACTION
+		+NOGRAVITY
+	}
+
+	States
+	{
+		Spawn:
+			CKST ABCD 5;
+			Stop;
 	}
 }
