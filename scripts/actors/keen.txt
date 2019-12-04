@@ -1175,6 +1175,7 @@ class CKStolenItem : Actor
 {
 	Default
 	{
+		Scale 2.0;
 		+NOINTERACTION
 		+NOGRAVITY
 	}
@@ -1184,5 +1185,459 @@ class CKStolenItem : Actor
 		Spawn:
 			CKST ABCD 5;
 			Stop;
+	}
+}
+
+class CKLindsey : CKBaseEnemy
+{
+	Default
+	{
+		//$Category Commander Keen (BoA)/NPCs
+		//$Title Princess Lindsey
+		//$Color 11
+		Speed 0;
+		FloatSpeed 2;
+		Radius 16;
+		Height 64;
+		Damage 0;
+		+NOGRAVITY
+		Obituary "$CK_LINDSEY";
+		CKBaseEnemy.StunTime 0;
+	}
+
+	States
+	{
+		Spawn:
+			CKPL A 1;
+		See:
+			CKPL AAAAAAAAAABBBBBBBBBBCCCCCCCCCCDDDDDDDDDD 1 CK_Float(2, FloatSpeed / 10); // Allow interpolated bobbing motion across 10-tic frames
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		if (pos.z - floorz < 2) { SetOrigin((pos.xy, floorz + 2), false); }
+
+		SpawnPoint = pos;
+
+		Super.PostBeginPlay();
+	}
+
+	void CK_Float(int dist = 2, double speed = 0.1)
+	{
+		SetOrigin(pos + (0, 0, speed), true);
+
+		if (abs(pos.z - SpawnPoint.z) > dist) { FloatSpeed *= -1; }
+	}
+}
+
+class CKDopefish : CKBaseEnemy
+{
+	int turncounter, zdir;
+
+	Default
+	{
+		//$Category Commander Keen (BoA)/Monsters
+		//$Title Dopefish
+		//$Color 4
+
+		Speed 2.5;
+		FloatSpeed 1.25;
+		Radius 64;
+		Height 128;
+		Damage 0; // Damages on touch only during attack state
+		+NOGRAVITY
+		Obituary "$CK_DOPEFISH";
+		CKBaseEnemy.StunTime 0;
+	}
+
+	States
+	{
+		Spawn:
+			CKDF A 1;
+		See:
+			CKDF AAAAAAAAAABBBBBBBBBB 1 CK_DopefishSwim();
+			Loop;
+		Attack:
+			CKDF C 10 // Open mouth
+			{
+				vel *= 0;
+
+				// Use alternate frames...  C is original-style sprite, E and G have tongue and tooth greens
+				if (Random() < 128) { frame = 4; }
+				else { frame = 6; }
+			}
+			CKDF A 1 // Bite!
+			{
+				A_PlaySound("ckeen/dopefish/attack");
+				vel.xy = RotateVector((1, 0), angle);
+				SetDamage(15);
+				if (target is "CKSchoolFish") { target.Destroy(); }
+			}
+			CKDF A 29; // Closed mouth
+			CKDF A 0 // Reset
+			{
+				SetDamage(0);
+				if (target && target.health > 0) { SetState(AttackState); } // Keep attacking the player without burping
+			}
+		Burp:
+			CKDF A 30;
+			CKDF D 30 {
+				A_Face(target);
+				A_PlaySound("ckeen/dopefish/burp");
+				Spawn("CKBubble", pos + (RotateVector((56, -4), angle + 90), 32));
+			}
+			CKDF A 30;
+			Goto See;
+	}
+
+	void CK_DopeFishSwim()
+	{
+		LookforPlayers(true);
+
+		bool blocked = BlockingLine || BlockingMobj;
+
+		if (BlockingMobj && BlockingMobj is "CKSchoolfish")
+		{
+			target = BlockingMobj;
+			A_Face(target);
+
+			SetState(AttackState);
+			return;
+		}
+
+		if (!CheckMove(pos.xy + vel.xy)) { blocked = true; }
+
+		if (turncounter > 0) { turncounter--; }
+
+		if (blocked)
+		{
+			if (BlockingMobj && BlockingMobj == target)
+			{
+				SetState(AttackState);
+				return;
+			}
+
+			if (!turncounter)
+			{
+				angle += Random(-115, -245);
+				turncounter = 70;
+			}
+
+			zdir = Random(-1, 1);
+		}
+		else if (target && IsVisible(target, true))
+		{
+			if (!turncounter)
+			{
+				angle = AngleTo(target);
+				turncounter = 70;
+			}
+
+			if (pos.z > target.pos.z) { zdir = -1; }
+			else if (pos.z < target.pos.z) { zdir = 1; }
+			else { zdir = 0; }
+		}
+
+		if (waterlevel < 3) { zdir = min(zdir, 0); } // Keep them underwater!
+
+		vel.xy = RotateVector((Speed, 0), angle);
+		vel.z = FloatSpeed * zdir;
+	}
+}
+
+class CKBubble : Actor
+{
+	Default
+	{
+		Scale 2.0;
+		+NOCLIP
+	}
+
+	States
+	{
+		Spawn:
+			CKBU ABCD 10;
+			Loop;
+	}
+
+	override void Tick()
+	{
+		if (waterlevel < 2) { Destroy(); }
+
+		vel.z = 5;
+
+		Super.Tick();
+	}
+}
+
+class CKSchoolfish : CKBaseEnemy
+{
+	int turncounter, zdir, swimoffset;
+
+	Default
+	{
+		//$Category Commander Keen (BoA)/Monsters
+		//$Title Schoolfish
+		//$Color 4
+
+		Speed 2.5;
+		FloatSpeed 1.25;
+		Radius 14;
+		Height 20;
+		Damage 0;
+		+NOGRAVITY
+		CKBaseEnemy.StunTime 0;
+	}
+
+	States
+	{
+		Spawn:
+			CKSF A 1;
+		See:
+			CKSF AAAAAAAAAABBBBBBBBBB 1 CK_SchoolfishSwim();
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		swimoffset = Random(-32, 32);
+		turncounter = Random(0, 35);
+
+		Super.PostBeginPlay();
+	}
+
+	void CK_SchoolFishSwim()
+	{
+		LookforPlayers(true);
+
+		bool blocked = BlockingLine || BlockingMobj;
+
+		if (!CheckMove(pos.xy + vel.xy)) { blocked = true; }
+
+		if (turncounter > 0) { turncounter--; }
+
+		if (blocked)
+		{
+			if (!turncounter)
+			{
+				angle += Random(-115, -245);
+				turncounter = 70;
+			}
+
+			zdir = Random(-1, 1);
+			swimoffset = Random(-32, 32);
+		}
+		else if (target && IsVisible(target, true))
+		{
+			if (!turncounter)
+			{
+				angle = AngleTo(target) + Random(-45, 45);
+				turncounter = 70;
+			}
+
+			double swimheight = (target.player ? target.player.viewheight : target.height / 2) + swimoffset;
+
+			if (pos.z > target.pos.z + swimheight + height) { zdir = -1; }
+			else if (pos.z < target.pos.z + swimheight - height) { zdir = 1; }
+			else { zdir = 0; }
+		}
+
+		if (waterlevel < 3) { zdir = min(zdir, 0); } // Keep them underwater!
+
+		vel.xy = RotateVector((Speed, 0), angle);
+		vel.z = FloatSpeed * zdir;
+	}
+
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (other is "CKSchoolfish" || other.player) { return false; } // Swim through other fish and the player
+
+		return Super.CanCollideWith(other, passive);
+	}	
+}
+
+class CKInchworm : CKBaseEnemy
+{
+	int turncounter, lasttouch, count;
+	bool egg;
+
+	Default
+	{
+		//$Category Commander Keen (BoA)/Monsters
+		//$Title Inchworm
+		//$Color 4
+
+		Speed 6;
+		Radius 18;
+		Height 20;
+		Damage 0;
+		MaxStepHeight 0;
+		CKBaseEnemy.StunTime 0;
+	}
+
+	States
+	{
+		Spawn:
+			CKWM A Random(0, 15);
+		See:
+			CKWM AB 15 CK_InchwormMove();
+			Loop;
+	}
+
+	void CK_InchwormMove()
+	{
+		LookforPlayers(true);
+
+		bool blocked = BlockingLine || BlockingMobj;
+
+		if (!TryMove(pos.xy + RotateVector((Speed, 0), angle), false)) { blocked = true; }
+
+		if (turncounter > 0) { turncounter--; }
+
+		if (!turncounter)
+		{
+			if (blocked || !target) { angle = Random(0, 359); }
+			else { angle = AngleTo(target); }
+
+			turncounter = 5;
+		}
+	}
+
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		// Don't collide with anything, but keep count of how many inchworms are overlapping right now
+		if (other is "CKInchWorm")
+		{
+			if (lasttouch != level.time)
+			{
+				lasttouch = level.time;
+				count = 0;
+			}
+
+			count++;
+
+			if (!egg && count == 11)
+			{
+				// This was an easter egg in CK4...  What to do here?
+				Console.Printf("12 inches in a foot... lol");
+
+				egg = true;
+			}
+		}
+
+		return false;
+	}
+}
+
+class CKMimRock : CKBaseEnemy
+{
+	bool bounced;
+
+	Default
+	{
+		//$Category Commander Keen (BoA)/Monsters
+		//$Title Mimrock
+		//$Color 4
+
+		Speed 6;
+		Radius 24;
+		Height 44;
+		Damage 0;
+		CKBaseEnemy.StunTime 0; // Only stunnable during moving and attack frames
+	}
+
+	States
+	{
+		Spawn:
+			CKMM A 10;
+			CKMM A 0 CK_MimRockWait();
+		See:
+			CKMM BCDEBC 3 CK_MimRockMove();
+			Goto Spawn;
+		Attack:
+			CKMM F 12 { SetDamage(15); }
+			CKMM G 5;
+		Fall:
+			CKMM H 1;
+			CKMM H 5 CK_MimRockJump();
+			Goto Spawn;
+		Stunned:
+			CKMM H 6;
+			CKMM I -1;
+			Stop;
+	}
+
+	void CK_MimRockWait()
+	{
+		stuntime = 0;
+		bounced = false;
+		SetDamage(0);
+
+		LookForPlayers(true);
+
+		if (target && !InSightOf(target) && Distance2D(target) > 48)
+		{
+			SetState(SeeState);
+		}
+		else
+		{
+			SetState(SpawnState);
+		}
+	}
+
+	void CK_MimRockMove()
+	{
+		stuntime = -1; // Can be stunned while walking
+
+		if (target && IsVisible(target, true) && !InsightOf(target) && abs(target.pos.z - pos.z) <= 80)
+		{
+			A_Face(target);
+
+			if (Distance2D(target) < 128) // Double original range
+			{
+				vel.xy = RotateVector((5, 0), angle);
+				vel.z = 10;
+
+				SetState(AttackState);
+			} 
+			else
+			{
+				A_Chase(null, null);
+			}
+		}
+		else { SetState(SpawnState); }
+	}
+
+	void CK_MimRockJump()
+	{
+		stuntime = -1; // Can be stunned while jumping
+
+		if (pos.z == floorz || bOnMobj)
+		{
+			A_PlaySound("ckeen/mimrock/bounce");
+
+			if (!bounced)
+			{
+				vel.z = 5;
+
+				bounced = true;
+
+				SetStateLabel("Fall");
+			}
+			else
+			{
+				vel.z = 0;
+			}
+		}
+		else
+		{
+			SetStateLabel("Fall");
+		}
+	}
+
+	bool InSightOf(Actor other)
+	{
+		return !(other && absangle(other.angle, other.AngleTo(self)) > 90);
 	}
 }

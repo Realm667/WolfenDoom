@@ -183,7 +183,7 @@ ACTOR CKStunnerBall
 	States
 	{
 	Spawn:
-		CKBL UV 5
+		CKBL UV 5 { if (waterlevel) { A_Die; } }
 		Loop
 	Death:
 		CKBL W 4
@@ -547,9 +547,9 @@ ACTOR CKWallShooterArrow_Horizontal : CKWallShooterArrow_Down
 
 ACTOR CKOracle : CKBaseEnemy
 {
-	//$Category Commander Keen (BoA)/Monsters
+	//$Category Commander Keen (BoA)/NPCs
 	//$Title Oracle of Wisdom (Council Member)
-	//$Color 4
+	//$Color 11
 	Speed 16
 	Radius 16
 	Height 64
