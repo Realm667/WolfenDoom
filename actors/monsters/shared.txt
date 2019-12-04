@@ -706,22 +706,32 @@ ACTOR HardFlyingNeedleZNoGrav : FlyingNeedleZNoGrav { +MTHRUSPECIES }
 
 ACTOR FlyingHack : FlyingNeedle
 {
+	Radius 8
 	Speed 13
-	Scale 0.27
 	DamageType "None"
 	PoisonDamage 1, 2
-	+NOGRAVITY
-	+ROLLSPRITE
+	DeathSound "dspfwood"
+	PROJECTILE
+	+RANDOMIZE
+	+RIPPER
 	States
 	{
 	Spawn:
-		COPR A 0 NODELAY A_SetRoll(random(0, 360), 0, 0)
-	Rotate:
-		COPR A 1 A_SetRoll(roll+20, SPF_INTERPOLATE, 0)
+		CLVR A 4 A_SpawnItem("CleaverTrail1")
+		CLVR B 4 A_SpawnItem("CleaverTrail2")
+		CLVR C 4 A_SpawnItem("CleaverTrail3")
+		CLVR D 4 A_SpawnItem("CleaverTrail4")
+		CLVR E 4 A_SpawnItem("CleaverTrail5")
+		CLVR F 4 A_SpawnItem("CleaverTrail6")
+		CLVR G 4 A_SpawnItem("CleaverTrail7")
+		CLVR H 4 A_SpawnItem("CleaverTrail8")
 		Loop
 	Death:
-		TNT1 A 1 A_SpawnItemEx("HackPuff")
+		CLVR IIIIJJJJKKKKLLLL 1 { A_FadeOut(0.05); A_SpawnItemEx("HackPuff"); }
 		Stop
+	Crash:
+		CLVR II 1 A_PlaySoundEX("Cleaver/Crash",2)
+		Goto Death
 	}
 }
 
@@ -960,31 +970,118 @@ ACTOR RedBounceBall : MutantBounceBall
 	}
 }
 
-ACTOR FlyingCleaver : MiniRocket
+ACTOR CleaverTrail1
 {
-	Radius 8
-	Speed 15
-	Scale 0.45
-	Damage (2*random(4,6))
-	DamageType "None"
-	SeeSound ""
-	DeathSound "gshardnd"
-	-RANDOMIZE
-	+DONTFALL
+	+NOBLOCKMAP
 	+NOGRAVITY
-	+ROLLSPRITE
-	+WALLSPRITE
+	+RANDOMIZE
+	-SOLID
 	States
 	{
 	Spawn:
-		MUPR A 0 NODELAY A_SetAngle(-90+angle, SPF_INTERPOLATE)
-	Rotate:
-		MUPR A 1 A_SetRoll(roll+20, SPF_INTERPOLATE, 0)
+		CLVR A 1 A_FadeOut(0.04)
+		Loop
+	}
+}
+
+ACTOR CleaverTrail2 : CleaverTrail1
+{
+	States
+	{
+	Spawn:
+		CLVR B 1 A_FadeOut(0.04)
+		Loop
+	}
+}
+
+ACTOR CleaverTrail3 : CleaverTrail1
+{
+	States
+	{
+	Spawn:
+		CLVR C 1 A_FadeOut(0.04)
+		Loop
+	}
+}
+
+ACTOR CleaverTrail4 : CleaverTrail1
+{
+	States
+	{
+	Spawn:
+		CLVR D 1 A_FadeOut(0.04)
+		Loop
+	}
+}
+
+ACTOR CleaverTrail5 : CleaverTrail1
+{
+	States
+	{
+	Spawn:
+		CLVR E 1 A_FadeOut(0.04)
+		Loop
+	}
+}
+
+ACTOR CleaverTrail6 : CleaverTrail1
+{
+	States
+	{
+	Spawn:
+		CLVR F 1 A_FadeOut(0.04)
+		Loop
+	}
+}
+
+ACTOR CleaverTrail7 : CleaverTrail1
+{
+	States
+	{
+	Spawn:
+		CLVR G 1 A_FadeOut(0.04)
+		Loop
+	}
+}
+
+ACTOR CleaverTrail8 : CleaverTrail1
+{
+	States
+	{
+	Spawn:
+		CLVR H 1 A_FadeOut(0.04)
+		Loop
+	}
+}
+
+ACTOR FlyingCleaver
+{
+	Radius 8
+	Speed 15
+	Damage (2*random(4,6))
+	DamageType "None"
+	DeathSound "dspfwood"
+	PROJECTILE
+	+RANDOMIZE
+	+RIPPER
+	States
+	{
+	Spawn:
+		CLVR A 4 A_SpawnItem("CleaverTrail1")
+		CLVR B 4 A_SpawnItem("CleaverTrail2")
+		CLVR C 4 A_SpawnItem("CleaverTrail3")
+		CLVR D 4 A_SpawnItem("CleaverTrail4")
+		CLVR E 4 A_SpawnItem("CleaverTrail5")
+		CLVR F 4 A_SpawnItem("CleaverTrail6")
+		CLVR G 4 A_SpawnItem("CleaverTrail7")
+		CLVR H 4 A_SpawnItem("CleaverTrail8")
 		Loop
 	Death:
-		MUPR A 1 { bRollSprite = FALSE; A_SpawnItemEx("HackPuff"); }
-		"####" A 1 A_FadeOut(0.1)
+		CLVR IIIIJJJJKKKKLLLL 1 { A_FadeOut(0.05); A_SpawnItemEx("HackPuff"); }
 		Stop
+	Crash:
+		CLVR II 1 A_PlaySoundEX("Cleaver/Crash",2)
+		Goto Death
 	}
 }
 
@@ -1195,17 +1292,26 @@ ACTOR ZombieVomit
 ACTOR ZFlyingHack : FlyingHack
 {
 	Speed 16
+	-RIPPER
 	DamageType "UndeadPoison"
 	States
 	{
 	Spawn:
-		COPR A 0 NODELAY A_SetRoll(random(0, 360), 0, 0)
-	Rotate:
-		COPR A 1 A_SetRoll(roll+20, SPF_INTERPOLATE, 0)
+		CLVR A 4 A_SpawnItem("CleaverTrail1")
+		CLVR B 4 A_SpawnItem("CleaverTrail2")
+		CLVR C 4 A_SpawnItem("CleaverTrail3")
+		CLVR D 4 A_SpawnItem("CleaverTrail4")
+		CLVR E 4 A_SpawnItem("CleaverTrail5")
+		CLVR F 4 A_SpawnItem("CleaverTrail6")
+		CLVR G 4 A_SpawnItem("CleaverTrail7")
+		CLVR H 4 A_SpawnItem("CleaverTrail8")
 		Loop
 	Death:
-		TNT1 A 1 A_SpawnItemEx("ZHackPuff")
+		CLVR IIIIJJJJKKKKLLLL 1 { A_FadeOut(0.05); A_SpawnItemEx("ZHackPuff"); }
 		Stop
+	Crash:
+		CLVR II 1 A_PlaySoundEX("Cleaver/Crash",2)
+		Goto Death
 	}
 }
 
