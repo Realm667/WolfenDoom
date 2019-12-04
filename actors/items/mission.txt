@@ -465,6 +465,23 @@ ACTOR CCampUniformPickup : CustomInventory
 	}
 }
 
+ACTOR RyanClassPickup : CustomInventory
+{
+	+INVENTORY.ALWAYSPICKUP
+	+INVENTORY.AUTOACTIVATE
+	-INVENTORY.INVBAR
+	States
+	{
+	Spawn:
+		UNKN A -1
+		Stop
+	Pickup:
+		TNT1 A 0 {A_GiveInventory("NullWeapon", 1); A_GiveInventory("RyanToken", 1);}
+		TNT1 A 0 A_SelectWeapon("NullWeapon")
+		Stop
+	}
+}
+
 ACTOR ZombieArmClue : CompassItem
 {
 	//$Title Zombie Arm (Clue)
