@@ -1,7 +1,7 @@
 class CKBaseEnemy : Actor
 {
-	bool stunned, stunframes, wakeontouch;
-	int stuntime, stuncounter;
+	bool stunned, stunframes;
+	int stuntime, stuncounter, wakeontouch;
 	Actor confusion;
 	State StunState, ReviveState, AttackState;
 
@@ -19,8 +19,6 @@ class CKBaseEnemy : Actor
 		Damage 15;
 		Scale 2.0;
 		Gravity 1.2;
-		PainSound "ckeen/kill";
-		DeathSound "ckeen/kill";
 		+DONTTHRUST
 		+FLOORCLIP
 		+LOOKALLAROUND
@@ -49,6 +47,8 @@ class CKBaseEnemy : Actor
 		if (!AttackState) { AttackState = FindState("Missile"); }
 		if (!AttackState) { AttackState = FindState("Melee"); }
 
+		SpawnPoint = pos;
+
 		Super.PostBeginPlay();
 	}
 
@@ -56,6 +56,12 @@ class CKBaseEnemy : Actor
 	// Be nice and let the 'kill monsters' cheat still work (won't stop enemies from reviving, though)
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
+		if (wakeontouch > 1)
+		{
+			wakeontouch = false;
+			SetStateLabel("See");
+		}
+
 		if (bSolid && ((source && source.player || source is "PlayerFollower") || mod == "Massacre") && stuntime != 0 && !stunned) { DoStun(true); }
 
 		return 0;
@@ -67,7 +73,7 @@ class CKBaseEnemy : Actor
 	// Unless damage is set 0, then fall back to executing the actor's special
  	override void Touch(Actor toucher)
 	{
-		if (wakeontouch)
+		if (wakeontouch && toucher && toucher.player)
 		{
 			wakeontouch = false;
 			SetStateLabel("See");
@@ -277,6 +283,13 @@ class CKBaseEnemy : Actor
 		}
 
 		counter++;
+	}
+
+	void CK_Float(int dist = 16, double speed = 1.5)
+	{
+		SetOrigin(pos + (0, 0, speed), true);
+
+		if (abs(pos.z - SpawnPoint.z) > dist) { FloatSpeed *= -1; }
 	}
 
 	Actor FindOnMObj()
@@ -1196,7 +1209,7 @@ class CKLindsey : CKBaseEnemy
 		//$Title Princess Lindsey
 		//$Color 11
 		Speed 0;
-		FloatSpeed 2;
+		FloatSpeed 1.5;
 		Radius 16;
 		Height 64;
 		Damage 0;
@@ -1210,30 +1223,22 @@ class CKLindsey : CKBaseEnemy
 		Spawn:
 			CKPL A 1;
 		See:
-			CKPL AAAAAAAAAABBBBBBBBBBCCCCCCCCCCDDDDDDDDDD 1 CK_Float(2, FloatSpeed / 10); // Allow interpolated bobbing motion across 10-tic frames
+			CKPL AAAAAAAAAABBBBBBBBBBCCCCCCCCCCDDDDDDDDDD 1 CK_Float(12, FloatSpeed); // Allow interpolated bobbing motion across 10-tic frames
 			Loop;
 	}
 
 	override void PostBeginPlay()
 	{
-		if (pos.z - floorz < 2) { SetOrigin((pos.xy, floorz + 2), false); }
-
-		SpawnPoint = pos;
+		if (pos.z - floorz < 25) { SetOrigin((pos.xy, floorz + 25), false); }
 
 		Super.PostBeginPlay();
-	}
-
-	void CK_Float(int dist = 2, double speed = 0.1)
-	{
-		SetOrigin(pos + (0, 0, speed), true);
-
-		if (abs(pos.z - SpawnPoint.z) > dist) { FloatSpeed *= -1; }
 	}
 }
 
 class CKDopefish : CKBaseEnemy
 {
 	int turncounter, zdir;
+	double oldangle;
 
 	Default
 	{
@@ -1263,7 +1268,7 @@ class CKDopefish : CKBaseEnemy
 			{
 				vel *= 0;
 
-				// Use alternate frames...  C is original-style sprite, E and G have tongue and tooth greens
+				// Use alternate frames...  C is original-style sprite, E and F have tongue and tooth greens
 				if (Random() < 128) { frame = 4; }
 				else { frame = 5; }
 			}
@@ -1281,13 +1286,18 @@ class CKDopefish : CKBaseEnemy
 				if (target && target.health > 0) { SetState(AttackState); } // Keep attacking the player without burping
 			}
 		Burp:
-			CKDF A 30;
-			CKDF D 30 {
-				A_Face(target);
+			CKDF A 30
+			{
+				oldangle = angle;
+				A_Face(players[consoleplayer].mo); // Minimize need for angled burp sprites by making him face the console player to burp
+			}
+			CKDF D 30
+			{
 				A_PlaySound("ckeen/dopefish/burp");
 				Spawn("CKBubble", pos + (RotateVector((56, -4), angle + 90), 32));
 			}
 			CKDF A 30;
+			CKDF A 0 { angle = oldangle; }
 			Goto See;
 	}
 
@@ -1639,5 +1649,284 @@ class CKMimRock : CKBaseEnemy
 	bool InSightOf(Actor other)
 	{
 		return !(other && absangle(other.angle, other.AngleTo(self)) > 90);
+	}
+}
+
+class CKSprite : CKBaseEnemy
+{
+	Default
+	{
+		//$Category Commander Keen (BoA)/Monsters
+		//$Title Sprite
+		//$Color 4
+		Speed 0;
+		FloatSpeed 2.0;
+		Radius 24;
+		Height 50;
+		Damage 0;
+		+NOGRAVITY
+		Obituary "$CK_SPRITE";
+		CKBaseEnemy.StunTime 0;
+	}
+
+	States
+	{
+		Spawn:
+			CKSP A 1;
+		See:
+			CKSP AAAAA 1 CK_SpriteFloat();
+			Loop;
+		Attack:
+			CKSP B 20 A_Face(target, 0, 0);
+			CKSP C 20 {
+				A_PlaySound("ckeen/shoot");
+				A_SpawnProjectile("CKSpriteProjectile", 18.0, 0, 0, CMF_AIMDIRECTION);
+			}
+			CKSP C 15;
+			Goto See;
+	}
+
+	override void PostBeginPlay()
+	{
+		if (pos.z - floorz < 25) { SetOrigin((pos.xy, floorz + 25), false); }
+
+		Super.PostBeginPlay();
+	}
+
+	void CK_SpriteFloat()
+	{
+		LookForPlayers(true);
+
+		CK_Float(16, FloatSpeed);
+
+		if (target && IsVisible(target, true) && target.pos.z < pos.z + height && target.pos.z + target.height > pos.z) { SetState(AttackState); }
+
+		if (pos.z > SpawnPoint.z + 16 && FloatSpeed < 0) { tics = 10; }
+	}
+}
+
+class CKSpriteProjectile : Actor
+{
+	Default
+	{
+		Projectile;
+		Scale 2.0;
+		Speed 10;
+		+BRIGHT
+		+NOGRAVITY
+	}
+
+	States
+	{
+		Spawn:
+			CKSP DEFG 5;
+			Loop;
+		Death:
+			TNT1 A 15 A_Explode(15, 64);
+			Stop;
+	}
+}
+
+class CKBirdEgg : CKBaseEnemy
+{
+	Default
+	{
+		//$Category Commander Keen (BoA)/Monsters
+		//$Title Blue Bird Egg
+		//$Color 4
+
+		Speed 0;
+		Radius 21;
+		Height 48;
+		CKBaseEnemy.StunTime 0;
+		CKBaseEnemy.WakeOnTouch 2;
+	}
+
+	States
+	{
+		Spawn:
+			CKEG A 4;
+			Loop;
+		See:
+			CKEG B -1
+			{
+				A_SetSize(-1, 20);
+
+				Spawn("CKBird", pos);
+
+				Actor shell;
+
+				shell = Spawn("CKBirdEggShellBit", pos);
+				if (shell)
+				{
+					shell.frame = 2;
+					shell.vel.xy = RotateVector((-7, 0), Random(0, 359));
+					shell.vel.z = 10;
+					shell = null;
+				}
+
+				shell = Spawn("CKBirdEggShellBit", pos);
+				if (shell)
+				{
+					shell.frame = 3;
+					shell.vel.xy = RotateVector((7, 0), Random(0, 359));
+					shell.vel.z = 10;
+					shell = null;
+				}
+
+				shell = Spawn("CKBirdEggShellBit", pos);
+				if (shell)
+				{
+					shell.frame = 4;
+					shell.vel.z = 14;
+					shell = null;
+				}
+			}
+			Stop;
+	}
+}
+
+class CKBirdEggShellBit : Actor
+{
+	Default
+	{
+		Scale 2.0;
+		Gravity 1.2;
+	}
+
+	States
+	{
+		Spawn:
+			CKEG C -1;
+			Stop;
+	}
+
+}
+
+class CKBird : CKBaseEnemy
+{
+	int turncounter, zdir;
+
+	Default
+	{
+		//$Category Commander Keen (BoA)/Monsters
+		//$Title Blue Bird
+		//$Color 4
+
+		Speed 6;
+		FloatSpeed 4;
+		Radius 28;
+		Height 66;
+		CKBaseEnemy.StunTime 120;
+		CKBaseEnemy.WakeOnTouch true;
+	}
+
+	States
+	{
+		Spawn:
+			CKEA F 60;
+		See:
+			CKEA FFF 1 CK_BirdWalk();
+			CKEA GGGG 1 CK_BirdWalk();
+			CKEA HHH 1 CK_BirdWalk();
+			CKEA IIII 1 CK_BirdWalk(); // I frame rotations are completely missing!  I had to export and add the current CKEAI0.png image
+			Loop;
+		Fly:
+			CKEA AAAABBBBCCCCDDDD 1 CK_BirdFly();
+			Loop;
+		Land:
+			CKEA D 4;
+			CKEA D 0 CK_BirdLand();
+			Loop;
+		Stunned:
+			CKEA E 4;
+			CKEA E 0 CK_BirdLand();
+			Loop;
+		Revive:
+			CKEA EFEFE 10;
+			Goto See;
+	}
+
+	void CK_BirdWalk()
+	{
+		LookForPlayers(true);
+
+		if (target && (abs(pos.z - target.pos.z) > 48 || target.pos.z - target.floorz > 64))
+		{
+			vel.z = 2.0;
+
+			bNoGravity = true;
+			bFloat = true;
+			Speed = FloatSpeed;
+
+			A_SetSize(56, -1, true);
+
+			SetStateLabel("Fly");
+		}
+		else
+		{
+			A_Chase(null, null);
+		}
+	}
+
+	void CK_BirdFly()
+	{
+		double heightoffset = 0;
+
+		LookForPlayers(true);
+
+		bool blocked = BlockingLine || (BlockingMobj && (!target || BlockingMobj != target));
+
+		if (!CheckMove(pos.xy + vel.xy)) { blocked = true; }
+
+		if (turncounter > 0) { turncounter--; }
+
+		if (blocked)
+		{
+			if (!turncounter)
+			{
+				angle += Random(90, 270);
+				turncounter = 35;
+
+				zdir = Random(-1, 1);
+			}
+		}
+		else if (target && IsVisible(target, true))
+		{
+			heightoffset = target.height / 2;
+
+			if (!turncounter)
+			{
+				angle = AngleTo(target);
+				turncounter = 70;
+			}
+
+			if (pos.z > target.pos.z + heightoffset) { zdir = -1; }
+			else if (pos.z < target.pos.z) { zdir = 1; }
+			else { zdir = 0; }
+		}
+
+		vel.xy = RotateVector((Speed, 0), angle);
+		vel.z = FloatSpeed * zdir;
+
+		if (pos.z <= floorz + heightoffset && vel.z <= 0)
+		{
+			SetStateLabel("Land");
+		}
+	}
+
+	void CK_BirdLand()
+	{
+		bNoGravity = false;
+		bFloat = false;
+		Speed = Default.Speed;
+
+		A_SetSize(Default.Radius, -1, true);
+
+		if (pos.z == floorz && vel.z <= 0)
+		{
+			vel *= 0;
+			SetState(SeeState);
+		}
 	}
 }
