@@ -1734,6 +1734,7 @@ class CKBirdEgg : CKBaseEnemy
 		//$Category Commander Keen (BoA)/Monsters
 		//$Title Blue Bird Egg
 		//$Color 4
+		//$Sprite CKEGA0
 
 		Speed 0;
 		Radius 21;
@@ -1927,6 +1928,83 @@ class CKBird : CKBaseEnemy
 		{
 			vel *= 0;
 			SetState(SeeState);
+		}
+	}
+}
+
+class CKPogoStick : CustomInventory
+{
+	bool active, once;
+	double moveangle;
+
+	Default
+	{
+		//$Category Commander Keen (BoA)/Items
+		//$Title Pogostick
+		//$Color 11
+
+		Tag "$TAGPOGO";
+		+NOGRAVITY
+		Inventory.Icon "CKPOG0";
+		Inventory.PickupMessage "$CK_POGO";
+		Inventory.MaxAmount 1;
+		Inventory.PickupSound "";
+		+INVENTORY.INVBAR
+		+INVENTORY.UNDROPPABLE
+	}
+
+	States
+	{
+		Spawn:
+			CKPO G -1;
+			Stop;
+		Use:
+			CKPO G 0
+			{
+				invoker.active = !invoker.active;
+			}
+			Fail;
+	}
+
+
+	override void Tick()
+	{
+		if (IsFrozen()) { return; }
+
+		if (owner && active)
+		{
+			if (
+				!owner.player || 
+				owner.waterlevel > 1 ||
+				owner.health <= 0 ||
+				owner.player.cmd.buttons & BT_ATTACK ||
+				owner.player.cmd.buttons & BT_ALTATTACK ||
+				owner.player.cheats & CF_NOCLIP
+			) { active = false; return; }
+
+			// Stomp on all other player sounds (land, grunt), since there doesn't seem to be a way to disable them temporarily
+			for (int s = 0; s <= 6; s++) { owner.A_StopSound(s); }
+
+			if (owner.player.onground)
+			{
+				owner.A_PlaySound("ckeen/pogo", CHAN_7);
+				owner.vel.z = 12.0;
+				if (owner.player.cmd.buttons & BT_JUMP) { owner.vel.z *= 1.5; }
+
+				moveangle = owner.angle;
+			}
+
+			if (speed < 8.0)
+			{
+				if (owner.player.cmd.buttons & BT_FORWARD) { speed += 0.5; }
+				if (owner.player.cmd.buttons & BT_BACK) { speed -= 0.5; }
+			}
+
+			owner.vel.xy = RotateVector((speed, 0), moveangle);
+		}
+		else
+		{
+			speed = 0;
 		}
 	}
 }
