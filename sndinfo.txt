@@ -78,7 +78,6 @@ ckeen/shoot		ckshoot
 ckeen/shothit	ckshoth
 ckeen/slugpoo	ckslugpo
 ckeen/starting	ckbegin
-ckeen/walk		ckwalk
 ckeen/switch		ckswitch
 ckeen/lick/attack	cklickf
 ckeen/wormouth/attack	ckwormf
@@ -92,6 +91,13 @@ ckeen/keen_death	ckdead
 ckeen/keen_helmet	ckhead
 ckeen/keen_jump		ckjump
 ckeen/keen_land		ckland
+ckeen/keen_step1	ckstep1
+ckeen/keen_step2	ckstep2
+
+//Commander Keen floors
+$random floor/keeny		{ ckeen/keen_step1 ckeen/keen_step2 }
+$limit floor/keeny 2
+$volume floor/keeny 1.0
 
 //Shell Casings
 $random bulletcasing/bounce {bcase1 bcase2 bcase3 bcase4}
@@ -2042,13 +2048,14 @@ floor/heavy3 STEPHVY3
 floor/heavy4 STEPHVY4
 $rolloff floor/heavy 128 750
 
+///////////
+//AMBIENT//
+///////////
+
 //Airship Sounds
 as_horn as_horn
 as_engn as_engn
 
-///////////
-//AMBIENT//
-///////////
 
 $random CELLAR_CRY { CRY01 CRY02 CRY03 CRY04 CRY05 CRY06 CRY07 }
 CRY01 CRY01
