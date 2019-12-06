@@ -813,6 +813,25 @@ ACTOR CKWallSlug
 	}
 }
 
+ACTOR CKWallFire
+{
+	//$Category Commander Keen (BoA)/Props
+	//$Title Wall Fire
+	//$Color 3
+	Radius 8
+	Height 32
+	Scale 2.0
+	-SOLID
+	+NOGRAVITY
+	+WALLSPRITE
+	States
+	{
+	Spawn:
+		CKWF ABCD 10
+		Loop
+	}
+}
+
 ACTOR CKCaveEyes
 {
 	//$Category Commander Keen (BoA)/Props
