@@ -1,3 +1,4 @@
+// Base enemy class
 class CKBaseEnemy : Actor
 {
 	bool stunned, stunframes;
@@ -312,6 +313,391 @@ class CKBaseEnemy : Actor
 	}
 }
 
+// Pickup items: points, health, and gems
+/* GZDB-BF cant parse mixins right now...  Copy/pasting redundant code to each item type's base class below for now
+mixin class CKPickup
+{
+	Actor touched;
+	double vspeed;
+	State PickupState;
+	int ticker;
+
+	Property VSpeed:vspeed;
+
+	Default
+	{
+		//$Category Commander Keen (BoA)/Pickups
+		//$Color 17
+
+		Scale 2.0;
+		+NOGRAVITY
+	}
+
+	override void PostBeginPlay()
+	{
+		SpawnPoint = pos;
+		PickupState = FindState("Pickup");
+
+		Super.PostBeginPlay();
+	}
+
+	override void Touch(Actor toucher)
+	{
+		if (toucher.player && !touched)
+		{
+			touched = toucher;
+			ticker = 12;
+
+			bDropped = false;
+
+			Super.Touch(toucher);
+		}
+	}
+
+	override void Tick()
+	{
+		if (touched)
+		{
+			if (!InStateSequence(CurState, PickupState))
+			{
+				SetState(PickupState);
+
+				vel.z = vspeed;
+			}
+
+			if (ticker > 0) { ticker--; }
+			else
+			{
+				bInvisible = true;
+				touched = null;
+
+				GoAwayAndDie();
+			}
+		}
+
+		Super.Tick();
+	}
+
+	override bool ShouldStay ()
+	{
+		if (touched && ticker) { return true; }
+
+		return false;
+	}
+}
+*/
+
+class CKTreasure : CoinItem
+{
+//	mixin CKPickup;
+	Actor touched;
+	double vspeed;
+	State PickupState;
+	int ticker;
+
+	Property VSpeed:vspeed;
+
+	Default
+	{
+		//$Category Commander Keen (BoA)/Pickups
+		//$Color 17
+
+		Scale 2.0;
+		+NOGRAVITY
+
+		Inventory.PickupFlash "";
+		Inventory.PickupSound "ckeen/pickup";
+
+		CKTreasure.VSpeed 4;
+	}
+
+	override void PostBeginPlay()
+	{
+		SpawnPoint = pos;
+		PickupState = FindState("Pickup");
+
+		Super.PostBeginPlay();
+	}
+
+	override void Touch(Actor toucher)
+	{
+		if (toucher.player && !touched)
+		{
+			touched = toucher;
+			ticker = 12;
+
+			bDropped = false;
+
+			Super.Touch(toucher);
+		}
+	}
+
+	override void Tick()
+	{
+		if (touched)
+		{
+			if (!InStateSequence(CurState, PickupState))
+			{
+				SetState(PickupState);
+
+				vel.z = vspeed;
+			}
+
+			if (ticker > 0) { ticker--; }
+			else
+			{
+				bInvisible = true;
+				touched = null;
+
+				SetOrigin(SpawnPoint, false);
+
+				GoAwayAndDie();
+			}
+		}
+
+		Super.Tick();
+	}
+
+	override bool ShouldStay ()
+	{
+		if (touched && ticker) { return true; }
+
+		return false;
+	}
+}
+
+class CKHealth : Health
+{
+//	mixin CKPickup;
+	Actor touched;
+	double vspeed;
+	State PickupState;
+	int ticker;
+
+	Property VSpeed:vspeed;
+
+	Default
+	{
+		//$Category Commander Keen (BoA)/Pickups
+		//$Color 17
+
+		Scale 2.0;
+		+NOGRAVITY
+
+		Inventory.PickupFlash "";
+		Inventory.PickupSound "ckeen/pickup";
+
+		CKHealth.VSpeed 4;
+	}
+
+	override void PostBeginPlay()
+	{
+		SpawnPoint = pos;
+		PickupState = FindState("Pickup");
+
+		Super.PostBeginPlay();
+	}
+
+	override void Touch(Actor toucher)
+	{
+		if (toucher.player && !touched)
+		{
+			touched = toucher;
+			ticker = 12;
+
+			bDropped = false;
+
+			Super.Touch(toucher);
+		}
+	}
+
+	override void Tick()
+	{
+		if (touched)
+		{
+			if (!InStateSequence(CurState, PickupState))
+			{
+				SetState(PickupState);
+
+				vel.z = vspeed;
+			}
+
+			if (ticker > 0) { ticker--; }
+			else
+			{
+				bInvisible = true;
+				touched = null;
+
+				GoAwayAndDie();
+			}
+		}
+
+		Super.Tick();
+	}
+
+	override bool ShouldStay ()
+	{
+		if (touched && ticker) { return true; }
+
+		return false;
+	}
+}
+
+class CKPuzzleItem : PuzzleItem
+{
+//	mixin CKPickup;
+	Actor touched;
+	double vspeed;
+	State PickupState;
+	int ticker;
+
+	Property VSpeed:vspeed;
+
+	Default
+	{
+		Scale 2.0;
+		+NOGRAVITY
+
+		//$Category Commander Keen (BoA)/Items
+		//$Color 13
+
+		+INVENTORY.INVBAR
+		Inventory.PickupFlash "";
+		Inventory.PickupSound "ckeen/gem";
+
+		CKPuzzleItem.VSpeed 4;
+	}
+
+	override void PostBeginPlay()
+	{
+		SpawnPoint = pos;
+		PickupState = FindState("Pickup");
+
+		Super.PostBeginPlay();
+	}
+
+	override void Touch(Actor toucher)
+	{
+		if (toucher.player && !touched)
+		{
+			touched = toucher;
+			ticker = 12;
+
+			bDropped = false;
+
+			Super.Touch(toucher);
+		}
+	}
+
+	override void Tick()
+	{
+		if (touched)
+		{
+			if (!InStateSequence(CurState, PickupState))
+			{
+				SetState(PickupState);
+
+				vel.z = vspeed;
+			}
+
+			if (ticker > 0) { ticker--; }
+			else
+			{
+				bInvisible = true;
+				touched = null;
+
+				GoAwayAndDie();
+			}
+		}
+
+		Super.Tick();
+	}
+
+	override bool ShouldStay ()
+	{
+		if (touched && ticker) { return true; }
+
+		return false;
+	}
+}
+
+class CKWeapon : NaziWeapon
+{
+//	mixin CKPickup;
+	Actor touched;
+	double vspeed;
+	State PickupState;
+	int ticker;
+
+	Property VSpeed:vspeed;
+
+	Default
+	{
+		Scale 2.0;
+		+NOGRAVITY
+
+		//$Category Commander Keen (BoA)/Weapons
+		//$Color 14
+
+		Inventory.PickupFlash "";
+
+		CKWeapon.VSpeed 4;
+	}
+
+	override void PostBeginPlay()
+	{
+		SpawnPoint = pos;
+		PickupState = FindState("Pickup");
+
+		Super.PostBeginPlay();
+	}
+
+	override void Touch(Actor toucher)
+	{
+		if (toucher.player && !touched)
+		{
+			touched = toucher;
+			ticker = 12;
+
+			bDropped = false;
+
+			Super.Touch(toucher);
+		}
+	}
+
+	override void Tick()
+	{
+		if (touched)
+		{
+			if (!InStateSequence(CurState, PickupState))
+			{
+				SetState(PickupState);
+
+				vel.z = vspeed;
+			}
+
+			if (ticker > 0) { ticker--; }
+			else
+			{
+				bInvisible = true;
+				touched = null;
+
+				GoAwayAndDie();
+			}
+		}
+
+		Super.Tick();
+	}
+
+	override bool ShouldStay ()
+	{
+		if (touched && ticker) { return true; }
+
+		return false;
+	}
+}
+
+// Moving Platforms
 class CKPlatform : Actor
 {
 	Array<Actor> touchers;
@@ -694,6 +1080,7 @@ class CKPlatformGlass : Actor
 	}
 }
 
+// Climbable Pipes
 class CKPipe : LadderBase
 {
 	Default
@@ -734,6 +1121,7 @@ class CKPipePink : CKPipe
 	}
 }
 
+// Enemies and NPCs
 class CKLick : CKBaseEnemy
 {
 	Default
@@ -1154,7 +1542,7 @@ class CKSmirky : CKBaseEnemy
 
 		while (mo = Actor(it.Next()))
 		{
-			if (mo is "Health" || mo is "SingleCoin") // Look for health and coin items first
+			if (mo is "CKHealth" || mo is "CKTreasure") // Look for health and coin items first
 			{
 				count++;
 
@@ -1173,7 +1561,7 @@ class CKSmirky : CKBaseEnemy
 
 		while (mo = Actor(it.Next())) // Otherwise, look for key gems and steal those instead so that we can't complete the map!
 		{
-			if (mo is "PuzzleItem")
+			if (mo is "CKPuzzleItem")
 			{
 				if (!goal || Distance2D(mo) < Distance2D(goal))
 				{
@@ -1213,6 +1601,7 @@ class CKLindsey : CKBaseEnemy
 		Radius 16;
 		Height 64;
 		Damage 0;
+		+FRIENDLY
 		+NOGRAVITY
 		Obituary "$CK_LINDSEY";
 		CKBaseEnemy.StunTime 0;
@@ -1932,6 +2321,7 @@ class CKBird : CKBaseEnemy
 	}
 }
 
+// Inventory Items
 class CKPogoStick : CustomInventory
 {
 	bool active, once;
@@ -2008,3 +2398,4 @@ class CKPogoStick : CustomInventory
 		}
 	}
 }
+

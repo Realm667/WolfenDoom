@@ -1,73 +1,102 @@
 //////////////////////
 // ITEMS & POWERUPS //
 //////////////////////
-ACTOR CKShikadiSoda : SingleCoin
+ACTOR CKShikadiSoda : CKTreasure
 {
-	//$Category Commander Keen (BoA)/Pickups
 	//$Title Pickup (Shikadi Soda, 1pts)
-	//$Color 17
-	Scale 1.0
-	+NOGRAVITY
+	Radius 10
+	Height 36
+	Inventory.Amount 1
 	Inventory.PickupMessage "$CKSODA"
-	Inventory.PickupSound "ckeen/pickup"
 	States
 	{
 	Spawn:
 		CKPU AB 15
 		Loop
 	Pickup:
-		"####" C 5 A_GiveInventory("CoinItem",1)
+		"####" C -1 BRIGHT
 		Stop
 	}
 }
 
-ACTOR CKShikkersCandyBar : SingleCoin
+ACTOR CKGum : CKTreasure
 {
-	//$Category Commander Keen (BoA)/Pickups
-	//$Title Pickup (Shikkers Candy Bar, 5pts)
-	//$Color 17
-	Scale 1.0
-	+NOGRAVITY
+	//$Title Pickup (Three-Tooth Gum, 2pts)
+	Radius 16
+	Height 32
+	Inventory.Amount 2
 	Inventory.PickupMessage "$CKCANDY"
-	Inventory.PickupSound "ckeen/pickup"
+	States
+	{
+	Spawn:
+		CKPU ST 15
+		Loop
+	Pickup:
+		"####" U -1 BRIGHT
+		Stop
+	}
+}
+
+ACTOR CKShikkersCandyBar : CKTreasure
+{
+	//$Title Pickup (Shikkers Candy Bar, 5pts)
+	Radius 14
+	Height 36
+	Inventory.Amount 5
+	Inventory.PickupMessage "$CKCANDY"
 	States
 	{
 	Spawn:
 		CKPU DE 15
 		Loop
 	Pickup:
-		"####" F 5 A_GiveInventory("CoinItem",2)
+		"####" F -1 BRIGHT
 		Stop
 	}
 }
 
-ACTOR CKDoughnut : SingleCoin
+ACTOR CKJawbreaker : CKTreasure
 {
-	//$Category Commander Keen (BoA)/Pickups
+	//$Title Pickup (Jawbreaker, 10pts)
+	Radius 16
+	Height 30
+	Inventory.Amount 10
+	Inventory.PickupMessage "$CKJAW"
+	States
+	{
+	Spawn:
+		CKPU PQ 15
+		Loop
+	Pickup:
+		"####" R -1 BRIGHT
+		Stop
+	}
+}
+
+ACTOR CKDoughnut : CKTreasure
+{
 	//$Title Pickup (Dougnut, 20pts)
-	//$Color 17
-	Scale 1.0
-	+NOGRAVITY
+	Radius 15
+	Height 30
+	Inventory.Amount 20
 	Inventory.PickupMessage "$CKDNUT"
-	Inventory.PickupSound "ckeen/pickup"
 	States
 	{
 	Spawn:
 		CKPU GH 15
 		Loop
 	Pickup:
-		"####" I 5 A_GiveInventory("CoinItem",5)
+		"####" I -1 BRIGHT
 		Stop
 	}
 }
 
-ACTOR CKIceCreamCone : SingleCoin
+ACTOR CKIceCreamCone : CKTreasure
 {
-	//$Category Commander Keen (BoA)/Pickups
 	//$Title Pickup (IceCreamCone, 50pts)
-	//$Color 17
-	Scale 1.0
-	+NOGRAVITY
+	Radius 10
+	Height 32
+	Inventory.Amount 50
 	Inventory.PickupMessage "$CKCONE"
 	Inventory.PickupSound "ckeen/pickup"
 	States
@@ -76,22 +105,22 @@ ACTOR CKIceCreamCone : SingleCoin
 		CKPU JK 15
 		Loop
 	Pickup:
-		"####" L 5 A_GiveInventory("CoinItem",10)
+		"####" L -1 BRIGHT
 		Stop
 	}
 }
 
-ACTOR CKRaindrop : Health
+ACTOR CKRaindrop : CKHealth
 {
-	//$Category Commander Keen (BoA)/Pickups
 	//$Title Health (Raindrop, +1)
-	//$Color 17
-	+NOGRAVITY
+	Radius 10
+	Height 32
 	+INVENTORY.ALWAYSPICKUP
 	Inventory.Amount 1
 	Inventory.MaxAmount 200
 	Inventory.PickupMessage "$CKDROP"
 	Inventory.PickupSound "ckeen/raindrop"
+	CKHealth.VSpeed 0
 	States
 	{
 	Spawn:
@@ -103,12 +132,11 @@ ACTOR CKRaindrop : Health
 	}
 }
 
-ACTOR CKOneUp : Health
+ACTOR CKOneUp : CKHealth
 {
-	//$Category Commander Keen (BoA)/Pickups
 	//$Title Health (Lifewater Flask, +100)
-	//$Color 17
-	+NOGRAVITY
+	Radius 12
+	Height 36
 	+INVENTORY.ALWAYSPICKUP
 	+INVENTORY.AUTOACTIVATE
 	Inventory.Amount 100
@@ -121,9 +149,7 @@ ACTOR CKOneUp : Health
 		CKPU MN 15 BRIGHT
 		Loop
 	Pickup:
-		"####" O 50
-	Death:
-		"####" O 50
+		"####" O -1 BRIGHT
 		Stop
 	}
 }
@@ -132,11 +158,11 @@ ACTOR CKOneUp : Health
 // WEAPONS //
 /////////////
 
-ACTOR CKStunner : NaziWeapon
+ACTOR CKStunner : CKWeapon
 {
-	//$Category Commander Keen (BoA)/Weapons
 	//$Title (2) Neural Stunner
-	//$Color 14
+	Radius 16
+	Height 26
 	Weapon.SelectionOrder 9998
 	Weapon.AmmoType "CKStunnerAmmo"
 	Weapon.AmmoUse 1
@@ -145,7 +171,6 @@ ACTOR CKStunner : NaziWeapon
 	Tag "$TAGNEURS"
 	Inventory.PickupMessage "$NEUST"
 	Inventory.Pickupsound "ckeen/gun"
-	Scale 2.0
 	+WEAPON.NOAUTOFIRE
 	States
 	{
@@ -169,6 +194,9 @@ ACTOR CKStunner : NaziWeapon
 		CKBL A 5
 		CKBL B 5
 		Loop
+	Pickup:
+		CKBL C -1 BRIGHT
+		Stop
 	}
 }
 
@@ -209,74 +237,68 @@ ACTOR CKStunnerAmmo : Ammo
 ////////////////////
 // KEYS & KEYPOTS //
 ////////////////////
-ACTOR CKBlueKey : PuzzleItem
+ACTOR CKBlueKey : CKPuzzleItem
 {
-	//$Category Commander Keen (BoA)/Items
 	//$Title Gem, blue (Blue Card)
-	//$Color 13
+	Radius 15
+	Height 24
 	puzzleitem.number 101
 	Inventory.PickupMessage "$CKBGEM"
 	Inventory.Icon "CKKEYS1"
 	Inventory.PickupSound "ckeen/gem"
 	Species "BoABlueKey"
 	+BRIGHT
-	+NOGRAVITY
-	+INVENTORY.INVBAR
 	States
 	{
 	Spawn:
 		CKKY CD 5
 		Loop
 	Pickup:
-		"####" G 5
+		"####" G -1
 		Stop
 	}
 }
 
-ACTOR CKYellowKey : PuzzleItem
+ACTOR CKYellowKey : CKPuzzleItem
 {
-	//$Category Commander Keen (BoA)/Items
 	//$Title Gem, yellow (Yellow Card)
-	//$Color 13
+	Radius 15
+	Height 24
 	puzzleitem.number 102
 	Inventory.PickupMessage "$CKYGEM"
 	Inventory.Icon "CKKEYS0"
 	Inventory.PickupSound "ckeen/gem"
 	Species "BoAYellowKey"
 	+BRIGHT
-	+NOGRAVITY
-	+INVENTORY.INVBAR
 	States
 	{
 	Spawn:
 		CKKY EF 5
 		Loop
 	Pickup:
-		"####" G 5
+		"####" G -1
 		Stop
 	}
 }
 
-ACTOR CKRedKey : PuzzleItem
+ACTOR CKRedKey : CKPuzzleItem
 {
-	//$Category Commander Keen (BoA)/Items
 	//$Title Gem, red (Red Card)
-	//$Color 13
+	Radius 15
+	Height 24
 	puzzleitem.number 103
 	Inventory.PickupMessage "$CKRGEM"
 	Inventory.Icon "CKKEYS2"
 	Inventory.PickupSound "ckeen/gem"
 	Species "BoARedKey"
 	+BRIGHT
-	+NOGRAVITY
-	+INVENTORY.INVBAR
 	States
 	{
 	Spawn:
 		CKKY AB 5
 		Loop
 	Pickup:
-		"####" G 5
+		"####" G -1
 		Stop
 	}
 }
@@ -286,11 +308,12 @@ ACTOR CKRedKeyPod : SwitchableDecoration
 	//$Category Commander Keen (BoA)/Items
 	//$Title Gempod, red
 	//$Color 13
-	Radius 16
-	Height 32
-	Mass 999999999
+	Radius 13
+	Height 22
+	Scale 2.0
 	+SOLID
 	+USESPECIAL
+	+DONTTHRUST
 	States
 	{
 	Spawn:
@@ -559,6 +582,7 @@ ACTOR CKOracle : CKBaseEnemy
 	Height 64
 	Damage 0
 	Obituary "$CK_ORACLE"
+	+FRIENDLY
 	CKBaseEnemy.StunTime 0
 
 	States
@@ -753,16 +777,15 @@ ACTOR CKFireplace
 	}
 }
 
-ACTOR CKGroundfire
+ACTOR CKGroundfire : CKBaseEnemy
 {
 	//$Category Commander Keen (BoA)/Props
 	//$Title Groundfire
 	//$Color 3
 	Radius 32
-	Height 32
-	Scale 2.0
-	-SOLID
-	-NOGRAVITY
+	Height 0
+	-COUNTKILL
+	CKBaseEnemy.StunTime 0
 	States
 	{
 	Spawn:
@@ -903,16 +926,15 @@ ACTOR CKAquaDrop
 	}
 }
 
-ACTOR CKSpike
+ACTOR CKSpike : CKBaseEnemy
 {
 	//$Category Commander Keen (BoA)/Props
 	//$Title Spike
 	//$Color 3
 	Radius 16
 	Height 48
-	Scale 2.0
-	+SOLID
-	-NOGRAVITY
+	-COUNTKILL
+	CKBaseEnemy.StunTime 0
 	States
 	{
 	Spawn:
