@@ -1083,6 +1083,10 @@ class CKPlatformGlass : Actor
 // Climbable Pipes
 class CKPipe : LadderBase
 {
+	Class<Actor> top;
+
+	Property Top:top;
+
 	Default
 	{
 		//$Category Commander Keen (BoA)/Props
@@ -1099,17 +1103,38 @@ class CKPipe : LadderBase
 	{
 		Super.PostBeginPlay();
 
-		SetOrigin((pos.xy, floorz + 32), false);
+		SetOrigin((pos.xy, pos.z - ladderheight), false);
+
 		A_SetSize(-1, ladderheight);
-		scale.y = -ladderheight / 132.0;
+		scale.y = -ladderheight / (64.0 / 1.2);
+
+		if (top) { Spawn(top, pos + (0, 0, ladderheight)); }
 	}
 }
+
+class CKPipeTopBlue : Actor
+{
+	Default
+	{
+		+NOINTERACTION
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+	}
+}
+
+class CKPipeTopPink : CKPipeTopBlue {}
 
 class CKPipeBlue : CKPipe
 {
 	Default
 	{
 		//$Title Climbable Pipe (Blue)
+		CKPipe.Top "CKPipeTopBlue";
 	}
 }
 
@@ -1118,6 +1143,7 @@ class CKPipePink : CKPipe
 	Default
 	{
 		//$Title Climbable Pipe (Pink)
+		CKPipe.Top "CKPipeTopPink";
 	}
 }
 

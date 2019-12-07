@@ -80,7 +80,7 @@ class LadderBase : Actor
 	override void PostBeginPlay()
 	{
 		if (!climbradius) { climbradius = Radius; }
-		if (ladderheight <= 0) { ladderheight = pos.z - floorz; }
+		if (ladderheight <= 0) { ladderheight = pos.z - floorz - 32; }
 
 		Climbers.Clear();
 
