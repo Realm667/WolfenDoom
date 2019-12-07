@@ -3326,7 +3326,7 @@ ACTOR Blondi : NaziBoss
 	Tag "Blondi"
 	PainChance 8
 	Height 64
-	Health 300
+	Health 800
 	Speed 6
 	Mass 140
 	Scale 1.2
@@ -3342,7 +3342,7 @@ ACTOR Blondi : NaziBoss
 	States
 	{
 	Spawn:
-		DOG2 A 0
+		BLON A 0
 		Goto Look
 	Idle:
 		"####" A 0 A_SetSpeed(6)
@@ -3372,8 +3372,19 @@ ACTOR Blondi : NaziBoss
 		Loop
 	Melee:
 		"####" EF 2 Fast A_FaceTarget
-		"####" G 8 Fast A_CustomMeleeAttack(random(1,9)*4,"dog/attack","dog/attack")
+		"####" G 8 Fast A_CustomMeleeAttack(random(6,9)*4,"dog/attack","dog/attack")
 		"####" FE 4 Fast
+		Goto See
+	Missile:
+		"####" N 8 Fast A_FaceTarget
+		"####" N 0 A_PlaySound("dog/sight", CHAN_AUTO, 1.0, FALSE, 0.1)
+		"####" N 1 Radius_Quake(10,10,0,16,0)
+		"####" O 4 A_SpawnProjectile("RumbleWaves",0,0,0,CMF_CHECKTARGETDEAD)
+		"####" N 8 Fast A_FaceTarget
+		"####" N 0 A_PlaySound("dog/sight", CHAN_AUTO, 1.0, FALSE, 0.1)
+		"####" N 1 Radius_Quake(10,10,0,16,0)
+		"####" O 4 A_SpawnProjectile("RumbleWaves",0,0,0,CMF_CHECKTARGETDEAD)
+		"####" N 4
 		Goto See
 	Pain:
 		"####" M 2
