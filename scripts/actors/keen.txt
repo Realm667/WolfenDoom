@@ -335,6 +335,22 @@ mixin class CKPickup
 		+NOGRAVITY
 	}
 
+	States(Actor)
+	{
+		HideDoomish:
+			"####" "#" 0 { bInvisible = false; }
+			"####" "#" 12 Bright;
+			Goto Inventory::HideDoomish;
+		HoldAndDestroy:
+			"####" "#" 0 { bInvisible = false; }
+			"####" "#" 12 Bright;
+			Stop;
+		Held:
+			"####" "#" 0 { bInvisible = false; }
+			"####" "#" 12 Bright;
+			Goto Inventory::Held;
+	}
+
 	override void PostBeginPlay()
 	{
 		SpawnPoint = pos;
@@ -349,8 +365,6 @@ mixin class CKPickup
 		{
 			touched = toucher;
 			ticker = 12;
-
-			bDropped = false;
 
 			Super.Touch(toucher);
 		}
@@ -373,18 +387,18 @@ mixin class CKPickup
 				bInvisible = true;
 				touched = null;
 
-				GoAwayAndDie();
+				if (Inventory.ShouldStay())
+				{
+					SetOrigin(SpawnPoint, false);
+				}
+				else
+				{
+					GoAwayAndDie();
+				}
 			}
 		}
 
 		Super.Tick();
-	}
-
-	override bool ShouldStay ()
-	{
-		if (touched && ticker) { return true; }
-
-		return false;
 	}
 }
 */
@@ -416,6 +430,22 @@ class CKTreasure : StackableInventory
 		CKTreasure.VSpeed 4;
 	}
 
+	States(Actor)
+	{
+		HideDoomish:
+			"####" "#" 0 { bInvisible = false; }
+			"####" "#" 12 Bright;
+			Goto Inventory::HideDoomish;
+		HoldAndDestroy:
+			"####" "#" 0 { bInvisible = false; }
+			"####" "#" 12 Bright;
+			Stop;
+		Held:
+			"####" "#" 0 { bInvisible = false; }
+			"####" "#" 12 Bright;
+			Goto Inventory::Held;
+	}
+
 	override void PostBeginPlay()
 	{
 		SpawnPoint = pos;
@@ -430,8 +460,6 @@ class CKTreasure : StackableInventory
 		{
 			touched = toucher;
 			ticker = 12;
-
-			bDropped = false;
 
 			Super.Touch(toucher);
 		}
@@ -453,10 +481,16 @@ class CKTreasure : StackableInventory
 			{
 				bInvisible = true;
 				touched = null;
+				vel.z = 0;
 
-				SetOrigin(SpawnPoint, false);
-
-				GoAwayAndDie();
+				if (Inventory.ShouldStay())
+				{
+					SetOrigin(SpawnPoint, false);
+				}
+				else
+				{
+					GoAwayAndDie();
+				}
 			}
 		}
 
@@ -495,6 +529,22 @@ class CKHealth : Health
 		CKHealth.VSpeed 4;
 	}
 
+	States(Actor)
+	{
+		HideDoomish:
+			"####" "#" 0 { bInvisible = false; }
+			"####" "#" 12 Bright;
+			Goto Inventory::HideDoomish;
+		HoldAndDestroy:
+			"####" "#" 0 { bInvisible = false; }
+			"####" "#" 12 Bright;
+			Stop;
+		Held:
+			"####" "#" 0 { bInvisible = false; }
+			"####" "#" 12 Bright;
+			Goto Inventory::Held;
+	}
+
 	override void PostBeginPlay()
 	{
 		SpawnPoint = pos;
@@ -509,8 +559,6 @@ class CKHealth : Health
 		{
 			touched = toucher;
 			ticker = 12;
-
-			bDropped = false;
 
 			Super.Touch(toucher);
 		}
@@ -532,8 +580,16 @@ class CKHealth : Health
 			{
 				bInvisible = true;
 				touched = null;
+				vel.z = 0;
 
-				GoAwayAndDie();
+				if (Inventory.ShouldStay())
+				{
+					SetOrigin(SpawnPoint, false);
+				}
+				else
+				{
+					GoAwayAndDie();
+				}
 			}
 		}
 
@@ -574,6 +630,22 @@ class CKPuzzleItem : PuzzleItem
 		CKPuzzleItem.VSpeed 4;
 	}
 
+	States(Actor)
+	{
+		HideDoomish:
+			"####" "#" 0 { bInvisible = false; }
+			"####" "#" 12 Bright;
+			Goto Inventory::HideDoomish;
+		HoldAndDestroy:
+			"####" "#" 0 { bInvisible = false; }
+			"####" "#" 12 Bright;
+			Stop;
+		Held:
+			"####" "#" 0 { bInvisible = false; }
+			"####" "#" 12 Bright;
+			Goto Inventory::Held;
+	}
+
 	override void PostBeginPlay()
 	{
 		SpawnPoint = pos;
@@ -588,8 +660,6 @@ class CKPuzzleItem : PuzzleItem
 		{
 			touched = toucher;
 			ticker = 12;
-
-			bDropped = false;
 
 			Super.Touch(toucher);
 		}
@@ -612,7 +682,16 @@ class CKPuzzleItem : PuzzleItem
 				bInvisible = true;
 				touched = null;
 
-				GoAwayAndDie();
+				vel.z = 0;
+
+				if (Inventory.ShouldStay())
+				{
+					SetOrigin(SpawnPoint, false);
+				}
+				else
+				{
+					GoAwayAndDie();
+				}
 			}
 		}
 
@@ -650,10 +729,28 @@ class CKWeapon : Weapon
 		CKWeapon.VSpeed 4;
 	}
 
+	States(Actor)
+	{
+		HideDoomish:
+			"####" "#" 0 { bInvisible = false; }
+			"####" "#" 12 Bright;
+			Goto Inventory::HideDoomish;
+		HoldAndDestroy:
+			"####" "#" 0 { bInvisible = false; }
+			"####" "#" 12 Bright;
+			Stop;
+		Held:
+			"####" "#" 0 { bInvisible = false; }
+			"####" "#" 12 Bright;
+			Goto Inventory::Held;
+	}
+
 	override void PostBeginPlay()
 	{
 		SpawnPoint = pos;
 		PickupState = FindState("Pickup");
+
+		bDropped = false;
 
 		Super.PostBeginPlay();
 	}
@@ -664,8 +761,6 @@ class CKWeapon : Weapon
 		{
 			touched = toucher;
 			ticker = 12;
-
-			bDropped = false;
 
 			Super.Touch(toucher);
 		}
@@ -687,25 +782,30 @@ class CKWeapon : Weapon
 			{
 				bInvisible = true;
 				touched = null;
+				vel.z = 0;
 
-				GoAwayAndDie();
+				if (Inventory.ShouldStay())
+				{
+					SetOrigin(SpawnPoint, false);
+				}
+				else
+				{
+					GoAwayAndDie();
+				}
 			}
 		}
 
 		Super.Tick();
-	}
-
-	override bool ShouldStay ()
-	{
-		if (touched && ticker) { return true; }
-
-		return false;
 	}
 }
 
 // Player class
 class KeenPlayer : PlayerPawn
 {
+	double aircontrol;
+
+	Property AirControl:aircontrol;
+
 	Default
 	{
 		Speed 1;
@@ -725,6 +825,9 @@ class KeenPlayer : PlayerPawn
 		Player.MorphWeapon "CKStunner";
 		Player.StartItem "CKStunner";
 		Player.WeaponSlot 1, "CKStunner";
+		Player.AirCapacity -1; // Breathe underwater
+		Player.JumpZ 12.0;
+		KeenPlayer.AirControl 0.8;
 	}
 
 	States
@@ -741,6 +844,7 @@ class KeenPlayer : PlayerPawn
 			}
 			Loop;
 		Missile:
+		Melee:
 			KEEN E 7 Bright;
 			Goto Missile;
 		Pain:
@@ -762,6 +866,7 @@ class KeenPlayer : PlayerPawn
 	override void PostBeginPlay()
 	{
 		TakeInventory("BoATilt", 1);
+		player.air_finished = int.max; // Set it here in case we start underwater
 
 		Super.PostBeginPlay();
 	}
@@ -1149,7 +1254,7 @@ class CKPlatformVertical : CKPlatform
 	{
 		SpawnPoint = pos;
 
-		movedist = user_movedist ? user_movedist : 256;
+		movedist = user_movedist ? user_movedist : pos.z - floorz + 2;
 
 		Super.PostBeginPlay();
 	}
@@ -1324,7 +1429,12 @@ class CKPipe : LadderBase
 		A_SetSize(-1, ladderheight);
 		scale.y = -ladderheight / (64.0 / 1.2);
 
-		if (top) { Spawn(top, pos + (0, 0, ladderheight)); }
+		if (top)
+		{
+			Actor t = Spawn(top, pos + (0, 0, ladderheight));
+			t.angle = angle;
+		}
+		
 	}
 }
 
@@ -1601,9 +1711,8 @@ class CKMine : CKBaseEnemy
 		Vector2 newpos = pos.xy + RotateVector((Speed * cos(abs(pitch)), 0), moveangle);
 		moved += Speed;
 
-		if (CheckMove(newpos, 0) && (user_movedist <= 0 || moved <= user_movedist) && waterlevel == 3 && pos.z > floorz && !bOnMobj) // Keep them underwater if they move up and down
+		if (CheckMove(newpos, 0) && (user_movedist <= 0 || moved <= user_movedist) && waterlevel == 3 && pos.z > floorz && !bOnMobj && pos.z + height < ceilingz) // Keep them underwater if they move up and down
 		{
-
 			SetOrigin((newpos, pos.z + Speed * sin(pitch)), true);
 		}
 		else // Swap directions
@@ -2039,6 +2148,7 @@ class CKSchoolfish : CKBaseEnemy
 		Radius 14;
 		Height 20;
 		Damage 0;
+		MaxStepHeight 0;
 		+NOGRAVITY
 		+NOTAUTOAIMED
 		CKBaseEnemy.StunTime 0;
@@ -2105,7 +2215,7 @@ class CKSchoolfish : CKBaseEnemy
 
 	override bool CanCollideWith(Actor other, bool passive)
 	{
-		if (other is "CKSchoolfish" || other.player) { return false; } // Swim through other fish and the player
+		if (other is "CKSchoolfish" || other is "CKMine" || other.player) { return false; } // Swim through other fish and the player
 
 		return Super.CanCollideWith(other, passive);
 	}	
@@ -2582,7 +2692,7 @@ class CKBird : CKBaseEnemy
 class CKPogoStick : CustomInventory
 {
 	bool active;
-	double moveangle;
+	double moveangle, sidespeed;
 	State PogoState;
 
 	Default
@@ -2642,13 +2752,21 @@ class CKPogoStick : CustomInventory
 				owner.vel.z = 12.0;
 				if (owner.player.cmd.buttons & BT_JUMP) { owner.vel.z *= 1.5; }
 
+				sidespeed = 0;
+
+				moveangle = owner.angle;
+			}
+			else
+			{
 				moveangle = owner.angle;
 			}
 
 			if (owner.player.cmd.buttons & BT_FORWARD) { speed = min(6, speed + 0.25); }
-			if (owner.player.cmd.buttons & BT_BACK) { speed = max(0, speed - 0.5); }
+			if (owner.player.cmd.buttons & BT_BACK) { speed = max(-1.5, speed - 0.5); }
+			if (owner.player.cmd.buttons & BT_MOVELEFT) { sidespeed = min(3, sidespeed + 0.5); }
+			if (owner.player.cmd.buttons & BT_MOVERIGHT) { sidespeed = max(-3, sidespeed - 0.5); }
 
-			owner.vel.xy = RotateVector((speed, 0), moveangle);
+			owner.vel.xy = RotateVector((speed, sidespeed), moveangle);
 		}
 		else
 		{
