@@ -174,15 +174,11 @@ ACTOR CKStunner : CKWeapon
 	+WEAPON.NOAUTOFIRE
 	States
 	{
+	Deselect: // Don't let the weapon be lowered
 	Ready:
 		CKBL Q 1 A_WeaponReady
 		Loop
-	Deselect:
-		CKBL Q 0 A_Lower
-		CKBL Q 1 A_Lower
-		Loop
 	Select:
-		CKBL Q 0 A_Raise
 		CKBL Q 1 A_Raise
 		Loop
 	Fire:
@@ -230,7 +226,7 @@ ACTOR CKStunnerAmmo : Ammo
 {
 	Tag "$TAGECELL"
 	+IGNORESKILL
-	Inventory.MaxAmount 5
+	Inventory.MaxAmount 99
 	Inventory.Icon CKNE01
 }
 
@@ -419,6 +415,7 @@ ACTOR CKMadMushroom : CKBaseEnemy
 	Radius 30
 	Height 56
 	Obituary "$CK_MUSH"
+	+NOTAUTOAIMED
 	CKBaseEnemy.StunTime 0
 
 	States
@@ -467,6 +464,7 @@ ACTOR CKPoisonSlugPoison : CKBaseEnemy
 	Scale 3.0
 	+FLATSPRITE
 	-SHOOTABLE
+	+NOTAUTOAIMED
 	CKBaseEnemy.StunTime 0
 
 	States
@@ -583,6 +581,7 @@ ACTOR CKOracle : CKBaseEnemy
 	Damage 0
 	Obituary "$CK_ORACLE"
 	+FRIENDLY
+	+NOTAUTOAIMED
 	CKBaseEnemy.StunTime 0
 
 	States
@@ -636,6 +635,7 @@ ACTOR CKThundercloud : CKBaseEnemy
 	-FLOORCLIP
 	+NOGRAVITY
 	-SOLID
+	+NOTAUTOAIMED
 	Obituary "$CK_TCLOUD"
 	CKBaseEnemy.StunTime 0
 	CKBaseEnemy.WakeOnTouch 1
@@ -785,6 +785,7 @@ ACTOR CKGroundfire : CKBaseEnemy
 	Radius 32
 	Height 0
 	-COUNTKILL
+	+NOTAUTOAIMED
 	CKBaseEnemy.StunTime 0
 	States
 	{
@@ -953,6 +954,7 @@ ACTOR CKSpike : CKBaseEnemy
 	Radius 16
 	Height 48
 	-COUNTKILL
+	+NOTAUTOAIMED
 	CKBaseEnemy.StunTime 0
 	States
 	{

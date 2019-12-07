@@ -130,6 +130,7 @@ class CKBaseEnemy : Actor
 			if (stunframes > 1) { frame += Random(0, stunframes - 1); } // Pick a random frame within set range
 			stuncounter = stuntime;
 			A_SetSize(Default.Radius, Default.Height / 2);
+			bNotAutoAimed = true;
 
 			stunned = true;
 		}
@@ -152,6 +153,7 @@ class CKBaseEnemy : Actor
 				if (confusion) { confusion.Destroy(); }
 
 				A_SetSize(Default.Radius, Default.Height);
+				bNotAutoAimed = Default.bNotAutoAimed;
 
 				SetState(ReviveState);
 			}
@@ -229,7 +231,7 @@ class CKBaseEnemy : Actor
 				scale *= 0.75;
 				scale -= 0.25;
 				
-				vel.xy = RotateVector((Speed * scale, 0), angle);
+				vel.xy = RotateVector((Speed * 1.5 * scale, 0), angle);
 
 				if (!CheckMove(pos.xy + vel.xy))
 				{
@@ -387,7 +389,7 @@ mixin class CKPickup
 }
 */
 
-class CKTreasure : CoinItem
+class CKTreasure : StackableInventory
 {
 //	mixin CKPickup;
 	Actor touched;
@@ -404,9 +406,12 @@ class CKTreasure : CoinItem
 
 		Scale 2.0;
 		+NOGRAVITY
+		+COUNTITEM
 
+		Inventory.MaxAmount 10000000;
 		Inventory.PickupFlash "";
 		Inventory.PickupSound "ckeen/pickup";
+		+INVENTORY.UNDROPPABLE
 
 		CKTreasure.VSpeed 4;
 	}
@@ -561,9 +566,10 @@ class CKPuzzleItem : PuzzleItem
 		//$Category Commander Keen (BoA)/Items
 		//$Color 13
 
-		+INVENTORY.INVBAR
+		Inventory.MaxAmount 1;
 		Inventory.PickupFlash "";
 		Inventory.PickupSound "ckeen/gem";
+		-INVENTORY.INVBAR
 
 		CKPuzzleItem.VSpeed 4;
 	}
@@ -621,7 +627,7 @@ class CKPuzzleItem : PuzzleItem
 	}
 }
 
-class CKWeapon : NaziWeapon
+class CKWeapon : Weapon
 {
 //	mixin CKPickup;
 	Actor touched;
@@ -694,6 +700,219 @@ class CKWeapon : NaziWeapon
 		if (touched && ticker) { return true; }
 
 		return false;
+	}
+}
+
+// Player class
+class KeenPlayer : PlayerPawn
+{
+	Default
+	{
+		Speed 1;
+		Health 100;
+		Radius 16;
+		Height 56;
+		Mass 100;
+		PainChance 255;
+		Scale 2.0;
+		DamageFactor "Falling", 0.0;
+		+NOSKIN
+
+		Player.SideMove 0.5, 0.5;
+		Player.ForwardMove 0.5, 0.5;
+		Player.ViewBob 0.1;
+		Player.DisplayName "Billy Blaze";
+		Player.MorphWeapon "CKStunner";
+		Player.StartItem "CKStunner";
+		Player.WeaponSlot 1, "CKStunner";
+	}
+
+	States
+	{
+		Spawn:
+			KEEN A 1;
+			Loop;
+		See:
+			KEEN ABCD 4;
+			Loop;
+		See.Pogo:
+			KEEN H 1 { // Temp sprites for while pogosticking!
+				if (player && player.onground) { frame = 8; }
+			}
+			Loop;
+		Missile:
+			KEEN E 12;
+			Goto Spawn;
+		Melee:
+			KEEN F 6 BRIGHT;
+			Goto Missile;
+		Pain:
+			KEEN G 4;
+			KEEN G 4 A_Pain;
+			Goto Spawn;
+		Death:
+		XDeath:
+			KEEN H 10
+			{
+				A_PlayerScream();
+				vel = (FRandom(-5.0, 5.0), FRandom(-5.0, 5.0), FRandom(1.0, 5.0));
+			}
+			KEEN I 70;
+			KEEN I -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		TakeInventory("BoATilt", 1);
+
+		Super.PostBeginPlay();
+	}
+
+	// Stripped down give cheat so that we can keep the +invuse key for activating the pogostick
+	override void CheatGive(String name, int amount)
+	{
+		int i;
+		Class<Inventory> type;
+		let player = self.player;
+
+		if (player.mo == NULL || player.health <= 0)
+		{
+			return;
+		}
+
+		int giveall = ALL_NO;
+		if (name ~== "all") { giveall = ALL_YES; }
+		else if (name ~== "everything") { giveall = ALL_YES; }
+
+		if (giveall || name ~== "health")
+		{
+			if (amount > 0)
+			{
+				health += amount;
+				player.health = health;
+			}
+			else
+			{
+				player.health = health = GetMaxHealth(true);
+			}
+
+			if (!giveall) { return; }
+		}
+
+
+		if (giveall || name ~== "ammo")
+		{
+			let ammoitem = FindInventory("CKStunnerAmmo");
+
+			if (!ammoitem)
+			{
+				let ammoitem = Inventory(Spawn("CKStunnerAmmo"));
+				ammoitem.AttachToOwner (self);
+				ammoitem.Amount = ammoitem.MaxAmount;
+			}
+			else if (ammoitem.Amount < ammoitem.MaxAmount)
+			{
+					ammoitem.Amount = ammoitem.MaxAmount;
+			}
+
+			if (!giveall) { return; }
+		}
+
+		if (giveall || name ~== "keys")
+		{
+			for (i = 0; i < AllActorClasses.Size(); ++i)
+			{
+				let type = (class<CKPuzzleItem>)(AllActorClasses[i]);
+				if (type != null)
+				{
+					let def = GetDefaultByType (type);
+					if (def.Icon.isValid())
+					{
+						GiveInventory(type, amount <= 0 ? def.MaxAmount : amount, true);
+					}
+				}
+			}
+
+			if (!giveall) { return; }
+		}
+
+
+		if (giveall || name ~== "weapons")
+		{
+			GiveInventory("CKStunner", 1);
+
+			if (!giveall) { return; }
+		}
+
+		if (giveall) { return; }
+
+		type = name;
+		if (!type)
+		{
+			if (PlayerNumber() == consoleplayer)
+				A_Log(String.Format("Unknown item \"%s\"\n", name));
+		}
+		else
+		{
+			if (name.left(2) ~== "CK") { GiveInventory(type, amount, true); }
+			else if (PlayerNumber() == consoleplayer)
+				A_Log(String.Format("Can't give item \"%s\" while you are Commander Keen!\n", name));
+		}
+	}
+
+	// No running...
+	override double, double TweakSpeeds (double forward, double side)
+	{
+		forward *= ForwardMove1;
+		side *= SideMove1;
+
+		return forward, side;
+	}
+}
+
+class Billy : PowerMorph
+{
+	int armor;
+	double savepercent;
+
+	Default
+	{
+		PowerMorph.MorphStyle MRF_LOSEACTUALWEAPON | MRF_NEWTIDBEHAVIOUR | MRF_UNDOBYDEATHSAVES;
+		PowerMorph.MorphFlash "Nothing"; 
+		PowerMorph.UnMorphFlash "Nothing";
+		PowerMorph.PlayerClass "KeenPlayer";
+		Powerup.Duration 0x7FFFFFFF;
+	}
+
+	override void InitEffect() 
+	{
+		if (owner && owner.player)
+		{
+			// Save the standard Doom-style armor values.  Doesn't support Hexen armor.
+			BasicArmor a = BasicArmor(owner.FindInventory("BasicArmor"));
+			if (a)
+			{
+				armor = a.Amount;
+				savepercent = a.SavePercent;
+			}
+		}
+
+		Super.InitEffect();
+	}
+
+	override void EndEffect()
+	{
+		if (MorphedPlayer && MorphedPlayer.mo)
+		{
+			// Restore armor amount and savepercent
+			MorphedPlayer.mo.SetInventory("BasicArmor", armor);
+
+			BasicArmor a = BasicArmor(MorphedPlayer.mo.FindInventory("BasicArmor"));
+			if (a) { a.SavePercent = savepercent; }
+		}
+ 
+		Super.EndEffect();
 	}
 }
 
@@ -1128,6 +1347,7 @@ class CKPipeTopBlue : Actor
 }
 
 class CKPipeTopPink : CKPipeTopBlue {}
+class CKPipeTopGold : CKPipeTopBlue {}
 
 class CKPipeBlue : CKPipe
 {
@@ -1144,6 +1364,15 @@ class CKPipePink : CKPipe
 	{
 		//$Title Climbable Pipe (Pink)
 		CKPipe.Top "CKPipeTopPink";
+	}
+}
+
+class CKPipeGold : CKPipe
+{
+	Default
+	{
+		//$Title Climbable Pipe (Gold)
+		CKPipe.Top "CKPipeTopGold";
 	}
 }
 
@@ -1629,6 +1858,7 @@ class CKLindsey : CKBaseEnemy
 		Damage 0;
 		+FRIENDLY
 		+NOGRAVITY
+		+NOTAUTOAIMED
 		Obituary "$CK_LINDSEY";
 		CKBaseEnemy.StunTime 0;
 	}
@@ -1667,6 +1897,7 @@ class CKDopefish : CKBaseEnemy
 		Height 128;
 		Damage 0; // Damages on touch only during attack state
 		+NOGRAVITY
+		+NOTAUTOAIMED
 		Obituary "$CK_DOPEFISH";
 		CKBaseEnemy.StunTime 0;
 	}
@@ -1812,6 +2043,7 @@ class CKSchoolfish : CKBaseEnemy
 		Height 20;
 		Damage 0;
 		+NOGRAVITY
+		+NOTAUTOAIMED
 		CKBaseEnemy.StunTime 0;
 	}
 
@@ -1898,6 +2130,7 @@ class CKInchworm : CKBaseEnemy
 		Height 20;
 		Damage 0;
 		MaxStepHeight 0;
+		+NOTAUTOAIMED
 		CKBaseEnemy.StunTime 0;
 	}
 
@@ -2154,6 +2387,7 @@ class CKBirdEgg : CKBaseEnemy
 		Speed 0;
 		Radius 21;
 		Height 48;
+		+NOTAUTOAIMED
 		CKBaseEnemy.StunTime 0;
 		CKBaseEnemy.WakeOnTouch 2;
 	}
@@ -2350,8 +2584,9 @@ class CKBird : CKBaseEnemy
 // Inventory Items
 class CKPogoStick : CustomInventory
 {
-	bool active, once;
+	bool active;
 	double moveangle;
+	State PogoState;
 
 	Default
 	{
@@ -2398,6 +2633,9 @@ class CKPogoStick : CustomInventory
 				owner.player.cheats & CF_NOCLIP
 			) { active = false; return; }
 
+			if (!PogoState) { PogoState = owner.FindState("See.Pogo", true); }
+			if (PogoState && !InStateSequence(owner.CurState, PogoState)) { owner.SetState(PogoState); }
+
 			// Stomp on all other player sounds (land, grunt), since there doesn't seem to be a way to disable them temporarily
 			for (int s = 0; s <= 6; s++) { owner.A_StopSound(s); }
 
@@ -2410,16 +2648,22 @@ class CKPogoStick : CustomInventory
 				moveangle = owner.angle;
 			}
 
-			if (speed < 8.0)
-			{
-				if (owner.player.cmd.buttons & BT_FORWARD) { speed += 0.5; }
-				if (owner.player.cmd.buttons & BT_BACK) { speed -= 0.5; }
-			}
+			if (owner.player.cmd.buttons & BT_FORWARD) { speed = min(6, speed + 0.25); }
+			if (owner.player.cmd.buttons & BT_BACK) { speed = max(0, speed - 0.5); }
 
 			owner.vel.xy = RotateVector((speed, 0), moveangle);
 		}
 		else
 		{
+			if (PogoState)
+			{
+				if (owner)
+				{
+					 if (owner.health && !InStateSequence(owner.CurState, owner.SeeState)) { owner.SetState(owner.SeeState); }
+					 else if (!owner.health && !InStateSequence(owner.CurState, owner.FindState("Death"))) { owner.SetStateLabel("Death"); }
+				}
+				PogoState = null;
+			}
 			speed = 0;
 		}
 	}

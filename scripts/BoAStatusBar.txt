@@ -3,6 +3,7 @@ class BoAStatusBar : BaseStatusBar
 	HUDFont mBigFont;
 	HUDFont mHUDFont;
 	HUDFont mSmallFont;
+	HUDFont KeenFont;
 	InventoryBarState diparms;
 	DynamicValueInterpolator mAirInterpolator;
 	DynamicValueInterpolator mBatteryInterpolator;
@@ -38,6 +39,7 @@ class BoAStatusBar : BaseStatusBar
 		mBigFont = HUDFont.Create("BIGFONT", 0);
 		mSmallFont = HUDFont.Create("SMALLFONT", 2);
 		mHUDFont = HUDFont.Create("THREEFIV", 1);
+		KeenFont = HUDFont.Create("HUDFONT_KEEN", 0);
 
 		diparms = InventoryBarState.Create();
 
@@ -147,9 +149,10 @@ class BoAStatusBar : BaseStatusBar
 				DrawImage("AMBAR", (-54, 152), DI_ITEM_OFFSETS);
 			}
 
-			if (!automapactive && CPlayer.morphtics && CPlayer.mo is "ShermanPlayer")
+			if (!automapactive && CPlayer.morphtics)
 			{
-				DrawTankStatusBar();
+				if (CPlayer.mo is "ShermanPlayer") { DrawTankStatusBar(); }
+				else if (CPlayer.mo is "KeenPlayer") { DrawKeenStatusBar(); }
 			}
 
 			return;
@@ -1012,5 +1015,32 @@ class BoAStatusBar : BaseStatusBar
 		clr = (int(red * shade) << 16) | (int(green * shade) << 8) | int(blue * shade);
 
 		return clr;
+	}
+
+	void DrawKeenStatusBar()
+	{
+		BeginHUD(1, False);
+
+		TextureID back = TexMan.CheckForTexture("CKHUDBKG", TexMan.Type_Any);
+		screen.DrawTexture(back, false, 4, 4, DTA_CleanNoMove, true, DTA_VirtualWidth, 320, DTA_VirtualHeight, 200, DTA_KeepRatio, true);
+
+		String score = FormatNumber(min(GetAmount("CKTreasure") * 100, 999999999));
+		screen.DrawText(KeenFont.mFont, Font.CR_UNTRANSLATED, 84 - KeenFont.mFont.StringWidth(score), 8, score, DTA_CleanNoMove, true, DTA_VirtualWidth, 320, DTA_VirtualHeight, 200, DTA_KeepRatio, true, DTA_Spacing, -4);
+
+		Ammo ammo1, ammo2;
+		int ammocount1, ammocount2;
+		[ammo1, ammo2, ammocount1, ammocount2] = GetCurrentAmmo();
+		if (ammo1)
+		{
+			String ammo = FormatNumber(min(99, ammocount1));
+			screen.DrawText(KeenFont.mFont, Font.CR_UNTRANSLATED, 84 - KeenFont.mFont.StringWidth(ammo), 24, ammo, DTA_CleanNoMove, true, DTA_VirtualWidth, 320, DTA_VirtualHeight, 200, DTA_KeepRatio, true, DTA_Spacing, -4);
+		}
+
+		// Draw a lifewater drop over the helmet - this is health percentage, not lives as in the original game
+		TextureID healthmask = TexMan.CheckForTexture("CKHLTHM", TexMan.Type_Any);
+		screen.DrawTexture(healthmask, false, 12, 23, DTA_CleanNoMove, true, DTA_VirtualWidth, 320, DTA_VirtualHeight, 200, DTA_KeepRatio, true);
+		
+		String health = FormatNumber(min(999, CPlayer.health));
+		screen.DrawText(KeenFont.mFont, Font.CR_UNTRANSLATED, 43 - KeenFont.mFont.StringWidth(health), 24, health, DTA_CleanNoMove, true, DTA_VirtualWidth, 320, DTA_VirtualHeight, 200, DTA_KeepRatio, true, DTA_Spacing, -4);
 	}
 }

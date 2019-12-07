@@ -127,7 +127,7 @@ class AlertLight : Actor
 	{
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
-			if (playeringame[i])
+			if (playeringame[i] && players[i].mo)
 			{
 				if (Distance3D(players[i].mo) < checkRadius * 2) { A_AddVisibility(players[i].mo); }
 			}

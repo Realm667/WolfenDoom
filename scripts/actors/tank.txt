@@ -575,7 +575,7 @@ class Sherman : PowerMorph
 
 	override void EndEffect()
 	{
-		if (MorphedPlayer)
+		if (MorphedPlayer && MorphedPlayer.mo)
 		{
 			let tank = ShermanPlayer(MorphedPlayer.mo);
 
