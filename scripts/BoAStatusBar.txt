@@ -139,14 +139,23 @@ class BoAStatusBar : BaseStatusBar
 			}
 		}
 
-		Super.Draw (state, TicFrac);
+		Super.Draw(state, TicFrac);
 
 		if (CPlayer.mo.FindInventory("CutsceneEnabled") || CPlayer.morphtics)
 		{
 			if (automapactive || state == HUD_StatusBar)
 			{
-				BeginStatusBar();
-				DrawImage("AMBAR", (-54, 152), DI_ITEM_OFFSETS);
+				if (CPlayer.morphtics)
+				{
+					SetSize(0, 320, 200);
+					UpdateScreenGeometry();
+					BeginStatusBar(true);
+				}
+				else
+				{
+					BeginStatusBar();
+					DrawImage("AMBAR", (-54, 152), DI_ITEM_OFFSETS);
+				}
 			}
 
 			if (!automapactive && CPlayer.morphtics)
@@ -1019,13 +1028,12 @@ class BoAStatusBar : BaseStatusBar
 
 	void DrawKeenStatusBar()
 	{
-		BeginHUD(1, False);
+		BeginHUD(1, True);
 
-		TextureID back = TexMan.CheckForTexture("CKHUDBKG", TexMan.Type_Any);
-		screen.DrawTexture(back, false, 4, 4, DTA_CleanNoMove, true, DTA_VirtualWidth, 320, DTA_VirtualHeight, 200, DTA_KeepRatio, true);
+		DrawImage("CKHUDBKG", (4, 4), DI_ITEM_LEFT_TOP);
 
 		String score = FormatNumber(min(GetAmount("CKTreasure") * 100, 999999999));
-		screen.DrawText(KeenFont.mFont, Font.CR_UNTRANSLATED, 84 - KeenFont.mFont.StringWidth(score), 8, score, DTA_CleanNoMove, true, DTA_VirtualWidth, 320, DTA_VirtualHeight, 200, DTA_KeepRatio, true, DTA_Spacing, -4);
+		DrawString(KeenFont, score, (84 - KeenFont.mFont.StringWidth(score), 8), DI_ITEM_LEFT_TOP);
 
 		Ammo ammo1, ammo2;
 		int ammocount1, ammocount2;
@@ -1033,14 +1041,13 @@ class BoAStatusBar : BaseStatusBar
 		if (ammo1)
 		{
 			String ammo = FormatNumber(min(99, ammocount1));
-			screen.DrawText(KeenFont.mFont, Font.CR_UNTRANSLATED, 84 - KeenFont.mFont.StringWidth(ammo), 24, ammo, DTA_CleanNoMove, true, DTA_VirtualWidth, 320, DTA_VirtualHeight, 200, DTA_KeepRatio, true, DTA_Spacing, -4);
+			DrawString(KeenFont, ammo, (84 - KeenFont.mFont.StringWidth(ammo), 24), DI_ITEM_LEFT_TOP);
 		}
 
 		// Draw a lifewater drop over the helmet - this is health percentage, not lives as in the original game
-		TextureID healthmask = TexMan.CheckForTexture("CKHLTHM", TexMan.Type_Any);
-		screen.DrawTexture(healthmask, false, 12, 23, DTA_CleanNoMove, true, DTA_VirtualWidth, 320, DTA_VirtualHeight, 200, DTA_KeepRatio, true);
+		DrawImage("CKHLTHM", (12, 23), DI_ITEM_LEFT_TOP);
 		
 		String health = FormatNumber(min(999, CPlayer.health));
-		screen.DrawText(KeenFont.mFont, Font.CR_UNTRANSLATED, 43 - KeenFont.mFont.StringWidth(health), 24, health, DTA_CleanNoMove, true, DTA_VirtualWidth, 320, DTA_VirtualHeight, 200, DTA_KeepRatio, true, DTA_Spacing, -4);
+		DrawString(KeenFont, health, (43 - KeenFont.mFont.StringWidth(health), 24), DI_ITEM_LEFT_TOP);
 	}
 }
