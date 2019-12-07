@@ -862,63 +862,10 @@ class BoAStatusBar : BaseStatusBar
 
 	void DrawTankStatusBar()
 	{
-		gl_proj.CacheResolution();
-		gl_proj.CacheFov(CPlayer.fov);
-		//gl_proj.OrientForPlayer(CPlayer);
-		gl_proj.Reorient(CPlayer.camera.pos,(
-						CPlayer.camera.angle,
-						CPlayer.camera.pitch,
-						CPlayer.camera.roll));
-		gl_proj.BeginProjection();
-
-		Vector2 dimensions;
-
 		let tankplayer = ShermanPlayer(CPlayer.mo);
-
-		Vector3 hitlocation = tankplayer.CrosshairPos;
 		let targetactor = tankplayer.CrosshairActor;
 
-		Vector3 worldpos = CPlayer.camera.pos + level.Vec3Diff(CPlayer.camera.pos, hitlocation); // World position of object, offset from viewpoint
-		gl_proj.ProjectWorldPos(worldpos); // Translate that to the screen, using the viewpoint's info
-
-		if (gl_proj.IsInScreen()) // If the coordinates are off the screen somehow, then skip drawing
-		{
-			viewport.FromHud();
-			Vector2 drawpos = viewport.SceneToWindow(gl_proj.ProjectToNormal());
-
-			TextureID image = TexMan.CheckForTexture("XHAIRB2", TexMan.Type_MiscPatch);
-
-			dimensions = TexMan.GetScaledSize(image);
-			double scaleamt = clamp(tankplayer.CrosshairDist / 680 * CPlayer.fov / 90, 0.5, 1.5); // Scale with fov to account for zooming
-	
-			dimensions /= scaleamt;
-
-			color cclr = 0xDDDDDD; // Light grey by default
-
-			if (targetactor && targetactor.bShootable && targetactor != CPlayer.mo && (!targetactor.master || targetactor.master != CPlayer.mo))
-			{
-				if (targetactor.bIsMonster && CPlayer.mo.isFriend(targetactor)) { cclr = 0x00CD00; } // Green for allies
-				else if (targetactor.bIsMonster)
-				{
-					cclr = 0xCD0000; // Red for enemies
-					dimensions *= 1 + (sin(level.time * 25) + 1.0) / 2;
-				} 
-				else if (!targetactor.bNoDamage && !targetactor.bInvulnerable)
-				{
-					cclr = 0xCDCD00; // Yellow for other shootables
-					dimensions *= 1 + 0.5 * (sin(level.time * 25) + 1.0) / 2;
-				} 
-			}
-
-			screen.DrawTexture(image, false, drawpos.x, drawpos.y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, cclr & 0xFFFFFF);
-
-			// Small cross in the center is dark for visibility
-			TextureID image2 = TexMan.CheckForTexture("XHAIRB7", TexMan.Type_MiscPatch); 
-			dimensions = TexMan.GetScaledSize(image2);
-			dimensions /= scaleamt;
-
-			screen.DrawTexture(image2, false, drawpos.x, drawpos.y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, 0x222222 & 0xFFFFFF);
-		}
+		DrawThirdPersonCrosshair(tankplayer.CrosshairPos, tankplayer.CrosshairDist, targetactor);
 
 		BeginHUD(1, False);
 
@@ -943,7 +890,7 @@ class BoAStatusBar : BaseStatusBar
 		double pulse = healthpercent < 25 ? (sin(level.time * (26 - healthpercent)) + 1.0) / 2 : 0.5; // Start blinking at less than 25% health, faster as health decreases
 
 		TextureID back = TexMan.CheckForTexture("TANKBACK", TexMan.Type_Any);
-		dimensions = TexMan.GetScaledSize(back) / 4;
+		Vector2 dimensions = TexMan.GetScaledSize(back) / 4;
 
 		double x = dimensions.x / 2 + 4;
 		double y = sheight - dimensions.y / 2 - 4;
@@ -993,6 +940,62 @@ class BoAStatusBar : BaseStatusBar
 		}
 	}
 
+	void DrawThirdPersonCrosshair(Vector3 hitlocation, double hitdist = 128, Actor targetactor = null, String crosshair1 = "XHAIRB2", String crosshair2 = "XHAIRB7")
+	{
+		gl_proj.CacheResolution();
+		gl_proj.CacheFov(CPlayer.fov);
+		//gl_proj.OrientForPlayer(CPlayer);
+		gl_proj.Reorient(CPlayer.camera.pos,(
+						CPlayer.camera.angle,
+						CPlayer.camera.pitch,
+						CPlayer.camera.roll));
+		gl_proj.BeginProjection();
+
+		Vector2 dimensions;
+
+		Vector3 worldpos = CPlayer.camera.pos + level.Vec3Diff(CPlayer.camera.pos, hitlocation); // World position of object, offset from viewpoint
+		gl_proj.ProjectWorldPos(worldpos); // Translate that to the screen, using the viewpoint's info
+
+		if (gl_proj.IsInScreen()) // If the coordinates are off the screen somehow, then skip drawing
+		{
+			viewport.FromHud();
+			Vector2 drawpos = viewport.SceneToWindow(gl_proj.ProjectToNormal());
+
+			TextureID image = TexMan.CheckForTexture(crosshair1, TexMan.Type_MiscPatch);
+
+			dimensions = TexMan.GetScaledSize(image);
+			double scaleamt = clamp(hitdist / 680 * CPlayer.fov / 90, 0.5, 1.5); // Scale with fov to account for zooming
+	
+			dimensions /= scaleamt;
+
+			color cclr = 0xDDDDDD; // Light grey by default
+
+			if (targetactor && targetactor.bShootable && targetactor != CPlayer.mo && (!targetactor.master || targetactor.master != CPlayer.mo))
+			{
+				if (targetactor.bIsMonster && CPlayer.mo.isFriend(targetactor)) { cclr = 0x00CD00; } // Green for allies
+				else if (targetactor.bIsMonster)
+				{
+					cclr = 0xCD0000; // Red for enemies
+					dimensions *= 1 + (sin(level.time * 25) + 1.0) / 2;
+				} 
+				else if (!targetactor.bNoDamage && !targetactor.bInvulnerable)
+				{
+					cclr = 0xCDCD00; // Yellow for other shootables
+					dimensions *= 1 + 0.5 * (sin(level.time * 25) + 1.0) / 2;
+				} 
+			}
+
+			screen.DrawTexture(image, false, drawpos.x, drawpos.y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, cclr & 0xFFFFFF);
+
+			// Small cross in the center is dark for visibility
+			TextureID image2 = TexMan.CheckForTexture(crosshair2, TexMan.Type_MiscPatch); 
+			dimensions = TexMan.GetScaledSize(image2);
+			dimensions /= scaleamt;
+
+			screen.DrawTexture(image2, false, drawpos.x, drawpos.y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, 0x222222 & 0xFFFFFF);
+		}
+	}
+
 	int GetHealthColor(double shade = 1.0)
 	{
 		color clr;
@@ -1028,6 +1031,12 @@ class BoAStatusBar : BaseStatusBar
 
 	void DrawKeenStatusBar()
 	{
+		let keen = KeenPlayer(CPlayer.mo);
+
+		if (CPlayer.cheats & CF_CHASECAM) { DrawThirdPersonCrosshair(keen.CrosshairPos, keen.CrosshairDist, null, "XHAIRB1", "XHAIRB5"); }
+
+		if (screenblocks > 11) { return; }
+
 		BeginHUD(1, True);
 
 		DrawImage("CKHUDBKG", (4, 4), DI_ITEM_LEFT_TOP);

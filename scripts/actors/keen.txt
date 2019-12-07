@@ -804,6 +804,15 @@ class KeenPlayer : PlayerPawn
 {
 	double aircontrol;
 
+	ACtor povcamera;
+	Vector3 cameralocation;
+	transient FLineTraceData cameratrace;
+
+	BoAFindHitPointTracer hittracer;
+	Vector3 CrosshairPos;
+	Actor CrosshairActor;
+	double CrosshairDist;
+
 	Property AirControl:aircontrol;
 
 	Default
@@ -839,14 +848,14 @@ class KeenPlayer : PlayerPawn
 			KEEN ABCD 3;
 			Loop;
 		See.Pogo:
-			KEEN H 1 { // Temp sprites for while pogosticking!
-				if (player && player.onground) { frame = 8; }
+			KEEN A 1 { // Temp sprites for while pogosticking!
+				if (player && player.onground) { frame = 6; }
 			}
 			Loop;
 		Missile:
 		Melee:
 			KEEN E 7 Bright;
-			Goto Missile;
+			Goto See;
 		Pain:
 			KEEN G 4;
 			KEEN G 4 A_Pain;
@@ -868,7 +877,59 @@ class KeenPlayer : PlayerPawn
 		TakeInventory("BoATilt", 1);
 		player.air_finished = int.max; // Set it here in case we start underwater
 
+		while (!povcamera) { povcamera = Spawn("SecurityCamera"); }
+		povcamera.master = self;
+
+		hittracer = new("BoAFindHitPointTracer");
+
 		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		bool chasecam = player.cheats & CF_CHASECAM;
+
+		if (player && povcamera && chasecam)
+		{
+			Player.MinPitch = -60;
+			Player.MaxPitch = 60;
+
+			// Force pitch clamping
+			if (pitch >= player.MaxPitch || pitch <= player.MinPitch)
+			{
+				player.cmd.pitch = 0;
+			}
+
+			double modifier;
+
+			if (pitch < 0) { modifier = -96 * sin(-pitch); } // Aiming up moves the camera up so you can keep the aimpoint on screen
+			else { modifier = 96 * sin(pitch); } // Aiming down actually moves the camera *up*, so that you can see the aimpoint over the top of the turret
+
+			LineTrace(angle + 180, 160.0, 0, TRF_THRUHITSCAN | TRF_THRUACTORS, height + 32 + modifier, 0.0, 0.0, cameratrace);
+
+			povcamera.SetOrigin(cameratrace.HitLocation + AngleToVector(angle, 2), true);
+			povcamera.angle = angle;
+			povcamera.pitch = pitch;
+
+			povcamera.CameraFOV = player.fov;
+
+			player.camera = povcamera;
+
+			DoTrace(self, angle, 2048, pitch, 0, height, hittracer);
+
+			CrosshairPos = hittracer.Results.HitPos;
+			CrosshairActor = hittracer.Results.HitActor;
+			CrosshairDist = hittracer.Results.Distance;
+		}
+		else
+		{
+			Player.MinPitch = -90;
+			Player.MaxPitch = 90;
+
+			player.camera = player.mo;
+		}
+
+		Super.Tick();
 	}
 
 	// Stripped down give cheat so that we can keep the +invuse key for activating the pogostick
@@ -971,6 +1032,16 @@ class KeenPlayer : PlayerPawn
 
 		return forward, side;
 	}
+
+	void DoTrace(Actor origin, double angle, double dist, double pitch, int flags, double zoffset, BoAFindHitPointTracer thistracer)
+	{
+		if (!origin) { origin = self; }
+
+		thistracer.skipspecies = origin.species;
+		thistracer.skipactor = origin;
+		Vector3 tracedir = (cos(angle) * cos(pitch), sin(angle) * cos(pitch), -sin(pitch));
+		thistracer.Trace(origin.pos + (0, 0, zoffset), origin.CurSector, tracedir, dist, 0);
+	}
 }
 
 class Billy : PowerMorph
@@ -991,6 +1062,8 @@ class Billy : PowerMorph
 	{
 		if (owner && owner.player)
 		{
+//			owner.player.cheats |= CF_CHASECAM;
+
 			// Save the standard Doom-style armor values.  Doesn't support Hexen armor.
 			BasicArmor a = BasicArmor(owner.FindInventory("BasicArmor"));
 			if (a)
@@ -1007,6 +1080,13 @@ class Billy : PowerMorph
 	{
 		if (MorphedPlayer && MorphedPlayer.mo)
 		{
+			MorphedPlayer.cheats &= ~CF_CHASECAM;
+			MorphedPlayer.camera = MorphedPlayer.mo;
+
+			// Restore pitch clamping, since this doesn't get reset otherwise
+			MorphedPlayer.MinPitch = -90;
+			MorphedPlayer.MaxPitch = 90;
+
 			// Restore armor amount and savepercent
 			MorphedPlayer.mo.SetInventory("BasicArmor", armor);
 
