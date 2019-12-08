@@ -42,6 +42,8 @@ class Z_SpriteShadow : Actor
 	transient CVar cvShadowDistance;
 	double shadowDist;
 
+	Vector3 lastpos;
+
 	void UpdateShadowDistance(void)
 	{
 		if (!cvShadowDistance) return;
@@ -57,7 +59,7 @@ class Z_SpriteShadow : Actor
 
 	override void Tick(void)
 	{
-		if (!cvShadowDistance || !bNoTimeFreeze && (globalfreeze || level.Frozen)) return;
+		if (!cvShadowDistance || pos == lastpos || !bNoTimeFreeze && (globalfreeze || level.Frozen)) return;
 
 		if (!bStopTicking)
 		{
@@ -106,7 +108,20 @@ class Z_SpriteShadow : Actor
 					}
 				}
 
-				heightdelta = max(1.0 - ((caster.pos.z - FloorZ) / 128), 0.001); // Difference between z position of parent actor and the floor height, as a percentage of an arbitrary number of units (with a min value to avoid division by 0)
+				double zheight = caster.floorz;
+				double shadowzdist = 128.0;
+
+
+				// Only check if you're on top of a thing if you're not on the ground already
+				// and are a player or can float.  Reduces processing overhead from FindOnMobj
+				// function, which calls a BlockThingsIterator
+				if ((caster.player || caster.bFloat) && caster.pos.z > floorz) 
+				{
+					Actor onmo = FindOnMobj(caster, shadowzdist);
+					if (onmo && onmo.pos.z + onmo.height > floorz) { zheight = onmo.pos.z + onmo.height; }
+				}
+
+				heightdelta = max(1.0 - ((caster.pos.z - zheight) / shadowzdist), 0.001); // Difference between z position of parent actor and the floor height, as a percentage of an arbitrary number of units (with a min value to avoid division by 0)
 
 				// sync size of bounding box
 				if (Radius != caster.Radius || Height != caster.Height)
@@ -136,7 +151,7 @@ class Z_SpriteShadow : Actor
 				Vector3 sPos = (
 					caster.Pos.X + cos(players[consoleplayer].camera.Angle) * 0.01,
 					caster.Pos.Y + sin(players[consoleplayer].camera.Angle) * 0.01,
-					caster.FloorZ
+					zheight
 					);
 				SetOrigin(sPos, true);
 
@@ -148,7 +163,35 @@ class Z_SpriteShadow : Actor
 				Destroy();
 				return;
 			}
+
+			lastpos = pos;
 		}
+	}
+
+	// Finds a walkable actor underneath 'origin' actor, within 'range' height distance...
+	Actor FindOnMObj(Actor origin, double range = 0)
+	{
+		BlockThingsIterator it = BlockThingsIterator.Create(origin, 1);
+
+		while (it.Next())
+		{
+			let mo = it.thing;
+
+			if (
+				mo == self || // Ignore self
+				!mo.bSolid || // Ignore non-solids
+				mo.bIsMonster || // Ignore monsters
+				abs(mo.pos.x - origin.pos.x) > origin.radius + mo.radius || // Ignore if outside of hitbox footprint
+				abs(mo.pos.y - origin.pos.y) > origin.radius + mo.radius    //  (using square hitboxes)
+			) { continue; } 
+
+			if (origin.pos.z >= mo.pos.z + mo.height && origin.pos.z <= mo.pos.z + mo.height + range)
+			{
+				return mo;
+			}
+		}
+
+		return null;
 	}
 }
 
