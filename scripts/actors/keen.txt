@@ -500,7 +500,7 @@ class KeenPlayer : PlayerPawn
 	Actor CrosshairActor;
 	double CrosshairDist;
 
-	bool pogohit;
+	Inventory pogo;
 
 	Property AirControl:aircontrol;
 
@@ -513,7 +513,7 @@ class KeenPlayer : PlayerPawn
 		Mass 100;
 		PainChance 255;
 		Scale 2.0;
-		DamageFactor "Falling", 0.0;
+		DamageFactor "Falling", 0.0; // No falling damage
 		+NOSKIN
 		+INTERPOLATEANGLES
 
@@ -521,11 +521,17 @@ class KeenPlayer : PlayerPawn
 		Player.ForwardMove 0.5, 0.5;
 		Player.ViewBob 0.1;
 		Player.DisplayName "Billy Blaze";
+
 		Player.MorphWeapon "CKStunner";
 		Player.StartItem "CKStunner";
 		Player.WeaponSlot 1, "CKStunner";
 		Player.AirCapacity -1; // Breathe underwater
 		Player.JumpZ 12.0;
+		Player.DamageScreenColor "FF 00 00", 0.0; // No red screen flash
+
+		Player.SoundClass "Keen"; // Most sounds are defined here, except for...
+		PainSound "ckeen/keen_pain"; // Pain sound has to be defined here because A_Pain plays actor's defined pain sound when morphed, not class's SNDINFO-defined pain sound...
+
 		KeenPlayer.AirControl 0.8;
 	}
 
@@ -540,6 +546,12 @@ class KeenPlayer : PlayerPawn
 				if (!waterlevel && vel.xy.length() < 0.6) { vel.xy *= 0; SetState(SpawnState); } // Walk in place less
 			}
 			Loop;
+		See.Jump:
+			KEEN AB 6;
+		See.Fall:
+			KEEN E 6;
+			KEEN E 0 { if (player.jumptics < 0) { SetStateLabel("See.Fall"); } }
+			Goto See;
 		See.Pogo:
 			KEEN K 7;
 		See.PogoBounce:
@@ -552,8 +564,12 @@ class KeenPlayer : PlayerPawn
 			KEEN E 1;
 			Goto Spawn;
 		Pain:
-			KEEN G 4;
-			KEEN G 4 A_Pain;
+			KEEN G 8 {
+				// A_Pain doesn't find the SNDINFO-defined pain sound for morphed actors anyway, 
+				// plus it restarts playing the sound every time it's called; if we call the pain
+				// sound manually here with CHAN_NOSTOP, we get a better effect.
+				A_PlaySound(PainSound, CHAN_VOICE | CHAN_NOSTOP); 
+			}
 			Goto Spawn;
 		Death:
 		XDeath:
@@ -570,7 +586,7 @@ class KeenPlayer : PlayerPawn
 	override void PostBeginPlay()
 	{
 		TakeInventory("BoATilt", 1);
-		player.air_finished = int.max; // Set it here in case we start underwater
+		player.air_finished = int.max; // Set initial air capacity to max directly in case we start underwater (only gets set on water entry by default)
 
 		while (!povcamera) { povcamera = Spawn("SecurityCamera"); }
 		povcamera.master = self;
@@ -598,9 +614,9 @@ class KeenPlayer : PlayerPawn
 			double modifier;
 
 			if (pitch < 0) { modifier = -96 * sin(-pitch); } // Aiming up moves the camera up so you can keep the aimpoint on screen
-			else { modifier = 96 * sin(pitch); } // Aiming down actually moves the camera *up*, so that you can see the aimpoint over the top of the turret
+			else { modifier = 96 * sin(pitch); } // Aiming down actually moves the camera *up*, so that you can see the aimpoint over the top of the actor
 
-			LineTrace(angle + 180, 160.0, 0, TRF_THRUHITSCAN | TRF_THRUACTORS, height + 32 + modifier, 0.0, 0.0, cameratrace);
+			LineTrace(angle + 180, 148.0, 0, TRF_THRUHITSCAN | TRF_THRUACTORS, height + 32 + modifier, 0.0, 0.0, cameratrace);
 
 			povcamera.SetOrigin(cameratrace.HitLocation + AngleToVector(angle, 2), true);
 			povcamera.angle = angle;
@@ -622,6 +638,19 @@ class KeenPlayer : PlayerPawn
 			Player.MaxPitch = 90;
 
 			player.camera = player.mo;
+		}
+
+		if (!pogo) { pogo = FindInventory("CKPogoStick"); }
+
+		if (
+			player &&
+			player.jumptics < 0 &&
+			(!pogo || !CKPogoStick(pogo).active) && 
+			!InStateSequence(CurState, FindState("See.Jump"))
+		)
+		{
+			A_PlaySound("ckeen/keen_jump");
+			SetStateLabel("See.Jump");
 		}
 
 		Super.Tick();
@@ -1217,6 +1246,7 @@ class CKPipe : LadderBase
 			t.angle = angle;
 		}
 		
+		if (!user_soundtype) { user_soundtype = 5; } // Soundtype 5 means no climbing sounds
 	}
 }
 
@@ -2525,7 +2555,8 @@ class CKPogoStick : CustomInventory
 						owner.health <= 0 ||
 						owner.player.cmd.buttons & BT_ATTACK ||
 						owner.player.cmd.buttons & BT_ALTATTACK ||
-						owner.player.cheats & CF_NOCLIP
+						owner.player.cheats & CF_NOCLIP ||
+						InStateSequence(owner.CurState, owner.FindState("Pain"))
 					)
 					{
 						active = false;

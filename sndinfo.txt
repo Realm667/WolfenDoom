@@ -85,19 +85,32 @@ ckeen/mine/explode	ckmineex
 ckeen/smirky/steal	cksmirti
 ckeen/smirky/teleport	cksmirto
 ckeen/dopefish/burp	ckdopebu
-ckeen/mimrock/bounce	ckklick
+ckeen/mimrock/bounce	ckhead
 ckeen/pogo		ckpogo
 ckeen/keen_death	ckdead
 ckeen/keen_helmet	ckhead
 ckeen/keen_jump		ckjump
 ckeen/keen_land		ckland
+ckeen/keen_pain		ckpain // Modified version of the original CK stats screen appearance sound
+ckeen/noway		cknoway
+
+//Commander Keen player class
+$playersound	keen	male	*death		ckdead
+$playersounddup	keen	male	*xdeath		*death
+$playersound	keen	male	*pain100	ckpain // Doesn't work when morphed...  A_Pain always defaults to local actor's PainSound if morphed...
+$playersounddup	keen	male	*pain75		*pain100
+$playersounddup	keen	male	*pain50		*pain100
+$playersounddup	keen	male	*pain25		*pain100
+$playersound	keen	male	*grunt		null
+$playersound	keen	male	*land		ckland
+$playersound	keen	male	*usefail	cknoway
 
 //Commander Keen floors
 ckeen/keen_step1	ckstep1
 ckeen/keen_step2	ckstep2
 $random floor/keeny		{ ckeen/keen_step1 ckeen/keen_step2 }
 //$limit floor/keeny 2
-$volume floor/keeny 1.0
+$volume floor/keeny 0.25
 
 //Shell Casings
 $random bulletcasing/bounce {bcase1 bcase2 bcase3 bcase4}
