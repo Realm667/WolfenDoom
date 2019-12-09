@@ -315,8 +315,7 @@ class CKBaseEnemy : Actor
 	}
 }
 
-// Pickup items: points, health, and gems
-/* GZDB-BF cant parse mixins right now...  Copy/pasting redundant code to each item type's base class below for now
+// Pickup items: Mixin used for points, health, gems, and weapon
 mixin class CKPickup
 {
 	Actor touched;
@@ -401,25 +400,13 @@ mixin class CKPickup
 		Super.Tick();
 	}
 }
-*/
 
 class CKTreasure : StackableInventory
 {
-//	mixin CKPickup;
-	Actor touched;
-	double vspeed;
-	State PickupState;
-	int ticker;
-
-	Property VSpeed:vspeed;
+	mixin CKPickup;
 
 	Default
 	{
-		//$Category Commander Keen (BoA)/Pickups
-		//$Color 17
-
-		Scale 2.0;
-		+NOGRAVITY
 		+COUNTITEM
 
 		Inventory.MaxAmount 10000000;
@@ -428,73 +415,6 @@ class CKTreasure : StackableInventory
 		+INVENTORY.UNDROPPABLE
 
 		CKTreasure.VSpeed 4;
-	}
-
-	States(Actor)
-	{
-		HideDoomish:
-			"####" "#" 0 { bInvisible = false; }
-			"####" "#" 12 Bright;
-			Goto Inventory::HideDoomish;
-		HoldAndDestroy:
-			"####" "#" 0 { bInvisible = false; }
-			"####" "#" 12 Bright;
-			Stop;
-		Held:
-			"####" "#" 0 { bInvisible = false; }
-			"####" "#" 12 Bright;
-			Goto Inventory::Held;
-	}
-
-	override void PostBeginPlay()
-	{
-		SpawnPoint = pos;
-		PickupState = FindState("Pickup");
-
-		Super.PostBeginPlay();
-	}
-
-	override void Touch(Actor toucher)
-	{
-		if (toucher.player && !touched)
-		{
-			touched = toucher;
-			ticker = 12;
-
-			Super.Touch(toucher);
-		}
-	}
-
-	override void Tick()
-	{
-		if (touched)
-		{
-			if (!InStateSequence(CurState, PickupState))
-			{
-				SetState(PickupState);
-
-				vel.z = vspeed;
-			}
-
-			if (ticker > 0) { ticker--; }
-			else
-			{
-				bInvisible = true;
-				touched = null;
-				vel.z = 0;
-
-				if (Inventory.ShouldStay())
-				{
-					SetOrigin(SpawnPoint, false);
-				}
-				else
-				{
-					GoAwayAndDie();
-				}
-			}
-		}
-
-		Super.Tick();
 	}
 
 	override bool ShouldStay ()
@@ -507,93 +427,14 @@ class CKTreasure : StackableInventory
 
 class CKHealth : Health
 {
-//	mixin CKPickup;
-	Actor touched;
-	double vspeed;
-	State PickupState;
-	int ticker;
-
-	Property VSpeed:vspeed;
+	mixin CKPickup;
 
 	Default
 	{
-		//$Category Commander Keen (BoA)/Pickups
-		//$Color 17
-
-		Scale 2.0;
-		+NOGRAVITY
-
 		Inventory.PickupFlash "";
 		Inventory.PickupSound "ckeen/pickup";
 
 		CKHealth.VSpeed 4;
-	}
-
-	States(Actor)
-	{
-		HideDoomish:
-			"####" "#" 0 { bInvisible = false; }
-			"####" "#" 12 Bright;
-			Goto Inventory::HideDoomish;
-		HoldAndDestroy:
-			"####" "#" 0 { bInvisible = false; }
-			"####" "#" 12 Bright;
-			Stop;
-		Held:
-			"####" "#" 0 { bInvisible = false; }
-			"####" "#" 12 Bright;
-			Goto Inventory::Held;
-	}
-
-	override void PostBeginPlay()
-	{
-		SpawnPoint = pos;
-		PickupState = FindState("Pickup");
-
-		Super.PostBeginPlay();
-	}
-
-	override void Touch(Actor toucher)
-	{
-		if (toucher.player && !touched)
-		{
-			touched = toucher;
-			ticker = 12;
-
-			Super.Touch(toucher);
-		}
-	}
-
-	override void Tick()
-	{
-		if (touched)
-		{
-			if (!InStateSequence(CurState, PickupState))
-			{
-				SetState(PickupState);
-
-				vel.z = vspeed;
-			}
-
-			if (ticker > 0) { ticker--; }
-			else
-			{
-				bInvisible = true;
-				touched = null;
-				vel.z = 0;
-
-				if (Inventory.ShouldStay())
-				{
-					SetOrigin(SpawnPoint, false);
-				}
-				else
-				{
-					GoAwayAndDie();
-				}
-			}
-		}
-
-		Super.Tick();
 	}
 
 	override bool ShouldStay ()
@@ -606,19 +447,11 @@ class CKHealth : Health
 
 class CKPuzzleItem : PuzzleItem
 {
-//	mixin CKPickup;
-	Actor touched;
-	double vspeed;
-	State PickupState;
-	int ticker;
+	mixin CKPickup;
 
-	Property VSpeed:vspeed;
 
 	Default
 	{
-		Scale 2.0;
-		+NOGRAVITY
-
 		//$Category Commander Keen (BoA)/Items
 		//$Color 13
 
@@ -628,74 +461,6 @@ class CKPuzzleItem : PuzzleItem
 		-INVENTORY.INVBAR
 
 		CKPuzzleItem.VSpeed 4;
-	}
-
-	States(Actor)
-	{
-		HideDoomish:
-			"####" "#" 0 { bInvisible = false; }
-			"####" "#" 12 Bright;
-			Goto Inventory::HideDoomish;
-		HoldAndDestroy:
-			"####" "#" 0 { bInvisible = false; }
-			"####" "#" 12 Bright;
-			Stop;
-		Held:
-			"####" "#" 0 { bInvisible = false; }
-			"####" "#" 12 Bright;
-			Goto Inventory::Held;
-	}
-
-	override void PostBeginPlay()
-	{
-		SpawnPoint = pos;
-		PickupState = FindState("Pickup");
-
-		Super.PostBeginPlay();
-	}
-
-	override void Touch(Actor toucher)
-	{
-		if (toucher.player && !touched)
-		{
-			touched = toucher;
-			ticker = 12;
-
-			Super.Touch(toucher);
-		}
-	}
-
-	override void Tick()
-	{
-		if (touched)
-		{
-			if (!InStateSequence(CurState, PickupState))
-			{
-				SetState(PickupState);
-
-				vel.z = vspeed;
-			}
-
-			if (ticker > 0) { ticker--; }
-			else
-			{
-				bInvisible = true;
-				touched = null;
-
-				vel.z = 0;
-
-				if (Inventory.ShouldStay())
-				{
-					SetOrigin(SpawnPoint, false);
-				}
-				else
-				{
-					GoAwayAndDie();
-				}
-			}
-		}
-
-		Super.Tick();
 	}
 
 	override bool ShouldStay ()
@@ -708,94 +473,16 @@ class CKPuzzleItem : PuzzleItem
 
 class CKWeapon : Weapon
 {
-//	mixin CKPickup;
-	Actor touched;
-	double vspeed;
-	State PickupState;
-	int ticker;
-
-	Property VSpeed:vspeed;
+	mixin CKPickup;
 
 	Default
 	{
-		Scale 2.0;
-		+NOGRAVITY
-
 		//$Category Commander Keen (BoA)/Weapons
 		//$Color 14
 
 		Inventory.PickupFlash "";
 
 		CKWeapon.VSpeed 4;
-	}
-
-	States(Actor)
-	{
-		HideDoomish:
-			"####" "#" 0 { bInvisible = false; }
-			"####" "#" 12 Bright;
-			Goto Inventory::HideDoomish;
-		HoldAndDestroy:
-			"####" "#" 0 { bInvisible = false; }
-			"####" "#" 12 Bright;
-			Stop;
-		Held:
-			"####" "#" 0 { bInvisible = false; }
-			"####" "#" 12 Bright;
-			Goto Inventory::Held;
-	}
-
-	override void PostBeginPlay()
-	{
-		SpawnPoint = pos;
-		PickupState = FindState("Pickup");
-
-		bDropped = false;
-
-		Super.PostBeginPlay();
-	}
-
-	override void Touch(Actor toucher)
-	{
-		if (toucher.player && !touched)
-		{
-			touched = toucher;
-			ticker = 12;
-
-			Super.Touch(toucher);
-		}
-	}
-
-	override void Tick()
-	{
-		if (touched)
-		{
-			if (!InStateSequence(CurState, PickupState))
-			{
-				SetState(PickupState);
-
-				vel.z = vspeed;
-			}
-
-			if (ticker > 0) { ticker--; }
-			else
-			{
-				bInvisible = true;
-				touched = null;
-				vel.z = 0;
-
-				if (Inventory.ShouldStay())
-				{
-					SetOrigin(SpawnPoint, false);
-				}
-				else
-				{
-					GoAwayAndDie();
-				}
-			}
-		}
-
-		Super.Tick();
 	}
 }
 
@@ -813,6 +500,8 @@ class KeenPlayer : PlayerPawn
 	Actor CrosshairActor;
 	double CrosshairDist;
 
+	bool pogohit;
+
 	Property AirControl:aircontrol;
 
 	Default
@@ -826,6 +515,7 @@ class KeenPlayer : PlayerPawn
 		Scale 2.0;
 		DamageFactor "Falling", 0.0;
 		+NOSKIN
+		+INTERPOLATEANGLES
 
 		Player.SideMove 0.5, 0.5;
 		Player.ForwardMove 0.5, 0.5;
@@ -842,20 +532,25 @@ class KeenPlayer : PlayerPawn
 	States
 	{
 		Spawn:
-			KEEN A 1;
+			KEEN L 1;
 			Loop;
 		See:
-			KEEN ABCD 3;
+			KEEN ABCD 6
+			{
+				if (!waterlevel && vel.xy.length() < 0.6) { vel.xy *= 0; SetState(SpawnState); } // Walk in place less
+			}
 			Loop;
 		See.Pogo:
-			KEEN A 7 { // Temp sprites for while pogosticking!
-				if (player && player.onground) { frame = 6; }
-			}
+			KEEN K 7;
+		See.PogoBounce:
+			KEEN J 1;
 			Loop;
 		Missile:
 		Melee:
-			KEEN E 7 Bright;
-			Goto See;
+			KEEN E 2;
+			KEEN F 4;
+			KEEN E 1;
+			Goto Spawn;
 		Pain:
 			KEEN G 4;
 			KEEN G 4 A_Pain;
@@ -915,7 +610,7 @@ class KeenPlayer : PlayerPawn
 
 			player.camera = povcamera;
 
-			DoTrace(self, angle, 2048, pitch, 0, height, hittracer);
+			DoTrace(self, angle, 2048, pitch, 0, height / 2, hittracer);
 
 			CrosshairPos = hittracer.Results.HitPos;
 			CrosshairActor = hittracer.Results.HitActor;
@@ -1018,7 +713,8 @@ class KeenPlayer : PlayerPawn
 		}
 		else
 		{
-			if (name.left(2) ~== "CK") { GiveInventory(type, amount, true); }
+			// Limit what you can give, since there is no inventory bar available - Player should be able to press '+use' to enable/disable pogostick, and that's it!
+			if (name.left(2) ~== "CK" || name.left(5) ~== "Power") { GiveInventory(type, amount, true); }
 			else if (PlayerNumber() == consoleplayer)
 				A_Log(String.Format("Can't give item \"%s\" while you are Commander Keen!\n", name));
 		}
@@ -1062,6 +758,7 @@ class Billy : PowerMorph
 	{
 		if (owner && owner.player)
 		{
+// Should we default Keen to third-person view??
 //			owner.player.cheats |= CF_CHASECAM;
 
 			// Save the standard Doom-style armor values.  Doesn't support Hexen armor.
@@ -1219,9 +916,13 @@ class CKPlatform : Actor
 			{
 				if (
 					Distance3D(touchers[i]) > (Radius + touchers[i].radius) * 1.4 ||
-					touchers[i].pos.z + touchers[i].height < pos.z ||
+					touchers[i].pos.z < pos.z + height ||
 					!touchers[i].bOnMobj
-				) { touchers.Delete(i); }
+				)
+				{
+					touchers.Delete(i);
+					offsets[i] = (0, 0, 0);
+				}
 				else { offsets[i] = touchers[i].pos - pos; }
 			}
 			else { touchers.Delete(i); touchers.ShrinkToFit(); }
@@ -1238,7 +939,8 @@ class CKPlatform : Actor
 					(Distance2D(touchers[i]) < (Radius + touchers[i].radius) * 1.4 && touchers[i].pos.z == pos.z + height) ||
 					absangle(angle, AngleTo(touchers[i])) < 45 ||
 					((touchers[i].bOnMobj || (touchers[i].player && touchers[i].player.jumptics == 0)) && Distance3D(touchers[i]) < radius * 2)
-				)
+				) &&
+				offsets[i] != (0, 0, 0)
 			)
 			{
 				if (touchers[i].CheckMove(pos.xy + offsets[i].xy)) { touchers[i].SetOrigin(pos + offsets[i], true); }
@@ -1754,6 +1456,8 @@ class CKMine : CKBaseEnemy
 		MaxStepHeight 0;
 		+NOGRAVITY
 		+FORCEXYBILLBOARD
+		+NOTAUTOAIMED
+		CKBaseEnemy.StunTime 0;
 	}
 
 	States
@@ -2771,7 +2475,7 @@ class CKBird : CKBaseEnemy
 // Inventory Items
 class CKPogoStick : CustomInventory
 {
-	bool active;
+	bool active, wasactive;
 	double moveangle, sidespeed;
 	State PogoState;
 
@@ -2809,58 +2513,69 @@ class CKPogoStick : CustomInventory
 	{
 		if (IsFrozen()) { return; }
 
-		if (owner && active)
+		if (owner)
 		{
-			if (
-				!owner.player || 
-				owner.waterlevel > 1 ||
-				owner.health <= 0 ||
-				owner.player.cmd.buttons & BT_ATTACK ||
-				owner.player.cmd.buttons & BT_ALTATTACK ||
-				owner.player.cheats & CF_NOCLIP
-			) { active = false; return; }
-
-			if (!PogoState) { PogoState = owner.FindState("See.Pogo", true); }
-			if (PogoState && !InStateSequence(owner.CurState, PogoState)) { owner.SetState(PogoState); }
-
-			// Stomp on all other player sounds (land, grunt), since there doesn't seem to be a way to disable them temporarily
-			for (int s = 0; s <= 6; s++) { owner.A_StopSound(s); }
-
-			if (owner.player.onground)
+			if (owner.health)
 			{
-				owner.A_PlaySound("ckeen/pogo", CHAN_7);
-				owner.vel.z = 12.0;
-				if (owner.player.cmd.buttons & BT_JUMP) { owner.vel.z *= 1.5; }
-
-				sidespeed = 0;
-
-				moveangle = owner.angle;
-			}
-			else
-			{
-				moveangle = owner.angle;
-			}
-
-			if (owner.player.cmd.buttons & BT_FORWARD) { speed = min(6, speed + 0.25); }
-			if (owner.player.cmd.buttons & BT_BACK) { speed = max(-1.5, speed - 0.5); }
-			if (owner.player.cmd.buttons & BT_MOVELEFT) { sidespeed = min(3, sidespeed + 0.5); }
-			if (owner.player.cmd.buttons & BT_MOVERIGHT) { sidespeed = max(-3, sidespeed - 0.5); }
-
-			owner.vel.xy = RotateVector((speed, sidespeed), moveangle);
-		}
-		else
-		{
-			if (PogoState)
-			{
-				if (owner)
+				if (active)
 				{
-					 if (owner.health && !InStateSequence(owner.CurState, owner.SeeState)) { owner.SetState(owner.SeeState); }
-					 else if (!owner.health && !InStateSequence(owner.CurState, owner.FindState("Death"))) { owner.SetStateLabel("Death"); }
+					if (
+						!owner.player || 
+						owner.waterlevel > 1 ||
+						owner.health <= 0 ||
+						owner.player.cmd.buttons & BT_ATTACK ||
+						owner.player.cmd.buttons & BT_ALTATTACK ||
+						owner.player.cheats & CF_NOCLIP
+					)
+					{
+						active = false;
+						owner.SetState(owner.SpawnState);
+
+						return;
+					}
+
+					// Stomp on all other player sounds (land, grunt), since there doesn't seem to be a way to disable them temporarily
+					for (int s = 0; s <= 6; s++) { owner.A_StopSound(s); }
+
+					if (owner.player.onground)
+					{
+						if (!PogoState) { PogoState = owner.FindState("See.Pogo", true); }
+						if (PogoState) { owner.SetState(PogoState); }
+
+						owner.A_PlaySound("ckeen/pogo", CHAN_7);
+						owner.vel.z = 12.0;
+						if (owner.player.cmd.buttons & BT_JUMP) { owner.vel.z *= 1.5; }
+
+						sidespeed = 0;
+
+						moveangle = owner.angle;
+					}
+					else
+					{
+						moveangle = owner.angle;
+					}
+
+					if (owner.player.cmd.buttons & BT_FORWARD) { speed = min(6, speed + 0.25); }
+					if (owner.player.cmd.buttons & BT_BACK) { speed = max(-1.5, speed - 0.5); }
+					if (owner.player.cmd.buttons & BT_MOVELEFT) { sidespeed = min(3, sidespeed + 0.5); }
+					if (owner.player.cmd.buttons & BT_MOVERIGHT) { sidespeed = max(-3, sidespeed - 0.5); }
+
+					owner.vel.xy = RotateVector((speed, sidespeed), moveangle);
 				}
-				PogoState = null;
+				else if (wasactive)
+				{
+					owner.SetState(owner.SpawnState);
+				}
 			}
-			speed = 0;
+			else if (active)
+			{
+				active = false;
+
+				owner.vel *= 0;
+			}
 		}
+
+		wasactive = active;
 	}
 }
 

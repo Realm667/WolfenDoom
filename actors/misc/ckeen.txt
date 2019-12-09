@@ -176,19 +176,18 @@ ACTOR CKStunner : CKWeapon
 	{
 	Deselect: // Don't let the weapon be lowered
 	Ready:
-		CKBL Q 1 A_WeaponReady
+		CKBF A 1 A_WeaponReady
 		Loop
 	Select:
-		CKBL Q 1 A_Raise
+		CKBF A 1 A_Raise
 		Loop
 	Fire:
-		CKBL R 8
-		CKBL S 10 A_FireProjectile ("CKStunnerBall")
-		CKBL T 0 A_ReFire
+		CKBF B 2
+		CKBF C 2 A_FireProjectile ("CKStunnerBall")
+		CKBF D 1
 		Goto Ready
 	Spawn:
-		CKBL A 5
-		CKBL B 5
+		CKBL AB 5
 		Loop
 	Pickup:
 		CKBL C -1 BRIGHT
@@ -211,13 +210,10 @@ ACTOR CKStunnerBall
 	States
 	{
 	Spawn:
-		CKBL UV 5 { if (waterlevel) { A_Die; } }
+		CKBA ABCD 3 { if (waterlevel > 2) { SetStateLabel("Death"); } }
 		Loop
 	Death:
-		CKBL W 4
-		CKBL X 4
-		CKBL Y 4
-		CKBL Z 4
+		CKBA EF 4
 		Stop
 	}
 }
