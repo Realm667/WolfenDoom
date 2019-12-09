@@ -17,6 +17,11 @@ script "boaobjectives" (void)
 		(GetLevelInfo(LEVELINFO_LEVELNUM)==99)
 	)
 	Terminate;
+	
+	If(
+		(CheckActorClass(PlayerNumber(),"KeenPlayer"))
+	)
+	Terminate;
 
 	if(objectives_on[PlayerNumber()])
 		objectives_on[PlayerNumber()]=0;
