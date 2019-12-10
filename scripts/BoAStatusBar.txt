@@ -21,7 +21,6 @@ class BoAStatusBar : BaseStatusBar
 	int barstate;
 	int LastHealth;
 	int LastMaxHealth;
-	int paintimer;
 	String LastIcon;
 	String LastTag;
 	double hour, minute, second;
@@ -1032,25 +1031,9 @@ class BoAStatusBar : BaseStatusBar
 
 	void DrawKeenStatusBar()
 	{
-		if (CPlayer.mo.CurState == CPlayer.mo.FindState("Pain"))
-		{
-			paintimer = 20;
-		}
-
-		if (paintimer > 0)
-		{
-			paintimer--;
-
-			double width = Screen.GetWidth();
-			double height = Screen.GetHeight();
-
-			TextureID pain = TexMan.CheckForTexture("graphics/hud/keen/pain.png", TexMan.Type_ANY);
-			screen.DrawTexture(pain, false, 0, 0, DTA_VirtualWidthF, width, DTA_VirtualHeightF, height, DTA_DestWidthF, width, DTA_DestHeightF, height, DTA_Alpha, 0.35, DTA_FlipX, Random(0, 1), DTA_FlipY, Random(0, 1));
-		}
-
 		let keen = KeenPlayer(CPlayer.mo);
 
-		if (keen && CPlayer.cheats & CF_CHASECAM) { DrawThirdPersonCrosshair(keen.CrosshairPos, keen.CrosshairDist, null, "XHAIRB1", "XHAIRB5"); }
+		if (CPlayer.cheats & CF_CHASECAM) { DrawThirdPersonCrosshair(keen.CrosshairPos, keen.CrosshairDist, null, "XHAIRB1", "XHAIRB5"); }
 
 		if (screenblocks > 11) { return; }
 
