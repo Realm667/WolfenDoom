@@ -16,8 +16,13 @@ class ClassicMessageBox : MessageBoxMenu
 	int alignment;
 	int graphicalign;
 
+	bool silent;
+	int autoclose;
+
 	override void Init(Menu parent, String msg, int messagemode, bool playsound, Name cmd, voidptr native_handler)
 	{
+		silent = !playsound;
+
 		// Initialize everything through the real message box code
 		Super.Init(parent, msg, messagemode, playsound, cmd, native_handler);
 
@@ -41,14 +46,14 @@ class ClassicMessageBox : MessageBoxMenu
 		bottomright = TexMan.CheckForTexture(prefix .. "BR", TexMan.Type_Any);
 
 		if (messagemode > 0) { blinktime = -1; }
+
+		autoclose = -1;
 	}
 
-	static ClassicMessageBox PrintMessage(String text, String prefix = "B_", Color fillcolor = 0xFFFFFF, int style = 0, int width = -1, int height = -1, bool nocursor = true, int align = 2, String graphic = "", int graphicalign = 0)
+	static bool PrintMessage(String text, String prefix = "B_", Color fillcolor = 0xFFFFFF, int style = 0, int width = -1, int height = -1, bool nocursor = true, int align = 2, String graphic = "", int graphicalign = 0, bool silent = true, int autoclosetime = -1)
 	{
-		StartMessage(text, nocursor);
-
-		ClassicMessageBox msg = ClassicMessageBox(GetCurrentMenu());
-		if (!msg) { msg = New("ClassicMessageBox"); }
+		ClassicMessageBox msg = New("ClassicMessageBox");
+		msg.mParentMenu = GetCurrentMenu();
 
 		msg.prefix = prefix;
 		msg.fillcolor = fillcolor;
@@ -74,18 +79,36 @@ class ClassicMessageBox : MessageBoxMenu
 		msg.alignment = align;
 		msg.graphicalign = graphicalign;
 
-		msg.Init(msg.mParentMenu, text, msg.mMessagemode);
+		msg.Init(msg.mParentMenu, text, nocursor, !silent);
 
 		msg.DontDim = true;
 		msg.DontBlur = true;
+		msg.silent = silent;
+		msg.autoclose = autoclosetime;
 
-		return msg;
+		msg.ActivateMenu();
+
+		return true;
 	}
 
 	override void Drawer()
 	{
 		if (mParentMenu) { mParentMenu.Drawer(); }
 		DrawMessage(message, 8, fillcolor);
+	}
+
+	override void Ticker()
+	{
+
+		if (autoclose > 0)
+		{
+			autoclose--;
+		}
+		else if (autoclose == 0)
+		{
+			Close();
+			if (!silent) { CloseSound(); }
+		}
 	}
 
 	void DrawMessage(String text, int size = 8, color clr = 0x0)
@@ -185,6 +208,70 @@ class ClassicMessageBox : MessageBoxMenu
 
 			drawx = 160 + xoffset;
 			drawy += fontheight;
+		}
+	}
+
+	override bool MenuEvent(int mkey, bool fromcontroller)
+	{
+		if (mMessageMode == 0)
+		{
+			if (mkey == MKEY_Up || mkey == MKEY_Down)
+			{
+				if (!silent) { MenuSound("menu/cursor"); }
+				messageSelection = !messageSelection;
+				return true;
+			}
+			else if (mkey == MKEY_Enter)
+			{
+				// 0 is yes, 1 is no
+				HandleResult(!messageSelection);
+				return true;
+			}
+			else if (mkey == MKEY_Back)
+			{
+				HandleResult(false);
+				return true;
+			}
+			return false;
+		}
+		else
+		{
+			Close();
+			if (!silent) { CloseSound(); }
+			return true;
+		}
+	}
+
+	override void HandleResult(bool res)
+	{
+		if (Handler != null)
+		{
+			if (res) 
+			{
+				CallHandler(Handler);
+			}
+			else
+			{
+				Close();
+				if (!silent) { CloseSound(); }
+			}
+		}
+		else if (mParentMenu != NULL)
+		{
+			if (mMessageMode == 0)
+			{
+				if (mAction == 'None') 
+				{
+					mParentMenu.MenuEvent(res? MKEY_MBYes : MKEY_MBNo, false);
+					Close();
+				}
+				else 
+				{
+					Close();
+					if (res) SetMenu(mAction, -1);
+				}
+				if (!silent) { CloseSound(); }
+			}
 		}
 	}
 }

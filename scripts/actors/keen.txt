@@ -10,9 +10,12 @@ class CKBaseEnemy : Actor
 	int counter, counter2;
 	Vector3 offset;
 
+	Sound touchsound;
+
 	Property StunTime:stuntime;
 	Property StunFrames:stunframes;
 	Property WakeOnTouch:wakeontouch;
+	Property TouchSound:touchsound;
 
 	Default
 	{
@@ -74,16 +77,26 @@ class CKBaseEnemy : Actor
 	// Unless damage is set 0, then fall back to executing the actor's special
  	override void Touch(Actor toucher)
 	{
-		if (wakeontouch && toucher && toucher.player)
+		if (toucher && toucher.player)
 		{
-			wakeontouch = false;
-			SetStateLabel("See");
+			if (wakeontouch > 0)
+			{
+				wakeontouch = false;
+				SetStateLabel("See");
+			}
+
+			if (damage > 0)
+			{
+				if (!stunned) { toucher.DamageMobj(self, self, damage, "Melee"); }
+			}
+
+			if (special)
+			{
+				A_Playsound(TouchSound, CHAN_UI);
+				Level.ExecuteSpecial(special, self, null, false, args[0], args[1], args[2], args[3], args[4]);
+				A_SetSpecial(0);
+			}
 		}
-		else if (damage && toucher && toucher.player)
-		{
-			if (!stunned) { toucher.DamageMobj(self, self, damage, "Melee"); }
-		}
-		else if (special) { Level.ExecuteSpecial(special, self, null, false, args[0], args[1], args[2], args[3], args[4]); }
 	}
 
 	override bool Used(Actor user)
@@ -259,6 +272,8 @@ class CKBaseEnemy : Actor
 		{
 			if (target.CheckMove(pos.xy + offset.xy) && CheckMove(pos.xy + vel.xy)) { target.SetOrigin(pos + (vel.xy, vel.z * gravity) + offset, true); }
 		}
+
+		bNoBlockMonst = !!(target && target is "PlayerPawn"); // Allow them to pass through monster blocking lines if a player is riding...
 	}
 
 	// Function to move an actor in a straight line until it hits something, then change directions randomly, with preference for moving toward player.
@@ -1152,7 +1167,11 @@ class CKPlatformEnergy : CKPlatformThrust
 
 	override void Tick()
 	{
-		if (CKPlatform(master) && !master.bDormant) { SetXYZ(master.pos); }
+		if (CKPlatform(master) && !master.bDormant)
+		{
+			SetXYZ(master.pos);
+			angle = master.angle;
+		}
 		else { Destroy(); }
 
 		Actor.Tick();
@@ -1298,6 +1317,8 @@ class CKPipeGold : CKPipe
 // Enemies and NPCs
 class CKLick : CKBaseEnemy
 {
+	int turncounter;
+
 	Default
 	{
 		//$Category Commander Keen (BoA)/Monsters
@@ -1305,8 +1326,8 @@ class CKLick : CKBaseEnemy
 		//$Color 4
 
 		Speed 8;
-		Radius 18;
-		Height 36;
+		Radius 16;
+		Height 32;
 		Damage 0; // Damages on touch only during attack state
 		Obituary "$CK_LICK";
 	}
@@ -1326,7 +1347,7 @@ class CKLick : CKBaseEnemy
 			CKLC E 2
 			{
 				A_PlaySound("ckeen/lick/attack");
-				vel.xy = RotateVector((1, 0), angle);
+				vel.xy = RotateVector((2, 0), angle);
 				SetDamage(15);
 			}
 			CKLC FGFEFGF 2;
@@ -1346,20 +1367,32 @@ class CKLick : CKBaseEnemy
 
 		if (pos.z == floorz || blocked || bOnMobj)
 		{
-			if (pos.z == floorz || bOnMobj)
+			if (target && IsVisible(target, true))
 			{
-				if (target && dist < 32)
+				if (IsVisible(target, true)) 
 				{
-					SetState(AttackState);
-					return;
-				}
+					angle = AngleTo(target);
 
-				if (dist > 48) { vel.z = 8.0; }
-				else { vel.z = 4.0; }
+					if (dist < 32)
+					{
+						angle = AngleTo(target);
+						SetState(AttackState);
+						return;
+					}
+				}
 			}
 
-			if (target) { angle = AngleTo(target); }
-			else if (blocked) { angle = Random(0, 359); }
+			if (blocked && !turncounter)
+			{
+				angle += Random(-115, -245);
+				turncounter = 45;
+			}
+
+			if (pos.z == floorz || bOnMobj)
+			{
+				if (dist > 48) { vel.z = Speed; }
+				else { vel.z = Speed / 2; }
+			}
 
 			vel.xy = RotateVector((dist > 48 ? Speed : Speed / 2, 0), angle);
 		}
@@ -1369,6 +1402,8 @@ class CKLick : CKBaseEnemy
 	{
 		// They would jump into tar originally and fall off of the map...  I think this is the best way to handle that.
 		if (waterlevel && !stunned) { DoStun(true); }
+
+		if (turncounter > 0) { turncounter--; }
 
 		Super.Tick();
 	}
@@ -1781,6 +1816,7 @@ class CKLindsey : CKBaseEnemy
 		+NOTAUTOAIMED
 		Obituary "$CK_LINDSEY";
 		CKBaseEnemy.StunTime 0;
+		CKBaseEnemy.TouchSound "ckeen/lindsey/touch";
 	}
 
 	States
