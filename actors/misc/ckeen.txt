@@ -984,6 +984,24 @@ ACTOR CKAquaDrop
 	}
 }
 
+ACTOR CKGroundThruster
+{
+	//$Category Commander Keen (BoA)/Props
+	//$Title Platform Thurster
+	//$Color 3
+	Radius 8
+	Height 32
+	Scale 2.0
+	-SOLID
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		CKJT AB 10
+		loop
+	}
+}
+
 ACTOR CKSpike : CKBaseEnemy
 {
 	//$Category Commander Keen (BoA)/Props
