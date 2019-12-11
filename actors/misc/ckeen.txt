@@ -295,6 +295,29 @@ ACTOR CKRedKey : CKPuzzleItem
 	}
 }
 
+
+ACTOR CKGreenKey : CKPuzzleItem
+{
+	//$Title Gem, green (Green Card)
+	Radius 15
+	Height 24
+	puzzleitem.number 103
+	Inventory.PickupMessage "$CKGGEM"
+	Inventory.Icon "CKKEYS3"
+	Inventory.PickupSound "ckeen/gem"
+	Species "BoAGreenKey"
+	+BRIGHT
+	States
+	{
+	Spawn:
+		CKKY HI 5
+		Loop
+	Pickup:
+		"####" G -1
+		Stop
+	}
+}
+
 ACTOR CKRedKeyPod : SwitchableDecoration
 {
 	//$Category Commander Keen (BoA)/Items
@@ -351,6 +374,24 @@ ACTOR CKYellowKeyPod : CKRedKeyPod
 	Active:
 		TNT1 A 0 A_Playsound("ckeen/gemuse")
 		CKKS E -1 BRIGHT
+		Stop
+	}
+}
+
+ACTOR CKGreenKeyPod : CKRedKeyPod
+{
+	//$Category Commander Keen (BoA)/Items
+	//$Title Gempod, green
+	//$Color 13
+	States
+	{
+	Spawn:
+	Inactive:
+		CKKS H -1
+		Stop
+	Active:
+		TNT1 A 0 A_Playsound("ckeen/gemuse")
+		CKKS G -1 BRIGHT
 		Stop
 	}
 }
@@ -571,7 +612,7 @@ ACTOR CKOracle : CKBaseEnemy
 	//$Category Commander Keen (BoA)/NPCs
 	//$Title Oracle of Wisdom (Council Member)
 	//$Color 11
-	Speed 16
+	Speed 3
 	Radius 16
 	Height 64
 	Damage 0
@@ -586,7 +627,7 @@ ACTOR CKOracle : CKBaseEnemy
 	Spawn:
 		CKCC A 1
 	See:
-		"####" AB 5 A_Wander
+		"####" AAAAABBBBB 1 A_Wander
 		"####" A 0 A_Jump(24, "Stand")
 		Loop
 	Stand:
@@ -780,7 +821,7 @@ ACTOR CKGroundfire : CKBaseEnemy
 	//$Title Groundfire
 	//$Color 3
 	Radius 32
-	Height 0
+	Height 0.5
 	-COUNTKILL
 	+NOTAUTOAIMED
 	CKBaseEnemy.StunTime 0

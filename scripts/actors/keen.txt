@@ -631,7 +631,7 @@ class KeenPlayer : PlayerPawn
 			if (pitch < 0) { modifier = -96 * sin(-pitch); } // Aiming up moves the camera up so you can keep the aimpoint on screen
 			else { modifier = 96 * sin(pitch); } // Aiming down actually moves the camera *up*, so that you can see the aimpoint over the top of the actor
 
-			LineTrace(angle + 180, 148.0, 0, TRF_THRUHITSCAN | TRF_THRUACTORS, height + 32 + modifier, 0.0, 0.0, cameratrace);
+			LineTrace(angle + 180, 96.0, 0, TRF_THRUHITSCAN | TRF_THRUACTORS, height + 32 + modifier, 0.0, 0.0, cameratrace);
 
 			povcamera.SetOrigin(cameratrace.HitLocation + AngleToVector(angle, 2), true);
 			povcamera.angle = angle;
@@ -1811,10 +1811,10 @@ class CKLindsey : CKBaseEnemy
 		Radius 16;
 		Height 64;
 		Damage 0;
+		Obituary "$CK_LINDSEY";
 		+FRIENDLY
 		+NOGRAVITY
 		+NOTAUTOAIMED
-		Obituary "$CK_LINDSEY";
 		CKBaseEnemy.StunTime 0;
 		CKBaseEnemy.TouchSound "ckeen/lindsey/touch";
 	}

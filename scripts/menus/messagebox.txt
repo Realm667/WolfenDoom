@@ -1,23 +1,54 @@
+class KeenMessage
+{
+	String text;
+	int align;
+	String graphic;
+	int graphicalign;
+	int width;
+	int height;
+	int autoclose;
+
+	ui static void Init(ClassicMessageBox parent, String mtext, int malign = 0, String mgraphic = "", int mgraphicalign = 0, int mautoclose = -1, int mwidth = 26, int mheight = 8)
+	{
+		KeenMessage msg = New("KeenMessage");
+
+		msg.text = mtext;
+		msg.align = malign;
+		msg.graphic = mgraphic;
+		msg.graphicalign = mgraphicalign;
+		msg.autoclose = mautoclose;
+		msg.width = mwidth;
+		msg.height = mheight;
+
+		parent.messages.Push(msg);
+	}
+}
+
 class ClassicMessageBox : MessageBoxMenu
 {
 	String prefix;
 	Color fillcolor;
 	TextureID top, bottom, left, right;
 	TextureID topleft, topright, bottomleft, bottomright;
-	TextureID graphic;
+
+	Font fnt;
 
 	String message;
+	int align;
+	int graphicalign;
+	String graphic;
+	TextureID tex;
+	int width, height;
 
 	String cursor;
 	int blinktime;
-	int width, height;
-
-	Font fnt;
-	int alignment;
-	int graphicalign;
 
 	bool silent;
 	int autoclose;
+	int cmds;
+
+	int index;
+	Array<KeenMessage> messages;
 
 	override void Init(Menu parent, String msg, int messagemode, bool playsound, Name cmd, voidptr native_handler)
 	{
@@ -26,12 +57,8 @@ class ClassicMessageBox : MessageBoxMenu
 		// Initialize everything through the real message box code
 		Super.Init(parent, msg, messagemode, playsound, cmd, native_handler);
 
-		message = msg;
-
-		message.Replace("\n\n" .. Stringtable.Localize("$DOSY"), "");
-		message.Replace("\n\n" .. Stringtable.Localize("$PRESSKEY"), "");
-		message.Replace("\n\n" .. Stringtable.Localize("$PRESSYN"), "");
-		message.Replace(Stringtable.Localize("$PRESSYN"), ""); // For the save deletion prompt
+		message = CleanString(msg);
+		tex = TexMan.CheckForTexture(graphic, TexMan.Type_Any);
 
 		if (!prefix.Length()) { prefix = "BG_"; fillcolor = 0x0; }
 		if (!fnt) { fnt = BigFont; }
@@ -50,45 +77,50 @@ class ClassicMessageBox : MessageBoxMenu
 		autoclose = -1;
 	}
 
-	static bool PrintMessage(String text, String prefix = "B_", Color fillcolor = 0xFFFFFF, int style = 0, int width = -1, int height = -1, bool nocursor = true, int align = 2, String graphic = "", int graphicalign = 0, bool silent = true, int autoclosetime = -1)
+	static String CleanString(String input)
 	{
-		ClassicMessageBox msg = New("ClassicMessageBox");
-		msg.mParentMenu = GetCurrentMenu();
+		input.Replace("\n\n" .. Stringtable.Localize("$DOSY"), "");
+		input.Replace("\n\n" .. Stringtable.Localize("$PRESSKEY"), "");
+		input.Replace("\n\n" .. Stringtable.Localize("$PRESSYN"), "");
+		input.Replace(Stringtable.Localize("$PRESSYN"), ""); // For the save deletion prompt
 
-		msg.prefix = prefix;
-		msg.fillcolor = fillcolor;
+		return input;
+	}
 
-		switch (style)
-		{
-			case 1:
-				msg.fnt = BigFont;
-				break;
-			case 2:
-				msg.fnt = ConFont;
-				break;
-			default:
-				msg.fnt = Font.GetFont("Classic");
-				break;
-		}
+	static ClassicMessageBox PrintMessage(String text, int align = 0, String graphic = "", int graphicalign = 0, int autoclose = -1, int width = 26, int height = 8)
+	{
+		ClassicMessageBox msg = ClassicMessageBox(GetCurrentMenu());
 
-		if (width > 0) { msg.width = width * 8 + 16; }
-		if (height > 0) { msg.height = height * 8 + 16; }
+		if (!msg) { msg = New("ClassicMessageBox"); }
 
-		if (graphic.length()) { msg.graphic = TexMan.CheckForTexture(graphic, TexMan.Type_Any); }
+		msg.cmds = players[consoleplayer].cmd.buttons;
 
-		msg.alignment = align;
-		msg.graphicalign = graphicalign;
+		msg.prefix = "B_";
+		msg.fillcolor = 0xFFFFFF;
+		msg.fnt = Font.GetFont("Classic");
 
-		msg.Init(msg.mParentMenu, text, nocursor, !silent);
+		KeenMessage.Init(msg, text, align, graphic, graphicalign, autoclose, width * 8 + 16, height * 8 + 16);
+
+		msg.Init(null, text, true, false);
+
+		msg.index = 1;
+
+		msg.message = msg.messages[msg.index - 1].text;
+		msg.width = msg.messages[msg.index - 1].width;
+		msg.height = msg.messages[msg.index - 1].height;
+		msg.align = msg.messages[msg.index - 1].align;
+		msg.graphic = msg.messages[msg.index - 1].graphic;
+		msg.tex = TexMan.CheckForTexture(msg.graphic, TexMan.Type_Any);
+		msg.graphicalign = msg.messages[msg.index - 1].graphicalign;
+		msg.autoclose = msg.messages[msg.index - 1].autoclose;
 
 		msg.DontDim = true;
 		msg.DontBlur = true;
-		msg.silent = silent;
-		msg.autoclose = autoclosetime;
+		msg.silent = true;
 
 		msg.ActivateMenu();
 
-		return true;
+		return msg;
 	}
 
 	override void Drawer()
@@ -99,14 +131,29 @@ class ClassicMessageBox : MessageBoxMenu
 
 	override void Ticker()
 	{
-
 		if (autoclose > 0)
 		{
 			autoclose--;
 		}
 		else if (autoclose == 0)
 		{
-			Close();
+			index++;
+
+			if (index > messages.Size()) { Close(); }
+			else
+			{
+				message = messages[index - 1].text;
+				width = messages[index - 1].width;
+				height = messages[index - 1].height;
+				align = messages[index - 1].align;
+				graphic = messages[index - 1].graphic;
+				tex = TexMan.CheckForTexture(graphic, TexMan.Type_Any);
+				graphicalign = messages[index - 1].graphicalign;
+				autoclose = messages[index - 1].autoclose;
+
+				cmds = players[consoleplayer].cmd.buttons;
+			}
+
 			if (!silent) { CloseSound(); }
 		}
 	}
@@ -122,7 +169,7 @@ class ClassicMessageBox : MessageBoxMenu
 
 		if (graphic)
 		{
-			graphicsize = TexMan.GetScaledSize(graphic);
+			graphicsize = TexMan.GetScaledSize(tex);
 			gw = int(graphicsize.x * CleanXFac);
 		}
 
@@ -143,8 +190,8 @@ class ClassicMessageBox : MessageBoxMenu
 		w += 24;
 		h += 24;
 
-		w = max(w, width);// - 2 * size;
-		h = max(h, height);// - 2 * size;
+		w = max(w, width);
+		h = max(h, height);
 
 		int ws = w * CleanXfac;
 		int hs = h * CleanYfac;
@@ -171,19 +218,19 @@ class ClassicMessageBox : MessageBoxMenu
 
 		int xoffset = 0;
 
-		if (graphic)
+		if (tex)
 		{
 			int drawx = x;
 
 			if (graphicalign == 2) { drawx += ws / 2 - gw / 2; }
-			else if (graphicalign == 1) { drawx += ws - gw; if (alignment) { xoffset -= int(graphicsize.x + 8) / alignment; } }
+			else if (graphicalign == 1) { drawx += ws - gw; if (align) { xoffset -= int(graphicsize.x + 8) / align; } }
 			else
 			{
-				if (alignment == 0) { xoffset += int(graphicsize.x) + 8; }
-				else if (alignment == 2) { xoffset += int(graphicsize.x + 8) / 3; }
+				if (align == 0) { xoffset += int(graphicsize.x) + 8; }
+				else if (align == 2) { xoffset += int(graphicsize.x + 8) / 3; }
 			}
 
-			screen.DrawTexture(graphic, true, drawx, y, DTA_CleanNoMove, true);
+			screen.DrawTexture(tex, true, drawx, y, DTA_CleanNoMove, true);
 		}
 
 		if (blinktime > -1 && gametic > blinktime)
@@ -200,8 +247,8 @@ class ClassicMessageBox : MessageBoxMenu
 		{
 			int size = fnt.StringWidth(message.StringAt(i) .. (i == (c - 1) ? cursor : ""));
 
-			if (alignment == 2) { drawx -= size / 2; }
-			else if (alignment == 1) { drawx += w / 2 - size - 8; }
+			if (align == 2) { drawx -= size / 2; }
+			else if (align == 1) { drawx += w / 2 - size - 8; }
 			else { drawx -= w / 2 - 8; }
 
 			screen.DrawText(fnt, 0, drawx, drawy, "\c[TrueBlack]" .. message.StringAt(i) .. (i == (c - 1) ? cursor : ""), DTA_Clean, true);
@@ -211,8 +258,41 @@ class ClassicMessageBox : MessageBoxMenu
 		}
 	}
 
+	override bool OnUIEvent(UIEvent ev)
+	{
+		if (ev.type == UIEvent.Type_KeyDown)
+		{
+			if (mMessageMode == 0)
+			{
+				// tolower
+				int ch = ev.KeyChar;
+				ch = ch >= 65 && ch <91? ch + 32 : ch;
+
+				if (ch == 110 /*'n'*/ || ch == 32) 
+				{
+					HandleResult(false);		
+					return true;
+				}
+				else if (ch == 121 /*'y'*/) 
+				{
+					HandleResult(true);
+					return true;
+				}
+			}
+			else
+			{
+				autoclose = 2;
+				return true;
+			}
+			return false;
+		}
+		return Super.OnUIEvent(ev);
+	}
+
 	override bool MenuEvent(int mkey, bool fromcontroller)
 	{
+		if (players[consoleplayer].cmd.buttons & cmds) { return false; }
+
 		if (mMessageMode == 0)
 		{
 			if (mkey == MKEY_Up || mkey == MKEY_Down)
@@ -236,14 +316,18 @@ class ClassicMessageBox : MessageBoxMenu
 		}
 		else
 		{
-			Close();
+			autoclose = 2;
 			if (!silent) { CloseSound(); }
 			return true;
 		}
+
+		return true;
 	}
 
 	override void HandleResult(bool res)
 	{
+		if (players[consoleplayer].cmd.buttons & cmds) { return; }
+
 		if (Handler != null)
 		{
 			if (res) 
@@ -252,7 +336,7 @@ class ClassicMessageBox : MessageBoxMenu
 			}
 			else
 			{
-				Close();
+				autoclose = 2;
 				if (!silent) { CloseSound(); }
 			}
 		}
@@ -263,11 +347,11 @@ class ClassicMessageBox : MessageBoxMenu
 				if (mAction == 'None') 
 				{
 					mParentMenu.MenuEvent(res? MKEY_MBYes : MKEY_MBNo, false);
-					Close();
+					autoclose = 2;
 				}
-				else 
+				else
 				{
-					Close();
+					autoclose = 2;
 					if (res) SetMenu(mAction, -1);
 				}
 				if (!silent) { CloseSound(); }
