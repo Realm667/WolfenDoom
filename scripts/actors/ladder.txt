@@ -30,7 +30,7 @@
 	2 - Rock step sounds
 	3 - Quiet metal step sounds
 	4 - Wood step sounds
-	5 - No sound
+	5 - Keen sounds
 
   RopeSpawner spawns a climbable/walkable rope from the actor along whatever
   pitch you give the actor (so, 90 for a rope that hangs straight down). 
@@ -190,7 +190,7 @@ class LadderBase : Actor
 				else if (user_soundtype == 2) { it.thing.A_PlaySound("floor/rock", CHAN_BODY, vol * 0.3); }
 				else if (user_soundtype == 3) { it.thing.A_PlaySound("floor/metal", CHAN_BODY, vol * 0.1); }
 				else if (user_soundtype == 4) { it.thing.A_PlaySound("floor/wood", CHAN_BODY, vol * 0.5); }
-				else if (user_soundtype == 5) { }
+				else if (user_soundtype == 5) { it.thing.A_PlaySound("ckeen/climb", CHAN_BODY, vol * 0.25, pitch:FRandom(0.9, 1.1)); }
 				else { it.thing.A_PlaySound("world/ladder", CHAN_BODY, vol * 0.4); }
 
 				soundtimeout = 15;

@@ -373,6 +373,8 @@ mixin class CKPickup
 		SpawnPoint = pos;
 		PickupState = FindState("Pickup");
 
+		bDropped = false;
+
 		Super.PostBeginPlay();
 	}
 

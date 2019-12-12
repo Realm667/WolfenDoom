@@ -296,7 +296,6 @@ class BoAStatusBar : BaseStatusBar
 		DrawString(mBigFont, FormatNumber(GetAmount("GrenadePickup")), (138, 185), DI_TEXT_ALIGN_LEFT);
 
 		//Keys
-		String image;
 		if (GetAmount("BoABlueKey")) { DrawImage("STKEYS0", (254, 171), DI_ITEM_OFFSETS); }
 		if (GetAmount("BoAGreenKey")) { DrawImage("STKEYS3", (260, 171), DI_ITEM_OFFSETS); }
 		if (GetAmount("BoAYellowKey")) { DrawImage("STKEYS1", (254, 180), DI_ITEM_OFFSETS); }
@@ -419,7 +418,6 @@ class BoAStatusBar : BaseStatusBar
 		//Top Right
 		DrawImage("HUD_UR", (-66, 0), DI_ITEM_OFFSETS);
 		//Keys
-		String image;
 		if (GetAmount("BoABlueKey")) { DrawImage("STKEYS0", (-14, 9), DI_ITEM_OFFSETS); }
 		if (GetAmount("BoAGreenKey")) { DrawImage("STKEYS3", (-14, 19), DI_ITEM_OFFSETS); }
 		if (GetAmount("BoAYellowKey")) { DrawImage("STKEYS1", (-24, 9), DI_ITEM_OFFSETS); }
@@ -1075,5 +1073,15 @@ class BoAStatusBar : BaseStatusBar
 		
 		String health = FormatNumber(min(999, CPlayer.health));
 		DrawString(KeenFont, health, (43 - KeenFont.mFont.StringWidth(health), 24), DI_ITEM_LEFT_TOP);
+
+		if (GetAmount("CKYellowKey") || GetAmount("CKBlueKey") || GetAmount("CKRedKey") || GetAmount("CKGreenKey"))
+		{
+			DrawImage("CKHUDKBG", (87, 4), DI_ITEM_LEFT_TOP);
+
+			if (GetAmount("CKYellowKey")) { DrawImage("CKKEYS0", (90, 7), DI_ITEM_LEFT_TOP); }
+			if (GetAmount("CKBlueKey")) { DrawImage("CKKEYS1", (90, 13), DI_ITEM_LEFT_TOP); }
+			if (GetAmount("CKRedKey")) { DrawImage("CKKEYS2", (90, 19), DI_ITEM_LEFT_TOP); }
+			if (GetAmount("CKGreenKey")) { DrawImage("CKKEYS3", (90, 25), DI_ITEM_LEFT_TOP); }
+		}
 	}
 }
