@@ -270,7 +270,10 @@ class CKBaseEnemy : Actor
 
 		if (target)
 		{
-			if (target.CheckMove(pos.xy + offset.xy) && CheckMove(pos.xy + vel.xy)) { target.SetOrigin(pos + (vel.xy, vel.z * gravity) + offset, true); }
+			if (target.TryMove(pos.xy + offset.xy, true) && CheckMove(pos.xy + vel.xy))
+			{
+				target.SetOrigin(pos + (vel.xy, vel.z * gravity) + offset, true);
+			}
 		}
 
 		bNoBlockMonst = !!(target && target is "PlayerPawn"); // Allow them to pass through monster blocking lines if a player is riding...
@@ -509,6 +512,7 @@ class KeenPlayer : PlayerPawn
 	ACtor povcamera;
 	Vector3 cameralocation;
 	transient FLineTraceData cameratrace;
+	double CameraDist;
 
 	BoAFindHitPointTracer hittracer;
 	Vector3 CrosshairPos;
@@ -631,7 +635,7 @@ class KeenPlayer : PlayerPawn
 			if (pitch < 0) { modifier = -96 * sin(-pitch); } // Aiming up moves the camera up so you can keep the aimpoint on screen
 			else { modifier = 96 * sin(pitch); } // Aiming down actually moves the camera *up*, so that you can see the aimpoint over the top of the actor
 
-			LineTrace(angle + 180, 96.0, 0, TRF_THRUHITSCAN | TRF_THRUACTORS, height + 32 + modifier, 0.0, 0.0, cameratrace);
+			LineTrace(angle + 180, (CameraDist ? Min(CameraDist + 1.0, 128.0 - waterlevel * 16.0) : 128.0 - waterlevel * 16.0), 0, TRF_THRUHITSCAN | TRF_THRUACTORS, height + 32 - waterlevel * 8.0 + modifier, 0.0, 0.0, cameratrace);
 
 			povcamera.SetOrigin(cameratrace.HitLocation + AngleToVector(angle, 2), true);
 			povcamera.angle = angle;
@@ -640,6 +644,7 @@ class KeenPlayer : PlayerPawn
 			povcamera.CameraFOV = player.fov;
 
 			player.camera = povcamera;
+			CameraDist = cameratrace.Distance;
 
 			DoTrace(self, angle, 2048, pitch, 0, height / 2, hittracer);
 
@@ -931,29 +936,19 @@ class CKPlatform : Actor
 		}
 	}
 
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (other.player || other.bIsMonster)
+		{
+			Touch(other);
+			return true;
+		}
+
+		return true;
+	}
+
 	void CheckTouchers()
 	{
-		ThinkerIterator it = ThinkerIterator.Create("Actor", Thinker.STAT_DEFAULT);
-		Actor mo;
-
-		while (mo = Actor(it.Next(false)))
-		{
-			if (Distance2D(mo) <= Radius + mo.Radius)
-			{
-				Touch(mo);
-			}
-		}
-
-		it = ThinkerIterator.Create("Actor", Thinker.STAT_PLAYER);
-
-		while (mo = Actor(it.Next(false)))
-		{
-			if (Distance2D(mo) <= Radius + mo.Radius)
-			{
-				Touch(mo);
-			}
-		}
-
 		for (int i = 0; i < min(touchers.Size(), 64); i++)
 		{
 			if (touchers[i])
@@ -987,7 +982,10 @@ class CKPlatform : Actor
 				offsets[i] != (0, 0, 0)
 			)
 			{
-				if (touchers[i].CheckMove(pos.xy + offsets[i].xy)) { touchers[i].SetOrigin(pos + offsets[i], true); }
+				if (touchers[i].TryMove(pos.xy + offsets[i].xy, true))
+				{
+					touchers[i].SetOrigin(pos + offsets[i], true);
+				}
 			}
 		}
 	}
@@ -2443,7 +2441,7 @@ class CKBird : CKBaseEnemy
 			Loop;
 		Land:
 			CKEA D 4;
-			CKEA D 0 CK_BirdLand();
+			CKEA D 0 CK_BirdLand(false);
 			Loop;
 		Stunned:
 			CKEA E 4;
@@ -2516,13 +2514,13 @@ class CKBird : CKBaseEnemy
 		vel.xy = RotateVector((Speed, 0), angle);
 		vel.z = FloatSpeed * zdir;
 
-		if (pos.z <= floorz + heightoffset && vel.z <= 0)
+		if (pos.z <= floorz + heightoffset && vel.z < 0)
 		{
 			SetStateLabel("Land");
 		}
 	}
 
-	void CK_BirdLand()
+	void CK_BirdLand(bool stopmovement = true)
 	{
 		bNoGravity = false;
 		bFloat = false;
@@ -2532,7 +2530,7 @@ class CKBird : CKBaseEnemy
 
 		if (pos.z == floorz && vel.z <= 0)
 		{
-			vel *= 0;
+			if (stopmovement) { vel.xy *= 0; }
 			SetState(SeeState);
 		}
 	}
