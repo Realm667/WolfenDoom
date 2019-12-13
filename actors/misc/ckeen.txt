@@ -8,13 +8,14 @@ ACTOR CKShikadiSoda : CKTreasure
 	Height 36
 	Inventory.Amount 1
 	Inventory.PickupMessage "$CKSODA"
+	+BRIGHT
 	States
 	{
 	Spawn:
 		CKPU AB 15
 		Loop
 	Pickup:
-		"####" C -1 BRIGHT
+		"####" C -1
 		Stop
 	}
 }
@@ -26,13 +27,14 @@ ACTOR CKGum : CKTreasure
 	Height 32
 	Inventory.Amount 2
 	Inventory.PickupMessage "$CKCANDY"
+	+BRIGHT
 	States
 	{
 	Spawn:
 		CKPU ST 15
 		Loop
 	Pickup:
-		"####" U -1 BRIGHT
+		"####" U -1
 		Stop
 	}
 }
@@ -44,13 +46,14 @@ ACTOR CKShikkersCandyBar : CKTreasure
 	Height 36
 	Inventory.Amount 5
 	Inventory.PickupMessage "$CKCANDY"
+	+BRIGHT
 	States
 	{
 	Spawn:
 		CKPU DE 15
 		Loop
 	Pickup:
-		"####" F -1 BRIGHT
+		"####" F -1
 		Stop
 	}
 }
@@ -62,13 +65,14 @@ ACTOR CKJawbreaker : CKTreasure
 	Height 30
 	Inventory.Amount 10
 	Inventory.PickupMessage "$CKJAW"
+	+BRIGHT
 	States
 	{
 	Spawn:
 		CKPU PQ 15
 		Loop
 	Pickup:
-		"####" R -1 BRIGHT
+		"####" R -1
 		Stop
 	}
 }
@@ -80,13 +84,14 @@ ACTOR CKDoughnut : CKTreasure
 	Height 30
 	Inventory.Amount 20
 	Inventory.PickupMessage "$CKDNUT"
+	+BRIGHT
 	States
 	{
 	Spawn:
 		CKPU GH 15
 		Loop
 	Pickup:
-		"####" I -1 BRIGHT
+		"####" I -1
 		Stop
 	}
 }
@@ -99,13 +104,14 @@ ACTOR CKIceCreamCone : CKTreasure
 	Inventory.Amount 50
 	Inventory.PickupMessage "$CKCONE"
 	Inventory.PickupSound "ckeen/pickup"
+	+BRIGHT
 	States
 	{
 	Spawn:
 		CKPU JK 15
 		Loop
 	Pickup:
-		"####" L -1 BRIGHT
+		"####" L -1
 		Stop
 	}
 }
@@ -143,13 +149,14 @@ ACTOR CKOneUp : CKHealth
 	Inventory.MaxAmount 200
 	Inventory.PickupMessage "$CKONEUP"
 	Inventory.PickupSound "ckeen/life"
+	+BRIGHT
 	States
 	{
 	Spawn:
-		CKPU MN 15 BRIGHT
+		CKPU MN 15
 		Loop
 	Pickup:
-		"####" O -1 BRIGHT
+		"####" O -1
 		Stop
 	}
 }
@@ -669,10 +676,10 @@ ACTOR CKThundercloud : CKBaseEnemy
 	Height 32
 	Damage 0
 	MaxTargetRange 32
-	-FLOORCLIP
 	+NOGRAVITY
-	-SOLID
 	+NOTAUTOAIMED
+	-FLOORCLIP
+	-SOLID
 	Obituary "$CK_TCLOUD"
 	CKBaseEnemy.StunTime 0
 	CKBaseEnemy.WakeOnTouch 1
@@ -705,8 +712,8 @@ ACTOR CKCloud
 	Radius 32
 	Height 32
 	Scale 2.0
-	-SOLID
 	+NOGRAVITY
+	-SOLID
 	States
 	{
 	Spawn:
@@ -773,8 +780,8 @@ ACTOR CKAlge1
 	Radius 32
 	Height 32
 	Scale 2.0
-	-SOLID
 	+NOGRAVITY
+	-SOLID
 	States
 	{
 	Spawn:
@@ -785,14 +792,26 @@ ACTOR CKAlge1
 
 ACTOR CKAlge2 : CKAlge1
 {
-	//$Category Commander Keen (BoA)/Props
 	//$Title Alge (triple)
-	//$Color 3
 	States
 	{
 	Spawn:
 		CKAL EFGH 10
 		Loop
+	}
+}
+
+ACTOR CKFoot : CKAlge1
+{
+	//$Title Foot (secret access)
+	Radius 32
+	Height 64
+	+SOLID
+	States
+	{
+	Spawn:
+		CKFT A -1
+		Stop
 	}
 }
 
@@ -804,8 +823,8 @@ ACTOR CKFireplace
 	Radius 32
 	Height 32
 	Scale 2.0
-	-SOLID
 	+NOGRAVITY
+	-SOLID
 	States
 	{
 	Spawn:
@@ -821,8 +840,8 @@ ACTOR CKGroundfire : CKBaseEnemy
 	//$Color 3
 	Radius 32
 	Height 0.5
-	-COUNTKILL
 	+NOTAUTOAIMED
+	-COUNTKILL
 	CKBaseEnemy.StunTime 0
 	States
 	{
@@ -840,9 +859,9 @@ ACTOR CKWallSlug
 	Radius 8
 	Height 32
 	Scale 2.0
-	-SOLID
 	+NOGRAVITY
 	+WALLSPRITE
+	-SOLID
 	States
 	{
 	Spawn:
@@ -851,17 +870,9 @@ ACTOR CKWallSlug
 	}
 }
 
-ACTOR CKWallFire
+ACTOR CKWallFire : CKWallSlug
 {
-	//$Category Commander Keen (BoA)/Props
 	//$Title Wall Fire
-	//$Color 3
-	Radius 8
-	Height 32
-	Scale 2.0
-	-SOLID
-	+NOGRAVITY
-	+WALLSPRITE
 	States
 	{
 	Spawn:
@@ -870,17 +881,9 @@ ACTOR CKWallFire
 	}
 }
 
-ACTOR CKCaveEyes
+ACTOR CKCaveEyes : CKWallSlug
 {
-	//$Category Commander Keen (BoA)/Props
 	//$Title Wall Eyes
-	//$Color 3
-	Radius 8
-	Height 32
-	Scale 2.0
-	-SOLID
-	+NOGRAVITY
-	+WALLSPRITE
 	States
 	{
 	Spawn:
@@ -889,17 +892,10 @@ ACTOR CKCaveEyes
 	}
 }
 
-ACTOR CKFireBowl
+ACTOR CKFireBowl : CKWallSlug
 {
-	//$Category Commander Keen (BoA)/Props
 	//$Title Fire Bowl
-	//$Color 3
 	Radius 32
-	Height 32
-	Scale 2.0
-	-SOLID
-	+NOGRAVITY
-	+WALLSPRITE
 	States
 	{
 	Spawn:
@@ -916,8 +912,8 @@ ACTOR CKExitSign1
 	Radius 32
 	Height 32
 	Scale 2.0
-	-SOLID
 	+NOGRAVITY
+	-SOLID
 	States
 	{
 	Spawn:
@@ -926,16 +922,9 @@ ACTOR CKExitSign1
 	}
 }
 
-ACTOR CKExitSign2
+ACTOR CKExitSign2 : CKExitSign1
 {
-	//$Category Commander Keen (BoA)/Props
 	//$Title ExitSign (2)
-	//$Color 3
-	Radius 32
-	Height 32
-	Scale 2.0
-	-SOLID
-	+NOGRAVITY
 	States
 	{
 	Spawn:
@@ -944,16 +933,9 @@ ACTOR CKExitSign2
 	}
 }
 
-ACTOR CKFireColumn
+ACTOR CKFireColumn : CKExitSign1
 {
-	//$Category Commander Keen (BoA)/Props
 	//$Title Fire Column
-	//$Color 3
-	Radius 32
-	Height 32
-	Scale 2.0
-	-SOLID
-	+NOGRAVITY
 	States
 	{
 	Spawn:
@@ -970,9 +952,9 @@ ACTOR CKAquaDrop
 	Radius 8
 	Height 32
 	Scale 2.0
-	-SOLID
-	+NOGRAVITY
 	+FLATSPRITE
+	+NOGRAVITY
+	-SOLID
 	States
 	{
 	Spawn:
@@ -990,8 +972,8 @@ ACTOR CKGroundThruster : CKBaseEnemy
 	//$Color 3
 	Radius 8
 	Height 64
-	-SOLID
 	+NOGRAVITY
+	-SOLID
 	States
 	{
 	Spawn:
@@ -1007,8 +989,8 @@ ACTOR CKSpike : CKBaseEnemy
 	//$Color 3
 	Radius 16
 	Height 48
-	-COUNTKILL
 	+NOTAUTOAIMED
+	-COUNTKILL
 	CKBaseEnemy.StunTime 0
 	States
 	{
