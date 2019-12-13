@@ -234,7 +234,7 @@ ACTOR CKBlueKey : CKPuzzleItem
 	//$Title Gem, blue (Blue Card)
 	Radius 15
 	Height 24
-	puzzleitem.number 101
+	PuzzleItem.Number 101
 	Inventory.PickupMessage "$CKBGEM"
 	Inventory.Icon "CKKEYS1"
 	Inventory.PickupSound "ckeen/gem"
@@ -256,7 +256,7 @@ ACTOR CKYellowKey : CKPuzzleItem
 	//$Title Gem, yellow (Yellow Card)
 	Radius 15
 	Height 24
-	puzzleitem.number 102
+	PuzzleItem.Number 102
 	Inventory.PickupMessage "$CKYGEM"
 	Inventory.Icon "CKKEYS0"
 	Inventory.PickupSound "ckeen/gem"
@@ -278,7 +278,7 @@ ACTOR CKRedKey : CKPuzzleItem
 	//$Title Gem, red (Red Card)
 	Radius 15
 	Height 24
-	puzzleitem.number 103
+	PuzzleItem.Number 103
 	Inventory.PickupMessage "$CKRGEM"
 	Inventory.Icon "CKKEYS2"
 	Inventory.PickupSound "ckeen/gem"
@@ -295,13 +295,12 @@ ACTOR CKRedKey : CKPuzzleItem
 	}
 }
 
-
 ACTOR CKGreenKey : CKPuzzleItem
 {
 	//$Title Gem, green (Green Card)
 	Radius 15
 	Height 24
-	puzzleitem.number 103
+	PuzzleItem.Number 103
 	Inventory.PickupMessage "$CKGGEM"
 	Inventory.Icon "CKKEYS3"
 	Inventory.PickupSound "ckeen/gem"
@@ -326,9 +325,9 @@ ACTOR CKRedKeyPod : SwitchableDecoration
 	Radius 13
 	Height 22
 	Scale 2.0
+	+DONTTHRUST
 	+SOLID
 	+USESPECIAL
-	+DONTTHRUST
 	States
 	{
 	Spawn:
@@ -526,8 +525,8 @@ ACTOR CKWallShooter : SwitchableDecoration
 	Height 16
 	Mass 40000
 	Obituary "$CK_WALSH"
-	+WALLSPRITE
 	+NOGRAVITY
+	+WALLSPRITE
 	-SOLID
 	States
 	{
@@ -596,8 +595,8 @@ ACTOR CKWallShooterArrow_Horizontal : CKWallShooterArrow_Down
 {
 	Radius 8
 	Height 8
-	+WALLSPRITE
 	+NOGRAVITY
+	+WALLSPRITE
 	States
 	{
 	Spawn:
@@ -743,8 +742,8 @@ ACTOR CKCoral1
 	Radius 32
 	Height 32
 	Scale 2.0
-	-SOLID
 	+NOGRAVITY
+	-SOLID
 	States
 	{
 	Spawn:
