@@ -99,16 +99,6 @@ class CKBaseEnemy : Actor
 		}
 	}
 
-	override bool Used(Actor user)
-	{
-		if (self is "CKBounder")
-		{
-			if (!target || target != user) { user.SetOrigin(pos + (0, 0, height), true); return true; }
-		}
-
-		return false;
-	}
-
 	override void Tick()
 	{
 		Super.Tick();
@@ -193,92 +183,6 @@ class CKBaseEnemy : Actor
 		}
 	}
 
-	// Function to handle Bounder bounce pattern, re-imagined in 3D space
-	void CK_BounderBounce()
-	{
-		LookforPlayers(true);
-
-		bool blocked = BlockingLine;
-
-		if (
-			target &&
-			(
-				(Distance2D(target) < (Radius + target.radius) * 1.4 && target.pos.z >= pos.z + height && target.pos.z <= pos.z + height + 16) ||
-				(
-					target.pos.z >= pos.z + height &&
-					(target.bOnMobj || (target.player && target.player.jumptics == 0)) && 
-					Distance3D(target) < radius * 2
-				)
-			)
-		)
-		{ offset = target.pos - pos; }
-		else { target = null; }
-
-		if (!blocked && BlockingMobj)
-		{
-			if (BlockingMobj != target) { blocked = true; }
-		}
-
-		if (bOnMobj)
-		{
-			Actor onmo = FindOnMobj();
-			if (!onmo || onmo == target) { bOnMobj = false; }
-		}
-
-		if (pos.z == floorz || blocked || waterlevel || bOnMobj)
-		{
-			if (pos.z == floorz || waterlevel || bOnMobj)
-			{
-				counter++;
-				A_PlaySound("ckeen/madmushroombounce");
-				vel.z = 12.0;
-			}
-
-			if (target)
-			{
-				counter = 0;
-
-				angle = target.angle;
-
-				double scale = 1.0 - (abs(target.pitch) / 90);
-				scale *= 0.75;
-				scale -= 0.25;
-				
-				vel.xy = RotateVector((Speed * 1.5 * scale, 0), angle);
-
-				if (!CheckMove(pos.xy + vel.xy))
-				{
-					vel.xy *= 0;
-				}
-			}
-			else if (counter > 2 && counter2)
-			{
-				counter2 = 0;
-
-				if (Random() < 200)
-				{
-					angle = Random(0, 359);
-					vel.xy = RotateVector((Speed, 0), angle);
-				}
-			}
-			else
-			{
-				counter2 = 1;
-				vel.xy *= 0;
-			}
-		}
-
-		if (target)
-		{
-			if (target.TryMove(pos.xy + offset.xy, true) && CheckMove(pos.xy + vel.xy))
-			{
-				target.SetOrigin(pos + (vel.xy, vel.z * gravity) + offset, true);
-			}
-		}
-
-		bNoBlockMonst = !!(target && target is "PlayerPawn"); // Allow them to pass through monster blocking lines if a player is riding...
-	}
-
 	// Function to move an actor in a straight line until it hits something, then change directions randomly, with preference for moving toward player.
 	void CK_Glide(int maxstep = 0)
 	{
@@ -313,17 +217,19 @@ class CKBaseEnemy : Actor
 		if (abs(pos.z - SpawnPoint.z) > dist) { FloatSpeed *= -1; }
 	}
 
-	Actor FindOnMObj()
+	static Actor FindOnMObj(Actor origin = null)
 	{
-		BlockThingsIterator it = BlockThingsIterator.Create(self, 1);
+		if (!origin) { return null; }
+
+		BlockThingsIterator it = BlockThingsIterator.Create(origin, 1);
 
 		while (it.Next())
 		{
 			let mo = it.thing;
 
-			if (mo == self) { continue; } // Ignore itself
+			if (mo == origin) { continue; } // Ignore itself
 
-			if (mo.bSolid && pos.z == mo.pos.z + mo.height)
+			if (mo.bSolid && origin.pos.z == mo.pos.z + mo.height)
 			{
 				return mo;
 			}
@@ -511,7 +417,7 @@ class KeenPlayer : PlayerPawn
 {
 	double aircontrol;
 
-	ACtor povcamera;
+	Actor povcamera;
 	Vector3 cameralocation;
 	transient FLineTraceData cameratrace;
 	double CameraDist;
@@ -891,7 +797,7 @@ class CKPlatform : Actor
 
 	override void Touch(Actor toucher)
 	{
-		if (toucher == self || toucher.bNoGravity || toucher is "CKPlatform") { return; }
+		if (toucher == self || toucher.bNoGravity || toucher is "CKPlatform" || toucher.pos.z == toucher.floorz) { return; }
 		if (toucher.pos.z > pos.z + 32.0 || toucher.pos.z < pos.z - 16) { return; }
 		if (touchers.Find(toucher) == touchers.Size()) { touchers.Push(toucher); }
 	}
@@ -921,7 +827,6 @@ class CKPlatform : Actor
 
 		Vector2 newpos = pos.xy + RotateVector((Speed, 0), moveangle);
 		moved += Speed;
-
 
 		if (CheckMove(newpos, 0) && (user_movedist <= 0 || moved <= user_movedist))
 		{
@@ -1056,7 +961,8 @@ class CKPlatformFalling : CKPlatform
 		else if (touchers.Size()) { movetimer++; }
 		else if (level.time % 20 == 0) { movetimer = max(movetimer - 1, 0); }
 
-		SetOrigin(pos + (0, 0, movez), true);
+		Vector3 newpos = pos + (0, 0, movez);
+		if (CheckMove(newpos.xy, PCM_NOACTORS)) { SetOrigin(newpos, true); }
 
 		MatchMovement();
 		Actor.Tick();
@@ -1117,7 +1023,8 @@ class CKPlatformVertical : CKPlatform
 			}
 		}
 
-		SetOrigin(pos + (0, 0, movez), true);
+		Vector3 newpos = pos + (0, 0, movez);
+		if (CheckMove(newpos.xy, 0)) { SetOrigin(newpos, true); }
 
 		MatchMovement();
 		Actor.Tick();
@@ -1252,6 +1159,8 @@ class CKPipe : LadderBase
 
 	override void PostBeginPlay()
 	{
+		if (user_groundoffset == -1) { user_groundoffset = 32.0; }
+
 		Super.PostBeginPlay();
 
 		SetOrigin((pos.xy, pos.z - ladderheight), false);
@@ -1868,7 +1777,8 @@ class CKDopefish : CKBaseEnemy
 		Attack:
 			CKDF C 10 // Open mouth
 			{
-				vel *= 0;
+				vel.xy = RotateVector((Speed, 0), angle);
+				vel.z = 0;
 
 				// Use alternate frames...  C is original-style sprite, E and F have tongue and tooth greens
 				if (Random() < 128) { frame = 4; }
@@ -1876,16 +1786,27 @@ class CKDopefish : CKBaseEnemy
 			}
 			CKDF A 1 // Bite!
 			{
+				vel.xy = RotateVector((Speed, 0), angle);
 				A_PlaySound("ckeen/dopefish/attack");
-				vel.xy = RotateVector((1, 0), angle);
-				SetDamage(15);
+				SetDamage(100);
 				if (target is "CKSchoolFish") { target.Destroy(); }
 			}
 			CKDF A 29; // Closed mouth
 			CKDF A 0 // Reset
 			{
 				SetDamage(0);
-				if (target && target.health > 0) { SetState(AttackState); } // Keep attacking the player without burping
+				if (target && target.health > 0)  // Keep attacking the player without burping
+				{
+					if (Distance3D(target) < 64)
+					{
+						A_Face(target);
+						SetState(AttackState);
+					}
+					else
+					{
+						SetState(SeeState);
+					}
+				}
 			}
 		Burp:
 			CKDF A 30
@@ -1975,7 +1896,7 @@ class CKBubble : Actor
 
 	override void Tick()
 	{
-		if (waterlevel < 2) { Destroy(); }
+		if (waterlevel < 2 || pos.z + height == ceilingz) { Destroy(); }
 
 		vel.z = 5;
 
@@ -2074,7 +1995,6 @@ class CKSchoolfish : CKBaseEnemy
 class CKInchworm : CKBaseEnemy
 {
 	int turncounter, lasttouch, count;
-	bool egg;
 
 	Default
 	{
@@ -2112,7 +2032,7 @@ class CKInchworm : CKBaseEnemy
 
 		if (!turncounter)
 		{
-			if (blocked || !target) { angle = Random(0, 359); }
+			if (blocked || !target || !IsVisible(target, true)) { angle = Random(0, 359); }
 			else { angle = AngleTo(target); }
 
 			turncounter = 5;
@@ -2132,16 +2052,43 @@ class CKInchworm : CKBaseEnemy
 
 			count++;
 
-			if (!egg && count == 11)
+			if (count == 11)
 			{
-				// This was an easter egg in CK4...  What to do here?
-				Console.Printf("12 inches in a foot... lol");
-
-				egg = true;
+				DoEasterEgg();
 			}
 		}
 
 		return false;
+	}
+
+	void DoEasterEgg()
+	{
+		// Only run this if there's no foot in the level already
+		ThinkerIterator it = ThinkerIterator.Create("CKFoot", Thinker.STAT_DEFAULT);
+		if (it.Next()) { return; }
+
+		// Use a spot 64 units in front of the player as the focus of the spawn.
+		if (target.player && Distance3D(target) < 32)
+		{
+			// This was an easter egg in CK4 that transported you to the secret map...  What to do here?
+			Console.Printf("12 inches in a foot... lol");
+
+			Vector3 newpos = pos;
+			newpos = target.pos + RotateVector((64, 0), target.angle);
+
+			Spawn("CKFootSmoke", newpos + (Random(0, 32), 0, Random(0, 32)));
+			Spawn("CKFootSmoke", newpos + (-Random(0, 32), 0, Random(0, 32)));
+			Spawn("CKFootSmoke", newpos + (0, Random(0, 32), Random(0, 32)));
+			Spawn("CKFootSmoke", newpos + (0, -Random(0, 32), Random(0, 32)));
+
+			Spawn("CKFoot", newpos);
+
+			// Remove the inchworms.
+			it = ThinkerIterator.Create("CKInchworm", Thinker.STAT_DEFAULT);
+			Actor mo;
+
+			while (mo = Actor(it.Next())) { mo.Destroy(); }
+		}
 	}
 }
 
@@ -2646,3 +2593,201 @@ class CKPogoStick : CustomInventory
 	}
 }
 
+class CKThundercloud : CKBaseEnemy
+{
+	Default
+	{
+		//$Category Commander Keen (BoA)/Monsters
+		//$Title Thundercloud
+		//$Color 4
+
+		Speed 2;
+		Radius 64;
+		Height 32;
+		Damage 0;
+		MaxTargetRange 32;
+		-FLOORCLIP
+		+NOGRAVITY
+		-SOLID
+		+NOTAUTOAIMED
+		Obituary "$CK_TCLOUD";
+
+		CKBaseEnemy.StunTime 0;
+	}
+
+	States
+	{
+		Spawn:
+			CKCL A 10
+			{
+				A_Look();
+
+				if (target && Distance3D(target) > 512) { SetState(SeeState); }	
+			}
+			Loop;
+		See:
+			CKCL B 50;
+		Chase:
+			CKCL BBBBB 2 CK_Glide();
+			Loop;
+		Missile:
+			CKCL B 40;
+			CKCL CBC 10;
+			CKCL B 10 A_SpawnItemEx("CKThunderbolt", -1, 0, -120, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			CKCL CBCB 10;
+			CKCL C 24;
+			Goto Chase;
+	}
+}
+
+class CKBounder : CKBaseEnemy
+{
+	Default
+	{
+		//$Category Commander Keen (BoA)/Monsters
+		//$Title Bounder
+		//$Color 4
+
+		Speed 6;
+		Radius 18;
+		Height 36;
+		Damage 0;
+		MaxStepHeight 48;
+		Obituary "$CK_BOUND";
+	}
+
+	States
+	{
+		Spawn:
+			CKBB A 1;
+		See:
+			CKBB AAAAAAAAAABBBBBBBBBB 1 CK_BounderBounce();
+			Loop;
+		Stunned:
+			CKBB C -1;
+			Stop;
+	}
+
+	// Function to handle Bounder bounce pattern, re-imagined in 3D space
+	void CK_BounderBounce()
+	{
+		LookforPlayers(true);
+
+		bool blocked = BlockingLine;
+
+		if (target)
+		{
+			if (
+				Distance2D(target) > (Radius + target.radius) * 1.4 ||
+				target.pos.z < pos.z
+			)
+			{
+				target = null;
+				offset = (0, 0, 0);
+			}
+			else
+			{
+				offset = target.pos - pos;
+				offset.z = max(offset.z, height);
+			}
+		}
+
+		if (!blocked && BlockingMobj)
+		{
+			if (BlockingMobj != target) { blocked = true; }
+		}
+
+		if (bOnMobj)
+		{
+			Actor onmo = FindOnMobj(self);
+			if (!onmo || onmo == target) { bOnMobj = false; }
+		}
+
+		if (pos.z == floorz || blocked || waterlevel || bOnMobj)
+		{
+			if (pos.z == floorz || waterlevel || bOnMobj)
+			{
+				counter++;
+				A_PlaySound("ckeen/madmushroombounce");
+				vel.z = 12.0;
+			}
+
+			if (target)
+			{
+				counter = 0;
+
+				angle = target.angle;
+
+				double scale = 1.0 - (abs(target.pitch) / 90);
+				scale *= 0.75;
+				scale -= 0.25;
+				
+				vel.xy = RotateVector((Speed * 1.5 * scale, 0), angle);
+
+				if (!CheckMove(pos.xy + vel.xy))
+				{
+					vel.xy *= 0;
+				}
+			}
+			else if (counter > 2 && counter2)
+			{
+				counter2 = 0;
+
+				if (Random() < 200)
+				{
+					angle = Random(0, 359);
+					vel.xy = RotateVector((Speed, 0), angle);
+				}
+			}
+			else
+			{
+				counter2 = 1;
+				vel.xy *= 0;
+			}
+		}
+
+		if (
+			target && 
+			(target.player && target.player.jumptics == 0) &&
+			offset != (0, 0, 0)
+		)
+		{
+			if (target.TryMove(pos.xy + offset.xy, false))
+			{
+				target.SetOrigin(pos + (vel.xy, vel.z * gravity) + offset, true);
+			}
+		}
+
+		bNoBlockMonst = !!(target && target is "PlayerPawn"); // Allow them to pass through monster blocking lines if a player is riding...
+	}
+
+	// Let the player 'use' the bounder in order to get on top instead of just jumping on top.
+	override bool Used(Actor user)
+	{
+		if (user.player && (!target || target != user))
+		{
+			user.SetOrigin(pos + (0, 0, height), true);
+			target = user;
+
+			return true;
+		}
+
+		return false;
+	}
+}
+
+class CKFootSmoke : Actor
+{
+	Default
+	{
+		Scale 2.0;
+		+NOINTERACTION
+	}
+
+	States
+	{
+		Spawn:
+			CKGN GHIJ 6;
+			Stop;
+	}
+}

@@ -642,68 +642,6 @@ ACTOR CKOracle : CKBaseEnemy
 	}
 }
 
-ACTOR CKBounder : CKBaseEnemy
-{
-	//$Category Commander Keen (BoA)/Monsters
-	//$Title Bounder
-	//$Color 4
-	Speed 6
-	Radius 18
-	Height 36
-	Damage 0
-	Obituary "$CK_BOUND"
-
-	States
-	{
-	Spawn:
-		CKBB A 1
-	See:
-		CKBB AAAAAAAAAABBBBBBBBBB 1 CK_BounderBounce
-		Loop
-	Stunned:
-		CKBB C -1
-		Stop
-	}
-}
-
-ACTOR CKThundercloud : CKBaseEnemy
-{
-	//$Category Commander Keen (BoA)/Monsters
-	//$Title Thundercloud
-	//$Color 4
-	Speed 2
-	Radius 64
-	Height 32
-	Damage 0
-	MaxTargetRange 32
-	+NOGRAVITY
-	+NOTAUTOAIMED
-	-FLOORCLIP
-	-SOLID
-	Obituary "$CK_TCLOUD"
-	CKBaseEnemy.StunTime 0
-	CKBaseEnemy.WakeOnTouch 1
-
-	States
-	{
-	Spawn:
-		CKCL A 10
-		Loop
-	See:
-		CKCL B 50
-	Chase:
-		"####" BBBBB 2 CK_Glide
-		Loop
-	Missile:
-		"####" B 40
-		"####" CBC 10
-		"####" B 10 A_SpawnItemEx("CKThunderbolt", -1, 0, -120, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
-		"####" CBCB 10
-		"####" C 24
-		Goto Chase
-	}
-}
-
 ACTOR CKCloud
 {
 	//$Category Commander Keen (BoA)/Props

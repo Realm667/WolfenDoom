@@ -53,11 +53,13 @@ class LadderBase : Actor
 	int soundtimeout, soundtimeout2;
 	int user_soundtype;
 	int activetimeout;
+	int user_groundoffset;
 
 	Property LadderHeight:ladderheight; // Height of climbable area
 	Property DisallowMonsters:nomonsters; // Can monsters climb the ladder?
 	Property ClimbRadius:climbradius; // Detection radius for the ladder.  Defaults to same as actor radius
 	Property Friction:friction;
+	Property GroundHeightOffset:user_groundoffset;
 
 	Default
 	{
@@ -70,6 +72,7 @@ class LadderBase : Actor
 		LadderBase.LadderHeight 132; // Uses custom property vice actual actor height so that the ladder model can be submerged in the ground to make shorter ladders 
 		LadderBase.DisallowMonsters True; // Sets variable determining if monsters should be disallowed from using the ladder
 		LadderBase.Friction 0.95; // Only slow down a little when climbing ladders, by default
+		LadderBase.GroundHeightOffset -1; // Default to -1 to allow setting to zero via UDMF property
 	}
 
 	States
@@ -82,7 +85,8 @@ class LadderBase : Actor
 	override void PostBeginPlay()
 	{
 		if (!climbradius) { climbradius = Radius; }
-		if (ladderheight <= 0) { ladderheight = pos.z - floorz - 32; }
+		if (user_groundoffset < 0) { user_groundoffset = 0; }
+		if (ladderheight <= 0) { ladderheight = pos.z - floorz - user_groundoffset; }
 
 		Climbers.Clear();
 
@@ -190,7 +194,7 @@ class LadderBase : Actor
 				else if (user_soundtype == 2) { it.thing.A_PlaySound("floor/rock", CHAN_BODY, vol * 0.3); }
 				else if (user_soundtype == 3) { it.thing.A_PlaySound("floor/metal", CHAN_BODY, vol * 0.1); }
 				else if (user_soundtype == 4) { it.thing.A_PlaySound("floor/wood", CHAN_BODY, vol * 0.5); }
-				else if (user_soundtype == 5) { it.thing.A_PlaySound("ckeen/climb", CHAN_BODY, vol * 0.25, pitch:FRandom(0.9, 1.1)); }
+				else if (user_soundtype == 5) { it.thing.A_PlaySound("ckeen/climb", CHAN_BODY, vol * 0.5, pitch:FRandom(0.9, 1.1)); }
 				else { it.thing.A_PlaySound("world/ladder", CHAN_BODY, vol * 0.4); }
 
 				soundtimeout = 15;
