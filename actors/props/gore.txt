@@ -675,6 +675,30 @@ ACTOR CyanideProp2 : CyanideProp1
 	}
 }
 
+ACTOR CobwebBody : HungBody
+{
+	//$Title Entangled Body in Cobweb, shootable
+	Radius 16
+	Height 92
+	Health 25
+	Scale 0.75
+	+DONTFALL
+	+DONTTHRUST
+	+NOBLOOD
+	+NOBLOODDECALS
+	+NOTAUTOAIMED
+	+SHOOTABLE
+	States
+	{
+	Spawn:
+		COBW A -1
+		Stop
+	Death:
+		COBW B -1
+		Stop
+	}
+}
+
 //3d Actors
 ACTOR Skeleton3
 {

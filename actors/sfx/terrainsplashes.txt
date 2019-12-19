@@ -1,48 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////// Water Splash ///////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-ACTOR CircleSplashWater
-{
-	+CLIENTSIDEONLY
-	+NOGRAVITY
-	Renderstyle "Translucent"
-	Alpha 0.9
-	Scale 0.5
-	States
-	{
-	Spawn:
-		UNKN ABABABABABAB 1 A_SetScale(scalex+0.3, scaley+0.3)
-		"####" A 1 A_FadeOut(0.05)
-		"####" A 1 A_SetScale(scalex+0.2, scaley+0.2)
-		"####" B 1 A_FadeOut(0.05)
-		"####" A 1 A_SetScale(scalex+0.2, scaley+0.2)
-		"####" B 1 A_FadeOut(0.05)
-		"####" A 1 A_SetScale(scalex+0.2, scaley+0.2)
-		"####" B 1 A_FadeOut(0.05)
-		"####" A 1 A_SetScale(scalex+0.2, scaley+0.2)
-		"####" B 1 A_FadeOut(0.05)
-		"####" A 1 A_SetScale(scalex+0.2, scaley+0.2)
-		"####" B 1 A_FadeOut(0.05)
-		"####" A 1 A_SetScale(scalex+0.2, scaley+0.2)
-		"####" B 1 A_FadeOut(0.05)
-		"####" A 1 A_SetScale(scalex+0.2, scaley+0.2)
-		"####" B 1 A_FadeOut(0.05)
-		"####" A 1 A_SetScale(scalex+0.2, scaley+0.2)
-		"####" B 1 A_FadeOut(0.05)
-		"####" A 1 A_SetScale(scalex+0.2, scaley+0.2)
-		"####" B 1 A_FadeOut(0.1)
-		"####" A 1 A_SetScale(scalex+0.2, scaley+0.2)
-		"####" B 1 A_FadeOut(0.1)
-		"####" A 1 A_SetScale(scalex+0.2, scaley+0.2)
-		"####" B 1 A_FadeOut(0.1)
-		"####" A 1 A_SetScale(scalex+0.2, scaley+0.2)
-		"####" B 1 A_FadeOut(0.1)
-		"####" A 1 A_SetScale(scalex+0.2, scaley+0.2)
-		"####" B 1 A_FadeOut(0.2)
-		Stop
-	}
-}
-
 ACTOR BoA_WaterSplash
 {
 	RenderStyle "Translucent"
@@ -57,7 +15,7 @@ ACTOR BoA_WaterSplash
 	{
 	Spawn:
 		WSPL A 0 A_SetScale(ScaleX+(frandom(-0.1,0.1)), ScaleY+(frandom(-0.1,0.1)))
-		"####" "#" 0 { A_SetTranslucent(frandom(0.6,0.3)); A_SpawnItemEx("CircleSplashWater"); }
+		"####" "#" 0 A_SetTranslucent(frandom(0.6,0.3))
 	Death:
 		"####" "#" 0 A_FadeOut(0.1,FTF_REMOVE)
 		"####" "#" 1 A_SetScale(ScaleX+0.05, ScaleY+0.05)
@@ -148,8 +106,6 @@ ACTOR BoA_LavaSmoke
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////// Nukage Splash //////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-ACTOR CircleSplashNukage : CircleSplashWater {}
-
 ACTOR BoA_NukageSplash
 {
 	RenderStyle "Add"
@@ -164,7 +120,7 @@ ACTOR BoA_NukageSplash
 	{
 	Spawn:
 		NSPL A 0 A_SetScale(ScaleX+(frandom(-0.1,0.1)), ScaleY+(frandom(-0.1,0.1)))
-		"####" "#" 0 { A_SetTranslucent(frandom(1.0,0.7),1); A_SpawnItemEx("CircleSplashNukage"); }
+		"####" "#" 0 A_SetTranslucent(frandom(1.0,0.7),1)
 	Death:
 		"####" "#" 0 A_FadeOut(0.1,FTF_REMOVE)
 		"####" "#" 1 A_SetScale(ScaleX+0.05, ScaleY+0.05)
@@ -198,8 +154,6 @@ ACTOR BoA_NukageSplash_Chunk : BoA_NukageSplash
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////// Slime Splash ///////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-ACTOR CircleSplashSlime : CircleSplashWater {}
-
 ACTOR BoA_SlimeSplash
 {
 	RenderStyle "Translucent"
@@ -214,7 +168,7 @@ ACTOR BoA_SlimeSplash
 	{
 	Spawn:
 		SSPL A 0 A_SetScale(ScaleX+(frandom(-0.1,0.1)), ScaleY+(frandom(-0.1,0.1)))
-		"####" "#" 0 { A_SetTranslucent(frandom(1.0,0.7)); A_SpawnItemEx("CircleSplashSlime"); }
+		"####" "#" 0 A_SetTranslucent(frandom(1.0,0.7))
 	Death:
 		"####" "#" 0 A_FadeOut(0.03,FTF_REMOVE)
 		"####" "#" 1 A_SetScale(ScaleX+0.015, ScaleY+0.015)
