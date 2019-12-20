@@ -2513,10 +2513,18 @@ class CKPogoStick : CustomInventory
 		Spawn:
 			CKPO G -1;
 			Stop;
+		Pickup:
+			CKPO G 0
+			{
+				ACS_NamedExecute("KeenPogoMessage", 0);
+			}
+			Stop;
 		Use:
 			CKPO G 0
 			{
 				invoker.active = !invoker.active;
+				invoker.speed = 0;
+				invoker.sidespeed = 0;
 			}
 			Fail;
 	}

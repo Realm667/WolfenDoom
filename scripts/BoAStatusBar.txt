@@ -3,7 +3,7 @@ class BoAStatusBar : BaseStatusBar
 	HUDFont mBigFont;
 	HUDFont mHUDFont;
 	HUDFont mSmallFont;
-	HUDFont KeenFont;
+	HUDFont KeenFont, KeenSmallFont;
 	InventoryBarState diparms;
 	DynamicValueInterpolator mAirInterpolator;
 	DynamicValueInterpolator mBatteryInterpolator;
@@ -41,6 +41,7 @@ class BoAStatusBar : BaseStatusBar
 		mSmallFont = HUDFont.Create("SMALLFONT", 2);
 		mHUDFont = HUDFont.Create("THREEFIV", 1);
 		KeenFont = HUDFont.Create("HUDFONT_KEEN", 0);
+		KeenSmallFont = HUDFont.Create("HUDFONT_KEEN_SMALL", 0);
 
 		diparms = InventoryBarState.Create();
 
@@ -1082,6 +1083,43 @@ class BoAStatusBar : BaseStatusBar
 			if (GetAmount("CKBlueKey")) { DrawImage("CKKEYS1", (90, 13), DI_ITEM_LEFT_TOP); }
 			if (GetAmount("CKRedKey")) { DrawImage("CKKEYS2", (90, 19), DI_ITEM_LEFT_TOP); }
 			if (GetAmount("CKGreenKey")) { DrawImage("CKKEYS3", (90, 25), DI_ITEM_LEFT_TOP); }
+		}
+
+		if (CPlayer.mo.InvSel != null && !level.NoInventoryBar)
+		{
+			DrawKeenInventorySelection(-12, 12, 16);
+		}
+	}
+
+	void DrawKeenInventorySelection(int x, int y, int size = 32)
+	{
+		Vector2 texsize = TexMan.GetScaledSize(CPlayer.mo.InvSel.Icon);
+		if (texsize.x > size || texsize.y > size)
+		{
+			if (texsize.y > texsize.x)
+			{
+				texsize.y = size * 1.0 / texsize.y;
+				texsize.x = texsize.y;
+			}
+			else
+			{
+				texsize.x = size * 1.0 / texsize.x;
+				texsize.y = texsize.x;
+			}
+		}
+		else { texsize = (1.0, 1.0); }
+
+		DrawInventoryIcon(CPlayer.mo.InvSel, (x, y), DI_ITEM_CENTER, scale:texsize);
+
+		if (CPlayer.mo.InvSel.Amount > 1)
+		{
+			DrawString(mHUDFont, FormatNumber(CPlayer.mo.InvSel.Amount), (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
+		}
+
+		if (CPlayer.mo.InvSel is "CKPogoStick")
+		{
+			String status = CKPogoStick(CPlayer.mo.InvSel).active ? "ON" : "OFF";
+			DrawString(KeenSmallFont, status, (x, y + size / 3 + mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_CENTER, Font.CR_WHITE);
 		}
 	}
 }

@@ -186,3 +186,8 @@ script "ShowStats" (void)
 {
 	ScriptCall("MapStatsHandler", "Toggle");
 }
+
+script "KeenPogoMessage" (int message)
+{
+	ScriptCall("ClassicMessageBox", "PrintMessage", "$KEENPOGO", 2, "KEENPOGO", 0, -1, 26, 6);
+}
