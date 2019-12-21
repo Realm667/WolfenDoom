@@ -38,7 +38,7 @@ class BoAStatusBar : BaseStatusBar
 
 		// Create the fonts used
 		mBigFont = HUDFont.Create("BIGFONT", 0);
-		mSmallFont = HUDFont.Create("SMALLFONT", 2);
+		mSmallFont = HUDFont.Create("SMALLFONT", 0);
 		mHUDFont = HUDFont.Create("THREEFIV", 1);
 		KeenFont = HUDFont.Create("HUDFONT_KEEN", 0);
 		KeenSmallFont = HUDFont.Create("HUDFONT_KEEN_SMALL", 0);
@@ -717,7 +717,7 @@ class BoAStatusBar : BaseStatusBar
 		DrawBarAlpha("HEALTH_R", "", health, maxhealth, (0, basey), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, ((maxhealth - health) / (maxhealth * 0.75)) * healthbaralpha);
 		DrawImage(icon, (-70, basey), flags | DI_ITEM_CENTER, healthbaralpha, (-1, -1), (0.5, 0.5));
 
-		DrawString(mSmallFont, tag, (4, (basey + 1) - mSmallFont.mFont.GetHeight() / 2), flags | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, healthbaralpha * 0.75);
+		DrawString(mSmallFont, tag, (0, (basey + 1) - mSmallFont.mFont.GetHeight() / 2), flags | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, healthbaralpha * 0.75);
 	}
 
 	void DrawCrosshairHint()
