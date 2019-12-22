@@ -1268,6 +1268,8 @@ class CKLick : CKBaseEnemy
 	{
 		LookforPlayers(true);
 
+		if (!target) { return; }
+
 		double dist = target ? Distance2D(target) - target.radius * 1.4 : 0;
 
 		bool blocked = BlockingLine || BlockingMobj;
@@ -1379,6 +1381,8 @@ class CKWormouth : CKBaseEnemy
 	void CK_WormMove()
 	{
 		LookforPlayers(true);
+
+		if (!target) { return; }
 
 		double dist = target ? Distance2D(target) - target.radius * 1.4 : 0;
 
@@ -1828,6 +1832,8 @@ class CKDopefish : CKBaseEnemy
 	{
 		LookforPlayers(true);
 
+		if (!target) { return; }
+
 		bool blocked = BlockingLine || BlockingMobj;
 
 		if (BlockingMobj && BlockingMobj is "CKSchoolfish")
@@ -1946,6 +1952,8 @@ class CKSchoolfish : CKBaseEnemy
 	{
 		LookforPlayers(true);
 
+		if (!target) { return; }
+
 		bool blocked = BlockingLine || BlockingMobj;
 
 		if (!CheckMove(pos.xy + vel.xy)) { blocked = true; }
@@ -2023,6 +2031,8 @@ class CKInchworm : CKBaseEnemy
 	void CK_InchwormMove()
 	{
 		LookforPlayers(true);
+
+		if (!target) { return; }
 
 		bool blocked = BlockingLine || BlockingMobj;
 
@@ -2405,6 +2415,8 @@ class CKBird : CKBaseEnemy
 	{
 		LookForPlayers(true);
 
+		if (!target) { return; }
+
 		if (target && (abs(pos.z - target.pos.z) > 48 || target.pos.z - target.floorz > 64))
 		{
 			vel.z = 2.0;
@@ -2513,12 +2525,6 @@ class CKPogoStick : CustomInventory
 		Spawn:
 			CKPO G -1;
 			Stop;
-		Pickup:
-			CKPO G 0
-			{
-				ACS_NamedExecute("KeenPogoMessage", 0);
-			}
-			Stop;
 		Use:
 			CKPO G 0
 			{
@@ -2529,6 +2535,14 @@ class CKPogoStick : CustomInventory
 			Fail;
 	}
 
+	override bool TryPickup (in out Actor toucher)
+	{
+		bool ret = Super.TryPickup(toucher);
+
+		if (ret) { ACS_NamedExecute("KeenPogoMessage", 0); }
+
+		return ret;
+	}
 
 	override void Tick()
 	{
@@ -2681,6 +2695,8 @@ class CKBounder : CKBaseEnemy
 	{
 		LookforPlayers(true);
 
+		if (!target) { return; }
+
 		bool blocked = BlockingLine;
 
 		if (target)
@@ -2798,4 +2814,241 @@ class CKFootSmoke : Actor
 			CKGN GHIJ 6;
 			Stop;
 	}
+}
+
+class CKBerkeloid : CKBaseEnemy
+{
+	double vspeed;
+	int floatdir, zdir, turncounter;
+
+	Property VSpeed:vspeed;
+
+	Default
+	{
+		//$Category Commander Keen (BoA)/Monsters
+		//$Title Berkeloid
+		//$Color 4
+
+		Speed 4;
+		Radius 15;
+		Height 43;
+		Obituary "$CK_BERKELOID";
+		CKBaseEnemy.StunTime 0;
+		CKBerkeloid.VSpeed 1.0;
+	}
+
+	States
+	{
+		Spawn:
+			CKFF A 1;
+		See:
+			CKFF AAABBBCCCDDD 1 CK_BerkeloidMove();
+			Loop;
+		Attack:
+			CKFF E 15;
+			CKFF E 3 CK_BerkeloidAttack();
+			CKFF F 15;
+			CKFF A 2;
+			Goto See;
+	}
+
+	override void PostBeginPlay()
+	{
+		floatdir = 1;
+		if (pos.z - floorz < 26.0) { SetOrigin((pos.xy, floorz + 26.0), true); }
+
+		Super.PostBeginPlay();
+	}
+
+	void CK_BerkeloidMove()
+	{
+		LookforPlayers(true);
+
+		if (!target) { return; }
+
+		if (Random() < 10 && !turncounter) { A_Face(target); }
+
+		if (Random() < 2) { SetState(AttackState); }
+		else if (Random() < 20 && Distance3D(target) < 256) { SetState(AttackState); }
+
+		bool blocked = BlockingLine || BlockingMobj;
+
+		if (!TryMove(pos.xy + RotateVector((Speed, 0), angle), false)) { blocked = true; }
+
+		if (blocked && !turncounter) { angle += Random(-115, -245); }
+	}
+
+	void CK_BerkeloidAttack()
+	{
+		vel.xy *= 0;
+ 
+		A_SpawnProjectile("CKBerkeloidBall", flags:CMF_AIMDIRECTION);
+
+		A_PlaySound("ckeen/berkeloid/attack");
+	}
+
+	void DoFloat()
+	{
+		if (counter++ > 24)
+		{
+			counter = 0;
+			floatdir *= -1;
+		}
+
+		if (waterlevel) { floatdir = 1; }
+
+		vel.z = vspeed * floatdir;
+	}
+
+	override void Tick()
+	{
+		if (turncounter > 0) { turncounter--; }
+
+		DoFloat();
+
+		Super.Tick();
+	}
+}
+
+class CKBerkeloidBall : Actor
+{
+	Default
+	{
+		Projectile;
+		Radius 6;
+		Height 12;
+		Speed 24;
+		-NOGRAVITY
+	}
+
+	States
+	{
+		Spawn:
+			CKFF HI 3;
+			Loop;
+		Death:
+			CKFF HJKJKHIHI 6 A_Explode(15, 32);
+			Stop;
+	}
+}
+
+
+class CKSkyPest : CKBaseEnemy
+{
+	int turncounter, zdir, zheightcounter;
+
+	Default
+	{
+		//$Category Commander Keen (BoA)/Monsters
+		//$Title SkyPest
+		//$Color 4
+
+		Speed 10;
+		FloatSpeed 5;
+		MaxDropoffHeight 64;
+		Radius 12;
+		Height 9;
+		+NOGRAVITY
+		+NODROPOFF
+		+NOTAUTOAIMED
+		Obituary "$CK_SKYPEST";
+		CKBaseEnemy.StunTime 0;
+	}
+
+	States
+	{
+		Spawn:
+			CKFL H 1;
+		See:
+			CKFL HH 1 CK_SkyPestFly();
+			CKFL III 1 CK_SkyPestFly();
+			Loop;
+		Preen:
+			CKFL A 50;
+			CKFL BCDKDCB 5;
+			CKFL A 30;
+			CKFL GFELEFG 5;
+			CKFL A 50;
+			CKFL A 1
+			{
+				zdir = 1;
+				zheightcounter = 35;
+				angle = Random(0, 359);
+				vel.z = 8.0;
+			}
+			Goto See;
+		Death:
+			CKFL J -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		zdir = RandomPick(-1, 1);
+
+		Super.PostBeginPlay();
+	}
+
+	void CK_SkyPestFly()
+	{
+		bool blocked = BlockingLine;
+
+		if (!CheckMove(pos.xy + vel.xy, PCM_NOACTORS)) { blocked = true; }
+
+		if (waterlevel) // Keep them above water!
+		{
+			zdir = 1;
+			zheightcounter = 75;
+		}
+		else if (!zheightcounter || pos.z == floorz || pos.z + height == ceilingz)
+		{
+			zdir *= -1;
+			zheightcounter = 70 - zdir;
+		}
+
+		if (blocked || !turncounter)
+		{
+			angle += RandomPick(-90, 90, 180);
+			turncounter = 20;
+		}
+
+		if (pos.z > floorz)
+		{
+			vel.xy = RotateVector((Speed, 0), angle);
+			vel.z = FloatSpeed * zdir;
+		}
+		else
+		{
+			vel *= 0;
+
+			SetOrigin((pos.xy, floorz), true);
+
+			SetStateLabel("Preen");
+		}
+	}
+
+	override void Tick()
+	{
+		if (turncounter > 0) { turncounter--; }
+		if (zheightcounter > 0) { zheightcounter--; }
+
+		Super.Tick();
+	}
+
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (pos.z == floorz && other.player && other.FindInventory("CKPogoStick"))
+		{
+			let p = CKPogoStick(other.FindInventory("CKPogoStick"));
+
+			if (p.active)
+			{
+				SetStateLabel("Death");
+				return false;
+			}
+		}
+
+		return Super.CanCollideWith(other, passive);
+	}
+
 }
