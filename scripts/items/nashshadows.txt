@@ -335,7 +335,7 @@ class SpriteShadowHandler : EventHandler
 		Actor mo;
 		while (mo = Actor(it.Next()))
 		{
-			if (!mo.bIsMonster || mo is "PlayerPawn" || (mo is "Base" && !Base(mo).shadow) || mo.CountInv("Z_DontShadeMe")) continue;
+			if (!mo.bIsMonster || mo is "PlayerPawn" || (mo is "Base" && !Base(mo).shadow) || mo.CountInv("Z_DontShadeMe") || (mo is "CKBaseEnemy" && CKBaseEnemy(mo).noshadow)) continue;
 
 			// intentionally using 2D distance because it's faster
 			if (p.camera && mo.Distance2DSquared(p.camera) > shadowDist ** 2)

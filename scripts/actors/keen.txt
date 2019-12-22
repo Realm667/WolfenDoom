@@ -12,10 +12,13 @@ class CKBaseEnemy : Actor
 
 	Sound touchsound;
 
+	bool noshadow;
+
 	Property StunTime:stuntime;
 	Property StunFrames:stunframes;
 	Property WakeOnTouch:wakeontouch;
 	Property TouchSound:touchsound;
+	Property NoShadow:noshadow;
 
 	Default
 	{
@@ -236,6 +239,16 @@ class CKBaseEnemy : Actor
 		}
 
 		return null;
+	}
+
+	void CK_WaitForPlayer(int dist = 256)
+	{
+		LookForPlayers(true);
+
+		if (target && Distance2D(target) < dist)
+		{
+			SetState(SeeState);
+		}
 	}
 }
 
@@ -3051,4 +3064,157 @@ class CKSkyPest : CKBaseEnemy
 		return Super.CanCollideWith(other, passive);
 	}
 
+}
+
+class CKSpear : CKBaseEnemy
+{
+	int dir;
+	int user_delay;
+
+	Default
+	{
+		//$Category Commander Keen (BoA)/Props
+		//$Title Spears (Down)
+		//$Color 3
+
+		Damage 0;
+		Radius 8;
+		Height 0;
+		+NOGRAVITY
+		+NOTAUTOAIMED
+		-COUNTKILL
+		CKBaseEnemy.StunTime 0;
+		CKBaseEnemy.NoShadow 1;
+	}
+
+	States
+	{
+		Spawn:
+			CKSH A 10 CK_WaitForPlayer(32);
+			Loop;
+		See:
+			CKSH A 60;
+			CKSH A 1
+			{
+				tics = user_delay;
+				user_delay = 0;
+			}
+		Thrust:
+			CKSH C 1 CK_SpearThrust();
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		dir = -1;
+
+		Super.PostBeginPlay();
+	}
+
+	virtual void CK_SpearThrust()
+	{
+		SetDamage(15);
+
+		if (dir > 0 && counter - 8 > 0)
+		{
+			counter -= 8;
+		}
+		else if (dir < 0 && counter + 8 < 80)
+		{
+			counter += 8;
+		}
+		else
+		{
+			dir *= -1;
+		}
+
+		if (counter <= 0) { frame = 0; }
+		else if (counter < 24) { frame = 1; }
+		else { frame = 2; }
+
+
+		if (counter <= 8 && dir == 1)
+		{
+			counter = 0;
+
+			SetState(SeeState);
+			SetDamage(0);
+		}
+
+		A_SetSize(Radius, counter);
+		SetOrigin((pos.xy, SpawnPoint.z - height), true);
+	}
+
+	override void Activate(Actor activator)
+	{
+		SetState(SeeState);
+
+		Super.Activate(activator);
+	}
+
+}
+
+
+class CKSpearUp : CKSpear
+{
+	Default
+	{
+		//$Title Spears (Up)
+	}
+
+	States
+	{
+		Spawn:
+			CKSH D 10 CK_WaitForPlayer(32);
+			Loop;
+		See:
+			CKSH D 60;
+			CKSH D 1
+			{
+				tics = user_delay;
+				user_delay = 0;
+			}
+		Thrust:
+			CKSH F 1 CK_SpearThrust();
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		dir = -1;
+
+		Super.PostBeginPlay();
+	}
+
+	override void CK_SpearThrust()
+	{
+		SetDamage(15);
+
+		if (dir > 0 && counter - 8 > 0)
+		{
+			counter -= 8;
+		}
+		else if (dir < 0 && counter + 8 < 56)
+		{
+			counter += 8;
+		}
+		else
+		{
+			dir *= -1;
+		}
+
+		if (counter <= 0) { frame = 3; }
+		else if (counter < 16) { frame = 4; }
+		else { frame = 5; }
+
+		if (counter <= 8 && dir == 1)
+		{
+			counter = 0;
+
+			SetState(SeeState);
+			SetDamage(0);
+		}
+
+		SetOrigin((pos.xy, SpawnPoint.z + counter), true);
+	}
 }
