@@ -677,3 +677,53 @@ class StaticActor : Actor
 		if (tics == -1 && (!bShootable || health <= 0) && (vel == (0, 0, 0))) { ChangeStatNum(STAT_STATIC); }
 	}
 }
+
+class Bubble : Actor
+{
+	int ticker;
+
+	Default
+	{
+		Radius 2;
+		Height 2;
+		Speed 1;
+		Scale 0.05;
+		Alpha 0.25;
+		RenderStyle "Add";
+		Projectile;
+		+CLIENTSIDEONLY
+		+FORCEXYBILLBOARD
+		+NOBLOCKMAP
+		+NOCLIP
+	}
+
+	States
+	{
+		Spawn:
+			SBUB A 1;
+			Loop;
+	}
+
+	override void Tick()
+	{
+		if (!waterlevel) { Destroy(); }
+		else if (pos.z + height == ceilingz)
+		{
+			ticker++;
+
+			if (ticker > 70)
+			{
+				alpha -= 0.01;
+				if (alpha <= 0) { Destroy(); }
+			}
+		}
+
+		if (Random() < 32)
+		{
+			angle = Random(0, 360);
+			vel.xy = RotateVector((-0.1, 0), angle);
+		}
+
+		Super.Tick();
+	}
+}

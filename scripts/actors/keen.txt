@@ -24,8 +24,10 @@ class CKBaseEnemy : Actor
 	{
 		Monster;
 		Damage 15;
-		Scale 2.0;
 		Gravity 1.2;
+		MaxDropoffHeight 64;
+		MaxStepHeight 48;
+		Scale 2.0;
 		+DONTTHRUST
 		+FLOORCLIP
 		+LOOKALLAROUND
@@ -387,7 +389,6 @@ class CKHealth : Health
 class CKPuzzleItem : PuzzleItem
 {
 	mixin CKPickup;
-
 
 	Default
 	{
@@ -928,7 +929,7 @@ class CKPlatform : Actor
 
 class CKPlatformFalling : CKPlatform
 {
-	int movetimer;
+	int movetimer, synchoffset;
 	double movez;
 	bool hitbottom;
 
@@ -942,6 +943,7 @@ class CKPlatformFalling : CKPlatform
 	override void PostBeginPlay()
 	{
 		SpawnPoint = pos;
+		synchoffset = Random(0, 19);
 
 		Super.PostBeginPlay();
 	}
@@ -972,12 +974,16 @@ class CKPlatformFalling : CKPlatform
 			}
 		}
 		else if (touchers.Size()) { movetimer++; }
-		else if (level.time % 20 == 0) { movetimer = max(movetimer - 1, 0); }
+		else if (movetimer && (level.time + synchoffset) % 20 == 0) { movetimer = max(movetimer - 1, 0); }
 
-		Vector3 newpos = pos + (0, 0, movez);
-		if (CheckMove(newpos.xy, PCM_NOACTORS)) { SetOrigin(newpos, true); }
+		if (movez)
+		{
+			Vector3 newpos = pos + (0, 0, movez);
+			if (CheckMove(newpos.xy, PCM_NOACTORS)) { SetOrigin(newpos, true); }
 
-		MatchMovement();
+			MatchMovement();
+		}
+
 		Actor.Tick();
 	}
 }
@@ -1036,10 +1042,14 @@ class CKPlatformVertical : CKPlatform
 			}
 		}
 
-		Vector3 newpos = pos + (0, 0, movez);
-		if (CheckMove(newpos.xy, 0)) { SetOrigin(newpos, true); }
+		if (movez)
+		{
+			Vector3 newpos = pos + (0, 0, movez);
+			if (CheckMove(newpos.xy, PCM_NOACTORS)) { SetOrigin(newpos, true); }
 
-		MatchMovement();
+			MatchMovement();
+		}
+
 		Actor.Tick();
 	}
 }
@@ -1187,7 +1197,7 @@ class CKPipe : LadderBase
 			t.angle = angle;
 		}
 		
-		if (!user_soundtype) { user_soundtype = 5; } // Soundtype 5 means no climbing sounds
+		if (!user_soundtype) { user_soundtype = 5; } // Soundtype 5 means Keen climbing sounds
 	}
 }
 
@@ -1285,19 +1295,17 @@ class CKLick : CKBaseEnemy
 
 		double dist = target ? Distance2D(target) - target.radius * 1.4 : 0;
 
-		bool blocked = BlockingLine || BlockingMobj;
-
-		if (!CheckMove(pos.xy + vel.xy)) { blocked = true; }
+		bool blocked = BlockingLine || BlockingMobj || !CheckMove(pos.xy + vel.xy, PCM_DROPOFF | PCM_NOLINES);
 
 		if (pos.z == floorz || blocked || bOnMobj)
 		{
-			if (target && IsVisible(target, true))
+			if (!blocked && target && IsVisible(target, true))
 			{
 				if (IsVisible(target, true)) 
 				{
 					angle = AngleTo(target);
 
-					if (dist < 32)
+					if (dist < 32 && abs(pos.z - target.pos.z) < 32)
 					{
 						angle = AngleTo(target);
 						SetState(AttackState);
@@ -1309,7 +1317,6 @@ class CKLick : CKBaseEnemy
 			if (blocked && !turncounter)
 			{
 				angle += Random(-115, -245);
-				turncounter = 45;
 			}
 
 			if (pos.z == floorz || bOnMobj)
@@ -1412,9 +1419,7 @@ class CKWormouth : CKBaseEnemy
 			return;
 		}
 
-		bool blocked = BlockingLine || BlockingMobj;
-
-		if (!TryMove(pos.xy + RotateVector((Speed, 0), angle), false)) { blocked = true; }
+		bool blocked = BlockingLine || BlockingMobj || !TryMove(pos.xy + RotateVector((Speed, 0), angle), false);
 
 		if (blocked) { angle = Random(0, 359); }
 	}
@@ -1576,9 +1581,7 @@ class CKSmirky : CKBaseEnemy
 
 		double dist = goal ? Distance2D(goal) : 0;
 
-		bool blocked = BlockingLine || BlockingMobj;
-
-		if (!CheckMove(pos.xy + vel.xy)) { blocked = true; }
+		bool blocked = BlockingLine || BlockingMobj || !CheckMove(pos.xy + vel.xy);
 
 		if (pos.z == floorz || blocked || bOnMobj)
 		{
@@ -1773,10 +1776,11 @@ class CKDopefish : CKBaseEnemy
 		//$Title Dopefish
 		//$Color 4
 
-		Speed 2.5;
-		FloatSpeed 1.25;
-		Radius 64;
 		Height 128;
+		Radius 64;
+		Scale 3.0;
+		Speed 3.75;
+		FloatSpeed 1.875;
 		Damage 0; // Damages on touch only during attack state
 		+NOGRAVITY
 		+NOTAUTOAIMED
@@ -1847,7 +1851,7 @@ class CKDopefish : CKBaseEnemy
 
 		if (!target) { return; }
 
-		bool blocked = BlockingLine || BlockingMobj;
+		bool blocked = BlockingLine || BlockingMobj || !CheckMove(pos.xy + vel.xy);
 
 		if (BlockingMobj && BlockingMobj is "CKSchoolfish")
 		{
@@ -1857,8 +1861,6 @@ class CKDopefish : CKBaseEnemy
 			SetState(AttackState);
 			return;
 		}
-
-		if (!CheckMove(pos.xy + vel.xy)) { blocked = true; }
 
 		if (turncounter > 0) { turncounter--; }
 
@@ -1967,9 +1969,7 @@ class CKSchoolfish : CKBaseEnemy
 
 		if (!target) { return; }
 
-		bool blocked = BlockingLine || BlockingMobj;
-
-		if (!CheckMove(pos.xy + vel.xy)) { blocked = true; }
+		bool blocked = BlockingLine || BlockingMobj || !CheckMove(pos.xy + vel.xy);
 
 		if (turncounter > 0) { turncounter--; }
 
@@ -2047,9 +2047,7 @@ class CKInchworm : CKBaseEnemy
 
 		if (!target) { return; }
 
-		bool blocked = BlockingLine || BlockingMobj;
-
-		if (!TryMove(pos.xy + RotateVector((Speed, 0), angle), false)) { blocked = true; }
+		bool blocked = BlockingLine || BlockingMobj || !TryMove(pos.xy + RotateVector((Speed, 0), angle), false);
 
 		if (turncounter > 0) { turncounter--; }
 
@@ -2454,9 +2452,7 @@ class CKBird : CKBaseEnemy
 
 		LookForPlayers(true);
 
-		bool blocked = BlockingLine || (BlockingMobj && (!target || BlockingMobj != target));
-
-		if (!CheckMove(pos.xy + vel.xy)) { blocked = true; }
+		bool blocked = BlockingLine || (BlockingMobj && (!target || BlockingMobj != target)) || !CheckMove(pos.xy + vel.xy);
 
 		if (turncounter > 0) { turncounter--; }
 
@@ -2524,6 +2520,7 @@ class CKPogoStick : CustomInventory
 		//$Color 11
 
 		Tag "$TAGPOGO";
+		+BRIGHT
 		+NOGRAVITY
 		Inventory.Icon "CKPOG0";
 		Inventory.PickupMessage "$CK_POGO";
@@ -2687,7 +2684,6 @@ class CKBounder : CKBaseEnemy
 		Radius 18;
 		Height 36;
 		Damage 0;
-		MaxStepHeight 48;
 		Obituary "$CK_BOUND";
 	}
 
@@ -2884,9 +2880,7 @@ class CKBerkeloid : CKBaseEnemy
 		if (Random() < 2) { SetState(AttackState); }
 		else if (Random() < 20 && Distance3D(target) < 256) { SetState(AttackState); }
 
-		bool blocked = BlockingLine || BlockingMobj;
-
-		if (!TryMove(pos.xy + RotateVector((Speed, 0), angle), false)) { blocked = true; }
+		bool blocked = BlockingLine || BlockingMobj || !TryMove(pos.xy + RotateVector((Speed, 0), angle), false);
 
 		if (blocked && !turncounter) { angle += Random(-115, -245); }
 	}
@@ -2958,7 +2952,6 @@ class CKSkyPest : CKBaseEnemy
 
 		Speed 10;
 		FloatSpeed 5;
-		MaxDropoffHeight 64;
 		Radius 12;
 		Height 9;
 		+NOGRAVITY
@@ -2991,7 +2984,7 @@ class CKSkyPest : CKBaseEnemy
 			}
 			Goto See;
 		Death:
-			CKFL J -1;
+			CKFL J -1 { SetDamage(0); }
 			Stop;
 	}
 
@@ -3004,9 +2997,7 @@ class CKSkyPest : CKBaseEnemy
 
 	void CK_SkyPestFly()
 	{
-		bool blocked = BlockingLine;
-
-		if (!CheckMove(pos.xy + vel.xy, PCM_NOACTORS)) { blocked = true; }
+		bool blocked = BlockingLine || !CheckMove(pos.xy + vel.xy, PCM_NOACTORS);
 
 		if (waterlevel) // Keep them above water!
 		{
@@ -3216,5 +3207,84 @@ class CKSpearUp : CKSpear
 		}
 
 		SetOrigin((pos.xy, SpawnPoint.z + counter), true);
+	}
+}
+
+class CKConfusion : Actor
+{
+	int ticker;
+
+	Default
+	{
+		Radius 1;
+		Height 1;
+		RenderStyle "Translucent";
+		Scale 2.0;
+		-SOLID
+	}
+
+	States
+	{
+		Spawn:
+			CKCF ABC 10;
+			Loop;
+	}
+
+	override void Tick()
+	{
+		if (master)
+		{
+			if (pos != master.pos) { SetXYZ(master.pos); }
+
+			ticker++;
+
+			if (ticker > 175) { alpha -= 0.01; }
+		}
+
+		Super.Tick();
+	}
+}
+
+
+class CKStunnerBall : Actor
+{
+	Actor confusion;
+
+	Default
+	{
+		Radius 11;
+		Height 8;
+		Speed 20;
+		Damage 20;
+		DamageType "KeenStunner";
+		Projectile;
+		+BRIGHT
+		+NOEXTREMEDEATH
+		+HITMASTER
+		SeeSound "ckeen/shoot";
+		DeathSound "ckeen/hit";
+		Obituary "$OB_CKBLAST";
+	}
+
+	States
+	{
+		Spawn:
+			CKBA ABCD 3 { if (waterlevel > 2) { SetStateLabel("Death"); } }
+			Loop;
+		Death:
+			CKBA EF 4;
+			TNT1 A 35;
+			Stop;
+	}
+
+	override void Tick()
+	{
+		if (!confusion && master && master.health <= 0)
+		{
+			confusion = Spawn("CKConfusion", master.pos);
+			confusion.master = master;
+		}
+
+		Super.Tick();
 	}
 }

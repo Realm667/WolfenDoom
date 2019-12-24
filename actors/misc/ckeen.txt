@@ -202,29 +202,6 @@ ACTOR CKStunner : CKWeapon
 	}
 }
 
-ACTOR CKStunnerBall
-{
-	Radius 11
-	Height 8
-	Speed 20
-	Damage 20
-	Projectile
-	+BRIGHT
-	+RANDOMIZE
-	SeeSound "ckeen/shoot"
-	DeathSound "ckeen/hit"
-	Obituary "$OB_CKBLAST"
-	States
-	{
-	Spawn:
-		CKBA ABCD 3 { if (waterlevel > 2) { SetStateLabel("Death"); } }
-		Loop
-	Death:
-		CKBA EF 4
-		Stop
-	}
-}
-
 ACTOR CKStunnerAmmo : Ammo
 {
 	Tag "$TAGECELL"
@@ -405,20 +382,6 @@ ACTOR CKGreenKeyPod : CKRedKeyPod
 //////////////
 // MONSTERS //
 //////////////
-ACTOR CKConfusion
-{
-	Radius 1
-	Height 1
-	Scale 2.0
-	-SOLID
-	States
-	{
-	Spawn:
-		CKCF ABC 10
-		Loop
-	}
-}
-
 ACTOR CKArachnut : CKBaseEnemy
 {
 	//$Category Commander Keen (BoA)/Monsters
