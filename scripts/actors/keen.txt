@@ -62,7 +62,7 @@ class CKBaseEnemy : Actor
 	}
 
 	// Don't take damage, only stun if stunnable (and the player is the one that shot you)
-	// Be nice and let the 'kill monsters' cheat still work (won't stop enemies from reviving, though)
+	// Be nice and let the 'kill monsters' cheat still work (won't stop stunned enemies from reviving, though)
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
 		if (wakeontouch > 1)
@@ -72,6 +72,7 @@ class CKBaseEnemy : Actor
 		}
 
 		if (bSolid && ((source && source.player || source is "PlayerFollower") || mod == "Massacre") && stuntime != 0 && !stunned) { DoStun(true); }
+		else if (mod == "Massacre" && FindState("Death")) { SetStateLabel("Death"); }
 
 		return 0;
 	}
@@ -98,7 +99,7 @@ class CKBaseEnemy : Actor
 			if (special)
 			{
 				A_Playsound(TouchSound, CHAN_UI);
-				Level.ExecuteSpecial(special, self, null, false, args[0], args[1], args[2], args[3], args[4]);
+				Level.ExecuteSpecial(special, toucher, null, false, args[0], args[1], args[2], args[3], args[4]);
 				A_SetSpecial(0);
 			}
 		}
@@ -1424,9 +1425,11 @@ class CKWormouth : CKBaseEnemy
 			return;
 		}
 
-		bool blocked = BlockingLine || BlockingMobj || !TryMove(pos.xy + RotateVector((Speed, 0), angle), false);
+		bool blocked = BlockingLine || BlockingMobj || !CheckMove(pos.xy + RotateVector((Speed, 0), angle), PCM_DROPOFF | PCM_NOLINES);
 
-		if (blocked) { angle = Random(0, 359); }
+		if (blocked) { angle += Random(-115, -245); }
+
+		vel.xy = RotateVector((Speed, 0), angle);
 	}
 
 	void CK_Look(int angleoffset = 0, int anglerange = 30)
@@ -2843,6 +2846,7 @@ class CKBerkeloid : CKBaseEnemy
 		Speed 4;
 		Radius 15;
 		Height 43;
+		+NODROPOFF
 		Obituary "$CK_BERKELOID";
 		CKBaseEnemy.StunTime 0;
 		CKBerkeloid.VSpeed 1.0;
@@ -2886,7 +2890,7 @@ class CKBerkeloid : CKBaseEnemy
 		if (Random() < 2) { SetState(AttackState); }
 		else if (Random() < 20 && Distance3D(target) < 256) { SetState(AttackState); }
 
-		bool blocked = BlockingLine || BlockingMobj || !TryMove(pos.xy + RotateVector((Speed, 0), angle), false);
+		bool blocked = BlockingLine || BlockingMobj || !CheckMove(pos.xy + RotateVector((Speed, 0), angle), PCM_DROPOFF | PCM_NOLINES);
 
 		if (blocked)
 		{
@@ -2894,6 +2898,7 @@ class CKBerkeloid : CKBaseEnemy
 			turncounter = 35;
 		}
 
+		vel.xy = RotateVector((Speed, 0), angle);
 	}
 
 	void CK_BerkeloidAttack()
@@ -2914,6 +2919,7 @@ class CKBerkeloid : CKBaseEnemy
 		}
 
 		if (waterlevel) { floatdir = 1; }
+		if (pos.z - floorz > 50) { floatdir = -1; }
 
 		vel.z = vspeed * floatdir;
 	}

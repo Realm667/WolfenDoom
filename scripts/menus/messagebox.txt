@@ -7,8 +7,10 @@ class KeenMessage
 	int width;
 	int height;
 	int autoclose;
+	int fadeintime, fadeouttime;
+	double fadealpha, fadetargetalpha;
 
-	ui static void Init(ClassicMessageBox parent, String mtext, int malign = 0, String mgraphic = "", int mgraphicalign = 0, int mautoclose = -1, int mwidth = 26, int mheight = 8)
+	ui static void Init(ClassicMessageBox parent, String mtext, int malign = 0, String mgraphic = "", int mgraphicalign = 0, int mautoclose = -1, int mwidth = 26, int mheight = 8, double fadealpha = 0.0, double fadetargetalpha = 1.0, int fadeintime = 0, int fadeouttime = 0)
 	{
 		KeenMessage msg = New("KeenMessage");
 
@@ -19,6 +21,10 @@ class KeenMessage
 		msg.autoclose = mautoclose;
 		msg.width = mwidth;
 		msg.height = mheight;
+		msg.fadealpha = fadealpha;
+		msg.fadetargetalpha = fadetargetalpha;
+		msg.fadeintime = fadeintime;
+		msg.fadeouttime = fadeouttime;
 
 		parent.messages.Push(msg);
 	}
@@ -49,6 +55,11 @@ class ClassicMessageBox : MessageBoxMenu
 
 	int index;
 	Array<KeenMessage> messages;
+
+	int curstate;
+	int fadetic, ticcount;
+	int fadeintime, fadeouttime;
+	double fadealpha, fadetargetalpha;
 
 	override void Init(Menu parent, String msg, int messagemode, bool playsound, Name cmd, voidptr native_handler)
 	{
@@ -87,7 +98,7 @@ class ClassicMessageBox : MessageBoxMenu
 		return input;
 	}
 
-	static ClassicMessageBox PrintMessage(String text, int align = 0, String graphic = "", int graphicalign = 0, int autoclose = -1, int width = 26, int height = 8)
+	static ClassicMessageBox PrintMessage(String text, int align = 0, String graphic = "", int graphicalign = 0, int autoclose = -1, int width = 26, int height = 8, double fadealpha = 0.0, double fadetargetalpha = 1.0, int fadeintime = 0, int fadeouttime = 0)
 	{
 		ClassicMessageBox msg = ClassicMessageBox(GetCurrentMenu());
 
@@ -99,7 +110,7 @@ class ClassicMessageBox : MessageBoxMenu
 		msg.fillcolor = 0xFFFFFF;
 		msg.fnt = Font.GetFont("Classic");
 
-		KeenMessage.Init(msg, text, align, graphic, graphicalign, autoclose, width * 8 + 16, height * 8 + 16);
+		KeenMessage.Init(msg, text, align, graphic, graphicalign, autoclose, width * 8 + 16, height * 8 + 16, fadealpha, fadetargetalpha, fadeintime, fadeouttime);
 
 		msg.Init(null, text, true, false);
 
@@ -114,6 +125,13 @@ class ClassicMessageBox : MessageBoxMenu
 		msg.graphicalign = msg.messages[msg.index - 1].graphicalign;
 		msg.autoclose = msg.messages[msg.index - 1].autoclose;
 
+		msg.curstate = 0;
+		msg.fadeintime = msg.messages[msg.index - 1].fadeintime;
+		msg.fadeouttime = msg.messages[msg.index - 1].fadeouttime;
+		msg.fadealpha = msg.messages[msg.index - 1].fadealpha;
+		msg.fadetargetalpha = msg.messages[msg.index - 1].fadetargetalpha;
+		msg.fadetic = (msg.messages[msg.index - 1].fadeintime || msg.messages[msg.index - 1].fadeouttime) ? gametic : 0;
+
 		msg.DontDim = true;
 		msg.DontBlur = true;
 		msg.silent = true;
@@ -127,6 +145,8 @@ class ClassicMessageBox : MessageBoxMenu
 	{
 		if (mParentMenu) { mParentMenu.Drawer(); }
 		DrawMessage(message, 8, fillcolor);
+
+		if (fadetic) { DrawFade(); }
 	}
 
 	override void Ticker()
@@ -139,7 +159,18 @@ class ClassicMessageBox : MessageBoxMenu
 		{
 			index++;
 
-			if (index > messages.Size()) { Close(); }
+			if (index > messages.Size())
+			{
+				if (!fadealpha)
+				{
+					Close();
+				}
+				else
+				{
+					menuactive = Menu.OnNoPause; // Let scripts (e.g., Level exit) run in the background
+					if (index > messages.Size() + 1) { Close(); } // Then close the menu on the next tick
+				}
+			}
 			else
 			{
 				message = messages[index - 1].text;
@@ -151,11 +182,20 @@ class ClassicMessageBox : MessageBoxMenu
 				graphicalign = messages[index - 1].graphicalign;
 				autoclose = messages[index - 1].autoclose;
 
+				curstate = 0;
+				fadeintime = messages[index - 1].fadeintime;
+				fadeouttime = messages[index - 1].fadeouttime;
+				fadealpha = messages[index - 1].fadealpha;
+				fadetargetalpha = messages[index - 1].fadetargetalpha;
+				fadetic = (messages[index - 1].fadeintime || messages[index - 1].fadeouttime) ? gametic : 0;
+
 				cmds = players[consoleplayer].cmd.buttons;
 			}
 
 			if (!silent) { CloseSound(); }
 		}
+
+		if (fadetic) { TickFade(); }
 	}
 
 	void DrawMessage(String text, int size = 8, color clr = 0x0)
@@ -356,6 +396,54 @@ class ClassicMessageBox : MessageBoxMenu
 				}
 				if (!silent) { CloseSound(); }
 			}
+		}
+	}
+
+	void DrawFade()
+	{
+		screen.Dim(0x000000, fadealpha, 0, 0, screen.GetWidth(), screen.GetHeight());
+	}
+
+	void TickFade()
+	{
+		ticcount++;
+
+		switch (curstate)
+		{
+			case 0:
+				if (fadeintime)
+				{
+					fadealpha = fadealpha + abs(clamp(fadetargetalpha / fadeintime, -1.0, 1.0));
+				}
+
+				if (ticcount >= fadeintime || !fadeintime)
+				{
+					ticcount = 0; curstate++;
+				}
+				break;
+			case 1:
+				fadealpha = fadetargetalpha;
+
+				if (ticcount >= 24)
+				{
+					ticcount = 0;
+					curstate++;
+				}
+				break;
+			default:
+				if (fadeouttime)
+				{
+					fadealpha = fadealpha - abs(clamp(fadetargetalpha / fadeouttime, -1.0, 1.0));
+				}
+
+				if (ticcount >= fadeouttime || !fadeouttime)
+				{
+					if (fadealpha == 0)
+					{
+						fadetic = 0;
+					}
+				}
+				break;
 		}
 	}
 }
