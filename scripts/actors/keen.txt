@@ -188,12 +188,12 @@ class CKBaseEnemy : Actor
 		}
 	}
 
-	// Function to move an actor in a straight line until it hits something, then change directions randomly, with preference for moving toward player.
-	void CK_Glide(int maxstep = 0)
+	// Function to move an actor in a straight line until it hits something (or travels maxstep units), then change directions randomly, with preference for moving toward player.
+	void CK_Glide(int maxstep = 1024)
 	{
 		LookforPlayers(true);
 
-		if (BlockingMobj || BlockingLine || SpawnTime == level.time || (maxstep && counter >= maxstep))
+		if (BlockingMobj || BlockingLine || SpawnTime == level.time || (maxstep && counter >= maxstep / Speed))
 		{
 			if (target && IsVisible(target, true))
 			{
@@ -243,6 +243,7 @@ class CKBaseEnemy : Actor
 		return null;
 	}
 
+	// Looks for a player, then waits for the player to be within dist units to activate
 	void CK_WaitForPlayer(int dist = 256)
 	{
 		LookForPlayers(true);
@@ -456,6 +457,9 @@ class KeenPlayer : PlayerPawn
 		Scale 2.0;
 		DamageFactor "Falling", 0.0; // No falling damage
 		+NOSKIN
+		+NOBLOOD
+		+NOBLOODDECALS
+		+DONTGIB
 		+INTERPOLATEANGLES
 
 		Player.SideMove 0.5, 0.5;
@@ -1303,7 +1307,7 @@ class CKLick : CKBaseEnemy
 			{
 				if (IsVisible(target, true)) 
 				{
-					angle = AngleTo(target);
+					if (!turncounter) { angle = AngleTo(target); }
 
 					if (dist < 32 && abs(pos.z - target.pos.z) < 32)
 					{
@@ -1314,9 +1318,10 @@ class CKLick : CKBaseEnemy
 				}
 			}
 
-			if (blocked && !turncounter)
+			if (blocked)
 			{
 				angle += Random(-115, -245);
+				turncounter = 35;
 			}
 
 			if (pos.z == floorz || bOnMobj)
@@ -2607,6 +2612,8 @@ class CKPogoStick : CustomInventory
 					if (owner.player.cmd.buttons & BT_MOVERIGHT) { sidespeed = max(-3, sidespeed - 0.5); }
 
 					owner.vel.xy = RotateVector((speed, sidespeed), moveangle);
+
+					if (!owner.vel.xy.length()) { owner.TryMove(owner.pos.xy, false); } // Make sure we still run collision logic even if there's no x/y axis velocity.
 				}
 				else if (wasactive)
 				{
@@ -2650,17 +2657,12 @@ class CKThundercloud : CKBaseEnemy
 	States
 	{
 		Spawn:
-			CKCL A 10
-			{
-				A_Look();
-
-				if (target && Distance3D(target) > 512) { SetState(SeeState); }	
-			}
+			CKCL A 10 CK_WaitForPlayer(512);
 			Loop;
 		See:
 			CKCL B 50;
 		Chase:
-			CKCL BBBBB 2 CK_Glide();
+			CKCL BBBBB 2 CK_Glide(512);
 			Loop;
 		Missile:
 			CKCL B 40;
@@ -2875,14 +2877,23 @@ class CKBerkeloid : CKBaseEnemy
 
 		if (!target) { return; }
 
-		if (Random() < 10 && !turncounter) { A_Face(target); }
+		if (Random() < 10)
+		{
+			A_Face(target);
+			turncounter = 35;
+		}
 
 		if (Random() < 2) { SetState(AttackState); }
 		else if (Random() < 20 && Distance3D(target) < 256) { SetState(AttackState); }
 
 		bool blocked = BlockingLine || BlockingMobj || !TryMove(pos.xy + RotateVector((Speed, 0), angle), false);
 
-		if (blocked && !turncounter) { angle += Random(-115, -245); }
+		if (blocked)
+		{
+			angle += Random(-115, -245);
+			turncounter = 35;
+		}
+
 	}
 
 	void CK_BerkeloidAttack()
@@ -3081,7 +3092,7 @@ class CKSpear : CKBaseEnemy
 	States
 	{
 		Spawn:
-			CKSH A 10 CK_WaitForPlayer(32);
+			CKSH A 10 CK_WaitForPlayer(128);
 			Loop;
 		See:
 			CKSH A 60;
@@ -3156,7 +3167,7 @@ class CKSpearUp : CKSpear
 	States
 	{
 		Spawn:
-			CKSH D 10 CK_WaitForPlayer(32);
+			CKSH D 10 CK_WaitForPlayer(128);
 			Loop;
 		See:
 			CKSH D 60;
