@@ -6,14 +6,17 @@ ACTOR UnderwaterLightRay : SwitchableDecoration
 	//$Sprite LRAYA0
 	Height 128
 	Radius 32
-	+FLOATBOB
+	//+FLOATBOB
 	+NOBLOCKMAP
 	+NOCLIP
 	+NOGRAVITY
 	+NOINTERACTION
+	+ROLLSPRITE
+	+WALLSPRITE
+	+ROLLCENTER
 	RenderStyle "Add"
 	Scale 0.5
-	Alpha 0.3
+	Alpha 1.0
 	States
 	{
 	Spawn:

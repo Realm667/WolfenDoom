@@ -771,6 +771,25 @@ ACTOR CKWallSlug
 	}
 }
 
+ACTOR CKTreeBranch
+{
+	//$Category Commander Keen (BoA)/Props
+	//$Title Tree Branch
+	//$Color 3
+	Radius 90
+	Height 1
+	Scale 1.0
+	+NOGRAVITY
+	+FLATSPRITE
+	-SOLID
+	States
+	{
+	Spawn:
+		CKBW A -1
+		Stop
+	}
+}
+
 ACTOR CKWallFire : CKWallSlug
 {
 	//$Title Wall Fire
