@@ -2987,7 +2987,7 @@ class CKSkyPest : CKBaseEnemy
 			CKFL III 1 CK_SkyPestFly();
 			Loop;
 		Preen:
-			CKFL A 50;
+			CKFL A 50 { SetDamage(0); }
 			CKFL BCDKDCB 5;
 			CKFL A 30;
 			CKFL GFELEFG 5;
@@ -3014,6 +3014,8 @@ class CKSkyPest : CKBaseEnemy
 
 	void CK_SkyPestFly()
 	{
+		SetDamage(Default.Damage);
+
 		bool blocked = BlockingLine || !CheckMove(pos.xy + vel.xy, PCM_NOACTORS);
 
 		if (waterlevel) // Keep them above water!
