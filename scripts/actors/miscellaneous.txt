@@ -77,6 +77,7 @@ class CrankModel : Actor
 class TextPaper : Actor
 {
 	int displaytime;
+	bool viewed;
 
 	Default
 	{
@@ -120,16 +121,28 @@ class TextPaper : Actor
 
 	override bool Used(Actor user)
 	{
+		viewed = 0;
+
 		if (special == 80 || (!special && args[0]))
 		{
 			if (displaytime < level.time) // Only run this when first pressed
 			{
-				if (special == 80) { Level.ExecuteSpecial(80, user, null, false, args[0], args[1], args[2], args[3], args[4]); } // Run it the old way if that's how it's set up (also allows setting other actions to run when you use the paper, still)
-				else {  Level.ExecuteSpecial(80, user, null, false, -int(Name("TextPaper")), 0, args[0], args[1], args[2]); } // Otherwise pass the args as defined
+				if (special == 80)
+				{
+					Level.ExecuteSpecial(80, user, null, false, args[0], args[1], args[2], args[3], args[4]); // Run it the old way if that's how it's set up (also allows setting other actions to run when you use the paper, still)
+
+					displaytime = level.time + 1;
+					user.player.usedown = false; // Set the internal logic to think that use was not held down so that this code block will be called again
+				}
+				else
+				{
+					viewed = Level.ExecuteSpecial(80, user, null, false, -int(Name("TextPaper")), 0, args[0], args[1], args[2]); // Otherwise pass the args as defined
+
+					if (viewed) { displaytime = level.time + 35; }
+					else { displaytime = level.time; }
+				}
 			} 
 			
-			displaytime = level.time + 1;
-			user.player.usedown = false; // Set the internal logic to think that use was not held down so that this code block will be called again
 			return true; // Return true so that the usefail sound doesn't play over and over and over again
 		}
 
@@ -142,7 +155,7 @@ class TextPaper : Actor
 		{
 			alpha = max(alpha - 0.06, 0);
 		}
-		else
+		else if (!viewed)
 		{
 			alpha = min(alpha + 0.02, 1.0);
 		}

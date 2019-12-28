@@ -116,11 +116,11 @@ script "Textpaper" (int text_number, int paperstyle, int fontstyle)
 
 	int fadein = 0.25;
 
-	// Paper stays on screen as long as you hold down the 'use' button
-	while (GetPlayerInput(-1, INPUT_BUTTONS) & BT_USE)
-	{
-		SetPlayerProperty(0, 1, PROP_TOTALLYFROZEN); // Freeze the player while they're reading
+	SetPlayerProperty(0, 1, PROP_TOTALLYFROZEN); // Freeze the player while they're reading
 
+	// Paper stays on screen until you press the 'use' button
+	while (fadein > 0 || !(GetPlayerInput(-1, INPUT_BUTTONS) & BT_USE && !(GetPlayerInput(-1, INPUT_OLDBUTTONS) & BT_USE)))
+	{
 		SetHudSize(640, 490, false);
 		SetFont(paper);
 		HudMessage(s:"A"; flags, 4, 0, 320.0, 240.0, 0.15, fadein, 1.0);
@@ -141,4 +141,6 @@ script "Textpaper" (int text_number, int paperstyle, int fontstyle)
 	}
 
 	SetPlayerProperty(0, 0, PROP_TOTALLYFROZEN);
+
+	SetResultValue(0);
 }
