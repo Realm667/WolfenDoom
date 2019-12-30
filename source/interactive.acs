@@ -48,10 +48,6 @@ Script "Activate" (int lineid, int repairtime)
 // Generic interactive paper display script.  
 // Takes a message number as an argument, then looks up PAPERTEXT__ in LANGUAGE and displays that message
 // Paper style can be customized via the seond argument, and font style by the third argument
-//
-//	Paper Styles: 0: Worn paper, 1: Plain white paper, 2: Plain tan paper, 3:Reich letterhead, 4:Nazi party letterhead
-//	Font Styles: 0: Handwriting, 1: Set (printing press-style) type, 2: Typewriter, 3:Runes
-//
 script "Textpaper" (int text_number, int paperstyle, int fontstyle)
 {
 	str message = "";
@@ -86,13 +82,13 @@ script "Textpaper" (int text_number, int paperstyle, int fontstyle)
 	str font;
 	switch (fontstyle)
 	{
-		default:
 		case 1: // Set Type (not fixed width)
 			font = "AMH18"; // http://bmf.php5.cz/?font=amh18
 			fontsize = fontsize * 7 / 8; // Make this one slightly smaller
 			break;
+		default:
 		case 2: // Typewriter Font
-			font = "NOB16"; // http://bmf.php5.cz/?font=nob16
+			font = "typewriter"; // Ripped from Fallout 76
 			break;
 		case 3: // Runic Font
 			font = "RUN14"; // http://bmf.php5.cz/?font=run14
@@ -100,6 +96,12 @@ script "Textpaper" (int text_number, int paperstyle, int fontstyle)
 		case 4: // Print handwriting
 			font = "CHICKN24"; // http://bmf.php5.cz/?font=chickn24 - will add to credits once finalized
 			fontsize = fontsize * 7 / 8;
+			break;
+		case 5: // Print handwriting 2
+			font = "handwriting_neat"; // Ripped from Fallout 76
+			break;
+		case 6: // Print handwriting 3
+			font = "handwriting_institute"; // Ripped from Fallout 76
 			break;
 	}
 
@@ -128,13 +130,18 @@ script "Textpaper" (int text_number, int paperstyle, int fontstyle)
 		SetHudSize(textwidth, textheight, false);
 		SetHudWrapWidth(wrapwidth);
 		SetFont(font);
-		HudMessage(l:message; flags, 3, "TrueBlack", textx + 0.1, texty + 0.1, 0.15, fadein, 1.0, 0.75);
 
 		if (fadein > 0) // Only the initial display does a fade in
 		{
+			HudMessage(l:message; flags | HUDMSG_LOG, 3, CR_UNTRANSLATED, textx + 0.1, texty + 0.1, 0.15, fadein, 1.0, 0.9); 
 			ACS_NamedExecute("HintMessage", 0, "PAPERTEXTHOLD"); 
 			Delay(35 * fadein / 1.0);
 			fadein = 0;
+		}
+		else
+		{
+			// Must use CR_UNTRANSLATED as color here here to preserve soft edges on fonts!
+			HudMessage(l:message; flags, 3, CR_UNTRANSLATED, textx + 0.1, texty + 0.1, 0.15, fadein, 1.0, 0.9); 
 		}
 
 		Delay(1);
