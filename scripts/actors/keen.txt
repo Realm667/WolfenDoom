@@ -2047,6 +2047,9 @@ class CKInchworm : CKBaseEnemy
 		See:
 			CKWM AB 15 CK_InchwormMove();
 			Loop;
+		Disappear:
+			CKWM "#" 5 A_Fadeout(0.05);
+			Loop;
 	}
 
 	void CK_InchwormMove()
