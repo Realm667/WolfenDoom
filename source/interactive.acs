@@ -82,7 +82,7 @@ script "Textpaper" (int text_number, int paperstyle, int fontstyle)
 	str font;
 	switch (fontstyle)
 	{
-		case 1: // Set Type (not fixed width)
+		case 1: // Set Type (not fixed width) - Like in a commercially printed book
 			font = "AMH18"; // http://bmf.php5.cz/?font=amh18
 			fontsize = fontsize * 7 / 8; // Make this one slightly smaller
 			break;
@@ -94,7 +94,7 @@ script "Textpaper" (int text_number, int paperstyle, int fontstyle)
 			font = "RUN14"; // http://bmf.php5.cz/?font=run14
 			break;
 		case 4: // Print handwriting
-			font = "CHICKN24"; // http://bmf.php5.cz/?font=chickn24 - will add to credits once finalized
+			font = "CHICKN24"; // http://bmf.php5.cz/?font=chickn24
 			fontsize = fontsize * 7 / 8;
 			break;
 		case 5: // Print handwriting 2

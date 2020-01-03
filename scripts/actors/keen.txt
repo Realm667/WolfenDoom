@@ -2023,7 +2023,8 @@ class CKSchoolfish : CKBaseEnemy
 
 class CKInchworm : CKBaseEnemy
 {
-	int turncounter, lasttouch, count;
+	Array<Actor> touchers;
+	int turncounter;
 
 	Default
 	{
@@ -2035,7 +2036,7 @@ class CKInchworm : CKBaseEnemy
 		Radius 18;
 		Height 20;
 		Damage 0;
-		MaxStepHeight 0;
+		MaxStepHeight 16;
 		+NOTAUTOAIMED
 		CKBaseEnemy.StunTime 0;
 	}
@@ -2045,10 +2046,7 @@ class CKInchworm : CKBaseEnemy
 		Spawn:
 			CKWM A Random(0, 15);
 		See:
-			CKWM AB 15 CK_InchwormMove();
-			Loop;
-		Disappear:
-			CKWM "#" 5 A_Fadeout(0.05);
+			CKWM AAABBB 5 CK_InchwormMove();
 			Loop;
 	}
 
@@ -2058,33 +2056,32 @@ class CKInchworm : CKBaseEnemy
 
 		if (!target) { return; }
 
-		bool blocked = BlockingLine || BlockingMobj || !TryMove(pos.xy + RotateVector((Speed, 0), angle), false);
+		if (turncounter) { turncounter--; }
 
-		if (turncounter > 0) { turncounter--; }
+		NewChaseDir();
 
-		if (!turncounter)
+		if (absangle(angle, AngleTo(target)) > 135 && !turncounter) { movedir = (movedir + 4) % 8; } // Turn around after a short while if you're facing away from the player
+
+		MonsterMove();
+
+		angle = movedir * 45;
+		if (!turncounter) { turncounter = 6; } // Set the timeout for how long until you turn around if you are facing away from the player
+
+		for (int i = 0; i < touchers.Size(); i++)
 		{
-			if (blocked || !target || !IsVisible(target, true)) { angle = Random(0, 359); }
-			else { angle = AngleTo(target); }
-
-			turncounter = 5;
+			if (touchers[i] && Distance3D(touchers[i]) > 32.0) { touchers.Delete(i); }
 		}
+
 	}
 
 	override bool CanCollideWith(Actor other, bool passive)
 	{
 		// Don't collide with anything, but keep count of how many inchworms are overlapping right now
-		if (other is "CKInchWorm")
+		if (other.bSolid && other is "CKInchWorm" && target && Distance3D(target) <= 32)
 		{
-			if (lasttouch != level.time)
-			{
-				lasttouch = level.time;
-				count = 0;
-			}
+			if (touchers.Find(other) == touchers.Size()) { touchers.Push(other); }
 
-			count++;
-
-			if (count == 11)
+			if (touchers.Size() == 11)
 			{
 				DoEasterEgg();
 			}
@@ -2099,27 +2096,16 @@ class CKInchworm : CKBaseEnemy
 		ThinkerIterator it = ThinkerIterator.Create("CKFoot", Thinker.STAT_DEFAULT);
 		if (it.Next()) { return; }
 
-		// Use a spot 64 units in front of the player as the focus of the spawn.
-		if (target.player && Distance3D(target) < 32)
+		// Execute the inchworms' special...
+		Level.ExecuteSpecial(special, self, null, false, args[0], args[1], args[2], args[3], args[4]);
+
+		// Remove the inchworms.
+		it = ThinkerIterator.Create("CKInchworm", Thinker.STAT_DEFAULT);
+		Actor mo;
+
+		while (mo = Actor(it.Next()))
 		{
-			// This was an easter egg in CK4 that transported you to the secret map...  What to do here?
-			Console.Printf("12 inches in a foot... lol");
-
-			Vector3 newpos = pos;
-			newpos = target.pos + RotateVector((64, 0), target.angle);
-
-			Spawn("CKFootSmoke", newpos + (Random(0, 32), 0, Random(0, 32)));
-			Spawn("CKFootSmoke", newpos + (-Random(0, 32), 0, Random(0, 32)));
-			Spawn("CKFootSmoke", newpos + (0, Random(0, 32), Random(0, 32)));
-			Spawn("CKFootSmoke", newpos + (0, -Random(0, 32), Random(0, 32)));
-
-			Spawn("CKFoot", newpos);
-
-			// Remove the inchworms.
-			it = ThinkerIterator.Create("CKInchworm", Thinker.STAT_DEFAULT);
-			Actor mo;
-
-			while (mo = Actor(it.Next())) { mo.Destroy(); }
+			mo.Destroy();
 		}
 	}
 }
@@ -2814,6 +2800,41 @@ class CKBounder : CKBaseEnemy
 		}
 
 		return false;
+	}
+}
+
+class CKFoot : CKBaseEnemy
+{
+	Default
+	{
+		//$Category Commander Keen (BoA)/Props
+		//$Title Foot (secret access)
+		//$Color 3
+
+		Radius 32;
+		Height 64;
+		Damage 0;
+		+FRIENDLY
+		+NOGRAVITY
+		+NOTAUTOAIMED
+		CKBaseEnemy.StunTime 0;
+	}
+
+	States
+	{
+		Spawn:
+			CKFT A -1;
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		Spawn("CKFootSmoke", pos + (Random(0, 32), 0, Random(0, 32)));
+		Spawn("CKFootSmoke", pos + (-Random(0, 32), 0, Random(0, 32)));
+		Spawn("CKFootSmoke", pos + (0, Random(0, 32), Random(0, 32)));
+		Spawn("CKFootSmoke", pos + (0, -Random(0, 32), Random(0, 32)));
 	}
 }
 
