@@ -5,8 +5,9 @@ Remove the problem / to-do from this list once it is done - OZY81
 - Check unused graphics and remove them (graphics/hud/creditsroll are not used for example)
 - Check unused models and remove them
 - Check unused sounds and remove them
-- Check unused sprites and remove them (Denkmal & Mecha Hitler [HITL## frames] are not used for example)
+- Check unused sprites and remove them (Denkmal is not used for example)
 - Fix strobe lights: StrobeEmitter & SpotLightBoA doesn't clamp geometry (noticeable since GZDoom 3.7.2)
+- Fix toilet soldiers: they raise countkill by one once the normal soldier gets spawned, also they are too much position sensible (they must stand exactly on top of Toilet actors)
 - Get rid of nazibannertall.md2 model and replace it with a .md3 (problem is that it gets skin offsets messed up during conversion atm)
 - Get some different sounds for bosses to turn each more distinct (not easy, should check on Wolf3d websites)
 - Improve ENDOOM.ans
@@ -15,7 +16,7 @@ Remove the problem / to-do from this list once it is done - OZY81
 - Test all brightmaps, some actors seems to use too many spawned lights which can be removed (specially during attacks)
 - Turn the whole project .ipk3 compatible (INTERMAP issue: if we watch the INTROMAP without skipping it, we can hear the HQs song once INTERMAP is loaded for a while, doesn't happen as .pk3 - Tested with GZDoom 4.1.3 Official)
 - Verify actors behavior, mainly props and enemies (don't forget to check LightBulb on maps and optimize lasers)
-- Verify every situation on maps where models disappear and use RenderRadius if needed
+- Verify every situation on maps where models disappear and use RenderRadius if needed (but watch out about performance!)
 
 ========================================================================================================================================================
 
