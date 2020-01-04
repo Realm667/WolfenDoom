@@ -1,8 +1,8 @@
 default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es,fr,it,ru
 ,,"The language.csv in the WolfenDoom repo is NOT the ""master"" version - see https://docs.google.com/spreadsheets/d/1Nok0lZ7fX9mKLRf7TItqsllhdIVSC8jt_L9otCBP0bs/edit?usp=sharing for the ""master"" version",,,,,,
 ,,Quit Messages,,,,,,
-,QUITMSG,Ingame dialogue and briefing messages can be tested ingame on TEST_DLG,\cCSure you don't want to shoot any more Nazis?,\cCsicher dass du keine Nazis mehr erschießen willst?,,,\cCSicuro di non volere sparare contro altri Nazisti?,"\cCМожет, убьёшь ещё пару нацистов?"
-,QUITMSG1,"To go to TEST_DLG, open the console, and type ""map test_dlg""","\cCIn case you hadn't noticed, there is a Nazi invasion going on.","\cCFalls du es noch nicht gemerkt hast, es findet eine Nazi Invasion statt.",,,"\cCNel caso in cui non lo avessi notato, c'e' una invasione di Nazisti in corso.","\cCНацисты продолжают наступление, если ты не заметил."
+,QUITMSG,"INFO FOR TESTING: Ingame dialogue and briefing messages can be tested ingame on TEST_DLG. To go to TEST_DLG, open the console, and type ""map test_dlg""",\cCSure you don't want to shoot any more Nazis?,\cCsicher dass du keine Nazis mehr erschießen willst?,,,\cCSicuro di non volere sparare contro altri Nazisti?,"\cCМожет, убьёшь ещё пару нацистов?"
+,QUITMSG1,"INFO FOR CHANGES: If the original language entry (enu) gets changed after a translation has already been done, the translated text will be marked with a red border, indicating that the translation needs to be updated according to the original string. As soon as the translated text has been updated, simply remove the red border again.","\cCIn case you hadn't noticed, there is a Nazi invasion going on.","\cCFalls du es noch nicht gemerkt hast, es findet eine Nazi Invasion statt.",,,"\cCNel caso in cui non lo avessi notato, c'e' una invasione di Nazisti in corso.","\cCНацисты продолжают наступление, если ты не заметил."
 ,QUITMSG2,,\cCI implore you to reconsider.,"\cCIch flehe dich an, das zu überdenken.",,,\cCTi imploro di ripensarci.,\cCЯ тебя очень прошу: подумай ещё раз!
 ,QUITMSG3,,\cCAre you sure? There are plenty of targets in here...,\cCBist du sicher? Es gibt noch jede Menge Ziele hier drin...,,,\cCSei sicuro? e' pieno di bersagli quaggiu'...,\cCУверен? Тут ещё достаточно мишеней…
 ,QUITMSG4,,\cCSure you don't want to go kick Hitler's ass?,\cCSicher dass du deinen Stiefel nicht in Hitler's Hintern versenken willst?,,,\cCSicuro di non volere prendere Hitler a calci in culo?,\cCТы правда не хочешь надрать Гитлеру задницу?
@@ -25,11 +25,12 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,ADVANCED,,Advanced Settings,Erweiterte Einstellungen,,,Settaggi Avanzati,Расширенные настройки
 ,BL_AM,,Blood Amount,Blut Menge,,,Quantita' di Sangue,Количество крови
 ,BL_DEC,,Decal Limit,Dekor Limit,,,Limite delle Decalcomanie,Максимум декалей
-,BL_GIBS,,Spawn Giblets,Eingeweide erzeugen,,,Spawna i Resti,Показ внутренностей
+,BL_GIBS,,Spawn Giblets,Eingeweide erzeugen,,,Spawna i Resti,"Показывать выбитые внутренности
+"
 ,BL_HIGH,,Excessive,Übertrieben,,,Eccessivo,Изобильное
 ,BL_LIF,,Blood Lifetime (in seconds),Blut Lebensspanne (in Sekunden),,,Durata del Sangue (in secondi),Время жизни крови (с)
-,BL_LIM,,Blood Limit,Blut Limit,,,Limite del Sangue,Ограничение крови
-,BL_LOW,,Mild,Lau,,,Mite,Мягкое
+,BL_LIM,,Blood Limit,Blut Limit,,,Limite del Sangue,Ограничение количества крови
+,BL_LOW,,Mild,Lau,,,Mite,Небольшое
 ,BL_MED,,Normal,Normal,,,Normale,Обычное
 ,BL_OP,,Blood Opacity,Blut Deckkraft,,,Opacita' del Sangue,Непрозрачность крови
 ,BL_POOLS,,Spawn Blood Pools,Blutlachen erzeugen,,,Crea Pozze di Sangue,Показывать лужи крови
@@ -68,7 +69,7 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,NOTEOPT2,,NOTE: 1-click settings to adjust details at once,Hinweis: 1-Klick Einstellungen um Details auf einmal anzupassen,,,NOTA: un solo clic per regolare tutti i dettagli in una sola volta,ПРИМЕЧАНИЕ: одна позиция изменяет сразу несколько настроек
 ,OPT_BLOOD,,Blood Settings,Blut Einstellungen,,,Settaggi del Sangue,Настройки крови
 ,OPT_CHEAT,,Cheats Settings,Schummel Einstellungen,,,Settaggi dei Trucchi,Настройки читов
-,OPT_CONTR,,Controls Settings,Kontroll Einstellungen,,,Settaggi del Controlli,Управление
+,OPT_CONTR,,Controls Settings,Steuerung Einstellungen,,,Settaggi del Controlli,Управление
 ,OPT_DEFA,,Default Mode On,Standard Modus an,,,Modalita' Default ON,Включить режим по умолчанию
 ,OPT_DEFAM,,"3d trees on, all boa special effects on, all boa particles at default values with droplets on, all boa actors rendering at default values, all boa postprocessed shaders on except lensflares, mirrors & reflections on, most of advanced engine gl_options on except for shadowmaps, normal texture filter on",,,,"alberi 3d ON, tutti gli effetti speciali boa ON, tutte le particelle boa ai valori predefiniti con sangue ON, rendering di tutti gli attori boa ai valori predefiniti, tutti gli shader boa postprocessati ON eccetto lensflares, specchi e riflessi ON, la maggior parte delle opzioni opengl ON ad eccezione delle shadowmaps, filtro texture normale ON","Включены: 3D-деревья, все спецэффекты, все частицы (со значениями по умолчанию и включая капли), отображение всех объектов с настройками по умолчанию, все шейдеры (кроме бликов), зеркала и отражения, большая часть продвинутых опций движка из серии gl_ (кроме теневых карт), нормальная фильтрация текстур"
 ,OPT_DEVC,,Developer Commentary,Entwickler Kommentare,,,Commenti degli Sviluppatori,Комментарии разработчиков
@@ -76,15 +77,15 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,OPT_HI,,High Mode On,,,,Modalita' Alta ON,"Включить высокие настройки
 "
 ,OPT_HIM,,"3d trees on, all boa special effects on, all boa particles at high values with droplets on, all boa actors rendering at high values, all boa postprocessed shaders on, mirrors & reflections on, most of advanced engine gl_options on, high texture filter on",,,,"alberi 3d ON, tutti gli effetti speciali boa ON, tutte le particelle boa ai valori alti con sangue ON, rendering di tutti gli attori boa ai valori alti, tutti gli shader boa postprocessati ON, specchi e riflessi ON, la maggior parte delle opzioni opengl ON, filtro texture alto ON","Включены: 3D-деревья, все спецэффекты, все частицы (с высокими настройками и включая капли), отображение всех объектов с высокими настройками, все шейдеры, зеркала и отражения, большая часть продвинутых опций движка из серии gl_, высокий уровень фильтрации текстур."
-,OPT_LOW,,Low Mode On,,,,Modalita' Bassa ON,"Включить низкие настройки ВКЛ.
+,OPT_LOW,,Low Mode On,,,,Modalita' Bassa ON,"Включить низкие настройки
 "
 ,OPT_LOWM,,"3d trees off, all boa special effects off except leaves, all boa particles at wider values with blood gibs on, all boa actors rendering at min values, all boa postprocessed shaders off except colorgrading, mirrors & reflections off, most of advanced engine gl_options off",,,,"alberi 3d OFF, tutti gli effetti speciali boa OFF eccetto le foglie, tutte le particelle boa a valori intermedi con resti di sangue ON, rendering di tutti gli attori boa ai valori minimi, tutti gli shader boa postprocessati OFF, specchi e riflessi OFF, la maggior parte delle opzioni opengl OFF","Выключены: 3D-деревья, все спецэффекты (кроме листьев), шейдеры (кроме изменения цветов), зеркала и отражения, большая часть продвинутых опций движка из серии gl_; включены все частицы (с увеличенными значениями и включая кровь); отображение всех объектов с минимальными настройками."
-,OPT_NORM,,Normal Mode On,,,,Modalita' Normale ON,"Включить средние настройки ВКЛ.
+,OPT_NORM,,Normal Mode On,,,,Modalita' Normale ON,"Включить средние настройки
 "
 ,OPT_NORMM,,"3d trees on, all boa special effects on except clouds, dust, smoke & steam, all boa particles at normal values with droplets on, all boa actors rendering at wider values, all boa postprocessed shaders off except colorgrading, mirrors & reflections on, most of advanced engine gl_options off",,,,"alberi 3d ON, tutti gli effetti speciali boa ON eccetto nuvole, polvere e vapore, tutte le particelle boa ai valori normali con sangue ON, rendering di tutti gli attori boa ai valori intermedi, tutti gli shader boa postprocessati OFF eccetto colorgrading, specchi e riflessi ON, la maggior parte delle opzioni opengl OFF","Включены: 3D-деревья, все спецэффекты (кроме облаков, пыли, дыма и пара), все частицы (с нормальными значениями и включая капли), отображение всех объектов с увеличенными настройками, зеркала и отражения; выключены: все шейдеры (кроме изменения цветов), большая часть продвинутых опций движка из серии gl_options."
-,OPT_PORT1,,Advanced GL Portals Off,Erweiterte GL Portale aus,,,Portali GL Avanzati OFF,Выключить продвинутые порталы ВЫКЛ.
+,OPT_PORT1,,Advanced GL Portals Off,Erweiterte GL Portale aus,,,Portali GL Avanzati OFF,Выключить продвинутые порталы
 ,OPT_PORT2,,Advanced GL Portals On,Erweiterte GL Portale an,,,Portali GL Avanzati ON,Включить продвинутые порталы
-,OPT_PORTS1,,"\cGWARNING! This is an extreme measure to improve performance on very low-end rigs, but you'll experience visual glitches which we are not responsible for! Use it at your own risk!\cD This won't be saved in your config anyway.\cR Are you sure?","\cGWARNUNG! Hierbei handelt es sich um eine extreme Maßnahme um die Performance auf schwächeren Systemen zu verbessern, im Gegenzug entstehen aber visuelle Fehler, für die wir nicht verantwortlich sind! Benutzung unter eigenem Risiko!\cD Diese Einstellungen werden ohnehin nicht dauerhaft in deinr Konfiguration gespeichert.\cRBist du sicher?",,,"\ATTENZIONE! Questa e' una misura estrema per migliorare le prestazioni su impianti di fascia molto bassa, ma si potrebbero verificare problemi visivi di cui non siamo responsabili! Usalo a tuo rischio e pericolo!\cD Questo non sara' comunque salvato nella tua configurazione.\cR Sei sicuro?","\cGВНИМАНИЕ! Это радикальный способ увеличить производительность на очень слабых машинах; Вы будете видеть ошибки отрисовки, за которые мы не несём никакой ответственности! Используйте на свой страх и риск!\cDЭта настройка не будет сохранена в конфигурационный файл.\cRВы уверены, что хотите её включить?"
+,OPT_PORTS1,,"\cGWARNING! This is an extreme measure to improve performance on very low-end rigs, but you'll experience visual glitches which we are not responsible for! Use it at your own risk!\cD This won't be saved in your config anyway.\cR Are you sure?","\cGWARNUNG! Hierbei handelt es sich um eine extreme Maßnahme um die Performance auf schwächeren Systemen zu verbessern, im Gegenzug entstehen aber visuelle Fehler, für die wir nicht verantwortlich sind! Benutzung unter eigenem Risiko!\cD Diese Einstellungen werden ohnehin nicht dauerhaft in deinr Konfiguration gespeichert.\cRBist du sicher?",,,"\ATTENZIONE! Questa e' una misura estrema per migliorare le prestazioni su impianti di fascia molto bassa, ma si potrebbero verificare problemi visivi di cui non siamo responsabili! Usalo a tuo rischio e pericolo!\cD Questo non sara' comunque salvato nella tua configurazione.\cR Sei sicuro?","\cGВНИМАНИЕ! Это радикальный способ увеличить производительность на очень слабых машинах; Вы будете видеть ошибки отрисовки, за которые мы не несём никакой ответственности! Используйте на свой страх и риск! \cDЭта настройка не будет сохранена в конфигурационный файл. \cRВы уверены, что хотите её включить?"
 ,OPT_PORTS2,,Enable Portals again?,Portale wieder aktivieren?,,,Abilita i Portal nuovamente?,Включить порталы?
 ,OPT_PROC,,Post Process Options,Post Process Einstellungen,,,Opzioni di Post Process,Настройки постобработки
 ,OPT_REND,,Rendering Settings,Render Einstellungen,,,Settaggi di Renderizzazione,Настройки отрисовки
@@ -93,7 +94,7 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,OPT_VHIM,,"3d trees on, all boa special effects on, all boa particles at highest values with droplets on, all boa actors rendering at highest values, all boa postprocessed shaders on, mirrors & reflections on, most of advanced engine gl_options on except, highest texture filter on",,,,"alberi 3d ON, tutti gli effetti speciali boa ON, tutte le particelle boa ai valori piu' alti, rendering di tutti gli attori boa ai valori ai piu' alti, tutti gli shader boa postprocessati ON, specchi e riflessi ON, la maggior parte delle opzioni opengl ON, filtro texture molto alto ON","Всё включено (3D-деревья, спецэффекты, частицы, объекты, шейдеры, зеркала, отражения, опции движка с префиксом gl_, фильтрация); максимальные настройки."
 ,OPT_VLOW,,Potato Mode On,Kartoffel Modus an,,,Modalita' Potato ON,Включить режим калькулятора
 ,OPT_VLOWM,,"3d trees off, all boa special effects off, all boa particles at min values, all boa actors rendering half of min values, all boa postprocessed shaders off, mirrors & reflections off, most of advanced engine gl_options off",,,,"alberi 3d OFF, tutti gli effetti speciali boa ai minimi, tutte le particelle boa ai minimi, rendering di tutti gli attori boa ai minimi, tutti gli shader boa postprocessati OFF, specchi e riflessi OFF, la maggior parte delle opzioni opengl OFF",Все ресурсоёмкие опции выключены; минимальные настройки.
-,OPT_WEAT,,Weather Settings,Wetter Einstellungen,,,Settaggi del Clima,Варианты погоды
+,OPT_WEAT,,Weather Settings,Wetter Einstellungen,,,Settaggi del Clima,Настройки погоды
 ,PP_GRADE,,Color Grading,,,,Gradazione del Colore,Изменение цветов
 ,PP_GRAIN,,Pixelated Film Grain,Pixel-Filmkörnung,,,Granulosita' del Film Pixellato,Пиксельный эффект киноплёнки
 ,PP_LENS,,Lens Flares,Linsenreflektionen,,,Lenti di Bagliore,Блики
@@ -105,12 +106,12 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,PP_OPT5,,Pixel Size,Pixelgröße,,,Dimensione del Pixel,Размер пикселей
 ,PP_VIGN,,Vignette,Vignette,,,Vignetta,Виньетирование
 ,PREDOPT,,PREDEFINED SETTINGS,VOREINSTELLUNGEN,,,SETTAGGI PREDEFINITI,ГОТОВЫЕ КОНФИГУРАЦИИ
-,RE_2DTR,,2D Trees,2D Bäume,,,Alberi 2D,Двухмерные деревья
+,RE_2DTR,,2D Trees,2D Bäume,,,Alberi 2D,Двумерные деревья
 ,RE_GRAS,,Grass,Grass,,,Erba,Трава
 ,RE_MIRR,,Mirrors,Spiegel,,,Specchi,Зеркала
 ,RE_REFL,,Reflections,Reflektionen,,,Riflessi,Отражения
 ,RE_SCEN,,Scenery,Dekoration,,,Scenario,Декорации
-,RE_SFX,,Special Effects,Spezialeffekte,,,Effetti Speciali,Особые эффекты
+,RE_SFX,,Special Effects,Spezialeffekte,,,Effetti Speciali,Спецэффекты
 ,RE_SHAD,,Sprite Shadows,Sprite Schatten,,,Ombre degli Sprite,Тени от спрайтов
 ,RE_TREE,,Trees,Bäume,,,Alberi,Деревья
 ,SF_BUBL,,Underwater Bubbles,Unterwasserblasen,,,Bolle Sott'acqua,Подводные пузыри
@@ -146,9 +147,9 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,,,,,,,,
 ,,Menu Skill Descriptions,,,,,,
 ,,,,,,,,
-,SKILLDESCRIPTION1,,"\c-With this skill, you receive only \cQhalf damage,\n\c-infighting is \cQenabled\c-, and enemy aggression is greatly \cQreduced\c-.",,,,"\c-Con questo livello di difficolta', subisci \cQmeta' del danno,\ni \c-combattimenti fra nemici sono \cQabilitati\c- e l'aggressivita' nemica e' molto \cQridotta\c-.","\c-На этом уровне сложности Вы получаете лишь \cQполовину урона,\c-битвы между врагами \cQвключены\c-, а вражеская агрессия значительно \cQснижена\c-."
-,SKILLDESCRIPTION2,,"\c-With this skill, you receive \cQ33% less damage\n\c-and infighting is \cQenabled\c-.",,,,"\c-Con questo livello di difficolta', subisci\cQ33% danno in meno\n\c-e i \c-combattimenti fra nemici sono \cQabilitati\c-.","\c-На этом уровне сложности Вы получаете на \cQ33% меньше урона, \c-и враги \cQмогут\c- драться между собой."
-,SKILLDESCRIPTION3,,\c-This is the intended way to play Blade of Agony.\n\c-Infighting is \cRdisabled\c-.,,,,\c-Questo e' come si dovrebbe giocare Blade of Agony.\n i \c-combattimenti fra nemici sono \cRdisabilitati\c-.,\c-Рекомендуемый уровень сложности для игры в Blade of Agony. \c-Битвы между врагами\cRотключены\c-.
+,SKILLDESCRIPTION1,,"\c-With this skill, you receive only \cQhalf damage,\n\c-infighting is \cQenabled\c-, and enemy aggression is greatly \cQreduced\c-.",,,,"\c-Con questo livello di difficolta', subisci \cQmeta' del danno,\ni \c-combattimenti fra nemici sono \cQabilitati\c- e l'aggressivita' nemica e' molto \cQridotta\c-.","\c-На этом уровне сложности Вы получаете лишь \cQполовину урона\c-, ""дружественный огонь"" между противниками \cQвключён\c-, а вражеская агрессия значительно \cQснижена\c-."
+,SKILLDESCRIPTION2,,"\c-With this skill, you receive \cQ33% less damage\n\c-and infighting is \cQenabled\c-.",,,,"\c-Con questo livello di difficolta', subisci\cQ33% danno in meno\n\c-e i \c-combattimenti fra nemici sono \cQabilitati\c-.","\c-На этом уровне сложности Вы получаете на \cQ33% меньше урона\c-, и противники \cQмогут\c- ранить друг друга."
+,SKILLDESCRIPTION3,,\c-This is the intended way to play Blade of Agony.\n\c-Infighting is \cRdisabled\c-.,,,,\c-Questo e' come si dovrebbe giocare Blade of Agony.\n i \c-combattimenti fra nemici sono \cRdisabilitati\c-.,"\c-Рекомендуемый уровень сложности для игры в Blade of Agony. \c-""Дружественный огонь"" между противниками \cRотключён\c-."
 ,SKILLDESCRIPTION4,,"\c-With this skill, enemy aggression is \cRincreased\n\c-and their rate of fire is \cRquicker\c-.",,,,"\c-Con questo livello di difficolta', l'aggressivita' nemica e' \cRaumentata\n\c-e la capacita' di fare fuoco piu' \cRrapida\c-.","\c-На этом уровне сложности вражеская агрессия \cRувеличена\c-, а их темп огня \cRускорен\c-."
 ,SKILLDESCRIPTION5,,"\c-This ain't at all the intended way to play Blade of Agony. \c-You'll be \cRdamaged at twice the normal rate\c-, \c-enemies will be \cRhighly aggressive, super-fast\c- and cheats will be \cRdisabled\c-. \c-You'll be pleading for your life soon enough.",,,,"\c-Questo non e' certamente il modo migiore per giocare a Blade of Agony.  \c-Subirete il \cRdoppio del danno normale\c-, \c-i nemici saranno \cRmolto aggressivi, super-veloci\c- e i trucchi saranno \cRdisabilitati\c-. \c-Implorerete per la vostra vita molto presto.","\c-Это уж точно не рекомендуемый уровень сложности для Blade of Agony. \c-Наносимый Вам урон будет \cRувеличен вдвое\c-, \c-враги будут \cRвесьма агрессивны и очень быстры\c-, а чит-коды \cRотключены\c-. \c-Вскоре Вы будете просить о пощаде."
 ,,,,,,,,
@@ -161,10 +162,10 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,,,,,,,,
 ,,Overrides for the Dialogues,,,,,,
 ,,,,,,,,
-,TXT_RANDOMGOODBYE_1,,\cCBye!,\cCBis dann!,,,\cCCiao!,\cПока!
+,TXT_RANDOMGOODBYE_1,,\cCBye!,\cCBis dann!,,,\cCCiao!,\cCДо встречи!
 ,TXT_RANDOMGOODBYE_2,,\cCGoodbye!,\cCAuf Wiedersehen!,,,\cCArrivederci!,\cCДо свидания!
-,TXT_RANDOMGOODBYE_3,,\cCBye.,\cCBis bald.,,,\cCAlla prossima.,\cПока.
-,TXT_RANDOMGOODBYE_4,,"\cCAuf Wiedersehen, BJ!",,,,,"\cCДо встречи, Би-Джей!"
+,TXT_RANDOMGOODBYE_3,,\cCBye.,\cCBis bald.,,,\cCAlla prossima.,\cCПока!
+,TXT_RANDOMGOODBYE_4,Isn't this a line BJ should speak himself?,"\cCAuf Wiedersehen, BJ!",,,,,"\cCДо встречи, Би-Джей!"
 ,TXT_HAVEENOUGH,,\cCYou don't need it!,\cCDas brauchst du nicht!,,,\cCNon ne hai bisogno!,\cCВам это не требуется!
 ,TXT_GOAWAY,,\cCGo away!,\cCGeh weg!,,,\cCVai via!,\cCУходите!
 ,,,,,,,,
@@ -194,161 +195,161 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,,,,,,,,
 ,,Mission Objectives,,,,,,
 ,,REMINDER: These lines must be very short in all languages,,,,,,
-,MO_C1M1_P1,,Gain access to registration building\n,,,,Accedi all'edificio di registrazione\n,Получите доступ к зданию регистрации\n
+,MO_C1M1_P1,,Gain access to registration building\n,,,,Accedi all'edificio di registrazione\n,Получите доступ к комендатуре\n
 ,MO_C1M1_P2,,Find entrance to the laboratories\n,,,,Trova l'entrata per i laboratori\n,Найдите вход в лабораторию\n
-,MO_C1M1_P3,,Kill Schabbs Jr. and collect intel\n,,,,Uccidi Schabbs Jr. e raccogli le informazioni\n,Убейте Шаббса-младшего и соберите информацию\n
-,MO_C1M1_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
-,MO_C1M1_S2,,Collect Operation: Eisenmann files\n,,,,Raccogli i file dell'Operazione Eisenmann\n,"Найдите документы по Операции ""Железный человек""\n"
+,MO_C1M1_P3,,Kill Schabbs Jr. and collect intel\n,,,,Uccidi Schabbs Jr. e raccogli le informazioni\n,Убейте д-ра Шаббса-мл.\n
+,MO_C1M1_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
+,MO_C1M1_S2,,Collect Operation: Eisenmann files\n,,,,Raccogli i file dell'Operazione Eisenmann\n,Найдите секретные документы\n
 ,,,,,,,,
-,MO_C1M2_P1,,Lower the security gates to prison\n,,,,Abbassa i cancelli di sicurezza della prigione\n,Откройте охраняемые ворота в тюрьму\n
-,MO_C1M2_P2,,Reach the execution cell block\n,,,,Raggiungi il complesso del braccio della morte\n,Доберитесь до блока осуществления казней\n
-,MO_C1M2_P3,,Kill guards and free Agent Ryan\n,,,,Uccidi le guardie e libera l'Agente Ryan\n,Устраните охранников и освободите агента Райана\n
-,MO_C1M2_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
-,MO_C1M2_S2,,Collect Operation: Eisenmann files\n,,,,Raccogli i file dell'Operazione Eisenmann\n,"Найдите документы по Операции ""Железный человек""\n"
+,MO_C1M2_P1,,Lower the security gates to prison\n,,,,Abbassa i cancelli di sicurezza della prigione\n,Откройте ворота в тюрьму\n
+,MO_C1M2_P2,,Reach the execution cell block\n,,,,Raggiungi il complesso del braccio della morte\n,Доберитесь до блока казней\n
+,MO_C1M2_P3,,Kill guards and free Agent Ryan\n,,,,Uccidi le guardie e libera l'Agente Ryan\n,Освободите агента Райана\n
+,MO_C1M2_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
+,MO_C1M2_S2,,Collect Operation: Eisenmann files\n,,,,Raccogli i file dell'Operazione Eisenmann\n,Найдите секретные документы\n
 ,,,,,,,,
 ,MO_C1M3_P1,,Enter the control bunker\n,,,,Infiltrati nel bunker di controllo\n,Достигните бункера управления\n
-,MO_C1M3_P2,,Reach the top of the flak tower\n,,,,Raggiungi la cima della torre dei flak\n,Доберитесь до верха зенитной башни\n
+,MO_C1M3_P2,,Reach the top of the flak tower\n,,,,Raggiungi la cima della torre dei flak\n,Доберитесь до верха башни\n
 ,MO_C1M3_P3,,Destroy all flak cannons\n,,,,Distruggi tutti i cannoni flak\n,Уничтожьте все зенитные орудия\n
-,MO_C1M3_S1,,Collect Operation: Eisenmann files\n,,,,Raccogli i file dell'Operazione Eisenmann\n,"Найдите документы по Операции ""Железный человек""\n"
-,MO_C1M3_S2,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
+,MO_C1M3_S1,,Collect Operation: Eisenmann files\n,,,,Raccogli i file dell'Operazione Eisenmann\n,Найдите секретные документы\n
+,MO_C1M3_S2,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
 ,,,,,,,,
-,MO_C1M4_P1,,Reach the dam's lower levels\n,,,,Raggiungi i piani inferiori della diga\n,Доберитесь до нижних уровней дамбы\n
-,MO_C1M4_P2,,Destroy the Flakvierling guns\n,,,,Distruggi i flakvierling\n,Уничтожьте счетверённые зенитные орудия\n
+,MO_C1M4_P1,,Reach the dam's lower levels\n,,,,Raggiungi i piani inferiori della diga\n,Достигните нижнего уровня дамбы\n
+,MO_C1M4_P2,,Destroy the Flakvierling guns\n,,,,Distruggi i flakvierling\n,Уничтожьте счетверённые зенитки\n
 ,MO_C1M4_P3,,Escape through the north entrance\n,,,,Fuggi dall'entata a nord\n,Уйдите через северный вход\n
-,MO_C1M4_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
-,MO_C1M4_S2,,Collect Operation: Eisenmann files\n,,,,Raccogli i file dell'Operazione Eisenmann\n,"Найдите документы по Операции ""Железный человек""\n"
+,MO_C1M4_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
+,MO_C1M4_S2,,Collect Operation: Eisenmann files\n,,,,Raccogli i file dell'Operazione Eisenmann\n,Найдите секретные документы\n
 ,,,,,,,,
-,MO_C1M5_P1,,Find the Resistance hideout\n,,,,Trova il nascondiglio della Resistenza\n,Найдите укрытие сил Сопротивления\n
-,MO_C1M5_P2,,Secure plaza & surrounding areas\n,,,,Proteggi la piazza e le aree circostanti\n,Зачистите площадь и прилегающие территории\n
-,MO_C1M5_P3,,Hold plaza & defend Nebelwerfer gun\n,,,,Mantieni la piazza e difendi il Nebelwerfer\n,Удерживайте площадь и защищайте реактивный миномёт\n
-,MO_C1M5_S1,,Collect Operation: Eisenmann files\n,,,,Raccogli i file dell'Operazione Eisenmann\n,"Найдите документы по Операции ""Железный человек""\n"
+,MO_C1M5_P1,,Find the Resistance hideout\n,,,,Trova il nascondiglio della Resistenza\n,Найдите укрытие Сопротивления\n
+,MO_C1M5_P2,,Secure plaza & surrounding areas\n,,,,Proteggi la piazza e le aree circostanti\n,Зачистите прилегающие территории\n
+,MO_C1M5_P3,,Hold plaza & defend Nebelwerfer gun\n,,,,Mantieni la piazza e difendi il Nebelwerfer\n,Защищайте площадь и миномёт\n
+,MO_C1M5_S1,,Collect Operation: Eisenmann files\n,,,,Raccogli i file dell'Operazione Eisenmann\n,Найдите секретные документы\n
 ,MO_C1M5_S2,,Find the BIG gold chest\n,,,,Trova il GRANDE baule d'oro\n,Найдите КРУПНЫЙ ящик с золотом\n
-,MO_C1M5_S3,,Find second half of the solar disc\n,,,,Trova la seconda parte del disco solare\n,Найдите вторую половину солнечного диска\n
+,MO_C1M5_S3,,Find second half of the solar disc\n,,,,Trova la seconda parte del disco solare\n,Найдите вторую половину диска\n
 ,,,,,,,,
 ,MO_C1M6_P1,,Reach the excavation site\n,,,,Raggiungi la zona degli scavi\n,Достигните места раскопок\n
 ,MO_C1M6_P2,,Enter the tomb ruins\n,,,,Entra nelle rovine della tomba\n,Доберитесь до руин гробницы\n
 ,MO_C1M6_P3,,Get the Spear of Destiny\n,,,,Prendi la Lancia del Destino\n,Получите Копьё Судьбы\n
-,MO_C1M6_S1,,Find the 'holy grail' (careful!)\n,,,,Trova il 'Santo Graal' (attenzione!)\n,"Найдите ""святой Грааль"" (осторожно!)\n"
-,MO_C1M6_S2,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
+,MO_C1M6_S1,,Find the 'holy grail' (careful!)\n,,,,Trova il 'Santo Graal' (attenzione!)\n,Найдите Грааль (осторожно!)\n
+,MO_C1M6_S2,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
 ,,,,,,,,
 ,MO_C1M0_P1,,Find the entrance to the facility\n,,,,Trova l'entrata per l'infrastruttura\n,Найдите вход в комплекс\n
 ,MO_C1M0_P2,,Plant all three Comp B bombs\n,,,,Piazza tutte e tre le bombe Comp B\n,Установите все три бомбы\n
-,MO_C1M0_P3,,Find the train station to escape\n,,,,Trova la stazione dei treni per fuggire\n,"Найдите железнодорожную станцию, чтобы уйти\n"
-,MO_C1M0_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
+,MO_C1M0_P3,,Find the train station to escape\n,,,,Trova la stazione dei treni per fuggire\n,"Найдите ж/д станцию, чтобы уйти\n"
+,MO_C1M0_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
 ,,,,,,,,
 ,MO_C2M1_P1,,Establish radio contact with Blake\n,,,,Stabilisci un contatto radio con Blake\n,Установите связь с Блейком\n
 ,MO_C2M1_P2,,Find an escape route\n,,,,Trova una via di fuga\n,Найдите путь отхода\n
 ,MO_C2M1_P3,,Rendezvous with Blake in the east\n,,,,Incontrati con Blake ad est\n,Встретьтесь с Блейком на востоке\n
-,MO_C2M1_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
+,MO_C2M1_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
 ,MO_C2M1_S2,,Find the Mayan artifact\n,,,,Trova l'artefatto Maya\n,Найдите артефакт майя\n
-,MO_C2M1_S3,,Stop German radio communication\n,,,,Ferma la comunicazione radio Tedesca\n,Остановите работу немецкой системы радиосвязи\n
+,MO_C2M1_S3,,Stop German radio communication\n,,,,Ferma la comunicazione radio Tedesca\n,Остановите немецкую радиосвязь\n
 ,,,,,,,,
-,MO_C2M2_P1,,Infiltrate the research facility\n,,,,Infiltrati nel centro di ricerca\n,Проникните в исследовательский комплекс\n
-,MO_C2M2_P2,,Destroy the automated prototypes\n,,,,Distruggi i prototipi automatizzati\n,Уничтожьте автоматизированные прототипы\n
-,MO_C2M2_P3,,Destroy the research facility\n,,,,Distruggi il centro di ricerca\n,Уничтожьте исследовательский комплекс\n
-,MO_C2M2_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
+,MO_C2M2_P1,,Infiltrate the research facility\n,,,,Infiltrati nel centro di ricerca\n,Проникните в комплекс\n
+,MO_C2M2_P2,,Destroy the automated prototypes\n,,,,Distruggi i prototipi automatizzati\n,Уничтожьте прототипы\n
+,MO_C2M2_P3,,Destroy the research facility\n,,,,Distruggi il centro di ricerca\n,Уничтожьте комплекс\n
+,MO_C2M2_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
 ,MO_C2M2_S2,,Find the Mayan artifact\n,,,,Trova l'artefatto Maya\n,Найдите артефакт майя\n
 ,,,,,,,,
 ,MO_C2M3_P1,,Investigate the farm to the north\n,,,,Indaga nella fattoria al nord\n,Исследуйте ферму на севере\n
-,MO_C2M3_P2,,Find a way into church's catacombs\n,,,,Trova una via per le catacombe della chiesa\n,Найдите вход в церковные катакомбы\n
+,MO_C2M3_P2,,Find a way into church's catacombs\n,,,,Trova una via per le catacombe della chiesa\n,Найдите вход в катакомбы церкви\n
 ,MO_C2M3_P3,,Kill Holzbein and Giftmacher\n,,,,Uccidi Holzbein e Giftmacher\n,Устраните Хольцбейна и Гифтмахера\n
-,MO_C2M3_S1,,Find and open the 2 supply chests\n,,,,Trova e apri i 2 bauli segreti\n,Найдите и откройте два ящика с припасами\n
-,MO_C2M3_S2,,Get the Nebelwerfer on church's roof\n,,,,Raccogli il Nebelwerfer sul tetto della chiesa\n,Достаньте ракетницу на крыше церкви\n
+,MO_C2M3_S1,,Find and open the 2 supply chests\n,,,,Trova e apri i 2 bauli segreti\n,Откройте два ящика с припасами\n
+,MO_C2M3_S2,,Get the Nebelwerfer on church's roof\n,,,,Raccogli il Nebelwerfer sul tetto della chiesa\n,Достаньте ракетницу на церкви\n
 ,MO_C2M3_S3,,Find the Mayan artifact\n,,,,Trova l'artefatto Maya\n,Найдите артефакт майя\n
 ,,,,,,,,
-,MO_C2M4_P1,,Join Douglas in the truck\n,,,,Raggiungi Douglas sul camion\n,Доберитесь до грузовика и присоединитесь к Дугласу\n
+,MO_C2M4_P1,,Join Douglas in the truck\n,,,,Raggiungi Douglas sul camion\n,Присоединитесь к Дугласу\n
 ,MO_C2M4_P2,,Reach the outskirts of Mahdia\n,,,,Raggiungi le periferie di Mahdia\n,Достигните окраины Махдии\n
 ,MO_C2M4_P3,,Collect the secret files\n,,,,Raccogli i file segreti\n,Заберите секретные документы\n
-,MO_C2M4_S1,,Destroy all German fighter planes\n,,,,Distruggi tutti gli aerei da combattimento Tedeschi\n,Уничтожьте все немецкие истребители\n
+,MO_C2M4_S1,,Destroy all German fighter planes\n,,,,Distruggi tutti gli aerei da combattimento Tedeschi\n,Уничтожьте немецкие истребители\n
 ,MO_C2M4_S2,,Find the Mayan artifact\n,,,,Trova l'artefatto Maya\n,Найдите артефакт майя\n
-,MO_C2M4_S3,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
+,MO_C2M4_S3,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
 ,,,,,,,,
 ,MO_C2M5_P1,,Fight your way into the facility\n,,,,Fatti strada combattendo nella struttura\n,Прорвитесь к комплексу\n
 ,MO_C2M5_P2,,Destroy the flying saucer\n,,,,Distruggi il disco volante\n,Уничтожьте летающую тарелку\n
-,MO_C2M5_P3,,Place Comp B on all vital spots\n,,,,Piazza il Comp B in tutti i punti vitali\n,Поставьте заряды взрывчатки на всех важных позициях\n
+,MO_C2M5_P3,,Place Comp B on all vital spots\n,,,,Piazza il Comp B in tutti i punti vitali\n,Заминируйте важные позиции\n
 ,MO_C2M5_S1,,Find the Ubermaschinengewehr 43\n,,,,Trova l'Ubermaschinengewehr 43\n,Найдите супер-пулемёт 43\n
 ,MO_C2M5_S2,,Find the Mayan artifact\n,,,,Trova l'artefatto Maya\n,Найдите артефакт майя\n
-,MO_C2M5_S3,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
+,MO_C2M5_S3,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
 ,,,,,,,,
-,MO_C2M6A_P1,,Reach the northern train station\n,,,,Raggiungi la stazione nord\n,Доберитесь до северной железнодорожной станции\n
-,MO_C2M6A_P2,,Lower gates from control tower\n,,,,Abbassa i cancelli dalla torre di controllo\n,Откройте ворота из башни управления\n
+,MO_C2M6A_P1,,Reach the northern train station\n,,,,Raggiungi la stazione nord\n,Достигните северной ж/д станции\n
+,MO_C2M6A_P2,,Lower gates from control tower\n,,,,Abbassa i cancelli dalla torre di controllo\n,Откройте ворота из башни\n
 ,MO_C2M6A_S1,,Find the heavy armor\n,,,,Trova l'armatura pesante\n,Найдите тяжёлую броню\n
-,MO_C2M6A_S2,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
+,MO_C2M6A_S2,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
 ,,,,,,,,
 ,MO_C2M6B_P1,,Find a scientist coat\n,,,,Trova una uniforme da scienziato\n,Найдите костюм учёного\n
 ,MO_C2M6B_P2,,Find an identification card\n,,,,Trova una carta di identita'\n,Найдите удостоверение личности\n
-,MO_C2M6B_P3,,Enter the U-boat storage to hide\n,,,,Entra nella stiva dell'U-Boat e nasconditi\n,Спрячьтесь в трюме подводной лодки\n
-,MO_C2M6B_S1,,Find the 'Totale Macht'\n,,,,Trova il 'Totale-Macht'\n,"Найдите ""Полную мощность""\n"
+,MO_C2M6B_P3,,Enter the U-boat storage to hide\n,,,,Entra nella stiva dell'U-Boat e nasconditi\n,Спрячьтесь в трюме подлодки\n
+,MO_C2M6B_S1,,Find the 'Totale Macht'\n,,,,Trova il 'Totale-Macht'\n,"Найдите ""Полную Мощность""\n"
 ,MO_C2M6B_S2,,Investigate research side project\n,,,,Indaga sul progetto di ricerca esterno\n,Узнайте больше о побочном проекте\n
-,MO_C2M6B_S3,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
+,MO_C2M6B_S3,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
 ,,,,,,,,
 ,MO_C2M6C_P1,,Kill Seeteufel and Giftmacher\n,,,,Uccidi Seeteufel e Giftmacher\n,Устраните Зеетойфеля и Гифтмахера\n
 ,MO_C2M6C_P2,,Shut down the Hades facility\n,,,,Fai cessare ogni attivita' nel centro Hades\n,"Прекратите работу комплекса ""Аид""\n"
 ,MO_C2M6C_P3,,Investigate Fettgesicht's excavation\n,,,,Indaga presso la zona degli scavi di Fettgesicht\n,Исследуйте раскопки Феттгезихта\n
 ,MO_C2M6C_S1,,Find the adrenaline kit\n,,,,Trova il kit di adrenalina\n,Найдите упаковку адреналина\n
 ,,,,,,,,
-,MO_C2M0A_P1,,Reach Nazi base camp and wipe it out\n,,,,Raggiungi l'accampamento dei Nazisti ed elimina tutti\n,Доберитесь до нацистского лагеря и зачистите его\n
+,MO_C2M0A_P1,,Reach Nazi base camp and wipe it out\n,,,,Raggiungi l'accampamento dei Nazisti ed elimina tutti\n,Зачистите нацистский лагерь\n
 ,MO_C2M0A_P2,,Reach the Pyramid of Kukulka'n\n,,,,Raggiungi la piramide di Kukulka'n\n,Достигните пирамиды Кукулькана\n
-,MO_C2M0A_P3,,Find the portal experiment site\n,,,,Trova il sito del portale sperimentale\n,Найдите место эксперимента с порталами\n
-,MO_C2M0A_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
+,MO_C2M0A_P3,,Find the portal experiment site\n,,,,Trova il sito del portale sperimentale\n,Найдите эксперимент с порталами\n
+,MO_C2M0A_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
 ,,,,,,,,
-,MO_C2M0B_P1,,Escape the prison ship SS Eisenherz\n,,,,Evadi dalla nave prigione SS Eusenherz\n,Сбегите с тюремного борта SS Eisenherz\n
+,MO_C2M0B_P1,,Escape the prison ship SS Eisenherz\n,,,,Evadi dalla nave prigione SS Eusenherz\n,Сбегите с борта SS Eisenherz\n
 ,MO_C2M0B_P2,,Reach the city New Berlin\n,,,,Raggiungi la citta' di New Berlin\n,Достигните Нового Берлина\n
-,MO_C2M0B_P3,,Destroy the Cyber-Mastermind Hitler\n,,,,Distruggi Hitler Cyber-Mastermind\n,Уничтожьте кибер-предводителя Гитлера!\n
+,MO_C2M0B_P3,,Destroy the Cyber-Mastermind Hitler\n,,,,Distruggi Hitler Cyber-Mastermind\n,Уничтожьте кибер-Гитлера!\n
 ,MO_C2M0B_S1,,Find the Protonenflinte S79\n,,,,Trova il Protonenflinte S79\n,Найдите протонное ружьё S79\n
 ,MO_C2M0B_S2,,Find the Repetierlaser 0815\n,,,,Trova il Repetierlaser 0815\n,Найдите автоматический лазер 0815\n
 ,MO_C2M0B_S3,,Find the Energiegewehr B95\n,,,,Trova l'Energiegewehr B95\n,Найдите плазмомёт B95\n
 ,,,,,,,,
-,MO_C3M1_P1,,Escape the camp and meet Sgt. Ascher \n,,,,Evadi dal campo e incontrati con Lt. Ascher\n,Покиньте лагерь и встретьтесь с лейтенантом Ашером\n
+,MO_C3M1_P1,,Escape the camp and meet Sgt. Ascher \n,,,,Evadi dal campo e incontrati con Lt. Ascher\n,Покиньте лагерь и встретьте Ашера\n
 ,MO_C3M1_P2,,Free the camp prisoners\n,,,,Libera i prigionieri del campo\n,Освободите заключённых из лагеря\n
 ,MO_C3M1_P2A,,Distract the camp guards\n,,,,Distrai le guardie del campo\n,Отвлеките охрану лагеря\n
 ,MO_C3M1_P3,,Destroy the facility\n,,,,Distruggi la struttura\n,Уничтожьте комплекс\n
-,MO_C3M1_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
+,MO_C3M1_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
 ,MO_C3M1_S2,,Kill Dr. Mengele\n,,,,Uccidi il Dr. Mengele\n,Убейте Доктора Менгеле\n
 ,MO_C3M1_S3,,Find at least 6 clues\n,,,,Tova almeno 6 indizi\n,Найдите не менее шести подсказок\n
 ,,,,,,,,
 ,MO_C3M2_P1,,Rendezvous with the allied forces \n,,,,Incontrati con le forze alleate\n,Встретьтесь с войсками союзников\n
-,MO_C3M2_P2,,Reach the hq at the mansion east\n,,,,Raggiungi i quartieri generali dalla mansione ad est\n,Доберитесь до штаба в особняке на востоке\n
+,MO_C3M2_P2,,Reach the hq at the mansion east\n,,,,Raggiungi i quartieri generali dalla mansione ad est\n,Достигните штаба в доме восточнее\n
 ,MO_C3M2_P3,,Destroy 3 objectives\n,,,,Distruggi 3 obiettivi\n,Уничтожьте три цели\n
-,MO_C3M2_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
+,MO_C3M2_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
 ,MO_C3M2_S2,,Destroy the radar central\n,,,,Distruggi la centrale radar\n,Выведите из строя систему радаров\n
 ,,,,,,,,
 ,MO_C3M3_P1,,Reach the town of Arnhem\n,,,,Raggiungi la citta' di Arnhem\n,Достигните Арнема\n
 ,MO_C3M3_P2,,Enter the Flaktower\n,,,,Entra nella Flaktower\n,Доберитесь до зенитной башни\n
 ,MO_C3M3_P3,,Kill James Ryan\n,,,,Uccidi James Ryan\n,Убейте Джеймса Райана\n
-,MO_C3M3_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
+,MO_C3M3_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
 ,,,,,,,,
-,MO_C3M4_P1,,Enter the Wolfsschanze\n,,,,Entra nel Wolfsschanze\n,Доберитесь до Волчьего логова\n
+,MO_C3M4_P1,,Enter the Wolfsschanze\n,,,,Entra nel Wolfsschanze\n,Доберитесь до Волчьего Логова\n
 ,MO_C3M4_P2,,Reach the city of Rastenburg\n,,,,Raggiungi la citta' di Rastenburg\n,Достигните Растенбурга\n
-,MO_C3M4_P3,,Survive until the Soviets arrive\n,,,,Sopravvivi fin quando arrivano i Sovietici\n,Выживите и встретьте Красную Армию\n
-,MO_C3M4_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
+,MO_C3M4_P3,,Survive until the Soviets arrive\n,,,,Sopravvivi fin quando arrivano i Sovietici\n,Встретьте Красную Армию\n
+,MO_C3M4_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
 ,MO_C3M4_S2,,Collect at least 15 big souls\n,,,,Raccogli almeno 15 grande anime\n,Соберите не менее 15 крупных душ\n
 ,,,,,,,,
 ,MO_C3M5A_P1,,Enter the Reichs Chancellory\n,,,,Entra nel Reichs Chancellory\n,Доберитесь до Рейхсканцелярии\n
-,MO_C3M5A_P2,,Kill Hitler's 4 henchmen\n,,,,Uccidi i 4 scagnozzi di Hitler\n,Устраните четырёх приспешников Гитлера\n
-,MO_C3M5A_P3,,"Find Hitler, dead or alive\n",,,,"Trova Hitler, vivo o morto\n",Найдите Гитлера — живым или мёртвым!
-,MO_C3M5A_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
+,MO_C3M5A_P2,,Kill Hitler's 4 henchmen\n,,,,Uccidi i 4 scagnozzi di Hitler\n,Устраните четырёх нацистских бонз\n
+,MO_C3M5A_P3,,"Find Hitler, dead or alive\n",,,,"Trova Hitler, vivo o morto\n",Найдите Гитлера!\n
+,MO_C3M5A_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
 ,MO_C3M5A_S1,,Find the soul chamber\n,,,,Trova la stanza dell'anima\n,Найдите комнату душ\n
 ,,,,,,,,
 ,MO_C3M5C_P1,,Find the repair kit\n,,,,Trova il kit di riparazione\n,Найдите ремонтный набор\n
 ,MO_C3M5C_P2,,Find two parachutes\n,,,,Trova due paracadute\n,Найдите два парашюта\n
 ,MO_C3M5C_P3,,Sabotage the engines\n,,,,Sabota i motori\n,Саботируйте работу двигателей\n
-,MO_C3M5C_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
+,MO_C3M5C_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
 ,,,,,,,,
 ,MO_C3M6A_P1,,Reach the Castle gates\n,,,,Raggiungi le porte del Castello\n,Достигните ворот Замка\n
 ,MO_C3M6A_P2,,Investigate the SS headquarter\n,,,,Indaga nel quartier generale delle SS\n,Исследуйте штаб СС\n
-,MO_C3M6A_P3,Fettgesicht?,Kill Schwabbelhals ultimately\n,,,,Uccidi Schwabbelhals definitivamente\n,Устраните Феттгезихта окончательно\n
-,MO_C3M6A_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Найдите и откройте ящик с припасами\n
+,MO_C3M6A_P3,Fettgesicht?,Kill Schwabbelhals ultimately\n,,,,Uccidi Schwabbelhals definitivamente\n,Устраните Феттгезихта насовсем\n
+,MO_C3M6A_S1,,Find and open the supply chest\n,,,,Trova e apri il baule segreto\n,Откройте ящик с припасами\n
 ,MO_C3M6A_S2,,Find the tesla cannon\n,,,,Trova il cannone tesla\n,Найдите пушку Тесла\n
 ,,,,,,,,
 ,,Key Messages,,,,,,
 ,,,,,,,,
-,GOTBLUEKEY,,Picked up a \cHblue \cRkey.,,,,Raccogli una \cRchiave \cHblu.,Получен \cHсиний \cRключ.
-,GOTCYANKEY,,Picked up a \cVcyan \cRkey.,,,,Raccogli una \cRchiave \cVazzurra.,Получен \cVголубой \cRключ.
-,GOTGREENKEY,,Picked up a \cDgreen \cRkey.,,,,Raccogli una \cRchiave \cDverde.,Получен \cDзелёный \cRключ.
-,GOTPURPLEKEY,,Picked up a \cTpurple \cRkey.,,,,Raccogli una \cRchiave \cTviola.,Получен \cTфиолетовый \cRключ.
-,GOTREDKEY,,Picked up a \cGred \cRkey.,,,,Raccogli una \cRchiave \cGrossa.,Получен \cGкрасный \cRключ.
-,GOTYELLOWKEY,,Picked up a \cKyellow \cRkey.,,,,Raccogli una \cRchiave \cKgialla.,Получен \cKжёлтый \cRключ.
+,GOTBLUEKEY,,Picked up a \cHblue \cRkey.,,,,Raccogli una \cRchiave \cHblu.,\cCПолучен \cHсиний \cCключ.
+,GOTCYANKEY,,Picked up a \cVcyan \cRkey.,,,,Raccogli una \cRchiave \cVazzurra.,\cCПолучен \cVголубой \cCключ.
+,GOTGREENKEY,,Picked up a \cDgreen \cRkey.,,,,Raccogli una \cRchiave \cDverde.,\cCПолучен \cDзелёный \cCключ.
+,GOTPURPLEKEY,,Picked up a \cTpurple \cRkey.,,,,Raccogli una \cRchiave \cTviola.,\cCПолучен \cTфиолетовый \cCключ.
+,GOTREDKEY,,Picked up a \cGred \cRkey.,,,,Raccogli una \cRchiave \cGrossa.,\cCПолучен \cGкрасный \cCключ.
+,GOTYELLOWKEY,,Picked up a \cKyellow \cRkey.,,,,Raccogli una \cRchiave \cKgialla.,\cCПолучен \cKжёлтый \cCключ.
 ,,,,,,,,
 ,PD_BLUEW,,\cCYou need a \cHblue \cCkey to open this door,,,,\cCHa bisogno di una \cCchiave  \cHblu per aprire questa porta,\cCДля открытия нужен \cHсиний \cCключ
 ,PD_BLUEWO,,\cCYou need a \cHblue \cCkey to activate this object,,,,\cCHa bisogno di una \cCchiave \cHblu per attivare quest'oggetto,\cCДля активации нужен \cHсиний \cCключ
@@ -476,7 +477,7 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,,,,,,,,
 ,ASHARD,,Picked up an armor shard.,,,,Raccogli un frammento di armatura.,Получен осколок брони.
 ,HEAVY,,Picked up a heavy armor vest!,,,,Raccogli l'armatura pesante!,Получена тяжёлая броня!
-,HELMSS,,Picked up a Stahlhelm.,,,,Raccogli un elmetto d'acciaio.,Получена стальная немецкая каска.
+,HELMSS,,Picked up a Stahlhelm.,,,,Raccogli un elmetto d'acciaio.,Получена немецкая стальная каска.
 ,JACKET,,Picked up a flak jacket.,,,,Raccogli un giubbotto antiproiettile.,Получен бронежилет.
 ,LEATHER,,Picked up a leather jacket.,,,,Raccogli un giubbotto di pelle.,Получена кожаная куртка.
 ,SUPASHLD,,Picked up the tesla shield!,,,,Raccogli lo scudo tesla!,Получен щит Тесла!
@@ -532,10 +533,10 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,THORS,,Picked up Thor's Hammer Files.,,,,Raccogli i File di Thor Hammer.,Получена документация по Молоту Тора.
 ,UNIFORM1,,Picked up a Scientist Uniform. Enemies won't notice you as long as you don't equip your weapons.,,,,Raccogli una Uniforme da Scienziato. I nemici non ti noteranno fin quando non tirerai fuori un'arma.,"Получена униформа учёного. Враги не заметят Вас, пока Вы не достанете оружие."
 ,UNIFORM2,,Picked up an SS Uniform. Enemies won't notice you as long as you don't equip your weapons.,,,,Raccogli una Uniforme delle SS. I nemici non ti noteranno fin quando non tirerai fuori un'arma.,"Получена униформа СС. Враги не заметят Вас, пока Вы не достанете оружие."
-,UNIFORM3,,Picked up a Concentration Camp Uniform. Enemies won't notice you as long as you don't equip your weapons.,,,,Raccogli una Uniforme da Campo di Concentramento. I nemici non ti noteranno fin quando non tirerai fuori un'arma.,"Получена униформа надзирателя. Враги не заметят Вас, пока Вы не достанетеь оружие."
+,UNIFORM3,,Picked up a Concentration Camp Uniform. Enemies won't notice you as long as you don't equip your weapons.,,,,Raccogli una Uniforme da Campo di Concentramento. I nemici non ti noteranno fin quando non tirerai fuori un'arma.,"Получена униформа надзирателя. Враги не заметят Вас, пока Вы не достанете оружие."
 ,ZARM,,Picked up a Zombie arm.,,,,Raccogli un braccio di Zombi.,"Получена рука зомби.
 "
-,ZHED,,Picked up a Zombie head.,,,,Raccogli una testa di Zombi.,Получена  голова зомби.
+,ZHED,,Picked up a Zombie head.,,,,Raccogli una testa di Zombi.,Получена голова зомби.
 ,ZMINR,,Picked up a Vril crystal.,,,,Raccogli un cristallo Vril.,Получен кристал Врил.
 ,ZOMBF,Needs better name? - Talon1024,Picked up Speerkrieg Files.,,,,Raccogli i File Speerkrieg.,"Получены документы по проекту ""Острие Копья""."
 ,,,,,,,,
@@ -608,22 +609,22 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,OTTOBOSS,,%o was splattered by Otto Giftmacher.,,,,,Игрока %o размазал по стенке Отто Гифтмахер.
 ,PARATROP,,%o was slaughtered by a Fallschirmjaeger.,,,,,Игрока %o убил воздушный десантник.
 ,PDRONE,,%o was killed by a Prototype drone.,,,,,Игрока %o убил прототип боевого дрона.
-,PRISONER,that's quite strange this exists,%o was somehow killed by a prisoner.,,,,,Игрока %o убил узник (каким-то образом).
+,PRISONER,that's quite strange this exists,%o was somehow killed by a prisoner.,,,,,Игрока %o каким-то образом убил узник.
 ,RAT,,%o was scratched by a rat.,,,,,Игрока %o расцарапала крыса.
-,RDRAGNOV,,%o was snap-shot by a NKVD guard with a Dragunov.,,,,,Игрока %o шлёпнул НКВД-шник со снайперской винтовкой.
+,RDRAGNOV,,%o was snap-shot by a NKVD guard with a Dragunov.,,,,,Игрока %o шлёпнул НКВД-шник с винтовкой.
 ,RIFLSOLD,,%o was plinked by a rifle soldier.,,,,,Игрока %o застрелил солдат с винтовкой.
 ,ROFFICER,,%o was plugged by a NKVD officer.,,,,,Игрока %o подстрелил офицер НКВД.
-,RPGUARDS,,%o was perforated by a trigger-happy PPSH guard.,,,,,Игрока %o продырявил насквозь солдато с ППШ.
+,RPGUARDS,,%o was perforated by a trigger-happy PPSH guard.,,,,,Игрока %o продырявил насквозь солдат с ППШ.
 ,SCHABBS1,,%o was used as an unwitting test subject by Dr. Schabbs Junior.,,,,,Игрока %o использовал как подопытного против его воли доктор Шаббс-младший.
 ,SCHABBS2,,%o has been punctured and poisoned by Dr. Schabbs Senior.,,,,,Игроку %o сделал смертельную инъекцию доктор Шаббс-старший.
 ,SCORPBIG,,%o was nailed by a big scorpion.,,,,,Игрока %o пригвоздил большой скорпион.
 ,SCORPSML,,%o was stung by a scorpion.,,,,,Игрока %o укусил скорпион.
-,SSCULT,,%o was shotgunned by an SS cultist.,,,,,Игрокп %o подстрелил из дробовика культист из СС.
+,SSCULT,,%o was shotgunned by a cultist.,,,,,Игрокп %o подстрелил из дробовика культист.
 ,SHARK,,%o was shredded by a shark.,,,,,Игрок %o был измельчен акулой.
 ,SHARKL,,%o was killed by a shark with a frikken laser on its head!,,,,,Игрока %o убила акула с чёртовым лазером на голове!
 ,SMOKEMO,,%o was consumed by the smoke-monster!,,,,,Игрока %o поглотил монстр из дыма!
 ,SNIPER,,%o took a headshot from a sniper.,,,,,Игрок %o получил пулю в голову от снайпера.
-,SSGHOST,,%o thought %g saw Hitler.,,,,,"Игроку %o показалось, что %g видел Гитлера."
+,SSGHOST,,%o thought %g saw Hitler.,,,,,Игроку %o почудился Гитлер.
 ,SSGUARD,,%o was killed by an SS guard.,,,,,Игрока %o убил охранник из СС.
 ,SSMPGURD,,%o was plugged by an SS with an MP40.,,,,,Игрока %o подстрелил СС-овец с MP40.
 ,SSOFFICE,,%o was viciously executed by an SS officer.,,,,,Игрока %o безжалостно казнил офицер СС.
@@ -634,7 +635,7 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,SUPAGIRL,,%o was terminated one of Gretel Grosse's daughters.,,,,,Игрока %o устранила одна из дочерей Гретель Гроссе.
 ,SUPAMUTN,,%o did the dance of doom with a powerful Mutant.,,,,,Игрок %o станцевал последний танец с усиленным Мутантом.
 ,SUPASOLD,,%o was terminated by an Ubersoldat.,,,,,Игрока %o устранил суперсолдат.
-,TANKS,,%o was disintegrated by a tank shell.,,,,,Игрока %o превратило в пыль прямое попадание из танковой пушки.
+,TANKS,,%o was disintegrated by a tank shell.,,,,,Игрока %o превратило в облако пыли прямое попадание из танковой пушки.
 ,TESLAT,,%o was zapped by a Tesla Turret.,,,,,Игрока %o ударила током башня Тесла.
 ,TOTENS,,%o was dismembered by General Totengräber attacks.,,,,,Игрок %o был расчленён генералом Тотенгрэбером.
 ,UBERMUTN,,%o was crushed by an Ubermutant.,,,,,Игрока %o раздавил супермутант.
@@ -648,7 +649,7 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,WRIFSOLD,,%o was snap-shot by a rifle soldier.,,,,,Игрока %o остановил стрелок.
 ,ZBAT,,%o was intoxicated by a zyklon bat.,,,,,Игрока %o отравила Циклоном летучая мышь.
 ,ZBUTCHER,,%o has been reduced into rotten sausages by a zombie butcher.,,,,,Игрока %o отправил на колбасу зомби-мясник.
-,ZDOGS,What does this mean?,%o was chewed with a poisonus bitten by a zombie dog.,,,,,Игрок %o не перенёс ядовитый укус зомбированной собаки.
+,ZDOGS,,%o was chewed with a poisonus bite by a zombie dog.,,,,,Игрок %o не перенёс ядовитый укус зомбированной собаки.
 ,ZGENERAL,,%o was creepily killed by undead Fettgesicht.,,,,,Игрок %o принял жуткую смерть от руки зомбированного Феттгезихта.
 ,ZLOSKULL,,%o has been intoxicated till death by a zyklon skull.,,,,,Игрока %o отравил Циклоном череп.
 ,ZMOKEMO,,%o was frightened till death by the zyklon-monster!,,,,,Игрока %o до смерти напугал циклоновый монстр!
@@ -698,7 +699,7 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,OBASTROR,,%o was destroyed by %k's AstroRocket.,,,,,Игрок %k уничтожил игрока %o астро-ракетой.
 ,ELEKTRO,,You picked up the Elektroschocker.,,,,,Получен электрошокер.
 ,OBELEKTRO,,%o was mowed down by %k's Elektroschocker.,,,,,Игрок %k ударил игрока %o электрошокером.
-,Найдите тяжёлый плазмомёт B95\n,,You got the Energiegewehr B95.,,,,,Получен тяжёлый плазмомёт B95.
+,ENERGIE,,You got the Energiegewehr B95.,,,,,Получен тяжёлый плазмомёт B95.
 ,OBENERGIE,,%o was mowed down by %k's energiegewehr.,,,,,Игрок %k дезинтегрировал игрока %o из тяжёлого плазмомёта.
 ,PROTON,,You got the Protonenflinte S79.,,,,,Получено протонное ружьё S79.
 ,OBPROTON,,%o was mowed down by %k's protonenflinte.,,,,,Игрок %k застрелил игрока %o из протонного ружья.
@@ -744,7 +745,7 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,TAGMINR,,Vril Crystal (clue),,,,,Кристалл Врил (подсказка)
 ,TAGNEBWP,,Klein Nebelwerfer,,,,,"Ракетомёт ""Малый Небельверфер""
 "
-,TAGNEURS,,Neural Stunner,,,,,Нейронный Оглушитель
+,TAGNEURS,,Neural Stunner,,,,,Подавитель Нейронной Активности
 ,TAGPETRO,,Petrol,Petroleum,,,,"Горючее
 "
 ,TAGPROTC,,Protonencell,,,,,Протонная батарея
@@ -777,7 +778,7 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,OBBOMB,,%o was destroyed by a bomb.,,,,,Игрока %o уничтожило бомбой.
 ,OBFALLRK,,%o was crushed by a falling rock.,,,,,Игрока %o придавило камнем.
 ,OBFIZZLE,,%o was fizzled to death.,,,,,Игрок %o выдохся.
-,OBGASBTL,,%o was intoxicated by a gas bottle.,,,,,Игрока %o отравило газом.
+,OBGASBTL,,%o was intoxicated by a gas bottle.,,,,,Игрок %o отравился газом.
 ,OBMINE,,%o touched a mine.,,,,,Игрок %o задел мину.
 ,OBDMINE,,%o touched a deployable mine.,,,,,Игрок %o задел переносную мину.
 ,OBSPIKES,,%o was impaled by Tutanchamun's toothpicks.,,,,,Игрока %o проткнуло зубочисткой Тутанхамона.
@@ -803,9 +804,9 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,C2M5,,Operation: Stahlhimmel,,,,Operazione: Stahlhimmel,"Операция ""Стальное небо"""
 ,C2M6,,Operation: Hades,,,,Operazione: Hades,"Операция ""Аид"""
 ,C2M0,,Operation: Astrostein,,,,Operazione: Astrostein,"Операция ""Звёздный камень"""
-,C3M1,"Briefing screen texture with mission title says ""Operation: Freiheit""",Operation: Geheimnisträger,,,,Operazione: Geheimnisträger,"Операция ""Носители секретов"""
+,C3M1,"Briefing screen texture with mission title says ""Operation: Freiheit""",Operation: Freiheit,,,,Operazione: Geheimnisträger,"Операция ""Носители секретов"""
 ,C3M2,,Operation: Eisenherz,,,,Operazione: Eisenherz,"Операция ""Железное сердце"""
-,C3M3,"Briefing screen texture with mission title says ""Operation: Stahlfestung""",Operation: Blutrache,,,,Operazione: Blutrache,"Операция ""Кровная месть"""
+,C3M3,"Briefing screen texture with mission title says ""Operation: Stahlfestung""",Operation: Stahlfestung,,,,Operazione: Blutrache,"Операция ""Кровная месть"""
 ,C3M4,,Operation: Wiedergeburt,,,,Operazione: Wiedergeburt,"Операция ""Возрождение"""
 ,C3M5,,Operation: Götterdämmerung,,,,Operazione: Götterdämmerung,"Операция ""Гибель богов"""
 ,C3M6,,Operation: Wolfenstein,,,,Operazione: Wolfenstein,"Операция ""Вольфенштайн"""
@@ -941,7 +942,7 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,,,,,,,,
 ,BRIEFINGC2M6_1,,"\cCFantastic job on your last mission, \cPWill\cC, but we have no time to lose. Intel's analysis on the files you brought back from the \cRStahlhimmel\cC facility tell us the \cRThor's Hammer\cC research facilities are only a part of something much bigger - the \cRHades Project\cC.",,,,,"\cCКак всегда, великолепная работа, \cPУилл\cC, однако до отдыха далеко: сейчас нельзя терять время. Документы из \cR""Стального Неба""\cC, расшифрованные разведкой, сообщают, что комплексы \cR""Молота Тора""\cC — лишь часть чего-то очень большого, а именно, \cRпроекта ""Аид""\cC."
 ,BRIEFINGC2M6_2,,"\cCWe only have bits and pieces of information about the \cRHades Project\cC, but if our theories are correct, the \cRHades Project\cC is some kind of \cRWunderwaffe\cC that is powerful enough to destroy all of \cBEurope\cC and end the war in one fell swoop -- instant victory for \cRHitler\cC.",,,,,"\cCУ нас есть лишь обрывки информации о \cRпроекте ""Аид""\cC, но, если наши предположения верны, \cRпроект ""Аид""\cC — некое \cRчудо-оружие\cC, которое достаточно мощно для того, чтобы уничтожить \cBЕвропу\cC целиком и привести войну одним махом к немедленной победе \cRГитлера\cC."
-,BRIEFINGC2M6_3,A nuclear missile? Seriously?,"\cCNow, we don't know what the \cRHades Project\cC is; for all we know, it could be some kind of super U-boat or long range nuclear missile. But, we do know that both \cRSeeteufel\cC and \cRGiftmacher\cC are leading this project, and that they are meeting at \cBTrondheim\cC in \cBNorway\cC.",,,,,"\cCМы не знаем, что вообще такое этот \cRпроект ""Аид""\cC; это может быть сверхмощная подводная лодка или ядерная ракета большой дальности. Однако известно, что руководят проектом \cRЗеетойфель\cC и \cRГифтмахер\cC, и что у них будет встреча в \cBнорвежском\cC городе \cBТронхейм\cC."
+,BRIEFINGC2M6_3,,"\cCNow, we don't know what the \cRHades Project\cC is; for all we know, it could be some kind of super U-boat or long range missile. But, we do know that both \cRSeeteufel\cC and \cRGiftmacher\cC are leading this project, and that they are meeting at \cBTrondheim\cC in \cBNorway\cC.",,,,,"\cCМы не знаем, что вообще такое этот \cRпроект ""Аид""\cC; это может быть сверхмощная подводная лодка или ядерная ракета большой дальности. Однако известно, что руководят проектом \cRЗеетойфель\cC и \cRГифтмахер\cC, и что у них будет встреча в \cBнорвежском\cC городе \cBТронхейм\cC."
 ,BRIEFINGC2M6_4,,"\cCThis is where you come in. \cPWill\cC, you and \cQDouglas\cC will drive to the train station in \cBBergen\cC, and catch one of the reinforcement trains to \cBTrondheim\cC. From there, you are to use any means necessary to eliminate \cRGiftmacher\cC and \cRSeeteufel\cC, and shut down the \cRHades Project\cC.",,,,,"\cCТут ты и выходишь на сцену. \cPУилл\cC, вы с \cQДугласом\cC подъедете к железнодорожной станции \cBБергена\cC и поймаете один из поездов, следующий в \cBТронхейм\cC. Когда прибудете, сделайте всё, что нужно для устранения \cRГифтмахера\cC и \cRЗеетойфеля\cC, и остановите \cRАид\cC."
 ,BRIEFINGC2M6_5,,"\cCThis mission could get long, \cPWill\cC, so stay in touch with \cQDouglas\cC and watch his back, and he'll watch yours. Best of luck to both you and \cQDouglas\cC; you will need it! Oh, before you go, \cPWill\cC, \cQJuliette\cC wanted to see you in her office. Dismissed!",,,,,"\cCЗадание будет долгим и тяжёлым, \cPУилл\cC, так что будь рядом с \cQДугласом\cC и прикрывай его, а он пусть прикрывает тебя. Желаю вам обоим удачи, она вам понадобится! А, вот ещё: перед тем как уйти, \cPУилл\cC, зайди к \cQДжульетте\cC в офис, она хотела тебя видеть. Свободен!"
 ,BRIEFINGC2M6_6,,"\cCThis sounds like a hard one, \cPWill\cC. Two birds with one stone, once again, but this time for real, and we're definitely not gonna let \cRGiftmacher\cC escape!",,,,,"\cCЗвучит как серьёзный вызов, \cPУилл\cC. Снова двух зайцев одним выстрелом, но в этот раз по-настоящему — мы не позволим \cRГифтмахеру\cC сбежать!"
@@ -979,11 +980,12 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,BRIEFINGC3M1_6,,"\cCAll right, \cPCaptain\cC. By order of \cQGen. Miller\cC, I'll be the one sending you in, supporting you, and extracting you from the battlefield from now on. I know \cQCpt. Douglas\cC is irreplaceable, but in his memory, I promise I'll do my best!",,,,,"\cPКапитан\cC, согласно приказу \cQгенерала Миллера\cC с настоящего момента я буду отправлять Вас на задания, оказывать поддержку и находить пути отхода. Я прекрасно понимаю, что никто не заменит в этих делах \cQкапитана Блейка\cC, и клянусь, что буду работать на пределе своих возможностей!"
 ,BRIEFINGC3M1_7,,"\cCI'll drop you off near the train station at 0800, and I'll update you as soon as you get a radio from the camp. Watch out for surprises, \cPCaptain\cC. \cBDachau\cC must be more than just an ordinary concentration camp if the rumors are true. Good luck, let's move out!",,,,,"\cCЯ высажу Вас рядом со станцией в 08.00, и как только Вы выйдете в эфир, я начну передавать Вам информацию о текущей обстановке. Будьте осторожны, \cPкапитан\cC. \cBДахау\cC может оказаться большим, чем обычный концентрационный лагерь. Удачи Вам; давайте начнём выдвигаться!"
 ,,,,,,,,
-,BRIEFINGC3M2_1,,"\cCExcellent work liberating the prisoners from \cBDachau\cC, \cPWill\cC, but we have no time to lose! Our \cBBraunschweig\cC offensive is in shambles. We originally launched a three-pronged attack with our infantry, tank, and air divisions, but we badly underestimated the enemy forces.",,,,,"\cCМолодец, что освободил узников \cBДахау\cC, \cPУилл\cC, но у нас по-прежнему нет времени! Наши попытки штурма \cBБрауншвейга\cC терпят неудачи. В атаках участвуют пехотные, танковые и воздушные дивизии, однако, по-видимому, мы серьёзно недооценили войска противника."
+,BRIEFINGC3M2_1,,"\cCExcellent work liberating the prisoners from \cBDachau\cC, \cPWill\cC, but we have no time to lose! Our \cBBraunschweig\cC offensive is in shambles. We originally launched a three-pronged attack with our infantry, tank, and air divisions, but we badly underestimated the enemy forces.",,,,,"\cCМолодец, что освободил узников \cBДахау\cC, \cPУилл\cC, но у нас по-прежнему нет времени на отдых! Наши попытки штурма \cBБрауншвейга\cC терпят неудачи. В атаках участвуют пехотные, танковые и воздушные дивизии, однако, по-видимому, мы серьёзно недооценили войска противника."
 ,BRIEFINGC3M2_2,,"\cCAt 0620 hours, we received a distress call from Allied forces on the field. We do not know the status of our tank division, but our infantry have been pinned down by heavy enemy fire, and our planes have been unable to breach the enemy's anti-air defences.",,,,,"\cCВ 06-20 мы получили сигнал бедствия от союзных войск с поля боя. Нам неизвестно состояние танковой дивизии; однако пехота прижата огнём к земле, а у самолётов не получается прорваться сквозь глухую оборону зенитной артиллерии."
 ,BRIEFINGC3M2_3,,"\cCOur primary objective is to break the stranglehold the \cRNazis\cC have on the region. First, you will meet up with \cQSgt. Ascher\cC and our infantry, and assist them if necessary. Then, get yourself up to speed on the situation, and discuss the best approach to the mission.",,,,,"\cCНаша основная цель — освободить местность от мёртвой хватки \cRнацистов\cC. Сначала ты встретишь \cQсержанта Ашера\cC и наших пехотинцев — помоги им, если потребуется. Разберись в ситуации на месте и обсуди с ними, как лучше поступить."
 ,BRIEFINGC3M2_4,,"\cCThe enemy has 4 main advantages on the field: \cRFlak\cC guns to deter air strikes, \cRZyklon C\cC tanks for zombie reinforcements, as well as \cRRadar\cC and \cRRadios\cC for communication and coordination. All of these objectives must be eliminated in order for us to turn the tide.",,,,,"\cCУ врага целых четыре преимущества: \cRзенитная артиллерия\cC, не дающая нам сбрасывать бомбы, \cRбаки с ""Циклоном C""\cC, обеспечивающие немцев зомби, и \cRрадар\cC с \cRрадиостанцией\cC для координации действий. Если мы хотим изменить ход битвы, всё это должно быть выведено из игры."
-,BRIEFINGC3M2_5,,"\cCAs soon as you destroy all of the enemy's advantages, we'll launch a devastating airstrike on the region with our B-24 bombers. We're counting on you, \cPBlazkowicz\cC! Now, go meet Sgt. Nash outside - time is of the essence!",,,,,"\cCКак только ты уничтожишь эти объекты, наши бомбардировщики B-24 сравняют регион с землёй. Мы надеемся на тебя, \cPБлажкович\cC! Сейчас иди встреться с сержантом Нэшем — время не ждёт!"
+,BRIEFINGC3M2_5,"
+","\cCAs soon as you destroy all of the enemy's advantages, we'll launch a devastating airstrike on the region with our B-24 bombers. We're counting on you, \cPBlazkowicz\cC! Now, go meet Sgt. Nash outside - time is of the essence!",,,,,"\cCКак только ты уничтожишь эти объекты, наши бомбардировщики B-24 сравняют регион с землёй. Мы надеемся на тебя, \cPБлажкович\cC! Сейчас иди встреться с сержантом Нэшем — время не ждёт!"
 ,BRIEFINGC3M2_6,,\cCWe'd better hurry if we want to intercept the enemy forces before they attack our camp there! I'll be taking you to the plane from which you will be dropped.,,,,,"\cCНам нужно поторопиться, если мы хотим перехватить вражеские войска, пока они не атаковали наших ребят! Я доставлю Вас до самолёта, который высадит Вас на место."
 ,BRIEFINGC3M2_7,,"\cCBy the way, I hope you get the opportunity to control one of our \cFShermans\cC. But be sure to keep your eyes open for German \cRTiger tanks\cC. They'll cause huge problems for you if you don't!",,,,,"\cCПомимо того, я надеюсь, что у Вас будет возможность взять под управление один из наших \cF""Шерманов""\cC. Однако будьте внимательны и не пропустите немецкие \cR""Тигры""\cC! Они способны доставить Вам серьёзные проблемы!"
 ,,,,,,,,
@@ -1272,7 +1274,7 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,MARINEAFTERDOUGLESCONV03,,"\cQSgt. Ascher\n\cCOkay then, \cPCaptain\cC! We've already cleared the area, so you check inside for any remaining forces. Oh, and grab some equipment before you proceed with \cQCpt. Blake\cC!",,,,,"\cQСержант Ашер\n\cCО'кей, \cPкапитан\cC! Мы уже зачистили местность, проверьте, не пропустили ли мы кого-нибудь. А, ещё возьмите с собой экипировку перед тем, как направиться к \cQкапитану Блейку\cC!"
 ,MARINEAFTERDOUGLESCONV04,,"\cQSgt. Ascher\n\cCI'm glad you're alive, \cPCpt.\cC Good job! You need to sneak into the train station now. Intel reports indicate the back entrance is guarded by only one person. The weather should provide enough cover to take him out with a single \cFKarabiner\cC shot.",,,,,"\cQСержант Ашер\n\cCЯ рад, что Вы живы, \cPкапитан\cC. Хорошая работа! Сейчас Вам нужно пробраться на станцию. Разведка сообщает, что заднюю часть здания охраняет только один человек. Погода должна позволить незаметно устранить его одним \cFснайперским\cC выстрелом."
 ,MARINEAFTERDOUGLESCONV05,,"\cQSgt. Ascher\n\cPCpt. \cC...\cU*kzzzrzzz*...\cCit you? The transm\cU*krzzrzzz*...\cCcan hear me, listen: The back entrance of the train station is poorly guarded...\cU*krzzzrzzz* \cC...sniper tower, kill the guar\cUkrzzzzrz\cC...better reception at the tower...\cUkrzzzzrzzz...\cC",,,,,"\cQСержант Ашер\n\cPКапитан\cC... \cU*р-р-р-З-З-З*\cC...Вас. Перебои со свя...\cU*р-з-З-з-р-р*...\cCслышите меня: дополнительный вход на станцию слабо охраня... \cU*з-з-з-з-з-з*\cC башне, устраните солда... \cUр-р-з-з-р-р\cC... будет лучше связь... \cUЗ-З-з-з-з-з\cC"
-,MARINEAFTERDOUGLESCONV06,,"\cQSgt. Ascher\n\cCGood work, \cPCpt.\cC, the enemy's communications are offline. The SS can't call in any more reinforcements, but you still need to deal with the \cRguards\cC. Try to find a different way out instead of killing them all. Maybe you can cause a distraction?",,,,,"\cQСержант Ашер\n\cЗамечательно, \cPкапитан\cC, система связи противника отключена. Теперь СС не сможет отправлять сюда подкрепления, но Вам по-прежнему придётся иметь дело с \cRохраной\cC. Попробуйте найти способ сбежать, не убивая их всех подряд. Может быть, их получится как-то отвлечь?"
+,MARINEAFTERDOUGLESCONV06,,"\cQSgt. Ascher\n\cCGood work, \cPCpt.\cC, the enemy's communications are offline. The SS can't call in any more reinforcements, but you still need to deal with the \cRguards\cC. Try to find a different way out instead of killing them all. Maybe you can cause a distraction?",,,,,"\cQСержант Ашер\n\cCЗамечательно, \cPкапитан\cC, система связи противника отключена. Теперь СС не сможет отправлять сюда подкрепления, но Вам по-прежнему придётся иметь дело с \cRохраной\cC. Попробуйте найти способ сбежать, не убивая их всех подряд. Может быть, их получится как-то отвлечь?"
 ,MARINEAFTERDOUGLESCONV07,,"\cQSgt. Ascher\n\cCBe careful, \cPCpt.\cC, there are alarms everywhere! You need to destroy the radios without being noticed. Use only your shovel if you absolutely need to kill someone. If the alarm goes off, just shut it off immediately, and pray to God you survive the SS onslaught!",,,,,"\cQСержант Ашер\n\cCБудьте осторожны, \cPкапитан\cC, здесь повсюду сигнализация! Незаметно уничтожьте радио. Если потребуется кого-то убить, делайте это лопатой. Если поднимется тревога, выключите её немедленно, и молитесь Господу, чтобы выстоять наплыв эсэсовцев!"
 ,MARINEAFTERDOUGLESCONV08,,"\cQSgt. Ascher\n\cCDamn, \cPCpt.\cC, I was hoping you'd find more weapons and ammo in that storage room! Looks like you'll have to make do with what little you have. Perhaps you can use that \cFComp B\cC charge you found to draw the guards away from the main entrance?",,,,,"\cQСержант Ашер\n\cCЧёрт возьми, \cPкапитан\cC, я думал, на складе будет побольше оружия и боеприпасов! Видимо, Вам придётся довольствоваться тем, что есть. Может быть, у Вас получится использовать этот заряд \cFвзрывчатки\cC, чтобы отвлечь охрану от главного входа?"
 ,MARINEAFTERDOUGLESCONV09,,"\cQSgt. Ascher\n\cCHoly hell, \cPCpt.\cC, that explosion was so big, I felt the shockwave from all the way over here! Now, get out of there! All hell is breaking loose, and you have a good chance of escaping amidst the chaos. Just be careful not to run into the SS! Now move!",,,,,"\cQСержант Ашер\n\cCМатерь Божья, \cPкапитан\cC, это был такой взрыв, что ударная волна дошла даже до меня! Уходите оттуда! Разверзлись врата ада, у Вас хорошие шансы выбраться из этого хаоса незамеченным. Просто будьте осторожнее и не попадитесь на глаза эсэсовцам! Бегите!"
@@ -1377,7 +1379,7 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,BARKEEPERCONV08,,"\cCMon cher, I am very happy to see you again. How are you?\n\n\cCI have to tell you something important: It was not \cQGutenberg\cC! The \cQMP\cC are still investigating his laboratory, but it's clear now that he has a good alibi and there is nothing that can prove he is guilty. I am happy to hear this. Yes, he is german, but I knew his heart is in the right place. \n\n\cCBut this also means the traitor is still around. Mon ami, please be careful on your next missions, you will be in my heart, and bonne chance!",,,,,"\cCГолубчик, я очень рада снова тебя видеть. Как ты?\n\n\cCУ меня есть для тебя кое-что важное: это был не \cQГутенберг\cC! \cQВоенная полиция\cC до сих пор проводит следствие в его лаборатории, однако сейчас очевидно, что у него железное алиби и что нет никаких доказательств его вины. Мне приятно это слышать. Да, он немец, но я знала, что его сердце на нашей стороне.\n\n\cCОднако это означает, что предатель ещё здесь. Мон ами, пожалуйста, будь осторожным на следующих заданиях, ты у меня в сердце, удачи тебе!"
 ,BARKEEPERCONV09,,"\cCMon cher, how do you feel? Do you still have those nightmares? Words can't describe how much I suffer from his loss...\n\n\cQDouglas\cC was a good friend of mine too, but I know that our friendship was never as tight as yours, \cPWilliam\cC. I am so sorry...  but please try not to do anything reckless or dangerous. I don't want to lose you too...",,,,,"\cCГолубчик, как ты себя чувствуешь? У тебя по-прежнему эти кошмары? Мои страдания от его потери словами не описать...\n\n\cQДуглас\cC был и моим хорошим другом, но я знаю, что ваша дружба была гораздо сильнее, \cPУильям\cC. Я так сожалею... но, пожалуйста, не делай ничего бесшабашного или опасного. Я не хочу тебя потерять..."
 ,BARKEEPERCONV10,,\cCI will avenge Douglas.,,,,,\cCЯ отомщу за Дугласа.
-,BARKEEPERCONV11,,"\cCI know you want to avenge him, and I am sure everyone at the HQ wants to.\n\n\cCBut, \cPWilliam\cC, you shouldn't lose your mind dwelling on his death. \cQDouglas\cC wouldn't have wanted to see you in such a mood or do something suicidal just for ze sake of killing \cRRyan\cC.\n\n\cCHow could we have been so blind all this time? It was him for such a long time, and we didn't notice anything... I feel like such an idiot...\n\n\cCWell, \cQGeneral Miller\cC is already waiting for you in the briefing room, but you should also visit Lieutenant \cQAnthony F. Arlow\cC in the radio communications room; He has a special job for you. \n\nIt seems we don't even have ze time for sorrow just now... mon cher, I will be here for you, just let me know when you need me.",,,,,"\cCЯ понимаю тебя и уверена, что каждый в штабе хочет это сделать.\n\n\cC\cPУильям\cC, не терзай себя мыслями о его смерти. \cQДуглас\cC не хотел бы видеть тебя в таком настроении или пойти на самоубийство просто с целью уничтожить \cRРайана\cC.\n\n\cCКак получилось, что мы не замечали его столько времени? Я чувствую себ такой идиоткой...\n\n\cCЛадно, \cQгенерал Миллер\cC уже ждёт тебя в комнате для совещаний, но, помимо него, зайди ещё, пожалуйста, к лейтенанту \cQЭрлоу\cC в комнате связи; у него есть для тебя специальное задание. \n\nКажется, что у нас нет времени даже на печаль... голубчик, я буду здесь, просто дай мне знать, когда я тебе понадоблюсь."
+,BARKEEPERCONV11,,"\cCI know you want to avenge him, and I am sure everyone at the HQ wants to.\n\n\cCBut, \cPWilliam\cC, you shouldn't lose your mind dwelling on his death. \cQDouglas\cC wouldn't have wanted to see you in such a mood or do something suicidal just for ze sake of killing \cRRyan\cC.\n\n\cCHow could we have been so blind all this time? It was him for such a long time, and we didn't notice anything... I feel like such an idiot...\n\n\cCWell, \cQGeneral Miller\cC is already waiting for you in the briefing room, but you should also visit Lieutenant \cQAnthony F. Arlow\cC in the radio communications room; He has a special job for you. \n\nIt seems we don't even have ze time for sorrow just now... mon cher, I will be here for you, just let me know when you need me.",,,,,"\cCЯ понимаю тебя и уверена, что каждый в штабе хочет это сделать.\n\n\cC\cPУильям\cC, не терзай себя мыслями о его смерти. \cQДуглас\cC не хотел бы видеть тебя в таком настроении или пойти на самоубийство просто с целью уничтожить \cRРайана\cC.\n\n\cCКак получилось, что мы не замечали его столько времени? Я чувствую себя такой идиоткой...\n\n\cCЛадно, \cQгенерал Миллер\cC уже ждёт тебя в комнате для совещаний, но, помимо него, зайди ещё, пожалуйста, к лейтенанту \cQЭрлоу\cC в комнате связи; у него есть для тебя специальное задание. \n\nКажется, что у нас нет времени даже на печаль... голубчик, я буду здесь, просто дай мне знать, когда я тебе понадоблюсь."
 ,,,,,,,,
 ,BARKEEPERLIVEANSWER01,,\cCAnything else?,,,,,\cCЧто-нибудь ещё?
 ,BARKEEPERLIVEANSWER02,,\cCCan you repeat that?,,,,,\cCНе могла бы ты ещё раз это мне сказать?
@@ -1648,8 +1650,8 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,RESCUETEAM01,Time counter in C3M4,\cCReinforcements arriving in ,\cCNachschub kommt an in,,,,\cCПодкрепления прибудут через
 ,RESCUETEAM02,,\cCseconds,\cCSekunden,,,,\cCсекунд
 ,,,,,,,,
-,BJMESSAGE01,C3M1,"\cPWilliam Blazkowicz\n\cCIt's locked -- the padlock looks rusty, though. If only I had something to break it with...",,,,,"\cPУильям Блажкович\n\cCЗакрыто — правда, замочек-то ржавый и хлипенький. Вот найти бы что-нибудь, чем можно было бы его сломать..."
-,BJMESSAGE02,C1M5,\cPWilliam Blazkowicz\n\cCI need another skull key to open that door. Maybe there's one lying around in this section of the catacombs?,,,,,"\cPУильям Блажкович\n\cCЧтобы открыть эту дверь, нужен другой череп-ключ. Может, в этой части катакомб такой найдётся?"
+,BJMESSAGE01,Entrance to the watchtower in C3M1,"\cPWilliam Blazkowicz\n\cCIt's locked -- the padlock looks rusty, though. If only I had something to break it with...",,,,,"\cPУильям Блажкович\n\cCЗакрыто — правда, замочек-то ржавый и хлипенький. Вот найти бы что-нибудь, чем можно было бы его сломать..."
+,BJMESSAGE02,Secret underground passage in C1M5,\cPWilliam Blazkowicz\n\cCI need another skull key to open that door. Maybe there's one lying around in this section of the catacombs?,,,,,"\cPУильям Блажкович\n\cCЧтобы открыть эту дверь, нужен другой череп-ключ. Может, в этой части катакомб такой найдётся?"
 ,,,,,,,,
 ,,Resistance door in C1M5,,,,,,
 ,RESISTANCEASK,,"\cR???\n\cCHALT! WER IST DA?! DAS PASSWORT??? ...               ... oh, it's you, \cQCaptain\cC! Quick, entrez!",,,,,"\cR???\n\cCХАЛЬТ! ВЕР ИСТ ДА?! ДАС ПАССВОРТ???               ...а, это ты, \cQкапитан\cC! Давай, заходи!"
@@ -1726,11 +1728,11 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,INTROTEXT8,,\cCCONCENTRATION CAMP DACHAU,\cCKONZENTRATIONSLAGER DACHAU,,,,\cCКОНЦЕНТРАЦИОННЫЙ ЛАГЕРЬ ДАХАУ
 ,,,,,,,,
 ,,"Cutscene texts for interlude movies, the individual paragraphs can be found after the EPILOGUE texts",,,,,,
-,CUTSCEN1,,RALLY OF WAR,,,,,RALLY OF WAR
+,CUTSCEN1,,RALLY OF WAR,,,,,ТЕЧЕНИЕ ВОЙНЫ
 ,CUTSCEN2,,NAZIS IN PARIS,,,,,НАЦИСТЫ В ПАРИЖЕ
 ,CUTSCEN3,,REICHSKANZLEI,,,,,РЕЙХСКАНЦЕЛЯРИЯ
 ,CUTSCENETEXT1,,"\cCNUREMBERG, 1944",,,,,"\cCНЮРНБЕРГ, 1944"
-,CUTSCENETEXT2,,\cCRALLY OF WAR,,,,,\cCRALLY OF WAR
+,CUTSCENETEXT2,,\cCRALLY OF WAR,,,,,\cCТЕЧЕНИЕ ВОЙНЫ
 ,CUTSCENETEXT3,,\cCPROPAGANDA TRANSMISSION,,,,,\cCПРОПАГАНДИСТСКОЕ СООБЩЕНИЕ
 ,CUTSCENETEXT4,,"\cCFRANCE, 1944",,,,,"\cCФРАНЦИЯ, 1944"
 ,CUTSCENETEXT5,,\cCAIRSPACE OVER PARIS,,,,,\cCВОЗДУШНОЕ ПРОСТРАНСТВО НАД ПАРИЖЕМ
@@ -1768,6 +1770,44 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,STATS_CHAPTER,,Phase,Phase,,,,Фаза
 ,STATS_NONE,,No missions completed.,Keine Missionen erledigt.,,,,Ни одной миссии пока не закончено.
 ,,,,,,,,
+,,Intermap credits,,,,,,
+,,,,,,,,
+,INTERCREDITS01,The first pipe character is used to separate text drawn in the bigfont from text drawn in the smallfont,Core Team|in alphabetical order,,,,,
+,INTERCREDITS02,,AFADoomer|model design\nprogramming,,,,,
+,INTERCREDITS03,,DoomJedi|sprite art,,,,,
+,INTERCREDITS04,,Doom Juan|level design\ndesign & plot conception\nsprite art directing\ntexture design,,,,,
+,INTERCREDITS05,,Ed the Bat|actors\nprogramming\nquality control,,,,,
+,INTERCREDITS06,,GuardSoul|level design\nquality control,,,,,
+,INTERCREDITS07,,MaxEd|model design\nprogramming\ngraphic design\nquality control,,,,,
+,INTERCREDITS08,,Nash Muhandes|programming,,,,,
+,INTERCREDITS09,,Ozymandias81|actors\nmodel design\ndynamic light definition\nbrightmap definition\nsprites\nprogramming,,,,,
+,INTERCREDITS10,,Talon1024|actors\nmodel design\nprogramming\nquality control,,,,,
+,INTERCREDITS11,,Tormentor667|project lead\nlevel design\ntexture and graphic design\nactor and sfx programming\ndesign and plot supervisor,,,,,
+,INTERCREDITS12,,|,,,,,
+,INTERCREDITS13,,Sources|material taken from,,,,,
+,INTERCREDITS14,,Actors|Cpt. Toenail | DemonBreakMaster\nDr. Doctor | Espi\nGothic | Krispy\nMagicWazard | Mor'ladim\nPillowBlaster | Sgt. Mark IV\nLaz Rojas \nMancubus | Youraofthehairfan\nZrrion the Insect,,,,,
+,INTERCREDITS15,Who is Jimmy91? James Paddock?,Fonts|Laz Rojas\nJimmy91,,,,,
+,INTERCREDITS16,,Graphics|B.J. Rowan\nBethesda\nCeeJay\nIdolFX\nMor'Ladim\nPeter Bark\nSidDoyle,,,,,
+,INTERCREDITS17,,Models|3dRegenerator\nEnjay\nLilWhiteMouse\nLou\nRex,,,,,
+,INTERCREDITS18,,Music|Adrian von Ziegler\nBobby Prince\nDerek Fichter\nJohn Stafford\nMichael Giacchino\nScott Buckley,,,,,
+,INTERCREDITS19,,Scripts|Cocka\nHetdegon\nKodi\nThe Zombie Killer\nYqco,,,,,
+,INTERCREDITS20,,Sounds|Bouncy\nJojikiba\nMcKinney,,,,,
+,INTERCREDITS21,,Special Effects|Cpt. Toenail\nKeksdose\nPillowblaster\nSolarsnowfall\nzrrion the insect,,,,,
+,INTERCREDITS22,,Sprites|Amv2k9 | BigDaveHadSomeToo | Captain J \nCpt. Toenail | CeeJay | Deadwolf \nEnjay | Fox66 \nJazzmaster | Kronos,,,,,
+,INTERCREDITS23,,Sprites|Laz Rojas | MagicWazard \nMajik Monkee | Mor'Ladim | Nash\nPillowBlaster | Raymoohawk \nSoartex | Vader \nThe raukgzbber | Z86,,,,,
+,INTERCREDITS24,,Textures|Ceeb\nEnjay\nFuzzballFox\nLaz Rojas\nMagicWazard,,,,,
+,INTERCREDITS25,,Based on work\nby Laz Rojas|WolfenDoom series\nof the late 90's,,,,,
+,INTERCREDITS26,,Based on work\nby WildWeasel|Nazis weapons mod,,,,,
+,INTERCREDITS27,,Additional work|detailed information\nin the text file,,,,,
+,INTERCREDITS28,,Special Thanks|in alphabetical order,,,,,
+,INTERCREDITS29,,Neil McPhail|for the WolfenDoom snap,,,,,
+,INTERCREDITS30,,"MaxED, ZZYZX & Boris|for GZDoomBuilder",,,,,
+,INTERCREDITS31,,Gez and sirJuddington|for SLADE,,,,,
+,INTERCREDITS32,,Randy Heit|for the ZDoom\nsourceport,,,,,
+,INTERCREDITS33,,Graf Zahl|for the GZDoom\nsourceport,,,,,
+,INTERCREDITS34,,the Community|for priceless feedback\nand irreplaceable support,,,,,
+,INTERCREDITS35,,You|for playing this mod,,,,,
+,,,,,,,,
 ,,Creditsmap Texts,,,,,,
 ,,These have voice actings according to their identifier,,,,,,
 ,,,,,,,,
@@ -1781,7 +1821,7 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 "
 ,CREDITSM05,,\cCOver 11 million people were killed in concentration camps during the Holocaust,,,,,"\cCСвыше 11 миллионов человек были убиты в концентрационных лагерях во время Холокоста.
 "
-,CREDITSM06,only in Europe! Maybe change to 70 (see Wikipedia)?,\cCA total of approximately 40 million people lost their lives during the war,,,,,"\cCПримерно 40 миллионов человек погибли в ходе боевых действий.
+,CREDITSM06,only in Europe! Maybe change to 70 (see Wikipedia)?,\cCA total of approximately 70 million people lost their lives during the war,,,,,"\cCПримерно 40 миллионов человек погибли в ходе боевых действий.
 "
 ,CREDITSM07,,"\cCAlthough there is no official proof, the Nazis conducted occult experiments",,,,,"\cCИзвестно, что нацисты занимались оккультными практиками, хотя этому не было официального подтверждения.
 "
@@ -1828,29 +1868,29 @@ default,Identifier,Remarks,enu eng enc ena enz eni ens enj enb enl ent enw,de,es
 ,DEVC1M5_2,,"\cYKevin ""Talon1024"" Caccamo\n\cCThe usable machinegun turrets here originally worked like the ones in Half-Life 2, where you could use them as long as you were close enough to them. The newer ZScript versions of the usable MG turrets were programmed by \cYAFADoomer\cC and me, and they are much more realistic. You're stuck on the turret until you leave it.",,,,,"\cYTalon1024 (Кевин Каккамо)\n\cCСначала эти станковые пулемёты работали как в Half-Life 2, такой пулемёт можно было использовать, если до него была малая дистанция. Новую версию используемых пулемётов написали на ZScript \cYAFADoomer\cC и я, и теперь они куда более реалистичны. Пока Вы не выпустите пулемёт из рук, с места Вы не сдвинетесь."
 ,DEVC1M5_3,,"\cYKevin ""Talon1024"" Caccamo\n\cCThis mission's visual design was heavily influenced by the original WolfenDoom: Operation Rheingold.",,,,,\cYTalon1024 (Кевин Каккамо)\n\cCНа дизайн этой миссии оказала значительное влияние оригинальная модификация WolfenDoom: Operation Rheingold.
 ,DEVC1M5_4,,"\cYKevin ""Talon1024"" Caccamo\n\cCDid you know Aperture Science designed and sold shower curtains before moving into... science?",,,,,"\cYTalon1024 (Кевин Каккамо)\n\cCВам известно, что Aperture Science разрабатывала и продавала занавески для душа перед тем, как приступить к... научным исследованиям?"
-,DEVC1M5_5,,"\cYKevin ""Talon1024"" Caccamo\n\cCI designed this area, and our mapper DoomJuan spiffed it up. There's even a ""meat locker"" at the back of the room that stores humans for turning into mutants.",,,,,
-,DEVC1M5_6,,"\cYKevin ""Talon1024"" Caccamo\n\cCI decided to put grenades beside both of these skeletons, but players decided not to use them against the critters in the catacombs, so I replaced the grenades beside one of the skeletons with ammo pickups in order to accomodate other players' play styles.",,,,,
-,DEVC1M5_7,,"\cYKevin ""Talon1024"" Caccamo\n\cCYou would originally have had to swim through the water in the catacombs to reach this switch. Players were having trouble finding the switch, so I decided to put it in a different spot using a portal.",,,,,
-,DEVC1M5_8,,"\cYKevin ""Talon1024"" Caccamo\n\cCOriginally, this door was getting stuck on something underneath. This is due to the door being a polyobject, and the sector the door is in being much shorter than the sector its start spot was in. I fixed this bug by making the door polyobject sector as tall as the gameplay area. We experienced a similar issue on C2M3 with the two-story house.",,,,,
-,DEVC1M5_9,,"\cYKevin ""Talon1024"" Caccamo\n\cCMessages from Juliette were added throughout the mission in order to make the progression less confusing and to guide the player as to what they need to do next.",,,,,
-,DEVC1M5_10,,"\cYKevin ""Talon1024"" Caccamo\n\cCThis part of the mission was changed so that it was more clear to the player what has to be done before the next wave, and so that the player wouldn't be overwhelmed as much by the enemy waves.",,,,,
-,DEVC1M6_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCAlthough GZDoom supports advanced materials, such as Diffuse/Specular/Normal mapped textures, as well as PBR textures, water surfaces are one of the only things in WolfenDoom that take advantage of that feature. This water pool is one place where the advanced material for water is highly visible.",,,,,
-,DEVC1M6_2,,"\cYKevin ""Talon1024"" Caccamo\n\cCThis arrow trap was changed from shooting a volley of arrows in an arc to shooting arrows in random directions. Now you have to watch your steps more carefully instead of just rushing over to the other side if you don't want to get hit by an arrow.",,,,,
-,DEVC1M6_3,,"\cYKevin ""Talon1024"" Caccamo\n\cCThis boss was originally in Temple of the Lizardmen 3 by Alando.",,,,,
-,DEVC1M6_4,,"\cYKevin ""Talon1024"" Caccamo\n\cCThe lava in this part of the level was originally instant death, but was changed to heavy damage when we found players getting frustrated over it.",,,,,
-,DEVC1M0_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCThe timer at the top was added for the Chapter 2 release of WolfenDoom. It was unclear to players how much time they had left to plant their bombs before the facility became a giant gas chamber.",,,,,
-,DEVC1M0_2,,"\cYKevin ""Talon1024"" Caccamo\n\cCFor the Chapter 2 release, I made the doors shut and barriers raise behind the player so that players would be locked out of the rest of the level until they have planted their Comp B charge and retrieved the key for the next level. If all of the bombs have not been planted by the end of the level, the player would get softlocked.",,,,,
-,DEVC2M1_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCAccording to Daniel, this part of the level is loosely based on the first level of Wolfenstein 3D.",,,,,
-,DEVC2M2_1,,"\cYKevin ""Talon1024"" Caccamo\n\cYDaniel ""Tormentor667"" Gimmer\cC is the voice actor for the man speaking over the loudspeakers.",,,,,
-,DEVC2M3_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCThis mission was originally set in France at Chateau Bruniquel, with Nazi troops occupying the surrounding areas, but it was changed to Castle Falkenberg in Germany because, according to DoomJuan, the mission ""looked and felt German"".",,,,,
-,DEVC2M3_2,,"\cYKevin ""Talon1024"" Caccamo\n\cCAt one point, the SNES cartridge for Commander Keen was in this secret area. Daniel thought at one point that he could complete the Commander Keen SNES easter egg levels in time for the final Chapter 2 release.\n\n\cCWe originally planned to make SNES easter egg levels based on other games and Doom mods, such as Golden Souls 2 or Hocus Pocus Doom, but we decided that sticking with the Commander Keen theme would be better.",,,,,
-,DEVC2M3_3,,"\cYKevin ""Talon1024"" Caccamo\n\cCThis area was previously a storage area next to a mutant lab, but Daniel ultimately decided that the storage area was out of place, and unnecessarily extended play time.",,,,,
-,DEVC2M3_4,,"\cYKevin ""Talon1024"" Caccamo\n\cCThis sign should say ""Graf Holzbein, Chief Financial Officer"" in German. Some of us would ask \cYDaniel ""Tormentor667"" Gimmer\cC for German translations of certain words or phrases, so that we could put them on signs like that one.",,,,,
-,DEVC2M4_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCWe encountered a strange bug which made players unable to use this ladder when the manhole cover was destroyed, due to the fact the manhole cover was a 3D floor sector. At that point, we decided to use a 3D model instead of a sector as a workaround.",,,,,
-,DEVC2M5A_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCA long time ago, this mission was completely different. You started in a forest where Douglas dropped you off, and proceeded on foot to a Nazi facility.",,,,,
-,DEVC2M5A_2,,"\cYKevin ""Talon1024"" Caccamo\n\cCSome of the passenger cars' room designs are based on the train from Harry Potter and The Chamber of Secrets.",,,,,
-,DEVC2M5B_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCDuring the development of Chapter 3, AFADoomer made some changes that made actors' hitboxes match their sizes. This unfortunately broke the turret here because its hitbox was too big. I had to make the turret smaller, and the sector it is in taller in order to make it work properly.",,,,,
-,DEVC2M0A_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCWhen I first tried to play this level on a Linux build of GZDoom, I was unable to because GZDoom's PNG code caused crashes on Linux that did not occur on Windows. Thankfully, this bug was quickly resolved thanks to a report I made on the forums.",,,,,
-,DEVC2M0B_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCThere are a hell of a lot of easter eggs on this level. See if you can find them all!",,,,,
-,DEVC3M1_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCOur mapper Dean ""DoomJuan"" Ascher tried making train signal levers out of 3D floor sectors, but they turned out very ugly, and so I made a 3D train lever model for him based on a stock photograph he shared on the Facebook dev team chat.",,,,,
-,DEVC3M5_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCBoth the Reichschancellory and the Fuhrerbunker underneath are based on their real-life counterparts. Our mapper Dean ""DoomJuan"" Ascher took great attention to detail. For example: putting 3 suitcases, a telephone, and a mirror in Eva's bedroom, or putting just one suitcase in each man's bedroom. I even made a 3D model of Hitler's desk, as per Dean's request.",,,,,
+,DEVC1M5_5,,"\cYKevin ""Talon1024"" Caccamo\n\cCI designed this area, and our mapper DoomJuan spiffed it up. There's even a ""meat locker"" at the back of the room that stores humans for turning into mutants.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCЯ создал эту область карты, а наш картостроитель \cYDoomJuan\cC сделал её разнообразнее. В конце помещения даже есть ""хранилище мяса"", в котором находятся люди, сохраняемые для последующего превращения в мутантов."
+,DEVC1M5_6,,"\cYKevin ""Talon1024"" Caccamo\n\cCI decided to put grenades beside both of these skeletons, but players decided not to use them against the critters in the catacombs, so I replaced the grenades beside one of the skeletons with ammo pickups in order to accomodate other players' play styles.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCЯ сначала поместил за обоих скелетов гранаты, но игроки не использовали их в катакомбах против скоплений животных, так что я заменил гранаты за одним из них на амуницию, чтобы приспособить карту под разные стили игры."
+,DEVC1M5_7,,"\cYKevin ""Talon1024"" Caccamo\n\cCYou would originally have had to swim through the water in the catacombs to reach this switch. Players were having trouble finding the switch, so I decided to put it in a different spot using a portal.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCВ прошлых версиях нужно было проплыть под водой в катакомбах, чтобы достигнуть этого выключателя. У многих игроков были проблемы с его нахождением, так что я переместил его, используя порталы."
+,DEVC1M5_8,,"\cYKevin ""Talon1024"" Caccamo\n\cCOriginally, this door was getting stuck on something underneath. This is due to the door being a polyobject, and the sector the door is in being much shorter than the sector its start spot was in. I fixed this bug by making the door polyobject sector as tall as the gameplay area. We experienced a similar issue on C2M3 with the two-story house.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCИзначально эта дверь застревала из-за какого-то предмета, находящегося под ней. Это было вызвано тем, что полиобъект, которым является дверь, и сектор, в котором он находится, значительно ниже, чем сектор, в котором должна отрисовываться дверь. Я исправил этот баг, увеличив высоту сектора с полиобъектом до высоты сектора, в котором должна находиться дверь. У нас была похожая проблема с двухэтажным зданием на карте C2M3."
+,DEVC1M5_9,,"\cYKevin ""Talon1024"" Caccamo\n\cCMessages from Juliette were added throughout the mission in order to make the progression less confusing and to guide the player as to what they need to do next.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCСообщения от Джульетты во время задания были добавлены, чтобы сделать прохождение менее запутанным и подсказать игроку, в какую сторону стоит двигаться дальше."
+,DEVC1M5_10,,"\cYKevin ""Talon1024"" Caccamo\n\cCThis part of the mission was changed so that it was more clear to the player what has to be done before the next wave, and so that the player wouldn't be overwhelmed as much by the enemy waves.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCЭта часть задания была переделана, чтобы игроку было яснее, что именно от него требуется сделать перед следующей волной наступления, и чтобы враги не задавили его числом, как в ранних версиях."
+,DEVC1M6_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCAlthough GZDoom supports advanced materials, such as Diffuse/Specular/Normal mapped textures, as well as PBR textures, water surfaces are one of the only things in WolfenDoom that take advantage of that feature. This water pool is one place where the advanced material for water is highly visible.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCХотя GZDoom поддерживает продвинутые материалы, в частности, текстуры с картами Diffuse/Specular/Normal, а также PBR, водные поверхности — один из весьма немногих случаев их использования в ВольфенДуме. По этой воде можно заметить, что они здесь действительно есть."
+,DEVC1M6_2,,"\cYKevin ""Talon1024"" Caccamo\n\cCThis arrow trap was changed from shooting a volley of arrows in an arc to shooting arrows in random directions. Now you have to watch your steps more carefully instead of just rushing over to the other side if you don't want to get hit by an arrow.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCЭта ловушка сейчас выпускает стрелы в случайных направлениях, а раньше она выпускала их дугой. Теперь, если нет желания поймать летящую стрелу, нужно быть осторожнее и смотреть, куда наступаешь, а не бежать сломя голову на другую сторону."
+,DEVC1M6_3,,"\cYKevin ""Talon1024"" Caccamo\n\cCThis boss was originally in Temple of the Lizardmen 3 by Alando.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCЭтот босс взят из модификации ""Temple of the Lizardmen 3"" автора \cYAlando\cC."
+,DEVC1M6_4,,"\cYKevin ""Talon1024"" Caccamo\n\cCThe lava in this part of the level was originally instant death, but was changed to heavy damage when we found players getting frustrated over it.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCПопадание в лаву в этой части уровня сначала приводило к мгновенной смерти, но когда стало известно, что игроки этого не одобряют, эффект был заменён на нанесение значительного урона."
+,DEVC1M0_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCThe timer at the top was added for the Chapter 2 release of WolfenDoom. It was unclear to players how much time they had left to plant their bombs before the facility became a giant gas chamber.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCТаймер сверху был добавлен перед релизом второй части ВольфенДума. До этого игрокам было непонятно, сколько времени у них оставалось до того момента, как комплекс превратится в огромную газовую камеру."
+,DEVC1M0_2,,"\cYKevin ""Talon1024"" Caccamo\n\cCFor the Chapter 2 release, I made the doors shut and barriers raise behind the player so that players would be locked out of the rest of the level until they have planted their Comp B charge and retrieved the key for the next level. If all of the bombs have not been planted by the end of the level, the player would get softlocked.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCВ релизе второй части я добавил закрытие дверей и поднятие ограничителей после того, как игрок зашёл во внутренние помещения на этаже; так блокируются любые попытки выйти из помещения, если игрок ещё не заложил взрывчатку и не нашёл ключ от следующего уровня шахты. Отсюда не получится сбежать, когда ещё не все бомбы установлены."
+,DEVC2M1_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCAccording to Daniel, this part of the level is loosely based on the first level of Wolfenstein 3D.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCПо словам \cYДаниэля\cC, эта часть карты основана на планировке первого уровня Wolfenstein 3-D."
+,DEVC2M2_1,,"\cYKevin ""Talon1024"" Caccamo\n\cYDaniel ""Tormentor667"" Gimmer\cC is the voice actor for the man speaking over the loudspeakers.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCГолос из громкоговорителей принадлежит \cYДаниэлю ""Tormentor667"" Гиммеру\cC."
+,DEVC2M3_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCThis mission was originally set in France at Chateau Bruniquel, with Nazi troops occupying the surrounding areas, but it was changed to Castle Falkenberg in Germany because, according to DoomJuan, the mission ""looked and felt German"".",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCПланировалось, что в этом задании события будут происходить во французском замке Бруникель, и нацисты будут занимать его окрестности, но мы сменили место событий на германский замок Фалькенберг, потому что, по мнению \cYDoomJuan\cC, задание ""выглядело и ощущалось, как немецкое""."
+,DEVC2M3_2,,"\cYKevin ""Talon1024"" Caccamo\n\cCAt one point, the SNES cartridge for Commander Keen was in this secret area. Daniel thought at one point that he could complete the Commander Keen SNES easter egg levels in time for the final Chapter 2 release.\n\n\cCWe originally planned to make SNES easter egg levels based on other games and Doom mods, such as Golden Souls 2 or Hocus Pocus Doom, but we decided that sticking with the Commander Keen theme would be better.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCНекоторое время картридж Commander Keen для SNES находился в этом секрете. Даниэлю сначала казалось, что у него получилось бы закончить работу над этими бонусными уровнями, посвящёнными Commander Keen, до релиза второй части ВольфенДума.\n\n\cCСначала мы планировали посвятить эти уровни другим играм и модификациями на Doom, такими как Golden Souls 2 или Hocus Pocus Doom, однако потом мы решили, что стоит всё-таки придерживаться темы Commander Keen."
+,DEVC2M3_3,,"\cYKevin ""Talon1024"" Caccamo\n\cCThis area was previously a storage area next to a mutant lab, but Daniel ultimately decided that the storage area was out of place, and unnecessarily extended play time.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCРаньше здесь, рядом с лабораторией с мутантами, был склад, но Даниэль в конечном счёте решил, что складу здесь не место и что он без необходимости растягивает прохождение уровня."
+,DEVC2M3_4,,"\cYKevin ""Talon1024"" Caccamo\n\cCThis sign should say ""Graf Holzbein, Chief Financial Officer"" in German. Some of us would ask \cYDaniel ""Tormentor667"" Gimmer\cC for German translations of certain words or phrases, so that we could put them on signs like that one.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCНа этом знаке написано по-немецки ""Граф Хольцбейн, Главный Финансист"". Некоторые из нас просили \cYДаниэля ""Tormentor667"" Гиммера\cC перевести на немецкий нужные нам слова и фразы, чтобы мы могли помещать их на знаки вроде этого."
+,DEVC2M4_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCWe encountered a strange bug which made players unable to use this ladder when the manhole cover was destroyed, due to the fact the manhole cover was a 3D floor sector. At that point, we decided to use a 3D model instead of a sector as a workaround.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCМы нашли странный баг, который не позволял игрокам использовать эту лестницу даже тогда, когда крышка люка была уничтожена. Это было связано с тем, что крышка люка была 3D-полом, и нам пришлось использовать 3D-модель в качестве временного решения."
+,DEVC2M5A_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCA long time ago, this mission was completely different. You started in a forest where Douglas dropped you off, and proceeded on foot to a Nazi facility.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCКогда-то это задание было совершенно другим. Оно начиналось в лесу, куда игрока довозил Дуглас, и нужно было оттуда дойти до нацистского комплекса пешком."
+,DEVC2M5A_2,,"\cYKevin ""Talon1024"" Caccamo\n\cCSome of the passenger cars' room designs are based on the train from Harry Potter and The Chamber of Secrets.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCДизайн некоторых пассажирских вагонов основан на поезде из ""Гарри Поттера и Тайной комнаты""."
+,DEVC2M5B_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCDuring the development of Chapter 3, AFADoomer made some changes that made actors' hitboxes match their sizes. This unfortunately broke the turret here because its hitbox was too big. I had to make the turret smaller, and the sector it is in taller in order to make it work properly.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCВ процессе разработки третьей части \cYAFADoomer\cC изменил высоты акторов, чтобы их хитбоксы соответствовали видимым размерам. К сожалению, это не позволило работать стоящей здесь турели — её хитбокс был слишком крупным. Мне пришлось уменьшить турель и сделать выше сектор, в котором она стоит, чтобы она правильно функционировала."
+,DEVC2M0A_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCWhen I first tried to play this level on a Linux build of GZDoom, I was unable to because GZDoom's PNG code caused crashes on Linux that did not occur on Windows. Thankfully, this bug was quickly resolved thanks to a report I made on the forums.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCКогда я в первый раз попробовал поиграть на этой карте через сборку GZDoom на Linux, возникла проблема: код GZDoom, обрабатывающий файлы формата PNG, оказывается, приводил в этом случае к вылету на Linux, а на Windows работал нормально. Хорошо, что баг был быстро исправлен после того, как я сообщил о нём на форуме."
+,DEVC2M0B_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCThere are a hell of a lot of easter eggs on this level. See if you can find them all!",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCНа этом уровне очень много отсылок и ""пасхальных яиц"". Попробуйте найти их все!"
+,DEVC3M1_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCOur mapper Dean ""DoomJuan"" Ascher tried making train signal levers out of 3D floor sectors, but they turned out very ugly, and so I made a 3D train lever model for him based on a stock photograph he shared on the Facebook dev team chat.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCНаш картостроитель \cYДин ""DoomJuan"" Ашер\cC пробовал делать переводчики стрелок из 3D-полов, но они выглядели безобразно, так что я сделал для него 3D-модель, основываясь на фотографии, которую он выложил в чат разработчиков на Facebook."
+,DEVC3M5_1,,"\cYKevin ""Talon1024"" Caccamo\n\cCBoth the Reichschancellory and the Fuhrerbunker underneath are based on their real-life counterparts. Our mapper Dean ""DoomJuan"" Ascher took great attention to detail. For example: putting 3 suitcases, a telephone, and a mirror in Eva's bedroom, or putting just one suitcase in each man's bedroom. I even made a 3D model of Hitler's desk, as per Dean's request.",,,,,"\cYКевин ""Talon1024"" Каккамо\n\cCИнтерьеры рейхсканцелярии и бункера Гитлера, находящегося под ней, основаны на исторических сведениях о том, как были устроены их прототипы из реальной жизни. Наш картостроитель \cYДин ""DoomJuan"" Ашер\cC проявил огромное внимание к деталям: например, в комнату Евы Браун он поставил три чемодана, телефон и зеркало, а в каждой мужской комнате лишь по одному чемодану. Я даже по просьбе \cYДина\cC сделал 3D-модель стола, стоявшего в кабинете Гитлера."

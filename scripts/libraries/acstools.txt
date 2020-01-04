@@ -2,8 +2,23 @@
 
 class ACSTools
 {
+    // Find the number of the last message in a series of messages in the string table.
+    // Examples/expected results for various inputs:
+    // prefix: DARRENMESSAGE
+    // start: 1
+    // return value: 101
+    //
+    // prefix: PRISONERMESSAGE
+    // start: 1
+    // return value: 21
+    //
+    // prefix: MARINEAFTERDOUGLESCONV
+    // start: 1
+    // return value: 55
+    //
     static int LastMessageFor(String prefix, int start)
     {
+        // Concatenating an empty string with a number is an easy way of converting it to a string
         String suffix = start < 10 ? "0" .. start : "" .. start;
         String lookup = prefix .. suffix;
         String entry = StringTable.Localize(lookup, false);
