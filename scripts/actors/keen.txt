@@ -138,7 +138,7 @@ class CKBaseEnemy : Actor
 		{
 			if (stunframes > 1) { frame += Random(0, stunframes - 1); } // Pick a random frame within set range
 			stuncounter = stuntime;
-			A_SetSize(Default.Radius, Default.Height / 2);
+			A_SetSize(Default.Radius, 0);
 			bNotAutoAimed = true;
 
 			stunned = true;
@@ -303,7 +303,7 @@ mixin class CKPickup
 
 	override void Touch(Actor toucher)
 	{
-		if (toucher.player && !touched)
+		if ((toucher.player || toucher is "CKSmirky") && !touched)
 		{
 			touched = toucher;
 			ticker = 12;
@@ -1387,19 +1387,23 @@ class CKWormouth : CKBaseEnemy
 			CKSN D 4
 			{
 				A_Face(target);
-				vel.xy = RotateVector((1, 0), angle);
 				bSolid = true;
 				A_PlaySound("ckeen/wormouth/attack");
-				SetDamage(15);
 			}
 			CKSN E 4;
-			CKSN F 8;
-			CKSN ED 4;
+			CKSN F 8
+			{
+				vel.xy = RotateVector((1, 0), angle);
+				SetDamage(15); // Damage on the 'biting' frame only
+			}
+			CKSN ED 4
+			{
+				SetDamage(0);
+			}
 			CKLC F 0
 			{
 				if (target && Distance2D(target) < 16) { SetState(AttackState); return; }
 				bSolid = false;
-				SetDamage(0);
 			}
 			Goto See;
 	}
@@ -1637,7 +1641,11 @@ class CKSmirky : CKBaseEnemy
 		{
 			Vector3 goalpos = goal.pos;
 
-			if (Inventory(goal).CallTryPickup(self))
+			if (
+				Inventory(goal).CallTryPickup(self) &&
+				!(goal is "CKTreasure" && CKTreasure(goal).touched) &&
+				!(goal is "CKPuzzleItem" && CKPuzzleItem(goal).touched)
+			)
 			{
 				Spawn("CKStolenItem", goalpos);
 				A_PlaySound("ckeen/smirky/steal");
@@ -3333,5 +3341,106 @@ class CKStunnerBall : Actor
 		}
 
 		Super.Tick();
+	}
+}
+
+class CKWallShooter : SwitchableDecoration
+{
+	int user_fireoffset; // Number of tics to offset firing pattern from other Wall Shooters
+
+	Default
+	{
+		//$Category Commander Keen (BoA)/Special
+		//$Title Wall Shooter (3D)
+		//$Color 4
+
+		+NOGRAVITY
+		+WALLSPRITE
+		+NODAMAGE
+		+DONTTHRUST
+		-SOLID
+		Radius 1;
+		Height 0;
+		Obituary "$CK_WALSH";
+	}
+
+	States
+	{
+		Spawn:
+		Active:
+			MDLA A 10 CK_WaitForPlayer(1024); // Don't fire until a player is around...
+			Loop;
+		See:
+			MDLA A 1
+			{
+				// Synchronize all wall shooters
+				if (level.time % (70 + user_fireoffset) == 0) { A_SpawnProjectile("CKWallShooterArrow", 0, 0, 0, CMF_AIMDIRECTION | CMF_SAVEPITCH, pitch); }
+
+				if (target && !IsVisible(target, true) && Distance2D(target) > 1024)
+				{
+					target = null;
+					SetState(SpawnState);
+				}
+			}
+			Loop;
+		Inactive:
+			MDLA A 1;
+			Loop;
+	}
+
+	void CK_WaitForPlayer(int dist = 256)
+	{
+		LookForPlayers(true);
+
+		if (target && Distance2D(target) < dist)
+		{
+			SetState(SeeState);
+		}
+	}
+}
+
+class CKWallShooterArrow : Actor
+{
+	Default
+	{
+		PROJECTILE;
+		+WALLSPRITE
+		+ROLLSPRITE
+		+NOCLIP
+		Radius 8;
+		Height 8;
+		Damage 16;
+		Speed 16;
+		Seesound "ckeen/blowgun";
+		Deathsound "ckeen/klick";
+	}
+
+	States
+	{
+		Spawn:
+			CKAR F 2 NODELAY A_Playsound(SeeSound);
+			CKAR F 0 { bNoClip = false; } // Only NoClip for first few ticks to make sure these can fire when placed against walls
+			CKAR EF 8;
+			Loop;
+		Death:
+			TNT1 A 0;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		// If fired straight up or down, always face the player for visibility purposes
+		if (pitch == 90 || pitch == 270)
+		{
+			bWallSprite = false;
+			pitch -= 180;
+		}
+
+		// Adjust for WallSprite offset and to change firing pitch to sprite roll amount
+		angle -= 90;
+		roll = pitch;
+		pitch = 0;
+
+		Super.PostBeginPlay();
 	}
 }
