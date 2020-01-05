@@ -3112,7 +3112,7 @@ class CKSkyPest : CKBaseEnemy
 
 }
 
-class CKSpear : CKBaseEnemy
+class CKSpearDown : CKBaseEnemy
 {
 	int dir;
 	int user_delay;
@@ -3200,8 +3200,7 @@ class CKSpear : CKBaseEnemy
 
 }
 
-
-class CKSpearUp : CKSpear
+class CKSpearUp : CKSpearDown
 {
 	Default
 	{
@@ -3262,6 +3261,65 @@ class CKSpearUp : CKSpear
 		}
 
 		SetOrigin((pos.xy, SpawnPoint.z + counter), true);
+	}
+}
+
+class CKSpear : CKSpearUp
+{
+	Default
+	{
+		//$Title Spears (Pitched)
+		+NOCLIP
+		-SOLID
+		+WALLSPRITE
+		+ROLLSPRITE
+	}
+
+	override void CK_SpearThrust()
+	{
+		SetDamage(15);
+		bSolid = true;
+
+		if (dir > 0 && counter - 8 > 0)
+		{
+			counter -= 8;
+		}
+		else if (dir < 0 && counter + 8 < 72)
+		{
+			counter += 8;
+		}
+		else
+		{
+			dir *= -1;
+		}
+
+		if (counter <= 0) { frame = 3; }
+		else if (counter < 40) { frame = 4; }
+		else { frame = 5; }
+
+		if (counter <= 8 && dir == 1)
+		{
+			counter = 0;
+			bSolid = false;
+
+			SetState(SeeState);
+			SetDamage(0);
+		}
+
+		SetOrigin((SpawnPoint.xy + RotateVector((counter * sin(roll), 0), angle + 90), SpawnPoint.z + counter * cos(roll)), true);
+	}
+
+	override void PostBeginPlay()
+	{
+		if (pitch == 90 || pitch == 270) { bWallSprite = false; }
+
+		if (pos.z == ceilingz) { SetOrigin((pos.xy, pos.z - 7), true); }
+
+		angle -= 90;
+		roll = pitch + 90;
+		pitch = 0;
+
+		Super.PostBeginPlay();
 	}
 }
 
