@@ -88,7 +88,7 @@ class MapStatsHandler : StaticEventHandler
 	{
 		TitleFont = SmallFont;
 		HeadingFont = SmallFont;
-		StatFont = Font.GetFont("chickn24");
+		StatFont = Font.GetFont("Chalkboard");
 
 		if (!TitleFont) { TitleFont = SmallFont; }
 		if (!HeadingFont) { HeadingFont = SmallFont; }
@@ -133,7 +133,28 @@ class MapStatsHandler : StaticEventHandler
 		if (e.IsSaveGame) // If loading a save, check for saved stats and copy them over if found
 		{
 			if (!persistent) { persistent = PersistentMapStatsHandler(EventHandler.Find("PersistentMapStatsHandler")); }
-			if (persistent) { Levels.Copy(persistent.Levels); }
+
+			if (persistent)
+			{
+				Levels.Copy(persistent.Levels);
+
+				for (int i = 0; i < persistent.Levels.Size(); i++)
+				{
+					let m = persistent.Levels[i];
+
+					// Filter to only show results from maps named in the CxMy format.
+					String mapname = m.mapname;
+					mapname.ToUpper();
+
+					if (mapname.Mid(0, 1) != "C" || mapname.Mid(2, 1) != "M") { continue; }
+
+					if (persistent.Levels[i])
+					{
+						chapter = Levels[i].mapname.CharCodeAt(1) - 48;
+						break;
+					}
+				}
+			}
 		}
 
 		active[consoleplayer] = false;
@@ -294,7 +315,7 @@ class MapStatsHandler : StaticEventHandler
 		if (xoffset < 0) { xoffset = width + xoffset; }
 		if (yoffset < 0) { yoffset = height + yoffset; }
 
-		String chaptertitle = Stringtable.Localize("$STATS_CHAPTER");
+		String chaptertitle = Stringtable.Localize("$STATS_CHAPTER") .. " ";
 
 		String s;
 
@@ -308,7 +329,7 @@ class MapStatsHandler : StaticEventHandler
 		else { s = chaptertitle .. s; }
 
 		// Print chapter number
-		DrawTextScaled(StatFont, Font.CR_GRAY, xoffset, yoffset, s, fontscale * 1.5, alignment);
+		DrawTextScaled(StatFont, Font.CR_UNTRANSLATED, xoffset, yoffset, s, fontscale * 1.5, alignment);
 	}
 
 	ui void DrawTotals(LevelData totals, int xoffset, int yoffset)
@@ -326,7 +347,7 @@ class MapStatsHandler : StaticEventHandler
 		DrawTextScaled(HeadingFont, Font.CR_DARKGRAY, xoffset - 72, yoffset, timetitle, headingscale, right);
 		let seconds = Thinker.Tics2Seconds(totals.leveltime);
 		s = String.Format("%02i:%02i:%02i", seconds / 3600, (seconds % 3600) / 60, seconds % 60);
-		DrawTextScaled(StatFont, Font.CR_GRAY, xoffset + 50, yoffset, s, fontscale, right);
+		DrawTextScaled(StatFont, Font.CR_UNTRANSLATED, xoffset + 50, yoffset, s, fontscale, right);
 	}
 
 	static const int drawpositions[] =
@@ -361,10 +382,10 @@ class MapStatsHandler : StaticEventHandler
 			total = String.Format("%i", d);
 			percentage = String.Format("%i%%", n * 100 / d);
 
-			DrawTextScaled(StatFont, Font.CR_GRAY, x + 90, y, amt, fontscale, right);
-			DrawTextScaled(StatFont, Font.CR_GRAY, x + 97, y, "/", fontscale, center);
-			DrawTextScaled(StatFont, Font.CR_GRAY, x + 104, y, total);
-			DrawTextScaled(StatFont, Font.CR_GRAY, x + (isTotals ? 175 : 160), y, percentage, fontscale, right);
+			DrawTextScaled(StatFont, Font.CR_UNTRANSLATED, x + 90, y, amt, fontscale, right);
+			DrawTextScaled(StatFont, Font.CR_UNTRANSLATED, x + 97, y, "/", fontscale, center);
+			DrawTextScaled(StatFont, Font.CR_UNTRANSLATED, x + 104, y, total);
+			DrawTextScaled(StatFont, Font.CR_UNTRANSLATED, x + (isTotals ? 175 : 160), y, percentage, fontscale, right);
 
 			return y += lineheight;
 		}
@@ -422,7 +443,7 @@ class MapStatsHandler : StaticEventHandler
 		// Print level time in hh:mm:ss format
 		let seconds = Thinker.Tics2Seconds(l.leveltime);
 		String t = String.Format("%02i:%02i:%02i", seconds / 3600, (seconds % 3600) / 60, seconds % 60);
-		DrawTextScaled(StatFont, Font.CR_GRAY, x + 256 - StatFont.StringWidth(t) * fontscale, y, t);
+		DrawTextScaled(StatFont, Font.CR_UNTRANSLATED, x + 256 - StatFont.StringWidth(t) * fontscale, y, t);
 
 		y += 2;
 
