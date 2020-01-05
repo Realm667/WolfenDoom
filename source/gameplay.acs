@@ -20,6 +20,8 @@ script "MissionNumber" OPEN
 		}
 	}
 
+	if (mapnum > 150 && mapnum < 154) { Terminate; }
+
 	if (!special_misnum) {
 		if (mapnum < 99) // If it's not a secret mission or the intermap
 		{
