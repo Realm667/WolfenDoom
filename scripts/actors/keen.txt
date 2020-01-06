@@ -266,15 +266,6 @@ mixin class CKPickup
 
 	Property VSpeed:vspeed;
 
-	Default
-	{
-		//$Category Commander Keen (BoA)/Pickups
-		//$Color 17
-
-		Scale 2.0;
-		+NOGRAVITY
-	}
-
 	States(Actor)
 	{
 		HideDoomish:
@@ -351,6 +342,7 @@ class CKTreasure : StackableInventory
 	Default
 	{
 		+COUNTITEM
+		+NOGRAVITY
 
 		Inventory.MaxAmount 10000000;
 		Inventory.PickupFlash "";
@@ -358,6 +350,7 @@ class CKTreasure : StackableInventory
 		+INVENTORY.UNDROPPABLE
 
 		CKTreasure.VSpeed 4;
+		Scale 2.0;
 	}
 
 	override bool ShouldStay ()
@@ -374,10 +367,13 @@ class CKHealth : Health
 
 	Default
 	{
+		+NOGRAVITY
+
 		Inventory.PickupFlash "";
 		Inventory.PickupSound "ckeen/pickup";
 
 		CKHealth.VSpeed 4;
+		Scale 2.0;
 	}
 
 	override bool ShouldStay ()
@@ -396,6 +392,7 @@ class CKPuzzleItem : PuzzleItem
 	{
 		//$Category Commander Keen (BoA)/Items
 		//$Color 13
+		+NOGRAVITY
 
 		Inventory.MaxAmount 1;
 		Inventory.PickupFlash "";
@@ -403,6 +400,7 @@ class CKPuzzleItem : PuzzleItem
 		-INVENTORY.INVBAR
 
 		CKPuzzleItem.VSpeed 4;
+		Scale 2.0;
 	}
 
 	override bool ShouldStay ()
@@ -421,10 +419,12 @@ class CKWeapon : Weapon
 	{
 		//$Category Commander Keen (BoA)/Weapons
 		//$Color 14
+		+NOGRAVITY
 
 		Inventory.PickupFlash "";
 
 		CKWeapon.VSpeed 4;
+		Scale 2.0;
 	}
 }
 
