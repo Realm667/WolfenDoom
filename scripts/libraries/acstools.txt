@@ -32,4 +32,33 @@ class ACSTools
         }
         return current - 1;
     }
+
+    // For the first thing with a matching TID, get the integer value for the given argument
+    static int GetArgument(int tid, int arg)
+    {
+        if(arg >= 0 && arg <= 4)
+        {
+            ActorIterator it = Level.CreateActorIterator(tid);
+            Actor thething = it.Next();
+            if(thething != null)
+            {
+                return thething.Args[arg];
+            }
+        }
+        return -1;
+    }
+
+    // For the first thing with a matching TID, set the integer value for the given argument
+    static void SetArgument(int tid, int arg, int value)
+    {
+        if(arg >= 0 && arg <= 4)
+        {
+            ActorIterator it = Level.CreateActorIterator(tid);
+            Actor thething = it.Next();
+            if(thething != null)
+            {
+                thething.Args[arg] = value;
+            }
+        }
+    }
 }
