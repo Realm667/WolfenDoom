@@ -699,6 +699,33 @@ ACTOR CobwebBody : HungBody
 	}
 }
 
+ACTOR CobwebNest : CobwebBody
+{
+	//$Title Spiders Nest, shootable
+	States
+	{
+	Spawn:
+		COBW C -1
+		Stop
+	Death:
+		//COBW CD 4 Spawn Debris here
+		COBW D 1 A_Jump(128,"Death1","Death2","Death3")
+	Death1:
+		COBW DDDDD 1 A_SpawnItemEx("MiniSpider",frandom(-4,4),frandom(-4,4),frandom(-4,4),0 ,0 ,0 ,0 ,SXF_SETMASTER | SXF_CLIENTSIDE | SXF_NOCHECKPOSITION, 0, tid)
+		COBW D -1
+		Stop
+	Death2:
+		COBW DDD 1 A_SpawnItemEx("BigSpider",frandom(-4,4),frandom(-4,4),frandom(-4,4),0 ,0 ,0 ,0 ,SXF_SETMASTER | SXF_CLIENTSIDE | SXF_NOCHECKPOSITION, 0, tid)
+		COBW D -1
+		Stop
+	Death3:
+		COBW DDD 1 A_SpawnItemEx("MiniSpider",frandom(-4,4),frandom(-4,4),frandom(-4,4),0 ,0 ,0 ,0 ,SXF_SETMASTER | SXF_CLIENTSIDE | SXF_NOCHECKPOSITION, 0, tid)
+		COBW DD 1 A_SpawnItemEx("BigSpider",frandom(-4,4),frandom(-4,4),frandom(-4,4),0 ,0 ,0 ,0 ,SXF_SETMASTER | SXF_CLIENTSIDE | SXF_NOCHECKPOSITION, 0, tid)
+		COBW D -1
+		Stop
+	}
+}
+
 //3d Actors
 ACTOR Skeleton3
 {

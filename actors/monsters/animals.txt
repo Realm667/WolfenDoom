@@ -327,6 +327,7 @@ ACTOR BigSpider : Base
 	DeathSound "spider1/death"
 	ActiveSound "spider1/active"
 	HitObituary "$BSPIDER"
+	Species "Spiders"
 	States
 	{
 	Spawn:
@@ -370,6 +371,28 @@ ACTOR BigSpider : Base
 		"####" A 5
 		"####" A -1 {bMThruSpecies = TRUE; bThruSpecies = TRUE;}
 		Stop
+	}
+}
+
+ACTOR MiniSpider : BigSpider
+{
+	//$Title Spider (mini)
+	Health 5
+	Radius 4
+	Height 8
+	Speed 12
+	Mass 50
+	PainChance 255
+	Scale 0.18
+	MaxDropOffHeight 64
+	MaxStepHeight 8
+	States
+	{
+	Melee:
+		GAYS A 4 A_FaceTarget
+		"####" E 4 A_CustomMeleeAttack(random(0,1),"spider1/melee","","Melee",TRUE)
+		"####" E 9 A_FaceTarget
+		Goto See
 	}
 }
 
