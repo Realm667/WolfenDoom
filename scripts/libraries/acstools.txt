@@ -40,7 +40,7 @@ class ACSTools
         {
             ActorIterator it = Level.CreateActorIterator(tid);
             Actor thething = it.Next();
-            if(thething != null)
+            if (thething != null)
             {
                 return thething.Args[arg];
             }
@@ -49,15 +49,33 @@ class ACSTools
     }
 
     // For the first thing with a matching TID, set the integer value for the given argument
-    static void SetArgument(int tid, int arg, int value)
+    static play void SetArgument(int tid, int arg, int value)
     {
         if(arg >= 0 && arg <= 4)
         {
+            int origArgs[5] = {0, 0, 0, 0, 0};
             ActorIterator it = Level.CreateActorIterator(tid);
             Actor thething = it.Next();
-            if(thething != null)
+            if (thething != null)
             {
-                thething.Args[arg] = value;
+                for (int i = 0; i < 5; i++)
+                {
+                    if (i == arg)
+                    {
+                        origArgs[i] = value;
+                    }
+                    else
+                    {
+                        origArgs[i] = thething.Args[i];
+                    }
+                }
+                thething.A_SetSpecial(thething.Special,
+                    origArgs[0],
+                    origArgs[1],
+                    origArgs[2],
+                    origArgs[3],
+                    origArgs[4]
+                );
             }
         }
     }
