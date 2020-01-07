@@ -619,20 +619,51 @@ class BoAPlayer : PlayerPawn
 	{
 		user_crouch = GetCrouchFactor(AAPTR_DEFAULT);
 
-		if (CountInv(token) > 0)
+		DisguiseToken token = DisguiseToken(FindInventory(Name(token)));
+
+		if (token && token.Amount > 0)
 		{
 			if (!(crouchsprite == "") && user_crouch < 0.75)
 			{
 				sprite = LookupSprite(crouchsprite);
-				Scale.Y = user_ScaleY / user_crouch; //Negate crouch sprite scaling
+				Scale.Y = user_ScaleY / user_crouch; // Negate crouch sprite scaling
 			}
 			else
 			{
 				sprite = LookupSprite(standsprite);
 				Scale.Y = user_ScaleY;
 			}
+
+			if (token.viewheight > -1)
+			{
+				viewheight = token.viewheight;
+				attackzoffset = Default.attackzoffset * token.viewheight / Default.viewheight;
+			}
+			if (token.playerscale > 0 && scale != Default.scale * token.playerscale)
+			{
+				scale = Default.scale * token.playerscale;
+				A_SetSize(Default.radius * scale.x / Default.scale.x, Default.height * scale.y / Default.scale.y);
+			}
+			if (token.viewbob > -1) { viewbob = token.viewbob; }
+			if (token.forwardmove1 > -1 && token.forwardmove2 > -1) { forwardmove1 = token.forwardmove1; forwardmove2 = token.forwardmove2; }
+			if (token.sidemove1 > -1 && token.sidemove2 > -1) { sidemove1 = token.sidemove1; sidemove2 = token.sidemove2; }
+
 			return true;
 		}
+
+		viewheight = Default.viewheight;
+		attackzoffset = Default.attackzoffset;
+		if (scale != Default.scale)
+		{
+			scale = Default.scale;
+			A_SetSize(Default.radius, Default.height);
+		}
+		viewbob = Default.viewbob;
+		forwardmove1 = Default.forwardmove1;
+		forwardmove2 = Default.forwardmove2;
+		sidemove1 = Default.sidemove1;
+		sidemove2 = Default.sidemove2;
+
 		return false;
 	}
 

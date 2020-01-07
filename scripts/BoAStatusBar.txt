@@ -572,6 +572,9 @@ class BoAStatusBar : BaseStatusBar
 
 	void DrawMugShot(Vector2 position)
 	{
+		int flags = MugShot.STANDARD;
+		String face = CPlayer.mo.face;
+
 		if (
 			CheckWeaponSelected("Browning5") ||
 			CheckWeaponSelected("FakeID") ||
@@ -586,12 +589,17 @@ class BoAStatusBar : BaseStatusBar
 			CheckWeaponSelected("TrenchShotgun")
 		)
 		{
-			DrawTexture(GetMugShot(5, mugshot.DISABLERAMPAGE), position, DI_ITEM_OFFSETS);
+			flags |= MugShot.DISABLERAMPAGE;
 		}
-		else
+
+		let disguise = DisguiseToken(CPlayer.mo.FindInventory("DisguiseToken", True));
+		if (disguise)
 		{
-			DrawTexture(GetMugShot(5), position, DI_ITEM_OFFSETS);
+			flags |= MugShot.CUSTOM;
+			face = disguise.HUDSprite; 
 		}
+
+		DrawTexture(GetMugShot(5, flags, face), position, DI_ITEM_OFFSETS);
 	}
 
 	void DrawVisibilityBar(Vector2 position = (0, 0), int flags = DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM, double scale = 1.)

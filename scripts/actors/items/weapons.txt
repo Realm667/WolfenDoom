@@ -95,7 +95,9 @@ class NaziWeapon : Weapon
 
 			if (allowdisguised)
 			{
-				if (owner.player.ReadyWeapon == self && owner.FindInventory("DisguiseToken", true) && !owner.FindInventory("DisguiseFailToken", true))
+				let disguise = DisguiseToken(owner.FindInventory("DisguiseToken", true));
+
+				if (owner.player.ReadyWeapon == self && disguise && disguise.NoTarget && !owner.FindInventory("DisguiseFailToken", true))
 				{
 					let psp = owner.player.GetPSprite(PSP_WEAPON);
 

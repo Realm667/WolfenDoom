@@ -357,3 +357,49 @@ class BoACompass : CustomInventory
 		}
 	}
 }
+
+
+class DisguiseToken : Inventory
+{
+	// Settings here are all referenced in the BoA player class and status bar code
+
+	int viewheight;
+	double playerscale;
+	double viewbob;
+	double forwardmove1, forwardmove2;
+	double sidemove1, sidemove2;
+	String HUDSprite;
+	bool NoTarget;
+
+	Property ViewHeight:viewheight;
+	Property PlayerScale:playerscale;
+	Property ViewBob:viewbob;
+	Property ForwardMove:forwardmove1, forwardmove2;
+	Property SideMove:sidemove1, sidemove2;
+	Property HUDSprite:HUDSprite;
+	Property NoTarget:NoTarget;
+
+	Default
+	{
+		Inventory.MaxAmount 1;
+		DisguiseToken.ViewHeight -1; // -1 means 'use BoAPlayer default' for everything below...
+		DisguiseToken.PlayerScale -1;
+		DisguiseToken.ViewBob -1;
+		DisguiseToken.ForwardMove -1, -1;
+		DisguiseToken.SideMove -1, -1;
+		DisguiseToken.HUDSprite "STF"; // Default to using the default mugshot
+		DisguiseToken.NoTarget True; // If True, disguise hides player from Nazis.  If False, player just uses alternate skin but is fired at normally.
+	}
+}
+
+class RyanToken : DisguiseToken
+{
+	Default
+	{
+		DisguiseToken.ViewBob 0.22; // Less bob then BJ
+		DisguiseToken.ForwardMove 0.9, 0.45; // Just a little slower than BJ
+		DisguiseToken.SideMove 0.9, 0.45;
+		DisguiseToken.HUDSprite "RTF"; // Ryan Mugshot
+		DisguiseToken.NoTarget False; // Don't hide player from enemies
+	}
+}
