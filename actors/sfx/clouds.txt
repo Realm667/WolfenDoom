@@ -1,7 +1,7 @@
 ACTOR CloudSpawner
 {
 	//$Category Special Effects (BoA)
-	//$Title Cloudstorm Spawner (arg1 xRadius, arg2 zRadius, arg3 Chance, arg4 Size, arg5 Color)
+	//$Title Cloudstorm Spawner (arg1 xRadius, arg2 zRadius, arg3 Chance, arg4 Size, arg5 Color; Renderstyle, Stencilcolor and Scale are taken into account)
 	//$Color 12
 	//$Arg0 "Radius(x/y)"
 	//$Arg0Tooltip "Radius of spawn area in map units"
@@ -14,7 +14,7 @@ ACTOR CloudSpawner
 	//$Arg3Enum { 0 = "Small"; 1 = "Medium"; 2 = "Large"; }
 	//$Arg4 "Color"
 	//$Arg4Type 11
-	//$Arg4Enum { 0 = "Grey"; 1 = "Tan"; }
+	//$Arg4Enum { 0 = "Grey (slow)"; 1 = "Tan (slow)"; 2 = "Dark (fast)"; }
 	+CLIENTSIDEONLY
 	+NOBLOCKMAP
 	+NOCLIP
@@ -26,6 +26,7 @@ ACTOR CloudSpawner
 	Spawn:
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("CloudSwitch")==0,"EndSpawn")
 		TNT1 A 0 A_JumpIf(Args[4] == 1, "Tan")
+		TNT1 A 0 A_JumpIf(Args[4] == 2, "Dark")
 	Grey:
 		TNT1 A 0 A_JumpIf(Args[3] == 0, "SmallGrey")
 		TNT1 A 0 A_JumpIf(Args[3] == 1, "MediumGrey")
@@ -36,23 +37,37 @@ ACTOR CloudSpawner
 		TNT1 A 0 A_JumpIf(Args[3] == 1, "MediumTan")
 		TNT1 A 0 A_JumpIf(Args[3] > 1, "LargeTan")
 		Goto SmallTan
+	Dark:
+		TNT1 A 0 A_JumpIf(Args[3] == 0, "SmallDark")
+		TNT1 A 0 A_JumpIf(Args[3] == 1, "MediumDark")
+		TNT1 A 0 A_JumpIf(Args[3] > 1, "LargeDark")
+		Goto SmallDark
 	SmallGrey:
-		TNT1 A 30 A_SpawnItemEx("SmallCloudGrey", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), random(5, 15), 0, 0, random(6, -6), 128, Args[2])
+		TNT1 A 30 A_SpawnItemEx("SmallCloudGrey", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), frandom(5.0, 8.0), 0, 0, random(6, -6), SXF_CLIENTSIDE | SXF_TRANSFERSCALE |  SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERSTENCILCOL, Args[2])
 		Loop
 	MediumGrey:
-		TNT1 A 30 A_SpawnItemEx("MediumCloudGrey", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), random(5, 15), 0, 0, random(6, -6), 128, Args[2])
+		TNT1 A 30 A_SpawnItemEx("MediumCloudGrey", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), frandom(5.0, 8.0), 0, 0, random(6, -6), SXF_CLIENTSIDE | SXF_TRANSFERSCALE |  SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERSTENCILCOL, Args[2])
 		Loop
 	LargeGrey:
-		TNT1 A 30 A_SpawnItemEx("LargeCloudGrey", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), random(5, 15), 0, 0, random(6, -6), 128, Args[2])
+		TNT1 A 30 A_SpawnItemEx("LargeCloudGrey", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), frandom(5.0, 8.0), 0, 0, random(6, -6), SXF_CLIENTSIDE | SXF_TRANSFERSCALE |  SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERSTENCILCOL, Args[2])
 		Loop
 	SmallTan:
-		TNT1 A 30 A_SpawnItemEx("SmallCloudTan", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), random(5, 15), 0, 0, random(6, -6), 128, Args[2])
+		TNT1 A 30 A_SpawnItemEx("SmallCloudTan", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), frandom(5.0, 8.0), 0, 0, random(6, -6), SXF_CLIENTSIDE | SXF_TRANSFERSCALE |  SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERSTENCILCOL, Args[2])
 		Loop
 	MediumTan:
-		TNT1 A 30 A_SpawnItemEx("MediumCloudTan", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), random(5, 15), 0, 0, random(6, -6), 128, Args[2])
+		TNT1 A 30 A_SpawnItemEx("MediumCloudTan", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), frandom(5.0, 8.0), 0, 0, random(6, -6), SXF_CLIENTSIDE | SXF_TRANSFERSCALE |  SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERSTENCILCOL, Args[2])
 		Loop
 	LargeTan:
-		TNT1 A 30 A_SpawnItemEx("LargeCloudTan", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), random(5, 15), 0, 0, random(6, -6), 128, Args[2])
+		TNT1 A 30 A_SpawnItemEx("LargeCloudTan", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), frandom(5.0, 8.0), 0, 0, random(6, -6), SXF_CLIENTSIDE | SXF_TRANSFERSCALE |  SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERSTENCILCOL, Args[2])
+		Loop
+	SmallDark:
+		TNT1 A 30 A_SpawnItemEx("SmallCloudDark", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), frandom(40.0, 70.0), 0, 0, random(6, -6), SXF_CLIENTSIDE | SXF_TRANSFERSCALE |  SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERSTENCILCOL, Args[2])
+		Loop
+	MediumDark:
+		TNT1 A 30 A_SpawnItemEx("MediumCloudDark", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), frandom(40.0, 70.0), 0, 0, random(6, -6), SXF_CLIENTSIDE | SXF_TRANSFERSCALE |  SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERSTENCILCOL, Args[2])
+		Loop
+	LargeDark:
+		TNT1 A 30 A_SpawnItemEx("LargeCloudDark", random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), frandom(40.0, 70.0), 0, 0, random(6, -6), SXF_CLIENTSIDE | SXF_TRANSFERSCALE |  SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERSTENCILCOL, Args[2])
 		Loop
 	EndSpawn:
 		TNT1 A 1
@@ -116,3 +131,24 @@ ACTOR CloudBaseTan : CloudBaseGrey
 ACTOR SmallCloudTan : CloudBaseTan  {	Scale 1.0 }
 ACTOR MediumCloudTan : CloudBaseTan {	Scale 2.0 }
 ACTOR LargeCloudTan : CloudBaseTan  {	Scale 4.0 }
+
+//Base Cloud Dark
+ACTOR CloudBaseDark : CloudBaseGrey
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256, "Cloud1", "Cloud2")
+	Cloud1:
+		CLXD A 0
+		Goto Movement
+	Cloud2:
+		CLXD B 0
+		Goto Movement
+	}
+}
+
+//Grey Clouds
+ACTOR SmallCloudDark : CloudBaseDark  {	Scale 1.0 }
+ACTOR MediumCloudDark : CloudBaseDark {	Scale 2.0 }
+ACTOR LargeCloudDark : CloudBaseDark  {	Scale 4.0 }
