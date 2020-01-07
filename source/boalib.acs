@@ -83,9 +83,12 @@ Script "BoA_PlayerLoop" ENTER
 // Uses ZScript to check that a sound exists
 function bool PlayMessageSound(int tid, int message)
 {
-	int length = ScriptCall("Object", "S_GetLength", message);
+	// Get localized SNDINFO entry for localized voice acting
+	str messageKey = StrParam(s:"SND_", s:message);
+	str messageEntry = StrParam(l:messageKey);
+	int hasSound = StrCmp(messageKey, messageEntry);
 
-	if (length == 0)
+	if (hasSound == 0)
 	{
 		if (GetCVar("developer")) { Log(s:"\cgMissing voiceover: \cjCheck SNDINFO entry and audio file for \cf", s:message, s:"\cj!"); }
 
@@ -94,7 +97,7 @@ function bool PlayMessageSound(int tid, int message)
 
 	if (!tid) { tid = playerID; }
 
-	PlaySound(tid, message, CHAN_BODY, 1.0, false, ATTN_NONE, false);
+	PlaySound(tid, messageEntry, CHAN_BODY, 1.0, false, ATTN_NONE, false);
 
 	return true;
 }
