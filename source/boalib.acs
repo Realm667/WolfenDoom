@@ -87,8 +87,13 @@ function bool PlayMessageSound(int tid, int message)
 	str messageKey = StrParam(s:"SND_", s:message);
 	str messageEntry = StrParam(l:messageKey);
 	int hasSound = StrCmp(messageKey, messageEntry);
+	int soundLength = 0;
+	if (hasSound != 0)
+	{
+		soundLength = ScriptCall("Object", "S_GetLength", messageEntry);
+	}
 
-	if (hasSound == 0)
+	if (!hasSound || soundLength == 0)
 	{
 		if (GetCVar("developer")) { Log(s:"\cgMissing voiceover: \cjCheck SNDINFO entry and audio file for \cf", s:message, s:"\cj!"); }
 
