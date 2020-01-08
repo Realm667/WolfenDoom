@@ -345,8 +345,8 @@ ACTOR RTCWParlor : InteractionBase
 		MDLA A 0 A_PlaySound("radios/loops", CHAN_ITEM)
 		Goto SpawnSet
 	Spawn:
-	  MDLA A 0 NODELAY A_SpawnItemEx("InteractionIcon", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
-		SpawnSet:
+		MDLA A 0 NODELAY A_SpawnItemEx("InteractionIcon", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+	SpawnSet:
 		MDLA A -1
 		Stop
 	Inactive:
@@ -365,6 +365,28 @@ ACTOR RTCWParlor : InteractionBase
 		"####" BBBBBB 3 A_SpawnItemEx("Spark_R1", ScaleX*24, frandom(-8.0,8.0), ScaleY*8, 0, frandom(-1.0,1.0), frandom(-1.0,1.0), random(0,360), SXF_CLIENTSIDE)
 		"####" B -1
 		Stop
+	}
+}
+
+ACTOR SovietRadio : RTCWParlor
+{
+	//$Title Russian Radio (interactive)
+	Health -1
+	-SHOOTABLE
+	+NODAMAGE
+	States
+	{
+	Active:
+		MDLA A 0 A_PlaySound("radios2/loops", CHAN_ITEM)
+		Goto SpawnSet
+	Spawn:
+		MDLA A 0 NODELAY A_SpawnItemEx("InteractionIcon", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+	SpawnSet:
+		MDLA A -1
+		Stop
+	Inactive:
+		MDLA A 0 A_StopSound(CHAN_ITEM)
+		Goto SpawnSet
 	}
 }
 
