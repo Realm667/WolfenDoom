@@ -22,13 +22,14 @@ class UnderlayRenderer : EventHandler
             {
                 Screen.DrawTexture(SpaceSuitGraphic, false, 0.0, 0.0, DTA_TopOffset, 80, DTA_LeftOffset, vXOffset, DTA_VirtualHeight, 200, DTA_VirtualWidth, vWidth, DTA_KeepRatio, true);
                 // Darken in dark sectors
-                //Console.Printf("Light level: %d", p.mo.CurSector.lightlevel);
-                //Screen.DrawTexture(SpaceSuitGraphic, false, 0.0, 0.0, DTA_TopOffset, 80, DTA_LeftOffset, vXOffset, DTA_VirtualHeight, 200, DTA_VirtualWidth, vWidth, DTA_KeepRatio, true, DTA_RenderStyle, STYLE_TranslucentStencil, DTA_Alpha, 1.0 - p.mo.CurSector.lightlevel / 255.0);
+                Screen.DrawTexture(SpaceSuitGraphic, false, 0.0, 0.0, DTA_TopOffset, 80, DTA_LeftOffset, vXOffset, DTA_VirtualHeight, 200, DTA_VirtualWidth, vWidth, DTA_KeepRatio, true, DTA_FillColor, 0, DTA_Alpha, 1.0 - p.mo.CurSector.lightlevel / 255.0);
             }
             Inventory ZyklonGasMask = p.mo.FindInventory("PowerZyklonMask");
             if (ZyklonGasMask)
             {
                 Screen.DrawTexture(GasMaskGraphic, false, 0.0, 0.0, DTA_TopOffset, 80, DTA_LeftOffset, vXOffset, DTA_VirtualHeight, 200, DTA_VirtualWidth, vWidth, DTA_KeepRatio, true);
+                // Darken in dark sectors
+                Screen.DrawTexture(GasMaskGraphic, false, 0.0, 0.0, DTA_TopOffset, 80, DTA_LeftOffset, vXOffset, DTA_VirtualHeight, 200, DTA_VirtualWidth, vWidth, DTA_KeepRatio, true, DTA_FillColor, 0, DTA_Alpha, 1.0 - p.mo.CurSector.lightlevel / 255.0);
             }
         }
     }
