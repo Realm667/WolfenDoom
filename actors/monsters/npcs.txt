@@ -93,6 +93,23 @@ ACTOR StatistSSAscher : StatistBarkeeper
 	}
 }
 
+ACTOR StatistStierlitz : StatistBarkeeper
+{
+	//$Title Col. Stierlitz (NPC)
+	Scale 0.67
+	-USESPECIAL
+	+FRIENDLY
+	States
+	{
+	Spawn:
+		STIE A 80
+		"####" B 40
+		"####" CB 40
+		"####" B 80
+		Loop
+	}
+}
+
 ACTOR StatistVolkoff : StatistBarkeeper
 {
 	//$Title Polk. Volkoff (NPC)
