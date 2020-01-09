@@ -93,9 +93,9 @@ ACTOR StatistSSAscher : StatistBarkeeper
 	}
 }
 
-ACTOR StatistStierlitz : StatistBarkeeper
+ACTOR StatistStierlitz1 : StatistBarkeeper
 {
-	//$Title Col. Stierlitz (NPC)
+	//$Title Col. Stierlitz, Civilian clothes (NPC)
 	Scale 0.67
 	-USESPECIAL
 	+FRIENDLY
@@ -106,6 +106,40 @@ ACTOR StatistStierlitz : StatistBarkeeper
 		"####" B 40
 		"####" CB 40
 		"####" B 80
+		Loop
+	}
+}
+
+ACTOR StatistStierlitz2 : StatistBarkeeper
+{
+	//$Title Col. Stierlitz, Prisoner clothes (NPC)
+	Scale 0.67
+	-USESPECIAL
+	+FRIENDLY
+	States
+	{
+	Spawn:
+		STIE D 80
+		"####" E 40
+		"####" FE 40
+		"####" E 80
+		Loop
+	}
+}
+
+ACTOR StatistStierlitz3 : StatistBarkeeper
+{
+	//$Title Col. Stierlitz, SS uniform (NPC)
+	Scale 0.67
+	-USESPECIAL
+	+FRIENDLY
+	States
+	{
+	Spawn:
+		STIE G 80
+		"####" H 40
+		"####" IH 40
+		"####" H 80
 		Loop
 	}
 }
