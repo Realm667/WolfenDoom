@@ -203,7 +203,7 @@ class ClassicMessageBox : MessageBoxMenu
 		if (!top || !bottom || !left || !right || !topleft || !topright || !bottomleft || !bottomright) { return; }
 
 		int w = 0, h = 0, gw = 0;
-		text = StringTable.Localize(text);
+		text = "\cj" .. StringTable.Localize(text);
 
 		Vector2 graphicsize;
 
