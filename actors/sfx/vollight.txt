@@ -23,7 +23,7 @@ ACTOR VolumetricLight_ConeDown : VolumetricBase
 	{
 	Spawn:
 	Active:
-		VOLT A 1 NODELAY A_SpawnItemEx("AlertLight", 0, 0, -112, 0, 0, 0, 0, SXF_SETTRACER)
+		VOLT A 1 NODELAY A_SpawnItemEx("AlertLight", 0, 0, -112, 0, 0, 0, 0, SXF_SETMASTER | SXF_SETTRACER)
 	ActiveLoop:
 		VOLT A 1
 		Loop
@@ -41,7 +41,7 @@ ACTOR VolumetricLight_ConeUp : VolumetricBase //spawn correct AlertLight & sprit
 	{
 	Spawn:
 	Active:
-		VOLT B 1 NODELAY A_SpawnItemEx("AlertLight", 0, 0, 112, 0, 0, 0, 0, SXF_SETTRACER)
+		VOLT B 1 NODELAY A_SpawnItemEx("AlertLight", 0, 0, 112, 0, 0, 0, 0, SXF_SETMASTER | SXF_SETTRACER)
 	ActiveLoop:
 		VOLT B 1
 		Loop

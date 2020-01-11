@@ -71,6 +71,7 @@ class AlertLight : Actor
 {
 	double checkRadius;
 	double oldVisibility;
+	bool hasmaster;
 
 	Default
 	{
@@ -92,6 +93,7 @@ class AlertLight : Actor
 	override void PostBeginPlay()
 	{
 		if (master) {
+			hasmaster = true;
 			checkRadius = master.args[3]; // If spawned and master is set, use parent's arg[3] as check radius
 		} else {
 			checkRadius = args[0]; // Otherwise, use the actor's arg[0]
@@ -132,6 +134,8 @@ class AlertLight : Actor
 				if (Distance3D(players[i].mo) < checkRadius * 2) { A_AddVisibility(players[i].mo); }
 			}
 		}
+
+		if (hasmaster && !master) { Destroy(); }
 
 		Super.Tick();
 	}

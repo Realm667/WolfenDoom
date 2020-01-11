@@ -9,6 +9,7 @@ class KeenMessage
 	int autoclose;
 	int fadeintime, fadeouttime;
 	double fadealpha, fadetargetalpha;
+	int showtics;
 
 	ui static void Init(ClassicMessageBox parent, String mtext, int malign = 0, String mgraphic = "", int mgraphicalign = 0, int mautoclose = -1, int mwidth = 26, int mheight = 8, double fadealpha = 0.0, double fadetargetalpha = 1.0, int fadeintime = 0, int fadeouttime = 0)
 	{
@@ -25,6 +26,7 @@ class KeenMessage
 		msg.fadetargetalpha = fadetargetalpha;
 		msg.fadeintime = fadeintime;
 		msg.fadeouttime = fadeouttime;
+		msg.showtics = 15;
 
 		parent.messages.Push(msg);
 	}
@@ -60,6 +62,8 @@ class ClassicMessageBox : MessageBoxMenu
 	int fadetic, ticcount;
 	int fadeintime, fadeouttime;
 	double fadealpha, fadetargetalpha;
+
+	int showtics;
 
 	override void Init(Menu parent, String msg, int messagemode, bool playsound, Name cmd, voidptr native_handler)
 	{
@@ -136,6 +140,8 @@ class ClassicMessageBox : MessageBoxMenu
 		msg.DontBlur = true;
 		msg.silent = true;
 
+		msg.showtics = 15;
+
 		msg.ActivateMenu();
 
 		return msg;
@@ -151,6 +157,8 @@ class ClassicMessageBox : MessageBoxMenu
 
 	override void Ticker()
 	{
+		if (showtics > 0) { showtics--; }
+
 		if (autoclose > 0)
 		{
 			autoclose--;
@@ -188,6 +196,7 @@ class ClassicMessageBox : MessageBoxMenu
 				fadealpha = messages[index - 1].fadealpha;
 				fadetargetalpha = messages[index - 1].fadetargetalpha;
 				fadetic = (messages[index - 1].fadeintime || messages[index - 1].fadeouttime) ? gametic : 0;
+				showtics = messages[index - 1].showtics;
 
 				cmds = players[consoleplayer].cmd.buttons;
 			}
@@ -203,7 +212,7 @@ class ClassicMessageBox : MessageBoxMenu
 		if (!top || !bottom || !left || !right || !topleft || !topright || !bottomleft || !bottomright) { return; }
 
 		int w = 0, h = 0, gw = 0;
-		text = "\cj" .. StringTable.Localize(text);
+		text = StringTable.Localize(text);
 
 		Vector2 graphicsize;
 
@@ -291,7 +300,7 @@ class ClassicMessageBox : MessageBoxMenu
 			else if (align == 1) { drawx += w / 2 - size - 8; }
 			else { drawx -= w / 2 - 8; }
 
-			screen.DrawText(fnt, 0, drawx, drawy, "\c[TrueBlack]" .. message.StringAt(i) .. (i == (c - 1) ? cursor : ""), DTA_Clean, true);
+			screen.DrawText(fnt, 0, drawx, drawy, "\c[White]" .. message.StringAt(i) .. (i == (c - 1) ? cursor : ""), DTA_Clean, true);
 
 			drawx = 160 + xoffset;
 			drawy += fontheight;
@@ -300,13 +309,15 @@ class ClassicMessageBox : MessageBoxMenu
 
 	override bool OnUIEvent(UIEvent ev)
 	{
+		if (players[consoleplayer].cmd.buttons & cmds || showtics > 0) { return false; }
+
 		if (ev.type == UIEvent.Type_KeyDown)
 		{
 			if (mMessageMode == 0)
 			{
 				// tolower
 				int ch = ev.KeyChar;
-				ch = ch >= 65 && ch <91? ch + 32 : ch;
+				ch = ch >= 65 && ch < 91? ch + 32 : ch;
 
 				if (ch == 110 /*'n'*/ || ch == 32) 
 				{
@@ -331,8 +342,6 @@ class ClassicMessageBox : MessageBoxMenu
 
 	override bool MenuEvent(int mkey, bool fromcontroller)
 	{
-		if (players[consoleplayer].cmd.buttons & cmds) { return false; }
-
 		if (mMessageMode == 0)
 		{
 			if (mkey == MKEY_Up || mkey == MKEY_Down)
@@ -366,8 +375,6 @@ class ClassicMessageBox : MessageBoxMenu
 
 	override void HandleResult(bool res)
 	{
-		if (players[consoleplayer].cmd.buttons & cmds) { return; }
-
 		if (Handler != null)
 		{
 			if (res) 
