@@ -182,6 +182,112 @@ script "FollowerMessage" (int type, int count)
 	TakeInventory("IncomingMessage", 9999);
 }
 
+script "SpyMessage" (int count)
+{
+	int messagelayer = GetMessageStart();
+	int messagetype = "";
+	int message = "";
+	int messagestr = "";
+
+	if (count < 0)
+	{
+		// If the actor's user_spymsgindex variable is set, use the corresponding LANGUAGE
+		// entry that's formatted as "SPYMESSAGE[MAPNAME][user_spymsgindex value]
+		// e.g.: SPYMESSAGEC1M11 for a spy in C1M1 with a variable set to 1.
+		message = StrParam(s:"SPYMESSAGE", n:PRINTNAME_LEVEL, d:-count);
+		messagestr = StrParam(l:message);
+	}
+
+	if (messagestr == message)
+	{
+		switch (count)
+		{
+			case 0:
+				messagetype = StrParam(s:"GENERIC", i:Random(0, 4));
+				break;
+			case 1:
+				messagetype = StrParam(s:"AMMO");
+				break;
+			case 2:
+				messagetype = StrParam(s:"BANDAGES");
+				break;
+			case 3:
+				messagetype = StrParam(s:"GOLD");
+				break;
+			default:
+				break;
+		}
+
+		message = StrParam(s:"SPYMESSAGE", s:messagetype);
+		messagestr = StrParam(l:message);
+
+		if (messagestr == message) { Terminate; }
+	}
+
+	str head = GetUserVariable(0, "head");
+	if (head == "") { Terminate; }
+
+	// Quick message display...  Variant of the BoADialogue script...
+
+	str headsilent = StrParam(s:head, i:0);
+	str headtalky = headsilent;
+
+	// Fade in HUD BGs
+	GiveInventory("IncomingMessage", 1);
+	SetHudSize(320, 200, true);
+	SetFont("HEADBAR");
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, messagelayer + 4, CR_UNTRANSLATED, 160.0, 24.0, 999.0, 1.0, 0.5);
+	SetFont("HEADBOVL"); //mxd. Frame overlay
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, messagelayer + 1, CR_UNTRANSLATED, 160.0, 24.0, 999.0, 1.0, 0.5); //mxd
+
+	// Fade in the portrait
+	SetFont(headsilent);
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, messagelayer + 3, CR_UNTRANSLATED, 21.0, 16.0, 999.0, 1.0, 0.5);
+
+	// Start talk animation
+	Delay(35);
+	SetFont(headtalky);
+	hudmessagebold(s:"A"; HUDMSG_PLAIN, messagelayer + 3, CR_UNTRANSLATED, 21.0, 16.0, 0.0);
+
+	// Play the audio (if it's there)
+	PlayMessageSound(0, message);
+
+	// Show message
+	AmbientSound("RADIONOS",127);
+	SetHudSize(640, 400, 1);
+	SetFont("SMALLFONT");
+	SetHudWrapWidth(540);
+	hudmessagebold(s:messagestr; HUDMSG_TYPEON | HUDMSG_LOG, messagelayer + 2, CR_GRAY, 100.1, 4.1, 999.0, 0.03, 0.5);
+
+	// Stop talk animation
+	delay(2*35);
+
+	if (count < 0) { delay(3*35); } // Take longer for initial conversation if it's not generic
+
+	SetHudSize(320, 200, true);
+	SetFont(headsilent);
+	hudmessagebold(s:"A"; HUDMSG_PLAIN, messagelayer + 3, CR_UNTRANSLATED, 21.0, 16.0, 0.0);
+
+	if (count < 0) { delay(5*35); } // Take longer for initial conversation if it's not generic
+
+	// Fade out the portrait
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, messagelayer + 3, CR_UNTRANSLATED, 21.0, 16.0, 0.0, 0.0, 0.5);
+
+	//Fade out HUD BGs
+	SetHudSize(320, 200, true);
+	SetFont("HEADBAR");
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, messagelayer + 4, CR_UNTRANSLATED, 160.0, 24.0, 0.0, 0.0, 0.5);
+	SetFont("HEADBOVL"); //mxd. Frame overlay
+	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, messagelayer + 1, CR_UNTRANSLATED, 160.0, 24.0, 0.0, 0.0, 0.5); //mxd
+
+	//Fade out the message
+	SetHudSize(640, 400, 1);
+	SetFont("SMALLFONT");
+	SetHudWrapWidth(540);
+	hudmessagebold(s:messagestr; HUDMSG_FADEINOUT, messagelayer + 2, CR_GRAY, 100.1, 4.1, 0.0, 0.0, 0.5);
+	TakeInventory("IncomingMessage", 9999);
+}
+
 script "ShowStats" (void)
 {
 	ScriptCall("MapStatsHandler", "Toggle");

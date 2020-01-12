@@ -94,6 +94,16 @@
 	- The enemy must call the A_UnblockAndDrop function in their Death state
 	  for this property to have any effect.
 
+	user_spymsgindex
+	- Message displayed when player presses use to interact with a FRIENDLY Nazi
+	  Message names in in LANGUAGE are formatted as:
+		SPYMESSAGE[MAPNAME][user_spymsgindex value]
+
+	  e.g., Spy message 1 in C3M1 would be the SPYMESSAGEC3M11 lookup
+
+	user_spyitem
+	- Item given to player when you press use to interact with a FRIENDLY Nazi
+
   New Functions (Base class)
 	A_LookThroughDisguise(int flags = 0, float minseedist = 0, float Range = 0, float maxheardist = 0, double fov = 0, statelabel label = "See")
 	- Allows enemies to always and immediately "see through" player disguises,
@@ -844,6 +854,12 @@ class Nazi : Base
 	bool user_fadedeath;
 	int user_noaltdeath;
 	Actor closestplayer;
+	bool wasused;
+	int usetime;
+	int activationcount;
+	String head;
+	String user_spyitem;
+	int user_spymsgindex;
 
 	Property Healer:healflags;
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
@@ -858,6 +874,7 @@ class Nazi : Base
 	Property HealDistance:healdistance;
 	Property FadeDeath:user_fadedeath;
 	Property NoAltDeath:user_noaltdeath;
+	Property Head:head;
 
 	Default
 	{
@@ -890,6 +907,7 @@ class Nazi : Base
 		Nazi.Sneakable False;
 		Nazi.SneakableCloseSightRadius 64;
 		Nazi.HealDistance 8;
+		Nazi.Head "MS_UNKN";
 	}
 
 	States
@@ -1371,6 +1389,13 @@ class Nazi : Base
 			}
 		}
 
+		if (bFriendly && !user_sneakable && Default.Species == "Nazi")
+		{
+			if (!closestplayer) { closestplayer = FindClosestPlayer(IgnoreFriendlies:!bFriendly); }
+
+			if (CheckSight(closestplayer, true) && Random() < 64) { SetState(SeeState); } // If the player is in sight, take a chance to turn on his Nazi allies
+		}
+
 		if (!Default.bLookAllAround && level.time && level.time % interval == 0)
 		{
 			FLineTraceData trace;
@@ -1430,8 +1455,28 @@ class Nazi : Base
 		}
 		else
 		{
-			if (closestplayer && target && closestplayer != target && Random[switchtarget](0, 100) < 20 && CheckSight(closestplayer) && Distance3D(closestplayer) < Distance3D(target)) { target = closestplayer; }
+			if (!bFriendly && closestplayer && target && closestplayer != target && Random[switchtarget](0, 100) < 20 && CheckSight(closestplayer) && Distance3D(closestplayer) < Distance3D(target)) { target = closestplayer; }
 			if (target is "ShermanPlayer") { target = Random(0, 1) ? ShermanPlayer(target).turret : ShermanPlayer(target).treads; }
+
+			if (!closestplayer) { closestplayer = FindClosestPlayer(IgnoreFriendlies:!bFriendly); }
+
+			// If a Nazi is flagged as friendly, he will turn on his fellow Nazis
+			if (bFriendly && !user_sneakable && Default.Species == "Nazi")
+			{
+				if (target)
+				{
+					Species = "Ally";
+
+					if (closestplayer && closestplayer.player && CheckSight(closestplayer.player.attacker))
+					{
+						target = closestplayer.player.attacker;
+					}
+				}
+				else
+				{
+					Species = Default.Species;
+				}
+			}
 
 			A_Chase(melee, missile, flags);
 		}
@@ -1751,7 +1796,7 @@ class Nazi : Base
 			{
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING); // Remove the sneakable eyes
 			}
-
+		
 			if (user_perceptiontime > 0) // or if it was a perceptive actor...
 			{
 				if (vis) { BoAVisibility(vis).suspicion = 0; } // Reset suspicion level to zero
@@ -1760,6 +1805,13 @@ class Nazi : Base
 			DeathDamageType = currentDamage;
 
 			if (master && master is "WaveSpawner") { A_QueueCorpse(); } // Queue wave spawned corpses for removal
+		}
+
+		if (Species == "Nazi" && bFriendly && source.player) // Friendly Nazis might become unfriendly if you shoot them
+		{
+//			if (developer) { console.printf("You shot a friendly spy!"); }
+
+			if (Random() < 64) { bFriendly = false; }
 		}
 
 		if (source && source != self && source.bFriendly != bFriendly) { target = source; } // Target the source if it wasn't friendly
@@ -1976,6 +2028,20 @@ class Nazi : Base
 	{
 		if (globalfreeze || level.Frozen) { return; }
 
+		if (wasused)
+		{
+			if (usetime > 0)
+			{
+				bDormant = true;
+				usetime--;
+			}
+			if (usetime == 0)
+			{
+				bDormant = false;
+				wasused = false;
+			}
+		}
+		
 		// If the enemy is sneakable and idle (and not patrolling), and isn't in its original location, keep it moving toward that location.
 		//  NOTE: This doesn't work properly when the player has NOTARGET enabled (or is wearing a disguise and has no weapon raised).
 		if (health > 0 && bShootable && !bDormant)
@@ -2095,10 +2161,60 @@ class Nazi : Base
 				A_LookForGrenades();
 			}
 
-			if (level.time && level.time % interval) { closestplayer = FindClosestPlayer(); }
+			if (level.time && level.time % interval) { closestplayer = FindClosestPlayer(IgnoreFriendlies:!bFriendly); }
 		}
 
 		Super.Tick();
+	}
+
+	override bool Used(Actor user)
+	{
+		if (user.player && !wasused && !special && bFriendly && !user_sneakable && Default.Species == "Nazi" && (!target || !target.bShootable) && activationcount < 4)
+		{
+			wasused = true;
+			usetime = 70;
+
+			SetState(SpawnState);
+			A_Face(user);
+
+			ACS_NamedExecuteAlways("SpyMessage", 0, !activationcount && user_spymsgindex ?  -user_spymsgindex : activationcount);
+
+			switch (activationcount)
+			{
+				case 0:
+					if (user_spyitem.length())
+					{
+						let item = (class<Inventory>)(user_spyitem);
+
+						if (item)
+						{
+							user.GiveInventory(user_spyitem, 1);
+							PlayerPawn(user).InvSel = user.FindInventory(user_spyitem);
+
+							user.A_StartSound(GetDefaultByType(item).PickupSound);
+						}
+					}
+
+				default:
+					break;
+				case 1:
+					user.GiveInventory("9mmAmmo", Random(1, 4) * 4);
+					user.A_StartSound(GetDefaultByType("9mmAmmo").PickupSound);
+					break;
+				case 2:
+					user.GiveInventory("Bandages", Random(1, 2));
+					user.A_StartSound(GetDefaultByType("Bandages").PickupSound);
+					break;
+				case 3:
+					user.GiveInventory("CoinItem", Random(2, 20));
+					user.A_StartSound(GetDefaultByType("CoinItem").PickupSound);
+					break;
+			}
+
+			activationcount++;
+		}
+
+		return Super.Used(user);
 	}
 }
 

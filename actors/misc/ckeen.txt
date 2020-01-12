@@ -471,6 +471,7 @@ ACTOR CKPoisonSlugPoison : CKBaseEnemy
 	+FLATSPRITE
 	+NOTAUTOAIMED
 	-COUNTKILL
+	-SHOOTABLE
 	CKBaseEnemy.StunTime 0
 
 	States
@@ -635,6 +636,7 @@ ACTOR CKGroundfire : CKBaseEnemy
 	Height 0.5
 	+NOTAUTOAIMED
 	-COUNTKILL
+	-SHOOTABLE
 	CKBaseEnemy.StunTime 0
 	States
 	{
@@ -786,6 +788,7 @@ ACTOR CKGroundThruster : CKBaseEnemy
 	Height 64
 	+NOGRAVITY
 	-SOLID
+	-SHOOTABLE
 	States
 	{
 	Spawn:
@@ -804,6 +807,7 @@ ACTOR CKSpike : CKBaseEnemy
 	Height 48
 	+NOTAUTOAIMED
 	-COUNTKILL
+	-SHOOTABLE
 	CKBaseEnemy.StunTime 0
 	States
 	{
