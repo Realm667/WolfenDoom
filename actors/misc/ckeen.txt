@@ -3,7 +3,9 @@
 //////////////////////
 ACTOR CKShikadiSoda : CKTreasure
 {
+	//$Category Commander Keen (BoA)/Pickups
 	//$Title Pickup (Shikadi Soda, 1pts)
+	//$Color 13
 	Radius 10
 	Height 36
 	Inventory.Amount 1
@@ -22,7 +24,9 @@ ACTOR CKShikadiSoda : CKTreasure
 
 ACTOR CKGum : CKTreasure
 {
+	//$Category Commander Keen (BoA)/Pickups
 	//$Title Pickup (Three-Tooth Gum, 2pts)
+	//$Color 13
 	Radius 16
 	Height 32
 	Inventory.Amount 2
@@ -41,7 +45,9 @@ ACTOR CKGum : CKTreasure
 
 ACTOR CKShikkersCandyBar : CKTreasure
 {
+	//$Category Commander Keen (BoA)/Pickups
 	//$Title Pickup (Shikkers Candy Bar, 5pts)
+	//$Color 13
 	Radius 14
 	Height 36
 	Inventory.Amount 5
@@ -60,7 +66,9 @@ ACTOR CKShikkersCandyBar : CKTreasure
 
 ACTOR CKJawbreaker : CKTreasure
 {
+	//$Category Commander Keen (BoA)/Pickups
 	//$Title Pickup (Jawbreaker, 10pts)
+	//$Color 13
 	Radius 16
 	Height 30
 	Inventory.Amount 10
@@ -79,7 +87,9 @@ ACTOR CKJawbreaker : CKTreasure
 
 ACTOR CKDoughnut : CKTreasure
 {
+	//$Category Commander Keen (BoA)/Pickups
 	//$Title Pickup (Dougnut, 20pts)
+	//$Color 13
 	Radius 15
 	Height 30
 	Inventory.Amount 20
@@ -98,7 +108,9 @@ ACTOR CKDoughnut : CKTreasure
 
 ACTOR CKIceCreamCone : CKTreasure
 {
+	//$Category Commander Keen (BoA)/Pickups
 	//$Title Pickup (IceCreamCone, 50pts)
+	//$Color 13
 	Radius 10
 	Height 32
 	Inventory.Amount 50
@@ -654,9 +666,10 @@ ACTOR CKWallSlug
 	Radius 8
 	Height 32
 	Scale 2.0
+	-SOLID
+	+NOBLOCKMAP
 	+NOGRAVITY
 	+WALLSPRITE
-	-SOLID
 	States
 	{
 	Spawn:
@@ -665,17 +678,12 @@ ACTOR CKWallSlug
 	}
 }
 
-ACTOR CKTreeBranch
+ACTOR CKTreeBranch : CKWallSlug
 {
-	//$Category Commander Keen (BoA)/Props
 	//$Title Tree Branch
-	//$Color 3
 	Radius 90
 	Height 1
 	Scale 1.0
-	+NOGRAVITY
-	+FLATSPRITE
-	-SOLID
 	States
 	{
 	Spawn:
@@ -710,6 +718,7 @@ ACTOR CKFireBowl : CKWallSlug
 {
 	//$Title Fire Bowl
 	Radius 32
+	-NOBLOCKMAP
 	States
 	{
 	Spawn:
