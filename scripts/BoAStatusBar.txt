@@ -732,9 +732,10 @@ class BoAStatusBar : BaseStatusBar
 	{
 		int crosshair = 0;
 		String crosshairstring;
+		Actor crosshairtarget;
 		color clr = 0xFF8800; // Default color is orange.
 		TextureID CrosshairImage;
-		double size = 1.0;
+		double size = vid_scalefactor;
 		Vector2 dimensions;
 		double w, h;
 		double maxwidth = max(52.0, int(crosshairscale * screen.GetWidth() / 20));
@@ -744,11 +745,12 @@ class BoAStatusBar : BaseStatusBar
 			// Try to retrieve the values from the player
 			crosshair = BoAPlayer(CPlayer.mo).crosshair;
 			crosshairstring = BoAPlayer(CPlayer.mo).crosshairstring;
+			crosshairtarget = BoAPlayer(CPlayer.mo).crosshairtarget;
 		}
 
 		// Don't continue if there's no crosshair, we're in titlemap, or the player is dead
 		if (
-			(!crosshair && !crosshairstring) || 
+			(!crosshair && !crosshairstring && !crosshairtarget) || 
 			CPlayer.cheats & CF_CHASECAM ||
 			gamestate == GS_TITLELEVEL || 
 			CPlayer.health <= 0
@@ -859,13 +861,29 @@ class BoAStatusBar : BaseStatusBar
 			}
 		}
 
-		if (!CrosshairImage) { return; }
+		if (CrosshairImage)
+		{
+			// Handle the scaling size multiplier here
+			dimensions *= size;
 
-		// Handle the scaling size multiplier here
-		dimensions *= size;
+			// Draw centered on screen, with offsets forced to center of the icon
+			screen.DrawTexture (CrosshairImage, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true);
+		}
 
-		// Draw centered on screen, with offsets forced to center of the icon
-		screen.DrawTexture (CrosshairImage, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true);
+		if (crosshairtarget && crosshairtarget != CPlayer.mo && crosshairtarget.bFriendly && CPlayer.ReadyWEapon && CPlayer.ReadyWeapon != Weapon(CPlayer.mo.FindInventory("NullWeapon")))
+		{
+			TextureID CrosshairFriendly = TexMan.CheckForTexture("NOSHOT", TexMan.Type_Any);
+
+			dimensions = TexMan.GetScaledSize(CrosshairFriendly);
+
+			clr = 0xFF0000;
+
+			// Handle the scaling size multiplier here
+			dimensions *= size;
+
+			// Draw centered on screen, with offsets forced to center of the icon
+			screen.DrawTexture (CrosshairFriendly, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true, DTA_Alpha, 0.5 + 0.125 * sin(level.time * 20));
+		}
 	}
 
 	void DrawTankStatusBar()
