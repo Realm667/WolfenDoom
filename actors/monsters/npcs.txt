@@ -794,13 +794,17 @@ ACTOR Camp_PrisonerBaldShirtless : Camp_PrisonerBald
 ACTOR StatistWehrmachtSurrender: StatistBarkeeper
 {
 	//$Title Wehrmacht soldier about to surrender (NPC)
-	Scale 1.0
+	Scale 0.67
 	-USESPECIAL
 	States
 	{
 	Spawn:
 		GRDS A 20
 		"####" A 20
+		Loop
+	Happy:
+		GRDS B 20
+		"####" B 20
 		Loop
 	}
 }
