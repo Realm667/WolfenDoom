@@ -870,7 +870,7 @@ class BoAStatusBar : BaseStatusBar
 			screen.DrawTexture (CrosshairImage, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true);
 		}
 
-		if (crosshairtarget && crosshairtarget != CPlayer.mo && crosshairtarget.bFriendly && CPlayer.ReadyWEapon && CPlayer.ReadyWeapon != Weapon(CPlayer.mo.FindInventory("NullWeapon")))
+		if (crosshairtarget && crosshairtarget != CPlayer.mo && crosshairtarget.bFriendly && CPlayer.ReadyWeapon && CPlayer.ReadyWeapon != Weapon(CPlayer.mo.FindInventory("NullWeapon")))
 		{
 			TextureID CrosshairFriendly = TexMan.CheckForTexture("NOSHOT", TexMan.Type_Any);
 

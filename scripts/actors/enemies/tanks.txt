@@ -198,6 +198,11 @@ class TankBase : VehicleBase
 		Mass 0x7ffffff;
 		Radius 100;
 		BloodType "TankSpark";
+		DamageFactor "Melee", 0.0;	// Knife, boot, etc.
+		DamageFactor "Bullet", 0.125;	// Most guns
+		DamageFactor "Pellet", 0.125;	// Shotguns
+		DamageFactor "Rifle", 0.5;	// Kar98, sniper rifle, chaingun
+		DamageFactor "Fire", 0.5;	// Flamer
 		Monster;
 		MaxDropoffHeight 48;
 		MaxStepHeight 32;
@@ -226,7 +231,6 @@ class TankBase : VehicleBase
 		TankBase.MaxGunPitch 25;
 		TankBase.TurretSpeed 1.5;
 	}
-
 
 	States
 	{

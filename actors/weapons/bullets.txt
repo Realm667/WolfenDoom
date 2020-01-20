@@ -47,6 +47,7 @@ ACTOR ShotgunTracer : PlayerTracer
 {
 	Scale .3
 	Damage (random(5,15))
+	DamageType "Pellet"
 	States
 	{
 		Death:
@@ -85,6 +86,7 @@ ACTOR Kar98kTracer : PlayerTracer
 	Damage (random(40,65))
 	Speed 180
 	Obituary "$OBMAUSER"
+	DamageType "Rifle"
 }
 
 ACTOR Kar98kTracer2 : Kar98kTracer { Damage (random(60,85)) }
@@ -95,12 +97,14 @@ ACTOR G43Tracer : Kar98kTracer
 	Damage (random(26,55))
 	Speed 150
 	Obituary "$OBG43"
+	DamageType "Rifle"
 }
 
 ACTOR ChaingunTracer : PlayerTracer
 {
 	Damage (random(11,15))
 	Speed 90
+	DamageType "Rifle"
 }
 
 //////////////////////////////////////////////////////////////////
