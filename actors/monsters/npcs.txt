@@ -441,8 +441,10 @@ ACTOR Camp_StaticBroom
 	+NOTAUTOAIMED
 	+SHOOTABLE
 	+SOLID
+	+THRUSPECIES
 	DeathSound "urss/death"
 	Species "PlayerFollower"
+	Species "Player"
 	States
 	{
 	Spawn:
@@ -654,11 +656,13 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 	+NOSPLASHALERT
 	+PUSHABLE
 	+SLIDESONWALLS
+	+THRUSPECIES
 	MaxStepHeight 16
 	MaxDropoffHeight 32
 	PainSound "urss/pain"
 	DeathSound "urss/death"
 	Species "PlayerFollower"
+	Species "Player"
 	States
 	{
 	Spawn:
