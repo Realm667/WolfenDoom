@@ -225,6 +225,7 @@ script "SpyMessage" (int count, int item)
 		if (messagestr == message) { Terminate; }
 
 		if (count == 0 && item) { messagestr = StrParam(s:messagestr, s:"\n", l:"SPYMESSAGETAKETHIS"); }
+		else if (count > 0 && count < 4) { messagestr = StrParam(l:StrParam(s:"SPYMESSAGEGENERIC", i:Random(0, 4)), s:"\n", s:messagestr); }
 	}
 
 	str head = GetUserVariable(0, "head");
@@ -272,6 +273,7 @@ script "SpyMessage" (int count, int item)
 	hudmessagebold(s:"A"; HUDMSG_PLAIN, messagelayer + 3, CR_UNTRANSLATED, 21.0, 16.0, 0.0);
 
 	if (count < 0) { delay(5*35); } // Take longer for initial conversation if it's not generic
+	else { delay(2 * 35); }
 
 	// Fade out the portrait
 	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, messagelayer + 3, CR_UNTRANSLATED, 21.0, 16.0, 0.0, 0.0, 0.5);

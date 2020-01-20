@@ -2179,8 +2179,9 @@ class Nazi : Base
 
 			int index = activationcount;
 			if (index == 0 && user_spyitem == "") { index = Random(1, 3); }
+			else if (index > 0) { index = 99; }
 
-			ACS_NamedExecuteAlways("SpyMessage", 0, !activationcount && user_spymsgindex ?  -user_spymsgindex : activationcount > 0 ? 99 : index, !(user_spyitem == ""));
+			ACS_NamedExecuteAlways("SpyMessage", 0, !activationcount && user_spymsgindex ?  -user_spymsgindex : index, !(user_spyitem == ""));
 
 			switch (index)
 			{
