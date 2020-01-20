@@ -2169,7 +2169,7 @@ class Nazi : Base
 
 	override bool Used(Actor user)
 	{
-		if (user.player && !wasused && !special && bFriendly && !user_sneakable && Default.Species == "Nazi" && (!target || !target.bShootable) && activationcount < 4)
+		if (user.player && !wasused && !special && bFriendly && !user_sneakable && Default.Species == "Nazi" && (!target || !target.bShootable) && activationcount < 2)
 		{
 			wasused = true;
 			usetime = 70;
@@ -2177,14 +2177,17 @@ class Nazi : Base
 			SetState(SpawnState);
 			A_Face(user);
 
-			ACS_NamedExecuteAlways("SpyMessage", 0, !activationcount && user_spymsgindex ?  -user_spymsgindex : activationcount);
+			int index = activationcount;
+			if (index == 0 && user_spyitem == "") { index = Random(1, 3); }
 
-			switch (activationcount)
+			ACS_NamedExecuteAlways("SpyMessage", 0, !activationcount && user_spymsgindex ?  -user_spymsgindex : activationcount > 0 ? 99 : index, !(user_spyitem == ""));
+
+			switch (index)
 			{
 				case 0:
-					if (user_spyitem.length())
+					if (!(user_spyitem == ""))
 					{
-						let item = (class<Inventory>)(user_spyitem);
+						let item = (Class<Inventory>)(user_spyitem);
 
 						if (item)
 						{

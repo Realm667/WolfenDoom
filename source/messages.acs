@@ -182,7 +182,7 @@ script "FollowerMessage" (int type, int count)
 	TakeInventory("IncomingMessage", 9999);
 }
 
-script "SpyMessage" (int count)
+script "SpyMessage" (int count, int item)
 {
 	int messagelayer = GetMessageStart();
 	int messagetype = "";
@@ -215,6 +215,7 @@ script "SpyMessage" (int count)
 				messagetype = StrParam(s:"GOLD");
 				break;
 			default:
+				messagetype = StrParam(s:"MOVE", i:Random(0, 1));
 				break;
 		}
 
@@ -222,6 +223,8 @@ script "SpyMessage" (int count)
 		messagestr = StrParam(l:message);
 
 		if (messagestr == message) { Terminate; }
+
+		if (count == 0 && item) { messagestr = StrParam(s:messagestr, s:"\n", l:"SPYMESSAGETAKETHIS"); }
 	}
 
 	str head = GetUserVariable(0, "head");
