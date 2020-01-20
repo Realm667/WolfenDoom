@@ -188,7 +188,7 @@ ACTOR CKStunner : CKWeapon
 	Weapon.AmmoGive 5
 	Weapon.UpSound "ckeen/flag"
 	Tag "$TAGNEURS"
-	Inventory.PickupMessage "$NEUST"
+	Inventory.PickupMessage "$CKNEUS"
 	Inventory.Pickupsound "ckeen/gun"
 	+WEAPON.NOAUTOFIRE
 	States
@@ -504,7 +504,6 @@ ACTOR CKOracle : CKBaseEnemy
 	Radius 16
 	Height 64
 	Damage 0
-	Obituary "$CK_ORACLE"
 	+FRIENDLY
 	+NOTAUTOAIMED
 	CKBaseEnemy.StunTime 0
@@ -730,7 +729,7 @@ ACTOR CKFireBowl : CKWallSlug
 ACTOR CKExitSign1
 {
 	//$Category Commander Keen (BoA)/Props
-	//$Title ExitSign (1)
+	//$Title Exit Sign (1)
 	//$Color 3
 	Radius 32
 	Height 32
@@ -747,7 +746,7 @@ ACTOR CKExitSign1
 
 ACTOR CKExitSign2 : CKExitSign1
 {
-	//$Title ExitSign (2)
+	//$Title Exit Sign (2)
 	States
 	{
 	Spawn:
