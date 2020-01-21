@@ -8,6 +8,11 @@ class ZScriptTools
 		double a = (TargetVel.Length() * TargetVel.Length()) - (MissileSpeed * MissileSpeed);
 		double b = ShooterToTarget dot TargetVel;
 		double c = ShooterToTarget.Length() * ShooterToTarget.Length();
+		if ((a * c) > (b * b))
+		{
+			// Cannot calculate intercept position
+			return TargetPos;
+		}
 		double timeA = (-b + sqrt(b*b - a * c)) / a;
 		double timeB = (-b - sqrt(b*b - a * c)) / a;
 		return TargetPos + (TargetVel * max(timeA, timeB));
