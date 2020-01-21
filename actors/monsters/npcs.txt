@@ -196,6 +196,22 @@ ACTOR StatistZhukov : StatistBarkeeper
 	}
 }
 
+ACTOR StatistWehrmachtSpy: StatistBarkeeper
+{
+	//$Title Spy with Wehrmacht Uniform (NPC)
+	Scale 0.67
+	-USESPECIAL
+	States
+	{
+	Spawn:
+		GRDS A -1
+		Stop
+	Happy:
+		GRDS B -1
+		Stop
+	}
+}
+
 ACTOR StatistBarkeeperMale : StatistBarkeeper
 {
 	//$Title Randi Heit, Barkeeper (NPC)
@@ -794,24 +810,6 @@ ACTOR Camp_PrisonerBaldShirtless : Camp_PrisonerBald
 			if (Random[wander](0, 255) < 30) { return resolveState("See"); }
 			return resolveState("");
 		}
-		Loop
-	}
-}
-
-ACTOR StatistWehrmachtSurrender: StatistBarkeeper
-{
-	//$Title Wehrmacht soldier about to surrender (NPC)
-	Scale 0.67
-	-USESPECIAL
-	States
-	{
-	Spawn:
-		GRDS A 20
-		"####" A 20
-		Loop
-	Happy:
-		GRDS B 20
-		"####" B 20
 		Loop
 	}
 }
