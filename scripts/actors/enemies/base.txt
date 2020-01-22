@@ -80,6 +80,11 @@
 	user_drawhealthbar
 	- The underlying variable for the Base.AlwaysDrawHealthBar property above
 
+	user_targetcrosshair
+	- Boolean value that causes the player's cursor to show a larger yellow 
+	  targeting reticle when the player's crosshair is over the actor.  Assists 
+	  with sniping and firing from a distance.
+
   UDMF Properties (Nazi Class)
 	user_sneakable
 	- The underlying variable for the Nazi.Sneakable property above
@@ -225,6 +230,7 @@ class Base : Actor
 	bool user_oncompass;
 	bool candodge;
 	bool nofear;
+	bool user_targetcrosshair;
 
 	Property AlwaysDrawHealthBar:user_DrawHealthBar;
 	Property BossIcon:BossIcon;

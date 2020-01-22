@@ -870,19 +870,31 @@ class BoAStatusBar : BaseStatusBar
 			screen.DrawTexture (CrosshairImage, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true);
 		}
 
-		if (crosshairtarget && crosshairtarget != CPlayer.mo && crosshairtarget.bFriendly && CPlayer.ReadyWeapon && CPlayer.ReadyWeapon != Weapon(CPlayer.mo.FindInventory("NullWeapon")))
+		if (crosshairtarget && crosshairtarget != CPlayer.mo && CPlayer.ReadyWeapon && CPlayer.ReadyWeapon != Weapon(CPlayer.mo.FindInventory("NullWeapon")))
 		{
-			TextureID CrosshairFriendly = TexMan.CheckForTexture("NOSHOT", TexMan.Type_Any);
+			TextureID CrosshairOverlay;
+			int pulsespeed = 5;
 
-			dimensions = TexMan.GetScaledSize(CrosshairFriendly);
+			if (Base(crosshairtarget) && Base(crosshairtarget).user_targetcrosshair && CPlayer.ReadyWeapon.DamageType != "Melee")
+			{
+				CrosshairOverlay = TexMan.CheckForTexture("SHOT", TexMan.Type_Any);
+				clr = 0xFFFF00;
+			}
+			else if (crosshairtarget.bFriendly && (!Nazi(crosshairtarget) || !Nazi(crosshairtarget).user_sneakable))
+			{
+				CrosshairOverlay = TexMan.CheckForTexture("NOSHOT", TexMan.Type_Any);
+				clr = 0xFF0000;
+				pulsespeed = 20;
+			}
 
-			clr = 0xFF0000;
+			if (CrosshairOverlay)
+			{
+				// Handle the scaling size multiplier here
+				dimensions = TexMan.GetScaledSize(CrosshairOverlay) * size * (1.0 + 0.125 * sin(level.time * pulsespeed)); // Pulse the size of the indicator
 
-			// Handle the scaling size multiplier here
-			dimensions *= size;
-
-			// Draw centered on screen, with offsets forced to center of the icon
-			screen.DrawTexture (CrosshairFriendly, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true, DTA_Alpha, 0.5 + 0.125 * sin(level.time * 20));
+				// Draw centered on screen, with offsets forced to center of the icon
+				screen.DrawTexture(CrosshairOverlay, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true, DTA_Alpha, 0.5 + 0.125 * sin(level.time * pulsespeed));
+			}
 		}
 	}
 

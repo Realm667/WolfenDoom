@@ -577,7 +577,7 @@ class BoAPlayer : PlayerPawn
 
 		actortrace.skipactor = self;
 		Vector3 tracedir = (cos(angle) * cos(pitch), sin(angle) * cos(pitch), -sin(pitch));
-		actortrace.Trace(self.pos + (0, 0, player.viewheight), self.CurSector, tracedir, 1024, 0);
+		actortrace.Trace(self.pos + (0, 0, player.viewheight), self.CurSector, tracedir, 2560, 0);
 
 		return actortrace.Results.HitActor;
 	}
@@ -1106,7 +1106,8 @@ Class CrosshairTracer : LineTracer
 				Results.HitActor != skipactor && // Skip the player
 				(!Results.HitActor.master || Results.HitActor.master != skipactor) && // And any children
 				!Results.HitActor.bNoInteraction && // And it's actually interactive...
-				(Results.HitActor.bSolid || Results.HitActor.bShootable) // And only return shootable actors
+				(Results.HitActor.bSolid || Results.HitActor.bShootable) && // And only return shootable actors
+				Results.HitActor.health > 0 // And it has health
 			) { return TRACE_Continue; } // Fall through, but remember the actor that you hit
 
 			return TRACE_Skip;
@@ -1120,12 +1121,14 @@ Class CrosshairTracer : LineTracer
 			if (Results.HitLine.flags & (Line.ML_BLOCKING | Line.ML_BLOCKEVERYTHING)) { return TRACE_Stop; }
 			if (Results.HitTexture)
 			{
-				if (Results.Tier != TIER_Middle || Results.HitLine.flags & Line.ML_3DMIDTEX) // 3D Midtex check still isn't perfect...
+				if (Results.HitLine.flags & Line.ML_3DMIDTEX)
 				{
-					return TRACE_Stop;
+					return TRACE_Skip; // Ignore 3D midtextures
 				}
-				return TRACE_Skip;
+
+				return TRACE_Stop;
 			}
+
 			return TRACE_Skip;
 		}
 
