@@ -143,6 +143,8 @@ ACTOR BJKickAuto : BJKick //Bastardize the weapon states to make a weapon that f
 	{
 	Ready:
 		TNT1 A 1
+		BJKK A 0 Offset(84,100) A_JumpIfInventory("CCBJUniformToken",1,"ReadyCC")
+		BJKK A 0 Offset(84,100) A_JumpIfInventory("SSBJUniformToken",1,"ReadySS")
 		BJKK A 1 Offset(84,100) A_TakeInventory("Stamina", 30)
 		BJKK A 1 Offset(80,96)
 		BJKK A 1 Offset(72,88)
@@ -162,6 +164,48 @@ ACTOR BJKickAuto : BJKick //Bastardize the weapon states to make a weapon that f
 		BJKK A 1 Offset(68,84)
 		BJKK A 1 Offset(76,92)
 		BJKK A 1 Offset(82,98)
+		Goto ReadyLoop
+	ReadyCC:
+		BJKK C 1 Offset(84,100) A_TakeInventory("Stamina", 30)
+		BJKK C 1 Offset(80,96)
+		BJKK C 1 Offset(72,88)
+		BJKK C 1 Offset(64,80)
+		BJKK C 1 Offset(56,72)
+		BJKK C 1 Offset(48,64)
+		BJKK C 1 Offset(40,56)
+		BJKK C 1 Offset(24,39)
+		BJKK C 1 Offset(6,34) A_PlaySound("knife/swing",CHAN_WEAPON)
+		BJKK D 2 Offset(4,32) A_CustomPunch(10, TRUE, CPF_NOTURN, "KickPuff", 70)	//CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
+		BJKK C 1 Offset(6,34) { bDontBlast = true; }
+		BJKK C 1 Offset(24,39) { bDontBlast = false; } //KickPuff blast happens 3 tics after spawning
+		BJKK C 1 Offset(36,52)
+		BJKK C 1 Offset(44,60)
+		BJKK C 1 Offset(52,68)
+		BJKK C 1 Offset(60,76)
+		BJKK C 1 Offset(68,84)
+		BJKK C 1 Offset(76,92)
+		BJKK C 1 Offset(82,98)
+		Goto ReadyLoop
+	ReadySS:
+		BJKK E 1 Offset(84,100) A_TakeInventory("Stamina", 30)
+		BJKK E 1 Offset(80,96)
+		BJKK E 1 Offset(72,88)
+		BJKK E 1 Offset(64,80)
+		BJKK E 1 Offset(56,72)
+		BJKK E 1 Offset(48,64)
+		BJKK E 1 Offset(40,56)
+		BJKK E 1 Offset(24,39)
+		BJKK E 1 Offset(6,34) A_PlaySound("knife/swing",CHAN_WEAPON)
+		BJKK F 2 Offset(4,32) A_CustomPunch(10, TRUE, CPF_NOTURN, "KickPuff", 70)	//CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
+		BJKK E 1 Offset(6,34) { bDontBlast = true; }
+		BJKK E 1 Offset(24,39) { bDontBlast = false; } //KickPuff blast happens 3 tics after spawning
+		BJKK E 1 Offset(36,52)
+		BJKK E 1 Offset(44,60)
+		BJKK E 1 Offset(52,68)
+		BJKK E 1 Offset(60,76)
+		BJKK E 1 Offset(68,84)
+		BJKK E 1 Offset(76,92)
+		BJKK E 1 Offset(82,98)
 	ReadyLoop:
 		TNT1 A 1 A_WeaponReady(WRF_DISABLESWITCH | WRF_NOFIRE)
 		Loop
