@@ -880,7 +880,7 @@ class BoAStatusBar : BaseStatusBar
 				CrosshairOverlay = TexMan.CheckForTexture("SHOT", TexMan.Type_Any);
 				clr = 0xFFFF00;
 			}
-			else if (crosshairtarget.bFriendly && (!Nazi(crosshairtarget) || !Nazi(crosshairtarget).user_sneakable))
+			else if (crosshairtarget.bShootable && crosshairtarget.health > 0 && crosshairtarget.bFriendly && (!Nazi(crosshairtarget) || !Nazi(crosshairtarget).user_sneakable))
 			{
 				CrosshairOverlay = TexMan.CheckForTexture("NOSHOT", TexMan.Type_Any);
 				clr = 0xFF0000;

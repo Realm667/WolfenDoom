@@ -141,17 +141,19 @@ class ActorSpawner : SwitchableDecoration
 	int CountSpawns(Class<Actor> spawntype = null, bool countdead = false)
 	{
 		int spawncount = 0;
-		if (!spawntype) { spawntype = user_spawntype; }
 
 		for (int i = 0; i < Spawns.Size(); i++) {
 			Actor mo = Spawns[i];
 
 			if (mo) {
 				if (!mo.bShootable || mo.health <= 0) {
-					if (countdead) { spawncount++; }
-					//Spawns.Delete(i);
-					//Spawns.ShrinkToFit();
-				} else if (mo.GetClass() == spawntype) {
+					if (mo is "RandomSpawner")
+					{
+						if (mo.tracer && mo.tracer.bShootable && mo.tracer.health > 0) { spawncount++; }
+						else { Spawns.Delete(i); }
+					}
+					else if (countdead) { spawncount++; }
+				} else if (!spawntype || mo.GetClass() == spawntype) {
 					spawncount++;
 				}
 			}
@@ -162,8 +164,6 @@ class ActorSpawner : SwitchableDecoration
 
 	int TotalSpawns(Class<Actor> spawntype = null, bool countdead = false)
 	{
-		if (!spawntype) { spawntype = user_spawntype; }
-
 		if (!tid) { return CountSpawns(spawntype, countdead); }
 
 		int total = 0;
@@ -194,7 +194,11 @@ class ActorSpawner : SwitchableDecoration
 					else
 					{
 						Spawns.Push(spawned);
-//						spawned.master = self;
+
+						// RandomSpawners that have the BOSS flag stay until their spawned item is killed or destroyed
+						// and set the spawned actor as their tracer.  This way our counters will stay accurate...
+						if (spawned is "RandomSpawner") { spawned.bBoss = true; } 
+
 						spawned.target = target;
 						spawned.angle = angle;
 						spawned.ChangeTID(user_tid);
@@ -300,10 +304,10 @@ class WaveSpawner : ActorSpawner
 	{
 		if (!Waves[index].enemy) { return false; }
 		if (Waves[index].round > round) { return false; }
-		if (TotalSpawns(Waves[index].enemy) >= Waves[index].count) { return false; }
+		if (TotalSpawns() >= Waves[index].count) { return false; }
 		if (
 			Waves[index].maxspawns != 0 &&
-			TotalSpawns(Waves[index].enemy, true) >= Waves[index].maxspawns
+			TotalSpawns(countdead:true) >= Waves[index].maxspawns
 		) { return false; }
 
 		return true;
@@ -363,7 +367,10 @@ class WaveSpawner : ActorSpawner
 					{
 						Spawns.Push(spawned);
 
-//						spawned.master = self;
+						// RandomSpawners that have the BOSS flag stay until their spawned item is killed or destroyed
+						// and set the spawned actor as their tracer.  This way our counters will stay accurate...
+						if (spawned is "RandomSpawner") { spawned.bBoss = true; } 
+
 						spawned.target = target;
 						spawned.angle = angle;
 
