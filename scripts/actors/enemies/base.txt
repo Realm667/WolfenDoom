@@ -1364,7 +1364,11 @@ class Nazi : Base
 	{
 		if (bDormant) { return; }
 
-		if (level.time > 35) { A_Look(); }
+		if (level.time > 35)
+		{
+			A_Look();
+			if (target && SeeSound) { SoundAlert(target, false, 256); } // If the Nazi yells after seeing a target, actually alert enemies around him
+		}
 
 		if (DodgeState) { A_TryHide(); }
 
@@ -1820,7 +1824,11 @@ class Nazi : Base
 			if (Random() < 64) { bFriendly = false; }
 		}
 
-		if (source && source != self && source.bFriendly != bFriendly) { target = source; } // Target the source if it wasn't friendly
+		if (source && source != self && source.bFriendly != bFriendly)
+		{
+			target = source; // Target the source if it wasn't friendly
+			SoundAlert(source, false, 192);
+		}
 
 		return damageamt; // Function returns amount of damage received by the actor
 	}
