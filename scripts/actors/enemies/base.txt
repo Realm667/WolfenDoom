@@ -513,6 +513,7 @@ class Base : Actor
 
 			newmobj.SetStateLabel(label);
 
+			if (bCountKill) { level.total_monsters--; }
 			self.Destroy();
 
 			return newmobj;
