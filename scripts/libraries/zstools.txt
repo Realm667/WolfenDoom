@@ -1,3 +1,5 @@
+// MIT License - (c) 2020 Kevin Caccamo, N00b
+
 class ZScriptTools
 {
 	// Calculate the intercept position, and the time it takes for a projectile to hit the target.
@@ -11,6 +13,10 @@ class ZScriptTools
 		if ((a * c) > (b * b))
 		{
 			// Cannot calculate intercept position
+			if (developer >= 1)
+			{
+				Console.Printf("Cannot calculate intercept position!");
+			}
 			return TargetPos, -1;
 		}
 		double timeA = (-b + sqrt(b*b - a * c)) / a;
