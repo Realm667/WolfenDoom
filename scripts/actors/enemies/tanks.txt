@@ -204,7 +204,7 @@ class TankBase : VehicleBase
 	Class<Actor> TurretProjectile;
 	Class<Actor> FrontGunProjectile;
 	double minpitch, maxpitch, minp, maxp;
-	int missilecount, missiletimeout, bulletcount, bullettimeout, chasetimeout, turrettimeout, reversetimeout, targettimeout;
+	int missilecount, missiletimeout, bulletcount, bullettimeout, chasetimeout, turrettimeout, reversetimeout, targettimeout, turretdelay;
 	sound movesound, idlesound;
 	bool missiletargeted, wheeled;
 	double zoffset, turretanglerange, turretspeed;
@@ -222,6 +222,7 @@ class TankBase : VehicleBase
 	Property MinGunPitch:minpitch;
 	Property TurretProjectile:TurretProjectile;
 	Property FrontGunProjectile:FrontGunProjectile;
+	Property TurretDelay:turretdelay;
 
 	Default
 	{
@@ -263,6 +264,7 @@ class TankBase : VehicleBase
 		TankBase.TurretSpeed 1.5;
 		TankBase.TurretProjectile "TankRocket";
 		TankBase.FrontGunProjectile "EnemyChaingunTracer";
+		TankBase.TurretDelay 38;
 	}
 
 	States
@@ -412,6 +414,12 @@ class TankBase : VehicleBase
 	override bool CanCollideWith(Actor other, bool passive)
 	{
 		if (other is "TankBlocker" && other.Species == Species) { return false; }
+
+		if (!treads || (other.pos.z + height > treads.pos.z && other.pos.z < treads.pos.z + treads.height))
+		{
+			other.DamageMobj(self, self, int(vel.length() * 0.625), "Crush");
+		}
+
 		return Super.CanCollideWith(other, passive);
 	}
 
@@ -571,7 +579,7 @@ class TankBase : VehicleBase
 					double interceptTime;
 					Vector3 interceptPos;
 					[interceptPos, interceptTime] = ZScriptTools.GetInterceptPosition(Pos, Target.Pos, Target.Vel, GetDefaultSpeed(TurretProjectile));
-					interceptTime += 38; // Account for pre-fire delay
+					interceptTime += turretdelay; // Account for pre-fire delay
 					interceptPos = Target.Pos + Target.Vel * interceptTime;
 					InterceptTarget.SetOrigin(interceptPos, true);
 					aimAt = InterceptTarget;
@@ -659,7 +667,7 @@ class TankBase : VehicleBase
 	{
 		missiletargeted = true;
 		chasetimeout = 40;
-		turrettimeout = 38;
+		turrettimeout = turretdelay;
 	}
 
 	virtual void DoFrontWeapon(Actor origin)
@@ -736,6 +744,19 @@ class TankBlocker : Actor
 		if (master) { return master.Used(user); }
 		return false;
 	}
+
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (master && master.master && other != master && other != master.master)
+		{
+			other.DamageMobj(self, master.master, int(master.master.vel.length() * 0.625), "Crush");
+
+			return master.CanCollideWith(other, passive);
+		}
+
+		return Super.CanCollideWith(other, passive);
+	}
+
 
 	override void Tick()
 	{
@@ -919,6 +940,18 @@ class TankTreadsBase : Actor
 		return false;
 	}
 
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (master && other != master)
+		{
+			other.DamageMobj(self, master, int(0.5 * master.vel.xy.length()), "Crush");
+
+			return master.CanCollideWith(other, passive);
+		}
+
+		return Super.CanCollideWith(other, passive);
+	}
+
 	void DoDeath()
 	{
 		if (turret) { turret.Destroy(); }
@@ -976,6 +1009,13 @@ class PairedTire : Actor
 		Species = master.Species;
 		bFriendly = master.bFriendly;
 		angle = master.angle + rotated;
+	}
+
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (master && other != master) { return master.CanCollideWith(other, passive); }
+
+		return Super.CanCollideWith(other, passive);
 	}
 
 	override void Tick()
@@ -1093,6 +1133,13 @@ class TankTurretBase : Actor
 		else { gunspot.master = self; }
 
 		Super.PostBeginPlay();
+	}
+
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (master && other != master) { master.CanCollideWith(other, passive); }
+
+		return true;
 	}
 
 	override void Tick()
@@ -1588,6 +1635,7 @@ class SSTank4 : TankBase
 		TankBase.TurretSpeed 1.0;
 		TankBase.WheeledMovement true;
 		TankBase.TurretProjectile "EnemyChaingunTracer";
+		TankBase.TurretDelay 2;
 	}
 
 	override void DoTurret(Actor origin) {}
@@ -1596,7 +1644,6 @@ class SSTank4 : TankBase
 	{
 		if (!origin || bullettimeout) { return; }
 
-		chasetimeout = 40;
 		turrettimeout = -1;
 
 		A_PlaySound("weapons/chaingun", CHAN_WEAPON);
@@ -1615,7 +1662,7 @@ class SSTank4 : TankBase
 		}
 		else
 		{
-			turrettimeout = 2; // 2 tics between shots
+			turrettimeout = turretdelay; // 2 tics between shots
 			chasetimeout = 40;
 		}
 	}
