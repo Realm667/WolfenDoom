@@ -919,6 +919,9 @@ class Nazi : Base
 
 	States
 	{
+		Active:
+			"####" "#" 0;
+			Goto Spawn;
 		Look:
 			"####" "#" 10 A_NaziLook();
 			Loop;
@@ -2234,6 +2237,12 @@ class Nazi : Base
 		}
 
 		return Super.Used(user);
+	}
+	
+	override void Activate (Actor activator)
+	{
+		Super.Activate(activator);
+		SetStateLabel("Active");
 	}
 }
 
