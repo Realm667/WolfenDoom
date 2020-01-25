@@ -1799,6 +1799,8 @@ class Nazi : Base
 			BecomeAlerted(source); // Alert that actor
 		}
 
+		if (bDormant && source && source.player) { bDormant = false; } // Wake up dormant enemies that are shot by a player
+
 		int damageamt = Super.DamageMobj(inflictor, source, damage, mod, flags, angle); // Get the damage amount from the real DamageMobj function
 
 		if (health <= 0) // If we killed the actor...
