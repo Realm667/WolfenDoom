@@ -365,6 +365,27 @@ class Base : Actor
 		return ClosestPlayer;
 	}
 
+	int CanBeSeen(int maxcount = 0, int range = 1024)
+	{
+		int count = 0;
+
+		ThinkerIterator it = ThinkerIterator.Create("Nazi", Thinker.STAT_DEFAULT);
+		Nazi mo;
+		while (mo = Nazi(it.Next()))
+		{
+			if (mo == self) { continue; }
+			if (!mo.bShootable || mo.health <= 0) { continue; }
+			if (Distance3D(mo) > range) { continue; }
+			if (!mo.IsVisible(self, true)) { continue; }
+
+			count++;
+
+			if (count > maxcount) { return count; }
+		}
+
+		return count;
+	}
+
 	bool SneakableActors() // Are there sneakable actors in the level?
 	{
 		ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2); // Just iterate over the sneakable eyes - faster than all Nazi actors
@@ -407,9 +428,7 @@ class Base : Actor
 				return false;
 			}
 
-			//bShootable = false;
 			// Take 50% damage instead, and prevent pain
-			//if (developer) Console.Printf("Starting to dodge");
 			bNoPain = true;
 			DamageFactor = Default.DamageFactor * 0.5;
 
@@ -1246,11 +1265,9 @@ class Nazi : Base
 		Dodge.End:
 			"####" A 2;
 			"####" A 0 {
-				//if (developer) Console.Printf("Done dodging");
 				sprite = SpawnState.sprite;
 				A_Face(target);
 				A_SetSize(-1, Default.height);
-				//bShootable = true;
 				bNoPain = Default.bNoPain;
 				DamageFactor = Default.DamageFactor;
 				reactiontime = 0;
@@ -1374,9 +1391,9 @@ class Nazi : Base
 			if (target && SeeSound) { SoundAlert(target, false, 256); } // If the Nazi yells after seeing a target, actually alert enemies around him
 		}
 
-		if (DodgeState) { A_TryHide(); }
-
 		if (CheckSightOrRange(512)) { return; }
+
+		if (DodgeState) { A_TryHide(); }
 
 		// Check specifically for players via CheckSight in order to "see through" block-everything lines (which are usually windows)
 		for (int p = 0; p < MAXPLAYERS; p++) // Iterate through all of the players and see if any are in sight
@@ -1407,7 +1424,12 @@ class Nazi : Base
 		{
 			if (!closestplayer) { closestplayer = FindClosestPlayer(IgnoreFriendlies:!bFriendly); }
 
-			if (CheckSight(closestplayer, true) && Random() < 64) { SetState(SeeState); } // If the player is in sight, take a chance to turn on his Nazi allies
+			if (CheckSight(lastheard, true)) { SetState(SeeState); } // If an alerting actor is in sight, become active
+			else if (activationcount == 0 && !CanBeSeen()) // if you haven't been used yet and there are no other enemies around
+			{
+				A_Face(closestplayer);
+				if (Random() < 6) { A_StartSound("spy/attention", CHAN_VOICE, 0, 0.5); } // play an attention-getting sound
+			}
 		}
 
 		if (!Default.bLookAllAround && level.time && level.time % interval == 0)
@@ -1474,25 +1496,42 @@ class Nazi : Base
 
 			if (!closestplayer) { closestplayer = FindClosestPlayer(IgnoreFriendlies:!bFriendly); }
 
-			// If a Nazi is flagged as friendly, he will turn on his fellow Nazis
+			// If a Nazi is flagged as friendly, he will turn on his fellow Nazis if there's only 1 other Nazi around
 			if (bFriendly && !user_sneakable && Default.Species == "Nazi")
 			{
-				if (target)
-				{
-					Species = "Ally";
+				int nazicount = CanBeseen(1);
 
-					if (closestplayer && closestplayer.player && CheckSight(closestplayer.player.attacker))
+				if (nazicount < 2)
+				{
+					if (!nazicount)
 					{
-						target = closestplayer.player.attacker;
+						Species = Default.Species;
+
+						SetState(SpawnState); // return to Spawn state
+					}
+					else
+					{
+						Species = "Ally";
+
+						if (closestplayer && closestplayer.player && CheckSight(closestplayer.player.attacker))
+						{
+							target = closestplayer.player.attacker;
+						}
+
+						A_Chase(melee, missile, flags);
 					}
 				}
 				else
 				{
 					Species = Default.Species;
+
+					A_Chase(null, null, flags);
 				}
 			}
-
-			A_Chase(melee, missile, flags);
+			else
+			{
+				A_Chase(melee, missile, flags);
+			}
 		}
 
 		if (candodge && !crouchtimeout) { A_TryHide(); }
@@ -1528,8 +1567,6 @@ class Nazi : Base
 
 	void A_TryHide(int chance = -1)
 	{
-		if (!user_incombat) { return; }
-
 		if (chance < 0) { chance = clamp(crouchchance + crouchchance * bFrightened, 0, 255); }
 
 		if (Random[duck](0, 255) > chance) { return; }
@@ -1563,7 +1600,7 @@ class Nazi : Base
 
 		LineTrace(angle, range, pitch, TRF_SOLIDACTORS | TRF_THRUHITSCAN, height, 0.0, 0.0, trace);
 		// Check if there's a solid actor (that's not an enemy) in front of you...
-		if (trace.HitType == TRACE_HitActor && trace.HitActor && !IsHostile(trace.HitActor)) { return true; }
+		if (trace.HitType == TRACE_HitActor && trace.HitActor && !IsHostile(trace.HitActor) && !trace.HitActor.bIsMonster) { return true; }
 
 		return false;
 	}
@@ -1752,8 +1789,7 @@ class Nazi : Base
 	{
 		Inventory vis;
 	
-		// I think this was breaking being able to hurt enemies while they are dodging - Talon1024
-		// if (DodgeState && sprite == DodgeState.sprite) { sprite = SpawnState.sprite; } // Make sure our sprite isn't crouched or rolling
+		if (DodgeState && sprite == DodgeState.sprite) { sprite = SpawnState.sprite; } // Make sure our sprite isn't crouched or rolling
 
 		if (user_sneakable && bDormant) { bDormant = False; } // Pain wakes up a dormant sneakable actors
 
