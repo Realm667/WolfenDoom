@@ -1071,6 +1071,23 @@ ACTOR WSniper : Sniper
 	}
 }
 
+
+ACTOR WSniper_Switchable : WSniper
+{
+	//$Category Monsters (BoA)/Wehrmacht
+	//$Title Wehrmacht Sniper (switchable)
+	//$Sprite RGR2F1
+	States
+	{
+	Spawn:
+		RGR2 F -1
+		Stop
+	Active:
+		"####" "#" 0
+		Goto Look
+	}
+}
+
 ACTOR Sniper_Crouch : BasicGuard
 {
 	//$Category Monsters (BoA)/Afrika Korps
@@ -1144,6 +1161,22 @@ ACTOR WSniper_Crouch : Sniper_Crouch
 		"####" F 0 A_SpawnItemEx("EnfieldRifleCasing", 8,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 0 {bNoPain = FALSE;}
 		Goto See
+	}
+}
+
+ACTOR WSniper_CrouchSwitchable : WSniper_Crouch
+{
+	//$Category Monsters (BoA)/Wehrmacht
+	//$Title Wehrmacht Sniper (switchable, crouch)
+	//$Sprite SNIWC0
+	States
+	{
+	Spawn:
+		SNIW C -1
+		Stop
+	Active:
+		"####" "#" 0
+		Goto Look
 	}
 }
 
@@ -1268,6 +1301,7 @@ ACTOR WGrenadier: Sniper_Crouch
 	PainSound "Nazi1/Pain"
 	DeathSound "Nazi1/Death"
 	DropItem "GrenadePickup" 32
+	Obituary "$GRENADIER"
 	Nazi.CrouchChance 0
 	States
 	{
