@@ -1816,3 +1816,22 @@ ACTOR Yellow_Light : Red_Light
 		Stop
 	}
 }
+
+///////////
+// Flare //
+///////////
+
+Actor ActiveFlare
+{
+  Radius 22
+  Height 11
+  States
+  {
+  Spawn:
+    FLRI A 0 Bright
+    FLRI A 0 Bright A_PlaySound("Flare/Light")
+    FLRI A 0 Bright A_PlaySoundEx("Flare/Loop", "SoundSlot7", 1, -1)
+    FLRI AB 1 Bright
+    Goto Spawn+3
+  }
+}
