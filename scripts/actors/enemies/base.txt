@@ -2242,7 +2242,7 @@ class Nazi : Base
 	override void Activate (Actor activator)
 	{
 		Super.Activate(activator);
-		SetStateLabel("Active");
+		if (health > 0) SetStateLabel("Active");
 	}
 }
 
