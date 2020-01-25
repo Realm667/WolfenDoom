@@ -1818,20 +1818,23 @@ ACTOR Yellow_Light : Red_Light
 }
 
 ///////////
-// Flare //
+// FLARE //
 ///////////
-
-Actor ActiveFlare
+ACTOR ActiveFlare
 {
-  Radius 22
-  Height 11
-  States
-  {
-  Spawn:
-    FLRI A 0 Bright
-    FLRI A 0 Bright A_PlaySound("Flare/Light")
-    FLRI A 0 Bright A_PlaySoundEx("Flare/Loop", "SoundSlot7", 1, -1)
-    FLRI AB 1 Bright
-    Goto Spawn+3
-  }
+	//$Category Lights (BoA)
+	//$Title Active Signal Flare
+	//$Color 11
+	Radius 22
+	Height 11
+	States
+	{
+	Spawn:
+		FLRI A 0
+		"####" A 0 A_PlaySound("Flare/Light")
+		"####" A 0 A_PlaySound("Flare/Loop", CHAN_BODY, 1, TRUE, ATTN_STATIC)
+	Spawn.Loop:
+		FLRI AB 1
+		Loop
+	}
 }
