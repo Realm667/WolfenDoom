@@ -939,8 +939,7 @@ class Nazi : Base
 	States
 	{
 		Active:
-			"####" "#" 0;
-			Goto Spawn;
+			"####" "#" 0 { SetState(SpawnState); }
 		Look:
 			"####" "#" 10 A_NaziLook();
 			Loop;
@@ -2266,7 +2265,7 @@ class Nazi : Base
 					user.A_StartSound(GetDefaultByType("Bandages").PickupSound);
 					break;
 				case 3:
-					user.GiveInventory("CoinItem", Random(2, 20));
+					user.GiveInventory("CoinItem", Random(2, 4) * 5);
 					user.A_StartSound(GetDefaultByType("CoinItem").PickupSound);
 					break;
 			}
