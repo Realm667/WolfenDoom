@@ -62,6 +62,31 @@ ACTOR ExclamationTouchable : Exclamation
 	}
 }
 
+ACTOR ExclamationTextpaper : ExclamationTouchable
+{
+	//$Title Exclamation Text (greyed out on touching)
+	//$Sprite EXCLF0
+	ExclamationBase.TouchRange 72.0
+	Scale 1.0
+	States
+	{
+	Spawn:
+		EXCL F 0
+		Goto Active
+	Active:
+		EXCL F -1 Bright
+		Stop
+	Inactive:
+		TNT1 A -1
+		Stop
+	Touched:
+		EXCL F 35 Bright
+	TouchLoop:
+		EXCL G -1
+		Stop
+	}
+}
+
 ACTOR InteractionIcon
 {
 	Height 8
