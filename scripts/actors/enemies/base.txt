@@ -1392,8 +1392,6 @@ class Nazi : Base
 
 		if (CheckSightOrRange(512)) { return; }
 
-		if (DodgeState) { A_TryHide(); }
-
 		// Check specifically for players via CheckSight in order to "see through" block-everything lines (which are usually windows)
 		for (int p = 0; p < MAXPLAYERS; p++) // Iterate through all of the players and see if any are in sight
 		{
@@ -1402,9 +1400,14 @@ class Nazi : Base
 			Actor mo = players[p].mo;
 
 			if (mo) {
-				if (AimState && (user_static || bAmbush) && !InStateSequence(CurState, FindState("Dodge.Crouch")))
+				if (absangle(angle, AngleTo(mo)) <= 30)
 				{
-					if (absangle(angle, AngleTo(mo)) <= 30) { frame = AimState.frame; }
+					if (DodgeState) { A_TryHide(255); }
+
+					if (AimState && (user_static || bAmbush) && !InStateSequence(CurState, FindState("Dodge.Crouch")))
+					{
+						frame = AimState.frame;
+					}
 				}
 
 				if (IsFriend(mo)) { continue; }
@@ -1779,8 +1782,6 @@ class Nazi : Base
 		if (frightscale && !speed) { frightscale = 0.0; }
 
 		Super.PostBeginPlay();
-
-		if (DodgeState) { A_TryHide(255); }
 	}
 
 	// Hijack the damage calls in order to implement stealth kills and critical hits
@@ -1801,21 +1802,21 @@ class Nazi : Base
 				A_Log(StringTable.Localize("$STEALTH"));
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING);
 				bFriendly = False; // Force to not friendly so that they will count as a kill and be healable.
-				DeathSound = "Nazi/Gurgle"; // Reset death sound to gurgle
+				if (self is "NaziStandard") { DeathSound = "Nazi/Gurgle"; } // Reset death sound to gurgle
 				SoundAlert(source, false, 192);
 				damage = health;
 				flags |= DMG_FORCED;
 			}
 			else if (user_incombat) // If the actor has already been in its See state
 			{
-				A_PlaySound("Nazi1/Pain", CHAN_AUTO, FRandom(0.2, 0.4), FALSE, ATTN_NORM); // Play quiet pain sound
+				if (self is "NaziStandard") { A_PlaySound("Nazi1/Pain", CHAN_AUTO, FRandom(0.2, 0.4), FALSE, ATTN_NORM); } // Play quiet pain sound
 				SoundAlert(source, false, 64); //ozy - only if near // Alert small radius
 			}
 			else // Otherwise, this attack was the equivalent of Stealth Kill for non-sneakable enemies
 			{
 				user_incombat = True;
 				A_Log(StringTable.Localize("$CRITICAL"));
-				DeathSound = "Nazi/Gurgle"; // Reset death sound to gurgle
+				if (self is "NaziStandard") { DeathSound = "Nazi/Gurgle"; } // Reset death sound to gurgle
 				SoundAlert(source, false, 192);
 				damage = health;
 				flags |= DMG_FORCED;
