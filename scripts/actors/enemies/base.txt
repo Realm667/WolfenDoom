@@ -904,7 +904,7 @@ class Nazi : Base
 
 	Default
 	{
-		Height 56;
+		Height 64;
 		Mass 35;
 		Scale 0.65;
 		PainChance 200;
@@ -1402,7 +1402,7 @@ class Nazi : Base
 			if (mo) {
 				if (absangle(angle, AngleTo(mo)) <= 30)
 				{
-					if (DodgeState) { A_TryHide(255); }
+					if (DodgeState) { A_TryHide(); }
 
 					if (AimState && (user_static || bAmbush) && !InStateSequence(CurState, FindState("Dodge.Crouch")))
 					{
@@ -1838,7 +1838,7 @@ class Nazi : Base
 			BecomeAlerted(source); // Alert that actor
 		}
 
-		if (bDormant && source && source.player) { bDormant = false; } // Wake up dormant enemies that are shot by a player
+		if (bDormant && !bFriendly && source && source.player) { bDormant = false; } // Wake up dormant enemies that are shot by a player
 
 		int damageamt = Super.DamageMobj(inflictor, source, damage, mod, flags, angle); // Get the damage amount from the real DamageMobj function
 
@@ -2766,6 +2766,7 @@ class NaziBoss : Nazi
 	{
 		Mass 1000;
 		Scale 0.67;
+		Height 80;
 		Base.BossIcon "BOSSICON";
 		DamageFactor "Rocket", 0.2;
 		+BOSS
