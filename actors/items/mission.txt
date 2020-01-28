@@ -61,7 +61,6 @@ ACTOR AktenDream : CompassItem
 	}
 }
 
-
 ACTOR AktenDreamClue : CompassItem
 {
 	//$Title Secret Files (Clue)
@@ -508,5 +507,45 @@ ACTOR MineralClue : ZombieArmClue
 	Spawn:
 		MINR B -1
 		Stop
+	}
+}
+
+ACTOR RyanIDs : SwitchableDecoration
+{
+	//$Category Props (BoA)/Mission
+	//$Title Ryan IDs (ARGs from 0 to 3)
+	//$Arg0 "Type"
+	//$Arg0Type 11
+	//$Arg0Enum { 0 = "British ID"; 1 = "German ID"; 2 = "Intel ID"; 3 = "Military ID"; }
+	Radius 8
+	Height 0
+	Scale 0.10
+	+FLATSPRITE
+	+NOBLOCKMAP
+	+NOGRAVITY
+	-SOLID
+	States
+	{
+	Active:
+		TNT1 A 0 {bDormant = FALSE;} //mxd. DORMANT flag must be updated manually
+	Spawn:
+		TNT1 A 0 NODELAY
+		TNT1 A 0 A_JumpIf(Args[0] == 1, "GerID")
+		TNT1 A 0 A_JumpIf(Args[0] == 2, "IntID")
+		TNT1 A 0 A_JumpIf(Args[0] == 3, "MilID")
+	BriID:
+		RYID A -1 A_SetPitch(180+Pitch)
+		Stop
+	GerID:
+		RYID B -1 A_SetPitch(180+Pitch)
+		Stop
+	IntID:
+		RYID C -1 A_SetPitch(180+Pitch)
+		Stop
+	MilID:
+		RYID D -1 A_SetPitch(180+Pitch)
+		Stop
+	Inactive:
+		TNT1 A 0 {bDormant = TRUE;} //mxd. DORMANT flag must be updated manually
 	}
 }
