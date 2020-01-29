@@ -403,3 +403,65 @@ class RyanToken : DisguiseToken
 		DisguiseToken.NoTarget False; // Don't hide player from enemies
 	}
 }
+
+class PowerRepairing : Powerup
+{
+	Default
+	{
+		Powerup.Duration -15;
+		Powerup.Strength 3; // Per tic HP increase
+	}
+
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		if (!Owner)
+		{
+			return;
+		}
+		else if (Owner is "ShermanPlayer")
+		{
+			// I would like to transfer the powerup to the tank body if the
+			// player exits the tank, but I don't know if that is even possible.
+			Owner.GiveBody(int(Strength), GetDefaultByType("ShermanPlayer").Health);
+		}
+		else
+		{
+			Destroy();
+		}
+	}
+}
+
+class RepairKit : CompassItem
+{
+	Default
+	{
+		//$Title Repair Kit (electric)
+		Tag "$TAGREKIT";
+		Inventory.Icon "EKPKA0";
+		Inventory.PickupMessage "$ELECPAK";
+		Inventory.PickupSound "misc/gadget_pickup";
+		Inventory.MaxAmount 3;
+	}
+
+	States
+	{
+	Spawn:
+		EKPK B -1;
+		Stop;
+	}
+
+	override bool Use(bool pickup)
+	{
+		if (Owner.FindInventory("PowerRepairing"))
+		{
+			return false;
+		}
+		if (Owner is "ShermanPlayer")
+		{
+			Inventory repairing = Owner.GiveInventoryType("PowerRepairing");
+			return true;
+		}
+		return false;
+	}
+}
