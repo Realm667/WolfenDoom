@@ -170,13 +170,15 @@ class TankInterceptTarget : Actor
 {
 	Default
 	{
+		+BRIGHT
+		+INVISIBLE
 		+NOINTERACTION
 	}
 
 	States
 	{
 	Spawn:
-		TNT1 A -1;
+		EXCL A -1;
 		Stop;
 	}
 
@@ -185,7 +187,11 @@ class TankInterceptTarget : Actor
 		Super.Tick();
 		if (developer >= 1)
 		{
-			sprite = GetSpriteIndex('EXCL');
+			bInvisible = false;
+		}
+		else
+		{
+			bInvisible = true;
 		}
 	}
 }

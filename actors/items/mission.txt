@@ -257,21 +257,6 @@ ACTOR Cartridge53 : CompassItem
 	}
 }
 
-ACTOR RepairKit : CompassItem
-{
-	//$Title Repair Kit (electric)
-	Tag "$TAGREKIT"
-	Inventory.Icon EKPKA0
-	Inventory.PickupMessage "$ELECPAK"
-	Inventory.PickupSound "misc/gadget_pickup"
-	States
-	{
-	Spawn:
-		EKPK B -1
-		Stop
-	}
-}
-
 ACTOR Crank : CompassItem
 {
 	//$Title Crank (mech)
