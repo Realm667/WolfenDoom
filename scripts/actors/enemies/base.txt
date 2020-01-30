@@ -684,6 +684,15 @@ class Base : Actor
 
 			if (bShootable && health > 0 && !bDormant)
 			{
+				if (Default.bCountKill && !bCountKill)
+				{
+					if (SpawnFlags & MTF_DORMANT && !bDormant)
+					{
+						bCountKill = true;
+						level.total_monsters++; 
+					}
+				}
+
 				if (swimmer && waterlevel < 3)
 				{
 					vel.z = min(vel.z, -1);
@@ -790,8 +799,16 @@ class Base : Actor
 
 	override void PostBeginPlay()
 	{
+		Super.PostBeginPlay();
+
 		if (!(self is "NaziBoss")) { A_SetSize(radius * scale.x / Default.scale.x, height * scale.y / Default.scale.y); } // If the actor is scaled from default, adjust the actual size of the actor
-		if (SpawnFlags & MTF_DORMANT) { bDormant = true; }
+
+		if (SpawnFlags & MTF_DORMANT)
+		{
+			bDormant = true;
+			bCountKill = false;
+			level.total_monsters--;
+		}
 
 		// After initilization, handle skill level health alterations
 		//   For each each skill level below 'normal', reduce enemy health by specified percentage
@@ -1838,7 +1855,8 @@ class Nazi : Base
 			BecomeAlerted(source); // Alert that actor
 		}
 
-		if (bDormant && !bFriendly && source && source.player) { bDormant = false; } // Wake up dormant enemies that are shot by a player
+// Don't do this because it breaks staged scenes, like the end of C2M0_A
+//		if (bDormant && !bFriendly && source && source.player) { bDormant = false; } // Wake up dormant enemies that are shot by a player
 
 		int damageamt = Super.DamageMobj(inflictor, source, damage, mod, flags, angle); // Get the damage amount from the real DamageMobj function
 
