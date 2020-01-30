@@ -812,7 +812,8 @@ ACTOR FlyingHack : FlyingNeedle
 		CLVR H 4 A_SpawnItem("CleaverTrail8")
 		Loop
 	Death:
-		CLVR IIIIJJJJKKKKLLLL 1 { A_FadeOut(0.05); A_SpawnItemEx("HackPuff"); }
+		CLVR I 0 A_SpawnItemEx("HackPuff")
+		CLVR IIJJKKLL 1 A_FadeOut(0.2)
 		Stop
 	Crash:
 		CLVR II 1 A_PlaySoundEX("Cleaver/Crash",2)
@@ -828,7 +829,8 @@ ACTOR HackPuff
 	+NOEXTREMEDEATH
 	+NOGRAVITY
 	+PUFFONACTORS
-	RenderStyle "Add"
+	RenderStyle "Translucent"
+	Alpha 0.5
 	States
 	{
 	Spawn:
@@ -1162,7 +1164,8 @@ ACTOR FlyingCleaver
 		CLVR H 4 A_SpawnItem("CleaverTrail8")
 		Loop
 	Death:
-		CLVR IIIIJJJJKKKKLLLL 1 { A_FadeOut(0.05); A_SpawnItemEx("HackPuff"); }
+		CLVR I 0 A_SpawnItemEx("HackPuff")
+		CLVR IIJJKKLL 1 A_FadeOut(0.2)
 		Stop
 	Crash:
 		CLVR II 1 A_PlaySoundEX("Cleaver/Crash",2)
@@ -1392,7 +1395,8 @@ ACTOR ZFlyingHack : FlyingHack
 		CLVR H 4 A_SpawnItem("CleaverTrail8")
 		Loop
 	Death:
-		CLVR IIIIJJJJKKKKLLLL 1 { A_FadeOut(0.05); A_SpawnItemEx("ZHackPuff"); }
+		CLVR I 0 A_SpawnItemEx("HackPuff")
+		CLVR IIJJKKLL 1 A_FadeOut(0.2)
 		Stop
 	Crash:
 		CLVR II 1 A_PlaySoundEX("Cleaver/Crash",2)
