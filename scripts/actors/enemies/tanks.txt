@@ -419,11 +419,11 @@ class TankBase : VehicleBase
 
 	override bool CanCollideWith(Actor other, bool passive)
 	{
-		if (other is "TankBlocker" && other.Species == Species) { return false; }
+		if (IsFriend(other) || (other is "TankBlocker" && other.Species == Species)) { return false; }
 
 		if (!treads || (other.pos.z + height > treads.pos.z && other.pos.z < treads.pos.z + treads.height))
 		{
-			other.DamageMobj(self, self, int(vel.length() * 0.625), "Crush");
+			other.DamageMobj(self, self, int(vel.length() * 0.625), "Trample");
 		}
 
 		return Super.CanCollideWith(other, passive);
@@ -753,9 +753,9 @@ class TankBlocker : Actor
 
 	override bool CanCollideWith(Actor other, bool passive)
 	{
-		if (master && master.master && other != master && other != master.master)
+		if (master && master.master && other != master && other != master.master && !master.master.IsFriend(other))
 		{
-			other.DamageMobj(self, master.master, int(master.master.vel.length() * 0.625), "Crush");
+			other.DamageMobj(self, master.master, int(master.master.vel.length() * 0.625), "Trample");
 
 			return master.CanCollideWith(other, passive);
 		}
@@ -948,9 +948,9 @@ class TankTreadsBase : Actor
 
 	override bool CanCollideWith(Actor other, bool passive)
 	{
-		if (master && other != master)
+		if (master && other != master && !master.IsFriend(other))
 		{
-			other.DamageMobj(self, master, int(0.5 * master.vel.xy.length()), "Crush");
+			other.DamageMobj(self, master, int(0.5 * master.vel.xy.length()), "Trample");
 
 			return master.CanCollideWith(other, passive);
 		}

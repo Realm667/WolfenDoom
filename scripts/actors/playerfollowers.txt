@@ -144,6 +144,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		MaxStepHeight 56; //Matches max player jump height with standard JumpZ of 8 and MaxStepHeight of 24
 		MaxDropOffHeight 512;
 		MaxTargetRange 3072; // Because we have long corridors that are more than 2048 units long, and PlayerFollowers would stand there stupidly even though enemies are in sight
+		DamageFactor "Trample", 0.0;
 		PainChance 128;
 		PlayerFollower.Weapon PWEAP_None;
 		PlayerFollower.CloseFollow False;
