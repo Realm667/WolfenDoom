@@ -2753,6 +2753,9 @@ ACTOR SuperSoldier : NaziBoss
 	SeeSound "Boss1/Sighted"
 	PainSound "boss/pain"
 	DeathSound "Boss1/Death"
+	DropItem "9mmAmmo" 64
+	DropItem "9mmAmmoBox" 64
+	DropItem "Medikit_Small" 32
 	States
 	{
 	Spawn:
@@ -3105,9 +3108,8 @@ ACTOR SuperSoldier_Girl : SuperSoldier
 	PainSound "bossGirl/pain"
 	DeathSound "BossGirl/Death"
 	DropItem "9mmAmmo" 128
-	DropItem "9mmAmmo" 128
-	DropItem "9mmAmmo" 128
 	DropItem "9mmAmmoBox" 128
+	DropItem "Medikit_Small" 32
 	States
 	{
 	Spawn:
@@ -3152,6 +3154,7 @@ ACTOR SuperSoldier_Elsa : SuperSoldier_Girl
 	Scale 0.63
 	Speed 7
 	Obituary "$SUPAELSA"
+	DropItem "Medikit_Small" 96
 	States
 	{
 	Spawn:
@@ -3269,7 +3272,7 @@ ACTOR SuperSoldier_Elite : SuperSoldier
 	DropItem "9mmAmmo" 128
 	DropItem "9mmAmmo" 128
 	DropItem "9mmAmmoBox" 128
-	DropItem "NebAmmo" 256
+	DropItem "Medikit_Small" 96
 	States
 	{
 	Spawn:

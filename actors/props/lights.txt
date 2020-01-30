@@ -950,6 +950,20 @@ ACTOR ColumnLight2 : ColumnLight
 	}
 }
 
+ACTOR StageLight : ColumnLight
+{
+	//$Title 3d Theatre Stage Light
+	Height 8
+	-SOLID
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
+}
+
 ACTOR FutureCeilingLight : LightBase
 {
 	//$Title 3d Modern Ceiling Light (SWITCHABLE)
@@ -1473,7 +1487,7 @@ ACTOR BoAWallTorch1 : SwitchableDecoration
 	}
 }
 
-ACTOR CreepyCandle : SwitchableDecoration
+ACTOR CreepyCandle : TableLightM
 {
 	//$Category Lights (BoA)/ACS Switchable
 	//$Title 2d Creepy Candle (ON)
@@ -1481,7 +1495,7 @@ ACTOR CreepyCandle : SwitchableDecoration
 	Radius 4
 	Height 8
 	Scale 0.8
-	+NOGRAVITY
+	-SOLID
 	States
 	{
 	Spawn:

@@ -138,9 +138,9 @@ ACTOR NebAmmo : Ammo
 	Scale 0.47
 	Tag "$TAGMINIR"
 	Inventory.Amount 5
-	Inventory.MaxAmount 150
-	Ammo.BackpackAmount 20
-	Ammo.BackpackMaxAmount 300
+	Inventory.MaxAmount 100
+	Ammo.BackpackAmount 10
+	Ammo.BackpackMaxAmount 150
 	Inventory.PickupMessage "$NEBWAMMO"
 	Inventory.Icon NEBE01
 	States
@@ -154,10 +154,10 @@ ACTOR NebAmmo : Ammo
 ACTOR NebAmmoBox : NebAmmo
 {
 	//$Category Ammo (BoA)
-	//$Title Nebelbox (x30 rounds)
+	//$Title Nebelbox (x20 rounds)
 	//$Color 6
 	Scale 0.63
-	Inventory.Amount 30
+	Inventory.Amount 20
 	Inventory.PickupMessage "$NEBWBOX"
 	States
 	{
