@@ -197,7 +197,13 @@ class ActorSpawner : SwitchableDecoration
 
 						// RandomSpawners that have the BOSS flag stay until their spawned item is killed or destroyed
 						// and set the spawned actor as their tracer.  This way our counters will stay accurate...
-						if (spawned is "RandomSpawner") { spawned.bBoss = true; } 
+						if (spawned is "RandomSpawner") { spawned.bBoss = true; spawned.master = self; }
+
+						if (user_maxspawns == 0 && spawned.bCountKill)
+						{
+							spawned.bCountKill = false;
+							level.total_monsters--;
+						}
 
 						spawned.target = target;
 						spawned.angle = angle;
@@ -369,11 +375,16 @@ class WaveSpawner : ActorSpawner
 
 						// RandomSpawners that have the BOSS flag stay until their spawned item is killed or destroyed
 						// and set the spawned actor as their tracer.  This way our counters will stay accurate...
-						if (spawned is "RandomSpawner") { spawned.bBoss = true; } 
+						if (spawned is "RandomSpawner") { spawned.bBoss = true; spawned.master = self; }
+
+						if (user_maxspawns == 0 && spawned.bCountKill)
+						{
+							spawned.bCountKill = false;
+							level.total_monsters--;
+						}
 
 						spawned.target = target;
 						spawned.angle = angle;
-
 						spawned.ChangeTID(user_tid);
 
 						if (Nazi(spawned)) { Nazi(spawned).dodgetimeout = 350; }
@@ -538,5 +549,33 @@ class DestructionSpawner : Actor
 		}
 
 		return damageamt;
+	}
+}
+
+class CivilianZombieSpawner : RandomSpawner
+{
+	Default
+	{
+		//$Category Monsters (BoA)/Occult
+		//$Title Civilian Zombie Spawner (random skin)
+		//$Color 4
+
+		DropItem "CivilianZombie1";
+		DropItem "CivilianZombie2";
+		DropItem "CivilianZombie3";
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (bBoss && tracer && master && master is "ActorSpawner")
+		{
+			if (tracer.bCountKill)
+			{
+				tracer.bCountKill = false;
+				level.total_monsters--;
+			}
+		}
 	}
 }
