@@ -571,7 +571,7 @@ class CivilianZombieSpawner : RandomSpawner
 
 		if (bBoss && tracer && master && master is "ActorSpawner")
 		{
-			if (tracer.bCountKill)
+			if (ActorSpawner(master).user_maxspawns == 0 && tracer.bCountKill)
 			{
 				tracer.bCountKill = false;
 				level.total_monsters--;

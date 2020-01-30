@@ -465,3 +465,26 @@ class RepairKit : CompassItem
 		return false;
 	}
 }
+
+class BandagesPowerup : PowerUp
+{
+	Default
+	{
+		Powerup.Duration -10;
+		Powerup.Strength 1;
+	}
+
+	// Derived from base PowerRegeneration class, but using actual ticrate-based seconds instead of running every 32 tics
+	override void DoEffect()
+	{
+		Super.DoEffect();
+
+		if (owner && owner.health > 0 && (Level.maptime % TICRATE) == 0)
+		{
+			if (Owner.GiveBody(int(Strength)))
+			{
+				Owner.A_StartSound("*regenerate", CHAN_ITEM);
+			}
+		}
+	}
+}
