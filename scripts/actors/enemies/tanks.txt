@@ -309,6 +309,7 @@ class TankBase : VehicleBase
 		treads.bFriendly = bFriendly;
 
 		if (!user_static) { A_PlaySound(idlesound, CHAN_6, 0.25, TRUE); }
+		else { level.total_monsters--; }
 
 		targettimeout = Random(0, 35);
 		intercept = G_SkillPropertyInt(SKILLP_ACSReturn) > 0; // Disable intercept missiles on easy skill

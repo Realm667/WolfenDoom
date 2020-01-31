@@ -85,6 +85,10 @@
 	  targeting reticle when the player's crosshair is over the actor.  Assists 
 	  with sniping and firing from a distance.
 
+	user_nocountkill
+	- Boolean value that sets an actor to not add to or subtract from the enemy
+	  kill counter on the automap and stats.
+
   UDMF Properties (Nazi Class)
 	user_sneakable
 	- The underlying variable for the Nazi.Sneakable property above
@@ -231,6 +235,7 @@ class Base : Actor
 	bool candodge;
 	bool nofear;
 	bool user_targetcrosshair;
+	bool user_nocountkill;
 
 	Property AlwaysDrawHealthBar:user_DrawHealthBar;
 	Property BossIcon:BossIcon;
@@ -532,7 +537,7 @@ class Base : Actor
 
 			newmobj.SetStateLabel(label);
 
-			if (bCountKill) { level.total_monsters--; }
+			if (bCountKill && !bFriendly) { level.total_monsters--; }
 			self.Destroy();
 
 			return newmobj;
@@ -684,9 +689,9 @@ class Base : Actor
 
 			if (bShootable && health > 0 && !bDormant)
 			{
-				if (Default.bCountKill && !bCountKill)
+				if (Default.bCountKill && !bCountKill && !bFriendly)
 				{
-					if (SpawnFlags & MTF_DORMANT && !bDormant)
+					if (SpawnFlags & MTF_DORMANT && !bDormant && !user_nocountkill)
 					{
 						bCountKill = true;
 						level.total_monsters++; 
@@ -806,6 +811,15 @@ class Base : Actor
 		if (SpawnFlags & MTF_DORMANT)
 		{
 			bDormant = true;
+
+			if (bCountKill && !bFriendly)
+			{
+				bCountKill = false;
+				level.total_monsters--;
+			}
+		}
+		else if (Default.bCountKill && !bFriendly && user_nocountkill)
+		{
 			bCountKill = false;
 			level.total_monsters--;
 		}
@@ -2080,8 +2094,11 @@ class Nazi : Base
 			goal.CopyFriendliness(self, false);
 
 			// And make the actor not count toward kills anymore
-			goal.bCountKill = false;
-			level.total_monsters--;
+			if (goal.bCountKill && !goal.bFriendly)
+			{
+				goal.bCountKill = false;
+				level.total_monsters--;
+			}
 		}
 
 		body = null;

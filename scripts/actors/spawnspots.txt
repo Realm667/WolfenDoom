@@ -199,7 +199,7 @@ class ActorSpawner : SwitchableDecoration
 						// and set the spawned actor as their tracer.  This way our counters will stay accurate...
 						if (spawned is "RandomSpawner") { spawned.bBoss = true; spawned.master = self; }
 
-						if (user_maxspawns == 0 && spawned.bCountKill)
+						if (user_maxspawns == 0 && spawned.bCountKill && !spawned.bFriendly)
 						{
 							spawned.bCountKill = false;
 							level.total_monsters--;
@@ -377,7 +377,7 @@ class WaveSpawner : ActorSpawner
 						// and set the spawned actor as their tracer.  This way our counters will stay accurate...
 						if (spawned is "RandomSpawner") { spawned.bBoss = true; spawned.master = self; }
 
-						if (user_maxspawns == 0 && spawned.bCountKill)
+						if (user_maxspawns == 0 && spawned.bCountKill && !spawned.bFriendly)
 						{
 							spawned.bCountKill = false;
 							level.total_monsters--;
@@ -571,7 +571,7 @@ class CivilianZombieSpawner : RandomSpawner
 
 		if (bBoss && tracer && master && master is "ActorSpawner")
 		{
-			if (ActorSpawner(master).user_maxspawns == 0 && tracer.bCountKill)
+			if (ActorSpawner(master).user_maxspawns == 0 && tracer.bCountKill && !tracer.bFriendly)
 			{
 				tracer.bCountKill = false;
 				level.total_monsters--;
