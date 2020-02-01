@@ -76,6 +76,10 @@
 	- Setting this to 2 instead of 1 will only resurrect enemies that have a
 	  suitable zombie counterpart
 
+	Nazi.ActivateWhenShot
+	- If an enemy is DORMANT and has this flag, they will become non-dormant
+	  if fired on by a player.
+
   UDMF Properties (Base Class)
 	user_drawhealthbar
 	- The underlying variable for the Base.AlwaysDrawHealthBar property above
@@ -112,6 +116,10 @@
 
 	user_spyitem
 	- Item given to player when you press use to interact with a FRIENDLY Nazi
+
+	user_activatewhenshot
+	- If an enemy is DORMANT and has this variabe set to non-zero, they will 
+	  become non-dormant if fired on by a player.
 
   New Functions (Base class)
 	A_LookThroughDisguise(int flags = 0, float minseedist = 0, float Range = 0, float maxheardist = 0, double fov = 0, statelabel label = "See")
@@ -917,6 +925,7 @@ class Nazi : Base
 	String head;
 	String user_spyitem;
 	int user_spymsgindex;
+	bool user_activatewhenshot;
 
 	Property Healer:healflags;
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
@@ -932,6 +941,7 @@ class Nazi : Base
 	Property FadeDeath:user_fadedeath;
 	Property NoAltDeath:user_noaltdeath;
 	Property Head:head;
+	Property ActivateWhenShot:user_activatewhenshot;
 
 	Default
 	{
@@ -1869,8 +1879,7 @@ class Nazi : Base
 			BecomeAlerted(source); // Alert that actor
 		}
 
-// Don't do this because it breaks staged scenes, like the end of C2M0_A
-//		if (bDormant && !bFriendly && source && source.player) { bDormant = false; } // Wake up dormant enemies that are shot by a player
+		if (user_activatewhenshot && bDormant && !bFriendly && source && source.player) { bDormant = false; } // Wake up dormant enemies that are shot by a player
 
 		int damageamt = Super.DamageMobj(inflictor, source, damage, mod, flags, angle); // Get the damage amount from the real DamageMobj function
 
@@ -2093,11 +2102,10 @@ class Nazi : Base
 			goal.target = null;
 			goal.CopyFriendliness(self, false);
 
-			// And make the actor not count toward kills anymore
+			// And make the actor not count as having been killed anymore
 			if (goal.bCountKill && !goal.bFriendly)
 			{
-				goal.bCountKill = false;
-				level.total_monsters--;
+				level.killed_monsters--;
 			}
 		}
 
