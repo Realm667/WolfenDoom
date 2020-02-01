@@ -1037,6 +1037,19 @@ class BoAPlayer : PlayerPawn
 			if (newState) { psp.SetState(newState); }
 		}
 	}
+/*
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
+	{
+		String i = "null";
+		String s = "null";
+		if (inflictor) { i = inflictor.getclassname(); }
+		if (source) { i = source.getclassname(); }
+
+		console.printf("Inflictor: %s\nSource: %s\nMod: %s", i, s, mod);
+
+		return Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
+	}
+*/
 }
 
 // Base class for simple visual effects that will always follow the player until removed

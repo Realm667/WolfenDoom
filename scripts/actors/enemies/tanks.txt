@@ -173,6 +173,8 @@ class TankInterceptTarget : Actor
 		+BRIGHT
 		+INVISIBLE
 		+NOINTERACTION
+		Alpha 0.5;
+		RenderStyle "Translucent";
 	}
 
 	States
@@ -245,7 +247,7 @@ class TankBase : VehicleBase
 		Monster;
 		MaxDropoffHeight 48;
 		MaxStepHeight 32;
-		Obituary "$TANKS";
+		Obituary "$TANKGUN";
 		Species "NaziTank";
 		MaxTargetRange 2048;
 		RenderStyle "None";
@@ -680,6 +682,20 @@ class TankBase : VehicleBase
 	{
 		chasetimeout = 20;
 		missiletimeout = 20;
+	}
+
+	override String GetObituary(Actor victim, Actor inflictor, Name mod, bool playerattack)
+	{
+		if (mod == 'Trample')
+		{
+			return "$TRAMPLE";
+		}
+		else if (mod == 'Rocket')
+		{
+			return "$TANKSHELL";
+		}
+
+		return Super.GetObituary(victim, inflictor, mod, playerattack);
 	}
 }
 
@@ -1283,6 +1299,8 @@ class FriendlySherman : TankBase
 
 		if (mo)
 		{
+			mo.target = self;
+
 			missilecount++;
 			if (missilecount > 1)
 			{
@@ -1305,7 +1323,12 @@ class FriendlySherman : TankBase
 		A_PlaySound("mauser/fire", CHAN_WEAPON);
 
 		Actor mo = A_SpawnProjectile(FrontGunProjectile, 0, 0, origin.angle + Random(-2, 2), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, Random(-2, 2));
-		mo.SetOrigin(origin.pos, false);
+
+		if (mo)
+		{
+			mo.SetOrigin(origin.pos, false);
+			mo.target = self;
+		}
 
 		bulletcount++;
 		if (bulletcount > 50 + Random(0, 25))
@@ -1371,6 +1394,8 @@ class SSTank1 : TankBase
 
 		if (mo)
 		{
+			mo.target = self;
+
 			missilecount++;
 			if (missilecount > 1)
 			{
@@ -1396,7 +1421,12 @@ class SSTank1 : TankBase
 		if (origin.master && TankBase(origin.master) && TankBase(origin.master).gun) { gunpitch = TankBase(origin.master).gun.pitch; }
 
 		Actor mo = A_SpawnProjectile(FrontGunProjectile, 0, 0, random(-4, 4), CMF_ABSOLUTEPITCH, max(-gunpitch, 0));
-		mo.SetOrigin(origin.pos, false);
+
+		if (mo)
+		{
+			mo.SetOrigin(origin.pos, false);
+			mo.target = self;
+		}
 
 		bulletcount++;
 		if (bulletcount > 75)
@@ -1485,6 +1515,8 @@ class SSTank2 : TankBase
 
 		if (mo)
 		{
+			mo.target = self;
+
 			missilecount++;
 			missiletimeout = 40;
 		}
@@ -1502,6 +1534,11 @@ class SSTank2 : TankBase
 		origin.angle = treads.angle;
 
 		Actor mo = origin.A_SpawnProjectile(FrontGunProjectile, 0, 0, origin.angle + random(-4, 4), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
+
+		if (mo)
+		{
+			mo.target = self;
+		}
 
 		bulletcount++;
 		if (bulletcount > 45)
@@ -1568,6 +1605,8 @@ class SSTank3 : TankBase
 
 		if (mo)
 		{
+			mo.target = self;
+
 			missilecount++;
 			missiletimeout = 40 + Random(0, 5) * 15;
 		}
@@ -1659,6 +1698,8 @@ class SSTank4 : TankBase
 
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle + random(-4, 4), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
 
+		if (mo) { mo.target = self; }
+
 		missilecount++;
 		if (missilecount > 45)
 		{
@@ -1738,6 +1779,8 @@ class T34Tank : TankBase
 
 		if (mo)
 		{
+			mo.target = self;
+
 			missilecount++;
 			if (missilecount > 1)
 			{
@@ -1763,7 +1806,12 @@ class T34Tank : TankBase
 		origin.angle = treads.angle;
 
 		Actor mo = origin.A_SpawnProjectile(FrontGunProjectile, 0, 0, origin.angle + random(-4, 4), CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, clamp(origin.pitch, -5, 5));
-		mo.SetOrigin(origin.pos + RotateVector((8.0, 0), angle), false);
+
+		if (mo)
+		{
+			mo.SetOrigin(origin.pos + RotateVector((8.0, 0), angle), false);
+			mo.target = self;
+		}
 
 		bulletcount++;
 		if (bulletcount > 75)
