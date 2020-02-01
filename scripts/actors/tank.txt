@@ -238,6 +238,19 @@ class ShermanPlayer : PlayerPawn
 		}
 	}
 
+	override bool UseInventory(Inventory item)
+	{
+		if (
+			item is "RepairKit" ||
+			item is "BoACompass"
+		)
+		{
+			return Super.UseInventory(item);
+		}
+
+		return false;
+	}
+
 	override bool CanCollideWith(Actor other, bool passive)
 	{
 		if (other is "TankBlocker" && other.Species == Species) { return false; }
