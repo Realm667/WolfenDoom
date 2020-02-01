@@ -181,6 +181,10 @@ class AlarmPanel : SwitchableDecoration
 			ALRM R 0;
 			ALRM # 5 {
 				if (!active) { frame++; } // If it wasn't active, show frame S, which is broken with switch in off position
+
+				if (NaziStandard(activator)) { NaziStandard(activator).activationgoal = null; }
+				activator = null;
+
 				A_PlaySound("World/Spark", CHAN_AUTO, 0.15);
 				A_SpawnItemEx("SparkFlare_Y1", 0, 0, 40);
 				A_PlaySound("METALBRK", CHAN_AUTO, 0.25);
@@ -210,6 +214,8 @@ class AlarmPanel : SwitchableDecoration
 
 	override void Activate (Actor activator)
 	{
+		if (health <= 0) { return; } // Just in case an actor somehow still calls the Activate function (
+
 		target = activator;
 		A_SetPeerState();
 		Super.Activate(activator);
@@ -225,13 +231,13 @@ class AlarmPanel : SwitchableDecoration
 	{
 		int dmg = Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
 
-		if (health <= 0 && active)
+		if (health <= 0)
 		{
-			A_SetPeerState(false);
-
 			// Clear the activator
 			if (NaziStandard(activator)) { NaziStandard(activator).activationgoal = null; }
 			activator = null;
+
+			A_SetPeerState(false);
 
 			SetStateLabel("Death");
 		}
