@@ -569,11 +569,12 @@ class TankBase : VehicleBase
 			bullettimeout = 35;
 		}
 
+		Actor cannon = gunspot ? gunspot : (gun ? gun : turret);
 		if (turret && !missiletimeout && !turrettimeout && missiletargeted && CheckLOF(CLOFF_JUMPENEMY | CLOFF_SKIPOBJECT, maxtargetrange, offsetforward: treads.radius))
 		{
 			flags |= CHF_DONTMOVE | CHF_DONTTURN;
 
-			DoTurret(gunspot ? gunspot : (gun ? gun : turret));
+			DoTurret(cannon);
 			missiletargeted = false;
 		}
 
@@ -585,10 +586,9 @@ class TankBase : VehicleBase
 				if (intercept)
 				{
 					double interceptTime;
-					Vector3 interceptPos;
-					[interceptPos, interceptTime] = ZScriptTools.GetInterceptPosition(Pos, Target.Pos, Target.Vel, GetDefaultSpeed(TurretProjectile));
+					interceptTime = ZScriptTools.GetInterceptTime4(Pos, Target.Pos, Target.Vel, GetDefaultSpeed(TurretProjectile));
 					interceptTime += turretdelay; // Account for pre-fire delay
-					interceptPos = Target.Pos + Target.Vel * interceptTime;
+					Vector3 interceptPos = Target.Pos + Target.Vel * interceptTime;
 					InterceptTarget.SetOrigin(interceptPos, true);
 					aimAt = InterceptTarget;
 				}
@@ -603,11 +603,9 @@ class TankBase : VehicleBase
 
 				if (int(turret.angle) == int(turret.AngleTo(aimAt)))
 				{
-					Actor spot = gunspot ? gunspot : (gun ? gun : turret);
-
 					if (CheckLOF(CLOFF_JUMPENEMY | CLOFF_SKIPOBJECT, maxtargetrange, offsetforward: treads.radius) && (!gun || (gun.pitch - turret.pitch >= minp && gun.pitch - turret.pitch <= maxp)))
 					{
-						DoTurretTarget(spot);
+						DoTurretTarget(cannon);
 					}
 				}
 			}

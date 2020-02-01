@@ -2,26 +2,47 @@
 
 class ZScriptTools
 {
-	// Calculate the intercept position, and the time it takes for a projectile to hit the target.
-	// Implementation of https://github.com/Realm667/WolfenDoom/issues/178#issuecomment-576599289
-	static Vector3, double GetInterceptPosition(Vector3 ShooterPos, Vector3 TargetPos, Vector3 TargetVel, double MissileSpeed)
+	// Calculate the time it will take for a projectile to hit a moving target,
+	// assuming constant velocities for both the projectile and target.
+	//
+	// Why calculate impact time rather than the position? It is more flexible,
+	// because then you can calculate impact position like this:
+	// ImpactPos = TargetPos + TargetVel * ImpactTime;
+	//
+	// Based on math and code from https://indyandyjones.wordpress.com/2010/04/08/intercepting-a-target-with-projectile/
+	// Very important excerpt from that particular blog post:
+	// Squaring and multiplication of vectors against vectors amounts to taking
+	// the dot product
+	static double GetInterceptTime(Vector3 ToTarget, Vector3 TargetVel, double MissileSpeed)
 	{
-		Vector3 ShooterToTarget = LevelLocals.Vec3Diff(ShooterPos, TargetPos); // TargetPos - ShooterPos
-		double a = (TargetVel dot TargetVel) - (MissileSpeed * MissileSpeed);
-		double b = ShooterToTarget dot TargetVel;
-		double c = ShooterToTarget dot ShooterToTarget;
-		if ((a * c) > (b * b))
+		// Get the terms of the quadratic equation.
+		// Taking the dot product of a vector with itself is the same as
+		// getting its squared length.
+		double a = (TargetVel dot TargetVel) - MissileSpeed * MissileSpeed;
+		double b = 2 * TargetVel dot ToTarget;
+		double c = ToTarget dot ToTarget;
+		double radicand = (b * b) - (4 * a * c);
+		if (radicand < 0)
 		{
-			// Cannot calculate intercept position
+			// Cannot calculate intercept time
 			if (developer >= 1)
 			{
-				Console.Printf("Cannot calculate intercept position!");
+				Console.Printf("Cannot calculate intercept time!");
 			}
-			return TargetPos, -1;
+			return 0.0;
 		}
-		double timeA = (-b + sqrt(b*b - a * c)) / a;
-		double timeB = (-b - sqrt(b*b - a * c)) / a;
-		double time = max(timeA, timeB);
-		return TargetPos + (TargetVel * time), time;
+		// This aims ahead of the target. If the other root was used,
+		// the calculated impact point would be behind the target.
+		double time = (-b - sqrt(radicand)) / (2 * a);
+		return time;
+	}
+
+	// Takes projectile origin and target position rather than the vector
+	// between the two positions.
+	static double GetInterceptTime4(Vector3 ProjPos, Vector3 TargetPos, Vector3 TargetVel, double MissileSpeed)
+	{
+		// LevelLocals.Vec3Diff accounts for portals
+		Vector3 ToTarget = LevelLocals.Vec3Diff(ProjPos, TargetPos); // TargetPos - ProjPos
+		return ZScriptTools.GetInterceptTime(ToTarget, TargetVel, MissileSpeed);
 	}
 }
