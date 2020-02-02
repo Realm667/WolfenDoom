@@ -1,6 +1,7 @@
 class BulletTracer : FastProjectile
 {
 	Class<TracerTrail> trail;
+	Actor trailactor;
 
 	Property Trail:trail;
 
@@ -26,6 +27,7 @@ class BulletTracer : FastProjectile
 		Death:
 		Crash:
 			TNT1 AAA 0 {
+				if (trailactor) { trailactor.Destroy(); }
 				A_SpawnItemEx("TracerSpark", 0, 0, 0, random(-2,2), random(-2,2), random(-2,2), random(0,359)); //T667 improvements
 				bWindThrust = false;
 			}
@@ -45,7 +47,13 @@ class BulletTracer : FastProjectile
 		Super.PostBeginPlay();
 
 		// Spawn the visible tracer *once* at spawn
-		A_SpawnItemEx(trail, 0, 0, 0, vel.x, vel.y, vel.z, 0, SXF_ABSOLUTEVELOCITY | SXF_SETMASTER); //mxd
+		trailactor = Spawn(trail, pos);
+		if (trailactor)
+		{
+			trailactor.vel = vel;
+			trailactor.angle = angle;
+			trailactor.master = self;
+		}
 	}
 
 	// Handling so that tracers won't hit actors that have the tracer's origin actor set as their master (or inherit from one that does)
