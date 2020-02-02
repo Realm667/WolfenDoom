@@ -80,6 +80,12 @@
 	- If an enemy is DORMANT and has this flag, they will become non-dormant
 	  if fired on by a player.
 
+	Nazi.IdleSound
+	- Sound used for idle noises when the actor is set as sneakable
+
+	Nazi.TargetLostSound
+	- Sound used while the target is out of sight when the actor is set as sneakable
+
   UDMF Properties (Base Class)
 	user_drawhealthbar
 	- The underlying variable for the Base.AlwaysDrawHealthBar property above
@@ -926,6 +932,7 @@ class Nazi : Base
 	String user_spyitem;
 	int user_spymsgindex;
 	bool user_activatewhenshot;
+	Sound IdleSound, LostSound;
 
 	Property Healer:healflags;
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
@@ -942,6 +949,8 @@ class Nazi : Base
 	Property NoAltDeath:user_noaltdeath;
 	Property Head:head;
 	Property ActivateWhenShot:user_activatewhenshot;
+	Property IdleSound:idlesound;
+	Property TargetLostSound:lostsound;
 
 	Default
 	{
@@ -975,6 +984,8 @@ class Nazi : Base
 		Nazi.SneakableCloseSightRadius 64;
 		Nazi.HealDistance 8;
 		Nazi.Head "MS_UNKN";
+		Nazi.IdleSound "axis1/idle";
+		Nazi.TargetLostSound "axis1/target_not_seen";
 	}
 
 	States
@@ -1408,6 +1419,8 @@ class Nazi : Base
 
 		if (bDormant) { return; } // Dormant actors should not do anything but bleed
 
+		if (target.species == species) { target = null; return; }
+
 		if (alertrange) { A_AlertMonsters(alertrange); } // Alert monsters in given range
 		if (playsound) { A_Pain(); } // Play pain sound unless passed 'false'
 
@@ -1783,7 +1796,8 @@ class Nazi : Base
 			}
 		}
 		else if (
-			Distance3d(mo) > 512
+			Distance3d(mo) > 512 ||
+			(mo.species != species)
 		) { return false; }
 
 		return true;
@@ -1907,9 +1921,9 @@ class Nazi : Base
 			if (Random() < 64) { bFriendly = false; }
 		}
 
-		if (source && source != self && source.bFriendly != bFriendly)
+		if (source && source != self && (!user_sneakable || source.bFriendly != bFriendly) && source.species != species)
 		{
-			target = source; // Target the source if it wasn't friendly
+			target = source; // Target the source if it wasn't friendly or of the same species
 			SoundAlert(source, false, 192);
 		}
 
@@ -1920,6 +1934,8 @@ class Nazi : Base
 	void BecomeAlerted(Actor newtarget = null)
 	{
 		if (health <= 0 || !bShootable) { return; } // If it's dead, don't do anything
+
+		if (newtarget && newtarget.species == species) { return; } // Ignore actors of the same species as targets
 
 		if (!alerted)
 		{

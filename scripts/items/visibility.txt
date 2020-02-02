@@ -57,7 +57,8 @@ class BoAVisibility : CustomInventory
 				nmo.user_incombat &&
 				nmo.target &&
 				nmo.target == Owner &&
-				(nmo.CheckSight(Owner) || Owner.Distance3d(nmo) < 256)
+				(nmo.CheckSight(Owner) || Owner.Distance3d(nmo) < 256) &&
+				!(nmo is "Rottweiler") // Don't count dogs as alerted, so if just dogs are alerted, you're still stealthy
 			) { count++; }
 		}
 
