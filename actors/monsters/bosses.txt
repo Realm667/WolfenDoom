@@ -3118,26 +3118,19 @@ ACTOR SuperSoldier_Girl : SuperSoldier
 	Missile:
 		WBO4 E 20 A_FaceTarget
 		"####" F 0 A_PlaySound("browning/fire", CHAN_WEAPON)
-		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,20,frandom(-6,6))
-		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,-20,frandom(-6,6))
-		"####" FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		"####" F 0 A_SpawnProjectile("EnemyPistolTracer",44,20,frandom(-6,6))
+		"####" F 0 A_SpawnProjectile("EnemyPistolTracer",44,-20,frandom(-6,6))
+		"####" F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
 		"####" F 0 {user_count++; if(user_count > 11) {user_count = 0; return ResolveState("Retreat");} return ResolveState("");}
-		"####" FG 2 LIGHT(SUPAFIRE) A_FaceTarget
+		"####" FG 3 LIGHT(SUPAFIRE) A_FaceTarget
 		"####" F 0 A_PlaySound("browning/fire", CHAN_WEAPON)
-		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,20,frandom(-6,6))
-		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,-20,frandom(-6,6))
-		"####" FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
+		"####" F 0 A_SpawnProjectile("EnemyPistolTracer",44,20,frandom(-6,6))
+		"####" F 0 A_SpawnProjectile("EnemyPistolTracer",44,-20,frandom(-6,6))
+		"####" F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
+		"####" F 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
 		"####" F 0 {user_count++; if(user_count > 11) {user_count = 0; return ResolveState("Retreat");} return ResolveState("");}
-		"####" FG 2 LIGHT(SUPAFIRE) A_FaceTarget
-		"####" F 0 A_PlaySound("browning/fire", CHAN_WEAPON)
-		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,20,frandom(-6,6))
-		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,-20,frandom(-6,6))
-		"####" FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
-		"####" FFFF 0 A_SpawnItemEx("9MMCasing", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION)
-		"####" F 0 {user_count++; if(user_count > 11) {user_count = 0; return ResolveState("Retreat");} return ResolveState("");}
-		"####" FG 2 LIGHT(SUPAFIRE)
+		"####" FG 6 LIGHT(SUPAFIRE)
 		Goto See
 	Retreat:
 		WBO4 A 0 A_SetSpeed(6)
