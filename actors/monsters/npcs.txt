@@ -461,7 +461,6 @@ ACTOR Camp_StaticBroom
 	+THRUSPECIES
 	DeathSound "urss/death"
 	Species "PlayerFollower"
-	Species "Player"
 	States
 	{
 	Spawn:
@@ -655,6 +654,8 @@ ACTOR Camp_StaticHammeringR : Camp_StaticHammeringL
 
 ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he doesn't - ozy81
 {
+	var float user_basescale;
+
 	//$Category Concentration Camp (BoA)
 	//$Title Wandering Prisoner (bald)
 	//$Color 3
@@ -673,19 +674,20 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 	+NOSPLASHALERT
 	+PUSHABLE
 	+SLIDESONWALLS
-	+THRUSPECIES
 	MaxStepHeight 16
 	MaxDropoffHeight 32
 	PainSound "urss/pain"
 	DeathSound "urss/death"
 	Species "PlayerFollower"
-	Species "Player"
 	States
 	{
 	Spawn:
 		PRSN E 0 NODELAY {
-		bUseSpecial = FALSE; //let's pretend when the actor is active we can't interact with it
-		A_SetScale(ScaleX + frandom(-0.2,0.2),ScaleY + frandom(-0.2,0.2));
+			bUseSpecial = FALSE; //let's pretend when the actor is active we can't interact with it
+
+			// Normalize scale amounts so actor height and radius aren't so far apart that they look disproportionate.
+			user_basescale = FRandom(-0.1, 0.05);
+			A_SetScale(ScaleX + user_basescale * FRandom(0.0, 1.5), ScaleY + user_basescale * FRandom(0.0, 1.5));
 		}
 	Active: //check if it's active though
 	SpawnLoop:

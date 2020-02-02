@@ -1050,6 +1050,17 @@ class BoAPlayer : PlayerPawn
 		return Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
 	}
 */
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		// You can't walk on top of PlayerFollowers or other actors with PlayerFollower species, 
+		// but will still collide with them if you walk into them, or they into you.
+		if (!passive && other && other.Species == "PlayerFollower" && other.bFriendly && pos.z > other.pos.z)
+		{
+			return false;
+		}
+
+		return Super.CanCollideWith(other, passive);
+	}
 }
 
 // Base class for simple visual effects that will always follow the player until removed
