@@ -1419,12 +1419,12 @@ class Nazi : Base
 
 		if (bDormant) { return; } // Dormant actors should not do anything but bleed
 
-		if (target.species == species) { target = null; return; }
+		if (target && target.species == species) { target = null; return; }
 
 		if (alertrange) { A_AlertMonsters(alertrange); } // Alert monsters in given range
 		if (playsound) { A_Pain(); } // Play pain sound unless passed 'false'
 
-		if (user_sneakable && bFriendly) // If we attacked a sneakable actor who wasn't alerted...
+		if (target && user_sneakable && bFriendly) // If we attacked a sneakable actor who wasn't alerted...
 		{
 			// If we are the same species as what shot us, then just become alert and look for a target - otherwise, return fire!
 			BecomeAlerted(target.species == species ? null : target); // Alert that actor
@@ -1590,7 +1590,7 @@ class Nazi : Base
 			}
 		}
 
-		if (candodge && !crouchtimeout) { A_TryHide(); }
+		if (candodge && !crouchtimeout && !goal) { A_TryHide(); }
 	}
 
 	state A_CheckFadeDeath()

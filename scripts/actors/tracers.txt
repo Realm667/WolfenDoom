@@ -97,7 +97,7 @@ class BulletTracer : FastProjectile
 				{
 					it.thing.lastHeard = self;
 
-					if (target && target.IsHostile(it.thing)) // Only 'whizz' at hostiles
+					if (target && target.IsHostile(it.thing) && target.species != it.thing.species) // Only 'whizz' at hostiles
 					{
 						SoundAlert(target, false, 64);
 						Actor mo = Spawn("Whizzer", pos);
