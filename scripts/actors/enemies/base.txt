@@ -1481,7 +1481,7 @@ class Nazi : Base
 			if (!closestplayer) { closestplayer = FindClosestPlayer(IgnoreFriendlies:!bFriendly); }
 
 			if (CheckSight(lastheard, true)) { SetState(SeeState); } // If an alerting actor is in sight, become active
-			else if (activationcount == 0 && !CanBeSeen()) // if you haven't been used yet and there are no other enemies around
+			else if (activationcount == 0 && !CanBeSeen() && closestplayer && closestplayer.IsVisible(self, true)) // if you haven't been used yet and there are no other enemies around
 			{
 				A_Face(closestplayer);
 				if (Random() < 6) { A_StartSound("spy/attention", CHAN_VOICE, 0, 0.5); } // play an attention-getting sound

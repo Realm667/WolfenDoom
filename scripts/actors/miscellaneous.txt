@@ -744,3 +744,22 @@ class Bubble : Actor
 		Super.Tick();
 	}
 }
+
+class AscherParachuting : Actor
+{
+	Default
+	{
+		+NOINTERACTION;
+		+NOGRAVITY;
+		+FLOATBOB;
+		FloatBobStrength 0.25;
+		Scale 0.5;
+	}
+
+	States
+	{
+		Spawn:
+			ASCP A -1;
+			Stop;
+	}
+}
