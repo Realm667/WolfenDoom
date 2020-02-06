@@ -148,7 +148,9 @@ class StealthBase : Actor
 		{
 			if (BoAVisibility(vis).alertedcount > 0) { return false; }
 
-			BoAVisibility(vis).extravisibility += skill + 2;
+			// If in direct enemy line of sight, increment the extravisibility amount 
+			// over time (so that you can't just stand there in front of them)
+			BoAVisibility(vis).extravisibility += 2.5 + 0.05 * skill; 
 			if (BoAVisibility(vis).visibility  >= 100) { return false; }
 		} else { return false; }
 
