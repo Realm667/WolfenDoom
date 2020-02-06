@@ -78,6 +78,22 @@ script "Textpaper" (int text_number, int paperstyle, int fontstyle)
 
 	int fontsize = 30; // Not truly font size - sets the overall scale of the font positioning and wrapping
 
+	// Hacky workaround for fonts that don't have Cyrillic characters
+	int l = GetCVarString("language");
+
+	if (StrCmp(l, "ru", 2) == 0)
+	{
+		switch (fontstyle)
+		{
+			case 1:
+				fontstyle = 2;
+				break;
+			case 4:
+				fontstyle = 5;
+				break;
+		}
+	}
+
 	// Set the actual font, based on the int that was passed, and do any other necessary adjustments
 	str font;
 	switch (fontstyle)
