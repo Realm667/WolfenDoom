@@ -889,24 +889,44 @@ class BoAStatusBar : BaseStatusBar
 				CrosshairOverlay = TexMan.CheckForTexture("SHOT", TexMan.Type_Any);
 				clr = 0xFFFF00;
 			}
-			else if (crosshairtarget.bShootable && crosshairtarget.health > 0 && crosshairtarget.bFriendly && (!Nazi(crosshairtarget) || !Nazi(crosshairtarget).user_sneakable))
+			else if (crosshairtarget.bShootable && crosshairtarget.health > 0)
 			{
-				if (crosshairtarget == currenttarget)
+				if (crosshairtarget.bFriendly && (!Nazi(crosshairtarget) || !Nazi(crosshairtarget).user_sneakable))
 				{
-					targettime++;
-
-					if (targettime > 45)
+					if (crosshairtarget == currenttarget)
 					{
-						CrosshairOverlay = TexMan.CheckForTexture("NOSHOT", TexMan.Type_Any);
-						clr = 0xFF0000;
-						pulsespeed = 20;
-						crosshairalpha = clamp((targettime - 45) * 0.006, 0.0, 1.0);
+						targettime++;
+
+						if (targettime > 45)
+						{
+							CrosshairOverlay = TexMan.CheckForTexture("NOSHOT", TexMan.Type_Any);
+							clr = 0xFF0000;
+							pulsespeed = 20;
+							crosshairalpha = clamp((targettime - 45) * 0.006, 0.0, 1.0);
+						}
+					}
+					else
+					{
+						currenttarget = crosshairtarget;
+						targettime = 0;
 					}
 				}
-				else
+				else if (CPlayer.ReadyWeapon is "KnifeSilent" && Nazi(crosshairtarget) && !Nazi(crosshairtarget).user_incombat && CPlayer.mo.Distance2D(crosshairtarget) < crosshairtarget.radius + 64.0)
 				{
-					currenttarget = crosshairtarget;
-					targettime = 0;
+					if (crosshairtarget == currenttarget)
+					{
+						targettime++;
+
+						CrosshairOverlay = TexMan.CheckForTexture("KNFEA0", TexMan.Type_Any);
+						clr = 0xDD7700;
+						pulsespeed = 0;
+						crosshairalpha = clamp(targettime * 0.1, 0.0, 1.0);
+					}
+					else
+					{
+						currenttarget = crosshairtarget;
+						targettime = 0;
+					}
 				}
 			}
 
