@@ -308,6 +308,7 @@ class Whizzer : GrenadeBase
 	Default
 	{
 		+NOGRAVITY
+		+NOINTERACTION
 		GrenadeBase.FearDistance 32;
 	}
 
@@ -368,7 +369,7 @@ class TracerTrail : Actor
 	{
 		Super.Tick();
 
-		if (TestMobjLocation()) { bNoInteraction  = false; }
+		if (bNoInteraction && TestMobjLocation()) { bNoInteraction  = false; }
 
 		if (!master || !vel.length()) { Destroy(); }
 	}

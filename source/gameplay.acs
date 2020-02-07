@@ -190,6 +190,8 @@ Script "QuickKick" (void)
 //death script
 script "OhNoes!" DEATH
 {
+	if (CheckInventory("CutsceneEnabled")) { Terminate; }
+
 	SetHudSize(320, 240, true);
 	LocalSetMusic("THEEND");
 
