@@ -103,7 +103,7 @@ class StealthBase : Actor
 					BoAVisibility(vis).suspicion = 0; // Clear the player's suspicion variable
 				}
 
-				players[playernum].cheats ^= CF_NOTARGET;  // Turn off the player's NOTARGET
+				players[playernum].cheats &= ~CF_NOTARGET;  // Turn off the player's NOTARGET
 				if (alert) { alert.Destroy(); } // Get rid of the alert indicator that was spawned here
 
 				if (Nazi(master) && !master.bDormant) { Nazi(master).BecomeAlerted(target); }
@@ -119,9 +119,9 @@ class StealthBase : Actor
 
 			if (sighttime <= 0 && playernum > -1) // Once fully out of sight and 'forgotten', restore NOTARGET flag if the player has a disguise (added check since default for playernum is 0)
 			{
-				let disguise = players[playernum].mo.FindInventory("DisguiseToken", True);
+				DisguiseToken disguise = DisguiseToken(players[playernum].mo.FindInventory("DisguiseToken", True));
 
-				if (disguise && !(players[playernum].cheats & CF_NOTARGET)) { players[playernum].cheats ^= CF_NOTARGET; }
+				if (disguise && disguise.notarget && !players[playernum].mo.FindInventory("DisguiseFailToken", True)) { players[playernum].cheats |= CF_NOTARGET; }
 				playernum = -1;
 			}
 		}
@@ -382,7 +382,9 @@ class DisguiseFailToken : Inventory
 	// Called when the item amount reaches 0
 	override void DepleteOrDestroy()
 	{
-		if (owner.FindInventory("DisguiseToken", true))
+		DisguiseToken disguise = DisguiseToken(owner.FindInventory("DisguiseToken", true));
+
+		if (disguise && disguise.notarget)
 		{
 			owner.player.cheats |= CF_NOTARGET;
 		}
