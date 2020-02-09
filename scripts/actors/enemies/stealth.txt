@@ -147,14 +147,20 @@ class StealthBase : Actor
 		if (vis)
 		{
 			if (BoAVisibility(vis).alertedcount > 0) { return false; }
-
-			// If in direct enemy line of sight, increment the extravisibility amount 
-			// over time (so that you can't just stand there in front of them)
-			BoAVisibility(vis).extravisibility += 2.5 + 0.05 * skill; 
 			if (BoAVisibility(vis).visibility  >= 100) { return false; }
 		} else { return false; }
 
 		return true;
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (!master) { Destroy(); }
+
+		SetXYZ(master.pos + (0, 0, height));
+		angle = master.angle;
 	}
 }
 
@@ -209,65 +215,8 @@ class SneakableGuardEyesIdle : StealthBase
 	States
 	{
 		Spawn:
-			TNT1 A 1; // Need a slight delay between A_Looks to prevent infinite loop
-			TNT1 A 0 {
-				if (!master || master.bDormant) { return SpawnState; }
-
-				A_Warp(AAPTR_MASTER, 0, 0, Height);
-
-				if (LastHeard && LastHeard is "PlayerPawn")
-				{
-					target = LastHeard;
-					if (Nazi(master) && !master.bDormant) { Nazi(master).BecomeAlerted(target); }
-
-					LastHeard = null;
-				}
-				else if (Nazi(master)) { Nazi(master).alerted = false; }
-
-				A_SneakableLook();
-				if (master && !master.bBoss && !idlesounddelay)
-				{
-					if (master)
-					{
-						if (Nazi(master)) { master.A_StartSound(Nazi(master).idlesound, CHAN_VOICE); }
-						else { master.A_StartSound("axis1/idle", CHAN_VOICE); }
-					}
-					idlesounddelay = Random(490, 630); // Set quote countdown time to 14 - 18 seconds
-				}
-				return ResolveState(null);
-			}
+			TNT1 A 1 A_SneakableLook();
 			Loop;
-		PlayerSeen:
-			TNT1 A 0 {
-				if (master && target) {
-					int dist = int(Distance3D(target) - master.radius - target.radius);
-					int checkdist;
-
-					if (Nazi(master)) { checkdist = Nazi(master).sneakableclosesightradius; }
-					else { checkdist = 64; }
-
-					if (dist < checkdist)
-					{
-						if (target)
-						{
-							Inventory vis = target.FindInventory("BoAVisibility");
-							if (vis) { BoAVisibility(vis).extravisibility = (checkdist - dist) * 2; }
-						}
-					}
-				}
-			}
-			TNT1 A 0 {
-				if (TargetIsHidden())
-				{
-					A_ClearTarget();
-					SetState(SpawnState);
-				}
-				else
-				{
-					if (Nazi(master) && !master.bDormant) { Nazi(master).BecomeAlerted(target); }
-				}
-			}
-			Stop;
 	}
 
 	override void PostBeginPlay()
@@ -285,77 +234,165 @@ class SneakableGuardEyesIdle : StealthBase
 
 	void A_SneakableLook()
 	{
+		if (!master || master.bDormant) { return; }
+
 		double closerange = 160.0;
 		double closeFOV = 120.0;
 		double farrange = 1024.0;
 		double farFOV = 65.0;
 
-		A_LookEx(0, 0.0, closerange, 256.0, closefov, "PlayerSeen"); // Wider FOV sight check for short-range
-		A_LookEx(0, 0.0, farrange, 256.0, master.bLookAllAround ? 360.0 : farFOV, "PlayerSeen");
-
-		if (Nazi(master)) { A_LookForNoTargetPlayer(Nazi(master).perceptiondistance); }
-		else { A_LookForNoTargetPlayer(); }
-
-		// Check via CheckSight in order to "see through" double-sided walls (windows)
-		for (int p = 0; p < MAXPLAYERS; p++) // Iterate through all of the players and see if any are in sight
+		if (LastHeard && LastHeard is "PlayerPawn")
 		{
-			if (players[p].cheats & CF_NOTARGET) { continue; }
+			target = LastHeard;
+			if (Nazi(master) && !master.bDormant) { Nazi(master).BecomeAlerted(target); }
 
-			Actor mo = players[p].mo;
+			LastHeard = null;
+		}
+		else if (Nazi(master)) { Nazi(master).alerted = false; }
 
-			if (mo) {
-				if (Distance3d(mo) > (closerange + farrange) / 2) { continue; } // Meet in the middle of the short/close ranges above
-				if (abs(deltaangle(angle, AngleTo(mo))) > farfov / 2) { continue; } // Use the far FOV
-				if (!CheckSight(mo, SF_SEEPASTBLOCKEVERYTHING | SF_SEEPASTSHOOTABLELINES)) { continue; }
+		A_LookEx(LOF_NOJUMP, 0.0, closerange, 256.0, closefov); // Wider FOV sight check for short-range
 
-				target = mo;
-				SetStateLabel("PlayerSeen");
+		if (!target || target == master) { A_LookEx(LOF_NOJUMP, 0.0, farrange, 256.0, master.bLookAllAround ? 360.0 : farFOV); }
+
+		if (!target || target == master)
+		{
+			if (Nazi(master)) { A_LookForNoTargetPlayer(Nazi(master).perceptiondistance); }
+			else { A_LookForNoTargetPlayer(); }
+		}
+
+		if (!target || target == master)
+		{
+			// Check via CheckSight in order to "see through" double-sided walls (windows)
+			for (int p = 0; p < MAXPLAYERS; p++) // Iterate through all of the players and see if any are in sight
+			{
+				if (players[p].cheats & CF_NOTARGET) { continue; }
+
+				Actor mo = players[p].mo;
+	
+				if (mo) {
+					if (Distance3d(mo) > (closerange + farrange) / 2) { continue; } // Meet in the middle of the short/close ranges above
+					if (abs(deltaangle(angle, AngleTo(mo))) > farfov / 2) { continue; } // Use the far FOV
+					if (!CheckSight(mo, SF_SEEPASTBLOCKEVERYTHING | SF_SEEPASTSHOOTABLELINES)) { continue; }
+
+					target = mo;
+				}
 			}
+		}
+
+
+		if (target && target != master)
+		{
+			int dist = int(Distance3D(target) - master.radius - target.radius);
+			int checkdist;
+
+			if (Nazi(master)) { checkdist = Nazi(master).sneakableclosesightradius; }
+			else { checkdist = 64; }
+
+			Inventory vis = target.FindInventory("BoAVisibility");
+
+			if (vis)
+			{
+				// If player gets within the "close visibility" range, extravisibility
+				// value jumps in proportion with distance
+				if (dist < checkdist)
+				{
+					BoAVisibility(vis).extravisibility = max((checkdist - dist) * 2, BoAVisibility(vis).extravisibility);
+				}
+
+				// If in direct enemy line of sight, increment the extravisibility amount 
+				// over time (so that you can't just stand there in front of them)
+				// This really only has an effect when a lot of enemies have you in sight
+				// all at the same time, otherwise the increments are too small to matter.
+				BoAVisibility(vis).extravisibility += 2.5 + 0.05 * skill;
+			}
+
+			if (TargetIsHidden())
+			{
+				A_ClearTarget();
+			}
+			else
+			{
+				if (Nazi(master) && !master.bDormant) { Nazi(master).BecomeAlerted(target); }
+			}
+		}
+		else if (!master.bBoss && !idlesounddelay)
+		{
+			if (Nazi(master)) { master.A_StartSound(Nazi(master).idlesound, CHAN_VOICE); }
+			else { master.A_StartSound("axis1/idle", CHAN_VOICE); }
+
+			idlesounddelay = Random(490, 630); // Set quote countdown time to 14 - 18 seconds
 		}
 	}
 
 	override void Tick()
 	{
-		if (idlesounddelay > 0) { idlesounddelay--; }
-
 		Super.Tick();
+
+		if (idlesounddelay > 0) { idlesounddelay--; }
 	}
 }
 
 // This actor follows SneakableGuard around checking if players are no longer seen
 class SneakableGuardEyesAlerted : StealthBase
 {
+	int timeout;
+	int lostsounddelay;
+
 	States
 	{
 		Spawn:
-			TNT1 A 1;
-			Goto ResetCounters;
-		ResetCounters:
-			TNT1 A 0 A_SetArg(0, random(280, 350)); // Set countdown time to 8 - 10 seconds
-			TNT1 A 0 A_SetArg(1, random(140, 210));  // Set quote countdown time to 4 - 6 seconds
-			Goto Look;
-		Look:
-			TNT1 A 1 A_Warp(AAPTR_MASTER, 0, 0, Height); // Need a slight delay between A_Looks to prevent infinite loop
-			TNT1 A 0 A_LookEx(0, 0.0, 1024.0, 256.0, 65.0, "PlayerSeen");
-			TNT1 A 0 A_CountdownArg(0, "ResetMaster"); // Sets master state to Patrol when the countdown reaches zero
-			TNT1 A 0 A_CountdownArg(1, "TryPlayLoosingTargetSound");
+			TNT1 A 1 A_SneakableSearch();
 			Loop;
-		TryPlayLoosingTargetSound:
-			TNT1 A 0 A_JumpIf(args[0] > 220, "Look"); // Too early!
-			TNT1 A 0 {
-				if (master && !master.bBoss)
-				{
-					if (Nazi(master)) { master.A_StartSound(Nazi(master).lostsound, CHAN_VOICE); }
-					else { master.A_StartSound("axis1/target_not_seen", CHAN_VOICE); }
-				}
+	}
+
+	override void PostBeginPlay()
+	{
+		ResetTimers();
+
+		Super.PostBeginPlay();
+	}
+
+	void ResetTimers(bool chatteronly = false)
+	{
+		if (!chatteronly) { timeout = Random(280, 350); }
+		lostsounddelay = Random(140, 210);
+	}
+
+	void A_SneakableSearch()
+	{
+		if (!master) { return; }
+
+		A_LookEx(LOF_NOJUMP, 0.0, 1024.0, 256.0, 65.0);
+
+		if (target)
+		{
+			A_ClearTarget();
+			ResetTimers();
+		}
+		else if (timeout == 0)
+		{
+			if (master && Nazi(master)) { Nazi(master).BecomeIdle(); }
+
+			Destroy();
+ 		}
+		else if (lostsounddelay == 0)
+		{
+			if (master && !master.bBoss)
+			{
+				if (Nazi(master)) { master.A_StartSound(Nazi(master).lostsound, CHAN_VOICE); }
+				else { master.A_StartSound("axis1/target_not_seen", CHAN_VOICE); }
 			}
-			Goto ResetCounters + 1; // Reset quote countdown time only
-		PlayerSeen: // Reset countdown
-			TNT1 A 1 A_ClearTarget();
-			Goto ResetCounters;
-		ResetMaster:
-			TNT1 A 0 { if (master) { Nazi(master).BecomeIdle(); } } // Cause the master to become idle
-			Stop;
+
+			ResetTimers(true);
+		}
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (timeout > 0) { timeout--; }
+		if (lostsounddelay > 0) { lostsounddelay--; }
 	}
 }
 

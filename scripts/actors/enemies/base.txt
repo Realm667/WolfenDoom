@@ -1314,8 +1314,7 @@ class Nazi : Base
 				bShootable = true;
 				candodge = true; // Tells the code in A_NaziChase that this actor should be allowed to dodge
 			}
-			"####" A 0 {
-				return ResolveState("Dodge.Resume"); }
+			"####" A 0 { return ResolveState("Dodge.Resume"); }
 		Dodge.Right:
 			"####" A 0 A_SetSize(-1, Default.height / 2);
 			"####" ABCDEA 5;
@@ -2208,7 +2207,6 @@ class Nazi : Base
 				{
 					goal = patrolgoal;
 					target = patrolgoal;
-					if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); }
 				}
 			}
 			else if (user_InCombat && !bFriendly && activationgoal)
