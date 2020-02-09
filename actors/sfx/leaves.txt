@@ -12,6 +12,7 @@ ACTOR LeavesSpawner : CinderSpawner //ozy81
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("LeavesSwitch")==0,"EndSpawn")
 	ActiveLoop:
 		TNT1 A 0 A_CheckSightOrRange(1200.0, "LoopWait", TRUE)
+		TNT1 A 0 A_CheckRange(2400.0, "LoopWait", TRUE)
 	LeafLoop: //if you need more spawn leaves, simply change above tics from 8 to a lower value, min 1
 		TNT1 A 8 A_SpawnItemEx("FloatingLeaves", random(-Args[0],Args[0]), random(-Args[0],Args[0]), random(0,Args[1]), random(Args[2],Args[3]), 0, random(-Args[2],Args[2]), random(-4, 4), 128, Args[4])
 		Goto ActiveLoop
@@ -39,8 +40,9 @@ ACTOR LeavesSpawnerHorizontal : LeavesSpawner //T667
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("LeavesSwitch")==0,"EndSpawn")
 	ActiveLoop:
 		TNT1 A 0 A_CheckSightOrRange(1200.0, "LoopWait", TRUE)
+		TNT1 A 0 A_CheckRange(2400.0, "LoopWait", TRUE)
 	LeafLoop: //if you need less spawn leaves, simply change above tics from 1 to a higher value, min 1
-		TNT1 A 1 A_SpawnItemEx("FloatingLeavesNoGravity", 0, random(-Args[0],Args[0]), random(0,Args[1]), random(Args[2],Args[3]), 0, 0, frandom(-4.0, 4.0), 128, Args[4])
+		TNT1 A 3 A_SpawnItemEx("FloatingLeavesNoGravity", 0, random(-Args[0],Args[0]), random(0,Args[1]), random(Args[2],Args[3]), 0, 0, frandom(-4.0, 4.0), 128, Args[4])
 		Goto ActiveLoop
 	Inactive:
 		TNT1 A -1
@@ -65,12 +67,12 @@ ACTOR FloatingLeaves : Debris_Leaf
 		LEFY A 0 NODELAY A_SetScale(ScaleX + frandom(0.15,0.45),ScaleY + frandom(0.15,0.45))
 	StartLoop:
 		LEFY ABCDEFGH 6 {
-							A_SetGravity(frandom(0.0525,0.0725));
-							A_SetRoll(roll + frandom(-0.5, 0.5), SPF_INTERPOLATE);
-							A_SetAngle(angle + random(-15, 15));
-							A_SetPitch(pitch + frandom(-0.25, 0.25));
-							A_JumpIf(waterlevel == 3, "AdjustMass");
-							}
+			A_SetGravity(frandom(0.0525,0.0725));
+			A_SetRoll(roll + frandom(-0.5, 0.5), SPF_INTERPOLATE);
+			A_SetAngle(angle + random(-15, 15));
+			A_SetPitch(pitch + frandom(-0.25, 0.25));
+			A_JumpIf(waterlevel == 3, "AdjustMass");
+		}
 		Loop
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(350)
@@ -102,4 +104,13 @@ ACTOR FloatingLeavesNoGravity : FloatingLeaves
 {
 	+NOGRAVITY
 	-FLATSPRITE
+
+	States
+	{
+		Spawn:
+			LEFY A 0 NODELAY A_SetScale(ScaleX + frandom(0.15,0.45),ScaleY + frandom(0.15,0.45))
+		StartLoop:
+			LEFY ABCDEFGH 6
+			Loop
+	}
 }

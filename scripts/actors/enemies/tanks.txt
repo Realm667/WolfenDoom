@@ -416,7 +416,7 @@ class TankBase : VehicleBase
 
 		if (!frontgunspot) { frontgunspot = TankTreadsBase(treads).gunspot; }
 
-		if (bFriendly && (!ally || ally.health <= 0)) { ally = FindClosestPlayer(360, 0, false); }
+		if (bFriendly && (!ally || ally.health <= 0)) { ally = FindClosestPlayer(self, 360, 0, false); }
 
 		if (target && bAvoidMelee) { bFrightened = Distance2D(target) < 256; } // Keep distance from the target
 	}

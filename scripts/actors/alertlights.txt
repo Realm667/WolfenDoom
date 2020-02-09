@@ -438,6 +438,92 @@ class SpotlightBeamLight : SpotLightAttenuated
 	}
 }
 
+class SpotlightFlickerAdditiveBoA : SpotlightFlickerAdditive replaces SpotlightFlickerAdditive
+{
+	override void Tick()
+	{
+		if (!bDormant && CheckIfSeen()) // If not dormant and a player is in line of sight
+		{
+			for (int p = 0; p < MAXPLAYERS; p++) // Iterate through all of the players and see which ones are in sight
+			{
+				Actor mo = players[p].mo;
+
+				if (mo && Distance2D(mo) <= args[4] * 2) // If they're in range, light them
+				{
+					DoVisibilityHandling(mo);
+
+				}
+			}
+		}
+
+		Super.Tick();
+	}
+
+	// Return the aim pitch offset from the source to the target
+	double PitchTo(Actor mo, Actor source = null, double sourcepitch = 0)
+	{
+		if (source == null) { source = self; }
+		if (!sourcepitch) { sourcepitch = source.pitch; }
+
+		double distxy = max(source.Distance2D(mo), 1);
+		double distz = source.pos.z - mo.pos.z;
+
+		double targetheight = mo.player ? mo.height * mo.player.crouchfactor : mo.height; // Get target height, with crouching if applicable
+
+		double pitchcalc = min(atan(distz / distxy), atan((distz - targetheight) / distxy)); // Return whichever is lower: pitch to actor bottom or actor top.
+
+		return pitchcalc - sourcepitch % 360; // Normalize to 360 degree range
+	}
+
+	void AddVisibility(Actor target, double amt, double max = 75)
+	{
+		if (target)
+		{
+			Inventory vis = target.FindInventory("BoAVisibility");
+			if (vis)
+			{
+				double brightness = (args[0] + args[1] + args[2]) / (255. * 3) * 1.25; // Calculate the light's overall brightness
+				brightness *= FRandom(0.25, 0.5); // Fudge the brightness level due to flickering
+
+				double amount;
+
+				if (spotinnerangle - amt < 0) // When in between inner and outer angles...
+				{
+					amount = spotouterangle * 1.5 - amt;
+					amount = amount / max((spotouterangle * 1.5 - spotinnerangle * 1.5), 1) * max; // Ramp up intensity proportionate to distance from inner angle edge
+				}
+				else { amount = max; } // Use full amount when located inside the center radius of the spotlight
+
+				amount *= brightness; // Adjust based on brightness level
+
+				amount = clamp(amount, 0, max); // Make sure the numbers are within the right range
+
+				double oldVisibility = BoAVisibility(vis).extravisibility;
+				BoAVisibility(vis).extravisibility  = int(oldvisibility + Max(amount - oldVisibility, 0)); // Set the new visibility - use delta in value instead of overriding so that multiple lights can be additive in visibility
+			}
+		}
+	}
+
+	void DoVisibilityHandling(Actor target)
+	{
+		double relpitch = PitchTo(target, self, pitch);
+
+		// Use custom function instead of AngleTo in order to account for target actor radius
+		Vector2 posoffset = pos.xy - target.pos.xy; // Get offsets
+		posoffset = RotateVector(posoffset, -angle); // Rotate to align with 0 degrees to remove rotation from calculations
+
+		// Calculate the angle to the left and right sides of the actor, and return whichever is smaller
+		double relangle = min(atan((posoffset.y + target.radius * 0.7) / posoffset.x), atan((posoffset.y - target.radius * 0.7) / posoffset.x));  // Radius is fudged by 0.7 since most actors's center of mass doesn't take up the whole radius
+
+		double reldist = sqrt(relpitch ** 2 + relangle ** 2); // Get the distance from light cone center using the calculated pitch and angle
+
+		if (reldist < spotouterangle * 1.5) // Use 1.5 times the outer angle so that we have wiggle room to calculate the ramp up to full light level
+		{
+			AddVisibility(target, reldist); // Do the visibility calculations and addition. 
+		}
+	}
+}
+
 class StrobeEmitter : Actor
 {
 	Actor light1, light2;

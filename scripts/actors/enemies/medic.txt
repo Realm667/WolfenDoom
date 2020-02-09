@@ -116,7 +116,7 @@ class NaziMedic : NaziStandard
 
 	state A_CheckForPlayer(bool jump = False)
 	{
-		Actor p = FindClosestPlayer(dist:int(192 + radius));
+		Actor p = FindClosestPlayer(self, dist:int(192 + radius));
 
 		// Run away from any player that's close by
 		if (p)

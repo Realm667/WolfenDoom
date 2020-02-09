@@ -357,7 +357,7 @@ class Base : Actor
 		return false;
 	}
 
-	Actor FindClosestPlayer(int fov = 120, int dist = 0, bool IgnoreFriendlies = True) // Also sets up initial sight parameters
+	static Actor FindClosestPlayer(Actor source, int fov = 120, int dist = 0, bool IgnoreFriendlies = True) // Also sets up initial sight parameters
 	{
 		Actor ClosestPlayer = null;
 
@@ -374,9 +374,9 @@ class Base : Actor
 			if (mo) {
 				if (!mo.bShootable || mo.health <= 0) { continue; }
 				if (players[p].cheats & CF_NOTARGET) { continue; }
-				if (!IsVisible(mo, false, SearchParams)) { continue; }
-				if (IgnoreFriendlies) { if (isFriend(mo)) { continue; } }
-				if (ClosestPlayer && Distance3d(mo) > Distance3d(ClosestPlayer)) { continue; }
+				if (!source.IsVisible(mo, false, SearchParams)) { continue; }
+				if (IgnoreFriendlies) { if (source.isFriend(mo)) { continue; } }
+				if (ClosestPlayer && source.Distance3d(mo) > source.Distance3d(ClosestPlayer)) { continue; }
 
 				ClosestPlayer = mo;
 			}
@@ -684,6 +684,30 @@ class Base : Actor
 			{
 				mo.A_SetRenderStyle(1.0, STYLE_SHADED);
 				mo.SetShade(clr);
+			}
+		}
+	}
+
+	static void DeactivateAll(String classname)
+	{
+		console.printf("called");
+		ThinkerIterator it;
+		Actor mo;
+
+		for (int i = 0; i < 6; i++)
+		{
+			it = ThinkerIterator.Create(classname, Thinker.STAT_DEFAULT - i);
+
+			while (mo = Actor(it.Next()))
+			{
+				mo.Deactivate(mo);
+				mo.bDormant = true;
+
+				if (mo.health > 0)
+				{
+					mo.SetState(mo.SpawnState);
+					mo.A_Face(mo.target);
+				}
 			}
 		}
 	}
@@ -1478,7 +1502,7 @@ class Nazi : Base
 
 		if (bFriendly && !user_sneakable && Default.Species == "Nazi")
 		{
-			if (!closestplayer) { closestplayer = FindClosestPlayer(IgnoreFriendlies:!bFriendly); }
+			if (!closestplayer) { closestplayer = FindClosestPlayer(self, IgnoreFriendlies:!bFriendly); }
 
 			if (CheckSight(lastheard, true)) { SetState(SeeState); } // If an alerting actor is in sight, become active
 			else if (activationcount == 0 && !CanBeSeen() && closestplayer && closestplayer.IsVisible(self, true)) // if you haven't been used yet and there are no other enemies around
@@ -1550,7 +1574,7 @@ class Nazi : Base
 			if (!bFriendly && closestplayer && target && closestplayer != target && Random[switchtarget](0, 100) < 20 && CheckSight(closestplayer) && Distance3D(closestplayer) < Distance3D(target)) { target = closestplayer; }
 			if (target is "ShermanPlayer") { target = Random(0, 1) ? ShermanPlayer(target).turret : ShermanPlayer(target).treads; }
 
-			if (!closestplayer) { closestplayer = FindClosestPlayer(IgnoreFriendlies:!bFriendly); }
+			if (!closestplayer) { closestplayer = FindClosestPlayer(self, IgnoreFriendlies:!bFriendly); }
 
 			// If a Nazi is flagged as friendly, he will turn on his fellow Nazis if there's only 1 other Nazi around
 			if (bFriendly && !user_sneakable && Default.Species == "Nazi")
@@ -1583,6 +1607,10 @@ class Nazi : Base
 
 					A_Chase(null, null, flags);
 				}
+			}
+			else if (target == patrolgoal)
+			{
+				A_Chase(null, null, flags); // Ensure that you don't attack if you are going after a navigation goal
 			}
 			else
 			{
@@ -2276,7 +2304,7 @@ class Nazi : Base
 				A_LookForGrenades();
 			}
 
-			if (level.time && level.time % interval) { closestplayer = FindClosestPlayer(IgnoreFriendlies:!bFriendly); }
+			if (level.time && level.time % interval) { closestplayer = FindClosestPlayer(self, IgnoreFriendlies:!bFriendly); }
 		}
 
 		Super.Tick();
