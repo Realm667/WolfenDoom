@@ -3417,7 +3417,7 @@ ACTOR PhantomBoss : RocketMan
 	PainSound "nazombie/pain"
 	DeathSound "nazombie/act"
 	DamageFactor "Electric", 0.8
-	DamageFactor "Fire", 1.2
+	DamageFactor "Fire", 0.5
 	DamageFactor "MutantPoison", 0
 	DamageFactor "Normal", 0.5
 	DamageFactor "Poison", 0
@@ -3432,7 +3432,7 @@ ACTOR PhantomBoss : RocketMan
 		Goto Look
 	Missile:
 		PHAN E 6 BRIGHT A_FaceTarget
-		"####" F 4 A_SpawnProjectile("BossDagger2",32,12,random(-2,2),CMF_CHECKTARGETDEAD)
+		"####" F 4 A_SpawnProjectile("BossDagger",32,12,random(-2,2),CMF_CHECKTARGETDEAD)
 		"####" C 4
 		Goto See
 	Melee: //Drain power attack planned

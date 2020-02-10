@@ -261,7 +261,7 @@ ACTOR NailFlame : Nail
 	}
 }
 
-ACTOR BossDagger1 : Nail
+ACTOR BossDagger : Nail
 {
 	Speed 32
 	Damage 8
@@ -272,13 +272,11 @@ ACTOR BossDagger1 : Nail
 		DGGR A 1 A_SpawnItemEx("DaggerBlur")
 		Loop
 	Crash:
-	Death: //requires different death
-		"####" C 0 A_PlaySound("dagboss/death")
-		"####" CDEF 2
-		Stop
-	XDeath: //requires different death
-		"####" C 0 A_PlaySound("dagboss/hit")
-		"####" CDEF 2
+		DGGR AA 1 A_PlaySoundEX("Cleaver/Crash",2)
+		Goto Death
+	Death:
+		DGGR A 0 A_SpawnItemEx("HackPuff")
+		DGGR A 1 A_FadeOut(0.4)
 		Stop
 	}
 }
@@ -291,40 +289,6 @@ ACTOR DaggerBlur : NailBlur
 	{
 	Spawn:
 		DGGR A 1 A_FadeOut(0.2)
-		Loop
-	}
-}
-
-ACTOR BossDagger2 : Nail
-{
-	Speed 44
-	Damage 12
-	Scale 1.0
-	States
-	{
-	Spawn:
-		DGGR B 1 A_SpawnItemEx("DaggerBlur2")
-		Loop
-	Crash:
-	Death:
-		"####" C 0 A_PlaySound("dagboss/death")
-		"####" CDEF 2
-		Stop
-	XDeath:
-		"####" C 0 A_PlaySound("dagboss/hit")
-		"####" CDEF 2
-		Stop
-	}
-}
-
-ACTOR DaggerBlur2 : NailBlur
-{
-	Scale 0.9
-	Speed 0.3
-	States
-	{
-	Spawn:
-		DGGR B 1 A_FadeOut(0.2)
 		Loop
 	}
 }
