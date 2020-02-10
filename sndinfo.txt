@@ -2351,11 +2351,13 @@ brdcrk03 brdcrk03
 $random BRIDGE_CREAK { brdcrk01 brdcrk02 brdcrk03 }
 
 //Underwater
+water/exit	splash2
 underwt1	underwt1
 underwt2	underwt2
 underwt3	underwt3
 underwt4	underwt4
 $random underwtr { underwt1 underwt2 underwt3 underwt4 }
+$rolloff underwtr log 8 16
 
 $AMBIENT 1 ALARM_DOOD POINT CONTINUOUS 1.0
 $AMBIENT 2 ALARM_RING POINT CONTINUOUS 1.0

@@ -130,25 +130,6 @@ script "NOGRENADES" (void)
 	TakeInventory("AstroGrenadePickup", 9999);
 }
 
-int underwatersoundtimeout[MAX_PLAYERS];
-
-//script "DoUnderwaterEffects" (void)
-function void DoUnderwaterEffects(void)
-{
-	if (Timer() % 7 == 0)
-	{
-		if(GetActorProperty(0,APROP_WATERLEVEL)>=3 && GetCVar("bubbleswitch")) //check also stored cvar for custom tweaks
-			SpawnForced("PlayerBubble",GetActorX(0)+random(4,8),GetActorY(0),GetActorZ(0)+random(48,52),0,random(0,255));
-	}
-
-	int p = PlayerNumber();
-	if(GetActorProperty(0,APROP_WATERLEVEL)>=3 && underwatersoundtimeout[p] < Timer())
-	{
-		localambientsound("underwtr",random(90,127));
-		underwatersoundtimeout[p] = Timer() + (35 * 8); //only 1 sound is 8sec long, 2 4sec & 1 2.5sec
-	}
-}
-
 Script "QuickKick" (void)
 {
 	int timeout;
