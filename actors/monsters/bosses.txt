@@ -3438,7 +3438,8 @@ ACTOR PhantomBoss : RocketMan
 	Melee: //Drain power attack planned
 		"####" K 4 A_FaceTarget
 		"####" L 4
-		"####" MN 4 A_CustomMeleeAttack(4)
+		"####" M 0 GiveBody(5)
+		"####" MN 4 A_CustomMeleeAttack(5, "Smoke/See", "")
 		"####" NMN 4
 		Goto See
 	Heal:
