@@ -414,6 +414,14 @@ class Base : Actor
 			return true;
 		}
 
+		// Or any spies who are tagged as FRIENDLY
+		it = ThinkerIterator.Create("Nazi", Thinker.STAT_DEFAULT); // Iterator over Nazis to check for spies
+		Nazi no;
+		while (no = Nazi(it.Next()))
+		{
+			if (no.bFriendly) { return true; }
+		}
+
 		return false;
 	}
 
@@ -1464,6 +1472,8 @@ class Nazi : Base
 		if (level.time > 35)
 		{
 			A_Look();
+
+			if (target && target.species == species) { target = null; } // Ignore the target if it's the same species (normally "Nazi")
 			if (target && SeeSound) { SoundAlert(target, false, 256); } // If the Nazi yells after seeing a target, actually alert enemies around him
 		}
 
@@ -1856,7 +1866,7 @@ class Nazi : Base
 			bNeverTarget = True; // A bit of a hack, but it works...  Will cause issues if FRIENDLY actors ever need to interact with sneakable actors
 			[sp, eyes] = A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid);
 		}
-		else if (SneakableActors()) // If there are sneakable actors in the level, no Nazi actors will be targetable - fixes targeting of non-sneakables by idle (friendly) sneakables
+		else if ((bFriendly && Species == "Nazi") || SneakableActors()) // If there are sneakable actors or spies in the level, no Nazi actors will be targetable - fixes targeting of non-sneakables by idle (friendly) sneakables
 		{ // This will break normal expected friendly monster behavior!
 			bNeverTarget = True;
 		}
