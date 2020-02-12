@@ -63,7 +63,7 @@ ACTOR TeslaCannon : NaziAstroWeapon
 			A_SpawnLightning("LightningBeamPri");
 		}
 		PULS E 0 {
-			TakeInventory("TeslaLoaded", 1); // Only take ammo once per firing, not with every lightning spawn
+			TakeInventory("TeslaLoaded", 1, TIF_NOTAKEINFINITE); // Only take ammo once per firing, not with every lightning spawn
 			A_ReFire;
 		}
 		Goto Ready
@@ -97,7 +97,7 @@ ACTOR TeslaCannon : NaziAstroWeapon
 		PULS E 1 {
 			A_GunFlash("Flash");
 			A_SpawnLightning("LightningBeamAlt");
-			TakeInventory("TeslaLoaded", 1);
+			TakeInventory("TeslaLoaded", 1, TIF_NOTAKEINFINITE);
 		}
 		PULS F 1
 		PULS G 1 {
@@ -123,7 +123,7 @@ ACTOR TeslaCannon : NaziAstroWeapon
 		PULS F 1 {
 			A_GunFlash("Flash");
 			A_SpawnLightning("LightningBeamAlt");
-			TakeInventory("TeslaLoaded", 1);
+			TakeInventory("TeslaLoaded", 1, TIF_NOTAKEINFINITE);
 		}
 		PULS G 1
 		PULS E 1 {

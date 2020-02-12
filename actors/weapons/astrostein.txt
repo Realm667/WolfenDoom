@@ -33,10 +33,11 @@ ACTOR AstroShotgun : NaziAstroWeapon
 		Goto Dryfire
 		ASSG C 0 A_AlertMonsters
 		ASSG C 0 A_PlaySound("astroshotgun/fire", CHAN_WEAPON)
+		ASSG C 0 A_TakeInventory("AstroShotgunLoaded",1,TIF_NOTAKEINFINITE)
 		ASSG C 0 A_FireProjectile("AstroTracerPlayer",-4.5,0)
 		ASSG C 0 A_FireProjectile("AstroTracerPlayer",-3.0,0)
 		ASSG C 0 A_FireProjectile("AstroTracerPlayer",-1.5,0)
-		ASSG C 0 A_FireProjectile("AstroTracerPlayer")
+		ASSG C 0 A_FireProjectile("AstroTracerPlayer",0.0,0)
 		ASSG C 0 A_FireProjectile("AstroTracerPlayer",1.5,0)
 		ASSG C 0 A_FireProjectile("AstroTracerPlayer",3.0,0)
 		ASSG C 3 A_FireProjectile("AstroTracerPlayer",4.5,0)
@@ -50,10 +51,11 @@ ACTOR AstroShotgun : NaziAstroWeapon
 		Goto Dryfire
 		ASSG C 0 A_AlertMonsters
 		ASSG C 0 A_PlaySound("astroshotgun/fire", CHAN_WEAPON)
+		ASSG C 0 A_TakeInventory("AstroShotgunLoaded",1,TIF_NOTAKEINFINITE)
 		ASSG C 0 A_FireProjectile("AstroTracerPlayer",0,0,0,0,0,1.5)
 		ASSG C 0 A_FireProjectile("AstroTracerPlayer",0,0,0,0,0,3.0)
 		ASSG C 0 A_FireProjectile("AstroTracerPlayer",0,0,0,0,0,4.5)
-		ASSG C 0 A_FireProjectile("AstroTracerPlayer")
+		ASSG C 0 A_FireProjectile("AstroTracerPlayer",0,0,0,0,0,0.0)
 		ASSG C 0 A_FireProjectile("AstroTracerPlayer",0,0,0,0,0,-1.5)
 		ASSG C 0 A_FireProjectile("AstroTracerPlayer",0,0,0,0,0,-4.5)
 		ASSG C 3 A_FireProjectile("AstroTracerPlayer",0,0,0,0,0,-3.0)
@@ -178,7 +180,8 @@ ACTOR AstroRocketlauncher : NaziAstroWeapon
 		Goto Dryfire
 		ASRL CD 4
 		ASRL E 0 A_AlertMonsters
-		ASRL E 4 A_FireProjectile("AstroRocket")
+		ASRL E 0 A_TakeInventory("AstroRocketLauncherLoaded",1,TIF_NOTAKEINFINITE)
+		ASRL E 4 A_FireProjectile("AstroRocket", 0, 0)
 		ASRL D 4
 		ASRL C 21
 		ASRL C 0 A_ReFire
@@ -188,7 +191,8 @@ ACTOR AstroRocketlauncher : NaziAstroWeapon
 		Goto Dryfire
 		ASRL CD 4
 		ASRL E 0 A_AlertMonsters
-		ASRL E 4 A_FireProjectile("AstroRocket_Slow")
+		ASRL E 0 A_TakeInventory("AstroRocketLauncherLoaded",1,TIF_NOTAKEINFINITE)
+		ASRL E 4 A_FireProjectile("AstroRocket_Slow", 0, 0)
 		ASRL D 4
 		ASRL C 30
 		ASRL C 0 A_ReFire
@@ -350,7 +354,12 @@ ACTOR AstroChaingun : NaziAstroWeapon
 		Goto Dryfire
 		ASCG D 0 A_AlertMonsters
 		ASCG D 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
-		ASCG DE 4 A_FireProjectile("AstroTracerPlayer",frandom(-1.0,1.0),1,0,0,0,frandom(-1.0,1.0))
+		ASCG D 0 A_TakeInventory("AstroChaingunLoaded",1,TIF_NOTAKEINFINITE)
+		ASCG D 4 A_FireProjectile("AstroTracerPlayer",frandom(-1.0,1.0),0,0,0,0,frandom(-1.0,1.0))
+		ASCG D 0 A_JumpIfInventory("AstroChaingunLoaded",1,1)
+		Goto Ready
+		ASCG E 0 A_TakeInventory("AstroChaingunLoaded",1,TIF_NOTAKEINFINITE)
+		ASCG E 4 A_FireProjectile("AstroTracerPlayer",frandom(-1.0,1.0),0,0,0,0,frandom(-1.0,1.0))
 		ASCG D 0 A_ReFire
 		Goto Ready
 	AltFire:
@@ -358,7 +367,12 @@ ACTOR AstroChaingun : NaziAstroWeapon
 		Goto Dryfire
 		ASCG D 0 A_AlertMonsters
 		ASCG D 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
-		ASCG DE 6 A_FireProjectile("AstroTracerPlayer",frandom(-0.2,0.2),1,0,0,0,frandom(-0.2,0.2))
+		ASCG D 0 A_TakeInventory("AstroChaingunLoaded",1,TIF_NOTAKEINFINITE)
+		ASCG D 6 A_FireProjectile("AstroTracerPlayer",frandom(-0.2,0.2),0,0,0,0,frandom(-0.2,0.2))
+		ASCG D 0 A_JumpIfInventory("AstroChaingunLoaded",1,1)
+		Goto Ready
+		ASCG E 0 A_TakeInventory("AstroChaingunLoaded",1,TIF_NOTAKEINFINITE)
+		ASCG E 6 A_FireProjectile("AstroTracerPlayer",frandom(-0.2,0.2),0,0,0,0,frandom(-0.2,0.2))
 		ASCG D 0 A_ReFire
 		Goto Ready
 	Reload:
@@ -557,7 +571,8 @@ ACTOR AstroLuger : NaziAstroWeapon //quite the same code from Luger P08 - ozy81
 		PLPI A 0 A_JumpIf(waterlevel > 0,2)
 		PLPI A 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON)
 		PLPI A 0 A_AlertMonsters
-		PLPI B 1 A_FireProjectile("AstroTracerPlayer",0,1,0,0,0,frandom(-0.2,0.2))
+		PLPI A 0 A_TakeInventory("AstroPistolLoaded",1,TIF_NOTAKEINFINITE)
+		PLPI B 1 A_FireProjectile("AstroTracerPlayer",0,0,0,0,0,frandom(-0.2,0.2))
 		PLPI B 1
 		PLPI B 1 Offset(0,36) A_SetPitch(pitch-(0.2*CallACS("RecoilAmount")))
 		PLPI B 1 Offset(0,41) A_CheckReload
