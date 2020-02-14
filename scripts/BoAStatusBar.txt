@@ -649,7 +649,7 @@ class BoAStatusBar : BaseStatusBar
 				disguise = CPlayer.mo.FindInventory("DisguiseToken", True);
 
 				// If the player has an active disguise, a stealth weapon selected, and NoTarget enabled, grey out the visibility bar and show the disguise icon
-				if (disguise && NaziWeapon(CPlayer.ReadyWeapon) && NaziWeapon(CPlayer.ReadyWeapon).allowdisguised && CPlayer.cheats & CF_NOTARGET)
+				if (disguise && DisguiseToken(disguise).notargettimeout && CPlayer.cheats & CF_NOTARGET)
 				{
 					DrawBarAlpha("VIS_RED", "", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, suspicion / 100., scale);
 

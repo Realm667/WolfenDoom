@@ -358,37 +358,185 @@ class BoACompass : CustomInventory
 	}
 }
 
-
-class DisguiseToken : Inventory
+// Disguise token to change player sprites and properties
+//  Formerly handled in CheckSpriteToken function in BoAPlayer class
+//  Properties are named similarly to their corresponding PlayerPawn property
+//  If you don't specify a crouch sprite, the standing sprite is used and default squishing applies
+//  DropItem list is used as the list of weapons that are allowed to be carried without breaking the disguise
+//
+// See RyanToken below for simple example.
+class DisguiseToken : CustomInventory
 {
-	// Settings here are all referenced in the BoA player class and status bar code
-
 	int viewheight;
 	double playerscale;
 	double viewbob;
 	double forwardmove1, forwardmove2;
 	double sidemove1, sidemove2;
-	String HUDSprite;
-	bool NoTarget;
+	String HUDsprite;
+	SpriteID basesprite, crouchsprite;
+	bool notarget;
+	int notargettimeout;
 
 	Property ViewHeight:viewheight;
 	Property PlayerScale:playerscale;
 	Property ViewBob:viewbob;
 	Property ForwardMove:forwardmove1, forwardmove2;
 	Property SideMove:sidemove1, sidemove2;
-	Property HUDSprite:HUDSprite;
-	Property NoTarget:NoTarget;
+	Property HUDSprite:HUDsprite;
+	Property NoTarget:notarget;
 
 	Default
 	{
+		+INVENTORY.KEEPDEPLETED
 		Inventory.MaxAmount 1;
-		DisguiseToken.ViewHeight -1; // -1 means 'use BoAPlayer default' for everything below...
-		DisguiseToken.PlayerScale -1;
+		DisguiseToken.PlayerScale 0.65; // Overrides scale of original player class
+		DisguiseToken.ViewHeight -1; // -1 means 'use player class default' for everything below...
 		DisguiseToken.ViewBob -1;
 		DisguiseToken.ForwardMove -1, -1;
 		DisguiseToken.SideMove -1, -1;
 		DisguiseToken.HUDSprite "STF"; // Default to using the default mugshot
 		DisguiseToken.NoTarget True; // If True, disguise hides player from Nazis.  If False, player just uses alternate skin but is fired at normally.
+		DropItem "NullWeapon"; // Misappropriate DropItem to list weapons that can be equipped without breaking disguise
+		DropItem "FakeID", 1; // Drop probability is used as a flag field; set to 1 to allow this weapon to be fired in disguise and to not alert enemies
+	}
+
+	States
+	{
+		Use:
+			TNT1 A -1;
+			Stop;
+		// Define WalkSprite (and CrouchSprite, if used) in token actor's states
+		WalkSprite:
+			PLAY A 0;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		State WalkState = FindState("WalkSprite");
+		State CrouchState = FindState("CrouchSprite");
+
+		basesprite = WalkState.sprite;
+
+		if (CrouchState) { crouchsprite = CrouchState.sprite; }
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		let p = PlayerPawn(owner);
+
+		if (!p || !p.player) { return; }
+
+		if (Amount > 0) // Apply token-specific settings and sprites to the player
+		{
+			if (playerscale > 0) { p.scale = (1.0, 1.0) * playerscale; }
+
+			if (crouchsprite && p.player.crouchfactor < 0.75)
+			{
+				p.sprite = crouchsprite;
+				p.scale.y *= 1.0 / p.player.crouchfactor; // Negate crouch sprite scaling
+			}
+			else
+			{
+				p.sprite = basesprite;
+			}
+
+			if (viewheight > -1)
+			{
+				p.viewheight = viewheight;
+				p.attackzoffset = p.Default.attackzoffset * viewheight / p.Default.viewheight;
+			}
+
+			if (p.scale.x != playerscale) { p.A_SetSize(p.Default.radius * p.scale.x / p.Default.scale.x, p.Default.height * p.scale.y / p.Default.scale.y); }
+
+			if (viewbob > -1) { p.viewbob = viewbob; }
+			if (forwardmove1 > -1 && forwardmove2 > -1) { p.forwardmove1 = forwardmove1; p.forwardmove2 = forwardmove2; }
+			if (sidemove1 > -1 && sidemove2 > -1) { p.sidemove1 = sidemove1; p.sidemove2 = sidemove2; }
+
+			if (notarget) { SetNoTarget(); }
+		}
+		else // Restore player defaults
+		{
+			p.sprite = p.SpawnState.sprite;
+			p.viewheight = p.Default.viewheight;
+			p.attackzoffset = p.Default.attackzoffset;
+			if (p.scale != p.Default.scale)
+			{
+				p.scale = p.Default.scale;
+				p.A_SetSize(p.Default.radius, p.Default.height);
+			}
+			p.viewbob = p.Default.viewbob;
+			p.forwardmove1 = p.Default.forwardmove1;
+			p.forwardmove2 = p.Default.forwardmove2;
+			p.sidemove1 = p.Default.sidemove1;
+			p.sidemove2 = p.Default.sidemove2;
+
+			Destroy();
+		}
+	}
+
+	void SetNoTarget()
+	{
+		bool hide = true;
+		let weap = owner.player.ReadyWeapon;
+
+		if (weap && !owner.FindInventory("DisguiseFailToken", true))
+		{
+			DropItem allowedweapons = GetDropItems();
+
+			if (allowedweapons)
+			{
+				for (DropItem weaponitem = allowedweapons; weaponitem != null; weaponitem = weaponitem.Next)
+				{
+					Class<Weapon> testweapon = weaponitem.Name;
+
+					if (testweapon && testweapon == weap.GetClass())
+					{
+						let psp = owner.player.GetPSprite(PSP_WEAPON);
+
+						if ( // If in ready state, up state, or down state, turn notarget on unless enemies are already alerted
+							weaponitem.Probability != 255 ||
+							psp.CurState == weap.GetReadyState() ||
+							psp.CurState == weap.GetUpState() ||
+							psp.CurState == weap.GetDownState()
+						) 
+						{
+							Inventory vis = owner.FindInventory("BoAVisibility");	
+
+							if (!vis || !BoAVisibility(vis).alertedcount) // If no enemies are already alerted, turn on notarget
+							{
+								notargettimeout = level.time + 2;
+							}
+						}
+						else
+						{
+							notargettimeout = level.time;
+						}
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (notargettimeout)
+		{
+			if (notargettimeout <= level.time) // Turn off notarget and reset speed
+			{
+				owner.player.cheats &= ~CF_NOTARGET;
+				owner.speed = owner.Default.speed;
+
+				notargettimeout = 0;
+			}
+			else // Turn on notarget and slow down your movement
+			{
+				owner.player.cheats |= CF_NOTARGET;
+				owner.speed = owner.Default.speed * 0.85;
+			}
+		}
 	}
 }
 
@@ -401,6 +549,14 @@ class RyanToken : DisguiseToken
 		DisguiseToken.SideMove 0.9, 0.45;
 		DisguiseToken.HUDSprite "RTF"; // Ryan Mugshot
 		DisguiseToken.NoTarget False; // Don't hide player from enemies
+	}
+
+	States
+	{
+		WalkSprite:
+			PLRR A 0;
+		CrouchSprite:
+			PLYR A 0;
 	}
 }
 

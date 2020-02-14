@@ -13,16 +13,6 @@
 	DoTokenChecks()
 	- Parent function where various inventory checks should be performed
 
-	CheckSpriteToken(token name, standing sprite, [crouching sprite])
-	- Handles sprite changing for Disguise Tokens:
-
-		CheckSpriteToken("ScientistUniformToken", "PLSC", "PLYS")
-
-	  This checks the player's inventory for the "ScientistUniformToken" token, and, if found, sets the
-	  base sprite to PLSC if the player is standing and PLYS if the player is crouching.  Also cancels
-	  out the sprite squishing if you specify a crouch sprite
-	- If you don't specify a crouching sprite, the standing sprite is used and default squishing applies
-
 	SpawnEffect(class<PlayerEffect>)
 	RemoveEffect(class<PlayerEffect>)
 	- Used to spawn/remove an effect actor that follows the player around (e.g., glow for FireBrand)
@@ -50,8 +40,6 @@
 
 class BoAPlayer : PlayerPawn
 {
-	double user_crouch;
-	double user_ScaleY;
 	double leveltilt, oldtilt, leveltiltangle;
 	Actor CrosshairTarget;
 	Actor ForcedHealthBar;
@@ -209,18 +197,6 @@ class BoAPlayer : PlayerPawn
 		Loop;
 	Death.Electric.End:
 		"####" H -1;
-		Stop;
-	SpriteList:
-		// Any sprite not used above that is switched to by a token check must be listed here or the game will not find it!
-		PLSC A 0;
-		PLYS A 0;
-		PLCP A 0; //camp
-		PLYP A 0;
-		PLSD A 0; //SS
-		PLSS A 0;
-		PLRR A 0; //Ryan
-		PLYR A 0;
-		KEEN A 0;
 		Stop;
 	SpriteLookups:
 		BURN A 0;
@@ -604,75 +580,9 @@ class BoAPlayer : PlayerPawn
 		return mo;
 	}
 
-	// Helper function for sprite index lookups to avoid hard engine crash
-	SpriteID LookupSprite(Name spritecheck)
-	{
-		SpriteID temp = GetSpriteIndex(spritecheck);
-		if (temp > -1) { return temp; }
-
-		console.printf("\cgERROR: \cjThe sprite name index for '\cf%s\cj' could not be found.  Did you forget to add it to one of the actor's states?", spritecheck);
-		return sprite;
-	}
-
-	// Function to do the actual token checking and sprite setting
-	bool CheckSpriteToken(String token, Name standsprite, Name crouchsprite = "")
-	{
-		user_crouch = GetCrouchFactor(AAPTR_DEFAULT);
-
-		DisguiseToken token = DisguiseToken(FindInventory(Name(token)));
-
-		if (token && token.Amount > 0)
-		{
-			if (!(crouchsprite == "") && user_crouch < 0.75)
-			{
-				sprite = LookupSprite(crouchsprite);
-				Scale.Y = user_ScaleY / user_crouch; // Negate crouch sprite scaling
-			}
-			else
-			{
-				sprite = LookupSprite(standsprite);
-				Scale.Y = user_ScaleY;
-			}
-
-			if (token.viewheight > -1)
-			{
-				viewheight = token.viewheight;
-				attackzoffset = Default.attackzoffset * token.viewheight / Default.viewheight;
-			}
-			if (token.playerscale > 0 && scale != Default.scale * token.playerscale)
-			{
-				scale = Default.scale * token.playerscale;
-				A_SetSize(Default.radius * scale.x / Default.scale.x, Default.height * scale.y / Default.scale.y);
-			}
-			if (token.viewbob > -1) { viewbob = token.viewbob; }
-			if (token.forwardmove1 > -1 && token.forwardmove2 > -1) { forwardmove1 = token.forwardmove1; forwardmove2 = token.forwardmove2; }
-			if (token.sidemove1 > -1 && token.sidemove2 > -1) { sidemove1 = token.sidemove1; sidemove2 = token.sidemove2; }
-
-			return true;
-		}
-
-		viewheight = Default.viewheight;
-		attackzoffset = Default.attackzoffset;
-		if (scale != Default.scale)
-		{
-			scale = Default.scale;
-			A_SetSize(Default.radius, Default.height);
-		}
-		viewbob = Default.viewbob;
-		forwardmove1 = Default.forwardmove1;
-		forwardmove2 = Default.forwardmove2;
-		sidemove1 = Default.sidemove1;
-		sidemove2 = Default.sidemove2;
-
-		return false;
-	}
-
 	void DoTokenChecks()
 	{
 		if (health <= 0) { return; } // Don't change sprites if the player is dead
-
-		if (user_ScaleY == 0) { user_ScaleY = Scale.Y; }
-		if (!baseSprite) { baseSprite = sprite; }
 
 		// Firebrand effect handling
 		if (player && player.ReadyWeapon is "FireBrand" && CountInv("PowerWeaponLevel2") > 0) { SpawnEffect("FireBrandEffect"); }
@@ -683,21 +593,6 @@ class BoAPlayer : PlayerPawn
 
 		if (player && lantern && lantern.active) { SpawnEffect("LanternEffect"); }
 		else { RemoveEffect("LanternEffect"); }
-
-		// New uniform or other sprite-changing tokens should be set up here.  See CheckSpriteToken function above.
-		//  These should be listed in order of precedence - The ones at the top will take priority.
-		//  All new sprites need to be added to the 'SpriteList' state above or the engine won't be able to use them.
-		if (
-			CheckSpriteToken("CCBJUniformToken", "PLCP", "PLYP") ||
-			CheckSpriteToken("ScientistUniformToken", "PLSC", "PLYS") ||
-			CheckSpriteToken("SSBJUniformToken", "PLSS", "PLSD") ||
-			CheckSpriteToken("RyanToken", "PLRR", "PLYR") ||
-			CheckSpriteToken("KeenToken", "KEEN", "KEEN")
-		) { return; }
-
-		// If no tokens found, restore the base sprite and original scale
-		sprite = baseSprite;
-		Scale.Y = user_ScaleY;
 	}
 
 	// Function to spawn no more than a single copy of an effect actor as a child of the player

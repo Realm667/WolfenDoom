@@ -2,21 +2,11 @@
 
   Base class for BoA Weapons
 
-  Custom Properties
-	NaziWeapon.Stealth
-	- Boolean property that allows the weapon to be carried while in disguise 
-	  without breaking the disguise.  See Shovel and NullWeapon for example.
-	- Firing the weapon can still alert enemies and cause the disguise to fail.
-
 */
 class NaziWeapon : Weapon
 {
-	int allowdisguised; // Set to 1 or True for normal behavior (can carry, but alerts if you fire).  Set to 2 to never alert 
-	int notargettimeout;
 	int lowertimeout;
 	float lowerstart, lowerspeed;
-
-	Property Stealth:allowdisguised; // Weapons tagged as stealth can be carried while in disguise without breaking the disguise unless they are fired
 
 	Default
 	{
@@ -26,7 +16,6 @@ class NaziWeapon : Weapon
 		Weapon.BobSpeed 2.2;
 		Weapon.BobRangeY 1.0;
 		Weapon.BobRangeX 1.25;
-		NaziWeapon.Stealth False;
 	}
 
 	States
@@ -93,58 +82,6 @@ class NaziWeapon : Weapon
 				}
 			}
 
-			if (allowdisguised)
-			{
-				let disguise = DisguiseToken(owner.FindInventory("DisguiseToken", true));
-
-				if (owner.player.ReadyWeapon == self && disguise && disguise.NoTarget && !owner.FindInventory("DisguiseFailToken", true))
-				{
-					let psp = owner.player.GetPSprite(PSP_WEAPON);
-
-					if ( // If in ready state, up state, or down state, turn notarget on unless enemies are already alerted
-						allowdisguised > 1 ||
-						psp.CurState == GetReadyState() ||
-						psp.CurState == GetUpState() ||
-						psp.CurState == GetDownState()
-					) 
-					{
-						Inventory vis = owner.FindInventory("BoAVisibility");
-
-						if (!vis || !BoAVisibility(vis).alertedcount) // If no enemies are already alerted, turn on notarget
-						{
-							notargettimeout = level.time + 2;
-						}
-					}
-					else
-					{
-						notargettimeout = level.time;
-					}
-				}
-
-				if (notargettimeout)
-				{
-					if (notargettimeout <= level.time) // Turn off notarget and reset speed
-					{
-						if (
-							owner.player.ReadyWeapon == self ||
-							(
-								!NaziWeapon(owner.player.ReadyWeapon) ||
-								!NaziWeapon(owner.player.ReadyWeapon).allowdisguised)
-							)
-						{
-							owner.player.cheats &= ~CF_NOTARGET;
-							owner.speed = owner.Default.speed;
-						}
-						notargettimeout = 0;
-					}
-					else // Turn on notarget and slow down your movement
-					{
-						owner.player.cheats |= CF_NOTARGET;
-						owner.speed = owner.Default.speed * 0.85;
-					}
-				}
-			}
-
 			// If you're using the knife and there's a chance of a stealth kill, hide 
 			// the crosshair so that the status bar code can draw the overlay knife icon.
 			if (owner.player.ReadyWeapon == self && self is "KnifeSilent")
@@ -191,7 +128,6 @@ class NullWeapon : NaziWeapon
 		+WEAPON.NOALERT
 		Weapon.SelectionOrder 99999; // Make this absolutely last in weapon priority
 		Tag "$TAGCLOAK";
-		NaziWeapon.Stealth True;
 	}
 
 	States
@@ -689,7 +625,6 @@ class TurretWeapon : NullWeapon
 		Tag "$TAGTURET";
 		Weapon.AmmoType1 "TurretBulletAmmo";
 		Weapon.AmmoType2 "TurretHeatAmmo";
-		NaziWeapon.Stealth False;
 	}
 
 	override void DoEffect()

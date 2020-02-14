@@ -5,19 +5,69 @@ ACTOR IncomingMessage : Inventory { Inventory.MaxAmount 1}
 ACTOR ScientistUniformToken : DisguiseToken
 {
 	Inventory.Icon "SCUNC0"
+	Inventory.PickupMessage "$UNIFORM1"
+	Inventory.PickupSound "pickup/uniform"
+	Scale 0.7
 	Tag "$TAGCOATL"
+	States
+	{
+		Spawn:
+			SCUN D -1
+			Stop
+		Pickup:
+			TNT1 A 0 A_SelectWeapon("NullWeapon")
+			Stop
+		WalkSprite:
+			PLSC A 0
+		CrouchSprite:
+			PLYS A 0
+	}
 }
 
 ACTOR CCBJUniformToken : DisguiseToken //used in concentration Camp
 {
 	Inventory.Icon "CCUFC0"
+	Inventory.PickupMessage "$UNIFORM3"
+	Scale 0.7
 	Tag "$TAGCOATC"
+	DropItem "NullWeapon" // List here adds the Shovel, so breaks inheritance of parent item list, so
+	DropItem "FakeID", 1  // they all must be included here if we want them to work in this disguise.
+	DropItem "Shovel"
+	States
+	{
+		Spawn:
+			CCUF D -1
+			Stop
+		Pickup:
+			TNT1 A 0 A_SelectWeapon("NullWeapon")
+			Stop
+		WalkSprite:
+			PLCP A 0
+		CrouchSprite:
+			PLYP A 0
+	}
 }
 
 ACTOR SSBJUniformToken : DisguiseToken
 {
 	Inventory.Icon "SSUFC0"
+	Inventory.PickupMessage "$UNIFORM2"
+	Inventory.PickupSound "pickup/uniform"
+	Scale 0.7
 	Tag "$TAGCOATS"
+	States
+	{
+		Spawn:
+			SSUF B -1
+			Stop
+		Pickup:
+			TNT1 A 0 A_SelectWeapon("NullWeapon")
+			Stop
+		WalkSprite:
+			PLSS A 0
+		CrouchSprite:
+			PLSD A 0
+	}
 }
 
 ACTOR SpyToken: Inventory { Inventory.MaxAmount 1 }
