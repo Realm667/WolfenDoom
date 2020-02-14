@@ -116,7 +116,7 @@ class CKBaseEnemy : Actor
 	// the SPECIAL flag, which changes other things with collision and interaction
 	override bool CanCollideWith(Actor other, bool passive)
 	{
-		if (bShootable && other.player)
+		if (!stuncounter && health > 0 && other.player)
 		{
 			Touch(other);
 			return true;
