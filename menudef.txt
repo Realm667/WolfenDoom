@@ -124,7 +124,6 @@ OptionMenu "BOAOptionsMenu"
 	Title "$ENHOPT"
 	StaticText "$WARNING1"
 	StaticText ""
-	Submenu "$OPT_CONTR", "BoACTRLOptions"
 	Submenu "$OPT_GAME", "GameOptions"
 	Submenu "$OPT_BLOOD", "BloodOptions"
 	Submenu "$OPT_WEAT", "WeatherOptions"
@@ -149,6 +148,11 @@ OptionMenu "BOAOptionsMenu"
 	SafeCommand "$OPT_DEFA", "boa_default",	"$OPT_DEFAM"
 	SafeCommand "$OPT_HI", 	"boa_high",	"$OPT_HIM"
 	SafeCommand "$OPT_VHI", "boa_veryhigh",	"$OPT_VHIM"
+}
+
+AddOptionMenu "CustomizeControls"
+{
+	Submenu "$OPT_CONTR", "BoACTRLOptions"
 }
 
 OptionValue "BloodAmount"
