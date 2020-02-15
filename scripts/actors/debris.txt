@@ -281,14 +281,6 @@ class DebrisChunk : DebrisBase
 		DebrisBase.ShouldScale false;
 		DistanceCheck "scenelod";
 	}
-
-	override void PostBeginPlay()
-	{
-		Super.PostBeginPlay();
-
-		bNoGravity = true;
-		SetOrigin((pos.xy, floorz + 8 * cos(pitch) - 8 * cos(roll)), false);
-	}
 }
 
 class DebrisPipe : DebrisBase

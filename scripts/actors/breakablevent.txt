@@ -141,3 +141,297 @@ class ManholeCover3D : Debris_Vent_FloorCeiling
 		return false;
 	}
 }
+
+class StatueBreakable : Actor
+{
+	double tiltangle;
+	double tiltpitch;
+	double floorheight;
+	Actor item;
+	Class<Actor> itemclass;
+	Vector3 spawnoffset;
+	Vector3 oldpos;
+	double oldpitch;
+	double oldroll;
+	Sound slidesound;
+
+	Property SlideSound:slidesound;
+
+	Default
+	{
+		//$Category Props (BoA)/Interactive Items
+		//$Title Breakable Statue (with configurable drop item)
+		//$Arg0 "Thing ID to spawn"
+		//$Arg0Str "Actor class to spawn"
+		//$Arg0ToolTip "What actor to spawn.  Numeric values set Thing ID, and string values set spawn class.  \nDefaults to nothing spawned."
+		//$Color 3
+
+		Radius 24;
+		Height 160;
+		Health 50;
+		Mass 2000;
+		Pushfactor 0.05;
+		Scale 0.5;
+		+NOBLOOD
+		+NOTAUTOAIMED
+		+PUSHABLE
+		+SHOOTABLE
+		+SOLID
+		+NODAMAGE
+
+		StatueBreakable.SlideSound "stone/slide";
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+		Fall:
+			MDLA A 1 A_DoTilt(tiltangle);
+			Loop;
+		Death:
+			MDLA A -1
+			{
+				if (item)
+				{
+					item.bNoGravity = item.Default.bSpecial;
+					item.bSpecial = item.Default.bSpecial;
+					item.bSolid = item.Default.bSolid;
+					item.bShootable = item.Default.bShootable;
+
+					item.angle = tiltangle + Random(70, 110) * RandomPick(-1, 1);
+					item.pitch = 75;
+					item.roll = 0;
+					item.bFlatSprite = item.Default.bFlatSprite;
+					item.bWallSprite = item.Default.bWallSprite;
+
+					item.scale = item.Default.scale;
+
+					item.SetOrigin((item.pos.xy + RotateVector((Default.Radius + Random(0, 16), 0), item.angle), item.floorz), true);
+
+					item = null;
+				}
+
+				A_DoTilt(tiltangle, 90);
+				bSolid = false;
+
+				Vector3 centerpoint = pos + (RotateVector((Default.height / 2, 0), tiltangle), 0);
+
+				for (int d = 0; d < 25; d++)
+				{
+					Actor mo = Spawn("DebrisChunk", centerpoint);
+					if (mo)
+					{
+						DebrisChunk(mo).user_variant = RandomPick(12, 13, 14);
+						mo.angle = Random(0, 359);
+						mo.VelFromAngle(Random(2, 6), mo.angle);
+					}
+				}
+
+				A_PlaySound("misc/SRCRK2", CHAN_AUTO, frandom (0.3,0.5), FALSE, ATTN_NORM);
+
+				Actor smoke = Spawn("KD_HL2SmokeGenerator", centerpoint);
+				if (smoke)
+				{
+					smoke.scale = scale;
+				}
+			}
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		tiltangle = angle;
+
+		itemclass = GetSpawnableType(args[0]);
+		if (!itemclass) { itemclass = "Gem"; }
+
+		if (itemclass)
+		{
+			item = Spawn(itemclass, pos + (RotateVector((13, -3), angle), 122));
+			if (item)
+			{
+				item.master = self;
+
+				item.bNoGravity = true;
+				item.bSpecial = false;
+				item.bSolid = false;
+				item.bShootable = false;
+
+				item.angle = angle - 11;
+
+				item.pitch = -40;
+				if (item.sprite != item.GetSpriteIndex("MDLA"))
+				{
+					item.pitch -= 90;
+
+					double r = GetSpriteRadius(item);
+
+					if (r > 5.0)
+					{
+						item.scale *= (5.0 / r);
+					}
+				}
+
+				item.roll = -3;
+				item.bWallSprite = false;
+				item.bFlatSprite = true;
+
+				spawnoffset = item.pos - pos;
+
+				Vector2 temp = RotateVector((spawnoffset.x, spawnoffset.y), -angle);
+				spawnoffset = (temp.x, temp.y, spawnoffset.z);
+
+				oldpos = pos;
+				oldpitch = pitch;
+				oldroll = roll;
+			}
+		}
+
+		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		floorheight = pos.z - cursector.floorplane.ZatPoint(pos.xy);
+
+		if (BlockingLine && vel.xy.length() && floorheight > 0)
+		{
+			double linelength = int(BlockingLine.delta.Length());
+
+			if (!BlockingLine.delta.x)
+			{
+				if (BlockingLine.v1.p.x > pos.x) { tiltangle = 180; }
+				else { tiltangle = 0; }
+			}
+			else if (!BlockingLine.delta.y)
+			{
+				if (BlockingLine.v1.p.y > pos.y) { tiltangle = 270; }
+				else { tiltangle = 90; }
+			}
+			else
+			{
+				tiltangle = atan2(BlockingLine.delta.y, BlockingLine.delta.x) + 90;
+				if (BlockingLine.frontsector == cursector) { tiltangle += 180; }
+
+				tiltangle = tiltangle % 360;
+			}
+		}
+
+		if (vel.z < -10.0 && pos.z < floorz + 16) { SetStateLabel("Death"); }
+		if (pos.z == floorz && floorheight > 0) { SetStateLabel("Fall"); }
+
+
+		if (
+			item && 
+			(
+				pitch != oldpitch || 
+				roll != oldroll || 
+				pos != oldpos
+			) && 
+			!CheckSightOrRange(128)
+		)
+		{
+			RotateItem();
+		}
+
+		double volume = 0.0;
+		if (pos.z == floorz) { volume = vel.xy.length() / 25; }
+
+		if (volume)
+		{
+			A_StartSound(slidesound, CHAN_5, CHANF_NOSTOP | CHANF_LOOP, volume);
+			A_SoundVolume(CHAN_5, volume);
+		}
+		else
+		{
+			A_StopSound(CHAN_5);
+		}
+	}
+
+	void A_DoTilt(double tiltangle, double pitchinput = 0)
+	{
+		double angle = deltaangle(tiltangle, angle);
+
+		if (tiltpitch < 90 || pitchinput)
+		{
+			if (pitchinput) { tiltpitch = pitchinput; }
+			else { tiltpitch += max(1, tiltpitch / 30); }
+
+			pitch = tiltpitch * cos(angle);
+			roll = tiltpitch * sin(angle);
+		}
+
+		if (floorheight <= Default.radius / 2)
+		{
+			bSolid = false;
+			bPushable = false;
+		}
+
+		VelFromAngle(0.25 * (90 - tiltpitch) / (Default.radius / 1.4), tiltangle);
+	}
+
+	void RotateItem()
+	{
+		Vector2 temp;
+		Vector3 offset;
+
+		// Keep the blocks in the correct position, regardless of pitch/roll of the master actor
+		// Obviously not perfect, because the blocks are rectangular, but close enough when you can't see them.
+		if (item && spawnoffset != (0, 0, 0)) {
+			temp = RotateVector((spawnoffset.y, spawnoffset.z), roll);
+			offset = (spawnoffset.x, temp.x, temp.y);
+
+			temp = RotateVector((offset.x, offset.z), 360 - pitch);
+			offset = (temp.x, offset.y, temp.y);
+
+			temp = RotateVector((offset.x, offset.y), angle);
+			offset = (temp.x, temp.y, offset.z);
+
+			item.SetOrigin(pos + offset, true);
+		}
+
+		oldpos = pos;
+		oldpitch = pitch;
+		oldroll = roll;
+	}
+
+	double GetSpriteRadius(Actor item)
+	{
+		TextureID tex = item.SpawnState.GetSpriteTexture(0);
+
+		if (tex) {
+			Vector2 size = TexMan.GetScaledSize(tex);
+			Vector2 offset = TexMan.GetScaledOffset(tex);
+
+			return max(size.x - offset.x, offset.x) * item.scale.x; // Get the width of the widest part of the sprite (left or right of the offset center)
+		}
+
+		return 0;
+	}
+}
+
+class Gem : Inventory
+{
+	Default
+	{
+		//$Category Props (BoA)/Interactive Items
+
+		+INVENTORY.INVBAR
+		Alpha 0.95;
+		RenderStyle "Add";
+		Scale 0.5;
+		Inventory.Icon "GEMAA0";
+		Inventory.PickupSound "misc/k_pkup";
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1 Light("MineralLite");
+			Stop;
+	}
+}

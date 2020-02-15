@@ -686,12 +686,36 @@ class ExplosionCore : Actor
 
 class StaticActor : Actor
 {
+	bool nostatic;
+
+	Property NoStatic:nostatic;
+
+	Default
+	{
+		StaticActor.NoStatic false;
+	}
+
 	override void Tick()
 	{
 		Super.Tick();
 
 		// If the actor stops animating (tics of -1) and isn't shootable or alive and moving, then stop ticking the actor.
-		if (tics == -1 && (!bShootable || health <= 0) && (vel == (0, 0, 0))) { ChangeStatNum(STAT_STATIC); }
+		if (
+			!nostatic &&
+			tics == -1 && 
+			(
+				!bShootable ||
+				health <= 0
+			) && 
+			vel == (0, 0, 0) &&
+			(
+				bNoGravity ||
+				pos.z == floorz
+			)
+		)
+		{
+			ChangeStatNum(STAT_STATIC);
+		}
 	}
 }
 

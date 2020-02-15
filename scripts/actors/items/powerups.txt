@@ -644,3 +644,36 @@ class BandagesPowerup : PowerUp
 		}
 	}
 }
+
+class ZyklonResistance: PowerupGiver
+{
+	Default
+	{
+		+INVENTORY.INVBAR
+		Radius 8;
+		Height 16;
+		Scale 0.3;
+		Inventory.Icon "BEAKD0";
+		Inventory.MaxAmount 1;
+		Inventory.PickupSound "misc/k_pkup";
+		Inventory.PickupMessage "You picked up a glowing green vial!";
+		Powerup.Duration 0x7FFFFFFF;
+		Powerup.Type "PowerZyklonResistance";
+	}
+
+	States
+	{
+		Spawn:
+			BEAK D -1 BRIGHT;
+			Stop;
+	}
+}
+
+class PowerZyklonResistance : PowerProtection
+{
+	Default
+	{
+		DamageFactor "UndeadPoison", 0.25;
+		DamageFactor "UndeadPoisonAmbience", 0.25;
+	}
+}
