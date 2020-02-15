@@ -36,7 +36,7 @@ class BoAStatusBar : BaseStatusBar
 	{
 		Super.Init();
 		gl_proj = new("Le_GlScreen");
-		SetSize(32, 320, 200);
+		SetSize(0, 320, 200);
 		CompleteBorder = True;
 
 		// Create the fonts used
@@ -197,6 +197,7 @@ class BoAStatusBar : BaseStatusBar
 
 			if (state == HUD_StatusBar)
 			{
+				SetSize(32, 320, 200);
 				BeginStatusBar(False);
 				DrawMainBar(TicFrac);
 			}
@@ -208,8 +209,7 @@ class BoAStatusBar : BaseStatusBar
 		}
 		else
 		{
-			BeginStatusBar();
-			DrawImage("AMBAR", (-54, 152), DI_ITEM_OFFSETS);
+			SetSize(0, 320, 200);
 		}
 	}
 
@@ -1203,5 +1203,148 @@ class BoAStatusBar : BaseStatusBar
 			String status = CKPogoStick(CPlayer.mo.InvSel).active ? "ON" : "OFF";
 			DrawString(KeenSmallFont, status, (x, y + size / 3 + mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_CENTER, Font.CR_WHITE);
 		}
+	}
+
+	// Original code from shared_sbar.cpp
+	override void DrawAutomapHUD(double ticFrac)
+	{
+		int crdefault = Font.CR_GRAY;
+		int highlight = Font.CR_GRAY;
+
+		let scale = GetUIScale(hud_scale);
+		let font = generic_ui ? NewSmallFont : SmallFont;
+		let font2 = font;
+		let vwidth = screen.GetWidth() / scale;
+		let vheight = screen.GetHeight() / scale;
+		let fheight = font.GetHeight();
+		String textbuffer;
+		int sec;
+		int y = 0;
+		int textdist = 4;
+		int zerowidth = font.GetCharWidth("0");
+
+		if (!generic_ui)
+		{
+			// If the original font does not have accents this will strip them - but a fallback to the VGA font is not desirable here for such cases.
+			if (!font.CanPrint(StringTable.Localize("AM_MONSTERS", false)) || !font.CanPrint(StringTable.Localize("AM_SECRETS", false)) || !font.CanPrint(StringTable.Localize("AM_ITEMS", false))) font2 = OriginalSmallFont;
+		}
+
+		if (am_showtime)
+		{
+			if (vid_fps) { y += (NewConsoleFont.GetHeight() * GetConScale() + 5) / scale; }
+			sec = Thinker.Tics2Seconds(level.time);
+			textbuffer = textbuffer.Format("%02d:%02d:%02d", sec / 3600, (sec % 3600) / 60, sec % 60);
+			screen.DrawText(font, crdefault, vwidth - zerowidth * 8 - textdist, y, textbuffer, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight, DTA_Monospace, 2, DTA_Spacing, zerowidth, DTA_KeepRatio, true);
+			y += fheight;
+		}
+
+		if (am_showtotaltime)
+		{
+			sec = Thinker.Tics2Seconds(level.totaltime);
+			textbuffer = textbuffer.Format("%02d:%02d:%02d", sec / 3600, (sec % 3600) / 60, sec % 60);
+			screen.DrawText(font, crdefault, vwidth - zerowidth * 8 - textdist, y, textbuffer, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight, DTA_Monospace, 2, DTA_Spacing, zerowidth, DTA_KeepRatio, true);
+		}
+
+		if (!deathmatch)
+		{
+			y = 0;
+			if (am_showmonsters)
+			{
+				textbuffer = textbuffer.Format("%s\34%c %d/%d", StringTable.Localize("AM_MONSTERS", false), Font.CR_RED + 65, level.killed_monsters, level.total_monsters);
+				screen.DrawText(font2, highlight, textdist, y, textbuffer, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
+				y += fheight;
+			}
+
+			if (am_showsecrets)
+			{
+				textbuffer = textbuffer.Format("%s\34%c %d/%d", StringTable.Localize("AM_SECRETS", false), Font.CR_GOLD + 65, level.found_secrets, level.total_secrets);
+				screen.DrawText(font2, highlight, textdist, y, textbuffer, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
+				y += fheight;
+			}
+
+			// Draw item count
+			if (am_showitems)
+			{
+				textbuffer = textbuffer.Format("%s\34%c %d/%d", StringTable.Localize("AM_ITEMS", false), Font.CR_YELLOW + 65, level.found_items, level.total_items);
+				screen.DrawText(font2, highlight, textdist, y, textbuffer, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
+				y += fheight;
+			}
+		}
+
+		//textbuffer = level.FormatMapName(crdefault);
+		// Don't prepend the map name...  Just use the level's title.
+		textbuffer = level.LevelName;
+
+		if (!generic_ui)
+		{
+			if (!font.CanPrint(textbuffer)) font = OriginalSmallFont;
+		}
+
+		let lines = font.BreakLines(textbuffer, vwidth - 32);
+		let numlines = lines.Count();
+		let finalwidth = lines.StringWidth(numlines - 1);
+
+		// calculate the top of the statusbar including any protrusion and transform it from status bar to screen space.
+		double x = 0, yy = 0, w = HorizontalResolution, h = 0;
+		StatusbarToRealCoords(x, yy, w, h);
+
+		h = GetProtrusion(double(finalwidth * scale / w));
+
+		[x, yy, w, h] = StatusbarToRealCoords(x, yy, w, h);
+
+		// Get the y coordinate for the first line of the map name text.
+		y = int((GetTopOfStatusbar() - int(h)) * screen.GetHeight() / vheight) - fheight * numlines;
+
+		// Draw the texts centered above the status bar.
+		for (int i = 0; i < numlines; i++)
+		{
+			int x = (vwidth - font.StringWidth(lines.StringAt(i))) / 2;
+			screen.DrawText(font, highlight, x, y, lines.StringAt(i), DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
+			y += fheight;
+		}
+	}
+
+	// From v_draw.cpp
+	int GetUIScale(int altval = 0)
+	{
+		int scaleval;
+
+		if (altval > 0) { scaleval = altval; }
+		else if (uiscale == 0)
+		{
+			// Default should try to scale to 640x400
+			int vscale = screen.GetHeight() / 400;
+			int hscale = screen.GetWidth() / 640;
+			scaleval = clamp(vscale, 1, hscale);
+		}
+		else scaleval = uiscale;
+
+		// block scales that result in something larger than the current screen.
+		int vmax = screen.GetHeight() / 200;
+		int hmax = screen.GetWidth() / 320;
+		int max = MAX(vmax, hmax);
+		return MAX(1,MIN(scaleval, max));
+	}
+
+	// From v_draw.cpp
+	int GetConScale(int altval = 0)
+	{
+		int scaleval;
+
+		if (altval > 0) { scaleval = (altval+1) / 2; }
+		else if (uiscale == 0)
+		{
+			// Default should try to scale to 640x400
+			int vscale = screen.GetHeight() / 800;
+			int hscale = screen.GetWidth() / 1280;
+			scaleval = clamp(vscale, 1, hscale);
+		}
+		else scaleval = (uiscale + 1) / 2;
+
+		// block scales that result in something larger than the current screen.
+		int vmax = screen.GetHeight() / 400;
+		int hmax = screen.GetWidth() / 640;
+		int max = MAX(vmax, hmax);
+		return MAX(1, MIN(scaleval, max));
 	}
 }
