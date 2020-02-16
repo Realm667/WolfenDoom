@@ -84,7 +84,7 @@ class BoAStatusBar : BaseStatusBar
 		Inventory vis = CPlayer.mo.FindInventory("BoAVisibility");
 		if (vis)
 		{
-			mVisibilityInterpolator.Update(BoAVisibility(vis).visibility);
+			mVisibilityInterpolator.Update(int(BoAVisibility(vis).visibility));
 
 			alertedcount = BoAVisibility(vis).alertedcount;
 
@@ -94,7 +94,7 @@ class BoAStatusBar : BaseStatusBar
 			}
 			else  // Otherwise use actual suspicion level
 			{
-				mSuspicionInterpolator.Update(BoAVisibility(vis).suspicion);
+				mSuspicionInterpolator.Update(int(BoAVisibility(vis).suspicion));
 			}
 		}
 	}
@@ -1209,7 +1209,7 @@ class BoAStatusBar : BaseStatusBar
 	override void DrawAutomapHUD(double ticFrac)
 	{
 		int crdefault = Font.CR_GRAY;
-		int highlight = Font.CR_GRAY;
+		int highlight = Font.CR_WHITE;
 
 		let scale = GetUIScale(hud_scale);
 		let font = generic_ui ? NewSmallFont : SmallFont;
@@ -1223,52 +1223,12 @@ class BoAStatusBar : BaseStatusBar
 		int textdist = 4;
 		int zerowidth = font.GetCharWidth("0");
 
-		if (!generic_ui)
+		// Vignette the edges...
+		let tex = TexMan.CheckForTexture ("CONVBACK", TexMan.Type_MiscPatch);
+		if (tex.isValid())
 		{
-			// If the original font does not have accents this will strip them - but a fallback to the VGA font is not desirable here for such cases.
-			if (!font.CanPrint(StringTable.Localize("AM_MONSTERS", false)) || !font.CanPrint(StringTable.Localize("AM_SECRETS", false)) || !font.CanPrint(StringTable.Localize("AM_ITEMS", false))) font2 = OriginalSmallFont;
-		}
-
-		if (am_showtime)
-		{
-			if (vid_fps) { y += (NewConsoleFont.GetHeight() * GetConScale() + 5) / scale; }
-			sec = Thinker.Tics2Seconds(level.time);
-			textbuffer = textbuffer.Format("%02d:%02d:%02d", sec / 3600, (sec % 3600) / 60, sec % 60);
-			screen.DrawText(font, crdefault, vwidth - zerowidth * 8 - textdist, y, textbuffer, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight, DTA_Monospace, 2, DTA_Spacing, zerowidth, DTA_KeepRatio, true);
-			y += fheight;
-		}
-
-		if (am_showtotaltime)
-		{
-			sec = Thinker.Tics2Seconds(level.totaltime);
-			textbuffer = textbuffer.Format("%02d:%02d:%02d", sec / 3600, (sec % 3600) / 60, sec % 60);
-			screen.DrawText(font, crdefault, vwidth - zerowidth * 8 - textdist, y, textbuffer, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight, DTA_Monospace, 2, DTA_Spacing, zerowidth, DTA_KeepRatio, true);
-		}
-
-		if (!deathmatch)
-		{
-			y = 0;
-			if (am_showmonsters)
-			{
-				textbuffer = textbuffer.Format("%s\34%c %d/%d", StringTable.Localize("AM_MONSTERS", false), Font.CR_RED + 65, level.killed_monsters, level.total_monsters);
-				screen.DrawText(font2, highlight, textdist, y, textbuffer, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
-				y += fheight;
-			}
-
-			if (am_showsecrets)
-			{
-				textbuffer = textbuffer.Format("%s\34%c %d/%d", StringTable.Localize("AM_SECRETS", false), Font.CR_GOLD + 65, level.found_secrets, level.total_secrets);
-				screen.DrawText(font2, highlight, textdist, y, textbuffer, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
-				y += fheight;
-			}
-
-			// Draw item count
-			if (am_showitems)
-			{
-				textbuffer = textbuffer.Format("%s\34%c %d/%d", StringTable.Localize("AM_ITEMS", false), Font.CR_YELLOW + 65, level.found_items, level.total_items);
-				screen.DrawText(font2, highlight, textdist, y, textbuffer, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
-				y += fheight;
-			}
+			Vector2 size = TexMan.GetScaledSize(tex);
+			screen.DrawTexture(tex, false, 0, 0, DTA_DestWidth, screen.GetWidth(), DTA_DestHeight, Screen.GetHeight(), DTA_Alpha, 0.75);
 		}
 
 		//textbuffer = level.FormatMapName(crdefault);
@@ -1284,23 +1244,99 @@ class BoAStatusBar : BaseStatusBar
 		let numlines = lines.Count();
 		let finalwidth = lines.StringWidth(numlines - 1);
 
-		// calculate the top of the statusbar including any protrusion and transform it from status bar to screen space.
-		double x = 0, yy = 0, w = HorizontalResolution, h = 0;
-		StatusbarToRealCoords(x, yy, w, h);
-
-		h = GetProtrusion(double(finalwidth * scale / w));
-
-		[x, yy, w, h] = StatusbarToRealCoords(x, yy, w, h);
-
-		// Get the y coordinate for the first line of the map name text.
-		y = int((GetTopOfStatusbar() - int(h)) * screen.GetHeight() / vheight) - fheight * numlines;
-
-		// Draw the texts centered above the status bar.
+		// Draw the text
 		for (int i = 0; i < numlines; i++)
 		{
-			int x = (vwidth - font.StringWidth(lines.StringAt(i))) / 2;
-			screen.DrawText(font, highlight, x, y, lines.StringAt(i), DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
-			y += fheight;
+			y = textdist;
+			screen.DrawText(BigFont, highlight, textdist, y, lines.StringAt(i), DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
+			y += BigFont.GetHeight();
+		}
+
+		y+= int(fheight / 2);
+
+		String time;
+
+		if (am_showtime) { time = level.TimeFormatted(); }
+
+		if (am_showtotaltime)
+		{
+			if (am_showtime) { time = time .. " / " .. level.TimeFormatted(true); }
+			else { time = level.TimeFormatted(true); }
+		}
+
+		if (am_showtime || am_showtotaltime)
+		{
+			screen.DrawText(font, crdefault, textdist, y, time, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight, DTA_Monospace, 2, DTA_Spacing, zerowidth, DTA_KeepRatio, true);
+			y += int(fheight * 3 / 2);
+		}
+
+		String monsters = StringTable.Localize("AM_MONSTERS", false);
+		String secrets = StringTable.Localize("AM_SECRETS", false);
+		String items = StringTable.Localize("AM_ITEMS", false);
+
+		double labelwidth = 0;
+
+		for (int i = 0; i < 3; i++)
+		{
+			String label;
+			int size;
+
+			Switch (i)
+			{
+				case 0:
+					label = monsters;
+					break;
+				case 1:
+					label = secrets;
+					break;
+				case 2:
+					label = items;
+					break;
+			}
+
+			size = font2.StringWidth(label .. "   ");
+
+			if (size > labelwidth) { labelwidth = size; }
+		}
+
+		if (!generic_ui)
+		{
+			// If the original font does not have accents this will strip them - but a fallback to the VGA font is not desirable here for such cases.
+			if (!font.CanPrint(monsters) || !font.CanPrint(secrets) || !font.CanPrint(items)) { font2 = OriginalSmallFont; }
+		}
+
+		if (!deathmatch)
+		{
+			if (am_showmonsters)
+			{
+				screen.DrawText(font2, crdefault, textdist, y, monsters, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
+
+				textbuffer = textbuffer.Format("%d/%d", level.killed_monsters, level.total_monsters);
+				screen.DrawText(font2, Font.CR_RED, textdist + labelwidth, y, textbuffer, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
+
+				y += fheight;
+			}
+
+			if (am_showsecrets)
+			{
+				screen.DrawText(font2, crdefault, textdist, y, secrets, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
+
+				textbuffer = textbuffer.Format("%d/%d", level.found_secrets, level.total_secrets);
+				screen.DrawText(font2, Font.CR_GOLD, textdist + labelwidth, y, textbuffer, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
+
+				y += fheight;
+			}
+
+			// Draw item count
+			if (am_showitems)
+			{
+				screen.DrawText(font2, crdefault, textdist, y, items, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
+
+				textbuffer = textbuffer.Format("%d/%d", level.found_items, level.total_items);
+				screen.DrawText(font2, Font.CR_YELLOW, textdist + labelwidth, y, textbuffer, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
+
+				y += fheight;
+			}
 		}
 	}
 
@@ -1317,7 +1353,7 @@ class BoAStatusBar : BaseStatusBar
 			int hscale = screen.GetWidth() / 640;
 			scaleval = clamp(vscale, 1, hscale);
 		}
-		else scaleval = uiscale;
+		else { scaleval = uiscale; }
 
 		// block scales that result in something larger than the current screen.
 		int vmax = screen.GetHeight() / 200;
@@ -1339,7 +1375,7 @@ class BoAStatusBar : BaseStatusBar
 			int hscale = screen.GetWidth() / 1280;
 			scaleval = clamp(vscale, 1, hscale);
 		}
-		else scaleval = (uiscale + 1) / 2;
+		else { scaleval = (uiscale + 1) / 2; }
 
 		// block scales that result in something larger than the current screen.
 		int vmax = screen.GetHeight() / 400;
