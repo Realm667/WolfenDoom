@@ -10,7 +10,7 @@ ACTOR ZombieKazi : ZombieStandard
 	Obituary "$NAZOKAZI"
 	DropItem "9mmAmmo" 64
 	DropItem "GrenadePickup" 16
-	DropItem "Soul", 192, 1
+	DropItem "Soul"
 	States
 	{
 	Spawn:
@@ -98,7 +98,7 @@ ACTOR ZombieBrain : ZombieStandard
 	+QUICKTORETALIATE
 	Obituary "$NAZOBITE"
 	DropItem "9mmAmmo" 32
-	DropItem "Soul", 64, 1
+	DropItem "Soul"
 	States
 	{
 	Spawn:
@@ -187,7 +187,7 @@ ACTOR ZombieOfficer : ZombieBrain
 	-QUICKTORETALIATE
 	DropItem "MP40" 192
 	DropItem "9mmAmmo" 32
-	DropItem "Soul", 64, 1
+	DropItem "Soul"
 	States
 	{
 	Spawn:
@@ -328,7 +328,7 @@ ACTOR ZGermanShepherd : ZombieStandard
 	-CANUSEWALLS
 	-CANPUSHWALLS
 	+NEVERTARGET
-	DropItem "Soul", 64, 1
+	DropItem "Soul"
 	States
 	{
 	Spawn:
@@ -396,7 +396,7 @@ ACTOR Camp_PrisonerZombie : ZombieStandard
 	Nazi.ZombieVariant "Camp_PrisonerZombie"
 	Health 30
 	Speed 3
-	DropItem "Soul", 64, 1
+	DropItem "Soul"
 	States
 	{
 	Spawn:
@@ -542,7 +542,7 @@ ACTOR ZombieGeneral : RocketMan
 	DamageFactor "UndeadPoison", 0
 	DropItem "NebAmmoBox" 128
 	DropItem "NebAmmoBox" 128
-	DropItem "Soul", 192, 5
+	DropItem "Soul", 255, 5
 	States
 	{
 	Spawn:
@@ -606,7 +606,7 @@ ACTOR ZombieZyklonstein : RocketMan
 	DamageFactor "UndeadPoison", 0
 	DropItem "FlameAmmo" 128
 	DropItem "FlameAmmo" 128
-	DropItem "Soul", 192, 10
+	DropItem "Soul", 255, 10
 	States
 	{
 	Spawn:
@@ -666,7 +666,7 @@ ACTOR ZombieButcher : RocketMan
 	DamageFactor "Poison", 0
 	DamageFactor "UndeadPoison", 0
 	DropItem "Medikit_Medium"
-	DropItem "SoulBig", 192, 1
+	DropItem "SoulBig", 255, 1
 	States
 	{
 	Spawn:

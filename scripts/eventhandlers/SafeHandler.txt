@@ -1,0 +1,20 @@
+class SafeHandler : EventHandler
+{
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Name == "opensafe")
+		{
+			ThinkerIterator it = ThinkerIterator.Create("Safe", Thinker.STAT_DEFAULT);
+			Safe mo;
+
+			while (mo = Safe(Actor(it.Next())))
+			{
+				if (int(mo.pos.x) != e.args[0] || int(mo.pos.y) != e.args[1] || int(mo.pos.z) != e.args[2]) { continue; }
+
+				mo.DoOpen();
+				return;
+			}
+		}
+	}
+
+}

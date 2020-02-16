@@ -787,3 +787,101 @@ class AscherParachuting : Actor
 			Stop;
 	}
 }
+
+class Safe : Actor
+{
+	bool isopen, locked, unlock;
+	Class<Actor> spawnclass;
+
+	Default
+	{
+		//$Category Props (BoA)/Interactive Items
+		//$Arg0 "Script to run"
+		//$Arg0Tooltip "[String] Actor to spawn in the safe or [Number] Script number to run"
+		//$Arg0Str "Actor class to spawn"
+		//$Arg1 "First number of combination"
+		//$Arg2 "Second number of combination"
+		//$Arg3 "Third number of combination"
+
+		+SOLID
+		Height 32;
+		Radius 12;
+	}
+
+	States
+	{
+		Spawn:
+		 	MDLA A -1;
+			Stop;
+		Opened:
+			MDLA BCDE 5;
+			MDLA F -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		BoACompass.Add(self, "CHESTICO");
+
+		if (args[0] < 0) // If a string value was passed in, use that as the spawn class
+		{
+			spawnclass = GetSpawnableType(args[0]);
+
+			if (GetDefaultByType(spawnclass).bCountItem) { level.total_items++; }
+		}
+
+		locked = true;
+
+		Super.PostBeginPlay();
+	}
+
+	override bool Used(Actor user)
+	{
+		if (isopen || !user.player) { return false; }
+
+		if (locked)
+		{
+			user.player.ConversationNPC = self;
+
+			Menu.SetMenu("CombinationSafe");
+
+			user.player.ConversationNPC = null;
+
+			return true;
+		}
+		else
+		{
+			DoOpen();
+			return true;
+		}
+
+		return false;
+	}
+
+	void DoOpen()
+	{
+		SetStateLabel("Opened");
+
+		locked = false;
+		isopen = true;
+
+		A_SetSize(4);
+
+		if (spawnclass) // If arg[0] resolved to a classname
+		{
+			// Spawn that actor
+			let mo = Spawn(spawnclass, pos + (0, 0, 6), ALLOW_REPLACE);
+			mo.scale *= 0.75;
+			mo.bDropped = False;
+
+			if (mo.bCountItem) { level.total_items--; }
+		}
+		else if (args[0] > 0)
+		{
+			// If you passed in a script number, then run the script
+			ACS_ExecuteAlways(args[0], 0, tid);
+		}
+
+		BoACompass.Remove(self);
+	}
+}
