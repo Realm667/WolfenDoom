@@ -870,9 +870,10 @@ class Safe : Actor
 		if (spawnclass) // If arg[0] resolved to a classname
 		{
 			// Spawn that actor
-			let mo = Spawn(spawnclass, pos + (0, 0, 6), ALLOW_REPLACE);
-			mo.scale *= 0.75;
-			mo.bDropped = False;
+			let mo = Spawn(spawnclass, pos + (0, 0, 4), ALLOW_REPLACE);
+			mo.scale *= 0.5;
+			mo.bNoGravity = true;
+			mo.bDropped = false;
 
 			if (mo.bCountItem) { level.total_items--; }
 		}

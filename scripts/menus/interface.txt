@@ -39,8 +39,8 @@ class CombinationSafe : BoAMenu
 
 		s = Safe(players[consoleplayer].ConversationNPC);
 
-		speed = 5;
-		steps = 23;
+		steps = 24;
+		speed = (360 / steps) / 6;
 
 		if (s && !s.special)
 		{
@@ -49,7 +49,23 @@ class CombinationSafe : BoAMenu
 			solution[2] = s.args[3];
 		}
 
+		// If no combination set, use the object's coordinates to derive a combination
+		if (solution[0] == 0 && solution[1] == 0 && solution[2] == 0)
+		{
+			// Default to setting a random combo...  If you flag the actor wth STANDSTILL, it will stay unlocked
+			if (!s.bStandStill)
+			{
+
+				solution[0] = int(abs(s.pos.x % steps));
+				solution[1] = int(abs(s.pos.y % steps));
+				solution[2] = int(abs(s.pos.z % steps));
+			}
+		}
+
+		if (developer) { console.printf("%i %i %i", solution[0], solution[1], solution[2]); }
+
 		DontDim = true;
+		menuactive = OnNoPause;
 	}
 
 	override void Drawer()
@@ -100,7 +116,7 @@ class CombinationSafe : BoAMenu
 
 			if (destangle > angle)
 			{
-				angle += speed;
+				angle += speed * 2;
 				dir = 1;
 
 				if (angle > 360)
@@ -111,7 +127,7 @@ class CombinationSafe : BoAMenu
 			}
 			else if (destangle < angle)
 			{
-				angle -= speed;
+				angle -= speed * 2;
 				dir = -1;
 
 				if (angle < 0)
@@ -122,7 +138,8 @@ class CombinationSafe : BoAMenu
 		}
 		else
 		{
-			destangle = angle;
+			destangle = angle - (angle % speed);
+			angle = destangle;
 		}
 
 		if (olddir && olddir != dir && set < 3)
@@ -132,10 +149,7 @@ class CombinationSafe : BoAMenu
 			set++;
 			count++;
 		}
-if (set < 3)
-{
-console.printf("%i >>> %i    %i", angle / (360 / steps), solution[set], count);
-}
+
 		olddir = dir;
 
 		if (set > 0 && count <= 0)
@@ -175,7 +189,7 @@ console.printf("%i >>> %i    %i", angle / (360 / steps), solution[set], count);
 			{
 				// Turn Right
 				keyactive = 5;
-				destangle = angle - speed * 2;
+				destangle = angle - speed * 4;
 			}
 			else
 			{
@@ -188,7 +202,7 @@ console.printf("%i >>> %i    %i", angle / (360 / steps), solution[set], count);
 		{
 			// Turn Left
 			keyactive = 5;
-			destangle = angle + speed * 2;
+			destangle = angle + speed * 4;
 
 			return true;
 		}
@@ -199,6 +213,88 @@ console.printf("%i >>> %i    %i", angle / (360 / steps), solution[set], count);
 	override bool MouseEvent(int type, int x, int y)
 	{
 		return false;
+	}
+
+	override bool OnUIEvent(UIEvent ev)
+	{
+		// Intercept key presses to see if we're pressing the strafe controls or use, 
+		// and redirect those to call the correct left/right/open movement menu event code.
+
+		if (ev.Type == UIEvent.Type_KeyDown || ev.Type == UIEVent.Type_Char)
+		{
+			CheckControl(ev, "+moveleft", MKEY_Left);
+			CheckControl(ev, "+moveright", MKEY_Right);
+			CheckControl(ev, "+use", MKEY_Enter);
+		}
+
+		return false;
+	}
+/*
+// Input events apparently don't handle repeating when you hold down a key...  Makes this approach painful to use.
+//  Requires "menuactive = Menu.WaitKey;" in Ticker()
+	override bool OnInputEvent(InputEvent ev)
+	{
+		if (InputEvent.Type_KeyDown)
+		{
+			Switch (ev.keyscan)
+			{
+				case 0:
+					break;
+				case InputEvent.KEY_ESCAPE:
+					menuactive = Menu.On;
+					Close();
+					MenuEvent(Menu.MKEY_Abort, false);
+					return true;
+					break;
+				default:
+					if (
+						CheckControl(ev, "+moveleft") ||
+						ev.keyscan == InputEvent.KEY_LeftArrow
+					) { MenuEvent(MKEY_Left, false); }
+					else if (
+						CheckControl(ev, "+moveright") ||
+						ev.keyscan == InputEvent.KEY_RightArrow
+					) { MenuEvent(MKEY_Right, false); }
+					else if (
+						CheckControl(ev, "+use") ||
+						ev.keyscan == InputEvent.KEY_Enter
+					) { MenuEvent(MKEY_Enter, false); }
+					return true;
+					break;
+			}
+		}
+
+		return false;
+	}
+
+
+	bool CheckControl(InputEvent ev, String control)
+	{
+		int c1, c2;
+		[c1, c2] = Bindings.GetKeysForCommand(control);
+
+		if (ev.keyscan == c1 || ev.keyscan == c2) { return true; }
+
+		return false;
+	}
+*/
+	void CheckControl(UIEvent ev, String control, int type)
+	{
+		int c1, c2;
+		[c1, c2] = Bindings.GetKeysForCommand(control);
+
+		Array<String> keys;
+		Bindings.NameKeys(c1, c2).Split(keys, ", ");
+
+		String keychar = String.Format("%c", ev.KeyChar);
+
+		for (int i = 0; i < keys.Size(); i++)
+		{
+			if (keys[i] ~== keychar)
+			{
+				MenuEvent(type, false);
+			}
+		}
 	}
 
 	void TryOpen()
@@ -219,7 +315,7 @@ console.printf("%i >>> %i    %i", angle / (360 / steps), solution[set], count);
 		if (match)
 		{
 			S_StartSound("safe/open", CHAN_7, CHANF_UI | CHANF_NOSTOP, 0.5);
-			EventHandler.SendNetworkEvent("opensafe", s.pos.x, s.pos.y, s.pos.z);
+			EventHandler.SendNetworkEvent("opensafe", int(s.pos.x), int(s.pos.y), int(s.pos.z));
 
 			Close();
 		}
