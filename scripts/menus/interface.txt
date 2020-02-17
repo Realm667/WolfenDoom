@@ -140,10 +140,10 @@ class CombinationSafe : BoAMenu
 			destangle = angle - (angle % speed);
 			angle = destangle;
 		}
-
+// if (set < 3) { console.printf("%i >>> %i", (angle / (360 / steps)) % steps, solution[set]); }
 		if (olddir && olddir != dir && set < 3)
 		{
-			combo[set] = angle / (360 / steps);
+			combo[set] = (angle / (360 / steps)) % steps;
 
 			set++;
 			count++;
@@ -305,8 +305,9 @@ class CombinationSafe : BoAMenu
 
 		for (int i = 0; i < 3; i++)
 		{
-			// Allow a step to either side of the right number to be accepted
-			if (combo[i] >= solution[i] - 1 && combo[i] <= solution[i] + 1) { continue; }	
+			// Allow a step to either side of the correct number to be accepted
+			if (combo[i] >= solution[i] - 1 && combo[i] <= solution[i] + 1) { continue; }
+			if (solution[i] == 0 && combo[i] >= steps - 1) { continue; }
 
 			match = false;
 		}
