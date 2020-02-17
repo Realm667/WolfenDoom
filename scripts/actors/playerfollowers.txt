@@ -109,6 +109,8 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 	String healparticle;
 	int healtime, playerhealtime;
 	int healplayer;
+	int scouttime;
+	int offset;
 
 	static const statelabel MissileStateNames[] = { null, "Melee", "Luger", "MP40", "Rifle", "Grenade", "Shotgun" };
 	static const int MissileRanges[] = { 1, 32, 512, 768, 1024, 512, 512 };
@@ -372,17 +374,21 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 		if (target && target is "GrenadeBase") // If you're running from a grenade
 		{
-			if (nonmoving && !currentGoal) // If you are standing and don't have an origin point set, spawn one
+			if (!bFrightened || Distance3D(target) > GrenadeBase(target).feardistance) { target = goal; }
+			else
 			{
-				currentGoal = Spawn("PatrolPoint", pos);
-				currentGoal.args[0] = -1;
-				currentGoal.args[1] = 0x7FFFFFFF;
-				currentGoal.angle = angle;
-			}
+				if (nonmoving && !currentGoal) // If you are standing and don't have an origin point set, spawn one
+				{
+					currentGoal = Spawn("PatrolPoint", pos);
+					currentGoal.args[0] = -1;
+					currentGoal.args[1] = 0x7FFFFFFF;
+					currentGoal.angle = angle;
+				}
 
-			if (target) { target.bShootable = true; } // Because A_Chase will try to find a new target if the target isn't shootable...
-			A_Chase(null, null); // Use default chase logic to run away
-			if (target) { target.bShootable = target.Default.bShootable; }
+				if (target) { target.bShootable = true; } // Because A_Chase will try to find a new target if the target isn't shootable...
+				A_Chase(null, null); // Use default chase logic to run away
+				if (target) { target.bShootable = target.Default.bShootable; }
+			}
 		}
 		else if (nonmoving) // If you're standing
 		{
@@ -441,7 +447,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			// Not sure why I'm having to manually handle stepping up onto map objects
 			if (
 				BlockingMobj && 
-				!BlockingMobj.bIsMonster && // Don't let them step up onto players, playerfollwoers, enemies, etc.
+				!BlockingMobj.bIsMonster && // Don't let them step up onto players, playerfollowers, enemies, etc.
 				(bCanPass || BlockingMobj.bActLikeBridge) &&
 				BlockingMobj.pos.z + BlockingMobj.height < pos.z + MaxStepHeight
 			)
@@ -454,7 +460,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 			if (playerToChase)
 			{
-				if (playerToChase.health && Distance3d(playerToChase) <= 64 && waterlevel < 2 && CheckSight(playerToChase)) // If within 64 units of the player, destroy the old waypoints and jump to "Close" state.  Has to be this close so that he can follow you into elevators
+				if (!scouttime && playerToChase.health && Distance3d(playerToChase) <= 64 && waterlevel < 2 && CheckSight(playerToChase)) // If within 64 units of the player, destroy the old waypoints and jump to "Close" state.  Has to be this close so that he can follow you into elevators
 				{
 					DestroyMarkers();
 					return ResolveState("Chase.Near");
@@ -462,7 +468,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 				if (currentGoal)
 				{
-					if (Distance3d(playerToChase) < Distance3d(currentGoal) && CheckSight(playerToChase)) // If closer to player than to goal, destroy the old waypoints and start again fresh
+					if (!scouttime && Distance3d(playerToChase) < Distance3d(currentGoal) && CheckSight(playerToChase)) // If closer to player than to goal, destroy the old waypoints and start again fresh
 					{
 						DestroyMarkers();
 					}
@@ -488,20 +494,22 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		while ( (mo = GrenadeBase(Finder.Next())) )
 		{
 			if (!CheckSight(mo)) { continue; }
-			if (mo.bMissile && mo.target == self || (mo.target is "PlayerPawn" && absangle(mo.angle + 180, AngleTo(mo.target)) > 30)) { continue; } // Ignore missiles fired from self and any from a player that aren't aimed at you
+			if (mo.bMissile && (mo.target == self || (mo.target is "PlayerPawn" && absangle(mo.angle + 180, AngleTo(mo.target)) > 30))) { continue; } // Ignore missiles fired from self and any from a player that aren't aimed at you
 			if (Distance3d(mo) > min(512, (mo.bMissile ? mo.feardistance * max(mo.Speed, mo.vel.length()) : mo.feardistance))) { continue; } // feardistance default is 256 units (see GrenadeBase actor, GrenadeBase.FearDistance property)
 
-			if (target != mo)
+			if (!GrenadeBase(target) || Distance3D(mo) < Distance3D(target))
 			{
 				target = mo;
 			}
+		}
 
-			if (!frighttimeout && (mo.bMissile || mo is "Whizzer")) { movedir = (mo.movedir + RandomPick(1, 2, 6, 7)) % 8; frighttimeout = 16; } // Pick a random direction away from the shooter and the missile's path
-			else { frighttimeout = int(min(mo.feardistance, 140)); } // Be frightened for a few seconds...  Less if there's a small fear distance/radius
+		if (target && target is "GrenadeBase")
+		{
+			if (!frighttimeout && (target.bMissile || target is "Whizzer")) { movedir = (target.movedir + RandomPick(1, 2, 6, 7)) % 8; frighttimeout = 16; } // Pick a random direction away from the shooter and the missile's path
+			else { frighttimeout = int(min(GrenadeBase(target).feardistance, 140)); } // Be frightened for a few seconds...  Less if there's a small fear distance/radius
 
 			if (!InStateSequence(CurState, FindState("Chase"))) { SetStateLabel("Chase"); }
 		}
-
 	}
 
 	state A_Defend(bool atPlayer = true)
@@ -600,6 +608,24 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 				{
 					faceangle = playerToChase.angle + 135 + Random[FaceAngle](-15, 15); // Make him look like he might be able to cover your back
 					if (abs(angle - faceangle) > 45) { angle = faceangle; }
+/*
+					if (!scouttime && Random() < 8)
+					{
+						scouttime = Random(45, 105);
+
+						Vector3 targetpos = GetLineTargetPos(playerToChase);
+
+						Actor mo = Spawn("PathMarker", targetpos);
+						if (PathMarker(mo))
+						{
+							PathMarker(mo).playerToChase = PlayerPawn(playerToChase);
+							PathMarker(mo).follower = self;
+							Markers.Insert(0, PathMarker(mo));
+						}
+
+						return ResolveState("Chase");
+					}
+*/
 				}
 
 				if (playerdist > radius + 128 + playerToChase.radius) { // If player moves too far away, go back to following (and forget the target if forgettarget = True)
@@ -609,7 +635,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 					return ResolveState("Chase.Back");
 				}
 
-				if (healplayer && playerToChase.player.health < healplayer && !playerhealtime)
+				if (healplayer && playerToChase.player && playerToChase.player.health < healplayer && !playerhealtime)
 				{
 					A_Playsound("misc/health_pkup");
 					playerhealtime = 2;
@@ -771,6 +797,8 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 		trace = new("BoAFindHitPointTracer");
 
+		offset = Random(0, 35);
+
 		Super.PostBeginPlay();
 	}
 
@@ -778,7 +806,9 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 	{
 		if (health <= 0) { Super.Tick(); return; }
 
-		if (!frighttimeout) { A_LookForGrenades(); }
+		if (scouttime > 0) { scouttime--; }
+
+		if ((level.time + offset) % 5 == 0) { A_LookForGrenades(); }
 
 		if (waterlevel > 0)
 		{
@@ -909,6 +939,20 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		}
 
 		return damage;
+	}
+
+	Vector3 GetLineTargetPos(Actor source)
+	{
+		if (!source) { source = self; }
+
+		CrosshairTracer actortrace;
+		actortrace = new("CrosshairTracer");
+
+		actortrace.skipactor = source;
+		Vector3 tracedir = (cos(source.angle) * cos(source.pitch), sin(source.angle) * cos(source.pitch), -sin(source.pitch));
+		actortrace.Trace(source.pos + (0, 0, height * 0.8), source.CurSector, tracedir, 2560, 0);
+
+		return actortrace.Results.HitPos - 16.0 * actortrace.Results.HitVector;
 	}
 }
 
