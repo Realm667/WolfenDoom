@@ -1263,12 +1263,25 @@ class US_Sherman : TankTreadsBase
 
 class US_ShermanTurret : TankTurretBase
 {
+	Actor gunspot2;
+
 	Default
 	{
 		TankTurretBase.GunClass "US_ShermanCannon";
 		TankTurretBase.GunSpotX 120;
 		TankTurretBase.GunSpotY 0;
 		TankTurretBase.GunSpotZ 20;
+	}
+
+	override void PostBeginPlay()
+	{
+		bool sp = false;
+
+		Vector3 gunspot2offset = (16, 20, 18);
+		while (!gunspot2) { [sp, gunspot2] = A_SpawnItemEx("WeaponSpot", gunspot2offset.x, gunspot2offset.y, gunspot2offset.z, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+		gunspot2.master = self;
+
+		Super.PostBeginPlay();
 	}
 }
 

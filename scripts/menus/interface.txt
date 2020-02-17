@@ -52,10 +52,9 @@ class CombinationSafe : BoAMenu
 		// If no combination set, use the object's coordinates to derive a combination
 		if (solution[0] == 0 && solution[1] == 0 && solution[2] == 0)
 		{
-			// Default to setting a random combo...  If you flag the actor wth STANDSTILL, it will stay unlocked
-			if (!s.bStandStill)
+			// Default to setting a pseudo-random combo...  If you flag the actor wth STANDSTILL, it will stay unlocked
+			if (s && !s.bStandStill)
 			{
-
 				solution[0] = int(abs(s.pos.x % steps));
 				solution[1] = int(abs(s.pos.y % steps));
 				solution[2] = int(abs(s.pos.z % steps));

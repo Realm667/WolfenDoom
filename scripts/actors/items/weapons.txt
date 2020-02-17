@@ -274,16 +274,22 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 	action void DoMachineGun()
 	{
 		Actor origin = self;
-		if (origin && ShermanPlayer(origin) && ShermanPlayer(origin).treads) { origin = ShermanPlayer(origin).treads; }
+		Actor maingun = self;
 
-		// Nullify angle and pitch so the weapon always fires straight ahead
-		double angledelta = deltaangle(angle, origin.angle);
-		double pitchdelta = deltaangle(pitch, origin.pitch);
+		if (origin && ShermanPlayer(origin) && ShermanPlayer(origin).turret)
+		{
+			if (US_ShermanTurret(ShermanPlayer(self).turret).gunspot2) { origin = US_ShermanTurret(ShermanPlayer(self).turret).gunspot2; }
+			if (US_ShermanTurret(ShermanPlayer(self).turret).gunspot) { maingun = US_ShermanTurret(ShermanPlayer(self).turret).gunspot; }
+		}
+
+		double angledelta = deltaangle(angle, maingun.angle);
+		double pitchdelta = deltaangle(pitch, maingun.pitch);
 
 		A_PlaySound("mauser/fire", CHAN_WEAPON, FRandom(0.6, 0.8));
-		Actor mo = A_FireProjectile("Kar98kTracer", angledelta + Random(-2, 2), False, 20, 16, 0, pitchdelta + Random(-2, 2));
-		if (mo)
+		Actor mo = A_FireProjectile("Kar98kTracer", angledelta + Random(-2, 2), False, 0, 0, 0, pitchdelta + Random(-2, 2));
+		if (mo && origin != self)
 		{
+			mo.SetOrigin(origin.pos, false); // Move the tarcer so that it flies from the model's gun
 			mo.bMThruSpecies = true;
 		}
 	}
