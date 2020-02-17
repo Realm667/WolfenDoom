@@ -1773,7 +1773,7 @@ class Nazi : Base
 		{
 			if (bBoss) { continue; }
 			if (!CheckSight(mo)) { continue; }
-			if (mo.bMissile && mo.target == self || (mo.target is "PlayerPawn" && absangle(mo.angle + 180, AngleTo(mo.target)) > 30)) { continue; } // Ignore missiles fired from self and any from a player that aren't aimed at you
+			if (mo.bMissile && (mo.target == self || (mo.target is "PlayerPawn" && absangle(mo.angle + 180, AngleTo(mo.target)) > 30))) { continue; } // Ignore missiles fired from self and any from a player that aren't aimed at you
 			if (Distance3d(mo) > (mo.bMissile ? mo.feardistance * max(mo.Speed, mo.vel.length()) : mo.feardistance)) { continue; } // feardistance default is 256 units (see GrenadeBase actor, GrenadeBase.FearDistance property)
 
 			if (target != mo)
