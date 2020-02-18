@@ -10,7 +10,7 @@ class BoAMenu : GenericMenu
 
 class CombinationSafe : BoAMenu
 {
-	TextureID spinner, spinnerfront, spinnerback, background;
+	TextureID spinner, spinnerfront, spinnerback, background, turn;
 	Vector2 location, size, bgsize, screendimensions;
 	double scale, bgscale;
 	int angle, destangle, dir, olddir, set, count;
@@ -18,7 +18,8 @@ class CombinationSafe : BoAMenu
 	int combo[3], solution[3];
 	int speed, steps;
 	Safe s;
-	bool attempted;
+	int initial;
+	int ticcount;
 
 	override void Init(Menu parent)
 	{
@@ -28,6 +29,7 @@ class CombinationSafe : BoAMenu
 		spinnerfront = TexMan.CheckForTexture("DIAL_F", TexMan.Type_Any);
 		spinnerback = TexMan.CheckForTexture("DIAL_B", TexMan.Type_Any);
 		background = TexMan.CheckForTexture("SAFEBKG", TexMan.Type_Any);
+		turn = TexMan.CheckForTexture("DIAL_DIR", TexMan.Type_Any);
 
 		location = (427, 240);
 		[location, screendimensions] = Screen.VirtualToRealCoords(location, (screen.GetWidth(), screen.GetHeight()), (640, 480));
@@ -65,12 +67,17 @@ class CombinationSafe : BoAMenu
 
 		DontDim = true;
 		menuactive = OnNoPause;
+
+		destangle = 360 * 3;
+		initial = 1;
 	}
 
 	override void Drawer()
 	{
 		if (solution[0] != 0 || solution[1] != 0 || solution[2] != 0)
 		{
+			screen.Dim(0x000000, 0.2, 0, 0, screen.GetWidth(), screen.GetHeight());
+
 			if (background)
 			{
 				screen.DrawTexture(background, false, location.x - bgsize.x * bgscale / 9.2, location.y, DTA_DestWidth, int(bgsize.x * bgscale), DTA_DestHeight, int(bgsize.y * bgscale), DTA_CenterOffset, true);
@@ -93,7 +100,22 @@ class CombinationSafe : BoAMenu
 				screen.DrawTexture(spinnerfront, false, location.x, location.y, DTA_DestWidth, int(size.x * scale), DTA_DestHeight, int(size.y * scale), DTA_CenterOffset, true);
 			}
 
-			screen.Dim(0x000000, 0.2, 0, 0, screen.GetWidth(), screen.GetHeight());
+			if (ticcount > 0)
+			{
+				if (ticcount > 35)
+				{
+					double alpha = 0.5 * (0.5 + sin(((ticcount - 35) * 720 / 70 - 90) / 2));
+
+					if (ticcount < 105 || ticcount > 175)
+					{
+						screen.DrawTexture(turn, false, location.x, location.y, DTA_DestWidth, int(size.x * scale), DTA_DestHeight, int(size.y * scale), DTA_CenterOffset, true, DTA_Alpha, alpha);
+					}
+					else if (ticcount < 245)
+					{
+						screen.DrawTexture(turn, false, location.x, location.y, DTA_DestWidth, int(size.x * scale), DTA_DestHeight, int(size.y * scale), DTA_CenterOffset, true, DTA_FlipX, true, DTA_Alpha, alpha);
+					}
+				}
+			}
 		}
 	}
 
@@ -107,7 +129,25 @@ class CombinationSafe : BoAMenu
 			return;
 		}
 
-		if (keyactive > 0) { keyactive--; }
+		if (initial)
+		{
+			ticcount++;
+
+			if (ticcount >= 245)
+			{
+				ticcount = 0;
+				initial++;
+
+				if (initial > 2) { initial = 0; }
+			}
+		}
+
+		if (keyactive > 0)
+		{
+			keyactive--;
+			ticcount = 0;
+			initial = 0;
+		}
 
 		if (keyactive)
 		{
@@ -161,52 +201,42 @@ class CombinationSafe : BoAMenu
 
 	override bool MenuEvent(int mkey, bool fromcontroller)
 	{
-		if (mkey == MKEY_Back)
+		switch (mkey)
 		{
-			Close();
-			return true;
-		}
-		else if (mkey == MKEY_Enter)
-		{
-			// Attempt Open
-			if (set == 2)
-			{
-				combo[2] = angle / (360 / steps);
-				set = 3;
-			}
+			case MKEY_Up:
+			case MKEY_Down:
+			case MKEY_Back:
+				Close();
+				return true;
+			case MKEY_Enter:
+				// Attempt Open
+				if (set == 2)
+				{
+					combo[2] = angle / (360 / steps);
+					TryOpen();
+				}
 
-			if (set > 2)
-			{
-				TryOpen();
-			}
+				if (set > 2)
+				{
+					TryOpen();
+				}
 
-			return true;
-		}
-		else if (mkey == MKEY_Right)
-		{
-			if (set < 3)
-			{
+				return true;
+			case MKEY_Right:
 				// Turn Right
 				keyactive = 5;
 				destangle = angle - speed * 4;
-			}
-			else
-			{
-				TryOpen();
-			}
 
-			return true;
+				return true;
+			case MKEY_Left:
+				// Turn Left
+				keyactive = 5;
+				destangle = angle + speed * 4;
+
+				return true;
+			default:
+				return false;
 		}
-		else if (mkey == MKEY_Left)
-		{
-			// Turn Left
-			keyactive = 5;
-			destangle = angle + speed * 4;
-
-			return true;
-		}
-
-		return Super.MenuEvent(mkey, fromcontroller);
 	}
 
 	override bool MouseEvent(int type, int x, int y)
@@ -224,6 +254,8 @@ class CombinationSafe : BoAMenu
 			CheckControl(ev, "+moveleft", MKEY_Left);
 			CheckControl(ev, "+moveright", MKEY_Right);
 			CheckControl(ev, "+use", MKEY_Enter);
+			CheckControl(ev, "+forward", MKEY_Up);
+			CheckControl(ev, "+back", MKEY_Down);
 		}
 
 		return false;
@@ -258,6 +290,10 @@ class CombinationSafe : BoAMenu
 						CheckControl(ev, "+use") ||
 						ev.keyscan == InputEvent.KEY_Enter
 					) { MenuEvent(MKEY_Enter, false); }
+					else if (
+						CheckControl(ev, "+forward") ||
+						CheckControl(ev, "+back")
+					) { MenuEvent(MKEY_Back, false); }
 					return true;
 					break;
 			}
@@ -286,10 +322,13 @@ class CombinationSafe : BoAMenu
 		Bindings.NameKeys(c1, c2).Split(keys, ", ");
 
 		String keychar = String.Format("%c", ev.KeyChar);
+		keychar = keychar.MakeUpper();
 
 		for (int i = 0; i < keys.Size(); i++)
 		{
-			if (keys[i] ~== keychar)
+			if (keys[i].Length() > 1) { continue; } // Skip named keys (Alt, Shift, Ctrl, etc.)
+
+			if (keys[i].ByteAt(0) == keychar.ByteAt(0))
 			{
 				MenuEvent(type, false);
 			}
@@ -298,9 +337,6 @@ class CombinationSafe : BoAMenu
 
 	void TryOpen()
 	{
-		if (attempted) { return; }
-		attempted = true;
-
 		int match = true;
 
 		for (int i = 0; i < 3; i++)
@@ -330,6 +366,5 @@ class CombinationSafe : BoAMenu
 		for (int i = 0; i < 3; i++) { combo[i] = 0; }
 		count = 0;
 		set = 0;
-		attempted = false;
 	}
 }
