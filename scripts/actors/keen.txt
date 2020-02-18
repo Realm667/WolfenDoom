@@ -121,7 +121,7 @@ class CKBaseEnemy : Actor
 			Touch(other);
 			return true;
 		}
-		else if (!bShootable)
+		else if (!bShootable && !CKBounder(other))
 		{
 			return false;
 		}
@@ -465,8 +465,8 @@ class KeenPlayer : PlayerPawn
 		+DONTGIB
 		+INTERPOLATEANGLES
 
-		Player.SideMove 0.5, 0.5;
-		Player.ForwardMove 0.5, 0.5;
+		Player.SideMove 1.0, 1.0;
+		Player.ForwardMove 1.0, 1.0;
 		Player.ViewBob 0.1;
 		Player.DisplayName "Billy Blaze";
 
@@ -489,10 +489,7 @@ class KeenPlayer : PlayerPawn
 			KEEN L 1;
 			Loop;
 		See:
-			KEEN ABCD 6
-			{
-				if (!waterlevel && vel.xy.length() < 0.6) { vel.xy *= 0; SetState(SpawnState); } // Walk in place less
-			}
+			KEEN ABCD 6;
 			Loop;
 		See.Jump:
 			KEEN AB 6;
@@ -701,6 +698,9 @@ class KeenPlayer : PlayerPawn
 	// No running...
 	override double, double TweakSpeeds (double forward, double side)
 	{
+		forward = clamp(forward, -6400, 6400);
+		side = clamp(side, -6144, 6144);
+
 		forward *= ForwardMove1;
 		side *= SideMove1;
 

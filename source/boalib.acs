@@ -58,17 +58,20 @@ Script "BoA_PlayerLoop" ENTER
 		// Do screen drawing actions
 		DrawObjectives();
 
-		if (CheckInventory("Sherman") == 0) // Only do these if you're not driving a tank
+		if (!CheckInventory("Sherman")) // Only do these if you're not driving a tank
 		{
-			DrawScreenOverlays();
+			if (!CheckInventory("Billy"))
+			{
+				DrawScreenOverlays();
 
-			// Do inventory checks
-			DoSprinting();
-			DoStaminaCheck();
+				// Do inventory checks
+				DoSprinting();
+				DoStaminaCheck();
 
-			// Do visual effects
-			DoFlinchRecovery();
-			DoTiltEffect();
+				// Do visual effects
+				DoFlinchRecovery();
+				DoTiltEffect();
+			}
 
 			// Do sound effects
 			DoFootstepSounds();
