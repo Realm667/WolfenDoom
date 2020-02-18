@@ -1649,7 +1649,8 @@ ACTOR Mechanic : BasicGuard
 		"####" "#" 0 {
 			if (!user_incombat) {
 				A_SetUserVar("user_incombat", TRUE);
-				A_SpawnItemEx("ToolBox",0,-8,22,0,0,0,0,SXF_NOCHECKPOSITION);
+				user_count2++;
+				if(user_count2 < 2) { A_SpawnItemEx("ToolBox",0,-8,22,0,0,0,0,SXF_NOCHECKPOSITION); }
 			}
 		}
 		"####" A 1 A_NaziChase
