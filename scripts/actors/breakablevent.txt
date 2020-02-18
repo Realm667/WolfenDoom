@@ -379,8 +379,7 @@ class StatueBreakable : Actor
 		Vector2 temp;
 		Vector3 offset;
 
-		// Keep the blocks in the correct position, regardless of pitch/roll of the master actor
-		// Obviously not perfect, because the blocks are rectangular, but close enough when you can't see them.
+		// Keep the actor in the correct position, regardless of pitch/roll of the master actor
 		if (item && spawnoffset != (0, 0, 0)) {
 			temp = RotateVector((spawnoffset.y, spawnoffset.z), roll);
 			offset = (spawnoffset.x, temp.x, temp.y);
@@ -426,7 +425,7 @@ class Gem : Inventory
 		Scale 0.5;
 		Inventory.Icon "GEMAA0";
 		Inventory.PickupSound "misc/k_pkup";
-		Inventory.PickupMessage "You picked up a mysterious gem!";
+		Inventory.PickupMessage "$PUGEM";
 	}
 
 	States

@@ -20,6 +20,8 @@ class CombinationSafe : BoAMenu
 	Safe s;
 	int initial;
 	int ticcount;
+	BrokenLines hintlines;
+	double hintx, hinty, hintlineheight;
 
 	override void Init(Menu parent)
 	{
@@ -70,6 +72,13 @@ class CombinationSafe : BoAMenu
 
 		destangle = 360 * 3;
 		initial = 1;
+
+		String hintmessage = StringTable.Localize("SAFEHINT", false);
+		hintlines = SmallFont.BreakLines(hintmessage, 240);
+
+		hintx = 320;
+		hintlineheight = SmallFont.GetHeight();
+		hinty = 470 - hintlineheight * (hintlines.Count() - 0.5);
 	}
 
 	override void Drawer()
@@ -100,12 +109,37 @@ class CombinationSafe : BoAMenu
 				screen.DrawTexture(spinnerfront, false, location.x, location.y, DTA_DestWidth, int(size.x * scale), DTA_DestHeight, int(size.y * scale), DTA_CenterOffset, true);
 			}
 
-			if (ticcount > 0)
+			if (ticcount > 0 && initial > 0)
 			{
+				double alpha;
+
+				if (initial == 1 && ticcount <= 175)
+				{
+					// Print hint message (duplicates ACS "HintMessage" script, but with handling for multiple lines)
+					if (ticcount == 10) { S_StartSound("menu/change", CHAN_7, CHANF_UI | CHANF_NOSTOP, 1.0); }
+
+					if (ticcount >= 105)
+					{
+						alpha = 0.5 + sin(((ticcount - 70) * 360 / 70 - 90) / 2);
+					}
+					else if (ticcount >= 35 && ticcount < 105)
+					{
+						alpha = 1.0;
+					}
+					else
+					{
+						alpha = 0.5 + sin((ticcount * 360 / 70 - 90) / 2);
+					}
+
+					for (int i = 0; i < hintlines.Count(); i++)
+					{
+						screen.DrawText(SmallFont, Font.CR_GRAY, hintx - hintlines.StringWidth(i) / 2, hinty + hintlineheight * i, hintlines.StringAt(i), DTA_VirtualWidth, 640, DTA_VirtualHeight, 480, DTA_Alpha, alpha);
+					}
+				}
+				
 				if (ticcount > 35)
 				{
-					double alpha = 0.5 * (0.5 + sin(((ticcount - 35) * 720 / 70 - 90) / 2));
-
+					alpha = 0.5 * (0.5 + sin(((ticcount - 35) * 720 / 70 - 90) / 2));
 					if (ticcount < 105 || ticcount > 175)
 					{
 						screen.DrawTexture(turn, false, location.x, location.y, DTA_DestWidth, int(size.x * scale), DTA_DestHeight, int(size.y * scale), DTA_CenterOffset, true, DTA_Alpha, alpha);
@@ -151,7 +185,7 @@ class CombinationSafe : BoAMenu
 
 		if (keyactive)
 		{
-			S_StartSound("safe/dial", CHAN_7, CHANF_UI | CHANF_NOSTOP, 0.5);
+			S_StartSound("safe/dial", CHAN_7, CHANF_UI | CHANF_NOSTOP, 0.65);
 
 			if (destangle > angle)
 			{
