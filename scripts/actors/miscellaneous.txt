@@ -886,3 +886,45 @@ class Safe : Actor
 		BoACompass.Remove(self);
 	}
 }
+
+
+class MineCartEMoving : ModelBase
+{
+	Default
+	{
+		//$Category Models (BoA)/Scenery
+		//$Title Mine Cart, Empty (for movement sequence)
+		//$Color 3
+
+		+CANPASS
+		+DONTTHRUST
+		-FLOORCLIP
+		+NOBLOOD
+		+NOBLOODDECALS
+		+NODAMAGE
+		+NOGRAVITY
+		+NOTAUTOAIMED
+		+SHOOTABLE
+		+SOLID
+
+		DistanceCheck "scenelod";
+		Radius 34;
+		Height 24;
+		Health -1;
+		Speed 0;
+	}
+
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		double amt = (speed ? speed : vel.length()); // C1M6's ACS rail script sets speed variable to movement speed of cart
+
+		if (amt && other.bShootable && !other.player && !PlayerPawn(other))
+		{
+			target = other;
+			A_DamageTarget(0x7FFFFFFF, "Trample");
+			A_StartSound("cartstop", CHAN_VOICE, 0, amt);
+		}
+
+		return true;
+	}
+}
