@@ -155,12 +155,12 @@ class StealthBase : Actor
 
 	override void Tick()
 	{
-		Super.Tick();
-
-		if (!master) { Destroy(); }
+		if (!master) { Destroy(); return; }
 
 		SetXYZ(master.pos + (0, 0, height));
 		angle = master.angle;
+
+		Super.Tick();
 	}
 }
 
