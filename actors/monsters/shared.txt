@@ -1213,7 +1213,7 @@ ACTOR ZyklonBCloud
 	DamageType "UndeadPoison"
 	Projectile
 	+WINDTHRUST
-	RenderStyle "Translucent" //was "Add"
+	RenderStyle "Translucent"
 	Alpha 0.4
 	States
 	{
@@ -1611,7 +1611,7 @@ ACTOR MengeleBomb : GrenadeBase
 		THRM ABAB 8
 		"####" A 0 A_AlertMonsters
 		"####" B 0 A_PlaySound("clusterbomb/explode", CHAN_AUTO, 1.0, FALSE, 0.1)
-		"####" ABABA 0 A_SpawnItemEx("ZyklonBCloud",random(-4,4),random(-4,4),random(4,4),frandom(-2.0,2.0),frandom(-2.0,2.0),frandom(0.0,1.0),0,64)
+		"####" ABABA 0 A_SpawnItemEx("ZyklonBCloud",random(-4,4),random(-4,4),random(4,4),frandom(-2.0,2.0),frandom(-2.0,2.0),frandom(0.0,1.0),0,128)
 		"####" ABABA 4 A_SpawnItemEx("MengeleBombFire", random(0,16), random(0,16), random(0,16), 0, 0, 0, 0, 0, 0)
 		"####" A 0 A_SpawnitemEx("ZyklonSkull", 0, 0, 16, 0, 0, 0, 0, 0, 0)
 		"####" AAAAAAAAAA 5 
