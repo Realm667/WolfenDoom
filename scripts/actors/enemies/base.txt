@@ -2826,12 +2826,15 @@ class ConversationMarker : Actor
 
 class ModelBase : Actor
 {
+	mixin GiveBouyancy;
+
 	Default
 	{
 		Height 56;
 		+FLOORCLIP
 		+DONTSPLASH
 		+NOGRAVITY
+		ModelBase.Bouyancy 0.0;
 	}
 
 	States
@@ -2846,6 +2849,13 @@ class ModelBase : Actor
 		A_SetSize(radius * scale.x / Default.scale.x, height * scale.y / Default.scale.y); // If the actor is scaled from default, adjust the actual size of the actor
 
 		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		DoBouyancy();
 	}
 }
 

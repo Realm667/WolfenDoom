@@ -821,7 +821,7 @@ class Safe : Actor
 
 	override void PostBeginPlay()
 	{
-		BoACompass.Add(self, "CHESTICO");
+		BoACompass.Add(self, "SAFEICO");
 
 		if (args[0] < 0) // If a string value was passed in, use that as the spawn class
 		{
@@ -926,5 +926,74 @@ class MineCartEMoving : ModelBase
 		}
 
 		return true;
+	}
+}
+
+mixin class GiveBouyancy
+{
+	Actor block;
+	bool inwater;
+	int offset;
+	double bouyancy;
+
+	Property Bouyancy:bouyancy;
+
+	void DoBouyancy()
+	{
+		if (!bouyancy) { return; }
+
+		if (offset == 0) { offset = Random(-64, 64); }
+
+		if (waterlevel > 0)
+		{
+			inwater = true;
+
+			bNoGravity = true;
+			bPushable = false;
+
+			double heightoffset = 0.05 * sin(level.time + offset);
+
+			bFloorClip = true;
+			floorclip = Default.height * ((1.0 - bouyancy) + heightoffset);
+
+			A_SetSize(Default.radius, Default.Height - floorclip);
+
+			if (waterlevel > 1)
+			{
+				vel.z = 2.0 * bouyancy;
+			}
+			else
+			{
+				vel.z = 0;
+			}
+
+			if (!block && pos.z - floorz > Default.Height)
+			{
+				block = Spawn("InvisibleBridgeBlocking", (pos.xy, pos.z - floorclip));
+				if (block)
+				{
+					block.A_SetSize(Default.Radius, Default.Height - height - 8);
+				}
+			}
+			if (block)
+			{
+				block.SetOrigin(pos - (0, 0, floorclip - 0.05), false);
+				block.vel = vel;
+			}
+		}
+		else if (inwater && !block.waterlevel)
+		{
+			inwater = false;
+
+			if (block) { block.Destroy(); }
+
+			bNoGravity = Default.bNoGravity;
+			bPushable = Default.bPushable;
+
+			bFloorClip = Default.bFloorClip;
+			floorclip = Default.bFloorClip;
+
+			A_SetSize(Default.Radius, Default.Height);
+		}
 	}
 }

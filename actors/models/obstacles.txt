@@ -60,6 +60,8 @@ ACTOR FuelDrum : 3dObstacle //MaxED
 	DistanceCheck "scenelod"
 	Radius 16
 	Height 43
+	-NOGRAVITY
+	ModelBase.Bouyancy 0.2
 }
 
 //this actor is needed on rare occasions where we can stay below them when crouch then stand up, it doesn't move the drum, like on c2m1
@@ -78,6 +80,8 @@ ACTOR GasDrum : 3dObstacle //MaxED
 	DistanceCheck "scenelod"
 	Radius 16
 	Height 42
+	-NOGRAVITY
+	ModelBase.Bouyancy 0.15
 }
 
 ACTOR FuelDrumAstro //Ozy81
@@ -115,14 +119,28 @@ ACTOR FuelDrumAstro //Ozy81
 	}
 }
 
-ACTOR MovableCrate1 : FuelDrumAstro //MaxED
+ACTOR MovableCrate1 : 3dObstacle //MaxED
 {
 	//$Title Movable Crate (paper, 64)
 	Radius 32
 	Height 64
 	Mass 9000
+	+MOVEWITHSECTOR
+	-NOGRAVITY
+	+PUSHABLE
+	+SLIDESONWALLS
+	ModelBase.Bouyancy 0.2
 	States
 	{
+	Spawn:
+		MDLA A 1
+		Goto Look
+	Look:
+		MDLA A 8 A_LookEx(LOF_NOSOUNDCHECK, 0, 64, 0, 360)
+		Loop
+	See:
+		MDLA A 0 A_JumpIf((velx != 0 || vely != 0), "Moving")
+		Goto Spawn
 	Moving:
 		MDLA A 35 A_PlaySound("papercrate_moving", CHAN_AUTO, 0.65)
 		Goto Spawn
