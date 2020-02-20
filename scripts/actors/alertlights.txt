@@ -586,7 +586,13 @@ class StrobeEmitter : Actor
 
 		if (globalfreeze || level.Frozen || CheckSightOrRange(range * 1.5)) { return; }
 
+		FLineTraceData trace;
+		LineTrace(light1.angle, range, light1.pitch, TRF_THRUACTORS, 0.0, 0.0, 0.0, trace);
+		light1.args[DynamicLight.LIGHT_INTENSITY] = int(trace.Distance);
 		light1.angle += Speed;
+
+		LineTrace(light2.angle, range, light2.pitch, TRF_THRUACTORS, 0.0, 0.0, 0.0, trace);
+		light2.args[DynamicLight.LIGHT_INTENSITY] = int(trace.Distance);
 		light2.angle += Speed;
 	}
 }
