@@ -174,13 +174,18 @@ end
 :Waterdrain
 	platform	5
 	playuntildone	WATDRAIN
-	playrepeat      null
-	stopsound	null
+	nostopcutoff
 end
 
 :Lift_Unreal
-	platform 6
+	platform 	6
         playuntildone   mach3S
         playrepeat      mach3L
         stopsound       mach3E
+end
+
+:Bubbledrain
+	platform	7
+	playuntildone	underwt1
+	nostopcutoff
 end
