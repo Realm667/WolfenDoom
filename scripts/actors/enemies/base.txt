@@ -2826,7 +2826,7 @@ class ConversationMarker : Actor
 
 class ModelBase : Actor
 {
-	mixin GiveBouyancy;
+	mixin GiveBuoyancy;
 
 	Default
 	{
@@ -2834,7 +2834,7 @@ class ModelBase : Actor
 		+FLOORCLIP
 		+DONTSPLASH
 		+NOGRAVITY
-		ModelBase.Bouyancy 0.0;
+		ModelBase.Buoyancy 0.0;
 	}
 
 	States
@@ -2855,7 +2855,7 @@ class ModelBase : Actor
 	{
 		Super.Tick();
 
-		DoBouyancy();
+		DoBuoyancy();
 	}
 }
 

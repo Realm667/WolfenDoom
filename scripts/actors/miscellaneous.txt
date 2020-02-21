@@ -929,18 +929,18 @@ class MineCartEMoving : ModelBase
 	}
 }
 
-mixin class GiveBouyancy
+mixin class GiveBuoyancy
 {
 	Actor block;
 	bool inwater;
 	int offset;
-	double bouyancy;
+	double buoyancy;
 
-	Property Bouyancy:bouyancy;
+	Property Buoyancy:buoyancy;
 
-	void DoBouyancy()
+	void DoBuoyancy()
 	{
-		if (!bouyancy) { return; }
+		if (!buoyancy) { return; }
 
 		if (offset == 0) { offset = Random(-64, 64); }
 
@@ -954,13 +954,13 @@ mixin class GiveBouyancy
 			double heightoffset = 0.05 * sin(level.time + offset);
 
 			bFloorClip = true;
-			floorclip = Default.height * ((1.0 - bouyancy) + heightoffset);
+			floorclip = Default.height * ((1.0 - buoyancy) + heightoffset);
 
 			A_SetSize(Default.radius, Default.Height - floorclip);
 
 			if (waterlevel > 1)
 			{
-				vel.z = 2.0 * bouyancy;
+				vel.z = 2.0 * buoyancy;
 			}
 			else
 			{
