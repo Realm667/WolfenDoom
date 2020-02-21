@@ -47,13 +47,14 @@ Script "Activate" (int lineid, int repairtime)
 
 // Generic interactive paper display script.  
 // Takes a message number as an argument, then looks up PAPERTEXT__ in LANGUAGE and displays that message
-// Paper style can be customized via the seond argument, and font style by the third argument
-script "Textpaper" (int text_number, int paperstyle, int fontstyle)
+// Paper style can be customized via the second argument, and font style by the third argument
+script "Textpaper" (int text_number, int paperstyle, int fontstyle, int papertid)
 {
 	str message = "";
 
 	// If a message number (0 or higher) was passed, the lookup name will be formatted as PAPERTEXTxx - PAPERTEXT00, PAPERTEXT01, etc.)
 	if (text_number > 0) { message = StrParam(s:"PAPERTEXT", s:Pad(text_number, 2)); }
+	else { message = StrParam(l:GetUserVariable(papertid, "user_displaystring")); }
 
 	str paper = "PAPER1"; // Default background
 	int pageoffset = 0; // Start text at the top of the page
@@ -70,6 +71,12 @@ script "Textpaper" (int text_number, int paperstyle, int fontstyle)
 				break;
 			case 4:
 				pageoffset = 45;
+				break;
+			case 6: 
+				pageoffset = 70;
+				break;
+			case 7: 
+				pageoffset = 55;
 				break;
 			default:
 				break;
