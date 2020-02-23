@@ -78,7 +78,7 @@ ACTOR RPPSHGuard1 : MP40Guard
 		"####" G 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",40,4,random(-12,12))
 		"####" G 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {user_count++; if(user_count > 15) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
-		"####" E 3 A_MonsterRefire(10,"See")
+		"####" E 3 A_MonsterRefire(32,"See")
 		"####" E 0 A_FaceTarget
 		Goto Missile + 2
 	Reload:
