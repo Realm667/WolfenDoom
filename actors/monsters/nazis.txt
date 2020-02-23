@@ -758,6 +758,7 @@ ACTOR RifleGuard : MP40Guard
 		"####" F 8
 		"####" F 0 {user_count++; if(user_count > 9) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
 		"####" F 0 A_PlaySound("mauser/cock", CHAN_AUTO, 0.25)
+		"####" E 10 A_FaceTarget
 		Goto See
 	Reload: //ozy81
 		"####" E 0 {bNoPain = TRUE;}
@@ -803,6 +804,7 @@ ACTOR WRifleGuard : RifleGuard
 		"####" F 4
 		"####" F 0 {user_count++; if(user_count > 4) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
 		"####" F 4 A_PlaySound("mauser/cock", CHAN_AUTO, 0.25)
+		"####" E 10 A_FaceTarget
 		Goto See
 	}
 }
@@ -842,6 +844,7 @@ ACTOR ArcticRifleGuard : RifleGuard
 		"####" E 6
 		"####" E 0 {user_count++; if(user_count > 4) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
 		"####" E 4 A_PlaySound("mauser/cock", CHAN_AUTO, 0.25)
+		"####" E 7 A_FaceTarget
 		Goto See
 	}
 }
