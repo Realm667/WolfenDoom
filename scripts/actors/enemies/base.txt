@@ -1311,7 +1311,7 @@ class Nazi : Base
 			"####" A 0 { return ResolveState("See"); }
 		See.Static: // Static Walk Pattern (non-moving, limited frame actor)
 			"####" "#" 0 { user_incombat = True; }
-			"####" "#" 1 A_NaziChase("Melee", "Missile");
+			"####" A 1 A_NaziChase("Melee", "Missile");
 			"####" A 0 { return ResolveState("See"); }
 		See.Sniper: // Sniper Walk Pattern (non-moving)
 			"####" "#" 0 { user_incombat = True; }
@@ -1573,7 +1573,7 @@ class Nazi : Base
 
 		if (user_sneakable && bFriendly && level.time && level.time % interval == 0) { A_LookForBodies(); }
 
-		if (target is "GrenadeBase")
+		if (target is "GrenadeBase" && Speed > 0)
 		{
 			if (candodge && Distance3D(target) < radius + 64 + target.radius) { A_DoSideRoll(force:true); } // Roll away if it's close
 			else { A_Chase(null, null, flags); } // If running from a grenade, just run away and don't fire
