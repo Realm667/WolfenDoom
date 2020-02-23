@@ -529,7 +529,7 @@ class StrobeEmitter : Actor
 	Actor light1, light2;
 	Color lightcolor;
 	int range;
-	FLineTraceData trace;
+	transient FLineTraceData trace;
 
 	Property LightColor:lightcolor;
 	Property Range:range;
