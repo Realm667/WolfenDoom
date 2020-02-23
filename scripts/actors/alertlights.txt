@@ -528,9 +528,7 @@ class StrobeEmitter : Actor
 {
 	Actor light1, light2;
 	Color lightcolor;
-	double lightradius;
 	int range;
-	int interval;
 	FLineTraceData trace;
 
 	Property LightColor:lightcolor;
@@ -538,6 +536,9 @@ class StrobeEmitter : Actor
 
 	Default
 	{
+		//$Category Lights (BoA)
+		//$Color 11
+
 		Radius 16;
 		Height 16;
 		Speed 10;
@@ -551,11 +552,95 @@ class StrobeEmitter : Actor
 	States
 	{
 		Spawn:
-			TNT1 A 1;
+			TNT1 A 0;
+		Inactive:
+			"####" A -1;
+			Stop;
+		Active:
+			"####" DCBA 4 Bright;
 			Loop;
+		SpriteList:
+			STRB A 0;
+			STRG A 0;
+			STRR A 0;
+			STRY A 0;
 	}
 
 	override void PostBeginPlay()
+	{
+		bDormant = true;
+
+		CVar shadowmaps = CVar.FindCVar("gl_light_shadowmap");
+
+		if (shadowmaps && shadowmaps.GetInt() == 0) // If shadowmaps are enabled, don't limit the range...  You still get slowdown, but only on initial light spawn
+		{
+			// Find the shortest distance to a wall, and use that as the light's max range (min of 128 units)
+			for (int i = 0; i < 360; i += int(Speed))
+			{
+				LineTrace(i, range, 35, TRF_THRUACTORS | TRF_THRUBLOCK | TRF_THRUHITSCAN, 0.0, 0.0, 0.0, trace);
+				if (trace.Distance > 128 && trace.Distance < range) { range = int(trace.Distance); }
+			}
+		}
+
+		// Set the sprite based on the assigned light color
+		String spr = "STR";
+
+		// Basic filter only catches "pure" colors, but it's good enough to catch the colors used by our strobes...
+		if (lightcolor.r)
+		{
+			if (lightcolor.g) { spr = spr .. "Y"; } // Yellow
+			else if (lightcolor.b) { } // Purple, but we don't have a sprite for that
+			else { spr = spr .. "R"; } // Red
+		}
+		else if (lightcolor.g)
+		{
+			if (lightcolor.b) { } // Cyan, but we don't have a sprite for that
+			else { spr = spr .. "G"; } // Green
+		}
+		else
+		{
+			spr = spr .. "B"; // Blue
+		}
+
+		if (spr.length() < 4) { Destroy(); return; } // If sprite name wasn't completed by the filter, Destroy the light
+		else
+		{
+			int s = GetSpriteIndex(spr); // Find the sprite and set it
+			if (s) { sprite = s; }
+		}
+
+		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (globalfreeze || level.Frozen || CheckSightOrRange(range * 1.5) || bDormant) { return; }
+
+		// Spin the lights
+		if (light1) { light1.angle += Speed; }
+		if (light2) { light2.angle += Speed; }
+	}
+
+	override void Activate(Actor activator)
+	{
+		bDormant = false;
+		SpawnLights();
+
+		SetStateLabel("Active");
+	}
+
+	override void Deactivate(Actor activator)
+	{
+		bDormant = true;
+		if (light1) { light1.Destroy(); }
+		if (light2) { light2.Destroy(); }
+
+		SetStateLabel("Inactive");
+	}
+
+	void SpawnLights()
 	{
 		while (!light1) { light1 = Spawn("SpotLightBoA", pos - (0, 0, height / 2)); }
 		light1.master = self;
@@ -577,36 +662,42 @@ class StrobeEmitter : Actor
 		light2.args[DynamicLight.LIGHT_RED] = lightcolor.r;
 		light2.args[DynamicLight.LIGHT_GREEN] = lightcolor.g;
 		light2.args[DynamicLight.LIGHT_BLUE] = lightcolor.b;
-
-		interval = Random(3, 35);
-
-		CVar shadowmaps = CVar.FindCVar("gl_light_shadowmap");
-
-		if (shadowmaps && shadowmaps.GetInt() == 0)
-		{
-			for (int i = 0; i < 360; i += 30)
-			{
-				LineTrace(i, range, 35, TRF_THRUACTORS | TRF_THRUBLOCK | TRF_THRUHITSCAN, 0.0, 0.0, 0.0, trace);
-				if (trace.Distance < range) { range = int(trace.Distance); }
-			}
-
-			range = Clamp(range, 128, Default.Range);
-		}
-
-		light1.args[DynamicLight.LIGHT_INTENSITY] = range;
-		light2.args[DynamicLight.LIGHT_INTENSITY] = range;
-
-		Super.PostBeginPlay();
 	}
+}
 
-	override void Tick()
+class StrobeEmitterBlue : StrobeEmitter
+{
+	Default
 	{
-		Super.Tick();
+		//$Title 2d Strobe Light (BLUE, SWITCHABLE)
+		StrobeEmitter.LightColor 0x0000CC;
+	}
+}
 
-		if (globalfreeze || level.Frozen || CheckSightOrRange(Default.range * 1.5)) { return; }
+class StrobeEmitterGreen : StrobeEmitter
+{
+	Default
+	{
+		//$Title 2d Strobe Light (GREEN, SWITCHABLE)
+		StrobeEmitter.LightColor 0x00CC00;
+	}
+}
 
-		light1.angle += Speed;
-		light2.angle += Speed;
+class StrobeEmitterRed : StrobeEmitter
+{
+	Default
+	{
+		//$Title 2d Strobe Light (RED, SWITCHABLE)
+		StrobeEmitter.LightColor 0xCC0000;
+	}
+}
+
+class StrobeEmitterYellow : StrobeEmitter
+{
+	Default
+	{
+		//$Title 2d Strobe Light (YELLOW, SWITCHABLE)
+		StrobeEmitter.LightColor 0xCC6600;
 	}
 }
 
@@ -619,8 +710,3 @@ class SpotLightBoA : SpotLight
 		Super.Tick();
 	}
 }
-
-class StrobeEmitterBlue : StrobeEmitter { Default { StrobeEmitter.LightColor 0x0000CC; } }
-class StrobeEmitterGreen : StrobeEmitter { Default { StrobeEmitter.LightColor 0x00CC00; } }
-class StrobeEmitterRed : StrobeEmitter { Default { StrobeEmitter.LightColor 0xCC0000; } }
-class StrobeEmitterYellow : StrobeEmitter { Default { StrobeEmitter.LightColor 0xCC6600; } }
