@@ -440,7 +440,7 @@ class TextPaper : Actor
 {
 	bool viewed;
 	int displaytime;
-	String user_displaystring;
+	String user_displaystring, user_displayimage;
 
 	Default
 	{
@@ -454,7 +454,7 @@ class TextPaper : Actor
 		//$Arg1 "Paper style"
 		//$Arg1Tooltip "Various paper styles."
 		//$Arg1Type 11
-		//$Arg1Enum { 1 = "White Paper"; 2 = "Tan Paper"; 3 = "White Paper with Nazi Letterhead"; 4 = "Tan Paper with Nazi Letterhead"; 5 = "Old Dirty Paper"; 6 = "Heer Memo"; 7 = "Scrap"; }
+		//$Arg1Enum { 1 = "White Paper"; 2 = "Tan Paper"; 3 = "White Paper with Nazi Letterhead"; 4 = "Tan Paper with Nazi Letterhead"; 5 = "Old Dirty Paper"; 6 = "Heer Memo"; 7 = "Scrap"; 0 = "Use user_displayimage variable"; }
 		//$Arg1Default 1
 		//$Arg2 "Font style"
 		//$Arg2Tooltip "Various font styles."
@@ -523,7 +523,7 @@ class TextPaper : Actor
 class TextPaperCollectible : Inventory
 {
 	int displaytime, id;
-	String user_displaystring;
+	String user_displaystring, user_displayimage;
 
 	Default
 	{
@@ -537,7 +537,7 @@ class TextPaperCollectible : Inventory
 		//$Arg1 "Paper style"
 		//$Arg1Tooltip "Various paper styles."
 		//$Arg1Type 11
-		//$Arg1Enum { 1 = "White Paper"; 2 = "Tan Paper"; 3 = "White Paper with Nazi Letterhead"; 4 = "Tan Paper with Nazi Letterhead"; 5 = "Old Dirty Paper"; 6 = "Heer Memo"; 7 = "Scrap"; }
+		//$Arg1Enum { 1 = "White Paper"; 2 = "Tan Paper"; 3 = "White Paper with Nazi Letterhead"; 4 = "Tan Paper with Nazi Letterhead"; 5 = "Old Dirty Paper"; 6 = "Heer Memo"; 7 = "Scrap"; 0 = "Use user_displayimage variable"; }
 		//$Arg1Default 6
 		//$Arg2 "Font style"
 		//$Arg2Tooltip "Various font styles."
@@ -707,5 +707,104 @@ class Safe : Actor
 		}
 
 		BoACompass.Remove(self);
+	}
+}
+
+mixin class GiveBuoyancy
+{
+	bool inwater;
+	int offset;
+	double user_buoyancy;
+
+	Property Buoyancy:user_buoyancy;
+
+	void DoBuoyancy()
+	{
+		if (!user_buoyancy) { return; }
+
+		if (offset == 0) { offset = Random(-64, 64); }
+
+		bool iswater;
+		double waterheight;
+		[waterheight, iswater] = GetWaterHeight();
+
+		if (iswater && waterheight > floorz && pos.z < waterheight)
+		{
+			inwater = true;
+
+			bNoGravity = true;
+			bPushable = false;
+
+			double heightoffset = min(abs(user_buoyancy) - 0.05, 0.1) * sin(level.time + offset);
+			double waterclip = Default.height * ((1.0 - user_buoyancy) + heightoffset);
+
+			if (waterheight > pos.z + waterclip + 1)
+			{
+				vel.z = 2.0 * abs(user_buoyancy);
+			}
+			else
+			{
+				SetOrigin((pos.xy, max(waterheight - waterclip, floorz)), true);
+			}
+		}
+		else if (inwater)
+		{
+			inwater = false;
+
+			bNoGravity = Default.bNoGravity;
+			bPushable = Default.bPushable;
+		}
+	}
+
+	// Modified from AActor::UpdateWaterLevel in p_mobj.cpp (waterlevel variable setting function)
+	// Updated to return actual water height value
+	double, bool GetWaterHeight()
+	{
+		if (curSector.MoreFlags & Sector.SECMF_UNDERWATER)
+		{
+			return ceilingz, true;
+		}
+		else
+		{
+			Sector hsec = curSector.GetHeightSec();
+
+			if (hsec)
+			{
+				if (hsec.MoreFlags & Sector.SECMF_UNDERWATERMASK)
+				{
+					double fh = hsec.floorplane.ZatPoint(pos.xy);
+					double ch = hsec.ceilingplane.ZatPoint(pos.xy);
+
+					if (pos.z < fh)
+					{
+						return fh, true;
+					}
+					else if (!(hsec.MoreFlags & Sector.SECMF_FAKEFLOORONLY) && (pos.z + height > ch))
+					{
+						return ch, true;
+					}
+				}
+			}
+			else
+			{
+				for (int i = 0; i < curSector.Get3DFloorCount(); i++)
+				{
+					F3DFloor f = curSector.Get3DFloor(i);
+
+					if (!(f.flags & F3DFloor.FF_EXISTS)) { continue; }
+					if (f.flags & F3DFloor.FF_SOLID) { continue; }
+					if (!(f.flags & F3DFloor.FF_SWIMMABLE)) { continue; }
+
+					double ff_bottom = f.bottom.ZatPoint(pos.xy);
+					double ff_top = f.top.ZatPoint(pos.xy);
+
+					if (ff_bottom > pos.z + height) continue;
+
+					return ff_top, true;
+				}
+			}
+		}
+
+		return 0, false;
 	}
 }

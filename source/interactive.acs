@@ -56,7 +56,7 @@ script "Textpaper" (int text_number, int paperstyle, int fontstyle, int papertid
 	if (text_number > 0) { message = StrParam(s:"PAPERTEXT", s:Pad(text_number, 2)); }
 	else { message = StrParam(l:GetUserVariable(papertid, "user_displaystring")); }
 
-	str paper = "PAPER1"; // Default background
+	str paper;
 	int pageoffset = 0; // Start text at the top of the page
 
 	// Set the background image if one was specified; if the image has a letterhead, offset the text y offset
@@ -81,6 +81,12 @@ script "Textpaper" (int text_number, int paperstyle, int fontstyle, int papertid
 			default:
 				break;
 		}
+	}
+	else
+	{
+		paper = GetUserVariable(papertid, "user_displayimage");
+
+		if (paper == "") { paper = "PAPER1"; } // Default background
 	}
 
 	int fontsize = 30; // Not truly font size - sets the overall scale of the font positioning and wrapping
