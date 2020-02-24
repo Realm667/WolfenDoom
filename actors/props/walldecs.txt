@@ -308,3 +308,16 @@ ACTOR SnowPile1 : CraterGrass
 		Stop
 	}
 }
+
+ACTOR StainedGlassLight : CraterGrass
+{
+	//$Title Stained Glass Light
+	RenderStyle "Add"
+	Alpha 1.0
+	States
+	{
+	Spawn:
+		STGL Z -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
