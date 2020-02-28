@@ -7,7 +7,7 @@ ACTOR AngelOfDeath : Base
 	//$Title Angel Of Death (Boss)
 	//$Color 4
 	Base.BossIcon "BOSSICO3"
-	Tag "???"
+	Tag "$TAGBOSSOCCULT"
 	Health 5000
 	Radius 48
 	Height 96
@@ -485,7 +485,7 @@ ACTOR SmokeMonster : Base
 	//$Sprite SMMOA0
 	Base.BossIcon "BOSSICO3"
 	Base.Shadow 0  //needed for shadows
-	Tag "???"
+	Tag "$TAGBOSSOCCULT"
 	Health 3000
 	Height 56
 	Mass 10000000
@@ -729,7 +729,7 @@ ACTOR ZyklonMonster : Nazi
 	//$Color 4
 	Base.BossIcon "BOSSICO3"
 	Base.Shadow 0  //needed for shadows
-	Tag "???"
+	Tag "$TAGBOSSOCCULT"
 	Health 4500
 	WoundHealth 2500
 	Height 56
@@ -1002,7 +1002,7 @@ ACTOR NaziLoper : Nazi
 	//$Category Monsters (BoA)/Occult
 	//$Title Nazi Loper
 	//$Color 4
-	Tag "Loper"
+	Tag "$TAGLOPER"
 	Health 550
 	Height 64
 	Radius 24
@@ -1143,7 +1143,7 @@ ACTOR FatMan : NaziBoss
 	//$Title General Giftmacher (Boss)
 	//$Color 4
 	Base.BossIcon "BOSSICO2"
-	Tag "Gen. Giftmacher"
+	Tag "$TAGGIFTMACHER"
 	PainChance 32
 	-FLOAT		//we don't want him to fly, yeah? ;)
 	-NOGRAVITY	//we don't want him to fly, yeah?
@@ -1212,7 +1212,7 @@ ACTOR RocketMan : NaziBoss
 	//$Title General Schwabbelhals (Boss)
 	//$Color 4
 	Base.BossIcon "BOSSICO2"
-	Tag "Gen. Schwabbelhals"
+	Tag "$TAGSCHWABBELHALS"
 	Health 300
 	PainChance 64
 	Mass 200
@@ -1268,7 +1268,7 @@ ACTOR GoeringBoss : RocketMan
 {
 	//$Title General Goering (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "Hermann Göring"
+	Tag "$TAGGOERING"
 	Health 2000
 	PainChance 64
 	Mass 200
@@ -1327,7 +1327,7 @@ ACTOR HimmlerBoss : RocketMan
 {
 	//$Title Himmler (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "Heinrich Himmler"
+	Tag "$TAGHIMMLER"
 	Health 1600
 	PainChance 8 //prevent UMG43 and nebelwerfer to stop the Boss attacking player, needs to be applied to many bosses - ozy81
 	Mass 200
@@ -1388,7 +1388,7 @@ ACTOR GoebbelsBoss : RocketMan
 {
 	//$Title Goebbels (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "Joseph Goebbels"
+	Tag "$TAGGOEBBELS"
 	Health 1200
 	PainChance 64
 	Mass 200
@@ -1438,7 +1438,7 @@ ACTOR BattonBoss : RocketMan
 {
 	//$Title Berlin Feldmarschall with Batton (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "Feldmarschall"
+	Tag "$TAGFELDMARSCHALL"
 	Speed 4
 	Health 800
 	Obituary "$BATTBOSS"
@@ -1491,7 +1491,7 @@ ACTOR BattonBoss2 : BattonBoss
 {
 	//$Title Luftwaffe Pilot with Batton (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "Luftwaffe Pilot"
+	Tag "$TAGLWPILOT"
 	Speed 8 //very fast
 	Health 700
 	Obituary "$NAVYBOSS"
@@ -1542,7 +1542,7 @@ ACTOR FlamerMan : RocketMan
 {
 	//$Title Friedhelm Hass (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "Friedhelm Hass"
+	Tag "$TAGHASS"
 	Speed 3.67
 	Health 700
 	Obituary "$FLAMEBOY"
@@ -1597,7 +1597,7 @@ ACTOR MadDoctor : RocketMan
 {
 	//$Title Dr Schabbs Jr. (Boss)
 	Base.BossIcon "BOSSICO1"
-	Tag "Dr. Schabbs Jr."
+	Tag "$TAGSCHABBSJR"
 	Health 400
 	Mass 4000
 	PainChance 64
@@ -1648,7 +1648,7 @@ ACTOR MadDoctor2 : MadDoctor
 {
 	//$Title Dr Schabbs Sr. (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "Dr. Schabbs Sr."
+	Tag "$TAGSCHABBSSR"
 	Health 600
 	+MISSILEEVENMORE
 	Obituary "$SCHABBS2"
@@ -1672,7 +1672,7 @@ ACTOR MadDoctor3 : MadDoctor
 {
 	//$Title Dr. Mengele (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "Dr. Mengele"
+	Tag "$TAGMENGELE"
 	Health 1600
 	PainChance 0
 	DamageFactor "MutantPoison", 0
@@ -1725,7 +1725,7 @@ ACTOR MadDoctor4 : MadDoctor
 {
 	//$Title Dr Morell (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "Dr. Morell"
+	Tag "$TAGMORELL"
 	Health 900
 	+MISSILEEVENMORE
 	Obituary "$MORELL"
@@ -1778,7 +1778,7 @@ ACTOR MadCook : MadDoctor
 {
 	//$Title Cook Fritz Bratwurst (Boss)
 	Obituary "$MADCOOK"
-	Tag "Fritz Bratwurst"
+	Tag "$TAGBRATWURST"
 	Health 400
 	Speed 5
 	+AVOIDMELEE
@@ -1806,13 +1806,13 @@ ACTOR MadCook2 : MadCook
 	//$Title Cook Max Gulasch (Boss)
 	//$Sprite COOKF0
 	Health 400
-	Tag "Max Gulasch"
+	Tag "$TAGGULASCH"
 }
 
 ACTOR MadButcher : MadDoctor
 {
 	//$Title Mad Butcher (Boss)
-	Tag "Mad Butcher"
+	Tag "$TAGMADBUTCHER"
 	Health 550
 	Obituary "$BUTCHER"
 	DropItem "Medikit_Medium"
@@ -1857,7 +1857,7 @@ ACTOR General : RocketMan
 {
 	//$Title General Fettgesicht (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "Gen. Fettgesicht"
+	Tag "$TAGFETTGESICHT"
 	Obituary "$BGENERAL"
 	Health 800
 	Mass 1000
@@ -1909,7 +1909,7 @@ ACTOR BerlinGeneral1 : General
 {
 	//$Title Berlin Officer, Rockets (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "Feldmarschall"
+	Tag "$TAGFELDMARSCHALL"
 	Health 600
 	Mass 1000
 	+MISSILEEVENMORE
@@ -2017,7 +2017,7 @@ ACTOR MarineGeneral : General
 {
 	//$Title General Seeteufel (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "Gen. Seeteufel"
+	Tag "$TAGSEETEUFEL"
 	Health 800
 	Mass 1000
 	+MISSILEEVENMORE
@@ -2060,14 +2060,14 @@ ACTOR MarineGeneral : General
 ACTOR AirshipGeneral : MarineGeneral
 {
 	//$Title General Eisenhimmel (Boss)
-	Tag "Gen. Eisenhimmel"
+	Tag "$TAGEISENHIMMEL"
 }
 
 ACTOR Totengraber_Healthy : RocketMan
 {
 	//$Title Totengraber, healthy (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "Gen. Totengräber"
+	Tag "$TAGTOTENGRAEBER"
 	Health 1000
 	DamageFactor "Poison", 0
 	DamageFactor "MutantPoison", 0
@@ -2128,7 +2128,7 @@ ACTOR Totengraber_Wounded : RocketMan
 {
 	//$Title Totengraber, wounded (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "Gen. Totengräber"
+	Tag "$TAGTOTENGRAEBER"
 	Health 1000
 	PainChance 16
 	+MISSILEMORE
@@ -2204,7 +2204,7 @@ ACTOR Mengele_Healthy : RocketMan
 {
 	//$Title Dr. Mengele, healthy (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "Dr. Mengele"
+	Tag "$TAGMENGELE"
 	Health 1000
 	DamageFactor "Poison", 0
 	DamageFactor "MutantPoison", 0
@@ -2265,7 +2265,7 @@ ACTOR Mengele_Wounded : RocketMan
 {
 	//$Title Dr. Mengele, wounded (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "Dr. Mengele"
+	Tag "$TAGMENGELE"
 	Health 1000
 	PainChance 16
 	+MISSILEMORE
@@ -2343,7 +2343,7 @@ ACTOR DeathKnight : Nazi
 	//$Category Monsters (BoA)/Bosses
 	//$Title Todesritter (Boss)
 	//$Color 4
-	Tag "Todesritter"
+	Tag "$TAGTODESRITTER"
 	Health 3000
 	Radius 64
 	Height 96
@@ -2482,7 +2482,7 @@ ACTOR Longinus_Hitler : NaziBoss
 	//$Title Adolf Hitler, Longinus (Boss)
 	//$Color 4
 	Base.BossIcon "BOSSICO3"
-	Tag "Adolf Hitler"
+	Tag "$TAGHITLER"
 	Health 40000
 	WoundHealth 20000
 	Mass 16000
@@ -2654,7 +2654,7 @@ ACTOR ChairGuy : Nazi
 	//$Title Graf Holzbein (Boss)
 	//$Color 4
 	Base.BossIcon "BOSSICO2"
-	Tag "Graf Holzbein"
+	Tag "$TAGHOLZBEIN"
 	Health 1000
 	Mass 100000
 	PainChance 64
@@ -2743,7 +2743,7 @@ ACTOR SuperSoldier : NaziBoss
 	//$Title Hans Grosse (Boss)
 	//$Color 4
 	Obituary "$SUPASOLD"
-	Tag "Ubersoldat"
+	Tag "$TAGUEBER"
 	Health 500
 	Radius 24
 	Height 64
@@ -2815,7 +2815,7 @@ ACTOR SuperSoldier : NaziBoss
 ACTOR SuperSoldier_SS : SuperSoldier
 {
 	//$Title Hans Grosse, SS (Boss)
-	Tag "SS Ubersoldat"
+	Tag "$TAGSSUEBER"
 	Scale 0.63
 	States
 	{
@@ -2875,7 +2875,7 @@ ACTOR SuperSoldier_SS : SuperSoldier
 ACTOR SuperSoldier_Afrika : SuperSoldier
 {
 	//$Title Hans Grosse, Afrika (Boss)
-	Tag "Afrika Ubersoldat"
+	Tag "$TAGAFRIKAUEBER"
 	Scale 0.63
 	+AVOIDMELEE
 	DropItem "GrenadePickup",128
@@ -2940,7 +2940,7 @@ ACTOR SuperSoldier_Afrika : SuperSoldier
 ACTOR SuperSoldier_Arctic : SuperSoldier
 {
 	//$Title Hans Grosse, Arctic (Boss)
-	Tag "Arctic Ubersoldat"
+	Tag "$TAGARCTICUEBER"
 	Scale 0.63
 	States
 	{
@@ -2992,7 +2992,7 @@ ACTOR SuperSoldier_Arctic : SuperSoldier
 ACTOR SuperSoldier_Wehrmacht : SuperSoldier
 {
 	//$Title Hans Grosse, Wehrmacht (Boss)
-	Tag "Wehr. Ubersoldat"
+	Tag "$TAGWEHRUEBER"
 	Scale 0.63
 	States
 	{
@@ -3050,7 +3050,7 @@ ACTOR SuperSoldier_Wehrmacht : SuperSoldier
 ACTOR SuperSoldier_Navy : SuperSoldier
 {
 	//$Title Hans Grosse, Navy (Boss)
-	Tag "Navy Ubersoldat"
+	Tag "$TAGNAVYUEBER"
 	Scale 0.63
 	States
 	{
@@ -3102,7 +3102,7 @@ ACTOR SuperSoldier_Girl : SuperSoldier
 {
 	//$Title Gretel Grosse (Boss)
 	Obituary "$SUPAGIRL"
-	Tag "Gretel Grosse Jr."
+	Tag "$TAGGRETELJR"
 	Speed 5
 	+MISSILEEVENMORE
 	+MISSILEMORE
@@ -3144,7 +3144,7 @@ ACTOR SuperSoldier_Elsa : SuperSoldier_Girl
 {
 	//$Title Elsa (Boss)
 	Base.BossIcon "BOSSICO2"
-	Tag "Elsa"
+	Tag "$TAGELSA"
 	Health 750
 	Scale 0.63
 	Speed 7
@@ -3261,7 +3261,7 @@ ACTOR SuperSoldier_Elsa : SuperSoldier_Girl
 ACTOR SuperSoldier_Elite : SuperSoldier
 {
 	//$Title Elite Ubersoldat (Boss)
-	Tag "Elite Ubersoldat"
+	Tag "$TAGELITEUEBER"
 	Health 850
 	Obituary "$SUPAELIT"
 	DropItem "9mmAmmo" 128
@@ -3321,7 +3321,7 @@ ACTOR Blondi : NaziBoss
 	//$Color 4
 	Base.BossIcon "BOSSICO1"
 	Base.LoiterDistance 64
-	Tag "Blondi"
+	Tag "$TAGBLONDI"
 	PainChance 8
 	Height 64
 	Health 800
@@ -3406,7 +3406,7 @@ ACTOR Blondi : NaziBoss
 ACTOR PhantomBoss : RocketMan
 {
 	//$Title Erik The Phantom (Boss)
-	Tag "Erik"
+	Tag "$TAGERIK"
 	Base.BossIcon "BOSSICO2"
 	Base.NoFear
 	Nazi.Healer 2
