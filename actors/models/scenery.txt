@@ -1300,7 +1300,7 @@ ACTOR 3dPiano : InteractionBase
 }
 
 //Archibase.net Stuff
-ACTOR CanyonRockSpawner : 3dObstacle //ozymandias81
+ACTOR CanyonRockSpawner : 3dObstacle2 //ozymandias81
 {
 	//$Category Models (BoA)/Rocks
 	//$Title Canyon Rock Spawner
@@ -1312,12 +1312,8 @@ ACTOR CanyonRockSpawner : 3dObstacle //ozymandias81
 	DistanceCheck "scenelod" //needed only for inheritances
 	Radius 24
 	Height 24
-	-CANPASS
-	+MOVEWITHSECTOR
 	+NOGRAVITY
-	+RELATIVETOFLOOR
 	+SOLID
-	+DONTTHRUST
 	States
 	{
 	Spawn:

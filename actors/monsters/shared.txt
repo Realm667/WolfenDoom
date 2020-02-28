@@ -789,14 +789,17 @@ ACTOR HardFlyingNeedleZ : FlyingNeedleZ { +MTHRUSPECIES }
 
 ACTOR HardFlyingNeedleZNoGrav : FlyingNeedleZNoGrav { +MTHRUSPECIES }
 
-ACTOR FlyingHack : FlyingNeedle
+ACTOR FlyingHack : MiniRocket
 {
 	Radius 8
 	Speed 13
+	Gravity 0.3
+	Scale 0.47
 	DamageType "None"
-	PoisonDamage 1, 2
+	Damage (random(1,2))
+	SeeSound ""
 	DeathSound "dspfwood"
-	PROJECTILE
+	-NOGRAVITY
 	+RANDOMIZE
 	+RIPPER
 	States
