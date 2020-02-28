@@ -34,6 +34,7 @@ ACTOR WaterSplashGeneratorNormal : SwitchableDecoration
 
 ACTOR WaterSplashSpawner
 {
+	+DONTSPLASH
 	States
 	{
 	Spawn:
@@ -62,6 +63,7 @@ ACTOR WaterSplashObject1
 	Scale 0.3
 	-NOGRAVITY
 	+CLIENTSIDEONLY
+	+DONTSPLASH
 	+NOINTERACTION
 	States
 	{
@@ -112,6 +114,7 @@ ACTOR WaterSplashCloud
 	Scale 0.7
 	-NOGRAVITY
 	+CLIENTSIDEONLY
+	+DONTSPLASH
 	+NOINTERACTION
 	States
 	{
