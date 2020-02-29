@@ -2,10 +2,16 @@
 // Ported by Nash Muhandes, from the following sources:
 // https://www.shadertoy.com/view/Mdj3zd
 // https://gamedev.stackexchange.com/questions/164607/how-to-implement-a-pixelated-screen-transition-shader
+// http://byteblacksmith.com/improvements-to-the-canonical-one-liner-glsl-rand-for-opengl-es-2-0/
 
 float rand(vec2 co)
 {
-	return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);
+	float a = 12.9898;
+	float b = 78.233;
+	float c = 43758.5453;
+	float dt = dot(co.xy, vec2(a, b));
+	float sn = mod(dt, 3.14);
+	return fract(sin(sn) * c);
 }
 
 void main()
