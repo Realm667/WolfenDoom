@@ -402,3 +402,375 @@ class CombinationSafe : BoAMenu
 		set = 0;
 	}
 }
+
+class ViewItem : BoAMenu
+{
+	TextureID background;
+	Vector2 location, size, bgsize, screendimensions;
+	double scale, fontscale, alpha, msgalpha;
+
+	bool initial;
+	int ticcount, closetime, start, maxy, maxlines, pagewidth;
+
+	BrokenLines hintlines;
+	double hintx, hinty, hintlineheight;
+
+	BrokenLines textlines;
+	double textx, texty, textlineheight;
+
+	Font msgfont;
+
+	Actor item;
+
+	override void Init(Menu parent)
+	{
+		Super.Init(parent);
+
+		item = players[consoleplayer].ConversationNPC;
+
+		texty = 55;
+		maxy = 428;
+		fontscale = 0.5;
+		pagewidth = 250;
+
+		String text, paper, fnt;
+
+		if (item)
+		{
+			paper = "PAPER" .. item.args[1];
+
+			switch (item.args[1])
+			{
+				case 3:
+					texty = 108;
+					break;
+				case 4:
+					texty = 168;
+					break;
+				case 6: 
+					texty = 220;
+					maxy = 308;
+					break;
+				case 7: 
+					texty = 195;
+					maxy = 296;
+					break;
+				case 8:
+					maxy = 375;
+				default:
+					break;
+			}
+
+			if (TextPaper(item))
+			{
+				text = TextPaper(item).user_displaystring;
+				if (paper == "PAPER0") { paper = TextPaper(item).user_displayimage; }
+			}
+			else if (TextPaperCollectible(item))
+			{
+				text = TextPaperCollectible(item).user_displaystring;
+				if (paper == "PAPER0") { paper = TextPaperCollectible(item).user_displayimage; }
+			}
+
+			if (text == "")
+			{
+				text = String.Format("PAPERTEXT%02i", item.args[0]);
+			}
+
+			int fontstyle = item.args[2];
+
+			// Hacky workaround for fonts that don't have Cyrillic characters
+			if (language.Left(2) ~== "ru")
+			{
+				switch (fontstyle)
+				{
+					case 1:
+						fontstyle = 2;
+						break;
+					case 4:
+						fontstyle = 5;
+						break;
+					case 8:
+						fontstyle = 7;
+						break;
+				}
+			}
+
+			switch (fontstyle)
+			{
+				case 1:
+					fnt = "AMH18";
+					fontscale *= 0.875;
+					break;
+				case 3:
+					fnt = "RUN14";
+					break;
+				case 4:
+					fnt = "CHICKN24";
+					fontscale *= 0.875;
+					break;
+				case 5:
+					fnt = "handwriting_neat";
+					break;
+				case 6:
+					fnt = "handwriting_institute";
+					break;
+				case 7:
+					fnt = "NewConsoleFont";
+					fontscale *= 1.5;
+					break;
+				case 8:
+					fnt = "MavenProSmall";
+					fontscale *= 1.2;
+					break;
+				case 2:
+				default:
+					fnt = "typewriter";
+					break;
+			}
+		}
+
+		// Background graphic
+		background = TexMan.CheckForTexture(paper, TexMan.Type_Any);
+		bgsize = TexMan.GetScaledSize(background);
+		scale = 0.95;
+		location = (320, 240);
+
+		// Hint message
+		String hintmessage = StringTable.Localize("PAPERTEXTHOLD", false);
+		hintlines = SmallFont.BreakLines(hintmessage, pagewidth);
+
+		hintx = 320;
+		hintlineheight = SmallFont.GetHeight();
+
+		double offset = hintlineheight * (hintlines.Count() - 0.5);
+
+		hinty = 470 - offset;
+		location.y -= offset;
+
+		// Text content
+		msgfont = Font.GetFont(fnt);
+		if (!msgfont) { msgFont = SmallFont; }
+
+		String textmessage = StringTable.Localize(text, false);
+		textlines = msgfont.BreakLines(textmessage, int(pagewidth / fontscale));
+
+		textx = 320 - pagewidth / 2;
+		textlineheight = msgfont.GetHeight() * 1.5 * fontscale;
+		maxlines = int((maxy - texty) / textlineheight);
+		texty -= offset;
+
+		// Menu setup
+		DontDim = true;
+		menuactive = Menu.On; // Must set to 'On' first instead of straight to WaitKey in order to not end up with stuck controls
+
+		initial = true;
+		closetime = 0;
+	}
+
+	override void Drawer()
+	{
+		screen.Dim(0x000000, 0.2 * alpha, 0, 0, screen.GetWidth(), screen.GetHeight());
+
+		if (alpha > 0)
+		{
+			if (background)
+			{
+				screen.DrawTexture(background, false, location.x, location.y, DTA_DestWidth, int(bgsize.x * scale), DTA_DestHeight, int(bgsize.y * scale), DTA_VirtualWidth, 640, DTA_VirtualHeight, 480, DTA_CenterOffset, true, DTA_Alpha, alpha);
+			}
+
+			if (textlines)
+			{
+				int skipcount;
+				for (int i = start; i < min(start + maxlines, textlines.Count() - skipcount); i++)
+				{
+					String text = textlines.StringAt(i + skipcount);
+
+					if (i == start && text.length() <= 2)
+					{
+						skipcount++;
+						i--;
+					}
+					else
+					{
+						screen.DrawText(msgfont, Font.CR_UNTRANSLATED, textx / fontscale, texty / fontscale + textlineheight * (i - start) / fontscale, text, DTA_VirtualWidth, int(640 / fontscale), DTA_VirtualHeight, int(480 / fontscale), DTA_Alpha, alpha);
+					}
+				}
+
+
+				if (textlines.Count() > maxlines)
+				{
+					bool l, r;
+
+					if (start > 0)
+					{
+						if (start + maxlines > textlines.Count())
+						{
+							l = true;
+							r = false;
+						}
+						else
+						{
+							l = true;
+							r = true;
+						}
+					}
+					else
+					{
+						l = false;
+						r = true;
+					}
+
+					if (l) { screen.DrawText(msgfont, Font.CR_UNTRANSLATED, (textx + pagewidth - 32 - 4) / fontscale, maxy / fontscale, "<", DTA_VirtualWidth, int(640 / fontscale), DTA_VirtualHeight, int(480 / fontscale), DTA_Alpha, alpha); }
+					if (r) { screen.DrawText(msgfont, Font.CR_UNTRANSLATED, (textx + pagewidth - 32 + 4) / fontscale, maxy / fontscale, ">", DTA_VirtualWidth, int(640 / fontscale), DTA_VirtualHeight, int(480 / fontscale), DTA_Alpha, alpha); }
+				}
+			}
+		}
+
+		if (msgalpha > 0)
+		{
+			for (int i = 0; i < hintlines.Count(); i++)
+			{
+				screen.DrawText(SmallFont, Font.CR_GRAY, hintx - hintlines.StringWidth(i) / 2, hinty + hintlineheight * i, hintlines.StringAt(i), DTA_VirtualWidth, 640, DTA_VirtualHeight, 480, DTA_Alpha, msgalpha);
+			}
+		}
+	}
+
+	override void Ticker()
+	{
+		ticcount++;
+
+		if (closetime > 0)
+		{
+			closetime--;
+			alpha = closetime / 5.0;
+		}
+
+		if (initial)
+		{
+			if (ticcount >= 245)
+			{
+				msgalpha = 0;
+				ticcount = 0;
+				initial = false;
+			}
+			else if (ticcount <= 175)
+			{
+				if (ticcount == 10) { S_StartSound("pickup/papers", CHAN_7, CHANF_UI | CHANF_NOSTOP, 1.0); }
+
+				if (ticcount >= 105)
+				{
+					msgalpha = 0.5 + sin(((ticcount - 70) * 360 / 70 - 90) / 2);
+				}
+				else if (ticcount >= 35 && ticcount < 105)
+				{
+					msgalpha = 1.0;
+					alpha = msgalpha;
+				}
+				else
+				{
+					menuactive = Menu.WaitKey;
+					msgalpha = 0.5 + sin((ticcount * 360 / 70 - 90) / 2);
+					alpha = msgalpha;
+				}
+			}
+		}
+
+		if (ticcount > 5 && alpha <= 0)
+		{
+			closetime = 0;
+			Close();
+		}
+
+		Super.Ticker();
+	}
+
+	override bool MenuEvent(int mkey, bool fromcontroller)
+	{
+		switch (mkey)
+		{
+			case MKEY_Up:
+			case MKEY_Left:
+				if (start > 0) { start = max(0, start - maxlines); }
+				return true;
+			case MKEY_Down:
+			case MKEY_Right:
+				if (start < textlines.Count() - maxlines) { start = start + maxlines; }
+				return true;
+			case MKEY_Back:
+			case MKEY_Enter:
+				DoClose();
+				return true;
+			default:
+				return false;
+		}
+	}
+
+	override bool MouseEvent(int type, int x, int y)
+	{
+		return false;
+	}
+
+	override bool OnInputEvent(InputEvent ev)
+	{
+		if (ticcount < 5) { return false; }
+
+		if (ev.type == InputEvent.Type_KeyDown)
+		{
+			switch (ev.keyscan)
+			{
+				case InputEvent.Key_Escape:
+				case InputEvent.Key_Enter:
+					MenuEvent(MKEY_Back, false);
+					return true;
+					break;
+				case InputEvent.Key_LeftArrow:
+				case InputEvent.Key_UpArrow:
+					MenuEvent(MKEY_Left, false);
+					return true;
+					break;
+				case InputEvent.Key_RightArrow:
+				case InputEvent.Key_DownArrow:
+					MenuEvent(MKEY_Right, false);
+					return true;
+					break;
+				case InputEvent.Key_Mouse1:
+					if (start < textlines.Count() - maxlines) { MenuEvent(MKEY_Right, false); }
+					else { MenuEvent(MKEY_Back, false); }
+					return true;
+					break;
+			}
+
+			CheckInput(ev, "+moveleft", MKEY_Left);
+			CheckInput(ev, "+moveright", MKEY_Right);
+			CheckInput(ev, "+use", MKEY_Enter);
+			CheckInput(ev, "+forward", MKEY_Up);
+			CheckInput(ev, "+back", MKEY_Down);
+		}
+
+		return false;
+	}
+
+	bool CheckInput(InputEvent ev, String control, int type)
+	{
+		int c1, c2;
+		[c1, c2] = Bindings.GetKeysForCommand(control);
+
+		if (ev.keyscan == c1 || ev.keyscan == c2)
+		{
+			MenuEvent(type, false);
+			return true;
+		}
+
+		return false;
+	}
+
+	void DoClose()
+	{
+		if (!closetime)
+		{
+			initial = false;
+			closetime = 5;
+		}
+	}
+}

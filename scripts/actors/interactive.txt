@@ -438,8 +438,6 @@ class Gem : Inventory
 
 class TextPaper : Actor
 {
-	bool viewed;
-	int displaytime;
 	String user_displaystring, user_displayimage;
 
 	Default
@@ -483,46 +481,24 @@ class TextPaper : Actor
 		if (special == 80) { frame = args[3]; }
 		else { frame = args[1]; }
 
-		if (!tid) { ChangeTID(FindUniqueTID(16000, 17000)); }
-
 		Super.PostBeginPlay();
 	}
 
 	override bool Used(Actor user)
 	{
-		if (!viewed && !special)
+		if (user)
 		{
-			// This calls ACS_ExecuteWithResult because it can pass a 4th parameter (the TID) to our existing TextPaper script so that we can access user variables
-			viewed = Level.ExecuteSpecial(84, user, null, false, -int(Name("TextPaper")), args[0], args[1], args[2], tid); // Otherwise pass the args as defined
-
-			if (viewed) { displaytime = level.time + 35; }
-			else { displaytime = level.time; }
-			
-			return true;
+			user.player.ConversationNPC = self;
+			if (user.player = players[consoleplayer]) { Menu.SetMenu("ViewItem"); }
+			user.player.ConversationNPC = null;
 		}
-		else { viewed = false; }
 
 		return false;
-	}
-
-	override void Tick()
-	{
-		if (displaytime > level.time)
-		{
-			alpha = max(alpha - 0.06, 0);
-		}
-		else if (!viewed)
-		{
-			alpha = min(alpha + 0.02, 1.0);
-		}
-
-		Super.Tick();
 	}
 }
 
 class TextPaperCollectible : Inventory
 {
-	int displaytime, id;
 	String user_displaystring, user_displayimage;
 
 	Default
@@ -542,7 +518,7 @@ class TextPaperCollectible : Inventory
 		//$Arg2 "Font style"
 		//$Arg2Tooltip "Various font styles."
 		//$Arg2Type 11
-		//$Arg2Enum { 1 = "Set Type (Book print)"; 2 = "Worn Typewriter"; 3 = "Occult Runes"; 4 = "Handwriting 1 (Messy)"; 5 = "Handwriting 2 (Neat)"; 6 = "Handwriting 3 (Neat, small)"; 7 = "Console Font"; }
+		//$Arg2Enum { 1 = "Set Type (Book print)"; 2 = "Worn Typewriter"; 3 = "Occult Runes"; 4 = "Handwriting 1 (Messy)"; 5 = "Handwriting 2 (Neat)"; 6 = "Handwriting 3 (Neat, small)"; 7 = "Console Font"; 8 = "Maven Pro (small)"; }
 		//$Arg2Default 5
 
 		-SOLID
@@ -556,6 +532,7 @@ class TextPaperCollectible : Inventory
 		Scale 0.25;
 		RenderStyle 'Translucent';
 		Inventory.Icon "TEXTG0";
+		Inventory.PickupMessage "$DOCUMENT";
 	}
 
 	States
@@ -572,22 +549,16 @@ class TextPaperCollectible : Inventory
 		String ico = String.Format("%s%c%i", "TEXT", 65 + args[1], 0);
 		icon = TexMan.CheckForTexture(ico, TexMan.Type_Any);
 
-		if (!tid) { ChangeTID(FindUniqueTID(16000, 17000)); }
-		id = tid; // Remember the TID for when it gets stripped on pickup
-
 		Super.PostBeginPlay();
 	}
 
 	override bool Use(bool pickup)
 	{
-		if (!special && owner && owner.player)
+		if (owner && owner.player)
 		{
-			if (!tid) { ChangeTID(id); } // Reassign the TID afer it gets stripped on pickup
-
-			// This calls ACS_ExecuteWithResult because it can pass a 4th parameter (the TID) to our existing TextPaper script so that we can access user variables
-			Level.ExecuteSpecial(84, owner, null, false, -int(Name("TextPaper")), args[0], args[1], args[2], tid);
-
-			if (PlayerPawn(owner)) { PlayerPawn(owner).InvSel = self; }
+			owner.player.ConversationNPC = self;
+			if (owner.player = players[consoleplayer]) { Menu.SetMenu("ViewItem"); }
+			owner.player.ConversationNPC = null;
 		}
 
 		return false;
@@ -606,6 +577,9 @@ class TextPaperCollectible : Inventory
 	override bool Used(Actor user)
 	{
 		Super.TryPickup(user);
+
+		PrintPickupMessage(user.CheckLocalView(), PickupMessage());
+		PlayPickupSound(user);
 
 		return false;
 	}
@@ -665,9 +639,7 @@ class Safe : Actor
 		if (locked)
 		{
 			user.player.ConversationNPC = self;
-
-			Menu.SetMenu("CombinationSafe");
-
+			if (user.player = players[consoleplayer]) { Menu.SetMenu("CombinationSafe"); }
 			user.player.ConversationNPC = null;
 
 			return true;
