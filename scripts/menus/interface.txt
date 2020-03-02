@@ -407,7 +407,7 @@ class ViewItem : BoAMenu
 {
 	TextureID background;
 	Vector2 location, size, bgsize, screendimensions;
-	double scale, fontscale, alpha, msgalpha;
+	double scale, fontscale, linespacing, alpha, msgalpha;
 
 	bool initial;
 	int ticcount, closetime, start, maxy, maxlines, pagewidth;
@@ -431,6 +431,7 @@ class ViewItem : BoAMenu
 		texty = 55;
 		maxy = 428;
 		fontscale = 0.5;
+		linespacing = 1.5;
 		pagewidth = 250;
 
 		String text, paper, fnt;
@@ -501,6 +502,7 @@ class ViewItem : BoAMenu
 				case 1:
 					fnt = "AMH18";
 					fontscale *= 0.875;
+					linespacing = 1.25;
 					break;
 				case 3:
 					fnt = "RUN14";
@@ -508,12 +510,14 @@ class ViewItem : BoAMenu
 				case 4:
 					fnt = "CHICKN24";
 					fontscale *= 0.875;
+					linespacing = 1.0;
 					break;
 				case 5:
 					fnt = "handwriting_neat";
 					break;
 				case 6:
 					fnt = "handwriting_institute";
+					linespacing = 1.2;
 					break;
 				case 7:
 					fnt = "NewConsoleFont";
@@ -522,10 +526,12 @@ class ViewItem : BoAMenu
 				case 8:
 					fnt = "MavenProSmall";
 					fontscale *= 1.2;
+					linespacing = 1.2;
 					break;
 				case 2:
 				default:
 					fnt = "typewriter";
+					linespacing = 1.4;
 					break;
 			}
 		}
@@ -552,11 +558,17 @@ class ViewItem : BoAMenu
 		msgfont = Font.GetFont(fnt);
 		if (!msgfont) { msgFont = SmallFont; }
 
-		String textmessage = StringTable.Localize(text, false);
+		String textmessage = "";
+
+		if (!(text == "PAPERTEXT00")) // Don't show any text if nothing was set up for display...
+		{
+			textmessage = StringTable.Localize(text, false);
+		}
+
 		textlines = msgfont.BreakLines(textmessage, int(pagewidth / fontscale));
 
 		textx = 320 - pagewidth / 2;
-		textlineheight = msgfont.GetHeight() * 1.5 * fontscale;
+		textlineheight = msgfont.GetHeight() * linespacing * fontscale;
 		maxlines = int((maxy - texty) / textlineheight);
 		texty -= offset;
 
