@@ -31,7 +31,6 @@ ACTOR CrowWander1L : Base //Wandering version. Flees when player gets close and 
 	//$Category Fauna (BoA)
 	//$Title Crow (left,wander,proxflee,reactsweapon)
 	//$Color 0
-	//Let's define a base sprite for this actor in order to avoid conflict on GZDB 2.3.0.2592+
 	//$Sprite CRW1A0B0
 	Mass 99999
 	Health 999
@@ -46,6 +45,7 @@ ACTOR CrowWander1L : Base //Wandering version. Flees when player gets close and 
 	+BOUNCEONWALLS
 	+FLOORCLIP
 	+FLOORHUGGER
+	+FRIENDLY //avoid playerfollowers to aim at them - ozy81
 	+LOOKALLAROUND
 	+NOBLOOD
 	+NODAMAGE
