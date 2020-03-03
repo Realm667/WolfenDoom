@@ -439,6 +439,9 @@ class Gem : Inventory
 class TextPaper : Actor
 {
 	String user_displaystring, user_displayimage;
+	Sound pickupsound;
+
+	Property PickupSound:pickupsound;
 
 	Default
 	{
@@ -467,6 +470,7 @@ class TextPaper : Actor
 		-SOLID
 		+FLATSPRITE
 		+NOGRAVITY
+		TextPaper.PickupSound "pickup/papers";
 	}
 
 	States
@@ -478,8 +482,9 @@ class TextPaper : Actor
 
 	override void PostBeginPlay()
 	{
-		if (special == 80) { frame = args[3]; }
-		else { frame = args[1]; }
+		frame = args[1];
+
+		if (frame == 8) { PickupSound = "pickup/generic"; }
 
 		Super.PostBeginPlay();
 	}
@@ -533,6 +538,7 @@ class TextPaperCollectible : Inventory
 		RenderStyle 'Translucent';
 		Inventory.Icon "TEXTG0";
 		Inventory.PickupMessage "$DOCUMENT";
+		Inventory.PickupSound "pickup/papers";
 	}
 
 	States
@@ -548,6 +554,8 @@ class TextPaperCollectible : Inventory
 
 		String ico = String.Format("%s%c%i", "TEXT", 65 + args[1], 0);
 		icon = TexMan.CheckForTexture(ico, TexMan.Type_Any);
+
+		if (frame == 8) { PickupSound = "pickup/generic"; }
 
 		Super.PostBeginPlay();
 	}
@@ -579,7 +587,6 @@ class TextPaperCollectible : Inventory
 		Super.TryPickup(user);
 
 		PrintPickupMessage(user.CheckLocalView(), PickupMessage());
-		PlayPickupSound(user);
 
 		return false;
 	}

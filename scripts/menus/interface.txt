@@ -421,6 +421,7 @@ class ViewItem : BoAMenu
 	Font msgfont;
 
 	Actor item;
+	Sound PickupSound;
 
 	override void Init(Menu parent)
 	{
@@ -534,6 +535,10 @@ class ViewItem : BoAMenu
 					linespacing = 1.4;
 					break;
 			}
+
+			if (Inventory(item)) { PickupSound = Inventory(item).PickupSound; }
+			else if (TextPaper(item)) { PickupSound = TextPaper(item).PickupSound; }
+			else { PickupSound = "pickup/generic"; }
 		}
 
 		// Background graphic
@@ -668,7 +673,7 @@ class ViewItem : BoAMenu
 			}
 			else if (ticcount <= 175)
 			{
-				if (ticcount == 10) { S_StartSound("pickup/papers", CHAN_7, CHANF_UI | CHANF_NOSTOP, 1.0); }
+				if (ticcount == 10) { S_StartSound(PickupSound, CHAN_ITEM, CHANF_UI | CHANF_NOSTOP, 1.0); }
 
 				if (ticcount >= 105)
 				{
@@ -692,6 +697,8 @@ class ViewItem : BoAMenu
 		{
 			closetime = 0;
 			Close();
+
+			if (Inventory(item)) { S_StartSound("pickup/item", CHAN_ITEM, CHANF_UI | CHANF_NOSTOP, 1.0); }
 		}
 
 		Super.Ticker();
