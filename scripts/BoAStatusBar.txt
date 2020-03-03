@@ -736,7 +736,25 @@ class BoAStatusBar : BaseStatusBar
 		DrawBarAlpha("HEALTH_R", "", health, maxhealth, (0, basey), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, ((maxhealth - health) / (maxhealth * 0.75)) * healthbaralpha);
 		DrawImage(icon, (-70, basey), flags | DI_ITEM_CENTER, healthbaralpha, (-1, -1), (0.5, 0.5));
 
-		DrawString(mSmallFont, tag, (0, (basey + 1) - mSmallFont.mFont.GetHeight() / 2), flags | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, healthbaralpha * 0.75);
+		String nametag = tag;
+
+		Vector2 hudscale = Statusbar.GetHudScale();
+		Vector2 screenpos;
+
+		double hscale = max(1.0, Screen.GetHeight() / ((200 / 10) * mSmallFont.mFont.GetHeight()));
+		double wscale = 152.0 * hscale / SmallFont.StringWidth(nametag);
+		double scale = min(wscale, hscale);
+
+		int width = int(Screen.GetWidth() / scale);
+		int height = int(Screen.GetHeight() / scale);
+
+		screenpos.x = width / 2;
+		screenpos.y = basey * (hudscale.y / scale);
+
+		screenpos.y -= mSmallFont.mFont.GetHeight() / 2;
+		screenpos.x -= SmallFont.StringWidth(nametag) / 2;
+
+		screen.DrawText(SmallFont, Font.CR_GRAY, screenpos.x, screenpos.y, nametag, DTA_KeepRatio, true, DTA_VirtualWidth, width, DTA_VirtualHeight, height, DTA_Alpha, healthbaralpha * 0.75);
 	}
 
 	void DrawCrosshairHint()
