@@ -8,7 +8,7 @@ ACTOR AngelOfDeath : Base
 	//$Color 4
 	Base.BossIcon "BOSSICO3"
 	Tag "$TAGBOSSOCCULT"
-	Health 5000
+	Health 3000
 	Radius 48
 	Height 96
 	Mass 2000
@@ -29,6 +29,7 @@ ACTOR AngelOfDeath : Base
 	BloodType "BossBlood"
 	BloodColor "DarkSeaGreen"
 	DamageFactor "Rocket", 0.2
+	DamageFactor "Electric", 1.2
 	States
 	{
 	Spawn:
@@ -148,7 +149,7 @@ ACTOR AngelOfDeath : Base
 		"####" MNOPQRS 10
 		"####" T -1
 		Stop
-  }
+	}
 }
 
 ACTOR AngelOfDeath_End : AngelOfDeath
@@ -474,7 +475,7 @@ ACTOR AngelOfDeath_End : AngelOfDeath
 		"####" MNOPQRS 10
 		"####" T -1
 		Stop
-  }
+	}
 }
 
 ACTOR SmokeMonster : Base
@@ -1003,7 +1004,7 @@ ACTOR NaziLoper : Nazi
 	//$Title Nazi Loper
 	//$Color 4
 	Tag "$TAGLOPER"
-	Health 550
+	Health 950
 	Height 64
 	Radius 24
 	Mass 300

@@ -18,13 +18,13 @@ Class ProtoDrone : Nazi //ozy81
 		MeleeThreshold 256; //forces the melee attack
 		MaxTargetRange 896; //same of Arch-Vile, guess it's enough
 		Speed 2;
-		PainChance 96; //it is a drone, so...
 		-FLOORCLIP
 		+FLOAT
 		+LOOKALLAROUND
 		+NOBLOOD
 		+NOGRAVITY
 		+NOINFIGHTING
+		+NOPAIN
 		Obituary "$PDRONE";
 		SeeSound "proto/see";
 		PainSound "drone_pain";
@@ -95,12 +95,6 @@ Class ProtoDrone : Nazi //ozy81
 				if (firecount++ < 35) { SetStateLabel("Missile.Loop"); }
 				else { A_StopSound(CHAN_6); if (beam) { beam.Destroy(); } }
 			}
-			Goto See;
-		Pain:
-		Pain.Dagger:
-			PROT N 3 { if (beam) { beam.Destroy(); } }
-			"####" O 3 A_Pain();
-			"####" N 6;
 			Goto See;
 		Death:
 			PROT OPQRS 3;
