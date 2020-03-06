@@ -239,6 +239,7 @@ class Base : Actor
 	int loiterdistance;
 	int maxdodge;
 	int timeout;
+	int interval;
 	int user_count;			//attacks counters
 	int user_count2;		//attacks counters
 	int user_count3;		//attacks counters
@@ -749,7 +750,7 @@ class Base : Actor
 					vel.z = min(vel.z, -1);
 				}
 
-				if (lightthreshold && level.time % 10 == 0) // If zero, ignore light levels (so, default to normal enemy behavior)
+				if (lightthreshold && (level.time + interval) % 10 == 0) // If zero, ignore light levels (so, default to normal enemy behavior)
 				{
 					if (ReactionTime == 0) // This is only checked when the enemy is active and not standing still or attacking
 					{
@@ -941,7 +942,6 @@ class Nazi : Base
 	bool user_sneakable;
 	int healflags;
 	int healloopcount;
-	int interval;
 	int perceptionfov;
 	int user_perceptiontime;
 	double perceptiondistance;
@@ -1766,6 +1766,8 @@ class Nazi : Base
 
 	void A_LookForGrenades()
 	{
+		if (!CheckIfSeen() && CheckRange(512.0, true)) { return; }
+
 		ThinkerIterator Finder = ThinkerIterator.Create("GrenadeBase", STAT_DEFAULT - 6);
 		GrenadeBase mo;
 
@@ -1854,7 +1856,7 @@ class Nazi : Base
 
 		HealState = FindState("Heal");
 
-		interval = Random[pollinterval](35, 70);
+		interval = Random[pollinterval](35, 105);
 	}
 
 	override void PostBeginPlay()

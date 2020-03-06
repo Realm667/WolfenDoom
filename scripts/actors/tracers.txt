@@ -2,6 +2,7 @@ class BulletTracer : FastProjectile
 {
 	Class<TracerTrail> trail;
 	Actor trailactor;
+	int offset;
 
 	Property Trail:trail;
 
@@ -54,6 +55,8 @@ class BulletTracer : FastProjectile
 			trailactor.angle = angle;
 			trailactor.master = self;
 		}
+
+		offset = Random(0, 70);
 	}
 
 	// Handling so that tracers won't hit actors that have the tracer's origin actor set as their master (or inherit from one that does)
@@ -74,7 +77,7 @@ class BulletTracer : FastProjectile
 
 	override void Tick()
 	{
-		DoWhizChecks();
+		if ((level.time + offset) % 30 == 0) { DoWhizChecks(); }
 
 		Super.Tick();
 	}
