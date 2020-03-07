@@ -1878,12 +1878,28 @@ class Nazi : Base
 		Super.PostBeginPlay();
 	}
 
+	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
+	{
+		State DeathState = FindState("Death");
+		if (DodgeState && sprite == DodgeState.sprite)
+		{
+			// Make sure the sprite is correct
+			if (DeathState.sprite)
+			{
+				sprite = DeathState.sprite;
+			}
+			else
+			{
+				sprite = SpawnState.sprite;
+			}
+		}
+		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
+	}
+
 	// Hijack the damage calls in order to implement stealth kills and critical hits
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
 		Inventory vis;
-	
-		if (DodgeState && sprite == DodgeState.sprite) { sprite = SpawnState.sprite; } // Make sure our sprite isn't crouched or rolling
 
 		if (user_sneakable && bDormant) { bDormant = False; } // Pain wakes up a dormant sneakable actors
 
