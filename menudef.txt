@@ -205,11 +205,18 @@ OptionValue "SmokeStyle"
 	1, "$SM_NEW"
 }
 
+OptionValue "TorchStyle"
+{
+	0, "$SM_SPR"
+	1, "$SM_PAR"
+}
+
 OptionMenu "EffectsOptions"
 {	
 	Title  "$OPT_SFX"
 	StaticText "$WARNING1"
 	StaticText ""
+	Option "$SF_TORC","torchtype","TorchStyle"
 	Option "$SF_CIND","cinderswitch","OnOff"
 	Option "$SF_LEAV","leavesswitch","OnOff"
 	Option "$SF_SMOD","smoketype","SmokeStyle"
