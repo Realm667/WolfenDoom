@@ -40,8 +40,32 @@ ACTOR BJKick : Weapon
 		BJKK A 1 Offset(24,39)
 		BJKK A 0 Offset(18,36)
 		BJKK A 1 Offset(6,34)
+		BJKK A 0 A_JumpIfInventory("PowerStrength", 1, "Fire.Berserked")
 		BJKK A 0 Offset(4,32) A_PlaySound("knife/swing",CHAN_WEAPON)
 		BJKK B 2 Offset(4,32) A_CustomPunch(8, TRUE, CPF_NOTURN, "KickPuff", 70)	//CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
+		BJKK A 0 Offset(4,32)
+		BJKK A 1 Offset(6,34)
+		BJKK A 0 Offset(18,36)
+		BJKK A 1 Offset(24,39)
+		BJKK A 0 Offset(28,43)
+		BJKK A 1 Offset(36,52)
+		BJKK A 0 Offset(40,56)
+		BJKK A 1 Offset(44,60)
+		BJKK A 0 Offset(48,64)
+		BJKK A 1 Offset(52,68)
+		BJKK A 0 Offset(56,72)
+		BJKK A 1 Offset(60,76)
+		BJKK A 0 Offset(64,80)
+		BJKK A 1 Offset(68,84)
+		BJKK A 0 Offset(72,88)
+		BJKK A 1 Offset(76,92)
+		BJKK A 0 Offset(80,96)
+		BJKK A 1 Offset(82,98)
+		BJKK A 0 Offset(84,100)
+		Goto Ready
+	Fire.Berserked:
+		BJKK A 0 Offset(4,32) A_PlaySound("knife/swing",CHAN_WEAPON)
+		BJKK B 2 Offset(4,32) A_CustomPunch(8*3, TRUE, CPF_NOTURN, "KickPuff", 80)	//Triple Damage +10 kickback force with TotaleMacht - Ozy81
 		BJKK A 0 Offset(4,32)
 		BJKK A 1 Offset(6,34)
 		BJKK A 0 Offset(18,36)
@@ -84,8 +108,32 @@ ACTOR BJKick : Weapon
 		BJKK A 1 Offset(24,39)
 		BJKK A 0 Offset(18,36)
 		BJKK A 2 Offset(6,34)
+		BJKK A 0 A_JumpIfInventory("PowerStrength", 1, "AltFire.Berserked")
 		BJKK A 0 Offset(4,32) A_PlaySound("knife/swing",CHAN_WEAPON)
 		BJKK B 3 Offset(4,32) A_CustomPunch(16, TRUE, CPF_NOTURN, "KickPuff", 80) //hit a bit far away like if the leg is stretched
+		BJKK A 0 Offset(4,32)
+		BJKK A 2 Offset(6,34)
+		BJKK A 0 Offset(18,36)
+		BJKK A 1 Offset(24,39)
+		BJKK A 0 Offset(28,43)
+		BJKK A 2 Offset(36,52)
+		BJKK A 0 Offset(40,56)
+		BJKK A 1 Offset(44,60)
+		BJKK A 0 Offset(48,64)
+		BJKK A 2 Offset(52,68)
+		BJKK A 0 Offset(56,72)
+		BJKK A 1 Offset(60,76)
+		BJKK A 0 Offset(64,80)
+		BJKK A 2 Offset(68,84)
+		BJKK A 0 Offset(72,88)
+		BJKK A 1 Offset(76,92)
+		BJKK A 0 Offset(80,96)
+		BJKK A 2 Offset(82,98)
+		BJKK A 0 Offset(84,100)
+		Goto Ready
+	AltFire.Berserked:
+		BJKK A 0 Offset(4,32) A_PlaySound("knife/swing",CHAN_WEAPON)
+		BJKK B 3 Offset(4,32) A_CustomPunch(16*3, TRUE, CPF_NOTURN, "KickPuff", 90)	//Triple Damage +20 more kickback force with TotaleMacht - Ozy81
 		BJKK A 0 Offset(4,32)
 		BJKK A 2 Offset(6,34)
 		BJKK A 0 Offset(18,36)
@@ -153,8 +201,22 @@ ACTOR BJKickAuto : BJKick //Bastardize the weapon states to make a weapon that f
 		BJKK A 1 Offset(48,64)
 		BJKK A 1 Offset(40,56)
 		BJKK A 1 Offset(24,39)
+		BJKK A 0 A_JumpIfInventory("PowerStrength", 1, "Ready.Berserked")
 		BJKK A 1 Offset(6,34) A_PlaySound("knife/swing",CHAN_WEAPON)
 		BJKK B 2 Offset(4,32) A_CustomPunch(10, TRUE, CPF_NOTURN, "KickPuff", 70)	//CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
+		BJKK A 1 Offset(6,34) { bDontBlast = true; }
+		BJKK A 1 Offset(24,39) { bDontBlast = false; } //KickPuff blast happens 3 tics after spawning
+		BJKK A 1 Offset(36,52)
+		BJKK A 1 Offset(44,60)
+		BJKK A 1 Offset(52,68)
+		BJKK A 1 Offset(60,76)
+		BJKK A 1 Offset(68,84)
+		BJKK A 1 Offset(76,92)
+		BJKK A 1 Offset(82,98)
+		Goto ReadyLoop
+	Ready.Berserked:
+		BJKK A 1 Offset(6,34) A_PlaySound("knife/swing",CHAN_WEAPON)
+		BJKK B 2 Offset(4,32) A_CustomPunch(10*5, TRUE, CPF_NOTURN, "KickPuff", 80)	//Quintuple Damage with Totalemacht, as suggested by N00b - Ozy81
 		BJKK A 1 Offset(6,34) { bDontBlast = true; }
 		BJKK A 1 Offset(24,39) { bDontBlast = false; } //KickPuff blast happens 3 tics after spawning
 		BJKK A 1 Offset(36,52)
@@ -174,6 +236,7 @@ ACTOR BJKickAuto : BJKick //Bastardize the weapon states to make a weapon that f
 		BJKK C 1 Offset(48,64)
 		BJKK C 1 Offset(40,56)
 		BJKK C 1 Offset(24,39)
+		BJKK C 0 A_JumpIfInventory("PowerStrength", 1, "Ready.Berserked")
 		BJKK C 1 Offset(6,34) A_PlaySound("knife/swing",CHAN_WEAPON)
 		BJKK D 2 Offset(4,32) A_CustomPunch(10, TRUE, CPF_NOTURN, "KickPuff", 70)	//CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
 		BJKK C 1 Offset(6,34) { bDontBlast = true; }
@@ -186,6 +249,32 @@ ACTOR BJKickAuto : BJKick //Bastardize the weapon states to make a weapon that f
 		BJKK C 1 Offset(76,92)
 		BJKK C 1 Offset(82,98)
 		Goto ReadyLoop
+	ReadyCC.Berserked:
+		BJKK C 1 Offset(6,34) A_PlaySound("knife/swing",CHAN_WEAPON)
+		BJKK D 2 Offset(4,32) A_CustomPunch(10*5, TRUE, CPF_NOTURN, "KickPuff", 80)	//Quintuple Damage with Totalemacht, as suggested by N00b - Ozy81
+		BJKK C 1 Offset(6,34) { bDontBlast = true; }
+		BJKK C 1 Offset(24,39) { bDontBlast = false; } //KickPuff blast happens 3 tics after spawning
+		BJKK C 1 Offset(36,52)
+		BJKK C 1 Offset(44,60)
+		BJKK C 1 Offset(52,68)
+		BJKK C 1 Offset(60,76)
+		BJKK C 1 Offset(68,84)
+		BJKK C 1 Offset(76,92)
+		BJKK C 1 Offset(82,98)
+		Goto ReadyLoop
+	ReadySS.Berserked:
+		BJKK E 1 Offset(6,34) A_PlaySound("knife/swing",CHAN_WEAPON)
+		BJKK F 2 Offset(4,32) A_CustomPunch(10*5, TRUE, CPF_NOTURN, "KickPuff", 80)	//Quintuple Damage with Totalemacht, as suggested by N00b - Ozy81
+		BJKK E 1 Offset(6,34) { bDontBlast = true; }
+		BJKK E 1 Offset(24,39) { bDontBlast = false; } //KickPuff blast happens 3 tics after spawning
+		BJKK E 1 Offset(36,52)
+		BJKK E 1 Offset(44,60)
+		BJKK E 1 Offset(52,68)
+		BJKK E 1 Offset(60,76)
+		BJKK E 1 Offset(68,84)
+		BJKK E 1 Offset(76,92)
+		BJKK E 1 Offset(82,98)
+		Goto ReadyLoop
 	ReadySS:
 		BJKK E 1 Offset(84,100) A_TakeInventory("Stamina", 30)
 		BJKK E 1 Offset(80,96)
@@ -195,6 +284,7 @@ ACTOR BJKickAuto : BJKick //Bastardize the weapon states to make a weapon that f
 		BJKK E 1 Offset(48,64)
 		BJKK E 1 Offset(40,56)
 		BJKK E 1 Offset(24,39)
+		BJKK E 0 A_JumpIfInventory("PowerStrength", 1, "Ready.Berserked")
 		BJKK E 1 Offset(6,34) A_PlaySound("knife/swing",CHAN_WEAPON)
 		BJKK F 2 Offset(4,32) A_CustomPunch(10, TRUE, CPF_NOTURN, "KickPuff", 70)	//CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
 		BJKK E 1 Offset(6,34) { bDontBlast = true; }

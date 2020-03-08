@@ -14,7 +14,6 @@ ACTOR KnifeSilent : NaziWeapon
 	Weapon.BobStyle Smooth
 	Weapon.BobSpeed 1.5
 	Weapon.BobRangeX 1.5
-	//Weapon.UpSound "knife/select" - no more inventory pickup sounds when we start a map (ozy81)
 	Inventory.PickupMessage "$KNIFE"
 	Weapon.SelectionOrder 10000
 	States
@@ -39,7 +38,7 @@ ACTOR KnifeSilent : NaziWeapon
 		Goto Fire.End
 	Fire.Berserked:
 		KNFG A 1 A_PlaySound("knife/swing", CHAN_WEAPON)
-		KNFG B 1 A_CustomPunch(10*2, 1, 0, "KnifePuff", 64) //Double Damage with NaziBerserk - ozy81
+		KNFG B 1 A_CustomPunch(10*5, 1, 0, "KnifePuff", 64) //Quintuple Damage with NaziBerserk, suggested by N00b - ozy81
 	Fire.End:
 		KNFG CDEFGHJKLMN 1
 		KNFG A 10
