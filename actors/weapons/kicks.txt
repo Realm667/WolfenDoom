@@ -236,7 +236,7 @@ ACTOR BJKickAuto : BJKick //Bastardize the weapon states to make a weapon that f
 		BJKK C 1 Offset(48,64)
 		BJKK C 1 Offset(40,56)
 		BJKK C 1 Offset(24,39)
-		BJKK C 0 A_JumpIfInventory("PowerStrength", 1, "Ready.Berserked")
+		BJKK C 0 A_JumpIfInventory("PowerStrength", 1, "ReadyCC.Berserked")
 		BJKK C 1 Offset(6,34) A_PlaySound("knife/swing",CHAN_WEAPON)
 		BJKK D 2 Offset(4,32) A_CustomPunch(10, TRUE, CPF_NOTURN, "KickPuff", 70)	//CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
 		BJKK C 1 Offset(6,34) { bDontBlast = true; }
@@ -284,7 +284,7 @@ ACTOR BJKickAuto : BJKick //Bastardize the weapon states to make a weapon that f
 		BJKK E 1 Offset(48,64)
 		BJKK E 1 Offset(40,56)
 		BJKK E 1 Offset(24,39)
-		BJKK E 0 A_JumpIfInventory("PowerStrength", 1, "Ready.Berserked")
+		BJKK E 0 A_JumpIfInventory("PowerStrength", 1, "ReadySS.Berserked")
 		BJKK E 1 Offset(6,34) A_PlaySound("knife/swing",CHAN_WEAPON)
 		BJKK F 2 Offset(4,32) A_CustomPunch(10, TRUE, CPF_NOTURN, "KickPuff", 70)	//CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
 		BJKK E 1 Offset(6,34) { bDontBlast = true; }
