@@ -105,13 +105,27 @@ class LadderBase : Actor
 
 			if (it.thing is "LadderBase")
 			{ // If there are other ladders immediately above or below, handle setting up transfer logic so that players don't get dropped mid-ladder if there are multiple stacked ladders
-				if (Distance2d(it.thing) > 0) { continue; } // Only check ladders that are directly above/below this one
-
-				if (it.thing.pos.z >= pos.z && pos.z - ladderheight <= it.thing.pos.z && it.thing.curSector == curSector) { passive = true; } // This ladder is not the top, so make it decorative only
-				else if (it.thing.pos.z < pos.z && pos.z - ladderheight > it.thing.pos.z) // This ladder is the top, so make its height check logic handle the entire stack
+				if (it.thing is "RopeSegment")
 				{
-					double heightcheck = pos.z - it.thing.pos.z + LadderBase(it.thing).ladderheight;
-					ladderheight = heightcheck > ladderheight ? heightcheck : ladderheight;
+					if (Distance2d(it.thing) > 8) { continue; }
+
+					if (it.thing.pos.z >= pos.z && it.thing.curSector == curSector) { passive = true; }
+ 					else if (it.thing.pos.z < pos.z) // This ladder is the top, so make its height check logic handle the entire stack
+					{
+						double heightcheck = pos.z - it.thing.pos.z + LadderBase(it.thing).ladderheight;
+						ladderheight = heightcheck > ladderheight ? heightcheck : ladderheight;
+					}
+				}
+				else
+				{
+					if (Distance2d(it.thing) > 0) { continue; } // Only check ladders that are directly above/below this one
+
+					if (it.thing.pos.z >= pos.z && pos.z - ladderheight <= it.thing.pos.z && it.thing.curSector == curSector) { passive = true; } // This ladder is not the top, so make it decorative only
+					else if (it.thing.pos.z < pos.z && pos.z - ladderheight > it.thing.pos.z) // This ladder is the top, so make its height check logic handle the entire stack
+					{
+						double heightcheck = pos.z - it.thing.pos.z + LadderBase(it.thing).ladderheight;
+						ladderheight = heightcheck > ladderheight ? heightcheck : ladderheight;
+					}
 				}
 			}
 		}
@@ -129,7 +143,7 @@ class LadderBase : Actor
 
 		while (it.Next())
 		{
-			if ((nomonsters || !it.thing.bIsMonster) && !(it.thing is "PlayerPawn") && !(it.thing is "PlayerFollower")) { continue; } // Ignore everything except players and monsters
+			if ((nomonsters || !it.thing.bIsMonster || it.thing.health <= 0 || it.thing.Default.bNoGravity) && !(it.thing is "PlayerPawn") && !(it.thing is "PlayerFollower")) { continue; } // Ignore everything except players and monsters
 
 			activetimeout = 350; // Set a timer so that the actor will stay active for 10 seconds after a player uses it to give playerfollowers a chance to use it...
 

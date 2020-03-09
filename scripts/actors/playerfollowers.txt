@@ -31,6 +31,11 @@
 	- Determines if you can make the NPC follow/stop following you by pressing 'use' on them
 	- Defaults to false.
 
+	PlayerFollower.HealPlayer
+	- Integer value that sets the health amount under which the player follower will heal
+	  the player (so, set to 40 means that once the player is below 40 health, the follower
+	  will heal the player in increments of 10 until the player is above 40 health).
+
   Useful Variables:
 	These are intended to be set via ACS using 'SetUserVariable(tid, "variable", value);'
 
