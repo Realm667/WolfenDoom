@@ -66,3 +66,83 @@ class UnderlayRenderer : EventHandler
 		}
 	}
 }
+
+class LoadScreen : StaticEventHandler
+{
+	TextureID LoadingGraphic, AltGraphic, BackgroundGraphic, FadeGraphic;
+	transient Font fnt;
+	int loading, unloading;
+	Vector2 size, bgsize, fadesize;
+	String loadstring;
+	int loaded;
+
+	override void OnRegister()
+	{
+		LoadingGraphic = TexMan.CheckForTexture("graphics/general/Loading.png", TexMan.Type_Any);
+		AltGraphic = TexMan.CheckForTexture("graphics/general/M_DOOM.png", TexMan.Type_Any);
+		BackgroundGraphic = TexMan.CheckForTexture("graphics/general/Loading0.png", TexMan.Type_Any);
+		FadeGraphic = TexMan.CheckForTexture("graphics/hud/general/MOVIEHUD.png", TexMan.Type_Any);
+
+		[size.x, size.y] = TexMan.GetSize(LoadingGraphic);
+		[bgsize.x, bgsize.y] = TexMan.GetSize(BackgroundGraphic);
+		[fadesize.x, fadesize.y] = TexMan.GetSize(FadeGraphic);
+
+		fnt = BigFont;
+	}
+
+	override void WorldLoaded(WorldEvent e)
+	{
+		unloading = 0;
+		loading = 120;
+	}
+
+	override void WorldUnloaded(WorldEvent e)
+	{
+		loaded = 0;
+		unloading = 1;
+	}
+
+	override void WorldTick()
+	{
+		if (loading > 0) { loading--; }
+		if (unloading > 0) { unloading++; }
+	}
+
+	override void RenderOverlay(RenderEvent e)
+	{
+		double scale = Screen.GetHeight() / 720;
+		double fadescale = Screen.GetWidth() / fadesize.x;
+
+		int x = int(Screen.GetWidth() - bgsize.x * scale / 2);
+		int y = int(Screen.GetHeight() - bgsize.y * scale / 2);
+
+		if (unloading)
+		{
+			double alpha = min(0.6, double(unloading) / 2);
+
+			if (!players[consoleplayer].mo.FindInventory("CutsceneEnabled")) // Only draw letterbox if there's no cutscene.
+			{
+				screen.DrawTexture(FadeGraphic, false, Screen.GetWidth() / 2, Screen.GetHeight() / 2, DTA_CenterOffset, true, DTA_DestWidth, int(fadesize.x * fadescale), DTA_DestHeight, int(fadesize.y * fadescale), DTA_Alpha, alpha / 0.6);
+			}
+
+			screen.DrawTexture(BackgroundGraphic, true, x, y, DTA_Alpha, alpha / 0.6, DTA_CenterOffset, true, DTA_DestWidth, int(bgsize.x * scale), DTA_DestHeight, int(bgsize.y * scale));
+			screen.DrawTexture(LoadingGraphic, false, x, y, DTA_Alpha, alpha, DTA_CenterOffset, true, DTA_DestWidth, int(size.x * scale), DTA_DestHeight, int(size.y * scale));
+		}
+		else if (loading && gamestate != GS_TITLELEVEL && gamestate != GS_FINALE)
+		{
+			double alpha = min(0.6, double(loading - 30) / 20);
+			double titlealpha = clamp(double(-15 + loading) / 20, 0.0, 0.65);
+			double fadealpha = clamp(double(-35 + loading - 60) / 20, 0.0, 1.0);
+
+			if (!players[consoleplayer].mo.FindInventory("CutsceneEnabled")) // Only draw letterbox and show map title if there's no cutscene.
+			{
+				screen.DrawTexture(FadeGraphic, false, Screen.GetWidth() / 2, Screen.GetHeight() / 2, DTA_CenterOffset, true, DTA_DestWidth, int(fadesize.x * fadescale), DTA_DestHeight, int(fadesize.y * fadescale), DTA_Alpha, alpha / 0.6);
+				screen.DrawText(fnt, Font.CR_GRAY, 65, 20 - fnt.GetHeight() / 2, level.levelname, DTA_Alpha, titlealpha, DTA_VirtualWidth, int(480 * Screen.GetAspectRatio()), DTA_VirtualHeight, 480, DTA_KeepRatio, true);
+			}
+
+			screen.DrawTexture(BackgroundGraphic, true, x, y, DTA_Alpha, alpha / 0.6, DTA_CenterOffset, true, DTA_DestWidth, int(bgsize.x * scale), DTA_DestHeight, int(bgsize.y * scale));
+			screen.DrawTexture(AltGraphic, false, x, y, DTA_Alpha, fadealpha * alpha, DTA_CenterOffset, true, DTA_DestWidth, int(size.x * scale), DTA_DestHeight, int(size.y * scale));
+			screen.DrawTexture(LoadingGraphic, false, x, y, DTA_Alpha, alpha, DTA_CenterOffset, true, DTA_DestWidth, int(size.x * scale), DTA_DestHeight, int(size.y * scale));
+		}
+	}
+}
