@@ -172,13 +172,13 @@ ACTOR BatFamiliar : Base
 		Goto See
 	Death:
 		BFAM D 5 A_ScreamAndUnblock
-		"####" EFD 5 {bMThruSpecies = TRUE; bThruSpecies = TRUE;}
+		"####" EFD 5 {bMThruSpecies = TRUE; bThruSpecies = TRUE; bNoGravity = FALSE;}
 		Goto Death+1
 	Crash:
-		BFAM G 6 A_PlaySound("batfam/crash")
+		BFAM G 6 A_ScreamAndUnblock
 		"####" H 7
 		"####" I 8
-		"####" J -1 {bMThruSpecies = TRUE; bThruSpecies = TRUE;}
+		"####" J -1 {bMThruSpecies = TRUE; bThruSpecies = TRUE; bNoGravity = FALSE;}
 		Stop
 	}
 }
