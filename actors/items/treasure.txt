@@ -155,6 +155,20 @@ ACTOR Cacoward : BagOfCoins
 	}
 }
 
+ACTOR Keenaward : BagOfCoins
+{
+	//$Title Treasure (Easteregg, Keenaward, 10pts)
+	Inventory.PickupMessage "$GOLDWRD"
+	Inventory.PickupSound "treasure/chest"
+	Scale 0.12
+	States
+	{
+	Spawn:
+		CKWR A -1 LIGHT(TRESLITE)
+		Stop
+	}
+}
+
 ACTOR GraalHoly : TreasureCross
 {
 	//$Title Treasure (Easteregg, Holy Graal, 15pts)
