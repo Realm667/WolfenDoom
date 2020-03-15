@@ -50,6 +50,17 @@ ACTOR WoodenBlades : ModelBase
 	Scale 0.85
 }
 
+ACTOR CeilingFanD : CeilingFan
+{
+	//$Title Ceiling Fan, Destroyed
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
+}
+
 ACTOR Wheelbarrow : 3dObstacle //Hunter01
 {
 	//$Category Models (BoA)/Scenery
