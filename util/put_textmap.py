@@ -44,8 +44,8 @@ offsets = []
 for lump in lumps:
     if lump.name == "TEXTMAP" and has_stdin:
         lump.data = sys.stdin.buffer.read()
-    dir_pos += len(lump.data)
     offsets.append(dir_pos)
+    dir_pos += len(lump.data)
 wadfile.write(struct.pack(wad_head, lump_count, dir_pos))
 for lump in lumps:
     wadfile.write(lump.data)

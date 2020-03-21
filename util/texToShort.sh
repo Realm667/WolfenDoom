@@ -88,6 +88,7 @@ if ((modify == 1)); then
     for mapwad in (#i)maps/*.wad; do
         maptext="$(python3 util/get_textmap.py $mapwad)"
         BADTEXTURES=$texstoreplace ruby -n -e $rbscript $maptext | python3 util/put_textmap.py $mapwad
+        rm $maptext
         #((progress++))
         #print "$mapwad done ($((progress / mapwadcount * 100))% overall)"
     done
