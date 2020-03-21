@@ -17,9 +17,9 @@ found = false
 if good
     badtextures.each { |texture|
         if not line.index(texture) === nil
-            lastdirsep = texture.rindex("/")
-            extension = texture.index(".")
-            short = texture[lastdirsep,extension - lastdirsep]
+            lastdirsep = texture.rindex("/") + 1
+            extension = texture.index(".") - 1
+            short = texture[lastdirsep..extension]
             line[texture] = short.upcase
             found = true
         end
