@@ -5,8 +5,10 @@ fullpaths=()
 shortexs=()
 modify=1
 rbscript="$(cat)" <<RUBY
-$\ = "\x0A"
-badtextures = ENV["BADTEXTURES"].split("|")
+\$\ = "\x0A"
+badtextures = ENV["BADTEXTURES"].split("|").map! { |texname|
+    texname.downcase
+}
 good = true
 begin
     line = \$_.downcase
@@ -15,9 +17,11 @@ rescue
 end
 found = false
 
-if good
+texturetype = /texture(?:floor|ceiling|top|bottom|middle)\s*=/
+
+if good and line.match? texturetype
     badtextures.each { |texture|
-        if not line.index(texture) === nil
+        if line.index(texture) != nil
             lastdirsep = texture.rindex("/") + 1
             extension = texture.index(".") - 1
             short = texture[lastdirsep..extension]
