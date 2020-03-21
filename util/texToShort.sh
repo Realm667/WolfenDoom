@@ -81,8 +81,9 @@ done
 if ((modify == 1)); then
     texstoreplace=""
     for tpath in $fullpaths; do
-        texstoreplace+="$tpath\\\|"
+        texstoreplace+="|$tpath"
     done
+    texstoreplace="${texstoreplace:1}"
     setopt extendedglob
     #progress=0
     #mapwads=((#i)maps/*.wad)

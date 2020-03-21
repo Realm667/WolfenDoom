@@ -48,9 +48,9 @@ wadfile.write(struct.pack(wad_head, lump_count, dir_pos))
 for lump in lumps:
     wadfile.write(lump.data)
 for index, lump in enumerate(lumps):
-    paddedname = bytearray(lump.name.encode("ascii"))
+    paddedname = list(lump.name.encode("ascii"))
     while len(paddedname) < 8:
         paddedname.append(0)
-    wadfile.write(struct.pack(wad_dir_entry, offsets[index], len(lump.data), paddedname))
+    wadfile.write(struct.pack(wad_dir_entry, offsets[index], len(lump.data), *paddedname))
 # Custom code end
 wadfile.close()
