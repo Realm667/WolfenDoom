@@ -88,9 +88,8 @@ if ((modify == 1)); then
     #mapwads=((#i)maps/*.wad)
     #typeset -F mapwadcount=${#mapwads}
     for mapwad in (#i)maps/*.wad; do
-        # old bad sed script
-        # sed -i -e "/texture\(top\|middle\|bottom\|floor\|ceiling\)[[:space:]]*=[[:space:]]*\"${texstoreplace}\";/s/\"textures\/\(.\+\?\)\.[[:alnum:]]\+\";/\"\1\";/gI" $mapwad
-        BADTEXTURES=$texstoreplace ruby -i.bak -nl -e $rbscript $mapwad
+        maptext="$(python3 util/get_textmap.py $mapwad)"
+        BADTEXTURES=$texstoreplace ruby -nl -e $rbscript $maptext | python3 util/put_textmap.py $mapwad
         #((progress++))
         #print "$mapwad done ($((progress / mapwadcount * 100))% overall)"
     done
