@@ -36,6 +36,8 @@ for dire in range(lump_count):
     wadfile.seek(dir_pos)
 
 # Custom code start
+wadfile.seek(0)
+wadfile.truncate(0)
 wadfile.write(wad_id)
 dir_pos = 12
 offsets = []

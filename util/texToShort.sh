@@ -5,6 +5,7 @@ fullpaths=()
 shortexs=()
 modify=1
 rbscript="$(cat)" <<RUBY
+$\ = "\x0A"
 badtextures = ENV["BADTEXTURES"].split("|")
 good = true
 begin
@@ -32,14 +33,6 @@ else
     puts \$_
 end
 RUBY
-
-min() {
-    if (( $1 < $2 )); then
-        print $1
-    else
-        print $2
-    fi
-}
 
 # Get texture names and texture definitions for textures whose names are too long
 for ((i=1; i <= ${#hitexs}; i++)) do
@@ -90,7 +83,7 @@ if ((modify == 1)); then
     #typeset -F mapwadcount=${#mapwads}
     for mapwad in (#i)maps/*.wad; do
         maptext="$(python3 util/get_textmap.py $mapwad)"
-        BADTEXTURES=$texstoreplace ruby -nl -e $rbscript $maptext | python3 util/put_textmap.py $mapwad
+        BADTEXTURES=$texstoreplace ruby -n -e $rbscript $maptext | python3 util/put_textmap.py $mapwad
         #((progress++))
         #print "$mapwad done ($((progress / mapwadcount * 100))% overall)"
     done
