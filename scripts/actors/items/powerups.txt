@@ -1,3 +1,29 @@
+class CustomInvBase : CustomInventory
+{
+	String FailMessage;
+
+	Property FailMessage:FailMessage;
+
+	Default
+	{
+		//$Category Powerups (BoA)
+		//$Color 6
+		Scale 0.50;
+		CustomInvBase.FailMessage "";
+	}
+
+	override bool Use(bool pickup)
+	{
+		if (level.levelnum == 99)
+		{
+			if (FailMessage) { Console.MidPrint (null, FailMessage, true); }
+			return false;
+		}
+
+		return Super.Use(pickup);
+	}
+}
+
 class PowerupToggler : PowerupGiver
 {
 	Inventory powerinv;
@@ -618,6 +644,39 @@ class RepairKit : CompassItem
 			return true;
 		}
 		return false;
+	}
+}
+
+class Bandages : PowerupGiver
+{
+	Default
+	{
+		//$Category Health (BoA)
+		//$Title Bandages (+10)
+		//$Color 6
+		Scale 0.5;
+		Tag "$TAGBAIDS";
+		Inventory.Icon "BAIDB0";
+		Inventory.MaxAmount 5;
+		Inventory.PickupMessage "$BAID";
+		Inventory.UseSound "pickup/bandage";
+		Inventory.PickupSound "misc/health_pkup";
+		Powerup.Type "BandagesPowerup";
+	}
+
+	States
+	{
+		Spawn:
+			BAID A -1;
+			Stop;
+	}
+
+	// Don't let the player use bandages when they are at full health!
+	override bool Use(bool pickup)
+	{
+		if (owner && owner.health >= owner.GetMaxHealth(true)) { return false; }
+
+		return Super.Use(pickup);
 	}
 }
 
