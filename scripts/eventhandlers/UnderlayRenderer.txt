@@ -21,24 +21,36 @@ class UnderlayRenderer : EventHandler
 			int lightlevel = p.mo.CurSector.lightlevel;
 			//double maskAlpha = lightlevel <= 64 ? lightlevel / 64.0 : 1.0; // Experiment
 			double maskAlpha = 1.0;
+
+			// Pull brightness of dynamic lights around the player from the stealth/visibility code
+			let vis = p.mo.FindInventory("BoAVisibility");
+			if (vis) { lightlevel += int(BoAVisibility(vis).extravisibility); }
+
 			//double blackAlpha = lightlevel > 64 ? 1.0 - (lightlevel - 64.0) / 192.0 : 1.0; // Experiment
 			double blackAlpha = 1.0 - (lightlevel / 255.0);
 			if (SpaceSuit)
 			{
-				Screen.DrawTexture(SpaceSuitGraphic, false, 0.0, 0.0,
-					DTA_TopOffset, 80,
-					DTA_LeftOffset, vXOffset,
-					DTA_VirtualHeight, 200,
-					DTA_VirtualWidth, vWidth,
+				// Scale the coordinates
+				double ratio = Screen.GetHeight() / 200;
+				Vector2 screenpos = (Screen.GetWidth() / 2, Screen.GetHeight() / 2);
+				Vector2 screensize = (Screen.GetWidth(), Screen.GetHeight()) * 1.8;
+
+				// Make 2D shape
+				let shape = ShapeUtil.MakeSquare();
+				let shade = ShapeUtil.MakeSquare();
+
+				double ang = (sin(level.time * 10) * p.mo.vel.xy.length()) / 10;
+
+				// Draw rotated texture
+				ShapeUtil.MoveSquare(shape, screensize, screenpos, ang);
+				Screen.DrawShape(SpaceSuitGraphic, false, shape, 
 					DTA_KeepRatio, true,
 					DTA_Alpha, maskAlpha);
+
 				// Darken the mask graphic in dark sectors by drawing it again
 				// as a black silhouette.
-				Screen.DrawTexture(SpaceSuitGraphic, false, 0.0, 0.0,
-					DTA_TopOffset, 80,
-					DTA_LeftOffset, vXOffset,
-					DTA_VirtualHeight, 200,
-					DTA_VirtualWidth, vWidth,
+				ShapeUtil.MoveSquare(shade, screensize, screenpos, ang);
+				Screen.DrawShape(SpaceSuitGraphic, false, shade, 
 					DTA_KeepRatio, true,
 					DTA_FillColor, 0,
 					DTA_Alpha, blackAlpha);
@@ -111,7 +123,6 @@ class LoadScreen : StaticEventHandler
 	override void RenderOverlay(RenderEvent e)
 	{
 		double scale = Screen.GetHeight() / 720;
-		double fadescale = Screen.GetWidth() / fadesize.x;
 
 		int x = int(Screen.GetWidth() - bgsize.x * scale / 2);
 		int y = int(Screen.GetHeight() - bgsize.y * scale / 2);
@@ -122,7 +133,7 @@ class LoadScreen : StaticEventHandler
 
 			if (!players[consoleplayer].mo.FindInventory("CutsceneEnabled")) // Only draw letterbox if there's no cutscene.
 			{
-				screen.DrawTexture(FadeGraphic, false, Screen.GetWidth() / 2, Screen.GetHeight() / 2, DTA_CenterOffset, true, DTA_DestWidth, int(fadesize.x * fadescale), DTA_DestHeight, int(fadesize.y * fadescale), DTA_Alpha, alpha / 0.6);
+				screen.DrawTexture(FadeGraphic, false, 0, 0, DTA_FullScreenEx, 2, DTA_Alpha, alpha / 0.6);
 			}
 
 			screen.DrawTexture(BackgroundGraphic, true, x, y, DTA_Alpha, alpha / 0.6, DTA_CenterOffset, true, DTA_DestWidth, int(bgsize.x * scale), DTA_DestHeight, int(bgsize.y * scale));
@@ -136,7 +147,7 @@ class LoadScreen : StaticEventHandler
 
 			if (!players[consoleplayer].mo.FindInventory("CutsceneEnabled")) // Only draw letterbox and show map title if there's no cutscene.
 			{
-				screen.DrawTexture(FadeGraphic, false, Screen.GetWidth() / 2, Screen.GetHeight() / 2, DTA_CenterOffset, true, DTA_DestWidth, int(fadesize.x * fadescale), DTA_DestHeight, int(fadesize.y * fadescale), DTA_Alpha, alpha / 0.6);
+				screen.DrawTexture(FadeGraphic, false, 0, 0, DTA_FullScreenEx, 2, DTA_Alpha, alpha / 0.6);
 				screen.DrawText(fnt, Font.CR_GRAY, 65, 20 - fnt.GetHeight() / 2, level.levelname, DTA_Alpha, titlealpha, DTA_VirtualWidth, int(480 * Screen.GetAspectRatio()), DTA_VirtualHeight, 480, DTA_KeepRatio, true);
 			}
 
