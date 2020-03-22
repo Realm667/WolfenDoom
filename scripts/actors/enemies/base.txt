@@ -964,7 +964,7 @@ class Nazi : Base
 	String user_spyitem;
 	int user_spymsgindex;
 	bool user_activatewhenshot;
-	Sound IdleSound, LostSound;
+	Sound IdleSound, LostSound, SightedSound;
 
 	Property Healer:healflags;
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
@@ -983,6 +983,7 @@ class Nazi : Base
 	Property ActivateWhenShot:user_activatewhenshot;
 	Property IdleSound:idlesound;
 	Property TargetLostSound:lostsound;
+	Property TargetSeenSound:sightedsound;
 
 	Default
 	{
@@ -1017,8 +1018,6 @@ class Nazi : Base
 		Nazi.SneakableCloseSightRadius 64;
 		Nazi.HealDistance 8;
 		Nazi.Head "MS_UNKN";
-		Nazi.IdleSound "axis1/idle";
-		Nazi.TargetLostSound "axis1/target_not_seen";
 	}
 
 	States
@@ -1996,7 +1995,11 @@ class Nazi : Base
 		if (!alerted)
 		{
 			A_SpawnItemEx("AlertMarker", 0, 0, 64, 0, 0, 0, 0, SXF_SETMASTER);
-			if (!bBoss) { A_PlaySound("axis1/sighted", CHAN_BODY); }
+			if (!bBoss)
+			{
+				if (sightedsound) { A_StartSound(sightedsound, CHAN_VOICE); }
+				else { A_StartSound(SeeSound, CHAN_VOICE); }
+			}
 			else { A_PlaySound(SeeSound, CHAN_BODY); }
 
 			ResetDodge(true);
@@ -2221,7 +2224,7 @@ class Nazi : Base
 			{
 				MeleeRange = 0; // To bypass the internal A_Chase "goal reached" logic
 
-				if (Distance3D(patrolgoal) <= Radius) // If at goal, clear target and goal and go to Spawn state
+				if (!loiterdistance && Distance3D(patrolgoal) <= Radius) // If at goal, clear target and goal and go to Spawn state
 				{
 					angle = patrolgoal.angle;
 					goal = null;
@@ -2409,6 +2412,9 @@ class NaziStandard : Nazi
 		SeeSound "Nazi1/Sighted";
 		PainSound "Nazi1/Pain";
 		DeathSound "Nazi1/Death";
+		Nazi.IdleSound "axis1/idle";
+		Nazi.TargetLostSound "axis1/target_not_seen";
+		Nazi.TargetSeenSound "axis1/sighted";
 	}
 
 	States

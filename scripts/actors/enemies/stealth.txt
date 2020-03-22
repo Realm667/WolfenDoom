@@ -227,8 +227,11 @@ class SneakableGuardEyesIdle : StealthBase
 
 		if (master && (!master.target || (master.target && master.target != master.goal)))
 		{
-			master.A_ClearTarget();
-			if (!InStateSequence(master.CurState, master.SpawnState)) { master.SetState(master.SpawnState); }
+			if (!Base(master) || Base(master).loiterdistance <= 0)
+			{
+				master.A_ClearTarget();
+				if (!InStateSequence(master.CurState, master.SpawnState)) { master.SetState(master.SpawnState); }
+			}
 		}
 	}
 
@@ -317,7 +320,10 @@ class SneakableGuardEyesIdle : StealthBase
 		}
 		else if (!master.bBoss && !idlesounddelay)
 		{
-			if (Nazi(master)) { master.A_StartSound(Nazi(master).idlesound, CHAN_VOICE); }
+			if (Nazi(master))
+			{
+				if (Nazi(master).idlesound) { master.A_StartSound(Nazi(master).idlesound, CHAN_VOICE); }
+			}
 			else { master.A_StartSound("axis1/idle", CHAN_VOICE); }
 
 			idlesounddelay = Random(490, 630); // Set quote countdown time to 14 - 18 seconds
@@ -379,7 +385,10 @@ class SneakableGuardEyesAlerted : StealthBase
 		{
 			if (master && !master.bBoss)
 			{
-				if (Nazi(master)) { master.A_StartSound(Nazi(master).lostsound, CHAN_VOICE); }
+				if (Nazi(master))
+				{
+					if (Nazi(master).lostsound) { master.A_StartSound(Nazi(master).lostsound, CHAN_VOICE); }
+				}
 				else { master.A_StartSound("axis1/target_not_seen", CHAN_VOICE); }
 			}
 
