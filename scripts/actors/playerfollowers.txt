@@ -804,6 +804,8 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 		offset = Random(0, 35);
 
+		if (bFriendly) { BoACompass.Add(self, "GOAL1"); }
+
 		Super.PostBeginPlay();
 	}
 
