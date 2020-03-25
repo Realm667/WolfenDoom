@@ -460,6 +460,7 @@ class ShermanPlayer : PlayerPawn
 
 		if (useholdtime >= 35)
 		{
+			A_SetInventory("ShakeShaderControl", 1);
 			if (treads && US_Sherman(treads)) { US_Sherman(treads).usetimeout = 35; }
 			TakeInventory("Sherman", 1);
 		}
