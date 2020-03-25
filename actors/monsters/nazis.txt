@@ -742,6 +742,7 @@ ACTOR RifleGuard : MP40Guard
 	SeeSound "Nazi3/Sighted"
 	DropItem "G43" 96
 	DropItem "MauserAmmo" 192 5
+	MaxTargetRange 768
 	States
 	{
 	Spawn:
@@ -783,6 +784,7 @@ ACTOR WRifleGuard : RifleGuard
 	Speed 2.5
 	Obituary "$WRIFSOLD"
 	+MISSILEMORE
+	MaxTargetRange 800
 	Nazi.ZombieVariant "ZombieBrain"
 	States
 	{
@@ -822,7 +824,7 @@ ACTOR ArcticRifleGuard : RifleGuard
 	Speed 2
 	Obituary "$ARIFSOLD"
 	+MISSILEEVENMORE
-	+MISSILEMORE
+	MaxTargetRange 896
 	Nazi.ZombieVariant ""
 	States
 	{
