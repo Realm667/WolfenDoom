@@ -145,12 +145,9 @@ ACTOR ZombieFlame : RocketFlame { RenderStyle "Shadow" }
 // Truck Nebelwerfer //
 ///////////////////////
 
-ACTOR NebelwerferTruck : Nebelwerfer
+ACTOR NebelwerferTruck : NaziWeapon
 {
 	Weapon.SelectionOrder 2500
-	Weapon.AmmoUse 0
-	Weapon.AmmoGive 0
-	Weapon.AmmoType "NebAmmo"
 	Weapon.UpSound "nebelwerfer/select"
 	Tag "Fliegerfaust"
 	-WEAPON.NOALERT
