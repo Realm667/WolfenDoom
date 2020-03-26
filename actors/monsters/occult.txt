@@ -503,7 +503,7 @@ ACTOR SSCultist : Guard
 	DropItem "TrenchShotgun" 32
 	PainSound "sscultist/pain"
 	DeathSound "sscultist/die"
-	SeeSound ""
+	SeeSound "sscultist/see"
 	States
 	{
 	Spawn:
@@ -511,7 +511,7 @@ ACTOR SSCultist : Guard
 		Goto Look
 	See:
 		"####" "#" 0 A_SetUserVar("user_incombat", TRUE) //mxd
-		SSCT A 0 A_Jump (32, "Run")
+		SSCT A 0 A_Jump(32, "Run")
 		"####" A 0 A_SetSpeed(2.66666667)
 		"####" A 1 A_NaziChase
 		"####" AA 1 A_NaziChase("","")
@@ -537,7 +537,7 @@ ACTOR SSCultist : Guard
 		"####" EE 1 A_NaziChase("","")
 		Loop
 	Run:
-		SSCT A 0 A_Jump (24, "See")
+		SSCT A 0 A_Jump(24, "See")
 		"####" A 0 A_SetSpeed(4.66666667)
 		"####" A 1 A_NaziChase
 		"####" A 1 A_NaziChase("","")

@@ -1,9 +1,7 @@
-
+//this is a simple tweaked variant of the original shader that had also all other PBR and Normal materials calcs included, which we don't need
 #define RELIEF_PARALLAX
-// #define NORMAL_PARALLAX
 
 mat3 GetTBN();
-vec3 GetBumpedNormal(mat3 tbn, vec2 texcoord);
 vec2 ParallaxMap(mat3 tbn);
 
 Material ProcessMaterial()
@@ -13,17 +11,6 @@ Material ProcessMaterial()
 
     Material material;
     material.Base = getTexel(texCoord);
-    material.Normal = GetBumpedNormal(tbn, texCoord);
-#if defined(SPECULAR)
-    material.Specular = texture(speculartexture, texCoord).rgb;
-    material.Glossiness = uSpecularMaterial.x;
-    material.SpecularLevel = uSpecularMaterial.y;
-#endif
-#if defined(PBR)
-    material.Metallic = texture(metallictexture, texCoord).r;
-    material.Roughness = texture(roughnesstexture, texCoord).r;
-    material.AO = texture(aotexture, texCoord).r;
-#endif
 #if defined(BRIGHTMAP)
     material.Bright = texture(brighttexture, texCoord);
 #endif
@@ -54,18 +41,6 @@ mat3 GetTBN()
     return mat3(t * invmax, b * invmax, n);
 }
 
-vec3 GetBumpedNormal(mat3 tbn, vec2 texcoord)
-{
-#if defined(NORMALMAP)
-    vec3 map = texture(normaltexture, texcoord).xyz;
-    map = map * 255./127. - 128./127.; // Math so "odd" because 0.5 cannot be precisely described in an unsigned format
-    map.xy *= vec2(0.5, -0.5); // Make normal map less strong and flip Y
-    return normalize(tbn * map);
-#else
-    return normalize(vWorldNormal.xyz);
-#endif
-}
-
 float GetDisplacementAt(vec2 currentTexCoords)
 {
     return 0.55 - texture(displacement, currentTexCoords).r * 1.14;
@@ -88,9 +63,9 @@ vec2 ParallaxMap(mat3 tbn)
 #elif defined(RELIEF_PARALLAX)
 vec2 ParallaxMap(mat3 tbn)
 {
-    const float parallaxScale = 0.68;
-    const float minLayers = 14.0;
-    const float maxLayers = 16.0;
+    const float parallaxScale = 0.48;
+    const float minLayers = 8.0;
+    const float maxLayers = 12.0;
 
     // Calculate fragment view direction in tangent space
     mat3 invTBN = transpose(tbn);
@@ -123,7 +98,6 @@ vec2 ParallaxMap(mat3 tbn)
         currentLayerDepth += layerDepth;
     }
 
-
 	deltaTexCoords *= 0.5;
 	layerDepth *= 0.5;
 
@@ -131,7 +105,7 @@ vec2 ParallaxMap(mat3 tbn)
 	currentLayerDepth -= layerDepth;
 
 
-	const int _reliefSteps = 16;
+	const int _reliefSteps = 8;
 	int currentStep = _reliefSteps;
 	while (currentStep > 0) {
 	float currentGetDisplacementAt = GetDisplacementAt(currentTexCoords);
