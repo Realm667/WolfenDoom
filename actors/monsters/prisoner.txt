@@ -5,15 +5,14 @@ ACTOR PrisonerAgentTalk
 	//$Color 5
 	Scale 0.67
 	Mass 100
-	Health 99999999
 	Radius 6
 	Height 52
 	+SOLID
 	States
 	{
 	Spawn:
-		FREE A 1 NODELAY A_LookEx(0,0,0,0,360)
-		Loop
+		FREE A -1
+		Stop
 	}
 }
 
