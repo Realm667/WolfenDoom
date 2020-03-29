@@ -549,7 +549,7 @@ class ViewItem : BoAMenu
 
 		// Hint message
 		String hintmessage = StringTable.Localize("PAPERTEXTHOLD", false);
-		hintlines = SmallFont.BreakLines(hintmessage, pagewidth);
+		hintlines = SmallFont.BreakLines(hintmessage, min(pagewidth + 50, 320));
 
 		hintx = 320;
 		hintlineheight = SmallFont.GetHeight();
@@ -558,6 +558,7 @@ class ViewItem : BoAMenu
 
 		hinty = 470 - offset;
 		location.y -= offset;
+		maxy = int(maxy - offset);
 
 		// Text content
 		msgfont = Font.GetFont(fnt);
