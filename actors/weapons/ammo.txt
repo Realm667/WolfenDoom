@@ -154,10 +154,10 @@ ACTOR NebAmmo : Ammo
 ACTOR NebAmmoBox : NebAmmo
 {
 	//$Category Ammo (BoA)
-	//$Title Nebelbox (x20 rounds)
+	//$Title Nebelbox (x10 rounds)
 	//$Color 6
 	Scale 0.63
-	Inventory.Amount 20
+	Inventory.Amount 10
 	Inventory.PickupMessage "$NEBWBOX"
 	States
 	{
@@ -170,13 +170,13 @@ ACTOR NebAmmoBox : NebAmmo
 ACTOR PanzerAmmo : Ammo
 {
 	//$Category Ammo (BoA)
-	//$Title Panzerschreck Rocket (x10 rockets)
+	//$Title Panzerschreck Rocket (x5 rockets)
 	//$Color 6
 	Tag "$TAGROCKT"
-	Inventory.MaxAmount 10
+	Inventory.MaxAmount 5
 	Inventory.PickupMessage "$PANZAMMO"
 	Ammo.BackpackAmount 1
-	Ammo.BackpackMaxAmount 20
+	Ammo.BackpackMaxAmount 10
 	Inventory.Icon PANZ01
 	Scale .25
 	States
