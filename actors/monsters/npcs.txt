@@ -9,8 +9,8 @@ ACTOR StatistBarkeeper : Base
 	+FRIENDLY
 	+SOLID
 	+USESPECIAL
-	Monster
 	-COUNTKILL //N00b
+	Monster
 	States
 	{
 	Spawn:
@@ -91,6 +91,29 @@ ACTOR StatistSSAscher : StatistBarkeeper
 		"####" F 80
 		"####" GJ 40
 		"####" HF 80
+		Goto Spawn
+	}
+}
+
+ACTOR StatistPeeingMan : StatistBarkeeper
+{
+	//$Title Col. Baker, Old Marine Peeing (NPC)
+	Scale 0.67
+	-USESPECIAL
+	States
+	{
+	Spawn:
+		OLDM A 1 A_SetTics(random(20,40)) //possible whistle here
+		"####" BCDCCDBD 1 A_SetTics(random(20,40))
+		"####" "#" 1 A_Jump(128,"Left","Right")
+		Loop
+	Left:
+		"####" EFGFFGEG 1 A_SetTics(random(20,40))
+		"####" "#" 1 A_Jump(32,"Right")
+		Goto Spawn
+	Right:
+		"####" HIJIIJHJ 1 A_SetTics(random(20,40))
+		"####" "#" 1 A_Jump(32,"Left")
 		Goto Spawn
 	}
 }

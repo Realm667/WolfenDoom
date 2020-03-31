@@ -649,9 +649,9 @@ ACTOR TMMarine1R : TMMarine1B
 	States
 	{
 	Spawn:
-		FIR1 O 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FSR1 O 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
 	Randomize:
-		FIR1 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8")
+		FSR1 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8")
 		Stop
 	}
 }
@@ -718,9 +718,9 @@ ACTOR TMMarine2R : TMMarine1B
 	States
 	{
 	Spawn:
-		FIR2 O 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FSR2 O 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
 	Randomize:
-		FIR2 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8")
+		FSR2 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8")
 		Stop
 	}
 }
@@ -787,9 +787,9 @@ ACTOR TMMarine3R : TMMarine1B
 	States
 	{
 	Spawn:
-		FIR3 O 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FSR3 O 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
 	Randomize:
-		FIR3 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8")
+		FSR3 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8")
 		Stop
 	}
 }
@@ -945,9 +945,9 @@ ACTOR TMMarine4R : TMMarine4B
 	States
 	{
 	Spawn:
-		FIR4 O 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FSR4 O 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
 	Randomize:
-		FIR4 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8")
+		FSR4 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8")
 		Stop
 	}
 }
@@ -1059,22 +1059,22 @@ ACTOR TMWound4 : TMWound1
 	States
 	{
 	Spawn:
-		FIR5 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FSR5 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
 	Randomize:
-		FIR5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4")
+		FSR5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4")
 		Stop
 	Pose1:
 		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
-		FIR5 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+		FSR5 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
 	Pose2:
 		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
-		FIR6 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+		FSR6 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
 	Pose3:
 		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
-		FIR7 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+		FSR7 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
 	Pose4:
 		"####" A 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10)
-		FIR8 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
+		FSR8 ABCDEFGHIJ 0 A_Jump(256,"SetPose")
 	SetPose:
 		"####" "#" -1
 		Stop
