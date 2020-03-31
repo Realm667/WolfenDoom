@@ -11,6 +11,7 @@ Material ProcessMaterial()
 
     Material material;
     material.Base = getTexel(texCoord);
+    material.Normal = normalize(vWorldNormal.xyz);
 #if defined(BRIGHTMAP)
     material.Bright = texture(brighttexture, texCoord);
 #endif
