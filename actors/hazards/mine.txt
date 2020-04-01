@@ -28,6 +28,7 @@ ACTOR Mine : GrenadeBase
 		"####" A 8 A_PlaySound("MINEF")
 		"####" A 0 A_Scream
 		"####" A 0 A_SpawnItemEx("GeneralExplosion_Medium")
+		"####" A 0 A_SpawnItemEx("ZCrater")
 		Stop
 	}
 }
@@ -59,6 +60,7 @@ ACTOR PlacedMine : Mine
 		"####" A 8 A_PlaySound("MINEF")
 		"####" A 0 A_Scream
 		"####" A 0 A_SpawnItemEx("FriendlyExplosion_Medium")
+		"####" A 0 A_SpawnItemEx("ZCrater")
 		Stop
 	SpawnWait:
 		"####" A 1 {bTouchy = FALSE;}
@@ -81,6 +83,7 @@ ACTOR BossEnemyPlacedMine : PlacedMine
 		"####" A 8 A_PlaySound("MINEF")
 		"####" A 0 A_Scream
 		"####" A 0 A_SpawnItemEx("EnemyExplosion_Medium")
+		"####" A 0 A_SpawnItemEx("ZCrater")
 		Stop
 	}
 }
