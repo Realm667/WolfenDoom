@@ -3,8 +3,11 @@ class BulletTracer : FastProjectile
 	Class<TracerTrail> trail;
 	Actor trailactor;
 	int offset;
+	int zoffset;
+	bool silent;
 
 	Property Trail:trail;
+	Property NoRicochet:silent;
 
 	Default
 	{
@@ -32,7 +35,10 @@ class BulletTracer : FastProjectile
 				A_SpawnItemEx("TracerSpark", 0, 0, 0, random(-2,2), random(-2,2), random(-2,2), random(0,359)); //T667 improvements
 				bWindThrust = false;
 			}
-			PUFF B 3 BRIGHT LIGHT("BPUFF1") { A_PlaySound("ricochet"); A_SpawnItemEx("ZBulletChip"); }
+			PUFF B 3 BRIGHT LIGHT("BPUFF1") {
+				if (!silent) { A_PlaySound("ricochet"); }
+				A_SpawnItemEx("ZBulletChip");
+			}
 			PUFF CD 3 BRIGHT LIGHT("BPUFF1");
 			Stop;
 		XDeath:
@@ -46,6 +52,11 @@ class BulletTracer : FastProjectile
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
+
+		if (target)
+		{
+			vel += target.vel;
+		}
 
 		// Spawn the visible tracer *once* at spawn
 		trailactor = Spawn(trail, pos);
@@ -235,6 +246,28 @@ class ZScorchLower : ZBulletChip
         ZSCO BC -1;
         Stop;
     }
+}
+
+class ZCrater : ZBulletChip
+{
+	Default
+	{
+		Scale 0.25;
+	}
+
+	States
+	{
+		Spawn:
+			ZSCO # -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		frame = Random(5, 9);
+
+		Super.PostBeginPlay();
+	}
 }
 
 class ZPlasma : ZBulletChip
@@ -506,6 +539,26 @@ class PlayerTracer : BulletTracer
 		}
 
 		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (isFrozen()) { return; }
+
+		if (zoffset < 8) // Rise up 8 units to match the crosshair height
+		{
+			zoffset = 8;
+			SetOrigin(pos + (0, 0, zoffset), true);
+			if (trailactor) { trailactor.SetOrigin(trailactor.pos + (0, 0, zoffset), true); }
+		}
+
+		if (pos.z > floorz)
+		{
+			vel.z -= 15.0 / Speed;
+			if (trailactor) { trailactor.vel = vel; }
+		}
 	}
 }
 

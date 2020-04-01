@@ -328,6 +328,13 @@ Class LightningBeam : Actor
 
 		return closest;
 	}
+
+	override void Tick()
+	{
+		if (master) { vel = master.vel; }
+
+		Super.Tick();
+	}
 }
 
 Class LightningBeam2 : LightningBeam

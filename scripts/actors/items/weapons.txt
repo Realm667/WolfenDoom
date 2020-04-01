@@ -105,12 +105,9 @@ class NaziWeapon : Weapon
 
 	action void A_SpawnLightning(Class<LightningBeam> beam = "LightningBeam")
 	{
-		bool spawned;
-		Actor b;
-
 		let p = player.mo;
 
-		b = Spawn(beam, pos + (RotateVector((max(4, cos(p.pitch) * p.radius), 0), angle), player.viewheight * 0.8));
+		Actor b = Spawn(beam, pos + (RotateVector((max(4, cos(p.pitch) * p.radius), 0), angle), player.viewheight * 0.8));
 		if (b)
 		{
 			b.master = p;
