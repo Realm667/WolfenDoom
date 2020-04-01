@@ -554,7 +554,7 @@ class PlayerTracer : BulletTracer
 			if (trailactor) { trailactor.SetOrigin(trailactor.pos + (0, 0, zoffset), true); }
 		}
 
-		if (pos.z > floorz)
+		if (pos.z > floorz && vel.xy.length())
 		{
 			vel.z -= 15.0 / Speed;
 			if (trailactor) { trailactor.vel = vel; }
