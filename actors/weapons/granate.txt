@@ -25,7 +25,7 @@ ACTOR GrenadePickup : CustomInventory
 		TNT1 A 0 A_FireProjectile("HandGrenade",0,0,0,0,FPF_NOAUTOAIM)
 		Stop
 		TNT1 A 0 {
-			A_TakeInventory("AstroGrenadeToken", 1);
+			A_TakeInventory("AstroGrenadeToken",1,TIF_NOTAKEINFINITE);
 			A_FireProjectile("AstroHandGrenade",0,0,0,0,FPF_NOAUTOAIM);
 		}
 		Stop
