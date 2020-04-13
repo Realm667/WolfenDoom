@@ -904,6 +904,8 @@ class TankTreadsBase : Actor
 		while (!gunspot) { [sp, gunspot] = A_SpawnItemEx("WeaponSpot", gunspotoffset.x, gunspotoffset.y, gunspotoffset.z, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
 		gunspot.master = self;
 
+		if (morphpowerup) { BoACompass.Add(self, "TANKICO"); }
+
 		Super.PostBeginPlay();
 	}
 
