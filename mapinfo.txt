@@ -15,6 +15,7 @@ gameinfo
 
 	dimcolor = "133049"
 	dimamount = 0.5
+	fullscreenautoaspect = 3
 	pickupcolor = "FFFFFF"
 
 	statscreen_mapnamefont = "BIGFONT", "DARKGRAY"
@@ -42,12 +43,13 @@ gameinfo
 
 	defaultconversationmenuclass = "BoAConversationMenu"
 	MessageboxClass = "ClassicMessageBox"
-	eventhandlers = "InventoryClearHandler", "WaterHandler", "CustomShaderHandler", "SpriteShadowHandler", "MineSweeperHandler", "CompassHandler", "MapStatsHandler", "PersistentMapStatsHandler", "UnderlayRenderer"
 	statusbarclass = "BoAStatusBar"
 
 	ForceKillScripts = true //needed for Droplets - ozy81
 
-	AddEventHandlers = "TcPostProcessShaderHandler", "ZFlatDecalKiller", "SafeHandler", "LoadScreen"
+	AddEventHandlers = "InventoryClearHandler", "WaterHandler", "CustomShaderHandler", "SpriteShadowHandler", 
+	"MineSweeperHandler", "CompassHandler", "MapStatsHandler", "PersistentMapStatsHandler", "UnderlayRenderer", 
+	"TcPostProcessShaderHandler", "ZFlatDecalKiller", "SafeHandler", "LoadScreen"
 }
 
 Automap
@@ -73,14 +75,13 @@ Automap
 
 	PortalColor = "BB BB BB"
 
-	SpecialWallColor = "0E 0E EE"
+	SpecialWallColor = "AE 0E 0E"
 	SecretWallColor = "FF 00 FF"
 
 	GridColor = "D0 D0 D0"
 
 	AlmostBackgroundColor = "C0 C0 C0"
 }
-
 
 Automap_Overlay
 {
@@ -103,7 +104,7 @@ Automap_Overlay
 
 	PortalColor = "44 44 44"
 
-	SpecialWallColor = "0E 0E EE"
+	SpecialWallColor = "AE 0E 0E"
 	SecretWallColor = "FF 00 FF"
 
 	GridColor = "2F 2F 2F"
