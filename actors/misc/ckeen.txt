@@ -177,43 +177,6 @@ ACTOR CKOneUp : CKHealth
 // WEAPONS //
 /////////////
 
-ACTOR CKStunner : CKWeapon
-{
-	//$Title (2) Neural Stunner
-	Radius 16
-	Height 26
-	Weapon.SelectionOrder 9998
-	Weapon.AmmoType "CKStunnerAmmo"
-	Weapon.AmmoUse 1
-	Weapon.AmmoGive 5
-	Weapon.UpSound "ckeen/flag"
-	Tag "$TAGNEURS"
-	Inventory.PickupMessage "$CKNEUS"
-	Inventory.Pickupsound "ckeen/gun"
-	+WEAPON.NOAUTOFIRE
-	States
-	{
-	Deselect: // Don't let the weapon be lowered
-	Ready:
-		CKBF A 1 A_WeaponReady
-		Loop
-	Select:
-		CKBF A 1 A_Raise
-		Loop
-	Fire:
-		CKBF B 2
-		CKBF C 2 A_FireProjectile ("CKStunnerBall")
-		CKBF D 1
-		Goto Ready
-	Spawn:
-		CKBL AB 5
-		Loop
-	Pickup:
-		CKBL C -1 BRIGHT
-		Stop
-	}
-}
-
 ACTOR CKStunnerAmmo : Ammo
 {
 	Tag "$TAGECELL"

@@ -122,6 +122,9 @@ class LoadScreen : StaticEventHandler
 
 	override void RenderOverlay(RenderEvent e)
 	{
+		// No overlays for cartridge levels
+		if (level.levelnum >= 151 && level.levelnum <= 153) { return; }
+
 		double scale = Screen.GetHeight() / 720;
 
 		int x = int(Screen.GetWidth() - 176 * scale / 2);

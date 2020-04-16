@@ -538,6 +538,8 @@ class KeenPlayer : PlayerPawn
 
 		hittracer = new("BoAFindHitPointTracer");
 
+		GiveInventory("CKLedgeGrab", 1);
+
 		Super.PostBeginPlay();
 	}
 
@@ -705,6 +707,49 @@ class KeenPlayer : PlayerPawn
 		side *= SideMove1;
 
 		return forward, side;
+	}
+
+	// Morph-friendly CheckWeaponChange function to allow changing weapons while morphed
+	override void CheckWeaponChange()
+	{
+		let player = self.player;
+		if (player.WeaponState & WF_DISABLESWITCH) // Weapon changing has been disabled.
+		{ // ...so throw away any pending weapon requests.
+			player.PendingWeapon = WP_NOCHANGE;
+		}
+
+		// Put the weapon away if the player has a pending weapon or has died, and
+		// we're at a place in the state sequence where dropping the weapon is okay.
+		if ((player.PendingWeapon != WP_NOCHANGE || player.health <= 0) &&
+			player.WeaponState & WF_WEAPONSWITCHOK)
+		{
+			DropWeapon();
+		}
+	}
+
+	// Modified FireWeapon that doesn't automatically switch to another weapon when no ammo remains
+	override void FireWeapon (State stat)
+	{
+		let player = self.player;
+		
+		let weapn = player.ReadyWeapon;
+		if (weapn == null || !weapn.CheckAmmo (Weapon.PrimaryFire, false))
+		{
+			return;
+		}
+
+		player.WeaponState &= ~WF_WEAPONBOBBING;
+		PlayAttacking ();
+		weapn.bAltFire = false;
+		if (stat == null)
+		{
+			stat = weapn.GetAtkState(!!player.refire);
+		}
+		player.SetPsprite(PSP_WEAPON, stat);
+		if (!weapn.bNoAlert)
+		{
+			SoundAlert (self, false);
+		}
 	}
 
 	void DoTrace(Actor origin, double angle, double dist, double pitch, int flags, double zoffset, BoAFindHitPointTracer thistracer)
@@ -2634,6 +2679,186 @@ class CKPogoStick : CustomInventory
 	}
 }
 
+class CKLedgeGrab : Inventory
+{
+	bool LedgeGrabbed;
+	double LedgeAngle;
+	double LedgeHeight;
+	int LedgeTime;
+	Weapon ReselectWeapon;
+	Inventory pogo;
+
+	Default
+	{
+		Inventory.MaxAmount 1;
+		Inventory.PickupSound "";
+		+INVENTORY.UNDROPPABLE
+	}
+
+	override void Tick()
+	{
+		if (IsFrozen()) { return; }
+
+		if (owner)
+		{
+			if (owner.health)
+			{
+				if (!pogo) { pogo = FindInventory("CKPogoStick"); }
+
+				if (!pogo || !CKPogoStick(pogo).active)
+				{
+					if (
+						(!owner.bOnMobj && owner.pos.z > owner.floorz) || 
+						owner.player.jumptics
+					)
+					{ LedgeGrabInitiator(); }
+
+					if (LedgeGrabbed)
+					{
+						owner.angle = clamp(owner.angle, LedgeAngle - 20, LedgeAngle + 20);
+						LedgeGrab();
+					}
+				}
+			}
+		}
+	}
+
+	// Ledge grabbing, modified from ZMovement by Ivory Duke (https://forum.zdoom.org/viewtopic.php?f=43&t=65095)
+	void LedgeGrabInitiator()
+	{
+		if (!owner || !owner.player || !PlayerPawn(owner)) { return; }
+
+		//Already ledge grabbing, no clipping, moving away from where you are looking, ceiling already too low for sure
+		if(LedgeGrabbed || (owner.player.Cheats & CF_NOCLIP2) || owner.Vel.XY dot AngleToVector(owner.Angle) <= 0 || owner.CeilingZ <= owner.Pos.Z + owner.Height * 1.6f) { return; }
+		
+		//Find ledge (if any)
+		FLineTraceData LedgeTrace;
+		double TraceDistance = sqrt(2) * owner.Radius + 1; //account for the fact that Doom's hitboxes are square
+		owner.LineTrace(owner.Angle, TraceDistance, 0, TRF_BLOCKSELF | TRF_THRUACTORS | TRF_BLOCKUSE, owner.Height * 1.2, data: LedgeTrace);
+		Vector3 HitPos = LedgeTrace.HitLocation;
+
+		if (LedgeTrace.HitLine) // Hit a blocking line
+		{
+			// If it's a "BLOCK USE" line, halt here - allows for selective blocking of ledge grabbing ability
+			if (LedgeTrace.HitLine.flags & Line.ML_BLOCKUSE) { return; }
+		}
+
+		double LedgeCandidate;
+		if(LedgeTrace.HitType == TRACE_HitWall) //hit wall scenario
+		{
+			if(LedgeTrace.Hit3DFloor != NULL) //3D floor
+			{
+				LedgeCandidate = LedgeTrace.Hit3DFloor.Top.ZAtPoint(HitPos.XY);
+			}
+			else //regular wall
+			{
+				Line HitLine = LedgeTrace.HitLine;
+				if(HitLine.FrontSector != NULL && HitLine.FrontSector != CurSector)
+					LedgeCandidate = HitLine.FrontSector.FloorPlane.ZatPoint(HitPos.XY);
+				else if(HitLine.BackSector != NULL && HitLine.BackSector != CurSector)
+					LedgeCandidate = HitLine.BackSector.FloorPlane.ZatPoint(HitPos.XY);
+			}
+		}
+		else if(LedgeTrace.HitSector != CurSector)//tracer stopper mid air in a sector that is not the one where player currently is
+		{
+			LedgeCandidate = LedgeTrace.HitSector.NextLowestFloorAt(HitPos.X, HitPos.Y, HitPos.Z, FFCF_3DRESTRICT, 0);
+/*
+// Handling for climbing over solid things.  Mostly works, but can be buggy...
+			BlockThingsIterator it = BlockThingsIterator.CreateFromPos(HitPos.x, HitPos.y, HitPos.z, -owner.height * 0.8, 1, false);
+
+			while (it.Next())
+			{
+				if (
+					it.thing == owner || 
+					it.thing.bIsMonster || 
+					PlayerFollower(it.thing) ||
+					owner.Vel.XY dot AngleToVector(owner.AngleTo(it.thing)) <= 0 
+				)
+				{ continue; }
+
+				if (it.thing.bSolid)
+				{
+					double testheight = it.thing.pos.z + it.thing.height;
+
+					if (testheight > LedgeCandidate && testheight > owner.pos.z)
+					{
+						LedgeCandidate = testheight;
+					}
+				}
+			}
+*/
+		}
+		else
+		{
+			return;
+		}
+
+		//Check if the candidate ledge can suffice
+		if (LedgeCandidate > owner.Pos.Z + owner.Height * (PlayerPawn(owner).jumpz / 13.0) && LedgeCandidate <= owner.Pos.Z + owner.Height * (1.0 + PlayerPawn(owner).jumpz / 40))
+		{
+			Vector3 OrigPos = owner.Pos;
+			owner.SetXYZ((owner.Pos.XY, LedgeCandidate));
+			if(!owner.CheckMove(owner.Pos.XY + 5.0 * AngleToVector(owner.Angle))) //not enough space, cancel everything :(
+			{
+				owner.SetXYZ(OrigPos);
+				return;
+			}
+			owner.SetXYZ(OrigPos);
+			LedgeHeight = LedgeCandidate;
+		}
+		else
+		{
+			return; //too high/low
+		}
+		
+		//Switch to a weapon that forbids firing during the ledge grab
+		ReselectWeapon = owner.player.ReadyWeapon;
+		Weapon empty = Weapon(owner.FindInventory("NullWeapon"));
+		if (!empty)
+		{
+			owner.GiveInventory("NullWeapon", 1);
+			empty = Weapon(owner.FindInventory("NullWeapon"));
+		}
+		owner.player.PendingWeapon = empty; 
+
+		if (owner.player.ReadyWeapon)
+		{
+			owner.player.SetPsprite(PSP_WEAPON, owner.player.ReadyWeapon.GetDownState());
+		}
+	
+		//Allow ledge grab
+		owner.A_StopSound(CHAN_WEAPON); 	//stop looping weapon sounds
+		LedgeAngle = owner.Angle;
+		owner.A_PlaySound("Climb", CHAN_BODY);
+		LedgeGrabbed = True;
+	}
+	
+	void LedgeGrab()
+	{
+		if (!owner ||!owner.player || !PlayerPawn(owner)) { return; }
+
+		LedgeTime++;
+		if(owner.Pos.Z >= LedgeHeight || !owner.Vel.Length() || LedgeTime >= 35)
+		{
+			//End Ledge Grab
+			owner.player.PendingWeapon = ReselectWeapon;
+			LedgeGrabbed = LedgeHeight = 0;
+			LedgeTime = 0;
+			//Only if ledge grab was successful
+			if(LedgeTime >= 35) { return; }
+			owner.Vel = owner.Vel.Length() ? (5.0 * AngleToVector(LedgeAngle), -3.0) : (0, 0, 0); //push player forward and downward
+			owner.A_PlaySound("*land", CHAN_BODY);
+		}
+		else
+		{
+			owner.Vel = owner.Vel.Length() ? (0, 0, 4) : (0, 0, 0);
+		}
+		
+		//Sprite animation
+		PlayerPawn(owner).PlayIdle();
+	}
+}
+
 class CKThundercloud : CKBaseEnemy
 {
 	Default
@@ -3395,7 +3620,7 @@ class CKStunnerBall : Actor
 
 	override void Tick()
 	{
-		if (!confusion && master && master.health <= 0)
+		if (!confusion && master && master.bIsMonster && master.health <= 0)
 		{
 			confusion = Spawn("CKConfusion", master.pos);
 			confusion.master = master;
@@ -3503,5 +3728,89 @@ class CKWallShooterArrow : Actor
 		pitch = 0;
 
 		Super.PostBeginPlay();
+	}
+}
+
+class CKStunner : CKWeapon
+{
+	Default
+	{
+		//$Title (2) Neural Stunner
+		Radius 16;
+		Height 26;
+		Weapon.SelectionOrder 9998;
+		Weapon.AmmoType "CKStunnerAmmo";
+		Weapon.AmmoUse 1;
+		Weapon.AmmoGive 5;
+		Weapon.UpSound "ckeen/flag";
+		Tag "$TAGNEURS";
+		Inventory.PickupMessage "$CKNEUS";
+		Inventory.Pickupsound "ckeen/gun";
+		+WEAPON.NOAUTOFIRE
+	}
+
+	States
+	{
+		Ready:
+			CKBF A 1 A_WeaponReady(WRF_NOSWITCH);
+			Loop;
+		Select:
+			CKBF A 1 A_Raise();
+			Loop;
+		Deselect:
+			CKBF A 1 A_LowerEx();
+			Loop;
+		Fire:
+			CKBF B 2;
+			CKBF C 2 A_FireProjectile ("CKStunnerBall");
+			CKBF D 1;
+			Goto Ready;
+		Spawn:
+			CKBL AB 5;
+			Loop;
+		Pickup:
+			CKBL C -1 BRIGHT;
+			Stop;
+	}
+
+	// Morph-friendly variant of A_Lower
+	action void A_LowerEx(int lowerspeed = 6)
+	{
+		let player = player;
+
+		if (null == player)
+		{
+			return;
+		}
+		if (null == player.ReadyWeapon)
+		{
+			player.mo.BringUpWeapon();
+			return;
+		}
+		let psp = player.GetPSprite(PSP_WEAPON);
+		if (!psp) return;
+		if (player.cheats & CF_INSTANTWEAPSWITCH)
+		{
+			psp.y = WEAPONBOTTOM;
+		}
+		else
+		{
+			psp.y += lowerspeed;
+		}
+		if (psp.y < WEAPONBOTTOM)
+		{ // Not lowered all the way yet
+			return;
+		}
+		if (player.playerstate == PST_DEAD)
+		{ // Player is dead, so don't bring up a pending weapon
+			// Player is dead, so keep the weapon off screen
+			player.SetPsprite(PSP_FLASH, null);
+			psp.SetState(player.ReadyWeapon.FindState('DeadLowered'));
+			return;
+		}
+		// [RH] Clear the flash state. Only needed for Strife.
+		player.SetPsprite(PSP_FLASH, null);
+		player.mo.BringUpWeapon ();
+		return;
 	}
 }
