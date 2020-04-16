@@ -3,6 +3,7 @@ class SkyViewPointStatic : SkyViewPoint
 	Actor base, anchor;
 	double heightoffset;
 	double scaling;
+	Vector2 anchoroffset;
 
 	Default
 	{
@@ -98,9 +99,7 @@ class SkyViewPointStatic : SkyViewPoint
 
 		if (base && base.player && SpawnPoint != (0, 0, 0))
 		{
-			Vector2 offset;
-
-			offset = (base.pos.xy - anchor.pos.xy) / scaling;
+			Vector2 offset = (base.pos.xy - anchor.pos.xy) / scaling;
 			offset = RotateVector(offset, angle);
 
 			// Set the viewpoint's height location
@@ -108,7 +107,17 @@ class SkyViewPointStatic : SkyViewPoint
 
 			heightdelta /= 2;
 
-			SetXYZ((SpawnPoint.xy + offset, SpawnPoint.z + heightoffset + heightdelta));
+			Vector3 dest = (SpawnPoint.xy + offset - anchoroffset, SpawnPoint.z + heightdelta);
+			double dist = (dest.xy - pos.xy).length();
+
+			if (base.bTeleport || dist <= 32.0)
+			{
+				SetXYZ(dest);
+			}
+			else
+			{
+				anchoroffset = (SpawnPoint.xy + offset) - pos.xy;
+			}
 		}
 	}
 }
