@@ -764,7 +764,7 @@ class BoAStatusBar : BaseStatusBar
 		Actor crosshairtarget;
 		color clr = 0xFF8800; // Default color is orange.
 		TextureID CrosshairImage;
-		double size = vid_scalefactor;
+		double size = vid_scalefactor * 1.5;
 		Vector2 dimensions;
 		double w, h;
 		double maxwidth = max(52.0, int(crosshairscale * screen.GetWidth() / 20));
@@ -977,14 +977,31 @@ class BoAStatusBar : BaseStatusBar
 		let tankplayer = ShermanPlayer(CPlayer.mo);
 		let targetactor = tankplayer.CrosshairActor;
 
-		DrawThirdPersonCrosshair(tankplayer.CrosshairPos, tankplayer.CrosshairDist, targetactor);
+		Let wpn = Cannon75mm(CPlayer.mo.FindInventory("Cannon75mm"));
+		color shellclr;
+		double dotscale = 1.25;
+
+		if (wpn && CPlayer.ReadyWeapon && CPlayer.ReadyWeapon == Weapon(wpn))
+		{
+			if (wpn.cannontimeout > 0)
+			{
+				shellclr = 0xFF9900;
+				dotscale = 1.5 + 0.5 * sin(level.time * 25);
+			}
+			else
+			{
+				shellclr = 0x009900;
+			}
+		}
+
+		DrawThirdPersonCrosshair(tankplayer.CrosshairPos, tankplayer.CrosshairDist, targetactor, scale:dotscale, clr:shellclr);
 
 		BeginHUD(1, False);
 
 		if (!(CPlayer.cheats & CF_CHASECAM))
 		{
 			TextureID image = TexMan.CheckForTexture("TANKVIEW", TexMan.Type_MiscPatch);
-			screen.DrawTexture(image, false, 0, 0, DTA_Fullscreen, true, DTA_KeepRatio, true);
+			screen.DrawTexture(image, false, 0, 0, DTA_FullscreenEx, 1, DTA_KeepRatio, true);
 		}
 
 		Vector2 hudscale = GetHUDScale();
@@ -1052,7 +1069,7 @@ class BoAStatusBar : BaseStatusBar
 		}
 	}
 
-	void DrawThirdPersonCrosshair(Vector3 hitlocation, double hitdist = 128, Actor targetactor = null, String crosshair1 = "XHAIRB2", String crosshair2 = "XHAIRB7")
+	void DrawThirdPersonCrosshair(Vector3 hitlocation, double hitdist = 128, Actor targetactor = null, String crosshair1 = "XHAIRB2", String crosshair2 = "XHAIRB7", double scale = 1.0, color clr = 0x222222)
 	{
 		gl_proj.CacheResolution();
 		gl_proj.CacheFov(CPlayer.fov);
@@ -1103,8 +1120,9 @@ class BoAStatusBar : BaseStatusBar
 			TextureID image2 = TexMan.CheckForTexture(crosshair2, TexMan.Type_MiscPatch); 
 			dimensions = TexMan.GetScaledSize(image2);
 			dimensions /= scaleamt;
+			dimensions *= scale;
 
-			screen.DrawTexture(image2, false, drawpos.x, drawpos.y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, 0x222222 & 0xFFFFFF);
+			screen.DrawTexture(image2, false, drawpos.x, drawpos.y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF);
 		}
 	}
 

@@ -246,19 +246,40 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 	{
 		Super.Tick();
 
-		if (cannontimeout > 0) { cannontimeout--; }
+		if (cannontimeout > 0)
+		{
+			if (owner)
+			{
+				if (cannontimeout == 140)
+				{
+					owner.A_StartSound("tank/breech/open", CHAN_6, 0, 12.0);
+				}
+				else if (cannontimeout == 105)
+				{
+					owner.A_StartSound("tank/shellcasing", CHAN_6, 0, 12.0, ATTN_NORM, FRandom(0.7, 1.0));
+				}
+				else if (cannontimeout == 35)
+				{
+					owner.A_StartSound("tank/breech/close", CHAN_6, 0, 12.0);
+				}
+			}
+
+			cannontimeout--;
+		}
 		else if (owner && owner.player && !(owner.player.cmd.buttons & BT_ATTACK)) { owner.player.refire = 0; }
 	}
 
 	action void DoCannon()
 	{
+		if (invoker.cannontimeout)  { return; }
+
 		Actor origin = self;
 		if (origin && ShermanPlayer(origin) && ShermanPlayer(origin).turret && US_ShermanTurret(ShermanPlayer(origin).turret).gunspot) { origin = US_ShermanTurret(ShermanPlayer(origin).turret).gunspot; }
 
 		double angledelta = deltaangle(angle, origin.angle);
 		double pitchdelta = deltaangle(pitch, origin.pitch);
 
-		A_PlaySound("Panzer/fire", CHAN_WEAPON);
+		A_StartSound("Panzer/fire", CHAN_WEAPON, 0, 8.0);
 		A_GunFlash();
 		Actor mo = A_FireProjectile("TankRocket", angledelta, False, 0, 0, FPF_NOAUTOAIM, pitchdelta);
 		if (mo && origin != self)
@@ -266,7 +287,7 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 			mo.SetOrigin(origin.pos, false); // Move the rocket so that it flies from the model's gun
 		}
 
-		invoker.cannontimeout = 40;
+		invoker.cannontimeout = 140;
 	}
 
 	action void DoMachineGun()
@@ -283,7 +304,7 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 		double angledelta = deltaangle(angle, maingun.angle);
 		double pitchdelta = deltaangle(pitch, maingun.pitch);
 
-		A_PlaySound("mauser/fire", CHAN_WEAPON, FRandom(0.6, 0.8));
+		A_StartSound("mauser/fire", CHAN_WEAPON, 0, FRandom(0.6, 0.8));
 		Actor mo = A_FireProjectile("Kar98kTracer", angledelta + Random(-2, 2), False, 0, 0, 0, pitchdelta + Random(-2, 2));
 		if (mo && origin != self)
 		{
