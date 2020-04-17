@@ -195,7 +195,7 @@ class StatueBreakable : Actor
 			{
 				if (item)
 				{
-					item.bNoGravity = item.Default.bSpecial;
+					item.bNoGravity = item.Default.bNoGravity;
 					item.bSpecial = item.Default.bSpecial;
 					item.bSolid = item.Default.bSolid;
 					item.bShootable = item.Default.bShootable;
@@ -294,8 +294,6 @@ class StatueBreakable : Actor
 
 	override void Tick()
 	{
-		Super.Tick();
-
 		floorheight = pos.z - cursector.floorplane.ZatPoint(pos.xy);
 
 		if (BlockingLine && vel.xy.length() && floorheight > 0)
@@ -321,9 +319,8 @@ class StatueBreakable : Actor
 			}
 		}
 
-		if (vel.z < -10.0 && pos.z < floorz + 16) { SetStateLabel("Death"); }
+		if (vel.z < -10.0 && pos.z <= floorz + 16) { SetStateLabel("Death"); }
 		if (pos.z == floorz && floorheight > 0) { SetStateLabel("Fall"); }
-
 
 		if (
 			item && 
@@ -350,6 +347,8 @@ class StatueBreakable : Actor
 		{
 			A_StopSound(CHAN_5);
 		}
+
+		Super.Tick();
 	}
 
 	void A_DoTilt(double tiltangle, double pitchinput = 0)
