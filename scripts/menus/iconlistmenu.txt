@@ -128,8 +128,8 @@ class ExtendedListMenu : ListMenu
 			double width = ratio > 1.25 ? 200 * ratio : 320;
 			double height = ratio < 1.25 ? 320 / ratio : 200;
 
-			TextureID tex = TexMan.CheckForTexture(overlay, TexMan.Type_MiscPatch);
-			if (tex.IsValid()) { screen.DrawTexture(tex, false, (width / 2) / scale, (height / 2) / scale, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidthF, width / scale, DTA_VirtualHeightF, height / scale); };
+			TextureID tex = TexMan.CheckForTexture(overlay, TexMan.Type_Any);
+			if (tex.IsValid()) { screen.DrawTexture(tex, true, (width / 2) / scale, (height / 2) / scale, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidthF, width / scale, DTA_VirtualHeightF, height / scale); };
 
 			if (overlaytext.Length())
 			{
@@ -304,7 +304,7 @@ class IconListMenu : ExtendedListMenu
 
 		for (int i = 0; i < mDesc.mItems.Size(); i++)
 		{
-			TextureID tex = TexMan.CheckForTexture(lookupBase .. i, TexMan.Type_MiscPatch);
+			TextureID tex = TexMan.CheckForTexture(lookupBase .. i, TexMan.Type_Any);
 
 			if (tex.IsValid())
 			{
@@ -341,7 +341,7 @@ class IconListMenu : ExtendedListMenu
 				itemindex++;
 
 				// Again, semi-hard-coded, unfortunately - Icons must be named [Menu name]1, [Menu name]2, etc.
-				TextureID tex = TexMan.CheckForTexture(lookupBase .. itemindex, TexMan.Type_MiscPatch);
+				TextureID tex = TexMan.CheckForTexture(lookupBase .. itemindex, TexMan.Type_Any);
 				if (tex.IsValid())
 				{
 					Vector2 texsize = TexMan.GetScaledSize(tex);
@@ -354,7 +354,7 @@ class IconListMenu : ExtendedListMenu
 					drawx -= texsize.x / 2;
 					drawy -= texsize.y / 2;
 
-					screen.DrawTexture(tex, false, drawx, drawy, DTA_Clean, true, DTA_Alpha, itemindex != index ? alpha * 0.6 : alpha);
+					screen.DrawTexture(tex, true, drawx, drawy, DTA_Clean, true, DTA_Alpha, itemindex != index ? alpha * 0.6 : alpha);
 				}
 			}
 		}
@@ -409,7 +409,7 @@ class StaticIconListMenu : ExtendedListMenu
 		double fontheight = mDesc.mFont.GetHeight();
 
 		// Again, semi-hard-coded, unfortunately - Icons must be named [Menu name]1, [Menu name]2, etc.
-		TextureID tex = TexMan.CheckForTexture(lookupBase .. index, TexMan.Type_MiscPatch);
+		TextureID tex = TexMan.CheckForTexture(lookupBase .. index, TexMan.Type_Any);
 		if (tex.IsValid())
 		{
 			Vector2 texsize = TexMan.GetScaledSize(tex);
@@ -423,7 +423,7 @@ class StaticIconListMenu : ExtendedListMenu
 			x -= texsize.x / 2;
 			y -= texsize.y / 2;
 
-			screen.DrawTexture(tex, false, x, y, DTA_Clean, true, DTA_Alpha, alpha);
+			screen.DrawTexture(tex, true, x, y, DTA_Clean, true, DTA_Alpha, alpha);
 		}
 	}
 }
