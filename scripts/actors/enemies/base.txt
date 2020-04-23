@@ -745,9 +745,18 @@ class Base : Actor
 					}
 				}
 
-				if (swimmer && waterlevel < 3)
+				if (swimmer && waterlevel < 3) // Swimmers can't leave the water once they are below the surface (edge case: they can stack up on top of each other and sometimes make it out if the next sector height is close to the water height)
 				{
-					vel.z = min(vel.z, -1);
+					vel.z = min(vel.z, -Speed);
+				}
+				else if (Default.bFloat && !swimmer) // Non-swimming floaters can't enter water when they are above the surface
+				{
+					if (waterlevel > 0) 
+					{
+						bFloat = false;
+						vel.z = max(vel.z, Speed);
+					}
+					else { bFloat = Default.bFloat; }
 				}
 
 				if (lightthreshold && (level.time + interval) % 10 == 0) // If zero, ignore light levels (so, default to normal enemy behavior)
