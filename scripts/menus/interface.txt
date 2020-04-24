@@ -558,7 +558,7 @@ class ViewItem : BoAMenu
 
 		hinty = 470 - offset;
 		location.y -= offset;
-		maxy = int(maxy - offset);
+		maxy = int(maxy - (hintlineheight * (hintlines.Count() - 1.0)));
 
 		// Text content
 		msgfont = Font.GetFont(fnt);
@@ -594,7 +594,7 @@ class ViewItem : BoAMenu
 		{
 			if (background)
 			{
-				screen.DrawTexture(background, false, location.x, location.y, DTA_DestWidth, int(bgsize.x * scale), DTA_DestHeight, int(bgsize.y * scale), DTA_VirtualWidth, 640, DTA_VirtualHeight, 480, DTA_CenterOffset, true, DTA_Alpha, alpha);
+				screen.DrawTexture(background, true, location.x, location.y, DTA_DestWidth, int(bgsize.x * scale), DTA_DestHeight, int(bgsize.y * scale), DTA_VirtualWidth, 640, DTA_VirtualHeight, 480, DTA_CenterOffset, true, DTA_Alpha, alpha);
 			}
 
 			if (textlines)
