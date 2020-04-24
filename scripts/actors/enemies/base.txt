@@ -333,9 +333,9 @@ class Base : Actor
 
 		if (goal != null)
 		{
-			target = goal;
 			bChaseGoal = true;
-			A_Chase(null, null, flags);
+			if (self is "Nazi") { Nazi(self).A_NaziChase(null, null, flags); }
+			else { A_Chase(null, null, flags); }
 		}
 		else
 		{
