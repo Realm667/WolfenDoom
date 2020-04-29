@@ -246,6 +246,7 @@ class Base : Actor
 	int user_count4;		//attacks counters
 	int user_offset;		//elite counter
 	int user_saw;			//smokemonster counter
+	int despawntime;
 	bool user_oncompass;
 	bool candodge;
 	bool nofear;
@@ -263,10 +264,12 @@ class Base : Actor
 	Property Swimmer:swimmer;
 	Property OnCompass:user_oncompass;
 	Property NoFear:nofear;
+	Property DespawnTime:despawntime;
 
 	Default
 	{
 		Base.Shadow 1;
+		Base.DespawnTime -1;
 		Activation THINGSPEC_Default | THINGSPEC_ThingTargets;
 	}
 
@@ -730,6 +733,7 @@ class Base : Actor
 			if (dodgetimeout > 0) { dodgetimeout--; }
 			if (crouchtimeout == 70) { crouchtimer++; }
 			if (crouchtimeout > 0) { crouchtimeout--; }
+			if (despawntime > 0) { despawntime--; }
 
 			if (frighttimeout > -35) { frighttimeout--; }
 			else { Speed = Default.Speed; }
@@ -843,6 +847,14 @@ class Base : Actor
 						if (frighttimeout == -35) { bFrightened = false; }  // Don't interfere with light sensitivity frightened flag use
 						Speed = Default.Speed;
 					}
+				}
+
+				// Randomly despawn if the player can't see you and is outside of range and you had a despawntime timeout set (AlarmSpawner uses this)
+				if (despawntime == 0 && Random(0, 255) < 10 && InStateSequence(CurState, FindState("Look")) && CheckSightOrRange(512))
+				{
+					bShootable = false;
+					if (bCountKill) { level.total_monsters--; }
+					Destroy();
 				}
 
 				timeout--;
@@ -2068,7 +2080,7 @@ class Nazi : Base
 		{
 			alerted = false;
 
-			A_RemoveChildren(TRUE, RMVF_EVERYTHING, "None", "Eyes"); // Get rid of the active guard eyes
+ 
 			bFriendly = True;
 
 			goal = patrolgoal; // Restore any navigation goal if there was one set

@@ -135,6 +135,7 @@ class AlarmPanel : SwitchableDecoration
 		Height 48;
 		Radius 24;
 		Health 1; //make sure that a minimum of damage destroys it...
+//		DamageFactor "
 	}
 
 	States
@@ -229,6 +230,8 @@ class AlarmPanel : SwitchableDecoration
 
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
+		if (inflictor is "BulletTracer" && !source.bFriendly) { return 0; } // Don't let enemy bullets destroy alarms
+
 		int dmg = Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
 
 		if (health <= 0)
@@ -413,6 +416,9 @@ class AlarmSpawner : ActorSpawner
 						guard.SetStateLabel("See");
 					}
 				}
+
+				if (Base(guard)) { Base(guard).despawntime = Random(35 * 30, 35 * 120); } //  Wait 30 seconds to 2 minutes before there's a chance to disappear
+
 				Spawns.Push(guard);
 			}
 
