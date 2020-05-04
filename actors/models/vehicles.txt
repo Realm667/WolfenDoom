@@ -191,6 +191,23 @@ ACTOR RTCWCar : 3dObstacle
 
 ACTOR RTCWCarGlass : 3dGlass { DistanceCheck "scenelod" }
 
+//Wolfenstein 2009 models
+ACTOR Opel_Fuel : 3dObstacle
+{
+	//$Category Models (BoA)/Vehicles
+	//$Title Opel Blitz T-Stoff Tankwagen
+	//$Color 3
+	DistanceCheck "scenelod"
+	Radius 32
+	Height 32
+	States
+	{
+	Spawn:
+		MDLA A -1 //no glass
+		Stop
+	}
+}
+
 //MaxED stuff
 ACTOR ModelGMCTruck : SwitchableDecoration //ozy81
 {
@@ -250,6 +267,7 @@ ACTOR ModelOpelTruck : 3dObstacle
 		Stop
 	}
 }
+
 ACTOR MercedesLimo : 3dObstacle
 {
 	//$Category Models (BoA)/Vehicles
