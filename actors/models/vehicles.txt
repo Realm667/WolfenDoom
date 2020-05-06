@@ -172,6 +172,61 @@ ACTOR Junker52 : 3dObstacle
 	Height 64
 }
 
+ACTOR Forklift : 3dObstacle
+{
+	//$Category Models (BoA)/Vehicles
+	//$Title Forklift
+	//$Color 3
+	DistanceCheck "scenelod"
+	Radius 80
+	Height 64
+}
+
+ACTOR Tires
+{
+	//$Category Props (BoA)/Street
+	//$Title Tires (Kubelwagon)
+	//$Color 3
+	DistanceCheck "scenelod"
+	Radius 16
+	Height 8
+	+SOLID
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
+}
+
+ACTOR Tires2 : Tires
+{
+	//$Title Tires (Nazi Staff Car)
+	DistanceCheck "scenelod"
+	+NOGRAVITY
+}
+
+ACTOR Tires3 : Tires
+{
+	//$Title Tires (Junker-52)
+	DistanceCheck "scenelod"
+	+NOGRAVITY
+}
+
+ACTOR Single_Tire : Tires
+{
+	//$Title Single Tire (Kubelwagon)
+	DistanceCheck "scenelod"
+	+NOGRAVITY
+}
+
+ACTOR Single_Tire2 : Tires
+{
+	//$Title Single Tire (Junker-52)
+	DistanceCheck "scenelod"
+	+NOGRAVITY
+}
+
 //Return to Castle Wolfenstein models
 ACTOR RTCWCar : 3dObstacle
 {
