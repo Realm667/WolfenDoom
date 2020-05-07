@@ -73,6 +73,28 @@ ACTOR TMGuardWithShadow : TMGuard
 	}
 }
 
+ACTOR TMMechanicNT : TMGuard
+{
+	//$Title Mechanic without Toolbox for Cutscenes (with shadow)
+	States
+	{
+	Spawn:
+		MNIC O -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
+		Stop
+	}
+}
+
+ACTOR TMMechanic : TMGuard
+{
+	//$Title Mechanic for Cutscenes (with shadow)
+	States
+	{
+	Spawn:
+		MNIC N -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
+		Stop
+	}
+}
+
 ACTOR TMDog : TMGuardWithShadow
 {
 	//$Title Titlemap Doge (with shadow)
