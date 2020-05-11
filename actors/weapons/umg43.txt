@@ -32,7 +32,7 @@ ACTOR UMG43 : NaziWeapon
 		Wait
 	Fire:
 		UMGG A 0 A_StartSound("chaingun/start")
-		UMGG A 1 A_StartSound("chaingun/loop", CHAN_5, 1.0, TRUE)
+		UMGG A 1 A_StartSound("chaingun/loop", CHAN_5, CHANF_LOOP, 1.0)
 		UMGG AAABBBCCD 1
 		UMGG D 1 A_Refire
 	FireFinish:
@@ -84,12 +84,12 @@ ACTOR UMG43 : NaziWeapon
 	AltFire:
 		UMGG A 0 A_StartSound("chaingun/start")
 		UMGG D 0 A_Refire("AltHold")
-		UMGG A 1 A_StartSound("chaingun/loop", CHAN_5, 1.0, TRUE)
+		UMGG A 1 A_StartSound("chaingun/loop", CHAN_5, CHANF_LOOP, 1.0)
 		UMGG AAABBBCCD 1
 		UMGG A 0 A_Refire("AltHold")
 	AltHold:
 		UMGG ABCD 1 A_WeaponReady(WRF_NOSECONDARY)
-		UMGG D 0 A_StartSound("chaingun/loop", CHAN_5, 1.0, TRUE)
+		UMGG D 0 A_StartSound("chaingun/loop", CHAN_5, CHANF_LOOP, 1.0)
 		UMGG D 0 A_Refire("AltHold")
 		Goto FireFinish
 	Spawn:

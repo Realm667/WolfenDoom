@@ -310,7 +310,7 @@ class TankBase : VehicleBase
 		treads.Species = Species;
 		treads.bFriendly = bFriendly;
 
-		if (!user_static) { A_StartSound(idlesound, CHAN_6, 0.25, TRUE); }
+		if (!user_static) { A_StartSound(idlesound, CHAN_6, CHANF_LOOP, 0.25); }
 		else { level.total_monsters--; }
 
 		targettimeout = Random(0, 35);
@@ -327,7 +327,7 @@ class TankBase : VehicleBase
 
 		A_StopSound(CHAN_6); //the idle sound
 		A_StopSound(CHAN_7);
-		A_StartSound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_IDLE);
+		A_StartSound("weapons/explode", CHAN_AUTO, 0, 1.0, ATTN_IDLE);
 		A_Scream();
 		A_NoBlocking();
 
@@ -598,8 +598,8 @@ class TankBase : VehicleBase
 				{
 					double delta = deltaangle(treads.angle, treads.AngleTo(aimAt));
 
-					if (abs(delta) <= turretanglerange) { turret.A_Face(aimAt, turretspeed); A_StartSound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
-					else { turret.angle = clamp(turret.angle, treads.angle - turretanglerange, treads.angle + turretanglerange); A_StartSound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
+					if (abs(delta) <= turretanglerange) { turret.A_Face(aimAt, turretspeed); A_StartSound("MACHINE_LOOP_3", CHAN_AUTO, 0, 0.2); }
+					else { turret.angle = clamp(turret.angle, treads.angle - turretanglerange, treads.angle + turretanglerange); A_StartSound("MACHINE_LOOP_3", CHAN_AUTO, 0, 0.2); }
 				}
 				else { turret.A_Face(aimAt, turretspeed); }
 
@@ -660,7 +660,7 @@ class TankBase : VehicleBase
 
 		DoTrample(true);
 
-		A_StartSound(movesound, CHAN_7, 1.0, TRUE);
+		A_StartSound(movesound, CHAN_7, CHANF_LOOP, 1.0);
 	}
 
 	virtual void DoTurret(Actor origin)
@@ -987,7 +987,7 @@ class TankTreadsBase : Actor
 	{
 		if (turret) { turret.Destroy(); }
 
-		A_StartSound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_IDLE);
+		A_StartSound("weapons/explode", CHAN_AUTO, 0, 1.0, ATTN_IDLE);
 
 		Actor dead = Spawn(deadclass, pos);
 

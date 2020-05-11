@@ -217,7 +217,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			Luger.Reload: // More emulation of the guard pistol - 8 shots, then reload
 				"####" G 0 { bNoPain = True; }
 				"####" G 30 {
-					A_StartSound("luger/reload", CHAN_ITEM, FRandom (0.3, 0.6), FALSE, ATTN_NORM);
+					A_StartSound("luger/reload", CHAN_ITEM, 0, FRandom (0.3, 0.6), ATTN_NORM);
 					shots = 0;
 				}
 				"####" G 0 {
@@ -1011,7 +1011,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 			Luger.Reload: // More emulation of the guard pistol - 8 shots, then reload
 				"####" F 0 { bNoPain = True; }
 				"####" F 30 {
-					A_StartSound("luger/reload", CHAN_ITEM, FRandom (0.3, 0.6), FALSE, ATTN_NORM);
+					A_StartSound("luger/reload", CHAN_ITEM, 0, FRandom (0.3, 0.6), ATTN_NORM);
 					A_SpawnItemEx("9MMCasing", 1, 0, 56, Random(3, 4), Random(-1, 1), Random(2, 4), Random(-55,-80), SXF_NOCHECKPOSITION);
 					shots = 0;
 				}

@@ -74,7 +74,7 @@ Class ProtoDrone : Nazi //ozy81
 			Goto See;
 		Missile:
 			PROT A 10 {
-				A_StartSound("proto/marker", CHAN_AUTO, 0.75);
+				A_StartSound("proto/marker", CHAN_AUTO, 0, 0.75);
 				firecount = 0;
 			}
 		Missile.Sight:
@@ -121,7 +121,7 @@ Class ProtoDrone : Nazi //ozy81
 	{
 		if (snd != "")
 		{
-			A_StartSound(snd, CHAN_6 | CHAN_NOSTOP, 1.0, false);
+			A_StartSound(snd, CHAN_6, CHANF_NOSTOP, 1.0);
 			A_SoundVolume(CHAN_6, volume);
 		}
 		DoTrace(self, angle, 2048, pitch, 0, zoffset, hitpointtracer);

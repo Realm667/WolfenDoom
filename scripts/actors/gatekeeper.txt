@@ -459,7 +459,7 @@ class GhostGate : GateKeeper
 		targetcolor = "189454"; // Creepy green;
 		textspeed = 8;
 
-		A_StartSound(loopsound, CHAN_6, 0.45 * scale.x, true, ATTN_NORM);
+		A_StartSound(loopsound, CHAN_6, CHANF_LOOP, 0.45 * scale.x, ATTN_NORM);
 	}
 
 	Actor FindPeers()
@@ -592,7 +592,7 @@ class GhostGate : GateKeeper
 
 		if (alpha <= 0.05 && !user_keyamount)
 		{
-			A_StartSound(opensound, CHAN_6, 0.25 * scale.x, false, ATTN_NORM);
+			A_StartSound(opensound, CHAN_6, 0, 0.25 * scale.x, ATTN_NORM);
 
 			if (args[1] > 0)
 			{
@@ -781,7 +781,7 @@ class GhostGateHelper : GhostGate
 
 		startalpha = linedef.alpha;
 
-		A_StartSound(loopsound, CHAN_6, 0.45 * scale.x, true, ATTN_NORM);
+		A_StartSound(loopsound, CHAN_6, CHANF_LOOP, 0.45 * scale.x, ATTN_NORM);
 	}
 
 	override void Tick()
@@ -1097,8 +1097,8 @@ class DoorHandler : Actor
 					break;
 			}
 
-			if (dir > 0) { A_StartSound(OpenSound, CHAN_VOICE, 0.7); }
-			else {  A_StartSound(CloseSound, CHAN_VOICE, 0.7); }
+			if (dir > 0) { A_StartSound(OpenSound, CHAN_VOICE, 0, 0.7); }
+			else {  A_StartSound(CloseSound, CHAN_VOICE, 0, 0.7); }
 		}
 
 		moveamt = int(clamp(moveamt + dir, 0, maxmoveamt));

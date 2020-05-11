@@ -32,7 +32,7 @@ ACTOR FireSpawner : HeatEffectGiver
 		TNT1 A 0 A_JumpIf(Args[0] == 4,"Immense")
 		TNT1 A 0 A_JumpIf(Args[0] > 4,"Inferno")
 		TNT1 A 0 A_JumpIf(Args[1] > 0,3)
-		TNT1 A 0 A_StartSound("SFX/FireLoop1", CHAN_6, 1.0, TRUE)
+		TNT1 A 0 A_StartSound("SFX/FireLoop1", CHAN_6, CHANF_LOOP, 1.0)
 	SmallLoop:
 		TNT1 A 0 A_SetTics(5 - CallACS("FireSwitch"))
 		TNT1 A 0 A_SpawnItemEx("SmallFlame")
@@ -54,7 +54,7 @@ ACTOR FireSpawner : HeatEffectGiver
 		Loop
 	Medium:
 		TNT1 A 0 A_JumpIf(Args[1] > 0,3)
-		TNT1 A 0 A_StartSound("SFX/FireLoop2", CHAN_6, 1.0, TRUE)
+		TNT1 A 0 A_StartSound("SFX/FireLoop2", CHAN_6, CHANF_LOOP, 1.0)
 		MedLoop:
 		TNT1 A 0 A_SetTics(5 - CallACS("FireSwitch"))
 		TNT1 A 0 A_SpawnItemEx("MediumFlame")
@@ -76,7 +76,7 @@ ACTOR FireSpawner : HeatEffectGiver
 		Loop
 	Large:
 		TNT1 A 0 A_JumpIf(Args[1] > 0,3)
-		TNT1 A 0 A_StartSound("SFX/FireLoop3", CHAN_6, 1.0, TRUE)
+		TNT1 A 0 A_StartSound("SFX/FireLoop3", CHAN_6, CHANF_LOOP, 1.0)
 		LargeLoop:
 		TNT1 A 0 A_SetTics(5 - CallACS("FireSwitch"))
 		TNT1 A 0 A_SpawnItemEx("LargeFlame")
@@ -98,7 +98,7 @@ ACTOR FireSpawner : HeatEffectGiver
 		Loop
 	Huge:
 		TNT1 A 0 A_JumpIf(Args[1] > 0,3)
-		TNT1 A 0 A_StartSound("SFX/FireLoop3", CHAN_6, 4.0, TRUE)
+		TNT1 A 0 A_StartSound("SFX/FireLoop3", CHAN_6, CHANF_LOOP, 4.0)
 		HugeLoop:
 		TNT1 A 0 A_SetTics(5 - CallACS("FireSwitch"))
 		TNT1 A 0 A_SpawnItemEx("HugeFlame")
@@ -120,7 +120,7 @@ ACTOR FireSpawner : HeatEffectGiver
 		Loop
 	Immense:
 		TNT1 A 0 A_JumpIf(Args[1] > 0,3)
-		TNT1 A 0 A_StartSound("SFX/FireLoop3", CHAN_6, 8.0, TRUE)
+		TNT1 A 0 A_StartSound("SFX/FireLoop3", CHAN_6, CHANF_LOOP, 8.0)
 		ImmenseLoop:
 		TNT1 A 0 A_SetTics(5 - CallACS("FireSwitch"))
 		TNT1 A 0 A_SpawnItemEx("ImmenseFlame")
@@ -142,7 +142,7 @@ ACTOR FireSpawner : HeatEffectGiver
 		Loop
 	Inferno:
 		TNT1 A 0 A_JumpIf(Args[1] > 0,3)
-		TNT1 A 0 A_StartSound("SFX/FireLoop3", CHAN_6, 16.0, TRUE)
+		TNT1 A 0 A_StartSound("SFX/FireLoop3", CHAN_6, CHANF_LOOP, 16.0)
 		InfernoLoop:
 		TNT1 A 0 A_SetTics(5 - CallACS("FireSwitch"))
 		TNT1 A 0 A_SpawnItemEx("InfernoFlame")
@@ -795,8 +795,8 @@ ACTOR BarrelFireSpawner
 	{
 	Spawn:
 		TNT1 A 1
-		TNT1 A 0 A_StartSound("SFX/FireStart", CHAN_7, frandom(0.4,0.8), FALSE, ATTN_STATIC)
-		TNT1 A 0 A_StartSound("SFX/FireLoop1", CHAN_6, frandom(0.2,0.4), TRUE, ATTN_STATIC)
+		TNT1 A 0 A_StartSound("SFX/FireStart", CHAN_7, 0, frandom(0.4,0.8), ATTN_STATIC)
+		TNT1 A 0 A_StartSound("SFX/FireLoop1", CHAN_6, CHANF_LOOP, frandom(0.2,0.4), ATTN_STATIC)
 		TNT1 A 0 A_SpawnItemEx("SmallFlame")
 		TNT1 A 0 A_Jump(256,1,6,7,8,9,10,11)
 		TNT1 A 1 A_SpawnItemEx("Flame1A")

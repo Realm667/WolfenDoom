@@ -1264,7 +1264,7 @@ class Nazi : Base
 			"####" AAA 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
 			"####" AAA 1 A_NaziChase(null, null);
-			"####" B 0 A_StartSound("mech/walk", CHAN_AUTO, frandom(0.7,1.0), FALSE, ATTN_IDLE);
+			"####" B 0 A_StartSound("mech/walk", CHAN_AUTO, 0, frandom(0.7,1.0), ATTN_IDLE);
 			"####" B 2 { A_NaziChase(); Radius_Quake(5, 2, 0, 5, 0); }
 			"####" BBB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
@@ -1277,7 +1277,7 @@ class Nazi : Base
 			"####" DDD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
 			"####" DDD 1 A_NaziChase(null, null);
-			"####" C 0 A_StartSound("mech/walk", CHAN_AUTO, frandom(0.5,0.7), FALSE, ATTN_IDLE);
+			"####" C 0 A_StartSound("mech/walk", CHAN_AUTO, 0, frandom(0.5,0.7), ATTN_IDLE);
 			"####" C 2 { A_NaziChase(); Radius_Quake(5, 2, 0, 5, 0); }
 			"####" CCC 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
@@ -1940,7 +1940,7 @@ class Nazi : Base
 			}
 			else if (user_incombat) // If the actor has already been in its See state
 			{
-				if (self is "NaziStandard") { A_StartSound("Nazi1/Pain", CHAN_AUTO, FRandom(0.2, 0.4), FALSE, ATTN_NORM); } // Play quiet pain sound
+				if (self is "NaziStandard") { A_StartSound("Nazi1/Pain", CHAN_AUTO, 0, FRandom(0.2, 0.4), ATTN_NORM); } // Play quiet pain sound
 				SoundAlert(source, false, 64); //ozy - only if near // Alert small radius
 			}
 			else // Otherwise, this attack was the equivalent of Stealth Kill for non-sneakable enemies

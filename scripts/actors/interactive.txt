@@ -229,7 +229,7 @@ class StatueBreakable : Actor
 					}
 				}
 
-				A_StartSound("misc/SRCRK2", CHAN_AUTO, frandom (0.3,0.5), FALSE, ATTN_NORM);
+				A_StartSound("misc/SRCRK2", CHAN_AUTO, 0, frandom (0.3,0.5), ATTN_NORM);
 
 				Actor smoke = Spawn("KD_HL2SmokeGenerator", centerpoint);
 				if (smoke)

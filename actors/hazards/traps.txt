@@ -47,7 +47,7 @@ ACTOR RollingBoulderGrey
 	States
 	{
 	Spawn:
-		GBOL A 2 NODELAY A_StartSound("Boulder/Roll", CHAN_5, 1.0, TRUE)
+		GBOL A 2 NODELAY A_StartSound("Boulder/Roll", CHAN_5, CHANF_LOOP, 1.0)
 		"####" BCDA 2 A_Quake(1,2,0,192,"")
 		Loop
 	Death:
@@ -77,7 +77,7 @@ ACTOR RollingBoulderBrown : RollingBoulderGrey
 	States
 	{
 	Spawn:
-		BBOL A 2 NODELAY A_StartSound("Boulder/Roll", CHAN_5, 1.0, TRUE)
+		BBOL A 2 NODELAY A_StartSound("Boulder/Roll", CHAN_5, CHANF_LOOP, 1.0)
 		"####" BCDA 2 A_Quake(1,2,0,192,"")
 		Loop
 	Death:
@@ -93,7 +93,7 @@ ACTOR RollingBoulderBrownHugger : RollingBoulderGreyHugger
 	States
 	{
 	Spawn:
-		BBOL A 2 NODELAY A_StartSound("Boulder/Roll", CHAN_5, 1.0, TRUE)
+		BBOL A 2 NODELAY A_StartSound("Boulder/Roll", CHAN_5, CHANF_LOOP, 1.0)
 		"####" BCDA 2 A_Quake(1,2,0,192,"")
 		Loop
 	Death:

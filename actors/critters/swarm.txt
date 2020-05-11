@@ -16,7 +16,7 @@ ACTOR Bodiless_Swarm : SwitchableDecoration
 	Active:
 		TNT1 A 0 {bDormant = FALSE;}
 	Spawn:
-		TNT1 A 0 NODELAY A_StartSound("SFX/Buzz", CHAN_BODY, frandom(0.6, 0.8), TRUE)
+		TNT1 A 0 NODELAY A_StartSound("SFX/Buzz", CHAN_BODY, CHANF_LOOP, frandom(0.6, 0.8))
 		"####" AAAAA 1 A_SpawnItemEx("SwarmFly",frandom(-16,16),frandom(-16,16),frandom(-16,16),0 ,0 ,0 ,0 ,SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
 		"####" A -1
 		Stop

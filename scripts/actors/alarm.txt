@@ -91,7 +91,7 @@ class Alarm : Base
 			if (!activated)
 			{
 				activated = true;
-				A_StartSound("alarm_ring", CHAN_VOICE, 1.0, true);
+				A_StartSound("alarm_ring", CHAN_VOICE, CHANF_LOOP, 1.0);
 			}
 			if (level.time % 35 == 0) { SoundAlert(target, false, 512); } // Only do the sound alert once a second for performance reasons
 		}
@@ -186,9 +186,9 @@ class AlarmPanel : SwitchableDecoration
 				if (NaziStandard(activator)) { NaziStandard(activator).activationgoal = null; }
 				activator = null;
 
-				A_StartSound("World/Spark", CHAN_AUTO, 0.15);
+				A_StartSound("World/Spark", CHAN_AUTO, 0, 0.15);
 				A_SpawnItemEx("SparkFlare_Y1", 0, 0, 40);
-				A_StartSound("METALBRK", CHAN_AUTO, 0.25);
+				A_StartSound("METALBRK", CHAN_AUTO, 0, 0.25);
 			}
 			ALRM # 2 {
 				for (int s = 1; s < 17; s++)

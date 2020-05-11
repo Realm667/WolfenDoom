@@ -176,7 +176,7 @@ Class LightningBeam : Actor
 
 		Actor prev;
 
-		A_StartSound(ActiveSound, CHAN_AUTO | CHAN_NOSTOP, 0.5, false, ATTN_STATIC);
+		A_StartSound(ActiveSound, CHAN_AUTO, CHANF_NOSTOP, 0.5, ATTN_STATIC);
 
 		While (CurDistance < MaxDistance - StepDistance)
 		{

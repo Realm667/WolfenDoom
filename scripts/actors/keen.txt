@@ -513,7 +513,7 @@ class KeenPlayer : PlayerPawn
 				// A_Pain doesn't find the SNDINFO-defined pain sound for morphed actors anyway, 
 				// plus it restarts playing the sound every time it's called; if we call the pain
 				// sound manually here with CHAN_NOSTOP, we get a better effect.
-				A_StartSound(PainSound, CHAN_VOICE | CHAN_NOSTOP); 
+				A_StartSound(PainSound, CHAN_VOICE, CHAN_NOSTOP); 
 			}
 			Goto Spawn;
 		Death:
