@@ -36,7 +36,7 @@ class Harpoon : Actor
 
 	void A_HarpoonChain ()
 	{
-		A_PlaySound ("harpoon/active", CHAN_ITEM);
+		A_StartSound ("harpoon/active", CHAN_ITEM);
 		Spawn("Harpoon_TrailX", Pos, ALLOW_REPLACE);
 		Spawn("Harpoon_TrailX", Vec3Offset(-Vel.x/2., -Vel.y/2., -Vel.z/2.), ALLOW_REPLACE);
 		Spawn("Harpoon_TrailX", Vec3Offset(-Vel.x, -Vel.y, -Vel.z), ALLOW_REPLACE);

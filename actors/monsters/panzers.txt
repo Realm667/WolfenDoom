@@ -68,7 +68,7 @@ ACTOR Nuke
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_PlaySound("panzer/explode", CHAN_AUTO, 1.0, FALSE, ATTN_NORM)
+		TNT1 A 0 NODELAY A_StartSound("panzer/explode", CHAN_AUTO, 1.0, FALSE, ATTN_NORM)
 		"####" A 0 Radius_Quake(7,30,0,96,0)
 		"####" A 0 A_SpawnItemEx("TankBoom",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
 		"####" A 0 A_SpawnItemEx("TankFlare")
@@ -355,7 +355,7 @@ ACTOR PanzerNuke : Nuke //for panzerschreck rockets
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_PlaySound("panzer/explode", CHAN_AUTO, 1.0, FALSE, ATTN_NORM)
+		TNT1 A 0 NODELAY A_StartSound("panzer/explode", CHAN_AUTO, 1.0, FALSE, ATTN_NORM)
 		"####" A 0 Radius_Quake(7,30,0,96,0)
 		"####" A 0 A_SpawnItemEx("TankBoom",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
 		"####" A 0 A_SpawnItemEx("TankFlare")
@@ -384,7 +384,7 @@ ACTOR ZombieNuke : Nuke //for zombiekazi
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_PlaySound("EXPLOSION_SOUND", CHAN_AUTO, 1.0, FALSE, ATTN_NORM)
+		TNT1 A 0 NODELAY A_StartSound("EXPLOSION_SOUND", CHAN_AUTO, 1.0, FALSE, ATTN_NORM)
 		"####" A 0 Radius_Quake(10,10,0,16,0)
 		"####" A 0 A_RadiusGive("BlurShaderControl", 192, RGF_PLAYERS | RGF_GIVESELF, 80)
 		"####" A 0 A_SpawnItemEx("KD_HL2Flash", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE)
@@ -400,7 +400,7 @@ ACTOR UFONuke : Nuke
 	States
 	{
 	Spawn:
-		TNT1 A 0 A_PlaySound("panzer/explode", CHAN_ITEM, 1.0, FALSE, ATTN_NORM)
+		TNT1 A 0 A_StartSound("panzer/explode", CHAN_ITEM, 1.0, FALSE, ATTN_NORM)
 		"####" A 0 A_SpawnItemEx("UFOFlare")
 		"####" A 25 A_SpawnItemEx("UFONukeFloor")
 		"####" A 0 A_SpawnItemEx("UFONukeSmokeFloor")
@@ -543,7 +543,7 @@ ACTOR LZ127Nuke : Nuke
 	States
 	{
 	Spawn:
-		TNT1 A 0 A_PlaySound("panzer/explode", CHAN_ITEM, 1.0, FALSE, ATTN_NORM)
+		TNT1 A 0 A_StartSound("panzer/explode", CHAN_ITEM, 1.0, FALSE, ATTN_NORM)
 		"####" A 0 A_SpawnItemEx("LZ127Flare")
 		"####" A 25 A_SpawnItemEx("LZ127NukeFloor")
 		"####" A 0 A_SpawnItemEx("LZ127NukeSmokeFloor")

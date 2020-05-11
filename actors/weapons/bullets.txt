@@ -274,12 +274,12 @@ ACTOR TeslaTracer : BulletTracer
 	Crash:
 		TNT1 AAAAA 0 A_SpawnItemEx("Spark_P1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
 		TNT1 A 0 A_SpawnItemEx("SparkFlare_P1")
-		TNT1 A 8 A_PlaySound("astroricochet")
+		TNT1 A 8 A_StartSound("astroricochet")
 		Stop
 	XDeath:
 		TNT1 AAAAA 0 A_SpawnItemEx("Spark_P1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
 		TNT1 A 0 A_SpawnItemEx("SparkFlare_P1")
-		TNT1 A 1 A_PlaySound("astrohitflesh")
+		TNT1 A 1 A_StartSound("astrohitflesh")
 		Stop
 	}
 }
@@ -302,7 +302,7 @@ ACTOR TeslaWhizzer
 	States
 	{
 	Spawn:
-		TNT1 A 1 A_PlaySound("tesla/attack")
+		TNT1 A 1 A_StartSound("tesla/attack")
 		Stop
 	}
 }
@@ -506,12 +506,12 @@ ACTOR AstroTracer : BulletTracer
 	Crash:
 		TNT1 AAAAA 0 A_SpawnItemEx("Spark_G1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
 		TNT1 A 0 { A_SpawnItemEx("SparkFlare_G1"); A_SpawnItemEx("ZBulletChip"); }
-		TNT1 A 8 A_PlaySound("astroricochet")
+		TNT1 A 8 A_StartSound("astroricochet")
 		Stop
 	XDeath:
 		TNT1 AAAAA 0 A_SpawnItemEx("Spark_G1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
 		TNT1 A 0 A_SpawnItemEx("SparkFlare_G1")
-		TNT1 A 1 A_PlaySound("astrohitflesh")
+		TNT1 A 1 A_StartSound("astrohitflesh")
 		Stop
 	}
 }
@@ -523,7 +523,7 @@ ACTOR AstroWhizzer
 	States
 	{
 	Spawn:
-		TNT1 A 1 A_PlaySound("astrowhiz")
+		TNT1 A 1 A_StartSound("astrowhiz")
 		Stop
 	}
 }
@@ -557,12 +557,12 @@ ACTOR ProtoTracer : BulletTracer
 	Crash:
 		TNT1 AAAAA 0 A_SpawnItemEx("Spark_R1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
 		TNT1 A 0 { A_SpawnItemEx("SparkFlare_R1"); A_SpawnItemEx("ZBulletChip"); }
-		TNT1 A 8 A_PlaySound("astroricochet")
+		TNT1 A 8 A_StartSound("astroricochet")
 		Stop
 	XDeath:
 		TNT1 AAAAA 0 A_SpawnItemEx("Spark_R1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
 		TNT1 A 0 A_SpawnItemEx("SparkFlare_R1")
-		TNT1 A 1 A_PlaySound("astrohitflesh")
+		TNT1 A 1 A_StartSound("astrohitflesh")
 		Stop
 	}
 }

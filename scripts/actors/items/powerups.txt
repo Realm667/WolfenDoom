@@ -149,7 +149,7 @@ class ZyklonMask : PowerupToggler
 		// Zyklon mask cannot be used underwater
 		if (powerinv && owner.waterlevel >= 3)
 		{
-			A_PlaySound("flamer/steam", CHAN_AUTO, Random(15, 45));
+			A_StartSound("flamer/steam", CHAN_AUTO, Random(15, 45));
 			powerinv.Destroy();
 		}
 		Super.Tick();
@@ -216,7 +216,7 @@ class LanternPickup : CustomInventory
 		{
 			if (owner.waterlevel >= 3)
 			{
-				A_PlaySound("flamer/steam", CHAN_AUTO, Random(15, 45));
+				A_StartSound("flamer/steam", CHAN_AUTO, Random(15, 45));
 				active = false;
 			}
 			else if (owner.FindInventory("LanternOil")) { owner.TakeInventory("LanternOil", 1); }

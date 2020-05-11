@@ -294,7 +294,7 @@ ACTOR CKRedKeyPod : SwitchableDecoration
 		CKKS B -1
 		Stop
 	Active:
-		TNT1 A 0 A_Playsound("ckeen/gemuse")
+		TNT1 A 0 A_StartSound("ckeen/gemuse")
 		CKKS A -1 BRIGHT
 		Stop
 	}
@@ -312,7 +312,7 @@ ACTOR CKBlueKeyPod : CKRedKeyPod
 		CKKS D -1
 		Stop
 	Active:
-		TNT1 A 0 A_Playsound("ckeen/gemuse")
+		TNT1 A 0 A_StartSound("ckeen/gemuse")
 		CKKS C -1 BRIGHT
 		Stop
 	}
@@ -330,7 +330,7 @@ ACTOR CKYellowKeyPod : CKRedKeyPod
 		CKKS F -1
 		Stop
 	Active:
-		TNT1 A 0 A_Playsound("ckeen/gemuse")
+		TNT1 A 0 A_StartSound("ckeen/gemuse")
 		CKKS E -1 BRIGHT
 		Stop
 	}
@@ -348,7 +348,7 @@ ACTOR CKGreenKeyPod : CKRedKeyPod
 		CKKS H -1
 		Stop
 	Active:
-		TNT1 A 0 A_Playsound("ckeen/gemuse")
+		TNT1 A 0 A_StartSound("ckeen/gemuse")
 		CKKS G -1 BRIGHT
 		Stop
 	}
@@ -428,7 +428,7 @@ ACTOR CKPoisonSlug : CKBaseEnemy
 		"####" A 0 A_Jump(16, "Pee")
 		Loop
 	Pee:
-		TNT1 A 0 A_PlaySound("ckeen/slugpoo")
+		TNT1 A 0 A_StartSound("ckeen/slugpoo")
 		CKPS C 30 A_SpawnItemEx("CKPoisonSlugPoison", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
 		Goto See
 	Stunned:
@@ -517,7 +517,7 @@ ACTOR CKThunderbolt
 	States
 	{
 	Spawn:
-		CKTH A 0 NODELAY A_Playsound("ckeen/shothit")
+		CKTH A 0 NODELAY A_StartSound("ckeen/shothit")
 		CKTH ABABAB 8 A_Explode
 		Stop
 	}

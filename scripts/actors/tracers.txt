@@ -36,7 +36,7 @@ class BulletTracer : FastProjectile
 				bWindThrust = false;
 			}
 			PUFF B 3 BRIGHT LIGHT("BPUFF1") {
-				if (!silent) { A_PlaySound("ricochet"); }
+				if (!silent) { A_StartSound("ricochet"); }
 				A_SpawnItemEx("ZBulletChip");
 			}
 			PUFF CD 3 BRIGHT LIGHT("BPUFF1");
@@ -44,7 +44,7 @@ class BulletTracer : FastProjectile
 		XDeath:
 			TNT1 A 1 {
 				bWindThrust = false;
-				A_PlaySound("hitflesh");
+				A_StartSound("hitflesh");
 			}
 			Stop;
 	}
@@ -359,7 +359,7 @@ class Whizzer : GrenadeBase
 	{
 		Super.PostBeginPlay();
 
-		if (master && PlayerPawn(master)) { A_PlaySound("whiz"); } // Only play whiz sound if near a player that's not the originator
+		if (master && PlayerPawn(master)) { A_StartSound("whiz"); } // Only play whiz sound if near a player that's not the originator
 	}
 }
 

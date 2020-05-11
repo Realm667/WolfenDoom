@@ -119,13 +119,13 @@ class ShermanPlayer : PlayerPawn
 				{
 					treads.angle -= 2;
 					forwardmove /= 5;
-					A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE);
+					A_StartSound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE);
 				}
 				else if (diff > 1)
 				{
 					treads.angle += 2;
 					forwardmove /= 5;
-					A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE);
+					A_StartSound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE);
 				}
 				else
 				{
@@ -316,8 +316,8 @@ class ShermanPlayer : PlayerPawn
 
 		sndvol = 0.7;
 
-		A_PlaySound("TKIDLE", CHAN_6, 0.25, TRUE);
-		A_PlaySound("TNK1LOOP", CHAN_7, 0.7, TRUE);
+		A_StartSound("TKIDLE", CHAN_6, 0.25, TRUE);
+		A_StartSound("TNK1LOOP", CHAN_7, 0.7, TRUE);
 
 		Super.PostBeginPlay();
 	}
@@ -374,7 +374,7 @@ class ShermanPlayer : PlayerPawn
 			if (turret.angle != angle)
 			{
 			 	turret.angle = !chasecam ? angle : clamp(angle, turret.angle - 1.5, turret.angle + 1.5);
-				A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE);
+				A_StartSound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE);
 			}
 
 			// Force pitch clamping

@@ -70,13 +70,13 @@ ACTOR MGTurretStealth : MGTurret
 	States
 	{
 	Missile: //This 'turret' fires and reloads like an MP40 Guard
-		"####" A 5 { A_FaceTarget; A_PlaySound("nazi/mp40", CHAN_WEAPON); }
+		"####" A 5 { A_FaceTarget; A_StartSound("nazi/mp40", CHAN_WEAPON); }
 		"####" B 4 A_SpawnProjectile("EnemySMGTracer",24,4,random(-8,8))
 		"####" A 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
 		"####" C 2 A_MonsterRefire(10, "See")
 		Loop
 	Reload:
-		"####" A 35 A_PlaySound("mp40/reload", CHAN_WEAPON)
+		"####" A 35 A_StartSound("mp40/reload", CHAN_WEAPON)
 		Goto See
 	Pain: //Disable for 2 seconds when shot, then go to reload
 		"####" C 70

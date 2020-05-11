@@ -310,7 +310,7 @@ class TankBase : VehicleBase
 		treads.Species = Species;
 		treads.bFriendly = bFriendly;
 
-		if (!user_static) { A_PlaySound(idlesound, CHAN_6, 0.25, TRUE); }
+		if (!user_static) { A_StartSound(idlesound, CHAN_6, 0.25, TRUE); }
 		else { level.total_monsters--; }
 
 		targettimeout = Random(0, 35);
@@ -327,7 +327,7 @@ class TankBase : VehicleBase
 
 		A_StopSound(CHAN_6); //the idle sound
 		A_StopSound(CHAN_7);
-		A_PlaySound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_IDLE);
+		A_StartSound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_IDLE);
 		A_Scream();
 		A_NoBlocking();
 
@@ -598,8 +598,8 @@ class TankBase : VehicleBase
 				{
 					double delta = deltaangle(treads.angle, treads.AngleTo(aimAt));
 
-					if (abs(delta) <= turretanglerange) { turret.A_Face(aimAt, turretspeed); A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
-					else { turret.angle = clamp(turret.angle, treads.angle - turretanglerange, treads.angle + turretanglerange); A_PlaySound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
+					if (abs(delta) <= turretanglerange) { turret.A_Face(aimAt, turretspeed); A_StartSound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
+					else { turret.angle = clamp(turret.angle, treads.angle - turretanglerange, treads.angle + turretanglerange); A_StartSound("MACHINE_LOOP_3", CHAN_AUTO, 0.2, FALSE); }
 				}
 				else { turret.A_Face(aimAt, turretspeed); }
 
@@ -660,7 +660,7 @@ class TankBase : VehicleBase
 
 		DoTrample(true);
 
-		A_PlaySound(movesound, CHAN_7, 1.0, TRUE);
+		A_StartSound(movesound, CHAN_7, 1.0, TRUE);
 	}
 
 	virtual void DoTurret(Actor origin)
@@ -987,7 +987,7 @@ class TankTreadsBase : Actor
 	{
 		if (turret) { turret.Destroy(); }
 
-		A_PlaySound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_IDLE);
+		A_StartSound("weapons/explode", CHAN_AUTO, 1.0, FALSE, ATTN_IDLE);
 
 		Actor dead = Spawn(deadclass, pos);
 
@@ -1342,7 +1342,7 @@ class FriendlySherman : TankBase
 
 		Super.DoFrontWeapon(origin);
 
-		A_PlaySound("mauser/fire", CHAN_WEAPON);
+		A_StartSound("mauser/fire", CHAN_WEAPON);
 
 		Actor mo = A_SpawnProjectile(FrontGunProjectile, 0, 0, origin.angle + Random(-2, 2), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, Random(-2, 2));
 
@@ -1437,7 +1437,7 @@ class SSTank1 : TankBase
 
 		Super.DoFrontWeapon(origin);
 
-		A_PlaySound("weapons/chaingun", CHAN_WEAPON);
+		A_StartSound("weapons/chaingun", CHAN_WEAPON);
 
 		double gunpitch = origin.pitch;
 		if (origin.master && TankBase(origin.master) && TankBase(origin.master).gun) { gunpitch = TankBase(origin.master).gun.pitch; }
@@ -1550,7 +1550,7 @@ class SSTank2 : TankBase
 
 		Super.DoFrontWeapon(origin);
 
-		A_PlaySound("weapons/chaingun", CHAN_WEAPON);
+		A_StartSound("weapons/chaingun", CHAN_WEAPON);
 
 		origin.A_Face(target, 0, 0, flags:FAF_MIDDLE);
 		origin.angle = treads.angle;
@@ -1713,7 +1713,7 @@ class SSTank4 : TankBase
 
 		turrettimeout = -1;
 
-		A_PlaySound("weapons/chaingun", CHAN_WEAPON);
+		A_StartSound("weapons/chaingun", CHAN_WEAPON);
 
 		origin.A_Face(target, 0, 0, flags:FAF_MIDDLE);
 		origin.angle = turret.angle;
@@ -1822,7 +1822,7 @@ class T34Tank : TankBase
 
 		Super.DoFrontWeapon(origin);
 
-		A_PlaySound("weapons/chaingun", CHAN_WEAPON);
+		A_StartSound("weapons/chaingun", CHAN_WEAPON);
 
 		origin.A_Face(target, 0, 0, flags:FAF_MIDDLE);
 		origin.angle = treads.angle;

@@ -38,7 +38,7 @@ ACTOR Luger9mm : NaziWeapon
 		LUGG A 0 A_SetPitch(pitch-(0.2*CallACS("RecoilAmount")))
 		LUGG A 0 A_JumpIf(waterlevel > 0,2)
 		LUGG A 0 A_FireProjectile("PistolSmokeSpawner",0,0,0,random(-4,4),0,0)
-		LUGG A 0 A_PlaySound("luger/fire", CHAN_WEAPON)
+		LUGG A 0 A_StartSound("luger/fire", CHAN_WEAPON)
 		LUGG A 0 A_SpawnItemEx("9MMCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
 		LUGG A 0 A_AlertMonsters
 		LUGG D 1 A_FireProjectile("LugerTracer")
@@ -51,7 +51,7 @@ ACTOR Luger9mm : NaziWeapon
 		LUGG A 1 Offset(0,32) A_WeaponReady(WRF_NOBOB)
 		Goto Ready
 	Reload:
-		LUGG A 1 Offset(0,35) A_PlaySound("luger/reload", CHAN_5)
+		LUGG A 1 Offset(0,35) A_StartSound("luger/reload", CHAN_5)
 		LUGG A 1 Offset(0,38)
 		LUGG A 1 Offset(0,44)
 		LUGG A 1 Offset(0,52)

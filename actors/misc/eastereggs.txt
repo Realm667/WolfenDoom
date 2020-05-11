@@ -14,12 +14,12 @@ ACTOR JazzJackrabbit : CommanderKeen
 	Death:
 		"####" AB 6
 		"####" C 6 A_Scream
-		"####" DEFGH 6 { A_SpawnItemEx("SingleCoin", 0, 0, random(4,8), frandom(0.5,1.5), frandom(0.5,1.5), frandom(1.0,4.0), random(0,360)); A_PlaySound("treasure/pickup", 0, 64, 0, ATTN_IDLE, 0, frandom(-6.0, 6.0)); }
+		"####" DEFGH 6 { A_SpawnItemEx("SingleCoin", 0, 0, random(4,8), frandom(0.5,1.5), frandom(0.5,1.5), frandom(1.0,4.0), random(0,360)); A_StartSound("treasure/pickup", 0, 64, 0, ATTN_IDLE, 0, frandom(-6.0, 6.0)); }
 		"####" I 0 A_NoBlocking
-		"####" III 2 { A_SpawnItemEx("SingleCoin", 0, 0, random(4,8), frandom(0.5,1.5), frandom(0.5,1.5), frandom(1.0,4.0), random(0,360)); A_PlaySound("treasure/pickup", 0, 64, 0, ATTN_IDLE, 0, frandom(-6.0, 6.0)); }
-		"####" JJJ 2 { A_SpawnItemEx("SingleCoin", 0, 0, random(4,8), frandom(0.5,1.5), frandom(0.5,1.5), frandom(1.0,4.0), random(0,360)); A_PlaySound("treasure/pickup", 0, 64, 0, ATTN_IDLE, 0, frandom(-6.0, 6.0)); }
+		"####" III 2 { A_SpawnItemEx("SingleCoin", 0, 0, random(4,8), frandom(0.5,1.5), frandom(0.5,1.5), frandom(1.0,4.0), random(0,360)); A_StartSound("treasure/pickup", 0, 64, 0, ATTN_IDLE, 0, frandom(-6.0, 6.0)); }
+		"####" JJJ 2 { A_SpawnItemEx("SingleCoin", 0, 0, random(4,8), frandom(0.5,1.5), frandom(0.5,1.5), frandom(1.0,4.0), random(0,360)); A_StartSound("treasure/pickup", 0, 64, 0, ATTN_IDLE, 0, frandom(-6.0, 6.0)); }
 		"####" K 6 A_KeenDie
-		"####" LLLLL 4 { A_SpawnItemEx("SingleCoin", 0, 0, random(4,8), frandom(0.5,1.5), frandom(0.5,1.5), frandom(1.0,4.0), random(0,360)); A_PlaySound("treasure/pickup", 0, 64, 0, ATTN_IDLE, 0, frandom(-6.0, 6.0)); }
+		"####" LLLLL 4 { A_SpawnItemEx("SingleCoin", 0, 0, random(4,8), frandom(0.5,1.5), frandom(0.5,1.5), frandom(1.0,4.0), random(0,360)); A_StartSound("treasure/pickup", 0, 64, 0, ATTN_IDLE, 0, frandom(-6.0, 6.0)); }
 		"####" L -1
 		Stop
 	Pain:

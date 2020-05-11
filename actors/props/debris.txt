@@ -649,7 +649,7 @@ ACTOR Debris_Flesh : Debris_Base
 	Death1:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
 		"####" "#" 0 A_StopSound(CHAN_ITEM)
-		"####" "#" 0 A_PlaySound("flesh/stop", CHAN_AUTO, frandom (0.2,0.5), FALSE, ATTN_NORM)
+		"####" "#" 0 A_StartSound("flesh/stop", CHAN_AUTO, frandom (0.2,0.5), FALSE, ATTN_NORM)
 		"####" "#" 1 A_SetTics(35*CallACS("DebrisLifetime"))
 		Death1Wait:
 		"####" "#" 1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY / 2) //let's flat it
@@ -666,7 +666,7 @@ ACTOR Debris_Flesh2 : Debris_Flesh
 	Death1:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
 		"####" "#" 0 A_StopSound(CHAN_ITEM)
-		"####" "#" 0 A_PlaySound("flesh/stop", CHAN_AUTO, frandom (0.1,0.3), FALSE, ATTN_NORM)
+		"####" "#" 0 A_StartSound("flesh/stop", CHAN_AUTO, frandom (0.1,0.3), FALSE, ATTN_NORM)
 		"####" "#" 1 A_SetTics(35*CallACS("DebrisLifetime"))
 		Death1Wait:
 		"####" "#" 1 A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY / 2) //let's flat it
@@ -1648,7 +1648,7 @@ ACTOR Debris_Vent : SwitchableDecoration
 	Spawn:
 	Active:
 		TNT1 A 0 A_SpawnItemEx("PowerPlantSmokePuffSmall", 0, 0, 32, 0, 0, 0, 0, 0)
-		TNT1 A 0 A_PlaySound("DSMETDST", CHAN_AUTO, 0.5, false, ATTN_NORM)
+		TNT1 A 0 A_StartSound("DSMETDST", CHAN_AUTO, 0.5, false, ATTN_NORM)
 		TNT1 AAAA 0 A_SpawnItemEx("Debris_Trash", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE)
 		TNT1 AAAA 0 A_SpawnItemEx("Debris_Trash2", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE)
 	Inactive:
@@ -1665,7 +1665,7 @@ ACTOR Debris_Wood2 : Debris_Vent
 	Spawn:
 	Active:
 		TNT1 A 0 A_SpawnItemEx("PowerPlantSmokePuffSmall", 0, 0, 32, 0, 0, 0, 0, 0) //needed? - Ozy81
-		TNT1 A 0 A_PlaySound("WOODBRK", CHAN_AUTO, 0.5, false, ATTN_NORM)
+		TNT1 A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0.5, false, ATTN_NORM)
 		TNT1 AAAA 0 A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE)
 		TNT1 AAAA 0 A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE)
 	Inactive:

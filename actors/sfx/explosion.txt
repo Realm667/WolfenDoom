@@ -25,7 +25,7 @@ ACTOR GeneralExplosion_Medium : SwitchableDecoration
 	Spawn:
 	Active:
 		TNT1 A 0 A_JumpIf(Args[1], 2)
-		TNT1 A 0 A_PlaySound("EXPLOSION_SOUND", CHAN_AUTO, 0.75, FALSE, ATTN_IDLE)
+		TNT1 A 0 A_StartSound("EXPLOSION_SOUND", CHAN_AUTO, 0.75, FALSE, ATTN_IDLE)
 		TNT1 A 0 A_JumpIf(!Args[0], "Quake")
 		Goto Explosion
 	Quake:
@@ -52,7 +52,7 @@ ACTOR FriendlyExplosion_Medium : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 A_PlaySound("EXPLOSION_SOUND", CHAN_AUTO, 0.75, FALSE, ATTN_IDLE)
+		TNT1 A 0 A_StartSound("EXPLOSION_SOUND", CHAN_AUTO, 0.75, FALSE, ATTN_IDLE)
 	Quake:
 		TNT1 A 0 Radius_Quake(10,10,0,16,0)
 		Goto Explosion
@@ -77,7 +77,7 @@ ACTOR EnemyExplosion_Medium : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 A_PlaySound("EXPLOSION_SOUND", CHAN_AUTO, 0.75, FALSE, ATTN_IDLE)
+		TNT1 A 0 A_StartSound("EXPLOSION_SOUND", CHAN_AUTO, 0.75, FALSE, ATTN_IDLE)
 	Quake:
 		TNT1 A 0 Radius_Quake(10,10,0,16,0)
 		Goto Explosion
@@ -218,7 +218,7 @@ ACTOR AstrosteinExplosion_Medium : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 A_PlaySound("astrostein/explosion")
+		TNT1 A 0 A_StartSound("astrostein/explosion")
 		TNT1 A 0 Radius_Quake(10,10,0,16,0)
 		TNT1 A 0 A_Explode(100, 192)
 		TNT1 A 0 A_RadiusGive("BlurShaderControl", 192, RGF_PLAYERS | RGF_GIVESELF, 80)
@@ -242,7 +242,7 @@ ACTOR AstrosteinExplosion_Decorative : AstrosteinExplosion_Medium
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 A_PlaySound("astrostein/explosion")
+		TNT1 A 0 A_StartSound("astrostein/explosion")
 		TNT1 A 0 Radius_Quake(10,10,0,16,0)
 		TNT1 A 0 A_RadiusGive("BlurShaderControl", 192, RGF_PLAYERS | RGF_GIVESELF, 80)
 		TNT1 A 0 A_JumpIf(CallACS("BoomSwitch")==0,"EndSpawn")
@@ -285,7 +285,7 @@ ACTOR ProtoExplosion_Medium : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 A_PlaySound("astrostein/explosion")
+		TNT1 A 0 A_StartSound("astrostein/explosion")
 		TNT1 A 0 Radius_Quake(10,10,0,16,0)
 		TNT1 A 0 A_Explode(random(10,20), 192)
 		TNT1 A 0 A_RadiusGive("BlurShaderControl", 192, RGF_PLAYERS | RGF_GIVESELF, 80)
@@ -318,7 +318,7 @@ ACTOR SceneryExplosion_Medium : GeneralExplosion_Medium
 	Spawn:
 	Active:
 		TNT1 A 0 A_CheckSightOrRange(1280, "Unseen")
-		TNT1 A 0 A_PlaySound("EXPLOSION_SOUND", CHAN_AUTO, 0.75, FALSE, ATTN_IDLE)
+		TNT1 A 0 A_StartSound("EXPLOSION_SOUND", CHAN_AUTO, 0.75, FALSE, ATTN_IDLE)
 		TNT1 A 0 A_JumpIf(!Args[0], "Quake")
 		Goto Explosion
 	Quake:

@@ -169,7 +169,7 @@ class LadderBase : Actor
 				{
 					if (user_soundtype == 1)
 					{
-						it.thing.A_PlaySound("world/ropecreak", CHAN_BODY, 0.05); // Play quiet walking-on-rope creaking sounds
+						it.thing.A_StartSound("world/ropecreak", CHAN_BODY, 0.05); // Play quiet walking-on-rope creaking sounds
 
 						soundtimeout = 15;
 					} 
@@ -204,12 +204,12 @@ class LadderBase : Actor
 			{
 				double vol = min(vel - 1.0, 1.0);
 
-				if (user_soundtype == 1) { it.thing.A_PlaySound("world/rope", CHAN_BODY, 0.05); } // Very quiet climbing sounds that combine with the rope creaking
-				else if (user_soundtype == 2) { it.thing.A_PlaySound("floor/rock", CHAN_BODY, vol * 0.3); }
-				else if (user_soundtype == 3) { it.thing.A_PlaySound("floor/metal", CHAN_BODY, vol * 0.1); }
-				else if (user_soundtype == 4) { it.thing.A_PlaySound("floor/wood", CHAN_BODY, vol * 0.5); }
-				else if (user_soundtype == 5) { it.thing.A_PlaySound("ckeen/climb", CHAN_BODY, vol * 0.5, pitch:FRandom(0.9, 1.1)); }
-				else { it.thing.A_PlaySound("world/ladder", CHAN_BODY, vol * 0.4); }
+				if (user_soundtype == 1) { it.thing.A_StartSound("world/rope", CHAN_BODY, 0.05); } // Very quiet climbing sounds that combine with the rope creaking
+				else if (user_soundtype == 2) { it.thing.A_StartSound("floor/rock", CHAN_BODY, vol * 0.3); }
+				else if (user_soundtype == 3) { it.thing.A_StartSound("floor/metal", CHAN_BODY, vol * 0.1); }
+				else if (user_soundtype == 4) { it.thing.A_StartSound("floor/wood", CHAN_BODY, vol * 0.5); }
+				else if (user_soundtype == 5) { it.thing.A_StartSound("ckeen/climb", CHAN_BODY, vol * 0.5, pitch:FRandom(0.9, 1.1)); }
+				else { it.thing.A_StartSound("world/ladder", CHAN_BODY, vol * 0.4); }
 
 				soundtimeout = 15;
 			}
@@ -222,8 +222,8 @@ class LadderBase : Actor
 
 					if (spawner && spawner.first && spawner.last)
 					{
-						if (spawner.pitch == -90 || abs(spawner.pitch != 90)) { spawner.last.A_PlaySound("world/ropecreak", CHAN_BODY, 0.15); } // Play creaking sound from the mount point
-						else if (spawner.pitch == 90 || abs(spawner.pitch != 90)) { spawner.first.A_PlaySound("world/ropecreak", CHAN_BODY, 0.15); } // Or both ends, depending how the rope is spawned
+						if (spawner.pitch == -90 || abs(spawner.pitch != 90)) { spawner.last.A_StartSound("world/ropecreak", CHAN_BODY, 0.15); } // Play creaking sound from the mount point
+						else if (spawner.pitch == 90 || abs(spawner.pitch != 90)) { spawner.first.A_StartSound("world/ropecreak", CHAN_BODY, 0.15); } // Or both ends, depending how the rope is spawned
 					}
 				} 
 

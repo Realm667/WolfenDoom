@@ -231,7 +231,7 @@ ACTOR ZBatFamiliar : BatFamiliar
 		ZFAM D 1
 		Stop
 	Crash:
-		BFAM G 6 A_PlaySound("batfam/crash")
+		BFAM G 6 A_StartSound("batfam/crash")
 		"####" H 7
 		"####" I 8
 		"####" J -1 {bMThruSpecies = TRUE; bThruSpecies = TRUE;}
@@ -337,9 +337,9 @@ ACTOR BigSpider : Base
 		GAYS A 10 A_LookThroughDisguise
 		Loop
 	See:
-		GAYS A 0 A_PlaySound("spider1/walk", CHAN_AUTO, 0.4)
+		GAYS A 0 A_StartSound("spider1/walk", CHAN_AUTO, 0.4)
 		"####" AABB 2 A_Chase
-		"####" B 0 A_PlaySound("spider1/walk", CHAN_AUTO, 0.4)
+		"####" B 0 A_StartSound("spider1/walk", CHAN_AUTO, 0.4)
 		"####" CCDD 2 A_Chase
 		"####" A 0 A_JumpIf(random(1, 24) == 1, "TryJump")
 		Loop
@@ -350,7 +350,7 @@ ACTOR BigSpider : Base
 		GAYS A 0 A_FaceTarget
 		"####" A 0 ThrustThing(angle*256/360, random(8, 12), 0, 0)
 		"####" A 0 ThrustThingZ(0, random(30, 50), 0, 1)
-		"####" A 0 A_PlaySound("spider1/jump", CHAN_AUTO, 0.2)
+		"####" A 0 A_StartSound("spider1/jump", CHAN_AUTO, 0.2)
 		"####" E 15
 		Goto See
 	Melee:
@@ -534,7 +534,7 @@ ACTOR ScorpionBig : Base
 	Jump:
 		TNT1 A 0 ThrustThing(angle*256/360,random(4,6),0,0)
 		TNT1 A 0 ThrustThingZ(0,random(30,40),0,1)
-		SCR2 C 15 A_PlaySound("scorpion/fall", CHAN_AUTO, 1.5)
+		SCR2 C 15 A_StartSound("scorpion/fall", CHAN_AUTO, 1.5)
 		Goto See
 	Pain:
 		SCR2 A 2 A_Pain

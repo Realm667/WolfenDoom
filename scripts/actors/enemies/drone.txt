@@ -52,29 +52,29 @@ Class ProtoDrone : Nazi //ozy81
 		Melee:
 			PROT B 0 A_Jump(128,"Melee2");
 			"####" B 5 A_FaceTarget();
-			"####" B 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON);
+			"####" B 0 A_StartSound("astrochaingun/fire", CHAN_WEAPON);
 			"####" CDE 8 LIGHT("PROTOFIRE") A_SpawnProjectile("EnemyProtoTracer",Scale.X*2,Scale.Y*-16,random(-12,12));
 			"####" B 5 A_FaceTarget();
-			"####" B 0 A_PlaySound("astrochaingun/fire", CHAN_WEAPON);
+			"####" B 0 A_StartSound("astrochaingun/fire", CHAN_WEAPON);
 			"####" CDE 8 LIGHT("PROTOFIRE") A_SpawnProjectile("EnemyProtoTracer",Scale.X*2,Scale.Y*-16,random(-12,12));
 			Goto See;
 		Melee2:
 			"####" N 5 A_FaceTarget();
 			"####" N 0 A_Jump(128,2);
 			"####" N 1 ThrustThing(int(Angle*256/360-192), 8, 1, 0);
-			"####" N 0 A_PlaySound("chaingun/fire", CHAN_WEAPON);
+			"####" N 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
 			"####" FGHI 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",Scale.X*2,Scale.Y*16,random(-24,24));
 			"####" I 0 A_SpawnItemEx("9MMCasing", Scale.X*2, Scale.Y*16, random(-2,2), RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
 			"####" N 5 A_FaceTarget();
 			"####" N 0 A_Jump(128,2);
 			"####" N 1 ThrustThing(int(Angle*256/360-192), 8, 1, 0);
-			"####" N 0 A_PlaySound("chaingun/fire", CHAN_WEAPON);
+			"####" N 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
 			"####" FGHI 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",Scale.X*2,Scale.Y*16,random(-24,24));
 			"####" I 0 A_SpawnItemEx("9MMCasing", Scale.X*2, Scale.Y*16, random(-2,2), RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
 			Goto See;
 		Missile:
 			PROT A 10 {
-				A_Playsound("proto/marker", CHAN_AUTO, 0.75);
+				A_StartSound("proto/marker", CHAN_AUTO, 0.75);
 				firecount = 0;
 			}
 		Missile.Sight:
@@ -121,7 +121,7 @@ Class ProtoDrone : Nazi //ozy81
 	{
 		if (snd != "")
 		{
-			A_PlaySound(snd, CHAN_6 | CHAN_NOSTOP, 1.0, false);
+			A_StartSound(snd, CHAN_6 | CHAN_NOSTOP, 1.0, false);
 			A_SoundVolume(CHAN_6, volume);
 		}
 		DoTrace(self, angle, 2048, pitch, 0, zoffset, hitpointtracer);

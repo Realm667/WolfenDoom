@@ -217,7 +217,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			Luger.Reload: // More emulation of the guard pistol - 8 shots, then reload
 				"####" G 0 { bNoPain = True; }
 				"####" G 30 {
-					A_PlaySound("luger/reload", CHAN_ITEM, FRandom (0.3, 0.6), FALSE, ATTN_NORM);
+					A_StartSound("luger/reload", CHAN_ITEM, FRandom (0.3, 0.6), FALSE, ATTN_NORM);
 					shots = 0;
 				}
 				"####" G 0 {
@@ -236,7 +236,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			MP40.Reload:
 				"####" F 0 { bNoPain = True; }
 				"####" F 30 {
-					A_PlaySound("MP40/reload", CHAN_WEAPON);
+					A_StartSound("MP40/reload", CHAN_WEAPON);
 					totalshots = 0;
 				}
 				"####" F 0 {
@@ -255,7 +255,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			Rifle.Reload:
 				"####" F 0 { bNoPain = True; }
 				"####" F 30 {
-					A_PlaySound("sten/reload", CHAN_WEAPON);
+					A_StartSound("sten/reload", CHAN_WEAPON);
 					totalshots = 0;
 				}
 				"####" F 0 {
@@ -272,7 +272,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 				"####" G 5;
  				"####" F 15 {
 					A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
-					A_PlaySound("shotgun/pump", CHAN_WEAPON);
+					A_StartSound("shotgun/pump", CHAN_WEAPON);
 				}
 				"####" F 0 {
 					reloadcount++;
@@ -282,7 +282,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 				"####" F 0 {
 					bNoPain = True;
 					frighttimeout = 10;
-					A_PlaySound("shotgun/load", CHAN_WEAPON);
+					A_StartSound("shotgun/load", CHAN_WEAPON);
 					reloadcount--;
 				}
 				"####" BBBBBCCCCC 1 A_Chase(null, null); // Reload on the run!
@@ -292,7 +292,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 				"####" F 0 {
 					if (reloadcount <= 0)
 					{
-						A_PlaySound("shotgun/pump", CHAN_WEAPON);
+						A_StartSound("shotgun/pump", CHAN_WEAPON);
 						bNoPain = False;
 						return ResolveState("Chase");
 					}
@@ -314,7 +314,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			Stop;
 		Heal:
 			"####" F 2 {
-				A_Playsound("misc/health_pkup");
+				A_StartSound("misc/health_pkup");
 				A_GiveInventory("Health", 25);
 				healtime = 5;
 			}
@@ -642,7 +642,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 				if (healplayer && playerToChase.player && playerToChase.player.health < healplayer && !playerhealtime)
 				{
-					A_Playsound("misc/health_pkup");
+					A_StartSound("misc/health_pkup");
 					playerhealtime = 2;
 					playerToChase.player.health += 10;
 					playerToChase.health += 10;
@@ -698,7 +698,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 	{
 		vel = (0, 0, 0);
 
-		A_PlaySound(weaponsound, CHAN_WEAPON);
+		A_StartSound(weaponsound, CHAN_WEAPON);
 		A_AlertMonsters(0, AMF_TARGETEMITTER);
 		for (int i = 0; i < shots; i++)
 		{
@@ -1011,7 +1011,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 			Luger.Reload: // More emulation of the guard pistol - 8 shots, then reload
 				"####" F 0 { bNoPain = True; }
 				"####" F 30 {
-					A_PlaySound("luger/reload", CHAN_ITEM, FRandom (0.3, 0.6), FALSE, ATTN_NORM);
+					A_StartSound("luger/reload", CHAN_ITEM, FRandom (0.3, 0.6), FALSE, ATTN_NORM);
 					A_SpawnItemEx("9MMCasing", 1, 0, 56, Random(3, 4), Random(-1, 1), Random(2, 4), Random(-55,-80), SXF_NOCHECKPOSITION);
 					shots = 0;
 				}
@@ -1031,7 +1031,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 			MP40.Reload:
 				"####" E 0 { bNoPain = True; }
 				"####" E 30 {
-					A_PlaySound("MP40/reload", CHAN_WEAPON);
+					A_StartSound("MP40/reload", CHAN_WEAPON);
 					A_SpawnItemEx("9MMCasing", 8, 0, 40, Random(3, 4), Random(-1, 1), Random(2, 4), Random(-55, -80),SXF_NOCHECKPOSITION);
 					totalshots = 0;
 				}
@@ -1051,7 +1051,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 			Rifle.Reload:
 				"####" E 0 { bNoPain = True; }
 				"####" E 30 {
-					A_PlaySound("sten/reload", CHAN_WEAPON);
+					A_StartSound("sten/reload", CHAN_WEAPON);
 					totalshots = 0;
 				}
 				"####" E 0 {
@@ -1068,7 +1068,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 				"####" F 5;
  				"####" E 15 {
 					A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
-					A_PlaySound("shotgun/pump", CHAN_WEAPON);
+					A_StartSound("shotgun/pump", CHAN_WEAPON);
 				}
 				"####" E 0 {
 					reloadcount++;
@@ -1078,7 +1078,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 				"####" E 0 {
 					bNoPain = True;
 					frighttimeout = 35;
-					A_PlaySound("shotgun/load", CHAN_WEAPON);
+					A_StartSound("shotgun/load", CHAN_WEAPON);
 					reloadcount--;
 				}
 				"####" AAAAABBBBB 1 A_Chase(null, null); // Reload on the run!
@@ -1088,7 +1088,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 				"####" E 0 {
 					if (reloadcount <= 0)
 					{
-						A_PlaySound("shotgun/pump", CHAN_WEAPON);
+						A_StartSound("shotgun/pump", CHAN_WEAPON);
 						bNoPain = False;
 						return ResolveState("Chase");
 					}
@@ -1110,7 +1110,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 			Stop;
 		Heal:
 			"####" E 2 {
-				A_Playsound("misc/health_pkup");
+				A_StartSound("misc/health_pkup");
 				A_GiveInventory("Health", 25);
 				healtime = 5;
 			}
@@ -1263,7 +1263,7 @@ class AgentArmedMP40 : AgentArmed
 			MP40.Reload:
 				"####" F 0 { bNoPain = True; }
 				"####" F 30 {
-					A_PlaySound("MP40/reload", CHAN_WEAPON);
+					A_StartSound("MP40/reload", CHAN_WEAPON);
 					totalshots = 0;
 				}
 				"####" F 0 {

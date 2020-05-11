@@ -27,7 +27,7 @@ ACTOR Shovel : NaziWeapon
 	Fire:
 		SHUV B 2 A_JumpIfInventory("PowerStrength",1,"PowerShovel")
 		SHUV B 1 Offset(15,32)
-		SHUV B 1 Offset(30,33) A_PlaySound("shovel/miss", CHAN_WEAPON)
+		SHUV B 1 Offset(30,33) A_StartSound("shovel/miss", CHAN_WEAPON)
 		SHUV B 1 Offset(52,35)
 		SHUV B 1 Offset(78,38)
 		SHUV B 1 Offset(92,44)
@@ -49,7 +49,7 @@ ACTOR Shovel : NaziWeapon
 		Goto Ready
 	PowerShovel:
 		SHUV B 1 Offset(5,32)
-		SHUV B 1 Offset(10,33) A_PlaySound("shovel/miss", CHAN_WEAPON)
+		SHUV B 1 Offset(10,33) A_StartSound("shovel/miss", CHAN_WEAPON)
 		SHUV B 1 Offset(16,35)
 		SHUV B 1 Offset(24,38)
 		SHUV B 1 Offset(26,39)

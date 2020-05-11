@@ -388,7 +388,7 @@ class TornadoSegment : Actor
 			offset = pos - master.pos;
 		}
 
-		A_PlaySound("WIND_SILENT", CHAN_6, 1.0, true, ATTN_NONE);
+		A_StartSound("WIND_SILENT", CHAN_6, 1.0, true, ATTN_NONE);
 
 		Super.PostBeginPlay();
 	}

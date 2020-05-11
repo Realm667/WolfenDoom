@@ -34,7 +34,7 @@ ACTOR Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 	Fire:
 		STEN A 0 A_JumpIfInventory("StenLoaded",1,1)
 		Goto Dryfire
-		STEN A 0 A_PlaySound("sten/fire", CHAN_WEAPON)
+		STEN A 0 A_StartSound("sten/fire", CHAN_WEAPON)
 		STEN A 0 A_SpawnItemEx("9mmCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
 		STEN A 0 A_AlertMonsters(384) // buffed a bit --N00b
 		STEN B 1 A_FireProjectile("StenTracer",frandom(-1.5,1.5),1,0,0,0,frandom(-1.0,1.0))
@@ -47,7 +47,7 @@ ACTOR Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 	Hold:
 		STEN A 0 A_JumpIfInventory("StenLoaded",1,1)
 		Goto Dryfire
-		STEN A 0 A_PlaySound("sten/fire", CHAN_WEAPON)
+		STEN A 0 A_StartSound("sten/fire", CHAN_WEAPON)
 		STEN A 0 A_SpawnItemEx("9mmCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
 		STEN A 0 A_AlertMonsters
 		STEN B 1 Offset(0,36) A_FireProjectile("StenTracer",frandom(-1.5,1.5),1,0,0,0,frandom(-1.0,1.0))
@@ -60,7 +60,7 @@ ACTOR Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 	Altfire: // semi-auto, as it is difficult to fire exactly one shot --N00b
 		STEN A 0 A_JumpIfInventory("StenLoaded",1,1)
 		Goto Dryfire
-		STEN A 0 A_PlaySound("sten/fire", CHAN_WEAPON)
+		STEN A 0 A_StartSound("sten/fire", CHAN_WEAPON)
 		STEN A 0 A_SpawnItemEx("9mmCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
 		STEN A 0 A_AlertMonsters(384)
 		STEN A 0 A_TakeInventory("StenLoaded",1,TIF_NOTAKEINFINITE) // take the round manually (see ammotypes) --N00b
@@ -72,7 +72,7 @@ ACTOR Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 		STEN A 3 // balance the DPS --N00b
 		Goto Ready
 	Reload:
-		STEN A 1 Offset(0,38) A_PlaySound("sten/reload", CHAN_5)
+		STEN A 1 Offset(0,38) A_StartSound("sten/reload", CHAN_5)
 		STEN A 1 Offset(0,44)
 		STEN A 1 Offset(0,56)
 		STEN A 1 Offset(-2,60)

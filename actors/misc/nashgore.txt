@@ -81,7 +81,7 @@ ACTOR NashGore_FlyingBlood : NashGore_BloodBase
 		TNT1 A 0
 		Stop
 	Crash:
-		TNT1 A 0 A_PlaySound("bloodsplat")
+		TNT1 A 0 A_StartSound("bloodsplat")
 		TNT1 A 0 A_SpawnItem("NashGore_BloodSplash", 0, 0, 0, 1)
 	BloodSplasher:
 		TNT1 A 0 A_SpawnItemEx("NashGore_BloodSpot", 0, 0, 0, 0, 0, 0, frandom(0, 360), 7, 128)
@@ -271,7 +271,7 @@ ACTOR Zombie_FlyingBlood : NashGore_FlyingBlood
 		TNT1 A 0
 		Stop
 	Crash:
-		TNT1 A 0 A_PlaySound("bloodsplat")
+		TNT1 A 0 A_StartSound("bloodsplat")
 		TNT1 A 0 A_SpawnItem("Zombie_BloodSplash", 0, 0, 0, 1)
 	BloodSplasher:
 		TNT1 A 0 A_SpawnItemEx("Zombie_BloodSpot", 0, 0, 0, 0, 0, 0, frandom(0, 360), 7, 128)
