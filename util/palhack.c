@@ -9,10 +9,11 @@
 
 // Necessary for reading grAb chunk (offsets)
 #define PNG_USER_CHUNKS_SUPPORTED
+#define PNG_READ_UNKNOWN_CHUNKS_SUPPORTED
 #define PNG_READ_USER_CHUNKS_SUPPORTED
-#define PNG_READ_QUANTIZE_SUPPORTED
-#define PNG_tRNS_SUPPORTED
 #define PNG_STORE_UNKNOWN_CHUNKS_SUPPORTED
+// Most font characters have transparency
+#define PNG_tRNS_SUPPORTED
 #include "png.h"
 
 // Boolean type - not in C by default
@@ -40,7 +41,7 @@ byte parse_hex(const char* hex);
 palette_t* read_bin_palette(const char* fname);
 int process_unknown_chunk(png_structp png_ptr, png_unknown_chunkp chunk_ptr);
 bool process_png(const char* fname, palette_t* pal);
-// double colour_distance_rgb(const palette_entry_t* to_compare, const palette_entry_t* against); // Needed?
+// double colour_distance_rgb(const palette_entry_t* to_compare, const palette_entry_t* against);
 
 int main(int argc, char** argv){
     if(argc == 1){
@@ -185,7 +186,7 @@ palette_t* read_bin_palette(const char* fname){
 }
 
 int process_unknown_chunk(png_structp png_ptr, png_unknown_chunkp chunk_ptr){
-    if(strcmp(chunk_ptr->name, "grAb") == 0){
+    if(strncmp(chunk_ptr->name, "grAb", 4) == 0){
         // Process grAb chunk - get offsets
         byte* offsets = png_get_user_chunk_ptr(png_ptr);
         memcpy(offsets, chunk_ptr->data, 8);
@@ -213,12 +214,11 @@ bool process_png(const char* fname, palette_t* pal){
         fprintf(stderr, "Can't read %s.\n", fname);
         return FALSE;
     }
-    if(png_sig_cmp(header, 0, 8) != 0){
+    if(png_sig_cmp(header, 0, 8)){
         fclose(f);
         fprintf(stderr, "%s isn't a PNG.\n", fname);
         return FALSE;
     }
-    // fclose(pngf);
     // Read PNG file
     png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
     if(!png_ptr){
@@ -239,19 +239,26 @@ bool process_png(const char* fname, palette_t* pal){
     // Already checked PNG header
     png_set_sig_bytes(png_ptr, 8);
     png_byte* grab_name = "grAb"; // Keep grAb chunk, it contains X and Y offsets
-    png_set_keep_unknown_chunks(png_ptr, PNG_HANDLE_CHUNK_IF_SAFE, grab_name, 1);
+    // png_set_keep_unknown_chunks(png_ptr, PNG_HANDLE_CHUNK_IF_SAFE, grab_name, 1);
     unsigned int width, height;
     byte offsets[8]; // Information for Doom PNG files
-    int bit_depth;
-    png_read_info(png_ptr, info_ptr);
-    png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, NULL, NULL, NULL, NULL);
-    // Set up palette quantization and other things
-    png_set_quantize(png_ptr, (png_colorp) pal->entries, pal->entry_count, pal->entry_count, NULL, 0);
     png_set_read_user_chunk_fn(png_ptr, offsets, process_unknown_chunk);
+    int bit_depth, color_type;
+    png_read_info(png_ptr, info_ptr);
+    png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, NULL, NULL, NULL);
+    // Don't hack an image which isn't paletted.
+    if(color_type != 3){
+        fclose(f);
+        png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+        fprintf(stderr, "%s isn't paletted! Convert it to the font palette with SLADE first.\n", fname);
+        return FALSE;
+    }
+    // Set up palette quantization and other things
+    // png_set_quantize(png_ptr, (png_colorp) pal->entries, pal->entry_count, pal->entry_count, NULL, 0);
     // Read the image
     png_byte** row_pointers = malloc(height * sizeof(png_byte*));
     for(unsigned int row = 0; row < height; row++){
-        row_pointers[row] = png_malloc(png_ptr, png_get_rowbytes(png_ptr, info_ptr));
+        row_pointers[row] = malloc(png_get_rowbytes(png_ptr, info_ptr));
     }
     png_read_image(png_ptr, row_pointers);
     png_read_end(png_ptr, info_ptr);
@@ -291,7 +298,7 @@ bool process_png(const char* fname, palette_t* pal){
     memcpy(grab_chunk.name, grab_name, 5);
     grab_chunk.data = offsets;
     grab_chunk.size = 8;
-    grab_chunk.location = PNG_HAVE_PLTE;
+    grab_chunk.location = PNG_HAVE_IHDR;
     png_set_unknown_chunks(png_ptr, info_ptr, &grab_chunk, 1);
     // Write image
     png_write_info(png_ptr, info_ptr);
@@ -299,7 +306,7 @@ bool process_png(const char* fname, palette_t* pal){
     png_write_end(png_ptr, info_ptr);
     // Shut down
     for(unsigned int row = 0; row < height; row++){
-        png_free(png_ptr, row_pointers[row]);
+        free(row_pointers[row]);
         row_pointers[row] = NULL;
     }
     free(row_pointers);
@@ -308,7 +315,6 @@ bool process_png(const char* fname, palette_t* pal){
     fclose(f);
     return TRUE;
 }
-
 /*
 // Find "distance" between two colours
 double colour_distance_rgb(const palette_entry_t* to_compare, const palette_entry_t* against){
