@@ -139,7 +139,7 @@ for ((i=1; i <= ${#hitexs}; i++)) do
             typeset -F loheight=${losize:${losize[(i)x]}}
             xscale=$((hiwidth / lowidth))
             yscale=$((hiheight / loheight))
-            print "\nTexture \"${lotex}\", ${hiwidth}, ${hiheight} \{\n\tXScale ${xscale}\n\tYScale ${yscale}\n\tPatch \"${texname}\", 0, 0\n\}"
+            print "\nTexture \"${lotex}\", ${hiwidth}, ${hiheight} \{\n\tXScale ${xscale}\n\tYScale ${yscale}\n\tWorldPanning\n\tPatch \"${texname}\", 0, 0\n\}"
             hitexs[i]=()
             ((i--))
         else
