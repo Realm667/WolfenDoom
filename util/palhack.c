@@ -126,6 +126,7 @@ palette_t* read_text_palette(const char* fname){
             parser += 2;
             pal->entries[cur_entry].b = parse_hex(fdata + parser);
             parser += 2;
+            cur_entry += 1;
         }
         parser += 1;
     }
@@ -282,8 +283,9 @@ bool process_png(const char* fname, palette_t* pal){
     // Begin writing PNG
     png_init_io(png_ptr, f);
     png_set_IHDR(png_ptr, info_ptr, width, height, bit_depth, PNG_COLOR_TYPE_PALETTE, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+    byte transparent_colour = 0;
     png_set_PLTE(png_ptr, info_ptr, pal->entries, pal->entry_count);
-    png_set_tRNS(png_ptr, info_ptr, (byte*)0, 1, NULL);
+    png_set_tRNS(png_ptr, info_ptr, &transparent_colour, 1, NULL);
     // Write grAb chunk
     png_unknown_chunk grab_chunk;
     memcpy(grab_chunk.name, grab_name, 5);
