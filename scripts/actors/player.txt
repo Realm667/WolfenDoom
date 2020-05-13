@@ -743,7 +743,7 @@ class BoAPlayer : PlayerPawn
 			AimActor = actortrace.HitActor;
 		}
 
-		if (AimLine && !crosshair)// || Level.GetUDMFInt(Level.UDMF_Line, AimLine.Index(), nm"user_forcecrosshair"))
+		if (AimLine && !crosshair)
 		{
 			// Only show custom crosshair if the line is running a script, is a locked door or puzzle item use line, or has a UDMF lock number
 			//  Otherwise - Why?  It's not an activation line, so what's the point of showing a hint?
@@ -811,7 +811,7 @@ class BoAPlayer : PlayerPawn
 		}
 
 		// Handle player holding down use button while looking at a repeatable, script-executing line that's within use range
-		if (AimLine) // If we are actually looking at a line within range
+		if (AimLine && crosshair || !(crosshairstring == "")) // If we are actually looking at a line within range, and it sets an interaction crosshair
 		{
 			if (
 				( // And the line is running a script
