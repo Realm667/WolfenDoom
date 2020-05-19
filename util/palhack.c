@@ -198,13 +198,12 @@ int process_unknown_chunk(png_structp png_ptr, png_unknown_chunkp chunk_ptr){
 bool process_png(const char* fname, palette_t* pal){
     png_image image;
     // Allocate buffer for PLTE chunk
-    /*
     byte palbufsize = pal->entry_count * 3 + 3;
     byte* palbuf = malloc(palbufsize);
     // Set up palette buffer
     memset(palbuf, 0, 3);
     memcpy(palbuf + 3, pal->entries, pal->entry_count * 3);
-    */
+    // Clear image
     memset(&image, 0, (sizeof(png_image)));
     // Check PNG header
     FILE* f = fopen(fname, "r");
@@ -291,7 +290,7 @@ bool process_png(const char* fname, palette_t* pal){
     png_init_io(png_ptr, f);
     png_set_IHDR(png_ptr, info_ptr, width, height, bit_depth, PNG_COLOR_TYPE_PALETTE, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
     byte transparent_colour = 0;
-    png_set_PLTE(png_ptr, info_ptr, pal->entries, pal->entry_count);
+    png_set_PLTE(png_ptr, info_ptr, (png_colorp) palbuf, pal->entry_count + 1);
     png_set_tRNS(png_ptr, info_ptr, &transparent_colour, 1, NULL);
     // Write grAb chunk
     png_unknown_chunk grab_chunk;
@@ -305,6 +304,7 @@ bool process_png(const char* fname, palette_t* pal){
     png_write_image(png_ptr, row_pointers);
     png_write_end(png_ptr, info_ptr);
     // Shut down
+    free(palbuf);
     for(unsigned int row = 0; row < height; row++){
         free(row_pointers[row]);
         row_pointers[row] = NULL;
