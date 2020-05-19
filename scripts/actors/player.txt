@@ -811,7 +811,7 @@ class BoAPlayer : PlayerPawn
 		}
 
 		// Handle player holding down use button while looking at a repeatable, script-executing line that's within use range
-		if (AimLine && crosshair || !(crosshairstring == "")) // If we are actually looking at a line within range, and it sets an interaction crosshair
+		if (AimLine && (crosshair || !(crosshairstring == ""))) // If we are actually looking at a line within range, and it sets an interaction crosshair
 		{
 			if (
 				( // And the line is running a script
