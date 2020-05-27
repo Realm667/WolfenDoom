@@ -1,30 +1,30 @@
 // Wave Spawner Scripts
 
 // Waves can be manually triggered for testing via the console with this script.
-script "SetWave" (int wave)
+script "SetZone" (int zone)
 {
-	currentwave = wave;
+	currentzone = zone;
 }
 
-// Activate the specified wave and deactivate the others
-function void ActivateWave(int wave)
+// Activate the specified zone and deactivate the others
+function void ActivateZone(int zone)
 {
-	lastwave = wave;
+	lastzone = zone;
 
-	for (int i = 1; i < maxwaves; i++) 
+	for (int i = 1; i < maxzones; i++) 
 	{
-		if (i == wave)
+		if (i == zone)
 		{
-			Thing_Activate(wavestarttid + i);
+			Thing_Activate(zonestarttid + i);
 		}
-		else { Thing_Deactivate(wavestarttid + i); }
+		else { Thing_Deactivate(zonestarttid + i); }
 	}
 }
 
 // Wrapper to prettify the ZScript interface
 function void AddWaveComponent(int id, str actor, int count, int maxspawns, int roundnum)
 {
-	ScriptCall("WaveSpawner", "AddWaveComponent", wavestarttid + id, actor, count, maxspawns, roundnum);
+	ScriptCall("WaveSpawner", "AddWaveComponent", zonestarttid + id, actor, count, maxspawns, roundnum);
 }
 
 script "TimeReset" OPEN

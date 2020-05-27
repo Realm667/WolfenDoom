@@ -20,10 +20,10 @@ int playerID;
 int repairstate[65536]; // Arbitrarily large to account for most possible line ids
 
 // Wave spawner configuration variables
-int maxwaves = 10; // How many waves can be set up
-int wavestarttid = 100; // Base TID for wave spawn points - wave 1 will add 1, wave 2 will add 2, etc.
-int currentwave = 0; // The currently activated wave
-int lastwave = 0; // The previous wave (used for fallback spawnpoints if it's night again and no other wave has been triggered)
+int maxzones = 10; // How many waves can be set up
+int zonestarttid = 100; // Base TID for wave spawn points - wave 1 will add 1, wave 2 will add 2, etc.
+int currentzone = 0; // The currently activated wave
+int lastzone = 0; // The previous wave (used for fallback spawnpoints if it's night again and no other wave has been triggered)
 
 #include "zcommon.acs"
 #include "functions.acs"

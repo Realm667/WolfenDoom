@@ -142,19 +142,28 @@ class ActorSpawner : SwitchableDecoration
 	{
 		int spawncount = 0;
 
-		for (int i = 0; i < Spawns.Size(); i++) {
+		for (int i = 0; i < Spawns.Size(); i++)
+		{
 			Actor mo = Spawns[i];
 
-			if (mo) {
-				if (!mo.bShootable || mo.health <= 0) {
-					if (mo is "RandomSpawner")
+			if (mo)
+			{
+				if (mo is "RandomSpawner")
+				{
+					mo = mo.tracer;
+					if (!mo)
 					{
-						if (mo.tracer && mo.tracer.bShootable && mo.tracer.health > 0) { spawncount++; }
-						else { Spawns.Delete(i); }
+						Spawns.Delete(i);
+						continue;
 					}
-					else if (countdead) { spawncount++; }
-				} else if (!spawntype || mo.GetClass() == spawntype) {
-					spawncount++;
+				}
+
+				if (!spawntype || mo.GetClass() == spawntype)
+				{
+					if (countdead || (mo.bShootable && mo.health > 0))
+					{
+						spawncount++;
+					}
 				}
 			}
 		}
@@ -237,7 +246,7 @@ class ActorSpawner : SwitchableDecoration
 	}
 }
 
-struct Wave
+class Wave // Can't use dynamic arrays with structs
 {
 	Class<Actor> enemy;
 	int count;
@@ -247,7 +256,7 @@ struct Wave
 
 class WaveSpawner : ActorSpawner
 {
-	Wave Waves[32]; // Can't use dynamic arrays with structs, unfortunately...  If we need more waves, this number can be increased
+	Array<Wave> Waves;
 	int waveindex;
 	int index;
 	int maxindex;
@@ -268,16 +277,13 @@ class WaveSpawner : ActorSpawner
 	States
 	{
 		Active:
-			"####" "#" 0 { round++; } // Increment the round when activated
+			"####" "#" 0 {
+				if (ValidRound(round + 1)) { round++; } 
+			}
 		Active.Spawn:
 			"####" "#" 35 A_SetTics(Random[Spawn](1, 21) * 5);
 			"####" "#" 0 A_DoSpawns();
 		Inactive:
-			"####" "#" 0 {
-				Spawns.Clear(); // Clear the enemy spawn queue when deactivated.  This way, when re-activated, everything starts over again
-				Spawns.ShrinkToFit();
-			}
-		InactiveLoop:
 			"####" "#" 35;
 			Loop;
 	}
@@ -298,22 +304,34 @@ class WaveSpawner : ActorSpawner
 
 	void NewWaveComponent(String actorclass, int count = 1, int maxspawns = 0, int round = 0)
 	{
-		Waves[waveindex].enemy = actorclass;
-		Waves[waveindex].count = count;
-		Waves[waveindex].maxspawns = maxspawns;
-		Waves[waveindex].round = round;
+		Wave this = new("Wave");
 
-		waveindex++;
+		this.enemy = actorclass;
+		this.count = count;
+		this.maxspawns = maxspawns;
+		this.round = round;
+
+		Waves.Push(this);
+	}
+
+	bool ValidRound(int round)
+	{
+		for (int w = 0; w < Waves.Size(); w++)
+		{
+			if (Waves[w] && Waves[w].round == round) { return true; }
+		}
+
+		return false;
 	}
 
 	bool ValidSpawn(int index)
 	{
-		if (!Waves[index].enemy) { return false; }
+		if (index < 0 || index > Waves.Size() - 1 || !Waves[index] || !Waves[index].enemy) { return false; }
 		if (Waves[index].round > round) { return false; }
-		if (TotalSpawns() >= Waves[index].count) { return false; }
+		if (TotalSpawns(Waves[index].enemy) >= Waves[index].count) { return false; }
 		if (
 			Waves[index].maxspawns != 0 &&
-			TotalSpawns(countdead:true) >= Waves[index].maxspawns
+			TotalSpawns(Waves[index].enemy, true) >= Waves[index].maxspawns
 		) { return false; }
 
 		return true;
@@ -339,76 +357,70 @@ class WaveSpawner : ActorSpawner
 			else if (lightlevel > 128) { return ResolveState("Active.Spawn"); } // But be more forgiving in our definition of 'dark' if you're not under sky
 		}
 
-		bool looped = false;
-
-		index = Random(0, waveindex - 1);
+		index = -1;
 
 		While (!ValidSpawn(index))
 		{
 			index++;
 
-			if (index > 31)
+			if (index > Waves.Size() - 1)
 			{
-				index = 0;
-				if (looped) { return ResolveState("Active.Spawn"); }
-				looped = true;
+				return ResolveState("Active.Spawn");
 			}
 		}
+
+		if (index == -1) { return ResolveState("Active.Spawn"); }
 
 		user_spawntype = Waves[index].enemy;
 		user_maxactors = Waves[index].count;
 		user_maxspawns = Waves[index].maxspawns;
 
-		int spawncount = TotalSpawns();
-		int totalspawncount = TotalSpawns(countdead:true);
-
-		if (spawncount < user_maxactors && (totalspawncount < user_maxspawns || user_maxspawns == 0)) {
-			//Spawn enemies if not visible to player
-			if (!InPlayerSightorRange(user_minspawndistance)) {
-				Actor spawned = Spawn(user_spawntype, pos);
-				if (spawned)
+		//Spawn enemies if not visible to player
+		if (!InPlayerSightorRange(user_minspawndistance)) {
+			Actor spawned = Spawn(user_spawntype, pos);
+			if (spawned)
+			{
+				if (!spawned.TestMobjLocation()) { spawned.Destroy(); }
+				else
 				{
-					if (!spawned.TestMobjLocation()) { spawned.Destroy(); }
-					else
+//console.printf("%i: Spawned %s  %i of %i  (Wave %i)", index, spawned.GetClassName(), TotalSpawns(user_spawntype) + 1, user_maxactors, round);
+					Spawns.Push(spawned);
+
+					// RandomSpawners that have the BOSS flag stay until their spawned item is killed or destroyed
+					// and set the spawned actor as their tracer.  This way our counters will stay accurate...
+					if (spawned is "RandomSpawner") { spawned.bBoss = true; spawned.master = self; }
+
+					if (user_maxspawns == 0 && spawned.bCountKill && !spawned.bFriendly)
 					{
-						Spawns.Push(spawned);
+						spawned.bCountKill = false;
+						level.total_monsters--;
+					}
 
-						// RandomSpawners that have the BOSS flag stay until their spawned item is killed or destroyed
-						// and set the spawned actor as their tracer.  This way our counters will stay accurate...
-						if (spawned is "RandomSpawner") { spawned.bBoss = true; spawned.master = self; }
+					spawned.target = target;
+					spawned.angle = angle;
+					spawned.ChangeTID(user_tid);
 
-						if (user_maxspawns == 0 && spawned.bCountKill && !spawned.bFriendly)
+					if (Nazi(spawned)) { Nazi(spawned).dodgetimeout = 350; }
+					if (Base(spawned))
+					{
+						Base(spawned).lightthreshold = 130;
+						Base(spawned).user_lightburns = true;
+					}
+
+					if (user_goal > 0)
+					{
+						let it = ActorIterator.Create(user_goal, "PatrolPoint");
+						Actor goal;
+						if (it) { goal = it.Next(); }
+						if (goal) { spawned.goal = goal; }
+
+						if (Nazi(spawned) && !(spawned is "ZombieStandard"))
 						{
-							spawned.bCountKill = false;
-							level.total_monsters--;
-						}
+							if (Nazi(spawned).user_sneakable) { Nazi(spawned).BecomeAlerted(); }
+							Nazi(spawned).activationgoal = goal;
+						}	
 
-						spawned.target = target;
-						spawned.angle = angle;
-						spawned.ChangeTID(user_tid);
-
-						if (Nazi(spawned)) { Nazi(spawned).dodgetimeout = 350; }
-						if (Base(spawned))
-						{
-							Base(spawned).lightthreshold = 130;
-							Base(spawned).user_lightburns = true;
-						}
-
-						if (user_goal > 0)
-						{
-							let it = ActorIterator.Create(user_goal, "PatrolPoint");
-							Actor goal;
-							if (it) { goal = it.Next(); }
-							if (goal) { spawned.goal = goal; }
-	
-							if (Nazi(spawned) && !(spawned is "ZombieStandard"))
-							{
-								if (Nazi(spawned).user_sneakable) { Nazi(spawned).BecomeAlerted(); }
-								Nazi(spawned).activationgoal = goal;
-							}	
-
-							spawned.SetStateLabel("See");
-						}
+						spawned.SetStateLabel("See");
 					}
 				}
 			}
