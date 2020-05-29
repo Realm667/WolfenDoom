@@ -4,18 +4,18 @@
 mat3 GetTBN();
 vec2 ParallaxMap(mat3 tbn);
 
-Material ProcessMaterial()
+void SetupMaterial(inout Material material)
 {
     mat3 tbn = GetTBN();
     vec2 texCoord = ParallaxMap(tbn);
 
-    Material material;
+    // Material material;
     material.Base = getTexel(texCoord);
     material.Normal = normalize(vWorldNormal.xyz);
 #if defined(BRIGHTMAP)
     material.Bright = texture(brighttexture, texCoord);
 #endif
-    return material;
+    // return material;
 }
 
 // Tangent/bitangent/normal space to world space transform matrix

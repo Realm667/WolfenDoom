@@ -23,13 +23,13 @@ vec2 GetWarpOffset(vec2 texCoord)
 	return offset;
 }
 
-Material ProcessMaterial()
+void SetupMaterial(inout Material material)
 {
 	vec2 texCoord = vTexCoord.st;
 	vec2 rippleoffset = GetRippleOffset(texCoord);
 	vec2 warpoffset = GetWarpOffset(texCoord);
 
-	Material material;
+	// Material material;
 	material.Base = getTexel(texCoord + rippleoffset) * 0.85 + texture(background, texCoord + warpoffset) * 0.05;
 	material.Normal = ApplyNormalMap(texCoord + rippleoffset);
 #if defined(SPECULAR)
@@ -40,5 +40,5 @@ Material ProcessMaterial()
 #if defined(BRIGHTMAP)
 	material.Bright = texture(brighttexture, vTexCoord.st);
 #endif
-	return material;
+	// return material;
 }
