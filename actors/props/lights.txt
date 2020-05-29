@@ -1621,7 +1621,7 @@ ACTOR BoAWallTorch1 : SwitchableDecoration
 		"####" Y 0 {bDormant = FALSE;}
 	Spawn:
 		WLTR Y 0 NODELAY A_JumpIf(!CallACS("TorchType"),2)
-		WLTR Y 3 BRIGHT Light("WALLTORCH") A_SpawnItemEx("RedFire", Random(-2, 2), Random(-2, 2), Random(34, 36), 0.001 * Random(10, 200), 0.001 * Random(10, 200), 0.001 * Random(1000, 2000), 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+		WLTR Y 3 BRIGHT Light("WALLTORCH") A_SpawnItemEx("RedFire", frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(34.0, 36.0), 0.001 * frandom(10.0, 200.0), 0.001 * frandom(10.0, 200.0), 0.001 * frandom(500.0, 1000.0), 0, SXF_SETMASTER | SXF_CLIENTSIDE)
 		Loop
 		WLTR ABCDEFGH 4
 		Loop
@@ -1642,7 +1642,7 @@ ACTOR BoAWallTorch2 : BoAWallTorch1
 		"####" Y 0 {bDormant = FALSE;}
 	Spawn:
 		WLTR Y 0 NODELAY A_JumpIf(!CallACS("TorchType"),2)
-		WLTR Y 3 BRIGHT Light("WALLTORC2") A_SpawnItemEx("ZykFire", Random(-2, 2), Random(-2, 2), Random(34, 36), 0.001 * Random(10, 200), 0.001 * Random(10, 200), 0.001 * Random(1000, 2000), 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+		WLTR Y 3 BRIGHT Light("WALLTORC2") A_SpawnItemEx("ZykFire", frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(34.0, 36.0), 0.001 * frandom(10.0, 200.0), 0.001 * frandom(10.0, 200.0), 0.001 * frandom(500.0, 1000.0), 0, SXF_SETMASTER | SXF_CLIENTSIDE)
 		Loop
 		WLTR IJKLMNOP 4
 		Loop
@@ -1663,7 +1663,7 @@ ACTOR BoAWallTorch3 : BoAWallTorch1
 		"####" Y 0 {bDormant = FALSE;}
 	Spawn:
 		WLTR Y 0 NODELAY A_JumpIf(!CallACS("TorchType"),2)
-		WLTR Y 3 BRIGHT Light("WALLTORC3") A_SpawnItemEx("MutFire", Random(-2, 2), Random(-2, 2), Random(34, 36), 0.001 * Random(10, 200), 0.001 * Random(10, 200), 0.001 * Random(1000, 2000), 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+		WLTR Y 3 BRIGHT Light("WALLTORC3") A_SpawnItemEx("MutFire", frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(34.0, 36.0), 0.001 * frandom(10.0, 200.0), 0.001 * frandom(10.0, 200.0), 0.001 * frandom(500.0, 1000.0), 0, SXF_SETMASTER | SXF_CLIENTSIDE)
 		Loop
 		WLTR QRSTUVWX 4
 		Loop
