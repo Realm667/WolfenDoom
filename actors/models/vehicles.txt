@@ -682,11 +682,18 @@ ACTOR COD_StukaBomb2 : COD_StukaBomb1
 	Height 64
 }
 
-ACTOR TMPlane : CODStuka
+ACTOR TMPlane : ModelBase
 {
 	//$Category Cutscenes (BoA)
 	//$Title Titlemap Stuka
 	//$Color 0
+	DistanceCheck "scenelod"
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
 }
 
 ACTOR CODCondor : 3dObstacle
