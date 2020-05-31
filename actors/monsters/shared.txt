@@ -819,7 +819,7 @@ ACTOR FlyingHack : MiniRocket
 		CLVR IIJJKKLL 1 A_FadeOut(0.2)
 		Stop
 	Crash:
-		CLVR II 1 A_PlaySoundEx("Cleaver/Crash",2)
+		CLVR II 1 A_StartSound("Cleaver/Crash",CHAN_VOICE)
 		Goto Death
 	}
 }
@@ -1171,7 +1171,7 @@ ACTOR FlyingCleaver
 		CLVR IIJJKKLL 1 A_FadeOut(0.2)
 		Stop
 	Crash:
-		CLVR II 1 A_PlaySoundEx("Cleaver/Crash",2)
+		CLVR II 1 A_StartSound("Cleaver/Crash",CHAN_VOICE)
 		Goto Death
 	}
 }
@@ -1402,7 +1402,7 @@ ACTOR ZFlyingHack : FlyingHack
 		CLVR IIJJKKLL 1 A_FadeOut(0.2)
 		Stop
 	Crash:
-		CLVR II 1 A_PlaySoundEx("Cleaver/Crash",2)
+		CLVR II 1 A_StartSound("Cleaver/Crash",CHAN_VOICE)
 		Goto Death
 	}
 }
@@ -1653,14 +1653,14 @@ ACTOR MengeleFireSpawner
 	Damage 0
 	+BLOODLESSIMPACT
 	+FLOORHUGGER
+	+INVISIBLE //avoid spamming black dots with sprites filters enabled - ozy81
 	+RIPPER
 	Projectile
-	MissileType MengeleFire
 	MissileHeight 0
 	States
 	{
 	Spawn: 
-		TNT1 A 6 BRIGHT A_MissileAttack
+		TNT1 A 6 A_SpawnProjectile("MengeleFire",8.0,frandom(-2.0,2.0),0,CMF_CHECKTARGETDEAD)
 		Loop
 	Death:  
 		TNT1 A 6

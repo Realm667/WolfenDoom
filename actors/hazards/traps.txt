@@ -272,7 +272,7 @@ ACTOR BossDagger : Nail
 		DGGR A 1 A_SpawnItemEx("DaggerBlur")
 		Loop
 	Crash:
-		DGGR AA 1 A_PlaySoundEx("Cleaver/Crash",2)
+		DGGR AA 1 A_StartSound("Cleaver/Crash",CHAN_VOICE)
 		Goto Death
 	Death:
 		DGGR A 0 A_SpawnItemEx("HackPuff")
