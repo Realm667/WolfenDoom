@@ -724,6 +724,18 @@ ACTOR CKExitSign2 : CKExitSign1
 	}
 }
 
+ACTOR CKPCKFSign1 : CKExitSign1
+{
+	//$Title PCKF Sign (1)
+	Scale 0.5
+	States
+	{
+	Spawn:
+		PCK1 BBAA 1 A_SetTics(random(4,8))
+		Loop
+	}
+}
+
 ACTOR CKFireColumn : CKExitSign1
 {
 	//$Title Fire Column
