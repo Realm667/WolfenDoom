@@ -7,6 +7,7 @@ ACTOR StatistBarkeeper : Base
 	Mass 100
 	Scale 0.65
 	+FRIENDLY
+	+NONSHOOTABLE
 	+SOLID
 	+USESPECIAL
 	-COUNTKILL //N00b
@@ -124,7 +125,6 @@ ACTOR StatistStierlitz1 : StatistBarkeeper
 	//$Title Col. Stierlitz, Civilian clothes (NPC)
 	Scale 0.67
 	-USESPECIAL
-	+FRIENDLY
 	States
 	{
 	Spawn:
@@ -141,7 +141,6 @@ ACTOR StatistStierlitz2 : StatistBarkeeper
 	//$Title Col. Stierlitz, SS uniform (NPC)
 	Scale 0.67
 	-USESPECIAL
-	+FRIENDLY
 	States
 	{
 	Spawn:
@@ -158,7 +157,6 @@ ACTOR StatistStierlitz3 : StatistBarkeeper
 	//$Title Col. Stierlitz, Prisoner clothes (NPC)
 	Scale 0.67
 	-USESPECIAL
-	+FRIENDLY
 	States
 	{
 	Spawn:
@@ -175,7 +173,6 @@ ACTOR StatistVolkoff : StatistBarkeeper
 	//$Title Polk. Volkoff (NPC)
 	Scale 0.67
 	-USESPECIAL
-	+FRIENDLY
 	States
 	{
 	Spawn:
@@ -264,6 +261,7 @@ ACTOR StatistSinger : SwitchableDecoration
 	Height 56
 	Mass 100
 	Scale 0.67
+	+NONSHOOTABLE
 	+SOLID
 	States
 	{
@@ -283,9 +281,7 @@ ACTOR StatistDarren : StatistBarkeeper
 	//$Title Dirty Douglas, Headquarters (NPC)
 	Translation 1
 	Species "Ally"
-	+FRIENDLY
 	+INVULNERABLE
-	+NONSHOOTABLE
 	States
 	{
 	Spawn:
