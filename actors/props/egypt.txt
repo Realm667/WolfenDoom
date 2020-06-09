@@ -51,6 +51,52 @@ ACTOR EStatue1 : EColumn //3d Actor
 	Radius 16
 }
 
+ACTOR AZChalice1 : EColumn
+{
+	//$Title Aztec Chalice, Stone
+	Height 88
+}
+
+ACTOR AZChalice2 : EColumn
+{
+	//$Title Aztec Chalice, Gold
+	Height 88
+}
+
+ACTOR AZIdol1 : EColumn
+{
+	//$Title Aztec Idol, Stone
+}
+
+ACTOR AZIdol2 : EColumn
+{
+	//$Title Aztec Idol, Gold
+}
+
+ACTOR AZMask : MuseumBase
+{
+	//$Category Props (BoA)/Egypt
+	//$Title Aztec Ceremonial Mask
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
+}
+
+ACTOR AZStatue : MuseumBase
+{
+	//$Category Props (BoA)/Egypt
+	//$Title Aztec Scorpion Statue
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
+}
+
 ACTOR EStatue2
 {
 	//$Category Props (BoA)/Egypt
