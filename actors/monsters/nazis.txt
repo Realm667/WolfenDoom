@@ -289,7 +289,7 @@ ACTOR LOfficer : MP40Guard //this has MP40 and it is more rapid than any other O
 		"####" E 0 A_FaceTarget
 		Goto Missile + 2
 	Reload:
-		OFR2 E 0 {bNoPain = TRUE;}
+		LOFR E 0 {bNoPain = TRUE;}
 		"####" E 40 A_StartSound("mp40/reload", CHAN_WEAPON)
 		"####" E 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {bNoPain = FALSE;}
