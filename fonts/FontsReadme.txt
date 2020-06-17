@@ -4,6 +4,34 @@ Having each font in GZDoom unicode format will make it easier to edit the fonts,
 
 The names of the PNG files are the hexadecimal code points for the unicode characters they correspond to. For example: Latin capital E (U+0045) is 0045.png
 
-I have only tested smallfont ingame, and since PNG fonts lack certain features of BMF fonts, some long briefing/dialogue texts may overflow the box. Obviously, we'll need to test each piece of text to ensure it fits within the box at the top. We may even need to do some manual tweaking to correct kerning and space widths.
+BIGFONT Cyrillic characters done by DoomJedi
 
-BIGFONT russian variant done by DoomJedi
+Characters needed for other European languages:
+
+à - 00E0
+á - 00E1
+À - 00C0
+Á - 00C1
+è - 00E8
+é - 00E9
+È - 00C8
+ì - 00EC
+í - 00ED
+Ì - 00CC
+Í - 00CD
+ò - 00F2
+ó - 00F3
+Ò - 00D2
+Ó - 00D3
+ù - 00F9
+ú - 00FA
+Ù - 00D9
+Ú - 00DA
+Ç - 00C7
+ç - 00E7
+ę - 0229
+į - 
+õ - 00F5
+ñ - 00F1
+ã - 00E3
+
