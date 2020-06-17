@@ -29,9 +29,13 @@ Characters needed for other European languages:
 Ú - 00DA
 Ç - 00C7
 ç - 00E7
+Ȩ - 0228
 ę - 0229
-į - 
+į - 012F
+Į - 012E
 õ - 00F5
+Õ - 00D5
 ñ - 00F1
+Ñ - 00D1
 ã - 00E3
-
+Ã - 00C3
