@@ -44,7 +44,10 @@ class InventoryClearHandler : EventHandler
 			if(type is "CKPogoStick" || type is "CKLedgeGrab")
 			{
 				let invclass = (class<Inventory>)(type);
-				me.TakeInventory(invclass, 0); // 0 will clear the item from the inventory
+				let invitem = me.FindInventory(invclass);
+				if(invitem){
+					me.RemoveInventory(invitem);
+				}
 			}
 		}
 		//If the player has any weapons in StartItem, set them here
