@@ -17,6 +17,7 @@ Characters needed for other European languages:
 Æ - 00C6
 Ç - 00C7
 È - 00C8
+É - 00C9
 Ê - 00CA
 Ì - 00CC
 Í - 00CD
@@ -60,4 +61,8 @@ Characters needed for other European languages:
 Į - 012E
 į - 012F
 ı - 0131
+Ş - 015E
+ş - 015F
+Š - 0160
+š - 0161
 Ȩ - 0228
