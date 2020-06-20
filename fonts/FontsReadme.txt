@@ -31,7 +31,6 @@ Characters needed for other European languages:
 Ú - 00DA [ ]
 Û - 00DB [ ]
 Ý - 00DD [ ]
-Þ - 00DE [ ] (This letter isn't used in modern writing AFAIK - Talon1024)
 à - 00E0 [x]
 á - 00E1 [x]
 â - 00E2 [ ]
@@ -55,7 +54,6 @@ Characters needed for other European languages:
 ù - 00F9 [ ]
 ú - 00FA [ ]
 ý - 00FD [ ]
-þ - 00FE [ ] (This letter isn't used in modern writing AFAIK - Talon1024)
 ÿ - 00FF [ ]
 ę - 0229 [ ]
 Į - 012E [ ]
