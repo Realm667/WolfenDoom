@@ -132,8 +132,6 @@ script "NOGRENADES" (void)
 
 Script "QuickKick" (void)
 {
-	int timeout;
-
 	If (
 		(CheckInventory("Stamina") < 30) ||
 		(GetSpeed(0) > 30) ||
@@ -142,30 +140,7 @@ Script "QuickKick" (void)
 	)
 		Terminate; //No kicking unless you have stamina, aren't walking, and aren't crouching
 
-	str strPrevWeapon = GetWeapon(); //Assign previous weapon name to a variable - gets "None" if there is none
-
-	SetPlayerProperty(0, 1, PROP_INSTANTWEAPONSWITCH); //Enable fast weapon switch
-
-	While (!SetWeapon("BJKickAuto")) //Give the player the auto-kick
-	{
-		GiveInventory("BJKickAuto", 1);
-		Delay(1);
-	}
-
-	Delay(25); //Wait for the animation and attack
-
-	If (StrICmp(strPrevWeapon, "None")) //Reset the old weapon
-	{
-		While (!SetWeapon(strPrevWeapon) && timeout < 35) // Wait until the weapon is set, or a second has elapsed
-		{
-			Delay(5);
-			timeout += 5;
-		}
-	}
-
-	TakeInventory("BJKickAuto", 1); //Remove the auto-kick from inventory
-
-	SetPlayerProperty(0, 0, PROP_INSTANTWEAPONSWITCH); //Disable fast weapon switch
+	ScriptCall("BoAPlayer", "DoKick");
 }
 
 //death script

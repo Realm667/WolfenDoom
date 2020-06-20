@@ -932,6 +932,26 @@ class BoAPlayer : PlayerPawn
 			if (newState) { psp.SetState(newState); }
 		}
 	}
+
+	static void DoKick(Actor mo)
+	{
+		if (mo.player && mo.player.ReadyWeapon && NaziWeapon(mo.player.ReadyWeapon) && mo.player.playerstate == PST_LIVE && !mo.player.FindPSprite(-10))
+		{
+			Inventory st = mo.FindInventory("Stamina");
+			NaziWeapon wpn = NaziWeapon(mo.player.ReadyWeapon);
+
+			if (!wpn) { return; }
+
+			if (st && st.Amount > 29)
+			{
+				if (mo.FindInventory("PowerStrength")) { wpn.modifier = 3.0; } // Strength increases damage by 3 and range by 10
+				else { wpn.modifier = 1.0; }
+
+				mo.A_TakeInventory("Stamina",30);
+				mo.player.SetPsprite(-10, wpn.FindState("KickOverlay"), true);
+			}
+		}
+	}
 /*
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{

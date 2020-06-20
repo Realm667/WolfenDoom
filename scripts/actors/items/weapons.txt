@@ -7,6 +7,8 @@ class NaziWeapon : Weapon
 {
 	int lowertimeout;
 	float lowerstart, lowerspeed;
+	double modifier;
+	uint oldbuttons;
 
 	Default
 	{
@@ -25,6 +27,28 @@ class NaziWeapon : Weapon
 			"####" "#" 1 Offset(0,35) A_StartSound("weapon/dryfire", CHAN_WEAPON);
 			"####" "#" 9 Offset(0,34);
 			"####" "#" 0 A_Jump(256,"Ready");
+			Stop;
+		KickOverlay:
+			TNT1 A 1; // Note:  Overlay offset y values are 32 less than their Weapon state counterparts
+			BJKK A 1 Offset(84, 68);
+			BJKK A 1 Offset(80, 64);
+			BJKK A 1 Offset(72, 56);
+			BJKK A 1 Offset(64, 48);
+			BJKK A 1 Offset(56, 40);
+			BJKK A 1 Offset(48, 32);
+			BJKK A 1 Offset(40, 24);
+			BJKK A 1 Offset(24, 7);
+			BJKK A 1 Offset(6, 2) A_StartSound("knife/swing",CHAN_WEAPON);
+			BJKK B 2 Offset(4, 0) A_CustomPunch(int(8 * invoker.modifier), TRUE, CPF_NOTURN, "KickPuff", invoker.modifier ? 80 : 70); //CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
+			BJKK A 1 Offset(6, 2) { bDontBlast = true; }
+			BJKK A 1 Offset(24, 7) { bDontBlast = false; } //KickPuff blast happens 3 tics after spawning
+			BJKK A 1 Offset(36, 20);
+			BJKK A 1 Offset(44, 28);
+			BJKK A 1 Offset(52, 36);
+			BJKK A 1 Offset(60, 44);
+			BJKK A 1 Offset(68, 52);
+			BJKK A 1 Offset(76, 60);
+			BJKK A 1 Offset(82, 66);
 			Stop;
 	}
 
@@ -48,6 +72,7 @@ class NaziWeapon : Weapon
 		}
 
 		if (skill >= 2) { bNoAutoAim = true; } // Force autoaim off if we're on normal skill or higher
+		modifier = 1.0;
 
 		Super.PostBeginPlay();
 	}
@@ -56,30 +81,60 @@ class NaziWeapon : Weapon
 	{
 		if (owner && owner.player)
 		{
-			if (owner.player.ReadyWeapon == self && owner.FindInventory("HQ_Checker", true))
+			if (owner.player.ReadyWeapon == self)
 			{
-				lowertimeout++;
-
 				let psp = owner.player.GetPSprite(PSP_WEAPON);
-				let downstate = GetDownState();
+				let kick = owner.player.FindPSprite(-10);
 
-				if (psp.CurState.InStateSequence(GetUpState()) || lowertimeout < 35) { return; }
-				else if (!psp.CurState.InStateSequence(downstate))
+				if (owner.FindInventory("HQ_Checker", true))
 				{
-					owner.player.SetPsprite(PSP_WEAPON, downstate);
-					lowerstart = psp.y;
-				}
-				else
-				{
-					if (!lowerspeed) { lowerspeed = psp.y - lowerstart; }
+					lowertimeout++;
 
-					if (psp.y >= WEAPONBOTTOM - lowerspeed)
+					let downstate = GetDownState();
+
+					if (psp.CurState.InStateSequence(GetUpState()) || lowertimeout < 35) { return; }
+					else if (!psp.CurState.InStateSequence(downstate))
 					{
-						owner.player.ReadyWeapon = null;
-						owner.player.PendingWeapon = WP_NOCHANGE;
-						lowertimeout = 0;
+						owner.player.SetPsprite(PSP_WEAPON, downstate);
+						lowerstart = psp.y;
+					}
+					else
+					{
+						if (!lowerspeed) { lowerspeed = psp.y - lowerstart; }
+
+						if (psp.y >= WEAPONBOTTOM - lowerspeed)
+						{
+							owner.player.ReadyWeapon = null;
+							owner.player.PendingWeapon = WP_NOCHANGE;
+							lowertimeout = 0;
+						}
 					}
 				}
+/* Handled via ACS and player class static function for integration with the old kick code rather than using a built-in keybind
+				else if (owner.player.cmd.buttons & BT_USER1 && !(oldbuttons & BT_USER1)) // Only kick on fresh button presses
+				{
+					Inventory st = owner.FindInventory("Stamina");
+
+					if (st && st.Amount > 29)
+					{
+						if (!kick)
+						{
+							if (owner.FindInventory("PowerStrength")) { modifier = 3.0; } // Strength increases damage by 3 and range by 10
+
+							owner.A_TakeInventory("Stamina",30);
+							owner.player.SetPsprite(-10, FindState("KickOverlay"), true);
+						}
+					}
+				}
+*/
+
+				if (kick)
+				{
+					if (owner.FindInventory("CCBJUniformToken")) { kick.frame += 2; }
+					else if (owner.FindInventory("SSBJUniformToken")) { kick.frame += 4; }
+				}
+
+				oldbuttons = owner.player.cmd.buttons;
 			}
 
 			// If you're using the knife and there's a chance of a stealth kill, hide 
