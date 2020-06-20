@@ -9,13 +9,9 @@ void SetupMaterial(inout Material material)
     mat3 tbn = GetTBN();
     vec2 texCoord = ParallaxMap(tbn);
 
-    // Material material;
     material.Base = getTexel(texCoord);
     material.Normal = normalize(vWorldNormal.xyz);
-#if defined(BRIGHTMAP)
-    material.Bright = texture(brighttexture, texCoord);
-#endif
-    // return material;
+    material.Bright = texture(brighttexture, texCoord); //force the check for brightmaps, otherwise doesn't work - ozy81
 }
 
 // Tangent/bitangent/normal space to world space transform matrix
@@ -105,7 +101,6 @@ vec2 ParallaxMap(mat3 tbn)
 	currentTexCoords += deltaTexCoords;
 	currentLayerDepth -= layerDepth;
 
-
 	const int _reliefSteps = 8;
 	int currentStep = _reliefSteps;
 	while (currentStep > 0) {
@@ -128,5 +123,4 @@ vec2 ParallaxMap(mat3 tbn)
 
 	return currentTexCoords - (P * 0.01);
 }
-
 #endif
