@@ -523,10 +523,13 @@ class DisguiseToken : CustomInventory
 						let psp = owner.player.GetPSprite(PSP_WEAPON);
 
 						if ( // If in ready state, up state, or down state, turn notarget on unless enemies are already alerted
-							weaponitem.Probability != 255 ||
-							psp.CurState == weap.GetReadyState() ||
-							psp.CurState == weap.GetUpState() ||
-							psp.CurState == weap.GetDownState()
+							!owner.player.FindPSprite(-10) && // Kicks make you lose your disguise
+							(
+								weaponitem.Probability != 255 ||
+								psp.CurState == weap.GetReadyState() ||
+								psp.CurState == weap.GetUpState() ||
+								psp.CurState == weap.GetDownState()
+							)
 						) 
 						{
 							Inventory vis = owner.FindInventory("BoAVisibility");	
