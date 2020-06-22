@@ -204,8 +204,10 @@ ACTOR PanzerRocket : GrenadeBase
 
 ACTOR EnemyPanzerRocket : PanzerRocket
 {
-	Speed 25
-	Damage (random(35,75))
+	DamageType "Rocket2"
+	Speed 20
+	FastSpeed 25
+	Damage (random(35,55))
 	States
 	{
 	Death:
@@ -215,18 +217,19 @@ ACTOR EnemyPanzerRocket : PanzerRocket
 		EXP1 A 0 { A_Explode(0, 192, 0, TRUE, 320); A_SpawnItemEx("ZScorch"); } //this is different so panzerguards doesn't die if they shot right down their feet
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark_Longlive", 0, 0, 0, random(-5,5), random(-5,5), random(-5,5), random(0,359)) //T667 improvements
 		TNT1 A 0 A_SpawnItemEx("PanzerNuke",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
-		TNT1 A 8 A_SpawnItemEx("GeneralExplosion_Large",56,0,32)
+		TNT1 A 8 A_SpawnItemEx("GeneralExplosion_NazisL",56,0,32)
 		EXP1 A 2 BRIGHT LIGHT(BOAFLMW2) A_Quake(9,15,0,1024,"")
 		EXP1 BCDEFGHIJKLMN 2 BRIGHT LIGHT(BOAFLMW2)
 		Stop
 	}
 }
 
-ACTOR BabyEnemyPanzerRocket : EnemyPanzerRocket	{Damage (random(35,50))}
-ACTOR HardEnemyPanzerRocket : EnemyPanzerRocket	{Damage (random(50,75))}
+ACTOR BabyEnemyPanzerRocket : EnemyPanzerRocket	{Speed 15 FastSpeed 20 Damage (random(25,40))}
+ACTOR HardEnemyPanzerRocket : EnemyPanzerRocket	{Speed 25 FastSpeed 30 Damage (random(45,65))}
 
 ACTOR PanzerBoom : EnemyPanzerRocket
 {
+	Damage 0
 	States
 	{
 	Spawn:
