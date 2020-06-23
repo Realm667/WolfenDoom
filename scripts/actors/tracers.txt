@@ -5,9 +5,11 @@ class BulletTracer : FastProjectile
 	int offset;
 	int zoffset;
 	bool silent;
+	bool noInertia;
 
 	Property Trail:trail;
 	Property NoRicochet:silent;
+	Property NoInertia:noInertia;
 
 	Default
 	{
@@ -54,7 +56,7 @@ class BulletTracer : FastProjectile
 	{
 		Super.PostBeginPlay();
 
-		if (target)
+		if (!noInertia && target)
 		{
 			vel += target.vel;
 		}
@@ -528,6 +530,7 @@ class PlayerTracer : BulletTracer
 	Default
 	{
 		Species "PlayerFollower"; // By default, player bullets have PlayerFollower species
+		-NOGRAVITY
 	}
 
 	override void PostBeginPlay()
@@ -555,7 +558,7 @@ class PlayerTracer : BulletTracer
 			if (trailactor) { trailactor.SetOrigin(trailactor.pos + (0, 0, zoffset), true); }
 		}
 
-		if (pos.z > floorz && vel.xy.length())
+		if (pos.z > floorz && !bNoGravity)
 		{
 			vel.z -= 15.0 / Speed;
 			if (trailactor) { trailactor.vel = vel; }
