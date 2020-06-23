@@ -48,7 +48,7 @@ ACTOR ShotgunTracer : PlayerTracer
 	Scale .3
 	Damage (random(5,15))
 	DamageType "Pellet"
-	BulletTracer.NoRicochet 1
+	+BULLETTRACER.NORICOCHET
 }
 
 ACTOR AutoShotgunTracer : ShotgunTracer	{Obituary "$OBAUTOSH"}
@@ -240,8 +240,8 @@ ACTOR AstroTracer : BulletTracer
 	+BLOODLESSIMPACT
 	DamageType "AstroPoison"
 	DeathType Disintegrate
-	BulletTracer.NoInertia 1
 	BulletTracer.Trail "AstroTrail"
+	+BULLETTRACER.NOINERTIA
 	States
 	{
 	Spawn:

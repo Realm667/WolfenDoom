@@ -4,12 +4,12 @@ class BulletTracer : FastProjectile
 	Actor trailactor;
 	int offset;
 	int zoffset;
-	bool silent;
-	bool noInertia;
+	int flags;
+
+	flagdef NoRicochet: flags, 0;
+	flagdef NoInertia: flags, 1;
 
 	Property Trail:trail;
-	Property NoRicochet:silent;
-	Property NoInertia:noInertia;
 
 	Default
 	{
@@ -39,7 +39,7 @@ class BulletTracer : FastProjectile
 				bWindThrust = false;
 			}
 			PUFF B 3 BRIGHT LIGHT("BPUFF1") {
-				if (!silent) { A_StartSound("ricochet"); }
+				if (!bNoRicochet) { A_StartSound("ricochet"); }
 				A_SpawnItemEx("ZBulletChip");
 			}
 			PUFF CD 3 BRIGHT LIGHT("BPUFF1");
@@ -56,7 +56,7 @@ class BulletTracer : FastProjectile
 	{
 		Super.PostBeginPlay();
 
-		if (!noInertia && target)
+		if (!bNoInertia && target)
 		{
 			vel += target.vel;
 		}
