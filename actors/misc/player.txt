@@ -1,6 +1,7 @@
 //Player
 ACTOR Stamina : Inventory {Inventory.MaxAmount 100}
 ACTOR IncomingMessage : Inventory { Inventory.MaxAmount 1}
+ACTOR ObjectiveToken : Inventory { Inventory.MaxAmount 6 +INVENTORY.UNDROPPABLE } //needed for objectives split through maps, like C3M1 clues - ozy81
 
 ACTOR ScientistUniformToken : DisguiseToken
 {
