@@ -515,6 +515,8 @@ ACTOR WToilet : WGuard
 		"####" E 0 A_Jump(256, "See+1")
 		Stop
 	Death:
+		"####" F 0 {bCanPass = FALSE;}
+		"####" F 0 {bNoGravity = TRUE;}
 		"####" F 5
 		"####" G 5 A_Scream
 		"####" H 5 A_UnblockAndDrop

@@ -709,30 +709,30 @@ ACTOR CobwebNest : CobwebBody
 		Stop
 	Death:
 		COBW D 1 A_UnSetSolid
-		COBW DDDD 0 A_SpawnItemEx("Debris_Web", random(-32,32), random(-16,16), random(-4,-8), random(-1,-2), -1, -1, random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION)
-		COBW DDD 0 A_SpawnItemEx("Debris_Web", random(-32,32), random(-16,16), random(-4,-8), random(-1,-2), -1, -1, random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION)
-		COBW DD 0 A_SpawnItemEx("Debris_Web", random(-32,32), random(-16,16), random(-4,-8), random(-1,-2), -1, -1, random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION)
+		COBW DDDD 0 A_SpawnItemEx("Debris_Web", frandom(-32.0,32.0), frandom(-16.0,16.0), frandom(-4.0,-8.0), frandom(-1.0,-2.0), -1, -1, random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION)
+		COBW DDD 0 A_SpawnItemEx("Debris_Web", frandom(-32.0,32.0), frandom(-16.0,16.0), frandom(-4.0,-8.0), frandom(-1.0,-2.0), -1, -1, random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION)
+		COBW DD 0 A_SpawnItemEx("Debris_Web", frandom(-32.0,32.0), frandom(-16.0,16.0), frandom(-4.0,-8.0), frandom(-1.0,-2.0), -1, -1, random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION)
 		COBW D 1 A_Jump(128,"Death1","Death2","Death3")
 	Death1:
-		COBW D 1 A_SpawnItemEx("MiniSpider",frandom(-24,24),frandom(-16,16),frandom(-4,-16),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
-		COBW D 0 A_SpawnItemEx("MiniSpider",frandom(-24,24),frandom(-16,16),frandom(-4,-16),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
-		COBW D 0 A_SpawnItemEx("MiniSpider",frandom(-24,24),frandom(-16,16),frandom(-4,-16),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
-		COBW D 0 A_SpawnItemEx("MiniSpider",frandom(-24,24),frandom(-16,16),frandom(-4,-16),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
-		COBW D 0 A_SpawnItemEx("MiniSpider",frandom(-24,24),frandom(-16,16),frandom(-4,-16),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
+		COBW D 1 A_SpawnItemEx("MiniSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
+		COBW D 0 A_SpawnItemEx("MiniSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
+		COBW D 0 A_SpawnItemEx("MiniSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
+		COBW D 0 A_SpawnItemEx("MiniSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
+		COBW D 0 A_SpawnItemEx("MiniSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
 		COBW D -1
 		Stop
 	Death2:
-		COBW D 1 A_SpawnItemEx("BigSpider",frandom(-24,24),frandom(-16,16),frandom(-4,-16),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
-		COBW D 0 A_SpawnItemEx("BigSpider",frandom(-24,24),frandom(-16,16),frandom(-4,-16),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
-		COBW D 0 A_SpawnItemEx("BigSpider",frandom(-24,24),frandom(-16,16),frandom(-4,-16),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
+		COBW D 1 A_SpawnItemEx("BigSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
+		COBW D 0 A_SpawnItemEx("BigSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
+		COBW D 0 A_SpawnItemEx("BigSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
 		COBW D -1
 		Stop
 	Death3:
-		COBW D 1 A_SpawnItemEx("MiniSpider",frandom(-24,24),frandom(-16,16),frandom(-4,-16),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
-		COBW D 0 A_SpawnItemEx("BigSpider",frandom(-24,24),frandom(-16,16),frandom(-4,-16),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
-		COBW D 0 A_SpawnItemEx("MiniSpider",frandom(-24,24),frandom(-16,16),frandom(-4,-16),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
-		COBW D 0 A_SpawnItemEx("BigSpider",frandom(-24,24),frandom(-16,16),frandom(-4,-16),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
-		COBW D 0 A_SpawnItemEx("MiniSpider",frandom(-24,24),frandom(-16,16),frandom(-4,-16),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
+		COBW D 1 A_SpawnItemEx("MiniSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
+		COBW D 0 A_SpawnItemEx("BigSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
+		COBW D 0 A_SpawnItemEx("MiniSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
+		COBW D 0 A_SpawnItemEx("BigSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
+		COBW D 0 A_SpawnItemEx("MiniSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid)
 		COBW D -1
 		Stop
 	}

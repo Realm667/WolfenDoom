@@ -82,6 +82,15 @@ ACTOR GasDrum : 3dObstacle //MaxED
 	Height 42
 	-NOGRAVITY
 	ModelBase.Buoyancy 0.15
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	Destroyed:
+		MDLA B -1
+		Stop
+	}
 }
 
 ACTOR FuelDrumAstro //Ozy81
