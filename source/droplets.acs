@@ -11,9 +11,9 @@ script "BloodScale" (void)
 	SetActorVelocity(0, velx, vely, velz, false, false);
 }
 
-script 86 KILL
+script "GIBS" KILL
 {
-	if (!CheckFlag(0, "ISMONSTER") || CheckFlag(0, "NOBLOOD") || CheckFlag(0, "NOBLOODDECALS") || CheckActorClass(0, "AstroGuard") || CheckActorClass(0, "AstroGuard2") || CheckActorClass(0, "AstroCommando") || CheckActorClass(0, "AstroOfficer") || CheckActorClass(0, "AstroScientist") || CheckActorClass(0, "AstroElite") || CheckActorClass(0, "BatFamiliar") || CheckActorClass(0, "ZBatFamiliar") || CheckActorClass(0, "BigSpider") || CheckActorClass(0, "MiniSpider") || CheckActorClass(0, "Scorpion"))
+	if (!CheckFlag(0, "ISMONSTER") || CheckFlag(0, "NOBLOOD") || CheckFlag(0, "NOBLOODDECALS") || CheckActorClass(0, "AstroGuard") || CheckActorClass(0, "AstroGuard2") || CheckActorClass(0, "AstroCommando") || CheckActorClass(0, "AstroOfficer") || CheckActorClass(0, "AstroScientist") || CheckActorClass(0, "AstroElite") || CheckActorClass(0, "BatFamiliar") || CheckActorClass(0, "ZBatFamiliar") || CheckActorClass(0, "BigSpider") || CheckActorClass(0, "MiniSpider") || CheckActorClass(0, "BigSpiderNest") || CheckActorClass(0, "MiniSpiderNest") || CheckActorClass(0, "Scorpion"))
 		terminate;
 	if (GetCVar("blood_gibs"))
 		GiveInventory("GibMe", 1);
@@ -27,7 +27,7 @@ script 86 KILL
 	GiveInventory("BleedMe", 1);
 }
 
-script "86me" DEATH
+script "GIBS_ME" DEATH
 {
 	if (CheckFlag(0, "NOBLOOD") || CheckFlag(0, "NOBLOODDECALS"))
 		terminate;
