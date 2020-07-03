@@ -9,6 +9,8 @@ class ExtendedConversationMenuBase : ConversationMenu
 		ConversationPauseTic = gametic + 20;
 		DontDim = true;
 
+		SetMusicVolume(Level.MusicVolume);
+
 		return 100;
 	}
 
@@ -20,7 +22,7 @@ class ExtendedConversationMenuBase : ConversationMenu
 
 	override void OnDestroy()
 	{
-		SetMusicVolume(1);
+		SetMusicVolume(Level.MusicVolume);
 		if (dialogue) { dialogue.Destroy(); }
 		Menu.OnDestroy();
 	}
