@@ -102,7 +102,7 @@ ACTOR BlackCat : BarkDog
 	Spawn:
 		BCAT A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY); A_GiveInventory("Z_ShadeMe",0); }
 	Purr:
-		BCAT A 0 A_StartSound("cat/purr", CHAN_ITEM, CHANF_LOOP, frandom(0.5,0.7), ATTN_NORM)
+		BCAT A 0 A_StartSound("cat/purr", CHAN_ITEM, CHANF_LOOP, frandom(0.1,0.2), ATTN_STATIC)
 	SpawnSet:
 		BCAT A 0 A_CheckRange(512,"SpawnSilent")
 		BCAT BCA 1 A_SetTics(random(4,10))
