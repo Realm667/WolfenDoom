@@ -28,7 +28,7 @@ LISTMENU "MainMenu"
 	StaticPatch 0, 10, "MENUBAK"
 	StaticPatchCentered 160, 5, "M_START"
 	Position 110, 60
-	TextItem "$MNU_NEWGAME", "n", "BoAPlayerclassMenu"
+	TextItem "$MNU_NEWGAME", "n", "PlayerclassMenu"
 	TextItem "$MNU_OPTIONS", "o", "BoAOptionsMenu"
 	TextItem "$MNU_GAMEFILES", "g", "GameFilesMenu"
 	TextItem "$MNU_INFO", "i", "ReadThisMenu"
@@ -43,7 +43,7 @@ LISTMENU "MainMenu"
 //
 //-------------------------------------------------------------------------------------------
 
-ListMenu "BoAPlayerclassMenu"
+ListMenu "PlayerclassMenu"
 {
 	IfGame(Doom, Heretic, Hexen, Strife)
 	{
@@ -179,6 +179,16 @@ OptionMenuSettings
 //CUSTOM OPTION MENUES//
 ////////////////////////
 
+OptionMenu "BoAPerformanceOptions"
+{
+	Title "$PERFOPT"
+	StaticText " "
+	Submenu "$OPT_WEAT",						"BoAWeatherOptions"
+	Submenu "$OPT_SFX",							"BoAEffectsOptions"
+	Submenu "$OPT_REND",						"BoARenderOptions"
+	Submenu "$OPT_PROC",						"BoAPostProcessShaderOptions"
+}
+
 OptionMenu "BoAPredefinedOptions"
 {
 	Title "$PREDOPT"
@@ -215,7 +225,7 @@ OptionMenu "BoAOptionsMenu"
 	StaticText " "
 	Submenu "$OPTMNU_CONTROLS",			"BoACustomizeControls"
 	Submenu "$OPTMNU_MOUSE",			"BoAMouseOptions"
-	Submenu "$OPTMNU_JOYSTICK",			"BoAJoystickOptions"
+	Submenu "$OPTMNU_JOYSTICK",			"JoystickOptions"
 	StaticText " "
 	Submenu "$OPTMNU_PLAYER",			"BoANewPlayerMenu"
 	Submenu "$OPTMNU_GAMEPLAY",			"BoAGameplayOptions"
@@ -285,7 +295,7 @@ OptionMenu "BoANewPlayerMenu"
 	AutoaimSlider "$PLYRMNU_AUTOAIM"
 	PlayerSwitchOnPickupItem "$PLYRMNU_SWITCHONPICKUP", "OffOn"
 	Option "$PLYRMNU_ALWAYSRUN", cl_run, "OnOff"
-	Class "BoANewPlayerMenu"
+	Class "NewPlayerMenu"
 }
 
 // The old player menu is kept for mods that redefine it. Only BoA related defs included plus Doom - ozy81
@@ -327,7 +337,7 @@ ListMenu "BoAPlayerMenu"
 	Slider "$PLYRMNU_AUTOAIM", "Autoaim", 0, 35, 1
 	ValueText "$PLYRMNU_SWITCHONPICKUP", "Switch", "OffOn"
 	ValueText "$PLYRMNU_ALWAYSRUN", "AlwaysRun", "OnOff"
-	Class "BoAPlayerMenu"
+	Class "PlayerMenu"
 }
 
 //-------------------------------------------------------------------------------------------
@@ -583,7 +593,7 @@ OptionMenu "BoAMouseOptions"
 //
 //-------------------------------------------------------------------------------------------
 
-OptionMenu "BoAJoystickOptionsDefaults"
+OptionMenu "JoystickOptionsDefaults" protected
 {
 	Title "$JOYMNU_OPTIONS"
 	Option "$JOYMNU_ENABLE", "use_joystick", "YesNo"
@@ -594,7 +604,7 @@ OptionMenu "BoAJoystickOptionsDefaults"
 		Option "$JOYMNU_XINPUT", "joy_xinput", "YesNo"
 		Option "$JOYMNU_PS2", "joy_ps2raw", "YesNo"
 	}
-	StaticText " "
+	StaticText ""
 	StaticTextSwitchable "$JOYMNU_NOCON", "$JOYMNU_CONFIG", "ConfigureMessage"
 	StaticTextSwitchable " ", "$JOYMNU_DISABLED1", "ConnectMessage1"
 	StaticTextSwitchable " ", "$JOYMNU_DISABLED2", "ConnectMessage2"
@@ -602,7 +612,7 @@ OptionMenu "BoAJoystickOptionsDefaults"
 	// The rest will be filled in by joystick code if devices get connected or disconnected
 }
 
-OptionMenu "BoAJoystickOptions"
+OptionMenu "JoystickOptions" protected
 {
 	Title "$JOYMNU_OPTIONS"
 }
@@ -623,10 +633,10 @@ OptionValue "Inversion"
 	1, "$OPTVAL_INVERTED"
 }
 
-OptionMenu "BoAJoystickConfigMenu"
+OptionMenu "JoystickConfigMenu" protected
 {
 	Title "$JOYMNU_TITLE"
-	Class "BoAJoystickConfigMenu"
+	Class "JoystickConfigMenu"
 	// Will be filled in by joystick code.
 }
 
@@ -882,11 +892,7 @@ OptionMenu "MBlurOpts"
 OptionMenu "BoAVideoOptions"
 {
 	Title "$DSPLYMNU_TITLE"
-
-	Submenu "$OPT_WEAT",						"BoAWeatherOptions"
-	Submenu "$OPT_SFX",							"BoAEffectsOptions"
-	Submenu "$OPT_REND",						"BoARenderOptions"
-	Submenu "$OPT_PROC",						"BoAPostProcessShaderOptions"
+	
 	Submenu "$DSPLYMNU_GLOPT", 					"BoAOpenGLOptions"
 	Submenu "$DSPLYMNU_SWOPT", 					"BoASWROptions"
 	Submenu "$DSPLYMNU_VKOPT",					"BoAVKOptions"
@@ -1594,7 +1600,7 @@ OptionMenu BoAGameplayOptions //needs to be reworked, we should keep fastmonster
 	Option "$GMPLYMNU_DONTCHECKAMMO",			"sv_dontcheckammo", "NoYes"
 	Option "$GMPLYMNU_KILLBOSSSPAWNS",			"sv_killbossmonst", "YesNo"
 	Option "$GMPLYMNU_NOCOUNTENDMONSTER",		"sv_nocountendmonst", "NoYes"
-	Class "BoAGameplayMenu"
+	Class "GameplayMenu"
 }
 
 OptionMenu "GameOptions"
@@ -1648,7 +1654,7 @@ OptionMenu BoADeathmatchOptions
 	Option "$GMPLYMNU_LOSEFRAG",				"sv_losefrag", "YesNo"
 	Option "$GMPLYMNU_KEEPFRAGS",				"sv_keepfrags", "YesNo"
 	Option "$GMPLYMNU_NOTEAMSWITCH",			"sv_noteamswitch", "YesNo"
-	Class "BoAGameplayMenu"
+	Class "GameplayMenu"
 }
 
 OptionMenu BoACoopOptions
@@ -1665,7 +1671,7 @@ OptionMenu BoACoopOptions
 	Option "$GMPLYMNU_KEEPAMMO",				"sv_cooploseammo", "NoYes"
 	Option "$GMPLYMNU_LOSEHALFAMMO",			"sv_coophalveammo", "YesNo"
 	Option "$GMPLYMNU_SPAWNWHEREDIED",			"sv_samespawnspot", "YesNo"
-	Class "BoAGameplayMenu"
+	Class "GameplayMenu"
 }
 
 /*=======================================
@@ -1673,8 +1679,8 @@ OptionMenu BoACoopOptions
  * Sound Options Menu
  *
  *=======================================*/
-/*
-OptionValue SampleRates
+
+/*OptionValue SampleRates
 {
 	0,		"$OPTVAL_DEFAULT"
 	4000,	"$OPTVAL_4000HZ"
@@ -1755,8 +1761,8 @@ OptionMenu OpenALSoundItems protected
 OptionValue MidiDevices
 {
 	// filled in by the sound code
-}
-*/
+}*/
+
 OptionMenu BoASoundOptions
 {
 	Title "$SNDMNU_TITLE"
@@ -1782,8 +1788,8 @@ OptionMenu BoASoundOptions
  * Advanced Sound Options Menu
  *
  *=======================================*/
-/*
-OptionValue GusMemory
+
+/*OptionValue GusMemory
 {
 	0, "$OPTVAL_UNLIMITED"
 	1, "$OPTVAL_256K"
@@ -1855,7 +1861,7 @@ OptionMenu ADLMIDICustomBanksMenu protected
 OptionMenu OPNMIDICustomBanksMenu protected
 {
 	Title "$ADVSNDMNU_OPNBANKFILE"
-}
+}*/
 
 /*=======================================
  *
@@ -1863,7 +1869,7 @@ OptionMenu OPNMIDICustomBanksMenu protected
  *
  *=======================================*/
 
-OptionValue ModReplayers
+/*OptionValue ModReplayers
 {
 	0.0, "$OPTVAL_SOUNDSYSTEM"
 	1.0, "$OPTVAL_FOO_DUMB"
@@ -1900,7 +1906,7 @@ OptionMenu ModReplayerOptions protected
 	// TODO if the menu system is ever rewritten: Provide a decent
 	// mechanism to edit the chip-o-matic settings like you can with
 	// the foo_dumb preferences in foobar2000.
-}
+}*/
 
 /*=======================================
  *
@@ -1908,7 +1914,7 @@ OptionMenu ModReplayerOptions protected
  *
  *=======================================*/
 
-OptionValue TimidityReverb
+/*OptionValue TimidityReverb
 {
 	0, "$OPTVAL_OFF"
 	1, "$OPTVAL_STANDARD"
@@ -2024,8 +2030,8 @@ OptionMenu OPNOptions protected
 	StaticText " "
 	Option "$ADVSNDMNU_OPNCUSTOMBANK", 	 "opn_use_custom_bank", "OnOff"
 	LabeledSubmenu "$ADVSNDMNU_OPNBANKFILE", "opn_custom_bank", "OPNMIDICustomBanksMenu"
-}
-*/
+}*/
+
 /*=======================================
  *
  * Change Renderer Menu
@@ -2423,7 +2429,7 @@ OptionMenu "BoAGLTextureGLOptions"
 	Option "$GLTEXMNU_RESIZEFNT",		gl_texture_hqresize_fonts,		"OnOff"
 	Option "$GLTEXMNU_PRECACHETEX",		gl_precache,					"YesNo"
 	Option "$GLTEXMNU_SORTDRAWLIST", 	gl_sort_textures,				"YesNo"
-	Class "BoAGLTextureGLOptions"
+	Class "GLTextureGLOptions"
 }
 
 OptionMenu "BoAGLLightOptions"
