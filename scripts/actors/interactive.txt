@@ -236,6 +236,8 @@ class StatueBreakable : Actor
 				{
 					smoke.scale = scale;
 				}
+
+				bPushable = false;
 			}
 			Stop;
 	}
@@ -249,7 +251,7 @@ class StatueBreakable : Actor
 
 		if (itemclass)
 		{
-			item = Spawn(itemclass, pos + (RotateVector((13, -3), angle), 122));
+			item = Spawn(itemclass, pos + (RotateVector((13, -3), angle) * scale.x / Default.Scale.X, Default.Height * 0.76 * scale.y / Default.Scale.Y));
 			if (item)
 			{
 				item.master = self;
@@ -370,7 +372,7 @@ class StatueBreakable : Actor
 			bPushable = false;
 		}
 
-		VelFromAngle(0.25 * (90 - tiltpitch) / (Default.radius / 1.4), tiltangle);
+		VelFromAngle(0.5 * (90 - tiltpitch) / (Default.radius / 1.4), tiltangle);
 	}
 
 	void RotateItem()

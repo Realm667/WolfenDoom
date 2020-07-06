@@ -435,3 +435,45 @@ class REBasementEntry2 : REBase
 			Stop;
 	}
 }
+
+class REBasementVault : REBase
+{
+	Default
+	{
+		//$Title Basement Vault (Right)
+		Height 0;
+		Radius 0;
+		+NOGRAVITY
+		-SOLID
+		+NOINTERACTION
+		RenderRadius 256.0;
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+	}
+}
+
+class REBasementVault2 : REBase
+{
+	Default
+	{
+		//$Title Basement Vault (Left)
+		Height 0;
+		Radius 0;
+		+NOGRAVITY
+		-SOLID
+		+NOINTERACTION
+		RenderRadius 256.0;
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+	}
+}
