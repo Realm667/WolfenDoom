@@ -1,0 +1,179 @@
+// Base class for text scroller menu screens.  Inherit from this and configure via the Init function (see IntroScroll class below)
+// Call from ACS with: 'ScriptCall("Menu", "SetMenu", "IntroScroll");'
+// Wait for completion from within ACS with: 'While (!ScriptCall("TextScroll", "Ready")) { Delay(35); }' (checks if the currently open scroller is done)
+class TextScroll : ReadThisMenu
+{
+	TextureID background, overlay, scrollback;
+	Font fnt;
+	int clr;
+	String text;
+
+	double scrolly, scrollx, scrollstep;
+	double textwidth, backwidth, backheight;
+	double alpha;
+	int w, h, lineheight, margin, topmargin, delay;
+
+	bool noskip, finished;
+
+	BrokenLines lines;
+
+	override void Init(Menu parent)
+	{
+		GenericMenu.Init(parent);
+
+		if (!fnt) { fnt = SmallFont; }
+
+		DontDim = true;
+		menuactive = OnNoPause;
+
+		alpha = 1.0;
+
+		w = 900;
+		h = int(w * 0.75);
+		margin = 160;
+		topmargin = 180;
+		lineheight = 25;
+
+		scrolly = h;
+		scrollx = w / 2;
+
+		textwidth = w - 160;
+
+		if (!scrollstep) { scrollstep = 1.0; }
+
+		scrolly += delay / scrollstep;
+
+		/*
+		background = TexMan.CheckForTexture("graphics/hud/general/M_INJ.png", TexMan.Type_Any);
+		scrollback = TexMan.CheckForTexture("graphics/intromap/ddb_lttb.png", TexMan.Type_Any);
+		overlay = TexMan.CheckForTexture("graphics/hud/general/MOVIEHD5.png", TexMan.Type_Any);
+		*/
+
+		if (scrollback)
+		{
+			[backwidth, backheight] = TexMan.GetSize(scrollback);
+			textwidth = backwidth - margin * 2;
+		}
+
+		lines = fnt.BreakLines(StringTable.Localize(text), int(textwidth));
+	}
+
+	override void Drawer()
+	{
+		if (background) { screen.DrawTexture(background, false, 0, 0, DTA_FullScreenEx, 2); }
+
+		if (scrollback) { screen.DrawTexture(scrollback, false, scrollx - backwidth / 2, scrolly, DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, alpha); }
+
+		for (int l = 0; l < lines.Count(); l++)
+		{
+			screen.DrawText(fnt, clr, scrollx - textwidth / 2, scrolly + topmargin + l * lineheight, lines.StringAt(l), DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, 0.9 * alpha);
+		}
+
+		if (overlay) { screen.DrawTexture(overlay, false, 0, 0, DTA_FullScreenEx, 2); }
+	}
+
+	override void Ticker()
+	{
+		scrolly -= scrollstep;
+
+		if (finished || scrolly < -(backheight - h)) // Wait until the bottom of the background image is on-screen before starting fading out
+		{
+			finished = true;
+			alpha -= 1.0 / 70; // Fade out over two seconds
+		}
+
+		if (alpha <= 0) { Close(); }
+
+		Super.Ticker();
+	}
+
+	override bool MenuEvent(int mkey, bool fromcontroller)
+	{
+		if (mkey == MKEY_Back)
+		{
+			SetMenu("MainMenu", -1);	
+			return true;
+		}
+
+		if (noskip) { return false; }
+
+		finished = true;
+		return true;
+	}
+
+	override bool MouseEvent(int type, int x, int y)
+	{
+		if (noskip || type == MOUSE_Move) { return false; }
+
+		finished = true;
+		return true;
+	}
+
+	override bool OnUIEvent(UIEvent ev)
+	{
+		// Intercept key presses to see if we're pressing the strafe controls or use, 
+		// and redirect those to call the correct left/right/open movement menu event code.
+
+		if (ev.Type == UIEvent.Type_KeyDown || ev.Type == UIEVent.Type_Char)
+		{
+			CheckControl(ev, "+moveleft", MKEY_Left);
+			CheckControl(ev, "+moveright", MKEY_Right);
+			CheckControl(ev, "+use", MKEY_Enter);
+			CheckControl(ev, "+forward", MKEY_Up);
+			CheckControl(ev, "+back", MKEY_Down);
+		}
+
+		return Super.OnUIEvent(ev);
+	}
+
+	void CheckControl(UIEvent ev, String control, int type)
+	{
+		int c1, c2;
+		[c1, c2] = Bindings.GetKeysForCommand(control);
+
+		Array<String> keys;
+		Bindings.NameKeys(c1, c2).Split(keys, ", ");
+
+		String keychar = String.Format("%c", ev.KeyChar);
+		keychar = keychar.MakeUpper();
+
+		for (int i = 0; i < keys.Size(); i++)
+		{
+			if (keys[i].Length() > 1) { continue; } // Skip named keys (Alt, Shift, Ctrl, etc.)
+
+			if (keys[i].ByteAt(0) == keychar.ByteAt(0))
+			{
+				MenuEvent(type, false);
+			}
+		}
+	}
+
+	static bool Ready()
+	{
+		Menu current = Menu.GetCurrentMenu();
+
+		if (current is "TextScroll" && TextScroll(current).finished) { return true; }
+		else { return false; }
+	}
+}
+
+class IntroScroll : TextScroll
+{
+	override void Init(Menu parent)
+	{
+		text = "$INTRO_LETTER";			// String of text to display; can be omitted (defaults to no text)
+		fnt = Font.GetFont("typewriter");	// Font to use; can be omitted (defaults to SmallFont)
+		clr = Font.CR_UNTRANSLATED;		// Font color; can be omitted (defaults to CR_BRICK)
+
+		// Background image that scrolls with the text; can be omitted (defaults to no image)
+		// You can also specify:
+		//  'background' for a static full-screen background image behind the scroller
+		//  'overlay' for a static full-screen image overlaid on top of the scroller
+		scrollback = TexMan.CheckForTexture("graphics/intromap/DDB_LTTB.png", TexMan.Type_Any);
+
+		noskip = false; // Allow the player to exit early (can be omitted; default is false)
+		scrollstep = 0.5; // Speed of scroller (can be omitted; default is 0.5)
+
+		Super.Init(parent);
+	}
+}
