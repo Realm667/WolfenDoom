@@ -139,8 +139,6 @@ class TextScroll : ReadThisMenu
 
 		for (int i = 0; i < keys.Size(); i++)
 		{
-			if (keys[i].Length() > 1) { continue; } // Skip named keys (Alt, Shift, Ctrl, etc.)
-
 			if (keys[i].ByteAt(0) == keychar.ByteAt(0))
 			{
 				MenuEvent(type, false);
@@ -176,4 +174,261 @@ class IntroScroll : TextScroll
 
 		Super.Init(parent);
 	}
+}
+
+class Finale : GenericMenu
+{
+	TextureID background, strips, labels, frame;
+	Font fnt, titlefnt;
+	String text;
+
+	double alpha, widthratio;
+	int w, h, lineheight, margin, textwidth, textheight;
+	int drawtic, texttic;
+
+	BrokenLines lines;
+	int page, oldpage, maxlines, maxpages, curchar, maxdrawn;
+
+	LevelData totals;
+
+	override void Init(Menu parent)
+	{
+		GenericMenu.Init(parent);
+
+		if (!fnt) { fnt = SmallFont; }
+		if (!titlefnt) { titlefnt = BigFont; }
+
+		DontDim = true;
+		menuactive = OnNoPause;
+
+		h = 400;
+		w = int(h * screen.GetAspectRatio());
+		widthratio = 640 / (h * screen.GetAspectRatio());
+
+		w = int(w * widthratio);
+
+		margin = 10;
+		lineheight = 12;
+
+		textwidth = 300;// * widthratio;
+		textheight = 220;
+
+		background = TexMan.CheckForTexture("graphics/finale/finale_background.png", TexMan.Type_Any);
+		strips = TexMan.CheckForTexture("graphics/finale/finale_strips.png", TexMan.Type_Any);
+		labels = TexMan.CheckForTexture("graphics/finale/finale_labels.png", TexMan.Type_Any);
+		frame = TexMan.CheckForTexture("graphics/finale/finale_frame.png", TexMan.Type_Any);
+
+		text = "$EPILOGUEC1";
+
+		lines = fnt.BreakLines(StringTable.Localize(text), textwidth);
+		maxlines = textheight / lineheight;
+		maxpages = lines.Count() / maxlines;
+
+		totals = GetTotals();
+	}
+
+	override void Drawer()
+	{
+		if (!lines) { return; }
+
+		double alpha = min(1.0, drawtic / 140.0);
+		if (background) { screen.DrawTexture(background, false, 0, 0, DTA_FullScreenEx, 3, DTA_Alpha, alpha); }
+
+		if (drawtic > 140)
+		{
+			double stripalpha = min(1.0, (drawtic - 140) / 140.0);
+			if (strips) { screen.DrawTexture(strips, false, 0, 0, DTA_FullScreenEx, 3, DTA_Alpha, stripalpha); }
+			if (labels) { screen.DrawTexture(labels, false, 0, 0, DTA_FullScreenEx, 3, DTA_Alpha, stripalpha); }
+			screen.DrawText(SmallFont, Font.CR_GRAY, 213, 183, "pg " .. page + 1 .. " of " .. maxpages + 1, DTA_320x200, true, DTA_Alpha, stripalpha);
+		}
+
+		if (drawtic > 70)
+		{
+			double framealpha = min(1.0, (drawtic - 70) / 140.0);
+			if (frame) { screen.DrawTexture(frame, false, 0, 0, DTA_FullScreenEx, 3, DTA_Alpha, framealpha); }
+		}
+
+		if (drawtic > 175)
+		{
+			double statsalpha = min(1.0, (drawtic - 175) / 140.0);
+
+			int lineheight = 12;
+			int line = 0;
+
+			int starty = 300;
+			int titlex = 56;
+			int valuex = titlex + 196;
+
+			String t = StringTable.Localize("$STATS_TIME");
+			screen.DrawText(SmallFont, Font.CR_WHITE, titlex, starty + line * lineheight, t, DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, statsalpha);
+
+			int sec = Thinker.Tics2Seconds(totals.leveltime); 
+			t = String.Format("%02d:%02d:%02d", sec / 3600, (sec % 3600) / 60, sec % 60);
+			screen.DrawText(SmallFont, Font.CR_GRAY, valuex - SmallFont.StringWidth(t), starty + line * lineheight, t, DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, statsalpha);
+			line++;
+
+			t = StringTable.Localize("$STATS_MONSTERS");
+			screen.DrawText(SmallFont, Font.CR_WHITE, titlex, starty + line * lineheight, t, DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, statsalpha);
+			t = totals.totalkills ? totals.killcount * 100 / totals.totalkills .. "%" : " - ";
+			screen.DrawText(SmallFont, Font.CR_RED, valuex - SmallFont.StringWidth(t), starty + line * lineheight, t, DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, statsalpha);
+			line++;
+
+			t = StringTable.Localize("$STATS_SECRETS");
+			screen.DrawText(SmallFont, Font.CR_WHITE, titlex, starty + line * lineheight, t, DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, statsalpha);
+			t = totals.totalsecrets ? totals.secretcount * 100 / totals.totalsecrets .. "%" : " - ";
+			screen.DrawText(SmallFont, Font.CR_YELLOW, valuex - SmallFont.StringWidth(t), starty + line * lineheight, t, DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, statsalpha);
+			line++;
+
+			t = StringTable.Localize("$STATS_ITEMS");
+			screen.DrawText(SmallFont, Font.CR_WHITE, titlex, starty + line * lineheight, t, DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, statsalpha);
+			t = totals.totalitems ? totals.itemcount * 100 / totals.totalitems .. "%" : " - ";
+			screen.DrawText(SmallFont, Font.CR_GOLD, valuex - SmallFont.StringWidth(t), starty + line * lineheight, t, DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, statsalpha);
+			line++;
+		}
+
+		screen.DrawText(titlefnt, Font.CR_WHITE, 300, 100, "Epilogue", DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, alpha);
+
+		int start = page * maxlines;
+		int end = min(start + maxlines, lines.Count());
+
+		int chars;
+
+		for (int l = start; l < end || chars > texttic; l++)
+		{
+			int len = min(texttic - chars, lines.StringAt(l).length());
+			screen.DrawText(fnt, Font.CR_DARKGRAY, 300, 120 + (l - start) * lineheight, lines.StringAt(l).Left(len), DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, alpha);
+			chars += len;
+		}
+	}
+
+	override void Ticker()
+	{
+		if (page != oldpage)
+		{
+			if (page > maxdrawn) { texttic = 0; }
+			else { texttic = 4096; }
+			oldpage = page;
+			maxdrawn = max(maxdrawn, page);
+		}
+		else
+		{
+			drawtic++;
+			texttic ++;
+		}
+
+		Super.Ticker();
+	}
+
+	override bool MenuEvent(int mkey, bool fromcontroller)
+	{
+		if (mkey == MKEY_Back)
+		{
+			Close();	
+			return true;
+		}
+		else if (mkey == MKEY_Right || mkey == MKEY_Down)
+		{
+			page = min(maxpages, page + 1);
+			return true;
+		}
+		else if (mkey == MKEY_Left || mkey == MKEY_Up)
+		{
+			page = max(0, page - 1);
+			return true;
+		}
+
+		return false;
+	}
+
+	override bool MouseEvent(int type, int x, int y)
+	{
+		if (type == MOUSE_Move) { return false; }
+
+		page = min(maxpages, page + 1);
+		return true;
+	}
+
+	override bool OnUIEvent(UIEvent ev)
+	{
+		// Intercept key presses to see if we're pressing the strafe controls or use, 
+		// and redirect those to call the correct left/right/open movement menu event code.
+
+		if (ev.Type == UIEvent.Type_KeyDown || ev.Type == UIEVent.Type_Char)
+		{
+			CheckControl(ev, "+moveleft", MKEY_Left);
+			CheckControl(ev, "+moveright", MKEY_Right);
+			CheckControl(ev, "+use", MKEY_Enter);
+			CheckControl(ev, "+forward", MKEY_Up);
+			CheckControl(ev, "+back", MKEY_Down);
+		}
+
+		return Super.OnUIEvent(ev);
+	}
+
+	void CheckControl(UIEvent ev, String control, int type)
+	{
+		int c1, c2;
+		[c1, c2] = Bindings.GetKeysForCommand(control);
+
+		Array<String> keys;
+		Bindings.NameKeys(c1, c2).Split(keys, ", ");
+
+		String keychar = String.Format("%c", ev.KeyChar);
+		keychar = keychar.MakeUpper();
+
+		for (int i = 0; i < keys.Size(); i++)
+		{
+			if (keys[i].ByteAt(0) == keychar.ByteAt(0))
+			{
+				MenuEvent(type, false);
+			}
+		}
+	}
+
+	LevelData GetTotals() // Pull the total stats from the map stats event handler
+	{
+		LevelData totals = New("LevelData");
+		totals.mapname = "Stat Totals";
+		totals.levelname = "Stat Totals";
+		totals.levelnum = 0;
+		totals.totalkills = 0;
+		totals.killcount  = 0;
+		totals.totalitems  = 0;
+		totals.itemcount = 0;
+		totals.totalsecrets = 0;
+		totals.secretcount = 0;
+		totals.leveltime = 0;
+
+		MapStatsHandler stats = MapStatsHandler(StaticEventHandler.Find("MapStatsHandler"));
+
+		if (stats)
+		{
+			Array<LevelData> summary;
+
+			for (int i = 0; i < stats.Levels.Size(); i++)
+			{
+				let m = stats.Levels[i];
+
+				// Filter to only show results from maps named in this episode (e.g., matching "C1L").
+				if (m.mapname.Mid(0, 3) ~== level.mapname.Mid(0, 3)) { summary.Push(m); }
+				else { continue; }
+			}
+
+			for (int i = 0; i < summary.Size(); i++)
+			{
+				let l = summary[i];
+
+				totals.totalkills += l.totalkills;
+				totals.killcount += l.killcount;
+				totals.totalitems += l.totalitems;
+				totals.itemcount += l.itemcount;
+				totals.totalsecrets += l.totalsecrets;
+				totals.secretcount += l.secretcount;
+				totals.leveltime += l.leveltime;
+			}
+		}
+
+		return totals;
+	}
+
 }
