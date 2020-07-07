@@ -355,7 +355,6 @@ OptionMenu "BoACustomizeControls"
 	Submenu    "$CNTRLMNU_WEAPONS"     , "BoAWeaponsControlMenu"
 	Submenu    "$CNTRLMNU_INVENTORY"   , "BoAInventoryControlsMenu"
 	Submenu    "$CNTRLMNU_OTHER"       , "BoAOtherControlsMenu"
-	Submenu    "$CNTRLMNU_POPUPS"      , "BoAStrifeControlsMenu"
 	Submenu    "$MAPCNTRLMNU_CONTROLS" , "BoAMapControlsMenu"
 }
 
@@ -517,18 +516,6 @@ OptionMenu "BoAOtherControlsMenu"
 	Control    "$CNTRLMNU_QUICKLOAD"       , "quickload"
 }
 
-OptionMenu "BoAStrifeControlsMenu"
-{
-	Title "$CNTRLMNU_POPUPS_TITLE"
-	ScrollTop 2
-	StaticTextSwitchable "$CNTRLMNU_SWITCHTEXT1", "$CNTRLMNU_SWITCHTEXT2", "ControlMessage"
-
-	StaticText " "
-	Control    "$CNTRLMNU_MISSION" , "showpop 1"
-	Control    "$CNTRLMNU_KEYS"    , "showpop 2"
-	Control    "$CNTRLMNU_STATS"   , "showpop 3"
-}
-
 //-------------------------------------------------------------------------------------------
 //
 // Mouse Menu
@@ -657,28 +644,6 @@ OptionValue SkyModes
 	0.0, "$OPTVAL_NORMAL"
 	1.0, "$OPTVAL_STRETCH"
 	2.0, "$OPTVAL_CAPPED"
-}
-
-OptionValue RocketTrailTypes
-{
-	0.0, "$OPTVAL_OFF"
-	1.0, "$OPTVAL_PARTICLES"
-	2.0, "$OPTVAL_SPRITES"
-	3.0, "$OPTVAL_SPRITESPARTICLES"
-}
-
-OptionValue BloodTypes
-{
-	0.0, "$OPTVAL_SPRITES"
-	1.0, "$OPTVAL_SPRITESPARTICLES"
-	2.0, "$OPTVAL_PARTICLES"
-}
-
-OptionValue PuffTypes
-{
-	0.0, "$OPTVAL_SPRITES"
-	1.0, "$OPTVAL_PARTICLES"
-	2.0, "$OPTVAL_SPRITESPARTICLES"
 }
 
 OptionValue Wipes
@@ -911,14 +876,7 @@ OptionMenu "BoAVideoOptions"
 	ColorPicker "$DSPLYMNU_CUSTOMINVERTC2",		"cl_custominvulmapcolor2"
 	Option "$DSPLYMNU_WIPETYPE",				"wipetype", 					"Wipes"
 	Option "$DSPLYMNU_DRAWFUZZ",				"r_drawfuzz", 					"Fuzziness"
-	Option "$DSPLYMNU_OLDTRANS",				"r_vanillatrans", 				"VanillaTrans"
-	Slider "$DSPLYMNU_TRANSSOUL",				"transsouls", 					0.25, 1.0, 0.05, 2
 	Option "$DSPLYMNU_FAKECONTRAST",			"r_fakecontrast", 				"Contrast"
-	Option "$DSPLYMNU_ROCKETTRAILS",			"cl_rockettrails", 				"RocketTrailTypes"
-	Option "$DSPLYMNU_BLOODTYPE",				"cl_bloodtype", 				"BloodTypes"
-	Option "$DSPLYMNU_PUFFTYPE",				"cl_pufftype", 					"PuffTypes"
-	Slider "$DSPLYMNU_MAXPARTICLES",			"r_maxparticles", 				100, 10000, 100, 0
-	Slider "$DSPLYMNU_MAXDECALS",				"cl_maxdecals", 				0, 10000, 100, 0
 	Option "$DSPLYMNU_PLAYERSPRITES",			"r_drawplayersprites", 			"OnOff"
 	Option "$DSPLYMNU_DEATHCAM",				"r_deathcamera", 				"OnOff"
 	Option "$DSPLYMNU_TELEZOOM",				"telezoom", 					"OnOff"
@@ -1565,7 +1523,6 @@ OptionMenu BoAGameplayOptions //needs to be reworked, we should keep fastmonster
 	Submenu "$OPT_GAME",						"GameOptions"
 	Submenu "$OPT_BLOOD",						"BloodOptions"
 	StaticText " "
-	Submenu "$GMPLYMNU_DEATHMATCH",				"DeathmatchOptions"
 	Submenu "$GMPLYMNU_COOPERATIVE",			"CoopOptions"
 	StaticText " "
 	Option "$GMPLYMNU_TEAMPLAY",				"teamplay",	"OnOff"
@@ -1573,14 +1530,6 @@ OptionMenu BoAGameplayOptions //needs to be reworked, we should keep fastmonster
 	StaticText " "
 	Option "$GMPLYMNU_SMARTAUTOAIM",			"sv_smartaim", "SmartAim"
 	StaticText " "
-	Option "$GMPLYMNU_FALLINGDAMAGE",			"sv_fallingdamage", "FallingDM"
-	Option "$GMPLYMNU_DROPWEAPON",				"sv_weapondrop", "YesNo"
-	Option "$GMPLYMNU_DOUBLEAMMO",				"sv_doubleammo", "YesNo"
-	Option "$GMPLYMNU_INFINITEAMMO",			"sv_infiniteammo", "YesNo"
-	Option "$GMPLYMNU_INFINITEINVENTORY",		"sv_infiniteinventory", "YesNo"
-	Option "$GMPLYMNU_NOMONSTERS",				"sv_nomonsters", "YesNo"
-	Option "$GMPLYMNU_NOMONSTERSTOEXIT",		"sv_killallmonsters", "YesNo"
-	Option "$GMPLYMNU_MONSTERSRESPAWN",			"sv_monsterrespawn", "YesNo"
 	Option "$GMPLYMNU_NORESPAWN",				"sv_norespawn", "YesNo"
 	Option "$GMPLYMNU_ITEMSRESPAWN",			"sv_itemrespawn", "YesNo"
 	Option "$GMPLYMNU_SUPERRESPAWN",			"sv_respawnsuper", "YesNo"
@@ -1588,9 +1537,6 @@ OptionMenu BoAGameplayOptions //needs to be reworked, we should keep fastmonster
 	Option "$GMPLYMNU_DEGENERATION",			"sv_degeneration", "YesNo"
 	Option "$GMPLYMNU_NOAUTOAIM",				"sv_noautoaim", "NoYes"
 	Option "$GMPLYMNU_ALLOWSUICIDE",			"sv_disallowsuicide", "NoYes"
-	Option "$GMPLYMNU_ALLOWJUMP",				"sv_jump", "JumpCrouchFreeLook"
-	Option "$GMPLYMNU_ALLOWCROUCH",				"sv_crouch", "JumpCrouchFreeLook"
-	Option "$GMPLYMNU_ALLOWFREELOOK",			"sv_freelook", "JumpCrouchFreeLook"
 	Option "$GMPLYMNU_ALLOWFOV",				"sv_nofov", "NoYes"
 	Option "$GMPLYMNU_BFGFREEAIM",				"sv_nobfgaim", "NoYes"
 	Option "$GMPLYMNU_ALLOWAUTOMAP",			"sv_noautomap", "NoYes"
@@ -1634,27 +1580,6 @@ OptionMenu "BloodOptions"
 	Slider "$BL_DEC", 							"cl_maxdecals", 64, 10000, 256
 	Option "$BL_POOLS", 						"blood_pools", "onoff"
 	Option "$BL_GIBS", 							"blood_gibs", "onoff"
-}
-
-OptionMenu BoADeathmatchOptions
-{
-	Position -35
-	Title 	"$GMPLYMNU_DEATHMATCH"
-
-	Option "$GMPLYMNU_WEAPONSSTAY",				"sv_weaponstay", "YesNo"
-	Option "$GMPLYMNU_ALLOWPOWERUPS",			"sv_noitems", "NoYes"
-	Option "$GMPLYMNU_ALLOWHEALTH",				"sv_nohealth", "NoYes"
-	Option "$GMPLYMNU_ALLOWARMOR",				"sv_noarmor", "NoYes"
-	Option "$GMPLYMNU_SPAWNFARTHEST",			"sv_spawnfarthest", "YesNo"
-	Option "$GMPLYMNU_SAMEMAP",					"sv_samelevel", "YesNo"
-	Option "$GMPLYMNU_FORCERESPAWN",			"sv_forcerespawn", "YesNo"
-	Option "$GMPLYMNU_ALLOWEXIT",				"sv_noexit", "NoYes"
-	Option "$GMPLYMNU_BARRELSRESPAWN",			"sv_barrelrespawn", "YesNo"
-	Option "$GMPLYMNU_RESPAWNPROTECTION",		"sv_respawnprotect", "YesNo"
-	Option "$GMPLYMNU_LOSEFRAG",				"sv_losefrag", "YesNo"
-	Option "$GMPLYMNU_KEEPFRAGS",				"sv_keepfrags", "YesNo"
-	Option "$GMPLYMNU_NOTEAMSWITCH",			"sv_noteamswitch", "YesNo"
-	Class "GameplayMenu"
 }
 
 OptionMenu BoACoopOptions
@@ -2593,7 +2518,7 @@ OptionMenu "ReverbSave" protected
  *
  *=======================================*/
 
-OptionMenu "vkoptions"
+OptionMenu "BoAVKOptions"
 {
 	Title "$VK_TITLE"
 	StaticText "$VK_WARNING"
