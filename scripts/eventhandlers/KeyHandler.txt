@@ -1,0 +1,26 @@
+class KeyHandler : EventHandler
+{
+	override bool InputProcess(InputEvent e)
+	{
+		if (e.Type == InputEvent.Type_KeyDown)
+		{
+			if (!Menu.GetCurrentMenu() && CheckKey(e, "menu_help")) // Intercept help menu key presses to use our custom help screens
+			{
+				Menu.SetMenu("BoAInfo");
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	ui bool CheckKey(InputEvent ev, String control)
+	{
+		int c1, c2;
+		[c1, c2] = Bindings.GetKeysForCommand(control);
+
+		if (c1 == ev.keyscan || c2 == ev.keyscan) { return true; }
+
+		return false;
+	}
+}

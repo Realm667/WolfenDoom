@@ -1,0 +1,125 @@
+class BoAInfo : GenericMenu
+{
+	int mScreen;
+	int mInfoTic;
+	int dir;
+
+	override void Init(Menu parent)
+	{
+		Super.Init(parent);
+		mScreen = 1;
+		dir = 1;
+		mInfoTic = gametic;
+	}
+
+	override void Drawer()
+	{
+		double alpha;
+		TextureID tex, prevpic;
+		
+		// Did the mapper choose a custom help page via MAPINFO?
+		if (Level.F1Pic.Length() != 0)
+		{
+			tex = TexMan.CheckForTexture(Level.F1Pic, TexMan.Type_MiscPatch);
+			mScreen = 1;
+		}
+		
+		if (!tex.IsValid())
+		{
+			tex = TexMan.CheckForTexture(gameinfo.infoPages[mScreen - 1], TexMan.Type_MiscPatch);
+		}
+
+		if (mScreen > 1 && mScreen <= gameinfo.infoPages.Size())
+		{
+			prevpic = TexMan.CheckForTexture(gameinfo.infoPages[mScreen - 1 - dir], TexMan.Type_MiscPatch);
+		}
+
+		screen.Dim(0, 1.0, 0,0, screen.GetWidth(), screen.GetHeight());
+		alpha = MIN((gametic - mInfoTic) * (3. / Thinker.TICRATE), 1.);
+		if (alpha < 1. && prevpic.IsValid())
+		{
+			screen.DrawTexture (prevpic, false, 0, 0, DTA_Fullscreen, true);
+		}
+		else alpha = 1;
+		screen.DrawTexture (tex, false, 0, 0, DTA_Fullscreen, true, DTA_Alpha, alpha);
+
+	}
+
+	override bool MenuEvent(int mkey, bool fromcontroller)
+	{
+		if (mkey == MKEY_Back)
+		{
+			Close();	
+			return true;
+		}
+		else if (mkey == MKEY_Right || mkey == MKEY_Down || mkey == MKEY_Enter)
+		{
+			if (mScreen + 1 <= gameinfo.infoPages.Size())
+			{
+				mScreen++;
+				dir = 1;
+				mInfoTic = gametic;
+				return true;
+			}
+		}
+		else if (mkey == MKEY_Left || mkey == MKEY_Up)
+		{
+			if (mScreen - 1 > 0)
+			{
+				mScreen--;
+				dir = -1;
+				mInfoTic = gametic;
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	override bool MouseEvent(int type, int x, int y)
+	{
+		if (type == MOUSE_Click)
+		{
+			MenuEvent(MKEY_Enter, false);
+		}
+
+		return false;
+	}
+
+	override bool OnUIEvent(UIEvent ev)
+	{
+		// Intercept key presses to see if we're pressing the strafe controls or use, 
+		// and redirect those to call the correct left/right/open movement menu event code.
+
+		if (ev.Type == UIEvent.Type_KeyDown || ev.Type == UIEVent.Type_Char)
+		{
+			CheckControl(ev, "+moveleft", MKEY_Left);
+			CheckControl(ev, "+moveright", MKEY_Right);
+			CheckControl(ev, "+use", MKEY_Enter);
+			CheckControl(ev, "+forward", MKEY_Up);
+			CheckControl(ev, "+back", MKEY_Down);
+		}
+
+		return Super.OnUIEvent(ev);
+	}
+
+	void CheckControl(UIEvent ev, String control, int type)
+	{
+		int c1, c2;
+		[c1, c2] = Bindings.GetKeysForCommand(control);
+
+		Array<String> keys;
+		Bindings.NameKeys(c1, c2).Split(keys, ", ");
+
+		String keychar = String.Format("%c", ev.KeyChar);
+		keychar = keychar.MakeUpper();
+
+		for (int i = 0; i < keys.Size(); i++)
+		{
+			if (keys[i].ByteAt(0) == keychar.ByteAt(0))
+			{
+				MenuEvent(type, false);
+			}
+		}
+	}
+}
