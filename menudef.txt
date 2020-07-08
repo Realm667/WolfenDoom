@@ -215,6 +215,9 @@ OptionMenu "BoACheatsOptions" //to merge with cheat options already existing on 
 	Option "$CH_OPT1", 					"sprintswitch", "OnOff"
 	StaticText " "
 	Slider "$CH_OPT2", 					"flinchamount", 0.0,1.0,0.1
+	StaticText " "
+	Option "$MISCMNU_NOCHEATS",			"nocheats", "OnOff" //moved here from msicellaneous - ozy81
+	Option "$MISCMNU_ALLCHEATS",		"allcheats", "OnOff"
 }
 
 OptionMenu "BoAOptionsMenu"
@@ -238,6 +241,8 @@ OptionMenu "BoAOptionsMenu"
 	Submenu "$OPTMNU_VIDEO",			"BoAVideoModeMenu"
 	StaticText " "
 	Submenu "$OPT_CHEAT", 				"BoACheatsOptions"
+	StaticText " "
+	Option "$OPTMNU_LANGUAGE", 			"language", "BoALanguageOptions"
 	StaticText " "
 	Option "$OPT_DEVC", 				"developercommentswitch", "OnOff"
 	StaticText " "
@@ -351,11 +356,11 @@ OptionMenu "BoACustomizeControls"
 	Title "$CNTRLMNU_TITLE"
 
 	Submenu    "$CNTRLMNU_ACTION"      , "BoAActionControlsMenu" //kick, grenades and objectives here - ozy81
-	Submenu    "$CNTRLMNU_CHAT"        , "BoAChatControlsMenu"
 	Submenu    "$CNTRLMNU_WEAPONS"     , "BoAWeaponsControlMenu"
 	Submenu    "$CNTRLMNU_INVENTORY"   , "BoAInventoryControlsMenu"
-	Submenu    "$CNTRLMNU_OTHER"       , "BoAOtherControlsMenu"
 	Submenu    "$MAPCNTRLMNU_CONTROLS" , "BoAMapControlsMenu"
+	Submenu    "$CNTRLMNU_CHAT"        , "BoAChatControlsMenu"
+	Submenu    "$CNTRLMNU_OTHER"       , "BoAOtherControlsMenu"
 }
 
 OptionMenu "BoAActionControlsMenu"
@@ -675,14 +680,6 @@ OptionValue Fuzziness
 	2.0, "$OPTVAL_SHADOW"
 }
 
-OptionValue VanillaTrans
-{
-	0.0, "$OPTVAL_VTFZDOOM"
-	1.0, "$OPTVAL_VTFVANILLA"
-	2.0, "$OPTVAL_VTAZDOOM"
-	3.0, "$OPTVAL_VTAVANILLA"
-}
-
 OptionValue GPUSwitch
 {
 	0.0, "$OPTVAL_DEFAULT"
@@ -697,7 +694,7 @@ OptionValue PreferBackend
 	2, "$OPTVAL_SOFTPOLY"
 }
 
-OptionMenu "TrueColorOptions" protected
+OptionMenu "BoATrueColorOptions"
 {
 	Title "$TCMNU_TITLE"
 	StaticText " "
@@ -709,7 +706,7 @@ OptionMenu "TrueColorOptions" protected
 OptionMenu "BoASWROptions"
 {
 	Title "$DSPLYMNU_SWOPT"
-	Submenu "$DSPLYMNU_TCOPT",					"TrueColorOptions"
+	Submenu "$DSPLYMNU_TCOPT",					"BoATrueColorOptions"
 	Option "$DSPLYMNU_BLENDMETHOD",				"r_blendmethod", "BlendMethods"
 	StaticText " "
 	Option "$DSPLYMNU_SKYMODE",					"r_skymode", "SkyModes"
@@ -796,6 +793,7 @@ OptionMenu "BoARenderOptions"
 	Slider "$RE_SCEN",							"scenelod",1024,16384,1024, 0
 	Slider "$RE_SFX",							"sfxlod",1024,16384,1024, 0
 	Slider "$RE_TREE",							"treeslod",1024,16384,1024, 0
+	StaticText " "
 	SafeCommand "$OPT_PORT1", 					"boa_portalsN", "$OPT_PORTS1"
 	SafeCommand "$OPT_PORT2", 					"boa_portalsY", "$OPT_PORTS2"
 }
@@ -857,7 +855,6 @@ OptionMenu "MBlurOpts"
 OptionMenu "BoAVideoOptions"
 {
 	Title "$DSPLYMNU_TITLE"
-	
 	Submenu "$DSPLYMNU_GLOPT", 					"BoAOpenGLOptions"
 	Submenu "$DSPLYMNU_SWOPT", 					"BoASWROptions"
 	Submenu "$DSPLYMNU_VKOPT",					"BoAVKOptions"
@@ -865,7 +862,7 @@ OptionMenu "BoAVideoOptions"
 	Submenu "$GLMNU_DYNLIGHT",					"BoAGLLightOptions"
 	StaticText " "
 	Slider "$DSPLYMNU_SCREENSIZE",				"screenblocks", 				3.0, 12.0, 1.0, 0
-
+	StaticText " "
 	Slider "$DSPLYMNU_GAMMA",					"vid_gamma",					0.75, 3.0, 0.05, 2
 	Slider "$DSPLYMNU_BRIGHTNESS",				"vid_brightness",				-0.8,0.8, 0.05,2
 	Slider "$DSPLYMNU_CONTRAST",				"vid_contrast",	   				0.1, 3.0, 0.1
@@ -1128,8 +1125,6 @@ OptionMenu "BoAMiscOptions" //move boa cheats here? - ozy81
 	}
 	Option "$MISCMNU_QUERYIWAD",				"queryiwad", "OnOff"
 	StaticText " "
-	Option "$MISCMNU_NOCHEATS",					"nocheats", "OnOff" //redundant with flinch/sprint setups, so implement them here instead?
-	Option "$MISCMNU_ALLCHEATS",				"allcheats", "OnOff"
 	Option "$MISCMNU_ENABLEAUTOSAVES",			"disableautosave", "Autosave"
 	Option "$MISCMNU_SAVELOADCONFIRMATION",		"saveloadconfirmation", "OnOff"
 	Slider "$MISCMNU_AUTOSAVECOUNT",			"autosavecount", 1, 20, 1, 0
@@ -1142,8 +1137,6 @@ OptionMenu "BoAMiscOptions" //move boa cheats here? - ozy81
 	Option "$MISCMNU_CACHENODES",				"gl_cachenodes", "OnOff"
 	Slider "$MISCMNU_CACHETIME",				"gl_cachetime", 0.0, 2.0, 0.1
 	SafeCommand "$MISCMNU_CLEARNODECACHE",		"clearnodecache"
-	StaticText " "
-	Option "$OPTMNU_LANGUAGE", 					"language", "BoALanguageOptions"
 
 	StaticText " "
 	Option "$MISCMNU_QUICKEXIT",				"m_quickexit", "OnOff"
@@ -1453,20 +1446,6 @@ OptionMenu BoAScoreboardOptions //include some options for HQs scoreboard? - ozy
 	Option "$SCRBRDMNU_HEADERCOLOR",		"sb_cooperative_headingcolor", "TextColors"
 	Option "$SCRBRDMNU_YOURCOLOR",			"sb_cooperative_yourplayercolor", "TextColors"
 	Option "$SCRBRDMNU_OTHERPLAYERCOLOR",	"sb_cooperative_otherplayercolor", "TextColors"
-	StaticText " "
-	StaticText " "
-	StaticText "$SCRBRDMNU_DEATHMATCH", 1
-	StaticText " "
-	Option "$SCRBRDMNU_ENABLE",				"sb_deathmatch_enable",	"YesNo"
-	Option "$SCRBRDMNU_HEADERCOLOR",		"sb_deathmatch_headingcolor", "TextColors"
-	Option "$SCRBRDMNU_YOURCOLOR",			"sb_deathmatch_yourplayercolor", "TextColors"
-	Option "$SCRBRDMNU_OTHERPLAYERCOLOR",	"sb_deathmatch_otherplayercolor", "TextColors"
-	StaticText " "
-	StaticText " "
-	StaticText "$SCRBRDMNU_TEAMDEATHMATCH", 1
-	StaticText " "
-	Option "$SCRBRDMNU_ENABLE",				"sb_teamdeathmatch_enable", "YesNo"
-	Option "$SCRBRDMNU_HEADERCOLOR",		"sb_teamdeathmatch_headingcolor", "TextColors"
 }
 
 //-------------------------------------------------------------------------------------------
@@ -1494,21 +1473,6 @@ OptionValue SmartAim
 	1.0, "$OPTVAL_ON"
 	2.0, "$OPTVAL_NEVERFRIENDS"
 	3.0, "$OPTVAL_ONLYMONSTERS"
-}
-
-OptionValue FallingDM
-{
-	0, "$OPTVAL_OFF"
-	1, "$OPTVAL_OLD"
-	2, "$OPTVAL_HEXEN"
-	3, "$OPTVAL_STRIFE"
-}
-
-OptionValue JumpCrouchFreeLook
-{
-	0, "$OPTVAL_DEFAULT"
-	1, "$OPTVAL_OFF"
-	2, "$OPTVAL_ON"
 }
 
 ///////////////////////
@@ -2410,7 +2374,6 @@ OptionMenu "BoAVR3DMenu"
 
 OptionMenu "BoAPostProcessMenu"
 {
-
 	Title "$GLMNU_POSTPROCESS"
 
 	Option "$GLPREFMNU_BLOOM",		 			gl_bloom,						"OnOff"
