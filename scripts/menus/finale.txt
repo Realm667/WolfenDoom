@@ -183,7 +183,7 @@ class Finale : GenericMenu
 	String text;
 
 	double alpha, widthratio;
-	int w, h, lineheight, margin, textwidth, textheight;
+	int w, h, lineheight, textwidth, textheight;
 	int drawtic, texttic;
 
 	BrokenLines lines;
@@ -207,10 +207,9 @@ class Finale : GenericMenu
 
 		w = int(w * widthratio);
 
-		margin = 10;
 		lineheight = 12;
 
-		textwidth = 300;// * widthratio;
+		textwidth = 300;
 		textheight = 220;
 
 		background = TexMan.CheckForTexture("graphics/finale/finale_background.png", TexMan.Type_Any);
@@ -326,7 +325,7 @@ class Finale : GenericMenu
 			Close();	
 			return true;
 		}
-		else if (mkey == MKEY_Right || mkey == MKEY_Down)
+		else if (mkey == MKEY_Right || mkey == MKEY_Down || MKEY_Enter)
 		{
 			page = min(maxpages, page + 1);
 			return true;
@@ -342,10 +341,13 @@ class Finale : GenericMenu
 
 	override bool MouseEvent(int type, int x, int y)
 	{
-		if (type == MOUSE_Move) { return false; }
+		if (type == MOUSE_Click)
+		{
+			page = min(maxpages, page + 1);
+			return true;
+		}
 
-		page = min(maxpages, page + 1);
-		return true;
+		return false;
 	}
 
 	override bool OnUIEvent(UIEvent ev)

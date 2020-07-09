@@ -1,0 +1,225 @@
+// Ugly but functional parser for nested bracketed data
+// Used for Info pages
+class ParsedValue
+{
+	String KeyName;
+	String Value;
+	Array<ParsedValue> Children;
+	ParsedValue Parent;
+
+	private int index;
+
+	void Init()
+	{
+		index = -1;
+	}
+
+	ParsedValue Next(String n = "")
+	{
+		while (++index < children.Size())
+		{
+			if (!n.length() || children[index].KeyName ~== n) { return children[index]; }
+		}
+
+		return null;
+	}
+
+	ParsedValue Find(String n = "", int instance = 1)
+	{
+		int i = -1;
+		int count = 0;
+
+		while (++i < children.Size())
+		{
+			if (!n.length() || children[i].KeyName ~== n)
+			{
+				if (++count == instance)
+				{
+					index = i;
+					return children[i];
+				}
+			}
+		}
+
+		return null;
+	}
+}
+
+class FileReader
+{
+	static ParsedValue Parse(String path)
+	{
+		ParsedValue root = new("ParsedValue");
+		ParseString(ReadLump(path), root);
+
+		return root;
+	}
+
+	static String ReadLump(String lumpname)
+	{
+		int lump = -1;
+
+		lump = Wads.CheckNumForFullName(lumpname);
+
+		if (lump > -1) { return Wads.ReadLump(lump); }
+
+		return "";
+	}
+
+	static int ParseString(String input, ParsedValue parent = null)
+	{
+		String token = "";
+		int length = 0;
+		ParsedValue block, key;
+		bool linecomment, blockcomment;
+
+		if (parent == null) { console.printf("\cgERROR: \ckParent node of parsed string cannot be null."); return 0; }
+
+		for (int i = 0; i < input.Length(); i++)
+		{
+			length = i;
+
+			switch(input.ByteAt(i))
+			{
+				case 13: // \r (Carriage Return)
+					if (i < input.Length() - 1 && input.ByteAt(i + 1) == 10) { break; }
+				case 10: // \n (Line Feed)
+					linecomment = false;
+				case 0:  // null
+				case 9:  // Tab
+					break;
+				case 47: // /
+					if (i < input.Length() - 1 && input.ByteAt(i + 1) == "/") { linecomment = true; }
+					else if (i < input.Length() - 1 && input.ByteAt(i + 1) == "*") { blockcomment = true; }
+					else if (i > 0 && input.ByteAt(i - 1) == "*") { blockcomment = false; }
+					else if (!blockcomment && !linecomment) { token = token .. input.Mid(i, 1); }
+					break;
+				case 59: // ;
+					if (blockcomment || linecomment) { break; }
+					key = new("ParsedValue");
+					key.parent = parent;
+					Array<String> temp;
+					temp.Clear();
+
+					token.Split(temp, "=");
+					key.keyname = Trim(temp[0]);
+					if (temp.Size() > 1) { key.value = Trim(temp[1]); }
+
+					if (parent) { parent.Children.Push(key); }
+
+					token = "";
+					break;
+				case 123: // {
+					if (blockcomment || linecomment) { break; }
+					block = new("ParsedValue");
+					block.parent = parent;
+					block.KeyName = Trim(token);
+
+					if (parent) { parent.Children.Push(block); }
+
+					token = "";
+					int l = 0;
+					l = ParseString(input.mid(i + 1), block);
+					i += l + 1;
+					break;
+				case 125: // }
+					if (blockcomment || linecomment) { break; }
+					return i;
+					break;
+				default:
+					if (blockcomment || linecomment) { break; }
+					token = token .. input.Mid(i, 1);
+					break;
+			}
+		}
+
+		return length;
+	}
+
+	static String DumpData(ParsedValue data, int depth = 0)
+	{
+		String output = "";
+		String padding = "";
+
+		for (int s = 1; s < depth; s++)
+		{
+			padding = padding .. "        ";
+		}
+
+		if (data.keyname && data.value) { console.printf("%sKey: %s = %s", padding, data.keyname, data.value); }
+		else if (data.keyname) { console.printf("%s%s", padding, data.keyname); }
+
+		if (data.Children.Size())
+		{
+			for (int i = 0; i < data.Children.Size(); i++)
+			{
+				DumpData(data.Children[i], depth + 1);
+			}
+		}
+
+		return output;
+	}
+
+	static int GetInt(ParsedValue data, String path)
+	{
+		return GetString(data, path).ToInt();
+	}
+
+	static double GetDouble(ParsedValue data, String path)
+	{
+		return GetString(data, path).ToDouble();
+	}
+
+	static bool GetBool(ParsedValue data, String path)
+	{
+		String val = GetString(data, path);
+
+		if (val == "0" || !val.length()) { return false; }
+
+		return true;
+	}
+
+	static String GetString(ParsedValue data, String path)
+	{
+		ParsedValue current = data;
+		Array<String> temp;
+
+		path.Split(temp, ".");
+
+		for (int i = 0; i < temp.Size(); i++)
+		{
+			for (int j = 0; j < current.Children.Size(); j++)
+			{
+				if (current.children[j].keyname ~== temp[i])
+				{
+					current = current.Children[j];
+					break;
+				}
+			}
+		}
+
+		if (current.value) { return current.value; }
+		else { return ""; }
+	}
+
+	static String Trim(String input)
+	{
+		if (input.Length() < 1) { return ""; }
+
+		String output = input;
+
+		While (
+			(output.ByteAt(0) >= 9 && output.ByteAt(0) <= 13) ||
+			output.ByteAt(0) == 32
+		) { output = output.Mid(1, output.Length() - 1); }
+
+		int last = output.Length() - 1;
+
+		While (
+			(output.ByteAt(last) >= 9 && output.ByteAt(last) <= 13) ||
+			output.ByteAt(last) == 32
+		) { output = output.Left(last); }
+
+		return output;
+	}
+}

@@ -1,0 +1,278 @@
+page // Each page is contained in a 'page' section
+{
+	block // Each gray block of info is contained in a 'block' section
+	{
+		attributes // Each block section has attributes to specify x/y position on screen, block width and height, and margin padding
+		{
+			x = 64;
+			y = 120;
+			width = 670;
+			height = 215;
+			margin = 12;
+		}
+		content // Sections of text or images are contained in content blocks.  Text and images can be aligned and scaled; see second page below
+		{
+			font = BigFont;
+			fontcolor = White;
+			text = $INFO1ATITLE;
+		}
+		content
+		{
+			text = $INFO1A; // Font defaults to SmallFont, gray, scale of 1.0 if you don't specify any other parameters
+		}
+	}
+
+	block
+	{
+		attributes
+		{
+			x = 64;
+			y = 370;
+			width = 670;
+			height = 215;
+			margin = 12;
+		}
+		content
+		{
+			pic = graphics/info/info1b.png;
+			picscale = 0.4;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			text = $INFO1BTITLE;
+			align = center;
+		}
+		content { text = $INFO1B; }
+	}
+}
+
+page
+{
+	block
+	{
+		attributes
+		{
+			x = 120;
+			y = 116;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO2ATITLE;
+		}
+		content
+		{
+			pic = graphics/info/info2A.png; // If you specify both a pic and text in a content section, the pic is always drawn above the text
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO2A;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 310;
+			y = 116;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO2BTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info2B.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO2B;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 500;
+			y = 116;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO2CTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info2C.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO2C;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 120;
+			y = 272;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO2DTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info2D.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO2D;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 310;
+			y = 272;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO2ETITLE;
+		}
+		content
+		{
+			pic = graphics/info/info2E.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO2E;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 500;
+			y = 272;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO2FTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info2F.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO2F;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 120;
+			y = 428;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO2GTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info2G.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO2G;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 310;
+			y = 428;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO2HTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info2H.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO2H;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 500;
+			y = 428;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO2ITITLE;
+		}
+		content
+		{
+			pic = graphics/info/info2I.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO2I;
+		}
+	}	
+}
