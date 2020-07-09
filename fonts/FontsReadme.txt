@@ -10,6 +10,8 @@ Characters needed for other European languages:
 
 [x] - Done, [o] - Needs offsets, [ ] - Incomplete
 
+Latin alphabet capital 0041-005A
+Latin alphabet small 0061-007A
 ¡ - 00A1 [x]
 ¿ - 00BF [x]
 À - 00C0 [x]
@@ -49,16 +51,16 @@ Characters needed for other European languages:
 í - 00ED [x]
 î - 00EE [x]
 ï - 00EF [x]
-ñ - 00F1 [ ]
-ò - 00F2 [ ]
-ó - 00F3 [ ]
-ô - 00F4 [ ]
-õ - 00F5 [ ]
-ø - 00F8 [ ]
-ù - 00F9 [ ]
-ú - 00FA [ ]
-ý - 00FD [ ]
-ÿ - 00FF [ ]
+ñ - 00F1 [x]
+ò - 00F2 [x]
+ó - 00F3 [x]
+ô - 00F4 [x]
+õ - 00F5 [x]
+ø - 00F8 [x] (WARNING: Probably ugly)
+ù - 00F9 [x]
+ú - 00FA [x]
+ý - 00FD [x]
+ÿ - 00FF [x]
 ę - 0229 [ ]
 Į - 012E [ ]
 į - 012F [ ]
