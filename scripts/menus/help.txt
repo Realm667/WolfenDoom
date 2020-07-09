@@ -4,6 +4,8 @@ class BoAInfo : GenericMenu
 	int mInfoTic;
 	int dir, w, h;
 	font titlefnt, fnt, fallbackfnt;
+	ParsedValue data;
+	int maxpages;
 
 	override void Init(Menu parent)
 	{
@@ -18,12 +20,19 @@ class BoAInfo : GenericMenu
 		fnt = Font.GetFont("SmallFont");
 		titlefnt = Font.GetFont("BigFont");
 		fallbackfnt = NewSmallFont;
+
+		data = FileReader.Parse("data/InfoScreen.txt");
+
+		if (!data) { return; }
+
+		data.Init();
+		while (data.Next("page")) { maxpages++; }
 	}
 
 	override void Drawer()
 	{
 		double alpha;
-		TextureID tex, prevpic;
+		TextureID tex, prevpic, labels;
 		
 		// Did the mapper choose a custom help page via MAPINFO?
 		if (Level.F1Pic.Length() != 0)
@@ -47,12 +56,20 @@ class BoAInfo : GenericMenu
 		if (alpha < 1. && prevpic.IsValid())
 		{
 			screen.DrawTexture (prevpic, false, 0, 0, DTA_FullscreenEx, 3);
-			DrawBlocks(mScreen - dir, 1.0);
+			DrawBlocks(data, mScreen - dir, 1.0);
 		}
 		else alpha = 1;
 		screen.DrawTexture (tex, false, 0, 0, DTA_FullscreenEx, 3, DTA_Alpha, alpha);
 
-		DrawBlocks(mScreen, alpha);
+		DrawBlocks(data, mScreen, alpha);
+
+		labels = TexMan.CheckForTexture("graphics/finale/finale_labels.png", TexMan.Type_Any);
+
+		if (labels)
+		{
+			screen.DrawTexture(labels, false, 0, 0, DTA_FullScreenEx, 3);
+			screen.DrawText(SmallFont, Font.CR_GRAY, 213, 183, "pg " .. mScreen .. " of " .. maxpages, DTA_320x200, true);
+		}
 	}
 
 	override bool MenuEvent(int mkey, bool fromcontroller)
@@ -133,13 +150,11 @@ class BoAInfo : GenericMenu
 		}
 	}
 
-	void DrawBlocks(int pagenum, double alpha)
+	void DrawBlocks(ParsedValue data, int pagenum, double alpha)
 	{
-		ParsedValue data = FileReader.Parse("data/InfoScreen.txt");
-
 		if (data)
 		{
-			data.Init();
+			data.Init(); // Reset to the top of the file
 
 			ParsedValue page = data.Find("page", pagenum);
 
@@ -167,13 +182,15 @@ class BoAInfo : GenericMenu
 		int bh = FileReader.GetInt(block, "attributes.height");
 		int margin = FileReader.GetInt(block, "attributes.margin");
 
-		Vector2 pos, size;
+		Vector2 pos, size, marginsize;
+		[pos, marginsize] = Screen.VirtualToRealCoords((x, y), (margin, margin), (w, h));
 		[pos, size] = Screen.VirtualToRealCoords((x, y), (bw, bh), (w, h));
 		Screen.Dim(0x333333, alpha, int(pos.x), int(pos.y), int(size.x), int(size.y));
 
 		ParsedValue content = block.Find("content");
 
-		int yoffset = margin;
+		int scrollspeed = FileReader.GetInt(block, "attributes.scroll");
+		int yoffset = margin + int((gametic - mInfoTic) * -scrollspeed / 4.0);
 
 		while (content)
 		{
@@ -200,11 +217,15 @@ class BoAInfo : GenericMenu
 
 				Vector2 picsize = TexMan.GetScaledSize(pic);
 
-				int xoffset = int((bw / scale) / 2 - picsize.x / 2);
-				if (align ~== "right") { xoffset = int((bw - margin) / scale - picsize.x); }
-				else if (align ~== "left") { xoffset = int(margin / scale); }
+				if (yoffset + int(picsize.y * scale) + margin / 2 > 0)
+				{
+					int xoffset = int((bw / scale) / 2 - picsize.x / 2);
+					if (align ~== "right") { xoffset = int((bw - margin) / scale - picsize.x); }
+					else if (align ~== "left") { xoffset = int(margin / scale); }
 
-				screen.DrawTexture (pic, true, x / scale + xoffset, y / scale + yoffset / scale, DTA_VirtualWidth, int(w / scale), DTA_VirtualHeight, int(h / scale), DTA_TopOffset, 0, DTA_LeftOffset, 0, DTA_Alpha, alpha);
+					screen.DrawTexture (pic, true, x / scale + xoffset, y / scale + yoffset / scale, DTA_VirtualWidth, int(w / scale), DTA_VirtualHeight, int(h / scale), DTA_TopOffset, 0, DTA_LeftOffset, 0, DTA_Alpha, alpha, DTA_ClipTop, int(pos.y + marginsize.y), DTA_ClipBottom, int(pos.y + size.y - marginsize.y));
+				}
+
 				yoffset += int(picsize.y * scale) + margin / 2;
 
 				if (yoffset > bh - margin * 2) { return; }
@@ -214,17 +235,26 @@ class BoAInfo : GenericMenu
 			{
 				String line = lines.StringAt(t);
 
-				int xoffset = int(margin / textscale);
-				if (align ~== "right") { xoffset = int((bw - margin) / textscale) - fnt.StringWidth(line); }
-				else if (align ~== "center") { xoffset = int((bw / textscale) / 2 - fnt.StringWidth(line) / 2); }
+				if (yoffset + int(fnt.GetHeight() * textscale) > 0)
+				{
+					int xoffset = int(margin / textscale);
+					if (align ~== "right") { xoffset = int((bw - margin) / textscale) - fnt.StringWidth(line); }
+					else if (align ~== "center") { xoffset = int((bw / textscale) / 2 - fnt.StringWidth(line) / 2); }
 
-				screen.DrawText(fnt, clr, x / textscale + xoffset, y / textscale + yoffset / textscale, line, DTA_VirtualWidth, int(w / textscale), DTA_VirtualHeight, int(h / textscale), DTA_Alpha, alpha);
+					screen.DrawText(fnt, clr, x / textscale + xoffset, y / textscale + yoffset / textscale, line, DTA_VirtualWidth, int(w / textscale), DTA_VirtualHeight, int(h / textscale), DTA_Alpha, alpha, DTA_ClipTop, int(pos.y + marginsize.y), DTA_ClipBottom, int(pos.y + size.y - marginsize.y));
+				}
 				yoffset += int(fnt.GetHeight() * textscale);
 
 				if (yoffset > bh - margin) { return; }
 			}
 
 			content = block.Next("content");
+
+			if (!content && scrollspeed) // Incomplete handling for looped scrolling blocks, but enough for our purposes
+			{
+				content = block.Find("content");
+				yoffset += margin / 2;
+			}
 
 			yoffset += margin / 2;
 		}
