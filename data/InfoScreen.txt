@@ -1,13 +1,17 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////// STORY //////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 page // Each page is contained in a 'page' section
 {
 	block // Each gray block of info is contained in a 'block' section
 	{
 		attributes // Each block section has attributes to specify x/y position on screen, block width and height, and margin padding
 		{
-			x = 64;
-			y = 120;
-			width = 670;
-			height = 215;
+			x = 120;
+			y = 116;
+			width = 560;
+			height = 462;
 			margin = 12;
 		}
 		content // Sections of text or images are contained in content blocks.  Text and images can be aligned and scaled; see second page below
@@ -18,7 +22,77 @@ page // Each page is contained in a 'page' section
 		}
 		content
 		{
+			pic = graphics/info/info1Z.jpg;
+			picscale = 1.0;
 			text = $INFO1A; // Font defaults to SmallFont, gray, scale of 1.0 if you don't specify any other parameters
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////// LOCALES////////////// //////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+page
+{
+	block
+	{
+		attributes
+		{
+			x = 120;
+			y = 116;
+			width = 560;
+			height = 462;
+			margin = 12;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			text = $INFO1BTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info1Y.jpg;
+			picscale = 1.0;
+			text = $INFO1B; // Font defaults to SmallFont, gray, scale of 1.0 if you don't specify any other parameters
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////// THE GOOD, BAD, UGLY (PAGE 1) ///////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+page // Each page is contained in a 'page' section
+{
+	block
+	{
+		attributes
+		{
+			x = 120;
+			y = 116;
+			width = 180;
+			height = 462;
+			margin = 10;
+		}
+		content
+		{
+			pic = graphics/info/info4a.png; // If you specify both a pic and text in a content section, the pic is always drawn above the text
+			picscale = 0.7;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.8;
+			text = $INFO4ATITLE;
+			align = center;
+		}
+		content 
+		{ 
+			text = $INFO4A; 
+			textscale = 1.0;
 		}
 	}
 
@@ -26,27 +100,516 @@ page // Each page is contained in a 'page' section
 	{
 		attributes
 		{
-			x = 64;
-			y = 370;
-			width = 670;
-			height = 215;
-			margin = 12;
+			x = 310;
+			y = 116;
+			width = 180;
+			height = 462;
+			margin = 10;
 		}
 		content
 		{
-			pic = graphics/info/info1b.png;
-			picscale = 0.4;
+			pic = graphics/info/info4b.png; // If you specify both a pic and text in a content section, the pic is always drawn above the text
+			picscale = 0.7;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			text = $INFO1BTITLE;
+			textscale = 0.8;
+			text = $INFO4BTITLE;
 			align = center;
 		}
-		content { text = $INFO1B; }
+		content 
+		{ 
+			text = $INFO4B; 
+			textscale = 1.0;
+		}
+	}
+
+	block
+	{
+		attributes
+		{
+			x = 500;
+			y = 116;
+			width = 180;
+			height = 462;
+			margin = 10;
+		}
+		content
+		{
+			pic = graphics/info/info4c.png; // If you specify both a pic and text in a content section, the pic is always drawn above the text
+			picscale = 0.7;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.8;
+			text = $INFO4CTITLE;
+			align = center;
+		}
+		content 
+		{ 
+			text = $INFO4C; 
+			textscale = 1.0;
+		}
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////// THE GOOD, BAD, UGLY (PAGE 2) ///////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+page // Each page is contained in a 'page' section
+{
+	block
+	{
+		attributes
+		{
+			x = 120;
+			y = 116;
+			width = 180;
+			height = 462;
+			margin = 10;
+		}
+		content
+		{
+			pic = graphics/info/info4d.png; // If you specify both a pic and text in a content section, the pic is always drawn above the text
+			picscale = 0.7;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.8;
+			text = $INFO4DTITLE;
+			align = center;
+		}
+		content 
+		{ 
+			text = $INFO4D; 
+			textscale = 1.0;
+		}
+	}
+
+	block
+	{
+		attributes
+		{
+			x = 310;
+			y = 116;
+			width = 180;
+			height = 462;
+			margin = 10;
+		}
+		content
+		{
+			pic = graphics/info/info4d.png; // If you specify both a pic and text in a content section, the pic is always drawn above the text
+			picscale = 0.7;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.8;
+			text = $INFO4DTITLE;
+			align = center;
+		}
+		content 
+		{ 
+			text = $INFO4D; 
+			textscale = 1.0;
+		}
+	}
+
+	block
+	{
+		attributes
+		{
+			x = 500;
+			y = 116;
+			width = 180;
+			height = 462;
+			margin = 10;
+		}
+		content
+		{
+			pic = graphics/info/info4e.png; // If you specify both a pic and text in a content section, the pic is always drawn above the text
+			picscale = 0.7;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.8;
+			text = $INFO4ETITLE;
+			align = center;
+		}
+		content 
+		{ 
+			text = $INFO4E; 
+			textscale = 1.0;
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////// THE GOOD, BAD, UGLY (PAGE 3) ///////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+page // Each page is contained in a 'page' section
+{
+	block
+	{
+		attributes
+		{
+			x = 120;
+			y = 116;
+			width = 180;
+			height = 462;
+			margin = 10;
+		}
+		content
+		{
+			pic = graphics/info/info4g.png; // If you specify both a pic and text in a content section, the pic is always drawn above the text
+			picscale = 0.7;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.8;
+			text = $INFO4GTITLE;
+			align = center;
+		}
+		content 
+		{ 
+			text = $INFO4G; 
+			textscale = 1.0;
+		}
+	}
+
+	block
+	{
+		attributes
+		{
+			x = 310;
+			y = 116;
+			width = 180;
+			height = 462;
+			margin = 10;
+		}
+		content
+		{
+			pic = graphics/info/info4h.png; // If you specify both a pic and text in a content section, the pic is always drawn above the text
+			picscale = 0.7;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.8;
+			text = $INFO4HTITLE;
+			align = center;
+		}
+		content 
+		{ 
+			text = $INFO4H; 
+			textscale = 1.0;
+		}
+	}
+
+	block
+	{
+		attributes
+		{
+			x = 500;
+			y = 116;
+			width = 180;
+			height = 462;
+			margin = 10;
+		}
+		content
+		{
+			pic = graphics/info/info4i.png; // If you specify both a pic and text in a content section, the pic is always drawn above the text
+			picscale = 0.7;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.8;
+			text = $INFO4ITITLE;
+			align = center;
+		}
+		content 
+		{ 
+			text = $INFO4I; 
+			textscale = 1.0;
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////// THE GOOD, BAD, UGLY (PAGE 4) ///////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+page // Each page is contained in a 'page' section
+{
+	block
+	{
+		attributes
+		{
+			x = 120;
+			y = 116;
+			width = 180;
+			height = 462;
+			margin = 10;
+		}
+		content
+		{
+			pic = graphics/info/info5a.png; // If you specify both a pic and text in a content section, the pic is always drawn above the text
+			picscale = 0.7;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.8;
+			text = $INFO5ATITLE;
+			align = center;
+		}
+		content 
+		{ 
+			text = $INFO5A; 
+			textscale = 1.0;
+		}
+	}
+
+	block
+	{
+		attributes
+		{
+			x = 310;
+			y = 116;
+			width = 180;
+			height = 462;
+			margin = 10;
+		}
+		content
+		{
+			pic = graphics/info/info5b.png; // If you specify both a pic and text in a content section, the pic is always drawn above the text
+			picscale = 0.7;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.8;
+			text = $INFO5BTITLE;
+			align = center;
+		}
+		content 
+		{ 
+			text = $INFO5B; 
+			textscale = 1.0;
+		}
+	}
+
+	block
+	{
+		attributes
+		{
+			x = 500;
+			y = 116;
+			width = 180;
+			height = 462;
+			margin = 10;
+		}
+		content
+		{
+			pic = graphics/info/info5c.png; // If you specify both a pic and text in a content section, the pic is always drawn above the text
+			picscale = 0.7;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.8;
+			text = $INFO5CTITLE;
+			align = center;
+		}
+		content 
+		{ 
+			text = $INFO5C; 
+			textscale = 1.0;
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////// ITEMS //////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+page
+{
+	block
+	{
+		attributes
+		{
+			x = 120;
+			y = 116;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO3ATITLE;
+		}
+		content
+		{
+			pic = graphics/info/info3A.png; // If you specify both a pic and text in a content section, the pic is always drawn above the text
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO3A;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 310;
+			y = 116;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO3BTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info3B.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO3B;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 500;
+			y = 116;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO3CTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info3C.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO3C;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 120;
+			y = 272;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO3DTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info3D.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO3D;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 310;
+			y = 272;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO3ETITLE;
+		}
+		content
+		{
+			pic = graphics/info/info3E.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO3E;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 500;
+			y = 272;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO3FTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info3F.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO3F;
+		}
+	}
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////// HINTS (PAGE 1) /////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 page
 {
@@ -276,3 +839,239 @@ page
 		}
 	}	
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////// HINTS (PAGE 2) /////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+page
+{
+	block
+	{
+		attributes
+		{
+			x = 120;
+			y = 116;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO2JTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info2J.png; // If you specify both a pic and text in a content section, the pic is always drawn above the text
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO2J;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 310;
+			y = 116;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO2KTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info2K.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO2K;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 500;
+			y = 116;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO2LTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info2L.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO2L;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 120;
+			y = 272;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO2MTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info2M.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO2M;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 310;
+			y = 272;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO2NTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info2N.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO2N;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 500;
+			y = 272;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO2OTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info2O.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO2O;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 120;
+			y = 428;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO2PTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info2P.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO2P;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 310;
+			y = 428;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO2QTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info2Q.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO2Q;
+		}
+	}
+	block
+	{
+		attributes
+		{
+			x = 500;
+			y = 428;
+			width = 180;
+			height = 150;
+			margin = 10;
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = $INFO2RTITLE;
+		}
+		content
+		{
+			pic = graphics/info/info2R.png;
+			picscale = 0.7;
+			textscale = 0.8;
+			text = $INFO2R;
+		}
+	}	
+}
+
+
+
