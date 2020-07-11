@@ -1,7 +1,7 @@
 class BoAInfo : GenericMenu
 {
 	int mScreen;
-	int mInfoTic;
+	int mInfoTic, prevtic;
 	int dir, w, h;
 	font titlefnt, fnt, fallbackfnt;
 	ParsedValue data;
@@ -53,12 +53,12 @@ class BoAInfo : GenericMenu
 		if (alpha < 1. && prevpic.IsValid())
 		{
 			screen.DrawTexture (prevpic, false, 0, 0, DTA_FullscreenEx, 3);
-			DrawBlocks(data, mScreen - dir, 1.0);
+			DrawBlocks(data, mScreen - dir, 1.0, prevtic);
 		}
 		else alpha = 1;
 		screen.DrawTexture (tex, false, 0, 0, DTA_FullscreenEx, 3, DTA_Alpha, alpha);
 
-		DrawBlocks(data, mScreen, alpha);
+		DrawBlocks(data, mScreen, alpha, mInfoTic);
 
 		labels = TexMan.CheckForTexture("graphics/finale/finale_labels.png", TexMan.Type_Any);
 
@@ -82,6 +82,7 @@ class BoAInfo : GenericMenu
 			{
 				mScreen++;
 				dir = 1;
+				prevtic = mInfoTic;
 				mInfoTic = gametic;
 				return true;
 			}
@@ -92,6 +93,7 @@ class BoAInfo : GenericMenu
 			{
 				mScreen--;
 				dir = -1;
+				prevtic = mInfoTic;
 				mInfoTic = gametic;
 				return true;
 			}
@@ -147,7 +149,7 @@ class BoAInfo : GenericMenu
 		}
 	}
 
-	void DrawBlocks(ParsedValue data, int pagenum, double alpha)
+	void DrawBlocks(ParsedValue data, int pagenum, double alpha, int tic)
 	{
 		if (data)
 		{
@@ -163,7 +165,7 @@ class BoAInfo : GenericMenu
 
 				while (block)
 				{
-					DrawBlock(block, alpha);
+					DrawBlock(block, alpha, tic);
 
 					block = page.Next("block");
 				}
@@ -171,7 +173,7 @@ class BoAInfo : GenericMenu
 		}
 	}
 
-	void DrawBlock(ParsedValue block, double alpha)
+	void DrawBlock(ParsedValue block, double alpha, int tic)
 	{
 		int x = FileReader.GetInt(block, "attributes.x");
 		int y = FileReader.GetInt(block, "attributes.y");
@@ -186,8 +188,12 @@ class BoAInfo : GenericMenu
 
 		ParsedValue content = block.Find("content");
 
+		double yoffset = margin;
+
 		double scrollspeed = FileReader.GetDouble(block, "attributes.scrollspeed");
-		double yoffset = margin - (gametic - mInfoTic) * scrollspeed;
+		double scrolldelay = FileReader.GetDouble(block, "attributes.scrolldelay");
+		int scrolloffset = (gametic - tic - scrolldelay);
+		if (scrolloffset > 0) { yoffset -= scrolloffset * scrollspeed; }
 
 		while (content)
 		{
