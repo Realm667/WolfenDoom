@@ -4,6 +4,10 @@
 
 page // Each page is contained in a 'page' section
 {
+	attributes
+	{
+		background = BOAHELP1;
+	}
 	block // Each gray block of info is contained in a 'block' section
 	{
 		attributes // Each block section has attributes to specify x/y position on screen, block width and height, and margin padding
@@ -35,6 +39,10 @@ page // Each page is contained in a 'page' section
 
 page
 {
+	attributes
+	{
+		background = BOAHELP2;
+	}
 	block
 	{
 		attributes
@@ -66,6 +74,10 @@ page
 
 page // Each page is contained in a 'page' section
 {
+	attributes
+	{
+		background = BOAHELP3;
+	}
 	block
 	{
 		attributes
@@ -163,6 +175,10 @@ page // Each page is contained in a 'page' section
 
 page // Each page is contained in a 'page' section
 {
+	attributes
+	{
+		background = BOAHELP4;
+	}
 	block
 	{
 		attributes
@@ -260,6 +276,10 @@ page // Each page is contained in a 'page' section
 
 page // Each page is contained in a 'page' section
 {
+	attributes
+	{
+		background = BOAHELP5;
+	}
 	block
 	{
 		attributes
@@ -357,6 +377,10 @@ page // Each page is contained in a 'page' section
 
 page // Each page is contained in a 'page' section
 {
+	attributes
+	{
+		background = BOAHELP6;
+	}
 	block
 	{
 		attributes
@@ -454,6 +478,10 @@ page // Each page is contained in a 'page' section
 
 page
 {
+	attributes
+	{
+		background = BOAHELP7;
+	}
 	block
 	{
 		attributes
@@ -613,6 +641,10 @@ page
 
 page
 {
+	attributes
+	{
+		background = BOAHELP8;
+	}
 	block
 	{
 		attributes
@@ -846,6 +878,10 @@ page
 
 page
 {
+	attributes
+	{
+		background = BOAHELP9;
+	}
 	block
 	{
 		attributes
@@ -1073,5 +1109,35 @@ page
 	}	
 }
 
-
-
+// Demo page to show off the scrolling block effect
+page
+{
+	attributes
+	{
+		background = BOAHELPA;
+	}
+	block
+	{
+		attributes
+		{
+			x = 150;
+			y = 150;
+			width = 200;
+			height = 250;
+			margin = 10;
+			scrollspeed = 0.5; // Value is measured in pixels scrolled per tic
+		}
+		content
+		{
+			font = BigFont;
+			fontcolor = White;
+			textscale = 0.75;
+			text = Scroller Demo;
+		}
+		content
+		{
+			fontcolor = Dark Gray;
+			text = $EPILOGUEC1;
+		}
+	}
+}

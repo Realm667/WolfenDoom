@@ -34,21 +34,18 @@ class BoAInfo : GenericMenu
 		double alpha;
 		TextureID tex, prevpic, labels;
 		
-		// Did the mapper choose a custom help page via MAPINFO?
-		if (Level.F1Pic.Length() != 0)
-		{
-			tex = TexMan.CheckForTexture(Level.F1Pic, TexMan.Type_MiscPatch);
-			mScreen = 1;
-		}
+		if (!data) { return; }
 		
 		if (!tex.IsValid())
 		{
-			tex = TexMan.CheckForTexture(gameinfo.infoPages[mScreen - 1], TexMan.Type_MiscPatch);
+			ParsedValue page = data.Find("page", mScreen);
+			tex = TexMan.CheckForTexture(FileReader.GetString(page, "attributes.background"), TexMan.Type_Any);
 		}
 
-		if (mScreen > 0 && mScreen <= gameinfo.infoPages.Size())
+		if (mScreen > 0 && mScreen <= maxpages)
 		{
-			prevpic = TexMan.CheckForTexture(gameinfo.infoPages[mScreen - 1 - dir], TexMan.Type_MiscPatch);
+			ParsedValue prevpage = data.Find("page", mScreen - dir);
+			prevpic = TexMan.CheckForTexture(FileReader.GetString(prevpage, "attributes.background"), TexMan.Type_Any);
 		}
 
 		screen.Dim(0, 1.0, 0,0, screen.GetWidth(), screen.GetHeight());
@@ -81,7 +78,7 @@ class BoAInfo : GenericMenu
 		}
 		else if (mkey == MKEY_Right || mkey == MKEY_Down || mkey == MKEY_Enter)
 		{
-			if (mScreen + 1 <= gameinfo.infoPages.Size())
+			if (mScreen + 1 <= maxpages)
 			{
 				mScreen++;
 				dir = 1;
@@ -189,8 +186,8 @@ class BoAInfo : GenericMenu
 
 		ParsedValue content = block.Find("content");
 
-		int scrollspeed = FileReader.GetInt(block, "attributes.scroll");
-		int yoffset = margin + int((gametic - mInfoTic) * -scrollspeed / 4.0);
+		double scrollspeed = FileReader.GetDouble(block, "attributes.scrollspeed");
+		double yoffset = margin - (gametic - mInfoTic) * scrollspeed;
 
 		while (content)
 		{
