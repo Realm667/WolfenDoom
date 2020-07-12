@@ -257,14 +257,6 @@ OptionMenu "BoAOptionsMenu"
 //
 //-------------------------------------------------------------------------------------------
 
-OptionValue "Gender" //mmh BJ is male only, should we get rid of Gender as well? - ozy81
-{
-	0, "$OPTVAL_MALE"
-	1, "$OPTVAL_FEMALE"
-	2, "$OPTVAL_NEUTRAL"
-	3, "$OPTVAL_OTHER"
-}
-
 OptionValue "PlayerTeam"
 {
 	// Filled in programmatically
@@ -296,7 +288,6 @@ OptionMenu "BoANewPlayerMenu"
 	PlayerColorSlider "$PLYRMNU_BLUE", 2
 	PlayerClassItem "$PLYRMNU_PLAYERCLASS", "PlayerClass"
 	PlayerSkinItem "$PLYRMNU_PLAYERSKIN", "PlayerSkin"
-	PlayerGenderItem "$PLYRMNU_PLAYERGENDER", "Gender"
 	AutoaimSlider "$PLYRMNU_AUTOAIM"
 	PlayerSwitchOnPickupItem "$PLYRMNU_SWITCHONPICKUP", "OffOn"
 	Option "$PLYRMNU_ALWAYSRUN", cl_run, "OnOff"
@@ -338,7 +329,6 @@ ListMenu "BoAPlayerMenu"
 	Slider "$PLYRMNU_BLUE", "Blue", 0, 255, 16
 	ValueText "$PLYRMNU_PLAYERCLASS", "Class"
 	ValueText "$PLYRMNU_PLAYERSKIN", "Skin"
-	ValueText "$PLYRMNU_PLAYERGENDER", "Gender", "Gender"
 	Slider "$PLYRMNU_AUTOAIM", "Autoaim", 0, 35, 1
 	ValueText "$PLYRMNU_SWITCHONPICKUP", "Switch", "OffOn"
 	ValueText "$PLYRMNU_ALWAYSRUN", "AlwaysRun", "OnOff"
@@ -822,6 +812,17 @@ OptionMenu "BoAPostProcessShaderOptions"
 	StaticText " "
 	StaticText "$PP_GRADE"
 	Option "$PP_GRADE", 						r_colorgrading, "OnOff"
+	StaticText " "
+	Option "$GLPREFMNU_BLOOM",		 			gl_bloom,						"OnOff"
+	Option "$GLPREFMNU_LENS",		 			gl_lens,						"OnOff"
+	Option "$GLPREFMNU_SSAO",		 			gl_ssao,						"SSAOModes"
+	Slider "$GLPREFMNU_SSAO_PORTALS",			gl_ssao_portals,				0.0, 4.0, 1.0, 0
+	Option "$GLPREFMNU_FXAA",		 			gl_fxaa,						"FXAAQuality"
+	Option "$GLPREFMNU_DITHER",		 			gl_dither_bpc,					"DitherModes"
+	Option "$GLPREFMNU_TONEMAP", 				gl_tonemap,						"TonemapModes"
+	StaticText " "
+	Slider "$GLPREFMNU_PALTONEMAPPOWER",		gl_paltonemap_powtable,			0.2, 3.0, 0.1, 1
+	Option "$GLPREFMNU_PALTONEMAPORDER",		gl_paltonemap_reverselookup,	"LookupOrder"
 }
 
 OptionValue "MBlurBlendModes"
@@ -1517,11 +1518,11 @@ OptionMenu "GameOptions"
 {
 	Title "$OPT_GAME"
 	StaticText " "
+	Option "$GA_SCAM", 							"sv_boastrafetilt", "OnOff"
 	Option "$GA_REL",							"autoreload","OnOff"
 	Slider "$GA_ZBULL",							"zwl_maxflatdecals",1024,4096,1024,0
 	Slider "$GA_SHELLS",						"casinglifetime",1,180,5,0
 	Slider "$GA_RECOIL",						"recoilamount",0,20,1,0
-	Option "$GA_SCAM", 							"sv_boastrafetilt", "OnOff"
 	Slider "$GA_DEBRIS",						"debrislifetime",1,180,5,0
 }
 
@@ -2337,7 +2338,6 @@ OptionMenu "BoAOpenGLOptions"
 {
 	Title "$GLMNU_TITLE"
 	Submenu "$GLPREFMNU_VRMODE",				"BoAVR3DMenu"
-	Submenu "$GLMNU_POSTPROCESS",				"BoAPostProcessMenu"
 	StaticText " "
 	Option "$GLPREFMNU_SECLIGHTMODE",			gl_lightmode,					"LightingModes"
 	Option "$GLPREFMNU_SWLMBANDED",				gl_bandedswlight,				"OnOff"
@@ -2372,21 +2372,6 @@ OptionMenu "BoAVR3DMenu"
 	Slider "$GLPREFMNU_VRSCREENDIST",			vr_screendist,					0.2, 10.0, 0.1, 1
 }
 
-OptionMenu "BoAPostProcessMenu"
-{
-	Title "$GLMNU_POSTPROCESS"
-
-	Option "$GLPREFMNU_BLOOM",		 			gl_bloom,						"OnOff"
-	Option "$GLPREFMNU_LENS",		 			gl_lens,						"OnOff"
-	Option "$GLPREFMNU_SSAO",		 			gl_ssao,						"SSAOModes"
-	Slider "$GLPREFMNU_SSAO_PORTALS",			gl_ssao_portals,				0.0, 4.0, 1.0, 0
-	Option "$GLPREFMNU_FXAA",		 			gl_fxaa,						"FXAAQuality"
-	Option "$GLPREFMNU_DITHER",		 			gl_dither_bpc,					"DitherModes"
-	Option "$GLPREFMNU_TONEMAP", 				gl_tonemap,						"TonemapModes"
-	StaticText " "
-	Slider "$GLPREFMNU_PALTONEMAPPOWER",		gl_paltonemap_powtable,			0.2, 3.0, 0.1, 1
-	Option "$GLPREFMNU_PALTONEMAPORDER",		gl_paltonemap_reverselookup,	"LookupOrder"
-}
 /*
 OptionMenu "ReverbEdit" protected
 {
