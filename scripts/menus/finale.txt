@@ -178,7 +178,7 @@ class IntroScroll : TextScroll
 
 class Finale : GenericMenu
 {
-	TextureID background, strips, labels, frame;
+	TextureID background, strips, label_l, label_r, frame;
 	Font fnt, titlefnt;
 	String text;
 
@@ -214,7 +214,8 @@ class Finale : GenericMenu
 
 		background = TexMan.CheckForTexture("graphics/finale/finale_background.png", TexMan.Type_Any);
 		strips = TexMan.CheckForTexture("graphics/finale/finale_strips.png", TexMan.Type_Any);
-		labels = TexMan.CheckForTexture("graphics/finale/finale_labels.png", TexMan.Type_Any);
+		label_l = TexMan.CheckForTexture("graphics/finale/finale_label_l.png", TexMan.Type_Any);
+		label_r = TexMan.CheckForTexture("graphics/finale/finale_label_r.png", TexMan.Type_Any);
 		frame = TexMan.CheckForTexture("graphics/finale/finale_frame.png", TexMan.Type_Any);
 
 		text = "$EPILOGUEC1";
@@ -237,8 +238,9 @@ class Finale : GenericMenu
 		{
 			double stripalpha = min(1.0, (drawtic - 140) / 140.0);
 			if (strips) { screen.DrawTexture(strips, false, 0, 0, DTA_FullScreenEx, 3, DTA_Alpha, stripalpha); }
-			if (labels) { screen.DrawTexture(labels, false, 0, 0, DTA_FullScreenEx, 3, DTA_Alpha, stripalpha); }
-			screen.DrawText(SmallFont, Font.CR_GRAY, 213, 183, "pg " .. page + 1 .. " of " .. maxpages + 1, DTA_320x200, true, DTA_Alpha, stripalpha);
+			if (label_l) { screen.DrawTexture(label_l, false, 32, 180, DTA_320x200, true, DTA_Alpha, stripalpha); }
+			if (label_r) { screen.DrawTexture(label_r, false, 320 - 32 - TexMan.GetSize(label_r), 180, DTA_320x200, true, DTA_Alpha, stripalpha); }
+			screen.DrawText(SmallFont, Font.CR_GRAY, 210, 183, "pg " .. page + 1 .. " of " .. maxpages + 1, DTA_320x200, true, DTA_Alpha, stripalpha);
 		}
 
 		if (drawtic > 70)

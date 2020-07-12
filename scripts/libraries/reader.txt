@@ -1,5 +1,6 @@
-// Ugly but functional parser for nested bracketed data
-// Used for Info pages
+// AFADoomer's ugly but functional parser for nested bracketed data
+// Free for use with attribution
+// Used for Info/Help pages
 class ParsedValue
 {
 	String KeyName;
@@ -124,6 +125,7 @@ class FileReader
 					break;
 				case 125: // }
 					if (blockcomment || linecomment) { break; }
+					if (FileReader.Trim(token).length()) { console.printf("Missing semi-colon after %s", token); }
 					return i;
 					break;
 				default:

@@ -1,3 +1,43 @@
+global 
+{
+	// There are two type of global properties: default properties and global variables
+
+	// Properties in the 'defaults' block with the same name as a defined attribute or 
+	// block property will be used as the default when that value is not directly specified.
+	defaults
+	{
+		screenwidth = 800;
+		screenheight = 600;
+		labelscale = 1.5;
+
+		dimcolor = 333333;
+		dimalpha = 0.8;
+		margin = 10;
+	}
+
+	// Arbitrarily named properties effectively act as global variables
+	//  - You can't perform mathematical operations on these here in the config file (so 'margin = defaultmargin + 2;' is invalid)
+	fullwidth = 640; 	// Full draw area width
+	fullheight = 460; 	// Full draw area height
+	thirdwidth = 207; 	// Column width 	((fullwidth + spacing of 10) / 3) - spacing of 10
+	thirdheight = 149; 	// Row height		((fullheight + spacing of 6) / 3) - spacing of 6
+
+	xleft = 80; 		// Left column
+	xcenter = 297;	 	// Middle column	(left + thirdwidth + spacing of 10)
+	xright = 514; 		// Right column		(middle + thirdwidth + spacing of 10)
+	ytop = 120; 		// Top row
+	ymiddle = 275; 		// Middle row		(top + thirdheight + spacing of 6)
+	ybottom = 430; 		// Bottom row		(middle + thirdheight + spacing of 6)
+
+	titlemedium = 0.8; 	// Cast and Team page titles
+	titlesmall = 0.75; 	// 3x3 page titles
+
+	textsmall = 0.85; 	// 3x3 page text
+
+	thumbnailscale = 0.7; 	// 3x3 page images
+}
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////// STORY //////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -7,20 +47,18 @@ page // Each page is contained in a 'page' section
 	attributes
 	{
 		background = BOAHELP1;
-		scale = 1.0;
-		dimalpha = 0.8;
 	}
 	block // Each gray block of info is contained in a 'block' section
 	{
 		attributes // Each block section has attributes to specify x/y position on screen, block width and height, and margin padding
 		{
-			x = 80;
-			y = 116;
-			width = 640;
-			height = 434;
+			x = xleft;
+			y = ytop;
+			width = fullwidth;
+			height = fullheight;
 			margin = 12;
 		}
-		content // Sections of text or images are contained in content blocks.  Text and images can be aligned and scaled; see second page below
+		content // Sections of text or images are contained in content blocks.  Text and images can be aligned and scaled; see characters page below
 		{
 			font = BigFont;
 			fontcolor = White;
@@ -28,9 +66,9 @@ page // Each page is contained in a 'page' section
 		}
 		content
 		{
-			pic = graphics/info/info1Z.jpg;
-			picscale = 1.0;
+			pic = graphics/info/info1Z.jpg; // If you specify both a pic and text in a content section, the pic is always drawn above the text
 			text = $INFO1A; // Font defaults to SmallFont, gray, scale of 1.0 if you don't specify any other parameters
+			align = full; // Alignment options are: left, right, and center (and full for text only)
 		}
 	}
 }
@@ -44,17 +82,15 @@ page
 	attributes
 	{
 		background = BOAHELP2;
-		scale = 1.0;
-		dimalpha = 0.8;
 	}
 	block
 	{
 		attributes
 		{
-			x = 80;
-			y = 116;
-			width = 640;
-			height = 434;
+			x = xleft;
+			y = ytop;
+			width = fullwidth;
+			height = fullheight;
 			margin = 12;
 		}
 		content
@@ -66,8 +102,8 @@ page
 		content
 		{
 			pic = graphics/info/info1Y.jpg;
-			picscale = 1.0;
-			text = $INFO1B; // Font defaults to SmallFont, gray, scale of 1.0 if you don't specify any other parameters
+			text = $INFO1B;
+			align = full;
 		}
 	}
 }
@@ -76,41 +112,37 @@ page
 ///////////////////////////////////////////////////////////////////// THE GOOD, BAD, UGLY (PAGE 1) ///////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-page // Each page is contained in a 'page' section
+page
 {
 	attributes
 	{
 		background = BOAHELP3;
-		scale = 1.0;
-		dimalpha = 0.8;
 	}
 	block
 	{
 		attributes
 		{
-			x = 80;
-			y = 116;
-			width = 206;
-			height = 434;
-			margin = 10;
+			x = xleft;
+			y = ytop;
+			width = thirdwidth;
+			height = fullheight;
 		}
 		content
 		{
-			pic = graphics/info/info4a.png; // If you specify both a pic and text in a content section, the pic is always drawn above the text
+			pic = graphics/info/info4a.png;
 			picscale = 0.5;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.8;
+			fontscale = titlemedium;
 			text = $INFO4ATITLE;
 			align = center;
 		}
 		content 
 		{ 
 			text = $INFO4A; 
-			fontscale = 1.0;
 		}
 	}
 
@@ -118,11 +150,10 @@ page // Each page is contained in a 'page' section
 	{
 		attributes
 		{
-			x = 296;
-			y = 116;
-			width = 207;
-			height = 434;
-			margin = 10;
+			x = xcenter;
+			y = ytop;
+			width = thirdwidth;
+			height = fullheight;
 		}
 		content
 		{
@@ -133,14 +164,13 @@ page // Each page is contained in a 'page' section
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.8;
+			fontscale = titlemedium;
 			text = $INFO4BTITLE;
 			align = center;
 		}
 		content 
 		{ 
 			text = $INFO4B; 
-			fontscale = 1.0;
 		}
 	}
 
@@ -148,11 +178,10 @@ page // Each page is contained in a 'page' section
 	{
 		attributes
 		{
-			x = 513;
-			y = 116;
-			width = 206;
-			height = 434;
-			margin = 10;
+			x = xright;
+			y = ytop;
+			width = thirdwidth;
+			height = fullheight;
 		}
 		content
 		{
@@ -163,14 +192,13 @@ page // Each page is contained in a 'page' section
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.8;
+			fontscale = titlemedium;
 			text = $INFO4CTITLE;
 			align = center;
 		}
 		content 
 		{ 
 			text = $INFO4C; 
-			fontscale = 1.0;
 		}
 	}
 }
@@ -179,23 +207,20 @@ page // Each page is contained in a 'page' section
 ///////////////////////////////////////////////////////////////////// THE GOOD, BAD, UGLY (PAGE 2) ///////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-page // Each page is contained in a 'page' section
+page
 {
 	attributes
 	{
 		background = BOAHELP4;
-		scale = 1.0;
-		dimalpha = 0.8;
 	}
 	block
 	{
 		attributes
 		{
-			x = 80;
-			y = 116;
-			width = 206;
-			height = 434;
-			margin = 10;
+			x = xleft;
+			y = ytop;
+			width = thirdwidth;
+			height = fullheight;
 		}
 		content
 		{
@@ -206,14 +231,13 @@ page // Each page is contained in a 'page' section
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.8;
+			fontscale = titlemedium;
 			text = $INFO4DTITLE;
 			align = center;
 		}
 		content 
 		{ 
 			text = $INFO4D; 
-			fontscale = 1.0;
 		}
 	}
 
@@ -221,11 +245,10 @@ page // Each page is contained in a 'page' section
 	{
 		attributes
 		{
-			x = 296;
-			y = 116;
-			width = 207;
-			height = 434;
-			margin = 10;
+			x = xcenter;
+			y = ytop;
+			width = thirdwidth;
+			height = fullheight;
 		}
 		content
 		{
@@ -236,14 +259,13 @@ page // Each page is contained in a 'page' section
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.8;
+			fontscale = titlemedium;
 			text = $INFO4ETITLE;
 			align = center;
 		}
 		content 
 		{ 
 			text = $INFO4E; 
-			fontscale = 1.0;
 		}
 	}
 
@@ -251,11 +273,10 @@ page // Each page is contained in a 'page' section
 	{
 		attributes
 		{
-			x = 513;
-			y = 116;
-			width = 206;
-			height = 434;
-			margin = 10;
+			x = xright;
+			y = ytop;
+			width = thirdwidth;
+			height = fullheight;
 		}
 		content
 		{
@@ -266,14 +287,13 @@ page // Each page is contained in a 'page' section
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.8;
+			fontscale = titlemedium;
 			text = $INFO4FTITLE;
 			align = center;
 		}
 		content 
 		{ 
 			text = $INFO4F; 
-			fontscale = 1.0;
 		}
 	}
 }
@@ -282,23 +302,20 @@ page // Each page is contained in a 'page' section
 ///////////////////////////////////////////////////////////////////// THE GOOD, BAD, UGLY (PAGE 3) ///////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-page // Each page is contained in a 'page' section
+page
 {
 	attributes
 	{
 		background = BOAHELP5;
-		scale = 1.0;
-		dimalpha = 0.8;
 	}
 	block
 	{
 		attributes
 		{
-			x = 80;
-			y = 116;
-			width = 206;
-			height = 434;
-			margin = 10;
+			x = xleft;
+			y = ytop;
+			width = thirdwidth;
+			height = fullheight;
 		}
 		content
 		{
@@ -309,14 +326,13 @@ page // Each page is contained in a 'page' section
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.8;
+			fontscale = titlemedium;
 			text = $INFO4GTITLE;
 			align = center;
 		}
 		content 
 		{ 
 			text = $INFO4G; 
-			fontscale = 1.0;
 		}
 	}
 
@@ -324,11 +340,10 @@ page // Each page is contained in a 'page' section
 	{
 		attributes
 		{
-			x = 296;
-			y = 116;
-			width = 207;
-			height = 434;
-			margin = 10;
+			x = xcenter;
+			y = ytop;
+			width = thirdwidth;
+			height = fullheight;
 		}
 		content
 		{
@@ -339,14 +354,13 @@ page // Each page is contained in a 'page' section
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.8;
+			fontscale = titlemedium;
 			text = $INFO4HTITLE;
 			align = center;
 		}
 		content 
 		{ 
 			text = $INFO4H; 
-			fontscale = 1.0;
 		}
 	}
 
@@ -354,11 +368,10 @@ page // Each page is contained in a 'page' section
 	{
 		attributes
 		{
-			x = 513;
-			y = 116;
-			width = 206;
-			height = 434;
-			margin = 10;
+			x = xright;
+			y = ytop;
+			width = thirdwidth;
+			height = fullheight;
 		}
 		content
 		{
@@ -369,14 +382,13 @@ page // Each page is contained in a 'page' section
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.8;
+			fontscale = titlemedium;
 			text = $INFO4ITITLE;
 			align = center;
 		}
 		content 
 		{ 
 			text = $INFO4I; 
-			fontscale = 1.0;
 		}
 	}
 }
@@ -385,23 +397,20 @@ page // Each page is contained in a 'page' section
 ///////////////////////////////////////////////////////////////////// THE GOOD, BAD, UGLY (PAGE 4) ///////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-page // Each page is contained in a 'page' section
+page
 {
 	attributes
 	{
 		background = BOAHELP6;
-		scale = 1.0;
-		dimalpha = 0.8;
 	}
 	block
 	{
 		attributes
 		{
-			x = 80;
-			y = 116;
-			width = 206;
-			height = 434;
-			margin = 10;
+			x = xleft;
+			y = ytop;
+			width = thirdwidth;
+			height = fullheight;
 		}
 		content
 		{
@@ -412,14 +421,13 @@ page // Each page is contained in a 'page' section
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.8;
+			fontscale = titlemedium;
 			text = $INFO5ATITLE;
 			align = center;
 		}
 		content 
 		{ 
 			text = $INFO5A; 
-			fontscale = 1.0;
 		}
 	}
 
@@ -427,11 +435,10 @@ page // Each page is contained in a 'page' section
 	{
 		attributes
 		{
-			x = 296;
-			y = 116;
-			width = 207;
-			height = 434;
-			margin = 10;
+			x = xcenter;
+			y = ytop;
+			width = thirdwidth;
+			height = fullheight;
 		}
 		content
 		{
@@ -442,14 +449,13 @@ page // Each page is contained in a 'page' section
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.8;
+			fontscale = titlemedium;
 			text = $INFO5BTITLE;
 			align = center;
 		}
 		content 
 		{ 
 			text = $INFO5B; 
-			fontscale = 1.0;
 		}
 	}
 
@@ -457,11 +463,10 @@ page // Each page is contained in a 'page' section
 	{
 		attributes
 		{
-			x = 513;
-			y = 116;
-			width = 206;
-			height = 434;
-			margin = 10;
+			x = xright;
+			y = ytop;
+			width = thirdwidth;
+			height = fullheight;
 		}
 		content
 		{
@@ -472,14 +477,13 @@ page // Each page is contained in a 'page' section
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.8;
+			fontscale = titlemedium;
 			text = $INFO5CTITLE;
 			align = center;
 		}
 		content 
 		{ 
 			text = $INFO5C; 
-			fontscale = 1.0;
 		}
 	}
 }
@@ -493,31 +497,27 @@ page
 	attributes
 	{
 		background = BOAHELP7;
-		scale = 1.0;
-		dimalpha = 0.8;
 	}
 	block
 	{
 		attributes
 		{
-			x = 80;
-			y = 116;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xleft;
+			y = ytop;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO3ATITLE;
 		}
 		content
 		{
 			pic = graphics/info/info3A.png;
 			picscale = 0.85;
-			fontscale = 1.0;
 			text = $INFO3A;
 		}
 	}
@@ -525,24 +525,22 @@ page
 	{
 		attributes
 		{
-			x = 296;
-			y = 116;
-			width = 207;
-			height = 145;
-			margin = 10;
+			x = xcenter;
+			y = ytop;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO3BTITLE;
 		}
 		content
 		{
 			pic = graphics/info/info3B.png;
 			picscale = 0.85;
-			fontscale = 1.0;
 			text = $INFO3B;
 		}
 	}
@@ -550,24 +548,22 @@ page
 	{
 		attributes
 		{
-			x = 513;
-			y = 116;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xright;
+			y = ytop;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO3CTITLE;
 		}
 		content
 		{
 			pic = graphics/info/info3C.png;
 			picscale = 0.85;
-			fontscale = 1.0;
 			text = $INFO3C;
 		}
 	}
@@ -575,24 +571,22 @@ page
 	{
 		attributes
 		{
-			x = 80;
-			y = 267;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xleft;
+			y = ymiddle;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO3DTITLE;
 		}
 		content
 		{
 			pic = graphics/info/info3D.png;
 			picscale = 0.85;
-			fontscale = 1.0;
 			text = $INFO3D;
 		}
 	}
@@ -600,24 +594,22 @@ page
 	{
 		attributes
 		{
-			x = 296;
-			y = 267;
-			width = 207;
-			height = 145;
-			margin = 10;
+			x = xcenter;
+			y = ymiddle;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO3ETITLE;
 		}
 		content
 		{
 			pic = graphics/info/info3E.png;
 			picscale = 0.85;
-			fontscale = 1.0;
 			text = $INFO3E;
 		}
 	}
@@ -625,24 +617,22 @@ page
 	{
 		attributes
 		{
-			x = 513;
-			y = 267;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xright;
+			y = ymiddle;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO3FTITLE;
 		}
 		content
 		{
 			pic = graphics/info/info3F.png;
 			picscale = 0.85;
-			fontscale = 1.0;
 			text = $INFO3F;
 		}
 	}
@@ -658,31 +648,28 @@ page
 	attributes
 	{
 		background = BOAHELP8;
-		scale = 1.0;
-		dimalpha = 0.8;
 	}
 	block
 	{
 		attributes
 		{
-			x = 80;
-			y = 116;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xleft;
+			y = ytop;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO2ATITLE;
 		}
 		content
 		{
 			pic = graphics/info/info2A.png;
-			picscale = 0.7;
-			fontscale = 0.8;
+			picscale = thumbnailscale;
+			fontscale = textsmall;
 			text = $INFO2A;
 		}
 	}
@@ -690,24 +677,23 @@ page
 	{
 		attributes
 		{
-			x = 296;
-			y = 116;
-			width = 207;
-			height = 145;
-			margin = 10;
+			x = xcenter;
+			y = ytop;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO2BTITLE;
 		}
 		content
 		{
 			pic = graphics/info/info2B.png;
-			picscale = 0.7;
-			fontscale = 0.8;
+			picscale = thumbnailscale;
+			fontscale = textsmall;
 			text = $INFO2B;
 		}
 	}
@@ -715,24 +701,23 @@ page
 	{
 		attributes
 		{
-			x = 513;
-			y = 116;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xright;
+			y = ytop;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO2CTITLE;
 		}
 		content
 		{
 			pic = graphics/info/info2C.png;
-			picscale = 0.7;
-			fontscale = 0.8;
+			picscale = thumbnailscale;
+			fontscale = textsmall;
 			text = $INFO2C;
 		}
 	}
@@ -740,24 +725,23 @@ page
 	{
 		attributes
 		{
-			x = 80;
-			y = 267;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xleft;
+			y = ymiddle;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO2DTITLE;
 		}
 		content
 		{
 			pic = graphics/info/info2D.png;
-			picscale = 0.7;
-			fontscale = 0.8;
+			picscale = thumbnailscale;
+			fontscale = textsmall;
 			text = $INFO2D;
 		}
 	}
@@ -765,24 +749,23 @@ page
 	{
 		attributes
 		{
-			x = 296;
-			y = 267;
-			width = 207;
-			height = 145;
-			margin = 10;
+			x = xcenter;
+			y = ymiddle;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO2ETITLE;
 		}
 		content
 		{
 			pic = graphics/info/info2E.png;
-			picscale = 0.7;
-			fontscale = 0.8;
+			picscale = thumbnailscale;
+			fontscale = textsmall;
 			text = $INFO2E;
 		}
 	}
@@ -790,24 +773,23 @@ page
 	{
 		attributes
 		{
-			x = 513;
-			y = 267;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xright;
+			y = ymiddle;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO2FTITLE;
 		}
 		content
 		{
 			pic = graphics/info/info2F.png;
-			picscale = 0.7;
-			fontscale = 0.8;
+			picscale = thumbnailscale;
+			fontscale = textsmall;
 			text = $INFO2F;
 		}
 	}
@@ -815,24 +797,23 @@ page
 	{
 		attributes
 		{
-			x = 80;
-			y = 418;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xleft;
+			y = ybottom;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO2GTITLE;
 		}
 		content
 		{
 			pic = graphics/info/info2G.png;
-			picscale = 0.7;
-			fontscale = 0.8;
+			picscale = thumbnailscale;
+			fontscale = textsmall;
 			text = $INFO2G;
 		}
 	}
@@ -840,24 +821,23 @@ page
 	{
 		attributes
 		{
-			x = 296;
-			y = 418;
-			width = 207;
-			height = 145;
-			margin = 10;
+			x = xcenter;
+			y = ybottom;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO2HTITLE;
 		}
 		content
 		{
 			pic = graphics/info/info2H.png;
-			picscale = 0.7;
-			fontscale = 0.8;
+			picscale = thumbnailscale;
+			fontscale = textsmall;
 			text = $INFO2H;
 		}
 	}
@@ -865,24 +845,23 @@ page
 	{
 		attributes
 		{
-			x = 513;
-			y = 418;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xright;
+			y = ybottom;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO2ITITLE;
 		}
 		content
 		{
 			pic = graphics/info/info2I.png;
-			picscale = 0.7;
-			fontscale = 0.8;
+			picscale = thumbnailscale;
+			fontscale = textsmall;
 			text = $INFO2I;
 		}
 	}	
@@ -897,31 +876,28 @@ page
 	attributes
 	{
 		background = BOAHELP9;
-		scale = 1.0;
-		dimalpha = 0.8;
 	}
 	block
 	{
 		attributes
 		{
-			x = 80;
-			y = 116;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xleft;
+			y = ytop;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO2JTITLE;
 		}
 		content
 		{
 			pic = graphics/info/info2J.png;
-			picscale = 0.7;
-			fontscale = 0.8;
+			picscale = thumbnailscale;
+			fontscale = textsmall;
 			text = $INFO2J;
 		}
 	}
@@ -929,24 +905,23 @@ page
 	{
 		attributes
 		{
-			x = 296;
-			y = 116;
-			width = 207;
-			height = 145;
-			margin = 10;
+			x = xcenter;
+			y = ytop;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO2KTITLE;
 		}
 		content
 		{
 			pic = graphics/info/info2K.png;
-			picscale = 0.7;
-			fontscale = 0.8;
+			picscale = thumbnailscale;
+			fontscale = textsmall;
 			text = $INFO2K;
 		}
 	}
@@ -954,24 +929,23 @@ page
 	{
 		attributes
 		{
-			x = 513;
-			y = 116;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xright;
+			y = ytop;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO2LTITLE;
 		}
 		content
 		{
 			pic = graphics/info/info2L.png;
-			picscale = 0.7;
-			fontscale = 0.8;
+			picscale = thumbnailscale;
+			fontscale = textsmall;
 			text = $INFO2L;
 		}
 	}
@@ -979,24 +953,23 @@ page
 	{
 		attributes
 		{
-			x = 80;
-			y = 267;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xleft;
+			y = ymiddle;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO2MTITLE;
 		}
 		content
 		{
 			pic = graphics/info/info2M.png;
-			picscale = 0.7;
-			fontscale = 0.8;
+			picscale = thumbnailscale;
+			fontscale = textsmall;
 			text = $INFO2M;
 		}
 	}
@@ -1004,24 +977,23 @@ page
 	{
 		attributes
 		{
-			x = 296;
-			y = 267;
-			width = 207;
-			height = 145;
-			margin = 10;
+			x = xcenter;
+			y = ymiddle;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO2NTITLE;
 		}
 		content
 		{
 			pic = graphics/info/info2N.png;
-			picscale = 0.7;
-			fontscale = 0.8;
+			picscale = thumbnailscale;
+			fontscale = textsmall;
 			text = $INFO2N;
 		}
 	}
@@ -1029,24 +1001,23 @@ page
 	{
 		attributes
 		{
-			x = 513;
-			y = 267;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xright;
+			y = ymiddle;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO2OTITLE;
 		}
 		content
 		{
 			pic = graphics/info/info2O.png;
-			picscale = 0.7;
-			fontscale = 0.8;
+			picscale = thumbnailscale;
+			fontscale = textsmall;
 			text = $INFO2O;
 		}
 	}
@@ -1054,24 +1025,23 @@ page
 	{
 		attributes
 		{
-			x = 80;
-			y = 418;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xleft;
+			y = ybottom;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO2PTITLE;
 		}
 		content
 		{
 			pic = graphics/info/info2P.png;
-			picscale = 0.7;
-			fontscale = 0.8;
+			picscale = thumbnailscale;
+			fontscale = textsmall;
 			text = $INFO2P;
 		}
 	}
@@ -1079,24 +1049,23 @@ page
 	{
 		attributes
 		{
-			x = 296;
-			y = 418;
-			width = 207;
-			height = 145;
-			margin = 10;
+			x = xcenter;
+			y = ybottom;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO2QTITLE;
 		}
 		content
 		{
 			pic = graphics/info/info2Q.png;
-			picscale = 0.7;
-			fontscale = 0.8;
+			picscale = thumbnailscale;
+			fontscale = textsmall;
 			text = $INFO2Q;
 		}
 	}
@@ -1104,24 +1073,23 @@ page
 	{
 		attributes
 		{
-			x = 513;
-			y = 418;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xright;
+			y = ybottom;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO2RTITLE;
 		}
 		content
 		{
 			pic = graphics/info/info2R.png;
-			picscale = 0.7;
-			fontscale = 0.8;
+			picscale = thumbnailscale;
+			fontscale = textsmall;
 			text = $INFO2R;
 		}
 	}	
@@ -1132,41 +1100,37 @@ page
 ///////////////////////////////////////////////////////////////////// CORE TEAMMATES (PAGE 1) ////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-page // Each page is contained in a 'page' section
+page
 {
 	attributes
 	{
 		background = BOAHELPA;
-		scale = 1.0;
-		dimalpha = 0.8;
 	}
 	block
 	{
 		attributes
 		{
-			x = 80;
-			y = 116;
-			width = 206;
-			height = 434;
-			margin = 10;
+			x = xleft;
+			y = ytop;
+			width = thirdwidth;
+			height = fullheight;
 		}
 		content
 		{
-			pic = graphics/info/info6a.png; // If you specify both a pic and text in a content section, the pic is always drawn above the text
+			pic = graphics/info/info6a.png;
 			picscale = 0.5;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.8;
+			fontscale = titlemedium;
 			text = $INFO6ATITLE;
 			align = center;
 		}
 		content 
 		{ 
 			text = $INFO6A; 
-			fontscale = 1.0;
 		}
 	}
 
@@ -1174,11 +1138,10 @@ page // Each page is contained in a 'page' section
 	{
 		attributes
 		{
-			x = 296;
-			y = 116;
-			width = 207;
-			height = 434;
-			margin = 10;
+			x = xcenter;
+			y = ytop;
+			width = thirdwidth;
+			height = fullheight;
 		}
 		content
 		{
@@ -1189,14 +1152,13 @@ page // Each page is contained in a 'page' section
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.8;
+			fontscale = titlemedium;
 			text = $INFO6BTITLE;
 			align = center;
 		}
 		content 
 		{ 
 			text = $INFO6B; 
-			fontscale = 1.0;
 		}
 	}
 
@@ -1204,11 +1166,10 @@ page // Each page is contained in a 'page' section
 	{
 		attributes
 		{
-			x = 513;
-			y = 116;
-			width = 206;
-			height = 434;
-			margin = 10;
+			x = xright;
+			y = ytop;
+			width = thirdwidth;
+			height = fullheight;
 		}
 		content
 		{
@@ -1219,14 +1180,13 @@ page // Each page is contained in a 'page' section
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.8;
+			fontscale = titlemedium;
 			text = $INFO6CTITLE;
 			align = center;
 		}
 		content 
 		{ 
 			text = $INFO6C; 
-			fontscale = 1.0;
 		}
 	}
 }
@@ -1235,41 +1195,37 @@ page // Each page is contained in a 'page' section
 ///////////////////////////////////////////////////////////////////// CORE TEAMMATES (PAGE 2) ////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-page // Each page is contained in a 'page' section
+page
 {
 	attributes
 	{
 		background = BOAHELPA;
-		scale = 1.0;
-		dimalpha = 0.8;
 	}
 	block
 	{
 		attributes
 		{
-			x = 80;
-			y = 116;
+			x = xleft;
+			y = ytop;
 			width = 315;
-			height = 434;
-			margin = 10;
+			height = fullheight;
 		}
 		content
 		{
-			pic = graphics/info/info6d.png; // If you specify both a pic and text in a content section, the pic is always drawn above the text
+			pic = graphics/info/info6d.png;
 			picscale = 0.5;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.8;
+			fontscale = titlemedium;
 			text = $INFO6DTITLE;
 			align = center;
 		}
 		content 
 		{ 
 			text = $INFO6D; 
-			fontscale = 1.0;
 		}
 	}
 
@@ -1278,10 +1234,9 @@ page // Each page is contained in a 'page' section
 		attributes
 		{
 			x = 405;
-			y = 116;
+			y = ytop;
 			width = 315;
-			height = 434;
-			margin = 10;
+			height = fullheight;
 		}
 		content
 		{
@@ -1292,14 +1247,13 @@ page // Each page is contained in a 'page' section
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.8;
+			fontscale = titlemedium;
 			text = $INFO6ETITLE;
 			align = center;
 		}
 		content 
 		{ 
 			text = $INFO6E; 
-			fontscale = 1.0;
 		}
 	}
 }
@@ -1313,202 +1267,191 @@ page
 	attributes
 	{
 		background = BOAHELPB;
-		scale = 1.0;
-		dimalpha = 0.8;
 	}
 	block
 	{
 		attributes
 		{
-			x = 80;
-			y = 116;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xleft;
+			y = ytop;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO7ATITLE;
 		}
 		content 
 		{ 
 			text = $INFO7A; 
-			fontscale = 0.8;
+			fontscale = textsmall;
 		}
 	}
 	block
 	{
 		attributes
 		{
-			x = 296;
-			y = 116;
-			width = 207;
-			height = 145;
-			margin = 10;
+			x = xcenter;
+			y = ytop;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO7BTITLE;
 		}
 		content 
 		{ 
 			text = $INFO7B; 
-			fontscale = 0.8;
+			fontscale = textsmall;
 		}
 	}
 	block
 	{
 		attributes
 		{
-			x = 513;
-			y = 116;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xright;
+			y = ytop;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO7CTITLE;
 		}
 		content 
 		{ 
 			text = $INFO7C; 
-			fontscale = 0.8;
+			fontscale = textsmall;
 		}
 	}
 	block
 	{
 		attributes
 		{
-			x = 80;
-			y = 267;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xleft;
+			y = ymiddle;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO7DTITLE;
 		}
 		content 
 		{ 
 			text = $INFO7D; 
-			fontscale = 0.8;
+			fontscale = textsmall;
 		}
 	}
 	block
 	{
 		attributes
 		{
-			x = 296;
-			y = 267;
-			width = 207;
-			height = 145;
-			margin = 10;
+			x = xcenter;
+			y = ymiddle;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO7ETITLE;
 		}
 		content 
 		{ 
 			text = $INFO7E; 
-			fontscale = 0.8;
+			fontscale = textsmall;
 		}
 	}
 	block
 	{
 		attributes
 		{
-			x = 513;
-			y = 267;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xright;
+			y = ymiddle;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO7FTITLE;
 		}
 		content 
 		{ 
 			text = $INFO7F; 
-			fontscale = 0.8;
+			fontscale = textsmall;
 		}
 	}
 	block
 	{
 		attributes
 		{
-			x = 80;
-			y = 418;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xleft;
+			y = ybottom;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO7GTITLE;
 		}
 		content 
 		{ 
 			text = $INFO7G; 
-			fontscale = 0.8;
+			fontscale = textsmall;
 		}
 	}
 	block
 	{
 		attributes
 		{
-			x = 296;
-			y = 418;
-			width = 207;
-			height = 145;
-			margin = 10;
+			x = xcenter;
+			y = ybottom;
+			width = thirdwidth;
+			height = thirdheight;
 		}
 		content
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO7HTITLE;
 		}
 		content 
 		{ 
 			text = $INFO7H; 
-			fontscale = 0.8;
+			fontscale = textsmall;
 		}
 	}
 	block
 	{
 		attributes
 		{
-			x = 513;
-			y = 418;
-			width = 206;
-			height = 145;
-			margin = 10;
+			x = xright;
+			y = ybottom;
+			width = thirdwidth;
+			height = thirdheight;
 			// scrollspeed = 0.2; // Value is measured in pixels scrolled per tic
 			// scrolldelay = 35; // Number of tics to wait before scrolling
 		}
@@ -1516,13 +1459,13 @@ page
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = $INFO7ITITLE;
 		}
 		content 
 		{ 
 			text = $INFO7I; 
-			fontscale = 0.8;
+			fontscale = textsmall;
 		}
 	}	
 }
@@ -1551,7 +1494,6 @@ page
 			y = 150;
 			width = 200;
 			height = 250;
-			margin = 10;
 			scrollspeed = 0.5; // Value is measured in pixels scrolled per tic
 			scrolldelay = 35; // Number of tics to wait before scrolling
 		}
@@ -1559,7 +1501,7 @@ page
 		{
 			font = BigFont;
 			fontcolor = White;
-			fontscale = 0.75;
+			fontscale = titlesmall;
 			text = Scroller Demo;
 		}
 		content
@@ -1571,3 +1513,5 @@ page
 		}
 	}
 }
+
+*/
