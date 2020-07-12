@@ -176,6 +176,9 @@ class IntroScroll : TextScroll
 	}
 }
 
+// Base class for finale menu screens.  Inherit from this and configure via the Init function (see FinaleC1 class below)
+// Call from ACS with: 'ScriptCall("Menu", "SetMenu", "FinaleC1");'
+// Wait for completion from within ACS with: 'While (!ScriptCall("Finale", "Ready")) { Delay(35); }' (checks if the currently open scroller is done)
 class Finale : GenericMenu
 {
 	TextureID background, strips, label_l, label_r, frame;
@@ -191,6 +194,8 @@ class Finale : GenericMenu
 
 	LevelData totals;
 
+	bool finished;
+
 	override void Init(Menu parent)
 	{
 		GenericMenu.Init(parent);
@@ -204,21 +209,20 @@ class Finale : GenericMenu
 		h = 400;
 		w = int(h * screen.GetAspectRatio());
 		widthratio = 640 / (h * screen.GetAspectRatio());
+		alpha = 1.0;
 
 		w = int(w * widthratio);
 
 		lineheight = 12;
 
 		textwidth = 300;
-		textheight = 220;
+		textheight = 240;
 
 		background = TexMan.CheckForTexture("graphics/finale/finale_background.png", TexMan.Type_Any);
 		strips = TexMan.CheckForTexture("graphics/finale/finale_strips.png", TexMan.Type_Any);
 		label_l = TexMan.CheckForTexture("graphics/finale/finale_label_l.png", TexMan.Type_Any);
 		label_r = TexMan.CheckForTexture("graphics/finale/finale_label_r.png", TexMan.Type_Any);
 		frame = TexMan.CheckForTexture("graphics/finale/finale_frame.png", TexMan.Type_Any);
-
-		text = "$EPILOGUEC1";
 
 		lines = fnt.BreakLines(StringTable.Localize(text), textwidth);
 		maxlines = textheight / lineheight;
@@ -231,32 +235,44 @@ class Finale : GenericMenu
 	{
 		if (!lines) { return; }
 
-		double alpha = min(1.0, drawtic / 140.0);
-		if (background) { screen.DrawTexture(background, false, 0, 0, DTA_FullScreenEx, 3, DTA_Alpha, alpha); }
+		double backalpha = min(0.5, drawtic / 140.0) * alpha;
+		if (background) { screen.DrawTexture(background, false, 0, 0, DTA_FullScreenEx, 3, DTA_Alpha, backalpha); }
 
 		if (drawtic > 140)
 		{
-			double stripalpha = min(1.0, (drawtic - 140) / 140.0);
+			double stripalpha = min(1.0, (drawtic - 140) / 140.0) * alpha;
 			if (strips) { screen.DrawTexture(strips, false, 0, 0, DTA_FullScreenEx, 3, DTA_Alpha, stripalpha); }
-			if (label_l) { screen.DrawTexture(label_l, false, 32, 180, DTA_320x200, true, DTA_Alpha, stripalpha); }
-			if (label_r) { screen.DrawTexture(label_r, false, 320 - 32 - TexMan.GetSize(label_r), 180, DTA_320x200, true, DTA_Alpha, stripalpha); }
-			screen.DrawText(SmallFont, Font.CR_GRAY, 210, 183, "pg " .. page + 1 .. " of " .. maxpages + 1, DTA_320x200, true, DTA_Alpha, stripalpha);
+
+			int lw, lh;
+			int sw = 800;
+			int sh = 600;
+			double labelscale = 1.5;
+
+			if (label_r)
+			{
+				[lw, lh] = TexMan.GetSize(label_r);
+				double offset = (sw / 10) / labelscale + lw;
+				screen.DrawTexture(label_r, false, sw / labelscale - offset, sh / labelscale - 4 * labelscale - lh, DTA_VirtualWidthF, sw / labelscale, DTA_VirtualHeightF, sh / labelscale, DTA_Alpha, stripalpha);
+				screen.DrawText(SmallFont, Font.CR_GRAY, sw / labelscale - offset + 12, sh / labelscale - 4 * labelscale  + 3 / labelscale - lh, "pg " .. page + 1 .. " of " .. maxpages + 1, DTA_VirtualWidthF, sw / labelscale, DTA_VirtualHeightF, sh / labelscale, DTA_Alpha, stripalpha);
+			}
+
+			if (label_l) { screen.DrawTexture(label_l, false, (sw / 10) / labelscale, sh / labelscale - 4 * labelscale - lh, DTA_VirtualWidthF, sw / labelscale, DTA_VirtualHeightF, sh / labelscale, DTA_Alpha, stripalpha); }
 		}
 
 		if (drawtic > 70)
 		{
-			double framealpha = min(1.0, (drawtic - 70) / 140.0);
+			double framealpha = min(1.0, (drawtic - 70) / 140.0) * alpha;
 			if (frame) { screen.DrawTexture(frame, false, 0, 0, DTA_FullScreenEx, 3, DTA_Alpha, framealpha); }
 		}
 
 		if (drawtic > 175)
 		{
-			double statsalpha = min(1.0, (drawtic - 175) / 140.0);
+			double statsalpha = min(1.0, (drawtic - 175) / 140.0) * alpha;
 
 			int lineheight = 12;
 			int line = 0;
 
-			int starty = 300;
+			int starty = 320;
 			int titlex = 56;
 			int valuex = titlex + 196;
 
@@ -287,7 +303,8 @@ class Finale : GenericMenu
 			line++;
 		}
 
-		screen.DrawText(titlefnt, Font.CR_WHITE, 300, 100, "Epilogue", DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, alpha);
+		double textalpha = min(1.0, drawtic / 140.0) * alpha;
+		screen.DrawText(titlefnt, Font.CR_WHITE, 300, 100, "Epilogue", DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, textalpha);
 
 		int start = page * maxlines;
 		int end = min(start + maxlines, lines.Count());
@@ -297,7 +314,7 @@ class Finale : GenericMenu
 		for (int l = start; l < end || chars > texttic; l++)
 		{
 			int len = min(texttic - chars, lines.StringAt(l).length());
-			screen.DrawText(fnt, Font.CR_DARKGRAY, 300, 120 + (l - start) * lineheight, lines.StringAt(l).Left(len), DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, alpha);
+			screen.DrawText(fnt, Font.CR_DARKGRAY, 300, 120 + (l - start) * lineheight, lines.StringAt(l).Left(len), DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, textalpha);
 			chars += len;
 		}
 	}
@@ -317,6 +334,12 @@ class Finale : GenericMenu
 			texttic ++;
 		}
 
+		if (finished)
+		{
+			alpha -= 1.0 / 70; // Fade out over two seconds
+			if (alpha <= 0) { Close(); }
+		}
+
 		Super.Ticker();
 	}
 
@@ -324,7 +347,7 @@ class Finale : GenericMenu
 	{
 		if (mkey == MKEY_Back)
 		{
-			Close();	
+			finished = true;
 			return true;
 		}
 		else if (mkey == MKEY_Right || mkey == MKEY_Down || mkey == MKEY_Enter)
@@ -435,4 +458,41 @@ class Finale : GenericMenu
 		return totals;
 	}
 
+	static bool Ready()
+	{
+		Menu current = Menu.GetCurrentMenu();
+
+		if (current is "Finale" && Finale(current).finished) { return true; }
+		else { return false; }
+	}
+}
+
+class FinaleC1 : Finale
+{
+	override void Init(Menu parent)
+	{
+		text = "$EPILOGUEC1";
+
+		Super.Init(parent);
+	}
+}
+
+class FinaleC2 : Finale
+{
+	override void Init(Menu parent)
+	{
+		text = "$EPILOGUEC2";
+
+		Super.Init(parent);
+	}
+}
+
+class FinaleC3 : Finale
+{
+	override void Init(Menu parent)
+	{
+		text = "$EPILOGUEC3";
+
+		Super.Init(parent);
+	}
 }
