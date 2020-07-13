@@ -74,7 +74,7 @@ class BoAInfo : GenericMenu
 			[lw, lh] = TexMan.GetSize(label_r);
 			double offset = (w / 10) / labelscale + lw;
 			screen.DrawTexture(label_r, false, w / labelscale - offset, h / labelscale - 4 * labelscale - lh, DTA_VirtualWidthF, w / labelscale, DTA_VirtualHeightF, h / labelscale);
-			screen.DrawText(SmallFont, Font.CR_GRAY, w / labelscale - offset + 12, h / labelscale - 4 * labelscale  + 3 / labelscale - lh, "pg " .. mScreen .. " of " .. maxpages, DTA_VirtualWidthF, w / labelscale, DTA_VirtualHeightF, h / labelscale);
+			screen.DrawText(SmallFont, Font.CR_GRAY, w / labelscale - offset + 12, h / labelscale - 4 * labelscale  + 3 / labelscale - lh, StringTable.Localize("$PAGE") .. " " .. mScreen .. " " .. StringTable.Localize("$OF") .. " " .. maxpages, DTA_VirtualWidthF, w / labelscale, DTA_VirtualHeightF, h / labelscale);
 		}
 
 		if (label_l) { screen.DrawTexture(label_l, false, (w / 10) / labelscale, h / labelscale - 4 * labelscale - lh, DTA_VirtualWidthF, w / labelscale, DTA_VirtualHeightF, h / labelscale); }
@@ -117,7 +117,8 @@ class BoAInfo : GenericMenu
 	{
 		if (type == MOUSE_Click)
 		{
-			MenuEvent(MKEY_Enter, false);
+			if (x > Screen.GetWidth() / 2) { MenuEvent(MKEY_Right, false); }
+			else { MenuEvent(MKEY_Left, false); }
 		}
 
 		return false;

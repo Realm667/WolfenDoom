@@ -43,12 +43,6 @@ class TextScroll : ReadThisMenu
 
 		scrolly += delay / scrollstep;
 
-		/*
-		background = TexMan.CheckForTexture("graphics/hud/general/M_INJ.png", TexMan.Type_Any);
-		scrollback = TexMan.CheckForTexture("graphics/intromap/ddb_lttb.png", TexMan.Type_Any);
-		overlay = TexMan.CheckForTexture("graphics/hud/general/MOVIEHD5.png", TexMan.Type_Any);
-		*/
-
 		if (scrollback)
 		{
 			[backwidth, backheight] = TexMan.GetSize(scrollback);
@@ -185,16 +179,17 @@ class Finale : GenericMenu
 	Font fnt, titlefnt;
 	String text;
 
-	double alpha, widthratio;
-	int w, h, lineheight, textwidth, textheight;
-	int drawtic, texttic;
+	double alpha, widthratio, textscale;
+	int w, h, textwidth, textheight;
+	int drawtic;
+	double texttic, lineheight;
 
 	BrokenLines lines;
 	int page, oldpage, maxlines, maxpages, curchar, maxdrawn;
 
 	LevelData totals;
 
-	bool finished;
+	bool finished, nostats, swapsides;
 
 	override void Init(Menu parent)
 	{
@@ -213,10 +208,11 @@ class Finale : GenericMenu
 
 		w = int(w * widthratio);
 
-		lineheight = 12;
+		textwidth = 270;
+		textheight = 260;
+		textscale = 1.25;
 
-		textwidth = 300;
-		textheight = 240;
+		lineheight = 12 * textscale;
 
 		background = TexMan.CheckForTexture("graphics/finale/finale_background.png", TexMan.Type_Any);
 		strips = TexMan.CheckForTexture("graphics/finale/finale_strips.png", TexMan.Type_Any);
@@ -224,8 +220,8 @@ class Finale : GenericMenu
 		label_r = TexMan.CheckForTexture("graphics/finale/finale_label_r.png", TexMan.Type_Any);
 		frame = TexMan.CheckForTexture("graphics/finale/finale_frame.png", TexMan.Type_Any);
 
-		lines = fnt.BreakLines(StringTable.Localize(text), textwidth);
-		maxlines = textheight / lineheight;
+		lines = fnt.BreakLines(StringTable.Localize(text), int(textwidth / textscale));
+		maxlines = int(textheight / lineheight);
 		maxpages = lines.Count() / maxlines;
 
 		totals = GetTotals();
@@ -236,7 +232,7 @@ class Finale : GenericMenu
 		if (!lines) { return; }
 
 		double backalpha = min(0.5, drawtic / 140.0) * alpha;
-		if (background) { screen.DrawTexture(background, false, 0, 0, DTA_FullScreenEx, 3, DTA_Alpha, backalpha); }
+		if (background) { screen.DrawTexture(background, false, 0, 0, DTA_FullScreenEx, 3, DTA_FlipX, swapsides, DTA_Alpha, backalpha); }
 
 		if (drawtic > 140)
 		{
@@ -253,19 +249,23 @@ class Finale : GenericMenu
 				[lw, lh] = TexMan.GetSize(label_r);
 				double offset = (sw / 10) / labelscale + lw;
 				screen.DrawTexture(label_r, false, sw / labelscale - offset, sh / labelscale - 4 * labelscale - lh, DTA_VirtualWidthF, sw / labelscale, DTA_VirtualHeightF, sh / labelscale, DTA_Alpha, stripalpha);
-				screen.DrawText(SmallFont, Font.CR_GRAY, sw / labelscale - offset + 12, sh / labelscale - 4 * labelscale  + 3 / labelscale - lh, "pg " .. page + 1 .. " of " .. maxpages + 1, DTA_VirtualWidthF, sw / labelscale, DTA_VirtualHeightF, sh / labelscale, DTA_Alpha, stripalpha);
+				screen.DrawText(SmallFont, Font.CR_GRAY, sw / labelscale - offset + 12, sh / labelscale - 4 * labelscale  + 3 / labelscale - lh, StringTable.Localize("$PAGE") .. " " .. page + 1 .. " " .. StringTable.Localize("$OF") .. " " .. maxpages + 1, DTA_VirtualWidthF, sw / labelscale, DTA_VirtualHeightF, sh / labelscale, DTA_Alpha, stripalpha);
 			}
 
-			if (label_l) { screen.DrawTexture(label_l, false, (sw / 10) / labelscale, sh / labelscale - 4 * labelscale - lh, DTA_VirtualWidthF, sw / labelscale, DTA_VirtualHeightF, sh / labelscale, DTA_Alpha, stripalpha); }
+			if (label_l)
+			{
+				[lw, lh] = TexMan.GetSize(label_l);
+				screen.DrawTexture(label_l, false, (sw / 10) / labelscale, sh / labelscale - 4 * labelscale - lh, DTA_VirtualWidthF, sw / labelscale, DTA_VirtualHeightF, sh / labelscale, DTA_Alpha, stripalpha);
+			}
 		}
 
 		if (drawtic > 70)
 		{
 			double framealpha = min(1.0, (drawtic - 70) / 140.0) * alpha;
-			if (frame) { screen.DrawTexture(frame, false, 0, 0, DTA_FullScreenEx, 3, DTA_Alpha, framealpha); }
+			if (frame) { screen.DrawTexture(frame, false, 0, 0, DTA_FullScreenEx, 3, DTA_FlipX, swapsides, DTA_Alpha, framealpha); }
 		}
 
-		if (drawtic > 175)
+		if (drawtic > 175 && !nostats)
 		{
 			double statsalpha = min(1.0, (drawtic - 175) / 140.0) * alpha;
 
@@ -273,7 +273,7 @@ class Finale : GenericMenu
 			int line = 0;
 
 			int starty = 320;
-			int titlex = 56;
+			int titlex = swapsides ? w - 196 - 64 : 64;
 			int valuex = titlex + 196;
 
 			String t = StringTable.Localize("$STATS_TIME");
@@ -304,17 +304,23 @@ class Finale : GenericMenu
 		}
 
 		double textalpha = min(1.0, drawtic / 140.0) * alpha;
-		screen.DrawText(titlefnt, Font.CR_WHITE, 300, 100, "Epilogue", DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, textalpha);
 
 		int start = page * maxlines;
-		int end = min(start + maxlines, lines.Count());
 
 		int chars;
 
-		for (int l = start; l < end || chars > texttic; l++)
+		int textx = swapsides ? 72 : 296;
+		int texty = 100;
+		int lineoffset = 0;
+
+		for (int l = start; l < min(start + lineoffset + maxlines, lines.Count()) || chars > texttic; l++)
 		{
-			int len = min(texttic - chars, lines.StringAt(l).length());
-			screen.DrawText(fnt, Font.CR_DARKGRAY, 300, 120 + (l - start) * lineheight, lines.StringAt(l).Left(len), DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, textalpha);
+			int len = min(int(texttic) - chars, lines.StringAt(l).length());
+
+			if (l == start && lines.StringWidth(l) == 0) { lineoffset++; } // Skip printing blank lines at the beginning of a page
+
+			int xoffset = 0; //(textwidth - lines.StringWidth(l) * textscale) / 2;
+			screen.DrawText(fnt, Font.CR_DARKGRAY, (textx + xoffset) / textscale, (texty + (l - start - lineoffset) * lineheight) / textscale, lines.StringAt(l).Left(len), DTA_VirtualWidthF, w / textscale, DTA_VirtualHeightF, h / textscale, DTA_Alpha, textalpha);
 			chars += len;
 		}
 	}
@@ -331,7 +337,7 @@ class Finale : GenericMenu
 		else
 		{
 			drawtic++;
-			texttic ++;
+			texttic += 0.5;
 		}
 
 		if (finished)
@@ -487,11 +493,69 @@ class FinaleC2 : Finale
 	}
 }
 
+class FinaleC2Secret : Finale
+{
+	override void Init(Menu parent)
+	{
+		text = "$EPILOGUES2";
+		nostats = true;
+
+		Super.Init(parent);
+	}
+}
+
 class FinaleC3 : Finale
 {
 	override void Init(Menu parent)
 	{
 		text = "$EPILOGUEC3";
+
+		Super.Init(parent);
+	}
+}
+
+class FinaleC3Secret : Finale
+{
+	override void Init(Menu parent)
+	{
+		text = "$EPILOGUEC3S";
+		nostats = true;
+
+		Super.Init(parent);
+	}
+}
+
+class FinaleCutscene1 : Finale
+{
+	override void Init(Menu parent)
+	{
+		text = "$CUTSCENE1";
+		nostats = true;
+		swapsides = true;
+
+		Super.Init(parent);
+	}
+}
+
+class FinaleCutscene2 : Finale
+{
+	override void Init(Menu parent)
+	{
+		text = "$CUTSCENE2";
+		nostats = true;
+		swapsides = true;
+
+		Super.Init(parent);
+	}
+}
+
+class FinaleCutscene3 : Finale
+{
+	override void Init(Menu parent)
+	{
+		text = "$CUTSCENE3";
+		nostats = true;
+		swapsides = true;
 
 		Super.Init(parent);
 	}
