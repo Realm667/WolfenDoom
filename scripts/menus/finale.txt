@@ -76,7 +76,7 @@ class TextScroll : ReadThisMenu
 	{
 		scrolly -= scrollstep;
 
-		if (finished || scrolly < -(backheight - h)) // Wait until the bottom of the background image is on-screen before starting fading out
+		if (finished || scrolly < -(backheight - lineheight * 12)) // Wait until the scroller is most of the way done before starting the fade-out
 		{
 			finished = true;
 			alpha -= 1.0 / 70; // Fade out over two seconds
@@ -178,7 +178,7 @@ class IntroScroll : TextScroll
 
 // Base class for finale menu screens.  Inherit from this and configure via the Init function (see FinaleC1 class below)
 // Call from ACS with: 'ScriptCall("Menu", "SetMenu", "FinaleC1");'
-// Wait for completion from within ACS with: 'While (!ScriptCall("Finale", "Ready")) { Delay(35); }' (checks if the currently open scroller is done)
+// Wait for completion from within ACS with: 'While (!ScriptCall("Finale", "Ready")) { Delay(35); }' (checks if the currently open finale is closing)
 class Finale : GenericMenu
 {
 	TextureID background, strips, label_l, label_r, frame;
