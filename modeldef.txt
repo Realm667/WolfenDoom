@@ -6563,7 +6563,29 @@ Model CODStukaF
 	FrameIndex MDLA A 0 0
 }
 
+Model CODStuka_Deco
+{
+	Path "models/"
+	Model 0 "stukas.md3"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}
+
 Model CODCondor
+{
+	Path "models/"
+	Model 0 "condor.md3"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}
+
+Model CODCondor_Deco
 {
 	Path "models/"
 	Model 0 "condor.md3"
@@ -7949,7 +7971,53 @@ Model T34Cannon
 	FrameIndex MDLA A 0 0
 }
 
-Model DestroyedT34Tank
+Model T34TankProp //decorative
+{
+	Path "models/"
+	Model 0 "t34_a.md3"
+	Model 1 "t34_b.md3"
+	Model 2 "t34_c.md3"
+	Scale 1.1 1.1 1.1
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}
+
+Model T34TreadsProp
+{
+	Path "models/"
+	Model 0 "t34_a.md3"
+	Scale 1.1 1.1 1.1
+	USEACTORPITCH
+	USEACTORROLL
+	
+	FrameIndex MDLA A 0 0
+}
+
+Model T34TurretProp
+{
+	Path "models/"
+	Model 0 "t34_b.md3"
+	Scale 1.1 1.1 1.1
+	USEACTORPITCH
+	USEACTORROLL
+	
+	FrameIndex MDLA A 0 0
+}
+
+Model T34CannonProp
+{
+	Path "models/"
+	Model 0 "t34_c.md3"
+	Scale 1.1 1.1 1.1
+	USEACTORPITCH
+	USEACTORROLL
+	
+	FrameIndex MDLA A 0 0
+}
+
+Model DestroyedT34Tank //destroyed
 {
 	Path "models/"
 	Model 0 "t34_d.md3"
@@ -8021,7 +8089,7 @@ Model US_ShermanDead
 	FrameIndex MDLA A 0 0
 }
 
-Model US_ShermanProp
+Model US_ShermanProp //decorative
 {
 	Path "models/"
 	Model 0 "sherbod1.md3"
@@ -8047,6 +8115,42 @@ Model US_ShermanTurretProp
 }
 
 Model US_ShermanCannonProp
+{
+	Path "models/"
+	Model 0 "shercann.md3"
+	Scale 1.1 1.1 1.1
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}
+
+Model US_ShermanDeco //decorative, no hitbox
+{
+	Path "models/"
+	Model 0 "sherbod1.md3"
+	Model 1 "sherbod2.md3"
+	Model 2 "sherbod3.md3"
+	Model 3 "sherbod4.md3"
+	Scale 1.1 1.1 1.1
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}
+
+Model US_ShermanTurretDeco
+{
+	Path "models/"
+	Model 0 "sherturr.md3"
+	Scale 1.1 1.1 1.1
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}
+
+Model US_ShermanCannonDeco
 {
 	Path "models/"
 	Model 0 "shercann.md3"

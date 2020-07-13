@@ -62,6 +62,17 @@ ACTOR TMGuard
 	}
 }
 
+ACTOR TMGuard2 : TMGuard
+{
+	//$Title Wehrmacht Guard, Decorative
+	States
+	{
+	Spawn:
+		MGR2 N -1
+		Stop
+	}
+}
+
 ACTOR TMGuardWithShadow : TMGuard
 {
 	//$Title Titlemap Soldier (with shadow)
@@ -389,6 +400,17 @@ ACTOR TMMarineHQ5 : TMMarineHQ1
 		Stop
 	Pose3:
 		MARH A -1
+		Stop
+	}
+}
+
+ACTOR TMRDragunovGuard : TMMarineHQ1
+{
+	//$Title NKVD Russian Dragunov Guard, Cutscenes
+	States
+	{
+	Spawn:
+		NKVR N -1
 		Stop
 	}
 }

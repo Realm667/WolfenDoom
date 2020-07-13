@@ -450,6 +450,45 @@ ACTOR US_ShermanProp : 3dObstacle
 	}
 }
 
+ACTOR US_ShermanTurretDeco : MuseumBase {DistanceCheck "scenelod" +CANPASS }
+ACTOR US_ShermanCannonDeco : MuseumBase {DistanceCheck "scenelod" +CANPASS }
+
+ACTOR US_ShermanDeco : MuseumBase
+{
+	//$Category Models (BoA)/Vehicles
+	//$Title US M4 Sherman Tank, Decorative
+	DistanceCheck "scenelod"
+	States
+	{
+	Spawn:
+		MDLA A -1 NODELAY {
+		A_SpawnItemEx("US_ShermanTurretDeco", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid);
+		A_SpawnItemEx("US_ShermanCannonDeco", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid); }
+		Stop
+	}
+}
+
+ACTOR T34TreadsProp : MuseumBase {DistanceCheck "scenelod" +CANPASS }
+ACTOR T34CannonProp : MuseumBase {DistanceCheck "scenelod" +CANPASS }
+ACTOR T34TurretProp : MuseumBase {DistanceCheck "scenelod" +CANPASS }
+
+ACTOR T34TankProp : MuseumBase
+{
+	//$Category Models (BoA)/Vehicles
+	//$Title T-34 Soviet Standard Tank (scenery)
+	//$Color 3
+	DistanceCheck "scenelod"
+	States
+	{
+	Spawn:
+		MDLA A -1 NODELAY {
+		A_SpawnItemEx("T34TurretProp", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid);
+		A_SpawnItemEx("T34CannonProp", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid);
+		A_SpawnItemEx("T34TreadsProp", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid); }
+		Stop
+	}
+}
+
 ACTOR COD_DestroyedTrainPlain : ModelIncaTrain
 {
 	//$Title Destroyed City Train (Plain)
@@ -707,6 +746,19 @@ ACTOR COD_StukaBomb2 : COD_StukaBomb1
 	Height 64
 }
 
+ACTOR CODStuka_Deco : MuseumBase
+{
+	//$Category Models (BoA)/Planes
+	//$Title Stuka Airplane, Decorative
+	DistanceCheck "scenelod"
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
+}
+
 ACTOR TMPlane : ModelBase
 {
 	//$Category Cutscenes (BoA)
@@ -730,6 +782,19 @@ ACTOR CODCondor : 3dObstacle
 	RenderRadius 512
 	Radius 8
 	Height 8
+}
+
+ACTOR CODCondor_Deco : MuseumBase
+{
+	//$Category Models (BoA)/Planes
+	//$Title German Condor Focke-Wulf FW200 Bomber, Decorative
+	DistanceCheck "scenelod"
+	States
+	{
+	Spawn:
+		MDLA A -1
+		Stop
+	}
 }
 
 ACTOR CODSideCar : 3dObstacle
