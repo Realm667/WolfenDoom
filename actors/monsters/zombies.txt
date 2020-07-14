@@ -324,6 +324,7 @@ ACTOR ZGermanShepherd : ZombieStandard
 	PainSound "cerb/pain"
 	DeathSound "cerb/death"
 	ActiveSound "cerb/act"
+	Obituary "$ZDOGS"
 	HitObituary "$ZDOGS"
 	-CANUSEWALLS
 	-CANPUSHWALLS
@@ -396,6 +397,7 @@ ACTOR Camp_PrisonerZombie : ZombieStandard
 	Nazi.ZombieVariant "Camp_PrisonerZombie"
 	Health 30
 	Speed 3
+	Obituary "$PRISBITE"
 	DropItem "Soul"
 	States
 	{
@@ -441,6 +443,7 @@ ACTOR CivilianZombie1 : Camp_PrisonerZombie
 	Nazi.ZombieVariant "CivilianZombie1"
 	Health 20
 	Speed 2
+	Obituary "$CIVBITE"
 	States
 	{
 	Spawn:

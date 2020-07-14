@@ -124,7 +124,7 @@
 	- Item given to player when you press use to interact with a FRIENDLY Nazi
 
 	user_activatewhenshot
-	- If an enemy is DORMANT and has this variabe set to non-zero, they will 
+	- If an enemy is DORMANT and has this variable set to non-zero, they will 
 	  become non-dormant if fired on by a player.
 
   New Functions (Base class)
@@ -2370,6 +2370,7 @@ class Nazi : Base
 
 			SetState(SpawnState);
 			A_Face(user);
+			bPushable = True;
 
 			int index = activationcount;
 			if (index == 0 && user_spyitem == "") { index = Random(1, 3); }
