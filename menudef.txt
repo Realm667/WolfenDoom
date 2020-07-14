@@ -205,7 +205,7 @@ OptionMenu "BoAPredefinedOptions"
 	SafeCommand "$OPT_VHI", 			"boa_veryhigh",	"$OPT_VHIM"
 }
 
-OptionMenu "BoACheatsOptions" //to merge with cheat options already existing on miscellaneous?
+OptionMenu "BoACheatsOptions"
 {
 	Title  "$OPT_CHEAT"
 	StaticText "$WARNING3"
@@ -249,6 +249,10 @@ OptionMenu "BoAOptionsMenu"
 	SafeCommand "$OPTMNU_DEFAULTS",		"reset2defaults"
 	SafeCommand	"$OPTMNU_RESETTOSAVED",	"reset2saved"
 	Command "$OPTMNU_CONSOLE",			"menuconsole"
+	StaticText " "
+	StaticText " "
+	StaticText " "
+	Submenu "$OPTMNU_ORGOPS",			"OptionsMenu"
 }
 
 //-------------------------------------------------------------------------------------------
@@ -351,6 +355,10 @@ OptionMenu "BoACustomizeControls"
 	Submenu    "$MAPCNTRLMNU_CONTROLS" , "BoAMapControlsMenu"
 	Submenu    "$CNTRLMNU_CHAT"        , "BoAChatControlsMenu"
 	Submenu    "$CNTRLMNU_OTHER"       , "BoAOtherControlsMenu"
+	StaticText " "
+	StaticText " "
+	StaticText " "
+	Submenu "$OPTMNU_ORGCTL"		   , "CustomizeControls"
 }
 
 OptionMenu "BoAActionControlsMenu"
@@ -880,6 +888,10 @@ OptionMenu "BoAVideoOptions"
 	Option "$DSPLYMNU_TELEZOOM",				"telezoom", 					"OnOff"
 	Slider "$DSPLYMNU_QUAKEINTENSITY",			"r_quakeintensity", 			0.0, 1.0, 0.05, 2
 	Option "$DSPLYMNU_NOMONSTERINTERPOLATION",	"nomonsterinterpolation", 		"NoYes"
+	StaticText " "
+	StaticText " "
+	StaticText " "
+	Submenu "$OPTMNU_ORGVID",					"VideoOptions"
 }
 
 //-------------------------------------------------------------------------------------------
@@ -1511,6 +1523,10 @@ OptionMenu BoAGameplayOptions //needs to be reworked, we should keep fastmonster
 	Option "$GMPLYMNU_DONTCHECKAMMO",			"sv_dontcheckammo", "NoYes"
 	Option "$GMPLYMNU_KILLBOSSSPAWNS",			"sv_killbossmonst", "YesNo"
 	Option "$GMPLYMNU_NOCOUNTENDMONSTER",		"sv_nocountendmonst", "NoYes"
+	StaticText " "
+	StaticText " "
+	StaticText " "
+	Submenu "$OPTMNU_ORGGPL",					"GameplayOptions"
 	Class "GameplayMenu"
 }
 
@@ -2358,6 +2374,10 @@ OptionMenu "BoAOpenGLOptions"
 	Slider "$GLPREFMNU_MENUBLUR",				gl_menu_blur, 0, 5.0, 0.5, 2
 	StaticText " "
 	Option "$GLPREFMNU_MULTISAMPLE", 			gl_multisample,					"Multisample"
+	StaticText " "
+	StaticText " "
+	StaticText " "
+	Submenu "$OPTMNU_ORGOGL",					"OpenGLOptions"
 }
 
 OptionMenu "BoAVR3DMenu"
