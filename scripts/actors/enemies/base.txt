@@ -1914,6 +1914,21 @@ class Nazi : Base
 				sprite = SpawnState.sprite;
 			}
 		}
+
+		if (bCanUseWalls && target && target.player && target.FindInventory("GierToken"))
+		{
+			for (int c = 1; c < Random(3, 6); c++)
+			{
+				Actor coin = Spawn("CoinDrop", pos + (Random(-4, 4), Random(-4, 4), 0));
+
+				if (coin)
+				{
+					coin.bCountItem = false;
+					coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+				}
+			}
+		}
+
 		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
 	}
 

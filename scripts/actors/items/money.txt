@@ -3,6 +3,7 @@ class CoinItem : StackableInventory {
 	// Inheriting from StackableInventory prevents player from picking it up if player is maxed out on it.
 
 	bool AllowPickup;
+	bool despawn;
 
 	Default {
 		Inventory.MaxAmount 9999;
@@ -46,5 +47,37 @@ class CoinItem : StackableInventory {
 		}
 
 		Super.Tick();
+	}
+}
+
+class CoinDrop : CoinItem
+{
+	int time;
+	int duration;
+
+	Property Duration:duration;
+
+	Default
+	{
+		-COUNTITEM
+		Scale 0.5;
+		Inventory.Amount 1;
+		Inventory.PickupMessage "$COIN";
+		Inventory.PickupSound "treasure/pickup";
+		CoinDrop.Duration -60;
+	}
+
+	States
+	{
+		Spawn:
+			ONEC A -1 LIGHT("COINLITE");
+			Stop;
+	}
+
+	override void Tick()
+	{
+		if (time++ > ((duration >= 0) ? duration : -duration * 35) && CheckIfSeen()) { Destroy(); } // Disappears if out of sight and duration has elapsed
+
+		Actor.Tick();
 	}
 }

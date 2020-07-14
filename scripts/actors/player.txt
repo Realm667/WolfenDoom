@@ -694,7 +694,7 @@ class BoAPlayer : PlayerPawn
 				{
 					if (Health < MaxHealth) // ...and we're not at full health...
 					{
-						GiveInventory("BandagesPowerup", 1); // Heal by 10 and play the bandage tearing sound
+						GiveInventory("RegenPowerup", 1); // Heal by 10 and play the bandage tearing sound
 						A_StartSound("pickup/bandage", CHAN_VOICE);
 						interactiontimeout = 350; // Set use delay of 10 seconds before re-use
 					}

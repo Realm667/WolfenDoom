@@ -14,37 +14,6 @@ ACTOR NazisBackpack : BackpackItem
 	}
 }
 
-ACTOR NaziBerserk : CustomInvBase
-{
-	//$Title Totale Macht (Berserk)
-	//$Sprite PSTRA0
-	+INVENTORY.INVBAR
-	Inventory.Icon "I_BSRK"
-	Inventory.MaxAmount 1
-	Inventory.PickupSound "misc/p_pkup"
-	Inventory.PickupMessage "$SSBERSK"
-	Tag "$TAGBERSP"
-	States
-	{
-	Spawn:
-		PSTR A -1
-		Loop
-	Pickup:
-		Stop
-	Use:
-		TNT1 A 0 {
-			A_GiveInventory("PowerStrength");
-			HealThing(100);
-			A_SelectWeapon("KnifeSilent");
-			A_GiveInventory("BerserkToken", 1);
-			ACS_NamedExecuteAlways("TotaleMacht", 0);
-		}
-		Stop
-	}
-}
-
-ACTOR BerserkToken : Inventory {Inventory.MaxAmount 1}
-
 ACTOR ScubaGearGiver : RadSuit
 {
 	//$Category Powerups (BoA)
