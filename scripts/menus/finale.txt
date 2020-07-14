@@ -261,7 +261,7 @@ class Finale : GenericMenu
 
 		if (drawtic > 70)
 		{
-			double framealpha = min(1.0, (drawtic - 70) / 140.0) * alpha;
+			double framealpha = min(1.0, (drawtic - 70) / 140.0) * alpha * 0.5;
 			if (frame) { screen.DrawTexture(frame, false, 0, 0, DTA_FullScreenEx, 3, DTA_FlipX, swapsides, DTA_Alpha, framealpha); }
 		}
 
@@ -520,6 +520,7 @@ class FinaleC3Secret : Finale
 	{
 		text = "$EPILOGUEC3S";
 		nostats = true;
+		swapsides = true;
 
 		Super.Init(parent);
 	}
