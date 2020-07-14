@@ -327,7 +327,8 @@ class BoAInfo : GenericMenu
 			}
 
 			double screenscale = screen.GetHeight() / double(h);
-			textscale = max(textscale, 11 / (fnt.GetHeight() * screenscale));
+			double minscale = 11 / (fnt.GetHeight() * screenscale);
+			textscale = max(textscale, minscale);
 
 			int clr = Font.CR_GRAY;
 			String fontcolor = GetString(content, "fontcolor");
@@ -480,7 +481,7 @@ class BoAInfo : GenericMenu
 
 				if (yoffset > bh - margin)
 				{
-					if (!scrollspeed)
+					if (!scrollspeed && minscale == textscale) // Only scroll if you adjusted the scaling and aren't scrolling already
 					{
 						SetValue(content, "scrollspeed", "0.25");
 						SetValue(content, "scrolldelay", "40");
