@@ -158,5 +158,11 @@ class LoadScreen : StaticEventHandler
 			screen.DrawTexture(AltGraphic, false, x, y, DTA_Alpha, fadealpha * alpha, DTA_CenterOffset, true, DTA_DestWidth, int(size.x * scale), DTA_DestHeight, int(size.y * scale));
 			screen.DrawTexture(LoadingGraphic, false, x, y, DTA_Alpha, alpha, DTA_CenterOffset, true, DTA_DestWidth, int(size.x * scale), DTA_DestHeight, int(size.y * scale));
 		}
+
+		// Catch edge cases where the status bar isn't on top...
+		if (BoAStatusBar(StatusBar) && BoAStatusBar(StatusBar).savetimer)
+		{
+			BoAStatusBar(StatusBar).DrawSaveIcon();
+		}
 	}
 }

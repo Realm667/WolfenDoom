@@ -79,6 +79,7 @@ class BoAStatusBar : BaseStatusBar
 		if (gameaction == ga_savegame || gameaction == ga_autosave)
 		{
 			// Don't print save messages
+			savetimer = savetimertime;
 			return true;
 		}
 
@@ -87,10 +88,9 @@ class BoAStatusBar : BaseStatusBar
 
 	override void Tick()
 	{
-		if (gameaction == 9 || gamestate == 10) { savetimer = savetimertime; }
-		else { savetimer = max(0, savetimer - 1); }
-
 		Super.Tick();
+
+		savetimer = max(0, savetimer - 1);
 
 		mAirInterpolator.Update(GetAirTime());
 		mStaminaInterpolator.Update(GetAmount("Stamina")); // This is a custom inventory item, not CPlayer.mo.stamina!
@@ -189,11 +189,8 @@ class BoAStatusBar : BaseStatusBar
 				if (CPlayer.mo is "ShermanPlayer") { DrawTankStatusBar(); }
 				else if (CPlayer.mo is "KeenPlayer") { DrawKeenStatusBar(); }
 			}
-
-			return;
 		}
-
-		if (!automapactive)
+		else if (!automapactive)
 		{
 			// Draw fullscreen overlays, regardless of status bar state
 			BeginHUD(1, True);
@@ -233,6 +230,11 @@ class BoAStatusBar : BaseStatusBar
 			SetSize(0, 320, 200);
 		}
 
+		DrawSaveIcon();
+	}
+
+	void DrawSaveIcon()
+	{
 		if (savetimer)
 		{
 			TextureID save = TexMan.CheckForTexture("SAVEICON", TexMan.Type_Any);
@@ -244,7 +246,7 @@ class BoAStatusBar : BaseStatusBar
 				if (savetimer > (savetimertime - 15)) { savealpha = (savetimertime - savetimer) / 15.0; }
 				else if (savetimer <= 15) { savealpha = savetimer / 15.0; }
 
-				screen.DrawTexture(save, true, 620, 20, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidth, 640, DTA_VirtualHeight, 480, DTA_Alpha, savealpha);
+				screen.DrawTexture(save, true, 620, 20, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidth, 640, DTA_VirtualHeight, 400, DTA_Alpha, savealpha);
 			}
 		}
 	}
