@@ -749,8 +749,16 @@ class PowerZyklonResistance : PowerProtection
 	}
 }
 
-class NaziBerserk : CustomInvBase
+class SavingHealth : CustomInvBase
 {
+	String savemessage;
+
+	Property SaveMessage : savemessage;
+}
+
+class NaziBerserk : SavingHealth
+{
+
 	Default
 	{
 		//$Title Totale Macht (Berserk)
@@ -761,6 +769,7 @@ class NaziBerserk : CustomInvBase
 		Inventory.PickupSound "misc/p_pkup";
 		Inventory.PickupMessage "$SSBERSK";
 		Tag "$TAGBERSP";
+		SavingHealth.SaveMessage "$TMSAVE";
 	}
 
 	States
@@ -793,11 +802,12 @@ class BerserkToken : PowerUp // Token is checked for in ACS-based sprint handlin
 class BerserkRegen : RegenPowerUp
 {
 	double blendstep;
+	bool initial;
 
 	Default
 	{
 		Powerup.Duration -60;
-		Powerup.Color "88 00 00", 0.25;
+		Powerup.Color "00 7D 5C", 0.5; // Zyklon green
 		RegenPowerUp.RegenSound "";
 		RegenPowerUp.RegenInterval 1; // Start healing quickly...
 	}
@@ -806,8 +816,9 @@ class BerserkRegen : RegenPowerUp
 	{
 		Super.InitEffect();
 
-		owner.A_StartSound("activate/macht", CHAN_AUTO, CHANF_LOCAL, 0.75, 0.5);
-		owner.A_StartSound("EXPDSND5", CHAN_AUTO, CHANF_LOCAL, 1.5, 0.25);
+		owner.A_StartSound("activate/macht", CHAN_AUTO, CHANF_LOCAL, 15.0, 0.5);
+		owner.A_StartSound("EXPDSND5", CHAN_AUTO, CHANF_LOCAL, 15.0, 0.25);
+		initial = true;
 	}
 
 	override void DoEffect()
@@ -822,22 +833,40 @@ class BerserkRegen : RegenPowerUp
 
 	override color GetBlend()
 	{
-		if (owner.health < 30) // Don't flash when the damage red pulse is already on screen
-		{
-			return 0;
-		}
+		double amt;
 
-		if ((Level.maptime % TICRATE) != 0)
+		if (effecttics < 175) // Pulse when there are 5 seconds left
 		{
-			double amt = (1.0 - double(owner.health) / owner.GetMaxHealth(true)) * sin(blendstep) * double(effecttics) / Default.effecttics;
+			if (effecttics == 174 || effecttics % TICRATE == 0) { blendstep = 0; }
+
+			amt = sin(blendstep) / 4;
 			blendstep += 90.0 / TICRATE;
+		}
+		else if (initial || (Level.maptime % TICRATE) != 0)
+		{
+			if (initial) // Always flash over two seconds on initial activation
+			{
+				amt = sin(blendstep);
+				blendstep += 45.0 / TICRATE;
 
-			return Color(int(BlendColor.a * amt), BlendColor.r, BlendColor.g, BlendColor.b);
+				if (blendstep >= 180.0)
+				{
+					blendstep = 0;
+					initial = false;
+				}
+			}
+			else // Flash every second after that, with more transparency the healthier you are and the weaker the effect gets
+			{
+				amt = (1.0 - double(owner.health) / owner.GetMaxHealth(true)) * sin(blendstep) * double(effecttics) / Default.effecttics;
+				blendstep += 90.0 / TICRATE;
+			}
 		}
 		else
 		{
 			blendstep = 0;
 		}
+
+		if (amt) { return Color(int(BlendColor.a * amt), BlendColor.r, BlendColor.g, BlendColor.b); }
 
 		return 0;
 	}
@@ -910,7 +939,7 @@ class GierToken : PowerUp // Token is checked for in Nazi class to cause enemies
 
 	Default
 	{
-		Powerup.Color "88 66 00", 0.65;
+		Powerup.Color "88 66 00", 0.65; // Gold flash
 		Powerup.Duration -60;
 	}
 
@@ -928,14 +957,22 @@ class GierToken : PowerUp // Token is checked for in Nazi class to cause enemies
 
 	override color GetBlend()
 	{
-		if (blendstep < 180.0)
+		double amt;
+		if (effecttics < 175) // Pulse when there are 5 seconds left
 		{
-			double amt = sin(blendstep);
-			blendstep += 135.0 / TICRATE;
+			if (effecttics == 174 || effecttics % TICRATE == 0) { blendstep = 0; }
 
-			return Color(int(BlendColor.a * amt), BlendColor.r, BlendColor.g, BlendColor.b);
+			amt = sin(blendstep) / 4;
+			blendstep += 90.0 / TICRATE;
+		}
+		else if (blendstep < 180.0)  // Fast flash of gold on activation
+		{
+			amt = sin(blendstep);
+			blendstep += 135.0 / TICRATE;
 		}
 
+		if (amt) { return Color(int(BlendColor.a * amt), BlendColor.r, BlendColor.g, BlendColor.b); }
+		
 		return 0;
 	}
 }
