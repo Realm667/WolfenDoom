@@ -22,6 +22,8 @@ class BoAStatusBar : BaseStatusBar
 	int LastHealth;
 	int LastMaxHealth;
 	int paintimer;
+	int savetimer;
+	int savetimertime;
 	String LastIcon;
 	String LastTag;
 	double hour, minute, second;
@@ -55,6 +57,8 @@ class BoAStatusBar : BaseStatusBar
 		mStaminaInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
 		mSuspicionInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
 		mVisibilityInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
+
+		savetimertime = 70;
 	}
 
 	override void NewGame ()
@@ -70,8 +74,22 @@ class BoAStatusBar : BaseStatusBar
 		mVisibilityInterpolator.Reset(0);
 	}
 
+	override bool ProcessNotify(EPrintLevel printlevel, String outline)
+	{
+		if (gameaction == ga_savegame || gameaction == ga_autosave)
+		{
+			// Don't print save messages
+			return true;
+		}
+
+		return false;
+	}
+
 	override void Tick()
 	{
+		if (gameaction == 9 || gamestate == 10) { savetimer = savetimertime; }
+		else { savetimer = max(0, savetimer - 1); }
+
 		Super.Tick();
 
 		mAirInterpolator.Update(GetAirTime());
@@ -213,6 +231,21 @@ class BoAStatusBar : BaseStatusBar
 		else
 		{
 			SetSize(0, 320, 200);
+		}
+
+		if (savetimer)
+		{
+			TextureID save = TexMan.CheckForTexture("SAVEICON", TexMan.Type_Any);
+
+			if (save)
+			{
+				double savealpha = 1.0;
+
+				if (savetimer > (savetimertime - 15)) { savealpha = (savetimertime - savetimer) / 15.0; }
+				else if (savetimer <= 15) { savealpha = savetimer / 15.0; }
+
+				screen.DrawTexture(save, true, 620, 20, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidth, 640, DTA_VirtualHeight, 480, DTA_Alpha, savealpha);
+			}
 		}
 	}
 
