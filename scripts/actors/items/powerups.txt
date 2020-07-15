@@ -792,11 +792,22 @@ class BerserkToken : PowerUp // Token is checked for in ACS-based sprint handlin
 
 class BerserkRegen : RegenPowerUp
 {
+	double blendstep;
+
 	Default
 	{
 		Powerup.Duration -60;
+		Powerup.Color "88 00 00", 0.25;
 		RegenPowerUp.RegenSound "";
 		RegenPowerUp.RegenInterval 1; // Start healing quickly...
+	}
+
+	override void InitEffect()
+	{
+		Super.InitEffect();
+
+		owner.A_StartSound("activate/macht", CHAN_AUTO, CHANF_LOCAL, 0.75, 0.5);
+		owner.A_StartSound("EXPDSND5", CHAN_AUTO, CHANF_LOCAL, 1.5, 0.25);
 	}
 
 	override void DoEffect()
@@ -807,6 +818,28 @@ class BerserkRegen : RegenPowerUp
 		{
 			regeninterval++; // ...and decrease healing rate over time.
 		}
+	}
+
+	override color GetBlend()
+	{
+		if (owner.health < 30) // Don't flash when the damage red pulse is already on screen
+		{
+			return 0;
+		}
+
+		if ((Level.maptime % TICRATE) != 0)
+		{
+			double amt = (1.0 - double(owner.health) / owner.GetMaxHealth(true)) * sin(blendstep) * double(effecttics) / Default.effecttics;
+			blendstep += 90.0 / TICRATE;
+
+			return Color(int(BlendColor.a * amt), BlendColor.r, BlendColor.g, BlendColor.b);
+		}
+		else
+		{
+			blendstep = 0;
+		}
+
+		return 0;
 	}
 }
 
@@ -845,8 +878,9 @@ class TotaleGier : CustomInvBase // Checked within Nazi class to drop coins on d
 	Default
 	{
 		//$Title Totale Gier (Make enemies drop gold when killed)
-		//$Sprite PSTRA0
+		//$Sprite TTGRA0
 		+INVENTORY.INVBAR
+		Inventory.Icon "I_TTGR";
 		Inventory.MaxAmount 1;
 		Inventory.PickupSound "misc/p_pkup";
 		Inventory.PickupMessage "$SSGIER";
@@ -856,7 +890,7 @@ class TotaleGier : CustomInvBase // Checked within Nazi class to drop coins on d
 	States
 	{
 		Spawn:
-			PSTR A -1;
+			TTGR A -1;
 			Loop;
 		Pickup:
 			Stop;
@@ -870,10 +904,38 @@ class TotaleGier : CustomInvBase // Checked within Nazi class to drop coins on d
 }
 
 
-class GierToken : PowerUp // Token is checked for in ACS-based sprint handling - no stamina use for the duration of this powerup!
+class GierToken : PowerUp // Token is checked for in Nazi class to cause enemies that are killed by the owner to drop coins on death
 {
+	double blendstep;
+
 	Default
 	{
+		Powerup.Color "88 66 00", 0.65;
 		Powerup.Duration -60;
+	}
+
+	override void InitEffect()
+	{
+		Super.InitEffect();
+
+		owner.A_StartSound("activate/gier", CHAN_AUTO, CHANF_LOCAL, 1.0, 2.0);
+
+		if (owner.player.mo == players[consoleplayer].camera)
+		{
+			StatusBar.SetMugshotState("Grin");
+		}
+	}
+
+	override color GetBlend()
+	{
+		if (blendstep < 180.0)
+		{
+			double amt = sin(blendstep);
+			blendstep += 135.0 / TICRATE;
+
+			return Color(int(BlendColor.a * amt), BlendColor.r, BlendColor.g, BlendColor.b);
+		}
+
+		return 0;
 	}
 }
