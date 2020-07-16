@@ -70,11 +70,15 @@ class StealthBase : Actor
 			if (mo) {
 				if (!mo.bShootable || mo.health <= 0) { continue; }
 				if (isFriend(mo)) { continue; }
-				if (Range && Distance3d(mo) > Range) { continue; }
+
+				double dist = Distance3D(mo);
+				if (Range && dist > Range) { continue; }
 				if (!IsVisible(mo, false, SearchParams)) { continue; }
 
 				let disguise = mo.FindInventory("DisguiseToken", True);
 				if (!disguise) { continue; }
+
+				if (target && dist > Distance3d(target)) { continue; } // get the closest player
 
 				target = mo;
 				playernum = p;
@@ -313,7 +317,7 @@ class SneakableGuardEyesIdle : StealthBase
 			{
 				A_ClearTarget();
 			}
-			else
+			else if (!threshold) // If there's a sight threshold, wait for that code to alert the actor
 			{
 				if (Nazi(master) && !master.bDormant) { Nazi(master).BecomeAlerted(target); }
 			}
