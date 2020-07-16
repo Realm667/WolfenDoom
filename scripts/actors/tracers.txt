@@ -66,7 +66,7 @@ class BulletTracer : FastProjectile
 		if (trailactor)
 		{
 			trailactor.vel = vel;
-			trailactor.angle = angle;
+			trailactor.A_FaceMovementDirection(0, 0.0, 0.0, FMDF_INTERPOLATE);
 			trailactor.master = self;
 		}
 
@@ -368,7 +368,7 @@ class Whizzer : GrenadeBase
 
 class TracerTrail : Actor
 {
-	double faderate, stepalpha, startalpha;
+	double faderate, stepalpha, startalpha, oldpitch;
 
 	Property FadeRate:faderate;
 	Property StartAlpha:startalpha;
@@ -406,11 +406,13 @@ class TracerTrail : Actor
 
 	override void Tick()
 	{
+		oldpitch = pitch;
+
 		Super.Tick();
 
 		if (bNoInteraction && TestMobjLocation()) { bNoInteraction  = false; }
 
-		if (!master || !vel.length()) { Destroy(); }
+		if (!master || !vel.xy.length()) { Destroy(); }
 	}
 
 	void DoFade()
