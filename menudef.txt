@@ -765,7 +765,6 @@ OptionMenu "BoARenderOptions"
 	Slider "FOV",								"fov", 80, 110, 2, 0
 	Option "$RE_2DTR",							"bidiswitch","OnOff"
 	Option "$RE_MIRR",							"gl_mirrors","OnOff"
-	Option "$RE_PORT",							"gl_portals","OnOff"
 	Option "$RE_REFL",							"gl_plane_reflection","OnOff"
 	Option "$RE_SHAD",							"cl_boaspriteshadowdistance", "ShadowDist"
 	StaticText " "
@@ -1048,7 +1047,6 @@ OptionValue "AltHUDAmmoOrder"
 OptionMenu "BoAAltHUDOptions" //include new kind of althud? - ozy81
 {
 	Title "$ALTHUDMNU_TITLE"
-	//Indent 220
 	Option "$ALTHUDMNU_ENABLE",					"hud_althud", "OnOff"
 	Option "$ALTHUDMNU_SHOWSECRETS",			"hud_showsecrets", "OnOff"
 	Option "$ALTHUDMNU_SHOWMONSTERS",			"hud_showmonsters", "OnOff"
@@ -1104,7 +1102,6 @@ OptionValue dehopt
 OptionMenu "BoAMiscOptions" //move boa cheats here? - ozy81
 {
 	Title "$MISCMNU_TITLE"
-	//Indent 220
 	IfOption(Windows)
 	{
 		Option "$MISCMNU_MERGEKEYS", 			"k_mergekeys", "OnOff"
@@ -1474,7 +1471,6 @@ OptionMenu BoAGameplayOptions
 {
 	Position -35
 	Title 	"$GMPLYMNU_TITLE"
-	//Indent 222
 	Submenu "$OPT_GAME",						"GameOptions"
 	Submenu "$OPT_BLOOD",						"BloodOptions"
 	StaticText " "
@@ -1995,94 +1991,6 @@ OptionMenu "BoAVR3DMenu"
 	Slider "$GLPREFMNU_VRSCREENDIST",			vr_screendist,					0.2, 10.0, 0.1, 1
 }
 
-/*
-OptionMenu "ReverbEdit" protected
-{
-	Class "ReverbEdit"
-	Title "$OPTMNU_REVERB"
-	StaticTextSwitchable 	"", "", "EvironmentName", 1
-	StaticTextSwitchable 	"", "", "EvironmentID"
-	StaticText " "
-	Submenu "$REVMNU_SELECT", "ReverbSelect"
-	Option "$REVMNU_TEST", "eaxedit_test", OnOff
-	StaticText " "
-	Submenu "$REVMNU_NEW", "ReverbNew"
-	Submenu "$REVMNU_SAVE", "ReverbSave"
-	Submenu "$REVMNU_EDIT", "ReverbSettings"
-}
-
-OptionMenu "ReverbSelect" protected
-{
-	Class "ReverbSelect"
-	Title "$REVMNU_SELECT"
-	// filled in by code
-}
-
-OptionMenu "ReverbSettings" protected
-{
-	Title "$REVMNU_EDIT"
-	SafeCommand "$REVMNU_REVERT", "revertenvironment"
-	StaticText " "
-	SliderReverbEditOption "$REVMNU_Environment_Size", 1, 100, 0.01, 3, 1
-	SliderReverbEditOption "$REVMNU_Environment_Diffusion", 0, 1, 0.01, 3, 2
-	SliderReverbEditOption "$REVMNU_Room", -10000, 0, 1, 0, 3
-	SliderReverbEditOption "$REVMNU_Room_HF", -10000, 0, 1, 0, 4
-	SliderReverbEditOption "$REVMNU_Room_LF", -10000, 0, 1, 0, 5
-	SliderReverbEditOption "$REVMNU_Decay_Time", 1, 200, 0.01, 3, 6
-	SliderReverbEditOption "$REVMNU_Decay_HF_Ratio", 1, 20, 0.01, 3, 7
-	SliderReverbEditOption "$REVMNU_Decay_LF_Ratio", 1, 20, 0.01, 3, 8
-	SliderReverbEditOption "$REVMNU_Reflections", -10000, 1000, 1, 0, 9
-	SliderReverbEditOption "$REVMNU_Reflections_Delay", 0, 0.3, 1, 3, 10
-	SliderReverbEditOption "$REVMNU_Reflections_Pan_X", -2000, 2000, 1, 3, 11
-	SliderReverbEditOption "$REVMNU_Reflections_Pan_Y", -2000, 2000, 1, 3, 12
-	SliderReverbEditOption "$REVMNU_Reflections_Pan_Z", -2000, 2000, 1, 3, 13
-	SliderReverbEditOption "$REVMNU_Reverb", -10000, 2000, 1, 0, 14
-	SliderReverbEditOption "$REVMNU_Reverb_Delay", 0, 0.1, 0.01, 3, 15
-	SliderReverbEditOption "$REVMNU_Reverb_Pan_X", -2000, 2000, 1, 3, 16
-	SliderReverbEditOption "$REVMNU_Reverb_Pan_Y", -2000, 2000, 1, 3, 17
-	SliderReverbEditOption "$REVMNU_Reverb_Pan_Z", -2000, 2000, 1, 3, 18
-	SliderReverbEditOption "$REVMNU_Echo_Time", 0.075, 0.25, 0.005, 3, 19
-	SliderReverbEditOption "$REVMNU_Echo_Depth", 0, 1, 0.01, 3, 20
-	SliderReverbEditOption "$REVMNU_Modulation_Time", 0.04, 4, 0.01, 3, 21
-	SliderReverbEditOption "$REVMNU_Modulation_Depth",0, 1, 0.01, 3, 22
-	SliderReverbEditOption "$REVMNU_Air_Absorption_HF", -100, 0, 0.01, 3, 23
-	SliderReverbEditOption "$REVMNU_HF_Reference", 10000, 200000, 1, 3, 24
-	SliderReverbEditOption "$REVMNU_LF_Reference",20, 10000, 0.1, 3, 25
-	SliderReverbEditOption "$REVMNU_Room_Rolloff_Factor",0, 10, 0.01, 3, 26
-	SliderReverbEditOption "$REVMNU_Diffusion",0, 100, 0.01, 3, 27
-	SliderReverbEditOption "$REVMNU_Density",0, 100, 0.01, 3, 28
-	StaticText " "
-	ReverbOption "$REVMNU_Reflections_Scale", 29, OnOff
-	ReverbOption "$REVMNU_Reflections_Delay_Scale", 30, OnOff
-	ReverbOption "$REVMNU_Decay_Time_Scale", 31, OnOff
-	ReverbOption "$REVMNU_Decay_HF_Limit", 32, OnOff
-	ReverbOption "$REVMNU_Reverb_Scale", 33, OnOff
-	ReverbOption "$REVMNU_Reverb_Delay_Scale", 34, OnOff
-	ReverbOption "$REVMNU_Echo_Time_Scale", 35, OnOff
-	ReverbOption "$REVMNU_Modulation_Time_Scale", 36, OnOff
-}
-
-OptionMenu "ReverbNew" protected
-{
-	Title "$REVMNU_NEW"
-	ReverbSelect "$REVMNU_Based_on", "ReverbSelect"
-	TextField "$REVMNU_Name", "reverbedit_name"
-	NumberField "$REVMNU_ID_1", "reverbedit_id1", 0, 255
-	NumberField "$REVMNU_ID_2", "reverbedit_id2", 0, 255
-	Command "$REVMNU_Create", "createenvironment", 0, 1
-}
-
-OptionMenu "ReverbSave" protected
-{
-	Class "ReverbSave"
-	Title "$REVMNU_SAVE"
-	Command "$REVMNU_Save", "savereverbs"
-	TextField "$REVMNU_File_name", "reverbsavename"
-	StaticText " "
-	StaticText "$REVMNU_Environments_to_save"
-	// Rest is filled in by code.
-}
-*/
 /*=======================================
  *
  * Vulkan Menu
@@ -2115,7 +2023,7 @@ OptionString "BoALanguageOptions" //these includes BoA only related languages, s
 	"fr", "Français (French)"
 	"it", "Italiano (Italian)"
 	"ru", "Русский (Russian)"
-	"tr", "Türk (Turkish)"
+	"tr", "Türk (Turkish)" //new for BoA, all GZDoom menues USED needs to be localized in our custom language entries - ozy81
 
 	//"cs", "Česky (Czech)"
 	//"eo", "Esperanto"
@@ -2129,6 +2037,4 @@ OptionString "BoALanguageOptions" //these includes BoA only related languages, s
 	//"ptg", "Português (European Portuguese)"
 	//"ro", "Română (Romanian)"
 	//"sr", "Српски (Serbian)"
-
-	//we need an entry for Turkish - ozy81
 }
