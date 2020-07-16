@@ -236,7 +236,7 @@ OptionMenu "BoAOptionsMenu"
 	Submenu "$OPTMNU_HUD",				"BoAHUDOptions"
 	Submenu "$OPTMNU_MISCELLANEOUS",	"BoAMiscOptions"
 	Submenu "$OPTMNU_NETWORK",			"BoANetworkOptions"
-	Submenu "$OPTMNU_SOUND",			"BoASoundOptions"
+	Submenu "$OPTMNU_SOUND",			"SoundOptions"
 	Submenu "$OPTMNU_DISPLAY",			"BoAVideoOptions"
 	Submenu "$OPTMNU_VIDEO",			"BoAVideoModeMenu"
 	StaticText " "
@@ -349,16 +349,12 @@ OptionMenu "BoACustomizeControls"
 {
 	Title "$CNTRLMNU_TITLE"
 
-	Submenu    "$CNTRLMNU_ACTION"      , "BoAActionControlsMenu" //kick, grenades and objectives here - ozy81
+	Submenu    "$CNTRLMNU_ACTION"      , "BoAActionControlsMenu"
 	Submenu    "$CNTRLMNU_WEAPONS"     , "BoAWeaponsControlMenu"
 	Submenu    "$CNTRLMNU_INVENTORY"   , "BoAInventoryControlsMenu"
 	Submenu    "$MAPCNTRLMNU_CONTROLS" , "BoAMapControlsMenu"
 	Submenu    "$CNTRLMNU_CHAT"        , "BoAChatControlsMenu"
 	Submenu    "$CNTRLMNU_OTHER"       , "BoAOtherControlsMenu"
-	StaticText " "
-	StaticText " "
-	StaticText " "
-	Submenu "$OPTMNU_ORGCTL"		   , "CustomizeControls"
 }
 
 OptionMenu "BoAActionControlsMenu"
@@ -368,8 +364,6 @@ OptionMenu "BoAActionControlsMenu"
 	StaticTextSwitchable "$CNTRLMNU_SWITCHTEXT1", "$CNTRLMNU_SWITCHTEXT2", "ControlMessage"
 
 	StaticText " " //newdefs on top? - ozy81
-	Control		"$CO_KICK"					, "pukename QuickKick"
-	Control		"$CO_GREN"					, "use GrenadePickup"
 	Control		"$CO_OBJS"					, "pukename boaobjectives"
 
 	StaticText " "
@@ -377,6 +371,8 @@ OptionMenu "BoAActionControlsMenu"
 	Control    "$CNTRLMNU_ALTATTACK"        , "+altattack"
 	Control    "$CNTRLMNU_RELOAD"           , "+reload"
 	Control    "$CNTRLMNU_ZOOM"             , "+zoom"
+	Control	   "$CO_KICK"					, "pukename QuickKick"
+	Control	   "$CO_GREN"					, "use GrenadePickup"
 
 	StaticText " "
 	Control    "$CNTRLMNU_USE"              , "+use"
@@ -413,16 +409,6 @@ OptionMenu "BoAActionControlsMenu"
 	Control    "$CNTRLMNU_RUN"              , "+speed"
 	Control    "$CNTRLMNU_TOGGLERUN"        , "toggle cl_run"
 	Control    "$CNTRLMNU_STRAFE"           , "+strafe"
-
-	StaticText " "
-	Control    "$CNTRLMNU_SCOREBOARD"       , "+showscores"
-	Control    "$CNTRLMNU_TOGGLESCOREBOARD" , "togglescoreboard"
-
-	StaticText " "
-	Control    "$CNTRLMNU_USER1"            , "+user1"
-	Control    "$CNTRLMNU_USER2"            , "+user2"
-	Control    "$CNTRLMNU_USER3"            , "+user3"
-	Control    "$CNTRLMNU_USER4"            , "+user4"
 }
 
 OptionMenu "BoAChatControlsMenu"
@@ -467,7 +453,6 @@ OptionMenu "BoAInventoryControlsMenu"
 
 	StaticText " "
 	Control    "$CNTRLMNU_USEITEM"      , "invuse"
-	Control    "$CNTRLMNU_USEALLITEMS"  , "invuseall"
 
 	StaticText " "
 	Control    "$CNTRLMNU_NEXTITEM"     , "invnext"
@@ -475,7 +460,6 @@ OptionMenu "BoAInventoryControlsMenu"
 
 	StaticText " "
 	Control    "$CNTRLMNU_DROPITEM"     , "invdrop"
-	Control    "$CNTRLMNU_QUERYITEM"    , "invquery"
 
 	StaticText " "
 	Control    "$CNTRLMNU_DROPWEAPON"   , "weapdrop"
@@ -781,6 +765,7 @@ OptionMenu "BoARenderOptions"
 	Slider "FOV",								"fov", 80, 110, 2, 0
 	Option "$RE_2DTR",							"bidiswitch","OnOff"
 	Option "$RE_MIRR",							"gl_mirrors","OnOff"
+	Option "$RE_PORT",							"gl_portals","OnOff"
 	Option "$RE_REFL",							"gl_plane_reflection","OnOff"
 	Option "$RE_SHAD",							"cl_boaspriteshadowdistance", "ShadowDist"
 	StaticText " "
@@ -791,9 +776,6 @@ OptionMenu "BoARenderOptions"
 	Slider "$RE_SCEN",							"scenelod",1024,16384,1024, 0
 	Slider "$RE_SFX",							"sfxlod",1024,16384,1024, 0
 	Slider "$RE_TREE",							"treeslod",1024,16384,1024, 0
-	StaticText " "
-	SafeCommand "$OPT_PORT1", 					"boa_portalsN", "$OPT_PORTS1"
-	SafeCommand "$OPT_PORT2", 					"boa_portalsY", "$OPT_PORTS2"
 }
 
 OptionMenu "BoAPostProcessShaderOptions"
@@ -827,10 +809,6 @@ OptionMenu "BoAPostProcessShaderOptions"
 	Slider "$GLPREFMNU_SSAO_PORTALS",			gl_ssao_portals,				0.0, 4.0, 1.0, 0
 	Option "$GLPREFMNU_FXAA",		 			gl_fxaa,						"FXAAQuality"
 	Option "$GLPREFMNU_DITHER",		 			gl_dither_bpc,					"DitherModes"
-	Option "$GLPREFMNU_TONEMAP", 				gl_tonemap,						"TonemapModes"
-	StaticText " "
-	Slider "$GLPREFMNU_PALTONEMAPPOWER",		gl_paltonemap_powtable,			0.2, 3.0, 0.1, 1
-	Option "$GLPREFMNU_PALTONEMAPORDER",		gl_paltonemap_reverselookup,	"LookupOrder"
 }
 
 OptionValue "MBlurBlendModes"
@@ -1492,7 +1470,7 @@ OptionValue SmartAim
 //CUSTOM GAMEPLAY OPS//
 ///////////////////////
 
-OptionMenu BoAGameplayOptions //needs to be reworked, we should keep fastmonsters, smartaim / noautoaim and chasecam only options - ozy81
+OptionMenu BoAGameplayOptions
 {
 	Position -35
 	Title 	"$GMPLYMNU_TITLE"
@@ -1506,23 +1484,6 @@ OptionMenu BoAGameplayOptions //needs to be reworked, we should keep fastmonster
 	Slider	"$GMPLYMNU_TEAMDAMAGE",				"teamdamage", 0, 1, 0.05,2
 	StaticText " "
 	Option "$GMPLYMNU_SMARTAUTOAIM",			"sv_smartaim", "SmartAim"
-	StaticText " "
-	Option "$GMPLYMNU_NORESPAWN",				"sv_norespawn", "YesNo"
-	Option "$GMPLYMNU_ITEMSRESPAWN",			"sv_itemrespawn", "YesNo"
-	Option "$GMPLYMNU_SUPERRESPAWN",			"sv_respawnsuper", "YesNo"
-	Option "$GMPLYMNU_FASTMONSTERS",			"sv_fastmonsters", "YesNo"
-	Option "$GMPLYMNU_DEGENERATION",			"sv_degeneration", "YesNo"
-	Option "$GMPLYMNU_NOAUTOAIM",				"sv_noautoaim", "NoYes"
-	Option "$GMPLYMNU_ALLOWSUICIDE",			"sv_disallowsuicide", "NoYes"
-	Option "$GMPLYMNU_ALLOWFOV",				"sv_nofov", "NoYes"
-	Option "$GMPLYMNU_BFGFREEAIM",				"sv_nobfgaim", "NoYes"
-	Option "$GMPLYMNU_ALLOWAUTOMAP",			"sv_noautomap", "NoYes"
-	Option "$GMPLYMNU_AUTOMAPALLIES",			"sv_noautomapallies", "NoYes"
-	Option "$GMPLYMNU_ALLOWSPYING",				"sv_disallowspying", "NoYes"
-	Option "$GMPLYMNU_CHASECAM",				"sv_chasecam", "YesNo"
-	Option "$GMPLYMNU_DONTCHECKAMMO",			"sv_dontcheckammo", "NoYes"
-	Option "$GMPLYMNU_KILLBOSSSPAWNS",			"sv_killbossmonst", "YesNo"
-	Option "$GMPLYMNU_NOCOUNTENDMONSTER",		"sv_nocountendmonst", "NoYes"
 	StaticText " "
 	StaticText " "
 	StaticText " "
@@ -1579,364 +1540,6 @@ OptionMenu BoACoopOptions
 	Option "$GMPLYMNU_SPAWNWHEREDIED",			"sv_samespawnspot", "YesNo"
 	Class "GameplayMenu"
 }
-
-/*=======================================
- *
- * Sound Options Menu
- *
- *=======================================*/
-
-/*OptionValue SampleRates
-{
-	0,		"$OPTVAL_DEFAULT"
-	4000,	"$OPTVAL_4000HZ"
-	8000,	"$OPTVAL_8000HZ"
-	11025,	"$OPTVAL_11025HZ"
-	22050,	"$OPTVAL_22050HZ"
-	32000,	"$OPTVAL_32000HZ"
-	44100,	"$OPTVAL_44100HZ"
-	48000,	"$OPTVAL_48000HZ"
-}
-
-OptionValue BufferSizes
-{
-	   0, "$OPTVAL_DEFAULT"
-	  64, "$OPTVAL_64SAMPLES"
-	 128, "$OPTVAL_128SAMPLES"
-	 256, "$OPTVAL_256SAMPLES"
-	 512, "$OPTVAL_512SAMPLES"
-	1024, "$OPTVAL_1024SAMPLES"
-	2048, "$OPTVAL_2048SAMPLES"
-	4096, "$OPTVAL_4096SAMPLES"
-}
-
-OptionValue BufferCounts
-{
-	   0, "$OPTVAL_DEFAULT"
-	   2, "2"
-	   3, "3"
-	   4, "4"
-	   5, "5"
-	   6, "6"
-	   7, "7"
-	   8, "8"
-	   9, "9"
-	  10, "10"
-	  11, "11"
-	  12, "12"
-}
-
-OptionString ALDevices
-{
-	// filled in by the sound code
-}
-
-OptionString ALResamplers
-{
-	// filled in by the sound code
-}
-
-OptionString SpeakerModes
-{
-	"Auto",		"$OPTSTR_AUTO"
-	"Mono",		"$OPTSTR_MONO"
-	"Stereo",	"$OPTSTR_STEREO"
-	"Prologic",	"$OPTSTR_PROLOGIC"
-	"Quad",		"$OPTSTR_QUAD"
-	"Surround",	"$OPTSTR_SURROUND"
-	"5.1",		"$OPTSTR_5POINT1"
-	"7.1",		"$OPTSTR_7POINT1"
-}
-
-OptionString Resamplers
-{
-	"NoInterp",		"$OPTSTR_NOINTERPOLATION"
-	"Linear",		"$OPTVAL_LINEAR_1"
-	"Cubic",		"$OPTVAL_CUBIC"
-	"Spline",		"$OPTSTR_SPLINE"
-}
-
-OptionMenu OpenALSoundItems protected
-{
-	Title "$OPENALMNU_TITLE"
-	Option "$OPENALMNU_PLAYBACKDEVICE",		"snd_aldevice",		"ALDevices"
-	Option "$OPENALMNU_ENABLEEFX",			"snd_efx",			"OnOff"
-	Option "$OPENALMNU_RESAMPLER",			"snd_alresampler",	"ALResamplers"
-}
-
-OptionValue MidiDevices
-{
-	// filled in by the sound code
-}*/
-
-OptionMenu BoASoundOptions
-{
-	Title "$SNDMNU_TITLE"
-	Slider "$MODMNU_MASTERVOLUME",		"snd_mastervolume", 0, 1, 0.05, 2
-	StaticText " "
-	Slider "$SNDMNU_SFXVOLUME",			"snd_sfxvolume", 0, 1, 0.05, 2
-	Slider "$SNDMNU_MUSICVOLUME",		"snd_musicvolume", 0, 1, 0.05, 2
-	StaticText " "
-	Slider "$SNDMNU_MENUVOLUME",		"snd_menuvolume", 0, 1, 0.05, 2
-	StaticText " "
-	Option "$SNDMNU_MIDIDEVICE",		"snd_mididevice", "MidiDevices"
-	StaticText " "
-	Option "$SNDMNU_UNDERWATERREVERB",	"snd_waterreverb", "OnOff"
-	Option "$SNDMNU_RANDOMIZEPITCHES",	"snd_pitched", "OnOff"
-	Slider "$SNDMNU_CHANNELS",			"snd_channels", 64, 256, 8, 0
-	StaticText " "
-	Submenu "$SNDMNU_ADVANCED",			"AdvSoundOptions"
-	Submenu "$OPTMNU_REVERB",			"ReverbEdit"
-}
-
-/*=======================================
- *
- * Advanced Sound Options Menu
- *
- *=======================================*/
-
-/*OptionValue GusMemory
-{
-	0, "$OPTVAL_UNLIMITED"
-	1, "$OPTVAL_256K"
-	2, "$OPTVAL_512K"
-	3, "$OPTVAL_768K"
-	4, "$OPTVAL_1024K"
-}
-
-OptionValue OplCores
-{
-	0, "$OPTVAL_MAMEOPL2"
-	1, "$OPTVAL_DOSBOXOPL3"
-	2, "$OPTVAL_JAVAOPL3"
-	3, "$OPTVAL_NUKEDOPL3"
-}
-
-OptionMenu AdvSoundOptions protected
-{
-	Title "$ADVSNDMNU_TITLE"
-	Option "$ADVSNDMNU_SAMPLERATE",			"snd_samplerate", "SampleRates"
-	Option "$ADVSNDMNU_HRTF",				"snd_hrtf", "AutoOffOn"
-	StaticText " "
-	Option "$SNDMNU_BACKGROUND",			"i_soundinbackground", "OnOff"
-	StaticText " "
-
-	ifoption(openal)
-	{
-	StaticText " "
-		Submenu "$SNDMNU_OPENAL",		"OpenALSoundItems"
-	}
-
-	StaticText " "
-	Submenu "$SNDMNU_MIDIPLAYER",		"MidiPlayerOptions"
-	Submenu "$SNDMNU_MODREPLAYER",		"ModReplayerOptions"
-	StaticText " "
-	Command "$SNDMNU_RESTART",			"snd_reset"
-}
-
-OptionMenu GusConfigMenu protected
-{
-	Title "$ADVSNDMNU_SELCONFIG"
-}
-
-OptionMenu WildMidiConfigMenu protected
-{
-	Title "$ADVSNDMNU_SELCONFIG"
-}
-
-OptionMenu TimidityConfigMenu protected
-{
-	Title "$ADVSNDMNU_SELCONFIG"
-}
-
-OptionMenu FluidPatchsetMenu protected
-{
-	Title "$ADVSNDMNU_SELCONFIG"
-}
-
-OptionMenu ADLBankMenu protected
-{
-	Title "$ADVSNDMNU_OPLBANK"
-}
-
-OptionMenu ADLMIDICustomBanksMenu protected
-{
-	Title "$ADVSNDMNU_OPLBANKFILE"
-}
-
-OptionMenu OPNMIDICustomBanksMenu protected
-{
-	Title "$ADVSNDMNU_OPNBANKFILE"
-}*/
-
-/*=======================================
- *
- * Module Replayer Options Menu
- *
- *=======================================*/
-
-/*OptionValue ModReplayers
-{
-	0.0, "$OPTVAL_SOUNDSYSTEM"
-	1.0, "$OPTVAL_FOO_DUMB"
-}
-
-OptionValue ModQuality
-{
-	0.0, "$OPTVAL_ALIASING"
-	1.0, "$OPTVAL_LINEAR_1"
-	2.0, "$OPTVAL_CUBIC"
-	3.0, "$OPTVAL_BLEP"		// Band-limited step
-	4.0, "$OPTVAL_LINEARSLOW"
-	5.0, "$OPTVAL_BLAM"		// Band-limited linear
-	6.0, "$OPTVAL_CUBICSLOW"
-	7.0, "$OPTVAL_SINC"
-}
-
-OptionValue ModVolumeRamps
-{
-	0.0, "$OPTVAL_NONE"
-	1.0, "$OPTVAL_NOTEONOFFONLY"
-	2.0, "$OPTVAL_FULLRAMPING"
-}
-
-OptionMenu ModReplayerOptions protected
-{
-	Title "$MODMNU_TITLE"
-	Slider "$MODMNU_MASTERVOLUME",			"mod_dumb_mastervolume", 1, 16, 0.5, 1
-	Option "$ADVSNDMNU_SAMPLERATE",			"mod_samplerate", "SampleRates"
-	Option "$MODMNU_QUALITY",				"mod_interp", "ModQuality"
-	Option "$MODMNU_VOLUMERAMPING",			"mod_volramp", "ModVolumeRamps"
-	StaticText " "
-	Option "$MODMNU_CHIPOMATIC",			"mod_autochip", "OnOff"
-	// TODO if the menu system is ever rewritten: Provide a decent
-	// mechanism to edit the chip-o-matic settings like you can with
-	// the foo_dumb preferences in foobar2000.
-}*/
-
-/*=======================================
- *
- * MIDI player
- *
- *=======================================*/
-
-/*OptionValue TimidityReverb
-{
-	0, "$OPTVAL_OFF"
-	1, "$OPTVAL_STANDARD"
-	2, "$ADVSNDMNU_GLOBAL"
-	3, "$ADVSNDMNU_FREEVERB"
-	4, "$ADVSNDMNU_GLOBAL_FREEVERB"
-}
-
-OptionMenu MidiPlayerOptions protected
-{
-	Title "$SNDMNU_MIDIPLAYER"
-	Submenu "$ADVSNDMNU_FLUIDSYNTH", "FluidsynthOptions", 0, 1
-	Submenu "$ADVSNDMNU_TIMIDITY", "TimidityOptions", 0, 1
-	Submenu "$ADVSNDMNU_GUSEMULATION", "GUSOptions", 0, 1
-	Submenu "$ADVSNDMNU_WILDMIDI", "WildMidiOptions", 0, 1
-	Submenu "$ADVSNDMNU_OPLSYNTHESIS", "OPLOptions", 0, 1
-	Submenu "$ADVSNDMNU_ADLMIDI", "ADLOptions", 0, 1
-	Submenu "$ADVSNDMNU_OPNMIDI", "OPNOptions", 0, 1
-}
-
-OptionMenu FluidsynthOptions protected
-{
-	Title "$ADVSNDMNU_FLUIDSYNTH"
-	LabeledSubMenu "$ADVSNDMNU_SELCONFIG",		"fluid_patchset", "FluidPatchsetMenu"
-	Slider "$ADVSNDMNU_FLUIDGAIN",			"fluid_gain", 0, 10, 0.5, 1
-	Option "$ADVSNDMNU_REVERB", 			"fluid_reverb", "OnOff"
-	Option "$ADVSNDMNU_CHORUS", 			"fluid_chorus", "OnOff"
-	Slider "$ADVSNDMNU_MIDIVOICES", 		"fluid_voices", 16, 4096, 16, 0
-	// other CVARs need to be revieved for usefulness
-}
-
-OptionMenu TimidityOptions protected
-{
-	Title "$ADVSNDMNU_TIMIDITY"
-	LabeledSubMenu "$ADVSNDMNU_SELCONFIG",		"timidity_config", "TimidityConfigMenu"
-	Option "$ADVSNDMNU_REVERB", 			"timidity_reverb", "TimidityReverb"
-	Slider "$ADVSNDMNU_REVERB_LEVEL", 		"timidity_reverb_level", 9, 127, 1, 0
-	Option "$ADVSNDMNU_CHORUS", 			"timidity_chorus", "OnOff"
-	// other CVARs need to be revieved for usefulness
-}
-
-OptionMenu GUSOptions protected
-{
-	Title "$ADVSNDMNU_GUSEMULATION"
-	LabeledSubMenu "$ADVSNDMNU_SELCONFIG",		"midi_config", "GusConfigMenu"
-	Slider "$ADVSNDMNU_MIDIVOICES",			"midi_voices", 16, 256, 4, 0
-	Option "$ADVSNDMNU_DMXGUS", 			"midi_dmxgus", "OnOff"
-	Option "$ADVSNDMNU_GUSMEMSIZE", 		"gus_memsize", "GusMemory"
-}
-
-OptionMenu WildMidiOptions protected
-{
-	Title "$ADVSNDMNU_WILDMIDI"
-	LabeledSubMenu "$ADVSNDMNU_SELCONFIG",		"wildmidi_config", "WildMidiConfigMenu"
-	Option "$ADVSNDMNU_REVERB", 			"wildmidi_reverb", "OnOff"
-	Option "$ADVSNDMNU_ADVRESAMPLING",		"wildmidi_enhanced_resampling", "OnOff"
-}
-
-OptionMenu OPLOptions protected
-{
-	Title "$ADVSNDMNU_OPLSYNTHESIS"
-	Option "$ADVSNDMNU_OPLCORES", 			"opl_core", "OplCores"
-	Slider "$ADVSNDMNU_OPLNUMCHIPS", 		"opl_numchips", 1, 8, 1, 0
-	Option "$ADVSNDMNU_OPLFULLPAN",			"opl_fullpan", "OnOff"
-}
-
-OptionValue AdlVolumeModels
-{
-	0, "$ADLVLMODEL_AUTO"
-	1, "$ADLVLMODEL_GENERIC"
-	2, "$ADLVLMODEL_NATIVE"
-	3, "$ADLVLMODEL_DMX"
-	4, "$ADLVLMODEL_APOGEE"
-	5, "$ADLVLMODEL_WIN9X"
-}
-
-OptionValue ADLOplCores
-{
-	0, "$OPTVAL_NUKEDOPL3"
-	1, "$OPTVAL_NUKEDOPL3174"
-	2, "$OPTVAL_DOSBOXOPL3"
-}
-
-OptionValue OpnCores
-{
-	0, "$OPTVAL_MAMEOPN2"
-	1, "$OPTVAL_NUKEDOPN2"
-	2, "$OPTVAL_GENSOPN2"
-}
-
-OptionMenu ADLOptions protected
-{
-	Title "$ADVSNDMNU_ADLMIDI"
-	Option "$ADVSNDMNU_OPLCORES",		 "adl_emulator_id", "ADLOplCores"
-	Option "$ADVSNDMNU_RUNPCMRATE",		 "adl_run_at_pcm_rate", "OnOff"
-	Slider "$ADVSNDMNU_ADLNUMCHIPS", 	 "adl_chips_count", 1, 32, 1, 0
-	Option "$ADVSNDMNU_OPLFULLPAN", 	 "adl_fullpan", "OnOff"
-	Option "$ADVSNDMNU_VLMODEL",		 "adl_volume_model", "AdlVolumeModels"
-	StaticText " "
-	LabeledSubmenu "$ADVSNDMNU_OPLBANK", "adl_bank", "ADLBankMenu"
-	StaticText " "
-	Option "$ADVSNDMNU_ADLCUSTOMBANK", 	 "adl_use_custom_bank", "OnOff"
-	LabeledSubmenu "$ADVSNDMNU_OPLBANKFILE", "adl_custom_bank", "ADLMIDICustomBanksMenu"
-}
-
-OptionMenu OPNOptions protected
-{
-	Title "$ADVSNDMNU_OPNMIDI"
-	Option "$ADVSNDMNU_OPNCORES",		 "opn_emulator_id", "OpnCores"
-	Option "$ADVSNDMNU_RUNPCMRATE",		 "opn_run_at_pcm_rate", "OnOff"
-	Slider "$ADVSNDMNU_OPNNUMCHIPS", 	 "opn_chips_count", 1, 32, 1, 0
-	Option "$ADVSNDMNU_OPLFULLPAN", 	 "opn_fullpan", "OnOff"
-	StaticText " "
-	Option "$ADVSNDMNU_OPNCUSTOMBANK", 	 "opn_use_custom_bank", "OnOff"
-	LabeledSubmenu "$ADVSNDMNU_OPNBANKFILE", "opn_custom_bank", "OPNMIDICustomBanksMenu"
-}*/
 
 /*=======================================
  *
