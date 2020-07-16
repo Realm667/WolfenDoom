@@ -761,11 +761,34 @@ class KeenPlayer : PlayerPawn
 		Vector3 tracedir = (cos(angle) * cos(pitch), sin(angle) * cos(pitch), -sin(pitch));
 		thistracer.Trace(origin.pos + (0, 0, zoffset), origin.CurSector, tracedir, dist, 0);
 	}
+
+	override bool UndoPlayerMorph(playerinfo activator, int unmorphflag, bool force)
+	{
+		if (!activator || !activator.mo) { return false; }
+
+		int premorphhealth;
+
+		for (Inventory i = activator.mo.inv; i != null; i = i.Inv)
+		{
+			if (i is "Billy")
+			{
+				if (Billy(i).premorphhealth) { premorphhealth = Billy(i).premorphhealth; }
+				break;
+			}
+		}
+
+		bool ret = Super.UndoPlayerMorph(activator, unmorphflag, force); // This call forces the player health to full Spawn Health
+
+		activator.health = activator.mo.health = premorphhealth;
+
+		return ret;
+	}
 }
 
 class Billy : PowerMorph
 {
 	int armor;
+	int premorphhealth;
 	double savepercent;
 
 	Default
@@ -791,6 +814,8 @@ class Billy : PowerMorph
 				armor = a.Amount;
 				savepercent = a.SavePercent;
 			}
+
+			premorphhealth = owner.health;
 		}
 
 		Super.InitEffect();
