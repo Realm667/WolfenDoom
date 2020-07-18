@@ -1,5 +1,5 @@
 //Rain Spawner by Tormentor667
-ACTOR RainSpawner : SwitchableDecoration
+ACTOR RainSpawner : EffectSpawner
 {
 	//$Category Special Effects (BoA)
 	//$Title Rain Spawner
@@ -57,7 +57,7 @@ ACTOR RainSpawner : SwitchableDecoration
 	}
 }
 
-ACTOR RainDropShort //3d actor
+ACTOR RainDropShort : ParticleBase //3d actor
 {
 	DistanceCheck "sfxlod"
 	Height 1

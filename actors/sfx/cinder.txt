@@ -1,4 +1,4 @@
-ACTOR CinderSpawner : SwitchableDecoration
+ACTOR CinderSpawner : EffectSpawner
 {
 	//$Category Special Effects (BoA)
 	//$Title Cinder Spawner (floor)
@@ -40,7 +40,7 @@ ACTOR CinderSpawner : SwitchableDecoration
 	}
 }
 
-ACTOR FloatingCinder
+ACTOR FloatingCinder : ParticleBase
 {
 	DistanceCheck "sfxlod"
 	Radius 0
@@ -73,7 +73,7 @@ ACTOR FloatingCinder2 : FloatingCinder { +NOINTERACTION }
 ////////////////
 // SKY CINDER //
 ////////////////
-ACTOR CinderSpawnerSky
+ACTOR CinderSpawnerSky : EffectSpawner
 {
 	//$Category Special Effects (BoA)
 	//$Title Cinder Spawner (ceiling)

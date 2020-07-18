@@ -197,7 +197,7 @@ ACTOR ImmenseFlame : SmallFlame {}
 ACTOR InfernoFlame : SmallFlame {}
 
 //Flames and particles
-ACTOR SmokeBase
+ACTOR SmokeBase : ParticleBase
 {
 	Height 2
 	Radius 1
@@ -298,7 +298,7 @@ ACTOR Smoke6A : SmokeBase //No DistanceCheck due to the fact we wanna forcibly s
 	}
 }
 
-ACTOR FlameBase
+ACTOR FlameBase : ParticleBase
 {
 	Height 2
 	Radius 1

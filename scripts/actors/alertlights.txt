@@ -99,6 +99,8 @@ class AlertLight : Actor
 			checkRadius = args[0]; // Otherwise, use the actor's arg[0]
 		}
 		if (!checkRadius) { checkRadius = 64; } // If nothing was set, use 64 map unit radius
+
+		EffectsManager.Add(self, checkRadius * 2); // Spawn the actor back in at twise its radius
 	}
 
 	void A_AddVisibility(Actor lighttarget = null, int minlight = 0)
@@ -127,15 +129,18 @@ class AlertLight : Actor
 
 	override void Tick()
 	{
-		for (int i = 0; i < MAXPLAYERS; i++)
+		if (!CheckRange(checkRadius * 2, true))
 		{
-			if (playeringame[i] && players[i].mo)
+			for (int i = 0; i < MAXPLAYERS; i++)
 			{
-				if (Distance3D(players[i].mo) < checkRadius * 2) { A_AddVisibility(players[i].mo); }
+				if (playeringame[i] && players[i].mo)
+				{
+					if (Distance3D(players[i].mo) < checkRadius * 2) { A_AddVisibility(players[i].mo); }
+				}
 			}
-		}
 
-		if (hasmaster && !master) { Destroy(); }
+			if (hasmaster && !master) { Destroy(); }
+		}
 
 		Super.Tick();
 	}

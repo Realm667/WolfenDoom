@@ -1,6 +1,6 @@
 const int SPLASHES_FLAGS = SXF_CLIENTSIDE | SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERSTENCILCOL;
 
-ACTOR WaterSplashGeneratorNormal : SwitchableDecoration
+ACTOR WaterSplashGeneratorNormal : EffectSpawner
 {
 	//$Category Special Effects (BoA)
 	//$Title Water Splash Generator (normal; Renderstyle, Stencilcolor are taken into account)
@@ -106,7 +106,7 @@ ACTOR WaterSplashObject4 : WaterSplashObject1
 	}
 }
 
-ACTOR WaterSplashCloud
+ACTOR WaterSplashCloud : ParticleBase
 {
 	Mass 100
 	Gravity 6.0

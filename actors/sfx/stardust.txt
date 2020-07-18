@@ -1,4 +1,4 @@
-ACTOR StarParticle
+ACTOR StarParticle : ParticleBase
 {
 	Gravity 0.125
 	Radius 1
@@ -13,6 +13,7 @@ ACTOR StarParticle
 	+NOGRAVITY
 	+THRUACTORS
 	+VULNERABLE //straight from the zwiki, since A_Die is used it needs this flag set: https://zdoom.org/wiki/A_Die - is it really needed?
+	DistanceCheck "sfxlod"
 	States
 	{
 	Spawn:
@@ -23,7 +24,7 @@ ACTOR StarParticle
 	}
 }
 
-ACTOR StarParticle_Spawner : SwitchableDecoration
+ACTOR StarParticle_Spawner : EffectSpawner
 {
 	//$Category Special Effects (BoA)
 	//$Title Startdust Spawner (horizontal)

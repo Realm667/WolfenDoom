@@ -3,7 +3,7 @@
 //   improved by  Ceeb & MaxED   //
 ///////////////////////////////////
 
-ACTOR SnowSpawner
+ACTOR SnowSpawner : EffectSpawner
 {
 	//$Category Special Effects (BoA)
 	//$Title Snow Spawner
@@ -53,7 +53,7 @@ ACTOR SnowSpawner
 	}
 }
 
-ACTOR SnowParticle
+ACTOR SnowParticle : ParticleBase
 {
 	DistanceCheck "sfxlod"
 	Radius 1

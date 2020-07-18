@@ -1205,7 +1205,7 @@ ACTOR ZyklonBBomb : ClusterBomb
 	}
 }
 
-ACTOR ZyklonBCloud
+ACTOR ZyklonBCloud : ParticleBase
 {
 	Game Doom
 	Radius 48
@@ -1972,11 +1972,21 @@ ACTOR MonsterHole2 : MonsterHole
 	{
 	Spawn:
 		TNT1 A 2 A_Jump(64,"SpawnAlt") //prevent doing huge amount of damage - ozy81
-		TNT1 A 0 A_SpawnItemEx("ZyklonZCloud4",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360),128)
+		TNT1 A 0 {
+			if (!CheckRange(sfxlod, true))
+			{
+				A_SpawnItemEx("ZyklonZCloud4",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360),128);
+			}
+		}
 		ZMMO ABCDEFGHIJKLMNOPQ 2
 		Stop
 	Spawn.Alt:
-		TNT1 A 0 A_SpawnItemEx("ZyklonZCloud5",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360),128)
+		TNT1 A 0 {
+			if (!CheckRange(sfxlod, true))
+			{
+				A_SpawnItemEx("ZyklonZCloud5",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360),128);
+			}
+		}
 		ZMMO ABCDEFGHIJKLMNOPQ 2
 		Stop
 	}
