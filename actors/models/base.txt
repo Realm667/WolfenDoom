@@ -2,7 +2,7 @@ const int MODELS_FLAGS1 = SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCA
 const int MODELS_FLAGS2 = SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE;
 
 //Base stuff - ModelBase moved on zscript codes
-ACTOR DecalBase
+ACTOR DecalBase : SceneryBase
 {
 	DistanceCheck "scenelod"
 	Radius 128
@@ -19,7 +19,7 @@ ACTOR DecalBase
 	}
 }
 
-ACTOR MuseumBase
+ACTOR MuseumBase : SceneryBase
 {
 	//$Category Models (BoA)/No Hitbox
 	//$Color 7

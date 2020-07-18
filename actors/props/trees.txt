@@ -1,4 +1,4 @@
-ACTOR TreeBase
+ACTOR TreeBase : TreesBase
 {
 	+FLATSPRITE
 	+ROLLSPRITE
@@ -384,7 +384,7 @@ ACTOR SmallTree1_Burnt : TreeBase
 }
 
 //2d actors
-ACTOR CeilingGrass
+ACTOR CeilingGrass : GrassBase
 {
 	//$Category Flora (BoA)
 	//$Title Ceiling Grass
@@ -404,7 +404,7 @@ ACTOR CeilingGrass
 	}
 }
 
-ACTOR Grass1
+ACTOR Grass1 : GrassBase
 {
 	//$Category Flora (BoA)
 	//$Title Grass 1
@@ -568,7 +568,7 @@ ACTOR Grass9 : Grass7
 	}
 }
 
-ACTOR SmallBush1
+ACTOR SmallBush1 : TreesBase
 {
 	//$Category Flora (BoA)
 	//$Title Bush 1
@@ -946,7 +946,7 @@ ACTOR NiceBush9 : NiceBush1
 	}
 }
 
-ACTOR Flower1
+ACTOR Flower1 : GrassBase
 {
 	//$Category Flora (BoA)
 	//$Title Flower (yellow)
@@ -1324,7 +1324,7 @@ ACTOR WinterTreeSpawner : RandomSpawner
 	DropItem "WinterI"
 }
 
-ACTOR WoodyLogs
+ACTOR WoodyLogs : TreesBase
 {
 	//$Category Flora (BoA)
 	//$Title Small Pack of Logs (Woods)

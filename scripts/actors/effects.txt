@@ -4,6 +4,7 @@ class EffectInfo // Should just be a struct, but we can't use structs in dynamic
 	Class<actor> type;
 	Vector3 position;
 	double angle, pitch, roll;
+	Vector2 scale;
 	Actor master, target, tracer;
 	int SpawnFlags;
 	int args[5];
@@ -12,15 +13,19 @@ class EffectInfo // Should just be a struct, but we can't use structs in dynamic
 	double range;
 }
 
-// Blocks get tracked in a dynamic array and culled when not in range of a player, then respawned when needed
+// Effects get tracked in a dynamic array and culled when not in range of a player, then respawned when needed
 class EffectsManager : Thinker
 {
 	Array<EffectInfo> effects;
 	int interval;
 
+	const cycletime = 35;
+
 	static void Add(Actor effect, double range = -1)
 	{
 		if (!effect) { return; }
+		if (effect.tid) { return; } // Don't add effects with a tid, because we can't guarantee they'll be spawned back in when they are activated/deactivated
+		if (effect.bSolid && !effect.bNoInteraction) { return; } // Only add non-solid or non-interactive objects
 
 		ThinkerIterator it = ThinkerIterator.Create("EffectsManager", Thinker.STAT_Default);
 		EffectsManager manager = EffectsManager(it.Next());
@@ -68,6 +73,7 @@ class EffectsManager : Thinker
 			this.angle = effect.angle;
 			this.pitch = effect.pitch;
 			this.roll = effect.roll;
+			this.scale = effect.scale;
 			this.master = effect.master;
 			this.target = effect.target;
 			this.tracer = effect.tracer;
@@ -84,6 +90,27 @@ class EffectsManager : Thinker
 
 			effects.Push(this);
 		}
+		else // Otherwise just update what's there...
+		{
+			effects[i].position = effect.pos;
+			effects[i].angle = effect.angle;
+			effects[i].pitch = effect.pitch;
+			effects[i].roll = effect.roll;
+			effects[i].scale = effect.scale;
+			effects[i].master = effect.master;
+			effects[i].target = effect.target;
+			effects[i].tracer = effect.tracer;
+			effects[i].SpawnFlags = effect.SpawnFlags;
+
+			for (int i = 0; i < 5; i++)
+			{
+				effects[i].args[i] = effect.args[i];
+			}
+
+			effects[i].tid = effect.tid;
+			effects[i].dormant = effect.bDormant;
+			effects[i].range = range;
+		}
 	}
 
 	void RemoveEffect(Actor effect)
@@ -99,10 +126,16 @@ class EffectsManager : Thinker
 
 	override void Tick()
 	{
-		if (interval > 0) { interval--; return; }
+		// Split up processing of the array across ticks to minimize single-tick think time
+		interval = (interval + 1) % cycletime;
+		double step = effects.Size() / double(cycletime);
+		if (int(step) < step) { step = int(step) + 1; } 
+		int start = interval * int(step);
+		int end = min(effects.Size(), start + int(step));
 
-		for (int i = 0; i < effects.Size(); i++)
+		for (int i = start; i < end; i++)
 		{
+			if (i >= effects.Size()) { return; }
 			if (!effects[i]) { continue; }
 
 			if (effects[i].master && effects[i].master.bDormant)
@@ -134,6 +167,7 @@ class EffectsManager : Thinker
 					effect.angle = effects[i].angle;
 					effect.pitch = effects[i].pitch;
 					effect.roll = effects[i].roll;
+					effect.scale = effects[i].scale;
 					effect.master = effects[i].master;
 					effect.target = effects[i].target;
 					effect.tracer = effects[i].tracer;
@@ -155,8 +189,6 @@ class EffectsManager : Thinker
 				effects[i].effect.Destroy();
 			}
 		}
-
-		interval = 15;
 	}
 }
 
@@ -170,6 +202,34 @@ class EffectSpawner : SwitchableDecoration
 	{
 		Super.PostBeginPlay();
 		EffectsManager.Add(self, range > 0 ? range : sfxlod);
+	}
+}
+
+// Do we want to use this handling with other types of actors that have lod CVARs?
+class GrassBase : Actor
+{
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		EffectsManager.Add(self, grasslod);
+	}
+}
+
+class SceneryBase : Actor
+{
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		EffectsManager.Add(self, scenelod);
+	}
+}
+
+class TreesBase : Actor
+{
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		EffectsManager.Add(self, treeslod);
 	}
 }
 
