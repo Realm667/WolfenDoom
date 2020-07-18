@@ -201,17 +201,11 @@ class CompassHandler : EventHandler
 
 					DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale, color(r, g, 0));
 				}
-				else if (PlayerFollower(mo))
+				else if (PlayerFollower(mo) && mo.bFriendly)
 				{
 					DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale, color(0, 0, 200));
-
-					double delta = Actor.deltaangle(p.mo.angle, mo.angle) + 90;
-					if (delta < 0) { delta += 360; }
-
-					String a = "AN" .. String.Format("%03i", abs(int(delta / 45) * 45));
-					TextureID tex = TexMan.CheckForTexture(a, TexMan.Type_Sprite);
-
-					if (tex) { DrawToHUD.DrawTexture(tex, (iconX, iconY), alpha / 2, scale); }
+					TextureID tex = TexMan.CheckForTexture("Arrow", TexMan.Type_Any);
+					if (tex) { DrawToHUD.DrawShapeTexture(tex, (iconX, iconY), alpha / 2, e.ViewAngle - mo.angle, scale); }
 				}
 
 			}
