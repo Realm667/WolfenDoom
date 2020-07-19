@@ -7,6 +7,12 @@ else
   sevenzip=7z
 fi
 
+if [[ -x "$(command -v git)" ]] && git rev-parse --git-dir > /dev/null 2>&1; then
+  git=1
+else
+  git=0
+fi
+
 cmthd='Deflate'
 updaterepo=1
 
@@ -44,15 +50,19 @@ HELP
   shift
 done
 
-if ((updaterepo)); then
+if ((updaterepo && git)); then
   git checkout master
   git pull origin master
 fi
 
 # Regular pk3 filename
 zipprefix="wolf_boa"
-zipcommit="$(git log -n 1 --format=%h)"
-zipname="$zipprefix-$zipcommit-$(git log -n 1 --date=short --format=%cd | sed 's/\([[:digit:]]\{4\}\)-\([[:digit:]]\{2\}\)-\([[:digit:]]\{1,2\}\)$/\1\2\3/').pk3"
+if ((git)); then
+  zipcommit="$(git log -n 1 --format=%h)"
+  zipname="$zipprefix-$zipcommit-$(git log -n 1 --date=short --format=%cd | sed 's/\([[:digit:]]\{4\}\)-\([[:digit:]]\{2\}\)-\([[:digit:]]\{1,2\}\)$/\1\2\3/').pk3"
+else
+  zipname="$zipprefix-$(date +%Y%m%d).pk3"
+fi
 
 $sevenzip a -tzip -mmt=on -mm=$cmthd -mx=9 -ssc -xr@'tools/7zExcludeList.txt' -x@'tools/7zExcludeListDir.txt' $zipname *
 if [[ $? -eq 0 ]]; then mv $zipname ..; fi
