@@ -171,8 +171,11 @@ class IntroScroll : TextScroll
 	}
 }
 
-// Base class for finale menu screens.  Inherit from this and configure via the Init function (see FinaleC1 class below)
-// Call from ACS with: 'ScriptCall("Menu", "SetMenu", "FinaleC1");'
+// Base class for finale menu screens.  
+//
+// Call from ACS with: 'ScriptCall("Finale", "Setup", "<String to display>", <true/false - Show stats>, <true/false - Swap draw sides for stats and text>);'
+//	Example: ScriptCall("Finale", "Setup", "$EPILOGUEC1", true, false);
+//
 // Wait for completion from within ACS with: 'While (!ScriptCall("Finale", "Ready")) { Delay(35); }' (checks if the currently open finale is closing)
 class Finale : GenericMenu
 {
@@ -222,11 +225,16 @@ class Finale : GenericMenu
 		label_r = TexMan.CheckForTexture("graphics/finale/finale_label_r.png", TexMan.Type_Any);
 		frame = TexMan.CheckForTexture("graphics/finale/finale_frame.png", TexMan.Type_Any);
 
+		InitText(text);
+
+		totals = GetTotals();
+	}
+
+	void InitText(String text)
+	{
 		lines = fnt.BreakLines(StringTable.Localize(text), int(textwidth / textscale));
 		maxlines = int(textheight / lineheight);
 		maxpages = lines.Count() / maxlines;
-
-		totals = GetTotals();
 	}
 
 	override void Drawer()
@@ -473,93 +481,19 @@ class Finale : GenericMenu
 		if (current is "Finale" && Finale(current).finished) { return true; }
 		else { return false; }
 	}
-}
 
-class FinaleC1 : Finale
-{
-	override void Init(Menu parent)
+	static ui void Setup(String str = "", bool stats = -1, bool swap = -1)
 	{
-		text = "$EPILOGUEC1";
+		Finale current = Finale(Menu.GetCurrentMenu());
+		if (!current)
+		{
+			SetMenu("Finale");
 
-		Super.Init(parent);
-	}
-}
+			current = Finale(Menu.GetCurrentMenu());
+		}
 
-class FinaleC2 : Finale
-{
-	override void Init(Menu parent)
-	{
-		text = "$EPILOGUEC2";
-
-		Super.Init(parent);
-	}
-}
-
-class FinaleC2Secret : Finale
-{
-	override void Init(Menu parent)
-	{
-		text = "$EPILOGUES2";
-		nostats = true;
-
-		Super.Init(parent);
-	}
-}
-
-class FinaleC3 : Finale
-{
-	override void Init(Menu parent)
-	{
-		text = "$EPILOGUEC3";
-
-		Super.Init(parent);
-	}
-}
-
-class FinaleC3Secret : Finale
-{
-	override void Init(Menu parent)
-	{
-		text = "$EPILOGUEC3S";
-		nostats = true;
-		swapsides = true;
-
-		Super.Init(parent);
-	}
-}
-
-class FinaleCutscene1 : Finale
-{
-	override void Init(Menu parent)
-	{
-		text = "$CUTSCENE1";
-		nostats = true;
-		swapsides = true;
-
-		Super.Init(parent);
-	}
-}
-
-class FinaleCutscene2 : Finale
-{
-	override void Init(Menu parent)
-	{
-		text = "$CUTSCENE2";
-		nostats = true;
-		swapsides = true;
-
-		Super.Init(parent);
-	}
-}
-
-class FinaleCutscene3 : Finale
-{
-	override void Init(Menu parent)
-	{
-		text = "$CUTSCENE3";
-		nostats = true;
-		swapsides = true;
-
-		Super.Init(parent);
+		if (str.length()) { current.InitText(str); }
+		if (stats > -1) { current.nostats = !stats; }
+		if (swap > -1) { current.swapsides = swap; }
 	}
 }
