@@ -69,6 +69,12 @@ script "Autosave" (void)
 	Autosave();
 }
 
+//common end map
+script "ChangeMap" (void)
+{
+	Exit_Normal(0);
+}
+
 //mxd. Mutants despawn checks
 script "DisableMutants" (void)
 {
@@ -184,7 +190,6 @@ script "OhNoes!" DEATH
 }
 
 // Screen overlays //
-
 function void DrawOverlay(int w, int h, int image, int outtime, int alpha)
 {
 	SetHudSize(w, h, 0);
