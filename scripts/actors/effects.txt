@@ -203,10 +203,26 @@ class EffectSpawner : SwitchableDecoration
 		Super.PostBeginPlay();
 		EffectsManager.Add(self, range > 0 ? range : sfxlod);
 	}
+
+	// Used directly in place of A_SpawnItemEx in DECORATE actors so that we don't have to re-write a bunch of code.
+	bool, Actor SpawnParticleActor(class<Actor> missile, double xofs = 0, double yofs = 0, double zofs = 0, double xvel = 0, double yvel = 0, double zvel = 0, double angle = 0, int flags = 0, int failchance = 0, int tid = 0)
+	{
+		if (CheckRange(sfxlod, true)) { return false, null; }
+
+		return A_SpawnItemEx(missile, xofs, yofs, zofs, xvel, yvel, zvel, angle, flags, failchance, tid);
+	}
 }
 
-// Do we want to use this handling with other types of actors that have lod CVARs?
-class GrassBase : Actor
+class EffectBase : SimpleActor // Rarely used; only for infinitely looping effects actors that are placed directly in-editor (e.g., PollenAir)
+{
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		EffectsManager.Add(self, sfxlod);
+	}
+}
+
+class GrassBase : SimpleActor
 {
 	override void PostBeginPlay()
 	{
@@ -222,6 +238,14 @@ class SceneryBase : Actor
 		Super.PostBeginPlay();
 		EffectsManager.Add(self, scenelod);
 	}
+
+	// Used directly in place of A_SpawnItemEx in DECORATE actors so that we don't have to re-write a bunch of code.
+	bool, Actor SpawnParticleActor(class<Actor> missile, double xofs = 0, double yofs = 0, double zofs = 0, double xvel = 0, double yvel = 0, double zvel = 0, double angle = 0, int flags = 0, int failchance = 0, int tid = 0)
+	{
+		if (CheckRange(sfxlod, true)) { return false, null; }
+
+		return A_SpawnItemEx(missile, xofs, yofs, zofs, xvel, yvel, zvel, angle, flags, failchance, tid);
+	}
 }
 
 class TreesBase : Actor
@@ -233,22 +257,19 @@ class TreesBase : Actor
 	}
 }
 
-class ParticleBase : Actor
+class ParticleBase : SimpleActor
 {
-	bool done;
 	int checktimer;
 
 	States
 	{
 		Death:
-			"####" "#" 5 A_FadeOut(0.05, FTF_REMOVE);
+			"####" "#" 1 A_FadeOut(0.05, FTF_REMOVE);
 			Loop;
 	}
 
 	override void PostBeginPlay()
 	{
-		if (CheckRange(sfxlod, true)) { Destroy(); return; }
-
 		Super.PostBeginPlay();
 
 		// Set the initial check at a random tick so they don't all check at once...
@@ -259,23 +280,15 @@ class ParticleBase : Actor
 	{
 		Super.Tick();
 
-		if (checktimer > 0) { checktimer--; }
-
-		if (checktimer == 0)
+		if (checktimer-- <= 0)
 		{
-			if (
-				!level.IsPointInLevel(pos) || // If it's outside the level
-				CheckRange(sfxlod, true) // or if it's outside of configured effects render range
-			) { done = true; }
+			if (!level.IsPointInLevel(pos) || CheckRange(sfxlod, true)) // If it's outside the level or is out of range to be spawned, remove it
+			{
+				tics = 0;
+				SetStateLabel("Death");
+			}
 
 			checktimer = 35; // Check once every second.
-		}
-
-		// If the actor is should be removed, do so
-		if (done)
-		{
-			tics = 0;
-			SetStateLabel("Death");
 		}
 	}
 }
@@ -366,7 +379,7 @@ class CloudSpawner : EffectSpawner
 
 	void A_SpawnClouds()
 	{
-		A_SpawnItemEx(cloud, random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), frandom(minspeed, maxspeed), 0, 0, random(6, -6), SXF_CLIENTSIDE | SXF_TRANSFERSCALE | SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERSTENCILCOL, Args[2]);
+		SpawnParticleActor(cloud, random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), frandom(minspeed, maxspeed), 0, 0, random(6, -6), SXF_CLIENTSIDE | SXF_TRANSFERSCALE | SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERSTENCILCOL, Args[2]);
 	}
 }
 
@@ -427,7 +440,7 @@ class SteamSpawner : EffectSpawner
 					ang = args[0] < 2 ? Random(0, 360) : Random(-8, 8);
 
 					if (args[1] && !args[3]) { A_StartSound(snd, 10, sndflags, 1.0); } // Each burst plays a sound on spawn
-					A_SpawnItemEx(particle, 0, 0, zoffset, velx, 0, velz, ang, 128);
+					SpawnParticleActor(particle, 0, 0, zoffset, velx, 0, velz, ang, 128);
 				}
 			}
 		Loop;

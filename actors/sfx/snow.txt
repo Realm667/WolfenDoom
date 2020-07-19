@@ -25,6 +25,7 @@ ACTOR SnowSpawner : EffectSpawner
 	+NOINTERACTION
 	+NOSECTOR
 	+SPAWNCEILING
+	EffectSpawner.Range 1024
 	States
 	{
 	Spawn:
@@ -34,19 +35,11 @@ ACTOR SnowSpawner : EffectSpawner
 		TNT1 A 0 A_JumpIf(Args[2], "CircleLoop")
 		Goto SquareLoop
 	CircleLoop:
-		TNT1 A 0 A_CheckRange(1024.0, "CircleWait", TRUE)
-		TNT1 A 6 A_SpawnItemEx("SnowParticle", random(-Args[0], Args[0]), 0, 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0),frandom(-1.0, -3.0), random(0, 359), 0, Args[1])
+		TNT1 A 6 SpawnParticleActor("SnowParticle", random(-Args[0], Args[0]), 0, 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0),frandom(-1.0, -3.0), random(0, 359), 0, Args[1])
 		Loop
-	CircleWait:
-		TNT1 A 35
-		Goto CircleLoop
 	SquareLoop:
-		TNT1 A 0 A_CheckRange(1024.0, "SquareWait", TRUE)
-		TNT1 A 6 A_SpawnItemEx("SnowParticle", random(-Args[0], Args[0]), random(-Args[0], Args[0]), 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, 0, Args[1])
+		TNT1 A 6 SpawnParticleActor("SnowParticle", random(-Args[0], Args[0]), random(-Args[0], Args[0]), 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, 0, Args[1])
 		Loop
-	SquareWait:
-		TNT1 A 35
-		Goto SquareLoop
 	Vanish:
 		TNT1 A 1
 		Stop
@@ -93,10 +86,10 @@ ACTOR ConfettiSpawner : SnowSpawner
 		TNT1 A 0 A_JumpIf(Args[2], "CircleLoop")
 		Goto SquareLoop
 	CircleLoop:
-		TNT1 A 6 A_SpawnItemEx("ConfettiParticle", random(-Args[0], Args[0]), 0, 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0),frandom(-4.0, 4.0), random(0, 359), SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1])
+		TNT1 A 6 SpawnParticleActor("ConfettiParticle", random(-Args[0], Args[0]), 0, 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0),frandom(-4.0, 4.0), random(0, 359), SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1])
 		Loop
 	SquareLoop:
-		TNT1 A 6 A_SpawnItemEx("ConfettiParticle", random(-Args[0], Args[0]), random(-Args[0], Args[0]), 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-4.0, 4.0), 0, SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1])
+		TNT1 A 6 SpawnParticleActor("ConfettiParticle", random(-Args[0], Args[0]), random(-Args[0], Args[0]), 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-4.0, 4.0), 0, SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1])
 		Loop
 	Vanish:
 		TNT1 A 1

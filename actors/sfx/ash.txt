@@ -21,13 +21,13 @@ Actor AshSpawner : EffectSpawner
 	Active:
 		TNT1 A 0
 		TNT1 A 0 A_Jump(256, 1, 2, 3, 4)
-		TNT1 A 1 A_SpawnItemEx("FloatingAshLight", Random(-Args[0],Args[0]), Random(-Args[0],Args[0]), Args[1], frandom(0.0, 0.2), 0, 0, random(0.0, 1.0), 128, Args[4])
+		TNT1 A 1 SpawnParticleActor("FloatingAshLight", Random(-Args[0],Args[0]), Random(-Args[0],Args[0]), Args[1], frandom(0.0, 0.2), 0, 0, random(0.0, 1.0), 128, Args[4])
 		Loop
-		TNT1 A 1 A_SpawnItemEx("FloatingAshGrey", Random(-Args[0],Args[0]), Random(-Args[0],Args[0]), Args[1], frandom(0.0, 0.2), 0, 0, random(0.0, 1.0), 128, Args[4])
+		TNT1 A 1 SpawnParticleActor("FloatingAshGrey", Random(-Args[0],Args[0]), Random(-Args[0],Args[0]), Args[1], frandom(0.0, 0.2), 0, 0, random(0.0, 1.0), 128, Args[4])
 		Loop
-		TNT1 A 1 A_SpawnItemEx("FloatingAshDarkGrey", Random(-Args[0],Args[0]), Random(-Args[0],Args[0]), Args[1], frandom(0.0, 0.2), 0, 0, random(0.0, 1.0), 128, Args[4])
+		TNT1 A 1 SpawnParticleActor("FloatingAshDarkGrey", Random(-Args[0],Args[0]), Random(-Args[0],Args[0]), Args[1], frandom(0.0, 0.2), 0, 0, random(0.0, 1.0), 128, Args[4])
 		Loop
-		TNT1 A 1 A_SpawnItemEx("FloatingAshDark", Random(-Args[0],Args[0]), Random(-Args[0],Args[0]), Args[1], frandom(0.0, 0.2), 0, 0, random(0.0, 1.0), 128, Args[4])
+		TNT1 A 1 SpawnParticleActor("FloatingAshDark", Random(-Args[0],Args[0]), Random(-Args[0],Args[0]), Args[1], frandom(0.0, 0.2), 0, 0, random(0.0, 1.0), 128, Args[4])
 		Loop
 	Inactive:
 		TNT1 A 10
