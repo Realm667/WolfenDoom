@@ -43,7 +43,8 @@ ACTOR StarParticle_Spawner : EffectSpawner
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("DustSwitch")==0,"EndSpawn")
 	Active:
 		"####" A 1
-		"####" A 8 SpawnParticleActor("StarParticle", random(0,128), 0, random(0,128), 0, random(2,8), 0, 0, SXF_CLIENTSIDE, 64)
+		"####" A 0 { if (CheckRange(sfxlod, true)) { SetStateLabel("Active"); } }
+		"####" A 8 A_SpawnItemEx("StarParticle", random(0,128), 0, random(0,128), 0, random(2,8), 0, 0, SXF_CLIENTSIDE, 64)
 		Loop
 	Inactive:
 		"####" A 10
@@ -63,7 +64,8 @@ ACTOR StarParticle_Spawner2 : StarParticle_Spawner
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("DustSwitch")==0,"EndSpawn")
 	Active:
 		"####" A 1
-		"####" A 8 SpawnParticleActor("StarParticle", random(0,128), random(0,128), 0, 0, random(2,8), -5, 0, SXF_CLIENTSIDE, 64)
+		"####" A 0 { if (CheckRange(sfxlod, true)) { SetStateLabel("Active"); } }
+		"####" A 8 A_SpawnItemEx("StarParticle", random(0,128), random(0,128), 0, 0, random(2,8), -5, 0, SXF_CLIENTSIDE, 64)
 		Loop
 	}
 }
@@ -77,7 +79,8 @@ ACTOR StarParticle_SpawnerFast : StarParticle_Spawner
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("DustSwitch")==0,"EndSpawn")
 	Active:
 		"####" A 1
-		"####" A 8 SpawnParticleActor("StarParticle", random(0,128), 0, random(0,128), 0, random(20,30), 0, 0, SXF_CLIENTSIDE, 64)
+		"####" A 0 { if (CheckRange(sfxlod, true)) { SetStateLabel("Active"); } }
+		"####" A 8 A_SpawnItemEx("StarParticle", random(0,128), 0, random(0,128), 0, random(20,30), 0, 0, SXF_CLIENTSIDE, 64)
 		Loop
 	}
 }

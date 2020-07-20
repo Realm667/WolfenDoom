@@ -17,6 +17,8 @@ class EffectInfo // Should just be a struct, but we can't use structs in dynamic
 class EffectsManager : Thinker
 {
 	Array<EffectInfo> effects;
+	Array<Actor> rainqueue;
+	CVar maxqueuecvar;
 	int interval;
 
 	const cycletime = 35;
@@ -24,7 +26,7 @@ class EffectsManager : Thinker
 	static void Add(Actor effect, double range = -1)
 	{
 		if (!effect) { return; }
-		if (effect.tid) { return; } // Don't add effects with a tid, because we can't guarantee they'll be spawned back in when they are activated/deactivated
+		if (effect.tid || effect.master) { return; } // Don't add effects with a tid or a master, because we can't guarantee they'll be spawned back in when they are activated/deactivated
 		if (effect.bSolid && !effect.bNoInteraction) { return; } // Only add non-solid or non-interactive objects
 
 		ThinkerIterator it = ThinkerIterator.Create("EffectsManager", Thinker.STAT_Default);
@@ -44,7 +46,6 @@ class EffectsManager : Thinker
 		EffectsManager manager = EffectsManager(it.Next());
 
 		if (!manager) { manager = new("EffectsManager"); }
-
 		if (!manager) { return; }
 
 		manager.RemoveEffect(effect);
@@ -79,9 +80,9 @@ class EffectsManager : Thinker
 			this.tracer = effect.tracer;
 			this.SpawnFlags = effect.SpawnFlags;
 
-			for (int i = 0; i < 5; i++)
+			for (int a = 0; a < 5; a++)
 			{
-				this.args[i] = effect.args[i];
+				this.args[a] = effect.args[a];
 			}
 
 			this.tid = effect.tid;
@@ -102,9 +103,9 @@ class EffectsManager : Thinker
 			effects[i].tracer = effect.tracer;
 			effects[i].SpawnFlags = effect.SpawnFlags;
 
-			for (int i = 0; i < 5; i++)
+			for (int a = 0; a < 5; a++)
 			{
-				effects[i].args[i] = effect.args[i];
+				effects[i].args[a] = effect.args[a];
 			}
 
 			effects[i].tid = effect.tid;
@@ -122,6 +123,40 @@ class EffectsManager : Thinker
 
 		effects.Delete(i);
 		effect.Destroy();
+	}
+
+	static void Queue(Actor mo)
+	{
+		if (!mo) { return; }
+
+		ThinkerIterator it = ThinkerIterator.Create("EffectsManager", Thinker.STAT_Default);
+		EffectsManager manager = EffectsManager(it.Next());
+
+		if (!manager) { manager = new("EffectsManager"); }
+		if (!manager) { return; }
+
+		manager.QueueAdd(mo);
+	}
+
+	void QueueAdd(Actor mo)
+	{
+		int maxqueue = 200;
+		if (maxqueuecvar) { maxqueue = maxqueuecvar.GetInt(); }
+
+		if (rainqueue.Size() > maxqueue && rainqueue[maxqueue])
+		{
+			rainqueue[maxqueue].Destroy();
+			rainqueue.Delete(maxqueue);
+		}
+
+		rainqueue.Insert(0, mo);
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		maxqueuecvar = CVar.FindCVar("maxprecipitationactors");
 	}
 
 	override void Tick()
@@ -201,15 +236,7 @@ class EffectSpawner : SwitchableDecoration
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		EffectsManager.Add(self, range > 0 ? range : sfxlod);
-	}
-
-	// Used directly in place of A_SpawnItemEx in DECORATE actors so that we don't have to re-write a bunch of code.
-	bool, Actor SpawnParticleActor(class<Actor> missile, double xofs = 0, double yofs = 0, double zofs = 0, double xvel = 0, double yvel = 0, double zvel = 0, double angle = 0, int flags = 0, int failchance = 0, int tid = 0)
-	{
-		if (CheckRange(sfxlod, true)) { return false, null; }
-
-		return A_SpawnItemEx(missile, xofs, yofs, zofs, xvel, yvel, zvel, angle, flags, failchance, tid);
+		EffectsManager.Add(self, range > 0 ? min(range, sfxlod) : sfxlod);
 	}
 }
 
@@ -237,14 +264,6 @@ class SceneryBase : Actor
 	{
 		Super.PostBeginPlay();
 		EffectsManager.Add(self, scenelod);
-	}
-
-	// Used directly in place of A_SpawnItemEx in DECORATE actors so that we don't have to re-write a bunch of code.
-	bool, Actor SpawnParticleActor(class<Actor> missile, double xofs = 0, double yofs = 0, double zofs = 0, double xvel = 0, double yvel = 0, double zvel = 0, double angle = 0, int flags = 0, int failchance = 0, int tid = 0)
-	{
-		if (CheckRange(sfxlod, true)) { return false, null; }
-
-		return A_SpawnItemEx(missile, xofs, yofs, zofs, xvel, yvel, zvel, angle, flags, failchance, tid);
 	}
 }
 
@@ -379,7 +398,10 @@ class CloudSpawner : EffectSpawner
 
 	void A_SpawnClouds()
 	{
-		SpawnParticleActor(cloud, random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), frandom(minspeed, maxspeed), 0, 0, random(6, -6), SXF_CLIENTSIDE | SXF_TRANSFERSCALE | SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERSTENCILCOL, Args[2]);
+		if (!CheckRange(sfxlod, true))
+		{
+			A_SpawnItemEx(cloud, random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), frandom(minspeed, maxspeed), 0, 0, random(6, -6), SXF_CLIENTSIDE | SXF_TRANSFERSCALE | SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERSTENCILCOL, Args[2]);
+		}
 	}
 }
 
@@ -433,14 +455,14 @@ class SteamSpawner : EffectSpawner
 			TNT1 A 1 { if (!args[1] && !args[3]) { A_StartSound(snd, 10, sndflags, 1.0); } } // Constant plays a looped sound once
 		SpawnLoop:
 			TNT1 A 1 {
-				if (!args[1] || Random(0, 255) < freq)
+				if (!CheckRange(sfxlod, true) && (!args[1] || Random(0, 255) < freq))
 				{
 					velx = args[0] < 2 ? 0.1 * Random(0, 4) : 0.1 * Random(35, 40);
 					velz = args[0] < 2 ? (args[0] == 1 ? -1 : 1) * 0.1 * Random(35, 40) : 0.1 * Random(-5, 5);
 					ang = args[0] < 2 ? Random(0, 360) : Random(-8, 8);
 
 					if (args[1] && !args[3]) { A_StartSound(snd, 10, sndflags, 1.0); } // Each burst plays a sound on spawn
-					SpawnParticleActor(particle, 0, 0, zoffset, velx, 0, velz, ang, 128);
+					A_SpawnItemEx(particle, 0, 0, zoffset, velx, 0, velz, ang, 128);
 				}
 			}
 		Loop;
@@ -515,3 +537,157 @@ class Bubble : ParticleBase
 		Super.Tick();
 	}
 }
+/*
+// Zscript version of the DECORATE Rain Spawner by Tormentor667
+class RainSpawner : EffectSpawner
+{
+	CVar rainswitch;
+	Class<Actor> raindrop;
+	EffectsManager manager;
+
+	Default
+	{
+		//$Category Special Effects (BoA)
+		//$Title Rain Spawner
+		//$Color 12
+		//$Arg0 "Radius"
+		//$Arg0Tooltip "Radius in map units\nDefault: 0"
+		//$Arg1 "Frequency"
+		//$Arg1Tooltip "Frequency, the lower the number, the heavier the rainfall\nRange: 0 - 255"
+		//$Arg2 "Sound"
+		//$Arg2Type 11
+		//$Arg2Enum { 0 = "Yes"; 1 = "No"; }
+		//$Arg3 "Drop Length"
+		//$Arg3Type 11
+		//$Arg3Enum { 0 = "Long"; 1 = "Short"; }
+		//$Arg3Tooltip "Drop length, use long (0) for heavy rainfall and short (1) for a mizzle"
+		//$Arg4 "Pitch"
+		//$Arg4Tooltip "The rainfall's pitch, for maps with wind and storm, use angle for direction.\nThe higher the number, the heavier the wind.\nRange: 0 - 75, where 75 is almost horizontal rain"
+		Radius 1;
+		Height 1;
+		YScale 0.1;
+		+NOCLIP
+		+NOGRAVITY
+		+SPAWNCEILING;
+		EffectSpawner.Range 1200;
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 0;
+		Active:
+			TNT1 A 1 SpawnDrop();
+			Loop;
+		Inactive:
+			TNT1 A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		rainswitch = CVar.FindCVar("rainswitch");
+
+		if (!args[3]) { raindrop = "RainDropLong"; }
+		else { raindrop = "RainDropShort"; }
+
+		ThinkerIterator it = ThinkerIterator.Create("EffectsManager", Thinker.STAT_Default);
+		manager = EffectsManager(it.Next());
+
+		if (!manager) { manager = new("EffectsManager"); }
+
+		Super.PostBeginPlay();
+	}
+
+	override void Activate(Actor activator)
+	{
+		if (rainswitch && !rainswitch.GetBool())
+		{
+			A_StopSound(7);
+
+			Destroy();
+		}
+		else
+		{
+			if (!args[2]) { A_StartSound("Ambient/Rain", 7, CHANF_LOOPING, 1.0); }
+			
+			SetStateLabel("Active");
+		}
+	}
+
+	override void Deactivate(Actor activator)
+	{
+		A_StopSound(7);
+
+		SetStateLabel("Inactive");
+	}
+
+	void SpawnDrop()
+	{
+		bool spawned;
+		Actor mo;
+		[spawned, mo] = A_SpawnItemEx(raindrop, Random(-Args[0], Args[0]), Random(-Args[0], Args[0]), -2, Args[4], 0, -(args[3] ? 20 : 40) + (Args[4] / 2), 0, SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1]);
+
+		if (spawned && mo && manager)
+		{
+			manager.QueueAdd(mo);
+		}
+	}
+}
+
+class RainDropShort : SimpleActor
+{
+	Default
+	{
+		DistanceCheck "sfxlod";
+		Height 1;
+		Radius 4;
+		RenderStyle "Translucent";
+		Alpha 0.7;
+		+CLIENTSIDEONLY
+		+DONTSPLASH
+		+FORCEYBILLBOARD
+		+MISSILE
+		+NOBLOCKMAP
+		+NOGRAVITY
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A 0;
+		Rainfall:
+			"####" A 4;
+			Loop;
+		Death:
+			RNDR A 0 {
+				Scale = (0.10, 0.10);
+				alpha = FRandom(0.8, 0.2);
+			}
+		RainDeath:
+			"####" A 1 {
+				Scale.x += 0.05;
+				Scale.y += 0.05;
+				A_FadeOut(0.1, FTF_REMOVE);
+			}
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		Scale.x += FRandom(-0.05, 0.05);
+		Scale.y += FRandom(-0.05, 0.05);
+		alpha = FRandom(0.7, 0.4);
+	}
+
+	override void Tick()
+	{
+		if (waterlevel) { Destroy(); return; }
+		Super.Tick();
+	}
+}
+
+class RainDropLong : RainDropShort {}
+*/

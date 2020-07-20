@@ -33,15 +33,15 @@ ACTOR RainSpawner : EffectSpawner
 		TNT1 A 0 A_JumpIf(!Args[2], "StartSound")
 		Goto RainLoop
 	StartSound:
-		TNT1 A 0 A_StartSound("Ambient/Rain", CHAN_AUTO, CHANF_LOOP, 1.0)
+		TNT1 A 0 A_StartSound("Ambient/Rain", CHAN_AUTO, CHANF_LOOPING, 1.0)
 		Goto RainLoop
 	RainLoop:
 		TNT1 A 0 A_JumpIf(!Args[3], "RainLong")
 	RainShort:
-		TNT1 A 1 SpawnParticleActor("RainDropShort", random(-Args[0], Args[0]), random(-Args[0], Args[0]), -2, Args[4], 0, -20+(Args[4]/2), 0, SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1])
+		TNT1 A 1 { if (!CheckRange(sfxlod, true)) { A_SpawnItemEx("RainDropShort", random(-Args[0], Args[0]), random(-Args[0], Args[0]), -2, Args[4], 0, -20+(Args[4]/2), 0, SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1]); } }
 		Goto RainLoop
 	RainLong:
-		TNT1 A 1 SpawnParticleActor("RainDropLong", random(-Args[0], Args[0]), random(-Args[0], Args[0]), -2, Args[4], 0, -40+(Args[4]/2), 0, SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1])
+		TNT1 A 1 { if (!CheckRange(sfxlod, true)) { A_SpawnItemEx("RainDropLong", random(-Args[0], Args[0]), random(-Args[0], Args[0]), -2, Args[4], 0, -40+(Args[4]/2), 0, SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1]); } }
 		Goto RainLoop
 	Vanish:
 		TNT1 A 0 A_StopSound(CHAN_AUTO)
@@ -54,7 +54,7 @@ ACTOR RainSpawner : EffectSpawner
 	}
 }
 
-ACTOR RainDropShort : ParticleBase //3d actor
+ACTOR RainDropShort //3d actor
 {
 	DistanceCheck "sfxlod"
 	Height 1

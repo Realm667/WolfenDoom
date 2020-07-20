@@ -131,7 +131,7 @@ ACTOR PowerPlantSmokeGenerator : EffectSpawner
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 	ActiveLoop:
 		TNT1 A 0 A_CheckSightOrRange(1200.0, "LoopWait", TRUE)
-		TNT1 A 8 SpawnParticleActor("PowerPlantSmokePuff", frandom(-8.0,8.0), frandom(-8.0,8.0), 0, frandom(0.2, -0.2), frandom(0.2, -0.2), frandom(0.5, 1.5))
+		TNT1 A 8 A_SpawnItemEx("PowerPlantSmokePuff", frandom(-8.0,8.0), frandom(-8.0,8.0), 0, frandom(0.2, -0.2), frandom(0.2, -0.2), frandom(0.5, 1.5))
 		Loop
 	Inactive:
 		TNT1 A -1
@@ -155,7 +155,7 @@ ACTOR PowerPlantSmokeGeneratorSmall : PowerPlantSmokeGenerator
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 	ActiveLoop:
 		TNT1 A 0 A_CheckSightOrRange(1200.0, "LoopWait", TRUE)
-		TNT1 A 8 SpawnParticleActor("PowerPlantSmokePuffSmall", frandom(-4.0,4.0), frandom(-4.0,4.0), 0, frandom(0.1, -0.1), frandom(0.1, -0.1), frandom(0.25, 0.75))
+		TNT1 A 8 A_SpawnItemEx("PowerPlantSmokePuffSmall", frandom(-4.0,4.0), frandom(-4.0,4.0), 0, frandom(0.1, -0.1), frandom(0.1, -0.1), frandom(0.25, 0.75))
 		Loop
 	Inactive:
 		TNT1 A -1
@@ -180,7 +180,7 @@ ACTOR PowerPlantSmokeGenerator2 : PowerPlantSmokeGenerator
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 	ActiveLoop:
 		TNT1 A 0 A_CheckSightOrRange(1200.0, "LoopWait", TRUE)
-		TNT1 A 8 SpawnParticleActor("PowerPlantSmokePuffLarge", frandom(-32.0,32.0), frandom(-32.0,32.0), 0, frandom(0.3, -0.3), frandom(0.3, -0.3), frandom(0.75, 2.0))
+		TNT1 A 8 A_SpawnItemEx("PowerPlantSmokePuffLarge", frandom(-32.0,32.0), frandom(-32.0,32.0), 0, frandom(0.3, -0.3), frandom(0.3, -0.3), frandom(0.75, 2.0))
 		Loop
 	Inactive:
 		TNT1 A -1
@@ -317,10 +317,10 @@ ACTOR AmbientSmokeGenerator : EffectSpawner
 	ActiveLoop:
 		TNT1 A 0 A_JumpIf(Args[2] == 1, "SkyboxLoop")
 		TNT1 A 0 A_CheckSightOrRange(1200.0, "LoopWait", TRUE)
-		TNT1 A 8 SpawnParticleActor("AmbientSmoke", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,48), 0, 0, 0.5, 0, 0, Args[1])
+		TNT1 A 8 A_SpawnItemEx("AmbientSmoke", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,48), 0, 0, 0.5, 0, 0, Args[1])
 		Loop
 	SkyboxLoop:
-		TNT1 A 8 SpawnParticleActor("AmbientSmokeSB", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,48), 0, 0, 0.5, 0, 0, Args[1])
+		TNT1 A 8 A_SpawnItemEx("AmbientSmokeSB", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,48), 0, 0, 0.5, 0, 0, Args[1])
 		TNT1 A 0 A_Jump(256,"ActiveLoop")
 		Stop
 	Inactive:
@@ -345,7 +345,7 @@ ACTOR AmbientSmokeGeneratorDown : AmbientSmokeGenerator
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 	ActiveLoop:
 		TNT1 A 0 A_CheckSightOrRange(1200.0, "LoopWait", TRUE)
-		TNT1 A 8 SpawnParticleActor("AmbientSmoke", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,-48), 0, 0, -0.5, 0, 0, Args[1])
+		TNT1 A 8 A_SpawnItemEx("AmbientSmoke", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,-48), 0, 0, -0.5, 0, 0, Args[1])
 		Loop
 	Inactive:
 		TNT1 A -1
@@ -387,7 +387,7 @@ ACTOR AmbientSmokeGenerator_Large : AmbientSmokeGenerator
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 	ActiveLoop:
 		TNT1 A 0 A_CheckSightOrRange(1200.0, "LoopWait", TRUE)
-		TNT1 A 8 SpawnParticleActor("AmbientSmoke_Large", random(-Args[0]*10, Args[0]*10), random(-Args[0]*10, Args[0]*10), random(64,256), 0, 0, random(1,4), 0, 0, Args[1])
+		TNT1 A 8 A_SpawnItemEx("AmbientSmoke_Large", random(-Args[0]*10, Args[0]*10), random(-Args[0]*10, Args[0]*10), random(64,256), 0, 0, random(1,4), 0, 0, Args[1])
 		Loop
 	Inactive:
 		TNT1 A -1
@@ -413,7 +413,7 @@ ACTOR AmbientSmokeGeneratorDown_Large : AmbientSmokeGeneratorDown
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("SmokeSwitch")==0,"EndSpawn")
 	ActiveLoop:
 		TNT1 A 0 A_CheckSightOrRange(1200.0, "LoopWait", TRUE)
-		TNT1 A 8 SpawnParticleActor("AmbientSmoke_Large", random(-Args[0]*10, Args[0]*10), random(-Args[0]*10, Args[0]*10), random(-64,-128),   0, 0, random(-1,-4), 0, 0, Args[1])
+		TNT1 A 8 A_SpawnItemEx("AmbientSmoke_Large", random(-Args[0]*10, Args[0]*10), random(-Args[0]*10, Args[0]*10), random(-64,-128),   0, 0, random(-1,-4), 0, 0, Args[1])
 		Loop
 	Inactive:
 		TNT1 A -1

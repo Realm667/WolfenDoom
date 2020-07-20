@@ -23,24 +23,30 @@ ACTOR DarkSmokeSpawner : EffectSpawner
 		TNT1 A 0 A_JumpIf(Args[0] == 1,"Medium")
 		TNT1 A 0 A_JumpIf(Args[0] > 1,"Large")
 		SmallLoop:
+		TNT1 A 1
+		TNT1 A 0 { if (CheckRange(sfxlod, true)) { SetStateLabel("SmallLoop"); } }
 		TNT1 A 0 A_Jump(256,1,2,3)
-		TNT1 A 2 SpawnParticleActor("DarkSmoke1")
-		TNT1 A 4 SpawnParticleActor("DarkSmoke1")
-		TNT1 A 6 SpawnParticleActor("DarkSmoke1")
+		TNT1 A 2 A_SpawnItemEx("DarkSmoke1")
+		TNT1 A 4 A_SpawnItemEx("DarkSmoke1")
+		TNT1 A 6 A_SpawnItemEx("DarkSmoke1")
 		Loop
 	Medium:
 		MedLoop:
+		TNT1 A 1
+		TNT1 A 0 { if (CheckRange(sfxlod, true)) { SetStateLabel("MediumLoop"); } }
 		TNT1 A 0 A_Jump(256,1,2,3)
-		TNT1 A 2 SpawnParticleActor("DarkSmoke2")
-		TNT1 A 4 SpawnParticleActor("DarkSmoke2")
-		TNT1 A 6 SpawnParticleActor("DarkSmoke2")
+		TNT1 A 2 A_SpawnItemEx("DarkSmoke2")
+		TNT1 A 4 A_SpawnItemEx("DarkSmoke2")
+		TNT1 A 6 A_SpawnItemEx("DarkSmoke2")
 		Loop
 	Large:
 		LargeLoop:
+		TNT1 A 1
+		TNT1 A 0 { if (CheckRange(sfxlod, true)) { SetStateLabel("LargeLoop"); } }
 		TNT1 A 0 A_Jump(256,1,2,3)
-		TNT1 A 2 SpawnParticleActor("DarkSmoke3")
-		TNT1 A 4 SpawnParticleActor("DarkSmoke3")
-		TNT1 A 6 SpawnParticleActor("DarkSmoke3")
+		TNT1 A 2 A_SpawnItemEx("DarkSmoke3")
+		TNT1 A 4 A_SpawnItemEx("DarkSmoke3")
+		TNT1 A 6 A_SpawnItemEx("DarkSmoke3")
 		Loop
 	Inactive:
 		TNT1 A 1

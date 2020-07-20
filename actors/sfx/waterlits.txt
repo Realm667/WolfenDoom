@@ -15,9 +15,10 @@ ACTOR UWLightGenerator1 : EffectSpawner
 	Spawn:
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("LitsSwitch")==0,"EndSpawn")
 	Active:
-		TNT1 A 0 A_CheckSight("Unsighted")
-		"####" A 2 SpawnParticleActor("UWaterLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
-		"####" A 1 SpawnParticleActor("UWaterLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
+		TNT1 A 1 A_CheckSight("Unsighted")
+		TNT1 A 0 { if (CheckRange(sfxlod, true)) { SetStateLabel("Active"); } }
+		"####" A 1 A_SpawnItemEx("UWaterLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
+		"####" A 1 A_SpawnItemEx("UWaterLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		Loop
 	Unsighted:
 		TNT1 A 1
@@ -40,9 +41,10 @@ ACTOR UWLightGenerator2 : UWLightGenerator1
 	Spawn:
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("LitsSwitch")==0,"EndSpawn")
 	Active:
-		TNT1 A 0 A_CheckSight("Unsighted")
-		"####" A 2 SpawnParticleActor("ULavaLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
-		"####" A 1 SpawnParticleActor("ULavaLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
+		TNT1 A 1 A_CheckSight("Unsighted")
+		TNT1 A 0 { if (CheckRange(sfxlod, true)) { SetStateLabel("Active"); } }
+		"####" A 1 A_SpawnItemEx("ULavaLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
+		"####" A 1 A_SpawnItemEx("ULavaLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		Loop
 	EndSpawn:
 		TNT1 A 1
@@ -58,9 +60,10 @@ ACTOR UWLightGenerator3 : UWLightGenerator1
 	Spawn:
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("LitsSwitch")==0,"EndSpawn")
 	Active:
-		TNT1 A 0 A_CheckSight("Unsighted")
-		"####" A 2 SpawnParticleActor("UGoreLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
-		"####" A 1 SpawnParticleActor("UGoreLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
+		TNT1 A 1 A_CheckSight("Unsighted")
+		TNT1 A 0 { if (CheckRange(sfxlod, true)) { SetStateLabel("Active"); } }
+		"####" A 1 A_SpawnItemEx("UGoreLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
+		"####" A 1 A_SpawnItemEx("UGoreLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		Loop
 	EndSpawn:
 		TNT1 A 1
@@ -76,9 +79,10 @@ ACTOR UWLightGenerator4 : UWLightGenerator1
 	Spawn:
 		TNT1 A 0 NODELAY A_JumpIf(CallACS("LitsSwitch")==0,"EndSpawn")
 	Active:
-		TNT1 A 0 A_CheckSight("Unsighted")
-		"####" A 2 SpawnParticleActor("UHazardLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
-		"####" A 1 SpawnParticleActor("UHazardLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
+		TNT1 A 1 A_CheckSight("Unsighted")
+		TNT1 A 0 { if (CheckRange(sfxlod, true)) { SetStateLabel("Active"); } }
+		"####" A 1 A_SpawnItemEx("UHazardLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
+		"####" A 1 A_SpawnItemEx("UHazardLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160)
 		Loop
 	EndSpawn:
 		TNT1 A 1
