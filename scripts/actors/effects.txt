@@ -18,7 +18,7 @@ class EffectsManager : Thinker
 {
 	Array<EffectInfo> effects;
 	Array<Actor> rainqueue;
-	CVar maxqueuecvar;
+	transient CVar maxqueuecvar;
 	int interval;
 
 	const cycletime = 35;
@@ -141,7 +141,11 @@ class EffectsManager : Thinker
 	void QueueAdd(Actor mo)
 	{
 		int maxqueue = 200;
-		if (maxqueuecvar) { maxqueue = maxqueuecvar.GetInt(); }
+		if (!maxqueuecvar)
+		{
+			maxqueuecvar = CVar.FindCVar("maxprecipitationactors");
+		}
+		maxqueue = maxqueuecvar.GetInt();
 
 		if (rainqueue.Size() > maxqueue && rainqueue[maxqueue])
 		{
