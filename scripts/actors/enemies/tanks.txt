@@ -310,7 +310,7 @@ class TankBase : VehicleBase
 		treads.Species = Species;
 		treads.bFriendly = bFriendly;
 
-		if (!user_static) { A_StartSound(idlesound, CHAN_6, CHANF_LOOP, 0.25); }
+		if (!user_static) { A_StartSound(idlesound, CHAN_6, CHANF_LOOPING, 0.25); }
 		else { level.total_monsters--; }
 
 		targettimeout = Random(0, 35);
@@ -598,13 +598,14 @@ class TankBase : VehicleBase
 				{
 					double delta = deltaangle(treads.angle, treads.AngleTo(aimAt));
 
-					if (abs(delta) <= turretanglerange) { turret.A_Face(aimAt, turretspeed); A_StartSound("MACHINE_LOOP_3", CHAN_AUTO, 0, 0.2); }
-					else { turret.angle = clamp(turret.angle, treads.angle - turretanglerange, treads.angle + turretanglerange); A_StartSound("MACHINE_LOOP_3", CHAN_AUTO, 0, 0.2); }
+					if (abs(delta) <= turretanglerange) { turret.A_Face(aimAt, turretspeed); A_StartSound("MACHINE_LOOP_3", 8, CHANF_NOSTOP, 1.0); }
+					else { turret.angle = clamp(turret.angle, treads.angle - turretanglerange, treads.angle + turretanglerange); A_StartSound("MACHINE_LOOP_3", 8, CHANF_NOSTOP, 1.0); }
 				}
 				else { turret.A_Face(aimAt, turretspeed); }
 
 				if (int(turret.angle) == int(turret.AngleTo(aimAt)))
 				{
+					A_StopSound(8);
 					if (CheckLOF(CLOFF_JUMPENEMY | CLOFF_SKIPOBJECT, maxtargetrange, offsetforward: treads.radius) && (!gun || (gun.pitch - turret.pitch >= minp && gun.pitch - turret.pitch <= maxp)))
 					{
 						DoTurretTarget(cannon);
@@ -660,7 +661,7 @@ class TankBase : VehicleBase
 
 		DoTrample(true);
 
-		A_StartSound(movesound, CHAN_7, CHANF_LOOP, 1.0);
+		A_StartSound(movesound, CHAN_7, CHANF_LOOPING, 1.0);
 	}
 
 	virtual void DoTurret(Actor origin)

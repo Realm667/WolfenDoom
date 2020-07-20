@@ -459,7 +459,7 @@ class GhostGate : GateKeeper
 		targetcolor = "189454"; // Creepy green;
 		textspeed = 8;
 
-		A_StartSound(loopsound, CHAN_6, CHANF_LOOP, 0.45 * scale.x, ATTN_NORM);
+		A_StartSound(loopsound, CHAN_6, CHANF_LOOPING, 0.45 * scale.x, ATTN_NORM);
 	}
 
 	Actor FindPeers()
@@ -781,7 +781,7 @@ class GhostGateHelper : GhostGate
 
 		startalpha = linedef.alpha;
 
-		A_StartSound(loopsound, CHAN_6, CHANF_LOOP, 0.45 * scale.x, ATTN_NORM);
+		A_StartSound(loopsound, CHAN_6, CHANF_LOOPING, 0.45 * scale.x, ATTN_NORM);
 	}
 
 	override void Tick()

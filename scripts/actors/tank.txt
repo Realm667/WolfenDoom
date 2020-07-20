@@ -319,8 +319,8 @@ class ShermanPlayer : PlayerPawn
 
 		sndvol = 0.7;
 
-		A_StartSound("TKIDLE", 31, CHANF_LOOP, 0.25);
-		A_StartSound("TNK1LOOP", 32, CHANF_LOOP, 0.7);
+		A_StartSound("TKIDLE", 31, CHANF_LOOPING, 0.25);
+		A_StartSound("TNK1LOOP", 32, CHANF_LOOPING, 0.7);
 
 		Super.PostBeginPlay();
 	}

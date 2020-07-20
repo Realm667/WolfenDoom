@@ -139,7 +139,7 @@ ACTOR LavaCauldron
 		Goto Frame1
 	Frame1:
 		LAVC A 0 A_CheckRange(512,"Frame4") //tweak for sound channels - ozy81
-		"####" A random(4, 6) A_StartSound("LavaCauldron/Loop", CHAN_5, CHANF_LOOP, 1.0, ATTN_STATIC)
+		"####" A random(4, 6) A_StartSound("LavaCauldron/Loop", CHAN_5, CHANF_LOOPING, 1.0, ATTN_STATIC)
 		"####" A 0 A_Jump(64, "Frame3")
 		Goto Frame2
 	Frame2:

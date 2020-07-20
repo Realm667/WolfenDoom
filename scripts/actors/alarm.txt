@@ -91,7 +91,7 @@ class Alarm : Base
 			if (!activated)
 			{
 				activated = true;
-				A_StartSound("alarm_ring", CHAN_VOICE, CHANF_LOOP, 1.0);
+				A_StartSound("alarm_ring", CHAN_VOICE, CHANF_LOOPING, 1.0);
 			}
 			if (level.time % 35 == 0) { SoundAlert(target, false, 512); } // Only do the sound alert once a second for performance reasons
 		}

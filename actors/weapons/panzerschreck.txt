@@ -185,7 +185,7 @@ ACTOR PanzerRocket : GrenadeBase
 	States
 	{
 	Spawn:
-		MNSS A 1 BRIGHT LIGHT(BOAFLMW2) NODELAY A_StartSound("panzer/fly", CHAN_VOICE, CHANF_LOOP, 1.0)
+		MNSS A 1 BRIGHT LIGHT(BOAFLMW2) NODELAY A_StartSound("panzer/fly", CHAN_VOICE, CHANF_LOOPING, 1.0)
 		MNSS A 1 BRIGHT LIGHT(BOAFLMW2) A_SpawnItemEx("RocketFlame",random(-1,1),0,random(-1,1))
 		Wait
 	Death:

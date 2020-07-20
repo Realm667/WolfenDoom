@@ -392,7 +392,7 @@ class TankRocket : Actor
 		Spawn:
 			TNT1 A 2;
 		SpawnLoop:
-			MNSS A 1 Bright Light("BOAFLMW2") A_StartSound("panzer/fly", CHAN_VOICE, CHANF_LOOP, 1.0);
+			MNSS A 1 Bright Light("BOAFLMW2") A_StartSound("panzer/fly", CHAN_VOICE, CHANF_LOOPING, 1.0);
 			MNSS A 1 Bright Light("BOAFLMW2") A_SpawnItemEx("RocketFlame", random(-1,1), 0, random(-1,1));
 			Wait;
 		Death:
@@ -1130,7 +1130,7 @@ class Firebrand : NaziWeapon
 		SRDG A 1 A_WeaponReady;
 		Loop;
 	SoundLoop:
-		SRDF A 0 A_StartSound("SFX/FireLoop2", CHAN_WEAPON, CHANF_LOOP, 0.7, ATTN_STATIC);
+		SRDF A 0 A_StartSound("SFX/FireLoop2", CHAN_WEAPON, CHANF_LOOPING, 0.7, ATTN_STATIC);
 		Goto PowerLoop;
 	PowerLoop:
 		SRDF A 3 A_WeaponReady;

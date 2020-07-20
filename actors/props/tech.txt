@@ -53,7 +53,7 @@ ACTOR TeslaLab2 : SwitchableDecoration
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 A_StartSound("tesla/active", CHAN_ITEM, CHANF_LOOP, 0.7, ATTN_STATIC)
+		TNT1 A 0 A_StartSound("tesla/active", CHAN_ITEM, CHANF_LOOPING, 0.7, ATTN_STATIC)
 	ActiveLoop:
 		TESL C 0 A_CheckRange(512,"Unsighted")
 		"####" C 8 LIGHT(TESLIT2)
@@ -93,7 +93,7 @@ ACTOR TeslaLab3 : TeslaLab2
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 A_StartSound("tesla/active", CHAN_ITEM, CHANF_LOOP, 0.7, ATTN_STATIC)
+		TNT1 A 0 A_StartSound("tesla/active", CHAN_ITEM, CHANF_LOOPING, 0.7, ATTN_STATIC)
 	ActiveLoop:
 		TESL F 0 A_CheckRange(512,"Unsighted")
 		"####" F 5 LIGHT(TESLIT1)
@@ -178,7 +178,7 @@ ACTOR TeslaLab4 : TeslaLab2
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 A_StartSound("tesla/active", CHAN_ITEM, CHANF_LOOP, 0.7, ATTN_STATIC)
+		TNT1 A 0 A_StartSound("tesla/active", CHAN_ITEM, CHANF_LOOPING, 0.7, ATTN_STATIC)
 		ActiveLoop:
 		TESL CDB 4 LIGHT(TESLIT2) A_CheckRange(512,"Unsighted")
 		Loop
@@ -201,7 +201,7 @@ ACTOR TeslaLab5 : TeslaLab2
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 A_StartSound("tesla/active", CHAN_ITEM, CHANF_LOOP, 0.7, ATTN_STATIC)
+		TNT1 A 0 A_StartSound("tesla/active", CHAN_ITEM, CHANF_LOOPING, 0.7, ATTN_STATIC)
 		ActiveLoop:
 		TESL FGHIJKLE 4 LIGHT(TESLIT1) A_CheckRange(512,"Unsighted")
 		Loop
