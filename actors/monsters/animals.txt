@@ -253,15 +253,16 @@ ACTOR RatFamiliar : Base
 	Monster
 	-CANPUSHWALLS
 	-CANUSEWALLS
+	-COUNTKILL
 	-FLOAT
 	-NOGRAVITY
 	+NOINFIGHTING
+	+FRIGHTENED
 	SeeSound "rat/squeek"
 	PainSound "batfam/pain"
 	DeathSound "rat/death"
 	ActiveSound "rat/active"
 	HitObituary "$RAT"
-	+Base.CANSQUISH
 	States
 	{
 	Spawn:
@@ -313,6 +314,7 @@ ACTOR BigSpider : Base
 	Monster
 	-CANPUSHWALLS
 	-CANUSEWALLS
+	-COUNTKILL
 	-MTHRUSPECIES
 	-THRUSPECIES
 	+DONTGIB
@@ -320,6 +322,7 @@ ACTOR BigSpider : Base
 	+NEVERFAST
 	+NOINFIGHTING
 	+THRUGHOST
+	+FRIGHTENED
 	Translation "176:191=164:167" , "32:47=164:167"
 	BloodType "ScorpionBlood"
 	BloodColor "DarkOrange1"
