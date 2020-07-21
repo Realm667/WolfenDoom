@@ -263,6 +263,7 @@ ACTOR RatFamiliar : Base
 	DeathSound "rat/death"
 	ActiveSound "rat/active"
 	HitObituary "$RAT"
+	+Base.CANSQUISH
 	States
 	{
 	Spawn:
@@ -333,6 +334,7 @@ ACTOR BigSpider : Base
 	HitObituary "$BSPIDER"
 	Species "Spiders"
 	+Base.CANSQUISH
+	DamageFactor "Squish", 5.0
 	States
 	{
 	Spawn:
