@@ -252,6 +252,9 @@ class Base : Actor
 	bool nofear;
 	bool user_targetcrosshair;
 	bool user_nocountkill;
+	int flags;
+
+	FlagDef CANSQUISH:flags, 0;
 
 	Property AlwaysDrawHealthBar:user_DrawHealthBar;
 	Property BossIcon:BossIcon;
@@ -939,10 +942,20 @@ class Base : Actor
 
 	override bool CanCollideWith(Actor other, bool passive)
 	{
-		if (other is "FlattenableProp")
+		if (passive)
 		{
-			other.Touch(self);
-			return false;
+			if (bCanSquish && other.player && pos.z == floorz)
+			{
+				DamageMobj(other, other, 1, "Squish", 0, other.angle);
+			}
+		}
+		else
+		{
+			if (other is "FlattenableProp")
+			{
+				other.Touch(self);
+				return false;
+			}
 		}
 
 		return true;

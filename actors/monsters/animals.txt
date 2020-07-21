@@ -261,6 +261,7 @@ ACTOR RatFamiliar : Base
 	DeathSound "rat/death"
 	ActiveSound "rat/active"
 	HitObituary "$RAT"
+	+Base.CANSQUISH
 	States
 	{
 	Spawn:
@@ -328,6 +329,7 @@ ACTOR BigSpider : Base
 	ActiveSound "spider1/active"
 	HitObituary "$BSPIDER"
 	Species "Spiders"
+	+Base.CANSQUISH
 	States
 	{
 	Spawn:
@@ -362,6 +364,8 @@ ACTOR BigSpider : Base
 		GAYS C 5
 		"####" C 3 A_Pain
 		Goto See
+	Death.Squish:
+		GAYR F 1 A_StartSound("shark/death", CHAN_7, 0, 0.125) // Play squishing sound
 	Death:
 		GAYR F 5
 		"####" E 5 A_Scream
