@@ -93,6 +93,8 @@ class AlertLight : Actor
 	override void PostBeginPlay()
 	{
 		if (master) {
+			if (master.bDormant) { Destroy(); return; }
+
 			hasmaster = true;
 			checkRadius = master.args[3]; // If spawned and master is set, use parent's arg[3] as check radius
 		} else {
@@ -100,7 +102,7 @@ class AlertLight : Actor
 		}
 		if (!checkRadius) { checkRadius = 64; } // If nothing was set, use 64 map unit radius
 
-		EffectsManager.Add(self, checkRadius * 2); // Spawn the actor back in at twise its radius
+		EffectsManager.Add(self, checkRadius * 2, true); // Spawn the actor back in at twice its radius
 	}
 
 	void A_AddVisibility(Actor lighttarget = null, int minlight = 0)

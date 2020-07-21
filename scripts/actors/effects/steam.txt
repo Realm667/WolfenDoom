@@ -1,0 +1,101 @@
+class SteamSpawner : EffectSpawner
+{
+	int zoffset;
+	double velx, velz;
+	int ang;
+	int freq;
+	String snd;
+	int sndflags;
+	Class<Actor> particle;
+
+	Property Particle:particle;
+
+	Default
+	{
+		//$Category Special Effects (BoA)
+		//$Title Steam Spawner
+		//$Color 12
+		//$Sprite STEMA0
+		//$Arg0 "Direction"
+		//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 4 map units below the ceiling)"
+		//$Arg0Type 11
+		//$Arg0Enum { 0 = "Up"; 1 = "Down"; 2 = "Forward"; }
+		//$Arg1 "Type"
+		//$Arg1Tooltip "Second argument chooses if it's a constant spawner, or spawns in bursts. Burst spawners use the third argument and play a different sound."
+		//$Arg1Type 11
+		//$Arg1Enum { 0 = "Constant"; 1 = "Bursts"; }
+		//$Arg2 "Frequency"
+		//$Arg2Tooltip "Third argument controls the frequency of the bursts (divided by 16. I.e, 128 will end up as 8). This is only used by the second argument."
+		//$Arg3 "Sound"
+		//$Arg3Type 11
+		//$Arg3Enum { 0 = "Yes"; 1 = "No"; }
+		Height 2;
+		Radius 1;
+		Mass 0;
+		+CLIENTSIDEONLY
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+NOINTERACTION
+		EffectSpawner.Range 2048;
+		EffectSpawner.SwitchVar "steamswitch";
+		SteamSpawner.Particle "SteamParticle";
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 0;
+		Active:
+			TNT1 A 1 SpawnEffect();
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		snd = args[1] > 0 && args[2] < 128 ? "STEAM_BURST" : "STEAM_SMALL";
+		sndflags = args[1] > 0 ? CHANF_OVERLAP : CHANF_LOOPING;
+
+		zoffset = args[0] == 0 ? 1 : 0;
+		freq = args[2] + 1 / 16; // This math is incorrect, based on the description in the args above, but is how it was originally. *shrug* Order of operations matter!
+
+		Super.PostBeginPlay();
+	}
+
+	override void Activate(Actor activator)
+	{
+		if (!args[1] && !args[3]) { A_StartSound(snd, 10, sndflags, 1.0); } // Constant steam plays a looped sound once on activation
+
+		Super.Activate(activator);
+	}
+
+	override void Deactivate(Actor activator)
+	{
+		A_StopSound(10);
+
+		Super.Deactivate(activator);
+	}
+
+	override void SpawnEffect()
+	{
+		Super.SpawnEffect();
+
+		if ((!args[1] || Random(0, 255) < freq))
+		{
+			velx = args[0] < 2 ? 0.1 * Random(0, 4) : 0.1 * Random(35, 40);
+			velz = args[0] < 2 ? (args[0] == 1 ? -1 : 1) * 0.1 * Random(35, 40) : 0.1 * Random(-5, 5);
+			ang = args[0] < 2 ? Random(0, 360) : Random(-8, 8);
+
+			if (args[1] && !args[3]) { A_StartSound(snd, 10, sndflags, 1.0); } // Each burst plays a sound on spawn
+
+			bool spawned;
+			Actor mo;
+
+			[spawned, mo] = A_SpawnItemEx(particle, 0, 0, zoffset, velx, 0, velz, ang, 128);
+
+			if (mo && manager)
+			{
+				manager.QueueParticle(mo);
+			}
+		}
+	}
+}

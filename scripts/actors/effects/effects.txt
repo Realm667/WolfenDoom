@@ -1,0 +1,393 @@
+#include "scripts/actors/effects/ash.txt"			// Ash
+#include "scripts/actors/effects/bubbles.txt"			// Underwater bubbles
+#include "scripts/actors/effects/cinder.txt"			// Cinders
+#include "scripts/actors/effects/clouds.txt"			// Clouds
+#include "scripts/actors/effects/confetti.txt"			// Confetti
+#include "scripts/actors/effects/leaves.txt"			// Leaf spawner
+#include "scripts/actors/effects/rain.txt"			// Rain
+#include "scripts/actors/effects/snow.txt"			// Snow
+#include "scripts/actors/effects/starparticles.txt"		// Star particles
+#include "scripts/actors/effects/steam.txt"			// Steam spawner
+
+class EffectInfo // Should just be a struct, but we can't use structs in dynamic arrays...
+{
+	Actor effect;
+	Class<actor> type;
+	Vector3 position;
+	double angle, pitch, roll;
+	Vector2 scale;
+	Actor master, target, tracer;
+	int SpawnFlags;
+	int args[5];
+	int tid;
+	bool dormant;
+	double range;
+}
+
+// Effects get tracked in a dynamic array and culled when not in range of a player, then respawned when needed
+class EffectsManager : Thinker
+{
+	Array<EffectInfo> effects;
+	Array<Actor> particlequeue;
+	transient CVar maxqueuecvar;
+	int interval, tickdelay;
+
+	const cycletime = 35;
+
+	static void Add(Actor effect, double range = -1, bool force = false)
+	{
+		if (!effect) { return; }
+		if (!force)
+		{
+			if (effect.tid || effect.master) { return; } // Don't add effects with a tid or a master, because we can't guarantee they'll be spawned back in when they are activated/deactivated
+			if (effect.bSolid && !effect.bNoInteraction) { return; } // Only add non-solid or non-interactive objects
+		}
+
+		ThinkerIterator it = ThinkerIterator.Create("EffectsManager", Thinker.STAT_Default);
+		EffectsManager manager = EffectsManager(it.Next());
+
+		if (!manager) { manager = new("EffectsManager"); }
+		if (!manager) { return; }
+
+		manager.AddEffect(effect, range);
+	}
+
+	static void Remove(Actor effect)
+	{
+		if (!effect) { return; }
+
+		ThinkerIterator it = ThinkerIterator.Create("EffectsManager", Thinker.STAT_Default);
+		EffectsManager manager = EffectsManager(it.Next());
+
+		if (!manager) { manager = new("EffectsManager"); }
+		if (!manager) { return; }
+
+		manager.RemoveEffect(effect);
+	}
+
+	uint FindEffect(Actor effect)
+	{
+		for (int i = 0; i < effects.Size(); i++)
+		{
+			if (effects[i] && effects[i].effect && effects[i].effect == effect) { return i; }
+		}
+		return effects.Size();
+	}
+
+	void AddEffect(Actor effect, double range = -1)
+	{
+		if (!effect) { return; }
+
+		int i = FindEffect(effect);
+		if (i == effects.Size()) // Only add it if it's not already there somehow.
+		{
+			EffectInfo this = New("EffectInfo");
+			this.effect = effect;
+			this.type = effect.GetClass();
+			this.position = effect.pos;
+			this.angle = effect.angle;
+			this.pitch = effect.pitch;
+			this.roll = effect.roll;
+			this.scale = effect.scale;
+			this.master = effect.master;
+			this.target = effect.target;
+			this.tracer = effect.tracer;
+			this.SpawnFlags = effect.SpawnFlags;
+
+			for (int a = 0; a < 5; a++)
+			{
+				this.args[a] = effect.args[a];
+			}
+
+			this.tid = effect.tid;
+			this.dormant = effect.bDormant;
+			this.range = range;
+
+			effects.Push(this);
+		}
+		else // Otherwise just update what's there...
+		{
+			effects[i].position = effect.pos;
+			effects[i].angle = effect.angle;
+			effects[i].pitch = effect.pitch;
+			effects[i].roll = effect.roll;
+			effects[i].scale = effect.scale;
+			effects[i].master = effect.master;
+			effects[i].target = effect.target;
+			effects[i].tracer = effect.tracer;
+			effects[i].SpawnFlags = effect.SpawnFlags;
+
+			for (int a = 0; a < 5; a++)
+			{
+				effects[i].args[a] = effect.args[a];
+			}
+
+			effects[i].tid = effect.tid;
+			effects[i].dormant = effect.bDormant;
+			effects[i].range = range;
+		}
+	}
+
+	void RemoveEffect(Actor effect)
+	{
+		if (!effect) { return; }
+
+		int i = FindEffect(effect);
+		if (i == effects.Size()) { return; }
+
+		effects.Delete(i);
+		effect.Destroy();
+	}
+
+	void QueueParticle(Actor mo)
+	{
+		particlequeue.Insert(0, mo);
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		maxqueuecvar = CVar.FindCVar("maxparticleactors");
+	}
+
+	override void Tick()
+	{
+		CullEffects();
+		CullParticles();
+	}
+
+	void CullEffects()
+	{
+		// Split up processing of the array across ticks to minimize single-tick think time
+		interval = (interval + 1) % cycletime;
+		double step = effects.Size() / double(cycletime);
+		if (int(step) < step) { step = int(step) + 1; } 
+		int start = interval * int(step);
+		int end = min(effects.Size(), start + int(step));
+
+		for (int i = start; i < end; i++)
+		{
+			if (i >= effects.Size()) { return; }
+			if (!effects[i]) { continue; }
+
+			if (effects[i].master && effects[i].master.bDormant)
+			{
+				effects.Delete(i); // If the master is deactivated, don't remember this effect anymore
+				continue;
+			}
+
+			bool inrange = false;
+
+			for (int p = 0; p < MAXPLAYERS && !inrange; p++)
+			{
+				if (!playeringame[p]) { continue; }
+
+				Actor check = players[p].camera;
+				if (!check) { check = players[p].mo; }
+				if (!check) { continue; }
+
+				double range = effects[i].range <= 0 ? sfxlod : effects[i].range;
+
+				if ((level.Vec3Diff(check.pos, effects[i].position)).length() < range) { inrange = true; }
+			}
+
+			if (inrange && !effects[i].effect)
+			{
+				Actor effect = Actor.Spawn(effects[i].type, effects[i].position);
+				if (effect)
+				{
+					effect.angle = effects[i].angle;
+					effect.pitch = effects[i].pitch;
+					effect.roll = effects[i].roll;
+					effect.scale = effects[i].scale;
+					effect.master = effects[i].master;
+					effect.target = effects[i].target;
+					effect.tracer = effects[i].tracer;
+					effect.SpawnFlags = effects[i].SpawnFlags;	
+
+					for (int a = 0; a < 5; a++)
+					{
+						effect.args[a] = effects[i].args[a];
+					}
+
+					effect.ChangeTID(effects[i].tid);
+					if (effect.SpawnFlags & MTF_DORMANT || effects[i].dormant) { effect.SetStateLabel("Inactive"); }
+
+					effects[i].effect = effect;
+				}
+			}
+			else if (!inrange && effects[i].effect && !effects[i].effect.bDormant)
+			{
+				effects[i].effect.Destroy();
+			}
+		}
+
+		effects.ShrinkToFit();
+	}
+
+	void CullParticles()
+	{
+		int maxqueue = 512;
+		if (maxqueuecvar) { maxqueue = max(1, maxqueuecvar.GetInt()); }
+
+		Array<Actor> t;
+
+		for (int s = 0; s < particlequeue.Size(); s++)
+		{
+			if (!particlequeue[s]) { continue; }
+
+			if (s > maxqueue)
+			{
+				if (particlequeue[s] is "ParticleBase") { particlequeue[s].SetStateLabel("Fade"); }
+				else { particlequeue[s].Destroy(); }
+
+				particlequeue.Delete(s);
+			}
+			else { t.Push(particlequeue[s]); }
+		}
+
+		particlequeue.Move(t);
+
+		int size = particlequeue.Size();
+		if (size > maxqueue * 0.75) { tickdelay = clamp(int((size - (maxqueue * 0.75)) / (maxqueue * 0.25) * 10), 0, 10); }
+		else { tickdelay = 0; }
+
+// Debug output: particle queue size and current tick delay
+//if (level.time % 35 == 0) { console.printf("%i  >> %i", size, tickdelay); }
+	}
+}
+
+class EffectSpawner : SwitchableDecoration
+{
+	transient CVar switchcvar;
+	String switchvar;
+	EffectsManager manager;
+	int range;
+
+	int flags;
+
+	FlagDef AllowTickDelay:flags, 0;
+
+	Property Range:range;
+	Property SwitchVar:switchvar;
+
+	States
+	{
+		Spawn:
+		Inactive:
+			TNT1 A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (switchvar.length()) { switchcvar = CVar.FindCVar(switchvar); }
+
+		ThinkerIterator it = ThinkerIterator.Create("EffectsManager", Thinker.STAT_Default);
+		manager = EffectsManager(it.Next());
+
+		if (!manager) { manager = new("EffectsManager"); }
+
+		manager.AddEffect(self, range > 0 ? min(range, sfxlod) : sfxlod);
+
+		if (bDormant || SpawnFlags & MTF_DORMANT) { Deactivate(null); }
+		else { Activate(null); }
+
+		tics += Random(0, 35);
+	}
+
+	override void Activate(Actor activator)
+	{
+		if (switchcvar && !switchcvar.GetBool()) { SetStateLabel("Inactive"); }
+		else
+		{
+			bDormant = false;
+			SetStateLabel("Active");
+		}
+	}
+
+	override void Deactivate(Actor activator)
+	{
+		bDormant = true;
+		SetStateLabel("Inactive");
+	}
+
+	virtual void SpawnEffect()
+	{
+		if (!bAllowTickDelay || !manager) { return; }
+
+		tics += curState.tics + manager.tickdelay;
+	}
+}
+
+class EffectBase : SimpleActor
+{
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		EffectsManager.Add(self, sfxlod);
+	}
+}
+
+class GrassBase : SimpleActor
+{
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		EffectsManager.Add(self, grasslod);
+	}
+}
+
+class SceneryBase : Actor
+{
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		EffectsManager.Add(self, scenelod);
+	}
+}
+
+class TreesBase : Actor
+{
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		EffectsManager.Add(self, treeslod);
+	}
+}
+
+class ParticleBase : SimpleActor // Use for non-interactive actors that move with their own velocity and might end up outside of the map
+{
+	int checktimer;
+
+	States
+	{
+		Fade:
+			"####" "#" 1 A_FadeOut(0.1, FTF_REMOVE);
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		// Set the initial check at a random tick so they don't all check at once...
+		checktimer = Random(0, 35);
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (checktimer-- <= 0)
+		{
+			// If it's outside the level, remove it
+			if (!level.IsPointInLevel(pos)) { Destroy(); return; }
+
+			checktimer = 35; // Check once every second.
+		}
+	}
+}
