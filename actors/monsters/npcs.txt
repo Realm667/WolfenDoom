@@ -470,35 +470,29 @@ ACTOR GeneralAllied : Base
 ACTOR Camp_StaticBroom
 {
 	//$Category Concentration Camp (BoA)/Static
-	//$Title Shootable Prisoner (with broom)
+	//$Title Prisoner (with broom)
 	//$Color 3
 	Height 48
-	Health 10
+	Health -1
 	Mass 600
 	Scale 0.65
+	+INVULNERABLE
 	+NOTAUTOAIMED
 	+SHOOTABLE
 	+SOLID
 	+THRUSPECIES
-	DeathSound "urss/death"
 	Species "PlayerFollower"
 	States
 	{
 	Spawn:
 		PRSA A -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
 		Stop
-	Death:
-		"####" A 0 A_UnSetSolid
-		"####" BCD 6
-		"####" E 8 A_Scream
-		"####" F -1
-		Stop
 	}
 }
 
 ACTOR Camp_StaticShovel : Camp_StaticBroom
 {
-	//$Title Shootable Prisoner (with shovel)
+	//$Title Prisoner (with shovel)
 	States
 	{
 	Spawn:
@@ -509,9 +503,8 @@ ACTOR Camp_StaticShovel : Camp_StaticBroom
 
 ACTOR Camp_StaticShovelLow : Camp_StaticBroom
 {
-	//$Title Shootable Prisoner (with shovel, low)
+	//$Title Prisoner (with shovel, low)
 	Height 24
-	+DONTTHRUST
 	States
 	{
 	Spawn:
@@ -522,7 +515,7 @@ ACTOR Camp_StaticShovelLow : Camp_StaticBroom
 
 ACTOR Camp_StaticKneeing : Camp_StaticBroom
 {
-	//$Title Shootable Prisoner (hurt, kneel)
+	//$Title Prisoner (hurt, kneel)
 	Height 32
 	States
 	{
@@ -534,7 +527,7 @@ ACTOR Camp_StaticKneeing : Camp_StaticBroom
 
 ACTOR Camp_StaticStandingA : Camp_StaticBroom
 {
-	//$Title Shootable Prisoner (standing, bald)
+	//$Title Prisoner (standing, bald)
 	States
 	{
 	Spawn:
@@ -545,7 +538,7 @@ ACTOR Camp_StaticStandingA : Camp_StaticBroom
 
 ACTOR Camp_StaticStandingB : Camp_StaticBroom
 {
-	//$Title Shootable Prisoner (standing, hat)
+	//$Title Prisoner (standing, hat)
 	States
 	{
 	Spawn:
@@ -554,16 +547,23 @@ ACTOR Camp_StaticStandingB : Camp_StaticBroom
 	}
 }
 
-ACTOR Camp_StaticStandingBTalk : Camp_StaticStandingB
+ACTOR Camp_StaticStandingBTalk : StatistBarkeeper
 {
-	//$Title Shootable Prisoner (standing, hat, talkable)
-	-NOTAUTOAIMED	// Conversation fix - Talon1024
+	//$Title Prisoner (standing, hat, talkable)
 	-SOLID			// Avoid potential map breaking behaviors, since we can "use" it to climb high heights, like huts on c3m1 - Ozy81
+	-USESPECIAL
+	+DONTTHRUST		// prevent actor from moving if hit - ozy81
+	States
+	{
+	Spawn:
+		PRSG A -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
+		Stop
+	}
 }
 
 ACTOR Camp_StaticWashBroom : Camp_StaticBroom
 {
-	//$Title Shootable Prisoner (washbroom)
+	//$Title Prisoner (washbroom)
 	States
 	{
 	Spawn:
@@ -574,7 +574,7 @@ ACTOR Camp_StaticWashBroom : Camp_StaticBroom
 
 ACTOR Camp_StaticSit : Camp_StaticBroom
 {
-	//$Title Shootable Prisoner (sit on a bench)
+	//$Title Prisoner (sit on the wc)
 	Height 32
 	+FORCEXYBILLBOARD
 	States
@@ -582,28 +582,28 @@ ACTOR Camp_StaticSit : Camp_StaticBroom
 	Spawn:
 		PRSI A -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
 		Stop
-	Death:
-		"####" A 0 A_UnSetSolid
-		"####" B 8 A_Scream
-		"####" B -1
+	}
+}
+
+ACTOR Camp_StaticSitTalk : StatistBarkeeper
+{
+	//$Title Prisoner (sit on the wc, talkable)
+	Height 32
+	+FORCEXYBILLBOARD
+	+DONTFACETALKER
+	-USESPECIAL
+	-SOLID
+	States
+	{
+	Spawn:
+		PRSI A -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
 		Stop
 	}
 }
 
-ACTOR Camp_StaticShovelDig
+ACTOR Camp_StaticShovelDig : Camp_StaticBroom
 {
-	//$Category Concentration Camp (BoA)/Static
-	//$Title Shootable Prisoner (digging with shovel)
-	//$Color 3
-	Height 48
-	Health 10
-	Mass 600
-	Scale 0.65
-	+NOTAUTOAIMED
-	+SHOOTABLE
-	+SOLID
-	DeathSound "urss/death"
-	Species "PlayerFollower"
+	//$Title Prisoner (digging with shovel)
 	States
 	{
 	Spawn:
@@ -619,18 +619,12 @@ ACTOR Camp_StaticShovelDig
 		"####" A 1 A_SetTics(random(24,32))
 		"####" BCDE 1 A_SetTics(random(12,16))
 		Goto SpawnLoop
-	Death:
-		"####" A 0 A_UnSetSolid
-		"####" FGH 8
-		"####" I 6 A_Scream
-		"####" J -1
-		Stop
 	}
 }
 
 ACTOR Camp_StaticHammeringL : Camp_StaticShovelDig
 {
-	//$Title Shootable Prisoner (hammering, left)
+	//$Title Prisoner (hammering, left)
 	States
 	{
 	Spawn:
@@ -651,21 +645,12 @@ ACTOR Camp_StaticHammeringL : Camp_StaticShovelDig
 		"####" CDCD 1 A_SetTics(random(12,16))
 		"####" BB 1 A_SetTics(random(12,16))
 		Goto SpawnLoop
-	Death:
-		PRSN I 5 A_Scream
-		"####" J 6
-		"####" K 5 A_NoBlocking
-		"####" L 5 A_Jump(1,2,3)
-		"####" M -1
-		"####" N -1
-		"####" O -1
-		Stop
 	}
 }
 
 ACTOR Camp_StaticHammeringR : Camp_StaticHammeringL
 {
-	//$Title Shootable Prisoner (hammering, right)
+	//$Title Prisoner (hammering, right)
 	States
 	{
 	Spawn:
@@ -704,12 +689,10 @@ ACTOR Camp_StaticBaldNH : Camp_StaticShirtlessNH
 
 ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he doesn't - ozy81
 {
-	var float user_basescale;
-
 	//$Category Concentration Camp (BoA)
-	//$Title Wandering Prisoner (bald)
+	//$Title Wandering Prisoner (invulnerable, bald)
 	//$Color 3
-	Health 25
+	Health -1
 	PainChance 255 //let's force it for Frightened - ozy81
 	Speed 1
 	Radius 20
@@ -719,6 +702,7 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 	-COUNTKILL
 	+FLOORCLIP
 	+FRIENDLY
+	+INVULNERABLE
 	+JUSTHIT
 	+NEVERTARGET
 	+NOSPLASHALERT
@@ -727,8 +711,8 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 	MaxStepHeight 16
 	MaxDropoffHeight 32
 	PainSound "urss/pain"
-	DeathSound "urss/death"
 	Species "PlayerFollower"
+	var float user_basescale;
 	States
 	{
 	Spawn:
@@ -831,15 +815,6 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 				bFrightened = True;
 			}
 		Goto SpawnLoop
-	Death:
-		"####" I 5 A_Scream
-		"####" J 6
-		"####" K 5 A_NoBlocking
-		"####" L 5 A_Jump(1,2,3)
-		"####" M -1
-		"####" N -1
-		"####" O -1
-		Stop
 	Inactive:
 		"####" E 0 {bUseSpecial = TRUE;}
 		"####" E -1
@@ -849,9 +824,7 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 
 ACTOR Camp_PrisonerBaldShirtless : Camp_PrisonerBald
 {
-	//$Title Wandering Prisoner, Shirtless (bald)
-	Health 15
-	Nazi.ZombieVariant "Camp_PrisonerZombie"
+	//$Title Wandering Prisoner, Shirtless (invulnerable, bald)
 	States
 	{
 	Spawn:
