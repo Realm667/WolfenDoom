@@ -946,6 +946,18 @@ class Base : Actor
 		{
 			if (bCanSquish && other.player && pos.z == floorz)
 			{
+/* Auto-stomp!
+				if (other.player.ReadyWeapon && other.player.ReadyWeapon is "NaziWeapon")
+				{
+					let kick = other.player.FindPSprite(-10);
+					if (!kick)
+					{
+						other.vel.xy *= 0;
+						other.player.SetPsprite(-10, other.player.ReadyWeapon.FindState("KickOverlay"), true);
+					}
+				}
+*/
+
 				DamageMobj(other, other, 1, "Squish", 0, other.angle);
 			}
 		}
@@ -2899,7 +2911,7 @@ class ConversationMarker : Actor
 	}
 }
 
-class ModelBase : SceneryBase
+class ModelBase : Actor
 {
 	mixin GiveBuoyancy;
 
