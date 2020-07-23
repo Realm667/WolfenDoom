@@ -294,7 +294,7 @@ class EffectSpawner : SwitchableDecoration
 
 		if (!manager) { manager = new("EffectsManager"); }
 
-		manager.AddEffect(self, range > 0 ? min(range, sfxlod) : sfxlod);
+		if (range > 0) { manager.AddEffect(self, range > 0 ? min(range, sfxlod) : sfxlod); } // If range is -1, do not cull
 
 		if (bDormant || SpawnFlags & MTF_DORMANT) { Deactivate(null); }
 		else { Activate(null); }

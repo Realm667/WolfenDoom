@@ -284,7 +284,7 @@ class VolcanoPuffSmoke : SmokeBase
 		RenderStyle "Translucent";
 		Alpha 0.0; // In DECORATE this was 1.0, so alpha was always above 1.0, and the actor just blinked into existence and then disappeared...
 		Scale 8;
-		SmokeBase.FadeInTics 5;
+		SmokeBase.FadeInTics 1;
 		SmokeBase.FadeOutTics 8;
 		SmokeBase.MaxAlpha 1.0;
 	}
@@ -292,7 +292,7 @@ class VolcanoPuffSmoke : SmokeBase
 	States
 	{
 		Spawn:
-			GRM3 A 1 DoFade(0.1, 0.0625);
+			GRM3 A 1 DoFade(0.1, 0.05);
 			Loop;
 	}
 }
@@ -308,6 +308,7 @@ class VolcanoSmokeGenerator : EffectSpawner
 		+NOGRAVITY
 		+NOINTERACTION
 		+SHOOTABLE
+		EffectSpawner.Range -1; // Don't cull these
 		EffectSpawner.SwitchVar "smokeswitch";
 		+EffectSpawner.ALLOWTICKDELAY
 	}
@@ -430,7 +431,11 @@ class AmbientSmokeGenerator : EffectSpawner
 		bool spawned;
 		Actor mo;
 
-		if (args[2]) { [spawned, mo] = A_SpawnItemEx("AmbientSmokeSB", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,48), 0, 0, 0.5, 0, 0, Args[1]); }
+		if (args[2])
+		{
+			range = -1; // Do not cull
+			[spawned, mo] = A_SpawnItemEx("AmbientSmokeSB", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,48), 0, 0, 0.5, 0, 0, Args[1]);
+		}
 		else { [spawned, mo] = A_SpawnItemEx("AmbientSmoke", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,48), 0, 0, 0.5, 0, 0, Args[1]); }
 		if (mo && manager) { manager.QueueParticle(mo); }
 	}
@@ -450,7 +455,11 @@ class AmbientSmokeGeneratorDown : AmbientSmokeGenerator
 		bool spawned;
 		Actor mo;
 
-		if (args[2]) { [spawned, mo] = A_SpawnItemEx("AmbientSmokeSB", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,-48), 0, 0, 0.5, 0, 0, Args[1]); }
+		if (args[2])
+		{
+			range = -1; // Do not cull
+			[spawned, mo] = A_SpawnItemEx("AmbientSmokeSB", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,-48), 0, 0, 0.5, 0, 0, Args[1]);
+		}
 		else { [spawned, mo] = A_SpawnItemEx("AmbientSmoke", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,-48), 0, 0, -0.5, 0, 0, Args[1]); }
 		if (mo && manager) { manager.QueueParticle(mo); }
 	}
