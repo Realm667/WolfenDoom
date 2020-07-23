@@ -2990,3 +2990,83 @@ class NaziBoss : Nazi
 		if (wounded && WoundedSprite) { sprite = WoundedSprite; }
 	}
 }
+
+class BatBase : Base
+{
+	int countdown;
+	Actor roostgoal;
+
+	States
+	{
+		Roost:
+			BFAM K Random(35, 350); // 'Sleep' on roost for 1-10 seconds
+		RoostLoop:
+			BFAM K 5 A_LookThroughDisguise(LOF_NOSIGHTCHECK); // Then only go after the player again if they make a noise
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		ResetCountDown();
+
+		SpawnRoost();
+	}
+
+	override void Tick()
+	{
+		if (IsFrozen()) { return; }
+
+		if (target) { countdown--; }
+
+		if (!roostgoal) { SpawnRoost(); } // Keep trying to spawn a roost if the actors spawned under open sky
+
+		// Positive values on countdown timer are how long remaining in active attack mode
+		// Negative values on countdown timer are how long bat has been trying to run away or get back to roost
+		if (countdown == 0 || reactiontime > 0) // When countdown hits zero, run away from the player
+		{
+			bFrightened = true;
+		}
+		else if (countdown < -35 && roostgoal) // After one second of running away, stop running and go back to roost
+		{
+			bFrightened = false;
+			goal = roostgoal;
+			target = goal;
+			bJustAttacked = True;
+			bChaseGoal = True;
+
+			if (roostgoal && Distance2D(roostgoal) < radius && roostgoal.pos.z <= pos.z + height) // At roost, roost.
+			{
+				SetOrigin(roostgoal.pos, true);
+				SetStateLabel("Roost");
+
+				ResetCountDown();
+				A_ClearTarget();
+			}
+		}
+
+		if (roostgoal && countdown == 35 * -10) // If you've been trying to get back to your roost for 10 seconds, give up and try to spawn a new roost here
+		{
+			SpawnRoost();
+		}
+
+		Super.Tick();
+	}
+
+	void ResetCountdown()
+	{
+		countdown = int(35 * Random(5, 10) * max(1.0, (pos.z - floorz) / 256.0)); // Actively chase player for 5-10 seconds - or more, if the ceiling is hight
+	}
+
+	void SpawnRoost()
+	{
+		if (ceilingpic != skyflatnum) // No roosting on sky ceiling
+		{
+			if (roostgoal) { roostgoal.Destroy(); } // If this gets called twice, destroy the old roost
+
+			roostgoal = Spawn("MapSpot", (pos.xy, ceilingz - height)); // Convenient actor re-use
+			roostgoal.bShootable = true; // Must be set so that A_Chase will keep the map spot as a target
+		}
+	}
+}
