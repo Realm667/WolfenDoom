@@ -3018,37 +3018,40 @@ class BatBase : Base
 	{
 		if (IsFrozen()) { return; }
 
-		if (target) { countdown--; }
-
-		if (!roostgoal) { SpawnRoost(); } // Keep trying to spawn a roost if the actors spawned under open sky
-
-		// Positive values on countdown timer are how long remaining in active attack mode
-		// Negative values on countdown timer are how long bat has been trying to run away or get back to roost
-		if (countdown == 0 || reactiontime > 0) // When countdown hits zero, run away from the player
+		if (bShootable && health > 0)
 		{
-			bFrightened = true;
-		}
-		else if (countdown < -35 && roostgoal) // After one second of running away, stop running and go back to roost
-		{
-			bFrightened = false;
-			goal = roostgoal;
-			target = goal;
-			bJustAttacked = True;
-			bChaseGoal = True;
+			if (target) { countdown--; }
 
-			if (roostgoal && Distance2D(roostgoal) < radius && roostgoal.pos.z <= pos.z + height) // At roost, roost.
+			if (!roostgoal) { SpawnRoost(); } // Keep trying to spawn a roost if the actors spawned under open sky
+
+			// Positive values on countdown timer are how long remaining in active attack mode
+			// Negative values on countdown timer are how long bat has been trying to run away or get back to roost
+			if (countdown == 0 || reactiontime > 0) // When countdown hits zero, run away from the player
 			{
-				SetOrigin(roostgoal.pos, true);
-				SetStateLabel("Roost");
-
-				ResetCountDown();
-				A_ClearTarget();
+				bFrightened = true;
 			}
-		}
+			else if (countdown < -35 && roostgoal) // After one second of running away, stop running and go back to roost
+			{
+				bFrightened = false;
+				goal = roostgoal;
+				target = goal;
+				bJustAttacked = True;
+				bChaseGoal = True;
 
-		if (roostgoal && countdown == 35 * -10) // If you've been trying to get back to your roost for 10 seconds, give up and try to spawn a new roost here
-		{
-			SpawnRoost();
+				if (roostgoal && Distance2D(roostgoal) < radius && roostgoal.pos.z <= pos.z + height) // At roost, roost.
+				{
+					SetOrigin(roostgoal.pos, true);
+					SetStateLabel("Roost");
+
+					ResetCountDown();
+					A_ClearTarget();
+				}
+			}
+
+			if (roostgoal && countdown == 35 * -10) // If you've been trying to get back to your roost for 10 seconds, give up and try to spawn a new roost here
+			{
+				SpawnRoost();
+			}
 		}
 
 		Super.Tick();

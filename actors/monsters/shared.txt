@@ -1442,36 +1442,6 @@ ACTOR BloodSkullCloud
 	}
 }
 
-ACTOR ZFlame1A : Flame1A
-{
-	+ROLLSPRITE
-	Scale 0.3
-	Alpha 0.3
-
-	States
-	{
-	Spawn:
-		ZFLM A 0
-		"####" A 0 ThrustThingZ(0,random(2,6),0,0)
-		"####" A 0 ThrustThing(random(0,255),random(0,1),0,0)
-		"####" A 0 BRIGHT A_FadeOut(.05)
-		"####" A 0 BRIGHT A_SetRoll(Roll-25, SPF_INTERPOLATE)
-		"####" A 2 BRIGHT A_SetScale(ScaleX-0.0125, ScaleY-0.0125)
-		Goto Spawn+3
-	}
-}
-
-ACTOR ZFlame1B : ZFlame1A
-{
-	DistanceCheck "sfxlod"
-	States
-	{
-	Spawn:
-		ZFLM B 0
-		Goto Super::Spawn+1
-	}
-}
-
 ACTOR ZFlamebolt
 {
 	Speed 10

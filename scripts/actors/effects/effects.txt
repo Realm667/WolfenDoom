@@ -1,13 +1,15 @@
-#include "scripts/actors/effects/ash.txt"			// Ash
-#include "scripts/actors/effects/bubbles.txt"			// Underwater bubbles
-#include "scripts/actors/effects/cinder.txt"			// Cinders
-#include "scripts/actors/effects/clouds.txt"			// Clouds
-#include "scripts/actors/effects/confetti.txt"			// Confetti
-#include "scripts/actors/effects/leaves.txt"			// Leaf spawner
-#include "scripts/actors/effects/rain.txt"			// Rain
-#include "scripts/actors/effects/snow.txt"			// Snow
-#include "scripts/actors/effects/starparticles.txt"		// Star particles
-#include "scripts/actors/effects/steam.txt"			// Steam spawner
+#include "scripts/actors/effects/ash.txt"
+#include "scripts/actors/effects/bubbles.txt"
+#include "scripts/actors/effects/cinder.txt"
+#include "scripts/actors/effects/clouds.txt"
+#include "scripts/actors/effects/confetti.txt"
+#include "scripts/actors/effects/fire.txt"
+#include "scripts/actors/effects/leaves.txt"
+#include "scripts/actors/effects/rain.txt"
+#include "scripts/actors/effects/snow.txt"
+#include "scripts/actors/effects/smoke.txt"
+#include "scripts/actors/effects/starparticles.txt"
+#include "scripts/actors/effects/steam.txt"
 
 class EffectInfo // Should just be a struct, but we can't use structs in dynamic arrays...
 {
@@ -219,6 +221,7 @@ class EffectsManager : Thinker
 			}
 			else if (!inrange && effects[i].effect && !effects[i].effect.bDormant)
 			{
+				effects[i].effect.A_RemoveChildren(TRUE, RMVF_MISC);
 				effects[i].effect.Destroy();
 			}
 		}
