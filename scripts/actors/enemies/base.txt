@@ -2302,7 +2302,7 @@ class Nazi : Base
 					target = patrolgoal;
 				}
 			}
-			else if (user_InCombat && !bFriendly && activationgoal)
+			else if (user_incombat && !bFriendly && activationgoal && (LastEnemy || LastHeard))
 			{
 				MeleeRange = 0; // To bypass the internal A_Chase "goal reached" logic
 
