@@ -1,0 +1,86 @@
+class DecorationShip : SwitchableDecoration
+{
+	EffectsManager manager;
+
+	Default
+	{
+		//$Category Astrostein (BoA)/Props
+		//$Title Space Ship (viper, activatable)
+		//$Color 3
+		Radius 8;
+		Height 6;
+		Speed 6;
+		Damage 3;
+		SeeSound "viper/flyby";
+		Projectile;
+		-ACTIVATEIMPACT
+		+ACTIVATEPCROSS
+		+CLIENTSIDEONLY
+		+DONTSPLASH
+		+NOGRAVITY
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A 0;
+		Active:
+			MDLA A 1 SpawnEffect();
+			Loop;
+		Inactive:
+			MDLA A -1;
+			Stop;
+		Death:
+			MDLA A 4;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		manager = EffectsManager.GetManager();
+	}
+
+	void SpawnEffect()
+	{
+		tics = curState.tics + manager.tickdelay;
+
+		bool spawned;
+		Actor mo;
+
+		[spawned, mo] = A_SpawnItemEx("DecorationShip_Steam", -32, -5, -1);
+		if (mo && manager) { manager.QueueParticle(mo); }
+
+		[spawned, mo] = A_SpawnItemEx("DecorationShip_Steam", -32, 5, -1);
+		if (mo && manager) { manager.QueueParticle(mo); }
+	}
+}
+
+class DecorationShip_Steam : SmokeBase
+{
+	Default
+	{
+		DistanceCheck "scenelod";
+		Radius 1;
+		Height 1;
+		RenderStyle "Add";
+		Alpha 0.2;
+		Scale 0.2;
+		+CLIENTSIDEONLY
+		+FORCEXYBILLBOARD
+		+MISSILE
+		+NOBLOCKMAP
+		+NOGRAVITY
+		SmokeBase.FadeInTics 1;
+		SmokeBase.FadeOutTics 1;
+		SmokeBase.MaxAlpha 1.0;
+	}
+
+	States
+	{
+		Spawn:
+			SSST A 1 DoFade(0.2, 0.1);
+			Loop;
+	}
+}

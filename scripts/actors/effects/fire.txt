@@ -53,10 +53,7 @@ class FireSpawner : HeatEffectGiver
 
 			if (switchvar.length()) { switchcvar = CVar.FindCVar(switchvar); }
 
-			ThinkerIterator it = ThinkerIterator.Create("EffectsManager", Thinker.STAT_Default);
-			manager = EffectsManager(it.Next());
-
-			if (!manager) { manager = new("EffectsManager"); }
+			manager = EffectsManager.GetManager();
 
 			if (bDormant || SpawnFlags & MTF_DORMANT) { Deactivate(null); }
 			else { Activate(null); }
@@ -149,7 +146,7 @@ class FireSpawner : HeatEffectGiver
 }
 
 //Flames and particles
-class FlameBase : SimpleActor
+class FlameBase : ParticleBase
 {
 	double scaleamt, thrustmin, thrustmax, thrustminz, thrustmaxz;
 
@@ -256,7 +253,7 @@ class Flame_Inferno : Flame_Large
 	}
 }
 
-class FireSmokeBase : SimpleActor
+class FireSmokeBase : ParticleBase
 {
 	double thrustmin, thrustmax, thrustminz, thrustmaxz;
 
@@ -343,7 +340,7 @@ class Smoke_Inferno : FireSmokeBase
 	}
 }
 
-class EmberBase : SimpleActor
+class EmberBase : ParticleBase
 {
 	double thrustmin, thrustmax, thrustminz, thrustmaxz;
 	int delay;

@@ -4,8 +4,11 @@
 #include "scripts/actors/effects/clouds.txt"
 #include "scripts/actors/effects/confetti.txt"
 #include "scripts/actors/effects/fire.txt"
+#include "scripts/actors/effects/laser.txt"
 #include "scripts/actors/effects/leaves.txt"
+#include "scripts/actors/effects/miscellaneous.txt"
 #include "scripts/actors/effects/rain.txt"
+#include "scripts/actors/effects/torches.txt"
 #include "scripts/actors/effects/snow.txt"
 #include "scripts/actors/effects/smoke.txt"
 #include "scripts/actors/effects/starparticles.txt"
@@ -36,6 +39,16 @@ class EffectsManager : Thinker
 
 	const cycletime = 35;
 
+	static EffectsManager GetManager()
+	{
+		ThinkerIterator it = ThinkerIterator.Create("EffectsManager", Thinker.STAT_Default);
+		EffectsManager manager = EffectsManager(it.Next());
+
+		if (!manager) { manager = new("EffectsManager"); }
+
+		return manager;
+	}
+
 	static void Add(Actor effect, double range = -1, bool force = false)
 	{
 		if (!effect) { return; }
@@ -45,10 +58,7 @@ class EffectsManager : Thinker
 			if (effect.bSolid && !effect.bNoInteraction) { return; } // Only add non-solid or non-interactive objects
 		}
 
-		ThinkerIterator it = ThinkerIterator.Create("EffectsManager", Thinker.STAT_Default);
-		EffectsManager manager = EffectsManager(it.Next());
-
-		if (!manager) { manager = new("EffectsManager"); }
+		EffectsManager manager = EffectsManager.GetManager();
 		if (!manager) { return; }
 
 		manager.AddEffect(effect, range);
@@ -58,11 +68,9 @@ class EffectsManager : Thinker
 	{
 		if (!effect) { return; }
 
-		ThinkerIterator it = ThinkerIterator.Create("EffectsManager", Thinker.STAT_Default);
-		EffectsManager manager = EffectsManager(it.Next());
-
-		if (!manager) { manager = new("EffectsManager"); }
+		EffectsManager manager = EffectsManager.GetManager();
 		if (!manager) { return; }
+
 
 		manager.RemoveEffect(effect);
 	}
@@ -289,10 +297,8 @@ class EffectSpawner : SwitchableDecoration
 
 		if (switchvar.length()) { switchcvar = CVar.FindCVar(switchvar); }
 
-		ThinkerIterator it = ThinkerIterator.Create("EffectsManager", Thinker.STAT_Default);
-		manager = EffectsManager(it.Next());
-
-		if (!manager) { manager = new("EffectsManager"); }
+		manager = EffectsManager.GetManager();
+		if (!manager) { return; }
 
 		if (range > 0) { manager.AddEffect(self, range > 0 ? min(range, sfxlod) : sfxlod); } // If range is -1, do not cull
 
@@ -322,7 +328,7 @@ class EffectSpawner : SwitchableDecoration
 	{
 		if (!bAllowTickDelay || !manager) { return; }
 
-		tics += curState.tics + manager.tickdelay;
+		tics = curState.tics + manager.tickdelay;
 	}
 }
 
@@ -365,11 +371,14 @@ class TreesBase : Actor
 class ParticleBase : SimpleActor // Use for non-interactive actors that move with their own velocity and might end up outside of the map
 {
 	int checktimer;
+	int flags;
+
+	FlagDef CHECKPOSITION:flags, 0;
 
 	States
 	{
 		Fade:
-			"####" "#" 1 A_FadeOut(0.1, FTF_REMOVE);
+			"####" "#" 1 A_FadeOut(0.25, FTF_REMOVE);
 			Loop;
 	}
 
@@ -385,7 +394,7 @@ class ParticleBase : SimpleActor // Use for non-interactive actors that move wit
 	{
 		Super.Tick();
 
-		if (checktimer-- <= 0)
+		if (bCheckPosition && checktimer-- <= 0)
 		{
 			// If it's outside the level, remove it
 			if (!level.IsPointInLevel(pos)) { Destroy(); return; }

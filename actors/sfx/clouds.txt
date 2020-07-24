@@ -1,5 +1,5 @@
 //Base Cloud Grey
-ACTOR CloudBaseGrey : SimpleActor
+ACTOR CloudBaseGrey : ParticleBase
 {
 	+MISSILE
 	+NOBLOCKMAP
@@ -9,6 +9,7 @@ ACTOR CloudBaseGrey : SimpleActor
 	RenderStyle "Translucent"
 	Alpha 0.1
 	Scale 0.5
+	+ParticleBase.CHECKPOSITION
 	States
 	{
 	Spawn:

@@ -254,6 +254,10 @@ class Base : Actor
 	bool user_nocountkill;
 	int flags;
 
+	LaserFindHitPointTracer HitPointTracer;
+	LaserBeam beam;
+	Actor flare;
+
 	FlagDef CANSQUISH:flags, 0;
 
 	Property AlwaysDrawHealthBar:user_DrawHealthBar;
@@ -727,6 +731,24 @@ class Base : Actor
 		}
 	}
 
+	void A_FireLaser(int damage, sound snd = "", double zoffset = 0, bool drawdecal = false, double alpha = 1.0, double volume = 1.0)
+	{
+		if (snd != "")
+		{
+			A_StartSound(snd, CHAN_6, CHANF_NOSTOP, 1.0);
+			A_SoundVolume(CHAN_6, volume);
+		}
+		Laser.DoTrace(self, angle, 2048, pitch, 0, zoffset, hitpointtracer);
+		[beam, flare] = Laser.DrawLaser(self, beam, flare, hitpointtracer.Results, "LaserBeam", "LaserPuff", damage, zoffset, drawdecal, alpha);
+	}
+
+	void A_StopLaser()
+	{
+		A_StopSound(CHAN_6);
+		if (beam) { beam.Destroy(); }
+		if (flare) { flare.Destroy(); }
+	}
+
 	override void Tick()
 	{
 		if (user_DrawHealthBar) { ChangeStatNum(Thinker.STAT_DEFAULT - 3); } // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient
@@ -876,6 +898,8 @@ class Base : Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
+
+		hitpointtracer = new("LaserFindHitPointTracer");
 
 		if (!(self is "NaziBoss")) { A_SetSize(radius * scale.x / Default.scale.x, height * scale.y / Default.scale.y); } // If the actor is scaled from default, adjust the actual size of the actor
 
