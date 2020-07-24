@@ -279,6 +279,7 @@ class EffectSpawner : SwitchableDecoration
 	int flags;
 
 	FlagDef AllowTickDelay:flags, 0;
+	FlagDef DontCull:flags, 1;
 
 	Property Range:range;
 	Property SwitchVar:switchvar;
@@ -300,7 +301,7 @@ class EffectSpawner : SwitchableDecoration
 		manager = EffectsManager.GetManager();
 		if (!manager) { return; }
 
-		if (range > 0) { manager.AddEffect(self, range > 0 ? min(range, sfxlod) : sfxlod); } // If range is -1, do not cull
+		if (range > 0 && !bDontCull) { manager.AddEffect(self, range > 0 ? min(range, sfxlod) : sfxlod); }
 
 		if (bDormant || SpawnFlags & MTF_DORMANT) { Deactivate(null); }
 		else { Activate(null); }
@@ -328,7 +329,7 @@ class EffectSpawner : SwitchableDecoration
 	{
 		if (!bAllowTickDelay || !manager) { return; }
 
-		tics = curState.tics + manager.tickdelay;
+		tics += curState.tics + manager.tickdelay;
 	}
 }
 

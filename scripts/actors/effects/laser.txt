@@ -37,7 +37,7 @@ class LaserShooter : EffectSpawner
 		Damage 100;
 		DamageType "Laser";
 		+NOGRAVITY
-		EffectSpawner.Range -1; // Never cull these
+		+EffectSpawner.DONTCULL
 		LaserShooter.FlareClass "BigLaserFlare";
 	}
 
@@ -59,13 +59,15 @@ class LaserShooter : EffectSpawner
 
 		hitpointtracer = new("LaserFindHitPointTracer");
 
-		if (!beamclass) { beamclass = beamclasses[args[0]]; }
+		if (!beamclass) { beamclass = beamclasses[min(2, args[0])]; }
 
 		if (!beamdistance)
 		{
 			if (!args[2]) { beamdistance = 2048; } // Default to 2048 units long
 			else { beamdistance = 256 * args[2]; }
 		}
+
+		range = max(range, beamdistance + 512);
 
 		if (bDormant || SpawnFlags & MTF_DORMANT) { Deactivate(null); }
 		else { Activate(null); }
@@ -126,7 +128,7 @@ class LaserShooterNF : LaserShooter
 
 	override void PostBeginPlay()
 	{
-		flareclass = flareclasses[args[0]];
+		flareclass = flareclasses[min(2, args[0])];
 
 		Super.PostBeginPlay();
 	}
@@ -241,6 +243,7 @@ class Laser : Actor
 
 			flare.frame = Random(0, 5);
 			flare.alpha = flare.Default.alpha * alpha;
+			flare.angle = flare.AngleTo(origin);
 		}
 
 		Actor puff;
@@ -409,7 +412,7 @@ class BigLaserFlare : EffectSpawner
 		RenderStyle "Add";
 		Scale 0.25;
 		Alpha 2.5; // Overbright so they show up better
-		EffectSpawner.Range -1; // Don't cull
+		+EffectSpawner.DONTCULL
 		+EffectSpawner.ALLOWTICKDELAY
 	}
 
@@ -445,13 +448,13 @@ class BigLaserFlare : EffectSpawner
 		bool spawned;
 		Actor mo;
 
-		[spawned, mo] = A_SpawnitemEx("SparkFlare_W1",random(-2,2), random(-2,2), random(-2,2), random(-2,2), random(-2,2), random(-2,2),0,SXF_ISTRACER|SXF_SETMASTER|SXF_NOCHECKPOSITION);
+		[spawned, mo] = A_SpawnitemEx("SparkFlare_W1",FRandom(0, 2), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), 0, SXF_ISTRACER | SXF_SETMASTER | SXF_NOCHECKPOSITION);
 		if (mo && manager) { manager.QueueParticle(mo); }
 
-		[spawned, mo] = A_SpawnItemEx("LaserSpark", random(-4,4), random(-4,4), random(-4,4), random(-2,2), random(-2,2), random(-2,2));
+		[spawned, mo] = A_SpawnItemEx("LaserSpark", FRandom(0, 4), FRandom(-4, 4), FRandom(-4, 4), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2));
 		if (mo && manager) { manager.QueueParticle(mo); }
 
-		[spawned, mo] = A_SpawnItemEx("LaserSmoke", random(-4,4), random(-4,4), random(-4,4), 0, 0, 3);
+		[spawned, mo] = A_SpawnItemEx("LaserSmoke", FRandom(0, 4), FRandom(-4, 4), FRandom(-4, 4), 0, 0, FRandom(2.5, 3.5));
 		if (mo && manager) { manager.QueueParticle(mo); }
 	}
 }
