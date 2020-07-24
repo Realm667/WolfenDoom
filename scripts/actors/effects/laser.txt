@@ -34,7 +34,7 @@ class LaserShooter : EffectSpawner
 		//$Arg3Enum { 0 = "Yes"; 1 = "No"; }
 		Radius 0;
 		Height 0;
-		Damage 100;
+		Damage 30;
 		DamageType "Laser";
 		+NOGRAVITY
 		+EffectSpawner.DONTCULL
@@ -179,7 +179,6 @@ class ZapShooter : LaserShooter
 		//$Arg2Type 11
 		//$Arg2Enum { 0 = "Yes"; 1 = "No"; }
 		//$Arg3 ""
-		Damage 300;
 		DamageType "Electric";
 		LaserShooter.BeamClass "ElectricBeam";
 		LaserShooter.FlareClass "ZapFlare";
@@ -208,7 +207,12 @@ class Laser : Actor
 		thistracer.skipactor = origin;
 
 		Vector3 tracedir = (cos(angle) * cos(pitch), sin(angle) * cos(pitch), -sin(pitch));
-		thistracer.Trace(origin.pos + (0, 0, zoffset), origin.CurSector, tracedir, dist, 0);
+		if (!thistracer.Trace(origin.pos + (0, 0, zoffset), origin.CurSector, tracedir, dist, 0))
+		{
+			 // If tracer failed, assume full range.
+			thistracer.Results.Distance = dist;
+			thistracer.Results.HitPos = origin.pos + (0, 0, zoffset) + thistracer.Results.HitVector * dist;
+		}
 	}
 
 	static LaserBeam, Actor DrawLaser(Actor origin, LaserBeam beam, Actor flare, TraceResults traceresults, Class<Actor> spawnclass = "LaserBeam", Class<Actor> puffclass = "LaserPuff", int damage = 0, double zoffset = 0, bool drawdecal = true, double alpha = 1.0, Class<Actor> flareclass = "LaserFlare")
@@ -220,7 +224,7 @@ class Laser : Actor
 		if (!origin) { return beam, flare; }
 
 		Vector3 beamoffset = origin.pos + (0, 0, zoffset);
-		double dist = (beamoffset - traceresults.HitPos).length();
+		double dist = traceresults.Distance;
 
 		//Laser beam
 		Vector3 beampos = beamoffset + traceresults.HitVector * (dist / 2);
@@ -236,7 +240,7 @@ class Laser : Actor
 
 		if (beam)
 		{
-			if (beam.pos != beampos) { beam.SetXYZ(beamoffset + traceresults.HitVector * (dist / 2)); }
+			if (beam.pos != beampos) { beam.SetXYZ(beampos); }
 
 			beam.pitch = origin.pitch - 90;
 			beam.angle = origin.angle;
@@ -279,6 +283,7 @@ class Laser : Actor
 
 				if (puff)
 				{
+					puff.master = origin;
 					puff.angle = origin.AngleTo(puff);
 					if (drawdecal && !Random(0, 16)) { puff.A_SprayDecal("LaserBeamScorch", 24.0); }
 					puff.angle = puff.AngleTo(origin);
@@ -290,6 +295,7 @@ class Laser : Actor
 			puff = Spawn("LaserSmoke", traceresults.HitPos, ALLOW_REPLACE);
 			if (puff)
 			{
+				puff.master = origin;
 				puff.angle = puff.AngleTo(origin);
 				puff.vel.z = 1.0;
 			}
@@ -336,16 +342,19 @@ class LaserFindHitPointTracer : LineTracer
 		}
 		else if (Results.HitType == TRACE_HitWall)
 		{
-			if (Results.HitLine.flags & (Line.ML_BLOCKEVERYTHING)) { return TRACE_Stop; } // Only stops at one-sided or blocking lines (NOT impassible!)
-			if (!(Results.HitLine.flags & (Line.ML_TWOSIDED))) { return TRACE_Stop; }
+			if (Results.HitLine.flags & Line.ML_BLOCKEVERYTHING) { return TRACE_Stop; } // Only stops at one-sided or blocking lines (NOT impassible!)
+			else if (!(Results.HitLine.flags & Line.ML_TWOSIDED)) { return TRACE_Stop; }
+
 			if (Results.HitTexture)
 			{
 				if (Results.Tier != TIER_Middle) // Ignores all mid-textures, so will pass through 3D-midtex lines unless they were marked as blocking
 				{
 					return TRACE_Stop;
 				}
-				return TRACE_Skip;
 			}
+
+			Results.HitLine = null;
+
 			return TRACE_Skip;
 		}
 
