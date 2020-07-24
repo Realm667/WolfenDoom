@@ -177,6 +177,11 @@ class TankSmoke : PuffSmoke
 
 class TankSmokeSpawner : EffectSpawner
 {
+	Default
+	{
+		+EffectSpawner.ALLOWTICKDELAY
+	}
+
 	override void SpawnEffect()
 	{
 		Super.SpawnEffect();
