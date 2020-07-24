@@ -173,10 +173,27 @@ class ZapShooter : LaserShooter
 	Default
 	{
 		//$Title Electrical Zap Shooter (switchable, 3 args)
+		//$Arg0 "Rotation Speed"
+		//$Arg1 "Distance (x256)"
+		//$Arg2 "Sound"
+		//$Arg2Type 11
+		//$Arg2Enum { 0 = "Yes"; 1 = "No"; }
+		//$Arg3 ""
 		Damage 300;
 		DamageType "Electric";
 		LaserShooter.BeamClass "ElectricBeam";
 		LaserShooter.FlareClass "ZapFlare";
+	}
+
+	override void PostBeginPlay()
+	{
+		// Offset the args so they match the parent actor's expected args
+		args[3] = args[2];
+		args[2] = args[1];
+		args[1] = args[0];
+		args[0] = 0;
+
+		Super.PostBeginPlay();
 	}
 }
 
