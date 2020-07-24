@@ -108,7 +108,9 @@ class LaserShooter : EffectSpawner
 
 class LaserShooterNF : LaserShooter
 {
-	static const string puffclasses[] = { "BigLaserFlareNR", "BigLaserFlareNP", "BigLaserFlareNG" };
+	static const string flareclasses[] = { "BigLaserFlareNR", "BigLaserFlareNP", "BigLaserFlareNG" };
+
+	Actor flare2;
 
 	Default
 	{
@@ -124,9 +126,43 @@ class LaserShooterNF : LaserShooter
 
 	override void PostBeginPlay()
 	{
-		puffclass = puffclasses[args[0]];
+		flareclass = flareclasses[args[0]];
 
 		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (flare2)
+		{
+			flare2.frame = Random(0, 5);
+			flare2.alpha = flare2.Default.alpha * alpha;
+		}
+	}
+
+	override void Activate(Actor activator)
+	{
+		if (!args[3]) { A_StartSound("tesla/loop", CHAN_6, CHANF_LOOPING, 0.2); }
+
+		// Second flare actor at origin
+		flare2 = Spawn(flareclass, pos, ALLOW_REPLACE);
+		if (flare2) { flare2.master = beam; }
+
+		bDormant = false;
+		SetStateLabel("Active");
+	}
+
+	override void Deactivate(Actor activator)
+	{
+		A_StopSound(CHAN_6);
+		if (beam) { beam.Destroy(); }
+		if (flare) { flare.Destroy(); }
+		if (flare2) { flare2.Destroy(); }
+
+		bDormant = true;
+		SetStateLabel("Inactive");
 	}
 }
 
