@@ -78,3 +78,91 @@ class HeatShaderControl : ShaderControl
 		}
 	}
 }
+
+class SandShaderControl : ShaderControl
+{
+	Vector2 dir;
+	Vector3 clr;
+	Color setcolor;
+	double setangle;
+	int holdTarget;
+	double size;
+	int shape;
+
+	Property ParticleColor:setcolor;
+	Property Angle:setangle;
+	Property Size:size;
+	Property Shape:shape;
+
+	Default
+	{
+		Alpha 0.0;
+		Speed 3.0;
+		SandShaderControl.Angle 0.0;
+		ShaderControl.Shader "sandshader";
+		SandShaderControl.ParticleColor "746251";
+		SandShaderControl.Size 4;
+		SandShaderControl.Shape 2; // 0 - Circle, 1 - Cube, 2 - Cylinder
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (!owner || !owner.player || !owner.player.camera) { Destroy(); return; }
+
+		SpawnPoint = owner.player.camera.pos;
+
+		clr = (setcolor.r, setcolor.g, setcolor.b) / 256.0;
+	}
+
+	override void SetUniforms(PlayerInfo p, RenderEvent e)
+	{
+		Vector3 campos = owner.player.camera.pos + (0, 0, owner.player.crouchviewdelta) - SpawnPoint;
+		campos.xy = RotateVector(campos.xy, -angle);
+
+		Shader.SetUniform1f(p, ShaderToControl, "timer", speed * (gametic + e.FracTic));
+		Shader.SetUniform1f(p, ShaderToControl, "angle", e.viewangle - setangle);
+		Shader.SetUniform1f(p, ShaderToControl, "pitch", e.viewpitch);
+		Shader.SetUniform1f(p, ShaderToControl, "fov", owner.player.FOV);
+		Shader.SetUniform1f(p, ShaderToControl, "bob", owner.player.bob / 64);
+		Shader.SetUniform3f(p, ShaderToControl, "position", campos);
+		Shader.SetUniform3f(p, ShaderToControl, "particlecolor", clr);
+		Shader.SetUniform1f(p, ShaderToControl, "size", size);
+		Shader.SetUniform1f(p, ShaderToControl, "shape", shape);
+	}
+
+	override void DoEffect()
+	{
+		if (amount > 1) { holdTarget = level.time + amount; } // Set hold time based on amount in inventory
+
+		// If we've hit the hold time or are underwater, remove the effect
+		if (owner.waterlevel > 1 || (holdTarget && level.time > holdTarget)) 
+		{
+			amount = 1;
+			holdTarget = 0;
+			alpha = 0;
+		}
+		else if (holdTarget)
+		{
+			double targetalpha = clamp((amount - 1) / 105.0, 0, 1.0);
+			if (alpha < targetalpha) { alpha = min(targetalpha, alpha + 0.05); }
+			else if (alpha > targetalpha) { alpha = max(targetalpha, alpha - 0.05); }
+
+			amount = max(amount - 4, 1);
+		}
+	}
+}
+
+class SnowShaderControl : SandShaderControl
+{
+	Default
+	{
+		Speed 0.5;
+		SandShaderControl.Angle 0.0;
+		ShaderControl.Shader "sandshader";
+		SandShaderControl.ParticleColor "White";
+		SandShaderControl.Size 6;
+		SandShaderControl.Shape 0; // 0 - Circle, 1 - Cube, 2 - Cylinder
+	}
+}

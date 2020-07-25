@@ -2115,6 +2115,21 @@ HardwareShader PostProcess scene {
 	Uniform float timer
 }
 
+HardwareShader PostProcess scene {
+	Name "sandshader"
+	Shader "shaders/snow.fp" 330
+	Uniform float angle
+	Uniform float pitch
+	Uniform float fov
+	Uniform vec3 position
+	Uniform float bob
+	Uniform vec3 particlecolor
+	Uniform float size
+	Uniform float timer
+	Uniform float alpha
+	Uniform float shape
+}
+
 //Color Grading hardware shader
 HardwareShader PostProcess Scene {
   Name "ColorGrade"

@@ -188,10 +188,13 @@ class ActorPositionable : Actor
 	}
 }
 
-class HeatEffectGiver : EffectSpawner
+class EffectGiver : EffectSpawner
 {
 	bool Active;
 	Array<Actor> Activators;
+	class<ShaderControl> controlclass;
+
+	Property Control:controlclass;
 
 	Default
 	{
@@ -221,7 +224,7 @@ class HeatEffectGiver : EffectSpawner
 
 		SetOrigin((pos.xy, fz), false);
 
-		A_SetSize(Radius * scale.x + 32, cz - fz); // Resize to the scaled size, plus 32 units to allow for a border on the edges where the value will properly be zero, and fill the height of the sector.
+		A_SetSize((Radius + 8) * scale.x, cz - fz); // Resize to the scaled size, plus 32 units to allow for a border on the edges where the value will properly be zero, and fill the height of the sector.
 
 		Active = !(SpawnFlags & MTF_DORMANT);
 
@@ -249,10 +252,14 @@ class HeatEffectGiver : EffectSpawner
 
 					int amt = clamp(int((128 / r) * (r - Distance2D(mo) + mo.Radius)), 0, 128); // Always scale from 0 to 128, regardless of scale/radius of actor
 
-					Inventory control = mo.FindInventory("HeatShaderControl");
-					if (control) { amt = max(amt, control.amount); } // Don't cancel out other givers
+					ShaderControl control = ShaderControl(mo.FindInventory(controlclass));
+					if (control)
+					{
+						if (amt - 5 >= control.amount) { SetParams(control); }
+						amt = max(amt, control.amount); // Don't cancel out other givers
+					}
 
-					mo.SetInventory("HeatShaderControl", 1 + amt);
+					mo.SetInventory(controlclass, 1 + amt);
 
 					if (amt <= 1) { Activators.Delete(i); }
 				}
@@ -261,6 +268,8 @@ class HeatEffectGiver : EffectSpawner
 
 		Super.Tick();
 	}
+
+	virtual void SetParams(ShaderControl control) {}
 
 	override void Activate (Actor activator)
 	{
@@ -272,6 +281,42 @@ class HeatEffectGiver : EffectSpawner
 	{
 		Active = false;
 		Super.Deactivate(activator);
+	}
+}
+
+class HeatEffectGiver : EffectGiver
+{
+	Default
+	{
+		EffectGiver.Control "HeatShaderControl";
+	}
+}
+
+class SandEffectGiver : EffectGiver
+{
+	Default
+	{
+		EffectGiver.Control "SandShaderControl";
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		scale *= 1.5;
+	}
+
+	override void SetParams(ShaderControl control)
+	{
+		SandShaderControl ctrl = SandShaderControl(control);
+
+		if (!ctrl) { return; }
+
+		double destangle = Normalize180(angle + 90);
+		if (destangle - ctrl.setangle > 180) { destangle -= 360; }
+
+		if (ctrl.setangle > destangle) { ctrl.setangle = max(destangle, ctrl.setangle - 5 * ctrl.speed); }
+		else if (ctrl.setangle < destangle) { ctrl.setangle = min(destangle, ctrl.setangle + 5 * ctrl.speed); }
 	}
 }
 
