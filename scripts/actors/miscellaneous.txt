@@ -205,15 +205,14 @@ class EffectGiver : EffectSpawner
 		+FLATSPRITE
 		+SPECIAL
 		+NOCLIP
-		RenderStyle "None";
 	}
 
 	States
 	{
 		Spawn:
-			PAO1 A 0;
+			TNT1 A 1;
 		Active:
-			PAO1 A 35;
+			TNT1 A 35;
 			Loop;
 	}
 
@@ -288,6 +287,8 @@ class HeatEffectGiver : EffectGiver
 {
 	Default
 	{
+		//$Title Heat Effect Giver
+		//$Sprite EFFGF0
 		EffectGiver.Control "HeatShaderControl";
 	}
 }
@@ -296,6 +297,8 @@ class SandEffectGiver : EffectGiver
 {
 	Default
 	{
+		//$Title Sand Effect Giver
+		//$Sprite EFFGS0
 		EffectGiver.Control "SandShaderControl";
 	}
 
