@@ -87,12 +87,13 @@ class SandShaderControl : ShaderControl
 	double setangle;
 	int holdTarget;
 	double size;
-	int shape;
+	int maxparticles;
+	EffectsManager manager;
 
 	Property ParticleColor:setcolor;
 	Property Angle:setangle;
 	Property Size:size;
-	Property Shape:shape;
+	Property MaxParticles:maxparticles;
 
 	Default
 	{
@@ -102,7 +103,7 @@ class SandShaderControl : ShaderControl
 		ShaderControl.Shader "sandshader";
 		SandShaderControl.ParticleColor "746251";
 		SandShaderControl.Size 4;
-		SandShaderControl.Shape 2; // 0 - Circle, 1 - Cube, 2 - Cylinder
+		SandShaderControl.MaxParticles 64;
 	}
 
 	override void PostBeginPlay()
@@ -114,6 +115,8 @@ class SandShaderControl : ShaderControl
 		SpawnPoint = owner.player.camera.pos;
 
 		clr = (setcolor.r, setcolor.g, setcolor.b) / 256.0;
+
+		manager = EffectsManager.GetManager();
 	}
 
 	override void SetUniforms(PlayerInfo p, RenderEvent e)
@@ -129,7 +132,7 @@ class SandShaderControl : ShaderControl
 		Shader.SetUniform3f(p, ShaderToControl, "position", campos);
 		Shader.SetUniform3f(p, ShaderToControl, "particlecolor", clr);
 		Shader.SetUniform1f(p, ShaderToControl, "size", size);
-		Shader.SetUniform1f(p, ShaderToControl, "shape", shape);
+		Shader.SetUniform1f(p, ShaderToControl, "maxparticles", maxparticles);
 	}
 
 	override void DoEffect()
@@ -145,24 +148,16 @@ class SandShaderControl : ShaderControl
 		}
 		else if (holdTarget)
 		{
+			if (manager)
+			{
+				maxparticles = int(Default.maxparticles * manager.particlescaling);
+			}
+
 			double targetalpha = clamp((amount - 1) / 105.0, 0, 1.0);
 			if (alpha < targetalpha) { alpha = min(targetalpha, alpha + 0.05); }
 			else if (alpha > targetalpha) { alpha = max(targetalpha, alpha - 0.05); }
 
 			amount = max(amount - 4, 1);
 		}
-	}
-}
-
-class SnowShaderControl : SandShaderControl
-{
-	Default
-	{
-		Speed 0.5;
-		SandShaderControl.Angle 0.0;
-		ShaderControl.Shader "sandshader";
-		SandShaderControl.ParticleColor "White";
-		SandShaderControl.Size 6;
-		SandShaderControl.Shape 0; // 0 - Circle, 1 - Cube, 2 - Cylinder
 	}
 }

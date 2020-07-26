@@ -29,7 +29,7 @@ float obj_box(vec3 p, vec3 center, vec3 size, float roundness){
 	return min(max(d.x,max(d.y,d.z)),0.0) + length(max(d,0.0)) - roundness;
 }
 
-const float maxd = 256.0; //Max depth
+const float maxd = 512.0; //Max depth
 float nearestD = maxd;
 vec3 color = texture(InputTexture, TexCoord).rgb;
 
@@ -59,16 +59,7 @@ float flakeDistance(vec3 p)
 	flakePos.y += sin(snowPush+stepZ*1.3)*(2.0/5.0)*modDist;
 	flakePos.z += sin(snowPush+stepX*1.7)*(2.0/5.0)*modDist;
 
-	switch (int(shape))
-	{
-		default:
-		case 0:
-			return obj_ball(flakeP, flakePos, size / 100.0);
-		case 1:
-			return obj_box(flakeP, flakePos, vec3(size / 200, size / 200.0, size / 200.0), 0.0);
-		case 2:
-			return obj_cylinder(flakeP, flakePos, vec2(size / 200.0, size / (10 + random(TexCoord))), size / 160.0);
-	}
+	return obj_cylinder(flakeP, flakePos, vec2(size / 200.0, size / (20 + random(TexCoord))), size / 160.0);
 }
 
 
@@ -85,7 +76,7 @@ void generatesnow(out vec4 fragColor, in vec2 fragCoord, in vec3 fragRayOri, in 
 	d=0.01;
 	const vec3 flakeE=vec3(0.007,0,0);
 
-	for(int i=0;i<128;i++)
+	for(int i = 0; i < maxparticles; i++)
 	{
 		if ((abs(d) < .001) || (f > maxd)) break;
 
@@ -104,7 +95,7 @@ void generatesnow(out vec4 fragColor, in vec2 fragCoord, in vec3 fragRayOri, in 
 
 		float edgeFade = pow(max(0.0,dot(n,-curCameraRayUnit)),1.0)*0.7;
 		float distFade = max(0.0,1.0-(nearestD/20.0));
-		color = mix(color, particlecolor, edgeFade * distFade * alpha * 2.0);
+		color += mix(vec3(0.0, 0.0, 0.0), particlecolor, edgeFade * distFade * alpha);
 	}
 
 	fragColor = vec4(color, 1.0);

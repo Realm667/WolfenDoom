@@ -37,6 +37,7 @@ class EffectsManager : Thinker
 	Array<Actor> particlequeue;
 	transient CVar maxqueuecvar;
 	int interval, tickdelay;
+	double particlescaling;
 
 	const cycletime = 35;
 
@@ -264,6 +265,8 @@ class EffectsManager : Thinker
 		int size = particlequeue.Size();
 		if (size > maxqueue * 0.75) { tickdelay = clamp(int((size - (maxqueue * 0.75)) / (maxqueue * 0.25) * 10), 0, 10); }
 		else { tickdelay = 0; }
+
+		particlescaling = max(0.1, 1.0 - (tickdelay / 10));
 
 // Debug output: particle queue size and current tick delay
 //if (level.time % 35 == 0) { console.printf("%i  >> %i", size, tickdelay); }
