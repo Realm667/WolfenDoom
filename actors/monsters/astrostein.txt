@@ -2,32 +2,6 @@
 //ATTACKS//
 ///////////
 
-ACTOR AstroDroneBall
-{
-	Radius 6
-	Height 8
-	Speed 10
-	FastSpeed 20
-	Damage 5
-	Projectile
-	+RANDOMIZE
-	RenderStyle "Add"
-	Scale 0.5
-	SeeSound "astrochaingun/fire"
-	DeathSound "astroplasmaexplode"
-	States
-	{
-	Spawn:
-		ROBP AB 4 A_SpawnItemEx("Spark_G1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
-		Loop
-	Death:
-		TNT1 AAAAA 0 A_SpawnItemEx("Spark_G1", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE)
-		TNT1 A 0 A_SpawnItemEx("SparkFlare_G1")
-		ROBP CDEG 6 BRIGHT
-		Stop
-	}
-}
-
 ACTOR HardAstroDroneBall : AstroDroneBall {+MTHRUSPECIES}
 
 ACTOR AstroRobotSeekerBall : AstroDroneBall

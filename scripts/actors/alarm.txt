@@ -187,14 +187,14 @@ class AlarmPanel : SwitchableDecoration
 				activator = null;
 
 				A_StartSound("World/Spark", CHAN_AUTO, 0, 0.15);
-				A_SpawnItemEx("SparkFlare_Y1", 0, 0, 40);
+				A_SpawnItemEx("SparkFlareY", 0, 0, 40);
 				A_StartSound("METALBRK", CHAN_AUTO, 0, 0.25);
 			}
 			ALRM # 2 {
 				for (int s = 1; s < 17; s++)
 				{
 					// Spawn 16 random orange, white, or yellow sparks
-			 		A_SpawnProjectile(String.Format("Spark_%c%i", RandomPick("O", "W", "Y"), s), 40 + Random(-12, 12), Random(-16, 16), 0, CMF_AIMDIRECTION | CMF_BADPITCH, Random(157,203));
+			 		A_SpawnProjectile(String.Format("Spark%c", RandomPick("O", "W", "Y")), 40 + Random(-12, 12), Random(-16, 16), 0, CMF_AIMDIRECTION | CMF_BADPITCH, Random(157,203));
 				}
 			}
 			ALRM # -1;

@@ -35,7 +35,7 @@ Class LightningPuff : Actor
 		for (int s = 1; s < Random(2, 5); s++)
 		{
 			// Spawn random white or yellow sparks
-	 		Actor mo = A_SpawnProjectile(String.Format("Spark_%c%i", RandomPick("W", "Y"), s), -1, 0, Random(-45, 45), CMF_AIMDIRECTION, 270 - pitch + FRandom(-45, 45));
+	 		Actor mo = A_SpawnProjectile(String.Format("Spark%c", RandomPick("W", "Y")), -1, 0, Random(-45, 45), CMF_AIMDIRECTION, 270 - pitch + FRandom(-45, 45));
 			if (mo) { mo.scale *= FRandom(0.5, 1.0); }
 		}
 	}
@@ -768,15 +768,5 @@ Class TargetActor2 : Actor
 		Spawn:
 			TNT1 A 1;
 			Stop;
-	}
-}
-
-class SparkBase : Actor
-{
-	override void Tick()
-	{
-		Super.Tick();
-
-		if (waterlevel) { Destroy(); }
 	}
 }

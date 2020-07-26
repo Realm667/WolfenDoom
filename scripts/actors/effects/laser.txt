@@ -455,6 +455,8 @@ class BigLaserFlare : EffectSpawner
 	{
 		Super.Tick();
 
+		if (!master) { Destroy(); }
+
 		frame = Random(0, 5);
 	}
 
@@ -474,7 +476,7 @@ class BigLaserFlare : EffectSpawner
 		bool spawned;
 		Actor mo;
 
-		[spawned, mo] = A_SpawnitemEx("SparkFlare_W1",FRandom(0, 2), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), 0, SXF_ISTRACER | SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		[spawned, mo] = A_SpawnitemEx("SparkFlareW",FRandom(0, 2), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), 0, SXF_ISTRACER | SXF_SETMASTER | SXF_NOCHECKPOSITION);
 		if (mo && manager) { manager.QueueParticle(mo); }
 
 		[spawned, mo] = A_SpawnItemEx("LaserSpark", FRandom(0, 4), FRandom(-4, 4), FRandom(-4, 4), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2));
@@ -591,45 +593,26 @@ class LaserPuff : Actor
 	{
 		Spawn:
 			AMRK A 5 {
-				A_SpawnItemEx("SparkFlare_Y1", 0, 0, 40);
+				A_SpawnItemEx("SparkFlareY", 0, 0, 40);
 			}
 			AMRK A 2 {
 				// Spawn random spark
-		 		A_SpawnProjectile(String.Format("Spark_%c%i", RandomPick("W", "Y"), Random(1, 16)), 0, 0, 0, CMF_AIMDIRECTION | CMF_BADPITCH, Random(157,203));
+		 		A_SpawnProjectile(String.Format("Spark%c", RandomPick("W", "Y")), 0, 0, 0, CMF_AIMDIRECTION, Random(-157, -203));
 			}
 			Stop;
 	}
 }
 
-// Spark spawned by default puff actor.  Currently only seen with ProtoDrone laser
-class LaserSpark : ParticleBase
+// Spark spawned by puff actor.
+class LaserSpark : SparkW
 {
 	Default
 	{
-		Height 1;
-		Radius 2;
-		Mass 0;
-		Speed 0.25;
 		Scale 0.025;
-		+FORCEXYBILLBOARD
-		+MISSILE
-		+NOBLOCKMAP
-		Gravity 0.125;
-		RenderStyle "Add";
-	}
-
-	States
-	{
-		Spawn:
-			SPKW E 1 BRIGHT;
-			Loop;
-		Death:
-			"####" EEEEEEEEEE 1 BRIGHT A_FadeOut(0.1);
-			Stop;
 	}
 }
 
-// Default flare actor.  Currently only seed with ProtoDrone laser
+// Default flare actor.  Currently only seen with ProtoDrone laser
 class LaserFlare : Actor
 {
 	Default
