@@ -870,6 +870,7 @@ Graphic "AMMNUM9", 32, 32
 	Patch "patches/mapnums/numback.png", 0, 0 	
 	Patch "patches/mapnums/num9.png", 0, 0 { Overlay }
 }
+
 Texture "textures/BUILD_M01.jpg", 256, 256 {
 	XScale 2.
 	YScale 2.
@@ -934,4 +935,21 @@ Texture SIGN_007, 176, 176 {
 Texture "textures/eastereggs/re/painting_door.png", 102, 148
 {
 	Patch "textures/eastereggs/re/painting.png", -76, -366
+}
+
+//textures that act weirdly if not set here
+Texture "textures/WIND_G10.jpg", 256, 512 //if we insert double value here Hires fits, but ONLY longnamed works
+{
+	WorldPanning
+	XScale 2.000
+	YScale 2.000
+	Patch "hires/textures/WIND_G10.jpg",0 ,0
+}
+
+Texture "textures/WIND_G11.jpg", 256, 512
+{
+	WorldPanning
+	XScale 2.000
+	YScale 2.000
+	Patch "hires/textures/WIND_G11.jpg",0 ,0
 }
