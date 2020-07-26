@@ -89,6 +89,7 @@ class SandShaderControl : ShaderControl
 	double size;
 	int maxparticles;
 	EffectsManager manager;
+	int frozentime;
 
 	Property ParticleColor:setcolor;
 	Property Angle:setangle;
@@ -122,17 +123,21 @@ class SandShaderControl : ShaderControl
 	override void SetUniforms(PlayerInfo p, RenderEvent e)
 	{
 		Vector3 campos = owner.player.camera.pos + (0, 0, owner.player.crouchviewdelta) - SpawnPoint;
-		campos.xy = RotateVector(campos.xy, -angle);
+		campos.xy = RotateVector(campos.xy, -setangle);
 
 		Shader.SetUniform1f(p, ShaderToControl, "timer", speed * (gametic + e.FracTic));
 		Shader.SetUniform1f(p, ShaderToControl, "angle", e.viewangle - setangle);
 		Shader.SetUniform1f(p, ShaderToControl, "pitch", e.viewpitch);
-		Shader.SetUniform1f(p, ShaderToControl, "fov", owner.player.FOV);
-		Shader.SetUniform1f(p, ShaderToControl, "bob", owner.player.bob / 64);
-		Shader.SetUniform3f(p, ShaderToControl, "position", campos);
+		Shader.SetUniform3f(p, ShaderToControl, "position", (campos.xy, p.viewz));
 		Shader.SetUniform3f(p, ShaderToControl, "particlecolor", clr);
 		Shader.SetUniform1f(p, ShaderToControl, "size", size);
 		Shader.SetUniform1f(p, ShaderToControl, "maxparticles", maxparticles);
+		Shader.SetUniform1f(p, ShaderToControl, "fov", p.FOV);
+
+		if (IsFrozen())
+		{
+			Shader.SetUniform1f(p, ShaderToControl, "timer", level.time - frozentime);
+		}
 	}
 
 	override void DoEffect()
@@ -148,12 +153,15 @@ class SandShaderControl : ShaderControl
 		}
 		else if (holdTarget)
 		{
+			if (IsFrozen()) { frozentime++; }
+			else { frozentime = 0; }
+
 			if (manager)
 			{
 				maxparticles = int(Default.maxparticles * manager.particlescaling);
 			}
 
-			double targetalpha = clamp((amount - 1) / 105.0, 0, 1.0);
+			double targetalpha = clamp((amount - 1) / 105.0, 0, 0.3);
 			if (alpha < targetalpha) { alpha = min(targetalpha, alpha + 0.05); }
 			else if (alpha > targetalpha) { alpha = max(targetalpha, alpha - 0.05); }
 
