@@ -65,6 +65,15 @@ script "BoADialogue"(int headtalky,int headsilent,int message)
 	TakeInventory("IncomingMessage", 9999);
 }
 
+script "BoADevComment" (int langEntry)
+{
+	if (GetCvar("developercommentswitch")) {
+		SetHudSize(800, 600, TRUE);
+		SetHudWrapWidth(720);
+		HudMessage(l:langEntry; HUDMSG_TYPEON, 2000, CR_UNTRANSLATED, 50.1, 400.1, 12.0, 0.02, 2.0, 1.0);
+	}
+}
+
 script "HintMessage" (int message)
 {
 	if (message == "") { Terminate; }
