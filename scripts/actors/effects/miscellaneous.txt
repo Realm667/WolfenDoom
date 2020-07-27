@@ -12,8 +12,8 @@ class EffectGiver : EffectSpawner
 		//$Category Special Effects (BoA)
 		//$Color 12
 		Radius 128;
-		Scale 4.0;
-		+FLATSPRITE
+		Alpha 0.5;
+		RenderStyle "Stencil";
 		+SPECIAL
 		+NOCLIP
 		EffectSpawner.SwitchVar "shaderoverlayswitch";
@@ -22,7 +22,7 @@ class EffectGiver : EffectSpawner
 	States
 	{
 		Spawn:
-			TNT1 A 1;
+			MDLA A 1;
 		Active:
 			TNT1 A 35;
 			Loop;
@@ -30,16 +30,16 @@ class EffectGiver : EffectSpawner
 
 	override void PostBeginPlay()
 	{
+		bInvisible = True;
+
 		double fz = GetZAt(0, 0, 0, GZF_NO3DFLOOR);
 		double cz = GetZAt(0, 0, 0, GZF_CEILING | GZF_NO3DFLOOR);
 
 		SetOrigin((pos.xy, fz), false);
 
-		A_SetSize((Radius + 8) * scale.x, cz - fz); // Resize to the scaled size, plus 32 units to allow for a border on the edges where the value will properly be zero, and fill the height of the sector.
-
-		Active = !(SpawnFlags & MTF_DORMANT);
-
-		Activators.Clear();
+		// Resize to the scaled size and fill the height of the sector, plus 32 units to allow for a border on the edges where the value will properly be zero
+		// This sets the actor size so that the player can touch it when the effect is still at amount zero, allowing gradual fade-in/out
+		A_SetSize(Radius * scale.x + 32, cz - fz); 
 
 		Super.PostBeginPlay();
 	}
@@ -51,7 +51,7 @@ class EffectGiver : EffectSpawner
 
 	override void Tick()
 	{
-		if (Active && level.time % 5 == 0)
+		if (!bDormant && level.time % 5 == 0)
 		{
 			for (int i = 0; i < Activators.Size(); i++)
 			{
@@ -59,9 +59,9 @@ class EffectGiver : EffectSpawner
 
 				if (mo && mo is "PlayerPawn")
 				{
-					double r = Default.Radius * scale.x / Default.scale.x;
-
-					int amt = clamp(int((128 / r) * (r - Distance2D(mo) + mo.Radius)), 0, 128); // Always scale from 0 to 128, regardless of scale/radius of actor
+					// Set the amount of the powerup based off of the original radius and scale values
+					// Always scale from 0 to 128, regardless of scale/radius of actor
+					int amt = clamp(int(128 * (1.0 - Distance2D(mo) / (Default.radius * scale.x))), 0, 128);
 
 					ShaderControl control = ShaderControl(mo.FindInventory(controlclass));
 					if (control)
@@ -70,9 +70,9 @@ class EffectGiver : EffectSpawner
 						amt = max(amt, control.amount); // Don't cancel out other givers - just go with whichever is giving the most
 					}
 
-					mo.SetInventory(controlclass, 1 + amt);
+					if (amt <= 1) { Activators.Delete(i); continue; }
 
-					if (amt <= 1) { Activators.Delete(i); }
+					mo.SetInventory(controlclass, min(1 + amt, 128));
 				}
 			}
 		}
@@ -81,18 +81,6 @@ class EffectGiver : EffectSpawner
 	}
 
 	virtual void SetParams(ShaderControl control) {}
-
-	override void Activate (Actor activator)
-	{
-		Active = true;
-		Super.Activate(activator);
-	}
-
-	override void Deactivate (Actor activator)
-	{
-		Active = false;
-		Super.Deactivate(activator);
-	}
 }
 
 class HeatEffectGiver : EffectGiver
@@ -100,7 +88,7 @@ class HeatEffectGiver : EffectGiver
 	Default
 	{
 		//$Title Heat Effect Giver
-		//$Sprite EFFGF0
+		StencilColor "Orange";
 		EffectGiver.Control "HeatShaderControl";
 	}
 }
@@ -110,15 +98,8 @@ class SandEffectGiver : EffectGiver
 	Default
 	{
 		//$Title Sand Effect Giver
-		//$Sprite EFFGS0
+		StencilColor "Tan";
 		EffectGiver.Control "SandShaderControl";
-	}
-
-	override void PostBeginPlay()
-	{
-		Super.PostBeginPlay();
-
-		scale *= 1.5;
 	}
 
 	override void SetParams(ShaderControl control)
