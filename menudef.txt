@@ -810,6 +810,9 @@ OptionMenu "BoAPostProcessShaderOptions"
 	Slider "$PP_OPT2", 							"cl_filmgrain_amount", 0.0, 1.0, 0.025, 3
 	Slider "$PP_OPT5", 							"cl_filmgrain_pixelsize", 2, 1024, 2
 	StaticText " "
+	StaticText "$PP_HESN"
+	Option "$PP_HESN", 							shaderoverlayswitch, "OnOff"
+	StaticText " "
 	StaticText "$PP_GRADE"
 	Option "$PP_GRADE", 						r_colorgrading, "OnOff"
 	StaticText " "
