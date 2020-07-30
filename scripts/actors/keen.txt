@@ -2400,7 +2400,8 @@ class CKBirdEgg : CKBaseEnemy
 			CKEG A 4;
 			Loop;
 		See:
-			CKEG B -1
+			CKEG BCD 8;
+			CKEG E -1
 			{
 				A_SetSize(-1, 20);
 
@@ -2411,7 +2412,7 @@ class CKBirdEgg : CKBaseEnemy
 				shell = Spawn("CKBirdEggShellBit", pos);
 				if (shell)
 				{
-					shell.frame = 2;
+					shell.frame = 4;
 					shell.vel.xy = RotateVector((-7, 0), Random(0, 359));
 					shell.vel.z = 10;
 					shell = null;
@@ -2420,7 +2421,7 @@ class CKBirdEgg : CKBaseEnemy
 				shell = Spawn("CKBirdEggShellBit", pos);
 				if (shell)
 				{
-					shell.frame = 3;
+					shell.frame = 5;
 					shell.vel.xy = RotateVector((7, 0), Random(0, 359));
 					shell.vel.z = 10;
 					shell = null;
@@ -2429,7 +2430,7 @@ class CKBirdEgg : CKBaseEnemy
 				shell = Spawn("CKBirdEggShellBit", pos);
 				if (shell)
 				{
-					shell.frame = 4;
+					shell.frame = random(6,7);
 					shell.vel.z = 14;
 					shell = null;
 				}
@@ -2449,7 +2450,7 @@ class CKBirdEggShellBit : Actor
 	States
 	{
 		Spawn:
-			CKEG C -1;
+			CKEG F -1;
 			Stop;
 	}
 

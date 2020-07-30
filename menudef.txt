@@ -757,6 +757,16 @@ OptionValue "ShadowDist" //rework these once nashshadows will be merged into gzd
 	16384, "$SH_ULTR"
 }
 
+OptionValue "ParticlesAmt" //uses same language entries as NashShadows
+{
+	0, "$SH_NONE"
+	32, "$SH_NEAR"
+	64, "$SH_DEFA"
+	128, "$SH_FAR"
+	256, "$SH_VFAR"
+	512, "$SH_ULTR"
+}
+
 OptionMenu "BoARenderOptions"
 {
 	Title  "$OPT_REND"
@@ -767,6 +777,7 @@ OptionMenu "BoARenderOptions"
 	Option "$RE_MIRR",							"gl_mirrors","OnOff"
 	Option "$RE_REFL",							"gl_plane_reflection","OnOff"
 	Option "$RE_SHAD",							"cl_boaspriteshadowdistance", "ShadowDist"
+	Option "$RE_PLES",							"maxparticleactors", "ParticlesAmt"
 	StaticText " "
 	StaticText "$DISTANCE"
 	StaticText "$DECREASE"
