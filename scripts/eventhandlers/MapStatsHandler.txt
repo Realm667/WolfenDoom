@@ -564,4 +564,10 @@ class MapStatsHandler : StaticEventHandler
 
 		return false;
 	}
+
+	override void NewGame()
+	{
+		Levels.Clear();
+		if (persistent) { persistent.Levels.Clear(); }
+	}
 }
