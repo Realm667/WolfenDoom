@@ -1400,7 +1400,7 @@ class BoAStatusBar : BaseStatusBar
 
 		if (!deathmatch)
 		{
-			if (am_showmonsters)
+			if (am_showmonsters && level.total_monsters > 0)
 			{
 				screen.DrawText(font2, crdefault, textdist, y, monsters, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
 
@@ -1410,7 +1410,7 @@ class BoAStatusBar : BaseStatusBar
 				y += fheight;
 			}
 
-			if (am_showsecrets)
+			if (am_showsecrets && level.total_secrets > 0)
 			{
 				screen.DrawText(font2, crdefault, textdist, y, secrets, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
 
@@ -1421,7 +1421,7 @@ class BoAStatusBar : BaseStatusBar
 			}
 
 			// Draw item count
-			if (am_showitems)
+			if (am_showitems && level.total_items > 0)
 			{
 				screen.DrawText(font2, crdefault, textdist, y, items, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
 
