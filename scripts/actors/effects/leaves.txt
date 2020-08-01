@@ -24,15 +24,7 @@ class LeavesSpawner : CinderSpawner
 	{
 		EffectSpawner.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-
-		[spawned, mo] = A_SpawnItemEx("FloatingLeaves", random(-Args[0],Args[0]), random(-Args[0],Args[0]), random(0,Args[1]), random(Args[2],Args[3]), 0, random(-Args[2],Args[2]), random(-4, 4), 128, Args[4]);
-
-		if (mo && manager)
-		{
-			manager.QueueParticle(mo);
-		}
+		A_SpawnItemEx("FloatingLeaves", random(-Args[0],Args[0]), random(-Args[0],Args[0]), random(0,Args[1]), random(Args[2],Args[3]), 0, random(-Args[2],Args[2]), random(-4, 4), 128, Args[4]);
 	}
 }
 
@@ -57,15 +49,7 @@ class LeavesSpawnerHorizontal : LeavesSpawner //ZScript version of original code
 	{
 		EffectSpawner.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-
-		[spawned, mo] = A_SpawnItemEx("FloatingLeavesNoGravity", 0, random(-Args[0],Args[0]), random(0,Args[1]), random(Args[2],Args[3]), 0, 0, frandom(-4.0, 4.0), 128, Args[4]);
-
-		if (mo && manager)
-		{
-			manager.QueueParticle(mo);
-		}
+		A_SpawnItemEx("FloatingLeavesNoGravity", 0, random(-Args[0],Args[0]), random(0,Args[1]), random(Args[2],Args[3]), 0, 0, frandom(-4.0, 4.0), 128, Args[4]);
 	}
 }
 

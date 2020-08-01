@@ -38,11 +38,7 @@ class BoAWallTorchBase : EffectSpawner
 	{
 		if (!CheckSightOrRange(sfxlod / 4, true))
 		{
-			bool spawned;
-			Actor mo;
-
-			[spawned, mo] = A_SpawnItemEx(flame, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(34.0, 36.0), 0.001 * frandom(10.0, 200.0), 0.001 * frandom(10.0, 200.0), 0.001 * frandom(500.0, 1000.0), 0, SXF_SETMASTER | SXF_CLIENTSIDE);
-			if (mo && manager) { manager.QueueParticle(mo); }
+			A_SpawnItemEx(flame, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(34.0, 36.0), 0.001 * frandom(10.0, 200.0), 0.001 * frandom(10.0, 200.0), 0.001 * frandom(500.0, 1000.0), 0, SXF_SETMASTER | SXF_CLIENTSIDE);
 
 			frame = 24; // Y Frame
 		}

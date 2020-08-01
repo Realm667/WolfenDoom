@@ -437,7 +437,7 @@ class ExplosionCore : Actor
 // Astrostein overhead ship
 class DecorationShip : SwitchableDecoration
 {
-	EffectsManager manager;
+	ParticleManager manager;
 
 	Default
 	{
@@ -476,21 +476,15 @@ class DecorationShip : SwitchableDecoration
 	{
 		Super.PostBeginPlay();
 
-		manager = EffectsManager.GetManager();
+		manager = ParticleManager.GetManager();
 	}
 
 	void SpawnEffect()
 	{
 		tics = curState.tics + manager.tickdelay;
 
-		bool spawned;
-		Actor mo;
-
-		[spawned, mo] = A_SpawnItemEx("DecorationShip_Steam", -32, -5, -1);
-		if (mo && manager) { manager.QueueParticle(mo); }
-
-		[spawned, mo] = A_SpawnItemEx("DecorationShip_Steam", -32, 5, -1);
-		if (mo && manager) { manager.QueueParticle(mo); }
+		A_SpawnItemEx("DecorationShip_Steam", -32, -5, -1);
+		A_SpawnItemEx("DecorationShip_Steam", -32, 5, -1);
 	}
 }
 

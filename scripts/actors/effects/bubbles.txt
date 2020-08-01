@@ -27,14 +27,7 @@ class BubbleSpawner : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-		[spawned, mo] = A_SpawnItemEx("Bubble", random (-16, 16), 0, 0, 0, 0, 2, random (0, 360), 0, 128);
-
-		if (mo && manager)
-		{
-			manager.QueueParticle(mo);
-		}
+		A_SpawnItemEx("Bubble", random (-16, 16), 0, 0, 0, 0, 2, random (0, 360), 0, 128);
 	}
 }
 

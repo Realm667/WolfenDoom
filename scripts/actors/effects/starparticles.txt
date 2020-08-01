@@ -32,15 +32,7 @@ class StarParticle_Spawner : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-
-		[spawned, mo] = A_SpawnItemEx("StarParticle", random(0,128), 0, random(0,128), 0, random(2,8), 0, 0, SXF_CLIENTSIDE, 64);
-
-		if (mo && manager)
-		{
-			manager.QueueParticle(mo);
-		}
+		A_SpawnItemEx("StarParticle", random(0,128), 0, random(0,128), 0, random(2,8), 0, 0, SXF_CLIENTSIDE, 64);
 	}
 }
 
@@ -55,15 +47,7 @@ class StarParticle_Spawner2 : StarParticle_Spawner
 	{
 		EffectSpawner.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-
-		[spawned, mo] = A_SpawnItemEx("StarParticle", random(0,128), random(0,128), 0, 0, random(2,8), -5, 0, SXF_CLIENTSIDE, 64);
-
-		if (mo && manager)
-		{
-			manager.QueueParticle(mo);
-		}
+		A_SpawnItemEx("StarParticle", random(0,128), random(0,128), 0, 0, random(2,8), -5, 0, SXF_CLIENTSIDE, 64);
 	}
 }
 
@@ -78,15 +62,7 @@ class StarParticle_SpawnerFast : StarParticle_Spawner
 	{
 		EffectSpawner.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-
-		[spawned, mo] = A_SpawnItemEx("StarParticle", random(0,128), 0, random(0,128), 0, random(20,30), 0, 0, SXF_CLIENTSIDE, 64);
-
-		if (mo && manager)
-		{
-			manager.QueueParticle(mo);
-		}
+		A_SpawnItemEx("StarParticle", random(0,128), 0, random(0,128), 0, random(20,30), 0, 0, SXF_CLIENTSIDE, 64);
 	}
 }
 

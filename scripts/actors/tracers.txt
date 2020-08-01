@@ -126,7 +126,7 @@ class BulletTracer : FastProjectile
 	}
 }
 
-class ZFlatDecal : SimpleActor
+class ZFlatDecal : ParticleBase
 {
     const epsilon = 4;
 
@@ -288,57 +288,6 @@ class ZPlasma : ZBulletChip
         }
         ZSCO DE -1;
         Stop;
-    }
-}
-
-class ZFlatDecalKiller : EventHandler
-{
-    Array<ZFlatDecal> flatDecals;
-    int back;
-
-    override void WorldThingSpawned(WorldEvent e)
-    {
-        if (!ZFlatDecal(e.thing)) return;
-
-        int maxFlatDecals = CVar.FindCVar('zwl_maxflatdecals').GetInt();
-        if (flatDecals.Size() < maxFlatDecals)
-        {
-            flatDecals.Push(ZFlatDecal(e.thing));
-        }
-        else
-        {
-            if (flatDecals[back])
-                flatDecals[back].Destroy();
-
-            flatDecals[back] = ZFlatDecal(e.thing);
-        }
-
-        back = (back + 1) % maxFlatDecals;
-    }
-
-    override void WorldTick()
-    {
-        int maxFlatDecals = CVar.FindCVar('zwl_maxflatdecals').GetInt();
-        if (flatDecals.Size() > maxFlatDecals)
-        {
-            Array<ZFlatDecal> newFlatDecals;
-
-            int excess = flatDecals.Size() - maxFlatDecals;
-
-            for (int i = 0; i < flatDecals.Size(); ++i)
-            {
-                if (i < excess)
-                    flatDecals[back].Destroy();
-                else
-                    newFlatDecals.Push(flatDecals[back]);
-
-                // Back is just a convenient counter; it isn't being used as the back of the queue, here
-                back = (back + 1) % flatDecals.Size();
-            }
-
-            back = 0;
-            flatDecals.Move(newFlatDecals);
-        }
     }
 }
 

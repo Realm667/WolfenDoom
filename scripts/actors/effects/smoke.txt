@@ -195,10 +195,7 @@ class TankSmokeSpawner : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		Actor mo;
-
-		mo = A_SpawnProjectile("TankSmoke", 58, 0, Random(0, 360), CMF_AIMDIRECTION, Random(-70, -130));
-		if (mo && manager) { manager.QueueParticle(mo); }
+		A_SpawnProjectile("TankSmoke", 58, 0, Random(0, 360), CMF_AIMDIRECTION, Random(-70, -130));
 	}	
 }
 
@@ -280,11 +277,7 @@ class PowerPlantSmokeGenerator : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-
-		[spawned, mo] = A_SpawnItemEx("PowerPlantSmokePuff", frandom(-8.0,8.0), frandom(-8.0,8.0), 0, frandom(0.2, -0.2), frandom(0.2, -0.2), frandom(0.5, 1.5));
-		if (mo && manager) { manager.QueueParticle(mo); }
+		A_SpawnItemEx("PowerPlantSmokePuff", frandom(-8.0,8.0), frandom(-8.0,8.0), 0, frandom(0.2, -0.2), frandom(0.2, -0.2), frandom(0.5, 1.5));
 	}
 }
 
@@ -299,11 +292,7 @@ class PowerPlantSmokeGeneratorSmall : PowerPlantSmokeGenerator
 	{
 		Super.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-
-		[spawned, mo] = A_SpawnItemEx("PowerPlantSmokePuffSmall", frandom(-4.0,4.0), frandom(-4.0,4.0), 0, frandom(0.1, -0.1), frandom(0.1, -0.1), frandom(0.25, 0.75));
-		if (mo && manager) { manager.QueueParticle(mo); }
+		A_SpawnItemEx("PowerPlantSmokePuffSmall", frandom(-4.0,4.0), frandom(-4.0,4.0), 0, frandom(0.1, -0.1), frandom(0.1, -0.1), frandom(0.25, 0.75));
 	}
 }
 
@@ -319,11 +308,7 @@ class PowerPlantSmokeGenerator2 : PowerPlantSmokeGenerator
 	{
 		Super.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-
-		[spawned, mo] = A_SpawnItemEx("PowerPlantSmokePuffLarge", frandom(-32.0,32.0), frandom(-32.0,32.0), 0, frandom(0.3, -0.3), frandom(0.3, -0.3), frandom(0.75, 2.0));
-		if (mo && manager) { manager.QueueParticle(mo); }
+		A_SpawnItemEx("PowerPlantSmokePuffLarge", frandom(-32.0,32.0), frandom(-32.0,32.0), 0, frandom(0.3, -0.3), frandom(0.3, -0.3), frandom(0.75, 2.0));
 	}
 }
 
@@ -385,11 +370,7 @@ class VolcanoSmokeGenerator : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-
-		[spawned, mo] = A_SpawnItemEx("VolcanoPuffSmoke", random(-128,128), random(-128,128), 0, random(1,5), random(1,5), random(10,20), random(1,359));
-		if (mo && manager) { manager.QueueParticle(mo); }
+		A_SpawnItemEx("VolcanoPuffSmoke", random(-128,128), random(-128,128), 0, random(1,5), random(1,5), random(10,20), random(1,359));
 	}
 }
 
@@ -487,16 +468,12 @@ class AmbientSmokeGenerator : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-
 		if (args[2])
 		{
-			range = -1; // Do not cull
-			[spawned, mo] = A_SpawnItemEx("AmbientSmokeSB", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,48), 0, 0, 0.5, 0, 0, Args[1]);
+			bDontCull = true; // Do not cull
+			A_SpawnItemEx("AmbientSmokeSB", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,48), 0, 0, 0.5, 0, 0, Args[1]);
 		}
-		else { [spawned, mo] = A_SpawnItemEx("AmbientSmoke", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,48), 0, 0, 0.5, 0, 0, Args[1]); }
-		if (mo && manager) { manager.QueueParticle(mo); }
+		else { A_SpawnItemEx("AmbientSmoke", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,48), 0, 0, 0.5, 0, 0, Args[1]); }
 	}
 }
 
@@ -511,16 +488,12 @@ class AmbientSmokeGeneratorDown : AmbientSmokeGenerator
 	{
 		Super.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-
 		if (args[2])
 		{
-			range = -1; // Do not cull
-			[spawned, mo] = A_SpawnItemEx("AmbientSmokeSB", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,-48), 0, 0, 0.5, 0, 0, Args[1]);
+			bDontCull = true; // Do not cull
+			A_SpawnItemEx("AmbientSmokeSB", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,-48), 0, 0, 0.5, 0, 0, Args[1]);
 		}
-		else { [spawned, mo] = A_SpawnItemEx("AmbientSmoke", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,-48), 0, 0, -0.5, 0, 0, Args[1]); }
-		if (mo && manager) { manager.QueueParticle(mo); }
+		else { A_SpawnItemEx("AmbientSmoke", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,-48), 0, 0, -0.5, 0, 0, Args[1]); }
 	}
 }
 
@@ -555,11 +528,7 @@ class AmbientSmokeGenerator_Large : AmbientSmokeGenerator
 	{
 		Super.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-
-		[spawned, mo] = A_SpawnItemEx("AmbientSmoke_Large", random(-Args[0]*10, Args[0]*10), random(-Args[0]*10, Args[0]*10), random(64,256), 0, 0, random(1,4), 0, 0, Args[1]);
-		if (mo && manager) { manager.QueueParticle(mo); }
+		A_SpawnItemEx("AmbientSmoke_Large", random(-Args[0]*10, Args[0]*10), random(-Args[0]*10, Args[0]*10), random(64,256), 0, 0, random(1,4), 0, 0, Args[1]);
 	}
 }
 
@@ -576,11 +545,7 @@ class AmbientSmokeGeneratorDown_Large : AmbientSmokeGeneratorDown
 	{
 		Super.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-
-		[spawned, mo] = A_SpawnItemEx("AmbientSmoke_Large", random(-Args[0]*10, Args[0]*10), random(-Args[0]*10, Args[0]*10), random(-64,-128),   0, 0, random(-1,-4), 0, 0, Args[1]);
-		if (mo && manager) { manager.QueueParticle(mo); }
+		A_SpawnItemEx("AmbientSmoke_Large", random(-Args[0]*10, Args[0]*10), random(-Args[0]*10, Args[0]*10), random(-64,-128),   0, 0, random(-1,-4), 0, 0, Args[1]);
 	}
 }
 
@@ -707,10 +672,6 @@ class DarkSmokeSpawner : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-
-		[spawned, mo] = A_SpawnItemEx("DarkSmoke" .. min(3, args[0] + 1));
-		if (mo && manager) { manager.QueueParticle(mo); }
+		A_SpawnItemEx("DarkSmoke" .. min(3, args[0] + 1));
 	}
 }

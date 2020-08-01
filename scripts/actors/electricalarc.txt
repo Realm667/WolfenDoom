@@ -36,7 +36,6 @@ class ElectricalArc : EffectSpawner
 
 		Super.SpawnEffect();
 
-		bool spawned;
 		Actor p;
 
 		p = Spawn(beam, pos);
@@ -46,8 +45,6 @@ class ElectricalArc : EffectSpawner
 			p.pitch = pitch;
 			p.angle = angle;
 		}
-
-		if (p && manager) { manager.QueueParticle(p); }
 	}
 }
 

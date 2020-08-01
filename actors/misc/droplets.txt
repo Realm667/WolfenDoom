@@ -14,7 +14,7 @@ ACTOR BleedMe : CustomInventory
 	}
 }
 
-ACTOR BloodPool2
+ACTOR BloodPool2 : ParticleBase
 {
 	Radius 1
 	Height 1
@@ -74,7 +74,7 @@ ACTOR GibMe : CustomInventory
 	}
 }
 
-ACTOR GibletA
+ACTOR GibletA : ParticleBase
 {
 	Radius 2
 	Height 4
@@ -357,7 +357,7 @@ ACTOR GibSpray
 //DROPLETS//
 ////////////
 
-ACTOR BloodDrop1
+ACTOR BloodDrop1 : ParticleBase
 {
 	DistanceCheck cl_drop1_dist
 	Radius 4
@@ -940,7 +940,7 @@ ACTOR CeilingDrop3 : DecoDrop3
 	}
 }
 
-ACTOR CeilDripper
+ACTOR CeilDripper : ParticleBase
 {
 	DistanceCheck cl_drop1_dist
 	Radius 1
@@ -1026,7 +1026,7 @@ ACTOR CeilDrip3 : CeilDripper
 //LIQUIDS//
 ///////////
 
-ACTOR BloodFog
+ACTOR BloodFog : ParticleBase
 {
 	Radius 4
 	Height 5
@@ -1282,7 +1282,7 @@ ACTOR DecoFog3 : BloodFog3
 	}
 }
 
-ACTOR UWBloodFog
+ACTOR UWBloodFog : ParticleBase
 {
 	Radius 4
 	Height 5

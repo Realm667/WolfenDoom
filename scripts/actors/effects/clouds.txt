@@ -89,14 +89,6 @@ class CloudSpawner : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-
-		[spawned, mo] = A_SpawnItemEx(cloud, random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), frandom(minspeed, maxspeed), 0, 0, random(6, -6), SXF_CLIENTSIDE | SXF_TRANSFERSCALE | SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERSTENCILCOL, Args[2]);
-
-		if (mo && manager)
-		{
-			manager.QueueParticle(mo);
-		}
+		A_SpawnItemEx(cloud, random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), frandom(minspeed, maxspeed), 0, 0, random(6, -6), SXF_CLIENTSIDE | SXF_TRANSFERSCALE | SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERSTENCILCOL, Args[2]);
 	}
 }

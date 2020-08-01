@@ -88,15 +88,7 @@ class SteamSpawner : EffectSpawner
 
 			if (args[1] && !args[3]) { A_StartSound(snd, 10, sndflags, 1.0); } // Each burst plays a sound on spawn
 
-			bool spawned;
-			Actor mo;
-
-			[spawned, mo] = A_SpawnItemEx(particle, 0, 0, zoffset, velx, 0, velz, ang, 128);
-
-			if (mo && manager)
-			{
-				manager.QueueParticle(mo);
-			}
+			A_SpawnItemEx(particle, 0, 0, zoffset, velx, 0, velz, ang, 128);
 		}
 	}
 }
