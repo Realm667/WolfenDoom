@@ -116,7 +116,7 @@ class BoAStatusBar : BaseStatusBar
 			}
 		}
 
-// This gets rid of needing to double-press useinv to immediately use a newly selected inventory item.
+		// This gets rid of needing to double-press useinv to immediately use a newly selected inventory item.
 //		CPlayer.inventorytics = 0;
 	}
 
@@ -797,7 +797,7 @@ class BoAStatusBar : BaseStatusBar
 		int crosshair = 0;
 		String crosshairstring;
 		Actor crosshairtarget;
-		color clr = 0xFF8800; // Default color is orange.
+		color clr = 0x000000;
 		TextureID CrosshairImage;
 		double size = vid_scalefactor * 1.5;
 		Vector2 dimensions;
@@ -882,7 +882,7 @@ class BoAStatusBar : BaseStatusBar
 					}
 					else
 					{
-						// Pulse the size of icon if you don't have it
+						clr = 0xFF8800; // Otherwise make it orange and pulse the size of icon if you don't have it
 						size = (crosshair < 80 || (crosshair > 90 && crosshair < 98)) ? 1.0 + 0.1 * sin(level.time * 15 % 360) : 1.0;
 					}
 
@@ -931,7 +931,8 @@ class BoAStatusBar : BaseStatusBar
 			dimensions *= size;
 
 			// Draw centered on screen, with offsets forced to center of the icon
-			screen.DrawTexture (CrosshairImage, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true);
+			if (clr > 0) { screen.DrawTexture (CrosshairImage, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true); }
+			else { screen.DrawTexture (CrosshairImage, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_CenterOffset, true); }
 		}
 
 		if (crosshairtarget && crosshairtarget != CPlayer.mo && CPlayer.ReadyWeapon && CPlayer.ReadyWeapon != Weapon(CPlayer.mo.FindInventory("NullWeapon")))
@@ -965,8 +966,7 @@ class BoAStatusBar : BaseStatusBar
 						if (targettime > 45)
 						{
 							CrosshairOverlay = TexMan.CheckForTexture("NOSHOT", TexMan.Type_Any);
-							clr = 0xFF0000;
-							pulsespeed = 20;
+							pulsespeed = 10;
 							crosshairalpha = clamp((targettime - 45) * 0.006, 0.0, 1.0);
 						}
 					}
@@ -1001,7 +1001,8 @@ class BoAStatusBar : BaseStatusBar
 				dimensions = TexMan.GetScaledSize(CrosshairOverlay) * size * (1.0 + 0.125 * sin(level.time * pulsespeed)); // Pulse the size of the indicator
 
 				// Draw centered on screen, with offsets forced to center of the icon
-				screen.DrawTexture(CrosshairOverlay, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true, DTA_Alpha, crosshairalpha * (0.5 + 0.125 * sin(level.time * pulsespeed)));
+				if (clr > 0) { screen.DrawTexture(CrosshairOverlay, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true, DTA_Alpha, crosshairalpha * (0.5 + 0.125 * sin(level.time * pulsespeed))); }
+				else { screen.DrawTexture(CrosshairOverlay, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_CenterOffset, true, DTA_Alpha, crosshairalpha * (0.5 + 0.125 * sin(level.time * pulsespeed))); }
 			}
 		}
 		else { currenttarget = null; }
