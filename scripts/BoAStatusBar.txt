@@ -954,20 +954,29 @@ class BoAStatusBar : BaseStatusBar
 
 				if (Base(crosshairtarget) && Base(crosshairtarget).user_targetcrosshair && CPlayer.ReadyWeapon.DamageType != "Melee")
 				{
+					size *= 1.25 - clamp(CPlayer.fov / 90.0 * CPlayer.mo.Distance3D(crosshairtarget) / 2048.0, 0.0, 0.75);
+
 					CrosshairOverlay = TexMan.CheckForTexture("SHOT", TexMan.Type_Any);
 					clr = 0xFFFF00;
 				}
 				else if (crosshairtarget.bFriendly && (!Nazi(crosshairtarget) || !Nazi(crosshairtarget).user_sneakable))
 				{
+					size *= 1.25 - clamp(CPlayer.fov / 90.0 * CPlayer.mo.Distance3D(crosshairtarget) / 2048.0, 0.0, 0.75);
+
 					if (crosshairtarget == currenttarget)
 					{
 						targettime++;
 
 						if (targettime > 45)
 						{
-							CrosshairOverlay = TexMan.CheckForTexture("NOSHOT", TexMan.Type_Any);
-							pulsespeed = 10;
 							crosshairalpha = clamp((targettime - 45) * 0.006, 0.0, 1.0);
+
+							CrosshairOverlay = TexMan.CheckForTexture("SHOT", TexMan.Type_Any);
+							dimensions = TexMan.GetScaledSize(CrosshairOverlay) * size;
+							screen.DrawTexture(CrosshairOverlay, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_CenterOffset, true, DTA_Alpha, crosshairalpha * 0.5);
+
+							CrosshairOverlay = TexMan.CheckForTexture("NOSHOT", TexMan.Type_Any);
+							pulsespeed = 20;
 						}
 					}
 					else
