@@ -1036,6 +1036,7 @@ class Nazi : Base
 	bool wasused;
 	int usetime;
 	int activationcount;
+	int gierdroplevel;
 	String head;
 	String user_spyitem;
 	int user_spymsgindex;
@@ -1060,6 +1061,12 @@ class Nazi : Base
 	Property IdleSound:idlesound;
 	Property TargetLostSound:lostsound;
 	Property TargetSeenSound:sightedsound;
+	// Level of gold drop when player is using Totale Gier
+	// Drop Level 0 (Animals) - Nothing
+	// Drop Level 1 (Normal soldiers) - 4-7 coins
+	// Drop Level 2 (Elites, Waffens, and Paratroops) - 15-20 coins (5-10 coins + 1 coin bag)
+	// Drop Level 3 (Minibosses) - ~50 coins (1 cross, goblet, or crown + 2 coin bags + 10 coins)
+	Property TotaleGierDrop:gierdroplevel;
 
 	Default
 	{
@@ -1094,6 +1101,7 @@ class Nazi : Base
 		Nazi.SneakableCloseSightRadius 64;
 		Nazi.HealDistance 8;
 		Nazi.Head "MS_UNKN";
+		Nazi.TotaleGierDrop 1;
 	}
 
 	States
@@ -1970,9 +1978,23 @@ class Nazi : Base
 			}
 		}
 
-		if (bCanUseWalls && target && target.player && target.FindInventory("GierToken"))
+		if (gierdroplevel > 0 && bCanUseWalls && target && target.player && target.FindInventory("GierToken"))
 		{
-			for (int c = 1; c < Random(3, 6); c++)
+			// Do Totale Gier coin drop
+			// Drop coins
+			int mincoins = 4;
+			int maxcoins = 7;
+			if (gierdroplevel == 2)
+			{
+				mincoins = 5;
+				maxcoins = 10;
+			}
+			else if (gierdroplevel == 3)
+			{
+				mincoins = 10;
+				maxcoins = 10;
+			}
+			for (int c = 1; c < Random(mincoins, maxcoins); c++)
 			{
 				Actor coin = Spawn("CoinDrop", pos + (Random(-4, 4), Random(-4, 4), 0));
 
@@ -1980,6 +2002,41 @@ class Nazi : Base
 				{
 					coin.bCountItem = false;
 					coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+				}
+			}
+			// Drop additional treasures
+			if (gierdroplevel == 2)
+			{
+				Actor coin = Spawn("CoinBagDrop", pos + (Random(-4, 4), Random(-4, 4), 0));
+				if (coin)
+				{
+					coin.bCountItem = false;
+					coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+				}
+			}
+			else if (gierdroplevel == 3)
+			{
+				static const class<CoinDrop> randomdrops[] = {"CrossDrop", "GobletDrop", "CrownDrop"};
+				// Random treasure drop
+				for (int c = 0; c < 1; c++)
+				{
+					class<CoinDrop> dropClass = randomdrops[Random(0, randomdrops.Size() - 1)];
+					Actor coin = Spawn(dropClass, pos + (Random(-4, 4), Random(-4, 4), 0));
+					if (coin)
+					{
+						coin.bCountItem = false;
+						coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+					}
+				}
+				// Drop 2 coin bags
+				for (int c = 0; c < 2; c++)
+				{
+					Actor coin = Spawn("CoinBagDrop", pos + (Random(-4, 4), Random(-4, 4), 0));
+					if (coin)
+					{
+						coin.bCountItem = false;
+						coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+					}
 				}
 			}
 		}
@@ -2995,6 +3052,7 @@ class NaziBoss : Nazi
 		DamageFactor "Rocket", 0.2;
 		+BOSS
 		+DONTTHRUST
+		Nazi.TotaleGierDrop 3;
 	}
 
 	States

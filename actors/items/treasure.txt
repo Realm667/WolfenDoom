@@ -29,6 +29,19 @@ ACTOR BagOfCoins : SingleCoin
 	}
 }
 
+ACTOR CoinBagDrop : CoinDrop
+{
+	//$Title Treasure (Coin Bag, 10pts)
+	Inventory.PickupMessage "$COINSBAG"
+	Inventory.Amount 10
+	States
+	{
+	Spawn:
+		BAGC A -1 LIGHT(BAGCLITE)
+		Stop
+	}
+}
+
 ACTOR TreasureChest : SingleCoin
 {
 	//$Title Treasure (Chest, 50pts)
@@ -86,6 +99,20 @@ ACTOR TreasureCross : SingleCoin
 	}
 }
 
+ACTOR CrossDrop : CoinDrop
+{
+	//$Title Treasure (Cross, 15pts)
+	Inventory.PickupMessage "$CROSS"
+	Inventory.Amount 15
+	Inventory.PickupSound "treasure/cross"
+	States
+	{
+	Spawn:
+		TREA F -1 LIGHT(COINLITE)
+		Stop
+	}
+}
+
 ACTOR Goblet : TreasureCross
 {
 	//$Title Treasure (Goblet, 15pts)
@@ -99,7 +126,34 @@ ACTOR Goblet : TreasureCross
 	}
 }
 
+ACTOR GobletDrop : CrossDrop
+{
+	//$Title Treasure (Goblet, 15pts)
+	Inventory.PickupMessage "$CHALICE"
+	Inventory.PickupSound "treasure/cup"
+	States
+	{
+	Spawn:
+		TREA G -1 LIGHT(TRESLITE)
+		Stop
+	}
+}
+
 ACTOR TreasureCrown : SingleCoin
+{
+	//$Title Treasure (Crown, 20pts)
+	Inventory.PickupMessage "$CROWN"
+	Inventory.PickupSound "treasure/crown"
+	Inventory.Amount 20
+	States
+	{
+	Spawn:
+		TREA D -1 LIGHT(BAGCLITE)
+		Stop
+	}
+}
+
+ACTOR CrownDrop : CoinDrop
 {
 	//$Title Treasure (Crown, 20pts)
 	Inventory.PickupMessage "$CROWN"
