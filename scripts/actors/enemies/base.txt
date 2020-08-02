@@ -253,6 +253,7 @@ class Base : Actor
 	bool user_targetcrosshair;
 	bool user_nocountkill;
 	int flags;
+	bool dodging;
 
 	LaserFindHitPointTracer HitPointTracer;
 	LaserBeam beam;
@@ -466,6 +467,8 @@ class Base : Actor
 				return false;
 			}
 
+			dodging = true;
+
 			// Take 50% damage instead, and prevent pain
 			bNoPain = true;
 			DamageFactor = Default.DamageFactor * 0.5;
@@ -504,6 +507,7 @@ class Base : Actor
 		{
 			Sprite = SpawnState.Sprite;
 		}
+
 		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
 	}
 
@@ -1437,6 +1441,7 @@ class Nazi : Base
 				bNoPain = Default.bNoPain;
 				DamageFactor = Default.DamageFactor;
 				reactiontime = 0;
+				dodging = false;
 			}
 			"####" A 0 {
 				if (!target) { return ResolveState("Spawn"); }
@@ -1551,7 +1556,7 @@ class Nazi : Base
 
 	void A_NaziLook()
 	{
-		if (bDormant) { return; }
+		if (bDormant || dodging) { return; }
 
 		if (level.time > 35)
 		{
@@ -1620,6 +1625,7 @@ class Nazi : Base
 
 	void A_NaziChase(statelabel melee = "None", statelabel missile = "None", int flags = 0)
 	{
+		if (dodging) { return; }
 		if (bDormant) { SetState(SpawnState); return; } // Dormant actors should not wake up even if they're somehow placed in their See state
 
 		sprite = SpawnState.sprite; // Make sure our sprite isn't crouched or rolling
@@ -1850,7 +1856,7 @@ class Nazi : Base
 
 	void A_LookForGrenades()
 	{
-		if (!CheckIfSeen() && CheckRange(512.0, true)) { return; }
+		if (dodging || (!CheckIfSeen() && CheckRange(512.0, true))) { return; }
 
 		ThinkerIterator Finder = ThinkerIterator.Create("GrenadeBase", STAT_DEFAULT - 6);
 		GrenadeBase mo;
@@ -2364,10 +2370,10 @@ class Nazi : Base
 			}
 		}
 		
-		// If the enemy is sneakable and idle (and not patrolling), and isn't in its original location, keep it moving toward that location.
-		//  NOTE: This doesn't work properly when the player has NOTARGET enabled (or is wearing a disguise and has no weapon raised).
-		if (health > 0 && bShootable && !bDormant)
+		if (health > 0 && bShootable && !bDormant && !dodging)
 		{
+			// If the enemy is sneakable and idle (and not patrolling), and isn't in its original location, keep it moving toward that location.
+			//  NOTE: This doesn't work properly when the player has NOTARGET enabled (or is wearing a disguise and has no weapon raised).
 			if (user_sneakable && bFriendly && user_incombat && patrolgoal && patrolgoal.args[0] == -1)
 			{
 				MeleeRange = 0; // To bypass the internal A_Chase "goal reached" logic
