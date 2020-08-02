@@ -1260,9 +1260,17 @@ class BoAStatusBar : BaseStatusBar
 			if (GetAmount("CKGreenKey")) { DrawImage("CKKEYS3", (90, 25), DI_ITEM_LEFT_TOP); }
 		}
 
-		if (CPlayer.mo.InvSel != null && !level.NoInventoryBar)
+		if (CPlayer.mo.InvSel != null)
 		{
-			DrawKeenInventorySelection(-12, 12, 16);
+			if (String.Format(CPlayer.mo.InvSel.GetClassName()).Left(2) ~== "CK")
+			{
+				if (!level.NoInventoryBar) { DrawKeenInventorySelection(-12, 12, 16); }
+			}
+			else
+			{
+				CPlayer.mo.InvSel = CPlayer.mo.InvSel.NextInv();
+				if (CPlayer.mo.InvSel == null) { CPlayer.mo.InvSel = CPlayer.mo.Inv; }
+			}
 		}
 	}
 
