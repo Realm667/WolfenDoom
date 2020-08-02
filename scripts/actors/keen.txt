@@ -784,6 +784,12 @@ class KeenPlayer : PlayerPawn
 
 		return ret;
 	}
+
+	override bool UseInventory (Inventory item)
+	{
+		if (String.Format(item.GetClassName()).Left(2) ~== "CK") { return Super.UseInventory(item); }
+		else { return false; }
+	}
 }
 
 class Billy : PowerMorph
