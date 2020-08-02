@@ -774,9 +774,15 @@ class Base : Actor
 					}
 				}
 
-				if (swimmer && waterlevel < 3) // Swimmers can't leave the water once they are below the surface (edge case: they can stack up on top of each other and sometimes make it out if the next sector height is close to the water height)
+				if (swimmer) // Swimmers can't leave the water once they are below the surface (edge case: they can stack up on top of each other and sometimes make it out if the next sector height is close to the water height)
 				{
-					vel.z = min(vel.z, -Speed);
+					double waterheight = Buoyancy.GetWaterHeight(self);
+					if (waterheight < pos.z + height + 8)
+					{
+						bFloat = false;
+						vel.z = min(vel.z, -Speed);
+					}
+					else { bFloat = Default.bFloat; }
 				}
 				else if (Default.bFloat && !swimmer) // Non-swimming floaters can't enter water when they are above the surface
 				{

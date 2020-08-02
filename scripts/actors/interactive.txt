@@ -690,6 +690,61 @@ class Safe : Actor
 	}
 }
 
+class Buoyancy : Actor
+{
+	// Modified from AActor::UpdateWaterLevel in p_mobj.cpp (waterlevel variable setting function)
+	// Updated to return actual water height value
+	static double, bool GetWaterHeight(Actor mo)
+	{
+		if (mo.curSector.MoreFlags & Sector.SECMF_UNDERWATER)
+		{
+			return mo.ceilingz, true;
+		}
+		else
+		{
+			Sector hsec = mo.curSector.GetHeightSec();
+
+			if (hsec)
+			{
+				if (hsec.MoreFlags & Sector.SECMF_UNDERWATERMASK)
+				{
+					double fh = hsec.floorplane.ZatPoint(mo.pos.xy);
+					double ch = hsec.ceilingplane.ZatPoint(mo.pos.xy);
+
+					if (mo.pos.z < fh)
+					{
+						return fh, true;
+					}
+					else if (!(hsec.MoreFlags & Sector.SECMF_FAKEFLOORONLY) && (mo.pos.z + mo.height > ch))
+					{
+						return ch, true;
+					}
+				}
+			}
+			else
+			{
+				for (int i = 0; i < mo.curSector.Get3DFloorCount(); i++)
+				{
+					F3DFloor f = mo.curSector.Get3DFloor(i);
+
+					if (!(f.flags & F3DFloor.FF_EXISTS)) { continue; }
+					if (f.flags & F3DFloor.FF_SOLID) { continue; }
+					if (!(f.flags & F3DFloor.FF_SWIMMABLE)) { continue; }
+
+					double ff_bottom = f.bottom.ZatPoint(mo.pos.xy);
+					double ff_top = f.top.ZatPoint(mo.pos.xy);
+
+					if (ff_bottom > mo.pos.z + mo.height) continue;
+
+					return ff_top, true;
+				}
+			}
+		}
+
+		return 0, false;
+	}
+}
+
 mixin class GiveBuoyancy
 {
 	bool inwater;
@@ -706,7 +761,7 @@ mixin class GiveBuoyancy
 
 		bool iswater;
 		double waterheight;
-		[waterheight, iswater] = GetWaterHeight();
+		[waterheight, iswater] = Buoyancy.GetWaterHeight(self);
 
 		if (iswater && waterheight > floorz && pos.z < waterheight)
 		{
@@ -734,57 +789,5 @@ mixin class GiveBuoyancy
 			bNoGravity = Default.bNoGravity;
 			bPushable = Default.bPushable;
 		}
-	}
-
-	// Modified from AActor::UpdateWaterLevel in p_mobj.cpp (waterlevel variable setting function)
-	// Updated to return actual water height value
-	double, bool GetWaterHeight()
-	{
-		if (curSector.MoreFlags & Sector.SECMF_UNDERWATER)
-		{
-			return ceilingz, true;
-		}
-		else
-		{
-			Sector hsec = curSector.GetHeightSec();
-
-			if (hsec)
-			{
-				if (hsec.MoreFlags & Sector.SECMF_UNDERWATERMASK)
-				{
-					double fh = hsec.floorplane.ZatPoint(pos.xy);
-					double ch = hsec.ceilingplane.ZatPoint(pos.xy);
-
-					if (pos.z < fh)
-					{
-						return fh, true;
-					}
-					else if (!(hsec.MoreFlags & Sector.SECMF_FAKEFLOORONLY) && (pos.z + height > ch))
-					{
-						return ch, true;
-					}
-				}
-			}
-			else
-			{
-				for (int i = 0; i < curSector.Get3DFloorCount(); i++)
-				{
-					F3DFloor f = curSector.Get3DFloor(i);
-
-					if (!(f.flags & F3DFloor.FF_EXISTS)) { continue; }
-					if (f.flags & F3DFloor.FF_SOLID) { continue; }
-					if (!(f.flags & F3DFloor.FF_SWIMMABLE)) { continue; }
-
-					double ff_bottom = f.bottom.ZatPoint(pos.xy);
-					double ff_top = f.top.ZatPoint(pos.xy);
-
-					if (ff_bottom > pos.z + height) continue;
-
-					return ff_top, true;
-				}
-			}
-		}
-
-		return 0, false;
 	}
 }
