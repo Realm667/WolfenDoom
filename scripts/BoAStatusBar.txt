@@ -27,6 +27,7 @@ class BoAStatusBar : BaseStatusBar
 	String LastIcon;
 	String LastTag;
 	double hour, minute, second;
+	Inventory lastinv;
 
 	Actor currenttarget;
 	int targettime;
@@ -1262,21 +1263,26 @@ class BoAStatusBar : BaseStatusBar
 
 		if (CPlayer.mo.InvSel != null)
 		{
-			if (String.Format(CPlayer.mo.InvSel.GetClassName()).Left(2) ~== "CK")
+			if (!level.NoInventoryBar && String.Format(CPlayer.mo.InvSel.GetClassName()).Left(2) ~== "CK")
 			{
-				if (!level.NoInventoryBar) { DrawKeenInventorySelection(-12, 12, 16); }
+				lastinv = CPlayer.mo.InvSel;
 			}
 			else
 			{
-				CPlayer.mo.InvSel = CPlayer.mo.InvSel.NextInv();
-				if (CPlayer.mo.InvSel == null) { CPlayer.mo.InvSel = CPlayer.mo.Inv; }
+				Inventory nextinv = CPlayer.mo.InvSel.NextInv();
+				if (nextinv == null) { nextinv = CPlayer.mo.Inv; }
+				if (nextinv && !nextinv.bInvBar) { nextinv = nextinv.NextInv(); }
+
+				if (nextinv) { CPlayer.mo.InvSel = nextinv; }
 			}
+
+			if (lastinv) { DrawKeenInventorySelection(-12, 12, 16); }
 		}
 	}
 
 	void DrawKeenInventorySelection(int x, int y, int size = 32)
 	{
-		Vector2 texsize = TexMan.GetScaledSize(CPlayer.mo.InvSel.Icon);
+		Vector2 texsize = TexMan.GetScaledSize(lastinv.Icon);
 		if (texsize.x > size || texsize.y > size)
 		{
 			if (texsize.y > texsize.x)
@@ -1292,16 +1298,16 @@ class BoAStatusBar : BaseStatusBar
 		}
 		else { texsize = (1.0, 1.0); }
 
-		DrawInventoryIcon(CPlayer.mo.InvSel, (x, y), DI_ITEM_CENTER, scale:texsize);
+		DrawInventoryIcon(lastinv, (x, y), DI_ITEM_CENTER, scale:texsize);
 
-		if (CPlayer.mo.InvSel.Amount > 1)
+		if (lastinv.Amount > 1)
 		{
-			DrawString(mHUDFont, FormatNumber(CPlayer.mo.InvSel.Amount), (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
+			DrawString(mHUDFont, FormatNumber(lastinv.Amount), (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE);
 		}
 
-		if (CPlayer.mo.InvSel is "CKPogoStick")
+		if (lastinv is "CKPogoStick")
 		{
-			String status = CKPogoStick(CPlayer.mo.InvSel).active ? "ON" : "OFF";
+			String status = CKPogoStick(lastinv).active ? "ON" : "OFF";
 			DrawString(KeenSmallFont, status, (x, y + size / 3 + mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_CENTER, Font.CR_WHITE);
 		}
 	}
