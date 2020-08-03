@@ -36,6 +36,8 @@ class BoAWallTorchBase : EffectSpawner
 
 	override void SpawnEffect()
 	{
+		Super.SpawnEffect();
+
 		if (!CheckSightOrRange(sfxlod / 4, true))
 		{
 			A_SpawnItemEx(flame, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(34.0, 36.0), 0.001 * frandom(10.0, 200.0), 0.001 * frandom(10.0, 200.0), 0.001 * frandom(500.0, 1000.0), 0, SXF_SETMASTER | SXF_CLIENTSIDE);
@@ -47,8 +49,6 @@ class BoAWallTorchBase : EffectSpawner
 			frame = frameoffset + ++frame % 8; // Rotate through 8 frames, starting with frameoffset (0 = A)
 			tics = 4;
 		}
-
-		Super.SpawnEffect();
 	}
 
 	override void Activate(Actor activator)
