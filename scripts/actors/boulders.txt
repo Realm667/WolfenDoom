@@ -114,6 +114,7 @@ class Boulder : Actor
 				A_PlaySound("Boulder/Stop");
 				SetStateLabel("Death");
 			}
+			bPushable = TRUE; //in case we survive between two of them or they get stuck into something which prevent us to leave a room
 			ClearBounce();
 		}
 
