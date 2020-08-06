@@ -18,11 +18,11 @@ class ConfettiSpawner : SnowSpawner
 
 class ConfettiParticle : ParticleBase
 {
-	transient CVar debrislifetime;
+	transient CVar boa_debrislifetime;
 
 	Default
 	{
-		DistanceCheck "sfxlod";
+		DistanceCheck "boa_sfxlod";
 		Radius 2;
 		Height 2;
 		Damage 0;
@@ -58,7 +58,7 @@ class ConfettiParticle : ParticleBase
 
 				bRollSprite = FALSE;
 
-				tics = (debrislifetime ? 35 * debrislifetime.GetInt() / 4 : 35);
+				tics = (boa_debrislifetime ? 35 * boa_debrislifetime.GetInt() / 4 : 35);
 			}
 		DeathWait:
 			"####" "#" 1 A_FadeOut(0.1);
@@ -69,7 +69,7 @@ class ConfettiParticle : ParticleBase
 	{
 		Super.PostBeginPlay();
 
-		debrislifetime = CVar.FindCVar("debrislifetime");
+		boa_debrislifetime = CVar.FindCVar("boa_debrislifetime");
 
 		gravity = FRandom(0.0005, 0.0225);
 		frame = Random(0, 5);

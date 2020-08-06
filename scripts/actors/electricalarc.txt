@@ -32,7 +32,7 @@ class ElectricalArc : EffectSpawner
 
 	void A_LightningBeam(Class<LightningBeam> beam = "LightningBeamArc")
 	{
-		tics = max(10 - lightningdensity, 1);
+		tics = max(10 - boa_lightningdensity, 1);
 
 		Super.SpawnEffect();
 

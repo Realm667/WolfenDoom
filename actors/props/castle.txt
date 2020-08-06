@@ -353,7 +353,7 @@ ACTOR HarnessSet
 	//$Category Props (BoA)/Castle
 	//$Title Medieval Harness Set (silver, red)
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 16
 	Height 72
 	+SOLID
@@ -368,7 +368,7 @@ ACTOR HarnessSet
 ACTOR HarnessSet2 : HarnessSet
 {
 	//$Title Medieval Harness Set (silver, blue)
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 }
 
 ACTOR WellEmpty //mxd
@@ -376,7 +376,7 @@ ACTOR WellEmpty //mxd
 	//$Category Props (BoA)/Castle
 	//$Title Well (empty)
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 24
 	Height 32
 	+SOLID
@@ -391,7 +391,7 @@ ACTOR WellEmpty //mxd
 ACTOR WellWater : WellEmpty //mxd
 {
 	//$Title Well (water)
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	States
 	{
 	Spawn:
@@ -402,7 +402,7 @@ ACTOR WellWater : WellEmpty //mxd
 
 ACTOR WellWaterWater //mxd
 {
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	RenderStyle "Translucent"
 	Alpha 0.9
 	States
@@ -416,7 +416,7 @@ ACTOR WellWaterWater //mxd
 ACTOR WellBlood : WellEmpty //mxd
 {
 	//$Title Well (blood)
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	States
 	{
 	Spawn:
@@ -427,14 +427,14 @@ ACTOR WellBlood : WellEmpty //mxd
 
 ACTOR WellBloodBlood : WellWaterWater //mxd
 {
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Alpha 0.7
 }
 
 ACTOR BarrelWine : WellEmpty //mxd
 {
 	//$Title Barrel (wine)
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	States
 	{
 	Spawn:

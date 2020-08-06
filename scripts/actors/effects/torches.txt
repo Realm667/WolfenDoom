@@ -17,7 +17,7 @@ class BoAWallTorchBase : EffectSpawner
 		+NOBLOCKMAP
 		+NOGRAVITY
 		-SOLID
-		EffectSpawner.SwitchVar "torchtype";
+		EffectSpawner.SwitchVar "boa_torchtype";
 		+EffectSpawner.DONTCULL
 		+EffectSpawner.ALLOWTICKDELAY
 	}
@@ -38,7 +38,7 @@ class BoAWallTorchBase : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		if (!CheckSightOrRange(sfxlod / 4, true))
+		if (!CheckSightOrRange(boa_sfxlod / 4, true))
 		{
 			A_SpawnItemEx(flame, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(34.0, 36.0), 0.001 * frandom(10.0, 200.0), 0.001 * frandom(10.0, 200.0), 0.001 * frandom(500.0, 1000.0), 0, SXF_SETMASTER | SXF_CLIENTSIDE);
 
@@ -115,7 +115,7 @@ class TorchFireBase : ParticleBase
 {
 	Default
 	{
-		DistanceCheck "sfxlod";
+		DistanceCheck "boa_sfxlod";
 		RenderStyle "Add";
 		Alpha 0.0;
 		Scale 0.175;

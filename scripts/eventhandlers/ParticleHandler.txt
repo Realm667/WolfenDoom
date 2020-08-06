@@ -14,10 +14,10 @@ class ParticleManager : EventHandler
 
 	override void OnRegister()
 	{
-		maxparticlescvar = CVar.FindCVar("maxparticleactors");
+		maxparticlescvar = CVar.FindCVar("boa_maxparticleactors");
 		maxbloodcvar = CVar.FindCVar("sv_corpsequeuesize");
-		maxdebriscvar = CVar.FindCVar("maxdebrisactors");
-		maxflatdecalscvar = CVar.FindCVar("zwl_maxflatdecals");
+		maxdebriscvar = CVar.FindCVar("boa_maxdebrisactors");
+		maxflatdecalscvar = CVar.FindCVar("boa_maxflatdecals");
 
 		maxparticles = 512;
 		if (maxparticlescvar) { maxparticles = max(1, maxparticlescvar.GetInt()); }

@@ -1,6 +1,6 @@
 script "BloodScale" (void)
 {
-	int mult = GetCVar("blood_rand");
+	int mult = GetCVar("boa_blood_rand");
 	mult = FixedMul(mult, random(0.75,1.25));
 	int velx = GetActorVelX(0);
 	int vely = GetActorVelY(0);
@@ -15,9 +15,9 @@ script "GIBS" KILL
 {
 	if (!CheckFlag(0, "ISMONSTER") || CheckFlag(0, "NOBLOOD") || CheckFlag(0, "NOBLOODDECALS") || CheckActorClass(0, "AstroGuard") || CheckActorClass(0, "AstroGuard2") || CheckActorClass(0, "AstroCommando") || CheckActorClass(0, "AstroOfficer") || CheckActorClass(0, "AstroScientist") || CheckActorClass(0, "AstroElite") || CheckActorClass(0, "BatFamiliar") || CheckActorClass(0, "ZBatFamiliar") || CheckActorClass(0, "BigSpider") || CheckActorClass(0, "MiniSpider") || CheckActorClass(0, "BigSpiderNest") || CheckActorClass(0, "MiniSpiderNest") || CheckActorClass(0, "Scorpion"))
 		terminate;
-	if (GetCVar("blood_gibs"))
+	if (GetCVar("boa_blood_gibs"))
 		GiveInventory("GibMe", 1);
-	if (!GetCVar("blood_pools"))
+	if (!GetCVar("boa_blood_pools"))
 		terminate;
 	Delay(7);
 	while (abs(GetActorVelX(0)) + abs(GetActorVelY(0)) + abs(GetActorVelZ(0)) > 0.3)
@@ -31,9 +31,9 @@ script "GIBS_ME" DEATH
 {
 	if (CheckFlag(0, "NOBLOOD") || CheckFlag(0, "NOBLOODDECALS"))
 		terminate;
-	if (GetCVar("blood_gibs"))
+	if (GetCVar("boa_blood_gibs"))
 		GiveInventory("GibMe", 1);
-	if (!GetCVar("blood_pools"))
+	if (!GetCVar("boa_blood_pools"))
 		terminate;
 	Delay(7);
 	while (abs(GetActorVelX(0)) + abs(GetActorVelY(0)) + abs(GetActorVelZ(0)) > 0.3)

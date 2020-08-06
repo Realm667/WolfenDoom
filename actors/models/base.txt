@@ -4,7 +4,7 @@ const int MODELS_FLAGS2 = SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCA
 //Base stuff - ModelBase moved on zscript codes
 ACTOR DecalBase : SceneryBase
 {
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 128
 	Height 0
 	Scale 1.25
@@ -23,7 +23,7 @@ ACTOR MuseumBase : SceneryBase
 {
 	//$Category Models (BoA)/No Hitbox
 	//$Color 7
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 4
 	Height 4
 	-SOLID
@@ -42,7 +42,7 @@ ACTOR InteractionBase : SwitchableDecoration
 {
 	//$Category Models (BoA)/Scenery
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 8
 	Height 8
 	Health 10
@@ -101,10 +101,10 @@ ACTOR 3dFurniture : 3dObstacle
 {
 	//$Category Furniture (BoA)
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 }
 
-ACTOR 3dFurniture_End  //this doesn't have scenelod to force needed effect on c3m6_b battle - ozy81
+ACTOR 3dFurniture_End  //this doesn't have boa_scenelod to force needed effect on c3m6_b battle - ozy81
 {
 	//$Category Final Battle (BoA)
 	//$Color 3

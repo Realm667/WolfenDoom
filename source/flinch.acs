@@ -26,13 +26,13 @@ function bool IsAlive(int tid)
 
 // Retrieve the base strength of player flinches.
 //
-// The cvar "flinchamount" is constrained between 0.0 (off) and 2.0
+// The cvar "boa_flinchamount" is constrained between 0.0 (off) and 2.0
 // (double flinch amount) to prevent wacky spins incurred by a higher flinch
 // amount.
 //
 function int GetServerFlinchAmount(void)
 {
-	return FixedMul(FixedClamp(GetCVar("flinchamount"), 0.0, 2.0), 0.025);
+	return FixedMul(FixedClamp(GetCVar("boa_flinchamount"), 0.0, 2.0), 0.025);
 }
 
 // Convert an integer to a fixed-point number.

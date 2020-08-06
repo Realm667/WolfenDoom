@@ -35,11 +35,11 @@ class SmokeBase : ParticleBase
 
 class PuffSmoke : SmokeBase
 {
-	transient CVar smoketype;
+	transient CVar boa_smoketype;
 
 	Default
 	{
-		DistanceCheck "sfxlod";
+		DistanceCheck "boa_sfxlod";
 		+CLIENTSIDEONLY
 		+FORCEXYBILLBOARD
 		+NOINTERACTION
@@ -65,9 +65,9 @@ class PuffSmoke : SmokeBase
 	{
 		Super.PostBeginPlay();
 
-		smoketype = CVar.FindCVar("smoketype");
+		boa_smoketype = CVar.FindCVar("boa_smoketype");
 
-		if (!smoketype.GetBool())
+		if (!boa_smoketype.GetBool())
 		{
 			if (!maxalpha) { maxalpha = 0.46; }
 			if (!outtics) { outtics = 2; }
@@ -260,7 +260,7 @@ class PowerPlantSmokeGenerator : EffectSpawner
 		+NOINTERACTION
 		+SHOOTABLE
 		EffectSpawner.Range 1200;
-		EffectSpawner.SwitchVar "smokeswitch";
+		EffectSpawner.SwitchVar "boa_smokeswitch";
 		+EffectSpawner.ALLOWTICKDELAY
 	}
 
@@ -353,7 +353,7 @@ class VolcanoSmokeGenerator : EffectSpawner
 		+NOINTERACTION
 		+SHOOTABLE
 		+EffectSpawner.DONTCULL
-		EffectSpawner.SwitchVar "smokeswitch";
+		EffectSpawner.SwitchVar "boa_smokeswitch";
 		+EffectSpawner.ALLOWTICKDELAY
 	}
 
@@ -418,7 +418,7 @@ class AmbientSmoke : AmbientSmokeSB
 {
 	Default
 	{
-		DistanceCheck "sfxlod";
+		DistanceCheck "boa_sfxlod";
 	}
 }
 
@@ -440,7 +440,7 @@ class AmbientSmokeGenerator : EffectSpawner
 		+CLIENTSIDEONLY
 		+NOINTERACTION
 		EffectSpawner.Range 1200;
-		EffectSpawner.SwitchVar "smokeswitch";
+		EffectSpawner.SwitchVar "boa_smokeswitch";
 		+EffectSpawner.ALLOWTICKDELAY
 	}
 
@@ -459,7 +459,7 @@ class AmbientSmokeGenerator : EffectSpawner
 
 		if (args[2])
 		{
-			range = sfxlod;
+			range = boa_sfxlod;
 			bAllowTickDelay = false;
 		}
 	}
@@ -652,7 +652,7 @@ class DarkSmokeSpawner : EffectSpawner
 		+NOGRAVITY
 		+NOINTERACTION
 		EffectSpawner.Range 1200;
-		EffectSpawner.SwitchVar "smokeswitch";
+		EffectSpawner.SwitchVar "boa_smokeswitch";
 		+EffectSpawner.ALLOWTICKDELAY
 	}
 

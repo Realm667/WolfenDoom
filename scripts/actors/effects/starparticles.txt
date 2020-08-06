@@ -14,7 +14,7 @@ class StarParticle_Spawner : EffectSpawner
 		RenderStyle "Add";
 		Alpha 1.0;
 		EffectSpawner.Range 1200;
-		EffectSpawner.SwitchVar "dustswitch";
+		EffectSpawner.SwitchVar "boa_dustswitch";
 		+EffectSpawner.ALLOWTICKDELAY
 	}
 
@@ -82,7 +82,7 @@ class StarParticle : ParticleBase
 		+MISSILE
 		+NOGRAVITY
 		+THRUACTORS
-		DistanceCheck "sfxlod";
+		DistanceCheck "boa_sfxlod";
 		+ParticleBase.CHECKPOSITION
 	}
 

@@ -183,7 +183,7 @@ class EffectsManager : Thinker
 				if (!check) { check = players[p].mo; }
 				if (!check) { continue; }
 
-				double range = effects[i].range <= 0 ? sfxlod : effects[i].range;
+				double range = effects[i].range <= 0 ? boa_sfxlod : effects[i].range;
 
 				if ((level.Vec3Diff(check.pos, effects[i].position)).length() < range) { inrange = true; }
 			}
@@ -256,7 +256,7 @@ class EffectSpawner : SwitchableDecoration
 		manager = ParticleManager.GetManager();
 		if (!manager) { return; }
 
-		if (range > 0 && !bDontCull) { EffectsManager.Add(self, range > 0 ? min(range, sfxlod) : sfxlod); }
+		if (range > 0 && !bDontCull) { EffectsManager.Add(self, range > 0 ? min(range, boa_sfxlod) : boa_sfxlod); }
 
 		if (bDormant || SpawnFlags & MTF_DORMANT) { Deactivate(null); }
 		else { Activate(null); }
@@ -293,7 +293,7 @@ class EffectBase : SimpleActor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		EffectsManager.Add(self, sfxlod);
+		EffectsManager.Add(self, boa_sfxlod);
 	}
 }
 
@@ -302,7 +302,7 @@ class GrassBase : SimpleActor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		EffectsManager.Add(self, grasslod);
+		EffectsManager.Add(self, boa_grasslod);
 	}
 }
 
@@ -311,7 +311,7 @@ class SceneryBase : Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		EffectsManager.Add(self, scenelod);
+		EffectsManager.Add(self, boa_scenelod);
 	}
 }
 
@@ -320,7 +320,7 @@ class TreesBase : Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		EffectsManager.Add(self, treeslod);
+		EffectsManager.Add(self, boa_treeslod);
 	}
 }
 

@@ -45,7 +45,7 @@ class ColorGradeThinker : Thinker {
    * Thinker initialization.
    */
   ColorGradeThinker Init() {
-    self.wasEnabled = bool(CVar.FindCVar('r_colorgrading').GetInt());
+    self.wasEnabled = bool(CVar.FindCVar('boa_colorgrading').GetInt());
 
     return self;
   }
@@ -63,7 +63,7 @@ class ColorGradeThinker : Thinker {
   }
 
   override void Tick() {
-    bool enabled = bool(CVar.FindCVar('r_colorgrading').GetInt());
+    bool enabled = bool(CVar.FindCVar('boa_colorgrading').GetInt());
     if (!enabled && !wasEnabled) {
       return;
     }

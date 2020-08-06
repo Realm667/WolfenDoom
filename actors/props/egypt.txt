@@ -32,7 +32,7 @@ ACTOR EColumn //3d Actor
 	//$Category Props (BoA)/Egypt
 	//$Title Ornated Column
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 32
 	Height 128
 	+SOLID
@@ -47,7 +47,7 @@ ACTOR EColumn //3d Actor
 ACTOR EStatue1 : EColumn //3d Actor
 {
 	//$Title Pharaoh Statue
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 16
 }
 
@@ -168,7 +168,7 @@ ACTOR LavaCauldronFire
 	{
 	Spawn:
 		TNT1 A 0 {
-			if (!CheckRange(sfxlod, true))
+			if (!CheckRange(boa_sfxlod, true))
 			{
 				A_SpawnItemEx("FloatingCinder", 0, 0, random(0,2), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE);
 			}

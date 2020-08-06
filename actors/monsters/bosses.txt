@@ -781,7 +781,7 @@ ACTOR ZyklonMonster : Nazi
 	Spawn:
 		TNT1 A 1 A_LookThroughDisguise
 		TNT1 AAAAAA 0 {
-			if (!CheckRange(sfxlod, true))
+			if (!CheckRange(boa_sfxlod, true))
 			{
 				A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360));
 			}

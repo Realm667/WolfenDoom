@@ -25,7 +25,7 @@ class FireSpawner : HeatEffectGiver
 		+DONTSPLASH
 		+NOCLIP
 		+NOGRAVITY
-		EffectSpawner.SwitchVar "fireswitch";
+		EffectSpawner.SwitchVar "boa_fireswitch";
 		+EffectSpawner.ALLOWTICKDELAY
 	}
 
@@ -347,7 +347,7 @@ class EmberBase : ParticleBase
 		RenderStyle "Add";
 		Alpha 0.8;
 		Scale 0.05;
-		DistanceCheck "sfxlod";
+		DistanceCheck "boa_sfxlod";
 		EmberBase.Thrust 0, 1;
 		EmberBase.ThrustZ 1, 4;
 		EmberBase.Delay 32;
@@ -527,7 +527,7 @@ class ZFlame1B : ZFlame1A
 {
 	Default
 	{
-		DistanceCheck "sfxlod";
+		DistanceCheck "boa_sfxlod";
 	}
 
 	States

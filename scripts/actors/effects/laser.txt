@@ -77,7 +77,7 @@ class LaserShooter : EffectSpawner
 	{
 		if (args[1]) { angle += args[1] * 0.25; }
 
-		if (CheckRange(sfxlod, true)) { return; }
+		if (CheckRange(boa_sfxlod, true)) { return; }
 
 		if (snd != "")
 		{
@@ -532,7 +532,7 @@ class LaserSmoke : PuffSmoke
 {
 	Default
 	{
-		DistanceCheck "sfxlod";
+		DistanceCheck "boa_sfxlod";
 		+CLIENTSIDEONLY
 		+FORCEXYBILLBOARD
 		+NOINTERACTION

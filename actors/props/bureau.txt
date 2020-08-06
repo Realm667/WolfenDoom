@@ -921,7 +921,7 @@ ACTOR Dollar
 		Stop
 	Death1:
 		"####" "#" 0 {bRollSprite = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("DebrisLifetime"))
+		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"))
 		Death1Wait:
 		"####" "#" 1 A_FadeOut(0.1)
 		Wait
@@ -1093,7 +1093,7 @@ ACTOR CoffeeMachine : SwitchableDecoration
 ACTOR WaterMachine : CoffeeMachine
 {
 	//$Title Water Machine (interactive, destroyable)
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Renderstyle "Translucent"
 	Alpha 0.5
 	States
@@ -1132,7 +1132,7 @@ ACTOR WaterMachine : CoffeeMachine
 
 ACTOR WaterMachineWater
 {
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Renderstyle "Translucent"
 	Alpha 0.2
 	States

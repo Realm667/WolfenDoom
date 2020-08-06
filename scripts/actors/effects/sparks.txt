@@ -51,8 +51,8 @@ class SparkBase : ParticleBase
 	{
 		Super.PostBeginPlay();
 
-		CVar sparkswitch = CVar.FindCVar("sparkswitch");
-		if (sparkswitch) { fadespeed = max(1, 6 - sparkswitch.GetInt()); }
+		CVar boa_sparkswitch = CVar.FindCVar("boa_sparkswitch");
+		if (boa_sparkswitch) { fadespeed = max(1, 6 - boa_sparkswitch.GetInt()); }
 		else { fadespeed = 1; }
 
 		if (

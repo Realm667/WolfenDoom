@@ -1105,8 +1105,8 @@ class GunSmokeSpawner : Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		CVar smokeSwitch = CVar.FindCVar("smokeswitch");
-		int smoke = smokeSwitch.GetInt();
+		CVar boa_smokeswitch = CVar.FindCVar("boa_smokeswitch");
+		int smoke = boa_smokeswitch.GetInt();
 		if (smoke == 0)
 		{
 			Destroy();
