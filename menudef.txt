@@ -244,7 +244,7 @@ OptionMenu "BoAOptionsMenu"
 	StaticText " "
 	Option "$OPTMNU_LANGUAGE", 			"language", "BoALanguageOptions"
 	StaticText " "
-	Option "$OPT_DEVC", 				"developercommentswitch", "OnOff"
+	Option "$OPT_DEVC", 				"boa_devcomswitch", "OnOff"
 	StaticText " "
 	SafeCommand "$OPTMNU_DEFAULTS",		"reset2defaults"
 	SafeCommand	"$OPTMNU_RESETTOSAVED",	"reset2saved"
@@ -1517,7 +1517,7 @@ OptionMenu "GameOptions"
 	Title "$OPT_GAME"
 	StaticText " "
 	Option "$GA_SCAM", 							"boa_strafetilt", "OnOff"
-	Option "$GA_REL",							"autoreload","OnOff"
+	Option "$GA_REL",							"boa_autoreload","OnOff"
 	Slider "$GA_ZBULL",							"boa_maxflatdecals",1024,4096,1024,0
 	Slider "$GA_SHELLS",						"boa_casinglifetime",1,180,5,0
 	Slider "$GA_RECOIL",						"boa_recoilamount",0,20,1,0

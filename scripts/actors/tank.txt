@@ -109,8 +109,8 @@ class ShermanPlayer : PlayerPawn
 			forwardmove = fm * movefactor * (35 / TICRATE);
 			sidemove = sm * movefactor * (35 / TICRATE);
 
-			CVar autosteer = CVar.FindCVar('autosteer');
-			bool shift = !(player.cmd.buttons & BT_SPEED) != !autosteer.GetInt(); // If shift is being held or autosteer cvar is true
+			CVar boa_autosteer = CVar.FindCVar('boa_autosteer');
+			bool shift = !(player.cmd.buttons & BT_SPEED) != !boa_autosteer.GetInt(); // If shift is being held or boa_autosteer cvar is true
 
 			// Handle "auto-steering" the tank to wherever you are aiming
 			if (forwardmove && shift && treads && turret && treads.angle != turret.angle) // If holding SHIFT, auto-steer the tracks to align with the turret
