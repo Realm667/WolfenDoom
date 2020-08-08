@@ -1448,15 +1448,14 @@ class CKWormouth : CKBaseEnemy
 		See:
 			CKSN AA 1 CK_WormMove();
 			Loop;
-		LookAround:  // There are frames missing here...  Eyes blink (the 4-tic frames) in original.
-			// This will need to be redone once we have a full set of sprites for all look angles
-			CKSN C 10;
-			CKSN C 4; // <--
-			CKSN C 10 CK_Look(90);
+		LookAround:  
+			CKSN I 10 { angle += 90; } // Look right
+			CKSN H 4;
+			CKSN I 10 CK_Look(90);
 			CKSN A 4;
-			CKSN B 10;
-			CKSN B 4; // <--
-			CKSN B 10 CK_Look(-90);
+			CKSN I 10 { angle += 180; } // Look left
+			CKSN H 4;
+			CKSN I 10 CK_Look(-90);
 			CKSN A 4 A_Face(target);
 			Goto See;
 		Stunned:
@@ -1896,7 +1895,7 @@ class CKDopefish : CKBaseEnemy
 				vel.xy = RotateVector((Speed, 0), angle);
 				vel.z = 0;
 
-				// Use alternate frames...  C is original-style sprite, E has schoolfish between teeth
+				// Use alternate frame...  C is original-style sprite, E has schoolfish between teeth
 				if (Random() < 128) { frame = 4; }
 			}
 			CKDF A 1 // Bite!
@@ -1924,18 +1923,13 @@ class CKDopefish : CKBaseEnemy
 				}
 			}
 		Burp:
-			CKDF A 30
-			{
-				oldangle = angle;
-				A_Face(players[consoleplayer].mo); // Minimize need for angled burp sprites by making him face the console player to burp
-			}
+			CKDF A 30;
 			CKDF D 30
 			{
 				A_StartSound("ckeen/dopefish/burp");
 				Spawn("CKBubble", pos + (RotateVector((56, -4), angle + 90), 32));
 			}
 			CKDF A 30;
-			CKDF A 0 { angle = oldangle; }
 			Goto See;
 	}
 
@@ -2488,7 +2482,7 @@ class CKBird : CKBaseEnemy
 			CKEA FFF 1 CK_BirdWalk();
 			CKEA GGGG 1 CK_BirdWalk();
 			CKEA HHH 1 CK_BirdWalk();
-			CKEA IIII 1 CK_BirdWalk(); // I frame rotations are completely missing!  I had to export and add the current CKEAI0.png image
+			CKEA IIII 1 CK_BirdWalk();
 			Loop;
 		Fly:
 			CKEA AAAABBBBCCCCDDDD 1 CK_BirdFly();
@@ -2510,7 +2504,7 @@ class CKBird : CKBaseEnemy
 	{
 		LookForPlayers(true);
 
-		if (!target) { return; }
+		if (!target || stunned) { return; }
 
 		if (target && (abs(pos.z - target.pos.z) > 48 || target.pos.z - target.floorz > 64))
 		{
@@ -2568,7 +2562,7 @@ class CKBird : CKBaseEnemy
 		vel.xy = RotateVector((Speed, 0), angle);
 		vel.z = FloatSpeed * zdir;
 
-		if (pos.z <= floorz + heightoffset && vel.z < 0)
+		if (pos.z <= floorz + heightoffset && vel.z <= 0)
 		{
 			SetStateLabel("Land");
 		}
@@ -2582,7 +2576,7 @@ class CKBird : CKBaseEnemy
 
 		A_SetSize(Default.Radius, -1, true);
 
-		if (pos.z == floorz && vel.z <= 0)
+		if (pos.z <= floorz && vel.z <= 0)
 		{
 			if (stopmovement) { vel.xy *= 0; }
 			SetState(SeeState);
