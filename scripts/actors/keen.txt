@@ -1896,9 +1896,8 @@ class CKDopefish : CKBaseEnemy
 				vel.xy = RotateVector((Speed, 0), angle);
 				vel.z = 0;
 
-				// Use alternate frames...  C is original-style sprite, E and F have tongue and tooth greens
+				// Use alternate frames...  C is original-style sprite, E has schoolfish between teeth
 				if (Random() < 128) { frame = 4; }
-				else { frame = 5; }
 			}
 			CKDF A 1 // Bite!
 			{
