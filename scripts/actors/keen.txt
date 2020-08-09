@@ -8,7 +8,7 @@ class CKBaseEnemy : Actor
 
 	// Some generic variables for CK_ internal functions.  I'd rather put these functions all in the actual classes, but DECORATE...
 	int counter, counter2;
-	Vector3 offset;
+	Vector3 offset, oldpos;
 
 	Sound touchsound;
 
@@ -108,7 +108,19 @@ class CKBaseEnemy : Actor
 
 	override void Tick()
 	{
-		Super.Tick();
+		if (pos != oldpos || vel.length() || !CheckRange(256)) // Tick normally if player nearby or moving
+		{
+			Super.Tick();
+			oldpos = pos;
+		}
+		else // Otherwise just tick through actor states
+		{
+			if (tics == -1) { return; }
+			else if (--tics <= 0)
+			{
+				SetState(CurState.NextState);
+			}
+		}
 
 		if (stunned) { DoStun(); }
 	}
@@ -157,7 +169,7 @@ class CKBaseEnemy : Actor
 			{
 				stuncounter--;
 			}
-			else if (stuncounter == 0)
+			else if (stuncounter == 0 && waterlevel < 2)
 			{
 				stunned = false;
 				if (confusion) { confusion.Destroy(); }
@@ -193,7 +205,7 @@ class CKBaseEnemy : Actor
 	// Function to move an actor in a straight line until it hits something (or travels maxstep units), then change directions randomly, with preference for moving toward player.
 	void CK_Glide(int maxstep = 1024)
 	{
-		LookforPlayers(true);
+		PlayerSearch();
 
 		if (BlockingMobj || BlockingLine || SpawnTime == level.time || (maxstep && counter >= maxstep / Speed))
 		{
@@ -248,12 +260,23 @@ class CKBaseEnemy : Actor
 	// Looks for a player, then waits for the player to be within dist units to activate
 	void CK_WaitForPlayer(int dist = 256)
 	{
-		LookForPlayers(true);
+		PlayerSearch();
 
 		if (target && Distance2D(target) < dist)
 		{
 			SetState(SeeState);
 		}
+	}
+
+	void PlayerSearch()
+	{
+		if (target) { return; }
+
+		LookExParams params;
+		params.maxDist = 1024;
+		params.maxHearDist = 1024;
+
+		LookForPlayers(true, params);
 	}
 }
 
@@ -264,6 +287,7 @@ mixin class CKPickup
 	double vspeed;
 	State PickupState;
 	int ticker;
+	bool ticked;
 
 	Property VSpeed:vspeed;
 
@@ -332,7 +356,19 @@ mixin class CKPickup
 			}
 		}
 
-		Super.Tick();
+		if (!ticked || !CheckRange(256)) // Tick normally if player nearby
+		{
+			Super.Tick();
+			ticked = true;
+		}
+		else // Otherwise just tick through actor states
+		{
+			if (tics == -1) { return; }
+			else if (--tics <= 0)
+			{
+				SetState(CurState.NextState);
+			}
+		}
 	}
 }
 
@@ -1373,7 +1409,7 @@ class CKLick : CKBaseEnemy
 
 	void CK_LickBounce()
 	{
-		LookforPlayers(true);
+		PlayerSearch();
 
 		if (!target) { return; }
 
@@ -1488,7 +1524,7 @@ class CKWormouth : CKBaseEnemy
 
 	void CK_WormMove()
 	{
-		LookforPlayers(true);
+		PlayerSearch();
 
 		if (!target) { return; }
 
@@ -1935,7 +1971,7 @@ class CKDopefish : CKBaseEnemy
 
 	void CK_DopeFishSwim()
 	{
-		LookforPlayers(true);
+		PlayerSearch();
 
 		if (!target) { return; }
 
@@ -2053,7 +2089,7 @@ class CKSchoolfish : CKBaseEnemy
 
 	void CK_SchoolFishSwim()
 	{
-		LookforPlayers(true);
+		PlayerSearch();
 
 		if (!target) { return; }
 
@@ -2132,7 +2168,7 @@ class CKInchworm : CKBaseEnemy
 
 	void CK_InchwormMove()
 	{
-		LookforPlayers(true);
+		PlayerSearch();
 
 		if (!target) { return; }
 
@@ -2234,7 +2270,7 @@ class CKMimRock : CKBaseEnemy
 		bounced = false;
 		SetDamage(0);
 
-		LookForPlayers(true);
+		PlayerSearch();
 
 		if (target && !InSightOf(target) && Distance2D(target) > 48)
 		{
@@ -2345,7 +2381,7 @@ class CKSprite : CKBaseEnemy
 
 	void CK_SpriteFloat()
 	{
-		LookForPlayers(true);
+		PlayerSearch();
 
 		CK_Float(16, FloatSpeed);
 
@@ -2502,11 +2538,13 @@ class CKBird : CKBaseEnemy
 
 	void CK_BirdWalk()
 	{
-		LookForPlayers(true);
+		PlayerSearch();
 
 		if (!target || stunned) { return; }
 
-		if (target && (abs(pos.z - target.pos.z) > 48 || target.pos.z - target.floorz > 64))
+		double newfloorz = GetZAt(Speed, 0, AngleTo(target), GZF_ABSOLUTEANG);
+
+		if (target && (target.pos.z - pos.z > 48 || newfloorz < pos.z))
 		{
 			vel.z = 2.0;
 
@@ -2526,9 +2564,12 @@ class CKBird : CKBaseEnemy
 
 	void CK_BirdFly()
 	{
+
 		double heightoffset = 0;
 
-		LookForPlayers(true);
+		PlayerSearch();
+
+		if (!target || stunned) { return; }
 
 		bool blocked = BlockingLine || (BlockingMobj && (!target || BlockingMobj != target)) || !CheckMove(pos.xy + vel.xy);
 
@@ -2559,10 +2600,12 @@ class CKBird : CKBaseEnemy
 			else { zdir = 0; }
 		}
 
+		if (waterlevel > 0) { zdir = 1; }
+
 		vel.xy = RotateVector((Speed, 0), angle);
 		vel.z = FloatSpeed * zdir;
 
-		if (pos.z <= floorz + heightoffset && vel.z <= 0)
+		if (!waterlevel && pos.z <= floorz + heightoffset && vel.z <= 0)
 		{
 			SetStateLabel("Land");
 		}
@@ -2570,13 +2613,15 @@ class CKBird : CKBaseEnemy
 
 	void CK_BirdLand(bool stopmovement = true)
 	{
+		if (waterlevel && !stunned) { SetStateLabel("Fly"); return; }
+
 		bNoGravity = false;
 		bFloat = false;
 		Speed = Default.Speed;
 
 		A_SetSize(Default.Radius, -1, true);
 
-		if (pos.z <= floorz && vel.z <= 0)
+		if (pos.z <= floorz)
 		{
 			if (stopmovement) { vel.xy *= 0; }
 			SetState(SeeState);
@@ -2957,7 +3002,7 @@ class CKBounder : CKBaseEnemy
 	// Function to handle Bounder bounce pattern, re-imagined in 3D space
 	void CK_BounderBounce()
 	{
-		LookforPlayers(true);
+		PlayerSearch();
 
 		if (!target) { return; }
 
@@ -3166,7 +3211,7 @@ class CKBerkeloid : CKBaseEnemy
 
 	void CK_BerkeloidMove()
 	{
-		LookforPlayers(true);
+		PlayerSearch();
 
 		if (!target) { return; }
 
@@ -3638,7 +3683,7 @@ class CKStunnerBall : Actor
 			Loop;
 		Death:
 			CKBA EF 4;
-			TNT1 A 35;
+			TNT1 A 35 { vel *= 0; }
 			Stop;
 	}
 
@@ -3700,7 +3745,7 @@ class CKWallShooter : SwitchableDecoration
 
 	void CK_WaitForPlayer(int dist = 256)
 	{
-		LookForPlayers(true);
+		if (!target) { LookForPlayers(true); }
 
 		if (target && Distance2D(target) < dist)
 		{
