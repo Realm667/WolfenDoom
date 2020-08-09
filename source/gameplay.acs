@@ -154,11 +154,23 @@ script "OhNoes!" DEATH
 {
 	if (CheckInventory("CutsceneEnabled")) { Terminate; }
 
+	bool generic;
+	int levelnum = GetLevelInfo(LEVELINFO_LEVELNUM);
+
+	if (levelnum >= 151 && levelnum <= 153) { generic = true; }
+
 	SetHudSize(320, 240, true);
-	LocalSetMusic("THEEND");
+
+	int fadetime = 1.5;
+
+	if (!generic)
+	{
+		LocalSetMusic("THEEND");
+		fadetime = 6.0;
+	}
 
 	SetFont("fade");
-	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1000, CR_UNTRANSLATED, 160.0, 120.0, 999999.0, 6.0, 1.0);
+	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1000, CR_UNTRANSLATED, 160.0, 120.0, 999999.0, fadetime, 1.0);
 
 	// [ZK] If you resurrect, the death screen should disappear immediately
 	for (int i = 0; i < 35*6; i++)
@@ -174,8 +186,11 @@ script "OhNoes!" DEATH
 		}
 	}
 
-	SetFont("youdied");
-	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1001, CR_UNTRANSLATED, 160.0, 120.0, 999999.0, 3.0, 1.0);
+	if (!generic)
+	{ 
+		SetFont("youdied");
+		HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1001, CR_UNTRANSLATED, 160.0, 120.0, 999999.0, 3.0, 1.0);
+	}
 
 	// [ZK] Delay 1 tic instead of 35
 	while(GetActorProperty(0,APROP_HEALTH) <= 0) Delay(1);
