@@ -299,5 +299,41 @@ script "PlayerHealthAbove25" (void)
 	SetResultValue(GetActorProperty(playerID, APROP_Health) >= 25);
 }
 
+///////////////////////////////////////////////////////
+//GENERAL MAPS SCRIPTS, DUKE3D-LIKE INTERACTIONS HERE//
+///////////////////////////////////////////////////////
+
+//Generic vent breaker script
+script "VENT_BREAK" (int vent_id)
+{
+	SetLineBlocking(vent_id,BLOCK_NOTHING);
+	SetLineTexture(vent_id, LINE_BACK, TEXTURE_MIDDLE, "VENT_M00");
+	Thing_Activate(vent_id);
+}
+
+//Generic Flush Sound WC
+script "WC_FLUSH" (int toilet_id)
+{
+	PlaySound(toilet_id,"toilet/flush",CHAN_BODY,1.0,0,0);
+}
+
+//Generic Mirror Script
+script "MIRRORS" (int line_id)
+{
+	TranslucentLine(line_id,255);
+	GlassBreak(0);
+	SetLineTexture(line_id,SIDE_FRONT,TEXTURE_MIDDLE,"MIRR_W04");
+}
+
+//Generic Light Script
+script "LIGHTS" (int light_tid)
+{
+	if(!GetActorProperty(light_tid,APROP_Dormant))
+		Thing_Deactivate(light_tid);
+	else
+		Thing_Activate(light_tid);
+	PlaySound(0,"SW_LIGHT");
+}
+
 // Compatibility placeholders (old functions that aren't needed any more, but might be referenced in old maps)
 script "BossHealth" (void) {}
