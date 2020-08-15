@@ -596,6 +596,12 @@ ACTOR SSToilet : WToilet
 	LeaveWC:
 		"####" A 9 ReplaceWith("SSOfficer", "See")
 		Stop
+	Death:
+		SSOT F 0 {bCanPass = FALSE;}
+		Goto Super::Death+1
+	Death.Alt1:
+		SSOT J -1 A_SpawnItemEx("Shit", random(-16,16), 0, 0, SXF_NOCHECKPOSITION)
+		Stop
 	}
 }
 
