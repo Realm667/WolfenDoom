@@ -37,7 +37,7 @@ ACTOR CrowWander1L : Base //Wandering version. Flees when player gets close and 
 	Radius 3
 	Height 3
 	Scale 0.7
-	Monster
+	//Monster
 	-CANUSEWALLS
 	-CANPUSHWALLS
 	-COUNTKILL
@@ -45,7 +45,6 @@ ACTOR CrowWander1L : Base //Wandering version. Flees when player gets close and 
 	+BOUNCEONWALLS
 	+FLOORCLIP
 	+FLOORHUGGER
-	+FRIENDLY //avoid playerfollowers to aim at them - ozy81
 	+LOOKALLAROUND
 	+NOBLOOD
 	+NODAMAGE
@@ -256,7 +255,7 @@ ACTOR CrowWander4R : CrowWander1R //Wandering version. Does not flee when player
 
 ACTOR CrowStill1L : CrowWander1L //Stationary version. Flees when player is close. Reacts to sound. Faces left.
 {
-	//$Title Crow (left,statonary,proxflee,reactsweapon)
+	//$Title Crow (left,stationaryry,proxflee,reactsweapon)
 	States
 	{
 	WanderFly:
@@ -266,7 +265,7 @@ ACTOR CrowStill1L : CrowWander1L //Stationary version. Flees when player is clos
 
 ACTOR CrowStill1R : CrowWander1R //Stationary version. Flees when player is close. Reacts to sound. Faces right.
 {
-	//$Title Crow (right,statonary,proxflee,reactsweapon)
+	//$Title Crow (right,stationaryry,proxflee,reactsweapon)
 	States
 	{
 	WanderFly:
@@ -276,7 +275,7 @@ ACTOR CrowStill1R : CrowWander1R //Stationary version. Flees when player is clos
 
 ACTOR CrowStill2L : CrowWander2L //Stationary version. Flees when player is close. No sound reaction. Faces left.
 {
-	//$Title Crow (left,statonary,proxflee)
+	//$Title Crow (left,stationaryry,proxflee)
 	States
 	{
 	WanderFly:
@@ -286,7 +285,7 @@ ACTOR CrowStill2L : CrowWander2L //Stationary version. Flees when player is clos
 
 ACTOR CrowStill2R : CrowWander2R //Stationary version. Flees when player is close. No sound reaction. Faces right.
 {
-	//$Title Crow (right,statonary,proxflee)
+	//$Title Crow (right,stationaryry,proxflee)
 	States
 	{
 	WanderFly:
@@ -296,7 +295,7 @@ ACTOR CrowStill2R : CrowWander2R //Stationary version. Flees when player is clos
 
 ACTOR CrowStill3L : CrowWander3L //Stationary version. Does not flee when player is close. Reacts to sound. Faces left.
 {
-	//$Title Crow (left,statonary,reactsweapon)
+	//$Title Crow (left,stationaryry,reactsweapon)
 	States
 	{
 	WanderFly:
@@ -306,7 +305,7 @@ ACTOR CrowStill3L : CrowWander3L //Stationary version. Does not flee when player
 
 ACTOR CrowStill3R : CrowWander3R //Stationary version. Flees when player is close. No sound reaction. Faces right.
 {
-	//$Title Crow (right,statonary,reactsweapon)
+	//$Title Crow (right,stationaryry,reactsweapon)
 	States
 	{
 	WanderFly:
@@ -316,7 +315,7 @@ ACTOR CrowStill3R : CrowWander3R //Stationary version. Flees when player is clos
 
 ACTOR CrowStill4L : CrowWander4L //Stationary version. Does not flee when player is close. No sound reaction. Faces left.
 {
-	//$Title Crow (left,statonary)
+	//$Title Crow (left,stationaryry)
 	States
 	{
 	WanderFly:
@@ -326,7 +325,7 @@ ACTOR CrowStill4L : CrowWander4L //Stationary version. Does not flee when player
 
 ACTOR CrowStill4R : CrowWander4R //Stationary version. Does not flee when player is close. No sound reaction. Faces right.
 {
-	//$Title Crow (right,statonary)
+	//$Title Crow (right,stationaryry)
 	States
 	{
 	WanderFly:
