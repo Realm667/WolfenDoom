@@ -1755,14 +1755,28 @@ ACTOR Red_Light : SwitchableDecoration
 	+SPAWNCEILING
 	States
 	{
-	Active:
-		"####" A 0 {bDormant = FALSE;}
 	Spawn:
-		STRR A -1 LIGHT(FIXEDRED)
+		STRR A 0
+		Goto CheckDormant
+	CheckDormant:
+		"####" "#" 0  {
+			if (bDormant) {
+				return ResolveState("Off");
+			}
+			return ResolveState("On");
+		}
+	On:
+		"####" "#" -1 LIGHT(FIXEDRED)
 		Stop
+	Off:
+		"####" "#" -1
+		Stop
+	Active: // These are just used to toggle the dormant state whenever 'used' by the player, regardless of starting value
 	Inactive:
-		"####" A -1 {bDormant = TRUE;}
-		Stop
+		"####" "#"0 {
+			bDormant = !bDormant;
+			return ResolveState("CheckDormant");
+		}
 	}
 }
 
@@ -1772,7 +1786,10 @@ ACTOR Blue_Light : Red_Light
 	States
 	{
 	Spawn:
-		STRB A -1 LIGHT(FIXEDBLU)
+		STRB A -1
+		Goto CheckDormant
+	On:
+		"####" "#" -1 LIGHT(FIXEDBLU)
 		Stop
 	}
 }
@@ -1783,7 +1800,10 @@ ACTOR Green_Light : Red_Light
 	States
 	{
 	Spawn:
-		STRG A -1 LIGHT(FIXEDGRN)
+		STRG A -1
+		Goto CheckDormant
+	On:
+		"####" "#" -1 LIGHT(FIXEDGRN)
 		Stop
 	}
 }
@@ -1794,7 +1814,10 @@ ACTOR Yellow_Light : Red_Light
 	States
 	{
 	Spawn:
-		STRY A -1 LIGHT(FIXEDYEL)
+		STRY A -1
+		Goto CheckDormant
+	On:
+		"####" "#" -1 LIGHT(FIXEDYEL)
 		Stop
 	}
 }
