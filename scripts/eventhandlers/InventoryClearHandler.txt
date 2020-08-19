@@ -40,9 +40,8 @@ class InventoryClearHandler : EventHandler
 				if(ammoitem!=null&&!ammoitem.bUNDROPPABLE)
 					me.A_TakeInventory(name(ammotype));
 			}
-			// Remove Commander Keen items, or else player will have them after
-			// playing one of the Commander Keen secret missions.
-			if(type is "CKPogoStick" || type is "CKLedgeGrab")
+			// Remove level-unique inventory items
+			if(type is "CKPogoStick" || type is "CKLedgeGrab" || type is "TextPaperCollectible")
 			{
 				let invclass = (class<Inventory>)(type);
 				let invitem = me.FindInventory(invclass);
