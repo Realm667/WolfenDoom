@@ -436,7 +436,7 @@ class AstroDroneBall : Actor
 
 	void SpawnSpark()
 	{
-		tics = curState.tics + manager.tickdelay;
+		if (curState && manager) { tics = curState.tics + manager.tickdelay; }
 
 		A_SpawnItemEx("SparkG", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE);
 	}
@@ -495,7 +495,7 @@ class AstroRocket : Actor
 
 	void SpawnSpark()
 	{
-		tics = curState.tics + manager.tickdelay;
+		if (curState && manager) { tics = curState.tics + manager.tickdelay; }
 
 		A_SpawnItemEx("SparkG", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE);
 	}

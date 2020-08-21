@@ -8,7 +8,7 @@ class Boulder : Actor
 	Default
 	{
 		BounceType "Hexen";
-		BounceFactor 1.0;
+		BounceFactor 0.6;
 		WallBounceFactor 0.25;
 		DeathSound "boulder/stop";
 		Damage 250;
@@ -51,6 +51,8 @@ class Boulder : Actor
 		if (target) { angle = target.angle; }
 
 		A_StartSound("boulder/roll", CHAN_5, CHANF_LOOPING, 1.0);
+
+		if (bHugger) { bouncefactor = 1.0; }
 
 		Super.PostBeginPlay();
 	}
