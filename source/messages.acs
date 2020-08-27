@@ -1,5 +1,40 @@
 int messagestart; // Used to track layer of hud messages that we should be OK to start on
 
+// Calculate time (in tics, 1/35 of a second) to display the message on-screen,
+// hopefully giving players enough time to read it, whilst not displaying it
+// for too long. "message" is the identifier of a LANGUAGE entry.
+function int GetMessageTime(int message)
+{
+	int extraTime = 105; // 3 extra seconds
+	int perWordTime = 10; // Tics per word
+	int longWordPerCharTics = 3; // Tics to add per char in a long word
+	str string = StrParam(l: message);
+	int length = StrLen(string);
+	int spaces = 0; // Number of spaces. Add 1 to get word count, multiply by perWordTime and add longWordTime and extraTime to get estimated reading time.
+	int longWordTime = 0; // Extra time to add for long words (7 or more letters)
+	int consecutiveChars = 0; // Consecutive letters
+	for (int i = 0; i < length; i++)
+	{
+		int strchar = GetChar(string, i);
+		// Found a space. 
+		if (strchar == ' ')
+		{
+			spaces += 1;
+			if (consecutiveChars >= 7)
+			{
+				longWordTime += longWordPerCharTics * consecutiveChars;
+			}
+			consecutiveChars = 0;
+		}
+		else
+		{
+			consecutiveChars += 1;
+		}
+	}
+	int totalTime = (spaces + 1) * perWordTime + longWordTime + extraTime;
+	return totalTime;
+}
+
 function int GetMessageStart (void)
 {
 	messagestart -= 4;
@@ -11,6 +46,9 @@ function int GetMessageStart (void)
 script "BoADialogue"(int headtalky,int headsilent,int message)
 {
 	int messagelayer = GetMessageStart();
+	int basemessagetime = GetMessageTime(message);
+	int talktime = basemessagetime * 3 / 4;
+	int resttime = basemessagetime - talktime;
 
 	// Fade in HUD BGs
 	GiveInventory("IncomingMessage", 1);
@@ -40,12 +78,12 @@ script "BoADialogue"(int headtalky,int headsilent,int message)
 	hudmessagebold(l:message; HUDMSG_TYPEON | HUDMSG_LOG, messagelayer + 2, CR_GRAY, 100.1, 4.1, 999.0, 0.03, 1.0);
 
 	// Stop talk animation
-	delay(5*35);
+	delay(talktime);
 	SetHudSize(320, 200, true);
 	SetFont(headsilent);
 	hudmessagebold(s:"A"; HUDMSG_PLAIN, messagelayer + 3, CR_UNTRANSLATED, 21.0, 16.0, 0.0);
 
-	delay(5*35);
+	delay(resttime);
 
 	// Fade out the portrait
 	hudmessagebold(s:"A"; HUDMSG_FADEINOUT, messagelayer + 3, CR_UNTRANSLATED, 21.0, 16.0, 0.0, 0.0, 1.0);
@@ -68,6 +106,9 @@ script "BoADialogue"(int headtalky,int headsilent,int message)
 script "BoADevComment" (int langEntry)
 {
 	if (GetCvar("boa_devcomswitch")) {
+		// Time to show message
+		int basemessagetime = GetMessageTime(langEntry);
+
 		// Position
 		int devcx = 50.1;
 		int devcy = 400.1;
@@ -90,7 +131,7 @@ script "BoADevComment" (int langEntry)
 		HudMessage(l:langEntry; HUDMSG_TYPEON, 2000, CR_UNTRANSLATED, devcx, devcy, 25.0, 0.02, 2.0, 1.0);
 
 		// Wait for 25 seconds and fade out message
-		Delay(35 * 25);
+		Delay(basemessagetime);
 		HudMessage(l:langEntry; HUDMSG_FADEOUT, 2000, CR_UNTRANSLATED, devcx, devcy, 0.0, 0.5, 1.0);
 	}
 }
