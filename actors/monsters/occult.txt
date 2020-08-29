@@ -488,10 +488,10 @@ ACTOR ZyklonMonk : UndeadMonk
 	}
 }
 
-ACTOR SSCultist : Guard
+ACTOR SSTemplar : Guard
 {
 	//$Category Monsters (BoA)/Occult
-	//$Title SS Cultist
+	//$Title SS Templar
 	Obituary "$SSCULT"
 	Health 100
 	Mass 125
@@ -501,9 +501,9 @@ ACTOR SSCultist : Guard
 	DropItem "12GaugeAmmo" 96
 	DropItem "12GaugeAmmo" 128
 	DropItem "TrenchShotgun" 32
-	PainSound "sscultist/pain"
-	DeathSound "sscultist/die"
-	SeeSound "sscultist/see"
+	PainSound "sstemplar/pain"
+	DeathSound "sstemplar/die"
+	SeeSound "sstemplar/see"
 	States
 	{
 	Spawn:
@@ -566,14 +566,14 @@ ACTOR SSCultist : Guard
 		"####" F 4 A_FaceTarget
 	Missile.Aimed:
 		"####" F 4 A_FaceTarget
-		"####" G 0 A_StartSound("sscultist/shoot", CHAN_6)
+		"####" G 0 A_StartSound("sstemplar/shoot", CHAN_6)
 		"####" G 0 {user_count++; if(user_count > 11) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
 		"####" G 0 A_SpawnProjectile("EnemyShotgunTracer",48,-8,random(-2,2))
 		"####" G 0 A_SpawnItemEx("ShotgunCasing", 16,0,60, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" G 4 LIGHT(PRIESTF)
 		"####" F 2 A_MonsterRefire(15,"See")
 		"####" F 8 A_FaceTarget
-		"####" G 0 A_StartSound("sscultist/shoot", CHAN_7)
+		"####" G 0 A_StartSound("sstemplar/shoot", CHAN_7)
 		"####" G 0 {user_count++; if(user_count > 11) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
 		"####" G 0 A_SpawnProjectile("EnemyShotgunTracer",48,-8,random(-2,2))
 		"####" G 0 A_SpawnItemEx("ShotgunCasing", 16,0,60, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION)
