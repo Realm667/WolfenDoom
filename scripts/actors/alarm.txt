@@ -124,6 +124,14 @@ class AlarmPanel : SwitchableDecoration
 	Default
 	{
 		//$Category Misc (BoA)
+		//$Arg0 Script number
+		//$Arg0Tooltip Script to call when alarm is activated or deactivated.  Alarm status passed as Arg 1.
+		//$Arg0Str Script name
+		//$Arg1 IGNORED
+		//$Arg1Tooltip DO NOT SET IN EDITOR.  Used to pass the current status of the alarm to the script in Arg 0.  1 = on, 0 = off.
+		//$Arg2 Script Argument 1
+		//$Arg3 Script Argument 2
+		//$Arg4 Script Argument 3
 		+DONTTHRUST //...in order to not move from where it is if hit but not enough - ozy81
 		+WALLSPRITE
 		+ROLLSPRITE
@@ -135,7 +143,6 @@ class AlarmPanel : SwitchableDecoration
 		Height 48;
 		Radius 24;
 		Health 1; //make sure that a minimum of damage destroys it...
-//		DamageFactor "
 	}
 
 	States
@@ -163,18 +170,20 @@ class AlarmPanel : SwitchableDecoration
 					marker.master = activator;
 				}
 
+				if (args[0] && active) { level.ExecuteSpecial(226, activator, null, 0, args[0], 0, false, args[2], args[3]); }
 				active = false;
 			}
 			Loop;
 		Active:
-			"####" P 1 Light("LAZERRED")
-			{
+			"####" P 1 Light("LAZERRED");
+			"####" P 0 {
 				counter = 0;
 				if (NaziStandard(activator)) { NaziStandard(activator).activationgoal = null; }
 				activator = null;
 
 				if (marker) { marker.Destroy(); }
 
+				if (args[0] && !active) { level.ExecuteSpecial(226, activator, null, 0, args[0], 0, true, args[2], args[3]); }
 				active = true;
 			}
 			Loop;
@@ -215,7 +224,7 @@ class AlarmPanel : SwitchableDecoration
 
 	override void Activate (Actor activator)
 	{
-		if (health <= 0) { return; } // Just in case an actor somehow still calls the Activate function (
+		if (health <= 0) { return; } // Just in case an actor somehow still calls the Activate function
 
 		target = activator;
 		A_SetPeerState();
