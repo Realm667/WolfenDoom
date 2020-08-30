@@ -337,6 +337,12 @@ ACTOR SSMP40Guard : SSGuard
 		"####" E 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See
+	NaziSalute: //for c3m5_c --N00b
+		SSMG A 0
+		SSMG Y 8
+		SSMG Z 14
+		SSMG Y 6
+		Goto Spawn
 	}
 }
 
@@ -735,6 +741,10 @@ ACTOR SSOfficer : Officer
 		"####" DDDD 1 A_Wander
 		"####" A 0 A_Look
 		Loop
+	NaziSalute: //for c3m5_c --N00b
+		SSOF A 1
+		SSOF Y 16
+		Goto Spawn
 	}
 }
 
