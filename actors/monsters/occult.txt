@@ -416,10 +416,10 @@ ACTOR NaziGeist : Geist
 		"####" B 1 BRIGHT A_SetTranslucent(1.0)
 		"####" CD 4 BRIGHT A_FaceTarget
 		"####" A 0 A_Jump(64,3)
-		"####" A 4 BRIGHT A_PainAttack("Geist",random(0,360),PAF_NOSKULLATTACK | PAF_NOTARGET,6)
+		"####" A 4 BRIGHT {A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), 32, 0, 0, 0, 0); A_PainAttack("Geist",random(0,360),PAF_NOSKULLATTACK | PAF_NOTARGET,6);}
 		"####" A 0 A_Jump(128,3)
-		"####" A 0 A_PainAttack("Geist",random(0,360),PAF_NOSKULLATTACK | PAF_NOTARGET,4)
-		"####" A 4 BRIGHT A_PainAttack("Geist",random(0,360),PAF_NOSKULLATTACK | PAF_NOTARGET,2)
+		"####" A 0 {A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), 32, 0, 0, 0, 0); A_PainAttack("Geist",random(0,360),PAF_NOSKULLATTACK | PAF_NOTARGET,4);}
+		"####" A 4 BRIGHT {A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), 32, 0, 0, 0, 0); A_PainAttack("Geist",random(0,360),PAF_NOSKULLATTACK | PAF_NOTARGET,2);}
 		"####" B 3 BRIGHT
 		"####" BCCCC 1 BRIGHT A_Fadeout(0.1)
 		"####" D 4 BRIGHT
