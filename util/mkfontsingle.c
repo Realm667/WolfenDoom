@@ -33,6 +33,8 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+uint8_t littleEndian = 1;
+
 struct image_data {
 	uint32_t width;
 	uint32_t height;
@@ -84,9 +86,12 @@ int writepng( struct image_data* idata, const char *filename, int ox, int oy )
 	unsigned char* grab_name = (unsigned char*) "grAb";
 	int offsets[2];
 	offsets[0] = ox;
-	offsets[0] = oy;
-	swap32(offsets + 0);
-	swap32(offsets + 1);
+	offsets[1] = oy;
+	if (littleEndian)
+	{
+		swap32(offsets + 0);
+		swap32(offsets + 1);
+	}
 	png_unknown_chunk grab_chunk;
 	memcpy(grab_chunk.name, grab_name, 5);
 	grab_chunk.data = (png_bytep) offsets;
@@ -185,6 +190,12 @@ int main( int argc, char **argv )
 		);
 		return 1;
 	}
+	char endie[4] = {1, 0, 0, 0};
+	int* enda = (int*) endie;
+	if ( *enda != 1 )
+	{
+		littleEndian = 0;
+	}
 	if ( FT_Init_FreeType(&ftlib) )
 		return 2;
 	uint32_t range[2] = {0x0000,0x00FF};
@@ -219,7 +230,7 @@ int main( int argc, char **argv )
 			{
 				char fname[256];
 				snprintf(fname,256,"%04X.png",i);
-				writepng(&idata, fname, fnt->glyph->bitmap_left, pxsiz-fnt->glyph->bitmap_top + upshift);
+				writepng(&idata, fname, -fnt->glyph->bitmap_left, fnt->glyph->bitmap_top + upshift);
 			}
 			free(idata.data);
 		}
