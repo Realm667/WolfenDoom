@@ -26,6 +26,7 @@
 	TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 	SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+#include <math.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
@@ -198,7 +199,7 @@ int main( int argc, char **argv )
 	}
 	if ( FT_Init_FreeType(&ftlib) )
 		return 2;
-	uint32_t range[2] = {0x0000,0x00FF};
+	uint32_t range[2] = {0x0021,0x00FF};
 	sscanf(argv[2],"%d",&pxsiz);
 	if ( argc > 3 ) sscanf(argv[3],"%x-%x",&range[0],&range[1]);
 	if ( argc > 4 ) sscanf(argv[4],"%d",&gradient);
@@ -221,16 +222,22 @@ int main( int argc, char **argv )
 			idata.channels = channels;
 			idata.data = malloc(idata.width * idata.height * channels);
 			memset(idata.data, 0, idata.width * idata.height * channels);
-			int xx = 0;
-			int yy = 0;
-			// draw drop shadow first
-			// draw_glyph(&fnt->glyph->bitmap,0,xx+1,yy+1);
-			int valid = draw_glyph(&idata, &fnt->glyph->bitmap,255,xx,yy);
+			// Position within image
+			int xpos = 0;
+			int ypos = 0;
+			// Calculate glyph X and Y offsets
+			// printf("Glyph %d linearHoriAdvance: %.3f\n", i, (float) fnt->glyph->linearHoriAdvance / 65536.0);
+			// printf("Glyph %d linearVertAdvance: %.3f\n", i, (float) fnt->glyph->linearVertAdvance / 65536.0);
+			int glyphHeight = (int)roundf((float) fnt->glyph->linearVertAdvance / 65536.0);
+			int glyphWidth = (int)roundf((float) fnt->glyph->linearHoriAdvance / 65536.0);
+			int xoffset = -fnt->glyph->bitmap_left;
+			int yoffset = fnt->glyph->bitmap_top - glyphHeight + upshift;
+			int valid = draw_glyph(&idata, &fnt->glyph->bitmap,255,xpos,ypos);
 			if ( valid )
 			{
 				char fname[256];
 				snprintf(fname,256,"%04X.png",i);
-				writepng(&idata, fname, -fnt->glyph->bitmap_left, fnt->glyph->bitmap_top + upshift);
+				writepng(&idata, fname, xoffset, yoffset);
 			}
 			free(idata.data);
 		}
