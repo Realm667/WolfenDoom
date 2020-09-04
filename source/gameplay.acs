@@ -1,8 +1,9 @@
 // Map checks/actions //
 // Special mission numbers - force a level number to map to a specific mission number
-#define SPECIAL_MISSION_COUNT 1
-int special_mission_numbers[SPECIAL_MISSION_COUNT][2] = {
-	{103, 13}
+#define SPECIAL_MISSION_COUNT 2
+int special_mission_numbers[SPECIAL_MISSION_COUNT][3] = {
+	{103, 13},
+	{104, -1},
 };
 
 // Set mission/briefing number
@@ -15,6 +16,11 @@ script "MissionNumber" OPEN
 	{
 		if (mapnum == special_mission_numbers[i][0])
 		{
+			if (special_mission_numbers[i][1] == -1)
+			{
+				// If the target mission number is -1, don't change the mission number
+				Terminate;
+			}
 			mission_number = special_mission_numbers[i][1];
 			special_misnum = true;
 		}
