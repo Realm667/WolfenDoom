@@ -128,8 +128,9 @@ void putpixel( struct image_data* idata, uint8_t v, uint8_t a, uint32_t x, uint3
 	idata->data[tpos+1] = alph;
 	// blend color
 	int col = idata->data[tpos]*(a-255);
-	col += v*a;
-	col /= 255;
+	// col += v*a;
+	col += v;
+	if ( col > 255 ) col = 255;
 	idata->data[tpos] = col;
 }
 
@@ -180,7 +181,7 @@ int main( int argc, char **argv )
 	{
 		fprintf(stderr,"usage: mkfontsingle <font name> <pxsize>"
 			" [unicode range (hex)] [gradient type] [y offset]\n\n"
-			" gradient type: 1 top to bottom, 2 bottom to top"
+			"gradient type: 1 is darker at the bottom, 2 is darker at the top\n"
 		);
 		return 1;
 	}
@@ -195,7 +196,6 @@ int main( int argc, char **argv )
 		return 4;
 	if ( FT_Set_Pixel_Sizes(fnt,0,pxsiz) )
 		return 8;
-	FT_Property_Set(ftlib, "truetype", "interpreter-version", 40);
 	int channels = 2; // Gray/alpha
 	struct image_data idata;
 	FT_Select_Charmap(fnt,FT_ENCODING_UNICODE);
