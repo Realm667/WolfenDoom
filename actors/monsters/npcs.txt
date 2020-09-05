@@ -229,6 +229,34 @@ ACTOR StatistZhukov : StatistBarkeeper
 	}
 }
 
+ACTOR StatistSSMerchant : StatistBarkeeper
+{
+	//$Title Stan, SS Merchant (NPC)
+	Scale 0.67
+	-USESPECIAL
+	States
+	{
+	Spawn:
+		MERK A 1 A_SetTics(random(20,40)) //possible whistle here
+		"####" BCDCCDBD 1 A_SetTics(random(20,40))
+		"####" "#" 1 A_Jump(128,"SeeAround","SellLeft","SellRight")
+		Loop
+	SeeAround:
+		"####" DEFEEDFD 1 A_SetTics(random(20,40))
+		"####" "#" 1 A_Jump(32,"Spawn")
+		"####" "#" 1 A_Jump(96,"SellLeft","SellRight")
+		Goto Spawn
+	SellLeft:
+		"####" GHIJKKJHJLGF 1 A_SetTics(random(60,120))
+		"####" "#" 1 A_Jump(192,"SeeAround")
+		Goto Spawn
+	SellRight:
+		"####" NOPQRSOPNONM 1 A_SetTics(random(60,120))
+		"####" "#" 1 A_Jump(192,"SeeAround")
+		Goto Spawn
+	}
+}
+
 ACTOR StatistWehrmachtSpy: StatistBarkeeper
 {
 	//$Title Surrendering Wehrmacht Soldier for C3M5_A (NPC)
