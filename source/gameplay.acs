@@ -81,6 +81,16 @@ script "ChangeMap" (void)
 	Exit_Normal(0);
 }
 
+//Clear inventory in order to avoid potential map breakers with chosen items, this exists mainly for DisguiseFailToken --ozy81
+//see https://github.com/Realm667/WolfenDoom/issues/281#issuecomment-687553459
+script "FixTokens" (void)
+{
+	TakeInventory("DisguiseFailToken",9999);
+	TakeInventory("RadioPickup",9999);
+	TakeInventory("TurretHeatAmmo",9999);
+	TakeInventory("TurretBulletAmmo",9999);
+}
+
 //mxd. Mutants despawn checks
 script "DisableMutants" (void)
 {
