@@ -68,6 +68,15 @@ ACTOR FuelDrum : 3dObstacle //MaxED
 ACTOR FuelDrumFix : FuelDrum
 {
 	//$Title Fuel Drum, non-solid for players
+	
+	+THRUSPECIES
+	Species "Player"
+}
+
+ACTOR FuelDrumSide : FuelDrum
+{
+	//$Title Fuel Drum on Side, non-solid for players
+	Height 24
 	+THRUSPECIES
 	Species "Player"
 }

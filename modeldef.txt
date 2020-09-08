@@ -4092,7 +4092,6 @@ Model FuelDrum
 {
 	Path "models/"
 	Model 0 "fueldrum.md3"
-	Skin 0 "fueldrum.jpg"
 	USEACTORPITCH
 	USEACTORROLL
 
@@ -4103,7 +4102,16 @@ Model FuelDrumFix
 {
 	Path "models/"
 	Model 0 "fueldrum.md3"
-	Skin 0 "fueldrum.jpg"
+	USEACTORPITCH
+	USEACTORROLL
+
+	FrameIndex MDLA A 0 0
+}
+
+Model FuelDrumSide
+{
+	Path "models/"
+	Model 0 "fueldrum_s.md3"
 	USEACTORPITCH
 	USEACTORROLL
 
@@ -6647,8 +6655,8 @@ Model FlakVierling3D //Destroyed
 Model FlakVierling3D_Ship
 {
 	Path "models/"
-	Model 0 "flak_a.md3"
-	Model 1 "flak_c.md3"
+	Model 0 "flak_c.md3"
+	Model 1 "flak_a.md3"
 	Scale 1.5 1.5 1.5
 	USEACTORPITCH
 	USEACTORROLL
