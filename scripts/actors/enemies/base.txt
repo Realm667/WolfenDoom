@@ -414,6 +414,19 @@ class Base : Actor
 			if (count > maxcount) { return count; }
 		}
 
+		it = ThinkerIterator.Create("Nazi", Thinker.STAT_DEFAULT - 5);
+		while (mo = Nazi(it.Next()))
+		{
+			if (mo == self) { continue; }
+			if (!mo.bShootable || mo.health <= 0) { continue; }
+			if (Distance3D(mo) > range) { continue; }
+			if (!mo.IsVisible(self, true)) { continue; }
+
+			count++;
+
+			if (count > maxcount) { return count; }
+		}
+
 		return count;
 	}
 
@@ -713,7 +726,6 @@ class Base : Actor
 
 	static void DeactivateAll(String classname)
 	{
-		console.printf("called");
 		ThinkerIterator it;
 		Actor mo;
 
