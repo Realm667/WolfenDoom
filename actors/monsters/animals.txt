@@ -130,6 +130,7 @@ ACTOR BatFamiliar : BatBase
 	Monster
 	-CANPUSHWALLS
 	-CANUSEWALLS
+	-COUNTKILL
 	-MTHRUSPECIES
 	-THRUSPECIES
 	+FLOAT
@@ -140,7 +141,7 @@ ACTOR BatFamiliar : BatBase
 	DeathSound "batfam/death"
 	ActiveSound "batfam/idle"
 	HitObituary "$BAT"
-	Base.Shadow 0  //needed for shadows
+	BatBase.MaxChaseTime 7
 	States
 	{
 	Spawn:
@@ -186,7 +187,6 @@ ACTOR BatFamiliar : BatBase
 ACTOR ZBatFamiliar : BatFamiliar
 {
 	//$Title Zyklon Bat
-	Base.Shadow 0  //needed for shadows
 	FloatSpeed 3.33333333
 	Speed 4.33333334
 	DamageFactor "MutantPoison", 0
@@ -195,6 +195,7 @@ ACTOR ZBatFamiliar : BatFamiliar
 	BloodColor "00 A0 7D"
 	BloodType "ZombieBlood"
 	HitObituary "$ZBAT"
+	BatBase.MaxChaseTime 12
 	States
 	{
 	Spawn:
@@ -226,15 +227,15 @@ ACTOR ZBatFamiliar : BatFamiliar
 		Goto See
 	Death:
 		ZFAM D 5 A_ScreamAndUnblock
-		"####" E 2 {bMThruSpecies = TRUE; bThruSpecies = TRUE;}
-		BFAM F 2
-		ZFAM D 1
-		Stop
+		ZFAM E 5 {bMThruSpecies = TRUE; bThruSpecies = TRUE; bNoGravity = FALSE;}
+		BFAM F 5
+		ZFAM D 5
+		Goto Death+1
 	Crash:
 		BFAM G 6 A_StartSound("batfam/crash")
 		"####" H 7
 		"####" I 8
-		"####" J -1 {bMThruSpecies = TRUE; bThruSpecies = TRUE;}
+		"####" J -1 {bMThruSpecies = TRUE; bThruSpecies = TRUE; bNoGravity = FALSE;}
 		Stop
 	}
 }

@@ -34,10 +34,7 @@ class EffectInfo // Should just be a struct, but we can't use structs in dynamic
 class EffectsManager : Thinker
 {
 	Array<EffectInfo> effects;
-	Array<Actor> particlequeue;
-	transient CVar maxqueuecvar;
-	int interval, tickdelay;
-	double particlescaling;
+	int interval;
 
 	const cycletime = 35;
 
@@ -57,7 +54,7 @@ class EffectsManager : Thinker
 		if (!force)
 		{
 			if (effect.tid || effect.master) { return; } // Don't add effects with a tid or a master, because we can't guarantee they'll be spawned back in when they are activated/deactivated
-			if (effect.bSolid && !effect.bNoInteraction) { return; } // Only add non-solid or non-interactive objects
+			if (!effect.bNoDamage && effect.bSolid && !effect.bNoInteraction) { return; } // Only add non-solid or non-interactive objects
 		}
 
 		EffectsManager manager = EffectsManager.GetManager();
@@ -151,22 +148,9 @@ class EffectsManager : Thinker
 		effect.Destroy();
 	}
 
-	void QueueParticle(Actor mo)
-	{
-		particlequeue.Insert(0, mo);
-	}
-
-	override void PostBeginPlay()
-	{
-		Super.PostBeginPlay();
-
-		maxqueuecvar = CVar.FindCVar("maxparticleactors");
-	}
-
 	override void Tick()
 	{
 		CullEffects();
-		CullParticles();
 	}
 
 	void CullEffects()
@@ -199,7 +183,7 @@ class EffectsManager : Thinker
 				if (!check) { check = players[p].mo; }
 				if (!check) { continue; }
 
-				double range = effects[i].range <= 0 ? sfxlod : effects[i].range;
+				double range = effects[i].range <= 0 ? boa_sfxlod : effects[i].range;
 
 				if ((level.Vec3Diff(check.pos, effects[i].position)).length() < range) { inrange = true; }
 			}
@@ -238,46 +222,13 @@ class EffectsManager : Thinker
 
 		effects.ShrinkToFit();
 	}
-
-	void CullParticles()
-	{
-		int maxqueue = 512;
-		if (maxqueuecvar) { maxqueue = max(1, maxqueuecvar.GetInt()); }
-
-		Array<Actor> t;
-
-		for (int s = 0; s < particlequeue.Size(); s++)
-		{
-			if (!particlequeue[s]) { continue; }
-
-			if (s > maxqueue)
-			{
-				if (particlequeue[s] is "ParticleBase") { particlequeue[s].SetStateLabel("Fade"); }
-				else { particlequeue[s].Destroy(); }
-
-				particlequeue.Delete(s);
-			}
-			else { t.Push(particlequeue[s]); }
-		}
-
-		particlequeue.Move(t);
-
-		int size = particlequeue.Size();
-		if (size > maxqueue * 0.75) { tickdelay = clamp(int((size - (maxqueue * 0.75)) / (maxqueue * 0.25) * 10), 0, 10); }
-		else { tickdelay = 0; }
-
-		particlescaling = max(0.1, 1.0 - (tickdelay / 10));
-
-// Debug output: particle queue size and current tick delay
-//if (level.time % 35 == 0) { console.printf("%i  >> %i", size, tickdelay); }
-	}
 }
 
 class EffectSpawner : SwitchableDecoration
 {
+	ParticleManager manager;
 	transient CVar switchcvar;
 	String switchvar;
-	EffectsManager manager;
 	int range;
 
 	int flags;
@@ -293,7 +244,7 @@ class EffectSpawner : SwitchableDecoration
 		Spawn:
 		Inactive:
 			TNT1 A -1;
-			Stop;
+			Wait;
 	}
 
 	override void PostBeginPlay()
@@ -302,10 +253,10 @@ class EffectSpawner : SwitchableDecoration
 
 		if (switchvar.length()) { switchcvar = CVar.FindCVar(switchvar); }
 
-		manager = EffectsManager.GetManager();
+		manager = ParticleManager.GetManager();
 		if (!manager) { return; }
 
-		if (range > 0 && !bDontCull) { manager.AddEffect(self, range > 0 ? min(range, sfxlod) : sfxlod); }
+		if (range > 0 && !bDontCull) { EffectsManager.Add(self, range > 0 ? min(range, boa_sfxlod) : boa_sfxlod); }
 
 		if (bDormant || SpawnFlags & MTF_DORMANT) { Deactivate(null); }
 		else { Activate(null); }
@@ -342,7 +293,7 @@ class EffectBase : SimpleActor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		EffectsManager.Add(self, sfxlod);
+		EffectsManager.Add(self, boa_sfxlod);
 	}
 }
 
@@ -351,7 +302,7 @@ class GrassBase : SimpleActor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		EffectsManager.Add(self, grasslod);
+		EffectsManager.Add(self, boa_grasslod);
 	}
 }
 
@@ -360,7 +311,7 @@ class SceneryBase : Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		EffectsManager.Add(self, scenelod);
+		EffectsManager.Add(self, boa_scenelod);
 	}
 }
 
@@ -369,11 +320,11 @@ class TreesBase : Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		EffectsManager.Add(self, treeslod);
+		EffectsManager.Add(self, boa_treeslod);
 	}
 }
 
-class ParticleBase : SimpleActor // Use for non-interactive actors that move with their own velocity and might end up outside of the map
+class ParticleBase : SimpleActor // Use for non-interactive effects actors only!
 {
 	int checktimer;
 	int flags;
@@ -383,7 +334,7 @@ class ParticleBase : SimpleActor // Use for non-interactive actors that move wit
 	States
 	{
 		Fade:
-			"####" "#" 1 A_FadeOut(0.25, FTF_REMOVE);
+			"####" "#" 1 A_FadeOut(0.1, FTF_REMOVE);
 			Loop;
 	}
 

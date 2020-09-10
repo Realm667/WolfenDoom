@@ -21,7 +21,7 @@ class CinderSpawner : EffectSpawner
 		+NOCLIP
 		+NOGRAVITY
 		EffectSpawner.Range 1024;
-		EffectSpawner.SwitchVar "cinderswitch";
+		EffectSpawner.SwitchVar "boa_cinderswitch";
 		+EffectSpawner.ALLOWTICKDELAY
 	}
 
@@ -50,15 +50,7 @@ class CinderSpawner : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-
-		[spawned, mo] = A_SpawnItemEx("FloatingCinder", random(-Args[0],Args[0]), random(-Args[0],Args[0]), random(0,Args[1]), random(Args[2],Args[3]), 0, random(-Args[2],Args[2]), random(-4, 4), 128, Args[4]);
-
-		if (mo && manager)
-		{
-			manager.QueueParticle(mo);
-		}
+		A_SpawnItemEx("FloatingCinder", random(-Args[0],Args[0]), random(-Args[0],Args[0]), random(0,Args[1]), random(Args[2],Args[3]), 0, random(-Args[2],Args[2]), random(-4, 4), 128, Args[4]);
 	}
 }
 
@@ -85,16 +77,8 @@ class CinderSpawnerSky : SnowSpawner
 	{
 		EffectSpawner.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-
-		if (args[2]) { [spawned, mo] = A_SpawnItemEx("FloatingCinder", random(-Args[0], Args[0]), 0, 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0),frandom(-1.0, -3.0), random(0, 359), 0, Args[1]); }
-		else { [spawned, mo] = A_SpawnItemEx("FloatingCinder", random(-Args[0], Args[0]), random(-Args[0], Args[0]), 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, 0, Args[1]); }
-
-		if (mo && manager)
-		{
-			manager.QueueParticle(mo);
-		}
+		if (args[2]) { A_SpawnItemEx("FloatingCinder", random(-Args[0], Args[0]), 0, 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0),frandom(-1.0, -3.0), random(0, 359), 0, Args[1]); }
+		else { A_SpawnItemEx("FloatingCinder", random(-Args[0], Args[0]), random(-Args[0], Args[0]), 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, 0, Args[1]); }
 	}
 }
 
@@ -102,7 +86,7 @@ class FloatingCinder : ParticleBase
 {
 	Default
 	{
-		DistanceCheck "sfxlod";
+		DistanceCheck "boa_sfxlod";
 		Radius 0;
 		Height 0;
 		+DONTSPLASH

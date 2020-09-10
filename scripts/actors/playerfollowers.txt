@@ -1224,6 +1224,12 @@ class PrisonerAgent : PlayerFollower
 		Spawn:
 			TORT A 1;
 			Goto Initialize;
+		Saved:
+			TORT OPQRS 4;
+			TORT T 4 {vel.z += 8.0;}
+			TORT U 4 A_StartSound("prisoner/yeeeah", CHAN_WEAPON);
+			TORT VUTRP 4;
+			Goto Spawn;
 	}
 }
 
@@ -1400,6 +1406,12 @@ class DouglasArmed : PlayerFollower2
 		Spawn:
 			DARR A 1;
 			Goto Initialize;
+		Luger:
+			"####" EF 10 A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
+			Luger.Refire:
+				"####" G 8 LIGHT("NaziFire") A_FollowerFire("LugerTracer", "9MMCasing", "nazi/pistol", 54, 1, 1);
+				"####" F 8;
+ 				"####" F 0 A_RefireReload("Luger.Refire", "Luger.Reload", 128, Random(4, 8));
 	}
 }
 

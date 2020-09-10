@@ -40,7 +40,7 @@ gameinfo
 
 	AddEventHandlers = "InventoryClearHandler", "WaterHandler", "CustomShaderHandler", "SpriteShadowHandler", 
 	"MineSweeperHandler", "CompassHandler", "MapStatsHandler", "PersistentMapStatsHandler", "UnderlayRenderer", 
-	"TcPostProcessShaderHandler", "ZFlatDecalKiller", "SafeHandler", "LoadScreen", "KeyHandler"
+	"TcPostProcessShaderHandler", "SafeHandler", "LoadScreen", "KeyHandler", "ParticleManager"
 }
 
 Automap
@@ -53,7 +53,7 @@ Automap
 	YourColor = "29 3C CC"
 	ThingColor = "88 88 88"			//Decorations
 	ThingColor_Item = "20 9C FC"		//Weapons and Ammo
-	ThingColor_CountItem = "FC F4 20"	//Treasure (usually)
+	ThingColor_CountItem = "FF BB 00"	//Treasure (usually)
 	ThingColor_Monster = "FC 00 00"
 	ThingColor_Friend = "00 FC 00"
 
@@ -67,7 +67,8 @@ Automap
 	PortalColor = "BB BB BB"
 
 	SpecialWallColor = "AE 0E 0E"
-	SecretWallColor = "FF 00 FF"
+	SecretSectorColor = "99 89 00"
+	UnexploredSecretColor = "FF EF 00"
 
 	GridColor = "D0 D0 D0"
 
@@ -82,7 +83,7 @@ Automap_Overlay
 	YourColor = "29 3C CC"
 	ThingColor = "88 88 88"			//Decorations
 	ThingColor_Item = "20 9C FC"		//Weapons and Ammo
-	ThingColor_CountItem = "FC F4 20"	//Treasure (usually)
+	ThingColor_CountItem = "FF BB 00"	//Treasure (usually)
 	ThingColor_Monster = "FC 00 00"
 	ThingColor_Friend = "00 FC 00"
 
@@ -96,7 +97,8 @@ Automap_Overlay
 	PortalColor = "44 44 44"
 
 	SpecialWallColor = "AE 0E 0E"
-	SecretWallColor = "FF 00 FF"
+	SecretSectorColor = "99 89 00"
+	UnexploredSecretColor = "FF EF 00"
 
 	GridColor = "2F 2F 2F"
 
@@ -750,6 +752,7 @@ DoomEdNums
 	8006=SSBJUniform
 	8007=CCBJUniform
 	8008=GrapplingHook
+	8009=TrainingTarget
 	8181=CinderSpawner
 	8182=CinderSpawnerSky
 	8183=LeavesSpawner
@@ -928,6 +931,7 @@ DoomEdNums
 	10731=JungleGrass3
 	10732=JungleGrass4
 	10733=GrassSpawnerJungle
+	10777=PrisonerDeco
 	10778=PrisonerFree
 	10779=PrisonerEnemyBoss_End
 	10780=PrisonerEnemyBoss
@@ -1055,6 +1059,7 @@ DoomEdNums
 	12030=MGTurret
 	12031=Longinus_Hitler
 	12032=DeathKnight
+	12033=WShotgunGuard
 	12034=FatMan
 	12035=Scientist
 	12036=Doberman
@@ -1217,6 +1222,7 @@ DoomEdNums
 	12811=WPanzerGuard
 	12812=WSniper_Switchable
 	12813=WSniper_CrouchSwitchable
+	12814=AKFlamerSoldier
 	12815=PhantomBoss
 	13001=FlakJacket
 	13002=HeavyArmor
@@ -1493,7 +1499,7 @@ DoomEdNums
 	18918=SSZombieBrain
 	18919=SSZombieOfficer
 	18920=ZGermanShepherd
-	18921=SSCultist
+	18921=SSTemplar
 	18922=Zapper
 	18923=StatistSinger
 	18924=KittySinger
@@ -1501,6 +1507,7 @@ DoomEdNums
 	18926=StatistDimitri
 	18927=StatistSSAscher
 	18928=StatistPeeingMan
+	18929=EisenhimmelHangarDoors
 	18949=Ink6
 	18950=Plant3
 	18951=Plant4
@@ -1876,6 +1883,7 @@ DoomEdNums
 	19595=Debris_Vent_FloorCeiling
 	19596=Debris_Wood2
 	19597=Debris_Wood_FloorCeiling
+	19598=Debris_Wood_FloorCeiling2
 	19600=COD_OilLamp
 	19601=Chandelier4Switchable
 	19602=Chandelier3Switchable
@@ -2076,6 +2084,7 @@ DoomEdNums
 	20218=Forklift
 	20219=MedTruck
 	20220=MedTruckD
+	20221=Luftschiff_Deco
 	21234=Tree1
 	21235=SecretUFO
 	21236=Exclamation
@@ -2243,6 +2252,8 @@ DoomEdNums
 	25113=StatistStierlitz3
 	25114=StatistWehrmachtSpy
 	25115=Camp_StaticSitTalk
+	25116=StatistSpion
+	25117=StatistSSMerchant
 	29395=BubbleSpawner
 	29990=BomberInAir_C3M2
 	29991=BomberInAir
@@ -2367,6 +2378,8 @@ DoomEdNums
 	31780=Planks1
 	31781=Planks2
 	31782=Planks3
+	31783=SSTank3Part1
+	31784=SSTank3Part2
 	31790=Suitcase1
 	31989=TMBlazko4
 	31990=TMMarine1

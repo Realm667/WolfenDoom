@@ -22,6 +22,9 @@ $pitchshift menu/dismiss 0
 $pitchshift menu/invalid 0
 $pitchshift menu/prompt 0
 
+$random menu/quit1 { scrm1 scrm2 scrm3 scrm4 scrm5 }
+$random menu/quit2 { scrm1 scrm2 scrm3 scrm4 scrm5 }
+
 ///////////
 //WEAPONS//
 ///////////
@@ -830,6 +833,9 @@ Naz4Dt10 Naz4Dt10
 Naz4Dt11 Naz4Dt11
 Naz4Dt12 Naz4Dt12
 
+//Winston Churchill Speech
+speech/winston_churchill WINCHRCH
+
 //Voice 1
 $random Nazi1/Death { Naz1Dt02 Naz1Dt02 Naz1Dt03 Naz1Dt03 Naz1Dt04 Naz1Dt04 Naz1Dt05 Naz1Dt05 Naz1Dt06 Naz1Dt06 Naz1Dt07 Naz1Dt07 Naz1Dt08 Naz1Dt08 Naz1Dt09 Naz1Dt09 Naz1Dt10 Naz1Dt10 Naz1Dt11 Naz1Dt11 Naz1Dt12 Naz1Dt12 }
 $random Nazi1/Pain { Naz1Pn02 Naz1Pn02 Naz1Pn03 Naz1Pn03 Naz1Pn04 Naz1Pn04 Naz1Pn05 Naz1Pn05 Naz1Pn06 Naz1Pn06 Naz1Pn07 Naz1Pn07 Naz1Pn08 Naz1Pn08 Naz1Pn09 Naz1Pn09 }
@@ -1112,6 +1118,7 @@ prisoner/pain1 	prpain1
 prisoner/pain2 	prpain2
 prisoner/pain3 	prpain3
 $random prisoner/pain { prisoner/pain1 prisoner/pain2 prisoner/pain3 }
+prisoner/yeeeah	pryeah
 
 //Sharks
 shark/sight DETECT
@@ -1177,24 +1184,31 @@ $limit Blood/Spit 0
 Blood/Impact	BLDIMPAC
 $limit Blood/Impact 0
 
-//Priest
-$random sscultist/pain	{ DSUNDPN1 DSUNDPN2 DSUNDPN3 }
-DSUNDPN1	DSUNDPN1
-DSUNDPN2	DSUNDPN2
-DSUNDPN3	DSUNDPN3
-$random sscultist/see	{ HITTIT1 HITTIT2 HITTIT3 }
-HITTIT1		HITTIT1
-HITTIT2		HITTIT2
-HITTIT3		HITTIT3
-$random sscultist/die	{ DSUNDIE1 DSUNDIE2 DSUNDIE3 }
-DSUNDIE1	DSUNDIE1
-DSUNDIE2	DSUNDIE2
-DSUNDIE3	DSUNDIE3
+//Templar Priest
+$random sstemplar/pain	{ TMPAIN1 TMPAIN2 TMPAIN3 TMPATK1 TMPATK2 TMPATK3 }
+TMPAIN1	TMPAIN1
+TMPAIN2	TMPAIN2
+TMPAIN3	TMPAIN3
+TMPATK1	TMPATK1
+TMPATK2	TMPATK2
+TMPATK3	TMPATK3
+
+$random sstemplar/see	{ TMPHIT1 TMPHIT2 TMPHIT3 TMPSEE}
+TMPHIT1		TMPHIT1
+TMPHIT2		TMPHIT2
+TMPHIT3		TMPHIT3
+TMPSEE		TMPSEE
+
+$random sstemplar/die	{ TMPDIE1 TMPDIE2 TMPDIEX }
+TMPDIE1	TMPDIE1
+TMPDIE2	TMPDIE2
+TMPDIEX	TMPDIEX
+
 DSUNDSHT	DSUNDSHT
-sscultist/shoot		DSUNDSHT
-sscultist/shoot2	DSUNDSHT
-$limit sscultist/shoot 0
-$limit sscultist/shoot2 0
+sstemplar/shoot		DSUNDSHT
+sstemplar/shoot2	DSUNDSHT
+$limit sstemplar/shoot 0
+$limit sstemplar/shoot2 0
 
 //Angel Of Death
 electricplasma/hit		PZAPHIT
@@ -1482,6 +1496,7 @@ C3M6B_VM C3M6B_VM
 CRDMP_HT CRDMP_HT
 C2M1_INT C2M1_INT
 C2M2_VIC C2M2_VIC
+CMBT_HT  CMBT_HT
 
 ////////////////////
 //TERRAIN SPLASHES//
@@ -2157,6 +2172,8 @@ $random ZOMBICRY { ambzomb1 ambzomb2 }
 
 world/bomb_ticker TICKTOCK
 
+TUNNEL_AMBIENCE tunnel1
+
 ELECTRICITY ELCLOOP
 $rolloff ELECTRICITY 64 256
 
@@ -2379,6 +2396,8 @@ parachute/open	chute
 GATEBCL0 GATEBCL0
 STNGT_CL STNGT_CL
 
+NOISE_LOUD noise2
+
 //Bridge Creak
 brdcrk01 brdcrk01
 brdcrk02 brdcrk02
@@ -2481,6 +2500,8 @@ $AMBIENT 84 CROWD_CHEERING POINT CONTINUOUS 0.5
 $AMBIENT 85 FIREWORKS_LOOP POINT CONTINUOUS 1.0
 $AMBIENT 86 HORORWND POINT CONTINUOUS 1.0
 $AMBIENT 87 SUBWAY_MOVING POINT CONTINUOUS 1.0
+$AMBIENT 88 TUNNEL_AMBIENCE POINT CONTINUOUS 1.0
+$AMBIENT 89 NOISE_LOUD POINT CONTINUOUS 1.0
 
 /////////////
 //BRIEFINGS//

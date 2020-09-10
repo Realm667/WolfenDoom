@@ -30,7 +30,7 @@ class CKBaseEnemy : Actor
 
 	// Some generic variables for CK_ internal functions.  I'd rather put these functions all in the actual classes, but DECORATE...
 	int counter, counter2;
-	Vector3 offset;
+	Vector3 offset, oldpos;
 
 	Sound touchsound;
 
@@ -55,6 +55,7 @@ class CKBaseEnemy : Actor
 		+LOOKALLAROUND
 		+NODAMAGE
 		+NOBLOOD
+		-COUNTKILL
 
 		CKBaseEnemy.StunTime -1; // Default to staying stunned forever
 		CKBaseEnemy.StunFrames 1; // Default to one possible frames for stun state (some actors have 2)
@@ -129,12 +130,24 @@ class CKBaseEnemy : Actor
 
 	override void Tick()
 	{
-		Super.Tick();
+		if (pos != oldpos || vel.length() || !CheckRange(256)) // Tick normally if player nearby or moving
+		{
+			Super.Tick();
+			oldpos = pos;
+		}
+		else // Otherwise just tick through actor states
+		{
+			if (tics == -1) { return; }
+			else if (--tics <= 0)
+			{
+				SetState(CurState.NextState);
+			}
+		}
 
 		if (stunned) { DoStun(); }
 	}
 
-	// Force calling of the Touch function for players without resorting to using 
+	// Force calling of the Touch function for players without resorting to using
 	// the SPECIAL flag, which changes other things with collision and interaction
 	override bool CanCollideWith(Actor other, bool passive)
 	{
@@ -178,7 +191,7 @@ class CKBaseEnemy : Actor
 			{
 				stuncounter--;
 			}
-			else if (stuncounter == 0)
+			else if (stuncounter == 0 && waterlevel < 2)
 			{
 				stunned = false;
 				if (confusion) { confusion.Destroy(); }
@@ -214,7 +227,7 @@ class CKBaseEnemy : Actor
 	// Function to move an actor in a straight line until it hits something (or travels maxstep units), then change directions randomly, with preference for moving toward player.
 	void CK_Glide(int maxstep = 1024)
 	{
-		LookforPlayers(true);
+		PlayerSearch();
 
 		if (BlockingMobj || BlockingLine || SpawnTime == level.time || (maxstep && counter >= maxstep / Speed))
 		{
@@ -269,12 +282,23 @@ class CKBaseEnemy : Actor
 	// Looks for a player, then waits for the player to be within dist units to activate
 	void CK_WaitForPlayer(int dist = 256)
 	{
-		LookForPlayers(true);
+		PlayerSearch();
 
 		if (target && Distance2D(target) < dist)
 		{
 			SetState(SeeState);
 		}
+	}
+
+	void PlayerSearch()
+	{
+		if (target) { return; }
+
+		LookExParams params;
+		params.maxDist = 1024;
+		params.maxHearDist = 1024;
+
+		LookForPlayers(true, params);
 	}
 }
 
@@ -285,6 +309,7 @@ mixin class CKPickup
 	double vspeed;
 	State PickupState;
 	int ticker;
+	bool ticked;
 
 	Property VSpeed:vspeed;
 
@@ -353,7 +378,19 @@ mixin class CKPickup
 			}
 		}
 
-		Super.Tick();
+		if (!ticked || !CheckRange(256)) // Tick normally if player nearby
+		{
+			Super.Tick();
+			ticked = true;
+		}
+		else // Otherwise just tick through actor states
+		{
+			if (tics == -1) { return; }
+			else if (--tics <= 0)
+			{
+				SetState(CurState.NextState);
+			}
+		}
 	}
 }
 
@@ -532,10 +569,10 @@ class KeenPlayer : PlayerPawn
 			Goto Spawn;
 		Pain:
 			KEEN G 8 {
-				// A_Pain doesn't find the SNDINFO-defined pain sound for morphed actors anyway, 
+				// A_Pain doesn't find the SNDINFO-defined pain sound for morphed actors anyway,
 				// plus it restarts playing the sound every time it's called; if we call the pain
 				// sound manually here with CHAN_NOSTOP, we get a better effect.
-				A_StartSound(PainSound, CHAN_VOICE, CHAN_NOSTOP); 
+				A_StartSound(PainSound, CHAN_VOICE, CHAN_NOSTOP);
 			}
 			Goto Spawn;
 		Death:
@@ -615,7 +652,7 @@ class KeenPlayer : PlayerPawn
 		if (
 			player &&
 			player.jumptics < 0 &&
-			(!pogo || !CKPogoStick(pogo).active) && 
+			(!pogo || !CKPogoStick(pogo).active) &&
 			!InStateSequence(CurState, FindState("See.Jump"))
 		)
 		{
@@ -753,7 +790,7 @@ class KeenPlayer : PlayerPawn
 	override void FireWeapon (State stat)
 	{
 		let player = self.player;
-		
+
 		let weapn = player.ReadyWeapon;
 		if (weapn == null || !weapn.CheckAmmo (Weapon.PrimaryFire, false))
 		{
@@ -805,6 +842,12 @@ class KeenPlayer : PlayerPawn
 
 		return ret;
 	}
+
+	override bool UseInventory (Inventory item)
+	{
+		if (String.Format(item.GetClassName()).Left(2) ~== "CK") { return Super.UseInventory(item); }
+		else { return false; }
+	}
 }
 
 class Billy : PowerMorph
@@ -816,13 +859,13 @@ class Billy : PowerMorph
 	Default
 	{
 		PowerMorph.MorphStyle MRF_LOSEACTUALWEAPON | MRF_NEWTIDBEHAVIOUR | MRF_UNDOBYDEATHSAVES;
-		PowerMorph.MorphFlash "Nothing"; 
+		PowerMorph.MorphFlash "Nothing";
 		PowerMorph.UnMorphFlash "Nothing";
 		PowerMorph.PlayerClass "KeenPlayer";
 		Powerup.Duration 0x7FFFFFFF;
 	}
 
-	override void InitEffect() 
+	override void InitEffect()
 	{
 		if (owner && owner.player)
 		{
@@ -860,7 +903,7 @@ class Billy : PowerMorph
 			BasicArmor a = BasicArmor(MorphedPlayer.mo.FindInventory("BasicArmor"));
 			if (a) { a.SavePercent = savepercent; }
 		}
- 
+
 		Super.EndEffect();
 	}
 }
@@ -993,7 +1036,7 @@ class CKPlatform : Actor
 		for (int i = 0; i < min(touchers.Size(), 64); i++)
 		{
 			if (
-				touchers[i] && 
+				touchers[i] &&
 				(
 					(Distance2D(touchers[i]) < (Radius + touchers[i].radius) * 1.4 && touchers[i].pos.z == pos.z + height) ||
 					absangle(angle, AngleTo(touchers[i])) < 45 ||
@@ -1295,7 +1338,7 @@ class CKPipe : LadderBase
 			Actor t = Spawn(top, pos + (0, 0, ladderheight));
 			t.angle = angle;
 		}
-		
+
 		if (!user_soundtype) { user_soundtype = 5; } // Soundtype 5 means Keen climbing sounds
 	}
 }
@@ -1388,7 +1431,7 @@ class CKLick : CKBaseEnemy
 
 	void CK_LickBounce()
 	{
-		LookforPlayers(true);
+		PlayerSearch();
 
 		if (!target) { return; }
 
@@ -1400,7 +1443,7 @@ class CKLick : CKBaseEnemy
 		{
 			if (!blocked && target && IsVisible(target, true))
 			{
-				if (IsVisible(target, true)) 
+				if (IsVisible(target, true))
 				{
 					if (!turncounter) { angle = AngleTo(target); }
 
@@ -1463,15 +1506,14 @@ class CKWormouth : CKBaseEnemy
 		See:
 			CKSN AA 1 CK_WormMove();
 			Loop;
-		LookAround:  // There are frames missing here...  Eyes blink (the 4-tic frames) in original.
-			// This will need to be redone once we have a full set of sprites for all look angles
-			CKSN C 10;
-			CKSN C 4; // <--
-			CKSN C 10 CK_Look(90);
+		LookAround:
+			CKSN I 10 { angle += 90; } // Look right
+			CKSN H 4;
+			CKSN I 10 CK_Look(90);
 			CKSN A 4;
-			CKSN B 10;
-			CKSN B 4; // <--
-			CKSN B 10 CK_Look(-90);
+			CKSN I 10 { angle += 180; } // Look left
+			CKSN H 4;
+			CKSN I 10 CK_Look(-90);
 			CKSN A 4 A_Face(target);
 			Goto See;
 		Stunned:
@@ -1504,7 +1546,7 @@ class CKWormouth : CKBaseEnemy
 
 	void CK_WormMove()
 	{
-		LookforPlayers(true);
+		PlayerSearch();
 
 		if (!target) { return; }
 
@@ -1649,7 +1691,7 @@ class CKSmirky : CKBaseEnemy
 		Speed 5;
 		Radius 40;
 		Height 64;
-		Damage 0; 
+		Damage 0;
 		Obituary "$CK_SMIRKY";
 	}
 
@@ -1660,7 +1702,7 @@ class CKSmirky : CKBaseEnemy
 			CKGN B 0 CK_SmirkyLook();
 		See:
 			CKGN CCCDDDEEEDDD 1 CK_SmirkyBounce();
-			CKGN D 0 A_Stop();
+			CKGN D 0; //A_Stop();
 			Goto Spawn;
 		Stunned:
 			CKGN C 3;
@@ -1696,7 +1738,7 @@ class CKSmirky : CKBaseEnemy
 				if ((!dist || dist > radius) && teleportcounter >= 12)
 				{
 					vel *= 0;
-					SetStateLabel("Teleport"); 
+					SetStateLabel("Teleport");
 					return;
 				}
 
@@ -1911,9 +1953,8 @@ class CKDopefish : CKBaseEnemy
 				vel.xy = RotateVector((Speed, 0), angle);
 				vel.z = 0;
 
-				// Use alternate frames...  C is original-style sprite, E and F have tongue and tooth greens
+				// Use alternate frame...  C is original-style sprite, E has schoolfish between teeth
 				if (Random() < 128) { frame = 4; }
-				else { frame = 5; }
 			}
 			CKDF A 1 // Bite!
 			{
@@ -1940,24 +1981,19 @@ class CKDopefish : CKBaseEnemy
 				}
 			}
 		Burp:
-			CKDF A 30
-			{
-				oldangle = angle;
-				A_Face(players[consoleplayer].mo); // Minimize need for angled burp sprites by making him face the console player to burp
-			}
+			CKDF A 30;
 			CKDF D 30
 			{
 				A_StartSound("ckeen/dopefish/burp");
 				Spawn("CKBubble", pos + (RotateVector((56, -4), angle + 90), 32));
 			}
 			CKDF A 30;
-			CKDF A 0 { angle = oldangle; }
 			Goto See;
 	}
 
 	void CK_DopeFishSwim()
 	{
-		LookforPlayers(true);
+		PlayerSearch();
 
 		if (!target) { return; }
 
@@ -2075,7 +2111,7 @@ class CKSchoolfish : CKBaseEnemy
 
 	void CK_SchoolFishSwim()
 	{
-		LookforPlayers(true);
+		PlayerSearch();
 
 		if (!target) { return; }
 
@@ -2120,7 +2156,7 @@ class CKSchoolfish : CKBaseEnemy
 		if (other is "CKSchoolfish" || other is "CKMine" || other.player) { return false; } // Swim through other fish and the player
 
 		return Super.CanCollideWith(other, passive);
-	}	
+	}
 }
 
 class CKInchworm : CKBaseEnemy
@@ -2154,7 +2190,7 @@ class CKInchworm : CKBaseEnemy
 
 	void CK_InchwormMove()
 	{
-		LookforPlayers(true);
+		PlayerSearch();
 
 		if (!target) { return; }
 
@@ -2256,7 +2292,7 @@ class CKMimRock : CKBaseEnemy
 		bounced = false;
 		SetDamage(0);
 
-		LookForPlayers(true);
+		PlayerSearch();
 
 		if (target && !InSightOf(target) && Distance2D(target) > 48)
 		{
@@ -2282,7 +2318,7 @@ class CKMimRock : CKBaseEnemy
 				vel.z = 10;
 
 				SetState(AttackState);
-			} 
+			}
 			else
 			{
 				A_Chase(null, null);
@@ -2367,7 +2403,7 @@ class CKSprite : CKBaseEnemy
 
 	void CK_SpriteFloat()
 	{
-		LookForPlayers(true);
+		PlayerSearch();
 
 		CK_Float(16, FloatSpeed);
 
@@ -2422,7 +2458,8 @@ class CKBirdEgg : CKBaseEnemy
 			CKEG A 4;
 			Loop;
 		See:
-			CKEG B -1
+			CKEG BCD 8;
+			CKEG E -1
 			{
 				A_SetSize(-1, 20);
 
@@ -2433,7 +2470,7 @@ class CKBirdEgg : CKBaseEnemy
 				shell = Spawn("CKBirdEggShellBit", pos);
 				if (shell)
 				{
-					shell.frame = 2;
+					shell.frame = 4;
 					shell.vel.xy = RotateVector((-7, 0), Random(0, 359));
 					shell.vel.z = 10;
 					shell = null;
@@ -2442,7 +2479,7 @@ class CKBirdEgg : CKBaseEnemy
 				shell = Spawn("CKBirdEggShellBit", pos);
 				if (shell)
 				{
-					shell.frame = 3;
+					shell.frame = 5;
 					shell.vel.xy = RotateVector((7, 0), Random(0, 359));
 					shell.vel.z = 10;
 					shell = null;
@@ -2451,7 +2488,7 @@ class CKBirdEgg : CKBaseEnemy
 				shell = Spawn("CKBirdEggShellBit", pos);
 				if (shell)
 				{
-					shell.frame = 4;
+					shell.frame = random(6,7);
 					shell.vel.z = 14;
 					shell = null;
 				}
@@ -2471,7 +2508,7 @@ class CKBirdEggShellBit : Actor
 	States
 	{
 		Spawn:
-			CKEG C -1;
+			CKEG F -1;
 			Stop;
 	}
 
@@ -2503,7 +2540,7 @@ class CKBird : CKBaseEnemy
 			CKEA FFF 1 CK_BirdWalk();
 			CKEA GGGG 1 CK_BirdWalk();
 			CKEA HHH 1 CK_BirdWalk();
-			CKEA IIII 1 CK_BirdWalk(); // I frame rotations are completely missing!  I had to export and add the current CKEAI0.png image
+			CKEA IIII 1 CK_BirdWalk();
 			Loop;
 		Fly:
 			CKEA AAAABBBBCCCCDDDD 1 CK_BirdFly();
@@ -2523,11 +2560,13 @@ class CKBird : CKBaseEnemy
 
 	void CK_BirdWalk()
 	{
-		LookForPlayers(true);
+		PlayerSearch();
 
-		if (!target) { return; }
+		if (!target || stunned) { return; }
 
-		if (target && (abs(pos.z - target.pos.z) > 48 || target.pos.z - target.floorz > 64))
+		double newfloorz = GetZAt(Speed, 0, AngleTo(target), GZF_ABSOLUTEANG);
+
+		if (target && (target.pos.z - pos.z > 48 || newfloorz < pos.z))
 		{
 			vel.z = 2.0;
 
@@ -2547,9 +2586,12 @@ class CKBird : CKBaseEnemy
 
 	void CK_BirdFly()
 	{
+
 		double heightoffset = 0;
 
-		LookForPlayers(true);
+		PlayerSearch();
+
+		if (!target || stunned) { return; }
 
 		bool blocked = BlockingLine || (BlockingMobj && (!target || BlockingMobj != target)) || !CheckMove(pos.xy + vel.xy);
 
@@ -2580,10 +2622,12 @@ class CKBird : CKBaseEnemy
 			else { zdir = 0; }
 		}
 
+		if (waterlevel > 0) { zdir = 1; }
+
 		vel.xy = RotateVector((Speed, 0), angle);
 		vel.z = FloatSpeed * zdir;
 
-		if (pos.z <= floorz + heightoffset && vel.z < 0)
+		if (!waterlevel && pos.z <= floorz + heightoffset && vel.z <= 0)
 		{
 			SetStateLabel("Land");
 		}
@@ -2591,13 +2635,15 @@ class CKBird : CKBaseEnemy
 
 	void CK_BirdLand(bool stopmovement = true)
 	{
+		if (waterlevel && !stunned) { SetStateLabel("Fly"); return; }
+
 		bNoGravity = false;
 		bFloat = false;
 		Speed = Default.Speed;
 
 		A_SetSize(Default.Radius, -1, true);
 
-		if (pos.z == floorz && vel.z <= 0)
+		if (pos.z <= floorz)
 		{
 			if (stopmovement) { vel.xy *= 0; }
 			SetState(SeeState);
@@ -2664,7 +2710,7 @@ class CKPogoStick : CustomInventory
 				if (active)
 				{
 					if (
-						!owner.player || 
+						!owner.player ||
 						owner.waterlevel > 1 ||
 						owner.health <= 0 ||
 						owner.player.cmd.buttons & BT_ATTACK ||
@@ -2755,7 +2801,7 @@ class CKLedgeGrab : Inventory
 				if (!pogo || !CKPogoStick(pogo).active)
 				{
 					if (
-						(!owner.bOnMobj && owner.pos.z > owner.floorz) || 
+						(!owner.bOnMobj && owner.pos.z > owner.floorz) ||
 						owner.player.jumptics
 					)
 					{ LedgeGrabInitiator(); }
@@ -2777,7 +2823,7 @@ class CKLedgeGrab : Inventory
 
 		//Already ledge grabbing, no clipping, moving away from where you are looking, ceiling already too low for sure
 		if(LedgeGrabbed || (owner.player.Cheats & CF_NOCLIP2) || owner.Vel.XY dot AngleToVector(owner.Angle) <= 0 || owner.CeilingZ <= owner.Pos.Z + owner.Height * 1.6f) { return; }
-		
+
 		//Find ledge (if any)
 		FLineTraceData LedgeTrace;
 		double TraceDistance = sqrt(2) * owner.Radius + 1; //account for the fact that Doom's hitboxes are square
@@ -2816,10 +2862,10 @@ class CKLedgeGrab : Inventory
 			while (it.Next())
 			{
 				if (
-					it.thing == owner || 
-					it.thing.bIsMonster || 
+					it.thing == owner ||
+					it.thing.bIsMonster ||
 					PlayerFollower(it.thing) ||
-					owner.Vel.XY dot AngleToVector(owner.AngleTo(it.thing)) <= 0 
+					owner.Vel.XY dot AngleToVector(owner.AngleTo(it.thing)) <= 0
 				)
 				{ continue; }
 
@@ -2857,7 +2903,7 @@ class CKLedgeGrab : Inventory
 		{
 			return; //too high/low
 		}
-		
+
 		//Switch to a weapon that forbids firing during the ledge grab
 		ReselectWeapon = owner.player.ReadyWeapon;
 		Weapon empty = Weapon(owner.FindInventory("NullWeapon"));
@@ -2866,20 +2912,20 @@ class CKLedgeGrab : Inventory
 			owner.GiveInventory("NullWeapon", 1);
 			empty = Weapon(owner.FindInventory("NullWeapon"));
 		}
-		owner.player.PendingWeapon = empty; 
+		owner.player.PendingWeapon = empty;
 
 		if (owner.player.ReadyWeapon)
 		{
 			owner.player.SetPsprite(PSP_WEAPON, owner.player.ReadyWeapon.GetDownState());
 		}
-	
+
 		//Allow ledge grab
 		owner.A_StopSound(CHAN_WEAPON); 	//stop looping weapon sounds
 		LedgeAngle = owner.Angle;
 		owner.A_StartSound("Climb", CHAN_BODY);
 		LedgeGrabbed = True;
 	}
-	
+
 	void LedgeGrab()
 	{
 		if (!owner ||!owner.player || !PlayerPawn(owner)) { return; }
@@ -2900,7 +2946,7 @@ class CKLedgeGrab : Inventory
 		{
 			owner.Vel = owner.Vel.Length() ? (0, 0, 4) : (0, 0, 0);
 		}
-		
+
 		//Sprite animation
 		PlayerPawn(owner).PlayIdle();
 	}
@@ -2978,7 +3024,7 @@ class CKBounder : CKBaseEnemy
 	// Function to handle Bounder bounce pattern, re-imagined in 3D space
 	void CK_BounderBounce()
 	{
-		LookforPlayers(true);
+		PlayerSearch();
 
 		if (!target) { return; }
 
@@ -3030,7 +3076,7 @@ class CKBounder : CKBaseEnemy
 				double scale = 1.0 - (abs(target.pitch) / 90);
 				scale *= 0.75;
 				scale -= 0.25;
-				
+
 				vel.xy = RotateVector((Speed * 1.5 * scale, 0), angle);
 
 				if (!CheckMove(pos.xy + vel.xy))
@@ -3056,7 +3102,7 @@ class CKBounder : CKBaseEnemy
 		}
 
 		if (
-			target && 
+			target &&
 			(target.player && target.player.jumptics == 0) &&
 			offset != (0, 0, 0)
 		)
@@ -3187,7 +3233,7 @@ class CKBerkeloid : CKBaseEnemy
 
 	void CK_BerkeloidMove()
 	{
-		LookforPlayers(true);
+		PlayerSearch();
 
 		if (!target) { return; }
 
@@ -3214,7 +3260,7 @@ class CKBerkeloid : CKBaseEnemy
 	void CK_BerkeloidAttack()
 	{
 		vel.xy *= 0;
- 
+
 		A_SpawnProjectile("CKBerkeloidBall", flags:CMF_AIMDIRECTION);
 
 		A_StartSound("ckeen/berkeloid/attack");
@@ -3299,7 +3345,7 @@ class CKSkyPest : CKBaseEnemy
 			CKFL A 50 { SetDamage(0); }
 			CKFL BCDKDCB 5;
 			CKFL A 30;
-			CKFL GFEEFG 5;
+			CKFL GFEJEFG 5;
 			CKFL A 50;
 			CKFL A 1
 			{
@@ -3310,7 +3356,7 @@ class CKSkyPest : CKBaseEnemy
 			}
 			Goto See;
 		Death:
-			CKFL J -1 { SetDamage(0); }
+			CKFL L -1 { SetDamage(0); }
 			Stop;
 	}
 
@@ -3659,7 +3705,7 @@ class CKStunnerBall : Actor
 			Loop;
 		Death:
 			CKBA EF 4;
-			TNT1 A 35;
+			TNT1 A 35 { vel *= 0; }
 			Stop;
 	}
 
@@ -3721,7 +3767,7 @@ class CKWallShooter : SwitchableDecoration
 
 	void CK_WaitForPlayer(int dist = 256)
 	{
-		LookForPlayers(true);
+		if (!target) { LookForPlayers(true); }
 
 		if (target && Distance2D(target) < dist)
 		{

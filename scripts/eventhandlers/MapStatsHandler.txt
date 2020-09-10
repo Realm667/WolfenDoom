@@ -33,11 +33,13 @@ class LevelData
 class PersistentMapStatsHandler : EventHandler
 {
 	Array<LevelData> Levels;
+	Array<String> SpecialItemPickups;
 }
 
 class MapStatsHandler : StaticEventHandler
 {
 	Array<LevelData> Levels;
+	Array<String> SpecialItemPickups;
 	bool draw;
 	bool active[MAXPLAYERS];
 	const width = 640;
@@ -45,7 +47,6 @@ class MapStatsHandler : StaticEventHandler
 	Font TitleFont, HeadingFont, StatFont;
 	double titlescale, headingscale, fontscale;
 	int lineheight;
-	Array<String> SpecialItemPickups;
 	int chapter;
 	PersistentMapStatsHandler persistent;
 
@@ -103,7 +104,11 @@ class MapStatsHandler : StaticEventHandler
 
 		// Save the copy of the data that will persist across saves...
 		if (!this.persistent) { this.persistent = PersistentMapStatsHandler(EventHandler.Find("PersistentMapStatsHandler")); }
-		if (this.persistent) { this.persistent.Levels.Copy(this.Levels); }
+		if (this.persistent)
+		{
+			this.persistent.Levels.Copy(this.Levels);
+			this.persistent.SpecialItemPickups.Copy(this.SpecialItemPickups);
+		}
 	}
 
 	override void OnRegister()
@@ -159,6 +164,7 @@ class MapStatsHandler : StaticEventHandler
 			if (persistent)
 			{
 				Levels.Copy(persistent.Levels);
+				SpecialItemPickups.Copy(persistent.SpecialItemPickups);
 
 				for (int i = 0; i < persistent.Levels.Size(); i++)
 				{
@@ -585,5 +591,17 @@ class MapStatsHandler : StaticEventHandler
 		}
 
 		return false;
+	}
+
+	override void NewGame()
+	{
+		Levels.Clear();
+		SpecialItemPickups.Clear();
+
+		if (persistent)
+		{
+			persistent.Levels.Clear();
+			persistent.SpecialItemPickups.Clear();
+		}
 	}
 }

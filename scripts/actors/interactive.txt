@@ -62,7 +62,7 @@ class Debris_Vent_FloorCeiling : SwitchableDecoration
 			VENT B 0 {
 				A_SpawnItemEx("PowerPlantSmokePuffSmall", 0, 0, 32, 0, 0, 0, 0, 0);
 
-				if (level.time > 5) { S_Sound("DSMETDST", CHAN_AUTO, 0.5, ATTN_NORM); }
+				if (level.time > 5) { S_StartSound("DSMETDST", CHAN_AUTO, 0, 0.5, ATTN_NORM); }
 
 				for (int i = 0; i < 4; i++) {
 					A_SpawnItemEx("Debris_Trash", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
@@ -71,6 +71,7 @@ class Debris_Vent_FloorCeiling : SwitchableDecoration
 
 				bNoInteraction = True;
 			}
+			"####" "#" 0; // Attempt to prevent sounds from being played when player loads their savegame - Talon1024
 			VENT B -1;
 			Stop;
 	}
@@ -102,7 +103,7 @@ class Debris_Wood_FloorCeiling : Debris_Vent_FloorCeiling
 			VENT D 0 {
 				A_SpawnItemEx("PowerPlantSmokePuffSmall", 0, 0, 32, 0, 0, 0, 0, 0);
 
-				if (level.time > 5) { S_Sound("WOODBRK", CHAN_AUTO, 0.5, ATTN_NORM); }
+				if (level.time > 5) { S_StartSound("WOODBRK", CHAN_AUTO, 0, 0.5, ATTN_NORM); }
 
 				for (int i = 0; i < 4; i++) {
 					A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
@@ -113,8 +114,93 @@ class Debris_Wood_FloorCeiling : Debris_Vent_FloorCeiling
 
 				bNoInteraction = True;
 			}
+			"####" "#" 0; // Attempt to prevent sounds from being played when player loads their savegame - Talon1024
 			VENT D -1;
 			Stop;
+	}
+}
+
+class Debris_Wood_FloorCeiling2 : Debris_Vent_FloorCeiling
+{
+	Default
+	{
+		//$Title Wood Debris, 2nd variant - Floor/Ceiling (activatable, solid/walkable)
+	}
+
+	States
+	{
+		Spawn:
+			VENT E 1;
+		Active:
+			VENT "#" 35;
+			Wait;
+		Inactive:
+		Death:
+			TNT1 A 0 {
+				A_SpawnItemEx("PowerPlantSmokePuffSmall", 0, 0, 32, 0, 0, 0, 0, 0);
+
+				if (level.time > 5) { S_StartSound("WOODBRK", CHAN_AUTO, 0, 0.5, ATTN_NORM); }
+
+				for (int i = 0; i < 4; i++) {
+					A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
+				}
+
+				bNoInteraction = True;
+			}
+			"####" "#" 0; // Attempt to prevent sounds from being played when player loads their savegame - Talon1024
+			TNT1 A 1;
+			Stop;
+	}
+}
+
+class TrainingTarget : SwitchableDecoration
+{
+	Default
+	{
+		//$Category Special Effects (BoA)
+		//$Title HQ's Training Camp Target
+		
+		Radius 32;
+		Height 72;
+		Health 1;
+		+DONTTHRUST
+		+FORCEYBILLBOARD
+		+NOBLOOD
+		+NOGRAVITY
+		+NOTAUTOAIMED
+		+SHOOTABLE
+		+WALLSPRITE
+	}
+	
+	States
+	{
+		Spawn:
+			TARG A 1;
+		Active:
+			TARG "#" 35;
+			Wait;
+		Inactive:
+		Death:
+			TARG B 0 { A_SpawnItemEx("PowerPlantSmokePuffSmall", 0, 0, 32, 0, 0, 0, 0, 0);
+				for (int i = 0; i < 4; i++) {
+					A_SpawnItemEx("Debris_FlagsW", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_FlagsW", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
+				}
+
+				bNoInteraction = True;
+			}
+			"####" "#" 0; // Attempt to prevent sounds from being played when player loads their savegame - Talon1024
+			TARG B -1;
+			Stop;
+	}
+
+	override bool Used(Actor user)
+	{
+		SetStateLabel("Death");
+		return Super.Used(user);
 	}
 }
 
@@ -144,7 +230,7 @@ class ManholeCover3D : Debris_Vent_FloorCeiling
 			TNT1 A 0 {
 				A_SpawnItemEx("PowerPlantSmokePuffSmall", 0, 0, 32, 0, 0, 0, 0, 0);
 
-				if (level.time > 5) { S_Sound("DSMETDST", CHAN_AUTO, 0.5, ATTN_NORM); }
+				if (level.time > 5) { S_StartSound("DSMETDST", CHAN_AUTO, 0, 0.5, ATTN_NORM); }
 
 				for (int i = 0; i < 4; i++) {
 					A_SpawnItemEx("Debris_Trash", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
@@ -153,6 +239,7 @@ class ManholeCover3D : Debris_Vent_FloorCeiling
 
 				bNoInteraction = True;
 			}
+			"####" "#" 0; // Attempt to prevent sounds from being played when player loads their savegame - Talon1024
 			TNT1 A -1;
 			Stop;
 	}
@@ -712,6 +799,61 @@ class Safe : Actor
 	}
 }
 
+class Buoyancy : Actor
+{
+	// Modified from AActor::UpdateWaterLevel in p_mobj.cpp (waterlevel variable setting function)
+	// Updated to return actual water height value
+	static double, bool GetWaterHeight(Actor mo)
+	{
+		if (mo.curSector.MoreFlags & Sector.SECMF_UNDERWATER)
+		{
+			return mo.ceilingz, true;
+		}
+		else
+		{
+			Sector hsec = mo.curSector.GetHeightSec();
+
+			if (hsec)
+			{
+				if (hsec.MoreFlags & Sector.SECMF_UNDERWATERMASK)
+				{
+					double fh = hsec.floorplane.ZatPoint(mo.pos.xy);
+					double ch = hsec.ceilingplane.ZatPoint(mo.pos.xy);
+
+					if (mo.pos.z < fh)
+					{
+						return fh, true;
+					}
+					else if (!(hsec.MoreFlags & Sector.SECMF_FAKEFLOORONLY) && (mo.pos.z + mo.height > ch))
+					{
+						return ch, true;
+					}
+				}
+			}
+			else
+			{
+				for (int i = 0; i < mo.curSector.Get3DFloorCount(); i++)
+				{
+					F3DFloor f = mo.curSector.Get3DFloor(i);
+
+					if (!(f.flags & F3DFloor.FF_EXISTS)) { continue; }
+					if (f.flags & F3DFloor.FF_SOLID) { continue; }
+					if (!(f.flags & F3DFloor.FF_SWIMMABLE)) { continue; }
+
+					double ff_bottom = f.bottom.ZatPoint(mo.pos.xy);
+					double ff_top = f.top.ZatPoint(mo.pos.xy);
+
+					if (ff_bottom > mo.pos.z + mo.height) continue;
+
+					return ff_top, true;
+				}
+			}
+		}
+
+		return 0, false;
+	}
+}
+
 mixin class GiveBuoyancy
 {
 	bool inwater;
@@ -728,7 +870,7 @@ mixin class GiveBuoyancy
 
 		bool iswater;
 		double waterheight;
-		[waterheight, iswater] = GetWaterHeight();
+		[waterheight, iswater] = Buoyancy.GetWaterHeight(self);
 
 		if (iswater && waterheight > floorz && pos.z < waterheight)
 		{
@@ -756,57 +898,5 @@ mixin class GiveBuoyancy
 			bNoGravity = Default.bNoGravity;
 			bPushable = Default.bPushable;
 		}
-	}
-
-	// Modified from AActor::UpdateWaterLevel in p_mobj.cpp (waterlevel variable setting function)
-	// Updated to return actual water height value
-	double, bool GetWaterHeight()
-	{
-		if (curSector.MoreFlags & Sector.SECMF_UNDERWATER)
-		{
-			return ceilingz, true;
-		}
-		else
-		{
-			Sector hsec = curSector.GetHeightSec();
-
-			if (hsec)
-			{
-				if (hsec.MoreFlags & Sector.SECMF_UNDERWATERMASK)
-				{
-					double fh = hsec.floorplane.ZatPoint(pos.xy);
-					double ch = hsec.ceilingplane.ZatPoint(pos.xy);
-
-					if (pos.z < fh)
-					{
-						return fh, true;
-					}
-					else if (!(hsec.MoreFlags & Sector.SECMF_FAKEFLOORONLY) && (pos.z + height > ch))
-					{
-						return ch, true;
-					}
-				}
-			}
-			else
-			{
-				for (int i = 0; i < curSector.Get3DFloorCount(); i++)
-				{
-					F3DFloor f = curSector.Get3DFloor(i);
-
-					if (!(f.flags & F3DFloor.FF_EXISTS)) { continue; }
-					if (f.flags & F3DFloor.FF_SOLID) { continue; }
-					if (!(f.flags & F3DFloor.FF_SWIMMABLE)) { continue; }
-
-					double ff_bottom = f.bottom.ZatPoint(pos.xy);
-					double ff_top = f.top.ZatPoint(pos.xy);
-
-					if (ff_bottom > pos.z + height) continue;
-
-					return ff_top, true;
-				}
-			}
-		}
-
-		return 0, false;
 	}
 }

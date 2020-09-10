@@ -1,8 +1,9 @@
 // Map checks/actions //
 // Special mission numbers - force a level number to map to a specific mission number
-#define SPECIAL_MISSION_COUNT 1
-int special_mission_numbers[SPECIAL_MISSION_COUNT][2] = {
-	{103, 13}
+#define SPECIAL_MISSION_COUNT 2
+int special_mission_numbers[SPECIAL_MISSION_COUNT][3] = {
+	{103, 13},
+	{104, -1},
 };
 
 // Set mission/briefing number
@@ -15,6 +16,11 @@ script "MissionNumber" OPEN
 	{
 		if (mapnum == special_mission_numbers[i][0])
 		{
+			if (special_mission_numbers[i][1] == -1)
+			{
+				// If the target mission number is -1, don't change the mission number
+				Terminate;
+			}
 			mission_number = special_mission_numbers[i][1];
 			special_misnum = true;
 		}
@@ -73,6 +79,16 @@ script "Autosave" (void)
 script "ChangeMap" (void)
 {
 	Exit_Normal(0);
+}
+
+//Clear inventory in order to avoid potential map breakers with chosen items, this exists mainly for DisguiseFailToken --ozy81
+//see https://github.com/Realm667/WolfenDoom/issues/281#issuecomment-687553459
+script "FixTokens" (void)
+{
+	TakeInventory("DisguiseFailToken",9999);
+	TakeInventory("RadioPickup",9999);
+	TakeInventory("TurretHeatAmmo",9999);
+	TakeInventory("TurretBulletAmmo",9999);
 }
 
 //mxd. Mutants despawn checks
@@ -154,11 +170,23 @@ script "OhNoes!" DEATH
 {
 	if (CheckInventory("CutsceneEnabled")) { Terminate; }
 
+	bool generic;
+	int levelnum = GetLevelInfo(LEVELINFO_LEVELNUM);
+
+	if (levelnum >= 151 && levelnum <= 153) { generic = true; }
+
 	SetHudSize(320, 240, true);
-	LocalSetMusic("THEEND");
+
+	int fadetime = 1.5;
+
+	if (!generic)
+	{
+		LocalSetMusic("THEEND");
+		fadetime = 6.0;
+	}
 
 	SetFont("fade");
-	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1000, CR_UNTRANSLATED, 160.0, 120.0, 999999.0, 6.0, 1.0);
+	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1000, CR_UNTRANSLATED, 160.0, 120.0, 999999.0, fadetime, 1.0);
 
 	// [ZK] If you resurrect, the death screen should disappear immediately
 	for (int i = 0; i < 35*6; i++)
@@ -174,8 +202,11 @@ script "OhNoes!" DEATH
 		}
 	}
 
-	SetFont("youdied");
-	HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1001, CR_UNTRANSLATED, 160.0, 120.0, 999999.0, 3.0, 1.0);
+	if (!generic)
+	{ 
+		SetFont("youdied");
+		HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1001, CR_UNTRANSLATED, 160.0, 120.0, 999999.0, 3.0, 1.0);
+	}
 
 	// [ZK] Delay 1 tic instead of 35
 	while(GetActorProperty(0,APROP_HEALTH) <= 0) Delay(1);
@@ -282,6 +313,42 @@ function void DrawScreenOverlays(void)
 script "PlayerHealthAbove25" (void)
 {
 	SetResultValue(GetActorProperty(playerID, APROP_Health) >= 25);
+}
+
+///////////////////////////////////////////////////////
+//GENERAL MAPS SCRIPTS, DUKE3D-LIKE INTERACTIONS HERE//
+///////////////////////////////////////////////////////
+
+//Generic vent breaker script
+script "VENT_BREAK" (int vent_id)
+{
+	SetLineBlocking(vent_id,BLOCK_NOTHING);
+	SetLineTexture(vent_id, LINE_BACK, TEXTURE_MIDDLE, "VENT_M00");
+	Thing_Activate(vent_id);
+}
+
+//Generic Flush Sound WC
+script "WC_FLUSH" (int toilet_id)
+{
+	PlaySound(toilet_id,"toilet/flush",CHAN_BODY,1.0,0,0);
+}
+
+//Generic Mirror Script
+script "MIRRORS" (int line_id)
+{
+	TranslucentLine(line_id,255);
+	GlassBreak(0);
+	SetLineTexture(line_id,SIDE_FRONT,TEXTURE_MIDDLE,"MIRR_W04");
+}
+
+//Generic Light Script
+script "LIGHTS" (int light_tid)
+{
+	if(!GetActorProperty(light_tid,APROP_Dormant))
+		Thing_Deactivate(light_tid);
+	else
+		Thing_Activate(light_tid);
+	PlaySound(0,"SW_LIGHT");
 }
 
 // Compatibility placeholders (old functions that aren't needed any more, but might be referenced in old maps)

@@ -366,7 +366,7 @@ ACTOR RumbleWaves
 	Death:
 		TNT1 A 0 A_Explode(20, 192)
 		TNT1 A 0 A_RadiusGive("BlurShaderControl", 192, RGF_PLAYERS | RGF_GIVESELF, 20)
-		TNT1 A 0 A_JumpIf(CallACS("BoomSwitch") == 0, "Inactive")
+		TNT1 A 0 A_JumpIf(CallACS("boa_boomswitch") == 0, "Inactive")
 		TNT1 A 0 A_SpawnItemEx("KD_HL2Flash", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE)
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE)
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SparkGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE)
@@ -1384,6 +1384,7 @@ ACTOR ZFlyingHack : FlyingHack
 {
 	Speed 16
 	-RIPPER
+	Damage (random(17, 31)) //since it is not a ripper anymore, and used only by a boss monster ZombieButcher --N00b
 	DamageType "UndeadPoison"
 	States
 	{
@@ -1663,7 +1664,43 @@ ACTOR MengeleFire
 }
 
 //////// Mengele End ////////
-
+/*
+ACTOR ZyklonGrenadePacket : GrenadeBase
+{
+	Radius 8
+	Height 16
+	Speed 20
+	Scale 0.4
+	Damage (1)
+	DamageType "Frag"
+	Projectile
+	-NOGRAVITY
+	-NOTELEPORT
+	+WINDTHRUST
+	Obituary "$OBGRENADE"
+	Gravity 0.4
+	States
+	{
+	Spawn:
+		ZTHW ABCDEFGH 2
+		Loop
+	Death:
+		EXN2 A 0 A_StartSound("grenade/explode", CHAN_AUTO, 0, 1.0, 0.1)
+		EXN2 A 2
+		TNT1 A 0 A_AlertMonsters
+		"####" A 0 A_Explode(25,45)
+		"####" A 0 A_SpawnItemEx("ZyklonBlazeFX2")
+		"####" A 2 Radius_Quake(10,10,0,16,0)
+		"####" A 0 A_StartSound("grenade/explode", CHAN_AUTO, 0, 1.0, 0.1)
+		"####" ABABA 0 A_SpawnItemEx("ZyklonBCloud",random(-4,4),random(-4,4),random(4,4),frandom(-2.0,2.0),frandom(-2.0,2.0),frandom(0.0,1.0),0,128)
+		"####" AAAAAAAAAA 5 
+				{
+					A_SpawnItemEx("ZyklonBCloud",random(-4,4),random(-4,4),random(4,4),frandom(-2.0,2.0),frandom(-2.0,2.0),frandom(0.0,1.0),0,128);
+				}
+		Stop
+	}
+}
+*/
 ACTOR ZFlameball_Scenery : ZFlameball { +NEVERTARGET }
 
 ACTOR UndeadFartCloud
@@ -1943,7 +1980,7 @@ ACTOR MonsterHole2 : MonsterHole
 	Spawn:
 		TNT1 A 2 A_Jump(64,"SpawnAlt") //prevent doing huge amount of damage - ozy81
 		TNT1 A 0 {
-			if (!CheckRange(sfxlod, true))
+			if (!CheckRange(boa_sfxlod, true))
 			{
 				A_SpawnItemEx("ZyklonZCloud4",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360),128);
 			}
@@ -1952,7 +1989,7 @@ ACTOR MonsterHole2 : MonsterHole
 		Stop
 	Spawn.Alt:
 		TNT1 A 0 {
-			if (!CheckRange(sfxlod, true))
+			if (!CheckRange(boa_sfxlod, true))
 			{
 				A_SpawnItemEx("ZyklonZCloud5",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360),128);
 			}
@@ -2568,7 +2605,7 @@ ACTOR ReflectiveOrb : VisualSpecialEffect
 //UNSORTED
 ACTOR SleepEffect
 {
-	DistanceCheck "sfxlod"
+	DistanceCheck "boa_sfxlod"
 	+CLIENTSIDEONLY
 	+FORCEXYBILLBOARD
 	+NOBLOCKMAP

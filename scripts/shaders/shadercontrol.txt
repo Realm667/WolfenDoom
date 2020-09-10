@@ -110,7 +110,7 @@ class SandShaderControl : ShaderControl
 	int holdTarget;
 	double size;
 	int maxparticles;
-	EffectsManager manager;
+	ParticleManager manager;
 	int frozentime;
 
 	Property ParticleColor:setcolor;
@@ -139,7 +139,7 @@ class SandShaderControl : ShaderControl
 
 		clr = (setcolor.r, setcolor.g, setcolor.b) / 256.0;
 
-		manager = EffectsManager.GetManager();
+		manager = ParticleManager.GetManager();
 	}
 
 	override void SetUniforms(PlayerInfo p, RenderEvent e)

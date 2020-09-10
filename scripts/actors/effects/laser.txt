@@ -77,7 +77,7 @@ class LaserShooter : EffectSpawner
 	{
 		if (args[1]) { angle += args[1] * 0.25; }
 
-		if (CheckRange(sfxlod, true)) { return; }
+		if (CheckRange(boa_sfxlod, true)) { return; }
 
 		if (snd != "")
 		{
@@ -217,8 +217,8 @@ class Laser : Actor
 
 	static LaserBeam, Actor DrawLaser(Actor origin, LaserBeam beam, Actor flare, TraceResults traceresults, Class<Actor> spawnclass = "LaserBeam", Class<Actor> puffclass = "LaserPuff", int damage = 0, double zoffset = 0, bool drawdecal = true, double alpha = 1.0, Class<Actor> flareclass = "LaserFlare")
 	{
-		EffectsManager manager;
-		if (EffectSpawner(origin)) { manager = EffectSpawner(origin).manager; }
+		ParticleManager manager;
+		manager = ParticleManager.GetManager();
 
 		if (!traceresults) { return beam, flare; }
 		if (!origin) { return beam, flare; }
@@ -473,17 +473,9 @@ class BigLaserFlare : EffectSpawner
 
 		Super.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-
-		[spawned, mo] = A_SpawnitemEx("SparkFlareW",FRandom(0, 2), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), 0, SXF_ISTRACER | SXF_SETMASTER | SXF_NOCHECKPOSITION);
-		if (mo && manager) { manager.QueueParticle(mo); }
-
-		[spawned, mo] = A_SpawnItemEx("LaserSpark", FRandom(0, 4), FRandom(-4, 4), FRandom(-4, 4), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2));
-		if (mo && manager) { manager.QueueParticle(mo); }
-
-		[spawned, mo] = A_SpawnItemEx("LaserSmoke", FRandom(0, 4), FRandom(-4, 4), FRandom(-4, 4), 0, 0, FRandom(2.5, 3.5));
-		if (mo && manager) { manager.QueueParticle(mo); }
+		A_SpawnitemEx("SparkFlareW",FRandom(0, 2), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), 0, SXF_ISTRACER | SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		A_SpawnItemEx("LaserSpark", FRandom(0, 4), FRandom(-4, 4), FRandom(-4, 4), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2));
+		A_SpawnItemEx("LaserSmoke", FRandom(0, 4), FRandom(-4, 4), FRandom(-4, 4), 0, 0, FRandom(2.5, 3.5));
 	}
 }
 
@@ -540,7 +532,7 @@ class LaserSmoke : PuffSmoke
 {
 	Default
 	{
-		DistanceCheck "sfxlod";
+		DistanceCheck "boa_sfxlod";
 		+CLIENTSIDEONLY
 		+FORCEXYBILLBOARD
 		+NOINTERACTION

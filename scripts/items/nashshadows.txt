@@ -50,7 +50,7 @@ class Z_SpriteShadow : Actor
 
 	override void PostBeginPlay()
 	{
-		cvShadowDistance = CVar.FindCVar("cl_boaspriteshadowdistance");
+		cvShadowDistance = CVar.FindCVar("boa_spriteshadowdistance");
 		UpdateShadowDistance();
 		Super.PostBeginPlay();
 	}
@@ -320,7 +320,7 @@ class SpriteShadowHandler : EventHandler
 
 	override void OnRegister()
 	{
-		cvShadowDistance = CVar.FindCVar("cl_boaspriteshadowdistance");
+		cvShadowDistance = CVar.FindCVar("boa_spriteshadowdistance");
 	}
 
 	// Player-specific stuff

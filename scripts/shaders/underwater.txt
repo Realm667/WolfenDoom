@@ -29,7 +29,7 @@ class WaterHandler : StaticEventHandler {
 		if (p.mo.waterlevel >= 3) {
 			Shader.SetEnabled(p, "watershader", true);
 			Shader.SetEnabled(p, "waterzoomshader", true);
-			double effectSize = CVar.GetCVar("uw_effectsize", p).GetFloat();
+			double effectSize = CVar.GetCVar("boa_uweffectsize", p).GetFloat();
 			Shader.SetUniform1f(p, "watershader", "waterFactor", effectSize);
 			Shader.SetUniform1f(p, "waterzoomshader", "zoomFactor", 1 - (effectSize * 2));
 		}

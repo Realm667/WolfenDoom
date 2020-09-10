@@ -16,6 +16,14 @@ ACTOR PrisonerAgentTalk
 	}
 }
 
+ACTOR PrisonerDeco : PrisonerAgentTalk
+{
+	//$Title Cpt. James Ryan (decoration for scenes)
+	+CLIENTSIDEONLY
+	+NOINTERACTION
+	-SOLID
+}
+
 ACTOR PrisonerFree : DirtyDarren
 {
 	//$Category Monsters (BoA)/NPCs

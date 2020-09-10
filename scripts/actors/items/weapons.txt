@@ -23,7 +23,7 @@ class NaziWeapon : Weapon
 	States
 	{
 		Dryfire:
-			"####" "#" 1 A_JumpIf(CallACS("Autoreload")==1,"Reload");
+			"####" "#" 1 A_JumpIf(CallACS("boa_autoreload")==1,"Reload");
 			"####" "#" 1 Offset(0,35) A_StartSound("weapon/dryfire", CHAN_WEAPON);
 			"####" "#" 9 Offset(0,34);
 			"####" "#" 0 A_Jump(256,"Ready");
@@ -1105,8 +1105,8 @@ class GunSmokeSpawner : Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		CVar smokeSwitch = CVar.FindCVar("smokeswitch");
-		int smoke = smokeSwitch.GetInt();
+		CVar boa_smokeswitch = CVar.FindCVar("boa_smokeswitch");
+		int smoke = boa_smokeswitch.GetInt();
 		if (smoke == 0)
 		{
 			Destroy();

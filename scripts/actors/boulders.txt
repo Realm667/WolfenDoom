@@ -1,0 +1,212 @@
+class Boulder : Actor
+{
+	Vector3 oldpos;
+	int flags;
+
+	FlagDef HUGGER:flags, 0;
+
+	Default
+	{
+		BounceType "Hexen";
+		BounceFactor 0.6;
+		WallBounceFactor 0.25;
+		DeathSound "boulder/stop";
+		Damage 250;
+		Friction 0.5;
+		Gravity 1.5;
+		Height 48;
+		Mass 100;
+		MaxStepHeight 8;
+		Obituary "$BOULDER";
+		Radius 24;
+		Speed 10;
+		+ACTIVATEIMPACT
+		+ACTIVATEPCROSS
+		+DROPOFF
+		+MISSILE
+		+NODAMAGETHRUST
+		+NOEXTREMEDEATH
+		+RIPPER
+		+SOLID
+		+STEPMISSILE
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A 1;
+		Roll:
+			"####" "#" 1;
+			Loop;
+		Death:
+			"####" "#" 1;
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		vel*= 1.05;
+		angle = 0;
+
+		if (target) { angle = target.angle; }
+
+		A_StartSound("boulder/roll", CHAN_5, CHANF_LOOPING, 1.0);
+
+		if (bHugger) { bouncefactor = 1.0; }
+
+		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		oldpos = pos;
+
+		Super.Tick();
+
+		if (IsFrozen() || pos == oldpos) { return; }
+
+		double moveangle = 0;
+
+		if (!vel.x) { moveangle = vel.y > 0 ? 90 : -90; }
+		else if (!vel.y) { moveangle = vel.x > 0 ? 0 : 180; }
+		else { moveangle = atan(vel.y / max(vel.x, 1)); }
+
+		double amt = (vel.length() - 4) / Speed;
+
+		if (pos.z <= floorz + 1 || bOnMobj)
+		{
+			A_SoundVolume(CHAN_5, amt);
+			A_SetSize(Default.Radius, Default.Height);
+
+			double deltaz = pos.z - GetZAt(radius, 0, moveangle, GZF_ABSOLUTEANG);
+			if (deltaz > 0)
+			{
+				double newspeed = clamp(deltaz / 512.0, -1.0, 1.0);
+				vel.xy += RotateVector((newspeed, 0), moveangle);
+			}
+			else { vel.z = vel.z / 4; }
+		}
+		else
+		{
+			A_SoundVolume(CHAN_5, 0);
+
+			double deltaz = pos.z - floorz;
+			if (bHugger && deltaz > 96.0)
+			{
+				A_SetSize(Default.Radius / 2, Default.Height);
+				vel.xy /= max(1.0, deltaz / 64.0); // Massive air friction over dropoffs...
+			}
+			vel.z += (deltaz > 0 ? -1 : 1) * GetGravity();
+		}
+
+		if (vel.length() > 4)
+		{
+			amt = (vel.length() - 4) / Speed;
+			A_Quake(1, 2, 0, int(192 * amt), "");
+			SetDamage(Default.damage);
+			if (!InStateSequence(CurState, FindState("Roll"))) { SetStateLabel("Roll"); }
+		}
+		else
+		{
+			vel *= 0;
+			A_StopSound(CHAN_5);
+			SetDamage(0);
+			if (pos.z == floorz && !InStateSequence(CurState, FindState("Death")))
+			{
+				A_PlaySound("Boulder/Stop");
+				SetStateLabel("Death");
+			}
+			bPushable = TRUE; //in case we survive between two of them or they get stuck into something which prevent us to leave a room
+			ClearBounce();
+		}
+
+		angle = 0; // Neutralize the angle
+		pitch += vel.x * 1.5; // Pitch with x movement
+		roll -= vel.y * 1.5; // Roll with y movement
+	}
+}
+
+class BoulderGray : Boulder {}
+
+class BoulderSpawner : SwitchableDecoration
+{
+	class<Boulder> boulderclass;
+	int flags;
+
+	FlagDef HUGGER:flags, 0;
+	FlagDef ACTIVATED:flags, 1;
+
+	Property BoulderClass:boulderclass;
+
+	Default
+	{
+		//$Category Hazards (BoA)
+		//$Color 3
+		Radius 24;
+		Height 48;
+		+SOLID
+		Obituary "$BOULDER";
+	}
+
+	States
+	{
+		Spawn:
+		Inactive:
+			MDLA A -1;
+			Stop;
+		Active:
+			TNT1 A 1 {
+				if (!bActivated) // Only spawn a boulder on first activation
+				{
+					bool spawned;
+					Actor mo;
+
+					[spawned, mo] = A_SpawnItemEx(boulderclass, 0, 0, 0, 10);
+					if (bHugger && Boulder(mo)) { Boulder(mo).bHugger = true; }
+
+					bActivated = true;
+					bSolid = false;
+				}
+			}
+			TNT1 A -1; // Keep the actor around so that the boulder crush obituary will work properly
+			Stop;
+	}
+}
+
+class BoulderStartGrey : BoulderSpawner
+{
+	Default
+	{
+		//$Title Boulder grey (bounce, inactive)
+		BoulderSpawner.BoulderClass "BoulderGray";
+	}
+}
+
+class BoulderStartGreyHugger : BoulderSpawner
+{
+	Default
+	{
+		//$Title Boulder grey (hugger, inactive)
+		BoulderSpawner.BoulderClass "BoulderGray";
+		+BoulderSpawner.HUGGER;
+	}
+}
+
+class BoulderStartBrown : BoulderSpawner
+{
+	Default
+	{
+		//$Title Boulder brown (bounce, inactive)
+		BoulderSpawner.BoulderClass "Boulder";
+	}
+}
+
+class BoulderStartBrownHugger : BoulderSpawner
+{
+	Default
+	{
+		//$Title Boulder brown (hugger, inactive)
+		BoulderSpawner.BoulderClass "Boulder";
+		+BoulderSpawner.HUGGER;
+	}
+}

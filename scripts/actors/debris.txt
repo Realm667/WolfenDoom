@@ -184,7 +184,7 @@ class DebrisBase : StaticActor
 		Mass 50;
 		DebrisBase.ShouldScale true;
 		DebrisBase.VariantCount 1;
-		DistanceCheck "scenelod";
+		DistanceCheck "boa_scenelod";
 	}
 
 	States
@@ -224,7 +224,7 @@ class DebrisMound : Actor
 		MaxStepHeight 48;
 		MaxDropoffHeight 48;
 		RenderRadius 512;
-		DistanceCheck "scenelod";
+		DistanceCheck "boa_scenelod";
 	}
 
 	States
@@ -301,7 +301,7 @@ class DebrisChunk : DebrisBase
 		//$Title Debris - Random Chunk
 		DebrisBase.VariantCount 12;
 		DebrisBase.ShouldScale false;
-		DistanceCheck "scenelod";
+		DistanceCheck "boa_scenelod";
 	}
 }
 
@@ -313,7 +313,7 @@ class DebrisPipe : DebrisBase
 		Radius 140;
 		Mass 100;
 		DebrisBase.VariantCount 6;
-		DistanceCheck "scenelod";
+		DistanceCheck "boa_scenelod";
 	}
 
 	override void PostBeginPlay()
@@ -332,7 +332,7 @@ class DebrisBeam : DebrisBase
 		Radius 128;
 		Mass 150;
 		DebrisBase.VariantCount 5;
-		DistanceCheck "scenelod";
+		DistanceCheck "boa_scenelod";
 	}
 
 	override void PostBeginPlay()
@@ -352,7 +352,7 @@ class DebrisGirder : DebrisBase
 		Radius 116;
 		Mass 300;
 		DebrisBase.VariantCount 3;
-		DistanceCheck "scenelod";
+		DistanceCheck "boa_scenelod";
 	}
 
 	override void PostBeginPlay()
@@ -370,7 +370,7 @@ class DebrisBrick : DebrisBase
 		//$Title Debris - Brick
 		Radius 14;
 		DebrisBase.ShouldScale false;
-		DistanceCheck "scenelod";
+		DistanceCheck "boa_scenelod";
 	}
 }
 
@@ -380,7 +380,7 @@ class DebrisBottle : DebrisChunk
 	{
 		DebrisBase.ShouldScale false;
 		DebrisBase.VariantCount 2;
-		DistanceCheck "scenelod";
+		DistanceCheck "boa_scenelod";
 		RenderStyle "Translucent";
 		Alpha 0.95;
 	}
@@ -390,7 +390,7 @@ class DebrisBottle2 : DebrisBottle
 {
 	Default
 	{
-		DistanceCheck "scenelod";
+		DistanceCheck "boa_scenelod";
 	}
 }
 
@@ -401,7 +401,7 @@ class DebrisCorrugated : DebrisBase
 		//$Title Debris - Corrugated Metal
 		Radius 70;
 		Mass 10;
-		DistanceCheck "scenelod";
+		DistanceCheck "boa_scenelod";
 		DebrisBase.ShouldScale false;
 		DebrisBase.VariantCount 2;
 	}

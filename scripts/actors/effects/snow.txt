@@ -29,7 +29,7 @@ class SnowSpawner : EffectSpawner
 		+NOSECTOR
 		+SPAWNCEILING;
 		EffectSpawner.Range 1024;
-		EffectSpawner.SwitchVar "snowswitch";
+		EffectSpawner.SwitchVar "boa_snowswitch";
 		+EffectSpawner.ALLOWTICKDELAY
 	}
 
@@ -53,13 +53,8 @@ class SnowSpawner : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-
-		if (args[2]) { [spawned, mo] = A_SpawnItemEx("SnowParticle", random(-Args[0], Args[0]), 0, 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0),frandom(-1.0, -3.0), random(0, 359), 0, Args[1]); }
-		else { [spawned, mo] = A_SpawnItemEx("SnowParticle", random(-Args[0], Args[0]), random(-Args[0], Args[0]), 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, 0, Args[1]); }
-
-		if (mo && manager) { manager.QueueParticle(mo); }
+		if (args[2]) { A_SpawnItemEx("SnowParticle", random(-Args[0], Args[0]), 0, 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0),frandom(-1.0, -3.0), random(0, 359), 0, Args[1]); }
+		else { A_SpawnItemEx("SnowParticle", random(-Args[0], Args[0]), random(-Args[0], Args[0]), 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, 0, Args[1]); }
 	}
 }
 
@@ -67,7 +62,7 @@ class SnowParticle : ParticleBase
 {
 	Default
 	{
-		DistanceCheck "sfxlod";
+		DistanceCheck "boa_sfxlod";
 		Radius 1;
 		Height 3;
 		Projectile;

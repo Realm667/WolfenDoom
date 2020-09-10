@@ -4,7 +4,7 @@ ACTOR ModelIncaTrain : ModelBase
 	//$Category Models (BoA)/Vehicles
 	//$Title Train
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	RenderRadius 256
 	Radius 4
 	Height 4
@@ -55,7 +55,7 @@ ACTOR BomberVTOL3 : ModelBase
 	//$Category Models (BoA)/Planes
 	//$Title Bomber VTOL-3
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 }
 
 ACTOR Submarine : ModelBase //Ozy81
@@ -66,7 +66,7 @@ ACTOR Submarine : ModelBase //Ozy81
 	//$Arg0 "Engine Sound"
 	//$Arg0Type 11
 	//$Arg0Enum { 0 = "No"; 1 = "Yes"; }
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 64
 	Height 64
 	-SOLID
@@ -96,7 +96,7 @@ ACTOR TankPanzer3 : ModelBase //MaxED
 	//$Category Models (BoA)/Vehicles
 	//$Title Tank (Panzer III)
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 4
 	Height 64
 }
@@ -106,7 +106,7 @@ ACTOR Cruiser : ModelBase //Ozy81
 	//$Category Models (BoA)/Ships
 	//$Title Battleship
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 4
 	Height 4
 }
@@ -116,7 +116,7 @@ ACTOR FlakVierling3D_Ship : 3dObstacle
 	//$Category Models (BoA)/Ships
 	//$Title Flak Vierling (ship variant)
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 72
 	Height 88
 	+NOGRAVITY
@@ -127,7 +127,7 @@ ACTOR Luftschiff : 3dObstacle
 	//$Category Models (BoA)/Ships
 	//$Title Luftschiff LZ127
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 32
 	Height 32
 	-SOLID
@@ -162,12 +162,19 @@ ACTOR Luftschiff_End : SwitchableDecoration
 	}
 }
 
+ACTOR Luftschiff_Deco : MuseumBase
+{
+	//$Category Models (BoA)/Ships
+	//$Title Luftschiff LZ127 (Decorative)
+	DistanceCheck "boa_scenelod"
+}
+
 ACTOR Junker52 : 3dObstacle
 {
 	//$Category Models (BoA)/Planes
 	//$Title Junkers JU-52
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 128
 	Height 64
 }
@@ -177,7 +184,7 @@ ACTOR Forklift : 3dObstacle
 	//$Category Models (BoA)/Vehicles
 	//$Title Forklift
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 80
 	Height 64
 }
@@ -187,7 +194,7 @@ ACTOR MedTruck : 3dObstacle
 	//$Category Models (BoA)/Vehicles
 	//$Title Medical Truck
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 68
 	Height 72
 }
@@ -197,7 +204,7 @@ ACTOR MedTruckD : 3dObstacle
 	//$Category Models (BoA)/Vehicles
 	//$Title Medical Truck, Destroyed
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 68
 	Height 72
 }
@@ -207,7 +214,7 @@ ACTOR Tires
 	//$Category Props (BoA)/Street
 	//$Title Tires (Kubelwagon)
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 16
 	Height 8
 	+SOLID
@@ -222,28 +229,28 @@ ACTOR Tires
 ACTOR Tires2 : Tires
 {
 	//$Title Tires (Nazi Staff Car)
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	+NOGRAVITY
 }
 
 ACTOR Tires3 : Tires
 {
 	//$Title Tires (Junker-52)
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	+NOGRAVITY
 }
 
 ACTOR Single_Tire : Tires
 {
 	//$Title Single Tire (Kubelwagon)
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	+NOGRAVITY
 }
 
 ACTOR Single_Tire2 : Tires
 {
 	//$Title Single Tire (Junker-52)
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	+NOGRAVITY
 }
 
@@ -253,7 +260,7 @@ ACTOR RTCWCar : 3dObstacle
 	//$Category Models (BoA)/Vehicles
 	//$Title Staff Car
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 32
 	Height 32
 	States
@@ -264,7 +271,7 @@ ACTOR RTCWCar : 3dObstacle
 	}
 }
 
-ACTOR RTCWCarGlass : 3dGlass { DistanceCheck "scenelod" }
+ACTOR RTCWCarGlass : 3dGlass { DistanceCheck "boa_scenelod" }
 
 //Wolfenstein 2009 models
 ACTOR Opel_Fuel : 3dObstacle
@@ -272,7 +279,7 @@ ACTOR Opel_Fuel : 3dObstacle
 	//$Category Models (BoA)/Vehicles
 	//$Title Opel Blitz T-Stoff Tankwagen
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 32
 	Height 32
 	States
@@ -289,7 +296,7 @@ ACTOR ModelGMCTruck : SwitchableDecoration //ozy81
 	//$Category Models (BoA)/Vehicles
 	//$Title Truck (US, MoH)
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Health -1
 	-FLOORCLIP
 	-NOBLOCKMAP
@@ -324,7 +331,7 @@ ACTOR ModelOpelTruck : 3dObstacle
 	//$Color 3
 	//$Arg0 "Type"
 	//$Arg0Tooltip "Pickup the desired type\nAfrika: 0\nWehrmacht: 1\nAfrika (Truck Seqs): 2\nWehrmacht (Truck Seqs): 3"
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	RenderRadius 256
 	Radius 24
 	Height 24
@@ -348,7 +355,7 @@ ACTOR MercedesLimo : 3dObstacle
 	//$Category Models (BoA)/Vehicles
 	//$Title Mercedes Nazi Limo
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 32
 	Height 32
 	States
@@ -359,14 +366,14 @@ ACTOR MercedesLimo : 3dObstacle
 	}
 }
 
-ACTOR LimoGlass : 3dGlass { DistanceCheck "scenelod" }
+ACTOR LimoGlass : 3dGlass { DistanceCheck "boa_scenelod" }
 
 ACTOR Kubelwagen : 3dObstacle
 {
 	//$Category Models (BoA)/Vehicles
 	//$Title Kubelwagen
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 32
 	Height 32
 	States
@@ -377,7 +384,7 @@ ACTOR Kubelwagen : 3dObstacle
 	}
 }
 
-ACTOR KubelGlass : 3dGlass { DistanceCheck "scenelod" }
+ACTOR KubelGlass : 3dGlass { DistanceCheck "boa_scenelod" }
 
 ACTOR OldCar_Spawner : 3dObstacle
 {
@@ -386,7 +393,7 @@ ACTOR OldCar_Spawner : 3dObstacle
 	//$Color 3
 	//$Arg0 "Color"
 	//$Arg0Tooltip "Pickup the desired color\nRandom: 0\nOlive: 1\nRed: 2\nCyan: 3\nNoir: 4"
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Height 64
 	+NOGRAVITY
 	States
@@ -423,21 +430,21 @@ ACTOR Tractor : 3dObstacle
 	//$Category Models (BoA)/Vehicles
 	//$Title Tractor
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 32
 	Height 32
 }
 
 //CODs Stuff - Ozy81
-ACTOR US_ShermanTurretProp : ModelBase {DistanceCheck "scenelod" +CANPASS }
-ACTOR US_ShermanCannonProp : ModelBase {DistanceCheck "scenelod" +CANPASS }
+ACTOR US_ShermanTurretProp : ModelBase {DistanceCheck "boa_scenelod" +CANPASS }
+ACTOR US_ShermanCannonProp : ModelBase {DistanceCheck "boa_scenelod" +CANPASS }
 
 ACTOR US_ShermanProp : 3dObstacle
 {
 	//$Category Models (BoA)/Vehicles
 	//$Title US M4 Sherman Tank (scenery)
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Height 88
 	+SOLID
 	States
@@ -450,14 +457,14 @@ ACTOR US_ShermanProp : 3dObstacle
 	}
 }
 
-ACTOR US_ShermanTurretDeco : MuseumBase {DistanceCheck "scenelod" +CANPASS }
-ACTOR US_ShermanCannonDeco : MuseumBase {DistanceCheck "scenelod" +CANPASS }
+ACTOR US_ShermanTurretDeco : MuseumBase {DistanceCheck "boa_scenelod" +CANPASS }
+ACTOR US_ShermanCannonDeco : MuseumBase {DistanceCheck "boa_scenelod" +CANPASS }
 
 ACTOR US_ShermanDeco : MuseumBase
 {
 	//$Category Models (BoA)/Vehicles
 	//$Title US M4 Sherman Tank, Decorative
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	States
 	{
 	Spawn:
@@ -468,16 +475,16 @@ ACTOR US_ShermanDeco : MuseumBase
 	}
 }
 
-ACTOR T34TreadsProp : MuseumBase {DistanceCheck "scenelod" +CANPASS }
-ACTOR T34CannonProp : MuseumBase {DistanceCheck "scenelod" +CANPASS }
-ACTOR T34TurretProp : MuseumBase {DistanceCheck "scenelod" +CANPASS }
+ACTOR T34TreadsProp : MuseumBase {DistanceCheck "boa_scenelod" +CANPASS }
+ACTOR T34CannonProp : MuseumBase {DistanceCheck "boa_scenelod" +CANPASS }
+ACTOR T34TurretProp : MuseumBase {DistanceCheck "boa_scenelod" +CANPASS }
 
 ACTOR T34TankProp : MuseumBase
 {
 	//$Category Models (BoA)/Vehicles
 	//$Title T-34 Soviet Standard Tank (scenery)
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	States
 	{
 	Spawn:
@@ -507,14 +514,14 @@ ACTOR COD_Tiger1 : ModelBase
 	Radius 4
 	Height 64
 	RenderRadius 256
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 }
 ACTOR COD_SSHorch : 3dObstacle
 {
 	//$Category Models (BoA)/Vehicles
 	//$Title Truck, Horch-1A (Nazi)
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 12
 	Height 52
 	States
@@ -528,7 +535,7 @@ ACTOR COD_SSHorch : 3dObstacle
 	}
 }
 
-ACTOR COD_SSHorch_Glass : 3dGlass { DistanceCheck "scenelod" }
+ACTOR COD_SSHorch_Glass : 3dGlass { DistanceCheck "boa_scenelod" }
 
 ACTOR COD_USJeep : 3dObstacle
 {
@@ -537,7 +544,7 @@ ACTOR COD_USJeep : 3dObstacle
 	//$Color 3
 	//$Arg0 "Shape"
 	//$Arg0Tooltip "Change the variant\nDamaged: 1"
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 12
 	Height 52
 	States
@@ -559,7 +566,7 @@ ACTOR COD_USJeep : 3dObstacle
 	}
 }
 
-ACTOR COD_USJeep_Glass : 3dGlass { DistanceCheck "scenelod" }
+ACTOR COD_USJeep_Glass : 3dGlass { DistanceCheck "boa_scenelod" }
 
 ACTOR COD_OpBlitzDestroyed : 3dObstacle
 {
@@ -568,7 +575,7 @@ ACTOR COD_OpBlitzDestroyed : 3dObstacle
 	//$Color 3
 	//$Arg0 "Type"
 	//$Arg0Tooltip "Change the variant\nAfrika: 1"
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 32
 	Height 64
 	States
@@ -585,7 +592,7 @@ ACTOR COD_OpBlitzDestroyed : 3dObstacle
 	}
 }
 
-ACTOR COD_OpBlitzD_Glass : 3dGlass { DistanceCheck "scenelod" }
+ACTOR COD_OpBlitzD_Glass : 3dGlass { DistanceCheck "boa_scenelod" }
 
 ACTOR CODBike : 3dObstacle
 {
@@ -594,7 +601,7 @@ ACTOR CODBike : 3dObstacle
 	//$Color 3
 	//$Arg0 "Shape"
 	//$Arg0Tooltip "Pickup the desired shape\nRandom: 0\nClean: 1\nBroken: 2"
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 16
 	Height 32
 	+NOGRAVITY
@@ -622,7 +629,7 @@ ACTOR CODOmahaBoat : FlakVierling3D
 	//$Category Models (BoA)/Ships
 	//$Title Landing Boat
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	States
 	{
 	Active:
@@ -670,7 +677,7 @@ ACTOR CODStuka : ModelBase
 	//$Color 3
 	//$Arg0 "Type"
 	//$Arg0Tooltip "Pickup the desired shape\nNormal: 0\nDestroyed: 1\nCrashed: 2\nBoom: 3"
-	DistanceCheck "scenelod" //if set lower, airplanes won't appear inside skyboxes probably - ozy81
+	DistanceCheck "boa_scenelod" //if set lower, airplanes won't appear inside skyboxes probably - ozy81
 	+CANPASS
 	+DONTTHRUST
 	+NOBLOODDECALS
@@ -715,7 +722,7 @@ ACTOR CODStuka_Flight : CODStuka
 	Radius 1
 }
 
-ACTOR CODStuka_Flight_Fog : CODStuka_Flight { DistanceCheck "scenelod" }
+ACTOR CODStuka_Flight_Fog : CODStuka_Flight { DistanceCheck "boa_scenelod" }
 
 ACTOR CODStukaF : 3dFurniture_End
 {
@@ -733,7 +740,7 @@ ACTOR COD_StukaBomb1 : 3dObstacle
 	//$Category Models (BoA)/Scenery
 	//$Title Stuka Bomb
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 16
 	Height 16
 	+NOGRAVITY
@@ -750,7 +757,7 @@ ACTOR CODStuka_Deco : MuseumBase
 {
 	//$Category Models (BoA)/Planes
 	//$Title Stuka Airplane, Decorative
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	States
 	{
 	Spawn:
@@ -764,7 +771,7 @@ ACTOR TMPlane : ModelBase
 	//$Category Cutscenes (BoA)
 	//$Title Titlemap Stuka
 	//$Color 0
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	States
 	{
 	Spawn:
@@ -778,7 +785,7 @@ ACTOR CODCondor : 3dObstacle
 	//$Category Models (BoA)/Planes
 	//$Title German Condor Focke-Wulf FW200 Bomber
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	RenderRadius 512
 	Radius 8
 	Height 8
@@ -788,7 +795,7 @@ ACTOR CODCondor_Deco : MuseumBase
 {
 	//$Category Models (BoA)/Planes
 	//$Title German Condor Focke-Wulf FW200 Bomber, Decorative
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	States
 	{
 	Spawn:
@@ -802,7 +809,7 @@ ACTOR CODSideCar : 3dObstacle
 	//$Category Models (BoA)/Vehicles
 	//$Title SideCar
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 56
 	Height 48
 }
@@ -819,7 +826,7 @@ ACTOR CODCivCarD_Spawner : 3dObstacle
 	//$Color 3
 	//$Arg0 "Color"
 	//$Arg0Tooltip "Pickup the desired color\nRandom: 0\nTan: 1\nRed: 2\nBlue: 3"
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Height 64
 	+NOGRAVITY
 	States
@@ -851,7 +858,7 @@ ACTOR CODScheinwerfer : SwitchableDecoration
 	//$Category Models (BoA)/Vehicles
 	//$Title Scheinwerfer (Set DORMANT & activate it via ACS)
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 64
 	Height 80
 	Health -1

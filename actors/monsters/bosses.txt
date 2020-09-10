@@ -781,7 +781,7 @@ ACTOR ZyklonMonster : Nazi
 	Spawn:
 		TNT1 A 1 A_LookThroughDisguise
 		TNT1 AAAAAA 0 {
-			if (!CheckRange(sfxlod, true))
+			if (!CheckRange(boa_sfxlod, true))
 			{
 				A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360));
 			}
@@ -2262,8 +2262,10 @@ ACTOR Mengele_Healthy : RocketMan
 {
 	//$Title Dr. Mengele, healthy (Boss)
 	Base.BossIcon "BOSSICO2"
+	Base.NoFear
 	Tag "$TAGMENGELE"
 	Health 1000
+	Speed 6
 	DamageFactor "Poison", 0
 	DamageFactor "MutantPoison", 0
 	DamageFactor "UndeadPoison", 0
@@ -2323,8 +2325,10 @@ ACTOR Mengele_Wounded : RocketMan
 {
 	//$Title Dr. Mengele, wounded (Boss)
 	Base.BossIcon "BOSSICO2"
+	Base.NoFear
 	Tag "$TAGMENGELE"
 	Health 1000
+	Speed 4
 	PainChance 16
 	+MISSILEMORE
 	DamageFactor "Poison", 0

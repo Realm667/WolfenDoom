@@ -25,7 +25,7 @@ class FireSpawner : HeatEffectGiver
 		+DONTSPLASH
 		+NOCLIP
 		+NOGRAVITY
-		EffectSpawner.SwitchVar "fireswitch";
+		EffectSpawner.SwitchVar "boa_fireswitch";
 		+EffectSpawner.ALLOWTICKDELAY
 	}
 
@@ -53,7 +53,7 @@ class FireSpawner : HeatEffectGiver
 
 			if (switchvar.length()) { switchcvar = CVar.FindCVar(switchvar); }
 
-			manager = EffectsManager.GetManager();
+			manager = ParticleManager.GetManager();
 
 			if (bDormant || SpawnFlags & MTF_DORMANT) { Deactivate(null); }
 			else { Activate(null); }
@@ -77,28 +77,11 @@ class FireSpawner : HeatEffectGiver
 			tics += 5 - switchcvar.GetInt();  // Set tics according to the cvar
 		}
 
-		bool spawned;
-		Actor mo;
-
 		int spawntype = RandomPick(3, 2, 1, 1, 1, 1, 1); // Replicates the random spawns of the old A_Jump calls... Embers, smoke, or flame
 
-		if (spawntype == 1 || spawntype == 3)
-		{
-			[spawned, mo] = A_SpawnItemEx("Flame_" .. suffix);
-			if (mo && manager) { manager.QueueParticle(mo); }
-		}
-
-		if (spawntype == 3)
-		{
-			[spawned, mo] = A_SpawnItemEx("Ember_" .. suffix);
-			if (mo && manager) { manager.QueueParticle(mo); }
-		}
-
-		if (spawntype == 2 && !args[2])
-		{
-			[spawned, mo] = A_SpawnItemEx("Smoke_" .. suffix);
-			if (mo && manager) { manager.QueueParticle(mo); }
-		}
+		if (spawntype == 1 || spawntype == 3) { A_SpawnItemEx("Flame_" .. suffix); }
+		if (spawntype == 3) { A_SpawnItemEx("Ember_" .. suffix); }
+		if (spawntype == 2 && !args[2]) { A_SpawnItemEx("Smoke_" .. suffix); }
 	}
 
 	override void Deactivate(Actor activator)
@@ -364,7 +347,7 @@ class EmberBase : ParticleBase
 		RenderStyle "Add";
 		Alpha 0.8;
 		Scale 0.05;
-		DistanceCheck "sfxlod";
+		DistanceCheck "boa_sfxlod";
 		EmberBase.Thrust 0, 1;
 		EmberBase.ThrustZ 1, 4;
 		EmberBase.Delay 32;
@@ -497,21 +480,14 @@ class BarrelFireSpawner : EffectSpawner
 
 		if (count == 0 && Random(0, 7) == 0) // 1 in 8 chance of spawning embers on the first loop
 		{
-			[spawned, mo] = A_SpawnItemEx("Ember_Small");
-			if (mo && manager) { manager.QueueParticle(mo); }
-
-			[spawned, mo] = A_SpawnItemEx("Ember_Medium");
-			if (mo && manager) { manager.QueueParticle(mo); }
-
-			[spawned, mo] = A_SpawnItemEx("Ember_Small");
-			if (mo && manager) { manager.QueueParticle(mo); }
-
+			A_SpawnItemEx("Ember_Small");
+			A_SpawnItemEx("Ember_Medium");
+			A_SpawnItemEx("Ember_Small");
 			A_Explode(Random(1, 2), 8, 0);
 		}
 		else
 		{
-			[spawned, mo] = A_SpawnItemEx("Flame_Small");
-			if (mo && manager) { manager.QueueParticle(mo); }
+			A_SpawnItemEx("Flame_Small");
 		}
 	}
 }
@@ -551,7 +527,7 @@ class ZFlame1B : ZFlame1A
 {
 	Default
 	{
-		DistanceCheck "sfxlod";
+		DistanceCheck "boa_sfxlod";
 	}
 
 	States

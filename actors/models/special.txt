@@ -89,7 +89,7 @@ ACTOR TestCrate : 3dObstacle //Ozy81
 	//$Category Props (BoA)/Labs
 	//$Title Test Lab Crate
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 24
 	Height 64
 	+SOLID
@@ -132,7 +132,7 @@ ACTOR TestCrate3 : TestCrate //Ozy81
 
 ACTOR CrateGlass : 3dGlass //Ozy81
 {
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 24
 	Height 64
 	-SOLID
@@ -151,7 +151,7 @@ ACTOR CrateGlass2 : CrateGlass { +NOGRAVITY }
 
 ACTOR DummyWarper //This is here to avoid "blink effects" - ozy81
 {
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 8
 	Height 64
 	Scale 1.1
@@ -466,7 +466,7 @@ ACTOR SlopeMe1 : 3dObstacle //Ozy81
 	//$Category Misc (BoA)
 	//$Title Slopeable Glass (clear)
 	//$Color 3
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Radius 16
 	Height 4
 	+NOGRAVITY
@@ -499,7 +499,7 @@ ACTOR IntermapSkylight : 3dObstacle //MaxED
 ACTOR LighthouseBeam : IntermapSkylight //MaxED
 {
 	//$Title Lighthouse Beam
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	RenderStyle "Add"
 	+BRIGHT
 	States

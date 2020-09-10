@@ -100,7 +100,7 @@ class AlertLight : Actor
 		//$Category Misc (BoA)
 		//$Title Alert Light (stealth)
 		//$Color 1
-		DistanceCheck "sfxlod";
+		DistanceCheck "boa_sfxlod";
 		+INVISIBLE
 		+NOGRAVITY
 	}
@@ -204,7 +204,7 @@ class SpotlightMount : Actor
 		+NOGRAVITY
 		Health 100;
 		Height 56;
-		DistanceCheck "scenelod";
+		DistanceCheck "boa_scenelod";
 	}
 
 	States
@@ -299,7 +299,7 @@ class SpotlightFlare : SwitchableDecoration
 		Radius 16;
 		Scale 0.5;
 		RenderStyle "Add";
-		DistanceCheck "sfxlod";
+		DistanceCheck "boa_sfxlod";
 	}
 
 	States
@@ -325,7 +325,7 @@ class SpotlightBeam : Actor
 		+BRIGHT
 		+NOBLOCKMAP
 		+NOGRAVITY
-		DistanceCheck "sfxlod";
+		DistanceCheck "boa_sfxlod";
 		RenderStyle "Add";
 		Alpha 0.4;
 	}

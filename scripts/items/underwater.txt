@@ -40,7 +40,7 @@ class BoAUnderwater : CustomInventory
 		// Spawn bubbles
 		if (level.time % 7 == 0)
 		{
-			if(owner.waterlevel >= 3 && bubbleswitch) //check also stored cvar for custom tweaks
+			if(owner.waterlevel >= 3 && boa_bubbleswitch) //check also stored cvar for custom tweaks
 			{
 				Actor bubble = Spawn("PlayerBubble", owner.pos + (Random(4, 8), 0, Random(48, 52)));
 				if (bubble) { bubble.angle = Random(0, 359); }

@@ -253,6 +253,7 @@ class Base : Actor
 	bool user_targetcrosshair;
 	bool user_nocountkill;
 	int flags;
+	bool dodging;
 
 	LaserFindHitPointTracer HitPointTracer;
 	LaserBeam beam;
@@ -466,6 +467,8 @@ class Base : Actor
 				return false;
 			}
 
+			dodging = true;
+
 			// Take 50% damage instead, and prevent pain
 			bNoPain = true;
 			DamageFactor = Default.DamageFactor * 0.5;
@@ -504,6 +507,7 @@ class Base : Actor
 		{
 			Sprite = SpawnState.Sprite;
 		}
+
 		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
 	}
 
@@ -774,9 +778,15 @@ class Base : Actor
 					}
 				}
 
-				if (swimmer && waterlevel < 3) // Swimmers can't leave the water once they are below the surface (edge case: they can stack up on top of each other and sometimes make it out if the next sector height is close to the water height)
+				if (swimmer) // Swimmers can't leave the water once they are below the surface (edge case: they can stack up on top of each other and sometimes make it out if the next sector height is close to the water height)
 				{
-					vel.z = min(vel.z, -Speed);
+					double waterheight = Buoyancy.GetWaterHeight(self);
+					if (waterheight < pos.z + height + 8)
+					{
+						bFloat = false;
+						vel.z = min(vel.z, -Speed);
+					}
+					else { bFloat = Default.bFloat; }
 				}
 				else if (Default.bFloat && !swimmer) // Non-swimming floaters can't enter water when they are above the surface
 				{
@@ -1030,6 +1040,7 @@ class Nazi : Base
 	bool wasused;
 	int usetime;
 	int activationcount;
+	int gierdroplevel;
 	String head;
 	String user_spyitem;
 	int user_spymsgindex;
@@ -1054,6 +1065,12 @@ class Nazi : Base
 	Property IdleSound:idlesound;
 	Property TargetLostSound:lostsound;
 	Property TargetSeenSound:sightedsound;
+	// Level of gold drop when player is using Totale Gier
+	// Drop Level 0 (Animals) - Nothing
+	// Drop Level 1 (Normal soldiers) - 4-7 coins
+	// Drop Level 2 (Elites, Waffens, and Paratroops) - 15-20 coins (5-10 coins + 1 coin bag)
+	// Drop Level 3 (Minibosses) - ~50 coins (1 cross, goblet, or crown + 2 coin bags + 10 coins)
+	Property TotaleGierDrop:gierdroplevel;
 
 	Default
 	{
@@ -1088,6 +1105,7 @@ class Nazi : Base
 		Nazi.SneakableCloseSightRadius 64;
 		Nazi.HealDistance 8;
 		Nazi.Head "MS_UNKN";
+		Nazi.TotaleGierDrop 1;
 	}
 
 	States
@@ -1423,6 +1441,7 @@ class Nazi : Base
 				bNoPain = Default.bNoPain;
 				DamageFactor = Default.DamageFactor;
 				reactiontime = 0;
+				dodging = false;
 			}
 			"####" A 0 {
 				if (!target) { return ResolveState("Spawn"); }
@@ -1537,7 +1556,7 @@ class Nazi : Base
 
 	void A_NaziLook()
 	{
-		if (bDormant) { return; }
+		if (bDormant || dodging) { return; }
 
 		if (level.time > 35)
 		{
@@ -1606,6 +1625,7 @@ class Nazi : Base
 
 	void A_NaziChase(statelabel melee = "None", statelabel missile = "None", int flags = 0)
 	{
+		if (dodging) { return; }
 		if (bDormant) { SetState(SpawnState); return; } // Dormant actors should not wake up even if they're somehow placed in their See state
 
 		sprite = SpawnState.sprite; // Make sure our sprite isn't crouched or rolling
@@ -1836,7 +1856,7 @@ class Nazi : Base
 
 	void A_LookForGrenades()
 	{
-		if (!CheckIfSeen() && CheckRange(512.0, true)) { return; }
+		if (dodging || (!CheckIfSeen() && CheckRange(512.0, true))) { return; }
 
 		ThinkerIterator Finder = ThinkerIterator.Create("GrenadeBase", STAT_DEFAULT - 6);
 		GrenadeBase mo;
@@ -1964,9 +1984,23 @@ class Nazi : Base
 			}
 		}
 
-		if (bCanUseWalls && target && target.player && target.FindInventory("GierToken"))
+		if (gierdroplevel > 0 && bCanUseWalls && target && target.player && target.FindInventory("GierToken"))
 		{
-			for (int c = 1; c < Random(3, 6); c++)
+			// Do Totale Gier coin drop
+			// Drop coins
+			int mincoins = 4;
+			int maxcoins = 7;
+			if (gierdroplevel == 2)
+			{
+				mincoins = 5;
+				maxcoins = 10;
+			}
+			else if (gierdroplevel == 3)
+			{
+				mincoins = 10;
+				maxcoins = 10;
+			}
+			for (int c = 1; c < Random(mincoins, maxcoins); c++)
 			{
 				Actor coin = Spawn("CoinDrop", pos + (Random(-4, 4), Random(-4, 4), 0));
 
@@ -1974,6 +2008,41 @@ class Nazi : Base
 				{
 					coin.bCountItem = false;
 					coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+				}
+			}
+			// Drop additional treasures
+			if (gierdroplevel == 2)
+			{
+				Actor coin = Spawn("CoinBagDrop", pos + (Random(-4, 4), Random(-4, 4), 0));
+				if (coin)
+				{
+					coin.bCountItem = false;
+					coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+				}
+			}
+			else if (gierdroplevel == 3)
+			{
+				static const class<CoinDrop> randomdrops[] = {"CrossDrop", "GobletDrop", "CrownDrop"};
+				// Random treasure drop
+				for (int c = 0; c < 1; c++)
+				{
+					class<CoinDrop> dropClass = randomdrops[Random(0, randomdrops.Size() - 1)];
+					Actor coin = Spawn(dropClass, pos + (Random(-4, 4), Random(-4, 4), 0));
+					if (coin)
+					{
+						coin.bCountItem = false;
+						coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+					}
+				}
+				// Drop 2 coin bags
+				for (int c = 0; c < 2; c++)
+				{
+					Actor coin = Spawn("CoinBagDrop", pos + (Random(-4, 4), Random(-4, 4), 0));
+					if (coin)
+					{
+						coin.bCountItem = false;
+						coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+					}
 				}
 			}
 		}
@@ -2301,10 +2370,10 @@ class Nazi : Base
 			}
 		}
 		
-		// If the enemy is sneakable and idle (and not patrolling), and isn't in its original location, keep it moving toward that location.
-		//  NOTE: This doesn't work properly when the player has NOTARGET enabled (or is wearing a disguise and has no weapon raised).
-		if (health > 0 && bShootable && !bDormant)
+		if (health > 0 && bShootable && !bDormant && !dodging)
 		{
+			// If the enemy is sneakable and idle (and not patrolling), and isn't in its original location, keep it moving toward that location.
+			//  NOTE: This doesn't work properly when the player has NOTARGET enabled (or is wearing a disguise and has no weapon raised).
 			if (user_sneakable && bFriendly && user_incombat && patrolgoal && patrolgoal.args[0] == -1)
 			{
 				MeleeRange = 0; // To bypass the internal A_Chase "goal reached" logic
@@ -2731,7 +2800,7 @@ class MutantStandard : Nazi
 		Disintegrate:
 			"####" H 5 {
 				A_Scream();
-				A_StartSound("astrostein/guard_death");
+				A_StartSound("mutant/Death");
 				A_UnblockAndDrop();
 				A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
 			}
@@ -2820,7 +2889,7 @@ class ZombieStandard : Nazi
 			}
 			"####" A 5 Bright Light("ITBURNS1") { A_Wander(); }
 			"####" BC 5 Bright Light("ITBURNS1") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), BASE_FLAGS, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
-			"####" D 5 Bright Light("ITBURNS1") { A_Wander(); A_StartSound("sscultist/die"); }
+			"####" D 5 Bright Light("ITBURNS1") { A_Wander(); A_StartSound("nazombie/die"); }
 			"####" E 5 Bright Light("ITBURNS1") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), BASE_FLAGS, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
 			"####" FABCD 5 Bright Light("ITBURNS2") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), BASE_FLAGS, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
 			"####" EFAG 5 Bright Light("ITBURNS3") A_Wander();
@@ -2848,7 +2917,7 @@ class ZombieStandard : Nazi
 			}
 			"####" A 5 Bright Light("TPortNormal");
 			"####" BA 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
-			"####" B 5 Bright Light("TPortNormal") { A_StartSound("sscultist/die"); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+			"####" B 5 Bright Light("TPortNormal") { A_StartSound("nazombie/die"); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
 			"####" AABAB 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
 			"####" C 7 Light("TPortNormal") A_UnblockAndDrop();
 			"####" DE 6 Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
@@ -2989,6 +3058,7 @@ class NaziBoss : Nazi
 		DamageFactor "Rocket", 0.2;
 		+BOSS
 		+DONTTHRUST
+		Nazi.TotaleGierDrop 3;
 	}
 
 	States
@@ -3019,13 +3089,21 @@ class BatBase : Base
 {
 	int countdown;
 	Actor roostgoal;
+	int maxchase;
+
+	Property MaxChaseTime:maxchase;
+
+	Default
+	{
+		BatBase.MaxChaseTime 7;
+	}
 
 	States
 	{
 		Roost:
-			BFAM K Random(35, 350); // 'Sleep' on roost for 1-10 seconds
+			"####" K Random(35, 350); // 'Sleep' on roost for 1-10 seconds
 		RoostLoop:
-			BFAM K 5 A_LookThroughDisguise(LOF_NOSIGHTCHECK); // Then only go after the player again if they make a noise
+			"####" K 5 A_LookThroughDisguise(LOF_NOSIGHTCHECK); // Then only go after the player again if they make a noise
 			Loop;
 	}
 
@@ -3044,7 +3122,11 @@ class BatBase : Base
 
 		if (bShootable && health > 0)
 		{
-			if (target) { countdown--; }
+			if (target)
+			{
+				if (target != goal && height < Default.Height) { A_SetSize(-1, Default.Height, true); }
+				countdown--;
+			}
 
 			if (!roostgoal) { SpawnRoost(); } // Keep trying to spawn a roost if the actors spawned under open sky
 
@@ -3062,13 +3144,21 @@ class BatBase : Base
 				bJustAttacked = True;
 				bChaseGoal = True;
 
-				if (roostgoal && Distance2D(roostgoal) < radius && roostgoal.pos.z <= pos.z + height) // At roost, roost.
+				if (roostgoal)
 				{
-					SetOrigin(roostgoal.pos, true);
-					SetStateLabel("Roost");
+					double dist = Distance2D(roostgoal);
+					if (dist < radius && roostgoal.pos.z <= pos.z + 16) // At roost, roost.
+					{
+						SetOrigin(roostgoal.pos, true);
+						SetStateLabel("Roost");
 
-					ResetCountDown();
-					A_ClearTarget();
+						ResetCountDown();
+						A_ClearTarget();
+					}
+					else if (dist < radius * 3)
+					{
+						A_SetSize(-1, 16); // Make the bat shorter so that the sprite can move closer to the ceiling to roost more smoothly
+					}
 				}
 			}
 
@@ -3083,7 +3173,7 @@ class BatBase : Base
 
 	void ResetCountdown()
 	{
-		countdown = int(35 * Random(5, 10) * max(1.0, (pos.z - floorz) / 256.0)); // Actively chase player for 5-10 seconds - or more, if the ceiling is hight
+		countdown = int(35 * Random(5, maxchase) * max(1.0, (pos.z - floorz) / 256.0)); // Actively chase player for 5-10 seconds - or more, if the ceiling is high
 	}
 
 	void SpawnRoost()
@@ -3092,7 +3182,7 @@ class BatBase : Base
 		{
 			if (roostgoal) { roostgoal.Destroy(); } // If this gets called twice, destroy the old roost
 
-			roostgoal = Spawn("MapSpot", (pos.xy, ceilingz - height)); // Convenient actor re-use
+			roostgoal = Spawn("MapSpot", (pos.xy, ceilingz - 16)); // Convenient actor re-use
 			roostgoal.bShootable = true; // Must be set so that A_Chase will keep the map spot as a target
 		}
 	}

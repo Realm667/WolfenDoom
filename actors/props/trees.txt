@@ -7,7 +7,7 @@ ACTOR TreeBase : TreesBase
 	States
 	{
 	Spawn:
-		MDLA A 0 NODELAY A_JumpIf(CallACS("BidiSwitch")==1,"BidiSpawn")
+		MDLA A 0 NODELAY A_JumpIf(CallACS("boa_bidiswitch")==1,"BidiSpawn")
 	TridiSpawn:
 		MDLA A -1
 		Stop
@@ -27,7 +27,7 @@ ACTOR Tree1 : TreeBase
 	+MOVEWITHSECTOR
 	+RELATIVETOFLOOR
 	+SOLID
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	States
 	{
 	BidiSpawn:
@@ -39,7 +39,7 @@ ACTOR Tree1 : TreeBase
 ACTOR Tree2 : Tree1
 {
 	//$Title Tree (large)
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	States
 	{
 	BidiSpawn:
@@ -52,7 +52,7 @@ ACTOR Tree3 : Tree1
 {
 	//$Title Tree 1 (middle)
 	Height 96
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	States
 	{
 	BidiSpawn:
@@ -65,7 +65,7 @@ ACTOR Tree4 : Tree1
 {
 	//$Title Tree 2 (middle)
 	Height 96
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	States
 	{
 	BidiSpawn:
@@ -79,7 +79,7 @@ ACTOR Palm1 : TreeBase
 	//$Category Flora (BoA)
 	//$Title Palm (center)
 	//$Color 3
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	+NOGRAVITY
 	+SOLID
 	States
@@ -157,7 +157,7 @@ ACTOR JungleTree1 : TreeBase
 	//$Category Flora (BoA)
 	//$Title Jungle Tree 1
 	//$Color 3
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	+SOLID
 	States
 	{
@@ -171,7 +171,7 @@ ACTOR JungleTree2 : JungleTree1
 {
 	//$Title Jungle Tree 2 (wall)
 	Height 32
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	States
 	{
 	BidiSpawn:
@@ -183,69 +183,69 @@ ACTOR JungleTree2 : JungleTree1
 ACTOR JungleTree3 : JungleTree1
 {
 	//$Title Jungle Tree 3 (bamboo)
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 }
 
 ACTOR WinterA : TreeBase
 {
 	Height 115
 	+SOLID
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 }
 
 ACTOR WinterB : WinterA
 {
 	Radius 15
 	Height 90
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 }
 
 ACTOR WinterC : WinterA
 {
 	Height 140
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 }
 
 ACTOR WinterD : TreeBase
 {
 	Height 60
 	+SOLID
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 }
 
 ACTOR WinterE : WinterA
 {
 	Radius 10
 	Height 45
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 }
 
 ACTOR WinterF : WinterA
 {
 	Radius 10
 	Height 110
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 }
 
 ACTOR WinterG : WinterA
 {
 	Radius 25
 	Height 130
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 }
 
 ACTOR WinterH : WinterA
 {
 	Radius 25
 	Height 130
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 }
 
 ACTOR WinterI : WinterA
 {
 	Radius 25
 	Height 130
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 }
 
 ACTOR SmallTree1 : TreeBase
@@ -257,7 +257,7 @@ ACTOR SmallTree1 : TreeBase
 	+MOVEWITHSECTOR
 	+RELATIVETOFLOOR
 	+SOLID
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	States
 	{
 	BidiSpawn:
@@ -270,7 +270,7 @@ ACTOR SmallTree2 : SmallTree1
 {
 	//$Title Tree 5 (small)
 	Height 64
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	States
 	{
 	BidiSpawn:
@@ -285,7 +285,7 @@ ACTOR Tree1_Burnt : TreeBase // changes visible only with 3d trees, this actor i
 	Radius 32
 	Height 192
 	+SOLID
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	States
 	{
 	BidiSpawn:
@@ -302,7 +302,7 @@ ACTOR Tree2_Burnt : TreeBase
 	Radius 32
 	Height 192
 	+SOLID
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	States
 	{
 	BidiSpawn:
@@ -316,7 +316,7 @@ ACTOR Tree3_Burnt : Tree2_Burnt
 	//$Title Tree 1 (burnt, middle)
 	Height 96
 	+NOGRAVITY
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	States
 	{
 	BidiSpawn:
@@ -329,7 +329,7 @@ ACTOR Tree4_Burnt : Tree2_Burnt
 {
 	//$Title Tree 2 (burnt, middle)
 	Height 96
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	States
 	{
 	BidiSpawn:
@@ -344,7 +344,7 @@ ACTOR JungleTree1_Burnt : TreeBase
 	//$Title Jungle Tree 1 (Burnt)
 	//$Color 3
 	+SOLID
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	States
 	{
 	BidiSpawn:
@@ -358,7 +358,7 @@ ACTOR JungleTree2_Burnt : JungleTree1_Burnt
 	//$Title Jungle Tree 2 (burnt, wall)
 	Height 32
 	+NOGRAVITY
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	States
 	{
 	BidiSpawn:
@@ -374,7 +374,7 @@ ACTOR SmallTree1_Burnt : TreeBase
 	//$Color 3
 	Height 96
 	+SOLID
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	States
 	{
 	BidiSpawn:
@@ -395,7 +395,7 @@ ACTOR CeilingGrass : GrassBase
 	+NOGRAVITY
 	+SPAWNCEILING
 	+WALLSPRITE
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -417,7 +417,7 @@ ACTOR Grass1 : GrassBase
 	+NOBLOOD
 	+NOTAUTOAIMED
 	+SHOOTABLE
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -441,7 +441,7 @@ ACTOR Grass1 : GrassBase
 ACTOR Grass2 : Grass1
 {
 	//$Title Grass 2
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -456,7 +456,7 @@ ACTOR Grass2 : Grass1
 ACTOR Grass3 : Grass1
 {
 	//$Title Grass 3
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -471,7 +471,7 @@ ACTOR Grass3 : Grass1
 ACTOR Grass4 : Grass1
 {
 	//$Title Grass 1 (desert)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -491,7 +491,7 @@ ACTOR Grass4 : Grass1
 ACTOR Grass5 : Grass4
 {
 	//$Title Grass 2 (desert)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -506,7 +506,7 @@ ACTOR Grass5 : Grass4
 ACTOR Grass6 : Grass4
 {
 	//$Title Grass 3 (desert)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -521,7 +521,7 @@ ACTOR Grass6 : Grass4
 ACTOR Grass7 : Grass1
 {
 	//$Title Grass 1 (winter)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -541,7 +541,7 @@ ACTOR Grass7 : Grass1
 ACTOR Grass8 : Grass7
 {
 	//$Title Grass 2 (winter)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -556,7 +556,7 @@ ACTOR Grass8 : Grass7
 ACTOR Grass9 : Grass7
 {
 	//$Title Grass 3 (winter)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -576,7 +576,7 @@ ACTOR SmallBush1 : TreesBase
 	-SOLID
 	Radius 16
 	Height 24
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	States
 	{
 	Spawn:
@@ -589,7 +589,7 @@ ACTOR SmallBush2 : SmallBush1
 {
 	//$Title Bush 2
 	Height 40
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	States
 	{
 	Spawn:
@@ -602,7 +602,7 @@ ACTOR Bush : SmallBush1
 {
 	//$Title Bush (small)
 	Height 32
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	States
 	{
 	Spawn:
@@ -621,7 +621,7 @@ ACTOR BigBush : SmallBush1
 	+NOBLOOD
 	+NOTAUTOAIMED
 	+SHOOTABLE
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	States
 	{
 	Spawn:
@@ -641,7 +641,7 @@ ACTOR NiceBush1 : Grass1
 {
 	//$Category Flora (BoA)
 	//$Title Flourishing Bush (1st variant, RBY flowers)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -690,7 +690,7 @@ ACTOR NiceBush1 : Grass1
 ACTOR NiceBush2 : NiceBush1
 {
 	//$Title Flourishing Bush (2nd variant, BY flowers)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -723,7 +723,7 @@ ACTOR NiceBush2 : NiceBush1
 ACTOR NiceBush3 : NiceBush1
 {
 	//$Title Flourishing Bush (3rd variant, red flowers)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -754,7 +754,7 @@ ACTOR NiceBush3 : NiceBush1
 ACTOR NiceBush4 : NiceBush1
 {
 	//$Title Flourishing Bush (4th variant, yellow flowers)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -785,7 +785,7 @@ ACTOR NiceBush4 : NiceBush1
 ACTOR NiceBush5 : NiceBush1
 {
 	//$Title Flourishing Bush (5th variant, blue flowers)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -816,7 +816,7 @@ ACTOR NiceBush5 : NiceBush1
 ACTOR NiceBush6 : NiceBush1
 {
 	//$Title Flourishing Bush (6th variant, random berries)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -847,7 +847,7 @@ ACTOR NiceBush6 : NiceBush1
 ACTOR NiceBush7 : NiceBush1
 {
 	//$Title Bed of Flowers (1st variant, random)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	Radius 12
 	Height 12
 	States
@@ -881,7 +881,7 @@ ACTOR NiceBush7 : NiceBush1
 ACTOR NiceBush8 : NiceBush1
 {
 	//$Title Bed of Flowers (2nd variant, random)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	Radius 8
 	Height 8
 	States
@@ -915,7 +915,7 @@ ACTOR NiceBush8 : NiceBush1
 ACTOR NiceBush9 : NiceBush1
 {
 	//$Title Bed of Flowers (3rd variant, random)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	Radius 8
 	Height 8
 	States
@@ -958,7 +958,7 @@ ACTOR Flower1 : GrassBase
 	+NOBLOOD
 	+NOTAUTOAIMED
 	+SHOOTABLE
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -981,7 +981,7 @@ ACTOR Flower1 : GrassBase
 ACTOR Flower2 : Flower1
 {
 	//$Title Flower (white)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -1000,7 +1000,7 @@ ACTOR Flower2 : Flower1
 ACTOR Flower3 : Flower1
 {
 	//$Title Flower (winter)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -1018,7 +1018,7 @@ ACTOR Flower3 : Flower1
 ACTOR Rose1 : Flower1
 {
 	//$Title Rose (red)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -1037,7 +1037,7 @@ ACTOR Rose1 : Flower1
 ACTOR Rose2 : Flower1
 {
 	//$Title Rose (yellow)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -1056,7 +1056,7 @@ ACTOR Rose2 : Flower1
 ACTOR Rose3 : Flower1
 {
 	//$Title Rose (blue-white)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -1075,7 +1075,7 @@ ACTOR Rose3 : Flower1
 ACTOR Rose4 : Flower1
 {
 	//$Title Rose (winter)
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -1095,7 +1095,7 @@ ACTOR JungleGrass1 : Grass1
 {
 	//$Title Jungle Grass 1
 	Scale 0.9
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -1113,7 +1113,7 @@ ACTOR JungleGrass1 : Grass1
 ACTOR JungleGrass2 : Grass1
 {
 	//$Title Jungle Grass 2
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -1131,7 +1131,7 @@ ACTOR JungleGrass2 : Grass1
 ACTOR JungleGrass3 : Grass1
 {
 	//$Title Jungle Grass 3
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -1149,7 +1149,7 @@ ACTOR JungleGrass3 : Grass1
 ACTOR JungleGrass4 : Grass1
 {
 	//$Title Jungle Grass 4
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -1173,7 +1173,7 @@ ACTOR RandomRye : FlattenableProp
 	Radius 8
 	Height 32
 	Scale 0.8
-	DistanceCheck "grasslod"
+	DistanceCheck "boa_grasslod"
 	States
 	{
 	Spawn:
@@ -1329,7 +1329,7 @@ ACTOR WoodyLogs : TreesBase
 	//$Category Flora (BoA)
 	//$Title Small Pack of Logs (Woods)
 	//$Color 3
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	Radius 24
 	Height 24
 	Scale 0.65
@@ -1345,7 +1345,7 @@ ACTOR WoodyLogs : TreesBase
 ACTOR SnowyLogs : WoodyLogs
 {
 	//$Title Small Pack of Logs (Snow)
-	DistanceCheck "treeslod"
+	DistanceCheck "boa_treeslod"
 	States
 	{
 	Spawn:

@@ -212,9 +212,9 @@ OptionMenu "BoACheatsOptions"
 	StaticText "$WARNING2"
 	StaticText "$WARNING1"
 	StaticText " "
-	Option "$CH_OPT1", 					"sprintswitch", "OnOff"
+	Option "$CH_OPT1", 					"boa_sprintswitch", "OnOff"
 	StaticText " "
-	Slider "$CH_OPT2", 					"flinchamount", 0.0,1.0,0.1
+	Slider "$CH_OPT2", 					"boa_flinchamount", 0.0,1.0,0.1
 	StaticText " "
 	Option "$MISCMNU_NOCHEATS",			"nocheats", "OnOff" //moved here from msicellaneous - ozy81
 	Option "$MISCMNU_ALLCHEATS",		"allcheats", "OnOff"
@@ -244,7 +244,7 @@ OptionMenu "BoAOptionsMenu"
 	StaticText " "
 	Option "$OPTMNU_LANGUAGE", 			"language", "BoALanguageOptions"
 	StaticText " "
-	Option "$OPT_DEVC", 				"developercommentswitch", "OnOff"
+	Option "$OPT_DEVC", 				"boa_devcomswitch", "OnOff"
 	StaticText " "
 	SafeCommand "$OPTMNU_DEFAULTS",		"reset2defaults"
 	SafeCommand	"$OPTMNU_RESETTOSAVED",	"reset2saved"
@@ -707,10 +707,10 @@ OptionMenu "BoAWeatherOptions"
 	Title  "$OPT_WEAT"
 	StaticText "$WARNING1"
 	StaticText " "
-	Option "$WE_CLOUD",							"cloudswitch","OnOff"
-	Option "$WE_FOG",							"fogswitch","OnOff"
-	Option "$WE_RAIN",							"rainswitch","OnOff"
-	Option "$WE_SNOW",							"snowswitch","OnOff"
+	Option "$WE_CLOUD",							"boa_cloudswitch","OnOff"
+	Option "$WE_FOG",							"boa_fogswitch","OnOff"
+	Option "$WE_RAIN",							"boa_rainswitch","OnOff"
+	Option "$WE_SNOW",							"boa_snowswitch","OnOff"
 }
 
 OptionValue "SmokeStyle"
@@ -730,21 +730,21 @@ OptionMenu "BoAEffectsOptions"
 	Title  "$OPT_SFX"
 	StaticText "$WARNING1"
 	StaticText " "
-	Option "$SF_TORC",							"torchtype","TorchStyle"
-	Option "$SF_CIND",							"cinderswitch","OnOff"
-	Option "$SF_LEAV",							"leavesswitch","OnOff"
-	Option "$SF_SMOD",							"smoketype","SmokeStyle"
-	Option "$SF_SMOK",							"smokeswitch","OnOff"
-	Option "$SF_SPLA",							"splashswitch","OnOff"
-	Option "$SF_STAR",							"dustswitch","OnOff"
-	Option "$SF_STEM",							"steamswitch","OnOff"
-	Slider "$SF_EXPD",							"boomswitch",0,5,1,0
-	Slider "$SF_FLAD",							"fireswitch",0,5,1,0
-	Slider "$SF_SPRK",							"sparkswitch",0,5,1,0
-	Slider "$SF_LITD",							"lightningdensity", 1, 10, 1, 0
-	Option "$SF_BUBL",							"bubbleswitch","OnOff"
-	Option "$SF_LITS",							"litsswitch","OnOff"
-	Slider "$SF_WATF",							"uw_effectsize", 0, 0.1, 0.005, 3
+	Option "$SF_TORC",							"boa_torchtype","TorchStyle"
+	Option "$SF_CIND",							"boa_cinderswitch","OnOff"
+	Option "$SF_LEAV",							"boa_leavesswitch","OnOff"
+	Option "$SF_SMOD",							"boa_smoketype","SmokeStyle"
+	Option "$SF_SMOK",							"boa_smokeswitch","OnOff"
+	Option "$SF_SPLA",							"boa_splashswitch","OnOff"
+	Option "$SF_STAR",							"boa_dustswitch","OnOff"
+	Option "$SF_STEM",							"boa_steamswitch","OnOff"
+	Slider "$SF_EXPD",							"boa_boomswitch",0,5,1,0
+	Slider "$SF_FLAD",							"boa_fireswitch",0,5,1,0
+	Slider "$SF_SPRK",							"boa_sparkswitch",0,5,1,0
+	Slider "$SF_LITD",							"boa_lightningdensity", 1, 10, 1, 0
+	Option "$SF_BUBL",							"boa_bubbleswitch","OnOff"
+	Option "$SF_LITS",							"boa_litsswitch","OnOff"
+	Slider "$SF_WATF",							"boa_uweffectsize", 0, 0.1, 0.005, 3
 }
 
 OptionValue "ShadowDist" //rework these once nashshadows will be merged into gzdoom - ozy81
@@ -757,24 +757,46 @@ OptionValue "ShadowDist" //rework these once nashshadows will be merged into gzd
 	16384, "$SH_ULTR"
 }
 
+OptionValue "ParticlesAmt"
+{
+	0, "$AM_NONE"
+	32, "$AM_COUP"
+	64, "$AM_SOME"
+	128, "$AM_MORE"
+	256, "$AM_LOTS"
+	512, "$AM_DEFA"
+}
+
+OptionValue "DebrisAmt"
+{
+	0, "$AM_NONE"
+	8, "$AM_COUP"
+	16, "$AM_SOME"
+	24, "$AM_MORE"
+	32, "$AM_LOTS"
+	64, "$AM_DEFA"
+}
+
 OptionMenu "BoARenderOptions"
 {
 	Title  "$OPT_REND"
 	StaticText "$WARNING4"
 	StaticText " "
 	Slider "FOV",								"fov", 80, 110, 2, 0
-	Option "$RE_2DTR",							"bidiswitch","OnOff"
+	Option "$RE_2DTR",							"boa_bidiswitch","OnOff"
 	Option "$RE_MIRR",							"gl_mirrors","OnOff"
 	Option "$RE_REFL",							"gl_plane_reflection","OnOff"
-	Option "$RE_SHAD",							"cl_boaspriteshadowdistance", "ShadowDist"
+	Option "$RE_SHAD",							"boa_spriteshadowdistance", "ShadowDist"
+	Option "$RE_PLES",							"boa_maxparticleactors", "ParticlesAmt"
+	Option "$RE_DEBR",							"boa_maxdebrisactors", "DebrisAmt"
 	StaticText " "
 	StaticText "$DISTANCE"
 	StaticText "$DECREASE"
 	StaticText " "
-	Slider "$RE_GRAS",							"grasslod",1024,16384,1024, 0
-	Slider "$RE_SCEN",							"scenelod",1024,16384,1024, 0
-	Slider "$RE_SFX",							"sfxlod",1024,16384,1024, 0
-	Slider "$RE_TREE",							"treeslod",1024,16384,1024, 0
+	Slider "$RE_GRAS",							"boa_grasslod",1024,16384,1024, 0
+	Slider "$RE_SCEN",							"boa_scenelod",1024,16384,1024, 0
+	Slider "$RE_SFX",							"boa_sfxlod",1024,16384,1024, 0
+	Slider "$RE_TREE",							"boa_treeslod",1024,16384,1024, 0
 }
 
 OptionMenu "BoAPostProcessShaderOptions"
@@ -785,22 +807,25 @@ OptionMenu "BoAPostProcessShaderOptions"
 	Submenu "$PP_MOTI", "MBlurOpts"
 	StaticText " "
 	StaticText "$PP_VIGN"
-	Option "$PP_OPT1", 							"tc_pp_vignette", "YesNo"
-	Slider "$PP_OPT2", 							"tc_pp_vignette_intensity", 0, 500, 0.05, 3
-	Slider "$PP_OPT3", 							"tc_pp_vignette_falloff", 0, 10, 0.05, 3
+	Option "$PP_OPT1", 							"boa_pp_vignette", "YesNo"
+	Slider "$PP_OPT2", 							"boa_pp_vignette_intensity", 0, 500, 0.05, 3
+	Slider "$PP_OPT3", 							"boa_pp_vignette_falloff", 0, 10, 0.05, 3
 	StaticText " "
 	StaticText "$PP_LENS"
-	Option "$PP_OPT1", 							"tc_pp_lensflares", "YesNo"
-	Slider "$PP_OPT2", 							"tc_pp_lensflares_amount", 0, 5, 0.05
-	Slider "$PP_OPT4", 							"tc_pp_lensflares_threshold", 0, 5, 0.05
+	Option "$PP_OPT1", 							"boa_pp_lensflares", "YesNo"
+	Slider "$PP_OPT2", 							"boa_pp_lensflares_amount", 0, 5, 0.05
+	Slider "$PP_OPT4", 							"boa_pp_lensflares_threshold", 0, 5, 0.05
 	StaticText " "
 	StaticText "$PP_GRAIN"
-	Option "$PP_OPT1", 							"cl_filmgrain", "YesNo"
-	Slider "$PP_OPT2", 							"cl_filmgrain_amount", 0.0, 1.0, 0.025, 3
-	Slider "$PP_OPT5", 							"cl_filmgrain_pixelsize", 2, 1024, 2
+	Option "$PP_OPT1", 							"boa_filmgrain", "YesNo"
+	Slider "$PP_OPT2", 							"boa_filmgrain_amount", 0.0, 1.0, 0.025, 3
+	Slider "$PP_OPT5", 							"boa_filmgrain_pixelsize", 2, 1024, 2
+	StaticText " "
+	StaticText "$PP_HESN"
+	Option "$PP_HESN", 							boa_shaderoverlayswitch, "OnOff"
 	StaticText " "
 	StaticText "$PP_GRADE"
-	Option "$PP_GRADE", 						r_colorgrading, "OnOff"
+	Option "$PP_GRADE", 						boa_colorgrading, "OnOff"
 	StaticText " "
 	Option "$GLPREFMNU_BLOOM",		 			gl_bloom,						"OnOff"
 	Option "$GLPREFMNU_LENS",		 			gl_lens,						"OnOff"
@@ -820,18 +845,18 @@ OptionMenu "MBlurOpts"
 {
 	Position -15
 	Title "$PP_MOTI"
-	Option "$PP_OPT1", 							"mblur", "YesNo"
-	Option "$MB_OPT6", 							"mblur_blendmode", "MBlurBlendModes"
+	Option "$PP_OPT1", 							"boa_mblur", "YesNo"
+	Option "$MB_OPT6", 							"boa_mblur_blendmode", "MBlurBlendModes"
 	StaticText " "
-	Slider "$MB_OPT7", 							"mblur_samples", 1, 100, 1, 0
-	Slider "$MB_OPT8", 							"mblur_strength", 1, 500, 8, 2
-	Slider "$MB_OPT9", 							"mblur_recovery", 4, 100, 4, 1
+	Slider "$MB_OPT7", 							"boa_mblur_samples", 1, 100, 1, 0
+	Slider "$MB_OPT8", 							"boa_mblur_strength", 1, 500, 8, 2
+	Slider "$MB_OPT9", 							"boa_mblur_recovery", 4, 100, 4, 1
 	StaticText " "
 	StaticText "$MB_ADV"
 	StaticText " "
-	Option "$MB_OPT3", 							"mblur_autostop", OnOff
-	Slider "$MB_OPT4", 							"mblur_recovery2", 0, 100, 5, 2
-	Slider "$MB_OPT5", 							"mblur_threshold", 0, 100, 10, 2
+	Option "$MB_OPT3", 							"boa_mblur_autostop", OnOff
+	Slider "$MB_OPT4", 							"boa_mblur_recovery2", 0, 100, 5, 2
+	Slider "$MB_OPT5", 							"boa_mblur_threshold", 0, 100, 10, 2
 }
 
 ///////////////////////////////////
@@ -1491,12 +1516,12 @@ OptionMenu "GameOptions"
 {
 	Title "$OPT_GAME"
 	StaticText " "
-	Option "$GA_SCAM", 							"sv_boastrafetilt", "OnOff"
-	Option "$GA_REL",							"autoreload","OnOff"
-	Slider "$GA_ZBULL",							"zwl_maxflatdecals",1024,4096,1024,0
-	Slider "$GA_SHELLS",						"casinglifetime",1,180,5,0
-	Slider "$GA_RECOIL",						"recoilamount",0,20,1,0
-	Slider "$GA_DEBRIS",						"debrislifetime",1,180,5,0
+	Option "$GA_SCAM", 							"boa_strafetilt", "OnOff"
+	Option "$GA_REL",							"boa_autoreload","OnOff"
+	Slider "$GA_ZBULL",							"boa_maxflatdecals",1024,4096,1024,0
+	Slider "$GA_SHELLS",						"boa_casinglifetime",1,180,5,0
+	Slider "$GA_RECOIL",						"boa_recoilamount",0,20,1,0
+	Slider "$GA_DEBRIS",						"boa_debrislifetime",1,180,5,0
 }
 
 OptionValue "BloodAmount"
@@ -1509,15 +1534,15 @@ OptionValue "BloodAmount"
 OptionMenu "BloodOptions"
 {
 	Title "$OPT_BLOOD"
-	Option "$BL_AM", 							"blood_amt", "BloodAmount"
-	Slider "$BL_OP", 							"blood_alpha", 0.5, 1.0, 0.1
-	Slider "$BL_VEL", 							"blood_rand", 0.5, 1.5, 0.1
-	Slider "$BL_SC", 							"blood_size", 0.7, 1.3, 0.1
+	Option "$BL_AM", 							"boa_blood_amt", "BloodAmount"
+	Slider "$BL_OP", 							"boa_blood_alpha", 0.5, 1.0, 0.1
+	Slider "$BL_VEL", 							"boa_blood_rand", 0.5, 1.5, 0.1
+	Slider "$BL_SC", 							"boa_blood_size", 0.7, 1.3, 0.1
 	Slider "$BL_LIM", 							"sv_corpsequeuesize", 64, 10000, 256
-	Slider "$BL_LIF",							"bloodlifetime",1,180,5,0
+	Slider "$BL_LIF",							"boa_bloodlifetime",1,180,5,0
 	Slider "$BL_DEC", 							"cl_maxdecals", 64, 10000, 256
-	Option "$BL_POOLS", 						"blood_pools", "onoff"
-	Option "$BL_GIBS", 							"blood_gibs", "onoff"
+	Option "$BL_POOLS", 						"boa_blood_pools", "onoff"
+	Option "$BL_GIBS", 							"boa_blood_gibs", "onoff"
 }
 
 OptionMenu BoACoopOptions

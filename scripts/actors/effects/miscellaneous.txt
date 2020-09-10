@@ -14,9 +14,9 @@ class EffectGiver : EffectSpawner
 		Radius 128;
 		Alpha 0.5;
 		RenderStyle "Stencil";
-		+SPECIAL
+		+SOLID
 		+NOCLIP
-		EffectSpawner.SwitchVar "shaderoverlayswitch";
+		EffectSpawner.SwitchVar "boa_shaderoverlayswitch";
 	}
 
 	States
@@ -44,9 +44,11 @@ class EffectGiver : EffectSpawner
 		Super.PostBeginPlay();
 	}
 
-	override void Touch(Actor toucher)
+	override bool CanCollideWith(Actor other, bool passive)
 	{
-		if (Activators.Find(toucher) == Activators.Size()) { Activators.Push(toucher); }
+		if (other.player && Activators.Find(other) == Activators.Size()) { Activators.Push(other); return true; }
+
+		return false;		
 	}
 
 	override void Tick()
@@ -437,7 +439,7 @@ class ExplosionCore : Actor
 // Astrostein overhead ship
 class DecorationShip : SwitchableDecoration
 {
-	EffectsManager manager;
+	ParticleManager manager;
 
 	Default
 	{
@@ -476,21 +478,15 @@ class DecorationShip : SwitchableDecoration
 	{
 		Super.PostBeginPlay();
 
-		manager = EffectsManager.GetManager();
+		manager = ParticleManager.GetManager();
 	}
 
 	void SpawnEffect()
 	{
 		tics = curState.tics + manager.tickdelay;
 
-		bool spawned;
-		Actor mo;
-
-		[spawned, mo] = A_SpawnItemEx("DecorationShip_Steam", -32, -5, -1);
-		if (mo && manager) { manager.QueueParticle(mo); }
-
-		[spawned, mo] = A_SpawnItemEx("DecorationShip_Steam", -32, 5, -1);
-		if (mo && manager) { manager.QueueParticle(mo); }
+		A_SpawnItemEx("DecorationShip_Steam", -32, -5, -1);
+		A_SpawnItemEx("DecorationShip_Steam", -32, 5, -1);
 	}
 }
 
@@ -498,7 +494,7 @@ class DecorationShip_Steam : SmokeBase
 {
 	Default
 	{
-		DistanceCheck "scenelod";
+		DistanceCheck "boa_scenelod";
 		Radius 1;
 		Height 1;
 		RenderStyle "Add";

@@ -28,7 +28,7 @@ class RainSpawner : EffectSpawner
 		+NOGRAVITY
 		+SPAWNCEILING;
 		EffectSpawner.Range 1200;
-		EffectSpawner.SwitchVar "rainswitch";
+		EffectSpawner.SwitchVar "boa_rainswitch";
 		+EffectSpawner.ALLOWTICKDELAY
 	}
 
@@ -69,14 +69,7 @@ class RainSpawner : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		bool spawned;
-		Actor mo;
-		[spawned, mo] = A_SpawnItemEx(raindrop, Random(-Args[0], Args[0]), Random(-Args[0], Args[0]), -2, Args[4], 0, -(args[3] ? 20 : 40) + (Args[4] / 2), 0, SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1]);
-
-		if (mo && manager)
-		{
-			manager.QueueParticle(mo);
-		}
+		A_SpawnItemEx(raindrop, Random(-Args[0], Args[0]), Random(-Args[0], Args[0]), -2, Args[4], 0, -(args[3] ? 20 : 40) + (Args[4] / 2), 0, SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1]);
 	}
 }
 
@@ -84,7 +77,7 @@ class RainDropShort : ParticleBase
 {
 	Default
 	{
-		DistanceCheck "sfxlod";
+		DistanceCheck "boa_sfxlod";
 		Height 1;
 		Radius 4;
 		RenderStyle "Translucent";

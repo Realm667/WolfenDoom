@@ -614,7 +614,7 @@ ACTOR TMMarine1
 {
 	//$Category Cutscenes (BoA)
 	//$Title Random Happy Marine 1 (brown hair)
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Scale 0.65
 	Translation 1
 	+NOBLOCKMAP
@@ -911,7 +911,7 @@ ACTOR TMMarine4
 {
 	//$Category Cutscenes (BoA)
 	//$Title Random Happy Soviet 1 (brown hair)
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Scale 0.65
 	+NOBLOCKMAP
 	States
@@ -1069,7 +1069,7 @@ ACTOR TMWound1
 {
 	//$Category Cutscenes (BoA)
 	//$Title Random Wounded Marine (brown hair, random country)
-	DistanceCheck "scenelod"
+	DistanceCheck "boa_scenelod"
 	Scale 0.65
 	+NOBLOCKMAP
 	States
@@ -1207,4 +1207,22 @@ ACTOR TMWound5 : TMWound1
 		"####" "#" -1
 		Stop
 	}
+}
+
+ACTOR SSTank3Part1 : ModelBase
+{
+	//$Category Cutscenes (BoA)
+	//$Title Tiger I Panzer, Body part
+	DistanceCheck "boa_scenelod"
+	Radius 64
+	Height 64
+}
+
+ACTOR SSTank3Part2 : ModelBase
+{
+	//$Category Cutscenes (BoA)
+	//$Title Tiger I Panzer, Turret part
+	DistanceCheck "boa_scenelod"
+	Radius 32
+	Height 24
 }
