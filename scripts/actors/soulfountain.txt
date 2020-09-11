@@ -36,6 +36,8 @@ class SoulFountain : Actor
 
 	Default
 	{
+		//$Category Misc (BoA)
+		//$Title Soul Fountain
 		Height 32;
 		Radius 64;
 		RenderStyle "Add";
@@ -51,7 +53,7 @@ class SoulFountain : Actor
 	States
 	{
 	Spawn:
-		SWRL ABCDEFGHIJKLMNOPQRSTUVWXYZ 2 A_SpawnVFX;
+		SWRL ABCDEFGHIJKLMNOPQRSTUVWXY 2 A_SpawnVFX;
 	}
 
 	override void PostBeginPlay()
@@ -66,7 +68,7 @@ class SoulFountain : Actor
 		Vector3 SpawnPoint = Pos + SpawnPointOffset;
 		Spawn("DamnedSoul", SpawnPoint, NO_REPLACE);
 		count += 1;
-		if (count == 1)
+		if (count == 2)
 		{
 			A_Fountain();
 			count = 0;
@@ -89,7 +91,7 @@ class SoulFountain : Actor
 	void A_GiveShit(Actor to, int amount)
 	{
 		Inventory souls = to.FindInventory("Soul");
-		if (souls && souls.amount < soulmax)
+		if (!souls || souls.amount < soulmax)
 		{
 			to.A_GiveInventory("Soul", amount);
 		}
