@@ -73,7 +73,7 @@ class SoulFountain : SwitchableDecoration
 	void A_SpawnVFX()
 	{
 		double SpawnRadius = Radius;
-		Vector3 SpawnPointOffset = (random[creepyvfx](-SpawnRadius, SpawnRadius), random[creepyvfx](-SpawnRadius, SpawnRadius), 0);
+		Vector3 SpawnPointOffset = (Frandom[creepyvfx](-SpawnRadius, SpawnRadius), Frandom[creepyvfx](-SpawnRadius, SpawnRadius), 0);
 		Vector3 SpawnPoint = Pos + SpawnPointOffset;
 		Spawn("DamnedSoul", SpawnPoint, NO_REPLACE);
 		count += 1;
