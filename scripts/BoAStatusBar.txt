@@ -118,7 +118,7 @@ class BoAStatusBar : BaseStatusBar
 			}
 		}
 
-		maptop = CheckInventory("IncomingMessage", 1) ? 176 * GetUIScale(hud_scale) : 0;
+		maptop = CheckInventory("IncomingMessage", 1) ? int(48 / 200.0 * Screen.GetHeight() / GetUIScale(hud_scale)) : 0;
 		if (maptexty > maptop) { maptexty = max(maptop, maptexty - 12); }
 		else if (maptexty < maptop) { maptexty = min(maptop, maptexty + 12); }
 
