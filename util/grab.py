@@ -13,10 +13,10 @@ parser.add_argument('y', type=int, help="y offset")
 offsets = parser.parse_args()
 
 # Convert to binary
-grabs = struct.pack(">ii", offsets.x, offsets.y)
-crc = struct.pack(">I", zlib.crc32(grabs, 0))
-size = struct.pack(">I", 8)
-output = size + b"grAb" + grabs + crc
+grabs = b"grAb" + struct.pack("!ii", offsets.x, offsets.y)
+crc = struct.pack("!I", zlib.crc32(grabs))
+size = struct.pack("!i", 8)
+output = size + grabs + crc
 
 # Write to stdout
 sys.stdout.buffer.write(output)
