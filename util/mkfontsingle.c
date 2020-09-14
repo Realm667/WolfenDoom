@@ -313,11 +313,11 @@ int32_t main( int32_t argc, int8_t **argv )
 	sscanf(argv[2],"%d",&pxsiz);
 	int32_t gradient = 0;
 	int32_t upshift = 0;
-    int32_t maxcharheight = pxsiz;
+	int32_t maxcharheight = pxsiz;
 	if ( argc > 3 ) sscanf(argv[3],"%x-%x",&range[0],&range[1]);
 	if ( argc > 4 ) sscanf(argv[4],"%d",&gradient);
 	if ( argc > 5 ) sscanf(argv[5],"%d",&upshift);
-    if ( argc > 6 ) sscanf(argv[6],"%d",&maxcharheight);
+	if ( argc > 6 ) sscanf(argv[6],"%d",&maxcharheight);
 	if ( FT_New_Face(ftlib,argv[1],0,&fnt) )
 		return 4;
 	if ( FT_Set_Pixel_Sizes(fnt,0,pxsiz) )
