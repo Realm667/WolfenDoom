@@ -242,7 +242,7 @@ void write_inf_monospace(int32_t width, int32_t height)
 }
 
 // For monospace fonts
-void render_glyphsheet(FT_Face fnt, int32_t charwidth, int32_t charheight, uint32_t low, uint32_t high, int32_t gradient, int32_t upshift)
+void render_glyphsheet(FT_Face fnt, int32_t charwidth, int32_t charheight, uint32_t low, uint32_t high, int32_t gradient, int32_t upshift, int32_t maxtop)
 {
 	// Render a glyph sheet for monospace fonts
 	int32_t channels = 2; // Gray/alpha
@@ -270,7 +270,7 @@ void render_glyphsheet(FT_Face fnt, int32_t charwidth, int32_t charheight, uint3
 			// Calculate glyph X and Y offsets
 			// int32_t glyphHeight = (int32_t)roundf((float) fnt->glyph->linearVertAdvance / 65536.0);
 			int32_t cellxoffset = fnt->glyph->bitmap_left;
-			int32_t cellyoffset = charheight - fnt->glyph->bitmap_top - upshift;
+			int32_t cellyoffset = maxtop - fnt->glyph->bitmap_top - upshift;
 			int32_t xoffset = column * charwidth + cellxoffset;
 			int32_t yoffset = row * charheight + cellyoffset;
 			int32_t valid = draw_glyph(&idata, &fnt->glyph->bitmap,255,xoffset,yoffset,gradient);
@@ -310,10 +310,10 @@ int32_t main( int32_t argc, int8_t **argv )
 		range[1] = high;
 	}
 	int32_t pxsiz;
+	sscanf(argv[2],"%d",&pxsiz);
 	int32_t gradient = 0;
 	int32_t upshift = 0;
     int32_t maxcharheight = pxsiz;
-	sscanf(argv[2],"%d",&pxsiz);
 	if ( argc > 3 ) sscanf(argv[3],"%x-%x",&range[0],&range[1]);
 	if ( argc > 4 ) sscanf(argv[4],"%d",&gradient);
 	if ( argc > 5 ) sscanf(argv[5],"%d",&upshift);
@@ -326,11 +326,13 @@ int32_t main( int32_t argc, int8_t **argv )
 	FT_Select_Charmap(fnt,FT_ENCODING_UNICODE);
 	// Is font monospace?
 	int32_t monospace = -1;
+	int32_t maxtop = 0;
 	for ( uint32_t i=range[0]; i<=range[1]; i++ )
 	{
 		FT_UInt glyph = FT_Get_Char_Index(fnt,i);
 		if ( !FT_Load_Glyph(fnt,glyph,FT_LOAD_DEFAULT) && glyph )
 		{
+			FT_Render_Glyph(fnt->glyph,FT_RENDER_MODE_NORMAL);
 			if ( monospace == -1 )
 			{
 				monospace = fnt->glyph->advance.x;
@@ -341,12 +343,15 @@ int32_t main( int32_t argc, int8_t **argv )
 				monospace = 0;
 				break;
 			}
-			// printf("%d %d\n", i, fnt->glyph->bitmap_top);
 			int32_t charheight = fnt->glyph->bitmap.rows + (fnt->glyph->bitmap.rows - fnt->glyph->bitmap_top);
 			if (charheight > maxcharheight)
 			{
 				// printf("maxcharheight %d\n", maxcharheight);
 				maxcharheight = charheight;
+			}
+			if (fnt->glyph->bitmap_top > maxtop)
+			{
+				maxtop = fnt->glyph->bitmap_top;
 			}
 		}
 	}
@@ -357,7 +362,7 @@ int32_t main( int32_t argc, int8_t **argv )
 	else
 	{
 		monospace = (uint32_t) round((double)monospace / 64.0);
-		render_glyphsheet(fnt,monospace,maxcharheight,range[0],range[1],gradient,upshift);
+		render_glyphsheet(fnt,monospace,maxcharheight,range[0],range[1],gradient,upshift,maxtop);
 	}
 	FT_Done_Face(fnt);
 	FT_Done_FreeType(ftlib);
