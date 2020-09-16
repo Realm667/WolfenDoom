@@ -1905,6 +1905,11 @@ ACTOR WGuard_Wounded : Nazi //ozy81
 		GRD2 R 1 A_Chase
 		"####" R 1 A_SetTics(random(1,14))
 		Loop
+	Idle:
+		// A_Chase sets this state if this guy doesn't have a target
+		// see src/playsim/p_enemy.cpp line 2343
+		// and src/playsim/p_mobj.cpp line 7253
+		"####" "#" 0 A_Jump(256, "Spawn")
 	Missile:
 		GRD2 S 7 A_FaceTarget
 		"####" T 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
