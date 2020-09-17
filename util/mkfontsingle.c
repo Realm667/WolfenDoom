@@ -332,6 +332,7 @@ int32_t main( int32_t argc, int8_t **argv )
 		FT_UInt glyph = FT_Get_Char_Index(fnt,i);
 		if ( !FT_Load_Glyph(fnt,glyph,FT_LOAD_DEFAULT) && glyph )
 		{
+			// Needed to set bitmap_top
 			FT_Render_Glyph(fnt->glyph,FT_RENDER_MODE_NORMAL);
 			if ( monospace == -1 )
 			{
