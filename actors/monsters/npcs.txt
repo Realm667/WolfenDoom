@@ -237,7 +237,7 @@ ACTOR StatistSSMerchant : StatistBarkeeper
 	States
 	{
 	Spawn:
-		MERK A 1 A_SetTics(random(20,40)) //possible whistle here
+		MERK A 1 A_SetTics(random(20,40))
 		"####" BCDCCDBD 1 A_SetTics(random(20,40))
 		"####" "#" 1 A_Jump(128,"SeeAround","SellLeft","SellRight")
 		Loop
@@ -253,6 +253,27 @@ ACTOR StatistSSMerchant : StatistBarkeeper
 	SellRight:
 		"####" NOPQRSOPNONM 1 A_SetTics(random(60,120))
 		"####" "#" 1 A_Jump(192,"SeeAround")
+		Goto Spawn
+	}
+}
+
+ACTOR StatistRUSmuggler : StatistBarkeeper
+{
+	//$Title Sergej, Russian Smuggler (NPC)
+	Scale 0.67
+	-USESPECIAL
+	States
+	{
+	Spawn:
+		SMGL A 1 A_SetTics(random(20,40))
+		"####" AEEFFEFF 1 A_SetTics(random(20,40))
+		"####" "#" 1 A_Jump(128,"Smoke")
+		Loop
+	Smoke:
+		"####" A 80
+		"####" BCDB 40
+		"####" E 40
+		"####" F 40
 		Goto Spawn
 	}
 }
