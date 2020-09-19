@@ -247,7 +247,7 @@ class SimpleActor : Actor
 			return;
 		}
 
-		if (vel != (0, 0, 0) && !bNoBlockMap) // Apply velocity as required
+		if (vel != (0, 0, 0)) // Apply velocity as required
 		{
 			SetXYZ(Vec3Offset(vel.X, vel.Y, vel.Z)); // Vec3Offset is portal-aware; use instead of just pos + vel, which is not
 		}
