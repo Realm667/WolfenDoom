@@ -215,7 +215,7 @@ class NiceBush1 : Grass1
 
 	override void PostBeginPlay()
 	{
-		Super.PostBeginPlay();
+		Actor.PostBeginPlay();
 
 		PickVariant();
 
@@ -462,7 +462,7 @@ class Flower1 : Grass1
 
 	override void PostBeginPlay()
 	{
-		Super.PostBeginPlay();
+		Actor.PostBeginPlay();
 
 		scale *= FRandom(0.8, 1.1);
 		scale.x *= RandomPick(-1, 1);
