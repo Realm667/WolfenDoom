@@ -329,7 +329,8 @@ class LaserFindHitPointTracer : LineTracer
 				(skipactor != Results.HitActor.master) && // And the master
 				(!Results.HitActor.master || Results.HitActor.master != skipactor) && // And any children
 				(!skipspecies || Results.HitActor.species != skipspecies) && // And any of the skipped species
-				(Results.HitActor.bSolid || Results.HitActor.bShootable || Results.HitActor is "PlayerPawn") // And only return shootable actors
+				(Results.HitActor.bSolid || Results.HitActor.bShootable || Results.HitActor is "PlayerPawn") && // And only return shootable actors
+				!(Results.HitActor is "EffectSpawner")
 			) { return TRACE_Stop; } 
 
 			Results.HitActor = null;
