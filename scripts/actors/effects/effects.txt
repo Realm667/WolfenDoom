@@ -14,6 +14,7 @@
 #include "scripts/actors/effects/starparticles.txt"
 #include "scripts/actors/effects/steam.txt"
 #include "scripts/actors/effects/torches.txt"
+#include "scripts/actors/effects/grass.txt"
 
 class EffectInfo // Should just be a struct, but we can't use structs in dynamic arrays...
 {
@@ -215,8 +216,12 @@ class EffectsManager : Thinker
 			}
 			else if (!inrange && effects[i].effect && !effects[i].effect.bDormant)
 			{
-				effects[i].effect.A_RemoveChildren(TRUE, RMVF_MISC);
-				effects[i].effect.Destroy();
+				if (effects[i].effect.health <= 0) { effects.Delete(i); } // Don't cull destroyed actors, and stop tracking them
+				else
+				{
+					effects[i].effect.A_RemoveChildren(TRUE, RMVF_MISC);
+					effects[i].effect.Destroy();
+				}
 			}
 		}
 
@@ -299,6 +304,10 @@ class EffectBase : SimpleActor
 
 class GrassBase : SimpleActor
 {
+	class<Actor> fragments;
+
+	Property Fragments:fragments;	
+
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
