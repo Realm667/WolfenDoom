@@ -1107,7 +1107,7 @@ Class CrosshairTracer : LineTracer
 	{
 		if (Results.HitType == TRACE_HitActor)
 		{
-			if (Results.HitActor == skipactor || (Results.HitActor.master && Results.HitActor.master == skipactor)) { Results.HitActor = null; return TRACE_Skip; } // Skip the player and any children) 
+			if (Results.HitActor == skipactor || (Results.HitActor.master && Results.HitActor.master == skipactor) || Results.HitActor is "EffectSpawner") { Results.HitActor = null; return TRACE_Skip; } // Skip the player and any children, and any effect spawners 
 			if (
 				!Results.HitActor.bNoInteraction && // If it's actually interactive...
 				(Results.HitActor.bSolid || Results.HitActor.bShootable) && // And shootable
