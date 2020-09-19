@@ -231,7 +231,7 @@ ACTOR StatistZhukov : StatistBarkeeper
 
 ACTOR StatistSSMerchant : StatistBarkeeper
 {
-	//$Title Stan, SS Merchant (NPC)
+	//$Title Fritz, SS Merchant (NPC)
 	Scale 0.67
 	-USESPECIAL
 	States
@@ -239,18 +239,17 @@ ACTOR StatistSSMerchant : StatistBarkeeper
 	Spawn:
 		MERK A 1 A_SetTics(random(20,40))
 		"####" BCDCCDBD 1 A_SetTics(random(20,40))
-		"####" "#" 1 A_Jump(128,"SeeAround","SellLeft","SellRight")
+		"####" "#" 1 A_Jump(128,"SeeAround")
 		Loop
 	SeeAround:
 		"####" DEFEEDFD 1 A_SetTics(random(20,40))
 		"####" "#" 1 A_Jump(32,"Spawn")
-		"####" "#" 1 A_Jump(96,"SellLeft","SellRight")
 		Goto Spawn
-	SellLeft:
+	SellLeft: //called via scripts
 		"####" GHIJKKJHJLGF 1 A_SetTics(random(60,120))
 		"####" "#" 1 A_Jump(192,"SeeAround")
 		Goto Spawn
-	SellRight:
+	SellRight: //called via scripts
 		"####" NOPQRSOPNONM 1 A_SetTics(random(60,120))
 		"####" "#" 1 A_Jump(192,"SeeAround")
 		Goto Spawn

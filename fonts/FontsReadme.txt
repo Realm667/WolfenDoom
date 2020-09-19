@@ -70,3 +70,4 @@ Latin alphabet small 0061-007A
 ş - 015F [x]
 Š - 0160 [x]
 š - 0161 [x]
+ẞ - 1E9E [ ]
