@@ -285,11 +285,15 @@ int32_t main( int32_t argc, int8_t **argv )
 	if ( argc < 3 )
 	{
 		fprintf(stderr,"usage: mkfontsingle <font name> <pxsize>"
-			" [unicode range (hex)] [gradient type] [y offset] [maxcharheight]\n\n"
-			"gradient type: 1 is darker at the bottom, 2 is darker at the top\n"
+			" [--range <unicode range>] [--gradient <gradient type>] [--upshift <y offset>] [--mincharheight <mincharheight>]\n\n"
+			"range: Range of Unicode characters to convert, in hexadecimal format. e.g. \"0401-0451\" for all characters in the Russian Alphabet.\n"
+			"gradient type: 1 is darker at the bottom, 2 is darker at the top.\n"
+			"upshift: Amount to increase or decrease Y offset by. Affects non-monospace fonts only.\n"
+			"mincharheight: Force the height of all monospace character cells to be no shorter than this. Affects monospace fonts only.\n"
 		);
 		return 1;
 	}
+	// Test endianness (byte ordering) of CPU
 	int8_t endie[4] = {1, 0, 0, 0};
 	int32_t* enda = (int32_t*) endie;
 	if ( *enda != 1 )
@@ -301,7 +305,7 @@ int32_t main( int32_t argc, int8_t **argv )
 	FT_Face fnt;
 	if ( FT_Init_FreeType(&ftlib) )
 		return 2;
-	// Parse arguments
+	// Parse positional arguments
 	uint32_t range[2] = {0x0021,0x00FF};
 	if (range[0] > range[1])
 	{
@@ -311,18 +315,41 @@ int32_t main( int32_t argc, int8_t **argv )
 	}
 	int32_t pxsiz;
 	sscanf(argv[2],"%d",&pxsiz);
+	// Parse options
 	int32_t gradient = 0;
 	int32_t upshift = 0;
-	int32_t maxcharheight = pxsiz;
-	if ( argc > 3 ) sscanf(argv[3],"%x-%x",&range[0],&range[1]);
-	if ( argc > 4 ) sscanf(argv[4],"%d",&gradient);
-	if ( argc > 5 ) sscanf(argv[5],"%d",&upshift);
-	if ( argc > 6 ) sscanf(argv[6],"%d",&maxcharheight);
+	int32_t mincharheight = pxsiz;
+	int8_t outline = 0;
+	for (int i = 2; i < argc; i++)
+	{
+		if (!strcmp(argv[i], "--range") && argc > i)
+		{
+			sscanf(argv[i+1], "%x-%x", &range[0], &range[1]);
+			// sscanf(argv[++i], "%x-%x", range); // Does this work?
+		}
+		else if (!strcmp(argv[i], "--gradient") && argc > i)
+		{
+			sscanf(argv[++i], "%d", &gradient);
+		}
+		else if (!strcmp(argv[i], "--upshift") && argc > i)
+		{
+			sscanf(argv[++i], "%d", &upshift);
+		}
+		else if (!strcmp(argv[i], "--mincharheight") && argc > i)
+		{
+			sscanf(argv[++i], "%d", &mincharheight);
+		}
+		else if (!strcmp(argv[i], "--outline"))
+		{
+			outline = 1;
+		}
+	}
+	// Set up font and font size
 	if ( FT_New_Face(ftlib,argv[1],0,&fnt) )
 		return 4;
 	if ( FT_Set_Pixel_Sizes(fnt,0,pxsiz) )
 		return 8;
-	
+
 	FT_Select_Charmap(fnt,FT_ENCODING_UNICODE);
 	// Is font monospace?
 	int32_t monospace = -1;
@@ -345,10 +372,10 @@ int32_t main( int32_t argc, int8_t **argv )
 				break;
 			}
 			int32_t charheight = fnt->glyph->bitmap.rows + (fnt->glyph->bitmap.rows - fnt->glyph->bitmap_top);
-			if (charheight > maxcharheight)
+			if (charheight > mincharheight)
 			{
-				// printf("maxcharheight %d\n", maxcharheight);
-				maxcharheight = charheight;
+				// printf("mincharheight %d\n", mincharheight);
+				mincharheight = charheight;
 			}
 			if (fnt->glyph->bitmap_top > maxtop)
 			{
@@ -363,7 +390,7 @@ int32_t main( int32_t argc, int8_t **argv )
 	else
 	{
 		monospace = (uint32_t) round((double)monospace / 64.0);
-		render_glyphsheet(fnt,monospace,maxcharheight,range[0],range[1],gradient,upshift,maxtop);
+		render_glyphsheet(fnt,monospace,mincharheight,range[0],range[1],gradient,upshift,maxtop);
 	}
 	FT_Done_Face(fnt);
 	FT_Done_FreeType(ftlib);
