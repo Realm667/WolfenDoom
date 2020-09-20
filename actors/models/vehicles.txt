@@ -670,14 +670,13 @@ ACTOR CODPTBoat : COD_USJeep
 	}
 }
 
-ACTOR CODStuka : ModelBase
+ACTOR CODStuka : ModelBase //no distancecheck for this one due it is used on C2M4 as sensible objective target --ozy81
 {
 	//$Category Models (BoA)/Planes
 	//$Title Stuka Airplane (Uses Args, Normal, Destroyed, Crashed or Boom)
 	//$Color 3
 	//$Arg0 "Type"
 	//$Arg0Tooltip "Pickup the desired shape\nNormal: 0\nDestroyed: 1\nCrashed: 2\nBoom: 3"
-	DistanceCheck "boa_scenelod" //if set lower, airplanes won't appear inside skyboxes probably - ozy81
 	+CANPASS
 	+DONTTHRUST
 	+NOBLOODDECALS
