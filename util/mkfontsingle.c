@@ -196,7 +196,7 @@ void write_inf(int32_t kerning, int32_t height, int32_t spacewidth)
 	free(data);
 }
 
-void render_glyphset(FT_Face fnt, uint32_t low, uint32_t high, int32_t gradient, int32_t upshift)
+void render_glyphset(FT_Face fnt, uint32_t low, uint32_t high, int32_t gradient, int32_t upshift, uint8_t padding)
 {
 	int32_t channels = 2; // Gray/alpha
 	struct image_data idata;
@@ -206,8 +206,8 @@ void render_glyphset(FT_Face fnt, uint32_t low, uint32_t high, int32_t gradient,
 		if ( !FT_Load_Glyph(fnt,glyph,FT_LOAD_DEFAULT) && glyph )
 		{
 			FT_Render_Glyph(fnt->glyph,FT_RENDER_MODE_NORMAL);
-			idata.width = fnt->glyph->bitmap.width;
-			idata.height = fnt->glyph->bitmap.rows;
+			idata.width = fnt->glyph->bitmap.width + padding * 2;
+			idata.height = fnt->glyph->bitmap.rows + padding * 2;
 			idata.channels = channels;
 			idata.data = malloc(idata.width * idata.height * channels);
 			memset(idata.data, 0, idata.width * idata.height * channels);
@@ -218,7 +218,7 @@ void render_glyphset(FT_Face fnt, uint32_t low, uint32_t high, int32_t gradient,
 			int32_t glyphWidth = (int32_t)roundf((float) fnt->glyph->linearHoriAdvance / 65536.0);
 			int32_t xoffset = -fnt->glyph->bitmap_left;
 			int32_t yoffset = fnt->glyph->bitmap_top - glyphHeight + upshift;
-			int32_t valid = draw_glyph(&idata, &fnt->glyph->bitmap,255,0,0,gradient);
+			int32_t valid = draw_glyph(&idata, &fnt->glyph->bitmap,255,padding,padding,gradient);
 			if ( valid )
 			{
 				int8_t fname[256];
@@ -242,7 +242,7 @@ void write_inf_monospace(int32_t width, int32_t height)
 }
 
 // For monospace fonts
-void render_glyphsheet(FT_Face fnt, int32_t charwidth, int32_t charheight, uint32_t low, uint32_t high, int32_t gradient, int32_t upshift, int32_t maxtop)
+void render_glyphsheet(FT_Face fnt, int32_t charwidth, int32_t charheight, uint32_t low, uint32_t high, int32_t gradient, int32_t upshift, int32_t maxtop, uint8_t padding)
 {
 	// Render a glyph sheet for monospace fonts
 	int32_t channels = 2; // Gray/alpha
@@ -253,6 +253,8 @@ void render_glyphsheet(FT_Face fnt, int32_t charwidth, int32_t charheight, uint3
 	int8_t fname[9];
 	sprintf(fname, "%04x.png", low);
 	// Set up image data
+	charwidth += padding * 2; // Add cell padding
+	charheight += padding * 2;
 	idata.width = columns * charwidth;
 	idata.height = rows * charheight;
 	idata.channels = channels;
@@ -269,8 +271,8 @@ void render_glyphsheet(FT_Face fnt, int32_t charwidth, int32_t charheight, uint3
 			FT_Render_Glyph(fnt->glyph,FT_RENDER_MODE_NORMAL);
 			// Calculate glyph X and Y offsets
 			// int32_t glyphHeight = (int32_t)roundf((float) fnt->glyph->linearVertAdvance / 65536.0);
-			int32_t cellxoffset = fnt->glyph->bitmap_left;
-			int32_t cellyoffset = maxtop - fnt->glyph->bitmap_top - upshift;
+			int32_t cellxoffset = fnt->glyph->bitmap_left + padding;
+			int32_t cellyoffset = maxtop - fnt->glyph->bitmap_top - upshift + padding;
 			int32_t xoffset = column * charwidth + cellxoffset;
 			int32_t yoffset = row * charheight + cellyoffset;
 			int32_t valid = draw_glyph(&idata, &fnt->glyph->bitmap,255,xoffset,yoffset,gradient);
@@ -285,11 +287,14 @@ int32_t main( int32_t argc, int8_t **argv )
 	if ( argc < 3 )
 	{
 		fprintf(stderr,"usage: mkfontsingle <font name> <pxsize>"
-			" [--range <unicode range>] [--gradient <gradient type>] [--upshift <y offset>] [--mincharheight <mincharheight>]\n\n"
+			" [--range <unicode range>] [--gradient <gradient type>] "
+			"[--upshift <y offset>] [--mincharheight <mincharheight>] "
+			"[--padding <width>]\n\n"
 			"range: Range of Unicode characters to convert, in hexadecimal format. e.g. \"0401-0451\" for all characters in the Russian Alphabet.\n"
 			"gradient type: 1 is darker at the bottom, 2 is darker at the top.\n"
 			"upshift: Amount to increase or decrease Y offset by. Affects non-monospace fonts only.\n"
 			"mincharheight: Force the height of all monospace character cells to be no shorter than this. Affects monospace fonts only.\n"
+			"padding: Amount of space (pixels) to add to the edges of each font character image.\n"
 		);
 		return 1;
 	}
@@ -319,7 +324,7 @@ int32_t main( int32_t argc, int8_t **argv )
 	int32_t gradient = 0;
 	int32_t upshift = 0;
 	int32_t mincharheight = pxsiz;
-	int8_t outline = 0;
+	uint8_t padding = 0;
 	for (int i = 2; i < argc; i++)
 	{
 		if (!strcmp(argv[i], "--range") && argc > i)
@@ -339,9 +344,9 @@ int32_t main( int32_t argc, int8_t **argv )
 		{
 			sscanf(argv[++i], "%d", &mincharheight);
 		}
-		else if (!strcmp(argv[i], "--outline"))
+		else if (!strcmp(argv[i], "--padding") && argc > 1)
 		{
-			outline = 1;
+			sscanf(argv[++i], "%hhu", &padding);
 		}
 	}
 	// Set up font and font size
@@ -385,12 +390,12 @@ int32_t main( int32_t argc, int8_t **argv )
 	}
 	if ( monospace == 0 )
 	{
-		render_glyphset(fnt,range[0],range[1],gradient,upshift);
+		render_glyphset(fnt,range[0],range[1],gradient,upshift,padding);
 	}
 	else
 	{
 		monospace = (uint32_t) round((double)monospace / 64.0);
-		render_glyphsheet(fnt,monospace,mincharheight,range[0],range[1],gradient,upshift,maxtop);
+		render_glyphsheet(fnt,monospace,mincharheight,range[0],range[1],gradient,upshift,maxtop,padding);
 	}
 	FT_Done_Face(fnt);
 	FT_Done_FreeType(ftlib);
