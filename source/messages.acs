@@ -108,7 +108,7 @@ int devcommentqueue = 0;
 script "BoADevComment" (int langEntry)
 {
 	int queuelength = devcommentqueue;
-	Print(s:"queuelength ", d:queuelength);
+	// Print(s:"queuelength ", d:queuelength);
 	if (GetCvar("boa_devcomswitch")) {
 		// Time to show message
 		int basemessagetime = GetMessageTime(langEntry);
