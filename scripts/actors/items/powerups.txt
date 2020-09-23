@@ -156,19 +156,66 @@ class ZyklonMask : PowerupToggler
 	}
 }
 
-class PowerZyklonMask : PowerProtection
+const CHAN_MASK = 194;
+
+// PowerProtection that plays a looping sound while active
+class PowerMaskProtection : PowerProtection
 {
+	sound maskSound;
+	int maskChannel;
+
+	Property Sound: maskSound;
+	Property Channel: maskChannel;
+
 	Default
 	{
-		DamageFactor "UndeadPoisonAmbience", 0;
+		PowerMaskProtection.Sound "player/gasmask";
+		PowerMaskProtection.Channel CHAN_MASK;
 	}
 
+	// Necessary?
+	/*
 	override void Tick()
 	{
 		if (Owner == null || EffectTics == 0)
 		{
 			Destroy();
 		}
+	}
+	*/
+
+	override void InitEffect()
+	{
+		if (Owner)
+		{
+			Owner.A_StartSound(maskSound, maskChannel, CHANF_LOOPING);
+		}
+		Super.InitEffect();
+	}
+
+	override void EndEffect()
+	{
+		if (Owner)
+		{
+			Owner.A_StopSound(maskChannel);
+		}
+		Super.EndEffect();
+	}
+}
+
+class PowerZyklonMask : PowerMaskProtection
+{
+	Default
+	{
+		DamageFactor "UndeadPoisonAmbience", 0;
+	}
+}
+
+class PowerSpaceSuit : PowerMaskProtection
+{
+	Default
+	{
+		DamageFactor "IceWater", 0;
 	}
 }
 

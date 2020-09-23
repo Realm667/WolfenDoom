@@ -295,19 +295,21 @@ function void DrawScreenOverlays(void)
 	}
 
 	// GasMask and SpaceSuit sounds
+	/*
 	int mask1 = GetActorPowerupTics(0, "PowerSpaceSuit");
 	if (mask1 && masksoundtimeout[p] < Timer())
 	{
 		localambientsound("player/gasmask",random(90,127));
 		masksoundtimeout[p] = Timer() + (35 * 8);
 	}
-	
+
 	int mask2 = GetActorPowerupTics(0, "PowerZyklonMask");
 	if (mask2 && masksoundtimeout[p] < Timer())
 	{
 		localambientsound("player/gasmask",random(90,127));
 		masksoundtimeout[p] = Timer() + (35 * 8);
 	}
+	*/
 }
 
 script "PlayerHealthAbove25" (void)
