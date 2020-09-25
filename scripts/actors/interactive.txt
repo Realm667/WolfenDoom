@@ -182,6 +182,30 @@ class TrainingTarget : SwitchableDecoration
 	}
 }
 
+class Fahrkarten : Actor
+{
+	Default
+	{
+		//$Category Decorations (BoA)
+		//$Title Fahrkarten Sign
+		
+		Radius 2;
+		Height 2;
+		+FORCEYBILLBOARD
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+NOINTERACTION
+		+WALLSPRITE
+	}
+	
+	States
+	{
+		Spawn:
+			FAHR A -1;
+			Stop;
+	}
+}
+
 // Workaround for this bug: https://forum.zdoom.org/viewtopic.php?f=2&t=62967 - Model by Talon1024
 class ManholeCover3D : Debris_Vent_FloorCeiling
 {
