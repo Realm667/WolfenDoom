@@ -695,7 +695,7 @@ ACTOR SeekerRocket : MiniRocket
 }
 
 ACTOR HardSeekerRocket : SeekerRocket { +MTHRUSPECIES MaxTargetRange 192 }
-
+/*
 //ATTACKS - ROBOTS
 ACTOR MechaRocket : MiniRocket
 {
@@ -711,13 +711,26 @@ ACTOR MechaRocket : MiniRocket
 }
 
 ACTOR HardMechaRocket : MechaRocket { +MTHRUSPECIES }
+*/
 
 ACTOR MiniMechaRocket : MiniRocket
 {
-	Speed 27
+	Speed 20
 	Scale 0.27
-	Damage (random(1,4)*5) //20 dmg max vs 16
+	Damage (random(1,2)*5) //5-10 damage + 10 splash damage
 	DeathSound "nebelwerfer/xplode"
+	States
+	{
+	Spawn:
+		NMIS A 0 NODELAY A_StartSound("nazi/missileengine", CHAN_AUTO, CHANF_LOOPING, 0.3)
+		"####" "#" 2 A_Weave(2, 2, 3, 3)
+		Loop
+	Death:
+		FRME A 1 BRIGHT LIGHT(OTTOFIRE) A_Explode(10, 30)
+		FRME A 0 A_StopSound(CHAN_AUTO)
+		FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT(OTTOFIRE)
+		Stop
+	}
 }
 
 ACTOR HardMiniMechaRocket : MiniMechaRocket { +MTHRUSPECIES }
