@@ -166,6 +166,44 @@ script "_Do_BoADevComment_" (int langEntry, int basemessagetime)
 	HudMessage(l:langEntry; HUDMSG_FADEOUT, 2000, CR_UNTRANSLATED, devcx, devcy, 0.0, 0.5, 1.0);
 }
 
+script "_Do_BoAHalfDeadGuardsDevComment_" (void)
+{
+	int basemessagetime = GetMessageTime("DEVCOMMENT_1");
+
+	// Position
+	int devcx = 50.1;
+	int devcy = 400.1;
+
+	// Border relative position
+	int borderx = devcx - 12.0;
+	int bordery = devcy - 12.0;
+
+	// Set up size
+	SetHudSize(800, 600, TRUE);
+
+	// Display background
+	SetFont("DEVCBACK");
+	HudMessage(s:"A"; HUDMSG_FADEINOUT, 2002, CR_UNTRANSLATED, borderx, bordery, ((basemessagetime + 18) * 1872) - (32768), 0.5, 0.5, 1.0);
+
+	// Display image for comment
+	int imagex = devcx + 40.0;
+	int imagey = devcy + 100.0;
+	SetFont("GRD2R0");
+	HudMessage(s:"A"; HUDMSG_FADEINOUT, 2001, CR_UNTRANSLATED, imagex, imagey, ((basemessagetime + 18) * 1872) - (32768), 0.5, 0.5, 1.0);
+
+	devcx += 80.0;
+
+	// Display message
+	Delay(18);
+	SetFont("SMALLFONT");
+	SetHudWrapWidth(640);
+	HudMessage(l:"DEVCOMMENT_1"; HUDMSG_TYPEON, 2000, CR_UNTRANSLATED, devcx, devcy, 999.0, 0.02, 2.0, 1.0);
+
+	// Wait for 25 seconds and fade out message
+	Delay(basemessagetime);
+	HudMessage(l:"DEVCOMMENT_1"; HUDMSG_FADEOUT, 2000, CR_UNTRANSLATED, devcx, devcy, 0.0, 0.5, 1.0);
+}
+
 script "HintMessage" (int message)
 {
 	if (message == "") { Terminate; }
