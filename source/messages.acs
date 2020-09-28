@@ -107,13 +107,29 @@ int devcommentqueue = 0;
 
 script "BoADevComment" (int langEntry)
 {
-	int queuelength = devcommentqueue;
+	int queuelength = devcommentqueue; // Script-local copy of devcommentqueue
+	int image = 0;
 	// Print(s:"queuelength ", d:queuelength);
 	if (GetCvar("boa_devcomswitch")) {
-		// Time to show message
+		// Get image to show on the comment, if any. The pipe character is used
+		// to separate the entry ID from the image name.
+		int index = 0;
+		int length = StrLen(langEntry);
+		while (index < length)
+		{
+			int char = GetChar(langEntry, index);
+			if (char == '|')
+			{
+				image = StrMid(langEntry, index + 1, length - index - 1);
+				langEntry = StrLeft(langEntry, index);
+				break;
+			}
+			index++;
+		}
+		// Get time to show message on screen
 		int basemessagetime = GetMessageTime(langEntry);
-		// 18 tics is about half a second. Add this to devcommentqueue twice
-		// to give messages time to fade in and out.
+		// 20 tics is a little more than half a second. Add this to
+		// devcommentqueue twice to give messages time to fade in and out.
 		devcommentqueue += basemessagetime + 20 * 2;
 		// Wait for previous dev comment to disappear
 		if (queuelength)
@@ -121,7 +137,7 @@ script "BoADevComment" (int langEntry)
 			delay(queuelength);
 		}
 		// Show new dev comment
-		ACS_NamedExecuteAlways("_Do_BoADevComment_", 0, langEntry, basemessagetime);
+		ACS_NamedExecuteAlways("_Do_BoADevComment_", 0, langEntry, basemessagetime, image);
 		// Use ACS_NamedExecute here so that only one instance of this script
 		// can run at any given time.
 		ACS_NamedExecute("_Tick_BoADevComment_", 0);
@@ -138,41 +154,22 @@ script "_Tick_BoADevComment_" (void)
 	}
 }
 
-script "_Do_BoADevComment_" (int langEntry, int basemessagetime)
+script "_Do_BoADevComment_" (int langEntry, int basemessagetime, int image)
 {
 	// Position
 	int devcx = 50.1;
 	int devcy = 400.1;
 
-	// Border relative position
-	int borderx = devcx - 12.0;
-	int bordery = devcy - 12.0;
+	// Offsets for image and text
+	int imageyoffset = 35.0;
+	int textxoffset = 0; // Offset text to the right to make space for image
+	int textxoffsetf = 0; // Same, but in fixed point
 
-	// Set up size
-	SetHudSize(800, 600, TRUE);
-
-	// Display background
-	SetFont("DEVCBACK");
-	HudMessage(s:"A"; HUDMSG_FADEINOUT, 2001, CR_UNTRANSLATED, borderx, bordery, ((basemessagetime + 18) * 1872) - (32768), 0.5, 0.5, 1.0);
-
-	// Display message
-	Delay(18);
-	SetFont("SMALLFONT");
-	SetHudWrapWidth(720);
-	HudMessage(l:langEntry; HUDMSG_TYPEON, 2000, CR_UNTRANSLATED, devcx, devcy, 999.0, 0.02, 2.0, 1.0);
-
-	// Wait for 25 seconds and fade out message
-	Delay(basemessagetime);
-	HudMessage(l:langEntry; HUDMSG_FADEOUT, 2000, CR_UNTRANSLATED, devcx, devcy, 0.0, 0.5, 1.0);
-}
-
-script "_Do_BoAHalfDeadGuardsDevComment_" (void)
-{
-	int basemessagetime = GetMessageTime("DEVCOMMENT_1");
-
-	// Position
-	int devcx = 50.1;
-	int devcy = 400.1;
+	if (image > 0)
+	{ // Image is assumed to be a string
+		textxoffset = ScriptCall("ACSTools", "GetTextureWidth", image);
+		textxoffsetf = textxoffset << 16;
+	}
 
 	// Border relative position
 	int borderx = devcx - 12.0;
@@ -185,23 +182,23 @@ script "_Do_BoAHalfDeadGuardsDevComment_" (void)
 	SetFont("DEVCBACK");
 	HudMessage(s:"A"; HUDMSG_FADEINOUT, 2002, CR_UNTRANSLATED, borderx, bordery, ((basemessagetime + 18) * 1872) - (32768), 0.5, 0.5, 1.0);
 
-	// Display image for comment
-	int imagex = devcx + 40.0;
-	int imagey = devcy + 100.0;
-	SetFont("GRD2R0");
-	HudMessage(s:"A"; HUDMSG_FADEINOUT, 2001, CR_UNTRANSLATED, imagex, imagey, ((basemessagetime + 18) * 1872) - (32768), 0.5, 0.5, 1.0);
-
-	devcx += 80.0;
+	// Display image
+	if (image > 0)
+	{
+		SetFont(image);
+		// BTW, the ID also works like z-index, but in reverse.
+		HudMessage(s:"A"; HUDMSG_FADEINOUT, 2001, CR_UNTRANSLATED, devcx, devcy + imageyoffset, ((basemessagetime + 18) * 1872) - (32768), 0.5, 0.5, 1.0);
+	}
 
 	// Display message
 	Delay(18);
 	SetFont("SMALLFONT");
-	SetHudWrapWidth(640);
-	HudMessage(l:"DEVCOMMENT_1"; HUDMSG_TYPEON, 2000, CR_UNTRANSLATED, devcx, devcy, 999.0, 0.02, 2.0, 1.0);
+	SetHudWrapWidth(720 - textxoffset);
+	HudMessage(l:langEntry; HUDMSG_TYPEON, 2000, CR_UNTRANSLATED, devcx + textxoffsetf, devcy, 999.0, 0.02, 2.0, 1.0);
 
 	// Wait for 25 seconds and fade out message
 	Delay(basemessagetime);
-	HudMessage(l:"DEVCOMMENT_1"; HUDMSG_FADEOUT, 2000, CR_UNTRANSLATED, devcx, devcy, 0.0, 0.5, 1.0);
+	HudMessage(l:langEntry; HUDMSG_FADEOUT, 2000, CR_UNTRANSLATED, devcx + textxoffsetf, devcy, 0.0, 0.5, 1.0);
 }
 
 script "HintMessage" (int message)
