@@ -137,9 +137,11 @@
 	  that wouldn't be fooled by a disguise, like rats, spiders, and possibly
 	  paranormal creatures.
 
-	A_JumpAttack(int attackspeed = 20)
+	A_JumpAttack(int attackspeed = 20, int flags = 0)
 	- A generic version of A_SkullAttack that allows you to pass in an attack speed
 	- Also handles skipping the attack if a swimmer is out of water
+	- Flags:
+	JAF_PRECISE - Velocity is calculated in true 3D rather than in 2D
 
 	A_WanderGoal()
 	- If the enemy has a goal assigned, go to it.  If not, wander.
@@ -214,6 +216,11 @@ enum EHealerFlags
 	HLR_ALLIES = 1,
 	HLR_ZOMBIES = 2,
 };
+
+enum EJumpAttackFlags
+{
+	JAF_PRECISE = 1,
+}
 
 // Base class to add ability to see through notarget to actors (e.g., mice, sharks)
 class Base : Actor
@@ -316,7 +323,7 @@ class Base : Actor
 		return ResolveState(null);
 	}
 
-	void A_JumpAttack(int attackspeed = 20)
+	void A_JumpAttack(int attackspeed = 20, int flags = JAF_PRECISE)
 	{
 		if (!target || (swimmer && target.waterlevel == 0)) { return; }
 
@@ -324,8 +331,20 @@ class Base : Actor
 		A_StartSound(AttackSound, CHAN_VOICE);
 		A_FaceTarget();
 
-		VelFromAngle(attackspeed);
-		Vel.Z = (target.pos.Z + target.Height / 2 - pos.Z) / DistanceBySpeed(target, attackspeed);
+		if (flags & JAF_PRECISE)
+		{
+			Vector3 myMiddle = Pos;
+			myMiddle.Z += height / 2;
+			Vector3 theirMiddle = target.Pos;
+			theirMiddle.Z += target.Height / 2;
+			Vector3 toEnemy = Level.Vec3Diff(myMiddle, theirMiddle);
+			Vel = toEnemy.Unit() * attackspeed;
+		}
+		else
+		{
+			VelFromAngle(attackspeed);
+			Vel.Z = (target.pos.Z + target.Height / 2 - pos.Z) / DistanceBySpeed(target, attackspeed);
+		}
 	}
 
 	void A_WanderGoal(int flags = 0, int scarerange = 0)
