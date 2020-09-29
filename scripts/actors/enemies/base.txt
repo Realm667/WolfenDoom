@@ -142,6 +142,7 @@
 	- Also handles skipping the attack if a swimmer is out of water
 	- Flags:
 	JAF_PRECISE - Velocity is calculated in true 3D rather than in 2D
+	JAF_INTERCEPT - Fly at the target's predicted position rather than their current position
 
 	A_WanderGoal()
 	- If the enemy has a goal assigned, go to it.  If not, wander.
@@ -220,6 +221,7 @@ enum EHealerFlags
 enum EJumpAttackFlags
 {
 	JAF_PRECISE = 1,
+	JAF_INTERCEPT = 2,
 }
 
 // Base class to add ability to see through notarget to actors (e.g., mice, sharks)
@@ -329,19 +331,38 @@ class Base : Actor
 
 		bSkullFly = true;
 		A_StartSound(AttackSound, CHAN_VOICE);
-		A_FaceTarget();
 
+		// Get "middle" of caller and their target
+		Vector3 myMiddle = Pos;
+		myMiddle.Z += height / 2;
+		Vector3 theirMiddle = target.Pos;
+		theirMiddle.Z += target.Height / 2;
+
+		// Calculate target position
+		Vector3 targetPos;
+		if (flags & JAF_INTERCEPT)
+		{
+			double interceptTime = ZScriptTools.GetInterceptTime4(myMiddle, theirMiddle, target.Vel, double(attackspeed));
+			targetPos = theirMiddle + target.Vel * interceptTime;
+		}
+		else
+		{
+			targetPos = theirMiddle;
+		}
+
+		// Modify velocity
 		if (flags & JAF_PRECISE)
 		{
-			Vector3 myMiddle = Pos;
-			myMiddle.Z += height / 2;
-			Vector3 theirMiddle = target.Pos;
-			theirMiddle.Z += target.Height / 2;
-			Vector3 toEnemy = Level.Vec3Diff(myMiddle, theirMiddle);
+			Angle = atan2(targetPos.Y, targetPos.X);
+			Vector3 toEnemy = Level.Vec3Diff(myMiddle, targetPos);
 			Vel = toEnemy.Unit() * attackspeed;
 		}
 		else
 		{
+			if (flags & JAF_INTERCEPT)
+			{
+				Angle = atan2(targetPos.Y, targetPos.X);
+			}
 			VelFromAngle(attackspeed);
 			Vel.Z = (target.pos.Z + target.Height / 2 - pos.Z) / DistanceBySpeed(target, attackspeed);
 		}
