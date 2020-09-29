@@ -273,7 +273,7 @@ class TankBase : VehicleBase
 		TankBase.TurretSpeed 1.5;
 		TankBase.TurretProjectile "TankRocket";
 		TankBase.FrontGunProjectile "EnemyChaingunTracer";
-		TankBase.TurretDelay 38;
+		TankBase.TurretDelay 9;
 	}
 
 	States
@@ -567,7 +567,7 @@ class TankBase : VehicleBase
 
 		if (!target || !CheckLOF(CLOFF_JUMPENEMY | CLOFF_SKIPOBJECT, maxtargetrange, offsetforward: treads.radius))
 		{
-			missiletimeout = 35;
+			missiletimeout = 70;
 			bullettimeout = 35;
 		}
 
@@ -682,7 +682,7 @@ class TankBase : VehicleBase
 	virtual void DoFrontWeapon(Actor origin)
 	{
 		chasetimeout = 20;
-		missiletimeout = 20;
+		missiletimeout = 70;
 	}
 
 	override String GetObituary(Actor victim, Actor inflictor, Name mod, bool playerattack)
