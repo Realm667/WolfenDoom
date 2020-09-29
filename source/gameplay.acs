@@ -326,6 +326,7 @@ script "VENT_BREAK" (int vent_id)
 {
 	SetLineBlocking(vent_id,BLOCK_NOTHING);
 	SetLineTexture(vent_id, LINE_BACK, TEXTURE_MIDDLE, "VENT_M00");
+	SetLineTexture(vent_id, LINE_FRONT, TEXTURE_MIDDLE, "VENT_M00");
 	Thing_Activate(vent_id);
 }
 
