@@ -73,6 +73,28 @@ ACTOR MutantMelee : Mutant
 	See:
 		"####" A 0 A_SetSpeed(6)
 		Goto See.MutantFasterAlt
+	See.MutantFasterAlt:
+		// Mutant Walk Pattern, offset frames (BCDE walk instead of ABCD)
+		"####" "#" 0 { user_incombat = True; }
+		"####" B 1 A_MeleeMutantChase
+		"####" B 1 A_MeleeMutantChase("", "")
+		"####" B 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		"####" B 1 A_MeleeMutantChase
+		"####" B 1 A_MeleeMutantChase("", "")
+		"####" C 1 A_MeleeMutantChase
+		"####" C 1 A_MeleeMutantChase("", "")
+		"####" C 1 A_MeleeMutantChase
+		"####" C 1 A_MeleeMutantChase("", "")
+		"####" D 1 A_MeleeMutantChase
+		"####" D 1 A_MeleeMutantChase("", "")
+		"####" D 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		"####" D 1 A_MeleeMutantChase
+		"####" D 1 A_MeleeMutantChase("", "")
+		"####" E 1 A_MeleeMutantChase
+		"####" E 1 A_MeleeMutantChase("", "")
+		"####" E 1 A_MeleeMutantChase
+		"####" E 1 A_MeleeMutantChase("", "")
+		"####" A 0 { return ResolveState("See"); }
 	Melee:
 		MLMT F 4 A_FaceTarget
 		MLMT G 5 A_CustomMeleeAttack(5*random(1,5))
@@ -80,9 +102,6 @@ ACTOR MutantMelee : Mutant
 		MLMT H 5 A_CustomMeleeAttack(5*random(1,5))
 		Goto See
 	Missile:
-		MLMT Q 0 A_CheckLOF("Missile.Cleaver", CLOFF_SKIPOBSTACLES | CLOFF_IGNOREGHOST, 1024, 512)
-		Goto See
-	Missile.Cleaver:
 		MLMT Q 8 A_FaceTarget
 		MLMT RS 4 A_FaceTarget
 		MLMT T 4 A_SpawnProjectile("FlyingCleaver",43,8,random(-2,2))

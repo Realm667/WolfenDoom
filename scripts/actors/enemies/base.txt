@@ -1091,6 +1091,7 @@ class Nazi : Base
 		Scale 0.65;
 		PainChance 200;
 		Speed 2;
+		FastSpeed 0; // FastMonsters will not increase monster movement speed
 		Monster;
 		+BOSSDEATH
 		+DONTGIB
@@ -1730,6 +1731,19 @@ class Nazi : Base
 		}
 
 		if (candodge && !crouchtimeout && !goal) { A_TryHide(); }
+	}
+
+	// A_NaziChase with CheckLOF
+	void A_MeleeMutantChase(statelabel melee = "None", statelabel missile = "None", double maxrange = 1024, double minrange = 512, int chaseFlags = 0, int CLOFFlags = CLOFF_SKIPOBSTACLES | CLOFF_IGNOREGHOST)
+	{
+		if (CheckLOF(CLOFFlags, maxrange, minrange))
+		{
+			A_NaziChase(melee, missile, chaseFlags);
+		}
+		else
+		{
+			A_NaziChase(melee, null, chaseFlags);
+		}
 	}
 
 	state A_CheckFadeDeath()
