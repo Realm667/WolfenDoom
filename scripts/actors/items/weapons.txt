@@ -364,7 +364,7 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 
 		A_StartSound("Panzer/fire", CHAN_WEAPON, 0, 8.0);
 		A_GunFlash();
-		Actor muzzleflash = Spawn("NebNuke", origin.Pos, ALLOW_REPLACE);
+		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		Actor mo = A_FireProjectile("TankRocket", angledelta, False, 0, 0, FPF_NOAUTOAIM, pitchdelta);
 		if (mo && origin != self)
 		{

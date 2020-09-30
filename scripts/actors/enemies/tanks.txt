@@ -1328,9 +1328,7 @@ class FriendlySherman : TankBase
 
 		Super.DoTurret(origin);
 
-		// Will this damage the tank that fired the projectile? NebNuke spawns
-		// NebBoom, which does a little bit of splash damage.
-		Actor muzzleflash = Spawn("NebNuke", origin.Pos, ALLOW_REPLACE);
+		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
@@ -1428,7 +1426,7 @@ class SSTank1 : TankBase
 
 		Super.DoTurret(origin);
 
-		Actor muzzleflash = Spawn("NebNuke", origin.Pos, ALLOW_REPLACE);
+		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
@@ -1552,7 +1550,7 @@ class SSTank2 : TankBase
 		origin.A_Face(target, 0, 0, flags:FAF_MIDDLE);
 		origin.angle = turret.angle;
 
-		Actor muzzleflash = Spawn("NebNuke", origin.Pos, ALLOW_REPLACE);
+		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
@@ -1645,7 +1643,7 @@ class SSTank3 : TankBase
 
 		Super.DoTurret(origin);
 
-		Actor muzzleflash = Spawn("NebNuke", origin.Pos, ALLOW_REPLACE);
+		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
@@ -1822,7 +1820,7 @@ class T34Tank : TankBase
 
 		Super.DoTurret(origin);
 
-		Actor muzzleflash = Spawn("NebNuke", origin.Pos, ALLOW_REPLACE);
+		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
