@@ -1361,7 +1361,7 @@ class FriendlySherman : TankBase
 		// Required for the muzzle flash to work properly.
 		muzzleflash.master = origin;
 		// Smoke
-		origin.A_SpawnProjectile("TurrSmokeSpawner", flags: CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE);
+		origin.A_SpawnProjectile("TurrSmokeSpawner", 0, flags: CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE);
 		// Projectile
 		Actor mo = A_SpawnProjectile(FrontGunProjectile, 0, 0, origin.angle + Random(-2, 2), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, Random(-2, 2));
 
@@ -1466,7 +1466,7 @@ class SSTank1 : TankBase
 		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
 		muzzleflash.master = origin;
 		// Smoke
-		origin.A_SpawnProjectile("TurrSmokeSpawner", flags: CMF_ABSOLUTEPITCH);
+		origin.A_SpawnProjectile("TurrSmokeSpawner", 0, flags: CMF_ABSOLUTEPITCH);
 		// Projectile
 		Actor mo = A_SpawnProjectile(FrontGunProjectile, 0, 0, random(-4, 4), CMF_ABSOLUTEPITCH, max(-gunpitch, 0));
 
@@ -1586,7 +1586,7 @@ class SSTank2 : TankBase
 		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
 		muzzleflash.master = origin;
 		// Smoke
-		origin.A_SpawnProjectile("TurrSmokeSpawner", flags: CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE);
+		origin.A_SpawnProjectile("TurrSmokeSpawner", 0, flags: CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE);
 		// Projectile
 		Actor mo = origin.A_SpawnProjectile(FrontGunProjectile, 0, 0, origin.angle + random(-4, 4), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
 
@@ -1756,7 +1756,7 @@ class SSTank4 : TankBase
 		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
 		muzzleflash.master = origin;
 		// Smoke
-		origin.A_SpawnProjectile("TurrSmokeSpawner", flags: CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE);
+		origin.A_SpawnProjectile("TurrSmokeSpawner", 0, flags: CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE);
 		// Projectile
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle + random(-4, 4), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
 
@@ -1872,7 +1872,7 @@ class T34Tank : TankBase
 		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
 		muzzleflash.master = origin;
 		// Smoke
-		origin.A_SpawnProjectile("TurrSmokeSpawner", flags: CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE);
+		origin.A_SpawnProjectile("TurrSmokeSpawner", 0, flags: CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE);
 		// Projectile
 		Actor mo = origin.A_SpawnProjectile(FrontGunProjectile, 0, 0, origin.angle + random(-4, 4), CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, clamp(origin.pitch, -5, 5));
 
