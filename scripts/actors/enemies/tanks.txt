@@ -314,7 +314,8 @@ class TankBase : VehicleBase
 		else { level.total_monsters--; }
 
 		targettimeout = Random(0, 35);
-		intercept = G_SkillPropertyInt(SKILLP_ACSReturn) > 0; // Disable intercept missiles on easy skill
+		// Disable intercepting missiles on lower skill levels
+		intercept = G_SkillPropertyInt(SKILLP_ACSReturn) > 2;
 		InterceptTarget = Spawn("TankInterceptTarget", Pos, ALLOW_REPLACE);
 
 		Super.PostBeginPlay();
