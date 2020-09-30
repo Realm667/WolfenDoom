@@ -664,6 +664,9 @@ class TankBase : VehicleBase
 		A_StartSound(movesound, CHAN_7, CHANF_LOOPING, 1.0);
 	}
 
+	// Fire the main cannon at the target. The main cannon is assumed to be
+	// already aiming at its target.
+	// origin - The main cannon actor
 	virtual void DoTurret(Actor origin)
 	{
 		missiletargeted = false;
@@ -672,6 +675,10 @@ class TankBase : VehicleBase
 		chasetimeout = 5;
 	}
 
+	// Fire the turret at the target. The turret is not assumed to be aiming at
+	// its target, so you will need to make the turret aim at the target when.
+	// you override this method.
+	// origin - The turret actor
 	virtual void DoTurretTarget(Actor origin)
 	{
 		missiletargeted = true;
@@ -679,6 +686,9 @@ class TankBase : VehicleBase
 		turrettimeout = turretdelay;
 	}
 
+	// Fire the front weapon at the target. The front weapon is assumed to be
+	// aiming at the target.
+	// origin - The front weapon
 	virtual void DoFrontWeapon(Actor origin)
 	{
 		chasetimeout = 20;
