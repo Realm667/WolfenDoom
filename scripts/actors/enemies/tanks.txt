@@ -1328,6 +1328,9 @@ class FriendlySherman : TankBase
 
 		Super.DoTurret(origin);
 
+		// Will this damage the tank that fired the projectile? NebNuke spawns
+		// NebBoom, which does a little bit of splash damage.
+		Actor muzzleflash = Spawn("NebNuke", origin.Pos, ALLOW_REPLACE);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
@@ -1355,6 +1358,8 @@ class FriendlySherman : TankBase
 
 		A_StartSound("mauser/fire", CHAN_WEAPON);
 
+		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
+		muzzleflash.master = origin; // Required for the muzzle flash to work properly.
 		Actor mo = A_SpawnProjectile(FrontGunProjectile, 0, 0, origin.angle + Random(-2, 2), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, Random(-2, 2));
 
 		if (mo)
@@ -1423,6 +1428,7 @@ class SSTank1 : TankBase
 
 		Super.DoTurret(origin);
 
+		Actor muzzleflash = Spawn("NebNuke", origin.Pos, ALLOW_REPLACE);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
@@ -1453,6 +1459,8 @@ class SSTank1 : TankBase
 		double gunpitch = origin.pitch;
 		if (origin.master && TankBase(origin.master) && TankBase(origin.master).gun) { gunpitch = TankBase(origin.master).gun.pitch; }
 
+		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
+		muzzleflash.master = origin;
 		Actor mo = A_SpawnProjectile(FrontGunProjectile, 0, 0, random(-4, 4), CMF_ABSOLUTEPITCH, max(-gunpitch, 0));
 
 		if (mo)
@@ -1544,6 +1552,7 @@ class SSTank2 : TankBase
 		origin.A_Face(target, 0, 0, flags:FAF_MIDDLE);
 		origin.angle = turret.angle;
 
+		Actor muzzleflash = Spawn("NebNuke", origin.Pos, ALLOW_REPLACE);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
@@ -1566,6 +1575,8 @@ class SSTank2 : TankBase
 		origin.A_Face(target, 0, 0, flags:FAF_MIDDLE);
 		origin.angle = treads.angle;
 
+		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
+		muzzleflash.master = origin;
 		Actor mo = origin.A_SpawnProjectile(FrontGunProjectile, 0, 0, origin.angle + random(-4, 4), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
@@ -1634,6 +1645,7 @@ class SSTank3 : TankBase
 
 		Super.DoTurret(origin);
 
+		Actor muzzleflash = Spawn("NebNuke", origin.Pos, ALLOW_REPLACE);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
@@ -1729,6 +1741,8 @@ class SSTank4 : TankBase
 		origin.A_Face(target, 0, 0, flags:FAF_MIDDLE);
 		origin.angle = turret.angle;
 
+		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
+		muzzleflash.master = origin;
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle + random(-4, 4), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo) { mo.target = self; }
@@ -1808,6 +1822,7 @@ class T34Tank : TankBase
 
 		Super.DoTurret(origin);
 
+		Actor muzzleflash = Spawn("NebNuke", origin.Pos, ALLOW_REPLACE);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
@@ -1838,6 +1853,8 @@ class T34Tank : TankBase
 		origin.A_Face(target, 0, 0, flags:FAF_MIDDLE);
 		origin.angle = treads.angle;
 
+		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
+		muzzleflash.master = origin;
 		Actor mo = origin.A_SpawnProjectile(FrontGunProjectile, 0, 0, origin.angle + random(-4, 4), CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, clamp(origin.pitch, -5, 5));
 
 		if (mo)
