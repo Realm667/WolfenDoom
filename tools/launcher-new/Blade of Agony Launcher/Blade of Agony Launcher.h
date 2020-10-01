@@ -9,24 +9,33 @@ TCHAR SourcePortName[] = TEXT("gzdoom.exe");
 enum DetailSettings
 {
 	DETAIL_UNCHANGED,
+	DETAIL_DEFAULT,
+	DETAIL_VERYLOW,
 	DETAIL_LOW,
-	DETAIL_MEDIUM,
+	DETAIL_NORMAL,
 	DETAIL_HIGH,
+	DETAIL_VERYHIGH,
 	DETAIL_END
 };
 
 TCHAR DetailSettingsStrings[DETAIL_END][50] = {
 	TEXT("Use Last Settings"),
+	TEXT("Reset to Default Settings"),
+	TEXT("Very Low Detail (fastest)"),
 	TEXT("Low Detail (faster)"),
-	TEXT("Moderate Detail"),
-	TEXT("High Detail"),
+	TEXT("'Normal' Detail"),
+	TEXT("High Detail (prettier)"),
+	TEXT("Very High Detail (beautiful)"),
 };
 
 TCHAR CmdDetailString[DETAIL_END][50] = {
 	TEXT(""),
-	TEXT("+lowdetail"),
-	TEXT("+mediumdetail"),
-	TEXT("+highdetail"),
+	TEXT("+boa_default"),
+	TEXT("+boa_verylow"),
+	TEXT("+boa_low"),
+	TEXT("+boa_normal"),
+	TEXT("+boa_high"),
+	TEXT("+boa_veryhigh"),
 };
 
 enum LoadDisplacementTextures
