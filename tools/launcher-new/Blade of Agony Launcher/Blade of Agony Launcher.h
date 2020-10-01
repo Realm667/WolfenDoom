@@ -18,7 +18,7 @@ enum DetailSettings
 	DETAIL_END
 };
 
-TCHAR DetailSettingsStrings[DETAIL_END][50] = {
+TCHAR DetailSettingsStrings[][50] = {
 	TEXT("Use Last Settings"),
 	TEXT("Reset to Default Settings"),
 	TEXT("Very Low Detail (fastest)"),
@@ -28,7 +28,7 @@ TCHAR DetailSettingsStrings[DETAIL_END][50] = {
 	TEXT("Very High Detail (beautiful)"),
 };
 
-TCHAR CmdDetailString[DETAIL_END][50] = {
+TCHAR DetailSettingsCmd[][50] = {
 	TEXT(""),
 	TEXT("+boa_default"),
 	TEXT("+boa_verylow"),
@@ -45,14 +45,53 @@ enum LoadDisplacementTextures
 	DIS_END
 };
 
-TCHAR DisplacementTexturesStrings[DIS_END][50] = {
+TCHAR DisplacementTexturesStrings[][50] = {
 	TEXT("Do not use displacement textures (faster)"),
 	TEXT("Use displacement textures (beautiful)"),
 };
 
-TCHAR CmdDisplacementString[DIS_END][50] = {
+TCHAR DisplacementTexturesCmd[][50] = {
 	TEXT(""),
 	TEXT("-file BOA_Displacement.pk3"),
+};
+
+enum UseDeveloperCommentary
+{
+	DEVC_NO,
+	DEVC_YES,
+	DEVC_END
+};
+
+TCHAR DeveloperCommentaryCmd[][50] = {
+	TEXT("+set boa_devcomswitch 0"),
+	TEXT("+set boa_devcomswitch 1")
+};
+
+enum Languages
+{
+	LANGUAGE_MAX = 8
+};
+
+TCHAR LanguagesList[][50] = {
+	TEXT("English"), // en
+	TEXT("German"), // de
+	TEXT("Spanish"), // es
+	TEXT("Russian"), // ru
+	TEXT("Portugese"), // pt
+	TEXT("Italian"), // it
+	TEXT("Turkish"), // trk
+	TEXT("French"), // fr
+};
+
+TCHAR LanguagesCmd[][50] = {
+	TEXT("+language en"), // en
+	TEXT("+language de"), // de
+	TEXT("+language es"), // es
+	TEXT("+language ru"), // ru
+	TEXT("+language pt"), // pt
+	TEXT("+language it"), // it
+	TEXT("+language trk"), // trk
+	TEXT("+language fr"), // fr
 };
 
 struct LauncherSettings
@@ -60,6 +99,8 @@ struct LauncherSettings
 	bool DontShow = false;
 	int DisplacementTextures = DIS_YES;
 	int Detail = DETAIL_UNCHANGED;
+	bool DevCommentary = false;
+	int Language = 0;
 };
 
 extern LauncherSettings settings;

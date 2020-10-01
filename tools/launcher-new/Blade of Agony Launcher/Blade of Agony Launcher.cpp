@@ -40,13 +40,24 @@ inline void BOA_FillComboBox(HWND dlg, int what, int max, LPARAM init, TCHAR lis
 	SendMessage(controlhwnd, CB_SETCURSEL, (WPARAM)init, (LPARAM)0);
 }
 
-inline void BOA_LaunchGZDoom(int detail, int displacement)
+inline void BOA_CheckBox(HWND dlg, int what, bool state)
+{
+	SendMessage(GetDlgItem(dlg, what), BM_SETCHECK, state ? BST_CHECKED : BST_UNCHECKED, 0);
+}
+
+inline void BOA_LaunchGZDoom(int detail, int displacement, int language, int devcomments)
 {
 	STARTUPINFO si = { sizeof(si) };
 	PROCESS_INFORMATION pi;
 	TCHAR GZFinalCmdLine[200];
 
-	_snwprintf_s(GZFinalCmdLine, 199, 199, TEXT("%s -iwad %s %s %s"), SourcePortName, IWadName, CmdDetailString[detail], CmdDisplacementString[displacement]);
+	_snwprintf_s(GZFinalCmdLine, 199, 199, TEXT("%s -iwad %s %s %s %s %s"),
+		SourcePortName,
+		IWadName,
+		DetailSettingsCmd[detail],
+		DisplacementTexturesCmd[displacement],
+		LanguagesCmd[language],
+		DeveloperCommentaryCmd[devcomments]);
 
 	CreateProcess(NULL,   // No module name (use command line)
 		GZFinalCmdLine,        // Command line
@@ -68,6 +79,10 @@ BOOL CALLBACK DialogProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lPara
     case WM_INITDIALOG:
 		BOA_FillComboBox(hwndDlg, IDC_COMBO1, DETAIL_END, LPARAM(DETAIL_UNCHANGED), DetailSettingsStrings);
 		BOA_FillComboBox(hwndDlg, IDC_COMBO2, DIS_END, LPARAM(settings.DisplacementTextures), DisplacementTexturesStrings);
+		BOA_FillComboBox(hwndDlg, IDC_COMBO3, LANGUAGE_MAX, LPARAM(settings.Language), LanguagesList);
+		BOA_CheckBox(hwndDlg, IDC_CHECK1, settings.DontShow);
+		BOA_CheckBox(hwndDlg, IDC_CHECK3, settings.DevCommentary);
+
 		if (shiftkeypressed) // by default shift key makes the window not have focus
 		{
 			// when I tested, I needed both of these, so...
@@ -91,9 +106,15 @@ BOOL CALLBACK DialogProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lPara
 			for (int i = 0; i < DIS_END; i++)
 				if (_tcscmp(check, DisplacementTexturesStrings[i]) == 0)
 					settings.DisplacementTextures = i;
-			
+
+			GetDlgItemText(hwndDlg, IDC_COMBO3, check, 49);
+			for (int i = 0; i < LANGUAGE_MAX; i++)
+				if (_tcscmp(check, LanguagesList[i]) == 0)
+					settings.Language = i;
+
 			settings.DontShow = SendDlgItemMessage(hwndDlg, IDC_CHECK1, BM_GETCHECK, 0, 0);
-			
+			settings.DevCommentary = SendDlgItemMessage(hwndDlg, IDC_CHECK3, BM_GETCHECK, 0, 0);
+
 			if (settings.DontShow)
 				MessageBox(NULL, TEXT("You can hold down SHIFT when starting in the future to get this box back"), TEXT("Notice"), MB_OK | MB_ICONINFORMATION);
 			
@@ -102,10 +123,16 @@ BOOL CALLBACK DialogProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lPara
 			_itow_s(settings.DontShow, setting, 19);
 			WritePrivateProfileString(TEXT("Launcher"), TEXT("DontShow"), setting, SettingsFile);
 
+			_itow_s(settings.DevCommentary, setting, 19);
+			WritePrivateProfileString(TEXT("Launcher"), TEXT("DevCommentary"), setting, SettingsFile);
+
 			_itow_s(settings.DisplacementTextures, setting, 19);
 			WritePrivateProfileString(TEXT("Launcher"), TEXT("DisplacementTextures"), setting, SettingsFile);
 
-			BOA_LaunchGZDoom(settings.Detail, settings.DisplacementTextures);
+			_itow_s(settings.Language, setting, 19);
+			WritePrivateProfileString(TEXT("Launcher"), TEXT("Language"), setting, SettingsFile);
+
+			BOA_LaunchGZDoom(settings.Detail, settings.DisplacementTextures, settings.Language, settings.DevCommentary);
 			
 			DestroyWindow(hwndDlg);
             return TRUE;
@@ -140,16 +167,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     LoadStringW(hInstance, IDC_BLADEOFAGONYLAUNCHER, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
 
-	settings.DontShow = GetPrivateProfileInt(TEXT("Launcher"), TEXT("DontShow"), (INT)settings.DontShow, SettingsFile);
-	settings.DisplacementTextures = GetPrivateProfileInt(TEXT("Launcher"), TEXT("DisplacementTextures"), (INT)settings.DisplacementTextures, SettingsFile);
+	settings.DontShow =				GetPrivateProfileInt(TEXT("Launcher"), TEXT("DontShow"),				(INT)settings.DontShow, SettingsFile);
+	settings.DevCommentary =		GetPrivateProfileInt(TEXT("Launcher"), TEXT("DevCommentary"),			(INT)settings.DevCommentary, SettingsFile);
+	settings.DisplacementTextures =	GetPrivateProfileInt(TEXT("Launcher"), TEXT("DisplacementTextures"),	(INT)settings.DisplacementTextures, SettingsFile);
+	settings.Language =				GetPrivateProfileInt(TEXT("Launcher"), TEXT("Language"),				(INT)settings.Language, SettingsFile);
 
 	if (!!(GetKeyState(0x10) & 0x8000))
 		shiftkeypressed = true;
 
-	if (!settings.DontShow || shiftkeypressed)
+	if (!settings.DontShow || shiftkeypressed || 1)
 		DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG1), 0, DialogProc);
 	else
-		BOA_LaunchGZDoom(settings.Detail, settings.DisplacementTextures);
+		BOA_LaunchGZDoom(settings.Detail, settings.DisplacementTextures, settings.Language, settings.DevCommentary);
 
 	return 0;
 }
