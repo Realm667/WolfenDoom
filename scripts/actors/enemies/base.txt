@@ -255,6 +255,7 @@ class Base : Actor
 	int user_count4;		//attacks counters
 	int user_offset;		//elite counter
 	int user_saw;			//smokemonster counter
+	double user_rangefactor;	// Multiplier for MaxTargetRange
 	int despawntime;
 	bool user_oncompass;
 	bool candodge;
@@ -960,6 +961,11 @@ class Base : Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
+
+		// Multiply MaxTargetRange
+		if(user_rangefactor > 0){
+			MaxTargetRange *= user_rangefactor;
+		}
 
 		hitpointtracer = new("LaserFindHitPointTracer");
 
