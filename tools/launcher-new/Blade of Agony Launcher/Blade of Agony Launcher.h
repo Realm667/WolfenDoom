@@ -23,7 +23,7 @@ TCHAR DetailSettingsStrings[DETAIL_END][50] = {
 	TEXT("Reset to Default Settings"),
 	TEXT("Very Low Detail (fastest)"),
 	TEXT("Low Detail (faster)"),
-	TEXT("'Normal' Detail"),
+	TEXT("Normal Detail"),
 	TEXT("High Detail (prettier)"),
 	TEXT("Very High Detail (beautiful)"),
 };
