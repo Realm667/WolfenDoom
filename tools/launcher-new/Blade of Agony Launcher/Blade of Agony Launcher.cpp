@@ -148,6 +148,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	if (!settings.DontShow || shiftkeypressed)
 		DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG1), 0, DialogProc);
+	else
+		BOA_LaunchGZDoom(settings.Detail, settings.DisplacementTextures);
 
 	return 0;
 }
