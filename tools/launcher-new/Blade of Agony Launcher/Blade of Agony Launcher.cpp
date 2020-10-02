@@ -175,7 +175,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	if (!!(GetKeyState(0x10) & 0x8000))
 		shiftkeypressed = true;
 
-	if (!settings.DontShow || shiftkeypressed || 1)
+	if (!settings.DontShow || shiftkeypressed)
 		DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG1), 0, DialogProc);
 	else
 		BOA_LaunchGZDoom(settings.Detail, settings.DisplacementTextures, settings.Language, settings.DevCommentary);
