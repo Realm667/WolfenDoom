@@ -1816,18 +1816,20 @@ class Nazi : Base
 			{
 				if (Random[altdeath](0, 255) < 128) // 50/50 chance of FrontDeath
 				{
-					Vel.XY *= -1; // Will most likely be pushed back by bullets
+					Vel.XY = (0, 0);
 					return FrontDeath;
 				}
+				Vel.XY *= -1; // Will most likely be pushed back by bullets
 				return BackDeath;
 			}
 			else if (FrontDeath)
 			{
-				Vel.XY *= -1; // Will most likely be pushed back by bullets
+				Vel.XY = (0, 0);
 				return FrontDeath;
 			}
 			else
 			{
+				Vel.XY *= -1;
 				return BackDeath;
 			}
 		}

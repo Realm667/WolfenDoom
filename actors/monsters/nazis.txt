@@ -70,7 +70,7 @@ ACTOR Guard : BasicGuard
 		"####" M 5 A_CheckAltDeath
 		"####" M -1
 		Stop
-	Death.Back:
+	Death.Front:
 		"####" I 5
 		GARA A 5 A_Scream
 		"####" B 5 A_UnblockAndDrop
@@ -81,7 +81,7 @@ ACTOR Guard : BasicGuard
 		"####" F 5 A_CheckAltDeath
 		"####" G -1
 		Stop
-	Death.Front: //no altdeath due to body side reasons - ozy81
+	Death.Back: //no altdeath due to body side reasons - ozy81
 		GARB A 5 A_Scream
 		"####" B 5 A_UnblockAndDrop
 		"####" CDE 5
