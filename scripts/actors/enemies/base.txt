@@ -1805,6 +1805,20 @@ class Nazi : Base
 
 		return ResolveState(null);
 	}
+	
+	state A_CheckBackDeath(int chance = 96)
+	{
+		if (!user_noaltdeath && Random[altdeath](0, 255) < chance) { return ResolveState("Death.Back"); }
+
+		return ResolveState(null);
+	}
+	
+	state A_CheckFrontDeath(int chance = 96)
+	{
+		if (!user_noaltdeath && Random[altdeath](0, 255) < chance) { return ResolveState("Death.Front"); }
+
+		return ResolveState(null);
+	}
 
 	bool InPlayerCrosshair()
 	{
