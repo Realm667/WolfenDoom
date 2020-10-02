@@ -3,7 +3,7 @@
 #include "resource.h"
 
 TCHAR SettingsFile[] = TEXT("./boa-launcher.ini");
-TCHAR IWadName[] = TEXT("BOA_Chapter3.ipk3");
+TCHAR IWadName[] = TEXT("boa.ipk3");
 TCHAR SourcePortName[] = TEXT("gzdoom.exe");
 
 enum DetailSettings
@@ -52,7 +52,7 @@ TCHAR DisplacementTexturesStrings[][50] = {
 
 TCHAR DisplacementTexturesCmd[][50] = {
 	TEXT(""),
-	TEXT("-file BOA_Displacement.pk3"),
+	TEXT("-file boa_dt.pk3"),
 };
 
 enum UseDeveloperCommentary
