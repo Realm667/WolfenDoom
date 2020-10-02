@@ -104,3 +104,4 @@ struct LauncherSettings
 };
 
 extern LauncherSettings settings;
+
