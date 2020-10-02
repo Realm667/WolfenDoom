@@ -1805,19 +1805,34 @@ class Nazi : Base
 
 		return ResolveState(null);
 	}
-	
-	state A_CheckBackDeath(int chance = 96)
-	{
-		if (!user_noaltdeath && Random[altdeath](0, 255) < chance) { return ResolveState("Death.Back"); }
 
-		return ResolveState(null);
-	}
-	
-	state A_CheckFrontDeath(int chance = 96)
+	state A_RandomDeathAnim(int chance = 96)
 	{
-		if (!user_noaltdeath && Random[altdeath](0, 255) < chance) { return ResolveState("Death.Front"); }
+		if (Random[altdeath](0, 255) < chance)
+		{
+			state FrontDeath = FindState("Death.Front");
+			state BackDeath = FindState("Death.Back");
+			if (FrontDeath && BackDeath)
+			{
+				if (Random[altdeath](0, 255) < 128) // 50/50 chance of FrontDeath
+				{
+					Vel.XY *= -1; // Will most likely be pushed back by bullets
+					return FrontDeath;
+				}
+				return BackDeath;
+			}
+			else if (FrontDeath)
+			{
+				Vel.XY *= -1; // Will most likely be pushed back by bullets
+				return FrontDeath;
+			}
+			else
+			{
+				return BackDeath;
+			}
+		}
 
-		return ResolveState(null);
+		return null;
 	}
 
 	bool InPlayerCrosshair()

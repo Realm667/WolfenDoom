@@ -62,10 +62,10 @@ ACTOR Guard : BasicGuard
 	States
 	{
 	Death:
-		"####" I 5 A_CheckBackDeath
+		"####" I 5 A_RandomDeathAnim
 		"####" J 5 A_Scream
 		"####" K 5 A_UnblockAndDrop
-		"####" L 5 A_CheckFrontDeath
+		"####" L 5 
 		"####" M 0 A_CheckFadeDeath
 		"####" M 5 A_CheckAltDeath
 		"####" M -1
@@ -75,16 +75,18 @@ ACTOR Guard : BasicGuard
 		GARA A 5 A_Scream
 		"####" B 5 A_UnblockAndDrop
 		"####" C 10 //spill blood? - ozy81
-		"####" D 5 A_CheckFadeDeath
-		"####" E 5 A_CheckAltDeath
-		"####" F -1
+		"####" D 5
+		"####" E 5
+		"####" F 0 A_CheckFadeDeath
+		"####" F 5 A_CheckAltDeath
+		"####" G -1
 		Stop
 	Death.Front: //no altdeath due to body side reasons - ozy81
 		GARB A 5 A_Scream
 		"####" B 5 A_UnblockAndDrop
-		"####" B 0 A_CheckFadeDeath
-		"####" C 5
-		"####" D -1
+		"####" CDE 5
+		"####" F 0 A_CheckFadeDeath
+		"####" F -1
 		Stop
 	}
 }
