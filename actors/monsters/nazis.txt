@@ -36,7 +36,7 @@ ACTOR BasicGuard : NaziStandard
 		"####" E 0 {bNoPain = FALSE;}
 		"####" "#" 0 A_Jump(256, "See") //So that inheriting actors go to their own See State
 	Death:
-		"####" I 5 A_RandomDeathAnim
+		"####" I 5 A_RandomDeathAnim //altdeaths break Raise states atm, except for those actors which have kept proper frame name, only a couple - ozy81
 		"####" J 5 A_Scream
 		"####" K 5 A_UnblockAndDrop
 		"####" L 5
@@ -71,7 +71,7 @@ ACTOR Guard : BasicGuard
 		"####" F 5
 		"####" G -1
 		Stop
-	Death.Back: //no altdeath due to body side reasons - ozy81
+	Death.Back:
 		GARB A 5 A_Scream
 		"####" B 5 A_UnblockAndDrop
 		"####" CDE 5
@@ -173,6 +173,23 @@ ACTOR SSGuard : BasicGuard
 	Death.Alt1:
 		TNT1 A 1 A_SpawnItemEx("SSGuard_Wounded_NoCount", 0, 0, 0)
 		Stop
+	Death.Front:
+		SSPA A 5 A_Scream
+		"####" B 5 A_UnblockAndDrop
+		"####" C 10 //spill blood? - ozy81
+		"####" D 5
+		"####" E 5
+		"####" F 0 A_CheckFadeDeath
+		"####" F 5
+		"####" G -1
+		Stop
+	Death.Back:
+		SSPB A 5 A_Scream
+		"####" B 5 A_UnblockAndDrop
+		"####" CDE 5
+		"####" F 0 A_CheckFadeDeath
+		"####" F -1
+		Stop
 	}
 }
 
@@ -215,6 +232,23 @@ ACTOR WGuard : BasicGuard
 		Goto See
 	Death.Alt1:
 		TNT1 A 1 A_SpawnItemEx("WGuard_Wounded_NoCount", 0, 0, 0)
+		Stop
+	Death.Front:
+		GRDA A 5 A_Scream
+		"####" B 5 A_UnblockAndDrop
+		"####" C 10 //spill blood? - ozy81
+		"####" D 5
+		"####" E 5
+		"####" F 0 A_CheckFadeDeath
+		"####" F 5
+		"####" G -1
+		Stop
+	Death.Back:
+		GRDB A 5 A_Scream
+		"####" B 5 A_UnblockAndDrop
+		"####" CDE 5
+		"####" F 0 A_CheckFadeDeath
+		"####" F -1
 		Stop
 	}
 }
@@ -374,6 +408,23 @@ ACTOR SSMP40Guard : SSGuard
 		"####" E 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See
+	Death.Front:
+		SSMA A 5 A_Scream
+		"####" B 5 A_UnblockAndDrop
+		"####" C 10 //spill blood? - ozy81
+		"####" D 5
+		"####" E 5
+		"####" F 0 A_CheckFadeDeath
+		"####" F 5
+		"####" G -1
+		Stop
+	Death.Back:
+		SSMB A 5 A_Scream
+		"####" B 5 A_UnblockAndDrop
+		"####" CDE 5
+		"####" F 0 A_CheckFadeDeath
+		"####" F -1
+		Stop
 	NaziSalute: //for c3m5_c --N00b
 		SSMG A 0
 		SSMG Y 8
@@ -785,6 +836,23 @@ ACTOR SSOfficer : Officer
 	Death.Alt1:
 		TNT1 A 1 A_SpawnItemEx("SSOfficer_Wounded_NoCount", 0, 0, 0)
 		Stop
+	Death.Front:
+		SSOA A 5 A_Scream
+		"####" B 5 A_UnblockAndDrop
+		"####" C 10 //spill blood? - ozy81
+		"####" D 5
+		"####" E 5
+		"####" F 0 A_CheckFadeDeath
+		"####" F 5
+		"####" G -1
+		Stop
+	Death.Back:
+		SSOB A 5 A_Scream
+		"####" B 5 A_UnblockAndDrop
+		"####" CDE 5
+		"####" F 0 A_CheckFadeDeath
+		"####" F -1
+		Stop
 	Idle:
 		"####" AAAA 1 A_Wander
 		"####" A 0 A_Look
@@ -853,6 +921,23 @@ ACTOR WOfficer : Officer
 	Death.Alt1:
 		TNT1 A 1 A_SpawnItemEx("WOfficer_Wounded_NoCount", 0, 0, 0)
 		Stop
+	Death.Front:
+		OFRA A 5 A_Scream
+		"####" B 5 A_UnblockAndDrop
+		"####" C 10 //spill blood? - ozy81
+		"####" D 5
+		"####" E 5
+		"####" F 0 A_CheckFadeDeath
+		"####" F 5
+		"####" G -1
+		Stop
+	Death.Back:
+		OFRB A 5 A_Scream
+		"####" B 5 A_UnblockAndDrop
+		"####" CDE 5
+		"####" F 0 A_CheckFadeDeath
+		"####" F -1
+		Stop
 	}
 }
 
@@ -895,21 +980,21 @@ ACTOR RifleGuard : MP40Guard
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See
 	Death.Front:
-		RGRA A 5 A_Scream
-		"####" B 5 A_UnblockAndDrop
-		"####" C 10
-		"####" D 5
-		"####" E 5
-		"####" F 0 A_CheckFadeDeath
-		"####" F 5
-		"####" G -1
+		"####" O 5 A_Scream
+		"####" P 5 A_UnblockAndDrop
+		"####" Q 10
+		"####" R 5
+		"####" S 5
+		"####" T 0 A_CheckFadeDeath
+		"####" T 5
+		"####" U -1
 		Stop
 	Death.Back:
-		RGRB A 5 A_Scream
-		"####" B 5 A_UnblockAndDrop
-		"####" CDE 5
-		"####" F 0 A_CheckFadeDeath
-		"####" F -1
+		"####" V 5 A_Scream
+		"####" W 5 A_UnblockAndDrop
+		"####" XYZ 5
+		"####" "[" 0 A_CheckFadeDeath
+		"####" "[" -1
 		Stop
 	}
 }
@@ -951,6 +1036,23 @@ ACTOR WRifleGuard : RifleGuard
 		"####" F 4 A_StartSound("mauser/cock", CHAN_AUTO, 0, 0.25)
 		"####" E 10 A_FaceTarget
 		Goto See
+	Death.Front:
+		RGR2 O 5 A_Scream
+		"####" P 5 A_UnblockAndDrop
+		"####" Q 10 //spill blood? - ozy81
+		"####" R 5
+		"####" S 5
+		"####" T 0 A_CheckFadeDeath
+		"####" T 5
+		"####" U -1
+		Stop
+	Death.Back:
+		RGR2 V 5 A_Scream
+		"####" W 5 A_UnblockAndDrop
+		"####" XYZ 5
+		"####" "[" 0 A_CheckFadeDeath
+		"####" "[" -1
+		Stop
 	}
 }
 
@@ -1003,6 +1105,23 @@ ACTOR WShotgunGuard : WRifleGuard
 		"####" E 17 A_StartSound("mauser/insert", CHAN_ITEM, 0, frandom (0.3,0.6), ATTN_NORM) //mauser/insert sound
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See
+	Death.Front:
+		SGR2 O 5 A_Scream
+		GRDA B 5 A_UnblockAndDrop //no need to include multiple copies of the same frames, so using WGuard ones here
+		"####" C 10 //spill blood? - ozy81
+		"####" D 5
+		"####" E 5
+		"####" F 0 A_CheckFadeDeath
+		"####" F 5
+		"####" G -1
+		Stop
+	Death.Back:
+		SGDB A 5 A_Scream
+		"####" B 5 A_UnblockAndDrop
+		"####" CDE 5
+		"####" F 0 A_CheckFadeDeath
+		"####" F -1
+		Stop
 	}
 }
 
