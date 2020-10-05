@@ -1799,14 +1799,14 @@ class Nazi : Base
 		return ResolveState(null);
 	}
 
-	state A_CheckAltDeath(int chance = 16)
+	state A_CheckAltDeath(int chance = 64)
 	{
 		if (!user_noaltdeath && Random[altdeath](0, 255) < chance) { return ResolveState("Death.Alt1"); }
 
 		return ResolveState(null);
 	}
 
-	state A_RandomDeathAnim(int chance = 96)
+	state A_RandomDeathAnim(int chance = 64)
 	{
 		if (Random[altdeath](0, 255) < chance)
 		{
