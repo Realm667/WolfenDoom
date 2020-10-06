@@ -2597,6 +2597,50 @@ class Nazi : Base
 		Super.Tick();
 	}
 
+	void SpyGive(class<Inventory> item, int rawAmount, Actor recipient)
+	{
+		Inventory haveItem = recipient.FindInventory(item);
+
+		// Amount of items to put in player's inventory
+		int amountToGive = rawAmount;
+
+		// Amount of items to drop at player's feet
+		int amountToDrop = 0;
+
+		// Space available in player's inventory
+		int spaceAvailable = GetDefaultByType(item).MaxAmount;
+
+		// Check whether player has the item
+		if (haveItem)
+		{
+			spaceAvailable = haveItem.MaxAmount - haveItem.Amount;
+		}
+
+		if (spaceAvailable > 0)
+		{
+			amountToGive = min(spaceAvailable, amountToGive);
+			recipient.GiveInventory(item, amountToGive);
+			recipient.A_StartSound(GetDefaultByType(item).PickupSound, CHAN_ITEM);
+		}
+		amountToDrop = amountToGive - spaceAvailable;
+
+		if (amountToDrop > 0)
+		{
+			amountToDrop /= GetDefaultByType(item).Amount;
+			/*
+			// Necessary?
+			if (amountToDrop % GetDefaultByType(item).Amount)
+			{
+				amountToDrop -= 1;
+			}
+			*/
+			for (int i = 0; i < amountToDrop; i++)
+			{
+				Spawn(item, recipient.Pos, ALLOW_REPLACE);
+			}
+		}
+	}
+
 	override bool Used(Actor user)
 	{
 		if (user.player && !wasused && !special && bFriendly && !user_sneakable && Default.Species == "Nazi" && (!target || !target.bShootable) && activationcount < 2)
@@ -2623,26 +2667,21 @@ class Nazi : Base
 
 						if (item)
 						{
-							user.GiveInventory(user_spyitem, 1);
-							PlayerPawn(user).InvSel = user.FindInventory(user_spyitem);
-
-							user.A_StartSound(GetDefaultByType(item).PickupSound);
+							SpyGive(user_spyitem, 1, user);
+							PlayerPawn(user).InvSel = user.FindInventory(item);
 						}
 					}
 
 				default:
 					break;
 				case 1:
-					user.GiveInventory("9mmAmmo", Random(1, 4) * 4);
-					user.A_StartSound(GetDefaultByType("9mmAmmo").PickupSound);
+					SpyGive("9mmAmmo", Random(1, 4) * 4, user);
 					break;
 				case 2:
-					user.GiveInventory("Bandages", Random(1, 2));
-					user.A_StartSound(GetDefaultByType("Bandages").PickupSound);
+					SpyGive("Bandages", Random(1, 2), user);
 					break;
 				case 3:
-					user.GiveInventory("CoinItem", Random(2, 4) * 5);
-					user.A_StartSound(GetDefaultByType("CoinItem").PickupSound);
+					SpyGive("CoinItem", Random(2, 4) * 5, user);
 					break;
 			}
 
