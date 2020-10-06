@@ -340,15 +340,11 @@ class Base : Actor
 		theirMiddle.Z += target.Height / 2;
 
 		// Calculate target position
-		Vector3 targetPos;
+		Vector3 targetPos = theirMiddle;
 		if (flags & JAF_INTERCEPT)
 		{
 			double interceptTime = ZScriptTools.GetInterceptTime4(myMiddle, theirMiddle, target.Vel, double(attackspeed));
 			targetPos = theirMiddle + target.Vel * interceptTime;
-		}
-		else
-		{
-			targetPos = theirMiddle;
 		}
 
 		// Modify velocity
