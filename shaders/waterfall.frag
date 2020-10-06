@@ -1,12 +1,16 @@
+// gzcompat.frag is a "compatibility layer" that lets you write texture shaders
+// for GZDoom using glslViewer.
+// glslViewer: https://github.com/patriciogonzalezvivo/glslViewer
+// gzcompat.frag: https://gist.github.com/Talon1024/f704e883851f447ca1985a1d8a45bf95
 #ifdef GLSLVIEWER
 #define USER_SHADER
 #include "gzcompat.frag"
 #endif
 
-#define MAX_ITERATIONS 8
-
 uniform float timer;
 
+// By Talon1024
+#define MAX_ITERATIONS 8
 vec4 add_blur(sampler2D source, vec4 color, int iterations)
 {
 	ivec2 tex_size = textureSize(source, 0);
@@ -54,12 +58,12 @@ float fbm( in vec2 p ){
     return f/0.9375;
 }
 
+// By Talon1024
 #define NOISE_SCALE 8.
 
-vec4 add_fbm_blur(vec2 uv, int tex_height, int iterations)
+vec4 add_fbm_blur(vec2 uv, float uv_y_inc, int iterations)
 {
 	vec2 myUv = uv;
-	float uv_y_inc = 2. / float(tex_height);
 	iterations = clamp(iterations, 0, MAX_ITERATIONS);
 	float mix_factor = 1. / float(iterations);
 	vec4 color = vec4(fbm(uv * NOISE_SCALE));
@@ -78,9 +82,10 @@ vec4 Process(vec4 color) // color is white for some reason.. A GZDoom bug?
 	vec4 finalColor = texture(tex, vTexCoord.xy);
 	finalColor = add_blur(tex, finalColor, 3);
 	vec2 fbmUv = vTexCoord.xy; fbmUv.y -= timer;
-	vec4 fbmColor = add_fbm_blur(fbmUv * NOISE_SCALE, textureSize(tex, 0).y / 2, 6);
+	vec4 fbmColor = add_fbm_blur(fbmUv * NOISE_SCALE, 3. / float(textureSize(tex, 0).y), 6);
+	// return fbmColor;
 	fbmColor *= texture(tex, vTexCoord.xy); // Colorize fbm
-	finalColor = mix(finalColor, texture(tex, vec2(vTexCoord.x, vTexCoord.y - timer)), .5);
+	finalColor = mix(finalColor, texture(tex, vec2(vTexCoord.x, vTexCoord.y - timer * .5)), .5);
 	finalColor += fbmColor;
 	return finalColor;
 }
