@@ -15,6 +15,7 @@ Blade of Agony is a story-driven FPS. The project is inspired by WWII shooters f
 - "Kodi": Programmer
 - "Yqco": Programmer
 - "BigDaveHadSomeToo": Sprite Artist
+- "praise Mima" KeksDose: Programmer, Sprite Artist
 - "RingMan": Sprite Artist
 - James Christian: Proofreading & Revision
 - "The Zombie Killer": Programmer, Technical Support
