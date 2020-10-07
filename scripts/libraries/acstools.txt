@@ -104,17 +104,70 @@ class ACSTools
 		return height;
 	}
 
-	// Like the "summon" command, but makes the summoned actor a friendly spy
-	static play void SummonSpy(Actor activator, string actorClassName)
+	static play void HasAltDeaths(Actor activator)
 	{
-		FLineTraceData ltd;
-		activator.LineTrace(activator.Angle, 64, activator.Pitch, data: ltd);
-		Vector3 Position = activator.Vec3Angle(min(64, ltd.Distance), activator.Angle);
-		if (actorClassName)
+		ActorFinderTracer aft = new("ActorFinderTracer");
+		aft.Source = activator;
+		Vector3 Origin = activator.Pos;
+		Origin.Z += activator.Height / 2;
+		if (activator is "PlayerPawn")
 		{
-			Class<Actor> ActorClass = actorClassName;
-			Actor Spy = Actor.Spawn(ActorClass, Position, NO_REPLACE);
-			Spy.bFriendly = true;
+			Origin.Z = activator.Pos.Z + PlayerPawn(activator).ViewHeight;
 		}
+		Console.Printf("Origin: %.3f %.3f %.3f", Origin);
+		float Pitch = activator.Pitch;
+		float Angle = activator.Angle;
+		Vector3 Direction = (
+			cos(Angle) * cos(Pitch),
+			sin(Angle) * cos(Pitch),
+			-sin(Pitch)
+		);
+		// Direction = Direction.Unit();
+		Console.Printf("Direction: %.3f %.3f %.3f", direction);
+		aft.Trace(activator.Pos, activator.CurSector, direction, 1024, TRACE_HitSky);
+		if (aft.Results.HitActor)
+		{
+			Console.Printf("========== %s ==========", aft.Results.HitActor.GetClassName());
+			State frontDeath = aft.Results.HitActor.FindState("Death.Front");
+			State backDeath = aft.Results.HitActor.FindState("Death.Back");
+			Console.Printf("Without exact: frontDeath %s, backDeath %s", frontDeath ? "true" : "false", backDeath ? "true" : "false");
+			frontDeath = aft.Results.HitActor.FindState("Death.Front", true);
+			backDeath = aft.Results.HitActor.FindState("Death.Back", true);
+			Console.Printf("With exact: frontDeath %s, backDeath %s", frontDeath ? "true" : "false", backDeath ? "true" : "false");
+		}
+	}
+}
+
+class ActorFinderTracer : LineTracer
+{
+	Actor Source;
+
+	bool isSuitableActor(Actor toExamine)
+	{
+		return toExamine != Source && toExamine is "Base" && toExamine.bSolid && toExamine.bShootable;
+	}
+
+	override ETraceStatus TraceCallback()
+	{
+		if (Results.HitType == TRACE_HitFloor || Results.HitType == TRACE_HitCeiling)
+		{
+			return TRACE_Stop;
+		}
+		if (Results.HitType == TRACE_HitWall && (Results.HitLine.flags & Line.ML_TWOSIDED))
+		{
+			return TRACE_Continue;
+		}
+		if (Results.HitType == TRACE_HitActor)
+		{
+			if (isSuitableActor(Results.HitActor))
+			{
+				return TRACE_Stop;
+			}
+			else
+			{
+				return TRACE_Continue;
+			}
+		}
+		return TRACE_Stop;
 	}
 }

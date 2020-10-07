@@ -1089,6 +1089,7 @@ class Nazi : Base
 	String healsound;
 	int healdistance;
 	bool user_fadedeath;
+	int user_norandomdeaths;
 	int user_noaltdeath;
 	Actor closestplayer;
 	bool wasused;
@@ -1114,6 +1115,7 @@ class Nazi : Base
 	Property HealDistance:healdistance;
 	Property FadeDeath:user_fadedeath;
 	Property NoAltDeath:user_noaltdeath;
+	Property NoRandomDeaths:user_norandomdeaths; // Disable random front/back deaths
 	Property Head:head;
 	Property ActivateWhenShot:user_activatewhenshot;
 	Property IdleSound:idlesound;
@@ -1804,10 +1806,14 @@ class Nazi : Base
 
 	state A_RandomDeathAnim(int chance = 64)
 	{
+		if (user_norandomdeaths)
+		{
+			return null;
+		}
 		if (Random[altdeath](0, 255) < chance)
 		{
-			state FrontDeath = FindState("Death.Front");
-			state BackDeath = FindState("Death.Back");
+			state FrontDeath = FindState("Death.Front", true);
+			state BackDeath = FindState("Death.Back", true);
 			if (FrontDeath && BackDeath)
 			{
 				if (Random[altdeath](0, 255) < 128) // 50/50 chance of FrontDeath
