@@ -103,4 +103,18 @@ class ACSTools
 		[width, height] = TexMan.GetSize(tex);
 		return height;
 	}
+
+	// Like the "summon" command, but makes the summoned actor a friendly spy
+	static play void SummonSpy(Actor activator, string actorClassName)
+	{
+		FLineTraceData ltd;
+		activator.LineTrace(activator.Angle, 64, activator.Pitch, data: ltd);
+		Vector3 Position = activator.Vec3Angle(min(64, ltd.Distance), activator.Angle);
+		if (actorClassName)
+		{
+			Class<Actor> ActorClass = actorClassName;
+			Actor Spy = Actor.Spawn(ActorClass, Position, NO_REPLACE);
+			Spy.bFriendly = true;
+		}
+	}
 }

@@ -1,0 +1,33 @@
+script "OverheatTurret" (int goToCooldown)
+{
+	ScriptCall("TurretGun", "Overheat", goToCooldown);
+}
+
+script "SummonSpy" (int classIndex)
+{
+	str actorClasses[9] = {
+		"Guard",
+		"MP40Guard",
+		"RifleGuard",
+		"Officer",
+		"WGuard",
+		"WMP40Guard",
+		"WRifleGuard",
+		"SSGuard",
+		"SSOfficer"
+	};
+	int actorClass = actorClasses[classIndex - 1];
+	if (classIndex == 0)
+	{
+		str classlist = StrParam(s:"Actor classes available:\n");
+		for (int i = 0; i < 9; i++)
+		{
+			classlist = StrParam(s: classlist, d: i+1, s:" (", s:actorClasses[i], s:")\n");
+		}
+		Print(s:classlist);
+	}
+	else
+	{
+		ScriptCall("ACSTools", "SummonSpy", actorClass);
+	}
+}
