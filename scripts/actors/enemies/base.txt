@@ -2620,20 +2620,22 @@ class Nazi : Base
 		}
 		amountToDrop = amountToGive - spaceAvailable;
 
+		if (item is "CoinItem")
+		{ // CoinItem is invisible, so drop something that's visible instead
+			item = "SingleCoin";
+		}
 		if (amountToDrop > 0)
 		{
 			amountToDrop /= GetDefaultByType(item).Amount;
-			/*
-			// Necessary?
-			if (amountToDrop % GetDefaultByType(item).Amount)
-			{
-				amountToDrop -= 1;
-			}
-			*/
 			for (int i = 0; i < amountToDrop; i++)
 			{
 				Spawn(item, recipient.Pos, ALLOW_REPLACE);
 			}
+		}
+
+		if (developer)
+		{
+			Console.Printf("SpyGive: rawAmount %d, amountToGive %d, spaceAvailable %d, amountToDrop %d", rawAmount, amountToGive, spaceAvailable, amountToDrop);
 		}
 	}
 
