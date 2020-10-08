@@ -32,7 +32,7 @@ vec4 add_blur(sampler2D source, vec4 color, int iterations)
 // Unknown license
 
 float zrand(vec2 n) {
-	return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
+	return fract(sin(dot(n, vec2(12.9898, 4.1414))) * (43758.5453));
 }
 
 float noize(vec2 p){

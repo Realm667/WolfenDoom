@@ -14,7 +14,7 @@ uniform float timer;
 // Unknown license
 
 float zrand(vec2 n) {
-	return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
+	return fract(sin(dot(n, vec2(12.9898, 4.1414))) * (43758.5453));
 }
 
 float noize(vec2 p){
@@ -33,16 +33,15 @@ float noize(vec2 p){
 const mat2 m2 = mat2(0.8,-0.6,0.6,0.8);
 float fbm( in vec2 p ){
     float f = 0.0;
+    // Reduced detail - Talon1024
     f += 0.5000*noize( p ); p = m2*p*2.02;
-    f += 0.2500*noize( p ); p = m2*p*2.03;
-    f += 0.1250*noize( p ); p = m2*p*2.01;
-    f += 0.0625*noize( p );
+    f += 0.2500*noize( p );
 
     return f/0.9375;
 }
 
 // By Talon1024
-#define NOISE_SCALE 32.
+#define NOISE_SCALE 64.
 
 vec4 Process(vec4 color) // color is white for some reason.. A GZDoom bug?
 {
