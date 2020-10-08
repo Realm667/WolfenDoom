@@ -1062,6 +1062,12 @@ class Base : Actor
 	}
 }
 
+enum EDisableDeathFlags
+{
+	RDEATH_FRONT = 1,
+	RDEATH_BACK = 2,
+}
+
 // Base class for almost all enemy actors.
 // Adds handling for 'sneakable' actors and stealth/critical hit kills
 class Nazi : Base
@@ -1115,7 +1121,7 @@ class Nazi : Base
 	Property HealDistance:healdistance;
 	Property FadeDeath:user_fadedeath;
 	Property NoAltDeath:user_noaltdeath;
-	Property NoRandomDeaths:user_norandomdeaths; // Disable random front/back deaths
+	Property NoRandomDeaths:user_norandomdeaths; // Disable random front/back deaths. Set to 1 to disable front deaths, set to 2 to disable back deaths, set to 3 to disable both front and back deaths.
 	Property Head:head;
 	Property ActivateWhenShot:user_activatewhenshot;
 	Property IdleSound:idlesound;
@@ -1806,15 +1812,16 @@ class Nazi : Base
 
 	state A_RandomDeathAnim(int chance = 64)
 	{
-		if (user_norandomdeaths)
+		if (user_norandomdeaths == 3)
 		{
+			// Front and back deaths are disabled
 			return null;
 		}
 		if (Random[altdeath](0, 255) < chance)
 		{
 			state FrontDeath = FindState("Death.Front", true);
 			state BackDeath = FindState("Death.Back", true);
-			if (FrontDeath && BackDeath)
+			if (FrontDeath && (!user_norandomdeaths & RDEATH_FRONT) && BackDeath && (!user_norandomdeaths & RDEATH_BACK))
 			{
 				if (Random[altdeath](0, 255) < 128) // 50/50 chance of FrontDeath
 				{
@@ -1824,12 +1831,12 @@ class Nazi : Base
 				Vel.XY *= -1; // Will most likely be pushed back by bullets
 				return BackDeath;
 			}
-			else if (FrontDeath)
+			else if (FrontDeath && (!user_norandomdeaths & RDEATH_FRONT))
 			{
 				Vel.XY = (0, 0);
 				return FrontDeath;
 			}
-			else
+			else if (BackDeath && (!user_norandomdeaths & RDEATH_BACK))
 			{
 				Vel.XY *= -1;
 				return BackDeath;
