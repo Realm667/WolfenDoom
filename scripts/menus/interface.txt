@@ -463,6 +463,7 @@ class ViewItem : BoAMenu
 					break;
 			}
 
+			// draw text from args; is this used on any map?
 			if (TextPaper(item))
 			{
 				text = TextPaper(item).user_displaystring;
@@ -473,10 +474,15 @@ class ViewItem : BoAMenu
 				text = TextPaperCollectible(item).user_displaystring;
 				if (paper == "PAPER0") { paper = TextPaperCollectible(item).user_displayimage; }
 			}
+			else if (TextPaperSecretHint(item)) {
+				text = TextPaperSecretHint(item).user_displaystring;
+			}
 
+			//no custom text provided, use text from localized stringtable
 			if (text == "")
 			{
-				text = String.Format("PAPERTEXT%02i", item.args[0]);
+				if (TextPaper(item) || TextPaperCollectible(item)) { text = String.Format("PAPERTEXT%02i", item.args[0]); }
+				else if (TextPaperSecretHint(item)) { text = ConstructSecretHintText(TextPaperSecretHint(item)); }
 			}
 
 			int fontstyle = item.args[2];
@@ -789,5 +795,48 @@ class ViewItem : BoAMenu
 			initial = false;
 			closetime = 5;
 		}
+	}
+	
+	string ConstructSecretHintText(TextPaperSecretHint item) {
+		if (!item.args[0]) return "";
+		string base_name = "SECRET"..item.args[0], data, result;
+		int i = 1, j;
+		while ((data = StringTable.Localize(base_name..i, false)) != base_name..i) {
+			//itemids: ??? = 1, Weapon = 2, Grenade(s) = 3(4), Gold (small, moderate, large, TREMENDOUS) = (5, 6, 7, 8), Ammo (small, moderate, large, TREMENDOUS) = (9, 10, 11, 12), Health (small, moderate, large, TREMENDOUS) = (13, 14, 15, 16), Armor = 17, Various Supplies = 18
+			//now decipher the data string which was passed
+			//the format is: t or s|id|itemid|[itemid|[...]], example: "t|1993|5|17" means thing with tag 1993 is a secret which gives access to a small amount of gold and an armor suit.
+			Array<String> tokens;
+			data.Split(tokens, "|");
+			if (tokens.size() < 3) { continue; }
+			result.AppendFormat("\cC"..i..". ");
+			bool secret_found;
+			if (tokens[0] == "t") //find such an item, id is a tag then
+			{
+				ActorIterator it = Level.CreateActorIterator(tokens[1].toInt());
+				let item = it.Next();
+				if (item == NULL || !item.bCOUNTSECRET) { secret_found = true; }
+				else { secret_found = false; }
+			}
+			else //tokens[0] == "s"
+			{ //ugly constant because they won't let me access the ESectorFlags...
+				if (!(Level.sectors[tokens[1].toInt()].flags & (1 << 31))) { secret_found = true; }
+				else { secret_found = false; }
+			}
+			//now construct the line; colours are a temporary solution, should use strikethrough if possible (or just a tick...)
+			if (secret_found) { result.AppendFormat("\cG"); }
+			else { result.AppendFormat("\cC"); }
+			for (j = 2; j < tokens.size() - 1; ++j)
+			{
+				result.AppendFormat(StringTable.Localize("SECRETITEM"..tokens[j], false));
+				result.AppendFormat(", ");
+			}
+			if (j == tokens.size() - 1)
+			{
+				result.AppendFormat(StringTable.Localize("SECRETITEM"..tokens[j], false));
+			}
+			result.AppendFormat("\cC\n");
+			++i;
+		}
+		return result;
 	}
 }
