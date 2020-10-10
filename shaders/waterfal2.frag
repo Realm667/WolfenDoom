@@ -13,10 +13,12 @@ uniform float timer;
 // From https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83
 // Unknown license
 
+// Random
 float zrand(vec2 n) {
 	return fract(sin(dot(n, vec2(12.9898, 4.1414))) * (43758.5453));
 }
 
+// Generic noise
 float noize(vec2 p){
 	vec2 ip = floor(p);
 	vec2 u = fract(p);
@@ -28,6 +30,7 @@ float noize(vec2 p){
 	return res*res;
 }
 
+// Fractional Brownian Motion noise
 // 	<https://www.shadertoy.com/view/MdX3Rr>
 //	by inigo quilez
 const mat2 m2 = mat2(0.8,-0.6,0.6,0.8);
@@ -41,7 +44,8 @@ float fbm( in vec2 p ){
 }
 
 // By Talon1024
-#define NOISE_SCALE 64.
+// #define NOISE_SCALE 64.
+// #define NOISE_DISTANCE 512.
 
 vec4 Process(vec4 color) // color is white for some reason.. A GZDoom bug?
 {
@@ -50,7 +54,7 @@ vec4 Process(vec4 color) // color is white for some reason.. A GZDoom bug?
 	vec4 fbmColor = vec4(fbm(fbmUv * NOISE_SCALE));
 	// return fbmColor;
 	fbmColor *= texture(tex, vTexCoord.xy); // Colorize fbm
-	fbmColor *= min(1., 1024. / pixelpos.w);
+	fbmColor *= min(1., NOISE_DISTANCE / pixelpos.w);
 	finalColor = mix(finalColor, texture(tex, vec2(vTexCoord.x, vTexCoord.y - timer * .5)), .5);
 	finalColor += fbmColor;
 	return finalColor;
