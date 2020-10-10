@@ -1984,7 +1984,7 @@ class Nazi : Base
 			{
 				target = mo;
 				if (user_sneakable && !alerted) { BecomeAlerted(target); } // If sneakable, alert them
-				else if (!bFriendly && !((mo is "Whizzer") && user_incombat)) { A_StartSound(SeeSound, CHAN_BODY); } // Play a 'sighted' alert sound if the enemy isn't a friendly (this basically assumes all enemies should yell out in German)
+				else if (!bFriendly && !((mo is "Whizzer") && user_incombat)) { A_StartSound(SeeSound, CHAN_VOICE); } // Play a 'sighted' alert sound if the enemy isn't a friendly (this basically assumes all enemies should yell out in German)
 			}
 
 			if (mo.bMissile) { movedir = (mo.movedir + RandomPick(1, 2, 6, 7)) % 8; } // Pick a random direction away from the shooter and the missile's path
@@ -2185,7 +2185,7 @@ class Nazi : Base
 			}
 			else if (user_incombat) // If the actor has already been in its See state
 			{
-				if (self is "NaziStandard") { A_StartSound("Nazi1/Pain", CHAN_AUTO, 0, FRandom(0.2, 0.4), ATTN_NORM); } // Play quiet pain sound
+				if (self is "NaziStandard") { A_StartSound("Nazi1/Pain", CHAN_VOICE, 0, FRandom(0.2, 0.4), ATTN_NORM); } // Play quiet pain sound
 				SoundAlert(source, false, 64); //ozy - only if near // Alert small radius
 			}
 			else // Otherwise, this attack was the equivalent of Stealth Kill for non-sneakable enemies
@@ -2266,7 +2266,7 @@ class Nazi : Base
 				if (sightedsound) { A_StartSound(sightedsound, CHAN_VOICE); }
 				else { A_StartSound(SeeSound, CHAN_VOICE); }
 			}
-			else { A_StartSound(SeeSound, CHAN_BODY); }
+			else { A_StartSound(SeeSound, CHAN_VOICE); }
 
 			ResetDodge(true);
 			dodgecounter = 0;
