@@ -87,9 +87,12 @@ class StealthBase : Actor
 
 		if (target) { vis = players[playernum].mo.FindInventory("BoAVisibility"); }
 
-		if (target && playernum >= 0 && CheckSight(target)) // If we have a player in view
+		if (target && vis && playernum >= 0 && CheckSight(target)) // If we have a player in view
 		{
-			sighttime += (Range - Distance3d(target)) / 256.0; // Increment sight time counter, scaled to how far away player is
+			double velmod = (max(target.vel.length(), 8.0) - 8.0) / 8.0;
+			velmod = velmod * velmod * 4.0;
+
+			sighttime += ((Range - Distance3d(target)) / 256.0) * (0.25 + velmod); // Increment sight time counter, scaled to how far away player is and how fast he's moving
 
 			if (master && !alert)
 			{  // Spawn the alert indicator
@@ -101,11 +104,8 @@ class StealthBase : Actor
 			{
 				sighttime = 0; // Reset the count
 
-				if (vis)
-				{
-					BoAVisibility(vis).visibility = 200;
-					BoAVisibility(vis).suspicion = 0; // Clear the player's suspicion variable
-				}
+				BoAVisibility(vis).visibility = 200;
+				BoAVisibility(vis).suspicion = 0; // Clear the player's suspicion variable
 
 				players[playernum].cheats &= ~CF_NOTARGET;  // Turn off the player's NOTARGET
 				if (alert) { alert.Destroy(); } // Get rid of the alert indicator that was spawned here
@@ -261,7 +261,7 @@ class SneakableGuardEyesIdle : StealthBase
 
 		if (!target || target == master) { A_LookEx(LOF_NOJUMP, 0.0, farrange, 256.0, master.bLookAllAround ? 360.0 : farFOV); }
 
-		if (!target || target == master)
+		if (!target || target == master || playernum > -1)
 		{
 			if (Nazi(master)) { A_LookForNoTargetPlayer(Nazi(master).perceptiondistance); }
 			else { A_LookForNoTargetPlayer(); }
@@ -285,7 +285,6 @@ class SneakableGuardEyesIdle : StealthBase
 				}
 			}
 		}
-
 
 		if (target && target != master)
 		{
