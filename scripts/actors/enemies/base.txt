@@ -1538,7 +1538,7 @@ class Nazi : Base
 			}
 			"####" AA 10 Bright Light("ITBURNS1") { A_Wander(); }
 			"####" BBC 6 Bright Light("ITBURNS3") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), BASE_FLAGS, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
-			"####" D 6 Bright Light("ITBURNS1") { A_Wander(); A_StartSound("dog/death"); }
+			"####" D 6 Bright Light("ITBURNS1") { A_Wander(); A_StartSound("dog/death", CHAN_VOICE); }
 			"####" E 6 Bright Light("ITBURNS1") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), BASE_FLAGS, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); A_NoBlocking(); }
 			"####" FF 6 Bright Light("ITBURNS2") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), BASE_FLAGS, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
 		Death.FireDogs.Smoke:
@@ -2740,7 +2740,7 @@ class NaziStandard : Nazi
 			}
 			"####" A 5 Bright Light("ITBURNS1") { A_Wander(); }
 			"####" BC 5 Bright Light("ITBURNS1") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), BASE_FLAGS, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
-			"####" D 5 Bright Light("ITBURNS1") { A_Wander(); A_StartSound("death/burning"); }
+			"####" D 5 Bright Light("ITBURNS1") { A_Wander(); A_StartSound("death/burning", CHAN_VOICE); }
 			"####" E 5 Bright Light("ITBURNS1") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), BASE_FLAGS, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
 			"####" FABCD 5 Bright Light("ITBURNS2") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), BASE_FLAGS, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
 			"####" EFAG 5 Bright Light("ITBURNS3") A_Wander();
@@ -2767,7 +2767,7 @@ class NaziStandard : Nazi
 			}
 			"####" A 5 Bright Light("TPortNormal");
 			"####" BA 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
-			"####" B 5 Bright Light("TPortNormal") { A_StartSound("death/burning"); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+			"####" B 5 Bright Light("TPortNormal") { A_StartSound("death/burning", CHAN_VOICE); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
 			"####" AABAB 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
 			"####" C 7 Light("TPortNormal") A_UnblockAndDrop();
 			"####" DE 6 Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
@@ -2824,7 +2824,7 @@ class NaziStandard : Nazi
 		Disintegrate:
 			"####" H 5 {
 				A_Scream();
-				A_StartSound("astrostein/guard_death");
+				A_StartSound(DeathSound, CHAN_VOICE);
 				A_UnblockAndDrop();
 				A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
 			}
@@ -2837,7 +2837,7 @@ class NaziStandard : Nazi
 		Disintegrate.Alt1: //added in case we plan to have allied soldiers on Astrostein maps - ozy81
 			"####" I 5 {
 				A_Scream();
-				A_StartSound("astrostein/guard_death");
+				A_StartSound(DeathSound, CHAN_VOICE);
 				A_UnblockAndDrop();
 				A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
 			}
@@ -2846,7 +2846,7 @@ class NaziStandard : Nazi
 		Disintegrate.Alt2:
 			"####" J 5 {
 				A_Scream();
-				A_StartSound("astrostein/guard_death");
+				A_StartSound(DeathSound, CHAN_VOICE);
 				A_UnblockAndDrop();
 				A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
 			}
@@ -2887,7 +2887,7 @@ class MutantStandard : Nazi
 			}
 			"####" A 5 Bright Light("ITBURNS1") { A_Wander(); }
 			"####" BC 5 Bright Light("ITBURNS1") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), BASE_FLAGS, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
-			"####" D 5 Bright Light("ITBURNS1") { A_Wander(); A_StartSound("mutant/Death"); }
+			"####" D 5 Bright Light("ITBURNS1") { A_Wander(); A_StartSound(DeathSound, CHAN_VOICE); }
 			"####" E 5 Bright Light("ITBURNS1") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), BASE_FLAGS, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
 			"####" FABCD 5 Bright Light("ITBURNS2") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), BASE_FLAGS, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
 			"####" EFAG 5 Bright Light("ITBURNS3") A_Wander();
@@ -2914,7 +2914,7 @@ class MutantStandard : Nazi
 			}
 			"####" A 5 Bright Light("TPortNormal");
 			"####" BA 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
-			"####" B 5 Bright Light("TPortNormal") { A_StartSound("mutant/Death"); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+			"####" B 5 Bright Light("TPortNormal") { A_StartSound(DeathSound, CHAN_VOICE); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
 			"####" AABAB 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
 			"####" C 7 Light("TPortNormal") A_UnblockAndDrop();
 			"####" DE 6 Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
@@ -2954,7 +2954,7 @@ class MutantStandard : Nazi
 		Disintegrate:
 			"####" H 5 {
 				A_Scream();
-				A_StartSound("mutant/Death");
+				A_StartSound(DeathSound, CHAN_VOICE);
 				A_UnblockAndDrop();
 				A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
 			}
@@ -3043,7 +3043,7 @@ class ZombieStandard : Nazi
 			}
 			"####" A 5 Bright Light("ITBURNS1") { A_Wander(); }
 			"####" BC 5 Bright Light("ITBURNS1") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), BASE_FLAGS, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
-			"####" D 5 Bright Light("ITBURNS1") { A_Wander(); A_StartSound("nazombie/die"); }
+			"####" D 5 Bright Light("ITBURNS1") { A_Wander(); A_StartSound(DeathSound, CHAN_VOICE); }
 			"####" E 5 Bright Light("ITBURNS1") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), BASE_FLAGS, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
 			"####" FABCD 5 Bright Light("ITBURNS2") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), BASE_FLAGS, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
 			"####" EFAG 5 Bright Light("ITBURNS3") A_Wander();
@@ -3071,7 +3071,7 @@ class ZombieStandard : Nazi
 			}
 			"####" A 5 Bright Light("TPortNormal");
 			"####" BA 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
-			"####" B 5 Bright Light("TPortNormal") { A_StartSound("nazombie/die"); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+			"####" B 5 Bright Light("TPortNormal") { A_StartSound(DeathSound, CHAN_VOICE); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
 			"####" AABAB 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
 			"####" C 7 Light("TPortNormal") A_UnblockAndDrop();
 			"####" DE 6 Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
@@ -3099,7 +3099,7 @@ class ZombieStandard : Nazi
 		Disintegrate:
 			"####" H 5 {
 				A_Scream();
-				A_StartSound("astrostein/guard_death");
+				A_StartSound(DeathSound, CHAN_VOICE);
 				A_UnblockAndDrop();
 				A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3));
 				A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
