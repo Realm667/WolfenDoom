@@ -2220,7 +2220,6 @@ ACTOR WGuard_Wounded : Nazi //ozy81
 	-SOLID
 	+FLOORCLIP
 	+LOOKALLAROUND
-	+PUSHABLE
 	States
 	{
 	Spawn:
@@ -2230,7 +2229,7 @@ ACTOR WGuard_Wounded : Nazi //ozy81
 		// Prevent wounded guards from blocking you
 		GRD2 O 7 A_CheckRange(64, 1, true)
 		Goto See
-		GRD2 PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE;}
+		GRD2 PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
 	SeeLoop:
 		GRD2 R 1 A_Chase
 		"####" R 1 A_SetTics(random(1,14))
@@ -2294,7 +2293,7 @@ ACTOR Guard_Wounded : WGuard_Wounded
 		// Prevent wounded guards from blocking you
 		GARD O 7 A_CheckRange(64, 1, true)
 		Goto See
-		GARD PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE;}
+		GARD PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
 	SeeLoop:
 		GARD R 1 A_Chase
 		"####" R 1 A_SetTics(random(1,14))
@@ -2353,7 +2352,7 @@ ACTOR SSGuard_Wounded : WGuard_Wounded
 		// Prevent wounded guards from blocking you
 		SSPG O 7 A_CheckRange(64, 1, true)
 		Goto See
-		SSPG PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE;}
+		SSPG PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
 	SeeLoop:
 		SSPG R 1 A_Chase
 		"####" R 1 A_SetTics(random(1,14))
@@ -2412,7 +2411,7 @@ ACTOR Officer_Wounded : WGuard_Wounded
 		// Prevent wounded guards from blocking you
 		OFFI O 7 A_CheckRange(64, 1, true)
 		Goto See
-		OFFI PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE;}
+		OFFI PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
 	SeeLoop:
 		OFFI R 1 A_Chase
 		"####" R 1 A_SetTics(random(1,14))
@@ -2471,7 +2470,7 @@ ACTOR SSOfficer_Wounded : WGuard_Wounded
 		// Prevent wounded guards from blocking you
 		SSOF O 7 A_CheckRange(64, 1, true)
 		Goto See
-		SSOF PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE;}
+		SSOF PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
 	SeeLoop:
 		SSOF R 1 A_Chase
 		"####" R 1 A_SetTics(random(1,14))
@@ -2530,7 +2529,7 @@ ACTOR WOfficer_Wounded : WGuard_Wounded
 		// Prevent wounded guards from blocking you
 		OFR2 O 7 A_CheckRange(64, 1, true)
 		Goto See
-		OFR2 PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE;}
+		OFR2 PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
 	SeeLoop:
 		OFR2 R 1 A_Chase
 		"####" R 1 A_SetTics(random(1,14))
