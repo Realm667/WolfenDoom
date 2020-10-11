@@ -1821,14 +1821,13 @@ class Nazi : Base
 		{
 			state FrontDeath = FindState("Death.Front", true);
 			state BackDeath = FindState("Death.Back", true);
-			if (FrontDeath && !(user_norandomdeaths & RDEATH_FRONT) && BackDeath && !(user_norandomdeaths & RDEATH_BACK))
+			if (FrontDeath && BackDeath && !user_norandomdeaths)
 			{
 				if (Random[altdeath](0, 255) < 128) // 50/50 chance of FrontDeath
 				{
 					Vel.XY = (0, 0);
 					return FrontDeath;
 				}
-				Vel.XY *= -1; // Will most likely be pushed back by bullets
 				return BackDeath;
 			}
 			else if (FrontDeath && !(user_norandomdeaths & RDEATH_FRONT))
@@ -1838,7 +1837,6 @@ class Nazi : Base
 			}
 			else if (BackDeath && !(user_norandomdeaths & RDEATH_BACK))
 			{
-				Vel.XY *= -1;
 				return BackDeath;
 			}
 		}
