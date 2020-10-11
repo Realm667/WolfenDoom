@@ -1655,11 +1655,21 @@ ACTOR ArcticSniper : NaziStandard
 		"####" A 0 {bNoPain = FALSE;}
 		Goto See
 	Death:
-		SNRF I 5
+		SNRF I 5 A_RandomDeathAnim
 		"####" J 5 A_Scream
 		"####" K 5 A_UnblockAndDrop
 		"####" L 5
 		"####" M -1
+		Stop
+	Death.Front:
+		SNDA I 0 A_CheckFadeDeath
+		SNDA I 5 A_Scream
+		"####" J 5 A_UnblockAndDrop
+		"####" K 10 //spill blood? - ozy81
+		"####" L 5
+		"####" M 5
+		"####" N 5
+		"####" O -1
 		Stop
 	Raise:
 		"####" MLKJI 5
@@ -3118,6 +3128,7 @@ ACTOR EliteAssaulter : BasicGuard
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See
 	Death.Front:
+		ELTA "#" 0 A_SetScale(0.87,0.87)
 		ETNA I 0 A_CheckFadeDeath
 		ETNA I 5 A_Scream
 		"####" J 5 A_UnblockAndDrop
