@@ -107,7 +107,9 @@ class ParticleManager : EventHandler
 
 			if (s >= limit)
 			{
-				if (input[s] is "ParticleBase") { input[s].SetStateLabel("Fade"); }
+				state FadeState = input[s].FindState("Fade");
+
+				if (FadeState) { input[s].SetState(FadeState); }
 				else { input[s].Destroy(); }
 			}
 			else { t.Push(input[s]); }
