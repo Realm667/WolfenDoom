@@ -115,6 +115,7 @@ class ACSTools
 			Origin.Z = activator.Pos.Z + PlayerPawn(activator).ViewHeight;
 		}
 		Console.Printf("Origin: %.3f %.3f %.3f", Origin);
+		// Actor.Spawn("TraceVisual", Origin, NO_REPLACE);
 		float Pitch = activator.Pitch;
 		float Angle = activator.Angle;
 		Vector3 Direction = (
@@ -122,10 +123,9 @@ class ACSTools
 			sin(Angle) * cos(Pitch),
 			-sin(Pitch)
 		);
-		// Direction = Direction.Unit();
 		Console.Printf("Direction: %.3f %.3f %.3f", direction);
-		aft.Trace(activator.Pos, activator.CurSector, direction, 1024, TRACE_HitSky);
-		if (aft.Results.HitActor)
+		aft.Trace(Origin, Level.PointInSector(Origin.XY), Direction, 1024, TRACE_HitSky);
+		if (aft.found)
 		{
 			Console.Printf("========== %s ==========", aft.Results.HitActor.GetClassName());
 			State frontDeath = aft.Results.HitActor.FindState("Death.Front");
@@ -135,12 +135,22 @@ class ACSTools
 			backDeath = aft.Results.HitActor.FindState("Death.Back", true);
 			Console.Printf("With exact: frontDeath %s, backDeath %s", frontDeath ? "true" : "false", backDeath ? "true" : "false");
 		}
+		/*
+		// Visualize trace
+		for (vector3 i = Origin; (aft.Results.HitPos - i) dot Direction >= 0; i += Direction * 4)
+		{
+			Actor.Spawn("TraceVisual", i, NO_REPLACE);
+		}
+		Actor.Spawn("TraceVisual", aft.Results.HitPos, NO_REPLACE);
+		*/
+		Console.Printf("Hit position: %.3f %.3f %.3f", aft.Results.HitPos);
 	}
 }
 
 class ActorFinderTracer : LineTracer
 {
 	Actor Source;
+	bool found;
 
 	bool isSuitableActor(Actor toExamine)
 	{
@@ -149,25 +159,54 @@ class ActorFinderTracer : LineTracer
 
 	override ETraceStatus TraceCallback()
 	{
-		if (Results.HitType == TRACE_HitFloor || Results.HitType == TRACE_HitCeiling)
+		if (Results.HitType == TRACE_HitFloor || Results.HitType == TRACE_HitCeiling || Results.HitType == TRACE_HasHitSky)
 		{
 			return TRACE_Stop;
 		}
-		if (Results.HitType == TRACE_HitWall && (Results.HitLine.flags & Line.ML_TWOSIDED))
+		else if (Results.HitType == TRACE_HitWall)
 		{
-			return TRACE_Continue;
+			if (Results.HitLine.sidedef[1] && Results.Tier == TIER_Middle)
+			{
+				return TRACE_Skip;
+			}
+			else
+			{
+				return TRACE_Stop;
+			}
 		}
-		if (Results.HitType == TRACE_HitActor)
+		else if (Results.HitType == TRACE_HitActor)
 		{
 			if (isSuitableActor(Results.HitActor))
 			{
+				found = true;
 				return TRACE_Stop;
 			}
 			else
 			{
-				return TRACE_Continue;
+				return TRACE_Skip;
 			}
 		}
-		return TRACE_Stop;
+		return TRACE_Skip;
+	}
+}
+
+class TraceVisual : Actor
+{
+	Default
+	{
+		+NOGRAVITY
+		+NOINTERACTION
+	}
+	States
+	{
+	Spawn:
+		EXCL A 10 Bright;
+		Stop;
+	}
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		SpriteOffset = (0, 65);
 	}
 }
