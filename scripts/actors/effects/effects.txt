@@ -424,15 +424,6 @@ class VolumetricBase : CullActorBase
 		Super.PostBeginPlay();
 		EffectsManager.Add(self, boa_scenelod);
 	}
-/*
-	override void Tick()
-	{
-		Super.Tick();
-
-		double dist = Distance2D(players[consoleplayer].mo);
-		alpha *= clamp(dist / 768, 0.25, 1.0);
-	}
-*/
 }
 
 class ParticleBase : SimpleActor // Use for non-interactive effects actors only!
