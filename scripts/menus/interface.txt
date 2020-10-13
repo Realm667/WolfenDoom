@@ -471,8 +471,15 @@ class ViewItem : BoAMenu
 			}
 			else if (TextPaperCollectible(item))
 			{
-				text = TextPaperCollectible(item).user_displaystring;
-				if (paper == "PAPER0") { paper = TextPaperCollectible(item).user_displayimage; }
+				if (CastleWolfensteinMap(item)) {
+					text = "PAPERTEXT00";
+					paper = "PAPER9";
+				}
+				else
+				{
+					text = TextPaperCollectible(item).user_displaystring;
+					if (paper == "PAPER0") { paper = TextPaperCollectible(item).user_displayimage; }
+				}
 			}
 			else if (TextPaperSecretHint(item)) {
 				text = TextPaperSecretHint(item).user_displaystring;

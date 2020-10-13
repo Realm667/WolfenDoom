@@ -795,6 +795,21 @@ class TextPaperSecretHint : Inventory
 	}
 }
 
+class CastleWolfensteinMap: TextPaperCollectible
+{
+	default
+	{
+		-INVENTORY.AUTOACTIVATE
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+	}
+	
+	override bool TryPickup(in out Actor toucher)
+	{
+		return Inventory.TryPickup(toucher); // pick this actor up automatically, needed for proper shop work
+	}
+}
+
 class Safe : Actor
 {
 	bool isopen, locked, unlock;
