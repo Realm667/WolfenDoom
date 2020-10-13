@@ -471,20 +471,16 @@ class ViewItem : BoAMenu
 			}
 			else if (TextPaperCollectible(item))
 			{
-				if (CastleWolfensteinMap(item)) {
-					text = "PAPERTEXT00";
-					paper = "PAPER9";
-				}
-				else
-				{
-					text = TextPaperCollectible(item).user_displaystring;
-					if (paper == "PAPER0") { paper = TextPaperCollectible(item).user_displayimage; }
-				}
+				text = TextPaperCollectible(item).user_displaystring;
+				if (paper == "PAPER0") { paper = TextPaperCollectible(item).user_displayimage; }
 			}
 			else if (TextPaperSecretHint(item)) {
 				text = TextPaperSecretHint(item).user_displaystring;
 			}
-
+			else if (CastleWolfensteinMap(item)) {
+				text = "PAPERTEXT00";
+				paper = "PAPER9";
+			}
 			//no custom text provided, use text from localized stringtable
 			if (text == "")
 			{
@@ -555,6 +551,10 @@ class ViewItem : BoAMenu
 		background = TexMan.CheckForTexture(paper, TexMan.Type_Any);
 		bgsize = TexMan.GetScaledSize(background);
 		scale = 0.95;
+		if (CastleWolfensteinMap(item))
+		{
+			scale = 0.45;
+		}
 		location = (320, 240);
 
 		// Hint message

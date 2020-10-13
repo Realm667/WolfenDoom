@@ -795,19 +795,65 @@ class TextPaperSecretHint : Inventory
 	}
 }
 
-class CastleWolfensteinMap: TextPaperCollectible
+class CastleWolfensteinMap : Inventory
 {
-	default
+	Default
 	{
-		-INVENTORY.AUTOACTIVATE
-		Inventory.Amount 1;
+		-SOLID
+		+FLATSPRITE
+		+NOGRAVITY
+		+INVENTORY.INVBAR
 		Inventory.MaxAmount 1;
+		Inventory.Amount 1;
+		Radius 16;
+		Height 32;
+		Scale 0.25;
+		RenderStyle 'Translucent';
+		Inventory.Icon "TEXTG0";
+		Inventory.PickupMessage "$PAPERMAP";
+		Inventory.PickupSound "pickup/papers";
+	}
+
+	States
+	{
+		Spawn:
+			TEXT G -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		frame = args[1];
+
+		String ico = String.Format("%s%c%i", "TEXT", 65 + args[1], 0);
+		icon = TexMan.CheckForTexture(ico, TexMan.Type_Any);
+
+		if (frame == 8) { PickupSound = "pickup/generic"; }
+
+		Super.PostBeginPlay();
+	}
+
+	override bool Use(bool pickup)
+	{
+		if (owner && owner.player)
+		{
+			owner.player.ConversationNPC = self;
+			if (owner.player = players[consoleplayer]) { Menu.SetMenu("ViewItem"); }
+			owner.player.ConversationNPC = null;
+		}
+
+		return false;
 	}
 	
-	override bool TryPickup(in out Actor toucher)
+	override bool Used(Actor user)
 	{
-		return Inventory.TryPickup(toucher); // pick this actor up automatically, needed for proper shop work
+		Super.TryPickup(user);
+
+		PrintPickupMessage(user.CheckLocalView(), PickupMessage());
+
+		return false;
 	}
+	//HandlePickup, TryPickup, Used are not needed since this is obtained from a merchant
 }
 
 class Safe : Actor
