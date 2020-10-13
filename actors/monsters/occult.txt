@@ -125,6 +125,7 @@ ACTOR WereWaffenSS : WaffenSS
 	DropItem "9mmAmmoBox" 128
 	DropItem "GrenadePickup" 32
 	DropItem "MP40" 128
+	Nazi.NoRandomDeaths 3 //no back-front death
 	States
 	{
 	Spawn:
@@ -620,6 +621,7 @@ ACTOR PlagueDoc : Guard
 	//$Category Monsters (BoA)/Occult
 	//$Title Plague Doctor (young)
 	Nazi.NoAltDeath 1
+	Nazi.NoRandomDeaths 2 //no backfall death
 	States
 	{
 	Spawn:
