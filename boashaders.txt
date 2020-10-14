@@ -142,7 +142,8 @@ HardwareShader Texture "textures/WFAL_X98.png"
 	// Define NOISE_SCALE = 64. // For waterfal2.frag
 }
 
-// Distance fade shader
+// DISTANCE FADE SHADER DEFS //
+// - Conelights
 HardwareShader Sprite VOLTA0
 {
 	Shader "shaders/distfade.frag"
@@ -153,7 +154,98 @@ HardwareShader Sprite VOLTB0
 	Shader "shaders/distfade.frag"
 	Define FADE_DISTANCE = 512.
 }
+// - Clouds
+HardwareShader Sprite CLXGA0
+{
+	Shader "shaders/distfade.frag"
+	Define FADE_DISTANCE = 256.
+}
+HardwareShader Sprite CLXGB0
+{
+	Shader "shaders/distfade.frag"
+	Define FADE_DISTANCE = 256.
+}
+HardwareShader Sprite CLXTA0
+{
+	Shader "shaders/distfade.frag"
+	Define FADE_DISTANCE = 256.
+}
+HardwareShader Sprite CLXTB0
+{
+	Shader "shaders/distfade.frag"
+	Define FADE_DISTANCE = 256.
+}
+HardwareShader Sprite CLXDA0
+{
+	Shader "shaders/distfade.frag"
+	Define FADE_DISTANCE = 256.
+}
+HardwareShader Sprite CLXDB0
+{
+	Shader "shaders/distfade.frag"
+	Define FADE_DISTANCE = 256.
+}
+// - Fog
+HardwareShader Sprite AWCFA0
+{
+	Shader "shaders/distfade.frag"
+	Define FADE_DISTANCE = 128.
+}
+HardwareShader Sprite AWCFB0
+{
+	Shader "shaders/distfade.frag"
+	Define FADE_DISTANCE = 128.
+}
+HardwareShader Sprite AWCFC0
+{
+	Shader "shaders/distfade.frag"
+	Define FADE_DISTANCE = 128.
+}
+HardwareShader Sprite AWCFD0
+{
+	Shader "shaders/distfade.frag"
+	Define FADE_DISTANCE = 128.
+}
+// - Zyklon Fog
+HardwareShader Sprite AWCFE0
+{
+	Shader "shaders/distfade.frag"
+	Define FADE_DISTANCE = 256.
+}
+HardwareShader Sprite AWCFF0
+{
+	Shader "shaders/distfade.frag"
+	Define FADE_DISTANCE = 256.
+}
+HardwareShader Sprite AWCFG0
+{
+	Shader "shaders/distfade.frag"
+	Define FADE_DISTANCE = 256.
+}
+HardwareShader Sprite AWCFH0
+{
+	Shader "shaders/distfade.frag"
+	Define FADE_DISTANCE = 256.
+}
+// - Underwater light ray
+HardwareShader Sprite LRAYA0
+{
+	Shader "shaders/distfade.frag"
+	Define FADE_DISTANCE = 256.
+}
+// - Steam
+HardwareShader Sprite STEMA0
+{
+	Shader "shaders/distfade.frag"
+	Define FADE_DISTANCE = 128.
+}
+HardwareShader Sprite ZTEMA0
+{
+	Shader "shaders/distfade.frag"
+	Define FADE_DISTANCE = 128.
+}
 
+// TEXTURES //
 Material Texture "AZTC_WTR"
 {
 	normal "materials/normalmaps/AZTC_WTR.png"
