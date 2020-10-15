@@ -14,8 +14,8 @@ Latin alphabet capital 0041-005A
 Latin alphabet small 0061-007A
 
 SMALLFONT               BIGFONT
-¡ - 00A1 [x]            [ ]
-¿ - 00BF [x]            [ ]
+¡ - 00A1 [x]            [x] (offsets
+¿ - 00BF [x]            [x] not needed)
 À - 00C0 [x]            [ ]
 Á - 00C1 [x]            [ ]
 Â - 00C2 [x]            [ ]
@@ -38,7 +38,7 @@ SMALLFONT               BIGFONT
 Ú - 00DA [x]            [ ]
 Û - 00DB [x]            [ ]
 Ý - 00DD [x]            [ ]
-ß - 00DF [x]            [ ]
+ß - 00DF [x]            [x]
 à - 00E0 [x]            [ ]
 á - 00E1 [x]            [ ]
 â - 00E2 [x]            [ ]
