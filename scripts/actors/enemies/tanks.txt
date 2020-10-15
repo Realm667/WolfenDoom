@@ -295,7 +295,7 @@ class TankBase : VehicleBase
 		TankBase.TurretSpeed 1.5;
 		TankBase.TurretProjectile "TankRocket";
 		TankBase.FrontGunProjectile "EnemyChaingunTracer";
-		TankBase.TurretDelay 38;
+		TankBase.TurretDelay 9;
 	}
 
 	States
@@ -336,7 +336,8 @@ class TankBase : VehicleBase
 		else { level.total_monsters--; }
 
 		targettimeout = Random(0, 35);
-		intercept = G_SkillPropertyInt(SKILLP_ACSReturn) > 0; // Disable intercept missiles on easy skill
+		// Disable intercepting missiles on lower skill levels
+		intercept = G_SkillPropertyInt(SKILLP_ACSReturn) > 2;
 		InterceptTarget = Spawn("TankInterceptTarget", Pos, ALLOW_REPLACE);
 
 		Super.PostBeginPlay();
@@ -589,7 +590,7 @@ class TankBase : VehicleBase
 
 		if (!target || !CheckLOF(CLOFF_JUMPENEMY | CLOFF_SKIPOBJECT, maxtargetrange, offsetforward: treads.radius))
 		{
-			missiletimeout = 35;
+			missiletimeout = 70;
 			bullettimeout = 35;
 		}
 
@@ -686,6 +687,9 @@ class TankBase : VehicleBase
 		A_StartSound(movesound, CHAN_7, CHANF_LOOPING, 1.0);
 	}
 
+	// Fire the main cannon at the target. The main cannon is assumed to be
+	// already aiming at its target.
+	// origin - The main cannon actor
 	virtual void DoTurret(Actor origin)
 	{
 		missiletargeted = false;
@@ -694,6 +698,10 @@ class TankBase : VehicleBase
 		chasetimeout = 5;
 	}
 
+	// Fire the turret at the target. The turret is not assumed to be aiming at
+	// its target, so you will need to make the turret aim at the target when.
+	// you override this method.
+	// origin - The turret actor
 	virtual void DoTurretTarget(Actor origin)
 	{
 		missiletargeted = true;
@@ -701,10 +709,13 @@ class TankBase : VehicleBase
 		turrettimeout = turretdelay;
 	}
 
+	// Fire the front weapon at the target. The front weapon is assumed to be
+	// aiming at the target.
+	// origin - The front weapon
 	virtual void DoFrontWeapon(Actor origin)
 	{
 		chasetimeout = 20;
-		missiletimeout = 20;
+		missiletimeout = 70;
 	}
 
 	override String GetObituary(Actor victim, Actor inflictor, Name mod, bool playerattack)
@@ -881,7 +892,6 @@ class TankTreadsBase : Actor
 
 	Default
 	{
-		DistanceCheck "boa_scenelod";
 		Radius 64; // Also used as half-width of model for slope tilt calculations
 		Height 64;
 		Mass 0x7ffffff;
@@ -1340,6 +1350,7 @@ class FriendlySherman : TankBase
 
 		Super.DoTurret(origin);
 
+		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
@@ -1367,6 +1378,13 @@ class FriendlySherman : TankBase
 
 		A_StartSound("mauser/fire", CHAN_WEAPON);
 
+		// Muzzle flash
+		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
+		// Required for the muzzle flash to work properly.
+		muzzleflash.master = origin;
+		// Smoke
+		origin.A_SpawnProjectile("TurrSmokeSpawner", 0, flags: CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE);
+		// Projectile
 		Actor mo = A_SpawnProjectile(FrontGunProjectile, 0, 0, origin.angle + Random(-2, 2), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, Random(-2, 2));
 
 		if (mo)
@@ -1435,6 +1453,7 @@ class SSTank1 : TankBase
 
 		Super.DoTurret(origin);
 
+		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
@@ -1465,6 +1484,12 @@ class SSTank1 : TankBase
 		double gunpitch = origin.pitch;
 		if (origin.master && TankBase(origin.master) && TankBase(origin.master).gun) { gunpitch = TankBase(origin.master).gun.pitch; }
 
+		// Muzzle flash
+		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
+		muzzleflash.master = origin;
+		// Smoke
+		origin.A_SpawnProjectile("TurrSmokeSpawner", 0, flags: CMF_ABSOLUTEPITCH);
+		// Projectile
 		Actor mo = A_SpawnProjectile(FrontGunProjectile, 0, 0, random(-4, 4), CMF_ABSOLUTEPITCH, max(-gunpitch, 0));
 
 		if (mo)
@@ -1556,6 +1581,7 @@ class SSTank2 : TankBase
 		origin.A_Face(target, 0, 0, flags:FAF_MIDDLE);
 		origin.angle = turret.angle;
 
+		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
@@ -1578,6 +1604,12 @@ class SSTank2 : TankBase
 		origin.A_Face(target, 0, 0, flags:FAF_MIDDLE);
 		origin.angle = treads.angle;
 
+		// Muzzle flash
+		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
+		muzzleflash.master = origin;
+		// Smoke
+		origin.A_SpawnProjectile("TurrSmokeSpawner", 0, flags: CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE);
+		// Projectile
 		Actor mo = origin.A_SpawnProjectile(FrontGunProjectile, 0, 0, origin.angle + random(-4, 4), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
@@ -1646,6 +1678,7 @@ class SSTank3 : TankBase
 
 		Super.DoTurret(origin);
 
+		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
@@ -1741,6 +1774,12 @@ class SSTank4 : TankBase
 		origin.A_Face(target, 0, 0, flags:FAF_MIDDLE);
 		origin.angle = turret.angle;
 
+		// Muzzle flash
+		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
+		muzzleflash.master = origin;
+		// Smoke
+		origin.A_SpawnProjectile("TurrSmokeSpawner", 0, flags: CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE);
+		// Projectile
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle + random(-4, 4), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo) { mo.target = self; }
@@ -1820,6 +1859,7 @@ class T34Tank : TankBase
 
 		Super.DoTurret(origin);
 
+		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
@@ -1850,6 +1890,12 @@ class T34Tank : TankBase
 		origin.A_Face(target, 0, 0, flags:FAF_MIDDLE);
 		origin.angle = treads.angle;
 
+		// Muzzle flash
+		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
+		muzzleflash.master = origin;
+		// Smoke
+		origin.A_SpawnProjectile("TurrSmokeSpawner", 0, flags: CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE);
+		// Projectile
 		Actor mo = origin.A_SpawnProjectile(FrontGunProjectile, 0, 0, origin.angle + random(-4, 4), CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, clamp(origin.pitch, -5, 5));
 
 		if (mo)

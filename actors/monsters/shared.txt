@@ -695,7 +695,7 @@ ACTOR SeekerRocket : MiniRocket
 }
 
 ACTOR HardSeekerRocket : SeekerRocket { +MTHRUSPECIES MaxTargetRange 192 }
-
+/*
 //ATTACKS - ROBOTS
 ACTOR MechaRocket : MiniRocket
 {
@@ -711,13 +711,36 @@ ACTOR MechaRocket : MiniRocket
 }
 
 ACTOR HardMechaRocket : MechaRocket { +MTHRUSPECIES }
+*/
 
 ACTOR MiniMechaRocket : MiniRocket
 {
-	Speed 27
+	var int user_wspeed;
+	var float user_wrange;
+	Speed 20
 	Scale 0.27
-	Damage (random(1,4)*5) //20 dmg max vs 16
+	Damage (random(1,2)*5) //5-10 damage + 10 splash damage
 	DeathSound "nebelwerfer/xplode"
+	States
+	{
+	Spawn:
+		NMIS A 0 NODELAY {
+			user_wspeed = random(2, 4) * (random(0, 1) * 2 - 1); /*the first parameter is integer afaik from wiki*/
+			user_wrange = frandom(3.0, 5.0);
+		}
+	Spawn.Fly:
+		NMIS A 0 A_StartSound("nazi/missileengine", CHAN_AUTO, CHANF_LOOPING, 0.3)
+		"####" "#" 1 {
+			A_Weave(user_wspeed, user_wspeed, user_wrange, user_wrange);
+			A_SpawnItemEx("RocketFlame",random(-1,1),0,random(-1,1));
+		}
+		Loop
+	Death:
+		FRME A 1 BRIGHT LIGHT(OTTOFIRE) A_Explode(random(16,32), 96, 0)
+		FRME A 0 A_StopSound(CHAN_AUTO)
+		FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT(OTTOFIRE)
+		Stop
+	}
 }
 
 ACTOR HardMiniMechaRocket : MiniMechaRocket { +MTHRUSPECIES }
@@ -1437,7 +1460,7 @@ ACTOR BloodSkullCloud
 	Spawn:
 		ZBGS B 2
 	Fade:
-		"####" B 3 LIGHT(BSKULFOG) A_FadeOut(0.01)
+		"####" B 3 A_FadeOut(0.01)
 		"####" B 0 A_SetScale(scaleX+0.01, scaleY+0.01)
 		Loop
 	}

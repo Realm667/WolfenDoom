@@ -135,7 +135,6 @@ ACTOR TeleportFog_AstroLarge : TeleportFog_Astro
 	}
 }
 
-
 ///////////
 //ENEMIES//
 ///////////
@@ -149,6 +148,7 @@ ACTOR AstroGuard : Guard
 	DropItem "AstroClipAmmo" 128
 	DropItem "AstroShotgunShell" 32
 	Obituary "$AGUARD1"
+	Nazi.NoRandomDeaths 3 //no back-front death
 	States
 	{
 	Spawn:
@@ -451,7 +451,7 @@ ACTOR AstroTurret : MGTurret
 	Scale 1.1
 	Speed 0
 	Obituary "$MGTURRET"
-	Health 100
+	Health 50
 	Radius 15
 	Height 21
 	PainChance 100

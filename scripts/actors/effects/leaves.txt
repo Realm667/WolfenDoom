@@ -115,9 +115,9 @@ class FloatingLeaves : ParticleBase
 	void LeafFloat()
 	{
 		gravity = FRandom(0.0525,0.0725);
-		A_SetRoll(roll + FRandom(-0.5, 0.5), SPF_INTERPOLATE);
+		A_SetRoll(roll + FRandom(-55.5, 55.5), SPF_INTERPOLATE);
 		angle += Random(-15, 15);
-		pitch += FRandom(0.25, 0.25);
+		pitch += FRandom(-55.25, 55.25);
 
 		if (waterlevel == 3)
 		{

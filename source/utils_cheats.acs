@@ -1,0 +1,11 @@
+script "OverheatTurret" (int goToCooldown)
+{
+	ScriptCall("TurretGun", "Overheat", goToCooldown);
+}
+
+// SummonSpy is unnecessary - the same thing can be achieved with the summonfriend CCMD
+
+script "HasAltDeaths" (void)
+{
+	ScriptCall("ACSTools", "HasAltDeaths");
+}

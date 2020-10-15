@@ -178,19 +178,66 @@ class ZyklonMask : PowerupToggler
 	}
 }
 
-class PowerZyklonMask : PowerProtection
+const CHAN_MASK = 194;
+
+// PowerProtection that plays a looping sound while active
+class PowerMaskProtection : PowerProtection
 {
+	sound maskSound;
+	int maskChannel;
+
+	Property Sound: maskSound;
+	Property Channel: maskChannel;
+
 	Default
 	{
-		DamageFactor "UndeadPoisonAmbience", 0;
+		PowerMaskProtection.Sound "player/gasmask";
+		PowerMaskProtection.Channel CHAN_MASK;
 	}
 
+	// Necessary?
+	/*
 	override void Tick()
 	{
 		if (Owner == null || EffectTics == 0)
 		{
 			Destroy();
 		}
+	}
+	*/
+
+	override void InitEffect()
+	{
+		if (Owner)
+		{
+			Owner.A_StartSound(maskSound, maskChannel, CHANF_LOOPING);
+		}
+		Super.InitEffect();
+	}
+
+	override void EndEffect()
+	{
+		if (Owner)
+		{
+			Owner.A_StopSound(maskChannel);
+		}
+		Super.EndEffect();
+	}
+}
+
+class PowerZyklonMask : PowerMaskProtection
+{
+	Default
+	{
+		DamageFactor "UndeadPoisonAmbience", 0;
+	}
+}
+
+class PowerSpaceSuit : PowerMaskProtection
+{
+	Default
+	{
+		DamageFactor "IceWater", 0;
 	}
 }
 
@@ -425,6 +472,7 @@ class DisguiseToken : CustomInventory
 	SpriteID basesprite, crouchsprite;
 	bool notarget;
 	int notargettimeout;
+	Name playersoundclass;
 
 	Property ViewHeight:viewheight;
 	Property PlayerScale:playerscale;
@@ -433,7 +481,7 @@ class DisguiseToken : CustomInventory
 	Property SideMove:sidemove1, sidemove2;
 	Property HUDSprite:HUDsprite;
 	Property NoTarget:notarget;
-
+	Property PlayerSoundClass:playersoundclass;
 	Default
 	{
 		+INVENTORY.KEEPDEPLETED
@@ -505,6 +553,8 @@ class DisguiseToken : CustomInventory
 			if (sidemove1 > -1 && sidemove2 > -1) { p.sidemove1 = sidemove1; p.sidemove2 = sidemove2; }
 
 			if (notarget) { SetNoTarget(); }
+			
+			if (playersoundclass) { p.SoundClass = playersoundclass; }
 		}
 		else // Restore player defaults
 		{
@@ -521,7 +571,8 @@ class DisguiseToken : CustomInventory
 			p.forwardmove2 = p.Default.forwardmove2;
 			p.sidemove1 = p.Default.sidemove1;
 			p.sidemove2 = p.Default.sidemove2;
-
+			p.soundclass = p.Default.soundclass;
+			
 			Destroy();
 		}
 	}
@@ -599,6 +650,7 @@ class RyanToken : DisguiseToken
 		DisguiseToken.ForwardMove 0.9, 0.45; // Just a little slower than BJ
 		DisguiseToken.SideMove 0.9, 0.45;
 		DisguiseToken.HUDSprite "RTF"; // Ryan Mugshot
+		DisguiseToken.PlayerSoundClass "ryan"; // soundclass
 		DisguiseToken.NoTarget False; // Don't hide player from enemies
 	}
 
@@ -644,6 +696,7 @@ class RepairKit : CompassItem
 	Default
 	{
 		//$Title Repair Kit (electric)
+		-INVENTORY.ALWAYSPICKUP
 		Tag "$TAGREKIT";
 		Inventory.Icon "EKPKA0";
 		Inventory.PickupMessage "$ELECPAK";

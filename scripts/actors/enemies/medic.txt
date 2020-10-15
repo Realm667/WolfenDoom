@@ -53,14 +53,15 @@ class NaziMedic : NaziStandard
 		//$Category Monsters (BoA)/Others
 		//$Title Nazi Medic
 		//$Color 4
-		Base.NoMedicHeal;
-		Nazi.Healer HLR_ALLIES;
 		Health 20;
 		Speed 4;
 		+AVOIDMELEE
 		+NEVERTARGET
-		DropItem "NaziMedicBox", 255;
+		Base.NoMedicHeal;
+		Nazi.NoRandomDeaths 2; //no backfall death
+		Nazi.Healer HLR_ALLIES;
 		Nazi.HealSound "misc/health_pkup";
+		DropItem "NaziMedicBox", 255;
 	}
 
 	States
@@ -119,10 +120,11 @@ class NaziMedic : NaziStandard
 			}
 			Goto See;
 		Death:
-			"####" H 5 {
+			"####" H 1 {
 				if (crouched) { return ResolveState("Death.Crouch"); }
 				return ResolveState(null);
 			}
+			"####" H 4 A_RandomDeathAnim();
 			"####" I 5 A_Scream();
 			"####" J 5 A_NoBlocking(!user_sneakable);
 			"####" KLUV 5;
@@ -134,6 +136,16 @@ class NaziMedic : NaziStandard
 			"####" R 5 A_NoBlocking(!user_sneakable);
 			"####" STUV 5;
 			"####" W -1;
+			Stop;
+		Death.Front:
+			NMDA I 0 A_CheckFadeDeath();
+			NMDA I 5 A_Scream();
+			"####" J 5 A_UnblockAndDrop();
+			"####" K 10;
+			"####" L 5;
+			"####" M 5;
+			"####" N 5;
+			"####" O -1;
 			Stop;
 	}
 

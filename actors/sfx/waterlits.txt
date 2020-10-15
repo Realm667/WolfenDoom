@@ -117,3 +117,34 @@ ACTOR UWaterLShooter
 ACTOR ULavaLShooter : UWaterLShooter{}
 ACTOR UGoreLShooter : UWaterLShooter{}
 ACTOR UHazardLShooter : UWaterLShooter{}
+
+//Tormentor667 light rays
+ACTOR UnderwaterLightRay : SwitchableDecoration
+{
+	//$Category Special Effects (BoA)
+	//$Title Underwater Light Ray
+	//$Color 12
+	//$Sprite LRAYA0
+	Height 128
+	Radius 32
+	+NOBLOCKMAP
+	+NOCLIP
+	+NOGRAVITY
+	+NOINTERACTION
+	+ROLLSPRITE
+	+WALLSPRITE
+	+ROLLCENTER
+	RenderStyle "Add"
+	Scale 0.5
+	Alpha 1.0
+	States
+	{
+	Spawn:
+	Active:
+		LRAY A -1 BRIGHT
+		Loop
+	Inactive:
+		TNT1 A -1
+		Loop
+	}
+}

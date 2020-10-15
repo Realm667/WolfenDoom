@@ -434,6 +434,10 @@ class ViewItem : BoAMenu
 	bool initial;
 	int ticcount, closetime, start, maxy, maxlines, pagewidth;
 
+	// Strikethroughs to draw, as pairs of ints representing the line number
+	// and width respectively.
+	Array<int> strikes;
+
 	BrokenLines hintlines;
 	double hintx, hinty, hintlineheight;
 
@@ -483,22 +487,6 @@ class ViewItem : BoAMenu
 					maxy = 375;
 				default:
 					break;
-			}
-
-			if (TextPaper(item))
-			{
-				text = TextPaper(item).user_displaystring;
-				if (paper == "PAPER0") { paper = TextPaper(item).user_displayimage; }
-			}
-			else if (TextPaperCollectible(item))
-			{
-				text = TextPaperCollectible(item).user_displaystring;
-				if (paper == "PAPER0") { paper = TextPaperCollectible(item).user_displayimage; }
-			}
-
-			if (text == "")
-			{
-				text = String.Format("PAPERTEXT%02i", item.args[0]);
 			}
 
 			int fontstyle = item.args[2];
@@ -555,6 +543,34 @@ class ViewItem : BoAMenu
 					break;
 			}
 
+			msgfont = Font.GetFont(fnt); // Needed because ConstructSecretHintText uses the msgfont
+			if (!msgfont) { msgfont = SmallFont; }
+
+			// draw text from args; is this used on any map?
+			if (TextPaper(item))
+			{
+				text = TextPaper(item).user_displaystring;
+				if (paper == "PAPER0") { paper = TextPaper(item).user_displayimage; }
+			}
+			else if (TextPaperCollectible(item))
+			{
+				text = TextPaperCollectible(item).user_displaystring;
+				if (paper == "PAPER0") { paper = TextPaperCollectible(item).user_displayimage; }
+			}
+			else if (TextPaperSecretHint(item)) {
+				text = TextPaperSecretHint(item).user_displaystring;
+			}
+			else if (CastleWolfensteinMap(item)) {
+				text = "PAPERTEXT00";
+				paper = "PAPER9";
+			}
+			//no custom text provided, use text from localized stringtable
+			if (text == "")
+			{
+				if (TextPaper(item) || TextPaperCollectible(item)) { text = String.Format("PAPERTEXT%02i", item.args[0]); }
+				else if (TextPaperSecretHint(item)) { text = ConstructSecretHintText(TextPaperSecretHint(item)); }
+			}
+
 			if (Inventory(item)) { PickupSound = Inventory(item).PickupSound; }
 			else if (TextPaper(item)) { PickupSound = TextPaper(item).PickupSound; }
 			else { PickupSound = "pickup/generic"; }
@@ -564,6 +580,10 @@ class ViewItem : BoAMenu
 		background = TexMan.CheckForTexture(paper, TexMan.Type_Any);
 		bgsize = TexMan.GetScaledSize(background);
 		scale = 0.95;
+		if (CastleWolfensteinMap(item))
+		{
+			scale = 0.45;
+		}
 		location = (320, 240);
 
 		// Hint message
@@ -581,7 +601,7 @@ class ViewItem : BoAMenu
 
 		// Text content
 		msgfont = Font.GetFont(fnt);
-		if (!msgfont) { msgFont = SmallFont; }
+		if (!msgfont) { msgfont = SmallFont; }
 
 		String textmessage = "";
 
@@ -608,6 +628,13 @@ class ViewItem : BoAMenu
 	override void Drawer()
 	{
 		screen.Dim(0x000000, 0.2 * alpha, 0, 0, screen.GetWidth(), screen.GetHeight());
+		int nextStrikeLine = 0, nextStrikeWidth = 0, nextStrikeIndex = 0;
+
+		if (strikes.Size() > 0)
+		{
+			nextStrikeLine = strikes[0];
+			nextStrikeWidth = strikes[1];
+		}
 
 		if (alpha > 0)
 		{
@@ -621,7 +648,8 @@ class ViewItem : BoAMenu
 				int skipcount;
 				for (int i = start; i < min(start + maxlines, textlines.Count() - skipcount); i++)
 				{
-					String text = textlines.StringAt(i + skipcount);
+					int curLine = i + skipcount;
+					String text = textlines.StringAt(curLine);
 
 					if (i == start && text.length() <= 2)
 					{
@@ -631,6 +659,15 @@ class ViewItem : BoAMenu
 					else
 					{
 						screen.DrawText(msgfont, Font.CR_UNTRANSLATED, textx / fontscale, texty / fontscale + textlineheight * (i - start) / fontscale, text, DTA_VirtualWidth, int(640 / fontscale), DTA_VirtualHeight, int(480 / fontscale), DTA_Alpha, alpha);
+						if (curLine == nextStrikeLine)
+						{
+							screen.DrawThickLine(int(textx / fontscale), int(texty / fontscale) + textlineheight * i, int(textx / fontscale) + nextStrikeWidth, int(texty / fontscale) + textlineheight * i, 2.25, Color(0, 0, 0, 100));
+							if (strikes.Size() >= (++nextStrikeIndex) * 2)
+							{
+								nextStrikeLine = strikes[nextStrikeIndex * 2];
+								nextStrikeWidth = strikes[nextStrikeIndex * 2 + 1];
+							}
+						}
 					}
 				}
 
@@ -811,5 +848,66 @@ class ViewItem : BoAMenu
 			initial = false;
 			closetime = 5;
 		}
+	}
+	
+	string ConstructSecretHintText(TextPaperSecretHint item) {
+		if (!item.args[0]) return "";
+		string base_name = "SECRET"..item.args[0], data, result;
+		int i = 1, curToken, stringLine = 0;
+		// Keep processing consecutive SECRET<i> strings until an entry doesn't exist
+		while ((data = StringTable.Localize(base_name..i, false)) != base_name..i) {
+			//itemids: ??? = 1, Weapon = 2, Grenade(s) = 3(4), Gold (small, moderate, large, TREMENDOUS) = (5, 6, 7, 8), Ammo (small, moderate, large, TREMENDOUS) = (9, 10, 11, 12), Health (small, moderate, large, TREMENDOUS) = (13, 14, 15, 16), Armor = 17, Various Supplies = 18
+			//now decipher the data string which was passed
+			//the format is: t or s|id|itemid|[itemid|[...]], example: "t|1993|5|17" means thing with tag 1993 is a secret which gives access to a small amount of gold and an armor suit.
+			Array<String> tokens;
+			data.Split(tokens, "|");
+			if (tokens.size() < 3) { continue; }
+			// Start each secret with a number in point form
+			result = result .. "\cC" .. i .. ". ";
+			bool secret_found;
+			// What is this secret? A thing? A sector?
+			if (tokens[0] == "t") // Thing secret
+			{
+				// Find the secret item
+				ActorIterator it = Level.CreateActorIterator(tokens[1].toInt());
+				let item = it.Next();
+				// Check whether or not it has been found
+				if (item == NULL || !item.bCOUNTSECRET) { secret_found = true; }
+				else { secret_found = false; }
+			}
+			else if (tokens[0] == "s") // Sector secret
+			{
+				if (!(Level.sectors[tokens[1].toInt()].flags & Sector.SECF_SECRET)) { secret_found = true; }
+				else { secret_found = false; }
+			}
+			// now construct the line; colours are a temporary solution, should use strikethrough if possible (or just a tick...)
+			/*
+			if (secret_found) { result.AppendFormat("\cG"); }
+			else { result.AppendFormat("\cC"); }
+			*/
+			// Add the items in the secret
+			for (curToken = 2; curToken < tokens.size(); ++curToken)
+			{
+				result = result .. StringTable.Localize("SECRETITEM"..tokens[curToken], false);
+				if (curToken < tokens.size() - 1)
+				{
+					result = result .. ", ";
+				}
+			}
+			result.AppendFormat("\cC\n");
+			// Add line numbers and widths to strikethroughs
+			BrokenLines lines = msgfont.BreakLines(result, int(pagewidth / fontscale));
+			for (int line = 0; line < lines.Count(); line++)
+			{
+				if (secret_found)
+				{
+					strikes.Push(stringLine); // Line number
+					strikes.Push(lines.StringWidth(line)); // Width
+				}
+				++stringLine;
+			}
+			++i;
+		}
+		return result;
 	}
 }

@@ -1,0 +1,123 @@
+/*
+ * Copyright (c) 2020 Kevin Caccamo
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+**/
+
+/*
+Soul Fountain - gives souls and health to any players standing near it
+
+For final battle with Hitler on C3M6_B
+*/
+class SoulFountain : SwitchableDecoration
+{
+	int count;
+	int soulmax;
+	int healthmax;
+
+	Property MaxSouls: soulmax;
+	Property MaxHealth: healthmax;
+
+	Default
+	{
+		//$Category Misc (BoA)
+		//$Title Soul Fountain
+		Height 32;
+		Radius 64;
+		RenderStyle "Add";
+		SoulFountain.MaxSouls 150;
+		SoulFountain.MaxHealth 200;
+		-SOLID
+		-SHOOTABLE
+		+NOBLOCKMAP
+		+FLOORHUGGER
+		+FLATSPRITE
+	}
+
+	States
+	{
+	Spawn:
+		SWRL YXWVUTSRQPONMLKJIHGFEDCBA 2 A_SpawnVFX;
+		Loop;
+	Inactive:
+		SWRL YXWVUTSRQPONMLKJIHGFEDCBA 2 A_FadeOut(.05, FTF_CLAMP);
+		TNT1 A -1;
+		Stop;
+	Active:
+		SWRL YXWVUTSRQPONMLKJIHGFEDCBA 2 A_FadeIn(.05, FTF_CLAMP);
+		Goto Spawn;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		count = 0;
+	}
+
+	void A_SpawnVFX()
+	{
+		double SpawnRadius = Radius;
+		Vector3 SpawnPointOffset = (Frandom[creepyvfx](-SpawnRadius, SpawnRadius), Frandom[creepyvfx](-SpawnRadius, SpawnRadius), 0);
+		Vector3 SpawnPoint = Pos + SpawnPointOffset;
+		Spawn("DamnedSoul", SpawnPoint, NO_REPLACE);
+		count += 1;
+		if (count == 2)
+		{
+			A_Fountain();
+			count = 0;
+		}
+	}
+
+	void A_Fountain()
+	{
+		/*
+		BlockThingsIterator it = BlockThingsIterator.Create(self, Radius * .75);
+		while (it.Next())
+		{
+			Actor thing = it.thing;
+			if (thing.player)
+			{
+				A_GiveShit(thing, 1);
+			}
+		}
+		*/
+		double distance = Radius;
+		distance *= distance;
+		for (int i = 0; i < MAXPLAYERS; i++)
+		{
+			if (playeringame[i] && Distance2DSquared(players[i].mo) < distance)
+			{
+				A_GiveShit(players[i].mo, 1);
+			}
+		}
+	}
+
+	void A_GiveShit(Actor to, int amount)
+	{
+		Inventory souls = to.FindInventory("Soul");
+		if (!souls || souls.amount < soulmax)
+		{
+			to.A_GiveInventory("Soul", amount);
+		}
+		if (to.health < healthmax)
+		{
+			to.GiveBody(amount);
+		}
+	}
+}

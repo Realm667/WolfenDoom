@@ -65,4 +65,22 @@ class ZScriptTools
 		Vector3 ToTarget = LevelLocals.Vec3Diff(ProjPos, TargetPos); // TargetPos - ProjPos
 		return ZScriptTools.GetInterceptTime(ToTarget, TargetVel, MissileSpeed);
 	}
+
+	// Is a particular bit set in this integer?
+	static bool BitIsSet(int number, int bitIndex)
+	{
+		return !!(number & (1 << bitIndex));
+	}
+
+	// Set a bit in this integer
+	static int BitSet(int number, int bitIndex)
+	{
+		return number | (1 << bitIndex);
+	}
+
+	// Unset a bit in this integer
+	static int BitUnset(int number, int bitIndex)
+	{
+		return number & (~(1 << bitIndex));
+	}
 }

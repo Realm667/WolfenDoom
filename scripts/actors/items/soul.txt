@@ -69,3 +69,24 @@ class SoulBig : Soul
 			Loop;
 	}
 }
+
+class SoulSuperBig : Soul
+{
+	Default
+	{
+		//$Category Powerups (BoA)
+		//$Title Souls (+25)
+		//$Color 6
+		//$Sprite AMM3E0
+
+		Inventory.Amount 25;
+		Inventory.PickupMessage "$SOUL_XBG";
+	}
+
+	States
+	{
+		Spawn:
+			AMM3 EFGH 4 Bright Light("SoulBig");
+			Loop;
+	}
+}

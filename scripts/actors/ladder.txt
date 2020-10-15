@@ -155,18 +155,6 @@ class LadderBase : Actor
 
 	override void Tick()
 	{
-		if (CheckRange((climbradius + 16) * 2, true)) // Minimal tick if out of range of the player
-		{
-			// Tick through actor states as normal
-			if (tics == -1) { return; }
-			else if (--tics <= 0)
-			{
-				SetState(CurState.NextState);
-			}
-
-			return;
-		}
-
 		Super.Tick();
 
 		if (passive) { return; }

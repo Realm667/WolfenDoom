@@ -9,7 +9,7 @@ class ConfettiSpawner : SnowSpawner
 
 	override void SpawnEffect()
 	{
-		Super.SpawnEffect();
+		EffectSpawner.SpawnEffect();
 
 		if (args[2]) { A_SpawnItemEx("ConfettiParticle", random(-Args[0], Args[0]), 0, 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0),frandom(-4.0, 4.0), random(0, 359), SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1]); }
 		else { A_SpawnItemEx("ConfettiParticle", random(-Args[0], Args[0]), random(-Args[0], Args[0]), 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-4.0, 4.0), 0, SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1]); }

@@ -63,7 +63,7 @@ class InventoryClearHandler : EventHandler
 					me.A_TakeInventory(name(ammotype));
 			}
 			// Remove level-unique inventory items
-			if(type is "CKPogoStick" || type is "CKLedgeGrab" || type is "TextPaperCollectible")
+			if(type is "CKPogoStick" || type is "CKLedgeGrab" || type is "TextPaperCollectible" || type is "TextPaperSecretHint")
 			{
 				let invclass = (class<Inventory>)(type);
 				let invitem = me.FindInventory(invclass);

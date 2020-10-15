@@ -386,6 +386,7 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 
 		A_StartSound("Panzer/fire", CHAN_WEAPON, 0, 8.0);
 		A_GunFlash();
+		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		Actor mo = A_FireProjectile("TankRocket", angledelta, False, 0, 0, FPF_NOAUTOAIM, pitchdelta);
 		if (mo && origin != self)
 		{
@@ -410,6 +411,9 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 		double pitchdelta = deltaangle(pitch, maingun.pitch);
 
 		A_StartSound("mauser/fire", CHAN_WEAPON, 0, FRandom(0.6, 0.8));
+		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
+		muzzleflash.master = self;
+		A_FireProjectile("TurrSmokeSpawner", origin.Pos.Z - Pos.Z);
 		Actor mo = A_FireProjectile("Kar98kTracer", angledelta + Random(-2, 2), False, 0, 0, 0, pitchdelta + Random(-2, 2));
 		if (mo && origin != self)
 		{

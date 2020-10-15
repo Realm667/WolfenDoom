@@ -204,6 +204,30 @@ class TrainingTarget : SwitchableDecoration
 	}
 }
 
+class Fahrkarten : Actor
+{
+	Default
+	{
+		//$Category Wall Decorations (BoA)
+		//$Title Fahrkarten Sign
+		
+		Radius 2;
+		Height 2;
+		+FORCEYBILLBOARD
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+NOINTERACTION
+		+WALLSPRITE
+	}
+	
+	States
+	{
+		Spawn:
+			FAHR A -1;
+			Stop;
+	}
+}
+
 // Workaround for this bug: https://forum.zdoom.org/viewtopic.php?f=2&t=62967 - Model by Talon1024
 class ManholeCover3D : Debris_Vent_FloorCeiling
 {
@@ -700,6 +724,158 @@ class TextPaperCollectible : Inventory
 
 		return false;
 	}
+}
+
+
+class TextPaperSecretHint : Inventory
+{
+	String user_displaystring; //, user_displayimage;
+
+	Default
+	{
+		//$Category Props (BoA)/Interactive Items
+		//$Title Secret Hint (usable, collectible)
+		//$Color 3
+
+		//$Arg0 "Text ID"
+		//$Arg0Tooltip "Lists of secret hints constructed from LANGUAGE lump entries. Leave as 0 to use the user_displaytext property to set a string or LANGUAGE entry."
+		//$Arg0Default 0
+		//$Arg1 "Paper style"
+		//$Arg1Tooltip "Various paper styles."
+		//$Arg1Type 11
+		//$Arg1Enum { 1 = "White Paper"; 2 = "Tan Paper"; 3 = "White Paper with Nazi Letterhead"; 4 = "Tan Paper with Nazi Letterhead"; 5 = "Old Dirty Paper"; 6 = "Heer Memo"; 7 = "Scrap"; 8 = "Astrostein tablet"; 0 = "Use user_displayimage variable"; }
+		//$Arg1Default 6
+		//$Arg2 "Font style"
+		//$Arg2Tooltip "Various font styles. Type 4 preferred."
+		//$Arg2Type 11
+		//$Arg2Enum { 1 = "Set Type (Book print)"; 2 = "Worn Typewriter"; 3 = "Occult Runes"; 4 = "Handwriting 1 (Messy)"; 5 = "Handwriting 2 (Neat)"; 6 = "Handwriting 3 (Neat, small)"; 7 = "Console Font"; 8 = "Maven Pro (small)"; }
+		//$Arg2Default 5
+
+		-SOLID
+		+FLATSPRITE
+		+NOGRAVITY
+		+INVENTORY.INVBAR
+		+INVENTORY.AUTOACTIVATE
+
+		Radius 16;
+		Height 32;
+		Scale 0.25;
+		RenderStyle 'Translucent';
+		Inventory.Icon "TEXTG0";
+		Inventory.PickupMessage "$SECRETHINTPAPER";
+		Inventory.PickupSound "pickup/papers";
+	}
+
+	States
+	{
+		Spawn:
+			TEXT G -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		frame = args[1];
+
+		String ico = String.Format("%s%c%i", "TEXT", 65 + args[1], 0);
+		icon = TexMan.CheckForTexture(ico, TexMan.Type_Any);
+
+		if (frame == 8) { PickupSound = "pickup/generic"; }
+
+		Super.PostBeginPlay();
+	}
+
+	override bool Use(bool pickup)
+	{
+		if (owner && owner.player)
+		{
+			owner.player.ConversationNPC = self;
+			if (owner.player = players[consoleplayer]) { Menu.SetMenu("ViewItem"); }
+			owner.player.ConversationNPC = null;
+		}
+
+		return false;
+	}
+
+	override bool HandlePickup (Inventory item)
+	{
+		return false; // Never stack these items together
+	}
+
+	override bool TryPickup(in out Actor toucher)
+	{
+		return false; // Don't pick this actor up automatically; use it like a regular TextPaper actor
+	}
+
+	override bool Used(Actor user)
+	{
+		Super.TryPickup(user);
+
+		PrintPickupMessage(user.CheckLocalView(), PickupMessage());
+
+		return false;
+	}
+}
+
+class CastleWolfensteinMap : Inventory
+{
+	Default
+	{
+		-SOLID
+		+FLATSPRITE
+		+NOGRAVITY
+		+INVENTORY.INVBAR
+		Inventory.MaxAmount 1;
+		Inventory.Amount 1;
+		Radius 16;
+		Height 32;
+		Scale 0.25;
+		RenderStyle 'Translucent';
+		Inventory.Icon "TEXTG0";
+		Inventory.PickupMessage "$PAPERMAP";
+		Inventory.PickupSound "pickup/papers";
+	}
+
+	States
+	{
+		Spawn:
+			TEXT G -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		frame = args[1];
+
+		String ico = String.Format("%s%c%i", "TEXT", 65 + args[1], 0);
+		icon = TexMan.CheckForTexture(ico, TexMan.Type_Any);
+
+		if (frame == 8) { PickupSound = "pickup/generic"; }
+
+		Super.PostBeginPlay();
+	}
+
+	override bool Use(bool pickup)
+	{
+		if (owner && owner.player)
+		{
+			owner.player.ConversationNPC = self;
+			if (owner.player = players[consoleplayer]) { Menu.SetMenu("ViewItem"); }
+			owner.player.ConversationNPC = null;
+		}
+
+		return false;
+	}
+	
+	override bool Used(Actor user)
+	{
+		Super.TryPickup(user);
+
+		PrintPickupMessage(user.CheckLocalView(), PickupMessage());
+
+		return false;
+	}
+	//HandlePickup, TryPickup, Used are not needed since this is obtained from a merchant
 }
 
 class Safe : Actor

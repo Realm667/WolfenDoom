@@ -14,6 +14,7 @@
 #include "scripts/actors/effects/starparticles.txt"
 #include "scripts/actors/effects/steam.txt"
 #include "scripts/actors/effects/torches.txt"
+#include "scripts/actors/effects/grass.txt"
 
 class EffectInfo // Should just be a struct, but we can't use structs in dynamic arrays...
 {
@@ -174,6 +175,7 @@ class EffectsManager : Thinker
 			}
 
 			bool inrange = false;
+			double dist, range;
 
 			for (int p = 0; p < MAXPLAYERS && !inrange; p++)
 			{
@@ -183,9 +185,10 @@ class EffectsManager : Thinker
 				if (!check) { check = players[p].mo; }
 				if (!check) { continue; }
 
-				double range = effects[i].range <= 0 ? boa_sfxlod : effects[i].range;
+				range = effects[i].range <= 0 ? boa_sfxlod : effects[i].range;
 
-				if ((level.Vec3Diff(check.pos, effects[i].position)).length() < range) { inrange = true; }
+				dist = (level.Vec3Diff(check.pos, effects[i].position)).length();
+				if (dist < range) { inrange = true; }
 			}
 
 			if (inrange && !effects[i].effect)
@@ -215,12 +218,41 @@ class EffectsManager : Thinker
 			}
 			else if (!inrange && effects[i].effect && !effects[i].effect.bDormant)
 			{
-				effects[i].effect.A_RemoveChildren(TRUE, RMVF_MISC);
-				effects[i].effect.Destroy();
+				if (effects[i].effect is "CullActorBase" && (CullActorBase(effects[i].effect).targetalpha != -1 || effects[i].effect.health <= 0))
+				{
+					if (dist > range * 2) { CullActorBase(effects[i].effect).targetalpha = -1; }
+					else { CullActorBase(effects[i].effect).targetalpha = GetDistanceAlpha(effects[i].effect, dist, range); }
+				}
+				else if (effects[i].effect.health <= 0) // Don't cull destroyed actors
+				{
+					effects.Delete(i); // ...and stop tracking them
+				}
+				else
+				{
+					effects[i].effect.A_RemoveChildren(TRUE, RMVF_MISC);
+
+					state FadeState = effects[i].effect.FindState("Fade");
+
+					if (effects[i].effect.alpha > 0 && level.time > 35 && FadeState) { effects[i].effect.SetState(FadeState); }
+					else { effects[i].effect.Destroy(); }
+				}
 			}
+			else if (effects[i].effect && effects[i].effect is "CullActorBase") { CullActorBase(effects[i].effect).targetalpha = GetDistanceAlpha(effects[i].effect, dist, range); }
 		}
 
 		effects.ShrinkToFit();
+	}
+
+	static double GetDistanceAlpha(Actor effect, double dist, double range)
+	{
+		if (!effect) { return 0; }
+
+		double ramp = 512;
+		double rampdist = dist - (range - ramp);
+
+		double alpha = 1.0 - clamp(rampdist / ramp, 0.0, 1.0);
+
+		return effect.Default.alpha * alpha;
 	}
 }
 
@@ -297,8 +329,51 @@ class EffectBase : SimpleActor
 	}
 }
 
-class GrassBase : SimpleActor
+class CullActorBase : Actor
 {
+	double targetalpha;
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (GetRenderStyle() == STYLE_Normal) { A_SetRenderStyle(alpha, STYLE_Translucent); }
+		alpha = 0;
+		targetalpha = -1;
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (targetalpha >= 0)
+		{
+			if (targetalpha > alpha)
+			{
+				alpha = min(targetalpha, alpha + 0.05);
+				if (GetRenderStyle() == STYLE_Normal) { A_SetRenderStyle(alpha, STYLE_Translucent); }
+			}
+			else if (targetalpha < alpha)
+			{
+				alpha = max(targetalpha, alpha - 0.05);
+				if (GetRenderStyle() == STYLE_Normal) { A_SetRenderStyle(alpha, STYLE_Translucent); }
+			}
+			else
+			{
+				if (targetalpha == Default.alpha) { RestoreRenderStyle(); }
+				alpha = targetalpha;
+				targetalpha = -1;
+			}
+		}
+	}
+}
+
+class GrassBase : CullActorBase
+{
+	class<Actor> fragments;
+
+	Property Fragments:fragments;	
+
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
@@ -306,21 +381,48 @@ class GrassBase : SimpleActor
 	}
 }
 
-class SceneryBase : Actor
+class SceneryBase : CullActorBase
 {
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		EffectsManager.Add(self, boa_scenelod, true);
+	}
+}
+
+class TreesBase : CullActorBase
+{
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		EffectsManager.Add(self, boa_treeslod, true);
+	}
+}
+
+class VolumetricBase : CullActorBase
+{
+	Default
+	{
+		//$Category Special Effects (BoA)
+		//$Color 12
+		//$Sprite "VOLTA0"
+		DistanceCheck "boa_scenelod";
+		Height 1;
+		Radius 1;
+		+NOBLOCKMAP
+		+NOCLIP
+		+NOGRAVITY
+		+NOINTERACTION
+		XScale 0.3;
+		YScale 0.45;
+		Alpha 0.4;
+		RenderStyle "Add";
+	}
+
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
 		EffectsManager.Add(self, boa_scenelod);
-	}
-}
-
-class TreesBase : Actor
-{
-	override void PostBeginPlay()
-	{
-		Super.PostBeginPlay();
-		EffectsManager.Add(self, boa_treeslod);
 	}
 }
 
