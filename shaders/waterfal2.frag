@@ -46,6 +46,9 @@ float fbm( in vec2 p ){
 // By Talon1024
 // #define NOISE_SCALE 64.
 // #define NOISE_DISTANCE 512.
+// #define OVERLAY_SCALE_X 1.
+// #define OVERLAY_SCALE_Y 1.
+// #define OVERLAY_OPACITY .5
 
 vec4 Process(vec4 color) // color is white for some reason.. A GZDoom bug?
 {
@@ -55,7 +58,10 @@ vec4 Process(vec4 color) // color is white for some reason.. A GZDoom bug?
 	// return fbmColor;
 	fbmColor *= texture(tex, vTexCoord.xy); // Colorize fbm
 	fbmColor *= min(1., NOISE_DISTANCE / pixelpos.w);
-	finalColor = mix(finalColor, texture(tex, vec2(vTexCoord.x, vTexCoord.y - timer * .5)), .5);
+	vec2 overlayUv = vTexCoord.xy;
+	overlayUv *= vec2(OVERLAY_SCALE_X, OVERLAY_SCALE_Y);
+	overlayUv.y -= timer * .5;
+	finalColor = mix(finalColor, texture(tex, overlayUv), OVERLAY_OPACITY);
 	finalColor += fbmColor;
 	return finalColor;
 }
