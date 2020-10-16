@@ -871,8 +871,6 @@ ACTOR Camp_StaticBaldNH : Camp_StaticShirtlessNH
 
 ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he doesn't - ozy81
 {
-	var float user_basescale;
-
 	//$Category Concentration Camp (BoA)
 	//$Title Wandering Prisoner (bald)
 	//$Color 3
@@ -896,6 +894,8 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 	PainSound "urss/pain"
 	DeathSound "urss/death"
 	Species "PlayerFollower"
+	Nazi.ZombieVariant "Camp_PrisonerZombie"
+	var float user_basescale;
 	States
 	{
 	Spawn:
