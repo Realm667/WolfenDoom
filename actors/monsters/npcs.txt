@@ -613,29 +613,35 @@ ACTOR GeneralAllied : Base
 ACTOR Camp_StaticBroom
 {
 	//$Category Concentration Camp (BoA)/Static
-	//$Title Prisoner (with broom)
+	//$Title Shootable Prisoner (with broom)
 	//$Color 3
 	Height 48
-	Health -1
+	Health 500
 	Mass 600
 	Scale 0.65
-	+INVULNERABLE
 	+NOTAUTOAIMED
 	+SHOOTABLE
 	+SOLID
 	+THRUSPECIES
+	DeathSound "urss/death"
 	Species "PlayerFollower"
 	States
 	{
 	Spawn:
 		PRSA A -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
 		Stop
+	Death:
+		"####" A 0 { A_UnSetSolid; A_TakeFromTarget("CoinItem",50); }//players will lose 50 coins if they kill him - ozy81
+		"####" BCD 6 
+		"####" E 8 A_Scream
+		"####" F -1
+		Stop
 	}
 }
 
 ACTOR Camp_StaticShovel : Camp_StaticBroom
 {
-	//$Title Prisoner (with shovel)
+	//$Title Shootable Prisoner (with shovel)
 	States
 	{
 	Spawn:
@@ -646,8 +652,9 @@ ACTOR Camp_StaticShovel : Camp_StaticBroom
 
 ACTOR Camp_StaticShovelLow : Camp_StaticBroom
 {
-	//$Title Prisoner (with shovel, low)
+	//$Title Shootable Prisoner (with shovel, low)
 	Height 24
+	+DONTTHRUST
 	States
 	{
 	Spawn:
@@ -658,7 +665,7 @@ ACTOR Camp_StaticShovelLow : Camp_StaticBroom
 
 ACTOR Camp_StaticKneeing : Camp_StaticBroom
 {
-	//$Title Prisoner (hurt, kneel)
+	//$Title Shootable Prisoner (hurt, kneel)
 	Height 32
 	States
 	{
@@ -670,7 +677,7 @@ ACTOR Camp_StaticKneeing : Camp_StaticBroom
 
 ACTOR Camp_StaticStandingA : Camp_StaticBroom
 {
-	//$Title Prisoner (standing, bald)
+	//$Title Shootable Prisoner (standing, bald)
 	States
 	{
 	Spawn:
@@ -681,7 +688,7 @@ ACTOR Camp_StaticStandingA : Camp_StaticBroom
 
 ACTOR Camp_StaticStandingB : Camp_StaticBroom
 {
-	//$Title Prisoner (standing, hat)
+	//$Title Shootable Prisoner (standing, hat)
 	States
 	{
 	Spawn:
@@ -693,6 +700,7 @@ ACTOR Camp_StaticStandingB : Camp_StaticBroom
 ACTOR Camp_StaticStandingBTalk : StatistBarkeeper
 {
 	//$Title Prisoner (standing, hat, talkable)
+	-NOTAUTOAIMED	// Conversation fix - Talon1024
 	-SOLID			// Avoid potential map breaking behaviors, since we can "use" it to climb high heights, like huts on c3m1 - Ozy81
 	-USESPECIAL
 	+DONTTHRUST		// prevent actor from moving if hit - ozy81
@@ -706,7 +714,7 @@ ACTOR Camp_StaticStandingBTalk : StatistBarkeeper
 
 ACTOR Camp_StaticWashBroom : Camp_StaticBroom
 {
-	//$Title Prisoner (washbroom)
+	//$Title Shootable Prisoner (washbroom)
 	States
 	{
 	Spawn:
@@ -717,13 +725,18 @@ ACTOR Camp_StaticWashBroom : Camp_StaticBroom
 
 ACTOR Camp_StaticSit : Camp_StaticBroom
 {
-	//$Title Prisoner (sit on the wc)
+	//$Title Shootable Prisoner (sit on a bench)
 	Height 32
 	+FORCEXYBILLBOARD
 	States
 	{
 	Spawn:
 		PRSI A -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
+		Stop
+	Death:
+		"####" A 0 { A_UnSetSolid; A_TakeFromTarget("CoinItem",50); }
+		"####" B 8 A_Scream
+		"####" B -1
 		Stop
 	}
 }
@@ -740,13 +753,23 @@ ACTOR Camp_StaticSitTalk : StatistBarkeeper
 	{
 	Spawn:
 		PRSI A -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
-		Stop
 	}
 }
 
-ACTOR Camp_StaticShovelDig : Camp_StaticBroom
+ACTOR Camp_StaticShovelDig
 {
-	//$Title Prisoner (digging with shovel)
+	//$Category Concentration Camp (BoA)/Static
+	//$Title Shootable Prisoner (digging with shovel)
+	//$Color 3
+	Height 48
+	Health 500
+	Mass 600
+	Scale 0.65
+	+NOTAUTOAIMED
+	+SHOOTABLE
+	+SOLID
+	DeathSound "urss/death"
+	Species "PlayerFollower"
 	States
 	{
 	Spawn:
@@ -762,12 +785,18 @@ ACTOR Camp_StaticShovelDig : Camp_StaticBroom
 		"####" A 1 A_SetTics(random(24,32))
 		"####" BCDE 1 A_SetTics(random(12,16))
 		Goto SpawnLoop
+	Death:
+		"####" A 0 { A_UnSetSolid; A_TakeFromTarget("CoinItem",50); }
+		"####" FGH 8
+		"####" I 6 A_Scream
+		"####" J -1
+		Stop
 	}
 }
 
 ACTOR Camp_StaticHammeringL : Camp_StaticShovelDig
 {
-	//$Title Prisoner (hammering, left)
+	//$Title Shootable Prisoner (hammering, left)
 	States
 	{
 	Spawn:
@@ -788,12 +817,22 @@ ACTOR Camp_StaticHammeringL : Camp_StaticShovelDig
 		"####" CDCD 1 A_SetTics(random(12,16))
 		"####" BB 1 A_SetTics(random(12,16))
 		Goto SpawnLoop
+	Death:
+		PRSN I 5 A_Scream
+		"####" I 0 A_TakeFromTarget("CoinItem",50)
+		"####" J 6
+		"####" K 5 A_NoBlocking
+		"####" L 5 A_Jump(1,2,3)
+		"####" M -1
+		"####" N -1
+		"####" O -1
+		Stop
 	}
 }
 
 ACTOR Camp_StaticHammeringR : Camp_StaticHammeringL
 {
-	//$Title Prisoner (hammering, right)
+	//$Title Shootable Prisoner (hammering, right)
 	States
 	{
 	Spawn:
@@ -832,10 +871,12 @@ ACTOR Camp_StaticBaldNH : Camp_StaticShirtlessNH
 
 ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he doesn't - ozy81
 {
+	var float user_basescale;
+
 	//$Category Concentration Camp (BoA)
-	//$Title Wandering Prisoner (invulnerable, bald)
+	//$Title Wandering Prisoner (bald)
 	//$Color 3
-	Health -1
+	Health 500
 	PainChance 255 //let's force it for Frightened - ozy81
 	Speed 1
 	Radius 20
@@ -845,7 +886,6 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 	-COUNTKILL
 	+FLOORCLIP
 	+FRIENDLY
-	+INVULNERABLE
 	+JUSTHIT
 	+NEVERTARGET
 	+NOSPLASHALERT
@@ -854,9 +894,8 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 	MaxStepHeight 16
 	MaxDropoffHeight 32
 	PainSound "urss/pain"
+	DeathSound "urss/death"
 	Species "PlayerFollower"
-	Nazi.NoRandomDeaths 3 //no back-front death, but well he is invulnerable
-	var float user_basescale;
 	States
 	{
 	Spawn:
@@ -959,6 +998,16 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 				bFrightened = True;
 			}
 		Goto SpawnLoop
+	Death:
+		"####" I 5 A_Scream
+		"####" I 0 A_TakeFromTarget("CoinItem",50)
+		"####" J 6
+		"####" K 5 A_NoBlocking
+		"####" L 5 A_Jump(1,2,3)
+		"####" M -1
+		"####" N -1
+		"####" O -1
+		Stop
 	Inactive:
 		"####" E 0 {bUseSpecial = TRUE;}
 		"####" E -1
@@ -968,7 +1017,9 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 
 ACTOR Camp_PrisonerBaldShirtless : Camp_PrisonerBald
 {
-	//$Title Wandering Prisoner, Shirtless (invulnerable, bald)
+	//$Title Wandering Prisoner, Shirtless (bald)
+	Health 15
+	Nazi.ZombieVariant "Camp_PrisonerZombie"
 	States
 	{
 	Spawn:
