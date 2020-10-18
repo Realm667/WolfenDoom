@@ -19,11 +19,21 @@ class Soul : StackableInventory
 
 	States
 	{
+		Placed:
+			AMM3 ABCD 5 Bright Light("Soul");
+			Loop;
 		Spawn:
 			AMM3 ABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCD 5 Bright Light("Soul");
 		Fadeout:
 			AMM3 ABCD 5 Bright A_FadeOut(0.05);
 			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (GetClassName() == "Soul" && !bDropped) { SetStateLabel("Placed"); }
 	}
 }
 
