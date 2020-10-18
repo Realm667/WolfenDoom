@@ -43,7 +43,7 @@ vec4 Process(vec4 color) // color is white for some reason.. A GZDoom bug?
 	finalColor = add_blur(tex, finalColor);
 	#endif
 	vec2 fbmUv = vTexCoord.xy; fbmUv.y -= timer;
-	vec4 fbmColor = texture(fbmnoise, fbmUv) * 1.5;
+	vec4 fbmColor = texture(fbmnoise, fbmUv);
 	// return fbmColor;
 	fbmColor *= texture(tex, vTexCoord.xy); // Colorize fbm
 	fbmColor *= min(1., NOISE_DISTANCE / pixelpos.w);
