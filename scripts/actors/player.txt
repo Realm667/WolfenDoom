@@ -401,7 +401,8 @@ class BoAPlayer : PlayerPawn
 	{
 		let player = self.player;
 		UserCmd cmd = player.cmd;
-		
+		prevBob = player.bob; // Fix for weapon stutter
+
 		CheckFOV();
 
 		if (player.inventorytics)
