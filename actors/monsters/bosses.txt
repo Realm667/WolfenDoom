@@ -1794,8 +1794,8 @@ ACTOR MadCook : MadDoctor
 		Goto See
 	Missile:
 		COOK E 10 A_FaceTarget
-		"####" FF 2 A_SpawnProjectile("FlyingHack",32,12,random(-8,8))
-		"####" F 3 A_SpawnProjectile("FlyingHack",32,12)
+		"####" FF 2 A_ArcProjectile("FlyingHack",32,12,random(-8,8))
+		"####" F 3 A_ArcProjectile("FlyingHack",32,12)
 		"####" A 8
 		Goto See
 	}

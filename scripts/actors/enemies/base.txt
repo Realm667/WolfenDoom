@@ -365,6 +365,24 @@ class Base : Actor
 		}
 	}
 
+	// Fires a projectile in an arc towards the target. Assumes the projectile has Gravity set
+	Actor A_ArcProjectile(class<Actor> missiletype, double spawnheight = 32, double spawnofs_xy = 0, double angle = 0, int flags = 0, double pitch = 0, int ptr = AAPTR_TARGET)
+	{
+		Actor targ = GetPointer(ptr);
+		Actor proj = A_SpawnProjectile(missiletype, spawnheight, spawnofs_xy, angle, flags, pitch, ptr);
+		double gravity = proj.GetGravity() / Actor.GetDefaultSpeed(missiletype);
+		Console.Printf("gravity: %.3f", gravity);
+		if (!gravity)
+		{
+			return proj;
+		}
+		Vector3 toTarget = Level.Vec3Diff(Pos, targ.Pos);
+		double distance = toTarget.XY.Length();
+		double height = toTarget.Z;
+		proj.Vel.Z = ZScriptTools.GetZVel(distance, gravity, height);
+		return proj;
+	}
+
 	void A_WanderGoal(int flags = 0, int scarerange = 0)
 	{
 		if (scarerange > 0 && lastheard)
