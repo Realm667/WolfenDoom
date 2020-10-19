@@ -449,7 +449,7 @@ class BoAInfo : GenericMenu
 								charbyte == 0x0
 							)
 							{
-								screen.DrawText(fnt, clr, x / textscale + xoffset + textx, y / textscale + yoffset / textscale, temp, DTA_VirtualWidthF, w / textscale, DTA_VirtualHeightF, h / textscale, DTA_Alpha, alpha, DTA_ClipTop, cliptop, DTA_ClipBottom, clipbottom);
+								screen.DrawText(fnt, clr, x / textscale + xoffset + textx, y / textscale + yoffset / textscale, temp, DTA_VirtualWidthF, w / textscale, DTA_VirtualHeightF, h / textscale, DTA_Alpha, alpha);
 
 								if (charbyte == 0x9) // Tab alignment
 								{
@@ -474,7 +474,7 @@ class BoAInfo : GenericMenu
 					}
 					else
 					{			
-						screen.DrawText(fnt, clr, x / textscale + xoffset, y / textscale + yoffset / textscale, line, DTA_VirtualWidthF, w / textscale, DTA_VirtualHeightF, h / textscale, DTA_Alpha, alpha, DTA_ClipTop, cliptop, DTA_ClipBottom, clipbottom);
+						screen.DrawText(fnt, clr, x / textscale + xoffset, y / textscale + yoffset / textscale, line, DTA_VirtualWidthF, w / textscale, DTA_VirtualHeightF, h / textscale, DTA_Alpha, alpha);
 					}
 				}
 				yoffset += fnt.GetHeight() * textscale;
