@@ -65,18 +65,18 @@ class ZScriptTools
 	}
 
 	// Get Z velocity for an arcing projectile, where:
-	// distance is the 2D distance between the shooter and target
+	// time is the 2D distance between the shooter and target, divided by the speed
 	// gravity is the amount the Z velocity decreases each tic
 	// height is the height difference between the shooter and target
-	static double GetZVel(double distance, double gravity, double height = 0)
+	static double GetZVel(double time, double gravity, double height = 0)
 	{
 		double badd = 0; // Add this to b
 		if (!!height) // height != 0
 		{
-			badd = height / distance;
+			badd = height / time;
 		}
 		// If there is no height difference, it's quite simple.
-		double b = distance * gravity + badd;
-		return b - gravity;
+		double b = time * gravity + badd;
+		return -gravity + b;
 	}
 }

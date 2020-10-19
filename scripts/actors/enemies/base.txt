@@ -370,16 +370,17 @@ class Base : Actor
 	{
 		Actor targ = GetPointer(ptr);
 		Actor proj = A_SpawnProjectile(missiletype, spawnheight, spawnofs_xy, angle, flags, pitch, ptr);
-		double gravity = proj.GetGravity() / Actor.GetDefaultSpeed(missiletype);
-		Console.Printf("gravity: %.3f", gravity);
+		double gravity = proj.GetGravity();
+		double speed = Actor.GetDefaultSpeed(missiletype);
 		if (!gravity)
 		{
 			return proj;
 		}
-		Vector3 toTarget = Level.Vec3Diff(Pos, targ.Pos);
-		double distance = toTarget.XY.Length();
+		Vector3 toTarget = Level.Vec3Diff(proj.Pos, targ.Pos);
+		double time = toTarget.XY.Length() / speed;
 		double height = toTarget.Z;
-		proj.Vel.Z = ZScriptTools.GetZVel(distance, gravity, height);
+		// Console.Printf("time %.3f, gravity %.3f, speed %.3f, height %.3f", time, gravity, speed, height);
+		proj.Vel.Z = ZScriptTools.GetZVel(time, gravity, height);
 		return proj;
 	}
 
