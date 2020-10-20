@@ -70,6 +70,7 @@ class ZScriptTools
 	// height is the height difference between the shooter and target
 	static double GetZVel(double time, double gravity, double height = 0)
 	{
+		gravity *= .5;
 		double badd = 0; // Add this to b
 		if (!!height) // height != 0
 		{
