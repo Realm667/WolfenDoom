@@ -395,7 +395,7 @@ class Base : Actor
 		}
 		if (pitch && (flags & CMF_OFFSETPITCH))
 		{
-			proj.Vel.Z += sin(-pitch);
+			proj.Vel.Z += sin(-pitch) * speed;
 		}
 		return proj;
 	}
