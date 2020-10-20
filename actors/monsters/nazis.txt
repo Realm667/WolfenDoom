@@ -1771,29 +1771,29 @@ ACTOR WGrenadier: Sniper_Crouch
 		"####" B 0 A_JumpIfCloser(radius+384,"Missile4",TRUE)
 		"####" B 0 A_Jump(64,"Missile2")
 		"####" B 0 A_Jump(16,"Missile3")
-		"####" C 4 A_SpawnProjectile("VeryFastGrenade",32,16,frandom(-4,4),CMF_OFFSETPITCH,8)
+		"####" C 4 A_ArcProjectile("VeryFastGrenade",32,16,frandom(-4,4),CMF_OFFSETPITCH,8)
 		"####" A 28
 		Goto See
 	Missile2:
 		"####" B 30 A_FaceTarget
-		"####" C 8 A_SpawnProjectile("HandGrenade",24,16,frandom(-4,4))
+		"####" C 8 A_ArcProjectile("HandGrenade",24,16,frandom(-4,4))
 		"####" A 15
 		"####" B 30 A_FaceTarget
-		"####" C 8 A_SpawnProjectile("VerySlowGrenade",24,16,frandom(-8,8),CMF_AIMDIRECTION)
+		"####" C 8 A_ArcProjectile("VerySlowGrenade",24,16,frandom(-8,8),CMF_AIMDIRECTION)
 		Goto See
 	Missile3:
 		"####" B 25 A_FaceTarget
-		"####" C 8 A_SpawnProjectile("HandGrenade",24,16,frandom(-4,4))
+		"####" C 8 A_ArcProjectile("HandGrenade",24,16,frandom(-4,4))
 		"####" A 10
 		"####" B 30 A_FaceTarget
-		"####" C 8 A_SpawnProjectile("SlowGrenade",24,16,frandom(-8,8),CMF_AIMDIRECTION)
+		"####" C 8 A_ArcProjectile("SlowGrenade",24,16,frandom(-8,8),CMF_AIMDIRECTION)
 		"####" A 15
 		"####" B 35 A_FaceTarget
-		"####" C 8 A_SpawnProjectile("VerySlowGrenade",24,16,frandom(-16,16))
+		"####" C 8 A_ArcProjectile("VerySlowGrenade",24,16,frandom(-16,16))
 		Goto See
 	Missile4:
 		"####" B 10 A_FaceTarget
-		"####" C 8 A_SpawnProjectile("SlowGrenade",24,16,frandom(-4,4),CMF_AIMDIRECTION)
+		"####" C 8 A_ArcProjectile("SlowGrenade",24,16,frandom(-4,4),CMF_AIMDIRECTION)
 		"####" A 20
 		Goto See
 	Death:
@@ -1829,29 +1829,29 @@ ACTOR AGrenadier : WGrenadier
 		"####" B 0 A_JumpIfCloser(radius+384,"Missile4",TRUE)
 		"####" B 0 A_Jump(64,"Missile2")
 		"####" B 0 A_Jump(16,"Missile3")
-		"####" C 6 A_SpawnProjectile("VeryFastGrenade",32,16,frandom(-4,4),CMF_OFFSETPITCH,8)
+		"####" C 6 A_ArcProjectile("VeryFastGrenade",32,16,frandom(-4,4),CMF_OFFSETPITCH,8)
 		"####" A 30
 		Goto See
 	Missile2:
 		"####" B 35 A_FaceTarget
-		"####" C 9 A_SpawnProjectile("HandGrenade",24,16,frandom(-4,4))
+		"####" C 9 A_ArcProjectile("HandGrenade",24,16,frandom(-4,4))
 		"####" A 20
 		"####" B 30 A_FaceTarget
-		"####" C 9 A_SpawnProjectile("VerySlowGrenade",24,16,frandom(-8,8),CMF_AIMDIRECTION)
+		"####" C 9 A_ArcProjectile("VerySlowGrenade",24,16,frandom(-8,8),CMF_AIMDIRECTION)
 		Goto See
 	Missile3:
 		"####" B 28 A_FaceTarget
-		"####" C 8 A_SpawnProjectile("HandGrenade",24,16,frandom(-4,4))
+		"####" C 8 A_ArcProjectile("HandGrenade",24,16,frandom(-4,4))
 		"####" A 15
 		"####" B 30 A_FaceTarget
-		"####" C 8 A_SpawnProjectile("SlowGrenade",24,16,frandom(-8,8),CMF_AIMDIRECTION)
+		"####" C 8 A_ArcProjectile("SlowGrenade",24,16,frandom(-8,8),CMF_AIMDIRECTION)
 		"####" A 15
 		"####" B 38 A_FaceTarget
-		"####" C 8 A_SpawnProjectile("VerySlowGrenade",24,16,frandom(-16,16))
+		"####" C 8 A_ArcProjectile("VerySlowGrenade",24,16,frandom(-16,16))
 		Goto See
 	Missile4:
 		"####" B 15 A_FaceTarget
-		"####" C 8 A_SpawnProjectile("SlowGrenade",24,16,frandom(-4,4),CMF_AIMDIRECTION)
+		"####" C 8 A_ArcProjectile("SlowGrenade",24,16,frandom(-4,4),CMF_AIMDIRECTION)
 		"####" A 25
 		Goto See
 	Death:
@@ -1881,29 +1881,29 @@ ACTOR SGrenadier : WGrenadier
 		"####" B 0 A_JumpIfCloser(radius+384,"Missile4",TRUE)
 		"####" B 0 A_Jump(64,"Missile2")
 		"####" B 0 A_Jump(16,"Missile3")
-		"####" C 4 A_SpawnProjectile("VeryFastGrenade",32,16,frandom(-4,4),CMF_OFFSETPITCH,8)
+		"####" C 4 A_ArcProjectile("VeryFastGrenade",32,16,frandom(-4,4),CMF_OFFSETPITCH,8)
 		"####" A 20
 		Goto See
 	Missile2:
 		"####" B 25 A_FaceTarget
-		"####" C 6 A_SpawnProjectile("HandGrenade",24,16,frandom(-4,4))
+		"####" C 6 A_ArcProjectile("HandGrenade",24,16,frandom(-4,4))
 		"####" A 15
 		"####" B 25 A_FaceTarget
-		"####" C 6 A_SpawnProjectile("VerySlowGrenade",24,16,frandom(-8,8),CMF_AIMDIRECTION)
+		"####" C 6 A_ArcProjectile("VerySlowGrenade",24,16,frandom(-8,8),CMF_AIMDIRECTION)
 		Goto See
 	Missile3:
 		"####" B 20 A_FaceTarget
-		"####" C 6 A_SpawnProjectile("HandGrenade",24,16,frandom(-4,4))
+		"####" C 6 A_ArcProjectile("HandGrenade",24,16,frandom(-4,4))
 		"####" A 5
 		"####" B 25 A_FaceTarget
-		"####" C 6 A_SpawnProjectile("SlowGrenade",24,16,frandom(-8,8),CMF_AIMDIRECTION)
+		"####" C 6 A_ArcProjectile("SlowGrenade",24,16,frandom(-8,8),CMF_AIMDIRECTION)
 		"####" A 12
 		"####" B 30 A_FaceTarget
-		"####" C 6 A_SpawnProjectile("VerySlowGrenade",24,16,frandom(-16,16))
+		"####" C 6 A_ArcProjectile("VerySlowGrenade",24,16,frandom(-16,16))
 		Goto See
 	Missile4:
 		"####" B 8 A_FaceTarget
-		"####" C 6 A_SpawnProjectile("SlowGrenade",24,16,frandom(-4,4),CMF_AIMDIRECTION)
+		"####" C 6 A_ArcProjectile("SlowGrenade",24,16,frandom(-4,4),CMF_AIMDIRECTION)
 		"####" A 15
 		Goto See
 	Death:
@@ -3122,7 +3122,7 @@ ACTOR EliteAssaulter : BasicGuard
 	Grenada: //only 4 grenades then always retreat once triggered - ozy81
 		ELTA EF 7 A_FaceTarget
 		"####" E 0 {user_count2++;}
-		"####" E 4 A_SpawnProjectile("HandGrenade")
+		"####" E 4 A_ArcProjectile("HandGrenade")
 	Retreat:
 		ELTA A 0 A_SetSpeed(8)
 		"####" A 0 {bFrightened = TRUE;}
