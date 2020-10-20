@@ -368,18 +368,22 @@ class Base : Actor
 	// Fires a projectile in an arc towards the target. Assumes the projectile has Gravity set
 	Actor A_ArcProjectile(class<Actor> missiletype, double spawnheight = 32, double spawnofs_xy = 0, double angle = 0, int flags = 0, double pitch = 0, int ptr = AAPTR_TARGET)
 	{
+		// This function works by firing the projectile, and then modifying its
+		// Z velocity to hit the target.
 		Actor targ = GetPointer(ptr);
 		Actor proj = A_SpawnProjectile(missiletype, spawnheight, spawnofs_xy, angle, flags, pitch, ptr);
 		double gravity = proj.GetGravity();
 		double speed = Actor.GetDefaultSpeed(missiletype);
 		if (!gravity)
 		{
+			// Gravity is 0, and thus the projectile will not fly in an arc, so
+			// don't modify the projectile's velocity!
 			return proj;
 		}
-		Vector3 toTarget = Level.Vec3Diff(proj.Pos, targ.Pos);
-		double time = toTarget.XY.Length() / speed;
-		double height = toTarget.Z;
-		// Console.Printf("time %.3f, gravity %.3f, speed %.3f, height %.3f", time, gravity, speed, height);
+		Vector2 toTarget = Level.Vec2Diff(proj.Pos.XY, targ.Pos.XY);
+		double time = toTarget.Length() / speed;
+		// Account for spawnheight when calculating height difference
+		double height = targ.Pos.Z - (proj.Pos.Z - spawnheight);
 		proj.Vel.Z = ZScriptTools.GetZVel(time, gravity, height);
 		return proj;
 	}
