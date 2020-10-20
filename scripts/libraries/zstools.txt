@@ -70,13 +70,8 @@ class ZScriptTools
 	// height is the height difference between the shooter and target
 	static double ArcZVel(double time, double gravity, double height = 0)
 	{
-		gravity *= .5;
-		double badd = 0; // Add this to b
-		if (height) // height != 0
-		{
-			badd = height / time;
-		}
-		// If there is no height difference, it's quite simple.
+		gravity *= .5; // I have no idea why I needed to do this, but I did...
+		double badd = height / time;
 		double b = time * gravity + badd;
 		return -gravity + b;
 	}

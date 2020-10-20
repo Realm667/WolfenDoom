@@ -1361,7 +1361,7 @@ ACTOR HimmlerBoss : RocketMan
 		"####" P 4 A_SpawnProjectile("NebRocketEnemy",44,-18)
 		Goto See
 	Mortar:
-		HIMM O 8 A_SpawnProjectile("HimmlerMortar",40,28,0,CMF_AIMDIRECTION|CMF_ABSOLUTEPITCH|CMF_SAVEPITCH,random(-30,-45))
+		HIMM O 8 A_ArcProjectile("HimmlerMortar",40,28,0,CMF_SAVEPITCH,random(-30,-45))
 		"####" N 6
 		Goto See
 	DropMine:
