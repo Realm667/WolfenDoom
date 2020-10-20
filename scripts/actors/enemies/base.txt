@@ -380,11 +380,10 @@ class Base : Actor
 			// don't modify the projectile's velocity!
 			return proj;
 		}
-		Vector2 toTarget = Level.Vec2Diff(proj.Pos.XY, targ.Pos.XY);
-		double time = toTarget.Length() / speed;
+		double time = proj.Distance2D(targ) / speed;
 		// Account for spawnheight when calculating height difference
 		double height = targ.Pos.Z - (proj.Pos.Z - spawnheight);
-		proj.Vel.Z = ZScriptTools.GetZVel(time, gravity, height);
+		proj.Vel.Z = ZScriptTools.ArcZVel(time, gravity, height);
 		return proj;
 	}
 
