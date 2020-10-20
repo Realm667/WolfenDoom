@@ -28,6 +28,7 @@ class EffectInfo // Should just be a struct, but we can't use structs in dynamic
 	int args[5];
 	int tid;
 	bool dormant;
+	bool ingame;
 	double range;
 }
 
@@ -79,7 +80,7 @@ class EffectsManager : Thinker
 	{
 		for (int i = 0; i < effects.Size(); i++)
 		{
-			if (effects[i] && effects[i].effect && effects[i].effect == effect) { return i; }
+			if (effects[i] && effects[i].ingame && effects[i].effect == effect) { return i; }
 		}
 		return effects.Size();
 	}
@@ -112,6 +113,7 @@ class EffectsManager : Thinker
 			this.tid = effect.tid;
 			this.dormant = effect.bDormant;
 			this.range = range;
+			this.ingame = true;
 
 			effects.Push(this);
 		}
@@ -191,7 +193,7 @@ class EffectsManager : Thinker
 				if (dist < range) { inrange = true; }
 			}
 
-			if (inrange && !effects[i].effect)
+			if (inrange && !effects[i].ingame)
 			{
 				Actor effect = Actor.Spawn(effects[i].type, effects[i].position);
 				if (effect)
@@ -203,7 +205,8 @@ class EffectsManager : Thinker
 					effect.master = effects[i].master;
 					effect.target = effects[i].target;
 					effect.tracer = effects[i].tracer;
-					effect.SpawnFlags = effects[i].SpawnFlags;	
+					effect.SpawnFlags = effects[i].SpawnFlags;
+					effect.bDormant = effects[i].dormant;
 
 					for (int a = 0; a < 5; a++)
 					{
@@ -214,6 +217,7 @@ class EffectsManager : Thinker
 					if (effect.SpawnFlags & MTF_DORMANT || effects[i].dormant) { effect.SetStateLabel("Inactive"); }
 
 					effects[i].effect = effect;
+					effects[i].ingame = true;
 				}
 			}
 			else if (!inrange && effects[i].effect && !effects[i].effect.bDormant)
@@ -234,7 +238,10 @@ class EffectsManager : Thinker
 					state FadeState = effects[i].effect.FindState("Fade");
 
 					if (effects[i].effect.alpha > 0 && level.time > 35 && FadeState) { effects[i].effect.SetState(FadeState); }
-					else { effects[i].effect.Destroy(); }
+					else {
+						effects[i].effect.Destroy();
+						effects[i].ingame = false;
+					}
 				}
 			}
 			else if (effects[i].effect && effects[i].effect is "CullActorBase") { CullActorBase(effects[i].effect).targetalpha = GetDistanceAlpha(effects[i].effect, dist, range); }
