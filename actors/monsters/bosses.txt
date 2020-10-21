@@ -2535,6 +2535,8 @@ ACTOR DeathKnight : Nazi
 ACTOR Longinus_Hitler : NaziBoss
 {
 	var float user_rumbleoffset;
+	var int user_count5;
+	var int user_count6;
 	//$Category Monsters (BoA)/Bosses
 	//$Title Adolf Hitler, Longinus (Boss)
 	//$Color 4
@@ -2578,24 +2580,24 @@ ACTOR Longinus_Hitler : NaziBoss
 	Wound:
 		"####" KLM 3
 	Wounded: // Set/define the 'wounded' state sprite here!  NaziBoss class will automatically force the enemy to use this base sprite when 'wounded' is set to true!
-		SHI2 "#" 0 { 
+		SHI2 "#" 0 {
 			A_SpawnItemEx("HitlerChaingun", random(8,-8), random(8,-8), random(54,64), random(1,6), random(1,6), random(1,6), random(0,360), SXF_NOCHECKPOSITION);
 			WoundHealth = 0; // Reset the WoundHealth to zero so that this block will only get activated when he's initially wounded
-			wounded = true; } // Set to true so that NaziBoss code will force the new sprite from here on
+			wounded = true; // Set to true so that NaziBoss code will force the new sprite from here on
+			bNoPain = true; } // now he is enraged and does not feel pain
 		Goto See
 	Heal:
-		"####" E 1 {bNoDamage = FALSE; A_UnsetReflective(); bAllowPain = TRUE;} //force Invulnerability removal - Ozy81
+		"####" E 1 {bNoDamage = FALSE; A_UnsetReflective(); } //force Invulnerability removal - Ozy81
 		"####" E 17 A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), 64, 0, 0, 0, 0)
 		"####" S 18 A_HealGoal
 		Goto See
-	Missile:
+	Missile: // Phase 1: 2 attacks (Chaingun/RumbleStomp) + Tesla for close range
 		"####" "#" 0 A_JumpIfCloser(radius + 256, "TeslaMissile")
-		"####" "#" 0 A_JumpIf(wounded, "Missile.Wounded")
+		"####" "#" 0 A_JumpIf(wounded,"Missile.Wounded")
 		"####" E 0 A_Jump(128,"RumbleStomp")
 		Goto Chaingun
-		"####" "#" 0 A_JumpIf(wounded, "ReflectiveOrb")
-	Missile.Wounded:
-		"####" E 0 A_Jump(170/*192*/,"RumbleStomp","ZyklonGrenade"/*, "ThuleSymbol"*/)
+	Missile.Wounded: // Phase 2: 4 attacks (RumbleStomp/ZyklonGrenade/PushAway/ReflectiveOrb) + Tesla for close range (processed before)
+		"####" E 0 A_Jump(192,"RumbleStomp","ZyklonGrenade","PushAway")
 		Goto ReflectiveOrb
 	Chaingun:
 		"####" E 6 A_StartSound("chaingun/start", CHAN_AUTO)
@@ -2610,18 +2612,21 @@ ACTOR Longinus_Hitler : NaziBoss
 		"####" I 0 {user_count3++; if(user_count3 > 5) {return ResolveState("See");} return ResolveState("");} //limit continuous refire
 		"####" G 2 A_MonsterRefire(20,"See")
 		Goto Chaingun
+	
+	//zombie reinforcements, tests multitasking skills and reaction (stop firing projectiles immediately)
 	ReflectiveOrb:
-		"####" S 0 A_Jump(64,"RumbleStomp")
 		"####" S 0 {user_count4++; if(user_count4 > 2) {return ResolveState("RumbleStomp");} return ResolveState("");} //limit continuous orbs
-		"####" S 1 {bNoDamage = TRUE; A_SetReflective(); bAllowPain = FALSE;}
+		"####" S 1 {user_count4 = 0; user_count5 = 0; user_count6 = 0; bNoDamage = TRUE; A_SetReflective();}
 		"####" S 1 A_SpawnItemEx("ReflectiveOrb",0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
 		"####" S 1 A_SetTics(35*3)
-		"####" S 1 {bNoDamage = FALSE; A_UnsetReflective(); bAllowPain = TRUE;}
+		"####" S 1 {bNoDamage = FALSE; A_UnsetReflective(); }
 		Goto See
+		
+	//also tests the player's multitasking and dodging skills
 	RumbleStomp:
-		"####" C 1 {bNoDamage = FALSE; A_UnsetReflective(); bAllowPain = TRUE;} //force Invulnerability removal - Ozy81
+		"####" C 1 {bNoDamage = FALSE; A_UnsetReflective();} //force Invulnerability removal - Ozy81
 		"####" C 6
-		"####" E 0 { user_count4 == 0; A_FaceTarget; }
+		"####" E 0 { user_count4 = 0; user_count5 = 0; user_count6 = 0; A_FaceTarget; }
 		"####" E 4
 		"####" H 8 LIGHT(ZYKOFIR2)
 		"####" H 0 A_StartSound("grenade/explode", CHAN_AUTO, 0, 1.0, 0.1)
@@ -2664,25 +2669,40 @@ ACTOR Longinus_Hitler : NaziBoss
 		}
 		"####" C 4
 		Goto See
+	
+	//instant area denial attack, prevent player from standing at one place (e. g. soul fountain) for too long
 	ZyklonGrenade:
+		"####" C 2 {user_count5++; if(user_count5 > 2) {return ResolveState("RumbleStomp");} return ResolveState("");} //limit continuous grenades
+		"####" C 2 {user_count4 = 0; user_count6 = 0; bNoDamage = FALSE; A_UnsetReflective();} //also needed here... --N00b
 		"####" E 6 A_FaceTarget
 		"####" T 14 A_FaceTarget
-		"####" V 8 A_FaceTarget
-		"####" W 6 {
+		"####" V 12 A_FaceTarget
+		"####" W 10 {
 			A_StartSound("grenade/throw");
 			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD);
 			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD);
 			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD);
 			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD);
 		}
-		"####" U 8
-		"####" C 4
+		"####" U 10
+		"####" C 6
 		Goto See
-	/*
-	ThuleSymbol:
-		"####" A 0 A_Log("THULE SYMBOL NOT IMPLEMENTED YET")
-		Goto RumbleStomp
-	*/
+	
+	//quick attack, deals zero damage but thrusts the player away (so they can fall from the arena)
+	//prevents the player from sniping at Hitler from a large distance (close to the arena boundary)
+	PushAway:
+		"####" C 2 {user_count6++; if(user_count6 > 2) {return ResolveState("ReflectiveOrb");} return ResolveState("");} //limit continuous pushes
+		"####" C 2 {user_count4 = 0; user_count5 = 0; bNoDamage = FALSE; A_UnsetReflective();}
+		"####" Y 10 A_FaceTarget
+		"####" X 12 A_FaceTarget
+		"####" Y 8 A_FaceTarget
+		"####" Z 6
+		{
+			A_QuakeEx(7,7,7,27,0,2048,"world/quake",QF_SCALEDOWN|QF_WAVE,6,6,6);
+			A_RadiusThrust(2000, 4096, RTF_NOIMPACTDAMAGE|RTF_NOTMISSILE|RTF_THRUSTZ, 2048);
+			//add a red area effect here?
+		}
+		Goto See
 	TeslaMissile:
 		"####" EHH 6 A_FaceTarget
 		"####" IJ 4 {
