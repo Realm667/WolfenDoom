@@ -2670,10 +2670,10 @@ ACTOR Longinus_Hitler : NaziBoss
 		"####" V 8 A_FaceTarget
 		"####" W 6 {
 			A_StartSound("grenade/throw");
-			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD|CMF_AIMDIRECTION);
-			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD|CMF_AIMDIRECTION);
-			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD|CMF_AIMDIRECTION);
-			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD|CMF_AIMDIRECTION);
+			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD);
+			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD);
+			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD);
+			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD);
 		}
 		"####" U 8
 		"####" C 4
@@ -3130,7 +3130,7 @@ ACTOR SuperSoldier_Wehrmacht : SuperSoldier
 	Missile2:
 		HWER E 12 A_FaceTarget
 		"####" I 8
-		"####" J 6 A_ArcProjectile("HandGrenade",50,16,frandom(-2,2),CMF_AIMDIRECTION)
+		"####" J 6 A_ArcProjectile("HandGrenade",50,16,frandom(-2,2))
 		"####" J 0 A_Jump(64,"Retreat")
 		"####" E 6
 		Goto See
