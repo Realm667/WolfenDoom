@@ -372,16 +372,18 @@ class Base : Actor
 		// Z velocity to hit the target.
 		Actor targ = GetPointer(ptr);
 		Actor proj = A_SpawnProjectile(missiletype, spawnheight, spawnofs_xy, angle, flags, pitch, ptr);
-		if (!gravity || (flags & CMF_ABSOLUTEPITCH) || (flags & CMF_AIMDIRECTION))
+		double gravity = proj.GetGravity();
+		if (!gravity || (flags & CMF_ABSOLUTEPITCH) || (flags & CMF_AIMDIRECTION) || !proj)
 		{
 			// Gravity is 0, and thus the projectile will not fly in an arc, so
 			// don't modify the projectile's velocity!
 			// Or CMF_ABSOLUTEPITCH or CMF_AIMDIRECTION is set, which makes the
 			// projectile use the given pitch value, in which case the Z
 			// velocity shouldn't be modified.
+			// Or the projectile was not even spawned, as could be the case if
+			// CMF_CHECKTARGETDEAD was set.
 			return proj;
 		}
-		double gravity = proj.GetGravity();
 		double speed = Actor.GetDefaultSpeed(missiletype);
 		double time = proj.Distance2D(targ) / speed;
 		// Account for spawnheight when calculating height difference
