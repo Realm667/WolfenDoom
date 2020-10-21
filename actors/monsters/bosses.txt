@@ -2534,13 +2534,14 @@ ACTOR DeathKnight : Nazi
 
 ACTOR Longinus_Hitler : NaziBoss
 {
+	var float user_rumbleoffset;
 	//$Category Monsters (BoA)/Bosses
 	//$Title Adolf Hitler, Longinus (Boss)
 	//$Color 4
 	Base.BossIcon "BOSSICO3"
 	Tag "$TAGHITLER"
-	Health 40000
-	WoundHealth 20000
+	Health 100000
+	WoundHealth 50000
 	Mass 16000
 	Painchance 16
 	Radius 64
@@ -2551,8 +2552,10 @@ ACTOR Longinus_Hitler : NaziBoss
 	+ALLOWPAIN
 	+INVULNERABLE
 	+NOFEAR
+	+MISSILEMORE //these two added by N00b
+	+MISSILEEVENMORE
 	PainChance 0 // No pain reaction, except for Occult Fire attacks.
-	PainChance "OccultFire", 24
+	PainChance "OccultFire", 8 //changed from 24, else you could stun him with repeated alternative attacks --N00b
 	DamageFactor "Rocket", 0.0
 	DamageFactor "OccultFire", 5.0
 	Obituary "$LHITLER"
@@ -2587,21 +2590,26 @@ ACTOR Longinus_Hitler : NaziBoss
 		Goto See
 	Missile:
 		"####" "#" 0 A_JumpIfCloser(radius + 256, "TeslaMissile")
-		"####" "#" 0 A_JumpIf(wounded, "ReflectiveOrb")
-	Chaingun:
+		"####" "#" 0 A_JumpIf(wounded, "Missile.Wounded")
 		"####" E 0 A_Jump(128,"RumbleStomp")
+		Goto Chaingun
+		"####" "#" 0 A_JumpIf(wounded, "ReflectiveOrb")
+	Missile.Wounded:
+		"####" E 0 A_Jump(170/*192*/,"RumbleStomp","ZyklonGrenade"/*, "ThuleSymbol"*/)
+		Goto ReflectiveOrb
+	Chaingun:
 		"####" E 6 A_StartSound("chaingun/start", CHAN_AUTO)
 		"####" E 0 A_StartSound("chaingun/loop", CHAN_AUTO)
 	Chaingun.Loop:
 		"####" FF 2 LIGHT(HAIL3FIR) A_SpawnProjectile("EnemyChaingunTracer2",102,-56,random(-11,11))
 		"####" FF 0 A_SpawnItemEx("9MMCasing2", 102,0,-72, random(3,4), random(-1,1), random(4,6), random(110,160),SXF_NOCHECKPOSITION)
-		"####" I 0 {user_count2++; if(user_count2 > 47) {user_count2 = 0; return ResolveState("See");} return ResolveState("");}
+		"####" I 0 {user_count2++; if(user_count2 > 5) {user_count2 = 0; return ResolveState("See");} return ResolveState("");}
 		"####" GG 2 LIGHT(HAIL3FIR) A_SpawnProjectile("EnemyChaingunTracer2",102,-56,random(-11,11))
 		"####" GG 0 A_SpawnItemEx("9MMCasing2", 102,0,-72, random(3,4), random(-1,1), random(4,6), random(110,160),SXF_NOCHECKPOSITION)
-		"####" I 0 {user_count2++; if(user_count2 > 47) {user_count2 = 0; return ResolveState("See");} return ResolveState("");}
-		"####" I 0 {user_count3++; if(user_count3 > 12) {return ResolveState("See");} return ResolveState("");} //limit continuous refire
+		"####" I 0 {user_count2++; if(user_count2 > 5) {user_count2 = 0; return ResolveState("See");} return ResolveState("");}
+		"####" I 0 {user_count3++; if(user_count3 > 5) {return ResolveState("See");} return ResolveState("");} //limit continuous refire
 		"####" G 2 A_MonsterRefire(20,"See")
-		Loop
+		Goto Chaingun
 	ReflectiveOrb:
 		"####" S 0 A_Jump(64,"RumbleStomp")
 		"####" S 0 {user_count4++; if(user_count4 > 2) {return ResolveState("RumbleStomp");} return ResolveState("");} //limit continuous orbs
@@ -2618,23 +2626,63 @@ ACTOR Longinus_Hitler : NaziBoss
 		"####" H 8 LIGHT(ZYKOFIR2)
 		"####" H 0 A_StartSound("grenade/explode", CHAN_AUTO, 0, 1.0, 0.1)
 		"####" H 1 Radius_Quake(10,10,0,16,0)
-		"####" E 12 A_SpawnProjectile("RumbleWaves",0,0,0,CMF_CHECKTARGETDEAD)
+		"####" E 12
+		{
+			user_rumbleoffset = frandom(0.0, 360.0);
+			for (user_count = 0; user_count < 8; user_count++)
+			{
+				A_SpawnProjectile("RumbleWaves",0,0,user_rumbleoffset+user_count*45.0,CMF_CHECKTARGETDEAD);
+			}
+		}
 		"####" C 6
 		"####" E 0 A_FaceTarget
 		"####" E 4
 		"####" H 8 LIGHT(ZYKOFIR2)
 		"####" H 0 A_StartSound("grenade/explode", CHAN_AUTO, 0, 1.0, 0.1)
 		"####" H 1 Radius_Quake(10,10,0,16,0)
-		"####" E 12 A_SpawnProjectile("RumbleWaves",0,0,random(-10,10),CMF_CHECKTARGETDEAD)
+		"####" E 12
+		{
+			user_rumbleoffset = frandom(0.0, 360.0);
+			for (user_count = 0; user_count < 8; user_count++)
+			{
+				A_SpawnProjectile("RumbleWaves",0,0,user_rumbleoffset+user_count*45.0,CMF_CHECKTARGETDEAD);
+			}
+		}
 		"####" C 6
 		"####" E 0 A_FaceTarget
 		"####" E 4
 		"####" H 8 LIGHT(ZYKOFIR2)
 		"####" H 0 A_StartSound("grenade/explode", CHAN_AUTO, 0, 1.0, 0.1)
 		"####" H 1 Radius_Quake(10,10,0,16,0)
-		"####" E 12 A_SpawnProjectile("RumbleWaves",0,0,random(-10,10),CMF_CHECKTARGETDEAD)
+		"####" E 12
+		{
+			user_rumbleoffset = frandom(0.0, 360.0);
+			for (user_count = 0; user_count < 8; user_count++)
+			{
+				A_SpawnProjectile("RumbleWaves",0,0,user_rumbleoffset+user_count*45.0,CMF_CHECKTARGETDEAD);
+			}
+		}
 		"####" C 4
 		Goto See
+	ZyklonGrenade:
+		"####" E 6 A_FaceTarget
+		"####" T 14 A_FaceTarget
+		"####" V 8 A_FaceTarget
+		"####" W 6 {
+			A_StartSound("grenade/throw");
+			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD|CMF_AIMDIRECTION);
+			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD|CMF_AIMDIRECTION);
+			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD|CMF_AIMDIRECTION);
+			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD|CMF_AIMDIRECTION);
+		}
+		"####" U 8
+		"####" C 4
+		Goto See
+	/*
+	ThuleSymbol:
+		"####" A 0 A_Log("THULE SYMBOL NOT IMPLEMENTED YET")
+		Goto RumbleStomp
+	*/
 	TeslaMissile:
 		"####" EHH 6 A_FaceTarget
 		"####" IJ 4 {
