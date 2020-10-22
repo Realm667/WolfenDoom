@@ -198,6 +198,36 @@ class TankInterceptTarget : Actor
 	}
 }
 
+// Same as NebNuke, but does not spawn NebBoom and cause explosion damage; moved from panzers.txt --N00b
+class NebNukeHarmless: Actor
+{
+	Actor a, b;
+	default
+	{
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+NOINTERACTION
+		Radius 0;
+		Height 0;
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 Radius_Quake(3,8,0,24,0);
+		"####" A 0 { a = Spawn("NebFlare", Pos, ALLOW_REPLACE); a.vel += self.vel; }
+		"####" A 3
+		{
+			a = Spawn("NebFloor", Pos, ALLOW_REPLACE); b = Spawn("NebSmokeFloor", Pos, ALLOW_REPLACE);
+			if (a) a.vel += self.vel; if (b) b.vel += self.vel;
+		}
+		"####" A 6 {
+			a = Spawn("NebSmokePillar", Pos, ALLOW_REPLACE); b = Spawn("NebSmokeMushroom", Pos, ALLOW_REPLACE);
+			if (a) a.vel += (self.vel + (0.0,0.0,2.0)); if (b) b.vel += self.vel;
+		}
+		Stop;
+	}
+}
+
 // Base tank enemy actor.  Follows terrain, tramples.
 //  Calls:
 //   DoTurretTarget (when turret is aimed at the target)
@@ -271,7 +301,7 @@ class TankBase : VehicleBase
 		TankBase.MinGunPitch -10;
 		TankBase.MaxGunPitch 25;
 		TankBase.TurretSpeed 1.5;
-		TankBase.TurretProjectile "TankRocket";
+		TankBase.TurretProjectile "TankMissile";
 		TankBase.FrontGunProjectile "EnemyChaingunTracer";
 		TankBase.TurretDelay 9;
 	}
@@ -1329,10 +1359,13 @@ class FriendlySherman : TankBase
 		Super.DoTurret(origin);
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
+		A_StartSound("tanks/75mmm3", CHAN_WEAPON);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
 		{
+			muzzleflash.vel += (mo.vel.x / 2.0, mo.vel.y / 2.0, mo.vel.z / 2.0);
+			if (self) muzzleflash.vel += self.vel;
 			mo.target = self;
 
 			missilecount++;
@@ -1432,10 +1465,13 @@ class SSTank1 : TankBase
 		Super.DoTurret(origin);
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
+		A_StartSound("tanks/75mmkwk40", CHAN_WEAPON);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
 		{
+			muzzleflash.vel += (mo.vel.x / 2.0, mo.vel.y / 2.0, mo.vel.z / 2.0);
+			if (self) muzzleflash.vel += self.vel;
 			mo.target = self;
 
 			missilecount++;
@@ -1545,6 +1581,7 @@ class SSTank2 : TankBase
 		Health 2500;
 		Speed 2.33333333;
 		MaxStepHeight 16;
+		TankBase.TurretProjectile "TankRocket"; //I presume the tube atop it is a variation of Panzerschreck
 		TankBase.TankActor "HalftrackTreads";
 		TankBase.TurretAngleRange 20;
 		TankBase.WheeledMovement true;
@@ -1560,6 +1597,7 @@ class SSTank2 : TankBase
 		origin.angle = turret.angle;
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
+		//no sound; it is a rocket
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
@@ -1657,10 +1695,13 @@ class SSTank3 : TankBase
 		Super.DoTurret(origin);
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
+		A_StartSound("tanks/88mmkwk36", CHAN_WEAPON);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
 		{
+			muzzleflash.vel += (mo.vel.x / 2.0, mo.vel.y / 2.0, mo.vel.z / 2.0);
+			if (self) muzzleflash.vel += self.vel;
 			mo.target = self;
 
 			missilecount++;
@@ -1838,10 +1879,13 @@ class T34Tank : TankBase
 		Super.DoTurret(origin);
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
+		A_StartSound("tanks/85mmziss53", CHAN_WEAPON);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
 		{
+			muzzleflash.vel += (mo.vel.x / 2.0, mo.vel.y / 2.0, mo.vel.z / 2.0);
+			if (self) muzzleflash.vel += self.vel;
 			mo.target = self;
 
 			missilecount++;

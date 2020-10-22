@@ -322,22 +322,6 @@ ACTOR NebNuke : Nuke
 	}
 }
 
-// Same as NebNuke, but does not spawn NebBoom and cause explosion damage
-ACTOR NebNukeHarmless : Nuke
-{
-	States
-	{
-	Spawn:
-		TNT1 A 0 Radius_Quake(3,8,0,24,0)
-		"####" A 0 A_SpawnItemEx("NebFlare")
-		"####" A 3 A_SpawnItemEx("NebFloor")
-		"####" A 0 A_SpawnItemEx("NebSmokeFloor")
-		"####" A 6 A_SpawnItemEx("NebSmokePillar",0,0,0,0,0,2)
-		"####" A 0 A_SpawnItemEx("NebSmokeMushroom",0,0,0)
-		Stop
-	}
-}
-
 ACTOR PanzerNuke : Nuke //for panzerschreck rockets
 {
 	States

@@ -362,12 +362,14 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 		double angledelta = deltaangle(angle, origin.angle);
 		double pitchdelta = deltaangle(pitch, origin.pitch);
 
-		A_StartSound("Panzer/fire", CHAN_WEAPON, 0, 8.0);
 		A_GunFlash();
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
-		Actor mo = A_FireProjectile("TankRocket", angledelta, False, 0, 0, FPF_NOAUTOAIM, pitchdelta);
+		A_StartSound("tanks/75mmm3", CHAN_WEAPON);
+		Actor mo = A_FireProjectile("TankMissile", angledelta, False, 0, 0, FPF_NOAUTOAIM, pitchdelta);
 		if (mo && origin != self)
 		{
+			muzzleflash.vel += (mo.vel.x / 2.0, mo.vel.y / 2.0, mo.vel.z / 2.0);
+			if (self) muzzleflash.vel += self.vel;
 			mo.SetOrigin(origin.pos, false); // Move the rocket so that it flies from the model's gun
 		}
 
@@ -460,6 +462,19 @@ class TankRocket : Actor
 			if (roottarget && roottarget == rootmaster) { return false; }
 		}
 		return true;
+	}
+}
+
+class TankMissile : TankRocket
+{
+	States
+	{
+		Spawn:
+			TNT1 A 2;
+		SpawnLoop:
+			MNSS A 1 Bright Light("BOAFLMW2") A_StartSound("panzer/fly", CHAN_VOICE, CHANF_LOOPING, 1.0);
+			MNSS A 1 Bright Light("BOAFLMW2"); //no flames, it is a regular projectile
+			Wait;
 	}
 }
 
