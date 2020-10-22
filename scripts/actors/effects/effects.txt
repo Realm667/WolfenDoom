@@ -239,7 +239,10 @@ class EffectsManager : Thinker
 
 					if (effects[i].effect.alpha > 0 && level.time > 35 && FadeState) { effects[i].effect.SetState(FadeState); }
 					else {
-						effects[i].effect.Destroy();
+						Actor effect = effects[i].effect;
+						effect.Destroy();
+						effects[i].effect = null;
+						effect = null;
 						effects[i].ingame = false;
 					}
 				}
