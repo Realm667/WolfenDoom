@@ -39,9 +39,9 @@ ACTOR BloodPool2 : ParticleBase
 		SPLT F 1 A_SetScale(user_size, 0.5)
 		TNT1 A 0
 		{
-			user_size = user_size + (1.55 - user_size) / 175.0;
+			user_size = user_size + (1.15 - user_size) / 125.0;
 		}
-		TNT1 A 0 A_JumpIf(user_size < 1.5, "Pool")
+		TNT1 A 0 A_JumpIf(user_size < 1.1, "Pool")
 		Goto Done
 	Done:
 		SPLT F 1
@@ -88,6 +88,7 @@ ACTOR GibletA : ParticleBase
 	+MISSILE
 	+MOVEWITHSECTOR
 	+NOBLOCKMAP
+	+NOTONAUTOMAP
 	+THRUACTORS
 	States
 	{
@@ -460,13 +461,13 @@ ACTOR DecoDroplet : BloodDrop1
 
 ACTOR BloodDrop2 : BloodDrop1
 {
-	DistanceCheck boa_drop2_dist
-	+DONTSPLASH
 	Radius 3
 	Height 3
 	Scale 0.18
 	Gravity 0.9
 	Friction 0.02
+	+DONTSPLASH
+	DistanceCheck boa_drop2_dist
 	States
 	{
 	Spawn:
@@ -543,13 +544,13 @@ ACTOR DecoDrop2 : BloodDrop2
 
 ACTOR BloodDrop3 : BloodDrop1
 {
-	DistanceCheck boa_drop3_dist
 	Radius 2
 	Height 2
 	Scale 0.13
 	Gravity 0.81
 	Friction 0.04
 	+DONTSPLASH
+	DistanceCheck boa_drop3_dist
 	States
 	{
 	Spawn:
@@ -624,12 +625,12 @@ ACTOR DecoDrop3 : BloodDrop3
 
 ACTOR ExcessDroplet : BloodDrop3
 {
-	+DONTSPLASH
-	DistanceCheck boa_drop3_dist
 	Radius 2
 	Height 2
 	Scale 0.09
 	Gravity 0.58
+	+DONTSPLASH
+	DistanceCheck boa_drop3_dist
 	States
 	{
 	Spawn:

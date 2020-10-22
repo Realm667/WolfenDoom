@@ -2534,9 +2534,6 @@ ACTOR DeathKnight : Nazi
 
 ACTOR Longinus_Hitler : NaziBoss
 {
-	var float user_rumbleoffset;
-	var int user_count5;
-	var int user_count6;
 	//$Category Monsters (BoA)/Bosses
 	//$Title Adolf Hitler, Longinus (Boss)
 	//$Color 4
@@ -2569,6 +2566,9 @@ ACTOR Longinus_Hitler : NaziBoss
 	Nazi.Healer 2
 	Nazi.HealSound "creepy/born"
 	Nazi.HealDistance 256
+	var float user_rumbleoffset;
+	var int user_count5;
+	var int user_count6;
 	States
 	{
 	Spawn:
