@@ -2699,7 +2699,8 @@ ACTOR Longinus_Hitler : NaziBoss
 		"####" Z 6
 		{
 			A_QuakeEx(7,7,7,27,0,2048,"world/quake",QF_SCALEDOWN|QF_WAVE,6,6,6);
-			A_RadiusThrust(2000, 4096, RTF_NOIMPACTDAMAGE|RTF_NOTMISSILE|RTF_THRUSTZ, 2048);
+			A_RadiusThrust(1800, 4096, RTF_NOIMPACTDAMAGE|RTF_NOTMISSILE, 2048);
+			A_RadiusThrust(200, 4096, RTF_NOIMPACTDAMAGE|RTF_NOTMISSILE|RTF_THRUSTZ, 2048);
 			//add a red area effect here?
 		}
 		Goto See
