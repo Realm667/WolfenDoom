@@ -366,12 +366,13 @@ class Base : Actor
 	}
 
 	// Fires a projectile in an arc towards the target. Assumes the projectile has Gravity set
-	Actor A_ArcProjectile(class<Actor> missiletype, double spawnheight = 32, double spawnofs_xy = 0, double angle = 0, int flags = 0, double pitch = 0, int ptr = AAPTR_TARGET)
+	Actor A_ArcProjectile(class<Actor> missiletype, double spawnheight = 32, double spawnofs_xy = 0, double angle = 0, int flags = 0, double pitch = 0, int ptr = AAPTR_TARGET, double maxdistance = 0)
 	{
 		// This function works by firing the projectile, and then modifying its
 		// Z velocity to hit the target.
 		Actor targ = GetPointer(ptr);
-		Actor proj = A_SpawnProjectile(missiletype, spawnheight, spawnofs_xy, angle, flags, pitch, ptr);
+		Actor proj = A_SpawnProjectile(
+			missiletype, spawnheight, spawnofs_xy, angle, flags, pitch, ptr);
 		if ((flags & CMF_ABSOLUTEPITCH) || (flags & CMF_AIMDIRECTION) || !proj)
 		{
 			// Or CMF_ABSOLUTEPITCH or CMF_AIMDIRECTION is set, which makes the
@@ -382,26 +383,33 @@ class Base : Actor
 			return proj;
 		}
 		double gravity = proj.GetGravity();
-		if (!gravity)
+		double speed = Actor.GetDefaultSpeed(missiletype);
+		if (!gravity || !speed)
 		{
 			// Gravity is 0, and thus the projectile will not fly in an arc, so
 			// don't modify the projectile's velocity!
+			// Also, if speed is 0, you'll end up dividing by 0, so prevent
+			// that.
 			return proj;
 		}
-		double speed = Actor.GetDefaultSpeed(missiletype);
-		double time = proj.Distance2D(targ) / speed;
+		double distance = proj.Distance2D(targ);
+		if (maxdistance)
+		{
+			distance = min(maxdistance, distance);
+		}
+		double time = distance / speed;
 		// Account for spawnheight when calculating height difference
 		double height = targ.Pos.Z - (proj.Pos.Z - spawnheight);
 		proj.Vel.Z = ZScriptTools.ArcZVel(time, gravity, height);
+		if (pitch && (flags & CMF_OFFSETPITCH))
+		{
+			proj.Vel.Z += sin(-pitch) * speed;
+		}
 		if (flags & CMF_SAVEPITCH)
 		{
 			// Calculate projectile pitch. Speed is amount to move forward each
 			// tic, and proj.Vel.Z is the amount to move up/down each tic.
-			proj.Pitch = atan2(proj.Vel.Z, speed);
-		}
-		if (pitch && (flags & CMF_OFFSETPITCH))
-		{
-			proj.Vel.Z += sin(-pitch) * speed;
+			proj.Pitch = -atan2(proj.Vel.Z, speed);
 		}
 		return proj;
 	}
