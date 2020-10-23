@@ -45,19 +45,20 @@ inline void BOA_CheckBox(HWND dlg, int what, bool state)
 	SendMessage(GetDlgItem(dlg, what), BM_SETCHECK, state ? BST_CHECKED : BST_UNCHECKED, 0);
 }
 
-inline void BOA_LaunchGZDoom(int detail, int displacement, int language, int devcomments)
+inline void BOA_LaunchGZDoom(int detail, int displacement, int language, int devcomments, int texfilt)
 {
 	STARTUPINFO si = { sizeof(si) };
 	PROCESS_INFORMATION pi;
 	TCHAR GZFinalCmdLine[200];
 
-	_snwprintf_s(GZFinalCmdLine, 199, 199, TEXT("%s -iwad %s %s %s %s %s"),
+	_snwprintf_s(GZFinalCmdLine, 199, 199, TEXT("%s -iwad %s %s %s %s %s %s"),
 		SourcePortName,
 		IWadName,
 		DetailSettingsCmd[detail],
 		DisplacementTexturesCmd[displacement],
 		LanguagesCmd[language],
-		DeveloperCommentaryCmd[devcomments]);
+		DeveloperCommentaryCmd[devcomments],
+		TexFilterSettingsCmd[texfilt]);
 
 	CreateProcess(NULL,   // No module name (use command line)
 		GZFinalCmdLine,        // Command line
@@ -80,6 +81,7 @@ BOOL CALLBACK DialogProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lPara
 		BOA_FillComboBox(hwndDlg, IDC_COMBO1, DETAIL_END, LPARAM(DETAIL_UNCHANGED), DetailSettingsStrings);
 		BOA_FillComboBox(hwndDlg, IDC_COMBO2, DIS_END, LPARAM(settings.DisplacementTextures), DisplacementTexturesStrings);
 		BOA_FillComboBox(hwndDlg, IDC_COMBO3, LANGUAGE_MAX, LPARAM(settings.Language), LanguagesList);
+		BOA_FillComboBox(hwndDlg, IDC_COMBO4, TEXFILT_END, LPARAM(TEXFILT_UNCHANGED), TexFilterSettingsStrings);
 		BOA_CheckBox(hwndDlg, IDC_CHECK1, settings.DontShow);
 		BOA_CheckBox(hwndDlg, IDC_CHECK3, settings.DevCommentary);
 
@@ -112,6 +114,11 @@ BOOL CALLBACK DialogProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lPara
 				if (_tcscmp(check, LanguagesList[i]) == 0)
 					settings.Language = i;
 
+			GetDlgItemText(hwndDlg, IDC_COMBO4, check, 49);
+			for (int i = 0; i < TEXFILT_END; i++)
+				if (_tcscmp(check, TexFilterSettingsStrings[i]) == 0)
+					settings.TexFilter = i;
+
 			settings.DontShow = SendDlgItemMessage(hwndDlg, IDC_CHECK1, BM_GETCHECK, 0, 0);
 			settings.DevCommentary = SendDlgItemMessage(hwndDlg, IDC_CHECK3, BM_GETCHECK, 0, 0);
 
@@ -132,7 +139,7 @@ BOOL CALLBACK DialogProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lPara
 			_itow_s(settings.Language, setting, 19);
 			WritePrivateProfileString(TEXT("Launcher"), TEXT("Language"), setting, SettingsFile);
 
-			BOA_LaunchGZDoom(settings.Detail, settings.DisplacementTextures, settings.Language, settings.DevCommentary);
+			BOA_LaunchGZDoom(settings.Detail, settings.DisplacementTextures, settings.Language, settings.DevCommentary, settings.TexFilter);
 			
 			DestroyWindow(hwndDlg);
             return TRUE;
@@ -178,7 +185,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	if (!settings.DontShow || shiftkeypressed)
 		DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG1), 0, (DLGPROC)DialogProc);
 	else
-		BOA_LaunchGZDoom(settings.Detail, settings.DisplacementTextures, settings.Language, settings.DevCommentary);
+		BOA_LaunchGZDoom(settings.Detail, settings.DisplacementTextures, settings.Language, settings.DevCommentary, settings.TexFilter);
 
 	return 0;
 }

@@ -69,7 +69,7 @@ TCHAR DeveloperCommentaryCmd[][50] = {
 
 enum Languages
 {
-	LANGUAGE_MAX = 8
+	LANGUAGE_MAX = 9
 };
 
 TCHAR LanguagesList[][50] = {
@@ -81,6 +81,7 @@ TCHAR LanguagesList[][50] = {
 	TEXT("Italian"), // it
 	TEXT("Turkish"), // trk
 	TEXT("French"), // fr
+	TEXT("Czech"), // cs
 };
 
 TCHAR LanguagesCmd[][50] = {
@@ -92,6 +93,30 @@ TCHAR LanguagesCmd[][50] = {
 	TEXT("+language it"), // it
 	TEXT("+language trk"), // trk
 	TEXT("+language fr"), // fr
+	TEXT("+language cs"), // cs
+};
+
+enum TexFilterSettings
+{
+	TEXFILT_UNCHANGED,
+	TEXFILT_NONE,
+	TEXFILT_TRILINEAR,
+	TEXFILT_TRILINEARNNX,
+	TEXFILT_END
+};
+
+TCHAR TexFilterSettingsStrings[][50] = {
+	TEXT("Use Last Settings"),
+	TEXT("No Texture Filtering"),
+	TEXT("Trilinear"),
+	TEXT("Trilinear (w/ Normal2x)"),
+};
+
+TCHAR TexFilterSettingsCmd[][120] = {
+	TEXT(""),
+	TEXT("+gl_texture_filter 0 +gl_texture_filter_anisotropic 0 +gl_texture_hqresizemode 6 +gl_texture_hqresizemult 1"),
+	TEXT("+gl_texture_filter 4 +gl_texture_filter_anisotropic 8 +gl_texture_hqresizemode 6 +gl_texture_hqresizemult 1"),
+	TEXT("+gl_texture_filter 4 +gl_texture_filter_anisotropic 16 +gl_texture_hqresizemode 6 +gl_texture_hqresizemult 2"),
 };
 
 struct LauncherSettings
@@ -101,6 +126,7 @@ struct LauncherSettings
 	int Detail = DETAIL_UNCHANGED;
 	bool DevCommentary = false;
 	int Language = 0;
+	int TexFilter = TEXFILT_UNCHANGED;
 };
 
 extern LauncherSettings settings;
