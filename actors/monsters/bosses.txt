@@ -2615,7 +2615,7 @@ ACTOR Longinus_Hitler : NaziBoss
 	
 	//zombie reinforcements, tests multitasking skills and reaction (stop firing projectiles immediately)
 	ReflectiveOrb:
-		"####" S 0 {user_count4++; if(user_count4 > 2) {return ResolveState("RumbleStomp");} return ResolveState("");} //limit continuous orbs
+		"####" S 0 {user_count4++; if(user_count4 > 1) {return ResolveState("RumbleStomp");} return ResolveState("");} //limit changed to 1 --N00b
 		"####" S 1 {user_count4 = 0; user_count5 = 0; user_count6 = 0; bNoDamage = TRUE; A_SetReflective();}
 		"####" S 1 A_SpawnItemEx("ReflectiveOrb",0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
 		"####" S 1 A_SetTics(35*3)
@@ -2623,6 +2623,7 @@ ACTOR Longinus_Hitler : NaziBoss
 		Goto See
 		
 	//also tests the player's multitasking and dodging skills
+	//this is the default attack which can be spammed indefinitely
 	RumbleStomp:
 		"####" C 1 {bNoDamage = FALSE; A_UnsetReflective();} //force Invulnerability removal - Ozy81
 		"####" C 6
@@ -2672,11 +2673,11 @@ ACTOR Longinus_Hitler : NaziBoss
 	
 	//instant area denial attack, prevent player from standing at one place (e. g. soul fountain) for too long
 	ZyklonGrenade:
-		"####" C 2 {user_count5++; if(user_count5 > 2) {return ResolveState("RumbleStomp");} return ResolveState("");} //limit continuous grenades
-		"####" C 2 {user_count4 = 0; user_count6 = 0; bNoDamage = FALSE; A_UnsetReflective();} //also needed here... --N00b
-		"####" E 6 A_FaceTarget
-		"####" T 14 A_FaceTarget
-		"####" V 12 A_FaceTarget
+		"####" C 2 {user_count5++; if(user_count5 > 1) {return ResolveState("RumbleStomp");} return ResolveState("");} //change attack type
+		"####" C 6 {user_count4 = 0; user_count6 = 0; bNoDamage = FALSE; A_UnsetReflective();} //also needed here... --N00b
+		"####" E 8 A_FaceTarget
+		"####" T 16 A_FaceTarget
+		"####" V 14 A_FaceTarget
 		"####" W 10 {
 			A_StartSound("grenade/throw");
 			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD);
@@ -2691,18 +2692,20 @@ ACTOR Longinus_Hitler : NaziBoss
 	//quick attack, deals zero damage but thrusts the player away (so they can fall from the arena)
 	//prevents the player from sniping at Hitler from a large distance (close to the arena boundary)
 	PushAway:
-		"####" C 2 {user_count6++; if(user_count6 > 2) {return ResolveState("ReflectiveOrb");} return ResolveState("");} //limit continuous pushes
-		"####" C 2 {user_count4 = 0; user_count5 = 0; bNoDamage = FALSE; A_UnsetReflective();}
+		"####" C 2 {user_count6++; if(user_count6 > 1) {return ResolveState("ReflectiveOrb");} return ResolveState("");} //change attack type
+		"####" C 4 {user_count4 = 0; user_count5 = 0; bNoDamage = FALSE; A_UnsetReflective();}
+		"####" Y 12 A_FaceTarget
+		"####" X 16 A_FaceTarget
 		"####" Y 10 A_FaceTarget
-		"####" X 12 A_FaceTarget
-		"####" Y 8 A_FaceTarget
 		"####" Z 6
 		{
-			A_QuakeEx(7,7,7,27,0,2048,"world/quake",QF_SCALEDOWN|QF_WAVE,6,6,6);
+			A_QuakeEx(7,7,7,57,0,2048,"world/quake",QF_SCALEDOWN|QF_WAVE,6,6,6);
 			A_RadiusThrust(1800, 4096, RTF_NOIMPACTDAMAGE|RTF_NOTMISSILE, 2048);
 			A_RadiusThrust(200, 4096, RTF_NOIMPACTDAMAGE|RTF_NOTMISSILE|RTF_THRUSTZ, 2048);
 			//add a red area effect here?
 		}
+		"####" Z 10
+		"####" C 6
 		Goto See
 	TeslaMissile:
 		"####" EHH 6 A_FaceTarget
