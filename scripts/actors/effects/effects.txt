@@ -332,6 +332,12 @@ class EffectSpawner : SwitchableDecoration
 
 class EffectBase : SimpleActor
 {
+	States
+	{
+	Inactive:
+		TNT1 A 0 A_Jump(256, "Spawn");
+	}
+
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
@@ -384,6 +390,12 @@ class GrassBase : CullActorBase
 
 	Property Fragments:fragments;	
 
+	States
+	{
+	Inactive:
+		TNT1 A 0 A_Jump(256, "Spawn");
+	}
+
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
@@ -393,6 +405,12 @@ class GrassBase : CullActorBase
 
 class SceneryBase : CullActorBase
 {
+	States
+	{
+	Inactive:
+		TNT1 A 0 A_Jump(256, "Spawn");
+	}
+
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
@@ -402,6 +420,12 @@ class SceneryBase : CullActorBase
 
 class TreesBase : CullActorBase
 {
+	States
+	{
+	Inactive:
+		TNT1 A 0 A_Jump(256, "Spawn");
+	}
+
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
@@ -427,6 +451,12 @@ class VolumetricBase : CullActorBase
 		YScale 0.45;
 		Alpha 0.4;
 		RenderStyle "Add";
+	}
+
+	States
+	{
+	Inactive:
+		TNT1 A 0 A_Jump(256, "Spawn");
 	}
 
 	override void PostBeginPlay()
