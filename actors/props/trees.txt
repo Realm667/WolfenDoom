@@ -191,6 +191,12 @@ ACTOR WinterA : TreeBase
 	Height 115
 	+SOLID
 	DistanceCheck "boa_treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE L -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR WinterB : WinterA
@@ -198,12 +204,24 @@ ACTOR WinterB : WinterA
 	Radius 15
 	Height 90
 	DistanceCheck "boa_treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE M -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR WinterC : WinterA
 {
 	Height 140
 	DistanceCheck "boa_treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE O -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR WinterD : TreeBase
@@ -211,6 +229,12 @@ ACTOR WinterD : TreeBase
 	Height 60
 	+SOLID
 	DistanceCheck "boa_treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE P -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR WinterE : WinterA
@@ -218,6 +242,12 @@ ACTOR WinterE : WinterA
 	Radius 10
 	Height 45
 	DistanceCheck "boa_treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE Q -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR WinterF : WinterA
@@ -225,6 +255,12 @@ ACTOR WinterF : WinterA
 	Radius 10
 	Height 110
 	DistanceCheck "boa_treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE R -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR WinterG : WinterA
@@ -232,6 +268,12 @@ ACTOR WinterG : WinterA
 	Radius 25
 	Height 130
 	DistanceCheck "boa_treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE S -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR WinterH : WinterA
@@ -239,6 +281,12 @@ ACTOR WinterH : WinterA
 	Radius 25
 	Height 130
 	DistanceCheck "boa_treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE T -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR WinterI : WinterA
@@ -246,6 +294,12 @@ ACTOR WinterI : WinterA
 	Radius 25
 	Height 130
 	DistanceCheck "boa_treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE U -1 A_SetPitch(270+pitch)
+		Stop
+	}
 }
 
 ACTOR SmallTree1 : TreeBase
