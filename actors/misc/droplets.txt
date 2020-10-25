@@ -39,7 +39,7 @@ ACTOR BloodPool2 : ParticleBase
 		SPLT F 1 A_SetScale(user_size, 0.5)
 		TNT1 A 0
 		{
-			user_size = user_size + (1.15 - user_size) / 125.0;
+			user_size = user_size + (1.15 - user_size) / 175.0;
 		}
 		TNT1 A 0 A_JumpIf(user_size < 1.1, "Pool")
 		Goto Done
