@@ -98,6 +98,10 @@ class EffectsManager : Thinker
 			this.position = effect.pos;
 			this.angle = effect.angle;
 			this.pitch = effect.pitch;
+			if (effect is "TreesBase") // Trees have special pitch handling,
+			{ // due to the fact they can be 2D as well.
+				this.pitch = TreesBase(effect).origPitch;
+			}
 			this.roll = effect.roll;
 			this.scale = effect.scale;
 			this.master = effect.master;
@@ -122,6 +126,10 @@ class EffectsManager : Thinker
 			effects[i].position = effect.pos;
 			effects[i].angle = effect.angle;
 			effects[i].pitch = effect.pitch;
+			if (effect is "TreesBase")
+			{
+				effects[i].pitch = TreesBase(effect).origPitch;
+			}
 			effects[i].roll = effect.roll;
 			effects[i].scale = effect.scale;
 			effects[i].master = effect.master;
@@ -420,6 +428,8 @@ class SceneryBase : CullActorBase
 
 class TreesBase : CullActorBase
 {
+	float origPitch;
+
 	States
 	{
 	Inactive:
@@ -429,7 +439,19 @@ class TreesBase : CullActorBase
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
+		origPitch = pitch;
 		EffectsManager.Add(self, boa_treeslod, true);
+	}
+
+	void A_TreePitchFix()
+	{
+		if (origPitch > 2 || origPitch < -2)
+		{
+			float newPitch = origPitch + 270;
+			bFlatSprite = true;
+			bRollSprite = true;
+			pitch = newPitch;
+		}
 	}
 }
 

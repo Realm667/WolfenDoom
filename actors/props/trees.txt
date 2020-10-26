@@ -1,7 +1,5 @@
 ACTOR TreeBase : TreesBase
 {
-	+FLATSPRITE
-	+ROLLSPRITE
 	Radius 16
 	Height 128
 	States
@@ -12,7 +10,7 @@ ACTOR TreeBase : TreesBase
 		MDLA A -1
 		Stop
 	BidiSpawn:
-		UNKN A -1 A_SetPitch(270+pitch) //fix the pitch, also spawn the UNKN sprite if not set, thanks to inheritances
+		UNKN A -1 A_TreePitchFix //fix the pitch, also spawn the UNKN sprite if not set, thanks to inheritances
 		Stop
 	}
 }
@@ -31,7 +29,7 @@ ACTOR Tree1 : TreeBase
 	States
 	{
 	BidiSpawn:
-		DTRE E -1 A_SetPitch(270+pitch)
+		DTRE E -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -43,7 +41,7 @@ ACTOR Tree2 : Tree1
 	States
 	{
 	BidiSpawn:
-		DTRE D -1 A_SetPitch(270+pitch)
+		DTRE D -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -56,7 +54,7 @@ ACTOR Tree3 : Tree1
 	States
 	{
 	BidiSpawn:
-		DTRE C -1 A_SetPitch(270+pitch)
+		DTRE C -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -69,7 +67,7 @@ ACTOR Tree4 : Tree1
 	States
 	{
 	BidiSpawn:
-		DTRE B -1 A_SetPitch(270+pitch)
+		DTRE B -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -85,7 +83,7 @@ ACTOR Palm1 : TreeBase
 	States
 	{
 	BidiSpawn:
-		DTRE I -1 A_SetPitch(270+pitch)
+		DTRE I -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -96,7 +94,7 @@ ACTOR Palm2 : Palm1
 	States
 	{
 	BidiSpawn:
-		DTRE J -1 A_SetPitch(270+pitch)
+		DTRE J -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -107,7 +105,7 @@ ACTOR Palm3 : Palm1
 	States
 	{
 	BidiSpawn:
-		DTRE K -1 A_SetPitch(270+pitch)
+		DTRE K -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -125,7 +123,7 @@ ACTOR Palm1NH : TreeBase //needed for INTERMAP - ozy81
 	States
 	{
 	BidiSpawn:
-		DTRE I -1 A_SetPitch(270+pitch)
+		DTRE I -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -136,7 +134,7 @@ ACTOR Palm2NH : Palm1NH
 	States
 	{
 	BidiSpawn:
-		DTRE J -1 A_SetPitch(270+pitch)
+		DTRE J -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -147,7 +145,7 @@ ACTOR Palm3NH : Palm1NH
 	States
 	{
 	BidiSpawn:
-		DTRE K -1 A_SetPitch(270+pitch)
+		DTRE K -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -162,7 +160,7 @@ ACTOR JungleTree1 : TreeBase
 	States
 	{
 	BidiSpawn:
-		DTRE F -1 A_SetPitch(270+pitch)
+		DTRE F -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -194,7 +192,7 @@ ACTOR WinterA : TreeBase
 	States
 	{
 	BidiSpawn:
-		DTRE L -1 A_SetPitch(270+pitch)
+		DTRE L -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -207,7 +205,7 @@ ACTOR WinterB : WinterA
 	States
 	{
 	BidiSpawn:
-		DTRE M -1 A_SetPitch(270+pitch)
+		DTRE M -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -219,7 +217,7 @@ ACTOR WinterC : WinterA
 	States
 	{
 	BidiSpawn:
-		DTRE O -1 A_SetPitch(270+pitch)
+		DTRE O -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -232,7 +230,7 @@ ACTOR WinterD : TreeBase
 	States
 	{
 	BidiSpawn:
-		DTRE P -1 A_SetPitch(270+pitch)
+		DTRE P -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -245,7 +243,7 @@ ACTOR WinterE : WinterA
 	States
 	{
 	BidiSpawn:
-		DTRE Q -1 A_SetPitch(270+pitch)
+		DTRE Q -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -258,7 +256,7 @@ ACTOR WinterF : WinterA
 	States
 	{
 	BidiSpawn:
-		DTRE R -1 A_SetPitch(270+pitch)
+		DTRE R -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -271,7 +269,7 @@ ACTOR WinterG : WinterA
 	States
 	{
 	BidiSpawn:
-		DTRE S -1 A_SetPitch(270+pitch)
+		DTRE S -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -284,7 +282,7 @@ ACTOR WinterH : WinterA
 	States
 	{
 	BidiSpawn:
-		DTRE T -1 A_SetPitch(270+pitch)
+		DTRE T -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -297,7 +295,7 @@ ACTOR WinterI : WinterA
 	States
 	{
 	BidiSpawn:
-		DTRE U -1 A_SetPitch(270+pitch)
+		DTRE U -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -315,7 +313,7 @@ ACTOR SmallTree1 : TreeBase
 	States
 	{
 	BidiSpawn:
-		DTRE A -1 A_SetPitch(270+pitch)
+		DTRE A -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -328,7 +326,7 @@ ACTOR SmallTree2 : SmallTree1
 	States
 	{
 	BidiSpawn:
-		DTRE H -1 A_SetPitch(270+pitch)
+		DTRE H -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -343,7 +341,7 @@ ACTOR Tree1_Burnt : TreeBase // changes visible only with 3d trees, this actor i
 	States
 	{
 	BidiSpawn:
-		DTRE E -1 A_SetPitch(270+pitch)
+		DTRE E -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -360,7 +358,7 @@ ACTOR Tree2_Burnt : TreeBase
 	States
 	{
 	BidiSpawn:
-		DBUR D -1 A_SetPitch(270+pitch)
+		DBUR D -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -374,7 +372,7 @@ ACTOR Tree3_Burnt : Tree2_Burnt
 	States
 	{
 	BidiSpawn:
-		DBUR E -1 A_SetPitch(270+pitch)
+		DBUR E -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -387,7 +385,7 @@ ACTOR Tree4_Burnt : Tree2_Burnt
 	States
 	{
 	BidiSpawn:
-		DBUR F -1 A_SetPitch(270+pitch)
+		DBUR F -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -402,7 +400,7 @@ ACTOR JungleTree1_Burnt : TreeBase
 	States
 	{
 	BidiSpawn:
-		DBUR A -1 A_SetPitch(270+pitch)
+		DBUR A -1 A_TreePitchFix
 		Stop
 	}
 }
@@ -432,7 +430,7 @@ ACTOR SmallTree1_Burnt : TreeBase
 	States
 	{
 	BidiSpawn:
-		DBUR C -1 A_SetPitch(270+pitch)
+		DBUR C -1 A_TreePitchFix
 		Stop
 	}
 }
