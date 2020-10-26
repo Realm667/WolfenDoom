@@ -1806,7 +1806,7 @@ ACTOR WGrenadier: Sniper_Crouch
 		Stop
 	Death.Electric:
 	XDeath:
-		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
+		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Nazis",0,0,32)
 		Goto Death.Fire
 	Idle:
 		Goto Look
@@ -2688,7 +2688,7 @@ ACTOR MGTurret : MiniShip
 	Crash:
 		TNT1 A 0 A_SetFloorClip
 		"####" A 0 A_Scream
-		"####" A 0 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
+		"####" A 0 A_SpawnItemEx("GeneralExplosion_Nazis",0,0,32)
 		Stop
 	Idle:
 		Goto Look
@@ -2724,7 +2724,7 @@ ACTOR MGTurretCeiling : MGTurret
 	Crash:
 		TNT1 A 0
 		"####" A 0 A_Scream
-		"####" A 0 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
+		"####" A 0 A_SpawnItemEx("GeneralExplosion_Nazis",0,0,32)
 		Stop
 	Idle:
 		Goto Look
@@ -3023,7 +3023,7 @@ ACTOR EliteFlamer : BasicGuard
 		Stop
 	Death.Electric:
 	XDeath:
-		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Small",0,0,32)
+		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Nazis",0,0,32)
 		Goto Death.Fire
 	}
 }
