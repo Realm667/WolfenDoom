@@ -3299,9 +3299,11 @@ class BatBase : Base
 	Default
 	{
 		BatBase.MaxChaseTime 7;
+		Species "Player"; ///this to avoid players getting blocked by bats in narrow places, we need to see what happens with targets though --Ozy81
+		+THRUSPECIES
 	}
 
-	States
+	States //these states shouldn't have shadows --Ozy81
 	{
 		Roost:
 			"####" K Random(35, 350); // 'Sleep' on roost for 1-10 seconds
