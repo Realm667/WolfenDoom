@@ -248,8 +248,8 @@ class EffectsManager : Thinker
 					if (effects[i].effect.alpha > 0 && level.time > 35 && FadeState) { effects[i].effect.SetState(FadeState); }
 					else {
 						Actor effect = effects[i].effect;
-						effect.Destroy();
 						effects[i].effect = null;
+						effect.Destroy();
 						effect = null;
 						effects[i].ingame = false;
 					}
@@ -443,7 +443,16 @@ class TreesBase : CullActorBase
 		EffectsManager.Add(self, boa_treeslod, true);
 	}
 
-	void A_TreePitchFix()
+	void A_3DPitchFix()
+	{
+		// If the player turns off 2D trees during a mission...
+		if (pitch != origPitch)
+		{
+			pitch = origPitch;
+		}
+	}
+
+	void A_2DPitchFix()
 	{
 		if (origPitch > 2 || origPitch < -2)
 		{
