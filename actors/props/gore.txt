@@ -56,6 +56,18 @@ ACTOR HungBody
 	}
 }
 
+ACTOR HungBodyMov : HungBody
+{
+	//$Title Hung Body, Shaking
+	States
+	{
+	Spawn:
+		HUNG BCCCCDDEEFFEEDDDCCBBB 1 A_SetTics (random(2,5))
+		HUNG A 1 A_SetTics (random(80,160))
+		Loop
+	}
+}
+
 ACTOR HungBody2 : HungBody
 {
 	//$Title Hung Body (Prisoner 1)
