@@ -445,21 +445,16 @@ class TreesBase : CullActorBase
 
 	void A_3DPitchFix()
 	{
-		// If the player turns off 2D trees during a mission...
-		if (pitch != origPitch)
-		{
-			pitch = origPitch;
-		}
+		// If the player has 2D trees on, and turns them off during a mission...
+		pitch = origPitch;
 	}
 
 	void A_2DPitchFix()
 	{
 		if (origPitch > 2 || origPitch < -2)
 		{
-			float newPitch = origPitch + 270;
 			bFlatSprite = true;
-			bRollSprite = true;
-			pitch = newPitch;
+			pitch = origPitch + 270;
 		}
 	}
 }
