@@ -173,17 +173,6 @@ class PowerMaskProtection : PowerProtection
 		PowerMaskProtection.Channel CHAN_MASK;
 	}
 
-	// Necessary?
-	/*
-	override void Tick()
-	{
-		if (Owner == null || EffectTics == 0)
-		{
-			Destroy();
-		}
-	}
-	*/
-
 	override void InitEffect()
 	{
 		if (Owner)
@@ -208,6 +197,15 @@ class PowerZyklonMask : PowerMaskProtection
 	Default
 	{
 		DamageFactor "UndeadPoisonAmbience", 0;
+	}
+
+	// PowerZyklonMask shouldn't expire
+	override void Tick()
+	{
+		if (Owner == null || EffectTics == 0)
+		{
+			Destroy();
+		}
 	}
 }
 
