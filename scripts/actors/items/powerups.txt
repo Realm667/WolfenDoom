@@ -37,13 +37,29 @@ class PowerupToggler : PowerupGiver
 		}
 		if (EffectTics == 1)
 		{
-			Destroy();
-			powerinv.Destroy();
+			if (amount > 1)
+			{
+				amount -= 1;
+				EffectTics = Default.EffectTics + 1;
+			}
+			else
+			{
+				Destroy();
+			}
+			if (powerinv)
+			{
+				powerinv.Destroy();
+			}
 		}
 	}
 
 	override void PostBeginPlay()
 	{
+		// In case powerup duration was not set in the defaults
+		if (EffectTics == 0)
+		{
+			EffectTics = Powerup(GetDefaultByType(PowerupType)).EffectTics;
+		}
 		// Add 1 tic to the powerup time so that this "toggler" has control
 		// over the powerup, and the powerup doesn't get removed without the
 		// toggler knowing
@@ -143,7 +159,7 @@ class ZyklonMask : PowerupToggler
 		Stop;
 	}
 
-	override void Tick()
+	override void DoEffect()
 	{
 		if (globalfreeze || level.Frozen) { return; }
 		// Zyklon mask cannot be used underwater
@@ -152,7 +168,7 @@ class ZyklonMask : PowerupToggler
 			A_StartSound("flamer/steam", CHAN_AUTO, 0, Random(15, 45));
 			powerinv.Destroy();
 		}
-		Super.Tick();
+		Super.DoEffect();
 	}
 }
 
