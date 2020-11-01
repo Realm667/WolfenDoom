@@ -91,6 +91,13 @@ class PowerupToggler : PowerupGiver
 		PowerupGiver toggler = PowerupGiver(toucher.FindInventory(GetClass()));
 		if (toggler)
 		{
+			if (toggler.MaxAmount > 1 && toggler.Amount < toggler.MaxAmount)
+			{
+				toggler.Amount += 1;
+				GoAwayAndDie();
+				return true;
+			}
+			// Type issue workaround
 			Class<Inventory> PowerType = PowerupType.GetClassName();
 			if (PowerType)
 			{
@@ -114,7 +121,7 @@ class PowerupToggler : PowerupGiver
 				}
 				else
 				{
-					// Powerup is not active, modify toggler EffectTic.s
+					// Powerup is not active, modify toggler EffectTics
 					if (bAdditiveTime)
 					{
 						toggler.EffectTics += Default.EffectTics;
