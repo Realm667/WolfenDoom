@@ -26,27 +26,43 @@ class CustomInvBase : CustomInventory
 
 class PowerupToggler : PowerupGiver
 {
-	Inventory powerinv;
+	Powerup powerinv;
 
-	override void Tick()
+	override void DoEffect()
 	{
 		if (globalfreeze || level.Frozen) { return; }
-		if (owner)
+		if (powerinv)
 		{
-			if (powerinv && powerinv is "Powerup")
-			{
-				EffectTics = Powerup(powerinv).EffectTics;
-			}
+			EffectTics = powerinv.EffectTics;
 		}
 		if (EffectTics == 1)
 		{
-			Destroy();
+			if (amount > 1)
+			{
+				amount -= 1;
+				EffectTics = Default.EffectTics + 1;
+			}
+			else
+			{
+				Destroy();
+			}
+			if (powerinv)
+			{
+				powerinv.Destroy();
+			}
 		}
 	}
 
 	override void PostBeginPlay()
 	{
-		// Ensure item gets removed properly
+		// In case powerup duration was not set in the defaults
+		if (EffectTics == 0)
+		{
+			EffectTics = Powerup(GetDefaultByType(PowerupType)).EffectTics;
+		}
+		// Add 1 tic to the powerup time so that this "toggler" has control
+		// over the powerup, and the powerup doesn't get removed without the
+		// toggler knowing
 		EffectTics += 1;
 	}
 
@@ -59,55 +75,55 @@ class PowerupToggler : PowerupGiver
 		else
 		{
 			Super.Use(pickup);
-			Class<Inventory> PowerType = PowerupType.GetClassName();
+			// Required to work around a type issue
+			class<Inventory> PowerType = PowerupType.GetClassName();
 			if (PowerType)
 			{
-				powerinv = Owner.FindInventory(PowerType);
+				powerinv = Powerup(Owner.FindInventory(PowerType));
 			}
 		}
-		return false;
+		return false; // Don't remove the toggler from owner's inventory.
 	}
 
 	override bool TryPickup(in out Actor toucher)
 	{
 		// Picking up another of the same item
-		PowerupGiver existing = PowerupGiver(toucher.FindInventory(GetClass()));
-		if (existing)
+		PowerupGiver toggler = PowerupGiver(toucher.FindInventory(GetClass()));
+		if (toggler)
 		{
 			Class<Inventory> PowerType = PowerupType.GetClassName();
 			if (PowerType)
 			{
 				Powerup curPower = Powerup(toucher.FindInventory(PowerType, true));
-				// If powerup is active, modify powerup EffectTics
+				// Powerup is active, modify powerup EffectTics. The toggler
+				// will query the EffectTics of the powerup every tic.
 				if (curPower)
 				{
-					if (curPower.EffectTics < Default.EffectTics)
+					if (bAdditiveTime)
 					{
-						if (bAdditiveTime)
-						{
-							curPower.EffectTics += Default.EffectTics;
-						}
-						else
-						{
-							curPower.EffectTics = Default.EffectTics;
-						}
+						curPower.EffectTics += Default.EffectTics;
+						GoAwayAndDie();
+						return true;
+					}
+					else if (curPower.EffectTics < (Default.EffectTics + 1))
+					{
+						curPower.EffectTics = Default.EffectTics + 1;
 						GoAwayAndDie();
 						return true;
 					}
 				}
 				else
 				{
-					// Powerup is not active, modify toggler EffectTics
-					if (existing.EffectTics < Default.EffectTics)
+					// Powerup is not active, modify toggler EffectTic.s
+					if (bAdditiveTime)
 					{
-						if (bAdditiveTime)
-						{
-							existing.EffectTics += Default.EffectTics;
-						}
-						else
-						{
-							existing.EffectTics = Default.EffectTics;
-						}
+						toggler.EffectTics += Default.EffectTics;
+						GoAwayAndDie();
+						return true;
+					}
+					else if (toggler.EffectTics < (Default.EffectTics + 1))
+					{
+						toggler.EffectTics = Default.EffectTics + 1;
 						GoAwayAndDie();
 						return true;
 					}
@@ -143,7 +159,7 @@ class ZyklonMask : PowerupToggler
 		Stop;
 	}
 
-	override void Tick()
+	override void DoEffect()
 	{
 		if (globalfreeze || level.Frozen) { return; }
 		// Zyklon mask cannot be used underwater
@@ -152,7 +168,7 @@ class ZyklonMask : PowerupToggler
 			A_StartSound("flamer/steam", CHAN_AUTO, 0, Random(15, 45));
 			powerinv.Destroy();
 		}
-		Super.Tick();
+		Super.DoEffect();
 	}
 }
 
