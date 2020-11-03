@@ -525,6 +525,22 @@ ACTOR WMP40Guard : MP40Guard
 		"####" KLM 5
 		"####" N -1
 		Stop
+	Death.Rifle:
+		"####" I 0 A_RandomHShotAnim
+	Death.HShot1:
+		MGH1 I 0 A_CheckFadeDeath
+		MGH1 I 5 A_Scream
+		"####" J 5 A_UnblockAndDrop
+		"####" KL 5
+		"####" M -1
+		Stop
+	Death.HShot2:
+		MGH2 I 0 A_CheckFadeDeath
+		MGH2 I 5 A_Scream
+		"####" J 5 A_UnblockAndDrop
+		"####" KL 5
+		"####" M -1
+		Stop
 	}
 }
 
@@ -988,6 +1004,22 @@ ACTOR WOfficer : Officer
 		"####" KLM 5
 		"####" N -1
 		Stop
+	Death.Rifle:
+		"####" I 0 A_RandomHShotAnim
+	Death.HShot1:
+		OFH1 I 0 A_CheckFadeDeath
+		OFH1 I 5 A_Scream
+		"####" J 5 A_UnblockAndDrop
+		"####" KL 5
+		"####" M -1
+		Stop
+	Death.HShot2:
+		OFH2 I 0 A_CheckFadeDeath
+		OFH2 I 5 A_Scream
+		"####" J 5 A_UnblockAndDrop
+		"####" KL 5
+		"####" M -1
+		Stop
 	}
 }
 
@@ -1102,6 +1134,22 @@ ACTOR WRifleGuard : RifleGuard
 		"####" J 5 A_UnblockAndDrop
 		"####" KLM 5
 		"####" N -1
+		Stop
+	Death.Rifle:
+		"####" I 0 A_RandomHShotAnim
+	Death.HShot1:
+		RGH1 I 0 A_CheckFadeDeath
+		RGH1 I 5 A_Scream
+		"####" J 5 A_UnblockAndDrop
+		"####" KL 5
+		"####" M -1
+		Stop
+	Death.HShot2:
+		RGH2 I 0 A_CheckFadeDeath
+		RGH2 I 5 A_Scream
+		"####" J 5 A_UnblockAndDrop
+		"####" KL 5
+		"####" M -1
 		Stop
 	}
 }
