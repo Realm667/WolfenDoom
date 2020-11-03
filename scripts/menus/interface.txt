@@ -836,45 +836,46 @@ class ViewItem : BoAMenu
 		while ((data = StringTable.Localize(base_name..i, false)) != base_name..i) {
 			//itemids: ??? = 1, Weapon = 2, Grenade(s) = 3(4), Gold (small, moderate, large, TREMENDOUS) = (5, 6, 7, 8), Ammo (small, moderate, large, TREMENDOUS) = (9, 10, 11, 12), Health (small, moderate, large, TREMENDOUS) = (13, 14, 15, 16), Armor = 17, Various Supplies = 18
 			//now decipher the data string which was passed
-			//the format is: t or s|id|itemid|[itemid|[...]], example: "t|1993|5|17" means thing with tag 1993 is a secret which gives access to a small amount of gold and an armor suit.
+			//the format is: t or s|comment|id|itemid|[itemid|[...]], example: "t|check the roof|1993|5|17" means thing with tag 1993 is a secret which gives access to a small amount of gold and an armor suit and tells the player to search for these on a roof.
 			Array<String> tokens;
 			data.Split(tokens, "|");
-			if (tokens.size() < 3) { continue; }
+			if (tokens.size() < 4) { Console.Printf("ConstructSecretHintText(): Incorrect hint format."); continue; }
 			// Start each secret with a number in point form
-			result = result .. "\cC" .. i .. ". ";
+			result = result .. "\cM" .. i .. ". "; // \cM = black
 			bool secret_found;
 			// What is this secret? A thing? A sector?
-			if (tokens[0] == "t") // Thing secret
+			if (tokens[0] == "t") // Thing secret, a TID is given
 			{
 				// Find the secret item
-				ActorIterator it = Level.CreateActorIterator(tokens[1].toInt());
+				ActorIterator it = Level.CreateActorIterator(tokens[2].toInt());
 				let item = it.Next();
 				// Check whether or not it has been found
 				if (item == NULL || !item.bCOUNTSECRET) { secret_found = true; }
 				else { secret_found = false; }
 			}
-			else if (tokens[0] == "s") // Sector secret
+			else if (tokens[0] == "s") // Sector secret, a sector number (not a tag) is given
 			{
-				if (!(Level.sectors[tokens[1].toInt()].flags & Sector.SECF_SECRET)) { secret_found = true; }
+				if (!(Level.sectors[tokens[2].toInt()].flags & Sector.SECF_SECRET)) { secret_found = true; }
 				else { secret_found = false; }
 			}
-			// now construct the line; colours are a temporary solution, should use strikethrough if possible (or just a tick...)
-			/*
+            // now construct the line
+            // let's pretend that BJ adds the red highlight mentally...
 			if (secret_found) { result.AppendFormat("\cG"); }
-			else { result.AppendFormat("\cC"); }
-			*/
+			else { result.AppendFormat("\cM"); }
 			// Add the items in the secret
-			for (curToken = 2; curToken < tokens.size(); ++curToken)
+			for (curToken = 3; curToken < tokens.size(); ++curToken)
 			{
 				result = result .. StringTable.Localize("SECRETITEM"..tokens[curToken], false);
 				if (curToken < tokens.size() - 1)
 				{
-					result = result .. ", ";
+					result = result .. ";\n";
 				}
 			}
-			result.AppendFormat("\cC\n");
+            if (tokens[1] != "") result.AppendFormat("  \cU"..tokens[1].."\cM\n"); // \cU = dark gray
+            else result.AppendFormat("\n"); //crutch...
 			// Add line numbers and widths to strikethroughs
-			BrokenLines lines = msgfont.BreakLines(result, int(pagewidth / fontscale));
+			/* commented the strike out, sadly does not work for now --N00b
+            BrokenLines lines = msgfont.BreakLines(result, int(pagewidth / fontscale));
 			for (int line = 0; line < lines.Count(); line++)
 			{
 				if (secret_found)
@@ -884,6 +885,7 @@ class ViewItem : BoAMenu
 				}
 				++stringLine;
 			}
+            */
 			++i;
 		}
 		return result;
