@@ -78,6 +78,22 @@ ACTOR Guard : BasicGuard
 		"####" KLM 5
 		"####" N -1
 		Stop
+	Death.Rifle:
+		"####" I 0 A_RandomHShotAnim
+	Death.HShot1:
+		GAH1 I 0 A_CheckFadeDeath
+		GAH1 I 5 A_Scream
+		"####" J 5 A_UnblockAndDrop
+		"####" KL 5
+		"####" M -1
+		Stop
+	Death.HShot2:
+		GAH2 I 0 A_CheckFadeDeath
+		GAH2 I 5 A_Scream
+		"####" J 5 A_UnblockAndDrop
+		"####" KL 5
+		"####" M -1
+		Stop
 	}
 }
 
@@ -334,6 +350,22 @@ ACTOR MP40Guard : Guard
 		"####" J 5 A_UnblockAndDrop
 		"####" KLM 5
 		"####" N -1
+		Stop
+	Death.Rifle:
+		"####" I 0 A_RandomHShotAnim
+	Death.HShot1:
+		MGH3 I 0 A_CheckFadeDeath
+		MGH3 I 5 A_Scream
+		"####" J 5 A_UnblockAndDrop
+		"####" KL 5
+		"####" M -1
+		Stop
+	Death.HShot2:
+		MGH4 I 0 A_CheckFadeDeath
+		MGH4 I 5 A_Scream
+		"####" J 5 A_UnblockAndDrop
+		"####" KL 5
+		"####" M -1
 		Stop
 	}
 }
@@ -851,6 +883,22 @@ ACTOR Officer : BasicGuard
 		"####" KLM 5
 		"####" N -1
 		Stop
+	Death.Rifle:
+		"####" I 0 A_RandomHShotAnim
+	Death.HShot1:
+		OFH3 I 0 A_CheckFadeDeath
+		OFH3 I 5 A_Scream
+		"####" J 5 A_UnblockAndDrop
+		"####" KL 5
+		"####" M -1
+		Stop
+	Death.HShot2:
+		OFH4 I 0 A_CheckFadeDeath
+		OFH4 I 5 A_Scream
+		"####" J 5 A_UnblockAndDrop
+		"####" KL 5
+		"####" M -1
+		Stop
 	Idle:
 		"####" AAAA 1 A_Wander
 		"####" A 0 A_Look
@@ -1077,6 +1125,22 @@ ACTOR RifleGuard : MP40Guard
 		"####" J 5 A_UnblockAndDrop
 		"####" KLM 5
 		"####" N -1
+		Stop
+	Death.Rifle:
+		"####" I 0 A_RandomHShotAnim
+	Death.HShot1:
+		RGH3 I 0 A_CheckFadeDeath
+		RGH3 I 5 A_Scream
+		"####" J 5 A_UnblockAndDrop
+		"####" KL 5
+		"####" M -1
+		Stop
+	Death.HShot2:
+		RGH4 I 0 A_CheckFadeDeath
+		RGH4 I 5 A_Scream
+		"####" J 5 A_UnblockAndDrop
+		"####" KL 5
+		"####" M -1
 		Stop
 	}
 }
