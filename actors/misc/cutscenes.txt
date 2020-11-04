@@ -47,6 +47,18 @@ ACTOR TMBlazko4 : TMBlazko
 	}
 }
 
+ACTOR TMWZombie : TMBlazko
+{
+	//$Title Wehrmacht Zombie Sample for Experiments
+	Scale 0.67
+	States
+	{
+	Spawn:
+		ZBIT N -1
+		Stop
+	}
+}
+
 ACTOR TMGuard
 {
 	//$Category Cutscenes (BoA)
