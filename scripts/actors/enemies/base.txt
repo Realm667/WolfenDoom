@@ -1826,7 +1826,7 @@ class Nazi : Base
 					{
 						Species = "Ally";
 
-						if (closestplayer && closestplayer.player && CheckSight(closestplayer.player.attacker))
+						if (closestplayer && closestplayer.player && closestplayer.player.attacker && CheckSight(closestplayer.player.attacker))
 						{
 							target = closestplayer.player.attacker;
 						}
