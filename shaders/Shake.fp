@@ -1,4 +1,16 @@
-// Modified from Nash's GZDoom port of the old video shader by Talon1024
+// From old video shader by jmpep, ported to GZDoom by Nash Muhandes
+// Modified for WolfenDoom: Blade of Agony by Kevin "Talon1024" Caccamo
+// https://www.shadertoy.com/view/Xdl3D8
+// License: See comments section for the shader
+/*
+heliumsoft, 2017-08-29
+Very nice old TV effect.
+Can i use your code in commercial project?
+
+jmpep, 2017-08-29
+@heliumsoft Yes, of course, you can use it for whatever you like :)
+*/
+
 #define MAX_SHAKE 0.002
 #define FREQUENCY 15.0
 

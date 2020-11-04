@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2019-2020 Dennis "Exl" Meuwissen
+ *
+ * This work is licensed under the Creative Commons
+ * Attribution-NonCommercial-ShareAlike 4.0 International License. To view a
+ * copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/
+ *
+ * You are free to copy and redistribute the material in any medium or format;
+ * and remix, transform, and build upon the material. If you do so, you must
+ * give appropriate credit, provide a link to the license, and indicate if
+ * changes were made. You may do so in any reasonable manner, but not in any way
+ * that suggests the licensor endorses you or your use. You may not use the
+ * material for commercial purposes. If you remix, transform, or build upon the
+ * material, you must distribute your contributions under the same license as
+ * the original.
+**/
+
 #define MAXCOLOR 15.0
 #define COLORS 16.0
 
