@@ -2263,7 +2263,7 @@ ACTOR Mechanic : BasicGuard
 				if(user_count2 < 2) { A_SpawnItemEx("ToolBox",0,-8,22,0,0,0,0,SXF_NOCHECKPOSITION); }
 			}
 		}
-		"####" A 1 A_NaziChase
+		"####" A 1 A_NaziChase // This line is causing crashes on C3M6_B for some reason...
 		"####" AA 1 A_NaziChase("","")
 		"####" A 1 A_NaziChase
 		"####" AA 1 A_NaziChase("","")

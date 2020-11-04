@@ -1,13 +1,3 @@
-// #version 330 core // Uncomment this if you're using glslViewer!
-// gzcompat.frag is a "compatibility layer" that lets you write texture shaders
-// for GZDoom using glslViewer.
-// glslViewer: https://github.com/patriciogonzalezvivo/glslViewer
-// gzcompat.frag: https://gist.github.com/Talon1024/f704e883851f447ca1985a1d8a45bf95
-#ifdef GLSLVIEWER
-#define USER_SHADER
-#include "gzcompat.frag"
-#endif
-
 uniform float timer;
 
 // By Talon1024
