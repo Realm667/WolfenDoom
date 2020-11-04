@@ -1915,33 +1915,6 @@ class Nazi : Base
 		return null;
 	}
 
-	state A_RandomHShotAnim(int chance = 64) //altdeath check needed? I doubt - ozy81
-	{
-		if (Random[altdeath](0, 255) < chance)
-		{
-			state HShot1 = FindState("Death.HShot1", true);
-			state HShot2 = FindState("Death.HShot2", true);
-			if (HShot1 && HShot2 /*&& user_nohshotdeaths*/)
-			{
-				if (Random[altdeath](0, 255) < 128) // 50/50 chance of HSHot1
-				{
-					return HShot1;
-				}
-				return HShot2;
-			}
-			else if (HShot1)
-			{
-				return HShot1;
-			}
-			else if (HShot2)
-			{
-				return HShot2;
-			}
-		}
-
-		return null;
-	}
-
 	bool InPlayerCrosshair()
 	{
 		BoAPlayer p;
