@@ -1290,6 +1290,9 @@ ACTOR ArcticRifleGuard : RifleGuard
 		"####" E 4 A_StartSound("mauser/cock", CHAN_AUTO, 0, 0.25)
 		"####" E 7 A_FaceTarget
 		Goto See
+	Death.Rifle:
+		SNRF I 0
+		Goto Super::Death
 	Death.Front:
 		SNRA I 0 A_CheckFadeDeath
 		SNRA I 5 A_Scream
@@ -1344,6 +1347,9 @@ ACTOR WaffenSS : SSMP40Guard
 		"####" E 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See
+	Death.Rifle:
+		WAFF I 0
+		Goto Super::Death
 	Death.Front:
 		WAFA I 0 A_CheckFadeDeath
 		WAFA I 5 A_Scream
@@ -1395,6 +1401,9 @@ ACTOR ArcticWaffen : WaffenSS
 		"####" E 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See
+	Death.Rifle:
+		SNWF I 0
+		Goto Super::Death
 	Death.Front:
 		SWDA I 0 A_CheckFadeDeath
 		SWDA I 5 A_Scream
@@ -1445,6 +1454,9 @@ ACTOR Paratrooper : WaffenSS
 		"####" E 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See
+	Death.Rifle:
+		PARA I 0
+		Goto Super::Death
 	Death.Front:
 		PADA I 0 A_CheckFadeDeath
 		PADA I 5 A_Scream
