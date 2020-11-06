@@ -67,7 +67,7 @@ class Soul : StackableInventory
 		{
 			if (!playeringame[player]){ continue; }
 			double pdist = Distance2D(players[player].mo);
-			if (pdist > distance || (target && target.player && pdist > Distance2D(target))) {
+			if (pdist > distance || (existing && existing.player && pdist > Distance2D(existing))) {
 				continue;
 			}
 			targetPlayer = players[player].mo;
@@ -80,9 +80,14 @@ class Soul : StackableInventory
 		target = FindClosestPlayer(target);
 		
 		A_SpawnItemEx("SoulFire", frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(16.0, 24.0), 0.001 * frandom(10.0, 20.0), 0.001 * frandom(10.0, 20.0), 0.001 * frandom(50.0, 100.0), 0, SXF_SETMASTER | SXF_CLIENTSIDE);
-		
+
 		if (target) {
-			Vel.XY = Vec2To(target).Unit() * Speed;
+			bNoGravity = true;
+			Vector2 posDiff = Vec2To(target);
+			Vel.XY = posDiff.Unit() * Speed;
+			Vel.Z = Speed / posDiff.Length() * (target.Pos.Z - Pos.Z);
+		} else {
+			bNoGravity = false;
 		}
 	}
 }
