@@ -78,6 +78,9 @@ class Soul : StackableInventory
 	void A_SoulSeek()
 	{
 		target = FindClosestPlayer(target);
+		
+		A_SpawnItemEx("SoulFire", frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(16.0, 24.0), 0.001 * frandom(10.0, 20.0), 0.001 * frandom(10.0, 20.0), 0.001 * frandom(50.0, 100.0), 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+		
 		if (target) {
 			Vel.XY = Vec2To(target).Unit() * Speed;
 		}
