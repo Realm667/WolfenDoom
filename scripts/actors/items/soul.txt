@@ -28,24 +28,26 @@ class Soul : StackableInventory
 		//$Title Souls (+1)
 		//$Color 6
 		//$Sprite AMM3A0
-
 		+FLOATBOB
 		+FORCEXYBILLBOARD
 		+INVENTORY.INVBAR
+		+LOOKALLAROUND
+		+NOCLIP
 		Inventory.Amount 1;
 		Inventory.MaxAmount 9999;
 		Inventory.Icon "AMM3I0";
 		Inventory.PickupMessage "$SOUL_SM";
 		Inventory.PickupSound "DSSLPU";
+		Speed 7;
 	}
 
 	States
 	{
 		Placed:
-			AMM3 ABCD 5 Bright Light("Soul");
+			AMM3 ABCD 5 Bright Light("Soul") A_SoulSeek;
 			Loop;
 		Spawn:
-			AMM3 ABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCD 5 Bright Light("Soul");
+			AMM3 ABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCD 5 Bright Light("Soul") A_SoulSeek;
 		Fadeout:
 			AMM3 ABCD 5 Bright A_FadeOut(0.05);
 			Loop;
@@ -56,6 +58,29 @@ class Soul : StackableInventory
 		Super.PostBeginPlay();
 
 		if (GetClassName() == "Soul" && !bDropped) { SetStateLabel("Placed"); }
+	}
+
+	Actor FindClosestPlayer(Actor existing = null, int distance = 256)
+	{
+		Actor targetPlayer = null;
+		for (int player = 0; player < MAXPLAYERS; player++)
+		{
+			if (!playeringame[player]){ continue; }
+			double pdist = Distance2D(players[player].mo);
+			if (pdist > distance || (target && target.player && pdist > Distance2D(target))) {
+				continue;
+			}
+			targetPlayer = players[player].mo;
+		}
+		return targetPlayer;
+	}
+
+	void A_SoulSeek()
+	{
+		target = FindClosestPlayer(target);
+		if (target) {
+			Vel.XY = Vec2To(target).Unit() * Speed;
+		}
 	}
 }
 
