@@ -1023,6 +1023,70 @@ ACTOR Bones_Base
 	Gravity 0.3
 }
 
+ACTOR HeadGibs : Bones_Base
+{
+	-FLATSPRITE
+	-RANDOMIZE
+	-ROLLCENTER
+	-ROLLSPRITE
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12,13)
+		GIBL A -1
+		GIBL B -1
+		GIBL C -1
+		GIBL D -1
+		GIBL E -1
+		GIBL F -1
+		GIBL G -1
+		GIBL H -1
+		GIBL I -1
+		GIBL J -1
+		GIBL K -1
+		GIBL L -1
+		GIBL M -1
+		Stop
+	}
+}
+
+ACTOR HeadGibsRing
+{
+	Radius 0
+	Height 0
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+NOINTERACTION
+	+THRUSPECIES
+	Species "Player"
+	var int user_gibs;
+	States
+	{
+	Spawn:
+		GIBL A 0 A_SpawnItemEx("HeadGibs",0,0,54,frandom(0.1, 6.0) * RandomPick(-1, 1), frandom(0.1, 6.0) * RandomPick(-1, 1), frandom(0.0, 6.0),user_gibs, NASHGORE_BLOODFLAGS1, 64)
+		GIBL A 0 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 54, frandom(0.1, 6.0) * RandomPick(-1, 1), frandom(0.1, 6.0) * RandomPick(-1, 1), frandom(0.0, 6.0), user_gibs, NASHGORE_BLOODFLAGS1, 64)
+		GIBL A 0 A_SetUserVar("user_gibs",user_gibs+45)
+		GIBL A 0 A_JumpIf(user_gibs==360,1)
+		Loop
+		TNT1 A 0
+		Stop
+	}
+}
+
+ACTOR ThroatSpill : HeadGibsRing
+{
+	States
+	{
+	Spawn:
+		GIBL A 0 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 24, frandom(0.1, 6.0) * RandomPick(-1, 1), frandom(0.1, 6.0) * RandomPick(-1, 1), frandom(0.0, 6.0), user_gibs, NASHGORE_BLOODFLAGS1, 64)
+		GIBL A 0 A_SetUserVar("user_gibs",user_gibs+20)
+		GIBL A 0 A_JumpIf(user_gibs==1080,1)
+		Loop
+		TNT1 A 0
+		Stop
+	}
+}
+
 ACTOR Debris_Bone : Bones_Base //no skull
 {
 	States
