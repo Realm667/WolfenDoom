@@ -44,7 +44,7 @@ class Soul : StackableInventory
 	States
 	{
 		Placed:
-			AMM3 ABCD 5 Bright Light("Soul") A_SoulSeek;
+			AMM3 ABCD 5 Bright Light("Soul");
 			Loop;
 		Spawn:
 			AMM3 ABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCD 5 Bright Light("Soul") A_SoulSeek;
@@ -75,9 +75,9 @@ class Soul : StackableInventory
 		return targetPlayer;
 	}
 
-	void A_SoulSeek()
+	void A_SoulSeek(int distance = 256)
 	{
-		target = FindClosestPlayer(target);
+		target = FindClosestPlayer(target, distance);
 		
 		A_SpawnItemEx("SoulFire", frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(16.0, 24.0), 0.001 * frandom(10.0, 20.0), 0.001 * frandom(10.0, 20.0), 0.001 * frandom(50.0, 100.0), 0, SXF_SETMASTER | SXF_CLIENTSIDE);
 
