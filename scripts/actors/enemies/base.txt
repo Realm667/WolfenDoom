@@ -758,7 +758,7 @@ class Base : Actor
 		posoffset = RotateVector(posoffset, -mo.angle); // Rotate to align with 0 degrees to remove rotation from calculations
 
 		// Calculate the angle to the left and right sides of the actor, and return whichever is smaller
-		double relangle = min(atan((posoffset.y + radius * 0.7) / posoffset.x), atan((posoffset.y - radius * 0.7) / posoffset.x));  // Radius is fudged by 0.7 since most actors's center of mass doesn't take up the whole radius
+		double relangle = min(atan2(posoffset.y + radius * 0.7, posoffset.x), atan2(posoffset.y - radius * 0.7, posoffset.x));  // Radius is fudged by 0.7 since most actors's center of mass doesn't take up the whole radius //Changed to atan2 because posoffset.x can be zero, it happened to me multiple times --N00b
 
 		double reldist = sqrt(relpitch ** 2 + relangle ** 2); // Get the distance from light cone center using the calculated pitch and angle
 

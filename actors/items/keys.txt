@@ -110,7 +110,25 @@ ACTOR SkullKey : PuzzleItem
 	}
 }
 
-ACTOR SkullKeyForSale : SkullKey
+//Special items
+
+
+ACTOR SurrenderingSoldierKey: SkullKey { //was SpyToken
+    //$Category Keys (BoA)
+	//$Title Surrendering Soldier Cache Key (puzzle 4, given by him)
+	//$Color 13
+    Inventory.Icon SKLKC0
+    //pickup message not needed
+    Inventory.MaxAmount 1
+    States
+	{
+	Spawn:
+		SKLK C -1
+		Stop
+	}
+}
+
+ACTOR SkullKeyForSale : SkullKey //C3M6_A
 {
 	//$Category Keys (BoA)
 	//$Title Occult Skull Key from C3M6_A (puzzle 4, for sale)
