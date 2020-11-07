@@ -1799,6 +1799,7 @@ class Nazi : Base
 
 		if (target is "GrenadeBase" && Speed > 0)
 		{
+			if (user_static && (flags & CHF_DONTMOVE)) { flags &= ~(flags & CHF_DONTMOVE); } // Make static enemies flee from grenades and other dangerous things
 			if (candodge && Distance3D(target) < radius + 64 + target.radius) { A_DoSideRoll(force:true); } // Roll away if it's close
 			else { A_Chase(null, null, flags); } // If running from a grenade, just run away and don't fire
 		}
@@ -1816,16 +1817,16 @@ class Nazi : Base
 
 				if (nazicount < 2)
 				{
-					if (!nazicount)
+					if (!nazicount) // nazicount == 0
 					{
 						Species = Default.Species;
-
+						bFrightened = false;
 						SetState(SpawnState); // return to Spawn state
 					}
 					else
 					{
 						Species = "Ally";
-
+						bFrightened = false;
 						if (closestplayer && closestplayer.player && closestplayer.player.attacker && CheckSight(closestplayer.player.attacker))
 						{
 							target = closestplayer.player.attacker;
@@ -1837,7 +1838,10 @@ class Nazi : Base
 				else
 				{
 					Species = Default.Species;
-
+					// Make him run away from you
+					if (!closestplayer) { closestplayer = FindClosestPlayer(self, IgnoreFriendlies:!bFriendly); }
+					target = closestplayer; // +FRIGHTENED will make this guy run away from his target.
+					bFrightened = true;
 					A_Chase(null, null, flags);
 				}
 			}
