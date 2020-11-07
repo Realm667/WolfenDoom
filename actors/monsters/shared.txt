@@ -67,6 +67,7 @@ ACTOR GoeringProjectile : NebRocket
 			}
 		Loop
 	Death:
+		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_ShockwaveOrange", 0, 0, 0, 0, 0, 0, 0, SXF_CLIENTSIDE | SXF_TRANSFERSCALE)
 		FRME A 1 BRIGHT LIGHT(NEBEXPLO) A_Explode(random(25,30))
 		FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT(NEBEXPLO)
 		Stop
@@ -627,9 +628,9 @@ ACTOR NebRocketEnemy : NebRocket
 	States
 	{
 	Death:
+		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_ShockwaveOrange", 0, 0, 0, 0, 0, 0, 0, SXF_CLIENTSIDE | SXF_TRANSFERSCALE)
 		FRME A 1 BRIGHT LIGHT(NEBEXPLO) A_Explode(random(25,30))
 		FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT(NEBEXPLO)
-
 		Stop
 	}
 }
