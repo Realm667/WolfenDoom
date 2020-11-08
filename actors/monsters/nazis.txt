@@ -81,9 +81,8 @@ ACTOR Guard : BasicGuard
 	Death.Rifle:
 		GAHA I 0 A_CheckFadeDeath
 		GAHA I 5 A_Scream
-		"####" J 5 A_UnblockAndDrop
-		"####" K 3 
-		"####" L 0 A_SpawnItemEx("HeadGibsRing", 0, 0, 0)
+		"####" J 5 A_GibsUnblockAndDrop
+		"####" K 3
 		"####" L 3
 		"####" M -1
 		Stop
@@ -211,9 +210,8 @@ ACTOR SSGuard : BasicGuard
 	Death.Rifle:
 		SPHS I 0 A_CheckFadeDeath
 		SPHS I 5 A_Scream
-		"####" J 5 A_UnblockAndDrop
-		"####" K 3 
-		"####" L 0 A_SpawnItemEx("HeadGibsRing", 0, 0, 0)
+		"####" J 5 A_GibsUnblockAndDrop
+		"####" K 3
 		"####" L 3
 		"####" M -1
 		Stop
@@ -280,9 +278,8 @@ ACTOR WGuard : BasicGuard
 	Death.Rifle:
 		GRHW I 0 A_CheckFadeDeath
 		GRHW I 5 A_Scream
-		"####" J 5 A_UnblockAndDrop
-		"####" K 3 
-		"####" L 0 A_SpawnItemEx("HeadGibsRing", 0, 0, 0)
+		"####" J 5 A_GibsUnblockAndDrop
+		"####" K 3
 		"####" L 3
 		"####" M -1
 		Stop
@@ -358,9 +355,8 @@ ACTOR MP40Guard : Guard
 	Death.Rifle:
 		MGHA I 0 A_CheckFadeDeath
 		MGHA I 5 A_Scream
-		"####" J 5 A_UnblockAndDrop
-		"####" K 3 
-		"####" L 0 A_SpawnItemEx("HeadGibsRing", 0, 0, 0)
+		"####" J 5 A_GibsUnblockAndDrop
+		"####" K 3
 		"####" L 3
 		"####" M -1
 		Stop
@@ -490,9 +486,8 @@ ACTOR SSMP40Guard : SSGuard
 	Death.Rifle:
 		SMHS I 0 A_CheckFadeDeath
 		SMHS I 5 A_Scream
-		"####" J 5 A_UnblockAndDrop
-		"####" K 3 
-		"####" L 0 A_SpawnItemEx("HeadGibsRing", 0, 0, 0)
+		"####" J 5 A_GibsUnblockAndDrop
+		"####" K 3
 		"####" L 3
 		"####" M -1
 		Stop
@@ -566,9 +561,8 @@ ACTOR WMP40Guard : MP40Guard
 	Death.Rifle:
 		MGHW I 0 A_CheckFadeDeath
 		MGHW I 5 A_Scream
-		"####" J 5 A_UnblockAndDrop
-		"####" K 3 
-		"####" L 0 A_SpawnItemEx("HeadGibsRing", 0, 0, 0)
+		"####" J 5 A_GibsUnblockAndDrop
+		"####" K 3
 		"####" L 3
 		"####" M -1
 		Stop
@@ -885,9 +879,8 @@ ACTOR Officer : BasicGuard
 	Death.Rifle:
 		OFHA I 0 A_CheckFadeDeath
 		OFHA I 5 A_Scream
-		"####" J 5 A_UnblockAndDrop
-		"####" K 3 
-		"####" L 0 A_SpawnItemEx("HeadGibsRing", 0, 0, 0)
+		"####" J 5 A_GibsUnblockAndDrop
+		"####" K 3
 		"####" L 3
 		"####" M -1
 		Stop
@@ -962,9 +955,8 @@ ACTOR SSOfficer : Officer
 	Death.Rifle:
 		SOHS I 0 A_CheckFadeDeath
 		SOHS I 5 A_Scream
-		"####" J 5 A_UnblockAndDrop
-		"####" K 3 
-		"####" L 0 A_SpawnItemEx("HeadGibsRing", 0, 0, 0)
+		"####" J 5 A_GibsUnblockAndDrop
+		"####" K 3
 		"####" L 3
 		"####" M -1
 		Stop
@@ -1056,9 +1048,8 @@ ACTOR WOfficer : Officer
 	Death.Rifle:
 		OFHW I 0 A_CheckFadeDeath
 		OFHW I 5 A_Scream
-		"####" J 5 A_UnblockAndDrop
-		"####" K 3 
-		"####" L 0 A_SpawnItemEx("HeadGibsRing", 0, 0, 0)
+		"####" J 5 A_GibsUnblockAndDrop
+		"####" K 3
 		"####" L 3
 		"####" M -1
 		Stop
@@ -1123,9 +1114,8 @@ ACTOR RifleGuard : MP40Guard
 	Death.Rifle:
 		RGHA I 0 A_CheckFadeDeath
 		RGHA I 5 A_Scream
-		"####" J 5 A_UnblockAndDrop
-		"####" K 3 
-		"####" L 0 A_SpawnItemEx("HeadGibsRing", 0, 0, 0)
+		"####" J 5 A_GibsUnblockAndDrop
+		"####" K 3
 		"####" L 3
 		"####" M -1
 		Stop
@@ -1189,9 +1179,8 @@ ACTOR WRifleGuard : RifleGuard
 	Death.Rifle:
 		RGHW I 0 A_CheckFadeDeath
 		RGHW I 5 A_Scream
-		"####" J 5 A_UnblockAndDrop
-		"####" K 3 
-		"####" L 0 A_SpawnItemEx("HeadGibsRing", 0, 0, 0)
+		"####" J 5 A_GibsUnblockAndDrop
+		"####" K 3
 		"####" L 3
 		"####" M -1
 		Stop
@@ -1267,9 +1256,8 @@ ACTOR WShotgunGuard : WRifleGuard
 	Death.Rifle: //placeholder
 		RGHW I 0 A_CheckFadeDeath
 		RGHW I 5 A_Scream
-		"####" J 5 A_UnblockAndDrop
-		"####" K 3 
-		"####" L 0 A_SpawnItemEx("HeadGibsRing", 0, 0, 0)
+		"####" J 5 A_GibsUnblockAndDrop
+		"####" K 3
 		"####" L 3
 		"####" M -1
 		Stop
