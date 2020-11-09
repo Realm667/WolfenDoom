@@ -81,8 +81,9 @@ class Soul : StackableInventory
 		if (target) {
 			bNoGravity = true;
 			Vector2 posDiff = Vec2To(target);
-			Vel.XY = posDiff.Unit() * Speed;
-			Vel.Z = Speed / posDiff.Length() * (target.Pos.Z - Pos.Z);
+			double distance = posDiff.Length();
+			Vel.XY = posDiff / max(1, distance) * Speed;
+			Vel.Z = Speed / max(1, distance) * (target.Pos.Z - Pos.Z);
 		} else {
 			bNoGravity = false;
 		}
