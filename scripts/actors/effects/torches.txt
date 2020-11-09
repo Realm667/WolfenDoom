@@ -174,21 +174,3 @@ class MutFire : TorchFireBase
 		if (spr != -1) { sprite = spr; }
 	}
 }
-
-class SoulFire : TorchFireBase
-{
-	Default
-	{
-		Scale 0.135;
-		-BRIGHT
-		+VISIBILITYPULSE
-	}
-	
-	override void PostBeginPlay()
-	{
-		Super.PostBeginPlay();
-
-		int spr = GetSpriteIndex("FIR" .. Random(3, 4));
-		if (spr != -1) { sprite = spr; }
-	}
-}

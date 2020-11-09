@@ -78,9 +78,6 @@ class Soul : StackableInventory
 	void A_SoulSeek(int distance = 256)
 	{
 		target = FindClosestPlayer(target, distance);
-		
-		A_SpawnItemEx("SoulFire", frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(16.0, 24.0), 0.001 * frandom(10.0, 20.0), 0.001 * frandom(10.0, 20.0), 0.001 * frandom(50.0, 100.0), 0, SXF_SETMASTER | SXF_CLIENTSIDE);
-
 		if (target) {
 			bNoGravity = true;
 			Vector2 posDiff = Vec2To(target);
