@@ -863,7 +863,7 @@ class ViewItem : BoAMenu
 			data.Split(tokens, "|");
 			if (tokens.size() < 4) { Console.Printf("ConstructSecretHintText(): Incorrect hint format."); continue; }
 			// Start each secret with a number in point form
-			result = result .. "\cM" .. i .. ". "; // \cM = black
+			result = result .. "\cC" .. i .. ". ";
 			bool secret_found;
 			// What is this secret? A thing? A sector?
 			if (tokens[0] == "t") // Thing secret, a TID is given
@@ -883,17 +883,17 @@ class ViewItem : BoAMenu
             // now construct the line
             // let's pretend that BJ adds the red highlight mentally...
 			if (secret_found) { result.AppendFormat("\cG"); }
-			else { result.AppendFormat("\cM"); }
+			else { result.AppendFormat("\cC"); }
 			// Add the items in the secret
 			for (curToken = 3; curToken < tokens.size(); ++curToken)
 			{
 				result = result .. StringTable.Localize("SECRETITEM"..tokens[curToken], false);
 				if (curToken < tokens.size() - 1)
 				{
-					result = result .. ";\n";
+					result = result .. "; ";
 				}
 			}
-            if (tokens[1] != "") result.AppendFormat("  \cU"..tokens[1].."\cM\n"); // \cU = dark gray
+            if (tokens[1] != "") result.AppendFormat("\cC"..tokens[1].."\n");
             else result.AppendFormat("\n"); //crutch...
 			// Add line numbers and widths to strikethroughs
 			/* commented the strike out, sadly does not work for now --N00b
