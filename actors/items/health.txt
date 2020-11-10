@@ -198,20 +198,21 @@ ACTOR PartyMeal9 : PartyMeal1
 	}
 }
 
-ACTOR FastFoodR : Meal //no empty fried potatoes and menu
+ACTOR FastFoodR : Meal //no empty stuff and menues
 {
 	//$Category Health (BoA)/Fast Food
 	//$Title Random Edible Fast Food (+5 health)
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6)
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7)
 		FFOD A -1
 		FFOD C -1
 		FFOD D -1
 		FFOD E -1
 		FFOD G -1
 		FFOD H -1
+		FFOD J -1
 		Stop
 	}
 }
@@ -310,6 +311,30 @@ ACTOR FastFood8 : Meal //from Ion Fury
 	{
 	Spawn:
 		FFOD H -1
+		Stop
+	}
+}
+
+ACTOR FastFood9 : Meal
+{
+	//$Category Health (BoA)/Fast Food
+	//$Title Pop Corn, Empty (+1 health)
+	States
+	{
+	Spawn:
+		FFOD I -1
+		Stop
+	}
+}
+
+ACTOR FastFood10 : Meal
+{
+	//$Category Health (BoA)/Fast Food
+	//$Title Pop Corn, Empty (+5 health)
+	States
+	{
+	Spawn:
+		FFOD J -1
 		Stop
 	}
 }
