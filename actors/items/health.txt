@@ -198,6 +198,211 @@ ACTOR PartyMeal9 : PartyMeal1
 	}
 }
 
+ACTOR FastFoodR : Meal //no empty fried potatoes and menu
+{
+	//$Category Health (BoA)/Fast Food
+	//$Title Random Edible Fast Food (+5 health)
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6)
+		FFOD A -1
+		FFOD C -1
+		FFOD D -1
+		FFOD E -1
+		FFOD G -1
+		FFOD H -1
+		Stop
+	}
+}
+
+ACTOR FastFood1 : Meal
+{
+	//$Category Health (BoA)/Fast Food
+	//$Title Burger (+5 health)
+	States
+	{
+	Spawn:
+		FFOD A -1
+		Stop
+	}
+}
+
+ACTOR FastFood2 : Meal
+{
+	//$Category Health (BoA)/Fast Food
+	//$Title Empty Fried Potatoes (+1 health)
+	Inventory.Amount 1
+	States
+	{
+	Spawn:
+		FFOD B -1
+		Stop
+	}
+}
+
+ACTOR FastFood3 : Meal
+{
+	//$Category Health (BoA)/Fast Food
+	//$Title Fried Potatoes (+5 health)
+	States
+	{
+	Spawn:
+		FFOD C -1
+		Stop
+	}
+}
+
+ACTOR FastFood4 : Meal
+{
+	//$Category Health (BoA)/Fast Food
+	//$Title Burger (+5 health)
+	States
+	{
+	Spawn:
+		FFOD D -1
+		Stop
+	}
+}
+
+ACTOR FastFood5 : Meal
+{
+	//$Category Health (BoA)/Fast Food
+	//$Title Burger (+5 health)
+	States
+	{
+	Spawn:
+		FFOD E -1
+		Stop
+	}
+}
+
+ACTOR FastFood6 : Meal
+{
+	//$Category Health (BoA)/Fast Food
+	//$Title Fast Food Menu (+10 health)
+	Inventory.Amount 10
+	States
+	{
+	Spawn:
+		FFOD F -1
+		Stop
+	}
+}
+
+ACTOR FastFood7 : Meal //from Ion Fury
+{
+	//$Category Health (BoA)/Fast Food
+	//$Title Mexican Taco (+5 health)
+	States
+	{
+	Spawn:
+		FFOD G -1
+		Stop
+	}
+}
+
+ACTOR FastFood8 : Meal //from Ion Fury
+{
+	//$Category Health (BoA)/Fast Food
+	//$Title Classic Hot Dog (+5 health)
+	States
+	{
+	Spawn:
+		FFOD H -1
+		Stop
+	}
+}
+
+ACTOR EastFoodR : Meal //no empty noodles
+{
+	//$Category Health (BoA)/Eastern Food
+	//$Title Random Edible Eastern Food (+5 health)
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3)
+		EAST A -1
+		EAST C -1
+		EAST D -1
+		Stop
+	}
+}
+
+ACTOR EastFood1 : Meal
+{
+	//$Category Health (BoA)/Eastern Food
+	//$Title Noodles Can (+5 health)
+	States
+	{
+	Spawn:
+		EAST A -1
+		Stop
+	}
+}
+
+ACTOR EastFood2 : Meal
+{
+	//$Category Health (BoA)/Eastern Food
+	//$Title Empty Noodles Can (+1 health)
+	Inventory.Amount 1
+	States
+	{
+	Spawn:
+		EAST B -1
+		Stop
+	}
+}
+
+ACTOR EastFood3 : Meal
+{
+	//$Category Health (BoA)/Eastern Food
+	//$Title Sushi (+5 health)
+	States
+	{
+	Spawn:
+		EAST C -1
+		Stop
+	}
+}
+
+ACTOR EastFood4 : Meal
+{
+	//$Category Health (BoA)/Eastern Food
+	//$Title Wasabi (+5 health)
+	States
+	{
+	Spawn:
+		EAST D -1
+		Stop
+	}
+}
+
+ACTOR ShishKebab : Meal
+{
+	//$Category Health (BoA)
+	//$Title Shish Kebab (+5 health)
+	States
+	{
+	Spawn:
+		SISH A -1
+		Stop
+	}
+}
+
+ACTOR JuicyChicken : Meal
+{
+	//$Category Health (BoA)/Eastern Food
+	//$Title Juicy Chicken (+10 health)
+	Inventory.Amount 10
+	States
+	{
+	Spawn:
+		CHIK A -1
+		Stop
+	}
+}
+
 ACTOR CupCake1 : Meal
 {
 	//$Category Health (BoA)/Party Food

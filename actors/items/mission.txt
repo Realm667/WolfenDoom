@@ -337,6 +337,21 @@ ACTOR ChutePickup : CompassItem
 	}
 }
 
+ACTOR ChemicalsPickup : CompassItem
+{
+	//$Title Chemical Ingredients
+	Tag "$TAGCHEM"
+	Inventory.Icon CHEMA0
+	Inventory.PickupMessage "$PCHEM"
+	Inventory.PickupSound "misc/p_pkup"
+	States
+	{
+	Spawn:
+		CHEM B -1
+		Stop
+	}
+}
+
 //////////////////////
 // DISGUISE UNIFORM //
 //////////////////////
