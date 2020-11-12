@@ -875,11 +875,24 @@ class ViewItem : BoAMenu
 				if (item == NULL || !item.bCOUNTSECRET) { secret_found = true; }
 				else { secret_found = false; }
 			}
+            else if (tokens[0] == "tr") //Secret trigger
+            {
+                // Find the secret item
+				ActorIterator it = Level.CreateActorIterator(tokens[2].toInt());
+                Actor actor;
+                secret_found = true;
+                while ((actor = it.Next()))
+                {
+					if (!(actor is "SecretTrigger")) continue;
+					secret_found = false;
+					break;
+				}
+            }
 			else if (tokens[0] == "s") // Sector secret, a sector number (not a tag) is given
 			{
 				if (!(Level.sectors[tokens[2].toInt()].flags & Sector.SECF_SECRET)) { secret_found = true; }
 				else { secret_found = false; }
-			}
+			} else { Console.Printf("ConstructSecretHintText(): Incorrect hint format."); continue; }
             // now construct the line
             // let's pretend that BJ adds the red highlight mentally...
 			if (secret_found) { result.AppendFormat("\cG"); }
