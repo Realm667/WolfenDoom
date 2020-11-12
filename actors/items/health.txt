@@ -42,16 +42,19 @@ ACTOR PartyMealR : Meal //no fruits for obvious reasons - ozy81
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9)
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12)
 		PMEL A -1
 		PMEL B -1
 		PMEL C -1
 		PMEL D -1
 		PMEL E -1
-		PMEL F -1
-		PMEL G -1
-		PMEL H -1
 		PMEL I -1
+		PMEL J -1
+		PMEL K -1
+		PMEL L -1
+		PMEL M -1
+		PMEL P -1
+		PMEL Q -1
 		Stop
 	}
 }
@@ -61,7 +64,7 @@ ACTOR StackedPartyMeal : StackedMeal
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,"MealA","MealB","MealC","MealD","MealE","MealF","MealG","MealH","MealI")
+		TNT1 A 0 NODELAY A_Jump(256,"MealA","MealB","MealC","MealD","MealE","MealF","MealG","MealH","MealI","MealJ","MealK","MealL")
 	MealA:
 		PMEL A 1
 		Loop
@@ -78,16 +81,25 @@ ACTOR StackedPartyMeal : StackedMeal
 		PMEL E 1
 		Loop
 	MealF:
-		PMEL F 1
+		PMEL I 1
 		Loop
 	MealG:
-		PMEL G 1
+		PMEL J 1
 		Loop
 	MealH:
-		PMEL H 1
+		PMEL K 1
 		Loop
 	MealI:
-		PMEL I 1
+		PMEL L 1
+		Loop
+	MealJ:
+		PMEL M 1
+		Loop
+	MealK:
+		PMEL P 1
+		Loop
+	MealL:
+		PMEL Q 1
 		Loop
 	}
 }
@@ -124,7 +136,7 @@ ACTOR PartyMeal3 : PartyMeal1
 	States
 	{
 	Spawn:
-		PMEL D -1
+		PMEL J -1
 		Stop
 	}
 }
@@ -136,9 +148,11 @@ ACTOR PartyMeal4 : PartyMeal1
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2)
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
 		PMEL E -1
 		PMEL F -1
+		PMEL G -1
+		PMEL H -1
 		Stop
 	}
 }
@@ -149,7 +163,7 @@ ACTOR PartyMeal5 : PartyMeal1
 	States
 	{
 	Spawn:
-		PMEL G -1
+		PMEL Q -1
 		Stop
 	}
 }
@@ -160,7 +174,7 @@ ACTOR PartyMeal6 : PartyMeal1
 	States
 	{
 	Spawn:
-		PMEL H -1
+		PMEL I -1
 		Stop
 	}
 }
@@ -171,7 +185,7 @@ ACTOR PartyMeal7 : PartyMeal1
 	States
 	{
 	Spawn:
-		PMEL I -1
+		PMEL D -1
 		Stop
 	}
 }
@@ -182,7 +196,7 @@ ACTOR PartyMeal8 : PartyMeal1
 	States
 	{
 	Spawn:
-		PMEL J -1
+		PMEL K -1
 		Stop
 	}
 }
@@ -193,7 +207,44 @@ ACTOR PartyMeal9 : PartyMeal1
 	States
 	{
 	Spawn:
-		PMEL K -1
+		PMEL L -1
+		Stop
+	}
+}
+
+ACTOR PartyMeal10 : PartyMeal1
+{
+	//$Title Edible Party Meal 10 (+5 health)
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4)
+		PMEL M -1
+		PMEL N -1
+		PMEL O -1
+		PMEL P -1
+		Stop
+	}
+}
+
+ACTOR PartyMeal11 : PartyMeal1
+{
+	//$Title Edible Party Meal 11 (+5 health)
+	States
+	{
+	Spawn:
+		PMEL R -1
+		Stop
+	}
+}
+
+ACTOR PartyMeal12 : PartyMeal1
+{
+	//$Title Edible Party Meal 12 (+5 health)
+	States
+	{
+	Spawn:
+		PMEL S -1
 		Stop
 	}
 }
@@ -202,6 +253,7 @@ ACTOR FastFoodR : Meal //no empty stuff and menues
 {
 	//$Category Health (BoA)/Fast Food
 	//$Title Random Edible Fast Food (+5 health)
+	Scale 0.37
 	States
 	{
 	Spawn:
@@ -221,6 +273,7 @@ ACTOR FastFood1 : Meal
 {
 	//$Category Health (BoA)/Fast Food
 	//$Title Burger (+5 health)
+	Scale 0.37
 	States
 	{
 	Spawn:
@@ -234,6 +287,7 @@ ACTOR FastFood2 : Meal
 	//$Category Health (BoA)/Fast Food
 	//$Title Empty Fried Potatoes (+1 health)
 	Inventory.Amount 1
+	Scale 0.37
 	States
 	{
 	Spawn:
@@ -246,6 +300,7 @@ ACTOR FastFood3 : Meal
 {
 	//$Category Health (BoA)/Fast Food
 	//$Title Fried Potatoes (+5 health)
+	Scale 0.37
 	States
 	{
 	Spawn:
@@ -258,6 +313,7 @@ ACTOR FastFood4 : Meal
 {
 	//$Category Health (BoA)/Fast Food
 	//$Title Burger (+5 health)
+	Scale 0.37
 	States
 	{
 	Spawn:
@@ -270,6 +326,7 @@ ACTOR FastFood5 : Meal
 {
 	//$Category Health (BoA)/Fast Food
 	//$Title Burger (+5 health)
+	Scale 0.37
 	States
 	{
 	Spawn:
@@ -282,6 +339,7 @@ ACTOR FastFood6 : Meal
 {
 	//$Category Health (BoA)/Fast Food
 	//$Title Fast Food Menu (+10 health)
+	Scale 0.37
 	Inventory.Amount 10
 	States
 	{
@@ -295,6 +353,7 @@ ACTOR FastFood7 : Meal //from Ion Fury
 {
 	//$Category Health (BoA)/Fast Food
 	//$Title Mexican Taco (+5 health)
+	Scale 0.37
 	States
 	{
 	Spawn:
@@ -307,6 +366,7 @@ ACTOR FastFood8 : Meal //from Ion Fury
 {
 	//$Category Health (BoA)/Fast Food
 	//$Title Classic Hot Dog (+5 health)
+	Scale 0.37
 	States
 	{
 	Spawn:
@@ -319,6 +379,7 @@ ACTOR FastFood9 : Meal
 {
 	//$Category Health (BoA)/Fast Food
 	//$Title Pop Corn, Empty (+1 health)
+	Scale 0.37
 	States
 	{
 	Spawn:
@@ -331,6 +392,7 @@ ACTOR FastFood10 : Meal
 {
 	//$Category Health (BoA)/Fast Food
 	//$Title Pop Corn, Empty (+5 health)
+	Scale 0.37
 	States
 	{
 	Spawn:
@@ -343,6 +405,7 @@ ACTOR EastFoodR : Meal //no empty noodles
 {
 	//$Category Health (BoA)/Eastern Food
 	//$Title Random Edible Eastern Food (+5 health)
+	Scale 0.37
 	States
 	{
 	Spawn:
@@ -358,6 +421,7 @@ ACTOR EastFood1 : Meal
 {
 	//$Category Health (BoA)/Eastern Food
 	//$Title Noodles Can (+5 health)
+	Scale 0.37
 	States
 	{
 	Spawn:
@@ -370,6 +434,7 @@ ACTOR EastFood2 : Meal
 {
 	//$Category Health (BoA)/Eastern Food
 	//$Title Empty Noodles Can (+1 health)
+	Scale 0.37
 	Inventory.Amount 1
 	States
 	{
@@ -407,6 +472,7 @@ ACTOR ShishKebab : Meal
 {
 	//$Category Health (BoA)
 	//$Title Shish Kebab (+5 health)
+	Scale 0.37
 	States
 	{
 	Spawn:
@@ -419,11 +485,17 @@ ACTOR JuicyChicken : Meal
 {
 	//$Category Health (BoA)/Eastern Food
 	//$Title Juicy Chicken (+10 health)
+	Scale 0.37
 	Inventory.Amount 10
 	States
 	{
 	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5)
 		CHIK A -1
+		CHIK B -1
+		CHIK C -1
+		CHIK D -1
+		CHIK E -1
 		Stop
 	}
 }
