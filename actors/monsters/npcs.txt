@@ -886,7 +886,7 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 
 			// Normalize scale amounts so actor height and radius aren't so far apart that they look disproportionate.
 			user_basescale = FRandom(-0.1, 0.05);
-			A_SetScale(ScaleX + user_basescale * FRandom(0.0, 1.5), ScaleY + user_basescale * FRandom(0.0, 1.5));
+			A_SetScale(ScaleX + user_basescale * FRandom(0.0, 0.65), ScaleY + user_basescale * FRandom(0.0, 0.65));
 		}
 	Active: //check if it's active though
 	SpawnLoop:
