@@ -17,6 +17,7 @@ vec4 ProcessTexel()
 	if(FragColor.r > 1.0) { FragColor.bg += FragColor.r - 1.0; }
 	if(FragColor.g > 1.0) { FragColor.rb += clamp(FragColor.g - 2.0, 0.0, 100.0); }
 	if(FragColor.b > 1.0) { FragColor.rg += FragColor.b - 1.0; }
-		
+	
+	FragColor.a = clamp(FragColor.a, 0.0, 1.0);
 	return mix(FragColor, vec4(fogColor, FragColor.a), fogDensity);
 }
