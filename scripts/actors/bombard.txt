@@ -29,14 +29,13 @@ class BombardShot : Actor
 		Damage 0;
 		Speed 15;
 		Gravity 0.125;
-		Scale 0.5;
 		-NOGRAVITY
 	}
 
 	States
 	{
 	Spawn:
-		TRGN A 5 A_SpawnItemEx("BodySmoke");
+		TRGN A 2 A_SpawnItemEx("BodySmoke");
 		Loop;
 	Crash:
 	Death:
@@ -55,7 +54,7 @@ class BombardShot : Actor
 		double gravity = shot.GetGravity();
 		double heightDiff = target.Z - origin.Z;
 		double time = posDiff.Length() / speed;
-		shot.Vel.XY = (cos(shot.Angle) * speed, sin(shot.Angle) * speed);
+		shot.VelFromAngle(speed, shot.Angle);
 		shot.Vel.Z = ZScriptTools.ArcZVel(time, gravity, heightDiff);
 		return shot;
 	}
