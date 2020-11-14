@@ -27,6 +27,7 @@ ACTOR Mine : GrenadeBase
 	Death:
 		"####" A 8 A_StartSound("MINEF")
 		"####" A 0 A_Scream
+		"####" A 0 A_SpawnGroundPlume
 		"####" A 0 A_SpawnItemEx("GeneralExplosion_Medium")
 		"####" A 0 A_SpawnItemEx("ZCrater")
 		Stop
