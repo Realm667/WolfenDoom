@@ -59,6 +59,7 @@ class BombardShot : Actor
 
 	override void PostBeginPlay()
 	{
+		Super.PostBeginPlay();
 		static const Sound sounds[] = { "EXPLOSION_LEADIN01", "EXPLOSION_LEADIN02", "EXPLOSION_LEADIN03", "EXPLOSION_LEADIN04" };
 		flybySound = sounds[Random(0, 3)];
 		flybyTics = int(ceil(S_GetLength(flybySound) * TICRATE));
