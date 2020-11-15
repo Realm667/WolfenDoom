@@ -27,7 +27,8 @@ class BombardShot : Actor
 	{
 		Projectile;
 		Damage 0;
-		Speed 15;
+		Speed 40;
+		ReactionTime 0;
 		Gravity 0.125;
 		-NOGRAVITY
 	}
@@ -35,25 +36,39 @@ class BombardShot : Actor
 	States
 	{
 	Spawn:
-		TRGN A 2 A_SpawnItemEx("BodySmoke");
+		TRGN A 1 {
+			A_SpawnItemEx("BodySmoke");
+			reactiontime -= 1;
+			if (reactiontime == 40)
+			{
+				A_StartSound("EXPLOSION_LEADIN", CHAN_BODY, attenuation: 0.5);
+			}
+		}
 		Loop;
 	Crash:
 	Death:
-		TNT1 A 0 A_StartSound("panzer/explode");
-		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Medium");
+		TNT1 A 0 {
+			A_StartSound("panzer/explode", CHAN_BODY);
+			A_SpawnItemEx("GeneralExplosion_Medium");
+		}
 		Stop;
 	}
 
-	static Actor Fire(Vector3 origin, Vector3 target, double forceSpeed = 0)
+	static Actor Fire(Vector3 origin, Vector3 target, int forceTime = 0)
 	{
 		Actor shot = Spawn("BombardShot", origin, ALLOW_REPLACE);
 		double speed = Actor.GetDefaultSpeed("BombardShot");
-		if (forceSpeed > 0.0) { speed = forceSpeed; }
 		Vector2 posDiff = Level.Vec2Diff(origin.XY, target.XY);
+		if (forceTime > 0)
+		{
+			speed = posDiff.Length() / forceTime;
+			shot.reactiontime = forceTime;
+		}
 		shot.Angle = atan2(posDiff.Y, posDiff.X);
 		double gravity = shot.GetGravity();
 		double heightDiff = target.Z - origin.Z;
 		double time = posDiff.Length() / speed;
+		shot.reactiontime = int(floor(time));
 		shot.VelFromAngle(speed, shot.Angle);
 		shot.Vel.Z = ZScriptTools.ArcZVel(time, gravity, heightDiff);
 		return shot;
@@ -75,80 +90,86 @@ class BombardShot : Actor
 		int bitIndexAllOrigins = 2;
 		int bitIndexAllTargets = 3;
 		// Random origin or not?
-		if (ZScriptTools.BitIsSet(flags, bitIndexRandomOrigin) || ZScriptTools.BitIsSet(flags, bitIndexAllOrigins)) {
+		if (ZScriptTools.BitIsSet(flags, bitIndexRandomOrigin) || ZScriptTools.BitIsSet(flags, bitIndexAllOrigins))
+		{
 			origin = originIter.Next();
-			while (origin != null) {
+			while (origin != null)
+			{
 				origins.Push(origin);
 				origin = originIter.Next();
 			}
 			origin = origins[Random(0, origins.Size() - 1)];
-		} else {
+		}
+		else
+		{
 			origin = originIter.Next();
 		}
 		// Random target or not?
-		if (ZScriptTools.BitIsSet(flags, bitIndexRandomTarget) || ZScriptTools.BitIsSet(flags, bitIndexAllTargets)) {
+		if (ZScriptTools.BitIsSet(flags, bitIndexRandomTarget) || ZScriptTools.BitIsSet(flags, bitIndexAllTargets))
+		{
 			target = targetIter.Next();
-			while (target != null) {
+			while (target != null)
+			{
 				targets.Push(target);
 				target = targetIter.Next();
 			}
 			target = targets[Random(0, targets.Size() - 1)];
-		} else {
+		}
+		else
+		{
 			target = targetIter.Next();
 		}
 		double forceSpeed = 0;
-		if (ZScriptTools.BitIsSet(flags, bitIndexAllTargets) && ZScriptTools.BitIsSet(flags, bitIndexAllOrigins)) {
+		if (ZScriptTools.BitIsSet(flags, bitIndexAllTargets) && ZScriptTools.BitIsSet(flags, bitIndexAllOrigins))
+		{
 			int largerSize = origins.Size();
 			int smallerSize = targets.Size();
 			int largerArray = 0;
-			if (targets.Size() > origins.Size()) {
+			if (targets.Size() > origins.Size())
+			{
 				largerSize = targets.Size();
 				smallerSize = origins.Size();
 				largerArray = 1;
 			}
-			for(int i = 0; i < largerSize; i++) {
+			for(int i = 0; i < largerSize; i++)
+			{
 				// Pick a random value from the smaller array, and iterate normally through the larger array
-				if (largerArray) {
+				if (largerArray)
+				{
 					// targets > origins
 					origin = origins[i < smallerSize ? i : Random(0, smallerSize - 1)];
 					target = targets[i];
-				} else {
+				}
+				else
+				{
 					// origins > targets
 					origin = origins[i];
 					target = targets[i < smallerSize ? i : Random(0, smallerSize - 1)];
 				}
-				if (forceTime) {
-					Vector2 posDiff = Level.Vec2Diff(origin.Pos.XY, target.Pos.XY);
-					forceSpeed = posDiff.Length() / forceTime;
-				}
-				BombardShot.Fire(origin.Pos, target.Pos, forceSpeed);
+				BombardShot.Fire(origin.Pos, target.Pos, forceTime);
 			}
-		} else if (ZScriptTools.BitIsSet(flags, bitIndexAllTargets)) {
+		}
+		else if (ZScriptTools.BitIsSet(flags, bitIndexAllTargets))
+		{
 			// All targets, single origin
-			for (int i = 0; i < targets.Size(); i++) {
+			for (int i = 0; i < targets.Size(); i++)
+			{
 				target = targets[i];
-				if (forceTime) {
-					Vector2 posDiff = Level.Vec2Diff(origin.Pos.XY, target.Pos.XY);
-					forceSpeed = posDiff.Length() / forceTime;
-				}
-				BombardShot.Fire(origin.Pos, target.Pos, forceSpeed);
+				BombardShot.Fire(origin.Pos, target.Pos, forceTime);
 			}
-		} else if (ZScriptTools.BitIsSet(flags, bitIndexAllOrigins)) {
+		}
+		else if (ZScriptTools.BitIsSet(flags, bitIndexAllOrigins))
+		{
 			// All origins, single target
-			for (int i = 0; i < origins.Size(); i++) {
+			for (int i = 0; i < origins.Size(); i++)
+			{
 				origin = origins[i];
-				if (forceTime) {
-					Vector2 posDiff = Level.Vec2Diff(origin.Pos.XY, target.Pos.XY);
-					forceSpeed = posDiff.Length() / forceTime;
-				}
-				BombardShot.Fire(origin.Pos, target.Pos, forceSpeed);
+				BombardShot.Fire(origin.Pos, target.Pos, forceTime);
 			}
-		} else {
-			if (forceTime) {
-				Vector2 posDiff = Level.Vec2Diff(origin.Pos.XY, target.Pos.XY);
-				forceSpeed = posDiff.Length() / forceTime;
-			}
-			BombardShot.Fire(origin.Pos, target.Pos, forceSpeed);
+		}
+		else
+		{
+			BombardShot.Fire(origin.Pos, target.Pos, forceTime);
 		}
 	}
 }
