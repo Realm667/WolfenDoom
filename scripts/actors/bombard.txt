@@ -23,6 +23,9 @@
 // Bombardment shot - C1M3
 class BombardShot : Actor
 {
+	Sound flybySound;
+	int flybyTics;
+
 	Default
 	{
 		Projectile;
@@ -39,19 +42,27 @@ class BombardShot : Actor
 		TRGN A 1 {
 			A_SpawnItemEx("BodySmoke");
 			reactiontime -= 1;
-			if (reactiontime == 40)
+			if (reactiontime == flybyTics)
 			{
-				A_StartSound("EXPLOSION_LEADIN", CHAN_BODY, attenuation: 0.5);
+				A_StartSound(flybySound, attenuation: 0.5);
 			}
 		}
 		Loop;
 	Crash:
 	Death:
 		TNT1 A 0 {
-			A_StartSound("panzer/explode", CHAN_BODY);
+			A_StartSound("panzer/explode");
 			A_SpawnItemEx("GeneralExplosion_Medium");
 		}
 		Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		static const Sound sounds[] = { "EXPLOSION_LEADIN01", "EXPLOSION_LEADIN02", "EXPLOSION_LEADIN03", "EXPLOSION_LEADIN04" };
+		flybySound = sounds[Random(0, 3)];
+		flybyTics = int(ceil(S_GetLength(flybySound) * TICRATE));
 	}
 
 	static Actor Fire(Vector3 origin, Vector3 target, int forceTime = 0)
