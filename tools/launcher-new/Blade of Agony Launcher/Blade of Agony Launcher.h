@@ -107,9 +107,9 @@ enum TexFilterSettings
 
 TCHAR TexFilterSettingsStrings[][50] = {
 	TEXT("Use Last Settings"),
-	TEXT("No Texture Filtering"),
+	TEXT("No Texture Filtering (recommended)"),
 	TEXT("Trilinear"),
-	TEXT("Trilinear (w/ Normal2x)"),
+	TEXT("Trilinear (with Normal2x)"),
 };
 
 TCHAR TexFilterSettingsCmd[][120] = {
