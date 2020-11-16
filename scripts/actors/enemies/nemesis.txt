@@ -1,0 +1,151 @@
+/*
+ * Copyright (c) 2020 Talon1024
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+**/
+
+class SpotFinderTracer : LineTracer
+{
+	// Set by the callback
+	bool hitWall;
+
+	override ETraceStatus TraceCallback()
+	{
+		if (Results.HitType == TRACE_HitFloor || Results.HitType == TRACE_HitCeiling)
+		{
+			hitWall = true;
+			return TRACE_Stop;
+		}
+		else if (Results.HitType == TRACE_HitWall)
+		{
+			// Walls need further examination
+			if (Results.Tier != TIER_Middle)
+			{
+				hitWall = true;
+				return TRACE_Stop;
+			}
+		}
+		return TRACE_Skip;
+	}
+}
+
+class YourNemesis : Demon
+{ // AKA ImmortalPinky AKA ImmortalDemon
+
+	Default
+	{
+		Health 300;
+		+JUMPDOWN
+	}
+
+	States
+	{
+	Death:
+		SARG I 8;
+		SARG J 8 A_Scream;
+		SARG K 4;
+		SARG L 4 A_NoBlocking;
+		SARG M 4;
+		SARG N 105; // Use 10500 = 5 minutes for the final enemy, 3 seconds is easier to test with.
+		SARG N -1 A_RaiseSelf(RF_NOCHECKPOSITION); // Doesn't work if duration is 0 for some reason
+		Stop;
+	Raise:
+		SARG N 5 { bSolid = false; bShootable = false; }
+		SARG MLKJI 5;
+		SARG A 0; // Set frame you see while disappearing
+		"####" "#" 1 A_FadeOutJump(0.125, "Reappear");
+		Wait;
+	Reappear:
+		"####" "#" 105; // Delay before re-appearing
+		SARG A 1 {
+			bSolid = true; bShootable = true;
+			A_FadeInJump(0.125, "See");
+		}
+		Wait;
+	}
+
+	void A_FadeOutJump(double fadeAmount, statelabel label, int flags = FTF_CLAMP)
+	{
+		A_FadeOut(fadeAmount, flags);
+		if (Alpha <= 0.0)
+		{
+			SetStateLabel(label);
+		}
+	}
+
+	void A_FadeInJump(double fadeAmount, statelabel label, int flags = FTF_CLAMP)
+	{
+		A_FadeIn(fadeAmount, flags);
+		if (Alpha >= 1.0)
+		{
+			SetStateLabel(label);
+		}
+	}
+
+	bool isAngleSuitable(double angle, out double maxdistance, double checkIncrement = 8)
+	{
+		SpotFinderTracer finder = new("SpotFinderTracer");
+		double zDiff = target.Pos.Z - Pos.Z;
+		Vector3 traceDirection = (cos(angle), sin(angle), 0);
+		Vector3 traceOrigin = target.Pos;
+		traceOrigin.Z += MaxStepHeight;
+		finder.Trace(traceOrigin, target.CurSector, traceDirection, maxdistance, 0);
+		// There is a wall blocking this angle!
+		if (finder.hitWall)
+		{
+			maxdistance = finder.Results.Distance;
+		}
+		AddZ(zDiff);
+		Vector2 checkDirection = (cos(angle), sin(angle));
+		// Check for a suitable spot to reappear at. Start at the furthest point, and close in to the target's position.
+		for (
+			Vector2 positionToCheck = target.Pos.XY + checkDirection * maxdistance;
+			-((positionToCheck - target.Pos.XY) dot checkDirection) > 0;
+			positionToCheck -= checkDirection * checkIncrement
+		){
+			if(CheckPosition(positionToCheck)) {
+				AddZ(-zDiff);
+				return true;
+			}
+		}
+		AddZ(-zDiff);
+		return false;
+	}
+
+	void A_TeleportCloseTo(double preferredAngle, double maxdistance)
+	{
+		if (!target) {return;}
+		preferredAngle = target.Angle + preferredAngle;
+		bool foundSuitableSpot = false;
+		for (double angleOffset = 0; angleOffset < 180; angleOffset += 0.5)
+		{
+			double traceAngle = preferredAngle + floor(angleOffset);
+			// Check in the other direction
+			if (ceil(angleOffset) != angleOffset)
+			{
+				traceAngle = 360 - traceAngle;
+			}
+			if (isAngleSuitable(traceAngle, maxdistance))
+			{
+				foundSuitableSpot = true;
+				break;
+			}
+		}
+	}
+}
