@@ -70,16 +70,21 @@ class BombardShot : Actor
 		Actor shot = Spawn("BombardShot", origin, ALLOW_REPLACE);
 		double speed = Actor.GetDefaultSpeed("BombardShot");
 		Vector2 posDiff = Level.Vec2Diff(origin.XY, target.XY);
+		double distance = posDiff.Length();
+		double time = forceTime;
 		if (forceTime > 0)
 		{
-			speed = posDiff.Length() / forceTime;
+			speed = distance / forceTime;
 			shot.reactiontime = forceTime;
+		}
+		else
+		{
+			time = distance / speed;
+			shot.reactiontime = int(floor(time));
 		}
 		shot.Angle = atan2(posDiff.Y, posDiff.X);
 		double gravity = shot.GetGravity();
 		double heightDiff = target.Z - origin.Z;
-		double time = posDiff.Length() / speed;
-		shot.reactiontime = int(floor(time));
 		shot.VelFromAngle(speed, shot.Angle);
 		shot.Vel.Z = ZScriptTools.ArcZVel(time, gravity, heightDiff);
 		return shot;
