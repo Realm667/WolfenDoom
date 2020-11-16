@@ -69,6 +69,7 @@ class GrenadeBase : Actor // Base actor for anything we want Nazis to run away f
 
 	static void SpawnGroundPlume(Actor self)
 	{
+		/*
 		Dictionary terrainPlumes = Dictionary.Create();
 		terrainPlumes.Insert("GRAS_B02", "DirtGroundPlume");
 		terrainPlumes.Insert("TEXTURES/GRAS_B02.PNG", "DirtGroundPlume");
@@ -77,9 +78,11 @@ class GrenadeBase : Actor // Base actor for anything we want Nazis to run away f
 		terrainPlumes.Insert("TEXTURES/GRAS_B02.PNG", "SnowGroundPlume");
 		terrainPlumes.Insert("SAND_T02", "SandGroundPlume");
 		terrainPlumes.Insert("TEXTURES/SAND_T02.PNG", "SandGroundPlume");
+		*/
 		if (self.Pos.Z == self.CurSector.floorplane.ZatPoint(self.Pos.XY)) {
 			String textureName = TexMan.GetName(self.floorpic);
-			String plumeClassStr = terrainPlumes.At(textureName.MakeUpper());
+			// String plumeClassStr = terrainPlumes.At(textureName.MakeUpper());
+			String plumeClassStr = "DirtGroundPlume";
 			if (plumeClassStr != "") {
 				class<Actor> plumeClass = plumeClassStr;
 				Actor.Spawn(plumeClass, self.Pos, ALLOW_REPLACE);
