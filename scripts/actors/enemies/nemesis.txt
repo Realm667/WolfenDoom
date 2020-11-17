@@ -64,7 +64,7 @@ class SpotFinderTracer : LineTracer
 }
 
 class RENemesis : NaziBoss
-{ // AKA ImmortalPinky AKA ImmortalDemon
+{
 	Default
 	{
 		Health 300;
@@ -77,13 +77,13 @@ class RENemesis : NaziBoss
 	States
 	{
 	Spawn:
-		NEMS A 0 NoDelay A_SetUserVar("user_incombat", 1);
+		NEMS A 0 NoDelay {user_incombat = 1;}
 		Goto Look;
 	See:
 		Goto See.Boss;
 	Missile:
 		NEMS FG 10;
-		NEMS G 10 A_ArcProjectile("ZombieVomit", 64);
+		NEMS G 10 A_ArcProjectile("ZombieVomit", additionalHeight: 32);
 		Goto See;
 	Melee:
 		NEMS HI 3;
@@ -144,9 +144,10 @@ class RENemesis : NaziBoss
 	}
 
 	// Checks whether the given angle is suitable for teleporting to. Returns the distance at the given angle which is suitable, or -1 if it is not suitable.
-	double isAngleSuitable(double angle, double maxdistance, double checkIncrement = 16)
+	double isAngleSuitable(double angle, double maxdistance, double checkIncrement = 16, double heightThreshold = 128)
 	{
 		double suitableDistance = -1;
+		// Find closest wall
 		SpotFinderTracer finder = new("SpotFinderTracer");
 		Vector3 traceDirection = (AngleToVector(angle), 0);
 		Vector3 traceOrigin = target.Pos;
@@ -157,15 +158,25 @@ class RENemesis : NaziBoss
 		{
 			maxdistance = finder.Results.Distance;
 		}
+		// Some setup
 		Vector3 oldPosition = Pos;
-		double checkDistance = maxdistance;
+		Sector targSec = Level.PointInSector(target.Pos.XY);
+		double targFloorHeight = targSec.NextLowestFloorAt(target.Pos.X, target.Pos.Y, target.Pos.Z, 0, MaxStepHeight);
 		// Check for a suitable spot to reappear at. Start at the furthest point, and close in to the target's position.
 		for (
 			double checkDistance = maxdistance;
 			checkDistance > 0;
 			checkDistance -= checkIncrement
 		){
+			Vector2 secCheckSpot = target.Vec2Angle(checkDistance, angle);
+			Sector sec = Level.PointInSector(secCheckSpot);
 			Vector3 checkSpot = target.Vec3Angle(checkDistance, angle);
+			double closestFloorHeight = sec.NextLowestFloorAt(checkSpot.X, checkSpot.Y, checkSpot.Z, 0, MaxStepHeight);
+			// "Closest floor height" is below the height threshold
+			if ((targFloorHeight - closestFloorHeight) > heightThreshold)
+			{
+				continue;
+			}
 			// Console.Printf("checkSpot: %.3f %.3f %.3f", checkSpot);
 			SetOrigin(checkSpot, false);
 			if (TestMobjLocation())
