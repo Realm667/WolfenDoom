@@ -69,10 +69,12 @@ class YourNemesis : Demon
 		SARG N 5 { bSolid = false; bShootable = false; }
 		SARG MLKJI 5;
 		SARG A 0; // Set frame you see while disappearing
-		"####" "#" 1 A_FadeOutJump(0.125, "Reappear");
+		"####" "#" 1 A_FadeOutJump(0.125, "Teleport");
 		Wait;
+	Teleport:
+		TNT1 A 105 A_TeleportCloseTo(180, 384, "Reappear");
+		Loop;
 	Reappear:
-		"####" "#" 105; // Delay before re-appearing
 		SARG A 1 {
 			bSolid = true; bShootable = true;
 			A_FadeInJump(0.125, "See");
@@ -98,8 +100,10 @@ class YourNemesis : Demon
 		}
 	}
 
-	bool isAngleSuitable(double angle, out double maxdistance, double checkIncrement = 8)
+	// Checks whether the given angle is suitable for teleporting to. Returns the distance at the given angle which is suitable, or -1 if it is not suitable.
+	double isAngleSuitable(double angle, double maxdistance, double checkIncrement = 8)
 	{
+		double suitableDistance = -1;
 		SpotFinderTracer finder = new("SpotFinderTracer");
 		double zDiff = target.Pos.Z - Pos.Z;
 		Vector3 traceDirection = (cos(angle), sin(angle), 0);
@@ -111,41 +115,53 @@ class YourNemesis : Demon
 		{
 			maxdistance = finder.Results.Distance;
 		}
-		AddZ(zDiff);
-		Vector2 checkDirection = (cos(angle), sin(angle));
+		Vector3 oldPosition = Pos;
+		Vector2 checkDirection = AngleToVector(angle);
+		double checkDistance = maxdistance;
 		// Check for a suitable spot to reappear at. Start at the furthest point, and close in to the target's position.
 		for (
-			Vector2 positionToCheck = target.Pos.XY + checkDirection * maxdistance;
+			Vector2 positionToCheck = target.Pos.XY + checkDirection * checkDistance;
 			-((positionToCheck - target.Pos.XY) dot checkDirection) > 0;
-			positionToCheck -= checkDirection * checkIncrement
+			checkDistance -= checkIncrement,
+			positionToCheck = target.Pos.XY + checkDirection * checkDistance
 		){
-			if(CheckPosition(positionToCheck)) {
-				AddZ(-zDiff);
-				return true;
+			SetOrigin((positionToCheck, target.Pos.Z), false);
+			if (TestMobjLocation())
+			{
+				suitableDistance = checkDistance;
+				break;
 			}
 		}
-		AddZ(-zDiff);
-		return false;
+		SetOrigin(oldPosition, false);
+		return suitableDistance;
 	}
 
-	void A_TeleportCloseTo(double preferredAngle, double maxdistance)
+	State A_TeleportCloseTo(double preferredAngle = 180, double maxdistance = 384, StateLabel toJumpTo = null)
 	{
-		if (!target) {return;}
+		if (!target) {return null;}
+		State appearState = FindState(toJumpTo, true);
 		preferredAngle = target.Angle + preferredAngle;
-		bool foundSuitableSpot = false;
-		for (double angleOffset = 0; angleOffset < 180; angleOffset += 0.5)
+		double suitableDistance = -1;
+		double traceAngle = 0;
+		for (double angleOffset = -90; angleOffset < 90; angleOffset += 0.5)
 		{
-			double traceAngle = preferredAngle + floor(angleOffset);
+			traceAngle = preferredAngle + floor(angleOffset);
 			// Check in the other direction
 			if (ceil(angleOffset) != angleOffset)
 			{
 				traceAngle = 360 - traceAngle;
 			}
+			suitableDistance = isAngleSuitable(traceAngle, maxdistance);
 			if (isAngleSuitable(traceAngle, maxdistance))
 			{
-				foundSuitableSpot = true;
 				break;
 			}
 		}
+		if (suitableDistance == -1)
+		{
+			return null;
+		}
+		SetOrigin(target.Vec3Angle(suitableDistance, traceAngle), false);
+		return appearState;
 	}
 }
