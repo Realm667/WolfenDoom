@@ -144,7 +144,7 @@ class RENemesis : NaziBoss
 	}
 
 	// Checks whether the given angle is suitable for teleporting to. Returns the distance at the given angle which is suitable, or -1 if it is not suitable.
-	double isAngleSuitable(double angle, double maxdistance, double checkIncrement = 8)
+	double isAngleSuitable(double angle, double maxdistance, double checkIncrement = 16)
 	{
 		double suitableDistance = -1;
 		SpotFinderTracer finder = new("SpotFinderTracer");
@@ -185,15 +185,16 @@ class RENemesis : NaziBoss
 		preferredAngle = target.Angle + preferredAngle;
 		double suitableDistance = -1;
 		double traceAngle = 0;
-		for (double angleOffset = 0; angleOffset < 180; angleOffset += 0.5)
+		for (double angleOffset = 0; angleOffset < 180; angleOffset += 22.5)
 		{
-			if (angleOffset == 0.0) continue;
-			traceAngle = preferredAngle + floor(angleOffset);
-			// Check in the other direction
-			if (ceil(angleOffset) != angleOffset)
+			traceAngle = preferredAngle + angleOffset;
+			suitableDistance = isAngleSuitable(traceAngle, maxdistance);
+			if (suitableDistance > -1)
 			{
-				traceAngle = preferredAngle - floor(angleOffset);
+				break;
 			}
+			// Check in the other direction
+			traceAngle = preferredAngle - angleOffset;
 			suitableDistance = isAngleSuitable(traceAngle, maxdistance);
 			if (suitableDistance > -1)
 			{
