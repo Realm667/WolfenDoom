@@ -99,7 +99,10 @@ class RENemesis : NaziBoss
 		NEMS R 8;
 		NEMS S 105; // Use 10500 = 5 minutes for the final enemy, 3 seconds is easier to test with.
 		NEMS S -1 {
-			A_RearrangePointers(AAPTR_NULL, newtracer: AAPTR_TARGET); // Keep previous target in "tracer" pointer to prevent it from being lost.
+			// Keep previous target in "tracer" pointer to prevent it from
+			// being lost, since actors lose their targets (and the lastEnemy)
+			// when they are resurrected.
+			A_RearrangePointers(AAPTR_NULL, newtracer: AAPTR_TARGET); 
 			A_RaiseSelf(RF_NOCHECKPOSITION); // Doesn't work if duration is 0 for some reason.
 		}
 		Stop;
@@ -162,21 +165,51 @@ class RENemesis : NaziBoss
 		Vector3 oldPosition = Pos;
 		Sector targSec = Level.PointInSector(target.Pos.XY);
 		double targFloorHeight = targSec.NextLowestFloorAt(target.Pos.X, target.Pos.Y, target.Pos.Z, 0, MaxStepHeight);
+		double mindistance = Radius + Speed;
 		// Check for a suitable spot to reappear at. Start at the furthest point, and close in to the target's position.
 		for (
 			double checkDistance = maxdistance;
-			checkDistance > 0;
+			checkDistance > mindistance;
 			checkDistance -= checkIncrement
 		){
 			Vector2 secCheckSpot = target.Vec2Angle(checkDistance, angle);
 			Sector sec = Level.PointInSector(secCheckSpot);
 			Vector3 checkSpot = target.Vec3Angle(checkDistance, angle);
+			// Ensure Nemesis doesn't teleport into midair
 			double closestFloorHeight = sec.NextLowestFloorAt(checkSpot.X, checkSpot.Y, checkSpot.Z, 0, MaxStepHeight);
-			// "Closest floor height" is below the height threshold
 			if ((targFloorHeight - closestFloorHeight) > heightThreshold)
 			{
 				continue;
 			}
+			/*
+			// I don't know for sure, but this code might cause a bad
+			// performance hit, and it's not even finished, so I'm leaving it
+			// commented out for now, unless it's really needed.
+			// For good measure - ensure he doesn't get stuck on an edge.
+			BlockLinesIterator iter = BlockLinesIterator.CreateFromPos(checkSpot.X, checkSpot.Y, checkSpot.Z, heightThreshold, Radius + Speed, sec);
+			bool onLedge = false;
+			while (iter.Next())
+			{
+				if (!(iter.CurLine.flags & Line.ML_TWOSIDED))
+				{
+					continue;
+				}
+				Sector otherSector = iter.CurLine.frontsector;
+				if (iter.CurLine.frontsector == sec)
+				{
+					otherSector = iter.CurLine.backsector;
+				}
+				if (otherSector.floorplane.ZatPoint(checkSpot.XY) > sec.floorplane.ZatPoint(checkSpot.XY))
+				{
+					continue;
+				}
+				double lowerFloor = otherSector.NextLowestFloorAt(checkSpot.X, checkSpot.Y, checkSpot.Z, 0, MaxStepHeight);
+			}
+			if (onLedge)
+			{
+				continue;
+			}
+			*/
 			// Console.Printf("checkSpot: %.3f %.3f %.3f", checkSpot);
 			SetOrigin(checkSpot, false);
 			if (TestMobjLocation())
@@ -218,6 +251,8 @@ class RENemesis : NaziBoss
 			return null;
 		}
 		SetOrigin(target.Vec3Angle(suitableDistance, traceAngle), false);
+		// Get him un-stuck from the ledge, if any.
+		Thrust(Speed, traceAngle + 180);
 		return appearState;
 	}
 }
