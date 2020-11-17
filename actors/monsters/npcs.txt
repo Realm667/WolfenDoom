@@ -521,6 +521,19 @@ ACTOR FatSinger : KittySinger
 	}
 }
 
+ACTOR ZFatSinger : FatSinger
+{
+	//$Title Zombiefied Brunhilde "Singing Fat Lady" (NPC, Shootable)
+	States
+	{
+	Spawn:
+		ZRUN A 0 NODELAY A_GiveInventory("Z_ShadeMe",0)
+	SpawnLoop:
+		ZRUN AAAACDEFBGBACEDFGBACEFGGDDCC 24
+		Loop
+	}
+}
+
 ACTOR BloodMime : KittySinger
 {
 	//$Title Blood Mime (NPC, Easteregg)
