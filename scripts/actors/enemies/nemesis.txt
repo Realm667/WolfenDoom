@@ -63,43 +63,61 @@ class SpotFinderTracer : LineTracer
 	}
 }
 
-class YourNemesis : Demon
+class RENemesis : NaziBoss
 { // AKA ImmortalPinky AKA ImmortalDemon
 	Default
 	{
 		Health 300;
+		Speed 6;
+		Tag "TAGNEMESIS";
+		Base.BossIcon "BOSSICO2";
 		+JUMPDOWN
 	}
 
 	States
 	{
+	Spawn:
+		NEMS A 0 NoDelay A_SetUserVar("user_incombat", 1);
+		Goto Look;
+	See:
+		Goto See.Boss;
+	Missile:
+		NEMS FG 10;
+		NEMS G 10 A_ArcProjectile("ZombieVomit", 64);
+		Goto See;
+	Melee:
+		NEMS HI 3;
+		NEMS JK 3;
+		Goto See;
+	Pain:
+		NEMS L 10;
+		Goto See;
 	Death:
-		SARG I 8;
-		SARG J 8 A_Scream;
-		SARG K 4;
-		SARG L 4 A_NoBlocking;
-		SARG M 4;
-		SARG N 105; // Use 10500 = 5 minutes for the final enemy, 3 seconds is easier to test with.
-		SARG N -1 {
+		NEMS M 8 A_Scream;
+		NEMS NOP 8;
+		NEMS Q 8 A_NoBlocking;
+		NEMS R 8;
+		NEMS S 105; // Use 10500 = 5 minutes for the final enemy, 3 seconds is easier to test with.
+		NEMS S -1 {
 			A_RearrangePointers(AAPTR_NULL, newtracer: AAPTR_TARGET); // Keep previous target in "tracer" pointer to prevent it from being lost.
 			A_RaiseSelf(RF_NOCHECKPOSITION); // Doesn't work if duration is 0 for some reason.
 		}
 		Stop;
 	Raise:
-		SARG N 5 {
+		NEMS S 8 {
 			bSolid = false;
 			bShootable = false;
 			A_RearrangePointers(AAPTR_TRACER); // Fetch target from "tracer" pointer.
 		}
-		SARG MLKJI 5;
-		SARG A 0; // Set frame you see while disappearing
+		NEMS RQPONML 8;
+		NEMS A 0; // Set frame you see while disappearing
 		"####" "#" 1 A_FadeOutJump(0.125, "Teleport");
 		Wait;
 	Teleport:
 		"####" "#" 70 A_TeleportCloseTo(180, 384, "Reappear");
 		Loop;
 	Reappear:
-		SARG A 1 {
+		"####" "#" 1 {
 			bSolid = true;
 			bShootable = true;
 			A_FadeInJump(0.125, "See");
