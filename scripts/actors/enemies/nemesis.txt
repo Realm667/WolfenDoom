@@ -40,6 +40,24 @@ class SpotFinderTracer : LineTracer
 				hitWall = true;
 				return TRACE_Stop;
 			}
+			else
+			{
+				if (!(Results.HitLine.flags & Line.ML_TWOSIDED))
+				{
+					// Not a two-sided wall
+					hitWall = true;
+					return TRACE_Stop;
+				}
+				else
+				{
+					// Two-sided wall
+					if (Results.HitLine.flags & Line.ML_BLOCKING)
+					{
+						hitWall = true;
+						return TRACE_Stop;
+					}
+				}
+			}
 		}
 		return TRACE_Skip;
 	}
@@ -47,7 +65,6 @@ class SpotFinderTracer : LineTracer
 
 class YourNemesis : Demon
 { // AKA ImmortalPinky AKA ImmortalDemon
-
 	Default
 	{
 		Health 300;
@@ -63,20 +80,28 @@ class YourNemesis : Demon
 		SARG L 4 A_NoBlocking;
 		SARG M 4;
 		SARG N 105; // Use 10500 = 5 minutes for the final enemy, 3 seconds is easier to test with.
-		SARG N -1 A_RaiseSelf(RF_NOCHECKPOSITION); // Doesn't work if duration is 0 for some reason
+		SARG N -1 {
+			A_RearrangePointers(AAPTR_NULL, newtracer: AAPTR_TARGET); // Keep previous target in "tracer" pointer to prevent it from being lost.
+			A_RaiseSelf(RF_NOCHECKPOSITION); // Doesn't work if duration is 0 for some reason.
+		}
 		Stop;
 	Raise:
-		SARG N 5 { bSolid = false; bShootable = false; }
+		SARG N 5 {
+			bSolid = false;
+			bShootable = false;
+			A_RearrangePointers(AAPTR_TRACER); // Fetch target from "tracer" pointer.
+		}
 		SARG MLKJI 5;
 		SARG A 0; // Set frame you see while disappearing
 		"####" "#" 1 A_FadeOutJump(0.125, "Teleport");
 		Wait;
 	Teleport:
-		TNT1 A 105 A_TeleportCloseTo(180, 384, "Reappear");
+		"####" "#" 70 A_TeleportCloseTo(180, 384, "Reappear");
 		Loop;
 	Reappear:
 		SARG A 1 {
-			bSolid = true; bShootable = true;
+			bSolid = true;
+			bShootable = true;
 			A_FadeInJump(0.125, "See");
 		}
 		Wait;
@@ -105,10 +130,9 @@ class YourNemesis : Demon
 	{
 		double suitableDistance = -1;
 		SpotFinderTracer finder = new("SpotFinderTracer");
-		double zDiff = target.Pos.Z - Pos.Z;
-		Vector3 traceDirection = (cos(angle), sin(angle), 0);
+		Vector3 traceDirection = (AngleToVector(angle), 0);
 		Vector3 traceOrigin = target.Pos;
-		traceOrigin.Z += MaxStepHeight;
+		traceOrigin.Z += target.MaxStepHeight;
 		finder.Trace(traceOrigin, target.CurSector, traceDirection, maxdistance, 0);
 		// There is a wall blocking this angle!
 		if (finder.hitWall)
@@ -116,16 +140,16 @@ class YourNemesis : Demon
 			maxdistance = finder.Results.Distance;
 		}
 		Vector3 oldPosition = Pos;
-		Vector2 checkDirection = AngleToVector(angle);
 		double checkDistance = maxdistance;
 		// Check for a suitable spot to reappear at. Start at the furthest point, and close in to the target's position.
 		for (
-			Vector2 positionToCheck = target.Pos.XY + checkDirection * checkDistance;
-			-((positionToCheck - target.Pos.XY) dot checkDirection) > 0;
-			checkDistance -= checkIncrement,
-			positionToCheck = target.Pos.XY + checkDirection * checkDistance
+			double checkDistance = maxdistance;
+			checkDistance > 0;
+			checkDistance -= checkIncrement
 		){
-			SetOrigin((positionToCheck, target.Pos.Z), false);
+			Vector3 checkSpot = target.Vec3Angle(checkDistance, angle);
+			// Console.Printf("checkSpot: %.3f %.3f %.3f", checkSpot);
+			SetOrigin(checkSpot, false);
 			if (TestMobjLocation())
 			{
 				suitableDistance = checkDistance;
@@ -138,25 +162,27 @@ class YourNemesis : Demon
 
 	State A_TeleportCloseTo(double preferredAngle = 180, double maxdistance = 384, StateLabel toJumpTo = null)
 	{
-		if (!target) {return null;}
 		State appearState = FindState(toJumpTo, true);
+		if (!target) {return appearState;}
 		preferredAngle = target.Angle + preferredAngle;
 		double suitableDistance = -1;
 		double traceAngle = 0;
-		for (double angleOffset = -90; angleOffset < 90; angleOffset += 0.5)
+		for (double angleOffset = 0; angleOffset < 180; angleOffset += 0.5)
 		{
+			if (angleOffset == 0.0) continue;
 			traceAngle = preferredAngle + floor(angleOffset);
 			// Check in the other direction
 			if (ceil(angleOffset) != angleOffset)
 			{
-				traceAngle = 360 - traceAngle;
+				traceAngle = preferredAngle - floor(angleOffset);
 			}
 			suitableDistance = isAngleSuitable(traceAngle, maxdistance);
-			if (isAngleSuitable(traceAngle, maxdistance))
+			if (suitableDistance > -1)
 			{
 				break;
 			}
 		}
+		// Console.Printf("suitableDistance: %.3f", suitableDistance);
 		if (suitableDistance == -1)
 		{
 			return null;
