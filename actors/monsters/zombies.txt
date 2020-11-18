@@ -317,7 +317,7 @@ ACTOR ZGermanShepherd : ZombieStandard
 	Nazi.ZombieVariant "ZGermanShepherd"
 	Height 48
 	Health 50
-	Speed 6
+	Speed 5
 	Mass 100
 	PainChance 180
 	MaxStepHeight 16
@@ -337,7 +337,7 @@ ACTOR ZGermanShepherd : ZombieStandard
 		ZDOG A 0
 		Goto Look
 	Idle:
-		"####" A 0 A_SetSpeed(6)
+		"####" A 0 A_SetSpeed(5)
 		"####" AAAAAAAA 1 A_Wander
 		"####" A 0 A_Look
 		"####" BBBBBBBB 1 A_Wander
@@ -351,8 +351,8 @@ ACTOR ZGermanShepherd : ZombieStandard
 		"####" A 0 {
 			user_incombat = True;
 
-			if (target && target != goal) { Speed = 9; }
-			else { Speed = 6; }
+			if (target && target != goal) { Speed = 7; }
+			else { Speed = 5; }
 		}
 		"####" A 1 A_Chase
 		"####" AAA 1 A_Chase("","",CHF_NOPLAYACTIVE)
