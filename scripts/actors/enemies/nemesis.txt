@@ -67,7 +67,8 @@ class RENemesis : NaziBoss
 {
 	Default
 	{
-		Health 300;
+		Health 1600;
+		Radius 64;
 		Speed 6;
 		Tag "TAGNEMESIS";
 		Base.BossIcon "BOSSICO2";
@@ -92,13 +93,11 @@ class RENemesis : NaziBoss
 	Pain:
 		NEMS L 10;
 		Goto See;
-	Death:
-		NEMS M 8 A_Scream;
-		NEMS NOP 8;
-		NEMS Q 8 A_NoBlocking;
-		NEMS R 8;
-		NEMS S 105; // Use 10500 = 5 minutes for the final enemy, 3 seconds is easier to test with.
-		NEMS S -1 {
+	Death: // Kneel after taking some damage
+		NEMS O 0; // A_JumpIfInTargetInventory("Something", 1, "Death.ForReal");
+		NEMS M 8 A_NoBlocking(false);
+		NEMS N 8400; // Kneel for 4 minutes = 8400 tics, 3 seconds is easier to test with
+		"####" "#" -1 { // This doesn't work if duration is 0 for some reason...
 			// Keep previous target in "tracer" pointer to prevent it from
 			// being lost, since actors lose their targets (and the lastEnemy)
 			// when they are resurrected.
@@ -106,13 +105,20 @@ class RENemesis : NaziBoss
 			A_RaiseSelf(RF_NOCHECKPOSITION); // Doesn't work if duration is 0 for some reason.
 		}
 		Stop;
+	Death.ForReal:
+		NEMS O 8 A_Scream;
+		NEMS P 8;
+		NEMS Q 8 A_NoBlocking;
+		NEMS R 8;
+		NEMS S -1;
+		Stop;
 	Raise:
-		NEMS S 8 {
+		NEMS N 8 {
 			bSolid = false;
 			bShootable = false;
 			A_RearrangePointers(AAPTR_TRACER); // Fetch target from "tracer" pointer.
 		}
-		NEMS RQPONML 8;
+		NEMS M 8;
 		NEMS A 0; // Set frame you see while disappearing
 		"####" "#" 1 A_FadeOutJump(0.125, "Teleport");
 		Wait;
@@ -120,6 +126,10 @@ class RENemesis : NaziBoss
 		"####" "#" 70 A_TeleportCloseTo(180, 384, "Reappear");
 		Loop;
 	Reappear:
+		"####" "#" 0 {
+			// Replace with jumpscare sound
+			A_StartSound("misc/secret");
+		}
 		"####" "#" 1 {
 			bSolid = true;
 			bShootable = true;
