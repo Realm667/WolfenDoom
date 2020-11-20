@@ -73,6 +73,7 @@ class GroundedMissile : GrenadeBase
 	Default
 	{
 		GroundedMissile.AirHeight 16;
+		Health 1;
 		Projectile;
 		-NOGRAVITY
 		+NOEXPLODEFLOOR
@@ -95,7 +96,8 @@ class GroundedMissile : GrenadeBase
 		double minz = floorz + minAirHeight;
 		if (Pos.Z <= minz)
 		{
-			Vel.Z = minz - Pos.Z;
+			Vel.Z = 0;
+			AddZ(minz - Pos.Z);
 			Vel.XY = AngleToVector(Angle, Speed);
 		}
 	}
@@ -198,7 +200,7 @@ class NemesisZyklonClouder : GroundedMissile
 		Height 16;
 		Speed 10;
 		Gravity .25;
-		GroundedMissile.AirHeight 32;
+		GroundedMissile.AirHeight 16;
 		Scale .25;
 		+BRIGHT
 	}
