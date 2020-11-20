@@ -63,14 +63,172 @@ class SpotFinderTracer : LineTracer
 	}
 }
 
+// Base class for missiles that travel on the floor
+class GroundedMissile : GrenadeBase
+{
+	double minAirHeight;
+
+	Property AirHeight: minAirHeight;
+
+	Default
+	{
+		GroundedMissile.AirHeight 16;
+		Projectile;
+		-NOGRAVITY
+		+NOEXPLODEFLOOR
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		if (!minAirHeight)
+		{
+			minAirHeight = Speed;
+		}
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+		if (health <= 0) return;
+		double floorz = CurSector.NextLowestFloorAt(Pos.X, Pos.Y, Pos.Z, steph: minAirHeight);
+		double minz = floorz + minAirHeight;
+		if (Pos.Z <= minz)
+		{
+			Vel.Z = minz - Pos.Z;
+			Vel.XY = AngleToVector(Angle, Speed);
+		}
+	}
+}
+
+/*
+// GroundedMissile class test
+class GroundedEnergyBolt : GroundedMissile
+{
+	Default
+	{
+		DamageFunction (40);
+		Speed 15;
+		Gravity .125;
+		GrenadeBase.FearDistance 64;
+		GroundedMissile.AirHeight 8;
+		+BRIGHT
+	}
+
+	States
+	{
+	Spawn:
+		ROBP AB 4;
+		Loop;
+	Death:
+		ROBP CDEG 6;
+		Stop;
+	}
+}
+*/
+
+/*
+class NemesisZyklonCloud : Actor
+{
+	Actor origin;
+
+	Default
+	{
+		Damage 0;
+		Scale .375;
+		Speed 7;
+		Projectile;
+		+RIPPER
+		+NOCLIP
+	}
+
+	States
+	{
+	Spawn:
+		AWCF EEEE 4 {
+			A_ZyklonAOE(32, 64);
+			A_CloudWander();
+		}
+		AWCF E 0 A_FadeOut(.125, FTF_REMOVE);
+		Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		origin = Spawn("MapSpot", Pos, NO_REPLACE);
+		SpriteOffset.Y = 70;
+	}
+
+	void A_CloudWander(double maxdistance = 128)
+	{
+		// Move towards origin if too far away
+		double angle = frandom(0.0, 360.0);
+		if (Distance2DSquared(origin) >= (maxdistance * maxdistance))
+		{
+			// Otherwise, just move in a completely random direction
+			angle = AngleTo(origin);
+		}
+		Vel.XY = AngleToVector(angle, Speed);
+	}
+
+	void A_ZyklonAOE(int damage, double radius, double ambientPercent = 0.0)
+	{
+		double ambient = double(damage) * ambientPercent;
+		int ambientDamage = ambient;
+		int realDamage = damage - ambient;
+		A_Explode(ambientDamage, radius, 0, damagetype: "UndeadPoisonAmbience");
+		A_Explode(realDamage, radius, 0, damagetype: "UndeadPoison");
+	}
+
+	override void OnDestroy()
+	{
+		origin.Destroy();
+		Super.OnDestroy();
+	}
+}
+*/
+
+class NemesisZyklonClouder : GroundedMissile
+{
+	Default
+	{
+		DamageFunction (40);
+		Radius 24;
+		Height 16;
+		Speed 10;
+		Gravity .25;
+		GroundedMissile.AirHeight 32;
+		Scale .25;
+		+BRIGHT
+	}
+
+	States
+	{
+	Spawn:
+		ZBAL A 4 LIGHT("ZYKFLMW2") {
+			A_SpawnProjectile("PoisonCloudUndead");
+			A_SpawnProjectile("PoisonCloudUndead");
+			A_SpawnProjectile("PoisonCloudUndead");
+		}
+		Loop;
+	Death:
+		ZBLX A 2 LIGHT("ZYKFLMW2") A_Explode(random(16,24), 128, 0, fulldamagedistance: 64);
+		ZBLX BCDEFGHIJK 2 LIGHT("ZYKFLMW2");
+		Stop;
+	}
+}
+
 class RENemesis : NaziBoss
 {
 	Default
 	{
+		DamageFactor "UndeadPoison", 0;
+		DamageFactor "UndeadPoisonAmbience", 0;
 		Health 1600;
 		Radius 64;
 		Speed 6;
-		Tag "TAGNEMESIS";
+		Tag "$TAGNEMESIS";
 		Base.BossIcon "BOSSICO2";
 		+JUMPDOWN
 	}
@@ -83,8 +241,13 @@ class RENemesis : NaziBoss
 	See:
 		Goto See.Boss;
 	Missile:
+		NEMS A 0 A_Jump(100, "Missile2");
 		NEMS FG 10;
 		NEMS G 10 A_ArcProjectile("ZombieVomit", additionalHeight: 32);
+		Goto See;
+	Missile2:
+		NEMS FG 10;
+		NEMS G 10 A_SpawnProjectile("NemesisZyklonClouder");
 		Goto See;
 	Melee:
 		NEMS HI 3;
