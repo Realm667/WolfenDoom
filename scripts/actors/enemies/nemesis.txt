@@ -66,25 +66,21 @@ class SpotFinderTracer : LineTracer
 // Base class for missiles that travel on the floor
 class GroundedMissile : GrenadeBase
 {
-	double minAirHeight;
-
-	Property AirHeight: minAirHeight;
-
 	Default
 	{
-		GroundedMissile.AirHeight 16;
 		Health 1;
 		Projectile;
 		-NOGRAVITY
 		+NOEXPLODEFLOOR
+		+STEPMISSILE
 	}
 
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		if (!minAirHeight)
+		if (!MaxStepHeight)
 		{
-			minAirHeight = Speed;
+			MaxStepHeight = Speed;
 		}
 	}
 
@@ -92,8 +88,8 @@ class GroundedMissile : GrenadeBase
 	{
 		Super.Tick();
 		if (health <= 0) return;
-		double floorz = CurSector.NextLowestFloorAt(Pos.X, Pos.Y, Pos.Z, steph: minAirHeight);
-		double minz = floorz + minAirHeight;
+		double floorz = CurSector.NextLowestFloorAt(Pos.X, Pos.Y, Pos.Z, steph: MaxStepHeight);
+		double minz = floorz + MaxStepHeight;
 		if (Pos.Z <= minz)
 		{
 			Vel.Z = 0;
@@ -200,7 +196,7 @@ class NemesisZyklonClouder : GroundedMissile
 		Height 16;
 		Speed 10;
 		Gravity .25;
-		GroundedMissile.AirHeight 16;
+		MaxStepHeight 16;
 		Scale .25;
 		+BRIGHT
 	}
@@ -356,7 +352,7 @@ class RENemesis : NaziBoss
 			Vector3 checkSpot = target.Vec3Angle(checkDistance, angle);
 			// Ensure Nemesis doesn't teleport into midair
 			double closestFloorHeight = sec.NextLowestFloorAt(checkSpot.X, checkSpot.Y, checkSpot.Z, 0, MaxStepHeight);
-			if ((targFloorHeight - closestFloorHeight) > heightThreshold)
+			if ((targFloorHeight - closestFloorHeight) > MaxDropoffHeight)
 			{
 				continue;
 			}
@@ -365,7 +361,7 @@ class RENemesis : NaziBoss
 			// performance hit, and it's not even finished, so I'm leaving it
 			// commented out for now, unless it's really needed.
 			// For good measure - ensure he doesn't get stuck on an edge.
-			BlockLinesIterator iter = BlockLinesIterator.CreateFromPos(checkSpot.X, checkSpot.Y, checkSpot.Z, heightThreshold, Radius + Speed, sec);
+			BlockLinesIterator iter = BlockLinesIterator.CreateFromPos(checkSpot.X, checkSpot.Y, checkSpot.Z, MaxDropoffHeight, Radius + Speed, sec);
 			bool onLedge = false;
 			while (iter.Next())
 			{
