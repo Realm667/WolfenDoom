@@ -65,20 +65,19 @@ ACTOR ChanGold : LightBase
 	States
 	{
 	Active:
-		MDLA A 0 {bDormant = FALSE;} //mxd. DORMANT flag must be updated manually
+		MDLA A 0 {bDormant = FALSE;}
 	Spawn:
 		MDLA A -1 LIGHT("3DCHAN")
 		Stop
 	Inactive:
-		MDLA B -1 {bDormant = TRUE;} //mxd. DORMANT flag must be updated manually
+		MDLA B -1 {bDormant = TRUE;}
 		Stop
 	}
 }
 
-ACTOR WallLight1 : ModelBase
+ACTOR WallLight1 : LightBase
 {
-	//$Category Lights (BoA)/Static
-	//$Title 3d Wall Light (OFF, STATIC)
+	//$Title 3d Wall Light (OFF)
 	//$Color 11
 	DistanceCheck "boa_scenelod"
 	Radius 4
@@ -86,24 +85,39 @@ ACTOR WallLight1 : ModelBase
 	-SOLID
 	+NOBLOCKMAP
 	+NOGRAVITY
-}
-
-ACTOR WallLight1Lit : WallLight1
-{
-	//$Title 3d Wall Light (ON, STATIC)
 	States
 	{
+	Active:
+		MDLA B 0 {bDormant = FALSE;}
 	Spawn:
-		MDLA A 0 NODELAY A_SpawnItemEx("VolumetricLight_ConeDown", ScaleX*16, 0, 24, 0, 0, 0, 0, SXF_ISTRACER, 0, tid)
-		MDLA A -1 LIGHT(OZYWALLT)
+		MDLA B -1
+		Stop
+	Inactive:
+		MDLA A -1 LIGHT(OZYWALLT){bDormant = TRUE; A_SpawnItemEx("VolumetricLight_ConeDown", ScaleX*16, 0, 24, 0, 0, 0, 0, SXF_ISTRACER, 0, tid);}
 		Stop
 	}
 }
 
-ACTOR WallLight1NC : WallLight1
+ACTOR WallLight1Lit : WallLight1
+{
+	//$Title 3d Wall Light (ON)
+	States
+	{
+	Active:
+		MDLA A 0 {bDormant = FALSE;}
+	Spawn:
+		MDLA A -1 NODELAY LIGHT(OZYWALLT) A_SpawnItemEx("VolumetricLight_ConeDown", ScaleX*16, 0, 24, 0, 0, 0, 0, SXF_ISTRACER, 0, tid)
+		Stop
+	Inactive:
+		MDLA B -1 {bDormant = TRUE;}
+		Stop
+	}
+}
+
+ACTOR WallLight1NC : WallLight1Lit
 {
 	//$Category Lights (BoA)/No Cones
-	//$Title 3d Wall Light, no cone (ON, STATIC)
+	//$Title 3d Wall Light, no cone (ON)
 	States
 	{
 	Spawn:
@@ -114,17 +128,33 @@ ACTOR WallLight1NC : WallLight1
 
 ACTOR WallLight2 : WallLight1
 {
-	//$Title 3d Wall Lantern (OFF, STATIC)
+	//$Title 3d Wall Lantern (OFF)
 	Height 24
+	States
+	{
+	Active:
+		MDLA B 0 {bDormant = FALSE;}
+	Spawn:
+		MDLA B -1
+		Stop
+	Inactive:
+		MDLA A -1 LIGHT(OZYWALLT){bDormant = TRUE;}
+		Stop
+	}
 }
 
 ACTOR WallLight2Lit : WallLight2
 {
-	//$Title 3d Wall Lantern (ON, STATIC)
+	//$Title 3d Wall Lantern (ON)
 	States
 	{
+	Active:
+		MDLA A 0 {bDormant = FALSE;}
 	Spawn:
 		MDLA A -1 LIGHT(OZYWALLT)
+		Stop
+	Inactive:
+		MDLA B -1 {bDormant = TRUE;}
 		Stop
 	}
 }
@@ -1005,9 +1035,8 @@ ACTOR Cell_LightNC : CastleLight1
 	}
 }
 
-ACTOR ColumnLight
+ACTOR ColumnLight : LightBase
 {
-	//$Category Lights (BoA)/Static
 	//$Title 3d Column Light (ON)
 	//$Color 11
 	DistanceCheck "boa_scenelod"
@@ -1016,8 +1045,13 @@ ACTOR ColumnLight
 	+SOLID
 	States
 	{
+	Active:
+		MDLA A 0 {bDormant = FALSE;}
 	Spawn:
 		MDLA A -1
+		Stop
+	Inactive:
+		MDLA B -1 {bDormant = TRUE;}
 		Stop
 	}
 }
@@ -1027,8 +1061,13 @@ ACTOR ColumnLight2 : ColumnLight
 	//$Title 3d Column Light (OFF)
 	States
 	{
+	Active:
+		MDLA B 0 {bDormant = FALSE;}
 	Spawn:
 		MDLA B -1
+		Stop
+	Inactive:
+		MDLA A -1 {bDormant = TRUE;}
 		Stop
 	}
 }
