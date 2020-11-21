@@ -224,7 +224,8 @@ class RENemesis : NaziBoss
 		DamageFactor "UndeadPoison", 0;
 		DamageFactor "UndeadPoisonAmbience", 0;
 		Health 1600;
-		Radius 64;
+		Radius 48;
+		MeleeRange 56;
 		Speed 6;
 		Tag "$TAGNEMESIS";
 		Base.BossIcon "BOSSICO2";
@@ -248,8 +249,12 @@ class RENemesis : NaziBoss
 		NEMS G 10 A_SpawnProjectile("NemesisZyklonClouder");
 		Goto See;
 	Melee:
-		NEMS HI 3;
-		NEMS JK 3;
+		NEMS A 3;
+		NEMS H 4 A_StartSound("skeleton/swing", CHAN_WEAPON);
+		NEMS I 12 A_CustomMeleeAttack(random(20,30), "skeleton/melee");
+		NEMS A 3 A_JumpIfTargetOutsideMeleeRange("See");
+		NEMS J 4 A_StartSound("skeleton/swing", CHAN_WEAPON);
+		NEMS K 12 A_CustomMeleeAttack(random(20,30), "skeleton/melee");
 		Goto See;
 	Pain:
 		NEMS L 10;
