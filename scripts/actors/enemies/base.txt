@@ -441,6 +441,13 @@ class Base : Actor
 		return proj;
 	}
 
+	void A_XDie(Name damagetype = 'None')
+	{
+		// Force the caller to die with an extreme death
+		A_Die(damagetype);
+		SetStateLabel("XDeath");
+	}
+
 	void A_WanderGoal(int flags = 0, int scarerange = 0)
 	{
 		if (scarerange > 0 && lastheard)
