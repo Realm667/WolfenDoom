@@ -259,7 +259,10 @@ class RENemesis : NaziBoss
 		NEMS L 10;
 		Goto See;
 	Death: // Kneel after taking some damage
-		NEMS O 0; // A_JumpIfInTargetInventory("Something", 1, "Death.ForReal");
+		NEMS O 0 {
+			ACS_NamedExecute("City_Light_On", 0);
+			return A_JumpIfInTargetInventory("NemesisDiesForGood", 1, "DeathForReal");
+		}
 		NEMS M 8 A_NoBlocking(false);
 		NEMS N 8400; // Kneel for 4 minutes = 8400 tics, 3 seconds is easier to test with
 		"####" "#" -1 { // This doesn't work if duration is 0 for some reason...
@@ -270,7 +273,7 @@ class RENemesis : NaziBoss
 			A_RaiseSelf(RF_NOCHECKPOSITION); // Doesn't work if duration is 0 for some reason.
 		}
 		Stop;
-	Death.ForReal:
+	DeathForReal:
 		NEMS O 8 A_Scream;
 		NEMS P 8;
 		NEMS Q 8 A_NoBlocking;
@@ -281,6 +284,7 @@ class RENemesis : NaziBoss
 		NEMS N 8 {
 			bSolid = false;
 			bShootable = false;
+			ACS_NamedExecute("City_Light_Off", 0);
 			A_RearrangePointers(AAPTR_TRACER); // Fetch target from "tracer" pointer.
 		}
 		NEMS M 8;
@@ -429,5 +433,12 @@ class RENemesis : NaziBoss
 		// Get him un-stuck from the ledge, if any.
 		Thrust(Speed, traceAngle + 180);
 		return appearState;
+	}
+}
+
+class NemesisDiesForGood : Inventory {
+	Default
+	{
+		Inventory.MaxAmount 1;
 	}
 }
