@@ -444,8 +444,8 @@ class Base : Actor
 	void A_XDie(Name damagetype = 'None')
 	{
 		// Force the caller to die with an extreme death
-		A_Die(damagetype);
-		SetStateLabel("XDeath");
+		int damage = health - GetGibHealth() + 1;
+		DamageMobj(null, null, damage, damagetype, DMG_FORCED);
 	}
 
 	void A_WanderGoal(int flags = 0, int scarerange = 0)
