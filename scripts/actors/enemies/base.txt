@@ -391,7 +391,7 @@ class Base : Actor
 		}
 	}
 
-	// Fires a projectile in an arc towards the target. Assumes the projectile has Gravity set
+	// Fires a projectile in an arc towards the target.
 	Actor A_ArcProjectile(class<Actor> missiletype, double spawnheight = 32, double spawnofs_xy = 0, double angle = 0, int flags = 0, double pitch = 0, int ptr = AAPTR_TARGET, double maxdistance = 0, double additionalHeight = 0)
 	{
 		// This function works by firing the projectile, and then modifying its
@@ -402,7 +402,8 @@ class Base : Actor
 			missiletype, spawnheight + additionalHeight, spawnofs_xy, angle, flags, pitch, ptr);
 		if ((flags & CMF_ABSOLUTEPITCH) || (flags & CMF_AIMDIRECTION) || !proj)
 		{
-			// Or CMF_ABSOLUTEPITCH or CMF_AIMDIRECTION is set, which makes the
+			// Do not modify the projectile's velocity, and just return it if
+			// CMF_ABSOLUTEPITCH or CMF_AIMDIRECTION is set, which makes the
 			// projectile use the given pitch value, in which case the Z
 			// velocity shouldn't be modified.
 			// Or the projectile was not even spawned, as could be the case if
@@ -413,20 +414,22 @@ class Base : Actor
 		double speed = Actor.GetDefaultSpeed(missiletype);
 		if (!gravity || !speed)
 		{
-			// Gravity is 0, and thus the projectile will not fly in an arc, so
+			// Gravity is 0, and thus the projectile will not fall, so
 			// don't modify the projectile's velocity!
 			// Also, if speed is 0, you'll end up dividing by 0, so prevent
 			// that.
 			return proj;
 		}
-		double distance = proj.Distance2D(targ);
+		// The height difference may be changed by a portal
+		Vector3 posDiff = Level.Vec3Diff(proj.Pos, targ.Pos);
+		double distance = posDiff.XY.Length();
 		if (maxdistance)
 		{
 			distance = min(maxdistance, distance);
 		}
 		double time = distance / speed;
 		// Account for spawnheight when calculating height difference
-		double height = targ.Pos.Z - (proj.Pos.Z - spawnheight);
+		double height = posDiff.Z + spawnheight;
 		proj.Vel.Z = ZScriptTools.ArcZVel(time, gravity, height);
 		if (pitch && (flags & CMF_OFFSETPITCH))
 		{
