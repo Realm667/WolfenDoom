@@ -1387,7 +1387,7 @@ class FriendlySherman : TankBase
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/75mmm3", CHAN_WEAPON);
 		//Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
-		Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:16);
+		Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 32, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:-32);
 
 		if (mo)
 		{
@@ -1506,7 +1506,7 @@ class SSTank1 : TankBase
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/75mmkwk40", CHAN_WEAPON);
 		//Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
-		Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:16);
+		Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 32, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:-32);
 
 		if (mo)
 		{
@@ -1923,7 +1923,7 @@ class T34Tank : TankBase
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/85mmziss53", CHAN_WEAPON);
 		//Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
-		Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:16);
+		Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 32, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:-32);
 		if (mo)
 		{
 			muzzleflash.vel += (mo.vel.x / 2.0, mo.vel.y / 2.0, mo.vel.z / 2.0);
