@@ -722,6 +722,8 @@ class TankBase : VehicleBase
 	// origin - The main cannon actor
 	virtual void DoTurret(Actor origin)
 	{
+		// Needed since overrides call origin.A_ArcProjectile, which uses the caller's target pointer.
+		origin.target = target;
 		missiletargeted = false;
 		bullettimeout = 20;
 		turrettimeout = 40;
@@ -729,11 +731,12 @@ class TankBase : VehicleBase
 	}
 
 	// Fire the turret at the target. The turret is not assumed to be aiming at
-	// its target, so you will need to make the turret aim at the target when.
+	// its target, so you will need to make the turret aim at the target when
 	// you override this method.
 	// origin - The turret actor
 	virtual void DoTurretTarget(Actor origin)
 	{
+		origin.target = target; // Just in case...
 		missiletargeted = true;
 		chasetimeout = 40;
 		turrettimeout = turretdelay;
@@ -744,6 +747,7 @@ class TankBase : VehicleBase
 	// origin - The front weapon
 	virtual void DoFrontWeapon(Actor origin)
 	{
+		origin.target = target;
 		chasetimeout = 20;
 		missiletimeout = 70;
 	}
@@ -1382,8 +1386,8 @@ class FriendlySherman : TankBase
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/75mmm3", CHAN_WEAPON);
-		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
-		//Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:16);
+		//Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+		Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:16);
 
 		if (mo)
 		{
@@ -1501,8 +1505,8 @@ class SSTank1 : TankBase
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/75mmkwk40", CHAN_WEAPON);
-		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
-		//Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:16);
+		//Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+		Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:16);
 
 		if (mo)
 		{
@@ -1732,8 +1736,8 @@ class SSTank3 : TankBase
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/88mmkwk36", CHAN_WEAPON);
-		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
-		//Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:16);
+		//Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+		Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 32, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:-32);
 
 		if (mo)
 		{
@@ -1822,6 +1826,7 @@ class SSTank4 : TankBase
 	override void DoTurretTarget(Actor origin)
 	{
 		if (!origin || bullettimeout) { return; }
+		origin.target = target; // Just in case
 
 		turrettimeout = -1;
 
@@ -1917,8 +1922,8 @@ class T34Tank : TankBase
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/85mmziss53", CHAN_WEAPON);
-		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
-		//Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:16);
+		//Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+		Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:16);
 		if (mo)
 		{
 			muzzleflash.vel += (mo.vel.x / 2.0, mo.vel.y / 2.0, mo.vel.z / 2.0);
