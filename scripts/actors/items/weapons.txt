@@ -387,7 +387,7 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 		A_GunFlash();
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/75mmm3", CHAN_WEAPON);
-		Actor mo = A_FireProjectile("TankMissilePlayer", angledelta, False, 0, 0, FPF_NOAUTOAIM, pitchdelta);
+		Actor mo = A_FireProjectile("TankMissile", angledelta, False, 0, 0, FPF_NOAUTOAIM, pitchdelta);
 		if (mo && origin != self)
 		{
 			muzzleflash.vel += (mo.vel.x / 2.0, mo.vel.y / 2.0, mo.vel.z / 2.0);
@@ -416,7 +416,7 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 		double angledelta = deltaangle(angle, maingun.angle);
 		double pitchdelta = deltaangle(pitch, maingun.pitch);
 
-		A_StartSound("mauser/fire", CHAN_WEAPON, 0, FRandom(0.6, 0.8));
+		A_StartSound("tank/50cal", CHAN_WEAPON, 0, FRandom(0.6, 0.8));
 		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
 		muzzleflash.master = self;
 		A_FireProjectile("TurrSmokeSpawner", origin.Pos.Z - Pos.Z);
@@ -455,7 +455,7 @@ class Cannon75mmKwK: Cannon75mm {
 		A_GunFlash();
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/75mmkwk40", CHAN_WEAPON);
-		Actor mo = A_FireProjectile("TankMissilePlayer", angledelta, False, 0, 0, FPF_NOAUTOAIM, pitchdelta);
+		Actor mo = A_FireProjectile("TankMissile", angledelta, False, 0, 0, FPF_NOAUTOAIM, pitchdelta);
 		if (mo && origin != self)
 		{
 			muzzleflash.vel += (mo.vel.x / 2.0, mo.vel.y / 2.0, mo.vel.z / 2.0);
@@ -562,6 +562,11 @@ class TankRocket : Actor
 
 class TankMissile : TankRocket
 {
+    default
+    {
+        -NOGRAVITY
+        Gravity 0.33;
+    }
 	States
 	{
 		Spawn:
@@ -572,7 +577,7 @@ class TankMissile : TankRocket
 			Wait;
 	}
 }
-
+/*
 class TankMissilePlayer: TankMissile
 {
     default
@@ -581,7 +586,7 @@ class TankMissilePlayer: TankMissile
         Gravity 0.33;
     }
 }
-
+*/
 class TurretSwivel : ActorPositionable
 {
 	Default

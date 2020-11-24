@@ -900,7 +900,7 @@ class TankBlocker : Actor
 }
 
 // Base actor for tank treads
-class TankTreadsBase : Actor
+class TankTreadsBase : Base
 {
 	Actor turret, gunspot;
 	Class<Actor> turretclass, deadclass, debris;
@@ -1168,7 +1168,7 @@ class PairedTire : Actor
 }
 
 // Base actor for tank turret
-class TankTurretBase : Actor
+class TankTurretBase : Base
 {
 	Actor gun, gunspot;
 	Class<Actor> gunclass;
@@ -1266,7 +1266,7 @@ class TankTurretBase : Actor
 	}
 }
 
-class TankCannonBase : Actor
+class TankCannonBase : Base
 {
 	Default
 	{
@@ -1283,7 +1283,7 @@ class TankCannonBase : Actor
 	}
 }
 
-class TankDeadBase : Actor
+class TankDeadBase : Base
 {
 	Default
 	{
@@ -1376,13 +1376,14 @@ class FriendlySherman : TankBase
 
 	override void DoTurret(Actor origin)
 	{
-		if (!origin) { return; }
+		if (!origin || !Base(origin)) { return; }
 
 		Super.DoTurret(origin);
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/75mmm3", CHAN_WEAPON);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+		//Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:16);
 
 		if (mo)
 		{
@@ -1409,7 +1410,7 @@ class FriendlySherman : TankBase
 
 		Super.DoFrontWeapon(origin);
 
-		A_StartSound("mauser/fire", CHAN_WEAPON);
+		A_StartSound("tank/50cal", CHAN_WEAPON);
 
 		// Muzzle flash
 		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
@@ -1494,13 +1495,14 @@ class SSTank1 : TankBase
 
 	override void DoTurret(Actor origin)
 	{
-		if (!origin) { return; }
+		if (!origin || !Base(origin)) { return; }
 
 		Super.DoTurret(origin);
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/75mmkwk40", CHAN_WEAPON);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+		//Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:16);
 
 		if (mo)
 		{
@@ -1724,13 +1726,14 @@ class SSTank3 : TankBase
 
 	override void DoTurret(Actor origin)
 	{
-		if (!origin) { return; }
+		if (!origin || !Base(origin)) { return; }
 
 		Super.DoTurret(origin);
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/88mmkwk36", CHAN_WEAPON);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+		//Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:16);
 
 		if (mo)
 		{
@@ -1908,14 +1911,14 @@ class T34Tank : TankBase
 
 	override void DoTurret(Actor origin)
 	{
-		if (!origin) { return; }
+		if (!origin || !Base(origin)) { return; }
 
 		Super.DoTurret(origin);
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/85mmziss53", CHAN_WEAPON);
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
-
+		//Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:16);
 		if (mo)
 		{
 			muzzleflash.vel += (mo.vel.x / 2.0, mo.vel.y / 2.0, mo.vel.z / 2.0);
