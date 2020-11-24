@@ -177,12 +177,13 @@ class NemesisZyklonBall : GroundedMissile
 		MaxStepHeight 16;
 		Scale .25;
 		+BRIGHT
+		+ROLLSPRITE
 	}
 
 	States
 	{
 	Spawn:
-		ZBAL AAAAAA 1 LIGHT("ZYKFLMW2") A_SetRoll(Roll + 1, SPF_INTERPOLATE);
+		ZBAL AAAAAA 1 LIGHT("ZYKFLMW2") A_SetRoll(Roll + 5, SPF_INTERPOLATE);
 		ZBAL A 0 A_SpawnZClouds;
 		Loop;
 	Death:
@@ -191,13 +192,6 @@ class NemesisZyklonBall : GroundedMissile
 		Stop;
 	}
 
-/*
-	override void PostBeginPlay()
-	{
-		Super.PostBeginPlay();
-		SpriteOffset.Y = -32;
-	}
-*/
 	void A_SpawnZClouds(int cloudsPerSide = 1, float cloudSeparation = 24)
 	{
 		A_SpawnProjectile("ZyklonZCloud", 0, flags: CMF_TRACKOWNER);
@@ -215,9 +209,11 @@ class RENemesis : NaziBoss
 	{
 		DamageFactor "UndeadPoison", 0;
 		DamageFactor "UndeadPoisonAmbience", 0;
+		DeathSound "nemesis/death";
 		Health 1600;
 		Radius 48;
 		MeleeRange 56;
+		SeeSound "nemesis/sight";
 		Speed 6;
 		Tag "$TAGNEMESIS";
 		Base.BossIcon "BOSSICO2";
