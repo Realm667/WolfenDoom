@@ -284,10 +284,7 @@ class RENemesis : NaziBoss
 		"####" "#" 70 A_TeleportCloseTo(180, 384, "Reappear");
 		Loop;
 	Reappear:
-		"####" "#" 0 {
-			// Replace with jumpscare sound
-			A_StartSound("misc/secret");
-		}
+		"####" "#" 0 A_StartSound("JUMPSCARE", attenuation: 0.0);
 		"####" "#" 1 {
 			bSolid = true;
 			bShootable = true;
