@@ -62,3 +62,39 @@ class GrenadeBase : Actor // Base actor for anything we want Nazis to run away f
 		}
 	}
 }
+
+// Fixes for Astrostein grenades:
+// Allow cheat "give AstroGrenadePickup" to give more than one grenade and token
+class AstroGrenadePickup : Inventory
+{
+	Default
+	{
+		//$Category Astrostein (BoA)/Weapons
+		//$Title Grenade (Astrostein)
+		//$Color 14
+		Inventory.PickupMessage "$GRENADE";
+		Inventory.PickupSound "grenade/pickup";
+		Inventory.MaxAmount 9999999999999; // This item is just a proxy for GrenadePickup and AstroGrenadeToken
+		Scale 0.25;
+	}
+
+	States
+	{
+	Spawn:
+		ASGN A -1 Light("ASTRAMM1");
+		Stop;
+	}
+
+	override bool TryPickup(in out Actor toucher)
+	{
+		Inventory grenade = toucher.FindInventory("GrenadePickup");
+		if (!grenade || grenade.Amount < grenade.MaxAmount)
+		{
+			toucher.GiveInventory("GrenadePickup", Amount);
+			toucher.GiveInventory("AstroGrenadeToken", Amount);
+			GoAwayAndDie();
+			return true;
+		}
+		return false;
+	}
+}

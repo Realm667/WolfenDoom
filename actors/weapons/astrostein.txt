@@ -584,33 +584,8 @@ ACTOR AstroLuger : NaziAstroWeapon //quite the same code from Luger P08 - ozy81
 ///////////////////////////////////////////////////////////////////////////////
 /////// ASTROSTEIN HANDGRANATE ////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-ACTOR AstroGrenadeToken : Inventory { Inventory.MaxAmount 9 }
-
-ACTOR AstroGrenadePickup : CustomInventory
-{
-	//$Category Astrostein (BoA)/Weapons
-	//$Title Grenade (Astrostein)
-	//$Color 14
-	Inventory.PickupMessage "$GRENADE"
-	Inventory.PickupSound "grenade/pickup"
-	Scale 0.25
-	States
-	{
-	Spawn:
-		ASGN A -1 LIGHT(ASTRAMM1)
-		Stop
-	Pickup:
-		TNT1 A 0 {
-			if (CountInv("GrenadePickup") < 9) {
-				A_GiveInventory("AstroGrenadeToken");
-				A_GiveInventory("GrenadePickup");
-				return true;
-			}
-			return false;
-		}
-		Stop
-	}
-}
+// See scripts/actors/weapons/grenade.txt for AstroGrenadePickup
+ACTOR AstroGrenadeToken : ParallelInventory { ParallelInventory.Type "GrenadePickup" }
 
 ACTOR AstroHandGrenade : HandGrenade
 {
