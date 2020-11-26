@@ -693,6 +693,9 @@ tank/breech/open	breech_o
 tank/breech/close	breech_c
 tank/shellcasing	tankcase
 
+//Sherman .50 BMG
+tank/50cal	M2HB
+
 //Debris - From FreeSFX.co.uk
 TKDBRS1 TKDBRS1
 TKDBRS2 TKDBRS2
@@ -717,7 +720,7 @@ Smoke/pain4			Sact4
 //Grosse
 boss/pain		dsbospai
 Boss1/Death	Bos1Dt01
-$random Boss1/Sighted { Bos1St01 Bos1St02 Bos1St03 Bos1St04 Bos1St05 Bos1St06 Bos1St07 Bos1St08 Bos1St09 }
+$random Boss1/Sighted { Bos1St01 DONTSPAM Bos1St02 DONTSPAM Bos1St03 DONTSPAM Bos1St04 DONTSPAM Bos1St05 DONTSPAM Bos1St06 DONTSPAM Bos1St07 DONTSPAM Bos1St08 DONTSPAM Bos1St09 }
 Bos1St01 Bos1St01
 Bos1St02 Bos1St02
 Bos1St03 Bos1St03
@@ -727,6 +730,7 @@ Bos1St06 Bos1St06
 Bos1St07 Bos1St07
 Bos1St08 Bos1St08
 Bos1St09 Bos1St09
+DONTSPAM null //this to reduce sounds spamming - ozy81
 
 //Gretel
 $random BossGirl/Death { gretdt1 gretdt2 gretdt3 gretdt4 }
@@ -1556,6 +1560,12 @@ spy/pssst	pssst
 
 $random spy/attention { spy/pssst }
 
+nemesis/sight1 DSNEMSE1
+nemesis/sight2 DSNEMSE2
+nemesis/sight3 DSNEMSE3
+nemesis/death DSNEMSE4
+$random nemesis/sight { nemesis/sight1 nemesis/sight2 nemesis/sight3 }
+
 ///////////////////
 //MUSIC AS SOUNDS//
 ///////////////////
@@ -1570,6 +1580,17 @@ C2M2_VIC C2M2_VIC
 C3M6_A_Z C3M6_A_Z
 CMBT_HT  CMBT_HT
 NZ_ERFUR NZ_ERFUR
+
+//Jumpscares
+
+JSCR01 JSCR01
+JSCR02 JSCR02
+JSCR03 JSCR03
+JSCR04 JSCR04
+JSCR05 JSCR05
+JSCR06 JSCR06
+
+$random JUMPSCARE { JSCR01 JSCR02 JSCR03 JSCR04 JSCR05 JSCR06 }
 
 ////////////////////
 //TERRAIN SPLASHES//

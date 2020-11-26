@@ -30,12 +30,12 @@ TCHAR DetailSettingsStrings[][50] = {
 
 TCHAR DetailSettingsCmd[][50] = {
 	TEXT(""),
-	TEXT("+boa_default"),
-	TEXT("+boa_verylow"),
-	TEXT("+boa_low"),
-	TEXT("+boa_normal"),
-	TEXT("+boa_high"),
-	TEXT("+boa_veryhigh"),
+	TEXT("+exec launcher-resource/detail-default.cfg"),
+	TEXT("+exec launcher-resource/detail-verylow.cfg"),
+	TEXT("+exec launcher-resource/detail-low.cfg"),
+	TEXT("+exec launcher-resource/detail-normal.cfg"),
+	TEXT("+exec launcher-resource/detail-high.cfg"),
+	TEXT("+exec launcher-resource/detail-veryhigh.cfg"),
 };
 
 enum LoadDisplacementTextures
@@ -69,10 +69,12 @@ TCHAR DeveloperCommentaryCmd[][50] = {
 
 enum Languages
 {
-	LANGUAGE_MAX = 9
+	LANGUAGE_UNCHANGED = 0,
+	LANGUAGE_MAX = 10
 };
 
 TCHAR LanguagesList[][50] = {
+	TEXT("Use last setting"), // unchanged
 	TEXT("English"), // en
 	TEXT("German"), // de
 	TEXT("Spanish"), // es
@@ -85,15 +87,16 @@ TCHAR LanguagesList[][50] = {
 };
 
 TCHAR LanguagesCmd[][50] = {
-	TEXT("+language en"), // en
-	TEXT("+language de"), // de
-	TEXT("+language es"), // es
-	TEXT("+language ru"), // ru
-	TEXT("+language pt"), // pt
-	TEXT("+language it"), // it
-	TEXT("+language trk"), // trk
-	TEXT("+language fr"), // fr
-	TEXT("+language cs"), // cs
+	TEXT(""), //unchanged
+	TEXT("+set language en"), // en
+	TEXT("+set language de"), // de
+	TEXT("+set language es"), // es
+	TEXT("+set language ru"), // ru
+	TEXT("+set language pt"), // pt
+	TEXT("+set language it"), // it
+	TEXT("+set language trk"), // trk
+	TEXT("+set language fr"), // fr
+	TEXT("+set language cs"), // cs
 };
 
 enum TexFilterSettings
@@ -112,11 +115,11 @@ TCHAR TexFilterSettingsStrings[][50] = {
 	TEXT("Trilinear (with Normal2x)"),
 };
 
-TCHAR TexFilterSettingsCmd[][120] = {
+TCHAR TexFilterSettingsCmd[][130] = {
 	TEXT(""),
-	TEXT("+gl_texture_filter 0 +gl_texture_filter_anisotropic 0 +gl_texture_hqresizemode 6 +gl_texture_hqresizemult 1"),
-	TEXT("+gl_texture_filter 4 +gl_texture_filter_anisotropic 8 +gl_texture_hqresizemode 6 +gl_texture_hqresizemult 1"),
-	TEXT("+gl_texture_filter 4 +gl_texture_filter_anisotropic 16 +gl_texture_hqresizemode 6 +gl_texture_hqresizemult 2"),
+	TEXT("+set gl_texture_filter 0 +set gl_texture_filter_anisotropic 0 +set gl_texture_hqresizemode 6 +set gl_texture_hqresizemult 1"),
+	TEXT("+set gl_texture_filter 4 +set gl_texture_filter_anisotropic 8 +set gl_texture_hqresizemode 6 +set gl_texture_hqresizemult 1"),
+	TEXT("+set gl_texture_filter 4 +set gl_texture_filter_anisotropic 16 +set gl_texture_hqresizemode 6 +set gl_texture_hqresizemult 2"),
 };
 
 struct LauncherSettings
@@ -125,7 +128,7 @@ struct LauncherSettings
 	int DisplacementTextures = DIS_YES;
 	int Detail = DETAIL_UNCHANGED;
 	bool DevCommentary = false;
-	int Language = 0;
+	int Language = LANGUAGE_UNCHANGED;
 	int TexFilter = TEXFILT_UNCHANGED;
 };
 

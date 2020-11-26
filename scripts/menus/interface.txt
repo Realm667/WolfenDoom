@@ -481,7 +481,7 @@ class ViewItem : BoAMenu
 					break;
 				case 7: 
 					texty = 195;
-					maxy = 296;
+					maxy = 314;
 					break;
 				case 8:
 					maxy = 375;
@@ -661,7 +661,7 @@ class ViewItem : BoAMenu
 						screen.DrawText(msgfont, Font.CR_UNTRANSLATED, textx / fontscale, texty / fontscale + textlineheight * (i - start) / fontscale, text, DTA_VirtualWidth, int(640 / fontscale), DTA_VirtualHeight, int(480 / fontscale), DTA_Alpha, alpha);
 						if (curLine == nextStrikeLine)
 						{
-							screen.DrawThickLine(int(textx / fontscale), int(texty / fontscale) + textlineheight * i, int(textx / fontscale) + nextStrikeWidth, int(texty / fontscale) + textlineheight * i, 2.25, Color(0, 0, 0, 100));
+							screen.DrawThickLine(int(textx / fontscale), int(texty / fontscale + textlineheight * i), int(textx / fontscale) + nextStrikeWidth, int(texty / fontscale + textlineheight * i), 2.25, Color(0, 0, 0, 100));
 							if (strikes.Size() >= (++nextStrikeIndex) * 2)
 							{
 								nextStrikeLine = strikes[nextStrikeIndex * 2];

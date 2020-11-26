@@ -274,9 +274,13 @@ class ExtendedConversationMenuBase : ConversationMenu
 			mShowGold |= reply.NeedsGold;
 
 			let ReplyText = Stringtable.Localize(reply.Reply);
-			if (reply.NeedsGold) ReplyText.AppendFormat(" for %u", reply.PrintAmount);
-
-			let ReplyLines = thisfont.BreakLines (ReplyText, w);
+			if (reply.NeedsGold)
+			{
+				ReplyText.AppendFormat(" %s", Stringtable.Localize("$TXT_TRADE"));
+				let amount = String.Format("%u", reply.PrintAmount);
+				ReplyText.Replace("%u", amount);
+			}
+			let ReplyLines = thisfont.BreakLines(ReplyText, w);
 
 			mResponses.Push(mResponseLines.Size());
 			for (int j = 0; j < ReplyLines.Count(); ++j)

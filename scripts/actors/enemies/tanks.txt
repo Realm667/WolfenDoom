@@ -722,6 +722,8 @@ class TankBase : VehicleBase
 	// origin - The main cannon actor
 	virtual void DoTurret(Actor origin)
 	{
+		// Needed since overrides call origin.A_ArcProjectile, which uses the caller's target pointer.
+		origin.target = target;
 		missiletargeted = false;
 		bullettimeout = 20;
 		turrettimeout = 40;
@@ -729,11 +731,12 @@ class TankBase : VehicleBase
 	}
 
 	// Fire the turret at the target. The turret is not assumed to be aiming at
-	// its target, so you will need to make the turret aim at the target when.
+	// its target, so you will need to make the turret aim at the target when
 	// you override this method.
 	// origin - The turret actor
 	virtual void DoTurretTarget(Actor origin)
 	{
+		origin.target = target; // Just in case...
 		missiletargeted = true;
 		chasetimeout = 40;
 		turrettimeout = turretdelay;
@@ -744,6 +747,7 @@ class TankBase : VehicleBase
 	// origin - The front weapon
 	virtual void DoFrontWeapon(Actor origin)
 	{
+		origin.target = target;
 		chasetimeout = 20;
 		missiletimeout = 70;
 	}
@@ -900,7 +904,7 @@ class TankBlocker : Actor
 }
 
 // Base actor for tank treads
-class TankTreadsBase : Actor
+class TankTreadsBase : Base
 {
 	Actor turret, gunspot;
 	Class<Actor> turretclass, deadclass, debris;
@@ -1168,7 +1172,7 @@ class PairedTire : Actor
 }
 
 // Base actor for tank turret
-class TankTurretBase : Actor
+class TankTurretBase : Base
 {
 	Actor gun, gunspot;
 	Class<Actor> gunclass;
@@ -1266,7 +1270,7 @@ class TankTurretBase : Actor
 	}
 }
 
-class TankCannonBase : Actor
+class TankCannonBase : Base
 {
 	Default
 	{
@@ -1283,7 +1287,7 @@ class TankCannonBase : Actor
 	}
 }
 
-class TankDeadBase : Actor
+class TankDeadBase : Base
 {
 	Default
 	{
@@ -1376,13 +1380,14 @@ class FriendlySherman : TankBase
 
 	override void DoTurret(Actor origin)
 	{
-		if (!origin) { return; }
+		if (!origin || !Base(origin)) { return; }
 
 		Super.DoTurret(origin);
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/75mmm3", CHAN_WEAPON);
-		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+		//Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+		Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 32, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:-32);
 
 		if (mo)
 		{
@@ -1409,7 +1414,7 @@ class FriendlySherman : TankBase
 
 		Super.DoFrontWeapon(origin);
 
-		A_StartSound("mauser/fire", CHAN_WEAPON);
+		A_StartSound("tank/50cal", CHAN_WEAPON);
 
 		// Muzzle flash
 		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
@@ -1446,6 +1451,7 @@ class PanzerIVTreads : TankTreadsBase
 	{
 		TankTreadsBase.DebrisActor "Debris_Tank2";
 		TankTreadsBase.DeadActor "DestroyedTank1";
+        TankTreadsBase.MorphPowerup "PanzerIV";
 		TankTreadsBase.TurretClass "PanzerIVTurret";
 		TankTreadsBase.GunSpotX 80;
 		TankTreadsBase.GunSpotY 26;
@@ -1455,12 +1461,23 @@ class PanzerIVTreads : TankTreadsBase
 
 class PanzerIVTurret : TankTurretBase
 {
+	Actor gunspot2;
 	Default
 	{
 		TankTurretBase.GunClass "PanzerIVCannon";
 		TankTurretBase.GunSpotX 155;
 		TankTurretBase.GunSpotY 0;
 		TankTurretBase.GunSpotZ 12;
+	}
+	override void PostBeginPlay()
+	{
+		bool sp = false;
+
+		Vector3 gunspot2offset = (48, 12, 8);
+		while (!gunspot2) { [sp, gunspot2] = A_SpawnItemEx("WeaponSpot", gunspot2offset.x, gunspot2offset.y, gunspot2offset.z, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+		gunspot2.master = self;
+
+		Super.PostBeginPlay();
 	}
 }
 
@@ -1482,13 +1499,14 @@ class SSTank1 : TankBase
 
 	override void DoTurret(Actor origin)
 	{
-		if (!origin) { return; }
+		if (!origin || !Base(origin)) { return; }
 
 		Super.DoTurret(origin);
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/75mmkwk40", CHAN_WEAPON);
-		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+		//Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+		Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 32, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:-32);
 
 		if (mo)
 		{
@@ -1712,13 +1730,14 @@ class SSTank3 : TankBase
 
 	override void DoTurret(Actor origin)
 	{
-		if (!origin) { return; }
+		if (!origin || !Base(origin)) { return; }
 
 		Super.DoTurret(origin);
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/88mmkwk36", CHAN_WEAPON);
-		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+		//Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+		Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 32, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:-32);
 
 		if (mo)
 		{
@@ -1807,6 +1826,7 @@ class SSTank4 : TankBase
 	override void DoTurretTarget(Actor origin)
 	{
 		if (!origin || bullettimeout) { return; }
+		origin.target = target; // Just in case
 
 		turrettimeout = -1;
 
@@ -1896,14 +1916,14 @@ class T34Tank : TankBase
 
 	override void DoTurret(Actor origin)
 	{
-		if (!origin) { return; }
+		if (!origin || !Base(origin)) { return; }
 
 		Super.DoTurret(origin);
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/85mmziss53", CHAN_WEAPON);
-		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
-
+		//Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
+		Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 32, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:-32);
 		if (mo)
 		{
 			muzzleflash.vel += (mo.vel.x / 2.0, mo.vel.y / 2.0, mo.vel.z / 2.0);

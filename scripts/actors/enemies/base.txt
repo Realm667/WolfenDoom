@@ -290,6 +290,7 @@ class Base : Actor
 	bool user_nocountkill;
 	int flags;
 	bool dodging;
+	bool statnumchanged;
 
 	LaserFindHitPointTracer HitPointTracer;
 	LaserBeam beam;
@@ -391,17 +392,19 @@ class Base : Actor
 		}
 	}
 
-	// Fires a projectile in an arc towards the target. Assumes the projectile has Gravity set
-	Actor A_ArcProjectile(class<Actor> missiletype, double spawnheight = 32, double spawnofs_xy = 0, double angle = 0, int flags = 0, double pitch = 0, int ptr = AAPTR_TARGET, double maxdistance = 0)
+	// Fires a projectile in an arc towards the target.
+	Actor A_ArcProjectile(class<Actor> missiletype, double spawnheight = 32, double spawnofs_xy = 0, double angle = 0, int flags = 0, double pitch = 0, int ptr = AAPTR_TARGET, double maxdistance = 0, double additionalHeight = 0)
 	{
 		// This function works by firing the projectile, and then modifying its
 		// Z velocity to hit the target.
 		Actor targ = GetPointer(ptr);
+		// NOTE: spawnheight is also the height being aimed at! Use additionalHeight to work around this.
 		Actor proj = A_SpawnProjectile(
-			missiletype, spawnheight, spawnofs_xy, angle, flags, pitch, ptr);
+			missiletype, spawnheight + additionalHeight, spawnofs_xy, angle, flags, pitch, ptr);
 		if ((flags & CMF_ABSOLUTEPITCH) || (flags & CMF_AIMDIRECTION) || !proj)
 		{
-			// Or CMF_ABSOLUTEPITCH or CMF_AIMDIRECTION is set, which makes the
+			// Do not modify the projectile's velocity, and just return it if
+			// CMF_ABSOLUTEPITCH or CMF_AIMDIRECTION is set, which makes the
 			// projectile use the given pitch value, in which case the Z
 			// velocity shouldn't be modified.
 			// Or the projectile was not even spawned, as could be the case if
@@ -412,20 +415,22 @@ class Base : Actor
 		double speed = Actor.GetDefaultSpeed(missiletype);
 		if (!gravity || !speed)
 		{
-			// Gravity is 0, and thus the projectile will not fly in an arc, so
+			// Gravity is 0, and thus the projectile will not fall, so
 			// don't modify the projectile's velocity!
 			// Also, if speed is 0, you'll end up dividing by 0, so prevent
 			// that.
 			return proj;
 		}
-		double distance = proj.Distance2D(targ);
+		// The height difference may be changed by a portal
+		Vector3 posDiff = Level.Vec3Diff(proj.Pos, targ.Pos);
+		double distance = posDiff.XY.Length();
 		if (maxdistance)
 		{
 			distance = min(maxdistance, distance);
 		}
 		double time = distance / speed;
 		// Account for spawnheight when calculating height difference
-		double height = targ.Pos.Z - (proj.Pos.Z - spawnheight);
+		double height = posDiff.Z + spawnheight;
 		proj.Vel.Z = ZScriptTools.ArcZVel(time, gravity, height);
 		if (pitch && (flags & CMF_OFFSETPITCH))
 		{
@@ -438,6 +443,13 @@ class Base : Actor
 			proj.Pitch = -atan2(proj.Vel.Z, speed);
 		}
 		return proj;
+	}
+
+	void A_XDie(Name damagetype = 'None')
+	{
+		// Force the caller to die with an extreme death
+		int damage = health - GetGibHealth() + 1;
+		DamageMobj(null, null, damage, damagetype, DMG_FORCED);
 	}
 
 	void A_WanderGoal(int flags = 0, int scarerange = 0)
@@ -879,7 +891,11 @@ class Base : Actor
 
 	override void Tick()
 	{
-		if (user_DrawHealthBar) { ChangeStatNum(Thinker.STAT_DEFAULT - 3); } // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient
+		if (user_DrawHealthBar && !statnumchanged)
+		{
+			ChangeStatNum(Thinker.STAT_DEFAULT - 3); // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient
+			statnumchanged = true; // Only do this once!
+		}
 
 		if (!globalfreeze && !level.Frozen)
 		{
@@ -922,7 +938,7 @@ class Base : Actor
 					else { bFloat = Default.bFloat; }
 				}
 
-				if (lightthreshold && (level.time + interval) % 10 == 0) // If zero, ignore light levels (so, default to normal enemy behavior)
+				if (lightthreshold && (level.time + interval) % 35 == 0) // If zero, ignore light levels (so, default to normal enemy behavior)
 				{
 					if (ReactionTime == 0) // This is only checked when the enemy is active and not standing still or attacking
 					{
@@ -2754,7 +2770,7 @@ class Nazi : Base
 				A_LookForGrenades();
 			}
 
-			if (level.time && level.time % interval) { closestplayer = FindClosestPlayer(self, IgnoreFriendlies:!bFriendly); }
+			if (level.time && level.time % interval == 0) { closestplayer = FindClosestPlayer(self, IgnoreFriendlies:!bFriendly); }
 		}
 
 		Super.Tick();

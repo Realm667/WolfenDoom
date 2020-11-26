@@ -683,3 +683,271 @@ class Sherman : PowerMorph
 		Super.EndEffect();
 	}
 }
+
+
+
+//////////////////////////////////
+//OTHER TANKS DRIVABLE BY PLAYER//
+//////////////////////////////////
+
+class PanzerIVPlayer: ShermanPlayer { //no special code migration measures: 'player is ShermanPlayer' will still evaluate to 1
+    default {
+        Player.MorphWeapon "Cannon75mmKwK";
+		Player.StartItem "Cannon75mmKwK";
+		Player.WeaponSlot 1, "Cannon75mmKwK";
+    }
+    override void PostBeginPlay()
+	{
+		TakeInventory("BoATilt", 1);
+
+		hittracer = new("BoAFindHitPointTracer");
+
+		// Spawn everything in neutral orientation
+		pitch = 0;
+		roll = 0;
+
+		bool sp = false;
+
+		if (tracer && PanzerIVTreads(tracer))
+		{
+			treads = tracer;
+			tracer = null;
+		}
+
+		while (!treads) { [sp, treads] = A_SpawnItemEx("PanzerIVTreads", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+		treads.master = self;
+		treads.bSolid = false;
+		treads.Species = Species;
+
+		while (!turretcamera) { [sp, turretcamera] = A_SpawnItemEx("SecurityCamera", -2.5 * radius, 0, treads.height + 128, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+		turretcamera.master = self;
+
+		sndvol = 0.7;
+
+		A_StartSound("TKIDLE", 31, CHANF_LOOPING, 0.25);
+		A_StartSound("TNK1LOOP", 32, CHANF_LOOPING, 0.7);
+
+		Super.PostBeginPlay();
+	}
+
+	override void Tick() //copy & paste
+	{
+		PlayerPawn.Tick();
+
+		bool chasecam = player.cheats & CF_CHASECAM;
+
+		if (health == Default.Health && PanzerIVTreads(treads).savedhealth)
+		{
+			A_SetHealth(PanzerIVTreads(treads).savedhealth);
+			PanzerIVTreads(treads).savedhealth = 0;
+		}
+
+		if (!turret) // Since turret is spawned by treads actor, check for it here since it'll be spawned after PostBeginPlay is called
+		{
+			if (PanzerIVTreads(treads))
+			{
+				turret = PanzerIVTreads(treads).turret;
+
+				if (turret)
+				{
+					turret.master = self;
+					turret.angle = angle;
+					turret.bSolid = false;
+
+					bool sp;
+					while (!povcamera) { [sp, povcamera] = turret.A_SpawnItemEx("SecurityCamera", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+					povcamera.master = turret;
+				}
+			}
+		}
+
+		if (Level.time % (35 * 5) == 0) { ForcedHealthBar = GetClosestForcedHealthBar(); } // Only run this check occasionally
+
+		if (player && turretcamera && treads && turret && povcamera)
+		{
+			double zoffset = VehicleBase.SetPitchRoll(treads);
+			double newz = pos.z - zoffset > GetZAt(0, 0) + MaxDropoffHeight ? pos.z - zoffset : GetZAt(0, 0);
+			treads.SetOrigin((pos.xy, newz), true);
+
+			double delta = deltaangle(treads.angle, turret.angle);
+
+			Player.MinPitch = treads.pitch * cos(delta) - 25;
+			Player.MaxPitch = treads.pitch * cos(delta) + 10;
+
+			turret.SetOrigin(treads.pos + (RotateVector((treads.radius * sin(treads.pitch), -treads.radius * sin(treads.roll)), treads.angle), treads.height * cos(treads.roll)), true);
+
+			turret.pitch = treads.roll * sin(-delta) + treads.pitch * cos(delta);
+			turret.roll = treads.roll * cos(-delta) + treads.pitch * sin(delta);
+
+			if (turret.angle != angle)
+			{
+			 	turret.angle = !chasecam ? angle : clamp(angle, turret.angle - 1.5, turret.angle + 1.5);
+				A_StartSound("MACHINE_LOOP_3", 30, CHANF_NOSTOP, 0.5);
+			}
+			else
+			{
+				A_StopSound(30);
+			}
+
+			// Force pitch clamping
+			if (turret.pitch + pitch >= player.MaxPitch || turret.pitch + pitch <= player.MinPitch)
+			{
+				player.cmd.pitch = 0;
+			}
+
+			if (!gun) { gun = PanzerIVTurret(turret).gun; }
+
+			if (gun)
+			{
+				DoTrace(gun, turret.angle, 2048, turret.pitch + pitch, 0, 0, hittracer);
+
+				CrosshairPos = hittracer.Results.HitPos;
+				CrosshairActor = hittracer.Results.HitActor;
+				CrosshairDist = hittracer.Results.Distance;
+
+				gun.pitch = turret.pitch + pitch;
+				gun.roll = turret.roll;
+			}
+
+			if (!chasecam)
+			{
+				if (povcamera)
+				{
+					Vector3 povoffset = (48, -24, 48);
+
+					povcamera.angle = turret.angle;
+					povcamera.pitch = gun.pitch;
+
+					Vector2 temp = RotateVector((povoffset.y, povoffset.z), turret.roll);
+					Vector3 offset = (povoffset.x, temp.x, temp.y);
+
+					temp = RotateVector((offset.x, offset.z), 360 - turret.pitch);
+					offset = (temp.x, offset.y, temp.y);
+
+					temp = RotateVector((offset.x, offset.y), turret.angle);
+					offset = (temp.x, temp.y, offset.z);
+
+					povcamera.SetOrigin(turret.pos + offset, true);
+
+					povcamera.roll = turret.roll;
+
+					povcamera.CameraFOV = player.fov * 1.2;
+
+					player.camera = povcamera;
+				}
+			}
+			else
+			{
+				double modifier, pitchmodifier;
+
+				if (pitch < 0) { modifier = 48 * sin(-pitch); } // Aiming up moves the camera up so you can keep the aimpoint on screen
+				else { modifier = 96 * sin(pitch * 3); } // Aiming down actually moves the camera *up*, so that you can see the aimpoint over the top of the turret
+
+				modifier += (turret.pitch > 0 ? 96 : 128) * sin(turret.pitch); // Move the camera up/down when going up/downhill
+				pitchmodifier = (turret.pitch > 0 ? -15 : 10) * sin(turret.pitch); // Pitch the camera up/down when going up/downhill
+
+				turret.LineTrace(angle + 180, 2.5 * radius, pitchmodifier, TRF_THRUHITSCAN | TRF_THRUACTORS, turret.height + 32 + modifier, 0.0, 0.0, cameratrace);
+
+				turretcamera.SetOrigin(cameratrace.HitLocation + AngleToVector(angle, 2), true);
+				turretcamera.angle = angle;
+				turretcamera.pitch = turret.pitch;
+
+				turretcamera.CameraFOV = player.fov;
+
+				player.camera = turretcamera;
+			}
+		}
+		else
+		{
+			player.camera = player.mo;
+		}
+
+		if (player.usedown)
+		{
+			useholdtime++;
+			if (useholdtime == 1) { Level.ExecuteSpecial(80, self, null, false, -int(Name("TankExitMessage")), 0); }
+		}
+		else { useholdtime = 0; }
+
+
+		if (useholdtime >= 35)
+		{
+			A_SetInventory("ShakeShaderControl", 1);
+			if (treads && PanzerIVTreads(treads)) { PanzerIVTreads(treads).usetimeout = 35; }
+			TakeInventory("PanzerIV", 1);
+		}
+	}
+    
+    override bool UndoPlayerMorph(playerinfo activator, int unmorphflag, bool force)
+	{
+		if (!activator || !activator.mo) { return false; }
+
+		int premorphhealth;
+
+		for (Inventory i = activator.mo.inv; i != null; i = i.Inv)
+		{
+			if (i is "PanzerIV")
+			{
+				if (PanzerIV(i).premorphhealth) { premorphhealth = PanzerIV(i).premorphhealth; }
+				break;
+			}
+		}
+
+		bool ret = Super.UndoPlayerMorph(activator, unmorphflag, force); // This call forces the player health to full Spawn Health
+
+		activator.health = activator.mo.health = premorphhealth;
+
+		return ret;
+	}
+}
+
+class PanzerIV : Sherman
+{
+	Default
+	{
+		PowerMorph.PlayerClass "PanzerIVPlayer";
+		Powerup.Duration 0x7FFFFFFF;
+	}
+
+	override void EndEffect()
+	{
+		if (MorphedPlayer && MorphedPlayer.mo)
+		{
+			let tank = PanzerIVPlayer(MorphedPlayer.mo);
+
+			if (tank)
+			{
+				if  (tank.treads)
+				{
+					tank.treads.bSolid = true;
+					tank.treads.master = null;
+					if (PanzerIVTreads(tank.treads))
+					{
+						PanzerIVTreads(tank.treads).savedhealth = tank.health;
+						PanzerIVTreads(tank.treads).usetimeout = 35;
+					}
+				}
+				if  (tank.turretcamera) { tank.turretcamera.Destroy(); }
+				if  (tank.povcamera) { tank.povcamera.Destroy(); }
+				MorphedPlayer.cheats &= ~CF_CHASECAM;
+
+				// Restore pitch clamping, since this doesn't get reset otherwise
+				MorphedPlayer.MinPitch = -90;
+				MorphedPlayer.MaxPitch = 90;
+
+				if (tank.health <= 0) { tank.treads.SetStateLabel("Death"); }
+
+				if (tank.turret) { MorphedPlayer.mo.SetOrigin(tank.turret.pos + (0, 0, tank.turret.height), false); } // Dump the player on top of the turret
+				else { MorphedPlayer.mo.SetOrigin(tank.pos + (0, 0, tank.height), false); } // Dump the player on top of the body of the tank
+
+				// Restore armor amount and savepercent
+				MorphedPlayer.mo.SetInventory("BasicArmor", armor);
+
+				BasicArmor a = BasicArmor(MorphedPlayer.mo.FindInventory("BasicArmor"));
+				if (a) { a.SavePercent = savepercent; }
+			}
+		}
+ 
+		Super.EndEffect();
+	}
+}

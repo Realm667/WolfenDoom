@@ -933,6 +933,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			source.bIsMonster &&
 			!IsFriend(source) &&
 			source.GetSpecies() != Species &&
+			source.bFriendly != bFriendly &&
 			(!target || Distance3D(source) < Distance3D(target))
 		)
 		{

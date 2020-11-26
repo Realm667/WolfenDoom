@@ -136,9 +136,6 @@ BOOL CALLBACK DialogProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lPara
 			_itow_s(settings.DisplacementTextures, setting, 19);
 			WritePrivateProfileString(TEXT("Launcher"), TEXT("DisplacementTextures"), setting, SettingsFile);
 
-			_itow_s(settings.Language, setting, 19);
-			WritePrivateProfileString(TEXT("Launcher"), TEXT("Language"), setting, SettingsFile);
-
 			BOA_LaunchGZDoom(settings.Detail, settings.DisplacementTextures, settings.Language, settings.DevCommentary, settings.TexFilter);
 			
 			DestroyWindow(hwndDlg);
@@ -177,7 +174,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	settings.DontShow =				GetPrivateProfileInt(TEXT("Launcher"), TEXT("DontShow"),				(INT)settings.DontShow, SettingsFile);
 	settings.DevCommentary =		GetPrivateProfileInt(TEXT("Launcher"), TEXT("DevCommentary"),			(INT)settings.DevCommentary, SettingsFile);
 	settings.DisplacementTextures =	GetPrivateProfileInt(TEXT("Launcher"), TEXT("DisplacementTextures"),	(INT)settings.DisplacementTextures, SettingsFile);
-	settings.Language =				GetPrivateProfileInt(TEXT("Launcher"), TEXT("Language"),				(INT)settings.Language, SettingsFile);
 
 	if (!!(GetKeyState(0x10) & 0x8000))
 		shiftkeypressed = true;

@@ -391,8 +391,12 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 		if (mo && origin != self)
 		{
 			muzzleflash.vel += (mo.vel.x / 2.0, mo.vel.y / 2.0, mo.vel.z / 2.0);
-			if (self) muzzleflash.vel += self.vel;
-			mo.SetOrigin(origin.pos, false); // Move the rocket so that it flies from the model's gun
+			if (self)
+            {
+                muzzleflash.vel += self.vel;
+                mo.vel += self.vel;
+            }
+			mo.SetOrigin(origin.pos, false); // Move the missile so that it flies from the model's gun
 		}
 
 		invoker.cannontimeout = 140;
@@ -412,14 +416,83 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 		double angledelta = deltaangle(angle, maingun.angle);
 		double pitchdelta = deltaangle(pitch, maingun.pitch);
 
-		A_StartSound("mauser/fire", CHAN_WEAPON, 0, FRandom(0.6, 0.8));
+		A_StartSound("tank/50cal", CHAN_WEAPON, 0, FRandom(0.6, 0.8));
 		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
 		muzzleflash.master = self;
 		A_FireProjectile("TurrSmokeSpawner", origin.Pos.Z - Pos.Z);
 		Actor mo = A_FireProjectile("Kar98kTracer", angledelta + Random(-2, 2), False, 0, 0, 0, pitchdelta + Random(-2, 2));
 		if (mo && origin != self)
 		{
+			mo.SetOrigin(origin.pos, false); // Move the tracer so that it flies from the model's gun
+            if (self) mo.vel += self.vel;
+			mo.bMThruSpecies = true;
+		}
+	}
+}
+
+class Cannon75mmKwK: Cannon75mm {
+    States
+	{
+		Fire:
+			TNT1 A 2 DoPzIVKwK();
+			TNT1 A 0 A_TankRefire();
+			Goto Ready;
+        AltFire:
+			TNT1 A 3 DoPzIVChaingun();
+			TNT1 A 20 A_TankRefire();
+			Goto Ready;
+    }
+    action void DoPzIVKwK()
+	{
+		if (invoker.cannontimeout)  { return; }
+
+		Actor origin = self;
+		if (origin && ShermanPlayer(origin) && ShermanPlayer(origin).turret && PanzerIVTurret(ShermanPlayer(origin).turret).gunspot) { origin = PanzerIVTurret(ShermanPlayer(origin).turret).gunspot; }
+
+		double angledelta = deltaangle(angle, origin.angle);
+		double pitchdelta = deltaangle(pitch, origin.pitch);
+
+		A_GunFlash();
+		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
+		A_StartSound("tanks/75mmkwk40", CHAN_WEAPON);
+		Actor mo = A_FireProjectile("TankMissile", angledelta, False, 0, 0, FPF_NOAUTOAIM, pitchdelta);
+		if (mo && origin != self)
+		{
+			muzzleflash.vel += (mo.vel.x / 2.0, mo.vel.y / 2.0, mo.vel.z / 2.0);
+			if (self)
+            {
+                muzzleflash.vel += self.vel;
+                mo.vel += self.vel;
+            }
+			mo.SetOrigin(origin.pos, false); // Move the rocket so that it flies from the model's gun
+		}
+
+		invoker.cannontimeout = 140;
+	}
+
+	action void DoPzIVChaingun()
+	{
+		Actor origin = self;
+		Actor maingun = self;
+
+		if (origin && ShermanPlayer(origin) && ShermanPlayer(origin).turret)
+		{
+			if (PanzerIVTurret(ShermanPlayer(self).turret).gunspot2) { origin = PanzerIVTurret(ShermanPlayer(self).turret).gunspot2; }
+			if (PanzerIVTurret(ShermanPlayer(self).turret).gunspot) { maingun = PanzerIVTurret(ShermanPlayer(self).turret).gunspot; }
+		}
+
+		double angledelta = deltaangle(angle, maingun.angle);
+		double pitchdelta = deltaangle(pitch, maingun.pitch);
+
+		A_StartSound("chaingun/fire", CHAN_WEAPON, 0, FRandom(0.6, 0.8));
+		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
+		muzzleflash.master = self;
+		A_FireProjectile("TurrSmokeSpawner", origin.Pos.Z - Pos.Z);
+		Actor mo = A_FireProjectile("ChaingunTracer", angledelta + Random(-4, 4), False, 0, 0, 0, pitchdelta + Random(-4, 4));
+		if (mo && origin != self)
+		{
 			mo.SetOrigin(origin.pos, false); // Move the tarcer so that it flies from the model's gun
+            if (self) mo.vel += self.vel;
 			mo.bMThruSpecies = true;
 		}
 	}
@@ -489,6 +562,11 @@ class TankRocket : Actor
 
 class TankMissile : TankRocket
 {
+    default
+    {
+        -NOGRAVITY
+        Gravity 0.33;
+    }
 	States
 	{
 		Spawn:
@@ -499,7 +577,16 @@ class TankMissile : TankRocket
 			Wait;
 	}
 }
-
+/*
+class TankMissilePlayer: TankMissile
+{
+    default
+    {
+        -NOGRAVITY
+        Gravity 0.33;
+    }
+}
+*/
 class TurretSwivel : ActorPositionable
 {
 	Default

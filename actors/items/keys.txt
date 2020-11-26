@@ -96,6 +96,7 @@ ACTOR SkullKey : PuzzleItem
 	//$Color 13
 	Scale 0.17
 	PuzzleItem.Number 4
+	Inventory.MaxAmount 2
 	Inventory.Icon SKLKB0
 	Inventory.PickupSound "key/skullkey"
 	PuzzleItem.FailMessage "$SKULLF"
@@ -134,4 +135,11 @@ ACTOR SkullKeyForSale : SkullKey //C3M6_A
 	//$Title Occult Skull Key from C3M6_A (puzzle 4, for sale)
 	//$Color 13
 	Inventory.MaxAmount 1
+	Inventory.Icon SKLKD0
+	States
+	{
+	Spawn:
+		SKLK E -1
+		Stop
+	}
 }
