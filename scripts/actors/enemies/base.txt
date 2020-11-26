@@ -290,6 +290,7 @@ class Base : Actor
 	bool user_nocountkill;
 	int flags;
 	bool dodging;
+	bool statnumchanged;
 
 	LaserFindHitPointTracer HitPointTracer;
 	LaserBeam beam;
@@ -890,7 +891,11 @@ class Base : Actor
 
 	override void Tick()
 	{
-		if (user_DrawHealthBar) { ChangeStatNum(Thinker.STAT_DEFAULT - 3); } // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient
+		if (user_DrawHealthBar && !statnumchanged)
+		{
+			ChangeStatNum(Thinker.STAT_DEFAULT - 3); // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient
+			statnumchanged = true; // Only do this once!
+		}
 
 		if (!globalfreeze && !level.Frozen)
 		{
@@ -933,7 +938,7 @@ class Base : Actor
 					else { bFloat = Default.bFloat; }
 				}
 
-				if (lightthreshold && (level.time + interval) % 10 == 0) // If zero, ignore light levels (so, default to normal enemy behavior)
+				if (lightthreshold && (level.time + interval) % 35 == 0) // If zero, ignore light levels (so, default to normal enemy behavior)
 				{
 					if (ReactionTime == 0) // This is only checked when the enemy is active and not standing still or attacking
 					{
@@ -2765,7 +2770,7 @@ class Nazi : Base
 				A_LookForGrenades();
 			}
 
-			if (level.time && level.time % interval) { closestplayer = FindClosestPlayer(self, IgnoreFriendlies:!bFriendly); }
+			if (level.time && level.time % interval == 0) { closestplayer = FindClosestPlayer(self, IgnoreFriendlies:!bFriendly); }
 		}
 
 		Super.Tick();
