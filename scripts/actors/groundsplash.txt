@@ -126,6 +126,7 @@ class GroundSplashBase : Actor
 			Sector ffSector;
 			double ffz;
 			[ffz, ffSector] = mo.CurSector.NextLowestFloorAt(mo.Pos.X, mo.Pos.Y, mo.Pos.Z, 0, 0);
+			if (mo.Pos.Z != ffz) { return; }
 			// A 3D floor control sector ceiling becomes a floor
 			TextureID ffTexture = ffSector.GetTexture(1);
 			textureName = TexMan.GetName(ffTexture);
