@@ -1,0 +1,21 @@
+// Alternative "ground splashes" for mines and such.
+// Note that these are different from water splashes because they are bigger
+// The format is like this:
+// <SplashType> {
+// 	<Texture> = <ActorClass>;
+// 	<Texture> = <ActorClass>;
+// 	<Texture> = <ActorClass>;
+// 	...
+// }
+// Where SplashType is the "splash class" which determines what ground
+// splash(es) are spawned, Texture is the floor texture, and ActorClass is
+// the ground splash actor to spawn.
+// Note: Both Texture and ActorClass are case insensitive.
+
+Mine
+{
+	GRAS_B02 = DirtGroundSplash;
+	textures/gras_b02.png = DirtGroundSplash;
+	GRAS_G03 = DirtGroundSplash;
+	TEXTURES/GRAS_G03.PNG = DirtGroundSplash;
+}

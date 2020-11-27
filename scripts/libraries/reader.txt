@@ -167,11 +167,16 @@ class FileReader
 
 		for (int s = 1; s < depth; s++)
 		{
-			padding = padding .. "        ";
+			padding = padding .. "    ";
 		}
 
-		if (data.keyname && data.value) { console.printf("%sKey: %s = %s", padding, data.keyname, data.value); }
-		else if (data.keyname) { console.printf("%s%s", padding, data.keyname); }
+		if (data.keyname && data.value) {
+			output.AppendFormat("%sKey: %s = %s\n", padding, data.keyname, data.value);
+			console.printf("%sKey: %s = %s", padding, data.keyname, data.value); }
+		else if (data.keyname) {
+			output.AppendFormat("%s%s\n", padding, data.keyname);
+			console.printf("%s%s", padding, data.keyname);
+		}
 
 		if (data.Children.Size())
 		{

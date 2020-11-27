@@ -20,6 +20,17 @@
  * SOFTWARE.
 **/
 
+mixin class SpawnsGroundSplash
+{
+	String groundSplashType;
+	Property SplashType: groundSplashType;
+
+	void A_SpawnGroundSplash()
+	{
+		GroundSplashBase.SpawnGroundSplash(self, self.groundSplashType);
+	}
+}
+
 class SoilParticle : SimpleActor
 {
 	Default
@@ -36,7 +47,7 @@ class SoilParticle : SimpleActor
 			SLP1 A 0 NoDelay A_Jump(128, 2);
 			SLP1 B 0;
 		Flight:
-			"####" "#" 5 A_CheckGround;
+			"####" "#" 35 A_CheckGround;
 			Loop;
 	}
 
@@ -67,7 +78,7 @@ class SoilParticle : SimpleActor
 	}
 }
 
-class GroundPlumeBase : Actor
+class GroundSplashBase : Actor
 {
 	Default
 	{
@@ -101,9 +112,37 @@ class GroundPlumeBase : Actor
 			}
 		}
 	}
+
+	// Spawn an alternative ground splash
+	static void SpawnGroundSplash(Actor mo, String splashType)
+	{
+		// Get floor texture
+		String textureName;
+		if (mo.Pos.Z == mo.CurSector.floorplane.ZatPoint(mo.Pos.XY)) {
+			// mo is on the ground
+			textureName = TexMan.GetName(mo.floorpic);
+		} else {
+			// mo is (probably) on a 3D floor
+			Sector ffSector;
+			double ffz;
+			[ffz, ffSector] = mo.CurSector.NextLowestFloorAt(mo.Pos.X, mo.Pos.Y, mo.Pos.Z, 0, 0);
+			// A 3D floor control sector ceiling becomes a floor
+			TextureID ffTexture = ffSector.GetTexture(1);
+			textureName = TexMan.GetName(ffTexture);
+		}
+		if (textureName == "") { return; }
+		// Get data from handler
+		GroundSplashDataHandler splashData = GroundSplashDataHandler(StaticEventHandler.Find("GroundSplashDataHandler"));
+		// Resolve splash actor class
+		String splashActorStr = FileReader.GetString(splashData.data, splashType .. "." .. textureName);
+		if (splashActorStr != "") {
+			class<Actor> splashActor = splashActorStr;
+			Actor.Spawn(splashActor, mo.Pos, ALLOW_REPLACE);
+		}
+	}
 }
 
-class DirtGroundPlume : GroundPlumeBase
+class DirtGroundSplash : GroundSplashBase
 {
 	States
 	{
