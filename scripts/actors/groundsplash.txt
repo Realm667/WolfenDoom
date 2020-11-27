@@ -31,7 +31,7 @@ mixin class SpawnsGroundSplash
 	}
 }
 
-class SoilParticle : SimpleActor
+class SoilSplashParticle : SimpleActor
 {
 	Default
 	{
@@ -43,12 +43,13 @@ class SoilParticle : SimpleActor
 
 	States
 	{
-		Spawn:
-			SLP1 A 0 NoDelay A_Jump(128, 2);
-			SLP1 B 0;
-		Flight:
-			"####" "#" 35 A_CheckGround;
-			Loop;
+	Spawn:
+		SLP1 A 0 NoDelay A_Jump(128, 1);
+		Goto Flight;
+		SLP1 B 0;
+	Flight:
+		"####" "#" 35 A_CheckGround;
+		Loop;
 	}
 
 	override void PostBeginPlay()
@@ -78,6 +79,20 @@ class SoilParticle : SimpleActor
 	}
 }
 
+class SnowSplashParticle : SoilSplashParticle
+{
+	States
+	{
+	Spawn:
+		SLP1 C 0 NoDelay A_Jump(128, 1, 2);
+		Goto Flight;
+		SLP1 D 0;
+		Goto Flight;
+		SLP1 E 0;
+		Goto Flight;
+	}
+}
+
 class GroundSplashBase : Actor
 {
 	Default
@@ -85,10 +100,11 @@ class GroundSplashBase : Actor
 		+NOINTERACTION
 	}
 
-	void A_SpawnPlume(class<Actor> particleClass, double endradius, double increment = .25, int height = 6, int ring = 8)
+	virtual void A_SpawnAltSplash(String particleClassNames, double endradius = 2, double increment = .25, int ring = 8)
 	{
-		CVar groundPlumeSwitch = CVar.FindCVar("boa_groundplume");
-		if(!groundPlumeSwitch.GetBool()) { return; }
+		Array<String> classNames;
+		particleClassNames.Split(classNames, "|", TOK_SKIPEMPTY);
+		int height = classNames.Size();
 		if (increment <= 0.0) { increment = .25; }
 		if (endradius < 0.0) { endradius = increment; }
 		for (double radius = 0.0; radius < endradius; radius += increment)
@@ -100,6 +116,8 @@ class GroundSplashBase : Actor
 			}
 			for (int i = 0; i < height; i++)
 			{ // Height is how many particles to spawn vertically
+				class<Actor> particleClass = classNames[i];
+				if (!particleClass) { continue; }
 				for (int j = 0; j < ring; j++)
 				{ // Ring is how many particles to spawn in a ring horizontally
 					double angleFrac = 1.0/ring;
@@ -114,8 +132,11 @@ class GroundSplashBase : Actor
 	}
 
 	// Spawn an alternative ground splash
-	static void SpawnGroundSplash(Actor mo, String splashType)
+	static Actor SpawnGroundSplash(Actor mo, String splashType)
 	{
+		// Check CVar
+		CVar groundPlumeSwitch = CVar.FindCVar("boa_groundplume");
+		if(!groundPlumeSwitch.GetBool()) { return null; }
 		// Get floor texture
 		String textureName;
 		if (mo.Pos.Z == mo.CurSector.floorplane.ZatPoint(mo.Pos.XY)) {
@@ -126,12 +147,12 @@ class GroundSplashBase : Actor
 			Sector ffSector;
 			double ffz;
 			[ffz, ffSector] = mo.CurSector.NextLowestFloorAt(mo.Pos.X, mo.Pos.Y, mo.Pos.Z, 0, 0);
-			if (mo.Pos.Z != ffz) { return; }
+			if (mo.Pos.Z != ffz) { return null; }
 			// A 3D floor control sector ceiling becomes a floor
 			TextureID ffTexture = ffSector.GetTexture(1);
 			textureName = TexMan.GetName(ffTexture);
 		}
-		if (textureName == "") { return; }
+		if (textureName == "") { return null; }
 		// Work around issue with full path textures being parsed incorrectly by FileReader.GetString
 		textureName.Replace(".", ">");
 		// Get data from handler
@@ -140,8 +161,19 @@ class GroundSplashBase : Actor
 		String splashActorStr = FileReader.GetString(splashData.data, splashType .. "." .. textureName);
 		if (splashActorStr != "") {
 			class<Actor> splashActor = splashActorStr;
-			Actor.Spawn(splashActor, mo.Pos, ALLOW_REPLACE);
+			if (splashActor)
+			{
+				return Actor.Spawn(splashActor, mo.Pos, ALLOW_REPLACE);
+			}
+			else
+			{
+				if (developer)
+				{
+					Console.Printf("Warning: Ground splash actor class %s does not exist!", splashActorStr);
+				}
+			}
 		}
+		return null;
 	}
 }
 
@@ -150,9 +182,17 @@ class DirtGroundSplash : GroundSplashBase
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay {
-			A_SpawnPlume("SoilParticle", 3, .5);
-		}
+		TNT1 A 0 NoDelay A_SpawnAltSplash("SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SoilSplashParticle", 3, .5);
+		Stop;
+	}
+}
+
+class SnowGroundSplash : GroundSplashBase
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnAltSplash("SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SnowSplashParticle", 3, .5);
 		Stop;
 	}
 }
