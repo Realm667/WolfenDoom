@@ -47,7 +47,7 @@ class InventoryClearHandler : EventHandler
 		};
 		for (int i = 0; i < 4; i++)
 		{
-			let invitem = me.FindInventory(invclass);
+			let invitem = me.FindInventory(itemTypes[i]);
 			if (invitem)
 			{
 				me.RemoveInventory(invitem);
