@@ -24,23 +24,39 @@ class InventoryClearHandler : EventHandler
 {
 	override void PlayerEntered(PlayerEvent e)
 	{
+		let me = PlayerPawn(players[e.PlayerNumber].mo);
 		// Give the player the camera tilt handling item (modified version of Nash's Tilt++ v1.3)
-		players[e.PlayerNumber].mo.A_GiveInventory("BoATilt", 1);
-		players[e.PlayerNumber].mo.A_GiveInventory("BoAVisibility", 1);
-		players[e.PlayerNumber].mo.A_GiveInventory("BoAUnderwater", 1);
+		me.A_GiveInventory("BoATilt", 1);
+		me.A_GiveInventory("BoAVisibility", 1);
+		me.A_GiveInventory("BoAUnderwater", 1);
 
 		// Force reset of certain shader effects
-		players[e.PlayerNumber].mo.A_SetInventory("OldVideoShaderControl", 1);
-		players[e.PlayerNumber].mo.A_SetInventory("BlurShaderControl", 1);
-		players[e.PlayerNumber].mo.A_SetInventory("HeatShaderControl", 1);
-		players[e.PlayerNumber].mo.A_SetInventory("SandShaderControl", 1);
+		me.A_SetInventory("OldVideoShaderControl", 1);
+		me.A_SetInventory("BlurShaderControl", 1);
+		me.A_SetInventory("HeatShaderControl", 1);
+		me.A_SetInventory("SandShaderControl", 1);
 
-		players[e.PlayerNumber].mo.A_GiveInventory("NullWeapon", 1);
+		me.A_GiveInventory("NullWeapon", 1);
+
+		// Remove level-specific inventory items
+		static const class<Inventory> itemTypes[] = {
+			"CKPogoStick",
+			"CKLedgeGrab",
+			"TextPaperCollectible",
+			"TextPaperSecretHint"
+		};
+		for (int i = 0; i < 4; i++)
+		{
+			let invitem = me.FindInventory(invclass);
+			if (invitem)
+			{
+				me.RemoveInventory(invitem);
+			}
+		}
 
 		// Ed the Bat's updated weapon stripping
 		if(level.levelnum!=99)
 			return;
-		let me=PlayerPawn(players[e.PlayerNumber].mo);
 		DropItem drop=me.GetDropItems();
 		
 		for(int i=0;i<AllActorClasses.Size();i++)
@@ -61,15 +77,6 @@ class InventoryClearHandler : EventHandler
 				let ammoitem=ammo(me.FindInventory(ammotype));
 				if(ammoitem!=null&&!ammoitem.bUNDROPPABLE)
 					me.A_TakeInventory(name(ammotype));
-			}
-			// Remove level-unique inventory items
-			if(type is "CKPogoStick" || type is "CKLedgeGrab" || type is "TextPaperCollectible" || type is "TextPaperSecretHint")
-			{
-				let invclass = (class<Inventory>)(type);
-				let invitem = me.FindInventory(invclass);
-				if(invitem){
-					me.RemoveInventory(invitem);
-				}
 			}
 		}
 		//If the player has any weapons in StartItem, set them here
