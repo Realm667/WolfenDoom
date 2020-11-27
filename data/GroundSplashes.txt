@@ -10,12 +10,15 @@
 // Where SplashType is the "splash class" which determines what ground
 // splash(es) are spawned, Texture is the floor texture, and ActorClass is
 // the ground splash actor to spawn.
-// Note: Both Texture and ActorClass are case insensitive.
+// Note 1: SplashType, Texture, and ActorClass are case insensitive.
+// Note 2: FileReader.GetString uses . as a data path delimiter, and it cannot
+// distinguish between file paths and "data paths", so you should replace any
+// dots in the filename with ">" (shift + .)
 
 Mine
 {
 	GRAS_B02 = DirtGroundSplash;
-	textures/gras_b02.png = DirtGroundSplash;
+	textures/gras_b02>png = DirtGroundSplash;
 	GRAS_G03 = DirtGroundSplash;
-	TEXTURES/GRAS_G03.PNG = DirtGroundSplash;
+	TEXTURES/GRAS_G03>PNG = DirtGroundSplash;
 }

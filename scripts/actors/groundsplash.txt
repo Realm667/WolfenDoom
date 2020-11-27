@@ -132,6 +132,8 @@ class GroundSplashBase : Actor
 			textureName = TexMan.GetName(ffTexture);
 		}
 		if (textureName == "") { return; }
+		// Work around issue with full path textures being parsed incorrectly by FileReader.GetString
+		textureName.Replace(".", ">");
 		// Get data from handler
 		GroundSplashDataHandler splashData = GroundSplashDataHandler(StaticEventHandler.Find("GroundSplashDataHandler"));
 		// Resolve splash actor class
