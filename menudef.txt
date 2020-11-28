@@ -520,7 +520,7 @@ OptionValue "Corners"
 
 OptionValue "MenuMouse"
 {
-	0, "$TXT_NO"
+	//0, "$TXT_NO" - omitted to prevent potential interactivity breakers - ozy81
 	1, "$TXT_YES"
 	2, "$OPTVAL_TOUCHSCREENLIKE"
 }
@@ -545,8 +545,6 @@ OptionMenu "BoAMouseOptions"
 	Option "$MOUSEMNU_SHOWBACKBUTTON",	"m_show_backbutton", 	"Corners", "use_mouse"
 	Option "$MOUSEMNU_CURSOR",			"vid_cursor", 			"Cursors"
 	StaticText 	""
-	Slider "$MOUSEMNU_SENSITIVITY",		"mouse_sensitivity", 	0.5, 2.5, 0.1
-	Option "$MOUSEMNU_NOPRESCALE",		"m_noprescale", 		"NoYes"
 	Option "$MOUSEMNU_SMOOTHMOUSE",		"m_filter", 			"YesNo"
 	StaticText 	""
 	Slider "$MOUSEMNU_TURNSPEED",		"m_yaw", 				0, 2.5, 0.1
@@ -1158,7 +1156,7 @@ OptionMenu "BoAMiscOptions" //move boa cheats here? - ozy81
 	IfOption(Windows)
 	{
 		StaticText " "
-		Option	"$DSPLYMNU_SHOWENDOOM",			"showendoom", "Endoom"
+		Option	"$DSPLYMNU_SHOWENDOOM",			"showendoom", "Endoom" //set 1.0 On per default in BoA
 	}
 }
 
@@ -1500,7 +1498,7 @@ OptionMenu BoAGameplayOptions
 	Submenu "$OPT_GAME",						"GameOptions"
 	Submenu "$OPT_BLOOD",						"BloodOptions"
 	StaticText " "
-	Submenu "$GMPLYMNU_COOPERATIVE",			"CoopOptions"
+	Submenu "$GMPLYMNU_COOPERATIVE",			"BoACoopOptions"
 	StaticText " "
 	Option "$GMPLYMNU_TEAMPLAY",				"teamplay",	"OnOff"
 	Slider	"$GMPLYMNU_TEAMDAMAGE",				"teamdamage", 0, 1, 0.05,2
@@ -1988,7 +1986,7 @@ OptionMenu "BoAOpenGLOptions"
 	Option "$GLPREFMNU_ENVIRONMENTMAPMIRROR",	gl_mirror_envmap,				"OnOff"
 	Option "$GLPREFMNU_ENV",					gl_enhanced_nightvision,		"OnOff"
 	Option "$GLPREFMNU_ENVSTEALTH",				gl_enhanced_nv_stealth,			"EnhancedStealth"
-	Option "$GLPREFMNU_SPRCLIP",				gl_spriteclip,					"SpriteclipModes"
+	Option "$GLPREFMNU_SPRCLIP",				gl_spriteclip,					"SpriteclipModes" //set as 2 per Default in BoA, always
 	Option "$GLPREFMNU_SPRBLEND",				gl_sprite_blend,				"OnOff"
 	Option "$GLPREFMNU_FUZZSTYLE",				gl_fuzztype,					"FuzzStyle"
 	Option "$GLPREFMNU_SPRBILLBOARD",			gl_billboard_mode,				"BillboardModes"
