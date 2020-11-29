@@ -262,10 +262,75 @@ class PowerSpaceSuit : PowerMaskProtection
 	}
 }
 
-class LanternPickup : CustomInventory
+class PoweredInventory : Inventory
 {
 	bool active;
+	Class<Inventory> fuelclass;
+	int fuelgiveamt;
 
+	Property Fuel:fuelclass;
+	Property FuelGiveAmt:fuelgiveamt;
+
+	override void Tick()
+	{
+		if (globalfreeze || level.Frozen) { return; }
+
+		if (owner && active)
+		{
+			if (owner.FindInventory(fuelclass)) { owner.TakeInventory(fuelclass, 1); }
+			else { active = false; }
+		}
+	}
+
+	override bool Use (bool pickup)
+	{
+		if (!owner) { return false; }
+
+		active = !active;
+
+		if (active && !owner.FindInventory(fuelclass)) { active = false; }
+
+		return false;
+	}
+
+	// This only gets called after you've picked up the item once...  
+	// On first pickup, the Inventory class HandlePickup returns true and this is never called.
+	override bool HandlePickup(Inventory item)
+	{
+		if (item.GetClass() == GetClass())
+		{
+			// If the player already has the item, but isn't at max fuel, add fuel here (and pick up the item)
+			let fuel = owner.FindInventory(fuelclass);
+			if (!fuel) { fuel = owner.GiveInventoryType(fuelclass); fuel.Amount = 0; }
+
+			if (fuel && fuel.Amount < fuel.MaxAmount)
+			{
+				fuel.Amount += fuelgiveamt;
+
+				if (fuel.Amount > fuel.MaxAmount && !sv_unlimited_pickup)
+				{
+					fuel.Amount = fuel.MaxAmount;
+				}
+
+				item.bPickupGood = true;
+			}
+
+			return true;
+		}
+		return false;
+	}
+
+	override bool TryPickup(in out Actor toucher)
+	{
+		// If this is the first pickup of the item, also add fuel to the player's inventory
+		if (!toucher.FindInventory(GetClass())) { toucher.A_GiveInventory(fuelclass, fuelgiveamt); }
+
+		return Super.TryPickup(toucher);
+	}
+}
+
+class LanternPickup : PoweredInventory
+{
 	Default
 	{
 		//$Category Powerups (BoA)
@@ -279,6 +344,8 @@ class LanternPickup : CustomInventory
 		Inventory.PickupSound "misc/gadget_pickup";
 		+INVENTORY.INVBAR
 		+INVENTORY.UNDROPPABLE
+		PoweredInventory.Fuel "LanternOil";
+		PoweredInventory.FuelGiveAmt 1000;
 	}
 
 	States
@@ -286,16 +353,6 @@ class LanternPickup : CustomInventory
 		Spawn:
 			LANT A -1;
 			Stop;
-		Pickup:
-			"####" A 0 A_GiveInventory("LanternOil", 1000);
-			Stop;
-		Use:
-			"####" A 0 {
-				invoker.active = !invoker.active;
-
-				if (invoker.active && !FindInventory("LanternOil")) { invoker.active = false; }
-			}
-			Fail;
 	}
 
 	override void Tick()
@@ -304,21 +361,19 @@ class LanternPickup : CustomInventory
 
 		if (owner && active)
 		{
-			if (owner.waterlevel >= 3)
+			if (owner.waterlevel >= 3) // Extinguish if the player goes underwater
 			{
 				A_StartSound("flamer/steam", CHAN_AUTO, 0, Random(15, 45));
 				active = false;
 			}
-			else if (owner.FindInventory("LanternOil")) { owner.TakeInventory("LanternOil", 1); }
-			else { active = false; }
 		}
+
+		Super.Tick();
 	}
 }
 
-class MineSweeper : CustomInventory
+class MineSweeper : PoweredInventory
 {
-	bool active;
-
 	Default
 	{
 		//$Category Powerups (BoA)
@@ -331,6 +386,8 @@ class MineSweeper : CustomInventory
 		Inventory.MaxAmount 1;
 		+INVENTORY.INVBAR
 		+INVENTORY.UNDROPPABLE
+		PoweredInventory.Fuel "Power";
+		PoweredInventory.FuelGiveAmt 2400;
 	}
 
 	States
@@ -338,38 +395,6 @@ class MineSweeper : CustomInventory
 		Spawn:
 			MSPU A -1;
 			Stop;
-		Pickup:
-			"####" A 0 {
-				if (CountInv("MineSweeper") == 0) {
-					A_GiveInventory ("Power", 2400);
-					return true;
-				} else if (CountInv("MineSweeper") > 0 && CountInv("Power") < 2400) {
-					A_GiveInventory ("Power", 2400 - CountInv("Power"));
-					A_TakeInventory ("MineSweeper", 1); // The player will immediately get another minesweeper.
-					return true;
-				} else {
-					return false;
-				}
-			}
-			Stop;
-		Use:
-			"####" A 0 {
-				invoker.active = !invoker.active;
-
-				if (invoker.active && !FindInventory("Power")) { invoker.active = false; }
-			}
-			Fail;
-	}
-
-	override void Tick()
-	{
-		if (globalfreeze || level.Frozen || !owner || !owner.player) { return; }
-
-		if (owner && active)
-		{
-			if (owner.FindInventory("Power")) { owner.TakeInventory("Power", 1); }
-			else { active = false; }
-		}
 	}
 }
 
