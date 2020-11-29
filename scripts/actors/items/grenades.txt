@@ -63,6 +63,13 @@ class GrenadeBase : Actor // Base actor for anything we want Nazis to run away f
 			SetState(CurState.NextState);
 		}
 	}
+
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (bTouchy && other is "PlayerFollower") { return false; } // Player follwoers can't set off touchy variants of these (Mines)
+
+		return true;
+	}
 }
 
 // Fixes for Astrostein grenades:
