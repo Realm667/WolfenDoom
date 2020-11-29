@@ -59,6 +59,7 @@ ACTOR NebRocket : GrenadeBase
 	DeathSound "nebelwerfer/xplode"
 	Decal Scorch
 	ProjectileKickback 100
+	GrenadeBase.SplashType "Missile"
 	States
 	{
 	Spawn:
@@ -69,6 +70,7 @@ ACTOR NebRocket : GrenadeBase
 	Death:
 	Crash:
 		EXP1 A 0 A_SetScale(0.85,0.95)
+		EXP1 A 0 A_SpawnGroundSplash
 		EXP1 A 0 A_AlertMonsters
 		EXP1 A 0 A_StopSound(CHAN_AUTO)
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark_Longlive", 0, 0, 0, frandom(-5.0,5.0), frandom(-5.0,5.0), frandom(-5.0,5.0), random(0,359)) //T667 improvements

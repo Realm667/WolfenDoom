@@ -187,12 +187,34 @@ class DirtGroundSplash : GroundSplashBase
 	}
 }
 
+// "Small" variant for Nebelwerfer and grenades
+class DirtGroundSplashSmall : GroundSplashBase
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnAltSplash("SoilSplashParticle|SoilSplashParticle|SoilSplashParticle", 3, .5);
+		Stop;
+	}
+}
+
 class SnowGroundSplash : GroundSplashBase
 {
 	States
 	{
 	Spawn:
 		TNT1 A 0 NoDelay A_SpawnAltSplash("SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SnowSplashParticle", 3, .5);
+		Stop;
+	}
+}
+
+// "Small" variant for Nebelwerfer and grenades
+class SnowGroundSplashSmall : GroundSplashBase
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnAltSplash("SoilSplashParticle|SoilSplashParticle|SnowSplashParticle", 3, .5);
 		Stop;
 	}
 }
