@@ -71,6 +71,7 @@ class ParticleManager : EventHandler
 			ConsolidateArray(flatdecalqueue, maxflatdecals);
 		}
 		else if (
+			e.thing is "SoilSplashParticle"	||	// Ground splash particle actors
 			e.thing is "ParticleBase" || 		// Handle all other ParticleBase actors last so that the above can inherit from ParticleBase and still get their own queues
 			e.thing is "LightningBeam"		// Lightning segments
 		)
@@ -100,12 +101,13 @@ class ParticleManager : EventHandler
 	void ConsolidateArray(in out Array<Actor> input, int limit)
 	{
 		Array<Actor> t;
+		int count = 0;
 
 		for (int s = 0; s < input.Size(); s++)
 		{
 			if (!input[s]) { continue; }
 
-			if (s >= limit)
+			if (count >= limit)
 			{
 				state FadeState = input[s].FindState("Fade");
 
@@ -113,6 +115,8 @@ class ParticleManager : EventHandler
 				else { input[s].Destroy(); }
 			}
 			else { t.Push(input[s]); }
+
+			count++;
 		}
 
 		input.Move(t);
