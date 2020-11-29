@@ -48,6 +48,7 @@ ACTOR HandGrenade : GrenadeBase
 	-NOGRAVITY
 	-NOTELEPORT
 	+WINDTHRUST
+	+FORCEXYBILLBOARD
 	Obituary "$OBGRENADE"
 	BounceType Doom
 	BounceFactor 0.2
@@ -70,7 +71,7 @@ ACTOR HandGrenade : GrenadeBase
 		THRW BCDEFGH 2
 		Loop
 	Death:
-		THRW B 35
+		THRW B 35 { floorclip -= 2; }
 		TNT1 A 0 A_SpawnGroundSplash
 		TNT1 A 0 A_AlertMonsters
 		TNT1 A 0 A_SetScale(1.75,1.75)
@@ -91,7 +92,7 @@ ACTOR HansGrenade : HandGrenade //Fast version for Afrika Boss
 	States
 	{
 	Death:
-		THRW B 10
+		THRW B 10 { floorclip -= 2; }
 		TNT1 A 0 A_SpawnGroundSplash
 		TNT1 A 0 A_AlertMonsters
 		TNT1 A 0 A_SetScale(1.75,1.75)
@@ -112,7 +113,7 @@ ACTOR VeryFastGrenade : HandGrenade //Very fast version for Grenadeers
 	States
 	{
 	Death:
-		THRW B 35
+		THRW B 35 { floorclip -= 2; }
 		TNT1 A 0 A_SpawnGroundSplash
 		TNT1 A 0 A_AlertMonsters
 		TNT1 A 0 A_SetScale(1.75,1.75)
@@ -133,7 +134,7 @@ ACTOR SlowGrenade : HandGrenade //Slow version for Grenadeers
 	States
 	{
 	Death:
-		THRW B 45
+		THRW B 45 { floorclip -= 2; }
 		TNT1 A 0 A_SpawnGroundSplash
 		TNT1 A 0 A_AlertMonsters
 		TNT1 A 0 A_SetScale(1.75,1.75)
@@ -154,7 +155,7 @@ ACTOR VerySlowGrenade : HandGrenade //Very slow version for Grenadeers
 	States
 	{
 	Death:
-		THRW B 70
+		THRW B 70 { floorclip -= 2; }
 		TNT1 A 0 A_SpawnGroundSplash
 		TNT1 A 0 A_AlertMonsters
 		TNT1 A 0 A_SetScale(1.75,1.75)
