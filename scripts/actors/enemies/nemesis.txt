@@ -312,7 +312,7 @@ class RENemesis : NaziBoss
 	}
 
 	// Checks whether the given angle is suitable for teleporting to. Returns the distance at the given angle which is suitable, or -1 if it is not suitable.
-	double isAngleSuitable(double angle, double maxdistance, double checkIncrement = 16, double heightThreshold = 128)
+	double isAngleSuitable(double angle, double maxdistance, double checkIncrement = 16, double heightThreshold = 128, double mindistance = 128)
 	{
 		double suitableDistance = -1;
 		// Find closest wall
@@ -330,7 +330,6 @@ class RENemesis : NaziBoss
 		Vector3 oldPosition = Pos;
 		Sector targSec = Level.PointInSector(target.Pos.XY);
 		double targFloorHeight = targSec.NextLowestFloorAt(target.Pos.X, target.Pos.Y, target.Pos.Z, 0, MaxStepHeight);
-		double mindistance = Radius + Speed;
 		// Check for a suitable spot to reappear at. Start at the furthest point, and close in to the target's position.
 		for (
 			double checkDistance = maxdistance;
