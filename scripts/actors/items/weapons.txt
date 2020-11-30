@@ -936,13 +936,14 @@ class TurretStand : Actor
 
 		if (user.player && abs(delta) > 135) // Player must be within +/-45 degrees of directly behind the gun
 		{
-			shooter = user;
-			shooter.DamageFactor = 0.25; // Player takes quarter damage while using the turret gun
 			if (gun)
 			{
 				gun.target = user;
-				gun.angle = user.angle;
+				user.Angle %= 360;
+				gun.Angle = user.Angle;
 			}
+			shooter = user;
+			shooter.DamageFactor = 0.25; // Player takes quarter damage while using the turret gun
 			return true;
 		}
 
