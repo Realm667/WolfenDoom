@@ -100,7 +100,7 @@ class GroundSplashBase : Actor
 		+NOINTERACTION
 	}
 
-	virtual void A_SpawnAltSplash(String particleClassNames, double endradius = 2, double increment = .25, int ring = 8)
+	virtual void A_SpawnAltSplash(String particleClassNames, double endradius = 2, double increment = .25, int ring = 5)
 	{
 		Array<String> classNames;
 		particleClassNames.Split(classNames, "|", TOK_SKIPEMPTY);
@@ -109,11 +109,6 @@ class GroundSplashBase : Actor
 		if (endradius < 0.0) { endradius = increment; }
 		for (double radius = 0.0; radius < endradius; radius += increment)
 		{
-			int curRing = ring;
-			if (radius == 0.0)
-			{
-				curRing = 1;
-			}
 			for (int i = 0; i < height; i++)
 			{ // Height is how many particles to spawn vertically
 				class<Actor> particleClass = classNames[i];
@@ -182,7 +177,7 @@ class DirtGroundSplash : GroundSplashBase
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_SpawnAltSplash("SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SoilSplashParticle", 3, .5);
+		TNT1 A 0 NoDelay A_SpawnAltSplash("SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SoilSplashParticle", 3, 1);
 		Stop;
 	}
 }
@@ -193,7 +188,7 @@ class DirtGroundSplashSmall : GroundSplashBase
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_SpawnAltSplash("SoilSplashParticle|SoilSplashParticle|SoilSplashParticle", 3, .5);
+		TNT1 A 0 NoDelay A_SpawnAltSplash("SoilSplashParticle|SoilSplashParticle|SoilSplashParticle", 5, 2);
 		Stop;
 	}
 }
@@ -203,7 +198,7 @@ class SnowGroundSplash : GroundSplashBase
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_SpawnAltSplash("SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SnowSplashParticle", 3, .5);
+		TNT1 A 0 NoDelay A_SpawnAltSplash("SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SoilSplashParticle|SnowSplashParticle", 3, 1);
 		Stop;
 	}
 }
@@ -214,7 +209,7 @@ class SnowGroundSplashSmall : GroundSplashBase
 	States
 	{
 	Spawn:
-		TNT1 A 0 NoDelay A_SpawnAltSplash("SoilSplashParticle|SoilSplashParticle|SnowSplashParticle", 3, .5);
+		TNT1 A 0 NoDelay A_SpawnAltSplash("SoilSplashParticle|SoilSplashParticle|SnowSplashParticle", 5, 2);
 		Stop;
 	}
 }
