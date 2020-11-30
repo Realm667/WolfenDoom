@@ -3491,8 +3491,15 @@ class BatBase : Base
 				}
 			}
 
+			if (countdown < 0 && abs(countdown) % 35 == 0)
+			{
+				movedir = (movedir + 8 + Random(-1, 1)) % 8;
+			}
+
 			if (roostgoal && countdown == 35 * -10) // If you've been trying to get back to your roost for 10 seconds, give up and try to spawn a new roost here
 			{
+				countdown = -35;
+
 				SpawnRoost();
 			}
 		}

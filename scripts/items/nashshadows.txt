@@ -177,6 +177,7 @@ class Z_SpriteShadow : Actor
 				mo == self || // Ignore self
 				!mo.bSolid || // Ignore non-solids
 				mo.bIsMonster || // Ignore monsters
+				mo.player || // Ignore players
 				abs(mo.pos.x - origin.pos.x) > origin.radius + mo.radius || // Ignore if outside of hitbox footprint
 				abs(mo.pos.y - origin.pos.y) > origin.radius + mo.radius    //  (using square hitboxes)
 			) { continue; } 
