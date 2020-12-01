@@ -51,7 +51,9 @@
 
 	PlayerFollower.CanBeCommanded
 	- Determines if you can make the NPC follow/stop following you by pressing 'use' on them
-	- Defaults to false.
+	- Defaults to false.  Can be set to true to unconditionally keep the actor in place, or 
+	  you can specify a distance in mapunits after which the actor will ignore your commands
+	  and catch up anyway
 
 	PlayerFollower.HealPlayer
 	- Integer value that sets the health amount under which the player follower will heal
@@ -124,7 +126,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 	bool countgrenades;
 	bool nocatchup;
 	bool nonmoving, user_nonmoving;
-	bool allowinteraction;
+	int allowinteraction;
 	int oldwaterlevel;
 	int activationcount;
 	String head;
@@ -850,7 +852,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 		oldwaterlevel = waterlevel;
 
-		if (!nonmoving && playerToChase && !playerToChase.bNoClip && Level.time % 5 == 0 && health > 0) // Spawn a waypoint at the player's position every 5 tics if the player has moved, and push it into an array
+		if ((!nonmoving || allowinteraction > 1) && playerToChase && !playerToChase.bNoClip && Level.time % 5 == 0 && health > 0) // Spawn a waypoint at the player's position every 5 tics if the player has moved, and push it into an array
 		{
 			if (playerToChase.pos != oldPlayerPos)
 			{
@@ -863,6 +865,11 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 				}
 				oldPlayerPos = playerToChase.pos;
 			}
+		}
+
+		if (allowinteraction > 1 && nonmoving && playerToChase && !playerToChase.bNoClip && Distance3D(playerToChase) > allowinteraction)
+		{
+			nonmoving = false;
 		}
 
 		frighttimeout = clamp(frighttimeout - 1, 0, 210);
@@ -1216,7 +1223,7 @@ class PrisonerAgent : PlayerFollower
 		Species "PlayerFollower";
 		PlayerFollower.CloseFollow True;
 		PlayerFollower.ChaseAttackChance 0;
-		PlayerFollower.CanBeCommanded True;
+		PlayerFollower.CanBeCommanded 4096;
 		PlayerFollower.Head "MS_PRIB";
 	}
 
