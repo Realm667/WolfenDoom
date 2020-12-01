@@ -35,7 +35,7 @@ ACTOR GrenadePickup : CustomInventory
 	}
 }
 
-ACTOR HandGrenade : GrenadeBase
+ACTOR HandGrenade : GrenadeBase //no hard variant since it is used also by players - ozy81
 {
 	Radius 4
 	Height 3
@@ -104,6 +104,12 @@ ACTOR HansGrenade : HandGrenade //Fast version for Afrika Boss
 	}
 }
 
+ACTOR HardHansGrenade : HansGrenade //skill 5 grenades have +30 speed to prevent grenadeers and bosses attack aimlessly - ozy81
+{
+	Speed 80
+	FastSpeed 85
+}
+
 ACTOR VeryFastGrenade : HandGrenade //Very fast version for Grenadeers
 {
 	Speed 100
@@ -123,6 +129,12 @@ ACTOR VeryFastGrenade : HandGrenade //Very fast version for Grenadeers
 		TNT1 A 1 Radius_Quake(10,10,0,16,0)
 		Stop
 	}
+}
+
+ACTOR HardVeryFastGrenade : VeryFastGrenade
+{
+	Speed 130
+	FastSpeed 135
 }
 
 ACTOR SlowGrenade : HandGrenade //Slow version for Grenadeers
@@ -146,6 +158,12 @@ ACTOR SlowGrenade : HandGrenade //Slow version for Grenadeers
 	}
 }
 
+ACTOR HardSlowGrenade : SlowGrenade
+{
+	Speed 50
+	FastSpeed 55
+}
+
 ACTOR VerySlowGrenade : HandGrenade //Very slow version for Grenadeers
 {
 	Speed 10
@@ -165,6 +183,12 @@ ACTOR VerySlowGrenade : HandGrenade //Very slow version for Grenadeers
 		TNT1 A 1 Radius_Quake(10,10,0,16,0)
 		Stop
 	}
+}
+
+ACTOR HardVerySlowGrenade : VerySlowGrenade
+{
+	Speed 30
+	FastSpeed 35
 }
 
 // Given to players when leaving INTERMAP. Restores the player's ability to

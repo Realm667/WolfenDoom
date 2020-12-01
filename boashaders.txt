@@ -391,88 +391,6 @@ Material Texture "textures/WATR_X99.png"
 	Texture background "textures/shader/water.png"
 	speed 0.6
 }
-/*
-//WATERFALLS - needs a different shader/shader textures since WARP doesn't support materials and waves aren't suitable
-Material Texture "AZTC_WTF"
-{
-	normal "materials/normalmaps/WFALL.png"
-	specular "materials/specular/WFALL.png"
-	specularlevel 2.0
-	//shader "shaders/waves.fp"
-	//Texture background "textures/shader/water.png"
-	//speed 1.0
-}
-
-Material Texture "textures/aztec/AZTC_WTF.png"
-{
-	normal "materials/normalmaps/WFALL.png"
-	specular "materials/specular/WFALL.png"
-	specularlevel 2.0
-	//shader "shaders/waves.fp"
-	//Texture background "textures/shader/water.png"
-	//speed 1.0
-}
-
-Material Texture "WATR_A00"
-{
-	normal "materials/normalmaps/WFALL.png"
-	specular "materials/specular/WFALL.png"
-	specularlevel 2.0
-	//shader "shaders/waves.fp"
-	//Texture background "textures/shader/water.png"
-	//speed 1.0
-}
-
-Material Texture "textures/WATR_A00.png"
-{
-	normal "materials/normalmaps/WFALL.png"
-	specular "materials/specular/WFALL.png"
-	specularlevel 2.0
-	//shader "shaders/waves.fp"
-	//Texture background "textures/shader/water.png"
-	//speed 1.0
-}
-
-Material Texture "WFAL_G98"
-{
-	normal "materials/normalmaps/WFALL.png"
-	specular "materials/specular/WFALL.png"
-	specularlevel 2.0
-	//shader "shaders/waves.fp"
-	//Texture background "textures/shader/water.png"
-	//speed 1.0
-}
-
-Material Texture "textures/WFAL_G98.png"
-{
-	normal "materials/normalmaps/WFALL.png"
-	specular "materials/specular/WFALL.png"
-	specularlevel 2.0
-	//shader "shaders/waves.fp"
-	//Texture background "textures/shader/water.png"
-	//speed 1.0
-}
-
-Material Texture "WFAL_X98"
-{
-	normal "materials/normalmaps/WFALL.png"
-	specular "materials/specular/WFALL.png"
-	specularlevel 2.0
-	//shader "shaders/waves.fp"
-	//Texture background "textures/shader/water.png"
-	//speed 1.0
-}
-
-Material Texture "textures/WFAL_X98.png"
-{
-	normal "materials/normalmaps/WFALL.png"
-	specular "materials/specular/WFALL.png"
-	specularlevel 2.0
-	//shader "shaders/waves.fp"
-	//Texture background "textures/shader/water.png"
-	speed 1.0
-}
-*/
 
 //ANIMATED - no shaders needed
 Material Texture "HIACID01"
@@ -1947,12 +1865,6 @@ HardwareShader Sprite UWPLC0
 	Speed 1.03
 }
 
-HardwareShader Sprite LRAYA0
-{
-	//Shader "shaders/underwater_sway.fp"
-	//Speed 1.03
-}
-
 //Rotating Drill
 HardwareShader Texture TURB_R01
 {
@@ -2074,13 +1986,18 @@ HardwareShader Sprite STEMA0
 	Speed 2.5
 }
 
+HardwareShader Sprite ZTEMA0
+{
+	Shader "shaders/rotate_cw.fp"
+	Speed 2.5
+}
+
 //Rotating Nuke Explosion parts
 HardwareShader Sprite FLA1A0
 {
 	Shader "shaders/rotate_cw.fp"
 	Speed 1.5
 }
-
 
 HardwareShader Sprite FLA2A0
 {

@@ -1867,6 +1867,7 @@ ACTOR WGrenadier: Sniper_Crouch
 	DeathSound "Nazi1/Death"
 	DropItem "GrenadePickup" 32
 	Obituary "$GRENADIER"
+	MaxTargetRange 1024
 	Nazi.CrouchChance 0
 	States
 	{
@@ -2113,7 +2114,7 @@ ACTOR WPanzerGuard : BasicGuard
     Death.Electric:
     Death.Rocket:
 		Goto Super::XDeath.Boom
-	Raise:
+	Raise: //not used
 		MGR2 MLK 5
 		WPNZ ED 2
 		Goto See
