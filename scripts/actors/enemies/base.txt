@@ -3455,6 +3455,8 @@ class BatBase : Base
 			{
 				if (target != goal && height < Default.Height) { A_SetSize(-1, Default.Height, true); }
 				countdown--;
+
+				if (CheckMeleeRange() && countdown > 0) { countdown = 0; }
 			}
 
 			if (!roostgoal) { SpawnRoost(); } // Keep trying to spawn a roost if the actors spawned under open sky
@@ -3479,6 +3481,7 @@ class BatBase : Base
 					if (dist < radius && roostgoal.pos.z <= pos.z + 16) // At roost, roost.
 					{
 						SetOrigin(roostgoal.pos, true);
+						vel *= 0; // Make sure to remove any externally-applied velocity, or you can (rarely) end up with sliding roosted bats
 						SetStateLabel("Roost");
 
 						ResetCountDown();
