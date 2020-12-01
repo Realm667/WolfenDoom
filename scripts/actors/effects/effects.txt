@@ -527,3 +527,24 @@ class ParticleBase : SimpleActor // Use for non-interactive effects actors only!
 		}
 	}
 }
+
+class BloodBase : ParticleBase
+{
+	int timer;
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (waterlevel == 3) // Blood that's underwater fades out and gets larger over time until it disappears
+		{
+			timer++;
+
+			if (timer > 35)
+			{
+				A_FadeOut(0.05, FTF_REMOVE);
+				scale *= 1.1;
+			}
+		}
+	}
+}
