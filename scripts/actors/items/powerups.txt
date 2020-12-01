@@ -1096,3 +1096,65 @@ class GierToken : PowerUp // Token is checked for in Nazi class to cause enemies
 		return 0;
 	}
 }
+
+class NazisBackpack : BackpackItem
+{
+    default
+    {
+        //$Category Items (BoA)
+        //$Title Backpack (Backpack)
+        //$Color 1
+        Height 26;
+        Scale 0.50;
+        Inventory.PickupMessage "$SSPACK";
+    }
+	States
+	{
+	Spawn:
+		BPK2 A -1;
+		Stop;
+	}
+    override bool HandlePickup (Inventory item) //modified from gzdoom.pk3
+	{
+		// Since you already have a backpack, that means you already have every
+		// kind of ammo in your inventory, so we don't need to look at the
+		// entire PClass list to discover what kinds of ammo exist, and we don't
+		// have to alter the MaxAmount either.
+		if (item is 'BackpackItem')
+		{
+            if (item is 'ShopBackpack') //trying to buy a second backpack from the shop
+            {
+                item.bPickupGood = false;
+                return true;
+            }
+			for (let probe = Owner.Inv; probe != NULL; probe = probe.Inv)
+			{
+				let ammoitem = Ammo(probe);
+
+				if (ammoitem && ammoitem.GetParentAmmo() == ammoitem.GetClass())
+				{
+					if (ammoitem.Amount < ammoitem.MaxAmount || sv_unlimited_pickup)
+					{
+						int amount = ammoitem.Default.BackpackAmount;
+						// extra ammo in baby mode and nightmare mode
+						if (!bIgnoreSkill)
+						{
+							amount = int(amount * G_SkillPropertyFloat(SKILLP_AmmoFactor));
+						}
+						ammoitem.Amount += amount;
+						if (ammoitem.Amount > ammoitem.MaxAmount && !sv_unlimited_pickup)
+						{
+							ammoitem.Amount = ammoitem.MaxAmount;
+						}
+					}
+				}
+			}
+			// The pickup always succeeds, even if you didn't get anything
+			item.bPickupGood = true;
+			return true;
+		}
+		return false;
+	}
+}
+
+class ShopBackpack: NazisBackpack {}
