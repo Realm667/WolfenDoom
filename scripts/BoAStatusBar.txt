@@ -788,8 +788,12 @@ class BoAStatusBar : BaseStatusBar
 		{
 			LastTag = mo.GetTag();
 			LastHealth = mo.health;
-			LastMaxHealth = mo.default.health;
-			if (Base(mo)) { LastIcon = Base(mo).BossIcon; }
+			LastMaxHealth = mo.GetSpawnHealth();
+			if (Base(mo))
+			{
+				LastIcon = Base(mo).BossIcon;
+				LastMaxHealth = Base(mo).adjustedmaxhealth;
+			}
 			else { LastIcon = ""; }
 
 			if (healthbaralpha < 1) { healthbaralpha += 0.2; }

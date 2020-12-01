@@ -291,6 +291,7 @@ class Base : Actor
 	int flags;
 	bool dodging;
 	bool statnumchanged;
+	int adjustedmaxhealth;
 
 	LaserFindHitPointTracer HitPointTracer;
 	LaserBeam beam;
@@ -1085,15 +1086,16 @@ class Base : Actor
 		//     This effectively takes a doberman from 3 hits with the knife to 2 on skill 1, to 1 on skill 0.
 
 		double multiplier = 2. / 3; // Cut the health down to 2/3 its value for each skill level below normal
+		double skill = G_SkillPropertyInt(SKILLP_ACSReturn);
+
+		adjustedmaxhealth = health;
 
 		if (skill < 2) { // If skill 0 or 1
-			int newhealth = health;
-
 			// Reduce the health by 1/3 for each skill level below normal
-			for (int i = 0; i < 2 - skill; i++) { newhealth = int(newhealth * multiplier); }
+			for (int i = 0; i < 2 - skill; i++) { adjustedmaxhealth = int(adjustedmaxhealth * multiplier); }
 
 			// Set the actor's health - cap minimum at 1 so that they don't die, just in case
-			A_SetHealth(max(newhealth, 1));
+			A_SetHealth(max(adjustedmaxhealth, 1));
 		}
 
 		if (bDormant) { loiterdistance = 0; } // Don't loiter if dormant.
