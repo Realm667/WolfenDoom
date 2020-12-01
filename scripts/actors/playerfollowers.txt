@@ -51,7 +51,9 @@
 
 	PlayerFollower.CanBeCommanded
 	- Determines if you can make the NPC follow/stop following you by pressing 'use' on them
-	- Defaults to false.
+	- Defaults to false.  Can be set to true to unconditionally keep the actor in place, or 
+	  you can specify a distance in mapunits after which the actor will ignore your commands
+	  and catch up anyway
 
 	PlayerFollower.HealPlayer
 	- Integer value that sets the health amount under which the player follower will heal
@@ -124,7 +126,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 	bool countgrenades;
 	bool nocatchup;
 	bool nonmoving, user_nonmoving;
-	bool allowinteraction;
+	int allowinteraction;
 	int oldwaterlevel;
 	int activationcount;
 	String head;
@@ -716,7 +718,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		thistracer.Trace(origin.pos + (0, 0, zoffset), origin.CurSector, tracedir, dist, 0);
 	}
 
-	void A_FollowerFire(class<Actor> weapontracer, class<Actor> casing, sound weaponsound = "nazi/pistol", int speed = 54, int damage = 1, double angleoffset = 8, double pitchoffset = 0, int shots = 1)
+	void A_FollowerFire(class<Actor> weapontracer, class<Actor> casing, sound weaponsound = "nazi/pistol", int zoffset = 54, int xyoffset = 1, double angleoffset = 8, double pitchoffset = 0, int shots = 1)
 	{
 		vel = (0, 0, 0);
 
@@ -727,7 +729,11 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			angleoffset = FRandom(-angleoffset, angleoffset);
 			pitchoffset = FRandom(-pitchoffset, pitchoffset);
 
-			A_SpawnProjectile(weapontracer, speed, damage, angleoffset, CMF_OFFSETPITCH, pitchoffset);
+			Actor shot = A_SpawnProjectile(weapontracer, zoffset, xyoffset, angleoffset, CMF_OFFSETPITCH, pitchoffset);
+			if (shot && target && target.bBoss)
+			{
+				shot.SetDamage(max(1, int(shot.damage * (5 - G_SkillPropertyInt(SKILLP_ACSReturn)) / 5.0))); // Decrease damage done based on skill level
+			}
 		}
 		A_SpawnItemEx(casing, 1, 0, 56, Random(1, 2), Random(-1, 1), Random(1, 2), Random(-55, -80), SXF_NOCHECKPOSITION);
 		shots++;
@@ -850,7 +856,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 		oldwaterlevel = waterlevel;
 
-		if (!nonmoving && playerToChase && !playerToChase.bNoClip && Level.time % 5 == 0 && health > 0) // Spawn a waypoint at the player's position every 5 tics if the player has moved, and push it into an array
+		if ((!nonmoving || allowinteraction > 1) && playerToChase && !playerToChase.bNoClip && Level.time % 5 == 0 && health > 0) // Spawn a waypoint at the player's position every 5 tics if the player has moved, and push it into an array
 		{
 			if (playerToChase.pos != oldPlayerPos)
 			{
@@ -863,6 +869,11 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 				}
 				oldPlayerPos = playerToChase.pos;
 			}
+		}
+
+		if (allowinteraction > 1 && nonmoving && playerToChase && !playerToChase.bNoClip && Distance3D(playerToChase) > allowinteraction)
+		{
+			nonmoving = false;
 		}
 
 		frighttimeout = clamp(frighttimeout - 1, 0, 210);
@@ -1216,7 +1227,7 @@ class PrisonerAgent : PlayerFollower
 		Species "PlayerFollower";
 		PlayerFollower.CloseFollow True;
 		PlayerFollower.ChaseAttackChance 0;
-		PlayerFollower.CanBeCommanded True;
+		PlayerFollower.CanBeCommanded 4096;
 		PlayerFollower.Head "MS_PRIB";
 	}
 

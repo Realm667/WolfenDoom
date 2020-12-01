@@ -421,9 +421,23 @@ class BoAStatusBar : BaseStatusBar
 		else { texsize = (1.0, 1.0); }
 
 		DrawInventoryIcon(CPlayer.mo.InvSel, (x, y), DI_ITEM_CENTER, scale:texsize);
+
 		if (CPlayer.mo.InvSel.Amount > 1)
 		{
 			DrawString(mHUDFont, FormatNumber(CPlayer.mo.InvSel.Amount), (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
+		}
+		else if (CPlayer.mo.InvSel is "PoweredInventory") // For powered inventory items, show current fuel level as a percentage
+		{
+			let item = PoweredInventory(CPlayer.mo.InvSel);
+			Inventory fuel;
+
+			if (item) { fuel = CPlayer.mo.FindInventory(item.fuelclass); }
+
+			if (fuel)
+			{
+				int amt = int(100 * fuel.Amount / fuel.MaxAmount);
+				DrawString(mHUDFont, FormatNumber(amt) .. "%", (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
+			}
 		}
 	}
 
@@ -774,8 +788,12 @@ class BoAStatusBar : BaseStatusBar
 		{
 			LastTag = mo.GetTag();
 			LastHealth = mo.health;
-			LastMaxHealth = mo.default.health;
-			if (Base(mo)) { LastIcon = Base(mo).BossIcon; }
+			LastMaxHealth = mo.GetSpawnHealth();
+			if (Base(mo))
+			{
+				LastIcon = Base(mo).BossIcon;
+				LastMaxHealth = Base(mo).adjustedmaxhealth;
+			}
 			else { LastIcon = ""; }
 
 			if (healthbaralpha < 1) { healthbaralpha += 0.2; }
@@ -1343,7 +1361,7 @@ class BoAStatusBar : BaseStatusBar
 	override void DrawAutomapHUD(double ticFrac)
 	{
 		int crdefault = Font.CR_GRAY;
-		int highlight = Font.CR_WHITE;
+		int highlight = Font.FindFontColor("LightGray");
 
 		let scale = GetUIScale(hud_scale);
 		let font = generic_ui ? NewSmallFont : SmallFont;
