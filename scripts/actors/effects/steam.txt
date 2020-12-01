@@ -17,9 +17,10 @@ class SteamSpawner : EffectSpawner
 		//$Color 12
 		//$Sprite STEMA0
 		//$Arg0 "Direction"
-		//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 4 map units below the ceiling)"
+		//$Arg0Tooltip "0 is up, 1 is down, 2 is forward (downfacing spawners should be placed 4 map units below the ceiling), 3 spawns aligned to angle/pitch of actor"
 		//$Arg0Type 11
-		//$Arg0Enum { 0 = "Up"; 1 = "Down"; 2 = "Forward"; }
+		//$Arg0Enum { 0 = "Up"; 1 = "Down"; 2 = "Forward"; 3 = "Dynamic"; }
+		//$Arg0Default 3
 		//$Arg1 "Type"
 		//$Arg1Tooltip "Second argument chooses if it's a constant spawner, or spawns in bursts. Burst spawners use the third argument and play a different sound."
 		//$Arg1Type 11
@@ -82,13 +83,26 @@ class SteamSpawner : EffectSpawner
 
 		if ((!args[1] || Random(0, 255) < freq))
 		{
-			velx = args[0] < 2 ? 0.1 * Random(0, 4) : 0.1 * Random(35, 40);
-			velz = args[0] < 2 ? (args[0] == 1 ? -1 : 1) * 0.1 * Random(35, 40) : 0.1 * Random(-5, 5);
-			ang = args[0] < 2 ? Random(0, 360) : Random(-8, 8);
-
 			if (args[1] && !args[3]) { A_StartSound(snd, 10, sndflags, 1.0); } // Each burst plays a sound on spawn
 
-			A_SpawnItemEx(particle, 0, 0, zoffset, velx, 0, velz, ang, 128);
+			if (args[0] < 3) // Original directional spawns
+			{
+				velx = args[0] < 2 ? 0.1 * Random(0, 4) : 0.1 * Random(35, 40);
+				velz = args[0] < 2 ? (args[0] == 1 ? -1 : 1) * 0.1 * Random(35, 40) : 0.1 * Random(-5, 5);
+				ang = args[0] < 2 ? Random(0, 360) : Random(-8, 8);
+
+				A_SpawnItemEx(particle, 0, 0, zoffset, velx, 0, velz, ang, 128);
+			}
+			else
+			{
+				Actor mo = Spawn(particle);
+				if (mo)
+				{
+					mo.alpha *= scale.x;
+					mo.SetOrigin(pos + (FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2)), false);
+					mo.Vel3DFromAngle(0.1 * Random(35, 40) * scale.x, angle, pitch);
+				}
+			}
 		}
 	}
 }
