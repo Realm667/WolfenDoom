@@ -1343,7 +1343,7 @@ class BoAStatusBar : BaseStatusBar
 	override void DrawAutomapHUD(double ticFrac)
 	{
 		int crdefault = Font.CR_GRAY;
-		int highlight = Font.CR_WHITE;
+		int highlight = Font.FindFontColor("LightGray");
 
 		let scale = GetUIScale(hud_scale);
 		let font = generic_ui ? NewSmallFont : SmallFont;
