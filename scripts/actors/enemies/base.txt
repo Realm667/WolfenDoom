@@ -584,9 +584,13 @@ class Base : Actor
 	bool A_DoSideRoll(int dodgespeed = 10, bool checkonly = false, bool force = false)
 	{
 		// If we're static, still waiting after the last dodge, or are on a path, don't try to dodge right now
-		if (!speed) { return false; }
-		if (dodgetimeout > 0) { return false; }
-		if (!force && (bFriendly || (target && target is "PatrolPoint"))) { return false; }
+		if
+		(
+			!speed ||
+			dodging ||
+			(!force && dodgetimeout > 0) ||
+			(!force && (bFriendly || (target && target is "PatrolPoint")))
+		) { return false; }
 
 		double dodgeangle;
 		double dodgedistance;
@@ -654,7 +658,7 @@ class Base : Actor
 		double right = GetMoveDistance(-90);
 
 		if (left < radius + 96 && right < radius + 96) { return -1, 0; } // Don't dodge if there's not space on either side - augmented values to avoid stuck cases
-		if (left == right) return 0, angle + 90 * RandomPick(-1, 1); // If the space on either side is the same, pick a random side
+		if (left == right) return left, angle + 90 * RandomPick(-1, 1); // If the space on either side is the same, pick a random side
 		if (left > right) return left, angle + 90; // If there's more space on the left, dodge left
 
 		return right, angle - 90; // Otherwise, dodge right
