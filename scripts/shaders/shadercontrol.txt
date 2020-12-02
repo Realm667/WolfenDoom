@@ -191,3 +191,52 @@ class SandShaderControl : ShaderControl
 		}
 	}
 }
+
+// Used for color grading persistence. Color grading information seems to get
+// lost (at least for me), after saving, quitting, and re-loading the savegame
+// Also, don't inherit from ShaderControl, so that it doesn't interfere with
+// the existing color grading
+class ColorGradeShaderControl : Inventory
+{
+	transient ColorGradeThinker colorGrading;
+	double currentSpeed;
+	double nextSpeed;
+
+	Default
+	{
+		Inventory.Amount 1;
+		Inventory.MaxAmount 2147483647;
+	}
+
+	override void DoEffect()
+	{
+		if (!Owner || Owner.PlayerNumber() < 0)
+		{
+			Destroy();
+			return;
+		}
+		int pnum = Owner.PlayerNumber();
+		if (!colorGrading)
+		{
+			// Probably loaded from a savegame - set up color grading
+			colorGrading = ColorGradeThinker.Get();
+			int currentLut = Amount & 0xFFFF - 1;
+			int nextLut = Amount >> 16;
+			colorGrading.playerStates[pnum].currentLut = currentLut;
+			colorGrading.playerStates[pnum].currentSpeed = currentSpeed;
+			colorGrading.playerStates[pnum].nextLut = nextLut;
+			colorGrading.playerStates[pnum].nextSpeed = nextSpeed;
+			colorGrading.playerStates[pnum].alpha = alpha;
+			Shader.SetUniform1i(players[pnum], "ColorGrade", "lutA", colorGrading.playerStates[pnum].currentLut);
+			Shader.SetUniform1i(players[pnum], "ColorGrade", "lutB", colorGrading.playerStates[pnum].nextLut);
+			Shader.SetUniform1f(players[pnum], "ColorGrade", "alpha", alpha);
+		}
+		else
+		{
+			Amount = (1 + colorGrading.playerStates[pnum].currentLut) | (colorGrading.playerStates[pnum].nextLut << 16);
+			currentSpeed = colorGrading.playerStates[pnum].currentSpeed;
+			nextSpeed = colorGrading.playerStates[pnum].nextSpeed;
+			alpha = colorGrading.playerStates[pnum].alpha;
+		}
+	}
+}
