@@ -29,8 +29,6 @@ class ControllableBase : Actor
 	String controllers;
 	String replacements;
 
-	bool replaced;
-
 	Property Controllers: controllers;
 	Property Replacements: replacements;
 
@@ -58,7 +56,7 @@ class ControllableBase : Actor
 		BlockThingsIterator iter = BlockThingsIterator.Create(self, range, true);
 		while (iter.Next())
 		{
-			if (CheckReplace(iter.thing))
+			if (abs(iter.thing.Pos.Z - Pos.Z) < range && CheckReplace(iter.thing))
 			{
 				return;
 			}

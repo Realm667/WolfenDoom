@@ -2,8 +2,6 @@
 //MECHAS//
 //////////
 
-const int MECHA_FLAGS = CPXF_SETTARGET | CPXF_NOZ | CPXF_EXACT;
-
 ACTOR MechaNaziStanding1 : ControllableBase
 {
 	//$Category Monsters (BoA)/Mechas
@@ -20,6 +18,9 @@ ACTOR MechaNaziStanding1 : ControllableBase
 	Spawn:
 		MCST A 1 NODELAY A_SetTics(Random(1, 35))
 		Goto Active
+	Active:
+		"####" "#" 35 A_CheckReplace(128)
+		Loop
 		// No Death states because it is invulnerable
 	}
 }
@@ -34,6 +35,9 @@ ACTOR MechaNaziStanding2 : MechaNaziStanding1
 	Spawn:
 		MCST B 1 NODELAY A_SetTics(Random(1, 35))
 		Goto Active
+	Active:
+		"####" "#" 35 A_CheckReplace(128)
+		Loop
 	}
 }
 
@@ -47,6 +51,9 @@ ACTOR MechaNaziStanding3 : MechaNaziStanding1
 	Spawn:
 		MCST C 1 NODELAY A_SetTics(Random(1, 35))
 		Goto Active
+	Active:
+		"####" "#" 35 A_CheckReplace(128)
+		Loop
 	}
 }
 
@@ -60,6 +67,9 @@ ACTOR MechaNaziStanding4 : MechaNaziStanding1
 	Spawn:
 		MCST D 1 NODELAY A_SetTics(Random(1, 35))
 		Goto Active
+	Active:
+		"####" "#" 35 A_CheckReplace(128)
+		Loop
 	}
 }
 
@@ -73,6 +83,9 @@ ACTOR MechaNaziStanding5 : MechaNaziStanding1
 	Spawn:
 		MCST E 1 NODELAY A_SetTics(Random(1, 35))
 		Goto Active
+	Active:
+		"####" "#" 35 A_CheckReplace(128)
+		Loop
 	}
 }
 
