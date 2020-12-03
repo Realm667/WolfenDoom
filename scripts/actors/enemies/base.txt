@@ -2274,15 +2274,19 @@ class Nazi : Base
 
 		if (currentDamage ~== "SilentKnifeAttack" && !bBoss) // If the attack was with the knife (and this is not a boss actor - they can't be one-hit killed!)
 		{
-			if (user_sneakable && bFriendly) // If this is a sneakable actor who isn't active yet
-			{ // Stealth kill, remove the sneakable eyes, alert a medium radius, and kill the actor
-				A_Log(StringTable.Localize("$STEALTH"));
-				A_RemoveChildren(TRUE, RMVF_EVERYTHING);
-				bFriendly = False; // Force to not friendly so that they will count as a kill and be healable.
-				if (self is "NaziStandard") { DeathSound = "Nazi/Gurgle"; } // Reset death sound to gurgle
-				SoundAlert(source, false, 192);
-				damage = health;
-				flags |= DMG_FORCED;
+			if (bFriendly)
+			{
+				if (user_sneakable || !(Default.Species == "Ally")) // If this is a non-Ally sneakable actor who isn't active yet
+				{ // Stealth kill, remove the sneakable eyes, alert a medium radius, and kill the actor
+					A_Log(StringTable.Localize("$STEALTH"));
+					A_RemoveChildren(TRUE, RMVF_EVERYTHING);
+					bFriendly = False; // Force to not friendly so that they will count as a kill and be healable.
+					if (self is "NaziStandard") { DeathSound = "Nazi/Gurgle"; } // Reset death sound to gurgle
+					SoundAlert(source, false, 192);
+					damage = health;
+					flags |= DMG_FORCED;
+				}
+				else {} // Don't change behavior for Allied FRIENDLY actors
 			}
 			else if (user_incombat) // If the actor has already been in its See state
 			{
