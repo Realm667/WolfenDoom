@@ -4,123 +4,77 @@
 
 const int MECHA_FLAGS = CPXF_SETTARGET | CPXF_NOZ | CPXF_EXACT;
 
-ACTOR MechaNaziStanding1 : CTurret_Afrika
+ACTOR MechaNaziStanding1 : ControllableBase
 {
 	//$Category Monsters (BoA)/Mechas
-	//$Title Empty Mecha-Nazi (Wehrmacht Guards only)
+	//$Title Empty Wehrmacht Mecha-Nazi (Wehrmacht Guards only)
 	Radius 48
 	Height 128
 	Health -1
 	Scale 1.16
 	+INVULNERABLE
+	ControllableBase.Controllers "WGuard"
+	ControllableBase.Replacements "MechaNaziWalking1"
 	States
 	{
 	Spawn:
 		MCST A 1 NODELAY A_SetTics(Random(1, 35))
-	Active:
-		MCST A 35 A_CheckProximity("SpawnEnemy", "WGuard", 128, 1, MECHA_FLAGS)
-		Loop
-	Inactive:
-		"####" A 0 //bland
-		Goto Spawn
-	SpawnEnemy:
-		TNT1 A 0 {bBumpSpecial = FALSE;}
-		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "WGuard")
-		"####" A 1 A_SpawnItemEx("MechaDropper1",0,0,0)
-		Stop
-	//No Death states because it is invulnerable
+		Goto Active
+		// No Death states because it is invulnerable
 	}
 }
 
 ACTOR MechaNaziStanding2 : MechaNaziStanding1
 {
-	//$Title Empty Mecha-Nazi (Afrika Korps Guards only)
+	//$Title Empty Afrika Korps Mecha-Nazi (Afrika Korps Guards only)
+	ControllableBase.Controllers "Guard"
+	ControllableBase.Replacements "MechaNaziWalking2"
 	States
 	{
 	Spawn:
 		MCST B 1 NODELAY A_SetTics(Random(1, 35))
-	Active:
-		MCST B 35 A_CheckProximity("SpawnEnemy", "Guard", 128, 1, MECHA_FLAGS)
-		Loop
-	Inactive:
-		"####" B 0 //bland
-		Goto Spawn
-	SpawnEnemy:
-		TNT1 A 0 {bBumpSpecial = FALSE;}
-		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "Guard")
-		"####" A 1 A_SpawnItemEx("MechaDropper2",0,0,0)
-		Stop
+		Goto Active
 	}
 }
 
 ACTOR MechaNaziStanding3 : MechaNaziStanding1
 {
-	//$Title Empty Mecha-Nazi (Arctic Rifle Guards only)
+	//$Title Empty Gebirgsjager Mecha-Nazi (Arctic Rifle Guards only)
+	ControllableBase.Controllers "ArcticRifleGuard"
+	ControllableBase.Replacements "MechaNaziWalking3"
 	States
 	{
 	Spawn:
 		MCST C 1 NODELAY A_SetTics(Random(1, 35))
-	Active:
-		MCST C 35 A_CheckProximity("SpawnEnemy", "ArcticRifleGuard", 128, 1, MECHA_FLAGS)
-		Loop
-	Inactive:
-		"####" C 0 //bland
-		Goto Spawn
-	SpawnEnemy:
-		TNT1 A 0 {bBumpSpecial = FALSE;}
-		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "ArcticRifleGuard")
-		"####" A 1 A_SpawnItemEx("MechaDropper3",0,0,0)
-		Stop
+		Goto Active
 	}
 }
 
 ACTOR MechaNaziStanding4 : MechaNaziStanding1
 {
-	//$Title Empty Mecha-Nazi (SS Guards only)
+	//$Title Empty SS Mecha-Nazi (SS Guards only)
+	ControllableBase.Controllers "SSGuard"
+	ControllableBase.Replacements "MechaNaziWalking4"
 	States
 	{
 	Spawn:
 		MCST D 1 NODELAY A_SetTics(Random(1, 35))
-	Active:
-		MCST D 35 A_CheckProximity("SpawnEnemy", "SSGuard", 128, 1, MECHA_FLAGS)
-		Loop
-	Inactive:
-		"####" D 0 //bland
-		Goto Spawn
-	SpawnEnemy:
-		TNT1 A 0 {bBumpSpecial = FALSE;}
-		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "SSGuard")
-		"####" A 1 A_SpawnItemEx("MechaDropper4",0,0,0)
-		Stop
+		Goto Active
 	}
 }
 
 ACTOR MechaNaziStanding5 : MechaNaziStanding1
 {
-	//$Title Empty Thor's Hammer Mecha-Nazi (SS Guards only)
+	//$Title Empty Kriegsmarine Mecha-Nazi (SS Guards only)
+	ControllableBase.Controllers "SSGuard"
+	ControllableBase.Replacements "MechaNaziWalking5"
 	States
 	{
 	Spawn:
 		MCST E 1 NODELAY A_SetTics(Random(1, 35))
-	Active:
-		MCST E 35 A_CheckProximity("SpawnEnemy", "SSGuard", 128, 1, MECHA_FLAGS)
-		Loop
-	Inactive:
-		"####" E 0 //bland
-		Goto Spawn
-	SpawnEnemy:
-		TNT1 A 0 {bBumpSpecial = FALSE;}
-		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "SSGuard")
-		"####" A 1 A_SpawnItemEx("MechaDropper5",0,0,0)
-		Stop
+		Goto Active
 	}
 }
-
-ACTOR MechaDropper1 : RandomSpawner { DropItem MechaNaziWalking1 }
-ACTOR MechaDropper2 : RandomSpawner { DropItem MechaNaziWalking2 }
-ACTOR MechaDropper3 : RandomSpawner { DropItem MechaNaziWalking3 }
-ACTOR MechaDropper4 : RandomSpawner { DropItem MechaNaziWalking4 }
-ACTOR MechaDropper5 : RandomSpawner { DropItem MechaNaziWalking5 }
 
 ACTOR MechaNaziWalking1 : MechBoss
 {

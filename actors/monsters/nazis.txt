@@ -2804,6 +2804,7 @@ ACTOR MGTurret : MiniShip
 	Height 32
 	Mass 9999
 	Speed 0
+	+DONTCORPSE
 	-FLOAT
 	-NOGRAVITY
 	+MISSILEEVENMORE
@@ -2828,7 +2829,6 @@ ACTOR MGTurret : MiniShip
 		"####" B 0 A_FaceTarget
 		Goto Missile+3
 	Death:
-	Crash:
 		TNT1 A 0 A_SetFloorClip
 		"####" A 0 A_Scream
 		"####" A 0 A_SpawnItemEx("GeneralExplosion_Nazis",0,0,32)
@@ -2864,7 +2864,6 @@ ACTOR MGTurretCeiling : MGTurret
 		"####" E 0 A_FaceTarget
 		Goto Missile+3
 	Death:
-	Crash:
 		TNT1 A 0
 		"####" A 0 A_Scream
 		"####" A 0 A_SpawnItemEx("GeneralExplosion_Nazis",0,0,32)
@@ -2898,7 +2897,7 @@ ACTOR MGTurretInvisible : MGTurret
 	}
 }
 
-ACTOR CTurret_Afrika : SwitchableDecoration
+ACTOR CTurret : ControllableBase
 {
 	//$Category Monsters (BoA)/Turrets
 	//$Title Controllable Turret (Afrika Guards only)
@@ -2906,65 +2905,29 @@ ACTOR CTurret_Afrika : SwitchableDecoration
 	Health 100
 	Radius 8
 	Height 32
+	Speed 0
 	Scale 0.62
-	+BUMPSPECIAL
 	+DONTTHRUST
 	+LOOKALLAROUND
 	+NOBLOOD
 	+NOTAUTOAIMED
 	+SHOOTABLE
 	+SOLID
-	+THRUSPECIES
-	Species "Nazi"
+	ControllableBase.Controllers "Guard|WGuard"
+	ControllableBase.Replacements "MGTurretSoldier|MGTurretSoldierW"
 	DeathSound "world/barrelboom"
-	Activation THINGSPEC_MonsterTrigger | THINGSPEC_ThingTargets
 	States
 	{
 	Spawn:
 		SMGS X 0 NODELAY //do not wait for usability or multiple turrets will spawn on Crash.Replace states - ozy81
-	Active:
-		SMGS X 1 A_CheckProximity("SpawnEnemy", "Guard", 64.0, 1, CPXF_NOZ | CPXF_EXACT | CPXF_SETTARGET | CPXF_SETONPTR ) //Only Guards can activate it and only 1 of them - thanks to yqco for proper pointers
-		Loop
-	Inactive:
-		"####" X 0 A_Jump(256,"Spawn")//bland
-		Stop
-	SpawnEnemy:
-		"####" A 0 {bBumpSpecial = FALSE;}
-		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "Guard") //...let's remove both Turret & Guard
-		"####" A 1 A_SpawnItemEx("MGTSDropper1",0,0,0) //So spawn a new MGTurretSoldier, avoid to place turrets inside places which are script sensible!
-		Stop
+		Goto Active
 	Death:
-		"####" A 0 {bBumpSpecial = FALSE;}
 		"####" A 0 A_UnSetSolid
 		"####" A 0 A_Scream
 		"####" A 0 A_SpawnItemEx("GeneralExplosion_Nazis",0,0,32)
 		Stop
 	}
 }
-
-ACTOR CTurret_Wehrmacht : CTurret_Afrika
-{
-	//$Title Controllable Turret (Wehrmacht Guards only)
-	States
-	{
-	Spawn:
-		SMGS X 0 NODELAY
-	Active:
-		SMGS X 1 A_CheckProximity("SpawnEnemy", "WGuard", 64.0, 1, CPXF_NOZ | CPXF_EXACT | CPXF_SETTARGET | CPXF_SETONPTR )
-		Loop
-	Inactive:
-		"####" X 0 A_Jump(256,"Spawn")//bland
-		Stop
-	SpawnEnemy:
-		"####" A 0 {bBumpSpecial = FALSE;}
-		"####" A 1 A_RemoveTarget(RMVF_EVERYTHING, "WGuard")
-		"####" A 1 A_SpawnItemEx("MGTSDropper2",0,0,0)
-		Stop
-	}
-}
-
-ACTOR MGTSDropper1 : RandomSpawner { DropItem MGTurretSoldier }
-ACTOR MGTSDropper2 : RandomSpawner { DropItem MGTurretSoldierW }
 
 ACTOR MGTurretSoldier : MGTurret
 {
@@ -3004,23 +2967,20 @@ ACTOR MGTurretSoldier : MGTurret
 		"####" D 0 A_Jump(256,"See")
 		Stop
 	Death:
-	Crash:
 		SMGS A 0 A_Scream
-		"####" A 0 A_Jump(128,"Crash.Replace")
-	Crash.Normal: ///it was .Explode but in order to avoid double explosions I got rid of it - ozy81
+		"####" A 0 A_Jump(128,"Replace")
 		"####" D 6
 		"####" EFG 6
 		"####" H -1 A_UnblockAndDrop
 		Stop
-	Crash.Replace:
-		"####" I 0 A_SpawnItemEx("CTurret_Afrika",0,0,0)
-		"####" I 0 A_Jump(256,"Crash.Die")
-	Crash.Die:
+	Replace:
+		"####" I 0 A_SpawnItemEx("CTurret",0,0,0)
+	SoldierDie:
 		"####" I 0 A_Scream
 		"####" I 6
 		"####" JK 4
-		"####" K 0 A_Jump(256,"Crash.Soldier")
-	Crash.Soldier:
+		"####" K 0 A_Jump(256,"SoldierDead")
+	SoldierDead:
 		GARD L 2
 		"####" M -1 A_UnblockAndDrop
 		Stop
@@ -3051,23 +3011,16 @@ ACTOR MGTurretSoldierW : MGTurretSoldier
 		"####" D 0 A_Jump(256,"See")
 		Stop
 	Death:
-	Crash:
 		SMGF A 0 A_Scream
-		"####" A 0 A_Jump(128,"Crash.Replace")
-	Crash.Normal:
+		"####" A 0 A_Jump(128,"Replace")
 		"####" D 6
 		"####" EFG 6
 		"####" H -1 A_UnblockAndDrop
 		Stop
-	Crash.Replace:
-		"####" I 0 A_SpawnItemEx("CTurret_Wehrmacht",0,0,0)
-		"####" I 0 A_Jump(256,"Crash.Die")
-	Crash.Die:
-		"####" I 0 A_Scream
-		"####" I 6
-		"####" JK 4
-		"####" K 0 A_Jump(256,"Crash.Soldier")
-	Crash.Soldier:
+	Replace:
+		"####" I 0 A_SpawnItemEx("CTurret",0,0,0)
+		"####" I 0 A_Jump(256,"SoldierDie")
+	SoldierDead:
 		GRD2 L 2
 		"####" M -1 A_UnblockAndDrop
 		Stop
