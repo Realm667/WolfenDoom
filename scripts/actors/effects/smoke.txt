@@ -370,7 +370,15 @@ class VolcanoSmokeGenerator : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		A_SpawnItemEx("VolcanoPuffSmoke", random(-128,128), random(-128,128), 0, random(1,5), random(1,5), random(10,20), random(1,359));
+		bool sp;
+		Actor mo;
+
+		[sp, mo] = A_SpawnItemEx("VolcanoPuffSmoke", random(-128,128), random(-128,128), 0, random(1,5), random(1,5), random(10,20), random(1,359));
+		if (sp && mo)
+		{
+			mo.scale.x *= scale.x;
+			mo.scale.y *= scale.y;
+		}
 	}
 }
 
