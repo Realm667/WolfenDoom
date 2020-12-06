@@ -71,7 +71,7 @@ class ParticleManager : EventHandler
 			ConsolidateArray(flatdecalqueue, maxflatdecals);
 		}
 		else if (
-			e.thing is "SoilSplashParticle"	||	// Ground splash particle actors
+			e.thing is "SplashParticleBase"	||	// Ground splash particle actors
 			e.thing is "ParticleBase" || 		// Handle all other ParticleBase actors last so that the above can inherit from ParticleBase and still get their own queues
 			e.thing is "LightningBeam"		// Lightning segments
 		)
