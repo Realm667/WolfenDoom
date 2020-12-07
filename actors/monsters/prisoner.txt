@@ -237,15 +237,14 @@ ACTOR PrisonerEnemyBoss_End : ZombieStandard
 	//$Color 4
 	Tag "$TAGZJRYAN"
 	Obituary "$ZRYAN"
-	Health 4200
-	WoundHealth 2100
+	Health 4000
+	WoundHealth 2000
 	Painchance 40
 	Mass 800
 	Speed 6
 	+AVOIDMELEE
 	+BOSS
 	+LOOKALLAROUND
-	+MISSILEEVENMORE
 	+MISSILEMORE
 	DropItem "Rune_Fa" 256
 	States
@@ -270,7 +269,7 @@ ACTOR PrisonerEnemyBoss_End : ZombieStandard
 		"####" BBB 1 A_Chase("","")
 		"####" B 1 A_Chase
 		"####" BBB 1 A_Chase("","")
-		"####" C 1 A_Chase("","",CHF_FASTCHASE)
+		"####" C 1 A_Chase("","") //less erratic this way, fastchase called only once on state - ozy81
 		"####" CCC 1 A_Chase("","")
 		"####" C 1 A_Chase
 		"####" CCC 1 A_Chase("","")
