@@ -1134,29 +1134,7 @@ class BoAStatusBar : BaseStatusBar
 
 		if (CPlayer.mo.InvSel != null && !level.NoInventoryBar)
 		{
-			Vector2 texsize = TexMan.GetScaledSize(CPlayer.mo.InvSel.Icon);
-			if (texsize.x > 32 || texsize.y > 32)
-			{
-				if (texsize.y > texsize.x)
-				{
-					texsize.y = 32.0 / texsize.y;
-					texsize.x = texsize.y;
-				}
-				else
-				{
-					texsize.x = 32.0 / texsize.x;
-					texsize.y = texsize.x;
-				}
-			}
-			else { texsize = (1.0, 1.0); }
-
-			Vector2 drawpos = (64, -38);
-
-			DrawInventoryIcon(CPlayer.mo.InvSel, drawpos, DI_ITEM_OFFSETS, 1.0);
-			if (CPlayer.mo.InvSel.Amount > 1)
-			{
-				DrawString(mHUDFont, FormatNumber(CPlayer.mo.InvSel.Amount), (drawpos.x + 31, drawpos.y + 30 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
-			}
+			DrawInventorySelection(80, -22, 32);
 		}
 	}
 
