@@ -724,11 +724,11 @@ class PowerRepairing : Powerup
 		{
 			return;
 		}
-		else if (Owner is "ShermanPlayer")
+		else if (Owner is "TankPlayer")
 		{
 			// I would like to transfer the powerup to the tank body if the
 			// player exits the tank, but I don't know if that is even possible.
-			Owner.GiveBody(int(Strength), GetDefaultByType("ShermanPlayer").Health);
+			Owner.GiveBody(int(Strength), GetDefaultByType("TankPlayer").Health);
 		}
 		else
 		{
@@ -763,7 +763,7 @@ class RepairKit : CompassItem
 		{
 			return false;
 		}
-		if (Owner is "ShermanPlayer")
+		if (Owner is "TankPlayer")
 		{
 			Inventory repairing = Owner.GiveInventoryType("PowerRepairing");
 			return true;

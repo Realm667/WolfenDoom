@@ -1014,7 +1014,7 @@ class Base : Actor
 					}
 				}
 
-				if (!bBoss && Default.Speed > 0 && target && target is "ShermanPlayer") // Be frightened of the tank (if you're not a boss, and if you aren't non-moving)
+				if (!bBoss && Default.Speed > 0 && target && target is "TankPlayer") // Be frightened of the tank (if you're not a boss, and if you aren't non-moving)
 				{
 					if (Distance2D(target) < 512) // Stay outside of 512 units and run away
 					{
@@ -1752,7 +1752,7 @@ class Nazi : Base
 				if (abs(deltaangle(angle, AngleTo(mo))) > 32.5) { continue; }
 				if (!CheckSight(mo, SF_SEEPASTBLOCKEVERYTHING | SF_SEEPASTSHOOTABLELINES)) { continue; }
 
-				if (mo is "ShermanPlayer") { target = ShermanPlayer(mo).turret; }
+				if (mo is "TankPlayer") { target = TankPlayer(mo).turret; }
 				else { target = mo; }
 
 				if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); }
@@ -1833,7 +1833,7 @@ class Nazi : Base
 		else
 		{
 			if (!bFriendly && closestplayer && target && closestplayer != target && Random[switchtarget](0, 100) < 20 && CheckSight(closestplayer) && Distance3D(closestplayer) < Distance3D(target)) { target = closestplayer; }
-			if (target is "ShermanPlayer") { target = Random(0, 1) ? ShermanPlayer(target).turret : ShermanPlayer(target).treads; }
+			if (target is "TankPlayer") { target = Random(0, 1) ? Actor(TankPlayer(target).turret) : Actor(TankPlayer(target).treads); }
 
 			if (!closestplayer) { closestplayer = FindClosestPlayer(self, IgnoreFriendlies:!bFriendly); }
 

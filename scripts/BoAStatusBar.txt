@@ -214,7 +214,7 @@ class BoAStatusBar : BaseStatusBar
 
 			if (!automapactive && CPlayer.morphtics)
 			{
-				if (CPlayer.mo is "ShermanPlayer") { DrawTankStatusBar(); }
+				if (CPlayer.mo is "TankPlayer") { DrawTankStatusBar(); }
 				else if (CPlayer.mo is "KeenPlayer") { DrawKeenStatusBar(); }
 			}
 		}
@@ -1065,10 +1065,10 @@ class BoAStatusBar : BaseStatusBar
 
 	void DrawTankStatusBar()
 	{
-		let tankplayer = ShermanPlayer(CPlayer.mo);
+		let tankplayer = TankPlayer(CPlayer.mo);
 		let targetactor = tankplayer.CrosshairActor;
 
-		Let wpn = Cannon75mm(CPlayer.mo.FindInventory("Cannon75mm"));
+		Let wpn = TankCannonWeapon(CPlayer.mo.FindInventory("TankCannonWeapon", true));
 		color shellclr;
 		double dotscale = 1.25;
 

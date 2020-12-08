@@ -61,7 +61,7 @@ class BlurShaderControl : ShaderControl {
 		if (amount > 1) { holdTarget = level.time + amount; } // Set hold time based on amount in inventory
 
 		// If we've hit the hold time or are a tank remove the effect
-		if (owner is "ShermanPlayer" || (holdTarget && level.time > holdTarget)) 
+		if (owner is "TankPlayer" || (holdTarget && level.time > holdTarget)) 
 		{
 			amount = 1;
 			holdTarget = 0;
@@ -89,7 +89,7 @@ class HeatShaderControl : ShaderControl
 		if (amount > 1) { holdTarget = level.time + amount; } // Set hold time based on amount in inventory
 
 		// If we've hit the hold time, are a tank, or are underwater, remove the effect
-		if (owner.waterlevel > 1 || owner is "ShermanPlayer" || (holdTarget && level.time > holdTarget)) 
+		if (owner.waterlevel > 1 || owner is "TankPlayer" || (holdTarget && level.time > holdTarget)) 
 		{
 			amount = 1;
 			holdTarget = 0;

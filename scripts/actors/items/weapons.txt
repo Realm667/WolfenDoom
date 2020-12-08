@@ -290,7 +290,7 @@ class NaziAstroWeapon : NaziWeapon {
 	}
 }
 
-class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank. 
+class TankCannonWeapon : NaziWeapon // Weapon used when morphed into a tank. 
 {
 	int cannontimeout;
 	int prevtimeout; // Cannon fire time is random now, so keep track of the previous cannon timeout.
@@ -311,14 +311,13 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 		Deselect:
 			TNT1 A 1 A_Lower;
 			Loop;
+		//real Fire and Altfire moved to subclasses, these two states are necessary for weapon syntax
+		
 		Fire:
-			TNT1 A 2 DoCannon();
+			TNT1 A 2 { Console.Printf("Base TankCannonWeapon fire state call, please report this error"); }
 			TNT1 A 0 A_TankRefire();
 			Goto Ready;
-		AltFire:
-			TNT1 A 6 DoMachineGun();
-			TNT1 A 20 A_TankRefire();
-			Goto Ready;
+		
 		Spawn:
 			UNKN A -1;
 			Loop;
@@ -337,13 +336,13 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 		}
 		else if ((player.cmd.buttons & BT_ALTATTACK) && player.health > 0)
 		{
-			if (player.mo is "ShermanPlayer") { ShermanPlayer(player.mo).altrefire++; }
+			if (player.mo is "TankPlayer") { TankPlayer(player.mo).altrefire++; }
 			else { player.refire++; }
 			player.mo.FireWeaponAlt(ResolveState(flash));
 		}
 		else
 		{
-			if (player.mo is "ShermanPlayer") { ShermanPlayer(player.mo).altrefire = 0; }
+			if (player.mo is "TankPlayer") { TankPlayer(player.mo).altrefire = 0; }
 			else { player.refire = 0; }
 		}
 	}
@@ -375,20 +374,21 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 		else if (owner && owner.player && !(owner.player.cmd.buttons & BT_ATTACK)) { owner.player.refire = 0; }
 	}
 
-	action void DoCannon()
+	//to modders: you can add your own customizable action functions for attacks
+	action void DoCannon(string sound, class<Actor> missiletype)
 	{
 		if (invoker.cannontimeout)  { return; }
 
 		Actor origin = self;
-		if (origin && ShermanPlayer(origin) && ShermanPlayer(origin).turret && US_ShermanTurret(ShermanPlayer(origin).turret).gunspot) { origin = US_ShermanTurret(ShermanPlayer(origin).turret).gunspot; }
+		if (origin && TankPlayer(origin) && TankPlayer(origin).turret && TankPlayer(origin).turret.gunspot) { origin = TankPlayer(origin).turret.gunspot; }
 
 		double angledelta = deltaangle(angle, origin.angle);
 		double pitchdelta = deltaangle(pitch, origin.pitch);
 
 		A_GunFlash();
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
-		A_StartSound("tanks/75mmm3", CHAN_WEAPON);
-		Actor mo = A_FireProjectile("TankMissile", angledelta, False, 0, 0, FPF_NOAUTOAIM, pitchdelta);
+		A_StartSound(sound, CHAN_WEAPON);
+		Actor mo = A_FireProjectile(missiletype, angledelta, False, 0, 0, FPF_NOAUTOAIM, pitchdelta);
 		if (mo && origin != self)
 		{
 			muzzleflash.vel += (mo.vel.x / 2.0, mo.vel.y / 2.0, mo.vel.z / 2.0);
@@ -404,25 +404,25 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 		invoker.cannontimeout = invoker.prevtimeout;
 	}
 
-	action void DoMachineGun()
+	action void DoMachineGun(string sound, class<Actor> missiletype)
 	{
 		Actor origin = self;
 		Actor maingun = self;
 
-		if (origin && ShermanPlayer(origin) && ShermanPlayer(origin).turret)
+		if (origin && TankPlayer(origin) && TankPlayer(origin).turret)
 		{
-			if (US_ShermanTurret(ShermanPlayer(self).turret).gunspot2) { origin = US_ShermanTurret(ShermanPlayer(self).turret).gunspot2; }
-			if (US_ShermanTurret(ShermanPlayer(self).turret).gunspot) { maingun = US_ShermanTurret(ShermanPlayer(self).turret).gunspot; }
+			if (TankPlayer(self).turret.gunspot2) { origin = TankPlayer(self).turret.gunspot2; }
+			if (TankPlayer(self).turret.gunspot) { maingun = TankPlayer(self).turret.gunspot; }
 		}
 
 		double angledelta = deltaangle(angle, maingun.angle);
 		double pitchdelta = deltaangle(pitch, maingun.pitch);
 
-		A_StartSound("tank/50cal", CHAN_WEAPON, 0, FRandom(0.6, 0.8));
+		A_StartSound(sound, CHAN_WEAPON, 0, FRandom(0.6, 0.8));
 		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
 		muzzleflash.master = self;
 		A_FireProjectile("TurrSmokeSpawner", origin.Pos.Z - Pos.Z);
-		Actor mo = A_FireProjectile("Kar98kTracer", angledelta + Random(-2, 2), False, 0, 0, 0, pitchdelta + Random(-2, 2));
+		Actor mo = A_FireProjectile(missiletype, angledelta + Random(-2, 2), False, 0, 0, 0, pitchdelta + Random(-2, 2));
 		if (mo && origin != self)
 		{
 			mo.SetOrigin(origin.pos, false); // Move the tracer so that it flies from the model's gun
@@ -432,72 +432,63 @@ class Cannon75mm : NaziWeapon // Weapon used when morphed into a tank.
 	}
 }
 
-class Cannon75mmKwK: Cannon75mm {
-    States
+class Cannon75mm: TankCannonWeapon {
+	States
 	{
 		Fire:
-			TNT1 A 2 DoPzIVKwK();
+			TNT1 A 2 DoCannon("tanks/75mmm3", "TankMissile");
 			TNT1 A 0 A_TankRefire();
 			Goto Ready;
         AltFire:
-			TNT1 A 3 DoPzIVChaingun();
+			TNT1 A 6 DoMachineGun("tank/50cal", "Kar98kTracer");
 			TNT1 A 20 A_TankRefire();
 			Goto Ready;
     }
-    action void DoPzIVKwK()
+}
+
+class Cannon75mmKwK: TankCannonWeapon // Pz. Kpfw. IV
+{
+    States
 	{
-		if (invoker.cannontimeout)  { return; }
+		Fire:
+			TNT1 A 2 DoCannon("tanks/75mmkwk40", "TankMissile");
+			TNT1 A 0 A_TankRefire();
+			Goto Ready;
+        AltFire:
+			TNT1 A 3 DoMachineGun("chaingun/fire", "ChaingunTracer");
+			TNT1 A 20 A_TankRefire();
+			Goto Ready;
+    }
+}
 
-		Actor origin = self;
-		if (origin && ShermanPlayer(origin) && ShermanPlayer(origin).turret && PanzerIVTurret(ShermanPlayer(origin).turret).gunspot) { origin = PanzerIVTurret(ShermanPlayer(origin).turret).gunspot; }
-
-		double angledelta = deltaangle(angle, origin.angle);
-		double pitchdelta = deltaangle(pitch, origin.pitch);
-
-		A_GunFlash();
-		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
-		A_StartSound("tanks/75mmkwk40", CHAN_WEAPON);
-		Actor mo = A_FireProjectile("TankMissile", angledelta, False, 0, 0, FPF_NOAUTOAIM, pitchdelta);
-		if (mo && origin != self)
-		{
-			muzzleflash.vel += (mo.vel.x / 2.0, mo.vel.y / 2.0, mo.vel.z / 2.0);
-			if (self)
-            {
-                muzzleflash.vel += self.vel;
-                mo.vel += self.vel;
-            }
-			mo.SetOrigin(origin.pos, false); // Move the rocket so that it flies from the model's gun
-		}
-
-		invoker.cannontimeout = 140;
-	}
-
-	action void DoPzIVChaingun()
+class Cannon88mm: TankCannonWeapon // Pz. Kpfw. VI E
+{
+    States
 	{
-		Actor origin = self;
-		Actor maingun = self;
+		Fire:
+			TNT1 A 2 DoCannon("tanks/88mmkwk36", "TankMissile");
+			TNT1 A 0 A_TankRefire();
+			Goto Ready;
+        AltFire:
+			TNT1 A 3 DoMachineGun("chaingun/fire", "ChaingunTracer");
+			TNT1 A 20 A_TankRefire();
+			Goto Ready;
+    }
+}
 
-		if (origin && ShermanPlayer(origin) && ShermanPlayer(origin).turret)
-		{
-			if (PanzerIVTurret(ShermanPlayer(self).turret).gunspot2) { origin = PanzerIVTurret(ShermanPlayer(self).turret).gunspot2; }
-			if (PanzerIVTurret(ShermanPlayer(self).turret).gunspot) { maingun = PanzerIVTurret(ShermanPlayer(self).turret).gunspot; }
-		}
-
-		double angledelta = deltaangle(angle, maingun.angle);
-		double pitchdelta = deltaangle(pitch, maingun.pitch);
-
-		A_StartSound("chaingun/fire", CHAN_WEAPON, 0, FRandom(0.6, 0.8));
-		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
-		muzzleflash.master = self;
-		A_FireProjectile("TurrSmokeSpawner", origin.Pos.Z - Pos.Z);
-		Actor mo = A_FireProjectile("ChaingunTracer", angledelta + Random(-4, 4), False, 0, 0, 0, pitchdelta + Random(-4, 4));
-		if (mo && origin != self)
-		{
-			mo.SetOrigin(origin.pos, false); // Move the tarcer so that it flies from the model's gun
-            if (self) mo.vel += self.vel;
-			mo.bMThruSpecies = true;
-		}
-	}
+class CannonMG34: TankCannonWeapon // Sd. Kfz. 223
+{
+    States
+	{
+		Fire:
+			TNT1 A 1;
+			TNT1 A 1;
+			Goto Ready;
+        AltFire:
+			TNT1 A 3 DoMachineGun("chaingun/fire", "ChaingunTracer");
+			TNT1 A 10 A_TankRefire();
+			Goto Ready;
+    }
 }
 
 class TankRocket : GrenadeBase

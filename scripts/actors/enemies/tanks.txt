@@ -259,7 +259,7 @@ class NebNukeHarmless: Actor
 // See FriendlySherman below for use
 class TankBase : VehicleBase
 {
-	Actor ally, treads, turret, gun, gunspot, frontgunspot;
+	Actor ally, treads, turret, gun, gunspot, gunspot2, frontgunspot;
 	Class<Actor> body;
 	Class<Actor> TurretProjectile;
 	Class<Actor> FrontGunProjectile;
@@ -906,7 +906,8 @@ class TankBlocker : Actor
 // Base actor for tank treads
 class TankTreadsBase : Base
 {
-	Actor turret, gunspot;
+	TankTurretBase turret;
+	Actor gunspot;
 	Class<Actor> turretclass, deadclass, debris;
 	Class<PowerMorph> morphpowerup;
 	int savedhealth;
@@ -957,9 +958,13 @@ class TankTreadsBase : Base
 	override void PostBeginPlay()
 	{
 		bool sp = false;
-
-		while (!turret) { [sp, turret] = A_SpawnItemEx(turretclass, 0, 0, Height, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
-
+		Actor temp;
+		
+		while (!turret)
+		{
+			[sp, temp] = A_SpawnItemEx(turretclass, 0, 0, Height, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); 
+			turret = TankTurretBase(temp);
+		}
 		double r = radius / 2;
 
 		A_SpawnItemEx("TankBlocker", length - r, -r, flags: SXF_SETMASTER);
@@ -1174,7 +1179,8 @@ class PairedTire : Actor
 // Base actor for tank turret
 class TankTurretBase : Base
 {
-	Actor gun, gunspot;
+	TankCannonBase gun;
+	actor gunspot, gunspot2;
 	Class<Actor> gunclass;
 	Vector3 spawnoffset;
 	Vector3 offset;
@@ -1214,10 +1220,16 @@ class TankTurretBase : Base
 	override void PostBeginPlay()
 	{
 		bool sp = false;
-
+		Actor temp;
+		
 		if (gunclass)
 		{
-			while (!gun) { [sp, gun] = A_SpawnItemEx(gunclass, gunoffsetx, 0, gunoffsetz, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
+			while (!gun)
+			{
+				[sp, temp] = A_SpawnItemEx(gunclass, gunoffsetx, 0, gunoffsetz, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE);
+				gun = TankCannonBase(temp);
+			}
+			
 			gun.Species = Species;
 
 			spawnoffset = gun.pos - pos;
@@ -1332,8 +1344,6 @@ class US_Sherman : TankTreadsBase
 
 class US_ShermanTurret : TankTurretBase
 {
-	Actor gunspot2;
-
 	Default
 	{
 		TankTurretBase.GunClass "US_ShermanCannon";
@@ -1461,7 +1471,6 @@ class PanzerIVTreads : TankTreadsBase
 
 class PanzerIVTurret : TankTurretBase
 {
-	Actor gunspot2;
 	Default
 	{
 		TankTurretBase.GunClass "PanzerIVCannon";
@@ -1694,6 +1703,7 @@ class TigerTreads : TankTreadsBase
 		TankTreadsBase.DebrisActor "Debris_Tank2";
 		TankTreadsBase.DeadActor "DestroyedTank3";
 		TankTreadsBase.TurretClass "TigerTurret";
+		TankTreadsBase.MorphPowerup "Tiger";
 	}
 }
 
@@ -1763,6 +1773,7 @@ class LightPanzerTreads : TankTreadsBase
 		TankTreadsBase.DeadActor "DestroyedTank4";
 		TankTreadsBase.Length 80;
 		TankTreadsBase.TurretClass "LightPanzerTurret";
+		TankTreadsBase.MorphPowerup "SdKfz223";
 	}
 
 	override void PostBeginPlay()
