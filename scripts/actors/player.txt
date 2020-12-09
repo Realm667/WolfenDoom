@@ -1191,7 +1191,7 @@ class BoAPlayer : PlayerPawn
 				if (mo.FindInventory("PowerStrength")) { wpn.modifier = 3.0; } // Strength increases damage by 3 and range by 10
 				else { wpn.modifier = 1.0; }
 
-				mo.A_TakeInventory("Stamina",30);
+				mo.A_TakeInventory("Stamina", 30);
 				mo.player.SetPsprite(-10, wpn.FindState("KickOverlay"), true);
 			}
 		}
