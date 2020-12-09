@@ -657,7 +657,7 @@ ACTOR DestroyedTank1 : TankSmokeSpawner
 	//$Category Models (BoA)/Vehicles
 	//$Title Tank 1 (Panther Panzer IV, destroyed)
 	//$Color 4
-	Radius 88
+	Radius 64
 	Height 96
 	Mass 0x7ffffff
 	+FLOORCLIP
@@ -672,6 +672,7 @@ ACTOR DestroyedTank1 : TankSmokeSpawner
 	States
 	{
 	Spawn:
+		
 	Active:
 		MDLA A 12 SpawnEffect()
 		Loop
@@ -682,6 +683,7 @@ ACTOR DestroyedTank2 : DestroyedTank1
 {
 	//$Title Tank 2 (KFZ 251 HalfTrack, destroyed)
 	Height 88
+	Radius 48
 }
 
 ACTOR DestroyedTank3 : DestroyedTank1
