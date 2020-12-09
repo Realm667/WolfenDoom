@@ -42,14 +42,17 @@ class InventoryClearHandler : EventHandler
 
 		me.A_GiveInventory("NullWeapon", 1);
 
-		// Remove level-specific inventory items
+		// Remove level-specific inventory items, and other items which should
+		// not persist between missions.
 		static const class<Inventory> itemTypes[] = {
 			"CKPogoStick",
 			"CKLedgeGrab",
 			"TextPaperCollectible",
-			"TextPaperSecretHint"
+			"TextPaperSecretHint",
+			"IncomingMessage",
+			"CutsceneEnabled"
 		};
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 6; i++)
 		{
 			let invitem = me.FindInventory(itemTypes[i]);
 			if (invitem)
