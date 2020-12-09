@@ -226,7 +226,8 @@ class RENemesis : NaziBoss
 		NEMS A 0 NoDelay {user_incombat = 1;}
 		Goto Look;
 	See:
-		Goto See.Boss;
+		"####" "#" 0 A_JumpIfCloser(1024, "See.Boss");
+		Goto TeleportStart;
 	Missile:
 		NEMS A 0 A_Jump(100, "Missile2");
 		NEMS FG 10;
@@ -277,10 +278,11 @@ class RENemesis : NaziBoss
 			A_RearrangePointers(AAPTR_TRACER); // Fetch target from "tracer" pointer.
 		}
 		NEMS M 8;
+	TeleportStart:
 		NEMS A 0; // Set frame you see while disappearing
-		"####" "#" 1 A_FadeOutJump(0.125, "Teleport");
+		"####" "#" 1 A_FadeOutJump(0.125, "TeleportEnd");
 		Wait;
-	Teleport:
+	TeleportEnd:
 		"####" "#" 70 A_TeleportCloseTo(180, 384, "Reappear");
 		Loop;
 	Reappear:
