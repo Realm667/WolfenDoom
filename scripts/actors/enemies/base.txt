@@ -910,7 +910,7 @@ class Base : Actor
 			if (despawntime > 0) { despawntime--; }
 
 			if (frighttimeout > -35) { frighttimeout--; }
-			else { Speed = Default.Speed; }
+			else if (Speed != Default.Speed) { Speed = Default.Speed; }
 
 			if (bShootable && health > 0 && !bDormant)
 			{
@@ -943,7 +943,7 @@ class Base : Actor
 					else { bFloat = Default.bFloat; }
 				}
 
-				if (lightthreshold && (level.time + interval) % 35 == 0) // If zero, ignore light levels (so, default to normal enemy behavior)
+				if ((!Nazi(self) || Nazi(self).user_incombat) && lightthreshold && (level.time + interval) % 35 == 0) // If light threshold is zero or Nazi actor is not awake, ignore light levels (so, default to normal enemy behavior)
 				{
 					if (ReactionTime == 0) // This is only checked when the enemy is active and not standing still or attacking
 					{
