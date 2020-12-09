@@ -711,24 +711,47 @@ class RyanToken : DisguiseToken
 
 class PowerRepairing : Powerup
 {
+	int resumetics;
+	Inventory giver; 
+
 	Default
 	{
-		Powerup.Duration -15;
+		Powerup.Duration -15; // Duration of effect in seconds 
 		Powerup.Strength 3; // Per tic HP increase
 	}
 
 	override void DoEffect()
 	{
 		Super.DoEffect();
-		if (!Owner)
+
+		if (!Owner || owner.health >= GetDefaultByType(owner.GetClass()).Health)
 		{
 			return;
 		}
 		else if (Owner is "TankPlayer")
 		{
-			// I would like to transfer the powerup to the tank body if the
-			// player exits the tank, but I don't know if that is even possible.
+			// Heal the tank, up to maximum default health for the tank player class
 			Owner.GiveBody(int(Strength), GetDefaultByType("TankPlayer").Health);
+			resumetics = EffectTics; // Save last effect tick count so we have a point to start from if the player exits the tank next tick
+
+			if (giver) // If a giving inventory item was set, manipulate its icon and handle inventory removal
+			{
+				giver.alpha = 0.67 + sin(level.time * 15) / 3; // Flash the icon while actively repairing
+
+				if (EffectTics == 1) // Handle removing (or decrementing the amount of) the inventory item 
+				{
+					if (--giver.Amount == 0) { giver.GoAwayAndDie(); } // If none remaining in inventory, remove the inventory item and this powerup
+					else { giver.alpha = 1.0; } // Restore to full alpha if there are more repair kits in inventory
+				}
+			}
+		}
+		else if (owner is "BoAPlayer")
+		{
+			// Don't heal a non-tank player, but also don't decrement the effect time
+			// This way, tank repair starts again when you get back into the tank
+			EffectTics = resumetics;
+
+			if (giver && giver.alpha != 1.0) { giver.alpha = 1.0; } // Set the icon back to solid if it was flashing
 		}
 		else
 		{
@@ -752,22 +775,24 @@ class RepairKit : CompassItem
 
 	States
 	{
-	Spawn:
-		EKPK B -1;
-		Stop;
+		Spawn:
+			EKPK B -1;
+			Stop;
 	}
 
 	override bool Use(bool pickup)
 	{
-		if (Owner.FindInventory("PowerRepairing"))
+		// Only activate for tank players that aren't at full health and who aren't already using a repair kit
+		if (Owner is "TankPlayer" && owner.health < GetDefaultByType("TankPlayer").Health && !Owner.FindInventory("PowerRepairing"))
 		{
-			return false;
+			Inventory repairing = Owner.GiveInventoryType("PowerRepairing"); // Give the actual powerup
+
+			// Tell the powerup what inventory item gave it, just in case someone decides to create a new type of repair kit
+			if (PowerRepairing(repairing)) { PowerRepairing(repairing).giver = self; }
+
+			// Don't 'return true' here; removal of the inventory item is handled in the PowerRepairing powerup as long as the 'giver' is set above.
 		}
-		if (Owner is "TankPlayer")
-		{
-			Inventory repairing = Owner.GiveInventoryType("PowerRepairing");
-			return true;
-		}
+
 		return false;
 	}
 }

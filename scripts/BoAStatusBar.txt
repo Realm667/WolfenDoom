@@ -420,7 +420,7 @@ class BoAStatusBar : BaseStatusBar
 		}
 		else { texsize = (1.0, 1.0); }
 
-		DrawInventoryIcon(CPlayer.mo.InvSel, (x, y), DI_ITEM_CENTER, scale:texsize);
+		DrawInventoryIcon(CPlayer.mo.InvSel, (x, y), DI_ITEM_CENTER, CPlayer.mo.InvSel.alpha, scale:texsize);
 
 		if (CPlayer.mo.InvSel.Amount > 1)
 		{
