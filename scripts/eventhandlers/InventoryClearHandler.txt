@@ -25,6 +25,9 @@ class InventoryClearHandler : EventHandler
 	override void PlayerEntered(PlayerEvent e)
 	{
 		let me = PlayerPawn(players[e.PlayerNumber].mo);
+
+		if (!me) { return; }
+
 		// Give the player the camera tilt handling item (modified version of Nash's Tilt++ v1.3)
 		me.A_GiveInventory("BoATilt", 1);
 		me.A_GiveInventory("BoAVisibility", 1);
