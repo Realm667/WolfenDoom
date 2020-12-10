@@ -251,7 +251,12 @@ class RENemesis : NaziBoss
 	Death: // Kneel after taking some damage
 		NEMS O 0 {
 			ACS_NamedExecute("City_Light_On", 0);
-			return A_JumpIfInTargetInventory("NemesisDiesForGood", 1, "DeathForReal");
+			ThinkerIterator it = ThinkerIterator.Create("NemesisDiesForGood");
+			if (it.Next())
+			{
+				return ResolveState("DeathForReal");
+			}
+			return ResolveState(null);
 		}
 		NEMS M 8 A_NoBlocking(false);
 		NEMS N 8400; // Kneel for 4 minutes = 8400 tics, 3 seconds is easier to test with
@@ -263,7 +268,7 @@ class RENemesis : NaziBoss
 			A_RaiseSelf(RF_NOCHECKPOSITION); // Doesn't work if duration is 0 for some reason.
 		}
 		Stop;
-	DeathForReal:
+	DeathForReal: // Die permanently, and do not reappear.
 		NEMS O 8 A_Scream;
 		NEMS P 8;
 		NEMS Q 8 A_NoBlocking;
@@ -423,9 +428,17 @@ class RENemesis : NaziBoss
 	}
 }
 
-class NemesisDiesForGood : Inventory {
+// Nemesis checks for this actor being on the map, and dies permanently if it is
+class NemesisDiesForGood : Actor {
 	Default
 	{
-		Inventory.MaxAmount 1;
+		+NOINTERACTION
+	}
+
+	States
+	{
+	Spawn:
+		TNT1 A -1;
+		Stop;
 	}
 }
