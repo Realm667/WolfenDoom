@@ -99,70 +99,53 @@ class GroundedMissile : GrenadeBase
 	}
 }
 
-/*
-// GroundedMissile class test
-class GroundedEnergyBolt : GroundedMissile
+class NemesisControl : Thinker
 {
-	Default
+	bool canDie;
+	bool sleeping;
+
+	static NemesisControl Get()
 	{
-		DamageFunction (40);
-		Speed 15;
-		Gravity .125;
-		GrenadeBase.FearDistance 64;
-		GroundedMissile.AirHeight 8;
-		+BRIGHT
+		ThinkerIterator it = ThinkerIterator.Create("NemesisControl");
+		NemesisControl control = NemesisControl(it.Next());
+		if (control)
+		{
+			return control;
+		}
+		return new("NemesisControl");
 	}
 
-	States
+	// ScriptCall("NemesisControl", "IsKillable");
+	static bool IsKillable()
 	{
-	Spawn:
-		ROBP AB 4;
-		Loop;
-	Death:
-		ROBP CDEG 6;
-		Stop;
-	}
-}
-*/
-
-class NemesisZyklonCloud : Actor
-{
-	Default
-	{
-		Damage 0;
-		Scale .375;
-		Speed 8;
-		Projectile;
-		+RIPPER
-		+NOCLIP
+		NemesisControl control = NemesisControl.Get();
+		return control.canDie;
 	}
 
-	States
+	// ScriptCall("NemesisControl", "IsAsleep");
+	static bool IsAsleep()
 	{
-	Spawn:
-		AWCF EEEEE 3 A_Explode(4, 64, 0, damagetype: "UndeadPoison");
-		AWCF E 0 A_FadeOut(.125, FTF_REMOVE);
-		Loop;
+		NemesisControl control = NemesisControl.Get();
+		return control.sleeping;
 	}
 
-	override void Tick()
+	// ScriptCall("NemesisControl", "SetKillable", 1);
+	// or
+	// ScriptCall("NemesisControl", "SetKillable", 0);
+	static void SetKillable(bool canDie)
 	{
-		Super.Tick();
-		// decelerate
-		Vel.XY *= .875;
+		NemesisControl control = NemesisControl.Get();
+		control.canDie = canDie;
 	}
 
-	// Deals UndeadPoison and UndeadPoisonAmbience damage
-	/*
-	void A_ZyklonAOE(int damage, double radius, double ambientPercent = 0.0)
+	// ScriptCall("NemesisControl", "SetAsleep", 1);
+	// or
+	// ScriptCall("NemesisControl", "SetAsleep", 0);
+	static void SetAsleep(bool sleeping)
 	{
-		double ambient = double(damage) * ambientPercent;
-		int ambientDamage = ambient;
-		int realDamage = damage - ambient;
-		A_Explode(ambientDamage, radius, 0, damagetype: "UndeadPoisonAmbience");
-		A_Explode(realDamage, radius, 0, damagetype: "UndeadPoison");
+		NemesisControl control = NemesisControl.Get();
+		control.sleeping = sleeping;
 	}
-	*/
 }
 
 class NemesisZyklonBall : GroundedMissile
@@ -205,6 +188,8 @@ class NemesisZyklonBall : GroundedMissile
 
 class RENemesis : NaziBoss
 {
+	NemesisControl control;
+
 	Default
 	{
 		DamageFactor "UndeadPoison", 0;
@@ -251,16 +236,24 @@ class RENemesis : NaziBoss
 	Death: // Kneel after taking some damage
 		NEMS O 0 {
 			ACS_NamedExecute("City_Light_On", 0);
-			ThinkerIterator it = ThinkerIterator.Create("NemesisDiesForGood");
-			if (it.Next())
+			if (control.canDie)
 			{
 				return ResolveState("DeathForReal");
 			}
 			return ResolveState(null);
 		}
 		NEMS M 8 A_NoBlocking(false);
-		NEMS N 8400; // Kneel for 4 minutes = 8400 tics, 3 seconds is easier to test with
-		"####" "#" -1 { // This doesn't work if duration is 0 for some reason...
+		NEMS N 105; // Kneel for 4 minutes = 8400 tics, 3 seconds is easier to test with
+		"####" "#" 35 {
+			// Check whether Nemesis is allowed to wake up
+			if (control.sleeping)
+			{
+				return ResolveState(null);
+			}
+			return ResolveState(1);
+		}
+		Wait;
+		"####" "#" -1 {
 			// Keep previous target in "tracer" pointer to prevent it from
 			// being lost, since actors lose their targets (and the lastEnemy)
 			// when they are resurrected.
@@ -298,6 +291,13 @@ class RENemesis : NaziBoss
 			A_FadeInJump(0.125, "See");
 		}
 		Wait;
+	}
+
+	override void PostBeginPlay()
+	{
+		// Get pointer to Nemesis controller thinker
+		control = NemesisControl.Get();
+		Super.PostBeginPlay();
 	}
 
 	void A_FadeOutJump(double fadeAmount, statelabel label, int flags = FTF_CLAMP)
@@ -425,20 +425,5 @@ class RENemesis : NaziBoss
 		// Get him un-stuck from the ledge, if any.
 		Thrust(Speed, traceAngle + 180);
 		return appearState;
-	}
-}
-
-// Nemesis checks for this actor being on the map, and dies permanently if it is
-class NemesisDiesForGood : Actor {
-	Default
-	{
-		+NOINTERACTION
-	}
-
-	States
-	{
-	Spawn:
-		TNT1 A -1;
-		Stop;
 	}
 }
