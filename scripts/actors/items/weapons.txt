@@ -1003,7 +1003,13 @@ class TurretStand : Actor
 		shooter.player.viewheight = PlayerPawn(shooter).viewheight * 3 / 4; 
 
 		gun.pitch = clamp(shooter.pitch, -55, 55);
-		gun.angle = clamp(shooter.angle, angle - 70, angle + 70);
+		gun.angle = ZScriptTools.clampAngle(shooter.angle, angle - 70, angle + 70);
+		/*
+		if (abs(deltaangle(shooter.angle, angle)) <= 70)
+		{
+			gun.angle = shooter.angle;
+		}
+		*/
 
 		shooter.angle = gun.angle;
 

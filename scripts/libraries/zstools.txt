@@ -95,4 +95,26 @@ class ZScriptTools
 		double b = time * gravity + badd;
 		return -gravity + b;
 	}
+
+	// Like "clamp", but for angles rather than plain numbers
+	static double ClampAngle(double angle, double min, double max)
+	{
+		min = Actor.Normalize180(min);
+		max = Actor.Normalize180(max);
+		angle = Actor.Normalize180(angle);
+		// Invert clamp
+		if (min > max)
+		{
+			if (angle < 0 && angle >= max)
+			{
+				return max;
+			}
+			else if (angle >= 0 && angle <= min)
+			{
+				return min;
+			}
+			return angle;
+		}
+		return clamp(angle, min, max);
+	}
 }
