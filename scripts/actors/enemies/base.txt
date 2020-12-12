@@ -613,7 +613,8 @@ class Base : Actor
 			!speed ||
 			dodging ||
 			(!force && dodgetimeout > 0) ||
-			(!force && (bFriendly || (target && target is "PatrolPoint")))
+			(!force && (bFriendly || (target && target is "PatrolPoint"))) ||
+			health <= 0
 		) { return false; }
 
 		double dodgeangle;
@@ -1740,7 +1741,7 @@ class Nazi : Base
 
 	void A_NaziLook()
 	{
-		if (bDormant || dodging) { return; }
+		if (bDormant || dodging || health <= 0) { return; }
 
 		if (level.time > 35)
 		{
@@ -1809,7 +1810,7 @@ class Nazi : Base
 
 	void A_NaziChase(statelabel melee = "None", statelabel missile = "None", int flags = 0)
 	{
-		if (dodging) { return; }
+		if (dodging || health <= 0) { return; }
 		if (bDormant) { SetState(SpawnState); return; } // Dormant actors should not wake up even if they're somehow placed in their See state
 
 		sprite = SpawnState.sprite; // Make sure our sprite isn't crouched or rolling
@@ -2117,7 +2118,7 @@ class Nazi : Base
 
 			Speed = Default.Speed + Random(1, 2); // Walk/run a little faster to get away
 
-			if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); } 
+			if (!InStateSequence(CurState, SeeState) && health > 0) { SetStateLabel("See"); } 
 		}
 	}
 
