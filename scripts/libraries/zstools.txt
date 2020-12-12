@@ -99,22 +99,31 @@ class ZScriptTools
 	// Like "clamp", but for angles rather than plain numbers
 	static double ClampAngle(double angle, double min, double max)
 	{
+		angle = Actor.Normalize180(angle);
 		min = Actor.Normalize180(min);
 		max = Actor.Normalize180(max);
-		angle = Actor.Normalize180(angle);
+		double maxdiff = Actor.deltaangle(angle, max);
+		double mindiff = -Actor.deltaangle(angle, min);
 		// Invert clamp
-		if (min > max)
+		if (maxdiff < 0 && mindiff < 0)
 		{
-			if (angle < 0 && angle >= max)
+			if (mindiff < maxdiff)
 			{
 				return max;
 			}
-			else if (angle >= 0 && angle <= min)
+			else
 			{
 				return min;
 			}
-			return angle;
 		}
-		return clamp(angle, min, max);
+		if (maxdiff < 0)
+		{
+			return max;
+		}
+		else if (mindiff < 0)
+		{
+			return min;
+		}
+		return angle;
 	}
 }
