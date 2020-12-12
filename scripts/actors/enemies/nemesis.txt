@@ -115,14 +115,14 @@ class NemesisControl : Thinker
 		return new("NemesisControl");
 	}
 
-	// ScriptCall("NemesisControl", "IsKillable");
+	// int killable = ScriptCall("NemesisControl", "IsKillable");
 	static bool IsKillable()
 	{
 		NemesisControl control = NemesisControl.Get();
 		return control.canDie;
 	}
 
-	// ScriptCall("NemesisControl", "IsAsleep");
+	// int asleep = ScriptCall("NemesisControl", "IsAsleep");
 	static bool IsAsleep()
 	{
 		NemesisControl control = NemesisControl.Get();
@@ -145,6 +145,25 @@ class NemesisControl : Thinker
 	{
 		NemesisControl control = NemesisControl.Get();
 		control.sleeping = sleeping;
+	}
+
+	// ScriptCall("NemesisControl", "ForceResurrect");
+	// NOTE: You'll have to make him "killable for good" by doing this:
+	// ScriptCall("NemesisControl", "SetKillable", 1);
+	static void ForceResurrect()
+	{
+		NemesisControl control = NemesisControl.Get();
+		control.sleeping = false;
+		ThinkerIterator iter = ThinkerIterator.Create("RENemesis");
+		RENemesis nemesis = RENemesis(iter.Next());
+		if (nemesis)
+		{
+			State DeathState = nemesis.FindState("Death");
+			if (nemesis.InStateSequence(nemesis.CurState, DeathState))
+			{
+				nemesis.A_ReviveStart();
+			 }
+		}
 	}
 }
 
@@ -253,13 +272,7 @@ class RENemesis : NaziBoss
 			return ResolveState(1);
 		}
 		Wait;
-		"####" "#" -1 {
-			// Keep previous target in "tracer" pointer to prevent it from
-			// being lost, since actors lose their targets (and the lastEnemy)
-			// when they are resurrected.
-			A_RearrangePointers(AAPTR_NULL, newtracer: AAPTR_TARGET); 
-			A_RaiseSelf(RF_NOCHECKPOSITION); // Doesn't work if duration is 0 for some reason.
-		}
+		"####" "#" -1 A_ReviveStart;
 		Stop;
 	DeathForReal: // Die permanently, and do not reappear.
 		NEMS O 8 A_Scream;
@@ -299,6 +312,15 @@ class RENemesis : NaziBoss
 		// Get pointer to Nemesis controller thinker
 		control = NemesisControl.Get();
 		Super.PostBeginPlay();
+	}
+
+	void A_ReviveStart()
+	{
+		// Keep previous target in "tracer" pointer to prevent it from
+		// being lost, since actors lose their targets (and the lastEnemy)
+		// when they are resurrected.
+		A_RearrangePointers(AAPTR_NULL, newtracer: AAPTR_TARGET); 
+		A_RaiseSelf(RF_NOCHECKPOSITION); // Doesn't work if state duration is 0 for some reason.
 	}
 
 	void A_FadeOutJump(double fadeAmount, statelabel label, int flags = FTF_CLAMP)
