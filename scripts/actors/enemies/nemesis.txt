@@ -270,14 +270,15 @@ class RENemesis : NaziBoss
 		Stop;
 	Raise:
 		NEMS N 8 {
-			bSolid = false;
-			bShootable = false;
 			ACS_NamedExecute("City_Light_Off", 0);
 			A_RearrangePointers(AAPTR_TRACER); // Fetch target from "tracer" pointer.
 		}
 		NEMS M 8;
 	TeleportStart:
-		NEMS A 0; // Set frame you see while disappearing
+		NEMS A 0 { // Set frame you see while disappearing
+			bSolid = false;
+			bShootable = false;
+		}
 		"####" "#" 1 A_FadeOutJump(0.125, "TeleportEnd");
 		Wait;
 	TeleportEnd:
