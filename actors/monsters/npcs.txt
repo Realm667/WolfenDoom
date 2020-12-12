@@ -870,7 +870,7 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 	//$Title Wandering Prisoner (bald)
 	//$Color 3
 	Health 500
-	PainChance 255 //let's force it for Frightened - ozy81
+	PainChance 128 // Was 255; but we can't always force to pain state, because then immediate successive hits make the actor freeze on the first pain sprite for some time
 	Speed 1
 	Radius 20
 	Height 50
@@ -884,6 +884,8 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 	+NOSPLASHALERT
 	+PUSHABLE
 	+SLIDESONWALLS
+	+INVULNERABLE
+	+ALLOWPAIN
 	MaxStepHeight 16
 	MaxDropoffHeight 32
 	SeeSound "urss/sighted"
@@ -959,7 +961,7 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 		"####" D 1 A_WanderGoal(0, 768)
 		"####" DDD 1 A_WanderGoal(0, 768)
 		"####" A 0 {
-			if (!goal && Random[lookaround](0, 255) < 32) { return resolveState("LookAround.Frightened"); }
+			if (Random[lookaround](0, 255) < 8) { return ResolveState("LookAround.Frightened"); } // Even goal-seekers can crouch sometimes
 			return resolveState("");
 		}
 		Goto See // Go back to normal see so that they can become un-frightened once the frightener is out of range
@@ -971,9 +973,18 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 		"####" A 0 A_Jump(4, "Cough") //insert from here random sounds and give each call a separate state - ozy81
 		Loop
 	LookAround.Frightened:
+		"####" A 0 { // When crouching, don't allow jump to pain state, and allow bullets to pass through
+			bAllowPain = false;
+			bNonShootable = true;
+		}
 		"####" P 1 A_SetTics(random(12,16))
 		"####" QRQRSQP 1 A_SetTics(random(48,96))
 		"####" E 1
+		"####" A 0 { // Restore pain jump and bullet hits, and be frightened when done crouching
+			bAllowPain = true;
+			bNonShootable = false;
+			frighttimeout = 35 + Random(0, 7) * 5;
+		}
 		Goto See.Frightened
 	Cough:
 		"####" A 0 A_Jump(32, "See") //try to reduce coughing probabilities in a significantly way - ozy81
@@ -991,9 +1002,10 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 		"####" H 1 A_SpawnItemEx("Pain_Overlay", ScaleX+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR)
 		"####" H 5 {
 				A_Pain();
-				bFrightened = True;
+				frighttimeout = 35 + Random(0, 7) * 5; // FRIGHTENED flag is set by code in Base class when frighttimeout value is greater than zero
+				if (Random(0, 19) == 0) { SetStateLabel("LookAround.Frightened"); } // 1 in 20 chance that they will crouch immediately when shot
 			}
-		Goto SpawnLoop
+		Goto See.Frightened
 	Death:
 		"####" I 5 A_Scream
 		"####" J 6

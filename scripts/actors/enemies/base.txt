@@ -455,21 +455,44 @@ class Base : Actor
 
 	void A_WanderGoal(int flags = 0, int scarerange = 0)
 	{
-		if (scarerange > 0 && lastheard)
+		if (scarerange > 0)
 		{
-			if (Distance3D(lastheard) <= scarerange)
+			if (!target) { LookForEnemies(true); }
+		
+			if (target)
 			{
-				frighttimeout = 35 + Random(0, 7) * 5; 
+				if (target is "GrenadeBase") // If a GrenadeBase actor is closer than last heard, use that as the feared actor 
+				{
+					if (!lastheard || Distance3D(target) < Distance3D(lastheard))
+					{
+						lastheard = target;
+						if (lastheard) { scarerange = max(scarerange, GrenadeBase(target).feardistance); }
+					}
+				}
+				else if (target is "Nazi") // If a Nazi actor is in sight, use that as the feared actor
+				{
+					if (!Nazi(target).user_incombat || !CheckSight(target)) { target = null; } // But only if the Nazi is awake and visible
+					else if (!lastheard || Distance3D(target) < Distance3D(lastheard)) { lastheard = target; }
+				}
 			}
-			else
+
+			if (lastheard)
 			{
-				lastheard = null;
+				// If it's close, or you last heard a BulletTracer or GrenadeBase, be afraid
+				if (Distance3D(lastheard) <= scarerange || lastheard is "BulletTracer" || lastheard is "GrenadeBase" || (target && target is "Nazi"))
+				{
+					frighttimeout = 35 + Random(0, 7) * 5; 
+				}
+				else
+				{
+					lastheard = null;
+				}
 			}
 		}
 
 		if (goal != null)
 		{
-			bChaseGoal = true;
+			if (!bFrightened) { bChaseGoal = true; }
 			if (self is "Nazi") { Nazi(self).A_NaziChase(null, null, flags); }
 			else { A_Chase(null, null, flags); }
 		}
