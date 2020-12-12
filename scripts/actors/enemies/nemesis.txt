@@ -103,6 +103,8 @@ class NemesisControl : Thinker
 {
 	bool canDie;
 	bool sleeping;
+	bool canTeleport;
+	private bool revive;
 
 	static NemesisControl Get()
 	{
@@ -148,21 +150,33 @@ class NemesisControl : Thinker
 	}
 
 	// ScriptCall("NemesisControl", "ForceResurrect");
-	// NOTE: You'll have to make him "killable for good" by doing this:
+	// NOTE: Do this to make him "killable for good":
 	// ScriptCall("NemesisControl", "SetKillable", 1);
 	static void ForceResurrect()
 	{
 		NemesisControl control = NemesisControl.Get();
 		control.sleeping = false;
-		ThinkerIterator iter = ThinkerIterator.Create("RENemesis");
-		RENemesis nemesis = RENemesis(iter.Next());
-		if (nemesis)
+		control.revive = true;
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+		if (revive)
 		{
-			State DeathState = nemesis.FindState("Death");
-			if (nemesis.InStateSequence(nemesis.CurState, DeathState))
+			ThinkerIterator iter = ThinkerIterator.Create("RENemesis");
+			RENemesis nemesis = RENemesis(iter.Next());
+			if (nemesis)
 			{
-				nemesis.A_ReviveStart();
-			 }
+				State DeathState = nemesis.FindState("Death");
+				if (nemesis.InStateSequence(nemesis.CurState, DeathState))
+				{
+					if (nemesis.A_ReviveStart())
+					{
+						revive = false;
+					}
+				}
+			}
 		}
 	}
 }
@@ -262,8 +276,8 @@ class RENemesis : NaziBoss
 			return ResolveState(null);
 		}
 		NEMS M 8 A_NoBlocking(false);
-		NEMS N 8400; // Kneel for 4 minutes = 8400 tics, 3 seconds is easier to test with
-		"####" "#" 35 {
+		NEMS N 8400 CanRaise; // Kneel for 4 minutes = 8400 tics, 3 seconds is easier to test with
+		"####" "#" 35 CanRaise {
 			// Check whether Nemesis is allowed to wake up
 			if (control.sleeping)
 			{
@@ -314,13 +328,13 @@ class RENemesis : NaziBoss
 		Super.PostBeginPlay();
 	}
 
-	void A_ReviveStart()
+	bool A_ReviveStart()
 	{
 		// Keep previous target in "tracer" pointer to prevent it from
 		// being lost, since actors lose their targets (and the lastEnemy)
 		// when they are resurrected.
 		A_RearrangePointers(AAPTR_NULL, newtracer: AAPTR_TARGET); 
-		A_RaiseSelf(RF_NOCHECKPOSITION); // Doesn't work if state duration is 0 for some reason.
+		return A_RaiseSelf(RF_NOCHECKPOSITION);
 	}
 
 	void A_FadeOutJump(double fadeAmount, statelabel label, int flags = FTF_CLAMP)
