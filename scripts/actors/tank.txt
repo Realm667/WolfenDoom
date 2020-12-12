@@ -409,6 +409,12 @@ class TankPlayer : PlayerPawn
 
 			if (turret.angle != angle)
 			{
+				angle = Normalize180(angle);
+				turret.angle = Normalize180(turret.angle);
+
+				if (angle > turret.angle + 180) { angle -= 360; }
+				else if (angle < turret.angle - 180) { angle += 360; }
+
 			 	turret.angle = !chasecam ? angle : clamp(angle, turret.angle - 1.5, turret.angle + 1.5);
 				A_StartSound("MACHINE_LOOP_3", 30, CHANF_NOSTOP, 0.5);
 			}
