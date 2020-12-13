@@ -112,7 +112,7 @@ class VehicleBase : Base
 	override void Tick()
 	{
 		SetPitchRoll(self);
-		DoTrample();
+		if (health > 0) { DoTrample(); }
 
 		Actor.Tick();
 	}
@@ -469,7 +469,7 @@ class TankBase : VehicleBase
 			if (!gunspot) { gunspot = TankTurretBase(turret).gunspot; }
 		}
 
-		if (!frontgunspot) { frontgunspot = TankTreadsBase(treads).gunspot; }
+		if (!frontgunspot && treads) { frontgunspot = TankTreadsBase(treads).gunspot; }
 
 		if (bFriendly && (!ally || ally.health <= 0)) { ally = FindClosestPlayer(self, 360, 0, false); }
 
