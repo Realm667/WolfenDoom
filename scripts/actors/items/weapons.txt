@@ -171,45 +171,6 @@ class NaziWeapon : Weapon
 						crosshair = 99;
 					}
 				}
-				else if (self is "NebelwerferTruck") // Handling for pitch clamping during truck sequence.  Here because weapon is still in DECORATE.
-				{
-					let psp = owner.player.FindPSprite(PSP_WEAPON);
-
-					if (psp.CurState.InStateSequence(GetUpState())) // Start out at min pitch of 10 degrees
-					{
-						owner.player.maxpitch = 10;
-
-						if (!owner.goal) // Stores the current vehicle as the player actor's goal pointer (which is otherwise unused)
-						{
-							ThinkerIterator it = ThinkerIterator.Create("ModelGMCTruck");
-							Actor mo;
-
-							while ((mo = Actor(it.Next())) && !owner.goal)
-							{
-								if (mo == self) { continue; } // Ignore itself
-
-								if (owner.Distance2D(mo) <= mo.Radius) { owner.goal = mo; }
-							}
-						}
-					}
-					else if (psp.CurState.InStateSequence(GetDownState()))
-					{
-						owner.player.maxpitch = 90; // Restore full pitch range
-					}
-					else if (owner.goal) // Adjust pitch cap based on angle of player to truck and pitch of truck
-					{
-						owner.player.maxpitch = 10;
-
-						double diff = absangle(owner.angle, owner.goal.angle);
-
-						if (diff > 35)
-						{
-							owner.player.maxpitch += (clamp(diff - 35, 0, 20) / 20.0) * 20;
-						}
-
-						owner.player.maxpitch += owner.goal.pitch * cos(diff);
-					}
-				}
 			}
 		}
 
@@ -1490,5 +1451,106 @@ class Firebrand : NaziWeapon
 	Spawn:
 		SRDP ABCD 4 LIGHT("ITBURNSOC1");
 		Loop;
+	}
+}
+
+///////////////////////
+// Truck Nebelwerfer //
+///////////////////////
+
+class NebelwerferTruck : NaziWeapon
+{
+	Default
+	{
+		Weapon.SelectionOrder 2500;
+		Weapon.UpSound "nebelwerfer/select";
+		Tag "Fliegerfaust";
+		-WEAPON.NOALERT
+		-WEAPON.AMMO_CHECKBOTH
+		+INVENTORY.UNDROPPABLE
+	}
+
+	States
+	{
+		Ready:
+			HSML A 1 {
+				A_WeaponReady(WRF_NOSWITCH);
+				invoker.AdjustPitch();
+			}
+			Loop;
+		Deselect:
+			HSML A 0 A_Lower();
+			HSML A 1 A_Lower();
+			Loop;
+		Select:
+			HSML A 0 A_Raise();
+			HSML A 1 A_Raise();
+			Loop;
+		Fire:
+			HSML A 0 A_JumpIf(height<=30,"Fire.LowRecoil");
+			HSML A 0 A_GunFlash();
+			HSML A 0 A_StartSound("nebelwerfer/fire", CHAN_WEAPON);
+			HSML BBC 1;
+			HSML C 0 A_FireProjectile("NebRocket2");
+			HSML CDD 1 A_SetPitch(pitch-(0.7*CallACS("boa_recoilamount")));
+			HSML A 40;
+			HSML A 2 A_ReFire();
+			Goto Ready;
+		Fire.LowRecoil:
+			HSML A 0 A_GunFlash();
+			HSML A 0 A_StartSound("nebelwerfer/fire", CHAN_WEAPON);
+			HSML BBC 1;
+			HSML C 0 A_FireProjectile("NebRocket2");
+			HSML CDD 1 A_SetPitch(pitch-(0.35*CallACS("boa_recoilamount")));
+			HSML A 40;
+			HSML A 2 A_ReFire();
+			Goto Ready;
+		Flash:
+			HSML A 2 A_Light2;
+			TNT1 A 2 A_Light1;
+			Goto LightDone;
+		Spawn:
+			HSML A -1;
+			Stop;
+	}
+
+	void AdjustPitch()
+	{
+		owner.player.maxpitch = 10; // Start with a max pitch down of 10 degrees
+
+		if (!owner.goal) // Stores the current vehicle as the player actor's goal pointer (which is otherwise unused)
+		{
+			ThinkerIterator it = ThinkerIterator.Create("ModelGMCTruck"); // This is what's used in C2M4; modify this code or inherit from that class if ever used elsewhere
+			Actor mo;
+
+			while ((mo = Actor(it.Next())) && !owner.goal)
+			{
+				if (mo == self) { continue; } // Ignore itself
+
+				if (owner.Distance2D(mo) <= mo.Radius) { owner.goal = mo; } // Find the closest truck to the player
+			}
+		}
+
+		if (owner.goal) // If a vehicle was found...
+		{
+			double diff = absangle(owner.angle, owner.goal.angle); // Get the angle offset of the player from the truck
+
+			if (diff > 35) // And adjust the pitch accordingle
+			{
+				owner.player.maxpitch += (clamp(diff - 35, 0, 20) / 20.0) * 20; // Scale from 10 to 30 degrees down, over the course of a 20 degree diff
+			}
+
+			owner.player.maxpitch += owner.goal.pitch * cos(diff); // Set max pitch in a smooth curve between 35 degrees and 55 degrees diff
+		}
+	}
+
+	override void OnDestroy()
+	{
+		if (owner && owner.player)
+		{			
+			owner.player.maxpitch = 90; // Restore full pitch range when this item is destroyed (removed from inventory)
+		}
+
+		Super.OnDestroy();
 	}
 }
