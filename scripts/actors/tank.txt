@@ -246,7 +246,7 @@ class TankPlayer : PlayerPawn
 			}
 		}
 	}
-	
+
 	override void CheckPitch()
 	{
 		let player = self.player;
@@ -474,7 +474,8 @@ class TankPlayer : PlayerPawn
 					Vector3 povoffset = (48, -24, 48);
 
 					povcamera.angle = turret.angle;
-					povcamera.pitch = gun.pitch;
+					if (gun) { povcamera.pitch = gun.pitch; }
+					else { povcamera.pitch = turret.pitch; }
 
 					Vector2 temp = RotateVector((povoffset.y, povoffset.z), turret.roll);
 					Vector3 offset = (povoffset.x, temp.x, temp.y);
