@@ -154,22 +154,61 @@ class NaziWeapon : Weapon
 				}
 
 				oldbuttons = owner.player.cmd.buttons;
-			}
 
-			// If you're using the knife and there's a chance of a stealth kill, hide 
-			// the crosshair so that the status bar code can draw the overlay knife icon.
-			if (owner.player.ReadyWeapon == self && self is "KnifeSilent")
-			{
-				BoAPlayer p = BoAPlayer(owner);
-
-				if (
-					p && 
-					Nazi(p.crosshairtarget) && 
-					!Nazi(p.crosshairtarget).user_incombat &&
-					p.Distance2D(p.crosshairtarget) < p.crosshairtarget.radius + 64.0
-				)
+				// If you're using the knife and there's a chance of a stealth kill, hide 
+				// the crosshair so that the status bar code can draw the overlay knife icon.
+				if (self is "KnifeSilent")
 				{
-					crosshair = 99;
+					BoAPlayer p = BoAPlayer(owner);
+
+					if (
+						p && 
+						Nazi(p.crosshairtarget) && 
+						!Nazi(p.crosshairtarget).user_incombat &&
+						p.Distance2D(p.crosshairtarget) < p.crosshairtarget.radius + 64.0
+					)
+					{
+						crosshair = 99;
+					}
+				}
+				else if (self is "NebelwerferTruck") // Handling for pitch clamping during truck sequence.  Here because weapon is still in DECORATE.
+				{
+					let psp = owner.player.FindPSprite(PSP_WEAPON);
+
+					if (psp.CurState.InStateSequence(GetUpState())) // Start out at min pitch of 10 degrees
+					{
+						owner.player.maxpitch = 10;
+
+						if (!owner.goal) // Stores the current vehicle as the player actor's goal pointer (which is otherwise unused)
+						{
+							ThinkerIterator it = ThinkerIterator.Create("ModelGMCTruck");
+							Actor mo;
+
+							while ((mo = Actor(it.Next())) && !owner.goal)
+							{
+								if (mo == self) { continue; } // Ignore itself
+
+								if (owner.Distance2D(mo) <= mo.Radius) { owner.goal = mo; }
+							}
+						}
+					}
+					else if (psp.CurState.InStateSequence(GetDownState()))
+					{
+						owner.player.maxpitch = 90; // Restore full pitch range
+					}
+					else if (owner.goal) // Adjust pitch cap based on angle of player to truck and pitch of truck
+					{
+						owner.player.maxpitch = 10;
+
+						double diff = absangle(owner.angle, owner.goal.angle);
+
+						if (diff > 35)
+						{
+							owner.player.maxpitch += (clamp(diff - 35, 0, 20) / 20.0) * 20;
+						}
+
+						owner.player.maxpitch += owner.goal.pitch * cos(diff);
+					}
 				}
 			}
 		}
