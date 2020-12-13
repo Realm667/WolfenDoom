@@ -57,7 +57,7 @@ class TankPlayer : PlayerPawn
 		DamageFactor "MutantPoison", 0.1;
 		DamageFactor "Normal", 0.5;
 		DamageFactor "Rocket", 0.5;
-		DamageFactor "Rocket2", 1.5; //enemypanzerrocket only, for panzerguards  - ozy81
+		DamageFactor "Rocket2", 10.0; //enemypanzerrocket only, for panzerguards  - ozy81 //1.5->10.0 --N00b
 		DamageFactor "UndeadPoison", 0.1;
 		MaxStepHeight 48;
 		MaxDropoffHeight 48;
@@ -222,7 +222,31 @@ class TankPlayer : PlayerPawn
 	}
 
 	override void CheckJump() {} // Tanks can't jump
-
+		
+	override void CheckAirSupply() //nor can they swim --N00b
+	{
+		// Handle air supply
+		//if (level.airsupply > 0)
+		{
+			let player = self.player;
+			
+			bool ok; Actor below; //see A_CheckSolidFooting on wiki
+			[ok, below] = TestMobjZ(true);
+			if (waterlevel >= 1 && abs(pos.z - GetZAt()) > 1 && !below)
+			{
+				vel.z -= gravity / 2.0;
+			}
+			if (waterlevel < 3 || (bInvulnerable) || (player.cheats & (CF_GODMODE | CF_NOCLIP2)) ||	(player.cheats & CF_GODMODE2))
+			{
+				ResetAirSupply();
+			}
+			else if (!(Level.maptime & 7)) //only does the damage while the tank is inhabited
+			{	//waterlevel is 3, the water is flooding the tank
+				DamageMobj(NULL, NULL, 100, 'Drowning');
+			}
+		}
+	}
+	
 	override void CheckPitch()
 	{
 		let player = self.player;
