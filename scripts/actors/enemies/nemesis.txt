@@ -336,6 +336,16 @@ class RENemesis : NaziBoss
 		Super.PostBeginPlay();
 	}
 
+	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
+	{
+		if (control.canDie)
+		{
+			// If Nemesis can die permanently, allow death special activation
+			activationtype &= ~THINGSPEC_NoDeathSpecial;
+		}
+		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
+	}
+
 	bool A_ReviveStart()
 	{
 		// Keep previous target in "tracer" pointer to prevent it from
