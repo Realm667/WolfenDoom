@@ -229,10 +229,12 @@ class RENemesis : NaziBoss
 
 	Default
 	{
+		Activation THINGSPEC_NoDeathSpecial;
 		DamageFactor "UndeadPoison", 0;
 		DamageFactor "UndeadPoisonAmbience", 0;
 		DeathSound "nemesis/death";
 		Health 1600;
+		PainChance 16;
 		Radius 48;
 		MeleeRange 56;
 		SeeSound "nemesis/sight";
@@ -248,7 +250,7 @@ class RENemesis : NaziBoss
 		NEMS A 0 NoDelay {user_incombat = 1;}
 		Goto Look;
 	See:
-		"####" "#" 0 A_JumpIfCloser(1024, "See.Boss");
+		"####" "#" 0 A_JumpIfCloser(768, "See.Boss");
 		Goto TeleportStart;
 	Missile:
 		NEMS A 0 A_Jump(100, "Missile2");
@@ -301,10 +303,12 @@ class RENemesis : NaziBoss
 		Stop;
 	Raise:
 		NEMS N 8 {
+			A_StartSound(SeeSound, attenuation: 0);
 			ACS_NamedExecute("City_Light_Off", 0);
 			A_RearrangePointers(AAPTR_TRACER); // Fetch target from "tracer" pointer.
 		}
 		NEMS M 8;
+		Goto See;
 	TeleportStart:
 		NEMS A 0 { // Set frame you see while disappearing
 			bSolid = false;
@@ -316,7 +320,7 @@ class RENemesis : NaziBoss
 		"####" "#" 70 A_TeleportCloseTo(180, 384, "Reappear");
 		Loop;
 	Reappear:
-		"####" "#" 0 A_StartSound("JUMPSCARE", attenuation: 0.0);
+		"####" "#" 0 A_StartSound("JUMPSCARE", attenuation: 0);
 		"####" "#" 1 {
 			bSolid = true;
 			bShootable = true;
