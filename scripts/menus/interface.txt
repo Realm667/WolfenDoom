@@ -854,14 +854,15 @@ class ViewItem : BoAMenu
 		if (!item.args[0]) return "";
 		string base_name = "SECRET"..item.args[0], data, result;
 		int i = 1, curToken, stringLine = 0;
+		bool error = false;
 		// Keep processing consecutive SECRET<i> strings until an entry doesn't exist
-		while ((data = StringTable.Localize(base_name..i, false)) != base_name..i) {
+		while (!error && (data = StringTable.Localize(base_name..i, false)) != base_name..i) {
 			//itemids: ??? = 1, Weapon = 2, Grenade(s) = 3(4), Gold (small, moderate, large, TREMENDOUS) = (5, 6, 7, 8), Ammo (small, moderate, large, TREMENDOUS) = (9, 10, 11, 12), Health (small, moderate, large, TREMENDOUS) = (13, 14, 15, 16), Armor = 17, Various Supplies = 18
 			//now decipher the data string which was passed
 			//the format is: t or s|comment|id|itemid|[itemid|[...]], example: "t|check the roof|1993|5|17" means thing with tag 1993 is a secret which gives access to a small amount of gold and an armor suit and tells the player to search for these on a roof.
 			Array<String> tokens;
 			data.Split(tokens, "|");
-			if (tokens.size() < 4) { Console.Printf("ConstructSecretHintText(): Incorrect hint format."); continue; }
+			if (tokens.size() < 4) { Console.Printf("ConstructSecretHintText(): Incorrect hint format."); error = true; continue; }
 			// Start each secret with a number in point form
 			result = result .. "\cC" .. i .. ". ";
 			bool secret_found;
@@ -891,10 +892,10 @@ class ViewItem : BoAMenu
 			else if (tokens[0] == "s") // Sector secret, a sector number (not a tag) is given
 			{
 				int i = tokens[2].toInt(); //check if the sector exists
-				if (Level.sectors.size() <= i) { Console.Printf("ConstructSecretHintText(): Secret sector does not exist."); continue; }
+				if (Level.sectors.size() <= i) { Console.Printf("ConstructSecretHintText(): Secret sector does not exist."); error = true; continue; }
 				if (!(Level.sectors[i].flags & Sector.SECF_SECRET)) { secret_found = true; }
 				else { secret_found = false; }
-			} else { Console.Printf("ConstructSecretHintText(): Incorrect hint format."); continue; }
+			} else { Console.Printf("ConstructSecretHintText(): Incorrect hint format."); error = true; continue; }
             // now construct the line
             // let's pretend that BJ adds the red highlight mentally...
 			if (secret_found) { result.AppendFormat("\cG"); }
