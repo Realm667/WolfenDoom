@@ -229,7 +229,7 @@ class RENemesis : NaziBoss
 
 	Default
 	{
-		Activation THINGSPEC_NoDeathSpecial;
+		Activation THINGSPEC_NoDeathSpecial; // Will be disabled when "killed for good"
 		DamageFactor "UndeadPoison", 0;
 		DamageFactor "UndeadPoisonAmbience", 0;
 		DeathSound "nemesis/death";
@@ -242,6 +242,7 @@ class RENemesis : NaziBoss
 		Tag "$TAGNEMESIS";
 		Base.BossIcon "BOSSICO2";
 		+JUMPDOWN
+		+NOINFIGHTING
 	}
 
 	States
