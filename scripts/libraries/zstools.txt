@@ -84,10 +84,16 @@ class ZScriptTools
 		return number & (~(1 << bitIndex));
 	}
 
-	// Get Z velocity for an arcing projectile, where:
-	// time is the 2D distance between the shooter and target, divided by the speed
-	// gravity is the amount the Z velocity decreases each tic
-	// height is the height difference between the shooter and target
+	// Get Z velocity for a falling projectile such that it hits a target at
+	// the given distance and height.
+	//
+	// time is the 2D distance between the shooter and target, divided by the
+	// speed. In other words, the amount of time (in tics) the projectile would
+	// take to reach the target if it didn't fall.
+	//
+	// gravity is the amount the Z velocity decreases each tic.
+	//
+	// height is the height difference between the shooter and target.
 	static double ArcZVel(double time, double gravity, double height = 0)
 	{
 		gravity *= .5; // I have no idea why I needed to do this, but I did...
@@ -99,11 +105,10 @@ class ZScriptTools
 	// Like "clamp", but for angles rather than plain numbers
 	static double ClampAngle(double angle, double min, double max)
 	{
-		angle = Actor.Normalize180(angle);
 		min = Actor.Normalize180(min);
 		max = Actor.Normalize180(max);
 		double maxdiff = Actor.deltaangle(angle, max);
-		double mindiff = -Actor.deltaangle(angle, min);
+		double mindiff = Actor.deltaangle(min, angle);
 		// Invert clamp
 		if (maxdiff < 0 && mindiff < 0)
 		{
@@ -124,6 +129,6 @@ class ZScriptTools
 		{
 			return min;
 		}
-		return angle;
+		return Actor.Normalize180(angle);
 	}
 }
