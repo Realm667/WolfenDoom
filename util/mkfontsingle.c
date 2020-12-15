@@ -272,6 +272,7 @@ void render_glyphsheet(FT_Face fnt, int32_t charwidth, int32_t charheight, uint3
 			// Calculate glyph X and Y offsets
 			// int32_t glyphHeight = (int32_t)roundf((float) fnt->glyph->linearVertAdvance / 65536.0);
 			int32_t cellxoffset = fnt->glyph->bitmap_left + padding;
+			if (cellxoffset < 0) { cellxoffset = 0; }
 			int32_t cellyoffset = maxtop - fnt->glyph->bitmap_top - upshift + padding;
 			int32_t xoffset = column * charwidth + cellxoffset;
 			int32_t yoffset = row * charheight + cellyoffset;
