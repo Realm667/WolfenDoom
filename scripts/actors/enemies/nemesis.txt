@@ -238,11 +238,13 @@ class RENemesis : NaziBoss
 		Radius 48;
 		MeleeRange 56;
 		SeeSound "nemesis/sight";
-		Speed 6;
+		Species "Zombie";
+		Speed 5;
 		Tag "$TAGNEMESIS";
 		Base.BossIcon "BOSSICO2";
 		+JUMPDOWN
 		+NOINFIGHTING
+		+NOINFIGHTSPECIES
 	}
 
 	States
@@ -374,6 +376,47 @@ class RENemesis : NaziBoss
 		}
 	}
 
+	/*
+	// Jump to a state if blocked by some lines
+	State A_JumpIfBlocked(statelabel toJumpTo)
+	{
+		BlockLinesIterator iter = BlockLinesIterator.Create(self, radius);
+		double maxhdiff = 0;
+		Sector mysec = Level.PointInSector(Pos.XY);
+		double mynlf = mysec.NextLowestFloorAt(Pos.X, Pos.Y, Pos.Z, steph: MaxStepHeight);
+		while (iter.Next())
+		{
+			Console.Printf("Line %d:", iter.CurLine.index());
+			if (iter.CurLine.flags & Line.ML_TWOSIDED && iter.CurLine.sidedef[1])
+			{
+				Sector frontsec = iter.CurLine.sidedef[0].sector;
+				Sector backsec = iter.CurLine.sidedef[1].sector;
+				double nlffront = frontsec.NextLowestFloorAt(Pos.X, Pos.Y, Pos.Z, steph: MaxStepHeight);
+				double nlfback = backsec.NextLowestFloorAt(Pos.X, Pos.Y, Pos.Z, steph: MaxStepHeight);
+				double hdiffa = abs(mynlf - nlfback);
+				double hdiffb = abs(mynlf - nlffront);
+				Console.Printf("connects sectors %d and %d. Floor heights: %.3f, %.3f", frontsec.Index(), backsec.Index(), nlffront, nlfback);
+				if (hdiffa > MaxStepHeight)
+				{
+					Console.Printf("height diff %.3f blocks me!", hdiffa);
+				}
+				if (hdiffb > MaxStepHeight)
+				{
+					Console.Printf("height diff %.3f blocks me!", hdiffb);
+				}
+				maxhdiff = max(hdiffa, hdiffb, maxhdiff);
+			}
+			else
+			{
+				Console.Printf("One-sided line!!");
+			}
+		}
+		Console.Printf("Done iterating through lines");
+		return ResolveState(null); // For now
+		return ResolveState(toJumpTo);
+	}
+	*/
+
 	// Checks whether the given angle is suitable for teleporting to. Returns the distance at the given angle which is suitable, or -1 if it is not suitable.
 	double isAngleSuitable(double angle, double maxdistance, double checkIncrement = 16, double heightThreshold = 128, double mindistance = 128)
 	{
@@ -408,35 +451,28 @@ class RENemesis : NaziBoss
 			{
 				continue;
 			}
-			/*
-			// I don't know for sure, but this code might cause a bad
-			// performance hit, and it's not even finished, so I'm leaving it
-			// commented out for now, unless it's really needed.
-			// For good measure - ensure he doesn't get stuck on an edge.
-			BlockLinesIterator iter = BlockLinesIterator.CreateFromPos(checkSpot.X, checkSpot.Y, checkSpot.Z, MaxDropoffHeight, Radius + Speed, sec);
-			bool onLedge = false;
+			BlockLinesIterator iter = BlockLinesIterator.CreateFromPos(checkSpot, MaxDropoffHeight, Radius + Speed, sec);
+			bool stuck = false;
+			double maxHeightDiff = 0;
 			while (iter.Next())
 			{
 				if (!(iter.CurLine.flags & Line.ML_TWOSIDED))
 				{
-					continue;
+					stuck = true;
+					break;
 				}
-				Sector otherSector = iter.CurLine.frontsector;
-				if (iter.CurLine.frontsector == sec)
-				{
-					otherSector = iter.CurLine.backsector;
-				}
-				if (otherSector.floorplane.ZatPoint(checkSpot.XY) > sec.floorplane.ZatPoint(checkSpot.XY))
-				{
-					continue;
-				}
-				double lowerFloor = otherSector.NextLowestFloorAt(checkSpot.X, checkSpot.Y, checkSpot.Z, 0, MaxStepHeight);
+				Sector frontsec = iter.CurLine.sidedef[0].sector;
+				Sector backsec = iter.CurLine.sidedef[1].sector;
+				double frontFloorHeight = frontsec.NextLowestFloorAt(checkSpot.X, checkSpot.Y, checkSpot.Z, steph: MaxStepHeight);
+				double backFloorHeight = backsec.NextLowestFloorAt(checkSpot.X, checkSpot.Y, checkSpot.Z, steph: MaxStepHeight);
+				double heightDiffA = abs(closestFloorHeight - backFloorHeight);
+				double heightDiffB = abs(closestFloorHeight - frontFloorHeight);
+				maxHeightDiff = max(heightDiffA, heightDiffB, maxHeightDiff);
 			}
-			if (onLedge)
+			if (stuck || maxHeightDiff > MaxStepHeight)
 			{
 				continue;
 			}
-			*/
 			// Console.Printf("checkSpot: %.3f %.3f %.3f", checkSpot);
 			SetOrigin(checkSpot, false);
 			if (TestMobjLocation())
@@ -478,8 +514,6 @@ class RENemesis : NaziBoss
 			return null;
 		}
 		SetOrigin(target.Vec3Angle(suitableDistance, traceAngle), false);
-		// Get him un-stuck from the ledge, if any.
-		Thrust(Speed, traceAngle + 180);
 		return appearState;
 	}
 }
