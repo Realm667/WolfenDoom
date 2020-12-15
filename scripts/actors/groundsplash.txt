@@ -168,14 +168,18 @@ class GroundSplashBase : Actor
 	}
 
 	// Spawn an alternative ground splash
-	static Actor SpawnGroundSplash(Actor mo, String splashType)
+	// mo - the actor which is used to check position and floor texture
+	// splashType - The "ground splash class" - e.g. Missile, Mine, etc.
+	// zthreshold - Maximum distance from splash actor to ground for spawning
+	// ground splash. Default is 3.
+	static Actor SpawnGroundSplash(Actor mo, String splashType, double zthreshold = 3)
 	{
 		// Check CVar
 		CVar groundPlumeSwitch = CVar.FindCVar("boa_groundplume");
 		if(!groundPlumeSwitch.GetBool()) { return null; }
 		// Get floor texture
 		String textureName;
-		if (mo.Pos.Z == mo.CurSector.floorplane.ZatPoint(mo.Pos.XY)) {
+		if (mo.Pos.Z <= (mo.CurSector.floorplane.ZatPoint(mo.Pos.XY) + zthreshold)) {
 			// mo is on the ground
 			textureName = TexMan.GetName(mo.floorpic);
 		} else {
@@ -183,7 +187,7 @@ class GroundSplashBase : Actor
 			Sector ffSector;
 			double ffz;
 			[ffz, ffSector] = mo.CurSector.NextLowestFloorAt(mo.Pos.X, mo.Pos.Y, mo.Pos.Z, 0, 0);
-			if (mo.Pos.Z != ffz) { return null; }
+			if (mo.Pos.Z > (ffz + zthreshold)) { return null; }
 			// A 3D floor control sector ceiling becomes a floor
 			TextureID ffTexture = ffSector.GetTexture(1);
 			textureName = TexMan.GetName(ffTexture);
