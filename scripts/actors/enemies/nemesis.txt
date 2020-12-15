@@ -442,9 +442,8 @@ class RENemesis : NaziBoss
 			checkDistance > mindistance;
 			checkDistance -= checkIncrement
 		){
-			Vector2 secCheckSpot = target.Vec2Angle(checkDistance, angle);
-			Sector sec = Level.PointInSector(secCheckSpot);
 			Vector3 checkSpot = target.Vec3Angle(checkDistance, angle);
+			Sector sec = Level.PointInSector(checkSpot.XY);
 			// Ensure Nemesis doesn't teleport into midair
 			double closestFloorHeight = sec.NextLowestFloorAt(checkSpot.X, checkSpot.Y, checkSpot.Z, 0, MaxStepHeight);
 			if ((targFloorHeight - closestFloorHeight) > MaxDropoffHeight)
