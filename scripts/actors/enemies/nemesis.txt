@@ -376,48 +376,9 @@ class RENemesis : NaziBoss
 		}
 	}
 
-	/*
-	// Jump to a state if blocked by some lines
-	State A_JumpIfBlocked(statelabel toJumpTo)
-	{
-		BlockLinesIterator iter = BlockLinesIterator.Create(self, radius);
-		double maxhdiff = 0;
-		Sector mysec = Level.PointInSector(Pos.XY);
-		double mynlf = mysec.NextLowestFloorAt(Pos.X, Pos.Y, Pos.Z, steph: MaxStepHeight);
-		while (iter.Next())
-		{
-			Console.Printf("Line %d:", iter.CurLine.index());
-			if (iter.CurLine.flags & Line.ML_TWOSIDED && iter.CurLine.sidedef[1])
-			{
-				Sector frontsec = iter.CurLine.sidedef[0].sector;
-				Sector backsec = iter.CurLine.sidedef[1].sector;
-				double nlffront = frontsec.NextLowestFloorAt(Pos.X, Pos.Y, Pos.Z, steph: MaxStepHeight);
-				double nlfback = backsec.NextLowestFloorAt(Pos.X, Pos.Y, Pos.Z, steph: MaxStepHeight);
-				double hdiffa = abs(mynlf - nlfback);
-				double hdiffb = abs(mynlf - nlffront);
-				Console.Printf("connects sectors %d and %d. Floor heights: %.3f, %.3f", frontsec.Index(), backsec.Index(), nlffront, nlfback);
-				if (hdiffa > MaxStepHeight)
-				{
-					Console.Printf("height diff %.3f blocks me!", hdiffa);
-				}
-				if (hdiffb > MaxStepHeight)
-				{
-					Console.Printf("height diff %.3f blocks me!", hdiffb);
-				}
-				maxhdiff = max(hdiffa, hdiffb, maxhdiff);
-			}
-			else
-			{
-				Console.Printf("One-sided line!!");
-			}
-		}
-		Console.Printf("Done iterating through lines");
-		return ResolveState(null); // For now
-		return ResolveState(toJumpTo);
-	}
-	*/
-
-	// Checks whether the given angle is suitable for teleporting to. Returns the distance at the given angle which is suitable, or -1 if it is not suitable.
+	// Checks whether the given angle is suitable for teleporting to. Returns
+	// the distance at the given angle which is suitable, or -1 if it is not
+	// suitable.
 	double isAngleSuitable(double angle, double maxdistance, double checkIncrement = 16, double heightThreshold = 128, double mindistance = 128)
 	{
 		double suitableDistance = -1;
@@ -436,7 +397,8 @@ class RENemesis : NaziBoss
 		Vector3 oldPosition = Pos;
 		Sector targSec = Level.PointInSector(target.Pos.XY);
 		double targFloorHeight = targSec.NextLowestFloorAt(target.Pos.X, target.Pos.Y, target.Pos.Z, 0, MaxStepHeight);
-		// Check for a suitable spot to reappear at. Start at the furthest point, and close in to the target's position.
+		// Check for a suitable spot to reappear at. Start at the furthest
+		// point, and close in to the target's position.
 		for (
 			double checkDistance = maxdistance;
 			checkDistance > mindistance;
@@ -450,6 +412,7 @@ class RENemesis : NaziBoss
 			{
 				continue;
 			}
+			// Ensure Nemesis doesn't get stuck on a wall or ledge
 			BlockLinesIterator iter = BlockLinesIterator.CreateFromPos(checkSpot, MaxDropoffHeight, Radius + Speed, sec);
 			bool stuck = false;
 			double maxHeightDiff = 0;
@@ -472,7 +435,9 @@ class RENemesis : NaziBoss
 			{
 				continue;
 			}
-			// Console.Printf("checkSpot: %.3f %.3f %.3f", checkSpot);
+			// Ensure Nemesis doesn't get stuck on another actor or prop
+			// (I think that's what TestMobjLocation does... It doesn't seem
+			// to have prevented Nemesis from getting stuck on a ledge.)
 			SetOrigin(checkSpot, false);
 			if (TestMobjLocation())
 			{
