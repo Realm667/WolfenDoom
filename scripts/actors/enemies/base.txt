@@ -660,23 +660,6 @@ class Base : Actor
 		return false;
 	}
 
-	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
-	{
-		// Fix sprite if actor dies when dodging - most actors use different sprite prefixes for their dodge states
-		State RightDodge = FindState("Dodge.Right");
-		State LeftDodge = FindState("Dodge.Left");
-		State CrouchDodge = FindState("Dodge.Crouch");
-		if (
-			((RightDodge && CurState.InStateSequence(RightDodge)) ||
-			(LeftDodge && CurState.InStateSequence(LeftDodge)) ||
-			(CrouchDodge && CurState.InStateSequence(CrouchDodge))) && Sprite != SpawnState.Sprite)
-		{
-			Sprite = SpawnState.Sprite;
-		}
-
-		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
-	}
-
 	double, double GetBestSideMove() //there should be some occasionally events where actors gets stucked over ledges or stairs, how to fix? - ozy81
 	{
 		double left = GetMoveDistance(90);
@@ -2207,20 +2190,6 @@ class Nazi : Base
 
 	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
 	{
-		State DeathState = FindState("Death");
-		if (DodgeState && sprite == DodgeState.sprite)
-		{
-			// Make sure the sprite is correct
-			if (DeathState.sprite)
-			{
-				sprite = DeathState.sprite;
-			}
-			else
-			{
-				sprite = SpawnState.sprite;
-			}
-		}
-
 		if (gierdroplevel > 0 && bCanUseWalls && target && target.player && target.FindInventory("GierToken"))
 		{
 			// Do Totale Gier coin drop
@@ -2290,6 +2259,9 @@ class Nazi : Base
 	// Hijack the damage calls in order to implement stealth kills and critical hits
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
+		// Make sure the sprite is correct if we were dodging
+		if (DodgeState && sprite == DodgeState.sprite) { sprite = SpawnState.sprite; }
+
 		Inventory vis;
 
 		if (user_sneakable && bDormant) { bDormant = False; } // Pain wakes up a dormant sneakable actors
