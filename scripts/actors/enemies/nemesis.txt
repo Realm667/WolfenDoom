@@ -285,7 +285,10 @@ class RENemesis : NaziBoss
 			return ResolveState(null);
 		}
 		NEMS M 8 A_NoBlocking(false);
-		NEMS N 8400 CanRaise; // Kneel for 4 minutes = 8400 tics, 3 seconds is easier to test with
+		// Kneel for 4 minutes = 60 seconds * 35 tics per second = 8400 tics
+		// 8400 tics - 3 seconds = 8400 - 105 = 8295 tics
+		// 3 seconds (105 tics) is easier to test with
+		NEMS N 8295 CanRaise;
 		"####" "#" 35 CanRaise {
 			// Check whether Nemesis is allowed to wake up
 			if (control.sleeping)
@@ -295,6 +298,7 @@ class RENemesis : NaziBoss
 			return ResolveState(1);
 		}
 		Wait;
+		"####" "#" 105; // Wait for 3 seconds before reviving
 		"####" "#" -1 A_ReviveStart;
 		Stop;
 	DeathForReal: // Die permanently, and do not reappear.
