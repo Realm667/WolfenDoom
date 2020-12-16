@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Talon1024, Username-N00b-is-not-available
+ * Copyright (c) 2020 Talon1024, Username-N00b-is-not-available, AFADoomer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -130,5 +130,60 @@ class ZScriptTools
 			return min;
 		}
 		return Actor.Normalize180(angle);
+	}
+
+	// Convert int to Roman numerals...  Just because.
+	// Reference https://www.hanshq.net/roman-numerals.html for algorithm used
+	static clearscope String ToRomanNumerals(int input)
+	{
+		static const string numerals[] = { "I", "V", "X", "L", "C", "D", "M" };
+		int d = 0;
+		String roman = "";
+
+		while (input > 0)
+		{
+			int num = input % 10;
+
+			if (num % 5 < 4)
+			{
+				for (int i = num % 5; i > 0; i--)
+				{
+					roman = numerals[d] .. roman;
+				}
+			}
+			if (num >= 4 && num <= 8) { roman = numerals[d + 1] .. roman; }
+			if (num == 9) { roman = numerals[d + 2] .. roman; }
+			if (num % 5 == 4) { roman = numerals[d] .. roman; }
+
+			input /= 10;
+			d += 2;
+		}
+
+		return roman;
+	}
+
+	// Takes a string of font names, separated by '|'.  Checks to see if the 'check' string can be
+	// printed by each listed font; if one is able to print the string, that font is returned.
+	//
+	//  This will check to see if Chalkboard can print all of the characters listed, and if not, it
+	//  will move on to Typewriter and test it the same way, and so on:
+	//
+	//  	ZScriptTools.GetViableFont("Chalkboard|Typewriter|handwriting_neat|handwriting_institute|chickn24", "0123456789%/ :");
+	//
+	//  Fallback if none of the passed fonts can print the string is to return SmallFont.
+	static clearscope Font GetViableFont(String fntname, String check = "")
+	{
+		// Splot the string to create an array of font names
+		Array<String> fonts;
+		fntname.Split(fonts, "|");
+
+		// Iterate through the array of fonts until you find one that can print all of the characters
+		for (int f = 0; f < fonts.Size(); f++)
+		{
+			Font fnt = Font.GetFont(fonts[f]);
+			if (fnt && fnt.CanPrint(check)) { return fnt; }
+		}
+
+		return SmallFont; // If all else fails, fall back to SmallFont
 	}
 }
