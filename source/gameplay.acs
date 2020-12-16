@@ -355,5 +355,14 @@ script "LIGHTS" (int light_tid)
 	PlaySound(0,"SW_LIGHT");
 }
 
+//Generic Light Script with no sound, for objects like creepycandle and so on
+script "LIGHTS_NOSOUND" (int light_tid)
+{
+	if(!GetActorProperty(light_tid,APROP_Dormant))
+		Thing_Deactivate(light_tid);
+	else
+		Thing_Activate(light_tid);
+}
+
 // Compatibility placeholders (old functions that aren't needed any more, but might be referenced in old maps)
 script "BossHealth" (void) {}
