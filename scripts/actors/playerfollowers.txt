@@ -679,6 +679,8 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			target &&
 			target.health > 0 &&
 			target != goal &&
+			target != self &&
+			target.bShootable &&
 			!target.bDormant &&
 			!target.bInvulnerable &&
 			CheckSight(target)
