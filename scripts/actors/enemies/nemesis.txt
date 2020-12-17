@@ -419,7 +419,8 @@ class RENemesis : NaziBoss
 			// Ensure Nemesis doesn't get stuck on a wall or ledge
 			BlockLinesIterator iter = BlockLinesIterator.CreateFromPos(checkSpot, MaxDropoffHeight, Radius + Speed, sec);
 			bool stuck = false;
-			double maxHeightDiff = 0;
+			double lowestFloor = 99999999;
+			double highestFloor = -99999999;
 			while (iter.Next())
 			{
 				if (!(iter.CurLine.flags & Line.ML_TWOSIDED))
@@ -431,11 +432,10 @@ class RENemesis : NaziBoss
 				Sector backsec = iter.CurLine.sidedef[1].sector;
 				double frontFloorHeight = frontsec.NextLowestFloorAt(checkSpot.X, checkSpot.Y, checkSpot.Z, steph: MaxStepHeight);
 				double backFloorHeight = backsec.NextLowestFloorAt(checkSpot.X, checkSpot.Y, checkSpot.Z, steph: MaxStepHeight);
-				double heightDiffA = abs(closestFloorHeight - backFloorHeight);
-				double heightDiffB = abs(closestFloorHeight - frontFloorHeight);
-				maxHeightDiff = max(heightDiffA, heightDiffB, maxHeightDiff);
+				lowestFloor = min(lowestFloor, frontFloorHeight, backFloorHeight);
+				highestFloor = max(highestFloor, frontFloorHeight, backFloorHeight);
 			}
-			if (stuck || maxHeightDiff > MaxStepHeight)
+			if (stuck || (highestFloor - lowestFloor) > MaxStepHeight)
 			{
 				continue;
 			}
