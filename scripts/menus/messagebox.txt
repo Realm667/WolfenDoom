@@ -23,6 +23,7 @@
 class KeenMessage
 {
 	String text;
+	String colorprefix;
 	int align;
 	String graphic;
 	int graphicalign;
@@ -38,6 +39,7 @@ class KeenMessage
 		KeenMessage msg = New("KeenMessage");
 
 		msg.text = mtext;
+		msg.colorprefix = "\c[TrueBlack]";
 		msg.align = malign;
 		msg.graphic = mgraphic;
 		msg.graphicalign = mgraphicalign;
@@ -63,7 +65,7 @@ class ClassicMessageBox : MessageBoxMenu
 
 	Font fnt;
 
-	String message;
+	String message, colorprefix;
 	int align;
 	int graphicalign;
 	String graphic;
@@ -135,6 +137,7 @@ class ClassicMessageBox : MessageBoxMenu
 		msg.prefix = "B_";
 		msg.fillcolor = 0xFFFFFF;
 		msg.fnt = Font.GetFont("Classic");
+		msg.colorprefix = "\c[TrueBlack]";
 
 		KeenMessage.Init(msg, text, align, graphic, graphicalign, autoclose, width * 8 + 16, height * 8 + 16, fadealpha, fadetargetalpha, fadeintime, fadeouttime);
 
@@ -172,7 +175,7 @@ class ClassicMessageBox : MessageBoxMenu
 	override void Drawer()
 	{
 		if (mParentMenu) { mParentMenu.Drawer(); }
-		DrawMessage(message, 8, fillcolor);
+		DrawMessage(message, 8, fillcolor, colorprefix);
 
 		if (fadetic) { DrawFade(); }
 	}
@@ -204,6 +207,7 @@ class ClassicMessageBox : MessageBoxMenu
 			else
 			{
 				message = messages[index - 1].text;
+				colorprefix = messages[index - 1].colorprefix;
 				width = messages[index - 1].width;
 				height = messages[index - 1].height;
 				align = messages[index - 1].align;
@@ -229,12 +233,12 @@ class ClassicMessageBox : MessageBoxMenu
 		if (fadetic) { TickFade(); }
 	}
 
-	void DrawMessage(String text, int size = 8, color clr = 0x0)
+	void DrawMessage(String text, int size = 8, color clr = 0x0, String colorprefix = "")
 	{
 		if (!top || !bottom || !left || !right || !topleft || !topright || !bottomleft || !bottomright) { return; }
 
 		int w = 0, h = 0, gw = 0;
-		text = StringTable.Localize(text);
+		text = colorprefix .. StringTable.Localize(text);
 
 		Vector2 graphicsize;
 
@@ -322,7 +326,7 @@ class ClassicMessageBox : MessageBoxMenu
 			else if (align == 1) { drawx += w / 2 - size - 8; }
 			else { drawx -= w / 2 - 8; }
 
-			screen.DrawText(fnt, 0, drawx, drawy, "\c[White]" .. message.StringAt(i) .. (i == (c - 1) ? cursor : ""), DTA_Clean, true);
+			screen.DrawText(fnt, 0, drawx, drawy, message.StringAt(i) .. (i == (c - 1) ? cursor : ""), DTA_Clean, true);
 
 			drawx = 160 + xoffset;
 			drawy += fontheight;
@@ -331,6 +335,20 @@ class ClassicMessageBox : MessageBoxMenu
 
 	override bool OnUIEvent(UIEvent ev)
 	{
+		// Intercept key presses to see if we're pressing the strafe controls or use, 
+		// and redirect those to call the correct left/right/open movement menu event code.
+
+		if (ev.Type == UIEvent.Type_KeyDown)
+		{
+			if (
+				CheckControl(ev, "+moveleft", MKEY_Left) ||
+				CheckControl(ev, "+moveright", MKEY_Right) ||
+				CheckControl(ev, "+use", MKEY_Enter) ||
+				CheckControl(ev, "+forward", MKEY_Up) ||
+				CheckControl(ev, "+back", MKEY_Down)
+			) { return false; }
+		}
+
 		if (players[consoleplayer].cmd.buttons & cmds || showtics > 0) { return false; }
 
 		if (ev.type == UIEvent.Type_KeyDown)
@@ -359,6 +377,7 @@ class ClassicMessageBox : MessageBoxMenu
 			}
 			return false;
 		}
+
 		return Super.OnUIEvent(ev);
 	}
 
@@ -393,6 +412,34 @@ class ClassicMessageBox : MessageBoxMenu
 		}
 
 		return true;
+	}
+
+	bool CheckControl(UIEvent ev, String control, int type)
+	{
+		int c1, c2;
+		[c1, c2] = Bindings.GetKeysForCommand(control);
+
+		String keynames = Bindings.NameKeys(c1, c2);
+		keynames = ZScriptTools.StripColorCodes(keynames);
+
+		Array<String> keys;
+		keynames.Split(keys, ", ");
+
+		String keychar = String.Format("%c", ev.KeyChar);
+		keychar = keychar.MakeUpper();
+
+		for (int i = 0; i < keys.Size(); i++)
+		{
+			if (keys[i].Length() > 1) { continue; } // Skip named keys (Alt, Shift, Ctrl, etc.)
+
+			if (keys[i].ByteAt(0) == keychar.ByteAt(0))
+			{
+				MenuEvent(type, false);
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	override void HandleResult(bool res)

@@ -369,13 +369,16 @@ class CombinationSafe : BoAMenu
 		return false;
 	}
 */
-	void CheckControl(UIEvent ev, String control, int type)
+	bool CheckControl(UIEvent ev, String control, int type)
 	{
 		int c1, c2;
 		[c1, c2] = Bindings.GetKeysForCommand(control);
 
+		String keynames = Bindings.NameKeys(c1, c2);
+		keynames = ZScriptTools.StripColorCodes(keynames);
+
 		Array<String> keys;
-		Bindings.NameKeys(c1, c2).Split(keys, ", ");
+		keynames.Split(keys, ", ");
 
 		String keychar = String.Format("%c", ev.KeyChar);
 		keychar = keychar.MakeUpper();
@@ -387,8 +390,11 @@ class CombinationSafe : BoAMenu
 			if (keys[i].ByteAt(0) == keychar.ByteAt(0))
 			{
 				MenuEvent(type, false);
+				return true;
 			}
 		}
+
+		return false;
 	}
 
 	void TryOpen()

@@ -508,8 +508,6 @@ class MapStatsHandler : StaticEventHandler
 
 	ui void DimScaled(Color clr = 0x000000, double alpha = 0.5, int x = 0, int y = 0, int w = width, int h = height)
 	{
-		double dimscale = double(Screen.GetHeight()) / height;
-
 		Vector2 pos, size;
 		[pos, size] = Screen.VirtualToRealCoords((x, y), (w, h), (width, height));
 

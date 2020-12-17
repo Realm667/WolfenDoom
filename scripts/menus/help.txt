@@ -151,7 +151,7 @@ class BoAInfo : GenericMenu
 		// Intercept key presses to see if we're pressing the strafe controls or use, 
 		// and redirect those to call the correct left/right/open movement menu event code.
 
-		if (ev.Type == UIEvent.Type_KeyDown || ev.Type == UIEVent.Type_Char)
+		if (ev.Type == UIEvent.Type_KeyDown)
 		{
 			CheckControl(ev, "+moveleft", MKEY_Left);
 			CheckControl(ev, "+moveright", MKEY_Right);
@@ -163,24 +163,32 @@ class BoAInfo : GenericMenu
 		return Super.OnUIEvent(ev);
 	}
 
-	void CheckControl(UIEvent ev, String control, int type)
+	bool CheckControl(UIEvent ev, String control, int type)
 	{
 		int c1, c2;
 		[c1, c2] = Bindings.GetKeysForCommand(control);
 
+		String keynames = Bindings.NameKeys(c1, c2);
+		keynames = ZScriptTools.StripColorCodes(keynames);
+
 		Array<String> keys;
-		Bindings.NameKeys(c1, c2).Split(keys, ", ");
+		keynames.Split(keys, ", ");
 
 		String keychar = String.Format("%c", ev.KeyChar);
 		keychar = keychar.MakeUpper();
 
 		for (int i = 0; i < keys.Size(); i++)
 		{
+			if (keys[i].Length() > 1) { continue; } // Skip named keys (Alt, Shift, Ctrl, etc.)
+
 			if (keys[i].ByteAt(0) == keychar.ByteAt(0))
 			{
 				MenuEvent(type, false);
+				return true;
 			}
 		}
+
+		return false;
 	}
 
 	void DrawBlocks(ParsedValue data, int pagenum, double alpha, int tic, double scale)
