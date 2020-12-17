@@ -27,7 +27,7 @@ class TextScroll : ReadThisMenu
 {
 	TextureID background, overlay, scrollback;
 	Font fnt;
-	int clr;
+	int clr, mapnum;
 	String text;
 
 	double scrolly, scrollx, scrollstep;
@@ -73,6 +73,8 @@ class TextScroll : ReadThisMenu
 		}
 
 		lines = fnt.BreakLines(StringTable.Localize(text), int(textwidth));
+
+		mapnum = level.levelnum; // Remember what map we're on so that we can close this scroller if the map changes
 	}
 
 	override void Drawer()
@@ -99,7 +101,7 @@ class TextScroll : ReadThisMenu
 			alpha -= 1.0 / 70; // Fade out over two seconds
 		}
 
-		if (alpha <= 0) { Close(); }
+		if (alpha <= 0 || (mapnum && mapnum != level.levelnum)) { Close(); } // Close if it faded out or if the map somehow changed
 
 		Super.Ticker();
 	}
