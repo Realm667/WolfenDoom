@@ -34,6 +34,20 @@ ACTOR Tree1 : TreeBase
 	}
 }
 
+ACTOR Tree1_Plaza : Tree1
+{
+	//$Title Tree (for Opera)
+	Radius 16
+	Height 56
+	DistanceCheck "boa_treeslod"
+	States
+	{
+	BidiSpawn:
+		DTRE E -1 A_2DPitchFix
+		Stop
+	}
+}
+
 ACTOR Tree2 : Tree1
 {
 	//$Title Tree (large)
