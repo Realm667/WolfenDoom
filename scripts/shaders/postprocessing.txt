@@ -106,7 +106,7 @@ class TcPostProcessShaderHandler : StaticEventHandler
 	override void WorldTick()
 	{
 		PlayerInfo	plr = players[ consoleplayer ];
-		if( plr && plr.health > 0 && Cvar.GetCVar( "boa_mblur", plr ).GetBool() )
+		if( plr && plr.health > 0 && plr.mo && Cvar.GetCVar( "boa_mblur", plr ).GetBool() && !plr.mo.FindInventory("CutsceneEnabled") )
 		{
 			yaw		= plr.mo.GetPlayerInput( ModInput_Yaw );
 			pitch	= -plr.mo.GetPlayerInput( ModInput_Pitch );
