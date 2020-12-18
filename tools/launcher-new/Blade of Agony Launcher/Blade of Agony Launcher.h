@@ -115,11 +115,11 @@ TCHAR TexFilterSettingsStrings[][50] = {
 	TEXT("Trilinear (with Normal2x)"),
 };
 
-TCHAR TexFilterSettingsCmd[][130] = {
+TCHAR TexFilterSettingsCmd[][50] = {
 	TEXT(""),
-	TEXT("+set gl_texture_filter 0 +set gl_texture_filter_anisotropic 0 +set gl_texture_hqresizemode 6 +set gl_texture_hqresizemult 1"),
-	TEXT("+set gl_texture_filter 4 +set gl_texture_filter_anisotropic 8 +set gl_texture_hqresizemode 6 +set gl_texture_hqresizemult 1"),
-	TEXT("+set gl_texture_filter 4 +set gl_texture_filter_anisotropic 16 +set gl_texture_hqresizemode 6 +set gl_texture_hqresizemult 2"),
+	TEXT("+exec launcher-resource/texfilt-none.cfg"),
+	TEXT("+exec launcher-resource/texfilt-tri.cfg"),
+	TEXT("+exec launcher-resource/texfilt-nnx.cfg"),
 };
 
 struct LauncherSettings
@@ -134,3 +134,12 @@ struct LauncherSettings
 
 extern LauncherSettings settings;
 
+// this enables the prettier (i.e. not Windows 95-like) theming for the dialog box window
+
+#pragma comment(linker,"/manifestdependency:\"" \
+    "type='win32' " \
+    "name='Microsoft.Windows.Common-Controls' " \
+    "version='6.0.0.0' " \
+    "processorArchitecture='*' "  \
+    "publicKeyToken='6595b64144ccf1df' " \
+    "language='*'\"")
