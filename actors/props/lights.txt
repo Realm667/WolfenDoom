@@ -879,6 +879,17 @@ ACTOR StreetLight2 : SwitchableDecoration
 	}
 }
 
+ACTOR StreetLight2NH : StreetLight2
+{
+	//$Category Lights (BoA)/No Hitbox
+	//$Title 3d Street Light with No Hitbox (TRIPLE, SWITCHABLE)
+	Height 4
+	-SOLID
+	+MOVEWITHSECTOR
+	+NOBLOCKMAP
+	+NOGRAVITY
+}
+
 ACTOR StreetLight3 : StreetLight2
 {
 	//$Title 3d Street Light (SINGLE, SWITCHABLE)
@@ -893,6 +904,17 @@ ACTOR StreetLight3 : StreetLight2
 		MDLA B -1 {bDormant = TRUE;}
 		Stop
 	}
+}
+
+ACTOR StreetLight3NH : StreetLight3
+{
+	//$Category Lights (BoA)/No Hitbox
+	//$Title 3d Street Light with No Hitbox (SINGLE, SWITCHABLE)
+	Height 4
+	-SOLID
+	+MOVEWITHSECTOR
+	+NOBLOCKMAP
+	+NOGRAVITY
 }
 
 ACTOR CastleLight1 : SwitchableDecoration
