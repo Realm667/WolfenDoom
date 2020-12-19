@@ -1,0 +1,34 @@
+// Revolving door data definitions
+// Format:
+// <Map Name>
+// {
+// 	<Polyobject number>
+// 	{
+// 		friction = <double>;
+// 		duration = <int>;
+// 		torque = <double>;
+// 	}
+// }
+// Where friction is the rotational momentum reduction per <duration> tics,
+// duration is the amount of time per rotation (Please use a multiple of 2),
+// and torque is the amount of rotational momentum added for each activation
+
+TEST_RDR
+{
+	1
+	{
+		friction = .125;
+		duration = 2;
+		torque = .25;
+	}
+}
+
+C1M5
+{
+	182
+	{
+		friction = .125;
+		duration = 2;
+		torque = .25;
+	}
+}
