@@ -132,6 +132,15 @@ class ZScriptTools
 		return Actor.Normalize180(angle);
 	}
 
+	static Vector3 GetTraceDirection(double Angle, double Pitch)
+	{
+		return (
+			cos(Angle) * cos(Pitch),
+			sin(Angle) * cos(Pitch),
+			-sin(Pitch)
+		);
+	}
+
 	// Convert int to Roman numerals...  Just because.
 	// Reference https://www.hanshq.net/roman-numerals.html for algorithm used
 	static clearscope String ToRomanNumerals(int input)

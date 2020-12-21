@@ -139,14 +139,10 @@ class ACSTools
 		// Actor.Spawn("TraceVisual", Origin, NO_REPLACE);
 		float Pitch = activator.Pitch;
 		float Angle = activator.Angle;
-		Vector3 Direction = (
-			cos(Angle) * cos(Pitch),
-			sin(Angle) * cos(Pitch),
-			-sin(Pitch)
-		);
+		Vector3 Direction = ZScriptTools.GetTraceDirection(Angle, Pitch);
 		Console.Printf("Direction: %.3f %.3f %.3f", direction);
 		aft.Trace(Origin, Level.PointInSector(Origin.XY), Direction, 1024, TRACE_HitSky);
-		if (aft.found)
+		if (aft.found())
 		{
 			Console.Printf("========== %s ==========", aft.Results.HitActor.GetClassName());
 			State frontDeath = aft.Results.HitActor.FindState("Death.Front");
@@ -171,11 +167,30 @@ class ACSTools
 class ActorFinderTracer : LineTracer
 {
 	Actor Source;
-	bool found;
+	class<Actor> typeRestriction;
+	bool exactType;
+	private bool find;
 
 	bool isSuitableActor(Actor toExamine)
 	{
-		return toExamine != Source && toExamine is "Base" && toExamine.bSolid && toExamine.bShootable;
+		bool typeGood = true;
+		if (typeRestriction)
+		{
+			if (exactType)
+			{
+				typeGood = toExamine.GetClass() == typeRestriction;
+			}
+			else
+			{
+				typeGood = toExamine is typeRestriction;
+			}
+		}
+		return typeGood && toExamine != Source && toExamine is "Base" && toExamine.bSolid && toExamine.bShootable;
+	}
+
+	bool found()
+	{
+		return find;
 	}
 
 	override ETraceStatus TraceCallback()
@@ -199,7 +214,7 @@ class ActorFinderTracer : LineTracer
 		{
 			if (isSuitableActor(Results.HitActor))
 			{
-				found = true;
+				find = true;
 				return TRACE_Stop;
 			}
 			else
@@ -208,26 +223,5 @@ class ActorFinderTracer : LineTracer
 			}
 		}
 		return TRACE_Skip;
-	}
-}
-
-class TraceVisual : Actor
-{
-	Default
-	{
-		+NOGRAVITY
-		+NOINTERACTION
-	}
-	States
-	{
-	Spawn:
-		EXCL A 10 Bright;
-		Stop;
-	}
-	
-	override void PostBeginPlay()
-	{
-		Super.PostBeginPlay();
-		SpriteOffset = (0, 65);
 	}
 }

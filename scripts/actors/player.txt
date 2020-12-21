@@ -796,7 +796,7 @@ class BoAPlayer : PlayerPawn
 		actortrace = new("CrosshairTracer");
 
 		actortrace.skipactor = self;
-		Vector3 tracedir = (cos(angle) * cos(pitch), sin(angle) * cos(pitch), -sin(pitch));
+		Vector3 tracedir = ZScriptTools.GetTraceDirection(Angle, Pitch);
 		actortrace.Trace(self.pos + (0, 0, player.viewheight), self.CurSector, tracedir, 2560, 0);
 
 		return actortrace.Results.HitActor;

@@ -565,7 +565,7 @@ class TankPlayer : PlayerPawn
 
 		thistracer.skipspecies = origin.species;
 		thistracer.skipactor = origin;
-		Vector3 tracedir = (cos(angle) * cos(pitch), sin(angle) * cos(pitch), -sin(pitch));
+		Vector3 tracedir = ZScriptTools.GetTraceDirection(angle, pitch);
 		thistracer.Trace(origin.pos + (0, 0, zoffset), origin.CurSector, tracedir, dist, 0);
 	}
 
