@@ -885,21 +885,21 @@ class BoAPlayer : PlayerPawn
 
 			if (leveltilt != oldtilt)
 			{
-				if (leveltilt == 0)
-				{
-					A_SetSize(Default.Radius, Default.Height);
-				}
-				else
-				{
-					double abstilt = abs(leveltilt);
-					double newradius = Default.radius * cos(abstilt) + Default.height / 2 * sin(abstilt);
-					double newheight = Default.radius * sin(abstilt) + Default.height / 2 * cos(abstilt);
+				// if (leveltilt == 0) will never be true because of the
+				// previous "if" statement
+				double abstilt = abs(leveltilt);
+				double newradius = Default.radius * cos(abstilt) + Default.height / 2 * sin(abstilt);
+				double newheight = Default.radius * sin(abstilt) + Default.height / 2 * cos(abstilt);
 
-					if (height != newheight || radius != newradius) { A_SetSize(newradius, newheight, true); }
-				}
+				if (height != newheight || radius != newradius) { A_SetSize(newradius, newheight, true); }
 
 				oldtilt = leveltilt;
 			}
+		}
+		else if (leveltilt == 0)
+		{
+			A_SetSize(Default.Radius, Default.Height);
+			oldtilt = 0;
 		}
 	}
 
