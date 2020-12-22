@@ -13,7 +13,7 @@ int leveltiltpitch, leveltiltangle;
 //
 script "ChangeTilt" (int pitch, int angle, int speed, int override)
 {
-	if (override) { leveltiltpitch = pitch * 1.0; leveltiltangle = angle * 1.0; Terminate; }
+	if (override || speed == 2147483647) { leveltiltpitch = pitch * 1.0; leveltiltangle = angle * 1.0; Terminate; }
 
 	pitch = pitch % 360;
 	angle = angle % 360;
@@ -59,7 +59,7 @@ script "ChangeTilt" (int pitch, int angle, int speed, int override)
 // Alternate script to forceably set the tilt amount
 script "SetTilt" (int pitch, int angle)
 {
-	ACS_NamedExecute("ChangeTilt", 0, pitch, angle, 999999999);
+	ACS_NamedExecute("ChangeTilt", 0, pitch, angle, 2147483647);
 }
 
 // The ACS scripts here handle the smooth transitions to new tilt pitch/angles
