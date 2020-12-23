@@ -2260,7 +2260,7 @@ class Nazi : Base
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
 		// Make sure the sprite is correct if we were dodging
-		if (DodgeState && sprite == DodgeState.sprite) { sprite = SpawnState.sprite; }
+		if ((!bNoPain || health <= 0) && DodgeState && sprite == DodgeState.sprite) { sprite = SpawnState.sprite; }
 
 		Inventory vis;
 
