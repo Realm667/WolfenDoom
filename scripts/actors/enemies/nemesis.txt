@@ -287,16 +287,11 @@ class RENemesis : NaziBoss
 		// 8400 tics - 3 seconds = 8400 - 105 = 8295 tics
 		// 3 seconds (105 tics) is easier to test with
 		NEMS N 8295 CanRaise;
-		"####" "#" 35 CanRaise {
-			// Check whether Nemesis is allowed to wake up
-			if (control.sleeping)
-			{
-				return ResolveState(null);
-			}
-			return ResolveState(1);
-		}
+	Sleep:
+		"####" "#" 35 CanRaise A_JumpIf(!control.sleeping, 1);
 		Wait;
-		"####" "#" 105; // Wait for 3 seconds before reviving
+		"####" "#" 104; // Wait for 3 seconds before reviving
+		"####" "#" 1 A_JumpIf(control.sleeping, "Sleep");
 		"####" "#" -1 A_ReviveStart;
 		Stop;
 	DeathForReal: // Die permanently, and do not reappear.
@@ -437,8 +432,15 @@ class RENemesis : NaziBoss
 				}
 				Sector frontsec = iter.CurLine.sidedef[0].sector;
 				Sector backsec = iter.CurLine.sidedef[1].sector;
-				double frontFloorHeight = frontsec.NextLowestFloorAt(checkSpot.X, checkSpot.Y, checkSpot.Z, steph: MaxStepHeight);
+				double frontFloorHeight = frontsec.NextLowestFloorAt(checkSpot.X, checkSpot.Y, checkSpot.Z + MaxStepHeight, steph: MaxStepHeight);
+				double frontCeilHeight = frontsec.NextHighestCeilingAt(checkSpot.X, checkSpot.Y, checkSpot.Z, checkSpot.Z + Height);
 				double backFloorHeight = backsec.NextLowestFloorAt(checkSpot.X, checkSpot.Y, checkSpot.Z, steph: MaxStepHeight);
+				double backCeilHeight = backsec.NextHighestCeilingAt(checkSpot.X, checkSpot.Y, checkSpot.Z, checkSpot.Z + Height);
+				if (frontCeilHeight - frontFloorHeight < Height || backCeilHeight - backFloorHeight < Height)
+				{ // Ensure a 3D floor isn't blocking Nemesis
+					stuck = true;
+					break;
+				}
 				lowestFloor = min(lowestFloor, frontFloorHeight, backFloorHeight);
 				highestFloor = max(highestFloor, frontFloorHeight, backFloorHeight);
 			}
@@ -446,10 +448,15 @@ class RENemesis : NaziBoss
 			{
 				continue;
 			}
+			SetOrigin(checkSpot, false);
+			// (Hopefully) Ensure Nemesis can move
+			if (!CheckMove(Vec2Angle(Speed, AngleTo(target))))
+			{
+				continue;
+			}
 			// Ensure Nemesis doesn't get stuck on another actor or prop
 			// (I think that's what TestMobjLocation does... It doesn't seem
 			// to have prevented Nemesis from getting stuck on a ledge.)
-			SetOrigin(checkSpot, false);
 			if (TestMobjLocation())
 			{
 				suitableDistance = checkDistance;
@@ -462,11 +469,12 @@ class RENemesis : NaziBoss
 
 	State A_TeleportCloseTo(double preferredAngle = 180, double maxdistance = 384, StateLabel toJumpTo = null)
 	{
-		State appearState = FindState(toJumpTo, true);
+		State appearState = ResolveState(toJumpTo);
 		if (!target) {return appearState;}
 		preferredAngle = target.Angle + preferredAngle;
 		double suitableDistance = -1;
 		double traceAngle = 0;
+		// Check every angle around target for a good position
 		for (double angleOffset = 0; angleOffset < 180; angleOffset += 22.5)
 		{
 			traceAngle = preferredAngle + angleOffset;
