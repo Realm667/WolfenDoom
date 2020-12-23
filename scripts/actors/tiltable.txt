@@ -70,18 +70,11 @@ class Tiltable : Actor
 
 			if (leveltilt != oldtilt)
 			{
-				if (leveltilt == 0)
-				{
-					A_SetSize(Default.Radius, Default.Height);
-				}
-				else
-				{
-					double abstilt = abs(leveltilt);
-					double newradius = Default.radius * cos(abstilt) + Default.height / 2 * sin(abstilt);
-					double newheight = Default.radius * sin(abstilt) + Default.height / 2 * cos(abstilt);
+				double abstilt = abs(leveltilt);
+				double newradius = Default.radius * cos(abstilt) + Default.height / 2 * sin(abstilt);
+				double newheight = Default.radius * sin(abstilt) + Default.height / 2 * cos(abstilt);
 
-					if (height != newheight || radius != newradius) { A_SetSize(newradius, newheight, true); }
-				}
+				if (height != newheight || radius != newradius) { A_SetSize(newradius, newheight, true); }
 
 				oldtilt = leveltilt;
 			}
@@ -106,6 +99,11 @@ class Tiltable : Actor
 
 			oldpos = pos;
 			oldvel = vel.Length();
+		}
+		else if (oldtilt != 0 && leveltilt == 0)
+		{
+			A_SetSize(Default.Radius, Default.Height);
+			oldtilt = 0;
 		}
 	}
 }

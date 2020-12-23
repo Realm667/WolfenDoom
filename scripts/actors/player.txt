@@ -896,7 +896,7 @@ class BoAPlayer : PlayerPawn
 				oldtilt = leveltilt;
 			}
 		}
-		else if (leveltilt == 0)
+		else if (oldtilt != 0 && leveltilt == 0)
 		{
 			A_SetSize(Default.Radius, Default.Height);
 			oldtilt = 0;
