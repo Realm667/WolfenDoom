@@ -1,0 +1,54 @@
+class IWADChecker: StaticEventHandler
+{
+	override void OnRegister()
+	{
+		bool ran_as_iwad = true;
+		if (Wads.FindLump("MAP01", 0) > 0 || Wads.FindLump("E1M1", 0) > 0) //filters Doom IWADS
+		{
+			Menu.SetMenu("IWADNotice");
+		}
+	}
+}
+
+class IWADNotice : BoAMenu
+{
+	bool printed;
+	override void Drawer()
+	{
+		String title = StringTable.Localize("IWADNOTICE1", false);
+		String text = StringTable.Localize("IWADNOTICE2", false);
+		if (!printed)
+		{
+			Console.Printf(title);
+			Console.Printf(text);
+			printed = true;
+		}
+		TextureID tex = TexMan.CheckForTexture("CONBACK", TexMan.Type_MiscPatch);
+		if (tex) { screen.DrawTexture (tex, false, 0, 0, DTA_Fullscreen, true, DTA_Alpha, 1.0); }
+		//print IWADNOTICE1 in bigfont and IWADNOTICE2 in smallfont --- does not work for some reason...
+		screen.DrawText (BigFont, Font.CR_UNTRANSLATED, screen.GetWidth() / 2, screen.GetHeight() / 2 - 30, title, DTA_Clean, true);
+		screen.DrawText (SmallFont, Font.CR_UNTRANSLATED, screen.GetWidth() / 2, screen.GetHeight() / 2 + 30, text, DTA_Clean, true);
+	}
+
+	override bool MenuEvent(int mkey, bool fromcontroller)
+	{
+		if (mkey == MKEY_Enter)
+		{
+			MenuSound("menu/choose");
+			Close();
+			return true;
+		}
+		else return Super.MenuEvent(mkey, fromcontroller);
+	}
+
+	override bool MouseEvent(int type, int x, int y)
+	{
+		if (type == MOUSE_Click)
+		{
+			return MenuEvent(MKEY_Enter, true);
+		}
+		return false;
+	}
+
+}
+
