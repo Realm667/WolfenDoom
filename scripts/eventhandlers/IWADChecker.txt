@@ -1,12 +1,18 @@
-class IWADChecker: StaticEventHandler
+class IWADChecker : EventHandler
 {
-	override void OnRegister()
+	// Check if BoA is being loaded as a PWAD, and display the IWADNotice if it
+	// is.
+	clearscope void CheckIWAD()
 	{
-		bool ran_as_iwad = true;
 		if (Wads.FindLump("MAP01", 0) > 0 || Wads.FindLump("E1M1", 0) > 0) //filters Doom IWADS
 		{
 			Menu.SetMenu("IWADNotice");
 		}
+	}
+
+	override void NewGame()
+	{
+		CheckIWAD();
 	}
 }
 
@@ -25,9 +31,22 @@ class IWADNotice : BoAMenu
 		}
 		TextureID tex = TexMan.CheckForTexture("CONBACK", TexMan.Type_MiscPatch);
 		if (tex) { screen.DrawTexture (tex, false, 0, 0, DTA_Fullscreen, true, DTA_Alpha, 1.0); }
-		//print IWADNOTICE1 in bigfont and IWADNOTICE2 in smallfont --- does not work for some reason...
-		screen.DrawText (BigFont, Font.CR_UNTRANSLATED, screen.GetWidth() / 2, screen.GetHeight() / 2 - 30, title, DTA_Clean, true);
-		screen.DrawText (SmallFont, Font.CR_UNTRANSLATED, screen.GetWidth() / 2, screen.GetHeight() / 2 + 30, text, DTA_Clean, true);
+		// Display IWADNOTICE1 on one line, center justified, in BigFont
+		screen.DrawText(BigFont, Font.CR_GRAY,
+			Screen.GetWidth() / 2 - BigFont.StringWidth(title) * CleanXfac / 2,
+			Screen.GetHeight() / 2 - BigFont.GetHeight() * CleanYfac / 2,
+			title, DTA_CleanNoMove, true);
+		// Display IWADNOTICE2 on multiple lines, center justified, in SmallFont
+		int widthChar = "a".ByteAt(0);
+		BrokenLines textLines = SmallFont.BreakLines(text, SmallFont.GetCharWidth(widthChar) * 50);
+		for (int line = 0; line < textLines.Count(); line++)
+		{
+			double yadd = SmallFont.GetHeight() * (line + 1);
+			screen.DrawText (SmallFont, Font.CR_GRAY,
+				Screen.GetWidth() / 2 - textLines.StringWidth(line) * CleanXfac / 2,
+				Screen.GetHeight() / 2 + yadd * CleanYfac,
+				textLines.StringAt(line), DTA_CleanNoMove, true);
+		}
 	}
 
 	override bool MenuEvent(int mkey, bool fromcontroller)

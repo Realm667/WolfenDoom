@@ -42,8 +42,7 @@ gameinfo
 
 	AddEventHandlers = "InventoryClearHandler", "WaterHandler", "CustomShaderHandler", "SpriteShadowHandler", 
 	"MineSweeperHandler", "CompassHandler", "MapStatsHandler", "PersistentMapStatsHandler", "UnderlayRenderer", 
-	"TcPostProcessShaderHandler", "SafeHandler", "LoadScreen", "KeyHandler", "ParticleManager", "GroundSplashDataHandler",
-	"IWADChecker"
+	"TcPostProcessShaderHandler", "SafeHandler", "LoadScreen", "KeyHandler", "ParticleManager", "GroundSplashDataHandler"
 }
 
 Automap
@@ -144,6 +143,7 @@ map INTERMAP lookup "INTERMAP"	//Tormentor667, MaxED & DoomJuan - Ed The Bat, Ta
 map TITLEMAP lookup "TITLEMAP" //MaxED & Tormentor667
 {
 	music = "D_DM2TTL"
+	EventHandlers = "ColorGradeEventHandler", "IWADChecker"
 }
 
 map INTROMAP lookup "INTROMAP" //Tormentor667
