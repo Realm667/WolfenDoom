@@ -853,18 +853,6 @@ class CastleWolfensteinMap : Inventory
 			Stop;
 	}
 
-	override void PostBeginPlay()
-	{
-		frame = args[1];
-
-		String ico = String.Format("%s%c%i", "TEXT", 65 + args[1], 0);
-		icon = TexMan.CheckForTexture(ico, TexMan.Type_Any);
-
-		if (frame == 8) { PickupSound = "pickup/generic"; }
-
-		Super.PostBeginPlay();
-	}
-
 	override bool Use(bool pickup)
 	{
 		if (owner && owner.player)
