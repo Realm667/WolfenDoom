@@ -28,17 +28,10 @@ class IWADChecker : EventHandler
 
 class IWADNotice : BoAMenu
 {
-	bool printed;
 	override void Drawer()
 	{
 		String title = StringTable.Localize("IWADNOTICE1", false);
 		String text = StringTable.Localize("IWADNOTICE2", false);
-		if (!printed)
-		{
-			Console.Printf(title);
-			Console.Printf(text);
-			printed = true;
-		}
 		TextureID tex = TexMan.CheckForTexture("CONBACK", TexMan.Type_MiscPatch);
 		if (tex) { screen.DrawTexture (tex, false, 0, 0, DTA_Fullscreen, true, DTA_Alpha, 1.0); }
 		// Display IWADNOTICE1 on one line, center justified, in BigFont
