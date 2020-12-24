@@ -31,6 +31,7 @@ class IWADChecker : EventHandler
 		if (Wads.FindLump("MAP01", 0) > 0 || Wads.FindLump("E1M1", 0) > 0) //filters Doom IWADS
 		{
 			Menu.SetMenu("IWADNotice");
+			Level.setFrozen(true);
 		}
 		checked = true;
 	}
@@ -81,6 +82,7 @@ class IWADNotice : BoAMenu
 		{
 			MenuSound("menu/choose");
 			Close();
+			Level.setFrozen(false);
 			return true;
 		}
 		else return Super.MenuEvent(mkey, fromcontroller);
