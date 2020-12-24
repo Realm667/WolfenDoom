@@ -1,18 +1,28 @@
 class IWADChecker : EventHandler
 {
+	bool checked;
+
 	// Check if BoA is being loaded as a PWAD, and display the IWADNotice if it
 	// is.
-	clearscope void CheckIWAD()
+	void CheckIWAD()
 	{
 		if (Wads.FindLump("MAP01", 0) > 0 || Wads.FindLump("E1M1", 0) > 0) //filters Doom IWADS
 		{
 			Menu.SetMenu("IWADNotice");
 		}
+		checked = true;
 	}
 
-	override void NewGame()
+	override void WorldTick()
 	{
-		CheckIWAD();
+		if (level.time == 5)
+		{
+			CheckIWAD();
+		}
+		if (checked)
+		{
+			Destroy();
+		}
 	}
 }
 
@@ -37,7 +47,8 @@ class IWADNotice : BoAMenu
 			Screen.GetHeight() / 2 - BigFont.GetHeight() * CleanYfac / 2,
 			title, DTA_CleanNoMove, true);
 		// Display IWADNOTICE2 on multiple lines, center justified, in SmallFont
-		int widthChar = "a".ByteAt(0);
+		String widthString = "a";
+		int widthChar = widthString.ByteAt(0);
 		BrokenLines textLines = SmallFont.BreakLines(text, SmallFont.GetCharWidth(widthChar) * 50);
 		for (int line = 0; line < textLines.Count(); line++)
 		{
