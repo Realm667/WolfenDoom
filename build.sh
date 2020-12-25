@@ -23,7 +23,7 @@ while [[ $# > 0 ]]; do
   if [[ "$1" == "-h" || "$1" == "--help" ]]; then
     cat <<HELP
 WolfenDoom sh.ake 'n baker - Linux/MacOS build script for
-              WolfenDoom: Blade of Agony
+              Wolfenstein: Blade of Agony
 
 -h  --help        Show this help
 -n  --no-update   Do not update the repo with the latest changes.

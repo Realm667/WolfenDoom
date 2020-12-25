@@ -1,5 +1,5 @@
 // Old video shader by jmpep, ported to GZDoom by Nash Muhandes
-// Modified for WolfenDoom: Blade of Agony by Kevin "Talon1024" Caccamo
+// Modified for Wolfenstein: Blade of Agony by Kevin "Talon1024" Caccamo
 // https://www.shadertoy.com/view/Xdl3D8
 // License: See comments section for the shader
 /*
