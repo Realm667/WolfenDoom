@@ -1,6 +1,6 @@
 ACTOR HQ_Checker : Inventory {Inventory.MaxAmount 1}
 
-ACTOR GrenadePickup : CustomInventory
+ACTOR GrenadePickup : IntervalUseItem
 {
 	//$Category Weapons (BoA)
 	//$Title Grenade
@@ -13,6 +13,7 @@ ACTOR GrenadePickup : CustomInventory
 	Inventory.InterHubamount 9
 	Inventory.UseSound "grenade/throw"
 	Inventory.PickupSound "grenade/pickup"
+	ReactionTime 35  // Interval between usages - Talon1024
 	+INVENTORY.INVBAR
 	States
 	{

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020 AFADoomer
+ * Copyright (c) 2019-2020 AFADoomer, Talon1024
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -105,5 +105,28 @@ class AstroGrenadePickup : Inventory
 			return true;
 		}
 		return false;
+	}
+}
+
+// Fix for grenades: only allow player to throw one per second
+class IntervalUseItem : CustomInventory
+{
+	override bool Use(bool pickup)
+	{
+		if (ReactionTime == 0)
+		{
+			ReactionTime = Default.ReactionTime;
+			return Super.Use(pickup);
+		}
+		return false;
+	}
+
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		if (ReactionTime > 0)
+		{
+			ReactionTime--;
+		}
 	}
 }
