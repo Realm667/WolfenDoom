@@ -1869,7 +1869,7 @@ class Nazi : Base
 			if (!bFriendly && user_cansurrender && closestplayer && CheckSight(closestplayer) && Distance3D(closestplayer) < 384.0) // last enemy in the room can surrender
 			{
 				int nazicount = CanBeseen(1);
-				if (!nazicount)
+				if (!nazicount && Random[surrender](0, 255) < 2)
 				{
 					if (bCountKill) { bCountKill = false; level.total_monsters--; }
 					bPushable = user_ForceWeaponDrop = true;
