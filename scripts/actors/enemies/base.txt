@@ -1871,11 +1871,7 @@ class Nazi : Base
 				int nazicount = CanBeseen(1);
 				if (!nazicount && Random[surrender](0, 255) < 2)
 				{
-					if (bCountKill) { bCountKill = false; level.total_monsters--; }
-					bPushable = user_ForceWeaponDrop = true;
-					State SurrenderSpriteState = FindState("SurrenderSprite");
-					if (SurrenderSpriteState) { sprite = SurrenderSpriteState.sprite; }
-					A_Die("Surrender");
+					DoSurrender();
 				}
 			}
 			
@@ -1925,6 +1921,16 @@ class Nazi : Base
 		}
 
 		if (candodge && !crouchtimeout && !goal) { A_TryHide(); }
+	}
+
+	virtual void DoSurrender()
+	{
+		if (bCountKill) { bCountKill = false; level.total_monsters--; }
+		bPushable = user_ForceWeaponDrop = true;
+		State SurrenderSpriteState = FindState("SurrenderSprite");
+		if (SurrenderSpriteState) { sprite = SurrenderSpriteState.sprite; }
+		bIsMonster = false;
+		A_Die("Surrender");
 	}
 
 	// A_NaziChase with CheckLOF

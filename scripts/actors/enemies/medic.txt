@@ -47,6 +47,7 @@
 class NaziMedic : NaziStandard
 {
 	bool crouched;
+	int hiddentime;
 
 	Default
 	{
@@ -55,9 +56,12 @@ class NaziMedic : NaziStandard
 		//$Color 4
 		Health 20;
 		Speed 4;
+		+ALLOWPAIN
 		+AVOIDMELEE
+		+INVULNERABLE
 		+NEVERTARGET
 		Base.NoMedicHeal;
+		Nazi.CanSurrender True;
 		Nazi.NoRandomDeaths 2; //no backfall death
 		Nazi.Healer HLR_ALLIES;
 		Nazi.HealSound "misc/health_pkup";
@@ -86,8 +90,11 @@ class NaziMedic : NaziStandard
 				Speed = Default.Speed;
 				bChaseGoal = True;
 				bSolid = True;
+				Speed = Default.Speed;
 
 				A_CheckForPlayer();
+
+				if (bFrightened) { SetStateLabel("See.Frightened"); }
 			}
 			"####" AAAAAA 1 A_WanderGoal(0, 512);
 			"####" B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION);
@@ -97,6 +104,32 @@ class NaziMedic : NaziStandard
 			"####" D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION);
 			"####" DDDDDD 1 A_WanderGoal(0, 512);
 			Loop;
+		See.Frightened:
+			"####" "#" 0 { Speed = FRandom(4,6); }
+			"####" "#" 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION);
+			"####" AAAAAA 1 A_WanderGoal(0, 768);
+			"####" BBBBBB 1 A_WanderGoal(0, 768);
+			"####" "#" 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION);
+			"####" CCCCCC 1 A_WanderGoal(0, 768);
+			"####" DDDDDD 1 A_WanderGoal(0, 768);
+			"####" A 0 {
+				if (Random[lookaround](0, 255) < 8) { SetStateLabel("Crouch"); } // Even goal-seekers can crouch sometimes
+			}
+			Goto See.Heal; // Go back to normal see so that they can become un-frightened once the frightener is out of range
+		Crouch:
+			NMDD A 0 { // When crouching, don't allow jump to pain state, and allow bullets to pass through
+				bAllowPain = false;
+				bNonShootable = true;
+				crouched = true;
+			}
+			"####" A 1 { tics = Random(30,60); }
+			NMDC A 0 { // Restore pain jump and bullet hits, and be frightened when done crouching
+				bAllowPain = true;
+				bNonShootable = false;
+				frighttimeout = 35 + Random(0, 7) * 5;
+				crouched = false;
+			}
+			Goto See.Frightened;
 		Heal:
 			"####" E 0 {
 				crouched = True;
@@ -119,6 +152,10 @@ class NaziMedic : NaziStandard
 				return ResolveState("See");
 			}
 			Goto See;
+		Pain:
+		Death:
+			"####" A 0 DoSurrender();
+/*
 		Death:
 			"####" H 1 {
 				if (crouched) { return ResolveState("Death.Crouch"); }
@@ -147,6 +184,14 @@ class NaziMedic : NaziStandard
 			"####" N 5;
 			"####" O -1;
 			Stop;
+*/
+		Death.Surrender:
+			"####" X 6;
+			"####" Y 6 A_NoBlocking(True);
+			"####" Z -1;
+			Stop;
+		SurrenderSprite:
+			NMDC A 0;
 	}
 
 	state A_CheckForPlayer(bool jump = False)
@@ -171,5 +216,12 @@ class NaziMedic : NaziStandard
 		} else if (goal) { target = goal; }
 
 		return ResolveState(null);
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (hiddentime > 70) { Destroy(); }
 	}
 }
