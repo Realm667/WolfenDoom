@@ -2257,6 +2257,7 @@ ACTOR Mechanic : BasicGuard
 	Obituary "$MECHANIC"
 	Nazi.FrightMultiplier 0.5
 	Nazi.NoRandomDeaths 2 //no backfall death
+	Nazi.CanSurrender 1
 	States
 	{
 	Spawn:
@@ -2266,6 +2267,8 @@ ACTOR Mechanic : BasicGuard
 		}
 		MNIC N 1
 		Goto Look
+	SurrenderSprite:
+		MNIS E 0
 	See:
 		Goto See.Dodge
 	Dodge:
@@ -3382,11 +3385,14 @@ ACTOR Scientist : BasicGuard
 	Obituary "$SCIENTIST"
 	Nazi.NoAltDeath 1
 	Nazi.NoRandomDeaths 2 //no backfall death
+	Nazi.CanSurrender 1
 	States
 	{
 	Spawn:
 		SCN2 N 1
 		Goto Look
+	SurrenderSprite:
+		SC2S E 0
 	See:
 		Goto See.Dodge
 	Dodge:
@@ -3415,11 +3421,14 @@ ACTOR Scientist2 : BasicGuard
 	Obituary "$SCIENTIST"
 	Nazi.NoAltDeath 1
 	Nazi.NoRandomDeaths 2 //no backfall death
+	Nazi.CanSurrender 1
 	States
 	{
 	Spawn:
 		SCNT N 1
 		Goto Look
+	SurrenderSprite:
+		SCNS E 0
 	See:
 		Goto See.Dodge
 	Dodge:
