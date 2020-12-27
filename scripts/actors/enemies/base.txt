@@ -1639,7 +1639,7 @@ class Nazi : Base
 			"####" H 0 A_Jump(256,"See");
 		Death.Surrender: //not just +FRIENDLY because we don't want them attacking their comrades
 			"####" E 6;
-			"####" F 6 A_UnblockAndDrop;
+			"####" F 6 A_NoBlocking(True);
 			Goto Death.Surrender.MainLoop;
 		Death.Surrender.MainLoop:
 			"####" G 9;

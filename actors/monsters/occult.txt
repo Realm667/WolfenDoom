@@ -628,11 +628,14 @@ ACTOR PlagueDoc : Guard
 	//$Title Plague Doctor (young)
 	Nazi.NoAltDeath 1
 	Nazi.NoRandomDeaths 2 //no backfall death
+	Nazi.CanSurrender 1
 	States
 	{
 	Spawn:
 		PDOC N 0
 		Goto Look
+	SurrenderSprite:
+		PDCS E 0
 	See:
 		Goto See.Dodge
 	Dodge:
