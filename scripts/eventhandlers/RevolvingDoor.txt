@@ -191,7 +191,7 @@ class RevolvingDoorHandler : EventHandler
 			String ponum = defs.children[tidx].keyname;
 			RevolvingDoorInstance door = new("RevolvingDoorInstance");
 			door.friction = FileReader.GetDouble(defs, ponum .. ".friction");
-			door.duration = FileReader.GetDouble(defs, ponum .. ".duration");
+			door.duration = FileReader.GetInt(defs, ponum .. ".duration");
 			doors.Push(door);
 			torque.Push(FileReader.GetDouble(defs, ponum .. ".torque"));
 			String tnum = String.Format("%d", tidx);
