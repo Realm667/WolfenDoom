@@ -60,7 +60,7 @@ Script "BoA_PlayerLoop" ENTER
 		// Do screen drawing actions
 		DrawObjectives();
 
-		if (!CheckInventory("Sherman")) // Only do these if you're not driving a tank
+		if (!ScriptCall("Actor", "FindInventory", "TankMorph", True)) // Only do these if you're not driving a tank
 		{
 			if (!CheckInventory("Billy"))
 			{

@@ -904,8 +904,8 @@ class ViewItem : BoAMenu
 			} else { Console.Printf("ConstructSecretHintText(): Incorrect hint format."); error = true; continue; }
             // now construct the line
             // let's pretend that BJ adds the red highlight mentally...
-			if (secret_found) { result.AppendFormat("\cG"); }
-			else { result.AppendFormat("\cC"); }
+			if (secret_found) { result.AppendFormat("\cD"); }
+			else { result.AppendFormat("\cG"); }
 			// Add the items in the secret
 			for (curToken = 3; curToken < tokens.size(); ++curToken)
 			{
