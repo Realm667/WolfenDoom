@@ -23,7 +23,7 @@
 // Base class for text scroller menu screens.  Inherit from this and configure via the Init function (see IntroScroll class below)
 // Call from ACS with: 'ScriptCall("Menu", "SetMenu", "IntroScroll");'
 // Wait for completion from within ACS with: 'While (!ScriptCall("TextScroll", "Ready")) { Delay(35); }' (checks if the currently open scroller is done)
-class TextScroll : ReadThisMenu
+class TextScroll : BoAMenu
 {
 	TextureID background, overlay, scrollback;
 	Font fnt;
@@ -110,7 +110,7 @@ class TextScroll : ReadThisMenu
 	{
 		if (mkey == MKEY_Back)
 		{
-			SetMenu("MainMenu", -1);	
+			Menu.SetMenu("MainMenu", -1);
 			return true;
 		}
 
@@ -143,34 +143,6 @@ class TextScroll : ReadThisMenu
 		}
 
 		return Super.OnUIEvent(ev);
-	}
-
-	bool CheckControl(UIEvent ev, String control, int type)
-	{
-		int c1, c2;
-		[c1, c2] = Bindings.GetKeysForCommand(control);
-
-		String keynames = Bindings.NameKeys(c1, c2);
-		keynames = ZScriptTools.StripColorCodes(keynames);
-
-		Array<String> keys;
-		keynames.Split(keys, ", ");
-
-		String keychar = String.Format("%c", ev.KeyChar);
-		keychar = keychar.MakeUpper();
-
-		for (int i = 0; i < keys.Size(); i++)
-		{
-			if (keys[i].Length() > 1) { continue; } // Skip named keys (Alt, Shift, Ctrl, etc.)
-
-			if (keys[i].ByteAt(0) == keychar.ByteAt(0))
-			{
-				MenuEvent(type, false);
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	static bool Ready()
@@ -209,7 +181,7 @@ class IntroScroll : TextScroll
 //	Example: ScriptCall("Finale", "Setup", "$EPILOGUEC1", true, false);
 //
 // Wait for completion from within ACS with: 'While (!ScriptCall("Finale", "Ready")) { Delay(35); }' (checks if the currently open finale is closing)
-class Finale : GenericMenu
+class Finale : BoAMenu
 {
 	TextureID background, strips, label_l, label_r, frame;
 	Font fnt, titlefnt;
@@ -440,34 +412,6 @@ class Finale : GenericMenu
 		return Super.OnUIEvent(ev);
 	}
 
-	bool CheckControl(UIEvent ev, String control, int type)
-	{
-		int c1, c2;
-		[c1, c2] = Bindings.GetKeysForCommand(control);
-
-		String keynames = Bindings.NameKeys(c1, c2);
-		keynames = ZScriptTools.StripColorCodes(keynames);
-
-		Array<String> keys;
-		keynames.Split(keys, ", ");
-
-		String keychar = String.Format("%c", ev.KeyChar);
-		keychar = keychar.MakeUpper();
-
-		for (int i = 0; i < keys.Size(); i++)
-		{
-			if (keys[i].Length() > 1) { continue; } // Skip named keys (Alt, Shift, Ctrl, etc.)
-
-			if (keys[i].ByteAt(0) == keychar.ByteAt(0))
-			{
-				MenuEvent(type, false);
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	LevelData GetTotals() // Pull the total stats from the map stats event handler
 	{
 		LevelData totals = New("LevelData");
@@ -527,7 +471,7 @@ class Finale : GenericMenu
 		Finale current = Finale(Menu.GetCurrentMenu());
 		if (!current)
 		{
-			SetMenu("Finale");
+			Menu.SetMenu("Finale");
 
 			current = Finale(Menu.GetCurrentMenu());
 		}

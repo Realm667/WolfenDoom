@@ -28,6 +28,34 @@ class BoAMenu : GenericMenu
 
 		Menu.SetMenu(mnu, param);
 	}
+
+	bool CheckControl(UIEvent ev, String control, int type)
+	{
+		int c1, c2;
+		[c1, c2] = Bindings.GetKeysForCommand(control);
+
+		String keynames = Bindings.NameKeys(c1, c2);
+		keynames = ZScriptTools.StripColorCodes(keynames);
+
+		Array<String> keys;
+		keynames.Split(keys, ", ");
+
+		String keychar = String.Format("%c", ev.KeyChar);
+		keychar = keychar.MakeUpper();
+
+		for (int i = 0; i < keys.Size(); i++)
+		{
+			if (keys[i].Length() > 1) { continue; } // Skip named keys (Alt, Shift, Ctrl, etc.)
+
+			if (keys[i].ByteAt(0) == keychar.ByteAt(0))
+			{
+				MenuEvent(type, false);
+				return true;
+			}
+		}
+
+		return false;
+	}
 }
 
 class CombinationSafe : BoAMenu
@@ -369,34 +397,6 @@ class CombinationSafe : BoAMenu
 		return false;
 	}
 */
-	bool CheckControl(UIEvent ev, String control, int type)
-	{
-		int c1, c2;
-		[c1, c2] = Bindings.GetKeysForCommand(control);
-
-		String keynames = Bindings.NameKeys(c1, c2);
-		keynames = ZScriptTools.StripColorCodes(keynames);
-
-		Array<String> keys;
-		keynames.Split(keys, ", ");
-
-		String keychar = String.Format("%c", ev.KeyChar);
-		keychar = keychar.MakeUpper();
-
-		for (int i = 0; i < keys.Size(); i++)
-		{
-			if (keys[i].Length() > 1) { continue; } // Skip named keys (Alt, Shift, Ctrl, etc.)
-
-			if (keys[i].ByteAt(0) == keychar.ByteAt(0))
-			{
-				MenuEvent(type, false);
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	void TryOpen()
 	{
 		int match = true;
