@@ -119,7 +119,7 @@ ACTOR UGoreLShooter : UWaterLShooter{}
 ACTOR UHazardLShooter : UWaterLShooter{}
 
 //Tormentor667 light rays
-ACTOR UnderwaterLightRay //: SwitchableDecoration
+ACTOR UnderwaterLightRay : SwitchableDecoration
 {
 	//$Category Special Effects (BoA)
 	//$Title Underwater Light Ray
@@ -140,11 +140,11 @@ ACTOR UnderwaterLightRay //: SwitchableDecoration
 	States
 	{
 	Spawn:
-	//Active:
+	Active:
 		LRAY A -1 BRIGHT
 		Loop
-	/*Inactive:
+	Inactive:
 		TNT1 A -1
-		Loop*/
+		Loop
 	}
 }
