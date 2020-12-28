@@ -382,7 +382,7 @@ class DialogueIcon : DialogueComponent
 	// Frames are roughly: 0 - mouth closed, 1 - mouth open narrow, 2 - mouth open normal, 3 - mouth open wide, 4 - mouth open with teeth
 	String Animate(String input, String image)
 	{
-		int animduration = 4; //tics
+		int animduration = 8; //tics
 
 		int lastchar = image.CharCodeAt(image.Length() - 1);
 		String imagebase = image.Left(image.Length() - 1);
@@ -396,10 +396,10 @@ class DialogueIcon : DialogueComponent
 		if (delay > 0) { image = imagebase .. "0"; delay--; }
 		else if (currentchar < input.Length())
 		{
-			int character = UCase(input.CharCodeAt(currentChar));
+			int character = UCase(input.ByteAt(currentChar));
 
-			if (currentchar < input.Length() - 1) { nextChar = UCase(input.CharCodeAt(currentChar + 1)); }
-			if (currentchar > 0) { prevChar = UCase(input.CharCodeAt(currentChar - 1)); }
+			if (currentchar < input.Length() - 1) { nextChar = UCase(input.ByteAt(currentChar + 1)); }
+			if (currentchar > 0) { prevChar = UCase(input.ByteAt(currentChar - 1)); }
 
 			Switch (character)
 			{
@@ -449,7 +449,7 @@ class DialogueIcon : DialogueComponent
 					frame = 0;
 					break;
 				case 85: //U
-					if (prevChar == 81 || UCase(input.CharCodeAt(currentChar + 2)) == 69 || (prevChar == 79 && nextchar < 65 )) //Q or E or O and not a letter
+					if (prevChar == 81 || UCase(input.ByteAt(currentChar + 2)) == 69 || (prevChar == 79 && nextchar < 65 )) //Q or E or O and not a letter
 					{
 						frame = 1;
 						break;
@@ -471,9 +471,9 @@ class DialogueIcon : DialogueComponent
 					break;
 				case 84: // T
 					if (nextChar == 73 && (
-						UCase(input.CharCodeAt(currentChar + 2)) == 79 ||
-						UCase(input.CharCodeAt(currentChar + 2)) == 65 ||
-						UCase(input.CharCodeAt(currentChar + 2)) == 69)
+						UCase(input.ByteAt(currentChar + 2)) == 79 ||
+						UCase(input.ByteAt(currentChar + 2)) == 65 ||
+						UCase(input.ByteAt(currentChar + 2)) == 69)
 					) // I and O or A or E
 					{
 						frame = 1;
@@ -504,6 +504,11 @@ class DialogueIcon : DialogueComponent
 				default: //All the rest
 					frame = 2;
 					break;
+			}
+
+			if (character > 128)
+			{
+				frame = Random(0, 4);
 			}
 		}
 
