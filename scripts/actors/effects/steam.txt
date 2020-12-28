@@ -85,17 +85,20 @@ class SteamSpawner : EffectSpawner
 		{
 			if (args[1] && !args[3]) { A_StartSound(snd, 10, sndflags, 1.0); } // Each burst plays a sound on spawn
 
+			Actor mo;
+
 			if (args[0] < 3) // Original directional spawns
 			{
 				velx = args[0] < 2 ? 0.1 * Random(0, 4) : 0.1 * Random(35, 40);
 				velz = args[0] < 2 ? (args[0] == 1 ? -1 : 1) * 0.1 * Random(35, 40) : 0.1 * Random(-5, 5);
 				ang = args[0] < 2 ? Random(0, 360) : Random(-8, 8);
 
-				A_SpawnItemEx(particle, 0, 0, zoffset, velx, 0, velz, ang, 128);
+				bool sp;
+				[sp, mo] = A_SpawnItemEx(particle, 0, 0, zoffset, velx, 0, velz, ang, 128);
 			}
 			else
 			{
-				Actor mo = Spawn(particle);
+				mo = Spawn(particle);
 				if (mo)
 				{
 					mo.alpha *= scale.x;
@@ -103,6 +106,8 @@ class SteamSpawner : EffectSpawner
 					mo.Vel3DFromAngle(0.1 * Random(35, 40) * scale.x, angle, pitch);
 				}
 			}
+
+			if (mo && mo.bMissile && mo.Damage) { mo.ChangeStatNum(Thinker.STAT_DEFAULT - 6); } // Let damaging steam actors be seen by the grenade avoidance code
 		}
 	}
 }
