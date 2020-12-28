@@ -148,3 +148,33 @@ ACTOR UnderwaterLightRay : SwitchableDecoration
 		Loop
 	}
 }
+
+ACTOR UnderwaterLightRayCone : SwitchableDecoration
+{
+	//$Category Special Effects (BoA)
+	//$Title Underwater Light Ray (cone)
+	//$Color 12
+	//$Sprite VOLTC0
+	Height 128
+	Radius 32
+	+NOBLOCKMAP
+	+NOCLIP
+	+NOGRAVITY
+	+NOINTERACTION
+	+ROLLSPRITE
+	+WALLSPRITE
+	+ROLLCENTER
+	RenderStyle "Add"
+	Scale 0.5
+	Alpha 1.0
+	States
+	{
+	Spawn:
+	Active:
+		VOLT C -1 BRIGHT
+		Loop
+	Inactive:
+		TNT1 A -1
+		Loop
+	}
+}
