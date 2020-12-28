@@ -103,27 +103,10 @@ class NaziMedic : NaziStandard
 			"####" CCCCCC 1 A_WanderGoal(0, 512);
 			"####" D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION);
 			"####" DDDDDD 1 A_WanderGoal(0, 512);
-			"####" A 0 {
-				if (!dodging && bFrightened && Random[lookaround](0, 255) < 8) { SetStateLabel("Crouch"); }
-			}
 			Loop;
-		Crouch:
-			NMDD A 0 { // When crouching, don't allow jump to pain state, and allow bullets to pass through
-				bAllowPain = false;
-				bNonShootable = true;
-				crouched = true;
-			}
-			"####" A 1 { tics = Random(30,60); }
-			NMDC A 0 { // Restore pain jump and bullet hits, and be frightened when done crouching
-				bAllowPain = true;
-				bNonShootable = false;
-				frighttimeout = 35 + Random(0, 7) * 5;
-				crouched = false;
-			}
-			Goto See.Heal;
 		Heal:
 			"####" E 0 {
-				crouched = True;
+				crouched = true;
 				if (goal) {
 					healloopcount = goal.Default.Health > 25 ? min(goal.Default.Health / 25, 3) : 0; // Set the number of Heal iterations to scale with the actor's spawnhealth (max of 3 loops)
 				}
@@ -145,41 +128,21 @@ class NaziMedic : NaziStandard
 			Goto See;
 		Death:
 			"####" A 0 DoSurrender();
-/*
-		Death:
-			"####" H 1 {
-				if (crouched) { return ResolveState("Death.Crouch"); }
-				return ResolveState(null);
-			}
-			"####" H 4 A_RandomDeathAnim();
-			"####" I 5 A_Scream();
-			"####" J 5 A_NoBlocking(!user_sneakable);
-			"####" KLUV 5;
-			"####" W -1;
-			Stop;
-		Death.Crouch:
-			"####" G 5 { crouched = False; }
-			"####" Q 5 A_Scream();
-			"####" R 5 A_NoBlocking(!user_sneakable);
-			"####" STUV 5;
-			"####" W -1;
-			Stop;
-		Death.Front:
-			NMDA I 0 A_CheckFadeDeath();
-			NMDA I 5 A_Scream();
-			"####" J 5 A_UnblockAndDrop();
-			"####" K 10;
-			"####" L 5;
-			"####" M 5;
-			"####" N 5;
-			"####" O -1;
-			Stop;
-*/
 		Death.Surrender:
 			"####" X 6;
 			"####" Y 6 A_NoBlocking(True);
-			"####" Z -1;
-			Stop;
+			Goto Death.Surrender.MainLoop;
+		Death.Surrender.MainLoop:
+			"####" Z 9;
+		Death.Surrender.SubLoop:
+			"####" Z 0;
+			"####" Z 32 A_Jump(64, "Death.Surrender.Blink");
+			"####" A 0 { return ResolveState("Death.Surrender.MainLoop"); }
+		Death.Surrender.Blink:
+			"####" Y 8;
+			"####" Z 16;
+			"####" Y 8;
+			"####" A 0 { return ResolveState("Death.Surrender.MainLoop"); }
 		SurrenderSprite:
 			NMDC A 0;
 	}
