@@ -863,6 +863,7 @@ class DialogueResponses : DialogueComponent
 				if (dialogue.autofocus) { dialogue.focus = dialogue.NextControl(true); }
 				dialogue.selection++;
 			}
+			Menu.MenuSound ("conv/cursor");
 			return true;
 		}
 		else if (mkey == Menu.MKEY_Down)
@@ -872,6 +873,7 @@ class DialogueResponses : DialogueComponent
 				if (dialogue.autofocus) { dialogue.focus = dialogue.NextControl(false); }
 				dialogue.selection--;
 			}
+			Menu.MenuSound ("conv/cursor");
 			return true;
 		}
 		else if (mkey == Menu.MKEY_Enter)
