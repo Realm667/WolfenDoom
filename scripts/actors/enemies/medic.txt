@@ -47,7 +47,6 @@
 class NaziMedic : NaziStandard
 {
 	bool crouched;
-	int hiddentime;
 
 	Default
 	{
@@ -86,15 +85,14 @@ class NaziMedic : NaziStandard
 			Goto See.Heal;
 		See.Heal:
 			"####" "#" 0 {
-				user_incombat = True;
+				user_incombat = true;
 				crouched = false;
-				Speed = Default.Speed;
-				bChaseGoal = True;
-				bSolid = True;
+				bChaseGoal = true;
+				bSolid = true;
 
 				A_CheckForPlayer();
 
-				if (bFrightened) { Speed = FRandom(4,6); }
+				Speed = bFrightened ? FRandom(4,6) : Default.Speed;
 			}
 			"####" AAAAAA 1 A_WanderGoal(0, 512);
 			"####" B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION);
@@ -103,6 +101,24 @@ class NaziMedic : NaziStandard
 			"####" CCCCCC 1 A_WanderGoal(0, 512);
 			"####" D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION);
 			"####" DDDDDD 1 A_WanderGoal(0, 512);
+			"####" A 0 {
+				if (bFrightened && frightener)
+				{
+					if (!CheckSight(frightener)) { frightener = null; } // Forget the frightener if they are out of sight
+					else if (
+						(
+							frightener.player || // Player actor
+							frightener is "PlayerTracer" || // Player shot
+							( // Other missile/projectile that came from a player
+								frightener.bMissile &&
+								frightener.target &&
+								frightener.target.player
+							)
+						) && 
+						Random(0, 8) == 0
+					) { SetStateLabel("Death"); } // Randomly surrender if the player was the frightener
+				}
+			}
 			Loop;
 		Heal:
 			"####" E 0 {
@@ -130,7 +146,7 @@ class NaziMedic : NaziStandard
 			"####" A 0 DoSurrender();
 		Death.Surrender:
 			"####" X 6;
-			"####" Y 6 A_NoBlocking(True);
+			"####" Y 6 A_NoBlocking(true); // No weapon to drop, just the medical kit
 			Goto Death.Surrender.MainLoop;
 		Death.Surrender.MainLoop:
 			"####" Z 9;
@@ -163,6 +179,7 @@ class NaziMedic : NaziStandard
 				body = null;
 				goal = null;
 				frighttimeout = 35 + Random(0, 14) * 5;
+				frightener = target;
 			}
 
 			if (jump && !InStateSequence(CurState, FindState("See.Heal"))) { return ResolveState("See.Heal"); }
@@ -176,8 +193,6 @@ class NaziMedic : NaziStandard
 		candodge = !crouched; // Only let him dodge if he's not crouched
 
 		Super.Tick();
-
-		if (hiddentime > 70) { Destroy(); }
 	}
 
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)

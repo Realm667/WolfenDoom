@@ -985,6 +985,7 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 			bAllowPain = true;
 			bNonShootable = false;
 			frighttimeout = 35 + Random(0, 7) * 5;
+			frightener = target;
 		}
 		Goto See.Frightened
 	Cough:
@@ -1004,6 +1005,8 @@ ACTOR Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 		"####" H 5 {
 				A_Pain();
 				frighttimeout = 35 + Random(0, 7) * 5; // FRIGHTENED flag is set by code in Base class when frighttimeout value is greater than zero
+				frightener = target;
+
 				if (Random(0, 19) == 0) { SetStateLabel("LookAround.Frightened"); } // 1 in 20 chance that they will crouch immediately when shot
 			}
 		Goto See.Frightened
