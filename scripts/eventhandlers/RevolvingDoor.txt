@@ -211,11 +211,11 @@ class RevolvingDoorHandler : EventHandler
 		}
 		int special = lineSpecialStr.ToInt();
 		// Check if special is supported
-		static const int pospecials[] = { Polyobj_OR_RotateLeft, Polyobj_OR_RotateRight, Polyobj_RotateLeft, Polyobj_RotateRight };
-		static const int factors[] = { 1, -1, 1, -1 };
-		int sign = 3; // Used as torque multiplier, as well as a check for
+		static const int pospecials[] = { 0, Polyobj_OR_RotateLeft, Polyobj_OR_RotateRight, Polyobj_RotateLeft, Polyobj_RotateRight };
+		static const int factors[] = { 0, 1, -1, 1, -1 };
+		int sign = 4; // Used as torque multiplier, as well as a check for
 		// whether the special is supported.
-		for (;sign >= 0; sign--)
+		for (;sign > 0; sign--)
 		{
 			if (special == pospecials[sign])
 			{
