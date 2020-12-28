@@ -888,6 +888,9 @@ class DialogueResponses : DialogueComponent
 				// Send dialogue and reply numbers across the wire.
 				dialogue.currentmenu.SendConversationReply(dialogue.currentmenu.mCurNode.ThisNodeNum, replynum);
 			}
+
+			if (dialogue.selection == responses.Size() - 1) { Menu.MenuSound ("menu/backup"); }
+
 			dialogue.currentmenu.CloseMenu();
 			return true;
 		}
