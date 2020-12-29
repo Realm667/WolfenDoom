@@ -114,7 +114,7 @@ class StealthBase : Actor
 			double velmod = (max(target.vel.length(), 8.0) - 8.0) / 8.0;
 			velmod = velmod * velmod * 4.0;
 
-			sighttime += ((Range - Distance3d(target)) / 256.0) * (0.25 + velmod); // Increment sight time counter, scaled to how far away player is and how fast he's moving
+			sighttime += ((Range - Distance3d(target)) / 256.0) * (0.25 + velmod) * min(1.0, 0.2 + 0.2 * skill); // Increment sight time counter, scaled to how far away player is and how fast he's moving
 
 			if (master && !alert)
 			{  // Spawn the alert indicator
