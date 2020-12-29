@@ -225,4 +225,11 @@ class ZScriptTools
 
 		return output;
 	}
+
+	static bool FindInventoryClass(Actor mo, String classname, bool descendants = true)
+	{
+		if (mo && mo.FindInventory(classname, descendants)) { return true; }
+
+		return false;
+	}
 }
