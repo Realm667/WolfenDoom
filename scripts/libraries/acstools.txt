@@ -162,6 +162,13 @@ class ACSTools
 		*/
 		Console.Printf("Hit position: %.3f %.3f %.3f", aft.Results.HitPos);
 	}
+
+	static bool FindInventoryClass(Actor mo, String classname, bool descendants = true)
+	{
+		if (mo && mo.FindInventory(classname, descendants)) { return true; }
+
+		return false;
+	}
 }
 
 class ActorFinderTracer : LineTracer
