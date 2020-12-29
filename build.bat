@@ -239,15 +239,15 @@ REM # ==========================================================================
 SET ErrorBool=False
 SET "ErrorString="
 REM Try to check if the resources could be found; if not - prepare an error message.
-IF NOT EXIST "%ProgramDirPath%tools\7za.exe" (
+IF NOT EXIST "%ProgramDirPath%tools\7za\7za.exe" (
     SET ErrorBool=True
     SET "ErrorString=%ErrorString%Could Not Find 7Zip!&ECHO."
 )
-IF NOT EXIST "%ProgramDirPath%tools\7zExcludeListDir.txt" (
+IF NOT EXIST "%ProgramDirPath%tools\7za\7zExcludeListDir.txt" (
     SET ErrorBool=True
     SET "ErrorString=%ErrorString%Could Not Find Exclude Directory List!&ECHO."
 )
-IF NOT EXIST "%ProgramDirPath%tools\7zExcludeList.txt" (
+IF NOT EXIST "%ProgramDirPath%tools\7za\7zExcludeList.txt" (
     SET ErrorBool=True
     SET "ErrorString=%ErrorString%Could Not Find Exclude List!&ECHO."
 )
@@ -302,7 +302,7 @@ REM # ==========================================================================
 :CompactProject_CheckResources_FilePermissions
 CALL :CompactProject_CheckResources_7ZipExecutableInternal
 IF %ERRORLEVEL% NEQ 0 (
-    CALL :CompactProject_CheckResources_ErrMSG 2 "Unable to execute [ {PROJECT_ROOT}\Tools\7za.exe ] due to insufficient privileges! [Error Code: %ERRORLEVEL%]"
+    CALL :CompactProject_CheckResources_ErrMSG 2 "Unable to execute [ {PROJECT_ROOT}\Tools\7za\7za.exe ] due to insufficient privileges! [Error Code: %ERRORLEVEL%]"
     EXIT /B 1
 )
 EXIT /B 0
@@ -319,7 +319,7 @@ REM #     ExitCode [Int]
 REM #           Returns the exit code reported by the system or 7Zip.
 REM # ================================================================================================
 :CompactProject_CheckResources_7ZipExecutableInternal
-"%ProgramDirPath%tools\7za.exe" 2> NUL 1> NUL
+"%ProgramDirPath%tools\7za\7za.exe" 2> NUL 1> NUL
 EXIT /B %ERRORLEVEL%
 
 
@@ -446,7 +446,7 @@ REM #                 of the program that has the 'RealTime' flag.  Meaning, if 
 REM #                 notice that their normal activities will be greatly delayed until the program with 'RealTime' is completed.
 REM # ================================================================================================
 :CompactProject_Execute
-START "WolfenDoom Compile: 7Zip" /B /%4 /WAIT "%ProgramDirPath%tools\7za.exe" a -t%1 -mm=%2 -mx=%3 -x@"%ProgramDirPath%tools\7zExcludeListDir.txt" -xr@"%ProgramDirPath%tools\7zExcludeList.txt" "%ProgramDirPath%..\%projectName%.pk3" "%ProgramDirPath%*"
+START "WolfenDoom Compile: 7Zip" /B /%4 /WAIT "%ProgramDirPath%tools\7za\7za.exe" a -t%1 -mm=%2 -mx=%3 -x@"%ProgramDirPath%tools\7za\7zExcludeListDir.txt" -xr@"%ProgramDirPath%tools\7za\7zExcludeList.txt" "%ProgramDirPath%..\%projectName%.pk3" "%ProgramDirPath%*"
 REM Because I couldn't use the error-pipes with 'Start', we'll have to check the ExitCode in a conditional statement
 IF %ERRORLEVEL% GEQ 1 (
     CALL :CompactProject_Execute_ErrMSG %ERRORLEVEL%

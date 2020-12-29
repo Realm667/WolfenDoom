@@ -401,6 +401,7 @@ ACTOR BinWhite
 	Height 32
 	Health 5
 	Mass 100
+	Scale 0.5
 	-DROPOFF
 	+NOBLOOD
 	+NOTAUTOAIMED
@@ -1046,6 +1047,7 @@ ACTOR CoffeeMachine : SwitchableDecoration
 	Radius 4
 	Height 16
 	Health 5
+	Scale 0.5
 	+DONTSPLASH
 	+DONTTHRUST
 	+LOOKALLAROUND //this is needed otherwise we can drink only while in front of it - ozy81
@@ -1096,6 +1098,7 @@ ACTOR WaterMachine : CoffeeMachine
 	DistanceCheck "boa_scenelod"
 	Renderstyle "Translucent"
 	Alpha 0.5
+	Scale 1.0
 	States
 	{
 	Active:

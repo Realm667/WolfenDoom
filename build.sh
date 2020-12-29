@@ -2,7 +2,7 @@
 
 if [[ -n "$(uname -s | grep -i 'MINGW\|CYGWIN\|MSYS')" ]]; then
   # We're using Bash on Windows!
-  sevenzip=./tools/7za.exe
+  sevenzip=./tools/7za/7za.exe
 else
   sevenzip=7z
 fi
@@ -64,5 +64,5 @@ else
   zipname="$zipprefix-$(date +%Y%m%d).pk3"
 fi
 
-$sevenzip a -tzip -mmt=on -mm=$cmthd -mx=9 -ssc -xr@'tools/7zExcludeList.txt' -x@'tools/7zExcludeListDir.txt' $zipname *
+$sevenzip a -tzip -mmt=on -mm=$cmthd -mx=9 -ssc -xr@'tools/7za/7zExcludeList.txt' -x@'tools/7za/7zExcludeListDir.txt' $zipname *
 if [[ $? -eq 0 ]]; then mv $zipname ..; fi
