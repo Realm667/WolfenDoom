@@ -400,11 +400,63 @@ class BoAStatusBar : BaseStatusBar
 		}
 
 		DrawImage("HUDBROVL", (74, 168), DI_ITEM_OFFSETS);
+
+		if (!level.NoInventoryBar)
+		{
+			BeginHUD(1, False);
+			DrawPuzzleItems(-20, 20, 20);
+		}
 	}
 
 	void DrawInventorySelection(int x, int y, int size = 32)
 	{
-		Vector2 texsize = TexMan.GetScaledSize(CPlayer.mo.InvSel.Icon);
+		DrawIcon(CPlayer.mo.InvSel, x, y, size);
+	}
+
+	void DrawPuzzleItems(int x, int y, int size = 32, int maxrows = 5, int maxcols = 0)
+	{
+		if (!CPlayer.mo.Inv) { return; }
+
+		int starty = y;
+		int rows = 1;
+		int cols = 1;
+
+		Inventory nextinv = CPlayer.mo.Inv;
+
+		while (nextinv)
+		{
+			// Draw puzzle items that are not already in the inventory bar, not drawn elsewhere, and not tied to Keen maps
+			if (!nextinv.bInvBar && nextinv is "PuzzleItem" && !(nextinv is "CoinItem") && !(nextinv is "CKPuzzleItem"))
+			{
+				DrawIcon(nextinv, x, y, size);
+
+				// Move down a block
+				if (!maxrows || rows < maxrows)
+				{
+					y += size + 2;
+					rows++;
+				}
+				else if (!maxcols || cols <= maxcols) // Wrap to the next column if we're too long
+				{
+					y = starty;
+					rows = 1;
+
+					x -= size + 2;
+					cols++;
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			nextinv = nextinv.Inv;
+		}
+	}
+
+	void DrawIcon(Inventory item, int x, int y, int size)
+	{
+		Vector2 texsize = TexMan.GetScaledSize(item.Icon);
 		if (texsize.x > size || texsize.y > size)
 		{
 			if (texsize.y > texsize.x)
@@ -420,15 +472,15 @@ class BoAStatusBar : BaseStatusBar
 		}
 		else { texsize = (1.0, 1.0); }
 
-		DrawInventoryIcon(CPlayer.mo.InvSel, (x, y), DI_ITEM_CENTER, CPlayer.mo.InvSel.alpha, scale:texsize);
+		DrawInventoryIcon(item, (x, y), DI_ITEM_CENTER, item.alpha, scale:texsize);
 
-		if (CPlayer.mo.InvSel.Amount > 1)
+		if (item.Amount > 1)
 		{
-			DrawString(mHUDFont, FormatNumber(CPlayer.mo.InvSel.Amount), (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
+			DrawString(mHUDFont, FormatNumber(item.Amount), (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
 		}
-		else if (CPlayer.mo.InvSel is "PoweredInventory") // For powered inventory items, show current fuel level as a percentage
+		else if (item is "PoweredInventory") // For powered inventory items, show current fuel level as a percentage
 		{
-			let item = PoweredInventory(CPlayer.mo.InvSel);
+			let item = PoweredInventory(item);
 			Inventory fuel;
 
 			if (item) { fuel = CPlayer.mo.FindInventory(item.fuelclass); }
@@ -533,9 +585,10 @@ class BoAStatusBar : BaseStatusBar
 		}
 
 		//Mugshot + Inventory
-		if (CPlayer.mo.InvSel != null && !level.NoInventoryBar)
+		if(!level.NoInventoryBar)
 		{
-			DrawInventorySelection(128, -22, 32);
+			if (CPlayer.mo.InvSel != null) { DrawInventorySelection(128, -22, 32); }
+			DrawPuzzleItems(-20, 48, 20);
 		}
 
 		DrawMugShot((7, -38));

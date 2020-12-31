@@ -581,7 +581,7 @@ class BoAPlayer : PlayerPawn
 		{
 			for (i = 0; i < AllActorClasses.Size(); ++i)
 			{
-				type = (class<Inventory>)(AllActorClasses[i]);
+				let type = (class<Inventory>)(AllActorClasses[i]);
 				if (type!= null)
 				{
 					let def = GetDefaultByType (type);
@@ -598,6 +598,19 @@ class BoAPlayer : PlayerPawn
 			}
 			if (!giveall)
 				return;
+		}
+
+		if (giveall || name ~== "gold" || name ~== "treasure" || name ~== "money" || name ~== "coins")
+		{
+			let type = (class<CoinItem>)("CoinItem");
+
+			if (type)
+			{
+				let def = GetDefaultByType(type);
+				GiveInventory(type, amount <= 0 ? def.MaxAmount : amount, true);
+			}
+
+			if (!giveall) { return; }
 		}
 
 		if (giveall || name ~== "puzzlepieces")

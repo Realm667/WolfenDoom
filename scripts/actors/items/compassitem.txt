@@ -20,20 +20,22 @@
  * SOFTWARE.
 **/
 
-class CompassItem : Inventory
+class CompassItem : PuzzleItem
 {
 	String iconName;
 	int specialclue;
+	class<Inventory> alternate0, alternate1;
 
 	Property SpecialClue:specialclue;
+	Property Alternates: alternate0, alternate1; // Items that get removed if they are already in the inventory when this item is given (e.g., remove halves of an egyptian artifact when you are given the whole artifact)
 
 	Default
 	{
 		//$Category Pickups (BoA)
 		//$Color 13
 		+INVENTORY.ALWAYSPICKUP
-		+INVENTORY.INVBAR
 		+INVENTORY.UNDROPPABLE
+		-INVENTORY.INVBAR
 		Inventory.MaxAmount 1;
 		Inventory.PickupSound "pickup/papers"; // Default to sounding like paper pickup
 		Scale 0.5;
@@ -72,5 +74,26 @@ class CompassItem : Inventory
 		}
 
 		return pickup;
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (owner) { RemoveAlternates(); }
+	}
+
+	void RemoveAlternates()
+	{
+		if (owner)
+		{
+			Inventory item;
+
+			item = owner.FindInventory(alternate0);
+			if (item) { item.Destroy(); }
+
+			item = owner.FindInventory(alternate1);
+			if (item) { item.Destroy(); }
+		}
 	}
 }

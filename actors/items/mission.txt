@@ -121,6 +121,7 @@ ACTOR ArtifactEgyptian : CompassItem
 	Inventory.PickupMessage "$EGYPT"
 	Inventory.MaxAmount 1
 	Inventory.PickupSound "misc/mayan_pickup"
+	CompassItem.Alternates "ArtifactEgyptian_H1", "ArtifactEgyptian_H2"
 	States
 	{
 	Spawn:
@@ -174,6 +175,7 @@ ACTOR SpearOfDestiny : CompassItem
 	Inventory.Icon SPEAA0
 	Inventory.PickupMessage "$SPEAROD"
 	Inventory.PickupSound "misc/spearofdestiny"
+	CompassItem.Alternates "SpearofDestiny_End", ""
 	States
 	{
 	Spawn:
@@ -191,6 +193,7 @@ ACTOR SpearOfDestiny_End : CompassItem
 	Inventory.Icon SPEAA0
 	Inventory.PickupMessage "$SPEAROD"
 	Inventory.PickupSound "misc/spearofdestiny"
+	CompassItem.Alternates "SpearofDestiny", ""
 	States
 	{
 	Spawn:
