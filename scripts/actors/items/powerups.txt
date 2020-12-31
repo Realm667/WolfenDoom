@@ -694,6 +694,8 @@ class RyanToken : DisguiseToken
 	Inventory BJInv;
 	Inventory BJInvSel;
 	Weapon BJReadyWeapon;
+	int BJStamina; // Attempt to fix health
+	int BJHealth;
 
 	Default
 	{
@@ -722,6 +724,7 @@ class RyanToken : DisguiseToken
 
 			let p = PlayerPawn(toucher);
 
+			// Console.Printf("Health: %d %d", p.Health, p.player.Health);
 			if (p)
 			{
 				BJInvSel = p.InvSel;
@@ -733,6 +736,14 @@ class RyanToken : DisguiseToken
 				toucher.A_GiveInventory("KnifeSilent", 1);
 
 				p.InvSel = p.InvFirst = p.FirstInv();
+
+				BJStamina = p.Stamina;
+				p.Stamina = p.Default.Stamina;
+				BJHealth = p.Health;
+				// Player's health is stored in two different places: the
+				// PlayerPawn actor, and the PlayerInfo which is attached to it.
+				p.Health = p.Default.Health;
+				p.player.Health = p.Default.Health;
 			}
 		}
 
@@ -751,6 +762,10 @@ class RyanToken : DisguiseToken
 			{
 				p.InvSel = p.InvFirst = BJInvSel;
 				p.player.PendingWeapon = BJReadyWeapon;
+
+				p.Stamina = BJStamina;
+				p.Health = BJHealth;
+				p.player.Health = BJHealth;
 			}
 		}
 
