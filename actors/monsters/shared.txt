@@ -1990,14 +1990,16 @@ ACTOR SmokeMonsterProjectile
 	}
 }
 
-ACTOR MonsterHole
+ACTOR MonsterHole : Appendage
 {
 	+NOCLIP
 	+NOGRAVITY
-	+NOINTERACTION
+	+SHOOTABLE
+	+THRUSPECIES
 	RenderStyle "Translucent"
 	Alpha 0.3
 	Scale .75
+	Species "Smoke"
 	States
 	{
 	Spawn:
@@ -2011,6 +2013,7 @@ ACTOR MonsterHole2 : MonsterHole
 {
 	Scale 1.0
 	+RANDOMIZE
+	Species "Zombie"
 	States
 	{
 	Spawn:

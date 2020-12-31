@@ -342,3 +342,36 @@ class MineCartEMoving : ModelBase
 		return true;
 	}
 }
+
+// Actor that passes damage through to its master, if one is set
+class Appendage : Actor
+{
+	Actor body;
+
+	override void PostBeginPlay()
+	{
+		body = self;
+		while (body && body.master) { body = body.master; }
+
+		if (body != self)
+		{
+			CopyBloodColor(body);
+			bNoBlood = body.bNoBlood;
+			bNoBloodDecals = body.bNoBloodDecals;
+		}
+	}
+
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
+	{
+		// Co-opt the main actor's poison start time to store the time that the last appendage damage happened
+		// so that we can't kill enemies with a single explosion that affects dozens of appendage/cloud actors
+
+		if (body && body.PoisonPeriodReceived < level.time)
+		{
+			body.PoisonPeriodReceived = level.time;
+			body.DamageMobj(inflictor, source, damage, mod, flags, angle);
+		}
+
+		return 0;
+	}
+}
