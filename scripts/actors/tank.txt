@@ -617,7 +617,7 @@ Class BoAFindHitPointTracer : LineTracer
 		}
 		else if (Results.HitType == TRACE_HitWall)
 		{
-			if (Results.HitLine.flags & (Line.ML_BLOCKING | Line.ML_BLOCKEVERYTHING)) { return TRACE_Stop; }
+			if (Results.HitLine.flags & Line.ML_BLOCKING || Results.HitLine.flags & Line.ML_BLOCKEVERYTHING) { return TRACE_Stop; }
 			if (Results.HitTexture)
 			{
 				if (Results.Tier != TIER_Middle || Results.HitLine.flags & Line.ML_3DMIDTEX) // 3D Midtex check still isn't perfect...

@@ -1381,6 +1381,8 @@ Class CrosshairTracer : LineTracer
 		}
 		else if (Results.HitType == TRACE_HitFloor || Results.HitType == TRACE_HitCeiling)
 		{
+			Results.HitActor = null;
+
 			return TRACE_Stop;
 		}
 		else if (Results.HitType == TRACE_HitWall)
@@ -1388,14 +1390,12 @@ Class CrosshairTracer : LineTracer
 			if (Results.HitLine.flags & Line.ML_BLOCKING || Results.HitLine.flags & Line.ML_BLOCKEVERYTHING) { return TRACE_Stop; }
 			if (Results.HitTexture)
 			{
-				if (Results.HitLine.flags & Line.ML_TWOSIDED)
+				if (Results.Tier != TIER_Middle) // 3D Midtex check still isn't perfect...
 				{
-					return TRACE_Skip; // Ignore all other double-sided lines 
+					return TRACE_Stop;
 				}
-
-				return TRACE_Stop;
+				return TRACE_Skip;
 			}
-
 			return TRACE_Skip;
 		}
 
