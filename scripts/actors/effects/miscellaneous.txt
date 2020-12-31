@@ -523,9 +523,14 @@ class BleedMe : Inventory
 {
 	override bool TryPickup(in out Actor toucher)
 	{
-		toucher.A_SpawnItemEx("BloodPool2", 0, 0, 0, toucher.vel.x, toucher.vel.y, toucher.vel.z, 0, SXF_USEBLOODCOLOR | SXF_SETMASTER);
+		if (toucher.health <= 0) // Added check in case the player ever runs across 0, 0 coordinates of a map
+		{
+			toucher.A_SpawnItemEx("BloodPool2", 0, 0, 0, toucher.vel.x, toucher.vel.y, toucher.vel.z, 0, SXF_USEBLOODCOLOR | SXF_SETMASTER);
 
-		return true;
+			return true;
+		}
+
+		return false;
 	}
 }
 
