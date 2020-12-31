@@ -528,6 +528,7 @@ class DisguiseToken : CustomInventory
 	Property HUDSprite:HUDsprite;
 	Property NoTarget:notarget;
 	Property PlayerSoundClass:playersoundclass;
+
 	Default
 	{
 		+INVENTORY.KEEPDEPLETED
@@ -690,6 +691,10 @@ class DisguiseToken : CustomInventory
 
 class RyanToken : DisguiseToken
 {
+	Inventory BJInv;
+	Inventory BJInvSel;
+	Weapon BJReadyWeapon;
+
 	Default
 	{
 		DisguiseToken.ViewBob 0.22; // Less bob then BJ
@@ -706,6 +711,50 @@ class RyanToken : DisguiseToken
 			PLRR A 0;
 		CrouchSprite:
 			PLYR A 0;
+	}
+
+	override bool TryPickup (in out Actor toucher)
+	{
+		if (toucher)
+		{
+			BJInv = toucher.Inv;
+			toucher.Inv = null;
+
+			let p = PlayerPawn(toucher);
+
+			if (p)
+			{
+				BJInvSel = p.InvSel;
+				BJReadyWeapon = p.player.ReadyWeapon;
+
+				let invclear = InventoryClearHandler(EventHandler.Find("InventoryClearHandler"));
+				if (invclear) { invclear.ResetPlayerInventory(toucher); }
+
+				toucher.A_GiveInventory("KnifeSilent", 1);
+
+				p.InvSel = p.InvFirst = p.FirstInv();
+			}
+		}
+
+		return Super.TryPickup(toucher);
+	}
+
+	override void OnDestroy()
+	{
+		if (owner)
+		{
+			owner.Inv = BJInv;
+
+			let p = PlayerPawn(owner);
+
+			if (p)
+			{
+				p.InvSel = p.InvFirst = BJInvSel;
+				p.player.PendingWeapon = BJReadyWeapon;
+			}
+		}
+
+		Super.OnDestroy();
 	}
 }
 
@@ -1124,22 +1173,24 @@ class GierToken : PowerUp // Token is checked for in Nazi class to cause enemies
 
 class NazisBackpack : BackpackItem
 {
-    default
-    {
-        //$Category Items (BoA)
-        //$Title Backpack (Backpack)
-        //$Color 1
-        Height 26;
-        Scale 0.50;
-        Inventory.PickupMessage "$SSPACK";
-    }
+	Default
+	{
+		//$Category Items (BoA)
+		//$Title Backpack (Backpack)
+		//$Color 1
+		Height 26;
+		Scale 0.50;
+		Inventory.PickupMessage "$SSPACK";
+	}
+
 	States
 	{
-	Spawn:
-		BPK2 A -1;
-		Stop;
+		Spawn:
+			BPK2 A -1;
+			Stop;
 	}
-    override bool HandlePickup (Inventory item) //modified from gzdoom.pk3
+
+	override bool HandlePickup (Inventory item) //modified from gzdoom.pk3
 	{
 		// Since you already have a backpack, that means you already have every
 		// kind of ammo in your inventory, so we don't need to look at the
@@ -1147,11 +1198,11 @@ class NazisBackpack : BackpackItem
 		// have to alter the MaxAmount either.
 		if (item is 'BackpackItem')
 		{
-            if (item is 'ShopBackpack') //trying to buy a second backpack from the shop
-            {
-                item.bPickupGood = false;
-                return true;
-            }
+			if (item is 'ShopBackpack') //trying to buy a second backpack from the shop
+			{
+				item.bPickupGood = false;
+				return true;
+			}
 			for (let probe = Owner.Inv; probe != NULL; probe = probe.Inv)
 			{
 				let ammoitem = Ammo(probe);

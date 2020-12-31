@@ -22,25 +22,32 @@
 
 class InventoryClearHandler : EventHandler
 {
+	// Set this code as static so that it can be called from other scripts, consolidate
+	// updates to one place , and avoid copy/paste duplication of the inventory resets.
+	void ResetPlayerInventory(Actor mo)
+	{
+		// Give the player the camera tilt handling item (modified version of Nash's Tilt++ v1.3)
+		mo.A_GiveInventory("BoATilt", 1);
+		mo.A_GiveInventory("BoAVisibility", 1);
+		mo.A_GiveInventory("BoAUnderwater", 1);
+
+		// Force reset of certain shader effects
+		mo.A_SetInventory("OldVideoShaderControl", 1);
+		mo.A_SetInventory("BlurShaderControl", 1);
+		mo.A_SetInventory("HeatShaderControl", 1);
+		mo.A_SetInventory("SandShaderControl", 1);
+		mo.A_SetInventory("ColorGradeShaderControl", 1);
+
+		mo.A_GiveInventory("NullWeapon", 1);
+	}
+
 	override void PlayerEntered(PlayerEvent e)
 	{
 		let me = PlayerPawn(players[e.PlayerNumber].mo);
 
 		if (!me) { return; }
 
-		// Give the player the camera tilt handling item (modified version of Nash's Tilt++ v1.3)
-		me.A_GiveInventory("BoATilt", 1);
-		me.A_GiveInventory("BoAVisibility", 1);
-		me.A_GiveInventory("BoAUnderwater", 1);
-
-		// Force reset of certain shader effects
-		me.A_SetInventory("OldVideoShaderControl", 1);
-		me.A_SetInventory("BlurShaderControl", 1);
-		me.A_SetInventory("HeatShaderControl", 1);
-		me.A_SetInventory("SandShaderControl", 1);
-		me.A_SetInventory("ColorGradeShaderControl", 1);
-
-		me.A_GiveInventory("NullWeapon", 1);
+		ResetPlayerInventory(me);
 
 		// Remove level-specific inventory items, and other items which should
 		// not persist between missions.
