@@ -377,10 +377,6 @@ class BoAStatusBar : BaseStatusBar
 		if (GetAmount("AstroYellowKey")) { DrawImage("ATKEYS1", (254, 180), DI_ITEM_OFFSETS); }
 		if (GetAmount("AstroRedKey")) { DrawImage("ATKEYS2", (254, 189), DI_ITEM_OFFSETS); }
 
-		if (GetAmount("CKBlueKey")) { DrawImage("CKKEYS1", (254, 171), DI_ITEM_OFFSETS); }
-		if (GetAmount("CKYellowKey")) { DrawImage("CKKEYS0", (254, 180), DI_ITEM_OFFSETS); }
-		if (GetAmount("CKRedKey")) { DrawImage("CKKEYS2", (254, 189), DI_ITEM_OFFSETS); }
-
 		//Ammo
 		DrawString(mHUDFont, FormatNumber(GetAmount("9mmAmmo"), 3), (284, 172), DI_TEXT_ALIGN_RIGHT);
 		DrawString(mHUDFont, FormatNumber(GetAmount("9mmAmmo"), 3), (284, 172), DI_TEXT_ALIGN_RIGHT);
@@ -404,7 +400,7 @@ class BoAStatusBar : BaseStatusBar
 		if (!level.NoInventoryBar)
 		{
 			BeginHUD(1, False);
-			DrawPuzzleItems(-20, 20, 20);
+			DrawPuzzleItems(-24, 20, 28);
 		}
 	}
 
@@ -413,7 +409,7 @@ class BoAStatusBar : BaseStatusBar
 		DrawIcon(CPlayer.mo.InvSel, x, y, size);
 	}
 
-	void DrawPuzzleItems(int x, int y, int size = 32, int maxrows = 5, int maxcols = 0)
+	void DrawPuzzleItems(int x, int y, int size = 32, int maxrows = 6, int maxcols = 0)
 	{
 		if (!CPlayer.mo.Inv) { return; }
 
@@ -425,8 +421,8 @@ class BoAStatusBar : BaseStatusBar
 
 		while (nextinv)
 		{
-			// Draw puzzle items that are not already in the inventory bar, not drawn elsewhere, and not tied to Keen maps
-			if (!nextinv.bInvBar && nextinv is "PuzzleItem" && !(nextinv is "CoinItem") && !(nextinv is "CKPuzzleItem"))
+			// Draw puzzle items that are not already in the inventory bar, not drawn elsewhere, and not tied to Keen maps (and have an icon defined)
+			if (!nextinv.bInvBar && nextinv is "PuzzleItem" && !(nextinv is "CoinItem") && !(nextinv is "CKPuzzleItem") && nextinv.icon)
 			{
 				DrawIcon(nextinv, x, y, size);
 
@@ -456,7 +452,7 @@ class BoAStatusBar : BaseStatusBar
 
 	void DrawIcon(Inventory item, int x, int y, int size)
 	{
-		Vector2 texsize = TexMan.GetScaledSize(item.Icon);
+		Vector2 texsize = TexMan.GetScaledSize(item.icon);
 		if (texsize.x > size || texsize.y > size)
 		{
 			if (texsize.y > texsize.x)
@@ -493,7 +489,7 @@ class BoAStatusBar : BaseStatusBar
 		}
 	}
 
-	protected void DrawFullScreenStuff ()
+	protected void DrawFullScreenStuff()
 	{
 		int current, max;
 
@@ -565,10 +561,6 @@ class BoAStatusBar : BaseStatusBar
 		if (GetAmount("AstroYellowKey")) { DrawImage("ATKEYS1", (-24, 9), DI_ITEM_OFFSETS); }
 		if (GetAmount("AstroRedKey")) { DrawImage("ATKEYS2", (-34, 9), DI_ITEM_OFFSETS); }
 
-		if (GetAmount("CKBlueKey")) { DrawImage("CKKEYS1", (-14, 9), DI_ITEM_OFFSETS); }
-		if (GetAmount("CKYellowKey")) { DrawImage("CKKEYS0", (-24, 9), DI_ITEM_OFFSETS); }
-		if (GetAmount("CKRedKey")) { DrawImage("CKKEYS2", (-34, 9), DI_ITEM_OFFSETS); }
-
 		//Bottom Left
 		DrawImage("HUD_BL", (0, -53), DI_ITEM_OFFSETS);
 		//Health
@@ -588,7 +580,7 @@ class BoAStatusBar : BaseStatusBar
 		if(!level.NoInventoryBar)
 		{
 			if (CPlayer.mo.InvSel != null) { DrawInventorySelection(128, -22, 32); }
-			DrawPuzzleItems(-20, 48, 20);
+			DrawPuzzleItems(-28, 48, 28);
 		}
 
 		DrawMugShot((7, -38));
