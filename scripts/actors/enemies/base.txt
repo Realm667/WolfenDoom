@@ -1768,7 +1768,7 @@ class Nazi : Base
 
 		if (level.time > 35)
 		{
-			A_Look();
+			A_LookEx(user_sneakable ? LOF_NOSEESOUND : 0); // Don't play see sound if you are a sneakable enemy - Their sound alert is handled elsewhere.
 
 			if (target && target.species == species) { target = null; } // Ignore the target if it's the same species (normally "Nazi")
 			if (target && SeeSound) { SoundAlert(target, false, 256); } // If the Nazi yells after seeing a target, actually alert enemies around him
@@ -2522,8 +2522,6 @@ class Nazi : Base
 		if (user_sneakable)
 		{
 			alerted = false;
-
- 
 			bFriendly = True;
 
 			goal = patrolgoal; // Restore any navigation goal if there was one set
