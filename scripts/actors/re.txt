@@ -230,11 +230,14 @@ class REBalusterMedium : REBase
 	}
 }
 
-class REBalusterSmall : REBase
+class REBalusterSmall : SimpleActor
 {
 	Default
 	{
+		//$Category Resident Evil (BoA)
 		//$Title Rail Support
+		+SOLID
+		+CANPASS
 		+NOGRAVITY
 		Height 21;
 		Radius 4;

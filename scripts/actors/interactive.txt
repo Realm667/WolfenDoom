@@ -454,7 +454,7 @@ class StatueBreakable : Actor
 			}
 		}
 
-		if (vel.z < -10.0 && pos.z <= floorz + 16) { SetStateLabel("Death"); }
+		if (vel.z < -1.0 && floorheight <= 16) { SetStateLabel("Death"); }
 		if (pos.z == floorz && floorheight > 0) { SetStateLabel("Fall"); }
 
 		if (
@@ -497,12 +497,6 @@ class StatueBreakable : Actor
 
 			pitch = tiltpitch * cos(angle);
 			roll = tiltpitch * sin(angle);
-		}
-
-		if (floorheight <= Default.radius / 2)
-		{
-			bSolid = false;
-			bPushable = false;
 		}
 
 		VelFromAngle(0.25 * (90 - tiltpitch) / (Default.radius / 1.4), tiltangle);
