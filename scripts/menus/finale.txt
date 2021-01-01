@@ -33,7 +33,8 @@ class TextScroll : BoAMenu
 	double scrolly, scrollx, scrollstep;
 	double textwidth, backwidth, backheight;
 	double alpha;
-	int w, h, lineheight, margin, topmargin, delay;
+	int w, h, margin, topmargin, delay;
+	double lineheight;
 
 	bool noskip, finished;
 
@@ -55,7 +56,7 @@ class TextScroll : BoAMenu
 		h = int(w * 0.75);
 		margin = 160;
 		topmargin = 180;
-		lineheight = 25;
+		lineheight = 23.25;
 
 		scrolly = h;
 		scrollx = w / 2;
