@@ -442,7 +442,7 @@ class BoAPlayer : PlayerPawn
 			giveall = ALL_YESYES;
 		}
 
-		if (name ~== "health")
+		if (giveall || name ~== "health")
 		{
 			if (amount > 0)
 			{
@@ -453,6 +453,9 @@ class BoAPlayer : PlayerPawn
 			{
 				player.health = health = GetMaxHealth(true);
 			}
+
+			let def = GetDefaultByType("Stamina");
+			GiveInventory("Stamina", def.MaxAmount);
 		}
 
 		if (giveall || name ~== "backpack")
@@ -592,6 +595,13 @@ class BoAPlayer : PlayerPawn
 						if (giveall == ALL_YESYES || GetReplacement(type) == type)
 						{
 							GiveInventory(type, amount <= 0 ? def.MaxAmount : amount, true);
+
+							if (type is "PoweredInventory") // Give full fuel for any powered inventory item
+							{
+								Class<Inventory> fuel = PoweredInventory(def).fuelclass;
+								def = GetDefaultByType(fuel);
+								GiveInventory(fuel, def.MaxAmount, true);
+							}
 						}
 					}
 				}
