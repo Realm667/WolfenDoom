@@ -365,10 +365,10 @@ class Appendage : Actor
 	{
 		// Co-opt the main actor's poison start time to store the time that the last appendage damage happened
 		// so that we can't kill enemies with a single explosion that affects dozens of appendage/cloud actors
-
-		if (body && body.PoisonPeriodReceived < level.time)
+		if (body && (body.PoisonPeriodReceived < level.time || (body.Poisoner && body.Poisoner != inflictor)))
 		{
 			body.PoisonPeriodReceived = level.time;
+			body.Poisoner = inflictor;
 			body.DamageMobj(inflictor, source, damage, mod, flags, angle);
 		}
 
