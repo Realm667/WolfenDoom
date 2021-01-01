@@ -689,9 +689,44 @@ class DisguiseToken : CustomInventory
 	}
 }
 
+// "Holds" an inventory temporarily
+class InventoryHolder : Thinker
+{
+	Array<Inventory> heldItems;
+	// Actor token;
+	// Actor for; // In case it has to carry between maps...
+
+	void HoldInventory(Inventory head)
+	{
+		Inventory ii = head;
+		while(ii != null)
+		{
+			ii.DetachFromOwner();
+			ii.Owner = null;
+			ii.bInvisible = true;
+			ii.bNoInteraction = true;
+			ii.ChangeStatNum(STAT_DEFAULT);
+			heldItems.Push(ii);
+			ii = ii.Inv;
+		}
+	}
+
+	void RestoreInventory(Actor receiver)
+	{
+		// Iterate in reverse to put items in the same order they were before
+		for (int i = heldItems.Size() - 1; i; i--)
+		{
+			Inventory ii = heldItems[i];
+			ii.bInvisible = false;
+			ii.bNoInteraction = false;
+			ii.AttachToOwner(receiver);
+		}
+	}
+}
+
 class RyanToken : DisguiseToken
 {
-	Inventory BJInv;
+	InventoryHolder BJInv;
 	Inventory BJInvSel;
 	Weapon BJReadyWeapon;
 	int BJStamina; // Attempt to fix health
@@ -719,7 +754,8 @@ class RyanToken : DisguiseToken
 	{
 		if (toucher)
 		{
-			BJInv = toucher.Inv;
+			BJInv = new("InventoryHolder");
+			BJInv.HoldInventory(toucher.Inv);
 			toucher.Inv = null;
 
 			let p = PlayerPawn(toucher);
@@ -754,7 +790,9 @@ class RyanToken : DisguiseToken
 	{
 		if (owner)
 		{
-			owner.Inv = BJInv;
+			owner.Inv = null;
+			BJInv.RestoreInventory(owner);
+			BJInv.Destroy();
 
 			let p = PlayerPawn(owner);
 
