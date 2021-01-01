@@ -303,7 +303,7 @@ class RENemesis : NaziBoss
 		Stop;
 	Raise:
 		NEMS N 8 {
-			A_StartSound(SeeSound, attenuation: 0);
+			A_StartSound(SeeSound, CHAN_VOICE, attenuation: 0);
 			ACS_NamedExecute("City_Light_Off", 0);
 			A_RearrangePointers(AAPTR_TRACER); // Fetch target from "tracer" pointer.
 		}
