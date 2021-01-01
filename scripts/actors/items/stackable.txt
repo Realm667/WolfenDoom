@@ -35,6 +35,11 @@
 */
 class StackableInventory : PuzzleItem
 {
+	Default
+	{
+		-NOGRAVITY
+	}
+
 	Class<Inventory> GetParentInventoryClass ()
 	{
 		class<Object> type = GetClass();
