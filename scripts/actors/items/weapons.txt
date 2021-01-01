@@ -111,21 +111,24 @@ class NaziWeapon : Weapon
 
 					let downstate = GetDownState();
 
-					if (psp.CurState.InStateSequence(GetUpState()) || lowertimeout < 35) { return; }
-					else if (!psp.CurState.InStateSequence(downstate))
+					if (psp && psp.CurState)
 					{
-						owner.player.SetPsprite(PSP_WEAPON, downstate);
-						lowerstart = psp.y;
-					}
-					else
-					{
-						if (!lowerspeed) { lowerspeed = psp.y - lowerstart; }
-
-						if (psp.y >= WEAPONBOTTOM - lowerspeed)
+						if (psp.CurState.InStateSequence(GetUpState()) || lowertimeout < 35) { return; }
+						else if (!psp.CurState.InStateSequence(downstate))
 						{
-							owner.player.ReadyWeapon = null;
-							owner.player.PendingWeapon = WP_NOCHANGE;
-							lowertimeout = 0;
+							owner.player.SetPsprite(PSP_WEAPON, downstate);
+							lowerstart = psp.y;
+						}
+						else
+						{
+							if (!lowerspeed) { lowerspeed = psp.y - lowerstart; }	
+
+							if (psp.y >= WEAPONBOTTOM - lowerspeed)
+							{
+								owner.player.ReadyWeapon = null;
+								owner.player.PendingWeapon = WP_NOCHANGE;
+								lowertimeout = 0;
+							}
 						}
 					}
 				}
