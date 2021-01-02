@@ -983,22 +983,6 @@ class TankTreadsBase : Base
 
 		if (morphpowerup) { BoACompass.Add(self, "TANKICO"); }
 
-		if (!master && morphpowerup)
-		{
-			// Check for repair kits, and make them usable from the inventory
-			// if the tank is drivable
-			ThinkerIterator it = ThinkerIterator.Create("RepairKit");
-			RepairKit rk = RepairKit(it.Next());
-			while (rk != null)
-			{
-				if (!rk.bInvBar)
-				{
-					rk.bInvBar = true;
-				}
-				rk = RepairKit(it.Next());
-			}
-		}
-
 		Super.PostBeginPlay();
 	}
 

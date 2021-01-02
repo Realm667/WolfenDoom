@@ -898,7 +898,7 @@ class RepairKit : CompassItem
 		return false;
 	}
 
-	override void PostBeginPlay()
+	override bool TryPickup (in out Actor toucher)
 	{
 		// Check for drivable tanks, and make the repair kit visible on the 
 		// inventory bar if there are drivable tanks present on the map.
@@ -912,6 +912,7 @@ class RepairKit : CompassItem
 			}
 			tank = TankTreadsBase(it.Next());
 		}
+		return Super.TryPickup(toucher);
 	}
 }
 
