@@ -897,6 +897,22 @@ class RepairKit : CompassItem
 
 		return false;
 	}
+
+	override void PostBeginPlay()
+	{
+		// Check for drivable tanks, and make the repair kit visible on the 
+		// inventory bar if there are drivable tanks present on the map.
+		ThinkerIterator it = ThinkerIterator.Create("TankTreadsBase");
+		TankTreadsBase tank = TankTreadsBase(it.Next());
+		while (tank != null)
+		{
+			if (!tank.master && tank.MorphPowerup)
+			{
+				bInvBar = true;
+			}
+			tank = TankTreadsBase(it.Next());
+		}
+	}
 }
 
 class Bandages : PowerupGiver
