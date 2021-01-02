@@ -597,14 +597,6 @@ class Base : Actor
 			return true;
 		}
 
-		// Or any spies who are tagged as FRIENDLY
-		it = ThinkerIterator.Create("Nazi", Thinker.STAT_DEFAULT); // Iterator over Nazis to check for spies
-		Nazi no;
-		while (no = Nazi(it.Next()))
-		{
-			if (no.bFriendly) { return true; }
-		}
-
 		return false;
 	}
 
@@ -1303,7 +1295,10 @@ class Nazi : Base
 			Loop;
 		See:
 		See.Normal: // Guard Walk Pattern
-			"####" "#" 0 { user_incombat = True; }
+			"####" "#" 0 {
+				user_incombat = True;
+				if (bStandStill) { SetStateLabel("See.Stand"); }
+			}
 			"####" A 1 A_NaziChase;
 			"####" AAA 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
@@ -1587,6 +1582,14 @@ class Nazi : Base
 			"####" "#" 0 { user_incombat = True; }
 			"####" A 1 A_NaziChase("Melee", "Missile");
 			"####" A 0 { return ResolveState("See"); }
+		See.Stand: // Standing state for basic Nazis
+			"####" "#" 0 {
+				user_incombat = True;
+				sprite = SpawnState.sprite;
+				frame = SpawnState.frame;
+			}
+			"####" "#" 1 A_NaziChase("Melee", "Missile", CHF_DONTMOVE | CHF_NODIRECTIONTURN);
+			"####" "#" 0 { return ResolveState("See"); }
 		See.Sniper: // Sniper Walk Pattern (non-moving)
 			"####" "#" 0 { user_incombat = True; }
 			"####" "#" 1 A_NaziChase("Melee", "Missile", CHF_NODIRECTIONTURN);
@@ -1770,39 +1773,47 @@ class Nazi : Base
 		{
 			A_LookEx(user_sneakable ? LOF_NOSEESOUND : 0); // Don't play see sound if you are a sneakable enemy - Their sound alert is handled elsewhere.
 
+			if (bStandStill) { LookForPlayers(bLookAllAround); }
+
 			if (target && target.species == species) { target = null; } // Ignore the target if it's the same species (normally "Nazi")
 			if (target && SeeSound) { SoundAlert(target, false, 256); } // If the Nazi yells after seeing a target, actually alert enemies around him
+
+			if (bStandStill) { SetStateLabel("See"); }
 		}
 
 		if (CheckSightOrRange(512)) { return; }
 
-		// Check specifically for players via CheckSight in order to "see through" block-everything lines (which are usually windows)
-		for (int p = 0; p < MAXPLAYERS; p++) // Iterate through all of the players and see if any are in sight
+		if (!bFriendly)
 		{
-			if (players[p].cheats & CF_NOTARGET) { continue; }
+			// Check specifically for players via CheckSight in order to "see through" block-everything lines (which are usually windows)
+			for (int p = 0; p < MAXPLAYERS; p++) // Iterate through all of the players and see if any are in sight
+			{
+				if (players[p].cheats & CF_NOTARGET) { continue; }
 
-			Actor mo = players[p].mo;
+				Actor mo = players[p].mo;
 
-			if (mo) {
-				if (absangle(angle, AngleTo(mo)) <= 30)
+				if (mo)
 				{
-					if (DodgeState) { A_TryHide(); }
-
-					if (AimState && (user_static || bAmbush) && !InStateSequence(CurState, FindState("Dodge.Crouch")))
+					if (absangle(angle, AngleTo(mo)) <= 30)
 					{
-						frame = AimState.frame;
+						if (DodgeState) { A_TryHide(); }
+
+						if (AimState && (user_static || bAmbush) && !InStateSequence(CurState, FindState("Dodge.Crouch")))
+						{
+							frame = AimState.frame;
+						}
 					}
+
+					if (IsFriend(mo)) { continue; }
+					if (Distance3d(mo) > 160.0) { continue; }
+					if (abs(deltaangle(angle, AngleTo(mo))) > 32.5) { continue; }
+					if (!CheckSight(mo, SF_SEEPASTBLOCKEVERYTHING | SF_SEEPASTSHOOTABLELINES)) { continue; }
+
+					if (mo is "TankPlayer") { target = TankPlayer(mo).turret; }
+					else { target = mo; }
+
+					if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); }
 				}
-
-				if (IsFriend(mo)) { continue; }
-				if (Distance3d(mo) > 160.0) { continue; }
-				if (abs(deltaangle(angle, AngleTo(mo))) > 32.5) { continue; }
-				if (!CheckSight(mo, SF_SEEPASTBLOCKEVERYTHING | SF_SEEPASTSHOOTABLELINES)) { continue; }
-
-				if (mo is "TankPlayer") { target = TankPlayer(mo).turret; }
-				else { target = mo; }
-
-				if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); }
 			}
 		}
 
@@ -1856,6 +1867,8 @@ class Nazi : Base
 
 		if ( // Chance to roll if the player is aiming at this actor
 			candodge &&
+			!bStandStill &&
+			(user_sneakable || !bFriendly) &&
 			(!maxdodge || dodgecounter < maxdodge) &&
 			!InStateSequence(CurState, FindState("Dodge.Crouch"))
 		)
@@ -2269,6 +2282,7 @@ class Nazi : Base
 			bNeverTarget = True; // A bit of a hack, but it works...  Will cause issues if FRIENDLY actors ever need to interact with sneakable actors
 			[sp, eyes] = A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid);
 		}
+		else if (bFriendly && !user_sneakable && Default.Species == "Nazi") { bNeverTarget = true; } // Spies will never be targeted
 		else if ((bFriendly && Species == "Nazi") || SneakableActors()) // If there are sneakable actors or spies in the level, no Nazi actors will be targetable - fixes targeting of non-sneakables by idle (friendly) sneakables
 		{ // This will break normal expected friendly monster behavior!
 			bNeverTarget = True;
@@ -2437,7 +2451,11 @@ class Nazi : Base
 		{
 //			if (developer) { console.printf("You shot a friendly spy!"); }
 
-			if (Random() < 64) { bFriendly = false; }
+			if (Random() < 64)
+			{
+				bFriendly = false;
+				bNeverTarget = false;
+			}
 		}
 
 		if (source && source != self && (!user_sneakable || source.bFriendly != bFriendly) && source.species != species)

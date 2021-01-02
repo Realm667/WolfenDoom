@@ -523,8 +523,11 @@ class BleedMe : Inventory
 {
 	override bool TryPickup(in out Actor toucher)
 	{
+		if (toucher.health > 0) { return false; }
+
 		toucher.A_SpawnItemEx("BloodPool2", 0, 0, 0, toucher.vel.x, toucher.vel.y, toucher.vel.z, 0, SXF_USEBLOODCOLOR | SXF_SETMASTER);
 		Destroy();
+
 		return false;
 	}
 }
