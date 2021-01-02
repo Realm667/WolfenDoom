@@ -679,6 +679,8 @@ class TankMorph : PowerMorph
 			}
 
 			premorphhealth = owner.health;
+
+			FilterInventoryBar(true);
 		}
 
 		Super.InitEffect();
@@ -721,9 +723,59 @@ class TankMorph : PowerMorph
 				BasicArmor a = BasicArmor(MorphedPlayer.mo.FindInventory("BasicArmor"));
 				if (a) { a.SavePercent = savepercent; }
 			}
+
+			ResetInventoryBar();
 		}
  
 		Super.EndEffect();
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (owner && owner is "TankPlayer") { FilterInventoryBar(); }
+	}
+
+	void FilterInventoryBar(bool set = false)
+	{
+		Inventory cur = owner.Inv;
+
+		while (cur)
+		{
+			if ( // Unfortunately hard-coded list of inventoy items that can be used while driving a tank
+				cur is "RepairKit" || 
+				cur is "BoACompass"
+			)
+			{
+				cur.bInvBar = true;
+				if (set && !cur.Default.bInvbar) { PlayerPawn(owner).InvSel = cur; } // Automatically select an item that wasn't previously on the inventory bar to highlight that it's there now
+			}
+			else { cur.bInvBar = false; }
+
+			cur = cur.Inv;
+		}
+
+		SelectValidInventory();
+	}
+
+	void ResetInventoryBar()
+	{
+		Inventory cur = MorphedPlayer.mo.Inv;
+
+		while (cur)
+		{
+			cur.bInvBar = cur.Default.bInvBar;
+			cur = cur.Inv;
+		}
+
+		SelectValidInventory();
+	}
+
+	void SelectValidInventory()
+	{
+		if (!PlayerPawn(owner).InvSel) { PlayerPawn(owner).InvSel = PlayerPawn(owner).Inv; }
+		if (!PlayerPawn(owner).InvSel.bInvBar) { PlayerPawn(owner).InvSel = PlayerPawn(owner).InvSel.NextInv(); } // Make sure a valid inventory item is selected
 	}
 }
 

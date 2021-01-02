@@ -470,7 +470,11 @@ class BoAStatusBar : BaseStatusBar
 
 		DrawInventoryIcon(item, (x, y), DI_ITEM_CENTER, item.alpha, scale:texsize);
 
-		if (item.Amount > 1)
+		if (item is "RepairKit" && CPlayer.mo is "TankPlayer")
+		{
+			RepairKit(item).DrawIcon(x, y, size);
+		}
+		else if (item.Amount > 1)
 		{
 			DrawString(mHUDFont, FormatNumber(item.Amount), (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
 		}

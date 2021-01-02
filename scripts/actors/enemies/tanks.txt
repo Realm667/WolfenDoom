@@ -1343,6 +1343,20 @@ class US_Sherman : TankTreadsBase
 		TankTreadsBase.GunSpotY 25;
 		TankTreadsBase.GunSpotZ 54;
 	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		double br = GetDefaultByType("TankBlocker").radius;
+		double r = radius - br;
+		double l = length - br;
+
+		A_SpawnItemEx("TankBlocker", l * 1.25, -r, flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		A_SpawnItemEx("TankBlocker", l * 1.25, r, flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		A_SpawnItemEx("TankBlocker", -l * 1.5, -r, flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		A_SpawnItemEx("TankBlocker", -l * 1.5, r, flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+	}
 }
 
 class US_ShermanTurret : TankTurretBase

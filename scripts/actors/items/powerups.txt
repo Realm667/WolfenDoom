@@ -813,6 +813,7 @@ class RyanToken : DisguiseToken
 
 class PowerRepairing : Powerup
 {
+	bool initialized;
 	int resumetics;
 	Inventory giver; 
 
@@ -828,32 +829,61 @@ class PowerRepairing : Powerup
 
 		if (!Owner || owner.health >= GetDefaultByType(owner.GetClass()).Health)
 		{
+			if (giver)
+			{
+				giver.alpha = 1.0; // Set the icon back to solid if it was flashing
+				if (RepairKit(giver)) { RepairKit(giver).repairtime = resumetics; }
+
+				Destroy();
+			}
+
 			return;
 		}
 		else if (Owner is "TankPlayer")
 		{
 			// Heal the tank, up to maximum default health for the tank player class
 			Owner.GiveBody(int(Strength), GetDefaultByType("TankPlayer").Health);
-			resumetics = EffectTics; // Save last effect tick count so we have a point to start from if the player exits the tank next tick
 
 			if (giver) // If a giving inventory item was set, manipulate its icon and handle inventory removal
 			{
 				giver.alpha = 0.67 + sin(level.time * 15) / 3; // Flash the icon while actively repairing
 
+				if (RepairKit(giver))
+				{
+					if (!initialized)
+					{
+						EffectTics = RepairKit(giver).repairtime;
+						initialized = true;
+					}
+					else { RepairKit(giver).repairtime = EffectTics; }
+				}
+
 				if (EffectTics == 1) // Handle removing (or decrementing the amount of) the inventory item 
 				{
 					if (--giver.Amount == 0) { giver.GoAwayAndDie(); } // If none remaining in inventory, remove the inventory item and this powerup
-					else { giver.alpha = 1.0; } // Restore to full alpha if there are more repair kits in inventory
+					else
+					{
+						giver.alpha = 1.0; // Restore to full alpha if there are more repair kits in inventory
+						if (RepairKit(giver)) { RepairKit(giver).repairtime = RepairKit(giver).Default.repairtime; } // Restore repair time amount for next repair kit use
+					}
 				}
 			}
+
+			resumetics = EffectTics; // Save last effect tick count so we have a point to start from if the player exits the tank next tick
 		}
 		else if (owner is "BoAPlayer")
 		{
 			// Don't heal a non-tank player, but also don't decrement the effect time
-			// This way, tank repair starts again when you get back into the tank
+			// This way, tank repair can be re-started when you get back into a tank
 			EffectTics = resumetics;
 
-			if (giver && giver.alpha != 1.0) { giver.alpha = 1.0; } // Set the icon back to solid if it was flashing
+			if (giver)
+			{
+				giver.alpha = 1.0; // Set the icon back to solid if it was flashing
+				if (RepairKit(giver)) { RepairKit(giver).repairtime = resumetics; }
+
+				Destroy();
+			}
 		}
 		else
 		{
@@ -864,6 +894,10 @@ class PowerRepairing : Powerup
 
 class RepairKit : CompassItem
 {
+	int repairtime;
+
+	Property RepairTime:repairtime;
+
 	Default
 	{
 		//$Title Repair Kit (electric)
@@ -873,6 +907,7 @@ class RepairKit : CompassItem
 		Inventory.PickupMessage "$ELECPAK";
 		Inventory.PickupSound "misc/gadget_pickup";
 		Inventory.MaxAmount 3;
+		RepairKit.RepairTime 500;
 	}
 
 	States
@@ -890,7 +925,11 @@ class RepairKit : CompassItem
 			Inventory repairing = Owner.GiveInventoryType("PowerRepairing"); // Give the actual powerup
 
 			// Tell the powerup what inventory item gave it, just in case someone decides to create a new type of repair kit
-			if (PowerRepairing(repairing)) { PowerRepairing(repairing).giver = self; }
+			if (PowerRepairing(repairing))
+			{
+				PowerRepairing(repairing).giver = self;
+				PowerRepairing(repairing).EffectTics = repairtime;
+			}
 
 			// Don't 'return true' here; removal of the inventory item is handled in the PowerRepairing powerup as long as the 'giver' is set above.
 		}
@@ -898,21 +937,24 @@ class RepairKit : CompassItem
 		return false;
 	}
 
-	override bool TryPickup (in out Actor toucher)
+	// Called from status bar code when selected by a tank player
+	ui void DrawIcon(int x, int y, int size)
 	{
-		// Check for drivable tanks, and make the repair kit visible on the 
-		// inventory bar if there are drivable tanks present on the map.
-		ThinkerIterator it = ThinkerIterator.Create("TankTreadsBase");
-		TankTreadsBase tank = TankTreadsBase(it.Next());
-		while (tank != null)
+		int drawx;
+		int drawy = y + size / 2 - 2;
+		int width = int(size / 16);
+		int height, fullheight;
+
+		for (int i = Amount; i > 0; i--)
 		{
-			if (!tank.master && tank.MorphPowerup)
-			{
-				bInvBar = true;
-			}
-			tank = TankTreadsBase(it.Next());
+			drawx = x + size / 2 - i * (width + 2);
+			fullheight = height = int(size * 0.75);
+
+			if (i == Amount) { height = int(height * repairtime * 1.0 / Default.repairtime); }
+
+			DrawToHUD.Dim("DDDD00", 0.25, drawx, drawy - fullheight, width, fullheight - height);
+			DrawToHUD.Dim("DDDD00", 0.65, drawx, drawy - height, width, height);
 		}
-		return Super.TryPickup(toucher);
 	}
 }
 

@@ -139,4 +139,53 @@ class DrawToHUD
 		ShapeUtil.MoveSquare(shape, screensize, screenpos, ang);
 		Screen.DrawShape(tex, false, shape, DTA_Alpha, alpha, DTA_AlphaChannel, alphachannel, DTA_FillColor, shade);
 	}
+
+
+	static ui void Dim(Color clr = 0x000000, double alpha = 0.5, int x = 0, int y = 0, int w = -1, int h = -1)
+	{
+		if (w == -1) { w = Screen.GetWidth(); }
+		if (h == -1) { h = Screen.GetHeight(); }
+
+		// Scale the coordinates
+		Vector2 screenpos, screensize;
+		[screenpos, screensize] = TranslatetoHUDCoordinates((x, y), (w, h));
+
+		Screen.Dim(clr, alpha, int(screenpos.x), int(screenpos.y), int(screensize.x), int(screensize.y));
+	}
+
+	static ui void DrawThickLine(int x0, int y0, int x1, int y1, double thickness, Color clr, double alpha = 1.0)
+	{
+		// Scale the coordinates
+		Vector2 screenpos, screensize;
+		[screenpos, screensize] = TranslatetoHUDCoordinates((x0, y0), (x1, y1));
+
+		Screen.DrawThickLine(int(screenpos.x), int(screenpos.y), int(screensize.x), int(screensize.y), thickness, clr, int(alpha * 255));
+	}
+
+	static ui void DrawLineFrame(Color clr, int x, int y, int w, int h, double thickness = 1, double alpha = 1.0)
+	{
+		// Scale the coordinates
+		Vector2 screenpos, screensize;
+		[screenpos, screensize] = TranslatetoHUDCoordinates((x, y), (w, h));
+
+		// Native function doesn't work from status bar code?
+		//Screen.DrawLineFrame(clr, int(screenpos.x), int(screenpos.y), int(screensize.x), int(screensize.y), thickness);
+
+		// So do it ourselves...
+		int left = int(screenpos.x);
+		int right = left + int(screensize.x);
+		int top = int(screenpos.y);
+		int bottom = top + int(screensize.y);
+
+		Vector2 hudscale = Statusbar.GetHudScale();
+		thickness *= hudscale.x;
+
+		int offset = int(thickness / 2);
+
+		// Draw top and bottom sides.
+		Screen.DrawThickLine(left - offset, top, right + offset, top, thickness, clr, int(alpha * 255));
+		Screen.DrawThickLine(right, top - offset, right, bottom + offset, thickness, clr, int(alpha * 255));
+		Screen.DrawThickLine(left - offset, bottom, right + offset, bottom, thickness, clr, int(alpha * 255));
+		Screen.DrawThickLine(left, top - offset, left, bottom + offset, thickness, clr, int(alpha * 255));
+	}
 }
