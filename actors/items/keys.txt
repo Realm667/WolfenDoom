@@ -111,20 +111,16 @@ ACTOR SkullKey : CompassItem
 	}
 }
 
-//Special items
-
-
-ACTOR SurrenderingSoldierKey: SkullKey { //was SpyToken
-    //$Category Keys (BoA)
+//Special items - no DeNums
+ACTOR SurrenderingSoldierKey: SkullKey //was SpyToken, pickup msg not needed
+{
 	//$Title Surrendering Soldier Cache Key (puzzle 4, given by him)
-	//$Color 13
-    Inventory.Icon SKLKC0
-    //pickup message not needed
+    Inventory.Icon SKLKF0
     Inventory.MaxAmount 1
     States
 	{
 	Spawn:
-		SKLK C -1
+		SKLK E -1
 		Stop
 	}
 }
@@ -139,7 +135,7 @@ ACTOR SkullKeyForSale : SkullKey //C3M6_A
 	States
 	{
 	Spawn:
-		SKLK E -1
+		SKLK C -1
 		Stop
 	}
 }

@@ -121,7 +121,21 @@ ACTOR TestCrate2 : TestCrate //Ozy81
 
 ACTOR TestCrate3 : TestCrate //Ozy81
 {
-	//$Title Test Lab Crate, stackable
+	//$Title Test Lab Crate (stackable)
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		MDLA A -1 NODELAY A_SpawnItemEx("CrateGlass2", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid)
+		Stop
+	}
+}
+
+ACTOR TestCrate4 : TestCrate //Ozy81
+{
+	//$Title Test Lab Crate (narrow places, stackable)
+	Radius 8
+	Height 8
 	+NOGRAVITY
 	States
 	{
