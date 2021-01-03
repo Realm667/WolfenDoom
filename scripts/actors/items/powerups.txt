@@ -727,7 +727,6 @@ class InventoryHolder : Thinker
 class RyanToken : DisguiseToken
 {
 	InventoryHolder BJInv;
-	Inventory BJInvSel;
 	Weapon BJReadyWeapon;
 	int BJStamina; // Attempt to fix health
 	int BJHealth;
@@ -763,7 +762,6 @@ class RyanToken : DisguiseToken
 			// Console.Printf("Health: %d %d", p.Health, p.player.Health);
 			if (p)
 			{
-				BJInvSel = p.InvSel;
 				BJReadyWeapon = p.player.ReadyWeapon;
 
 				let invclear = InventoryClearHandler(EventHandler.Find("InventoryClearHandler"));
@@ -802,7 +800,7 @@ class RyanToken : DisguiseToken
 
 			if (p)
 			{
-				p.InvSel = p.InvFirst = BJInvSel;
+				p.InvSel = p.FirstInv(); // Doesn't matter
 				// Just in case...
 				p.player.ReadyWeapon = null;
 				p.player.PendingWeapon = BJReadyWeapon;
