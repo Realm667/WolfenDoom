@@ -692,35 +692,18 @@ class DisguiseToken : CustomInventory
 // "Holds" an inventory temporarily
 class InventoryHolder : Thinker
 {
-	Array<Inventory> heldItems;
+	Inventory heldItems;
 	// Actor token;
 	// Actor for; // In case it has to carry between maps...
 
 	void HoldInventory(Inventory head)
 	{
-		Inventory ii = head;
-		while(ii != null)
-		{
-			ii.DetachFromOwner();
-			ii.Owner = null;
-			ii.bInvisible = true;
-			ii.bNoInteraction = true;
-			ii.ChangeStatNum(STAT_DEFAULT);
-			heldItems.Push(ii);
-			ii = ii.Inv;
-		}
+		heldItems = head;
 	}
 
 	void RestoreInventory(Actor receiver)
 	{
-		// Iterate in reverse to put items in the same order they were before
-		for (int i = heldItems.Size() - 1; i; i--)
-		{
-			Inventory ii = heldItems[i];
-			ii.bInvisible = false;
-			ii.bNoInteraction = false;
-			ii.AttachToOwner(receiver);
-		}
+		receiver.Inv = heldItems;
 	}
 }
 
