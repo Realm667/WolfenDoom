@@ -173,15 +173,21 @@ Class LightningBeam : Actor
 
 		Scale.Y = StepDistance;
 
+		FLineTraceData trace;
+
+		if (master)
+		{
+			master.LineTrace(angle, MaxDistance, pitch, TRF_THRUHITSCAN, 0.0, 0.0, 0.0, trace);
+			tracer = trace.HitActor;
+		}
+
 		if (AimPoint == (0, 0, 0))
 		{
-			FLineTraceData trace;
 			LineTrace(angle, MaxDistance, pitch, TRF_THRUHITSCAN | TRF_THRUACTORS, 0.0, 0.0, 0.0, trace);
-
 			AimPoint = trace.HitLocation;
 		}
 
-		tracer = Spawn("TargetActor", AimPoint);
+		if (!tracer) { tracer = Spawn("TargetActor", AimPoint); }
 
 		Super.PostBeginPlay();
 	}
@@ -195,7 +201,7 @@ Class LightningBeam : Actor
 		let def = GetDefaultByType(trailclass);
 		if (!def) { return; }
 
-		if (master && master.radius && def.damage) { master.A_CustomBulletAttack(angle - master.angle, 0, 1, def ? def.Damage : Random(0, 1), MovingTrailBeam(def) ? MovingTrailBeam(def).puff : "LightningPuff", master.radius * 4, CBAF_AIMFACING | CBAF_EXPLICITANGLE); }
+		if (master && master.radius && def.damage) { master.A_CustomBulletAttack(angle - master.angle, 0, 1, def ? int(def.Damage) : Random(0, 1), MovingTrailBeam(def) ? MovingTrailBeam(def).puff : "LightningPuff", master.radius * 4, CBAF_AIMFACING | CBAF_EXPLICITANGLE); }
 
 		Actor prev;
 
@@ -208,10 +214,10 @@ Class LightningBeam : Actor
 			bool spawned;
 			Actor t;
 
-			if (targets && (!closest || level.time % 15 == 0)) // Only run this every fifteen tics, or on first iteration
+			if (!closest || level.time % 15 == 0) // Only run this every fifteen tics, or on first iteration
 			{
-				closest = ClosestMonster();
-				if (closest) { tracer = closest; }
+				closest = ClosestMonster(self);
+				if (closest && targets) { tracer = closest; }
 			}
 
 			A_FaceTracer(faceamt, 0, 0, 0, FAF_MIDDLE);
@@ -298,6 +304,25 @@ Class LightningBeam : Actor
 
 			SetXYZ(pos + (RotateVector((cos(-pitch) * StepDistance, 0), angle), sin(-pitch) * StepDistance));
 
+			if (master && master is "PlayerPawn" && tracer)
+			{
+				double dist = master.Distance3D(tracer);
+
+				if (dist >= CurDistance - StepDistance && dist <= CurDistance)
+				{	
+					if (!closest || closest == tracer) { closest = ClosestMonster(self, 96, tracer); }
+
+					if (closest && !closest.player)
+					{
+						angle = AngleTo(closest);
+
+						SetXYZ(tracer.pos + (0, 0, tracer.height / 2));
+
+						tracer = closest;
+					}
+				}
+			}
+
 			prev = t;
 
 			CurDistance += StepDistance;
@@ -312,22 +337,28 @@ Class LightningBeam : Actor
 		}
 	}
 
-	actor ClosestMonster(void)
+	static Actor ClosestMonster(Actor spawner, int range = 256, Actor origin = null)
 	{
 		Actor mo, closest;
 
-		if (master is "PlayerPawn" || master.bFriendly == true)
+		if (!origin) { origin = spawner; }
+
+		if (spawner is "MovingTrailBeam" || (spawner.master && (spawner.master is "PlayerPawn" || spawner.master.bFriendly == true)))
 		{
-			BlockThingsIterator it = BlockThingsIterator.Create(self, 256);
+			BlockThingsIterator it = BlockThingsIterator.Create(origin, range);
 
 			while (it.Next())
 			{
 				mo = it.thing;
 
-				if (mo == self || mo == origin || !mo.bShootable || mo.bDormant) { continue; }
-				if (!origin.IsVisible(mo, true)) { continue; }
-				if (Distance3d(mo) > 256) { continue; }
-				if (closest && Distance3d(mo) > Distance3d(closest)) { continue; }
+				if (mo == spawner || !mo.bShootable || !mo.bIsMonster || mo.bDormant || mo.health <= 0 || mo == origin) { continue; }
+				if (spawner is "LightningBeam")
+				{
+					if (mo == LightningBeam(spawner).origin) { continue; }
+					if (!LightningBeam(spawner).origin.IsVisible(mo, true)) { continue; }
+				}
+				if (origin.Distance3d(mo) > range) { continue; }
+				if (closest && origin.Distance3d(mo) > origin.Distance3d(closest)) { continue; }
 
 				closest = mo;
 			}
@@ -342,7 +373,7 @@ Class LightningBeam : Actor
 				{
 					if (!mo.bShootable || mo.health <= 0) { continue; }
 					if (players[p].cheats & CF_NOTARGET) { continue; }
-					if (closest && Distance3d(mo) > Distance3d(closest)) { continue; }
+					if (closest && origin.Distance3d(mo) > origin.Distance3d(closest)) { continue; }
 
 					closest = mo;
 				}
@@ -606,7 +637,7 @@ Class MovingTrailBeam : Actor
 {
 	String puff;
 	Vector3 beamoffset;
-	int damage;
+	double damage;
 
 	Property Damage:damage;
 	Property PuffActor:puff;
@@ -641,8 +672,17 @@ Class MovingTrailBeam : Actor
 		{ 
 			if (damage > 0 && Distance3D(master) > master.radius * 4)
 			{
+				int dmg = int(damage);
+
+				if (damage != dmg)
+				{
+					// If we passed a double in for damage amount, fudge the actual damage to get closer to that number on average
+					int part = int((damage - dmg) * 100);
+					dmg = dmg + !!(Random(0, 100) < part);
+				}
+
 				// Used to make all individual bolt segments leave decals and cause damage
-				LineAttack(angle, scale.y, pitch - 90, damage, "Electric", puff, 0, null, -8.5);
+				LineAttack(angle, scale.y, pitch - 90, dmg, "Electric", puff, 0, null, -8.5);
 			}
 
 			beamoffset = pos - master.pos;
@@ -705,7 +745,7 @@ Class LightningTrailBeam : MovingTrailBeam
 {
 	Default
 	{
-		MovingTrailBeam.Damage 2;
+		MovingTrailBeam.Damage 3;
 	}
 }
 
@@ -713,7 +753,7 @@ Class LightningTrailBeamAlt : MovingTrailBeam
 {
 	Default
 	{
-		MovingTrailBeam.Damage 2;
+		MovingTrailBeam.Damage 3;
 	}
 }
 

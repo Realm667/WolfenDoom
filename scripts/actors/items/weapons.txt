@@ -184,7 +184,12 @@ class NaziWeapon : Weapon
 	{
 		let p = player.mo;
 
-		Actor b = Spawn(beam, pos + (RotateVector((max(4, cos(p.pitch) * p.radius), 0), angle), player.viewheight * 0.8));
+		double posdist = max(4, cos(p.pitch) * p.radius);
+		if (p.pitch > 0) { posdist = -p.radius + posdist; } // Adjust beam origin for downward view pitch (otherwise beam spawns "in front of" the player weapon)
+
+		double posheight = player.viewheight * 0.8;
+
+		Actor b = Spawn(beam, pos + (RotateVector((posdist, 0), angle), posheight));
 		if (b)
 		{
 			b.master = p;
