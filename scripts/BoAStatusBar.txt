@@ -400,7 +400,8 @@ class BoAStatusBar : BaseStatusBar
 		if (!level.NoInventoryBar)
 		{
 			BeginHUD(1, False);
-			DrawPuzzleItems(-24, 20, 28);
+
+			DrawPuzzleItems(-16, 16, 20, 9, -1);
 		}
 	}
 
@@ -409,7 +410,31 @@ class BoAStatusBar : BaseStatusBar
 		DrawIcon(CPlayer.mo.InvSel, x, y, size);
 	}
 
-	void DrawPuzzleItems(int x, int y, int size = 32, int maxrows = 6, int maxcols = 0)
+	int CountPuzzleItems(int maxrows = 0, int col = 1)
+	{
+		int count = 0;
+		Inventory nextinv = CPlayer.mo.Inv;
+
+		while (nextinv)
+		{
+			if (!nextinv.bInvBar && nextinv is "PuzzleItem" && !(nextinv is "CoinItem") && !(nextinv is "CKPuzzleItem") && nextinv.icon)
+			{
+				count++;
+			}
+
+			if (maxrows > 0 && count == maxrows)
+			{
+				if (--col == 0) { break; }
+				else { count = 0; }
+			}
+
+			nextinv = nextinv.Inv;
+		}
+
+		return count;
+	}
+
+	void DrawPuzzleItems(int x, int y, int size = 32, int maxrows = 6, int maxcols = 0, bool vcenter = false)
 	{
 		if (!CPlayer.mo.Inv) { return; }
 
@@ -419,6 +444,10 @@ class BoAStatusBar : BaseStatusBar
 
 		Inventory nextinv = CPlayer.mo.Inv;
 
+		if (vcenter) { y -= int((size + 2) * CountPuzzleItems(maxrows) / 2.0); }
+
+		nextinv = CPlayer.mo.Inv;
+
 		while (nextinv)
 		{
 			// Draw puzzle items that are not already in the inventory bar, not drawn elsewhere, and not tied to Keen maps (and have an icon defined)
@@ -427,14 +456,14 @@ class BoAStatusBar : BaseStatusBar
 				DrawIcon(nextinv, x, y, size);
 
 				// Move down a block
-				if (!maxrows || rows < maxrows)
+				if (maxrows <= 0 || rows < maxrows)
 				{
 					y += size + 2;
 					rows++;
 				}
-				else if (!maxcols || cols <= maxcols) // Wrap to the next column if we're too long
+				else if (maxcols <= 0 || cols <= maxcols) // Wrap to the next column if we're too long
 				{
-					y = starty;
+					y = vcenter ? starty - int((size + 2) * CountPuzzleItems(maxrows, cols + 1) / 2.0) : starty;
 					rows = 1;
 
 					x -= size + 2;
@@ -584,7 +613,17 @@ class BoAStatusBar : BaseStatusBar
 		if(!level.NoInventoryBar)
 		{
 			if (CPlayer.mo.InvSel != null) { DrawInventorySelection(128, -22, 32); }
-			DrawPuzzleItems(-28, 48, 28);
+
+			Vector2 hudscale = Statusbar.GetHudScale();
+
+			int size = 20;
+			int maxrows = int((Screen.GetHeight() / hudscale.y - 96) / (size + 2));
+
+			// Centered vertically on the right side of the screen
+			//DrawPuzzleItems(-28, int((Screen.GetHeight() / hudscale.y) / 2), size, maxrows, -1, true);
+
+			// Aligned under the key display
+			DrawPuzzleItems(-28, 48, size, maxrows, -1);
 		}
 
 		DrawMugShot((7, -38));
