@@ -693,21 +693,40 @@ class DisguiseToken : CustomInventory
 class InventoryHolder : Thinker
 {
 	Array<Inventory> heldItems;
+	Inventory holder;
 	// Actor token;
 	// Actor for; // In case it has to carry between maps...
 
 	void HoldInventory(Inventory head)
 	{
-		Inventory ii = head;
-		while(ii != null)
+		if (head == holder)
 		{
-			ii.DetachFromOwner();
-			ii.Owner = null;
-			ii.bInvisible = true;
-			ii.bNoInteraction = true;
-			ii.ChangeStatNum(STAT_DEFAULT);
-			heldItems.Push(ii);
+			head = head.Inv;
+		}
+		Inventory ii = head;
+		// Make sure all items are restored.
+		heldItems.Push(head);
+		while (ii != null)
+		{
+			// Don't store the token, or the sprite shadow. Z_ShadeMe is
+			// automatically given to actors using SpriteShadowHandler, and
+			// "destroys" itself at certain intervals, so trying to "restore"
+			// it will result in reading/writing a null pointer. Besides,
+			// sprite shadows will eventually become a native GZDoom engine
+			// feature in the future.
+			if (ii == holder || ii is "Z_ShadeMe") {
+				ii = ii.Inv;
+				continue;
+			}
+			// ii will be detached from the owner, and thus removed from their
+			// inventory (a linked list), so we need to advance "ii" to the 
+			// next item, and store a pointer to the current item.
+			Inventory curItem = ii;
 			ii = ii.Inv;
+			curItem.BecomePickup(); // Detach from owner
+			curItem.A_ChangeLinkFlags(1, 1); // Prevent players from picking it up.
+			heldItems.Push(curItem);
+			// Console.Printf("%s (%d/%d)", curItem.GetClassName(), curItem.Amount, curItem.MaxAmount);
 		}
 	}
 
@@ -717,8 +736,9 @@ class InventoryHolder : Thinker
 		for (int i = heldItems.Size() - 1; i; i--)
 		{
 			Inventory ii = heldItems[i];
-			ii.bInvisible = false;
-			ii.bNoInteraction = false;
+			// Console.Printf("%s (%d/%d)", ii.GetClassName(), ii.Amount, ii.MaxAmount);
+			// Inventory.AttachToOwner changes bNoBlockmap and bNoSector, so
+			// there is no need to change those flags here.
 			ii.AttachToOwner(receiver);
 		}
 	}
@@ -753,7 +773,14 @@ class RyanToken : DisguiseToken
 	{
 		if (toucher)
 		{
+			// Disable sprite shadow, so the shadow doesn't become too dark
+			Z_ShadeMe shadow = Z_ShadeMe(toucher.FindInventory("Z_ShadeMe"));
+			if (shadow)
+			{
+				shadow.SetEnableShadow(false);
+			}
 			BJInv = new("InventoryHolder");
+			BJInv.holder = self;
 			BJInv.HoldInventory(toucher.Inv);
 			toucher.Inv = null;
 
@@ -788,10 +815,16 @@ class RyanToken : DisguiseToken
 		return Super.TryPickup(toucher);
 	}
 
-	override void OnDestroy()
+	override void DepleteOrDestroy()
 	{
 		if (owner)
 		{
+			// Disable sprite shadow, so the shadow doesn't become too dark
+			Z_ShadeMe shadow = Z_ShadeMe(owner.FindInventory("Z_ShadeMe"));
+			if (shadow)
+			{
+				shadow.SetEnableShadow(false);
+			}
 			owner.Inv = null;
 			BJInv.RestoreInventory(owner);
 			BJInv.Destroy();
@@ -811,7 +844,7 @@ class RyanToken : DisguiseToken
 			}
 		}
 
-		Super.OnDestroy();
+		Super.DepleteOrDestroy();
 	}
 }
 
