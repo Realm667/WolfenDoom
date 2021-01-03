@@ -565,63 +565,62 @@ class DisguiseToken : CustomInventory
 		if (CrouchState) { crouchsprite = CrouchState.sprite; }
 	}
 
-	override void Tick()
+	override void DoEffect()
 	{
-		Super.Tick();
-
+		Super.DoEffect();
+		if (!Amount) { return; }
 		let p = PlayerPawn(owner);
-
 		if (!p || !p.player) { return; }
+		// Apply token-specific settings and sprites to the player
+		if (playerscale > 0) { p.scale = (1.0, 1.0) * playerscale; }
 
-		if (Amount > 0) // Apply token-specific settings and sprites to the player
+		if (crouchsprite && p.player.crouchfactor < 0.75)
 		{
-			if (playerscale > 0) { p.scale = (1.0, 1.0) * playerscale; }
-
-			if (crouchsprite && p.player.crouchfactor < 0.75)
-			{
-				p.sprite = crouchsprite;
-				p.scale.y *= 1.0 / p.player.crouchfactor; // Negate crouch sprite scaling
-			}
-			else
-			{
-				p.sprite = basesprite;
-			}
-
-			if (viewheight > -1)
-			{
-				p.viewheight = viewheight;
-				p.attackzoffset = p.Default.attackzoffset * viewheight / p.Default.viewheight;
-			}
-
-			if (p.scale.x != playerscale) { p.A_SetSize(p.Default.radius * p.scale.x / p.Default.scale.x, p.Default.height * p.scale.y / p.Default.scale.y); }
-
-			if (viewbob > -1) { p.viewbob = viewbob; }
-			if (forwardmove1 > -1 && forwardmove2 > -1) { p.forwardmove1 = forwardmove1; p.forwardmove2 = forwardmove2; }
-			if (sidemove1 > -1 && sidemove2 > -1) { p.sidemove1 = sidemove1; p.sidemove2 = sidemove2; }
-
-			if (notarget) { SetNoTarget(); }
-			
-			if (playersoundclass) { p.SoundClass = playersoundclass; }
+			p.sprite = crouchsprite;
+			p.scale.y *= 1.0 / p.player.crouchfactor; // Negate crouch sprite scaling
 		}
-		else // Restore player defaults
+		else
 		{
-			p.sprite = p.SpawnState.sprite;
-			p.viewheight = p.Default.viewheight;
-			p.attackzoffset = p.Default.attackzoffset;
-			if (p.scale != p.Default.scale)
-			{
-				p.scale = p.Default.scale;
-				p.A_SetSize(p.Default.radius, p.Default.height);
-			}
-			p.viewbob = p.Default.viewbob;
-			p.forwardmove1 = p.Default.forwardmove1;
-			p.forwardmove2 = p.Default.forwardmove2;
-			p.sidemove1 = p.Default.sidemove1;
-			p.sidemove2 = p.Default.sidemove2;
-			p.soundclass = p.Default.soundclass;
-			
-			Destroy();
+			p.sprite = basesprite;
 		}
+
+		if (viewheight > -1)
+		{
+			p.viewheight = viewheight;
+			p.attackzoffset = p.Default.attackzoffset * viewheight / p.Default.viewheight;
+		}
+
+		if (p.scale.x != playerscale) { p.A_SetSize(p.Default.radius * p.scale.x / p.Default.scale.x, p.Default.height * p.scale.y / p.Default.scale.y); }
+
+		if (viewbob > -1) { p.viewbob = viewbob; }
+		if (forwardmove1 > -1 && forwardmove2 > -1) { p.forwardmove1 = forwardmove1; p.forwardmove2 = forwardmove2; }
+		if (sidemove1 > -1 && sidemove2 > -1) { p.sidemove1 = sidemove1; p.sidemove2 = sidemove2; }
+
+		if (notarget) { SetNoTarget(); }
+		
+		if (playersoundclass) { p.SoundClass = playersoundclass; }
+	}
+
+	override void DepleteOrDestroy()
+	{
+		// Restore player defaults
+		let p = PlayerPawn(owner);
+		if (!p || !p.player) { return; }
+		p.sprite = p.SpawnState.sprite;
+		p.viewheight = p.Default.viewheight;
+		p.attackzoffset = p.Default.attackzoffset;
+		if (p.scale != p.Default.scale)
+		{
+			p.scale = p.Default.scale;
+			p.A_SetSize(p.Default.radius, p.Default.height);
+		}
+		p.viewbob = p.Default.viewbob;
+		p.forwardmove1 = p.Default.forwardmove1;
+		p.forwardmove2 = p.Default.forwardmove2;
+		p.sidemove1 = p.Default.sidemove1;
+		p.sidemove2 = p.Default.sidemove2;
+		p.soundclass = p.Default.soundclass;
+		Super.DepleteOrDestroy();
 	}
 
 	void SetNoTarget()
