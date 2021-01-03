@@ -772,6 +772,10 @@ class RyanToken : DisguiseToken
 				toucher.A_GiveInventory("KnifeSilent", 1);
 
 				p.InvSel = p.InvFirst = p.FirstInv();
+				// Needed so that players can switch weapons when they turn
+				// into James Ryan.
+				p.player.ReadyWeapon = null;
+				p.player.PendingWeapon = Weapon(p.FindInventory("NullWeapon"));
 
 				BJStamina = p.Stamina;
 				p.Stamina = p.Default.Stamina;
@@ -799,6 +803,8 @@ class RyanToken : DisguiseToken
 			if (p)
 			{
 				p.InvSel = p.InvFirst = BJInvSel;
+				// Just in case...
+				p.player.ReadyWeapon = null;
 				p.player.PendingWeapon = BJReadyWeapon;
 
 				p.Stamina = BJStamina;
