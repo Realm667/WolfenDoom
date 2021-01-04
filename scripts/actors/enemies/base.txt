@@ -2458,8 +2458,9 @@ class Nazi : Base
 			}
 		}
 
-		if (source && source != self && (!user_sneakable || source.bFriendly != bFriendly) && source.species != species)
+		if (OkayToSwitchTarget(source))
 		{
+			lastenemy = target;
 			target = source; // Target the source if it wasn't friendly or of the same species
 			SoundAlert(source, false, 192);
 		}
