@@ -221,7 +221,21 @@ class ActorSpawner : SwitchableDecoration
 				Actor spawned = Spawn(user_spawntype, pos);
 				if (spawned)
 				{
-					if (!spawned.TestMobjLocation()) { spawned.Destroy(); }
+					if (user_maxspawns == 0 && spawned.bCountKill && !spawned.bFriendly)
+					{
+						spawned.bCountKill = false;
+						level.total_monsters--;
+					}
+
+					if (!spawned.TestMobjLocation())
+					{ 
+						if (spawned.bCountKill)
+						{
+							spawned.bCountKill = false;
+							level.total_monsters--;
+						}
+						spawned.Destroy();
+					}
 					else
 					{
 						Spawns.Push(spawned);
@@ -229,12 +243,6 @@ class ActorSpawner : SwitchableDecoration
 						// RandomSpawners that have the BOSS flag stay until their spawned item is killed or destroyed
 						// and set the spawned actor as their tracer.  This way our counters will stay accurate...
 						if (spawned is "RandomSpawner") { spawned.bBoss = true; spawned.master = self; }
-
-						if (user_maxspawns == 0 && spawned.bCountKill && !spawned.bFriendly)
-						{
-							spawned.bCountKill = false;
-							level.total_monsters--;
-						}
 
 						spawned.target = target;
 						spawned.angle = angle;
@@ -402,7 +410,21 @@ class WaveSpawner : ActorSpawner
 			Actor spawned = Spawn(user_spawntype, pos);
 			if (spawned)
 			{
-				if (!spawned.TestMobjLocation()) { spawned.Destroy(); }
+				if (user_maxspawns == 0 && spawned.bCountKill && !spawned.bFriendly)
+				{
+					spawned.bCountKill = false;
+					level.total_monsters--;
+				}
+
+				if (!spawned.TestMobjLocation())
+				{ 
+					if (spawned.bCountKill)
+					{
+						spawned.bCountKill = false;
+						level.total_monsters--;
+					}
+					spawned.Destroy();
+				}
 				else
 				{
 //console.printf("%i: Spawned %s  %i of %i  (Wave %i)", index, spawned.GetClassName(), TotalSpawns(user_spawntype) + 1, user_maxactors, round);
@@ -411,12 +433,6 @@ class WaveSpawner : ActorSpawner
 					// RandomSpawners that have the BOSS flag stay until their spawned item is killed or destroyed
 					// and set the spawned actor as their tracer.  This way our counters will stay accurate...
 					if (spawned is "RandomSpawner") { spawned.bBoss = true; spawned.master = self; }
-
-					if (user_maxspawns == 0 && spawned.bCountKill && !spawned.bFriendly)
-					{
-						spawned.bCountKill = false;
-						level.total_monsters--;
-					}
 
 					spawned.target = target;
 					spawned.angle = angle;
