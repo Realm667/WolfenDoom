@@ -145,3 +145,10 @@ ACTOR DreamState : Inventory
 		Stop
 	}
 }
+
+// Dialogue tokens - can be used in IfItem blocks in Strife conversations to
+// boot the player back to the "main menu" in the conversation, or lock out
+// certain options.
+ACTOR DialogueToken1 : Inventory { Inventory.MaxAmount 1 }
+ACTOR DialogueToken2 : DialogueToken1 {}
+ACTOR DialogueToken3 : DialogueToken1 {}
