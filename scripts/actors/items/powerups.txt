@@ -689,21 +689,16 @@ class DisguiseToken : CustomInventory
 }
 
 // "Holds" an inventory temporarily
-class InventoryHolder : Thinker
+class InventoryHolder play
 {
 	Array<Inventory> heldItems;
 	Inventory holder;
-	// Actor token;
-	// Actor for; // In case it has to carry between maps...
 
 	void HoldInventory(Inventory head)
 	{
-		if (head == holder)
-		{
-			head = head.Inv;
-		}
 		Inventory ii = head;
-		// Make sure all items are restored.
+		// Make sure all items are restored. Note that the first element in
+		// heldItems won't be reached in RestoreInventory.
 		heldItems.Push(head);
 		while (ii != null)
 		{
@@ -746,7 +741,6 @@ class InventoryHolder : Thinker
 class RyanToken : DisguiseToken
 {
 	InventoryHolder BJInv;
-	Weapon BJReadyWeapon;
 	int BJStamina; // Attempt to fix health
 	int BJHealth;
 
@@ -788,8 +782,6 @@ class RyanToken : DisguiseToken
 			// Console.Printf("Health: %d %d", p.Health, p.player.Health);
 			if (p)
 			{
-				BJReadyWeapon = p.player.ReadyWeapon;
-
 				let invclear = InventoryClearHandler(EventHandler.Find("InventoryClearHandler"));
 				if (invclear) { invclear.ResetPlayerInventory(toucher); }
 
@@ -835,7 +827,7 @@ class RyanToken : DisguiseToken
 				p.InvSel = p.FirstInv(); // Doesn't matter
 				// Just in case...
 				p.player.ReadyWeapon = null;
-				p.player.PendingWeapon = BJReadyWeapon;
+				p.player.PendingWeapon = Weapon(p.FindInventory("NullWeapon"));
 
 				p.Stamina = BJStamina;
 				p.Health = BJHealth;
