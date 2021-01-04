@@ -99,6 +99,7 @@ Class LightningBeam : Actor
 
 	Actor closest;
 	Actor origin;
+	Array<Actor> near;
 	String trail;
 	bool targets;
 	double AngleRandom;
@@ -160,10 +161,8 @@ Class LightningBeam : Actor
 
 	override void PostBeginPlay()
 	{
-		if (master)
-		{
-			origin = master;
-		}
+		if (master) { origin = master; }
+		else { origin = self; }
 
 		Choke = random(ChokeMin, ChokeMax);
 
@@ -175,21 +174,29 @@ Class LightningBeam : Actor
 
 		FLineTraceData trace;
 
-		if (master)
-		{
-			master.LineTrace(angle, MaxDistance, pitch, TRF_THRUHITSCAN, 0.0, 0.0, 0.0, trace);
-			tracer = trace.HitActor;
-		}
-
 		if (AimPoint == (0, 0, 0))
 		{
-			LineTrace(angle, MaxDistance, pitch, TRF_THRUHITSCAN | TRF_THRUACTORS, 0.0, 0.0, 0.0, trace);
+			origin.LineTrace(origin.angle, MaxDistance, origin.pitch, TRF_THRUHITSCAN | TRF_THRUACTORS, origin.height, 0.0, 0.0, trace);
 			AimPoint = trace.HitLocation;
 		}
+
+		tracer = GetLineTarget(origin, int(MaxDistance));
 
 		if (!tracer) { tracer = Spawn("TargetActor", AimPoint); }
 
 		Super.PostBeginPlay();
+	}
+
+	Actor GetLineTarget(Actor origin, int range = 2560)
+	{
+		CrosshairTracer actortrace;
+		actortrace = new("CrosshairTracer");
+
+		actortrace.skipactor = origin;
+		Vector3 tracedir = ZScriptTools.GetTraceDirection(origin.Angle, origin.Pitch);
+		actortrace.Trace(origin.pos + (0, 0, origin.height / 2), origin.CurSector, tracedir, range, 0);
+
+		return actortrace.Results.HitActor;
 	}
 
 	void A_SpawnBeam()
@@ -216,7 +223,7 @@ Class LightningBeam : Actor
 
 			if (!closest || level.time % 15 == 0) // Only run this every fifteen tics, or on first iteration
 			{
-				closest = ClosestMonster(self);
+				closest = ClosestMonster(self, 256, null, near);
 				if (closest && targets) { tracer = closest; }
 			}
 
@@ -306,20 +313,31 @@ Class LightningBeam : Actor
 
 			if (master && master is "PlayerPawn" && tracer)
 			{
-				double dist = master.Distance3D(tracer);
+				if (Distance2D(tracer) <= tracer.radius && pos.z < tracer.pos.z + tracer.height && pos.z > tracer.pos.z)
+				{
+					SetXYZ((tracer.pos.xy, pos.z) + (RotateVector((cos(-pitch) * StepDistance / 2, 0), angle), sin(-pitch) * StepDistance / 2));
 
-				if (dist >= CurDistance - StepDistance && dist <= CurDistance)
-				{	
-					if (!closest || closest == tracer) { closest = ClosestMonster(self, 96, tracer); }
-
-					if (closest && !closest.player)
+					if (near.Size())
 					{
-						angle = AngleTo(closest);
+						int i = near.Size();
+						Actor current = tracer;
+						tracer = null;
 
-						SetXYZ(tracer.pos + (0, 0, tracer.height / 2));
+						while (!tracer && i > 0)
+						{
+							tracer = near[--i];
+							closest = tracer;
 
-						tracer = closest;
+							if (tracer == current || tracer.player) { tracer = null; }
+
+							near.Delete(i);
+							near.ShrinkToFit();
+						}
+
+						if (i == 0) { MaxDistance = CurDistance; }
 					}
+
+					if (tracer) { angle = AngleTo(tracer); }
 				}
 			}
 
@@ -337,7 +355,7 @@ Class LightningBeam : Actor
 		}
 	}
 
-	static Actor ClosestMonster(Actor spawner, int range = 256, Actor origin = null)
+	static Actor ClosestMonster(Actor spawner, int range = 256, Actor origin = null, out Array<Actor> near = null)
 	{
 		Actor mo, closest;
 
@@ -358,6 +376,9 @@ Class LightningBeam : Actor
 					if (!LightningBeam(spawner).origin.IsVisible(mo, true)) { continue; }
 				}
 				if (origin.Distance3d(mo) > range) { continue; }
+
+				if (near) { near.Push(mo); }
+
 				if (closest && origin.Distance3d(mo) > origin.Distance3d(closest)) { continue; }
 
 				closest = mo;
@@ -745,7 +766,7 @@ Class LightningTrailBeam : MovingTrailBeam
 {
 	Default
 	{
-		MovingTrailBeam.Damage 3;
+		MovingTrailBeam.Damage 4;
 	}
 }
 
@@ -753,7 +774,7 @@ Class LightningTrailBeamAlt : MovingTrailBeam
 {
 	Default
 	{
-		MovingTrailBeam.Damage 3;
+		MovingTrailBeam.Damage 4;
 	}
 }
 
