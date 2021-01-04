@@ -743,7 +743,7 @@ class InventoryHolder play
 		curItem.Amount = prevAmount;
 		curItem.A_ChangeLinkFlags(1, 1); // Prevent players from picking it up.
 		heldItems.Push(curItem);
-		Console.Printf("%s (%d/%d) (%d/%d)", curItem.GetClassName(), curItem.Amount, curItem.MaxAmount, prevAmount, prevMaxAmount);
+		// Console.Printf("%s (%d/%d) (%d/%d)", curItem.GetClassName(), curItem.Amount, curItem.MaxAmount, prevAmount, prevMaxAmount);
 	}
 
 	void RestoreInventory(Actor receiver)
@@ -765,13 +765,13 @@ class InventoryHolder play
 		for (int i = heldItems.Size() - 1; i; i--)
 		{
 			Inventory ii = heldItems[i];
-			Console.Printf("%s (%d/%d)", ii.GetClassName(), ii.Amount, ii.MaxAmount);
 			RestoreItem(ii, receiver);
 		}
 	}
 
 	protected void RestoreItem(Inventory item, Actor receiver)
 	{
+		// Console.Printf("%s (%d/%d)", ii.GetClassName(), ii.Amount, ii.MaxAmount);
 		// Fix ammo amounts if player had a backpack
 		Inventory existing = receiver.FindInventory(item.GetClass());
 		if (existing)
@@ -824,7 +824,7 @@ class RyanToken : DisguiseToken
 			let p = PlayerPawn(toucher);
 
 			// Console.Printf("Health: %d %d", p.Health, p.player.Health);
-			if (p)
+			if (p && p.player)
 			{
 				let invclear = InventoryClearHandler(EventHandler.Find("InventoryClearHandler"));
 				if (invclear) { invclear.ResetPlayerInventory(toucher); }
@@ -854,7 +854,6 @@ class RyanToken : DisguiseToken
 	{
 		if (owner)
 		{
-			// Disable sprite shadow, so the shadow doesn't become too dark
 			BJInv.RestoreInventory(owner);
 			BJInv.Destroy();
 
@@ -878,26 +877,56 @@ class RyanToken : DisguiseToken
 }
 
 // Hold player inventory until training course is complete
-class HQTraining : Inventory
+class HQTrainingCourse : Inventory
 {
+	InventoryHolder holder;
+
 	Default
 	{
-		+INVENTORY.INVBAR
 		Inventory.MaxAmount 1;
-		Inventory.Icon "ARTEA0";
 	}
 
-	States
+	override bool TryPickup(in out Actor toucher)
 	{
-	Spawn:
-		ARTE B -1;
-		Stop;
+		if (toucher)
+		{
+			holder = new("InventoryHolder");
+			holder.holder = self;
+			holder.HoldInventory(toucher.Inv);
+
+			let p = PlayerPawn(toucher);
+			if (p && p.player)
+			{
+				let invclear = InventoryClearHandler(EventHandler.Find("InventoryClearHandler"));
+				if (invclear) { invclear.ResetPlayerInventory(toucher); }
+				p.InvSel = p.InvFirst = p.FirstInv();
+				// Needed so that players can switch weapons.
+				p.player.ReadyWeapon = null;
+				p.player.PendingWeapon = Weapon(p.FindInventory("NullWeapon"));
+			}
+		}
+		return Super.TryPickup(toucher);
 	}
 
-	override bool Use(bool pickup)
+	override void DepleteOrDestroy()
 	{
-		BecomePickup();
-		return Super.Use(pickup);
+		if (owner)
+		{
+			holder.RestoreInventory(owner);
+			holder.Destroy();
+
+			let p = PlayerPawn(owner);
+
+			if (p)
+			{
+				p.InvSel = p.FirstInv(); // Doesn't matter
+				// Just in case...
+				p.player.ReadyWeapon = null;
+				p.player.PendingWeapon = Weapon(p.FindInventory("NullWeapon"));
+			}
+		}
+
+		Super.DepleteOrDestroy();
 	}
 }
 
