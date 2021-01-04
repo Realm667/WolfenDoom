@@ -700,6 +700,7 @@ class InventoryHolder play
 		// Make sure all items are restored. Note that the first element in
 		// heldItems won't be reached in RestoreInventory.
 		heldItems.Push(head);
+		Array<Inventory> deferredItemsToHold;
 		while (ii != null)
 		{
 			// Don't store the token, or the sprite shadow. Z_ShadeMe is
@@ -712,28 +713,77 @@ class InventoryHolder play
 				ii = ii.Inv;
 				continue;
 			}
+			else if (ii is "BackpackItem")
+			{
+				// Backpacks need special handling, since they reset the ammo
+				// counts for all ammo types when taken away.
+				deferredItemsToHold.Push(ii);
+				ii = ii.Inv;
+				continue;
+			}
 			// ii will be detached from the owner, and thus removed from their
 			// inventory (a linked list), so we need to advance "ii" to the 
 			// next item, and store a pointer to the current item.
 			Inventory curItem = ii;
 			ii = ii.Inv;
-			curItem.BecomePickup(); // Detach from owner
-			curItem.A_ChangeLinkFlags(1, 1); // Prevent players from picking it up.
-			heldItems.Push(curItem);
-			// Console.Printf("%s (%d/%d)", curItem.GetClassName(), curItem.Amount, curItem.MaxAmount);
+			HoldItem(curItem);
 		}
+		for (int i = 0; i < deferredItemsToHold.Size(); i++)
+		{
+			HoldItem(deferredItemsToHold[i]);
+		}
+	}
+
+	protected void HoldItem(Inventory curItem)
+	{
+		int prevMaxAmount = curItem.MaxAmount;
+		int prevAmount = curItem.Amount;
+		curItem.BecomePickup();
+		curItem.MaxAmount = prevMaxAmount;
+		curItem.Amount = prevAmount;
+		curItem.A_ChangeLinkFlags(1, 1); // Prevent players from picking it up.
+		heldItems.Push(curItem);
+		Console.Printf("%s (%d/%d) (%d/%d)", curItem.GetClassName(), curItem.Amount, curItem.MaxAmount, prevAmount, prevMaxAmount);
 	}
 
 	void RestoreInventory(Actor receiver)
 	{
+		// Clear out receiver's previous inventory
+		Inventory ii = receiver.Inv;
+		while (ii != null)
+		{
+			if (ii == holder || ii is "Z_ShadeMe")
+			{
+				ii = ii.Inv;
+				continue;
+			}
+			Inventory curItem = ii;
+			curItem.DepleteOrDestroy();
+			ii = ii.Inv;
+		}
 		// Iterate in reverse to put items in the same order they were before
 		for (int i = heldItems.Size() - 1; i; i--)
 		{
 			Inventory ii = heldItems[i];
-			// Console.Printf("%s (%d/%d)", ii.GetClassName(), ii.Amount, ii.MaxAmount);
+			Console.Printf("%s (%d/%d)", ii.GetClassName(), ii.Amount, ii.MaxAmount);
+			RestoreItem(ii, receiver);
+		}
+	}
+
+	protected void RestoreItem(Inventory item, Actor receiver)
+	{
+		// Fix ammo amounts if player had a backpack
+		Inventory existing = receiver.FindInventory(item.GetClass());
+		if (existing)
+		{
+			existing.MaxAmount = item.MaxAmount;
+			existing.Amount = item.Amount;
+		}
+		else
+		{
 			// Inventory.AttachToOwner changes bNoBlockmap and bNoSector, so
 			// there is no need to change those flags here.
-			ii.AttachToOwner(receiver);
+			item.AttachToOwner(receiver);
 		}
 	}
 }
@@ -746,6 +796,7 @@ class RyanToken : DisguiseToken
 
 	Default
 	{
+		-INVENTORY.KEEPDEPLETED
 		DisguiseToken.ViewBob 0.22; // Less bob then BJ
 		DisguiseToken.ForwardMove 0.9, 0.45; // Just a little slower than BJ
 		DisguiseToken.SideMove 0.9, 0.45;
@@ -766,16 +817,9 @@ class RyanToken : DisguiseToken
 	{
 		if (toucher)
 		{
-			// Disable sprite shadow, so the shadow doesn't become too dark
-			Z_ShadeMe shadow = Z_ShadeMe(toucher.FindInventory("Z_ShadeMe"));
-			if (shadow)
-			{
-				shadow.SetEnableShadow(false);
-			}
 			BJInv = new("InventoryHolder");
 			BJInv.holder = self;
 			BJInv.HoldInventory(toucher.Inv);
-			toucher.Inv = null;
 
 			let p = PlayerPawn(toucher);
 
@@ -811,12 +855,6 @@ class RyanToken : DisguiseToken
 		if (owner)
 		{
 			// Disable sprite shadow, so the shadow doesn't become too dark
-			Z_ShadeMe shadow = Z_ShadeMe(owner.FindInventory("Z_ShadeMe"));
-			if (shadow)
-			{
-				shadow.SetEnableShadow(false);
-			}
-			owner.Inv = null;
 			BJInv.RestoreInventory(owner);
 			BJInv.Destroy();
 
@@ -836,6 +874,30 @@ class RyanToken : DisguiseToken
 		}
 
 		Super.DepleteOrDestroy();
+	}
+}
+
+// Hold player inventory until training course is complete
+class HQTraining : Inventory
+{
+	Default
+	{
+		+INVENTORY.INVBAR
+		Inventory.MaxAmount 1;
+		Inventory.Icon "ARTEA0";
+	}
+
+	States
+	{
+	Spawn:
+		ARTE B -1;
+		Stop;
+	}
+
+	override bool Use(bool pickup)
+	{
+		BecomePickup();
+		return Super.Use(pickup);
 	}
 }
 
