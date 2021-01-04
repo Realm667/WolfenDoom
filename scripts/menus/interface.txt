@@ -510,7 +510,9 @@ class ViewItem : BoAMenu
 						break;
 				}
 			}
-
+			
+			if (TextPaperSecretHint(item)) { fontstyle = 5; }
+			
 			switch (fontstyle)
 			{
 				case 1:
@@ -563,10 +565,9 @@ class ViewItem : BoAMenu
 				text = TextPaperCollectible(item).user_displaystring;
 				if (paper == "PAPER0") { paper = TextPaperCollectible(item).user_displayimage; }
 			}
-			else if (TextPaperSecretHint(item)) {
-				text = TextPaperSecretHint(item).user_displaystring;
-			}
-			else if (CastleWolfensteinMap(item)) {
+			else if (TextPaperSecretHint(item)) { text = TextPaperSecretHint(item).user_displaystring; }
+			else if (CastleWolfensteinMap(item))
+			{
 				text = "PAPERTEXT00";
 				paper = "PAPER9";
 			}

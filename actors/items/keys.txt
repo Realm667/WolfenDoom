@@ -114,9 +114,10 @@ ACTOR SkullKey : CompassItem
 //Special items - no DeNums
 ACTOR SurrenderingSoldierKey: SkullKey //was SpyToken, pickup msg not needed
 {
-	//$Title Surrendering Soldier Cache Key (puzzle 4, given by him)
+	//$Title Surrendering Soldier Cache Key (puzzle 5, given by him)
     Inventory.Icon SKLKF0
     Inventory.MaxAmount 1
+	PuzzleItem.Number 5
     States
 	{
 	Spawn:
@@ -128,10 +129,11 @@ ACTOR SurrenderingSoldierKey: SkullKey //was SpyToken, pickup msg not needed
 ACTOR SkullKeyForSale : SkullKey //C3M6_A
 {
 	//$Category Keys (BoA)
-	//$Title Occult Skull Key from C3M6_A (puzzle 4, for sale)
+	//$Title Occult Skull Key from C3M6_A (puzzle 6, for sale)
 	//$Color 13
 	Inventory.MaxAmount 1
 	Inventory.Icon SKLKD0
+	PuzzleItem.Number 6
 	States
 	{
 	Spawn:
