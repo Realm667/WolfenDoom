@@ -1771,12 +1771,12 @@ class Nazi : Base
 
 		if (level.time > 35)
 		{
-			A_LookEx(user_sneakable ? LOF_NOSEESOUND : 0); // Don't play see sound if you are a sneakable enemy - Their sound alert is handled elsewhere.
+			A_LookEx((user_sneakable || bFrightened) ? LOF_NOSEESOUND : 0); // Don't play see sound if you are a sneakable enemy - Their sound alert is handled elsewhere.
 
 			if (bStandStill) { LookForPlayers(bLookAllAround); }
 
-			if (target && target.species == species) { target = null; } // Ignore the target if it's the same species (normally "Nazi")
-			if (target && SeeSound) { SoundAlert(target, false, 256); } // If the Nazi yells after seeing a target, actually alert enemies around him
+			if (target && target.species == species || HitFriend()) { target = null; } // Ignore the target if it's the same species (normally "Nazi")
+			if (target && SeeSound && !user_sneakable) { SoundAlert(target, false, 256); } // If the Nazi yells after seeing a target, actually alert enemies around him
 
 			if (bStandStill) { SetStateLabel("See"); }
 		}
@@ -1899,7 +1899,7 @@ class Nazi : Base
 
 			if (!bFriendly && user_cansurrender && closestplayer && CheckSight(closestplayer) && Distance3D(closestplayer) < 384.0) // last enemy in the room can surrender
 			{
-				int nazicount = CanBeseen(1);
+				int nazicount = CanBeSeen(1);
 				if (!nazicount && Random[surrender](0, 255) < 2)
 				{
 					DoSurrender();

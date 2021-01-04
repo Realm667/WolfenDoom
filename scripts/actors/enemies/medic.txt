@@ -170,7 +170,7 @@ class NaziMedic : NaziStandard
 		// Run away from any player that's close by
 		if (p)
 		{
-			if ((frighttimeout <= 0 && Random(0, 255) < 16) || jump) { A_StartSound("Nazi1/Sighted", CHAN_ITEM); }
+			if ((!bFrightened && Random(0, 255) < 16) || jump) { A_StartSound("Nazi1/Sighted", CHAN_ITEM); }
 			Speed = Default.Speed * 2;
 
 			if (Distance3D(p) < 512 + radius)
