@@ -30,8 +30,6 @@ class Soul : StackableInventory
 		//$Sprite AMM3A0
 		+FLOATBOB
 		+FORCEXYBILLBOARD
-		+LOOKALLAROUND
-		+NOCLIP
 		Inventory.Amount 1;
 		Inventory.MaxAmount 9999;
 		Inventory.Icon "AMM3I0";
@@ -79,14 +77,23 @@ class Soul : StackableInventory
 		target = FindClosestPlayer(target, distance);
 		if (target) {
 			bNoGravity = true;
+			bSolid = true; // Needed for collision detection handling while flying
 			Vector2 posDiff = Vec2To(target);
 			double distance = posDiff.Length();
 			Vel.XY = posDiff / max(1, distance) * Speed;
-			double middle = target.Pos.Z + target.Height / 2;
+			double middle = target.Pos.Z + max(0, target.Height / 2 - height); // Account for the soul actor height when aiming at target
 			Vel.Z = Speed / max(1, distance) * (middle - Pos.Z);
 		} else {
 			bNoGravity = false;
+			bSolid = false;
 		}
+	}
+
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (other && other.player) { Touch(other); } // Try to pick up even if the player isn't moving
+
+		return false; // Treat as non-solid in all other cases
 	}
 }
 
