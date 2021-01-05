@@ -691,8 +691,45 @@ class DisguiseToken : CustomInventory
 // "Holds" an inventory temporarily
 class InventoryHolder play
 {
+	// Indicates whether an item should be held, not held, or held later.
+	enum EHold {
+		HOLD = 0,
+		DO_NOT_HOLD,
+		HOLD_DEFERRED
+	}
+
 	Array<Inventory> heldItems;
 	Inventory holder;
+
+	protected virtual EHold ShouldHoldItem(Inventory item)
+	{
+		// Don't "hold" the token which caused this to "hold" the player's
+		// inventory.
+		if (item == holder ||
+			// "Holding" a Z_ShadeMe will result in reading/writing a null
+			// pointer. Besides, sprite shadows will become a native GZDoom
+			// engine feature in the future.
+			item is "Z_ShadeMe" ||
+			// Don't "hold" the player's stamina (used for sprinting and
+			// kicking).
+			item is "Stamina" ||
+			// "Holding" an "IncomingMessage" or "CutsceneToken" may cause
+			// the compass to break.
+			item is "IncomingMessage" ||
+			item is "CutsceneEnabled" ||
+			// Don't "hold" items that are not expected to be removed.
+			item is "ShaderControl" ||
+			item is "ColorGradeShaderControl") {
+			return DO_NOT_HOLD;
+		}
+		else if (item is "BackpackItem")
+		{
+			// Backpacks need special handling, since they reset the ammo
+			// counts for all ammo types when taken away.
+			return HOLD_DEFERRED;
+		}
+		return HOLD;
+	}
 
 	void HoldInventory(Inventory head)
 	{
@@ -703,21 +740,13 @@ class InventoryHolder play
 		Array<Inventory> deferredItemsToHold;
 		while (ii != null)
 		{
-			// Don't store the token, or the sprite shadow. Z_ShadeMe is
-			// automatically given to actors using SpriteShadowHandler, and
-			// "destroys" itself at certain intervals, so trying to "restore"
-			// it will result in reading/writing a null pointer. Besides,
-			// sprite shadows will eventually become a native GZDoom engine
-			// feature in the future.
-			if (ii == holder || ii is "Z_ShadeMe") {
-				ii = ii.Inv;
-				continue;
-			}
-			else if (ii is "BackpackItem")
+			EHold hold = ShouldHoldItem(ii);
+			if (hold == HOLD_DEFERRED)
 			{
-				// Backpacks need special handling, since they reset the ammo
-				// counts for all ammo types when taken away.
 				deferredItemsToHold.Push(ii);
+			}
+			if (hold)
+			{
 				ii = ii.Inv;
 				continue;
 			}
@@ -752,7 +781,8 @@ class InventoryHolder play
 		Inventory ii = receiver.Inv;
 		while (ii != null)
 		{
-			if (ii == holder || ii is "Z_ShadeMe")
+			EHold hold = ShouldHoldItem(ii);
+			if (hold == DO_NOT_HOLD)
 			{
 				ii = ii.Inv;
 				continue;
