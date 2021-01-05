@@ -1,24 +1,24 @@
 version "3.7.2"
 
 // Menu Components
-#include "scripts/menus/iconlistmenu.txt"						// Skill Menu (with icons) Base
-#include "scripts/menus/playermenunamebox.txt"					// Replacement player menu name box that colors name by default
-#include "scripts/menus/messagebox.txt"					// Wolf3D-style message box
+#include "scripts/menus/iconlistmenu.txt"			// Skill Menu (with icons) Base
+#include "scripts/menus/playermenunamebox.txt"			// Replacement player menu name box that colors name by default
+#include "scripts/menus/messagebox.txt"				// Wolf3D-style message box
 #include "scripts/conversations/conversationmenucomponents.txt"	// Replacement Conversation MenuComponents
-#include "scripts/conversations/conversationmenubase.txt"		// Replacement Conversation Menu Base
-#include "scripts/conversations/boaconversationmenu.txt"		// Replacement Conversation Menu
-#include "scripts/menus/interface.txt"					// On-screen interfaces using menu code
-#include "scripts/menus/finale.txt"					// Text-based intermission screens
-#include "scripts/menus/help.txt"					// Localized help screen
+#include "scripts/conversations/conversationmenubase.txt"	// Replacement Conversation Menu Base
+#include "scripts/conversations/boaconversationmenu.txt"	// Replacement Conversation Menu
+#include "scripts/menus/interface.txt"				// On-screen interfaces using menu code
+#include "scripts/menus/finale.txt"				// Text-based intermission screens
+#include "scripts/menus/help.txt"				// Localized help screen
 
 // Classes/Libraries
-#include "scripts/libraries/libeye/viewport.txt"	// Libeye by KeksDose, praise Mima
-#include "scripts/libraries/libeye/projector.txt"	// https://forum.zdoom.org/viewtopic.php?f=105&t=64566
+#include "scripts/libraries/libeye/viewport.txt"		// Libeye by KeksDose, praise Mima
+#include "scripts/libraries/libeye/projector.txt"		// https://forum.zdoom.org/viewtopic.php?f=105&t=64566
 #include "scripts/libraries/libeye/projector_gl.txt"
 #include "scripts/libraries/libeye/projector_planar.txt"
-#include "scripts/libraries/mk_rotation.txt"		// On-screen texture rotation helper functions by Marisa Kirisame
+#include "scripts/libraries/mk_rotation.txt"			// On-screen texture rotation helper functions by Marisa Kirisame
 #include "scripts/libraries/DrawToHUD.txt"			// Drawing and coordinate translation to match HUD element scaling and positioning
-#include "scripts/libraries/reader.txt"			// Ugly but functional parser for nested bracket data
+#include "scripts/libraries/reader.txt"				// Ugly but functional parser for nested bracket data
 
 // Event Handler
 #include "scripts/eventhandlers/InventoryClearHandler.txt"
@@ -38,13 +38,13 @@ version "3.7.2"
 
 // Actors
 #include "scripts/actors/player.txt"				// Player
-#include "scripts/actors/playerfollowers.txt"		// Player follower NPCs
+#include "scripts/actors/playerfollowers.txt"			// Player follower NPCs
 #include "scripts/actors/enemies/base.txt"			// Base classes for enemies
-#include "scripts/actors/enemies/attacks.txt"		// Enemy projectiles
+#include "scripts/actors/enemies/attacks.txt"			// Enemy projectiles
 #include "scripts/actors/enemies/tanks.txt"			// Tanks
 #include "scripts/actors/enemies/drone.txt"			// Proto-Drone
 #include "scripts/actors/tracers.txt"				// Tracers base classes
-#include "scripts/actors/enemies/stealth.txt"		// Stealth enabling actors
+#include "scripts/actors/enemies/stealth.txt"			// Stealth enabling actors
 #include "scripts/actors/alertlights.txt"			// Base class for light objects that should affect "sneaking" light level
 #include "scripts/actors/spawnspots.txt"			// Enemy spawners
 #include "scripts/actors/alarm.txt"					// Alarm and Alarm Panel actors
@@ -61,8 +61,9 @@ version "3.7.2"
 #include "scripts/actors/boulders.txt"				// 3D model boulders
 #include "scripts/actors/soulfountain.txt"			// Soul fountain (C3M6_B)
 #include "scripts/actors/groundsplash.txt"			// Ground soil "splashes"
-#include "scripts/actors/enemies/nemesis.txt"		// Nemesis (C3M0_A)
+#include "scripts/actors/enemies/nemesis.txt"			// Nemesis (C3M0_A)
 #include "scripts/actors/enemies/controllable.txt"		// Controllable actors
+#include "scripts/actors/enemies/zombies.txt"			// Zombies
 
 /// Interactive Props
 #include "scripts/actors/interactive.txt"			// Interactive actors (breakable vent, statue, etc.)
@@ -76,29 +77,29 @@ version "3.7.2"
 #include "scripts/actors/mountains.txt"
 
 /// Inventory
-#include "scripts/actors/items/stackable.txt"		// Stackable inventory base class (Ammo-style top-level class inheritance for inventory items)
+#include "scripts/actors/items/stackable.txt"			// Stackable inventory base class (Ammo-style top-level class inheritance for inventory items)
 #include "scripts/actors/items/money.txt"			// Money (can be made dormant to prevent player from picking it up)
 #include "scripts/actors/items/weapons.txt"			// ZScriptified weapon components
 #include "scripts/actors/items/soul.txt"			// Soul inventory items
 #include "scripts/actors/items/chest.txt"			// Supply chest
-#include "scripts/actors/items/powerups.txt"		// Lantern and Minesweeper
+#include "scripts/actors/items/powerups.txt"			// Lantern and Minesweeper
 #include "scripts/actors/items/vserum.txt"			// Vitality Serum (max health +5)
-#include "scripts/actors/items/compassitem.txt"		// Base class for quest items (files, clues, Spear of Destiny, etc.) that show up on the compass
-#include "scripts/actors/items/grenades.txt"		// Base class for all grenade type actors
+#include "scripts/actors/items/compassitem.txt"			// Base class for quest items (files, clues, Spear of Destiny, etc.) that show up on the compass
+#include "scripts/actors/items/grenades.txt"			// Base class for all grenade type actors
 #include "scripts/actors/items/meal.txt"			// Meal fix
-#include "scripts/actors/items/parallelitem.txt"	// "Parallel" inventory items
+#include "scripts/actors/items/parallelitem.txt"		// "Parallel" inventory items
 
 /// Player & Monsters Effects Inventory Items
-#include "scripts/items/tilt.txt"					// Nash's tilt implementation
+#include "scripts/items/tilt.txt"				// Nash's tilt implementation
 #include "scripts/items/nashshadows.txt"			// Nash's sprite shadows effect - since it uses dummy inventory items...
 #include "scripts/items/visibility.txt"				// Stealth visibility handling for player
 #include "scripts/items/underwater.txt"				// Underwater effects handling
 
 /// Shaders
-#include "scripts/shaders/shadercontrol_base.txt"	// Talon1024 - Generic custom shader controls
-#include "scripts/shaders/shadercontrol.txt"		// Talon1024 - Shader controllers
+#include "scripts/shaders/shadercontrol_base.txt"		// Talon1024 - Generic custom shader controls
+#include "scripts/shaders/shadercontrol.txt"			// Talon1024 - Shader controllers
 #include "scripts/shaders/underwater.txt"			// Underwater
-#include "scripts/shaders/postprocessing.txt"		// Postprocessing Shaders + PixelEater MotionBlur eventhandlers
+#include "scripts/shaders/postprocessing.txt"			// Postprocessing Shaders + PixelEater MotionBlur eventhandlers
 #include "scripts/shaders/colorgrade.txt"			// Exl's Color Grading
 
 /// Miscellaneous

@@ -1220,6 +1220,7 @@ class Nazi : Base
 	Sound IdleSound, LostSound, SightedSound;
 	bool surrendered;
 	int hiddentime;
+	spriteID defaultsprite;
 
 	Property Healer:healflags;
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
@@ -1585,7 +1586,7 @@ class Nazi : Base
 		See.Stand: // Standing state for basic Nazis
 			"####" "#" 0 {
 				user_incombat = True;
-				sprite = SpawnState.sprite;
+				sprite = defaultsprite;
 				frame = SpawnState.frame;
 			}
 			"####" "#" 1 A_NaziChase("Melee", "Missile", CHF_DONTMOVE | CHF_NODIRECTIONTURN);
@@ -1624,7 +1625,7 @@ class Nazi : Base
 		Dodge.End:
 			"####" A 2;
 			"####" A 0 {
-				sprite = SpawnState.sprite;
+				sprite = defaultsprite;
 				A_Face(target);
 				A_SetSize(-1, Default.height);
 				bNoPain = Default.bNoPain;
@@ -1847,7 +1848,7 @@ class Nazi : Base
 		if (dodging || health <= 0) { return; }
 		if (bDormant) { SetState(SpawnState); return; } // Dormant actors should not wake up even if they're somehow placed in their See state
 
-		sprite = SpawnState.sprite; // Make sure our sprite isn't crouched or rolling
+		sprite = defaultsprite; // Make sure our sprite isn't crouched or rolling
 
 		if (melee == "None") { melee = "Melee.Aimed"; }
 		if (missile == "None") { missile = "Missile.Aimed"; }
@@ -2290,6 +2291,8 @@ class Nazi : Base
 
 		if (frightscale && !speed) { frightscale = 0.0; }
 
+		if (!defaultsprite) { defaultsprite = SpawnState.sprite; }
+
 		Super.PostBeginPlay();
 	}
 
@@ -2365,7 +2368,7 @@ class Nazi : Base
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
 		// Make sure the sprite is correct if we were dodging
-		if (!bNoPain && DodgeState && sprite == DodgeState.sprite) { sprite = SpawnState.sprite; }
+		if (!bNoPain && DodgeState && sprite == DodgeState.sprite) { sprite = defaultsprite; }
 
 		Inventory vis;
 
@@ -2439,7 +2442,7 @@ class Nazi : Base
 			// Fix dead enemies being invisible if you kill them while dodging
 			if (DodgeState && sprite == DodgeState.sprite)
 			{
-				sprite = SpawnState.Sprite;
+				sprite = defaultsprite;
 			}
 
 			DeathDamageType = currentDamage;
@@ -2548,7 +2551,7 @@ class Nazi : Base
 
 			[sp, eyes] = A_SpawnItemEx("SneakableGuardEyesIdle", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid);
 
-			sprite = SpawnState.sprite;
+			sprite = defaultsprite;
 
 			if (goal && target) { if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); } }
 			else { SetStateLabel("Spawn"); }
