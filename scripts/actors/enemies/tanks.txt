@@ -376,7 +376,7 @@ class TankBase : VehicleBase
 	void DoDeath()
 	{
 		if (turret) { turret.Destroy(); }
-		InterceptTarget.Destroy();
+		if (InterceptTarget) { InterceptTarget.Destroy(); }
 
 		A_StopSound(CHAN_6); //the idle sound
 		A_StopSound(CHAN_7);

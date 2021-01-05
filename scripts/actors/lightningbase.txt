@@ -223,7 +223,7 @@ Class LightningBeam : Actor
 
 			if (!closest || level.time % 15 == 0) // Only run this every fifteen tics, or on first iteration
 			{
-				closest = ClosestMonster(self, 256, null, near);
+				closest = ClosestMonster(self, int(MaxDistance - CurDistance), null, near);
 				if (closest && targets) { tracer = closest; }
 			}
 
