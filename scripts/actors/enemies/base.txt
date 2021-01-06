@@ -2461,7 +2461,7 @@ class Nazi : Base
 			}
 		}
 
-		if (OkayToSwitchTarget(source))
+		if (damageamt && !bDormant && OkayToSwitchTarget(source))
 		{
 			lastenemy = target;
 			target = source; // Target the source if it wasn't friendly or of the same species
