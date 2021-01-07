@@ -755,11 +755,11 @@ ACTOR ZyklonMonster : Nazi
 	+NOGRAVITY
 	+NOICEDEATH
 	DamageType "Smoke"
-	DamageFactor "Electric", 0.2
-	DamageFactor "Fire", 0.2
-	DamageFactor "Normal", 0.2
+	DamageFactor "Electric", 0.4
+	DamageFactor "Fire", 0.4
+	DamageFactor "Normal", 0.4
 	DamageFactor "OccultFire", 2.0
-	DamageFactor "Rocket", 0.2
+	DamageFactor "Rocket", 0.4
 	DamageFactor "Smoke", 0
 	DamageFactor "MutantPoison", 0
 	DamageFactor "Poison", 0
@@ -788,9 +788,9 @@ ACTOR ZyklonMonster : Nazi
 		TNT1 A 0 A_StartSound("Smoke/Tick", CHAN_7, CHANF_LOOPING, 1.0)
 		TNT1 A 0 A_SetUserVar("user_saw",1)
 	Walk:
-		TNT1 A 1 A_NaziChase
+		TNT1 A 1 A_Chase
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER)
-		TNT1 A 1 A_NaziChase
+		TNT1 A 1 A_Chase
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER)
 		Loop
 	Missile:
