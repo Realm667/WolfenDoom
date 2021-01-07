@@ -126,6 +126,37 @@ class BodySmoke : PuffSmoke //needed for burnt bodies - ozy81
 	}
 }
 
+class BodySmokeSpawner : EffectSpawner
+{
+	Default
+	{
+		+EffectSpawner.ALLOWTICKDELAY
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 0;
+		Active:
+			MDLA A 12 SpawnEffect();
+			Loop;
+	}
+
+	override void SpawnEffect()
+	{
+		Super.SpawnEffect();
+
+		A_SpawnItemEx("BodySmoke", Random(-3, 3), Random(-3, 3), 0, 0, 0, FRandom(0.2, 1.0));
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (master && master.tics == -1) { Destroy(); }
+	}
+}
+
 class WaterSmokePuff : WaterSmoke
 {
 	Default
