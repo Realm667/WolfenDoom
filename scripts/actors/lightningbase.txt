@@ -369,7 +369,7 @@ Class LightningBeam : Actor
 			{
 				mo = it.thing;
 
-				if (mo == spawner || !mo.bShootable || !mo.bIsMonster || mo.bDormant || mo.health <= 0 || mo == origin) { continue; }
+				if (mo == spawner || !mo.bShootable || !mo.bIsMonster || mo.bDormant || mo.health <= 0 || mo == origin || spawner.IsFriend(mo)) { continue; } // Magical lightning that doesn't seek out your allies
 				if (spawner is "LightningBeam")
 				{
 					if (mo == LightningBeam(spawner).origin) { continue; }

@@ -197,6 +197,8 @@ class NaziMedic : NaziStandard
 
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
+		if (source is "MovingTrailBeam") { source = source.master; } // Attribute damage to the owner of any lightning beam
+
 		if (bInvulnerable && source && source.player)
 		{
 			SetStateLabel("Death");
