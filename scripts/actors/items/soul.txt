@@ -20,6 +20,15 @@
  * SOFTWARE.
 **/
 
+mixin class VariableCountPickup
+{
+	override String PickupMessage()
+	{
+		String local = StringTable.Localize(PickupMsg);
+		return String.Format(local, Amount);
+	}
+}
+
 class Soul : StackableInventory
 {
 	String msg;
@@ -245,7 +254,7 @@ class Soul : StackableInventory
 
 	override String PickupMessage()
 	{
-		return msg;	
+		return String.Format(msg, Amount);
 	}
 
 	// Update scale, sprite frame, and pickup message based on current Amount value
@@ -255,7 +264,6 @@ class Soul : StackableInventory
 		else
 		{
 			msg = StringTable.Localize("$SOUL_BG");
-			msg.Replace("3", String.Format("%i", Amount)); // Replace the '3' in the pickup message with the actual current count
 		}
 
 		// Set actual scale amounts
@@ -280,6 +288,8 @@ class Soul : StackableInventory
 
 class SoulBig : Soul
 {
+	mixin VariableCountPickup;
+
 	Default
 	{
 		//$Category Powerups (BoA)
