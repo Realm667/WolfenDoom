@@ -22,6 +22,12 @@
 
 class Soul : StackableInventory
 {
+	String msg;
+	bool large;
+	int loops, oldamount;
+	int user_amount;
+	double destscale;
+
 	Default
 	{
 		//$Category Powerups (BoA)
@@ -30,23 +36,39 @@ class Soul : StackableInventory
 		//$Sprite AMM3A0
 		+FLOATBOB
 		+FORCEXYBILLBOARD
+		+DONTSPLASH // Don't make footstep sounds
 		Inventory.Amount 1;
 		Inventory.MaxAmount 9999;
 		Inventory.Icon "AMM3I0";
 		Inventory.PickupMessage "$SOUL_SM";
 		Inventory.PickupSound "DSSLPU";
+		Gravity 0.5;
 		Speed 7;
+		Renderstyle "Translucent";
+		Alpha 0.8;
 	}
 
 	States
 	{
 		Placed:
-			AMM3 ABCD 5 Bright Light("Soul");
+			AMM3 ABCD 5 Bright;
 			Loop;
 		Spawn:
-			AMM3 ABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCD 5 Bright Light("Soul") A_SoulSeek;
+			AMM3 ABCD 5 Bright A_SoulSeek();
+			AMM3 A 0 { if (loops++ < 20) { SetStateLabel("Spawn"); } } // Loop animation 20 times before starting fade; this logic also allows loops to be reset in code
 		Fadeout:
-			AMM3 ABCD 5 Bright A_FadeOut(0.05);
+			AMM3 ABCD 5 Bright
+			{
+				A_SoulSeek();
+				A_FadeOut(0.05);
+			}
+			Loop;
+		Merge:
+			AMM3 ABCD 5 Bright
+			{
+				A_SoulSeek();
+				A_FadeOut(0.1);
+			}
 			Loop;
 	}
 
@@ -54,7 +76,72 @@ class Soul : StackableInventory
 	{
 		Super.PostBeginPlay();
 
-		if (GetClassName() == "Soul" && !bDropped) { SetStateLabel("Placed"); }
+		msg = PickupMsg;
+		oldamount = Amount;
+
+		if (user_amount) { Amount = user_amount; }
+
+		if (GetClassName() == "Soul")
+		{
+			if (!bDropped) { SetStateLabel("Placed"); }
+			else
+			{
+				// Give minor random initial velocity
+				vel.x = FRandom(-2.0, 2.0);
+				vel.y = FRandom(-2.0, 2.0);
+				vel.z = FRandom(-2.0, 0.1);
+
+				A_AttachLight("Glow", DynamicLight.PointLight, 0x78FF73, 24, 0, DynamicLight.LF_ATTENUATE, (0.0, 0.0, 32.0));
+			}
+		}
+	}
+
+	override void Tick()
+	{
+		if (globalfreeze || level.frozen) { return; }
+
+		Super.Tick();
+
+		if (!owner)
+		{
+			A_AttachLight("Glow", DynamicLight.PointLight, 0x78FF73, int((24 + 8.0 * ((Amount - 3) / 22)) * alpha / Default.alpha), 0, DynamicLight.LF_ATTENUATE, (0.0, 0.0, 32.0));
+
+			if (CurState && tics == CurState.tics) // Run this logic at the beginning of every new frame
+			{
+				if (large) { frame += 4; } // Offset the frames once you hit 3 souls in order to use the larger soul sprite and match the SoulBig pickup
+			}
+
+			if (Amount > oldamount)
+			{
+				DoScaling(); // Update scale, sprite frame, and pickup message
+				oldamount = Amount;
+			}
+
+			if (destscale && destscale > scale.x) // Smooth scaling to increase size over time.
+			{
+				scale = min(destscale, scale.x * 1.01) * (1, 1);
+				floorclip = -16 * (1.0 - (scale.x / Default.scale.x));
+			}
+
+			if (bDropped)
+			{
+				if (Level.time % 2 == 0 && vel.length() > 0.1)
+				{
+					Actor sf = Spawn("SoulTrail", pos - vel);
+					if (sf) { sf.master = self; }
+				}
+
+				if (target is "Soul" && Distance3D(target) < 32.0)
+				{
+					if (floatbobphase > target.floatbobphase) { floatbobphase--; }
+					else if (floatbobphase < target.floatbobphase) { floatbobphase++; }
+				}
+			}
+		}
+		else
+		{
+			A_RemoveLight("Glow");
+		}
 	}
 
 	Actor FindClosestPlayer(Actor existing = null, int distance = 256)
@@ -74,26 +161,120 @@ class Soul : StackableInventory
 
 	void A_SoulSeek(int distance = 256)
 	{
-		target = FindClosestPlayer(target, distance);
-		if (target) {
-			bNoGravity = true;
+		if (Amount && bSpecial) // If we're still a valid pickup (not absorbed by another soul and disappearing), look for a new seek target...
+		{
 			bSolid = true; // Needed for collision detection handling while flying
+
+			target = FindClosestPlayer(target, distance); // Prefer to target a player
+
+			BlockThingsIterator it = BlockThingsIterator.Create(self, 64); // But also move toward other souls
+
+			while (it.Next())
+			{
+				if (it.thing == self) { continue; }
+				if (it.thing.GetClassName() == "Soul")
+				{
+					let s = Soul(it.thing);
+					if (!target || (s.target == target && s.Distance3D(target) < Distance3D(target))) { target = s; } // Merge with souls heading to the same target
+
+					break;
+				}
+			}
+		}
+
+		if (target && self != target.target)
+		{
+			bNoGravity = true;
+
+			double sp = Speed - Amount / 25.0; // Move more slowly toward the player as Amount increases
+
+			let s = Soul(target); // Move much more slowly toward other souls
+			if (s)
+			{
+				if (bSpecial)
+				{
+					if ( Amount + s.Amount > 25 ) { sp = -0.12; } // If at max amount, move away from other souls
+					else { sp = 0.5 + Soul(target).Amount / 25.0; } // Otherwise move more quickly the more souls the target has
+				}
+				else
+				{
+					sp = 0.5;
+				}
+			}
+
+			// Original targeting algorithm by Talon1024 / Kevin Caccamo
 			Vector2 posDiff = Vec2To(target);
 			double distance = posDiff.Length();
-			Vel.XY = posDiff / max(1, distance) * Speed;
+			Vel.XY = posDiff / max(1, distance) * sp;
 			double middle = target.Pos.Z + max(0, target.Height / 2 - height); // Account for the soul actor height when aiming at target
-			Vel.Z = Speed / max(1, distance) * (middle - Pos.Z);
-		} else {
+			Vel.Z = sp / max(1, distance) * (middle - Pos.Z);
+		}
+		else
+		{
+			vel.z = min(vel.z, -0.1);
 			bNoGravity = false;
-			bSolid = false;
 		}
 	}
 
 	override bool CanCollideWith(Actor other, bool passive)
 	{
-		if (other && other.player) { Touch(other); } // Try to pick up even if the player isn't moving
+		if (other)
+		{
+			if (Amount && other.player) { Touch(other); } // Try to pick up even if the player isn't moving
+			else if (Amount && other.GetClassName() == "Soul" && Distance3D(other) <= 12.0) // Try to absorb another soul when hit
+			{
+				let s = Soul(other);
+
+				if (s.Amount >= Amount && s.Amount + Amount <= 25)
+				{
+					s.loops = 0; // Reset fadeout animation time for the growing soul orb
+					s.Amount += Amount; // Add the value of this orb to the other orb
+
+					A_StartSound("DSSLPU", CHAN_VOICE, 0, 0.25, ATTN_STATIC, 0.125);
+
+					Amount = 0;
+					bSpecial = false;
+					target = s;
+					SetStateLabel("Merge");
+				}
+			}
+		}
 
 		return false; // Treat as non-solid in all other cases
+	}
+
+	override String PickupMessage()
+	{
+		return msg;	
+	}
+
+	// Update scale, sprite frame, and pickup message based on current Amount value
+	void DoScaling()
+	{
+		if (Amount >= 25) { msg = StringTable.Localize("$SOUL_XBG"); }
+		else
+		{
+			msg = StringTable.Localize("$SOUL_BG");
+			msg.Replace("3", String.Format("%i", Amount)); // Replace the '3' in the pickup message with the actual current count
+		}
+
+		// Set actual scale amounts
+		if (Amount < 3) // Scale small sprite up slightly when adding each soul
+		{
+			scale *= 1.1;
+		}
+		else if (Amount >= 25) // At maximum size, match appearance and message of the SoulSuperBig powerup
+		{
+			destscale = Default.scale.x;
+			floorclip = Default.floorclip;
+		}
+		else // Scale up to full size in steps, based on how many souls have been added
+		{
+			if (!large) { scale = Default.scale / 2; } // If not yet tagged as large, reset the scale
+			destscale = Default.scale.x / 2 * (1.0 + (Amount - 3) / 22.0);
+		}
+
+		if (Amount > 2) { large = true; } // Use the larger sprite and glow for amounts 3 or higher
 	}
 }
 
@@ -106,6 +287,7 @@ class SoulBig : Soul
 		//$Color 6
 		//$Sprite AMM3E0
 
+		Scale 0.5;
 		Inventory.Amount 3;
 		Inventory.PickupMessage "$SOUL_BG";
 	}
@@ -113,8 +295,15 @@ class SoulBig : Soul
 	States
 	{
 		Spawn:
-			AMM3 EFGH 4 Bright Light("SoulBig");
+			AMM3 EFGH 4 Bright;
 			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		floorclip = -16.0; // Adjust apparent height of sprite off of ground after scaling down
 	}
 }
 
@@ -134,7 +323,53 @@ class SoulSuperBig : Soul
 	States
 	{
 		Spawn:
-			AMM3 EFGH 4 Bright Light("SoulBig");
+			AMM3 EFGH 4 Bright;
 			Loop;
+	}
+}
+
+
+class SoulTrail : ParticleBase
+{
+	int steps;
+
+	Default
+	{
+		+FLOATBOB
+		+FORCEXYBILLBOARD
+		+NOBLOCKMAP
+		+NOGRAVITY
+		Alpha 0.6;
+		DistanceCheck "boa_sfxlod";
+		RenderStyle "Add";
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (!master) { Destroy(); }
+		else
+		{
+			sprite = master.sprite;
+			frame = master.frame;
+			scale = master.scale;
+			vel = master.vel;
+			floatbobphase = master.floatbobphase;
+			floorclip = master.floorclip;
+
+			steps = max(4, int(3 * master.vel.length()));
+		}
+	}
+
+	override void Tick()
+	{
+		if (globalfreeze || level.frozen) { return; }
+
+		alpha -= Default.alpha / steps;
+
+		if (master) { alpha *= master.alpha / master.Default.alpha; }
+
+		if (alpha <= 0) { Destroy(); }
 	}
 }
