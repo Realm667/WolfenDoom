@@ -13,6 +13,18 @@ class SmokeBase : ParticleBase
 	Property FadeInTics:intics;
 	Property FadeOutTics:outtics;
 
+	Default
+	{
+		+ROLLSPRITE
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		roll = Random(1, 360);
+	}
+
 	// Handle fade in and fade out here, optionally passing in a scale change amount
 	void DoFade(double instep = 0.04, double outstep = 0.025, double scaledelta = 1.0)
 	{

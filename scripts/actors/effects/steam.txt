@@ -111,3 +111,38 @@ class SteamSpawner : EffectSpawner
 		}
 	}
 }
+
+class SteamParticle : ParticleBase
+{
+	Default
+	{
+		DistanceCheck "boa_sfxlod";
+		Height 1;
+		Radius 1;
+		+DONTSPLASH
+		+FORCEXYBILLBOARD
+		+MISSILE
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+WINDTHRUST
+		+ROLLSPRITE
+		Scale 0.04;
+		Alpha 0.65;
+	}
+
+	States
+	{
+		Spawn:
+			STEM A 0;
+			"####" A 2 A_SetScale(Scale.X + 0.013, Scale.Y + 0.013);
+			"####" A 0 A_FadeOut(0.04, FTF_REMOVE);
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		roll = Random(1, 360);
+	}
+}
