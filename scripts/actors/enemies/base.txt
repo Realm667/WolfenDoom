@@ -1205,7 +1205,6 @@ class Nazi : Base
 	String healsound;
 	int healdistance;
 	bool user_fadedeath;
-	int user_norandomdeaths;
 	int user_noaltdeath;
 	Actor closestplayer;
 	bool wasused;
@@ -1235,7 +1234,6 @@ class Nazi : Base
 	Property HealDistance:healdistance;
 	Property FadeDeath:user_fadedeath;
 	Property NoAltDeath:user_noaltdeath;
-	Property NoRandomDeaths:user_norandomdeaths; // Disable random front/back deaths. Set to 1 to disable front deaths, set to 2 to disable back deaths, set to 3 to disable both front and back deaths.
 	Property Head:head;
 	Property ActivateWhenShot:user_activatewhenshot;
 	Property IdleSound:idlesound;
@@ -2008,32 +2006,31 @@ class Nazi : Base
 
 	state A_RandomDeathAnim(int chance = 64)
 	{
-		if (user_norandomdeaths == 3)
-		{
-			// Front and back deaths are disabled
-			return null;
-		}
 		if (Random[altdeath](0, 255) < chance)
 		{
 			state FrontDeath = FindState("Death.Front", true);
 			state BackDeath = FindState("Death.Back", true);
-			if (FrontDeath && BackDeath && !user_norandomdeaths)
+			state HeadDeath = FindState("Death.Headshot", true);
+			int sum = !!FrontDeath + !!BackDeath + !!HeadDeath;
+			if (sum == 0) { return null; } //actor has no altdeaths
+			int diceroll = Random[altdeath](0, 255);
+			int cumulative = 0;
+			if (FrontDeath)
 			{
-				if (Random[altdeath](0, 255) < 128) // 50/50 chance of FrontDeath
-				{
-					Vel.XY = (0, 0);
-					return FrontDeath;
-				}
-				return BackDeath;
+				++cumulative;
+				if (diceroll <= (cumulative * 256 / sum)) { Vel.XY = (0, 0); return FrontDeath; }
 			}
-			else if (FrontDeath && !(user_norandomdeaths & RDEATH_FRONT))
+			
+			if (BackDeath)
 			{
-				Vel.XY = (0, 0);
-				return FrontDeath;
+				++cumulative;
+				if (diceroll <= (cumulative * 256 / sum)) { return BackDeath; }
 			}
-			else if (BackDeath && !(user_norandomdeaths & RDEATH_BACK))
+			
+			if (HeadDeath)
 			{
-				return BackDeath;
+				++cumulative;
+				if (diceroll <= (cumulative * 256 / sum)) { return HeadDeath; }
 			}
 		}
 
@@ -2390,6 +2387,7 @@ class Nazi : Base
 					SoundAlert(source, false, 192);
 					damage = health;
 					flags |= DMG_FORCED;
+					user_noaltdeath = True;
 				}
 				else {} // Don't change behavior for Allied FRIENDLY actors
 			}
@@ -2406,6 +2404,7 @@ class Nazi : Base
 				SoundAlert(source, false, 192);
 				damage = health;
 				flags |= DMG_FORCED;
+				user_noaltdeath = True;
 			}
 		}
 

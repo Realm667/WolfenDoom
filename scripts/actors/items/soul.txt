@@ -20,15 +20,6 @@
  * SOFTWARE.
 **/
 
-mixin class VariableCountPickup
-{
-	override String PickupMessage()
-	{
-		String local = StringTable.Localize(PickupMsg);
-		return String.Format(local, Amount);
-	}
-}
-
 class Soul : StackableInventory
 {
 	String msg;
@@ -288,8 +279,6 @@ class Soul : StackableInventory
 
 class SoulBig : Soul
 {
-	mixin VariableCountPickup;
-
 	Default
 	{
 		//$Category Powerups (BoA)
@@ -314,6 +303,18 @@ class SoulBig : Soul
 		Super.PostBeginPlay();
 
 		floorclip = -16.0; // Adjust apparent height of sprite off of ground after scaling down
+	}
+	
+	override String PickupMessage()
+	{
+		String local = StringTable.Localize(PickupMsg);
+		if (language.Left(2) ~== "ru")
+		{ //special handling for Russian, works for values <= 25 --N00b
+			if ((5 <= Amount && Amount <= 20) || (Amount % 10 == 0 || Amount % 10 >= 5)) local = "Получено %d проклятых душ";
+			else if (Amount % 10 == 1) local = "Получена %d проклятая душа";
+			else local = "Получены %d проклятые души";
+		}
+		return String.Format(local, Amount);
 	}
 }
 

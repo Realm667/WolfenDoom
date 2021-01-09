@@ -23,7 +23,7 @@ ACTOR BasicGuard : NaziStandard
 		"####" E 10 A_FaceTarget
 	Missile.Aimed:
 		"####" F 10 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" G 8 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",54,1,random(-8,8))
 		"####" F 8 A_SpawnItemEx("9MMCasing", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
 		"####" F 0 {user_count++; if(user_count > 7) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -78,7 +78,7 @@ ACTOR Guard : BasicGuard
 		"####" KLM 5
 		"####" N -1
 		Stop
-	Death.Rifle:
+	Death.Headshot:
 		GAHA I 0 A_CheckFadeDeath
 		GAHA I 5 A_Scream
 		"####" J 5 A_GibsUnblockAndDrop
@@ -121,7 +121,7 @@ ACTOR GiantGuard : Guard
 		"####" E 5 A_FaceTarget
 	Missile.Aimed:
 		"####" F 5 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" G 8 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",254,1,random(-8,8))
 		"####" F 8 A_SpawnItemEx("9MMCasing", 1, 0, 256, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
 		"####" F 0 {user_count++; if(user_count > 7) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -136,7 +136,6 @@ ACTOR GiantGuard : Guard
 	Pain:
 		"####" H 6 A_NaziPain(0, True, -64)
 		Goto See
-	Death.Rifle: //no special deaths - ozy81
 	Death:
 		"####" I 5
 		"####" J 5 A_Scream
@@ -207,7 +206,7 @@ ACTOR SSGuard : BasicGuard
 		"####" KLM 5
 		"####" N -1
 		Stop
-	Death.Rifle:
+	Death.Headshot:
 		SPHS I 0 A_CheckFadeDeath
 		SPHS I 5 A_Scream
 		"####" J 5 A_GibsUnblockAndDrop
@@ -245,11 +244,11 @@ ACTOR WGuard : BasicGuard
 		"####" E 9 A_FaceTarget
 	Missile.Aimed:
 		"####" F 9 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" G 7 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",54,1,random(-6,6))
 		"####" G 0 A_SpawnItemEx("9MMCasing", 1,0,56, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 9 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" G 7 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",54,1,random(-10,10))
 		"####" G 0 A_SpawnItemEx("9MMCasing", 1,0,56, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 0 {user_count++; if(user_count > 3) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -275,7 +274,7 @@ ACTOR WGuard : BasicGuard
 		"####" KLM 5
 		"####" N -1
 		Stop
-	Death.Rifle:
+	Death.Headshot:
 		GRHW I 0 A_CheckFadeDeath
 		GRHW I 5 A_Scream
 		"####" J 5 A_GibsUnblockAndDrop
@@ -312,19 +311,19 @@ ACTOR MP40Guard : Guard
 		"####" E 8 A_FaceTarget
 	Missile.Aimed:
 		"####" F 8 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/mp40", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/mp40", CHAN_WEAPON); A_AlertMonsters(768); }
 		"####" G 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",40,4,random(-8,8))
 		"####" G 0 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 2 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/mp40", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/mp40", CHAN_WEAPON); A_AlertMonsters(768); }
 		"####" G 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",40,4,random(-8,8))
 		"####" G 0 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 2 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/mp40", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/mp40", CHAN_WEAPON); A_AlertMonsters(768); }
 		"####" G 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",40,4,random(-8,8))
 		"####" G 0 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 2 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/mp40", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/mp40", CHAN_WEAPON); A_AlertMonsters(768); }
 		"####" G 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",40,4,random(-8,8))
 		"####" G 0 A_SpawnItemEx("9MMCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 0 {user_count++; if(user_count > 7) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -352,7 +351,7 @@ ACTOR MP40Guard : Guard
 		"####" KLM 5
 		"####" N -1
 		Stop
-	Death.Rifle:
+	Death.Headshot:
 		MGHA I 0 A_CheckFadeDeath
 		MGHA I 5 A_Scream
 		"####" J 5 A_GibsUnblockAndDrop
@@ -389,11 +388,11 @@ ACTOR LOfficer : MP40Guard //this has MP40 and it is more rapid than any other O
 		"####" E 3 A_FaceTarget
 	Missile.Aimed:
 		"####" E 3 A_FaceTarget
-		"####" F 0 A_StartSound("nazi/mp40", CHAN_WEAPON)
+		"####" F 0 { A_StartSound("nazi/mp40", CHAN_WEAPON); A_AlertMonsters(768); }
 		"####" F 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",40,4,random(-8,8))
 		"####" F 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 2 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/mp40", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/mp40", CHAN_WEAPON); A_AlertMonsters(768); }
 		"####" G 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",40,4,random(-12,12))
 		"####" G 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {user_count++; if(user_count > 15) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -406,9 +405,8 @@ ACTOR LOfficer : MP40Guard //this has MP40 and it is more rapid than any other O
 		"####" E 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See
-	Death.Rifle:
-		LOFR H 0
-		Goto Super::Death
+	Death.Headshot: //no such state --N00b
+		Stop
 	Death.Front:
 		LOFA I 0 A_CheckFadeDeath
 		LOFA I 5 A_Scream
@@ -456,7 +454,7 @@ ACTOR SSMP40Guard : SSGuard
 		"####" E 7 A_FaceTarget
 	Missile.Aimed:
 		"####" F 7 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/mp40", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/mp40", CHAN_WEAPON); A_AlertMonsters(768); }
 		"####" G 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",40,4,random(-8,8))
 		"####" G 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" G 0 {user_count++; if(user_count > 31) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -486,7 +484,7 @@ ACTOR SSMP40Guard : SSGuard
 		"####" KLM 5
 		"####" N -1
 		Stop
-	Death.Rifle:
+	Death.Headshot:
 		SMHS I 0 A_CheckFadeDeath
 		SMHS I 5 A_Scream
 		"####" J 5 A_GibsUnblockAndDrop
@@ -527,11 +525,11 @@ ACTOR WMP40Guard : MP40Guard
 		"####" E 3 A_FaceTarget
 	Missile.Aimed:
 		"####" E 3 A_FaceTarget
-		"####" F 0 A_StartSound("nazi/mp40", CHAN_WEAPON)
+		"####" F 0 { A_StartSound("nazi/mp40", CHAN_WEAPON); A_AlertMonsters(768); }
 		"####" F 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",40,4,random(-8,8))
 		"####" F 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 2 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/mp40", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/mp40", CHAN_WEAPON); A_AlertMonsters(768); }
 		"####" G 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",40,4,random(-12,12))
 		"####" G 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {user_count++; if(user_count > 15) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -561,7 +559,7 @@ ACTOR WMP40Guard : MP40Guard
 		"####" KLM 5
 		"####" N -1
 		Stop
-	Death.Rifle:
+	Death.Headshot:
 		MGHW I 0 A_CheckFadeDeath
 		MGHW I 5 A_Scream
 		"####" J 5 A_GibsUnblockAndDrop
@@ -619,11 +617,11 @@ ACTOR WMP40GuardSleep : WMP40Guard
 	Missile:
 		"####" E 3 A_FaceTarget
 		"####" E 3 A_FaceTarget
-		"####" F 0 A_StartSound("nazi/mp40", CHAN_WEAPON)
+		"####" F 0 { A_StartSound("nazi/mp40", CHAN_WEAPON); A_AlertMonsters(768); }
 		"####" F 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",40,4,random(-8,8))
 		"####" F 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 2 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/mp40", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/mp40", CHAN_WEAPON); A_AlertMonsters(768); }
 		"####" G 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemySMGTracer",40,4,random(-12,12))
 		"####" G 0 A_SpawnItemEx("9MMCasing", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {user_count++; if(user_count > 15) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -679,7 +677,7 @@ ACTOR WToilet : WGuard
 		"####" A 10 A_FaceTarget
 	Missile.Aimed:
 		"####" C 10 A_FaceTarget
-		"####" D 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" D 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" D 8 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",32,1,random(-8,8))
 		"####" C 8 A_SpawnItemEx("9MMCasing", 1, 0, 32, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
 		"####" C 0 {user_count++; if(user_count > 7) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -767,7 +765,7 @@ ACTOR SSToilet : WToilet
 		Stop
 	Missile.Aimed:
 		"####" C 6 A_FaceTarget
-		"####" D 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" D 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" D 6 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",32,1,random(-8,8))
 		"####" C 6 A_SpawnItemEx("9MMCasing", 1, 0, 32, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
 		"####" C 0 {user_count++; if(user_count > 7) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -853,7 +851,7 @@ ACTOR Officer : BasicGuard
 		"####" E 4 A_FaceTarget
 	Missile.Aimed:
 		"####" F 4 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" G 6 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",52,1,random(-4,4))
 		"####" F 5 A_SpawnItemEx("9MMCasing", 1,0,54, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 0 {user_count++; if(user_count > 7) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -879,7 +877,7 @@ ACTOR Officer : BasicGuard
 		"####" KLM 5
 		"####" N -1
 		Stop
-	Death.Rifle:
+	Death.Headshot:
 		OFHA I 0 A_CheckFadeDeath
 		OFHA I 5 A_Scream
 		"####" J 5 A_GibsUnblockAndDrop
@@ -924,11 +922,11 @@ ACTOR SSOfficer : Officer
 		"####" E 5 A_FaceTarget
 	Missile.Aimed:
 		"####" F 5 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" G 5 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",52,1,random(-6,6))
 		"####" G 0 A_SpawnItemEx("9MMCasing", 1,0,54, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 4 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" G 5 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",52,1,random(-6,6))
 		"####" G 0 A_SpawnItemEx("9MMCasing", 1,0,54, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" G 0 {user_count++; if(user_count > 3) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -955,7 +953,7 @@ ACTOR SSOfficer : Officer
 		"####" KLM 5
 		"####" N -1
 		Stop
-	Death.Rifle:
+	Death.Headshot:
 		SOHS I 0 A_CheckFadeDeath
 		SOHS I 5 A_Scream
 		"####" J 5 A_GibsUnblockAndDrop
@@ -1009,19 +1007,19 @@ ACTOR WOfficer : Officer
 		"####" E 4 A_FaceTarget
 	Missile.Aimed:
 		"####" F 4 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" G 5 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",52,1,random(-4,4))
 		"####" G 0 A_SpawnItemEx("9MMCasing", 1,0,54, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 4 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" G 5 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",52,1,random(-6,6))
 		"####" G 0 A_SpawnItemEx("9MMCasing", 1,0,54, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 4 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" G 5 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",52,1,random(-8,8))
 		"####" G 0 A_SpawnItemEx("9MMCasing", 1,0,54, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 4 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" G 5 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",52,1,random(-8,8))
 		"####" G 0 A_SpawnItemEx("9MMCasing", 1,0,54, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" G 0 {user_count++; if(user_count > 1) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -1048,7 +1046,7 @@ ACTOR WOfficer : Officer
 		"####" KLM 5
 		"####" N -1
 		Stop
-	Death.Rifle:
+	Death.Headshot:
 		OFHW I 0 A_CheckFadeDeath
 		OFHW I 5 A_Scream
 		"####" J 5 A_GibsUnblockAndDrop
@@ -1082,7 +1080,7 @@ ACTOR RifleGuard : MP40Guard
 		"####" E 10 A_FaceTarget
 	Missile.Aimed:
 		"####" F 20 A_FaceTarget
-		"####" G 0 A_StartSound("mauser/fire", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("mauser/fire", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" G 8 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyRifleTracer",40,8,random(-4,4))
 		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 8,0,42, random(3,4), random(-4,4), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 8
@@ -1114,7 +1112,7 @@ ACTOR RifleGuard : MP40Guard
 		"####" KLM 5
 		"####" N -1
 		Stop
-	Death.Rifle:
+	Death.Headshot:
 		RGHA I 0 A_CheckFadeDeath
 		RGHA I 5 A_Scream
 		"####" J 5 A_GibsUnblockAndDrop
@@ -1150,11 +1148,11 @@ ACTOR WRifleGuard : RifleGuard
 		"####" E 10 A_FaceTarget
 	Missile.Aimed:
 		"####" F 20 A_FaceTarget
-		"####" G 0 A_StartSound("mauser/fire", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("mauser/fire", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" G 8 LIGHT(NAZIFIRE)A_SpawnProjectile("EnemyRifleTracer",44,5,random(-4,4))
 		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 1, 0, 56, random(1,2), random(-4,4), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
 		"####" F 4 A_FaceTarget
-		"####" G 0 A_StartSound("mauser/fire", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("mauser/fire", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" G 8 LIGHT(NAZIFIRE)A_SpawnProjectile("EnemyRifleTracer",44,5,random(-10,10))
 		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
 		"####" F 4
@@ -1179,7 +1177,7 @@ ACTOR WRifleGuard : RifleGuard
 		"####" KLM 5
 		"####" N -1
 		Stop
-	Death.Rifle:
+	Death.Headshot:
 		RGHW I 0 A_CheckFadeDeath
 		RGHW I 5 A_Scream
 		"####" J 5 A_GibsUnblockAndDrop
@@ -1214,7 +1212,7 @@ ACTOR WShotgunGuard : WRifleGuard
 		"####" E 7 A_FaceTarget
 	Missile.Aimed:
 		"####" F 15 A_FaceTarget //faster reaction
-		"####" G 0 A_StartSound("shotgun/fire", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("shotgun/fire", CHAN_WEAPON); A_AlertMonsters(1536); }
 		"####" G 8 LIGHT(NAZIFIRE)
 		{
 			A_SpawnProjectile("EnemyShotgunTracer",44,5,random(-6,6));
@@ -1256,7 +1254,7 @@ ACTOR WShotgunGuard : WRifleGuard
 		"####" KLM 5
 		"####" N -1
 		Stop
-	Death.Rifle: //placeholder
+	Death.Headshot: //placeholder
 		RGHW I 0 A_CheckFadeDeath
 		RGHW I 5 A_Scream
 		"####" J 5 A_GibsUnblockAndDrop
@@ -1277,7 +1275,6 @@ ACTOR ArcticRifleGuard : RifleGuard
 	+MISSILEEVENMORE
 	MaxTargetRange 896
 	Nazi.ZombieVariant ""
-	Nazi.NoRandomDeaths 2 //no backfall death
 	States
 	{
 	Spawn:
@@ -1293,11 +1290,11 @@ ACTOR ArcticRifleGuard : RifleGuard
 		"####" E 7 A_FaceTarget
 	Missile.Aimed:
 		"####" E 16 A_FaceTarget
-		"####" F 0 A_StartSound("mauser/fire", CHAN_WEAPON)
+		"####" F 0 { A_StartSound("mauser/fire", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" F 9 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyRifleTracer",40,8,random(-4,4))
 		"####" F 0 A_SpawnItemEx("MauserRifleCasing", 8,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 5 A_FaceTarget
-		"####" E 0 A_StartSound("mauser/fire", CHAN_WEAPON)
+		"####" E 0 { A_StartSound("mauser/fire", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" F 9 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyRifleTracer",40,8,random(-12,12))
 		"####" F 0 A_SpawnItemEx("MauserRifleCasing", 8,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 6
@@ -1305,9 +1302,9 @@ ACTOR ArcticRifleGuard : RifleGuard
 		"####" E 4 A_StartSound("mauser/cock", CHAN_AUTO, 0, 0.25)
 		"####" E 7 A_FaceTarget
 		Goto See
-	Death.Rifle:
-		SNRF I 0
-		Goto Super::Death
+	Death.Back:
+	Death.Headshot: //no such state --N00b
+		Stop
 	Death.Front:
 		SNRA I 0 A_CheckFadeDeath
 		SNRA I 5 A_Scream
@@ -1332,7 +1329,6 @@ ACTOR WaffenSS : SSMP40Guard
 	DropItem "MP40" 96
 	Nazi.FrightMultiplier 0.9
 	Nazi.ZombieVariant ""
-	Nazi.NoRandomDeaths 2 //no backfall death
 	Nazi.TotaleGierDrop 2
 	States
 	{
@@ -1349,7 +1345,7 @@ ACTOR WaffenSS : SSMP40Guard
 		"####" E 6 A_FaceTarget
 	Missile.Aimed:
 		"####" F 6 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM)
+		"####" G 0 { A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM); A_AlertMonsters(1024); }
 		"####" G 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",38,6,random(-4,4))
 		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" G 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -1362,9 +1358,9 @@ ACTOR WaffenSS : SSMP40Guard
 		"####" E 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See
-	Death.Rifle:
-		WAFF I 0
-		Goto Super::Death
+	Death.Back:
+	Death.Headshot: //no such state --N00b
+		Stop
 	Death.Front:
 		WAFA I 0 A_CheckFadeDeath
 		WAFA I 5 A_Scream
@@ -1387,7 +1383,6 @@ ACTOR ArcticWaffen : WaffenSS
 	DropItem "9mmAmmo" 192
 	DropItem "GrenadePickup" 8
 	DropItem "MP40" 96
-	Nazi.NoRandomDeaths 2 //no backfall death
 	States
 	{
 	Spawn:
@@ -1403,7 +1398,7 @@ ACTOR ArcticWaffen : WaffenSS
 		"####" E 7 A_FaceTarget
 	Missile.Aimed:
 		"####" F 7 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM)
+		"####" G 0 { A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM); A_AlertMonsters(1024); }
 		"####" G 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",38,6,random(-4,4))
 		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" G 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -1416,9 +1411,9 @@ ACTOR ArcticWaffen : WaffenSS
 		"####" E 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See
-	Death.Rifle:
-		SNWF I 0
-		Goto Super::Death
+	Death.Back:
+	Death.Headshot: //no such state --N00b
+		Stop
 	Death.Front:
 		SWDA I 0 A_CheckFadeDeath
 		SWDA I 5 A_Scream
@@ -1440,7 +1435,6 @@ ACTOR Paratrooper : WaffenSS
 	Obituary "$PARATROP"
 	DropItem "9mmAmmo" 192
 	DropItem "MP40" 96
-	Nazi.NoRandomDeaths 2 //no backfall death
 	States
 	{
 	Spawn:
@@ -1456,7 +1450,7 @@ ACTOR Paratrooper : WaffenSS
 		"####" E 7 A_FaceTarget
 	Missile.Aimed:
 		"####" F 7 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM)
+		"####" G 0 { A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM); A_AlertMonsters(1024); }
 		"####" G 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",38,6,random(-4,4))
 		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" G 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -1469,9 +1463,9 @@ ACTOR Paratrooper : WaffenSS
 		"####" E 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See
-	Death.Rifle:
-		PARA I 0
-		Goto Super::Death
+	Death.Back:
+	Death.Headshot:
+		Stop
 	Death.Front:
 		PADA I 0 A_CheckFadeDeath
 		PADA I 5 A_Scream
@@ -1514,7 +1508,7 @@ ACTOR Sniper : NaziStandard
 	Melee:
 	Missile:
 		SNIA F 32 A_FaceTarget
-		"####" G 0 A_StartSound("browning/fire", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("browning/fire", CHAN_WEAPON); A_AlertMonsters(1536); }
 		"####" G 0 A_FaceTarget
 		"####" G 8 LIGHT(NAZIFIRE)A_SpawnProjectile("EnemyRifleTracer",44,5)
 		"####" G 0 A_SpawnItemEx("EnfieldRifleCasing", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
@@ -1580,7 +1574,7 @@ ACTOR WSniper : Sniper
 	Melee:
 	Missile:
 		SNW2 F 32 A_FaceTarget
-		"####" G 0 A_StartSound("browning/fire", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("browning/fire", CHAN_WEAPON); A_AlertMonsters(1536); }
 		"####" G 0 A_FaceTarget
 		"####" G 8 LIGHT(NAZIFIRE)A_SpawnProjectile("EnemyRifleTracer",44,5)
 		"####" G 0 A_SpawnItemEx("EnfieldRifleCasing", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
@@ -1671,7 +1665,7 @@ ACTOR Sniper_Crouch : NaziStandard
 	Melee:
 	Missile:
 		"####" C 28 A_FaceTarget //a bit fast than normal one
-		"####" D 0 A_StartSound("browning/fire", CHAN_WEAPON)
+		"####" D 0 { A_StartSound("browning/fire", CHAN_WEAPON); A_AlertMonsters(1536); }
 		"####" G 0 A_FaceTarget
 		"####" D 8 LIGHT(NAZIFIRE)A_SpawnProjectile("EnemyRifleTracer",34,5)
 		"####" D 0 A_SpawnItemEx("EnfieldRifleCasing", 1, 0, 34, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
@@ -1749,7 +1743,6 @@ ACTOR ArcticSniper : NaziStandard
 	DropItem "Kar98k" 72
 	DropItem "MauserAmmo" 192 5
 	+LOOKALLAROUND
-	Nazi.NoRandomDeaths 2 //no backfall death
 	States
 	{
 	Spawn:
@@ -1764,7 +1757,7 @@ ACTOR ArcticSniper : NaziStandard
 	Melee:
 	Missile: //attack & reload are slightly fast than other snipers - ozy81
 		SNSP B 28 A_FaceTarget
-		"####" B 0 A_StartSound("browning/fire", CHAN_WEAPON)
+		"####" B 0 { A_StartSound("browning/fire", CHAN_WEAPON); A_AlertMonsters(1536); }
 		"####" B 0 A_FaceTarget
 		"####" C 7 LIGHT(NAZIFIRE)A_SpawnProjectile("EnemyRifleTracer",44,5)
 		"####" C 0 A_SpawnItemEx("EnfieldRifleCasing", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
@@ -1785,6 +1778,9 @@ ACTOR ArcticSniper : NaziStandard
 		"####" K 5 A_UnblockAndDrop
 		"####" L 5
 		"####" M -1
+		Stop
+	Death.Back:
+	Death.Headshot:
 		Stop
 	Death.Front:
 		SNDA I 0 A_CheckFadeDeath
@@ -1832,7 +1828,7 @@ ACTOR ArcticSniper_Crouch : NaziStandard
 	Melee:
 	Missile: //attack & reload are slightly fast than other snipers - ozy81
 		SNSP E 24 A_FaceTarget //a bit fast than normal one
-		"####" E 0 A_StartSound("browning/fire", CHAN_WEAPON)
+		"####" E 0 { A_StartSound("browning/fire", CHAN_WEAPON); A_AlertMonsters(1536); }
 		"####" E 0 A_FaceTarget
 		"####" F 7 LIGHT(NAZIFIRE)A_SpawnProjectile("EnemyRifleTracer",34,5)
 		"####" F 0 A_SpawnItemEx("EnfieldRifleCasing", 1, 0, 34, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
@@ -2085,7 +2081,7 @@ ACTOR WPanzerGuard : BasicGuard
 		Goto Idle
 	Missile.Aimed:
 		"####" A 1 { A_SetTics(random(30,45)); A_FaceTarget; }
-		"####" B 0 A_StartSound("panzer/fire", CHAN_WEAPON)
+		"####" B 0 { A_StartSound("panzer/fire", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" B 4
 		"####" B 0 A_Jump(128,"Missile.AimedBadly")
 		"####" C 8 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPanzerRocket", 34, -10)
@@ -2222,7 +2218,6 @@ ACTOR Gestapo : BasicGuard
 	DropItem "Luger9mm" 96
 	Nazi.FrightMultiplier 0.5
 	Nazi.NoAltDeath 1
-	Nazi.NoRandomDeaths 2 //no backfall death
 	States
 	{
 	Spawn:
@@ -2234,6 +2229,9 @@ ACTOR Gestapo : BasicGuard
 		GSAD A 0
 	Dodge.Resume:
 		Goto See.Normal
+	Death.Back:
+	Death.Headshot:
+		Stop
 	Death.Front:
 		GSAA I 0 A_CheckFadeDeath
 		GSAA I 5 A_Scream
@@ -2256,7 +2254,6 @@ ACTOR Mechanic : BasicGuard
 	Speed 2.37
 	Obituary "$MECHANIC"
 	Nazi.FrightMultiplier 0.5
-	Nazi.NoRandomDeaths 2 //no backfall death
 	Nazi.CanSurrender 1
 	States
 	{
@@ -2316,7 +2313,7 @@ ACTOR Mechanic : BasicGuard
 		"####" E 8 A_FaceTarget
 	Missile.Aimed:
 		"####" F 8 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" G 8 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",54,1,random(-8,8))
 		"####" F 8 A_SpawnItemEx("9MMCasing", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
 		"####" F 0 {user_count++; if(user_count > 7) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -2348,6 +2345,9 @@ ACTOR Mechanic : BasicGuard
 		"####" K 5 A_UnblockAndDrop
 		"####" L 5
 		"####" M -1
+		Stop
+	Death.Back:
+	Death.Headshot:
 		Stop
 	Death.Front:
 		"####" I 0 A_CheckFadeDeath
@@ -2381,7 +2381,7 @@ ACTOR WGuard_Wounded : Nazi //ozy81
 	States
 	{
 	Spawn:
-		GRD2 O 35 A_Look
+		GRD2 O 15 { A_Look(); user_count4 = 0; }
 		Loop
 	See:
 		// Prevent wounded guards from blocking you
@@ -2389,7 +2389,7 @@ ACTOR WGuard_Wounded : Nazi //ozy81
 		Goto See
 		GRD2 PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
 	SeeLoop:
-		GRD2 R 1 A_Chase
+		GRD2 R 1 { A_Chase; user_count4 += 1; if (user_count4 > 50) { A_Die; } }
 		"####" R 1 A_SetTics(random(1,14))
 		Loop
 	Idle:
@@ -2399,11 +2399,11 @@ ACTOR WGuard_Wounded : Nazi //ozy81
 		"####" "#" 0 A_Jump(256, "Spawn")
 	Missile:
 		GRD2 S 7 A_FaceTarget
-		"####" T 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" T 7 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",27,1,random(-8,8))
 		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" S 14
-		"####" T 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" T 7 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",27,1,random(-16,16))
 		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" T 0 {user_count++; if(user_count > 3) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -2445,7 +2445,7 @@ ACTOR Guard_Wounded : WGuard_Wounded
 	States
 	{
 	Spawn:
-		GARD O 35 A_Look
+		GARD O 15 { A_Look(); user_count4 = 0; }
 		Loop
 	See:
 		// Prevent wounded guards from blocking you
@@ -2453,16 +2453,16 @@ ACTOR Guard_Wounded : WGuard_Wounded
 		Goto See
 		GARD PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
 	SeeLoop:
-		GARD R 1 A_Chase
+		GARD R 1 { A_Chase; user_count4 += 1; if (user_count4 > 50) { A_Die; } }
 		"####" R 1 A_SetTics(random(1,14))
 		Loop
 	Missile:
 		GARD S 7 A_FaceTarget
-		"####" T 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" T 7 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",27,1,random(-8,8))
 		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" S 14
-		"####" T 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" T 7 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",27,1,random(-16,16))
 		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" T 0 {user_count++; if(user_count > 3) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -2504,7 +2504,7 @@ ACTOR SSGuard_Wounded : WGuard_Wounded
 	States
 	{
 	Spawn:
-		SSPG O 35 A_Look
+		SSPG O 15 { A_Look(); user_count4 = 0; }
 		Loop
 	See:
 		// Prevent wounded guards from blocking you
@@ -2512,16 +2512,16 @@ ACTOR SSGuard_Wounded : WGuard_Wounded
 		Goto See
 		SSPG PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
 	SeeLoop:
-		SSPG R 1 A_Chase
+		SSPG R 1 { A_Chase; user_count4 += 1; if (user_count4 > 50) { A_Die; } }
 		"####" R 1 A_SetTics(random(1,14))
 		Loop
 	Missile:
 		SSPG S 7 A_FaceTarget
-		"####" T 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" T 7 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",27,1,random(-8,8))
 		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" S 14
-		"####" T 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" T 7 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",27,1,random(-16,16))
 		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" T 0 {user_count++; if(user_count > 3) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -2563,7 +2563,7 @@ ACTOR Officer_Wounded : WGuard_Wounded
 	States
 	{
 	Spawn:
-		OFFI O 35 A_Look
+		OFFI O 15 { A_Look(); user_count4 = 0; }
 		Loop
 	See:
 		// Prevent wounded guards from blocking you
@@ -2571,16 +2571,16 @@ ACTOR Officer_Wounded : WGuard_Wounded
 		Goto See
 		OFFI PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
 	SeeLoop:
-		OFFI R 1 A_Chase
+		OFFI R 1 { A_Chase; user_count4 += 1; if (user_count4 > 50) { A_Die; } }
 		"####" R 1 A_SetTics(random(1,14))
 		Loop
 	Missile:
 		OFFI S 7 A_FaceTarget
-		"####" T 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" T 7 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",27,1,random(-8,8))
 		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" S 14
-		"####" T 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" T 7 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",27,1,random(-16,16))
 		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" T 0 {user_count++; if(user_count > 3) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -2622,7 +2622,7 @@ ACTOR SSOfficer_Wounded : WGuard_Wounded
 	States
 	{
 	Spawn:
-		SSOF O 35 A_Look
+		SSOF O 15 { A_Look(); user_count4 = 0; }
 		Loop
 	See:
 		// Prevent wounded guards from blocking you
@@ -2630,16 +2630,16 @@ ACTOR SSOfficer_Wounded : WGuard_Wounded
 		Goto See
 		SSOF PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
 	SeeLoop:
-		SSOF R 1 A_Chase
+		SSOF R 1 { A_Chase; user_count4 += 1; if (user_count4 > 50) { A_Die; } }
 		"####" R 1 A_SetTics(random(1,14))
 		Loop
 	Missile:
 		SSOF S 7 A_FaceTarget
-		"####" T 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" T 7 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",27,1,random(-8,8))
 		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" S 14
-		"####" T 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" T 7 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",27,1,random(-16,16))
 		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" T 0 {user_count++; if(user_count > 3) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -2681,7 +2681,7 @@ ACTOR WOfficer_Wounded : WGuard_Wounded
 	States
 	{
 	Spawn:
-		OFR2 O 35 A_Look
+		OFR2 O 15 { A_Look(); user_count4 = 0; }
 		Loop
 	See:
 		// Prevent wounded guards from blocking you
@@ -2689,16 +2689,16 @@ ACTOR WOfficer_Wounded : WGuard_Wounded
 		Goto See
 		OFR2 PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
 	SeeLoop:
-		OFR2 R 1 A_Chase
+		OFR2 R 1 { A_Chase; user_count4 += 1; if (user_count4 > 50) { A_Die; } }
 		"####" R 1 A_SetTics(random(1,14))
 		Loop
 	Missile:
 		OFR2 S 7 A_FaceTarget
-		"####" T 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" T 7 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",27,1,random(-6,6))
 		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" S 12
-		"####" T 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" T 7 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",27,1,random(-12,12))
 		"####" T 0 A_SpawnItemEx("9MMCasing", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" T 0 {user_count++; if(user_count > 3) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -2829,7 +2829,7 @@ ACTOR MGTurret : MiniShip
 		"####" A 4 A_StartSound("chaingun/start", CHAN_WEAPON)
 		"####" A 1 A_StartSound("chaingun/loop", CHAN_WEAPON)
 		"####" A 5 A_FaceTarget
-		"####" B 0 A_StartSound("chaingun/fire", CHAN_WEAPON)
+		"####" B 0 { A_StartSound("chaingun/fire", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" C 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyChaingunTracer",20,0,random(-11,11))
 		"####" B 3 A_MonsterRefire(20,"See")
 		"####" B 0 A_FaceTarget
@@ -2864,7 +2864,7 @@ ACTOR MGTurretCeiling : MGTurret
 		"####" D 4 A_StartSound("chaingun/start", CHAN_WEAPON)
 		"####" D 1 A_StartSound("chaingun/loop", CHAN_WEAPON)
 		"####" D 5 A_FaceTarget
-		"####" E 0 A_StartSound("chaingun/fire", CHAN_WEAPON)
+		"####" E 0 { A_StartSound("chaingun/fire", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" F 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyChaingunTracer",Height-8,0,random(-11,11))
 		"####" E 3 A_MonsterRefire(20,"See")
 		"####" E 0 A_FaceTarget
@@ -2895,7 +2895,7 @@ ACTOR MGTurretInvisible : MGTurret
 		"####" A 4 A_StartSound("chaingun/start", CHAN_WEAPON)
 		"####" A 1 A_StartSound("chaingun/loop", CHAN_WEAPON)
 		"####" A 5 A_FaceTarget
-		"####" B 0 A_StartSound("chaingun/fire", CHAN_WEAPON)
+		"####" B 0 { A_StartSound("chaingun/fire", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" C 3 A_SpawnProjectile("EnemyChaingunTracer",20,0,random(-11,11))
 		"####" B 3 A_MonsterRefire(30,"See")
 		"####" B 0 A_FaceTarget
@@ -2962,7 +2962,7 @@ ACTOR MGTurretSoldier : MGTurret
 		SMGS A 4 A_StartSound("chaingun/start", CHAN_WEAPON)
 		"####" A 1 A_StartSound("chaingun/loop", CHAN_AUTO)
 		"####" A 5 A_FaceTarget
-		"####" B 0 A_StartSound("chaingun/fire", CHAN_WEAPON)
+		"####" B 0 { A_StartSound("chaingun/fire", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" C 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyChaingunTracer",34,-2,random(-11,11))
 		"####" C 0 A_SpawnItemEx("9MMCasing", 0,0,36, random(2,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" B 3 A_MonsterRefire(10,"See")
@@ -3010,7 +3010,7 @@ ACTOR MGTurretSoldierW : MGTurretSoldier
 		SMGF A 4 A_StartSound("chaingun/start", CHAN_WEAPON)
 		"####" A 1 A_StartSound("chaingun/loop", CHAN_AUTO)
 		"####" A 5 A_FaceTarget
-		"####" B 0 A_StartSound("chaingun/fire", CHAN_WEAPON)
+		"####" B 0 { A_StartSound("chaingun/fire", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" C 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyChaingunTracer",34,-2,random(-11,11))
 		"####" C 0 A_SpawnItemEx("9MMCasing", 0,0,36, random(2,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" B 3 A_MonsterRefire(10,"See")
@@ -3167,7 +3167,6 @@ ACTOR EliteAssaulter : BasicGuard
 	Base.NoMedicHeal
 	Nazi.FrightMultiplier 0.25
 	Nazi.NoAltDeath 1
-	Nazi.NoRandomDeaths 2 //no backfall death
 	Nazi.TotaleGierDrop 2
 	States
 	{
@@ -3216,22 +3215,22 @@ ACTOR EliteAssaulter : BasicGuard
 	Missile.NoGrenada:
 		"####" E 0 A_StartSound("ammo/cell2")
 		"####" EF 12 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/stg44", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/stg44", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" G 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",39,5,random(-6,6))
 		"####" G 0 {user_count++; if(user_count > 31) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
 		"####" G 0 A_SpawnItemEx("9MMCasing", 6,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 4 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/stg44", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/stg44", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" G 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",39,5,random(-5,5))
 		"####" G 0 {user_count++; if(user_count > 31) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
 		"####" G 0 A_SpawnItemEx("9MMCasing", 6,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 4 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/stg44", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/stg44", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" G 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",39,5,random(-4,4))
 		"####" G 0 {user_count++; if(user_count > 31) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
 		"####" G 0 A_SpawnItemEx("9MMCasing", 6,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 4 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/stg44", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/stg44", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" G 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",39,5,random(-3,3))
 		"####" G 0 A_SpawnItemEx("9MMCasing", 6,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 10 A_FaceTarget
@@ -3254,6 +3253,9 @@ ACTOR EliteAssaulter : BasicGuard
 		"####" E 0 A_SpawnItemEx("9MMCasing", 6,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See
+	Death.Back:
+	Death.Headshot:
+		Stop
 	Death.Front:
 		ETNA I 0 A_CheckFadeDeath
 		ETNA I 5 A_Scream
@@ -3287,7 +3289,6 @@ ACTOR EliteSoldatRifler : BasicGuard
 	Base.NoMedicHeal
 	Nazi.FrightMultiplier 0.25
 	Nazi.NoAltDeath 1
-	Nazi.NoRandomDeaths 2 //no backfall death
 	Nazi.TotaleGierDrop 2
 	States
 	{
@@ -3335,7 +3336,7 @@ ACTOR EliteSoldatRifler : BasicGuard
 		"####" E 9 A_FaceTarget
 	Missile.Aimed:
 		"####" F 9 A_FaceTarget
-		"####" G 0 A_StartSound("mauser/fire", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("mauser/fire", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" G 2 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyRifleTracer",39,7,random(-4,4))
 		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 7,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" F 4 A_StartSound("mauser/cock", CHAN_AUTO, 0, 0.25)
@@ -3353,13 +3354,16 @@ ACTOR EliteSoldatRifler : BasicGuard
 	CampingFire:
 		ELTR Q 0 A_JumpIfCloser(540,"CampingDone")
 		"####" Q 10 A_FaceTarget
-		"####" R 0 A_StartSound("mauser/fire", CHAN_WEAPON)
+		"####" R 0 { A_StartSound("mauser/fire", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" R 2 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyRifleTracer",32,5,random(-1,1))
 		"####" Q 20
 		Goto CampingContinue
 	CampingDone:
 		ELTR QPO 2
 		Goto See
+	Death.Back:
+	Death.Headshot:
+		Stop
 	Death.Front:
 		ETFA I 0 A_CheckFadeDeath
 		ETFA I 5 A_Scream
@@ -3384,7 +3388,6 @@ ACTOR Scientist : BasicGuard
 	+FRIGHTENED
 	Obituary "$SCIENTIST"
 	Nazi.NoAltDeath 1
-	Nazi.NoRandomDeaths 2 //no backfall death
 	Nazi.CanSurrender 1
 	States
 	{
@@ -3399,6 +3402,9 @@ ACTOR Scientist : BasicGuard
 		SCD2 A 0
 	Dodge.Resume:
 		Goto See.Normal
+	Death.Back:
+	Death.Headshot:
+		Stop
 	Death.Front:
 		SCNA I 0 A_CheckFadeDeath
 		SCNA I 5 A_Scream
@@ -3420,7 +3426,6 @@ ACTOR Scientist2 : BasicGuard
 	+FRIGHTENED
 	Obituary "$SCIENTIST"
 	Nazi.NoAltDeath 1
-	Nazi.NoRandomDeaths 2 //no backfall death
 	Nazi.CanSurrender 1
 	States
 	{
@@ -3435,6 +3440,9 @@ ACTOR Scientist2 : BasicGuard
 		SCND A 0
 	Dodge.Resume:
 		Goto See.Normal
+	Death.Back:
+	Death.Headshot:
+		Stop
 	Death.Front:
 		SCTA I 0 A_CheckFadeDeath
 		SCTA I 5 A_Scream
@@ -3478,7 +3486,6 @@ ACTOR DirtyDarren : BasicGuard
 	+FRIENDLY
 	+USESPECIAL
 	Nazi.NoAltDeath 1
-	Nazi.NoRandomDeaths 3 //no back-front death
 	Nazi.CrouchChance 0
 	States
 	{
@@ -3491,11 +3498,15 @@ ACTOR DirtyDarren : BasicGuard
 		"####" E 5 A_FaceTarget
 	Missile.Aimed:
 		"####" F 5 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" G 8 LIGHT(NAZIFIRE) A_SpawnProjectile("ThompsonTracer",32,0,random(-8,8))
 		"####" F 8 A_SpawnItemEx("9MMCasing", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
 		"####" F 0 {user_count++; if(user_count > 7) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
 		"####" F 0 A_Jump(256,"See")
+		Stop
+	Death.Front:
+	Death.Back:
+	Death.Headshot:
 		Stop
 	}
 }
@@ -3531,7 +3542,7 @@ ACTOR Marine1 : DirtyDarren
 		"####" F 6 A_FaceTarget
 	Missile.Aimed:
 		"####" G 6 A_FaceTarget
-		"####" H 0 A_StartSound("nazi/stg44", CHAN_WEAPON)
+		"####" H 0 { A_StartSound("nazi/stg44", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" H 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",38,6,random(-4,4))
 		"####" H 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" H 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -3577,7 +3588,7 @@ ACTOR Marine1B : Marine1
 		"####" F 5 A_FaceTarget
 	Missile.Aimed:
 		"####" G 5 A_FaceTarget
-		"####" H 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" H 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" H 8 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",54,1,random(-8,8))
 		"####" G 8 A_SpawnItemEx("9MMCasing", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
 		"####" F 0 {user_count++; if(user_count > 7) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -3617,7 +3628,7 @@ ACTOR Marine2A : Marine1
 		"####" F 3 A_FaceTarget
 	Missile.Aimed:
 		"####" F 3 A_FaceTarget
-		"####" G 0 A_StartSound("nazi/stg44", CHAN_WEAPON)
+		"####" G 0 { A_StartSound("nazi/stg44", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" GH 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",38,6,random(-4,4))
 		"####" H 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" H 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -3647,7 +3658,7 @@ ACTOR Marine2B : Marine1
 		"####" F 6 A_FaceTarget
 	Missile.Aimed:
 		"####" G 6 A_FaceTarget
-		"####" H 0 A_StartSound("nazi/stg44", CHAN_WEAPON)
+		"####" H 0 { A_StartSound("nazi/stg44", CHAN_WEAPON); A_AlertMonsters(1024); }
 		"####" H 3 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyStGTracer",38,6,random(-4,4))
 		"####" H 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" H 0{user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}
@@ -3673,7 +3684,7 @@ ACTOR Marine3A : Marine1
 		"####" F 5 A_FaceTarget
 	Missile.Aimed:
 		"####" G 5 A_FaceTarget
-		"####" H 0 A_StartSound("nazi/pistol", CHAN_WEAPON)
+		"####" H 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" H 8 LIGHT(NAZIFIRE) A_SpawnProjectile("EnemyPistolTracer",54,1,random(-8,8))
 		"####" G 8 A_SpawnItemEx("9MMCasing", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION)
 		"####" F 0 {user_count++; if(user_count > 7) {user_count = 0; return ResolveState("Reload");} return ResolveState("");}

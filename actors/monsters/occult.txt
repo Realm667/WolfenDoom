@@ -125,7 +125,6 @@ ACTOR WereWaffenSS : WaffenSS
 	DropItem "9mmAmmoBox" 128
 	DropItem "GrenadePickup" 32
 	DropItem "MP40" 128
-	Nazi.NoRandomDeaths 3 //no back-front death
 	States
 	{
 	Spawn:
@@ -151,9 +150,10 @@ ACTOR WereWaffenSS : WaffenSS
 		"####" E 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION)
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See
-	Death.Rifle:
-		WOFF I 0
-		Goto Super::Death
+	Death.Front:
+	Death.Back:
+	Death.Headshot:
+		Stop
 	Death.Fire:
 		"####" # 0 A_SetScale(0.62)
 		Goto Death.Fire.Random
@@ -627,7 +627,6 @@ ACTOR PlagueDoc : Guard
 	//$Category Monsters (BoA)/Occult
 	//$Title Plague Doctor (young)
 	Nazi.NoAltDeath 1
-	Nazi.NoRandomDeaths 2 //no backfall death
 	Nazi.CanSurrender 1
 	States
 	{
@@ -642,9 +641,9 @@ ACTOR PlagueDoc : Guard
 		PDOD A 0
 	Dodge.Resume:
 		Goto See.Fast //more fast now - ozy81
-	Death.Rifle:
-		PDOC I 0
-		Goto Super::Death
+	Death.Back:
+	Death.Headshot:
+		Stop
 	Death.Front:
 		"####" I 0 A_CheckFadeDeath
 		PDOA I 5 A_Scream

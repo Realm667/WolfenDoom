@@ -168,6 +168,7 @@ class NaziWeapon : Weapon
 						p && 
 						Nazi(p.crosshairtarget) && 
 						!Nazi(p.crosshairtarget).user_incombat &&
+						!WGuard_Wounded(p.crosshairtarget) && //this gave away wounded guards
 						p.Distance2D(p.crosshairtarget) < p.crosshairtarget.radius + 64.0
 					)
 					{
