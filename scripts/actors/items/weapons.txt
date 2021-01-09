@@ -318,7 +318,6 @@ class TankCannonWeapon : NaziWeapon // Weapon used when morphed into a tank.
 			TNT1 A 1 A_Lower;
 			Loop;
 		//real Fire and Altfire moved to subclasses, these two states are necessary for weapon syntax
-		
 		Fire:
 			TNT1 A 2 { Console.Printf("Base TankCannonWeapon fire state call, please report this error"); }
 			TNT1 A 0 A_TankRefire();
@@ -399,10 +398,10 @@ class TankCannonWeapon : NaziWeapon // Weapon used when morphed into a tank.
 		{
 			muzzleflash.vel += (mo.vel.x / 2.0, mo.vel.y / 2.0, mo.vel.z / 2.0);
 			if (self)
-            {
-                muzzleflash.vel += self.vel;
-                mo.vel += self.vel;
-            }
+			{
+				muzzleflash.vel += self.vel;
+				mo.vel += self.vel;
+			}
 			mo.SetOrigin(origin.pos, false); // Move the missile so that it flies from the model's gun
 		}
 
@@ -428,73 +427,74 @@ class TankCannonWeapon : NaziWeapon // Weapon used when morphed into a tank.
 		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
 		muzzleflash.master = self;
 		A_FireProjectile("TurrSmokeSpawner", origin.Pos.Z - Pos.Z);
-		Actor mo = A_FireProjectile(missiletype, angledelta + Random(-2, 2), False, 0, 0, 0, pitchdelta + Random(-2, 2));
+		Actor mo = A_FireProjectile(missiletype, angledelta + Random(-2, 2), False, origin.pos.x - pos.x, origin.pos.z - pos.z, 0, pitchdelta + Random(-2, 2));
 		if (mo && origin != self)
 		{
 			mo.SetOrigin(origin.pos, false); // Move the tracer so that it flies from the model's gun
-            if (self) mo.vel += self.vel;
+			if (self) { mo.vel += self.vel; }
 			mo.bMThruSpecies = true;
 		}
 	}
 }
 
-class Cannon75mm: TankCannonWeapon {
+class Cannon75mm: TankCannonWeapon
+{
 	States
 	{
 		Fire:
 			TNT1 A 2 DoCannon("tanks/75mmm3", "TankMissile");
 			TNT1 A 0 A_TankRefire();
 			Goto Ready;
-        AltFire:
+		AltFire:
 			TNT1 A 6 DoMachineGun("tank/50cal", "Kar98kTracer");
 			TNT1 A 20 A_TankRefire();
 			Goto Ready;
-    }
+	}
 }
 
 class Cannon75mmKwK: TankCannonWeapon // Pz. Kpfw. IV
 {
-    States
+	States
 	{
 		Fire:
 			TNT1 A 2 DoCannon("tanks/75mmkwk40", "TankMissile");
 			TNT1 A 0 A_TankRefire();
 			Goto Ready;
-        AltFire:
+		AltFire:
 			TNT1 A 3 DoMachineGun("chaingun/fire", "ChaingunTracer");
 			TNT1 A 20 A_TankRefire();
 			Goto Ready;
-    }
+	}
 }
 
 class Cannon88mm: TankCannonWeapon // Pz. Kpfw. VI E
 {
-    States
+	States
 	{
 		Fire:
 			TNT1 A 2 DoCannon("tanks/88mmkwk36", "TankMissile");
 			TNT1 A 0 A_TankRefire();
 			Goto Ready;
-        AltFire:
+		AltFire:
 			TNT1 A 3 DoMachineGun("chaingun/fire", "ChaingunTracer");
 			TNT1 A 20 A_TankRefire();
 			Goto Ready;
-    }
+	}
 }
 
 class CannonMG34: TankCannonWeapon // Sd. Kfz. 223
 {
-    States
+	States
 	{
 		Fire:
 			TNT1 A 1;
 			TNT1 A 1;
 			Goto Ready;
-        AltFire:
+		AltFire:
 			TNT1 A 3 DoMachineGun("chaingun/fire", "ChaingunTracer");
 			TNT1 A 10 A_TankRefire();
 			Goto Ready;
-    }
+	}
 }
 
 class TankRocket : GrenadeBase
@@ -563,11 +563,12 @@ class TankRocket : GrenadeBase
 
 class TankMissile : TankRocket
 {
-    default
-    {
-        -NOGRAVITY
-        Gravity 0.33;
-    }
+	Default
+	{
+		-NOGRAVITY
+		Gravity 0.33;
+	}
+
 	States
 	{
 		Spawn:
@@ -581,11 +582,11 @@ class TankMissile : TankRocket
 /*
 class TankMissilePlayer: TankMissile
 {
-    default
-    {
-        -NOGRAVITY
-        Gravity 0.33;
-    }
+	Default
+	{
+		-NOGRAVITY
+		Gravity 0.33;
+	}
 }
 */
 class TurretSwivel : ActorPositionable
@@ -867,7 +868,7 @@ class TurretWeapon : NullWeapon
 	override void DoEffect()
 	{
 		static const string heatlevelicons[] = {"HEAT01", "HEAT02", "HEAT03", "HEAT04", "HEAT05", "HEAT06"};
-		static const int heatlevels[] =        {0, 20, 40, 60, 80, 100};
+		static const int heatlevels[] = {0, 20, 40, 60, 80, 100};
 
 		if (gun)
 		{

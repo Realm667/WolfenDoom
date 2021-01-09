@@ -501,6 +501,7 @@ class PlayerTracer : BulletTracer
 {
 	Default
 	{
+		MaxTargetRange 2048.0; // Used in P_SpawnPlayerMissile's P_LineAttack call to set range for auto-aiming
 		Species "PlayerFollower"; // By default, player bullets have PlayerFollower species
 		-NOGRAVITY
 	}
