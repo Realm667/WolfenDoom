@@ -2180,11 +2180,11 @@ class Nazi : Base
 
 		if (!grenade) { return; }
 
-		if (target != grenade)
+		if (target != grenade && !bFrightened)
 		{
 			target = grenade;
 			if (user_sneakable && !alerted) { BecomeAlerted(target); } // If sneakable, alert them
-			else if (!bFriendly && !((grenade is "Whizzer") && user_incombat)) { A_StartSound(SeeSound, CHAN_VOICE); } // Play a 'sighted' alert sound if the enemy isn't a friendly (this basically assumes all enemies should yell out in German)
+			else if (user_incombat && !bFriendly && !((grenade is "Whizzer"))) { A_StartSound(SeeSound, CHAN_VOICE); } // Play SeeSound if the enemy isn't a friendly
 		}
 
 		if (timeout <= 0)
