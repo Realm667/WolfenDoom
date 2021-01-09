@@ -783,7 +783,7 @@ ACTOR FlyingNeedleZ : MiniRocket
 {
 	Speed 12
 	DamageType "UndeadPoison"
-	PoisonDamage 4, 5
+	PoisonDamage 1, 2
 	SeeSound ""
 	DeathSound "gshardnd"
 	Gravity 0.3
@@ -1233,9 +1233,9 @@ ACTOR ZyklonBCloud : ParticleBase
 	Game Doom
 	Radius 48
 	Height 32
-	Damage 2
 	Scale 1.5
-	PoisonDamage 4
+	Damage 2
+	PoisonDamage 2
 	DamageType "UndeadPoison"
 	Projectile
 	+WINDTHRUST
@@ -1254,7 +1254,7 @@ ACTOR ZyklonBCloud : ParticleBase
 
 ACTOR ZyklonZCloud : ZyklonBCloud
 {
-	PoisonDamage 2
+	PoisonDamage 1
 	Alpha 0.3
 	States
 	{
@@ -1315,7 +1315,7 @@ ACTOR ZyklonBBall
 	+RANDOMIZE
 	+SEEKERMISSILE
 	Alpha 1.0
-	RenderStyle "Translucent" //was "Add"
+	RenderStyle "Translucent"
 	SeeSound "tgfr1"
 	DeathSound "tgfr2"
 	States
