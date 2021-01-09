@@ -2783,7 +2783,7 @@ class Nazi : Base
 			}
 		}
 		
-		if (health > 0 && bShootable && !bDormant && !dodging)
+		if (health > 0 && bShootable && !bDormant && !dodging && !surrendered)
 		{
 			if (curSector.GetUDMFInt("user_background") == True) // If this is a background actor, skip most of the logic here
 			{
@@ -2918,7 +2918,7 @@ class Nazi : Base
 			if (!InPlayerSight(self)) { hiddentime++; }
 			else { hiddentime = 0; } // Reset the timer if seen
 
-			if (hiddentime > 35 * 15) { Destroy(); } // Remove the surrendered actor after 15 seconds of being out of sight.
+			if (hiddentime > 35 * 10) { Destroy(); } // Remove the surrendered actor after 10 seconds of being out of sight.
 		}
 
 		Super.Tick();

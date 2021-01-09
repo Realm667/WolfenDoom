@@ -142,24 +142,35 @@ class NaziMedic : NaziStandard
 			}
 			Goto See;
 		Death:
+			"####" A 0 A_NoBlocking(true); // No weapon to drop, just the medical kit
+			"####" XYZ 6;
 			"####" A 0 DoSurrender();
 		Death.Surrender:
+			"####" F 1 A_SetTics(Random(35, 70));
+			"####" BA 6;
+		Death.SurrenderLoop:
+			"####" A 1 A_SetTics(Random(35, 70));
+			"####" BC 6;
+			"####" DEDED 1 A_SetTics(Random(48, 96));
+			"####" CB 6;
+			Loop;
+		Death.StandingSurrender:
 			"####" X 6;
 			"####" Y 6 A_NoBlocking(true); // No weapon to drop, just the medical kit
-			Goto Death.Surrender.MainLoop;
-		Death.Surrender.MainLoop:
+			Goto Death.StandingSurrender.MainLoop;
+		Death.StandingSurrender.MainLoop:
 			"####" Z 9;
-		Death.Surrender.SubLoop:
+		Death.StandingSurrender.SubLoop:
 			"####" Z 0;
-			"####" Z 32 A_Jump(64, "Death.Surrender.Blink");
-			"####" A 0 { return ResolveState("Death.Surrender.MainLoop"); }
-		Death.Surrender.Blink:
+			"####" Z 32 A_Jump(64, "Death.StandingSurrender.Blink");
+			"####" A 0 { return ResolveState("Death.StandingSurrender.MainLoop"); }
+		Death.StandingSurrender.Blink:
 			"####" Y 8;
 			"####" Z 16;
 			"####" Y 8;
-			"####" A 0 { return ResolveState("Death.Surrender.MainLoop"); }
+			"####" A 0 { return ResolveState("Death.StandingSurrender.MainLoop"); }
 		SurrenderSprite:
-			NMDC A 0;
+			NMDS A 0;
 	}
 
 	state A_CheckForPlayer(bool jump = False)
@@ -200,7 +211,11 @@ class NaziMedic : NaziStandard
 
 		if (bInvulnerable && source && source.player)
 		{
-			SetStateLabel("Death");
+			if (!surrendered)
+			{
+				surrendered = true;
+				SetStateLabel("Death");
+			}
 
 			return 0;
 		}
