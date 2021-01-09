@@ -261,6 +261,11 @@ class Soul : StackableInventory
 				else if (Amount % 10 == 1) msg = "Получена %d проклятая душа.";
 				else msg = "Получены %d проклятые души.";
 			}
+			if (language.Left(2) ~== "cs")
+			{ //special handling for Czech
+				if (Amount <= 4) msg = "Sebral jsi %d prokleté duše.";
+				else msg = "Sebral jsi 7 prokletých duší.";
+			}
 		}
 
 		// Set actual scale amounts
