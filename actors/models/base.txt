@@ -81,22 +81,6 @@ ACTOR 3dObstacle : 3dObject
 	+SHOOTABLE
 }
 
-ACTOR 3dObstacle2 //so it doesn't clash with zscriptified ModelBase, breaking moving train zones behavior (C2M5_A rocks and trees) - ozy81
-{
-	Health -1
-	-CANPASS
-	-FLOORCLIP
-	-NOBLOCKMAP
-	+DONTTHRUST
-	+MOVEWITHSECTOR
-	+NOBLOOD
-	+NOBLOODDECALS
-	+NODAMAGE
-	+NOTAUTOAIMED
-	+RELATIVETOFLOOR
-	+SHOOTABLE
-}
-
 ACTOR 3dFurniture : 3dObstacle
 {
 	//$Category Furniture (BoA)
