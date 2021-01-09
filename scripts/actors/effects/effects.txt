@@ -97,59 +97,45 @@ class EffectsManager : Thinker
 		if (i == effects.Size()) // Only add it if it's not already there somehow.
 		{
 			EffectInfo this = New("EffectInfo");
+
 			this.effect = effect;
 			this.type = effect.GetClass();
-			this.position = effect.pos;
-			this.angle = effect.angle;
-			this.pitch = effect.pitch;
-			if (effect is "TreesBase") // Trees have special pitch handling,
-			{ // due to the fact they can be 2D as well.
-				this.pitch = TreesBase(effect).origPitch;
-			}
-			this.roll = effect.roll;
-			this.scale = effect.scale;
-			this.master = effect.master;
-			this.target = effect.target;
-			this.tracer = effect.tracer;
-			this.SpawnFlags = effect.SpawnFlags;
-
-			for (int a = 0; a < 5; a++)
-			{
-				this.args[a] = effect.args[a];
-			}
-
-			this.tid = effect.tid;
-			this.dormant = effect.bDormant;
-			this.range = range;
 			this.ingame = true;
+
+			SaveEffectInfo(effect, this, range);
 
 			effects.Push(this);
 		}
 		else // Otherwise just update what's there...
 		{
-			effects[i].position = effect.pos;
-			effects[i].angle = effect.angle;
-			effects[i].pitch = effect.pitch;
-			if (effect is "TreesBase")
-			{
-				effects[i].pitch = TreesBase(effect).origPitch;
-			}
-			effects[i].roll = effect.roll;
-			effects[i].scale = effect.scale;
-			effects[i].master = effect.master;
-			effects[i].target = effect.target;
-			effects[i].tracer = effect.tracer;
-			effects[i].SpawnFlags = effect.SpawnFlags;
-
-			for (int a = 0; a < 5; a++)
-			{
-				effects[i].args[a] = effect.args[a];
-			}
-
-			effects[i].tid = effect.tid;
-			effects[i].dormant = effect.bDormant;
-			effects[i].range = range;
+			SaveEffectInfo(effect, effects[i], range);
 		}
+	}
+
+	void SaveEffectInfo(Actor mo, EffectInfo info, double range = -1)
+	{
+		info.position = mo.pos;
+		info.angle = mo.angle;
+		info.pitch = mo.pitch;
+		if (mo is "TreesBase")	// Trees have special pitch handling,
+		{ 			// due to the fact they can be 2D as well.
+			info.pitch = TreesBase(mo).origPitch;
+		}
+		info.roll = mo.roll;
+		info.scale = mo.scale;
+		info.master = mo.master;
+		info.target = mo.target;
+		info.tracer = mo.tracer;
+		info.SpawnFlags = mo.SpawnFlags;
+
+		for (int a = 0; a < 5; a++)
+		{
+			info.args[a] = mo.args[a];
+		}
+
+		info.tid = mo.tid;
+		info.dormant = mo.bDormant;
+		if (range >= 0) { info.range = range; }
 	}
 
 	void RemoveEffect(Actor effect)
@@ -234,6 +220,8 @@ class EffectsManager : Thinker
 
 					effects[i].effect = effect;
 					effects[i].ingame = true;
+
+					if (effect is "CullActorBase") { CullActorBase(effect).wasculled = true; }
 				}
 			}
 			else if (!inrange && effects[i].effect && !effects[i].effect.bDormant)
@@ -257,6 +245,8 @@ class EffectsManager : Thinker
 					effects[i].sprite = effect.sprite;
 					effects[i].frame = effect.frame;
 					effects[i].curstate = effect.CurState;
+
+					SaveEffectInfo(effect, effects[i], range);
 
 					effects[i].effect.A_RemoveChildren(TRUE, RMVF_MISC);
 
