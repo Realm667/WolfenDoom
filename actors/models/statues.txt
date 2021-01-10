@@ -192,7 +192,15 @@ ACTOR 3dPrometheus_LF : 3dFurniture_End
 	States
 	{
 	Spawn:
-		MDLA A -1 NODELAY A_SpawnItemEx("PrometheusFireA", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		MDLA A -1 NODELAY A_SpawnItemEx("PrometheusFireA", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE)
+		Stop
+	Destroyed:
+		MDLA B 0 A_RemoveChildren(TRUE, RMVF_MISC)
+		"####" BBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Statue3", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE)
+		"####" BBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Statue1", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE)
+		"####" BBBBBBBBBB 0 A_SpawnItemEx("Debris_Statue3", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE)
+		"####" BBBBBBB 0 A_SpawnItemEx("Debris_Statue1", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE)
+		MDLA B -1 
 		Stop
 	}
 }

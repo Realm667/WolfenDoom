@@ -217,6 +217,28 @@ ACTOR WallLight2Switch : SimpleLight1
 	}
 }
 
+ACTOR HangLight1Switch : SimpleLight1
+{
+	//$Category Lights (BoA)/No Cones
+	//$Title 3d Hanging Lantern, no cone (ON, SWITCHABLE)
+	Radius 1
+	Height 24
+	States
+	{
+	Active:
+		MDLA A 0 {bDormant = FALSE;}
+	Spawn:
+		MDLA A 0 NODELAY
+	Activate:
+		MDLA A 1 LIGHT(OZYSIMLT)
+		Loop
+	Inactive:
+		MDLA A 0 {bDormant = TRUE;}
+		MDLA B -1
+		Stop
+	}
+}
+
 ACTOR Chandelier1Switchable : LightBaseARGs
 {
 	//$Title 3d Chandelier with Tall Candles (RUSTY, ARGS)
