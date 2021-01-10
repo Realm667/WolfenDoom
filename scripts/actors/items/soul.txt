@@ -150,10 +150,14 @@ class Soul : StackableInventory
 		for (int player = 0; player < MAXPLAYERS; player++)
 		{
 			if (!playeringame[player]){ continue; }
+
 			double pdist = Distance2D(players[player].mo);
-			if (pdist > distance || (existing && existing.player && pdist > Distance2D(existing))) {
-				continue;
-			}
+			if (pdist > distance || (existing && existing.player && pdist > Distance2D(existing))) { continue; }
+
+			// Don't target players who already have full soul amount
+			let i = players[player].mo.FindInventory(self.GetClass());
+			if (i && i.Amount >= MaxAmount) { continue; }
+
 			targetPlayer = players[player].mo;
 		}
 		return targetPlayer;
