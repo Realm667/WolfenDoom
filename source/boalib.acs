@@ -5,6 +5,7 @@
 #libdefine MAX_OBJECTIVES 6
 #libdefine MAX_PLAYER_HEALTH 150
 #libdefine PLAYER_TAG_OFFSET 1000
+#libdefine BRIDGECOUNT 256 // Track sector tags up to 256
 
 global int 1:disable_mutants; //mxd. When set to true, Mutant and MutantMelee will immediately despawn after spawning.
 global int 2:disable_big_mutants; //mxd. When set to true, BigMutant1 and BigMutant2 will immediately despawn after spawning.
@@ -26,6 +27,9 @@ int maxzones = 10; // How many waves can be set up
 int zonestarttid = 100; // Base TID for wave spawn points - wave 1 will add 1, wave 2 will add 2, etc.
 int currentzone = 0; // The currently activated wave
 int lastzone = 0; // The previous wave (used for fallback spawnpoints if it's night again and no other wave has been triggered)
+
+// CK bridge tracking
+bool bridgestatus[BRIDGECOUNT];
 
 #include "zcommon.acs"
 #include "functions.acs"

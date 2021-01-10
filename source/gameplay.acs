@@ -367,3 +367,37 @@ script "LIGHTS_NOSOUND" (int light_tid)
 
 // Compatibility placeholders (old functions that aren't needed any more, but might be referenced in old maps)
 script "BossHealth" (void) {}
+
+// Commander Keen bridge movement script
+//
+// Uses absolute values rather than sector height offsets so that even if a bridge does
+// somehow get stuck, re-activating the use line will eventually fix the placement.
+script "BridgeScript" (int bridge_id, int destheight)
+{
+	if (bridge_id > BRIDGECOUNT) { Terminate; } // Don't overflow the bridge status array
+
+	// If the bridge is on-screen, override the passed-in height and move it away.  otherwise, use the passed in height
+	if (bridgestatus[bridge_id]) { destheight = 10000; } // Default height to hold the bridge off-screen (above the general map ceiling height)
+
+	// Toggle the bridge status
+	bridgestatus[bridge_id] = !bridgestatus[bridge_id];
+
+	// Move the bridge to the set destination height
+	MoveBridge(bridge_id, destheight);
+}
+
+function void MoveBridge(int bridge_id, int destheight)
+{
+	int bridgeheight = 16; // Height of bridges (desired difference between floor and ceiling of 3D floor sector)
+
+	if (GetSectorCeilingZ(bridge_id, 0, 0) > destheight * 1.0) // If currently higher than destination, move floor first
+	{
+		Floor_MoveToValue(bridge_id, 0x7FFFFFFF, destheight - bridgeheight);
+		Ceiling_MoveToValue(bridge_id, 0x7FFFFFFF, destheight);
+	}
+	else // Otherwise, move ceiling first
+	{
+		Ceiling_MoveToValue(bridge_id, 0x7FFFFFFF, destheight);
+		Floor_MoveToValue(bridge_id, 0x7FFFFFFF, destheight - bridgeheight);
+	}
+}
