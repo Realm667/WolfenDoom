@@ -951,7 +951,7 @@ class BoAPlayer : PlayerPawn
 
 				if (texname.IndexOf(".") >= 0) // If it's a long filename
 				{
-					// Strip the texture name down to only the filename (basically the old-style texture name)
+					// Strip the texture name down to only the filename (basically the old-style texture name, but allowing more than 8 characters)
 					int start = texname.RightIndexOf("/") + 1;
 					texname = texname.Mid(start, texname.RightIndexOf(".") - start);
 				}
@@ -982,21 +982,25 @@ class BoAPlayer : PlayerPawn
 				else if ( // I think this is most of the 'unusable door' textures?
 					texname == "DOOR_B09" ||
 					texname == "DOOR_B89" ||
+					texname == "DOOR_B32" ||
+					texname == "DOOR_B52" ||
 					texname == "DOOR_F00_X" ||
 					texname == "DOOR_G11" ||
 					texname == "DOOR_G12" ||
 					texname == "DOOR_G20" ||
 					texname == "DOOR_G21" ||
 					texname == "DOOR_G30" ||
+					texname == "DOOR_L02" ||
 					texname == "DOOR_M00" ||
 					texname == "DOOR_M02" ||
 					texname == "DOOR_M02D" ||
+					texname == "DOOR_M10" ||
 					texname == "DOOR_SET1" ||
 					texname == "DOOR_SET2" ||
+					texname == "DOOR_SETW_CL" ||
 					texname == "DOOR_W40" ||
-					texname == "DOOR_L02" ||
-					texname == "DOOR_B52" ||
-					texname == "MIDG_M89"
+					texname == "MIDG_M89" ||
+					texname == "DOOR_BRF"
 				)
 				{
 					A_StartSound("picklock/locked", CHAN_VOICE, 0, 0.25);
