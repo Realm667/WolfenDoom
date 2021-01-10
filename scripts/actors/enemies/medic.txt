@@ -115,7 +115,12 @@ class NaziMedic : NaziStandard
 							)
 						) && 
 						Random(0, 8) == 0
-					) { SetStateLabel("Death"); } // Randomly surrender if the player was the frightener
+					)
+					{
+						// Randomly surrender if the player was the frightener
+						surrendered = true;
+						SetStateLabel("Death");
+					}
 				}
 			}
 			Loop;

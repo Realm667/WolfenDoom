@@ -762,8 +762,11 @@ class KeenPlayer : PlayerPawn
 	// No running...
 	override double, double TweakSpeeds (double forward, double side)
 	{
-		forward = clamp(forward, -6400, 6400);
-		side = clamp(side, -6144, 6144);
+		if (!(player.cheats & CF_NOCLIP2 || player.cheats & CF_NOCLIP)) // Clamp speeds unless you are cheating
+		{
+			forward = clamp(forward, -6400, 6400);
+			side = clamp(side, -6144, 6144);
+		}
 
 		forward *= ForwardMove1;
 		side *= SideMove1;
