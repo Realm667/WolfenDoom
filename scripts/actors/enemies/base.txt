@@ -2960,14 +2960,16 @@ class Nazi : Base
 			amountToDrop /= GetDefaultByType(item).Amount;
 			for (int i = 0; i < amountToDrop; i++)
 			{
-				Spawn(item, recipient.Pos, ALLOW_REPLACE);
+				Actor drop = Spawn(item, recipient.Pos, ALLOW_REPLACE);
+				if (drop) { drop.Vel3DFromAngle(Random(1, 4), Random(0, 359), Random(-75, -90)); } // Don't stack items on top of each other
 			}
 		}
-
+/*
 		if (developer)
 		{
 			Console.Printf("SpyGive: rawAmount %d, amountToGive %d, spaceAvailable %d, amountToDrop %d", rawAmount, amountToGive, spaceAvailable, amountToDrop);
 		}
+*/
 	}
 
 	override bool Used(Actor user)
@@ -2997,7 +2999,9 @@ class Nazi : Base
 						if (item)
 						{
 							SpyGive(user_spyitem, 1, user);
-							PlayerPawn(user).InvSel = user.FindInventory(item);
+
+							let itemdef = GetDefaultByType(item);
+							if (itemdef.bInvBar) { PlayerPawn(user).InvSel = user.FindInventory(item); }
 						}
 					}
 
