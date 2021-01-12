@@ -642,6 +642,7 @@ class InteractiveItem : PuzzleItem
 		{
 			Inventory.TryPickup(user);
 			PrintPickupMessage(user.CheckLocalView(), PickupMessage());
+			if (!bAutoActivate) { S_StartSound(PickupSound, CHAN_ITEM, CHANF_UI | CHANF_NOSTOP, 1.0); }
 		}
 		else
 		{
@@ -653,8 +654,6 @@ class InteractiveItem : PuzzleItem
 
 	ui virtual String GetDisplayString()
 	{
-		if (user_displaystring == "") { return String.Format("PAPERTEXT%02i", args[0]); }
-
 		return user_displaystring;
 	}
 
@@ -710,6 +709,13 @@ class TextPaper : InteractiveItem
 		if (frame == 8) { PickupSound = "pickup/generic"; }
 	}
 
+	override String GetDisplayString()
+	{
+		if (user_displaystring == "") { return String.Format("PAPERTEXT%02i", args[0]); }
+
+		return user_displaystring;
+	}
+
 	States
 	{
 		Spawn:
@@ -739,23 +745,15 @@ class TextPaperCollectible : TextPaper
 	}
 }
 
-class TextPaperSecretHint : InteractiveItem
+class TextPaperSecretHint : TextPaperCollectible 
 {
 	Default
 	{
 		//$Title Secret Hint (usable, collectible)
 
-		//$Arg0 "Text ID"
 		//$Arg0Tooltip "Lists of secret hints constructed from LANGUAGE lump entries. Leave as 0 to use the user_displaystring property to set a string or LANGUAGE entry."
-		//$Arg0Default 0
-		//$Arg1 "Paper style"
-		//$Arg1Tooltip "Various paper styles."
-		//$Arg1Type 11
-		//$Arg1Enum { 1 = "White Paper"; 2 = "Tan Paper"; 3 = "White Paper with Nazi Letterhead"; 4 = "Tan Paper with Nazi Letterhead"; 5 = "Old Dirty Paper"; 6 = "Heer Memo"; 7 = "Scrap"; 8 = "Astrostein tablet"; 0 = "Use user_displayimage variable"; }
-		//$Arg1Default 6
+		//$Arg2 "Not used"
 
-		+Inventory.INVBAR
-		+Inventory.AUTOACTIVATE
 		Inventory.Icon "TEXTF0";
 		Inventory.PickupMessage "$SECRETHINTPAPER";
 	}
@@ -805,7 +803,7 @@ class TextPaperSecretHint : InteractiveItem
 			Array<String> tokens;
 			data.Split(tokens, "|");
 
-			if (tokens.size() < 4) { Console.Printf("ConstructSecretHintText(): Incorrect hint format."); error = true; continue; }
+			if (tokens.size() < 4) { Console.Printf("TextPaperSecretHint.GetDisplayString(): Incorrect hint format."); error = true; continue; }
 
 			bool secret_found;
 
@@ -865,11 +863,10 @@ class TextPaperSecretHint : InteractiveItem
 	}
 }
 
-class CastleWolfensteinMap : TextPaperCollectible
+class CastleWolfensteinMap : InteractiveItem
 {
 	Default
 	{
-		-Inventory.AUTOACTIVATE
 		-InteractiveItem.SETSPRITE
 		Inventory.MaxAmount 1;
 		Inventory.Amount 1;
