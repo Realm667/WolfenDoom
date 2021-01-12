@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 AFADoomer
+ * Copyright (c) 2018-2021 AFADoomer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -344,59 +344,7 @@ class CombinationSafe : BoAMenu
 
 		return false;
 	}
-/*
-// Input events apparently don't handle repeating when you hold down a key...  Makes this approach painful to use.
-//  Requires "menuactive = Menu.WaitKey;" in Ticker()
-	override bool OnInputEvent(InputEvent ev)
-	{
-		if (InputEvent.Type_KeyDown)
-		{
-			Switch (ev.keyscan)
-			{
-				case 0:
-					break;
-				case InputEvent.KEY_ESCAPE:
-					menuactive = Menu.On;
-					Close();
-					MenuEvent(Menu.MKEY_Abort, false);
-					return true;
-					break;
-				default:
-					if (
-						CheckControl(ev, "+moveleft") ||
-						ev.keyscan == InputEvent.KEY_LeftArrow
-					) { MenuEvent(MKEY_Left, false); }
-					else if (
-						CheckControl(ev, "+moveright") ||
-						ev.keyscan == InputEvent.KEY_RightArrow
-					) { MenuEvent(MKEY_Right, false); }
-					else if (
-						CheckControl(ev, "+use") ||
-						ev.keyscan == InputEvent.KEY_Enter
-					) { MenuEvent(MKEY_Enter, false); }
-					else if (
-						CheckControl(ev, "+forward") ||
-						CheckControl(ev, "+back")
-					) { MenuEvent(MKEY_Back, false); }
-					return true;
-					break;
-			}
-		}
 
-		return false;
-	}
-
-
-	bool CheckControl(InputEvent ev, String control)
-	{
-		int c1, c2;
-		[c1, c2] = Bindings.GetKeysForCommand(control);
-
-		if (ev.keyscan == c1 || ev.keyscan == c2) { return true; }
-
-		return false;
-	}
-*/
 	void TryOpen()
 	{
 		int match = true;
@@ -440,10 +388,6 @@ class ViewItem : BoAMenu
 	bool initial;
 	int ticcount, closetime, start, maxy, maxlines, pagewidth;
 
-	// Strikethroughs to draw, as pairs of ints representing the line number
-	// and width respectively.
-	Array<int> strikes;
-
 	BrokenLines hintlines;
 	double hintx, hinty, hintlineheight;
 
@@ -452,14 +396,14 @@ class ViewItem : BoAMenu
 
 	Font msgfont;
 
-	Actor item;
+	InteractiveItem item;
 	Sound PickupSound;
 
 	override void Init(Menu parent)
 	{
 		Super.Init(parent);
 
-		item = players[consoleplayer].ConversationNPC;
+		item = InteractiveItem(players[consoleplayer].ConversationNPC); // Only view actors that inherit from InteractiveItem
 
 		texty = 55;
 		maxy = 428;
@@ -487,7 +431,7 @@ class ViewItem : BoAMenu
 					break;
 				case 7: 
 					texty = 195;
-					maxy = 314;
+					maxy = 300;
 					break;
 				case 8:
 					maxy = 375;
@@ -510,9 +454,7 @@ class ViewItem : BoAMenu
 						break;
 				}
 			}
-			
-			if (TextPaperSecretHint(item)) { fontstyle = 5; }
-			
+
 			switch (fontstyle)
 			{
 				case 1:
@@ -544,6 +486,12 @@ class ViewItem : BoAMenu
 					fontscale *= 1.2;
 					linespacing = 1.2;
 					break;
+				case 9:
+					fnt = "handwriting_neat";
+					fontscale *= 1.25;
+					linespacing = 1.0;
+
+					break;
 				case 2:
 				default:
 					fnt = "typewriter";
@@ -551,46 +499,18 @@ class ViewItem : BoAMenu
 					break;
 			}
 
-			msgfont = Font.GetFont(fnt); // Needed because ConstructSecretHintText uses the msgfont
-			if (!msgfont) { msgfont = SmallFont; }
+			// Get text and image info from InteractiveItem functions.  Used for all text papers and variants.
+			text = item.GetDisplayString();
+			if (paper == "PAPER0") { paper = item.GetDisplayImage(); }
+			scale = item.GetDisplayScale();
 
-			// draw text from args; is this used on any map?
-			if (TextPaper(item))
-			{
-				text = TextPaper(item).user_displaystring;
-				if (paper == "PAPER0") { paper = TextPaper(item).user_displayimage; }
-			}
-			else if (TextPaperCollectible(item))
-			{
-				text = TextPaperCollectible(item).user_displaystring;
-				if (paper == "PAPER0") { paper = TextPaperCollectible(item).user_displayimage; }
-			}
-			else if (TextPaperSecretHint(item)) { text = TextPaperSecretHint(item).user_displaystring; }
-			else if (CastleWolfensteinMap(item))
-			{
-				text = "PAPERTEXT00";
-				paper = "PAPER9";
-			}
-			//no custom text provided, use text from localized stringtable
-			if (text == "")
-			{
-				if (TextPaper(item) || TextPaperCollectible(item)) { text = String.Format("PAPERTEXT%02i", item.args[0]); }
-				else if (TextPaperSecretHint(item)) { text = ConstructSecretHintText(TextPaperSecretHint(item)); }
-			}
-
-			if (Inventory(item)) { PickupSound = Inventory(item).PickupSound; }
-			else if (TextPaper(item)) { PickupSound = TextPaper(item).PickupSound; }
-			else { PickupSound = "pickup/generic"; }
+			PickupSound = item.PickupSound;
 		}
 
 		// Background graphic
 		background = TexMan.CheckForTexture(paper, TexMan.Type_Any);
 		bgsize = TexMan.GetScaledSize(background);
-		scale = 0.95;
-		if (CastleWolfensteinMap(item))
-		{
-			scale = 0.45;
-		}
+
 		location = (320, 240);
 
 		// Hint message
@@ -612,7 +532,7 @@ class ViewItem : BoAMenu
 
 		String textmessage = "";
 
-		if (!(text == "PAPERTEXT00")) // Don't show any text if nothing was set up for display...
+		if (!(text == "")) // Don't show any text if nothing was set up for display...
 		{
 			textmessage = StringTable.Localize(text, false);
 		}
@@ -635,13 +555,6 @@ class ViewItem : BoAMenu
 	override void Drawer()
 	{
 		screen.Dim(0x000000, 0.2 * alpha, 0, 0, screen.GetWidth(), screen.GetHeight());
-		int nextStrikeLine = 0, nextStrikeWidth = 0, nextStrikeIndex = 0;
-
-		if (strikes.Size() > 0)
-		{
-			nextStrikeLine = strikes[0];
-			nextStrikeWidth = strikes[1];
-		}
 
 		if (alpha > 0)
 		{
@@ -666,19 +579,10 @@ class ViewItem : BoAMenu
 					else
 					{
 						screen.DrawText(msgfont, Font.CR_UNTRANSLATED, textx / fontscale, texty / fontscale + textlineheight * (i - start) / fontscale, text, DTA_VirtualWidth, int(640 / fontscale), DTA_VirtualHeight, int(480 / fontscale), DTA_Alpha, alpha);
-						if (curLine == nextStrikeLine)
-						{
-							screen.DrawThickLine(int(textx / fontscale), int(texty / fontscale + textlineheight * i), int(textx / fontscale) + nextStrikeWidth, int(texty / fontscale + textlineheight * i), 2.25, Color(0, 0, 0, 100));
-							if (strikes.Size() >= (++nextStrikeIndex) * 2)
-							{
-								nextStrikeLine = strikes[nextStrikeIndex * 2];
-								nextStrikeWidth = strikes[nextStrikeIndex * 2 + 1];
-							}
-						}
 					}
 				}
 
-
+				// Draw left/right indicators at the bottom of the page, as appropriate
 				if (textlines.Count() > maxlines)
 				{
 					bool l, r;
@@ -762,7 +666,7 @@ class ViewItem : BoAMenu
 			closetime = 0;
 			Close();
 
-			if (Inventory(item)) { S_StartSound("pickup/item", CHAN_ITEM, CHANF_UI | CHANF_NOSTOP, 1.0); }
+			if (item.bAllowPickup) { S_StartSound("pickup/item", CHAN_ITEM, CHANF_UI | CHANF_NOSTOP, 1.0); }
 		}
 
 		Super.Ticker();
@@ -855,96 +759,5 @@ class ViewItem : BoAMenu
 			initial = false;
 			closetime = 5;
 		}
-	}
-	
-	string ConstructSecretHintText(TextPaperSecretHint item)
-	{
-		if (!item.args[0]) return "";
-
-		string base_name = "SECRET"..item.args[0], data, result;
-		int i = 1, curToken, stringLine = 0;
-		bool error = false;
-
-		// Keep processing consecutive SECRET<i> strings until an entry doesn't exist
-		while (!error && (data = StringTable.Localize(base_name..i, false)) != base_name..i)
-		{
-			// itemids:
-			//   ??? = 1, Weapon = 2, Grenade(s) = 3(4), 
-			//   Gold (small, moderate, large, TREMENDOUS) = (5, 6, 7, 8), 
-			//   Ammo (small, moderate, large, TREMENDOUS) = (9, 10, 11, 12), 
-			//   Health (small, moderate, large, TREMENDOUS) = (13, 14, 15, 16), 
-			//   Armor = 17, Various Supplies = 18
-			//
-			// Now decipher the data string which was passed
-			//
-			// The format is:
-			//	t or s|comment|id|itemid|[itemid|[...]]
-			//
-			// example: "t|check the roof|1993|5|17" means thing with tag 1993 is a 
-			// secret which gives access to a small amount of gold and an armor suit 
-			// and tells the player to search for these on a roof.
-
-			Array<String> tokens;
-			data.Split(tokens, "|");
-
-			if (tokens.size() < 4) { Console.Printf("ConstructSecretHintText(): Incorrect hint format."); error = true; continue; }
-
-			// Start each secret with a number in point form
-			result = result .. "\cL" .. i .. ". ";
-			bool secret_found;
-
-			// What is this secret? A thing? A sector?
-			if (tokens[0] == "t") // Thing secret, a TID is given
-			{
-				// Find the secret item
-				ActorIterator it = Level.CreateActorIterator(tokens[2].toInt());
-				let item = it.Next();
-				// Check whether or not it has been found
-				if (!item || !item.bCOUNTSECRET) { secret_found = true; }
-				else { secret_found = false; }
-			}
-			else if (tokens[0] == "tr") //Secret trigger
-			{
-				// Find the secret item
-				ActorIterator it = Level.CreateActorIterator(tokens[2].toInt());
-				Actor actor;
-				secret_found = true;
-				while ((actor = it.Next()))
-				{
-					if (!(actor is "SecretTrigger")) continue;
-					secret_found = false;
-					break;
-				}
-			}
-			else if (tokens[0] == "s") // Sector secret, a sector number (not a tag) is given
-			{
-				int i = tokens[2].toInt(); //check if the sector exists
-				if (Level.sectors.size() <= i) { Console.Printf("ConstructSecretHintText(): Secret sector does not exist."); error = true; continue; }
-				if (!(Level.sectors[i].flags & Sector.SECF_SECRET)) { secret_found = true; }
-				else { secret_found = false; }
-			} else { Console.Printf("ConstructSecretHintText(): Incorrect hint format."); error = true; continue; }
-
-			// now construct the line
-			// let's pretend that BJ adds the red highlight mentally...
-			if (secret_found) { result.AppendFormat("\c[SecretGreen]"); }
-			else { result.AppendFormat("\c[SecretRed]"); }
-
-			// Add the items in the secret
-			for (curToken = 3; curToken < tokens.size(); ++curToken)
-			{
-				result = result .. StringTable.Localize("SECRETITEM"..tokens[curToken], false);
-				if (curToken < tokens.size() - 1)
-				{
-					result = result .. "; ";
-				}
-			}
-
-			if (tokens[1] != "") result.AppendFormat("\cL"..tokens[1].."\n");
-			else result.AppendFormat("\n"); //crutch...
-
-			++i;
-		}
-
-		return result;
 	}
 }

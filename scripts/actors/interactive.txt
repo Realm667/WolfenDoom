@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 AFADoomer
+ * Copyright (c) 2020 AFADoomer, Talon1024, N00b
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -571,18 +571,120 @@ class Gem : CompassItem
 	}
 }
 
-class TextPaper : Actor
+class InteractiveItem : PuzzleItem
 {
 	String user_displaystring, user_displayimage;
-	Sound pickupsound;
+	double user_displayscale;
+	private int itemflags;
 
-	Property PickupSound:pickupsound;
+	Property DisplayString:user_displaystring;
+	Property DisplayImage:user_displayimage;
+	Property DisplayScale:user_displayscale;
+
+	Flagdef AllowPickup:itemflags, 0; // Allow the item to be added to player inventory
+	Flagdef SetSprite:itemflags, 1; // Use args[1] input to set the sprite and inventory icon
 
 	Default
 	{
 		//$Category Props (BoA)/Interactive Items
-		//$Title Paper (usable)
 		//$Color 3
+
+		-SOLID
+		+FLATSPRITE
+		+NOGRAVITY
+		-SPECIAL // Don't pick up automatically; requires player to 'use' the item to interact
+		+InteractiveItem.ALLOWPICKUP // Pick up after used by the player, instead of being left in place
+		+InteractiveItem.SETSPRITE // Set the sprite and icon based off of the second argument
+		Radius 16;
+		Height 32;
+		Scale 0.25;
+		RenderStyle 'Translucent';
+		Inventory.PickupSound "pickup/papers";
+		InteractiveItem.DisplayString "";
+		InteractiveItem.DisplayImage "";
+		InteractiveItem.DisplayScale 0.95;
+	}
+
+	override void PostBeginPlay()
+	{
+		if (bSetSprite)
+		{
+			frame = args[1];
+
+			String ico = String.Format("%s%c%i", "TEXT", 65 + args[1], 0);
+			icon = TexMan.CheckForTexture(ico, TexMan.Type_Any);
+		}
+
+		Super.PostBeginPlay();
+	}
+
+
+	override bool HandlePickup (Inventory item)
+	{
+		return false; // Never stack these items together
+	}
+
+	override bool TryPickup(in out Actor toucher)
+	{
+		return false; // Don't pick this actor up automatically; use it to activate it
+	}
+
+	override bool Use(bool pickup)
+	{
+		ViewItem(owner);
+
+		return false;
+	}
+
+	override bool Used(Actor user)
+	{
+		if (bAllowPickup)
+		{
+			Inventory.TryPickup(user);
+			PrintPickupMessage(user.CheckLocalView(), PickupMessage());
+		}
+		else
+		{
+			ViewItem(user);
+		}
+
+		return false;
+	}
+
+	ui virtual String GetDisplayString()
+	{
+		if (user_displaystring == "") { return String.Format("PAPERTEXT%02i", args[0]); }
+
+		return user_displaystring;
+	}
+
+	ui virtual String GetDisplayImage()
+	{
+		return user_displayimage;		
+	}
+
+	ui virtual double GetDisplayScale()
+	{
+		return user_displayscale;
+	}
+
+	void ViewItem(Actor viewer)
+	{
+		if (viewer && viewer.player)
+		{
+			viewer.player.ConversationNPC = self;
+			if (viewer.player = players[consoleplayer]) { Menu.SetMenu("ViewItem"); }
+			viewer.player.ConversationNPC = null;
+		}
+
+	}
+}
+
+class TextPaper : InteractiveItem
+{
+	Default
+	{
+		//$Title Paper (usable)
 
 		//$Arg0 "Text ID"
 		//$Arg0Tooltip "Predefined texts from the LANGUAGE lump, e.g. 2 is PAPERTEXT02.  Leave as 0 to use the user_displaytext property to set a string or LANGUAGE entry."
@@ -598,14 +700,14 @@ class TextPaper : Actor
 		//$Arg2Enum { 1 = "Set Type (Book print)"; 2 = "Worn Typewriter"; 3 = "Occult Runes"; 4 = "Handwriting 1 (Messy)"; 5 = "Handwriting 2 (Neat)"; 6 = "Handwriting 3 (Neat, small)"; 7 = "Console Font"; 8 = "Maven Pro (small)"; }
 		//$Arg2Default 2
 
-		Radius 16;
-		Height 32;
-		Scale 0.25;
-		RenderStyle 'Translucent';
-		-SOLID
-		+FLATSPRITE
-		+NOGRAVITY
-		TextPaper.PickupSound "pickup/papers";
+		-InteractiveItem.ALLOWPICKUP
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (frame == 8) { PickupSound = "pickup/generic"; }
 	}
 
 	States
@@ -614,66 +716,19 @@ class TextPaper : Actor
 			TEXT A -1;
 			Stop;
 	}
-
-	override void PostBeginPlay()
-	{
-		frame = args[1];
-
-		if (frame == 8) { PickupSound = "pickup/generic"; }
-
-		Super.PostBeginPlay();
-	}
-
-	override bool Used(Actor user)
-	{
-		if (user)
-		{
-			user.player.ConversationNPC = self;
-			if (user.player = players[consoleplayer]) { Menu.SetMenu("ViewItem"); }
-			user.player.ConversationNPC = null;
-		}
-
-		return false;
-	}
 }
 
-class TextPaperCollectible : Inventory
+class TextPaperCollectible : TextPaper
 {
-	String user_displaystring, user_displayimage;
-
 	Default
 	{
-		//$Category Props (BoA)/Interactive Items
 		//$Title Paper (usable, collectable)
-		//$Color 3
 
-		//$Arg0 "Text ID"
-		//$Arg0Tooltip "Predefined texts from the LANGUAGE lump, e.g. 2 is PAPERTEXT02.  Leave as 0 to use the user_displaytext property to set a string or LANGUAGE entry."
-		//$Arg0Default 0
-		//$Arg1 "Paper style"
-		//$Arg1Tooltip "Various paper styles."
-		//$Arg1Type 11
-		//$Arg1Enum { 1 = "White Paper"; 2 = "Tan Paper"; 3 = "White Paper with Nazi Letterhead"; 4 = "Tan Paper with Nazi Letterhead"; 5 = "Old Dirty Paper"; 6 = "Heer Memo"; 7 = "Scrap"; 8 = "Astrostein tablet"; 0 = "Use user_displayimage variable"; }
-		//$Arg1Default 6
-		//$Arg2 "Font style"
-		//$Arg2Tooltip "Various font styles."
-		//$Arg2Type 11
-		//$Arg2Enum { 1 = "Set Type (Book print)"; 2 = "Worn Typewriter"; 3 = "Occult Runes"; 4 = "Handwriting 1 (Messy)"; 5 = "Handwriting 2 (Neat)"; 6 = "Handwriting 3 (Neat, small)"; 7 = "Console Font"; 8 = "Maven Pro (small)"; }
-		//$Arg2Default 5
-
-		-SOLID
-		+FLATSPRITE
-		+NOGRAVITY
 		+INVENTORY.INVBAR
 		+INVENTORY.AUTOACTIVATE
-
-		Radius 16;
-		Height 32;
-		Scale 0.25;
-		RenderStyle 'Translucent';
+		+InteractiveItem.ALLOWPICKUP
 		Inventory.Icon "TEXTG0";
 		Inventory.PickupMessage "$DOCUMENT";
-		Inventory.PickupSound "pickup/papers";
 	}
 
 	States
@@ -682,160 +737,146 @@ class TextPaperCollectible : Inventory
 			TEXT G -1;
 			Stop;
 	}
-
-	override void PostBeginPlay()
-	{
-		frame = args[1];
-
-		String ico = String.Format("%s%c%i", "TEXT", 65 + args[1], 0);
-		icon = TexMan.CheckForTexture(ico, TexMan.Type_Any);
-
-		if (frame == 8) { PickupSound = "pickup/generic"; }
-
-		Super.PostBeginPlay();
-	}
-
-	override bool Use(bool pickup)
-	{
-		if (owner && owner.player)
-		{
-			owner.player.ConversationNPC = self;
-			if (owner.player = players[consoleplayer]) { Menu.SetMenu("ViewItem"); }
-			owner.player.ConversationNPC = null;
-		}
-
-		return false;
-	}
-
-	override bool HandlePickup (Inventory item)
-	{
-		return false; // Never stack these items together
-	}
-
-	override bool TryPickup(in out Actor toucher)
-	{
-		return false; // Don't pick this actor up automatically; use it like a regular TextPaper actor
-	}
-
-	override bool Used(Actor user)
-	{
-		Super.TryPickup(user);
-
-		PrintPickupMessage(user.CheckLocalView(), PickupMessage());
-
-		return false;
-	}
 }
 
-
-class TextPaperSecretHint : Inventory
+class TextPaperSecretHint : InteractiveItem
 {
-	String user_displaystring; //, user_displayimage;
-
 	Default
 	{
-		//$Category Props (BoA)/Interactive Items
 		//$Title Secret Hint (usable, collectible)
-		//$Color 3
 
 		//$Arg0 "Text ID"
-		//$Arg0Tooltip "Lists of secret hints constructed from LANGUAGE lump entries. Leave as 0 to use the user_displaytext property to set a string or LANGUAGE entry."
+		//$Arg0Tooltip "Lists of secret hints constructed from LANGUAGE lump entries. Leave as 0 to use the user_displaystring property to set a string or LANGUAGE entry."
 		//$Arg0Default 0
 		//$Arg1 "Paper style"
 		//$Arg1Tooltip "Various paper styles."
 		//$Arg1Type 11
 		//$Arg1Enum { 1 = "White Paper"; 2 = "Tan Paper"; 3 = "White Paper with Nazi Letterhead"; 4 = "Tan Paper with Nazi Letterhead"; 5 = "Old Dirty Paper"; 6 = "Heer Memo"; 7 = "Scrap"; 8 = "Astrostein tablet"; 0 = "Use user_displayimage variable"; }
 		//$Arg1Default 6
-		//$Arg2 "Font style"
-		//$Arg2Tooltip "Forced large handwriting font."
-		//$Arg2Type 11
-		//$Arg2Enum { 5 = "Handwriting 2 (Neat)"; }
-		//$Arg2Default 5
 
-		-SOLID
-		+FLATSPRITE
-		+NOGRAVITY
-		+INVENTORY.INVBAR
-		+INVENTORY.AUTOACTIVATE
-
-		Radius 16;
-		Height 32;
-		Scale 0.25;
-		Tag "$TAGSECRETHINT";
-		RenderStyle 'Translucent';
-		Inventory.Icon "TEXTG0";
+		+Inventory.INVBAR
+		+Inventory.AUTOACTIVATE
+		Inventory.Icon "TEXTF0";
 		Inventory.PickupMessage "$SECRETHINTPAPER";
-		Inventory.PickupSound "pickup/papers";
 	}
 
 	States
 	{
 		Spawn:
-			TEXT G -1;
+			TEXT F -1;
 			Stop;
 	}
 
 	override void PostBeginPlay()
 	{
-		frame = args[1];
-
-		String ico = String.Format("%s%c%i", "TEXT", 65 + args[1], 0);
-		icon = TexMan.CheckForTexture(ico, TexMan.Type_Any);
-
-		if (frame == 8) { PickupSound = "pickup/generic"; }
+		args[2] = 9; // Custom font settings for secret hint paper
 
 		Super.PostBeginPlay();
 	}
 
-	override bool Use(bool pickup)
+	override String GetDisplayString()
 	{
-		if (owner && owner.player)
+		// Code by N00b, with minor modifications
+		if (!args[0]) { return Super.GetDisplayString(); }
+
+		string base_name = "SECRET"..args[0], data, result;
+		int i = 1, curToken, stringLine = 0;
+		bool error = false;
+
+		// Keep processing consecutive SECRET<i> strings until an entry doesn't exist
+		while (!error && (data = StringTable.Localize(base_name..i, false)) != base_name..i)
 		{
-			owner.player.ConversationNPC = self;
-			if (owner.player = players[consoleplayer]) { Menu.SetMenu("ViewItem"); }
-			owner.player.ConversationNPC = null;
+			// itemids:
+			//   ??? = 1, Weapon = 2, Grenade(s) = 3(4), 
+			//   Gold (small, moderate, large, TREMENDOUS) = (5, 6, 7, 8), 
+			//   Ammo (small, moderate, large, TREMENDOUS) = (9, 10, 11, 12), 
+			//   Health (small, moderate, large, TREMENDOUS) = (13, 14, 15, 16), 
+			//   Armor = 17, Various Supplies = 18
+			//
+			// Now decipher the data string which was passed
+			//
+			// The format is:
+			//	t or s|comment|id|itemid|[itemid|[...]]
+			//
+			// example: "t|check the roof|1993|5|17" means thing with tag 1993 is a 
+			// secret which gives access to a small amount of gold and an armor suit 
+			// and tells the player to search for these on a roof.
+
+			Array<String> tokens;
+			data.Split(tokens, "|");
+
+			if (tokens.size() < 4) { Console.Printf("ConstructSecretHintText(): Incorrect hint format."); error = true; continue; }
+
+			bool secret_found;
+
+			// What is this secret? A thing? A sector?
+			if (tokens[0] == "t") // Thing secret, a TID is given
+			{
+				// Find the secret item
+				ActorIterator it = Level.CreateActorIterator(tokens[2].toInt());
+				let item = it.Next();
+				// Check whether or not it has been found
+				if (!item || !item.bCOUNTSECRET) { secret_found = true; }
+				else { secret_found = false; }
+			}
+			else if (tokens[0] == "tr") //Secret trigger
+			{
+				// Find the secret item
+				ActorIterator it = Level.CreateActorIterator(tokens[2].toInt());
+				Actor actor;
+				secret_found = true;
+				while ((actor = it.Next()))
+				{
+					if (!(actor is "SecretTrigger")) continue;
+					secret_found = false;
+					break;
+				}
+			}
+			else if (tokens[0] == "s") // Sector secret, a sector number (not a tag) is given
+			{
+				int i = tokens[2].toInt(); //check if the sector exists
+				if (Level.sectors.size() <= i) { Console.Printf("ConstructSecretHintText(): Secret sector does not exist."); error = true; continue; }
+				if (!(Level.sectors[i].flags & Sector.SECF_SECRET)) { secret_found = true; }
+				else { secret_found = false; }
+			} else { Console.Printf("ConstructSecretHintText(): Incorrect hint format."); error = true; continue; }
+
+			// now construct the line
+			// let's pretend that BJ adds the red highlight mentally...
+			if (secret_found) { result.AppendFormat("\cL☒ \c[SecretGreen]"); } // Use Unicode ballot checkbox characters to integrate the completion mark
+			else { result.AppendFormat("\cL☐ \c[SecretRed]"); }
+
+			// Add the items in the secret
+			for (curToken = 3; curToken < tokens.size(); ++curToken)
+			{
+				result = result .. StringTable.Localize("SECRETITEM"..tokens[curToken], false);
+				if (curToken < tokens.size() - 1)
+				{
+					result = result .. "; ";
+				}
+			}
+
+			if (tokens[1] != "") result.AppendFormat("\cL"..tokens[1].."\n\n");
+			else result.AppendFormat("\n"); //crutch...
+
+			++i;
 		}
 
-		return false;
-	}
-
-	override bool HandlePickup (Inventory item)
-	{
-		return false; // Never stack these items together
-	}
-
-	override bool TryPickup(in out Actor toucher)
-	{
-		return false; // Don't pick this actor up automatically; use it like a regular TextPaper actor
-	}
-
-	override bool Used(Actor user)
-	{
-		Super.TryPickup(user);
-
-		PrintPickupMessage(user.CheckLocalView(), PickupMessage());
-
-		return false;
+		return result;
 	}
 }
 
-class CastleWolfensteinMap : Inventory
+class CastleWolfensteinMap : TextPaperCollectible
 {
 	Default
 	{
-		-SOLID
-		+FLATSPRITE
-		+NOGRAVITY
-		+INVENTORY.INVBAR
+		-Inventory.AUTOACTIVATE
+		-InteractiveItem.SETSPRITE
 		Inventory.MaxAmount 1;
 		Inventory.Amount 1;
-		Radius 16;
-		Height 32;
-		Scale 0.25;
-		RenderStyle 'Translucent';
 		Inventory.Icon "MAPIA0";
 		Inventory.PickupMessage "$PAPERMAP";
-		Inventory.PickupSound "pickup/papers";
+		InteractiveItem.DisplayImage "PAPER9";
+		InteractiveItem.DisplayScale 0.45;
 	}
 
 	States
@@ -844,28 +885,6 @@ class CastleWolfensteinMap : Inventory
 			MAPI B -1;
 			Stop;
 	}
-
-	override bool Use(bool pickup)
-	{
-		if (owner && owner.player)
-		{
-			owner.player.ConversationNPC = self;
-			if (owner.player = players[consoleplayer]) { Menu.SetMenu("ViewItem"); }
-			owner.player.ConversationNPC = null;
-		}
-
-		return false;
-	}
-	
-	override bool Used(Actor user)
-	{
-		Super.TryPickup(user);
-
-		PrintPickupMessage(user.CheckLocalView(), PickupMessage());
-
-		return false;
-	}
-	//HandlePickup, TryPickup, Used are not needed since this is obtained from a merchant
 }
 
 class Safe : Actor
