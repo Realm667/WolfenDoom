@@ -857,22 +857,42 @@ class ViewItem : BoAMenu
 		}
 	}
 	
-	string ConstructSecretHintText(TextPaperSecretHint item) {
+	string ConstructSecretHintText(TextPaperSecretHint item)
+	{
 		if (!item.args[0]) return "";
+
 		string base_name = "SECRET"..item.args[0], data, result;
 		int i = 1, curToken, stringLine = 0;
 		bool error = false;
+
 		// Keep processing consecutive SECRET<i> strings until an entry doesn't exist
-		while (!error && (data = StringTable.Localize(base_name..i, false)) != base_name..i) {
-			//itemids: ??? = 1, Weapon = 2, Grenade(s) = 3(4), Gold (small, moderate, large, TREMENDOUS) = (5, 6, 7, 8), Ammo (small, moderate, large, TREMENDOUS) = (9, 10, 11, 12), Health (small, moderate, large, TREMENDOUS) = (13, 14, 15, 16), Armor = 17, Various Supplies = 18
-			//now decipher the data string which was passed
-			//the format is: t or s|comment|id|itemid|[itemid|[...]], example: "t|check the roof|1993|5|17" means thing with tag 1993 is a secret which gives access to a small amount of gold and an armor suit and tells the player to search for these on a roof.
+		while (!error && (data = StringTable.Localize(base_name..i, false)) != base_name..i)
+		{
+			// itemids:
+			//   ??? = 1, Weapon = 2, Grenade(s) = 3(4), 
+			//   Gold (small, moderate, large, TREMENDOUS) = (5, 6, 7, 8), 
+			//   Ammo (small, moderate, large, TREMENDOUS) = (9, 10, 11, 12), 
+			//   Health (small, moderate, large, TREMENDOUS) = (13, 14, 15, 16), 
+			//   Armor = 17, Various Supplies = 18
+			//
+			// Now decipher the data string which was passed
+			//
+			// The format is:
+			//	t or s|comment|id|itemid|[itemid|[...]]
+			//
+			// example: "t|check the roof|1993|5|17" means thing with tag 1993 is a 
+			// secret which gives access to a small amount of gold and an armor suit 
+			// and tells the player to search for these on a roof.
+
 			Array<String> tokens;
 			data.Split(tokens, "|");
+
 			if (tokens.size() < 4) { Console.Printf("ConstructSecretHintText(): Incorrect hint format."); error = true; continue; }
+
 			// Start each secret with a number in point form
-			result = result .. "\cC" .. i .. ". ";
+			result = result .. "\cL" .. i .. ". ";
 			bool secret_found;
+
 			// What is this secret? A thing? A sector?
 			if (tokens[0] == "t") // Thing secret, a TID is given
 			{
@@ -883,19 +903,19 @@ class ViewItem : BoAMenu
 				if (!item || !item.bCOUNTSECRET) { secret_found = true; }
 				else { secret_found = false; }
 			}
-            else if (tokens[0] == "tr") //Secret trigger
-            {
-                // Find the secret item
+			else if (tokens[0] == "tr") //Secret trigger
+			{
+				// Find the secret item
 				ActorIterator it = Level.CreateActorIterator(tokens[2].toInt());
-                Actor actor;
-                secret_found = true;
-                while ((actor = it.Next()))
-                {
+				Actor actor;
+				secret_found = true;
+				while ((actor = it.Next()))
+				{
 					if (!(actor is "SecretTrigger")) continue;
 					secret_found = false;
 					break;
 				}
-            }
+			}
 			else if (tokens[0] == "s") // Sector secret, a sector number (not a tag) is given
 			{
 				int i = tokens[2].toInt(); //check if the sector exists
@@ -903,10 +923,12 @@ class ViewItem : BoAMenu
 				if (!(Level.sectors[i].flags & Sector.SECF_SECRET)) { secret_found = true; }
 				else { secret_found = false; }
 			} else { Console.Printf("ConstructSecretHintText(): Incorrect hint format."); error = true; continue; }
-            // now construct the line
-            // let's pretend that BJ adds the red highlight mentally...
-			if (secret_found) { result.AppendFormat("\cD"); }
-			else { result.AppendFormat("\cG"); }
+
+			// now construct the line
+			// let's pretend that BJ adds the red highlight mentally...
+			if (secret_found) { result.AppendFormat("\c[SecretGreen]"); }
+			else { result.AppendFormat("\c[SecretRed]"); }
+
 			// Add the items in the secret
 			for (curToken = 3; curToken < tokens.size(); ++curToken)
 			{
@@ -916,10 +938,13 @@ class ViewItem : BoAMenu
 					result = result .. "; ";
 				}
 			}
-            if (tokens[1] != "") result.AppendFormat("\cC"..tokens[1].."\n");
-            else result.AppendFormat("\n"); //crutch...
+
+			if (tokens[1] != "") result.AppendFormat("\cL"..tokens[1].."\n");
+			else result.AppendFormat("\n"); //crutch...
+
 			++i;
 		}
+
 		return result;
 	}
 }
