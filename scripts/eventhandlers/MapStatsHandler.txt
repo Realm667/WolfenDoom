@@ -498,7 +498,7 @@ class MapStatsHandler : StaticEventHandler
 			angle += drawpositions[j + 2];
 
 			TextureID img = TexMan.CheckForTexture(imageprefix .. i, TexMan.Type_Any);
-			if (img) { DrawShapeTexture(img, 1.0, imagex, imagey, angle, 0.06 + (imagex % 10 < 5 ? 0.01 : 0)); }
+			if (img) { DrawTransformedTexture(img, 1.0, imagex, imagey, angle, 0.06 + (imagex % 10 < 5 ? 0.01 : 0)); }
 		}
 
 		y += lineheight;
@@ -534,7 +534,7 @@ class MapStatsHandler : StaticEventHandler
 		Screen.DrawText(fnt, normalcolor, int(x / scale), int(y / scale), text, DTA_VirtualWidth, int(width / scale), DTA_VirtualHeight, int(height / scale));
 	}
 
-	ui void DrawShapeTexture(TextureID tex, double alpha = 1.0, int x = width / 2, int y = height / 2, double ang = 0, double scale = 1.0)
+	ui void DrawTransformedTexture(TextureID tex, double alpha = 1.0, int x = width / 2, int y = height / 2, double ang = 0, double scale = 1.0)
 	{
 		double shapescale = double(Screen.GetHeight()) / height;
 
@@ -542,11 +542,8 @@ class MapStatsHandler : StaticEventHandler
 		texsize = TexMan.GetScaledSize(tex);
 		[pos, size] = Screen.VirtualToRealCoords((x, y), (texsize.x * scale, texsize.y * scale), (width, height));
 
-		let shape = ShapeUtil.MakeSquare();
-
 		// Draw rotated texture
-		ShapeUtil.MoveSquare(shape, size, pos, ang);
-		Screen.DrawShape(tex, false, shape, DTA_Alpha, alpha);
+		DrawToHUD.DrawTransformedTexture(tex, pos, alpha, ang, scale);
 	}
 
 	static void Toggle(Actor activator, int status = -1)

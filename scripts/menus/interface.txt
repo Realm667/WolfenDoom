@@ -149,9 +149,12 @@ class CombinationSafe : BoAMenu
 
 			if (spinner)
 			{
+				/*
 				let shape = ShapeUtil.MakeSquare();
 				ShapeUtil.MoveSquare(shape, size * scale, location, 360 - angle);
 				Screen.DrawShape(spinner, false, shape);
+				*/
+				DrawToHUD.DrawTransformedTexture(spinner, location, ang: 360 - angle, scale: scale);
 			}
 
 			if (spinnerfront)
