@@ -30,22 +30,22 @@ class CompassIcon
 class CompassHandler : EventHandler
 {
 	Array<CompassIcon> CompassItems;
-	transient ui Array<Shape2D> CompassItemSquares;
 	const compassX = 85.0;
 	const compassY = 105.0;
 	const compassRadius = 46.0;
 	const compassIconSize = 12.0;
 	const distFactor = 0.1;
 	// Used to optimize 2D drawing
-	transient Shape2D roseSquare;
+	transient Shape2D genericSquare;
 
 	double drawflash;
 
 	override void OnRegister()
 	{
-		// Initialize the square used to draw the compass rose so that the game
-		// doesn't have to make a new one every frame.
-		roseSquare = ShapeUtil.MakeSquare();
+		// Initialize the square used to draw the compass rose (and other
+		// things) so that the game doesn't have to make and upload a new one
+		// every frame.
+		genericSquare = ShapeUtil.MakeSquare();
 	}
 
 	uint FindCompassItem(Actor mo) // Helper function to find a thing in a child class (Used in place of CompassItems.Find(mo) since the mo is nested in a CompassIcon object
@@ -136,17 +136,6 @@ class CompassHandler : EventHandler
 		}		
 	}
 
-	ui Shape2D GetSquare(in out uint shapeIndex)
-	{
-		// Console.Printf("shapeIndex: %u", shapeIndex);
-		// Console.Printf("CompassItemSquares: %u", CompassItemSquares.Size());
-		if (shapeIndex >= CompassItemSquares.Size())
-		{
-			CompassItemSquares.Push(ShapeUtil.MakeSquare());
-		}
-		return CompassItemSquares[shapeIndex++];
-	}
-
 	override void RenderOverlay( RenderEvent e )
 	{
 		PlayerInfo p = players[consoleplayer];
@@ -160,9 +149,9 @@ class CompassHandler : EventHandler
 		if (cmps && cmps.active && screenblocks < 12 && !automapactive && !p.mo.FindInventory("CutsceneEnabled") && !p.mo.FindInventory("IncomingMessage") && (level.levelnum < 151 || level.levelnum > 153)) // Hide the compass when HUD is hidden and when cutscenes are active, when you are in a middle of a radio message or when automap is turned on
 		{
 			// Find compass and background textures
-			TextureID cmpsbg = TexMan.CheckForTexture("COMPASS", TexMan.Type_Any);
-			TextureID cmpsrose = TexMan.CheckForTexture("COMP_BKG", TexMan.Type_Any);
-			TextureID cmpsflash = TexMan.CheckForTexture("COMP_FLS", TexMan.Type_Any);
+			TextureID cmpsbg = TexMan.CheckForTexture("COMPASS");
+			TextureID cmpsrose = TexMan.CheckForTexture("COMP_BKG");
+			TextureID cmpsflash = TexMan.CheckForTexture("COMP_FLS");
 
 			double compassalpha = (1.0 - p.BlendA); // Fade the compass if there's a screen blend/fade in effect
 
@@ -170,7 +159,7 @@ class CompassHandler : EventHandler
 			DrawToHUD.DrawTexture(cmpsbg, (compassX, compassY - 6.0), compassalpha);
 
 			// Draw the background compass directions
-			DrawToHUD.DrawShapeTexture(cmpsrose, (compassX, compassY), compassalpha, e.ViewAngle - 90, square: roseSquare); // Use player angle, offset so that 90 degrees on the map is shown as north
+			DrawToHUD.DrawShapeTexture(cmpsrose, (compassX, compassY), compassalpha, e.ViewAngle - 90, square: genericSquare); // Use player angle, offset so that 90 degrees on the map is shown as north
 
 			// Draw icons
 			for (int i = 0; i < CompassItems.Size(); i++)
@@ -252,7 +241,7 @@ class CompassHandler : EventHandler
 					TextureID tex = TexMan.CheckForTexture("Arrow", TexMan.Type_Any);
 					if (tex)
 					{
-						DrawToHUD.DrawShapeTexture(tex, (iconX, iconY), alpha / 2, e.ViewAngle - mo.angle, scale, square: GetSquare(shapeIndex));
+						DrawToHUD.DrawShapeTexture(tex, (iconX, iconY), alpha / 2, e.ViewAngle - mo.angle, scale, square: genericSquare);
 					}
 				}
 
@@ -270,7 +259,7 @@ class CompassHandler : EventHandler
 				else { flashalpha = 1.0 - (phase - 0.5); } // Fade out
 
 				// Draw the gold flash around the perimeter of the compass
-				DrawToHUD.DrawShapeTexture(cmpsflash, (compassX, compassY), compassalpha / 3 * flashalpha * 0.75, -105 + 360 * phase, square: GetSquare(shapeIndex));
+				DrawToHUD.DrawShapeTexture(cmpsflash, (compassX, compassY), compassalpha / 3 * flashalpha * 0.75, -105 + 360 * phase, square: genericSquare);
 			}
 
 			// Redraw the compass texture on top with a lower alpha so that the glass actually looks translucent
