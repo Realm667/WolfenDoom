@@ -117,11 +117,12 @@ class DrawToHUD
 		screen.DrawTexture(tex, false, screenpos.x, screenpos.y, DTA_DestWidth, int(screensize.x), DTA_DestHeight, int(screensize.y), DTA_Alpha, alpha, DTA_CenterOffset, true, DTA_AlphaChannel, alphachannel, DTA_FillColor, shade);
 	}
 
-	static ui void DrawShapeTexture(TextureID tex, Vector2 pos, double alpha = 1.0, double ang = 0, double scale = 1.0, color shade = -1, Shape2D square = null)
+	static ui void DrawTransformedTexture(TextureID tex, Vector2 pos, double alpha = 1.0, double ang = 0, double scale = 1.0, color shade = -1)
 	{
 		// Scale the coordinates
 		Vector2 screenpos, screensize;
-		[screenpos, screensize] = TranslatetoHUDCoordinates(pos, TexMan.GetScaledSize(tex) * scale);
+		Vector2 texsize = TexMan.GetScaledSize(tex);
+		[screenpos, screensize] = TranslatetoHUDCoordinates(pos, texsize * scale);
 
 		bool alphachannel;
 		color fillcolor;
@@ -132,15 +133,8 @@ class DrawToHUD
 			fillcolor = shade & 0xFFFFFF;
 		}
 
-		// Make 2D shape
-		if (!square)
-		{
-			square = ShapeUtil.MakeSquare();
-		}
-
 		// Draw rotated texture
-		ShapeUtil.MoveSquare(square, screensize, screenpos, ang);
-		Screen.DrawShape(tex, false, square, DTA_Alpha, alpha, DTA_AlphaChannel, alphachannel, DTA_FillColor, shade);
+		Screen.DrawTexture(tex, false, screenpos.x, screenpos.y, DTA_CenterOffset, true, DTA_Rotate, -ang, DTA_DestWidth, int(screensize.x), DTA_DestHeight, int(screensize.y), DTA_Alpha, alpha, DTA_AlphaChannel, alphachannel, DTA_FillColor, shade);
 	}
 
 
