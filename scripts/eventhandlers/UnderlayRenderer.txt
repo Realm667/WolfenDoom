@@ -25,8 +25,8 @@ class UnderlayRenderer : EventHandler
 {
 	TextureID SpaceSuitGraphic;
 	TextureID GasMaskGraphic;
-	Shape2D shape;
-	Shape2D shade;
+	transient Shape2D shape;
+	transient Shape2D shade;
 
 	override void OnRegister()
 	{
