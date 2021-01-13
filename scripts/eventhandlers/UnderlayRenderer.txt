@@ -54,13 +54,14 @@ class UnderlayRenderer : EventHandler
 			double blackAlpha = 1.0 - (lightlevel / 255.0);
 			if (SpaceSuit)
 			{
+				double xpos = 320 - vXOffset;
+				double ypos = 100;
 				double ang = (sin(level.time * 10) * p.mo.vel.xy.length()) / 10;
 
 				// Draw rotated texture
-				Screen.DrawTexture(SpaceSuitGraphic, false, 0.0, 0.0,
+				Screen.DrawTexture(SpaceSuitGraphic, false, xpos, ypos,
 					DTA_Rotate, -ang,
-					DTA_LeftOffset, vXOffset,
-					DTA_TopOffset, 80,
+					DTA_CenterOffset, true,
 					DTA_VirtualHeight, 200,
 					DTA_VirtualWidth, vWidth,
 					DTA_KeepRatio, true,
@@ -68,10 +69,9 @@ class UnderlayRenderer : EventHandler
 
 				// Darken the mask graphic in dark sectors by drawing it again
 				// as a black silhouette.
-				Screen.DrawTexture(SpaceSuitGraphic, false, 0.0, 0.0,
+				Screen.DrawTexture(SpaceSuitGraphic, false, xpos, ypos,
 					DTA_Rotate, -ang,
-					DTA_LeftOffset, vXOffset,
-					DTA_TopOffset, 80,
+					DTA_CenterOffset, true,
 					DTA_VirtualHeight, 200,
 					DTA_VirtualWidth, vWidth,
 					DTA_KeepRatio, true,

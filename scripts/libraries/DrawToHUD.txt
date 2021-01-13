@@ -134,7 +134,7 @@ class DrawToHUD
 		}
 
 		// Draw rotated texture
-		Screen.DrawTexture(tex, false, screenpos.x, screenpos.y, DTA_TopOffset, int(texsize.y / 2), DTA_LeftOffset, int(texsize.x / 2), DTA_Rotate, -ang, DTA_DestWidth, int(screensize.x), DTA_DestHeight, int(screensize.y), DTA_Alpha, alpha, DTA_AlphaChannel, alphachannel, DTA_FillColor, shade);
+		Screen.DrawTexture(tex, false, screenpos.x, screenpos.y, DTA_CenterOffset, true, DTA_Rotate, -ang, DTA_DestWidth, int(screensize.x), DTA_DestHeight, int(screensize.y), DTA_Alpha, alpha, DTA_AlphaChannel, alphachannel, DTA_FillColor, shade);
 	}
 
 
