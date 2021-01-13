@@ -543,7 +543,7 @@ class MapStatsHandler : StaticEventHandler
 		[pos, size] = Screen.VirtualToRealCoords((x, y), (texsize.x * scale, texsize.y * scale), (width, height));
 
 		// Draw rotated texture
-		DrawToHUD.DrawTransformedTexture(tex, pos, alpha, ang, scale);
+		Screen.DrawTexture(tex, false, pos.x, pos.y, DTA_CenterOffset, true, DTA_Rotate, -ang, DTA_Alpha, alpha, DTA_DestWidthF, size.x, DTA_DestHeightF, size.y);
 	}
 
 	static void Toggle(Actor activator, int status = -1)

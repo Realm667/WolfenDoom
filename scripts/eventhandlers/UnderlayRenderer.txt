@@ -54,6 +54,10 @@ class UnderlayRenderer : EventHandler
 			double blackAlpha = 1.0 - (lightlevel / 255.0);
 			if (SpaceSuit)
 			{
+				// gfg this took me FOREVER to figure out.
+				// But basically, the "position" is the offset from the offset
+				// position, and the offset position acts as the pivot point 
+				// for rotations and such... At least, in my experience.
 				double xpos = 320 - vXOffset;
 				double ypos = 100;
 				double ang = (sin(level.time * 10) * p.mo.vel.xy.length()) / 10;
