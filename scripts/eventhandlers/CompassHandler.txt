@@ -35,18 +35,8 @@ class CompassHandler : EventHandler
 	const compassRadius = 46.0;
 	const compassIconSize = 12.0;
 	const distFactor = 0.1;
-	// Used to optimize 2D drawing
-	transient Shape2D genericSquare;
 
 	double drawflash;
-
-	override void OnRegister()
-	{
-		// Initialize the square used to draw the compass rose (and other
-		// things) so that the game doesn't have to make and upload a new one
-		// every frame.
-		genericSquare = ShapeUtil.MakeSquare();
-	}
 
 	uint FindCompassItem(Actor mo) // Helper function to find a thing in a child class (Used in place of CompassItems.Find(mo) since the mo is nested in a CompassIcon object
 	{
@@ -159,7 +149,7 @@ class CompassHandler : EventHandler
 			DrawToHUD.DrawTexture(cmpsbg, (compassX, compassY - 6.0), compassalpha);
 
 			// Draw the background compass directions
-			DrawToHUD.DrawShapeTexture(cmpsrose, (compassX, compassY), compassalpha, e.ViewAngle - 90, square: genericSquare); // Use player angle, offset so that 90 degrees on the map is shown as north
+			DrawToHUD.DrawTransformedTexture(cmpsrose, (compassX, compassY), compassalpha, e.ViewAngle - 90); // Use player angle, offset so that 90 degrees on the map is shown as north
 
 			// Draw icons
 			for (int i = 0; i < CompassItems.Size(); i++)
@@ -241,7 +231,7 @@ class CompassHandler : EventHandler
 					TextureID tex = TexMan.CheckForTexture("Arrow", TexMan.Type_Any);
 					if (tex)
 					{
-						DrawToHUD.DrawShapeTexture(tex, (iconX, iconY), alpha / 2, e.ViewAngle - mo.angle, scale, square: genericSquare);
+						DrawToHUD.DrawTransformedTexture(tex, (iconX, iconY), alpha / 2, e.ViewAngle - mo.angle, scale);
 					}
 				}
 
@@ -259,7 +249,7 @@ class CompassHandler : EventHandler
 				else { flashalpha = 1.0 - (phase - 0.5); } // Fade out
 
 				// Draw the gold flash around the perimeter of the compass
-				DrawToHUD.DrawShapeTexture(cmpsflash, (compassX, compassY), compassalpha / 3 * flashalpha * 0.75, -105 + 360 * phase, square: genericSquare);
+				DrawToHUD.DrawTransformedTexture(cmpsflash, (compassX, compassY), compassalpha / 3 * flashalpha * 0.75, -105 + 360 * phase);
 			}
 
 			// Redraw the compass texture on top with a lower alpha so that the glass actually looks translucent
