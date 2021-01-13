@@ -394,7 +394,7 @@ class GhostGate : GateKeeper
 					bool sp;
 					Actor mo;
 	
-					[sp, mo] = A_SpawnItemEx("CreepyEffect", 0, Random(-linelength / 2, linelength / 2), Random(16, int(64 + 32 * scale.x)), 0, 0, random(1, 2), angle, SXF_NOCHECKPOSITION | SXF_SETMASTER);
+					[sp, mo] = A_SpawnItemEx("CreepyEffect", Random(-linelength / 2, linelength / 2), 0, Random(16, int(64 + 32 * scale.x)), 0, 0, random(1, 2), 0, SXF_NOCHECKPOSITION | SXF_SETMASTER);
 
 					if (sp)
 					{
@@ -430,7 +430,7 @@ class GhostGate : GateKeeper
 
 		SpawnPoint = pos;
 
-		if (user_keyamount == 25 && args[0]) { user_keyamount = args[0]; }
+		if (user_keyamount == Default.user_keyamount && args[0]) { user_keyamount = args[0]; }
 
 		FindPeers();
 
@@ -484,7 +484,7 @@ class GhostGate : GateKeeper
 		A_StartSound(loopsound, CHAN_6, CHANF_LOOPING, 0.45 * scale.x, ATTN_NORM);
 	}
 
-	Actor FindPeers()
+	void FindPeers()
 	{
 		if (tid)
 		{
@@ -498,7 +498,6 @@ class GhostGate : GateKeeper
 				if (mo.GetClassName() == GetClassName()) { peers.Push(GhostGate(mo)); }
 			}
 		}
-		return null;
 	}
 
 	Actor ClosestPlayer(double dist = 0)
@@ -762,7 +761,22 @@ class GhostGateHelper : GhostGate
 			console.printf("\cgERROR: \clSoul Gate helper actor at %d, %d, %d was placed on a one-sided line!  Unexpected behavior may result.", pos.x, pos.y, pos.z);
 		}
 
-		if (!master) { master = FindParent(); }
+		if (!master)
+		{
+			master = FindParent();
+
+			let g = GhostGate(master);
+
+			if (g)
+			{
+				// Add this line's length to the main gate actor's line length
+				g.linelength += linelength;
+				g.activationradius = max(g.activationradius, g.linelength);
+
+				// And reset it's radius to match
+				g.A_SetSize(g.activationradius);
+			}
+		}
 
 		SpawnPoint = pos;
 
@@ -774,7 +788,7 @@ class GhostGateHelper : GhostGate
 		}
 		else
 		{
-			if (user_keyamount == 25 && args[0]) { user_keyamount = args[0]; } // Still support setting locally, just in case we want to use it that way in the future...
+			if (user_keyamount == Default.user_keyamount && args[0]) { user_keyamount = args[0]; } // Still support setting locally, just in case we want to use it that way in the future...
 		}
 
 		TextureID tex = TexMan.CheckForTexture("WATR_G98", TexMan.Type_Any);
