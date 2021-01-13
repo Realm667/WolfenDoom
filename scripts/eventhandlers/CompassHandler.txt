@@ -30,14 +30,14 @@ class CompassIcon
 class CompassHandler : EventHandler
 {
 	Array<CompassIcon> CompassItems;
-	ui Array<Shape2D> CompassItemSquares;
+	transient ui Array<Shape2D> CompassItemSquares;
 	const compassX = 85.0;
 	const compassY = 105.0;
 	const compassRadius = 46.0;
 	const compassIconSize = 12.0;
 	const distFactor = 0.1;
 	// Used to optimize 2D drawing
-	Shape2D roseSquare;
+	transient Shape2D roseSquare;
 
 	double drawflash;
 
@@ -136,8 +136,10 @@ class CompassHandler : EventHandler
 		}		
 	}
 
-	ui Shape2D GetSquare(out uint shapeIndex)
+	ui Shape2D GetSquare(in out uint shapeIndex)
 	{
+		// Console.Printf("shapeIndex: %u", shapeIndex);
+		// Console.Printf("CompassItemSquares: %u", CompassItemSquares.Size());
 		if (shapeIndex >= CompassItemSquares.Size())
 		{
 			CompassItemSquares.Push(ShapeUtil.MakeSquare());
