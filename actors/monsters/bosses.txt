@@ -1150,9 +1150,10 @@ ACTOR FatMan : NaziBoss
 	-FLOAT		//we don't want him to fly, yeah? ;)
 	-NOGRAVITY	//we don't want him to fly, yeah?
 	Obituary "$OTTOBOSS"
-	SeeSound "Boss2/Sighted"
 	PainSound "boss/pain"
-	DeathSound "Boss2/Death"
+	ActiveSound "giftm/active"
+	SeeSound "giftm/sight"
+	DeathSound "giftm/die"
 	DropItem "NebAmmo"
 	States
 	{
@@ -1220,8 +1221,9 @@ ACTOR RocketMan : NaziBoss
 	Mass 200
 	+LOOKALLAROUND
 	Obituary "$FATMAN"
-	SeeSound "fatman/sight"
-	DeathSound "fatman/death"
+	ActiveSound "schwabb/active"
+	SeeSound "schwabb/sight"
+	DeathSound "schwabb/die"
 	States
 	{
 	Spawn:
@@ -1276,8 +1278,9 @@ ACTOR GoeringBoss : RocketMan
 	Mass 200
 	+LOOKALLAROUND
 	Obituary "$GOERING"
-	SeeSound "Boss1/Sighted"
-	DeathSound "Boss1/Death"
+	ActiveSound "goering/active"
+	SeeSound "goering/sight"
+	DeathSound "goering/die"
 	DropItem "FlameAmmo" 128
 	DropItem "FlameAmmo" 128
 	DropItem "Medikit_Large" 192
@@ -1336,8 +1339,9 @@ ACTOR HimmlerBoss : RocketMan
 	+LOOKALLAROUND
 	+MISSILEMORE
 	Obituary "$HIMMLER"
-	SeeSound "Boss1/Sighted"
-	DeathSound "Boss1/Death"
+	ActiveSound "himmler/active"
+	SeeSound "himmler/sight"
+	DeathSound "himmler/die"
 	DamageFactor "Electric", 0.5
 	DamageFactor "Fire", 0.5
 	DamageFactor "MutantPoison", 0
@@ -1396,8 +1400,9 @@ ACTOR GoebbelsBoss : RocketMan
 	Mass 200
 	+LOOKALLAROUND
 	Obituary "$GOEBELS"
-	SeeSound "Boss1/Sighted"
-	DeathSound "Boss1/Death"
+	ActiveSound "goebbs/active"
+	SeeSound "goebbs/sight"
+	DeathSound "goebbs/die"
 	DamageFactor "Electric", 0.7
 	DamageFactor "Fire", 0.2
 	DamageFactor "MutantPoison", 0
@@ -1549,8 +1554,9 @@ ACTOR FlamerMan : RocketMan
 	Speed 3.67
 	Health 700
 	Obituary "$FLAMEBOY"
-	SeeSound "Boss1/Sighted"
-	DeathSound "Boss1/Death"
+	ActiveSound "fried/active"
+	SeeSound "fried/sight"
+	DeathSound "fried/die"
 	DropItem "FlameAmmo"
 	DropItem "Pyrolight" 64
 	States
@@ -1605,6 +1611,9 @@ ACTOR MadDoctor : RocketMan
 	Mass 4000
 	PainChance 64
 	Obituary "$SCHABBS1"
+	ActiveSound "schabbs/active"
+	SeeSound "schabbs/sight"
+	DeathSound "schabbs/die"
 	DropItem "Medikit_Medium"
 	States
 	{
@@ -1686,6 +1695,9 @@ ACTOR MadDoctor3 : MadDoctor
 	-MISSILEEVENMORE
 	Obituary "$MENGELE"
 	DropItem "Medikit_Large"
+	ActiveSound "mengele/active"
+	SeeSound "mengele/sight"
+	DeathSound "mengele/die"
 	States
 	{
 	Spawn:
@@ -1737,6 +1749,9 @@ ACTOR MadDoctor4 : MadDoctor
 	DamageFactor "Poison", 0
 	DropItem "Medikit_Large"
 	DropItem "AdrenalineKit"
+	ActiveSound "morell/active"
+	SeeSound "morell/sight"
+	DeathSound "morell/die"
 	States
 	{
 	Spawn:
@@ -1786,6 +1801,8 @@ ACTOR MadCook : MadDoctor
 	Speed 5
 	+AVOIDMELEE
 	+MISSILEMORE
+	SeeSound "fatman/sight"
+	DeathSound "fatman/death"
 	States
 	{
 	Spawn:
@@ -2016,8 +2033,9 @@ ACTOR General : RocketMan
 	Mass 1000
 	+MISSILEEVENMORE
 	Nazi.ZombieVariant "ZombieGeneral"
-	SeeSound "Boss3/Sighted"
-	DeathSound "Boss3/Death"
+	ActiveSound "fettges/active"
+	SeeSound "fettges/sight"
+	DeathSound "fettges/die"
 	DropItem "NebAmmo" 128
 	DropItem "NebAmmo" 128
 	DropItem "NebAmmo" 128
@@ -2175,8 +2193,9 @@ ACTOR MarineGeneral : General
 	Mass 1000
 	+MISSILEEVENMORE
 	Obituary "$GENERAL"
-	SeeSound "Boss3/Sighted"
-	DeathSound "Boss3/Death"
+	ActiveSound "seeteuf/active"
+	SeeSound "seeteuf/sight"
+	DeathSound "seeteuf/die"
 	DropItem "NebAmmo" 128
 	DropItem "NebAmmo" 128
 	DropItem "NebAmmo" 128
@@ -2280,7 +2299,9 @@ ACTOR Totengraber_Healthy : RocketMan
 	PainChance 16
 	+MISSILEMORE
 	Obituary "$TOTENS"
-	DeathSound "hitlerghost/die"
+	ActiveSound "toten/active"
+	SeeSound "toten/sight"
+	DeathSound "hitlerghost/die" //laughs
 	States
 	{
 	Spawn:
@@ -2341,6 +2362,9 @@ ACTOR Totengraber_Wounded : RocketMan
 	DamageFactor "MutantPoison", 0
 	DamageFactor "UndeadPoison", 0
 	Obituary "$TOTENS"
+	ActiveSound "toten/active"
+	SeeSound "toten/sight"
+	DeathSound "toten/die"
 	Nazi.Healer 2 //HLR_ZOMBIES value as defined in ZScript, not sure why the enum isn't recognized in Decorate...
 	Nazi.HealSound "creepy/born"
 	States
@@ -2419,6 +2443,9 @@ ACTOR Mengele_Healthy : RocketMan
 	PainChance 16
 	+MISSILEMORE
 	Obituary "$MENGELE"
+	ActiveSound "mengele/active"
+	SeeSound "mengele/sight"
+	PainSound "mengele/pain"
 	DeathSound "hitlerghost/die"
 	States
 	{
@@ -2480,6 +2507,10 @@ ACTOR Mengele_Wounded : RocketMan
 	Obituary "$MENGELE"
 	Nazi.Healer 2
 	Nazi.HealSound "creepy/born"
+	ActiveSound "mengele/active" //maybe creepier?
+	SeeSound "mengele/sight" //maybe creepier?
+	PainSound "mengele/pain" //maybe creepier?
+	DeathSound "mengele/die" //maybe creepier?
 	States
 	{
 	Spawn:
@@ -2912,11 +2943,11 @@ ACTOR Longinus_Hitler : NaziBoss
 			if (wounded) { frame = 5; } // Use frame F instead of N for pain state when wounded
 		}
 		Goto See
-	Death: //something epic should happen here - ozy81
+	Death:
 		SHI2 K 5
 		SHI2 L 5 A_Scream
 		SHI2 MN 10
-		SHI2 O 5 A_StartSound("hitler/gib")
+		SHI2 O 5
 		SHI2 P 7 A_NoBlocking
 		SHI2 Q 9 A_SpawnItemEx("3dBridge24")
 	Dead:
@@ -2943,9 +2974,10 @@ ACTOR ChairGuy : Nazi
 	+MISSILEEVENMORE
 	+NOGRAVITY
 	Obituary "$CHAIRMAN"
-	SeeSound "krist/sight"
 	PainSound "boss/pain"
-	DeathSound "krist/death"
+	SeeSound "holz/sight"
+	DeathSound "holz/death"
+	ActiveSound "holz/active"
 	DropItem "GrenadePickup",128
 	DropItem "GrenadePickup",128
 	DropItem "GrenadePickup",128

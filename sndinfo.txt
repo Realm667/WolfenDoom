@@ -707,6 +707,8 @@ TKDBRS4 TKDBRS4
 $random TANKDBRS	{ TKDBRS1 TKDBRS2 TKDBRS3 TKDBRS4 }
 $limit	TANKDBRS 1
 
+//Some boss sounds are double defined in order to have more chances to reproduce them on top of others
+
 //Smokemonster
 Smoke/See			SSee
 Smoke/Tick			Slop1
@@ -771,6 +773,177 @@ KOMSEE06 KOMSEE06
 KOMSEE07 KOMSEE07
 $random Komuto/Sighted { KOMSEE01 KOMSEE02 KOMSEE03 KOMSEE04 KOMSEE05 KOMSEE06 KOMSEE07 }
 
+//Mengele, 3 actors - maybe we need creepier version for wounded
+$random mengele/active { MENGROA1 MENGROA2 }
+MENGROA1 MENGROA1
+MENGROA2 MENGROA2
+$random mengele/sight { MENGALR1 MENGALR2 }
+MENGALR1 MENGALR1
+MENGALR2 MENGALR2
+$random mengele/die { MENGDIE1 MENGDIE2 }
+MENGDIE1 MENGDIE1
+MENGDIE2 MENGDIE2
+
+//Morell
+$random morell/active { MORLROA1 MORLROA2 }
+MORLROA1 MORLROA1
+MORLROA2 MORLROA2
+$random morell/sight { MORLALR1 MORLALR2 }
+MORLALR1 MORLALR1
+MORLALR2 MORLALR2
+$random morell/die { MORLDIE1 MORLDIE2 }
+MORLDIE1 MORLDIE1
+MORLDIE2 MORLDIE2
+
+//Dr.Schabbs Sr.
+$random schabbs/active { SCHBROA1 SCHBROA2 }
+SCHBROA1 SCHBROA1
+SCHBROA2 SCHBROA2
+$random schabbs/sight { SCHBALR1 SCHBALR2 }
+SCHBALR1 SCHBALR1
+SCHBALR2 SCHBALR2
+$random schabbs/die { SCHBDIE1 SCHBDIE2 }
+SCHBDIE1 SCHBDIE1
+SCHBDIE2 SCHBDIE2
+
+//Fettgesicht
+$random fettges/active { FETTROA1 FETTROA2 }
+FETTROA1 FETTROA1
+FETTROA2 FETTROA2
+$random fettges/sight { FETTALR1 FETTALR2 }
+FETTALR1 FETTALR1
+FETTALR2 FETTALR2
+$random fettges/die { FETTDIE1 FETTDIE2 }
+FETTDIE1 FETTDIE1
+FETTDIE2 FETTDIE2
+
+//Friedhelm
+$random fried/active { FRIDROA1 FRIDROA2 }
+FRIDROA1 FRIDROA1
+FRIDROA2 FRIDROA2
+$random fried/sight { FRIDALR1 FRIDALR2 }
+FRIDALR1 FRIDALR1
+FRIDALR2 FRIDALR2
+$random fried/die { FRIDDIE1 FRIDDIE2 }
+FRIDDIE1 FRIDDIE1
+FRIDDIE2 FRIDDIE2
+
+//Giftmacher
+$random giftm/active { GIFTROA1 GIFTROA2 }
+GIFTROA1 GIFTROA1
+GIFTROA2 GIFTROA2
+$random giftm/sight { GIFTALR1 GIFTALR2 }
+GIFTALR1 GIFTALR1
+GIFTALR2 GIFTALR2
+$random giftm/die { GIFTDIE1 GIFTDIE2 }
+GIFTDIE1 GIFTDIE1
+GIFTDIE2 GIFTDIE2
+
+//Goebbels
+$random goebbs/active { GOEBROA1 GOEBROA2 }
+GOEBROA1 GOEBROA1
+GOEBROA2 GOEBROA2
+$random goebbs/sight { GOEBALR1 GOEBALR2 }
+GOEBALR1 GOEBALR1
+GOEBALR2 GOEBALR2
+$random goebbs/die { GOEBDIE1 GOEBDIE2 }
+GOEBDIE1 GOEBDIE1
+GOEBDIE2 GOEBDIE2
+
+//Goering
+$random goering/active { GOERROA1 GOERROA2 }
+GOERROA1 GOERROA1
+GOERROA2 GOERROA2
+$random goering/sight { GOERALR1 GOERALR2 }
+GOERALR1 GOERALR1
+GOERALR2 GOERALR2
+$random goering/die { GOERDIE1 GOERDIE2 }
+GOERDIE1 GOERDIE1
+GOERDIE2 GOERDIE2
+Goering/shotsit DSSLSHOT
+Goering/shotdth DSSLSHDT
+
+//Himmler
+$random himmler/active { HIMMROA1 HIMMROA2 }
+HIMMROA1 HIMMROA1
+HIMMROA2 HIMMROA2
+$random himmler/sight { HIMMALR1 HIMMALR2 }
+HIMMALR1 HIMMALR1
+HIMMALR2 HIMMALR2
+$random himmler/die { HIMMDIE1 HIMMDIE2 }
+HIMMDIE1 HIMMDIE1
+HIMMDIE2 HIMMDIE2
+
+//Graf Holzbein
+$random holz/active { HOLZROA1 HOLZROA2 }
+HOLZROA1 HOLZROA1
+HOLZROA2 HOLZROA2
+$random holz/sight { HOLZALR1 HOLZALR2 HOLZALR1 HOLZALR2 DSKRISIT }
+HOLZALR1 HOLZALR1
+HOLZALR2 HOLZALR2
+DSKRISIT DSKRISIT
+$random holz/die { HOLZDIE1 HOLZDIE2 HOLZDIE1 HOLZDIE2 DSKRIDTH }
+HOLZDIE1 HOLZDIE1
+HOLZDIE2 HOLZDIE2
+DSKRIDTH DSKRIDTH
+
+//Schwabbelhals
+$random schwabl/active { SCHWROA1 SCHWROA2 }
+SCHWROA1 SCHWROA1
+SCHWROA2 SCHWROA2
+$random schwabl/sight { SCHWALR1 SCHWALR2 }
+SCHWALR1 SCHWALR1
+SCHWALR2 SCHWALR2
+$random schwabl/die { SCHWDIE1 SCHWDIE2 }
+SCHWDIE1 SCHWDIE1
+SCHWDIE2 SCHWDIE2
+
+//Seeteufel
+$random seeteuf/active { SEETROA1 SEETROA2 SEETROA3 }
+SEETROA1 SEETROA1
+SEETROA2 SEETROA2
+SEETROA3 SEETROA3
+$random seeteuf/sight { SEETALR1 SEETALR2 }
+SEETALR1 SEETALR1
+SEETALR2 SEETALR2
+$random seeteuf/die { SEETDIE1 SEETDIE2 }
+SEETDIE1 SEETDIE1
+SEETDIE2 SEETDIE2
+
+//Totengraber
+$random toten/active { TOTEROA1 TOTEROA2 TOTEROA3 }
+TOTEROA1 TOTEROA1
+TOTEROA2 TOTEROA2
+TOTEROA3 TOTEROA3
+$random toten/sight { TOTEALR1 TOTEALR2 }
+TOTEALR1 TOTEALR1
+TOTEALR2 TOTEALR2
+$random toten/die { TOTEDIE1 TOTEDIE2 }
+TOTEDIE1 TOTEDIE1
+TOTEDIE2 TOTEDIE2
+
+//Hitler - kept some old dependencies as well, some are shared through other bosses --ozy81
+$random hitler/active { HITLROA1 HITLROA2 HITLROA3 }
+HITLROA1 HITLROA1
+HITLROA2 HITLROA2
+HITLROA3 HITLROA3
+$random hitler/sight { HITLALR1 HITLALR2 HITLALR1 HITLALR2 DSHITSIT }
+HITLALR1 HITLALR1
+HITLALR2 HITLALR2
+DSHITSIT DSHITSIT
+$random hitler/die { HITLDIE1 HITLDIE2 HITLDIE1 HITLDIE2 DSHITDTH }
+HITLDIE1 HITLDIE1
+HITLDIE2 HITLDIE2
+DSHITDTH DSHITDTH
+hitler/pain		DSHITPAI
+hitler/walk		DSHITWLK
+hitler/orbapp	TP_APP
+hitler/orbfade	TP_FADE
+
+//Fake Hitler
+hitlerghost/see HGHSEE
+hitlerghost/die HGHDIE
+
 //Doctors
 Boss2/Death Bos2Dt01
 $random Boss2/Sighted { bos2st01 bos2st02 bos2st03 bos2st04 bos2st05 bos2st06 bos2st07 bos2st08 }
@@ -784,35 +957,17 @@ Bos2St07 Bos2St07
 Bos2St08 Bos2St08
 gshardnd gshardnd
 
-//Fat Man
-fatman/sight	dsfatsit
-fatman/death	dsfatdth
-
-//Goering
-Goering/shotsit DSSLSHOT
-Goering/shotdth DSSLSHDT
+//Fat Man - now used for Cooks
+fatman/sight	DSFATSIT
+fatman/death	DSFATDTH
 
 //General
 Boss3/Death Bos3Dt01
 Boss3/Sighted Bos3St01
 
-//Chair Guy
-krist/sight		dskrisit
-krist/death		dskridth
-
 //Death Knight
-deathknight/sight	dsdtksit
-deathknight/death	dsdtkdth
-
-//Hitler
-hitler/sight	dshitsit
-hitler/pain		dshitpai
-hitler/death	dshitdth
-hitler/gib		hitlrgib
-hitler/walk		dshitwlk
-hitler/act		hghdie
-hitler/orbapp	TP_APP
-hitler/orbfade	TP_FADE
+deathknight/sight	DSDTKSIT
+deathknight/death	DSDTKDTH
 
 //Machines
 metal/pain	dsping
@@ -856,10 +1011,6 @@ mutant/death dsmutdt
 supaproj/bounce		sm_boun
 supaproj/explode	sm_expl
 supaproj/fire		sm_fire
-
-//Fake Hitler
-hitlerghost/see hghsee
-hitlerghost/die hghdie
 
 //Undead Monk
 monk/see monk_see
