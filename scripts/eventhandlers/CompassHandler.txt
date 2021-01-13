@@ -30,13 +30,23 @@ class CompassIcon
 class CompassHandler : EventHandler
 {
 	Array<CompassIcon> CompassItems;
+	ui Array<Shape2D> CompassItemSquares;
 	const compassX = 85.0;
 	const compassY = 105.0;
 	const compassRadius = 46.0;
 	const compassIconSize = 12.0;
 	const distFactor = 0.1;
+	// Used to optimize 2D drawing
+	Shape2D roseSquare;
 
 	double drawflash;
+
+	override void OnRegister()
+	{
+		// Initialize the square used to draw the compass rose so that the game
+		// doesn't have to make a new one every frame.
+		roseSquare = ShapeUtil.MakeSquare();
+	}
 
 	uint FindCompassItem(Actor mo) // Helper function to find a thing in a child class (Used in place of CompassItems.Find(mo) since the mo is nested in a CompassIcon object
 	{
@@ -126,6 +136,15 @@ class CompassHandler : EventHandler
 		}		
 	}
 
+	ui Shape2D GetSquare(out uint shapeIndex)
+	{
+		if (shapeIndex >= CompassItemSquares.Size())
+		{
+			CompassItemSquares.Push(ShapeUtil.MakeSquare());
+		}
+		return CompassItemSquares[shapeIndex++];
+	}
+
 	override void RenderOverlay( RenderEvent e )
 	{
 		PlayerInfo p = players[consoleplayer];
@@ -133,6 +152,8 @@ class CompassHandler : EventHandler
 		if (!p || !p.mo) { return; }
 
 		BoACompass cmps = BoACompass(p.mo.FindInventory("BoACompass"));
+
+		uint shapeIndex = 0;
 
 		if (cmps && cmps.active && screenblocks < 12 && !automapactive && !p.mo.FindInventory("CutsceneEnabled") && !p.mo.FindInventory("IncomingMessage") && (level.levelnum < 151 || level.levelnum > 153)) // Hide the compass when HUD is hidden and when cutscenes are active, when you are in a middle of a radio message or when automap is turned on
 		{
@@ -147,7 +168,7 @@ class CompassHandler : EventHandler
 			DrawToHUD.DrawTexture(cmpsbg, (compassX, compassY - 6.0), compassalpha);
 
 			// Draw the background compass directions
-			DrawToHUD.DrawShapeTexture(cmpsrose, (compassX, compassY), compassalpha, e.ViewAngle - 90); // Use player angle, offset so that 90 degrees on the map is shown as north
+			DrawToHUD.DrawShapeTexture(cmpsrose, (compassX, compassY), compassalpha, e.ViewAngle - 90, square: roseSquare); // Use player angle, offset so that 90 degrees on the map is shown as north
 
 			// Draw icons
 			for (int i = 0; i < CompassItems.Size(); i++)
@@ -227,7 +248,10 @@ class CompassHandler : EventHandler
 				{
 					DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale, color(0, 0, 200));
 					TextureID tex = TexMan.CheckForTexture("Arrow", TexMan.Type_Any);
-					if (tex) { DrawToHUD.DrawShapeTexture(tex, (iconX, iconY), alpha / 2, e.ViewAngle - mo.angle, scale); }
+					if (tex)
+					{
+						DrawToHUD.DrawShapeTexture(tex, (iconX, iconY), alpha / 2, e.ViewAngle - mo.angle, scale, square: GetSquare(shapeIndex));
+					}
 				}
 
 			}
@@ -244,7 +268,7 @@ class CompassHandler : EventHandler
 				else { flashalpha = 1.0 - (phase - 0.5); } // Fade out
 
 				// Draw the gold flash around the perimeter of the compass
-				DrawToHUD.DrawShapeTexture(cmpsflash, (compassX, compassY), compassalpha / 3 * flashalpha * 0.75, -105 + 360 * phase);
+				DrawToHUD.DrawShapeTexture(cmpsflash, (compassX, compassY), compassalpha / 3 * flashalpha * 0.75, -105 + 360 * phase, square: GetSquare(shapeIndex));
 			}
 
 			// Redraw the compass texture on top with a lower alpha so that the glass actually looks translucent

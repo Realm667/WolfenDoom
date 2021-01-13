@@ -25,11 +25,16 @@ class UnderlayRenderer : EventHandler
 {
 	TextureID SpaceSuitGraphic;
 	TextureID GasMaskGraphic;
+	Shape2D shape;
+	Shape2D shade;
 
 	override void OnRegister()
 	{
 		SpaceSuitGraphic = TexMan.CheckForTexture("STGMASK", TexMan.Type_Any);
 		GasMaskGraphic = TexMan.CheckForTexture("STGZASK", TexMan.Type_Any);
+		// Make 2D shapes
+		shape = ShapeUtil.MakeSquare();
+		shade = ShapeUtil.MakeSquare();
 	}
 
 	override void RenderUnderlay(RenderEvent e)
@@ -56,10 +61,6 @@ class UnderlayRenderer : EventHandler
 				double ratio = Screen.GetHeight() / 200;
 				Vector2 screenpos = (Screen.GetWidth() / 2, Screen.GetHeight() / 2);
 				Vector2 screensize = (Screen.GetWidth(), Screen.GetHeight()) * 1.8;
-
-				// Make 2D shape
-				let shape = ShapeUtil.MakeSquare();
-				let shade = ShapeUtil.MakeSquare();
 
 				double ang = (sin(level.time * 10) * p.mo.vel.xy.length()) / 10;
 
