@@ -249,28 +249,13 @@ class Soul : StackableInventory
 
 	override String PickupMessage()
 	{
-		return String.Format(msg, Amount);
+		return msg;
 	}
 
 	// Update scale, sprite frame, and pickup message based on current Amount value
 	void DoScaling()
 	{
 		if (Amount >= 25) { msg = StringTable.Localize("$SOUL_XBG"); }
-		else
-		{
-			msg = StringTable.Localize("$SOUL_BG");
-			if (language.Left(2) ~== "ru")
-			{ //special handling for Russian, works for values <= 25 --N00b
-				if ((5 <= Amount && Amount <= 20) || (Amount % 10 == 0 || Amount % 10 >= 5)) msg = "Получено %d проклятых душ.";
-				else if (Amount % 10 == 1) msg = "Получена %d проклятая душа.";
-				else msg = "Получены %d проклятые души.";
-			}
-			else if (language.Left(2) ~== "cs")
-			{ //special handling for Czech
-				if (Amount <= 4) msg = "Sebral jsi %d prokleté duše.";
-				else msg = "Sebral jsi %d prokletých duší.";
-			}
-		}
 
 		// Set actual scale amounts
 		if (Amount < 3) // Scale small sprite up slightly when adding each soul

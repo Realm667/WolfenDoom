@@ -733,6 +733,7 @@ class TextPaperCollectible : TextPaper
 		+INVENTORY.INVBAR
 		+INVENTORY.AUTOACTIVATE
 		+InteractiveItem.ALLOWPICKUP
+		Tag "$TAGPAPERCOLLECTIBLE";
 		Inventory.Icon "TEXTG0";
 		Inventory.PickupMessage "$DOCUMENT";
 	}
@@ -754,6 +755,7 @@ class TextPaperSecretHint : TextPaperCollectible
 		//$Arg0Tooltip "Lists of secret hints constructed from LANGUAGE lump entries. Leave as 0 to use the user_displaystring property to set a string or LANGUAGE entry."
 		//$Arg2 "Not used"
 
+		Tag "$TAGSECRETHINT";
 		Inventory.Icon "TEXTF0";
 		Inventory.PickupMessage "$SECRETHINTPAPER";
 	}
