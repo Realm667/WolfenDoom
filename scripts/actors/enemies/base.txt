@@ -3656,7 +3656,14 @@ class BatBase : Base
 
 			if (countdown < 0 && abs(countdown) % 35 == 0)
 			{
-				NewChaseDir();
+				if (target)
+				{
+					NewChaseDir();
+				}
+				else
+				{
+					RandomChaseDir();
+				}
 				FaceMovementDirection();
 			}
 
