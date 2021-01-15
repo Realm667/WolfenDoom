@@ -974,7 +974,8 @@ class Base : Actor
 								(target && Distance2D(target) > 64 + target.radius + radius)
 							)
 							{
-								NewChaseDir();
+								if (target) { NewChaseDir(); }
+								else { RandomChaseDir(); }
 								FaceMovementDirection();
 								frighttimeout = 35 + Random(0, 7) * 5; // Use a counter to keep the actor frightened for a little bit
 								frightener = self;
@@ -2190,7 +2191,11 @@ class Nazi : Base
 		if (timeout <= 0)
 		{
 			if (grenade.bMissile) { movedir = (grenade.movedir + RandomPick(1, 2, 6, 7)) % 8; } // Pick a random direction away from the shooter and the missile's path
-			else { NewChaseDir(); }
+			else
+			{
+				if (target) { NewChaseDir(); }
+				else { RandomChaseDir(); }
+			}
 
 			FaceMovementDirection();
 
