@@ -26,6 +26,8 @@ class BulletTracer : FastProjectile
 	int offset;
 	int zoffset;
 	int flags;
+	double floorportalz, ceilingportalz;
+	Sector oldsector;
 
 	flagdef NoRicochet: flags, 0;
 	flagdef NoInertia: flags, 1;
@@ -60,7 +62,11 @@ class BulletTracer : FastProjectile
 				bWindThrust = false;
 			}
 			PUFF B 3 BRIGHT LIGHT("BPUFF1") {
-				if (!bNoRicochet) { A_StartSound("ricochet"); }
+				if (!bNoRicochet)
+				{
+					A_StartSound("ricochet");
+					DoWhizChecks();
+				}
 				A_SpawnItemEx("ZBulletChip");
 			}
 			PUFF CD 3 BRIGHT LIGHT("BPUFF1");
@@ -127,19 +133,18 @@ class BulletTracer : FastProjectile
 
 			if (it.thing.health > 0 && it.thing.bShootable && (Nazi(it.thing) || PlayerPawn(it.thing) || PlayerFollower(it.thing)))// Only affect living Nazis, players, and player followers
 			{
-				double dist = Distance3d(it.thing);
-
-				if (dist > radius) { continue; }
-
 				if (it.thing.lastHeard != self)
 				{
 					it.thing.lastHeard = self;
 
-					if (target && target.IsHostile(it.thing) && target.species != it.thing.species) // Only 'whizz' at hostiles
+					if (target && (target.IsHostile(it.thing) || (Nazi(it.thing) && Nazi(it.thing).user_sneakable)) && target.species != it.thing.species) // Only 'whizz' at hostiles
 					{
-						SoundAlert(target, false, 64);
 						Actor mo = Spawn("Whizzer", pos);
 						if (mo) { mo.master = it.thing; }
+
+						it.thing.SoundAlert(target, false, 64); // Emit alert sound
+
+						return; // Only whiz once per check to cut down on performance impact
 					}
 				}
 			}
@@ -149,108 +154,108 @@ class BulletTracer : FastProjectile
 
 class ZFlatDecal : ParticleBase
 {
-    const epsilon = 4;
+	const epsilon = 4;
 
-    bool onCeiling;
-    bool randomFlipX,
-         randomFlipY;
+	bool onCeiling;
+	bool randomFlipX,
+		 randomFlipY;
 
-    Property RandomFlip : randomFlipX, randomFlipY;
+	Property RandomFlip : randomFlipX, randomFlipY;
 
-    Default
-    {
-        Height 0;
-        Radius 0;
+	Default
+	{
+		Height 0;
+		Radius 0;
 
-        RenderStyle "Shaded";
+		RenderStyle "Shaded";
 
-        +FLATSPRITE
-        +MOVEWITHSECTOR
-        +NOBLOCKMAP
-        +NOGRAVITY
-        +NOTELEPORT
-    }
+		+FLATSPRITE
+		+MOVEWITHSECTOR
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+NOTELEPORT
+	}
 
-    override void PostBeginPlay()
-    {
-        Super.PostBeginPlay();
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
 
-        // Random flip
-        scale.x *= randomFlipX ? RandomPick(1, -1) : 1;
-        scale.y *= randomFlipY ? RandomPick(1, -1) : 1;
+		// Random flip
+		scale.x *= randomFlipX ? RandomPick(1, -1) : 1;
+		scale.y *= randomFlipY ? RandomPick(1, -1) : 1;
 
-        // Stick to floor/ceiling
-        SecPlane plane;
-        if (Abs(pos.z - GetZAt()) <= epsilon)
-        {
-            SetZ(GetZAt());
-            plane = curSector.floorPlane;
-            onCeiling = false;
-        }
-        else if (Abs(pos.z - GetZAt(flags:GZF_Ceiling)) <= epsilon)
-        {
-            SetZ(GetZAt(flags:GZF_Ceiling));
-            plane = curSector.ceilingPlane;
-            onCeiling = true;
-        }
-        else
-        {
-            Destroy();
-            return;
-        }
+		// Stick to floor/ceiling
+		SecPlane plane;
+		if (Abs(pos.z - GetZAt()) <= epsilon)
+		{
+			SetZ(GetZAt());
+			plane = curSector.floorPlane;
+			onCeiling = false;
+		}
+		else if (Abs(pos.z - GetZAt(flags:GZF_Ceiling)) <= epsilon)
+		{
+			SetZ(GetZAt(flags:GZF_Ceiling));
+			plane = curSector.ceilingPlane;
+			onCeiling = true;
+		}
+		else
+		{
+			Destroy();
+			return;
+		}
 
-        // Tilt to match slopes
-        let normal = plane.normal;
-        angle = VectorAngle(normal.x, normal.y);
+		// Tilt to match slopes
+		let normal = plane.normal;
+		angle = VectorAngle(normal.x, normal.y);
 
-        normal.xy = RotateVector(normal.xy, -angle);
-        pitch = -VectorAngle(normal.x, normal.z) + 90;
-    }
+		normal.xy = RotateVector(normal.xy, -angle);
+		pitch = -VectorAngle(normal.x, normal.z) + 90;
+	}
 
-    override void Tick()
-    {
-        Super.Tick();
+	override void Tick()
+	{
+		Super.Tick();
 
-        // MoveWithSector isn't good enough to stick to a rising ceiling
-        if (onCeiling)
-            SetZ(GetZAt(flags:GZF_Ceiling));
-    }
+		// MoveWithSector isn't good enough to stick to a rising ceiling
+		if (onCeiling)
+			SetZ(GetZAt(flags:GZF_Ceiling));
+	}
 }
 
 class ZBulletChip : ZFlatDecal
 {
-    Default
-    {
-        Scale 0.5;
-        Alpha 0.85;
-        StencilColor "Black";
-        ZFlatDecal.RandomFlip true, true;
-    }
+	Default
+	{
+		Scale 0.5;
+		Alpha 0.85;
+		StencilColor "Black";
+		ZFlatDecal.RandomFlip true, true;
+	}
 
-    States
-    {
-    Spawn:
-        TNT1 A 0 NODELAY
-        {
-            return curState + Random(1, 5);
-        }
-        CHIP ABCDE -1;
-        Stop;
-    }
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY
+		{
+			return curState + Random(1, 5);
+		}
+		CHIP ABCDE -1;
+		Stop;
+	}
 }
 
 class ZScorch : ZBulletChip
 {
-    States
-    {
-    Spawn:
-        TNT1 A 0 NODELAY
-        {
-            return curState + 1;
-        }
-        ZSCO A -1;
-        Stop;
-    }
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY
+		{
+			return curState + 1;
+		}
+		ZSCO A -1;
+		Stop;
+	}
 }
 
 class ZScorchLower : ZBulletChip
@@ -260,16 +265,16 @@ class ZScorchLower : ZBulletChip
 		Scale 0.5;
 	}
 	
-    States
-    {
-    Spawn:
-        TNT1 A 0 NODELAY
-        {
-            return curState + Random (1,2);
-        }
-        ZSCO BC -1;
-        Stop;
-    }
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY
+		{
+			return curState + Random (1,2);
+		}
+		ZSCO BC -1;
+		Stop;
+	}
 }
 
 class ZCrater : ZBulletChip
@@ -300,16 +305,16 @@ class ZPlasma : ZBulletChip
 	{
 		Scale 1.5;
 	}
-    States
-    {
-    Spawn:
-        TNT1 A 0 NODELAY
-        {
-            return curState + Random (1,2);
-        }
-        ZSCO DE -1;
-        Stop;
-    }
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY
+		{
+			return curState + Random (1,2);
+		}
+		ZSCO DE -1;
+		Stop;
+	}
 }
 
 class Whizzer : GrenadeBase
@@ -336,7 +341,7 @@ class Whizzer : GrenadeBase
 	}
 }
 
-class TracerTrail : Actor
+class TracerTrail : SimpleActor
 {
 	double faderate, stepalpha, startalpha, oldpitch;
 
@@ -380,7 +385,7 @@ class TracerTrail : Actor
 
 		Super.Tick();
 
-		if (bNoInteraction && TestMobjLocation()) { bNoInteraction  = false; }
+		if (bNoInteraction && TestMobjLocation()) { bNoInteraction = false; }
 
 		if (!master || !vel.xy.length()) { Destroy(); }
 	}
