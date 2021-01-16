@@ -1188,7 +1188,7 @@ ACTOR DamnedSoulSpawner
 		}
 }
 
-ACTOR DamnedSoul
+ACTOR DamnedSoul : SimpleActor
 {
 	Radius 2
 	Height 2
@@ -1204,7 +1204,7 @@ ACTOR DamnedSoul
 		{
 		Spawn:
 			HADE D 0 NODELAY A_SetScale(ScaleX + frandom(-0.7, 0.3))
-			"####" D 0 A_StartSound ("DamnedSoul/Moan")
+			"####" D 0 A_StartSound ("creepy/moans")
 		FadeIn:
 			"####" D 1 A_SetTranslucent (alpha+0.03, 1)
 			"####" D 1 A_SetTranslucent (alpha+0.03, 1)
