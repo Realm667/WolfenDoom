@@ -38,6 +38,11 @@ class SoulFountain : SwitchableDecoration
 	{
 		//$Category Misc (BoA)
 		//$Title Soul Fountain
+		//$Arg0 "Maximum souls for player"
+		//$Arg0Default 150
+		//$Arg1 "Maximum health for player"
+		//$Arg1Default 200
+		//$Sprite SWRLZ0
 		Height 32;
 		Radius 64;
 		RenderStyle "Add";
@@ -46,8 +51,8 @@ class SoulFountain : SwitchableDecoration
 		-SOLID
 		-SHOOTABLE
 		+NOBLOCKMAP
-		+FLOORHUGGER
 		+FLATSPRITE
+		+NOGRAVITY
 	}
 
 	States
@@ -67,6 +72,14 @@ class SoulFountain : SwitchableDecoration
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
+
+		// Match size to scaled size
+		A_SetSize(radius * scale.x, height * scale.y);
+
+		// Use arguments to override default amounts if they are set
+		if (args[0]) { soulmax = args[0]; }
+		if (args[1]) { healthmax = args[1]; }
+
 		count = 0;
 	}
 

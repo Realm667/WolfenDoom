@@ -615,3 +615,55 @@ class CivilianZombieSpawner : CivilianZombie
 		//$Color 4
 	}
 }
+
+class BatSwarmSpawner : Base
+{
+	int count;
+	Class<Actor> spawnclass;
+
+	Default
+	{
+		//$Category Misc (BoA)
+		//$Title Spawner, Bat Swarm
+		//$Arg0 "Use String Argument!"
+		//$Arg0Str "Actor class to spawn"
+		//$Arg0ToolTip "What actor to spawn.  Defaults to BatFamiliar."
+		//$Arg1 "Number to spawn"
+		//$Arg1ToolTip "Total number of bats to spawn.  Default is 10."
+		//$Sprite BFAMK0
+
+		+NOGRAVITY
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 5 A_LookThroughDisguise();
+			Loop;
+		See:
+			TNT1 A 5 {
+				Actor b = Spawn(spawnclass, pos);
+
+				if (b)
+				{
+					b.target = target;
+					b.vel.xy = RotateVector((FRandom(-1.0, 1.0), 0), Random(1, 360));
+					b.vel.z = FRandom(-1.0, 1.0);
+					count--;
+				}
+
+				if (count <= 0) { Destroy(); }
+			}
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (args[0] < 0) { spawnclass =  GetSpawnableType(args[0]); }
+		else { spawnclass = "BatFamiliar"; }
+
+		count = args[1] ? args[1] : 10;
+	}
+}
