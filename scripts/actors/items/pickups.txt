@@ -1,0 +1,60 @@
+class SpearOfDestiny : CompassItem
+{
+	Default
+	{
+		//$Title Spear of Destiny
+		Tag "$TAGSTAFF";
+		Scale 0.67;
+		+COUNTITEM
+		Inventory.Icon "SPEAA0";
+		Inventory.PickupMessage "$SPEAROD";
+		Inventory.PickupSound "misc/spearofdestiny";
+		CompassItem.Alternates "SpearofDestiny_End", "";
+	}
+
+	States
+	{
+		Spawn:
+			SPEA B -1;
+			Stop;
+	}
+}
+
+class SpearOfDestiny_End : SpearOfDestiny
+{
+	Default
+	{
+		//$Title Spear of Destiny (Final Battle)
+		+FLOATBOB
+		Radius 48; // Make this easier to pick up
+		Scale 2.0; // start scaled up, since it gets dropped from Longinus_Hitler
+		CompassItem.Alternates "SpearofDestiny", "";
+	}
+
+	States
+	{
+		Spawn:
+			SPEA C -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		floorclip = -24; // Raise the sprite above the floor, but not the hitbox
+
+		SetOrigin((pos.xy, floorz), false);
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+		
+		if (scale.x != 0.67)
+		{
+			if (scale.x > 0.67) { scale = (scale.x - 0.025) * (1.0, 1.0); }
+			else { scale = 0.67 * (1.0, 1.0); }
+		}
+	}
+}
