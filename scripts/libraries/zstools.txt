@@ -190,10 +190,61 @@ class ZScriptTools
 		for (int f = 0; f < fonts.Size(); f++)
 		{
 			Font fnt = Font.GetFont(fonts[f]);
-			if (fnt && fnt.CanPrint(check)) { return fnt; }
+			if (fnt && ZScriptTools.DebugFontGlyphs(fonts[f], check)) { return fnt; }
 		}
 
 		return SmallFont; // If all else fails, fall back to SmallFont
+	}
+
+	static void TestFonts()
+	{
+		String data = FileReader.ReadLump("LANGUAGE.csv");
+
+		Array<String> lines;
+		data.Split(lines, "\n");
+
+		String fntname = "newsmallfont|amh18|bigfont|bigupper|chalkboard|chickn24|Classic|handwriting_institute|handwriting_neat|MavenProSmall|run14|smallfont|threefiv|typewriter";
+
+		Array<String> fonts;
+		fntname.Split(fonts, "|");
+
+		for (int f = 0; f < fonts.Size(); f++)
+		{
+			String output = "";
+
+			console.printf("\cKTesting font \cC%s\cK...", fonts[f]);
+
+			for (int r = 1; r < lines.Size(); r++)
+			{
+				output = ZScriptTools.TestFont(fonts[f], lines[r], output);
+			}
+
+			if (output.length()) { console.printf("\cG  Missing: \cJ%s\n", output); }
+			else { console.printf("\cD  All characters found.\n", fonts[f], output); }
+		}
+	}
+
+	static clearscope String TestFont(String fnt, String check, String output = "")
+	{
+		bool valid;
+		String result;
+		[valid, result] = ZScriptTools.DebugFontGlyphs(fnt, check, true);
+
+		if (!valid)
+		{
+			Array<String> results;
+			result.split(results, ", ");
+			for (int r = 0; r < results.Size(); r++)
+			{
+				if (output.IndexOf(results[r]) == -1)
+				{
+					if (output.length()) { output = output .. ", "; }
+					output = output .. results[r];
+				}
+			}
+		}
+
+		return output;
 	}
 
 	// Strip color codes out of a string
@@ -224,5 +275,50 @@ class ZScriptTools
 		}
 
 		return output;
+	}
+
+	// UTF aware character-by-character printing check
+	static bool, string DebugFontGlyphs(String fnt, String input, bool silent = false)
+	{
+		if (fnt == "") { return false, ""; }
+		if (input == "") { return true, ""; }
+
+		Font testfont = Font.GetFont(fnt);
+		if (!testfont)
+		{
+			if (developer && !silent) { console.printf("\cKFont \cC%s \cKcould not be found.", fnt); }
+			return false, "";
+		}
+
+		if (testfont.CanPrint(input)) { return true, ""; } // Skip the additional logic if the string is printable
+
+		input = ZScriptTools.StripColorCodes(input);
+
+		String fail;
+		int c = 0;
+
+		for (int i = 0; i < input.CodePointCount(); ++i)
+		{
+			int t;
+			[t, c] = input.GetNextCodePoint(c);
+
+			String test = String.Format("%c", t);
+			if (test.length() && !testfont.CanPrint(test))
+			{
+				if (fail.IndexOf(test) == -1)
+				{
+					if (fail.length()) { fail = fail .. ", "; }
+					fail = String.Format("%s%s (%04X)", fail, test, t);
+				}
+			}
+		}
+
+		if (fail.length())
+		{
+			if (developer && !silent) { console.printf("\cKFont \cC%s \cKcannot print \cJ%s\cK.", fnt, fail); }
+			return false, fail;
+		}
+
+		return true, "";
 	}
 }

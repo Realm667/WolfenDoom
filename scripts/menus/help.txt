@@ -29,6 +29,7 @@ class BoAInfo : BoAMenu
 	int maxpages;
 	double labelscale;
 	bool continousscroll;
+	bool once;
 
 	override void Init(Menu parent)
 	{
@@ -100,6 +101,8 @@ class BoAInfo : BoAMenu
 		}
 
 		if (label_l) { screen.DrawTexture(label_l, false, (w / 10) / labelscale, h / labelscale - 4 * labelscale - lh, DTA_VirtualWidthF, w / labelscale, DTA_VirtualHeightF, h / labelscale); }
+
+		once = true;
 	}
 
 	override bool MenuEvent(int mkey, bool fromcontroller)
@@ -117,6 +120,7 @@ class BoAInfo : BoAMenu
 				dir = 1;
 				prevtic = mInfoTic;
 				mInfoTic = gametic;
+				once = false;
 				return true;
 			}
 		}
@@ -128,6 +132,7 @@ class BoAInfo : BoAMenu
 				dir = -1;
 				prevtic = mInfoTic;
 				mInfoTic = gametic;
+				once = false;
 				return true;
 			}
 		}
@@ -315,6 +320,8 @@ class BoAInfo : BoAMenu
 
 			textscale *= scale;
 
+			if (!once && alpha < 1.0) { ZScriptTools.DebugFontGlyphs(GetString(content, "font"), text); }
+
 			if (!fnt || !fnt.CanPrint(text)) { fnt = SmallFont; } // If the font can't print the string, try falling back to SmallFont
 			if (!fnt.CanPrint(text)) { fnt = NewSmallFont; } // If SmallFont still can't print it, use the engine's built-in NewSmallFont
 
@@ -501,6 +508,7 @@ class BoAInfo : BoAMenu
 			}
 
 			content = block.Next("content");
+			if (content) { once = false; }
 
 			if (!content && scrollspeed) // Incomplete handling for looped scrolling blocks (they only loop for upward scrolling), but enough for our purposes
 			{

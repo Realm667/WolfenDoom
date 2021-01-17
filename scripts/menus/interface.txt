@@ -535,6 +535,8 @@ class ViewItem : BoAMenu
 			textmessage = StringTable.Localize(text, false);
 		}
 
+		ZScriptTools.DebugFontGlyphs(fnt, textmessage);
+
 		textlines = msgfont.BreakLines(textmessage, int(pagewidth / fontscale));
 
 		textx = 320 - pagewidth / 2;
