@@ -72,7 +72,7 @@
 	- Be cautious!  If the PlayerFollower gets stuck somwhere in the level geometry while
 	  this is set, then the PlayerFollower will never be able to become un-stuck.
 
-	user_nonmoving (default is 0)
+	nonmoving (default is 0)
 	- Setting this boolean to 1 causes the PlayerFollower to stand in place and not
 	  follow the player anymore.
 	- This differs from being dormant/Deactivated in that the PlayerFollower will still
@@ -419,7 +419,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 				if (target) { target.bShootable = target.Default.bShootable; }
 			}
 		}
-		else if (nonmoving) // If you're standing
+		else if (nonmoving && !Markers.Size())  // If you're standing (and there were no marker goals already spawned).  If marker goals were spawner, follower will run up to that point, then become nonmoving
 		{
 			if (currentGoal) // If you have a goal assigned, it's an origin point and you were previously running from a grenade
 			{
