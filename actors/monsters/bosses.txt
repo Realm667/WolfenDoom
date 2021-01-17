@@ -2376,7 +2376,7 @@ ACTOR Totengraber_Wounded : RocketMan
 	See:
 		Goto See.BossBleeding
 	Heal:
-		"####" E 6 A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), 64, 0, 0, 0, 0)
+		"####" E 6 A_SpawnAtGoal("CreepyRaiseFlat", random(10,-10), random(10,-10), 0, 0, 0, 0, 0)
 		"####" E 0 A_HealGoal
 		Goto See
 	Missile:
@@ -2520,7 +2520,7 @@ ACTOR Mengele_Wounded : RocketMan
 	See:
 		Goto See.BossBleeding
 	Heal:
-		"####" E 6 A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), 64, 0, 0, 0, 0)
+		"####" E 6 A_SpawnAtGoal("CreepyRaiseFlat", random(10,-10), random(10,-10), 0, 0, 0, 0, 0)
 		"####" E 0 A_HealGoal
 		Goto See
 	Missile:
@@ -2794,7 +2794,7 @@ ACTOR Longinus_Hitler : NaziBoss
 		Goto See
 	Heal:
 		"####" E 1 {bNoDamage = FALSE; A_UnsetReflective(); } //force Invulnerability removal - Ozy81
-		"####" E 17 A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), 64, 0, 0, 0, 0)
+		"####" E 17 A_SpawnAtGoal("CreepyRaiseFlat", random(10,-10), random(10,-10), 0, 0, 0, 0, 0)
 		"####" S 18 A_HealGoal
 		Goto See
 	Missile: // Phase 1: 2 attacks (Chaingun/RumbleStomp) + Tesla for close range
@@ -3780,7 +3780,7 @@ ACTOR PhantomBoss : RocketMan
 		Goto See
 	Heal:
 		"####" P 3
-		"####" O 3 A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), 64, 0, 0, 0, 0)
+		"####" O 3 A_SpawnAtGoal("CreepyRaiseFlat", random(10,-10), random(10,-10), 0, 0, 0, 0, 0)
 		"####" O 0 A_HealGoal
 		"####" POP 6
 		Goto See
