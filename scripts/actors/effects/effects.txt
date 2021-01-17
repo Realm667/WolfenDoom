@@ -15,6 +15,7 @@
 #include "scripts/actors/effects/steam.txt"
 #include "scripts/actors/effects/torches.txt"
 #include "scripts/actors/effects/grass.txt"
+#include "scripts/actors/effects/creepy.txt"
 
 class EffectInfo // Should just be a struct, but we can't use structs in dynamic arrays...
 {
@@ -34,6 +35,7 @@ class EffectInfo // Should just be a struct, but we can't use structs in dynamic
 	uint8 frame;
 	State curstate;
 	bool wasculled;
+	double radius, height;
 }
 
 // Effects get tracked in a dynamic array and culled when not in range of a player, then respawned when needed
@@ -136,6 +138,16 @@ class EffectsManager : Thinker
 		info.tid = mo.tid;
 		info.dormant = mo.bDormant;
 		if (range >= 0) { info.range = range; }
+
+		info.sprite = mo.sprite;
+		info.frame = mo.frame;
+		info.curstate = mo.CurState;
+
+		if (mo is "Blocker")
+		{
+			info.radius = mo.radius;
+			info.height = mo.height;
+		}
 	}
 
 	void RemoveEffect(Actor effect)
@@ -218,6 +230,8 @@ class EffectsManager : Thinker
 					effect.frame = effects[i].frame;
 					if (effects[i].curstate) { effect.SetState(effects[i].curstate); }
 
+					if (effect is "Blocker") { effect.A_SetSize(effects[i].radius, effects[i].height); }
+
 					effects[i].effect = effect;
 					effects[i].ingame = true;
 
@@ -240,11 +254,6 @@ class EffectsManager : Thinker
 					Actor effect = effects[i].effect;
 
 					if (effect is "CullActorBase") { effects[i].wasculled = true; }
-
-					// Save the frame and state
-					effects[i].sprite = effect.sprite;
-					effects[i].frame = effect.frame;
-					effects[i].curstate = effect.CurState;
 
 					SaveEffectInfo(effect, effects[i], range);
 
@@ -290,9 +299,15 @@ class EffectSpawner : SwitchableDecoration
 
 	FlagDef AllowTickDelay:flags, 0;
 	FlagDef DontCull:flags, 1;
+	FlagDef DoActivation:flags, 2;
 
 	Property Range:range;
 	Property SwitchVar:switchvar;
+
+	Default
+	{
+		+EffectSpawner.DoActivation // Automatically activate/deactivate based on DORMANT flag by default
+	}
 
 	States
 	{
@@ -313,8 +328,11 @@ class EffectSpawner : SwitchableDecoration
 
 		if (range > 0 && !bDontCull) { EffectsManager.Add(self, range > 0 ? min(range, boa_sfxlod) : boa_sfxlod); }
 
-		if (bDormant || SpawnFlags & MTF_DORMANT) { Deactivate(null); }
-		else { Activate(null); }
+		if (bDoActivation)
+		{
+			if (bDormant || SpawnFlags & MTF_DORMANT) { Deactivate(null); }
+			else { Activate(null); }
+		}
 
 		tics += Random(0, 35);
 	}
@@ -347,8 +365,8 @@ class EffectBase : SimpleActor
 {
 	States
 	{
-	Inactive:
-		"####" A 0 A_Jump(256, "Spawn");
+		Inactive:
+			"####" A 0 A_Jump(256, "Spawn");
 	}
 
 	override void PostBeginPlay()
@@ -532,7 +550,7 @@ class Blocker : CullActorBase
 	{
 		Super.PostBeginPlay();
 
-		if (tracer) { A_SetSize(Radius * tracer.scale.x, Height * tracer.scale.y); }
+		if (!wasculled && tracer) { A_SetSize(Radius * tracer.scale.x, Height * tracer.scale.y); }
 
 		scale.x = Radius * 2.0;
 		scale.y = Height * level.pixelStretch;
