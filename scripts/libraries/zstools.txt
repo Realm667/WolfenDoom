@@ -224,6 +224,26 @@ class ZScriptTools
 		}
 	}
 
+	static void TestFontFallback()
+	{
+		String fntname = "bigfont";
+
+		Array<String> fonts;
+		fntname.Split(fonts, "|");
+
+		for (int f = 0; f < fonts.Size(); f++)
+		{
+			String output = "";
+
+			console.printf("\cKTesting font \cC%s\cK for language '\cC%s\cK'...", fonts[f], language);
+
+			output = ZScriptTools.TestFont(fonts[f], StringTable.Localize("REQUIRED_CHARACTERS", false), output);
+
+			if (output.length()) { console.printf("\cG  Missing: \cJ%s\n", output); }
+			else { console.printf("\cD  All characters found.\n", fonts[f], output); }
+		}
+	}
+
 	static clearscope String TestFont(String fnt, String check, String output = "")
 	{
 		bool valid;
