@@ -561,6 +561,51 @@ ACTOR BloodMime : KittySinger
 	}
 }
 
+ACTOR HelmetlessMarine1 : StatistBarkeeper
+{
+	//$Title Helmetless Marine 1, Talking (NPC)
+	Scale 0.67
+	+RANDOMIZE
+	States
+	{
+	Spawn:
+		ALL1 A 10
+		"####" B 20 A_Jump(128,2)
+		"####" CB 20
+		"####" D 10 A_Jump(128,2)
+		"####" DACB 30
+		"####" E 10
+		Loop
+	}
+}
+
+ACTOR HelmetlessMarine2 : HelmetlessMarine1
+{
+	//$Title Helmetless Marine 2, Talking (NPC)
+	States
+	{
+	Spawn:
+		ALL2 A 10
+		"####" B 20 A_Jump(128,2)
+		"####" CB 20
+		"####" D 10 A_Jump(128,2)
+		"####" DACB 30
+		"####" E 10
+		Loop
+	}
+}
+
+ACTOR HelmetlessPara1 : HelmetlessMarine1
+{
+	//$Title Helmetless Paratrooper 1, Standing (NPC)
+	States
+	{
+	Spawn:
+		ALL3 A -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
+		Stop
+	}
+}
+
 ACTOR Marine3AStatist : Marine1
 {
 	Height 56
