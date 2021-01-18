@@ -561,51 +561,6 @@ ACTOR BloodMime : KittySinger
 	}
 }
 
-ACTOR HelmetlessMarine1 : StatistBarkeeper
-{
-	//$Title Helmetless Marine 1, Talking (NPC)
-	Scale 0.67
-	+RANDOMIZE
-	States
-	{
-	Spawn:
-		ALL1 A 10
-		"####" B 20 A_Jump(128,2)
-		"####" CB 20
-		"####" D 10 A_Jump(128,2)
-		"####" DACB 30
-		"####" E 10
-		Loop
-	}
-}
-
-ACTOR HelmetlessMarine2 : HelmetlessMarine1
-{
-	//$Title Helmetless Marine 2, Talking (NPC)
-	States
-	{
-	Spawn:
-		ALL2 A 10
-		"####" B 20 A_Jump(128,2)
-		"####" CB 20
-		"####" D 10 A_Jump(128,2)
-		"####" DACB 30
-		"####" E 10
-		Loop
-	}
-}
-
-ACTOR HelmetlessPara1 : HelmetlessMarine1
-{
-	//$Title Helmetless Paratrooper 1, Standing (NPC)
-	States
-	{
-	Spawn:
-		ALL3 A -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
-		Stop
-	}
-}
-
 ACTOR Marine3AStatist : Marine1
 {
 	Height 56
@@ -646,6 +601,80 @@ ACTOR GeneralAllied : Base
 	Spawn:
 		GENR O -1 NODELAY A_GiveInventory("Z_ShadeMe",0)
 		Stop
+	}
+}
+
+ACTOR HelmetlessMarine1T : StatistBarkeeper
+{
+	//$Title Helmetless Marine 1, Talking (NPC)
+	Scale 0.67
+	+RANDOMIZE
+	States
+	{
+	Spawn:
+		ALL1 A 5
+		"####" B 8 A_Jump(128,2)
+		"####" CB 8
+		"####" D 5 A_Jump(128,2)
+		"####" DACB 12
+		"####" E 8
+		Loop
+	}
+}
+
+ACTOR HelmetlessMarine1C : HelmetlessMarine1T
+{
+	//$Title Helmetless Marine 1, Cup (NPC)
+	-RANDOMIZE
+	States
+	{
+	Spawn:
+		ALC1 A -1
+		Stop
+	}
+}
+
+ACTOR HelmetlessMarine2T : HelmetlessMarine1T
+{
+	//$Title Helmetless Marine 2, Talking (NPC)
+	States
+	{
+	Spawn:
+		ALL2 A 5
+		"####" B 8 A_Jump(128,2)
+		"####" CB 8
+		"####" D 5 A_Jump(128,2)
+		"####" DACB 12
+		"####" E 8
+		Loop
+	}
+}
+
+ACTOR HelmetlessPara1S : HelmetlessMarine1T
+{
+	//$Title Helmetless Paratrooper 1, Standing (NPC)
+	-RANDOMIZE
+	States
+	{
+	Spawn:
+		ALL3 A -1
+		Stop
+	}
+}
+
+ACTOR HelmetlessPara1T : HelmetlessMarine1T
+{
+	//$Title Helmetless Paratrooper 1, Talking (NPC)
+	States
+	{
+	Spawn:
+		ALL3 A 5
+		"####" B 8 A_Jump(128,2)
+		"####" CB 8
+		"####" D 5 A_Jump(128,2)
+		"####" DACB 12
+		"####" E 8
+		Loop
 	}
 }
 
