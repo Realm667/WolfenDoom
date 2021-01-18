@@ -182,7 +182,7 @@ class ZScriptTools
 	//  Fallback if none of the passed fonts can print the string is to return SmallFont.
 	static clearscope Font GetViableFont(String fntname, String check = "")
 	{
-		// Splot the string to create an array of font names
+		// Split the string to create an array of font names
 		Array<String> fonts;
 		fntname.Split(fonts, "|");
 
@@ -237,7 +237,10 @@ class ZScriptTools
 
 			console.printf("\cKTesting font \cC%s\cK for language '\cC%s\cK'...", fonts[f], language);
 
-			output = ZScriptTools.TestFont(fonts[f], StringTable.Localize("REQUIRED_CHARACTERS", false), output);
+			String teststring = StringTable.Localize("REQUIRED_CHARACTERS", false);
+			teststring = teststring .. teststring.MakeLower();
+
+			output = ZScriptTools.TestFont(fonts[f], teststring, output);
 
 			if (output.length()) { console.printf("\cG  Missing: \cJ%s\n", output); }
 			else { console.printf("\cD  All characters found.\n", fonts[f], output); }
