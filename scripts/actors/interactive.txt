@@ -156,6 +156,24 @@ class Debris_Wood_FloorCeiling2 : Debris_Vent_FloorCeiling
 	}
 }
 
+class Debris_WindowBoards : Debris_Wood_FloorCeiling2
+{
+	Default
+	{
+		//$Title Wood Debris, 3rd variant - Window boards (activatable)
+		-SOLID
+		Scale 0.5;
+		Radius 1;
+	}
+
+	States
+	{
+		Spawn:
+			VENT F 1;
+			Goto Active;
+	}
+}
+
 class TrainingTarget : SwitchableDecoration
 {
 	Default
