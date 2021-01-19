@@ -709,6 +709,8 @@ $limit	TANKDBRS 1
 
 //Some boss sounds are double defined in order to have more chances to reproduce them on top of others
 
+DONTSPAM null //use this to reduce sounds spamming - ozy81
+
 //Smokemonster
 Smoke/See			SSee
 Smoke/Tick			Slop1
@@ -735,7 +737,6 @@ Bos1St06 Bos1St06
 Bos1St07 Bos1St07
 Bos1St08 Bos1St08
 Bos1St09 Bos1St09
-DONTSPAM null //this to reduce sounds spamming - ozy81
 
 //Gretel
 $random BossGirl/Death { gretdt1 gretdt2 gretdt3 gretdt4 }
@@ -774,7 +775,7 @@ KOMSEE07 KOMSEE07
 $random Komuto/Sighted { KOMSEE01 KOMSEE02 KOMSEE03 KOMSEE04 KOMSEE05 KOMSEE06 KOMSEE07 }
 
 //Mengele, 3 actors - maybe we need creepier version for wounded
-$random mengele/active { MENGROA1 MENGROA2 }
+$random mengele/active { MENGROA1 DONTSPAM MENGROA2 DONTSPAM }
 MENGROA1 MENGROA1
 MENGROA2 MENGROA2
 $random mengele/sight { MENGALR1 MENGALR2 }
@@ -785,7 +786,7 @@ MENGDIE1 MENGDIE1
 MENGDIE2 MENGDIE2
 
 //Morell
-$random morell/active { MORLROA1 MORLROA2 }
+$random morell/active { MORLROA1 DONTSPAM MORLROA2 DONTSPAM }
 MORLROA1 MORLROA1
 MORLROA2 MORLROA2
 $random morell/sight { MORLALR1 MORLALR2 }
@@ -796,7 +797,7 @@ MORLDIE1 MORLDIE1
 MORLDIE2 MORLDIE2
 
 //Dr.Schabbs Sr.
-$random schabbs/active { SCHBROA1 SCHBROA2 }
+$random schabbs/active { SCHBROA1 DONTSPAM SCHBROA2 DONTSPAM }
 SCHBROA1 SCHBROA1
 SCHBROA2 SCHBROA2
 $random schabbs/sight { SCHBALR1 SCHBALR2 }
@@ -806,8 +807,19 @@ $random schabbs/die { SCHBDIE1 SCHBDIE2 }
 SCHBDIE1 SCHBDIE1
 SCHBDIE2 SCHBDIE2
 
+//Eisenhimmel
+$random eisen/active { EISEROA1 DONTSPAM EISEROA2 DONTSPAM }
+EISEROA1 EISEROA1
+EISEROA2 EISEROA2
+$random eisen/sight { EISEALR1 EISEALR2 }
+EISEALR1 EISEALR1
+EISEALR2 EISEALR2
+$random eisen/die { EISEDIE1 EISEDIE2 }
+EISEDIE1 EISEDIE1
+EISEDIE2 EISEDIE2
+
 //Fettgesicht
-$random fettges/active { FETTROA1 FETTROA2 }
+$random fettges/active { FETTROA1 DONTSPAM FETTROA2 DONTSPAM }
 FETTROA1 FETTROA1
 FETTROA2 FETTROA2
 $random fettges/sight { FETTALR1 FETTALR2 }
@@ -818,7 +830,7 @@ FETTDIE1 FETTDIE1
 FETTDIE2 FETTDIE2
 
 //Friedhelm
-$random fried/active { FRIDROA1 FRIDROA2 }
+$random fried/active { FRIDROA1 DONTSPAM FRIDROA2 DONTSPAM }
 FRIDROA1 FRIDROA1
 FRIDROA2 FRIDROA2
 $random fried/sight { FRIDALR1 FRIDALR2 }
@@ -829,7 +841,7 @@ FRIDDIE1 FRIDDIE1
 FRIDDIE2 FRIDDIE2
 
 //Giftmacher
-$random giftm/active { GIFTROA1 GIFTROA2 }
+$random giftm/active { GIFTROA1 DONTSPAM GIFTROA2 DONTSPAM }
 GIFTROA1 GIFTROA1
 GIFTROA2 GIFTROA2
 $random giftm/sight { GIFTALR1 GIFTALR2 }
@@ -840,7 +852,7 @@ GIFTDIE1 GIFTDIE1
 GIFTDIE2 GIFTDIE2
 
 //Goebbels
-$random goebbs/active { GOEBROA1 GOEBROA2 }
+$random goebbs/active { GOEBROA1 DONTSPAM GOEBROA2 DONTSPAM }
 GOEBROA1 GOEBROA1
 GOEBROA2 GOEBROA2
 $random goebbs/sight { GOEBALR1 GOEBALR2 }
@@ -851,7 +863,7 @@ GOEBDIE1 GOEBDIE1
 GOEBDIE2 GOEBDIE2
 
 //Goering
-$random goering/active { GOERROA1 GOERROA2 }
+$random goering/active { GOERROA1 DONTSPAM GOERROA2 DONTSPAM }
 GOERROA1 GOERROA1
 GOERROA2 GOERROA2
 $random goering/sight { GOERALR1 GOERALR2 }
@@ -864,7 +876,7 @@ Goering/shotsit DSSLSHOT
 Goering/shotdth DSSLSHDT
 
 //Himmler
-$random himmler/active { HIMMROA1 HIMMROA2 }
+$random himmler/active { HIMMROA1 DONTSPAM HIMMROA2 DONTSPAM }
 HIMMROA1 HIMMROA1
 HIMMROA2 HIMMROA2
 $random himmler/sight { HIMMALR1 HIMMALR2 }
@@ -875,7 +887,7 @@ HIMMDIE1 HIMMDIE1
 HIMMDIE2 HIMMDIE2
 
 //Graf Holzbein
-$random holz/active { HOLZROA1 HOLZROA2 }
+$random holz/active { HOLZROA1 DONTSPAM HOLZROA2 DONTSPAM }
 HOLZROA1 HOLZROA1
 HOLZROA2 HOLZROA2
 $random holz/sight { HOLZALR1 HOLZALR2 HOLZALR1 HOLZALR2 DSKRISIT }
@@ -888,7 +900,7 @@ HOLZDIE2 HOLZDIE2
 DSKRIDTH DSKRIDTH
 
 //Schwabbelhals
-$random schwabl/active { SCHWROA1 SCHWROA2 }
+$random schwabl/active { SCHWROA1 DONTSPAM SCHWROA2 DONTSPAM }
 SCHWROA1 SCHWROA1
 SCHWROA2 SCHWROA2
 $random schwabl/sight { SCHWALR1 SCHWALR2 }
@@ -899,7 +911,7 @@ SCHWDIE1 SCHWDIE1
 SCHWDIE2 SCHWDIE2
 
 //Seeteufel
-$random seeteuf/active { SEETROA1 SEETROA2 SEETROA3 }
+$random seeteuf/active { SEETROA1 DONTSPAM SEETROA2 DONTSPAM SEETROA3 DONTSPAM }
 SEETROA1 SEETROA1
 SEETROA2 SEETROA2
 SEETROA3 SEETROA3
@@ -911,7 +923,7 @@ SEETDIE1 SEETDIE1
 SEETDIE2 SEETDIE2
 
 //Totengraber
-$random toten/active { TOTEROA1 TOTEROA2 TOTEROA3 }
+$random toten/active { TOTEROA1 DONTSPAM TOTEROA2 DONTSPAM TOTEROA3 DONTSPAM }
 TOTEROA1 TOTEROA1
 TOTEROA2 TOTEROA2
 TOTEROA3 TOTEROA3
@@ -923,7 +935,7 @@ TOTEDIE1 TOTEDIE1
 TOTEDIE2 TOTEDIE2
 
 //Hitler - kept some old dependencies as well, some are shared through other bosses --ozy81
-$random hitler/active { HITLROA1 HITLROA2 HITLROA3 }
+$random hitler/active { HITLROA1 DONTSPAM HITLROA2 DONTSPAM HITLROA3 DONTSPAM }
 HITLROA1 HITLROA1
 HITLROA2 HITLROA2
 HITLROA3 HITLROA3
