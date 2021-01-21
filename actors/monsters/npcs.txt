@@ -634,6 +634,90 @@ ACTOR HelmetlessMarine1C : HelmetlessMarine1T
 	}
 }
 
+ACTOR HelmetlessMarine1H : HelmetlessMarine1T
+{
+	//$Title Helmetless Marine 1, Hands Crossed (NPC)
+	-RANDOMIZE
+	States
+	{
+	Spawn:
+		ALH1 A -1
+		Stop
+	}
+}
+
+ACTOR HelmetlessMarine1O : HelmetlessMarine1T
+{
+	//$Title Helmetless Marine 1, Smoking (NPC)
+	-RANDOMIZE
+	States
+	{
+	Spawn:
+		ALO1 A -1
+		Stop
+	}
+}
+
+ACTOR HelmetlessMarine1S : HelmetlessMarine1T
+{
+	//$Title Helmetless Marine 1, Standing (NPC)
+	-RANDOMIZE
+	States
+	{
+	Spawn:
+		ALL1 A -1
+		Stop
+	}
+}
+
+ACTOR HelmetlessMarine2C : HelmetlessMarine1T
+{
+	//$Title Helmetless Marine 2, Cup (NPC)
+	-RANDOMIZE
+	States
+	{
+	Spawn:
+		ALC2 A -1
+		Stop
+	}
+}
+
+ACTOR HelmetlessMarine2H : HelmetlessMarine1T
+{
+	//$Title Helmetless Marine 2, Hands Crossed (NPC)
+	-RANDOMIZE
+	States
+	{
+	Spawn:
+		ALH2 A -1
+		Stop
+	}
+}
+
+ACTOR HelmetlessMarine2O : HelmetlessMarine1T
+{
+	//$Title Helmetless Marine 2, Smoking (NPC)
+	-RANDOMIZE
+	States
+	{
+	Spawn:
+		ALO2 A -1
+		Stop
+	}
+}
+
+ACTOR HelmetlessMarine2S : HelmetlessMarine1T
+{
+	//$Title Helmetless Marine 2, Standing (NPC)
+	-RANDOMIZE
+	States
+	{
+	Spawn:
+		ALL2 A -1
+		Stop
+	}
+}
+
 ACTOR HelmetlessMarine2T : HelmetlessMarine1T
 {
 	//$Title Helmetless Marine 2, Talking (NPC)
@@ -647,6 +731,42 @@ ACTOR HelmetlessMarine2T : HelmetlessMarine1T
 		"####" DACB 12
 		"####" E 8
 		Loop
+	}
+}
+
+ACTOR HelmetlessPara1C : HelmetlessMarine1T
+{
+	//$Title Helmetless Paratrooper, Cup (NPC)
+	-RANDOMIZE
+	States
+	{
+	Spawn:
+		ALC3 A -1
+		Stop
+	}
+}
+
+ACTOR HelmetlessPara1H : HelmetlessMarine1T
+{
+	//$Title Helmetless Paratrooper, Hands Crossed (NPC)
+	-RANDOMIZE
+	States
+	{
+	Spawn:
+		ALH3 A -1
+		Stop
+	}
+}
+
+ACTOR HelmetlessPara1O : HelmetlessMarine1T
+{
+	//$Title Helmetless Paratrooper, Smoking (NPC)
+	-RANDOMIZE
+	States
+	{
+	Spawn:
+		ALO3 A -1
+		Stop
 	}
 }
 
@@ -668,6 +788,131 @@ ACTOR HelmetlessPara1T : HelmetlessMarine1T
 	States
 	{
 	Spawn:
+		ALL3 A 5
+		"####" B 8 A_Jump(128,2)
+		"####" CB 8
+		"####" D 5 A_Jump(128,2)
+		"####" DACB 12
+		"####" E 8
+		Loop
+	}
+}
+//never use these randoms for talkable npcs! --ozy81
+ACTOR HelmetlessAlliedRC : HelmetlessMarine1T
+{
+	//$Title Random Helmetless Allied Soldier, Cup (NPC)
+	States
+	{
+	Spawn:
+		ALC1 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.67, 0.69) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		ALC1 A 0 A_Jump(256,"Pose1","Pose2","Pose3")
+		Stop
+	Pose1:
+		ALC1 A -1
+		Stop
+	Pose2:
+		ALC2 A -1
+		Stop
+	Pose3:
+		ALC3 A -1
+		Stop
+	}
+}
+
+ACTOR HelmetlessAlliedRH : HelmetlessMarine1T
+{
+	//$Title Random Helmetless Allied Soldier, Crossed Arms (NPC)
+	States
+	{
+	Spawn:
+		ALH1 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.67, 0.69) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		ALH1 A 0 A_Jump(256,"Pose1","Pose2","Pose3")
+		Stop
+	Pose1:
+		ALH1 A -1
+		Stop
+	Pose2:
+		ALH2 A -1
+		Stop
+	Pose3:
+		ALH3 A -1
+		Stop
+	}
+}
+
+ACTOR HelmetlessAlliedRO : HelmetlessMarine1T
+{
+	//$Title Random Helmetless Allied Soldier, Smoking (NPC)
+	States
+	{
+	Spawn:
+		ALO1 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.67, 0.69) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		ALO1 A 0 A_Jump(256,"Pose1","Pose2","Pose3")
+		Stop
+	Pose1:
+		ALO1 A -1
+		Stop
+	Pose2:
+		ALO2 A -1
+		Stop
+	Pose3:
+		ALO3 A -1
+		Stop
+	}
+}
+
+ACTOR HelmetlessAlliedRS : HelmetlessMarine1T
+{
+	//$Title Random Helmetless Allied Soldier, Standing (NPC)
+	States
+	{
+	Spawn:
+		ALL1 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.67, 0.69) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		ALL1 A 0 A_Jump(256,"Pose1","Pose2","Pose3")
+		Stop
+	Pose1:
+		ALL1 A -1
+		Stop
+	Pose2:
+		ALL2 A -1
+		Stop
+	Pose3:
+		ALL3 A -1
+		Stop
+	}
+}
+
+ACTOR HelmetlessAlliedRT : HelmetlessMarine1T
+{
+	//$Title Random Helmetless Allied Soldier, Talking (NPC)
+	States
+	{
+	Spawn:
+		ALL1 A 0 NODELAY { A_SetScale(ScaleX * RandomPick(-1.0, 1.0), frandom(0.67, 0.69) ); A_GiveInventory("Z_ShadeMe",0); }
+	Randomize:
+		ALL1 A 0 A_Jump(256,"Pose1","Pose2","Pose3")
+		Stop
+	Pose1:
+		ALL1 A 5
+		"####" B 8 A_Jump(128,2)
+		"####" CB 8
+		"####" D 5 A_Jump(128,2)
+		"####" DACB 12
+		"####" E 8
+		Loop
+	Pose2:
+		ALL2 A 5
+		"####" B 8 A_Jump(128,2)
+		"####" CB 8
+		"####" D 5 A_Jump(128,2)
+		"####" DACB 12
+		"####" E 8
+		Loop
+	Pose3:
 		ALL3 A 5
 		"####" B 8 A_Jump(128,2)
 		"####" CB 8
