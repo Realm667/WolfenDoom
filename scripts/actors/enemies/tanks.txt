@@ -301,6 +301,7 @@ class TankBase : VehicleBase
 		+AVOIDMELEE
 		+BOSS
 		+BOSSDEATH
+		+COUNTKILL
 		+DONTMORPH
 		+FLOORCLIP
 		+ISMONSTER
@@ -415,6 +416,18 @@ class TankBase : VehicleBase
 		if (turrettimeout > 0) { turrettimeout--; }
 		if (reversetimeout > 0) { reversetimeout--; }
 		if (targettimeout > 0) { targettimeout--; }
+
+		if (bShootable && health > 0 && !bDormant)
+		{
+			if (Default.bCountKill && !bCountKill && !bFriendly)
+			{
+				if (SpawnFlags & MTF_DORMANT && !bDormant && !user_nocountkill)
+				{
+					bCountKill = true;
+					level.total_monsters++; 
+				}
+			}
+		}
 
 		if (!turret)
 		{
