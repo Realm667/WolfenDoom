@@ -102,7 +102,7 @@ class Soul : StackableInventory
 
 		Super.Tick();
 
-		if (!owner)
+		if (!owner && !bNoSector)
 		{
 			A_AttachLight("Glow", DynamicLight.PointLight, 0x78FF73, int((24 + 8.0 * ((Amount - 3) / 22)) * alpha / Default.alpha), 0, DynamicLight.LF_ATTENUATE, (0.0, 0.0, 32.0));
 
@@ -165,6 +165,12 @@ class Soul : StackableInventory
 
 	void A_SoulSeek(int distance = 256)
 	{
+		// Account for souls "held" by an InventoryHolder
+		if (bNoSector && !owner)
+		{
+			SetStateLabel("Placed");
+			return;
+		}
 		if (Amount && bSpecial) // If we're still a valid pickup (not absorbed by another soul and disappearing), look for a new seek target...
 		{
 			bSolid = true; // Needed for collision detection handling while flying
