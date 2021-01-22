@@ -442,14 +442,9 @@ class ViewItem : BoAMenu
 			// Hacky workaround for fonts that don't have Cyrillic characters
 			if (language.Left(2) ~== "ru")
 			{
-				switch (fontstyle)
+				if (fontstyle == 4)
 				{
-					case 1:
-						fontstyle = 2;
-						break;
-					case 4:
-						fontstyle = 5;
-						break;
+					fontstyle = 5;
 				}
 			}
 
