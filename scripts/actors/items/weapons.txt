@@ -31,6 +31,7 @@ class NaziWeapon : Weapon
 	float lowerstart, lowerspeed;
 	double modifier;
 	uint oldbuttons;
+	bool reloading; // Weapon is reloading
 
 	Default
 	{
@@ -225,6 +226,20 @@ class NaziWeapon : Weapon
 			p.A_SetAngle(AngleTo(closest), SPF_INTERPOLATE);
 			p.A_Face(closest, -1, 90, 0, 0, FAF_BOTTOM);
 		}
+	}
+
+	action void A_Reloading(bool r = true)
+	{
+		invoker.reloading = r;
+	}
+
+	action state A_JumpIfReloading(StateLabel st)
+	{
+		if (invoker.reloading)
+		{
+			return A_Jump(256, st);
+		}
+		return null;
 	}
 }
 
