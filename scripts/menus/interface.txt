@@ -384,7 +384,7 @@ class ViewItem : BoAMenu
 	double scale, fontscale, linespacing, alpha, msgalpha;
 
 	bool initial;
-	int ticcount, closetime, start, maxy, maxlines, pagewidth;
+	int ticcount, closetime, maxy, maxlines, pagewidth, page, maxpages;
 
 	BrokenLines hintlines;
 	double hintx, hinty, hintlineheight;
@@ -513,30 +513,41 @@ class ViewItem : BoAMenu
 		hintx = 320;
 		hintlineheight = SmallFont.GetHeight();
 
-		double offset = hintlineheight * (hintlines.Count() - 0.5);
+		double offset = hintlineheight * (hintlines.Count() - 0.5) - 10;
 
-		hinty = 470 - offset;
+		hinty = 460 - offset;
 		location.y -= offset;
-		maxy = int(maxy - (hintlineheight * (hintlines.Count() - 1.0)));
-
-		// Text content
-		msgfont = Font.GetFont(fnt);
-		if (!msgfont) { msgfont = SmallFont; }
-
-		String textmessage = "";
+		maxy = int(maxy - (hintlineheight * (hintlines.Count() - 1.0) - 10));
 
 		if (!(text == "")) // Don't show any text if nothing was set up for display...
 		{
-			textmessage = StringTable.Localize(text, false);
+			// Text content
+			msgfont = Font.GetFont(fnt);
+			if (!msgfont) { msgfont = SmallFont; }
+
+			String textmessage = StringTable.Localize(text, false);
+
+			ZScriptTools.DebugFontGlyphs(fnt, textmessage);
+
+			textlines = msgfont.BreakLines(textmessage, int(pagewidth / fontscale));
+
+			textx = 320 - pagewidth / 2;
+			textlineheight = msgfont.GetHeight() * linespacing * fontscale;
+			maxlines = int((maxy - texty) / textlineheight);
+
+			int count = textlines.Count();
+			for (int c = count; c > 0; c--)
+			{
+				if (textlines.StringWidth(c) <= 0) { count--; } // Don't count empty lines at the end
+				else { break; }
+			}		
+
+			double pages = count / maxlines;
+
+			maxpages = int(pages);  // maxpages is an integer, but make sure to always round up if there was even a small amount of overflow
+			if (maxpages < pages) { maxpages++; }
 		}
 
-		ZScriptTools.DebugFontGlyphs(fnt, textmessage);
-
-		textlines = msgfont.BreakLines(textmessage, int(pagewidth / fontscale));
-
-		textx = 320 - pagewidth / 2;
-		textlineheight = msgfont.GetHeight() * linespacing * fontscale;
-		maxlines = int((maxy - texty) / textlineheight);
 		texty -= offset;
 
 		// Menu setup
@@ -560,49 +571,19 @@ class ViewItem : BoAMenu
 
 			if (textlines)
 			{
-				int skipcount;
-				for (int i = start; i < min(start + maxlines, textlines.Count() - skipcount); i++)
+				int start = page * maxlines;
+				for (int i = start; i < min(start + maxlines, textlines.Count()); i++)
 				{
-					int curLine = i + skipcount;
-					String text = textlines.StringAt(curLine);
+					String text = textlines.StringAt(i);
 
-					if (i == start && text.length() <= 2)
-					{
-						skipcount++;
-						i--;
-					}
-					else
-					{
-						screen.DrawText(msgfont, Font.CR_UNTRANSLATED, textx / fontscale, texty / fontscale + textlineheight * (i - start) / fontscale, text, DTA_VirtualWidth, int(640 / fontscale), DTA_VirtualHeight, int(480 / fontscale), DTA_Alpha, alpha);
-					}
+					screen.DrawText(msgfont, Font.CR_UNTRANSLATED, textx / fontscale, texty / fontscale + textlineheight * (i - start) / fontscale, text, DTA_VirtualWidth, int(640 / fontscale), DTA_VirtualHeight, int(480 / fontscale), DTA_Alpha, alpha);
 				}
 
 				// Draw left/right indicators at the bottom of the page, as appropriate
-				if (textlines.Count() > maxlines)
+				if (maxpages > 0)
 				{
-					bool l, r;
-
-					if (start > 0)
-					{
-						if (start + maxlines > textlines.Count())
-						{
-							l = true;
-							r = false;
-						}
-						else
-						{
-							l = true;
-							r = true;
-						}
-					}
-					else
-					{
-						l = false;
-						r = true;
-					}
-
-					if (l) { screen.DrawText(msgfont, Font.CR_UNTRANSLATED, (textx + pagewidth - 32 - 4) / fontscale, maxy / fontscale, "<", DTA_VirtualWidth, int(640 / fontscale), DTA_VirtualHeight, int(480 / fontscale), DTA_Alpha, alpha); }
-					if (r) { screen.DrawText(msgfont, Font.CR_UNTRANSLATED, (textx + pagewidth - 32 + 4) / fontscale, maxy / fontscale, ">", DTA_VirtualWidth, int(640 / fontscale), DTA_VirtualHeight, int(480 / fontscale), DTA_Alpha, alpha); }
+					if (page > 0) { screen.DrawText(msgfont, Font.CR_UNTRANSLATED, (textx + pagewidth - 32 - 4) / fontscale, maxy / fontscale, "<", DTA_VirtualWidth, int(640 / fontscale), DTA_VirtualHeight, int(480 / fontscale), DTA_Alpha, alpha); }
+					if (page < maxpages) { screen.DrawText(msgfont, Font.CR_UNTRANSLATED, (textx + pagewidth - 32 + 4) / fontscale, maxy / fontscale, ">", DTA_VirtualWidth, int(640 / fontscale), DTA_VirtualHeight, int(480 / fontscale), DTA_Alpha, alpha); }
 				}
 			}
 		}
@@ -661,7 +642,7 @@ class ViewItem : BoAMenu
 			closetime = 0;
 			Close();
 
-			if (item.bAllowPickup) { S_StartSound("pickup/item", CHAN_ITEM, CHANF_UI | CHANF_NOSTOP, 1.0); }
+			if (item.bAllowPickup) { S_StartSound("pickup/item", CHAN_ITEM, CHANF_UI | CHANF_NOSTOP, 1.0); } // Generic "putting in inventory" sound
 		}
 
 		Super.Ticker();
@@ -673,11 +654,11 @@ class ViewItem : BoAMenu
 		{
 			case MKEY_Up:
 			case MKEY_Left:
-				if (start > 0) { start = max(0, start - maxlines); }
+				if (page > 0) { page--; }
 				return true;
 			case MKEY_Down:
 			case MKEY_Right:
-				if (start < textlines.Count() - maxlines) { start = start + maxlines; }
+				if (page < maxpages) { page++; }
 				return true;
 			case MKEY_Back:
 			case MKEY_Enter:
@@ -717,7 +698,7 @@ class ViewItem : BoAMenu
 					return true;
 					break;
 				case InputEvent.Key_Mouse1:
-					if (start < textlines.Count() - maxlines) { MenuEvent(MKEY_Right, false); }
+					if (page < maxpages) { MenuEvent(MKEY_Right, false); }
 					else { MenuEvent(MKEY_Back, false); }
 					return true;
 					break;
