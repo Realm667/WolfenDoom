@@ -32,6 +32,22 @@ ACTOR StatistBarkeeper : Base
 	}
 }
 
+ACTOR Clerk : StatistBarkeeper
+{
+	//$Title Lt. Laz Rojas
+	States
+	{
+	Spawn:
+		BLCK A 0 NODELAY A_Jump(256,"Pose1","Pose2")
+	Pose1:
+		BLCK A -1
+		Stop
+	Pose1:
+		BLCK B -1
+		Stop
+	}
+}
+
 ACTOR StatistMedic : StatistBarkeeper
 {
 	//$Title Ty Halderman, Medic (NPC)
