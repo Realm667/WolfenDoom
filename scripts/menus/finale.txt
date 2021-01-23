@@ -239,7 +239,18 @@ class Finale : BoAMenu
 	{
 		lines = fnt.BreakLines(StringTable.Localize(text), int(textwidth / textscale));
 		maxlines = int(textheight / lineheight);
-		maxpages = lines.Count() / maxlines;
+
+		int count = lines.Count();
+		for (int c = count; c > 0; c--)
+		{
+			if (lines.StringWidth(c) <= 0) { count--; } // Don't count empty lines at the end
+			else { break; }
+		}		
+
+		double pages = count / maxlines;
+
+		maxpages = int(pages);  // maxpages is an integer, but make sure to always round up if there was even a small amount of overflow
+		if (maxpages < pages) { maxpages++; }
 	}
 
 	override void Drawer()
