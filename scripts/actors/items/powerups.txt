@@ -771,6 +771,7 @@ class InventoryHolder play
 		curItem.MaxAmount = prevMaxAmount;
 		curItem.Amount = prevAmount;
 		curItem.A_ChangeLinkFlags(1, 1); // Prevent players from picking it up.
+		curItem.SetStateLabel("Held");
 		heldItems.Push(curItem);
 		// Console.Printf("%s (%d/%d) (%d/%d)", curItem.GetClassName(), curItem.Amount, curItem.MaxAmount, prevAmount, prevMaxAmount);
 	}
@@ -823,6 +824,8 @@ class RyanToken : DisguiseToken
 	InventoryHolder BJInv;
 	int BJStamina; // Attempt to fix health
 	int BJHealth;
+	class<Inventory> PreInvSel;
+	class<Weapon> PreWeapon;
 
 	Default
 	{
@@ -847,11 +850,18 @@ class RyanToken : DisguiseToken
 	{
 		if (toucher)
 		{
+			let p = PlayerPawn(toucher);
+			if (p.InvSel)
+			{
+				PreInvSel = p.InvSel.GetClass();
+			}
+			if (p.player && p.player.ReadyWeapon)
+			{
+				PreWeapon = p.player.ReadyWeapon.GetClass();
+			}
 			BJInv = new("InventoryHolder");
 			BJInv.holder = self;
 			BJInv.HoldInventory(toucher.Inv);
-
-			let p = PlayerPawn(toucher);
 
 			// Console.Printf("Health: %d %d", p.Health, p.player.Health);
 			if (p && p.player)
@@ -860,7 +870,7 @@ class RyanToken : DisguiseToken
 				if (invclear) { invclear.ResetPlayerInventory(toucher); }
 
 				toucher.A_GiveInventory("KnifeSilent", 1);
-
+				
 				p.InvSel = p.InvFirst = p.FirstInv();
 				// Needed so that players can switch weapons when they turn
 				// into James Ryan.
@@ -891,10 +901,14 @@ class RyanToken : DisguiseToken
 
 			if (p)
 			{
-				p.InvSel = p.FirstInv(); // Doesn't matter
+				p.InvSel = p.FindInventory(PreInvSel);
+				if (!p.InvSel)
+				{
+					p.InvSel = p.FirstInv();
+				}
 				// Just in case...
 				p.player.ReadyWeapon = null;
-				p.player.PendingWeapon = Weapon(p.FindInventory("NullWeapon"));
+				p.player.PendingWeapon = Weapon(p.FindInventory(PreWeapon));
 
 				p.Stamina = BJStamina;
 				p.Health = BJHealth;
@@ -910,6 +924,8 @@ class RyanToken : DisguiseToken
 class HQTrainingCourse : Inventory
 {
 	InventoryHolder holder;
+	class<Inventory> PreInvSel;
+	class<Weapon> PreWeapon;
 
 	Default
 	{
@@ -920,11 +936,19 @@ class HQTrainingCourse : Inventory
 	{
 		if (toucher)
 		{
+			let p = PlayerPawn(toucher);
+			if (p.player && p.player.ReadyWeapon)
+			{
+				PreWeapon = p.player.ReadyWeapon.GetClassName();
+			}
+			if (p.InvSel)
+			{
+				PreInvSel = p.InvSel.GetClassName();
+			}
 			holder = new("InventoryHolder");
 			holder.holder = self;
 			holder.HoldInventory(toucher.Inv);
 
-			let p = PlayerPawn(toucher);
 			if (p && p.player)
 			{
 				let invclear = InventoryClearHandler(EventHandler.Find("InventoryClearHandler"));
@@ -949,10 +973,14 @@ class HQTrainingCourse : Inventory
 
 			if (p)
 			{
-				p.InvSel = p.FirstInv(); // Doesn't matter
+				p.InvSel = p.FindInventory(PreInvSel);
+				if (!p.InvSel)
+				{
+					p.InvSel = p.FirstInv();
+				}
 				// Just in case...
 				p.player.ReadyWeapon = null;
-				p.player.PendingWeapon = Weapon(p.FindInventory("NullWeapon"));
+				p.player.PendingWeapon = Weapon(p.FindInventory(PreWeapon));
 			}
 		}
 

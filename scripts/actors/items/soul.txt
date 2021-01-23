@@ -165,12 +165,6 @@ class Soul : StackableInventory
 
 	void A_SoulSeek(int distance = 256)
 	{
-		// Account for souls "held" by an InventoryHolder
-		if (bNoSector && !owner)
-		{
-			SetStateLabel("Placed");
-			return;
-		}
 		if (Amount && bSpecial) // If we're still a valid pickup (not absorbed by another soul and disappearing), look for a new seek target...
 		{
 			bSolid = true; // Needed for collision detection handling while flying

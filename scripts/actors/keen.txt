@@ -861,7 +861,7 @@ class Billy : PowerMorph
 	int armor;
 	int premorphhealth;
 	double savepercent;
-	class<Inventory> preMorphSelType;
+	class<Inventory> PreInvSel;
 
 	Default
 	{
@@ -889,7 +889,11 @@ class Billy : PowerMorph
 
 			premorphhealth = owner.health;
 
-			preMorphSelType = PlayerPawn(owner).InvSel.GetClass();
+			PlayerPawn p = PlayerPawn(owner);
+			if (p && p.InvSel)
+			{
+				PreInvSel = PlayerPawn(owner).InvSel.GetClass();
+			}
 		}
 
 		Super.InitEffect();
@@ -912,7 +916,11 @@ class Billy : PowerMorph
 			BasicArmor a = BasicArmor(MorphedPlayer.mo.FindInventory("BasicArmor"));
 			if (a) { a.SavePercent = savepercent; }
 
-			MorphedPlayer.mo.InvSel = MorphedPlayer.mo.FindInventory(preMorphSelType);
+			MorphedPlayer.mo.InvSel = MorphedPlayer.mo.FindInventory(PreInvSel);
+			if (!MorphedPlayer.mo.InvSel)
+			{
+				MorphedPlayer.mo.InvSel = MorphedPlayer.mo.FirstInv();
+			}
 		}
 
 		Super.EndEffect();
