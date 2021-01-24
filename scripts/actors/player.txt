@@ -1240,16 +1240,16 @@ class BoAPlayer : PlayerPawn
 
 		if (player && player.mo && G_SkillPropertyInt(SKILLP_ACSReturn) < 3) { saveme = player.mo.FindInventory("SavingHealth", true); }
 
-		if (saveme) { player.cheats |= CF_BUDDHA; }
+		if (saveme) { player.cheats |= CF_BUDDHA2; }
 
 		int dmg = Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
 
 		if (saveme)
 		{
-			player.cheats &= ~CF_BUDDHA;
+			player.cheats &= ~CF_BUDDHA2;
 
 			// If the player would have died, use the saving inventory item
-			if (player.health <= 1 && dmg < TELEFRAG_DAMAGE)
+			if (player.health <= 1)
 			{
 				saveme.Use(false);
 
