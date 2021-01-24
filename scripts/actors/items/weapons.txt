@@ -231,6 +231,11 @@ class NaziWeapon : Weapon
 	action void A_Reloading(bool r = true)
 	{
 		invoker.reloading = r;
+		// Clear firing state, so the player can cancel the reload if the reload
+		// was started automatically via the DryFire state
+		if (r && invoker.Owner.player) {
+			invoker.Owner.player.WeaponState &= ~(WF_WEAPONREADY | WF_WEAPONREADYALT);
+		}
 	}
 
 	action state A_JumpIfReloading(StateLabel st)
