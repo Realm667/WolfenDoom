@@ -2381,7 +2381,7 @@ ACTOR WGuard_Wounded : Nazi //ozy81
 	States
 	{
 	Spawn:
-		GRD2 O 15 { A_Look(); user_count4 = 0; }
+		GRD2 O 150 { A_Look(); user_count4 = 0; }
 		Loop
 	See:
 		// Prevent wounded guards from blocking you
@@ -2445,7 +2445,7 @@ ACTOR Guard_Wounded : WGuard_Wounded
 	States
 	{
 	Spawn:
-		GARD O 15 { A_Look(); user_count4 = 0; }
+		GARD O 150 { A_Look(); user_count4 = 0; }
 		Loop
 	See:
 		// Prevent wounded guards from blocking you
@@ -2504,7 +2504,7 @@ ACTOR SSGuard_Wounded : WGuard_Wounded
 	States
 	{
 	Spawn:
-		SSPG O 15 { A_Look(); user_count4 = 0; }
+		SSPG O 150 { A_Look(); user_count4 = 0; }
 		Loop
 	See:
 		// Prevent wounded guards from blocking you
@@ -2563,7 +2563,7 @@ ACTOR Officer_Wounded : WGuard_Wounded
 	States
 	{
 	Spawn:
-		OFFI O 15 { A_Look(); user_count4 = 0; }
+		OFFI O 150 { A_Look(); user_count4 = 0; }
 		Loop
 	See:
 		// Prevent wounded guards from blocking you
@@ -2622,7 +2622,7 @@ ACTOR SSOfficer_Wounded : WGuard_Wounded
 	States
 	{
 	Spawn:
-		SSOF O 15 { A_Look(); user_count4 = 0; }
+		SSOF O 150 { A_Look(); user_count4 = 0; }
 		Loop
 	See:
 		// Prevent wounded guards from blocking you
@@ -2681,7 +2681,7 @@ ACTOR WOfficer_Wounded : WGuard_Wounded
 	States
 	{
 	Spawn:
-		OFR2 O 15 { A_Look(); user_count4 = 0; }
+		OFR2 O 150 { A_Look(); user_count4 = 0; }
 		Loop
 	See:
 		// Prevent wounded guards from blocking you
@@ -2811,10 +2811,10 @@ ACTOR MGTurret : MiniShip
 	Mass 9999
 	Speed 0
 	+DONTCORPSE
-	-FLOAT
-	-NOGRAVITY
 	+MISSILEEVENMORE
 	+NOPAIN
+	-FLOAT
+	-NOGRAVITY
 	Obituary "$MGTURRET"
 	States
 	{
@@ -2882,7 +2882,7 @@ ACTOR MGTurretCeiling : MGTurret
 ACTOR MGTurretInvisible : MGTurret
 {
 	//$Title Automatic Turret (invisible, non-shootable)
-	Health 0
+	Health -1
 	Obituary "$MGTHIDE"
 	-COUNTKILL
 	-SHOOTABLE
