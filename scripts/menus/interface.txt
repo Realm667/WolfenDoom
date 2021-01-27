@@ -439,15 +439,6 @@ class ViewItem : BoAMenu
 
 			int fontstyle = item.args[2];
 
-			// Hacky workaround for fonts that don't have Cyrillic characters
-			if (language.Left(2) ~== "ru")
-			{
-				if (fontstyle == 4)
-				{
-					fontstyle = 5;
-				}
-			}
-
 			switch (fontstyle)
 			{
 				case 1:
@@ -483,7 +474,6 @@ class ViewItem : BoAMenu
 					fnt = "handwriting_neat";
 					fontscale *= 1.25;
 					linespacing = 1.0;
-
 					break;
 				case 2:
 				default:
