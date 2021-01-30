@@ -37,6 +37,7 @@ class NaziWeapon : Weapon
 	{
 		+WEAPON.AMMO_CHECKBOTH
 		+WEAPON.NOALERT
+		+WEAPON.NOAUTOAIM
 		Weapon.BobStyle "InverseSmooth";
 		Weapon.BobSpeed 2.2;
 		Weapon.BobRangeY 1.0;
@@ -91,7 +92,6 @@ class NaziWeapon : Weapon
 			Amount = 1;
 		}
 
-		if (skill >= 2) { bNoAutoAim = true; } // Force autoaim off if we're on normal skill or higher
 		modifier = 1.0;
 
 		Super.PostBeginPlay();

@@ -327,11 +327,11 @@ class BoAStatusBar : BaseStatusBar
 		int ammocount1, ammocount2;
 		[ammo1, ammo2, ammocount1, ammocount2] = GetCurrentAmmo();
 		if (ammo1) { DrawString(mBigFont, FormatNumber(ammocount1, 3), (225, 171), DI_TEXT_ALIGN_RIGHT); }
-		if (ammo2) { DrawString(mBigFont, FormatNumber(ammocount2, 3), (225, 185), DI_TEXT_ALIGN_RIGHT); }
+		if (ammo2 && ammo1 != ammo2) { DrawString(mBigFont, FormatNumber(ammocount2, 3), (225, 185), DI_TEXT_ALIGN_RIGHT); }
 
 		//Ammo Icons
 		DrawInventoryIcon(ammo1, (231, 170), DI_ITEM_OFFSETS);
-		DrawInventoryIcon(ammo2, (231, 184), DI_ITEM_OFFSETS);
+		if (ammo1 != ammo2) DrawInventoryIcon(ammo2, (231, 184), DI_ITEM_OFFSETS);
 
 		//Weapon
 		if (!disguisetag) { DrawString(mHUDFont, GetWeaponTag(), (190, 159), DI_TEXT_ALIGN_CENTER); }
