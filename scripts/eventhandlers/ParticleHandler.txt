@@ -12,6 +12,8 @@ class ParticleManager : EventHandler
 	int tickdelay;
 	double particlescaling;
 
+int count;
+
 	override void OnRegister()
 	{
 		maxparticlescvar = CVar.FindCVar("boa_maxparticleactors");
@@ -22,7 +24,7 @@ class ParticleManager : EventHandler
 		maxparticles = 512;
 		if (maxparticlescvar) { maxparticles = max(1, maxparticlescvar.GetInt()); }
 
-		maxblood = 64;
+		maxblood = 1024;
 		if (maxbloodcvar) { maxblood = max(1, maxbloodcvar.GetInt()); }
 
 		maxdebris = 64;
@@ -46,6 +48,8 @@ class ParticleManager : EventHandler
 			e.thing is "UWBloodFog"
 		)
 		{
+count++;
+console.printf("%i", count);
 			bloodqueue.Insert(0, e.thing);
 
 			if (maxbloodcvar) { maxblood = max(1, maxbloodcvar.GetInt()); }
