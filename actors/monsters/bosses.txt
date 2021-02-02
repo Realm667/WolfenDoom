@@ -160,19 +160,21 @@ ACTOR AngelOfDeath_End : AngelOfDeath
 	WoundHealth 2500
 	Speed 10
 	-REFLECTIVE
+	+INVULNERABLE
 	+ALLOWPAIN
-	PainChance "Fire", 8
-	PainChance "Normal", 4
+	PainChance "Fire", 0
+	PainChance "Normal", 0
 	PainChance "OccultFire", 48
-	PainChance "Rocket", 4
+	PainChance "Rocket", 0
 	PainChance "MutantPoison", 0
 	PainChance "Poison", 0
 	PainChance "UndeadPoison", 0
 	DamageFactor "MutantPoison", 0
 	DamageFactor "Poison", 0
 	DamageFactor "UndeadPoison", 0
-	DamageFactor "Normal", 0.5
-	DamageFactor "Fire", 0.5
+	DamageFactor "Rocket", 0
+	DamageFactor "Normal", 0
+	DamageFactor "Fire", 0
 	DamageFactor "OccultFire", 2.0
 	Species "Zombie"
 	DropItem "Rune_Gibor" 256
@@ -754,21 +756,22 @@ ACTOR ZyklonMonster : Nazi
 	+NOBLOODDECALS
 	+NOGRAVITY
 	+NOICEDEATH
+	+INVULNERABLE
 	DamageType "Smoke"
-	DamageFactor "Electric", 0.4
-	DamageFactor "Fire", 0.4
-	DamageFactor "Normal", 0.4
+	DamageFactor "Electric", 0
+	DamageFactor "Fire", 0
+	DamageFactor "Normal", 0
 	DamageFactor "OccultFire", 2.0
-	DamageFactor "Rocket", 0.4
+	DamageFactor "Rocket", 0
 	DamageFactor "Smoke", 0
 	DamageFactor "MutantPoison", 0
 	DamageFactor "Poison", 0
 	DamageFactor "UndeadPoison", 0
-	PainChance "Electric", 8
-	PainChance "Fire", 8
-	PainChance "Normal", 8
+	PainChance "Electric", 0
+	PainChance "Fire", 0
+	PainChance "Normal", 0
 	PainChance "OccultFire", 48
-	PainChance "Rocket", 8
+	PainChance "Rocket", 0
 	PainChance "MutantPoison", 0
 	PainChance "Poison", 0
 	PainChance "UndeadPoison", 0
@@ -1611,9 +1614,9 @@ ACTOR MadDoctor : RocketMan
 	Mass 4000
 	PainChance 64
 	Obituary "$SCHABBS1"
-	ActiveSound "schabbs/active"
-	SeeSound "schabbs/sight"
-	DeathSound "schabbs/die"
+	ActiveSound ""
+	SeeSound "fatman/sight" //generic boss sounds
+	DeathSound "fatman/death"
 	DropItem "Medikit_Medium"
 	States
 	{
@@ -2605,6 +2608,7 @@ ACTOR DeathKnight : Nazi
 	DropItem "9mmAmmo" 128
 	DropItem "9mmAmmoBox" 128
 	DropItem "NebAmmo" 256
+	Nazi.TotaleGierDrop 3
 	States
 	{
 	Spawn:
@@ -2986,6 +2990,7 @@ ACTOR ChairGuy : Nazi
 	DropItem "GrenadePickup",128
 	DropItem "GrenadePickup",128
 	DropItem "GrenadePickup",128
+	Nazi.TotaleGierDrop 3
 	States
 	{
 	Spawn:
@@ -3649,6 +3654,7 @@ ACTOR Blondi : NaziBoss
 	ActiveSound "dog/active"
 	HitObituary "$BLONDI"
 	DamageFactor "Rocket", 1.0
+	Nazi.TotaleGierDrop 0
 	-CANUSEWALLS
 	-CANPUSHWALLS
 	+NEVERTARGET
