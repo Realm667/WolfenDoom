@@ -103,3 +103,16 @@ class CoinDrop : CoinItem
 		Actor.Tick();
 	}
 }
+
+class FakeCoinItem : CoinItem
+{
+	Default
+	{
+		-COUNTITEM
+		Scale 0.5;
+	}
+	override void Tick() //no countitem adjustment --N00b
+	{
+		Actor.Tick();
+	}
+}
