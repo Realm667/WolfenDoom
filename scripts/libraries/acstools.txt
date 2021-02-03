@@ -170,29 +170,80 @@ class ACSTools
 		return false;
 	}
 
-	// The string returned by this function will be appended to the LANGUAGE entry ID
-	static String GetNumberForm(int count) {
+	// Gets the entry ID for the properly declined word form, given a number
+	// and a "base" entry ID. If no declined entry exists in the language 
+	// table, the "base" entry ID is returned.
+	//
+	// For example:
+	// In languages with only singular/plural forms, the plural form of KRAUTSKILLER02 would be KRAUTSKILLER02P
+	// In Czech, it would be KRAUTSKILLER02A or KRAUTSKILLER02B
+	// But if there is no declined form of KRAUTSKILLER02, it returns KRAUTSKILLER02.
+	static String GetDeclinedForm(String entry, int count) {
+		String form = ""; // Singular (default)
 		if (language.Left(2) ~== "cs")
 		{
 			if (count > 3)
 			{
-				return "B";
+				form = "B";
 			}
 			else if (count > 1)
 			{
-				return "A";
+				form = "A";
 			}
 		}
 		else if (language ~== "ru")
 		{
-			// TODO: Russian declensions
+			// See https://en.wikipedia.org/wiki/Russian_declension#Declension_of_cardinal_numerals
+			switch (count) {
+			case 50: form = "50"; break;
+			case 60: form = "60"; break;
+			case 70: form = "70"; break;
+			case 80: form = "80"; break;
+			case 200: form = "200"; break;
+			case 300: form = "300"; break;
+			// These may not be needed; The highest counter is the time until
+			// the Hindenburg airship crashes on C3M5_C, which is a bit more
+			// than 300.
+			case 400: form = "400"; break;
+			case 500: form = "500"; break;
+			case 600: form = "600"; break;
+			case 700: form = "700"; break;
+			case 800: form = "800"; break;
+			case 900: form = "900"; break;
+			default:
+				int numend = count % 10;
+				if (numend == 1)
+				{
+					// Nominative singular
+					form = "A";
+				}
+				else if (numend == 2 || numend == 3 || numend == 4)
+				{
+					// Genitive singular
+					form = "B";
+				}
+				else
+				{
+					// Genitive plural
+					form = "P";
+				}
+			}
 		}
 		else if (count != 1)
 		{
 			// Languages that only have singular/plural forms
-			return "P"; // Plural
+			form = "P"; // Plural
 		}
-		return ""; // Singular
+		String key = entry + form;
+		// Check if the declined form exists
+		String text = StringTable.Localize(key, false);
+		if (text != key)
+		{
+			// Declined form exists because the entry was found
+			return key;
+		}
+		// Declined form was not found, so just return the original entry key
+		return entry;
 	}
 }
 
