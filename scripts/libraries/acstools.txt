@@ -169,6 +169,26 @@ class ACSTools
 
 		return false;
 	}
+
+	// The string returned by this function will be appended to the LANGUAGE entry ID
+	static String GetNumberForm(int count) {
+		if (language.Left(2) ~== "cs")
+		{
+			if (count > 3)
+			{
+				return "B";
+			}
+			else if (count > 1)
+			{
+				return "A";
+			}
+		}
+		else if (language ~== "ru")
+		{
+			// TODO: Russian declensions
+		}
+		return "";
+	}
 }
 
 class ActorFinderTracer : LineTracer
