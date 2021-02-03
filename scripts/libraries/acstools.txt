@@ -187,7 +187,12 @@ class ACSTools
 		{
 			// TODO: Russian declensions
 		}
-		return "";
+		else if (count != 1)
+		{
+			// Languages that only have singular/plural forms
+			return "P"; // Plural
+		}
+		return ""; // Singular
 	}
 }
 
