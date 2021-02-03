@@ -234,7 +234,7 @@ class ACSTools
 			// Languages that only have singular/plural forms
 			form = "P"; // Plural
 		}
-		String key = entry + form;
+		String key = entry .. form;
 		// Check if the declined form exists
 		String text = StringTable.Localize(key, false);
 		if (text != key)
