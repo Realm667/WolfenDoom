@@ -264,11 +264,11 @@ class RENemesis : NaziBoss
 		Goto See;
 	Melee:
 		NEMS A 3;
-		NEMS H 4 A_StartSound("skeleton/swing", CHAN_WEAPON);
-		NEMS I 12 A_CustomMeleeAttack(random(20,30), "skeleton/melee");
+		NEMS H 4 A_StartSound("nemesis/swing", CHAN_WEAPON);
+		NEMS I 12 A_CustomMeleeAttack(random(20,30), "nemesis/melee");
 		NEMS A 3 A_JumpIfTargetOutsideMeleeRange("See");
-		NEMS J 4 A_StartSound("skeleton/swing", CHAN_WEAPON);
-		NEMS K 12 A_CustomMeleeAttack(random(20,30), "skeleton/melee");
+		NEMS J 4 A_StartSound("nemesis/swing", CHAN_WEAPON);
+		NEMS K 12 A_CustomMeleeAttack(random(20,30), "nemesis/melee");
 		Goto See;
 	Pain:
 		NEMS L 10;
@@ -311,6 +311,7 @@ class RENemesis : NaziBoss
 		Goto See;
 	TeleportStart:
 		NEMS A 0 { // Set frame you see while disappearing
+			bNoPain = true;
 			bSolid = false;
 			bShootable = false;
 		}
@@ -320,13 +321,19 @@ class RENemesis : NaziBoss
 		"####" "#" 70 A_TeleportCloseTo(180, 384, "Reappear");
 		Loop;
 	Reappear:
-		"####" "#" 0 A_StartSound("JUMPSCARE", attenuation: 0);
+		"####" "#" 0 {
+			A_StartSound("JUMPSCARE", attenuation: 0);
+		}
 		"####" "#" 1 {
-			bSolid = true;
-			bShootable = true;
-			A_FadeInJump(0.125, "See");
+			A_FadeInJump(0.125, 1);
 		}
 		Wait;
+		"####" "#" 0 {
+			bSolid = true;
+			bShootable = true;
+			bNoPain = false;
+		}
+		Goto See;
 	}
 
 	override void PostBeginPlay()
