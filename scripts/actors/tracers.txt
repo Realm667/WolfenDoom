@@ -63,7 +63,7 @@ class BulletTracer : FastProjectile
 				if (!bNoRicochet)
 				{
 					A_StartSound("ricochet");
-					DoWhizChecks();
+//					DoWhizChecks();
 				}
 				A_SpawnItemEx("ZBulletChip");
 			}
@@ -272,7 +272,7 @@ class BulletTracer : FastProjectile
 		{
 			if (it.thing == target) { continue; } // Ignore the originator
 
-			if (it.thing.health > 0 && it.thing.bShootable && (Nazi(it.thing) || PlayerPawn(it.thing) || PlayerFollower(it.thing)))// Only affect living Nazis, players, and player followers
+			if (it.thing.health > 0 && it.thing.bShootable && (Nazi(it.thing) || PlayerPawn(it.thing) || PlayerFollower(it.thing)) && it.thing.IsVisible(self, true)) // Only affect living Nazis, players, and player followers
 			{
 				if (it.thing.lastHeard != self)
 				{
