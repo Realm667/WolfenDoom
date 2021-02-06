@@ -231,33 +231,16 @@ class ACSTools
 		if (text != key)
 		{
 			// Declined form exists because the entry was found
-			return key;
+			return text;
 		}
-		// Declined form was not found, so just return the original entry key
-		return entry;
-	}
-
-	// For TEST_DLG only! Please don't use this anywhere else.
-	static String FormatAndLocalize(String toLocalize, int number)
-	{
-		Array<String> entries;
-		toLocalize.Split(entries, "%", TOK_SKIPEMPTY);
-		String entryId = GetDeclinedForm(entries[0], number);
-		String rv = StringTable.Localize(entryId, false);
-		if (rv == entryId)
+		// Declined form was not found, so return the entry in singular form
+		text = StringTable.Localize(entry, false);
+		if (text != entry)
 		{
-			rv = "";
+			return text;
 		}
-		for (int i = 1; i < entries.Size(); i++)
-		{
-			entryId = GetDeclinedForm(entries[i], number);
-			rv = rv .. number;
-			if (StringTable.Localize(entryId, false) != entryId)
-			{
-				rv = rv .. StringTable.Localize(entryId, false);
-			}
-		}
-		return rv;
+		// Entry was not found, return a blank string.
+		return "";
 	}
 }
 
