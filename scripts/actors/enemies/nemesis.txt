@@ -315,11 +315,10 @@ class RENemesis : NaziBoss
 			bSolid = false;
 			bShootable = false;
 		}
-		"####" "#" 1 A_FadeOutJump(0.125, "TeleportEnd");
+		"####" "#" 1 A_FadeOutJump(0.125, 1);
 		Wait;
-	TeleportEnd:
 		"####" "#" 70 A_TeleportCloseTo(180, 384, "Reappear");
-		Loop;
+		Wait;
 	Reappear:
 		"####" "#" 0 A_StartSound("JUMPSCARE", attenuation: 0);
 		"####" "#" 1 A_FadeInJump(0.125, 1);
@@ -364,7 +363,15 @@ class RENemesis : NaziBoss
 		// being lost, since actors lose their targets (and the lastEnemy)
 		// when they are resurrected.
 		A_RearrangePointers(AAPTR_NULL, newtracer: AAPTR_TARGET); 
-		return A_RaiseSelf(RF_NOCHECKPOSITION);
+		if (A_RaiseSelf(RF_NOCHECKPOSITION))
+		{
+			// BoA code sets max health separately from the MonsterHealth
+			// property in MAPINFO skill definitions, and stores it in the
+			// "adjustedmaxhealth" property.
+			A_SetHealth(adjustedmaxhealth);
+			return true;
+		}
+		return false;
 	}
 
 	void A_FadeOutJump(double fadeAmount, statelabel label, int flags = FTF_CLAMP)
