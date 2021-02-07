@@ -178,6 +178,7 @@ class ACSTools
 	// In languages with only singular/plural forms, the plural form of KRAUTSKILLER02 would be KRAUTSKILLER02P
 	// In Czech, it would be KRAUTSKILLER02A or KRAUTSKILLER02B
 	// But if there is no declined form of KRAUTSKILLER02, it returns KRAUTSKILLER02.
+	// s:ScriptCall("ACSTools", "GetDeclinedForm", "entry", xxx)
 	static String GetDeclinedForm(String entry, int count) {
 		String form = ""; // Singular (default)
 		if (language.Left(2) ~== "cs")
