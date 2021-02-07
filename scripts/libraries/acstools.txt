@@ -21,7 +21,7 @@
 **/
 // Miscellaneous ACS tools
 
-class ACSTools play
+class ACSTools
 {
 	// Find the number of the last message in a series of messages in the string table.
 	// Examples/expected results for various inputs:
@@ -244,7 +244,7 @@ class ACSTools play
 		return "";
 	}
 	
-	static void DamageSectorWrapper(int tag, int damage) // for destructible 3d floors --N00b
+	static play void DamageSectorWrapper(int tag, int damage) // for destructible 3d floors --N00b
 	{
 		SectorTagIterator sectors = level.CreateSectorTagIterator(tag);
 		int sector_id = sectors.next(); //damage only the first sector
