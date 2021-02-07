@@ -157,11 +157,17 @@ class TextScroll : BoAMenu
 
 class IntroScroll : TextScroll
 {
+	TextureID signature;
+	int sig_size_y;
+	String sig_name;
+
 	override void Init(Menu parent)
 	{
 		text = "$INTRO_LETTER";			// String of text to display; can be omitted (defaults to no text)
 		fnt = Font.GetFont("typewriter");	// Font to use; can be omitted (defaults to SmallFont)
 		clr = Font.CR_UNTRANSLATED;		// Font color; can be omitted (defaults to CR_BRICK)
+
+		sig_name = StringTable.Localize(text .. "2");
 
 		// Background image that scrolls with the text; can be omitted (defaults to no image)
 		// You can also specify:
@@ -169,10 +175,42 @@ class IntroScroll : TextScroll
 		//  'overlay' for a static full-screen image overlaid on top of the scroller
 		scrollback = TexMan.CheckForTexture("graphics/intromap/DDB_LTTB.png", TexMan.Type_Any);
 
+		// Special handling for the signature block
+		signature = TexMan.CheckForTexture("graphics/intromap/DDB_LTTS.png", TexMan.Type_Any);
+		if (signature)
+		{
+			int sig_size_x;
+			[sig_size_x, sig_size_y] = TexMan.GetSize(signature);
+		}
+
 		noskip = false; // Allow the player to exit early (can be omitted; default is false)
 		scrollstep = 0.35; // Speed of scroller (can be omitted; default is 0.5)
 
 		Super.Init(parent);
+	}
+
+	override void Drawer()
+	{
+		if (background) { screen.DrawTexture(background, false, 0, 0, DTA_FullScreenEx, 2); }
+
+		if (scrollback) { screen.DrawTexture(scrollback, false, scrollx - backwidth / 2, scrolly, DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, alpha); }
+
+		for (int l = 0; l < lines.Count(); l++)
+		{
+			screen.DrawText(fnt, clr, scrollx - textwidth / 2, scrolly + topmargin + l * lineheight, lines.StringAt(l), DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, 0.9 * alpha);
+		}
+
+		// Special handling to add the signature block at the end of the letter
+		double sigy = scrolly + topmargin + (lines.Count() + 2) * lineheight; // Skip two blank lines and place the closing title line
+		screen.DrawText(fnt, clr, scrollx - textwidth / 2, sigy, sig_name, DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, 0.9 * alpha);
+
+		if (signature)
+		{
+			sigy -= sig_size_y * 0.95; // Then go back up most of the height of the signature to draw the ink signature
+			screen.DrawTexture(signature, false, scrollx - 306, sigy, DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, alpha);
+		}
+
+		if (overlay) { screen.DrawTexture(overlay, false, 0, 0, DTA_FullScreenEx, 2); }
 	}
 }
 
