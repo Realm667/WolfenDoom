@@ -229,7 +229,7 @@ class ACSTools play
 		String key = entry .. form;
 		// Check if the declined form exists
 		String text = StringTable.Localize(key, false);
-		if (text != key)
+		if (text != key && text != " ")
 		{
 			// Declined form exists because the entry was found
 			return text;
