@@ -21,7 +21,7 @@
 **/
 // Miscellaneous ACS tools
 
-class ACSTools
+class ACSTools play
 {
 	// Find the number of the last message in a series of messages in the string table.
 	// Examples/expected results for various inputs:
@@ -242,6 +242,13 @@ class ACSTools
 		}
 		// Entry was not found, return a blank string.
 		return "";
+	}
+	
+	static void DamageSectorWrapper(int tag, int damage) // for destructible 3d floors --N00b
+	{
+		SectorTagIterator sectors = level.CreateSectorTagIterator(tag);
+		int sector_id = sectors.next(); //damage only the first sector
+		Destructible.DamageSector(level.sectors[sector_id], null, damage, "None", SECPART_3D, (0, 0, 0), false);
 	}
 }
 
