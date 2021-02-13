@@ -607,8 +607,6 @@ class KeenPlayer : PlayerPawn
 
 	override void Tick()
 	{
-		if (!player) return;
-		
 		bool chasecam = player.cheats & CF_CHASECAM;
 
 		if (player && povcamera && chasecam)
