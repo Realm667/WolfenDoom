@@ -607,7 +607,7 @@ class KeenPlayer : PlayerPawn
 
 	override void Tick()
 	{
-		bool chasecam = player.cheats & CF_CHASECAM;
+		bool chasecam = player && player.cheats & CF_CHASECAM;
 
 		if (player && povcamera && chasecam)
 		{
@@ -642,7 +642,7 @@ class KeenPlayer : PlayerPawn
 			CrosshairActor = hittracer.Results.HitActor;
 			CrosshairDist = hittracer.Results.Distance;
 		}
-		else
+		else if (player)
 		{
 			Player.MinPitch = -90;
 			Player.MaxPitch = 90;
