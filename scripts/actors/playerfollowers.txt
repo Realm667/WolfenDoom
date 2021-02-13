@@ -563,7 +563,9 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		if (!target && playerToChase && CheckSight(playerToChase))
 		{
 			// If you don't have a target, and you see the player being attacked by an enemy, target that enemy.
-			if (players[playerToChase.PlayerNumber()].attacker && players[playerToChase.PlayerNumber()].attacker.bIsMonster) { target = players[playerToChase.PlayerNumber()].attacker; }
+			let mo = players[playerToChase.PlayerNumber()].attacker;
+
+			if (mo && OkayToSwitchTarget(mo)) { target = mo; }
 		}
 
 		if (target && target.health <= 0) { target = null; }
