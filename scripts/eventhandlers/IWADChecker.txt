@@ -22,8 +22,6 @@
 
 class IWADChecker : EventHandler
 {
-	bool checked;
-
 	// Check if BoA is being loaded as a PWAD, and display the IWADNotice if it
 	// is.
 	void CheckIWAD()
@@ -33,7 +31,18 @@ class IWADChecker : EventHandler
 			Menu.SetMenu("IWADNotice");
 			Level.setFrozen(true);
 		}
-		checked = true;
+	}
+
+	void CheckRenderer()
+	{
+		// Ensure player is using a renderer which supports shaders
+		/*
+		if (!(r_renderercaps & RFF_MATSHADER) && !(r_renderercaps & RFF_POSTSHADER))
+		{
+			Menu.SetMenu("IWADNotice");
+			Level.setFrozen(true);
+		}
+		*/
 	}
 
 	override void WorldTick()
@@ -41,9 +50,7 @@ class IWADChecker : EventHandler
 		if (level.time == 5)
 		{
 			CheckIWAD();
-		}
-		if (checked)
-		{
+			CheckRenderer();
 			Destroy();
 		}
 	}
