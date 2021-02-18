@@ -1778,7 +1778,7 @@ class Nazi : Base
 
 		if (level.time > 35)
 		{
-			A_LookEx((user_sneakable || bFrightened) ? LOF_NOSEESOUND : 0); // Don't play see sound if you are a sneakable enemy - Their sound alert is handled elsewhere.
+			A_LookEx((user_sneakable || bFrightened || (bFriendly && !user_sneakable && Default.Species == "Nazi")) ? LOF_NOSEESOUND : 0); // Don't play see sound if you are a sneakable enemy - Their sound alert is handled elsewhere.
 
 			if (bStandStill) { LookForPlayers(bLookAllAround); }
 
