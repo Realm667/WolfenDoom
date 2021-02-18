@@ -699,6 +699,7 @@ class InventoryHolder play
 	}
 
 	Array<Inventory> heldItems;
+	Array<String> itemTypeNames; // For debugging only - Some items are apparently being lost in C3M0_B
 	Inventory holder;
 
 	protected virtual EHold ShouldHoldItem(Inventory item)
@@ -765,6 +766,7 @@ class InventoryHolder play
 
 	protected void HoldItem(Inventory curItem)
 	{
+		itemTypeNames.Push(curItem.GetClassName());
 		int prevMaxAmount = curItem.MaxAmount;
 		int prevAmount = curItem.Amount;
 		curItem.BecomePickup();
@@ -796,6 +798,10 @@ class InventoryHolder play
 		for (int i = heldItems.Size() - 1; i; i--)
 		{
 			Inventory ii = heldItems[i];
+			if (developer)
+			{
+				Console.Printf("Attempting to restore %s...", itemTypeNames[i]);
+			}
 			RestoreItem(ii, receiver);
 		}
 	}
