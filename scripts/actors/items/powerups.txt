@@ -737,6 +737,7 @@ class InventoryHolder play
 		Inventory ii = head;
 		// Make sure all items are restored. Note that the first element in
 		// heldItems won't be reached in RestoreInventory.
+		itemTypeNames.Push(head.GetClassName());
 		heldItems.Push(head);
 		Array<Inventory> deferredItemsToHold;
 		while (ii != null)
