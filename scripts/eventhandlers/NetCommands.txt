@@ -7,7 +7,7 @@ class DebugEventHandler : StaticEventHandler
 		Actor mo;
 		while( (mo = Actor(it.Next ())) )
 		{
-			if (!mo.bCountKill || mo.Health <= 0 || mo.bDormant || mo.bFriendly)
+			if (!mo.CountsAsKill())
 			{
 				continue;
 			}
