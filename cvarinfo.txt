@@ -1,85 +1,101 @@
-server bool boa_bidiswitch = false;
-server bool boa_bubbleswitch = true;
-server bool boa_cinderswitch = true;
-server bool boa_cloudswitch = true;
-server bool boa_dustswitch = true;
-server bool boa_fogswitch = true;
-server bool boa_leavesswitch = true;
-server bool boa_litsswitch = true;
-server bool boa_rainswitch = true;
-server bool boa_shaderoverlayswitch = true;
-server bool boa_smokeswitch = true;
-server bool boa_smoketype = true;
-server bool boa_snowswitch = true;
-server bool boa_splashswitch = true;
-server bool boa_sprintswitch = false;
-server bool boa_steamswitch = true;
-server bool boa_strafetilt = true;
-server bool boa_torchtype = true;
-server bool boa_groundplume = true;
-server float boa_flinchamount = 1.0;
-server int boa_bloodlifetime = 60;
-server int boa_boomswitch = 5;
-server int boa_casinglifetime = 60;
-server int boa_debrislifetime = 60;
-server int boa_fireswitch = 5;
-server int boa_grasslod = 8192;
-server int boa_lightningdensity = 10;
-server int boa_maxdebrisactors = 64;
-server int boa_maxflatdecals = 256;
-server int boa_maxparticleactors = 512;
-server int boa_recoilamount = 1;
-server int boa_scenelod = 8192;
-server int boa_sfxlod = 8192;
-server int boa_sparkswitch = 5;
-server int boa_treeslod = 8192;
-user bool boa_autoreload = true;
-user bool boa_autosteer = false;
-user bool boa_devcomswitch = false;
-user float boa_uweffectsize = 0.01;
+// SERVER VARIABLES
+////////////////////
+
+// Performance and appearance
+server bool boa_bidiswitch = false; //2D trees
+server bool boa_bubbleswitch = true; //Bubbles
+server bool boa_cinderswitch = true; //Cinder
+server bool boa_cloudswitch = true; //Clouds
+server bool boa_dustswitch = true; //Stardust
+server bool boa_fogswitch = true; //Fog
+server bool boa_leavesswitch = true; //Falling leaves
+server bool boa_litsswitch = true; //Underwater lights
+server bool boa_rainswitch = true; //Rain
+server bool boa_shaderoverlayswitch = true; //Heat and sandstorm
+server bool boa_smokeswitch = true; //Smoke
+server bool boa_smoketype = true; //Thin/thick smoke
+server bool boa_snowswitch = true; //Snow
+server bool boa_splashswitch = true; //Water splashes
+server bool boa_steamswitch = true; //Steam
+server bool boa_strafetilt = true; //Strafe camera tilt
+server bool boa_torchtype = true; //Particle/sprite torches
+server bool boa_groundplume = true; //Ground terrain splashes
+server int boa_bloodlifetime = 60; //Blood lifetime, s
+server int boa_boomswitch = 5; //Explosion density
+server int boa_casinglifetime = 60; //Casings lifetime, s
+server int boa_debrislifetime = 60; //Debris lifetime, s
+server int boa_fireswitch = 5; //Flame density
+server int boa_grasslod = 8192; //Grass render distance
+server int boa_lightningdensity = 10; //Lightning density
+server int boa_maxdebrisactors = 64; //Debris limit
+server int boa_maxflatdecals = 256; //Horizontal decals limit
+server int boa_maxparticleactors = 512; //Particles limit
+server int boa_scenelod = 8192; //Scenery render distance
+server int boa_sfxlod = 8192; //Special effects render distance
+server int boa_sparkswitch = 5; //Spark density
+server int boa_treeslod = 8192; //Tree render distance
+
+// Blood (server)
+server bool boa_blood_gibs = true; //Spawn giblets
+server bool boa_blood_pools = true; //Spawn blood pools
+server float boa_blood_alpha = 0.75; //Alpha of the actors
+server float boa_blood_rand = 1.0; //Velocity
+server float boa_blood_size = 1.0; //Scale
+server int boa_blood_amt = 1; //Amount
 
 // These are hex-formated RGB colors converted to decimal to silence GZDB parsing errors (the hex values work fine in GZDoom)
 server noarchive int g_activecolor = 10027008;
 server noarchive int g_altcolor = 14483456;
 server noarchive int g_inactivecolor = 4473924;
 
-// Droplets CVARs
-server bool boa_blood_gibs = true;
-server bool boa_blood_pools = true;
-server float boa_blood_alpha = 0.75;
-server float boa_blood_rand = 1.0;
-server float boa_blood_size = 1.0;
-server int boa_blood_amt = 1;
+// Postprocessing (server)
+server bool boa_colorgrading = true; //Color grading
 
-user int boa_drop1_dist = 1536;
-user int boa_drop2_dist = 768;
-user int boa_drop3_dist = 384;
+// Cheats
+server cheat float boa_flinchamount = 1.0; //Flinch scalar
+server cheat int boa_recoilamount = 1; //Recoil scalar
+server cheat bool boa_sprintswitch = false; //Unlimited sprint
 
-// Postprocessing
+// USER VARIABLES
+//////////////////
+
+// Gameplay options
+user bool boa_autoreload = true; //Autoreloading
+user bool boa_autosteer = false; //Autosteering while in a tank
+user bool boa_devcomswitch = false; //Developer comments
+user float boa_uweffectsize = 0.01; //Underwater effect parameter
+
+// Render distance (user)
+user int boa_drop1_dist = 1536; //Large blood drops
+user int boa_drop2_dist = 768; //Medium blood drops
+user int boa_drop3_dist = 384; //Small blood drops
+user int boa_spriteshadowdistance = 1024; //Shadows
+
+// Postprocessing (user)
+
+// Lens flares
 user bool boa_pp_lensflares = true;
 user float boa_pp_lensflares_amount = 0.2;
 user float boa_pp_lensflares_distance = 0.009;
 user float boa_pp_lensflares_threshold = 0.1;
 user int boa_pp_lensflares_samples = 16;
 
+// Vignette
 user bool boa_pp_vignette = true;
 user float boa_pp_vignette_falloff = 0.3;
 user float boa_pp_vignette_intensity = 80.0;
 
+//Pixelated Film Grain
 user bool boa_filmgrain = true;
 user float boa_filmgrain_amount = 0.1;
 user int boa_filmgrain_pixelsize = 640;
 
-server bool boa_colorgrading = true;
-
 // Motion Blur
-user bool boa_mblur = true ;
-user bool boa_mblur_autostop = true ;
-user float boa_mblur_recovery = 64 ;
-user float boa_mblur_recovery2 = 90 ;
-user float boa_mblur_strength = 64 ;
-user float boa_mblur_threshold = 30 ;
-user int boa_mblur_blendmode = 1 ;
-user int boa_mblur_samples = 5 ;
-
-user int boa_spriteshadowdistance = 1024;
+user bool boa_mblur = true;
+user bool boa_mblur_autostop = true;
+user float boa_mblur_recovery = 64;
+user float boa_mblur_recovery2 = 90;
+user float boa_mblur_strength = 64;
+user float boa_mblur_threshold = 30;
+user int boa_mblur_blendmode = 1;
+user int boa_mblur_samples = 5;
