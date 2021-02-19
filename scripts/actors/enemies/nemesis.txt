@@ -350,7 +350,7 @@ class RENemesis : NaziBoss
 
 	override bool OkayToSwitchTarget(Actor other)
 	{
-		if (other.Species == "Zombie")
+		if (other.Species == "Zombie" || other == self)
 		{
 			return false;
 		}
