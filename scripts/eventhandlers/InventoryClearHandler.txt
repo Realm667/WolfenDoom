@@ -22,6 +22,7 @@
 
 class InventoryClearHandler : EventHandler
 {
+	bool preventClearing;
 	// Set this code as static so that it can be called from other scripts, consolidate
 	// updates to one place , and avoid copy/paste duplication of the inventory resets.
 	void ResetPlayerInventory(Actor mo)
@@ -41,6 +42,12 @@ class InventoryClearHandler : EventHandler
 		mo.A_GiveInventory("NullWeapon", 1);
 	}
 
+	static void SetShouldNotClear(bool shouldNotClear)
+	{
+		InventoryClearHandler handler = InventoryClearHandler(EventHandler.Find("InventoryClearHandler"));
+		handler.preventClearing = shouldNotClear;
+	}
+
 	override void PlayerEntered(PlayerEvent e)
 	{
 		let me = PlayerPawn(players[e.PlayerNumber].mo);
@@ -54,12 +61,13 @@ class InventoryClearHandler : EventHandler
 		static const class<Inventory> itemTypes[] = {
 			"CKPogoStick",
 			"CKLedgeGrab",
+			"CKTreasure", // Keen levels can be played more than once now
 			"TextPaperCollectible",
 			"TextPaperSecretHint",
 			"IncomingMessage",
 			"CutsceneEnabled"
 		};
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < 7; i++)
 		{
 			let invitem = me.FindInventory(itemTypes[i]);
 			if (invitem)
@@ -69,7 +77,7 @@ class InventoryClearHandler : EventHandler
 		}
 
 		// Ed the Bat's updated weapon stripping
-		if(level.levelnum!=99)
+		if(level.levelnum!=99 || preventClearing)
 			return;
 		DropItem drop=me.GetDropItems();
 		
