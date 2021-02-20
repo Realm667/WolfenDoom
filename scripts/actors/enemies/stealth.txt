@@ -441,24 +441,8 @@ class DisguiseFailToken : Inventory
 
 	override void DoEffect()
 	{
-		if (owner is "PlayerPawn")
-		{
-			if (owner.player.cheats & CF_NOTARGET != 0)
-			{
-				owner.player.cheats &= ~CF_NOTARGET;
-			}
-		}
-	}
-
-	// Called when the item amount reaches 0
-	override void DepleteOrDestroy()
-	{
 		DisguiseToken disguise = DisguiseToken(owner.FindInventory("DisguiseToken", true));
 
-		if (disguise && disguise.notarget)
-		{
-			owner.player.cheats |= CF_NOTARGET;
-		}
-		Super.DepleteOrDestroy();
+		if (disguise) { disguise.notargettimeout = level.time; } // Set disguise to immediately fail every tick
 	}
 }

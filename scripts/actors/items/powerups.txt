@@ -625,7 +625,6 @@ class DisguiseToken : CustomInventory
 
 	void SetNoTarget()
 	{
-		bool hide = true;
 		let weap = owner.player.ReadyWeapon;
 
 		if (weap && !owner.FindInventory("DisguiseFailToken", true))
@@ -652,7 +651,7 @@ class DisguiseToken : CustomInventory
 							)
 						) 
 						{
-							Inventory vis = owner.FindInventory("BoAVisibility");	
+							Inventory vis = owner.FindInventory("BoAVisibility");
 
 							if (!vis || !BoAVisibility(vis).alertedcount) // If no enemies are already alerted, turn on notarget
 							{
