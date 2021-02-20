@@ -42,12 +42,36 @@ class DebugEventHandler : StaticEventHandler
 		Console.Printf("%d \"live\" enemies found", count);
 	}
 
+	void ShowRemainingTreasures(class<Actor> base = "Inventory")
+	{
+		ThinkerIterator it = ThinkerIterator.Create(base);
+		int count = 0;
+		Actor mo;
+		while( (mo = Actor(it.Next ())) )
+		{
+			if (!mo.bCountItem || !mo.bSpecial || mo.bDormant)
+			{
+				continue;
+			}
+			else
+			{
+				Console.Printf("%s at (%.3f, %.3f, %.3f)", mo.GetClassName(), mo.Pos);
+				count += 1;
+			}
+		}
+		Console.Printf("%d treasure items found", count);
+	}
+
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		// netevent showliveenemies
 		if (e.name ~== "showliveenemies")
 		{
 			ShowRemainingEnemies();
+		}
+		else if (e.name ~== "showtreasures")
+		{
+			ShowRemainingTreasures();
 		}
 	}
 }
