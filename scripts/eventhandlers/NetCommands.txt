@@ -22,6 +22,8 @@
 
 class DebugEventHandler : StaticEventHandler
 {
+	bool showvel;
+
 	void ShowRemainingEnemies(class<Actor> base = "Base")
 	{
 		ThinkerIterator it = ThinkerIterator.Create(base);
@@ -62,6 +64,16 @@ class DebugEventHandler : StaticEventHandler
 		Console.Printf("%d treasure items found", count);
 	}
 
+	void ShowSkill()
+	{
+		Console.Printf("Skill: %d", skill);
+	}
+
+	void ShowSpeed()
+	{
+		showvel = !showvel;
+	}
+
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		// netevent showliveenemies
@@ -72,6 +84,23 @@ class DebugEventHandler : StaticEventHandler
 		else if (e.name ~== "showtreasures")
 		{
 			ShowRemainingTreasures();
+		}
+		else if (e.name ~== "showskill")
+		{
+			ShowSkill();
+		}
+		else if (e.name ~== "showspeed")
+		{
+			ShowSpeed();
+		}
+	}
+
+	override void RenderOverlay(RenderEvent e)
+	{
+		Actor player = players[consoleplayer].mo;
+		if (showvel)
+		{
+			Screen.DrawText(smallfont, Font.CR_GRAY, 20.0, 20.0, String.Format("Speed: %.3f", player.Vel.Length()));
 		}
 	}
 }
