@@ -252,8 +252,14 @@ class RENemesis : NaziBoss
 		NEMS A 0 NoDelay {user_incombat = 1;}
 		Goto Look;
 	See:
-		"####" "#" 0 A_JumpIfCloser(768, "See.Boss");
-		Goto TeleportStart;
+		"####" "#" 0 {
+			if (target && Distance2D(target) > 768)
+			{
+				return ResolveState("TeleportStart");
+			}
+			return ResolveState(null);
+		}
+		Goto See.Boss;
 	Missile:
 		NEMS A 0 A_Jump(100, "Missile2");
 		NEMS FG 10;
@@ -332,11 +338,11 @@ class RENemesis : NaziBoss
 		Goto See;
 	}
 
-	override void PostBeginPlay()
+	override void BeginPlay()
 	{
 		// Get pointer to Nemesis controller thinker
 		control = NemesisControl.Get();
-		Super.PostBeginPlay();
+		Super.BeginPlay();
 	}
 
 	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
@@ -347,11 +353,15 @@ class RENemesis : NaziBoss
 			activationtype &= ~THINGSPEC_NoDeathSpecial;
 		}
 		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
+		if (target == self)
+		{
+			target = null;
+		}
 	}
 
 	override bool OkayToSwitchTarget(Actor other)
 	{
-		if (other.Species == "Zombie" || other == self)
+		if (other.Species == "Zombie")
 		{
 			return false;
 		}
