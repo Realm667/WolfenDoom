@@ -62,12 +62,13 @@ class InventoryClearHandler : EventHandler
 			"CKPogoStick",
 			"CKLedgeGrab",
 			"CKTreasure", // Keen levels can be played more than once now
+			"CKStunnerAmmo",
 			"TextPaperCollectible",
 			"TextPaperSecretHint",
 			"IncomingMessage",
 			"CutsceneEnabled"
 		};
-		for (int i = 0; i < 7; i++)
+		for (int i = 0; i < 8; i++)
 		{
 			let invitem = me.FindInventory(itemTypes[i]);
 			if (invitem)

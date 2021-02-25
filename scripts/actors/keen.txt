@@ -925,6 +925,9 @@ class Billy : PowerMorph
 
 		Super.EndEffect();
 	}
+
+	// Don't delete this item when player dies!
+	override void OwnerDied() {}
 }
 
 // Moving Platforms
