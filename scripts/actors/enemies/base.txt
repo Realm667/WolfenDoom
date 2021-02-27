@@ -1224,7 +1224,7 @@ class Nazi : Base
 	bool user_activatewhenshot;
 	bool user_cansurrender;
 	Sound IdleSound, LostSound, SightedSound;
-	bool surrendered;
+	int surrendered;
 	int hiddentime;
 	spriteID defaultsprite;
 
@@ -1969,11 +1969,10 @@ class Nazi : Base
 	virtual void DoSurrender()
 	{
 		if (bCountKill) { bCountKill = false; level.total_monsters--; }
-		bPushable = true;
 		user_ForceWeaponDrop = true;
-		bShootable = false;
 		surrendered = true;
 
+		health = 1;
 		vel *= 0;
 
 		// 1 in 8 chance that surrendering enemies will urinate
@@ -2382,7 +2381,7 @@ class Nazi : Base
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
 		// Make sure the sprite is correct if we were dodging
-		if (!bNoPain && DodgeState && sprite == DodgeState.sprite) { sprite = defaultsprite; }
+		if (!bNoPain && (DodgeState && sprite == DodgeState.sprite) || surrendered) { sprite = defaultsprite; }
 
 		Inventory vis;
 
@@ -2577,7 +2576,9 @@ class Nazi : Base
 
 	void A_UnblockAndDrop()
 	{
-		if (user_ForceWeaponDrop)
+		bool dodrops = false;
+
+		if (user_ForceWeaponDrop && surrendered < 2)
 		{
 			DropItem drops = GetDropItems();
 			DropItem item;
@@ -2602,8 +2603,6 @@ class Nazi : Base
 					}
 				}
 			}
-
-			A_NoBlocking(False); // Set A_NoBlocking with no additional item drops.
 		}
 		else if (user_sneakable)
 		{
@@ -2639,13 +2638,15 @@ class Nazi : Base
 					}
 				}
 			}
-
-			A_NoBlocking(False); // Set A_NoBlocking with no additional item drops.
 		}
 		else
 		{
-			A_NoBlocking(True); // Otherwise, unblock and do normal drops
+			if (surrendered < 2) { dodrops = true; }
 		}
+
+		if (surrendered) { surrendered++; }
+
+		A_NoBlocking(dodrops);
 	}
 
 	void A_GibsUnblockAndDrop(int head = 2, Class<Actor> bloodspurt = "")
@@ -2653,76 +2654,8 @@ class Nazi : Base
 		if (bloodspurt == "") { bloodspurt = "Pain_Overlay"; } // directly from A_NaziPain - ozy81
 		A_SpawnItemEx(bloodspurt, scale.x + 3, 0, height + 48, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR); // Spawn head spurt
 		A_SpawnItemEx("HeadGibsRing", scale.x + 3, 0, height + head, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR); // Spawn head gibs
-	
-		if (user_ForceWeaponDrop)
-		{
-			DropItem drops = GetDropItems();
-			DropItem item;
 
-			if (drops != null)
-			{
-				for (item = drops; item != null; item = item.Next)
-				{
-					String itemName = String.Format("%s", item.Name); // Don't know why I have to do this and the Length check, but 'DropItem ""' crashes without it, even if I check for != "", != null, etc...
-					if (itemName.Length() > 0 && item.Name != 'None')
-					{
-						Actor drop = Spawn(item.Name); // See if it spawns in order to validate the name...  Since there's no FindClass function exposed?
-
-						if (drop is "Weapon") // If it is a weapon, drop the item
-						{
-							int amt = item.Amount;
-
-							A_DropItem(item.Name, amt);
-						}
-
-						drop.Destroy(); // Destroy the placeholder spawned item
-					}
-				}
-			}
-
-			A_NoBlocking(False); // Set A_NoBlocking with no additional item drops.
-		}
-		else if (user_sneakable)
-		{
-			DropItem drops = GetDropItems();
-			DropItem item;
-
-			double dropfactor = G_SkillPropertyFloat(SKILLP_DropAmmoFactor);
-			if (dropfactor < 0) { dropfactor = 0.5; }
-
-			if (drops != null)
-			{
-				for (item = drops; item != null; item = item.Next)
-				{
-					String itemName = String.Format("%s", item.Name); // Don't know why I have to do this and the Length check, but 'DropItem ""' crashes without it, even if I check for != "", != null, etc...
-					if (itemName.Length() > 0 && item.Name != 'None')
-					{
-						Actor drop = Spawn(item.Name); // See if it spawns in order to validate the name...  Since there's no FindClass function exposed?
-
-						if (Weapon(drop)) // Only drop weapons, no extra ammo, grenades, etc.
-						{
-							int amt = item.Amount;
-
-							if (amt <= 0)
-							{
-								amt = Weapon(drop).AmmoGive1 > 0 ? Weapon(drop).AmmoGive1 : Weapon(drop).AmmoGive2; // Default to affecting AmmoType1, with fallback to AmmoType2
-								amt = max(int(amt * (dropfactor / 2)), 0); // Worst case, drop a weapon with zero ammo
-							}
-
-							A_DropItem(item.Name, amt);
-						}
-
-						drop.Destroy(); // Destroy the placeholder spawned item
-					}
-				}
-			}
-
-			A_NoBlocking(False); // Set A_NoBlocking with no additional item drops.
-		}
-		else
-		{
-			A_NoBlocking(True); // Otherwise, unblock and do normal drops
-		}
+		A_UnblockAndDrop();
 	}
 
 	void A_HealGoal()
@@ -2941,8 +2874,9 @@ class Nazi : Base
 		Super.Tick();
 	}
 
-	void SpyGive(class<Inventory> item, int rawAmount, Actor recipient)
+	static void SpyGive(Actor recipient, String itemname, int rawAmount)
 	{
+		Class<Inventory> item = itemname;
 		Inventory haveItem = recipient.FindInventory(item);
 
 		// Amount of items to put in player's inventory
@@ -2966,27 +2900,60 @@ class Nazi : Base
 			recipient.GiveInventory(item, amountToGive);
 			recipient.A_StartSound(GetDefaultByType(item).PickupSound, CHAN_ITEM);
 		}
+
 		amountToDrop = amountToGive - spaceAvailable;
+
+		if (amountToDrop <= 0) { return; }
+
+		int delta;
 
 		if (item is "CoinItem")
 		{ // CoinItem is invisible, so drop something that's visible instead
-			item = "SingleCoin";
+			delta = DropDelta(recipient, "GoldBar", amountToDrop);
+			delta = DropDelta(recipient, "BagOfCoins", delta);
+			DropDelta(recipient, "SingleCoin", delta);
 		}
-		if (amountToDrop > 0)
+		else if (item is "9mmAmmo")
+		{
+			delta = DropDelta(recipient, "9mmAmmoBox", amountToDrop);
+			DropDelta(recipient, "9mmAmmo", delta);
+		}
+		else if (item is "NebAmmo")
+		{
+			delta = DropDelta(recipient, "NebAmmoBox", amountToDrop);
+			DropDelta(recipient, "NebAmmo", delta);
+		}
+		else
 		{
 			amountToDrop /= GetDefaultByType(item).Amount;
-			for (int i = 0; i < amountToDrop; i++)
-			{
-				Actor drop = Spawn(item, recipient.Pos, ALLOW_REPLACE);
-				if (drop) { drop.Vel3DFromAngle(Random(1, 4), Random(0, 359), Random(-75, -90)); } // Don't stack items on top of each other
-			}
+			DropItems(recipient, item, amountToDrop);
 		}
-/*
-		if (developer)
+	}
+
+	// Drops the maximum number of the specified item to meet a target amount, and returns
+	// the amount of the base inventory class that still needs to be dropped
+	static int DropDelta(Actor target, Class<Inventory> item, int delta)
+	{
+		int amt = GetDefaultByType(item).Amount; // How many does this item give?
+		int dropamt = delta / amt; // How many of this item should be spawned?
+		delta %= amt; // What's left of the original requested amount after spawning these?
+
+		DropItems(target, item, dropamt);
+
+		return delta;
+	}
+
+	static void DropItems(Actor target, Class<Inventory> item, int amt)
+	{
+		if (!amt) { return; }
+
+		for (int i = 0; i < amt; i++)
 		{
-			Console.Printf("SpyGive: rawAmount %d, amountToGive %d, spaceAvailable %d, amountToDrop %d", rawAmount, amountToGive, spaceAvailable, amountToDrop);
+			double r = GetDefaultByType(item).radius + target.radius;
+			Vector3 spawnpos = target.pos + (FRandom(-r, r), FRandom(-r, r), 0);
+			Actor drop = Spawn(item, spawnpos, ALLOW_REPLACE);
+			if (drop) { drop.Vel3DFromAngle(Random(1, 4), Random(0, 359), Random(-75, -90)); } // Don't stack items on top of each other
 		}
-*/
 	}
 
 	override bool Used(Actor user)
@@ -3015,7 +2982,7 @@ class Nazi : Base
 
 						if (item)
 						{
-							SpyGive(user_spyitem, 1, user);
+							SpyGive(user, user_spyitem, 1);
 
 							let itemdef = GetDefaultByType(item);
 							if (itemdef.bInvBar) { PlayerPawn(user).InvSel = user.FindInventory(item); }
@@ -3025,13 +2992,13 @@ class Nazi : Base
 				default:
 					break;
 				case 1:
-					SpyGive("9mmAmmo", Random(1, 4) * 4, user);
+					SpyGive(user, "9mmAmmo", Random(1, 4) * 4);
 					break;
 				case 2:
-					SpyGive("Bandages", Random(1, 2), user);
+					SpyGive(user, "Bandages", Random(1, 2));
 					break;
 				case 3:
-					SpyGive("CoinItem", Random(2, 4) * 5, user);
+					SpyGive(user, "CoinItem", Random(2, 4) * 5);
 					break;
 			}
 
