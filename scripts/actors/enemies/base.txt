@@ -1224,7 +1224,7 @@ class Nazi : Base
 	bool user_activatewhenshot;
 	bool user_cansurrender;
 	Sound IdleSound, LostSound, SightedSound;
-	bool surrendered;
+	int surrendered;
 	int hiddentime;
 	spriteID defaultsprite;
 
@@ -1969,11 +1969,10 @@ class Nazi : Base
 	virtual void DoSurrender()
 	{
 		if (bCountKill) { bCountKill = false; level.total_monsters--; }
-		bPushable = true;
 		user_ForceWeaponDrop = true;
-		bShootable = false;
 		surrendered = true;
 
+		health = 1;
 		vel *= 0;
 
 		// 1 in 8 chance that surrendering enemies will urinate
@@ -2382,7 +2381,7 @@ class Nazi : Base
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
 		// Make sure the sprite is correct if we were dodging
-		if (!bNoPain && DodgeState && sprite == DodgeState.sprite) { sprite = defaultsprite; }
+		if (!bNoPain && (DodgeState && sprite == DodgeState.sprite) || surrendered) { sprite = defaultsprite; }
 
 		Inventory vis;
 
@@ -2577,7 +2576,9 @@ class Nazi : Base
 
 	void A_UnblockAndDrop()
 	{
-		if (user_ForceWeaponDrop)
+		bool dodrops = false;
+
+		if (user_ForceWeaponDrop && surrendered < 2)
 		{
 			DropItem drops = GetDropItems();
 			DropItem item;
@@ -2602,8 +2603,6 @@ class Nazi : Base
 					}
 				}
 			}
-
-			A_NoBlocking(False); // Set A_NoBlocking with no additional item drops.
 		}
 		else if (user_sneakable)
 		{
@@ -2639,13 +2638,15 @@ class Nazi : Base
 					}
 				}
 			}
-
-			A_NoBlocking(False); // Set A_NoBlocking with no additional item drops.
 		}
 		else
 		{
-			A_NoBlocking(True); // Otherwise, unblock and do normal drops
+			if (surrendered < 2) { dodrops = true; }
 		}
+
+		if (surrendered) { surrendered++; }
+
+		A_NoBlocking(dodrops);
 	}
 
 	void A_GibsUnblockAndDrop(int head = 2, Class<Actor> bloodspurt = "")
@@ -2653,76 +2654,8 @@ class Nazi : Base
 		if (bloodspurt == "") { bloodspurt = "Pain_Overlay"; } // directly from A_NaziPain - ozy81
 		A_SpawnItemEx(bloodspurt, scale.x + 3, 0, height + 48, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR); // Spawn head spurt
 		A_SpawnItemEx("HeadGibsRing", scale.x + 3, 0, height + head, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR); // Spawn head gibs
-	
-		if (user_ForceWeaponDrop)
-		{
-			DropItem drops = GetDropItems();
-			DropItem item;
 
-			if (drops != null)
-			{
-				for (item = drops; item != null; item = item.Next)
-				{
-					String itemName = String.Format("%s", item.Name); // Don't know why I have to do this and the Length check, but 'DropItem ""' crashes without it, even if I check for != "", != null, etc...
-					if (itemName.Length() > 0 && item.Name != 'None')
-					{
-						Actor drop = Spawn(item.Name); // See if it spawns in order to validate the name...  Since there's no FindClass function exposed?
-
-						if (drop is "Weapon") // If it is a weapon, drop the item
-						{
-							int amt = item.Amount;
-
-							A_DropItem(item.Name, amt);
-						}
-
-						drop.Destroy(); // Destroy the placeholder spawned item
-					}
-				}
-			}
-
-			A_NoBlocking(False); // Set A_NoBlocking with no additional item drops.
-		}
-		else if (user_sneakable)
-		{
-			DropItem drops = GetDropItems();
-			DropItem item;
-
-			double dropfactor = G_SkillPropertyFloat(SKILLP_DropAmmoFactor);
-			if (dropfactor < 0) { dropfactor = 0.5; }
-
-			if (drops != null)
-			{
-				for (item = drops; item != null; item = item.Next)
-				{
-					String itemName = String.Format("%s", item.Name); // Don't know why I have to do this and the Length check, but 'DropItem ""' crashes without it, even if I check for != "", != null, etc...
-					if (itemName.Length() > 0 && item.Name != 'None')
-					{
-						Actor drop = Spawn(item.Name); // See if it spawns in order to validate the name...  Since there's no FindClass function exposed?
-
-						if (Weapon(drop)) // Only drop weapons, no extra ammo, grenades, etc.
-						{
-							int amt = item.Amount;
-
-							if (amt <= 0)
-							{
-								amt = Weapon(drop).AmmoGive1 > 0 ? Weapon(drop).AmmoGive1 : Weapon(drop).AmmoGive2; // Default to affecting AmmoType1, with fallback to AmmoType2
-								amt = max(int(amt * (dropfactor / 2)), 0); // Worst case, drop a weapon with zero ammo
-							}
-
-							A_DropItem(item.Name, amt);
-						}
-
-						drop.Destroy(); // Destroy the placeholder spawned item
-					}
-				}
-			}
-
-			A_NoBlocking(False); // Set A_NoBlocking with no additional item drops.
-		}
-		else
-		{
-			A_NoBlocking(True); // Otherwise, unblock and do normal drops
-		}
+		A_UnblockAndDrop();
 	}
 
 	void A_HealGoal()

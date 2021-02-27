@@ -149,7 +149,10 @@ class NaziMedic : NaziStandard
 		Death:
 			"####" A 0 A_NoBlocking(true); // No weapon to drop, just the medical kit
 			"####" XYZ 6;
-			"####" A 0 DoSurrender();
+			"####" A 0 {
+				DoSurrender();
+				bShootable = false;
+			}
 		Death.Surrender:
 			"####" F 1 A_SetTics(Random(35, 70));
 			"####" BA 6;
