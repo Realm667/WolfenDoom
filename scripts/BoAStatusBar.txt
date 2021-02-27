@@ -1086,7 +1086,7 @@ class BoAStatusBar : BaseStatusBar
 				}
 */
 
-				if (Base(crosshairtarget) && Base(crosshairtarget).user_targetcrosshair && CPlayer.ReadyWeapon.DamageType != "Melee")
+				if (Base(crosshairtarget) && Base(crosshairtarget).user_targetcrosshair && CPlayer.ReadyWeapon.DamageType != "Melee" && skill <= 1)
 				{
 					size *= 1.25 - clamp(CPlayer.fov / 90.0 * CPlayer.mo.Distance3D(crosshairtarget) / 2048.0, 0.0, 0.75);
 
@@ -1119,7 +1119,7 @@ class BoAStatusBar : BaseStatusBar
 						targettime = 0;
 					}
 				}
-				else if (CPlayer.ReadyWeapon is "KnifeSilent" && Nazi(crosshairtarget) && !Nazi(crosshairtarget).user_incombat && CPlayer.mo.Distance2D(crosshairtarget) < crosshairtarget.radius + 64.0)
+				else if (CPlayer.ReadyWeapon is "KnifeSilent" && Nazi(crosshairtarget) && !Nazi(crosshairtarget).user_incombat && !(p.crosshairtarget is "WGuard_Wounded") && CPlayer.mo.Distance2D(crosshairtarget) < crosshairtarget.radius + 64.0)
 				{
 					if (crosshairtarget == currenttarget)
 					{
