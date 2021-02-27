@@ -916,6 +916,11 @@ class CastleWolfensteinMap : InteractiveItem
 			MAPI B -1;
 			Stop;
 	}
+
+	override bool TryPickup(in out Actor toucher)
+	{
+		return Inventory.TryPickup(toucher); // Given via conversation and script, so must be picked up automatically.
+	}
 }
 
 class Safe : Actor
