@@ -36,6 +36,10 @@ class EffectInfo // Should just be a struct, but we can't use structs in dynamic
 	State curstate;
 	bool wasculled;
 	double radius, height;
+	bool bflatsprite;
+	bool bspecial;
+	bool bsolid;
+	bool bshootable;
 }
 
 // Effects get tracked in a dynamic array and culled when not in range of a player, then respawned when needed
@@ -148,6 +152,11 @@ class EffectsManager : Thinker
 			info.radius = mo.radius;
 			info.height = mo.height;
 		}
+
+		info.bflatsprite = mo.bFlatSprite;
+		info.bspecial = mo.bSpecial;
+		info.bsolid = mo.bSolid;
+		info.bshootable = mo.bShootable;
 	}
 
 	void RemoveEffect(Actor effect)
@@ -232,9 +241,14 @@ class EffectsManager : Thinker
 
 					if (effect is "Blocker") { effect.A_SetSize(effects[i].radius, effects[i].height); }
 
+					effect.bFlatSprite = effects[i].bflatsprite;
+					effect.bSpecial = effects[i].bspecial;
+					effect.bSolid = effects[i].bsolid;
+					effect.bShootable = effects[i].bshootable;
+
 					effects[i].effect = effect;
 					effects[i].ingame = true;
-
+ 
 					if (effect is "CullActorBase") { CullActorBase(effect).wasculled = true; }
 				}
 			}
