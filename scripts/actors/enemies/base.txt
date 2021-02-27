@@ -2958,7 +2958,7 @@ class Nazi : Base
 
 	override bool Used(Actor user)
 	{
-		if (user.player && !wasused && !special && bFriendly && !user_sneakable && Default.Species == "Nazi" && (!target || !target.bShootable) && activationcount < 2)
+		if (user.player && !wasused && !special && bFriendly && !user_sneakable && Default.Species == "Nazi" && (!target || !target.bShootable) && activationcount < 2 && health > 0)
 		{
 			wasused = true;
 			usetime = 70;
