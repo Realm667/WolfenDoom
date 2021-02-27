@@ -182,13 +182,15 @@ class NaziMedic : NaziStandard
 	{
 		Actor p = FindClosestPlayer(self, dist:int(512 + radius));
 
+		if (!p) { p = lastheard; } // Also respond to any alert sounds
+
 		// Run away from any player that's close by
 		if (p)
 		{
 			if ((!bFrightened && Random(0, 255) < 16) || jump) { A_StartSound("Nazi1/Sighted", CHAN_ITEM); }
 			Speed = Default.Speed * 2;
 
-			if (Distance3D(p) < 512 + radius)
+			if (p.player && Distance3D(p) < 512 + radius)
 			{
 				target = p;
 				body = null;
