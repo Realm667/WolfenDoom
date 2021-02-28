@@ -7,7 +7,9 @@ function void DoSprinting(void)
 	bool checksprint = GetCVar("boa_sprintswitch");
 
 	int buttons = GetPlayerInput(-1,INPUT_BUTTONS);
-
+	
+	if (CheckInventory("IsDragging")) { return; }
+	
 	// Unfortunately, we have to check for each type of disguise token here - can't check for the base DisguiseToken class in ACS
 	if (
 		!(
@@ -19,7 +21,7 @@ function void DoSprinting(void)
 		) && 
 		(buttons & BT_SPEED) && 
 		(buttons & BT_FORWARD) && 
-		!(buttons & BT_CROUCH) && 
+		!(buttons & BT_CROUCH) && //does not work for 'toggled' crouching!
 		CheckInventory("Stamina") && 
 		cooldown[PlayerNumber()] <= 0
 	)

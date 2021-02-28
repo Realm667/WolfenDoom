@@ -76,6 +76,7 @@ class BoAPlayer : PlayerPawn
 	Actor climbing;
 	int interactiontimeout;
 	int flinchfactor;
+	bool dodragging; // Set true to enable dragging of corpses and pushable actors (crouch and use)
 
 	Default
 	{
@@ -236,7 +237,8 @@ class BoAPlayer : PlayerPawn
 	override void PostBeginPlay()
 	{
 		flinchfactor = 255; // Start out with full flinch amount.
-
+		dodragging = false;
+		
 		Super.PostBeginPlay();
 	}
 
@@ -930,7 +932,6 @@ class BoAPlayer : PlayerPawn
 
 	void DoInteractions()
 	{
-		bool dodragging = false; // Set true to enable dragging of corpses and pushable actors (crouch and use)
 
 		FLineTraceData trace;
 		LineTrace(angle, UseRange, pitch, TRF_THRUACTORS, player.viewheight, 0.0, 0.0, trace);
@@ -1114,13 +1115,13 @@ class BoAPlayer : PlayerPawn
 			}
 		}
 		// Draggable corpse handling (also lets you pull pushable actors)
-		//  Player must crouch within use range of a draggable actor and hold use, then move to drag the actor along
+		// Player must _hold_ crouch within use range of a draggable actor and _hold_ use, then move to drag the actor along
+		// There is also little sense to drag something with a weapon in your hands, so it gets lowered
 		else if (dodragging && (AimActor || DragTarget) && player.usedown && player.cmd.buttons & BT_CROUCH)
 		{
 			if (DragTarget)
 			{
 				DragTarget.Warp(self, Clamp(Distance2D(DragTarget), radius + DragTarget.radius + speed, UseRange), flags:WARPF_INTERPOLATE | WARPF_NOCHECKPOSITION);
-
 				// Closed hand grab icon
 				crosshair = 97;
 			}
@@ -1130,8 +1131,8 @@ class BoAPlayer : PlayerPawn
 					AimActor && 
 					Distance2D(AimActor) < UseRange && 
 					(
-						IsCorpse(AimActor) ||
-						AimActor.bPushable
+						(IsCorpse(AimActor) && !AimActor.bBOSS) ||
+						(AimActor.bPushable && !AimActor.bISMONSTER)
 					)
 				)
 				{
@@ -1143,7 +1144,8 @@ class BoAPlayer : PlayerPawn
 						player.PendingWeapon = lowered;
 					}
 					DragTarget = AimActor;
-					Speed = Default.Speed * 0.05;
+					GiveInventory("IsDragging", 1);
+					Speed = Default.Speed * CROUCHSPEED / (1.0 + AimActor.mass / (player.mo.mass + 1.0));
 				}
 			}
 		}
@@ -1162,14 +1164,14 @@ class BoAPlayer : PlayerPawn
 			{
 				DragTarget = null;
 				Speed = Default.Speed;
-
+				TakeInventory("IsDragging", 1);
 				if (
 					player.cmd.buttons & BT_CROUCH &&
 					AimActor && 
 					Distance2D(AimActor) < UseRange + AimActor.Radius && 
 					(
-						IsCorpse(AimActor) ||
-						(!AimActor.bIsMonster && AimActor.bPushable)
+						(IsCorpse(AimActor) && !AimActor.bBOSS) ||
+						(AimActor.bPushable && !AimActor.bISMONSTER)
 					)
 				)
 				{
@@ -1315,6 +1317,9 @@ class BoAPlayer : PlayerPawn
 		}
 	}
 }
+
+// for bypassing DoSprinting from sprint.acs when dragging an object
+class IsDragging: Inventory { Inventory.MaxAmount 1 }
 
 // Base class for simple visual effects that will always follow the player until removed
 class PlayerEffect : Actor
