@@ -59,61 +59,72 @@ class SpearOfDestiny_End : SpearOfDestiny
 	}
 }
 
-class UniformStand: SwitchableDecoration
+class UniformStand : SwitchableDecoration
 {
 	class<DisguiseToken> currentuniform;
+	Inventory dropped;
+
 	property UniformType: currentuniform;
-	default
+
+	Default
 	{
 		Radius 8;
 		Height 56;
 		Scale 0.7;
-		-DORMANT
 		+NOTAUTOAIMED
 		+SOLID
 		+USESPECIAL
 		Activation THINGSPEC_Switch;
 		UniformStand.UniformType "";
 	}
+
 	States
 	{
-	Spawn:
-		HNG1 A 0;
-		Goto Inactive;
-	Inactive:
-		"####" "#" 1 NODELAY {bDormant = TRUE;}
-		"####" "#" -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0);
-		Stop;
-	PreLoadSprites:
-		HNG1 ABCD 0;
-		HNG2 ABCD 0;
+		Spawn:
+			HNG1 A 0;
+			Goto Inactive;
+		Inactive:
+			"####" "#" -1 {
+				bDormant = TRUE; 
+				ACS_NamedExecuteAlways("BoA_CompassQueue",0);
+			}
+			Stop;
+		PreLoadSprites:
+			HNG1 ABCD 0;
+			HNG2 ABCD 0;
 	}
 	
 	override void Activate (Actor activator)
 	{
-		if (activator is "PlayerPawn")
+		// Can't be activated if the rack is empty, or if we've already spawned a disguise that hasn't been picked up
+		if (activator is "PlayerPawn" && currentuniform && (!dropped || dropped.owner))
 		{
+			// Spawn the pickup for the disguise that was on the rack
+			if (currentuniform) { dropped = Inventory(Spawn(currentuniform, pos + (0, 0, 16))); }
+
+			// Find any current disguise that's in the player inventory
 			let disguise = DisguiseToken(activator.FindInventory("DisguiseToken", True));
-			if (disguise && disguise.Amount > 0) //KEEPDEPLETED
+
+			if (disguise)
 			{
-				bSolid = FALSE;
-				if (currentuniform) A_SpawnItemEx(currentuniform, 0, 0, 16, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
-				bSolid = TRUE;
-				if (disguise is "ScientistUniformToken") { frame = "B"; }
-				else if (disguise is "CCBJUniformToken") { frame = "C"; }
-				else if (disguise is "SSBJUniformToken") { frame = "D"; }
-				else { frame = "A"; }
+				// If the player already had a disguise, set that as the rack's current disguise
+				if (disguise is "ScientistUniformToken") { frame = 1; }
+				else if (disguise is "CCBJUniformToken") { frame = 2; }
+				else if (disguise is "SSBJUniformToken") { frame = 3; }
+				else { frame = 0; }
+
 				currentuniform = disguise.GetClass();
-				activator.A_TakeInventory(currentuniform);
+
+				// Remove the old disguise from the player inventory
+				disguise.DepleteOrDestroy(); // Reset the player's attributes and remove from the player's inventory
 			}
 			else
 			{
-				if (currentuniform)
-				{
-					A_SpawnItemEx(currentuniform, 0, 0, 16, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
-					currentuniform = null;
-				}
+				// Otherwise, just set the rack to the empty sprite and don't let it be used again
+				frame = 0;
+				currentuniform = null;
 			}
+
 			SetStateLabel("Inactive");
 		}
 	}

@@ -531,7 +531,6 @@ class DisguiseToken : CustomInventory
 
 	Default
 	{
-		+INVENTORY.KEEPDEPLETED
 		DisguiseToken.PlayerScale 0.65; // Overrides scale of original player class
 		DisguiseToken.ViewHeight -1; // -1 means 'use player class default' for everything below...
 		DisguiseToken.ViewBob -1;
@@ -620,6 +619,13 @@ class DisguiseToken : CustomInventory
 		p.sidemove1 = p.Default.sidemove1;
 		p.sidemove2 = p.Default.sidemove2;
 		p.soundclass = p.Default.soundclass;
+
+		if (notarget)
+		{
+			p.player.cheats &= ~CF_NOTARGET;
+			p.speed = owner.Default.speed;
+		}
+
 		Super.DepleteOrDestroy();
 	}
 
@@ -835,7 +841,6 @@ class RyanToken : DisguiseToken
 
 	Default
 	{
-		-INVENTORY.KEEPDEPLETED
 		DisguiseToken.ViewBob 0.22; // Less bob then BJ
 		DisguiseToken.ForwardMove 0.9, 0.45; // Just a little slower than BJ
 		DisguiseToken.SideMove 0.9, 0.45;
