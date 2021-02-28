@@ -1319,7 +1319,7 @@ class BoAPlayer : PlayerPawn
 }
 
 // for bypassing DoSprinting from sprint.acs when dragging an object
-class IsDragging: Inventory { Inventory.MaxAmount 1 }
+class IsDragging: Inventory { Default { Inventory.MaxAmount 1; } }
 
 // Base class for simple visual effects that will always follow the player until removed
 class PlayerEffect : Actor

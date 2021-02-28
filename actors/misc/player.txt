@@ -4,7 +4,7 @@ ACTOR IncomingMessage : Inventory {Inventory.MaxAmount 20}
 
 ACTOR ScientistUniformToken : DisguiseToken
 {
-	Inventory.Icon "SCUNC0"
+	Inventory.Icon "UNFSB0"
 	Inventory.PickupMessage "$UNIFORM1"
 	Inventory.PickupSound "pickup/uniform"
 	Scale 0.7
@@ -12,7 +12,7 @@ ACTOR ScientistUniformToken : DisguiseToken
 	States
 	{
 		Spawn:
-			SCUN D -1
+			UNFL B -1
 			Stop
 		Pickup:
 			TNT1 A 0 A_SelectWeapon("NullWeapon")
@@ -26,7 +26,7 @@ ACTOR ScientistUniformToken : DisguiseToken
 
 ACTOR CCBJUniformToken : DisguiseToken //used in concentration Camp
 {
-	Inventory.Icon "CCUFC0"
+	Inventory.Icon "UNFSC0"
 	Inventory.PickupMessage "$UNIFORM3"
 	Scale 0.7
 	Tag "$TAGCOATC"
@@ -36,7 +36,7 @@ ACTOR CCBJUniformToken : DisguiseToken //used in concentration Camp
 	States
 	{
 		Spawn:
-			CCUF D -1
+			UNFL C -1
 			Stop
 		Pickup:
 			TNT1 A 0 A_SelectWeapon("NullWeapon")
@@ -50,7 +50,7 @@ ACTOR CCBJUniformToken : DisguiseToken //used in concentration Camp
 
 ACTOR SSBJUniformToken : DisguiseToken
 {
-	Inventory.Icon "SSUFC0"
+	Inventory.Icon "UNFSD0"
 	Inventory.PickupMessage "$UNIFORM2"
 	Inventory.PickupSound "pickup/uniform"
 	Scale 0.7
@@ -58,7 +58,7 @@ ACTOR SSBJUniformToken : DisguiseToken
 	States
 	{
 		Spawn:
-			SSUF B -1
+			UNFL D -1
 			Stop
 		Pickup:
 			TNT1 A 0 A_SelectWeapon("NullWeapon")

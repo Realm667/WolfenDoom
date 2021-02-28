@@ -1524,6 +1524,7 @@ ACTOR Sniper : NaziStandard
 		"####" F 0 {bNoPain = FALSE;}
 		Goto See
 	Death:
+		"####" # 0 { mass = 70; }
 		SNIA I 5 A_RandomDeathAnim
 		"####" J 5 A_Scream
 		"####" K 5 A_UnblockAndDrop
@@ -1681,6 +1682,7 @@ ACTOR Sniper_Crouch : NaziStandard
 		"####" F 0 {bNoPain = FALSE;}
 		Goto See
 	Death:
+		"####" # 0 { mass = 70; }
 		"####" K 7 A_Scream
 		"####" L 5 A_UnblockAndDrop
 		"####" M -1
@@ -1773,6 +1775,7 @@ ACTOR ArcticSniper : NaziStandard
 		"####" A 0 {bNoPain = FALSE;}
 		Goto See
 	Death:
+		"####" # 0 { mass = 70; }
 		SNRF I 5 A_RandomDeathAnim
 		"####" J 5 A_Scream
 		"####" K 5 A_UnblockAndDrop
@@ -1844,6 +1847,7 @@ ACTOR ArcticSniper_Crouch : NaziStandard
 		"####" D 0 {bNoPain = FALSE;}
 		Goto See
 	Death:
+		"####" # 0 { mass = 70; }
 		SNRF K 7 A_Scream
 		"####" L 5 A_UnblockAndDrop
 		"####" M -1
@@ -2101,6 +2105,7 @@ ACTOR WPanzerGuard : BasicGuard
 		"####" A 0 {bNoPain = FALSE;}
 		Goto See
 	Death:
+		"####" # 0 { mass = 70; }
 		"####" D 0 A_Jump(64,"Death.Boom")
 		"####" D 3
 		"####" E 5

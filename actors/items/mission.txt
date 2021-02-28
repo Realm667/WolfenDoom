@@ -305,68 +305,41 @@ ACTOR ChemicalsPickup : CompassItem
 	}
 }
 
-//////////////////////
-// DISGUISE UNIFORM //
-//////////////////////
-
-ACTOR ScientistUniform : SwitchableDecoration
+ACTOR ScientistUniform : UniformStand
 {
 	//$Category Pickups (BoA)
-	//$Title Scientist Uniform (useable)
+	//$Title Scientist Uniform (usable)
 	//$Color 13
-	Radius 8
-	Height 56
-	Scale 0.7
-	-DORMANT
-	+NOTAUTOAIMED
-	+SOLID
-	+USESPECIAL
-	Activation THINGSPEC_Switch
+	UniformStand.UniformType "ScientistUniformToken"
 	States
 	{
 	Spawn:
-	Inactive:
-		SCUN A -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
-		Stop
-	Active:
-		SCUN B 0 {bSolid = FALSE; bDormant = FALSE; bUseSpecial = FALSE;}
-		"####" B 0 A_SpawnItemEx("ScientistUniformToken", 0, 0, 16, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
-		"####" B -1
-		Stop
-	}
-}
-
-ACTOR SSBJUniform : ScientistUniform
-{
-	//$Title SS Uniform (useable)
-	States
-	{
-	Spawn:
-	Inactive:
-		SSUF A -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
-		Stop
-	Active:
-		SCUN B 0 {bSolid = FALSE; bDormant = FALSE; bUseSpecial = FALSE;}
-		"####" B 0 A_SpawnItemEx("SSBJUniformToken", 0, 0, 16, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
-		"####" B -1
-		Stop
+		HNG1 B 0
+		Goto Inactive
 	}
 }
 
 ACTOR CCBJUniform : ScientistUniform
 {
-	//$Title Concentration Camp Uniform (useable)
+	//$Title Concentration Camp Uniform (usable)
+	UniformStand.UniformType "CCBJUniformToken"
 	States
 	{
 	Spawn:
-	Inactive:
-		CCUF A -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0)
-		Stop
-	Active:
-		CCUF B 0 {bSolid = FALSE; bDormant = FALSE; bUseSpecial = FALSE;}
-		"####" B 0 A_SpawnItemEx("CCBJUniformToken", 0, 0, 16, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
-		"####" B -1
-		Stop
+		HNG2 C 0
+		Goto Inactive
+	}
+}
+
+ACTOR SSBJUniform : ScientistUniform
+{
+	//$Title SS Uniform (usable)
+	UniformStand.UniformType "SSBJUniformToken"
+	States
+	{
+	Spawn:
+		HNG1 D 0
+		Goto Inactive
 	}
 }
 

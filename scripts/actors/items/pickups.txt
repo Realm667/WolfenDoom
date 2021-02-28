@@ -58,3 +58,68 @@ class SpearOfDestiny_End : SpearOfDestiny
 		}
 	}
 }
+
+class UniformStand: SwitchableDecoration
+{
+	class<DisguiseToken> currentuniform;
+	property UniformType: currentuniform;
+	default
+	{
+		Radius 8;
+		Height 56;
+		Scale 0.7;
+		-DORMANT
+		+NOTAUTOAIMED
+		+SOLID
+		+USESPECIAL
+		Activation THINGSPEC_Switch;
+		UniformStand.UniformType "";
+	}
+	States
+	{
+	Spawn:
+		HNG1 A 0;
+		Goto Inactive;
+	Inactive:
+		"####" "#" 1 NODELAY {bDormant = TRUE;}
+		"####" "#" -1 NODELAY ACS_NamedExecuteAlways("BoA_CompassQueue",0);
+		Stop;
+	PreLoadSprites:
+		HNG1 ABCD 0;
+		HNG2 ABCD 0;
+	}
+	
+	override void Activate (Actor activator)
+	{
+		if (activator is "PlayerPawn")
+		{
+			let disguise = DisguiseToken(activator.FindInventory("DisguiseToken", True));
+			if (disguise && disguise.Amount > 0) //KEEPDEPLETED
+			{
+				bSolid = FALSE;
+				if (currentuniform) A_SpawnItemEx(currentuniform, 0, 0, 16, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+				bSolid = TRUE;
+				if (disguise is "ScientistUniformToken") { frame = "B"; }
+				else if (disguise is "CCBJUniformToken") { frame = "C"; }
+				else if (disguise is "SSBJUniformToken") { frame = "D"; }
+				else { frame = "A"; }
+				currentuniform = disguise.GetClass();
+				activator.A_TakeInventory(currentuniform);
+			}
+			else
+			{
+				if (currentuniform)
+				{
+					A_SpawnItemEx(currentuniform, 0, 0, 16, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+					currentuniform = null;
+				}
+			}
+			SetStateLabel("Inactive");
+		}
+	}
+	
+	override void Deactivate (Actor deactivator)
+	{
+		Activate(deactivator);
+	}
+}
