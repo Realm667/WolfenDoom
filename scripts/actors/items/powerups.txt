@@ -797,8 +797,8 @@ class InventoryHolder play
 				continue;
 			}
 			Inventory curItem = ii;
-			curItem.DepleteOrDestroy();
 			ii = ii.Inv;
+			curItem.DepleteOrDestroy();
 		}
 		// Iterate in reverse to put items in the same order they were before
 		for (int i = heldItems.Size() - 1; i; i--)
@@ -895,6 +895,15 @@ class RyanToken : DisguiseToken
 				// PlayerPawn actor, and the PlayerInfo which is attached to it.
 				p.Health = p.Default.Health;
 				p.player.Health = p.Default.Health;
+				// Add start items
+				/*
+				DropItem si = GetDefaultByType(p.GetClass()).GetDropItems();
+				while (si != null)
+				{
+					p.GiveInventory(si.Name, si.Amount);
+					si = si.Next;
+				}
+				*/
 			}
 		}
 
