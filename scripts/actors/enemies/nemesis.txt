@@ -433,6 +433,10 @@ class RENemesis : NaziBoss
 		){
 			Vector3 checkSpot = target.Vec3Angle(checkDistance, angle);
 			Sector sec = Level.PointInSector(checkSpot.XY);
+			if (sec.GetUDMFInt("user_blocknemesis"))
+			{ // Don't teleport into sectors marked with "user_blocknemesis"
+				continue;
+			}
 			// Ensure Nemesis doesn't teleport into midair
 			double closestFloorHeight = sec.NextLowestFloorAt(checkSpot.X, checkSpot.Y, checkSpot.Z, 0, MaxStepHeight);
 			if ((targFloorHeight - closestFloorHeight) > MaxDropoffHeight)
