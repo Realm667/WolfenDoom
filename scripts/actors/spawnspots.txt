@@ -100,7 +100,7 @@ class ActorSpawner : SwitchableDecoration
 			TNT1 A 1;
 			Loop;
 		Active:
-			"####" "#" 35 A_SetTics(Random[Spawn](1, 12 - skill) * 5);
+			"####" "#" 35 A_SetTics(Random[Spawn](1, 7 - skill) * 5);
 			"####" "#" 0 { return ResolveState("Active.Spawn"); }
 		Active.Spawn:
 			"####" "#" 1 A_DoSpawns();
@@ -193,7 +193,7 @@ class ActorSpawner : SwitchableDecoration
 		return spawncount;
 	}
 
-	int TotalSpawns(Class<Actor> spawntype = null, bool countdead = false)
+	virtual int TotalSpawns(Class<Actor> spawntype = null, bool countdead = false)
 	{
 		if (!tid) { return CountSpawns(spawntype, countdead); }
 
@@ -275,6 +275,34 @@ class ActorSpawner : SwitchableDecoration
 
 		if (bDormant) { return ResolveState("Inactive"); } // Cut out if the spawner is now dormant
 		return ResolveState("Active");
+	}
+}
+
+// More aggressive actor spawner, which ignores other actor spawners with the same TID
+class AggressiveActorSpawner : ActorSpawner
+{
+	Default
+	{
+		//$Category Misc (BoA)
+		//$Title Spawner, Actor
+		//$Arg0 "Thing ID to spawn"
+		//$Arg0Str "Actor class to spawn"
+		//$Arg0ToolTip "What actor to spawn.  Numeric values set Thing ID, and string values set spawn class."
+		//$Arg1 "Maximum number alive"
+		//$Arg1ToolTip "Determines the number of actors to keep alive at once (e.g., '5' will spawn a new actor every time you kill one, keeping 5 alive at all times)."
+		//$Arg2 "TID to give actor"
+		//$Arg2ToolTip "TID that will be given to the spawned actor(s).  Default is 0 (no TID)."
+		//$Arg3 "Minimum player distance"
+		//$Arg3ToolTip "Distance that the player must be away from this actor in order for spawns to take place.  A value of '0' defaults to 512."
+		//$Arg3Default 512
+		//$Arg4 "Maximum number to spawn, total"
+		//$Arg4ToolTip "Determines the number of actors to spawn in total, regardless of how many are killed. Zero means unlimited."
+		//$Sprite EXCLC0
+	}
+
+	override int TotalSpawns(Class<Actor> spawntype, bool countdead)
+	{
+		return CountSpawns(spawntype, countdead);
 	}
 }
 
