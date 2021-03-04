@@ -128,6 +128,36 @@ class ActorSpawner : SwitchableDecoration
 		if (bDormant) { SetStateLabel("Inactive"); }
 	}
 
+	static void SetArgument(int tid, int arg, int value)
+	{
+		if (arg < 0 || arg > 4) return;
+		ActorIterator it = Level.CreateActorIterator(tid);
+		ActorSpawner spawner = ActorSpawner(it.Next());
+		while (spawner != null)
+		{
+			spawner.Args[arg] = value;
+			switch (arg)
+			{
+			case 0:
+				spawner.user_spawntype = GetSpawnableType(value);
+				break;
+			case 1:
+				spawner.user_maxactors = value;
+				break;
+			case 2:
+				spawner.user_tid = value;
+				break;
+			case 3:
+				spawner.user_minspawndistance = value;
+				break;
+			case 4:
+				spawner.user_maxspawns = value;
+				break;
+			}
+			spawner = ActorSpawner(it.Next());
+		}
+	}
+
 	bool InPlayerSightOrRange(int range = 512)
 	{
 		for (int p = 0; p < MAXPLAYERS; p++) // Iterate through all of the players and see if any can see the spawn point
