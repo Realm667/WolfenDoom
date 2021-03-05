@@ -8,20 +8,13 @@ function void DoSprinting(void)
 
 	int buttons = GetPlayerInput(-1,INPUT_BUTTONS);
 	
-	if (CheckInventory("IsDragging")) { return; }
+	if (CheckInventory("IsDragging") || ScriptCall("ACSTools", "FindInventoryClass", "TankMorph", 1)) { return; }
 	
-	// Unfortunately, we have to check for each type of disguise token here - can't check for the base DisguiseToken class in ACS
 	if (
-		!(
-			CheckWeapon("NullWeapon") &&
-			(
-				CheckInventory("SSBJUniformToken") ||
-				CheckInventory("ScientistUniformToken")
-			)
-		) && 
+		!(CheckWeapon("NullWeapon") && ScriptCall("ACSTools", "FindInventoryClass", "DisguiseToken", 1)) && 
 		(buttons & BT_SPEED) && 
 		(buttons & BT_FORWARD) && 
-		!(buttons & BT_CROUCH) && //does not work for 'toggled' crouching!
+		!(buttons & BT_CROUCH) && //you can still sprint with 'toggled' crouching!
 		CheckInventory("Stamina") && 
 		cooldown[PlayerNumber()] <= 0
 	)
