@@ -93,9 +93,20 @@ function void DrawObjectives(void)
 		}
 	}
 
-	setfont("OBJECTGX");
+	int intPosX = 400.0;
+	if (
+		StrCmp(StrLeft(GetCvarString("language"), 2), "en") == 0 ||
+		StrCmp(GetCvarString("language"), "default") == 0)
+	{
+		SetFont("OBJECTGX");
+	}
+	else
+	{
+		SetFont("OBJECTGY");
+		intPosX += 40.0;
+	}
 	hudmessage(s:"A";
-		HUDMSG_PLAIN,972,CR_UNTRANSLATED,400.0,115.1,0.03);
+		HUDMSG_PLAIN,972,CR_UNTRANSLATED,intPosX,115.1,0.03);
 }
 
 script "boaobjectiveaccomplished" (void)
