@@ -6,7 +6,16 @@ zparseopts -D -E -A params -source:
 
 fontname=${1:?Font required}
 source=${params[--source]}
-: ${source:="$(csvcut -c1 fontchars.csv)"}
+
+# csvcut is part of "csvkit": https://csvkit.readthedocs.io/en/latest/
+if [[ -z $source ]] && whence csvcut >& /dev/null; then
+    source="$(csvcut -c 1 fontchars.csv | sed -Ee 's/^.*([0-9A-Fa-f]{4,}).*$/\1/g')"
+elif [[ -r $source ]]; then
+    source="$(<$source)"
+else
+    print "Unable to find source!"
+    exit 1
+fi
 
 : ${(Af)charz::="${source}"}
 : ${(Af)flist::="$(ls -1 $fontname)"}
@@ -19,14 +28,7 @@ if ((fonttype == 1)); then
     # Variable-width
     i=2
     while [[ -n ${charz[$i]} ]] {
-        # Remove quote marks
-        if [[ ${charz[$i]} == \"* ]]; then
-            charz[$i]=${charz[$i][2,-2]}
-        fi
-        if [[ ${charz[$i]} == \"\"* ]]; then
-            charz[$i]=${charz[$i]:1}
-        fi
-        charcode=${charz[$i][5,9]}
+        charcode=${charz[$i]}
         if [[ -n ${flist[(r)${charcode}*]} ]]; then
             print '✓'
         else
@@ -40,7 +42,6 @@ else
     pcre_compile '(\d+)\s*,\s*(\d+)'
     pcre_match -a celldim $cellsize
     pcre_compile '(\d+)x(\d+)'
-    i=2
     curimg=""
     curimgcharsleft=0
     # Monospace font characters are stored in sheets
@@ -57,14 +58,9 @@ else
 #         print $((0x${base:0:4})) $count
 #     done
     convert -size $celldim[1]x$celldim[2] -depth 8 canvas:none rgba:- | base64 -w 0 | read blankchar
+    i=2
     while [[ -n ${charz[$i]} ]] {
-        if [[ ${charz[$i]} == \"* ]]; then
-            charz[$i]=${charz[$i][2,-2]}
-        fi
-        if [[ ${charz[$i]} == \"\"* ]]; then
-            charz[$i]=${charz[$i]:1}
-        fi
-        charcode=$((0x${charz[$i][5,9]}))
+        charcode=$((0x${charz[$i]}))
         found=0
         for base count cols rows in ${(kvs@ @)imginfos[@]}; do
             colw=$((cols * celldim[1]))
@@ -81,7 +77,8 @@ else
                 if [[ $chardata != $blankchar ]]; then
                     print '✓'
                 else
-                    print "U -> ${base}@${charcol},${charrow} (${charx},${chary})"
+                    # Needed for CSV compatibility
+                    print "\"U -> ${base}@${charcol},${charrow} (${charx},${chary})\""
                 fi
                 break
             fi

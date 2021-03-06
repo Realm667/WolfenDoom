@@ -1,0 +1,49 @@
+name: Update font character table
+on:
+  push:
+    paths:
+    - 'language.csv'
+    - 'fonts/**/*'
+    - '!fonts/fontchars.csv'
+
+jobs:
+  scan_fonts:
+    name: Scan fonts
+    runs-on: ubuntu-20.04
+    env:
+      REPO_ROOT: ${{github.workspace}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup temporary directory
+        run: mkdir -p /tmp/scans/
+      - name: Update package info
+        run: sudo apt update
+      - name: Install required software
+        run: sudo apt -y install python3 zsh imagemagick
+      - name: Scan language table
+        run: |
+          python3 $REPO_ROOT/tools/util/charlist.py language.csv --header "Char & codepoint" --csv > /tmp/language_charlist_csv
+          python3 $REPO_ROOT/tools/util/charlist.py language.csv --header "Char & codepoint" --code-only > /tmp/language_charlist
+      - name: Scan fonts
+        run: |
+          cd fonts
+          for fontname in $(ls -1F | sed -e '/[^/]$/d;s/\/$//g'); do
+            echo $fontname > /tmp/scans/${fontname}
+            zsh $REPO_ROOT/tools/util/checkfont.sh $fontname --source /tmp/language_charlist >> /tmp/scans/${fontname}
+          done
+        shell: bash
+      - name: Update font character table
+        run: |
+          paste -d , /tmp/language_charlist_csv - /tmp/scans/* <<COMMENTS > fonts/fontchars.csv
+          Comments
+          ✓ = Finished
+          NO = Needs offsets
+          U = Unfinished
+          Updated by GitHub Actions on $(date -Iminutes)
+          COMMENTS
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add fonts/fontchars.csv
+          git commit -m "Update fontchars.csv"
+          git push
