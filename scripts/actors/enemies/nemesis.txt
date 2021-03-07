@@ -51,7 +51,10 @@ class SpotFinderTracer : LineTracer
 				else
 				{
 					// Two-sided wall
-					if (Results.HitLine.flags & Line.ML_BLOCKING)
+					if (Results.HitLine.flags & Line.ML_BLOCKING ||
+						Results.HitLine.flags & Line.ML_BLOCKMONSTERS ||
+						Results.HitLine.flags & Line.ML_BLOCK_PLAYERS ||
+						Results.HitLine.flags & Line.ML_BLOCKEVERYTHING)
 					{
 						hitWall = true;
 						return TRACE_Stop;
