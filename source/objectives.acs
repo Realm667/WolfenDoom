@@ -57,20 +57,34 @@ function void DrawObjectives(void)
 	int intMsgID = 960;
 
 	int intHeaderCount = 0;
+	int english = 0;
+
+	if (
+		StrCmp(StrLeft(GetCvarString("language"), 2), "en") == 0 ||
+		StrCmp(GetCvarString("language"), "default") == 0)
+	{
+		english = 1;
+	}
 
 	for (int i = 0; i <= 7; i++)
 	{
 		SetFont("SMALLFONT");
 		int intPosY = 135.0 + (13.0 * (intMsgID - 960)) + 0.1;
+		int intPosX = 300.1;
+
+		if (!english)
+		{
+			intPosX -= 40.0;
+		}
 
 		if (i == 0)
 		{
-			HudMessage(l:"MO_PRIMARY"; HUDMSG_PLAIN, intMsgID++, CR_UNTRANSLATED, 300.1, intPosY, 0.03);
+			HudMessage(l:"MO_PRIMARY"; HUDMSG_PLAIN, intMsgID++, CR_UNTRANSLATED, intPosX, intPosY, 0.03);
 			intHeaderCount++;
 		}
 		else if (i == 4)
 		{
-			HudMessage(l:"MO_SECONDARY"; HUDMSG_PLAIN, intMsgID++, CR_UNTRANSLATED, 300.1, intPosY, 0.03);
+			HudMessage(l:"MO_SECONDARY"; HUDMSG_PLAIN, intMsgID++, CR_UNTRANSLATED, intPosX, intPosY, 0.03);
 			intHeaderCount++;
 		}
 		else
@@ -82,31 +96,28 @@ function void DrawObjectives(void)
 				strLen(strOutput) > 0 &&
 				((objectives_active >> objIdx) & 1) == 1)
 			{
-				HudMessage(s:strOutput; HUDMSG_PLAIN, intMsgID++, CR_UNTRANSLATED, 310.1, intPosY, 0.03);
+				HudMessage(s:strOutput; HUDMSG_PLAIN, intMsgID++, CR_UNTRANSLATED, intPosX + 10.0, intPosY, 0.03);
 
 				If (!StrCmp(StrParam(l:objectives[objIdx][0]), StrParam(l:"MO_ICON_ACC")))
 					SetFont("OBJ_YES");
 				Else
 					SetFont("OBJ_NO");
-				HudMessage(s:"A"; HUDMSG_PLAIN, intMsgID - 10, CR_UNTRANSLATED, 300.1, intPosY + 1.0, 0.03);
+				HudMessage(s:"A"; HUDMSG_PLAIN, intMsgID - 10, CR_UNTRANSLATED, intPosX, intPosY + 1.0, 0.03);
 			}
 		}
 	}
 
-	int intPosX = 400.0;
-	if (
-		StrCmp(StrLeft(GetCvarString("language"), 2), "en") == 0 ||
-		StrCmp(GetCvarString("language"), "default") == 0)
+	if (!english)
 	{
-		SetFont("OBJECTGX");
+		SetFont("OBJECTGY");
 	}
 	else
 	{
-		SetFont("OBJECTGY");
-		intPosX += 40.0;
+		SetFont("OBJECTGX");
 	}
+
 	hudmessage(s:"A";
-		HUDMSG_PLAIN,972,CR_UNTRANSLATED,intPosX,115.1,0.03);
+		HUDMSG_PLAIN,972,CR_UNTRANSLATED,400.0,115.1,0.03);
 }
 
 script "boaobjectiveaccomplished" (void)
