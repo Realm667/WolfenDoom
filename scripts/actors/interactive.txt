@@ -601,6 +601,7 @@ class InteractiveItem : PuzzleItem
 
 	Flagdef AllowPickup:itemflags, 0; // Allow the item to be added to player inventory
 	Flagdef SetSprite:itemflags, 1; // Use args[1] input to set the sprite and inventory icon
+	Flagdef UseToPickUp:itemflags, 2; // Player must press 'use' on item to pick it up
 
 	Default
 	{
@@ -613,6 +614,7 @@ class InteractiveItem : PuzzleItem
 		-SPECIAL // Don't pick up automatically; requires player to 'use' the item to interact
 		+InteractiveItem.ALLOWPICKUP // Pick up after used by the player, instead of being left in place
 		+InteractiveItem.SETSPRITE // Set the sprite and icon based off of the second argument
+		+InteractiveItem.USETOPICKUP // Must be used by the player to pick it up
 		Radius 16;
 		Height 32;
 		Scale 0.25;
@@ -644,7 +646,23 @@ class InteractiveItem : PuzzleItem
 
 	override bool TryPickup(in out Actor toucher)
 	{
-		return false; // Don't pick this actor up automatically; use it to activate it
+		if (bUseToPickup) { return false; } // Don't pick this actor up automatically; use it to activate it
+		else
+		{
+			// Handling so that conversation-given items properly check the max amount before giving items to the player and taking money
+			if (bDropped && maxamount > 0) // If given/dropped by another actor, and there is a max amount set...
+			{
+				let current = toucher.FindInventory(GetClass()); // and it's already in player inventory...
+				if (current && current.Amount + Amount > maxamount) // don't pick it up if you already have max amount
+				{
+					bAlwaysPickup = false;	// Don't force pickup in excess of MaxAmount if the item was spawned by another actor after map load
+								// This flag is checked in the internal Inventory pickup logic, regardless of the return value here.
+					return false;
+				}
+			}
+
+			return Super.TryPickup(toucher);
+		}
 	}
 
 	override bool Use(bool pickup)
@@ -902,6 +920,7 @@ class CastleWolfensteinMap : InteractiveItem
 	Default
 	{
 		-InteractiveItem.SETSPRITE
+		-InteractiveItem.USETOPICKUP
 		Inventory.MaxAmount 1;
 		Inventory.Amount 1;
 		Inventory.Icon "MAPIA0";
@@ -915,11 +934,6 @@ class CastleWolfensteinMap : InteractiveItem
 		Spawn:
 			MAPI B -1;
 			Stop;
-	}
-
-	override bool TryPickup(in out Actor toucher)
-	{
-		return Inventory.TryPickup(toucher); // Given via conversation and script, so must be picked up automatically.
 	}
 }
 
