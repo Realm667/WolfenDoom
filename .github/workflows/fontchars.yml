@@ -10,7 +10,7 @@ on:
 jobs:
   scan_fonts:
     name: Scan fonts
-    if: ${{ github.repository_owner == 'Realm667' }}
+    if: ${{ github.event_name != 'workflow_dispatch' && github.repository_owner == 'Realm667' }}
     runs-on: ubuntu-20.04
     env:
       REPO_ROOT: ${{github.workspace}}
