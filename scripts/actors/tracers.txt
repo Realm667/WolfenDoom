@@ -38,6 +38,8 @@ class BulletTracer : FastProjectile
 		+NOEXTREMEDEATH
 		+WINDTHRUST
 		+THRUGHOST
+		-NOGRAVITY
+		Gravity 15.0;
 		Radius 2;
 		Height 2;
 		Speed 75;
@@ -96,6 +98,15 @@ class BulletTracer : FastProjectile
 		}
 
 		offset = Random(0, 70);
+
+		if (!bNoGravity && target && !target.player && target.target)
+		{
+			Vector3 posDiff = Level.Vec3Diff(Pos, target.target.Pos);
+			double time = posDiff.XY.Length() / Speed;
+			double grav = GetGravity() / Speed;
+			double height = posDiff.Z + ((Pos.Z - target.Pos.Z) / 2);
+			Vel.Z = ZScriptTools.ArcZVel(time, grav, height);
+		}
 	}
 
 	// Handling so that tracers won't hit actors that have the tracer's origin actor set as their master (or inherit from one that does)
@@ -261,6 +272,12 @@ class BulletTracer : FastProjectile
 					return;
 				}
 			}
+		}
+
+		if (!bNoGravity && pos.z > floorz)
+		{
+			vel.z -= GetGravity() / Speed;
+			if (trailactor) { trailactor.vel = vel; }
 		}
 	}
 
@@ -675,12 +692,6 @@ class PlayerTracer : BulletTracer
 			zoffset = 8;
 			SetOrigin(pos + (0, 0, zoffset), true);
 			if (trailactor) { trailactor.SetOrigin(trailactor.pos + (0, 0, zoffset), true); }
-		}
-
-		if (pos.z > floorz && !bNoGravity)
-		{
-			vel.z -= 15.0 / Speed;
-			if (trailactor) { trailactor.vel = vel; }
 		}
 	}
 }
