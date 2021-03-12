@@ -429,7 +429,7 @@ class Base : Actor
 		}
 		// The height difference may be changed by a portal
 		Vector3 posDiff = Level.Vec3Diff(proj.Pos, targ.Pos);
-		double distance = posDiff.XY.Length();
+		double distance = posDiff.Length();
 		if (maxdistance)
 		{
 			distance = min(maxdistance, distance);
