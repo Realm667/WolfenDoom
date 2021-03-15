@@ -224,7 +224,13 @@ class ACSTools
 		// Entry was not found, return a blank string.
 		return "";
 	}
-	
+
+	static bool ShouldUseWideObjectivesBox()
+	{
+		WideObjectivesDataHandler dataHandler = WideObjectivesDataHandler(StaticEventHandler.Find("WideObjectivesDataHandler"));
+		return dataHandler.shouldUseWideObjectivesBox();
+	}
+
 	static play void DamageSectorWrapper(int tag, int damage) // for destructible 3d floors --N00b
 	{
 		SectorTagIterator sectors = level.CreateSectorTagIterator(tag);
