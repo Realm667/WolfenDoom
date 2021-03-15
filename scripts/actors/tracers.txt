@@ -98,13 +98,21 @@ class BulletTracer : FastProjectile
 		}
 
 		offset = Random(0, 70);
+		Actor shooter = target;
 
-		if (!bNoGravity && target && !target.player && target.target)
+		while (shooter is "KTFlare" || shooter is "TurretGun") {
+			shooter = shooter.master;
+		}
+		if (shooter is "TurretStand") {
+			shooter = TurretStand(shooter).shooter;
+		}
+
+		if (!bNoGravity && shooter && !shooter.player && shooter.target)
 		{
-			Vector3 posDiff = Level.Vec3Diff(Pos, target.target.Pos);
+			Vector3 posDiff = Level.Vec3Diff(Pos, shooter.target.Pos);
 			double time = posDiff.Length() / Speed;
 			double grav = GetGravity() / Speed;
-			double height = posDiff.Z + ((Pos.Z - target.Pos.Z) / 2);
+			double height = posDiff.Z + ((Pos.Z - shooter.Pos.Z) / 2);
 			Vel.Z = ZScriptTools.ArcZVel(time, grav, height);
 		}
 	}
