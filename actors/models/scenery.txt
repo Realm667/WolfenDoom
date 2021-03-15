@@ -457,6 +457,26 @@ ACTOR RTCWGramo : InteractionBase
 	}
 }
 
+ACTOR RTCWGramoHitler : RTCWGramo
+{
+	//$Title Hitler's Gramophone (destroyable, interactive)
+	States
+	{
+	Active:
+		MDLA A 0 A_StartSound("WALKUR2", CHAN_ITEM)
+		Play:
+		MDLA ABCDEFGHIJKLMNOPQRSTUVWXYZ 1
+		MDLB ABCDEFGHIJKLMNOPQRSTUVWXYZ 1
+		MDLC ABCDEFGHIJKLMNOPQRSTUVWXYZ 1
+		Loop
+	Spawn:
+		MDLA A 0 NODELAY A_SpawnItemEx("InteractionIcon", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE)
+	SpawnSet:
+		MDLA A -1
+		Stop
+	}
+}
+
 ACTOR RTCWPhone : 3dObstacle
 {
 	//$Category Models (BoA)/Scenery
