@@ -237,6 +237,11 @@ class ACSTools
 		int sector_id = sectors.next(); //damage only the first sector
 		Destructible.DamageSector(level.sectors[sector_id], null, damage, "None", SECPART_3D, (0, 0, 0), false);
 	}
+
+	static bool IsAtMaxHealth(Actor activator)
+	{
+		return activator.Health == activator.GetMaxHealth();
+	}
 }
 
 class ActorFinderTracer : LineTracer
