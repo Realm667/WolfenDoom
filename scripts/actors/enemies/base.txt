@@ -436,12 +436,13 @@ class Base : Actor
 		}
 		double time = distance / speed;
 		// Account for spawnheight when calculating height difference
-		double height = posDiff.Z + spawnheight;
+		double crouchfactor = 1;
 		if (targ.player)
 		{
 			// Account for crouched players
-			height += targ.player.crouchoffset * .5;
+			crouchfactor = targ.player.crouchfactor;
 		}
+		double height = posDiff.Z + spawnheight * crouchfactor;
 		proj.Vel.Z = ZScriptTools.ArcZVel(time, gravity, height);
 		if (pitch && (flags & CMF_OFFSETPITCH))
 		{
