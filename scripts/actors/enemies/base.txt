@@ -440,8 +440,7 @@ class Base : Actor
 		if (targ.player)
 		{
 			// Account for crouched players
-			// Console.Printf("crouchoffset: %d", targ.player.crouchoffset);
-			height += targ.player.crouchoffset;
+			height += targ.player.crouchoffset * .5;
 		}
 		proj.Vel.Z = ZScriptTools.ArcZVel(time, gravity, height);
 		if (pitch && (flags & CMF_OFFSETPITCH))
