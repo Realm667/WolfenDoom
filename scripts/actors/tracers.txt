@@ -112,7 +112,11 @@ class BulletTracer : FastProjectile
 			Vector3 posDiff = Level.Vec3Diff(Pos, shooter.target.Pos);
 			double time = posDiff.Length() / Speed;
 			double grav = GetGravity() / Speed;
-			double height = posDiff.Z + ((Pos.Z - shooter.Pos.Z) / 2);
+			double height = posDiff.Z + shooter.target.height * .75;
+			if (shooter.target.player)
+			{
+				height += shooter.target.player.crouchoffset;
+			}
 			Vel.Z = ZScriptTools.ArcZVel(time, grav, height);
 		}
 	}
