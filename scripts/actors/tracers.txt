@@ -290,7 +290,11 @@ class BulletTracer : FastProjectile
 		if (!bNoGravity && pos.z > floorz)
 		{
 			vel.z -= GetGravity() / Speed;
-			if (trailactor) { trailactor.vel = vel; }
+			if (trailactor)
+			{
+				trailactor.vel = vel;
+				trailactor.pitch = -VectorAngle(Speed, Vel.Z);
+			}
 		}
 	}
 
@@ -514,7 +518,7 @@ class Whizzer : GrenadeBase
 
 class TracerTrail : SimpleActor
 {
-	double faderate, stepalpha, startalpha, oldpitch;
+	double faderate, stepalpha, startalpha;
 
 	Property FadeRate:faderate;
 	Property StartAlpha:startalpha;
@@ -552,8 +556,6 @@ class TracerTrail : SimpleActor
 
 	override void Tick()
 	{
-		oldpitch = pitch;
-
 		Super.Tick();
 
 		if (bNoInteraction && TestMobjLocation()) { bNoInteraction = false; }
