@@ -240,7 +240,7 @@ class ACSTools
 
 	static bool IsAtMaxHealth(Actor activator)
 	{
-		return activator.Health == activator.GetMaxHealth();
+		return activator.Health == activator.GetMaxHealth(true);
 	}
 }
 
