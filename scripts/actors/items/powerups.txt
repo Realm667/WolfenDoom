@@ -896,14 +896,16 @@ class RyanToken : DisguiseToken
 				p.Health = p.Default.Health;
 				p.player.Health = p.Default.Health;
 				// Add start items
-				/*
 				DropItem si = GetDefaultByType(p.GetClass()).GetDropItems();
 				while (si != null)
 				{
-					p.GiveInventory(si.Name, si.Amount);
+					class<Inventory> siClass = si.Name;
+					if (!(siClass is "Weapon"))
+					{
+						p.GiveInventory(siClass, si.Amount);
+					}
 					si = si.Next;
 				}
-				*/
 			}
 		}
 
@@ -977,6 +979,17 @@ class HQTrainingCourse : Inventory
 				// Needed so that players can switch weapons.
 				p.player.ReadyWeapon = null;
 				p.player.PendingWeapon = Weapon(p.FindInventory("NullWeapon"));
+				// Add start items
+				DropItem si = GetDefaultByType(p.GetClass()).GetDropItems();
+				while (si != null)
+				{
+					class<Inventory> siClass = si.Name;
+					if (!(siClass is "Weapon"))
+					{
+						p.GiveInventory(siClass, si.Amount);
+					}
+					si = si.Next;
+				}
 			}
 		}
 		return Super.TryPickup(toucher);
