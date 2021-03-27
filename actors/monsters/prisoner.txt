@@ -293,12 +293,12 @@ ACTOR PrisonerEnemyBoss_End : ZombieStandard
 	Missile:
 		"####" A 0 A_JumpIfInventory("PrisonerMedikitCounter", 3, 2)
 		"####" A 0 A_JumpIfHealthLower(600, "Heal")
-		"####" A 0 A_Jump(192, "Luger")
+		"####" A 0 A_Jump(128, "Luger")
 	Grenade:
 		"####" F 0 A_Jump(128, "OccultFire")
 		"####" F 0 A_Jump(128, "ZyklonFire")
 		"####" F 16 A_FaceTarget
-		"####" F 10 A_SpawnProjectile("HandGrenade",40,4,random(-8,8), CMF_OFFSETPITCH|CMF_BADPITCH, random(0,16))
+		"####" F 10 A_ArcProjectile("HandGrenade",40,4,random(-8,8), CMF_OFFSETPITCH|CMF_BADPITCH, random(0,16))
 		Goto See
 	Luger:
 		"####" FG 5 A_FaceTarget
