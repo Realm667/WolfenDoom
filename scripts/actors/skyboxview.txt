@@ -132,7 +132,7 @@ class SkyViewPointStatic : SkyViewPoint
 			Vector3 dest = (SpawnPoint.xy + offset - anchoroffset, SpawnPoint.z + heightdelta);
 			double dist = (dest.xy - pos.xy).length();
 
-			if (base.bTeleport || dist <= 32.0)
+			if (base.bTeleport || dist <= 32.0 || level.time < 5)
 			{
 				SetXYZ(dest);
 			}
