@@ -308,6 +308,7 @@ class EffectSpawner : SwitchableDecoration
 	transient CVar switchcvar;
 	String switchvar;
 	int range;
+	bool user_unmanaged;
 
 	int flags;
 
@@ -339,6 +340,12 @@ class EffectSpawner : SwitchableDecoration
 
 		manager = ParticleManager.GetManager();
 		if (!manager) { return; }
+
+		if (user_unmanaged)
+		{
+			bDontCull = true;
+			bAllowTickDelay = false;
+		}
 
 		if (range > 0 && !bDontCull) { EffectsManager.Add(self, range > 0 ? min(range, boa_sfxlod) : boa_sfxlod); }
 
