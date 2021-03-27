@@ -70,6 +70,8 @@ class Boulder : Actor
 					if (scale.x < 0.05) { Destroy(); }
 				}
 
+				A_StopSound(CHAN_5);
+
 				bPushable = true;
 			}
 			Loop;
@@ -120,7 +122,7 @@ class Boulder : Actor
 			Vector3 gradient;
 			gradient.x = normal.x * normal.z;
 			gradient.y = normal.y * normal.z;
-			gradient.z = -(normal.x * normal.x) - (normal.y * normal.y);
+			gradient.z = (normal.x * normal.x) + (normal.y * normal.y);
 
 			if (bHugger && vel.length()) { vel = vel.Unit() * Speed; }
 			else 
