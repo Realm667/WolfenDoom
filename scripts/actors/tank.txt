@@ -752,7 +752,10 @@ class TankMorph : PowerMorph
 				if (set && !cur.Default.bInvbar) { PlayerPawn(owner).InvSel = cur; } // Automatically select an item that wasn't previously on the inventory bar to highlight that it's there now
 			}
 			else { cur.bInvBar = false; }
-
+			if (cur is "PoweredInventory")
+			{ // Ensure PoweredInventory (Lantern and Mine sweeper) items are turned off when player enters a tank
+				PoweredInventory(cur).active = false;
+			}
 			cur = cur.Inv;
 		}
 
