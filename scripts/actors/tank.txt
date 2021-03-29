@@ -584,7 +584,10 @@ class TankPlayer : PlayerPawn
 			}
 		}
 
-		bool ret = Super.UndoPlayerMorph(activator, unmorphflag, force); // This call forces the player health to full Spawn Health
+		// This call forces the player health to full Spawn Health, so we have to re-asjudt health after this point
+		// Setting the third argument (force) to true ensures that all of the morph cleanup code runs even if the
+		// player spawn fails so that we can gracefully handle player location in the TankMorph powerup code.
+		bool ret = Super.UndoPlayerMorph(activator, unmorphflag, true); 
 
 		activator.health = activator.mo.health = premorphhealth;
 
@@ -694,7 +697,7 @@ class TankMorph : PowerMorph
 
 			if (tank)
 			{
-				if  (tank.treads)
+				if (tank.treads)
 				{
 					tank.treads.bSolid = true;
 					tank.treads.master = null;
@@ -704,8 +707,8 @@ class TankMorph : PowerMorph
 						TankTreadsBase(tank.treads).usetimeout = 35;
 					}
 				}
-				if  (tank.turretcamera) { tank.turretcamera.Destroy(); }
-				if  (tank.povcamera) { tank.povcamera.Destroy(); }
+				if (tank.turretcamera) { tank.turretcamera.Destroy(); }
+				if (tank.povcamera) { tank.povcamera.Destroy(); }
 				MorphedPlayer.cheats &= ~CF_CHASECAM;
 
 				// Restore pitch clamping, since this doesn't get reset otherwise
@@ -714,14 +717,48 @@ class TankMorph : PowerMorph
 
 				if (tank.health <= 0) { tank.treads.SetStateLabel("Death"); }
 
-				if (tank.turret) { MorphedPlayer.mo.SetOrigin(tank.turret.pos + (0, 0, tank.turret.height), false); } // Dump the player on top of the turret
-				else { MorphedPlayer.mo.SetOrigin(tank.pos + (0, 0, tank.height), false); } // Dump the player on top of the body of the tank
-
 				// Restore armor amount and savepercent
 				MorphedPlayer.mo.SetInventory("BasicArmor", armor);
 
 				BasicArmor a = BasicArmor(MorphedPlayer.mo.FindInventory("BasicArmor"));
 				if (a) { a.SavePercent = savepercent; }
+
+				// Reposition the player so that it's not inside of the tank
+				Vector3 newpos = tank.pos + (0, 0, tank.height); // Dump the player on top of the body of the tank
+				if (tank.turret) { newpos = tank.turret.pos + (0, 0, tank.turret.height); } // Dump the player on top of the turret if there is one
+
+				MorphedPlayer.mo.SetOrigin(newpos, false);
+
+				for (
+					int i = 0;
+					i <= 4 && !MorphedPlayer.mo.TestMobjLocation();
+					i++
+				)
+				{
+					// Try different spots around the tank if spawning on top didn't work
+					switch(i)
+					{
+						case 1:
+							newpos = tank.pos + (RotateVector((0, -128), tank.angle), 0);
+							break;
+						case 2:
+							newpos = tank.pos + (RotateVector((0, 128), tank.angle), 0);
+							break;
+						case 3:
+							newpos = tank.pos + (RotateVector((192, 0), tank.angle), 0);
+							break;
+						case 4:
+							newpos = tank.pos + (RotateVector((-192, 0), tank.angle), 0);
+							break;
+						default:
+							// Worst case, leave you crammed into the space between the tank and the ceiling.
+							// Possibly stuck, but still able to get back in the tank.
+						case 0:
+							break;
+					}
+
+					MorphedPlayer.mo.SetOrigin(newpos, false);
+				}
 			}
 
 			ResetInventoryBar();
@@ -743,7 +780,7 @@ class TankMorph : PowerMorph
 
 		while (cur)
 		{
-			if ( // Unfortunately hard-coded list of inventoy items that can be used while driving a tank
+			if ( // Unfortunately hard-coded list of inventory items that can be used while driving a tank
 				cur is "RepairKit" || 
 				cur is "BoACompass"
 			)
