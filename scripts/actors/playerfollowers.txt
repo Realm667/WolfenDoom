@@ -305,7 +305,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			Shotgun.Reload:
 				"####" F 0 {
 					bNoPain = True;
-					frighttimeout = 10;
+					frighttimeout += 10;
 					A_StartSound("shotgun/load", CHAN_WEAPON);
 					reloadcount--;
 				}
@@ -534,8 +534,8 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 		if (target && target is "GrenadeBase")
 		{
-			if (!frighttimeout && (target.bMissile || target is "Whizzer")) { movedir = (target.movedir + RandomPick(1, 2, 6, 7)) % 8; frighttimeout = 16; } // Pick a random direction away from the shooter and the missile's path
-			else { frighttimeout = int(min(GrenadeBase(target).feardistance, 140)); } // Be frightened for a few seconds...  Less if there's a small fear distance/radius
+			if (!frighttimeout && (target.bMissile || target is "Whizzer")) { movedir = (target.movedir + RandomPick(1, 2, 6, 7)) % 8; frighttimeout += 16; } // Pick a random direction away from the shooter and the missile's path
+			else { frighttimeout += int(min(GrenadeBase(target).feardistance, 140)); } // Be frightened for a few seconds...  Less if there's a small fear distance/radius
 
 			if (!InStateSequence(CurState, FindState("Chase"))) { SetStateLabel("Chase"); }
 		}
@@ -879,6 +879,9 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		{
 			nonmoving = false;
 		}
+
+		// Don't stay standing near enemies; run away based on how much spawn health they have
+		if (target && IsHostile(target) && Distance3D(target) < target.Default.health / 5) { frighttimeout = max(frighttimeout, target.Default.health / 100); }
 
 		frighttimeout = clamp(frighttimeout - 1, 0, 210);
 
