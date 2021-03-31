@@ -130,7 +130,7 @@ class CKBaseEnemy : Actor
 
 	override void Tick()
 	{
-		if (pos != oldpos || vel.length() || !CheckRange(256)) // Tick normally if player nearby or moving
+		if (pos != oldpos || vel.length() || !CheckRange(256) || (!bNoGravity && pos.z == ceilingz - height)) // Tick normally if player nearby or moving (or if hit the ceiling)
 		{
 			Super.Tick();
 			oldpos = pos;
