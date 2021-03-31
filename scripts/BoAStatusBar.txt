@@ -933,7 +933,7 @@ class BoAStatusBar : BaseStatusBar
 		Actor crosshairtarget;
 		color clr = 0x000000;
 		TextureID CrosshairImage;
-		double size = vid_scalefactor * 1.5;
+		double size = vid_scalefactor * 2.0 * crosshairscale;
 		Vector2 dimensions;
 		double w, h;
 		double maxwidth = max(52.0, int(crosshairscale * screen.GetWidth() / 20));
@@ -1088,7 +1088,7 @@ class BoAStatusBar : BaseStatusBar
 
 				if (Base(crosshairtarget) && Base(crosshairtarget).user_targetcrosshair && CPlayer.ReadyWeapon.DamageType != "Melee" && skill <= 1)
 				{
-					size *= 1.25 - clamp(CPlayer.fov / 90.0 * CPlayer.mo.Distance3D(crosshairtarget) / 2048.0, 0.0, 0.75);
+					size *= 1.25 - clamp(CPlayer.fov / 90.0 * CPlayer.mo.Distance3D(crosshairtarget) / 4096.0, 0.0, 0.75);
 
 					CrosshairOverlay = TexMan.CheckForTexture("SHOT", TexMan.Type_Any);
 					clr = 0xFFFF00;
