@@ -1059,6 +1059,10 @@ class Base : Actor
 
 				if (timeout > 0) { timeout--; }
 			}
+			else if (!bDormant && health <= 0 && Default.bShootable && bShootable) // If an actor somehow is shootable but should have died, kill it now
+			{
+				Die(self, self);
+			}
 
 			if (bInConversation && marker)
 			{
