@@ -382,7 +382,7 @@ class DialogueIcon : DialogueComponent
 	// Frames are roughly: 0 - mouth closed, 1 - mouth open narrow, 2 - mouth open normal, 3 - mouth open wide, 4 - mouth open with teeth
 	String Animate(String input, String image)
 	{
-		int animduration = 8; //tics
+		int animduration = 4; //tics
 
 		int lastchar = image.CharCodeAt(image.Length() - 1);
 		String imagebase = image.Left(image.Length() - 1);
@@ -391,7 +391,7 @@ class DialogueIcon : DialogueComponent
 
 		int frame = 0;
 
-		int currentChar = tic / animduration;
+		int currentChar = level.time / animduration;
 
 		if (delay > 0) { image = imagebase .. "0"; delay--; }
 		else if (currentchar < input.Length())
