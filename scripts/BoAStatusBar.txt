@@ -933,10 +933,11 @@ class BoAStatusBar : BaseStatusBar
 		Actor crosshairtarget;
 		color clr = 0x000000;
 		TextureID CrosshairImage;
-		double size = vid_scalefactor * 2.0 * crosshairscale;
+		double chscale = crosshairscale > 0 ? crosshairscale : 0.5;
+		double size = vid_scalefactor * 2.0 * chscale;
 		Vector2 dimensions;
 		double w, h;
-		double maxwidth = max(52.0, int(crosshairscale * screen.GetWidth() / 20));
+		double maxwidth = max(52.0, int(chscale * screen.GetWidth() / 20));
 
 		if (BoAPlayer(CPlayer.mo))
 		{
@@ -1017,7 +1018,7 @@ class BoAStatusBar : BaseStatusBar
 					else
 					{
 						clr = 0xFF8800; // Otherwise make it orange and pulse the size of icon if you don't have it
-						size = (crosshair < 80 || (crosshair > 90 && crosshair < 98)) ? 1.0 + 0.1 * sin(level.time * 15 % 360) : 1.0;
+						size *= (crosshair < 80 || (crosshair > 90 && crosshair < 98)) ? 1.0 + 0.1 * sin(level.time * 15 % 360) : 1.0;
 					}
 
 					// Force everything to maxwidth pixels at widest dimension
@@ -1088,7 +1089,7 @@ class BoAStatusBar : BaseStatusBar
 
 				if (Base(crosshairtarget) && Base(crosshairtarget).user_targetcrosshair && CPlayer.ReadyWeapon.DamageType != "Melee" && skill <= 1)
 				{
-					size *= 1.25 - clamp(CPlayer.fov / 90.0 * CPlayer.mo.Distance3D(crosshairtarget) / 4096.0, 0.0, 0.75);
+					size *= 1.25 - clamp(CPlayer.fov / 90.0 * CPlayer.mo.Distance3D(crosshairtarget) / 2048.0, 0.0, 0.75);
 
 					CrosshairOverlay = TexMan.CheckForTexture("SHOT", TexMan.Type_Any);
 					clr = 0xFFFF00;
