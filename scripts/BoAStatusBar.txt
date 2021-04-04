@@ -311,7 +311,7 @@ class BoAStatusBar : BaseStatusBar
 		let armor = CPlayer.mo.FindInventory("BasicArmor");
 		if (armor != null && armor.Amount > 0)
 		{
-			DrawInventoryIcon(armor, (4, 184), DI_ITEM_OFFSETS);
+			DrawIcon(armor, 4, 184, 24, DI_ITEM_OFFSETS);
 			DrawString(mBigFont, FormatNumber(GetArmorAmount(), 3), (52, 185), DI_TEXT_ALIGN_RIGHT);
 			DrawString(mBigFont, "%", (65, 185), DI_TEXT_ALIGN_RIGHT);
 		}
@@ -436,7 +436,7 @@ class BoAStatusBar : BaseStatusBar
 		}
 	}
 
-	void DrawIcon(Inventory item, int x, int y, int size)
+	void DrawIcon(Inventory item, int x, int y, int size, int flags = DI_ITEM_CENTER)
 	{
 		Vector2 texsize = TexMan.GetScaledSize(item.icon);
 		if (texsize.x > size || texsize.y > size)
@@ -454,11 +454,21 @@ class BoAStatusBar : BaseStatusBar
 		}
 		else { texsize = (1.0, 1.0); }
 
-		DrawInventoryIcon(item, (x, y), DI_ITEM_CENTER, item.alpha, scale:texsize);
+		DrawInventoryIcon(item, (x, y), flags, item.alpha, scale:texsize);
 
 		if (item is "RepairKit" && CPlayer.mo is "TankPlayer")
 		{
 			RepairKit(item).DrawIcon(x, y, size);
+		}
+		else if (item is "BasicArmor")
+		{
+/*
+			let armor = BasicArmor(CPlayer.mo.FindInventory("BasicArmor"));
+			if (!armor) { return; }
+
+			String value = FormatNumber(int(armor.SavePercent * 100)) .. "%";
+			DrawString(mHUDFont, value, (x + size / 2, y + size / 2 - mHUDFont.mFont.GetHeight() / 2), DI_TEXT_ALIGN_CENTER, Font.CR_GRAY);
+*/
 		}
 		else if (item.Amount > 1)
 		{
@@ -561,7 +571,7 @@ class BoAStatusBar : BaseStatusBar
 		let armor = CPlayer.mo.FindInventory("BasicArmor");
 		if (armor != null && armor.Amount > 0)
 		{
-			DrawInventoryIcon(armor, (44, -20), DI_ITEM_OFFSETS);
+			DrawIcon(armor, 44, -20, 24, DI_ITEM_OFFSETS);
 			DrawString(mBigFont, FormatNumber(GetArmorAmount(), 3), (94, -20), DI_TEXT_ALIGN_RIGHT);
 			DrawString(mBigFont, "%", (107, -20), DI_TEXT_ALIGN_RIGHT);
 		}

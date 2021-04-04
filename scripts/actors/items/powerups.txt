@@ -1556,3 +1556,76 @@ class NazisBackpack : BackpackItem
 }
 
 class ShopBackpack: NazisBackpack {}
+
+class SuperShield : BasicArmorPickup
+{
+	Default
+	{
+		//$Category Astrostein (BoA)/Health
+		//$Title Super Shield (modern, +100)
+		//$Color 6
+		Armor.SavePercent 100.0;
+		Armor.SaveAmount 100;
+		Inventory.MaxAmount 200;
+		Inventory.Icon "armh05";
+		Inventory.PickupMessage "$SUPASHLD";
+		+BRIGHT
+	}
+
+	States
+	{
+		Spawn:
+			ARMX AB 3;
+			Loop;
+	}
+
+	// Modified from https://github.com/coelckers/gzdoom/blob/master/wadsrc/static/zscript/actors/inventory/armor.zs
+	override bool Use (bool pickup)
+	{
+		int SaveAmount = GetSaveAmount();
+		let armor = BasicArmor(Owner.FindInventory("BasicArmor"));
+
+		// This should really never happen but let's be prepared for a broken inventory.
+		if (armor == null)
+		{
+			armor = BasicArmor(Spawn("BasicArmor"));
+			armor.BecomeItem ();
+			Owner.AddInventory (armor);
+		}
+		else
+		{
+			// If you already have more armor than this item gives you, you can't use it.
+			if (pickup && armor.ArmorType == GetClassName() && (MaxAmount && armor.Amount >= MaxAmount))
+			{
+				return false;
+			}
+		}
+
+		// Always override whatever old armor was there
+		armor.SavePercent = clamp(SavePercent, 0, 100) / 100.0;
+		armor.Amount = min(armor.Amount + SaveAmount + armor.BonusCount, MaxAmount);
+		armor.MaxAmount = max(armor.Amount, armor.MaxAmount);
+		armor.Icon = Icon;
+		armor.MaxAbsorb = max(armor.MaxAbsorb, MaxAbsorb);
+		armor.MaxFullAbsorb = max(armor.MaxFullAbsorb, MaxFullAbsorb);
+		armor.ArmorType = GetClassName();
+		armor.ActualSaveAmount = max(armor.ActualSaveAmount, SaveAmount);
+
+		return true;
+	}
+
+	override bool CanPickup(Actor toucher)
+	{
+		// Force pickup unless you already have maxed it out
+		if (toucher && toucher.player)
+		{
+			let armor = BasicArmor(toucher.FindInventory("BasicArmor"));
+
+			if (armor && armor.ArmorType == GetClassName() && (MaxAmount && armor.Amount >= MaxAmount)) { return false; }
+
+			return true;
+		}
+
+		return BasicArmorPickup.CanPickup(toucher);
+	}
+}

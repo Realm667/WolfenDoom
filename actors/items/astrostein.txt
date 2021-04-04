@@ -12,24 +12,6 @@ ACTOR AstroMedikit : Medikit
 	}
 }
 
-ACTOR SuperShield : BasicArmorPickup
-{
-	//$Category Astrostein (BoA)/Health
-	//$Title Super Shield (modern, +100)
-	//$Color 6
-	Armor.SavePercent 100.0
-	Armor.SaveAmount 100
-	Inventory.Icon "armh05"
-	Inventory.PickupMessage "$SUPASHLD"
-	+BRIGHT
-	States
-	{
-	Spawn:
-		ARMX AB 3
-		Loop
-	}
-}
-
 ACTOR AstroBlueKey : BoABlueKey
 {
 	//$Category Astrostein (BoA)/Keys
