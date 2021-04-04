@@ -111,10 +111,13 @@ class StealthBase : Actor
 
 		if (target && vis && playernum >= 0 && CheckSight(target)) // If we have a player in view
 		{
+			double distWeight = .8;
+			double speedWeight = .2;
 			double velmod = max(1, target.vel.length() / 4) - 1;
 			// Console.Printf("velmod %.3f", velmod);
 
-			sighttime += ( ((Range - Distance3d(target)) / Range) + velmod) * min(1.0, 0.2 * skill); // Increment sight time counter, scaled to how far away player is and how fast he's moving
+			// Increment sight time counter, scaled to how far away player is and how fast he's moving. Once the sight time counter reaches full, become alerted.
+			sighttime += (((Range - Distance3d(target)) / Range) * distWeight + velmod * speedWeight ) * min(1.0, 0.25 * (skill + 1));
 
 			if (master && !alert)
 			{  // Spawn the alert indicator
