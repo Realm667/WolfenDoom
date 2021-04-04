@@ -111,8 +111,8 @@ class StealthBase : Actor
 
 		if (target && vis && playernum >= 0 && CheckSight(target)) // If we have a player in view
 		{
-			double distWeight = .8;
-			double speedWeight = .2;
+			double distWeight = 1.5;
+			double speedWeight = .25;
 			double velmod = max(1, target.vel.length() / 4) - 1;
 			// Console.Printf("velmod %.3f", velmod);
 
