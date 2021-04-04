@@ -2212,6 +2212,13 @@ HardwareShader PostProcess scene {
 	Uniform float maxparticles
 }
 
+HardwareShader PostProcess scene {
+	Name "nausea"
+	Shader "shaders/nausea.fp" 330
+	Uniform int timer
+	Uniform float alpha
+}
+
 //Color Grading hardware shader
 HardwareShader PostProcess Scene {
   Name "ColorGrade"

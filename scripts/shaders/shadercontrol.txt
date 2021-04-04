@@ -254,3 +254,82 @@ class ColorGradeShaderControl : Inventory
 		}
 	}
 }
+
+class NauseaShaderControl : ShaderControl
+{
+	int holdTarget, timer, flags;
+	double velocity, oldangle, oldpitch;
+
+	FlagDef DEPLETE:flags, 0;
+
+	Default
+	{
+		ShaderControl.Shader "nausea";
+		+NauseaShaderControl.DEPLETE
+		Speed 1.0;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (!owner || !owner.player) { Destroy(); return; }
+	}
+
+	override void SetUniforms(PlayerInfo p, RenderEvent e)
+	{
+		Shader.SetUniform1f(p, ShaderToControl, "timer", speed * (gametic + e.FracTic));
+	}
+
+	override void DoEffect()
+	{
+		if (amount > 1) { holdTarget = level.time + amount; } // Set hold time based on amount in inventory
+
+		// If we've hit the hold time, remove the effect
+		if (holdTarget && level.time > holdTarget) 
+		{
+			amount = 1;
+			holdTarget = 0;
+			alpha = 0;
+		}
+		else if (holdTarget)
+		{
+			double targetvelocity = owner.vel.x * owner.vel.x + owner.vel.y * owner.vel.y + owner.vel.z * owner.vel.z + abs(oldangle - owner.angle) * 20 + abs(oldpitch - owner.pitch) * 20;
+
+			if (velocity < targetvelocity) { if (velocity < 50) { velocity ++; } }
+			else if (velocity > 0) { velocity --; }
+			else { velocity = 0; }
+
+			alpha = min(sin(velocity), 0.4);
+
+			if (bDeplete)
+			{
+				amount--; // Remove one from inventory every tick
+				alpha *= clamp(amount / 70.0, 0, 1.0); // Fade the effect out over the last 2 seconds
+			}
+
+			oldangle = owner.angle;
+			oldpitch = owner.pitch;
+		}
+	}
+}
+
+// Item for enabling "dream state" overlays with minimal changes to older ACS code
+class DreamState : NauseaShaderControl
+{
+	Default
+	{
+		Inventory.Amount 2;
+		Inventory.MaxAmount 2;
+		-NauseaShaderControl.DEPLETE
+	}
+
+	override void OnDestroy()
+	{
+		// Automatically disable the shader when the item is removed from a player's inventory
+		if (owner && owner.player)
+		{
+			Shader.SetEnabled(owner.player, shaderToControl, false);
+		}
+	}
+}

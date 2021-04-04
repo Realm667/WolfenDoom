@@ -135,17 +135,6 @@ ACTOR CutsceneEnabled : Inventory
 	}
 }
 
-// Dummy item for enabling "dream state" overlays
-ACTOR DreamState : Inventory
-{
-	States
-	{
-	Spawn:
-		TNT1 A -1
-		Stop
-	}
-}
-
 // Dialogue tokens - can be used in IfItem blocks in Strife conversations to
 // boot the player back to the "main menu" in the conversation, or lock out
 // certain options.

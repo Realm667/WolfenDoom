@@ -150,49 +150,6 @@ class BoAStatusBar : BaseStatusBar
 
 	override void Draw (int state, double TicFrac)
 	{
-		if (!automapactive && CPlayer.mo.FindInventory("DreamState"))
-		{
-			TextureID tex = TexMan.CheckForTexture("DREAMING", TexMan.Type_MiscPatch);
-			if (tex.IsValid()) {
-				double ratio = screen.GetAspectRatio();
-
-				int basewidth = 320;
-				int baseheight = 240;
-
-				// Calculate width and height to keep the image at the same relative size, regardless of aspect ratio
-				double width = ratio > 1.25 ? baseheight * ratio : basewidth;
-				double height = ratio < 1.25 ? basewidth / ratio : baseheight;
-
-				TexMan.SetCameraToTexture(CPlayer.mo, "DREAMING", int(CPlayer.fov)); // Use player's FOV for the camera FOV
-
-				double targetvelocity = CPlayer.mo.vel.x * CPlayer.mo.vel.x + CPlayer.mo.vel.y * CPlayer.mo.vel.y + CPlayer.mo.vel.z * CPlayer.mo.vel.z + abs(oldangle - CPlayer.mo.angle) * 20 + abs(oldpitch - CPlayer.mo.pitch) * 20;
-
-				if (velocity < targetvelocity) { velocity = velocity < 50 ? velocity + 1 : velocity; }
-				else if (velocity > 0) { velocity -= 1; }
-				else { velocity = 0; }
-
-				double alpha = min(sin(velocity), 0.4);
-
-				double x = cos(level.time % 360) * 8;
-				double y = sin(level.time % 360) * 8;
-
-				screen.DrawTexture(tex, false, (width / 2) + x, (height / 2) + y, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidthF, width, DTA_VirtualHeightF, height, DTA_Alpha, alpha / 2);
-				screen.DrawTexture(tex, false, (width / 2) - x, (height / 2) - y, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidthF, width, DTA_VirtualHeightF, height, DTA_Alpha, alpha / 2);
-
-				x = sin(level.time % 360) * 16;
-				y = cos(level.time % 360) * 16;
-
-				screen.DrawTexture(tex, false, (width / 2) + x, (height / 2) + y, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidthF, width, DTA_VirtualHeightF, height, DTA_Alpha, max(0, alpha / 2 - .15));
-				screen.DrawTexture(tex, false, (width / 2) - x, (height / 2) - y, DTA_Clean, true, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidthF, width, DTA_VirtualHeightF, height, DTA_Alpha, max(0, alpha / 2 - .15));
-			}
-
-			if (level.time % 35)
-			{
-				oldangle = CPlayer.mo.angle;
-				oldpitch = CPlayer.mo.pitch;
-			}
-		}
-
 		Super.Draw(state, TicFrac);
 
 		if (CPlayer.mo.FindInventory("CutsceneEnabled") || CPlayer.morphtics)
