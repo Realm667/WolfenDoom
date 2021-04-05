@@ -50,7 +50,7 @@ class KeenMessage
 		msg.fadetargetalpha = fadetargetalpha;
 		msg.fadeintime = fadeintime;
 		msg.fadeouttime = fadeouttime;
-		msg.showtics = 15;
+		msg.showtics = 70;
 
 		parent.messages.Push(msg);
 	}
@@ -165,7 +165,7 @@ class ClassicMessageBox : MessageBoxMenu
 		msg.DontBlur = true;
 		msg.silent = true;
 
-		msg.showtics = 15;
+		msg.showtics = 70;
 
 		msg.ActivateMenu();
 
@@ -338,6 +338,8 @@ class ClassicMessageBox : MessageBoxMenu
 		// Intercept key presses to see if we're pressing the strafe controls or use, 
 		// and redirect those to call the correct left/right/open movement menu event code.
 
+		if (players[consoleplayer].cmd.buttons & cmds || showtics > 0) { return false; }
+
 		if (ev.Type == UIEvent.Type_KeyDown)
 		{
 			if (
@@ -348,8 +350,6 @@ class ClassicMessageBox : MessageBoxMenu
 				CheckControl(ev, "+back", MKEY_Down)
 			) { return false; }
 		}
-
-		if (players[consoleplayer].cmd.buttons & cmds || showtics > 0) { return false; }
 
 		if (ev.type == UIEvent.Type_KeyDown)
 		{
