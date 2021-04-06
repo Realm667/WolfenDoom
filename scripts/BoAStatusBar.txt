@@ -900,11 +900,11 @@ class BoAStatusBar : BaseStatusBar
 		Actor crosshairtarget;
 		color clr = 0x000000;
 		TextureID CrosshairImage;
-		double chscale = crosshairscale > 0 ? crosshairscale : 0.5;
-		double size = vid_scalefactor * 2.0 * chscale;
+		double chscale = max(0.35, crosshairscale); // Scale with crosshair, down to a certain point
+		double size = (vid_scalefactor > 0 ? vid_scalefactor : 1.0) * clamp(Screen.GetWidth() / 1920.0, 0.25, 1.0) * 3.5 * chscale; // Smaller screen widths get smaller overlays
 		Vector2 dimensions;
 		double w, h;
-		double maxwidth = max(52.0, int(chscale * screen.GetWidth() / 20));
+		double maxwidth = chscale * max(64.0, int(screen.GetWidth() / 20));
 
 		if (BoAPlayer(CPlayer.mo))
 		{
