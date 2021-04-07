@@ -42,22 +42,22 @@ ACTOR Luger9mm : NaziWeapon
 		LUGG A 0 A_SpawnItemEx("9MMCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
 		LUGG A 0 A_AlertMonsters
 		LUGG G 1 A_FireProjectile("LugerTracer")
-		LUGG H 1
-		LUGG I 1 Offset(0,36) A_SetPitch(pitch-(0.2*CallACS("boa_recoilamount")))
-		LUGG J 1 Offset(0,41) A_CheckReload
-		LUGG A 1 Offset(0,35) A_WeaponReady(WRF_NOBOB)
+		LUGG B 1
+		LUGG C 1 Offset(0,36) A_SetPitch(pitch-(0.2*CallACS("boa_recoilamount")))
+		LUGG D 1 Offset(0,41) A_CheckReload
+		LUGG E 1 Offset(0,35) A_WeaponReady(WRF_NOBOB)
 		LUGG A 1 Offset(0,33) A_WeaponReady(WRF_NOBOB)
 		LUGG A 1 Offset(0,31) A_WeaponReady(WRF_NOBOB)
 		LUGG A 1 Offset(0,32) A_WeaponReady(WRF_NOBOB)
 		Goto Ready
 	Reload:
-		LUGG F 1 Offset(0,35) A_StartSound("luger/reload", CHAN_5)
-		LUGG E 1 Offset(0,38)
-		LUGG D 1 Offset(0,44)
-		LUGG C 1 Offset(0,52)
-		LUGG B 1 Offset(0,62)
-		LUGG B 1 Offset(0,72)
-		LUGG B 1 Offset(0,82)
+		LUGG H 1 Offset(0,35) A_StartSound("luger/reload", CHAN_5)
+		LUGG H 1 Offset(0,38)
+		LUGG J 1 Offset(0,44)
+		LUGG J 1 Offset(0,52)
+		LUGG I 1 Offset(0,62)
+		LUGG I 1 Offset(0,72)
+		LUGG I 1 Offset(0,82)
 		TNT1 A 11
 	ReloadLoop:
 		TNT1 A 0 A_TakeInventory("9mmAmmo",1,TIF_NOTAKEINFINITE)
@@ -65,12 +65,12 @@ ACTOR Luger9mm : NaziWeapon
 		TNT1 A 0 A_JumpIfInventory("Luger9mmLoaded",0,"ReloadFinish")
 		TNT1 A 0 A_JumpIfInventory("9mmAmmo",1,"ReloadLoop")
 	ReloadFinish:
-		LUGG B 1 Offset(0,82)
-		LUGG C 1 Offset(0,72)
-		LUGG D 1 Offset(0,62)
-		LUGG E 1 Offset(0,52)
-		LUGG F 1 Offset(0,44)
-		LUGG A 1 Offset(0,38)
+		LUGG I 1 Offset(0,82)
+		LUGG I 1 Offset(0,72)
+		LUGG J 1 Offset(0,62)
+		LUGG J 1 Offset(0,52)
+		LUGG H 1 Offset(0,44)
+		LUGG H 1 Offset(0,38)
 		LUGG A 1 Offset(0,35)
 		LUGG A 1 Offset(0,32)
 		Goto Ready
