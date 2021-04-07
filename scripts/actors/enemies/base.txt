@@ -2313,9 +2313,9 @@ class Nazi : Base
 		Super.PostBeginPlay();
 	}
 
-	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
+	void DoGierDrops()
 	{
-		if (gierdroplevel > 0 && bCanUseWalls && target && target.player && target.FindInventory("GierToken"))
+		if (gierdroplevel > 0 && target && target.player && target.FindInventory("GierToken"))
 		{
 			// Do Totale Gier coin drop
 			// Drop coins
@@ -2377,8 +2377,12 @@ class Nazi : Base
 				}
 			}
 		}
+	}
 
+	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
+	{
 		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
+		DoGierDrops(); // AActor::Die sets target to killer
 	}
 
 	// Hijack the damage calls in order to implement stealth kills and critical hits
@@ -3289,6 +3293,7 @@ class ZombieStandard : Nazi
 		Base.LightThreshold 130;
 		Base.LightKills True;
 		Nazi.FrightMultiplier 0.0;
+		Nazi.TotaleGierDrop 0;
 		GibHealth 30;
 		PainChance 64;
 		DamageFactor "Electric", 0.8;
