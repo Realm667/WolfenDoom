@@ -989,7 +989,7 @@ class TurretStand : Actor
 	{
 		VehicleBase.SetPitchRoll(self, 0);
 
-		if (shooter && shooter.player && gun)
+		if (shooter && shooter.player && gun && shooter.health > 0)
 		{
 			if (
 				shooter.player.cmd.buttons & BT_CROUCH ||
