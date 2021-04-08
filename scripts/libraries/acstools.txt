@@ -242,6 +242,17 @@ class ACSTools
 	{
 		return activator.Health == activator.GetMaxHealth(true);
 	}
+
+	static bool IsNoClipping(Actor activator)
+	{
+		if (activator)
+		{
+			if (activator.player) { return (activator.player.cheats & (CF_NOCLIP | CF_NOCLIP2)); }
+			else { return activator.bNoClip; }
+		}
+
+		return false;
+	}
 }
 
 class ActorFinderTracer : LineTracer

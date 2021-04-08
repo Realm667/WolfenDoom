@@ -16,7 +16,8 @@ function void DoSprinting(void)
 		(buttons & BT_FORWARD) && 
 		!(buttons & BT_CROUCH) && //you can still sprint with 'toggled' crouching!
 		CheckInventory("Stamina") && 
-		cooldown[PlayerNumber()] <= 0
+		cooldown[PlayerNumber()] <= 0 &&
+		!ScriptCall("ACSTools", "IsNoClipping") // Don't use stamina if you are already cheating and noclipping
 	)
 	{
 		SetActorProperty(0,APROP_SPEED,2.0);
