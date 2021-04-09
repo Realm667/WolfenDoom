@@ -162,7 +162,7 @@ class ACSTools
 	// s:ScriptCall("ACSTools", "GetDeclinedForm", "entry", xxx)
 	static String GetDeclinedForm(String entry, int count) {
 		String form = ""; // Singular (default)
-		if (language.Left(2) ~== "cs")
+		if (language.Left(2) ~== "cs") // Czech
 		{
 			if (count > 4)
 			{
@@ -173,7 +173,18 @@ class ACSTools
 				form = "A";
 			}
 		}
-		else if (language ~== "ru")
+		else if (language.Left(2) ~== "pl") // Polish
+		{
+			if (count > 4)
+			{
+				form = "B";
+			}
+			else if (count > 1)
+			{
+				form = "A";
+			}
+		}
+		else if (language ~== "ru") // Russian
 		{
 			int numend = count % 100;
 			// See https://en.wikipedia.org/wiki/Russian_declension#Declension_of_cardinal_numerals
