@@ -1377,6 +1377,59 @@ class BoAStatusBar : BaseStatusBar
 		}
 	}
 
+	override void DrawMyPos()
+	{
+		int headercolor = Font.CR_GRAY;
+		int infocolor = Font.FindFontColor("LightGray");
+
+		let scalevec = GetHUDScale();
+		int scale = int(scalevec.X);
+		int vwidth = screen.GetWidth() / scale;
+		int vheight = screen.GetHeight() / scale;
+
+		int height = SmallFont.GetHeight();
+		int width = SmallFont.StringWidth("X: -00000.00");
+
+		int x = vwidth - width - 10;
+		int y = 10 + maptop;
+
+		if (screenblocks < 12)
+		{
+			if (screenblocks == 11) { if (!automapactive && !CPlayer.mo.FindInventory("CutsceneEnabled")) { x -= 54; } }
+			else { y = GetTopOfStatusBar() - 6 * height - 10; }
+		}
+
+		// Draw coordinates
+		Vector3 pos = CPlayer.mo.Pos;
+		String header, value;
+		
+		for (int i = 0; i < 3; y += height, ++i)
+		{
+			double v = i == 0 ? pos.X : i == 1 ? pos.Y : pos.Z;
+
+			header = String.Format("%c:", int("X") + i);
+			value = String.Format("%5.2f", v);
+
+			screen.DrawText (SmallFont, headercolor, x, y, header, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
+			screen.DrawText (SmallFont, infocolor, x + width - SmallFont.StringWidth(value), y, value, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
+		}
+
+		y += height;
+
+		// Draw player angle
+		screen.DrawText (SmallFont, headercolor, x, y, "A:", DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
+		value = String.Format("%0.2f", CPlayer.mo.angle);
+		screen.DrawText (SmallFont, infocolor, x + width - SmallFont.StringWidth(value), y, value, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
+
+		y += height;
+
+		// Draw player pitch
+		screen.DrawText (SmallFont, headercolor, x, y, "P:", DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
+		value = String.Format("%0.2f", CPlayer.mo.pitch);
+		screen.DrawText (SmallFont, infocolor, x + width - SmallFont.StringWidth(value), y, value, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
+
+	}
+
 	// Original code from shared_sbar.cpp
 	override void DrawAutomapHUD(double ticFrac)
 	{
@@ -1407,6 +1460,7 @@ class BoAStatusBar : BaseStatusBar
 		//textbuffer = level.FormatMapName(crdefault);
 		// Don't prepend the map name...  Just use the level's title.
 		textbuffer = level.LevelName;
+		if (idmypos) { textbuffer = textbuffer .. " (" .. level.mapname .. ")"; }
 
 		if (!generic_ui)
 		{
@@ -1510,6 +1564,8 @@ class BoAStatusBar : BaseStatusBar
 				y += fheight;
 			}
 		}
+
+		if (idmypos) { DrawMyPos(); } // If enabled, draw idmypos output again so that it's on top of the vignette...  Slightly wasteful to draw it twice, but it's minor (and I can't control the engine code that draws it before the automap hud).
 	}
 
 	// From v_draw.cpp
