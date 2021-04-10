@@ -4,47 +4,53 @@ int staminarecoverytimeout[MAX_PLAYERS];
 
 function void DoSprinting(void)
 {
-	bool checksprint = GetCVar("boa_sprintswitch");
+	if (CheckInventory("IsDragging")) { return; }
 
-	int buttons = GetPlayerInput(-1,INPUT_BUTTONS);
-	
-	if (CheckInventory("IsDragging") || ScriptCall("ACSTools", "FindInventoryClass", "TankMorph", 1)) { return; }
-	
+	bool checksprint = GetCVar("boa_sprintswitch");
+	int buttons = GetPlayerInput(-1, INPUT_BUTTONS);
+	int p = PlayerNumber();
+
+	int speed = 1.0;
+
+	// Reset to full stamina if noclipping, and increase base speed
+	if (ScriptCall("ACSTools", "IsNoClipping"))
+	{
+		speed = 2.5;
+		cooldown[p] = 0;
+		staminarecoverytimeout[p] = 0;
+		GiveInventory("Stamina", 100);
+	}
+
 	if (
-		!(CheckWeapon("NullWeapon") && ScriptCall("ACSTools", "FindInventoryClass", "DisguiseToken", 1)) && 
 		(buttons & BT_SPEED) && 
 		(buttons & BT_FORWARD) && 
 		!(buttons & BT_CROUCH) && //you can still sprint with 'toggled' crouching!
+		cooldown[p] <= 0 &&
 		CheckInventory("Stamina") && 
-		cooldown[PlayerNumber()] <= 0 &&
-		!ScriptCall("ACSTools", "IsNoClipping") // Don't use stamina if you are already cheating and noclipping
+		!ScriptCall("ACSTools", "IsHidden") // Don't allow sprinting if you are wearing a NOTARGET disguise unless you are not currently hidden
 	)
 	{
-		SetActorProperty(0,APROP_SPEED,2.0);
+		speed *= 2;
 
-		if(checksprint==TRUE||CheckInventory("BerserkToken"))
-			TakeInventory("Stamina",0); //do not deplete stamina - ozy
-		else
+		// Don't use stamina if stamina check is disabled or if Totale Macht/Berserk is active
+		if (!checksprint && !CheckInventory("BerserkToken"))
 		{
-			TakeInventory("Stamina",random(1,3)); //more stamina to use
+			TakeInventory("Stamina", Random(1, 3)); //more stamina to use
 		}
 	}
 	else
 	{
-		SetActorProperty(0,APROP_SPEED,1.0);
-
-		int p = PlayerNumber();
-
 		if (staminarecoverytimeout[p] < Timer())
 		{
-			cooldown[PlayerNumber()]--;
+			cooldown[p]--;
 			GiveInventory("Stamina",1);
-			staminarecoverytimeout[p] = Timer() + Random(1,3); //recovery is more fast
+			staminarecoverytimeout[p] = Timer() + Random(1, 3); //recovery is more fast
 		}
 	}
 
-	if(!CheckInventory("Stamina"))
-		cooldown[PlayerNumber()]=100;
+	SetActorProperty(0, APROP_SPEED, speed);
+
+	if (!CheckInventory("Stamina")) { cooldown[p] = 100; }
 }
 
 int staminasoundtimeout[MAX_PLAYERS];

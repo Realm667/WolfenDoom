@@ -264,6 +264,25 @@ class ACSTools
 
 		return false;
 	}
+
+	// Check if the player is wearing a disguise and is currently hidden
+	// If a player is wearing a disguise and is undetected, returns true
+	// If a player has been seen or is carrying a weapon not allowed by the current disguise, returns false
+	ui static bool IsHidden(Actor mo)
+	{
+		if (mo && mo.player)
+		{
+			let disguise = DisguiseToken(mo.FindInventory("DisguiseToken", true));
+
+			if (
+				disguise &&
+				disguise.notarget &&
+				mo.player.cheats & CF_NOTARGET
+			) { return true; }
+		}
+
+		return false;
+	}
 }
 
 class ActorFinderTracer : LineTracer

@@ -277,7 +277,7 @@ class BoAStatusBar : BaseStatusBar
 
 		//AirControl & Stamina
 		DrawBar("HORZAIRF", "HORZAIRE", mAirInterpolator.GetValue(), level.airsupply, (36, 160), 0, SHADER_HORZ, DI_ITEM_OFFSETS);
-		DrawBar("HORZSTMF", "HORZSTME", mStaminaInterpolator.GetValue(), 100, (88, 160), 0, SHADER_HORZ, DI_ITEM_OFFSETS);
+		if (!ACSTools.IsHidden(CPlayer.mo)) { DrawBar("HORZSTMF", "HORZSTME", mStaminaInterpolator.GetValue(), 100, (88, 160), 0, SHADER_HORZ, DI_ITEM_OFFSETS); }
 
 		//Ammo
 		Ammo ammo1, ammo2;
@@ -531,7 +531,7 @@ class BoAStatusBar : BaseStatusBar
 
 		//AirControl & Stamina
 		DrawBar("VERTAIRF", "VERTAIRE", mAirInterpolator.GetValue(), level.airsupply, (4, -174), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
-		DrawBar("VERTSTMF", "VERTSTME", mStaminaInterpolator.GetValue(), 100, (-10, -174), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
+		if (!ACSTools.IsHidden(CPlayer.mo)) { DrawBar("VERTSTMF", "VERTSTME", mStaminaInterpolator.GetValue(), 100, (-10, -174), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS); }
 
 		//Top Left
 		DrawImage("HUD_UL", (0, 0), DI_ITEM_OFFSETS);
