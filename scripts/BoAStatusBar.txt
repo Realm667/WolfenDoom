@@ -1391,7 +1391,7 @@ class BoAStatusBar : BaseStatusBar
 		int width = SmallFont.StringWidth("X: -00000.00");
 
 		int x = vwidth - width - 10;
-		int y = 10 + maptop;
+		int y = 10 + maptop + vid_fps ? NewSmallFont.GetHeight() * GetConScale(con_scale) : 0;
 
 		if (screenblocks < 12)
 		{
