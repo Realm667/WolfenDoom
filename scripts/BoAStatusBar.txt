@@ -1383,15 +1383,15 @@ class BoAStatusBar : BaseStatusBar
 		int infocolor = Font.FindFontColor("LightGray");
 
 		let scalevec = GetHUDScale();
-		int scale = int(scalevec.X);
-		int vwidth = screen.GetWidth() / scale;
-		int vheight = screen.GetHeight() / scale;
+		double scale = int(scalevec.X);
+		int vwidth = int(screen.GetWidth() / scale);
+		int vheight = int(screen.GetHeight() / scale);
 
 		int height = SmallFont.GetHeight();
 		int width = SmallFont.StringWidth("X: -00000.00");
 
 		int x = vwidth - width - 10;
-		int y = 10 + maptop + (vid_fps ? NewSmallFont.GetHeight() * GetConScale(con_scale) : 0);
+		int y = 10 + maptop + (vid_fps ? int(NewSmallFont.GetHeight() / GetConScale(con_scale) / scale) : 0);
 
 		if (screenblocks < 12)
 		{
