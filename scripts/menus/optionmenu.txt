@@ -1,0 +1,97 @@
+/*
+ * Copyright (c) 2018-2021 AFADoomer
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * Portions copied from GZDoom licensed under GPLv3
+**/
+
+class BoAOptionMenu : OptionMenu
+{
+	// Lightly modified from https://github.com/coelckers/gzdoom/blob/master/wadsrc/static/zscript/engine/ui/menu/optionmenu.zs
+	override void Drawer ()
+	{
+		int y = mDesc.mPosition;
+
+		if (y <= 0)
+		{
+			y = DrawCaption(mDesc.mTitle, -y, true);
+		}
+		mDesc.mDrawTop = y / CleanYfac_1; // mouse checks are done in clean space.
+		int fontheight = OptionMenuSettings.mLinespacing * CleanYfac_1;
+
+		int indent = GetIndent();
+
+		int ytop = y + mDesc.mScrollTop * 8 * CleanYfac_1;
+		int lastrow = screen.GetHeight() - OptionHeight() * CleanYfac_1;
+
+		int i;
+		for (i = 0; i < mDesc.mItems.Size() && y <= lastrow; i++)
+		{
+			// Don't scroll the uppermost items
+			if (i == mDesc.mScrollTop)
+			{
+				i += mDesc.mScrollPos;
+				if (i >= mDesc.mItems.Size()) break;	// skipped beyond end of menu 
+			}
+			bool isSelected = mDesc.mSelectedItem == i;
+			int cur_indent = mDesc.mItems[i].Draw(mDesc, y, indent, isSelected);
+			if (cur_indent >= 0 && isSelected && mDesc.mItems[i].Selectable())
+			{
+				if (((MenuTime() % 8) < 6) || GetCurrentMenu() != self)
+				{
+					DrawOptionText(cur_indent + 3 * CleanXfac_1, y, OptionMenuSettings.mFontColorSelection, "◄");
+				}
+			}
+
+			// Added message for displaying percentage completion of translations
+			if (mDesc.mItems[i] is "OptionMenuItemOption" && mDesc.mItems[i].mLabel == "$OPTMNU_LANGUAGE")
+			{
+				String val = StringTable.Localize("$TRANSLATION FINISHED %");
+				if (!(val == "100,00%"))
+				{
+					val.Replace(",", ".");
+
+					let item = OptionMenuItemOption(mDesc.mItems[i]);
+
+					String lang = StringTable.Localize(OptionValues.GetText(item.mValues, item.GetSelection()));
+
+					DrawOptionText(cur_indent + (20 + NewSmallFont.StringWidth(lang)) * CleanXFac_1, y, Font.CR_DARKRED, val);
+				}
+			}
+
+			y += fontheight;
+		}
+
+		CanScrollUp = (mDesc.mScrollPos > 0);
+		CanScrollDown = (i < mDesc.mItems.Size());
+		VisBottom = i - 1;
+
+		if (CanScrollUp)
+		{
+			DrawOptionText(screen.GetWidth() - 11 * CleanXfac_1, ytop, OptionMenuSettings.mFontColorSelection, "▲");
+		}
+		if (CanScrollDown)
+		{
+			DrawOptionText(screen.GetWidth() - 11 * CleanXfac_1 , y - 8*CleanYfac_1, OptionMenuSettings.mFontColorSelection, "▼");
+		}
+
+		Menu.Drawer();
+	}
+}
