@@ -79,6 +79,8 @@ class DrawToHUD
 		Vector2 screenpos, screensize;
 		[screenpos, screensize] = TranslatetoHUDCoordinates(pos, (640, 480) * scale);
 
+		screenpos /= scale;
+
 		//Do offset handling...
 		switch (offset)
 		{
@@ -91,8 +93,6 @@ class DrawToHUD
 			default:
 				break;
 		}
-
-		screenpos /= scale;
 
 		// Draw the text
 		screen.DrawText(fnt, shade, screenpos.x, screenpos.y, text, DTA_KeepRatio, true, DTA_Alpha, alpha, DTA_VirtualWidth, width, DTA_VirtualHeight, height);
