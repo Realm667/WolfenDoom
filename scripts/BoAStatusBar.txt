@@ -112,6 +112,10 @@ class BoAStatusBar : BaseStatusBar
 
 	override void Tick()
 	{
+		maptop = CheckInventory("IncomingMessage", 1) ? int(48 / 200.0 * Screen.GetHeight() / GetUIScale(hud_scale)) : 0;
+		if (maptexty > maptop) { maptexty = max(maptop, maptexty - 12); }
+		else if (maptexty < maptop) { maptexty = min(maptop, maptexty + 12); }
+
 		Super.Tick();
 
 		savetimer = max(0, savetimer - 1);
@@ -139,10 +143,6 @@ class BoAStatusBar : BaseStatusBar
 				mSuspicionInterpolator.Update(int(BoAVisibility(vis).suspicion));
 			}
 		}
-
-		maptop = CheckInventory("IncomingMessage", 1) ? int(48 / 200.0 * Screen.GetHeight() / GetUIScale(hud_scale)) : 0;
-		if (maptexty > maptop) { maptexty = max(maptop, maptexty - 12); }
-		else if (maptexty < maptop) { maptexty = min(maptop, maptexty + 12); }
 
 		// This gets rid of needing to double-press useinv to immediately use a newly selected inventory item.
 		CPlayer.inventorytics = 0;
@@ -1391,7 +1391,7 @@ class BoAStatusBar : BaseStatusBar
 		int width = SmallFont.StringWidth("X: -00000.00");
 
 		int x = vwidth - width - 10;
-		int y = 10 + maptop + vid_fps ? NewSmallFont.GetHeight() * GetConScale(con_scale) : 0;
+		int y = 10 + maptop + (vid_fps ? NewSmallFont.GetHeight() * GetConScale(con_scale) : 0);
 
 		if (screenblocks < 12)
 		{
