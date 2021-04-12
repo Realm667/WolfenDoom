@@ -177,6 +177,7 @@ ACTOR AngelOfDeath_End : AngelOfDeath
 	DamageFactor "Fire", 0
 	DamageFactor "OccultFire", 2.0
 	Species "Zombie"
+	DropItem "Rune_Fa" 255
 	DropItem "Rune_Gibor" 255
 	States
 	{
@@ -471,7 +472,8 @@ ACTOR AngelOfDeath_End : AngelOfDeath
 	Death:
 		"####" L 0 {bFloatBob = FALSE;}
 		"####" L 5 A_Scream
-		"####" L 2 A_Fall
+		"####" L 2 A_NoBlocking
+		"####" L 2 // Prevent items dropping more than once
 		Wait
 	Crash:
 		"####" MNOPQRS 10
