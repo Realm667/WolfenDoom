@@ -1,0 +1,99 @@
+class Walther9mm : NaziWeapon
+{
+	Default
+	{
+	//$Category Weapons (BoA)
+	//$Title (2) Walther
+	//$Color 14
+	Scale 0.50;
+	Weapon.SelectionOrder 9997;
+	Weapon.AmmoType "Walther9mmLoaded";
+	Weapon.AmmoUse 1;
+	Weapon.AmmoType2 "9mmAmmo";
+	Weapon.AmmoUse2 1;
+	Weapon.AmmoGive2 8;
+	Weapon.UpSound "walther/select";
+	Tag "Walther P38";
+	Inventory.PickupMessage "$P38WALT";
+	}
+	States
+	{
+	Ready:
+		WALG A 0 A_JumpIfInventory("Walther9mmLoaded",0,2);
+		WALG A 0 A_JumpIfInventory("9mmAmmo",1,2);
+		WALG A 1 A_WeaponReady;
+		Loop;
+		WALG A 1 A_WeaponReady(WRF_ALLOWRELOAD);
+		Loop;
+	Deselect:
+		WALG B 0 A_Lower;
+		WALG B 1 A_Lower;
+		Loop;
+	Select:
+		WALG A 0 A_Raise;
+		WALG A 1 A_Raise;
+		Loop;
+	Fire:
+		WALG A 0 A_JumpIfInventory("Walther9mmLoaded",1,1);
+		Goto Dryfire;
+		WALG A 0 A_GunFlash;
+		WALG A 0 A_SetPitch(pitch-(0.2*CallACS("boa_recoilamount")));
+		WALG A 0 A_JumpIf(waterlevel > 0,2);
+		WALG A 0 A_FireProjectile("PistolSmokeSpawner",0,0,0,random(-4,4),0,0);
+		WALG A 0 A_StartSound("walther/fire", CHAN_WEAPON);
+		WALG A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
+		WALG A 0 A_AlertMonsters;
+		WALG A 1 A_FireProjectile("WaltherTracer");
+		WALG B 2;
+		WALG A 1 A_SetPitch(pitch-(0.2*CallACS("boa_recoilamount")));
+		WALG A 1 Offset(0,36);
+		WALG A 1 Offset(0,41);
+		WALG A 1 Offset(0,35);
+		TNT1 A 0 A_CheckReload;
+		WALG A 1 Offset(0,32) A_Jump(128,"Ready");
+		Goto Ready;
+	Reload:
+		WALG A 1 Offset(0,35) A_StartSound("walther/reload", CHAN_5);
+		WALG A 1 Offset(0,38);
+		WALG A 1 Offset(0,44);
+		WALG A 1 Offset(0,52);
+		WALG B 1 Offset(0,62);
+		WALG B 1 Offset(0,72);
+		WALG B 1 Offset(0,82);
+		TNT1 A 8;
+	ReloadLoop:
+		TNT1 A 0 A_TakeInventory("9mmAmmo",1,TIF_NOTAKEINFINITE);
+		TNT1 A 0 A_GiveInventory("Walther9mmLoaded");
+		TNT1 A 0 A_JumpIfInventory("Walther9mmLoaded",0,"ReloadFinish");
+		TNT1 A 0 A_JumpIfInventory("9mmAmmo",1,"ReloadLoop");
+	ReloadFinish:
+		WALG B 1 Offset(0,82);
+		WALG B 1 Offset(0,72);
+		WALG B 1 Offset(0,62);
+		WALG B 1 Offset(0,52);
+		WALG A 1 Offset(0,44);
+		WALG A 1 Offset(0,38);
+		WALG A 1 Offset(0,35);
+		WALG A 1 Offset(0,32);
+		Goto Ready;
+	Flash:
+		WALF A 1 A_Light2;
+		TNT1 A 1;
+		TNT1 A 2 A_Light1;
+		Goto LightDone;
+	Spawn:
+		WALP A -1;
+		Stop;
+	}
+}
+
+class Walther9mmLoaded : Ammo
+{
+	Default
+	{
+	Tag "9x19mm";
+	+INVENTORY.IGNORESKILL
+	Inventory.MaxAmount 8;
+	Inventory.Icon "WALT01";
+	}
+}

@@ -1,139 +1,73 @@
-//Player
-#include "actors/misc/player.txt"
+Actor 9mmAmmo : Ammo
+{
+	//$Category Ammo (BoA)
+	//$Title Ammoclip (x8 clips)
+	//$Color 6
+	Scale 0.20
+	Tag "9x19mm"
+	Inventory.Amount 8
+	Inventory.MaxAmount 256
+	Ammo.BackpackAmount 64
+	Ammo.BackpackMaxAmount 480
+	Inventory.PickupMessage "$9MMAMMO"
+	Inventory.Icon "WALT01"
+	States
+	{
+	Spawn:
+		MCLP A -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
 
-//Weapons
-#include "actors/weapons/ammo.txt"
-#include "actors/weapons/shovel.txt"
-#include "actors/weapons/knife.txt"
-#include "actors/weapons/luger.txt"
-#include "actors/weapons/p38.txt"
-#include "actors/weapons/shotgun.txt"
-#include "actors/weapons/g43.txt"
-#include "actors/weapons/kar98k.txt"
-#include "actors/weapons/browning.txt"
-#include "actors/weapons/mp40.txt"
-#include "actors/weapons/flamer.txt"
-#include "actors/weapons/nebelwerfer.txt"
-#include "actors/weapons/umg43.txt"
-#include "actors/weapons/stenmk2.txt"
-#include "actors/weapons/truckgun.txt"
-#include "actors/weapons/panzerschreck.txt"
-#include "actors/weapons/granate.txt"
-#include "actors/weapons/bullets.txt"
-#include "actors/weapons/firebrand.txt"
-#include "actors/weapons/astrostein.txt"
-#include "actors/weapons/tesla.txt"
-#include "actors/weapons/fakeid.txt"
-#include "actors/weapons/kicks.txt" 		//AFADoomer
+Actor 9mmAmmoBox : 9mmAmmo
+{
+	//$Category Ammo (BoA)
+	//$Title Ammobox (x64 clips)
+	//$Color 6
+	Inventory.Amount 64
+	Inventory.PickupMessage "$9MMBOX"
+	Inventory.Icon "WALT02"
+	States
+	{
+	Spawn:
+		MCLP B -1
+		Stop
+	}
+}
 
-//Model Base
-#include "actors/models/base.txt"
+Actor 12GaugeAmmo : Ammo
+{
+	//$Category Ammo (BoA)
+	//$Title Shells (x4 shells)
+	//$Color 6
+	Scale 0.30
+	Tag "$TAGGAUGE"
+	Inventory.PickupMessage "$GAUGAMMO"
+	Inventory.Amount 4
+	Inventory.MaxAmount 32
+	Ammo.BackpackAmount 4
+	Ammo.BackpackMaxAmount 64
+	Inventory.Icon "BROW02"
+	States
+	{
+	Spawn:
+		SHEL A -1 NODELAY A_SetScale(ScaleX * RandomPick(-1, 1), ScaleY)
+		Stop
+	}
+}
 
-//Props
-#include "actors/props/bath.txt"
-#include "actors/props/bureau.txt"
-#include "actors/props/camp.txt"
-#include "actors/props/castle.txt"
-#include "actors/props/debris.txt"
-#include "actors/props/egypt.txt"
-#include "actors/props/flags.txt"
-#include "actors/props/furniture.txt"
-#include "actors/props/gore.txt"
-#include "actors/props/industrial.txt"
-#include "actors/props/kitchen.txt"
-#include "actors/props/labs.txt"
-#include "actors/props/lights.txt"
-#include "actors/props/shops.txt"
-#include "actors/props/street.txt"
-#include "actors/props/tech.txt"
-#include "actors/props/trees.txt"
-#include "actors/props/underwater.txt"
-#include "actors/props/vehicles.txt"
-#include "actors/props/walldecs.txt"
-#include "actors/props/astrostein.txt"		//Secret Operation Episode 2
-
-//Items
-#include "actors/items/armor.txt"
-#include "actors/items/health.txt"
-#include "actors/items/keys.txt"
-#include "actors/items/mission.txt"
-#include "actors/items/powerups.txt"
-#include "actors/items/treasure.txt"
-#include "actors/items/astrostein.txt"		//Secret Operation Episode 2
-
-//Special Effects
-#include "actors/sfx/clouds.txt"
-#include "actors/sfx/fog.txt"
-#include "actors/sfx/steam.txt"
-#include "actors/sfx/splash.txt"
-#include "actors/sfx/glass.txt"
-#include "actors/sfx/explosion.txt"
-#include "actors/sfx/flare.txt"
-#include "actors/sfx/fireworks.txt"
-#include "actors/sfx/waterlits.txt"
-#include "actors/sfx/rings.txt"
-#include "actors/sfx/swirl.txt"
-#include "actors/sfx/lightning.txt"
-#include "actors/sfx/skyboxtracer.txt"
-#include "actors/sfx/terrainsplashes.txt"
-#include "actors/sfx/vollight.txt"
-#include "actors/sfx/creepyrift.txt"
-
-//Critters
-#include "actors/critters/bird.txt"
-#include "actors/critters/farm.txt"
-#include "actors/critters/pollen.txt"
-#include "actors/critters/swarm.txt"
-#include "actors/critters/rats.txt"
-#include "actors/props/zyklon.txt"
-
-//Monsters
-#include "actors/monsters/shared.txt"		//Place this always as first
-#include "actors/monsters/nazis.txt"		//and this as second - ozy81
-#include "actors/monsters/animals.txt"
-#include "actors/monsters/bosses.txt"
-#include "actors/monsters/mechas.txt"
-#include "actors/monsters/mutants.txt"
-#include "actors/monsters/occult.txt"
-#include "actors/monsters/panzers.txt"
-#include "actors/monsters/prisoner.txt"
-#include "actors/monsters/robots.txt"
-#include "actors/monsters/npcs.txt"
-#include "actors/monsters/russians.txt"
-#include "actors/monsters/zombies.txt"
-#include "actors/monsters/astrostein.txt"	//Secret Operation Episode 2
-#include "actors/monsters/stealth.txt"		//MaxED & AFADoomer
-
-//Elements
-#include "actors/misc/exclamation.txt"
-
-//EasterEggs
-#include "actors/misc/ckeen.txt"
-#include "actors/misc/eastereggs.txt"
-
-//Hazards
-#include "actors/hazards/barrels.txt"
-#include "actors/hazards/electricity.txt"
-#include "actors/hazards/fallingrock.txt"
-#include "actors/hazards/gasflask.txt"
-#include "actors/hazards/mine.txt"
-#include "actors/hazards/traps.txt"
-
-//Models
-#include "actors/models/furniture.txt"
-#include "actors/models/mission.txt"
-#include "actors/models/obstacles.txt"
-#include "actors/models/scenery.txt"
-#include "actors/models/special.txt"
-#include "actors/models/statues.txt"
-#include "actors/models/vehicles.txt"
-#include "actors/models/mapobjects.txt"
-
-//Gore
-#include "actors/misc/nashgore.txt"
-#include "actors/misc/droplets.txt"
-
-//Misc
-#include "actors/misc/civilians.txt"
-#include "actors/misc/cutscenes.txt"
-#include "actors/misc/teleporter.txt"
+Actor 12GaugeAmmoBox : 12GaugeAmmo
+{
+	//$Category Ammo (BoA)
+	//$Title Shellbox (x16 shells)
+	//$Color 6
+	Scale 0.25
+	Inventory.Amount 16
+	Inventory.PickupMessage "$GAUGBOX"
+	States
+	{
+	Spawn:
+		SBOX A -1
+		Stop
+	}
+}
