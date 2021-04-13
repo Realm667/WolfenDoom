@@ -1,0 +1,19 @@
+MenuItems
+{
+	$OPTMNU_LANGUAGE // Name of the menu item to customize
+	{
+		Info // Warning/info string that follows options (e.g., percent translated)
+		{
+			String = $TRANSLATION FINISHED %; // String value to display after this menu item.  Pre-pended with '$' uses LANGUAGE lookup
+			Default = 100,00%; // Don't show entries that match this value
+			Replace = ,:.; // Replace the string before ':' with the string after (so this changes from comma to point decimal)
+			Color = Dark Red; // Use dark red color instead of the default option menu highlight color
+		}
+
+		Icon // Graphical icon that shows up in front of either the label or the selected option
+		{
+			Graphic = &language; // Look up 'language' CVAR (special handling in menu code).  Can also take an image short name.
+			Position = Options; // Position to left of options.  Any other value places the graphic to the left of the label.
+		}
+	}
+}
