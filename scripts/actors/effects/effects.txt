@@ -42,11 +42,33 @@ class EffectInfo // Should just be a struct, but we can't use structs in dynamic
 	bool bshootable;
 }
 
+const CHUNKSIZE = 512;
+const MAPMAX = 32768;
+
+class EffectBlock
+{
+	Array<int> indices;
+
+	static int, int GetBlock(double x, double y)
+	{
+		int row = int(y + MAPMAX) / CHUNKSIZE;
+		int col = int(x + MAPMAX) / CHUNKSIZE;
+
+		int maxval = MAPMAX * 2 / CHUNKSIZE;
+
+		row = clamp(row, 0, maxval);
+		col = clamp(col, 0, maxval);
+
+		return row, col;
+	}
+}
+
 // Effects get tracked in a dynamic array and culled when not in range of a player, then respawned when needed
 class EffectsManager : Thinker
 {
 	Array<EffectInfo> effects;
-	int interval;
+	int interval, renderchunks;
+	EffectBlock[MAPMAX * 2 / CHUNKSIZE][MAPMAX * 2 / CHUNKSIZE] effectblocks; // Grid of blocks across the entire map
 
 	const cycletime = 35;
 
@@ -82,7 +104,6 @@ class EffectsManager : Thinker
 		EffectsManager manager = EffectsManager.GetManager();
 		if (!manager) { return; }
 
-
 		manager.RemoveEffect(effect);
 	}
 
@@ -111,6 +132,12 @@ class EffectsManager : Thinker
 			SaveEffectInfo(effect, this, range);
 
 			effects.Push(this);
+
+			int x, y;
+			[x, y] = EffectBlock.GetBlock(effect.pos.x, effect.pos.y);
+
+			if (!effectblocks[x][y]) { effectblocks[x][y] = New("EffectBlock"); }
+			effectblocks[x][y].indices.Push(effects.Size() - 1);
 		}
 		else // Otherwise just update what's there...
 		{
@@ -172,118 +199,211 @@ class EffectsManager : Thinker
 
 	override void Tick()
 	{
-		CullEffects();
+		if (level.time == 2)
+		{
+			CullAllEffects(); // Cull everything at map start
+
+			renderchunks = (MAPMAX / CHUNKSIZE) / 2;
+			interval = 0;
+		}
+		else
+		{
+			CullEffects();
+
+			if (interval++ > renderchunks) { interval = 0; }
+		}
 	}
 
 	void CullEffects()
 	{
-		// Split up processing of the array across ticks to minimize single-tick think time
-		interval = (interval + 1) % cycletime;
-		double step = effects.Size() / double(cycletime);
-		if (int(step) < step) { step = int(step) + 1; } 
-		int start = interval * int(step);
-		int end = min(effects.Size(), start + int(step));
+		int maxval = MAPMAX * 2 / CHUNKSIZE;
 
-		for (int i = start; i < end; i++)
+		for (int p = 0; p < MAXPLAYERS; p++)
 		{
-			if (i >= effects.Size()) { return; }
-			if (!effects[i]) { continue; }
+			if (!playeringame[p]) { continue; }
 
-			if (effects[i].master && effects[i].master.bDormant)
+			Actor plr = players[p].camera;
+			if (!plr) { plr = players[p].mo; }
+			if (!plr) { continue; }
+
+			int chunkx, chunky;
+			Vector2 playpos = plr.pos.xy;
+
+			playpos += Actor.RotateVector((boa_cullrange * 2 / 3, 0), plr.angle); // Center drawing ahead of the player
+
+			[chunkx, chunky] = EffectBlock.GetBlock(playpos.x, playpos.y);
+
+			int count = 0;
+
+			// Cull effects in chunks radiating out from the player's current location
+			for (int x = chunkx - interval; x <= chunkx + interval; x++)
 			{
-				effects.Delete(i); // If the master is deactivated, don't remember this effect anymore
-				continue;
-			}
+				if (x < 0 || x >= maxval) { continue; }
 
-			bool inrange = false;
-			double dist, range;
-
-			for (int p = 0; p < MAXPLAYERS && !inrange; p++)
-			{
-				if (!playeringame[p]) { continue; }
-
-				Actor check = players[p].camera;
-				if (!check) { check = players[p].mo; }
-				if (!check) { continue; }
-
-				range = effects[i].range <= 0 ? boa_sfxlod : effects[i].range;
-
-				dist = (level.Vec3Diff(check.pos, effects[i].position)).length();
-				if (dist < range) { inrange = true; }
-			}
-
-			if (inrange && !effects[i].ingame)
-			{
-				Actor effect = Actor.Spawn(effects[i].type, effects[i].position);
-				if (effect)
+				for (int y = chunky - interval; y <= chunky + interval; y++)
 				{
-					effect.angle = effects[i].angle;
-					effect.pitch = effects[i].pitch;
-					effect.roll = effects[i].roll;
-					effect.scale = effects[i].scale;
-					effect.master = effects[i].master;
-					effect.target = effects[i].target;
-					effect.tracer = effects[i].tracer;
-					effect.SpawnFlags = effects[i].SpawnFlags;
-					effect.bDormant = effects[i].dormant;
+					if (y < 0 || y >= maxval) { continue; }
+					if (
+						(x != chunkx - interval && x != chunkx + interval) &&
+						(y != chunky - interval && y != chunky + interval)
+					) { continue; }
 
-					for (int a = 0; a < 5; a++)
-					{
-						effect.args[a] = effects[i].args[a];
-					}
+					bool force = !multiplayer && (interval > boa_cullrange / CHUNKSIZE); // Force removal if outside of the cull range (and not multiplayer)
 
-					effect.ChangeTID(effects[i].tid);
-					if (effect.SpawnFlags & MTF_DORMANT || effects[i].dormant) { effect.SetStateLabel("Inactive"); }
+					count += CullChunk(effectblocks[x][y].indices, force);
+				}
+			}
+		}
+	}
 
-					effect.sprite = effects[i].sprite;
-					effect.frame = effects[i].frame;
-					if (effects[i].curstate) { effect.SetState(effects[i].curstate); }
+	int CullChunk(Array<int> indices, bool forceremove = false)
+	{
+		if (!indices) { return 0; }
 
-					if (effect is "Blocker") { effect.A_SetSize(effects[i].radius, effects[i].height); }
+		int count = 0;
 
-					effect.bFlatSprite = effects[i].bflatsprite;
-					effect.bSpecial = effects[i].bspecial;
-					effect.bSolid = effects[i].bsolid;
-					effect.bShootable = effects[i].bshootable;
+		for (int i = 0; i < indices.Size(); i++)
+		{
+			count += CullEffect(indices[i], forceremove);
+		}
 
-					effects[i].effect = effect;
-					effects[i].ingame = true;
+		return count;
+	}
+
+	void DestroyEffect(EffectInfo e)
+	{
+		if (!e.effect || !e.ingame || e.effect.bDormant) { return; }
+
+		if (e.effect.health > 0 || e.effect.health == -1)
+		{
+			if (e.effect is "CullActorBase") { e.wasculled = true; }
+
+			SaveEffectInfo(e.effect, e);
+
+			e.effect.A_RemoveChildren(TRUE, RMVF_MISC);
+			e.effect.Destroy();
+			e.effect = null;
+			e.ingame = false;
+		}
+	}
+
+	bool CullEffect(int i, bool forceremove = false)
+	{
+		if (i >= effects.Size()) { return false; }
+		if (!effects[i]) { return false; }
+
+		if (effects[i].master && effects[i].master.bDormant)
+		{
+			effects.Delete(i); // If the master is deactivated, don't remember this effect anymore
+			return false;
+		}
+
+		if (forceremove)
+		{
+			DestroyEffect(effects[i]);
+
+			return false;
+		}
+
+		bool inrange = false;
+		double dist, range;
+
+		for (int p = 0; p < MAXPLAYERS && !inrange; p++)
+		{
+			if (!playeringame[p]) { continue; }
+
+			Actor check = players[p].camera;
+			if (!check) { check = players[p].mo; }
+			if (!check) { continue; }
+
+			range = effects[i].range <= 0 ? boa_sfxlod : effects[i].range;
+			range = max(1024, min(boa_cullrange, range));
+
+			dist = (level.Vec3Diff(check.pos, effects[i].position)).length();
+			if (dist < range) { inrange = true; }
+		}
+
+		if (inrange && !effects[i].ingame)
+		{
+			Actor effect = Actor.Spawn(effects[i].type, effects[i].position);
+			if (effect)
+			{
+				effect.angle = effects[i].angle;
+				effect.pitch = effects[i].pitch;
+				effect.roll = effects[i].roll;
+				effect.scale = effects[i].scale;
+				effect.master = effects[i].master;
+				effect.target = effects[i].target;
+				effect.tracer = effects[i].tracer;
+				effect.SpawnFlags = effects[i].SpawnFlags;
+				effect.bDormant = effects[i].dormant;
+
+				for (int a = 0; a < 5; a++)
+				{
+					effect.args[a] = effects[i].args[a];
+				}
+
+				effect.ChangeTID(effects[i].tid);
+				if (effect.SpawnFlags & MTF_DORMANT || effects[i].dormant) { effect.SetStateLabel("Inactive"); }
+
+				effect.sprite = effects[i].sprite;
+				effect.frame = effects[i].frame;
+				if (effects[i].curstate) { effect.SetState(effects[i].curstate); }
+
+				if (effect is "Blocker") { effect.A_SetSize(effects[i].radius, effects[i].height); }
+
+				effect.bFlatSprite = effects[i].bflatsprite;
+				effect.bSpecial = effects[i].bspecial;
+				effect.bSolid = effects[i].bsolid;
+				effect.bShootable = effects[i].bshootable;
+
+				effects[i].effect = effect;
+				effects[i].ingame = true;
  
-					if (effect is "CullActorBase") { CullActorBase(effect).wasculled = true; }
-				}
+				if (effect is "CullActorBase") { CullActorBase(effect).wasculled = true; }
 			}
-			else if (!inrange && effects[i].effect && !effects[i].effect.bDormant)
+		}
+		else if (!inrange && effects[i].effect && !effects[i].effect.bDormant)
+		{
+			if (effects[i].effect is "CullActorBase" && (CullActorBase(effects[i].effect).targetalpha != -1 || effects[i].effect.health <= 0))
 			{
-				if (effects[i].effect is "CullActorBase" && (CullActorBase(effects[i].effect).targetalpha != -1 || effects[i].effect.health <= 0))
-				{
-					if (dist > range * 2) { CullActorBase(effects[i].effect).targetalpha = -1; }
-					else { CullActorBase(effects[i].effect).targetalpha = GetDistanceAlpha(effects[i].effect, dist, range); }
-				}
-				else if (effects[i].effect.health <= 0) // Don't cull destroyed actors
-				{
-					effects.Delete(i); // ...and stop tracking them
-				}
-				else
-				{
-					Actor effect = effects[i].effect;
+				if (dist > range * 2) { CullActorBase(effects[i].effect).targetalpha = -1; }
+				else { CullActorBase(effects[i].effect).targetalpha = GetDistanceAlpha(effects[i].effect, dist, range); }
+			}
+			else if (effects[i].effect.health <= 0) // Don't cull destroyed actors
+			{
+				effects.Delete(i); // ...and stop tracking them
+			}
+			else
+			{
+				Actor effect = effects[i].effect;
 
-					if (effect is "CullActorBase") { effects[i].wasculled = true; }
+				if (effect is "CullActorBase") { effects[i].wasculled = true; }
 
-					SaveEffectInfo(effect, effects[i], range);
+				SaveEffectInfo(effect, effects[i], range);
 
-					effects[i].effect.A_RemoveChildren(TRUE, RMVF_MISC);
+				effects[i].effect.A_RemoveChildren(TRUE, RMVF_MISC);
 
-					state FadeState = effects[i].effect.FindState("Fade");
-					if (effects[i].effect.alpha > 0 && level.time > 35 && FadeState) { effects[i].effect.SetState(FadeState); }
-					else {
-						effects[i].effect = null;
-						effect.Destroy();
-						effect = null;
-						effects[i].ingame = false;
-					}
+				state FadeState = effects[i].effect.FindState("Fade");
+				if (interval && effects[i].effect.alpha > 0 && level.time > 35 && FadeState) { effects[i].effect.SetState(FadeState); }
+				else {
+					effects[i].effect = null;
+					effect.Destroy();
+					effect = null;
+					effects[i].ingame = false;
 				}
 			}
-			else if (effects[i].effect && effects[i].effect is "CullActorBase") { CullActorBase(effects[i].effect).targetalpha = GetDistanceAlpha(effects[i].effect, dist, range); }
+		}
+		else if (effects[i].effect && effects[i].effect is "CullActorBase") { CullActorBase(effects[i].effect).targetalpha = GetDistanceAlpha(effects[i].effect, dist, range); }
+
+		return effects[i].ingame;
+	}
+
+	void CullAllEffects()
+	{
+		for (int i = 0; i < effects.Size(); i++)
+		{
+			CullEffect(i);
 		}
 
 		effects.ShrinkToFit();
