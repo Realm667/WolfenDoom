@@ -1094,14 +1094,12 @@ class Base : Actor
 
 			if (bCountKill && !bFriendly)
 			{
-				bCountKill = false;
-				level.total_monsters--;
+				ClearCounters();
 			}
 		}
 		else if (Default.bCountKill && !bFriendly && user_nocountkill)
 		{
-			bCountKill = false;
-			level.total_monsters--;
+			ClearCounters();
 		}
 
 		// After initilization, handle skill level health alterations
@@ -1971,7 +1969,7 @@ class Nazi : Base
 
 	virtual void DoSurrender()
 	{
-		if (bCountKill) { bCountKill = false; level.total_monsters--; }
+		if (bCountKill) { ClearCounters(); }
 		user_ForceWeaponDrop = true;
 		surrendered = true;
 
@@ -2336,8 +2334,8 @@ class Nazi : Base
 
 				if (coin)
 				{
-					coin.bCountItem = false;
 					coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+					coin.ClearCounters();
 				}
 			}
 			// Drop additional treasures
@@ -2346,8 +2344,8 @@ class Nazi : Base
 				Actor coin = Spawn("CoinBagDrop", pos + (Random(-4, 4), Random(-4, 4), 0));
 				if (coin)
 				{
-					coin.bCountItem = false;
 					coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+					coin.ClearCounters();
 				}
 			}
 			else if (gierdroplevel == 3)
@@ -2360,8 +2358,8 @@ class Nazi : Base
 					Actor coin = Spawn(dropClass, pos + (Random(-4, 4), Random(-4, 4), 0));
 					if (coin)
 					{
-						coin.bCountItem = false;
 						coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+						coin.ClearCounters();
 					}
 				}
 				// Drop 2 coin bags
@@ -2370,8 +2368,8 @@ class Nazi : Base
 					Actor coin = Spawn("CoinBagDrop", pos + (Random(-4, 4), Random(-4, 4), 0));
 					if (coin)
 					{
-						coin.bCountItem = false;
 						coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+						coin.ClearCounters();
 					}
 				}
 			}

@@ -358,7 +358,7 @@ class TankBase : VehicleBase
 		treads.bFriendly = bFriendly;
 
 		if (!user_static) { A_StartSound(idlesound, CHAN_6, CHANF_LOOPING, 0.25); }
-		else { level.total_monsters--; }
+		else { ClearCounters(); }
 
 		targettimeout = Random(0, 35);
 		// Disable intercepting missiles on lower skill levels
