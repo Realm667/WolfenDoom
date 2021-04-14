@@ -179,6 +179,9 @@ class NaziMedic : NaziStandard
 			"####" A 0 { return ResolveState("Death.StandingSurrender.MainLoop"); }
 		SurrenderSprite:
 			NMDS A 0;
+		Alarm:
+			"####" N 50 A_SetTics(interval);
+			"####" N 0 A_Jump(256, "See");
 	}
 
 	state A_CheckForPlayer(bool jump = False)

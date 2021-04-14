@@ -2288,7 +2288,7 @@ class Nazi : Base
 		HealState = FindState("Heal");
 		IdleState = FindState("Idle");
 
-		interval = Random[pollinterval](35, 105);
+		interval = Random[pollinterval](35, 140);
 	}
 
 	override void PostBeginPlay()
@@ -2832,7 +2832,7 @@ class Nazi : Base
 				if (!bFrightened || (frightener && !frightener.player))
 				{
 					// If it wasn't frightened by a player and close to a dead body that it isn't already healing, start healing the body
-					if (goal && Distance3d(goal) <= goal.radius + radius + healdistance && !InStateSequence(CurState, HealState)) {
+					if (goal && goal.bIsMonster && Distance3d(goal) <= goal.radius + radius + healdistance && !InStateSequence(CurState, HealState)) {
 						if (Nazi(goal)) { Nazi(goal).healing = true; }
 						bChaseGoal = Default.bChaseGoal;
 						SetStateLabel("Heal");
