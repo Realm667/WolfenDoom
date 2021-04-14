@@ -32,7 +32,7 @@ class ZombieKazi : ZombieStandard
 	Speed 8;
 	+NOVERTICALMELEERANGE
 	Obituary "$NAZOKAZI";
-	DropItem "9mmAmmo", 64;
+	DropItem "Ammo9mm", 64;
 	DropItem "GrenadePickup", 16;
 	DropItem "Soul";
 	}
@@ -139,7 +139,7 @@ class ZombieBrain : ZombieStandard
 	Speed 2;
 	+QUICKTORETALIATE
 	Obituary "$NAZOBITE";
-	DropItem "9mmAmmo", 32;
+	DropItem "Ammo9mm", 32;
 	DropItem "Soul";
 	}
 	States
@@ -237,7 +237,7 @@ class ZombieOfficer : ZombieBrain
 	Speed 3;
 	-QUICKTORETALIATE
 	DropItem "MP40", 192;
-	DropItem "9mmAmmo", 32;
+	DropItem "Ammo9mm", 32;
 	DropItem "Soul";
 	}
 	States
@@ -697,7 +697,7 @@ class ZombieBrainRuthless: ZombieBrain
 	Health 30;
 	+JUMPDOWN
 	DropItem "Bandages", 16;
-	DropItem "9mmAmmo", 64;
+	DropItem "Ammo9mm", 64;
 	DropItem "MauserAmmo", 32;
 	DropItem "Soul";
 	DropItem "Soul", 64;

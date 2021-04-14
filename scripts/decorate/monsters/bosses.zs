@@ -1053,12 +1053,14 @@ class NaziLoper : Nazi
 	Radius 24;
 	Mass 300;
 	Speed 7;
-	DamageFunction (2 * random(1,8)); //jump attacks
+	DamageFunction (8 * random(1,8)); //jump attacks
+	DefThreshold 32;
 	Scale 0.65;
 	PainChance 64;
 	DamageFactor "Rocket", 0.2;
 	DamageFactor "Electric", 0.0;
 	+BOSS
+	+MISSILEMORE
 	+NORADIUSDMG //or the ZTracer will kill the Loper :D
 	MaxStepHeight 16;
 	MaxDropOffHeight 128;
@@ -1085,7 +1087,8 @@ class NaziLoper : Nazi
 		"####" FG 8 A_CustomMeleeAttack(2*random(2,10),"loper/attack","loper/attack","Melee",TRUE);
 		Goto Look;
 	Missile:
-		"####" E 0 A_Jump(random(128,192),"Missile2","Missile3");
+		"####" E 0 A_Jump(160,"Missile3");  // Leap attack
+		"####" E 0 A_Jump(random(128,192),"Missile2");
 		"####" EE 2 LIGHT("LOPERLIT"){
 			A_StartSound("tesla/kill");
 			A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, CMF_AIMDIRECTION, 0);
@@ -1134,11 +1137,11 @@ class NaziLoper : Nazi
 		"####" G 8 A_FaceTarget;
 		Goto Look;
 	Missile3:
-		"####" A 0 A_JumpIfCloser(192, 2);
+		"####" A 0 A_JumpIfCloser(512, 1);
 		Goto Look;
 		"####" CE 8 A_FaceTarget;
 		"####" H 8 ThrustThingZ(0,random(30,40),0,1);
-		"####" FG 1 A_SkullAttack;
+		"####" FG 1 A_SkullAttack(30);
 		"####" E 3 A_Gravity;
 		"####" C 5;
 		Goto Look;
@@ -2228,7 +2231,7 @@ class BerlinGeneral2 : BerlinGeneral1
 {	Default
 	{
 		//$Title Berlin Officer, Chaingun (Boss)
-		DropItem "9mmAmmoBox", 128;
+		DropItem "AmmoBox9mm", 128;
 	}
 	States
 	{
@@ -2715,9 +2718,9 @@ class DeathKnight : Nazi
 	SeeSound "deathknight/sight";
 	PainSound "boss/pain";
 	DeathSound "deathknight/death";
-	DropItem "9mmAmmo", 128;
-	DropItem "9mmAmmo", 128;
-	DropItem "9mmAmmoBox", 128;
+	DropItem "Ammo9mm", 128;
+	DropItem "Ammo9mm", 128;
+	DropItem "AmmoBox9mm", 128;
 	DropItem "NebAmmo", 256;
 	Nazi.TotaleGierDrop 3;
 	}
@@ -3191,8 +3194,8 @@ class SuperSoldier : NaziBoss
 	SeeSound "Boss1/Sighted";
 	PainSound "boss/pain";
 	DeathSound "Boss1/Death";
-	DropItem "9mmAmmo", 64;
-	DropItem "9mmAmmoBox", 64;
+	DropItem "Ammo9mm", 64;
+	DropItem "AmmoBox9mm", 64;
 	DropItem "Medikit_Small", 32;
 	}
 	States
@@ -3566,8 +3569,8 @@ class SuperSoldier_Girl : SuperSoldier
 	SeeSound "BossGirl/Sighted";
 	PainSound "bossGirl/pain";
 	DeathSound "BossGirl/Death";
-	DropItem "9mmAmmo", 128;
-	DropItem "9mmAmmoBox", 128;
+	DropItem "Ammo9mm", 128;
+	DropItem "AmmoBox9mm", 128;
 	DropItem "Medikit_Small", 32;
 	}
 	States
@@ -3727,9 +3730,9 @@ class SuperSoldier_Elite : SuperSoldier
 	Tag "$TAGELITEUEBER";
 	Health 850;
 	Obituary "$SUPAELIT";
-	DropItem "9mmAmmo", 128;
-	DropItem "9mmAmmo", 128;
-	DropItem "9mmAmmoBox", 128;
+	DropItem "Ammo9mm", 128;
+	DropItem "Ammo9mm", 128;
+	DropItem "AmmoBox9mm", 128;
 	DropItem "Medikit_Small", 96;
 	}
 	States

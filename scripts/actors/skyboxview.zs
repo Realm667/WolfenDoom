@@ -20,6 +20,8 @@
  * SOFTWARE.
 **/
 
+// Use STANDSTILL flag in editor to tell the viewpont to ignore re-calculating the 
+// anchor offset when the player crosses line portals
 class SkyViewPointStatic : SkyViewPoint
 {
 	Actor base, anchor;
@@ -66,6 +68,8 @@ class SkyViewPointStatic : SkyViewPoint
 		{
 			it = ActorIterator.Create(anchorid, "Actor");
 			mo.anchor = it.Next();
+			
+			mo.anchoroffset = (0, 0);
 		}
 
 		mo.base = null;
@@ -132,7 +136,7 @@ class SkyViewPointStatic : SkyViewPoint
 			Vector3 dest = (SpawnPoint.xy + offset - anchoroffset, SpawnPoint.z + heightdelta);
 			double dist = (dest.xy - pos.xy).length();
 
-			if (base.bTeleport || dist <= 32.0 || level.time < 5)
+			if (base.bTeleport || dist <= 32.0 || level.time < 5 || bStandStill)
 			{
 				SetXYZ(dest);
 			}
@@ -140,6 +144,10 @@ class SkyViewPointStatic : SkyViewPoint
 			{
 				anchoroffset = (SpawnPoint.xy + offset) - pos.xy;
 			}
+		}
+		else
+		{
+			SetAnchor(tid);
 		}
 	}
 }

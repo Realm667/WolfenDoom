@@ -31,7 +31,7 @@ class Luger9mm : NaziWeapon
 	Weapon.SelectionOrder 9998;
 	Weapon.AmmoType "Luger9mmLoaded";
 	Weapon.AmmoUse 1;
-	Weapon.AmmoType2 "9mmAmmo";
+	Weapon.AmmoType2 "Ammo9mm";
 	Weapon.AmmoUse2 1;
 	Weapon.AmmoGive2 8;
 	Weapon.UpSound "luger/select";
@@ -43,7 +43,7 @@ class Luger9mm : NaziWeapon
 	{
 	Ready:
 		LUGG A 0 A_JumpIfInventory("Luger9mmLoaded",0,2);
-		LUGG A 0 A_JumpIfInventory("9mmAmmo",1,2);
+		LUGG A 0 A_JumpIfInventory("Ammo9mm",1,2);
 		LUGG A 1 A_WeaponReady;
 		Loop;
 		LUGG A 1 A_WeaponReady(WRF_ALLOWRELOAD);
@@ -85,10 +85,10 @@ class Luger9mm : NaziWeapon
 		LUGG I 1 Offset(0,82);
 		TNT1 A 11;
 	ReloadLoop:
-		TNT1 A 0 A_TakeInventory("9mmAmmo",1,TIF_NOTAKEINFINITE);
+		TNT1 A 0 A_TakeInventory("Ammo9mm",1,TIF_NOTAKEINFINITE);
 		TNT1 A 0 A_GiveInventory("Luger9mmLoaded");
 		TNT1 A 0 A_JumpIfInventory("Luger9mmLoaded",0,"ReloadFinish");
-		TNT1 A 0 A_JumpIfInventory("9mmAmmo",1,"ReloadLoop");
+		TNT1 A 0 A_JumpIfInventory("Ammo9mm",1,"ReloadLoop");
 	ReloadFinish:
 		LUGG I 1 Offset(0,82);
 		LUGG I 1 Offset(0,72);

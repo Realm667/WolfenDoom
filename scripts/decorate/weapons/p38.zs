@@ -31,7 +31,7 @@ class Walther9mm : NaziWeapon
 	Weapon.SelectionOrder 9997;
 	Weapon.AmmoType "Walther9mmLoaded";
 	Weapon.AmmoUse 1;
-	Weapon.AmmoType2 "9mmAmmo";
+	Weapon.AmmoType2 "Ammo9mm";
 	Weapon.AmmoUse2 1;
 	Weapon.AmmoGive2 8;
 	Weapon.UpSound "walther/select";
@@ -42,7 +42,7 @@ class Walther9mm : NaziWeapon
 	{
 	Ready:
 		WALG A 0 A_JumpIfInventory("Walther9mmLoaded",0,2);
-		WALG A 0 A_JumpIfInventory("9mmAmmo",1,2);
+		WALG A 0 A_JumpIfInventory("Ammo9mm",1,2);
 		WALG A 1 A_WeaponReady;
 		Loop;
 		WALG A 1 A_WeaponReady(WRF_ALLOWRELOAD);
@@ -84,10 +84,10 @@ class Walther9mm : NaziWeapon
 		WALG B 1 Offset(0,82);
 		TNT1 A 8;
 	ReloadLoop:
-		TNT1 A 0 A_TakeInventory("9mmAmmo",1,TIF_NOTAKEINFINITE);
+		TNT1 A 0 A_TakeInventory("Ammo9mm",1,TIF_NOTAKEINFINITE);
 		TNT1 A 0 A_GiveInventory("Walther9mmLoaded");
 		TNT1 A 0 A_JumpIfInventory("Walther9mmLoaded",0,"ReloadFinish");
-		TNT1 A 0 A_JumpIfInventory("9mmAmmo",1,"ReloadLoop");
+		TNT1 A 0 A_JumpIfInventory("Ammo9mm",1,"ReloadLoop");
 	ReloadFinish:
 		WALG B 1 Offset(0,82);
 		WALG B 1 Offset(0,72);

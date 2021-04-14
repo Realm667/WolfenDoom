@@ -475,21 +475,25 @@ class RopeSpawner : Actor
 		if (tid)
 		{
 			target = FindTarget();
-			if (target)
-			{
-				A_Face(target, 0, 0);
+			if (target) { A_Face(target, 0, 0, flags:FAF_TOP); }
+		}
 
-				HitDistance = Distance3D(target) + target.Radius * 2;
+		FLineTraceData trace;
+		LineTrace(angle, user_maxlength, pitch, TRF_THRUACTORS, 0.0, 0.0, 0.0, trace);
+		HitDistance = trace.Distance;
+
+		for (double s = 0; s < HitDistance; s += spacing * scale.x)
+		{
+			Vector3 stepmove = (cos(angle) * cos(-pitch), sin(angle) * cos(-pitch), sin(-pitch)).Unit(); // Calculate facing direction as a unit vector
+
+			Actor segment = Spawn(seg, pos + stepmove * s + (0, 0, zoffset * scale.y - 4), ALLOW_REPLACE);
+			if (segment)
+			{
+				segment.pitch = pitch;
+				segment.angle = angle;
+				segment.target = self;
 			}
 		}
-
-		if (!HitDistance)
-		{
-			FLineTraceData trace;
-			LineTrace(angle, user_maxlength, pitch, TRF_THRUACTORS, 0.0, 0.0, 0.0, trace);
-			HitDistance = trace.Distance;
-		}
-		A_CustomRailgun(0, 0, "", "", RGF_CENTERZ | RGF_NOPIERCING | RGF_SILENT, 0, 0, "", 0, 0, HitDistance, 1, spacing * scale.x, 0, seg, zoffset * scale.y);
 
 		timeout = level.time + 35;
 

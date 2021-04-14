@@ -21,6 +21,89 @@
  * SOFTWARE.
 **/
 
+class Ammo9mm : Ammo
+{
+	Default {
+	//$Category Ammo (BoA)
+	//$Title Ammoclip (x8 clips)
+	//$Color 6
+	Scale 0.20;
+	Tag "9x19mm";
+	Inventory.Amount 8;
+	Inventory.MaxAmount 256;
+	Ammo.BackpackAmount 64;
+	Ammo.BackpackMaxAmount 480;
+	Inventory.PickupMessage "$9MMAMMO";
+	Inventory.Icon "WALT01";
+	}
+	States
+	{
+	Spawn:
+		MCLP A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		Stop;
+	}
+}
+
+class AmmoBox9mm : Ammo9mm
+{
+	Default {
+	//$Category Ammo (BoA)
+	//$Title Ammobox (x64 clips)
+	//$Color 6
+	Inventory.Amount 64;
+	Inventory.PickupMessage "$9MMBOX";
+	Inventory.Icon "WALT02";
+	}
+	States
+	{
+	Spawn:
+		MCLP B -1;
+		Stop;
+	}
+}
+
+class Ammo12Gauge : Ammo
+{
+	Default {
+	//$Category Ammo (BoA)
+	//$Title Shells (x4 shells)
+	//$Color 6
+	Scale 0.30;
+	Tag "$TAGGAUGE";
+	Inventory.PickupMessage "$GAUGAMMO";
+	Inventory.Amount 4;
+	Inventory.MaxAmount 32;
+	Ammo.BackpackAmount 4;
+	Ammo.BackpackMaxAmount 64;
+	Inventory.Icon "BROW02";
+	}
+	States
+	{
+	Spawn:
+		SHEL A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		Stop;
+	}
+}
+
+class AmmoBox12Gauge : Ammo12Gauge
+{
+	Default {
+	//$Category Ammo (BoA)
+	//$Title Shellbox (x16 shells)
+	//$Color 6
+	Scale 0.25;
+	Inventory.Amount 16;
+	Inventory.PickupMessage "$GAUGBOX";
+	}
+	States
+	{
+	Spawn:
+		SBOX A -1;
+		Stop;
+	}
+}
+
+
 class MauserAmmo : Ammo
 {
 	Default

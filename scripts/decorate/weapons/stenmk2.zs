@@ -32,7 +32,7 @@ class Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 	Inventory.PickupMessage "$STEN";
 	Weapon.AmmoType "StenLoaded";
 	Weapon.AmmoUse 1;
-	Weapon.AmmoType2 "9mmAmmo";
+	Weapon.AmmoType2 "Ammo9mm";
 	Weapon.AmmoUse2 1;
 	Weapon.AmmoGive2 32;
 	Weapon.UpSound "sten/select";
@@ -43,7 +43,7 @@ class Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 	{
 	Ready:
 		STEN A 0 A_JumpIfInventory("StenLoaded",0,2);
-		STEN A 0 A_JumpIfInventory("9mmAmmo",1,2);
+		STEN A 0 A_JumpIfInventory("Ammo9mm",1,2);
 		STEN A 1 A_WeaponReady;
 		Loop;
 		STEN A 1 A_WeaponReady(WRF_ALLOWRELOAD);
@@ -106,10 +106,10 @@ class Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 		STEN A 1 Offset(-10,82);
 		STEN A 20 Offset(-11,84);
 	ReloadLoop:
-		TNT1 A 0 A_TakeInventory("9mmAmmo",1,TIF_NOTAKEINFINITE);
+		TNT1 A 0 A_TakeInventory("Ammo9mm",1,TIF_NOTAKEINFINITE);
 		TNT1 A 0 A_GiveInventory("StenLoaded");
 		TNT1 A 0 A_JumpIfInventory("StenLoaded",0,"ReloadFinish");
-		TNT1 A 0 A_JumpIfInventory("9mmAmmo",1,"ReloadLoop");
+		TNT1 A 0 A_JumpIfInventory("Ammo9mm",1,"ReloadLoop");
 	ReloadFinish:
 		STEN A 1 Offset(-10,84);
 		STEN A 1 Offset(-10,90);

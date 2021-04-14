@@ -32,9 +32,9 @@ class UMG43 : NaziWeapon
 	Inventory.PickupSound "chaingun/get";
 	Tag "UMG 43";
 	Weapon.AmmoGive 30;
-	Weapon.AmmoType "9mmAmmo";
+	Weapon.AmmoType "Ammo9mm";
 	Weapon.AmmoUse 1;
-	Weapon.AmmoType2 "9mmAmmo";
+	Weapon.AmmoType2 "Ammo9mm";
 	Weapon.AmmoUse2 4;
 	Weapon.SelectionOrder 900;
 	Weapon.UpSound "chaingun/select";

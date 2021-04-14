@@ -152,7 +152,7 @@ class WereWaffenSS : WaffenSS
 	PainSound "wolfman/pain";
 	DeathSound "wolfman/death";
 	Obituary "$WEREWAFF";
-	DropItem "9mmAmmoBox", 128;
+	DropItem "AmmoBox9mm", 128;
 	DropItem "GrenadePickup", 32;
 	DropItem "MP40", 128;
 	}
@@ -550,8 +550,8 @@ class SSTemplar : Guard
 	Speed 2.66666667;
 	Scale 0.7;
 	PainChance 128;
-	DropItem "12GaugeAmmo", 96;
-	DropItem "12GaugeAmmo", 128;
+	DropItem "Ammo12Gauge", 96;
+	DropItem "Ammo12Gauge", 128;
 	DropItem "TrenchShotgun", 32;
 	PainSound "sstemplar/pain";
 	DeathSound "sstemplar/die";

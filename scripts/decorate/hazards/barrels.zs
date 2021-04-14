@@ -105,8 +105,8 @@ class GoodieBarrel1 : TNTBarrel1
 	{
 		//$Title Goodie Barrel (disguise)
 		DeathSound "WOODBRK";
-		DropItem "12GaugeAmmo", 64;
-		DropItem "9mmAmmo", 64;
+		DropItem "Ammo12Gauge", 64;
+		DropItem "Ammo9mm", 64;
 		DropItem "Bandages", 48;
 		DropItem "Dogfood", 64;
 		DropItem "GrenadePickup", 16;

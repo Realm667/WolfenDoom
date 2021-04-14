@@ -58,7 +58,7 @@ class NaziMedic : NaziStandard
 		Speed 4;
 		+ALLOWPAIN
 		+AVOIDMELEE
-		+INVULNERABLE
+		+NODAMAGE
 		+NEVERTARGET
 		Base.NoMedicHeal;
 		Nazi.CanSurrender True;
@@ -179,6 +179,9 @@ class NaziMedic : NaziStandard
 			"####" A 0 { return ResolveState("Death.StandingSurrender.MainLoop"); }
 		SurrenderSprite:
 			NMDS A 0;
+		Alarm:
+			"####" N 50 A_SetTics(interval);
+			"####" N 0 A_Jump(256, "See");
 	}
 
 	state A_CheckForPlayer(bool jump = False)
@@ -217,9 +220,9 @@ class NaziMedic : NaziStandard
 
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
-		if (source is "MovingTrailBeam") { source = source.master; } // Attribute damage to the owner of any lightning beam
+		if (source && source is "MovingTrailBeam") { source = source.master; } // Attribute damage to the owner of any lightning beam
 
-		if (bInvulnerable && source && source.player)
+		if (bNoDamage && source && source.player)
 		{
 			if (!surrendered)
 			{

@@ -30,7 +30,7 @@ class TrenchShotgun : NaziWeapon
 	Weapon.SelectionOrder 400;
 	Weapon.AmmoType "TrenchShotgunLoaded";
 	Weapon.AmmoUse 1;
-	Weapon.AmmoType2 "12GaugeAmmo";
+	Weapon.AmmoType2 "Ammo12Gauge";
 	Weapon.AmmoUse2 1;
 	Weapon.AmmoGive2 8;
 	Weapon.UpSound "shotgun/select";
@@ -66,7 +66,7 @@ class TrenchShotgun : NaziWeapon
 		Loop;
 	Ready:
 		SHTG A 0 A_JumpIfInventory("TrenchShotgunLoaded",0,2);
-		SHTG A 0 A_JumpIfInventory("12GaugeAmmo",1,2);
+		SHTG A 0 A_JumpIfInventory("Ammo12Gauge",1,2);
 		SHTG A 1 A_WeaponReady;
 		Loop;
 		SHTG A 1 A_WeaponReady(WRF_ALLOWRELOAD);
@@ -118,7 +118,7 @@ class TrenchShotgun : NaziWeapon
 		SHTG C 1 Offset(-6,46);
 		SHTG C 1 Offset(-7,55);
 	ReloadLoop:
-		SHTG A 0 A_TakeInventory("12GaugeAmmo",1,TIF_NOTAKEINFINITE);
+		SHTG A 0 A_TakeInventory("Ammo12Gauge",1,TIF_NOTAKEINFINITE);
 		SHTG A 0 A_GiveInventory("TrenchShotgunLoaded");
 		SHTG C 1 Offset(-8,58) A_StartSound("shotgun/load", CHAN_WEAPON);
 		SHTG C 1 Offset(-9,64);
@@ -132,7 +132,7 @@ class TrenchShotgun : NaziWeapon
 		SHTG C 2 Offset(-8,59) A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY);
 		SHTG C 3 Offset(-8,58) A_WeaponReady(WRF_NOBOB|WRF_NOSECONDARY);
 		SHTG A 0 A_JumpIfInventory("TrenchShotgunLoaded",0,"ReloadFinish");
-		TNT1 A 0 A_JumpIfInventory("12GaugeAmmo",1,"ReloadLoop");
+		TNT1 A 0 A_JumpIfInventory("Ammo12Gauge",1,"ReloadLoop");
 	ReloadFinish:
 		SHTG C 1 Offset(3,35) A_StartSound("shotgun/pump");
 		SHTG C 1 Offset(-1,38);

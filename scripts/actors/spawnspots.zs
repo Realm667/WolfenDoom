@@ -254,16 +254,14 @@ class ActorSpawner : SwitchableDecoration
 //console.printf("Spawned %s  %i of %i (%i / %i)", GetDefaultByType(user_spawntype).GetClassName(), spawncount, user_maxactors, totalspawncount, user_maxspawns);
 					if (user_maxspawns == 0 && spawned.bCountKill && !spawned.bFriendly)
 					{
-						spawned.bCountKill = false;
-						level.total_monsters--;
+						spawned.ClearCounters();
 					}
 
 					if (!spawned.TestMobjLocation())
 					{ 
 						if (spawned.bCountKill)
 						{
-							spawned.bCountKill = false;
-							level.total_monsters--;
+							spawned.ClearCounters();
 						}
 						spawned.Destroy();
 					}
@@ -472,16 +470,14 @@ class WaveSpawner : ActorSpawner
 			{
 				if (user_maxspawns == 0 && spawned.bCountKill && !spawned.bFriendly)
 				{
-					spawned.bCountKill = false;
-					level.total_monsters--;
+					spawned.ClearCounters();
 				}
 
 				if (!spawned.TestMobjLocation())
 				{ 
 					if (spawned.bCountKill)
 					{
-						spawned.bCountKill = false;
-						level.total_monsters--;
+						spawned.ClearCounters();
 					}
 					spawned.Destroy();
 				}

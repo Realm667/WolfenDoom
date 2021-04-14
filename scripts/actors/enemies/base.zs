@@ -303,7 +303,8 @@ class Base : Actor
 	Actor flare;
 
 	FlagDef CANSQUISH:flags, 0;
-
+	FlagDef STOMP:flags, 1;
+	
 	Property AlwaysDrawHealthBar:user_DrawHealthBar;
 	Property BossIcon:BossIcon;
 	Property DodgeAmount:maxdodge; // Max number of times the enemy will dodge
@@ -1093,14 +1094,12 @@ class Base : Actor
 
 			if (bCountKill && !bFriendly)
 			{
-				bCountKill = false;
-				level.total_monsters--;
+				ClearCounters();
 			}
 		}
 		else if (Default.bCountKill && !bFriendly && user_nocountkill)
 		{
-			bCountKill = false;
-			level.total_monsters--;
+			ClearCounters();
 		}
 
 		// After initilization, handle skill level health alterations
@@ -1153,9 +1152,8 @@ class Base : Actor
 	{
 		if (passive)
 		{
-			if (bCanSquish && other.player && pos.z == floorz)
+			if (bStomp && bCanSquish && other.player && pos.z == floorz)
 			{
-/* Auto-stomp!
 				if (other.player.ReadyWeapon && other.player.ReadyWeapon is "NaziWeapon")
 				{
 					let kick = other.player.FindPSprite(-10);
@@ -1165,9 +1163,8 @@ class Base : Actor
 						other.player.SetPsprite(-10, other.player.ReadyWeapon.FindState("KickOverlay"), true);
 					}
 				}
-*/
 
-				DamageMobj(other, other, 1, "Squish", 0, other.angle);
+				DamageMobj(other, other, health, "Squish", 0, other.angle);
 			}
 		}
 		else
@@ -1845,7 +1842,7 @@ class Nazi : Base
 			}
 		}
 
-		if (!Default.bLookAllAround && level.time && level.time % interval == 0)
+		if (!Default.bLookAllAround && level.time % interval == 0)
 		{
 			FLineTraceData trace;
 			if (LineTrace(angle, 256.0, pitch, TRF_THRUHITSCAN | TRF_ALLACTORS, Height * 0.9, 0.0, 0.0, trace) && trace.HitType == TRACE_HitWall)
@@ -1898,7 +1895,7 @@ class Nazi : Base
 			}
 		}
 
-		if (user_sneakable && bFriendly && level.time && level.time % interval == 0) { A_LookForBodies(); }
+		if (user_sneakable && bFriendly && level.time % interval == 0) { A_LookForBodies(); }
 
 		if (target && (target is "GrenadeBase") && Speed > 0)
 		{
@@ -1972,7 +1969,7 @@ class Nazi : Base
 
 	virtual void DoSurrender()
 	{
-		if (bCountKill) { bCountKill = false; level.total_monsters--; }
+		if (bCountKill) { ClearCounters(); }
 		user_ForceWeaponDrop = true;
 		surrendered = true;
 
@@ -2288,7 +2285,7 @@ class Nazi : Base
 		HealState = FindState("Heal");
 		IdleState = FindState("Idle");
 
-		interval = Random[pollinterval](35, 105);
+		interval = Random[pollinterval](35, 140);
 	}
 
 	override void PostBeginPlay()
@@ -2337,8 +2334,8 @@ class Nazi : Base
 
 				if (coin)
 				{
-					coin.bCountItem = false;
 					coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+					coin.ClearCounters();
 				}
 			}
 			// Drop additional treasures
@@ -2347,8 +2344,8 @@ class Nazi : Base
 				Actor coin = Spawn("CoinBagDrop", pos + (Random(-4, 4), Random(-4, 4), 0));
 				if (coin)
 				{
-					coin.bCountItem = false;
 					coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+					coin.ClearCounters();
 				}
 			}
 			else if (gierdroplevel == 3)
@@ -2361,8 +2358,8 @@ class Nazi : Base
 					Actor coin = Spawn(dropClass, pos + (Random(-4, 4), Random(-4, 4), 0));
 					if (coin)
 					{
-						coin.bCountItem = false;
 						coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+						coin.ClearCounters();
 					}
 				}
 				// Drop 2 coin bags
@@ -2371,8 +2368,8 @@ class Nazi : Base
 					Actor coin = Spawn("CoinBagDrop", pos + (Random(-4, 4), Random(-4, 4), 0));
 					if (coin)
 					{
-						coin.bCountItem = false;
 						coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+						coin.ClearCounters();
 					}
 				}
 			}
@@ -2823,7 +2820,7 @@ class Nazi : Base
 				// If it doesn't have a goal (and isn't running away), look for dead bodies
 				if (!goal || (goal && Distance3d(goal) > 1024))
 				{
-					if (level.time && level.time % interval == 0) { A_LookForBodies(); }
+					if (level.time % interval == 0) { A_LookForBodies(); }
 
 					if (Nazi(body) && !body.bShootable && !Nazi(body).healing) { bChaseGoal = true; goal = body; } // Keep trying to get to the body if it's still dead and isn't being healed
 					else { body = null; }
@@ -2832,7 +2829,7 @@ class Nazi : Base
 				if (!bFrightened || (frightener && !frightener.player))
 				{
 					// If it wasn't frightened by a player and close to a dead body that it isn't already healing, start healing the body
-					if (goal && Distance3d(goal) <= goal.radius + radius + healdistance && !InStateSequence(CurState, HealState)) {
+					if (goal && goal.bIsMonster && Distance3d(goal) <= goal.radius + radius + healdistance && !InStateSequence(CurState, HealState)) {
 						if (Nazi(goal)) { Nazi(goal).healing = true; }
 						bChaseGoal = Default.bChaseGoal;
 						SetStateLabel("Heal");
@@ -2868,7 +2865,7 @@ class Nazi : Base
 				A_LookForGrenades();
 			}
 
-			if (level.time && level.time % interval == 0) { closestplayer = FindClosestPlayer(self, IgnoreFriendlies:!bFriendly); }
+			if (level.time % interval == 0) { closestplayer = FindClosestPlayer(self, IgnoreFriendlies:!bFriendly); }
 		}
 
 		if (user_cansurrender && surrendered)
@@ -2921,10 +2918,10 @@ class Nazi : Base
 			delta = DropDelta(recipient, "BagOfCoins", delta);
 			DropDelta(recipient, "SingleCoin", delta);
 		}
-		else if (item is "9mmAmmo")
+		else if (item is "Ammo9mm")
 		{
-			delta = DropDelta(recipient, "9mmAmmoBox", amountToDrop);
-			DropDelta(recipient, "9mmAmmo", delta);
+			delta = DropDelta(recipient, "AmmoBox9mm", amountToDrop);
+			DropDelta(recipient, "Ammo9mm", delta);
 		}
 		else if (item is "NebAmmo")
 		{
@@ -2960,7 +2957,11 @@ class Nazi : Base
 			double r = GetDefaultByType(item).radius + target.radius;
 			Vector3 spawnpos = target.pos + (FRandom(-r, r), FRandom(-r, r), 0);
 			Actor drop = Spawn(item, spawnpos, ALLOW_REPLACE);
-			if (drop) { drop.Vel3DFromAngle(Random(1, 4), Random(0, 359), Random(-75, -90)); } // Don't stack items on top of each other
+			if (drop)
+			{
+				drop.Vel3DFromAngle(Random(1, 4), Random(0, 359), Random(-75, -90)); // Don't stack items on top of each other
+				drop.ClearCounters();
+			}
 		}
 	}
 
@@ -3000,7 +3001,7 @@ class Nazi : Base
 				default:
 					break;
 				case 1:
-					SpyGive(user, "9mmAmmo", Random(1, 4) * 4);
+					SpyGive(user, "Ammo9mm", Random(1, 4) * 4);
 					break;
 				case 2:
 					SpyGive(user, "Bandages", Random(1, 2));
@@ -3020,6 +3021,15 @@ class Nazi : Base
 	{
 		Super.Activate(activator);
 		if (health > 0) SetStateLabel("Active");
+	}
+	
+	override void OnDestroy()
+	{
+		if (user_sneakable && bFriendly && health > 0)
+		{
+			bFriendly = false;
+			ClearCounters();
+		}
 	}
 }
 

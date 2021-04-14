@@ -35,7 +35,7 @@ class Mutant : MutantStandard
 	Obituary "$MUTANT";
 	+MISSILEEVENMORE
 	+MISSILEMORE
-	DropItem "9mmAmmo", 128;
+	DropItem "Ammo9mm", 128;
 	}
 	States
 	{

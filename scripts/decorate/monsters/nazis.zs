@@ -31,7 +31,7 @@ class BasicGuard : NaziStandard
 	{
 	Health 20;
 	Obituary "$GUARD";
-	DropItem "9mmAmmo", 192;
+	DropItem "Ammo9mm", 192;
 	DropItem "Luger9mm", 64;
 	}
 	States
@@ -124,16 +124,16 @@ class GiantGuard : Guard
 	{
 	//$Title Afrika Korps Giant Guard (Easter Egg, no fadedeath)
 	//$Sprite GARDF1
-	DropItem "9mmAmmo", 255;
-	DropItem "9mmAmmo", 255;
-	DropItem "9mmAmmo", 255;
-	DropItem "9mmAmmo", 255;
-	DropItem "9mmAmmo", 255;
-	DropItem "9mmAmmo", 255;
-	DropItem "9mmAmmo", 255;
-	DropItem "9mmAmmo", 255;
-	DropItem "9mmAmmo", 255;
-	DropItem "9mmAmmo", 255;
+	DropItem "Ammo9mm", 255;
+	DropItem "Ammo9mm", 255;
+	DropItem "Ammo9mm", 255;
+	DropItem "Ammo9mm", 255;
+	DropItem "Ammo9mm", 255;
+	DropItem "Ammo9mm", 255;
+	DropItem "Ammo9mm", 255;
+	DropItem "Ammo9mm", 255;
+	DropItem "Ammo9mm", 255;
+	DropItem "Ammo9mm", 255;
 	DropItem "GrenadePickup", 255;
 	DropItem "GrenadePickup", 255;
 	DropItem "GrenadePickup", 255;
@@ -332,7 +332,7 @@ class MP40Guard : Guard
 	SeeSound "Nazi2/Sighted";
 	PainSound "Nazi2/Pain";
 	DeathSound "Nazi2/Death";
-	DropItem "9mmAmmo", 192;
+	DropItem "Ammo9mm", 192;
 	DropItem "GrenadePickup", 16;
 	DropItem "MP40", 96;
 	Nazi.NoAltDeath 1;
@@ -479,7 +479,7 @@ class SSMP40Guard : SSGuard
 	SeeSound "Nazi2/Sighted";
 	PainSound "Nazi2/Pain";
 	DeathSound "Nazi2/Death";
-	DropItem "9mmAmmo", 192;
+	DropItem "Ammo9mm", 192;
 	DropItem "GrenadePickup", 16;
 	DropItem "MP40", 96;
 	Obituary "$SSMPGURD";
@@ -1278,7 +1278,7 @@ class WShotgunGuard : WRifleGuard
 	Speed 2.75; //a bit faster and tougher than the riflemen
 	Obituary "$WSGSOLD";
 	DropItem "TrenchShotgun", 64;
-	DropItem "12GaugeAmmo", 192;
+	DropItem "Ammo12Gauge", 192;
 	MaxTargetRange 512;
 	}
 	States
@@ -1413,7 +1413,7 @@ class WaffenSS : SSMP40Guard
 	Health 80;
 	Obituary "$SSWAFFEN";
 	SeeSound "Nazi3/Sighted";
-	DropItem "9mmAmmo", 192;
+	DropItem "Ammo9mm", 192;
 	DropItem "GrenadePickup", 32;
 	DropItem "MP40", 96;
 	Nazi.FrightMultiplier 0.9;
@@ -1472,7 +1472,7 @@ class ArcticWaffen : WaffenSS
 	//$Title Waffen Arctic
 	Health 90;
 	Obituary "$ARWAFFEN";
-	DropItem "9mmAmmo", 192;
+	DropItem "Ammo9mm", 192;
 	DropItem "GrenadePickup", 8;
 	DropItem "MP40", 96;
 	}
@@ -1528,7 +1528,7 @@ class Paratrooper : WaffenSS
 	Health 90;
 	Scale 0.64;
 	Obituary "$PARATROP";
-	DropItem "9mmAmmo", 192;
+	DropItem "Ammo9mm", 192;
 	DropItem "MP40", 96;
 	}
 	States
@@ -2358,8 +2358,8 @@ class Gestapo : BasicGuard
 	Speed 3.5;
 	Health 80;
 	Obituary "$GESTAPO";
-	DropItem "9mmAmmo", 172;
-	DropItem "9mmAmmoBox", 16;
+	DropItem "Ammo9mm", 172;
+	DropItem "AmmoBox9mm", 16;
 	DropItem "Luger9mm", 96;
 	Nazi.FrightMultiplier 0.5;
 	Nazi.NoAltDeath 1;
@@ -2571,7 +2571,7 @@ class WGuard_Wounded : Nazi //ozy81
 		GRD2 U 7;
 		"####" V 5 A_UnblockAndDrop;
 		"####" W 5;
-		"####" M -1 {A_DropItem("9mmAmmo",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
+		"####" M -1 {A_DropItem("Ammo9mm",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
 		Stop;
 	}
 }
@@ -2636,7 +2636,7 @@ class Guard_Wounded : WGuard_Wounded
 		GARD U 7;
 		"####" V 5 A_UnblockAndDrop;
 		"####" W 5;
-		"####" M -1 {A_DropItem("9mmAmmo",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
+		"####" M -1 {A_DropItem("Ammo9mm",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
 		Stop;
 	}
 }
@@ -2701,7 +2701,7 @@ class SSGuard_Wounded : WGuard_Wounded
 		SSPG U 7;
 		"####" V 5 A_UnblockAndDrop;
 		"####" W 5;
-		"####" M -1 {A_DropItem("9mmAmmo",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
+		"####" M -1 {A_DropItem("Ammo9mm",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
 		Stop;
 	}
 }
@@ -2766,7 +2766,7 @@ class Officer_Wounded : WGuard_Wounded
 		OFFI U 7;
 		"####" V 5 A_UnblockAndDrop;
 		"####" W 5;
-		"####" M -1 {A_DropItem("9mmAmmo",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
+		"####" M -1 {A_DropItem("Ammo9mm",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
 		Stop;
 	}
 }
@@ -2831,7 +2831,7 @@ class SSOfficer_Wounded : WGuard_Wounded
 		SSOF U 7;
 		"####" V 5 A_UnblockAndDrop;
 		"####" W 5;
-		"####" M -1 {A_DropItem("9mmAmmo",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
+		"####" M -1 {A_DropItem("Ammo9mm",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
 		Stop;
 	}
 }
@@ -2896,7 +2896,7 @@ class WOfficer_Wounded : WGuard_Wounded
 		OFR2 U 7;
 		"####" V 5 A_UnblockAndDrop;
 		"####" W 5;
-		"####" M -1 {A_DropItem("9mmAmmo",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
+		"####" M -1 {A_DropItem("Ammo9mm",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
 		Stop;
 	}
 }
@@ -3372,7 +3372,7 @@ class EliteAssaulter : BasicGuard
 	SeeSound "eliteassaulter/sight";
 	PainSound "eliteassaulter/pain";
 	DeathSound "eliteassaulter/death";
-	DropItem "9mmAmmo", 192;
+	DropItem "Ammo9mm", 192;
 	DropItem "GrenadePickup", 16;
 	DropItem "MP40", 96;
 	Base.NoMedicHeal;

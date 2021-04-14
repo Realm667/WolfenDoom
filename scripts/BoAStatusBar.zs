@@ -335,9 +335,9 @@ class BoAStatusBar : BaseStatusBar
 		if (GetAmount("AstroRedKey")) { DrawImage("ATKEYS2", (254, 189), DI_ITEM_OFFSETS); }
 
 		//Ammo
-		DrawString(mHUDFont, FormatNumber(GetAmount("9mmAmmo"), 3), (284, 172), DI_TEXT_ALIGN_RIGHT);
-		DrawString(mHUDFont, FormatNumber(GetAmount("9mmAmmo"), 3), (284, 172), DI_TEXT_ALIGN_RIGHT);
-		DrawString(mHUDFont, FormatNumber(GetAmount("12GaugeAmmo"), 3), (284, 178), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mHUDFont, FormatNumber(GetAmount("Ammo9mm"), 3), (284, 172), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mHUDFont, FormatNumber(GetAmount("Ammo9mm"), 3), (284, 172), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mHUDFont, FormatNumber(GetAmount("Ammo12Gauge"), 3), (284, 178), DI_TEXT_ALIGN_RIGHT);
 		DrawString(mHUDFont, FormatNumber(GetAmount("MauserAmmo"), 3), (284, 184), DI_TEXT_ALIGN_RIGHT);
 		DrawString(mHUDFont, FormatNumber(GetAmount("FlameAmmo"), 3), (284, 190), DI_TEXT_ALIGN_RIGHT);
 		DrawString(mHUDFont, FormatNumber(GetAmount("NebAmmo"), 3), (307, 172), DI_TEXT_ALIGN_RIGHT);

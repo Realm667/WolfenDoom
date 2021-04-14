@@ -31,7 +31,7 @@ class MP40 : NaziWeapon
 	Weapon.SelectionOrder 600;
 	Weapon.AmmoType "MP40Loaded";
 	Weapon.AmmoUse 1;
-	Weapon.AmmoType2 "9mmAmmo";
+	Weapon.AmmoType2 "Ammo9mm";
 	Weapon.AmmoUse2 1;
 	Weapon.UpSound "mp40/select";
 	Tag "MP 40";
@@ -42,7 +42,7 @@ class MP40 : NaziWeapon
 	{
 	Ready:
 		RIFG A 0 A_JumpIfInventory("MP40Loaded",0,2);
-		RIFG A 0 A_JumpIfInventory("9mmAmmo",1,2);
+		RIFG A 0 A_JumpIfInventory("Ammo9mm",1,2);
 		RIFG A 1 A_WeaponReady;
 		Loop;
 		RIFG A 1 A_WeaponReady(WRF_ALLOWRELOAD);
@@ -93,10 +93,10 @@ class MP40 : NaziWeapon
 		RIFG B 1 Offset(-3,55);
 		RIFG B 15 Offset(-3,56);
 	ReloadLoop:
-		TNT1 A 0 A_TakeInventory("9mmAmmo",1,TIF_NOTAKEINFINITE);
+		TNT1 A 0 A_TakeInventory("Ammo9mm",1,TIF_NOTAKEINFINITE);
 		TNT1 A 0 A_GiveInventory("MP40Loaded");
 		TNT1 A 0 A_JumpIfInventory("MP40Loaded",0,"ReloadFinish");
-		TNT1 A 0 A_JumpIfInventory("9mmAmmo",1,"ReloadLoop");
+		TNT1 A 0 A_JumpIfInventory("Ammo9mm",1,"ReloadLoop");
 	ReloadFinish:
 		RIFG B 1 Offset(-3,57);
 		RIFG B 1 Offset(-3,59);
