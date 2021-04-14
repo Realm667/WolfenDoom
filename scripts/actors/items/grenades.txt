@@ -66,7 +66,7 @@ class GrenadeBase : Actor // Base actor for anything we want Nazis to run away f
 
 	override bool CanCollideWith(Actor other, bool passive)
 	{
-		if (bTouchy && (other is "PlayerFollower" || other.bInvulnerable)) { return false; } // Player followers and invulnerable actors can't set off touchy variants of these (Mines)
+		if (bTouchy && (other is "PlayerFollower" || other.bInvulnerable || other.bNoDamage)) { return false; } // Player followers and invulnerable actors can't set off touchy variants of these (Mines)
 
 		return true;
 	}
