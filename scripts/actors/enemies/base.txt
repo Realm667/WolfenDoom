@@ -3021,6 +3021,15 @@ class Nazi : Base
 		Super.Activate(activator);
 		if (health > 0) SetStateLabel("Active");
 	}
+
+	override void OnDestroy()
+	{
+		if (user_sneakable && bFriendly && health > 0)
+		{
+			bFriendly = false;
+			ClearCounters();
+		}
+	}
 }
 
 //Standard Nazi enemy defaults.
