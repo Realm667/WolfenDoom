@@ -216,8 +216,6 @@ class MapStatsHandler : StaticEventHandler
 			TextureID board = TexMan.CheckForTexture("board_hd", TexMan.Type_Any);
 			if (board) { Screen.DrawTexture(board, false, screenwidth / 2, screenheight / 2, DTA_DestWidth, int(screenheight * 16 / 9), DTA_DestHeight, screenheight, DTA_CenterOffset, true); }
 
-			DrawChapter(chapter, width / 2, height / 5, center);
-
 			for (int i = 0; i < persistent.Levels.Size(); i++)
 			{
 				let m = persistent.Levels[i];
@@ -276,6 +274,10 @@ class MapStatsHandler : StaticEventHandler
 			totals.secretcount = 0;
 			totals.leveltime = 0;
 
+			// Draw 'Phase X' string or the 'No Missions Completed' string, as applicable
+			if (summary.Size()) { DrawChapter(chapter, width / 2, height / 5, center); }
+			else { DrawTextScaled(PhaseFont, Font.CR_WHITE, width / 2, height / 2 - height / 16, Stringtable.Localize("$STATS_NONE"), phasescale * 1.5, center); }
+	
 			for (int i = 0; i < summary.Size(); i++)
 			{
 				let l = summary[i];
@@ -350,12 +352,7 @@ class MapStatsHandler : StaticEventHandler
 
 		String s = ZScriptTools.ToRomanNumerals(chapter);
 
-		if (s == "")
-		{
-			yoffset = height / 2 - height / 16;
-			s = Stringtable.Localize("$STATS_NONE");
-		}
-		else { s = Stringtable.Localize("$STATS_CHAPTER") .. " " .. s; }
+		s = Stringtable.Localize("$STATS_CHAPTER") .. " " .. s;
 
 		// Print chapter number
 		DrawTextScaled(PhaseFont, Font.CR_WHITE, xoffset, yoffset, s, phasescale * 1.5, alignment);
