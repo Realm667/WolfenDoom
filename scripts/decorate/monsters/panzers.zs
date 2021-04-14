@@ -724,6 +724,7 @@ class DestroyedTank1 : TankSmokeSpawner
 	//$Category Models (BoA)/Vehicles
 	//$Title Tank 1 (Panther Panzer IV, destroyed)
 	//$Color 4
+	//$Sprite MDLAA0
 	Radius 64;
 	Height 96;
 	Mass 0x7ffffff;
@@ -740,7 +741,6 @@ class DestroyedTank1 : TankSmokeSpawner
 	States
 	{
 	Spawn:
-		
 	Active:
 		MDLA A 12 SpawnEffect();
 		Loop;
