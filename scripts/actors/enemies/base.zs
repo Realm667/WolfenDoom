@@ -252,6 +252,7 @@ enum EJumpAttackFlags
 {
 	JAF_PRECISE = 1,
 	JAF_INTERCEPT = 2,
+	JAF_ARC = 4, // Force using ArcZVel to calculate Z velocity
 }
 
 // Base class to add ability to see through notarget to actors (e.g., mice, sharks)
@@ -387,13 +388,6 @@ class Base : Actor
 			Vector3 toEnemy = (posDiff.X, posDiff.Y, posDiff.Z);
 			toEnemy.Z += target.Height * heightFactor;
 			Vel = toEnemy.Unit() * attackspeed;
-			if (!bNoGravity)
-			{
-				double time = posDiff.Length() / attackspeed;
-				double grav = GetGravity();
-				double height = posDiff.Z + target.Height * heightFactor;
-				Vel.Z = ZScriptTools.ArcZVel(time, grav, height);
-			}
 		}
 		else
 		{
@@ -403,6 +397,15 @@ class Base : Actor
 			}
 			VelFromAngle(attackspeed);
 			Vel.Z = (target.pos.Z + target.Height * heightFactor - pos.Z) / DistanceBySpeed(target, attackspeed);
+		}
+
+		// Calculate arc trajectory
+		if (flags & JAF_ARC)
+		{
+			double time = posDiff.Length() / attackspeed;
+			double grav = GetGravity();
+			double height = posDiff.Z + target.Height * heightFactor;
+			Vel.Z = ZScriptTools.ArcZVel(time, grav, height);
 		}
 	}
 

@@ -1142,7 +1142,7 @@ class NaziLoper : Nazi
 		"####" CE 8 A_FaceTarget;
 		"####" H 8;
 		"####" F 1;
-		"####" G 1 A_JumpAttack(30, .5, JAF_PRECISE | (random(0, 1) ? JAF_INTERCEPT : 0));
+		"####" G 1 A_JumpAttack(30, .5, JAF_ARC | (random(0, 1) ? JAF_INTERCEPT : 0));
 		"####" E 3;
 		"####" C 5;
 		Goto Look;
