@@ -893,7 +893,7 @@ class FlatNumber : Actor
 		{
 			Vector2 newpos = RotateVector((offset.x * scale.x / default.scale.x, offset.y * scale.x / default.scale.x), master.angle);
 
-			SetOrigin((master.pos.x + newpos.x, master.pos.y + newpos.y, master.pos.z + offset.z + 2 * sin(level.time) / 2), true);
+			SetXYZ((master.pos.x + newpos.x, master.pos.y + newpos.y, master.pos.z + offset.z + 2 * sin(level.time) / 2));
 		}
 
 		Super.Tick();
