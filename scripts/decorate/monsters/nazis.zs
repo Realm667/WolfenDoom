@@ -2533,15 +2533,18 @@ class WGuard_Wounded : Nazi //ozy81
 	States
 	{
 	Spawn:
-		GRD2 O 150 { A_Look(); user_count4 = 0; }
+		GRD2 O 0;
+		Goto Spawn.Loop;
+	Spawn.Loop:
+		"####" O 150 { A_Look(); user_count4 = 0; }
 		Loop;
 	See:
 		// Prevent wounded guards from blocking you
-		GRD2 O 7 A_CheckRange(64, 1, true);
+		"####" O 7 A_CheckRange(64, 1, true);
 		Goto See;
-		GRD2 PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
+		"####" PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
 	SeeLoop:
-		GRD2 R 1 { A_Chase(); user_count4 += 1; if (user_count4 > 50) { A_Die(); } }
+		"####" R 1 { A_Chase(); user_count4 += 1; if (user_count4 > 50) { A_Die(); } }
 		"####" R 1 A_SetTics(random(1,14));
 		Loop;
 	Idle:
@@ -2550,7 +2553,7 @@ class WGuard_Wounded : Nazi //ozy81
 		// and src/playsim/p_mobj.cpp line 7253
 		"####" "#" 0 A_Jump(256, "Spawn");
 	Missile:
-		GRD2 S 7 A_FaceTarget;
+		"####" S 7 A_FaceTarget;
 		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
 		"####" T 7 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",27,1,random(-8,8));
 		"####" T 0 A_SpawnItemEx("Casing9mm", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
@@ -2568,10 +2571,16 @@ class WGuard_Wounded : Nazi //ozy81
 		"####" R 0 {bNoPain = FALSE;}
 		"####" "#" 0 A_Jump(256, "SeeLoop");
 	Death:
-		GRD2 U 7;
+		"####" U 7;
 		"####" V 5 A_UnblockAndDrop;
 		"####" W 5;
 		"####" M -1 {A_DropItem("Ammo9mm",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
+		Stop;
+	Death_NoCount:
+		"####" U 7;
+		"####" V 5 A_UnblockAndDrop;
+		"####" W 5;
+		"####" M -1;
 		Stop;
 	}
 }
@@ -2585,11 +2594,7 @@ class WGuard_Wounded_NoCount : WGuard_Wounded
 	States
 	{
 	Death:
-		GRD2 U 7;
-		"####" V 5 A_UnblockAndDrop;
-		"####" W 5;
-		"####" M -1;
-		Stop;
+		Goto Death_NoCount;
 	}
 }
 
@@ -2603,41 +2608,8 @@ class Guard_Wounded : WGuard_Wounded
 	States
 	{
 	Spawn:
-		GARD O 150 { A_Look(); user_count4 = 0; }
-		Loop;
-	See:
-		// Prevent wounded guards from blocking you
-		GARD O 7 A_CheckRange(64, 1, true);
-		Goto See;
-		GARD PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
-	SeeLoop:
-		GARD R 1 { A_Chase(); user_count4 += 1; if (user_count4 > 50) { A_Die(); } }
-		"####" R 1 A_SetTics(random(1,14));
-		Loop;
-	Missile:
-		GARD S 7 A_FaceTarget;
-		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
-		"####" T 7 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",27,1,random(-8,8));
-		"####" T 0 A_SpawnItemEx("Casing9mm", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" S 14;
-		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
-		"####" T 7 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",27,1,random(-16,16));
-		"####" T 0 A_SpawnItemEx("Casing9mm", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" T 0 {user_count++; if(user_count > 3) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" S 14;
-		Goto SeeLoop;
-	Reload:
-		GARD R 0 {bNoPain = TRUE;}
-		"####" R 30 A_StartSound("luger/reload", CHAN_ITEM, 0, frandom (0.3,0.6), ATTN_NORM);
-		"####" R 0 A_SpawnItemEx("Casing9mm", 1, 0, 56, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" R 0 {bNoPain = FALSE;}
-		"####" "#" 0 A_Jump(256, "SeeLoop");
-	Death:
-		GARD U 7;
-		"####" V 5 A_UnblockAndDrop;
-		"####" W 5;
-		"####" M -1 {A_DropItem("Ammo9mm",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
-		Stop;
+		GARD O 0;
+		Goto Spawn.Loop;
 	}
 }
 
@@ -2650,11 +2622,7 @@ class Guard_Wounded_NoCount : Guard_Wounded
 	States
 	{
 	Death:
-		GARD U 7;
-		"####" V 5 A_UnblockAndDrop;
-		"####" W 5;
-		"####" M -1;
-		Stop;
+		Goto Death_NoCount;
 	}
 }
 
@@ -2668,41 +2636,8 @@ class SSGuard_Wounded : WGuard_Wounded
 	States
 	{
 	Spawn:
-		SSPG O 150 { A_Look(); user_count4 = 0; }
-		Loop;
-	See:
-		// Prevent wounded guards from blocking you
-		SSPG O 7 A_CheckRange(64, 1, true);
-		Goto See;
-		SSPG PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
-	SeeLoop:
-		SSPG R 1 { A_Chase(); user_count4 += 1; if (user_count4 > 50) { A_Die(); } }
-		"####" R 1 A_SetTics(random(1,14));
-		Loop;
-	Missile:
-		SSPG S 7 A_FaceTarget;
-		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
-		"####" T 7 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",27,1,random(-8,8));
-		"####" T 0 A_SpawnItemEx("Casing9mm", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" S 14;
-		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
-		"####" T 7 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",27,1,random(-16,16));
-		"####" T 0 A_SpawnItemEx("Casing9mm", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" T 0 {user_count++; if(user_count > 3) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" S 14;
-		Goto SeeLoop;
-	Reload:
-		SSPG R 0 {bNoPain = TRUE;}
-		"####" R 30 A_StartSound("luger/reload", CHAN_ITEM, 0, frandom (0.3,0.6), ATTN_NORM);
-		"####" R 0 A_SpawnItemEx("Casing9mm", 1, 0, 56, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" R 0 {bNoPain = FALSE;}
-		"####" "#" 0 A_Jump(256, "SeeLoop");
-	Death:
-		SSPG U 7;
-		"####" V 5 A_UnblockAndDrop;
-		"####" W 5;
-		"####" M -1 {A_DropItem("Ammo9mm",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
-		Stop;
+		SSPG O 0;
+		Goto Spawn.Loop;
 	}
 }
 
@@ -2715,11 +2650,7 @@ class SSGuard_Wounded_NoCount : SSGuard_Wounded
 	States
 	{
 	Death:
-		SSPG U 7;
-		"####" V 5 A_UnblockAndDrop;
-		"####" W 5;
-		"####" M -1;
-		Stop;
+		Goto Death_NoCount;
 	}
 }
 
@@ -2733,41 +2664,8 @@ class Officer_Wounded : WGuard_Wounded
 	States
 	{
 	Spawn:
-		OFFI O 150 { A_Look(); user_count4 = 0; }
-		Loop;
-	See:
-		// Prevent wounded guards from blocking you
-		OFFI O 7 A_CheckRange(64, 1, true);
-		Goto See;
-		OFFI PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
-	SeeLoop:
-		OFFI R 1 { A_Chase(); user_count4 += 1; if (user_count4 > 50) { A_Die(); } }
-		"####" R 1 A_SetTics(random(1,14));
-		Loop;
-	Missile:
-		OFFI S 7 A_FaceTarget;
-		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
-		"####" T 7 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",27,1,random(-8,8));
-		"####" T 0 A_SpawnItemEx("Casing9mm", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" S 14;
-		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
-		"####" T 7 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",27,1,random(-16,16));
-		"####" T 0 A_SpawnItemEx("Casing9mm", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" T 0 {user_count++; if(user_count > 3) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" S 14;
-		Goto SeeLoop;
-	Reload:
-		OFFI R 0 {bNoPain = TRUE;}
-		"####" R 30 A_StartSound("luger/reload", CHAN_ITEM, 0, frandom (0.3,0.6), ATTN_NORM);
-		"####" R 0 A_SpawnItemEx("Casing9mm", 1, 0, 56, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" R 0 {bNoPain = FALSE;}
-		"####" "#" 0 A_Jump(256, "SeeLoop");
-	Death:
-		OFFI U 7;
-		"####" V 5 A_UnblockAndDrop;
-		"####" W 5;
-		"####" M -1 {A_DropItem("Ammo9mm",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
-		Stop;
+		OFFI O 0;
+		Goto Spawn.Loop;
 	}
 }
 
@@ -2780,11 +2678,7 @@ class Officer_Wounded_NoCount : Officer_Wounded
 	States
 	{
 	Death:
-		OFFI U 7;
-		"####" V 5 A_UnblockAndDrop;
-		"####" W 5;
-		"####" M -1;
-		Stop;
+		Goto Death_NoCount;
 	}
 }
 
@@ -2798,41 +2692,8 @@ class SSOfficer_Wounded : WGuard_Wounded
 	States
 	{
 	Spawn:
-		SSOF O 150 { A_Look(); user_count4 = 0; }
-		Loop;
-	See:
-		// Prevent wounded guards from blocking you
-		SSOF O 7 A_CheckRange(64, 1, true);
-		Goto See;
-		SSOF PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
-	SeeLoop:
-		SSOF R 1 { A_Chase(); user_count4 += 1; if (user_count4 > 50) { A_Die(); } }
-		"####" R 1 A_SetTics(random(1,14));
-		Loop;
-	Missile:
-		SSOF S 7 A_FaceTarget;
-		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
-		"####" T 7 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",27,1,random(-8,8));
-		"####" T 0 A_SpawnItemEx("Casing9mm", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" S 14;
-		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
-		"####" T 7 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",27,1,random(-16,16));
-		"####" T 0 A_SpawnItemEx("Casing9mm", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" T 0 {user_count++; if(user_count > 3) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" S 14;
-		Goto SeeLoop;
-	Reload:
-		SSOF R 0 {bNoPain = TRUE;}
-		"####" R 30 A_StartSound("luger/reload", CHAN_ITEM, 0, frandom (0.3,0.6), ATTN_NORM);
-		"####" R 0 A_SpawnItemEx("Casing9mm", 1, 0, 56, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" R 0 {bNoPain = FALSE;}
-		"####" "#" 0 A_Jump(256, "SeeLoop");
-	Death:
-		SSOF U 7;
-		"####" V 5 A_UnblockAndDrop;
-		"####" W 5;
-		"####" M -1 {A_DropItem("Ammo9mm",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
-		Stop;
+		SSOF O 0;
+		Goto Spawn.Loop;
 	}
 }
 
@@ -2845,11 +2706,7 @@ class SSOfficer_Wounded_NoCount : SSOfficer_Wounded
 	States
 	{
 	Death:
-		SSOF U 7;
-		"####" V 5 A_UnblockAndDrop;
-		"####" W 5;
-		"####" M -1;
-		Stop;
+		Goto Death_NoCount;
 	}
 }
 
@@ -2863,41 +2720,8 @@ class WOfficer_Wounded : WGuard_Wounded
 	States
 	{
 	Spawn:
-		OFR2 O 150 { A_Look(); user_count4 = 0; }
-		Loop;
-	See:
-		// Prevent wounded guards from blocking you
-		OFR2 O 7 A_CheckRange(64, 1, true);
-		Goto See;
-		OFR2 PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
-	SeeLoop:
-		OFR2 R 1 { A_Chase(); user_count4 += 1; if (user_count4 > 50) { A_Die(); } }
-		"####" R 1 A_SetTics(random(1,14));
-		Loop;
-	Missile:
-		OFR2 S 7 A_FaceTarget;
-		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
-		"####" T 7 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",27,1,random(-6,6));
-		"####" T 0 A_SpawnItemEx("Casing9mm", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" S 12;
-		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
-		"####" T 7 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",27,1,random(-12,12));
-		"####" T 0 A_SpawnItemEx("Casing9mm", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" T 0 {user_count++; if(user_count > 3) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" S 12;
-		Goto SeeLoop;
-	Reload:
-		OFR2 R 0 {bNoPain = TRUE;}
-		"####" R 25 A_StartSound("luger/reload", CHAN_ITEM, 0, frandom (0.3,0.6), ATTN_NORM);
-		"####" R 0 A_SpawnItemEx("Casing9mm", 1, 0, 56, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" R 0 {bNoPain = FALSE;}
-		"####" "#" 0 A_Jump(256, "SeeLoop");
-	Death:
-		OFR2 U 7;
-		"####" V 5 A_UnblockAndDrop;
-		"####" W 5;
-		"####" M -1 {A_DropItem("Ammo9mm",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
-		Stop;
+		OFR2 O 0;
+		Goto Spawn.Loop;
 	}
 }
 
@@ -2910,11 +2734,7 @@ class WOfficer_Wounded_NoCount : WOfficer_Wounded
 	States
 	{
 	Death:
-		OFR2 U 7;
-		"####" V 5 A_UnblockAndDrop;
-		"####" W 5;
-		"####" M -1;
-		Stop;
+		Goto Death_NoCount;
 	}
 }
 
