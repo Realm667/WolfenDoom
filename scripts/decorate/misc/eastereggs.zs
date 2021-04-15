@@ -187,7 +187,7 @@ class BoABrain : BossBrain
 	Death:
 		BOAR A 100 A_BrainScream;
 		BOAR AA 10;
-		BOAR A -1 //A_BrainDie; //commented out otherwise it will end the map and also will spawn wall of explosions behind --Ozy81
+		BOAR A -1; //A_BrainDie; //commented out otherwise it will end the map and also will spawn wall of explosions behind --Ozy81
 		Stop;
 	}
 }
