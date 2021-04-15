@@ -167,6 +167,31 @@ class BoAHead5 : Dogse
 	}
 }
 
+class BoABrain : BossBrain
+{
+	Default
+	{
+		//$Category EasterEgg (BoA)
+		//$Title Romero Aged Head (Easteregg)
+		PainSound "boabrain/pain";
+		DeathSound "boabrain/death";
+	}
+	States
+	{
+	Spawn:
+		BOAR A -1;
+		Stop;
+	Pain:
+		BOAR B 36 A_BrainPain;
+		Goto Spawn;
+	Death:
+		BOAR A 100 A_BrainScream;
+		BOAR AA 10;
+		BOAR A -1 //A_BrainDie; //commented out otherwise it will end the map and also will spawn wall of explosions behind --Ozy81
+		Stop;
+	}
+}
+
 class BladeRunner : Dogse
 {
 	Default
