@@ -2432,6 +2432,7 @@ class Nazi : Base
 				{ // Stealth kill, remove the sneakable eyes, alert a medium radius, and kill the actor
 					A_Log(StringTable.Localize("$STEALTH"));
 					A_RemoveChildren(TRUE, RMVF_EVERYTHING, "None", "Eyes");
+					A_RemoveChildren(TRUE, RMVF_EVERYTHING, "None", "AlertMarker");
 					bFriendly = False; // Force to not friendly so that they will count as a kill and be healable.
 					if (self is "NaziStandard") { DeathSound = "Nazi/Gurgle"; } // Reset death sound to gurgle
 					SoundAlert(source, false, 192);
@@ -2482,6 +2483,7 @@ class Nazi : Base
 			if (user_sneakable) // and it was a sneakable actor...
 			{
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING, "None", "Eyes"); // Remove the sneakable eyes
+				A_RemoveChildren(TRUE, RMVF_EVERYTHING, "None", "AlertMarker"); // Remove the alert marker
 			}
 		
 			if (user_perceptiontime > 0) // or if it was a perceptive actor...

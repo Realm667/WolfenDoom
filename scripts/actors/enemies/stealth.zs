@@ -198,7 +198,7 @@ class AlertMarker : Actor
 {
 	Default
 	{
-		Species "Eyes";
+		Species "AlertMarker";
 		Scale 2.0;
 		+BRIGHT
 		+NOGRAVITY
