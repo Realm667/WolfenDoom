@@ -48,6 +48,7 @@ const MAPMAX = 32768;
 class EffectBlock
 {
 	Array<int> indices;
+	bool forceculled;
 
 	static int, int GetBlock(double x, double y)
 	{
@@ -214,6 +215,16 @@ class EffectsManager : Thinker
 		}
 	}
 
+	bool Culled(Vector2 pos)
+	{
+		int x, y;
+		[x, y] = EffectBlock.GetBlock(pos.x, pos.y);
+
+		if (!effectblocks[x][y]) { effectblocks[x][y] = New("EffectBlock"); }
+
+		return effectblocks[x][y].forceculled;
+	}
+
 	void CullEffects()
 	{
 		int maxval = MAPMAX * 2 / CHUNKSIZE;
@@ -250,7 +261,10 @@ class EffectsManager : Thinker
 
 					bool force = !multiplayer && (interval > boa_cullrange / CHUNKSIZE); // Force removal if outside of the cull range (and not multiplayer)
 
+					if (!effectblocks[x][y]) { effectblocks[x][y] = New("EffectBlock"); }
+
 					count += CullChunk(effectblocks[x][y].indices, force);
+					effectblocks[x][y].forceculled = force;
 				}
 			}
 		}
@@ -317,7 +331,7 @@ class EffectsManager : Thinker
 			if (!check) { continue; }
 
 			range = effects[i].range <= 0 ? boa_sfxlod : effects[i].range;
-			range = max(1024, min(boa_cullrange, range));
+			range = max(1024, min(boa_cullrange, range)); // Minimum range is 1024, no matter what the CVARs are set to!  boa_cullrange overrides other CVARs.
 
 			dist = (level.Vec3Diff(check.pos, effects[i].position)).length();
 			if (dist < range) { inrange = true; }

@@ -298,7 +298,7 @@ class Base : Actor
 	bool dodging;
 	bool statnumchanged;
 	int adjustedmaxhealth;
-
+	EffectsManager manager;
 	LaserFindHitPointTracer HitPointTracer;
 	LaserBeam beam;
 	Actor flare;
@@ -928,7 +928,7 @@ class Base : Actor
 			statnumchanged = true; // Only do this once!
 		}
 
-		if (!globalfreeze && !level.Frozen)
+		if (!globalfreeze && !level.Frozen && !(manager && manager.Culled(pos.xy)))
 		{
 			if (dodgetimeout > 0) { dodgetimeout--; }
 			if (crouchtimeout == 70) { crouchtimer++; }
@@ -1093,6 +1093,8 @@ class Base : Actor
 
 	override void PostBeginPlay()
 	{
+		EffectsManager manager = EffectsManager.GetManager();
+
 		Super.PostBeginPlay();
 
 		// Multiply MaxTargetRange
@@ -2768,6 +2770,8 @@ class Nazi : Base
 		
 		if (health > 0 && bShootable && !bDormant && !dodging && !surrendered)
 		{
+			if (manager && !manager.Culled(pos.xy)) { Super.Tick(); return; }
+
 			if (curSector.GetUDMFInt("user_background") == True) // If this is a background actor, skip most of the logic here
 			{
 				if (!InStateSequence(curState, IdleState)) { SetState(IdleState); }
@@ -3049,7 +3053,7 @@ class Nazi : Base
 		Super.Activate(activator);
 		if (health > 0) SetStateLabel("Active");
 	}
-	
+
 	override void OnDestroy()
 	{
 		if (user_sneakable && bFriendly && health > 0)
