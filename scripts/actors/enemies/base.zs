@@ -360,7 +360,9 @@ class Base : Actor
 		return ResolveState(null);
 	}
 
-	void A_JumpAttack(int attackspeed = 20, int flags = JAF_PRECISE)
+	// Charge towards the target. Similar to A_SkullAttack, but can optionally
+	// charge in 3D rather than treating the Z velocity as an afterthought
+	void A_JumpAttack(int attackspeed = 20, double heightFactor = .5, int flags = JAF_PRECISE)
 	{
 		if (!target || (swimmer && target.waterlevel == 0)) { return; }
 
@@ -368,34 +370,39 @@ class Base : Actor
 		A_StartSound(AttackSound, CHAN_VOICE);
 
 		// Get "middle" of caller and their target
-		Vector3 myMiddle = Pos;
-		myMiddle.Z += height / 2;
-		Vector3 theirMiddle = target.Pos;
-		theirMiddle.Z += target.Height / 2;
 
 		// Calculate target position
-		Vector3 targetPos = theirMiddle;
+		Vector3 targetPos = target.Pos;
 		if (flags & JAF_INTERCEPT)
 		{
-			double interceptTime = ZScriptTools.GetInterceptTime4(myMiddle, theirMiddle, target.Vel, double(attackspeed));
-			targetPos = theirMiddle + target.Vel * interceptTime;
+			double interceptTime = ZScriptTools.GetInterceptTime4(Pos, target.Pos, target.Vel, double(attackspeed));
+			targetPos = target.Pos + target.Vel * interceptTime;
 		}
+		Vector3 posDiff = Level.Vec3Diff(Pos, targetPos);
 
 		// Modify velocity
 		if (flags & JAF_PRECISE)
 		{
 			Angle = atan2(targetPos.Y, targetPos.X);
-			Vector3 toEnemy = Level.Vec3Diff(myMiddle, targetPos);
+			Vector3 toEnemy = (posDiff.X, posDiff.Y, posDiff.Z);
+			toEnemy.Z += target.Height * heightFactor;
 			Vel = toEnemy.Unit() * attackspeed;
+			if (!bNoGravity)
+			{
+				double time = posDiff.Length() / attackspeed;
+				double grav = GetGravity();
+				double height = posDiff.Z + target.Height * heightFactor;
+				Vel.Z = ZScriptTools.ArcZVel(time, grav, height);
+			}
 		}
 		else
 		{
 			if (flags & JAF_INTERCEPT)
 			{
-				Angle = atan2(targetPos.Y, targetPos.X);
+				Angle = atan2(posDiff.Y, posDiff.X);
 			}
 			VelFromAngle(attackspeed);
-			Vel.Z = (target.pos.Z + target.Height / 2 - pos.Z) / DistanceBySpeed(target, attackspeed);
+			Vel.Z = (target.pos.Z + target.Height * heightFactor - pos.Z) / DistanceBySpeed(target, attackspeed);
 		}
 	}
 

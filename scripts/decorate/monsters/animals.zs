@@ -618,6 +618,7 @@ class Shark : Base
 	Mass 120;
 	Speed 2.5;
 	FloatSpeed 1;
+	DamageFunction (random(1,5)*5);
 	Monster;
 	-CANPUSHWALLS
 	-CANUSEWALLS
@@ -627,6 +628,7 @@ class Shark : Base
 	+NEVERTARGET
 	+NOGRAVITY
 	+NOINFIGHTING
+	+NOFRICTION
 	Obituary "$SHARK";
 	SeeSound "shark/sight";
 	DeathSound "shark/death";
@@ -667,7 +669,7 @@ class Shark : Base
 		Loop;
 	Missile:
 		"####" A 10;
-		"####" A 8 A_JumpAttack(20, JAF_PRECISE | JAF_INTERCEPT);
+		"####" A 8 A_JumpAttack(20, frandom(0.5, 0.75), JAF_PRECISE | JAF_INTERCEPT);
 		"####" A 0 A_Jump(256, "See");
 	Melee:
 		"####" A 10 A_FaceTarget;

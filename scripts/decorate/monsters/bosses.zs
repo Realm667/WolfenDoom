@@ -1137,12 +1137,13 @@ class NaziLoper : Nazi
 		"####" G 8 A_FaceTarget;
 		Goto Look;
 	Missile3:
-		"####" A 0 A_JumpIfCloser(512, 1);
+		"####" A 0 A_JumpIfCloser(1024, 1);
 		Goto Look;
 		"####" CE 8 A_FaceTarget;
-		"####" H 8 ThrustThingZ(0,random(30,40),0,1);
-		"####" FG 1 A_SkullAttack(30);
-		"####" E 3 A_Gravity;
+		"####" H 8;
+		"####" F 1;
+		"####" G 1 A_JumpAttack(30, .5, JAF_PRECISE | (random(0, 1) ? JAF_INTERCEPT : 0));
+		"####" E 3;
 		"####" C 5;
 		Goto Look;
 	Missile4:
