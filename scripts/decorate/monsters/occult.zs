@@ -257,10 +257,10 @@ class HitlerGhost : Nazi
 	Pain:
 		"####" A 0 A_Jump(256,"Pain1","Pain2","Pain3");
 	Pain1:
-		"####" AAA 3 ThrustThing(Angle*256/360-192, 8, 1, 0);
+		"####" AAA 3 ThrustThing((int) (Angle*256/360-192), 8, 1, 0);
 		Goto PainDone;
 	Pain2:
-		"####" AAA 3 ThrustThing(Angle*256/360-64, 8, 1, 0);
+		"####" AAA 3 ThrustThing((int) (Angle*256/360-64), 8, 1, 0);
 		Goto PainDone;
 	Pain3:
 		"####" A 1;

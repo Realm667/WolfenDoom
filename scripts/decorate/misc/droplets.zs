@@ -674,23 +674,23 @@ class BloodHitPuff: Actor
 	Spawn:
 		TNT1 A 0 NODELAY
 		{
-			user_force = frandom(6.0,12.0);
-			user_angmom = frandom(-4.5,4.5);
+			user_force = (int) (frandom(6.0,12.0));
+			user_angmom = (int) (frandom(-4.5,4.5));
 			A_SetPitch(frandom(-45.0,90.0));
 			A_StartSound("blood/hit",0,0,0.3);
 			Scale.X *= randompick(1,-1);
 		}
 		BLPF AABBCCDDEE 1
 		{
-			A_SpawnItemEx("BloodDrop1",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY,(224-GetCVar("boa_blood_amt")*48));
+			A_SpawnItemEx("BloodDrop1",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (224-GetCVar("boa_blood_amt")*48));
 			angle += user_angmom;
-			A_SpawnItemEx("BloodDrop2",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY,(160-GetCVar("boa_blood_amt")*48));
+			A_SpawnItemEx("BloodDrop2",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (160-GetCVar("boa_blood_amt")*48));
 			angle += user_angmom;
-			A_SpawnItemEx("BloodDrop3",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY,(96-GetCVar("boa_blood_amt")*48));
+			A_SpawnItemEx("BloodDrop3",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (96-GetCVar("boa_blood_amt")*48));
 			angle += user_angmom;
-			A_SpawnItemEx("ExcessDroplet",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY,(256-GetCVar("boa_blood_amt")*64));
+			A_SpawnItemEx("ExcessDroplet",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (256-GetCVar("boa_blood_amt")*64));
 			angle += user_angmom;
-			user_force *= 0.8;
+			user_force = (int) (0.8 * user_force);
 		}
 		TNT1 A 0;
 		Stop;
@@ -708,21 +708,21 @@ class BloodHitPuffMid : BloodHitPuff
 	Spawn:
 		TNT1 A 0 NODELAY
 		{
-			user_force = frandom(6.0,12.0);
-			user_angmom = frandom(-6.0,6.0);
+			user_force = (int) (frandom(6.0,12.0));
+			user_angmom = (int) (frandom(-6.0,6.0));
 			A_SetPitch(frandom(-45.0,90.0));
 			A_StartSound("blood/hit",0,0,0.2);
 			Scale.X *= randompick(1,-1);
 		}
 		BLPF AABBCCDDEE 1
 		{
-			A_SpawnItemEx("BloodDrop2",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY,(160-GetCVar("boa_blood_amt")*48));
+			A_SpawnItemEx("BloodDrop2",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (160-GetCVar("boa_blood_amt")*48));
 			angle += user_angmom;
-			A_SpawnItemEx("BloodDrop3",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY,(96-GetCVar("boa_blood_amt")*48));
+			A_SpawnItemEx("BloodDrop3",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (96-GetCVar("boa_blood_amt")*48));
 			angle += user_angmom;
-			A_SpawnItemEx("ExcessDroplet",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY,(256-GetCVar("boa_blood_amt")*64));
+			A_SpawnItemEx("ExcessDroplet",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (256-GetCVar("boa_blood_amt")*64));
 			angle += user_angmom;
-			user_force *= 0.8;
+			user_force = (int) (0.8 * user_force);
 		}
 		TNT1 A 0;
 		Stop;
@@ -740,19 +740,19 @@ class BloodHitPuffSmall : BloodHitPuff
 	Spawn:
 		TNT1 A 0 NODELAY
 		{
-			user_force = frandom(6.0,12.0);
-			user_angmom = frandom(-9.0,9.0);
+			user_force = (int) (frandom(6.0,12.0));
+			user_angmom = (int) (frandom(-9.0,9.0));
 			A_SetPitch(frandom(-45.0,90.0));
 			A_StartSound("blood/hit",0,0,0.1);
 			Scale.X *= randompick(1,-1);
 		}
 		BLPF AABBCCDDEE 1
 		{
-			A_SpawnItemEx("BloodDrop3",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY,(96-GetCVar("boa_blood_amt")*48));
+			A_SpawnItemEx("BloodDrop3",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (96-GetCVar("boa_blood_amt")*48));
 			angle += user_angmom;
-			A_SpawnItemEx("ExcessDroplet",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY,(256-GetCVar("boa_blood_amt")*64));
+			A_SpawnItemEx("ExcessDroplet",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (256-GetCVar("boa_blood_amt")*64));
 			angle += user_angmom;
-			user_force *= 0.8;
+			user_force = (int) (0.8 * user_force);
 		}
 		TNT1 A 0;
 		Stop;
@@ -789,7 +789,7 @@ class BloodSquirt: Actor
 		{
 			A_FaceTarget(0,0,0,0,FAF_MIDDLE);
 			A_Warp(AAPTR_DEFAULT,cos(angle)*8,sin(angle)*8,sin(pitch)*8,0,WARPF_ABSOLUTEOFFSET);
-			A_SpawnItemEx("BloodHitPuff",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION,128-GetCVar("boa_blood_amt")*64);
+			A_SpawnItemEx("BloodHitPuff",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION, (int) (128-GetCVar("boa_blood_amt")*64));
 		}
 		Stop;
 	Mid:
@@ -797,7 +797,7 @@ class BloodSquirt: Actor
 		{
 			A_FaceTarget(0,0,0,0,FAF_MIDDLE);
 			A_Warp(AAPTR_DEFAULT,cos(angle)*8,sin(angle)*8,sin(pitch)*8,0,WARPF_ABSOLUTEOFFSET);
-			A_SpawnItemEx("BloodHitPuffMid",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION,64-GetCVar("boa_blood_amt")*32);
+			A_SpawnItemEx("BloodHitPuffMid",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION, (int) (64-GetCVar("boa_blood_amt")*32));
 		}
 		Stop;
 	}

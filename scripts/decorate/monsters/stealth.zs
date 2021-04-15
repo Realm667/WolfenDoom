@@ -48,7 +48,7 @@ class SneakableSSMP40GuardStatic : SneakableSSMP40Guard
 	States
 	{
 	Spawn:
-		SSMG A 0 NODELAY { user_angle = angle; }
+		SSMG A 0 NODELAY { user_angle = (int) (angle); }
 		Goto Look;
 	See: //doesn't roll - ozy81
 	See.Dodge:
@@ -70,7 +70,7 @@ class SneakableSSMP40GuardStatic2 : SneakableSSMP40Guard
 	States
 	{
 	Spawn:
-		SSMG A 0 NODELAY { user_angle = angle; }
+		SSMG A 0 NODELAY { user_angle = (int) (angle); }
 		Goto Look;
 	See: //doesn't roll - ozy81
 	See.Dodge:

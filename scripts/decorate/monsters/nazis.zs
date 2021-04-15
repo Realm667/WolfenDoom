@@ -2964,9 +2964,9 @@ class MiniShip : Nazi
 	Pain:
 		SHIP A 3;
 		"####" A 3 A_Pain;
-		"####" A 1 ThrustThing(Angle*256/360+192, 4, 1, 0);
-		"####" A 1 ThrustThing(Angle*256/360+128, 2, 1, 0);
-		"####" A 1 ThrustThing(Angle*256/360+64, 4, 1, 0);
+		"####" A 1 ThrustThing((int) (Angle*256/360+192), 4, 1, 0);
+		"####" A 1 ThrustThing((int) (Angle*256/360+128), 2, 1, 0);
+		"####" A 1 ThrustThing((int) (Angle*256/360+64), 4, 1, 0);
 		"####" "#" 0 A_AlertMonsters(256); //mxd
 		Goto See;
 	Death:

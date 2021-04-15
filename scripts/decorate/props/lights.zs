@@ -2015,7 +2015,7 @@ class FBowlFire: Actor
 	{
 	Spawn:
 		TNT1 A 0 { if (!CheckRange(boa_sfxlod, true)) { A_SpawnItemEx("FloatingCinder", 0, 0, random(0,2), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE); } }
-		"####" A 16 A_Explode(8, Radius, 0, FALSE, Radius);
+		"####" A 16 A_Explode(8, (int) (Radius), 0, FALSE, (int) (Radius));
 		Loop;
 	}
 }

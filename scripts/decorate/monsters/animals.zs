@@ -394,7 +394,7 @@ class BigSpider : Base
 		Goto See;
 	Jump:
 		GAYS A 0 A_FaceTarget;
-		"####" A 0 ThrustThing(angle*256/360, random(8, 12), 0, 0);
+		"####" A 0 ThrustThing((int) (angle*256/360), random(8, 12), 0, 0);
 		"####" A 0 ThrustThingZ(0, random(30, 50), 0, 1);
 		"####" A 0 A_StartSound("spider1/jump", CHAN_AUTO, 0, 0.2);
 		"####" E 15;
@@ -505,7 +505,7 @@ class Scorpion : Base
 		TNT1 A 0 A_CheckFloor("Jump"); //don't jump if mid-air
 		Goto See;
 	Jump:
-		TNT1 A 0 ThrustThing(angle*256/360,random(4,6),0,0);
+		TNT1 A 0 ThrustThing((int) (angle*256/360),random(4,6),0,0);
 		SCRP C 15 ThrustThingZ(0,random(30,40),0,1);
 		Goto See;
 	Procrastinate:
@@ -589,7 +589,7 @@ class ScorpionBig : Base
 		TNT1 A 0 A_CheckFloor("Jump"); //don't jump if mid-air
 		Goto See;
 	Jump:
-		TNT1 A 0 ThrustThing(angle*256/360,random(4,6),0,0);
+		TNT1 A 0 ThrustThing((int) (angle*256/360),random(4,6),0,0);
 		TNT1 A 0 ThrustThingZ(0,random(30,40),0,1);
 		SCR2 C 15 A_StartSound("scorpion/fall", CHAN_AUTO, 0, 1.5);
 		Goto See;

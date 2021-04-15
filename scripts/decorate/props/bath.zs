@@ -149,7 +149,7 @@ class ToiletTalking : ToiletShootable
 	{
 	Spawn:
 		MDLA A 1 {
-			if (!user_angle) { user_angle = angle; }
+			if (!user_angle) { user_angle = (int) (angle); }
 			angle = user_angle;
 		}
 		Loop;

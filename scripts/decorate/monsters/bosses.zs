@@ -599,7 +599,7 @@ class SmokeMonster : Base
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 0 A_Jump(256,"SmokePain1","SmokePain2","SmokePain3");
 	SmokePain1:
-		TNT1 A 1 ThrustThing(Angle*256/360-192, 8, 1, 0);
+		TNT1 A 1 ThrustThing((int) (Angle*256/360-192), 8, 1, 0);
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
@@ -607,7 +607,7 @@ class SmokeMonster : Base
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
-		TNT1 A 1 ThrustThing(Angle*256/360-192, 8, 1, 0);
+		TNT1 A 1 ThrustThing((int) (Angle*256/360-192), 8, 1, 0);
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
@@ -615,7 +615,7 @@ class SmokeMonster : Base
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
-		TNT1 A 1 ThrustThing(Angle*256/360-192, 8, 1, 0);
+		TNT1 A 1 ThrustThing((int) (Angle*256/360-192), 8, 1, 0);
 	PainEnd:
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
@@ -624,7 +624,7 @@ class SmokeMonster : Base
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		Goto See;
 	SmokePain2:
-		TNT1 A 1 ThrustThing(Angle*256/360-64, 8, 1, 0);
+		TNT1 A 1 ThrustThing((int) (Angle*256/360-64), 8, 1, 0);
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
@@ -632,7 +632,7 @@ class SmokeMonster : Base
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
-		TNT1 A 1 ThrustThing(Angle*256/360-64, 8, 1, 0);
+		TNT1 A 1 ThrustThing((int) (Angle*256/360-64), 8, 1, 0);
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
@@ -640,7 +640,7 @@ class SmokeMonster : Base
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
-		TNT1 A 1 ThrustThing(Angle*256/360-64, 8, 1, 0);
+		TNT1 A 1 ThrustThing((int) (Angle*256/360-64), 8, 1, 0);
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		Goto PainEnd;
@@ -884,7 +884,7 @@ class ZyklonMonster : Nazi
 		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 0 A_Jump(256,"SmokePain1","SmokePain2","SmokePain3");
 	SmokePain1:
-		TNT1 A 1 ThrustThing(Angle*256/360-192, 8, 1, 0);
+		TNT1 A 1 ThrustThing((int) (Angle*256/360-192), 8, 1, 0);
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
@@ -892,7 +892,7 @@ class ZyklonMonster : Nazi
 		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
-		TNT1 A 1 ThrustThing(Angle*256/360-192, 8, 1, 0);
+		TNT1 A 1 ThrustThing((int) (Angle*256/360-192), 8, 1, 0);
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
@@ -900,7 +900,7 @@ class ZyklonMonster : Nazi
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
-		TNT1 A 1 ThrustThing(Angle*256/360-192, 8, 1, 0);
+		TNT1 A 1 ThrustThing((int) (Angle*256/360-192), 8, 1, 0);
 	PainEnd:
 		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
@@ -909,7 +909,7 @@ class ZyklonMonster : Nazi
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		Goto See;
 	SmokePain2:
-		TNT1 A 1 ThrustThing(Angle*256/360-64, 8, 1, 0);
+		TNT1 A 1 ThrustThing((int) (Angle*256/360-64), 8, 1, 0);
 		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
@@ -917,7 +917,7 @@ class ZyklonMonster : Nazi
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
-		TNT1 A 1 ThrustThing(Angle*256/360-64, 8, 1, 0);
+		TNT1 A 1 ThrustThing((int) (Angle*256/360-64), 8, 1, 0);
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
@@ -925,7 +925,7 @@ class ZyklonMonster : Nazi
 		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
-		TNT1 A 1 ThrustThing(Angle*256/360-64, 8, 1, 0);
+		TNT1 A 1 ThrustThing((int) (Angle*256/360-64), 8, 1, 0);
 		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		Goto PainEnd;
@@ -1113,7 +1113,7 @@ class NaziLoper : Nazi
 		"####" A 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0);
 		"####" A 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
 		"####" A 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-		"####" A 0 ThrustThing(angle*256/360,random(4,6),0,0);
+		"####" A 0 ThrustThing((int) (angle*256/360),random(4,6),0,0);
 		"####" AE 6 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
 		"####" H 8 ThrustThingZ(0,random(30,40),0,1);
 		"####" E 6 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
