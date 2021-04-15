@@ -24,6 +24,8 @@ class BoAVisibility : CustomInventory
 {
 	double extravisibility;
 	double visibility;
+	double fogfactor;
+	int lightlevel;
 	int noiselevel;
 	int alertedcount;
 	double suspicion;
@@ -39,7 +41,16 @@ class BoAVisibility : CustomInventory
 
 	void DoVisibility()
 	{
-		int lightlevel = Owner.CurSector.lightlevel;
+		lightlevel = owner.CurSector.lightlevel;
+
+		Color light = owner.CurSector.ColorMap.LightColor;
+		Color fade = owner.CurSector.ColorMap.FadeColor;
+
+		// Sector light level minus the average (inverted) RGB light level minus fog depth
+		int density = owner.CurSector.ColorMap.FogDensity;
+		if (!density) { density = lightlevel; }
+		double fogamount = (255 - (light.r + light.g + light.b) / 3.0) - ((fade.r + fade.g + fade.b) / 3.0) * (density / 255.0);
+		fogfactor = clamp(fogamount / -1.5, 0, 100);
 
 		if (lightlevel + extravisibility > 64)
 		{
@@ -87,6 +98,17 @@ class BoAVisibility : CustomInventory
 		alertedcount = count;
 	}
 
+	bool CheckVisibility(Actor mo)
+	{
+		if (fogfactor && visibility < (mo.Distance3D(owner) / fogfactor))
+		{
+			mo.target = null;
+			return false;
+		}
+
+		return true;
+	}
+
 	override void Tick(void)
 	{
 		if (Owner && Owner is "PlayerPawn")
@@ -99,7 +121,7 @@ class BoAVisibility : CustomInventory
 			}
 			timeout--;
 
-			if (alertedcount <= 0) { DoVisibility(); }
+			DoVisibility();
 		}
 
 		Super.Tick();

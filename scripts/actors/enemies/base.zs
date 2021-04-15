@@ -305,7 +305,7 @@ class Base : Actor
 
 	FlagDef CANSQUISH:flags, 0;
 	FlagDef STOMP:flags, 1;
-	
+
 	Property AlwaysDrawHealthBar:user_DrawHealthBar;
 	Property BossIcon:BossIcon;
 	Property DodgeAmount:maxdodge; // Max number of times the enemy will dodge
@@ -1080,6 +1080,12 @@ class Base : Actor
 				marker.SetStateLabel("Inactive");
 				marker = null;
 			}
+
+			if (target && interval && level.time % interval == 0) // At intervals, make sure you haven't lost your target in the fog, even if you're not callin A_NaziLook or A_NaziChase
+			{
+				BoAVisibility vis = BoAVisibility(target.FindInventory("BoAVisibility"));
+				if (vis) { vis.CheckVisibility(self); }
+			}
 		}
 
 		Super.Tick();
@@ -1798,6 +1804,12 @@ class Nazi : Base
 
 			if (bStandStill) { LookForPlayers(bLookAllAround); }
 
+			if (target)
+			{
+				BoAVisibility vis = BoAVisibility(target.FindInventory("BoAVisibility"));
+				if (vis) { vis.CheckVisibility(self); }
+			}
+
 			if (target && target.species == species || HitFriend()) { target = null; } // Ignore the target if it's the same species (normally "Nazi")
 			if (target && SeeSound && !user_sneakable) { SoundAlert(target, false, 256); } // If the Nazi yells after seeing a target, actually alert enemies around him
 
@@ -1970,6 +1982,12 @@ class Nazi : Base
 			}
 			else
 			{
+				if (target)
+				{
+					BoAVisibility vis = BoAVisibility(target.FindInventory("BoAVisibility"));
+					if (vis) { vis.CheckVisibility(self); }
+				}
+
 				A_Chase(melee, missile, flags);
 			}
 		}
