@@ -947,7 +947,7 @@ class CKSpike : CKBaseEnemy
 		//$Category Commander Keen (BoA)/Props
 		//$Title Spike
 		//$Color 3
-		DamageFunction (100 * random(1,8));
+		Damage 100;
 		Radius 16;
 		Height 48;
 		+NOTAUTOAIMED
