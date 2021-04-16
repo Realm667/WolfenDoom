@@ -761,25 +761,6 @@ class TMSSTank1 : TMBlazko
 	}
 }
 
-class TMIntroLight: Actor
-{
-	Default
-	{
-		//$Category Cutscenes (BoA)
-		//$Title Dummy Flickerlight for Cutscenes
-		+INVISIBLE
-		+NOBLOCKMAP
-		+NOGRAVITY
-		+NOINTERACTION
-	}
-	States
-	{
-	Spawn:
-		UNKN A 1 LIGHT("INTROS");
-		Loop;
-	}
-}
-
 class TMRUFlag : TMBlazko
 {
 	Default
