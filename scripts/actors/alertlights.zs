@@ -394,18 +394,19 @@ class SpotlightBeamLight : SpotLightAttenuated
 
 		if (target)
 		{
-			double relpitch = PitchTo(target, self, pitch);
-
-			// Use custom function instead of AngleTo in order to account for target actor radius
-			Vector2 posoffset = pos.xy - target.pos.xy; // Get offsets
-			posoffset = RotateVector(posoffset, -angle); // Rotate to align with 0 degrees to remove rotation from calculations
-
-			// Calculate the angle to the left and right sides of the actor, and return whichever is smaller
-			double relangle = min(atan((posoffset.y + target.radius * 0.7) / posoffset.x), atan((posoffset.y - target.radius * 0.7) / posoffset.x));  // Radius is fudged by 0.7 since most actors's center of mass doesn't take up the whole radius
-
-			double reldist = sqrt(relpitch ** 2 + relangle ** 2); // Get the distance from light cone center using the calculated pitch and angle
-
-			if (reldist < spotouterangle * 1.333333) // Use 1.5 times the outer angle so that we have wiggle room to calculate the ramp up to full light level
+			// SphericalCoords calculates the "spherical coordinates" from a 
+			// point to another point. X is the yaw offset, Y is the pitch 
+			// offset, and Z is the distance. It was added to GZDoom in response
+			// to a feature request for a "PitchTo" function.
+			// Calculate both feet and head positions
+			Vector3 toFeet = Level.SphericalCoords(Pos, target.Pos, (angle, pitch));
+			Vector3 headPos = target.Pos; headPos.Z += target.Height;
+			Vector3 toHead = Level.SphericalCoords(Pos, headPos, (angle, pitch));
+			// Get distance from spotlight to target's feet and head
+			double feetDist = toFeet.x * toFeet.x + toFeet.y * toFeet.y;
+			double headDist = toHead.x * toHead.x + toHead.y * toHead.y;
+			double reldist = sqrt(min(feetDist, headDist));
+			if (reldist < spotouterangle)
 			{
 				AddVisibility(reldist); // Do the visibility calculations and addition
 
@@ -422,22 +423,6 @@ class SpotlightBeamLight : SpotLightAttenuated
 		Super.Tick();
 	}
 
-	// Return the aim pitch offset from the source to the target
-	double PitchTo(Actor mo, Actor source = null, double sourcepitch = 0)
-	{
-		if (source == null) { source = self; }
-		if (!sourcepitch) { sourcepitch = source.pitch; }
-
-		double distxy = max(source.Distance2D(mo), 1);
-		double distz = source.pos.z - mo.pos.z;
-
-		double targetheight = mo.player ? mo.height * mo.player.crouchfactor : mo.height; // Get target height, with crouching if applicable
-
-		double pitchcalc = min(atan(distz / distxy), atan((distz - targetheight) / distxy)); // Return whichever is lower: pitch to actor bottom or actor top.
-
-		return pitchcalc - sourcepitch % 360; // Normalize to 360 degree range
-	}
-
 	void AddVisibility(double amt, double max = 75)
 	{
 		if (target)
@@ -451,8 +436,8 @@ class SpotlightBeamLight : SpotLightAttenuated
 
 				if (spotinnerangle - amt < 0) // When in between inner and outer angles...
 				{
-					amount = spotouterangle * 1.5 - amt;
-					amount = amount / max((spotouterangle * 1.5 - spotinnerangle * 1.5), 1) * max; // Ramp up intensity proportionate to distance from inner angle edge
+					amount = spotouterangle - amt;
+					amount = amount / max((spotouterangle - spotinnerangle), 1) * max; // Ramp up intensity proportionate to distance from inner angle edge
 				}
 				else { amount = max; } // Use full amount when located inside the center radius of the spotlight
 
@@ -488,22 +473,6 @@ class SpotlightFlickerAdditiveBoA : SpotlightFlickerAdditive replaces SpotlightF
 		Super.Tick();
 	}
 
-	// Return the aim pitch offset from the source to the target
-	double PitchTo(Actor mo, Actor source = null, double sourcepitch = 0)
-	{
-		if (source == null) { source = self; }
-		if (!sourcepitch) { sourcepitch = source.pitch; }
-
-		double distxy = max(source.Distance2D(mo), 1);
-		double distz = source.pos.z - mo.pos.z;
-
-		double targetheight = mo.player ? mo.height * mo.player.crouchfactor : mo.height; // Get target height, with crouching if applicable
-
-		double pitchcalc = min(atan(distz / distxy), atan((distz - targetheight) / distxy)); // Return whichever is lower: pitch to actor bottom or actor top.
-
-		return pitchcalc - sourcepitch % 360; // Normalize to 360 degree range
-	}
-
 	void AddVisibility(Actor target, double amt, double max = 75)
 	{
 		if (target)
@@ -518,8 +487,8 @@ class SpotlightFlickerAdditiveBoA : SpotlightFlickerAdditive replaces SpotlightF
 
 				if (spotinnerangle - amt < 0) // When in between inner and outer angles...
 				{
-					amount = spotouterangle * 1.5 - amt;
-					amount = amount / max((spotouterangle * 1.5 - spotinnerangle * 1.5), 1) * max; // Ramp up intensity proportionate to distance from inner angle edge
+					amount = spotouterangle - amt;
+					amount = amount / max((spotouterangle - spotinnerangle), 1) * max; // Ramp up intensity proportionate to distance from inner angle edge
 				}
 				else { amount = max; } // Use full amount when located inside the center radius of the spotlight
 
@@ -535,18 +504,16 @@ class SpotlightFlickerAdditiveBoA : SpotlightFlickerAdditive replaces SpotlightF
 
 	void DoVisibilityHandling(Actor target)
 	{
-		double relpitch = PitchTo(target, self, pitch);
+		// Calculate both feet and head positions
+		Vector3 toFeet = Level.SphericalCoords(Pos, target.Pos, (angle, pitch));
+		Vector3 headPos = target.Pos; headPos.Z += target.Height;
+		Vector3 toHead = Level.SphericalCoords(Pos, headPos, (angle, pitch));
+		// Get distance from spotlight to target's feet and head
+		double feetDist = toFeet.x * toFeet.x + toFeet.y * toFeet.y;
+		double headDist = toHead.x * toHead.x + toHead.y * toHead.y;
+		double reldist = sqrt(min(feetDist, headDist));
 
-		// Use custom function instead of AngleTo in order to account for target actor radius
-		Vector2 posoffset = pos.xy - target.pos.xy; // Get offsets
-		posoffset = RotateVector(posoffset, -angle); // Rotate to align with 0 degrees to remove rotation from calculations
-
-		// Calculate the angle to the left and right sides of the actor, and return whichever is smaller
-		double relangle = min(atan((posoffset.y + target.radius * 0.7) / posoffset.x), atan((posoffset.y - target.radius * 0.7) / posoffset.x));  // Radius is fudged by 0.7 since most actors's center of mass doesn't take up the whole radius
-
-		double reldist = sqrt(relpitch ** 2 + relangle ** 2); // Get the distance from light cone center using the calculated pitch and angle
-
-		if (reldist < spotouterangle * 1.5) // Use 1.5 times the outer angle so that we have wiggle room to calculate the ramp up to full light level
+		if (reldist < spotouterangle)
 		{
 			AddVisibility(target, reldist); // Do the visibility calculations and addition. 
 		}
