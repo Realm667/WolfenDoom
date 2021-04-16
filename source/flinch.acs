@@ -160,6 +160,11 @@ Function void DoFlinchRecovery(void)
 	}
 }
 
+script "DoFlinchRecovery_Wrapper" (void)
+{
+	DoFlinchRecovery();
+}
+
 // Calculate a random flinch strength.
 //
 // Both arguments are expected to be positive with max larger or equal to min.

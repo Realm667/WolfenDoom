@@ -62,6 +62,8 @@
 
 */
 
+const PLAYER_TAG_OFFSET = 1000;
+
 class BoAPlayer : PlayerPawn
 {
 	double leveltilt, oldtilt, leveltiltangle;
@@ -238,6 +240,8 @@ class BoAPlayer : PlayerPawn
 	{
 		flinchfactor = 255; // Start out with full flinch amount.
 		dodragging = false;
+		int playerID = PLAYER_TAG_OFFSET + PlayerNumber();
+		Thing_ChangeTID(0, playerID);
 		
 		Super.PostBeginPlay();
 	}
@@ -255,6 +259,31 @@ class BoAPlayer : PlayerPawn
 			DoTokenChecks();
 
 			DoInteractions();
+			
+			if (level.mapname != "TITLEMAP")
+			{
+				// Do screen drawing actions
+				ACS_NamedExecuteAlways("DrawObjectives_Wrapper", 0);
+
+				if (!FindInventory("TankMorph", 1)) // Only do these if you're not driving a tank
+				{
+					if (!CountInv("Billy"))
+					{
+						ACS_NamedExecuteAlways("DrawScreenOverlays_Wrapper", 0);
+
+						// Do inventory checks
+						ACS_NamedExecuteAlways("DoSprinting_Wrapper", 0);
+						ACS_NamedExecuteAlways("DoStaminaCheck_Wrapper", 0);
+
+						// Do visual effects
+						ACS_NamedExecuteAlways("DoFlinchRecovery_Wrapper", 0);
+						ACS_NamedExecuteAlways("DoTiltEffect_Wrapper", 0);
+					}
+
+					// Do sound effects
+					ACS_NamedExecuteAlways("DoFootstepSounds_Wrapper", 0);
+				}
+			}
 		}
 
 		Super.Tick();

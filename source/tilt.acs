@@ -69,3 +69,8 @@ function void DoTiltEffect(void)
 	SetUserVariable(0, "leveltilt", leveltiltpitch);
 	SetUserVariable(0, "leveltiltangle", leveltiltangle);
 }
+
+script "DoTiltEffect_Wrapper" (void)
+{
+	DoTiltEffect();
+}

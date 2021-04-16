@@ -52,6 +52,11 @@ function void DoSprinting(void)
 	if (!CheckInventory("Stamina")) { cooldown[p] = 100; }
 }
 
+script "DoSprinting_Wrapper" (void)
+{
+	DoSprinting();
+}
+
 int staminasoundtimeout[MAX_PLAYERS];
 
 function void DoStaminaCheck(void)
@@ -64,4 +69,9 @@ function void DoStaminaCheck(void)
 		PlaySound(0,"player/breathing",CHAN_VOICE);
 		staminasoundtimeout[p] = Timer() + 50;
 	}
+}
+
+script "DoStaminaCheck_Wrapper" (void)
+{
+	DoStaminaCheck();
 }

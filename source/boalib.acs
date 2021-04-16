@@ -49,43 +49,8 @@ bool bridgestatus[BRIDGECOUNT];
 
 #include "utils_cheats.acs"
 
-// Consolidated gameplay loop.
-// ALL restarting/perpetual functions should be called from here, not in their own ENTER scripts.
-// The more ENTER scripts are constantly looping, the worse performance will be!
-Script "BoA_PlayerLoop" ENTER
-{
-	playerID = PLAYER_TAG_OFFSET + PlayerNumber();
-	Thing_ChangeTID(0, playerID);
-
-	if (GameType() == GAME_TITLE_MAP) { Terminate; }
-
-	While (True)
-	{
-		// Do screen drawing actions
-		DrawObjectives();
-
-		if (!ScriptCall("ACSTools", "FindInventoryClass", "TankMorph", 1)) // Only do these if you're not driving a tank
-		{
-			if (!CheckInventory("Billy"))
-			{
-				DrawScreenOverlays();
-
-				// Do inventory checks
-				DoSprinting();
-				DoStaminaCheck();
-
-				// Do visual effects
-				DoFlinchRecovery();
-				DoTiltEffect();
-			}
-
-			// Do sound effects
-			DoFootstepSounds();
-		}
-
-		Delay(1);
-	}
-}
+// Consolidated gameplay loop: moved to ZScript
+// Script "BoA_PlayerLoop" ENTER ...
 
 // Uses ZScript to check that a sound exists
 function bool PlayMessageSound(int tid, int message)

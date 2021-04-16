@@ -314,6 +314,11 @@ function void DrawScreenOverlays(void)
 	*/
 }
 
+script "DrawScreenOverlays_Wrapper" (void)
+{
+	DrawScreenOverlays();
+}
+
 script "PlayerHealthAbove25" (void)
 {
 	SetResultValue(GetActorProperty(playerID, APROP_Health) >= 25);

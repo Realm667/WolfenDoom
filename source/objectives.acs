@@ -118,6 +118,11 @@ function void DrawObjectives(void)
 		HUDMSG_PLAIN,972,CR_UNTRANSLATED,400.0,115.1,0.03);
 }
 
+script "DrawObjectives_Wrapper" (void)
+{
+	DrawObjectives();
+}
+
 script "boaobjectiveaccomplished" (void)
 {
 	AmbientSound("misc/objective_acc", 57);
