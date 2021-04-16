@@ -169,7 +169,7 @@ class EffectsManager : Thinker
 
 		info.tid = mo.tid;
 		info.dormant = mo.bDormant;
-		if (range >= 0) { info.range = range; }
+		if (range >= 0) { info.range = clamp(range, 1024, 8192); }
 
 		info.sprite = mo.sprite;
 		info.frame = mo.frame;
@@ -240,10 +240,9 @@ class EffectsManager : Thinker
 			int chunkx, chunky;
 			Vector2 playpos = plr.pos.xy;
 
-			playpos += Actor.RotateVector((boa_cullrange * 2 / 3, 0), plr.angle); // Center drawing ahead of the player
-
 			[chunkx, chunky] = EffectBlock.GetBlock(playpos.x, playpos.y);
 
+			int range = clamp(boa_cullrange, 1024, 8192);
 			int count = 0;
 
 			// Cull effects in chunks radiating out from the player's current location
@@ -259,7 +258,7 @@ class EffectsManager : Thinker
 						(y != chunky - interval && y != chunky + interval)
 					) { continue; }
 
-					bool force = !multiplayer && (interval > boa_cullrange / CHUNKSIZE); // Force removal if outside of the cull range (and not multiplayer)
+					bool force = !multiplayer && (interval > range / CHUNKSIZE); // Force removal if outside of the cull range (and not multiplayer)
 
 					if (!effectblocks[x][y]) { effectblocks[x][y] = New("EffectBlock"); }
 
@@ -331,7 +330,7 @@ class EffectsManager : Thinker
 			if (!check) { continue; }
 
 			range = effects[i].range <= 0 ? boa_sfxlod : effects[i].range;
-			range = max(1024, min(boa_cullrange, range)); // Minimum range is 1024, no matter what the CVARs are set to!  boa_cullrange overrides other CVARs.
+			range = clamp(min(range, boa_cullrange), 1024, 8192); // Minimum range is 1024, no matter what the CVARs are set to!  boa_cullrange overrides other CVARs.
 
 			dist = (level.Vec3Diff(check.pos, effects[i].position)).length();
 			if (dist < range) { inrange = true; }
