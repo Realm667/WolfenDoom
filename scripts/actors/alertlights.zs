@@ -405,7 +405,7 @@ class SpotlightBeamLight : SpotLightAttenuated
 
 			double reldist = sqrt(relpitch ** 2 + relangle ** 2); // Get the distance from light cone center using the calculated pitch and angle
 
-			if (reldist < spotouterangle * 1.5) // Use 1.5 times the outer angle so that we have wiggle room to calculate the ramp up to full light level
+			if (reldist < spotouterangle * 1.333333) // Use 1.5 times the outer angle so that we have wiggle room to calculate the ramp up to full light level
 			{
 				AddVisibility(reldist); // Do the visibility calculations and addition
 
