@@ -173,8 +173,7 @@ class BoABrain : BossBrain
 	{
 		//$Category EasterEgg (BoA)
 		//$Title Romero Aged Head (Easteregg)
-		PainSound "boabrain/pain";
-		DeathSound "boabrain/death";
+		Height 88;
 	}
 	States
 	{
@@ -184,10 +183,14 @@ class BoABrain : BossBrain
 	Pain:
 		BOAR B 36 A_BrainPain;
 		Goto Spawn;
-	Death:
-		BOAR A 100 A_BrainScream;
-		BOAR AA 10;
-		BOAR A -1; //A_BrainDie; //commented out otherwise it will end the map and also will spawn wall of explosions behind --Ozy81
+	Death: //A_BrainDie removed otherwise it will end the map --Ozy81
+		BOAR B 5 A_UnSetSolid;
+		BOAR B 100 A_BrainScream;
+		"####" BBBBBBBBBBBBBBBB 0 A_SpawnItemEx("BloodSkullCloud",random(-16,16),random(-16,16),random(24,48),random(1,2), random(1,2), random(1,2), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_FatFlesh", random(-16,16), random(-16,16), random(24,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" BBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Flesh", random(-16,16), random(-16,16), random(24,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" BBBBBBBBB 0 A_SpawnItemEx("NashGore_FlyingBlood", random(-16,16), random(-16,16), random(24,48), random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" C -1;
 		Stop;
 	}
 }
