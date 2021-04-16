@@ -2523,7 +2523,7 @@ class WGuard_Wounded : Nazi //ozy81
 	Nazi.ZombieVariant "";
 	Health 5;
 	Speed 0;
-	Obituary "$WGUARD";
+	Obituary "$WNDWGUARD";
 	MONSTER;
 	-SOLID
 	+FLOORCLIP
@@ -2603,7 +2603,7 @@ class Guard_Wounded : WGuard_Wounded
 	Default
 	{
 	//$Title Wounded Guard (Pistol, Afrika Korps)
-	Obituary "$GUARD";
+	Obituary "$WNDGUARD";
 	}
 	States
 	{
@@ -2631,7 +2631,7 @@ class SSGuard_Wounded : WGuard_Wounded
 	Default
 	{
 	//$Title Wounded Guard (Pistol, SS)
-	Obituary "$SSGUARD";
+	Obituary "$WNDSSGUARD";
 	}
 	States
 	{
@@ -2659,7 +2659,7 @@ class Officer_Wounded : WGuard_Wounded
 	Default
 	{
 	//$Title Officer Wounded (Pistol, Afrika Korps)
-	Obituary "$OFFICER";
+	Obituary "$WNDOFFICER";
 	}
 	States
 	{
@@ -2687,7 +2687,7 @@ class SSOfficer_Wounded : WGuard_Wounded
 	Default
 	{
 	//$Title Officer Wounded (Pistol, SS)
-	Obituary "$SSOFFICE";
+	Obituary "$WNDSSOFFICER";
 	}
 	States
 	{
@@ -2715,7 +2715,7 @@ class WOfficer_Wounded : WGuard_Wounded
 	Default
 	{
 	//$Title Officer Wounded (Pistol, Wehrmacht)
-	Obituary "$WOFFICER";
+	Obituary "$WNDWOFFICER";
 	}
 	States
 	{
