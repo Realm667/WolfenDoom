@@ -27,18 +27,18 @@ vec4 BiCubic(vec2 TexCoord)
 	float b = fract( TexCoord.y * texsize.y ); // get the decimal part
 
 	vec2 offset = vec2(texelSizeX / 2., texelSizeY / 2.);
-	for( int m = -1; m <=2; m++ )
+	for( int m = -1; m <= 2; m++ )
 	{
-		for( int n =-1; n<= 2; n++)
+		for( int n =-1; n <= 2; n++)
 		{
-			vec4 vecData = getTexel(TexCoord + offset + vec2(texelSizeX + offset.x * float( m ), texelSizeY + offset.y * float( n )));
+			vec4 vecData = getTexel(TexCoord + offset + vec2(offset.x * float( m ), offset.y * float( n )));
 			float f  = Triangular( float( m ) - a );
-			vec4 vecCooef1 = vec4(f);
+			vec4 vecCoeff1 = vec4(f);
 			float f1 = Triangular ( -( float( n ) - b ) );
-			vec4 vecCoeef2 = vec4(f1);
+			vec4 vecCoeff2 = vec4(f1);
 
-			nSum = nSum + ( vecData * vecCoeef2 * vecCooef1  );
-			nDenom = nDenom + (( vecCoeef2 * vecCooef1 ));
+			nSum = nSum + ( vecData * vecCoeff2 * vecCoeff1  );
+			nDenom = nDenom + (( vecCoeff2 * vecCoeff1 ));
 		}
 	}
 	return nSum / nDenom;
