@@ -345,3 +345,128 @@ class ZScriptTools
 		return true, "";
 	}
 }
+
+// Functions to identify the current IWAD and read info from the matching IWADINFO block
+// Uses the FileReader class and ParsedValue functions to parse IWADINFO data
+class WADInfo
+{
+	// Look up and parse the IWADINFO block associated with the current IWAD
+	static ParsedValue GetIWADInfo()
+	{
+		int w = WADIndex("PLAYPAL"); // Get the first loaded WAD with a PLAYPAL entry; this is the IWAD
+		int i = Wads.CheckNumForName("IWADINFO", 0, w); // Try to load IWADINFO from that IWAD (only works for custom mods)
+
+ 		// If no IWADINFO was found in the WAD, load the engine IWADINFO lump from game_support.pk3
+		if (i < 0)
+		{
+			w = WADIndex("IWADINFO"); // Get the first wad with an IWADINFO lump that you can find; this will be game_support.pk3
+			i = Wads.CheckNumForName("IWADINFO", 0, w); // Try to load the IWADINFO from game_support.pk3
+
+			if (i == -1) { return null; } // If none found somehow, abort.
+		}
+
+		String infodata = Wads.ReadLump(i); // Read the lump into a string
+
+		// Manually do a naive parsing of IWADINFO to add end-of-line semicolons so FileReader can parse it
+		Array<String> info;
+		infodata.Split(info, "\n");
+		infodata = "";
+
+		for (int i = 0; i < info.Size(); i++)
+		{
+			String line = FileReader.Trim(info[i]);
+			if (line.IndexOf("=") > -1 || line.IndexOf("\x22") > -1) { line = line .. ";"; } // Stick a semicolon on the end if it contains quotes or an equal sign
+
+			infodata = infodata .. "\n" .. line; // Then re-concatenate everything back together
+		}
+
+		// Parse the string with FileReader to make the data logically accessible
+		ParsedValue IWADs = new("ParsedValue");
+		FileReader.ParseString(infodata, IWADs);
+
+		// Iterate through all defined IWADs to find a definition whose required lumps are all currently loaded
+		ParsedValue IWAD = IWADs.Find("IWAD");
+		while (IWAD)
+		{
+			String mustcontain = FileReader.GetString(IWAD, "mustcontain");
+
+			if (mustcontain.length())
+			{
+				Array<String> lumps;
+				mustcontain.Split(lumps, ",");
+
+				for (int l = 0; l < lumps.Size(); l++)
+				{
+					lumps[l] = FileReader.StripQuotes(lumps[l]);
+				}
+
+				if (CheckIWADLumps(lumps)) { return IWAD; } // If the lumps were all there, this is our matching IWADINFO
+			}
+			else
+			{
+				return IWAD; // If it doesn't have any 'mustcontain' lumps defined, it's a custom IWAD/IPK3 anyway
+			}
+
+			IWAD = IWADs.Next("IWad");
+		}
+
+		return null;
+	}
+
+	// Iterate through wads in load order (defaulting to up to 15 files) and return the
+	// index of the first one containing a lump matching the lump name that was passed in. 
+	// This can be used to get the index of gzdoom.pk3, game_support.pk3, the current IWAD, 
+	// etc. by searching for lumps that first appear in those files.
+	//
+	// Examples:
+	//  DEHSUPP -> gzdoom.pk3
+	//  IWADINFO -> game_support.pk3
+	//  PLAYPAL -> Current IWAD
+	//
+	static int WADIndex(String lump, int max = 15)
+	{
+		for (int i = 0; i < max; i++)
+		{
+			int l = Wads.CheckNumForName(lump, 0, i);
+			if (l > -1) { return i; }
+		}
+
+		return -1;
+	}
+
+	// Search the current IWAD for all lumps listed in an array of strings
+	static bool CheckIWADLumps(Array<String> lumps)
+	{
+		int w = WADIndex("PLAYPAL"); // First PLAYPAL lump parsed by the engine will be in the IWAD
+
+		for (int i = 0; i < lumps.Size(); i++)
+		{
+			int l = -1;
+			
+			for (int n = Wads.ns_global; n < Wads.ns_firstskin; n++) // Iterate through all namespaces for this check
+			{
+				int m = Wads.CheckNumForName(lumps[i], n, w); // Try to find the lump
+
+				if (m > -1)
+				{
+					l = m; // If it was found, move on to search for the next lump
+					break;
+				}
+			}
+
+			if (l < 0) { return false; } // If the lump wasn't found in any namespace, this is not the file we are looking for
+		}
+
+		return true;
+	}
+
+	// Wrapper function to handle looking up a value with a single call
+	//  e.g.: String IWADName = WadInfo.GetIWADInfoEntry("name");
+	static String GetIWADInfoEntry(String entry = "name")
+	{
+		ParsedValue IWAD = GetIWADInfo();
+		if (IWAD) { return FileReader.GetString(IWAD, entry, true); }
+
+		return "";
+	}
+}

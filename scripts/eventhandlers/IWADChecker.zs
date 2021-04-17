@@ -26,8 +26,10 @@ class IWADChecker : EventHandler
 	// is.
 	void CheckIWAD()
 	{
-		if (Wads.FindLump("MAP01", 0) > 0 || Wads.FindLump("E1M1", 0) > 0) //filters Doom IWADS
+		// If the IWAD's autoname value doesn't match the BoA C3 release autoname, then show the notice
+		if (!(WadInfo.GetIWADInfoEntry("autoname") == "WolfenDoom.BoA.v3"))
 		{
+			//console.printf("Current IWAD is " .. WadInfo.GetIWADInfoEntry("name") .. ".");
 			Menu.SetMenu("IWADNotice");
 			Level.setFrozen(true);
 		}
