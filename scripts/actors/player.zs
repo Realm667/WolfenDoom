@@ -1174,7 +1174,7 @@ class BoAPlayer : PlayerPawn
 					}
 					DragTarget = AimActor;
 					GiveInventory("IsDragging", 1);
-					Speed = Default.Speed * CROUCHSPEED / (1.0 + AimActor.mass / (player.mo.mass + 1.0));
+					Speed = Default.Speed / (1.0 + AimActor.mass / (player.mo.mass + 1.0));
 				}
 			}
 		}
