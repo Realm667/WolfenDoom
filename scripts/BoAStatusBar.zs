@@ -1396,7 +1396,7 @@ class BoAStatusBar : BaseStatusBar
 		if (screenblocks < 12)
 		{
 			if (screenblocks == 11) { if (!automapactive && !CPlayer.mo.FindInventory("CutsceneEnabled")) { x -= 54; } }
-			else { y = GetTopOfStatusBar() - 6 * height - 10; }
+			else { y = int(GetTopOfStatusBar() / scale) - 6 * height - 10; }
 		}
 
 		// Draw coordinates
