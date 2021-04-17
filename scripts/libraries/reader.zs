@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 AFADoomer
+ * Copyright (c) 2018-2021 AFADoomer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
 
 // AFADoomer's ugly but functional parser for nested bracketed data
 // Free for use with attribution
-// Used for Info/Help pages
+// Used for Info/Help pages and parsing of various data files
 class ParsedValue
 {
 	String KeyName;
@@ -125,10 +125,13 @@ class FileReader
 					temp.Clear();
 
 					token.Split(temp, "=");
-					key.keyname = Trim(temp[0]);
-					if (temp.Size() > 1) { key.value = Trim(temp[1]); }
+					if (temp.Size())
+					{
+						key.keyname = Trim(temp[0]);
+						if (temp.Size() > 1) { key.value = Trim(temp[1]); }
 
-					if (parent) { parent.Children.Push(key); }
+						if (parent) { parent.Children.Push(key); }
+					}
 
 					token = "";
 					break;
@@ -208,7 +211,7 @@ class FileReader
 		return true;
 	}
 
-	static String GetString(ParsedValue data, String path)
+	static String GetString(ParsedValue data, String path, bool strip = false)
 	{
 		ParsedValue current = data;
 		Array<String> temp;
@@ -227,8 +230,9 @@ class FileReader
 			}
 		}
 
-		if (current.value) { return current.value; }
-		else { return ""; }
+		if (!current.value) { return ""; }
+
+		return strip ? StripQuotes(current.value) : current.value;
 	}
 
 	static String Trim(String input)
@@ -237,18 +241,61 @@ class FileReader
 
 		String output = input;
 
-		While (
-			(output.ByteAt(0) >= 9 && output.ByteAt(0) <= 13) ||
-			output.ByteAt(0) == 32
-		) { output = output.Mid(1, output.Length() - 1); }
-
-		int last = output.Length() - 1;
-
-		While (
-			(output.ByteAt(last) >= 9 && output.ByteAt(last) <= 13) ||
-			output.ByteAt(last) == 32
-		) { output = output.Left(last); }
+		while (IsWhiteSpace(output.GetNextCodePoint(0))) { output.Remove(0, 1); }
+		while (IsWhiteSpace(output.GetNextCodePoint(output.CodePointCount() - 1))) { output.DeleteLastCharacter(); }
 
 		return output;
+	}
+
+	static String StripQuotes(String input)
+	{
+		if (input.Length() < 1) { return ""; }
+
+		input = Trim(input);
+
+		// If there are both leading and trailing quotes, remove them, otherwise leave them alone
+		if (input.GetNextCodePoint(0) == 0x0022 && input.GetNextCodePoint(input.CodePointCount() - 1) == 0x0022)
+		{
+			input.Remove(0, 1);
+			input.DeleteLastCharacter();
+		}
+
+		return input;
+	}
+
+	static bool IsWhitespace(int c)
+	{
+		switch (c)
+		{
+			// Reference https://en.wikipedia.org/wiki/Whitespace_character
+			case 0x0009:
+			case 0x000A:
+			case 0x000B:
+			case 0x000C:
+			case 0x000D:
+			case 0x0020:
+			case 0x0085: 
+			case 0x00A0:
+			case 0x1680:
+			case 0x2000:
+			case 0x2001:
+			case 0x2002:
+			case 0x2003:
+			case 0x2004:
+			case 0x2005:
+			case 0x2006:
+			case 0x2007:
+			case 0x2008:
+			case 0x2009:
+			case 0x200A:
+			case 0x2028:
+			case 0x2029:
+			case 0x202F:
+			case 0x205F:
+			case 0x3000:
+				return true;
+			default:
+				return false;
+		}
 	}
 }
