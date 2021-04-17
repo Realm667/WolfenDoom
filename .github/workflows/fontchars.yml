@@ -47,5 +47,5 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add fonts/fontchars.csv
-          git commit -m "Update fontchars.csv"
-          git push
+          # Force 0 exit status here so that the workflow run doesn't fail
+          git commit -m "Update fontchars.csv" && git push || :
