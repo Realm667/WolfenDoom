@@ -781,6 +781,20 @@ class TankBase : VehicleBase
 
 		Super.OnDestroy();
 	}
+
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
+	{
+		// For bullet projectiles, if the enemy's species (appended with "Tank") is the same as the tank's species, then don't do any damage to the tank.
+		if (source && mod == "Bullet")
+		{
+			if (source.species == species || source.species == species .. "Tank")
+			{
+				return 0;
+			}
+		}
+
+		return Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
+	}
 }
 
 // Blocker object for the front and back of the tank used to keep actors from walking inside the model
