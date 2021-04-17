@@ -132,13 +132,13 @@ class EffectsManager : Thinker
 
 			SaveEffectInfo(effect, this, range);
 
-			effects.Push(this);
+			int j = effects.Push(this);
 
 			int x, y;
 			[x, y] = EffectBlock.GetBlock(effect.pos.x, effect.pos.y);
 
 			if (!effectblocks[x][y]) { effectblocks[x][y] = New("EffectBlock"); }
-			effectblocks[x][y].indices.Push(effects.Size() - 1);
+			effectblocks[x][y].indices.Push(j);
 		}
 		else // Otherwise just update what's there...
 		{
@@ -194,7 +194,7 @@ class EffectsManager : Thinker
 		int i = FindEffect(effect);
 		if (i == effects.Size()) { return; }
 
-		effects.Delete(i);
+		effects[i] = null;
 		effect.Destroy();
 	}
 
@@ -207,7 +207,7 @@ class EffectsManager : Thinker
 			renderchunks = (MAPMAX / CHUNKSIZE) / 2;
 			interval = 0;
 		}
-		else
+		else if (level.time > 2)
 		{
 			CullEffects();
 
@@ -307,7 +307,7 @@ class EffectsManager : Thinker
 
 		if (effects[i].master && effects[i].master.bDormant)
 		{
-			effects.Delete(i); // If the master is deactivated, don't remember this effect anymore
+			effects[i] = null; // If the master is deactivated, don't remember this effect anymore
 			return false;
 		}
 
@@ -385,7 +385,7 @@ class EffectsManager : Thinker
 			}
 			else if (effects[i].effect.health <= 0) // Don't cull destroyed actors
 			{
-				effects.Delete(i); // ...and stop tracking them
+				effects[i] = null; // ...and stop tracking them
 			}
 			else
 			{
@@ -418,8 +418,6 @@ class EffectsManager : Thinker
 		{
 			CullEffect(i);
 		}
-
-		effects.ShrinkToFit();
 	}
 
 	static double GetDistanceAlpha(Actor effect, double dist, double range)
