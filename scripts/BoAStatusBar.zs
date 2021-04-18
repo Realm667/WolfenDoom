@@ -218,7 +218,7 @@ class BoAStatusBar : BaseStatusBar
 		DrawSaveIcon();
 	}
 
-	void DrawSaveIcon()
+	virtual void DrawSaveIcon()
 	{
 		if (savetimer)
 		{
@@ -236,7 +236,7 @@ class BoAStatusBar : BaseStatusBar
 		}
 	}
 
-	protected void DrawMainBar (double TicFrac)
+	virtual void DrawMainBar (double TicFrac)
 	{
 		int current, max;
 
@@ -362,7 +362,7 @@ class BoAStatusBar : BaseStatusBar
 		}
 	}
 
-	void DrawInventorySelection(int x, int y, int size = 32)
+	virtual void DrawInventorySelection(int x, int y, int size = 32)
 	{
 		DrawIcon(CPlayer.mo.InvSel, x, y, size);
 	}
@@ -391,7 +391,7 @@ class BoAStatusBar : BaseStatusBar
 		return count;
 	}
 
-	void DrawPuzzleItems(int x, int y, int size = 32, int maxrows = 6, int maxcols = 0, bool vcenter = false)
+	virtual void DrawPuzzleItems(int x, int y, int size = 32, int maxrows = 6, int maxcols = 0, bool vcenter = false)
 	{
 		if (!CPlayer.mo.Inv) { return; }
 
@@ -436,7 +436,7 @@ class BoAStatusBar : BaseStatusBar
 		}
 	}
 
-	void DrawIcon(Inventory item, int x, int y, int size, int flags = DI_ITEM_CENTER)
+	virtual void DrawIcon(Inventory item, int x, int y, int size, int flags = DI_ITEM_CENTER)
 	{
 		Vector2 texsize = TexMan.GetScaledSize(item.icon);
 		if (texsize.x > size || texsize.y > size)
@@ -489,7 +489,7 @@ class BoAStatusBar : BaseStatusBar
 		}
 	}
 
-	protected void DrawFullScreenStuff()
+	virtual void DrawFullScreenStuff()
 	{
 		int current, max;
 
@@ -708,7 +708,7 @@ class BoAStatusBar : BaseStatusBar
 		return stealth; // Set up like this so it basically returns last known value if it's not time to re-poll
 	}
 
-	void DrawMugShot(Vector2 position)
+	virtual void DrawMugShot(Vector2 position)
 	{
 		int flags = MugShot.STANDARD;
 		String face = CPlayer.mo.face;
@@ -740,7 +740,7 @@ class BoAStatusBar : BaseStatusBar
 		DrawTexture(GetMugShot(5, flags, face), position, DI_ITEM_OFFSETS);
 	}
 
-	bool DrawVisibilityBar(Vector2 position = (0, 0), int flags = DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM, double scale = 1.)
+	virtual bool DrawVisibilityBar(Vector2 position = (0, 0), int flags = DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM, double scale = 1.)
 	{
 		Inventory disguise;
 
@@ -862,7 +862,7 @@ class BoAStatusBar : BaseStatusBar
 		if (healthbaralpha > 0) { DrawHealthBar(LastTag, LastHealth, LastMaxHealth, LastIcon); }
 	}
 
-	void DrawHealthBar(String tag, int health, int maxhealth, String icon = "")
+	virtual void DrawHealthBar(String tag, int health, int maxhealth, String icon = "")
 	{
 		int flags = DI_SCREEN_TOP | DI_SCREEN_HCENTER;
 		int basey = 20;
@@ -893,7 +893,7 @@ class BoAStatusBar : BaseStatusBar
 		screen.DrawText(SmallFont, Font.CR_GRAY, screenpos.x, screenpos.y, nametag, DTA_KeepRatio, true, DTA_VirtualWidth, width, DTA_VirtualHeight, height, DTA_Alpha, healthbaralpha * 0.75);
 	}
 
-	void DrawCrosshairHint()
+	virtual void DrawCrosshairHint()
 	{
 		int crosshair = 0;
 		String crosshairstring;
@@ -1121,7 +1121,7 @@ class BoAStatusBar : BaseStatusBar
 		else { currenttarget = null; }
 	}
 
-	void DrawTankStatusBar()
+	virtual void DrawTankStatusBar()
 	{
 		let tankplayer = TankPlayer(CPlayer.mo);
 		let targetactor = tankplayer.CrosshairActor;
@@ -1286,7 +1286,7 @@ class BoAStatusBar : BaseStatusBar
 		return clr;
 	}
 
-	void DrawKeenStatusBar()
+	virtual void DrawKeenStatusBar()
 	{
 		if (CPlayer.mo.CurState == CPlayer.mo.FindState("Pain"))
 		{
