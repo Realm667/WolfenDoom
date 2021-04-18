@@ -94,22 +94,22 @@ function str OptionalLocalizedString (str identifier)
 
 function void AddLabel(int tid, str label)
 {
-	ScriptCall("OverlayHandler", "Add", tid, StrParam(l:label));
+	ScriptCall("ScreenLabelHandler", "Add", tid, StrParam(l:label));
 }
 
 function void AddIconLabel(int tid, str label, str icon)
 {
-	ScriptCall("OverlayHandler", "Add", tid, StrParam(l:label), icon);
+	ScriptCall("ScreenLabelHandler", "Add", tid, StrParam(l:label), icon);
 }
 
 function void AddKeyLabel(int tid, str key, str name)
 {
-	ScriptCall("OverlayHandler", "Add", tid, KeyInfo(key, name));
+	ScriptCall("ScreenLabelHandler", "Add", tid, KeyInfo(key, name));
 }
 
 function void AddKeyIconLabel(int tid, str key, str name, str icon)
 {
-	ScriptCall("OverlayHandler", "Add", tid, KeyInfo(key, name), icon);
+	ScriptCall("ScreenLabelHandler", "Add", tid, KeyInfo(key, name), icon);
 }
 
 function str KeyInfo(str key, str name)
