@@ -13,6 +13,14 @@ class ScreenLabelHandler : EventHandler
 {
 	Array<ScreenLabelItem> ScreenLabelItems;
 
+	protected Le_GlScreen			gl_proj;
+	protected Le_Viewport			viewport;
+
+	override void OnRegister ()
+	{
+		gl_proj = new("Le_GlScreen");
+	}
+
 	override void WorldThingDestroyed(WorldEvent e)
 	{
 		int i = FindItem(e.Thing);
@@ -103,6 +111,12 @@ class ScreenLabelHandler : EventHandler
 
 		if (!p || !p.mo || automapactive) { return; }
 
+		viewport.FromHud();
+		gl_proj.CacheResolution();
+		gl_proj.CacheFov(p.fov);
+		gl_proj.OrientForRenderOverlay(e);
+		gl_proj.BeginProjection();
+
 		for (int i = 0; i < ScreenLabelItems.Size(); i++)
 		{
 			if (!ScreenLabelItems[i] || !ScreenLabelItems[i].mo || (Inventory(ScreenLabelItems[i].mo) && Inventory(ScreenLabelItems[i].mo).owner)) { continue; }
@@ -118,16 +132,12 @@ class ScreenLabelHandler : EventHandler
 			double fovscale = p.fov / 90;
 
 			Vector3 worldpos = e.viewpos + level.Vec3Diff(e.viewpos, mo.pos + (0, 0, mo.height + 16 + mo.GetBobOffset())); // World position of object, offset from viewpoint
-			Vector3 screenpos = BoACoordUtil.WorldToScreen(worldpos, e.viewpos, e.viewpitch, e.viewangle, e.viewroll, p.fov); // Translate that to the screen, using the viewpoint's info
+			gl_proj.ProjectWorldPos(worldpos); // Translate that to the screen, using the viewpoint's info
 
-			if (screenpos.z > 1 || screenpos.z < -1) { continue; } // If the coordinates are off the screen, then skip drawing this item
+			if (!gl_proj.IsInScreen()) { continue; } // If the coordinates are off the screen, then skip drawing this item
 
-			bool draw;
-			Vector2 drawpos, startpos;
-			[drawpos, draw] = BoACoordUtil.ToViewport(screenpos);
-			if (!draw) { continue; }
-
-			startpos = drawpos;
+			Vector2 drawpos = viewport.SceneToWindow(gl_proj.ProjectToNormal());
+			Vector2 startpos = drawpos;
 
 			// Get icon image information in order to properly offset text and set frame size
 			TextureID image;
