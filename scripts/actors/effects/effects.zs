@@ -49,6 +49,7 @@ class EffectBlock
 {
 	Array<int> indices;
 	bool forceculled;
+	int cullinterval;
 
 	static int, int GetBlock(double x, double y)
 	{
@@ -215,14 +216,14 @@ class EffectsManager : Thinker
 		}
 	}
 
-	bool Culled(Vector2 pos)
+	int, bool Culled(Vector2 pos)
 	{
 		int x, y;
 		[x, y] = EffectBlock.GetBlock(pos.x, pos.y);
 
-		if (!effectblocks[x][y]) { effectblocks[x][y] = New("EffectBlock"); }
+		if (!effectblocks[x][y]) { return 0; }
 
-		return effectblocks[x][y].forceculled;
+		return effectblocks[x][y].cullinterval, effectblocks[x][y].forceculled;
 	}
 
 	void CullEffects()
@@ -258,12 +259,17 @@ class EffectsManager : Thinker
 						(y != chunky - interval && y != chunky + interval)
 					) { continue; }
 
-					bool force = !multiplayer && (interval > range / CHUNKSIZE); // Force removal if outside of the cull range (and not multiplayer)
+					// Skip empty blocks
+					if (!effectblocks[x][y]) { continue; }
 
-					if (!effectblocks[x][y]) { effectblocks[x][y] = New("EffectBlock"); }
+					bool forceremove = !multiplayer && (interval >  range / CHUNKSIZE); // Force removal if outside of the cull range (and not multiplayer)
 
-					count += CullChunk(effectblocks[x][y].indices, force);
-					effectblocks[x][y].forceculled = force;
+					// Delay culling if this chunk was force culled last time and is still outside of culling range
+					if (effectblocks[x][y].forceculled && forceremove) { continue; }
+
+					count += CullChunk(effectblocks[x][y].indices, forceremove);
+					effectblocks[x][y].forceculled = forceremove;
+					effectblocks[x][y].cullinterval = interval;
 				}
 			}
 		}
@@ -321,19 +327,27 @@ class EffectsManager : Thinker
 		bool inrange = false;
 		double dist, range;
 
-		for (int p = 0; p < MAXPLAYERS && !inrange; p++)
+		range = effects[i].range <= 0 ? boa_sfxlod : effects[i].range;
+		range = clamp(min(range, boa_cullrange), 1024, 8192); // Minimum range is 1024, no matter what the CVARs are set to!  boa_cullrange overrides other CVARs.
+
+		if (multiplayer)
 		{
-			if (!playeringame[p]) { continue; }
+			for (int p = 0; p < MAXPLAYERS && !inrange; p++)
+			{
+				if (!playeringame[p]) { continue; }
 
-			Actor check = players[p].camera;
-			if (!check) { check = players[p].mo; }
-			if (!check) { continue; }
+				Actor check = players[p].camera;
+				if (!check) { check = players[p].mo; }
+				if (!check) { continue; }
 
-			range = effects[i].range <= 0 ? boa_sfxlod : effects[i].range;
-			range = clamp(min(range, boa_cullrange), 1024, 8192); // Minimum range is 1024, no matter what the CVARs are set to!  boa_cullrange overrides other CVARs.
-
-			dist = (level.Vec3Diff(check.pos, effects[i].position)).length();
-			if (dist < range) { inrange = true; }
+				dist = (level.Vec3Diff(check.pos, effects[i].position)).length();
+				if (dist < range) { inrange = true; }
+			}
+		}
+		else
+		{
+			dist = CHUNKSIZE * interval;
+			inrange = !forceremove;
 		}
 
 		if (inrange && !effects[i].ingame)

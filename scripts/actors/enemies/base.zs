@@ -928,8 +928,14 @@ class Base : Actor
 			statnumchanged = true; // Only do this once!
 		}
 
-		if (!globalfreeze && !level.Frozen && !(manager && manager.Culled(pos.xy)))
+		if (!globalfreeze && !level.Frozen)
 		{
+			if (manager)
+			{
+				int cullinterval = manager.Culled(pos.xy);
+				if (cullinterval > 4) { Super.Tick(); return; }
+			}
+
 			if (dodgetimeout > 0) { dodgetimeout--; }
 			if (crouchtimeout == 70) { crouchtimer++; }
 			if (crouchtimeout > 0) { crouchtimeout--; }
@@ -2756,6 +2762,12 @@ class Nazi : Base
 	{
 		if (globalfreeze || level.Frozen || !interval) { return; }
 
+		if (manager)
+		{
+			int cullinterval = manager.Culled(pos.xy);
+			if (cullinterval > 4) { return; }
+		}
+
 		if (wasused)
 		{
 			if (usetime > 0)
@@ -2772,8 +2784,6 @@ class Nazi : Base
 		
 		if (health > 0 && bShootable && !bDormant && !dodging && !surrendered)
 		{
-			if (manager && !manager.Culled(pos.xy)) { Super.Tick(); return; }
-
 			if (curSector.GetUDMFInt("user_background") == True) // If this is a background actor, skip most of the logic here
 			{
 				if (!InStateSequence(curState, IdleState)) { SetState(IdleState); }
