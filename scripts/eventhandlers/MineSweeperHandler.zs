@@ -22,7 +22,7 @@
 
 class MineSweeperHandler : EventHandler
 {
-	Array<Actor > ScannableThings;
+	Array<Actor> ScannableThings;
 
 	// Libeye things
 	protected Le_GlScreen			gl_proj;
