@@ -123,7 +123,7 @@ class ScreenLabelHandler : EventHandler
 
 			Actor mo = ScreenLabelItems[i].mo;
 
-			double dist = p.mo.Distance3D(mo);
+			double dist = Level.Vec3Diff(e.viewpos, mo.pos).Length();
 			double alpha = 1.0;
 
 			if (dist > 768) { continue; }
