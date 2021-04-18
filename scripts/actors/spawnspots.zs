@@ -56,6 +56,7 @@ class ActorSpawner : SwitchableDecoration
 {
 	Array<Actor> Spawns;
 	Class<Actor> user_spawntype;
+	Actor closestplayer;
 
 	// TID to give the spawned enemy actor (default no TID)
 	int user_tid;
@@ -158,36 +159,64 @@ class ActorSpawner : SwitchableDecoration
 		}
 	}
 
+	// Iterate through all of the players and see if any can see the spawn point
 	bool InPlayerSightOrRange(int range = 512)
 	{
-		for (int p = 0; p < MAXPLAYERS; p++) // Iterate through all of the players and see if any can see the spawn point
+		double dist = !!closestplayer ? Distance3D(closestplayer) : 0x7FFFFFFF;
+
+		for (int p = 0; p < MAXPLAYERS; p++)
 		{
+			if (!playeringame[p]) { continue; }
+
 			Actor mo = players[p].mo;
+			double modist = Distance3d(mo);
 
-			if (mo) {
-				if (GetLightLevel() > 80) // Only care about the player seeing the spot if it's light enough to see
-				{
-					LookExParams look;
-					look.fov = mo.player.fov * 1.4; // Plus a little extra to account for wider screen ratios...
+			if (mo && modist < dist)
+			{
+				closestplayer = mo;
+				dist = modist;
+			}
 
-					if (mo.IsVisible(self, false, look)) { return true; }
-				}
-				if (Distance3d(mo) <= range) { return true; }
+			if (dist <= range) { return true; }
+		}
+
+		double lightlevel, fogfactor;
+		[lightlevel, fogfactor] = GetLightLevel();
+
+		// Only care about the player seeing the spot if it's light enough to see
+		if ((!fogfactor && lightlevel > 80) || 38 >= (dist / fogfactor))
+		{
+			for (int q = 0; q < MAXPLAYERS; q++)
+			{
+				if (!playeringame[q]) { continue; }
+
+				Actor mo2 = players[q].mo;
+
+				LookExParams look;
+				look.fov = mo2.player.fov * 1.4; // Plus a little extra to account for wider screen ratios...
+
+				if (mo2 && mo2.IsVisible(self, false, look)) { return true; }
 			}
 		}
 
 		return false;
 	}
 
-	double GetLightLevel(Actor mo = null)
+	double, double GetLightLevel(Actor mo = null)
 	{
 		if (!mo) { mo = self; }
+
+		int lightlevel = mo.CurSector.lightlevel;
 
 		Color light = mo.CurSector.ColorMap.LightColor;
 		Color fade = mo.CurSector.ColorMap.FadeColor;
 
-		// Sector light level minus the average (inverted) RGB light level minus fog depth
-		return mo.CurSector.lightlevel - (255 - (light.r + light.g + light.b) / 3) - ((fade.r + fade.g + fade.b) / 3) - 255 * (mo.CurSector.ColorMap.FogDensity / 510);
+		int density = mo.CurSector.ColorMap.FogDensity;
+		if (!density) { density = lightlevel; }
+		double fogamount = (255 - (light.r + light.g + light.b) / 3.0) - ((fade.r + fade.g + fade.b) / 3.0) * (density / 255.0);
+		double fogfactor = clamp(fogamount / -1.5, 0, 100);
+
+		return lightlevel, fogfactor;
 	}
 
 	int CountSpawns(Class<Actor> spawntype = null, bool countdead = false)
