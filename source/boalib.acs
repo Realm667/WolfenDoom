@@ -90,3 +90,57 @@ function str OptionalLocalizedString (str identifier)
 	}
 	return value;
 }
+
+
+function void AddLabel(int tid, str label)
+{
+	ScriptCall("OverlayHandler", "Add", tid, StrParam(l:label));
+}
+
+function void AddIconLabel(int tid, str label, str icon)
+{
+	ScriptCall("OverlayHandler", "Add", tid, StrParam(l:label), icon);
+}
+
+function void AddKeyLabel(int tid, str key, str name)
+{
+	ScriptCall("OverlayHandler", "Add", tid, KeyInfo(key, name));
+}
+
+function void AddKeyIconLabel(int tid, str key, str name, str icon)
+{
+	ScriptCall("OverlayHandler", "Add", tid, KeyInfo(key, name), icon);
+}
+
+function str KeyInfo(str key, str name)
+{
+	if (!StrLen(name))
+	{
+		name = StrParam(s:"CNTRLMNU_", s:key);
+	}
+	name = StrParam(l:name);
+
+	str keybind = StrParam(s:"+", s:key);
+	keybind = StrParam(k:keybind);
+
+	return StrParam(s:name, s:"\n\c[Dark Red]", s:keybind);
+}
+
+function str GetKeyMessage(str message, str key)
+{
+	message = StrParam(l:message);
+
+	if (key != 0)
+	{
+		key = StrParam(s:key);
+		str bind = StrParam(k:key);
+
+		str clr = "\cU";
+
+		if (!StrCmp(bind, "???", 3)) { clr = "\c[Dark Red]"; }
+
+		message = StrParam(s:message, s:"  ", s:clr, s:"<", s:bind, s:">");
+	}
+
+	return message;
+}

@@ -201,24 +201,27 @@ script "_Do_BoADevComment_" (int langEntry, int basemessagetime, int image)
 	HudMessage(l:langEntry; HUDMSG_FADEOUT, 2000, CR_UNTRANSLATED, devcx + textxoffsetf, devcy, 0.0, 0.5, 1.0);
 }
 
-script "HintMessage" (int message)
+script "HintMessage" (int message, int key)
 {
 	if (message == "") { Terminate; }
 
-	message = StrParam(l:message);
+	message = GetKeyMessage(message, key);
 
 	SetHudSize(640, 480, true);
-	hudmessagebold(s:message; HUDMSG_FADEINOUT,80,CR_GRAY,320.0,470.0,3.0,1.0,1.0);
+
+	int drawpos = 470.0;
+
+	if (ScriptCall("Base", "SneakableActors") > 0) { drawpos -= 30.0; }
+
+	hudmessagebold(s:message; HUDMSG_FADEINOUT | HUDMSG_LOG, 80, CR_GRAY, 320.0, drawpos, 3.0, 1.0, 1.0);
+
 	delay(10);
 	AmbientSound("menu/change", 96);
 }
 
 script "TankExitMessage" (void)
 {
-	SetHudSize(640, 480, true);
-	hudmessagebold(l:"TANKEXITHOLD"; HUDMSG_FADEINOUT,80,CR_GRAY,320.0,470.0,1.0,1.0,0.5);
-	delay(10);
-	AmbientSound("menu/change", 96);
+	ACS_NamedExecute("HintMessage", 0, "TANKEXITHOLD", "+use");
 }
 
 script "FollowerMessage" (int type, int count)

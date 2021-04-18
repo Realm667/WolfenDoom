@@ -605,7 +605,7 @@ class Base : Actor
 		return count;
 	}
 
-	bool SneakableActors() // Are there sneakable actors in the level?
+	static bool SneakableActors() // Are there sneakable actors in the level?
 	{
 		ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2); // Just iterate over the sneakable eyes - faster than all Nazi actors
 		StealthBase mo;
