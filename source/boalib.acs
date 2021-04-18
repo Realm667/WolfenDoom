@@ -79,19 +79,6 @@ function bool PlayMessageSound(int tid, int message)
 	return true;
 }
 
-// Attempt to localize a string, but if it isn't available in the current
-// language, return an empty string.
-function str OptionalLocalizedString (str identifier)
-{
-	str value = StrParam(l:identifier);
-	if (StrCmp(identifier, value) == 0)
-	{
-		return "";
-	}
-	return value;
-}
-
-
 function void AddLabel(int tid, str label)
 {
 	ScriptCall("ScreenLabelHandler", "Add", tid, StrParam(l:label));
