@@ -96,9 +96,9 @@ class BoAPlayer : PlayerPawn
 		Player.StartItem "Luger9mmLoaded",8;
 		Player.StartItem "MP40Loaded",32;
 		Player.StartItem "PanzerschreckLoaded";
-		Player.StartItem "PyrolightLoaded",25;
+		Player.StartItem "PyrolightLoaded",50;
 		Player.StartItem "StenLoaded",32;
-		Player.StartItem "TeslaLoaded",50;
+		Player.StartItem "TeslaLoaded",30;
 		Player.StartItem "TrenchShotgunLoaded",8;
 		Player.StartItem "Walther9mmLoaded",8;
 		Player.StartItem "Stamina", 100;
