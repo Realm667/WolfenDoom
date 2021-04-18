@@ -73,7 +73,7 @@ class LaserShooter : EffectSpawner
 		else { Activate(null); }
 	}
 
-	void A_FireLaser(int damage, sound snd = "", double zoffset = 0, bool drawdecal = false, double alpha = 1.0, double volume = 1.0)
+	virtual void A_FireLaser(int damage, sound snd = "", double zoffset = 0, bool drawdecal = false, double alpha = 1.0, double volume = 1.0)
 	{
 		if (args[1]) { angle += args[1] * 0.25; }
 
@@ -170,6 +170,10 @@ class LaserShooterNF : LaserShooter
 
 class ZapShooter : LaserShooter
 {
+	double hitRadius;
+
+	Property hitRadius: HitRadius;
+
 	Default
 	{
 		//$Title Electrical Zap Shooter (switchable, 3 args)
@@ -179,6 +183,7 @@ class ZapShooter : LaserShooter
 		//$Arg2Type 11
 		//$Arg2Enum { 0 = "Yes"; 1 = "No"; }
 		//$Arg3 ""
+		ZapShooter.HitRadius 32;
 		DamageType "Electric";
 		LaserShooter.BeamClass "ElectricBeam";
 		LaserShooter.FlareClass "ZapFlare";
@@ -193,6 +198,42 @@ class ZapShooter : LaserShooter
 		args[0] = 0;
 
 		Super.PostBeginPlay();
+	}
+
+	override void A_FireLaser(int damage, sound snd, double zoffset, bool drawdecal, double alpha, double volume)
+	{
+		if (args[1]) { angle += args[1] * 0.25; }
+
+		if (CheckRange(boa_sfxlod, true)) { return; }
+
+		A_LookEx(LOF_NOSEESOUND | LOF_NOJUMP, 0, max(boa_sfxlod, 1024), max(boa_sfxlod, 1024));
+
+		if (snd != "")
+		{
+			A_StartSound(snd, CHAN_6, CHANF_NOSTOP, 1.0);
+			A_SoundVolume(CHAN_6, volume);
+		}
+
+		double shootAngle = angle;
+		double shootPitch = pitch;
+		double shootDist = beamdistance;
+		if (target)
+		{
+			// Ensure target is within HitRadius
+			Vector3 targPos = target.Pos; targPos.Z += target.Height * .5;
+			Vector3 toTarget = Level.Vec3Diff(Pos, targPos);
+			Vector2 xy = Actor.RotateVector(toTarget.XY, angle);
+			Vector2 radiusCheck = (xy.y, toTarget.Z);
+			if (radiusCheck.Length() < hitRadius)
+			{
+				Vector3 shoot = Level.SphericalCoords(Pos, targPos);
+				shootAngle = -shoot.x;
+				shootPitch = -shoot.y;
+			}
+		}
+
+		Laser.DoTrace(self, shootAngle, shootDist, shootPitch, 0, zoffset, hitpointtracer);
+		[beam, flare] = Laser.DrawLaser(self, beam, flare, hitpointtracer.Results, beamclass, puffclass, damage, zoffset, drawdecal, alpha, flareclass);
 	}
 }
 
