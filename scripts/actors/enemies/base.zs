@@ -1176,19 +1176,22 @@ class Base : Actor
 	{
 		if (passive)
 		{
-			if (bStomp && bCanSquish && other.player && pos.z == floorz)
+			if (other.player && pos.z == floorz)
 			{
-				if (other.player.ReadyWeapon && other.player.ReadyWeapon is "NaziWeapon")
+				if (bStomp)
 				{
-					let kick = other.player.FindPSprite(-10);
-					if (!kick)
+					if (other.player.ReadyWeapon && other.player.ReadyWeapon is "NaziWeapon")
 					{
-						other.vel.xy *= 0;
-						other.player.SetPsprite(-10, other.player.ReadyWeapon.FindState("KickOverlay"), true);
+						let kick = other.player.FindPSprite(-10);
+						if (!kick)
+						{
+							other.vel.xy *= 0;
+							other.player.SetPsprite(-10, other.player.ReadyWeapon.FindState("KickOverlay"), true);
+						}
 					}
 				}
 
-				DamageMobj(other, other, health, "Squish", 0, other.angle);
+				if (bCanSquish) { DamageMobj(other, other, health, "Squish", 0, other.angle); }
 			}
 		}
 		else
