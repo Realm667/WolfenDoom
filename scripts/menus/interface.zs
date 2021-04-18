@@ -124,7 +124,7 @@ class CombinationSafe : BoAMenu
 		initial = 1;
 
 		String hintmessage = StringTable.Localize("SAFEHINT", false);
-		hintlines = SmallFont.BreakLines(hintmessage, 240);
+		hintlines = SmallFont.BreakLines(hintmessage, 400);
 
 		hintx = 320;
 		hintlineheight = SmallFont.GetHeight();
