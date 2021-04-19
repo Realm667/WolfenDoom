@@ -220,7 +220,7 @@ class ZapShooter : LaserShooter
 		if (target)
 		{
 			// Ensure target is within HitRadius
-			Vector3 targPos = target.Pos; targPos.Z += target.Height * .5;
+			Vector3 targPos = target.Pos; targPos.Z += target.Height * .75;
 			Vector3 toTarget = Level.Vec3Diff(Pos, targPos);
 			Vector2 xy = Actor.RotateVector(toTarget.XY, angle);
 			Vector2 radiusCheck = (xy.y, toTarget.Z);
