@@ -2539,10 +2539,11 @@ class WGuard_Wounded : Nazi //ozy81
 		"####" O 150 { A_Look(); user_count4 = 0; }
 		Loop;
 	See:
+		"####" O random(175, 350);
 		// Prevent wounded guards from blocking you
 		"####" O 7 A_CheckRange(64, 1, true);
 		Goto See;
-		"####" PQ 1 {A_SetTics(random(1,7)); bSolid = TRUE; bPushable = TRUE;}
+		"####" PQ 1 {A_SetTics(random(5,7)); bSolid = TRUE; bPushable = TRUE;}
 	SeeLoop:
 		"####" R 1 { A_Chase(); user_count4 += 1; if (user_count4 > 50) { A_Die(); } }
 		"####" R 1 A_SetTics(random(1,14));
