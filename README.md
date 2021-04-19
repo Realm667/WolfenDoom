@@ -1,4 +1,4 @@
-# Wolfendoom: Blade of Agony
+# Wolfenstein: Blade of Agony
 Blade of Agony is a story-driven FPS. The project is inspired by WWII shooters from the 90's and early 2000's, like Wolfenstein 3D, Medal of Honor, and Call of Duty, but with faster-paced gameplay in the spirit of Doom! The game can be played standalone using the GZDoom engine as a base.
 
 ## Authors
