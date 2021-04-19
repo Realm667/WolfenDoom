@@ -49,15 +49,14 @@ class ParallelInventory : Inventory
 		return true;
 	}
 
-	override bool TryPickup(in out Actor toucher)
+	override bool CanPickup(Actor toucher)
 	{
 		Inventory existing = toucher.FindInventory(parallel);
 		if (!existing)
 		{
-			GoAwayAndDie();
 			return false;
 		}
 		MaxAmount = existing.MaxAmount;
-		return Super.TryPickup(toucher);
+		return Super.CanPickup(toucher);
 	}
 }
