@@ -2532,6 +2532,13 @@ class Nazi : Base
 		return damageamt; // Function returns amount of damage received by the actor
 	}
 
+	override bool OkayToSwitchTarget(Actor other)
+	{
+		if (bFriendly == other.bFriendly && species == other.species .. "Tank") { return false; }
+		
+		return Super.OkayToSwitchTarget(other);
+	}
+
 	// Handling for alerting sneakable actors
 	void BecomeAlerted(Actor newtarget = null)
 	{

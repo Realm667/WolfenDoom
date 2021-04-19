@@ -98,7 +98,6 @@ class ScreenLabelHandler : EventHandler
 
 		if (i < handler.ScreenLabelItems.Size())
 		{
-			console.printf("wtf");
 			handler.ScreenLabelItems[i].Destroy();
 			handler.ScreenLabelItems.Delete(i, 1);
 			handler.ScreenLabelItems.ShrinkToFit();
