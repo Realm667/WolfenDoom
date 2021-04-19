@@ -119,12 +119,20 @@ class ScreenLabelHandler : EventHandler
 
 		for (int i = 0; i < ScreenLabelItems.Size(); i++)
 		{
-			if (!ScreenLabelItems[i] || !ScreenLabelItems[i].mo || (Inventory(ScreenLabelItems[i].mo) && Inventory(ScreenLabelItems[i].mo).owner)) { continue; }
+			if (
+				!ScreenLabelItems[i] || 
+				!ScreenLabelItems[i].mo || 
+				ScreenLabelItems[i].mo.bDormant ||
+				(
+					Inventory(ScreenLabelItems[i].mo) && 
+					Inventory(ScreenLabelItems[i].mo).owner
+				)
+			) { continue; }
 
 			Actor mo = ScreenLabelItems[i].mo;
 
 			double dist = Level.Vec3Diff(e.viewpos, mo.pos).Length();
-			double alpha = 1.0;
+			double alpha = ScreenLabelItems[i].alpha;
 
 			if (dist > 768) { continue; }
 			if (dist > 256) { alpha = 1.0 - (dist - 256) / 512; }
@@ -148,7 +156,7 @@ class ScreenLabelHandler : EventHandler
 				if (image) { imagedimensions = TexMan.GetScaledSize(image) * vid_scalefactor; }
 			}
 
-			// Get text content in order to caluculate frame size
+			// Get text content in order to calculate frame size
 			String text = StringTable.Localize(ScreenLabelItems[i].text);
 			BrokenLines lines = SmallFont.BreakLines(text, int(48 * SmallFont.StringWidth(" ")));
 
@@ -174,7 +182,7 @@ class ScreenLabelHandler : EventHandler
 			lineheight /= dist / 512;
 			
 			color clr = ScreenLabelItems[i].clr;
-			double bgalpha = ScreenLabelItems[i].alpha * alpha * 0.5;
+			double bgalpha = alpha * 0.5;
 
 			double textheight = max(max(lines.Count() * lineheight, dimensions.y), imagedimensions.y);
 			double textwidth = 100 * textscale;
@@ -212,9 +220,7 @@ class ScreenLabelHandler : EventHandler
 				drawpos.y -= imagedimensions.y / 2;
 
 				color clr = ScreenLabelItems[i].clr;
-				double alpha = ScreenLabelItems[i].alpha * alpha;
-
-				screen.DrawTexture (image, true, drawpos.x, drawpos.y, DTA_DestWidthF, imagedimensions.x, DTA_DestHeightF, imagedimensions.y, DTA_CenterOffset, true);
+				screen.DrawTexture (image, true, drawpos.x, drawpos.y, DTA_DestWidthF, imagedimensions.x, DTA_DestHeightF, imagedimensions.y, DTA_CenterOffset, true, DTA_Alpha, alpha);
 			}
 
 			// Draw the text
