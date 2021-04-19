@@ -117,7 +117,7 @@ function str GetKeyMessage(str message, str key)
 {
 	message = StrParam(l:message);
 
-	if (key != 0)
+	if (key != 0 && StrLen(key) > 0)
 	{
 		key = StrParam(s:key);
 		str bind = StrParam(k:key);
