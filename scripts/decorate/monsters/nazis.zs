@@ -2540,7 +2540,7 @@ class WGuard_Wounded : Nazi //ozy81
 	{
 	Spawn:
 		GRD2 O 0;
-		"####" "#" A_RemoveChildren;
+		"####" "#" 0 A_RemoveChildren();
 		Goto Spawn.Loop;
 	Spawn.Loop:
 		"####" O 150 { A_Look(); user_count4 = 0; }
@@ -2617,7 +2617,7 @@ class Guard_Wounded : WGuard_Wounded
 	{
 	Spawn:
 		GARD O 0;
-		"####" "#" A_RemoveChildren;
+		"####" "#" 0 A_RemoveChildren();
 		Goto Spawn.Loop;
 	}
 }
@@ -2646,7 +2646,7 @@ class SSGuard_Wounded : WGuard_Wounded
 	{
 	Spawn:
 		SSPG O 0;
-		"####" "#" A_RemoveChildren;
+		"####" "#" 0 A_RemoveChildren();
 		Goto Spawn.Loop;
 	}
 }
@@ -2675,7 +2675,7 @@ class Officer_Wounded : WGuard_Wounded
 	{
 	Spawn:
 		OFFI O 0;
-		"####" "#" A_RemoveChildren;
+		"####" "#" 0 A_RemoveChildren();
 		Goto Spawn.Loop;
 	}
 }
@@ -2704,7 +2704,7 @@ class SSOfficer_Wounded : WGuard_Wounded
 	{
 	Spawn:
 		SSOF O 0;
-		"####" "#" A_RemoveChildren;
+		"####" "#" 0 A_RemoveChildren();
 		Goto Spawn.Loop;
 	}
 }
@@ -2733,7 +2733,7 @@ class WOfficer_Wounded : WGuard_Wounded
 	{
 	Spawn:
 		OFR2 O 0;
-		"####" "#" A_RemoveChildren;
+		"####" "#" 0 A_RemoveChildren();
 		Goto Spawn.Loop;
 	}
 }
