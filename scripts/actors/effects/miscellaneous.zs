@@ -46,6 +46,7 @@ class EffectGiver : EffectSpawner
 
 	override bool CanCollideWith(Actor other, bool passive)
 	{
+		if (!Activators.Size() && switchcvar && !switchcvar.GetBool()) { return false; }
 		if (other.player && Activators.Find(other) == Activators.Size()) { Activators.Push(other); return true; }
 
 		return false;		
@@ -53,7 +54,21 @@ class EffectGiver : EffectSpawner
 
 	override void Tick()
 	{
-		if (!bDormant && level.time % 5 == 0)
+		if (Activators.Size() && switchcvar && !switchcvar.GetBool())
+		{
+			for (int i = 0; i < Activators.Size(); i++)
+			{
+				Actor mo = Activators[i];
+
+				if (mo && mo is "PlayerPawn")
+				{
+					ShaderControl control = ShaderControl(mo.FindInventory(controlclass));
+					if (control) { control.amount = 1; }
+					Activators.Delete(i);
+				}
+			}
+		}
+		else if (!bDormant && level.time % 5 == 0)
 		{
 			for (int i = 0; i < Activators.Size(); i++)
 			{
