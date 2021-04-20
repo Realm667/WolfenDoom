@@ -222,7 +222,7 @@ class NaziMedic : NaziStandard
 	{
 		if (source && source is "MovingTrailBeam") { source = source.master; } // Attribute damage to the owner of any lightning beam
 
-		if (bNoDamage && source && source.player)
+		if (bNoDamage && source && source.player || source is "PlayerFollower")
 		{
 			if (!surrendered)
 			{
