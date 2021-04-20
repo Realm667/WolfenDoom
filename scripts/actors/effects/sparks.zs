@@ -329,9 +329,17 @@ class SparkSpawnerBase : EffectSpawner
 		String sparktype = "Spark" .. sparkcolor;
 
 		int delay = 0;
-		if (manager) { delay = manager.tickdelay; }
+		if (manager)
+		{
+			delay = manager.GetDelay(chunkx, chunky);
 
-		for (int s = 0; s < 32 - (3 * delay); s++)
+			if (manager.effectmanager && manager.effectmanager.effectblocks[chunkx][chunky])
+			{
+				delay = int(2 * delay * manager.effectmanager.effectblocks[chunkx][chunky].cullinterval);
+			}
+		}
+
+		for (int s = 0; s < 32 - delay; s++)
 		{
 			if (args[0] == 0) { A_SpawnProjectile(sparktype,0,0,random(0,360),CMF_AIMDIRECTION,random(-67,-113)); } // Up
 			else if (args[0] == 1) { A_SpawnProjectile(sparktype,0,0,random(0,360),CMF_AIMDIRECTION,random(67,113)); } // Down
@@ -439,7 +447,7 @@ class AstroDroneBall : Actor
 
 	void SpawnSpark()
 	{
-		if (curState && manager) { tics = curState.tics + manager.tickdelay; }
+		if (curState && manager) { tics = curState.tics + manager.GetDelay(0, 0, self); }
 
 		A_SpawnItemEx("SparkG", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE);
 	}
@@ -498,7 +506,7 @@ class AstroRocket : Actor
 
 	void SpawnSpark()
 	{
-		if (curState && manager) { tics = curState.tics + manager.tickdelay; }
+		if (curState && manager) { tics = curState.tics + manager.GetDelay(0, 0, self); }
 
 		A_SpawnItemEx("SparkG", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE);
 	}

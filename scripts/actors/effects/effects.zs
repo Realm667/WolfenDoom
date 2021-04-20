@@ -61,7 +61,7 @@ class EffectBlock
 		row = clamp(row, 0, maxval);
 		col = clamp(col, 0, maxval);
 
-		return row, col;
+		return col, row;
 	}
 }
 
@@ -454,6 +454,7 @@ class EffectSpawner : SwitchableDecoration
 	String switchvar;
 	int range;
 	bool user_unmanaged;
+	int chunkx, chunky;
 
 	int flags;
 
@@ -485,6 +486,8 @@ class EffectSpawner : SwitchableDecoration
 
 		manager = ParticleManager.GetManager();
 		if (!manager) { return; }
+
+		[chunkx, chunky] = EffectBlock.GetBlock(pos.x, pos.y);
 
 		if (user_unmanaged)
 		{
@@ -523,7 +526,7 @@ class EffectSpawner : SwitchableDecoration
 	{
 		if (!bAllowTickDelay || !manager) { return; }
 
-		tics += curState.tics + manager.tickdelay;
+		tics += curState.tics + manager.GetDelay(chunkx, chunky);
 	}
 }
 

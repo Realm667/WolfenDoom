@@ -483,7 +483,7 @@ class DecorationShip : SwitchableDecoration
 
 	void SpawnEffect()
 	{
-		tics = curState.tics + manager.tickdelay;
+		tics = curState.tics + manager.GetDelay(0, 0, self);
 
 		A_SpawnItemEx("DecorationShip_Steam", -32, -5, -1);
 		A_SpawnItemEx("DecorationShip_Steam", -32, 5, -1);

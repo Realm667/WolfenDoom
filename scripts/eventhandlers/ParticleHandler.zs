@@ -11,7 +11,8 @@ class ParticleManager : EventHandler
 	int maxparticles, maxblood, maxdebris, maxflatdecals;
 	int tickdelay;
 	double particlescaling;
-
+	EffectsManager effectmanager;
+	
 	override void OnRegister()
 	{
 		maxparticlescvar = CVar.FindCVar("boa_maxparticleactors");
@@ -120,5 +121,32 @@ class ParticleManager : EventHandler
 		}
 
 		input.Move(t);
+	}
+
+	int GetDelay(int chunkx, int chunky, Actor origin = null)
+	{
+		if (!effectmanager) { effectmanager = EffectsManager.GetManager(); }
+
+		if (origin)
+		{
+			[chunkx, chunky] = EffectBlock.GetBlock(origin.pos.x, origin.pos.y);
+		}
+
+		if (effectmanager && effectmanager.effectblocks[chunkx][chunky])
+		{
+			double interval = effectmanager.effectblocks[chunkx][chunky].cullinterval;
+
+			if (interval > 1)
+			{
+				int maxinterval = clamp(boa_cullrange, 1024, 8192) / CHUNKSIZE;
+				double delayfactor = interval / maxinterval;
+				delayfactor = delayfactor ** 2 * interval;
+
+				return int(tickdelay * delayfactor);
+			}
+			else {return 0; }
+		}
+
+		return tickdelay;
 	}
 }

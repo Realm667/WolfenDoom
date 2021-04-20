@@ -70,7 +70,7 @@ class FireSpawner : HeatEffectGiver
 
 	override void SpawnEffect()
 	{
-		if (bAllowTickDelay && manager) { tics = curState.tics + manager.tickdelay; } // Double tickdelay for these spawners
+		if (bAllowTickDelay && manager) { tics = curState.tics + manager.GetDelay(chunkx, chunky); } // Double tickdelay for these spawners
 
 		if (switchcvar)
 		{
