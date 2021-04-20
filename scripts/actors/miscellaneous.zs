@@ -375,3 +375,36 @@ class Appendage : Actor
 		return 0;
 	}
 }
+
+class ScreenLabel : SimpleActor
+{
+	String user_text, user_icon;
+
+	Default
+	{
+		//$Category Misc (BoA)
+		//$Title Screen Label
+		//$Arg0 Use user_text and user_icon
+		+INVISIBLE
+		+NOINTERACTION
+		Height 0;
+		Radius 0;
+	}
+
+	States
+	{
+		Spawn:
+			AMRK A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		ScreenLabelHandler handler = ScreenLabelHandler(EventHandler.Find("ScreenLabelHandler"));
+		if (!handler) { return; }
+
+		handler.AddItem(self, user_icon, user_text, 0xFFFFFF, 0.8);
+	}
+}

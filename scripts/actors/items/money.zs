@@ -20,14 +20,12 @@
  * SOFTWARE.
 **/
 
-class CoinItem : StackableInventory {
-	// Can be activated/deactivated and/or set dormant to prevent player from picking it up.
-	// Inheriting from StackableInventory prevents player from picking it up if player is maxed out on it.
-
-	bool AllowPickup;
-	bool despawn;
-
-	Default {
+// Can be activated/deactivated and/or set dormant to prevent player from picking it up.
+// Inheriting from StackableInventory prevents player from picking it up if player is maxed out on it.
+class CoinItem : StackableInventory
+{
+	Default
+	{
 		Inventory.MaxAmount 9999;
 		Tag "Money";
 		+COUNTITEM
@@ -37,38 +35,42 @@ class CoinItem : StackableInventory {
 
 	override void Activate(Actor activator)
 	{
-		AllowPickup = true;
+		bDormant = false;
+
+		if (Default.bCountItem && !bCountItem)
+		{
+			level.total_items++;
+			bCountItem = true;
+		}
+
+		if (Default.bCountSecret && !bCountSecret)
+		{
+			level.total_secrets++;
+			bCountSecret = true;
+		}
+
 		Super.Activate(activator);
 	}
 
 	override void Deactivate(Actor activator)
 	{
-		AllowPickup = false;
+		bDormant = true;
+		ClearCounters();
 		Super.Deactivate(activator);
 	}
 
 	override void BeginPlay()
 	{
 		Super.BeginPlay();
-		AllowPickup = !(SpawnFlags & MTF_DORMANT);
+
+		bDormant = SpawnFlags & MTF_DORMANT;
+		if (bDormant) { ClearCounters(); }
 	}
 
 	override bool CanPickup(Actor toucher)
 	{
-		if (AllowPickup) return Super.CanPickup(toucher);
+		if (!bDormant) return Super.CanPickup(toucher);
 		return false;
-	}
-
-	override void Tick()
-	{
-		if (bCountItem != AllowPickup)
-		{
-			bCountItem = AllowPickup;
-
-			level.total_items += bCountItem ? 1 : -1;
-		}
-
-		Super.Tick();
 	}
 }
 
