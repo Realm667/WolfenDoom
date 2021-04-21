@@ -90,7 +90,7 @@ class ParticleManager : EventHandler
 			particlescaling = max(0.1, 1.0 - (tickdelay / 10));
 
 			// Debug output: particle queue size and current tick delay
-			//if (level.time % 35 == 0) { console.printf("%i  >> %i", size, tickdelay); }
+			if (boa_debugparticles && level.time % 35 == 0) { console.printf("%i of %i particles, %i tick delay", size, maxparticles, tickdelay); }
 		}
 	}
 

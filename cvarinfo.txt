@@ -102,3 +102,11 @@ user float boa_mblur_strength = 64;
 user float boa_mblur_threshold = 30;
 user int boa_mblur_blendmode = 1;
 user int boa_mblur_samples = 5;
+
+// Developer tools
+server bool boa_debugvoiceovers = false;	// Prints message if a message has no corresponding audio file
+server bool boa_debugalarms = false;		// Highlights selected activator of an alarm panel with green light
+server bool boa_debugparticles = false;		// Prints particle count and current tick delay value once every second
+server bool boa_debugholdinventory = false;	// Prints list of restored inventory items for InventoryHolder actor
+server bool boa_debugsafes = false;		// Prints safe combinations to console when they are activated
+server bool boa_debugtankintercepts = false;	// Shows a sprite at tank aim/intercept target spots

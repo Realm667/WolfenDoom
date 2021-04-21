@@ -1047,15 +1047,6 @@ class BoAStatusBar : BaseStatusBar
 
 			if (crosshairtarget.bShootable && crosshairtarget.health > 0)
 			{
-/*
-				if (developer)
-				{
-					Actor t = Base(crosshairtarget);
-					String info = t.GetClassName() .. "\nHealth: " .. t.health .. "\nSpecies: " .. t.species;
-					Screen.DrawText(SmallFont, Font.CR_White, Screen.GetWidth() / 2, Screen.GetHeight() / 2 + 16, info, DTA_Alpha, 0.25);
-				}
-*/
-
 				if (Base(crosshairtarget) && Base(crosshairtarget).user_targetcrosshair && CPlayer.ReadyWeapon.DamageType != "Melee")
 				{
 					size *= 1.25 - clamp(CPlayer.fov / 90.0 * CPlayer.mo.Distance3D(crosshairtarget) / 2048.0, 0.0, 0.75);

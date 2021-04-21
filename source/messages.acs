@@ -255,7 +255,7 @@ script "FollowerMessage" (int type, int count)
 	messagestr = StrParam(l:message);
 	if (messagestr == message)
 	{
-		if (GetCVar("developer")) { Log(s:"\cgMissing voiceover: \cjCheck SNDINFO entry and audio file for \cf", s:message, s:"\cj! Falling back to \cf", s:StrParam(s:"FOLLOWER", l:messagetype), s:"\cj."); }
+		if (GetCVar("boa_debugvoiceovers")) { Log(s:"\cgMissing voiceover: \cjCheck SNDINFO entry and audio file for \cf", s:message, s:"\cj! Falling back to \cf", s:StrParam(s:"FOLLOWER", l:messagetype), s:"\cj."); }
 		// If not found, fall back to the generic messages
 		message = StrParam(s:"FOLLOWER", l:messagetype);
 		messagestr = StrParam(l:message);

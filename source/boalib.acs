@@ -67,7 +67,7 @@ function bool PlayMessageSound(int tid, int message)
 
 	if (!hasSound || soundLength == 0)
 	{
-		if (GetCVar("developer")) { Log(s:"\cgMissing voiceover: \cjCheck SNDINFO entry and audio file for \cf", s:message, s:"\cj!"); }
+		if (GetCVar("boa_debugvoiceovers")) { Log(s:"\cgMissing voiceover: \cjCheck SNDINFO entry and audio file for \cf", s:message, s:"\cj!"); }
 
 		return false;
 	}

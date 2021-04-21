@@ -205,14 +205,13 @@ class TankInterceptTarget : Actor
 		EXCL A -1;
 		Stop;
 	}
-/*
+
 	override void Tick()
 	{
 		Super.Tick();
 
-		bInvisible = !developer;
+		bInvisible = !boa_debugtankintercepts;
 	}
-*/
 }
 
 // Same as NebNuke, but does not spawn NebBoom and cause explosion damage; moved from panzers.txt --N00b

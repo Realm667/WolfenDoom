@@ -804,7 +804,7 @@ class InventoryHolder play
 		for (int i = heldItems.Size() - 1; i; i--)
 		{
 			Inventory ii = heldItems[i];
-			if (developer)
+			if (boa_debugholdinventory)
 			{
 				Console.Printf("Attempting to restore %s...", itemTypeNames[i]);
 			}
