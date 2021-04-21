@@ -89,7 +89,7 @@ class EffectsManager : Thinker
 		if (!effect) { return; }
 		if (!force)
 		{
-			if (effect.tid || effect.master) { return; } // Don't add effects with a tid or a master, because we can't guarantee they'll be spawned back in when they are activated/deactivated
+			if (effect.tid || (effect.master && !(effect is "DebrisBase"))) { return; } // Don't add effects with a tid or a master, because we can't guarantee they'll be spawned back in when they are activated/deactivated
 			if (!effect.bNoDamage && effect.bSolid && !effect.bNoInteraction) { return; } // Only add non-solid or non-interactive objects
 		}
 

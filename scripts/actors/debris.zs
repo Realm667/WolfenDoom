@@ -164,7 +164,7 @@ class Debris : Actor
 	}
 }
 
-class DebrisBase : StaticActor
+class DebrisBase : SceneryBase
 {
 	int variants;
 	int user_variant;
@@ -196,20 +196,23 @@ class DebrisBase : StaticActor
 
 	override void PostBeginPlay()
 	{
-		if (user_variant) { frame = user_variant; }
-		else { frame = Random(0, variants - 1); }
-
-		maxscale = 1.5;
-
-		if (master)
+		if (!wasculled)
 		{
-			double dist = Distance2D(master);
+			if (user_variant) { frame = user_variant; }
+			else { frame = Random(0, variants - 1); }
 
-			pitch = -atan((master.pos.z + master.Height - pos.z) / dist) + FRandom(-5, 15);
-			roll = Random(-30, 30);
-			angle = AngleTo(master) + Random(-35, 35);
+			maxscale = 1.5;
 
-			maxscale = (dist * 2.5) / (Radius * scale.x);
+			if (master)
+			{
+				double dist = Distance2D(master);
+
+				pitch = -atan((master.pos.z + master.Height - pos.z) / dist) + FRandom(-5, 15);
+				roll = Random(-30, 30);
+				angle = AngleTo(master) + Random(-35, 35);
+
+				maxscale = (dist * 2.5) / (Radius * scale.x);
+			}
 		}
 
 		Super.PostBeginPlay();
@@ -320,7 +323,7 @@ class DebrisPipe : DebrisBase
 	{
 		Super.PostBeginPlay();
 
-		scale *= FRandom(0.5, maxscale);
+		if (!wasculled) { scale *= FRandom(0.5, maxscale); }
 	}
 }
 
@@ -339,8 +342,11 @@ class DebrisBeam : DebrisBase
 	{
 		Super.PostBeginPlay();
 
-		scale.x *= FRandom(0.75, maxscale);
-		scale.y *= FRandom(0.5, maxscale);
+		if (!wasculled)
+		{
+			scale.x *= FRandom(0.75, maxscale);
+			scale.y *= FRandom(0.5, maxscale);
+		}
 	}
 }
 
@@ -359,7 +365,7 @@ class DebrisGirder : DebrisBase
 	{
 		Super.PostBeginPlay();
 
-		scale *= FRandom(0.5, min(maxscale, 2.5));
+		if (!wasculled) { scale *= FRandom(0.5, min(maxscale, 2.5)); }
 	}
 }
 

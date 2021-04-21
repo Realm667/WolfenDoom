@@ -115,7 +115,7 @@ class CombinationSafe : BoAMenu
 			}
 		}
 
-//		if (developer) { console.printf("%i %i %i", solution[0], solution[1], solution[2]); }
+		if (boa_debugsafes) { console.printf("%i %i %i", solution[0], solution[1], solution[2]); }
 
 		DontDim = true;
 		menuactive = OnNoPause;

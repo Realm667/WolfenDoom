@@ -3546,7 +3546,7 @@ class ConversationMarker : Actor
 	}
 }
 
-class ModelBase : Actor
+class ModelBase : SceneryBase
 {
 	mixin GiveBuoyancy;
 
@@ -3568,7 +3568,7 @@ class ModelBase : Actor
 
 	override void PostBeginPlay()
 	{
-		A_SetSize(radius * scale.x / Default.scale.x, height * scale.y / Default.scale.y); // If the actor is scaled from default, adjust the actual size of the actor
+		if (!wasculled) { A_SetSize(radius * scale.x / Default.scale.x, height * scale.y / Default.scale.y); } // If the actor is scaled from default, adjust the actual size of the actor
 
 		Super.PostBeginPlay();
 	}
