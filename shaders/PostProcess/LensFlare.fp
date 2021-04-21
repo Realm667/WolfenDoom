@@ -27,8 +27,7 @@ void main()
 		fsrc = texture(InputTexture, tc);
 		fc += vec4(fsrc.rgb, 1.0);
 	}
-	
-	
+
 	size = 0.35;
 	for(int i = 0; i < samples; i ++)
 	{
@@ -88,7 +87,6 @@ void main()
 	fc = fc/(samples*3);
 	fc = fc-threshold;
 	fc = clamp(fc,0.0,1000000.0);
-	
 	
 	FragColor = vec4(c + (fc * vec4(0.8, 0.8, 1.0, 1.0))*amount);
 }
