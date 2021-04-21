@@ -74,7 +74,7 @@ class BasicGuard : NaziStandard
 		"####" M 1 A_FadeOut(0.005,FTF_REMOVE);
 		Loop;
 	Death.Alt1:
-		"####" "#" 0 A_SpawnItemEx("Guard_Wounded_NoCount", flags: SXF_ISMASTER);
+		"####" "#" 0 A_SpawnItemEx("Guard_Wounded_NoCount", flags: SXF_SETMASTER);
 		"####" "#" -1; // In case A_SpawnItemEx fails
 		Stop;
 	}
@@ -223,7 +223,7 @@ class SSGuard : BasicGuard
 		"####" A 0 A_Look;
 		Loop;
 	Death.Alt1:
-		"####" "#" 0 A_SpawnItemEx("SSGuard_Wounded_NoCount", flags: SXF_ISMASTER);
+		"####" "#" 0 A_SpawnItemEx("SSGuard_Wounded_NoCount", flags: SXF_SETMASTER);
 		"####" "#" -1;
 		Stop;
 	Death.Front:
@@ -295,7 +295,7 @@ class WGuard : BasicGuard
 		"####" F 8;
 		Goto See;
 	Death.Alt1:
-		"####" "#" 0 A_SpawnItemEx("WGuard_Wounded_NoCount", flags: SXF_ISMASTER);
+		"####" "#" 0 A_SpawnItemEx("WGuard_Wounded_NoCount", flags: SXF_SETMASTER);
 		"####" "#" -1;
 		Stop;
 	Death.Front:
@@ -930,7 +930,7 @@ class Officer : BasicGuard
 		"####" F 0 A_Jump(256,"See");
 		Stop;
 	Death.Alt1:
-		"####" "#" 0 A_SpawnItemEx("Officer_Wounded_NoCount", flags: SXF_ISMASTER);
+		"####" "#" 0 A_SpawnItemEx("Officer_Wounded_NoCount", flags: SXF_SETMASTER);
 		"####" "#" -1;
 		Stop;
 	Death.Front:
@@ -1010,7 +1010,7 @@ class SSOfficer : Officer
 		"####" F 0 A_Jump(256,"See");
 		Stop;
 	Death.Alt1:
-		"####" "#" 0 A_SpawnItemEx("SSOfficer_Wounded_NoCount", flags: SXF_ISMASTER);
+		"####" "#" 0 A_SpawnItemEx("SSOfficer_Wounded_NoCount", flags: SXF_SETMASTER);
 		"####" "#" -1;
 		Stop;
 	Death.Front:
@@ -1107,7 +1107,7 @@ class WOfficer : Officer
 		"####" F 0 A_Jump(256,"See");
 		Stop;
 	Death.Alt1:
-		"####" "#" 0 A_SpawnItemEx("WOfficer_Wounded_NoCount", flags: SXF_ISMASTER);
+		"####" "#" 0 A_SpawnItemEx("WOfficer_Wounded_NoCount", flags: SXF_SETMASTER);
 		"####" "#" -1;
 		Stop;
 	Death.Front:
@@ -2540,7 +2540,7 @@ class WGuard_Wounded : Nazi //ozy81
 	{
 	Spawn:
 		GRD2 O 0;
-		"####" "#" 0 A_RemoveChildren();
+		"####" "#" 0 A_RemoveMaster;
 		Goto Spawn.Loop;
 	Spawn.Loop:
 		"####" O 150 { A_Look(); user_count4 = 0; }
@@ -2617,7 +2617,7 @@ class Guard_Wounded : WGuard_Wounded
 	{
 	Spawn:
 		GARD O 0;
-		"####" "#" 0 A_RemoveChildren();
+		"####" "#" 0 A_RemoveMaster;
 		Goto Spawn.Loop;
 	}
 }
@@ -2646,7 +2646,7 @@ class SSGuard_Wounded : WGuard_Wounded
 	{
 	Spawn:
 		SSPG O 0;
-		"####" "#" 0 A_RemoveChildren();
+		"####" "#" 0 A_RemoveMaster;
 		Goto Spawn.Loop;
 	}
 }
@@ -2675,7 +2675,7 @@ class Officer_Wounded : WGuard_Wounded
 	{
 	Spawn:
 		OFFI O 0;
-		"####" "#" 0 A_RemoveChildren();
+		"####" "#" 0 A_RemoveMaster;
 		Goto Spawn.Loop;
 	}
 }
@@ -2704,7 +2704,7 @@ class SSOfficer_Wounded : WGuard_Wounded
 	{
 	Spawn:
 		SSOF O 0;
-		"####" "#" 0 A_RemoveChildren();
+		"####" "#" 0 A_RemoveMaster;
 		Goto Spawn.Loop;
 	}
 }
@@ -2733,7 +2733,7 @@ class WOfficer_Wounded : WGuard_Wounded
 	{
 	Spawn:
 		OFR2 O 0;
-		"####" "#" 0 A_RemoveChildren();
+		"####" "#" 0 A_RemoveMaster;
 		Goto Spawn.Loop;
 	}
 }
