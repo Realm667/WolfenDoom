@@ -362,9 +362,9 @@ class BloodDrop1 : ParticleBase
 	States
 	{
 	Spawn:
-		DLUD A 1 NODELAY { alpha = GetCVar("boa_blood_alpha"); }
+		DLUD A 1 NODELAY { alpha = boa_blood_alpha; }
 		TNT1 A 0 A_ScaleVelocity(0.75);
-		TNT1 A 0 A_ScaleVelocity(GetCVar("boa_blood_rand"));
+		TNT1 A 0 A_ScaleVelocity(boa_blood_rand);
 		TNT1 A 0 A_JumpIf(waterlevel > 0, "Underwater");
 		Goto Fall;
 	Fall:
@@ -381,14 +381,14 @@ class BloodDrop1 : ParticleBase
 		TNT1 A 0 A_JumpIf(CallACS("LiquidCheck"),"Fog");
 		TNT1 A 0 A_SetAngle(frandom(0.0,360.0));
 		TNT1 A 0 A_Jump(128, 2);
-		SPLT F 1 A_SetScale(1.2 * GetCVar("boa_blood_size"),0.1);
+		SPLT F 1 A_SetScale(1.2 * boa_blood_size,0.1);
 		Goto Splat;
-		SPLT G 1 A_SetScale(1.2 * GetCVar("boa_blood_size"),0.1);
+		SPLT G 1 A_SetScale(1.2 * boa_blood_size,0.1);
 	Splat:
-		"####" "#" 1 A_SetScale(1.7 * GetCVar("boa_blood_size"),0.1);
-		"####" "#" 1 A_SetScale(2.4 * GetCVar("boa_blood_size"),0.1);
-		"####" "#" 1 A_SetScale(3.3 * GetCVar("boa_blood_size"),0.1);
-		"####" "#" 1 A_SetScale(frandom(4.66,6.0) * GetCVar("boa_blood_size"),0.1);
+		"####" "#" 1 A_SetScale(1.7 * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(2.4 * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(3.3 * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(frandom(4.66,6.0) * boa_blood_size,0.1);
 		"####" "#" 0 A_QueueCorpse;
 		"####" "#" -1;
 	Underwater:
@@ -424,14 +424,14 @@ class DecoDroplet : BloodDrop1
 		TNT1 A 0 A_JumpIf(CallACS("LiquidCheck"),"Fog");
 		TNT1 A 0 A_SetAngle(frandom(0.0,360.0));
 		TNT1 A 0 A_Jump(128, 2);
-		SPLT F 1 A_SetScale(1.2 * GetCVar("boa_blood_size"),0.1);
+		SPLT F 1 A_SetScale(1.2 * boa_blood_size,0.1);
 		Goto Splat;
-		SPLT G 1 A_SetScale(1.2 * GetCVar("boa_blood_size"),0.1);
+		SPLT G 1 A_SetScale(1.2 * boa_blood_size,0.1);
 	Splat:
-		"####" "#" 1 A_SetScale(1.7 * GetCVar("boa_blood_size"),0.1);
-		"####" "#" 1 A_SetScale(2.4 * GetCVar("boa_blood_size"),0.1);
-		"####" "#" 1 A_SetScale(3.3 * GetCVar("boa_blood_size"),0.1);
-		"####" "#" 1 A_SetScale(frandom(4.66,6.0) * GetCVar("boa_blood_size"),0.1);
+		"####" "#" 1 A_SetScale(1.7 * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(2.4 * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(3.3 * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(frandom(4.66,6.0) * boa_blood_size,0.1);
 		"####" "#" 0 A_QueueCorpse;
 		Goto Cleanup;
 	Fog:
@@ -455,8 +455,8 @@ class BloodDrop2 : BloodDrop1
 	States
 	{
 	Spawn:
-		DLUD A 1 NODELAY { alpha = GetCVar("boa_blood_alpha"); }
-		TNT1 A 0 A_ScaleVelocity(GetCVar("boa_blood_rand"));
+		DLUD A 1 NODELAY { alpha = boa_blood_alpha; }
+		TNT1 A 0 A_ScaleVelocity(boa_blood_rand);
 		TNT1 A 0 A_JumpIf(waterlevel > 0, "Underwater");
 		Goto Fall;
 	Fall:
@@ -472,14 +472,14 @@ class BloodDrop2 : BloodDrop1
 		TNT1 A 0 A_JumpIf(CallACS("LiquidCheck"),"Fog");
 		TNT1 A 0 A_SetAngle(frandom(0.0,360.0));
 		TNT1 A 0 A_Jump(128, 2);
-		SPLT F 1 A_SetScale(0.69 * GetCVar("boa_blood_size"),0.1);
+		SPLT F 1 A_SetScale(0.69 * boa_blood_size,0.1);
 		Goto Splat;
-		SPLT G 1 A_SetScale(0.69 * GetCVar("boa_blood_size"),0.1);
+		SPLT G 1 A_SetScale(0.69 * boa_blood_size,0.1);
 	Splat:
-		"####" "#" 1 A_SetScale(0.97 * GetCVar("boa_blood_size"),0.1);
-		"####" "#" 1 A_SetScale(1.36 * GetCVar("boa_blood_size"),0.1);
-		"####" "#" 1 A_SetScale(1.9 * GetCVar("boa_blood_size"),0.1);
-		"####" "#" 1 A_SetScale(frandom(2.66,4.0) * GetCVar("boa_blood_size"),0.1);
+		"####" "#" 1 A_SetScale(0.97 * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(1.36 * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(1.9 * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(frandom(2.66,4.0) * boa_blood_size,0.1);
 		"####" "#" 0 A_QueueCorpse;
 		"####" "#" -1;
 	Underwater:
@@ -513,14 +513,14 @@ class DecoDrop2 : BloodDrop2
 
 		TNT1 A 0 A_SetAngle(frandom(0.0,360.0));
 		TNT1 A 0 A_Jump(128, 2);
-		SPLT F 1 A_SetScale(0.69 * GetCVar("boa_blood_size"),0.1);
+		SPLT F 1 A_SetScale(0.69 * boa_blood_size,0.1);
 		Goto Splat;
-		SPLT G 1 A_SetScale(0.69 * GetCVar("boa_blood_size"),0.1);
+		SPLT G 1 A_SetScale(0.69 * boa_blood_size,0.1);
 	Splat:
-		"####" "#" 1 A_SetScale(0.97 * GetCVar("boa_blood_size"),0.1);
-		"####" "#" 1 A_SetScale(1.36 * GetCVar("boa_blood_size"),0.1);
-		"####" "#" 1 A_SetScale(1.9 * GetCVar("boa_blood_size"),0.1);
-		"####" "#" 1 A_SetScale(frandom(2.66,4.0) * GetCVar("boa_blood_size"),0.1);
+		"####" "#" 1 A_SetScale(0.97 * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(1.36 * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(1.9 * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(frandom(2.66,4.0) * boa_blood_size,0.1);
 		"####" "#" 0 A_QueueCorpse;
 		Goto Cleanup;
 	Fog:
@@ -544,9 +544,9 @@ class BloodDrop3 : BloodDrop1
 	States
 	{
 	Spawn:
-		DLUD A 1 NODELAY { alpha = GetCVar("boa_blood_alpha"); }
+		DLUD A 1 NODELAY { alpha = boa_blood_alpha; }
 		TNT1 A 0 A_ScaleVelocity(1.25);
-		TNT1 A 0 A_ScaleVelocity(GetCVar("boa_blood_rand"));
+		TNT1 A 0 A_ScaleVelocity(boa_blood_rand);
 		TNT1 A 0 A_JumpIf(waterlevel > 0, "Underwater");
 		Goto Fall;
 	Fall:
@@ -561,14 +561,14 @@ class BloodDrop3 : BloodDrop1
 		TNT1 A 0 A_JumpIf(CallACS("LiquidCheck"),"Fog");
 		TNT1 A 0 A_SetAngle(frandom(0.0,360.0));
 		TNT1 A 0 A_Jump(128, 2);
-		SPLT F 1 A_SetScale(0.17 * GetCVar("boa_blood_size"),0.1);
+		SPLT F 1 A_SetScale(0.17 * boa_blood_size,0.1);
 		Goto Splat;
-		SPLT G 1 A_SetScale(0.17 * GetCVar("boa_blood_size"),0.1);
+		SPLT G 1 A_SetScale(0.17 * boa_blood_size,0.1);
 	Splat:
-		"####" "#" 1 A_SetScale(0.24 * GetCVar("boa_blood_size"),0.1);
-		"####" "#" 1 A_SetScale(0.34 * GetCVar("boa_blood_size"),0.1);
-		"####" "#" 1 A_SetScale(0.47 * GetCVar("boa_blood_size"),0.1);
-		"####" "#" 1 A_SetScale(frandom(0.66,2.0) * GetCVar("boa_blood_size"),0.1);
+		"####" "#" 1 A_SetScale(0.24 * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(0.34 * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(0.47 * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(frandom(0.66,2.0) * boa_blood_size,0.1);
 		"####" "#" 0 A_QueueCorpse;
 		"####" "#" -1;
 	Underwater:
@@ -600,14 +600,14 @@ class DecoDrop3 : BloodDrop3
 		TNT1 A 0 A_JumpIf(CallACS("LiquidCheck"),"Fog");
 		TNT1 A 0 A_SetAngle(frandom(0.0,360.0));
 		TNT1 A 0 A_Jump(128, 2);
-		SPLT F 1 A_SetScale(0.17 * GetCVar("boa_blood_size"),0.1);
+		SPLT F 1 A_SetScale(0.17 * boa_blood_size,0.1);
 		Goto Splat;
-		SPLT G 1 A_SetScale(0.17 * GetCVar("boa_blood_size"),0.1);
+		SPLT G 1 A_SetScale(0.17 * boa_blood_size,0.1);
 	Splat:
-		"####" "#" 1 A_SetScale(0.24 * GetCVar("boa_blood_size"),0.1);
-		"####" "#" 1 A_SetScale(0.34 * GetCVar("boa_blood_size"),0.1);
-		"####" "#" 1 A_SetScale(0.47 * GetCVar("boa_blood_size"),0.1);
-		"####" "#" 1 A_SetScale(frandom(0.66,2.0) * GetCVar("boa_blood_size"),0.1);
+		"####" "#" 1 A_SetScale(0.24 * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(0.34 * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(0.47 * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(frandom(0.66,2.0) * boa_blood_size,0.1);
 		"####" "#" 0 A_QueueCorpse;
 		Goto Cleanup;
 	Fog:
@@ -630,9 +630,9 @@ class ExcessDroplet : BloodDrop3
 	States
 	{
 	Spawn:
-		DLUD A 1 NODELAY { alpha = GetCVar("boa_blood_alpha"); }
+		DLUD A 1 NODELAY { alpha = boa_blood_alpha; }
 		TNT1 A 0 A_ScaleVelocity(1.5);
-		TNT1 A 0 A_ScaleVelocity(GetCVar("boa_blood_rand"));
+		TNT1 A 0 A_ScaleVelocity(boa_blood_rand);
 		TNT1 A 0 A_JumpIf(waterlevel > 0, "Underwater");
 		Goto Fall;
 	Fall:
@@ -682,13 +682,13 @@ class BloodHitPuff: Actor
 		}
 		BLPF AABBCCDDEE 1
 		{
-			A_SpawnItemEx("BloodDrop1",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (224-GetCVar("boa_blood_amt")*48));
+			A_SpawnItemEx("BloodDrop1",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (224-boa_blood_amt*48));
 			angle += user_angmom;
-			A_SpawnItemEx("BloodDrop2",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (160-GetCVar("boa_blood_amt")*48));
+			A_SpawnItemEx("BloodDrop2",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (160-boa_blood_amt*48));
 			angle += user_angmom;
-			A_SpawnItemEx("BloodDrop3",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (96-GetCVar("boa_blood_amt")*48));
+			A_SpawnItemEx("BloodDrop3",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (96-boa_blood_amt*48));
 			angle += user_angmom;
-			A_SpawnItemEx("ExcessDroplet",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (256-GetCVar("boa_blood_amt")*64));
+			A_SpawnItemEx("ExcessDroplet",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (256-boa_blood_amt*64));
 			angle += user_angmom;
 			user_force = (int) (0.8 * user_force);
 		}
@@ -716,11 +716,11 @@ class BloodHitPuffMid : BloodHitPuff
 		}
 		BLPF AABBCCDDEE 1
 		{
-			A_SpawnItemEx("BloodDrop2",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (160-GetCVar("boa_blood_amt")*48));
+			A_SpawnItemEx("BloodDrop2",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (160-boa_blood_amt*48));
 			angle += user_angmom;
-			A_SpawnItemEx("BloodDrop3",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (96-GetCVar("boa_blood_amt")*48));
+			A_SpawnItemEx("BloodDrop3",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (96-boa_blood_amt*48));
 			angle += user_angmom;
-			A_SpawnItemEx("ExcessDroplet",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (256-GetCVar("boa_blood_amt")*64));
+			A_SpawnItemEx("ExcessDroplet",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (256-boa_blood_amt*64));
 			angle += user_angmom;
 			user_force = (int) (0.8 * user_force);
 		}
@@ -748,9 +748,9 @@ class BloodHitPuffSmall : BloodHitPuff
 		}
 		BLPF AABBCCDDEE 1
 		{
-			A_SpawnItemEx("BloodDrop3",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (96-GetCVar("boa_blood_amt")*48));
+			A_SpawnItemEx("BloodDrop3",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (96-boa_blood_amt*48));
 			angle += user_angmom;
-			A_SpawnItemEx("ExcessDroplet",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (256-GetCVar("boa_blood_amt")*64));
+			A_SpawnItemEx("ExcessDroplet",0,0,4,(cos(angle)*user_force),(sin(angle)*user_force),(sin(pitch)*user_force),0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEVELOCITY, (int) (256-boa_blood_amt*64));
 			angle += user_angmom;
 			user_force = (int) (0.8 * user_force);
 		}
@@ -789,7 +789,7 @@ class BloodSquirt: Actor
 		{
 			A_FaceTarget(0,0,0,0,FAF_MIDDLE);
 			A_Warp(AAPTR_DEFAULT,cos(angle)*8,sin(angle)*8,sin(pitch)*8,0,WARPF_ABSOLUTEOFFSET);
-			A_SpawnItemEx("BloodHitPuff",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION, (int) (128-GetCVar("boa_blood_amt")*64));
+			A_SpawnItemEx("BloodHitPuff",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION, (int) (128-boa_blood_amt*64));
 		}
 		Stop;
 	Mid:
@@ -797,7 +797,7 @@ class BloodSquirt: Actor
 		{
 			A_FaceTarget(0,0,0,0,FAF_MIDDLE);
 			A_Warp(AAPTR_DEFAULT,cos(angle)*8,sin(angle)*8,sin(pitch)*8,0,WARPF_ABSOLUTEOFFSET);
-			A_SpawnItemEx("BloodHitPuffMid",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION, (int) (64-GetCVar("boa_blood_amt")*32));
+			A_SpawnItemEx("BloodHitPuffMid",0,0,0,0,0,0,0,SXF_TRANSFERTRANSLATION, (int) (64-boa_blood_amt*32));
 		}
 		Stop;
 	}
@@ -819,7 +819,7 @@ class CeilingDroplet : DecoDroplet
 	States
 	{
 	Spawn:
-		TNT1 A 1 NODELAY { alpha = GetCVar("boa_blood_alpha"); }
+		TNT1 A 1 NODELAY { alpha = boa_blood_alpha; }
 		DLUD C 6
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - Pos.Z - 1);
@@ -870,7 +870,7 @@ class CeilingDrop2 : DecoDrop2
 	States
 	{
 	Spawn:
-		TNT1 A 1 NODELAY { alpha = GetCVar("boa_blood_alpha"); }
+		TNT1 A 1 NODELAY { alpha = boa_blood_alpha; }
 		DLUD C 6
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - Pos.Z - 1);
@@ -920,7 +920,7 @@ class CeilingDrop3 : DecoDrop3
 	States
 	{
 	Spawn:
-		TNT1 A 1 NODELAY { alpha = GetCVar("boa_blood_alpha"); }
+		TNT1 A 1 NODELAY { alpha = boa_blood_alpha; }
 		DLUD C 6
 		{
 			A_Warp(AAPTR_DEFAULT,0,0,ceilingz - Pos.Z - 1);
@@ -979,11 +979,11 @@ class CeilDripper : ParticleBase
 		SPLT F 0 A_Jump(128, 2);
 		SPLT G 0;
 		"####" "#" 0 A_SetAngle(frandom(0.0,360.0));
-		"####" "#" 1 A_SetScale(1.3 * GetCVar("boa_blood_size"),1);
-		"####" "#" 1 A_SetScale(1.82 * GetCVar("boa_blood_size"),1);
-		"####" "#" 1 A_SetScale(2.55 * GetCVar("boa_blood_size"),1);
-		"####" "#" 1 A_SetScale(3.57 * GetCVar("boa_blood_size"),1);
-		"####" "#" 1 A_SetScale(frandom(5.0,6.0) * GetCVar("boa_blood_size"),1);
+		"####" "#" 1 A_SetScale(1.3 * boa_blood_size,1);
+		"####" "#" 1 A_SetScale(1.82 * boa_blood_size,1);
+		"####" "#" 1 A_SetScale(2.55 * boa_blood_size,1);
+		"####" "#" 1 A_SetScale(3.57 * boa_blood_size,1);
+		"####" "#" 1 A_SetScale(frandom(5.0,6.0) * boa_blood_size,1);
 		Goto Drippy;
 	Drippy:
 		"####" "######" 1 A_Warp(AAPTR_DEFAULT,0,0,ceilingz - Pos.Z - 1);
@@ -1008,11 +1008,11 @@ class CeilDrip2 : CeilDripper
 		SPLT F 0 A_Jump(128, 2);
 		SPLT G 0;
 		"####" "#" 0 A_SetAngle(frandom(0.0,360.0));
-		"####" "#" 1 A_SetScale(0.78 * GetCVar("boa_blood_size"),1);
-		"####" "#" 1 A_SetScale(1.09 * GetCVar("boa_blood_size"),1);
-		"####" "#" 1 A_SetScale(1.53 * GetCVar("boa_blood_size"),1);
-		"####" "#" 1 A_SetScale(2.14 * GetCVar("boa_blood_size"),1);
-		"####" "#" 1 A_SetScale(frandom(3.0,4.0) * GetCVar("boa_blood_size"),1);
+		"####" "#" 1 A_SetScale(0.78 * boa_blood_size,1);
+		"####" "#" 1 A_SetScale(1.09 * boa_blood_size,1);
+		"####" "#" 1 A_SetScale(1.53 * boa_blood_size,1);
+		"####" "#" 1 A_SetScale(2.14 * boa_blood_size,1);
+		"####" "#" 1 A_SetScale(frandom(3.0,4.0) * boa_blood_size,1);
 		Goto Drippy;
 	Drippy:
 		"####" "#########" 1 A_Warp(AAPTR_DEFAULT,0,0,ceilingz - Pos.Z - 1);
@@ -1037,11 +1037,11 @@ class CeilDrip3 : CeilDripper
 		SPLT F 0 A_Jump(128, 2);
 		SPLT G 0;
 		"####" "#" 0 A_SetAngle(frandom(0.0,360.0));
-		"####" "#" 1 A_SetScale(0.26 * GetCVar("boa_blood_size"),1);
-		"####" "#" 1 A_SetScale(0.36 * GetCVar("boa_blood_size"),1);
-		"####" "#" 1 A_SetScale(0.51 * GetCVar("boa_blood_size"),1);
-		"####" "#" 1 A_SetScale(0.71 * GetCVar("boa_blood_size"),1);
-		"####" "#" 1 A_SetScale(frandom(1.0,2.0) * GetCVar("boa_blood_size"),1);
+		"####" "#" 1 A_SetScale(0.26 * boa_blood_size,1);
+		"####" "#" 1 A_SetScale(0.36 * boa_blood_size,1);
+		"####" "#" 1 A_SetScale(0.51 * boa_blood_size,1);
+		"####" "#" 1 A_SetScale(0.71 * boa_blood_size,1);
+		"####" "#" 1 A_SetScale(frandom(1.0,2.0) * boa_blood_size,1);
 		Goto Drippy;
 	Drippy:
 		"####" "############" 1 A_Warp(AAPTR_DEFAULT,0,0,ceilingz - Pos.Z - 1);

@@ -187,7 +187,7 @@ class AlarmPanel : SwitchableDecoration
 					counter = 490; // Check every second after the first delay
 				}
 
-				if (GetCVar("boa_debugalarms") > 0 && activator && !marker)
+				if (boa_debugalarms > 0 && activator && !marker)
 				{
 					marker = activator.Spawn("FireBrandEffect", activator.pos);
 					marker.master = activator;
