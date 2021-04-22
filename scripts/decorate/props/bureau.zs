@@ -1294,13 +1294,16 @@ class CoffeeMachine : SwitchableDecoration
 	SpawnSet:
 		"####" A -1;
 		Stop;
+	SpawnSet2:
+		"####" C -1;
+		Stop;
 	Inactive:
 		"####" A 0 A_StopSound(CHAN_AUTO);
 		Goto SpawnSet;
 	Empty:
 		"####" A 0 A_RemoveChildren(TRUE, RMVF_MISC);
 		"####" A 0 {bUseSpecial = FALSE;}
-		Goto SpawnSet;
+		Goto SpawnSet2;
 	Death:
 		TNT1 A 0 A_StartSound("GLSBRK01", CHAN_AUTO, 0, 1.0, ATTN_NORM);
 		"####" A 0 A_RemoveChildren(TRUE, RMVF_MISC);
