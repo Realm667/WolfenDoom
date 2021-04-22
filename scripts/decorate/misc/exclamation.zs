@@ -183,12 +183,19 @@ class InteractionIcon25Health : InteractionIcon
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_CheckRange(128.0, "FadeAway", TRUE);
-		TNT1 A 0 A_JumpIf(CallACS("PlayerHealthAbove25") == 1, "FadeAway");
+		ICNI A 0 NODELAY {
+			PlayerPawn pmo = players[consoleplayer].mo;
+			if (pmo.health > 25 || Distance2D(pmo) > 128.0)
+			{
+				return ResolveState("FadeAway");
+			}
+			A_FadeIn(0.0625, FTF_CLAMP);
+			return ResolveState(null);
+		}
 		ICNI A 1 BRIGHT;
 		Loop;
 	FadeAway:
-		TNT1 A 10;
+		ICNI A 1 A_FadeOut(0.0625, FTF_CLAMP);
 		Goto Spawn;
 	}
 }
