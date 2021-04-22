@@ -399,7 +399,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 	state A_ChaseGoal()
 	{
-		if (!playerToChase || playerToChase.health <= 0) { return ResolveState("Stand"); } // Make sure a player was targeted as who to chase - if he's dead, target another player (multiplayer support)
+		if (!playerToChase || playerToChase.health <= 0 || nonmoving) { return ResolveState("Stand"); } // Make sure a player was targeted as who to chase - if he's dead, target another player (multiplayer support)
 
 		if (target && target is "GrenadeBase") // If you're running from a grenade
 		{
@@ -419,7 +419,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 				if (target) { target.bShootable = target.Default.bShootable; }
 			}
 		}
-		else if (nonmoving && !Markers.Size())  // If you're standing (and there were no marker goals already spawned).  If marker goals were spawner, follower will run up to that point, then become nonmoving
+		else if (nonmoving && !Markers.Size())  // If you're standing (and there were no marker goals already spawned).  If marker goals were spawned, follower will run up to that point, then become nonmoving
 		{
 			if (currentGoal) // If you have a goal assigned, it's an origin point and you were previously running from a grenade
 			{
@@ -878,6 +878,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		if (allowinteraction > 1 && nonmoving && playerToChase && !playerToChase.bNoClip && Distance3D(playerToChase) > allowinteraction)
 		{
 			nonmoving = false;
+			SetStateLabel("Chase");
 		}
 
 		// Don't stay standing near enemies; run away based on how much spawn health they have
