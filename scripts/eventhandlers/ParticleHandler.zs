@@ -47,9 +47,10 @@ class ParticleManager : EventHandler
 			e.thing is "UWBloodFog"
 		)
 		{
-			bloodqueue.Insert(0, e.thing);
+			if (maxbloodcvar) { maxblood = max(0, maxbloodcvar.GetInt()); }
+			if (!maxblood) { e.thing.Destroy(); return; }
 
-			if (maxbloodcvar) { maxblood = max(1, maxbloodcvar.GetInt()); }
+			bloodqueue.Insert(0, e.thing);
 			ConsolidateArray(bloodqueue, maxblood);
 		}
 		else if (
@@ -57,18 +58,20 @@ class ParticleManager : EventHandler
 			e.thing is "Debris_Base"		// Explosion/breakage debris
 		)
 		{
-			debrisqueue.Insert(0, e.thing);
+			if (maxdebriscvar) { maxdebris = max(0, maxdebriscvar.GetInt()); }
+			if (!maxdebris) { e.thing.Destroy(); return; }
 
-			if (maxdebriscvar) { maxdebris = max(1, maxdebriscvar.GetInt()); }
+			debrisqueue.Insert(0, e.thing);
 			ConsolidateArray(debrisqueue, maxdebris);
 		}
 		else if (
 			e.thing is "ZFlatDecal"			// Flat decals
 		)
 		{
-			flatdecalqueue.Insert(0, e.thing);
+			if (maxflatdecalscvar) { maxflatdecals = max(0, maxflatdecalscvar.GetInt()); }
+			if (!maxflatdecals) { e.thing.Destroy(); return; }
 
-			if (maxflatdecalscvar) { maxflatdecals = max(1, maxflatdecalscvar.GetInt()); }
+			flatdecalqueue.Insert(0, e.thing);
 			ConsolidateArray(flatdecalqueue, maxflatdecals);
 		}
 		else if (
@@ -77,10 +80,10 @@ class ParticleManager : EventHandler
 			e.thing is "LightningBeam"		// Lightning segments
 		)
 		{
-			particlequeue.Insert(0, e.thing);
-
 			if (maxparticlescvar) { maxparticles = max(0, maxparticlescvar.GetInt()); }
+			if (!maxparticles) { e.thing.Destroy(); return; }
 
+			particlequeue.Insert(0, e.thing);
 			ConsolidateArray(particlequeue, maxparticles);
 
 			int size = particlequeue.Size();
