@@ -20,16 +20,17 @@
  * SOFTWARE.
 **/
 
-class Plane1: Actor
+class Plane1: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/2D Vehicles
-	//$Title Plane (grey)
-	//$Color 3
-	Radius 96;
-	Height 96;
-	+SOLID
+		//$Category Props (BoA)/2D Vehicles
+		//$Title Plane (grey)
+		//$Color 3
+		Radius 96;
+		Height 96;
+		+SOLID
+		CullActorBase.CullLevel 2;
 	}
 	States
 	{

@@ -20,15 +20,16 @@
  * SOFTWARE.
 **/
 
-class UnderwaterPlant1: Actor
+class UnderwaterPlant1: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Underwater
-	//$Title Underwater Seaweed (long)
-	//$Color 3
-	Radius 8;
-	Height 96;
+		//$Category Props (BoA)/Underwater
+		//$Title Underwater Seaweed (long)
+		//$Color 3
+		Radius 8;
+		Height 96;
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{

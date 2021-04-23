@@ -22,18 +22,19 @@
 
 //Concentration Camp actors made from DoomJedi resources
 // GORE //
-class Camp_HungSkeleton: Actor
+class Camp_HungSkeleton: SceneryBase
 {
 	Default
 	{
-	//$Category Concentration Camp (BoA)/Gore
-	//$Title Camp Prisoner Hanging Skeleton
-	//$Color 3
-	Radius 16;
-	Height 60;
-	Scale 0.65;
-	+NOGRAVITY
-	+SPAWNCEILING
+		//$Category Concentration Camp (BoA)/Gore
+		//$Title Camp Prisoner Hanging Skeleton
+		//$Color 3
+		Radius 16;
+		Height 60;
+		Scale 0.65;
+		+NOGRAVITY
+		+SPAWNCEILING
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -71,18 +72,19 @@ class Camp_PrisonerHang : Camp_HungSkeleton
 	}
 }
 
-class Camp_RandomPileDead: Actor
+class Camp_RandomPileDead: SceneryBase
 {
 	Default
 	{
-	//$Category Concentration Camp (BoA)/Gore
-	//$Title Dead Prisoners (pile, random)
-	//$Color 3
-	Radius 16;
-	Height 12;
-	ProjectilePassHeight 4;
-	Scale 0.65;
-	+SOLID
+		//$Category Concentration Camp (BoA)/Gore
+		//$Title Dead Prisoners (pile, random)
+		//$Color 3
+		Radius 16;
+		Height 12;
+		ProjectilePassHeight 4;
+		Scale 0.65;
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -178,16 +180,17 @@ class Camp_SnowyLogsDead : Camp_LogsDead
 	}
 }
 
-class Camp_RandomBodyParts: Actor
+class Camp_RandomBodyParts: SceneryBase
 {
 	Default
 	{
-	//$Category Concentration Camp (BoA)/Gore
-	//$Title Prisoners Body Parts (random)
-	//$Color 3
-	Radius 8;
-	Height 4;
-	Scale 0.7;
+		//$Category Concentration Camp (BoA)/Gore
+		//$Title Prisoners Body Parts (random)
+		//$Color 3
+		Radius 8;
+		Height 4;
+		Scale 0.7;
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -269,16 +272,17 @@ class Camp_LyingBodies3 : Camp_RandomBodyParts
 	}
 }
 
-class Camp_PrisonerGuts: Actor
+class Camp_PrisonerGuts: SceneryBase
 {
 	Default
 	{
-	//$Category Concentration Camp (BoA)/Gore
-	//$Title Camp Prisoner Corpse, Severed Guts
-	//$Color 3
-	Radius 8;
-	Height 32;
-	Scale 0.7;
+		//$Category Concentration Camp (BoA)/Gore
+		//$Title Camp Prisoner Corpse, Severed Guts
+		//$Color 3
+		Radius 8;
+		Height 32;
+		Scale 0.7;
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -313,21 +317,22 @@ class Camp_PrisonerSit : Camp_PrisonerGuts
 	}
 }
 
-class Camp_PrisonerSamples: Actor
+class Camp_PrisonerSamples: SceneryBase
 {
 	Default
 	{
-	//$Category Concentration Camp (BoA)/Gore
-	//$Title Camp Prisoner Body Sample (random, shootable)
-	//$Color 3
-	Radius 16;
-	Height 16;
-	Scale 0.6;
-	Health 1;
-	+CANPASS
-	+NOBLOOD
-	+NOTAUTOAIMED
-	+SHOOTABLE
+		//$Category Concentration Camp (BoA)/Gore
+		//$Title Camp Prisoner Body Sample (random, shootable)
+		//$Color 3
+		Radius 16;
+		Height 16;
+		Scale 0.6;
+		Health 1;
+		+CANPASS
+		+NOBLOOD
+		+NOTAUTOAIMED
+		+SHOOTABLE
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -555,18 +560,19 @@ class Camp_PrisonerSample14 : Camp_PrisonerSamples
 }
 
 // SCENERY //
-class Camp_RandomUniform: Actor
+class Camp_RandomUniform: SceneryBase
 {
 	Default
 	{
-	//$Category Concentration Camp (BoA)/Scenery
-	//$Title Prisoner Uniform (random)
-	//$Color 3
-	Scale 0.65;
-	Radius 8;
-	Height 40;
-	ProjectilePassHeight 8;
-	+SOLID
+		//$Category Concentration Camp (BoA)/Scenery
+		//$Title Prisoner Uniform (random)
+		//$Color 3
+		Scale 0.65;
+		Radius 8;
+		Height 40;
+		ProjectilePassHeight 8;
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -625,18 +631,19 @@ class Camp_Eyeglass : Cup1
 	}
 }
 
-class Camp_RandomEyeglass: Actor
+class Camp_RandomEyeglass: SceneryBase
 {
 	Default
 	{
-	//$Category Concentration Camp (BoA)/Scenery
-	//$Title Eyeglasses (broken, random)
-	//$Color 3
-	Radius 2;
-	Height 2;
-	Scale 0.25;
-	+CANPASS
-	+SOLID
+		//$Category Concentration Camp (BoA)/Scenery
+		//$Title Eyeglasses (broken, random)
+		//$Color 3
+		Radius 2;
+		Height 2;
+		Scale 0.25;
+		+CANPASS
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{

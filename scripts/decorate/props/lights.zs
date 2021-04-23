@@ -22,14 +22,15 @@
 **/
 
 //base actors
-class LightBase : SwitchableDecoration
+class LightBase : SceneryBase
 {
 	Default
 	{
-	//$Category Lights (BoA)/ACS Switchable
-	//$Color 11
-	DistanceCheck "boa_scenelod";
-	+NOGRAVITY
+		//$Category Lights (BoA)/ACS Switchable
+		//$Color 11
+		DistanceCheck "boa_scenelod";
+		+NOGRAVITY
+		CullActorBase.CullLevel 2;
 	}
 }
 
@@ -482,20 +483,21 @@ class Chandelier4SwitchableNH : Chandelier2SwitchableNH
 	}
 }
 
-class ArtDeco_WLight1 : SwitchableDecoration
+class ArtDeco_WLight1 : SceneryBase
 {
 	Default
 	{
-	//$Category Lights (BoA)/ACS Switchable
-	//$Title 3d Art-Deco Wall Light 1 (SET DORMANT & ACTIVATE IT VIA ACS)
-	//$Color 11
-	DistanceCheck "boa_scenelod";
-	Radius 1;
-	Height 1;
-	-FLOORCLIP
-	+NOBLOCKMAP
-	+DONTTHRUST
-	+NOGRAVITY
+		//$Category Lights (BoA)/ACS Switchable
+		//$Title 3d Art-Deco Wall Light 1 (SET DORMANT & ACTIVATE IT VIA ACS)
+		//$Color 11
+		DistanceCheck "boa_scenelod";
+		Radius 1;
+		Height 1;
+		-FLOORCLIP
+		+NOBLOCKMAP
+		+DONTTHRUST
+		+NOGRAVITY
+		CullActorBase.CullLevel 2;
 	}
 	States
 	{
@@ -551,18 +553,19 @@ class CODNeoLights2 : CODNeoLights1
 	}
 }
 
-class COD_ArtDecoLight1A : SwitchableDecoration
+class COD_ArtDecoLight1A : SceneryBase
 {
 	Default
 	{
-	//$Category Lights (BoA)/ACS Switchable
-	//$Title 3d Art Deco Ceiling Light (OFF, SET DORMANT & ACTIVATE IT VIA ACS)
-	//$Color 11
-	DistanceCheck "boa_scenelod";
-	Radius 8;
-	Height 0;
-	+NOBLOCKMAP
-	+NOGRAVITY
+		//$Category Lights (BoA)/ACS Switchable
+		//$Title 3d Art Deco Ceiling Light (OFF, SET DORMANT & ACTIVATE IT VIA ACS)
+		//$Color 11
+		DistanceCheck "boa_scenelod";
+		Radius 8;
+		Height 0;
+		+NOBLOCKMAP
+		+NOGRAVITY
+		CullActorBase.CullLevel 2;
 	}
 	States
 	{
@@ -756,14 +759,15 @@ class Flame_Normal3d : SceneryBase
 {
 	Default
 	{
-	DistanceCheck "boa_sfxlod";
-	Scale 0.06;
-	+FORCEYBILLBOARD
-	+NOBLOCKMAP
-	+NOGRAVITY
-	+NOINTERACTION
-	+RANDOMIZE
-	RenderStyle "Add";
+		DistanceCheck "boa_sfxlod";
+		Scale 0.06;
+		+FORCEYBILLBOARD
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+NOINTERACTION
+		+RANDOMIZE
+		RenderStyle "Add";
+		CullActorBase.CullLevel 2;
 	}
 	States
 	{
@@ -987,17 +991,18 @@ class CeilingLightM2NC : CeilingLightM
 	}
 }
 
-class StreetLight1 : SwitchableDecoration
+class StreetLight1 : SceneryBase
 {
 	Default
 	{
-	//$Category Lights (BoA)/ACS Switchable
-	//$Title 3d Street Light (OFF, SWITCHABLE)
-	//$Color 11
-	DistanceCheck "boa_scenelod";
-	Radius 4;
-	Height 128;
-	+SOLID
+		//$Category Lights (BoA)/ACS Switchable
+		//$Title 3d Street Light (OFF, SWITCHABLE)
+		//$Color 11
+		DistanceCheck "boa_scenelod";
+		Radius 4;
+		Height 128;
+		+SOLID
+		CullActorBase.CullLevel 2;
 	}
 	States
 	{
@@ -1042,17 +1047,18 @@ class StreetLight1Lit : StreetLight1
 	}
 }
 
-class StreetLight2 : SwitchableDecoration
+class StreetLight2 : SceneryBase
 {
 	Default
 	{
-	//$Category Lights (BoA)/ACS Switchable
-	//$Title 3d Street Light (TRIPLE, SWITCHABLE)
-	//$Color 11
-	DistanceCheck "boa_scenelod";
-	Radius 4;
-	Height 128;
-	+SOLID
+		//$Category Lights (BoA)/ACS Switchable
+		//$Title 3d Street Light (TRIPLE, SWITCHABLE)
+		//$Color 11
+		DistanceCheck "boa_scenelod";
+		Radius 4;
+		Height 128;
+		+SOLID
+		CullActorBase.CullLevel 2;
 	}
 	States
 	{
@@ -1114,20 +1120,21 @@ class StreetLight3NH : StreetLight3
 	}
 }
 
-class CastleLight1 : SwitchableDecoration
+class CastleLight1 : SceneryBase
 {
 	Default
 	{
-	//$Category Lights (BoA)/ACS Switchable
-	//$Title 3d Castle Light 1 (SWITCHABLE)
-	//$Color 11
-	DistanceCheck "boa_scenelod";
-	Radius 16;
-	Height 32;
-	+NOBLOCKMAP
-	+NOGRAVITY
-	+SOLID
-	+SPAWNCEILING
+		//$Category Lights (BoA)/ACS Switchable
+		//$Title 3d Castle Light 1 (SWITCHABLE)
+		//$Color 11
+		DistanceCheck "boa_scenelod";
+		Radius 16;
+		Height 32;
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+SOLID
+		+SPAWNCEILING
+		CullActorBase.CullLevel 2;
 	}
 	States
 	{
@@ -1285,17 +1292,18 @@ class ColumnLight2 : ColumnLight
 	}
 }
 
-class StageLight: Actor
+class StageLight: SceneryBase
 {
 	Default
 	{
-	//$Category Lights (BoA)/Static
-	//$Title 3d Theatre Stage Light
-	DistanceCheck "boa_scenelod";
-	Radius 8;
-	Height 8;
-	-SOLID
-	+NOGRAVITY
+		//$Category Lights (BoA)/Static
+		//$Title 3d Theatre Stage Light
+		DistanceCheck "boa_scenelod";
+		Radius 8;
+		Height 8;
+		-SOLID
+		+NOGRAVITY
+		CullActorBase.CullLevel 2;
 	}
 	States
 	{
@@ -1407,27 +1415,28 @@ class MedicalLight : LightBase2
 	}
 }
 
-class LightBulb : SwitchableDecoration
+class LightBulb : SceneryBase
 {
 	Default
 	{
-	//$Category Lights (BoA)/ARGs
-	//$Title 3d Light Bulb (OFF, BREAKABLE)
-	//$Color 11
-	//$Arg0 "Type"
-	//$Arg0Tooltip "Pickup the desired type\nBreakable: 0\nUnBreakable: 1"
-	DistanceCheck "boa_scenelod";
-	Radius 4;
-	Height 1;
-	Health 1;
-	+DONTFALL
-	+DONTTHRUST
-	+NOBLOOD
-	+NOGRAVITY
-	+NOTAUTOAIMED
-	+SHOOTABLE
-	+SOLID
-	+SPAWNCEILING
+		//$Category Lights (BoA)/ARGs
+		//$Title 3d Light Bulb (OFF, BREAKABLE)
+		//$Color 11
+		//$Arg0 "Type"
+		//$Arg0Tooltip "Pickup the desired type\nBreakable: 0\nUnBreakable: 1"
+		DistanceCheck "boa_scenelod";
+		Radius 4;
+		Height 1;
+		Health 1;
+		+DONTFALL
+		+DONTTHRUST
+		+NOBLOOD
+		+NOGRAVITY
+		+NOTAUTOAIMED
+		+SHOOTABLE
+		+SOLID
+		+SPAWNCEILING
+		CullActorBase.CullLevel 2;
 	}
 	States
 	{
@@ -1630,21 +1639,22 @@ class Cell_Light_NoInt : Cell_Light
 }
 
 //2d Lights
-class TableLightM : SwitchableDecoration
+class TableLightM : SceneryBase
 {
 	Default
 	{
-	//$Category Lights (BoA)/ACS Switchable
-	//$Title 2d Bureau Light 1 (MIDDLE, SWITCHABLE)
-	//$Color 11
-	Radius 4;
-	Height 32;
-	Scale 0.50;
-	ProjectilePassHeight 4;
-	+NOTAUTOAIMED
-	+SOLID
-	+USESPECIAL
-	Activation THINGSPEC_Switch;
+		//$Category Lights (BoA)/ACS Switchable
+		//$Title 2d Bureau Light 1 (MIDDLE, SWITCHABLE)
+		//$Color 11
+		Radius 4;
+		Height 32;
+		Scale 0.50;
+		ProjectilePassHeight 4;
+		+NOTAUTOAIMED
+		+SOLID
+		+USESPECIAL
+		Activation THINGSPEC_Switch;
+		CullActorBase.CullLevel 2;
 	}
 	States
 	{
@@ -1956,18 +1966,19 @@ class CreepyCandlestick : CreepyCandle
 	}
 }
 
-class FBowl1 : SwitchableDecoration
+class FBowl1 : SceneryBase
 {
 	Default
 	{
-	//$Category Lights (BoA)/ACS Switchable
-	//$Title 2d Fire Bowl (ON)
-	//$Color 11
-	//$Sprite FBWLA0
-	Radius 32;
-	Height 26;
-	Scale 0.78; //mxd
-	+SOLID
+		//$Category Lights (BoA)/ACS Switchable
+		//$Title 2d Fire Bowl (ON)
+		//$Color 11
+		//$Sprite FBWLA0
+		Radius 32;
+		Height 26;
+		Scale 0.78; //mxd
+		+SOLID
+		CullActorBase.CullLevel 2;
 	}
 	States
 	{
@@ -2000,16 +2011,17 @@ class FBowl1 : SwitchableDecoration
 	}
 }
 
-class FBowlFire: Actor
+class FBowlFire: SceneryBase
 {
 	Default
 	{
-	Radius 32;
-	Height 30;
-	DamageType "Fire";
-	ProjectilePassHeight 0;
-	+DONTSPLASH
-	+NOGRAVITY
+		Radius 32;
+		Height 30;
+		DamageType "Fire";
+		ProjectilePassHeight 0;
+		+DONTSPLASH
+		+NOGRAVITY
+		CullActorBase.CullLevel 2;
 	}
 	States
 	{
@@ -2020,18 +2032,19 @@ class FBowlFire: Actor
 	}
 }
 
-class CBowl1 : SwitchableDecoration
+class CBowl1 : SceneryBase
 {
 	Default
 	{
-	//$Category Lights (BoA)/ACS Switchable
-	//$Title 2d Ceiling Fire Bowl (ON)
-	//$Color 11
-	Radius 8;
-	Height 80;
-	+NOGRAVITY
-	+SOLID
-	+SPAWNCEILING
+		//$Category Lights (BoA)/ACS Switchable
+		//$Title 2d Ceiling Fire Bowl (ON)
+		//$Color 11
+		Radius 8;
+		Height 80;
+		+NOGRAVITY
+		+SOLID
+		+SPAWNCEILING
+		CullActorBase.CullLevel 2;
 	}
 	States
 	{
@@ -2059,17 +2072,18 @@ class CBowl1 : SwitchableDecoration
 	}
 }
 
-class FBarrel1 : SwitchableDecoration
+class FBarrel1 : SceneryBase
 {
 	Default
 	{
-	//$Category Lights (BoA)/ACS Switchable
-	//$Title 2d Fire Barrel (ON)
-	//$Color 11
-	Radius 16;
-	Height 48;
-	ProjectilePassHeight 0;
-	+SOLID
+		//$Category Lights (BoA)/ACS Switchable
+		//$Title 2d Fire Barrel (ON)
+		//$Color 11
+		Radius 16;
+		Height 48;
+		ProjectilePassHeight 0;
+		+SOLID
+		CullActorBase.CullLevel 2;
 	}
 	States
 	{
@@ -2105,19 +2119,20 @@ class FBarrel1 : SwitchableDecoration
 	}
 }
 
-class Red_Light : SwitchableDecoration
+class Red_Light : SceneryBase
 {
 	Default
 	{
-	//$Category Lights (BoA)
-	//$Title 2d Light, Red (ON, SWITCHABLE)
-	//$Color 11
-	Radius 16;
-	Height 16;
-	+DONTSPLASH
-	+NOBLOCKMAP
-	+NOGRAVITY
-	+SPAWNCEILING
+		//$Category Lights (BoA)
+		//$Title 2d Light, Red (ON, SWITCHABLE)
+		//$Color 11
+		Radius 16;
+		Height 16;
+		+DONTSPLASH
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+SPAWNCEILING
+		CullActorBase.CullLevel 2;
 	}
 	States
 	{

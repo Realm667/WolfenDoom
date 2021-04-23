@@ -485,7 +485,7 @@ class Typewriter : Obstacle3d
 	}
 }
 
-class RadioModern: Actor
+class RadioModern: SceneryBase
 {
 	Default
 	{
@@ -506,6 +506,7 @@ class RadioModern: Actor
 		+NOTAUTOAIMED
 		+SHOOTABLE
 		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -1219,7 +1220,7 @@ class Feldfernschreiber : ModelBase
 	}
 }
 
-class Toolbox3D: Actor
+class Toolbox3D: SceneryBase
 {
 	Default
 	{
@@ -1231,6 +1232,7 @@ class Toolbox3D: Actor
 		Height 8;
 		+NOBLOCKMAP
 		+NOGRAVITY
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{

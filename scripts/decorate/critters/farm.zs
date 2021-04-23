@@ -20,7 +20,7 @@
  * SOFTWARE.
 **/
 
-class Cows: Actor
+class Cows: SceneryBase
 {
 	Default
 	{
@@ -31,6 +31,7 @@ class Cows: Actor
 		Radius 32;
 		Scale 0.8;
 		+RANDOMIZE
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -155,7 +156,7 @@ class BlackCat : BarkDog
 
 class HissCounter : Inventory { Default {Inventory.MaxAmount 2; } }
 
-class OcherCat: Actor
+class OcherCat: SceneryBase
 {
 	Default
 	{
@@ -169,6 +170,7 @@ class OcherCat: Actor
 		+NOTAUTOAIMED
 		+RANDOMIZE
 		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -241,7 +243,7 @@ class CatSpawner : RandomSpawner
 	}
 }
 
-class DogsBodies: Actor
+class DogsBodies: SceneryBase
 {
 	Default
 	{
@@ -250,6 +252,7 @@ class DogsBodies: Actor
 		//$Sprite ZARKA0
 		Scale 0.65;
 		+NOBLOCKMAP
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{

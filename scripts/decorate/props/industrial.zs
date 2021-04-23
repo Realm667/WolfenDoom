@@ -48,19 +48,20 @@ class RadioactiveBarrel2 : RadioactiveBarrel //3d actor
 	}
 }
 
-class Crane: Actor //3d actor
+class Crane: SceneryBase //3d actor
 {
 	Default
 	{
-	//$Category Props (BoA)/Industrial
-	//$Title Crane
-	//$Color 3
-	DistanceCheck "boa_scenelod";
-	Radius 8;
-	Height 80;
-	+NOGRAVITY
-	+SOLID
-	+SPAWNCEILING
+		//$Category Props (BoA)/Industrial
+		//$Title Crane
+		//$Color 3
+		DistanceCheck "boa_scenelod";
+		Radius 8;
+		Height 80;
+		+NOGRAVITY
+		+SOLID
+		+SPAWNCEILING
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -85,17 +86,18 @@ class UBoat : Crane
 	}
 }
 
-class Zapper: Actor
+class Zapper: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Industrial
-	//$Title Zapper
-	//$Color 3
-	Radius 8;
-	Height 56;
-	Scale 0.5;
-	+SOLID
+		//$Category Props (BoA)/Industrial
+		//$Title Zapper
+		//$Color 3
+		Radius 8;
+		Height 56;
+		Scale 0.5;
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -105,16 +107,17 @@ class Zapper: Actor
 	}
 }
 
-class Pipe1: Actor
+class Pipe1: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Industrial/Pipes
-	//$Title Pipe (thick)
-	//$Color 3
-	Radius 8;
-	Height 128;
-	+SOLID
+		//$Category Props (BoA)/Industrial/Pipes
+		//$Title Pipe (thick)
+		//$Color 3
+		Radius 8;
+		Height 128;
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{

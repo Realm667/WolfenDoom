@@ -21,30 +21,32 @@
  * SOFTWARE.
 **/
 
-class StreetBase: Actor
+class StreetBase: SceneryBase
 {
 	Default
 	{
-	Radius 16;
-	Height 56;
-	Mass 100;
-	+NOBLOOD
-	+NOTAUTOAIMED
-	+SHOOTABLE
-	+SOLID
+		Radius 16;
+		Height 56;
+		Mass 100;
+		+NOBLOOD
+		+NOTAUTOAIMED
+		+SHOOTABLE
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 }
 
-class Dome: Actor
+class Dome: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Street
-	//$Title Dome
-	//$Color 3
-	Radius 2;
-	Height 2;
-	+NOGRAVITY
+		//$Category Props (BoA)/Street
+		//$Title Dome
+		//$Color 3
+		Radius 2;
+		Height 2;
+		+NOGRAVITY
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -215,16 +217,17 @@ class HydrantShootable : StreetBase
 	}
 }
 
-class RoadBarrier: Actor
+class RoadBarrier: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Street
-	//$Title Road Barrier (Small)
-	DistanceCheck "boa_scenelod";
-	Radius 32;
-	Height 64;
-	+SOLID
+		//$Category Props (BoA)/Street
+		//$Title Road Barrier (Small)
+		DistanceCheck "boa_scenelod";
+		Radius 32;
+		Height 64;
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -234,17 +237,18 @@ class RoadBarrier: Actor
 	}
 }
 
-class NTomb1: Actor
+class NTomb1: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Street
-	//$Title Tombstone 1
-	//$Color 3
-	DistanceCheck "boa_scenelod";
-	Radius 15;
-	Height 68;
-	+SOLID
+		//$Category Props (BoA)/Street
+		//$Title Tombstone 1
+		//$Color 3
+		DistanceCheck "boa_scenelod";
+		Radius 15;
+		Height 68;
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -295,19 +299,20 @@ class NTomb5 : NTomb1
 	}
 }
 
-class Haycart: Actor
+class Haycart: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Street
-	//$Title Haycart
-	//$Color 3
-	//$Arg0 "Type"
-	//$Arg0Tooltip "Pickup the desired type\nNormal: 0\nDestroyed: 1"
-	DistanceCheck "boa_scenelod";
-	Radius 24; //reduced for map-wise placement - ozy
-	Height 32;
-	+SOLID
+		//$Category Props (BoA)/Street
+		//$Title Haycart
+		//$Color 3
+		//$Arg0 "Type"
+		//$Arg0Tooltip "Pickup the desired type\nNormal: 0\nDestroyed: 1"
+		DistanceCheck "boa_scenelod";
+		Radius 24; //reduced for map-wise placement - ozy
+		Height 32;
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{

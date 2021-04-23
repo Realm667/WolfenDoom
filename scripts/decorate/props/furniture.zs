@@ -21,17 +21,18 @@
 **/
 
 //2d actors
-class Table1: Actor
+class Table1: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Castle
-	//$Title Table, random (1)
-	//$Color 3
-	Radius 24;
-	Height 24;
-	Scale 0.5;
-	+SOLID
+		//$Category Props (BoA)/Castle
+		//$Title Table, random (1)
+		//$Color 3
+		Radius 24;
+		Height 24;
+		Scale 0.5;
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -114,18 +115,19 @@ class Table6 : Table1
 }
 
 //3d actors - these are all scale sensible, watch out!
-class Table7: Actor
+class Table7: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Castle
-	//$Title Table (1, no chairs, meals & liquors)
-	//$Color 3
-	DistanceCheck "boa_scenelod";
-	Radius 20;
-	Height 27;
-	Scale 1.15;
-	+SOLID
+		//$Category Props (BoA)/Castle
+		//$Title Table (1, no chairs, meals & liquors)
+		//$Color 3
+		DistanceCheck "boa_scenelod";
+		Radius 20;
+		Height 27;
+		Scale 1.15;
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{

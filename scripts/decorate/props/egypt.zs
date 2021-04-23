@@ -20,22 +20,23 @@
  * SOFTWARE.
 **/
 
-class EVase: Actor
+class EVase: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Egypt
-	//$Title Vase (breakable)
-	//$Color 3
-	Radius 24; //in order to make the smokemonster never goin' stuck'd on map c1m6
-	Height 64;
-	Health 1;
-	Scale 0.85;
-	+NOBLOOD
-	+NOTAUTOAIMED
-	+SHOOTABLE
-	+SOLID
-	DeathSound "Pot/Break";
+		//$Category Props (BoA)/Egypt
+		//$Title Vase (breakable)
+		//$Color 3
+		Radius 24; //in order to make the smokemonster never goin' stuck'd on map c1m6
+		Height 64;
+		Health 1;
+		Scale 0.85;
+		+NOBLOOD
+		+NOTAUTOAIMED
+		+SHOOTABLE
+		+SOLID
+		DeathSound "Pot/Break";
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -52,17 +53,18 @@ class EVase: Actor
 	}
 }
 
-class EColumn: Actor //3d Actor
+class EColumn: SceneryBase //3d Actor
 {
 	Default
 	{
-	//$Category Props (BoA)/Egypt
-	//$Title Ornated Column
-	//$Color 3
-	DistanceCheck "boa_scenelod";
-	Radius 32;
-	Height 128;
-	+SOLID
+		//$Category Props (BoA)/Egypt
+		//$Title Ornated Column
+		//$Color 3
+		DistanceCheck "boa_scenelod";
+		Radius 32;
+		Height 128;
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -221,16 +223,17 @@ class AZStatue : MuseumBase
 	}
 }
 
-class EStatue2: Actor
+class EStatue2: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Egypt
-	//$Title Large Statue (1st variant)
-	//$Color 3
-	Radius 16;
-	Height 128;
-	+SOLID
+		//$Category Props (BoA)/Egypt
+		//$Title Large Statue (1st variant)
+		//$Color 3
+		Radius 16;
+		Height 128;
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -254,16 +257,17 @@ class EStatue3 : EStatue2
 	}
 }
 
-class LavaCauldron: Actor
+class LavaCauldron: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Egypt
-	//$Title Lava Cauldron
-	//$Color 3
-	Radius 24;
-	Height 32;
-	+SOLID
+		//$Category Props (BoA)/Egypt
+		//$Title Lava Cauldron
+		//$Color 3
+		Radius 24;
+		Height 32;
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -291,14 +295,15 @@ class LavaCauldron: Actor
 	}
 }
 
-class LavaCauldronFire: Actor
+class LavaCauldronFire: SceneryBase
 {
 	Default
 	{
-	Radius 24;
-	Height 30;
-	DamageType "Fire";
-	+NOGRAVITY
+		Radius 24;
+		Height 30;
+		DamageType "Fire";
+		+NOGRAVITY
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -446,23 +451,24 @@ class BreakableVase6 : BreakableVase1
 	}
 }
 
-class EgyptPlant1: Actor
+class EgyptPlant1: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Egypt
-	//$Title Vase with Plant (breakable)
-	//$Color 3
-	Radius 8;
-	Height 32;
-	Health 5;
-	Scale 0.5;
-	+DONTGIB
-	+NOBLOOD
-	+NOTAUTOAIMED
-	+SHOOTABLE
-	+SOLID
-	DeathSound "Pot/Break";
+		//$Category Props (BoA)/Egypt
+		//$Title Vase with Plant (breakable)
+		//$Color 3
+		Radius 8;
+		Height 32;
+		Health 5;
+		Scale 0.5;
+		+DONTGIB
+		+NOBLOOD
+		+NOTAUTOAIMED
+		+SHOOTABLE
+		+SOLID
+		DeathSound "Pot/Break";
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -480,19 +486,20 @@ class EgyptPlant1: Actor
 	}
 }
 
-class AztecVase1: Actor
+class AztecVase1: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Egypt
-	//$Title Aztec Vase 1 (ceiling)
-	//$Color 3
-	Radius 8;
-	Height 80;
-	Scale 0.85;
-	+NOGRAVITY
-	+SOLID
-	+SPAWNCEILING
+		//$Category Props (BoA)/Egypt
+		//$Title Aztec Vase 1 (ceiling)
+		//$Color 3
+		Radius 8;
+		Height 80;
+		Scale 0.85;
+		+NOGRAVITY
+		+SOLID
+		+SPAWNCEILING
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{

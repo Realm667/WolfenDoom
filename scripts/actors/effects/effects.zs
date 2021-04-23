@@ -65,7 +65,7 @@ class EffectBlock
 	}
 }
 
-// Effects get tracked in a dynamic array and culled when not in range of a player, then respawned when needed
+// Select actors get tracked in a dynamic array and culled when not in range of a player, then respawned when needed
 class EffectsManager : Thinker
 {
 	Array<EffectInfo> effects;
@@ -87,6 +87,7 @@ class EffectsManager : Thinker
 	static void Add(Actor effect, double range = -1, bool force = false)
 	{
 		if (!effect) { return; }
+		if (effect is "CullActorBase" && CullActorBase(effect).culllevel > boa_culllevel) { return; }
 		if (!force)
 		{
 			if (effect.tid || (effect.master && !(effect is "DebrisBase"))) { return; } // Don't add effects with a tid or a master, because we can't guarantee they'll be spawned back in when they are activated/deactivated
@@ -387,7 +388,7 @@ class EffectsManager : Thinker
 				effects[i].effect = effect;
 				effects[i].ingame = true;
  
-				if (effect is "CullActorBase") { CullActorBase(effect).wasculled = true; }
+				if (effect is "CullActorBase") { CullActorBase(effect).bWasCulled = true; }
 			}
 		}
 		else if (!inrange && effects[i].effect && !effects[i].effect.bDormant)
@@ -548,7 +549,19 @@ class EffectBase : SimpleActor
 class CullActorBase : Actor
 {
 	double targetalpha;
-	bool wasculled;
+	int culllevel;
+	int flags;
+
+	FlagDef WASCULLED:flags, 0;
+	FlagDef DONTCULL:flags, 1;
+
+	Property CullLevel:culllevel;
+
+	Default
+	{
+		// Most actors are level 0; detail and prop actors are 1, and light fixtures are 2
+		CullActorBase.CullLevel 0;
+	}
 
 	States
 	{
@@ -560,7 +573,7 @@ class CullActorBase : Actor
 	{
 		Super.PostBeginPlay();
 
-		if (wasculled)
+		if (bWasCulled)
 		{
 			if (GetRenderStyle() == STYLE_Normal) { A_SetRenderStyle(alpha, STYLE_Translucent); }
 			alpha = 0;
@@ -594,6 +607,18 @@ class CullActorBase : Actor
 		}
 	}
 
+	override void Activate (Actor activator)
+	{
+		bDormant = false;
+		SetStateLabel("Active");
+	}
+
+	override void Deactivate (Actor activator)
+	{
+		bDormant = true;
+		SetStateLabel("Inactive");
+	}
+
 	bool SpawnBlock(double x, double y, double z, double r = -1, double h = -1)
 	{
 		Actor block = Spawn("Blocker", pos + (RotateVector((x * scale.x, y * scale.x), angle), z * scale.y));
@@ -619,7 +644,7 @@ class GrassBase : CullActorBase
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		EffectsManager.Add(self, boa_grasslod);
+		if (!bDontCull) { EffectsManager.Add(self, boa_grasslod); }
 	}
 }
 
@@ -628,7 +653,7 @@ class SceneryBase : CullActorBase
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		EffectsManager.Add(self, boa_scenelod, true);
+		if (!bDontCull) { EffectsManager.Add(self, boa_scenelod, true); }
 	}
 }
 
@@ -640,7 +665,7 @@ class TreesBase : CullActorBase
 	{
 		Super.PostBeginPlay();
 		origPitch = pitch;
-		EffectsManager.Add(self, boa_treeslod, true);
+		if (!bDontCull) { EffectsManager.Add(self, boa_treeslod, true); }
 	}
 
 	void A_3DPitchFix()
@@ -682,7 +707,7 @@ class VolumetricBase : CullActorBase
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		EffectsManager.Add(self, boa_scenelod);
+		if (!bDontCull) { EffectsManager.Add(self, boa_scenelod); }
 	}
 }
 
@@ -719,7 +744,7 @@ class Blocker : CullActorBase
 	{
 		Super.PostBeginPlay();
 
-		if (!wasculled && tracer) { A_SetSize(Radius * tracer.scale.x, Height * tracer.scale.y); }
+		if (!bWasCulled && tracer) { A_SetSize(Radius * tracer.scale.x, Height * tracer.scale.y); }
 
 		scale.x = Radius * 2.0;
 		scale.y = Height * level.pixelStretch;

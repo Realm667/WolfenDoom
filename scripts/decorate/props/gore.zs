@@ -20,17 +20,18 @@
  * SOFTWARE.
 **/
 
-class NukageBody: Actor
+class NukageBody: SceneryBase
 {
 	Default
 	{
-	//$Category Gore (BoA)
-	//$Title Nukage Body (floating)
-	//$Color 4
-	Radius 16;
-	Height 12;
-	Scale 0.75;
-	+FLOATBOB
+		//$Category Gore (BoA)
+		//$Title Nukage Body (floating)
+		//$Color 4
+		Radius 16;
+		Height 12;
+		Scale 0.75;
+		+FLOATBOB
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -69,18 +70,19 @@ class NukageBody3 : NukageBody2
 	}
 }
 
-class HungBody: Actor
+class HungBody: SceneryBase
 {
 	Default
 	{
-	//$Category Gore (BoA)
-	//$Title Hung Body
-	//$Color 4
-	Radius 8;
-	Height 98;
-	+NOGRAVITY
-	+SOLID
-	+SPAWNCEILING
+		//$Category Gore (BoA)
+		//$Title Hung Body
+		//$Color 4
+		Radius 8;
+		Height 98;
+		+NOGRAVITY
+		+SOLID
+		+SPAWNCEILING
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -150,17 +152,18 @@ class HungBody4 : HungBody2
 	}
 }
 
-class DeadBody: Actor
+class DeadBody: SceneryBase
 {
 	Default
 	{
-	//$Category Gore (BoA)
-	//$Title Dead Body (random)
-	//$Color 4
-	Radius 16;
-	Height 12;
-	Scale 0.65;
-	+SOLID
+		//$Category Gore (BoA)
+		//$Title Dead Body (random)
+		//$Color 4
+		Radius 16;
+		Height 12;
+		Scale 0.65;
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -183,15 +186,16 @@ class DeadBody: Actor
 	}
 }
 
-class Skeleton1: Actor
+class Skeleton1: SceneryBase
 {
 	Default
 	{
-	//$Category Gore (BoA)
-	//$Title Skeleton with ribs
-	//$Color 4
-	Radius 16;
-	Height 12;
+		//$Category Gore (BoA)
+		//$Title Skeleton with ribs
+		//$Color 4
+		Radius 16;
+		Height 12;
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -217,18 +221,19 @@ class Skeleton2 : Skeleton1
 	}
 }
 
-class EmptyCage: Actor
+class EmptyCage: SceneryBase
 {
 	Default
 	{
-	//$Category Gore (BoA)
-	//$Title Cage (empty)
-	//$Color 4
-	Radius 16;
-	Height 64;
-	Scale 0.5;
-	+NOGRAVITY
-	+SPAWNCEILING
+		//$Category Gore (BoA)
+		//$Title Cage (empty)
+		//$Color 4
+		Radius 16;
+		Height 64;
+		Scale 0.5;
+		+NOGRAVITY
+		+SPAWNCEILING
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -238,16 +243,17 @@ class EmptyCage: Actor
 	}
 }
 
-class PileOfSkulls: Actor
+class PileOfSkulls: SceneryBase
 {
 	Default
 	{
-	//$Category Gore (BoA)
-	//$Title Pile of Skulls
-	//$Color 4
-	Radius 4;
-	Height 64;
-	Scale 0.5;
+		//$Category Gore (BoA)
+		//$Title Pile of Skulls
+		//$Color 4
+		Radius 4;
+		Height 64;
+		Scale 0.5;
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -274,16 +280,17 @@ class MacSkulls : PileOfSkulls
 	}
 }
 
-class RandomDeadSoldier: Actor
+class RandomDeadSoldier: SceneryBase
 {
 	Default
 	{
-	//$Category Gore (BoA)
-	//$Title Dead Soldier (random)
-	//$Color 4
-	Radius 16;
-	Height 8;
-	Scale 0.5;
+		//$Category Gore (BoA)
+		//$Title Dead Soldier (random)
+		//$Color 4
+		Radius 16;
+		Height 8;
+		Scale 0.5;
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -331,16 +338,17 @@ class RandomDeadMutant : RandomDeadSoldier
 	}
 }
 
-class MutantSubject1: Actor
+class MutantSubject1: SceneryBase
 {
 	Default
 	{
-	//$Category Gore (BoA)
-	//$Title Subject (1st variant)
-	//$Color 4
-	Radius 8;
-	Height 64;
-	Scale 1.1;
+		//$Category Gore (BoA)
+		//$Title Subject (1st variant)
+		//$Color 4
+		Radius 8;
+		Height 64;
+		Scale 1.1;
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -395,19 +403,20 @@ class MutantSubjectRandom : RandomSpawner
 	}
 }
 
-class MutantSubjectWarped: Actor
+class MutantSubjectWarped: SceneryBase
 {
 	Default
 	{
-	//$Category Gore (BoA)
-	//$Title Random Mutant Subject (Special)
-	//$Color 4
-	//$Sprite ALMUA0
-	Radius 8;
-	Height 64;
-	Scale 1.1;
-	-NOGRAVITY
-	+LOOKALLAROUND
+		//$Category Gore (BoA)
+		//$Title Random Mutant Subject (Special)
+		//$Color 4
+		//$Sprite ALMUA0
+		Radius 8;
+		Height 64;
+		Scale 1.1;
+		-NOGRAVITY
+		+LOOKALLAROUND
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -425,18 +434,19 @@ class MutantSubjectWarped: Actor
 	}
 }
 
-class CagedBody: Actor
+class CagedBody: SceneryBase
 {
 	Default
 	{
-	//$Category Gore (BoA)
-	//$Title Cage with Body
-	//$Color 4
-	Radius 16;
-	Height 80;
-	+NOGRAVITY
-	+SPAWNCEILING
-	Scale 0.7;
+		//$Category Gore (BoA)
+		//$Title Cage with Body
+		//$Color 4
+		Radius 16;
+		Height 80;
+		+NOGRAVITY
+		+SPAWNCEILING
+		Scale 0.7;
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -446,18 +456,19 @@ class CagedBody: Actor
 	}
 }
 
-class CreepySkulls: Actor
+class CreepySkulls: SceneryBase
 {
 	Default
 	{
-	//$Category Gore (BoA)
-	//$Title Creepy Skulls (args, straight or side)
-	//$Color 4
-	//$Sprite DJSKC0
-	//$Arg0 "Type"
-	//$Arg0Tooltip "Pickup the desired type\nRandom: 0\nStraight: 1\nSide: 2"
-	Radius 8;
-	Scale 0.7;
+		//$Category Gore (BoA)
+		//$Title Creepy Skulls (args, straight or side)
+		//$Color 4
+		//$Sprite DJSKC0
+		//$Arg0 "Type"
+		//$Arg0Tooltip "Pickup the desired type\nRandom: 0\nStraight: 1\nSide: 2"
+		Radius 8;
+		Scale 0.7;
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -478,22 +489,23 @@ class CreepySkulls: Actor
 	}
 }
 
-class CreepySkullsImpaled: Actor
+class CreepySkullsImpaled: SceneryBase
 {
 	Default
 	{
-	//$Category Gore (BoA)
-	//$Title Creepy Impaled Skulls (args, 1 or 2 skulls)
-	//$Color 4
-	//$Sprite DJSKA0
-	//$Arg0 "Type"
-	//$Arg0Tooltip "Pickup the desired type\nRandom: 0\nOne Skull: 1\nTwo Skulls: 2"
-	Radius 12;
-	Height 40;
-	Scale 0.7;
-	ProjectilePassHeight 4;
-	+NOTAUTOAIMED
-	+SOLID
+		//$Category Gore (BoA)
+		//$Title Creepy Impaled Skulls (args, 1 or 2 skulls)
+		//$Color 4
+		//$Sprite DJSKA0
+		//$Arg0 "Type"
+		//$Arg0Tooltip "Pickup the desired type\nRandom: 0\nOne Skull: 1\nTwo Skulls: 2"
+		Radius 12;
+		Height 40;
+		Scale 0.7;
+		ProjectilePassHeight 4;
+		+NOTAUTOAIMED
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -514,17 +526,18 @@ class CreepySkullsImpaled: Actor
 	}
 }
 
-class RandomBodyParts: Actor
+class RandomBodyParts: SceneryBase
 {
 	Default
 	{
-	//$Category Gore (BoA)
-	//$Title Body Parts (random)
-	//$Color 4
-	//$Sprite GOREE0
-	Radius 8;
-	Height 4;
-	Scale 0.7;
+		//$Category Gore (BoA)
+		//$Title Body Parts (random)
+		//$Color 4
+		//$Sprite GOREE0
+		Radius 8;
+		Height 4;
+		Scale 0.7;
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -546,16 +559,17 @@ class RandomBodyParts: Actor
 	}
 }
 
-class PrisonerGuts: Actor
+class PrisonerGuts: SceneryBase
 {
 	Default
 	{
-	//$Category Gore (BoA)
-	//$Title Tortured Prisoner with severed Guts (random)
-	//$Color 4
-	Radius 8;
-	Height 32;
-	Scale 0.7;
+		//$Category Gore (BoA)
+		//$Title Tortured Prisoner with severed Guts (random)
+		//$Color 4
+		Radius 8;
+		Height 32;
+		Scale 0.7;
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -787,18 +801,19 @@ class HangingPara2 : HangingPara1
 	}
 }
 
-class CyanideProp1: Actor
+class CyanideProp1: SceneryBase
 {
 	Default
 	{
-	//$Category Gore (BoA)
-	//$Title Brass Cyanide Container (side)
-	//$Color 4
-	Radius 2;
-	Height 2;
-	Scale 0.14;
-	+MOVEWITHSECTOR
-	+NOBLOCKMAP
+		//$Category Gore (BoA)
+		//$Title Brass Cyanide Container (side)
+		//$Color 4
+		Radius 2;
+		Height 2;
+		Scale 0.14;
+		+MOVEWITHSECTOR
+		+NOBLOCKMAP
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -893,18 +908,19 @@ class CobwebNest : CobwebBody
 }
 
 //3d Actors
-class Skeleton3: Actor
+class Skeleton3: SceneryBase
 {
 	Default
 	{
-	//$Category Gore (BoA)
-	//$Title Skeleton Arms
-	//$Color 4
-	DistanceCheck "boa_scenelod";
-	Radius 16;
-	Height 51;
-	+NOGRAVITY
-	+SPAWNCEILING
+		//$Category Gore (BoA)
+		//$Title Skeleton Arms
+		//$Color 4
+		DistanceCheck "boa_scenelod";
+		Radius 16;
+		Height 51;
+		+NOGRAVITY
+		+SPAWNCEILING
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -929,19 +945,20 @@ class SkeletonChains : Skeleton3
 	}
 }
 
-class Manacles: Actor
+class Manacles: SceneryBase
 {
 	Default
 	{
-	//$Category Gore (BoA)
-	//$Title Wall Manacles (with Type args)
-	//$Color 4
-	//$Arg0 "Type"
-	//$Arg0Tooltip "Pickup the desired type\nRandom: 0\nNormal: 1\nWith Hands: 2\nRusty: 3"
-	DistanceCheck "boa_scenelod";
-	Radius 1;
-	Height 32;
-	+NOGRAVITY
+		//$Category Gore (BoA)
+		//$Title Wall Manacles (with Type args)
+		//$Color 4
+		//$Arg0 "Type"
+		//$Arg0Tooltip "Pickup the desired type\nRandom: 0\nNormal: 1\nWith Hands: 2\nRusty: 3"
+		DistanceCheck "boa_scenelod";
+		Radius 1;
+		Height 32;
+		+NOGRAVITY
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -968,18 +985,19 @@ class Manacles: Actor
 }
 
 //Doom Replacements (these were) - Had to include new actors for these since they doesn't seem to work with .ipk3 file - ozy81
-class WolfBloodPool: Actor // Modified Jaguar Wolf3D water pool sprite
+class WolfBloodPool: SceneryBase // Modified Jaguar Wolf3D water pool sprite
 {
 	Default
 	{
-	//$Category Gore (BoA)
-	//$Title Replacement for BloodPool actor
-	//$Color 4
-	Radius 20;
-	Height 1;
-	Scale 0.5;
-	+MOVEWITHSECTOR
-	+NOBLOCKMAP
+		//$Category Gore (BoA)
+		//$Title Replacement for BloodPool actor
+		//$Color 4
+		Radius 20;
+		Height 1;
+		Scale 0.5;
+		+MOVEWITHSECTOR
+		+NOBLOCKMAP
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{

@@ -21,18 +21,19 @@
  * SOFTWARE.
 **/
 
-class SSUniformStatic: Actor
+class SSUniformStatic: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Bureau
-	//$Title SS Uniform
-	//$Color 3
-	Radius 8;
-	Height 20;
-	Scale 0.67;
-	ProjectilePassHeight 4;
-	+SOLID
+		//$Category Props (BoA)/Bureau
+		//$Title SS Uniform
+		//$Color 3
+		Radius 8;
+		Height 20;
+		Scale 0.67;
+		ProjectilePassHeight 4;
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -435,17 +436,18 @@ class CoatHanger7S : RandomSpawner
 	}
 }
 
-class PaperBox1: Actor
+class PaperBox1: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Bureau
-	//$Title Box (single)
-	//$Color 3
-	Radius 8;
-	Height 16;
-	Scale 0.5;
-	+SOLID
+		//$Category Props (BoA)/Bureau
+		//$Title Box (single)
+		//$Color 3
+		Radius 8;
+		Height 16;
+		Scale 0.5;
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -508,24 +510,25 @@ class CasinoDice : PaperBox1
 	}
 }
 
-class BinWhite: Actor
+class BinWhite: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Bureau
-	//$Title Recycle Bin (white)
-	//$Color 3
-	Radius 16;
-	Height 32;
-	Health 5;
-	Mass 100;
-	Scale 0.5;
-	-DROPOFF
-	+NOBLOOD
-	+NOTAUTOAIMED
-	+PUSHABLE
-	+SHOOTABLE
-	+SOLID
+		//$Category Props (BoA)/Bureau
+		//$Title Recycle Bin (white)
+		//$Color 3
+		Radius 16;
+		Height 32;
+		Health 5;
+		Mass 100;
+		Scale 0.5;
+		-DROPOFF
+		+NOBLOOD
+		+NOTAUTOAIMED
+		+PUSHABLE
+		+SHOOTABLE
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -1257,27 +1260,28 @@ class Toys_Hitler : Toys_Hans
 	}
 }
 
-class CoffeeMachine : SwitchableDecoration
+class CoffeeMachine : SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Bureau
-	//$Title Coffee Machine (interactive, destroyable)
-	//$Color 3
-	Radius 4;
-	Height 16;
-	Health 5;
-	Scale 0.5;
-	+DONTSPLASH
-	+DONTTHRUST
-	+LOOKALLAROUND //this is needed otherwise we can drink only while in front of it - ozy81
-	+NOBLOOD
-	+NOBLOODDECALS
-	+NOTAUTOAIMED
-	+SHOOTABLE
-	+SOLID
-	+USESPECIAL
-	Activation THINGSPEC_Switch | THINGSPEC_ThingTargets;
+		//$Category Props (BoA)/Bureau
+		//$Title Coffee Machine (interactive, destroyable)
+		//$Color 3
+		Radius 4;
+		Height 16;
+		Health 5;
+		Scale 0.5;
+		+DONTSPLASH
+		+DONTTHRUST
+		+LOOKALLAROUND //this is needed otherwise we can drink only while in front of it - ozy81
+		+NOBLOOD
+		+NOBLOODDECALS
+		+NOTAUTOAIMED
+		+SHOOTABLE
+		+SOLID
+		+USESPECIAL
+		Activation THINGSPEC_Switch | THINGSPEC_ThingTargets;
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -1360,13 +1364,14 @@ class WaterMachine : CoffeeMachine
 	}
 }
 
-class WaterMachineWater: Actor
+class WaterMachineWater: SceneryBase
 {
 	Default
 	{
-	DistanceCheck "boa_scenelod";
-	Renderstyle "Translucent";
-	Alpha 0.2;
+		DistanceCheck "boa_scenelod";
+		Renderstyle "Translucent";
+		Alpha 0.2;
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{

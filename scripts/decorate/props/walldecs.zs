@@ -293,14 +293,15 @@ class Wall_CivilianFemale2 : Wall_CivilianMale4
 }
 
 //FLAT DECS//
-class FlatBase: Actor
+class FlatBase: SceneryBase
 {
 	Default
 	{
-	Radius 128;
-	Height 0;
-	Scale 0.25;
-	+FLATSPRITE
+		Radius 128;
+		Height 0;
+		Scale 0.25;
+		+FLATSPRITE
+		CullActorBase.CullLevel 1;
 	}
 }
 

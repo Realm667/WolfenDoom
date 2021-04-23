@@ -54,7 +54,7 @@ class JazzJackrabbit : CommanderKeen
 	}
 }
 
-class Dogse: Actor
+class Dogse: SceneryBase
 {
 	Default
 	{
@@ -64,6 +64,7 @@ class Dogse: Actor
 		Radius 16;
 		Height 24;
 		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{

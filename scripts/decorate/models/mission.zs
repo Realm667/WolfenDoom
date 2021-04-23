@@ -115,7 +115,7 @@ class Nebelwerfer3D : Base //MaxED
 	}
 }
 
-class Nebelwerfer3D_Destroyed: Actor //Ozy81
+class Nebelwerfer3D_Destroyed: SceneryBase //Ozy81
 {
 	Default
 	{
@@ -131,6 +131,7 @@ class Nebelwerfer3D_Destroyed: Actor //Ozy81
 		+SHOOTABLE
 		+SOLID
 		BloodType "TankSpark";
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -216,7 +217,7 @@ class FlakVierling3D : SwitchableDecoration
 	}
 }
 
-class FlakVierling3D_War: Actor
+class FlakVierling3D_War: SceneryBase
 {
 	Default
 	{
@@ -235,6 +236,7 @@ class FlakVierling3D_War: Actor
 		+SHOOTABLE
 		+SOLID
 		BloodType "TankSpark";
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{

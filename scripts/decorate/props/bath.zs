@@ -20,17 +20,18 @@
  * SOFTWARE.
 **/
 
-class BathBase: Actor
+class BathBase: SceneryBase
 {
 	Default
 	{
-	Radius 8;
-	Height 32;
-	+NOBLOOD
-	+NODROPOFF
-	+NOTAUTOAIMED
-	+SHOOTABLE
-	+SOLID
+		Radius 8;
+		Height 32;
+		+NOBLOOD
+		+NODROPOFF
+		+NOTAUTOAIMED
+		+SHOOTABLE
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 }
 
@@ -156,22 +157,24 @@ class ToiletTalking : ToiletShootable
 	}
 }
 
-class WashingDish: Actor
+class WashingDish: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Bath
-	//$Title Washing Dish
-	//$Color 3
-	DistanceCheck "boa_scenelod";
-	Radius 8;
-	Height 32;
-	+SOLID
+		//$Category Props (BoA)/Bath
+		//$Title Washing Dish
+		//$Color 3
+		DistanceCheck "boa_scenelod";
+		Radius 8;
+		Height 32;
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
+
 	States
 	{
-	Spawn:
-		MDLA A -1;
-		Stop;
+		Spawn:
+			MDLA A -1;
+			Stop;
 	}
 }

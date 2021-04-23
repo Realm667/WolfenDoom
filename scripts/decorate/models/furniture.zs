@@ -41,7 +41,7 @@ class BoATable2 : MuseumBase
 	}
 }
 
-class Radiator_Short: Actor
+class Radiator_Short: SceneryBase
 {
 	Default
 	{
@@ -52,6 +52,7 @@ class Radiator_Short: Actor
 		Radius 4;
 		Height 32;
 		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{

@@ -728,6 +728,7 @@ class PlainsSun3D : ModelBase
 		//$Category Skyboxes (BoA)
 		//$Title Sunny Morning SkyBox (PlainsSun, Special)
 		//$Color 3
+		+CullActorBase.DONTCULL;
 	}
 }
 

@@ -3568,7 +3568,7 @@ class ModelBase : SceneryBase
 
 	override void PostBeginPlay()
 	{
-		if (!wasculled) { A_SetSize(radius * scale.x / Default.scale.x, height * scale.y / Default.scale.y); } // If the actor is scaled from default, adjust the actual size of the actor
+		if (!bWasCulled) { A_SetSize(radius * scale.x / Default.scale.x, height * scale.y / Default.scale.y); } // If the actor is scaled from default, adjust the actual size of the actor
 
 		Super.PostBeginPlay();
 	}

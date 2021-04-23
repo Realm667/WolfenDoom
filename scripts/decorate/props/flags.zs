@@ -421,18 +421,19 @@ class Toys_NaziFlagS : Toys_UKFlag
 	}
 }
 
-class Maps_Pins1: Actor
+class Maps_Pins1: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Flags
-	//$Title Maps Pins - SS Flag
-	//$Color 3
-	Radius 2;
-	Height 2;
-	Scale 0.25;
-	+NOGRAVITY
-	+WALLSPRITE
+		//$Category Props (BoA)/Flags
+		//$Title Maps Pins - SS Flag
+		//$Color 3
+		Radius 2;
+		Height 2;
+		Scale 0.25;
+		+NOGRAVITY
+		+WALLSPRITE
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{

@@ -196,7 +196,7 @@ class DebrisBase : SceneryBase
 
 	override void PostBeginPlay()
 	{
-		if (!wasculled)
+		if (!bWasCulled)
 		{
 			if (user_variant) { frame = user_variant; }
 			else { frame = Random(0, variants - 1); }
@@ -323,7 +323,7 @@ class DebrisPipe : DebrisBase
 	{
 		Super.PostBeginPlay();
 
-		if (!wasculled) { scale *= FRandom(0.5, maxscale); }
+		if (!bWasCulled) { scale *= FRandom(0.5, maxscale); }
 	}
 }
 
@@ -342,7 +342,7 @@ class DebrisBeam : DebrisBase
 	{
 		Super.PostBeginPlay();
 
-		if (!wasculled)
+		if (!bWasCulled)
 		{
 			scale.x *= FRandom(0.75, maxscale);
 			scale.y *= FRandom(0.5, maxscale);
@@ -365,7 +365,7 @@ class DebrisGirder : DebrisBase
 	{
 		Super.PostBeginPlay();
 
-		if (!wasculled) { scale *= FRandom(0.5, min(maxscale, 2.5)); }
+		if (!bWasCulled) { scale *= FRandom(0.5, min(maxscale, 2.5)); }
 	}
 }
 

@@ -20,17 +20,18 @@
  * SOFTWARE.
 **/
 
-class REBase : Actor
+class REBase : SceneryBase
 {
 	Default
 	{
 		//$Category Resident Evil (BoA)
 		+SOLID
 		+CANPASS
+		CullActorBase.CullLevel 1;
 	}
 }
 
-class REChandelier : SwitchableDecoration
+class REChandelier : SceneryBase
 {
 	Default
 	{
@@ -38,6 +39,7 @@ class REChandelier : SwitchableDecoration
 		//$Title Entry Hall Chandelier
 		+NOGRAVITY
 		-SOLID
+		CullActorBase.CullLevel 2;
 	}
 
 	States
@@ -110,6 +112,7 @@ class RELightStair : REBase
 		//$Title Tall Lamp
 		Height 128;
 		Radius 10;
+		CullActorBase.CullLevel 2;
 	}
 
 	States
@@ -128,6 +131,7 @@ class RELightStair2 : REBase
 		Height 64;
 		Radius 10;
 		+NOGRAVITY
+		CullActorBase.CullLevel 2;
 	}
 
 	States

@@ -48,7 +48,7 @@ class RockSpawner : SceneryBase
 			{
 				A_SetSize(radius * scale.x, height * scale.y);
 			}
-			else if (!wasculled) // Blockers get added to the effect manager and handle their own culling, so only spawn blockers on initial spawn before culling
+			else if (!bWasCulled) // Blockers get added to the effect manager and handle their own culling, so only spawn blockers on initial spawn before culling
 			{
 				Actor block;
 

@@ -20,19 +20,20 @@
  * SOFTWARE.
 **/
 
-class ShopStand1: Actor
+class ShopStand1: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Shops
-	//$Title SS Shop Stand (Guard variant, random, non-solid)
-	//$Color 3
-	Radius 8;
-	Height 8;
-	Scale 0.67;
-	-SOLID
-	+CANPASS
-	+NOGRAVITY
+		//$Category Props (BoA)/Shops
+		//$Title SS Shop Stand (Guard variant, random, non-solid)
+		//$Color 3
+		Radius 8;
+		Height 8;
+		Scale 0.67;
+		-SOLID
+		+CANPASS
+		+NOGRAVITY
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -208,25 +209,26 @@ class ShopCleaver : ShopStand1
 	}
 }
 
-class ShopStand1D: Actor
+class ShopStand1D: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Shops/Destroyable
-	//$Title SS Shop Stand (Guard variant, random, destroyable)
-	//$Color 3
-	Radius 8;
-	Height 64;
-	Health 5;
-	Mass 100;
-	Scale 0.67;
-	-DROPOFF
-	-NOGRAVITY
-	+NOBLOOD
-	+NOTAUTOAIMED
-	+PUSHABLE
-	+SHOOTABLE
-	+SOLID
+		//$Category Props (BoA)/Shops/Destroyable
+		//$Title SS Shop Stand (Guard variant, random, destroyable)
+		//$Color 3
+		Radius 8;
+		Height 64;
+		Health 5;
+		Mass 100;
+		Scale 0.67;
+		-DROPOFF
+		-NOGRAVITY
+		+NOBLOOD
+		+NOTAUTOAIMED
+		+PUSHABLE
+		+SHOOTABLE
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -554,25 +556,26 @@ class Butchery9 : Butchery1
 	}
 }
 
-class Butchery1D: Actor
+class Butchery1D: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Shops/Destroyable
-	//$Title Pork Butt (random)
-	//$Color 3
-	Radius 4;
-	Height 8;
-	Health 5;
-	Mass 100;
-	Scale 0.25;
-	-DROPOFF
-	+CANPASS
-	+NOBLOOD
-	+NOTAUTOAIMED
-	+PUSHABLE
-	+SHOOTABLE
-	+SOLID
+		//$Category Props (BoA)/Shops/Destroyable
+		//$Title Pork Butt (random)
+		//$Color 3
+		Radius 4;
+		Height 8;
+		Health 5;
+		Mass 100;
+		Scale 0.25;
+		-DROPOFF
+		+CANPASS
+		+NOBLOOD
+		+NOTAUTOAIMED
+		+PUSHABLE
+		+SHOOTABLE
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -908,26 +911,27 @@ class Bakery1 : Butchery1
 	}
 }
 
-class Bakery1D: Actor
+class Bakery1D: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Shops/Destroyable
-	//$Title Bread (laying, random, destroyable)
-	//$Color 3
-	Radius 4;
-	Height 8;
-	Health 5;
-	Mass 100;
-	Scale 0.35;
-	-DROPOFF
-	+CANPASS
-	+NOBLOOD
-	+NOTAUTOAIMED
-	+PUSHABLE
-	+SHOOTABLE
-	+SOLID
-	+TOUCHY
+		//$Category Props (BoA)/Shops/Destroyable
+		//$Title Bread (laying, random, destroyable)
+		//$Color 3
+		Radius 4;
+		Height 8;
+		Health 5;
+		Mass 100;
+		Scale 0.35;
+		-DROPOFF
+		+CANPASS
+		+NOBLOOD
+		+NOTAUTOAIMED
+		+PUSHABLE
+		+SHOOTABLE
+		+SOLID
+		+TOUCHY
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{

@@ -20,17 +20,18 @@
  * SOFTWARE.
 **/
 
-class Ink1: Actor
+class Ink1: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Castle
-	//$Title Ink, Yellow
-	//$Color 3
-	Radius 2;
-	Height 2;
-	Scale 0.2;
-	+CANPASS
+		//$Category Props (BoA)/Castle
+		//$Title Ink, Yellow
+		//$Color 3
+		Radius 2;
+		Height 2;
+		Scale 0.2;
+		+CANPASS
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -110,22 +111,23 @@ class Ink6 : Ink1
 	}
 }
 
-class MonsterStatue: Actor
+class MonsterStatue: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Castle
-	//$Title Monster Statue (Red Eyes)
-	//$Color 3
-	Radius 24;
-	Height 64;
-	Health 25;
-	Mass 100000;
-	Scale 0.5;
-	+NOBLOOD
-	+NOTAUTOAIMED
-	+SHOOTABLE
-	+SOLID
+		//$Category Props (BoA)/Castle
+		//$Title Monster Statue (Red Eyes)
+		//$Color 3
+		Radius 24;
+		Height 64;
+		Health 25;
+		Mass 100000;
+		Scale 0.5;
+		+NOBLOOD
+		+NOTAUTOAIMED
+		+SHOOTABLE
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -339,19 +341,20 @@ class BronzeStatueF : BronzeStatueA
 	}
 }
 
-class BronzeStatueFMini: Actor
+class BronzeStatueFMini: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Castle
-	//$Title Mini Arno Breker's Speer Statue
-	//$Color 3
-	Radius 1;
-	Height 1;
-	Scale 0.05;
-	-SOLID
-	+NOBLOCKMAP
-	+NOINTERACTION
+		//$Category Props (BoA)/Castle
+		//$Title Mini Arno Breker's Speer Statue
+		//$Color 3
+		Radius 1;
+		Height 1;
+		Scale 0.05;
+		-SOLID
+		+NOBLOCKMAP
+		+NOINTERACTION
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -421,17 +424,18 @@ class Denkmal2 : Denkmal
 	}
 }
 
-class HarnessSet: Actor
+class HarnessSet: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Castle
-	//$Title Medieval Harness Set (silver, red)
-	//$Color 3
-	DistanceCheck "boa_scenelod";
-	Radius 16;
-	Height 72;
-	+SOLID
+		//$Category Props (BoA)/Castle
+		//$Title Medieval Harness Set (silver, red)
+		//$Color 3
+		DistanceCheck "boa_scenelod";
+		Radius 16;
+		Height 72;
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -450,17 +454,18 @@ class HarnessSet2 : HarnessSet
 	}
 }
 
-class WellEmpty: Actor //mxd
+class WellEmpty: SceneryBase //mxd
 {
 	Default
 	{
-	//$Category Props (BoA)/Castle
-	//$Title Well (empty)
-	//$Color 3
-	DistanceCheck "boa_scenelod";
-	Radius 24;
-	Height 32;
-	+SOLID
+		//$Category Props (BoA)/Castle
+		//$Title Well (empty)
+		//$Color 3
+		DistanceCheck "boa_scenelod";
+		Radius 24;
+		Height 32;
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -485,13 +490,14 @@ class WellWater : WellEmpty //mxd
 	}
 }
 
-class WellWaterWater: Actor //mxd
+class WellWaterWater: SceneryBase //mxd
 {
 	Default
 	{
-	DistanceCheck "boa_scenelod";
-	RenderStyle "Translucent";
-	Alpha 0.9;
+		DistanceCheck "boa_scenelod";
+		RenderStyle "Translucent";
+		Alpha 0.9;
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{

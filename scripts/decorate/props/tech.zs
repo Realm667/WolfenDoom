@@ -24,18 +24,19 @@
 const TESLA_FLAGS1 = SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE;
 const TESLA_FLAGS2 = SXF_TRANSFERSCALE | SXF_CLIENTSIDE;
 
-class Radar: Actor //3d ACTOR
+class Radar: SceneryBase //3d ACTOR
 {
 	Default
 	{
-	//$Category Props (BoA)/Tech
-	//$Title Radar
-	//$Color 3
-	DistanceCheck "boa_scenelod";
-	Radius 32;
-	Height 48;
-	Scale 0.75;
-	+SOLID
+		//$Category Props (BoA)/Tech
+		//$Title Radar
+		//$Color 3
+		DistanceCheck "boa_scenelod";
+		Radius 32;
+		Height 48;
+		Scale 0.75;
+		+SOLID
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -45,19 +46,20 @@ class Radar: Actor //3d ACTOR
 	}
 }
 
-class TeslaLab1: Actor
+class TeslaLab1: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Tech
-	//$Title Tesla Device (Off)
-	//$Color 3
-	Radius 32;
-	Height 48;
-	Scale 0.6;
-	+DONTTHRUST
-	+NOGRAVITY
-	+NOTAUTOAIMED
+		//$Category Props (BoA)/Tech
+		//$Title Tesla Device (Off)
+		//$Color 3
+		Radius 32;
+		Height 48;
+		Scale 0.6;
+		+DONTTHRUST
+		+NOGRAVITY
+		+NOTAUTOAIMED
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
@@ -257,19 +259,20 @@ class TeslaLab5 : TeslaLab2
 	}
 }
 
-class Pmetal1: Actor
+class Pmetal1: SceneryBase
 {
 	Default
 	{
-	//$Category Props (BoA)/Tech
-	//$Title Metal Junk 1
-	//$Color 3
-	+CLIENTSIDEONLY
-	+CORPSE
-	+MOVEWITHSECTOR
-	+NOTELEPORT
-	Height 1;
-	Radius 1;
+		//$Category Props (BoA)/Tech
+		//$Title Metal Junk 1
+		//$Color 3
+		+CLIENTSIDEONLY
+		+CORPSE
+		+MOVEWITHSECTOR
+		+NOTELEPORT
+		Height 1;
+		Radius 1;
+		CullActorBase.CullLevel 1;
 	}
 	States
 	{
