@@ -845,9 +845,9 @@ class ShermanPlayer: TankPlayer
 }
 
 class PanzerIVPlayer: ShermanPlayer
-{ //modders can inherit from TankPlayer directly
+{ //modders should inherit from TankPlayer directly
 	default
-	{ //this is done for no special code migration measures on maps, as 'player is ShermanPlayer' will still evaluate to 1
+	{
 		Player.MorphWeapon "Cannon75mmKwK";
 		Player.StartItem "Cannon75mmKwK";
 		Player.WeaponSlot 1, "Cannon75mmKwK";
@@ -862,47 +862,5 @@ class PanzerIV : Sherman //can also inherit directly from TankMorph
 	{
 		PowerMorph.PlayerClass "PanzerIVPlayer";
 		TankMorph.ActorClass "PanzerIVPlayer";
-	}
-}
-
-class TigerPlayer: ShermanPlayer //this is not used in any map, just an example for the modders
-{ //to add a new player tank class, just add this (playerpawn) actor, the powerup and the cannon weapon, then add MorphPowerup to the treads actor
-	default
-	{
-		Player.MorphWeapon "Cannon88mm";
-		Player.StartItem "Cannon88mm";
-		Player.WeaponSlot 1, "Cannon88mmKwK";
-		TankPlayer.TreadsClass "TigerTreads";
-		TankPlayer.PowerupClass "Tiger";
-	}
-}
-
-class Tiger : Sherman
-{
-	Default
-	{
-		PowerMorph.PlayerClass "TigerPlayer";
-		TankMorph.ActorClass "TigerPlayer";
-	}
-}
-
-class SdKfz223Player: ShermanPlayer
-{
-	default
-	{
-		Player.MorphWeapon "CannonMG34";
-		Player.StartItem "CannonMG34";
-		Player.WeaponSlot 1, "CannonMG34";
-		TankPlayer.TreadsClass "LightPanzerTreads";
-		TankPlayer.PowerupClass "SdKfz223";
-	}
-}
-
-class SdKfz223 : Sherman
-{
-	Default
-	{
-		PowerMorph.PlayerClass "SdKfz223Player";
-		TankMorph.ActorClass "SdKfz223Player";
 	}
 }

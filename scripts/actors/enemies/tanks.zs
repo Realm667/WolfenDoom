@@ -1744,7 +1744,6 @@ class TigerTreads : TankTreadsBase
 		TankTreadsBase.DebrisActor "Debris_Tank2";
 		TankTreadsBase.DeadActor "DestroyedTank3";
 		TankTreadsBase.TurretClass "TigerTurret";
-		TankTreadsBase.MorphPowerup "Tiger";
 	}
 }
 
@@ -1814,7 +1813,6 @@ class LightPanzerTreads : TankTreadsBase
 		TankTreadsBase.DeadActor "DestroyedTank4";
 		TankTreadsBase.Length 80;
 		TankTreadsBase.TurretClass "LightPanzerTurret";
-		TankTreadsBase.MorphPowerup "SdKfz223";
 	}
 
 	override void PostBeginPlay()
