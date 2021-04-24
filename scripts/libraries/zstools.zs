@@ -380,6 +380,18 @@ class ZScriptTools
 				return false;
 		}
 	}
+
+	static String Trim(String input)
+	{
+		if (input.Length() < 1) { return ""; }
+
+		String output = input;
+
+		while (ZScriptTools.IsWhiteSpace(output.GetNextCodePoint(0))) { output.Remove(0, 1); }
+		while (ZScriptTools.IsWhiteSpace(output.GetNextCodePoint(output.CodePointCount() - 1))) { output.DeleteLastCharacter(); }
+
+		return output;
+	}
 }
 
 // Functions to identify the current IWAD and read info from the matching IWADINFO block
@@ -410,7 +422,7 @@ class WADInfo
 
 		for (int i = 0; i < info.Size(); i++)
 		{
-			String line = FileReader.Trim(info[i]);
+			String line = ZScriptTools.Trim(info[i]);
 			if (line.IndexOf("=") > -1 || line.IndexOf("\x22") > -1) { line = line .. ";"; } // Stick a semicolon on the end if it contains quotes or an equal sign
 
 			infodata = infodata .. "\n" .. line; // Then re-concatenate everything back together

@@ -350,20 +350,61 @@ class ACSTools
 
 			if (SmallFont.StringWidth(line) > maxwidth)
 			{
+				if (!currentcolor)
+				{
+					currentcolor = lastcolor = "C"; // Use gray as default color if none was set
+				}
+				
 				if (colorindex > lastspace) { currentcolor = lastcolor; } // Make sure the color change didn't happen after the last known space
-				output = String.Format("%s%s%c\c%s", output, input.Mid(linestart, lastspace - linestart + 1), c == 0x0A ? 0 : 0x0A, currentcolor);
 
-				linestart = lastspace + 1;
-				lastspace = linestart;
+				line = ZScriptTools.Trim(input.Mid(linestart, lastspace - linestart + 1));
+				output = String.Format("%s%s%c\c%s", output, line, c == 0x0A ? 0 : 0x0A, currentcolor);
+
+				linestart = i = lastspace;
 			}
 		}
 
+		// Make sure to catch the final line is it doesn't end in a line break
 		if (linestart < count)
 		{
-			output = String.Format("%s%s", output, input.Mid(linestart));
+			String line = ZScriptTools.Trim(input.Mid(linestart));
+			output = String.Format("%s%s", output, line);
 		}
 
 		return output;
+	}
+
+	static String GetKeyPressString(String bind, bool required = false, String keycolor = "Gold", String textcolor = "Untranslated", String errorcolor = "Dark Red")
+	{
+		int c1, c2;
+		[c1, c2] = Bindings.GetKeysForCommand(bind);
+
+		keycolor = "\c[" .. keycolor .. "]";
+		textcolor = "\c[" .. textcolor .. "]";
+		errorcolor = "\c[" .. errorcolor .. "]";
+
+		String keynames = Bindings.NameKeys(c1, c2);
+		keynames = ZScriptTools.StripColorCodes(keynames);
+		keynames.Replace(", ", ">" .. textcolor .. " " .. StringTable.Localize("$WORD_OR") .. " " .. keycolor .. "<");
+
+		// If the bind is an inventory use command, append '<activate item>' to the string
+		String suffix = "";
+		if (bind.Left(3) ~== "use")
+		{
+			suffix = " " .. StringTable.Localize("$WORD_OR") .. keycolor .. " <" .. StringTable.Localize("$CNTRLMNU_USEITEM") .. ">" .. textcolor;
+			suffix.MakeLower();
+		}
+
+		if (required && !keynames.length())
+		{
+			return errorcolor .. "<" .. StringTable.Localize("$BINDKEY") .. " " .. bind .. ">" .. textcolor .. suffix;
+		}
+		else
+		{
+			keynames = keycolor .. "<" .. keynames .. ">" .. textcolor .. suffix;
+		}
+
+		return keynames;
 	}
 }
 

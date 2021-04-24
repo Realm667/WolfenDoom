@@ -113,21 +113,17 @@ function str KeyInfo(str key, str name)
 	return StrParam(s:name, s:"\n\c[Dark Red]", s:keybind);
 }
 
-function str GetKeyMessage(str message, str key)
+function str GetKeyMessage(str message, str key, bool inline)
 {
-	message = StrParam(l:message);
-
-	if (key != 0 && StrLen(key) > 0)
+	if (inline)
 	{
-		key = StrParam(s:key);
-		str bind = StrParam(k:key);
-
-		str clr = "\cU";
-
-		if (!StrCmp(bind, "???", 3)) { clr = "\c[Dark Red]"; }
-
-		message = StrParam(s:message, s:"  ", s:clr, s:"<", s:bind, s:">");
+		return StrParam(l:message, s:" (", s:ScriptCall("ACSTools", "GetKeyPressString", key, true, "Dark Gray", "Gray"), s:")\cC");
 	}
 
-	return message;
+	return StrParam(l:message, s:"\n", s:ScriptCall("ACSTools", "GetKeyPressString", key, true, "Dark Gray", "Gray"), s:"\cC");
+}
+
+function void StartMessage(void)
+{
+	ACS_NamedExecute("HintMessage", 0, "INTROTEXGEN01", "+use");
 }

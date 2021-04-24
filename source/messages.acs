@@ -203,20 +203,49 @@ script "_Do_BoADevComment_" (int langEntry, int basemessagetime, int image)
 
 script "HintMessage" (int message, int key)
 {
-	if (message == "") { Terminate; }
+	if (message == "" && key == "") { Terminate; }
 
-	message = GetKeyMessage(message, key);
+	message = StrParam(l:message);
+	message = ScriptCall("ACSTools", "BreakString", message, 300);
+	key = ScriptCall("ACSTools", "GetKeyPressString", key, true, "Dark Gray", "Gray");
 
-	SetHudSize(640, 480, true);
+	SetHudSize(640, 480, false);
+	int screenblocks = GetCVar("screenblocks");
 
-	int drawpos = 470.0;
+	int drawpos = 464.0;
 
-	if (ScriptCall("Base", "SneakableActors") > 0) { drawpos -= 30.0; }
+	// Offset the message upward as needed if we are not in a cutscene
+	if (!CheckActorInventory(1001, "CutsceneEnabled")) // Just check player 1 for efficiency
+	{
+		if (screenblocks < 11)
+		{
+			drawpos -= 10.0;
+			if (ScriptCall("Base", "SneakableActors") > 0) { drawpos -= 5.0; } // Offset for sneak bar in status bar view
+		}
+		else if (screenblocks == 11 && ScriptCall("Base", "SneakableActors") > 0) { drawpos -= 30.0; } // Offset for sneak bar in fullscreen
+	}
 
-	hudmessagebold(s:message; HUDMSG_FADEINOUT | HUDMSG_LOG, 80, CR_GRAY, 320.0, drawpos, 3.0, 1.0, 1.0);
+	drawpos -= CountLineBreaks(message) * 11.0;
+
+	if (StrLen(key) > 0) { message = StrParam(s:message, s:"\n", s:key); }
+
+	hudmessagebold(s:message; HUDMSG_FADEINOUT | HUDMSG_LOG, 80, CR_GRAY, 320.4, drawpos, 3.0, 1.0, 1.0);
 
 	delay(10);
 	AmbientSound("menu/change", 96);
+}
+
+function int CountLineBreaks(str input)
+{
+	int count = 0;
+
+	for (int c = 0; c < StrLen(input); c++)
+	{
+		int char = GetChar(input, c);
+		if (char == 0x0A) { count++; }
+	}
+
+	return count;
 }
 
 script "TankExitMessage" (void)

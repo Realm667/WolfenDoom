@@ -127,8 +127,8 @@ class FileReader
 					token.Split(temp, "=");
 					if (temp.Size())
 					{
-						key.keyname = Trim(temp[0]);
-						if (temp.Size() > 1) { key.value = Trim(temp[1]); }
+						key.keyname = ZScriptTools.Trim(temp[0]);
+						if (temp.Size() > 1) { key.value = ZScriptTools.Trim(temp[1]); }
 
 						if (parent) { parent.Children.Push(key); }
 					}
@@ -139,7 +139,7 @@ class FileReader
 					if (blockcomment || linecomment) { break; }
 					block = new("ParsedValue");
 					block.parent = parent;
-					block.KeyName = Trim(token);
+					block.KeyName = ZScriptTools.Trim(token);
 
 					if (parent) { parent.Children.Push(block); }
 
@@ -150,7 +150,7 @@ class FileReader
 					break;
 				case 125: // }
 					if (blockcomment || linecomment) { break; }
-					if (FileReader.Trim(token).length()) { console.printf("Missing semi-colon after %s", token); }
+					if (ZScriptTools.Trim(token).length()) { console.printf("Missing semi-colon after %s", token); }
 					return i;
 					break;
 				default:
@@ -235,23 +235,11 @@ class FileReader
 		return strip ? StripQuotes(current.value) : current.value;
 	}
 
-	static String Trim(String input)
-	{
-		if (input.Length() < 1) { return ""; }
-
-		String output = input;
-
-		while (ZScriptTools.IsWhiteSpace(output.GetNextCodePoint(0))) { output.Remove(0, 1); }
-		while (ZScriptTools.IsWhiteSpace(output.GetNextCodePoint(output.CodePointCount() - 1))) { output.DeleteLastCharacter(); }
-
-		return output;
-	}
-
 	static String StripQuotes(String input)
 	{
 		if (input.Length() < 1) { return ""; }
 
-		input = Trim(input);
+		input = ZScriptTools.Trim(input);
 
 		// If there are both leading and trailing quotes, remove them, otherwise leave them alone
 		if (input.GetNextCodePoint(0) == 0x0022 && input.GetNextCodePoint(input.CodePointCount() - 1) == 0x0022)
