@@ -184,7 +184,7 @@ class ActorSpawner : SwitchableDecoration
 		[lightlevel, fogfactor] = GetLightLevel();
 
 		// Only care about the player seeing the spot if it's light enough to see
-		if ((!fogfactor && lightlevel > 80) || 38 >= (dist / fogfactor))
+		if ((!fogfactor && lightlevel > 80) || (fogfactor && 38 >= (dist / fogfactor)))
 		{
 			for (int q = 0; q < MAXPLAYERS; q++)
 			{
