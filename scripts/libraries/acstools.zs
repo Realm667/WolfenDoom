@@ -351,7 +351,7 @@ class ACSTools
 			if (SmallFont.StringWidth(line) > maxwidth)
 			{
 				if (colorindex > lastspace) { currentcolor = lastcolor; } // Make sure the color change didn't happen after the last known space
-				output = String.Format("%s%s%c\c%s", output, input.Mid(linestart, lastspace - linestart + 1), c == 0x0A ? 0 : 0x0A, lastcolor);
+				output = String.Format("%s%s%c\c%s", output, input.Mid(linestart, lastspace - linestart + 1), c == 0x0A ? 0 : 0x0A, currentcolor);
 
 				linestart = lastspace + 1;
 				lastspace = linestart;
