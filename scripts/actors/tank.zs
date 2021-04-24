@@ -386,7 +386,7 @@ class TankPlayer : PlayerPawn
 	{
 		Super.Tick();
 
-		bool chasecam = player.cheats & CF_CHASECAM;
+		bool chasecam = !(player.cheats & CF_CHASECAM);
 
 		if (health == Default.Health && treads.savedhealth)
 		{
@@ -671,8 +671,6 @@ class TankMorph : PowerMorph
 	{
 		if (owner && owner.player)
 		{
-			owner.player.cheats |= CF_CHASECAM;
-
 			// Save the standard Doom-style armor values.  Doesn't support Hexen armor.
 			BasicArmor a = BasicArmor(owner.FindInventory("BasicArmor"));
 			if (a)
@@ -709,7 +707,6 @@ class TankMorph : PowerMorph
 				}
 				if (tank.turretcamera) { tank.turretcamera.Destroy(); }
 				if (tank.povcamera) { tank.povcamera.Destroy(); }
-				MorphedPlayer.cheats &= ~CF_CHASECAM;
 
 				// Restore pitch clamping, since this doesn't get reset otherwise
 				MorphedPlayer.MinPitch = -90;
