@@ -283,6 +283,88 @@ class ACSTools
 
 		return false;
 	}
+
+	// ZScript implementation of similar funtionality to V_BreakLines.  Hard-coded to use SmallFont
+	//  Some logic taken from https://github.com/coelckers/gzdoom/blob/master/src/common/fonts/v_text.cpp
+	ui static String BreakString(String input, int maxwidth)
+	{
+		if (!input.length()) { return ""; }
+
+		input = StringTable.Localize(input, false);
+
+		int c, linestart, lastspace, colorindex;
+		String output, currentcolor, lastcolor;
+		bool lastWasSpace = false;
+
+		int count = input.CodePointCount();
+
+		for (int i = 0; i < count; i++)
+		{
+			c = input.GetNextCodePoint(i);
+
+			if (c == 0x1C)
+			{
+				c = input.GetNextCodePoint(++i);
+
+				if (c == 0x5B) // [
+				{
+					int namestart = i;
+					int length;
+					while (c && c != 0x5D) // ]
+					{
+						c = input.GetNextCodePoint(++i);
+
+						length++;
+					}
+
+					if (i < count) { length++; }
+
+					lastcolor = currentcolor; // Remember the previous color in case the string gets cut before this point
+					currentcolor = input.Mid(namestart, length);
+				}
+				else
+				{
+					lastcolor = currentcolor;
+					currentcolor = String.Format("%c", c);
+				}
+
+				colorindex = i; // Remember the index of the color so that we can revert to the old color if the last space precededes the color change
+
+				continue;
+			}
+
+			if (ZScriptTools.IsWhiteSpace(c))
+			{
+				if (!lastWasSpace)
+				{
+					lastspace = i;
+					lastWasSpace = true;
+				}
+			}
+			else
+			{
+				lastWasSpace = false;
+			}
+
+			String line = input.Mid(linestart, i - linestart + 1);
+
+			if (SmallFont.StringWidth(line) > maxwidth)
+			{
+				if (colorindex > lastspace) { currentcolor = lastcolor; } // Make sure the color change didn't happen after the last known space
+				output = String.Format("%s%s%c\c%s", output, input.Mid(linestart, lastspace - linestart + 1), c == 0x0A ? 0 : 0x0A, lastcolor);
+
+				linestart = lastspace + 1;
+				lastspace = linestart;
+			}
+		}
+
+		if (linestart < count)
+		{
+			output = String.Format("%s%s", output, input.Mid(linestart));
+		}
+
+		return output;
+	}
 }
 
 class ActorFinderTracer : LineTracer
