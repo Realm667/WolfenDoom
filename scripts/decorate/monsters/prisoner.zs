@@ -21,7 +21,7 @@
  * SOFTWARE.
 **/
 
-class PrisonerAgentTalk: Actor
+class PrisonerAgentTalk: StatistBarkeeper
 {
 	Default
 	{
@@ -33,6 +33,7 @@ class PrisonerAgentTalk: Actor
 	Radius 6;
 	Height 52;
 	+SOLID
+	+INVULNERABLE
 	}
 	States
 	{
