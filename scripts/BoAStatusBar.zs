@@ -937,16 +937,17 @@ class BoAStatusBar : BaseStatusBar
 
 			dimensions = TexMan.GetScaledSize(CrosshairImage);
 
-			// Force everything to 64 pixels at widest dimension
+			maxwidth = 64.0 / min(1.0, vid_scalefactor);
+
 			if (dimensions.x > dimensions.y)
 			{
-				dimensions.y *= 64 / dimensions.x;
-				dimensions.x = 64;
+				dimensions.y *= maxwidth / dimensions.x;
+				dimensions.x = maxwidth;
 			}
 			else
 			{
-				dimensions.x *= 64 / dimensions.y;
-				dimensions.y = 64;
+				dimensions.x *= maxwidth / dimensions.y;
+				dimensions.y = maxwidth ;
 			}
 		}
 
@@ -960,7 +961,7 @@ class BoAStatusBar : BaseStatusBar
 
 				if (def)
 				{
-					size *= 1.75;
+					size *= 1.75 / min(1.0, vid_scalefactor);
 
 					TextureID icon = def.Icon; // First, try to use the Inventory item's icon as the crosshair
 
