@@ -1,7 +1,7 @@
 //-------------------------------------------------------------------------------------------
 //
 // About BoA menudef:
-// In order to include our custom standalone menues, we have decide to get rid of certain
+// In order to include our custom standalone menus, we have decide to get rid of certain
 // options which may be potential game breakers or that we retain not useful for players
 // due of the nature of the mod.
 //
@@ -34,7 +34,7 @@ LISTMENU "MainMenu"
 	StaticPatchCentered 160, 5, "M_START"
 	Position 110, 60
 	TextItem "$MNU_NEWGAME", "n", "PlayerclassMenu"
-	TextItem "$MNU_OPTIONS", "o", "BoAOptionsMenu"
+	TextItem "$MNU_OPTIONS", "o", "OptionsMenu"
 	TextItem "$MNU_GAMEFILES", "g", "GameFilesMenu"
 	TextItem "$MNU_INFO", "i", "BoAInfo"
 	TextItem "$MNU_QUITGAME", "q", "QuitMenu"
@@ -50,18 +50,12 @@ LISTMENU "MainMenu"
 
 ListMenu "PlayerclassMenu"
 {
-	IfGame(Doom, Heretic, Hexen, Strife)
-	{
-		NetgameMessage "$NEWGAME"
-	}
+	NetgameMessage "$NEWGAME"
 
-	IfGame(Doom, Strife, Chex)
-	{
-		StaticTextCentered 160, 15, "$MNU_CHOOSECLASS"
-		Position 48, 63
-		PlayerDisplay 220, 63, "20 00 00", "80 00 40"
-		MouseWindow 0, 220
-	}
+	StaticTextCentered 160, 15, "$MNU_CHOOSECLASS"
+	Position 48, 63
+	PlayerDisplay 220, 63, "20 00 00", "80 00 40"
+	MouseWindow 0, 220
 	// The rest of this menu will be set up based on the actual player definitions.
 }
 
@@ -144,54 +138,23 @@ ListMenu "SaveGameMenu"
 //
 //-------------------------------------------------------------------------------------------
 
-OptionValue "YesNo"
-{
-	0, "$TXT_NO"
-	1, "$TXT_YES"
-}
-
-OptionValue "NoYes"
-{
-	0, "$TXT_YES"
-	1, "$TXT_NO"
-}
-
-OptionValue "OnOff"
-{
-	0, "$OPTVAL_OFF"
-	1, "$OPTVAL_ON"
-}
-
-OptionValue "OffOn"
-{
-	0, "$OPTVAL_ON"
-	1, "$OPTVAL_OFF"
-}
-
-OptionValue AutoOffOn
-{
-	-1, "$OPTVAL_AUTO"
-	0, "$OPTVAL_OFF"
-	1, "$OPTVAL_ON"
-}
-
 OptionMenuSettings
 {
 	Linespacing 16
 }
 
-////////////////////////
-//CUSTOM OPTION MENUES//
-////////////////////////
+///////////////////////
+//CUSTOM OPTION MENUS//
+///////////////////////
 
 OptionMenu "BoAPerformanceOptions"
 {
 	Title "$PERFOPT"
 	StaticText " "
-	Submenu "$OPT_WEAT",						"BoAWeatherOptions"
-	Submenu "$OPT_SFX",							"BoAEffectsOptions"
-	Submenu "$OPT_REND",						"BoARenderOptions"
-	Submenu "$OPT_PROC",						"BoAPostProcessShaderOptions"
+	Submenu "$OPT_WEAT",				"BoAWeatherOptions"
+	Submenu "$OPT_SFX",				"BoAEffectsOptions"
+	Submenu "$OPT_REND",				"BoARenderOptions"
+	Submenu "$OPT_PROC",				"BoAPostProcessShaderOptions"
 }
 
 OptionMenu "BoAPredefinedOptions"
@@ -217,131 +180,32 @@ OptionMenu "BoACheatsOptions"
 	StaticText "$WARNING2"
 	StaticText "$WARNING1"
 	StaticText " "
-	Option "$CH_OPT1", 					"boa_sprintswitch", "OnOff"
+	Option "$CH_OPT1", 				"boa_sprintswitch", "OnOff"
 	StaticText " "
-	Slider "$CH_OPT2", 					"boa_flinchamount", 0.0,1.0,0.1
+	Slider "$CH_OPT2", 				"boa_flinchamount", 0.0,1.0,0.1
 	StaticText " "
 	Option "$MISCMNU_NOCHEATS",			"nocheats", "OnOff" //moved here from msicellaneous - ozy81
-	Option "$MISCMNU_ALLCHEATS",		"allcheats", "OnOff"
+	Option "$MISCMNU_ALLCHEATS",			"allcheats", "OnOff"
 }
 
-OptionMenu "BoAOptionsMenu"
+OptionMenu "BoAOptionsTop" // Added onto the top of the default Options menu
 {
-	Title "$OPTMNU_TITLE"
-	Submenu "$PERFOPT",					"BoAPerformanceOptions" //this should contain most of all custom related boa menues - ozy81
-	Submenu "$PREDOPT",					"BoAPredefinedOptions"
+	Submenu "$PERFOPT",				"BoAPerformanceOptions" //this should contain most of all custom related boa menus - ozy81
+	Submenu "$PREDOPT",				"BoAPredefinedOptions"
 	StaticText " "
-	Submenu "$OPTMNU_CONTROLS",			"BoACustomizeControls"
-	Submenu "$OPTMNU_MOUSE",			"BoAMouseOptions"
-	Submenu "$OPTMNU_JOYSTICK",			"JoystickOptions"
-	StaticText " "
-	Submenu "$OPTMNU_PLAYER",			"BoANewPlayerMenu"
-	Submenu "$OPTMNU_GAMEPLAY",			"BoAGameplayOptions"
-	Submenu "$OPTMNU_AUTOMAP",			"BoAAutomapOptions"
-	Submenu "$OPTMNU_HUD",				"BoAHUDOptions"
-	Submenu "$OPTMNU_MISCELLANEOUS",	"BoAMiscOptions"
-	Submenu "$OPTMNU_NETWORK",			"BoANetworkOptions"
-	Submenu "$OPTMNU_SOUND",			"SoundOptions"
-	Submenu "$OPTMNU_DISPLAY",			"BoAVideoOptions"
-	Submenu "$OPTMNU_VIDEO",			"BoAVideoModeMenu"
-	StaticText " "
+
+	class "MenuShim"
+}
+
+OptionMenu "BoAOptionsMiddle" // Added in the middle of the default Options menu (before Options Search)
+{
 	Submenu "$OPT_CHEAT", 				"BoACheatsOptions"
 	StaticText " "
 	Option "$OPTMNU_LANGUAGE", 			"language", "BoALanguageOptions"
 	StaticText " "
 	Option "$OPT_DEVC", 				"boa_devcomswitch", "OnOff"
-	StaticText " "
-	SafeCommand "$OPTMNU_DEFAULTS",		"reset2defaults"
-	SafeCommand	"$OPTMNU_RESETTOSAVED",	"reset2saved"
-	Command "$OPTMNU_CONSOLE",			"menuconsole"
-	StaticText " "
-	StaticText " "
-	StaticText " "
-	Submenu "$OPTMNU_ORGOPS",			"OptionsMenu"
-}
 
-//-------------------------------------------------------------------------------------------
-//
-// The player menu
-//
-//-------------------------------------------------------------------------------------------
-
-OptionValue "PlayerTeam"
-{
-	// Filled in programmatically
-}
-
-OptionValue "PlayerColors"
-{
-	// Filled in programmatically
-}
-
-OptionValue "PlayerClass"
-{
-	// Filled in programmatically
-}
-
-OptionValue "PlayerSkin"
-{
-	// Filled in programmatically
-}
-
-OptionMenu "BoANewPlayerMenu"
-{
-	Title "$MNU_PLAYERSETUP"
-	PlayerNameField "$PLYRMNU_NAME"
-	PlayerTeamItem "$PLYRMNU_TEAM", "PlayerTeam"
-	PlayerColorItem "$PLYRMNU_PLAYERCOLOR", "PlayerColors"
-	PlayerColorSlider "$PLYRMNU_RED", 0
-	PlayerColorSlider "$PLYRMNU_GREEN", 1
-	PlayerColorSlider "$PLYRMNU_BLUE", 2
-	PlayerClassItem "$PLYRMNU_PLAYERCLASS", "PlayerClass"
-	PlayerSkinItem "$PLYRMNU_PLAYERSKIN", "PlayerSkin"
-	AutoaimSlider "$PLYRMNU_AUTOAIM"
-	PlayerSwitchOnPickupItem "$PLYRMNU_SWITCHONPICKUP", "OffOn"
-	Option "$PLYRMNU_ALWAYSRUN", cl_run, "OnOff"
-	Class "NewPlayerMenu"
-}
-
-// The old player menu is kept for mods that redefine it. Only BoA related defs included plus Doom - ozy81
-ListMenu "BoAPlayerMenu"
-{
-	Font "BigFont", "DarkGray", "Black"
-	StaticTextCentered 160, 6, "$MNU_PLAYERSETUP"
-	Font "SmallFont"
-	Linespacing 18
-	Position 48, 36
-
-	PlayerNameBoxColored "$PLYRMNU_NAME", 0, "Playerbox"
-	Selector "-", -16, -1
-
-	MouseWindow 0, 220
-	PlayerDisplay 220, 80, "20 00 00", "80 00 40", 1, "PlayerDisplay"
-
-	IfGame (Doom, Strife, Chex)
-	{
-		PlayerNameBox "$PLYRMNU_NAME", 0, "Playerbox"
-		Selector "-", -16, -1
-	}
-	IfGame(Doom, Heretic, Strife, Chex)
-	{
-		MouseWindow 0, 220
-		PlayerDisplay 220, 48, "20 00 00", "80 00 40", 1, "PlayerDisplay"
-	}
-
-	ValueText "$PLYRMNU_TEAM", "Team"
-	ValueText "$PLYRMNU_PLAYERCOLOR", "Color"
-	Linespacing 10
-	Slider "$PLYRMNU_RED", "Red", 0, 255, 16
-	Slider "$PLYRMNU_GREEN", "Green", 0, 255, 16
-	Linespacing 14
-	Slider "$PLYRMNU_BLUE", "Blue", 0, 255, 16
-	ValueText "$PLYRMNU_PLAYERCLASS", "Class"
-	ValueText "$PLYRMNU_PLAYERSKIN", "Skin"
-	Slider "$PLYRMNU_AUTOAIM", "Autoaim", 0, 35, 1
-	ValueText "$PLYRMNU_SWITCHONPICKUP", "Switch", "OffOn"
-	ValueText "$PLYRMNU_ALWAYSRUN", "AlwaysRun", "OnOff"
-	Class "PlayerMenu"
+	class "MenuShim"
 }
 
 //-------------------------------------------------------------------------------------------
@@ -357,8 +221,8 @@ OptionMenu "BoACustomizeControls"
 	Submenu    "$CNTRLMNU_ACTION"      , "BoAActionControlsMenu"
 	Submenu    "$CNTRLMNU_WEAPONS"     , "BoAWeaponsControlMenu"
 	Submenu    "$CNTRLMNU_INVENTORY"   , "BoAInventoryControlsMenu"
-	Submenu    "$MAPCNTRLMNU_CONTROLS" , "BoAMapControlsMenu"
-	Submenu    "$CNTRLMNU_OTHER"       , "BoAOtherControlsMenu"
+	Submenu    "$MAPCNTRLMNU_CONTROLS" , "MapControlsMenu"
+	Submenu    "$CNTRLMNU_OTHER"       , "OtherControlsMenu"
 }
 
 OptionMenu "BoAActionControlsMenu"
@@ -368,14 +232,14 @@ OptionMenu "BoAActionControlsMenu"
 	StaticTextSwitchable "$CNTRLMNU_SWITCHTEXT1", "$CNTRLMNU_SWITCHTEXT2", "ControlMessage"
 
 	StaticText " " //newdefs on top? - ozy81
-	Control		"$CO_OBJS"					, "pukename boaobjectives"
+	Control		"$CO_OBJS"		, "pukename boaobjectives"
 
 	StaticText " "
 	Control    "$CNTRLMNU_ATTACK"           , "+attack"
 	Control    "$CNTRLMNU_ALTATTACK"        , "+altattack"
 	Control    "$CNTRLMNU_RELOAD"           , "+reload"
-	Control	   "$CO_KICK"					, "pukename QuickKick"
-	Control	   "$CO_GREN"					, "use GrenadePickup"
+	Control	   "$CO_KICK"			, "pukename QuickKick"
+	Control	   "$CO_GREN"			, "use GrenadePickup"
 
 	StaticText " "
 	Control    "$CNTRLMNU_USE"              , "+use"
@@ -446,58 +310,11 @@ OptionMenu "BoAInventoryControlsMenu"
 	Control    "$CNTRLMNU_PREVIOUSITEM" , "invprev"
 }
 
-OptionMenu "BoAOtherControlsMenu"
-{
-	Title "$CNTRLMNU_OTHER_TITLE"
-	ScrollTop 2
-	StaticTextSwitchable "$CNTRLMNU_SWITCHTEXT1", "$CNTRLMNU_SWITCHTEXT2", "ControlMessage"
-
-	StaticText " "
-	Control    "$CNTRLMNU_AUTOMAP"         , "togglemap"
-
-	StaticText " " //kept here always for duke alike pals - ozy81
-	Control    "$CNTRLMNU_CHASECAM"        , "chase"
-	Control    "$CNTRLMNU_COOPSPY"         , "spynext"
-
-	StaticText " "
-	Control    "$CNTRLMNU_SCREENSHOT"      , "screenshot"
-	Control    "$CNTRLMNU_CONSOLE"         , "toggleconsole"
-	Control    "$CNTRLMNU_PAUSE"           , "pause"
-
-	StaticText " "
-	Control    "$CNTRLMNU_DISPLAY_INC"     , "sizeup"
-	Control    "$CNTRLMNU_DISPLAY_DEC"     , "sizedown"
-	Control    "$CNTRLMNU_TOGGLE_MESSAGES" , "togglemessages"
-	Control    "$CNTRLMNU_ADJUST_GAMMA"    , "bumpgamma"
-
-	StaticText " "
-	Control    "$CNTRLMNU_OPEN_HELP"       , "menu_help"
-	Control    "$CNTRLMNU_OPEN_SAVE"       , "menu_save"
-	Control    "$CNTRLMNU_OPEN_LOAD"       , "menu_load"
-	Control    "$CNTRLMNU_OPEN_OPTIONS"    , "menu_options"
-	Control    "$CNTRLMNU_OPEN_DISPLAY"    , "menu_display"
-	Control    "$CNTRLMNU_EXIT_TO_MAIN"    , "menu_endgame"
-	Control    "$CNTRLMNU_MENU_QUIT"       , "menu_quit"
-
-	StaticText " "
-	Control    "$CNTRLMNU_QUICKSAVE"       , "quicksave"
-	Control    "$CNTRLMNU_QUICKLOAD"       , "quickload"
-}
-
 //-------------------------------------------------------------------------------------------
 //
 // Mouse Menu
 //
 //-------------------------------------------------------------------------------------------
-
-OptionValue "Corners"
-{
-	-1, "$OPTVAL_OFF"
-	0, "$OPTVAL_UPPERLEFT"
-	1, "$OPTVAL_UPPERRIGHT"
-	2, "$OPTVAL_LOWERLEFT"
-	3, "$OPTVAL_LOWERRIGHT"
-}
 
 OptionValue "MenuMouse"
 {
@@ -506,92 +323,6 @@ OptionValue "MenuMouse"
 	2, "$OPTVAL_TOUCHSCREENLIKE"
 }
 
-OptionString "Cursors"
-{
-	"None", "$OPTVAL_DEFAULT"
-	"cursor", "$OPTSTR_SIMPLEARROW"
-	"doomcurs", "$OPTVAL_DOOM"
-	"herecurs", "$OPTSTR_HERETIC"
-	"hexncurs", "$OPTVAL_HEXEN"
-	"strfcurs", "$OPTVAL_STRIFE"
-	"chexcurs", "$OPTSTR_CHEX"
-	"-", "$OPTSTR_SYSTEMCURSOR"
-}
-
-OptionMenu "BoAMouseOptions"
-{
-	Title "$MOUSEMNU_TITLE"
-	Option "$MOUSEMNU_ENABLEMOUSE",		"use_mouse", 			"YesNo"
-	Option "$MOUSEMNU_MOUSEINMENU",		"m_use_mouse", 			"MenuMouse", "use_mouse"
-	Option "$MOUSEMNU_SHOWBACKBUTTON",	"m_show_backbutton", 	"Corners", "use_mouse"
-	Option "$MOUSEMNU_CURSOR",			"vid_cursor", 			"Cursors"
-	StaticText 	""
-	Option "$MOUSEMNU_SMOOTHMOUSE",		"m_filter", 			"YesNo"
-	StaticText 	""
-	Slider "$MOUSEMNU_TURNSPEED",		"m_yaw", 				0, 2.5, 0.1
-	Slider "$MOUSEMNU_MOUSELOOKSPEED",	"m_pitch", 				0, 2.5, 0.1
-	Slider "$MOUSEMNU_FORWBACKSPEED",	"m_forward", 			0, 2.5, 0.1
-	Slider "$MOUSEMNU_STRAFESPEED",		"m_side", 				0, 2.5, 0.1
-	StaticText 	""
-	Option "$MOUSEMNU_ALWAYSMOUSELOOK",	"freelook", 			"OnOff"
-	Option "$MOUSEMNU_INVERTMOUSEX",	"invertmousex", 		"OnOff"
-	Option "$MOUSEMNU_INVERTMOUSE",		"invertmouse", 			"OnOff"
-	Option "$MOUSEMNU_LOOKSPRING",		"lookspring", 			"OnOff"
-	Option "$MOUSEMNU_LOOKSTRAFE",		"lookstrafe", 			"OnOff"
-}
-
-//-------------------------------------------------------------------------------------------
-//
-// Joystick Menu
-//
-//-------------------------------------------------------------------------------------------
-
-OptionMenu "JoystickOptionsDefaults" protected
-{
-	Title "$JOYMNU_OPTIONS"
-	Option "$JOYMNU_ENABLE", "use_joystick", "YesNo"
-	Option "$JOYMNU_NOMENU", "m_blockcontrollers", "YesNo"
-	IfOption(Windows)
-	{
-		Option "$JOYMNU_DINPUT", "joy_dinput", "YesNo"
-		Option "$JOYMNU_XINPUT", "joy_xinput", "YesNo"
-		Option "$JOYMNU_PS2", "joy_ps2raw", "YesNo"
-	}
-	StaticText ""
-	StaticTextSwitchable "$JOYMNU_NOCON", "$JOYMNU_CONFIG", "ConfigureMessage"
-	StaticTextSwitchable " ", "$JOYMNU_DISABLED1", "ConnectMessage1"
-	StaticTextSwitchable " ", "$JOYMNU_DISABLED2", "ConnectMessage2"
-
-	// The rest will be filled in by joystick code if devices get connected or disconnected
-}
-
-OptionMenu "JoystickOptions" protected
-{
-	Title "$JOYMNU_OPTIONS"
-}
-
-OptionValue "JoyAxisMapNames"
-{
-	-1, "$OPTVAL_NONE"
-	0, "$OPTVAL_TURNING"
-	1, "$OPTVAL_LOOKINGUPDOWN"
-	2, "$OPTVAL_MOVINGFORWARD"
-	3, "$OPTVAL_STRAFING"
-	4, "$OPTVAL_MOVINGUPDOWN"
-}
-
-OptionValue "Inversion"
-{
-	0, "$OPTVAL_NOTINVERTED"
-	1, "$OPTVAL_INVERTED"
-}
-
-OptionMenu "JoystickConfigMenu" protected
-{
-	Title "$JOYMNU_TITLE"
-	Class "JoystickConfigMenu"
-	// Will be filled in by joystick code.
-}
 
 //-------------------------------------------------------------------------------------------
 //
@@ -599,82 +330,11 @@ OptionMenu "JoystickConfigMenu" protected
 //
 //-------------------------------------------------------------------------------------------
 
-OptionValue BlendMethods
-{
-	0.0, "$OPTVAL_CLASSIC"
-	1.0, "$OPTVAL_PRECISE"
-}
-
-OptionValue SkyModes
-{
-	0.0, "$OPTVAL_NORMAL"
-	1.0, "$OPTVAL_STRETCH"
-	2.0, "$OPTVAL_CAPPED"
-}
-
-OptionValue Wipes
-{
-	0.0, "$OPTVAL_NONE"
-	1.0, "$OPTVAL_MELT"
-	2.0, "$OPTVAL_BURN"
-	3.0, "$OPTVAL_CROSSFADE"
-}
-
-OptionValue Endoom
-{
-	0.0, "$OPTVAL_OFF"
-	1.0, "$OPTVAL_ON"
-	2.0, "$OPTVAL_ONLYMODIFIED"
-}
-
-OptionValue Contrast
-{
-	0.0, "$OPTVAL_OFF"
-	1.0, "$OPTVAL_ON"
-	2.0, "$OPTVAL_SMOOTH_1"
-}
-
-OptionValue Fuzziness
-{
-	0.0, "$OPTVAL_TRANSLUCENT"
-	1.0, "$OPTVAL_FUZZ"
-	2.0, "$OPTVAL_SHADOW"
-}
-
-OptionValue GPUSwitch
-{
-	0.0, "$OPTVAL_DEFAULT"
-	1.0, "$OPTVAL_DEDICATED"
-	2.0, "$OPTVAL_INTEGRATED"
-}
-
 OptionValue PreferBackend
 {
 	0, "$OPTVAL_OPENGL"
 	1, "$OPTVAL_VULKAN"
-	2, "$OPTVAL_SOFTPOLY"
-}
-
-OptionMenu "BoATrueColorOptions"
-{
-	Title "$TCMNU_TITLE"
-	StaticText " "
-	Option "$TCMNU_MINFILTER",				"r_minfilter", "OnOff"
-	Option "$TCMNU_MAGFILTER",				"r_magfilter", "OnOff"
-	Option "$TCMNU_MIPMAP",					"r_mipmap", "OnOff"
-}
-
-OptionMenu "BoASWROptions"
-{
-	Title "$DSPLYMNU_SWOPT"
-	Submenu "$DSPLYMNU_TCOPT",					"BoATrueColorOptions"
-	Option "$DSPLYMNU_BLENDMETHOD",				"r_blendmethod", "BlendMethods"
-	StaticText " "
-	Option "$DSPLYMNU_SKYMODE",					"r_skymode", "SkyModes"
-	Option "$DSPLYMNU_LINEARSKY",				"r_linearsky", "OnOff"
-	Option "$DSPLYMNU_GZDFULLBRIGHT",			"r_fullbrightignoresectorcolor", "OnOff"
-	Option "$DSPLYMNU_SCALEFUZZ",				"r_fuzzscale", "OnOff"
-	Option "$DSPLYMNU_MODELS",					"r_models", "OnOff"
+	//2, "$OPTVAL_SOFTPOLY" // Remove the SoftPoly option, since it will not work well
 }
 
 ////////////////////////////
@@ -848,11 +508,11 @@ OptionMenu "MBlurOpts"
 OptionMenu "BoAVideoOptions"
 {
 	Title "$DSPLYMNU_TITLE"
-	Submenu "$DSPLYMNU_GLOPT", 					"BoAOpenGLOptions"
-	Submenu "$DSPLYMNU_SWOPT", 					"BoASWROptions"
-	Submenu "$DSPLYMNU_VKOPT",					"BoAVKOptions"
-	Submenu "$GLMNU_TEXOPT", 					"BoAGLTextureGLOptions"
-	Submenu "$GLMNU_DYNLIGHT",					"BoAGLLightOptions"
+	Submenu "$DSPLYMNU_GLOPT", 					"OpenGLOptions"
+	Submenu "$DSPLYMNU_SWOPT", 					"SWROptions"
+	Submenu "$DSPLYMNU_VKOPT",					"VKOptions"
+	Submenu "$GLMNU_TEXOPT", 					"GLTextureGLOptions"
+	Submenu "$GLMNU_DYNLIGHT",					"GLLightOptions"
 	StaticText " "
 	Slider "$DSPLYMNU_SCREENSIZE",				"screenblocks", 				3.0, 12.0, 1.0, 0
 	StaticText " "
@@ -879,99 +539,6 @@ OptionMenu "BoAVideoOptions"
 // HUD menu
 //
 //-------------------------------------------------------------------------------------------
-
-OptionValue CrosshairHealthTypes
-{
-	0.0, "$TXT_NO"
-	1.0, "$OPTVAL_YES_STANDARD"
-	2.0, "$OPTVAL_YES_ENHANCED"
-}
-
-OptionValue DisplayTagsTypes
-{
-	0.0, "$OPTVAL_NONE"
-	1.0, "$OPTVAL_ITEMS"
-	2.0, "$OPTVAL_WEAPONS"
-	3.0, "$OPTVAL_BOTH"
-}
-
-OptionValue TextColors
-{
-	0.0, "$C_BRICK"
-	1.0, "$C_TAN"
-	2.0, "$C_GRAY"
-	3.0, "$C_GREEN"
-	4.0, "$C_BROWN"
-	5.0, "$C_GOLD"
-	6.0, "$C_RED"
-	7.0, "$C_BLUE"
-	8.0, "$C_ORANGE"
-	9.0, "$C_WHITE"
-	10.0, "$C_YELLOW"
-	11.0, "$C_DEFAULT"
-	12.0, "$C_BLACK"
-	13.0, "$C_LIGHTBLUE"
-	14.0, "$C_CREAM"
-	15.0, "$C_OLIVE"
-	16.0, "$C_DARKGREEN"
-	17.0, "$C_DARKRED"
-	18.0, "$C_DARKBROWN"
-	19.0, "$C_PURPLE"
-	20.0, "$C_DARKGRAY"
-	21.0, "$C_CYAN"
-	22.0, "$C_ICE"
-	23.0, "$C_FIRE"
-	24.0, "$C_SAPPHIRE"
-	25.0, "$C_TEAL"
-}
-
-OptionValue Crosshairs
-{
-	// will be filled in from the XHAIRS lump
-}
-
-OptionValue ZDoomHexen
-{
-	0.0, "$OPTVAL_ZDOOM"
-	1.0, "$OPTVAL_HEXEN"
-}
-
-OptionValue ZDoomStrife
-{
-	0.0, "$OPTVAL_ZDOOM"
-	1.0, "$OPTVAL_STRIFE"
-}
-
-OptionMenu "BoAHUDOptions"
-{
-	Title "$HUDMNU_TITLE"
-	Submenu "$HUDMNU_SCALEOPT",				"BoAScalingOptions"
-	Submenu "$HUDMNU_ALTHUD",				"BoAAltHudOptions"
-	Submenu "$HUDMNU_MESSAGE", 				"BoAMessageOptions"
-	Submenu "$HUDMNU_FLASH", 				"BoAFlashOptions"
-	Submenu "$DSPLYMNU_SCOREBOARD", 		"BoAScoreboardOptions"
-	Submenu "$HUDMNU_FONTOPTIONS",			"BoAFontOptions"
-	StaticText " "
-	Option "$HUDMNU_CROSSHAIRON",			"crosshairon", "OnOff"
-	Option "$HUDMNU_CROSSHAIR",				"crosshair", "Crosshairs"
-	Option "$HUDMNU_FORCECROSSHAIR",		"crosshairforce", "OnOff"
-	Option "$HUDMNU_GROWCROSSHAIR",			"crosshairgrow", "OnOff"
-	ColorPicker "$HUDMNU_CROSSHAIRCOLOR", 	"crosshaircolor"
-	Option "$HUDMNU_CROSSHAIRHEALTH",		"crosshairhealth", "CrosshairHealthTypes"
-	Slider "$HUDMNU_CROSSHAIRSCALE",		"crosshairscale", 0.0, 2.0, 0.05, 2
-	StaticText " "
-	Option "$HUDMNU_NAMETAGS",				"displaynametags", "DisplayTagsTypes"
-	Option "$HUDMNU_NAMETAGCOLOR",			"nametagcolor", "TextColors", "displaynametags"
-	Option "$HUDMNU_OLDOUCH",				"st_oldouch", "OnOff"
-	StaticText " "
-	Slider "$DSPLYMNU_MOVEBOB",				"movebob", 0, 1.0, 0.05, 2
-	Slider "$DSPLYMNU_STILLBOB",			"stillbob", 0, 1.0, 0.05, 2
-	Slider "$DSPLYMNU_BOBSPEED",			"wbobspeed", 0, 2.0, 0.1
-	Slider "$DSPLYMNU_BOBFIRE",				"wbobfire", 0, 1.0, 0.1
-	StaticText " "
-	Slider "$DSPLYMNU_MENUDIM",				"dimamount", 0, 1.0, 0.05, 2
-	ColorPicker "$DSPLYMNU_DIMCOLOR",		"dimcolor"
-}
 
 OptionMenu "BoAFlashOptions" //include some options regarding custom poisons? - ozy81
 {
@@ -1001,106 +568,12 @@ OptionMenu "BoAScalingOptions" //limit some scaling aspect to not break hud? - o
 	StaticText " "
 	Option "$SCALEMNU_HUDASPECT", 				"hud_aspectscale", "OnOff"
 }
-//-------------------------------------------------------------------------------------------
-//
-// Alternative HUD
-//
-//-------------------------------------------------------------------------------------------
-
-OptionValue "AMCoordinates"
-{
-	0, "$OPTVAL_PLAYER"
-	1, "$OPTVAL_MAP"
-}
-
-OptionValue "AltHUDAmmo"
-{
-	0, "$OPTVAL_CURRENTWEAPON"
-	1, "$OPTVAL_AVAILABLEWEAPONS"
-	2, "$OPTVAL_ALLWEAPONS"
-}
-
-OptionValue "AltHUDTime"
-{
-	0, "$OPTVAL_OFF"
-	1, "$OPTVAL_LEVELMILLISECONDS"
-	2, "$OPTVAL_LEVELSECONDS"
-	3, "$OPTVAL_LEVEL"
-	4, "$OPTVAL_HUBSECONDS"
-	5, "$OPTVAL_HUB"
-	6, "$OPTVAL_TOTALSECONDS"
-	7, "$OPTVAL_TOTAL"
-	8, "$OPTVAL_SYSTEMSECONDS"
-	9, "$OPTVAL_SYSTEM"
-}
-
-OptionValue "AltHUDLag"
-{
-	0, "$OPTVAL_OFF"
-	1, "$OPTVAL_NETGAMESONLY"
-	2, "$OPTVAL_ALWAYS"
-}
-
-OptionValue "AltHUDAmmoOrder"
-{
-	0, "$OPTVAL_AMMOIMAGETEXT"
-	1, "$OPTVAL_AMMOTEXTIMAGE"
-}
-
-OptionMenu "BoAAltHUDOptions" //include new kind of althud? - ozy81
-{
-	Title "$ALTHUDMNU_TITLE"
-	Option "$ALTHUDMNU_ENABLE",					"hud_althud", "OnOff"
-	Option "$ALTHUDMNU_SHOWSECRETS",			"hud_showsecrets", "OnOff"
-	Option "$ALTHUDMNU_SHOWMONSTERS",			"hud_showmonsters", "OnOff"
-	Option "$ALTHUDMNU_SHOWITEMS",				"hud_showitems", "OnOff"
-	Option "$ALTHUDMNU_SHOWSTATS",				"hud_showstats", "OnOff"
-	Option "$ALTHUDMNU_SHOWBERSERK",			"hud_berserk_health", "OnOff"
-	Option "$ALTHUDMNU_SHOWWEAPONS",			"hud_showweapons", "OnOff"
-	Option "$ALTHUDMNU_SHOWAMMO",				"hud_showammo", "AltHUDAmmo"
-	Option "$ALTHUDMNU_SHOWTIME",				"hud_showtime", "AltHUDTime"
-	Option "$ALTHUDMNU_TIMECOLOR",				"hud_timecolor", "TextColors"
-	Option "$ALTHUDMNU_SHOWLAG",				"hud_showlag", "AltHUDLag"
-	Option "$ALTHUDMNU_AMMOORDER",				"hud_ammo_order", "AltHUDAmmoOrder"
-	Slider "$ALTHUDMNU_AMMORED",				"hud_ammo_red", 0, 100, 1, 0
-	Slider "$ALTHUDMNU_AMMOYELLOW",				"hud_ammo_yellow", 0, 100, 1, 0
-	Slider "$ALTHUDMNU_HEALTHRED",				"hud_health_red", 0, 100, 1, 0
-	Slider "$ALTHUDMNU_HEALTHYELLOW",			"hud_health_yellow", 0, 100, 1, 0
-	Slider "$ALTHUDMNU_HEALTHGREEN",			"hud_health_green", 0, 100, 1, 0
-	Slider "$ALTHUDMNU_ARMORRED",				"hud_armor_red", 0, 100, 1, 0
-	Slider "$ALTHUDMNU_ARMORYELLOW",			"hud_armor_yellow", 0, 100, 1, 0
-	Slider "$ALTHUDMNU_ARMORGREEN",				"hud_armor_green", 0, 100, 1, 0
-	StaticText " "
-	StaticText "$ALTHUDMNU_AUTOMAPHUD", 1
-	option "$ALTHUDMNU_TITLECOLOR",				"hudcolor_titl", "TextColors"
-	option "$ALTHUDMNU_MAPTIMECOLOR",			"hudcolor_ltim", "TextColors"
-	option "$ALTHUDMNU_HUBTIMECOLOR",			"hudcolor_time", "TextColors"
-	option "$ALTHUDMNU_TOTALTIMECOLOR",			"hudcolor_ttim", "TextColors"
-	option "$ALTHUDMNU_COORDINATECOLOR",		"hudcolor_xyco", "TextColors"
-	option "$ALTHUDMNU_COORDINATEMODE",			"map_point_coordinates", "AMCoordinates"
-	option "$ALTHUDMNU_STATSNAMECOLOR",			"hudcolor_statnames", "TextColors"
-	option "$ALTHUDMNU_STATSCOLOR",				"hudcolor_stats", "TextColors"
-}
 
 //-------------------------------------------------------------------------------------------
 //
 // Misc menu
 //
 //-------------------------------------------------------------------------------------------
-
-OptionValue Autosave
-{
-	0,	"$OPTVAL_ALWAYS"
-	1,	"$OPTVAL_SCRIPTSONLY"
-	2,	"$OPTVAL_NEVER"
-}
-
-OptionValue dehopt
-{
-	0,	"$OPTVAL_NEVER"
-	1,	"$OPTVAL_ALL"
-	2,	"$OPTVAL_ONLYLASTONE"
-}
 
 OptionMenu "BoAMiscOptions" //move boa cheats here? - ozy81
 {
@@ -1141,265 +614,15 @@ OptionMenu "BoAMiscOptions" //move boa cheats here? - ozy81
 
 //-------------------------------------------------------------------------------------------
 //
-// Automap Menu
-//
-//-------------------------------------------------------------------------------------------
-
-OptionValue MapColorTypes
-{
-	0, "$OPTVAL_CUSTOM"
-	1, "$OPTVAL_TRADITIONALDOOM"
-	2, "$OPTVAL_TRADITIONALSTRIFE"
-	3, "$OPTVAL_TRADITIONALRAVEN"
-}
-
-OptionValue SecretTypes
-{
-	0, "$OPTVAL_NEVER"
-	1, "$OPTVAL_ONLYWHENFOUND"
-	2, "$OPTVAL_ALWAYS"
-}
-
-OptionValue RotateTypes
-{
-	0, "$OPTVAL_OFF"
-	1, "$OPTVAL_ON"
-	2, "$OPTVAL_ONFOROVERLAYONLY"
-}
-
-OptionValue OverlayTypes
-{
-	0, "$OPTVAL_OFF"
-	1, "$OPTVAL_OVERLAYNORMAL"
-	2, "$OPTVAL_OVERLAYONLY"
-}
-
-OptionValue MaplabelTypes
-{
-	0, "$OPTVAL_NEVER"
-	1, "$OPTVAL_ALWAYS"
-	2, "$OPTVAL_NOTFORHUBS"
-}
-
-OptionValue STSTypes
-{
-	0, "$OPTVAL_OFF"
-	1, "$OPTVAL_FRONT"
-	2, "$OPTVAL_ANIMATED"
-	3, "$OPTVAL_ROTATED"
-}
-
-OptionValue MapBackTypes
-{
-	0, "$OPTVAL_OFF"
-	1, "$OPTVAL_ON"
-	2, "$OPTVAL_MAPDEFINEDCOLORSONLY"
-}
-
-OptionValue MapTriggers
-{
-	0, "$OPTVAL_OFF"
-	1, "$OPTVAL_NODOORS"
-	2, "$OPTVAL_ON"
-}
-
-OptionString MapMarkFont
-{
-	"AMMNUMx", "$OPTVAL_DEFAULT"
-	"SmallFont", "$OPTVAL_SMALL"
-	"BigFont", "$OPTVAL_LARGE"
-	"ConsoleFont", "$OPTVAL_CONSOLE"
-}
-
-OptionMenu BoAAutomapOptions
-{
-	Title "$AUTOMAPMNU_TITLE"
-
-	Option "$AUTOMAPMNU_COLORSET",				"am_colorset", "MapColorTypes"
-	Option "$AUTOMAPMNU_CUSTOMCOLORS",			"am_customcolors", "YesNo"
-	Submenu "$AUTOMAPMNU_SETCUSTOMCOLORS",		"BoAMapColorMenu"
-
-	StaticText " "
-	Submenu "$AUTOMAPMNU_CONTROLS",				"BoAMapControlsMenu"
-
-	StaticText " "
-	Option "$AUTOMAPMNU_ROTATE",				"am_rotate", "RotateTypes"
-	Option "$AUTOMAPMNU_OVERLAY",				"am_overlay", "OverlayTypes"
-	Option "$AUTOMAPMNU_TEXTURED",				"am_textured", "OnOff"
-	Option "$AUTOMAPMNU_FOLLOW",				"am_followplayer", "OnOff"
-
-	StaticText " "
-	Option "$AUTOMAPMNU_SHOWITEMS",				"am_showitems", "OnOff"
-	Option "$AUTOMAPMNU_SHOWMONSTERS",			"am_showmonsters", "OnOff"
-	Option "$AUTOMAPMNU_SHOWSECRETS",			"am_showsecrets", "OnOff"
-	Option "$AUTOMAPMNU_SHOWTIME",				"am_showtime", "OnOff"
-	Option "$AUTOMAPMNU_SHOWTOTALTIME",			"am_showtotaltime", "OnOff"
-	Option "$AUTOMAPMNU_SHOWMAPLABEL",			"am_showmaplabel", "MaplabelTypes"
-
-	StaticText " "
-	Option "$AUTOMAPMNU_SHOWKEYS",				"am_showkeys", "OnOff"
-	Option "$AUTOMAPMNU_SHOWKEYS_ALWAYS",		"am_showkeys_always", "OnOff"
-
-	StaticText " "
-	Option "$AUTOMAPMNU_MAPSECRETS",			"am_map_secrets", "SecretTypes"
-	Option "$AUTOMAPMNU_DRAWMAPBACK",			"am_drawmapback", "MapBackTypes"
-	Option "$AUTOMAPMNU_SHOWTRIGGERLINES",		"am_showtriggerlines", "MapTriggers"
-	Option "$AUTOMAPMNU_SHOWTHINGSPRITES",		"am_showthingsprites", "STSTypes"
-
-	StaticText " "
-	Option "$AUTOMAPMNU_PTOVERLAY",				"am_portaloverlay", "OnOff"
-	Slider "$AUTOMAPMNU_EMPTYSPACEMARGIN",		"am_emptyspacemargin", 0, 90, 5, 0
-
-	StaticText " "
-	Option "$AUTOMAPMNU_MARKFONT",				"am_markfont", "MapMarkFont"
-	Option "$AUTOMAPMNU_MARKCOLOR",				"am_markcolor", "TextColors"
-}
-
-//-------------------------------------------------------------------------------------------
-//
-// Automap Controls
-//
-//-------------------------------------------------------------------------------------------
-
-OptionMenu BoAMapControlsMenu
-{
-	Title "$MAPCNTRLMNU_TITLE"
-	ScrollTop 2
-	StaticTextSwitchable 	"$CNTRLMNU_SWITCHTEXT1", "$CNTRLMNU_SWITCHTEXT2", "ControlMessage"
-
-	StaticText " "
-	MapControl "$MAPCNTRLMNU_PANLEFT",			"+am_panleft"
-	MapControl "$MAPCNTRLMNU_PANRIGHT",			"+am_panright"
-	MapControl "$MAPCNTRLMNU_PANUP",			"+am_panup"
-	MapControl "$MAPCNTRLMNU_PANDOWN",			"+am_pandown"
-
-	StaticText " "
-	MapControl "$MAPCNTRLMNU_ZOOMIN",			"+am_zoomin"
-	MapControl "$MAPCNTRLMNU_ZOOMOUT",			"+am_zoomout"
-
-	StaticText " "
-	MapControl "$MAPCNTRLMNU_TOGGLEZOOM",		"am_gobig"
-	MapControl "$MAPCNTRLMNU_TOGGLEFOLLOW",		"am_togglefollow"
-	MapControl "$MAPCNTRLMNU_TOGGLETEXTURE",	"am_toggletexture"
-
-	StaticText " "
-	MapControl "$MAPCNTRLMNU_SETMARK",			"am_setmark"
-	MapControl "$MAPCNTRLMNU_CLEARMARK",		"am_clearmarks"
-}
-
-//-------------------------------------------------------------------------------------------
-//
-// Automap Colors
-//
-//-------------------------------------------------------------------------------------------
-
-OptionMenu BoAMapColorMenu
-{
-	Title "$MAPCOLORMNU_TITLE"
-	SafeCommand "$MAPCOLORMNU_DEFAULTMAPCOLORS", 		"am_restorecolors"
-	StaticText " "
-	Submenu "$MAPCOLORMNU_CHEATMODE",					"BoAMapColorMenuCheats"
-	Submenu "$MAPCOLORMNU_OVERLAY",						"BoAMapColorMenuOverlay"
-	Submenu "$MAPCOLORMNU_OVCHEATMODE",					"BoAMapColorMenuCheatsOverlay"
-	StaticText " "
-	ColorPicker "$MAPCOLORMNU_BACKCOLOR",				"am_backcolor"
-	ColorPicker "$MAPCOLORMNU_YOURCOLOR",				"am_yourcolor"
-	ColorPicker "$MAPCOLORMNU_WALLCOLOR",				"am_wallcolor"
-	ColorPicker "$MAPCOLORMNU_FDWALLCOLOR",				"am_fdwallcolor"
-	ColorPicker "$MAPCOLORMNU_CDWALLCOLOR",				"am_cdwallcolor"
-	ColorPicker "$MAPCOLORMNU_EFWALLCOLOR",				"am_efwallcolor"
-	ColorPicker "$MAPCOLORMNU_GRIDCOLOR",				"am_gridcolor"
-	ColorPicker "$MAPCOLORMNU_XHAIRCOLOR",				"am_xhaircolor"
-	ColorPicker "$MAPCOLORMNU_NOTSEENCOLOR",			"am_notseencolor"
-	ColorPicker "$MAPCOLORMNU_LOCKEDCOLOR",				"am_lockedcolor"
-	ColorPicker "$MAPCOLORMNU_INTRALEVELCOLOR",			"am_intralevelcolor"
-	ColorPicker "$MAPCOLORMNU_INTERLEVELCOLOR",			"am_interlevelcolor"
-	ColorPicker "$MAPCOLORMNU_SECRETSECTORCOLOR",		"am_secretsectorcolor"
-	ColorPicker "$MAPCOLORMNU_UNEXPLOREDSECRETCOLOR",	"am_unexploredsecretcolor"
-	ColorPicker "$MAPCOLORMNU_SPECIALWALLCOLOR",		"am_specialwallcolor"
-	ColorPicker "$MAPCOLORMNU_PORTAL",					"am_portalcolor"
-}
-
-OptionMenu BoAMapColorMenuCheats
-{
-	Title "$MAPCOLORMNU_CHEATMODE"
-	ColorPicker "$MAPCOLORMNU_TSWALLCOLOR",				"am_tswallcolor"
-	ColorPicker "$MAPCOLORMNU_SECRETWALLCOLOR",			"am_secretwallcolor"
-	ColorPicker "$MAPCOLORMNU_THINGCOLOR",				"am_thingcolor"
-	ColorPicker "$MAPCOLORMNU_MONSTERCOLOR",			"am_thingcolor_monster"
-	ColorPicker "$MAPCOLORMNU_NONCOUNTINGMONSTERCOLOR",	"am_thingcolor_ncmonster"
-	ColorPicker "$MAPCOLORMNU_FRIENDCOLOR",				"am_thingcolor_friend"
-	ColorPicker "$MAPCOLORMNU_ITEMCOLOR",				"am_thingcolor_item"
-	ColorPicker "$MAPCOLORMNU_COUNTITEMCOLOR",			"am_thingcolor_citem"
-}
-
-OptionMenu BoAMapColorMenuOverlay
-{
-	Title "$MAPCOLORMNU_OVERLAY"
-	ColorPicker "$MAPCOLORMNU_YOURCOLOR",				"am_ovyourcolor"
-	ColorPicker "$MAPCOLORMNU_WALLCOLOR",				"am_ovwallcolor"
-	ColorPicker "$MAPCOLORMNU_FDWALLCOLOR",				"am_ovfdwallcolor"
-	ColorPicker "$MAPCOLORMNU_CDWALLCOLOR",				"am_ovcdwallcolor"
-	ColorPicker "$MAPCOLORMNU_EFWALLCOLOR",				"am_ovefwallcolor"
-	ColorPicker "$MAPCOLORMNU_NOTSEENCOLOR",			"am_ovunseencolor"
-	ColorPicker "$MAPCOLORMNU_LOCKEDCOLOR",				"am_ovlockedcolor"
-	ColorPicker "$MAPCOLORMNU_INTRALEVELCOLOR",			"am_ovtelecolor"
-	ColorPicker "$MAPCOLORMNU_INTERLEVELCOLOR",			"am_ovinterlevelcolor"
-	ColorPicker "$MAPCOLORMNU_SECRETSECTORCOLOR",		"am_ovsecretsectorcolor"
-	ColorPicker "$MAPCOLORMNU_SPECIALWALLCOLOR",		"am_ovspecialwallcolor"
-	ColorPicker "$MAPCOLORMNU_PORTAL",					"am_ovportalcolor"
-}
-
-OptionMenu BoAMapColorMenuCheatsOverlay
-{
-	Title "$MAPCOLORMNU_OVCHEATMODE"
-	ColorPicker "$MAPCOLORMNU_TSWALLCOLOR",				"am_ovotherwallscolor"
-	ColorPicker "$MAPCOLORMNU_SECRETWALLCOLOR",			"am_ovsecretwallcolor"
-	ColorPicker "$MAPCOLORMNU_THINGCOLOR",				"am_ovthingcolor"
-	ColorPicker "$MAPCOLORMNU_MONSTERCOLOR",			"am_ovthingcolor_monster"
-	ColorPicker "$MAPCOLORMNU_NONCOUNTINGMONSTERCOLOR",	"am_ovthingcolor_ncmonster"
-	ColorPicker "$MAPCOLORMNU_FRIENDCOLOR",				"am_ovthingcolor_friend"
-	ColorPicker "$MAPCOLORMNU_ITEMCOLOR",				"am_ovthingcolor_item"
-	ColorPicker "$MAPCOLORMNU_COUNTITEMCOLOR",			"am_ovthingcolor_citem"
-}
-
-//-------------------------------------------------------------------------------------------
-//
-// Color Picker
-//
-//-------------------------------------------------------------------------------------------
-
-OptionMenu ColorPickerMenu protected
-{
-	Title "$MNU_COLORPICKER"
-	// This menu will be created by the calling code
-}
-
-//-------------------------------------------------------------------------------------------
-//
 // Messages
 //
 //-------------------------------------------------------------------------------------------
 
-OptionValue MessageLevels
-{
-	0.0, "$OPTVAL_ITEMPICKUP"
-	1.0, "$OPTVAL_OBITUARIES"
-	2.0, "$OPTVAL_CRITICALMESSAGES"
-}
-
-OptionValue DevMessageLevels
-{
-	0, "$OPTVAL_OFF"
-	1, "$OPTVAL_ERRORS"
-	2, "$OPTVAL_WARNINGS"
-	3, "$OPTVAL_NOTIFICATIONS"
-	4, "$OPTVAL_EVERYTHING"
-}
-
-OptionMenu BoAMessageOptions //include commentaries here? - ozy81
+OptionMenu "BoAMessageOptions"
 {
 	Title "$MSGMNU_TITLE"
+	Option "$OPT_DEVC", 				"boa_devcomswitch", "OnOff"
+	StaticText ""
 	Option "$MSGMNU_SHOWMESSAGES",				"show_messages", "OnOff"
 	Option "$MSGMNU_SHOWOBITUARIES",			"show_obituaries", "OnOff"
 	Option "$MSGMNU_SHOWSECRETS",				"cl_showsecretmessage", "OnOff"
@@ -1427,7 +650,7 @@ OptionMenu BoAMessageOptions //include commentaries here? - ozy81
 //
 //-------------------------------------------------------------------------------------------
 
-OptionMenu BoAScoreboardOptions //include some options for HQs scoreboard? - ozy81
+OptionMenu "BoAScoreboardOptions" //include some options for HQs scoreboard? - ozy81
 {
 	Title "$SCRBRDMNU_TITLE"
 	StaticText "$SCRBRDMNU_COOPERATIVE", 1
@@ -1438,45 +661,18 @@ OptionMenu BoAScoreboardOptions //include some options for HQs scoreboard? - ozy
 	Option "$SCRBRDMNU_OTHERPLAYERCOLOR",	"sb_cooperative_otherplayercolor", "TextColors"
 }
 
-//-------------------------------------------------------------------------------------------
-//
-// Font options
-//
-//-------------------------------------------------------------------------------------------
-
-OptionMenu BoAFontOptions //include more fonts? - ozy81
-{
-	Title "$HUDMNU_FONTOPTIONS"
-	Option "$FONTMNU_LOG",					"log_vgafont", "YesNo"
-	Option "$FONTMNU_DLG",					"dlg_vgafont", "YesNo"
-}
-
-/*=======================================
- *
- * Gameplay Options (dmflags) Menu
- *
- *=======================================*/
-
-OptionValue SmartAim
-{
-	0.0, "$OPTVAL_OFF"
-	1.0, "$OPTVAL_ON"
-	2.0, "$OPTVAL_NEVERFRIENDS"
-	3.0, "$OPTVAL_ONLYMONSTERS"
-}
-
 ///////////////////////
 //CUSTOM GAMEPLAY OPS//
 ///////////////////////
 
-OptionMenu BoAGameplayOptions
+OptionMenu "BoAGameplayOptions"
 {
 	Position -35
 	Title 	"$GMPLYMNU_TITLE"
-	Submenu "$OPT_GAME",						"GameOptions"
-	Submenu "$OPT_BLOOD",						"BloodOptions"
+	Submenu "$OPT_GAME",						"BoAGameOptions"
+	Submenu "$OPT_BLOOD",						"BoABloodOptions"
 	StaticText " "
-	Submenu "$GMPLYMNU_COOPERATIVE",			"BoACoopOptions"
+	Submenu "$GMPLYMNU_COOPERATIVE",			"CoopOptions"
 	StaticText " "
 	Option "$GMPLYMNU_TEAMPLAY",				"teamplay",	"OnOff"
 	Slider	"$GMPLYMNU_TEAMDAMAGE",				"teamdamage", 0, 1, 0.05,2
@@ -1489,7 +685,7 @@ OptionMenu BoAGameplayOptions
 	Class "GameplayMenu"
 }
 
-OptionMenu "GameOptions"
+OptionMenu "BoAGameOptions"
 {
 	Title "$OPT_GAME"
 	StaticText " "
@@ -1508,7 +704,7 @@ OptionValue "BloodAmount"
 	2, "$BL_HIGH"
 }
 
-OptionMenu "BloodOptions"
+OptionMenu "BoABloodOptions"
 {
 	Title "$OPT_BLOOD"
 	Option "$BL_AM", 							"boa_blood_amt", "BloodAmount"
@@ -1520,493 +716,6 @@ OptionMenu "BloodOptions"
 	Slider "$BL_DEC", 							"cl_maxdecals", 64, 10000, 256
 	Option "$BL_POOLS", 						"boa_blood_pools", "onoff"
 	Option "$BL_GIBS", 							"boa_blood_gibs", "onoff"
-}
-
-OptionMenu BoACoopOptions
-{
-	Position -35
-	Title 	"$GMPLYMNU_COOPERATIVE"
-
-	Option "$GMPLYMNU_MULTIPLAYERWEAPONS",	 	"sv_noweaponspawn", "NoYes"
-	Option "$GMPLYMNU_LOSEINVENTORY",			"sv_cooploseinventory", "YesNo"
-	Option "$GMPLYMNU_KEEPKEYS",				"sv_cooplosekeys", "NoYes"
-	Option "$GMPLYMNU_KEEPWEAPONS",				"sv_cooploseweapons", "NoYes"
-	Option "$GMPLYMNU_KEEPARMOR",				"sv_cooplosearmor", "NoYes"
-	Option "$GMPLYMNU_KEEPPOWERUPS",			"sv_cooplosepowerups", "NoYes"
-	Option "$GMPLYMNU_KEEPAMMO",				"sv_cooploseammo", "NoYes"
-	Option "$GMPLYMNU_LOSEHALFAMMO",			"sv_coophalveammo", "YesNo"
-	Option "$GMPLYMNU_SPAWNWHEREDIED",			"sv_samespawnspot", "YesNo"
-	Class "GameplayMenu"
-}
-
-/*=======================================
- *
- * Change Renderer Menu
- *
- *=======================================*/
-
-OptionValue "RenderMode"
-{
-	0, "$OPTVAL_SWDOOM"
-	1, "$OPTVAL_SWDOOMTC"
-	4,  "$OPTVAL_HWPOLY"
-}
-
-/*=======================================
- *
- * Video mode menu
- *
- *=======================================*/
-
-OptionValue ForceRatios
-{
-	0.0, "$OPTVAL_OFF"
-	3.0, "4:3"
-	1.0, "16:9"
-	5.0, "17:10"
-	2.0, "16:10"
-	4.0, "5:4"
-	6.0, "21:9"
-}
-
-OptionValue Ratios
-{
-	0.0, "4:3"
-	4.0, "5:4"
-	1.0, "16:9"
-	2.0, "16:10"
-	3.0, "17:10"
-	6.0, "21:9"
-	 -1, "$OPTVAL_ALL"
-}
-
-OptionValue ScaleModes
-{
-	0, "$OPTVAL_NORMAL"
-	6, "320x200"
-	2, "640x400"
-	3, "960x600"
-	4, "1280x800"
-	5, "$OPTVAL_CUSTOM"
-	1, "$OPTVAL_LOWEST"
-}
-
-OptionValue CropAspect
-{
-	0, "$OPTVAL_STRETCH"
-	1, "$OPTVAL_LETTERBOX"
-}
-
-OptionMenu BoAVideoModeMenu
-{
-	Title "$VIDMNU_TITLE"
-
-	Option "$VIDMNU_PREFERBACKEND",		"vid_preferbackend", "PreferBackend"
-	StaticText " "
-	Option "$VIDMNU_RENDERMODE",		"vid_rendermode", "RenderMode"
-	Option "$VIDMNU_FULLSCREEN",		"vid_fullscreen", "YesNo"
-
-	IfOption(Mac)
-	{
-		Option "$VIDMNU_HIDPI",			"vid_hidpi", "YesNo"
-	}
-	IfOption(Windows)
-	{
-		Option "$DSPLYMNU_GPUSWITCH",			vid_gpuswitch, "GPUSwitch"
-	}
-
-	Option "$VIDMNU_FORCEASPECT",		"vid_aspect", "ForceRatios"
-	Option "$VIDMNU_CROPASPECT",		"vid_cropaspect", "CropAspect"
-	Option "$VIDMNU_SCALEMODE",			"vid_scalemode", "ScaleModes"
-	Slider "$VIDMNU_SCALEFACTOR",		"vid_scalefactor", 0.25, 2.0, 0.25, 2
-
-	StaticText " "
-	Option "$DSPLYMNU_VSYNC",			"vid_vsync", "OnOff"
-	Option "$DSPLYMNU_CAPFPS",			"cl_capfps", "OffOn"
-
-	StaticText " "
-	StaticText "$VIDMNU_CUSTOMRES"
-	TextField "$VIDMNU_CUSTOMX", 		menu_resolution_custom_width
-	TextField "$VIDMNU_CUSTOMY", 		menu_resolution_custom_height
-	Option "$VIDMNU_USELINEAR", 		"vid_scale_linear", "YesNo"
-	StaticText " "
-	Command "$VIDMNU_APPLYW", 			"menu_resolution_commit_changes 0"
-	Command "$VIDMNU_APPLYFS", 			"menu_resolution_commit_changes 1"
-	StaticText " "
-
-	SubMenu "$VIDMNU_RESPRESET", 		BoACustomResolutionMenu
-}
-
-OptionMenu BoACustomResolutionMenu //we should include some warnings about what breaks if changing this/that maybe? - ozy81
-{
-	Title "$VIDMNU_RESPRESETTTL"
-	StaticText "$VIDMNU_RESPRESETHEAD"
-	StaticText " "
-	StaticText "$VIDMNU_ASPECT43"
-	Command "640x480", "menu_resolution_set_custom 640 480"
-	Command "1024x768", "menu_resolution_set_custom 1024 768"
-	Command "1280x960", "menu_resolution_set_custom 1280 960"
-	Command "1600x1200", "menu_resolution_set_custom 1600 1200"
-	StaticText " "
-	StaticText "$VIDMNU_ASPECT54"
-	Command "1280x1024", "menu_resolution_set_custom 1280 1024"
-	StaticText " "
-	StaticText "$VIDMNU_ASPECT169"
-	Command "960x540", "menu_resolution_set_custom 960 540"
-	Command "(720p HD)   1280x720", "menu_resolution_set_custom 1280 720"
-	Command "1366x768", "menu_resolution_set_custom 1366 768"
-	Command "(1080p HD) 1920x1080", "menu_resolution_set_custom 1920 1080"
-	Command "(1440p HD) 2560x1440", "menu_resolution_set_custom 2560 1440"
-	Command "(4K UHD) 3840x2160", "menu_resolution_set_custom 3840 2160"
-	StaticText " "
-	StaticText "$VIDMNU_ASPECT1610"
-	Command "960x600", "menu_resolution_set_custom 960 600"
-	Command "1280x800", "menu_resolution_set_custom 1280 800"
-	Command "1440x900", "menu_resolution_set_custom 1440 900"
-	Command "1680x1050", "menu_resolution_set_custom 1680 1050"
-	Command "1920x1200", "menu_resolution_set_custom 1920 1200"
-}
-
-/*=======================================
- *
- * Network options menu
- *
- *=======================================*/
-
-OptionMenu BoANetworkOptions //I doubt that BoA will be coop/dm friendly, this could be removed as well - ozy81
-{
-	Title "$NETMNU_TITLE"
-	StaticText "$NETMNU_LOCALOPTIONS", 1
-	Option "$NETMNU_MOVEPREDICTION",		"cl_noprediction", "OffOn"
-	Option "$NETMNU_LINESPECIALPREDICTION",	"cl_predict_specials", "OnOff"
-	Slider "$NETMNU_PREDICTIONLERPSCALE",	"cl_predict_lerpscale", 0.0, 0.5, 0.05, 2
-	Slider "$NETMNU_LERPTHRESHOLD",			"cl_predict_lerpthreshold", 0.1, 16.0, 0.1
-	StaticText " "
-	StaticText "$NETMNU_HOSTOPTIONS", 1
-	Option "$NETMNU_EXTRATICS",				"net_extratic", "ExtraTicMode"
-	Option "$NETMNU_TICBALANCE",			"net_ticbalance", "OnOff"
-}
-
-OptionValue ExtraTicMode
-{
-	0, "$OPTVAL_NONE"
-	1, "1"
-	2, "$OPTVAL_ALLUNACKNOWLEDGED"
-}
-
-OptionValue "LookupOrder"
-{
-	0, "$OPTVAL_OBVERSEFIRST"
-	1, "$OPTVAL_REVERSEFIRST"
-}
-
-OptionValue "SpriteclipModes"
-{
-	0, "$OPTVAL_NEVER"
-	1, "$OPTVAL_SMART"
-	2, "$OPTVAL_ALWAYS"
-	3, "$OPTVAL_SMARTER"
-}
-
-OptionValue "EnhancedStealth"
-{
-	0, "$OPTVAL_NEVER"
-	1, "$OPTVAL_INFRAREDONLY"
-	2, "$OPTVAL_INFRAREDANDTORCH"
-	3, "$OPTVAL_ANYFIXEDCOLORMAP"
-}
-
-OptionValue "FilterModes"
-{
-	0, "$OPTVAL_NONE"
-	1, "$OPTVAL_NONENEARESTMIPMAP"
-	5, "$OPTVAL_NONELINEARMIPMAP"
-	6, "$OPTVAL_NONETRILINEAR"
-	2, "$OPTVAL_LINEAR_2"
-	3, "$OPTVAL_BILINEAR"
-	4, "$OPTVAL_TRILINEAR"
-}
-
-OptionValue "TonemapModes"
-{
-	0, "$OPTVAL_OFF"
-	1, "$OPTVAL_UNCHARTED2"
-	2, "$OPTVAL_HEJLDAWSON"
-	3, "$OPTVAL_REINHARD"
-	5, "$OPTVAL_PALETTE"
-}
-
-OptionValue "SSAOModes"
-{
-	0, "$OPTVAL_OFF"
-	1, "$OPTVAL_LOW"
-	2, "$OPTVAL_MEDIUM"
-	3, "$OPTVAL_HIGH"
-}
-
-OptionValue "FXAAQuality"
-{
-	0, "$OPTVAL_OFF"
-	1, "$OPTVAL_LOW"
-	2, "$OPTVAL_MEDIUM"
-	3, "$OPTVAL_HIGH"
-	4, "$OPTVAL_EXTREME"
-}
-
-OptionValue "Anisotropy"
-{
-	1, "$OPTVAL_OFF"
-	2, "$OPTVAL_2X"
-	4, "$OPTVAL_4X"
-	8, "$OPTVAL_8X"
-	16, "$OPTVAL_16X"
-}
-
-OptionValue "Multisample"
-{
-	1, "$OPTVAL_OFF"
-	2, "$OPTVAL_2X"
-	4, "$OPTVAL_4X"
-	8, "$OPTVAL_8X"
-	16, "$OPTVAL_16X"
-	32, "$OPTVAL_32X"
-}
-
-OptionValue "Colormaps"
-{
-	0, "$OPTVAL_USEASPALETTE"
-	1, "$OPTVAL_BLEND"
-}
-
-OptionValue "LightingModes"
-{
-	0, "$OPTVAL_STANDARD"
-	1, "$OPTVAL_BRIGHT"
-	2, "$OPTVAL_DOOM"
-	3, "$OPTVAL_DARK"
-	4, "$OPTVAL_LEGACY"
-	5, "$OPTVAL_BUILD"
-	8, "$OPTVAL_SOFTWARE"
-	16, "$OPTVAL_VANILLA"
-}
-
-OptionValue "Precision"
-{
-	0, "$OPTVAL_SPEED"
-	1, "$OPTVAL_QUALITY"
-}
-
-OptionValue "DitherModes"
-{
-	0, "$OPTVAL_OFF"
-	-1, "$OPTVAL_ON"
-	6, "6 BPC"
-	8, "8 BPC"
-	10, "10 BPC"
-	12, "12 BPC"
-}
-
-OptionValue "Hz"
-{
-	0, "$OPTVAL_OPTIMAL"
-	60, "$OPTVAL_60"
-	70, "$OPTVAL_70"
-	72, "$OPTVAL_72"
-	75, "$OPTVAL_75"
-	85, "$OPTVAL_85"
-	100, "$OPTVAL_100"
-}
-
-OptionValue "BillboardModes"
-{
-	0, "$OPTVAL_YAXIS"
-	1, "$OPTVAL_XYAXIS"
-}
-
-OptionValue "Particles"
-{
-	0, "$OPTVAL_SQUARE"
-	1, "$OPTVAL_ROUND"
-	2, "$OPTVAL_SMOOTH_2"
-}
-
-OptionValue "HqResizeModes"
-{
-   0, "$OPTVAL_OFF"
-   1, "$OPTVAL_SCALENX"
-   2, "$OPTVAL_HQNX"
-   3, "$OPTVAL_HQNXMMX"
-   4, "$OPTVAL_NXBRZ"
-   5, "$OPTVAL_OLD_NXBRZ"
-   6, "$OPTVAL_NORMALNX"
-}
-
-OptionValue "HqResizeMultipliers"
-{
-   1, "$OPTVAL_OFF"
-   2, "2x"
-   3, "3x"
-   4, "4x"
-   5, "5x"
-   6, "6x"
-}
-
-OptionValue "HqResizeModesNoMMX"
-{
-   0, "$OPTVAL_OFF"
-   1, "$OPTVAL_SCALENX"
-   2, "$OPTVAL_HQNX"
-   4, "$OPTVAL_NXBRZ"
-   5, "$OPTVAL_OLD_NXBRZ"
-   6, "$OPTVAL_NORMALNX"
-}
-
-OptionValue "FogMode"
-{
-	0, "$OPTVAL_OFF"
-	1, "$OPTVAL_STANDARD"
-	2, "$OPTVAL_RADIAL"
-}
-
-OptionValue "FuzzStyle"
-{
-	0, "$OPTVAL_SHADOW"
-	1, "$OPTVAL_PIXELFUZZ"
-	2, "$OPTVAL_SMOOTHFUZZ"
-	3, "$OPTVAL_SWIRLYFUZZ"
-	4, "$OPTVAL_TRANSLUCENTFUZZ"
-	6, "$OPTVAL_NOISE"
-	7, "$OPTVAL_SMOOTHNOISE"
-	8, "$OPTVAL_SOFTWARE"
-	//5, "$OPTVAL_JAGGEDFUZZ" I can't see any difference between this and 4 so it's disabled for now.
-}
-
-OptionValue VRMode
-{
-	0, "$OPTVAL_NORMAL"
-	1, "$OPTVAL_GREENMAGENTA"
-	2, "$OPTVAL_REDCYAN"
-	9, "$OPTVAL_AMBERBLUE"
-	3, "$OPTVAL_SBSFULL"
-	4, "$OPTVAL_SBSNARROW"
-	11, "$OPTVAL_TOPBOTTOM"
-	12, "$OPTVAL_ROWINTERLEAVED"
-	13, "$OPTVAL_COLUMNINTERLEAVED"
-	14, "$OPTVAL_CHECKERBOARD"
-	5, "$OPTVAL_LEFTEYE"
-	6, "$OPTVAL_RIGHTEYE"
-	7, "$OPTVAL_QUADBUFFERED"
-}
-
-OptionValue ShadowMapQuality
-{
-	128, "128"
-	256, "256"
-	512, "512"
-	1024, "1024"
-}
-
-OptionValue ShadowMapFilter
-{
-	0, "$OPTVAL_NEAREST"
-	1, "$OPTVAL_PCF_LOW"
-	2, "$OPTVAL_PCF_MEDIUM"
-	3, "$OPTVAL_PCF_HIGH"
-}
-
-OptionMenu "BoAGLTextureGLOptions"
-{
-	Title "$GLTEXMNU_TITLE"
-	Option "$GLTEXMNU_TEXFILTER",		gl_texture_filter,				"FilterModes"
-	Option "$GLTEXMNU_ANISOTROPIC",		gl_texture_filter_anisotropic,	"Anisotropy"
-
-	ifOption(MMX)
-	{
-		Option "$GLTEXMNU_HQRESIZE",		gl_texture_hqresizemode,		"HqResizeModes"
-	}
-	else
-	{
-		Option "$GLTEXMNU_HQRESIZE",		gl_texture_hqresizemode,		"HqResizeModesNoMMX"
-	}
-	Option "$GLTEXMNU_HQRESIZEMULT",	gl_texture_hqresizemult,		"HqResizeMultipliers"
-	StaticText "!HQRESIZE_WARNING!"
-
-	Option "$GLTEXMNU_RESIZETEX",		gl_texture_hqresize_textures,	"OnOff"
-	Option "$GLTEXMNU_RESIZESPR",		gl_texture_hqresize_sprites,	"OnOff"
-	Option "$GLTEXMNU_RESIZEFNT",		gl_texture_hqresize_fonts,		"OnOff"
-	Option "$GLTEXMNU_PRECACHETEX",		gl_precache,					"YesNo"
-	Option "$GLTEXMNU_SORTDRAWLIST", 	gl_sort_textures,				"YesNo"
-	Class "GLTextureGLOptions"
-}
-
-OptionMenu "BoAGLLightOptions"
-{
-	Title "$GLLIGHTMNU_TITLE"
-	Option "$TCMNU_DYNLIGHTS",					"r_dynlights", "OnOff"
-	Option "$GLLIGHTMNU_LIGHTSENABLED",			gl_lights,				"OnOff"
-	Option "$GLLIGHTMNU_LIGHTSPRITES",			gl_light_sprites,		"YesNo"
-	Option "$GLLIGHTMNU_LIGHTPARTICLES",		gl_light_particles,		"YesNo"
-	Option "$GLLIGHTMNU_LIGHTSHADOWMAP",		gl_light_shadowmap,		"YesNo"
-	Option "$GLLIGHTMNU_LIGHTSHADOWMAPQUALITY", gl_shadowmap_quality,	"ShadowMapQuality"
-	Option "$GLLIGHTMNU_LIGHTSHADOWMAPFILTER", 	gl_shadowmap_filter,	"ShadowMapFilter"
-}
-
-OptionMenu "BoAOpenGLOptions"
-{
-	Title "$GLMNU_TITLE"
-	Submenu "$GLPREFMNU_VRMODE",				"BoAVR3DMenu"
-	StaticText " "
-	Option "$GLPREFMNU_SECLIGHTMODE",			gl_lightmode,					"LightingModes"
-	Option "$GLPREFMNU_SWLMBANDED",				gl_bandedswlight,				"OnOff"
-	Option "$GLPREFMNU_FOGMODE",				gl_fogmode,						"FogMode"
-	Option "$GLPREFMNU_FOGFORCEFULLBRIGHT",		gl_brightfog,					"YesNo"
-	Slider "$GLPREFMNU_WPNLIGHTSTR",			gl_weaponlight,					0,32, 2
-	Option "$GLPREFMNU_ENVIRONMENTMAPMIRROR",	gl_mirror_envmap,				"OnOff"
-	Option "$GLPREFMNU_ENV",					gl_enhanced_nightvision,		"OnOff"
-	Option "$GLPREFMNU_ENVSTEALTH",				gl_enhanced_nv_stealth,			"EnhancedStealth"
-	Option "$GLPREFMNU_SPRCLIP",				gl_spriteclip,					"SpriteclipModes" //set as 2 per Default in BoA, always
-	Option "$GLPREFMNU_SPRBLEND",				gl_sprite_blend,				"OnOff"
-	Option "$GLPREFMNU_FUZZSTYLE",				gl_fuzztype,					"FuzzStyle"
-	Option "$GLPREFMNU_SPRBILLBOARD",			gl_billboard_mode,				"BillboardModes"
-	Option "$GLPREFMNU_SPRBILLFACECAMERA",		gl_billboard_faces_camera,		"OnOff"
-	Option "$GLPREFMNU_PARTICLESTYLE",			gl_particles_style,				"Particles"
-	Option "$GLPREFMNU_RENDERQUALITY",			gl_render_precise,				"Precision"
-	StaticText " "
-	Slider "$GLPREFMNU_MENUBLUR",				gl_menu_blur, 0, 5.0, 0.5, 2
-	StaticText " "
-	Option "$GLPREFMNU_MULTISAMPLE", 			gl_multisample,					"Multisample"
-	StaticText " "
-	StaticText " "
-	StaticText " "
-	Submenu "$OPTMNU_ORGOGL",					"OpenGLOptions"
-}
-
-OptionMenu "BoAVR3DMenu"
-{
-	Title "$GLPREFMNU_VRMODE"
-	Option "$GLMNU_3DMODE",						vr_mode, 						"VRMode"
-	IfOption(Windows)
-	{
-		Option "$GLPREFMNU_VRQUADSTEREO",			vr_enable_quadbuffered,			"OnOff"
-	}
-	Slider "$GLPREFMNU_VRIPD",					vr_ipd,							0.041, 0.073, 0.001, 3
-	Slider "$GLPREFMNU_VRSCREENDIST",			vr_screendist,					0.2, 10.0, 0.1, 1
-}
-
-/*=======================================
- *
- * Vulkan Menu
- *
- *=======================================*/
-
-OptionMenu "BoAVKOptions"
-{
-	Title "$VK_TITLE"
-	StaticText "$VK_WARNING"
-	StaticText "$VK_RESTART"
-	StaticText " "
-	TextField "$VKMNU_DEVICE",			vk_device
-	Option "$VKMNU_HDR",				"vk_hdr", "OnOff"
 }
 
 /*=======================================
@@ -2027,7 +736,7 @@ OptionString "BoALanguageOptions" //these includes BoA only related languages, s
 	"it", "Italiano (Italian)"
 	"pl", "Polski (Polish)"
 	"ru", "Русский (Russian)"
-	"tr", "Türk (Turkish)" //new for BoA, all GZDoom menues USED needs to be localized in our custom language entries - ozy81
+	"tr", "Türk (Turkish)" //new for BoA, all GZDoom menus USED needs to be localized in our custom language entries - ozy81
 
 	//"eo", "Esperanto"
 	//"esm", "Español (Latino) (Latin American Spanish)"

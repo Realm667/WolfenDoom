@@ -1,3 +1,6 @@
+// Various settings controlling behavior of any menu with the BoAOptionsMenu class (set in MENUDEF as the default Option Menu)
+
+// Add info strings or icons to option menu items
 MenuItems
 {
 	$OPTMNU_LANGUAGE // Name of the menu item to customize
@@ -16,4 +19,35 @@ MenuItems
 			Position = Options; // Position to left of options.  Any other value places the graphic to the left of the label.
 		}
 	}
+}
+
+// Insert the contents of another option menu into the specified menu, placed in relation to a specific menu item
+MenuInsertions
+{
+	$OPTMNU_TITLE // Name of the menu to customize
+	{
+		CustomizeControls // Name of menu item to insert menu items relative to
+		{
+			menuname = BoAOptionsTop; // Name of the defined menu to insert into this menu
+		}
+
+		os_Menu
+		{
+			offset = -1; // Offset applied to the index of the named menu item.  In this case, insert menu contents one line before the Option Search menu entry.
+			menuname = BoAOptionsMiddle;
+		}
+	}
+}
+
+// Menu actions to be renamed at run time (so an item set up to open CustomizeControls will open BoACustomizeControls instead)
+MenuRewrites
+{
+	CustomizeControls = BoACustomizeControls;
+	GameplayOptions = BoAGameplayOptions;
+	MiscOptions = BoAMiscOptions;
+	VideoOptions = BoAVideoOptions;
+	ScalingOptions = BoAScalingOptions;
+	MessageOptions = BoAMessageOptions;
+	FlashOptions = BoAFlashOptions;
+	ScoreboardOptions = BoAScoreBoardOptions;
 }

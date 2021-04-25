@@ -33,14 +33,52 @@
 
 class BoAOptionMenu : OptionMenu
 {
-	ParsedValue menudata;
+	ParsedValue menudata, insertdata, rewritedata;
+	String mName;
 
 	override void Init(Menu parent, OptionMenuDescriptor desc)
 	{
 		menudata = FileReader.Parse("data/OptionMenus.txt");
+		insertdata = menudata.Find("MenuInsertions");
+		rewritedata = menudata.Find("MenuRewrites");
 		menudata = menudata.Find("MenuItems");
 
+		if (insertdata)
+		{
+			ParsedValue insertion = insertdata.Find(desc.mTitle);
+			if (insertion)
+			{
+				for (int i = 0; i < insertion.children.Size(); i++)
+				{
+					String menuname = FileReader.GetString(insertion.children[i], "menuname");
+					if (menuname == "") { continue; }
+
+					int offset = FileReader.GetInt(insertion.children[i], "offset");
+					int index = FindAction(desc, insertion.children[i].keyname) + offset;
+
+					InsertMenuItems(menuname, desc, index);
+				}
+			}
+		}
+/*
+		if (desc.mTitle == "$OPTMNU_TITLE")
+		{
+			InsertMenuItems("BoAOptionsTop", desc);
+			InsertMenuItems("BoAOptionsMiddle", desc, FindAction(desc, "os_menu") - 1);
+		}
+*/
+
 		Super.Init(parent, desc);
+
+		if (BoAOptionMenu(mParentMenu))
+		{
+			let parentdescriptor = BoAOptionMenu(mParentMenu).mDesc;
+
+			if (parentdescriptor)
+			{
+				mName = parentdescriptor.mItems[parentdescriptor.mSelectedItem].GetAction();
+			}
+		}
 	}
 
 	// Modified from https://github.com/coelckers/gzdoom/blob/master/wadsrc/static/zscript/engine/ui/menu/optionmenu.zs
@@ -71,6 +109,32 @@ class BoAOptionMenu : OptionMenu
 			}
 
 			bool isSelected = mDesc.mSelectedItem == i;
+
+			let item = mDesc.mItems[i];
+
+			if (item.mEnabled)
+			{
+				if (item is "OptionMenuItemSubmenu")
+				{
+					String menu = item.GetAction();
+
+					if (menu.Mid(menu.Length() - 6) ~== "Simple") { menu = menu.Left(menu.Length() - 6); }
+
+					bool rewrite;
+					String menuname;
+					[rewrite, menuname] = CheckRewrite(menu);
+					if (rewrite)
+					{
+						menu = menuname;
+						
+						let newitem = new("OptionMenuItemSubmenu");
+						newitem.Init(item.mLabel, menu, OptionMenuItemSubmenu(item).mParam, item.mCentered);
+
+						mDesc.mItems[i] = newitem;
+					}
+				}
+			}
+
 			int cur_indent = indent;
 
 			if (!menudata || DrawDescriptor(mDesc.mItems[i], indent, y, isSelected)) // Only run the old draw code if DrawDescriptor didn't already handle everything
@@ -250,5 +314,80 @@ class BoAOptionMenu : OptionMenu
 		}
 
 		return ret;
+	}
+
+	Menu GetMenu(String menuname)
+	{
+		SetMenu(menuname);
+		let menu = GetCurrentMenu();
+		menu.Close();
+
+		return menu;
+	}
+
+	int FindAction(OptionMenuDescriptor desc, String actionname)
+	{
+		if (!desc) { return 0; }
+
+		for (int i = 0; i < desc.mItems.Size(); i++)
+		{
+			if (desc.mItems[i].GetAction() == actionname) { return i; }
+		}
+
+		return desc.mItems.Size();
+	}
+
+	void InsertMenuItems(String menuname, in out OptionMenuDescriptor desc, int index = 0)
+	{
+		Menu insert = GetMenu(menuname);
+		if (OptionMenu(insert))
+		{
+			OptionMenuDescriptor insertDesc = OptionMenu(insert).mDesc;
+
+			if (desc.mItems.Find(insertDesc.mItems[0]) == desc.mItems.Size())
+			{
+				for (int i = insertDesc.mItems.Size() - 1; i >= 0; i--)
+				{
+					desc.mItems.Insert(max(0, index), insertDesc.mItems[i]);
+				}
+			}
+		}
+	}
+
+	bool, String CheckRewrite(String menuname)
+	{
+		// Don't re-write the menu action that opens this menu if it's nested inside of this menu, 
+		// so that we can set an action to open the original engine menu if desired
+		if ("BoA" .. menuname ~== mName) { return false, menuname; }
+
+		String rewrite = FileReader.GetString(rewritedata, "MenuRewrites." .. menuname);
+		if (rewrite.length()) { return true, rewrite; }
+
+		return false, menuname;
+	}
+}
+
+// Option Menu shim that opens just long enough for the GetMenu function above to copy the contents of the descriptor
+// Also skips the automated removal of empty lines at the end of the menu that is performed by normal menus, and 
+// doesn't draw anything on screen, so that the player can't even see that menu was opened.
+// This is hacky...  But there's currently no way to directly look up a menu descriptor.
+class MenuShim : OptionMenu
+{
+	override void Init(Menu parent, OptionMenuDescriptor desc)
+	{
+		mParentMenu = parent;
+		mDesc = desc;
+
+		for(int i=0;i<mDesc.mItems.Size(); i++)
+		{
+			mDesc.mItems[i].OnMenuCreated();
+		}
+	}
+
+	override void Drawer() {}
+
+	override void Ticker()
+	{
+		Close();
 	}
 }
