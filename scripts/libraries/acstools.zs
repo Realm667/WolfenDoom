@@ -286,19 +286,26 @@ class ACSTools
 
 	// ZScript implementation of similar funtionality to V_BreakLines.  Hard-coded to use SmallFont
 	//  Some logic taken from https://github.com/coelckers/gzdoom/blob/master/src/common/fonts/v_text.cpp
-	ui static String BreakString(String input, int maxwidth)
+	ui static String BreakString(String input, int maxwidth, bool flow = 0)
 	{
 		if (!input.length()) { return ""; }
 
 		input = StringTable.Localize(input, false);
 
-		int c = -1, linestart, lastspace, colorindex, wordindex;
+		int c = -1, colorindex, wordindex;
 		String output, currentcolor, lastcolor;
-		bool lastWasSpace = false;
 
 		int i = 0;
 		int count = input.Length();
 		String line = "", word = "";
+
+		if (flow) // Flow the text to fill most of the lines that it would take up at the the passed-in maxwidth value
+		{
+			BrokenLines b = SmallFont.BreakLines(input, maxwidth);
+			int w = SmallFont.StringWidth(input);
+
+			maxwidth = int(w * 1.25 / b.Count());
+		}
 
 		while (c != 0)
 		{
@@ -357,7 +364,7 @@ class ACSTools
 			}
 		}
 
-		// Make sure to catch the final word and or line
+		// Make sure to catch the final word and/or line
 		output = String.Format("%s%s%c%s", output, line, SmallFont.StringWidth(line) + SmallFont.StringWidth(word) > maxwidth ? 0x0A : 0, word);
 
 		return output;
