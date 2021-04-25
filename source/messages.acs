@@ -207,7 +207,7 @@ script "HintMessage" (int message, int key)
 
 	message = StrParam(l:message);
 	message = ScriptCall("ACSTools", "BreakString", message, 300);
-	key = ScriptCall("ACSTools", "GetKeyPressString", key, true, "Dark Gray", "Gray");
+	if (key && StrLen(key) > 0) key = ScriptCall("ACSTools", "GetKeyPressString", key, true, "Dark Gray", "Gray");
 
 	SetHudSize(640, 480, false);
 	int screenblocks = GetCVar("screenblocks");

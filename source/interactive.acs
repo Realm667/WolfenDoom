@@ -15,8 +15,8 @@ Script "Activate" (int lineid, int repairtime)
 	{
 		if (repairstate[lineid] == 0) // Show hint message on first use
 		{
-			if (increment == 35) { ACS_NamedExecute("HintMessage", 0, "HINTTEXTFIRE"); }
-			else { ACS_NamedExecute("HintMessage", 0, "HINTTEXTHOLD"); } 
+			if (increment == 35) { ACS_NamedExecute("HintMessage", 0, "HINTTEXTFIRE", "+attack"); }
+			else { ACS_NamedExecute("HintMessage", 0, "HINTTEXTHOLD", "+use"); }
 		}
 
 		int step = 80 + 10 * repairstate[lineid] / (repairtime * 35);
