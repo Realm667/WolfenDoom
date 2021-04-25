@@ -292,35 +292,36 @@ class ACSTools
 
 		input = StringTable.Localize(input, false);
 
-		int c, linestart, lastspace, colorindex;
+		int c = -1, linestart, lastspace, colorindex, wordindex;
 		String output, currentcolor, lastcolor;
 		bool lastWasSpace = false;
 
-		int count = input.CodePointCount();
+		int i = 0;
+		int count = input.Length();
+		String line = "", word = "";
 
-		for (int i = 0; i < count; i++)
+		while (c != 0)
 		{
-			c = input.GetNextCodePoint(i);
+			[c, i] = input.GetNextCodePoint(i);
+			word = String.Format("%s%c", word, c);
 
 			if (c == 0x1C)
 			{
-				c = input.GetNextCodePoint(++i);
+				[c, i] = input.GetNextCodePoint(i);
+				word = String.Format("%s%c", word, c);
 
 				if (c == 0x5B) // [
 				{
-					int namestart = i;
-					int length;
+					String temp = "";
 					while (c && c != 0x5D) // ]
 					{
-						c = input.GetNextCodePoint(++i);
-
-						length++;
+						[c, i] = input.GetNextCodePoint(i);
+						word = String.Format("%s%c", word, c);
+						if (c != 0x5D) { temp = String.Format("%s%c", temp, c); }
 					}
 
-					if (i < count) { length++; }
-
 					lastcolor = currentcolor; // Remember the previous color in case the string gets cut before this point
-					currentcolor = input.Mid(namestart, length);
+					currentcolor = temp;
 				}
 				else
 				{
@@ -333,43 +334,31 @@ class ACSTools
 				continue;
 			}
 
-			if (ZScriptTools.IsWhiteSpace(c))
-			{
-				if (!lastWasSpace)
-				{
-					lastspace = i;
-					lastWasSpace = true;
-				}
-			}
-			else
-			{
-				lastWasSpace = false;
-			}
-
-			String line = input.Mid(linestart, i - linestart + 1);
-
-			if (SmallFont.StringWidth(line) > maxwidth)
+			if (SmallFont.StringWidth(line) + SmallFont.StringWidth(word) > maxwidth || c == 0x0A)
 			{
 				if (!currentcolor)
 				{
 					currentcolor = lastcolor = "C"; // Use gray as default color if none was set
 				}
 
-				if (colorindex > lastspace) { currentcolor = lastcolor; } // Make sure the color change didn't happen after the last known space
+				if (colorindex > wordindex) { currentcolor = lastcolor; } // Make sure the color change didn't happen after the last known space
 
-				line = ZScriptTools.Trim(input.Mid(linestart, lastspace - linestart + 1));
 				output = String.Format("%s%s%c\c%s", output, line, c == 0x0A ? 0 : 0x0A, currentcolor);
-
-				linestart = i = lastspace;
+				line = "";
+			}
+			else
+			{
+				if (ZScriptTools.IsWhiteSpace(c) || i >= count)
+				{
+					line = line .. word;
+					wordindex = i;
+					word = "";
+				}
 			}
 		}
 
-		// Make sure to catch the final line is it doesn't end in a line break
-		if (linestart < count)
-		{
-			String line = ZScriptTools.Trim(input.Mid(linestart));
-			output = String.Format("%s%s", output, line);
-		}
+		// Make sure to catch the final word and or line
+		output = String.Format("%s%s%c%s", output, line, SmallFont.StringWidth(line) + SmallFont.StringWidth(word) > maxwidth ? 0x0A : 0, word);
 
 		return output;
 	}
