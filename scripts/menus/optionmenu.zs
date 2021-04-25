@@ -60,13 +60,6 @@ class BoAOptionMenu : OptionMenu
 				}
 			}
 		}
-/*
-		if (desc.mTitle == "$OPTMNU_TITLE")
-		{
-			InsertMenuItems("BoAOptionsTop", desc);
-			InsertMenuItems("BoAOptionsMiddle", desc, FindAction(desc, "os_menu") - 1);
-		}
-*/
 
 		Super.Init(parent, desc);
 
@@ -175,7 +168,7 @@ class BoAOptionMenu : OptionMenu
 	{
 		bool ret = true;
 
-		if (!menudata) { return ret; }
+		if (!menudata || !ZScriptTools.Trim(item.mLabel).length()) { return ret; }
 
 		ParsedValue descriptor = menudata.Find(item.mLabel);
 		if (!descriptor) { return ret; }
