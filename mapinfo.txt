@@ -42,11 +42,13 @@ gameinfo
 
 	AddEventHandlers = "InventoryClearHandler", "WaterHandler", "CustomShaderHandler", "SpriteShadowHandler", 
 	"MineSweeperHandler", "CompassHandler", "MapStatsHandler", "PersistentMapStatsHandler", "UnderlayRenderer", 
-	"TcPostProcessShaderHandler", "SafeHandler", "LoadScreen", "KeyHandler", "ParticleManager", "GroundSplashDataHandler", "DebugEventHandler", "WideObjectivesDataHandler", "ScreenLabelHandler"
+	"TcPostProcessShaderHandler", "SafeHandler", "LoadScreen", "KeyHandler", "ParticleManager", 
+	"GroundSplashDataHandler", "DebugEventHandler", "WideObjectivesDataHandler", "ScreenLabelHandler"
 
 	ChatSound = "misc/chat"
 
-	QuitMessages = "$QUITMSG", "$QUITMSG1", "$QUITMSG2", "$QUITMSG3", "$QUITMSG4", "$QUITMSG5", "$QUITMSG6", "$QUITMSG7", "$QUITMSG8", "$QUITMSG9", "$QUITMSG10", "$QUITMSG11", "$QUITMSG12", "$QUITMSG13", "$QUITMSG14"
+	QuitMessages = "$QUITMSG", "$QUITMSG1", "$QUITMSG2", "$QUITMSG3", "$QUITMSG4", "$QUITMSG5", "$QUITMSG6", 
+	"$QUITMSG7", "$QUITMSG8", "$QUITMSG9", "$QUITMSG10", "$QUITMSG11", "$QUITMSG12", "$QUITMSG13", "$QUITMSG14"
 }
 
 Automap
@@ -751,6 +753,14 @@ DamageType Knife
 DamageType Trample { NoArmor }
 DamageType Truck { ReplaceFactor }
 DamageType Rocket { ReplaceFactor }
+
+DamageType Failure
+{
+	Factor = 1000000.0
+	NoArmor
+	ReplaceFactor
+	Obituary = "$OBFAILURE"
+}
 
 //////////////
 //DOOMEDNUMS//
