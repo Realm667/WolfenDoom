@@ -391,8 +391,8 @@ script "SpyMessage" (int count, int item)
 
 		if (messagestr == message) { Terminate; }
 
-		if (count == 0 && item) { messagestr = StrParam(s:messagestr, s:"\n", l:"SPYMESSAGETAKETHIS"); }
-		else if (count > 0 && count < 4) { messagestr = StrParam(l:StrParam(s:"SPYMESSAGEGENERIC", i:Random(0, 4)), s:"\n", s:messagestr); }
+		if (count == 0 && item) { messagestr = StrParam(s:messagestr, s:"\n\cC", l:"SPYMESSAGETAKETHIS"); }
+		else if (count > 0 && count < 4) { messagestr = StrParam(l:StrParam(s:"SPYMESSAGEGENERIC", i:Random(0, 4)), s:"\n\cC", s:messagestr); }
 	}
 
 	str head = GetUserVariable(0, "head");
