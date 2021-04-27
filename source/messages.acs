@@ -70,7 +70,7 @@ script "BoADialogue"(int headtalky,int headsilent,int message)
 	// Play the audio (if it's there)
 	PlayMessageSound(0, message);
 
-	str msg = ScriptCall("ACSTools", "BreakString", message, 540);
+	str msg = ScriptCall("BrokenString", "BreakString", message, 540, "Gray");
 
 	// Show message
 	AmbientSound("RADIONOS",127);
@@ -205,8 +205,7 @@ script "HintMessage" (int message, int key)
 {
 	if (message == "" && key == "") { Terminate; }
 
-	message = StrParam(l:message);
-	message = ScriptCall("ACSTools", "BreakString", message, 300, true);
+	message = ScriptCall("BrokenString", "BreakString", message, 300, true, "Gray");
 	if (key && StrLen(key) > 0) key = ScriptCall("ACSTools", "GetKeyPressString", key, true, "Dark Gray", "Gray");
 
 	SetHudSize(640, 480, false);
@@ -319,7 +318,7 @@ script "FollowerMessage" (int type, int count)
 	// Play the audio (if it's there)
 	PlayMessageSound(0, message);
 
-	str msg = ScriptCall("ACSTools", "BreakString", messagestr, 540);
+	str msg = ScriptCall("BrokenString", "BreakString", messagestr, 540, "Gray");
 
 	// Show message
 	AmbientSound("RADIONOS",127);
@@ -424,7 +423,7 @@ script "SpyMessage" (int count, int item)
 	// Play the audio (if it's there)
 	PlayMessageSound(0, message);
 
-	str msg = ScriptCall("ACSTools", "BreakString", messagestr, 540);
+	str msg = ScriptCall("BrokenString", "BreakString", messagestr, 540, "Gray");
 
 	// Show message
 	AmbientSound("RADIONOS",127);

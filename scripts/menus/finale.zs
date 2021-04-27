@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 AFADoomer
+ * Copyright (c) 2018-2021 AFADoomer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -231,7 +231,7 @@ class Finale : BoAMenu
 	int drawtic;
 	double texttic, lineheight;
 
-	BrokenLines lines;
+	BrokenString lines;
 	int page, oldpage, maxlines, maxpages, curchar, maxdrawn;
 
 	LevelData totals;
@@ -275,7 +275,9 @@ class Finale : BoAMenu
 
 	void InitText(String text)
 	{
-		lines = fnt.BreakLines(StringTable.Localize(text), int(textwidth / textscale));
+		[text, lines] = BrokenString.BreakString(StringTable.Localize(text), int(textwidth / textscale), false, "U");
+		if (!lines) { return; }
+
 		maxlines = int(textheight / lineheight);
 
 		int count = lines.Count();
@@ -286,6 +288,16 @@ class Finale : BoAMenu
 		}		
 
 		double pages = count / maxlines;
+
+		// Subtract any blank lines that will be skipped if they fall at the top of a page.
+		int lostlines = 0;
+		for (int p = 0; p < pages; p++)
+		{
+			if (lines.StringWidth(p * maxlines + lostlines) == 0) { lostlines++; }
+		}
+
+		// ... and re-calculate the page count.
+		pages = (count - lostlines) / maxlines;
 
 		maxpages = int(pages);  // maxpages is an integer, but make sure to always round up if there was even a small amount of overflow
 		if (maxpages < pages) { maxpages++; }
@@ -377,14 +389,26 @@ class Finale : BoAMenu
 		int texty = 100;
 		int lineoffset = 0;
 
-		for (int l = start; l < min(start + lineoffset + maxlines, lines.Count()) || chars > texttic; l++)
+		for (int l = start; l < min(start + lineoffset + maxlines, lines.Count() + 1) || chars > texttic; l++)
 		{
-			int len = min(int(texttic) - chars, lines.StringAt(l).length());
+			int len = min(int(texttic) - chars, lines.StringAt(l).CodePointCount());
 
 			if (l == start && lines.StringWidth(l) == 0) { lineoffset++; } // Skip printing blank lines at the beginning of a page
 
-			int xoffset = 0; //(textwidth - lines.StringWidth(l) * textscale) / 2;
-			screen.DrawText(fnt, Font.CR_DARKGRAY, (textx + xoffset) / textscale, (texty + (l - start - lineoffset) * lineheight) / textscale, lines.StringAt(l).Left(len), DTA_VirtualWidthF, w / textscale, DTA_VirtualHeightF, h / textscale, DTA_Alpha, textalpha);
+			int xoffset = 0;
+
+			String line = "";
+			int nextchar = 0, i = 0;
+			while (i < len)
+			{
+				int c;
+				[c, nextchar] = lines.StringAt(l).GetNextCodePoint(nextchar);
+				line = String.Format("%s%c", line, c);
+
+				i++;
+			}
+
+			screen.DrawText(fnt, Font.CR_DARKGRAY, (textx + xoffset) / textscale, (texty + (l - start - lineoffset) * lineheight) / textscale, line, DTA_VirtualWidthF, w / textscale, DTA_VirtualHeightF, h / textscale, DTA_Alpha, textalpha);
 			chars += len;
 		}
 	}
