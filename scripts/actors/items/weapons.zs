@@ -445,7 +445,10 @@ class TankCannonWeapon : NaziWeapon // Weapon used when morphed into a tank.
 
 		A_StartSound(sound, CHAN_WEAPON, 0, FRandom(0.6, 0.8));
 		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
-		muzzleflash.master = self;
+		if (muzzleflash)
+		{
+			muzzleflash.master = origin;
+		}
 		A_FireProjectile("TurrSmokeSpawner", origin.Pos.Z - Pos.Z);
 		Actor mo = A_FireProjectile(missiletype, angledelta + Random(-2, 2), False, origin.pos.x - pos.x, origin.pos.z - pos.z, 0, pitchdelta + Random(-2, 2));
 		if (mo && origin != self)

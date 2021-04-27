@@ -1393,11 +1393,13 @@ class US_ShermanTurret : TankTurretBase
 	{
 		bool sp = false;
 
-		Vector3 gunspot2offset = (16, 20, 18);
+		Vector3 gunspot2offset = (48, 16, 19);
 		while (!gunspot2) { [sp, gunspot2] = A_SpawnItemEx("WeaponSpot", gunspot2offset.x, gunspot2offset.y, gunspot2offset.z, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
 		gunspot2.master = self;
 
 		Super.PostBeginPlay();
+
+		if (gun) { gunspot2.master = gun; }
 	}
 }
 
@@ -1521,11 +1523,13 @@ class PanzerIVTurret : TankTurretBase
 	{
 		bool sp = false;
 
-		Vector3 gunspot2offset = (48, 12, 8);
+		Vector3 gunspot2offset = (48, 16, 10);
 		while (!gunspot2) { [sp, gunspot2] = A_SpawnItemEx("WeaponSpot", gunspot2offset.x, gunspot2offset.y, gunspot2offset.z, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE); }
 		gunspot2.master = self;
 
 		Super.PostBeginPlay();
+
+		if (gun) { gunspot2.master = gun; }
 	}
 }
 
