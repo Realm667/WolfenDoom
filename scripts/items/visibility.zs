@@ -91,13 +91,15 @@ class BoAVisibility : CustomInventory
 
 	bool CheckVisibility(Actor mo)
 	{
-		if (fogfactor && visibility + extravisibility < (mo.Distance3D(owner) / fogfactor))
+		if (fogfactor && visibility + extravisibility < (mo.Distance3D(owner) / (fogfactor * 0.5)))
 		{
 			if (Nazi(mo)) { Nazi(mo).bChaseOnly = true; }
 			else { mo.target = null; }
 
 			return false;
 		}
+
+		if (Nazi(mo)) { Nazi(mo).bChaseOnly = false; }
 
 		return true;
 	}

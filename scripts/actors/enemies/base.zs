@@ -1995,7 +1995,6 @@ class Nazi : Base
 				if (bChaseOnly)
 				{
 					A_Chase(null, null, flags);
-					bChaseOnly = false;
 				}
 				else
 				{
