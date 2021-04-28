@@ -223,7 +223,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			Loop;
 		Chase.Stand: // Wherever standing, take up defensive position (if armed), otherwise stand stupidly
 			"####" AAAAA 1 A_Defend(false);
-			"####" A 0 { if (!nonmoving) { return ResolveState("Chase"); } return ResolveState(null); }
+			"####" A 0 { if (!nonmoving) { SetStateLabel("Chase"); } }
 			Loop;
 		Pain:
 			"####" I 1 A_SpawnItemEx("Pain_Overlay", Scale.X+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR);
@@ -399,7 +399,8 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 	state A_ChaseGoal()
 	{
-		if (!playerToChase || playerToChase.health <= 0 || nonmoving) { return ResolveState("Stand"); } // Make sure a player was targeted as who to chase - if he's dead, target another player (multiplayer support)
+		if (!playerToChase || playerToChase.health <= 0) { return ResolveState("Stand"); } // Make sure a player was targeted as who to chase - if he's dead, target another player (multiplayer support)
+		if (nonmoving) { return ResolveState("Chase.Stand"); }
 
 		if (target && target is "GrenadeBase") // If you're running from a grenade
 		{
@@ -465,7 +466,11 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			{
 				SetOrigin(Markers[75].pos, true); // Warp to the halfway point
 				currentGoal = Markers[75];
-				if (!weapon) { weapon = PWEAP_Luger; } // Pretend he picked up a pistol and some ammo somewhere, and he will act like a friendly Guard
+				if (!weapon) // Pretend he picked up a pistol and some ammo somewhere, and he will act like a friendly Guard
+				{
+					weapon = PWEAP_Luger;
+					chaseattackchance = max(128, chaseattackchance);
+				}
 			}
 			else if (Markers.Size()) { currentGoal = Markers[Markers.Size() - 1]; }
 
@@ -878,6 +883,11 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		if (allowinteraction > 1 && nonmoving && playerToChase && !playerToChase.bNoClip && Distance3D(playerToChase) > allowinteraction)
 		{
 			nonmoving = false;
+			if (!weapon) // Pretend he picked up a pistol and some ammo somewhere
+			{
+				weapon = PWEAP_Luger;
+				chaseattackchance = max(128, chaseattackchance);
+			}
 			SetStateLabel("Chase");
 		}
 
