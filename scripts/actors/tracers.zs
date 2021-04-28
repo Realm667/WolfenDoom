@@ -473,9 +473,62 @@ class ZCrater : ZBulletChip
 
 	override void PostBeginPlay()
 	{
+		if (!TestPoints(self)) { Destroy(); }
+
 		frame = Random(5, 9);
 
 		Super.PostBeginPlay();
+	}
+
+	bool TestPoints(Actor mo)
+	{
+		Vector3 normals[4];
+		double offset = 8.0;
+
+		PointTracer pointtracer;
+		pointtracer = new("PointTracer");
+
+		Vector3 tracedir = (0, 0, -1);
+		double zoffset = mo.pos.z;
+		double dist = 128.0;
+		Vector3 tracepos;
+		
+		tracepos = (mo.pos.xy + RotateVector((offset, -offset), mo.angle), zoffset);
+		pointtracer.Trace(tracepos, level.PointInSector(tracepos.xy), tracedir, dist, 0);
+		normals[0] = pointtracer.Results.HitSector.floorplane.normal;
+
+		tracepos = (mo.pos.xy + RotateVector((offset, offset), mo.angle), zoffset); 
+		pointtracer.Trace(tracepos, level.PointInSector(tracepos.xy), tracedir, dist, 0);
+		normals[1] = pointtracer.Results.HitSector.floorplane.normal;
+
+		if (normals[1] != normals[0]) { return false; }
+
+		tracepos = (mo.pos.xy + RotateVector((-offset, -offset), mo.angle), zoffset);
+		pointtracer.Trace(tracepos, level.PointInSector(tracepos.xy), tracedir, dist, 0);
+		normals[2] = pointtracer.Results.HitSector.floorplane.normal;
+
+		if (normals[2] != normals[1]) { return false; }
+
+		tracepos = (mo.pos.xy + RotateVector((-offset, offset), mo.angle), zoffset);
+		pointtracer.Trace(tracepos, level.PointInSector(tracepos.xy), tracedir, dist, 0);
+		normals[3] = pointtracer.Results.HitSector.floorplane.normal;
+
+		if (normals[3] != normals[2]) { return false; }
+
+		return true;
+	}
+}
+
+class PointTracer : LineTracer
+{
+	override ETraceStatus TraceCallback()
+	{
+		if (Results.HitType == TRACE_HitActor)
+		{
+			return TRACE_Skip;
+		}
+
+		return TRACE_Stop;
 	}
 }
 
