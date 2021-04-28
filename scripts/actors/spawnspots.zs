@@ -195,9 +195,7 @@ class ActorSpawner : SwitchableDecoration
 				LookExParams look;
 				look.fov = mo2.player.fov * 1.4; // Plus a little extra to account for wider screen ratios...
 
-				if (mo2 && mo2.IsVisible(self, false, look)) { 
-					console.printf("%f", dist / fogfactor);
-					return true; }
+				if (mo2 && mo2.IsVisible(self, false, look)) { return true; }
 			}
 		}
 
