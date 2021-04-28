@@ -400,7 +400,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 	state A_ChaseGoal()
 	{
 		if (!playerToChase || playerToChase.health <= 0) { return ResolveState("Stand"); } // Make sure a player was targeted as who to chase - if he's dead, target another player (multiplayer support)
-		if (nonmoving) { return ResolveState("Chase.Stand"); }
+		if (nonmoving && allowinteraction > 1) { return ResolveState("Chase.Stand"); } // Followers who will stop standing and catch up on their own are handled differently
 
 		if (target && target is "GrenadeBase") // If you're running from a grenade
 		{
@@ -527,6 +527,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 		while ( (mo = GrenadeBase(Finder.Next())) )
 		{
+			if (mo is "Mine") { continue; }
 			if (!CheckSight(mo)) { continue; }
 			if (mo.bMissile && (mo.target == self || (mo.target is "PlayerPawn" && absangle(mo.angle + 180, AngleTo(mo.target)) > 30))) { continue; } // Ignore missiles fired from self and any from a player that aren't aimed at you
 			if (Distance3d(mo) > min(512, (mo.bMissile ? mo.feardistance * max(mo.Speed, mo.vel.length()) : mo.feardistance))) { continue; } // feardistance default is 256 units (see GrenadeBase actor, GrenadeBase.FearDistance property)
