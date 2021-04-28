@@ -71,6 +71,7 @@ class EffectsManager : Thinker
 	Array<EffectInfo> effects;
 	int interval, renderchunks;
 	EffectBlock[MAPMAX * 2 / CHUNKSIZE][MAPMAX * 2 / CHUNKSIZE] effectblocks; // Grid of blocks across the entire map
+	Vector2 playerpos[MAXPLAYERS];
 
 	const cycletime = 35;
 
@@ -211,9 +212,28 @@ class EffectsManager : Thinker
 		}
 		else if (level.time > 2)
 		{
-			CullEffects();
+			bool cull = false;
+			int x, y;
 
-			if (interval++ > renderchunks) { interval = 0; }
+			for (int p = 0; p < MAXPLAYERS; p++)
+			{
+				if (!playeringame[p]) { continue; }
+
+				[x, y] = EffectBlock.GetBlock(players[p].mo.pos.x, players[p].mo.pos.y);
+
+				if (playerpos[p] != (x, y))
+				{
+					cull = true;
+					playerpos[p] = (x, y);
+				}
+			}
+
+			if (cull || interval > 0)
+			{
+				CullEffects();
+
+				if (interval++ > renderchunks) { interval = 0; }
+			}
 		}
 	}
 
@@ -268,7 +288,11 @@ class EffectsManager : Thinker
 					// Delay culling if this chunk was force culled last time and is still outside of culling range
 					if (effectblocks[x][y].forceculled && forceremove) { continue; }
 
-					count += CullChunk(effectblocks[x][y].indices, forceremove);
+					// Don't cull chunks that are the same distance away as last time
+					if (effectblocks[x][y].cullinterval != interval || effectblocks[x][y].forceculled || forceremove)
+					{
+						count += CullChunk(effectblocks[x][y].indices, forceremove);
+					}
 					effectblocks[x][y].forceculled = forceremove;
 					effectblocks[x][y].cullinterval = interval;
 				}

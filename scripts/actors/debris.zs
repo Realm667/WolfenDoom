@@ -160,7 +160,6 @@ class Debris : SceneryBase
 					if (DebrisBase(mo))
 					{
  						if (DebrisBase(mo).doscale) { mo.scale = FRandom(0.25, 1.5) * mo.scale; }
-						 DebrisBase(mo).bDontCull = bDontCull;
 					}
 
 					if (!(mo is "DebrisBase"))
@@ -191,13 +190,14 @@ class Debris : SceneryBase
 	}
 }
 
-class DebrisBase : SceneryBase
+class DebrisBase : StaticActor
 {
 	int variants;
 	int user_variant;
 	bool doscale;
 	double maxscale;
 	Vector3 oldpos;
+	bool bWasCulled; // Placeholder for eventual culling support for debris piles
 
 	Property VariantCount:variants;
 	Property ShouldScale:doscale;
