@@ -1716,9 +1716,9 @@ class MadDoctor : RocketMan
 		"####" G 6 A_NaziPain(256);
 		Goto See;
 	Death:
-		"####" G 7;
-		"####" H 5;
-		"####" I 5 A_Scream;
+		"####" G 8;
+		"####" H 8;
+		"####" I 8 A_Scream;
 		"####" J -1 A_NoBlocking;
 		Stop;
 	}
@@ -1803,10 +1803,10 @@ class MadDoctor3 : MadDoctor
 		"####" R 6 A_NaziPain(256);
 		Goto See;
 	Death:
-		"####" R 7;
-		"####" Q 5;
-		"####" S 5 A_Scream;
-		"####" T 2 ;
+		"####" R 8;
+		"####" Q 8;
+		"####" S 8 A_Scream;
+		"####" T 8 ;
 		"####" U -1 A_NoBlocking;
 		Stop;
 	}
@@ -1861,10 +1861,10 @@ class MadDoctor4 : MadDoctor
 		"####" J 6 A_NaziPain(256);
 		Goto See;
 	Death:
-		"####" J 7;
-		"####" I 5;
-		"####" K 5 A_Scream;
-		"####" L 2 ;
+		"####" J 8;
+		"####" I 8;
+		"####" K 8 A_Scream;
+		"####" L 8 ;
 		"####" M -1 A_NoBlocking;
 		Stop;
 	}
@@ -2113,9 +2113,9 @@ class MadButcher : MadDoctor
 		"####" G 6 A_NaziPain(256);
 		Goto See;
 	Death:
-		"####" G 7;
-		"####" H 5;
-		"####" I 5 A_Scream;
+		"####" G 8;
+		"####" H 8;
+		"####" I 8 A_Scream;
 		"####" J -1 A_NoBlocking;
 		Stop;
 	}
