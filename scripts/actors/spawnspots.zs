@@ -181,10 +181,10 @@ class ActorSpawner : SwitchableDecoration
 		}
 
 		double lightlevel, fogfactor;
-		[lightlevel, fogfactor] = GetLightLevel();
+		[lightlevel, fogfactor] = ZScriptTools.GetLightLevel(self);
 
 		// Only care about the player seeing the spot if it's light enough to see
-		if ((!fogfactor && lightlevel > 80) || (fogfactor && 38 >= (dist / fogfactor)))
+		if ((!fogfactor && lightlevel > 80) || (fogfactor && 25 > (dist / fogfactor)))
 		{
 			for (int q = 0; q < MAXPLAYERS; q++)
 			{
@@ -195,28 +195,13 @@ class ActorSpawner : SwitchableDecoration
 				LookExParams look;
 				look.fov = mo2.player.fov * 1.4; // Plus a little extra to account for wider screen ratios...
 
-				if (mo2 && mo2.IsVisible(self, false, look)) { return true; }
+				if (mo2 && mo2.IsVisible(self, false, look)) { 
+					console.printf("%f", dist / fogfactor);
+					return true; }
 			}
 		}
 
 		return false;
-	}
-
-	double, double GetLightLevel(Actor mo = null)
-	{
-		if (!mo) { mo = self; }
-
-		int lightlevel = mo.CurSector.lightlevel;
-
-		Color light = mo.CurSector.ColorMap.LightColor;
-		Color fade = mo.CurSector.ColorMap.FadeColor;
-
-		int density = mo.CurSector.ColorMap.FogDensity;
-		if (!density) { density = lightlevel; }
-		double fogamount = (255 - (light.r + light.g + light.b) / 3.0) - ((fade.r + fade.g + fade.b) / 3.0) * (density / 255.0);
-		double fogfactor = clamp(fogamount / -1.5, 0, 100);
-
-		return lightlevel, fogfactor;
 	}
 
 	int CountSpawns(Class<Actor> spawntype = null, bool countdead = false)
@@ -454,21 +439,11 @@ class WaveSpawner : ActorSpawner
 		return true;
 	}
 
-	double GetLightLevel(Actor mo = null)
-	{
-		if (!mo) { mo = self; }
-
-		Color light = mo.CurSector.ColorMap.LightColor;
-
-		// Sector light level minus the average (inverted) RGB light level minus fog depth
-		return mo.CurSector.lightlevel - (255 - (light.r + light.g + light.b) / 3) - 255 * (mo.CurSector.ColorMap.FogDensity / 510);
-	}
-
 	override state A_DoSpawns()
 	{
 		if (user_lightburns) // Chapter 3 Secret Level
 		{
-			double lightlevel = GetLightLevel();
+			double lightlevel = ZScriptTools.GetLightLevel(self);
 
 			if (ceilingpic == skyflatnum && lightlevel > 80) { return ResolveState("Active.Spawn"); } // Don't spawn until it's actually dark
 			else if (lightlevel > 128) { return ResolveState("Active.Spawn"); } // But be more forgiving in our definition of 'dark' if you're not under sky

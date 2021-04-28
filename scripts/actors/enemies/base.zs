@@ -833,17 +833,6 @@ class Base : Actor
 		return pitchcalc - sourcepitch % 360; // Normalize to 360 degree range
 	}
 
-	double GetLightLevel(Actor mo = null)
-	{
-		if (!mo) { mo = self; }
-
-		Color light = mo.CurSector.ColorMap.LightColor;
-		Color fade = mo.CurSector.ColorMap.FadeColor;
-
-		// Sector light level minus the average (inverted) RGB light level minus fog depth
-		return mo.CurSector.lightlevel - (255 - (light.r + light.g + light.b) / 3) - ((fade.r + fade.g + fade.b) / 3) - 255 * (mo.CurSector.ColorMap.FogDensity / 510);
-	}
-
 	void A_LightningAttack(Class<LightningBeam> beam = "LightningBeamZap", int xoffset = 0, int yoffset = 0, int zoffset = -1, double angleoffset = 0, double pitchoffset = 0, bool fromsky = false)
 	{
 		if (!target) { return; }
@@ -984,9 +973,10 @@ class Base : Actor
 						FLineTraceData trace;
 						if (LineTrace(angle, 256, 45, TRF_THRUHITSCAN | TRF_THRUACTORS, Height * 0.9, 0.0, 0.0, trace) && trace.HitType == TRACE_HitFloor)
 						{
-							Color light = trace.HitSector.ColorMap.LightColor;
+							double lightlevel, fogfactor;
+							[lightlevel, fogfactor] = ZScriptTools.GetLightLevel(self);
 
-							double visibility = trace.HitSector.lightlevel - (255 - (light.r + light.g + light.b) / 3) - 255 * (trace.HitSector.ColorMap.FogDensity / 510);
+							double visibility = lightlevel - fogfactor;
 
 							if (
 								(
@@ -1010,10 +1000,10 @@ class Base : Actor
 					{
 						if (ceilingpic == skyflatnum)
 						{
-							double lightamt = GetLightLevel();
+							double lightlevel = ZScriptTools.GetLightLevel(self);
 
-							if (lightamt > lightthreshold) { A_Die("Fire"); }
-							else if (health > 0 && Random() < 64 && lightamt > max(128, lightthreshold - 48) && !CheckSightOrRange(64))
+							if (lightlevel > lightthreshold) { A_Die("Fire"); }
+							else if (health > 0 && Random() < 64 && lightlevel > max(128, lightthreshold - 48) && !CheckSightOrRange(64))
 							{
 								Spawn("BodySmoke", (pos.x + FRandom(-radius / 2, radius / 2), pos.y + FRandom(-radius / 2, radius / 2), pos.z + FRandom(0, height)));
 							}
@@ -1087,7 +1077,7 @@ class Base : Actor
 				marker = null;
 			}
 
-			if (target && interval && level.time % interval == 0) // At intervals, make sure you haven't lost your target in the fog, even if you're not callin A_NaziLook or A_NaziChase
+			if (target && interval && level.time % interval == 0) // At intervals, make sure you haven't lost your target in the fog, even if you're not calling A_NaziLook or A_NaziChase
 			{
 				BoAVisibility vis = BoAVisibility(target.FindInventory("BoAVisibility"));
 				if (vis) { vis.CheckVisibility(self); }
@@ -1255,6 +1245,9 @@ class Nazi : Base
 	int surrendered;
 	int hiddentime;
 	spriteID defaultsprite;
+	int naziflags;
+
+	FlagDef CHASEONLY:naziflags, 0;
 
 	Property Healer:healflags;
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
@@ -1999,7 +1992,15 @@ class Nazi : Base
 					if (vis) { vis.CheckVisibility(self); }
 				}
 
-				A_Chase(melee, missile, flags);
+				if (bChaseOnly)
+				{
+					A_Chase(null, null, flags);
+					bChaseOnly = false;
+				}
+				else
+				{
+					A_Chase(melee, missile, flags);
+				}
 			}
 		}
 

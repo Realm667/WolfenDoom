@@ -41,16 +41,7 @@ class BoAVisibility : CustomInventory
 
 	void DoVisibility()
 	{
-		lightlevel = owner.CurSector.lightlevel;
-
-		Color light = owner.CurSector.ColorMap.LightColor;
-		Color fade = owner.CurSector.ColorMap.FadeColor;
-
-		// Sector light level minus the average (inverted) RGB light level minus fog depth
-		int density = owner.CurSector.ColorMap.FogDensity;
-		if (!density) { density = lightlevel; }
-		double fogamount = (255 - (light.r + light.g + light.b) / 3.0) - ((fade.r + fade.g + fade.b) / 3.0) * (density / 255.0);
-		fogfactor = clamp(fogamount / -1.5, 0, 100);
+		[lightlevel, fogfactor] = ZScriptTools.GetLightLevel(owner);
 
 		if (lightlevel + extravisibility > 64)
 		{
@@ -100,9 +91,11 @@ class BoAVisibility : CustomInventory
 
 	bool CheckVisibility(Actor mo)
 	{
-		if (fogfactor && visibility < (mo.Distance3D(owner) / fogfactor))
+		if (fogfactor && visibility + extravisibility < (mo.Distance3D(owner) / fogfactor))
 		{
-			mo.target = null;
+			if (Nazi(mo)) { Nazi(mo).bChaseOnly = true; }
+			else { mo.target = null; }
+
 			return false;
 		}
 

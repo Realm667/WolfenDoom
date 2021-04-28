@@ -392,6 +392,24 @@ class ZScriptTools
 
 		return output;
 	}
+
+	static int, double GetLightLevel(Actor mo = null)
+	{
+		if (!mo) { return 0, 0; }
+
+		int lightlevel = mo.CurSector.lightlevel;
+
+		Color light = mo.CurSector.ColorMap.LightColor;
+		Color fade = mo.CurSector.ColorMap.FadeColor;
+
+		int density = mo.CurSector.ColorMap.FogDensity;
+		if (!density) { density = lightlevel; }
+		double fogamount = (255 - (light.r + light.g + light.b) / 3.0) - ((fade.r + fade.g + fade.b) / 3.0) * (density / 255.0);
+		double fogfactor = clamp(-fogamount, 0, 100);
+
+		// Average (inverted) RGB light level minus fog depth
+		return lightlevel, fogfactor;
+	}
 }
 
 // Functions to identify the current IWAD and read info from the matching IWADINFO block
