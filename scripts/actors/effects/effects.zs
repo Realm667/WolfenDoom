@@ -589,6 +589,9 @@ class CullActorBase : Actor
 
 	States
 	{
+		// These can be overridden by actors which inherit from CullActorBase
+		Active:
+			"####" A 0 A_Jump(256, "Spawn");
 		Inactive:
 			"####" A 0 A_Jump(256, "Spawn");
 	}
