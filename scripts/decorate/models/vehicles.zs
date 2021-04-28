@@ -436,6 +436,15 @@ class ModelOpelTruck : Obstacle3d
 	}
 }
 
+// Rideable "Opel truck" for C2M5_A
+class ModelOpelTruckRide : ModelOpelTruck
+{
+	Default
+	{
+		+CULLACTORBASE.DONTCULL
+	}
+}
+
 class MercedesLimo : Obstacle3d
 {	Default
 	{
