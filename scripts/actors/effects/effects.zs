@@ -587,15 +587,6 @@ class CullActorBase : Actor
 		CullActorBase.CullLevel 0;
 	}
 
-	States
-	{
-		// These can be overridden by actors which inherit from CullActorBase
-		Active:
-			"####" A 0 A_Jump(256, "Spawn");
-		Inactive:
-			"####" A 0 A_Jump(256, "Spawn");
-	}
-
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
@@ -637,13 +628,13 @@ class CullActorBase : Actor
 	override void Activate (Actor activator)
 	{
 		bDormant = false;
-		SetStateLabel("Active");
+		if (FindState("Active", true)) SetStateLabel("Active");
 	}
 
 	override void Deactivate (Actor activator)
 	{
 		bDormant = true;
-		SetStateLabel("Inactive");
+		if (FindState("Inactive", true)) SetStateLabel("Inactive");
 	}
 
 	bool SpawnBlock(double x, double y, double z, double r = -1, double h = -1)
