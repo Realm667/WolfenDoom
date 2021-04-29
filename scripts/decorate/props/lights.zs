@@ -1678,8 +1678,19 @@ class TableLightM : SceneryBase
 	Inactive:
 		"####" "#"0 {
 			A_StartSound("SMSWITCH");
+			bDormant = !bDormant;
 			return ResolveState("CheckDormant");
 		}
+	}
+
+	override void Activate (Actor activator)
+	{
+		SetStateLabel("Active");
+	}
+
+	override void Deactivate (Actor activator)
+	{
+		SetStateLabel("Inactive");
 	}
 }
 
@@ -1930,6 +1941,7 @@ class CreepyCandle : TableLightM
 	Active:
 	Inactive:
 		"####" E 0 {
+			bDormant = !bDormant;
 			return ResolveState("CheckDormant");}
 	}
 }
@@ -2004,6 +2016,7 @@ class FBowl1 : SceneryBase
 		FBWL N 0 {
 			A_StopSound(CHAN_BODY);
 			A_RemoveChildren(TRUE, RMVF_MISC);
+			bDormant = !bDormant;
 			return ResolveState("CheckDormant");}
 	}
 }
@@ -2064,6 +2077,7 @@ class CBowl1 : SceneryBase
 	Active:
 	Inactive:
 		"####" D 0 {
+			bDormant = !bDormant;
 			return ResolveState("CheckDormant");}
 	}
 }
@@ -2110,6 +2124,7 @@ class FBarrel1 : SceneryBase
 	Inactive:
 		"####" E 0 {
 			A_RemoveChildren(TRUE, RMVF_MISC);
+			bDormant = !bDormant;
 			return ResolveState("CheckDormant");}
 	}
 }
@@ -2150,6 +2165,7 @@ class Red_Light : SceneryBase
 	Active: // These are just used to toggle the dormant state whenever 'used' by the player, regardless of starting value
 	Inactive:
 		"####" "#"0 {
+			bDormant = !bDormant;
 			return ResolveState("CheckDormant");
 		}
 	}
