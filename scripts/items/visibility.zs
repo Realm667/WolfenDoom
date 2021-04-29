@@ -41,7 +41,7 @@ class BoAVisibility : CustomInventory
 
 	void DoVisibility()
 	{
-		[lightlevel, fogfactor] = ZScriptTools.GetLightLevel(owner);
+		[lightlevel, fogfactor] = ZScriptTools.GetLightLevel(owner.CurSector);
 
 		if (lightlevel + extravisibility > 64)
 		{

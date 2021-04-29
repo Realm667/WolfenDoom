@@ -302,6 +302,7 @@ class Base : Actor
 	LaserFindHitPointTracer HitPointTracer;
 	LaserBeam beam;
 	Actor flare;
+	double dlvisibility;
 
 	FlagDef CANSQUISH:flags, 0;
 	FlagDef STOMP:flags, 1;
@@ -964,34 +965,35 @@ class Base : Actor
 					else { bFloat = Default.bFloat; }
 				}
 
-				if ((!Nazi(self) || Nazi(self).user_incombat) && lightthreshold && (level.time + interval) % 35 == 0) // If light threshold is zero or Nazi actor is not awake, ignore light levels (so, default to normal enemy behavior)
+				if ((!Nazi(self) || Nazi(self).user_incombat) && lightthreshold)  // If light threshold is zero or Nazi actor is not awake, ignore light levels (so, default to normal enemy behavior)
 				{
-					if (ReactionTime == 0) // This is only checked when the enemy is active and not standing still or attacking
+					if ((level.time + interval) % 10 == 0) // Periodically poll dynamic lights to handle light avoidance
 					{
-						double dlvisibility = GetVisibility(); // This calls a ThinkerIterator, which is why this whole block only runs every 10 ticks
-
-						FLineTraceData trace;
-						if (LineTrace(angle, 256, 45, TRF_THRUHITSCAN | TRF_THRUACTORS, Height * 0.9, 0.0, 0.0, trace) && trace.HitType == TRACE_HitFloor)
+						if (
+							ReactionTime == 0 && // This is only checked when the enemy is active and not standing still or attacking
+							!bFrightened && 
+							frighttimeout == -35 && // Use a counter to keep the randomness evident!
+							(!target || Distance2D(target) > 64 + target.radius + radius) // Only run away if not nearby to target
+						)
 						{
-							double lightlevel, fogfactor;
-							[lightlevel, fogfactor] = ZScriptTools.GetLightLevel(self);
+							dlvisibility = GetVisibility(); // This calls a ThinkerIterator, which is why this whole block only runs every 10 ticks
 
-							double visibility = lightlevel - fogfactor;
-
-							if (
-								(
-									!bFrightened && 
-									frighttimeout == -35 && // Use a counter to keep the randomness evident!
-									(visibility > lightthreshold || visibility + dlvisibility > lightthreshold + 64 + Random(0, 32)) // Add some randomness to the light reaction distance
-								) &&
-								(target && Distance2D(target) > 64 + target.radius + radius)
-							)
+							FLineTraceData trace;
+							if (LineTrace(angle, 256, 45, TRF_THRUHITSCAN | TRF_THRUACTORS, Height * 0.9, 0.0, 0.0, trace) && trace.HitType == TRACE_HitFloor)
 							{
-								if (target) { NewChaseDir(); }
-								else { RandomChaseDir(); }
-								FaceMovementDirection();
-								frighttimeout = 35 + Random(0, 7) * 5; // Use a counter to keep the actor frightened for a little bit
-								frightener = self;
+								double lightlevel, fogfactor;
+								[lightlevel, fogfactor] = ZScriptTools.GetLightLevel(trace.HitSector);
+
+								double visibility = lightlevel - fogfactor;
+
+								if (visibility > lightthreshold || visibility + dlvisibility > lightthreshold + 64 + Random(0, 32)) // Add some randomness to the light reaction distance
+								{
+									if (target) { NewChaseDir(); }
+									else { RandomChaseDir(); }
+									FaceMovementDirection();
+									frighttimeout = 35 + Random(0, 7) * 5; // Use a counter to keep the actor frightened for a little bit
+									frightener = self;
+								}
 							}
 						}
 					}
@@ -1000,12 +1002,23 @@ class Base : Actor
 					{
 						if (ceilingpic == skyflatnum)
 						{
-							double lightlevel = ZScriptTools.GetLightLevel(self);
+							double lightlevel, fogfactor;
+							[lightlevel, fogfactor] = ZScriptTools.GetLightLevel(CurSector, true);
+							lightlevel -= fogfactor;
 
 							if (lightlevel > lightthreshold) { A_Die("Fire"); }
-							else if (health > 0 && Random() < 64 && lightlevel > max(128, lightthreshold - 48) && !CheckSightOrRange(64))
+							else
 							{
-								Spawn("BodySmoke", (pos.x + FRandom(-radius / 2, radius / 2), pos.y + FRandom(-radius / 2, radius / 2), pos.z + FRandom(0, height)));
+								// This min value really should be lower, since the light threshold for Zombies is 130...  
+								// But it's too late now.  Just means the "smoking while it's not quite light enough to
+								// burn up" effect isn't really ever seen in the mod.
+								double minval = 128;
+								
+								double delta = lightlevel - max(minval, lightthreshold - 48); 
+								if (health > 0 && delta > 0 && Random() < 64 * (delta / 16)) // Smoke more as you approach burning point
+								{
+									Spawn("BodySmoke", (pos.x + FRandom(-radius / 2, radius / 2), pos.y + FRandom(-radius / 2, radius / 2), pos.z + FRandom(0, height)));
+								}
 							}
 						}
 					}

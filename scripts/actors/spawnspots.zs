@@ -181,7 +181,7 @@ class ActorSpawner : SwitchableDecoration
 		}
 
 		double lightlevel, fogfactor;
-		[lightlevel, fogfactor] = ZScriptTools.GetLightLevel(self);
+		[lightlevel, fogfactor] = ZScriptTools.GetLightLevel(CurSector);
 
 		// Only care about the player seeing the spot if it's light enough to see
 		if ((!fogfactor && lightlevel > 80) || (fogfactor && 25 > (dist / fogfactor)))
@@ -441,10 +441,12 @@ class WaveSpawner : ActorSpawner
 	{
 		if (user_lightburns) // Chapter 3 Secret Level
 		{
-			double lightlevel = ZScriptTools.GetLightLevel(self);
+			double lightlevel, fogfactor;
+			[lightlevel, fogfactor] = ZScriptTools.GetLightLevel(CurSector, true);
+			lightlevel -= fogfactor;
 
-			if (ceilingpic == skyflatnum && lightlevel > 80) { return ResolveState("Active.Spawn"); } // Don't spawn until it's actually dark
-			else if (lightlevel > 128) { return ResolveState("Active.Spawn"); } // But be more forgiving in our definition of 'dark' if you're not under sky
+			if (ceilingpic == skyflatnum && lightlevel <= 128) { return ResolveState("Active.Spawn"); } // Don't spawn until it's actually dark
+			else if (lightlevel > 160) { return ResolveState("Active.Spawn"); } // But be more forgiving in our definition of 'dark' if you're not under sky
 		}
 
 		index = -1;
