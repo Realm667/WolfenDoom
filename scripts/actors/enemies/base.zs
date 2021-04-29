@@ -1111,6 +1111,8 @@ class Base : Actor
 			MaxTargetRange *= user_rangefactor;
 		}
 
+		user_nocountkill = user_nocountkill || (SpawnFlags & MTF_NOCOUNT);
+
 		hitpointtracer = new("LaserFindHitPointTracer");
 
 		if (!(self is "NaziBoss")) { A_SetSize(radius * scale.x / Default.scale.x, height * scale.y / Default.scale.y); } // If the actor is scaled from default, adjust the actual size of the actor
