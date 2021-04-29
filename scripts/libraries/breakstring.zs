@@ -156,6 +156,12 @@ class BrokenString : Object
 			}
 		}
 
+		if (word.length())
+		{
+			if (brokenlines) { brokenlines.lines.Push(colorstring .. word); }
+			output.AppendFormat("%s", word);
+		}
+
 		return output, brokenlines;
 	}
 }
