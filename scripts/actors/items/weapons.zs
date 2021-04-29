@@ -1311,6 +1311,8 @@ class GunSmokeSpawner : Actor
 
 class Firebrand : NaziWeapon
 {
+	int ticcount;
+
 	Default
 	{
 		//$Category Weapons (BoA)
@@ -1439,7 +1441,11 @@ class Firebrand : NaziWeapon
 				A_SetBlend("ff 00 00", .5, 15);
 			}
 		}
-		SRDG C 1 A_GiveInventory("PowerWeaponLevel2");
+		SRDG C 1
+		{
+			invoker.ticcount = 8;
+			A_GiveInventory("PowerWeaponLevel2");
+		}
 		"####" BA 1;
 		Goto Ready;
 	Altfire2:
@@ -1484,6 +1490,20 @@ class Firebrand : NaziWeapon
 	Spawn:
 		SRDP ABCD 4 LIGHT("ITBURNSOC1");
 		Loop;
+	}
+
+	override void Tick()
+	{
+		if (owner)
+		{
+			if (owner.CountInv("PowerWeaponLevel2"))
+			{
+				if (ticcount > 4) { owner.A_AttachLight("FlameEffect", DynamicLight.FlickerLight , color(2, 212, 117), 24, 32, DYNAMICLIGHT.LF_ATTENUATE, (0, 0, 32), 0.2); }
+				else if (ticcount > 0) { owner.A_AttachLight("FlameEffect", DynamicLight.FlickerLight , color(26, 168, 105), 32, 36, DYNAMICLIGHT.LF_ATTENUATE, (0, 0, 32), 0.3); }
+				else { owner.A_AttachLight("FlameEffect", DynamicLight.FlickerLight , color(18, 94, 48), 36, 44, DYNAMICLIGHT.LF_ATTENUATE, (0, 0, 32), 0.4); }
+			}
+			else { owner.A_RemoveLight("FlameEffect"); }
+		}
 	}
 }
 

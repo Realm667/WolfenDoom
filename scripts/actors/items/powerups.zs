@@ -331,6 +331,8 @@ class PoweredInventory : Inventory
 
 class LanternPickup : PoweredInventory
 {
+	int ticcount;
+
 	Default
 	{
 		//$Category Powerups (BoA)
@@ -357,18 +359,42 @@ class LanternPickup : PoweredInventory
 
 	override void Tick()
 	{
-		if (globalfreeze || level.Frozen) { return; }
-
-		if (owner && active)
+		if (owner)
 		{
-			if (owner.waterlevel >= 3) // Extinguish if the player goes underwater
+			if (active)
 			{
-				A_StartSound("flamer/steam", CHAN_AUTO, 0, Random(15, 45));
-				active = false;
+				if (owner.waterlevel >= 3) // Extinguish if the player goes underwater
+				{
+					A_StartSound("flamer/steam", CHAN_AUTO, 0, Random(15, 45));
+					active = false;
+				}
+				else
+				{
+					if (ticcount > 4) { owner.A_AttachLightDef("LanternFlicker", "LANT01"); }
+					else if (ticcount > 0) { owner.A_AttachLightDef("LanternFlicker", "LANT02"); }
+					else { owner.A_AttachLightDef("LanternFlicker", "LANT03"); }
+
+					if (ticcount) { ticcount = max(0, ticcount - 1); }
+				}
+			}
+			else
+			{
+				owner.A_RemoveLight("LanternFlicker");
 			}
 		}
 
+		if (globalfreeze || level.Frozen) { return; }
+
 		Super.Tick();
+	}
+
+	override bool Use(bool pickup)
+	{
+		bool ret = Super.Use(pickup);
+
+		if (active) { ticcount = 8; }
+
+		return ret;
 	}
 }
 

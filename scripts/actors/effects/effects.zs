@@ -624,13 +624,13 @@ class CullActorBase : Actor
 	override void Activate (Actor activator)
 	{
 		bDormant = false;
-		if (FindState("Active", true)) SetStateLabel("Active");
+		if (FindState("Active", true)) { SetStateLabel("Active"); }
 	}
 
 	override void Deactivate (Actor activator)
 	{
 		bDormant = true;
-		if (FindState("Inactive", true)) SetStateLabel("Inactive");
+		if (FindState("Inactive", true)) { SetStateLabel("Inactive"); }
 	}
 
 	bool SpawnBlock(double x, double y, double z, double r = -1, double h = -1)

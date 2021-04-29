@@ -846,7 +846,7 @@ class BoAPlayer : PlayerPawn
 		if (player) { Super.CheckUndoMorph(); }
 	}
 
-	Actor GetLineTarget()
+	virtual Actor GetLineTarget()
 	{
 		CrosshairTracer actortrace;
 		actortrace = new("CrosshairTracer");
@@ -858,7 +858,7 @@ class BoAPlayer : PlayerPawn
 		return actortrace.Results.HitActor;
 	}
 
-	Actor GetClosestForcedHealthBar()
+	virtual Actor GetClosestForcedHealthBar()
 	{
 		ThinkerIterator Finder = ThinkerIterator.Create("Base", Thinker.STAT_DEFAULT - 3);
 		Base it;
@@ -880,22 +880,12 @@ class BoAPlayer : PlayerPawn
 		return mo;
 	}
 
-	void DoTokenChecks()
-	{
-		if (health <= 0) { return; } // Don't change sprites if the player is dead
-
-		// Firebrand effect handling
-		if (player && player.ReadyWeapon is "FireBrand" && CountInv("PowerWeaponLevel2") > 0) { SpawnEffect("FireBrandEffect"); }
-		else { RemoveEffect("FireBrandEffect"); }
-		
-		// Lantern effect handling
-		LanternPickup lantern = LanternPickup(FindInventory("LanternPickup"));
-
-		if (player && lantern && lantern.active) { SpawnEffect("LanternEffect"); }
-		else { RemoveEffect("LanternEffect"); }
-	}
+	// Allow derived classes to run a check every tick
+	virtual void DoTokenChecks() {}
 
 	// Function to spawn no more than a single copy of an effect actor as a child of the player
+	// No longer used in the mod, but left for compatibility and possible extension in the future
+	// Would be useful for swirling particle effects that follow the player, etc.
 	void SpawnEffect(class<PlayerEffect> effect)
 	{
 		ThinkerIterator it = ThinkerIterator.Create("PlayerEffect", Thinker.STAT_DEFAULT - 4);
@@ -959,7 +949,7 @@ class BoAPlayer : PlayerPawn
 		}
 	}
 
-	void DoInteractions()
+	virtual void DoInteractions()
 	{
 
 		FLineTraceData trace;
@@ -1307,7 +1297,7 @@ class BoAPlayer : PlayerPawn
 		return Super.CanCollideWith(other, passive);
 	}
 
-	void A_PlayerPain()
+	virtual void A_PlayerPain()
 	{
 		// [RH] Vary player pain sounds depending on health (ala Quake2)
 		if (player && player.morphTics == 0)
@@ -1374,12 +1364,13 @@ class PlayerEffect : Actor
 	override void Tick()
 	{
 		// If a master is assigned, always move to its location
-		if (master) { A_Warp(AAPTR_MASTER, flags:WARPF_COPYPITCH | WARPF_COPYINTERPOLATION | WARPF_NOCHECKPOSITION); }
+		if (master) { SetOrigin(master.pos, true); }
 		Super.Tick();
 	}
 }
 
-class FireBrandEffect : PlayerEffect
+// No longer used for player, but used as a debugging marker
+class FireBrandEffect : PlayerEffect 
 {
 	States
 	{
@@ -1388,19 +1379,6 @@ class FireBrandEffect : PlayerEffect
 			TNT1 A 4 Light("ITBURNSOC2");
 		SpawnLoop:
 			TNT1 A 4 Light("ITBURNSOC3") A_SetTics(Random(1, 8));
-			Loop;
-	}
-}
-
-class LanternEffect : PlayerEffect
-{
-	States
-	{
-		Spawn:
-			TNT1 A 4 NODELAY Light("LANT01");
-			TNT1 A 4 Light("LANT02");
-		SpawnLoop:
-			TNT1 A 4 Light("LANT03") A_SetTics(Random(1, 3));
 			Loop;
 	}
 }
