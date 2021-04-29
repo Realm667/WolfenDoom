@@ -93,6 +93,7 @@ class ControllableBase : Actor
 			{
 				Actor replaced = Spawn(replacement, Pos, NO_REPLACE);
 				toucher.CopyFriendliness(replaced, true, false);
+				toucher.ClearCounters();
 				toucher.Destroy();
 				Destroy();
 				return true;
