@@ -219,7 +219,11 @@ class EffectsManager : Thinker
 			{
 				if (!playeringame[p]) { continue; }
 
-				[x, y] = EffectBlock.GetBlock(players[p].mo.pos.x, players[p].mo.pos.y);
+				Actor plr = players[p].camera;
+				if (!plr) { plr = players[p].mo; }
+				if (!plr) { continue; }
+
+				[x, y] = EffectBlock.GetBlock(plr.pos.x, plr.pos.y);
 
 				if (playerpos[p] != (x, y))
 				{
@@ -255,15 +259,7 @@ class EffectsManager : Thinker
 		{
 			if (!playeringame[p]) { continue; }
 
-			Actor plr = players[p].camera;
-			if (!plr) { plr = players[p].mo; }
-			if (!plr) { continue; }
-
-			int chunkx, chunky;
-			Vector2 playpos = plr.pos.xy;
-
-			[chunkx, chunky] = EffectBlock.GetBlock(playpos.x, playpos.y);
-
+			int chunkx = int(playerpos[p].x), chunky = int(playerpos[p].y);
 			int range = clamp(boa_cullrange, 1024, 8192);
 			int count = 0;
 
@@ -288,8 +284,8 @@ class EffectsManager : Thinker
 					// Delay culling if this chunk was force culled last time and is still outside of culling range
 					if (effectblocks[x][y].forceculled && forceremove) { continue; }
 
-					// Don't cull chunks that are the same distance away as last time
-					if (effectblocks[x][y].cullinterval != interval || effectblocks[x][y].forceculled || forceremove)
+					// Don't cull chunks that are the same distance away as last time, or if our camera is outside of our body
+					if (players[p].camera != players[p].mo || effectblocks[x][y].cullinterval != interval || effectblocks[x][y].forceculled || forceremove)
 					{
 						count += CullChunk(effectblocks[x][y].indices, forceremove);
 					}
