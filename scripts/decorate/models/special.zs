@@ -667,6 +667,7 @@ class SlopeMe1 : Obstacle3d //Ozy81
 		Radius 16;
 		Height 4;
 		+NOGRAVITY
+		+CullActorBase.DONTCULL //remove in 3.1 
 	}
 }
 
@@ -675,6 +676,7 @@ class SlopeMe2 : SlopeMe1 //Ozy81
 	Default
 	{
 		//$Title Slopeable Glass (checker)
+		+CullActorBase.DONTCULL //remove in 3.1 
 	}
 }
 
