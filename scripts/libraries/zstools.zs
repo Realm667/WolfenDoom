@@ -393,7 +393,7 @@ class ZScriptTools
 		return output;
 	}
 
-	static int, double GetLightLevel(Sector cursec, bool weighteddensity = false)
+	static int, double GetLightLevel(Sector cursec)
 	{
 		if (!cursec) { return 0, 0; }
 
@@ -405,10 +405,8 @@ class ZScriptTools
 		int density = cursec.ColorMap.FogDensity;
 		if (!density) { density = lightlevel; }
 
-		double fogamount = (255 - (light.r + light.g + light.b) / 3.0) - ((fade.r + fade.g + fade.b) / 3.0) * (density / 255.0);
-		if (weighteddensity) { fogamount -= cursec.ColorMap.FogDensity * 0.5; }
-
-		double fogfactor = clamp(-fogamount, 0, 100);
+		double fogamount = (255 - (light.r + light.g + light.b) / 3.0) + ((fade.r + fade.g + fade.b) / 3.0) * density / 255.0;
+		double fogfactor = clamp(fogamount, 0, 100);
 
 		// Average (inverted) RGB light level minus fog depth
 		return lightlevel, fogfactor;

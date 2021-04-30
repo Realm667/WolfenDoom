@@ -1003,7 +1003,7 @@ class Base : Actor
 						if (ceilingpic == skyflatnum)
 						{
 							double lightlevel, fogfactor;
-							[lightlevel, fogfactor] = ZScriptTools.GetLightLevel(CurSector, true);
+							[lightlevel, fogfactor] = ZScriptTools.GetLightLevel(CurSector);
 							lightlevel -= fogfactor;
 
 							if (lightlevel > lightthreshold) { A_Die("Fire"); }
@@ -1015,7 +1015,7 @@ class Base : Actor
 								double minval = 128;
 								
 								double delta = lightlevel - max(minval, lightthreshold - 48); 
-								if (health > 0 && delta > 0 && Random() < 64 * (delta / 16)) // Smoke more as you approach burning point
+								if (health > 0 && delta > 0 && Random() < 64 * (delta / 16) && !CheckSightOrRange(64)) // Smoke more as you approach burning point
 								{
 									Spawn("BodySmoke", (pos.x + FRandom(-radius / 2, radius / 2), pos.y + FRandom(-radius / 2, radius / 2), pos.z + FRandom(0, height)));
 								}
