@@ -295,6 +295,7 @@ class PrisonerEnemyBoss_End : ZombieStandard
 	Painchance 40;
 	Mass 800;
 	Speed 6;
+	Base.LightKills 0;
 	+AVOIDMELEE
 	+BOSS
 	+LOOKALLAROUND
