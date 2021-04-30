@@ -497,7 +497,7 @@ class WaveSpawner : ActorSpawner
 					if (Nazi(spawned)) { Nazi(spawned).dodgetimeout = 350; }
 					if (Base(spawned))
 					{
-						Base(spawned).lightthreshold = 224;
+						Base(spawned).lightthreshold = 190;
 						Base(spawned).user_lightburns = true;
 					}
 
