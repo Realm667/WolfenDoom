@@ -150,7 +150,7 @@ class TestCrate : Obstacle3d //Ozy81
 	States
 	{
 	Spawn:
-		MDLA A -1 NODELAY A_SpawnItemEx("CrateGlass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid);
+		MDLA A -1 NODELAY A_SpawnItemEx("CrateGlass", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS1, 0, tid);
 		Stop;
 	}
 }
@@ -183,7 +183,7 @@ class TestCrate3 : TestCrate //Ozy81
 	States
 	{
 	Spawn:
-		MDLA A -1 NODELAY A_SpawnItemEx("CrateGlass2", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid);
+		MDLA A -1 NODELAY A_SpawnItemEx("CrateGlass2", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS1, 0, tid);
 		Stop;
 	}
 }
@@ -200,7 +200,7 @@ class TestCrate4 : TestCrate //Ozy81
 	States
 	{
 	Spawn:
-		MDLA A -1 NODELAY A_SpawnItemEx("CrateGlass2", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2, 0, tid);
+		MDLA A -1 NODELAY A_SpawnItemEx("CrateGlass2", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS1, 0, tid);
 		Stop;
 	}
 }
@@ -215,6 +215,7 @@ class CrateGlass : Glass3d //Ozy81
 		-SOLID
 		-NOGRAVITY
 		-NOTELEPORT
+		+CULLACTORBASE.DONTCULL
 		Alpha 0.5;
 	}
 	States
