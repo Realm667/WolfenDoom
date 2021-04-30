@@ -23,6 +23,7 @@
 class DebugEventHandler : StaticEventHandler
 {
 	bool showvel;
+	bool showlightlevel;
 
 	void ShowRemainingEnemies(class<Actor> base = "Base")
 	{
@@ -64,16 +65,6 @@ class DebugEventHandler : StaticEventHandler
 		Console.Printf("%d treasure items found", count);
 	}
 
-	void ShowSkill()
-	{
-		Console.Printf("Skill: %d", skill);
-	}
-
-	void ShowSpeed()
-	{
-		showvel = !showvel;
-	}
-
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		// netevent showliveenemies
@@ -87,20 +78,34 @@ class DebugEventHandler : StaticEventHandler
 		}
 		else if (e.name ~== "showskill")
 		{
-			ShowSkill();
+			Console.Printf("Skill: %d", skill);
 		}
 		else if (e.name ~== "showspeed")
 		{
-			ShowSpeed();
+			showvel = !showvel;
+		}
+		else if (e.name ~== "showlightlevel")
+		{
+			showlightlevel = !showlightlevel;
 		}
 	}
 
 	override void RenderOverlay(RenderEvent e)
 	{
 		Actor player = players[consoleplayer].mo;
+		double y = 20.0;
 		if (showvel)
 		{
-			Screen.DrawText(smallfont, Font.CR_GRAY, 20.0, 20.0, String.Format("Speed: %.3f", player.Vel.Length()));
+			Screen.DrawText(smallfont, Font.CR_GRAY, 20.0, y, String.Format("Speed: %.3f", player.Vel.Length()));
+			y += 20;
+		}
+		if (showlightlevel)
+		{
+			int lightlevel;
+			double fogfactor;
+			[lightlevel, fogfactor] = ZScriptTools.GetLightLevel(player.CurSector);
+			Screen.DrawText(smallfont, Font.CR_GRAY, 20.0, y, String.Format("Light level: %d %.3f", lightlevel, fogfactor));
+			y += 20;
 		}
 	}
 }
