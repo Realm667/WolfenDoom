@@ -442,7 +442,7 @@ class WaveSpawner : ActorSpawner
 		if (user_lightburns) // Chapter 3 Secret Level
 		{
 			double lightlevel, fogfactor;
-			[lightlevel, fogfactor] = ZScriptTools.GetLightLevel(CurSector, true);
+			[lightlevel, fogfactor] = ZScriptTools.GetLightLevel(CurSector);
 			lightlevel -= fogfactor;
 
 			if (ceilingpic == skyflatnum && lightlevel <= 128) { return ResolveState("Active.Spawn"); } // Don't spawn until it's actually dark
