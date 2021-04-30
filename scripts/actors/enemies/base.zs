@@ -3368,7 +3368,7 @@ class ZombieStandard : Nazi
 {
 	Default
 	{
-		Base.LightThreshold 130;
+		Base.LightThreshold 224;
 		Base.LightKills True;
 		Nazi.FrightMultiplier 0.0;
 		Nazi.TotaleGierDrop 0;

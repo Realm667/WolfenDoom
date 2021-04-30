@@ -456,7 +456,7 @@ class ZombieGeneral : RocketMan
 	{
 	//$Title General Fettgesicht, Zombiefied (Boss)
 	Base.BossIcon "BOSSICO2";
-	Base.LightThreshold 145;
+	Base.LightThreshold 224;
 	Nazi.ZombieVariant "ZombieGeneral";
 	Tag "$TAGZFETTGESICHT";
 	Health 1000;
@@ -525,7 +525,7 @@ class ZombieZyklonstein : RocketMan
 	{
 	//$Title Zyklonstein (Boss)
 	Base.BossIcon "BOSSICO2";
-	Base.LightThreshold 150;
+	Base.LightThreshold 224;
 	Tag "$TAGZZYKLONSTEIN";
 	Health 1200;
 	Obituary "$ZZYKLON";
@@ -598,7 +598,7 @@ class ZombieButcher : RocketMan
 	//$Title Zombie Butcher (Boss)
 	Tag "$TAGZBUTCHER";
 	Base.BossIcon "BOSSICO2";
-	Base.LightThreshold 145;
+	Base.LightThreshold 224;
 	Health 650;
 	Obituary "$ZBUTCHER";
 	ActiveSound "nazombie/act";
