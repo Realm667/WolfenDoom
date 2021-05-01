@@ -152,6 +152,7 @@ class NaziMedic : NaziStandard
 			"####" A 0 {
 				DoSurrender();
 				bShootable = false;
+				bIsMonster = false; // Keep these from being re-killed by the massacre/kill monsters cheat
 			}
 		Death.Surrender:
 			"####" F 1 A_SetTics(Random(35, 70));

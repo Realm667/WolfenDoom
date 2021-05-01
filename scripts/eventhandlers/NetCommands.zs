@@ -32,7 +32,7 @@ class DebugEventHandler : StaticEventHandler
 		Actor mo;
 		while( (mo = Actor(it.Next ())) )
 		{
-			if (!mo.CountsAsKill() || mo.Health <= 0 || mo.bDormant)
+			if (!(mo.CountsAsKill() || (Nazi(mo) && Nazi(mo).user_sneakable)) || mo.Health <= 0 || mo.bDormant)
 			{
 				continue;
 			}
