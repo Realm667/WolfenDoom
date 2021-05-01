@@ -173,8 +173,31 @@ class ScorpionNail : Nail
 	}
 }
 
-class PowerSlow : PowerSpeed { Default { Powerup.Duration -4; Speed 0.33; } }
-class SlowFreeze : PowerupGiver { Default { +INVENTORY.AUTOACTIVATE +INVENTORY.ADDITIVETIME -INVENTORY.INVBAR Powerup.Type "PowerSlow"; } }
+class PowerSlow : PowerSpeed
+{
+	Default
+	{
+		Powerup.Duration -4;
+		Speed 0.33;
+	}
+
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		Overlay.Init(owner.player, "M_ICED", EffectTics - 36, 18, 18, 0.75, 0, Overlay.Fit);
+	}
+}
+
+class SlowFreeze : PowerupGiver
+{
+	Default
+	{
+		+INVENTORY.AUTOACTIVATE
+		+INVENTORY.ADDITIVETIME
+		-INVENTORY.INVBAR
+		Powerup.Type "PowerSlow";
+	}
+}
 
 class IceDart : FastProjectile
 {

@@ -23,6 +23,8 @@
 class InventoryClearHandler : EventHandler
 {
 	bool preventClearing;
+	bool heartbeat;
+
 	// Set this code as static so that it can be called from other scripts, consolidate
 	// updates to one place , and avoid copy/paste duplication of the inventory resets.
 	void ResetPlayerInventory(Actor mo)
@@ -31,6 +33,7 @@ class InventoryClearHandler : EventHandler
 		mo.A_GiveInventory("BoATilt", 1);
 		mo.A_GiveInventory("BoAVisibility", 1);
 		mo.A_GiveInventory("BoAUnderwater", 1);
+		mo.A_GiveInventory("BoAHeartBeat", 1);
 
 		// Force reset of certain shader effects
 		mo.A_SetInventory("OldVideoShaderControl", 1);
@@ -127,6 +130,32 @@ class InventoryClearHandler : EventHandler
 				if(ammotype!=null)
 					me.A_SetInventory(di.Name,di.Amount);
 			}
+		}
+	}
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Name == "heartbeat")
+		{
+			heartbeat = e.args[0];
+
+			let mo = players[consoleplayer].mo;
+			if (mo)
+			{
+				Inventory hb = mo.FindInventory("BoAHeartbeat");
+				if (!hb) { hb = mo.GiveInventoryType("BoAHeartBeat"); }
+				if (hb) { hb.bDormant = !heartbeat; }
+			}
+		}
+	}
+
+	override void UITick()
+	{
+		bool beat = !BaseStatusBar.GetGlobalACSValue(5); // This is only accessible in ui context
+		
+		if (beat != heartbeat)
+		{
+			EventHandler.SendNetworkEvent("heartbeat", beat);
 		}
 	}
 }

@@ -252,6 +252,16 @@ class PowerZyklonMask : PowerMaskProtection
 			Destroy();
 		}
 	}
+
+	override void DoEffect()
+	{
+		Super.DoEffect();
+
+		if (owner)
+		{
+			Overlay.Init(owner.player, "STGZASK", 2, 0, 0, 1.0, 0, Overlay.Force320x200 | Overlay.LightEffects);
+		}
+	}
 }
 
 class PowerSpaceSuit : PowerMaskProtection
@@ -259,6 +269,16 @@ class PowerSpaceSuit : PowerMaskProtection
 	Default
 	{
 		DamageFactor "IceWater", 0;
+	}
+
+	override void DoEffect()
+	{
+		Super.DoEffect();
+
+		if (owner)
+		{
+			Overlay.Init(owner.player, "STGMASK", EffectTics, 0, 0, 1.0, 0, Overlay.Force320x200 | Overlay.LightEffects, -(sin(level.time * 10) * owner.vel.xy.length()) / 10);
+		}
 	}
 }
 
