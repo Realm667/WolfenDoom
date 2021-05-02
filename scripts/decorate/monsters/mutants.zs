@@ -106,7 +106,6 @@ class MutantMelee : Mutant
 		"####" "#" 0 { user_incombat = True; }
 		"####" B 1 A_MeleeMutantChase;
 		"####" B 1 A_MeleeMutantChase(null, null);
-		"####" B 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 		"####" B 1 A_MeleeMutantChase;
 		"####" B 1 A_MeleeMutantChase(null, null);
 		"####" C 1 A_MeleeMutantChase;
@@ -115,7 +114,6 @@ class MutantMelee : Mutant
 		"####" C 1 A_MeleeMutantChase(null, null);
 		"####" D 1 A_MeleeMutantChase;
 		"####" D 1 A_MeleeMutantChase(null, null);
-		"####" D 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 		"####" D 1 A_MeleeMutantChase;
 		"####" D 1 A_MeleeMutantChase(null, null);
 		"####" E 1 A_MeleeMutantChase;

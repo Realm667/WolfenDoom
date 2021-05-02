@@ -214,9 +214,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			"####" BBBBB 1;
 		Chase: // Standard goal chasing
 			"####" BBBBBCCCCC 1 A_ChaseGoal();
-			"####" C 0 A_SpawnStep();
 			"####" DDDDDEEEEE 1 A_ChaseGoal();
-			"####" E 0 A_SpawnStep();
 			Loop;
 		Chase.Near: // Near the player, take up defensive position (if armed), otherwise stand stupidly
 			"####" AAAAA 1 A_Defend();
@@ -310,9 +308,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 					reloadcount--;
 				}
 				"####" BBBBBCCCCC 1 A_Chase(null, null); // Reload on the run!
-				"####" C 0 A_SpawnStep();
 				"####" DDDDDEEEEE 1 A_Chase(null, null);
-				"####" E 0 A_SpawnStep();
 				"####" F 0 {
 					if (reloadcount <= 0)
 					{
@@ -387,14 +383,6 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			return ResolveState("Chase");
 		}
 		return ResolveState("Stand");
-	}
-
-	void A_SpawnStep()
-	{
-		if (waterlevel == 0)
-		{
-			Spawn("PlayerStep", (pos.x, pos.y, pos.z + 14));
-		}
 	}
 
 	state A_ChaseGoal()
@@ -844,6 +832,8 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 		if (bFriendly) { BoACompass.Add(self, "GOAL1"); }
 
+		GiveInventoryType("BoAFootsteps");
+
 		Super.PostBeginPlay();
 	}
 
@@ -860,7 +850,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			// Only do this on entering the water
 			if (waterlevel > oldwaterlevel && waterlevel == 1)
 			{
-				Spawn("PlayerStep", (pos.x, pos.y, pos.z + 14));
+				Spawn("SplashStep", (pos.x, pos.y, pos.z + 14));
 			}
 		}
 
@@ -1037,9 +1027,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 			}
 		Chase:
 			"####" AAAAABBBBB 1 A_ChaseGoal();
-			"####" B 0 A_SpawnStep();
 			"####" CCCCCDDDDD 1 A_ChaseGoal();
-			"####" D 0 A_SpawnStep();
 			Loop;
 		Chase.Near:
 			"####" NNNNN 1 A_Defend();
@@ -1135,9 +1123,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 					reloadcount--;
 				}
 				"####" AAAAABBBBB 1 A_Chase(null, null); // Reload on the run!
-				"####" B 0 A_SpawnStep();
 				"####" CCCCCDDDDD 1 A_Chase(null, null);
-				"####" D 0 A_SpawnStep();
 				"####" E 0 {
 					if (reloadcount <= 0)
 					{
@@ -1552,9 +1538,7 @@ class DogFollower : PlayerFollower2
 		Chase:
 			"####" A 0 { Speed = 8; }
 			"####" AAAABBBB 1 A_ChaseGoal();
-			"####" B 0 A_SpawnStep();
 			"####" CCCCDDDD 1 A_ChaseGoal();
-			"####" D 0 A_SpawnStep();
 			Loop;
 		Chase.Near:
 			"####" A 0 { Speed = 4; }
@@ -1562,12 +1546,10 @@ class DogFollower : PlayerFollower2
 			"####" AAA 1 A_Chase(null, null);
 			"####" A 0 A_Defend();
 			"####" BBB 1 A_ChaseGoal();
-			"####" B 0 A_SpawnStep();
 			"####" A 0 A_Defend();
 			"####" CCC 1 A_Chase(null, null);
 			"####" A 0 A_Defend();
 			"####" DDD 1 A_ChaseGoal();
-			"####" D 0 A_SpawnStep();
 			Loop;
 		Pain:
 			"####" M 4 A_Pain();

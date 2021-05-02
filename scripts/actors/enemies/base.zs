@@ -1346,7 +1346,6 @@ class Nazi : Base
 			"####" A 1 A_NaziChase;
 			"####" AAA 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
-			"####" B 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 			"####" BBB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
 			"####" BBB 1 A_NaziChase(null, null);
@@ -1355,7 +1354,6 @@ class Nazi : Base
 			"####" C 1 A_NaziChase;
 			"####" CCC 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
-			"####" D 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 			"####" DDD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
 			"####" DDD 1 A_NaziChase(null, null);
@@ -1367,7 +1365,6 @@ class Nazi : Base
 			"####" A 1 A_NaziChase;
 			"####" AA 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
-			"####" B 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 			"####" BB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
 			"####" BB 1 A_NaziChase(null, null);
@@ -1378,7 +1375,6 @@ class Nazi : Base
 			"####" D 1 A_NaziChase;
 			"####" DD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
-			"####" D 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 			"####" DD 1 A_NaziChase(null, null);
 			"####" A 0 { return ResolveState("See"); }
 		See.Faster: // Officer Walk Pattern
@@ -1389,7 +1385,6 @@ class Nazi : Base
 			"####" A 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
 			"####" B 1 A_NaziChase(null, null);
-			"####" B 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 			"####" B 1 A_NaziChase;
 			"####" B 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
@@ -1398,7 +1393,6 @@ class Nazi : Base
 			"####" C 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
 			"####" D 1 A_NaziChase(null, null);
-			"####" D 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 			"####" D 1 A_NaziChase;
 			"####" D 1 A_NaziChase(null, null);
 			"####" A 0 { return ResolveState("See"); }
@@ -1406,7 +1400,6 @@ class Nazi : Base
 			"####" "#" 0 { user_incombat = True; }
 			"####" A 1 A_NaziChase;
 			"####" A 1 A_NaziChase(null, null);
-			"####" A 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 			"####" A 1 A_NaziChase;
 			"####" A 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
@@ -1415,7 +1408,6 @@ class Nazi : Base
 			"####" B 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
 			"####" C 1 A_NaziChase(null, null);
-			"####" C 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 			"####" C 1 A_NaziChase;
 			"####" C 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
@@ -1427,7 +1419,6 @@ class Nazi : Base
 			"####" "#" 0 { user_incombat = True; }
 			"####" B 1 A_NaziChase;
 			"####" B 1 A_NaziChase(null, null);
-			"####" B 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 			"####" B 1 A_NaziChase;
 			"####" B 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
@@ -1436,7 +1427,6 @@ class Nazi : Base
 			"####" C 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
 			"####" D 1 A_NaziChase(null, null);
-			"####" D 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 			"####" D 1 A_NaziChase;
 			"####" D 1 A_NaziChase(null, null);
 			"####" E 1 A_NaziChase;
@@ -1606,7 +1596,6 @@ class Nazi : Base
 			"####" A 1 A_NaziChase;
 			"####" AA 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
-			"####" B 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 			"####" BB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
 			"####" BB 1 A_NaziChase(null, null);
@@ -1617,7 +1606,6 @@ class Nazi : Base
 			"####" D 1 A_NaziChase;
 			"####" DD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
-			"####" D 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 			"####" DD 1 A_NaziChase(null, null);
 			"####" A 0 { return ResolveState("See"); }
 		See.Statisch: // Static Walk Pattern (non-moving, limited frame actor)
@@ -2360,6 +2348,12 @@ class Nazi : Base
 		if (frightscale && !speed) { frightscale = 0.0; }
 
 		if (!defaultsprite) { defaultsprite = SpawnState.sprite; }
+
+		if (!bBoss)
+		{
+			let footsteps = BoAFootsteps(GiveInventoryType("BoAFootsteps"));
+			if (footsteps) { footsteps.stepdistance = 36; }
+		}
 
 		Super.PostBeginPlay();
 	}
@@ -3408,7 +3402,6 @@ class ZombieStandard : Nazi
 			"####" O 1 A_NaziChase;
 			"####" OOO 1 A_NaziChase(null,null);
 			"####" P 1 A_NaziChase;
-			"####" P 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 			"####" PPP 1 A_NaziChase(null,null);
 			"####" P 1 A_NaziChase;
 			"####" PPP 1 A_NaziChase(null,null);
@@ -3417,7 +3410,6 @@ class ZombieStandard : Nazi
 			"####" Q 1 A_NaziChase;
 			"####" QQQ 1 A_NaziChase(null,null);
 			"####" R 1 A_NaziChase;
-			"####" R 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 			"####" RRR 1 A_NaziChase(null,null);
 			"####" R 1 A_NaziChase;
 			"####" RRR 1 A_NaziChase(null,null);
@@ -3428,7 +3420,6 @@ class ZombieStandard : Nazi
 			"####" A 1 A_NaziChase;
 			"####" AAA 1 A_NaziChase(null,null);
 			"####" B 1 A_NaziChase;
-			"####" B 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 			"####" BBB 1 A_NaziChase(null,null);
 			"####" B 1 A_NaziChase;
 			"####" BBB 1 A_NaziChase(null,null);
@@ -3437,7 +3428,6 @@ class ZombieStandard : Nazi
 			"####" C 1 A_NaziChase;
 			"####" CCC 1 A_NaziChase(null,null);
 			"####" D 1 A_NaziChase;
-			"####" D 0 A_SpawnItemEx("EnemyStep", 0, 0, 14, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 			"####" DDD 1 A_NaziChase(null,null);
 			"####" D 1 A_NaziChase;
 			"####" DDD 1 A_NaziChase(null,null);

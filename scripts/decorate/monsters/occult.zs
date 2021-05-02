@@ -573,7 +573,6 @@ class SSTemplar : Guard
 		"####" AA 1 A_NaziChase(null,null);
 		"####" B 1 A_NaziChase;
 		"####" BB 1 A_NaziChase(null,null);
-		"####" B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION);
 		"####" B 1 A_NaziChase;
 		"####" BB 1 A_NaziChase(null,null);
 		"####" C 1 A_NaziChase;
@@ -583,7 +582,6 @@ class SSTemplar : Guard
 		"####" D 1 A_NaziChase;
 		"####" DD 1 A_NaziChase(null,null);
 		"####" D 0 A_Jump(32, "Idle");
-		"####" D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION);
 		"####" D 1 A_NaziChase;
 		"####" DD 1 A_NaziChase(null,null);
 		"####" E 1 A_NaziChase;
@@ -600,7 +598,6 @@ class SSTemplar : Guard
 		"####" A 1 A_NaziChase(null,null);
 		"####" B 1 A_NaziChase;
 		"####" B 1 A_NaziChase(null,null);
-		"####" B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION);
 		"####" B 1 A_NaziChase;
 		"####" B 1 A_NaziChase(null,null);
 		"####" C 1 A_NaziChase;
@@ -609,7 +606,6 @@ class SSTemplar : Guard
 		"####" C 1 A_NaziChase(null,null);
 		"####" D 1 A_NaziChase;
 		"####" D 1 A_NaziChase(null,null);
-		"####" D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION);
 		"####" D 1 A_NaziChase;
 		"####" D 1 A_NaziChase(null,null);
 		"####" E 1 A_NaziChase;

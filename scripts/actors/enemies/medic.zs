@@ -94,11 +94,9 @@ class NaziMedic : NaziStandard
 				Speed = bFrightened ? FRandom(4,6) : Default.Speed;
 			}
 			"####" AAAAAA 1 A_WanderGoal(0, 512);
-			"####" B 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION);
 			"####" BBBBBB 1 A_WanderGoal(0, 512);
 			"####" B 0 A_CheckForPlayer();
 			"####" CCCCCC 1 A_WanderGoal(0, 512);
-			"####" D 0 A_SpawnItemEx("EnemyStep",0,0,14,0,0,0,0,SXF_NOCHECKPOSITION);
 			"####" DDDDDD 1 A_WanderGoal(0, 512);
 			"####" A 0 {
 				if (bFrightened && frightener)

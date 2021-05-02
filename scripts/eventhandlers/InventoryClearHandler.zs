@@ -29,11 +29,17 @@ class InventoryClearHandler : EventHandler
 	// updates to one place , and avoid copy/paste duplication of the inventory resets.
 	void ResetPlayerInventory(Actor mo)
 	{
-		// Give the player the camera tilt handling item (modified version of Nash's Tilt++ v1.3)
-		mo.A_GiveInventory("BoATilt", 1);
+		if (BoAPlayer(mo))
+		{
+			// Give the player the camera tilt handling item (modified version of Nash's Tilt++ v1.3)
+			mo.A_GiveInventory("BoATilt", 1);
+			mo.A_GiveInventory("BoASprinting", 1);
+			mo.A_GiveInventory("BoAHeartBeat", 1);
+		}
+
 		mo.A_GiveInventory("BoAVisibility", 1);
 		mo.A_GiveInventory("BoAUnderwater", 1);
-		mo.A_GiveInventory("BoAHeartBeat", 1);
+		mo.A_GiveInventory("BoAFootsteps", 1);
 
 		// Force reset of certain shader effects
 		mo.A_SetInventory("OldVideoShaderControl", 1);
