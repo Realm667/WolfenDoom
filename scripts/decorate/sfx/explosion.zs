@@ -60,7 +60,7 @@ class GeneralExplosion_Medium : SwitchableDecoration
 	Explosion:
 		TNT1 A 0 A_Explode(100, 192);
 		TNT1 A 0 A_RadiusGive("BlurShaderControl", 192, RGF_PLAYERS | RGF_GIVESELF, 80);
-		TNT1 A 0 A_JumpIf(CallACS("boa_boomswitch") == 0, "Inactive");
+		TNT1 A 0 A_JumpIf(boa_boomswitch == 0, "Inactive");
 		TNT1 A 0 A_SpawnItemEx("KD_HL2Flash", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SparkGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
@@ -89,7 +89,7 @@ class FriendlyExplosion_Medium : SwitchableDecoration
 	Explosion:
 		TNT1 A 0 A_Explode(100, 192, 0, TRUE);
 		TNT1 A 0 A_RadiusGive("BlurShaderControl", 192, RGF_PLAYERS | RGF_GIVESELF, 80);
-		TNT1 A 0 A_JumpIf(CallACS("boa_boomswitch") == 0, "Inactive");
+		TNT1 A 0 A_JumpIf(boa_boomswitch == 0, "Inactive");
 		TNT1 A 0 A_SpawnItemEx("KD_HL2Flash", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SparkGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
@@ -118,7 +118,7 @@ class EnemyExplosion_Medium : SwitchableDecoration
 	Explosion:
 		TNT1 A 0 A_Explode(50, 192, 0, TRUE);
 		TNT1 A 0 A_RadiusGive("BlurShaderControl", 192, RGF_PLAYERS | RGF_GIVESELF, 80);
-		TNT1 A 0 A_JumpIf(CallACS("boa_boomswitch") == 0, "Inactive");
+		TNT1 A 0 A_JumpIf(boa_boomswitch == 0, "Inactive");
 		TNT1 A 0 A_SpawnItemEx("KD_HL2Flash", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SparkGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
@@ -151,7 +151,7 @@ class KD_HL2Flash : KD_HL2ExplosionBase
 		TNT1 A 0 A_Jump(256,1,2);
 		EXN1 AB 0 LIGHT("FireSpawnerSmall") A_Jump(256,"Fade");
 	Fade:
-		"####" "#" 1 BRIGHT LIGHT("FireSpawnerLarge") A_FadeOut(frandom(0.05, 0.10) * (6 - CallACS("boa_boomswitch")));
+		"####" "#" 1 BRIGHT LIGHT("FireSpawnerLarge") A_FadeOut(frandom(0.05, 0.10) * (6 - boa_boomswitch));
 		Loop;
 	}
 }
@@ -167,7 +167,7 @@ class KD_HL2Smoke : KD_HL2ExplosionBase
 	{
 	Spawn:
 		TSMK A 1 A_SetScale(Scale.X + frandom(0.005, 0.015));
-		TSMK A 0 A_FadeOut(frandom(0.006, 0.012) * (6 - CallACS("boa_boomswitch")),FTF_REMOVE);
+		TSMK A 0 A_FadeOut(frandom(0.006, 0.012) * (6 - boa_boomswitch),FTF_REMOVE);
 		Loop;
 	}
 }
@@ -196,7 +196,7 @@ class KD_HL2Spark : KD_HL2ExplosionBase
 	Drop:
 		PAO1 A 0 A_ChangeVelocity(frandom(0.98, 0.99) * Vel.X,frandom(0.98, 0.99) * Vel.Y,Vel.Z - frandom(0.2, 0.5), CVF_REPLACE);
 		PAO1 A 1 A_SetScale(Scale.X - 0.002);
-		PAO1 A 0 A_FadeOut(0.01 * (6 - CallACS("boa_boomswitch")),FTF_REMOVE);
+		PAO1 A 0 A_FadeOut(0.01 * (6 - boa_boomswitch),FTF_REMOVE);
 		Loop;
 	}
 }
@@ -228,7 +228,7 @@ class GeneralExplosion_Nazis : GeneralExplosion_Medium
 	Explosion:
 		TNT1 A 0 A_Explode(25, 192);
 		TNT1 A 0 A_RadiusGive("BlurShaderControl", 192, RGF_PLAYERS | RGF_GIVESELF, 80);
-		TNT1 A 0 A_JumpIf(CallACS("boa_boomswitch") == 0, "Inactive");
+		TNT1 A 0 A_JumpIf(boa_boomswitch == 0, "Inactive");
 		TNT1 A 0 A_SpawnItemEx("KD_HL2Flash", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SparkGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
@@ -250,7 +250,7 @@ class GeneralExplosion_NazisL : GeneralExplosion_Medium
 	Explosion:
 		TNT1 A 0 A_Explode(25, 192);
 		TNT1 A 0 A_RadiusGive("BlurShaderControl", 192, RGF_PLAYERS | RGF_GIVESELF, 80);
-		TNT1 A 0 A_JumpIf(CallACS("boa_boomswitch") == 0, "Inactive");
+		TNT1 A 0 A_JumpIf(boa_boomswitch == 0, "Inactive");
 		TNT1 A 0 A_SpawnItemEx("KD_HL2Flash", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SparkGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
@@ -295,7 +295,7 @@ class AstrosteinExplosion_Medium : SwitchableDecoration
 		TNT1 A 0 Radius_Quake(10,10,0,16,0);
 		TNT1 A 0 A_Explode(100, 192);
 		TNT1 A 0 A_RadiusGive("BlurShaderControl", 192, RGF_PLAYERS | RGF_GIVESELF, 80);
-		TNT1 A 0 A_JumpIf(CallACS("boa_boomswitch")==0,"EndSpawn");
+		TNT1 A 0 A_JumpIf(boa_boomswitch==0,"EndSpawn");
 		TNT1 A 0 A_SpawnItemEx("KD_HL2FlashAstrostein", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SparkGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
@@ -322,7 +322,7 @@ class AstrosteinExplosion_Decorative : AstrosteinExplosion_Medium
 		TNT1 A 0 A_StartSound("astrostein/explosion");
 		TNT1 A 0 Radius_Quake(10,10,0,16,0);
 		TNT1 A 0 A_RadiusGive("BlurShaderControl", 192, RGF_PLAYERS | RGF_GIVESELF, 80);
-		TNT1 A 0 A_JumpIf(CallACS("boa_boomswitch")==0,"EndSpawn");
+		TNT1 A 0 A_JumpIf(boa_boomswitch==0,"EndSpawn");
 		TNT1 A 0 A_SpawnItemEx("KD_HL2FlashAstrostein", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SparkGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
@@ -370,7 +370,7 @@ class ProtoExplosion_Medium : SwitchableDecoration
 		TNT1 A 0 Radius_Quake(10,10,0,16,0);
 		TNT1 A 0 A_Explode(random(10,20), 192);
 		TNT1 A 0 A_RadiusGive("BlurShaderControl", 192, RGF_PLAYERS | RGF_GIVESELF, 80);
-		TNT1 A 0 A_JumpIf(CallACS("boa_boomswitch")==0,"EndSpawn");
+		TNT1 A 0 A_JumpIf(boa_boomswitch==0,"EndSpawn");
 		TNT1 A 0 A_SpawnItemEx("KD_HL2FlashProto", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SparkGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
@@ -412,7 +412,7 @@ class SceneryExplosion_Medium : GeneralExplosion_Medium
 	Explosion:
 		TNT1 A 0 A_Explode(100, 192);
 		TNT1 A 0 A_RadiusGive("BlurShaderControl", 192, RGF_PLAYERS | RGF_GIVESELF, 80);
-		TNT1 A 0 A_JumpIf(CallACS("boa_boomswitch") == 0, "Inactive");
+		TNT1 A 0 A_JumpIf(boa_boomswitch == 0, "Inactive");
 		TNT1 A 0 A_SpawnItemEx("KD_LagsFlash", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_LagsSmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_LagsSparkGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);

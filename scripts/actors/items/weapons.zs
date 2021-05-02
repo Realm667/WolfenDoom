@@ -47,7 +47,7 @@ class NaziWeapon : Weapon
 	States
 	{
 		Dryfire:
-			"####" "#" 1 A_JumpIf(CallACS("boa_autoreload")==1,"Reload");
+			"####" "#" 1 A_JumpIf(CVar.FindCVar("boa_autoreload").GetInt() == 1,"Reload");
 			"####" "#" 1 Offset(0,35) A_StartSound("weapon/dryfire", CHAN_WEAPON);
 			"####" "#" 9 Offset(0,34);
 			"####" "#" 0 A_Jump(256,"Ready");
@@ -1545,7 +1545,7 @@ class NebelwerferTruck : NaziWeapon
 			HSML A 0 A_StartSound("nebelwerfer/fire", CHAN_WEAPON);
 			HSML BBC 1;
 			HSML C 0 A_FireProjectile("NebRocket2");
-			HSML CDD 1 A_SetPitch(pitch-(0.7*CallACS("boa_recoilamount")));
+			HSML CDD 1 A_SetPitch(pitch-(0.7* boa_recoilamount));
 			HSML A 40;
 			HSML A 2 A_ReFire();
 			Goto Ready;
@@ -1554,7 +1554,7 @@ class NebelwerferTruck : NaziWeapon
 			HSML A 0 A_StartSound("nebelwerfer/fire", CHAN_WEAPON);
 			HSML BBC 1;
 			HSML C 0 A_FireProjectile("NebRocket2");
-			HSML CDD 1 A_SetPitch(pitch-(0.35*CallACS("boa_recoilamount")));
+			HSML CDD 1 A_SetPitch(pitch-(0.35*boa_recoilamount));
 			HSML A 40;
 			HSML A 2 A_ReFire();
 			Goto Ready;

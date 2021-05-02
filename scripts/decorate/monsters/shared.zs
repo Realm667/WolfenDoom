@@ -436,7 +436,7 @@ class RumbleWaves: Actor
 	Death:
 		TNT1 A 0 A_Explode(20, 192);
 		TNT1 A 0 A_RadiusGive("BlurShaderControl", 192, RGF_PLAYERS | RGF_GIVESELF, 20);
-		TNT1 A 0 A_JumpIf(CallACS("boa_boomswitch") == 0, "Inactive");
+		TNT1 A 0 A_JumpIf(boa_boomswitch == 0, "Inactive");
 		TNT1 A 0 A_SpawnItemEx("KD_HL2Flash", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		TNT1 A 0 A_SpawnItemEx("KD_HL2SparkGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);

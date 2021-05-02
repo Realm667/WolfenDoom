@@ -31,7 +31,7 @@ class TreeBase : TreesBase
 	States
 	{
 	Spawn:
-		MDLA A 0 NODELAY A_JumpIf(CallACS("boa_bidiswitch")==1,"BidiSpawn");
+		MDLA A 0 NODELAY A_JumpIf(boa_bidiswitch==1,"BidiSpawn");
 	TridiSpawn:
 		MDLA A -1 A_3DPitchFix;
 		Stop;

@@ -60,7 +60,7 @@ class Luger9mm : NaziWeapon
 		LUGG A 0 A_JumpIfInventory("Luger9mmLoaded",1,1);
 		Goto Dryfire;
 		LUGG A 0 A_GunFlash;
-		LUGG A 0 A_SetPitch(pitch-(0.2*CallACS("boa_recoilamount")));
+		LUGG A 0 A_SetPitch(pitch-(0.2*boa_recoilamount));
 		LUGG A 0 A_JumpIf(waterlevel > 0,2);
 		LUGG A 0 A_FireProjectile("PistolSmokeSpawner",0,0,0,random(-4,4),0,0);
 		LUGG A 0 A_StartSound("luger/fire", CHAN_WEAPON);
@@ -68,7 +68,7 @@ class Luger9mm : NaziWeapon
 		LUGG A 0 A_AlertMonsters;
 		LUGG G 1 A_FireProjectile("LugerTracer");
 		LUGG B 1;
-		LUGG C 1 Offset(0,36) A_SetPitch(pitch-(0.2*CallACS("boa_recoilamount")));
+		LUGG C 1 Offset(0,36) A_SetPitch(pitch-(0.2*boa_recoilamount));
 		LUGG D 1 Offset(0,41) A_CheckReload;
 		LUGG E 1 Offset(0,35) A_WeaponReady(WRF_NOBOB);
 		LUGG A 1 Offset(0,33) A_WeaponReady(WRF_NOBOB);

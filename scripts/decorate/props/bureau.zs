@@ -1125,7 +1125,7 @@ class Dollar: Actor
 		Stop;
 	Death1:
 		"####" "#" 0 {bRollSprite = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 		Death1Wait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;

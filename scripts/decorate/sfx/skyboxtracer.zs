@@ -58,7 +58,7 @@ class SkyboxTracerSpawner : SwitchableDecoration
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("boa_smokeswitch")==0,"EndSpawn");
+		TNT1 A 0 NODELAY A_JumpIf(boa_smokeswitch==0,"EndSpawn");
 	Active:
 		TNT1 A 12 A_SpawnItemEx("SkyboxTracerTrail", 0, 0, 0, 1, 0, 8, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE);
 		Loop;

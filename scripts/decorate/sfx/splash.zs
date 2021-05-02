@@ -44,7 +44,7 @@ class WaterSplashGeneratorNormal : EffectSpawner
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("boa_splashswitch")==0,"EndSpawn");
+		TNT1 A 0 NODELAY A_JumpIf(boa_splashswitch==0,"EndSpawn");
 		TNT1 A 0 A_JumpIf(Args[3] > 0, 2);
 		TNT1 A 0 A_StartSound("water/lap", CHAN_7, 0, 1.0);
 		TNT1 AAAAAAA 2 { if (!CheckRange(boa_sfxlod, true)) { A_SpawnItemEx("WaterSplashSpawner", 0, 0, 0, 0, 0, 0, 0, SPLASHES_FLAGS); } }
@@ -173,7 +173,7 @@ class WaterSplashGeneratorNormalLooping : WaterSplashGeneratorNormal
 	{
 	Spawn:
 	Active:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("boa_splashswitch")==0,"EndSpawn");
+		TNT1 A 0 NODELAY A_JumpIf(boa_splashswitch==0,"EndSpawn");
 		TNT1 A 4 { if (!CheckRange(boa_sfxlod, true)) { A_SpawnItemEx("WaterSplashSpawner", 0, 0, 0, 0, 0, 0, 0, SPLASHES_FLAGS); } }
 		TNT1 A 4 { if (!CheckRange(boa_sfxlod, true)) { A_SpawnItemEx("WaterSplashCloud", random(-8,8), random(-8,8), random(0,16), 0, 0, 0, 0, SPLASHES_FLAGS); } }
 		Loop;

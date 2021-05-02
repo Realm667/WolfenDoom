@@ -66,7 +66,7 @@ class G43 : NaziWeapon
 		M1GG A 1 A_FireProjectile("G43Tracer");
 		M1GG A 0 A_JumpIf(waterlevel > 0,2);
 		M1GG A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0);
-		M1GG A 1 A_SetPitch(pitch-(1.4*CallACS("boa_recoilamount")));
+		M1GG A 1 A_SetPitch(pitch-(1.4*boa_recoilamount));
 		M1GG CDEDC 1;
 		TNT1 A 0 A_CheckReload;
 		M1GG AAFFFA 1 A_WeaponReady(WRF_NOBOB);

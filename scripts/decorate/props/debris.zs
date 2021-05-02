@@ -73,7 +73,7 @@ class Debris_Trash : Debris_Base
 		Loop;
 	Death:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -104,7 +104,7 @@ class Debris_Hydrant : Debris_Trash
 		Loop;
 	Death:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -138,7 +138,7 @@ class Debris_MetalJunk : Debris_Base
 		Loop;
 	Death:
 		"####" "#" 0 {A_SetRoll(0); A_SetAngle(0); A_SetPitch(0); bFlatSprite = FALSE; bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -183,7 +183,7 @@ class Debris_Statue1 : Debris_Base
 		Loop;
 	Death:
 		"####" "#" 0 {A_SetRoll(0); A_SetAngle(0); A_SetPitch(0); bFlatSprite = FALSE; bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -220,7 +220,7 @@ class Debris_Statue2 : Debris_Statue1
 		Loop;
 	Death:
 		"####" "#" 0 {A_SetRoll(0); A_SetAngle(0); A_SetPitch(0); bFlatSprite = FALSE; bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -257,7 +257,7 @@ class Debris_Statue3 : Debris_Statue1
 		Loop;
 	Death:
 		"####" "#" 0 {A_SetRoll(0); A_SetAngle(0); A_SetPitch(0); bFlatSprite = FALSE; bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -294,7 +294,7 @@ class Debris_Statue4 : Debris_Statue1
 		Loop;
 	Death:
 		"####" "#" 0 {A_SetRoll(0); A_SetAngle(0); A_SetPitch(0); bFlatSprite = FALSE; bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -328,7 +328,7 @@ class Debris_Wood : Debris_Base
 		Loop;
 	Death:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -362,7 +362,7 @@ class Debris_ToyHans : Debris_Base
 		Loop;
 	Death:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -391,7 +391,7 @@ class Debris_ToyWaff : Debris_ToyHans
 		Loop;
 	Death:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -424,7 +424,7 @@ class Debris_ToyRPG1 : Debris_ToyHans
 		Loop;
 	Death:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -457,7 +457,7 @@ class Debris_ToyRPG2 : Debris_ToyHans
 		Loop;
 	Death:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -490,7 +490,7 @@ class Debris_ToyRPG3 : Debris_ToyHans
 		Loop;
 	Death:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -523,7 +523,7 @@ class Debris_Astro : Debris_Base
 		Loop;
 	Death:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -561,7 +561,7 @@ class Debris_GlassShard_Small : Debris_Base
 		Stop;
 	Death1:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 		Death1Wait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -600,7 +600,7 @@ class Debris_Bin : Debris_Base
 		Stop;
 	Death1:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 		Death1Wait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -635,7 +635,7 @@ class Debris_Metal1 : Debris_Base
 		Stop;
 	Death1:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 		Death1Wait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -670,7 +670,7 @@ class Debris_Metal2 : Debris_Base
 		Stop;
 	Death1:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 		Death1Wait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -706,7 +706,7 @@ class Debris_Metal3 : Debris_Base
 		Stop;
 	Death1:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 		Death1Wait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -744,7 +744,7 @@ class Debris_Pottery : Debris_Base
 		Stop;
 	Death1:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 		Death1Wait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -775,7 +775,7 @@ class Debris_Porcelain : Debris_Pottery
 		Stop;
 	Death1:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 		Death1Wait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -813,7 +813,7 @@ class Debris_Flesh : Debris_Base
 		"####" "#" 0 {bBounceOnActors = FALSE;}
 		"####" "#" 0 A_StopSound(CHAN_ITEM);
 		"####" "#" 0 A_StartSound("flesh/stop", CHAN_AUTO, 0, frandom (0.2,0.5), ATTN_NORM);
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 		Death1Wait:
 		"####" "#" 1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y / 2); //let's flat it
 		"####" "#" 1 A_FadeOut(0.1);
@@ -833,7 +833,7 @@ class Debris_Flesh2 : Debris_Flesh
 		"####" "#" 0 {bBounceOnActors = FALSE;}
 		"####" "#" 0 A_StopSound(CHAN_ITEM);
 		"####" "#" 0 A_StartSound("flesh/stop", CHAN_AUTO, 0, frandom (0.1,0.3), ATTN_NORM);
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 		Death1Wait:
 		"####" "#" 1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y / 2); //let's flat it
 		"####" "#" 1 A_FadeOut(0.1);
@@ -886,7 +886,7 @@ class Debris_Bread : Debris_Base
 	Death1:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
 		"####" "#" 0 A_StopSound(CHAN_ITEM);
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 		Death1Wait:
 		"####" "#" 1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y / 2); //let's flat it
 		"####" "#" 1 A_FadeOut(0.1);
@@ -927,7 +927,7 @@ class Debris_Leaf : Feather //inheritances with Ravens actor
 		Stop;
 	Death1:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 		Death1Wait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -962,7 +962,7 @@ class Debris_Translated : Debris_Leaf //needed to fix translations
 		Stop;
 	Death1:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 		Death1Wait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -997,7 +997,7 @@ class Debris_Cloth : Debris_Leaf
 		Stop;
 	Death1:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 		Death1Wait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -1044,7 +1044,7 @@ class Debris_ChipsGreen: Actor
 		Stop;
 	Death1:
 		"####" "#" 0 {bBounceOnActors = FALSE; bBounceOnCeilings = FALSE; bBounceOnWalls = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 		Death1Wait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Stop;
@@ -1215,7 +1215,7 @@ class Debris_Bone : Bones_Base //no skull
 		Loop;
 	Death:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -1238,7 +1238,7 @@ class Debris_Skull : Bones_Base
 		Loop;
 	Death:
 		"####" H 0 {A_SetRoll(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		"####" H 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" H 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" H 1 A_FadeOut(0.1);
 		Wait;
@@ -1260,7 +1260,7 @@ class Debris_FatAxe : Debris_Bone
 		Loop;
 	Death:
 		BRUN X 0 {A_SetRoll(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE; bFlatSprite = TRUE;}
-		"####" X 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" X 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -1282,7 +1282,7 @@ class Debris_FatShield : Debris_Bone
 		Loop;
 	Death:
 		BRUN Z 0 {A_SetRoll(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE; bFlatSprite = TRUE;}
-		"####" Z 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" Z 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -1302,7 +1302,7 @@ class Debris_FatHelm : Debris_Bone
 		Loop;
 	Death:
 		BRUN Y 0 {A_SetRoll(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		"####" Y 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" Y 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -1322,7 +1322,7 @@ class Debris_SSHelm : Debris_Bone
 		Loop;
 	Death:
 		STND J 0 {A_SetRoll(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		"####" J 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" J 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -1338,7 +1338,7 @@ class Debris_SSHelm2 : Debris_SSHelm
 		Loop;
 	Death:
 		STND K 0 {A_SetRoll(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		"####" K 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" K 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -1358,7 +1358,7 @@ class Debris_Batton : Debris_Bone
 		Loop;
 	Death:
 		BNAV K 0 {A_SetRoll(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		"####" K 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" K 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -1374,7 +1374,7 @@ class Debris_Batton2 : Debris_Batton
 		Loop;
 	Death:
 		BNAV K 0 {A_SetRoll(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		"####" K 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" K 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -1395,7 +1395,7 @@ class HitlerChaingun : Debris_FatAxe
 		Loop;
 	Death:
 		SHI1 X 0 {A_SetRoll(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		"####" X 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" X 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -1422,7 +1422,7 @@ class Debris_Loper : Debris_Skull
 		Loop;
 	Death:
 		"####" O 0 {A_SetRoll(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		"####" O 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" O 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" O 1 A_FadeOut(0.1);
 		Wait;
@@ -1484,7 +1484,7 @@ class Debris_Mecha : Debris_MetalJunk
 		Loop;
 	Death:
 		DMCH "#" 0 {A_SetRoll(0); A_SetAngle(0); A_SetPitch(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		DMCH "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		DMCH "#" 1 A_SetTics(35*boa_debrislifetime);
 		DMCH "#" 0 A_Jump(256,"DeathWait");
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.09); //lasts more time to have better feeling of debris spammed around - ozy81
@@ -1508,7 +1508,7 @@ class Debris_Mecha2 : Debris_Mecha
 		Loop;
 	Death:
 		DMCI "#" 0 {A_SetRoll(0); A_SetAngle(0); A_SetPitch(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		DMCI "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		DMCI "#" 1 A_SetTics(35*boa_debrislifetime);
 		DMCI "#" 0 A_Jump(256,"DeathWait");
 	}
 }
@@ -1529,7 +1529,7 @@ class Debris_Mecha3 : Debris_Mecha
 		Loop;
 	Death:
 		DMCJ "#" 0 {A_SetRoll(0); A_SetAngle(0); A_SetPitch(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		DMCJ "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		DMCJ "#" 1 A_SetTics(35*boa_debrislifetime);
 		DMCJ "#" 0 A_Jump(256,"DeathWait");
 	}
 }
@@ -1550,7 +1550,7 @@ class Debris_Mecha4 : Debris_Mecha
 		Loop;
 	Death:
 		DMCK "#" 0 {A_SetRoll(0); A_SetAngle(0); A_SetPitch(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		DMCK "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		DMCK "#" 1 A_SetTics(35*boa_debrislifetime);
 		DMCK "#" 0 A_Jump(256,"DeathWait");
 	}
 }
@@ -1571,7 +1571,7 @@ class Debris_Mecha5 : Debris_Mecha
 		Loop;
 	Death:
 		DMCN "#" 0 {A_SetRoll(0); A_SetAngle(0); A_SetPitch(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		DMCN "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		DMCN "#" 1 A_SetTics(35*boa_debrislifetime);
 		DMCN "#" 0 A_Jump(256,"DeathWait");
 	}
 }
@@ -1622,7 +1622,7 @@ class Debris_AstroSuite : Debris_MetalJunk
 		Loop;
 	Death:
 		ROB1 "#" 0 {A_SetRoll(0); A_SetAngle(0); A_SetPitch(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		ROB1 "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		ROB1 "#" 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -1668,7 +1668,7 @@ class Debris_AstroRobot : Debris_AstroSuite
 		Loop;
 	Death:
 		ROB2 "#" 0 {A_SetRoll(0); A_SetAngle(0); A_SetPitch(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
-		ROB2 "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		ROB2 "#" 1 A_SetTics(35*boa_debrislifetime);
 	DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -1715,7 +1715,7 @@ class Debris_Tank: Actor
 		Stop;
 	Death1:
 		"####" "#" 0 {bBounceOnActors = FALSE; bBounceOnCeilings = FALSE; bBounceOnWalls = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 	Death1Wait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -1752,7 +1752,7 @@ class Debris_Tank2 : Debris_Tank
 		Stop;
 	Death1:
 		"####" "#" 0 {bBounceOnActors = FALSE; bBounceOnCeilings = FALSE; bBounceOnWalls = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 	Death1Wait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
@@ -1795,7 +1795,7 @@ class Debris_TankShards : Debris_Tank
 		Stop;
 	Death1:
 		"####" "#" 0 {bBounceOnActors = FALSE; bBounceOnCeilings = FALSE; bBounceOnWalls = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 	Death1Wait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;

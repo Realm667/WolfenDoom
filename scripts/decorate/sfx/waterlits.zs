@@ -39,7 +39,7 @@ class UWLightGenerator1 : EffectSpawner
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("boa_litsswitch")==0,"EndSpawn");
+		TNT1 A 0 NODELAY A_JumpIf(boa_litsswitch==0,"EndSpawn");
 	Active:
 		TNT1 A 1 A_CheckSight("Unsighted");
 		TNT1 A 0 { if (CheckRange(boa_sfxlod, true)) { SetStateLabel("Active"); } }
@@ -68,7 +68,7 @@ class UWLightGenerator2 : UWLightGenerator1
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("boa_litsswitch")==0,"EndSpawn");
+		TNT1 A 0 NODELAY A_JumpIf(boa_litsswitch==0,"EndSpawn");
 	Active:
 		TNT1 A 1 A_CheckSight("Unsighted");
 		TNT1 A 0 { if (CheckRange(boa_sfxlod, true)) { SetStateLabel("Active"); } }
@@ -90,7 +90,7 @@ class UWLightGenerator3 : UWLightGenerator1
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("boa_litsswitch")==0,"EndSpawn");
+		TNT1 A 0 NODELAY A_JumpIf(boa_litsswitch==0,"EndSpawn");
 	Active:
 		TNT1 A 1 A_CheckSight("Unsighted");
 		TNT1 A 0 { if (CheckRange(boa_sfxlod, true)) { SetStateLabel("Active"); } }
@@ -112,7 +112,7 @@ class UWLightGenerator4 : UWLightGenerator1
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("boa_litsswitch")==0,"EndSpawn");
+		TNT1 A 0 NODELAY A_JumpIf(boa_litsswitch==0,"EndSpawn");
 	Active:
 		TNT1 A 1 A_CheckSight("Unsighted");
 		TNT1 A 0 { if (CheckRange(boa_sfxlod, true)) { SetStateLabel("Active"); } }

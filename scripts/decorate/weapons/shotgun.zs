@@ -82,11 +82,11 @@ class TrenchShotgun : NaziWeapon
 		SHTG F 1 A_GunFlash;
 		SHTG F 0 A_JumpIf(waterlevel > 0,2);
 		SHTG F 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0);
-		SHTG F 1 A_SetPitch(pitch-(4.0*CallACS("boa_recoilamount")));
-		SHTG F 1 Offset(0,40) A_SetPitch(pitch-(2.0*CallACS("boa_recoilamount")));
-		SHTG F 1 Offset(0,36) A_SetPitch(pitch-(1.0*CallACS("boa_recoilamount")));
-		SHTG A 1 Offset(0,34) A_SetPitch(pitch+(1.0*CallACS("boa_recoilamount")));
-		SHTG A 1 Offset(0,33) A_SetPitch(pitch+(0.5*CallACS("boa_recoilamount")));
+		SHTG F 1 A_SetPitch(pitch-(4.0*boa_recoilamount));
+		SHTG F 1 Offset(0,40) A_SetPitch(pitch-(2.0*boa_recoilamount));
+		SHTG F 1 Offset(0,36) A_SetPitch(pitch-(1.0*boa_recoilamount));
+		SHTG A 1 Offset(0,34) A_SetPitch(pitch+(1.0*boa_recoilamount));
+		SHTG A 1 Offset(0,33) A_SetPitch(pitch+(0.5*boa_recoilamount));
 		SHTG A 7 A_WeaponReady(WRF_NOFIRE);
 		SHTG A 1 Offset(-1,33);
 		SHTG B 1 Offset(5,34) A_StartSound("shotgun/pump", CHAN_5);

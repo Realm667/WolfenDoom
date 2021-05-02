@@ -44,7 +44,7 @@ class FogCloud_Generator : SwitchableDecoration
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("boa_fogswitch")==0,"EndSpawn");
+		TNT1 A 0 NODELAY A_JumpIf(boa_fogswitch==0,"EndSpawn");
 	Active:
 		TNT1 A 0 A_JumpIf(ARGS[0]!=0,"MaperInput");
 		TNT1 A 0 A_Jump(128,1,2);
@@ -143,7 +143,7 @@ class ZyklonFogCloud_Generator : FogCloud_Generator
 	States
 	{
 	Spawn:
-		TNT1 A 0 A_JumpIf(CallACS("boa_fogswitch")==0,"EndSpawn");
+		TNT1 A 0 A_JumpIf(boa_fogswitch==0,"EndSpawn");
 	Active:
 		TNT1 A 0 A_JumpIf(ARGS[0]!=0,"MaperInput");
 		TNT1 A 0 A_Jump(128,1,2);

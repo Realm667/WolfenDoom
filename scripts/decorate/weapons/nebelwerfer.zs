@@ -55,7 +55,7 @@ class Nebelwerfer : NaziWeapon
 		NEBG A 0 A_GunFlash;
 		NEBG A 0 A_StartSound("nebelwerfer/fire", CHAN_WEAPON);
 		NEBG A 2 A_FireProjectile("NebRocket");
-		NEBG BCDEB 2 A_SetPitch(pitch-(0.5*CallACS("boa_recoilamount")));
+		NEBG BCDEB 2 A_SetPitch(pitch-(0.5*boa_recoilamount));
 		NEBG DEFC 5;
 		NEBG BA 2 A_ReFire;
 		Goto Ready;
@@ -144,7 +144,7 @@ class RPG8RocketTrail : RocketFlame
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("boa_smokeswitch")==0,"EndSpawn");
+		TNT1 A 0 NODELAY A_JumpIf(boa_smokeswitch==0,"EndSpawn");
 		TNT1 A 1 A_Jump(256, "Flyloop1", "Flyloop2", "Flyloop3", "Flyloop4");
 	Flyloop1:
 		SMOK A 1 { A_SetScale(Scale.X+0.010); A_FadeOut(.008, FTF_REMOVE); }

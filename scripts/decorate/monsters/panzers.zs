@@ -156,7 +156,7 @@ class NukeSmoke : Nuke
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("boa_smokeswitch")==0,"EndSpawn");
+		TNT1 A 0 NODELAY A_JumpIf(boa_smokeswitch==0,"EndSpawn");
 		TNT1 A 0 A_Jump(256,1,2,3,4);
 		NSMK ABCD 0 A_Jump(256,"End");
 	End:
@@ -242,7 +242,7 @@ class TankSmokeRing : Nuke
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("boa_smokeswitch")==0,"EndSpawn");
+		TNT1 A 0 NODELAY A_JumpIf(boa_smokeswitch==0,"EndSpawn");
 		TNT1 A 0 A_SpawnItemEx("NukeSmoke",0,0,0,1,0,0,user_theta);
 		UWMR A 0 { user_theta = user_theta+20; }
 		"####" A 0 A_JumpIf(user_theta==360,1);
@@ -301,7 +301,7 @@ class NebSmoke : NukeSmoke
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("boa_smokeswitch")==0,"EndSpawn");
+		TNT1 A 0 NODELAY A_JumpIf(boa_smokeswitch==0,"EndSpawn");
 		TNT1 A 0 A_Jump(256,1,2,3,4);
 		NSMK ABCD 0 A_Jump(256,"End");
 	End:
@@ -469,7 +469,7 @@ class UFONukeSmoke : NukeSmoke
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("boa_smokeswitch")==0,"EndSpawn");
+		TNT1 A 0 NODELAY A_JumpIf(boa_smokeswitch==0,"EndSpawn");
 		TNT1 A 0 A_Jump(256,1,2,3,4);
 		NSMK ABCD 0 A_Jump(256,"End");
 	End:
@@ -555,7 +555,7 @@ class UFOSmokeRing : Nuke
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("boa_smokeswitch")==0,"EndSpawn");
+		TNT1 A 0 NODELAY A_JumpIf(boa_smokeswitch==0,"EndSpawn");
 		TNT1 A 0 A_SpawnItemEx("UFONukeSmoke",0,0,0,1,0,0,user_theta);
 		UWMR A 0 { user_theta = user_theta+20; }
 		"####" A 0 A_JumpIf(user_theta==360,1);
@@ -618,7 +618,7 @@ class LZ127NukeSmoke : NukeSmoke
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("boa_smokeswitch")==0,"EndSpawn");
+		TNT1 A 0 NODELAY A_JumpIf(boa_smokeswitch==0,"EndSpawn");
 		TNT1 A 0 A_Jump(256,1,2,3,4);
 		NSMK ABCD 0 A_Jump(256,"End");
 	End:
@@ -704,7 +704,7 @@ class LZ127SmokeRing : Nuke
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("boa_smokeswitch")==0,"EndSpawn");
+		TNT1 A 0 NODELAY A_JumpIf(boa_smokeswitch==0,"EndSpawn");
 		TNT1 A 0 A_SpawnItemEx("LZ127NukeSmoke",0,0,0,1,0,0,user_theta);
 		UWMR A 0 { user_theta = user_theta+20; }
 		"####" A 0 A_JumpIf(user_theta==360,1);

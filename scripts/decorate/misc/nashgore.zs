@@ -186,16 +186,16 @@ class NashGore_BloodSpot : NashGore_BloodBase
 		TNT1 A 0 A_SpawnItem("NashGore_BloodSplash", 0, 0, 0, 1);
 		TNT1 A 0 A_Jump(256, "BloodSpot1", "BloodSpot2", "BloodSpot3", "BloodSpot4");
 	BloodSpot1:
-		BSPT A 0 A_SetTics(35*CallACS("boa_bloodlifetime"));
+		BSPT A 0 A_SetTics(35*boa_bloodlifetime);
 		"####" "#" 0 A_Jump(256, "FadeOut");
 	BloodSpot2:
-		BSPT B 0 A_SetTics(35*CallACS("boa_bloodlifetime"));
+		BSPT B 0 A_SetTics(35*boa_bloodlifetime);
 		"####" "#" 0 A_Jump(256, "FadeOut");
 	BloodSpot3:
-		BSPT C 0 A_SetTics(35*CallACS("boa_bloodlifetime"));
+		BSPT C 0 A_SetTics(35*boa_bloodlifetime);
 		"####" "#" 0 A_Jump(256, "FadeOut");
 	BloodSpot4:
-		BSPT D 0 A_SetTics(35*CallACS("boa_bloodlifetime"));
+		BSPT D 0 A_SetTics(35*boa_bloodlifetime);
 		"####" "#" 0 A_Jump(256, "FadeOut");
 	FadeOut:
 		"####" "#" 2 A_FadeOut(0.005);
@@ -393,19 +393,19 @@ class Zombie_BloodSpot : NashGore_BloodSpot
 		TNT1 A 0 A_Jump(256, "BloodSpot1", "BloodSpot2", "BloodSpot3", "BloodSpot4");
 	BloodSpot1:
 		ZSPT AEI 1 A_SetTics(random(24,35));
-		"####" M 0 A_SetTics(35*CallACS("boa_bloodlifetime"));
+		"####" M 0 A_SetTics(35*boa_bloodlifetime);
 		"####" "#" 0 A_Jump(256, "FadeOut");
 	BloodSpot2:
 		ZSPT BFJ 1 A_SetTics(random(24,35));
-		"####" N 0 A_SetTics(35*CallACS("boa_bloodlifetime"));
+		"####" N 0 A_SetTics(35*boa_bloodlifetime);
 		"####" "#" 0 A_Jump(256, "FadeOut");
 	BloodSpot3:
 		ZSPT CGK 1 A_SetTics(random(24,35));
-		"####" O 0 A_SetTics(35*CallACS("boa_bloodlifetime"));
+		"####" O 0 A_SetTics(35*boa_bloodlifetime);
 		"####" "#" 0 A_Jump(256, "FadeOut");
 	BloodSpot4:
 		ZSPT DHL 1 A_SetTics(random(24,35));
-		"####" P 0 A_SetTics(35*CallACS("boa_bloodlifetime"));
+		"####" P 0 A_SetTics(35*boa_bloodlifetime);
 		"####" "#" 0 A_Jump(256, "FadeOut");
 	FadeOut:
 		"####" "#" 2 A_FadeOut(0.005);

@@ -398,7 +398,7 @@ class FlamerSmoke1: Actor
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_JumpIf(CallACS("boa_smokeswitch")==0,"EndSpawn");
+		TNT1 A 0 NODELAY A_JumpIf(boa_smokeswitch==0,"EndSpawn");
 		SMOC A 0;
 	FadeIn:
 		"####" A 0 ThrustThingZ(0,random(2,6),0,0);

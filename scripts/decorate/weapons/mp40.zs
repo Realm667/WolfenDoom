@@ -59,7 +59,7 @@ class MP40 : NaziWeapon
 		RIFG A 0 A_JumpIfInventory("MP40Loaded",1,1);
 		Goto Dryfire;
 		RIFG A 0 A_GunFlash;
-		RIFG A 0 A_SetPitch(pitch-(0.5*CallACS("boa_recoilamount")));
+		RIFG A 0 A_SetPitch(pitch-(0.5*boa_recoilamount));
 		RIFG A 0 A_JumpIf(waterlevel > 0,2);
 		RIFG A 0 A_FireProjectile("ChainSmokeSpawner",0,0,0,random(-4,4),0,0);
 		RIFG A 0 A_StartSound("mp40/fire", CHAN_WEAPON, 0, frandom(0.6, 0.8));

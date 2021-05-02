@@ -85,11 +85,11 @@ class Browning5 : NaziWeapon
 		BA5G A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0);
 		BA5G A 0 A_AlertMonsters;
 		BA5G A 1 A_GunFlash;
-		BA5G A 1 Offset(0,42) A_SetPitch(pitch-(4.0*CallACS("boa_recoilamount")));
-		BA5G A 1 Offset(0,47) A_SetPitch(pitch-(2.0*CallACS("boa_recoilamount")));
-		BA5G A 1 Offset(0,36) A_SetPitch(pitch-(1.0*CallACS("boa_recoilamount")));
-		BA5G A 1 Offset(0,34) A_SetPitch(pitch+(1.0*CallACS("boa_recoilamount")));
-		BA5G A 4 Offset(0,33) A_SetPitch(pitch+(0.5*CallACS("boa_recoilamount")));
+		BA5G A 1 Offset(0,42) A_SetPitch(pitch-(4.0*boa_recoilamount));
+		BA5G A 1 Offset(0,47) A_SetPitch(pitch-(2.0*boa_recoilamount));
+		BA5G A 1 Offset(0,36) A_SetPitch(pitch-(1.0*boa_recoilamount));
+		BA5G A 1 Offset(0,34) A_SetPitch(pitch+(1.0*boa_recoilamount));
+		BA5G A 4 Offset(0,33) A_SetPitch(pitch+(0.5*boa_recoilamount));
 		BA5G A 1;
 		TNT1 A 0 A_CheckReload;
 		Goto Ready;

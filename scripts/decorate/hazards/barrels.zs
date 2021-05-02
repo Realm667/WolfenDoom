@@ -31,7 +31,7 @@ class BarrelFrags: Actor
 	Spawn:
 		FRAG ABCDEFGHIJKLM 3;
 		"####" N 1;
-		"####" "#" 1 A_SetTics(35*CallACS("boa_debrislifetime"));
+		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 		DeathWait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;

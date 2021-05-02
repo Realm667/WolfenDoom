@@ -202,7 +202,7 @@ class Casing9mm : ParticleBase
 		Stop;
 	Death1:
 		"####" "#" 0 {bBounceOnActors = FALSE;}
-		"####" "#" 1 A_SetTics(35*CallACS("ShellLifetime")); //try to run tics into seconds for a player-friendly setting
+		"####" "#" 1 A_SetTics(35*boa_casinglifetime); //try to run tics into seconds for a player-friendly setting
 	Death1Wait:
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;

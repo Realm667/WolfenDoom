@@ -597,14 +597,14 @@ class AstroLuger : NaziAstroWeapon //quite the same code from Luger P08 - ozy81
 		PLPI A 0 A_JumpIfInventory("AstroPistolLoaded",1,1);
 		Goto Dryfire;
 		PLPI A 0 A_GunFlash;
-		PLPI A 0 A_SetPitch(pitch-(0.2*CallACS("boa_recoilamount")));
+		PLPI A 0 A_SetPitch(pitch-(0.2*boa_recoilamount));
 		PLPI A 0 A_JumpIf(waterlevel > 0,2);
 		PLPI A 0 A_StartSound("astrochaingun/fire", CHAN_WEAPON);
 		PLPI A 0 A_AlertMonsters;
 		PLPI A 0 A_TakeInventory("AstroPistolLoaded",1,TIF_NOTAKEINFINITE);
 		PLPI B 1 A_FireProjectile("AstroTracerPlayer",0,0,0,0,0,frandom(-0.2,0.2));
 		PLPI B 1;
-		PLPI B 1 Offset(0,36) A_SetPitch(pitch-(0.2*CallACS("boa_recoilamount")));
+		PLPI B 1 Offset(0,36) A_SetPitch(pitch-(0.2*boa_recoilamount));
 		PLPI B 1 Offset(0,41) A_CheckReload;
 		PLPI C 1 Offset(0,35) A_WeaponReady(WRF_NOBOB);
 		PLPI C 1 Offset(0,33) A_WeaponReady(WRF_NOBOB);
