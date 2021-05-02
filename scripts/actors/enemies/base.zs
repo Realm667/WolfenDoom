@@ -2435,10 +2435,10 @@ class Nazi : Base
 		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
 		DoGierDrops(); // AActor::Die sets target to killer
 
-		// Make sure the sneakable enemeis that were killed without being alerted to the
+		// Make sure the sneakable enemies that were killed without being alerted to the
 		// player still count as kills, since there is special handling to add them to
 		// the level's max kill count, and FRIENDLY monsters don't get counted as kills.
-		if (user_sneakable && bFriendly)
+		if (user_sneakable && bFriendly && bCountKill)
 		{
 			level.killed_monsters++;
 		}
