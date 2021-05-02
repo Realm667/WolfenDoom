@@ -333,3 +333,64 @@ class DreamState : NauseaShaderControl
 		}
 	}
 }
+
+class PainShaderControl : ShaderControl
+{
+	int timer, maxtimer, value;
+	double blendalpha;
+
+	Default
+	{
+		ShaderControl.Shader "screenblend";
+		Speed 1.0;
+		Alpha 0.0;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (!owner || !owner.player) { Destroy(); return; }
+	}
+
+	override void SetUniforms(PlayerInfo p, RenderEvent e)
+	{
+		color clr = p.mo.damagefade;
+
+		Shader.SetUniform1f(p, ShaderToControl, "alpha", blendalpha);
+		Shader.SetUniform3f(p, ShaderToControl, "blendcolor", (clr.r, clr.g, clr.b));
+	}
+
+	override void DoEffect()
+	{
+		value = max(amount, value);
+		if (amount > 2 && value == amount)
+		{
+			timer += max(35, amount);
+			if (!maxtimer) { maxtimer = timer; }
+		}
+
+		timer--;
+
+		// If we've hit the countdown time, remove the effect
+		if (timer <= 0)
+		{
+			amount = 1;
+			value = 0;
+			alpha = 0.0;
+			blendalpha = 0.0;
+			timer = 0;
+			maxtimer = 0;
+		}
+		else
+		{
+			amount = 2;
+
+			if (timer > maxtimer - 15) { alpha = 1.0 - (timer - (maxtimer - 15)) / 15.0; } // Fade in
+			else if (timer <= 15) { alpha = timer / 15.0; } // Fade out
+			else { alpha = 1.0; }
+
+			blendalpha = clamp((min(114, value) / 114.0) * blood_fade_scalar * alpha, 0.0, 1.0);
+		}
+	}
+}
