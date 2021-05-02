@@ -79,6 +79,7 @@ class BoAPlayer : PlayerPawn
 	int interactiontimeout;
 	int flinchfactor;
 	bool dodragging; // Set true to enable dragging of corpses and pushable actors (crouch and use)
+	PainShaderControl painflash;
 
 	Default
 	{
@@ -242,6 +243,8 @@ class BoAPlayer : PlayerPawn
 		dodragging = false;
 		int playerID = PLAYER_TAG_OFFSET + PlayerNumber();
 		Thing_ChangeTID(0, playerID);
+
+		if (!painflash) { painflash = PainShaderControl(GiveInventoryType("PainShaderControl")); }
 		
 		Super.PostBeginPlay();
 	}
@@ -1278,6 +1281,14 @@ class BoAPlayer : PlayerPawn
 			}
 
 			dmg = 1;
+		}
+
+		if (painflash)
+		{
+			painflash.amount += dmg;
+			painflash.timer = min(350, painflash.timer + player.damagecount);
+
+			player.damagecount = 0; // Do not use the engine's built-in damage fades
 		}
 
 		return dmg;
