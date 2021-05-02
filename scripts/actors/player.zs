@@ -269,8 +269,6 @@ class BoAPlayer : PlayerPawn
 				{
 					if (!CountInv("Billy"))
 					{
-						ACS_NamedExecuteAlways("DrawScreenOverlays_Wrapper", 0);
-
 						// Do inventory checks
 						ACS_NamedExecuteAlways("DoSprinting_Wrapper", 0);
 						ACS_NamedExecuteAlways("DoStaminaCheck_Wrapper", 0);

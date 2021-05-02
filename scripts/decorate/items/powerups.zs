@@ -61,11 +61,12 @@ class SpaceSuit : PowerupGiver
 		+INVENTORY.ALWAYSRESPAWN
 		+INVENTORY.AUTOACTIVATE
 	}
+
 	States
 	{
-	Spawn:
-		SSUT A -1;
-		Stop;
+		Spawn:
+			SSUT A -1;
+			Stop;
 	}
 }
 
@@ -100,10 +101,57 @@ class Power : Inventory
 	}
 }
 
-class AdrenalineSpeed : PowerupGiver { Default { +INVENTORY.AUTOACTIVATE +INVENTORY.ADDITIVETIME -INVENTORY.INVBAR Inventory.MaxAmount 0; Powerup.Type "PowerDrugs"; } }
-class PowerDrugs : PowerDoubleFiringSpeed { Default { Powerup.Duration -10; } }
-class AdrenalineFactor : PowerupGiver { Default { +INVENTORY.AUTOACTIVATE +INVENTORY.ADDITIVETIME -INVENTORY.INVBAR Inventory.MaxAmount 0; Powerup.Type "PowerFactor"; } }
-class PowerFactor : PowerDamage { Default { Powerup.Duration -10; DamageFactor "Normal", 2.0; } }
+class AdrenalineSpeed : PowerupGiver
+{
+	Default
+	{
+		+INVENTORY.AUTOACTIVATE
+		+INVENTORY.ADDITIVETIME
+		-INVENTORY.INVBAR
+		Inventory.MaxAmount 0;
+		Powerup.Type "PowerDrugs";
+	}
+}
+
+class PowerDrugs : PowerDoubleFiringSpeed
+{
+	Default
+	{
+		Powerup.Duration -10;
+	}
+}
+
+class AdrenalineFactor : PowerupGiver
+{
+	Default
+	{
+		+INVENTORY.AUTOACTIVATE
+		+INVENTORY.ADDITIVETIME
+		-INVENTORY.INVBAR
+		Inventory.MaxAmount 0;
+		Powerup.Type "PowerFactor";
+	}
+}
+
+class PowerFactor : PowerDamage
+{
+	Default
+	{
+		Powerup.Duration -10;
+		DamageFactor "Normal", 2.0;
+	}
+
+	override void DoEffect()
+	{
+		Super.DoEffect();
+
+		if (owner)
+		{
+			let drugs = PowerDrugs(owner.FindInventory("PowerDrugs"));
+			if (drugs) { Overlay.Init(owner.player, "M_INJ", drugs.EffectTics - 36, 18, 18); }
+		}
+	}
+}
 
 class AdrenalineKit : CustomInvBase
 {
