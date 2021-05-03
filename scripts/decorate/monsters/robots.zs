@@ -31,6 +31,7 @@ class TeslaTurret : NaziStandard
 	Height 96;
 	Speed 0;
 	MaxTargetRange 640;
+	-CASTSPRITESHADOW  //needed for shadows
 	-COUNTKILL
 	+DONTTHRUST
 	+INVULNERABLE
@@ -41,7 +42,6 @@ class TeslaTurret : NaziStandard
 	SeeSound "";
 	PainSound "";
 	DeathSound "";
-	Base.Shadow 0; //needed for shadows
 	}
 	States
 	{

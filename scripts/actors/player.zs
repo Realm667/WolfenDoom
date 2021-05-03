@@ -82,6 +82,7 @@ class BoAPlayer : PlayerPawn
 
 	Default
 	{
+		+CASTSPRITESHADOW
 		+DONTTRANSLATE //Needed to fix Camp uniform palette - ozy81
 		+THRUSPECIES // Needed for swimming through ActorBlockers
 		Species "Player";

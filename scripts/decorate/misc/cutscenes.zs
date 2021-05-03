@@ -148,11 +148,12 @@ class TMGuardWithShadow : TMGuard
 	Default
 	{
 		//$Title Titlemap Soldier (with shadow)
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		MGR2 A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		MGR2 A -1;
 		Stop;
 	}
 }
@@ -162,11 +163,12 @@ class TMMechanicNT : TMGuard
 	Default
 	{
 		//$Title Mechanic without Toolbox for Cutscenes (with shadow)
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		MNIC O -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		MNIC O -1;
 		Stop;
 	}
 }
@@ -176,11 +178,12 @@ class TMMechanic : TMGuard
 	Default
 	{
 		//$Title Mechanic for Cutscenes (with shadow)
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		MNIC N -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		MNIC N -1;
 		Stop;
 	}
 }
@@ -190,11 +193,12 @@ class TMScientist : TMGuard //present on c1m2
 	Default
 	{
 		//$Title Scientist young Cutscenes (with shadow)
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		SCN2 N -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		SCN2 N -1;
 		Stop;
 	}
 }
@@ -204,11 +208,12 @@ class TMScientist2 : TMGuard //present on c1m2
 	Default
 	{
 		//$Title Scientist old Cutscenes (with shadow)
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		SCNT N -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		SCNT N -1;
 		Stop;
 	}
 }
@@ -218,11 +223,12 @@ class TMDog : TMGuardWithShadow
 	Default
 	{
 		//$Title Titlemap Doge (with shadow)
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		DOG3 L -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		DOG3 L -1;
 		Stop;
 	}
 }
@@ -265,12 +271,13 @@ class TMFanfare1 : SwitchableDecoration
 		Radius 8;
 		Scale 0.65;
 		+NOBLOCKMAP
+		-CASTSPRITESHADOW
 	}
 	States
 	{
 	Inactive:
 	Spawn:
-		BANN N -1; //NODELAY A_GiveInventory("Z_ShadeMe",0);
+		BANN N -1;
 		Stop;
 	Active:
 		"####" A 1;
@@ -298,11 +305,12 @@ class TMFanfare2 : TMGuard
 	Default
 	{
 		//$Title Fanfare Trumpet Soldier (Right)
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		TRUM A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		TRUM A -1;
 		Stop;
 	}
 }
@@ -312,11 +320,12 @@ class TMFanfare3 : TMFanfare2
 	Default
 	{
 		//$Title Fanfare Trumpet Soldier (Left)
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		TRUM B -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		TRUM B -1;
 		Stop;
 	}
 }
@@ -326,11 +335,12 @@ class TMFanfare4 : TMFanfare1
 	Default
 	{
 		//$Title Fanfare SSMP40 Soldier (Activate to make him walk)
+		-CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		SSMG N -1; //NODELAY A_GiveInventory("Z_ShadeMe",0);
+		SSMG N -1;
 		Stop;
 	}
 }
@@ -340,11 +350,12 @@ class TMFanfare5 : TMFanfare1
 	Default
 	{
 		//$Title Fanfare SS Officer (Activate to make him walk)
+		-CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		SSOF N -1; //NODELAY A_GiveInventory("Z_ShadeMe",0);
+		SSOF N -1;
 		Stop;
 	}
 }
@@ -354,6 +365,7 @@ class TMHitler : TMFanfare1
 	Default
 	{
 		//$Title Adolf Hitler (Speech)
+		+CASTSPRITESHADOW
 	}
 	States
 	{
@@ -361,7 +373,7 @@ class TMHitler : TMFanfare1
 		ADFS EDCBA 20;
 		ADFS A 300;
 	Spawn:
-		ADFS E -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		ADFS E -1;
 		Stop;
 	Active:
 		"####" D 1 A_SetTics(random(40,60));
@@ -375,11 +387,12 @@ class TMGauleiter : TMGuard
 	Default
 	{
 		//$Title Gauleiter
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		GAUL A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		GAUL A -1;
 		Stop;
 	}
 }
@@ -389,6 +402,7 @@ class TMGauleiterNS : TMGauleiter
 	Default
 	{
 		//$Title Gauleiter (No Shadow)
+		-CASTSPRITESHADOW
 	}
 	States
 	{
@@ -404,11 +418,12 @@ class TMMiller : TMGuard
 	{
 		//$Title General Miller for HQs
 		Scale 0.67;
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		GENR O -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		GENR O -1;
 		Stop;
 	}
 }
@@ -423,7 +438,7 @@ class TMMarineHQ1 : TMCivBase
 	States
 	{
 	Spawn:
-		ARMH A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		ARMH A -1;
 		Stop;
 	}
 }
@@ -437,7 +452,7 @@ class TMMarineHQ2 : TMMarineHQ1
 	States
 	{
 	Spawn:
-		MARH A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		MARH A -1;
 		Stop;
 	}
 }
@@ -451,7 +466,7 @@ class TMMarineHQ3 : TMMarineHQ1
 	States
 	{
 	Spawn:
-		PARS A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		PARS A -1;
 		Stop;
 	}
 }
@@ -466,7 +481,7 @@ class TMMarineHQ1NW : TMCivBase
 	States
 	{
 	Spawn:
-		ARH2 A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		ARH2 A -1;
 		Stop;
 	}
 }
@@ -476,11 +491,12 @@ class TMMarineHQ2NW : TMMarineHQ1
 	Default
 	{
 		//$Title Marine weaponless, Green, Cutscenes
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		MAH2 A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		MAH2 A -1;
 		Stop;
 	}
 }
@@ -490,11 +506,12 @@ class TMMarineHQ3NW : TMMarineHQ1
 	Default
 	{
 		//$Title Marine weaponless, Brown, Cutscenes
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		PARP A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		PARP A -1;
 		Stop;
 	}
 }
@@ -504,11 +521,12 @@ class TMMarineHQ4 : TMMarineHQ1
 	Default
 	{
 		//$Title Random Marine, Weaponless, Cutscenes
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		RNDM A 0 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		RNDM A 0;
 	Randomize:
 		RNDM A 0 A_Jump(256,"Pose1","Pose2","Pose3");
 	Pose1:
@@ -528,11 +546,12 @@ class TMMarineHQ5 : TMMarineHQ1
 	Default
 	{
 		//$Title Random Marine, Armed, Cutscenes
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		RNDM B 0 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		RNDM B 0;
 	Randomize:
 		RNDM B 0 A_Jump(256,"Pose1","Pose2","Pose3");
 	Pose1:
@@ -566,11 +585,12 @@ class TMAscher : TMMarineHQ1
 	Default
 	{
 		//$Title Sgt. Ascher, Cutscenes
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		PARS A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		PARS A -1;
 		Stop;
 	}
 }
@@ -580,11 +600,12 @@ class TMClerk : TMMarineHQ1
 	Default
 	{
 		//$Title Lt. Laz Rojas, Cutscenes
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		BLCK B -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		BLCK B -1;
 		Stop;
 	}
 }
@@ -598,7 +619,7 @@ class TMStatistBarkeeper : TMCivBase
 	States
 	{
 	Spawn:
-		BDKP A 0 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		BDKP A 0;
 	SpawnLoop:
 		BDKP A 80;
 		"####" B 40;
@@ -620,7 +641,7 @@ class TMStatistBarkeeperMale : TMStatistBarkeeper
 	States
 	{
 	Spawn:
-		BDK2 A 0 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		BDK2 A 0;
 	SpawnLoop:
 		BDK2 A 80;
 		"####" B 40;
@@ -643,7 +664,7 @@ class TMStatistMedic : TMStatistBarkeeper
 	States
 	{
 	Spawn:
-		MEDC A 0 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		MEDC A 0;
 	SpawnLoop:
 		MEDC A 80;
 		"####" B 40;
@@ -665,7 +686,7 @@ class TMStatistAFA : TMStatistMedic
 	States
 	{
 	Spawn:
-		AFAD A 0 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		AFAD A 0;
 	SpawnLoop:
 		AFAD A 80;
 		"####" B 40;
@@ -689,7 +710,7 @@ class TMStatistDimitri : TMStatistMedic
 	States
 	{
 	Spawn:
-		RUST A 0 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		RUST A 0;
 	SpawnLoop:
 		RUST A 80;
 		"####" B 40;
@@ -708,7 +729,7 @@ class TMStatistYevgeny : TMStatistMedic
 	States
 	{
 	Spawn:
-		YEVG A 0 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		YEVG A 0;
 	SpawnLoop:
 		YEVG A 80;
 		"####" B 40;
@@ -723,11 +744,12 @@ class TMHitler2 : TMGuard
 	Default
 	{
 		//$Title Adolf Hitler (Downfall)
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		HISC A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		HISC A -1;
 		Stop;
 	}
 }
@@ -786,11 +808,12 @@ class TMMarine1: Actor
 		Scale 0.65;
 		Translation 1;
 		+NOBLOCKMAP
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		FIN1 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIN1 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIN1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose17","Pose17");
 	Pose1:
@@ -867,7 +890,7 @@ class TMMarine1B : TMMarine1
 	States
 	{
 	Spawn:
-		FIB1 O 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIB1 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIB1 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -907,11 +930,12 @@ class TMMarine1G : TMMarine1B
 	Default
 	{
 		//$Title Random Happy Marine 1 (gray hair)
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		FIG1 O 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIG1 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIG1 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -927,7 +951,7 @@ class TMMarine1R : TMMarine1B
 	States
 	{
 	Spawn:
-		FSR1 O 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FSR1 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FSR1 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -943,7 +967,7 @@ class TMMarine1Y : TMMarine1B
 	States
 	{
 	Spawn:
-		FIY1 O 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIY1 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIY1 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -959,7 +983,7 @@ class TMMarine2 : TMMarine1
 	States
 	{
 	Spawn:
-		FIN2 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIN2 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIN2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose17","Pose17");
 		Stop;
@@ -979,7 +1003,7 @@ class TMMarine2B : TMMarine1B
 	States
 	{
 	Spawn:
-		FIB2 O 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIB2 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIB2 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -995,7 +1019,7 @@ class TMMarine2G : TMMarine1B
 	States
 	{
 	Spawn:
-		FIG2 O 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIG2 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIG2 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1011,7 +1035,7 @@ class TMMarine2R : TMMarine1B
 	States
 	{
 	Spawn:
-		FSR2 O 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FSR2 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FSR2 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1027,7 +1051,7 @@ class TMMarine2Y : TMMarine1B
 	States
 	{
 	Spawn:
-		FIY2 O 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIY2 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIY2 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1043,7 +1067,7 @@ class TMMarine3 : TMMarine1
 	States
 	{
 	Spawn:
-		FIN3 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIN3 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIN3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose17","Pose17");
 		Stop;
@@ -1063,7 +1087,7 @@ class TMMarine3B : TMMarine1B
 	States
 	{
 	Spawn:
-		FIB3 O 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIB3 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIB3 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1079,7 +1103,7 @@ class TMMarine3G : TMMarine1B
 	States
 	{
 	Spawn:
-		FIG3 O 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIG3 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIG3 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1095,7 +1119,7 @@ class TMMarine3R : TMMarine1B
 	States
 	{
 	Spawn:
-		FSR3 O 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FSR3 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FSR3 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1111,7 +1135,7 @@ class TMMarine3Y : TMMarine1B
 	States
 	{
 	Spawn:
-		FIY3 O 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIY3 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIY3 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1127,11 +1151,12 @@ class TMMarine4: Actor
 		DistanceCheck "boa_scenelod";
 		Scale 0.65;
 		+NOBLOCKMAP
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		FIN4 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIN4 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIN4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose17","Pose17");
 		Stop;
@@ -1209,7 +1234,7 @@ class TMMarine4B : TMMarine4
 	States
 	{
 	Spawn:
-		FIB4 O 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIB4 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIB4 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 	Pose1:
@@ -1252,7 +1277,7 @@ class TMMarine4G : TMMarine4B
 	States
 	{
 	Spawn:
-		FIG4 O 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIG4 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIG4 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1268,7 +1293,7 @@ class TMMarine4R : TMMarine4B
 	States
 	{
 	Spawn:
-		FSR4 O 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FSR4 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FSR4 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1284,7 +1309,7 @@ class TMMarine4Y : TMMarine4B
 	States
 	{
 	Spawn:
-		FIY4 O 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIY4 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIY4 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1300,11 +1325,12 @@ class TMWound1: Actor
 		DistanceCheck "boa_scenelod";
 		Scale 0.65;
 		+NOBLOCKMAP
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		FIN5 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIN5 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIN5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4");
 		Stop;
@@ -1335,7 +1361,7 @@ class TMWound2 : TMWound1
 	States
 	{
 	Spawn:
-		FIB5 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIB5 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIB5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4");
 		Stop;
@@ -1366,7 +1392,7 @@ class TMWound3 : TMWound1
 	States
 	{
 	Spawn:
-		FIG5 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIG5 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIG5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4");
 		Stop;
@@ -1397,7 +1423,7 @@ class TMWound4 : TMWound1
 	States
 	{
 	Spawn:
-		FSR5 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FSR5 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FSR5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4");
 		Stop;
@@ -1428,7 +1454,7 @@ class TMWound5 : TMWound1
 	States
 	{
 	Spawn:
-		FIY5 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		FIY5 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		FIY5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4");
 		Stop;

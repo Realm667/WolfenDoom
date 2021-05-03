@@ -516,7 +516,6 @@ class SmokeMonster : Base
 	//$Color 4
 	//$Sprite SMMOA0
 	Base.BossIcon "BOSSICO3";
-	Base.Shadow 0;  //needed for shadows
 	Tag "$TAGBOSSOCCULT";
 	Health 3000;
 	Height 56;
@@ -530,6 +529,7 @@ class SmokeMonster : Base
 	MeleeThreshold 192;
 	Monster;
 	+BOSS
+	-CASTSPRITESHADOW  //needed for shadows
 	+DONTFALL
 	+DONTHARMCLASS
 	+DONTMORPH
@@ -770,7 +770,6 @@ class ZyklonMonster : Nazi
 	//$Sprite ZMMOA0
 	//$Color 4
 	Base.BossIcon "BOSSICO3";
-	Base.Shadow 0;  //needed for shadows
 	Tag "$TAGBOSSOCCULT";
 	Health 4500;
 	WoundHealth 2500;
@@ -780,6 +779,7 @@ class ZyklonMonster : Nazi
 	Speed 6;
 	+ALLOWPAIN
 	+BOSS
+	-CASTSPRITESHADOW  //needed for shadows
 	+DONTFALL
 	+DONTHARMCLASS
 	+DONTMORPH

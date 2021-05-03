@@ -235,11 +235,12 @@ class DSA1Female : Dogse
 		//$Title Arkania's Female Characters (Easteregg)
 		Height 75;
 		Scale 0.13;
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		ARKA A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), Scale.Y); A_GiveInventory("Z_ShadeMe",0); }
+		ARKA A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), Scale.Y);
 	Randomize:
 		ARKA A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12");
 		Stop;
@@ -289,11 +290,12 @@ class DSA1Male : Dogse
 		//$Title Arkania's Male Characters (Easteregg)
 		Height 75;
 		Scale 0.13;
+		+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		ARKA B 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), Scale.Y); A_GiveInventory("Z_ShadeMe",0); }
+		ARKA B 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), Scale.Y);
 	Randomize:
 		ARKA B 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12");
 		Stop;

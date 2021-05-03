@@ -28,6 +28,7 @@ class TMCivBase: Actor
 		DistanceCheck "boa_scenelod";
 		Scale 0.65;
 		+NOBLOCKMAP
+		+CASTSPRITESHADOW
 	}
 }
 
@@ -41,7 +42,7 @@ class TMCivFemale1 : TMCivBase
 	States
 	{
 	Spawn:
-		FEM1 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.58, 0.63) ); A_GiveInventory("Z_ShadeMe",0); }
+		FEM1 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.58, 0.63) );
 	Randomize:
 		FEM1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9");
 		Stop;
@@ -89,7 +90,7 @@ class TMCivFemale2 : TMCivFemale1
 	States
 	{
 	Spawn:
-		FEM2 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.58, 0.63) ); A_GiveInventory("Z_ShadeMe",0); }
+		FEM2 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.58, 0.63) );
 	Randomize:
 		FEM2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9");
 		Stop;
@@ -105,7 +106,7 @@ class TMCivFemale3 : TMCivFemale1
 	States
 	{
 	Spawn:
-		FEM3 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.58, 0.63) ); A_GiveInventory("Z_ShadeMe",0); }
+		FEM3 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.58, 0.63) );
 	Randomize:
 		FEM3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9");
 		Stop;
@@ -121,7 +122,7 @@ class TMCivFemale4 : TMCivFemale1
 	States
 	{
 	Spawn:
-		FEM4 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.58, 0.63) ); A_GiveInventory("Z_ShadeMe",0); }
+		FEM4 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.58, 0.63) );
 	Randomize:
 		FEM4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9");
 		Stop;
@@ -137,7 +138,7 @@ class TMCivMale1 : TMCivBase
 	States
 	{
 	Spawn:
-		MAL1 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		MAL1 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		MAL1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13");
 		Stop;
@@ -199,7 +200,7 @@ class TMCivMale2 : TMCivMale1
 	States
 	{
 	Spawn:
-		MAL2 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		MAL2 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		MAL2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13");
 		Stop;
@@ -215,7 +216,7 @@ class TMCivMale3 : TMCivMale1
 	States
 	{
 	Spawn:
-		MAL3 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		MAL3 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		MAL3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13");
 		Stop;
@@ -231,7 +232,7 @@ class TMCivMale4 : TMCivMale1
 	States
 	{
 	Spawn:
-		MAL4 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		MAL4 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		MAL4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13");
 		Stop;
@@ -247,7 +248,7 @@ class TMCivMale5 : TMCivMale1
 	States
 	{
 	Spawn:
-		MAL5 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		MAL5 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		MAL5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13");
 		Stop;
@@ -263,7 +264,7 @@ class TMCivMale6 : TMCivBase
 	States
 	{
 	Spawn:
-		MHA1 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		MHA1 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		MHA1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
@@ -328,7 +329,7 @@ class TMCivMale7 : TMCivMale6
 	States
 	{
 	Spawn:
-		MHA2 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		MHA2 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		MHA2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
@@ -344,7 +345,7 @@ class TMCivMale8 : TMCivMale6
 	States
 	{
 	Spawn:
-		MHA3 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		MHA3 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		MHA3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
@@ -360,7 +361,7 @@ class TMCivMale9 : TMCivMale6
 	States
 	{
 	Spawn:
-		MHA4 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		MHA4 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		MHA4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
@@ -377,7 +378,7 @@ class TMCivMale10 : TMCivMale6
 	States
 	{
 	Spawn:
-		MHA1 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		MHA1 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		MHA1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
@@ -418,7 +419,7 @@ class TMCivGirl1 : TMCivBase
 	States
 	{
 	Spawn:
-		CFL1 A 0 NODELAY { A_SetScale(Scale.X, frandom(0.58, 0.63) ); A_GiveInventory("Z_ShadeMe",0); }
+		CFL1 A 0 NODELAY A_SetScale(Scale.X, frandom(0.58, 0.63) );
 	Randomize:
 		CFL1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
@@ -473,7 +474,7 @@ class TMCivGirl2 : TMCivGirl1
 	States
 	{
 	Spawn:
-		CFL2 A 0 NODELAY { A_SetScale(Scale.X, frandom(0.58, 0.63) ); A_GiveInventory("Z_ShadeMe",0); }
+		CFL2 A 0 NODELAY A_SetScale(Scale.X, frandom(0.58, 0.63) );
 	Randomize:
 		CFL2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
@@ -502,7 +503,7 @@ class TMCivGirl3 : TMCivGirl1
 	States
 	{
 	Spawn:
-		CFL3 A 0 NODELAY { A_SetScale(Scale.X, frandom(0.58, 0.63) ); A_GiveInventory("Z_ShadeMe",0); }
+		CFL3 A 0 NODELAY A_SetScale(Scale.X, frandom(0.58, 0.63) );
 	Randomize:
 		CFL3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
@@ -531,7 +532,7 @@ class TMCivGirl4 : TMCivGirl1
 	States
 	{
 	Spawn:
-		CFL4 A 0 NODELAY { A_SetScale(Scale.X, frandom(0.58, 0.63) ); A_GiveInventory("Z_ShadeMe",0); }
+		CFL4 A 0 NODELAY A_SetScale(Scale.X, frandom(0.58, 0.63) );
 	Randomize:
 		CFL4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
@@ -560,7 +561,7 @@ class TMCivBoy1 : TMCivGirl1
 	States
 	{
 	Spawn:
-		CHL1 A 0 NODELAY { A_SetScale(Scale.X, frandom(0.58, 0.63) ); A_GiveInventory("Z_ShadeMe",0); }
+		CHL1 A 0 NODELAY A_SetScale(Scale.X, frandom(0.58, 0.63) );
 	Randomize:
 		CHL1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
@@ -589,7 +590,7 @@ class TMCivBoy2 : TMCivGirl1
 	States
 	{
 	Spawn:
-		CHL2 A 0 NODELAY { A_SetScale(Scale.X, frandom(0.58, 0.63) ); A_GiveInventory("Z_ShadeMe",0); }
+		CHL2 A 0 NODELAY A_SetScale(Scale.X, frandom(0.58, 0.63) );
 	Randomize:
 		CHL2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
@@ -618,7 +619,7 @@ class TMCivBoy3 : TMCivGirl1
 	States
 	{
 	Spawn:
-		CHL3 A 0 NODELAY { A_SetScale(Scale.X, frandom(0.58, 0.63) ); A_GiveInventory("Z_ShadeMe",0); }
+		CHL3 A 0 NODELAY A_SetScale(Scale.X, frandom(0.58, 0.63) );
 	Randomize:
 		CHL3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
@@ -647,7 +648,7 @@ class TMCivBoy4 : TMCivGirl1
 	States
 	{
 	Spawn:
-		CHL4 A 0 NODELAY { A_SetScale(Scale.X, frandom(0.58, 0.63) ); A_GiveInventory("Z_ShadeMe",0); }
+		CHL4 A 0 NODELAY A_SetScale(Scale.X, frandom(0.58, 0.63) );
 	Randomize:
 		CHL4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
@@ -676,7 +677,7 @@ class TMCivExtra1 : TMCivBase
 	States
 	{
 	Spawn:
-		XTR1 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		XTR1 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		XTR1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16");
 		Stop;
@@ -740,7 +741,7 @@ class TMCivExtra2 : TMCivExtra1
 	States
 	{
 	Spawn:
-		XTR2 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		XTR2 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		XTR2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16");
 		Stop;
@@ -756,7 +757,7 @@ class TMCivExtra3 : TMCivExtra1
 	States
 	{
 	Spawn:
-		XTR3 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		XTR3 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		XTR3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose18","Pose19","Pose20");
 		Stop;
@@ -784,7 +785,7 @@ class TMCivExtra4 : TMCivExtra1
 	States
 	{
 	Spawn:
-		XTR4 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		XTR4 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		XTR4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose18","Pose19","Pose20");
 		Stop;
@@ -812,7 +813,7 @@ class TMCivExtra5 : TMCivExtra1
 	States
 	{
 	Spawn:
-		XTR5 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		XTR5 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		XTR5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose18","Pose19","Pose20");
 		Stop;
@@ -840,7 +841,7 @@ class TMCivExtra6 : TMCivExtra1
 	States
 	{
 	Spawn:
-		XTR6 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		XTR6 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		XTR6 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -904,7 +905,7 @@ class TMCivExtra7 : TMCivExtra1
 	States
 	{
 	Spawn:
-		XTR7 A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		XTR7 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		XTR7 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose18","Pose19","Pose20","Pose21","Pose22","Pose23","Pose24","Pose25","Pose26","Pose27","Pose28","Pose29","Pose30","Pose31","Pose32");
 		Stop;
@@ -1024,7 +1025,7 @@ class TMCivExtra8 : TMCivExtra1
 	States
 	{
 	Spawn:
-		HOBO A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) ); A_GiveInventory("Z_ShadeMe",0); }
+		HOBO A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
 	Randomize:
 		HOBO A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;

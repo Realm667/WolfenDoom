@@ -524,12 +524,12 @@ class CKPoisonSlugPoison : CKBaseEnemy
 		Radius 8;
 		Height 0.5;
 		Scale 3.0;
+		-CASTSPRITESHADOW
 		+FLATSPRITE
 		+NOTAUTOAIMED
 		-COUNTKILL
 		-SHOOTABLE
 		CKBaseEnemy.StunTime 0;
-		CKBaseEnemy.NoShadow 1;
 	}
 	States
 	{

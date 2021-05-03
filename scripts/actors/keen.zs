@@ -34,13 +34,10 @@ class CKBaseEnemy : Actor
 
 	Sound touchsound;
 
-	bool noshadow;
-
 	Property StunTime:stuntime;
 	Property StunFrames:stunframes;
 	Property WakeOnTouch:wakeontouch;
 	Property TouchSound:touchsound;
-	Property NoShadow:noshadow;
 
 	Default
 	{
@@ -50,6 +47,7 @@ class CKBaseEnemy : Actor
 		MaxDropoffHeight 64;
 		MaxStepHeight 48;
 		Scale 2.0;
+		+CASTSPRITESHADOW
 		+DONTTHRUST
 		+FLOORCLIP
 		+LOOKALLAROUND
@@ -3468,12 +3466,12 @@ class CKSpearDown : CKBaseEnemy
 		Damage 0;
 		Radius 8;
 		Height 0;
+		-CASTSPRITESHADOW
 		+NOGRAVITY
 		+NOTAUTOAIMED
 		-COUNTKILL
 		-SHOOTABLE
 		CKBaseEnemy.StunTime 0;
-		CKBaseEnemy.NoShadow 1;
 	}
 
 	States
