@@ -758,10 +758,6 @@ class InventoryHolder play
 		// Don't "hold" the token which caused this to "hold" the player's
 		// inventory.
 		if (item == holder ||
-			// "Holding" a Z_ShadeMe will result in reading/writing a null
-			// pointer. Besides, sprite shadows will become a native GZDoom
-			// engine feature in the future.
-			item is "Z_ShadeMe" ||
 			// Don't "hold" the player's stamina (used for sprinting and
 			// kicking).
 			item is "Stamina" ||

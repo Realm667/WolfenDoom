@@ -299,6 +299,7 @@ class TankBase : VehicleBase
 		+AVOIDMELEE
 		+BOSS
 		+BOSSDEATH
+		-CASTSPRITESHADOW
 		+COUNTKILL
 		+DONTMORPH
 		+FLOORCLIP
@@ -340,8 +341,6 @@ class TankBase : VehicleBase
 
 	override void PostBeginPlay()
 	{
-		A_GiveInventory("Z_DontShadeMe");
-
 		// Spawn everything in neutral orientation
 		pitch = 0;
 		roll = 0;
