@@ -34,15 +34,15 @@ class BoASprinting : Inventory
 	Property ExhaustionStamina:exhaustionthreshold;
 	Property GaspSound:gaspsound;
 
-	FlagDef AFFECTSIDEMOVE:flags, 0; // Affects strafing speed
-	FlagDef AFFECTFORWARDONLY:flags, 1; // Affects only forward movement, not backward
-	FlagDef ALLOWCROUCH:flags, 2; // Allow sprinting while crouched
+	FlagDef AnyDirection:flags, 0; // Allow sprinting while moving sideways
+	FlagDef AffectForwardOnly:flags, 1; // Affects only forward movement, not backwards or sideways
+	FlagDef AllowCrouch:flags, 2; // Allow sprinting while crouched
 
 	Default
 	{
 		BoASprinting.ExhaustionStamina 25;
 		BoASprinting.GaspSound "player/breathing";
-		+BoASprinting.AffectSideMove
+		+BoASprinting.AffectForwardOnly
 	}
 
 	override void Tick()
@@ -69,11 +69,8 @@ class BoASprinting : Inventory
 		PlayerPawn(owner).forwardmove1 = PlayerPawn(owner).Default.forwardmove1;
 		PlayerPawn(owner).forwardmove2 = PlayerPawn(owner).Default.forwardmove1 / 2; // Internal running code multiplies by 2
 
-		if (bAffectSideMove)
-		{
-			PlayerPawn(owner).sidemove1 = PlayerPawn(owner).Default.sidemove1;
-			PlayerPawn(owner).sidemove2 = PlayerPawn(owner).Default.sidemove1 / 2;
-		}
+		PlayerPawn(owner).sidemove1 = PlayerPawn(owner).Default.sidemove1;
+		PlayerPawn(owner).sidemove2 = PlayerPawn(owner).Default.sidemove1 / 2;
 
 		// Reset to full stamina if noclipping, and increase base speed
 		if (owner.player.cheats & (CF_NOCLIP | CF_NOCLIP2))
@@ -91,7 +88,7 @@ class BoASprinting : Inventory
 		if (
 			run &&
 			(
-				(bAffectSideMove && cmd.sidemove) || // Check if player is strafing, if that flag is set
+				(bAnyDirection && cmd.sidemove) || // Check if player is strafing, if that flag is set
 				(
 					cmd.forwardmove && // Or if player is moving forward or backward
 					(!bAffectForwardOnly || cmd.forwardmove > 0) // And only forward, if that flag is set
@@ -106,12 +103,12 @@ class BoASprinting : Inventory
 			if (cl_run)
 			{ // Change walking speed if cl_run set
 				PlayerPawn(owner).forwardmove1 = PlayerPawn(owner).Default.forwardmove1 * 2;
-				if (bAffectSideMove) { PlayerPawn(owner).sidemove1 = PlayerPawn(owner).Default.sidemove1 * 2; }
+				PlayerPawn(owner).sidemove1 = PlayerPawn(owner).Default.sidemove1 * 2;
 			}
 			else
 			{ // Otherwise update run speed
 				PlayerPawn(owner).forwardmove2 = PlayerPawn(owner).Default.forwardmove1;
-				if (bAffectSideMove) { PlayerPawn(owner).sidemove2 = PlayerPawn(owner).Default.sidemove1; }
+				PlayerPawn(owner).sidemove2 = PlayerPawn(owner).Default.sidemove1;
 			}
 
 			// Don't use stamina if stamina check is disabled or if Totale Macht/Berserk is active
