@@ -20,7 +20,7 @@
  * SOFTWARE.
 **/
 
-class SafeHandler : EventHandler
+class InteractionHandler : EventHandler
 {
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -47,5 +47,4 @@ class SafeHandler : EventHandler
 		}
 
 	}
-
 }
