@@ -37,12 +37,13 @@ class BoASprinting : Inventory
 	FlagDef AFFECTSIDEMOVE:flags, 0; // Affects strafing speed
 	FlagDef AFFECTFORWARDONLY:flags, 1; // Affects only forward movement, not backward
 	FlagDef ALLOWCROUCH:flags, 2; // Allow sprinting while crouched
+	FlagDef ANYDIRECTION:flags, 3; // Allow sprinting in any direction
 
 	Default
 	{
 		BoASprinting.ExhaustionStamina 25;
 		BoASprinting.GaspSound "player/breathing";
-		+BoASprinting.AFFECTSIDEMOVE;
+		+BoASprinting.AffectSideMove
 	}
 
 	override void Tick()
@@ -87,6 +88,14 @@ class BoASprinting : Inventory
 		}
 
 		bool run = cmd.buttons & BT_SPEED & ~cl_run;
+		if (bAnyDirection)
+		{
+			run = run && (cmd.sidemove || cmd.forwardmove);
+		}
+		else
+		{
+			run = run && max(0, cmd.forwardmove);
+		}
 
 		if (
 			run &&
