@@ -82,6 +82,7 @@ class BoAPlayer : PlayerPawn
 
 	Default
 	{
+		+CASTSPRITESHADOW
 		+DONTTRANSLATE //Needed to fix Camp uniform palette - ozy81
 		+THRUSPECIES // Needed for swimming through ActorBlockers
 		Species "Player";
@@ -109,7 +110,7 @@ class BoAPlayer : PlayerPawn
 		Player.AttackZOffset 24;
 		Player.DisplayName "William Blazkowicz";
 		Player.CrouchSprite "PLYC";
-		Player.SideMove 1.0, 0.5;
+		Player.SideMove 1.0, 1.0;
 		Player.ForwardMove 1.0, 1.0;
 		Player.ViewBob 0.44;
 		Player.WeaponSlot 1, "KnifeSilent", "Shovel", "Firebrand", "AstrosteinMelee"; //, "FakeID";
@@ -269,17 +270,10 @@ class BoAPlayer : PlayerPawn
 				{
 					if (!CountInv("Billy"))
 					{
-						// Do inventory checks
-//						ACS_NamedExecuteAlways("DoSprinting_Wrapper", 0);
-//						ACS_NamedExecuteAlways("DoStaminaCheck_Wrapper", 0);
-
 						// Do visual effects
 						ACS_NamedExecuteAlways("DoFlinchRecovery_Wrapper", 0);
 						ACS_NamedExecuteAlways("DoTiltEffect_Wrapper", 0);
 					}
-
-					// Do sound effects
-//					ACS_NamedExecuteAlways("DoFootstepSounds_Wrapper", 0);
 				}
 			}
 		}

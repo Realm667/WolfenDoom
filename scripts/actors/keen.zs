@@ -34,13 +34,10 @@ class CKBaseEnemy : Actor
 
 	Sound touchsound;
 
-	bool noshadow;
-
 	Property StunTime:stuntime;
 	Property StunFrames:stunframes;
 	Property WakeOnTouch:wakeontouch;
 	Property TouchSound:touchsound;
-	Property NoShadow:noshadow;
 
 	Default
 	{
@@ -50,6 +47,7 @@ class CKBaseEnemy : Actor
 		MaxDropoffHeight 64;
 		MaxStepHeight 48;
 		Scale 2.0;
+		+CASTSPRITESHADOW
 		+DONTTHRUST
 		+FLOORCLIP
 		+LOOKALLAROUND
@@ -753,7 +751,7 @@ class KeenPlayer : PlayerPawn
 		else
 		{
 			// Limit what you can give, since there is no inventory bar available - Player should be able to press '+use' to enable/disable pogostick, and that's it!
-			if (name.left(2) ~== "CK" || name.left(5) ~== "Power") { GiveInventory(type, amount, true); }
+			if (name.left(2) ~== "CK" || name.left(5) ~== "Power" || name.left(3) ~== "BoA") { GiveInventory(type, amount, true); }
 			else if (PlayerNumber() == consoleplayer)
 				A_Log(String.Format("Can't give item \"%s\" while you are Commander Keen!\n", name));
 		}
@@ -879,6 +877,9 @@ class Billy : PowerMorph
 // Should we default Keen to third-person view??
 //			owner.player.cheats |= CF_CHASECAM;
 
+			owner.TakeInventory("BoASprinting", 1);
+			owner.TakeInventory("BoAHeartBeat", 1);
+
 			// Save the standard Doom-style armor values.  Doesn't support Hexen armor.
 			BasicArmor a = BasicArmor(owner.FindInventory("BasicArmor"));
 			if (a)
@@ -909,6 +910,9 @@ class Billy : PowerMorph
 			// Restore pitch clamping, since this doesn't get reset otherwise
 			MorphedPlayer.MinPitch = -90;
 			MorphedPlayer.MaxPitch = 90;
+
+			// Reset the default inventory items (effects, shaders, etc.)
+			InventoryClearHandler.GiveDefaultInventory(MorphedPlayer.mo, true);
 
 			// Restore armor amount and savepercent
 			MorphedPlayer.mo.SetInventory("BasicArmor", armor);
@@ -3468,12 +3472,12 @@ class CKSpearDown : CKBaseEnemy
 		Damage 0;
 		Radius 8;
 		Height 0;
+		-CASTSPRITESHADOW
 		+NOGRAVITY
 		+NOTAUTOAIMED
 		-COUNTKILL
 		-SHOOTABLE
 		CKBaseEnemy.StunTime 0;
-		CKBaseEnemy.NoShadow 1;
 	}
 
 	States

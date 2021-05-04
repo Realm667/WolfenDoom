@@ -54,9 +54,6 @@
 	- Integer value that sets the range from the spawn point that this actor will
 	  wander while it is idle (normally only on spawn).  Used by dogs and sharks.
 
-	Base.Shadow
-	- Boolean value that sets whether or not the actor receives a sprite shadow
-
 	Base.LightThreshold
 	- Integer value that determines the light level at which the actor becomes
 	  afraid and runs away from the light
@@ -265,7 +262,6 @@ class Base : Actor
 	State DodgeState;
 	String BossIcon;
 	bool noheal;
-	bool shadow;
 	bool swimmer;
 	bool user_DrawHealthBar;
 	bool user_ForceWeaponDrop;
@@ -314,7 +310,6 @@ class Base : Actor
 	Property LightThreshold:lightthreshold;
 	Property LoiterDistance:loiterdistance;
 	Property NoMedicHeal:noheal;
-	Property Shadow:shadow;
 	Property Swimmer:swimmer;
 	Property OnCompass:user_oncompass;
 	Property NoFear:nofear;
@@ -322,7 +317,7 @@ class Base : Actor
 
 	Default
 	{
-		Base.Shadow 1;
+		+CASTSPRITESHADOW
 		Base.DespawnTime -1;
 		Activation THINGSPEC_Default | THINGSPEC_ThingTargets;
 	}
@@ -1863,7 +1858,7 @@ class Nazi : Base
 		{
 			if (!closestplayer) { closestplayer = FindClosestPlayer(self, IgnoreFriendlies:!bFriendly); }
 
-			if (CheckSight(lastheard, true)) { SetState(SeeState); } // If an alerting actor is in sight, become active
+			if (lastheard && CheckSight(lastheard, true)) { SetState(SeeState); } // If an alerting actor is in sight, become active
 			else if (activationcount == 0 && !CanBeSeen() && closestplayer && closestplayer.IsVisible(self, true)) // if you haven't been used yet and there are no other enemies around
 			{
 				A_Face(closestplayer);

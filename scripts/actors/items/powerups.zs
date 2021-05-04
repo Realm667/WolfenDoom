@@ -562,9 +562,9 @@ class DisguiseToken : CustomInventory
 	double sidemove1, sidemove2;
 	String HUDsprite;
 	SpriteID basesprite, crouchsprite;
-	bool notarget;
 	int notargettimeout;
 	Name playersoundclass;
+	int flags;
 
 	Property ViewHeight:viewheight;
 	Property PlayerScale:playerscale;
@@ -572,8 +572,10 @@ class DisguiseToken : CustomInventory
 	Property ForwardMove:forwardmove1, forwardmove2;
 	Property SideMove:sidemove1, sidemove2;
 	Property HUDSprite:HUDsprite;
-	Property NoTarget:notarget;
 	Property PlayerSoundClass:playersoundclass;
+
+	FlagDef NOTARGET:flags, 0;
+	FlagDef ALLOWSPRINT:flags, 1;
 
 	Default
 	{
@@ -583,9 +585,10 @@ class DisguiseToken : CustomInventory
 		DisguiseToken.ForwardMove -1, -1;
 		DisguiseToken.SideMove -1, -1;
 		DisguiseToken.HUDSprite "STF"; // Default to using the default mugshot
-		DisguiseToken.NoTarget True; // If True, disguise hides player from Nazis.  If False, player just uses alternate skin but is fired at normally.
 		DropItem "NullWeapon"; // Misappropriate DropItem to list weapons that can be equipped without breaking disguise
 		DropItem "FakeID", 1; // Drop probability is used as a flag field; set to 1 to allow this weapon to be fired in disguise and to not alert enemies
+		+DisguiseToken.NoTarget; // If set, disguise hides player from Nazis.  If False, player just uses alternate skin but is fired at normally.
+		+DisguiseToken.AllowSprint; // If set, allows the player to sprint while disguised
 	}
 
 	States
@@ -641,9 +644,19 @@ class DisguiseToken : CustomInventory
 		if (forwardmove1 > -1 && forwardmove2 > -1) { p.forwardmove1 = forwardmove1; p.forwardmove2 = forwardmove2; }
 		if (sidemove1 > -1 && sidemove2 > -1) { p.sidemove1 = sidemove1; p.sidemove2 = sidemove2; }
 
-		if (notarget) { SetNoTarget(); }
+		if (bNoTarget) { SetNoTarget(); }
 		
 		if (playersoundclass) { p.SoundClass = playersoundclass; }
+	}
+
+	override bool TryPickup (in out Actor toucher)
+	{
+		if (toucher && !bAllowSprint)
+		{
+			toucher.TakeInventory("BoASprinting", 1);
+		}
+
+		return Super.TryPickup(toucher);
 	}
 
 	override void DepleteOrDestroy()
@@ -666,11 +679,14 @@ class DisguiseToken : CustomInventory
 		p.sidemove2 = p.Default.sidemove2;
 		p.soundclass = p.Default.soundclass;
 
-		if (notarget)
+		if (bNoTarget)
 		{
 			p.player.cheats &= ~CF_NOTARGET;
 			p.speed = owner.Default.speed;
 		}
+
+		// Reset the default inventory items (effects, shaders, etc.)
+		InventoryClearHandler.GiveDefaultInventory(p);
 
 		Super.DepleteOrDestroy();
 	}
@@ -758,10 +774,6 @@ class InventoryHolder play
 		// Don't "hold" the token which caused this to "hold" the player's
 		// inventory.
 		if (item == holder ||
-			// "Holding" a Z_ShadeMe will result in reading/writing a null
-			// pointer. Besides, sprite shadows will become a native GZDoom
-			// engine feature in the future.
-			item is "Z_ShadeMe" ||
 			// Don't "hold" the player's stamina (used for sprinting and
 			// kicking).
 			item is "Stamina" ||
@@ -854,7 +866,7 @@ class InventoryHolder play
 			{
 				Console.Printf("Attempting to restore %s...", itemTypeNames[i]);
 			}
-			RestoreItem(ii, receiver);
+			if (ii) { RestoreItem(ii, receiver); }
 		}
 	}
 
@@ -892,7 +904,7 @@ class RyanToken : DisguiseToken
 		DisguiseToken.SideMove 0.9, 0.45;
 		DisguiseToken.HUDSprite "RTF"; // Ryan Mugshot
 		DisguiseToken.PlayerSoundClass "ryan"; // soundclass
-		DisguiseToken.NoTarget False; // Don't hide player from enemies
+		-DisguiseToken.NOTARGET; // Don't hide player from enemies
 	}
 
 	States
@@ -923,8 +935,8 @@ class RyanToken : DisguiseToken
 			// Console.Printf("Health: %d %d", p.Health, p.player.Health);
 			if (p && p.player)
 			{
-				let invclear = InventoryClearHandler(EventHandler.Find("InventoryClearHandler"));
-				if (invclear) { invclear.ResetPlayerInventory(toucher); }
+				// Reset the default inventory items (effects, shaders, etc.)
+				InventoryClearHandler.GiveDefaultInventory(toucher);
 
 				toucher.A_GiveInventory("KnifeSilent", 1);
 				
@@ -1019,8 +1031,9 @@ class HQTrainingCourse : Inventory
 
 			if (p && p.player)
 			{
-				let invclear = InventoryClearHandler(EventHandler.Find("InventoryClearHandler"));
-				if (invclear) { invclear.ResetPlayerInventory(toucher); }
+				// Reset the default inventory items (effects, shaders, etc.)
+				InventoryClearHandler.GiveDefaultInventory(p);
+
 				p.InvSel = p.InvFirst = p.FirstInv();
 				// Needed so that players can switch weapons.
 				p.player.ReadyWeapon = null;

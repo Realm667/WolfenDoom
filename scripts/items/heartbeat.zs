@@ -88,7 +88,7 @@ class BoAHeartBeat : Inventory
 
 	virtual bool PlayHeartBeat(in out int heartbeatdelay, double volume)
 	{
-		if (!heartbeatdelay) { return true; }
+		if (heartbeatdelay < level.time) { return true; }
 
 		if (heartbeatdelay == level.time)
 		{

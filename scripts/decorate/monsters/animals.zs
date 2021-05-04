@@ -620,6 +620,7 @@ class Shark : Base
 	FloatSpeed 1;
 	DamageFunction (random(1,5)*5);
 	Monster;
+	-CASTSPRITESHADOW  //needed for shadows
 	-CANPUSHWALLS
 	-CANUSEWALLS
 	+FLOAT
@@ -633,7 +634,6 @@ class Shark : Base
 	SeeSound "shark/sight";
 	DeathSound "shark/death";
 	ActiveSound "shark/active";
-	Base.Shadow 0;  //needed for shadows
 	}
 	States
 	{

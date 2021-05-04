@@ -276,7 +276,7 @@ class ACSTools
 
 			if (
 				disguise &&
-				disguise.notarget &&
+				disguise.bNoTarget &&
 				mo.player.cheats & CF_NOTARGET
 			) { return true; }
 		}

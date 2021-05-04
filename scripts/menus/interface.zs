@@ -63,15 +63,18 @@ class CombinationSafe : BoAMenu
 	TextureID spinner, spinnerfront, spinnerback, background, turn;
 	Vector2 location, size, bgsize, screendimensions;
 	double scale, bgscale;
-	int angle, destangle, dir, olddir, set, count;
-	int keyactive;
+	int dir, olddir, set, count;
+	double angle, destangle;
+	int keyactive, keytime;
 	int combo[3], solution[3];
-	int speed, steps;
+	double speed;
+	int steps;
 	Safe s;
 	int initial;
 	int ticcount;
 	BrokenLines hintlines;
 	double hintx, hinty, hintlineheight;
+	int freespin;
 
 	override void Init(Menu parent)
 	{
@@ -94,7 +97,8 @@ class CombinationSafe : BoAMenu
 		s = Safe(players[consoleplayer].ConversationNPC);
 
 		steps = 24;
-		speed = (360 / steps) / 6;
+		speed = 360.0 / steps;
+		keytime = max(2, int(speed / 5));
 
 		if (s && !s.special)
 		{
@@ -121,6 +125,7 @@ class CombinationSafe : BoAMenu
 		menuactive = OnNoPause;
 
 		destangle = 360 * 3;
+		freespin = 3;
 		initial = 1;
 
 		String hintmessage = StringTable.Localize("SAFEHINT", false);
@@ -170,7 +175,7 @@ class CombinationSafe : BoAMenu
 					{
 						alpha = 0.5 + sin(((ticcount - 70) * 360 / 70 - 90) / 2);
 					}
-					else if (ticcount >= 35 && ticcount < 105)
+					else if (ticcount >= 35)
 					{
 						alpha = 1.0;
 					}
@@ -231,24 +236,24 @@ class CombinationSafe : BoAMenu
 			initial = 0;
 		}
 
-		if (keyactive)
+		if (keyactive == keytime - 1 || freespin)
 		{
-			S_StartSound("safe/dial", CHAN_7, CHANF_UI | CHANF_NOSTOP, 0.65);
+			S_StartSound("safe/dial", CHAN_7, CHANF_UI | CHANF_NOSTOP, 1.0);
 
 			if (destangle > angle)
 			{
-				angle += speed * 2;
+				angle += speed + speed * (!!freespin * 2);
 				dir = 1;
 
 				if (angle > 360)
 				{
 					angle -= 360;
-					count = max(0, count -1);
+					count = max(0, count - 1);
 				}
 			}
 			else if (destangle < angle)
 			{
-				angle -= speed * 2;
+				angle -= speed + speed * (!!freespin * 2);
 				dir = -1;
 
 				if (angle < 0)
@@ -256,16 +261,33 @@ class CombinationSafe : BoAMenu
 					angle += 360;
 				}
 			}
+
+			if (freespin > 0 && angle <= speed * 3)
+			{
+				freespin--;
+				if (freespin == 0) { angle = destangle = 0; }
+			}
 		}
-		else
+		else if (!keyactive)
 		{
 			destangle = angle - (angle % speed);
 			angle = destangle;
 		}
-// if (set < 3) { console.printf("%i >>> %i", (angle / (360 / steps)) % steps, solution[set]); }
+
+		if (boa_debugsafes && set < 3)
+		{
+			int at = int((angle / (360 / steps)) % steps);
+			String temp = String.Format("At: %i", at);
+
+			int next = solution[at == solution[set] ? min(2, set + 1) : set];
+			temp.AppendFormat("\nNext Number: %i", next);
+
+			console.printf(temp);
+		}
+
 		if (olddir && olddir != dir && set < 3)
 		{
-			combo[set] = (angle / (360 / steps)) % steps;
+			combo[set] = int((angle / (360 / steps)) % steps);
 
 			set++;
 			count++;
@@ -283,6 +305,8 @@ class CombinationSafe : BoAMenu
 
 	override bool MenuEvent(int mkey, bool fromcontroller)
 	{
+		if (keyactive || freespin > 0) { return false; }
+
 		switch (mkey)
 		{
 			case MKEY_Up:
@@ -294,7 +318,7 @@ class CombinationSafe : BoAMenu
 				// Attempt Open
 				if (set == 2)
 				{
-					combo[2] = angle / (360 / steps);
+					combo[2] = int((angle / (360 / steps)) % steps);
 					TryOpen();
 				}
 
@@ -306,13 +330,22 @@ class CombinationSafe : BoAMenu
 				return true;
 			case MKEY_Right:
 				// Turn Right
-				keyactive = 5;
+				if (angle == 0 && count == 0 && set == 0) { return false; } // Don't let the dial turn to the right in the beginning
+				
+				// Allow safe to open if you turn dial to right after setting combo correctly
+				if (set == 2)
+				{
+					combo[2] = int((angle / (360 / steps)) % steps);
+					TryOpen();
+				}
+
+				keyactive = keytime;
 				destangle = angle - speed * 4;
 
 				return true;
 			case MKEY_Left:
 				// Turn Left
-				keyactive = 5;
+				keyactive = keytime;
 				destangle = angle + speed * 4;
 
 				return true;
