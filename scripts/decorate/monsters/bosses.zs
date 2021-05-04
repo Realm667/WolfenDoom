@@ -2876,35 +2876,14 @@ class Longinus_Hitler : NaziBoss
 		Nazi.Healer 2;
 		Nazi.HealSound "creepy/born";
 		Nazi.HealDistance 256;
+		Alpha 0.0;
 	}
 	States
 	{
 	Appear:
 		SHI1 A 0 A_StartSound("hitlerghost/die", CHAN_AUTO, 0, 1.0);
-		"####" A 5 A_SetRenderStyle(0.01, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.05, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.10, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.15, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.20, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.25, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.30, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.35, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.40, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.45, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.50, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.55, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.60, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.65, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.70, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.75, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.80, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.85, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.90, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.95, STYLE_Translucent);
-		"####" A 1 A_SetRenderStyle(0.99, STYLE_Translucent);
-		"####" A 0 { A_StopSound(CHAN_AUTO); A_StartSound("hitlerghost/die", CHAN_AUTO, 0, 10.0); }
-		"####" A 5 A_SetRenderStyle(1, STYLE_NORMAL);
-		"####" A 1;
+		"####" A -1;
+		Stop;
 	Spawn:
 		SHI1 A 0;
 		"####" "#" 0 { user_incombat = TRUE; } //mxd
@@ -3081,6 +3060,44 @@ class Longinus_Hitler : NaziBoss
 	Dead:
 		SHI2 R 4 A_SetScale(max(Scale.X * 0.98, 1.0));
 		Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		SetStateLabel("Appear");
+
+		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		if (isFrozen()) { return; }
+
+		if (InStateSequence(CurState, FindState("Appear")))
+		{
+			bDormant = true;
+
+			alpha += 0.01;
+			A_SetRenderStyle(alpha, STYLE_Translucent);
+
+			if (alpha == 1.0)
+			{
+				A_StopSound(CHAN_AUTO);
+				A_StartSound("hitlerghost/die", CHAN_AUTO, 0, 10.0);
+				RestoreRenderStyle();
+
+				bDormant = false;
+
+				SetState(SpawnState);
+			}
+		}
+		else if (GetRenderStyle() != Default.GetRenderStyle())
+		{
+			alpha = 1.0;
+			RestoreRenderStyle();
+		}
+
+		Super.Tick();
 	}
 }
 
