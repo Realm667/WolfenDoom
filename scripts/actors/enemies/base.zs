@@ -1858,7 +1858,7 @@ class Nazi : Base
 		{
 			if (!closestplayer) { closestplayer = FindClosestPlayer(self, IgnoreFriendlies:!bFriendly); }
 
-			if (CheckSight(lastheard, true)) { SetState(SeeState); } // If an alerting actor is in sight, become active
+			if (lastheard && CheckSight(lastheard, true)) { SetState(SeeState); } // If an alerting actor is in sight, become active
 			else if (activationcount == 0 && !CanBeSeen() && closestplayer && closestplayer.IsVisible(self, true)) // if you haven't been used yet and there are no other enemies around
 			{
 				A_Face(closestplayer);
