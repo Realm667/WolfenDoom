@@ -150,7 +150,7 @@ class StealthBase : Actor
 			{
 				DisguiseToken disguise = DisguiseToken(players[playernum].mo.FindInventory("DisguiseToken", True));
 
-				if (disguise && disguise.notarget && !players[playernum].mo.FindInventory("DisguiseFailToken", True)) { players[playernum].cheats |= CF_NOTARGET; }
+				if (disguise && disguise.bNoTarget && !players[playernum].mo.FindInventory("DisguiseFailToken", True)) { players[playernum].cheats |= CF_NOTARGET; }
 				playernum = -1;
 			}
 		}
