@@ -1125,27 +1125,6 @@ class Base : Actor
 			ClearCounters();
 		}
 
-		// After initilization, handle skill level health alterations
-		//   For each each skill level below 'normal', reduce enemy health by specified percentage
-		//     So, for an enemy with 25 health normally, at the second skill level, it would have 16,
-		//     and at the first skill level it would have 10 (~66% of 16) (assuming the multiplier is 2/3)
-		//     This effectively takes a doberman from 3 hits with the knife to 2 on skill 1, to 1 on skill 0.
-
-		/*
-		double multiplier = 2. / 3; // Cut the health down to 2/3 its value for each skill level below normal
-		double skill = G_SkillPropertyInt(SKILLP_ACSReturn);
-
-		adjustedmaxhealth = health;
-
-		if (skill < 2) { // If skill 0 or 1
-			// Reduce the health by 1/3 for each skill level below normal
-			for (int i = 0; i < 2 - skill; i++) { adjustedmaxhealth = int(adjustedmaxhealth * multiplier); }
-
-			// Set the actor's health - cap minimum at 1 so that they don't die, just in case
-			A_SetHealth(max(adjustedmaxhealth, 1));
-		}
-		*/
-
 		if (bDormant) { loiterdistance = 0; } // Don't loiter if dormant.
 
 		// If it's a loiterer with no set goal, spawn a patrolpoint goal for it and make that the goal, then run around that point
