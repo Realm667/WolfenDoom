@@ -279,7 +279,7 @@ class EffectsManager : Thinker
 					// Skip empty blocks
 					if (!effectblocks[x][y]) { continue; }
 
-					bool forceremove = !multiplayer && (interval >  range / CHUNKSIZE); // Force removal if outside of the cull range (and not multiplayer)
+					bool forceremove = boa_culling && (!multiplayer && (interval >  range / CHUNKSIZE)); // Force removal if outside of the cull range (and not multiplayer)
 
 					// Delay culling if this chunk was force culled last time and is still outside of culling range
 					if (effectblocks[x][y].forceculled && forceremove) { continue; }
@@ -290,7 +290,7 @@ class EffectsManager : Thinker
 						count += CullChunk(effectblocks[x][y].indices, forceremove);
 					}
 					effectblocks[x][y].forceculled = forceremove;
-					effectblocks[x][y].cullinterval = interval;
+					effectblocks[x][y].cullinterval = !boa_culling ? 0 : interval;
 				}
 			}
 		}
@@ -371,6 +371,8 @@ class EffectsManager : Thinker
 			inrange = !forceremove;
 		}
 
+		if (!boa_culling) { inrange = true; }
+
 		if (inrange && !effects[i].ingame)
 		{
 			Actor effect = Actor.Spawn(effects[i].type, effects[i].position);
@@ -442,7 +444,11 @@ class EffectsManager : Thinker
 				}
 			}
 		}
-		else if (effects[i].effect && effects[i].effect is "CullActorBase") { CullActorBase(effects[i].effect).targetalpha = GetDistanceAlpha(effects[i].effect, dist, range); }
+		else if (effects[i].effect && effects[i].effect is "CullActorBase")
+		{
+			if (boa_culling) { CullActorBase(effects[i].effect).targetalpha = GetDistanceAlpha(effects[i].effect, dist, range); }
+			else { CullActorBase(effects[i].effect).targetalpha = effects[i].effect.Default.alpha; }
+		}
 
 		return effects[i].ingame;
 	}
