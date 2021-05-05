@@ -232,6 +232,20 @@ class Overlay : Thinker
 
 		return handler.AddOverlay(player, image, holdtime, intime, outtime, alpha, index, flags, angle, offsets);
 	}
+
+	// Wrapper for setting an overlay from ACS
+	// Used in C3M5_A subway crash sequence script
+	//  ScriptCall("Overlay", "ACSInit", "M_INJ", 0, 0, 175, 2.0);
+	static overlay ACSInit(Actor mo, String image, int holdtime, int intime, int outtime, double alpha = 1.0, uint index = 0, int flags = Overlay.Default, double angle = 0, Vector2 offsets = (0, 0))
+	{
+		if (!mo || !mo.player) { return null; }
+
+		let handler = UnderlayRenderer(EventHandler.Find("UnderlayRenderer"));
+		if (!handler) { return null; }
+
+		return handler.AddOverlay(mo.player, image, holdtime, intime, outtime, alpha, index, flags, angle, offsets);
+
+	}
 }
 
 class LoadScreen : StaticEventHandler
