@@ -847,7 +847,7 @@ class BoAStatusBar : BaseStatusBar
 			if (Base(mo))
 			{
 				LastIcon = Base(mo).BossIcon;
-				LastMaxHealth = Base(mo).adjustedmaxhealth;
+				LastMaxHealth = mo.GetSpawnHealth();
 			}
 			else { LastIcon = ""; }
 
