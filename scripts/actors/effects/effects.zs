@@ -203,14 +203,14 @@ class EffectsManager : Thinker
 
 	override void Tick()
 	{
-		if (level.time == 2)
+		if (level.maptime == 2)
 		{
 			CullAllEffects(); // Cull everything at map start
 
 			renderchunks = (MAPMAX / CHUNKSIZE) / 2;
 			interval = 0;
 		}
-		else if (level.time > 2)
+		else if (level.maptime > 2)
 		{
 			bool cull = false;
 			int x, y;
@@ -234,9 +234,16 @@ class EffectsManager : Thinker
 
 			if (cull || interval > 0)
 			{
-				CullEffects();
+				bool culled;
+				int cx, cy;
+				[culled, cx, cy] = CullEffects();
 
-				if (interval++ > renderchunks) { interval = 0; }
+				if (boa_debugculling && !culled)
+				{
+					console.printf("Last culled: %i, %i at interval %i", cx, cy, interval);
+				}
+
+				if (interval++ > renderchunks || !culled) { interval = 0; }
 			}
 		}
 	}
@@ -251,7 +258,7 @@ class EffectsManager : Thinker
 		return effectblocks[x][y].cullinterval, effectblocks[x][y].forceculled;
 	}
 
-	void CullEffects()
+	bool, int, int CullEffects()
 	{
 		int maxval = MAPMAX * 2 / CHUNKSIZE;
 
@@ -291,9 +298,15 @@ class EffectsManager : Thinker
 					}
 					effectblocks[x][y].forceculled = forceremove;
 					effectblocks[x][y].cullinterval = !boa_culling ? 0 : interval;
+
+					if (boa_cullactorlimit > 0 && count > boa_cullactorlimit) { return false, x, y; }
 				}
 			}
+
+			if (boa_debugculling && count) { console.printf("Spawned %i actors in interval %i", count, interval); }
 		}
+
+		return true, 0, 0;
 	}
 
 	int CullChunk(Array<int> indices, bool forceremove = false)
@@ -347,6 +360,7 @@ class EffectsManager : Thinker
 
 		bool inrange = false;
 		double dist, range;
+		bool ret = false;
 
 		range = effects[i].range <= 0 ? boa_sfxlod : effects[i].range;
 		range = clamp(min(range, boa_cullrange), 1024, 8192); // Minimum range is 1024, no matter what the CVARs are set to!  boa_cullrange overrides other CVARs.
@@ -411,6 +425,10 @@ class EffectsManager : Thinker
 				effects[i].ingame = true;
  
 				if (effect is "CullActorBase") { CullActorBase(effect).bWasCulled = true; }
+				else if (effect is "AlertLight") { AlertLight(effect).wasculled = true; }
+				else if (effect is "EffectBase") { EffectBase(effect).wasculled = true; }
+
+				ret = true;
 			}
 		}
 		else if (!inrange && effects[i].effect && !effects[i].effect.bDormant)
@@ -435,7 +453,7 @@ class EffectsManager : Thinker
 				effects[i].effect.A_RemoveChildren(TRUE, RMVF_MISC);
 
 				state FadeState = effects[i].effect.FindState("Fade");
-				if (interval && effects[i].effect.alpha > 0 && level.time > 35 && FadeState) { effects[i].effect.SetState(FadeState); }
+				if (interval && effects[i].effect.alpha > 0 && level.maptime > 35 && FadeState) { effects[i].effect.SetState(FadeState); }
 				else {
 					effects[i].effect = null;
 					effect.Destroy();
@@ -450,7 +468,7 @@ class EffectsManager : Thinker
 			else { CullActorBase(effects[i].effect).targetalpha = effects[i].effect.Default.alpha; }
 		}
 
-		return effects[i].ingame;
+		return ret;
 	}
 
 	void CullAllEffects()
@@ -559,6 +577,8 @@ class EffectSpawner : SwitchableDecoration
 
 class EffectBase : SimpleActor
 {
+	bool wasculled;
+
 	States
 	{
 		Inactive:
@@ -568,7 +588,7 @@ class EffectBase : SimpleActor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		EffectsManager.Add(self, boa_sfxlod);
+		if (!wasculled) { EffectsManager.Add(self, boa_sfxlod); }
 	}
 }
 
@@ -664,7 +684,7 @@ class GrassBase : CullActorBase
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		if (!bDontCull) { EffectsManager.Add(self, boa_grasslod); }
+		if (!bDontCull && !bWasCulled) { EffectsManager.Add(self, boa_grasslod); }
 	}
 }
 
@@ -673,7 +693,7 @@ class SceneryBase : CullActorBase
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		if (!bDontCull) { EffectsManager.Add(self, boa_scenelod, true); }
+		if (!bDontCull && !bWasCulled) { EffectsManager.Add(self, boa_scenelod, true); }
 	}
 }
 
@@ -685,7 +705,7 @@ class TreesBase : CullActorBase
 	{
 		Super.PostBeginPlay();
 		origPitch = pitch;
-		if (!bDontCull) { EffectsManager.Add(self, boa_treeslod, true); }
+		if (!bDontCull && !bWasCulled) { EffectsManager.Add(self, boa_treeslod, true); }
 	}
 
 	void A_3DPitchFix()
@@ -727,7 +747,7 @@ class VolumetricBase : CullActorBase
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		if (!bDontCull) { EffectsManager.Add(self, boa_scenelod); }
+		if (!bDontCull && !bWasCulled) { EffectsManager.Add(self, boa_scenelod); }
 	}
 }
 
@@ -771,7 +791,7 @@ class Blocker : CullActorBase
 
 		alpha = Default.alpha;
 
-		EffectsManager.Add(self, 256.0); // These are invisible, so only need to be spawned in when immediately near the player
+		if (!bWasCulled) { EffectsManager.Add(self, 256.0); } // These are invisible, so only need to be spawned in when immediately near the player
 	}
 }
 

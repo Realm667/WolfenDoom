@@ -93,7 +93,7 @@ class AlertLight : Actor
 {
 	double checkRadius;
 	double oldVisibility;
-	bool hasmaster;
+	bool hasmaster, wasculled;
 
 	Default
 	{
@@ -124,7 +124,7 @@ class AlertLight : Actor
 		}
 		if (!checkRadius) { checkRadius = 64; } // If nothing was set, use 64 map unit radius
 
-		EffectsManager.Add(self, checkRadius * 2, true); // Spawn the actor back in at twice its radius
+		if (!wasculled) { EffectsManager.Add(self, checkRadius * 2, true); } // Spawn the actor back in at twice its radius
 	}
 
 	void A_AddVisibility(Actor lighttarget = null, int minlight = 0)

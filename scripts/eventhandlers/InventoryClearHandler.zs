@@ -55,16 +55,10 @@ class InventoryClearHandler : EventHandler
 	// Static call to allow easy resetting of the default inventory items from actor code
 	static void GiveDefaultInventory(Actor mo, bool ignoreclass = false)
 	{
-		console.printF("called");
 		if (!mo) { return; }
-console.printF("finding");
-		let handler = InventoryClearHandler(EventHandler.Find("InventoryClearHandler"));
-		if (handler) { 
-			console.printF("resetting (%i)", ignoreclass);
-			handler.ResetPlayerInventory(mo, ignoreclass); }
-		else {console.printf("not found?");}
 
-		console.printF("done");
+		let handler = InventoryClearHandler(EventHandler.Find("InventoryClearHandler"));
+		if (handler) { handler.ResetPlayerInventory(mo, ignoreclass); }
 	}
 
 	static void SetShouldNotClear(bool shouldNotClear)
