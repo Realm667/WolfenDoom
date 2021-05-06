@@ -16,6 +16,7 @@
 #include "scripts/actors/effects/torches.zs"
 #include "scripts/actors/effects/grass.zs"
 #include "scripts/actors/effects/creepy.zs"
+#include "scripts/actors/effects/splash.zs"
 
 class EffectInfo // Should just be a struct, but we can't use structs in dynamic arrays...
 {
