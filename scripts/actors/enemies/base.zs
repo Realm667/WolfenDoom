@@ -906,6 +906,14 @@ class Base : Actor
 
 	override void Tick()
 	{
+		if (manager)
+		{
+			int cullinterval = manager.Culled(pos.xy);
+			if (cullinterval > 8 || cullinterval == -1) { Thinker.Tick(); return; }
+			else if (cullinterval > 6) { Super.Tick(); return; }
+		}
+		else { manager = EffectsManager.GetManager(); }
+
 		if (user_DrawHealthBar && !statnumchanged)
 		{
 			ChangeStatNum(Thinker.STAT_DEFAULT - 3); // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient
@@ -914,12 +922,6 @@ class Base : Actor
 
 		if (!globalfreeze && !level.Frozen)
 		{
-			if (manager)
-			{
-				int cullinterval = manager.Culled(pos.xy);
-				if (cullinterval > 4) { Super.Tick(); return; }
-			}
-
 			if (dodgetimeout > 0) { dodgetimeout--; }
 			if (crouchtimeout == 70) { crouchtimer++; }
 			if (crouchtimeout > 0) { crouchtimeout--; }
@@ -2762,13 +2764,16 @@ class Nazi : Base
 
 	override void Tick()
 	{
-		if (globalfreeze || level.Frozen || !interval) { return; }
-
 		if (manager)
 		{
 			int cullinterval = manager.Culled(pos.xy);
-			if (cullinterval > 4) { return; }
+			if (cullinterval > 8 || cullinterval == -1) { Thinker.Tick(); return; }
+			else if (cullinterval > 6) { Actor.Tick(); return; }
+			else if (cullinterval > 4) { Super.Tick(); return; }
 		}
+		else { manager = EffectsManager.GetManager(); }
+
+		if (globalfreeze || level.Frozen || !interval) { return; }
 
 		if (wasused)
 		{

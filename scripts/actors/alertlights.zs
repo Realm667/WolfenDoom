@@ -526,6 +526,7 @@ class StrobeEmitter : Actor
 	Color lightcolor;
 	int range;
 	transient FLineTraceData trace;
+	EffectsManager manager;
 
 	Property LightColor:lightcolor;
 	Property Range:range;
@@ -605,6 +606,8 @@ class StrobeEmitter : Actor
 			if (s) { sprite = s; }
 		}
 
+		manager = EffectsManager.GetManager();
+
 		Super.PostBeginPlay();
 	}
 
@@ -612,7 +615,17 @@ class StrobeEmitter : Actor
 	{
 		Super.Tick();
 
-		if (globalfreeze || level.Frozen || CheckSightOrRange(range * 1.5) || bDormant) { return; }
+		if (globalfreeze || level.Frozen || bDormant) { return; }
+
+		if (manager)
+		{
+			int interval;
+			bool forceculled;
+
+			[interval, forceculled] = manager.Culled(pos.xy);
+			if (forceculled || interval > range * 1.5 / 512.0) { return; }
+		}
+		else if (CheckSightOrRange(range * 1.5)) { return; }
 
 		// Spin the lights
 		if (light1) { light1.angle += Speed; }

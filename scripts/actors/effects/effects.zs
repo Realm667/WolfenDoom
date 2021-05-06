@@ -251,16 +251,31 @@ class EffectsManager : Thinker
 
 	int, bool Culled(Vector2 pos)
 	{
+		if (!boa_culling) { return 0, false; }
+
 		int x, y;
 		[x, y] = EffectBlock.GetBlock(pos.x, pos.y);
 
-		if (!effectblocks[x][y]) { return 0, false; }
-
+		if (!effectblocks[x][y]) { return -1, false; }
+	
 		return effectblocks[x][y].cullinterval, effectblocks[x][y].forceculled;
+	}
+
+	bool InRange(Vector3 pos, double range)
+	{
+		int interval;
+		bool forceculled;
+
+		[interval, forceculled] = Culled(pos.xy);
+		if (forceculled || interval > range / CHUNKSIZE || interval == -1) { return false; }
+
+		return true;
 	}
 
 	bool, int, int CullEffects()
 	{
+		bool ret = true;
+		int retx = 0, rety = 0;
 		int maxval = MAPMAX * 2 / CHUNKSIZE;
 
 		for (int p = 0; p < MAXPLAYERS; p++)
@@ -284,13 +299,17 @@ class EffectsManager : Thinker
 						(y != chunky - interval && y != chunky + interval)
 					) { continue; }
 
-					// Skip empty blocks
-					if (!effectblocks[x][y]) { continue; }
+					// Initialize any empty blocks so that interval and forcecull values will be set
+					if (!effectblocks[x][y]) { effectblocks[x][y] = New("EffectBlock"); }
 
 					bool forceremove = boa_culling && (!multiplayer && (interval >  range / CHUNKSIZE)); // Force removal if outside of the cull range (and not multiplayer)
 
 					// Delay culling if this chunk was force culled last time and is still outside of culling range
-					if (effectblocks[x][y].forceculled && forceremove) { continue; }
+					if (effectblocks[x][y].forceculled && forceremove)
+					{
+						effectblocks[x][y].cullinterval = interval;
+						continue;
+					}
 
 					// Don't cull chunks that are the same distance away as last time, or if our camera is outside of our body
 					if (players[p].camera != players[p].mo || effectblocks[x][y].cullinterval != interval || effectblocks[x][y].forceculled || forceremove)
@@ -300,14 +319,19 @@ class EffectsManager : Thinker
 					effectblocks[x][y].forceculled = forceremove;
 					effectblocks[x][y].cullinterval = !boa_culling ? 0 : interval;
 
-					if (boa_cullactorlimit > 0 && count > boa_cullactorlimit) { return false, x, y; }
+					if (boa_cullactorlimit > 0 && count > boa_cullactorlimit && !retx && !rety)
+					{
+						ret = false;
+						retx = x;
+						rety = y;
+					}
 				}
 			}
 
 			if (boa_debugculling && count) { console.printf("Spawned %i actors in interval %i", count, interval); }
 		}
 
-		return true, 0, 0;
+		return ret, retx, rety;
 	}
 
 	int CullChunk(Array<int> indices, bool forceremove = false)
