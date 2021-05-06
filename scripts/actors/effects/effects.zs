@@ -254,7 +254,7 @@ class EffectsManager : Thinker
 		int x, y;
 		[x, y] = EffectBlock.GetBlock(pos.x, pos.y);
 
-		if (!effectblocks[x][y]) { return 0; }
+		if (!effectblocks[x][y]) { return 0, false; }
 
 		return effectblocks[x][y].cullinterval, effectblocks[x][y].forceculled;
 	}

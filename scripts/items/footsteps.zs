@@ -29,6 +29,7 @@ class BoAFootsteps : Inventory
 	Vector3 oldpos;
 	bool step;
 	int stepdistance, noise;
+	EffectsManager manager;
 
 	Property StepDistance:stepdistance;
 	Property Noise:noise;
@@ -44,6 +45,7 @@ class BoAFootsteps : Inventory
 		Super.Tick();
 
 		if (!owner || owner.health <= 0) { Destroy(); return; }
+		if (!manager) { manager = EffectsManager.GetManager(); }
 
 		DoFootstepSounds();
 	}
@@ -51,8 +53,18 @@ class BoAFootsteps : Inventory
 	void DoFootstepSounds()
 	{
 		if (oldpos == (0, 0, 0)) { oldpos = owner.pos; }
+		else if (owner.pos == oldpos) { return; }
 
-		if (!owner.player && !owner.CheckRange(1024, true)) { return; } // Don't play non-player footsteps if no players are around
+		if (manager)
+		{
+			int interval;
+			bool forceculled;
+
+			[interval, forceculled] = manager.Culled(owner.pos.xy);
+			if (forceculled || interval > 1) { return; }
+		}
+
+		if (!owner.player && !owner.CheckRange(768, true)) { return; } // Don't play non-player footsteps if no players are around
 
 		if (owner.waterlevel > 2) { return; }
 
