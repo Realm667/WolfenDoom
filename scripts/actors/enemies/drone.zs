@@ -62,7 +62,11 @@ Class ProtoDrone : Nazi //ozy81
 			PROT A 1 A_Look();
 			Loop;
 		See:
-			PROT A 1 A_Chase();
+			PROT A 1
+			{
+				A_Chase();
+				A_StopLaser();
+			}
 			"####" AA 1 A_Chase(null, null, CHF_NOPLAYACTIVE);
 			Loop;
 		Idle:
@@ -75,7 +79,11 @@ Class ProtoDrone : Nazi //ozy81
 			Loop;
 		Melee:
 			PROT B 0 A_Jump(128,"Melee2");
-			"####" B 5 A_FaceTarget();
+			"####" B 5
+			{
+				A_FaceTarget();
+				A_StopLaser();
+			}
 			"####" B 0 A_StartSound("astrochaingun/fire", CHAN_WEAPON);
 			"####" CDE 8 LIGHT("PROTOFIRE") A_SpawnProjectile("EnemyProtoTracer",Scale.X*2,Scale.Y*-16,random(-12,12));
 			"####" B 5 A_FaceTarget();
@@ -83,7 +91,11 @@ Class ProtoDrone : Nazi //ozy81
 			"####" CDE 8 LIGHT("PROTOFIRE") A_SpawnProjectile("EnemyProtoTracer",Scale.X*2,Scale.Y*-16,random(-12,12));
 			Goto See;
 		Melee2:
-			"####" N 5 A_FaceTarget();
+			"####" N 5
+			{
+				A_FaceTarget();
+				A_StopLaser(); 
+			}
 			"####" N 0 A_Jump(128,2);
 			"####" N 1 ThrustThing(int(Angle*256/360-192), 8, 1, 0);
 			"####" N 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
