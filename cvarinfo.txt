@@ -20,6 +20,7 @@ server bool boa_snowswitch = true; //Snow
 server bool boa_splashswitch = true; //Water splashes
 server bool boa_steamswitch = true; //Steam
 server bool boa_strafetilt = true; //Strafe camera tilt
+server bool boa_tilteffects = true; // Override to disable cosmetic tilt effects (except for level tilt) ** // Needs menu entry
 server bool boa_torchtype = true; //Particle/sprite torches
 server bool boa_groundplume = true; //Ground terrain splashes
 server int boa_bloodlifetime = 60; //Blood lifetime, s
@@ -39,8 +40,8 @@ server int boa_treeslod = 8192; //Tree render distance
 server int boa_cullrange = 8192; // Hard culling distance - takes precedence over all other defined ranges **
 server int boa_culllevel = 0; // Controls culling of additional actors (3d models and lights) **
 server int boa_debriscullstyle = 0; // Controls if debris items are remembered and reproduced when culled/restored (1, significant system impact), or if they are just spawned from scratch (0) **
-server int boa_cullactorlimit = 0; // Controls max number of culled actors to respawn per game tick (0 means unlimited.  Clamped internally to no less than 256) **
-server bool boa_culling = true; // Enables/disables actor culling
+server int boa_cullactorlimit = 32; // Controls max number of culled actors to respawn per game tick (0 means unlimited.  Clamped internally to no less than 256) **
+server bool boa_culling = true; // Enables/disables actor culling ** // Needs menu entry, possibly launcher choice
 
 // Blood (server)
 server bool boa_blood_gibs = true; //Spawn giblets

@@ -14,6 +14,9 @@
 //
 //===========================================================================
 
+// Heavily reworked by AFADoomer, though the guts still belong to Nash
+// Level tilting addition by AFADoomer, with work by Talon1024
+
 class BoATilt : CustomInventory
 {
 	Default
@@ -25,44 +28,22 @@ class BoATilt : CustomInventory
 	}
 
 	double strafeInput, strafeBuffer;
-	double moveTiltOsc, underwaterTiltOsc;
+	double moveTiltOsc;
 	double deathTiltOsc;
 	double deathTiltAngle;
 	double lastRoll;
 	double lastLevelTilt;
 	double lastPitch;
 
-	//===========================================================================
-	//
-	// Calculate and apply the combined tilt roll amount
-	//
-	//===========================================================================
-	void Tilt_CalcViewRoll (void)
+	double, double CalcLevelTilt()
 	{
-		// CVARS ///////////////////////////////////////////////////////////////
-		bool strafeTiltEnabled = boa_strafetilt;
-		bool moveTiltEnabled = true;
-		bool underwaterTiltEnabled = false;
-		bool deathTiltEnabled = true;
-		double strafeTiltSpeed = 1.0;
-		double strafeTiltAngle = 0.5;
-		double strafeTiltReversed = false;
-		double moveTiltScalar = 0.5;
-		double moveTiltAngle = 0.015;
-		double moveTiltSpeed = 15.0;
-		double underwaterTiltSpeed = 0.8;
-		double underwaterTiltAngle = 0.2;
-		double underwaterTiltScalar = 1.0;
-
-		// Shared variables we'll need later
-		double r, v;
-		double curRoll = 0, curLevelTilt = 0;
-
 		//===========================================================================
 		//
 		// Level Tilting
 		//
 		//===========================================================================
+		double curPitch = 0;
+		double curLevelTilt = 0;
 
 		if (owner && BoAPlayer(owner))
 		{
@@ -76,9 +57,7 @@ class BoATilt : CustomInventory
 				curLevelTilt = sin(offsetangle) * leveltilt;
 
 				// Level tilt pitch. Hopefully, this doesn't conflict with weapon recoil. - Talon1024
-				double curPitch = cos(offsetangle) * leveltilt;
-				Owner.A_SetPitch(Owner.pitch + (curPitch - lastPitch), SPF_INTERPOLATE);
-				lastPitch = curPitch;
+				curPitch = cos(offsetangle) * leveltilt;
 			}
 			else
 			{
@@ -87,91 +66,74 @@ class BoATilt : CustomInventory
 			}
 		}
 
+		return curPitch, curLevelTilt;
+	}
+
+	double CalcStrafeTilt()
+	{
 		//===========================================================================
 		//
 		// Strafe Tilting
 		//
 		//===========================================================================
+		double strafeTiltSpeed = 1.0;
+		double strafeTiltAngle = 0.5;
+		double strafeTiltReversed = false;
 
 		// normalized strafe input
-		if (strafeTiltEnabled && ((Owner.Pos.Z == Owner.FloorZ) || (Owner.bOnMObj)) && Owner.Health > 0)
-		{
-			int dir;
-			if (strafeTiltReversed) dir = -1;
-			else dir = 1;
-			strafeInput = strafeTiltSpeed * (Owner.GetPlayerInput(INPUT_SIDEMOVE) / 10240.0);
-			strafeInput *= strafeTiltAngle;
-			strafeInput *= dir;
-		}
+		int dir;
+		if (strafeTiltReversed) dir = -1;
+		else dir = 1;
+		strafeInput = strafeTiltSpeed * (owner.GetPlayerInput(INPUT_SIDEMOVE) / 10240.0);
+		strafeInput *= strafeTiltAngle;
+		strafeInput *= dir;
 
-		// tilt!
-		curRoll += strafeInput;
+		return strafeInput;
+	}
 
+	double CalcMovementTilt()
+	{
 		//===========================================================================
 		//
 		// Movement Tilting
 		//
 		//===========================================================================
+		double moveTiltScalar = 0.5;
+		double moveTiltAngle = 0.015;
+		double moveTiltSpeed = 15.0;
 
-		if (moveTiltEnabled && ((Owner.Pos.Z == Owner.FloorZ) || (Owner.bOnMObj)) && Owner.Health > 0)
+		double r = 0;
+
+		// get player's velocity
+		double v = owner.Vel.Length() * moveTiltScalar;
+
+		// increment angle
+		moveTiltOsc += moveTiltSpeed;
+
+		// clamp angle
+		if (moveTiltOsc >= 360. || moveTiltOsc < 0.)
 		{
-			// get player's velocity
-			v = Owner.Vel.Length() * moveTiltScalar;
-
-			// increment angle
-			moveTiltOsc += moveTiltSpeed;
-
-			// clamp angle
-			if (moveTiltOsc >= 360. || moveTiltOsc < 0.)
-			{
-				moveTiltOsc = 0.;
-			}
-
-			// calculate roll
-			r = Sin(moveTiltOsc);
-			r *= moveTiltAngle;
-			r *= v;
+			moveTiltOsc = 0.;
 		}
 
-		// tilt!
-		curRoll += r;
+		// calculate roll
+		r = Sin(moveTiltOsc);
+		r *= moveTiltAngle;
+		r *= v;
 
-		//===========================================================================
-		//
-		// Underwater Tilting
-		//
-		//===========================================================================
+		return r;
+	}
 
-		if (Owner.WaterLevel >= 3 && underwaterTiltEnabled)
-		{
-			// fixed rate of 15
-			v = 15. * underwaterTiltScalar;
-
-			// increment angle
-			underwaterTiltOsc += underwaterTiltSpeed;
-
-			// clamp angle
-			if (underwaterTiltOsc >= 360. || underwaterTiltOsc < 0.)
-			{
-				underwaterTiltOsc = 0.;
-			}
-
-			// calculate roll
-			r = Sin(underwaterTiltOsc);
-			r *= underwaterTiltAngle;
-			r *= v;
-		}
-
-		// tilt!
-		curRoll += r;
-
+	double CalcDeathTilt()
+	{
 		//===========================================================================
 		//
 		// Death Tilting
 		//
 		//===========================================================================
+		double r = 0;
 
-		if (!(Owner.Health > 0) && deathTiltEnabled)
+		if (!(owner.Health > 0))
 		{
 			double deathTiltSpeed = 1.0;
 
@@ -197,36 +159,60 @@ class BoATilt : CustomInventory
 			deathTiltAngle = 0;
 		}
 
-		// tilt!
-		curRoll += r;
-
-		//===========================================================================
-		//
-		// Tilt Post Processing
-		//
-		//===========================================================================
-
-		if (abs(curRoll) > 0.000001)
-		{
-			// Stabilize tilt
-			curRoll *= 0.75;
-		}
-
-		// Apply the sum of all rolling routines
-		// (including after stabilization)
-		Owner.A_SetRoll(Owner.Roll + (curRoll - lastRoll) + (curLevelTilt - lastLevelTilt), SPF_INTERPOLATE);
-		lastLevelTilt = curLevelTilt;
-		lastRoll = curRoll;
+		return r;
 	}
 
-	override void Tick(void)
+	override void DoEffect(void)
 	{
-		if (Owner && Owner is "PlayerPawn")
+		if (!owner) { return; }
+
+		double curLevelTilt;
+
+		// Level tilt processing is required for C3M5_C, so dont allow deactivating it
+		if (BoAPlayer(owner) && BoAPlayer(owner).leveltilt) // But also only run this if the level tilt value is set!
 		{
-			Tilt_CalcViewRoll();
+			double pitchoffset;
+			[pitchoffset, curLevelTilt] = CalcLevelTilt();
+			owner.A_SetViewPitch(owner.viewpitch + (pitchoffset - lastPitch), SPF_INTERPOLATE);
+			lastPitch = pitchoffset;
+
+			if (!boa_tilteffects) // Do the roll adjustment even if other tilt effects are disabled
+			{
+				owner.A_SetViewRoll(owner.viewroll + (curLevelTilt - lastLevelTilt), SPF_INTERPOLATE);
+				lastLevelTilt = curLevelTilt;
+
+				return;
+			}
+		}
+		else
+		{
+			// Make sure everything was reset if we were previously on a level that had tilt
+			if (owner.viewroll || owner.viewpitch)
+			{
+				owner.viewroll = owner.viewpitch = 0;
+			}
 		}
 
-		Super.Tick();
+		// Allow all other effects to be disabled via CVar
+		if (!boa_tilteffects) { return; }
+
+		double curRoll = 0;
+
+		// If on the ground or on an object
+		if ((owner.Pos.Z == owner.FloorZ || owner.bOnMObj) && owner.Health > 0)
+		{
+			if (boa_strafetilt) { curRoll += CalcStrafeTilt(); } // Do strafe tilt, if enabled
+			curRoll += CalcMovementTilt(); // Do movement tilt
+		}
+
+		curRoll += CalcDeathTilt(); // Always check if we need to do death tilt
+
+		if (abs(curRoll) > 0.000001) { curRoll *= 0.75; } // Stabilize tilt
+
+		// Apply the sum of all rolling routines (including after stabilization)
+		owner.A_SetViewRoll(owner.viewroll + (curRoll - lastRoll) + (curLevelTilt - lastLevelTilt), SPF_INTERPOLATE);
+		lastLevelTilt = curLevelTilt;
+		lastRoll = curRoll;
 	}
 
 	//===========================================================================
@@ -236,14 +222,11 @@ class BoATilt : CustomInventory
 	//===========================================================================
 	States
 	{
-	Use:
-		TNT1 A 0;
-		Fail;
-	Pickup:
-		TNT1 A 0
-		{
-			return true;
-		}
-		Stop;
+		Use:
+			TNT1 A 0;
+			Fail;
+		Pickup:
+			TNT1 A 0 { return true; }
+			Stop;
 	}
 }
