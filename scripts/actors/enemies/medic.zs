@@ -112,7 +112,7 @@ class NaziMedic : NaziStandard
 								frightener.target.player
 							)
 						) && 
-						Random(0, 8) == 0
+						Random(0, 32) == 0
 					)
 					{
 						// Randomly surrender if the player was the frightener
