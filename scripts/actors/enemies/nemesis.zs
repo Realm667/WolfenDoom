@@ -297,6 +297,7 @@ class RENemesis : NaziBoss
 		// Kneel for 4 minutes = 60 seconds * 35 tics per second = 8400 tics
 		// 8400 tics - 3 seconds = 8400 - 105 = 8295 tics
 		// 3 seconds (105 tics) is easier to test with
+		// Nemesis should animate between MN frames as suggested by DoomJedi, since this was his intention --Ozy81
 		NEMS N 8295 CanRaise;
 	Sleep:
 		"####" "#" 35 CanRaise A_JumpIf(!control.sleeping, 1);
