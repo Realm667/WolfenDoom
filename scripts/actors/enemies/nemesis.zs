@@ -230,6 +230,7 @@ class NemesisZyklonBall : GroundedMissile
 class RENemesis : NaziBoss
 {
 	NemesisControl control;
+	int kneelTime;
 
 	Default
 	{
@@ -294,11 +295,13 @@ class RENemesis : NaziBoss
 			return ResolveState(null);
 		}
 		NEMS M 8 A_NoBlocking(false);
+	Kneel:
 		// Kneel for 4 minutes = 60 seconds * 35 tics per second = 8400 tics
 		// 8400 tics - 3 seconds = 8400 - 105 = 8295 tics
 		// 3 seconds (105 tics) is easier to test with
-		// Nemesis should animate between MN frames as suggested by DoomJedi, since this was his intention --Ozy81
-		NEMS N 8295 CanRaise;
+		NEMS N 15 CanRaise A_Kneel;
+		NEMS M 15 CanRaise A_Kneel;
+		Loop;
 	Sleep:
 		"####" "#" 35 CanRaise A_JumpIf(!control.sleeping, 1);
 		Wait;
@@ -373,11 +376,21 @@ class RENemesis : NaziBoss
 		return Super.OkayToSwitchTarget(other);
 	}
 
+	state A_Kneel(int maxTime = 553)
+	{
+		kneelTime += 1;
+		if (kneelTime == maxTime) {
+			return ResolveState("Sleep");
+		}
+		return ResolveState(null);
+	}
+
 	bool A_ReviveStart()
 	{
 		// Keep previous target in "tracer" pointer to prevent it from
 		// being lost, since actors lose their targets (and the lastEnemy)
 		// when they are resurrected.
+		kneelTime = 0;
 		A_RearrangePointers(AAPTR_NULL, newtracer: AAPTR_TARGET);
 		return A_RaiseSelf(RF_NOCHECKPOSITION);
 	}
