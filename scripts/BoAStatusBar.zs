@@ -51,9 +51,9 @@ class BoAStatusBar : BaseStatusBar
 	double hour, minute, second;
 	Inventory lastinv;
 	int maptop, maptexty;
-
 	Actor currenttarget;
 	int targettime;
+	int widthoffset;
 
 	protected Le_GlScreen gl_proj;
 	protected Le_Viewport viewport;
@@ -150,6 +150,8 @@ class BoAStatusBar : BaseStatusBar
 
 	override void Draw (int state, double TicFrac)
 	{
+		CalcOffsets();
+
 		Super.Draw(state, TicFrac);
 
 		if (CPlayer.mo.FindInventory("CutsceneEnabled") || CPlayer.morphtics)
@@ -358,7 +360,7 @@ class BoAStatusBar : BaseStatusBar
 		{
 			BeginHUD(1, False);
 
-			DrawPuzzleItems(-16, 16, 20, 9, -1);
+			DrawPuzzleItems(-(widthoffset + 16), 16, 20, 9, -1);
 		}
 	}
 
@@ -506,8 +508,8 @@ class BoAStatusBar : BaseStatusBar
 			if (ms && ms.active)
 
 			{
-				DrawImage("SWEP_BAK", (0, -28), DI_SCREEN_CENTER_BOTTOM);
-				DrawBar("SWEP_ON", "SWEP_OFF", current, max, (0, -28), 0, SHADER_HORZ, DI_SCREEN_CENTER_BOTTOM);
+				DrawImage("SWEP_BAK", (widthoffset + 0, -28), DI_SCREEN_CENTER_BOTTOM);
+				DrawBar("SWEP_ON", "SWEP_OFF", current, max, (widthoffset + 0, -28), 0, SHADER_HORZ, DI_SCREEN_CENTER_BOTTOM);
 			}
 		}
 
@@ -524,19 +526,19 @@ class BoAStatusBar : BaseStatusBar
 				//DrawBar("LANT_ON", "LANT_OFF", current, max, (-11, -144), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER | DI_SCREEN_TOP);
 				
 				//remove - comment following lines and set above if you don't want indicator on bottom zone in fullscreen - ozy81
-				DrawImage("LANT_BAK", (0, -28), DI_SCREEN_CENTER_BOTTOM);
-				DrawBar("LANT_ON", "LANT_OFF", current, max, (0, -28), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER_BOTTOM);
+				DrawImage("LANT_BAK", (widthoffset + 0, -28), DI_SCREEN_CENTER_BOTTOM);
+				DrawBar("LANT_ON", "LANT_OFF", current, max, (widthoffset + 0, -28), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER_BOTTOM);
 			}
 		}
 
 		//AirControl & Stamina
-		DrawBar("VERTAIRF", "VERTAIRE", mAirInterpolator.GetValue(), level.airsupply, (4, -174), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
-		DrawBar("VERTSTMF", "VERTSTME", mStaminaInterpolator.GetValue(), 100, (-10, -174), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
+		DrawBar("VERTAIRF", "VERTAIRE", mAirInterpolator.GetValue(), level.airsupply, (widthoffset + 4, -174), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
+		DrawBar("VERTSTMF", "VERTSTME", mStaminaInterpolator.GetValue(), 100, (-(widthoffset + 10), -174), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
 
 		//Top Left
-		DrawImage("HUD_UL", (0, 0), DI_ITEM_OFFSETS);
+		DrawImage("HUD_UL", (widthoffset + 0, 0), DI_ITEM_OFFSETS);
 		//Money
-		DrawString(mBigFont, FormatNumber(GetAmount("CoinItem")), (60, 7), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mBigFont, FormatNumber(GetAmount("CoinItem")), (widthoffset + 60, 7), DI_TEXT_ALIGN_RIGHT);
 		//Time
 		String time = level.TimeFormatted();
 
@@ -545,41 +547,41 @@ class BoAStatusBar : BaseStatusBar
 			time = FormatNumber(int(hour), 2, 2, FNF_FILLZEROS) .. ":" .. FormatNumber(int(minute), 2, 2, FNF_FILLZEROS) .. ":" .. FormatNumber(int(second), 2, 2, FNF_FILLZEROS);
 		}
 
-		DrawString(mHUDFont, time, (20, 21), DI_TEXT_ALIGN_LEFT);
+		DrawString(mHUDFont, time, (widthoffset + 20, 21), DI_TEXT_ALIGN_LEFT);
 
 		//Top Right
-		DrawImage("HUD_UR", (-66, 0), DI_ITEM_OFFSETS);
+		DrawImage("HUD_UR", (-(widthoffset + 66), 0), DI_ITEM_OFFSETS);
 		//Keys
-		if (GetAmount("BoABlueKey")) { DrawImage("STKEYS0", (-14, 9), DI_ITEM_OFFSETS); }
-		if (GetAmount("BoAGreenKey")) { DrawImage("STKEYS3", (-14, 19), DI_ITEM_OFFSETS); }
-		if (GetAmount("BoAYellowKey")) { DrawImage("STKEYS1", (-24, 9), DI_ITEM_OFFSETS); }
-		if (GetAmount("BoAPurpleKey")) { DrawImage("STKEYS4", (-24, 19), DI_ITEM_OFFSETS); }
-		if (GetAmount("BoARedKey")) { DrawImage("STKEYS2", (-34, 9), DI_ITEM_OFFSETS); }
-		if (GetAmount("BoACyanKey")) { DrawImage("STKEYS5", (-34, 19), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoABlueKey")) { DrawImage("STKEYS0", (-(widthoffset + 14), 9), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoAGreenKey")) { DrawImage("STKEYS3", (-(widthoffset + 14), 19), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoAYellowKey")) { DrawImage("STKEYS1", (-(widthoffset + 24), 9), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoAPurpleKey")) { DrawImage("STKEYS4", (-(widthoffset + 24), 19), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoARedKey")) { DrawImage("STKEYS2", (-(widthoffset + 34), 9), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoACyanKey")) { DrawImage("STKEYS5", (-(widthoffset + 34), 19), DI_ITEM_OFFSETS); }
 
-		if (GetAmount("AstroBlueKey")) { DrawImage("ATKEYS0", (-14, 9), DI_ITEM_OFFSETS); }
-		if (GetAmount("AstroYellowKey")) { DrawImage("ATKEYS1", (-24, 9), DI_ITEM_OFFSETS); }
-		if (GetAmount("AstroRedKey")) { DrawImage("ATKEYS2", (-34, 9), DI_ITEM_OFFSETS); }
+		if (GetAmount("AstroBlueKey")) { DrawImage("ATKEYS0", (-(widthoffset + 14), 9), DI_ITEM_OFFSETS); }
+		if (GetAmount("AstroYellowKey")) { DrawImage("ATKEYS1", (-(widthoffset + 24), 9), DI_ITEM_OFFSETS); }
+		if (GetAmount("AstroRedKey")) { DrawImage("ATKEYS2", (-(widthoffset + 34), 9), DI_ITEM_OFFSETS); }
 
 		//Bottom Left
-		DrawImage("HUD_BL", (0, -53), DI_ITEM_OFFSETS);
+		DrawImage("HUD_BL", (widthoffset + 0, -53), DI_ITEM_OFFSETS);
 		//Health
-		DrawString(mBigFont, FormatNumber(CPlayer.health, 3), (94, -36), DI_TEXT_ALIGN_RIGHT);
-		DrawString(mBigFont, "%", (107, -36), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mBigFont, FormatNumber(CPlayer.health, 3), (widthoffset + 94, -36), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mBigFont, "%", (widthoffset + 107, -36), DI_TEXT_ALIGN_RIGHT);
 
 		//Armor
 		let armor = CPlayer.mo.FindInventory("BasicArmor");
 		if (armor != null && armor.Amount > 0)
 		{
 			DrawIcon(armor, 44, -20, 24, DI_ITEM_OFFSETS);
-			DrawString(mBigFont, FormatNumber(GetArmorAmount(), 3), (94, -20), DI_TEXT_ALIGN_RIGHT);
-			DrawString(mBigFont, "%", (107, -20), DI_TEXT_ALIGN_RIGHT);
+			DrawString(mBigFont, FormatNumber(GetArmorAmount(), 3), (widthoffset + 94, -20), DI_TEXT_ALIGN_RIGHT);
+			DrawString(mBigFont, "%", (widthoffset + 107, -20), DI_TEXT_ALIGN_RIGHT);
 		}
 
 		//Mugshot + Inventory
 		if(!level.NoInventoryBar)
 		{
-			if (CPlayer.mo.InvSel != null) { DrawInventorySelection(128, -22, 32); }
+			if (CPlayer.mo.InvSel != null) { DrawInventorySelection(widthoffset + 128, -22, 32); }
 
 			Vector2 hudscale = Statusbar.GetHudScale();
 
@@ -590,29 +592,29 @@ class BoAStatusBar : BaseStatusBar
 			//DrawPuzzleItems(-28, int((Screen.GetHeight() / hudscale.y) / 2), size, maxrows, -1, true);
 
 			// Aligned under the key display
-			DrawPuzzleItems(-28, 48, size, maxrows, -1);
+			DrawPuzzleItems(-(widthoffset + 28), 48, size, maxrows, -1);
 		}
 
-		DrawMugShot((7, -38));
+		DrawMugShot((widthoffset + 7, -38));
 
 		//Bottom Right
-		DrawImage("HUD_BR", (-116, -53), DI_ITEM_OFFSETS);
+		DrawImage("HUD_BR", (-(widthoffset + 116), -53), DI_ITEM_OFFSETS);
 		//Weapon
-		DrawString(mHUDFont, GetWeaponTag(), (-55, -52), DI_TEXT_ALIGN_CENTER);
+		DrawString(mHUDFont, GetWeaponTag(), (-(widthoffset + 55), -52), DI_TEXT_ALIGN_CENTER);
 
 		//Ammo
 		Ammo ammo1, ammo2;
 		int ammocount1, ammocount2;
 		[ammo1, ammo2, ammocount1, ammocount2] = GetCurrentAmmo();
-		if (ammo1) { DrawString(mBigFont, FormatNumber(ammocount1, 3), (-10, -20), DI_TEXT_ALIGN_RIGHT); }
-		if (ammo2) { DrawString(mBigFont, FormatNumber(ammocount2, 3), (-10, -36), DI_TEXT_ALIGN_RIGHT); }
+		if (ammo1) { DrawString(mBigFont, FormatNumber(ammocount1, 3), (-(widthoffset + 10), -20), DI_TEXT_ALIGN_RIGHT); }
+		if (ammo2) { DrawString(mBigFont, FormatNumber(ammocount2, 3), (-(widthoffset + 10), -36), DI_TEXT_ALIGN_RIGHT); }
 
 		//Ammo Icons
-		DrawInventoryIcon(ammo1, (-61, -21), DI_ITEM_OFFSETS);
-		DrawInventoryIcon(ammo2, (-61, -37), DI_ITEM_OFFSETS);
+		DrawInventoryIcon(ammo1, (-(widthoffset + 61), -21), DI_ITEM_OFFSETS);
+		DrawInventoryIcon(ammo2, (-(widthoffset + 61), -37), DI_ITEM_OFFSETS);
 
 		//Grenade
-		DrawString(mBigFont, FormatNumber(GetAmount("GrenadePickup")), (-83, -20), DI_TEXT_ALIGN_LEFT);
+		DrawString(mBigFont, FormatNumber(GetAmount("GrenadePickup")), (-(widthoffset + 83), -20), DI_TEXT_ALIGN_LEFT);
 	}
 
 	void DrawDayNightState()
@@ -1602,5 +1604,53 @@ class BoAStatusBar : BaseStatusBar
 		int hmax = screen.GetWidth() / 640;
 		int max = MAX(vmax, hmax);
 		return MAX(1, MIN(scaleval, max));
+	}
+
+	virtual void CalcOffsets()
+	{
+		CVar hudratio = CVar.FindCVar("boa_hudratio");
+
+		int boa_hudratio = hudratio.GetInt();
+		double ratio;
+		
+		switch (boa_hudratio)
+		{
+			// These match the built-in ratios currently defined in the ForceRatios option value
+			case 1:
+				ratio = 16.0 / 9;
+				break;
+			case 2:
+				ratio = 16.0 / 10;
+				break;
+			case 3:
+				ratio = 4.0 / 3;
+				break;
+			case 4:
+				ratio = 5.0 / 4;
+				break;
+			case 5:
+				ratio = 17.0 / 10;
+				break;
+			case 6:
+				ratio = 21.0 / 9;
+				break;
+			default:
+				widthoffset = 0;
+				return;
+		}
+
+		// If the ratio selected is wider than the current screen, don't do any offsetting
+		if (ratio >= Screen.GetAspectRatio())
+		{
+			widthoffset = 0;
+			return;
+		}
+
+		// Account for hud scaling, both automatic and manual
+		Vector2 scale = Statusbar.getHUDScale();
+		double h = Screen.GetHeight() / scale.y;
+		double w = h * ratio;
+
+		widthoffset = int((Screen.GetWidth() / scale.x - w) / 2);
 	}
 }
