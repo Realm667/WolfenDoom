@@ -46,6 +46,8 @@ class FireSpawner : HeatEffectGiver
 
 	override void PostBeginPlay()
 	{
+		suffix = suffixes[args[0]];
+		
 		if (args[0] < 3) { EffectSpawner.PostBeginPlay(); } // Skip the standard EffectGiver PostBeginPlay, because that sets the actor's size to the full height of the sector
 		else // For extra-large flames, just run necessary initialization without adding the spawner to the effects manager queue...  Assume it's a major set piece that shouldn't disappear across the map.
 		{
@@ -64,8 +66,6 @@ class FireSpawner : HeatEffectGiver
 		A_SetSize(Radius * scale.x + 32, Height * scale.y + 32);
 
 		if (switchcvar && !switchcvar.GetBool()) { Deactivate(null); return; }
-
-		suffix = suffixes[args[0]];
 	}
 
 	override void SpawnEffect()
@@ -80,6 +80,8 @@ class FireSpawner : HeatEffectGiver
 		}
 
 		int spawntype = RandomPick(3, 2, 1, 1, 1, 1, 1); // Replicates the random spawns of the old A_Jump calls... Embers, smoke, or flame
+
+		if (!suffix.length()) { suffix = "Small"; }
 
 		if (spawntype == 1 || spawntype == 3) { Spawn("Flame_" .. suffix, pos); }
 		if (spawntype == 3) { Spawn("Ember_" .. suffix, pos); }
