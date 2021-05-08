@@ -3248,7 +3248,7 @@ class MutantStandard : Nazi
 		SeeSound "mutant/see";
 		PainSound "mutant/pain";
 		DeathSound "mutant/Death";
-		BloodColor "Purple";
+		BloodColor "9F 00 9B";
 		BloodType "MutantBlood";
 		Translation "16:47=[205,0,215]:[40,0,96]","168:191=[205,0,215]:[40,0,96]";
 		Nazi.TotaleGierDrop 0;
