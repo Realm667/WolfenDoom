@@ -456,8 +456,8 @@ class Scorpion : Base
 	//$Category Monsters (BoA)/Critters
 	//$Title Scorpion (normal)
 	//$Color 4
-	Radius 10;
-	Height 12;
+	Radius 16;
+	Height 16;
 	Scale 0.6;
 	Mass 20;
 	Speed 6;
