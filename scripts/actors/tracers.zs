@@ -154,7 +154,7 @@ class BulletTracer : FastProjectile
 	{
 		if ((level.time + offset) % 30 == 0)
 		{
-			if (target.player || (manager && manager.InRange(pos, 0))) { DoWhizChecks(); }
+			if ((target && target.player) || (manager && manager.InRange(pos, 0))) { DoWhizChecks(); }
 		}
 
 		ClearInterpolation();
