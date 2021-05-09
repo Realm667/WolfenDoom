@@ -573,7 +573,7 @@ class BoAStatusBar : BaseStatusBar
 		let armor = CPlayer.mo.FindInventory("BasicArmor");
 		if (armor != null && armor.Amount > 0)
 		{
-			DrawIcon(armor, 44, -20, 24, DI_ITEM_OFFSETS);
+			DrawIcon(armor, widthoffset + 44, -20, 24, DI_ITEM_OFFSETS);
 			DrawString(mBigFont, FormatNumber(GetArmorAmount(), 3), (widthoffset + 94, -20), DI_TEXT_ALIGN_RIGHT);
 			DrawString(mBigFont, "%", (widthoffset + 107, -20), DI_TEXT_ALIGN_RIGHT);
 		}
