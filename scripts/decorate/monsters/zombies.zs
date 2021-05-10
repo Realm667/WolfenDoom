@@ -509,8 +509,8 @@ class ZombieGeneral : RocketMan
 		Goto See;
 	Death:
 		ZFET J 5;
-		"####" K 5 A_Scream;
-		"####" L 5 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3));
+		"####" K 7 A_Scream;
+		"####" L 9 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3));
 		"####" M -1 A_NoBlocking;
 		Stop;
 	Raise:
@@ -581,8 +581,8 @@ class ZombieZyklonstein : RocketMan
 		Goto See;
 	Death:
 		ZSKL J 5;
-		"####" K 5 A_Scream;
-		"####" L 5 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3));
+		"####" K 7 A_Scream;
+		"####" L 9 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3));
 		"####" M -1 A_NoBlocking;
 		Stop;
 	Raise:
@@ -652,8 +652,8 @@ class ZombieButcher : RocketMan
 		Goto See;
 	Death:
 		BTCZ G 7;
-		"####" H 5;
-		"####" I 5 A_Scream;
+		"####" H 8;
+		"####" I 9 A_Scream;
 		"####" J -1 A_NoBlocking;
 		Stop;
 	}
