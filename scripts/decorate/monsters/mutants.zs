@@ -258,9 +258,9 @@ class BigMutant1 : Mutant
 		Goto See;
 	Death:
 		"####" I 5;
-		"####" J 5;
-		"####" K 5 A_Scream;
-		"####" L 5 A_UnblockAndDrop;
+		"####" J 6;
+		"####" K 7 A_Scream;
+		"####" L 8 A_UnblockAndDrop;
 		"####" M -1;
 		Stop;
 	Idle:
@@ -417,10 +417,10 @@ class UberMutant : Mutant
 		Goto See;
 	Death:
 		UBMU I 6;
-		UBMU I 6 A_Scream;
-		UBMU J 6;
-		UBMU J 6 A_UnblockAndDrop;
-		UBMU KL 6;
+		UBMU I 8 A_Scream;
+		UBMU J 8;
+		UBMU J 8 A_UnblockAndDrop;
+		UBMU KL 10;
 		UBMU M -1 A_BossDeath;
 		Stop;
 	Raise:
