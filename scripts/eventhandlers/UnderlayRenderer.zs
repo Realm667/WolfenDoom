@@ -60,14 +60,19 @@ class UnderlayRenderer : EventHandler
 			if (o)
 			{
 				// If it's done fading in and out, delete it.
-				if (level.time > o.holdtime + o.outtime) { overlays.Delete(a); }
+				if (o.holdtime != -1 && level.time > o.holdtime + o.outtime) { overlays.Delete(a); }
 			}
 		}
 	}
 
 	ui void DrawOverlay(overlay o)
 	{
-		if (automapactive && !(o.flags & Overlay.OnMap)) { return; }
+		if (automapactive)
+		{
+			if (!(o.flags & Overlay.OnMap)) { return; }
+		}
+		else if (o.flags & Overlay.NotOn3DView) { return; }
+
 		if (players[consoleplayer].cheats & CF_CHASECAM && !(o.flags & Overlay.OnChaseCam)) { return; }
 
 		int timer = level.time;
@@ -79,7 +84,7 @@ class UnderlayRenderer : EventHandler
 		{
 			drawalpha = double(timer - o.start) / o.intime;
 		}
-		else if (timer < o.holdtime)  // Draw at full alpha while holding
+		else if (timer < o.holdtime || o.holdtime == -1)  // Draw at full alpha while holding
 		{
 			drawalpha = 1.0;
 		}
@@ -171,15 +176,20 @@ class UnderlayRenderer : EventHandler
 				overlays.Insert(index, o);
 				o.start = level.time;
 				o.index = index;
+				o.player = player;
+				o.image = image;
 			}
 		}
 
 		if (o)
 		{
-			o.player = player;
-			o.image = image;
+			if (holdtime + intime + outtime == 0) { holdtime = -1; }
+			else { holdtime = level.time + holdtime + intime; } // Base off of level.time so that stackable effects will extend it properly
+
+			if (o.flags != flags) { o.start = level.time; }
+
 			o.intime = intime;
-			o.holdtime = level.time + holdtime + intime; // Base off of level.time so that stackable effects will extend it properly
+			o.holdtime = holdtime; 
 			o.outtime = outtime;
 			o.flags = flags;
 			o.alpha = alpha;
@@ -213,8 +223,9 @@ class Overlay : Thinker
 		OnHUD = 2,			// Draw on top of HUD elements
 		OnMap = 4,			// Draw on top of the automap
 		LightEffects = 8,	// Uses sector light and player visibility info to darken the overlay in darker sectors (see spacesuit and gasmask)
-		Force320x200 = 16,	// Keep aspect ratio, but otherwise force to 320x200 screen size (see spacesuitand gasmask)
-		OnChaseCam = 32		// Draw in chasecam view
+		Force320x200 = 16,	// Keep aspect ratio, but otherwise force to 320x200 screen size (see spacesuit and gasmask)
+		OnChaseCam = 32,	// Draw in chasecam view
+		NotOn3DView = 64	// Don't draw on normal game view (when automap is inactive)
 	}
 
 	PlayerInfo player;
@@ -234,16 +245,18 @@ class Overlay : Thinker
 	}
 
 	// Wrapper for setting an overlay from ACS
-	// Used in C3M5_A subway crash sequence script
+	// Used in C3M5_A subway crash sequence script and cutscenes
 	//  ScriptCall("Overlay", "ACSInit", "M_INJ", 0, 0, 175, 2.0);
-	static overlay ACSInit(Actor mo, String image, int holdtime, int intime, int outtime, double alpha = 1.0, uint index = 0, int flags = Overlay.Default, double angle = 0, Vector2 offsets = (0, 0))
+	static overlay ACSInit(Actor mo, String image, int holdtime, int intime, int outtime, double alpha = 1.0, int index = 0, int flags = Overlay.Default, double angle = 0, Vector2 offsets = (0, 0))
 	{
-		if (!mo || !mo.player) { return null; }
+		PlayerInfo p;
+		if (mo && mo.player) { p = mo.player; } // Use the activating player
+		else { p = players[consoleplayer]; } // If none was passed, apply to current viewing player
 
 		let handler = UnderlayRenderer(EventHandler.Find("UnderlayRenderer"));
 		if (!handler) { return null; }
 
-		return handler.AddOverlay(mo.player, image, holdtime, intime, outtime, alpha, index, flags, angle, offsets);
+		return handler.AddOverlay(p, image, holdtime, intime, outtime, alpha, index, flags, angle, offsets);
 
 	}
 }
