@@ -777,6 +777,11 @@ class InventoryHolder play
 			// Don't "hold" the player's stamina (used for sprinting and
 			// kicking).
 			item is "Stamina" ||
+			// Don't "hold" footsteps, heartbeat, or sprinting - these items
+			// destroy themselves if not in an actor's inventory.
+			item is "BoASprinting" ||
+			item is "BoAHeartBeat" ||
+			item is "BoAFootsteps" ||
 			// "Holding" an "IncomingMessage" or "CutsceneToken" may cause
 			// the compass to break.
 			item is "IncomingMessage" ||
@@ -866,7 +871,14 @@ class InventoryHolder play
 			{
 				Console.Printf("Attempting to restore %s...", itemTypeNames[i]);
 			}
-			if (ii) { RestoreItem(ii, receiver); }
+			if (ii)
+			{
+				RestoreItem(ii, receiver);
+			}
+			else if (boa_debugholdinventory)
+			{
+				Console.Printf("Unable to restore %s because it is null!", itemTypeNames[i]);
+			}
 		}
 	}
 
