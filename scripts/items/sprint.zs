@@ -35,14 +35,14 @@ class BoASprinting : Inventory
 	Property GaspSound:gaspsound;
 
 	FlagDef AnyDirection:flags, 0; // Allow sprinting while moving sideways
-	FlagDef AffectForwardOnly:flags, 1; // Affects only forward movement, not backwards or sideways
+	FlagDef RequireForward:flags, 1; // Only sprint when there is some forward movement
 	FlagDef AllowCrouch:flags, 2; // Allow sprinting while crouched
 
 	Default
 	{
 		BoASprinting.ExhaustionStamina 25;
 		BoASprinting.GaspSound "player/breathing";
-		+BoASprinting.AffectForwardOnly
+		+BoASprinting.RequireForward
 	}
 
 	override void Tick()
@@ -91,7 +91,7 @@ class BoASprinting : Inventory
 				(bAnyDirection && cmd.sidemove) || // Check if player is strafing, if that flag is set
 				(
 					cmd.forwardmove && // Or if player is moving forward or backward
-					(!bAffectForwardOnly || cmd.forwardmove > 0) // And only forward, if that flag is set
+					(!bRequireForward || cmd.forwardmove > 0) // And only forward, if that flag is set
 				)
 			) &&
 			(bAllowCrouch || owner.player.crouchfactor == 1.0) &&
@@ -132,7 +132,7 @@ class BoASprinting : Inventory
 
 	virtual void DoExhaustionCheck(void)
 	{
-		if (owner.waterlevel > 2) { return; }
+		if (owner.waterlevel > 2 || gamestate != GS_LEVEL) { return; }
 
 		let stamina = owner.FindInventory("Stamina");
 
