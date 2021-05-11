@@ -143,7 +143,14 @@ class CKBaseEnemy : Actor
 		}
 
 		// If an actor falls onto an instant-death floor, remove it
-		if (pos.z == floorz && curSector.damagetype == "InstantDeath") { Die(self, self, 0, "Falling"); }
+		F3DFloor curfloor;
+		Sector floorsec;
+		[floorz, floorsec, curfloor] = curSector.NextLowestFloorAt(pos.x, pos.y, pos.z);
+
+		Sector cursec = curSector;
+		if (curfloor) { cursec = curfloor.model; }
+		
+		if (pos.z == floorz && cursec.damagetype == "InstantDeath") { Die(self, self, 0, "Falling"); }
 
 		if (stunned) { DoStun(); }
 	}
