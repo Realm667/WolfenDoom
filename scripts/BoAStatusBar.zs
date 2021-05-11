@@ -154,7 +154,7 @@ class BoAStatusBar : BaseStatusBar
 
 		Super.Draw(state, TicFrac);
 
-		if (CPlayer.mo.FindInventory("CutsceneEnabled") || CPlayer.morphtics)
+		if (CPlayer.mo.FindInventory("CutsceneEnabled") || CPlayer.morphtics || level.maptime < 5)
 		{
 			if (automapactive || state == HUD_StatusBar)
 			{

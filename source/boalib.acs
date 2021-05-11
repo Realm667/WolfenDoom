@@ -124,3 +124,48 @@ function void StartMessage(void)
 {
 	ACS_NamedExecute("HintMessage", 0, "INTROTEXGEN01", "+use");
 }
+
+function void FadeToBlack(int holdtime, int intime, int outtime)
+{
+	// This stays as a HUDMessage for layering purposes with existing code;
+	SetHUDSize(2, 2, True);
+
+	if (holdtime == -1) { holdtime = 9999.0; }
+	else { holdtime = holdtime * 1.0 / 35; }
+
+	SetFont("BLACKBG");
+	HUDMessageBold(s: "A"; HUDMSG_FADEINOUT, 20, CR_UNTRANSLATED, 1.0, 1.0, holdtime, intime * 1.0 / 35, outtime * 1.0 / 35);
+}
+
+function void HideMap(bool onoff)
+{
+	if (onoff) { ScriptCall("Overlay", "ACSInit", "BLACKBG", 0, 0, 0, 1.0, 1, 2 | 4 | 64); }
+	else { ScriptCall("Overlay", "ACSInit", "BLACKBG", 1, 0, 0, 1.0, 1, 2 | 4 | 64); }
+}
+
+function void Overlay(str graphic, bool onoff)
+{
+	if (onoff) { ScriptCall("Overlay", "ACSInit", graphic, 0, 0, 0, 1.0); }
+	else { ScriptCall("Overlay", "ACSInit", graphic, 1, 0, 0, 1.0); }
+}
+
+// Standard script to set up a standard start-of-level cutscene
+script "CinematicStart" (void)
+{
+	GiveInventory("CutsceneEnabled", 1);
+	FadeToBlack(0, 0, 70);
+	HideMap(true);
+	SetPlayerProperty(1, 1, PROP_FROZEN);
+}
+
+// Standard script to restore normal play after a cutscene
+script "CinematicEnd" (void)
+{
+	FadeToBlack(140, 70, 70);
+	Delay(2 * 35);
+	Overlay("MOVIEHUD", false); // Disable the two commonly used overlays automatically
+	Overlay("MOVIEHD5", false);
+	HideMap(false);
+	SetPlayerProperty(1, 0, PROP_FROZEN);
+	TakeInventory("CutsceneEnabled", 1);
+}

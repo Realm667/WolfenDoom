@@ -183,7 +183,7 @@ class UnderlayRenderer : EventHandler
 
 		if (o)
 		{
-			if (holdtime + intime + outtime == 0) { holdtime = -1; }
+			if (holdtime + intime + outtime == 0 || holdtime < 0) { holdtime = -1; }
 			else { holdtime = level.time + holdtime + intime; } // Base off of level.time so that stackable effects will extend it properly
 
 			if (o.flags != flags) { o.start = level.time; }
@@ -298,6 +298,8 @@ class LoadScreen : StaticEventHandler
 
 	override void WorldTick()
 	{
+		if (level.time < 5) { return; }
+
 		if (loading > 0) { loading--; }
 		if (unloading > 0) { unloading++; }
 	}
@@ -306,6 +308,7 @@ class LoadScreen : StaticEventHandler
 	{
 		// No overlays for cartridge levels
 		if (level.levelnum >= 151 && level.levelnum <= 153) { return; }
+		if (level.time < 5) { return; }
 
 		double scale = Screen.GetHeight() / 720;
 
