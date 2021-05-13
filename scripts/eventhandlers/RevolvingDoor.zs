@@ -189,27 +189,85 @@ class RevolvingDoorHandler : EventHandler
 		for (int tidx = 0; tidx < defs.Children.Size(); tidx++)
 		{
 			String ponum = defs.children[tidx].keyname;
+			String tnum = String.Format("%d", doors.Size());
 			RevolvingDoorInstance door = new("RevolvingDoorInstance");
 			door.friction = FileReader.GetDouble(defs, ponum .. ".friction");
 			door.duration = FileReader.GetInt(defs, ponum .. ".duration");
 			doors.Push(door);
 			torque.Push(FileReader.GetDouble(defs, ponum .. ".torque"));
-			String tnum = String.Format("%d", tidx);
 			ponums.Insert(ponum, tnum);
 		}
+	}
+
+	private String AddLineSpecial(Line line)
+	{
+		String lineIndex = String.Format("%d", line.Index());
+		String lineSpecialStr = String.Format(
+			"%d %d %d %d %d %d", // The original special and arguments
+			line.special,
+			line.args[0],
+			line.args[1],
+			line.args[2],
+			line.args[3],
+			line.args[4]);
+		poLineSpecials.Insert(lineIndex, lineSpecialStr);
+		return lineSpecialStr;
+	}
+
+	protected int getOriginalSpecial(Line line)
+	{
+		String lineIndex = String.Format("%d", line.Index());
+		String lineSpecialStr = poLineSpecials.At(lineIndex);
+		if (!lineSpecialStr.Length())
+		{
+			lineSpecialStr = AddLineSpecial(line);
+		}
+		return lineSpecialStr.ToInt(10);
+	}
+
+	protected int getOriginalArg(Line line, int arg)
+	{
+		String lineIndex = String.Format("%d", line.Index());
+		String lineSpecialStr = poLineSpecials.At(lineIndex);
+		if (!lineSpecialStr.Length())
+		{
+			lineSpecialStr = AddLineSpecial(line);
+		}
+		int lineSpecialStrLength = lineSpecialStr.Length();
+		int spacesToSkip = arg + 1; // First number is the special
+		int spacesSkipped = 0;
+		int pos = 0;
+		while (pos < lineSpecialStrLength)
+		{
+			if (lineSpecialStr.ByteAt(pos) == 32) // Space
+			{
+				spacesSkipped += 1;
+			}
+			pos++;
+			if (spacesSkipped == spacesToSkip)
+			{
+				return lineSpecialStr.Mid(pos).ToInt(10);
+			}
+		}
+		return 0;
+	}
+
+	protected int getPoArrayIndex(int ponum)
+	{
+		String postr = String.Format("%d", ponum);
+		String tnum = ponums.At(postr);
+		if (tnum.Length())
+		{
+			return tnum.ToInt();
+		}
+		return -1;
 	}
 
 	override void WorldLinePreActivated(WorldEvent e)
 	{
 		// Get line's original special
-		String lineIndex = String.Format("%d", e.ActivatedLine.Index());
-		String lineSpecialStr = poLineSpecials.At(lineIndex);
-		if (!lineSpecialStr.Length())
-		{
-			lineSpecialStr = String.Format("%d", e.ActivatedLine.special);
-			poLineSpecials.Insert(lineIndex, lineSpecialStr);
-		}
-		int special = lineSpecialStr.ToInt();
+		int lineIndex = e.ActivatedLine.Index();
+		int special = getOriginalSpecial(e.ActivatedLine);
 		// Check if special is supported
 		static const int pospecials[] = { 0, Polyobj_OR_RotateLeft, Polyobj_OR_RotateRight, Polyobj_RotateLeft, Polyobj_RotateRight };
 		static const int factors[] = { 0, 1, -1, 1, -1 };
@@ -225,14 +283,11 @@ class RevolvingDoorHandler : EventHandler
 		}
 		if (!sign) { return; } // NOTE: -1 is truthy, 0 is not
 		// Do the thing
-		int ponum = e.ActivatedLine.Args[0];
-		String postr = String.Format("%d", ponum);
-		String tnum = ponums.At(postr);
-		if (tnum.Length())
+		int poindex = getPoArrayIndex(e.ActivatedLine.Args[0]);
+		if (poindex >= 0)
 		{
-			int tidx = tnum.ToInt();
-			e.ShouldActivate = !doors[tidx].isMoving();
-			doors[tidx].Activate(e.ActivatedLine, e.Thing, torque[tidx] * sign);
+			e.ShouldActivate = !doors[poindex].isMoving();
+			doors[poindex].Activate(e.ActivatedLine, e.Thing, torque[poindex] * sign * getOriginalArg(e.ActivatedLine, 1));
 		}
 	}
 
