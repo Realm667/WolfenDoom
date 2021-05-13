@@ -20,6 +20,7 @@ server bool boa_snowswitch = true; //Snow
 server bool boa_splashswitch = true; //Water splashes
 server bool boa_steamswitch = true; //Steam
 server bool boa_strafetilt = true; //Strafe camera tilt
+server bool boa_tilteffects = true; // Override to disable cosmetic tilt effects (except for level tilt) ** // Needs menu entry
 server bool boa_torchtype = true; //Particle/sprite torches
 server bool boa_groundplume = true; //Ground terrain splashes
 server int boa_bloodlifetime = 60; //Blood lifetime, s
@@ -39,7 +40,8 @@ server int boa_treeslod = 8192; //Tree render distance
 server int boa_cullrange = 8192; // Hard culling distance - takes precedence over all other defined ranges **
 server int boa_culllevel = 0; // Controls culling of additional actors (3d models and lights) **
 server int boa_debriscullstyle = 0; // Controls if debris items are remembered and reproduced when culled/restored (1, significant system impact), or if they are just spawned from scratch (0) **
-server int boa_cullactorlimit = 0; // Controls max number of culled actors to respawn per game tick (0 means unlimited.  Clamped internally to no less than 256) **
+server int boa_cullactorlimit = 32; // Controls max number of culled actors to respawn per game tick (0 means unlimited.  Clamped internally to no less than 256) **
+server bool boa_culling = true; // Enables/disables actor culling ** // Needs menu entry, possibly launcher choice
 
 // Blood (server)
 server bool boa_blood_gibs = true; //Spawn giblets
@@ -70,6 +72,7 @@ user bool boa_autoreload = true; //Autoreloading
 user bool boa_autosteer = false; //Autosteering while in a tank **
 user bool boa_devcomswitch = false; //Developer comments
 user float boa_uweffectsize = 0.01; //Underwater effect parameter
+user int boa_hudratio = 0; // Force the fullscreen HUD elements to draw at a fixed ratio (Uses ForceRatios menu values)
 
 // Render distance (user)
 user int boa_drop1_dist = 1536; //Large blood drops
@@ -111,5 +114,6 @@ server bool boa_debugvoiceovers = false;		// Prints notification if a message ha
 server bool boa_debugalarms = false;			// Highlights selected activator of an alarm panel with green light
 server bool boa_debugparticles = false;			// Prints particle count and current tick delay value once every second
 server bool boa_debugholdinventory = false;		// Prints list of restored inventory items for InventoryHolder actor
-server bool boa_debugsafes = false;				// Prints safe combinations to console when they are activated
-server bool boa_debugtankintercepts = false; 	//Shows a sprite at tank aim/intercept target spots
+server bool boa_debugsafes = false;			// Prints safe combinations to console when they are activated
+server bool boa_debugtankintercepts = false; 		// Shows a sprite at tank aim/intercept target spots
+server bool boa_debugculling = false;			// Shows culling max actor limit information and 

@@ -440,11 +440,12 @@ class StatistSinger : SwitchableDecoration
 	Scale 0.67;
 	+NONSHOOTABLE
 	+SOLID
+	+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		MADI A 0 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		MADI A 0;
 	Active:
 		MADI ABCDEFBGDHFIB 8 A_SetSolid;
 		Loop;
@@ -541,12 +542,13 @@ class KittySinger: Actor
 	+NOTAUTOAIMED
 	+SHOOTABLE
 	+SOLID
+	+CASTSPRITESHADOW
 	Species "Nazi";
 	}
 	States
 	{
 	Spawn:
-		KITY A 0 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		KITY A 0;
 	SpawnLoop:
 		"####" A 0 A_CheckRange(768,"SpawnLoopSilent");
 		"####" A 1;
@@ -576,7 +578,7 @@ class FatSinger : KittySinger
 	States
 	{
 	Spawn:
-		BRUN A 0 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		BRUN A 0;
 	SpawnLoop:
 		BRUN AAAACDEFBGBACEDFGBACEFGGDDCC 24;
 		Loop;
@@ -610,7 +612,7 @@ class ZFatSinger : FatSinger
 	States
 	{
 	Spawn:
-		ZRUN A 0 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		ZRUN A 0;
 	SpawnLoop:
 		ZRUN AAAACDEFBGBACEDFGBACEFGGDDCC 24;
 		Loop;
@@ -626,7 +628,7 @@ class BloodMime : KittySinger
 	States
 	{
 	Spawn:
-		MIME A 0 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		MIME A 0;
 	SpawnLoop:
 		MIME AAAACDBBACDBACDDCC 1 A_SetTics(random(12,24));
 		Loop;
@@ -686,11 +688,12 @@ class GeneralAllied : Base
 	Mass 100;
 	Scale 0.67;
 	+SOLID
+	+CASTSPRITESHADOW
 	}
 	States
 	{
 	Spawn:
-		GENR O -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		GENR O -1;
 		Stop;
 	}
 }
@@ -940,7 +943,7 @@ class HelmetlessAlliedRC : HelmetlessMarine1T
 	States
 	{
 	Spawn:
-		ALC1 A 0 NODELAY { A_SetScale(Scale.X, frandom(0.67, 0.69) ); A_GiveInventory("Z_ShadeMe",0); }
+		ALC1 A 0 NODELAY A_SetScale(Scale.X, frandom(0.67, 0.69) );
 	Randomize:
 		ALC1 A 0 A_Jump(256,"Pose1","Pose2","Pose3");
 		Stop;
@@ -965,7 +968,7 @@ class HelmetlessAlliedRH : HelmetlessMarine1T
 	States
 	{
 	Spawn:
-		ALH1 A 0 NODELAY { A_SetScale(Scale.X, frandom(0.67, 0.69) ); A_GiveInventory("Z_ShadeMe",0); }
+		ALH1 A 0 NODELAY A_SetScale(Scale.X, frandom(0.67, 0.69) );
 	Randomize:
 		ALH1 A 0 A_Jump(256,"Pose1","Pose2","Pose3");
 		Stop;
@@ -990,7 +993,7 @@ class HelmetlessAlliedRO : HelmetlessMarine1T
 	States
 	{
 	Spawn:
-		ALO1 A 0 NODELAY { A_SetScale(Scale.X, frandom(0.67, 0.69) ); A_GiveInventory("Z_ShadeMe",0); }
+		ALO1 A 0 NODELAY A_SetScale(Scale.X, frandom(0.67, 0.69) );
 	Randomize:
 		ALO1 A 0 A_Jump(256,"Pose1","Pose2","Pose3");
 		Stop;
@@ -1024,7 +1027,7 @@ class HelmetlessAlliedRS : HelmetlessMarine1T
 	States
 	{
 	Spawn:
-		ALL1 A 0 NODELAY { A_SetScale(Scale.X, frandom(0.67, 0.69) ); A_GiveInventory("Z_ShadeMe",0); }
+		ALL1 A 0 NODELAY A_SetScale(Scale.X, frandom(0.67, 0.69) );
 	Randomize:
 		ALL1 A 0 A_Jump(256,"Pose1","Pose2","Pose3");
 		Stop;
@@ -1049,7 +1052,7 @@ class HelmetlessAlliedRT : HelmetlessMarine1T
 	States
 	{
 	Spawn:
-		ALL1 A 0 NODELAY { A_SetScale(Scale.X, frandom(0.67, 0.69) ); A_GiveInventory("Z_ShadeMe",0); }
+		ALL1 A 0 NODELAY A_SetScale(Scale.X, frandom(0.67, 0.69) );
 	Randomize:
 		ALL1 A 0 A_Jump(256,"Pose1","Pose2","Pose3");
 		Stop;
@@ -1092,6 +1095,7 @@ class Camp_StaticBroom: Actor
 	Health 500;
 	Mass 600;
 	Scale 0.65;
+	+CASTSPRITESHADOW
 	+FRIENDLY
 	+NOTAUTOAIMED
 	+SHOOTABLE
@@ -1103,7 +1107,7 @@ class Camp_StaticBroom: Actor
 	States
 	{
 	Spawn:
-		PRSA A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		PRSA A -1;
 		Stop;
 	Death:
 		"####" A 0 A_UnSetSolid;
@@ -1123,7 +1127,7 @@ class Camp_StaticShovel : Camp_StaticBroom
 	States
 	{
 	Spawn:
-		PRSB A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		PRSB A -1;
 		Stop;
 	}
 }
@@ -1154,7 +1158,7 @@ class Camp_StaticKneeing : Camp_StaticBroom
 	States
 	{
 	Spawn:
-		PRSE A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		PRSE A -1;
 		Stop;
 	}
 }
@@ -1168,7 +1172,7 @@ class Camp_StaticStandingA : Camp_StaticBroom
 	States
 	{
 	Spawn:
-		PRSF A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		PRSF A -1;
 		Stop;
 	}
 }
@@ -1182,7 +1186,7 @@ class Camp_StaticStandingB : Camp_StaticBroom
 	States
 	{
 	Spawn:
-		PRSG A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		PRSG A -1;
 		Stop;
 	}
 }
@@ -1200,7 +1204,7 @@ class Camp_StaticStandingBTalk : StatistBarkeeper
 	States
 	{
 	Spawn:
-		PRSG A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		PRSG A -1;
 		Stop;
 	}
 }
@@ -1214,7 +1218,7 @@ class Camp_StaticWashBroom : Camp_StaticBroom
 	States
 	{
 	Spawn:
-		PRSH A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		PRSH A -1;
 		Stop;
 	}
 }
@@ -1230,7 +1234,7 @@ class Camp_StaticSit : Camp_StaticBroom
 	States
 	{
 	Spawn:
-		PRSI A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		PRSI A -1;
 		Stop;
 	Death:
 		"####" A 0 A_UnSetSolid;
@@ -1254,7 +1258,7 @@ class Camp_StaticSitTalk : StatistBarkeeper
 	States
 	{
 	Spawn:
-		PRSI A -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		PRSI A -1;
 	}
 }
 
@@ -1269,6 +1273,7 @@ class Camp_StaticShovelDig: Actor
 	Health 500;
 	Mass 600;
 	Scale 0.65;
+	+CASTSPRITESHADOW
 	+FRIENDLY
 	+NOTAUTOAIMED
 	+SHOOTABLE
@@ -1279,7 +1284,7 @@ class Camp_StaticShovelDig: Actor
 	States
 	{
 	Spawn:
-		PRSC A 0 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		PRSC A 0;
 	SpawnLoop:
 		PRSC A 0 A_CheckRange(512,"SpawnLoopSilent");
 		PRSC A 1 A_SetTics(random(24,32));
@@ -1309,8 +1314,7 @@ class Camp_StaticHammeringL : Camp_StaticShovelDig
 	States
 	{
 	Spawn:
-		HAMM A 0 NODELAY A_GiveInventory("Z_ShadeMe",0);
-		"####" A 0 A_Jump(256,"SpawnLoop");
+		HAMM A 0 NoDelay A_Jump(256,"SpawnLoop");
 	SpawnLoop:
 		HAMM A 0 A_CheckRange(512,"SpawnLoopSilent");
 		HAMM A 1 A_SetTics(random(24,32));
@@ -1347,7 +1351,7 @@ class Camp_StaticHammeringR : Camp_StaticHammeringL
 	States
 	{
 	Spawn:
-		HAMM A 0 NODELAY { A_GiveInventory("Z_ShadeMe",0); A_SetScale(Scale.X * -1, Scale.Y); }
+		HAMM A 0 NODELAY A_SetScale(Scale.X * -1, Scale.Y);
 		"####" A 0 A_Jump(256,"SpawnLoop");
 	}
 }
@@ -1361,13 +1365,14 @@ class Camp_StaticShirtlessNH: Actor
 	//$Color 3
 	Height 48;
 	Scale 0.65;
+	+CASTSPRITESHADOW
 	+NOGRAVITY
 	+NOINTERACTION
 	}
 	States
 	{
 	Spawn:
-		PRSS E -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		PRSS E -1;
 		Stop;
 	}
 }
@@ -1381,7 +1386,7 @@ class Camp_StaticBaldNH : Camp_StaticShirtlessNH
 	States
 	{
 	Spawn:
-		PRSN E -1 NODELAY A_GiveInventory("Z_ShadeMe",0);
+		PRSN E -1;
 		Stop;
 	}
 }

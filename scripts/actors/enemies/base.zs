@@ -54,9 +54,6 @@
 	- Integer value that sets the range from the spawn point that this actor will
 	  wander while it is idle (normally only on spawn).  Used by dogs and sharks.
 
-	Base.Shadow
-	- Boolean value that sets whether or not the actor receives a sprite shadow
-
 	Base.LightThreshold
 	- Integer value that determines the light level at which the actor becomes
 	  afraid and runs away from the light
@@ -265,7 +262,6 @@ class Base : Actor
 	State DodgeState;
 	String BossIcon;
 	bool noheal;
-	bool shadow;
 	bool swimmer;
 	bool user_DrawHealthBar;
 	bool user_ForceWeaponDrop;
@@ -297,7 +293,6 @@ class Base : Actor
 	int flags;
 	bool dodging;
 	bool statnumchanged;
-	int adjustedmaxhealth;
 	EffectsManager manager;
 	LaserFindHitPointTracer HitPointTracer;
 	LaserBeam beam;
@@ -314,7 +309,6 @@ class Base : Actor
 	Property LightThreshold:lightthreshold;
 	Property LoiterDistance:loiterdistance;
 	Property NoMedicHeal:noheal;
-	Property Shadow:shadow;
 	Property Swimmer:swimmer;
 	Property OnCompass:user_oncompass;
 	Property NoFear:nofear;
@@ -322,7 +316,7 @@ class Base : Actor
 
 	Default
 	{
-		Base.Shadow 1;
+		+CASTSPRITESHADOW
 		Base.DespawnTime -1;
 		Activation THINGSPEC_Default | THINGSPEC_ThingTargets;
 	}
@@ -912,6 +906,14 @@ class Base : Actor
 
 	override void Tick()
 	{
+		if (manager)
+		{
+			int cullinterval = manager.Culled(pos.xy);
+			if (cullinterval > 8 || cullinterval == -1) { Thinker.Tick(); return; }
+			else if (cullinterval > 6) { Super.Tick(); return; }
+		}
+		else { manager = EffectsManager.GetManager(); }
+
 		if (user_DrawHealthBar && !statnumchanged)
 		{
 			ChangeStatNum(Thinker.STAT_DEFAULT - 3); // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient
@@ -920,12 +922,6 @@ class Base : Actor
 
 		if (!globalfreeze && !level.Frozen)
 		{
-			if (manager)
-			{
-				int cullinterval = manager.Culled(pos.xy);
-				if (cullinterval > 4) { Super.Tick(); return; }
-			}
-
 			if (dodgetimeout > 0) { dodgetimeout--; }
 			if (crouchtimeout == 70) { crouchtimer++; }
 			if (crouchtimeout > 0) { crouchtimeout--; }
@@ -1129,25 +1125,6 @@ class Base : Actor
 		else if (Default.bCountKill && !bFriendly && user_nocountkill)
 		{
 			ClearCounters();
-		}
-
-		// After initilization, handle skill level health alterations
-		//   For each each skill level below 'normal', reduce enemy health by specified percentage
-		//     So, for an enemy with 25 health normally, at the second skill level, it would have 16,
-		//     and at the first skill level it would have 10 (~66% of 16) (assuming the multiplier is 2/3)
-		//     This effectively takes a doberman from 3 hits with the knife to 2 on skill 1, to 1 on skill 0.
-
-		double multiplier = 2. / 3; // Cut the health down to 2/3 its value for each skill level below normal
-		double skill = G_SkillPropertyInt(SKILLP_ACSReturn);
-
-		adjustedmaxhealth = health;
-
-		if (skill < 2) { // If skill 0 or 1
-			// Reduce the health by 1/3 for each skill level below normal
-			for (int i = 0; i < 2 - skill; i++) { adjustedmaxhealth = int(adjustedmaxhealth * multiplier); }
-
-			// Set the actor's health - cap minimum at 1 so that they don't die, just in case
-			A_SetHealth(max(adjustedmaxhealth, 1));
 		}
 
 		if (bDormant) { loiterdistance = 0; } // Don't loiter if dormant.
@@ -1863,7 +1840,7 @@ class Nazi : Base
 		{
 			if (!closestplayer) { closestplayer = FindClosestPlayer(self, IgnoreFriendlies:!bFriendly); }
 
-			if (CheckSight(lastheard, true)) { SetState(SeeState); } // If an alerting actor is in sight, become active
+			if (lastheard && CheckSight(lastheard, true)) { SetState(SeeState); } // If an alerting actor is in sight, become active
 			else if (activationcount == 0 && !CanBeSeen() && closestplayer && closestplayer.IsVisible(self, true)) // if you haven't been used yet and there are no other enemies around
 			{
 				A_Face(closestplayer);
@@ -2787,13 +2764,16 @@ class Nazi : Base
 
 	override void Tick()
 	{
-		if (globalfreeze || level.Frozen || !interval) { return; }
-
 		if (manager)
 		{
 			int cullinterval = manager.Culled(pos.xy);
-			if (cullinterval > 4) { return; }
+			if (cullinterval > 8 || cullinterval == -1) { Thinker.Tick(); return; }
+			else if (cullinterval > 6) { Actor.Tick(); return; }
+			else if (cullinterval > 4) { Super.Tick(); return; }
 		}
+		else { manager = EffectsManager.GetManager(); }
+
+		if (globalfreeze || level.Frozen || !interval) { return; }
 
 		if (wasused)
 		{
@@ -3268,7 +3248,7 @@ class MutantStandard : Nazi
 		SeeSound "mutant/see";
 		PainSound "mutant/pain";
 		DeathSound "mutant/Death";
-		BloodColor "Purple";
+		BloodColor "9F 00 9B";
 		BloodType "MutantBlood";
 		Translation "16:47=[205,0,215]:[40,0,96]","168:191=[205,0,215]:[40,0,96]";
 		Nazi.TotaleGierDrop 0;

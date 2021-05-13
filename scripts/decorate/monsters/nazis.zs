@@ -2822,13 +2822,13 @@ class MGTurret : MiniShip
 	{
 	//$Category Monsters (BoA)/Defensive Devices
 	//$Title Automatic Turret (shootable)
-	Base.Shadow 0;
 	Base.Swimmer 0;
 	Health 50;
 	Radius 2;
 	Height 32;
 	Mass 9999;
 	Speed 0;
+	-CASTSPRITESHADOW
 	+DONTCORPSE
 	+MISSILEEVENMORE
 	+NOPAIN
@@ -2972,11 +2972,11 @@ class MGTurretSoldier : MGTurret
 	//$Title Stationary Turret Soldier (Afrika Korps)
 	Health 100;
 	MaxTargetRange 3072;
-	Base.Shadow 1;
 	Height 56;
 	Radius 16;
 	PainChance 32;
 	Scale 0.62;
+	+CASTSPRITESHADOW
 	-NOBLOODDECALS
 	+DONTTHRUST
 	BloodType "Nashgore_Blood";
@@ -3848,9 +3848,9 @@ class Dummy_Talk3 : Base
 	//$Category Conversation Stuff (BoA)
 	//$Title Door Messages
 	//$Color 5
-	Base.Shadow 0;
 	Radius 8;
 	Height 64;
+	-CASTSPRITESHADOW
 	+INVISIBLE
 	+SOLID
 	}

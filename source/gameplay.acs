@@ -108,12 +108,6 @@ script "DisableSuperMutants" (void)
 	if(disable_supermutants) Thing_Remove(0);
 }
 
-//Astrostein check
-script "AstrosteinCheck" (void)
-{
-	SetResultValue(astrostein);
-}
-
 //Teleportscript from Re-Exhumed
 script "ExTeleportPlayer" (int teleportID, int destinationID)
 {
@@ -146,12 +140,6 @@ script "CLEAR INVENTORY"(void)
 	TakeInventory("AktenV2",1);
 	TakeInventory("RepairKit",9999); //make sure that more than 1 is taken to not fool objectives between HQs and missions --Ozy81
 	TakeInventory("CutsceneEnabled", 1);
-}
-
-script "NOGRENADES" (void)
-{
-	TakeInventory("GrenadePickup", 9999);
-	TakeInventory("AstroGrenadePickup", 9999);
 }
 
 Script "QuickKick" (void)

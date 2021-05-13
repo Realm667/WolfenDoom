@@ -30,13 +30,14 @@ class Cows: SceneryBase
 		Height 32;
 		Radius 32;
 		Scale 0.8;
+		+CASTSPRITESHADOW
 		+RANDOMIZE
 		CullActorBase.CullLevel 1;
 	}
 	States
 	{
 	Spawn:
-		COWS A 0 NODELAY { A_SetScale(Scale.X + frandom(0.1,0.2),Scale.Y + frandom(0.1,0.2)); A_GiveInventory("Z_ShadeMe",0); }
+		COWS A 0 NODELAY A_SetScale(Scale.X + frandom(0.1,0.2),Scale.Y + frandom(0.1,0.2));
 	Randomize:
 		COWS A 0 A_Jump(128,"Cow2");
 	Cow1:
@@ -60,7 +61,7 @@ class Camel : Cows
 	States
 	{
 	Spawn:
-		CAML A 0 NODELAY { A_SetScale(Scale.X + frandom(0.1,0.2),Scale.Y + frandom(0.1,0.2)); A_GiveInventory("Z_ShadeMe",0); }
+		CAML A 0 NODELAY A_SetScale(Scale.X + frandom(0.1,0.2),Scale.Y + frandom(0.1,0.2));
 	SpawnSet:
 		"####" BA 1 A_SetTics(random(40,80));
 		"####" CDEFDEF 1 A_SetTics(random(8,16));
@@ -78,6 +79,7 @@ class BarkDog : SwitchableDecoration
 		Radius 8;
 		Height 24;
 		Scale 0.9;
+		+CASTSPRITESHADOW
 		+DONTTHRUST
 		+NONSHOOTABLE
 		+NOTAUTOAIMED
@@ -95,7 +97,7 @@ class BarkDog : SwitchableDecoration
 		"####" GE 1 A_SetTics(random(20,40));
 		Goto SpawnSet;
 	Spawn:
-		BRDG A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y); A_GiveInventory("Z_ShadeMe",0); }
+		BRDG A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
 	SpawnSet:
 		BRDG DCBA 1 A_SetTics(random(4,10));
 		"####" AA 1 A_SetTics(random(10,40));
@@ -135,7 +137,7 @@ class BlackCat : BarkDog
 		"####" G 1 A_SetTics(random(20,30));
 		Goto Purr;
 	Spawn:
-		BCAT A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y); A_GiveInventory("Z_ShadeMe",0); }
+		BCAT A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
 	Purr:
 		BCAT A 0 A_StartSound("cat/purr", CHAN_ITEM, CHANF_LOOPING, frandom(0.1,0.2), ATTN_STATIC);
 	SpawnSet:
@@ -163,6 +165,7 @@ class OcherCat: SceneryBase
 		Radius 4;
 		Height 8;
 		Scale 0.9;
+		+CASTSPRITESHADOW
 		+CANPASS
 		+DONTTHRUST
 		+NOGRAVITY
@@ -175,7 +178,7 @@ class OcherCat: SceneryBase
 	States
 	{
 	Spawn:
-		OCAT A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y); A_GiveInventory("Z_ShadeMe",0); }
+		OCAT A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
 	Randomize:
 		OCAT A 0 A_Jump(128,"Cat2");
 	Cat1:
@@ -194,7 +197,7 @@ class GrayCat : OcherCat
 	States
 	{
 	Spawn:
-		GCAT A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y); A_GiveInventory("Z_ShadeMe",0); }
+		GCAT A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
 	Randomize:
 		GCAT A 0 A_Jump(128,"Cat2");
 	Cat1:
@@ -213,7 +216,7 @@ class WhiteCat : OcherCat
 	States
 	{
 	Spawn:
-		WCAT A 0 NODELAY { A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y); A_GiveInventory("Z_ShadeMe",0); }
+		WCAT A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
 	Randomize:
 		WCAT A 0 A_Jump(128,"Cat2");
 	Cat1:

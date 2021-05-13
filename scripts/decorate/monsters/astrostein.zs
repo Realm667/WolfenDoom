@@ -61,6 +61,7 @@ class Destroyed_AstroSuite: Actor
 	Health 50;
 	Mass 400;
 	Scale 0.70;
+	+CASTSPRITESHADOW
 	+FRIENDLY
 	+NOBLOOD
 	+NOTAUTOAIMED
@@ -70,7 +71,6 @@ class Destroyed_AstroSuite: Actor
 	States
 	{
 	Spawn:
-		ROB1 O 0 NODELAY A_GiveInventory("Z_ShadeMe", 1);  // This does not inherit from Base, so shadow item must be added manually.
 		ROB1 O -1;
 		Stop;
 	Death:

@@ -456,8 +456,8 @@ class Scorpion : Base
 	//$Category Monsters (BoA)/Critters
 	//$Title Scorpion (normal)
 	//$Color 4
-	Radius 10;
-	Height 12;
+	Radius 16;
+	Height 16;
 	Scale 0.6;
 	Mass 20;
 	Speed 6;
@@ -620,6 +620,7 @@ class Shark : Base
 	FloatSpeed 1;
 	DamageFunction (random(1,5)*5);
 	Monster;
+	-CASTSPRITESHADOW  //needed for shadows
 	-CANPUSHWALLS
 	-CANUSEWALLS
 	+FLOAT
@@ -633,7 +634,6 @@ class Shark : Base
 	SeeSound "shark/sight";
 	DeathSound "shark/death";
 	ActiveSound "shark/active";
-	Base.Shadow 0;  //needed for shadows
 	}
 	States
 	{

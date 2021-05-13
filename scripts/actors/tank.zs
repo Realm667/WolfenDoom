@@ -671,6 +671,9 @@ class TankMorph : PowerMorph
 	{
 		if (owner && owner.player)
 		{
+			owner.TakeInventory("BoASprinting", 1);
+			owner.TakeInventory("BoAHeartbeat", 1);
+
 			// Save the standard Doom-style armor values.  Doesn't support Hexen armor.
 			BasicArmor a = BasicArmor(owner.FindInventory("BasicArmor"));
 			if (a)
@@ -713,6 +716,9 @@ class TankMorph : PowerMorph
 				MorphedPlayer.MaxPitch = 90;
 
 				if (tank.health <= 0) { tank.treads.SetStateLabel("Death"); }
+
+				// Reset the default inventory items (effects, shaders, etc.)
+				InventoryClearHandler.GiveDefaultInventory(MorphedPlayer.mo, true);
 
 				// Restore armor amount and savepercent
 				MorphedPlayer.mo.SetInventory("BasicArmor", armor);

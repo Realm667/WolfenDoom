@@ -2054,6 +2054,7 @@ class CBowl1 : SceneryBase
 		+NOGRAVITY
 		+SOLID
 		+SPAWNCEILING
+		+FORCEYBILLBOARD
 		CullActorBase.CullLevel 2;
 	}
 	States

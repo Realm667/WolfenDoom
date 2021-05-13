@@ -317,6 +317,8 @@ class SparkSpawnerBase : EffectSpawner
 
 	void SpawnFlare()
 	{
+		if (manager && manager.effectmanager && !manager.effectmanager.InRange(pos, boa_sfxlod)) { return; }
+		
 		if (!CheckRange(1280, true)) { A_StartSound("World/Spark", CHAN_AUTO); }
 
 		A_SpawnItemEx("SparkFlare" .. sparkcolor);
@@ -324,6 +326,8 @@ class SparkSpawnerBase : EffectSpawner
 
 	override void SpawnEffect()
 	{
+		if (manager && manager.effectmanager && !manager.effectmanager.InRange(pos, boa_sfxlod)) { return; }
+
 		Super.SpawnEffect();
 
 		String sparktype = "Spark" .. sparkcolor;

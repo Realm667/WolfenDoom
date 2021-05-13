@@ -51,8 +51,8 @@ class VitalitySerum : Inventory
 	{
 		if (Super.TryPickup(toucher))
 		{
-			toucher.Stamina += Boost;
-			toucher.GiveBody(Boost);
+			toucher.Stamina += Boost * Amount;
+			toucher.GiveBody(Boost * Amount);
 			return true;
 		}
 		return false;

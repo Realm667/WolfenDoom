@@ -516,7 +516,6 @@ class SmokeMonster : Base
 	//$Color 4
 	//$Sprite SMMOA0
 	Base.BossIcon "BOSSICO3";
-	Base.Shadow 0;  //needed for shadows
 	Tag "$TAGBOSSOCCULT";
 	Health 3000;
 	Height 56;
@@ -530,6 +529,7 @@ class SmokeMonster : Base
 	MeleeThreshold 192;
 	Monster;
 	+BOSS
+	-CASTSPRITESHADOW  //needed for shadows
 	+DONTFALL
 	+DONTHARMCLASS
 	+DONTMORPH
@@ -770,7 +770,6 @@ class ZyklonMonster : Nazi
 	//$Sprite ZMMOA0
 	//$Color 4
 	Base.BossIcon "BOSSICO3";
-	Base.Shadow 0;  //needed for shadows
 	Tag "$TAGBOSSOCCULT";
 	Health 4500;
 	WoundHealth 2500;
@@ -780,6 +779,7 @@ class ZyklonMonster : Nazi
 	Speed 6;
 	+ALLOWPAIN
 	+BOSS
+	-CASTSPRITESHADOW  //needed for shadows
 	+DONTFALL
 	+DONTHARMCLASS
 	+DONTMORPH
@@ -1229,8 +1229,8 @@ class FatMan : NaziBoss
 		Goto See;
 	Death:
 		OTTO G 5;
-		"####" H 5 A_Scream;
-		"####" I 5;
+		"####" H 8 A_Scream;
+		"####" I 10;
 		"####" J -1 A_NoBlocking;
 		Stop;
 	Raise:
@@ -1254,7 +1254,7 @@ class FatMan2 : FatMan
 		"####" E 8;
 		Goto See.BossFast;
 	Death:
-		OTTO KL 5 A_Scream;
+		OTTO KL 10 A_Scream;
 		"####" KKKK 0 A_SpawnItemEx("PowerPlantSmokePuff", random(-8,8), random(-8,8), random(0,16), random(0,1), random(0,1), random(1,3));
 		"####" KLKLKL 5 A_Fadeout(0.1); //laughs
 		Stop;
@@ -1301,8 +1301,8 @@ class RocketMan : NaziBoss
 		Goto See;
 	Death:
 		"####" H 5;
-		"####" I 5 A_Scream;
-		"####" J 5;
+		"####" I 8 A_Scream;
+		"####" J 10;
 		"####" K 0 A_NoBlocking;
 		"####" K -1 A_BossDeath;
 		Stop;
@@ -1376,8 +1376,8 @@ class GoeringBoss : RocketMan
 		Goto See;
 	Death:
 		"####" H 5;
-		"####" I 5 A_Scream;
-		"####" J 5;
+		"####" I 8 A_Scream;
+		"####" J 10;
 		"####" K 0 A_NoBlocking;
 		"####" K -1 A_BossDeath;
 		Stop;
@@ -1441,8 +1441,8 @@ class HimmlerBoss : RocketMan
 		Goto See;
 	Death:
 		HIMM I 5;
-		"####" H 5 A_Scream;
-		"####" J 5;
+		"####" H 8 A_Scream;
+		"####" J 10;
 		"####" K -1 A_NoBlocking;
 		Stop;
 	}
@@ -1495,8 +1495,8 @@ class GoebbelsBoss : RocketMan
 		Goto See;
 	Death:
 		GOEB H 5;
-		"####" G 5 A_Scream;
-		"####" I 5;
+		"####" G 8 A_Scream;
+		"####" I 10;
 		"####" J -1 A_NoBlocking;
 		Stop;
 	}
@@ -1540,8 +1540,8 @@ class BattonBoss : RocketMan
 	Death:
 		BATT H 5;
 		"####" G 0 A_SpawnItemEx("Debris_Batton", 12, 0, 32, random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
-		"####" G 5 A_Scream;
-		"####" I 5;
+		"####" G 8 A_Scream;
+		"####" I 10;
 		"####" J -1 A_NoBlocking;
 		Stop;
 	Idle:
@@ -1593,8 +1593,8 @@ class BattonBoss2 : BattonBoss
 	Death:
 		BNAV H 5;
 		"####" G 0 A_SpawnItemEx("Debris_Batton2", 12, 0, 32, random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
-		"####" G 5 A_Scream;
-		"####" I 5;
+		"####" G 8 A_Scream;
+		"####" I 10;
 		"####" J -1 A_NoBlocking;
 		Stop;
 	Idle:
@@ -1648,8 +1648,8 @@ class FlamerMan : RocketMan
 		Goto See;
 	Death:
 		FLAM G 5;
-		"####" H 5 A_Scream;
-		"####" I 5;
+		"####" H 8 A_Scream;
+		"####" I 10;
 		"####" J -1 A_NoBlocking;
 		Stop;
 	Raise:
@@ -1717,8 +1717,8 @@ class MadDoctor : RocketMan
 		Goto See;
 	Death:
 		"####" G 8;
-		"####" H 8;
-		"####" I 8 A_Scream;
+		"####" H 12;
+		"####" I 16 A_Scream;
 		"####" J -1 A_NoBlocking;
 		Stop;
 	}
@@ -1804,9 +1804,9 @@ class MadDoctor3 : MadDoctor
 		Goto See;
 	Death:
 		"####" R 8;
-		"####" Q 8;
-		"####" S 8 A_Scream;
-		"####" T 8 ;
+		"####" Q 10;
+		"####" S 12 A_Scream;
+		"####" T 10 ;
 		"####" U -1 A_NoBlocking;
 		Stop;
 	}
@@ -1862,9 +1862,9 @@ class MadDoctor4 : MadDoctor
 		Goto See;
 	Death:
 		"####" J 8;
-		"####" I 8;
-		"####" K 8 A_Scream;
-		"####" L 8 ;
+		"####" I 10;
+		"####" K 12 A_Scream;
+		"####" L 10;
 		"####" M -1 A_NoBlocking;
 		Stop;
 	}
@@ -2114,8 +2114,8 @@ class MadButcher : MadDoctor
 		Goto See;
 	Death:
 		"####" G 8;
-		"####" H 8;
-		"####" I 8 A_Scream;
+		"####" H 12;
+		"####" I 16 A_Scream;
 		"####" J -1 A_NoBlocking;
 		Stop;
 	}
@@ -2166,8 +2166,8 @@ class General : RocketMan
 		Goto See;
 	Death:
 		FETT J 5;
-		"####" K 5 A_Scream;
-		"####" L 5;
+		"####" K 8 A_Scream;
+		"####" L 10;
 		"####" M -1 A_NoBlocking;
 		Stop;
 	Raise:
@@ -2218,8 +2218,8 @@ class BerlinGeneral1 : General
 		Goto See;
 	Death:
 		BOFF H 5;
-		"####" G 5 A_Scream;
-		"####" I 5;
+		"####" G 8 A_Scream;
+		"####" I 10;
 		"####" J -1 A_NoBlocking;
 		Stop;
 	Raise:
@@ -2278,8 +2278,8 @@ class BerlinGeneral2 : BerlinGeneral1
 		Goto See;
 	Death:
 		BOF2 I 5;
-		"####" H 5 A_Scream;
-		"####" J 5;
+		"####" H 8 A_Scream;
+		"####" J 10;
 		"####" K -1 A_NoBlocking;
 		Stop;
 	Raise:
@@ -2325,8 +2325,8 @@ class MarineGeneral : General
 		Goto See;
 	Death:
 		SEET L 5;
-		"####" M 5 A_Scream;
-		"####" N 5;
+		"####" M 8 A_Scream;
+		"####" N 10;
 		"####" O -1 A_NoBlocking;
 		Stop;
 	Raise:
@@ -2390,8 +2390,8 @@ class RommelBoss : General
 		Goto See;
 	Death:
 		ROMM H 5;
-		"####" G 5 A_Scream;
-		"####" I 5;
+		"####" G 8 A_Scream;
+		"####" I 10;
 		"####" J -1 A_NoBlocking;
 		Stop;
 	Raise:
@@ -2447,7 +2447,7 @@ class Totengraber_Healthy : RocketMan
 		"####" H 6 A_NaziPain(256);
 		Goto See;
 	Death:
-		"####" A 5 A_Scream;
+		"####" A 10 A_Scream;
 		"####" A 0 A_NoBlocking;
 		"####" AAAA 0 A_SpawnItemEx("PowerPlantSmokePuff", random(-8,8), random(-8,8), random(0,16), random(0,1), random(0,1), random(1,3));
 		"####" AAAAAAAAAA 5 A_Fadeout(0.1); //laughs
@@ -2525,8 +2525,8 @@ class Totengraber_Wounded : RocketMan
 		Goto See;
 	Death:
 		"####" H 5;
-		"####" I 5 A_Scream;
-		TOTH J 5;
+		"####" I 8 A_Scream;
+		TOTH J 10;
 		"####" K 0 A_NoBlocking;
 		"####" K -1 A_BossDeath;
 		Stop;
@@ -2593,7 +2593,7 @@ class Mengele_Healthy : RocketMan
 		"####" H 6 A_NaziPain(256);
 		Goto See;
 	Death:
-		"####" A 5 A_Scream;
+		"####" A 10 A_Scream;
 		"####" A 0 A_NoBlocking;
 		"####" AAAA 0 A_SpawnItemEx("PowerPlantSmokePuff", random(-8,8), random(-8,8), random(0,16), random(0,1), random(0,1), random(1,3));
 		"####" AAAAAAAAAA 5 A_Fadeout(0.1); //laughs
@@ -2674,9 +2674,9 @@ class Mengele_Wounded : RocketMan
 		Goto See;
 	Death:
 		"####" H 5;
-		"####" G 5 A_Scream;
-		"####" I 5;
-		"####" J 5;
+		"####" G 8 A_Scream;
+		"####" I 12;
+		"####" J 16;
 		"####" K 0 A_NoBlocking;
 		"####" K -1 A_BossDeath;
 		Stop;
@@ -2827,9 +2827,9 @@ class DeathKnight : Nazi
 		Goto See;
 	Death:
 		DKGT M 5 A_Scream;
-		"####" NOP 5;
-		"####" Q 5 A_NoBlocking;
-		"####" R 5;
+		"####" NOP 12;
+		"####" Q 10 A_NoBlocking;
+		"####" R 8;
 		"####" S -1;
 		Stop;
 	Idle:
@@ -2876,35 +2876,14 @@ class Longinus_Hitler : NaziBoss
 		Nazi.Healer 2;
 		Nazi.HealSound "creepy/born";
 		Nazi.HealDistance 256;
+		Alpha 0.0;
 	}
 	States
 	{
 	Appear:
 		SHI1 A 0 A_StartSound("hitlerghost/die", CHAN_AUTO, 0, 1.0);
-		"####" A 5 A_SetRenderStyle(0.01, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.05, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.10, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.15, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.20, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.25, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.30, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.35, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.40, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.45, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.50, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.55, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.60, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.65, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.70, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.75, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.80, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.85, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.90, STYLE_Translucent);
-		"####" A 5 A_SetRenderStyle(0.95, STYLE_Translucent);
-		"####" A 1 A_SetRenderStyle(0.99, STYLE_Translucent);
-		"####" A 0 { A_StopSound(CHAN_AUTO); A_StartSound("hitlerghost/die", CHAN_AUTO, 0, 10.0); }
-		"####" A 5 A_SetRenderStyle(1, STYLE_NORMAL);
-		"####" A 1;
+		"####" A -1;
+		Stop;
 	Spawn:
 		SHI1 A 0;
 		"####" "#" 0 { user_incombat = TRUE; } //mxd
@@ -3073,14 +3052,52 @@ class Longinus_Hitler : NaziBoss
 		Goto See;
 	Death:
 		SHI2 K 5;
-		SHI2 L 5 A_Scream;
-		SHI2 MN 10;
-		SHI2 O 5;
+		SHI2 L 8 A_Scream;
+		SHI2 MN 12;
+		SHI2 O 8;
 		SHI2 P 7 A_NoBlocking;
 		SHI2 Q 9 A_SpawnItemEx("Bridge24_3d");
 	Dead:
 		SHI2 R 4 A_SetScale(max(Scale.X * 0.98, 1.0));
 		Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		SetStateLabel("Appear");
+
+		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		if (isFrozen()) { return; }
+
+		if (InStateSequence(CurState, FindState("Appear")))
+		{
+			bDormant = true;
+
+			alpha += 0.01;
+			A_SetRenderStyle(alpha, STYLE_Translucent);
+
+			if (alpha == 1.0)
+			{
+				A_StopSound(CHAN_AUTO);
+				A_StartSound("hitlerghost/die", CHAN_AUTO, 0, 10.0);
+				RestoreRenderStyle();
+
+				bDormant = false;
+
+				SetState(SpawnState);
+			}
+		}
+		else if (GetRenderStyle() != Default.GetRenderStyle())
+		{
+			alpha = 1.0;
+			RestoreRenderStyle();
+		}
+
+		Super.Tick();
 	}
 }
 
@@ -3245,8 +3262,8 @@ class SuperSoldier : NaziBoss
 		Goto See;
 	Death:
 		"####" I 5;
-		"####" J 5 A_Scream;
-		"####" K 5;
+		"####" J 8 A_Scream;
+		"####" K 12;
 		"####" L -1 A_NoBlocking;
 		Stop;
 	Raise:
@@ -3377,8 +3394,8 @@ class SuperSoldier_Afrika : SuperSoldier
 		Goto See;
 	Death:
 		"####" J 5;
-		"####" K 5 A_Scream;
-		"####" L 5;
+		"####" K 8 A_Scream;
+		"####" L 12;
 		"####" M -1 A_NoBlocking;
 		Stop;
 	Raise:
@@ -3493,8 +3510,8 @@ class SuperSoldier_Wehrmacht : SuperSoldier
 		Goto See;
 	Death:
 		HWER K 5;
-		"####" L 5 A_Scream;
-		"####" M 5;
+		"####" L 8 A_Scream;
+		"####" M 12;
 		"####" N -1 A_NoBlocking;
 		Stop;
 	Raise:
@@ -3713,8 +3730,8 @@ class SuperSoldier_Elsa : SuperSoldier_Girl
 		Goto See;
 	Death:
 		ELSA H 7;
-		"####" I 5 A_Scream;
-		"####" J 5;
+		"####" I 8 A_Scream;
+		"####" J 12;
 		"####" J -1 A_NoBlocking;
 		Stop;
 	Raise: //unused
@@ -3863,7 +3880,7 @@ class Blondi : NaziBoss
 		Goto See;
 	Death:
 		"####" H 8;
-		"####" I 8 A_Scream;
+		"####" I 12 A_Scream;
 		"####" J 6;
 		"####" K -1 A_NoBlocking;
 		Stop;
@@ -3954,8 +3971,8 @@ class PhantomBoss : RocketMan
 		Goto See;
 	Death:
 		PHAN G 5;
-		"####" H 5 A_Scream;
-		"####" I 5;
+		"####" H 8 A_Scream;
+		"####" I 12;
 		"####" J 0 A_NoBlocking; //now 50 souls total
 		"####" J 0 A_SpawnProjectile("Soul", 32, 0, 5, CMF_BADPITCH, 0);
 		"####" J 0 A_SpawnProjectile("Soul", 32, 0, 25, CMF_BADPITCH, 0);

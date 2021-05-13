@@ -79,11 +79,11 @@ class Alarm : Base
 	Default
 	{
 		//$Category Misc (BoA)
+		-CASTSPRITESHADOW
 		+WALLSPRITE
 		+ROLLSPRITE
 		+NOGRAVITY
 		-SOLID
-		Base.Shadow 0;
 		Height 16;
 		Radius 8;
 	}

@@ -25,14 +25,14 @@ jobs:
         run: sudo apt -y install python3 zsh imagemagick
       - name: Scan language table
         run: |
-          python3 $REPO_ROOT/tools/util/charlist.py language.csv --header "Char & codepoint" --csv > /tmp/language_charlist_csv
-          python3 $REPO_ROOT/tools/util/charlist.py language.csv --header "Char & codepoint" --code-only > /tmp/language_charlist
+          python3 $REPO_ROOT/tools/programs/charlist.py language.csv --header "Char & codepoint" --csv > /tmp/language_charlist_csv
+          python3 $REPO_ROOT/tools/programs/charlist.py language.csv --header "Char & codepoint" --code-only > /tmp/language_charlist
       - name: Scan fonts
         run: |
           cd fonts
           for fontname in $(ls -1F | sed -e '/[^/]$/d;s/\/$//g'); do
             echo $fontname > /tmp/scans/${fontname}
-            zsh $REPO_ROOT/tools/util/checkfont.sh $fontname --source /tmp/language_charlist >> /tmp/scans/${fontname}
+            zsh $REPO_ROOT/tools/programs/checkfont.sh $fontname --source /tmp/language_charlist >> /tmp/scans/${fontname}
           done
         shell: bash
       - name: Update font character table

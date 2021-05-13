@@ -298,6 +298,7 @@ class RENemesis : NaziBoss
 		// 8400 tics - 3 seconds = 8400 - 105 = 8295 tics
 		// 3 seconds (105 tics) is easier to test with
 		NEMS N 8295 CanRaise;
+		Loop;
 	Sleep:
 		"####" "#" 35 CanRaise A_JumpIf(!control.sleeping, 1);
 		Wait;
@@ -377,16 +378,8 @@ class RENemesis : NaziBoss
 		// Keep previous target in "tracer" pointer to prevent it from
 		// being lost, since actors lose their targets (and the lastEnemy)
 		// when they are resurrected.
-		A_RearrangePointers(AAPTR_NULL, newtracer: AAPTR_TARGET); 
-		if (A_RaiseSelf(RF_NOCHECKPOSITION))
-		{
-			// BoA code sets max health separately from the MonsterHealth
-			// property in MAPINFO skill definitions, and stores it in the
-			// "adjustedmaxhealth" property.
-			A_SetHealth(adjustedmaxhealth);
-			return true;
-		}
-		return false;
+		A_RearrangePointers(AAPTR_NULL, newtracer: AAPTR_TARGET);
+		return A_RaiseSelf(RF_NOCHECKPOSITION);
 	}
 
 	void A_FadeOutJump(double fadeAmount, statelabel label, int flags = FTF_CLAMP)

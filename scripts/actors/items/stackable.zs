@@ -94,6 +94,7 @@ class StackableInventory : PuzzleItem
 			}
 
 			copy = Inventory(Spawn (type));
+			copy.ClearCounters();
 			copy.Amount = amount;
 			copy.Deactivate(null);
 			copy.BecomeItem ();

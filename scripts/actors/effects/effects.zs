@@ -16,6 +16,7 @@
 #include "scripts/actors/effects/torches.zs"
 #include "scripts/actors/effects/grass.zs"
 #include "scripts/actors/effects/creepy.zs"
+#include "scripts/actors/effects/splash.zs"
 
 class EffectInfo // Should just be a struct, but we can't use structs in dynamic arrays...
 {
@@ -203,14 +204,14 @@ class EffectsManager : Thinker
 
 	override void Tick()
 	{
-		if (level.time == 2)
+		if (level.maptime == 2)
 		{
 			CullAllEffects(); // Cull everything at map start
 
 			renderchunks = (MAPMAX / CHUNKSIZE) / 2;
 			interval = 0;
 		}
-		else if (level.time > 2)
+		else if (level.maptime > 2)
 		{
 			bool cull = false;
 			int x, y;
@@ -234,25 +235,47 @@ class EffectsManager : Thinker
 
 			if (cull || interval > 0)
 			{
-				CullEffects();
+				bool culled;
+				int cx, cy;
+				[culled, cx, cy] = CullEffects();
 
-				if (interval++ > renderchunks) { interval = 0; }
+				if (boa_debugculling && !culled)
+				{
+					console.printf("Last culled: %i, %i at interval %i", cx, cy, interval);
+				}
+
+				if (interval++ > renderchunks || !culled) { interval = 0; }
 			}
 		}
 	}
 
 	int, bool Culled(Vector2 pos)
 	{
+		if (!boa_culling) { return 0, false; }
+
 		int x, y;
 		[x, y] = EffectBlock.GetBlock(pos.x, pos.y);
 
-		if (!effectblocks[x][y]) { return 0; }
-
+		if (!effectblocks[x][y]) { return -1, false; }
+	
 		return effectblocks[x][y].cullinterval, effectblocks[x][y].forceculled;
 	}
 
-	void CullEffects()
+	bool InRange(Vector3 pos, double range)
 	{
+		int interval;
+		bool forceculled;
+
+		[interval, forceculled] = Culled(pos.xy);
+		if (forceculled || interval > range / CHUNKSIZE || interval == -1) { return false; }
+
+		return true;
+	}
+
+	bool, int, int CullEffects()
+	{
+		bool ret = true;
+		int retx = 0, rety = 0;
 		int maxval = MAPMAX * 2 / CHUNKSIZE;
 
 		for (int p = 0; p < MAXPLAYERS; p++)
@@ -276,13 +299,17 @@ class EffectsManager : Thinker
 						(y != chunky - interval && y != chunky + interval)
 					) { continue; }
 
-					// Skip empty blocks
-					if (!effectblocks[x][y]) { continue; }
+					// Initialize any empty blocks so that interval and forcecull values will be set
+					if (!effectblocks[x][y]) { effectblocks[x][y] = New("EffectBlock"); }
 
-					bool forceremove = !multiplayer && (interval >  range / CHUNKSIZE); // Force removal if outside of the cull range (and not multiplayer)
+					bool forceremove = boa_culling && (!multiplayer && (interval >  range / CHUNKSIZE)); // Force removal if outside of the cull range (and not multiplayer)
 
 					// Delay culling if this chunk was force culled last time and is still outside of culling range
-					if (effectblocks[x][y].forceculled && forceremove) { continue; }
+					if (effectblocks[x][y].forceculled && forceremove)
+					{
+						effectblocks[x][y].cullinterval = interval;
+						continue;
+					}
 
 					// Don't cull chunks that are the same distance away as last time, or if our camera is outside of our body
 					if (players[p].camera != players[p].mo || effectblocks[x][y].cullinterval != interval || effectblocks[x][y].forceculled || forceremove)
@@ -290,10 +317,21 @@ class EffectsManager : Thinker
 						count += CullChunk(effectblocks[x][y].indices, forceremove);
 					}
 					effectblocks[x][y].forceculled = forceremove;
-					effectblocks[x][y].cullinterval = interval;
+					effectblocks[x][y].cullinterval = !boa_culling ? 0 : interval;
+
+					if (boa_cullactorlimit > 0 && count > boa_cullactorlimit && !retx && !rety)
+					{
+						ret = false;
+						retx = x;
+						rety = y;
+					}
 				}
 			}
+
+			if (boa_debugculling && count) { console.printf("Spawned %i actors in interval %i", count, interval); }
 		}
+
+		return ret, retx, rety;
 	}
 
 	int CullChunk(Array<int> indices, bool forceremove = false)
@@ -347,6 +385,7 @@ class EffectsManager : Thinker
 
 		bool inrange = false;
 		double dist, range;
+		bool ret = false;
 
 		range = effects[i].range <= 0 ? boa_sfxlod : effects[i].range;
 		range = clamp(min(range, boa_cullrange), 1024, 8192); // Minimum range is 1024, no matter what the CVARs are set to!  boa_cullrange overrides other CVARs.
@@ -370,6 +409,8 @@ class EffectsManager : Thinker
 			dist = CHUNKSIZE * interval;
 			inrange = !forceremove;
 		}
+
+		if (!boa_culling) { inrange = true; }
 
 		if (inrange && !effects[i].ingame)
 		{
@@ -409,6 +450,10 @@ class EffectsManager : Thinker
 				effects[i].ingame = true;
  
 				if (effect is "CullActorBase") { CullActorBase(effect).bWasCulled = true; }
+				else if (effect is "AlertLight") { AlertLight(effect).wasculled = true; }
+				else if (effect is "EffectBase") { EffectBase(effect).wasculled = true; }
+
+				ret = true;
 			}
 		}
 		else if (!inrange && effects[i].effect && !effects[i].effect.bDormant)
@@ -433,7 +478,7 @@ class EffectsManager : Thinker
 				effects[i].effect.A_RemoveChildren(TRUE, RMVF_MISC);
 
 				state FadeState = effects[i].effect.FindState("Fade");
-				if (interval && effects[i].effect.alpha > 0 && level.time > 35 && FadeState) { effects[i].effect.SetState(FadeState); }
+				if (interval && effects[i].effect.alpha > 0 && level.maptime > 35 && FadeState) { effects[i].effect.SetState(FadeState); }
 				else {
 					effects[i].effect = null;
 					effect.Destroy();
@@ -442,9 +487,13 @@ class EffectsManager : Thinker
 				}
 			}
 		}
-		else if (effects[i].effect && effects[i].effect is "CullActorBase") { CullActorBase(effects[i].effect).targetalpha = GetDistanceAlpha(effects[i].effect, dist, range); }
+		else if (effects[i].effect && effects[i].effect is "CullActorBase")
+		{
+			if (boa_culling) { CullActorBase(effects[i].effect).targetalpha = GetDistanceAlpha(effects[i].effect, dist, range); }
+			else { CullActorBase(effects[i].effect).targetalpha = effects[i].effect.Default.alpha; }
+		}
 
-		return effects[i].ingame;
+		return ret;
 	}
 
 	void CullAllEffects()
@@ -553,6 +602,8 @@ class EffectSpawner : SwitchableDecoration
 
 class EffectBase : SimpleActor
 {
+	bool wasculled;
+
 	States
 	{
 		Inactive:
@@ -562,7 +613,7 @@ class EffectBase : SimpleActor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		EffectsManager.Add(self, boa_sfxlod);
+		if (!wasculled) { EffectsManager.Add(self, boa_sfxlod); }
 	}
 }
 
@@ -658,7 +709,7 @@ class GrassBase : CullActorBase
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		if (!bDontCull) { EffectsManager.Add(self, boa_grasslod); }
+		if (!bDontCull && !bWasCulled) { EffectsManager.Add(self, boa_grasslod); }
 	}
 }
 
@@ -667,7 +718,7 @@ class SceneryBase : CullActorBase
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		if (!bDontCull) { EffectsManager.Add(self, boa_scenelod, true); }
+		if (!bDontCull && !bWasCulled) { EffectsManager.Add(self, boa_scenelod, true); }
 	}
 }
 
@@ -679,7 +730,7 @@ class TreesBase : CullActorBase
 	{
 		Super.PostBeginPlay();
 		origPitch = pitch;
-		if (!bDontCull) { EffectsManager.Add(self, boa_treeslod, true); }
+		if (!bDontCull && !bWasCulled) { EffectsManager.Add(self, boa_treeslod, true); }
 	}
 
 	void A_3DPitchFix()
@@ -721,7 +772,7 @@ class VolumetricBase : CullActorBase
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		if (!bDontCull) { EffectsManager.Add(self, boa_scenelod); }
+		if (!bDontCull && !bWasCulled) { EffectsManager.Add(self, boa_scenelod); }
 	}
 }
 
@@ -765,7 +816,7 @@ class Blocker : CullActorBase
 
 		alpha = Default.alpha;
 
-		EffectsManager.Add(self, 256.0); // These are invisible, so only need to be spawned in when immediately near the player
+		if (!bWasCulled) { EffectsManager.Add(self, 256.0); } // These are invisible, so only need to be spawned in when immediately near the player
 	}
 }
 

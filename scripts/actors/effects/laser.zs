@@ -309,6 +309,8 @@ class Laser : Actor
 		}
 
 		Actor puff;
+		int delay = 0;
+		if (manager) { delay = 2 * manager.GetDelay(0, 0, traceresults.HitActor); }
 
 		if (
 			traceresults.HitType == TRACE_HitFloor || 
@@ -317,28 +319,34 @@ class Laser : Actor
 			(traceresults.HitActor && traceresults.HitActor.bNoBlood)
 		)
 		{
-			// Spawn bullet puff
-			if (puffclass != "")
+			if (!delay || level.time % delay == 0)
 			{
-				puff = Spawn(puffclass, traceresults.HitPos - traceresults.HitVector * 3.0, ALLOW_REPLACE);
-
-				if (puff)
+				// Spawn bullet puff
+				if (puffclass != "" && (!delay || level.time % delay == 0))
 				{
-					puff.master = origin;
-					puff.angle = origin.AngleTo(puff);
-					if (drawdecal && !Random(0, 16)) { puff.A_SprayDecal("LaserBeamScorch", 24.0); }
-					puff.angle = puff.AngleTo(origin);
+					puff = Spawn(puffclass, traceresults.HitPos - traceresults.HitVector * 3.0, ALLOW_REPLACE);
+
+					if (puff)
+					{
+						puff.master = origin;
+						puff.angle = origin.AngleTo(puff);
+						if (drawdecal && !Random(0, 16)) { puff.A_SprayDecal("LaserBeamScorch", 24.0); }
+						puff.angle = puff.AngleTo(origin);
+					}
 				}
 			}
 		}
 		else if (traceresults.HitActor)
  		{
-			puff = Spawn("LaserSmoke", traceresults.HitPos, ALLOW_REPLACE);
-			if (puff)
+			if (!delay || level.time % delay == 0)
 			{
-				puff.master = origin;
-				puff.angle = puff.AngleTo(origin);
-				puff.vel.z = 1.0;
+				puff = Spawn("LaserSmoke", traceresults.HitPos, ALLOW_REPLACE);
+				if (puff)
+				{
+					puff.master = origin;
+					puff.angle = puff.AngleTo(origin);
+					puff.vel.z = 1.0;
+				}
 			}
 		}
 

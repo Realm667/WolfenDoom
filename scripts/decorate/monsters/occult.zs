@@ -222,6 +222,7 @@ class HitlerGhost : Nazi
 	PainChance 24;
 	Scale 0.69;
 	DamageFactor "Rocket", 0.2;
+	-CASTSPRITESHADOW  //needed for shadows
 	-FLOORCLIP
 	+BOSS
 	+FLOAT
@@ -231,7 +232,6 @@ class HitlerGhost : Nazi
 	DeathSound "hitlerghost/die";
 	SeeSound "hitlerghost/see";
 	RenderStyle "Translucent";
-	Base.Shadow 0;  //needed for shadows
 	}
 	States
 	{
@@ -293,6 +293,7 @@ class Geist : Nazi
 	FloatSpeed 1.33;
 	Alpha 0.5;
 	RenderStyle "Translucent";
+	-CASTSPRITESHADOW  //needed for shadows
 	-FLOORCLIP
 	+DONTFALL
 	+FLOAT
@@ -303,7 +304,6 @@ class Geist : Nazi
 	PainChance 255;
 	PainSound "geist/pain";
 	DeathSound "geist/die";
-	Base.Shadow 0;  //needed for shadows
 	Base.NoFear;
 	}
 	States

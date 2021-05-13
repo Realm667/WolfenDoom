@@ -1,0 +1,1 @@
+call G:\DoomDev\Projects\Wolfendoom\Wolfendoom\tools\gldefs-mats-generator.cmd > G:\DoomDev\Projects\Wolfendoom\Wolfendoom\boadisplace.txt

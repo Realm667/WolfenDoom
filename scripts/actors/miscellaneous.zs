@@ -155,6 +155,11 @@ class ActorPositionable : Base
 		ROT_MatchRoll = 4,
 	};
 
+	Default
+	{
+		-CASTSPRITESHADOW
+	}
+
 	Vector3 spawnoffset;
 	Vector3 offset;
 

@@ -64,6 +64,7 @@ class CrowWander1L : Base //Wandering version. Flees when player gets close and 
 		Height 3;
 		Scale 0.7;
 		//Monster
+		-CASTSPRITESHADOW
 		-CANUSEWALLS
 		-CANPUSHWALLS
 		-COUNTKILL
@@ -80,7 +81,6 @@ class CrowWander1L : Base //Wandering version. Flees when player gets close and 
 		+THRUACTORS
 		MeleeRange 310;
 		PainChance 255;
-		Base.Shadow 0;
 	}
 	States
 	{

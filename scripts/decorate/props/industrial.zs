@@ -117,6 +117,7 @@ class Pipe1: SceneryBase
 		Radius 8;
 		Height 128;
 		+SOLID
+		+FORCEYBILLBOARD
 		CullActorBase.CullLevel 1;
 	}
 	States

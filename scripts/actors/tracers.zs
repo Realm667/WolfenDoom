@@ -26,9 +26,11 @@ class BulletTracer : FastProjectile
 	int offset;
 	int zoffset;
 	int flags;
+	EffectsManager manager;
 
 	flagdef NoRicochet: flags, 0;
 	flagdef NoInertia: flags, 1;
+	flagdef PortalAware: flags, 2;
 
 	Property Trail:trail;
 
@@ -65,7 +67,6 @@ class BulletTracer : FastProjectile
 				if (!bNoRicochet)
 				{
 					A_StartSound("ricochet");
-//					DoWhizChecks();
 				}
 				A_SpawnItemEx("ZBulletChip");
 			}
@@ -125,6 +126,12 @@ class BulletTracer : FastProjectile
 			double height = posDiff.Z + shooter.target.height * heightfac * crouchfactor;
 			Vel.Z = ZScriptTools.ArcZVel(time, grav, height);
 		}
+
+		FLineTraceData trace;
+		if (shooter.LineTrace(shooter.angle, 2048, shooter.pitch, 0, int(pos.z - shooter.pos.z), 0, 0, trace))
+		{
+			bPortalAware = !!trace.NumPortals;
+		}
 	}
 
 	// Handling so that tracers won't hit actors that have the tracer's origin actor set as their master (or inherit from one that does)
@@ -145,7 +152,10 @@ class BulletTracer : FastProjectile
 
 	override void Tick()
 	{
-		if ((level.time + offset) % 30 == 0) { DoWhizChecks(); }
+		if ((level.time + offset) % 30 == 0)
+		{
+			if ((target && target.player) || (manager && manager.InRange(pos, 0))) { DoWhizChecks(); }
+		}
 
 		ClearInterpolation();
 		double oldz = pos.Z;
@@ -266,7 +276,7 @@ class BulletTracer : FastProjectile
 					ExplodeMissile (NULL, NULL);
 					return;
 				}
-
+				if (bPortalAware) { CheckPortalTransition(); }
 				if (changexy && ripcount <= 0) 
 				{
 					ripcount = count >> 3;
@@ -275,7 +285,6 @@ class BulletTracer : FastProjectile
 					Effect();
 				}
 			}
-			CheckPortalTransition();
 		}
 		if (!CheckNoDelay())
 			return;		// freed itself

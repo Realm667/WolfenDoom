@@ -18,7 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
-*/
+**/
 
 // Converted to ZScript by AFADoomer from ACS code derived from Lasting Light by ral22,
 // originally ported in by Ozymandias81, modified by edthebat, MaxEd, and AFADoomer
@@ -29,14 +29,20 @@ class BoASprinting : Inventory
 	int staminarecoverytimeout, staminasoundtimeout;
 	int exhaustionthreshold;
 	String gaspsound;
+	int flags;
 
 	Property ExhaustionStamina:exhaustionthreshold;
 	Property GaspSound:gaspsound;
+
+	FlagDef AnyDirection:flags, 0; // Allow sprinting while moving sideways
+	FlagDef RequireForward:flags, 1; // Only sprint when there is some forward movement
+	FlagDef AllowCrouch:flags, 2; // Allow sprinting while crouched
 
 	Default
 	{
 		BoASprinting.ExhaustionStamina 25;
 		BoASprinting.GaspSound "player/breathing";
+		+BoASprinting.RequireForward
 	}
 
 	override void Tick()
@@ -63,10 +69,14 @@ class BoASprinting : Inventory
 		PlayerPawn(owner).forwardmove1 = PlayerPawn(owner).Default.forwardmove1;
 		PlayerPawn(owner).forwardmove2 = PlayerPawn(owner).Default.forwardmove1 / 2; // Internal running code multiplies by 2
 
+		PlayerPawn(owner).sidemove1 = PlayerPawn(owner).Default.sidemove1;
+		PlayerPawn(owner).sidemove2 = PlayerPawn(owner).Default.sidemove1 / 2;
+
 		// Reset to full stamina if noclipping, and increase base speed
 		if (owner.player.cheats & (CF_NOCLIP | CF_NOCLIP2))
 		{
 			PlayerPawn(owner).forwardmove1 = PlayerPawn(owner).forwardmove2 = 2.5;
+			PlayerPawn(owner).sidemove1 = PlayerPawn(owner).sidemove2 = 2.5;
 			cooldown = 0;
 			staminarecoverytimeout = 0;
 
@@ -77,15 +87,29 @@ class BoASprinting : Inventory
 
 		if (
 			run &&
-			cmd.forwardmove > 0 &&
-			owner.player.crouchfactor == 1.0 &&
+			(
+				(bAnyDirection && cmd.sidemove) || // Check if player is strafing, if that flag is set
+				(
+					cmd.forwardmove && // Or if player is moving forward or backward
+					(!bRequireForward || cmd.forwardmove > 0) // And only forward, if that flag is set
+				)
+			) &&
+			(bAllowCrouch || owner.player.crouchfactor == 1.0) &&
 			cooldown <= 0 &&
 			stamina.amount > 0
 		)
 		{
 			// Counteract cl_run swapping run and walk speeds
-			if (cl_run) { PlayerPawn(owner).forwardmove1 = PlayerPawn(owner).Default.forwardmove1 * 2; } // Change walking speed if cl_run set
-			else { PlayerPawn(owner).forwardmove2 = PlayerPawn(owner).Default.forwardmove1; } // Otherwise update run speed
+			if (cl_run)
+			{ // Change walking speed if cl_run set
+				PlayerPawn(owner).forwardmove1 = PlayerPawn(owner).Default.forwardmove1 * 2;
+				PlayerPawn(owner).sidemove1 = PlayerPawn(owner).Default.sidemove1 * 2;
+			}
+			else
+			{ // Otherwise update run speed
+				PlayerPawn(owner).forwardmove2 = PlayerPawn(owner).Default.forwardmove1;
+				PlayerPawn(owner).sidemove2 = PlayerPawn(owner).Default.sidemove1;
+			}
 
 			// Don't use stamina if stamina check is disabled or if Totale Macht/Berserk is active
 			if (!boa_sprintswitch && !owner.FindInventory("BerserkToken"))
@@ -108,7 +132,7 @@ class BoASprinting : Inventory
 
 	virtual void DoExhaustionCheck(void)
 	{
-		if (owner.waterlevel > 2) { return; }
+		if (owner.waterlevel > 2 || gamestate != GS_LEVEL) { return; }
 
 		let stamina = owner.FindInventory("Stamina");
 

@@ -27,9 +27,9 @@ class InventoryClearHandler : EventHandler
 
 	// Set this code as static so that it can be called from other scripts, consolidate
 	// updates to one place , and avoid copy/paste duplication of the inventory resets.
-	void ResetPlayerInventory(Actor mo)
+	void ResetPlayerInventory(Actor mo, bool ignoreclass = false)
 	{
-		if (BoAPlayer(mo))
+		if (BoAPlayer(mo) || ignoreclass)
 		{
 			// Give the player the camera tilt handling item (modified version of Nash's Tilt++ v1.3)
 			mo.A_GiveInventory("BoATilt", 1);
@@ -50,6 +50,15 @@ class InventoryClearHandler : EventHandler
 		mo.A_SetInventory("NauseaShaderControl", 1);
 
 		mo.A_GiveInventory("NullWeapon", 1);
+	}
+
+	// Static call to allow easy resetting of the default inventory items from actor code
+	static void GiveDefaultInventory(Actor mo, bool ignoreclass = false)
+	{
+		if (!mo) { return; }
+
+		let handler = InventoryClearHandler(EventHandler.Find("InventoryClearHandler"));
+		if (handler) { handler.ResetPlayerInventory(mo, ignoreclass); }
 	}
 
 	static void SetShouldNotClear(bool shouldNotClear)
