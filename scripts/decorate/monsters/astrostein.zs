@@ -181,6 +181,7 @@ class AstroGuard : Guard
 	DropItem "AstroClipAmmo", 128;
 	DropItem "AstroShotgunShell" ,32;
 	Obituary "$AGUARD1";
+	DeathSound "astrostein/guard_death";
 	}
 	States
 	{
