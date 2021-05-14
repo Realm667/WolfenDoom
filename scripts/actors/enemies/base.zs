@@ -298,6 +298,7 @@ class Base : Actor
 	LaserBeam beam;
 	Actor flare;
 	double dlvisibility;
+	bool step;
 
 	FlagDef CANSQUISH:flags, 0;
 	FlagDef STOMP:flags, 1;
@@ -904,6 +905,49 @@ class Base : Actor
 		if (flare) { flare.Destroy(); }
 	}
 
+	enum steptype
+	{
+		Normal = 0,
+		Heavy,
+		Mech
+	}
+
+	void A_PlayStepSound(int type = Base.Normal, double stepvolume = 1.0, double typevolume = 1.0)
+	{
+		if (manager)
+		{
+			int interval;
+			bool forceculled;
+
+			[interval, forceculled] = manager.Culled(pos.xy);
+			if (forceculled || interval > 3) { return; }
+		}
+
+		if (pos.z == max(curSector.NextLowestFloorAt(pos.x, pos.y, pos.z), floorz)) // If on the floor
+		{
+			stepvolume = clamp(stepvolume, 0.0, 1.0);
+			typevolume = clamp(typevolume, 0.0, 1.0);
+
+			step = !step;
+			Sound stepsound = BoAFootsteps.GetStepSound(self, step);
+
+			switch (type)
+			{
+				case 2:
+					if (stepsound) { A_StartSound(stepsound, CHAN_AUTO, CHANF_DEFAULT, stepvolume, 8); }
+					A_StartSound("mech/walk", CHAN_AUTO, CHANF_DEFAULT, FRandom(0.7, 1.0) * typevolume, ATTN_IDLE);
+					break;
+				case 1:
+					if (stepsound) { A_StartSound(stepsound, CHAN_AUTO, CHANF_DEFAULT, stepvolume, 8); }
+					A_StartSound("floor/heavy", CHAN_AUTO, CHANF_DEFAULT, typevolume);
+					break;
+				default:
+					if (stepsound) { A_StartSound(stepsound, CHAN_AUTO, CHANF_DEFAULT, stepvolume); }
+					break;
+			}
+		}
+	}
+
 	override void Tick()
 	{
 		if (manager)
@@ -1323,6 +1367,7 @@ class Nazi : Base
 			"####" A 1 A_NaziChase;
 			"####" AAA 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
+			"####" # 0 A_PlayStepSound();
 			"####" BBB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
 			"####" BBB 1 A_NaziChase(null, null);
@@ -1331,6 +1376,7 @@ class Nazi : Base
 			"####" C 1 A_NaziChase;
 			"####" CCC 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
+			"####" # 0 A_PlayStepSound();
 			"####" DDD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
 			"####" DDD 1 A_NaziChase(null, null);
@@ -1342,6 +1388,7 @@ class Nazi : Base
 			"####" A 1 A_NaziChase;
 			"####" AA 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
+			"####" # 0 A_PlayStepSound();
 			"####" BB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
 			"####" BB 1 A_NaziChase(null, null);
@@ -1352,6 +1399,7 @@ class Nazi : Base
 			"####" D 1 A_NaziChase;
 			"####" DD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
+			"####" # 0 A_PlayStepSound();
 			"####" DD 1 A_NaziChase(null, null);
 			"####" A 0 { return ResolveState("See"); }
 		See.Faster: // Officer Walk Pattern
@@ -1362,6 +1410,7 @@ class Nazi : Base
 			"####" A 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
 			"####" B 1 A_NaziChase(null, null);
+			"####" # 0 A_PlayStepSound();
 			"####" B 1 A_NaziChase;
 			"####" B 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
@@ -1370,6 +1419,7 @@ class Nazi : Base
 			"####" C 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
 			"####" D 1 A_NaziChase(null, null);
+			"####" # 0 A_PlayStepSound();
 			"####" D 1 A_NaziChase;
 			"####" D 1 A_NaziChase(null, null);
 			"####" A 0 { return ResolveState("See"); }
@@ -1377,6 +1427,7 @@ class Nazi : Base
 			"####" "#" 0 { user_incombat = True; }
 			"####" A 1 A_NaziChase;
 			"####" A 1 A_NaziChase(null, null);
+			"####" # 0 A_PlayStepSound();
 			"####" A 1 A_NaziChase;
 			"####" A 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
@@ -1385,6 +1436,7 @@ class Nazi : Base
 			"####" B 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
 			"####" C 1 A_NaziChase(null, null);
+			"####" # 0 A_PlayStepSound();
 			"####" C 1 A_NaziChase;
 			"####" C 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
@@ -1396,6 +1448,7 @@ class Nazi : Base
 			"####" "#" 0 { user_incombat = True; }
 			"####" B 1 A_NaziChase;
 			"####" B 1 A_NaziChase(null, null);
+			"####" # 0 A_PlayStepSound();
 			"####" B 1 A_NaziChase;
 			"####" B 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
@@ -1404,6 +1457,7 @@ class Nazi : Base
 			"####" C 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
 			"####" D 1 A_NaziChase(null, null);
+			"####" # 0 A_PlayStepSound();
 			"####" D 1 A_NaziChase;
 			"####" D 1 A_NaziChase(null, null);
 			"####" E 1 A_NaziChase;
@@ -1417,7 +1471,7 @@ class Nazi : Base
 			"####" AAA 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
 			"####" AAA 1 A_NaziChase(null, null);
-			"####" B 0 A_StartSound("floor/heavy", CHAN_AUTO);
+			"####" # 0 A_PlayStepSound(Base.Heavy, 0.3, 1.0);
 			"####" B 1 A_NaziChase;
 			"####" BBB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
@@ -1426,7 +1480,7 @@ class Nazi : Base
 			"####" CCC 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
 			"####" CCC 1 A_NaziChase(null, null);
-			"####" D 0 A_StartSound("floor/heavy", CHAN_AUTO);
+			"####" # 0 A_PlayStepSound(Base.Heavy, 0.3, 1.0);
 			"####" D 1 A_NaziChase;
 			"####" DDD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
@@ -1438,7 +1492,7 @@ class Nazi : Base
 			"####" AAA 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
 			"####" AAA 1 A_NaziChase(null, null);
-			"####" B 0 A_StartSound("floor/heavy", CHAN_AUTO);
+			"####" # 0 A_PlayStepSound(Base.Heavy, 0.3, 1.0);
 			"####" B 1 A_NaziChase;
 			"####" BBB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
@@ -1447,7 +1501,7 @@ class Nazi : Base
 			"####" CCC 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
 			"####" CCC 1 A_NaziChase(null, null);
-			"####" D 0 A_StartSound("floor/heavy", CHAN_AUTO);
+			"####" # 0 A_PlayStepSound(Base.Heavy, 0.3, 1.0);
 			"####" D 1 A_NaziChase;
 			"####" DDD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
@@ -1459,7 +1513,7 @@ class Nazi : Base
 			"####" AAA 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
 			"####" AAA 1 A_NaziChase(null, null);
-			"####" B 0 A_StartSound("floor/heavy", CHAN_AUTO);
+			"####" # 0 A_PlayStepSound(Base.Heavy, 0.15, 1.0);
 			"####" B 1 { A_NaziChase(); Radius_Quake(5, 2, 0, 5, 0); }
 			"####" BBB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
@@ -1468,7 +1522,7 @@ class Nazi : Base
 			"####" CCC 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
 			"####" CCC 1 A_NaziChase(null, null);
-			"####" D 0 A_StartSound("floor/heavy", CHAN_AUTO);
+			"####" # 0 A_PlayStepSound(Base.Heavy, 0.15, 1.0);
 			"####" D 1 { A_NaziChase(); Radius_Quake(5, 2, 0, 5, 0); }
 			"####" DDD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
@@ -1500,7 +1554,7 @@ class Nazi : Base
 			"####" AA 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
 			"####" AA 1 A_NaziChase(null, null);
-			"####" B 0 A_StartSound("floor/heavy", CHAN_AUTO);
+			"####" # 0 A_PlayStepSound(Base.Heavy, 0.3, 1.0);
 			"####" B 1 A_NaziChase;
 			"####" BB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
@@ -1509,7 +1563,7 @@ class Nazi : Base
 			"####" CC 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
 			"####" CC 1 A_NaziChase(null, null);
-			"####" D 0 A_StartSound("floor/heavy", CHAN_AUTO);
+			"####" # 0 A_PlayStepSound(Base.Heavy, 0.3, 1.0);
 			"####" D 1 A_NaziChase;
 			"####" DD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
@@ -1521,7 +1575,7 @@ class Nazi : Base
 			"####" AAA 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
 			"####" AAA 1 A_NaziChase(null, null);
-			"####" B 0 A_StartSound("mech/walk", CHAN_AUTO, 0, frandom(0.7,1.0), ATTN_IDLE);
+			"####" # 0 A_PlayStepSound(Base.Mech, 0.15, 1.0);
 			"####" B 2 { A_NaziChase(); Radius_Quake(5, 2, 0, 5, 0); }
 			"####" BBB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
@@ -1534,7 +1588,7 @@ class Nazi : Base
 			"####" DDD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
 			"####" DDD 1 A_NaziChase(null, null);
-			"####" C 0 A_StartSound("mech/walk", CHAN_AUTO, 0, frandom(0.5,0.7), ATTN_IDLE);
+			"####" # 0 A_PlayStepSound(Base.Mech, 0.15, 1.0);
 			"####" C 2 { A_NaziChase(); Radius_Quake(5, 2, 0, 5, 0); }
 			"####" CCC 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
@@ -1550,7 +1604,8 @@ class Nazi : Base
 			"####" AAA 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
 			"####" AAA 1 A_NaziChase(null, null);
-			"####" B 0 {A_StartSound("floor/heavy", CHAN_AUTO); A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(1.0, 2.0), random(0, 360), SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY, 0);}
+			"####" # 0 A_PlayStepSound(Base.Heavy, 0.3, 1.0);
+			"####" B 0 { A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(1.0, 2.0), random(0, 360), SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY, 0);}
 			"####" B 1 A_NaziChase;
 			"####" BBB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
@@ -1560,7 +1615,8 @@ class Nazi : Base
 			"####" CCC 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
 			"####" CCC 1 A_NaziChase(null, null);
-			"####" D 0 {A_StartSound("floor/heavy", CHAN_AUTO); A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 0, frandom(0.1, 1.0) * RandomPick(-1, 1), frandom(0.1, 1.0) * RandomPick(-1, 1), frandom(0.0, 2.0), 0, SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY, 0);}
+			"####" # 0 A_PlayStepSound(Base.Heavy, 0.3, 1.0);
+			"####" D 0 { A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 0, frandom(0.1, 1.0) * RandomPick(-1, 1), frandom(0.1, 1.0) * RandomPick(-1, 1), frandom(0.0, 2.0), 0, SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY, 0);}
 			"####" D 1 A_NaziChase;
 			"####" DDD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
@@ -1573,6 +1629,7 @@ class Nazi : Base
 			"####" A 1 A_NaziChase;
 			"####" AA 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
+			"####" # 0 A_PlayStepSound();
 			"####" BB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
 			"####" BB 1 A_NaziChase(null, null);
@@ -1583,6 +1640,7 @@ class Nazi : Base
 			"####" D 1 A_NaziChase;
 			"####" DD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
+			"####" # 0 A_PlayStepSound();
 			"####" DD 1 A_NaziChase(null, null);
 			"####" A 0 { return ResolveState("See"); }
 		See.Statisch: // Static Walk Pattern (non-moving, limited frame actor)
@@ -2325,13 +2383,13 @@ class Nazi : Base
 		if (frightscale && !speed) { frightscale = 0.0; }
 
 		if (!defaultsprite) { defaultsprite = SpawnState.sprite; }
-
+/*
 		if (!bBoss)
 		{
 			let footsteps = BoAFootsteps(GiveInventoryType("BoAFootsteps"));
 			if (footsteps) { footsteps.stepdistance = 36; }
 		}
-
+*/
 		Super.PostBeginPlay();
 	}
 
@@ -3382,6 +3440,7 @@ class ZombieStandard : Nazi
 			"####" O 1 A_NaziChase;
 			"####" OOO 1 A_NaziChase(null,null);
 			"####" P 1 A_NaziChase;
+			"####" # 0 A_PlayStepSound();
 			"####" PPP 1 A_NaziChase(null,null);
 			"####" P 1 A_NaziChase;
 			"####" PPP 1 A_NaziChase(null,null);
@@ -3390,6 +3449,7 @@ class ZombieStandard : Nazi
 			"####" Q 1 A_NaziChase;
 			"####" QQQ 1 A_NaziChase(null,null);
 			"####" R 1 A_NaziChase;
+			"####" # 0 A_PlayStepSound();
 			"####" RRR 1 A_NaziChase(null,null);
 			"####" R 1 A_NaziChase;
 			"####" RRR 1 A_NaziChase(null,null);
@@ -3400,6 +3460,7 @@ class ZombieStandard : Nazi
 			"####" A 1 A_NaziChase;
 			"####" AAA 1 A_NaziChase(null,null);
 			"####" B 1 A_NaziChase;
+			"####" # 0 A_PlayStepSound();
 			"####" BBB 1 A_NaziChase(null,null);
 			"####" B 1 A_NaziChase;
 			"####" BBB 1 A_NaziChase(null,null);
@@ -3408,6 +3469,7 @@ class ZombieStandard : Nazi
 			"####" C 1 A_NaziChase;
 			"####" CCC 1 A_NaziChase(null,null);
 			"####" D 1 A_NaziChase;
+			"####" # 0 A_PlayStepSound();
 			"####" DDD 1 A_NaziChase(null,null);
 			"####" D 1 A_NaziChase;
 			"####" DDD 1 A_NaziChase(null,null);

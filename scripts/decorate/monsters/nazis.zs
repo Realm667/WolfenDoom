@@ -657,6 +657,7 @@ class WMP40GuardSleep : WMP40Guard
 		"####" A 1 A_Chase;
 		"####" AAA 1 A_Chase(" "," ");
 		"####" B 1 A_Chase;
+		"####" # 0 A_PlayStepSound();
 		"####" BBB 1 A_Chase(" "," ");
 		"####" B 1 A_Chase;
 		"####" BBB 1 A_Chase(" "," ");
@@ -665,6 +666,7 @@ class WMP40GuardSleep : WMP40Guard
 		"####" C 1 A_Chase;
 		"####" CCC 1 A_Chase(" "," ");
 		"####" D 1 A_Chase;
+		"####" # 0 A_PlayStepSound();
 		"####" DDD 1 A_Chase(" "," ");
 		"####" D 1 A_Chase;
 		"####" DDD 1 A_Chase(" "," ");
@@ -2438,6 +2440,7 @@ class Mechanic : BasicGuard
 		"####" A 1 A_NaziChase;
 		"####" AA 1 A_NaziChase(null,null);
 		"####" B 1 A_NaziChase;
+		"####" # 0 A_PlayStepSound();
 		"####" BB 1 A_NaziChase(null,null);
 		"####" B 1 A_NaziChase;
 		"####" BB 1 A_NaziChase(null,null);
@@ -2448,6 +2451,7 @@ class Mechanic : BasicGuard
 		"####" D 1 A_NaziChase;
 		"####" DD 1 A_NaziChase(null,null);
 		"####" D 1 A_NaziChase;
+		"####" # 0 A_PlayStepSound();
 		"####" DD 1 A_NaziChase(null,null);
 		Loop;
 	Idle:
@@ -3115,6 +3119,7 @@ class EliteFlamer : BasicGuard
 		"####" AA 1 A_NaziChase(null,null);
 		"####" B 1 A_NaziChase;
 		"####" BB 1 A_NaziChase(null,null);
+		"####" # 0 A_PlayStepSound();
 		"####" B 1 A_NaziChase;
 		"####" BB 1 A_NaziChase(null,null);
 		"####" C 1 A_NaziChase;
@@ -3123,6 +3128,7 @@ class EliteFlamer : BasicGuard
 		"####" CC 1 A_NaziChase(null,null);
 		"####" D 1 A_NaziChase;
 		"####" DD 1 A_NaziChase(null,null);
+		"####" # 0 A_PlayStepSound();
 		"####" D 1 A_Chase(null,null,CHF_FASTCHASE);
 		"####" DD 1 A_NaziChase(null,null);
 		Loop;
@@ -3228,6 +3234,7 @@ class EliteAssaulter : BasicGuard
 		"####" AA 1 A_NaziChase(null,null);
 		"####" B 1 A_NaziChase;
 		"####" BB 1 A_NaziChase(null,null);
+		"####" # 0 A_PlayStepSound();
 		"####" B 1 A_NaziChase;
 		"####" BB 1 A_NaziChase(null,null);
 		"####" C 1 A_NaziChase;
@@ -3236,6 +3243,7 @@ class EliteAssaulter : BasicGuard
 		"####" CC 1 A_NaziChase(null,null);
 		"####" D 1 A_NaziChase;
 		"####" DD 1 A_NaziChase(null,null);
+		"####" # 0 A_PlayStepSound();
 		"####" D 1 A_Chase(null,null,CHF_FASTCHASE);
 		"####" DD 1 A_NaziChase(null,null);
 		Loop;
@@ -3349,6 +3357,7 @@ class EliteSoldatRifler : BasicGuard
 		"####" AA 1 A_NaziChase(null,null);
 		"####" B 1 A_NaziChase;
 		"####" BB 1 A_NaziChase(null,null);
+		"####" # 0 A_PlayStepSound();
 		"####" B 1 A_NaziChase;
 		"####" BB 1 A_NaziChase(null,null);
 		"####" C 1 A_NaziChase;
@@ -3357,6 +3366,7 @@ class EliteSoldatRifler : BasicGuard
 		"####" CC 1 A_NaziChase(null,null);
 		"####" D 1 A_NaziChase;
 		"####" DD 1 A_NaziChase(null,null);
+		"####" # 0 A_PlayStepSound();
 		"####" D 1 A_Chase(null,null,CHF_FASTCHASE);
 		"####" DD 1 A_NaziChase(null,null);
 		Loop;

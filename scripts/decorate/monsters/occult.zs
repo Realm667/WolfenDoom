@@ -573,6 +573,7 @@ class SSTemplar : Guard
 		"####" AA 1 A_NaziChase(null,null);
 		"####" B 1 A_NaziChase;
 		"####" BB 1 A_NaziChase(null,null);
+		"####" # 0 A_PlayStepSound();
 		"####" B 1 A_NaziChase;
 		"####" BB 1 A_NaziChase(null,null);
 		"####" C 1 A_NaziChase;
@@ -582,6 +583,7 @@ class SSTemplar : Guard
 		"####" D 1 A_NaziChase;
 		"####" DD 1 A_NaziChase(null,null);
 		"####" D 0 A_Jump(32, "Idle");
+		"####" # 0 A_PlayStepSound();
 		"####" D 1 A_NaziChase;
 		"####" DD 1 A_NaziChase(null,null);
 		"####" E 1 A_NaziChase;
@@ -598,6 +600,7 @@ class SSTemplar : Guard
 		"####" A 1 A_NaziChase(null,null);
 		"####" B 1 A_NaziChase;
 		"####" B 1 A_NaziChase(null,null);
+		"####" # 0 A_PlayStepSound();
 		"####" B 1 A_NaziChase;
 		"####" B 1 A_NaziChase(null,null);
 		"####" C 1 A_NaziChase;
@@ -606,6 +609,7 @@ class SSTemplar : Guard
 		"####" C 1 A_NaziChase(null,null);
 		"####" D 1 A_NaziChase;
 		"####" D 1 A_NaziChase(null,null);
+		"####" # 0 A_PlayStepSound();
 		"####" D 1 A_NaziChase;
 		"####" D 1 A_NaziChase(null,null);
 		"####" E 1 A_NaziChase;

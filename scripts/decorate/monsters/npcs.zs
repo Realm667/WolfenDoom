@@ -1447,6 +1447,7 @@ class Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 	See:
 		"####" "#" 0 { user_incombat = TRUE; A_SetSpeed(1);}
 		"####" "#" 0 { if (bFRIGHTENED) { SetStateLabel("See.Frightened"); } }
+		"####" # 0 A_PlayStepSound();
 		"####" AA 1 A_WanderGoal(0, 768);
 		"####" AAAAA 1 A_WanderGoal(0, 768);
 		"####" AA 1 A_WanderGoal(0, 768);
@@ -1455,6 +1456,7 @@ class Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 		"####" BBBBB 1 A_WanderGoal(0, 768);
 		"####" BB 1 A_WanderGoal(0, 768);
 		"####" BBBBB 1 A_WanderGoal(0, 768);
+		"####" # 0 A_PlayStepSound();
 		"####" CC 1 A_WanderGoal(0, 768);
 		"####" CCCCC 1 A_WanderGoal(0, 768);
 		"####" CC 1 A_WanderGoal(0, 768);
@@ -1470,6 +1472,7 @@ class Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 		Loop;
 	See.Frightened:
 		"####" "#" 0 { A_SetSpeed(random(4,6)); }
+		"####" # 0 A_PlayStepSound();
 		"####" A 1 A_WanderGoal(0, 768);
 		"####" AAA 1 A_WanderGoal(0, 768);
 		"####" A 1 A_WanderGoal(0, 768);
@@ -1478,6 +1481,7 @@ class Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 		"####" BBB 1 A_WanderGoal(0, 768);
 		"####" B 1 A_WanderGoal(0, 768);
 		"####" BBB 1 A_WanderGoal(0, 768);
+		"####" # 0 A_PlayStepSound();
 		"####" C 1 A_WanderGoal(0, 768);
 		"####" CCC 1 A_WanderGoal(0, 768);
 		"####" C 1 A_WanderGoal(0, 768);

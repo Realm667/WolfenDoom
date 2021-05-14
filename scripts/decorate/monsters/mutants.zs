@@ -106,6 +106,7 @@ class MutantMelee : Mutant
 		"####" "#" 0 { user_incombat = True; }
 		"####" B 1 A_MeleeMutantChase;
 		"####" B 1 A_MeleeMutantChase(null, null);
+		"####" # 0 A_PlayStepSound();
 		"####" B 1 A_MeleeMutantChase;
 		"####" B 1 A_MeleeMutantChase(null, null);
 		"####" C 1 A_MeleeMutantChase;
@@ -118,6 +119,7 @@ class MutantMelee : Mutant
 		"####" D 1 A_MeleeMutantChase(null, null);
 		"####" E 1 A_MeleeMutantChase;
 		"####" E 1 A_MeleeMutantChase(null, null);
+		"####" # 0 A_PlayStepSound();
 		"####" E 1 A_MeleeMutantChase;
 		"####" E 1 A_MeleeMutantChase(null, null);
 		"####" A 0 { return ResolveState("See"); }
