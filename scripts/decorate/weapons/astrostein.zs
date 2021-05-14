@@ -370,6 +370,7 @@ class AstroChaingun : NaziAstroWeapon
 		ASCG D 4 A_FireProjectile("AstroTracerPlayer",frandom(-1.0,1.0),0,0,0,0,frandom(-1.0,1.0));
 		ASCG D 0 A_JumpIfInventory("AstroChaingunLoaded",1,1);
 		Goto Ready;
+		ASCG D 0 A_StartSound("astrochaingun/fire", CHAN_WEAPON);
 		ASCG E 0 A_TakeInventory("AstroChaingunLoaded",1,TIF_NOTAKEINFINITE);
 		ASCG E 4 A_FireProjectile("AstroTracerPlayer",frandom(-1.0,1.0),0,0,0,0,frandom(-1.0,1.0));
 		ASCG D 0 A_ReFire;
@@ -383,6 +384,7 @@ class AstroChaingun : NaziAstroWeapon
 		ASCG D 6 A_FireProjectile("AstroTracerPlayer",frandom(-0.2,0.2),0,0,0,0,frandom(-0.2,0.2));
 		ASCG D 0 A_JumpIfInventory("AstroChaingunLoaded",1,1);
 		Goto Ready;
+		ASCG D 0 A_StartSound("astrochaingun/fire", CHAN_WEAPON);
 		ASCG E 0 A_TakeInventory("AstroChaingunLoaded",1,TIF_NOTAKEINFINITE);
 		ASCG E 6 A_FireProjectile("AstroTracerPlayer",frandom(-0.2,0.2),0,0,0,0,frandom(-0.2,0.2));
 		ASCG D 0 A_ReFire;
@@ -676,5 +678,11 @@ class AstroHandGrenade : HandGrenade
 		TNT1 A 1 A_SpawnItemEx("AstrosteinExplosion_Medium");
 		TNT1 A 1 Radius_Quake(10,10,0,16,0);
 		Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		floorclip -= 4;
+		Super.PostBeginPlay();
 	}
 }

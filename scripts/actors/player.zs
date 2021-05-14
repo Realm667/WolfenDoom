@@ -672,6 +672,21 @@ class BoAPlayer : PlayerPawn
 
 		if (giveall)
 			return;
+		
+		if (name ~== "astrostein")
+		{
+			GiveInventory("AstrosteinMelee", 1);
+			GiveInventory("AstroLuger", 1);
+			GiveInventory("AstroClipAmmo", GetDefaultByType("AstroClipAmmo").MaxAmount);
+			GiveInventory("AstroShotgun", 1);
+			GiveInventory("AstroShotgunShell", GetDefaultByType("AstroShotgunShell").MaxAmount);
+			GiveInventory("AstroChaingun", 1);
+			GiveInventory("AstroRocketLauncher", 1);
+			GiveInventory("AstroRocketAmmo", GetDefaultByType("AstroRocketAmmo").MaxAmount);
+			GiveInventory("AstroGrenadePickup", GetDefaultByType("GrenadePickup").MaxAmount);
+
+			return;
+		}
 
 		type = name;
 		if (type == NULL)
