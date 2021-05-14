@@ -128,7 +128,7 @@ class BulletTracer : FastProjectile
 		}
 
 		FLineTraceData trace;
-		if (shooter.LineTrace(shooter.angle, 2048, shooter.pitch, 0, int(pos.z - shooter.pos.z), 0, 0, trace))
+		if (shooter && shooter.LineTrace(shooter.angle, 2048, shooter.pitch, 0, int(pos.z - shooter.pos.z), 0, 0, trace))
 		{
 			bPortalAware = !!trace.NumPortals;
 		}
