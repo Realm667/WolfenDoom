@@ -198,12 +198,7 @@ class WereWaffenSS : WaffenSS
 		SLOP A 1 A_SetScale(0.77);
 		Goto Super::XDeath+1;
 	Disintegrate:
-		"####" F 0 A_StartSound("astrostein/guard_death");
-		"####" F 5 A_Scream;
-		"####" F 0 A_NoBlocking;
-		"####" F 0 A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
-		"####" F 1 A_FadeOut(0.02);
-		Goto Disintegrate+3;
+		"####" F 0 A_Jump(256,"Disintegration");
 	}
 }
 

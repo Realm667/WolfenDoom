@@ -294,6 +294,7 @@ class Base : Actor
 	bool dodging;
 	bool statnumchanged;
 	EffectsManager manager;
+	ParticleManager pmanager;
 	LaserFindHitPointTracer HitPointTracer;
 	LaserBeam beam;
 	Actor flare;
@@ -957,6 +958,8 @@ class Base : Actor
 			else if (cullinterval > 6) { Super.Tick(); return; }
 		}
 		else { manager = EffectsManager.GetManager(); }
+
+		if (!pmanager) { pmanager = ParticleManager.GetManager(); }
 
 		if (user_DrawHealthBar && !statnumchanged)
 		{
@@ -1764,6 +1767,28 @@ class Nazi : Base
 		Death.FireDogs.End:
 			"####" G -1;
 			Stop;
+		Disintegrate:
+			"####" H 0 A_Jump(256,"Disintegration");
+		Disintegrate.Alt1: //added in case we plan to have allied soldiers on Astrostein maps - ozy81
+			"####" I 0 A_Jump(256,"Disintegration");
+		Disintegrate.Alt2:
+			"####" J 0 A_Jump(256,"Disintegration");
+		Disintegration:
+			"####" "#" 5
+			{
+				if (DeathSound != "astrostein/guard_death") { A_StartSound("astrostein/guard_death", CHAN_AUTO); }
+				A_Scream();
+				A_UnblockAndDrop();
+			}
+			"####" "#" 0 A_Jump(256,"Disintegration.FadeLoop");
+		Disintegration.FadeLoop:
+			"####" "#" 1 {
+				int chunkx, chunky;
+				[chunkx, chunky] = EffectBlock.GetBlock(pos.x, pos.y);
+				if (level.time % max(1, pmanager.GetDelay(chunkx, chunky)) == 0) { A_SpawnItemEx("BaseLine", FRandom(0.8 * radius, -0.8 * radius), FRandom(0.8 * radius, -0.8 * radius), FRandom(0, 8), 0, 0, FRandom(1, 3), 0, 129, 0); }
+				A_FadeOut(0.02);
+			}
+			Loop;
 		MakeSneakable:
 			"####" # 0 {
 				if (health <= 0 || !bShootable) { return ResolveState("StaticFrame"); } // If it's dead, don't make a zombie, just freeze on the current frame and hope no one notices...
@@ -3257,37 +3282,6 @@ class NaziStandard : Nazi
 			"####" F 5 A_UnblockAndDrop();
 			"####" G -1;
 			Stop;
-		Disintegrate:
-			"####" H 5 {
-				A_Scream();
-				A_StartSound(DeathSound, CHAN_VOICE);
-				A_UnblockAndDrop();
-				A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
-			}
-		Disintegrate.FadeLoop:
-			"####" "#" 1 {
-				A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
-				A_FadeOut(0.02);
-			}
-			Loop;
-		Disintegrate.Alt1: //added in case we plan to have allied soldiers on Astrostein maps - ozy81
-			"####" I 5 {
-				A_Scream();
-				A_StartSound(DeathSound, CHAN_VOICE);
-				A_UnblockAndDrop();
-				A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
-			}
-			"####" I 0 A_Jump(256,"Disintegrate.FadeLoop");
-			Stop;
-		Disintegrate.Alt2:
-			"####" J 5 {
-				A_Scream();
-				A_StartSound(DeathSound, CHAN_VOICE);
-				A_UnblockAndDrop();
-				A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
-			}
-			"####" J 0 A_Jump(256,"Disintegrate.FadeLoop");
-			Stop;
 	}
 }
 
@@ -3391,15 +3385,8 @@ class MutantStandard : Nazi
 			}
 			Goto XDeath+1;
 		Disintegrate:
-			"####" H 5 {
-				A_Scream();
-				A_StartSound(DeathSound, CHAN_VOICE);
-				A_UnblockAndDrop();
-				A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
-			}
-		Disintegrate.FadeLoop:
-			"####" H 1 A_FadeOut(0.02);
-			Loop;
+			"####" I 0 A_Jump(256, "Disintegration");
+			Stop;
 	}
 }
 
@@ -3540,16 +3527,9 @@ class ZombieStandard : Nazi
 			"####" G -1;
 			Stop;
 		Disintegrate:
-			"####" H 5 {
-				A_Scream();
-				A_StartSound(DeathSound, CHAN_VOICE);
-				A_UnblockAndDrop();
-				A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3));
-				A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
-			}
-		Disintegrate.FadeLoop:
-			"####" H 1 A_FadeOut(0.02);
-			Loop;
+			"####" F 0 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, FRandom(1, 3));
+			"####" F 0 A_Jump(256, "Disintegration");
+			Stop;
 	}
 }
 

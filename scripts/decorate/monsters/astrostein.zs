@@ -114,7 +114,7 @@ class AstroRobotDropper : RandomSpawner { Default { DropItem "Destroyed_AstroRob
 //DEATH EFFECT//
 ////////////////
 
-class BaseLine: Actor
+class BaseLine : ParticleBase
 {	Default
 	{
 	+BRIGHT
