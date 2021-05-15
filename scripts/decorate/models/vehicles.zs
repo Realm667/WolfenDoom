@@ -179,14 +179,21 @@ class FlakVierling3D_Ship : Obstacle3d
 class Luftschiff : Obstacle3d
 {	Default
 	{
-	//$Category Models (BoA)/Ships
-	//$Title Luftschiff LZ127
-	//$Color 3
-	DistanceCheck "boa_scenelod";
-	Radius 32;
-	Height 32;
-	-SOLID
-	+NOGRAVITY
+		//$Category Models (BoA)/Ships
+		//$Title Luftschiff LZ127
+		//$Color 3
+		DistanceCheck "boa_scenelod";
+		Radius 32;
+		Height 32;
+		-SOLID
+		+NOGRAVITY
+	}
+
+	States
+	{
+		Spawn:
+			MDLA ABCDEFGH 1;
+			Loop;
 	}
 }
 
