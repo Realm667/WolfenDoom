@@ -25,13 +25,13 @@ class ModelIncaTrain : ModelBase
 {
 	Default
 	{
-		//$Category Models (BoA)/Vehicles
-		//$Title Train
-		//$Color 3
-		DistanceCheck "boa_scenelod";
-		RenderRadius 256;
-		Radius 4;
-		Height 4;
+	//$Category Models (BoA)/Vehicles
+	//$Title Train
+	//$Color 3
+	DistanceCheck "boa_scenelod";
+	RenderRadius 256;
+	Radius 4;
+	Height 4;
 	}
 }
 
@@ -39,7 +39,7 @@ class ModelRailBoxcar : ModelIncaTrain
 {
 	Default
 	{
-		//$Title Train (boxcar)
+	//$Title Train (boxcar)
 	}
 }
 
@@ -47,11 +47,11 @@ class TrainWheels : ModelIncaTrain
 {
 	Default
 	{
-		//$Category Models (BoA)/Vehicles
-		//$Title Train Wheels
-		//$Color 3
-		Radius 4;
-		Height 4;
+	//$Category Models (BoA)/Vehicles
+	//$Title Train Wheels
+	//$Color 3
+	Radius 4;
+	Height 4;
 	}
 }
 
@@ -59,13 +59,16 @@ class ModelRailBoxcar2 : ModelIncaTrain
 {
 	Default
 	{
-		//$Title Train (boxcar,kz)
+	//$Title Train (boxcar,kz)
 	}
 }
 
 class ModelRailBoxcar3 : ModelIncaTrain
 {
+	Default
+	{
 	//$Title Train (future)
+	}
 }
 
 class ModelRailBoxcar3_Projectile : ModelRailBoxcar3
@@ -179,21 +182,24 @@ class FlakVierling3D_Ship : Obstacle3d
 class Luftschiff : Obstacle3d
 {	Default
 	{
-		//$Category Models (BoA)/Ships
-		//$Title Luftschiff LZ127
-		//$Color 3
-		DistanceCheck "boa_scenelod";
-		Radius 32;
-		Height 32;
-		-SOLID
-		+NOGRAVITY
+	//$Category Models (BoA)/Ships
+	//$Title Luftschiff LZ127
+	//$Color 3
+	DistanceCheck "boa_scenelod";
+	Radius 32;
+	Height 32;
+	-SOLID
+	+NOGRAVITY
 	}
 
 	States
 	{
-		Spawn:
-			MDLA ABCDEFGH 1;
-			Loop;
+	Spawn:
+		MDLA A -1;
+		Stop;
+	Animate:
+		MDLA ABCDEFGH 1;
+		Loop;
 	}
 }
 
