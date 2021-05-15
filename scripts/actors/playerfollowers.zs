@@ -1004,6 +1004,20 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 		return actortrace.Results.HitPos - 16.0 * actortrace.Results.HitVector;
 	}
+
+	static void SetGoal(int tid, int goaltid)
+	{
+		let gt = Level.CreateActorIterator(goaltid);
+		Actor goal = gt.Next();
+
+		let it = Level.CreateActorIterator(tid, "PlayerFollower");
+		PlayerFollower pf;
+		while (pf = PlayerFollower(it.Next()))
+		{
+			pf.Markers.Clear();
+			pf.currentgoal = goal;
+		}
+	}
 }
 
 class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost all actors except prisoner, with N as standing frame and A-D walking, EFG firing, H pain, IJKLM Death
