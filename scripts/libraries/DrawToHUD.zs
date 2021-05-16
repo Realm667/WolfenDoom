@@ -98,11 +98,12 @@ class DrawToHUD
 		screen.DrawText(fnt, shade, screenpos.x, screenpos.y, text, DTA_KeepRatio, true, DTA_Alpha, alpha, DTA_VirtualWidth, int(width), DTA_VirtualHeight, int(height));
 	}
 
-	static ui void DrawTexture(TextureID tex, Vector2 pos, double alpha = 1.0, double scale = 1.0, color shade = -1)
+	static ui void DrawTexture(TextureID tex, Vector2 pos, double alpha = 1.0, double scale = 1.0, color shade = -1, Vector2 destsize = (-1, -1))
 	{
 		// Scale the coordinates
 		Vector2 screenpos, screensize;
-		[screenpos, screensize] = TranslatetoHUDCoordinates(pos, TexMan.GetScaledSize(tex) * scale);
+		if (destsize == (-1, -1)) { destsize = TexMan.GetScaledSize(tex); }
+		[screenpos, screensize] = TranslatetoHUDCoordinates(pos, destsize * scale);
 
 		bool alphachannel;
 		color fillcolor;
@@ -183,5 +184,36 @@ class DrawToHUD
 		Screen.DrawThickLine(right, top - offset, right, bottom + offset, thickness, clr, int(alpha * 255));
 		Screen.DrawThickLine(left - offset, bottom, right + offset, bottom, thickness, clr, int(alpha * 255));
 		Screen.DrawThickLine(left, top - offset, left, bottom + offset, thickness, clr, int(alpha * 255));
+	}
+
+	static ui void DrawFrame(String prefix, int x, int y, int w, int h, color fillclr = 0x0, double alpha = 1.0, double fillalpha = -1)
+	{
+		TextureID top = TexMan.CheckForTexture(prefix .. "T");
+		TextureID bottom = TexMan.CheckForTexture(prefix .. "B");
+		TextureID left = TexMan.CheckForTexture(prefix .. "L");
+		TextureID right = TexMan.CheckForTexture(prefix .. "R");
+		TextureID topleft = TexMan.CheckForTexture(prefix .. "TL");
+		TextureID topright = TexMan.CheckForTexture(prefix .. "TR");
+		TextureID bottomleft = TexMan.CheckForTexture(prefix .. "BL");
+		TextureID bottomright = TexMan.CheckForTexture(prefix .. "BR");
+
+		if (!top || !bottom || !left || !right || !topleft || !topright || !bottomleft || !bottomright) { return; }
+
+		Vector2 size = TexMan.GetScaledSize(top);
+		int cellsize = int(size.x);
+
+		if (fillalpha == -1) { fillalpha = alpha; }
+
+		DrawToHUD.Dim(fillclr, fillalpha, x + cellsize / 2, y + cellsize / 2, w - cellsize, h - cellsize);
+
+		DrawToHUD.DrawTexture(top, (x + w / 2, y), alpha, destsize:(w - cellsize, cellsize));
+		DrawToHUD.DrawTexture(bottom, (x + w / 2, y + h), alpha, destsize:(w - cellsize, cellsize));
+		DrawToHUD.DrawTexture(left, (x, y + h / 2), alpha, destsize:(cellsize, h - cellsize));
+		DrawToHUD.DrawTexture(right, (x + w, y + h / 2), alpha, destsize:(cellsize, h - cellsize));
+
+		DrawToHUD.DrawTexture(topleft, (x, y), alpha);
+		DrawToHUD.DrawTexture(topright, (x + w, y), alpha);
+		DrawToHUD.DrawTexture(bottomleft, (x, y + h), alpha);
+		DrawToHUD.DrawTexture(bottomright, (x + w, y + h), alpha);
 	}
 }

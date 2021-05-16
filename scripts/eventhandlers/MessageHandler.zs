@@ -122,7 +122,7 @@ class Message : Thinker
 
 			if (headtex) { size = TexMan.GetScaledSize(headtex); }
 
-			DrawToHUD.Dim(0x000000, 0.25 * staticalpha, x, y, int(msgwidth + size.x + margin * 4), 70);
+			DrawToHUD.DrawFrame("FRAME_", x, y, int(msgwidth + size.x + margin * 4), 70, 0x1b1b1b, 1.0 * staticalpha, 0.5 * staticalpha);
 
 			y += margin;
 
