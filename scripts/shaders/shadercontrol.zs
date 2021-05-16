@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 Talon1024, AFADoomer
+ * Copyright (c) 2018-2021 Talon1024, AFADoomer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -339,24 +339,25 @@ class PainShaderControl : ShaderControl
 	int timer, maxtimer, value;
 	double blendalpha;
 
+	color clr;
+
 	Default
 	{
 		ShaderControl.Shader "screenblend";
 		Speed 1.0;
 		Alpha 0.0;
+		+Inventory.KEEPDEPLETED
 	}
 
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
 
-		if (!owner || !owner.player) { Destroy(); return; }
+		if (!owner || !PlayerPawn(owner)) { Destroy(); return; }
 	}
 
 	override void SetUniforms(PlayerInfo p, RenderEvent e)
 	{
-		color clr = PlayerPawn(p.mo).GetPainFlash();
-
 		Shader.SetUniform1f(p, ShaderToControl, "alpha", blendalpha);
 		Shader.SetUniform3f(p, ShaderToControl, "blendcolor", (clr.r, clr.g, clr.b));
 	}
@@ -373,6 +374,24 @@ class PainShaderControl : ShaderControl
 		217, 218, 219, 220, 221, 221, 222, 223, 224, 225, 226, 227, 228, 229, 229,
 		230, 231, 232, 233, 234, 235, 235, 236, 237
 	};
+
+	override void Tick()
+	{
+		PlayerPawn(owner).damagefade.a = 0;
+
+		if (owner.player.damagecount)
+        {
+			// Only apply this effect to DamageScreenColors that have zero as their alpha value
+			// This allows poison effects and similar to act as normal
+			color newclr = PlayerPawn(owner).GetPainFlash();
+			if (newclr.a == 0) { clr = newclr; }
+
+            amount = owner.player.damagecount;
+			timer = min(350, timer + owner.player.damagecount);
+        }
+
+		Super.Tick();
+	}
 
 	override void DoEffect()
 	{
@@ -397,7 +416,7 @@ class PainShaderControl : ShaderControl
 			if (timer <= 10) { alpha = timer / 10.0; } // Fade out
 			else { alpha = 1.0; }
 
-			blendalpha = clamp((DamageToAlpha[min(113, value)] / 255.0) * blood_fade_scalar * alpha, 0.0, 1.0);
+			blendalpha = clamp((DamageToAlpha[clamp(value, 0, 113)] / 255.0) * blood_fade_scalar * alpha, 0.0, 1.0);
 		}
 	}
 }
