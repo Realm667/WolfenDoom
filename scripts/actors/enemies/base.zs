@@ -3113,7 +3113,50 @@ class Nazi : Base
 			if (index == 0 && user_spyitem == "") { index = Random(1, 3); }
 			else if (index > 0) { index = 99; }
 
-			ACS_NamedExecuteAlways("SpyMessage", 0, !activationcount && user_spymsgindex ?  -user_spymsgindex : index, !(user_spyitem == ""));
+			String msg = "";
+			String messagestr = "";
+
+			if (!activationcount && user_spymsgindex)
+			{
+				msg = "SPYMESSAGE" .. level.mapname .. user_spymsgindex;
+				messagestr = StringTable.Localize(msg, false);
+			}
+
+			if (messagestr ~== msg)
+			{
+				switch (index)
+				{
+					case 0:
+						msg = "GENERIC" .. Random(0, 4);
+						break;
+					case 1:
+						msg = "AMMO";
+						break;
+					case 2:
+						msg = "BANDAGES";
+						break;
+					case 3:
+						msg = "GOLD";
+						break;
+					default:
+						msg = "MOVE" .. Random(0, 1);
+						break;
+				}
+
+				msg = "SPYMESSAGE" .. msg;
+				messagestr = StringTable.Localize(msg, false);
+
+				if (!(messagestr ~== msg))
+				{
+					if (index == 0 && user_spyitem) { messagestr = messagestr .. "\n\cC" .. StringTable.Localize("SPYMESSAGETAKETHIS", false); }
+					else if (index > 0 && index < 4) { messagestr = StringTable.Localize("SPYMESSAGEGENERIC" .. Random(0, 4), false) .. "\n\cC" .. messagestr; }
+				}
+			}
+
+			if (messagestr.length())
+			{
+				Message.Init(user, head, messagestr);
+			}
 
 			switch (index)
 			{
