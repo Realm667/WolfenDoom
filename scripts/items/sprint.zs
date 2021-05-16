@@ -40,6 +40,7 @@ class BoASprinting : Inventory
 
 	Default
 	{
+		+Inventory.Undroppable
 		BoASprinting.ExhaustionStamina 25;
 		BoASprinting.GaspSound "player/breathing";
 		+BoASprinting.RequireForward
