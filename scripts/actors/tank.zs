@@ -524,7 +524,7 @@ class TankPlayer : PlayerPawn
 		if (player.usedown)
 		{
 			useholdtime++;
-			if (useholdtime == 1) { Level.ExecuteSpecial(80, self, null, false, -int(Name("TankExitMessage")), 0); }
+			if (useholdtime == 1) { HintMessage.Init(player.mo, "TANKEXITHOLD", "+use"); }
 		}
 		else { useholdtime = 0; }
 

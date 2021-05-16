@@ -56,13 +56,14 @@ class BrokenString : Object
 		return newobj;
 	}
 
-	// ZScript implementation of similar funtionality to V_BreakLines.  Hard-coded to use SmallFont
+	// ZScript implementation of similar funtionality to V_BreakLines.
 	//  Some logic taken from https://github.com/coelckers/gzdoom/blob/master/src/common/fonts/v_text.cpp
-	ui static String, BrokenString BreakString(String input, int maxwidth, bool flow = false, String defaultcolor = "L")
+	ui static String, BrokenString BreakString(String input, int maxwidth, bool flow = false, String defaultcolor = "L", Font fnt = null)
 	{
 		if (!input.length()) { return "", null; }
+		if (fnt == null) { fnt = SmallFont; }
 
-		BrokenString brokenlines = BrokenString.Init(SmallFont);
+		BrokenString brokenlines = BrokenString.Init(fnt);
 		input = StringTable.Localize(input, false);
 		
 		int c = -1, colorindex, wordindex;
@@ -75,13 +76,13 @@ class BrokenString : Object
 
 		if (flow) // Flow the text to fill most of the lines that it would take up at the the passed-in maxwidth value
 		{
-			double w = SmallFont.StringWidth(input);
+			double w = fnt.StringWidth(input);
 			double linecount = w / maxwidth;
 
 			if (linecount > int(linecount)) { linecount++; }
 			linecount = int(linecount);
 
-			maxwidth = int(min(SmallFont.StringWidth(input) * 1.25 / linecount, maxwidth));
+			maxwidth = int(min(fnt.StringWidth(input) * 1.25 / linecount, maxwidth));
 		}
 
 		while (c != 0)
@@ -123,9 +124,9 @@ class BrokenString : Object
 				continue;
 			}
 
-			if (SmallFont.StringWidth(line) + SmallFont.StringWidth(word) > maxwidth || c == 0x0A || c == 0)
+			if (fnt.StringWidth(line) + fnt.StringWidth(word) > maxwidth || c == 0x0A || c == 0)
 			{
-				if ((c == 0x0A || c == 0) && SmallFont.StringWidth(line) + SmallFont.StringWidth(word) < maxwidth)
+				if ((c == 0x0A || c == 0) && fnt.StringWidth(line) + fnt.StringWidth(word) < maxwidth)
 				{
 					line = line .. word;
 					wordindex = i;

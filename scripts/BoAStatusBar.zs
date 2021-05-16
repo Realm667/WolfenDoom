@@ -112,7 +112,7 @@ class BoAStatusBar : BaseStatusBar
 
 	override void Tick()
 	{
-		maptop = CheckInventory("IncomingMessage", 1) ? int(48 / 200.0 * Screen.GetHeight() / GetUIScale(hud_scale)) : 0;
+		maptop = CheckInventory("IncomingMessage", 1) ? int(48 / 200.0 * Screen.GetHeight() / BoAStatusBar.GetUIScale(hud_scale)) : 0;
 		if (maptexty > maptop) { maptexty = max(maptop, maptexty - 12); }
 		else if (maptexty < maptop) { maptexty = min(maptop, maptexty + 12); }
 
@@ -1435,7 +1435,7 @@ class BoAStatusBar : BaseStatusBar
 		int crdefault = Font.CR_GRAY;
 		int highlight = Font.FindFontColor("LightGray");
 
-		let scale = GetUIScale(hud_scale);
+		let scale = BoAStatusBar.GetUIScale(hud_scale);
 		let font = generic_ui ? NewSmallFont : SmallFont;
 		let font2 = font;
 		let vwidth = screen.GetWidth() / scale;
@@ -1568,7 +1568,7 @@ class BoAStatusBar : BaseStatusBar
 	}
 
 	// From v_draw.cpp
-	int GetUIScale(int altval = 0)
+	static int GetUIScale(int altval = 0)
 	{
 		int scaleval;
 
