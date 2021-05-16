@@ -37,6 +37,7 @@ class BoAHeartBeat : Inventory
 
 	Default
 	{
+		+Inventory.Undroppable
 		BoAHeartBeat.Threshold 30;
 		BoaHeartBeat.HeartbeatSound "hbeat";
 	}
