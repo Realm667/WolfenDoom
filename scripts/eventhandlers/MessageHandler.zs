@@ -41,7 +41,16 @@ class Message : Thinker
 		msg.time = ZScriptTools.GetMessageTime(text) + intime + outtime;
 		msg.intime = intime;
 		msg.outtime = outtime;
-		msg.player = mo.player;
+		PlayerInfo player;
+		if (mo && mo.player)
+		{
+			player = mo.player;
+		}
+		else
+		{
+			player = players[consoleplayer];
+		}
+		msg.player = player;
 
 		handler.messages.Push(msg);
 	}
