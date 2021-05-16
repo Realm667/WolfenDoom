@@ -1754,10 +1754,9 @@ class MadDoctor2 : MadDoctor
 }
 
 class MadDoctor3 : MadDoctor
-{
-	Default
+{	Default
 	{
-	//$Title Dr. Mengele (Boss)
+	//$Title Dr. Mengele, Masked (Boss)
 	Base.BossIcon "BOSSICO2";
 	Tag "$TAGMENGELE";
 	Health 1600;
@@ -1773,6 +1772,49 @@ class MadDoctor3 : MadDoctor
 	ActiveSound "mengele/active";
 	SeeSound "mengele/sight";
 	DeathSound "mengele/die";
+	}
+	States
+	{
+	Spawn:
+		MENZ A 0;
+		Goto Look;
+	Missile:
+		MENZ E 0 A_Jump(128, "Missile2", "Missile3");
+	Missile1:
+		MENZ E 10 A_FaceTarget;
+		"####" FFF 0 A_SpawnProjectile("FlyingNeedleZ",32,12, 0, 0, random(30,50));
+		"####" FFF 0 A_SpawnProjectile("FlyingNeedleZ",32,12, random(-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, random(20,40));
+		"####" F 8 A_SpawnProjectile("FlyingNeedleZ",32,12, random(-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, random(20,40));
+		"####" A 6 A_FaceTarget;
+		Goto See;
+	Missile2:
+		MENZ GHIJK 12 A_FaceTarget;
+		"####" L 8 A_SpawnProjectile("MengeleBomb",32,12, random(-64,64), 0, random(20,40));
+		Goto See;
+	Missile3:
+		MENZ MN 12 A_FaceTarget;
+		"####" O 1 A_FaceTarget;
+		"####" P 0 A_SpawnProjectile("MengeleFireSpawner",16,0,32,0);
+		"####" P 8 A_SpawnProjectile("MengeleFireSpawner",16,0,-32,0);
+		"####" OPPO 4 A_FaceTarget;
+		Goto See;
+	Pain:
+		"####" R 6 A_NaziPain(256);
+		Goto See;
+	Death:
+		"####" R 8;
+		"####" Q 10;
+		"####" S 12 A_Scream;
+		"####" T 10 ;
+		"####" U -1 A_NoBlocking;
+		Stop;
+	}
+}
+
+class MadDoctor3B : MadDoctor3 //unused
+{	Default
+	{
+	//$Title Dr. Mengele, On Duty (Boss)
 	}
 	States
 	{
@@ -1800,10 +1842,10 @@ class MadDoctor3 : MadDoctor
 		"####" OPPO 4 A_FaceTarget;
 		Goto See;
 	Pain:
-		"####" R 6 A_NaziPain(256);
+		MENG R 6 A_NaziPain(256);
 		Goto See;
 	Death:
-		"####" R 8;
+		MENG R 8;
 		"####" Q 10;
 		"####" S 12 A_Scream;
 		"####" T 10 ;
