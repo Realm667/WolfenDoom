@@ -411,6 +411,74 @@ class ZScriptTools
 		// Average (inverted) RGB light level minus fog depth
 		return lightlevel, fogfactor;
 	}
+
+	static ui void TypeString(Font fnt, String text, int msgwidth, Vector2 textpos, int texttic, double textscale = 1.0, double alpha = 1.0, Vector2 screensize = (640, 400), bool fixed = false)
+	{
+		BrokenString lines;
+		[text, lines] = BrokenString.BreakString(StringTable.Localize(text, false), msgwidth, false, "U");
+		int lineheight = int(SmallFont.GetHeight());
+
+		int chars;
+
+		double h = int(screensize.y);
+		double w = int(screensize.y * 5 / 3);
+
+		for (int l = 0; l <= lines.Count() || chars > texttic; l++)
+		{
+			int len = min(texttic - chars, lines.StringAt(l).CodePointCount());
+
+			String line = "";
+			int nextchar = 0, i = 0;
+			while (i < len)
+			{
+				int c;
+				[c, nextchar] = lines.StringAt(l).GetNextCodePoint(nextchar);
+				line = String.Format("%s%c", line, c);
+
+				i++;
+			}
+
+			if (fixed) { screen.DrawText(fnt, Font.CR_UNTRANSLATED, textpos.x / textscale, textpos.y / textscale + l * lineheight / textscale, line, DTA_VirtualWidth, int(w * textscale), DTA_VirtualHeight, int(h * textscale), DTA_Alpha, alpha); }
+			else { DrawToHud.DrawText(line, (textpos.x, textpos.y + l * lineheight), fnt, alpha, textscale, screensize, Font.CR_UNTRANSLATED); }
+			chars += len;
+		}
+	}
+
+	// Converted and made Unicode-aware by AFADoomer from GetMessageTime ACS code written by Talon1024
+	//
+	//   Calculate time (in tics, 1/35 of a second) to display the message on-screen,
+	//   hopefully giving players enough time to read it, whilst not displaying it
+	//   for too long. "message" is the identifier of a LANGUAGE entry.
+	//
+	static int GetMessageTime(String message)
+	{
+		message = StringTable.Localize(message, false);
+
+		int extraTime = 70; // 2 extra seconds
+		int perWordTime = 6; // Tics per word
+		int longWordPerCharTics = 2; // Tics to add per char in a long word
+		int spaces = 0; // Number of spaces. Add 1 to get word count, multiply by perWordTime and add longWordTime and extraTime to get estimated reading time.
+		int longWordTime = 0; // Extra time to add for long words (7 or more letters)
+		int consecutiveChars = 0; // Consecutive letters
+
+		int nextchar = 0;
+		for (int i = 0; i < message.CodePointCount(); i++)
+		{
+			int strchar;
+			[strchar, nextchar] = message.GetNextCodePoint(nextchar);
+
+			if (ZScriptTools.IsWhiteSpace(strchar))
+			{
+				spaces++;
+
+				if (consecutiveChars >= 7) { longWordTime += longWordPerCharTics * consecutiveChars; }
+				consecutiveChars = 0;
+			}
+			else { consecutiveChars++; }
+		}
+
+		return (spaces + 1) * perWordTime + longWordTime + extraTime;
+	}
 }
 
 // Functions to identify the current IWAD and read info from the matching IWADINFO block

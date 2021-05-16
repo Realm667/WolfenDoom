@@ -27,21 +27,11 @@ class StackedMeal : Meal
 {
 	Default
 	{
+		//$Title Meals (2 variants, floating)
 		Radius 1;
 		Height 1;
 		+CANPASS
 		+NOGRAVITY
-	}
-	States
-	{
-	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,"MealA","MealB");
-	MealA:
-		MEAL A 1;
-		Loop;
-	MealB:
-		MEAL B 1;
-		Loop;
 	}
 }
 
@@ -74,6 +64,10 @@ class PartyMealR : Meal //no fruits for obvious reasons - ozy81
 
 class StackedPartyMeal : StackedMeal
 {
+	Default
+	{
+		//$Title Party Meals (12 variants, floating)
+	}
 	States
 	{
 	Spawn:

@@ -908,7 +908,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 	{
 		if (!IsFriend(user)) { return false; }
 
-		String message = "";
+		String msg = "";
 
 		if (!Default.user_nonmoving && allowinteraction) { nonmoving = !nonmoving; } // If not set nonmoving by default or disabled, allow toggling...
 
@@ -916,12 +916,12 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		{
 			if (allowinteraction)
 			{
-				ACS_NamedExecuteAlways("FollowerMessage", 0, 0, Random(0, 4)); // Pick a random 'I'll stay here' message
+				msg = "STAY" .. Random(0, 4);
 				activationcount = 0;
 			}
 			else
 			{
-				ACS_NamedExecuteAlways("FollowerMessage", 0, 1, activationcount); // Pick a random 'I can't move' message
+				msg = "STATIC" .. activationcount;
 				activationcount = min(activationcount + 1, 4);
 			}
 		}
@@ -931,14 +931,22 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 			if (allowinteraction)
 			{
-				ACS_NamedExecuteAlways("FollowerMessage", 0, 2, Random(0, 4)); // Pick a random 'follow' message
+				msg = "COME" .. Random(0, 4);
 				activationcount = 0;
 			}
 			else
 			{
-				ACS_NamedExecuteAlways("FollowerMessage", 0, 3, activationcount); // Pick a random 'I can't leave you' message
+				msg = "ALWAYS" .. activationcount;
 				activationcount = min(activationcount + 1, 4);
 			}
+		}
+
+		if (msg != "")
+		{
+			String classmsg = GetClassName() .. msg; // Try to use a class-specific message
+			if (StringTable.Localize(classmsg, false) ~== classmsg) { classmsg = "FOLLOWER" .. msg; } // Otherwise fall back to generic FOLLOWER* message
+
+			Message.Init(user, head, classmsg);
 		}
 
 		return false;
@@ -1003,6 +1011,20 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		actortrace.Trace(source.pos + (0, 0, height * 0.8), source.CurSector, tracedir, 2560, 0);
 
 		return actortrace.Results.HitPos - 16.0 * actortrace.Results.HitVector;
+	}
+
+	static void SetGoal(int tid, int goaltid)
+	{
+		let gt = Level.CreateActorIterator(goaltid);
+		Actor goal = gt.Next();
+
+		let it = Level.CreateActorIterator(tid, "PlayerFollower");
+		PlayerFollower pf;
+		while (pf = PlayerFollower(it.Next()))
+		{
+			pf.Markers.Clear();
+			pf.currentgoal = goal;
+		}
 	}
 }
 

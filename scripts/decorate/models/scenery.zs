@@ -439,7 +439,7 @@ class RTCWClock : Obstacle3d //fixed by mxd
 	Spawn:
 		MDLA A 0 NODELAY A_SpawnItemEx("RTCWClockPendulum", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2);
 		Goto TickLoop;
-	TickLoop: // Tried adding those sound effects to RTCWClockPendulum, found out that it horribly messes model interpolation...
+	TickLoop: // Tried adding those sound effects to RTCWClockPendulum, found out that it horribly messes model interpolation... - mxd
 		MDLA A 0 A_CheckRange(512,"NoTickLoop"); //tweak for sound channels - ozy81
 		MDLA A 44 A_StartSound("oldclock/tick");
 		MDLA A 0 A_Jump(1, "Chime");
@@ -898,39 +898,11 @@ class FlagWide_Flutter : FlagWave
 	}
 }
 
-class FlagWide_Hang : FlagWide_Flutter
-{
-	Default
-	{
-		//$Title Hanging Flag, Wide (Swastika)
-	}
-	States
-	{
-	Spawn:
-		MDLA A -1;
-		Stop;
-	}
-}
-
 class FlagShort_Flutter : FlagWide_Flutter
 {
 	Default
 	{
 		//$Title Waving Flag, Short (Swastika)
-	}
-}
-
-class FlagShort_Hang : FlagWide_Flutter
-{
-	Default
-	{
-		//$Title Hanging Flag, Short (Swastika)
-	}
-	States
-	{
-	Spawn:
-		MDLA A -1;
-		Stop;
 	}
 }
 
@@ -962,11 +934,25 @@ class NaziBannerGearTallFlutter512 : FlagWave
 	}
 }
 
-class NaziBannerTallHang512 : FlagWave
+class NaziBannerTallFlutter256 : NaziBannerTallFlutter512
 {
 	Default
 	{
+		//$Title Nazi Banner Tall, Flutter (256)
+	}
+}
+
+class NaziBannerTallHang512 : ModelBase //we don't need flapping sounds for a not moving flag, right? -ozy81
+{
+	Default
+	{
+		//$Category Models (BoA)/Flags
 		//$Title Nazi Banner Tall, Not Moving (512)
+		DistanceCheck "boa_scenelod";
+		Radius 1;
+		Height 1;
+		Mass 5;
+		+NOINTERACTION
 	}
 	States
 	{
@@ -976,19 +962,27 @@ class NaziBannerTallHang512 : FlagWave
 	}
 }
 
-class NaziBannerTallFlutter256 : NaziBannerTallFlutter512
-{
-	Default
-	{
-		//$Title Nazi Banner Tall, Flutter (256)
-	}
-}
-
 class NaziBannerTallHang256 : NaziBannerTallHang512
 {
 	Default
 	{
 		//$Title Nazi Banner Tall, Not Moving (256)
+	}
+}
+
+class FlagWide_Hang : NaziBannerTallHang512
+{
+	Default
+	{
+		//$Title Hanging Flag, Wide (Swastika)
+	}
+}
+
+class FlagShort_Hang : NaziBannerTallHang512
+{
+	Default
+	{
+		//$Title Hanging Flag, Short (Swastika)
 	}
 }
 
@@ -1320,35 +1314,39 @@ class TrainLever3DSwitch3 : TrainLever3DSwitch
 
 class TrainLever3DSwitch4 : TrainLever3DSwitch
 {
-Default
+	Default
 	{
 	//$Title Train Lever, Blue 4 (Switchable)
 	}
 }
 
 class TrainLever3DSwitch5 : TrainLever3DSwitch
-{Default
+{
+	Default
 	{
 	//$Title Train Lever, White 5 (Switchable)
 	}
 }
 
 class TrainLever3DSwitch6 : TrainLever3DSwitch
-{Default
+{
+	Default
 	{
 	//$Title Train Lever, White 6 (Switchable)
 	}
 }
 
 class TrainLever3DSwitch7 : TrainLever3DSwitch
-{Default
+{
+	Default
 	{
 	//$Title Train Lever, Brown 7 (Switchable)
 	}
 }
 
 class TrainLever3DSwitch8 : TrainLever3DSwitch
-{Default
+{
+	Default
 	{
 	//$Title Train Lever, Brown 8 (Switchable)
 	}
@@ -1356,35 +1354,40 @@ class TrainLever3DSwitch8 : TrainLever3DSwitch
 
 //COD stuff
 class CODPipe1 : MuseumBase
-{Default
+{
+	Default
 	{
 	//$Title Decorative Pipe 1
 	}
 }
 
 class CODPipe2 : MuseumBase
-{Default
+{
+	Default
 	{
 	//$Title Decorative Pipe 2
 	}
 }
 
 class CODPipe3 : MuseumBase
-{Default
+{
+	Default
 	{
 	//$Title Decorative Pipe 3
 	}
 }
 
 class CODPipe4 : MuseumBase
-{Default
+{
+	Default
 	{
 	//$Title Decorative Pipe 4
 	}
 }
 
 class CODPipe5 : MuseumBase
-{Default
+{
+	Default
 	{
 	//$Title Decorative Pipe 5
 	}
@@ -1392,21 +1395,23 @@ class CODPipe5 : MuseumBase
 
 class CODPipe6 : MuseumBase
 {
-Default
+	Default
 	{
 	//$Title Decorative Pipe 6
 	}
 }
 
 class CODPipe7 : MuseumBase
-{Default
+{
+	Default
 	{
 	//$Title Decorative Pipe 7
 	}
 }
 
 class CODPipe8 : MuseumBase
-{Default
+{
+	Default
 	{
 	//$Title Decorative Pipe 8
 	}
@@ -1414,7 +1419,7 @@ class CODPipe8 : MuseumBase
 
 class CODPipe9 : MuseumBase
 {
-Default
+	Default
 	{
 	//$Title Decorative Pipe 9
 	}
@@ -1422,14 +1427,14 @@ Default
 
 class CODPipe10 : MuseumBase
 {
-Default
+	Default
 	{
 	//$Title Decorative Pipe 10
 	}
 }
 class CODPipe11 : MuseumBase
 {
-Default
+	Default
 	{
 	//$Title Decorative Pipe 11
 	}
@@ -1437,7 +1442,7 @@ Default
 
 class CODPipe12 : MuseumBase
 {
-Default
+	Default
 	{
 	//$Title Decorative Pipe 12
 	}
@@ -1469,7 +1474,7 @@ class CODPipe15 : MuseumBase
 
 class CODPipe16 : MuseumBase
 {
-Default
+	Default
 	{
 	//$Title Decorative Pipe 16
 	}
@@ -1477,7 +1482,7 @@ Default
 
 class CODPipe17 : MuseumBase
 {
-Default
+	Default
 	{
 	//$Title Decorative Pipe 17
 	}
@@ -1485,7 +1490,7 @@ Default
 
 class CODPipe18 : MuseumBase
 {
-Default
+	Default
 	{
 	//$Title Decorative Pipe 18
 	}
@@ -1501,7 +1506,7 @@ Default
 
 class COD_WallBars2 : COD_WallBars1
 {
-Default
+	Default
 	{
 	//$Title Rusty Wall Bars 2
 	}

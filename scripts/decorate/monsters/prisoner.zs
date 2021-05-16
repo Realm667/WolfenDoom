@@ -205,6 +205,7 @@ class PrisonerEnemyBoss : DirtyDarren
 		"####" E 1 A_Chase;
 		"####" EEE 1 A_Chase(null,null);
 		"####" B 1 A_Chase;
+		"####" # 0 A_PlayStepSound();
 		"####" BBB 1 A_Chase(null,null);
 		"####" B 1 A_Chase;
 		"####" BBB 1 A_Chase(null,null);
@@ -213,6 +214,7 @@ class PrisonerEnemyBoss : DirtyDarren
 		"####" C 1 A_Chase;
 		"####" CCC 1 A_Chase(null,null);
 		"####" D 1 A_Chase;
+		"####" # 0 A_PlayStepSound();
 		"####" DDD 1 A_Chase(null,null);
 		"####" D 1 A_Chase;
 		"####" DDD 1 A_Chase(null,null);
@@ -319,6 +321,7 @@ class PrisonerEnemyBoss_End : ZombieStandard
 		"####" E 1 A_Chase;
 		"####" EEE 1 A_Chase(null,null);
 		"####" B 1 A_Chase;
+		"####" # 0 A_PlayStepSound();
 		"####" BBB 1 A_Chase(null,null);
 		"####" B 1 A_Chase;
 		"####" BBB 1 A_Chase(null,null);
@@ -327,6 +330,7 @@ class PrisonerEnemyBoss_End : ZombieStandard
 		"####" C 1 A_Chase;
 		"####" CCC 1 A_Chase(null,null);
 		"####" D 1 A_Chase;
+		"####" # 0 A_PlayStepSound();
 		"####" DDD 1 A_Chase(null,null);
 		"####" D 1 A_Chase;
 		"####" DDD 1 A_Chase(null,null);

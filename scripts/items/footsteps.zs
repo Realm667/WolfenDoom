@@ -72,18 +72,8 @@ class BoAFootsteps : Inventory
 		{
 			if (curStepDistance > stepdistance)
 			{
-				// Read the sound directly from the terrain definition instead of spawning an actor to cause a splash
-				TerrainDef ground = owner.GetFloorTerrain();
-				Sound stepsound;
-
-				if (ground)
-				{
-					step = !step; // Alternate between the left and right step sounds; unused (left and right sounds are the same), but works if configured
-					if (step) { stepsound = ground.leftstepsound; }
-					else { stepsound = ground.rightstepsound; }
-				}
-
-				if (!stepsound) { stepsound = "floor/dirt"; } // Fall back to the dirt sound if nothing was found.
+				step = !step; // Alternate between the left and right step sounds; unused (left and right sounds are the same), but works if configured
+				Sound stepsound = GetStepSound(owner, step);
 
 				if (owner.player && owner.player.crouchfactor == 0.5) //different step sounds while crouching
 				{
@@ -120,6 +110,23 @@ class BoAFootsteps : Inventory
 		{
 			curStepDistance = 0;
 		}
+	}
+
+	static Sound GetStepSound(Actor origin, bool which)
+	{
+		// Read the sound directly from the terrain definition instead of spawning an actor to cause a splash
+		TerrainDef ground = origin.GetFloorTerrain();
+		Sound stepsound;
+
+		if (ground)
+		{
+			if (which) { stepsound = ground.leftstepsound; }
+			else { stepsound = ground.rightstepsound; }
+		}
+
+		if (!stepsound) { stepsound = "floor/dirt"; } // Fall back to the dirt sound if nothing was found.
+
+		return stepsound;
 	}
 }
 

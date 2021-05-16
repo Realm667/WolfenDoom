@@ -72,32 +72,14 @@ class SkyViewPointStatic : SkyViewPoint
 			mo.anchoroffset = (0, 0);
 		}
 
-		mo.base = null;
+		mo.base = players[consoleplayer].camera;
 
-		// Iterate through all of the possible players in the game
-		for (int i = 0; i < MAXPLAYERS; i++)
+		if (!mo.anchor)
 		{
-			// If a player is in the game and has spawned...
-			if (playeringame[i] && players[i].camera)
-			{
-				if (!mo.base)  // Set the skybox to follow the first player who is in the game
-				{
-					mo.base = players[i].camera;
-
-					if (!mo.anchor)
-					{
-						mo.anchor = Spawn("SkyViewPointAnchor", players[i].mo.pos); // Use player's position as a fallback anchor point if no anchor is in place
-					}
-
-					mo.heightoffset = mo.SpawnPoint.z - mo.anchor.pos.z - 17.25; // To match normal skybox offset height
-				}
-				else  // If there are multiple players, don't move the skybox
-				{
-					mo.base = null;
-					break;
-				}
-			}
+			mo.anchor = Spawn("SkyViewPointAnchor", players[consoleplayer].mo.pos); // Use player's position as a fallback anchor point if no anchor is in place
 		}
+
+		mo.heightoffset = mo.SpawnPoint.z - mo.anchor.pos.z - 17.25; // To match normal skybox offset height
 
 		if ((mo.tid == 0 && level.sectorPortals[0].mSkybox == null) || mo.args[3] > 0)
 		{

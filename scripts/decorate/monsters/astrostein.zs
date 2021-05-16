@@ -114,7 +114,7 @@ class AstroRobotDropper : RandomSpawner { Default { DropItem "Destroyed_AstroRob
 //DEATH EFFECT//
 ////////////////
 
-class BaseLine: Actor
+class BaseLine : ParticleBase
 {	Default
 	{
 	+BRIGHT
@@ -181,6 +181,7 @@ class AstroGuard : Guard
 	DropItem "AstroClipAmmo", 128;
 	DropItem "AstroShotgunShell" ,32;
 	Obituary "$AGUARD1";
+	DeathSound "astrostein/guard_death";
 	}
 	States
 	{
@@ -364,7 +365,7 @@ class AstroElite : AstroGuard
 class AstroSuiteGuard : AstroGuard
 {	Default
 	{
-	//$Title Astrostein Suite Guard
+	//$Title Astrostein Suit Guard
 	Speed 2;
 	Scale 0.70;
 	Health 200;
@@ -374,35 +375,57 @@ class AstroSuiteGuard : AstroGuard
 	}
 	States
 	{
-	Spawn:
-		ROB1 A 0;
-		Goto Look;
-	See:
-		Goto See.Normal;
-	Missile:
-	Missile.Aimed:
-		"####" EF 5 A_FaceTarget;
-		"####" F 0 A_StartSound("astrochaingun/fire");
-		"####" G 0 A_SpawnProjectile("EnemyAstroTracer",48,-10,random(-8,4));
-		"####" G 0 A_SpawnProjectile("EnemyAstroTracer",40,-10,random(-8,4));
-		"####" G 0 A_SpawnProjectile("EnemyAstroTracer",40,10,random(4,-8));
-		"####" G 8 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,10,random(4,-8));
-		"####" E 8 A_Jump(256,"See");
-		Stop;
-	Pain:
-		"####" H 3;
-		"####" H 3 A_Pain;
-		"####" H 0 A_Jump(256,"See");
-		Stop;
-	Death.Fire: //We don't want different Death sequences than the Disintegrate one for Astrosteins, yeah?
-	XDeath:
-	Death:
-	Disintegrate:
-		"####" I 0 A_StartSound("astrostein/guard_death");
-		"####" I 0 A_Scream;
-		"####" IIIIIJJJJJKKKKKLLLLLMMMMMNNNNNOOOOO 1 A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
-		"####" O 1 A_SpawnItemEx("AstroSuiteDropper", 0, 0, 0);
-		Stop;
+		Spawn:
+			ROB1 A 0;
+			Goto Look;
+		See:
+			"####" "#" 0 {
+				user_incombat = True;
+				if (bStandStill) { SetStateLabel("See.Stand"); }
+			}
+			"####" A 1 A_NaziChase;
+			"####" AAA 1 A_NaziChase(null, null);
+			"####" A 1 A_NaziChase;
+			"####" AAA 1 A_NaziChase(null, null);
+			"####" B 1 A_NaziChase;
+			"####" # 0 A_PlayStepSound(Base.Mech, 1.0, 0.15);
+			"####" BBB 1 A_NaziChase(null, null);
+			"####" B 1 A_NaziChase;
+			"####" BBB 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" CCC 1 A_NaziChase(null, null);
+			"####" C 1 A_NaziChase;
+			"####" CCC 1 A_NaziChase(null, null);
+			"####" D 1 A_NaziChase;
+			"####" # 0 A_PlayStepSound(Base.Mech, 1.0, 0.15);
+			"####" DDD 1 A_NaziChase(null, null);
+			"####" D 1 A_NaziChase;
+			"####" DDD 1 A_NaziChase(null, null);
+			"####" A 0 { return ResolveState("See"); }
+		Missile:
+		Missile.Aimed:
+			"####" EF 5 A_FaceTarget;
+			"####" F 0 A_StartSound("astrochaingun/fire");
+			"####" G 0 A_SpawnProjectile("EnemyAstroTracer",48,-10,random(-8,4));
+			"####" G 0 A_SpawnProjectile("EnemyAstroTracer",40,-10,random(-8,4));
+			"####" G 0 A_SpawnProjectile("EnemyAstroTracer",40,10,random(4,-8));
+			"####" G 8 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,10,random(4,-8));
+			"####" E 8 A_Jump(256,"See");
+			Stop;
+		Pain:
+			"####" H 3;
+			"####" H 3 A_Pain;
+			"####" H 0 A_Jump(256,"See");
+			Stop;
+		Death.Fire: //We don't want different Death sequences than the Disintegrate one for Astrosteins, yeah?
+		XDeath:
+		Death:
+		Disintegrate:
+			"####" I 0 A_StartSound("astrostein/guard_death");
+			"####" I 0 A_Scream;
+			"####" IIIIIJJJJJKKKKKLLLLLMMMMMNNNNNOOOOO 1 A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
+			"####" O 1 A_SpawnItemEx("AstroSuiteDropper", 0, 0, 0);
+			Stop;
 	}
 }
 
@@ -583,6 +606,7 @@ class AstroCyborg1 : NaziBoss
 		"####" AA 1 A_NaziChase(null,null,CHF_NOPLAYACTIVE);
 		"####" A 1 A_NaziChase;
 		"####" AA 1 A_NaziChase(null,null,CHF_NOPLAYACTIVE);
+		"####" # 0 A_PlayStepSound(Base.Heavy, 0.3, 1.0);
 		"####" B 1 A_NaziChase;
 		"####" BB 1 A_NaziChase(null,null,CHF_NOPLAYACTIVE);
 		"####" B 1 A_NaziChase;
@@ -595,6 +619,7 @@ class AstroCyborg1 : NaziBoss
 		"####" CC 1 A_NaziChase(null,null,CHF_NOPLAYACTIVE);
 		"####" C 1 A_NaziChase;
 		"####" CC 1 A_NaziChase(null,null,CHF_NOPLAYACTIVE);
+		"####" # 0 A_PlayStepSound(Base.Heavy, 0.3, 1.0);
 		"####" D 1 A_NaziChase;
 		"####" DD 1 A_NaziChase(null,null,CHF_NOPLAYACTIVE);
 		"####" D 1 A_NaziChase;
@@ -645,6 +670,7 @@ class AstroCyborg2 : AstroCyborg1
 		"####" AA 1 A_NaziChase(null,null,CHF_NOPLAYACTIVE);
 		"####" A 1 A_NaziChase;
 		"####" AA 1 A_NaziChase(null,null,CHF_NOPLAYACTIVE);
+		"####" # 0 A_PlayStepSound(Base.Heavy, 0.3, 1.0);
 		"####" B 1 A_NaziChase;
 		"####" BB 1 A_NaziChase(null,null,CHF_NOPLAYACTIVE);
 		"####" B 1 A_NaziChase;
@@ -661,6 +687,7 @@ class AstroCyborg2 : AstroCyborg1
 		"####" CC 1 A_NaziChase(null,null,CHF_NOPLAYACTIVE);
 		"####" C 1 A_NaziChase;
 		"####" CC 1 A_NaziChase(null,null,CHF_NOPLAYACTIVE);
+		"####" # 0 A_PlayStepSound(Base.Heavy, 0.3, 1.0);
 		"####" D 1 A_NaziChase;
 		"####" DD 1 A_NaziChase(null,null,CHF_NOPLAYACTIVE);
 		"####" D 1 A_NaziChase;

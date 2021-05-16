@@ -1384,7 +1384,7 @@ class BoAStatusBar : BaseStatusBar
 		int height = SmallFont.GetHeight();
 		int width = SmallFont.StringWidth("X: -00000.00");
 
-		int x = vwidth - width - 10;
+		int x = vwidth - width - 10 - widthoffset;
 		int y = 10 + maptop + (vid_fps ? int(NewSmallFont.GetHeight() / GetConScale(con_scale) / scale) : 0);
 
 		if (screenblocks < 12)
@@ -1396,6 +1396,11 @@ class BoAStatusBar : BaseStatusBar
 		// Draw coordinates
 		Vector3 pos = CPlayer.mo.Pos;
 		String header, value;
+
+		// Draw map name
+		screen.DrawText (SmallFont, Font.CR_RED, x, y, level.mapname.MakeUpper(), DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
+
+		y += height;
 		
 		for (int i = 0; i < 3; y += height, ++i)
 		{

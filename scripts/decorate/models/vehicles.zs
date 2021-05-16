@@ -25,13 +25,13 @@ class ModelIncaTrain : ModelBase
 {
 	Default
 	{
-		//$Category Models (BoA)/Vehicles
-		//$Title Train
-		//$Color 3
-		DistanceCheck "boa_scenelod";
-		RenderRadius 256;
-		Radius 4;
-		Height 4;
+	//$Category Models (BoA)/Vehicles
+	//$Title Train
+	//$Color 3
+	DistanceCheck "boa_scenelod";
+	RenderRadius 256;
+	Radius 4;
+	Height 4;
 	}
 }
 
@@ -39,7 +39,7 @@ class ModelRailBoxcar : ModelIncaTrain
 {
 	Default
 	{
-		//$Title Train (boxcar)
+	//$Title Train (boxcar)
 	}
 }
 
@@ -47,11 +47,11 @@ class TrainWheels : ModelIncaTrain
 {
 	Default
 	{
-		//$Category Models (BoA)/Vehicles
-		//$Title Train Wheels
-		//$Color 3
-		Radius 4;
-		Height 4;
+	//$Category Models (BoA)/Vehicles
+	//$Title Train Wheels
+	//$Color 3
+	Radius 4;
+	Height 4;
 	}
 }
 
@@ -59,13 +59,16 @@ class ModelRailBoxcar2 : ModelIncaTrain
 {
 	Default
 	{
-		//$Title Train (boxcar,kz)
+	//$Title Train (boxcar,kz)
 	}
 }
 
 class ModelRailBoxcar3 : ModelIncaTrain
 {
+	Default
+	{
 	//$Title Train (future)
+	}
 }
 
 class ModelRailBoxcar3_Projectile : ModelRailBoxcar3
@@ -187,6 +190,16 @@ class Luftschiff : Obstacle3d
 	Height 32;
 	-SOLID
 	+NOGRAVITY
+	}
+
+	States
+	{
+	Spawn:
+		MDLA A -1;
+		Stop;
+	Animate:
+		MDLA ABCDEFGH 1;
+		Loop;
 	}
 }
 

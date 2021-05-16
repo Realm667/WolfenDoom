@@ -60,6 +60,15 @@ class GrenadePickup : IntervalUseItem
 		TNT1 A 0 A_Print("$STUPID1",3.5);
 		Fail;
 	}
+
+	override void Tick()
+	{
+		if (owner && owner.FindInventory("AstroGrenadeToken"))
+		{
+			icon = TexMan.CheckForTexture("ASGNB0");
+		}
+		else { icon = Default.icon; }
+	}
 }
 
 class HandGrenade : GrenadeBase //no hard variant since it is used also by players - ozy81
