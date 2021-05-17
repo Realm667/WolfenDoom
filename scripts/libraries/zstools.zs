@@ -506,6 +506,30 @@ class ZScriptTools
 
 		return (spaces + 1) * perWordTime + longWordTime + extraTime;
 	}
+
+	// Converted from ACS; Function to check for a voiceover, play it, and print an error if it isn't found
+	static int PlaySound(Actor mo, String text)
+	{
+		// Get localized SNDINFO entry for voice acting
+		String messageKey = "SND_" .. text;
+		String messageEntry = StringTable.Localize(messageKey, false);
+
+		bool hassound = !(messageKey ~== messageEntry);
+		
+		double soundLength = 0;
+		if (hasSound) { soundLength = S_GetLength(messageEntry); }
+
+		if (!hasSound || soundLength == 0)
+		{
+			if (boa_debugvoiceovers) { console.printf("\cgMissing voiceover: \cjCheck SNDINFO entry and audio file for \cf%s\cj!", text); }
+
+			return 0;
+		}
+
+		mo.A_StartSound(messageEntry, CHAN_BODY, CHANF_LOCAL);
+
+		return int(soundLength * 35);
+	}
 }
 
 // Functions to identify the current IWAD and read info from the matching IWADINFO block
