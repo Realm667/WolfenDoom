@@ -61,7 +61,7 @@ class MessageBase : Thinker
 		msg.player = player;
 
 		handler.messages.Push(msg);
-		if (handler.types.Find(type) == handler.types.Size()) { handler.types.Push(type); }
+		if (handler.types.Find(type) == handler.types.Size()) { handler.types.Push(type); } // Add this type of message to the handler if it wasn't already aware of it
 
 		return msg;
 	}
@@ -114,8 +114,11 @@ class Message : MessageBase
 	static void Init(Actor mo, String icon, String text, int intime = 35, int outtime = 35)
 	{
 		Message msg = Message(MessageBase.Init(mo, text, intime, outtime, "Message"));
-		msg.msgname = icon; // Set the name to the icon string so that messages with the same icon don't fade in between
-		msg.icon = icon;
+		if (msg)
+		{
+			msg.msgname = icon; // Set the name to the icon string so that messages with the same icon don't fade in between
+			msg.icon = icon;
+		}
 	}
 
 	override void Start()
@@ -141,6 +144,7 @@ class Message : MessageBase
 		}
 		else { msgwidth = 540; }
 
+		Vector2 destsize = (640, 400);
 		TextureID bgtex, ovltex, headtex;
 
 		if (ticker > 35 && ticker < time * 0.75) // Talk once faded in and through 3/4 of display time
@@ -191,7 +195,7 @@ class Message : MessageBase
 
 			if (ticker > 35 && text.length())
 			{
-				ZScriptTools.TypeString(SmallFont, text, msgwidth, (x, y), ticker - 35, hudscale.y, alpha, (320 * hudscale.x, 200 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP);
+				ZScriptTools.TypeString(SmallFont, text, msgwidth, (x, y), ticker - 35, hudscale.y, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP);
 			}
 		}
 		else
@@ -208,7 +212,7 @@ class Message : MessageBase
 
 			if (ticker > 35 && text.length())
 			{
-				ZScriptTools.TypeString(SmallFont, text, msgwidth, (100.0, 4.0), ticker - 35, 1.0, alpha, (640, 400), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP | ZScriptTools.STR_FIXED);
+				ZScriptTools.TypeString(SmallFont, text, msgwidth, (100.0, 4.0), ticker - 35, 1.0, alpha, destsize, ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP | ZScriptTools.STR_FIXED);
 			}
 		}
 	}
@@ -222,8 +226,8 @@ class HintMessage : MessageBase
 
 	static void Init(Actor mo, String text, String key)
 	{
-		HintMessage msg = HintMessage(MessageBase.Init(mo, text, 35, 35, "HintMessage"));
-		msg.key = key;
+		HintMessage msg = HintMessage(MessageBase.Init(mo, text, 20, 20, "HintMessage"));
+		if (msg) { msg.key = key; }
 	}
 
 	override void Start()
@@ -255,6 +259,7 @@ class HintMessage : MessageBase
 			texth += lineheight;
 		}
 
+		Vector2 destsize = (640, 480);
 		double posx, posy;
 		
 		if (flags & MSG_FULLSCREEN)
@@ -262,29 +267,36 @@ class HintMessage : MessageBase
 			Vector2 hudscale = StatusBar.GetHUDScale();
 
 			posx = Screen.GetWidth() / hudscale.x / 2;
-			posy = Screen.GetHeight() / hudscale.y - 8.0;
-		
-			if (!player.mo.FindInventory("CutsceneEnabled"))
+			posy = Screen.GetHeight() / hudscale.y;
+
+			if (player.mo.FindInventory("CutsceneEnabled"))
 			{
+				posy -= 20 * Screen.GetHeight() / hudscale.y / destsize.y;
+				posy -= texth / 2;
+			}
+			else		
+			{
+				posy -= 8 * Screen.GetHeight() / hudscale.y / destsize.y;
+
 				Vector2 hudscale = StatusBar.GetHUDScale();
 
 				ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2);
 				if (StealthBase(it.Next())) { posy -= 32.0; }
-			}
 
-			posy -= texth;
+				posy -= texth;
+			}
 
 			for (int l = 0; l <= lines.Count(); l++)
 			{
-				DrawToHUD.DrawText(lines.StringAt(l), (posx, posy), SmallFont, 1.0, 1.0 * hudscale.y, (640, 480), Font.CR_GRAY, ZScriptTools.STR_CENTERED);
+				DrawToHUD.DrawText(lines.StringAt(l), (posx, posy), SmallFont, alpha, 1.0 * hudscale.y, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
 				posy += lineheight;
 			}
 		}
 		else
 		{
 			double uiscale = BoAStatusBar.GetUIScale(st_scale);
-			posx = 320.0;
-			posy = 480.0 * StatusBar.GetTopOfStatusBar() / Screen.GetHeight() - 8.0 * uiscale;
+			posx = destsize.x / 2;
+			posy = destsize.y * StatusBar.GetTopOfStatusBar() / Screen.GetHeight() - 8.0 * uiscale;
 		
 			if (!player.mo.FindInventory("CutsceneEnabled"))
 			{
@@ -296,9 +308,91 @@ class HintMessage : MessageBase
 
 			for (int l = 0; l <= lines.Count(); l++)
 			{
-				screen.DrawText(SmallFont, Font.CR_GRAY, posx - lines.StringWidth(l) / 2, posy, lines.StringAt(l), DTA_VirtualWidth, 640, DTA_VirtualHeight, 480, DTA_Alpha, alpha);
+				screen.DrawText(SmallFont, Font.CR_GRAY, posx - lines.StringWidth(l) / 2, posy, lines.StringAt(l), DTA_VirtualWidth, int(destsize.x), DTA_VirtualHeight, int(destsize.y), DTA_Alpha, alpha);
 				posy += lineheight;
 			}
+		}
+	}
+}
+
+// Developer commentary
+class DevCommentary : MessageBase
+{
+	ui int msgwidth, barwidth;
+	String title;
+	String image;
+
+	static void Init(Actor mo, String text, int intime = 18, int outtime = 18)
+	{
+		CVar devcom = CVar.FindCVar("boa_devcomswitch");
+		if (devcom && !devcom.GetBool()) { return; }
+
+		Array<String> input;
+		text.Split(input, "|");
+
+		if (input.Size()) { text = input[0]; }
+		DevCommentary msg = DevCommentary(MessageBase.Init(mo, text, intime, outtime, "DevCommentary"));
+
+		if (msg && input.Size() > 1) { msg.image = input[1]; }
+	}
+
+	override void DrawMessage(int flags)
+	{
+		if (flags & MessageBase.MSG_FULLSCREEN)
+		{
+			Vector2 hudscale = StatusBar.GetHUDScale();
+			barwidth = int(min(Screen.GetHeight() * 1.25 / hudscale.y, Screen.GetWidth() / hudscale.x - 128));
+		}
+		else
+		{
+			barwidth = 720;
+		}
+
+		Vector2 destsize = (640, 480);
+		TextureID imagetex;
+		Vector2 size = (0, 0);
+
+		imagetex = TexMan.CheckForTexture(image);
+		if (imagetex) { size = TexMan.GetScaledSize(imagetex); }
+
+		msgwidth = int(barwidth - size.x);
+
+		String brokentext;
+		BrokenString lines;
+		[brokentext, lines] = BrokenString.BreakString(StringTable.Localize(text, false), msgwidth, false, "C");
+		int lineheight = int(SmallFont.GetHeight());
+
+		Vector2 hudscale = StatusBar.GetHUDScale();
+
+		int x = int(Screen.GetWidth() / hudscale.x / 2 - barwidth / 2); // Position scaled relative to screen center
+		int margin = 4;
+		int y;
+
+		if (flags & MSG_FULLSCREEN)
+		{
+			y = int(Screen.GetHeight() / hudscale.y);
+
+			if (player.mo.FindInventory("CutsceneEnabled")) { y -= int(64 * Screen.GetHeight() / hudscale.y / destsize.y); }
+			else { y -= int(16 * Screen.GetHeight() / hudscale.y / destsize.y); }
+		}
+		else { y = StatusBar.GetTopOfStatusBar() - 32; }
+
+		double boxheight = lines.Count() * lineheight + margin;
+		boxheight = max(boxheight, size.y + margin);
+		boxheight += margin;
+
+		y -= int(boxheight);
+
+		DrawToHUD.DrawFrame("DEV_", x, y, msgwidth + size.x + margin * 4, boxheight, 0x11273c, 1.0 * alpha, 0.8 * alpha);
+
+		if (imagetex) { DrawToHUD.DrawTexture(imagetex, (x + margin, y + 32.0 + (boxheight - 32.0) / 2 - size.y / 2), alpha, 1.0, centered:false); }
+
+		x += size.x ? int(size.x + margin * 4) : 0;
+		y -= 4; 
+
+		if (ticker > 35 && text.length())
+		{
+			ZScriptTools.TypeString(SmallFont, text, msgwidth, (x, y), int((ticker - 35) * 1.5), hudscale.y, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP);
 		}
 	}
 }
@@ -321,7 +415,7 @@ class MessageHandler : EventHandler
 		flags = 0;
 
 		CVar altstyle = CVar.FindCVar("boa_altmessagestyle");
-		if (screenblocks == 11 || Screen.GetHeight() > Screen.GetWidth() || (altstyle && altstyle.GetBool())) { flags |= MessageBase.MSG_FULLSCREEN; }
+		if (screenblocks == 11 || Screen.GetHeight() > Screen.GetWidth() || (altstyle && altstyle.GetBool()) || players[consoleplayer].mo.FindInventory("CutsceneEnabled")) { flags |= MessageBase.MSG_FULLSCREEN; }
 		
 		// Allow one of each type of message to be viewed at once
 		for (int t = 0; t < types.Size(); t++)
@@ -337,11 +431,11 @@ class MessageHandler : EventHandler
 	{
 		if (m)
 		{
+			int i = messages.Find(m);
+
 			if (m.ticker > m.time)
 			{
 				m.End();
-
-				int i = messages.Find(m);
 				if (i < messages.Size()) { messages.Delete(i); }
 			}
 			else
@@ -351,15 +445,15 @@ class MessageHandler : EventHandler
 					m.Start();
 
 					// Flag so that we can try not to fade message backgrounds and icons in between messages with the same name
-					if (!!(active[consoleplayer] == m.msgname)) { flags |= MessageBase.MSG_NOFADEIN; }
+					if (!!(active[consoleplayer] == m.GetClassName() .. m.msgname)) { flags |= MessageBase.MSG_NOFADEIN; }
 
-					active[consoleplayer] = m.msgname;
+					active[consoleplayer] = m.GetClassName() .. m.msgname;
 				}
 
 				if (!(flags & MessageBase.MSG_NOFADEOUT) && messages.Size() > 1)
 				{
-					let nm = messages[1];
-					if (nm.msgname == m.msgname) { flags |= MessageBase.MSG_NOFADEOUT; }
+					let nm = NextMessage(m.GetClass(), i + 1);
+					if (nm && nm.msgname == m.msgname) { flags |= MessageBase.MSG_NOFADEOUT; }
 				}
 
 				m.DoTick();
@@ -367,9 +461,9 @@ class MessageHandler : EventHandler
 		}
 	}
 
-	MessageBase NextMessage(class<MessageBase> type)
+	MessageBase NextMessage(class<MessageBase> type, int start = 0)
 	{
-		for (int a = 0; a < messages.Size(); a++)
+		for (int a = start; a < messages.Size(); a++)
 		{
 			if (messages[a].GetClass() == type) { return messages[a]; }
 		}

@@ -61,7 +61,7 @@ class DrawToHUD
 		return screenpos, screensize;
 	}
 
-	static ui void DrawText(String text, Vector2 pos, Font fnt = null, double alpha = 1.0, double scale = 1.0, Vector2 size = (640, 480), color shade = -1, int flags = 0)
+	static ui void DrawText(String text, Vector2 pos, Font fnt = null, double alpha = 1.0, double scale = 1.0, Vector2 size = (640, 480), color shade = -1, int flags = ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT)
 	{
 		if (!fnt) { fnt = SmallFont; }
 
@@ -191,6 +191,12 @@ class DrawToHUD
 
 		Vector2 size = TexMan.GetScaledSize(top);
 		int cellsize = int(size.x);
+
+		// Make sure all cells will touch...  No floating point positioning!
+		x = int(x);
+		y = int(y);
+		w = int(w);
+		h = int(h);
 
 		if (fillalpha == -1) { fillalpha = alpha; }
 
