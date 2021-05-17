@@ -148,7 +148,8 @@ class PowerFactor : PowerDamage
 		if (owner)
 		{
 			let drugs = PowerDrugs(owner.FindInventory("PowerDrugs"));
-			if (drugs) { Overlay.Init(owner.player, "M_INJ", drugs.EffectTics - 36, 18, 18); }
+			if (drugs) { Overlay.Init(owner.player, "M_INJ", max(0, drugs.EffectTics - 36), 18, 18); 
+			}
 		}
 	}
 }
