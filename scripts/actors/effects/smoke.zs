@@ -150,7 +150,7 @@ class BodySmokeSpawner : EffectSpawner
 		Spawn:
 			TNT1 A 0;
 		Active:
-			MDLA A 12 SpawnEffect();
+			"####" A 12 SpawnEffect();
 			Loop;
 	}
 

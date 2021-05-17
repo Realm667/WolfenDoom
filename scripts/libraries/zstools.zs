@@ -412,7 +412,18 @@ class ZScriptTools
 		return lightlevel, fogfactor;
 	}
 
-	static ui void TypeString(Font fnt, String text, int msgwidth, Vector2 textpos, int texttic, double textscale = 1.0, double alpha = 1.0, Vector2 screensize = (640, 400), bool fixed = false)
+	enum StringPosition
+	{
+		STR_LEFT = 0,
+		STR_RIGHT = 1,
+		STR_CENTERED = 2,
+		STR_TOP = 4,
+		STR_BOTTOM = 8,
+		STR_MIDDLE = 16,
+		STR_FIXED = 32 // Print directly on screen, not in hud coordinate space
+	}
+
+	static ui void TypeString(Font fnt, String text, int msgwidth, Vector2 textpos, int texttic, double textscale = 1.0, double alpha = 1.0, Vector2 screensize = (640, 400), int flags = STR_CENTERED | STR_MIDDLE)
 	{
 		BrokenString lines;
 		[text, lines] = BrokenString.BreakString(StringTable.Localize(text, false), msgwidth, false, "U");
@@ -422,6 +433,22 @@ class ZScriptTools
 
 		double h = int(screensize.y);
 		double w = int(screensize.y * 5 / 3);
+
+		double textw = 0;
+		double texth = 0;
+		for (int lw = 0; lw <= lines.Count(); lw++)
+		{
+			int width = lines.StringWidth(lw);
+			if (width > textw) { textw = width; }
+
+			texth += lineheight;
+		}
+
+		if (flags & STR_RIGHT) { textpos.x -= textw; }
+		else if (flags & STR_CENTERED) { textpos.x -= textw / 2; }
+
+		if (flags & STR_BOTTOM) { textpos.y -= texth; }
+		else if (flags & STR_MIDDLE) { textpos.y -= texth / 2; }
 
 		for (int l = 0; l <= lines.Count() || chars > texttic; l++)
 		{
@@ -438,7 +465,7 @@ class ZScriptTools
 				i++;
 			}
 
-			if (fixed) { screen.DrawText(fnt, Font.CR_UNTRANSLATED, textpos.x / textscale, textpos.y / textscale + l * lineheight / textscale, line, DTA_VirtualWidth, int(w * textscale), DTA_VirtualHeight, int(h * textscale), DTA_Alpha, alpha); }
+			if (flags & STR_FIXED) { screen.DrawText(fnt, Font.CR_UNTRANSLATED, textpos.x / textscale, textpos.y / textscale + l * lineheight / textscale, line, DTA_VirtualWidth, int(w * textscale), DTA_VirtualHeight, int(h * textscale), DTA_Alpha, alpha); }
 			else { DrawToHud.DrawText(line, (textpos.x, textpos.y + l * lineheight), fnt, alpha, textscale, screensize, Font.CR_UNTRANSLATED); }
 			chars += len;
 		}

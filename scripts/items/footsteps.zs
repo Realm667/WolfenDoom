@@ -36,6 +36,7 @@ class BoAFootsteps : Inventory
 
 	Default
 	{
+		+Inventory.Undroppable
 		BoAFootsteps.StepDistance 76;
 		BoAFootsteps.Noise 0; // This was 10 in the original MaxEd/2015 ACS implementation
 	}
