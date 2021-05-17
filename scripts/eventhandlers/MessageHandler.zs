@@ -106,7 +106,7 @@ class Message : MessageBase
 	ui int msgwidth, barwidth;
 	String icon;
 
-	static void Init(Actor mo, String icon, String text, int intime = 35, int outtime = 35)
+	static int Init(Actor mo, String icon, String text, int intime = 35, int outtime = 35)
 	{
 		Message msg = Message(MessageBase.Init(mo, text, intime, outtime, "Message"));
 		if (msg)
@@ -114,6 +114,7 @@ class Message : MessageBase
 			msg.msgname = icon; // Set the name to the icon string so that messages with the same icon don't fade in between
 			msg.icon = icon;
 		}
+		return msg.time;
 	}
 
 	override void Start()
@@ -219,7 +220,7 @@ class BriefingMessage : Message
 {
 	bool shouldEnd;
 
-	static void Init(Actor mo, String icon, String text, int intime = 35, int outtime = 35)
+	static int Init(Actor mo, String icon, String text, int intime = 35, int outtime = 35)
 	{
 		BriefingMessage msg = BriefingMessage(MessageBase.Init(mo, text, intime, outtime, "BriefingMessage"));
 		if (msg)
@@ -228,6 +229,7 @@ class BriefingMessage : Message
 			msg.icon = icon;
 			msg.time = 2147483647;
 		}
+		return msg.time;
 	}
 
 	static BriefingMessage Get()
@@ -316,16 +318,132 @@ class BriefingMessage : Message
 	}
 }
 
+// Radio message with 2 icons. The first icon fades into the next one.
+class FadeIconMessage : Message
+{
+	String icon2;
+
+	static int Init(Actor mo, String icon, String icon2, String text, int intime = 35, int outtime = 35)
+	{
+		FadeIconMessage msg = FadeIconMessage(MessageBase.Init(mo, text, intime, outtime, "FadeIconMessage"));
+		if (msg)
+		{
+			msg.msgname = icon;
+			msg.icon = icon;
+			msg.icon2 = icon2;
+		}
+		return msg.time;
+	}
+
+	override void DrawMessage()
+	{
+		if (flags & MessageBase.MSG_FULLSCREEN)
+		{
+			Vector2 hudscale = StatusBar.GetHUDScale();
+			barwidth = int(min(Screen.GetHeight() / hudscale.y, Screen.GetWidth() / hudscale.x - 240));
+			msgwidth = barwidth - 64;
+		}
+		else { msgwidth = 540; }
+
+		Vector2 destsize = (640, 400);
+		TextureID bgtex, ovltex, headtex, headtex2;
+
+		if (ticker > 35 && ticker < time * 0.75) // Talk once faded in and through 3/4 of display time
+		{
+			headtex = TexMan.CheckForTexture(icon .. "1"); // ANIMDEFS-defined talking head
+			headtex2 = TexMan.CheckForTexture(icon2 .. "!");
+		}
+
+		if (!headtex.IsValid()) // Fall back to static face if not currently animated (or animated face not found)
+		{
+			headtex = TexMan.CheckForTexture(icon .. "0"); // Static head
+		}
+		if (!headtex2.IsValid())
+		{
+			headtex2 = TexMan.CheckForTexture(icon2 .. "0");
+		}
+
+		double staticalpha = alpha;
+		double headalpha = staticalpha;
+		double head2alpha = ticker / double(time - outtime);
+		if (flags & MSG_NOFADEIN && ticker < intime) { staticalpha = 1.0; }
+		else if (flags & MSG_NOFADEOUT && ticker > time - outtime) { staticalpha = 1.0; }
+		if (ticker > time - outtime) { headalpha = 0.0; head2alpha = alpha; }
+
+		if (flags & MSG_FULLSCREEN)
+		{
+			String brokentext;
+			BrokenString lines;
+			[brokentext, lines] = BrokenString.BreakString(StringTable.Localize(text, false), msgwidth, false, "C");
+			int lineheight = int(SmallFont.GetHeight());
+
+			Vector2 hudscale = StatusBar.GetHUDScale();
+			Vector2 size = (0, 0);
+
+			int x = int(Screen.GetWidth() / hudscale.x / 2 - barwidth / 2); // Position scaled relative to screen center
+			int y = 8;
+			int margin = 8;
+
+			if (headtex) { size = TexMan.GetScaledSize(headtex) * 1.25; }
+
+			double boxheight = lines.Count() * lineheight + margin * 2;
+			boxheight = max(boxheight, size.y + margin);
+			boxheight += margin;
+
+			DrawToHUD.DrawFrame("FRAME_", x, y, msgwidth + size.x + margin * 4, boxheight, 0x1b1b1b, 1.0 * staticalpha, 0.5 * staticalpha);
+
+			y += margin;
+
+			if (headtex)
+			{
+				DrawToHUD.DrawFrame("INSET_", x + margin, y, size.x, size.y - 2, 0x404040, 0.5 * staticalpha);
+				DrawToHUD.DrawTexture(headtex, (x + margin, y), headalpha, 1.25, centered:false);
+				
+			}
+			if (headtex2)
+			{
+				DrawToHUD.DrawTexture(headtex2, (x + margin, y), head2alpha, 1.25, centered:false);
+			}
+
+			x += size.x ? int(size.x + margin * 2) : 0;
+
+			if (ticker > 35 && text.length())
+			{
+				ZScriptTools.TypeString(SmallFont, text, msgwidth, (x, y), ticker - 35, hudscale.y, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP);
+			}
+		}
+		else
+		{
+			Vector2 bgpos = (160.0, 24.0);
+			Vector2 headpos = (21.0, 16.0);
+
+			bgtex = TexMan.CheckForTexture("HEADBAR");
+			ovltex = TexMan.CheckForTexture("HEADBOVL");
+
+			if (bgtex) { screen.DrawTexture(bgtex, true, bgpos.x, bgpos.y, DTA_320x200, true, DTA_CenterOffset, true, DTA_Alpha, staticalpha); }
+			if (headtex) { screen.DrawTexture(headtex, true, headpos.x, headpos.y, DTA_320x200, true, DTA_CenterOffset, true, DTA_Alpha, headalpha); }
+			if (headtex2) { screen.DrawTexture(headtex2, true, headpos.x, headpos.y, DTA_320x200, true, DTA_CenterOffset, true, DTA_Alpha, head2alpha); }
+			if (ovltex) { screen.DrawTexture(ovltex, true, bgpos.x, bgpos.y, DTA_320x200, true, DTA_CenterOffset, true, DTA_Alpha, staticalpha); }
+
+			if (ticker > 35 && text.length())
+			{
+				ZScriptTools.TypeString(SmallFont, text, msgwidth, (100.0, 4.0), ticker - 35, 1.0, alpha, destsize, ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP | ZScriptTools.STR_FIXED);
+			}
+		}
+	}
+}
+
 // Standard bottom-of-screen hint messages
 class HintMessage : MessageBase
 {
 	ui int msgwidth;
 	String key;
 
-	static void Init(Actor mo, String text, String key)
+	static int Init(Actor mo, String text, String key)
 	{
 		HintMessage msg = HintMessage(MessageBase.Init(mo, text, 20, 20, "HintMessage"));
 		if (msg) { msg.key = key; }
+		return msg.time;
 	}
 
 	override void Start()
@@ -419,10 +537,10 @@ class DevCommentary : MessageBase
 	ui int msgwidth, barwidth;
 	String image;
 
-	static void Init(Actor mo, String text, int intime = 18, int outtime = 18)
+	static int Init(Actor mo, String text, int intime = 18, int outtime = 18)
 	{
 		CVar devcom = CVar.FindCVar("boa_devcomswitch");
-		if (devcom && !devcom.GetBool()) { return; }
+		if (devcom && !devcom.GetBool()) { return 0; }
 
 		Array<String> input;
 		text.Split(input, "|");
@@ -431,6 +549,8 @@ class DevCommentary : MessageBase
 		DevCommentary msg = DevCommentary(MessageBase.Init(mo, text, intime, outtime, "DevCommentary"));
 
 		if (msg && input.Size() > 1) { msg.image = input[1]; }
+
+		return msg.time;
 	}
 
 	override void DrawMessage()
