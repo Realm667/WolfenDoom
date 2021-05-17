@@ -288,8 +288,28 @@ class BriefingMessage : Message
 			ticker++;
 			time = ticker + intime + outtime;
 		}
-		if (ticker < intime) { alpha = ticker / double(intime); }
-		else if (ticker > time - outtime) { alpha = (time - ticker) / double(outtime); }
+		if (ticker < intime)
+		{
+			if (intime > 0)
+			{
+				alpha = ticker / double(intime);
+			}
+			else
+			{
+				alpha = 1.0;
+			}
+		}
+		else if (ticker > time - outtime)
+		{
+			if (outtime > 0)
+			{
+				alpha = (time - ticker) / double(outtime);
+			}
+			else
+			{
+				alpha = 0.0;
+			}
+		}
 		else { alpha = 1.0; }
 
 		// alpha = clamp(alpha, 0.0, 1.0);
