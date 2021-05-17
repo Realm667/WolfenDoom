@@ -420,7 +420,7 @@ class MessageHandler : EventHandler
 		if (
 			screenblocks == 11 ||
 			ratio < (4.0 / 3) || // Use the new-style menus on odd resolutions narrower than 4:3
-			ratio > (16.0 / 9) || // and on ultra-widescreen resolutions over 16:9
+			ratio > (16.0 / 9 + 0.00001) || // and on ultra-widescreen resolutions over 16:9
 			(altstyle && altstyle.GetBool()) || 
 			players[consoleplayer].mo.FindInventory("CutsceneEnabled")
 		) { fullscreen = true; }
