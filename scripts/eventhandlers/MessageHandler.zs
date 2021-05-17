@@ -213,6 +213,89 @@ class Message : MessageBase
 	}
 }
 
+// Message which stays on screen until "end" is set to true. The text content 
+// can also be replaced.
+class BriefingMessage : Message
+{
+	bool shouldEnd;
+
+	static void Init(Actor mo, String icon, String text, int intime = 35, int outtime = 35)
+	{
+		BriefingMessage msg = BriefingMessage(MessageBase.Init(mo, text, intime, outtime, "BriefingMessage"));
+		if (msg)
+		{
+			msg.msgname = icon;
+			msg.icon = icon;
+			msg.time = 2147483647;
+		}
+	}
+
+	static BriefingMessage Get()
+	{
+		MessageHandler handler = MessageHandler(EventHandler.Find("MessageHandler"));
+		MessageBase msg = handler.NextMessage("BriefingMessage");
+		if (msg)
+		{
+			return BriefingMessage(msg);
+		}
+		return null;
+	}
+
+	// Fade the message out
+	static void SetShouldEnd(bool end)
+	{
+		BriefingMessage msg = BriefingMessage.Get();
+		if (!msg) { return; }
+		msg.shouldEnd = end;
+		if (end)
+		{
+			msg.time = msg.ticker + msg.outtime;
+		}
+	}
+
+	// Set the entry to use for the message text
+	static void SetEntry(String entry)
+	{
+		BriefingMessage msg = BriefingMessage.Get();
+		if (!msg) { return; }
+		msg.text = entry;
+		// Start typing the new text from the beginning, rather than having it appear all at once.
+		msg.ticker = 35;
+	}
+
+	override void Start()
+	{
+		// Console.Printf("BriefingMessage start");
+		player.mo.SetInventory("IncomingMessage", 1);
+
+		time = max(time, ZScriptTools.PlaySound(player.mo, text));
+	}
+
+	/*
+	override void End()
+	{
+		Console.Printf("BriefingMessage end");
+		Super.End();
+	}
+	*/
+
+	// Slightly modified from MessageBase.DoTick to account for the "end" variable
+	override void DoTick()
+	{
+		ticker++;
+		if (!shouldEnd)
+		{
+			ticker++;
+			time = ticker + intime + outtime;
+		}
+		if (ticker < intime) { alpha = ticker / double(intime); }
+		else if (ticker > time - outtime) { alpha = (time - ticker) / double(outtime); }
+		else { alpha = 1.0; }
+
+		// alpha = clamp(alpha, 0.0, 1.0);
+	}
+}
+
 // Standard bottom-of-screen hint messages
 class HintMessage : MessageBase
 {
