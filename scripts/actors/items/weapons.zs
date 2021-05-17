@@ -1496,7 +1496,7 @@ class Firebrand : NaziWeapon
 	{
 		if (owner)
 		{
-			if (owner.CountInv("PowerWeaponLevel2"))
+			if (owner.CountInv("PowerWeaponLevel2") && owner.player && owner.player.ReadyWeapon == self)
 			{
 				if (ticcount > 4) { owner.A_AttachLight("FlameEffect", DynamicLight.FlickerLight , color(2, 212, 117), 24, 32, DYNAMICLIGHT.LF_ATTENUATE, (0, 0, 32), 0.2); }
 				else if (ticcount > 0) { owner.A_AttachLight("FlameEffect", DynamicLight.FlickerLight , color(26, 168, 105), 32, 36, DYNAMICLIGHT.LF_ATTENUATE, (0, 0, 32), 0.3); }
