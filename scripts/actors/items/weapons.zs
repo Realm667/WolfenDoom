@@ -967,6 +967,7 @@ class TurretStand : Actor
 			}
 			shooter = user;
 			shooter.DamageFactor = 0.25; // Player takes quarter damage while using the turret gun
+			ReactionTime = 10; // Lock player to gun for 10 tics
 			return true;
 		}
 
@@ -1018,6 +1019,11 @@ class TurretStand : Actor
 	void DoInteractions()
 	{
 		shooter.SetOrigin(pos + RotateVector((-(shooter.radius + radius) * 1.5, 0), gun.angle), true); // Keep the shooter at the firing position
+
+		if (ReactionTime)
+		{
+			ReactionTime--;
+		}
 
 		if (!twep)
 		{
@@ -1088,7 +1094,7 @@ class TurretStand : Actor
 
 	virtual bool CanLeaveTurret()
 	{
-		return !GunIsReloading() || GunIsCooling();
+		return ReactionTime == 0 && !GunIsReloading() || GunIsCooling();
 	}
 
 	virtual bool LeaveTurret()
