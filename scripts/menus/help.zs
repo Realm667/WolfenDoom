@@ -337,7 +337,7 @@ class BoAInfo : BoAMenu
 
 			double screenscale = screen.GetHeight() / double(h);
 			double minscale = 10 / (fnt.GetHeight() * screenscale);
-			textscale = max(textscale, minscale);
+//			textscale = max(textscale, minscale);
 
 			int clr = Font.CR_GRAY;
 			String fontcolor = GetString(content, "fontcolor");
