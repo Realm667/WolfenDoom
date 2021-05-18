@@ -207,7 +207,7 @@ class UnderlayRenderer : EventHandler
 		for (int o = 0; o < overlays.Size(); o++)
 		{
 			let this = overlays[o];
-			if (this && this.player == p && this.image ~== image && (!index || this.index == index)) { return this; }
+			if (this && this.player == p && this.image ~== image && this.index == index) { return this; }
 		}
 
 		return null;
