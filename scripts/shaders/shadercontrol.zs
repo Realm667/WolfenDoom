@@ -82,6 +82,7 @@ class HeatShaderControl : ShaderControl
 	Default
 	{
 		ShaderControl.Shader "heatshader";
+		Inventory.MaxAmount 70;
 	}
 
 	override void DoEffect()
