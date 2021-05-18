@@ -264,8 +264,6 @@ class BoAPlayer : PlayerPawn
 			if (level.mapname != "TITLEMAP")
 			{
 				// Do screen drawing actions
-				ACS_NamedExecuteAlways("DrawObjectives_Wrapper", 0);
-
 				if (!FindInventory("TankMorph", 1)) // Only do these if you're not driving a tank
 				{
 					if (!CountInv("Billy"))

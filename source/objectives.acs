@@ -1,157 +1,71 @@
-int objectives_on[MAX_PLAYERS];			//Objective display toggle
-
-int objectives_active = 0;
-str objectives[MAX_OBJECTIVES][2]=
-{
-	{"",""},
-	{"",""},
-	{"",""},
-	{"",""},
-	{"",""},
-	{"",""}
-};
-
+// Bound via menus to toggle the objective screen on and off
 script "boaobjectives" (void)
 {
-	If(
-		(GetLevelInfo(LEVELINFO_LEVELNUM)==99)
-	)
-	Terminate;
-	
-	If(
-		(CheckActorClass(PlayerNumber(),"KeenPlayer"))
-	)
-	Terminate;
-
-	if(objectives_on[PlayerNumber()])
-		objectives_on[PlayerNumber()]=0;
-	else
-		objectives_on[PlayerNumber()]=1;
+	ScriptCall("ObjectiveHandler", "Toggle");
 }
 
-/* Change an objective
- * mode - 0 for icon, 1 for text.
+
+// Wrapper functions maintained for backwards compatibility with existing map code
+/*
+   How to do objectives with the current ZSCript:
+
+     Add new:
+                ScriptCall("Objective", "Add", 
+                        <String: text lookup>, 
+                        <int: order in the list>, 
+                        <bool: secondary(1) or primary(0)>, 
+                        <bool: complete(1) or not(0)>, 
+                        <bool: quiet(1) or display message and play sound(0)>
+                );
+
+     Mark complete:
+                ScriptCall("Objective", "Completed", 
+                        <String: text lookup>,     <- These are an either/or lookup - if the string doesn't match, or was passed
+                        <int: order in the list>,  <- in as a blank, then the order number is checked.  Use -1 as order to ignore.
+                        <bool: quiet(1) or display message and play sound(0)>
+                );
+
+   These calls eliminate the need to call both a script to set up the objective and a script to show the message.
+   Adding a new message with an order or string value that matches an existing message will replace that message.
+
+*/
+
+/* Set up an objective
+ * mode - 0 for icon, 1 for text. Not needed with pure ZScript, but used for backward compatibility
  * objnumber - 0-indexed objective number. 0-2 are primary, 3-5 are secondary.
- * objtext - Objective text. MO_ICON_OPN or MO_ICON_ACC if mode is 0, LANGUAGE entry name if mode is 1.
+ * objtext - Objective text. 
  */
 script "boaobjectivesset"(int mode,int objnumber,int objtext)
 {
-	if (mode == 1) { // Objective text
-		// No curly braces needed here, since there's just one statement after the if/else.
-		if (StrLen(StrParam(l:objtext)) > 0)
-			objectives_active |= (1 << objnumber);
-		else
-			// Blank objective text
-			objectives_active &= ~(1 << objnumber);
-	}
-	objectives[objnumber][mode]=objtext;
-}
+	bool secondary;
+	if (objnumber > 2) { secondary = true; }
 
-function void DrawObjectives(void)
-{
-	if (!objectives_on[PlayerNumber()]) { return; }
-
-	sethudsize(800,600,1);
-	setfont("SMALLFONT");
-
-	int intMsgID = 960;
-
-	int intHeaderCount = 0;
-	int narrowbox = 0;
-
-	if (!ScriptCall("ACSTools", "ShouldUseWideObjectivesBox"))
+	if (mode == 1)
 	{
-		narrowbox = 1;
-	}
-
-	for (int i = 0; i <= 7; i++)
-	{
-		SetFont("SMALLFONT");
-		int intPosY = 135.0 + (13.0 * (intMsgID - 960)) + 0.1;
-		int intPosX = 300.1;
-
-		if (!narrowbox)
-		{
-			intPosX -= 40.0;
-		}
-
-		if (i == 0)
-		{
-			HudMessage(l:"MO_PRIMARY"; HUDMSG_PLAIN, intMsgID++, CR_UNTRANSLATED, intPosX, intPosY, 0.03);
-			intHeaderCount++;
-		}
-		else if (i == 4)
-		{
-			HudMessage(l:"MO_SECONDARY"; HUDMSG_PLAIN, intMsgID++, CR_UNTRANSLATED, intPosX, intPosY, 0.03);
-			intHeaderCount++;
-		}
-		else
-		{
-			int objIdx = i - intHeaderCount;
-			str strOutput = StrParam(l:objectives[objIdx][0], l:objectives[objIdx][1]);
-
-			If (
-				strLen(strOutput) > 0 &&
-				((objectives_active >> objIdx) & 1) == 1)
-			{
-				HudMessage(s:strOutput; HUDMSG_PLAIN, intMsgID++, CR_UNTRANSLATED, intPosX + 10.0, intPosY, 0.03);
-
-				If (!StrCmp(StrParam(l:objectives[objIdx][0]), StrParam(l:"MO_ICON_ACC")))
-					SetFont("OBJ_YES");
-				Else
-					SetFont("OBJ_NO");
-				HudMessage(s:"A"; HUDMSG_PLAIN, intMsgID - 10, CR_UNTRANSLATED, intPosX, intPosY + 1.0, 0.03);
-			}
-		}
-	}
-
-	if (!narrowbox)
-	{
-		SetFont("OBJECTGY");
+		// Pass a text name and numeric order to set up an objective.
+		// Mark it as secondary with the third parameter
+		// Omit final variable (or set false) to play the drumroll and display the message
+		ScriptCall("Objective", "Add", objtext, objnumber, secondary, false, true);
 	}
 	else
 	{
-		SetFont("OBJECTGX");
+		if (!StrCmp(objtext, "MO_ICON_ACC")) { ScriptCall("Objective", "Completed", "", objnumber, true); }
 	}
-
-	hudmessage(s:"A";
-		HUDMSG_PLAIN,972,CR_UNTRANSLATED,400.0,115.1,0.03);
-}
-
-script "DrawObjectives_Wrapper" (void)
-{
-	DrawObjectives();
 }
 
 script "boaobjectiveaccomplished" (void)
 {
-	AmbientSound("misc/objective_acc", 57);
-
-	sethudsize(800,600,1);
-	setfont("OBJICON");
-	hudmessage(s:"A";
-		HUDMSG_FADEINOUT,990,CR_UNTRANSLATED,400.0,115.1,1.0,0.5,0.5);
-	setfont("SMALLFONT");
-	hudmessage(l:"MO_ACCOMP";
-		HUDMSG_FADEINOUT,989,CR_UNTRANSLATED,400.0,130.1,1.0,0.5,0.5);
-
-	ScriptCall("BoACompass", "Flash");
+	ScriptCall("Objective", "Completed"); // Call with no parameters to just play the effect
 }
 
 script "boaobjectiveadded" (void)
 {
-	AmbientSound("misc/objective_add", 57);
-	sethudsize(800,600,1);
-	setfont("OBJADD");
-	hudmessage(s:"A";
-		HUDMSG_FADEINOUT,990,CR_UNTRANSLATED,400.0,115.1,1.0,0.5,0.5);
-	setfont("SMALLFONT");
-	hudmessage(l:"MO_ADDED";
-		HUDMSG_FADEINOUT,989,CR_UNTRANSLATED,400.0,130.1,1.0,0.5,0.5);
-
+	ScriptCall("Objective", "Add"); // Call with no parameters to just play the effect
 }
 
 script "CompleteObjective" (int num)
 {
-	ACS_NamedExecuteAlways("boaobjectivesset", 0, 0, num, "MO_ICON_ACC");
+	// Pass a text name and/or a numeric order to mark an objective complete
+	// Omit final variable (or set false) to play the drumroll and display the message
+	ScriptCall("Objective", "Completed", "", num, true);
 }

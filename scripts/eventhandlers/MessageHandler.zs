@@ -132,7 +132,7 @@ class Message : MessageBase
 
 	override void DrawMessage()
 	{
-		if (flags & MessageBase.MSG_FULLSCREEN)
+		if (flags & MSG_FULLSCREEN)
 		{
 			Vector2 hudscale = StatusBar.GetHUDScale();
 			barwidth = int(min(Screen.GetHeight() / hudscale.y, Screen.GetWidth() / hudscale.x - 240));
@@ -337,7 +337,7 @@ class FadeIconMessage : Message
 
 	override void DrawMessage()
 	{
-		if (flags & MessageBase.MSG_FULLSCREEN)
+		if (flags & MSG_FULLSCREEN)
 		{
 			Vector2 hudscale = StatusBar.GetHUDScale();
 			barwidth = int(min(Screen.GetHeight() / hudscale.y, Screen.GetWidth() / hudscale.x - 240));
@@ -531,6 +531,50 @@ class HintMessage : MessageBase
 	}
 }
 
+class ObjectiveMessage : MessageBase
+{
+	String image, snd;
+	double posx, posy;
+	Vector2 destsize;
+
+	static int Init(Actor mo, String text, String image = "", String snd = "", double posx = 400, double posy = 135, Vector2 destsize = (800, 600))
+	{
+		let handler = MessageHandler(EventHandler.Find("MessageHandler"));
+		if (!handler) { return 0; }
+
+		ObjectiveMessage msg = ObjectiveMessage(MessageBase.Init(mo, text, 18, 18, "ObjectiveMessage"));
+		msg.msgname = text;
+		msg.image = image;
+		msg.snd = snd;
+		msg.posx = posx;
+		msg.posy = posy;
+		msg.destsize = destsize;
+
+		return msg.time;
+	}
+
+	override void Start()
+	{
+		player.mo.A_StartSound(snd, CHAN_AUTO, CHANF_DEFAULT, 0.45);
+	}
+
+	override void DrawMessage()
+	{
+		TextureID tex = TexMan.CheckForTexture(image);
+		String msgstr = StringTable.Localize(text, false);
+
+		if (tex.IsValid())
+		{
+			screen.DrawTexture(tex, true, posx, posy, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_CenterOffset, true, DTA_Alpha, alpha);
+		}
+
+		if (msgstr.length())
+		{
+			screen.DrawText(SmallFont, Font.CR_GRAY, posx - SmallFont.StringWidth(msgstr) / 2, posy - SmallFont.GetHeight() / 2, msgstr, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_Alpha, alpha);
+		}
+	}
+}
+
 // Developer commentary
 class DevCommentary : MessageBase
 {
@@ -555,7 +599,7 @@ class DevCommentary : MessageBase
 
 	override void DrawMessage()
 	{
-		if (flags & MessageBase.MSG_FULLSCREEN)
+		if (flags & MSG_FULLSCREEN)
 		{
 			Vector2 hudscale = StatusBar.GetHUDScale();
 			barwidth = int(min(Screen.GetHeight() * 1.25 / hudscale.y, Screen.GetWidth() / hudscale.x - 128));
@@ -718,6 +762,17 @@ class MessageHandler : EventHandler
 		for (int a = start; a < messages.Size(); a++)
 		{
 			if (messages[a].GetClass() == type) { return messages[a]; }
+		}
+
+		return null;
+	}
+
+	// Find a message with a given name
+	MessageBase FindMessage(String msgname, int start = 0)
+	{
+		for (int a = start; a < messages.Size(); a++)
+		{
+			if (messages[a].msgname == msgname) { return messages[a]; }
 		}
 
 		return null;
