@@ -39,6 +39,7 @@ class GrenadePickup : IntervalUseItem
 	Inventory.UseSound "grenade/throw";
 	Inventory.PickupSound "grenade/pickup";
 	ReactionTime 12;  // Interval between usages - Talon1024
+	-NOGRAVITY
 	+INVENTORY.INVBAR
 	}
 	States
