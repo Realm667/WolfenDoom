@@ -160,6 +160,7 @@ class Message : MessageBase
 			msg.msgname = icon; // Set the name to the icon string so that messages with the same icon don't fade in between
 			msg.icon = icon;
 		}
+		MessageLogHandler.Add(String.Format("|%s", msg.text));
 		return msg.GetTime();
 	}
 
@@ -173,6 +174,7 @@ class Message : MessageBase
 			msg.msgname = icon; // Set the name to the icon string so that messages with the same icon don't fade in between
 			msg.icon = icon;
 		}
+		MessageLogHandler.Add(String.Format("%s|%s", msg.charname, msg.text));
 		return msg.GetTime();
 	}
 
@@ -308,7 +310,7 @@ class BriefingMessage : Message
 			msg.time = 2147483647;
 			msg.typespeed = 2.0;
 		}
-
+		MessageLogHandler.Add(String.Format("|%s", msg.text));
 		return msg.GetTime();
 	}
 
@@ -324,6 +326,7 @@ class BriefingMessage : Message
 			msg.time = 2147483647;
 			msg.typespeed = 2.0;
 		}
+		MessageLogHandler.Add(String.Format("%s|%s", msg.charname, msg.text));
 		return msg.GetTime();
 	}
 
@@ -387,6 +390,7 @@ class FadeIconMessage : Message
 			msg.icon = icon;
 			msg.icon2 = icon2;
 		}
+		MessageLogHandler.Add(String.Format("|%s", msg.text));
 		return msg.GetTime();
 	}
 
@@ -611,7 +615,7 @@ class DevCommentary : MessageBase
 		DevCommentary msg = DevCommentary(MessageBase.Init(mo, text, intime, outtime, "DevCommentary"));
 
 		if (msg && input.Size() > 1) { msg.image = input[1]; }
-
+		MessageLogHandler.Add(String.Format("MESSAGELOGTYPE_DEVCOM|%s", text));
 		return msg.GetTime();
 	}
 
