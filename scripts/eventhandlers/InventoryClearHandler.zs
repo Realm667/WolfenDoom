@@ -48,6 +48,7 @@ class InventoryClearHandler : EventHandler
 		mo.A_SetInventory("SandShaderControl", 1);
 		mo.A_SetInventory("ColorGradeShaderControl", 1);
 		mo.A_SetInventory("NauseaShaderControl", 1);
+		mo.A_SetInventory("PainShaderControl", 1);
 
 		mo.A_GiveInventory("NullWeapon", 1);
 	}

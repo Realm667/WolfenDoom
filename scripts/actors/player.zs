@@ -122,6 +122,7 @@ class BoAPlayer : PlayerPawn
 		Player.WeaponSlot 7, "Panzerschreck";
 		Player.WeaponSlot 8, "TeslaCannon", "UMG43";
 		Player.WeaponSlot 0, "NullWeapon";
+		Player.DamageScreenColor "ff 00 00", 0;
 		Player.DamageScreenColor "ff ff ff", 1, "IceWater";
 		Player.DamageScreenColor "64 00 C8", 1, "MutantPoison";
 		Player.DamageScreenColor "00 5A 40", 1, "UndeadPoison";
@@ -243,7 +244,7 @@ class BoAPlayer : PlayerPawn
 		dodragging = false;
 		int playerID = PLAYER_TAG_OFFSET + PlayerNumber();
 		Thing_ChangeTID(0, playerID);
-		
+
 		Super.PostBeginPlay();
 	}
 
