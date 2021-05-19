@@ -150,12 +150,26 @@ class Message : MessageBase
 	ui int msgwidth, barwidth;
 	String icon;
 	double typespeed;
+	String charname; // Name of NPC - useful for player follower and spy messages
 
 	static int Init(Actor mo, String icon, String text, int intime = 35, int outtime = 35)
 	{
 		Message msg = Message(MessageBase.Init(mo, text, intime, outtime, "Message"));
 		if (msg)
 		{
+			msg.msgname = icon; // Set the name to the icon string so that messages with the same icon don't fade in between
+			msg.icon = icon;
+		}
+		return msg.GetTime();
+	}
+
+	// For player followers, briefings, and undercover allied spies
+	static int InitWithName(Actor mo, String icon, String text, String charname, int intime = 35, int outtime = 35)
+	{
+		Message msg = Message(MessageBase.Init(mo, text, intime, outtime, "Message"));
+		if (msg)
+		{
+			msg.charname = charname;
 			msg.msgname = icon; // Set the name to the icon string so that messages with the same icon don't fade in between
 			msg.icon = icon;
 		}
@@ -182,6 +196,10 @@ class Message : MessageBase
 
 	override double DrawMessage()
 	{
+		String fulltext = StringTable.Localize(charname, false);
+		// Character name is given
+		if (fulltext.Length()) { fulltext = fulltext .. "\cC"; }
+		fulltext = fulltext .. StringTable.Localize(text, false);
 		if (flags & MSG_FULLSCREEN)
 		{
 			Vector2 hudscale = StatusBar.GetHUDScale();
@@ -213,7 +231,7 @@ class Message : MessageBase
 		{
 			String brokentext;
 			BrokenString lines;
-			[brokentext, lines] = BrokenString.BreakString(StringTable.Localize(text, false), msgwidth, false, "C");
+			[brokentext, lines] = BrokenString.BreakString(fulltext, msgwidth, false, "C");
 			int lineheight = int(SmallFont.GetHeight());
 
 			Vector2 hudscale = StatusBar.GetHUDScale();
@@ -242,8 +260,8 @@ class Message : MessageBase
 			x += size.x ? int(size.x + margin * 2) : 0;
 
 			if (ticker > 35 && text.length())
-			{
-				ZScriptTools.TypeString(SmallFont, text, msgwidth, (x, y), typeticks, hudscale.y, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP);
+			{ // text.length() instead of fulltext.length() because there's no point in just showing the character's name
+				ZScriptTools.TypeString(SmallFont, fulltext, msgwidth, (x, y), typeticks, hudscale.y, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP);
 			}
 
 			protrusion = (y + boxheight) / (Screen.GetHeight() / hudscale.y);
@@ -265,8 +283,8 @@ class Message : MessageBase
 			y = handler.topoffset * destsize.y;
 
 			if (ticker > 35 && text.length())
-			{
-				ZScriptTools.TypeString(SmallFont, text, msgwidth, (100.0, y + 4.0), typeticks, 1.0, alpha, destsize, ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP | ZScriptTools.STR_FIXED);
+			{ // text.length() instead of fulltext.length() because there's no point in just showing the character's name
+				ZScriptTools.TypeString(SmallFont, fulltext, msgwidth, (100.0, y + 4.0), typeticks, 1.0, alpha, destsize, ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP | ZScriptTools.STR_FIXED);
 			}
 
 			protrusion = y + 32.0 / 200;
@@ -291,6 +309,21 @@ class BriefingMessage : Message
 			msg.typespeed = 2.0;
 		}
 
+		return msg.GetTime();
+	}
+
+	// For player followers, briefings, and undercover allied spies
+	static int InitWithName(Actor mo, String icon, String text, String charname, int intime = 35, int outtime = 35)
+	{
+		BriefingMessage msg = BriefingMessage(MessageBase.Init(mo, text, intime, outtime, "BriefingMessage"));
+		if (msg)
+		{
+			msg.charname = charname;
+			msg.msgname = icon; // Set the name to the icon string so that messages with the same icon don't fade in between
+			msg.icon = icon;
+			msg.time = 2147483647;
+			msg.typespeed = 2.0;
+		}
 		return msg.GetTime();
 	}
 

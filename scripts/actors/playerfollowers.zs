@@ -130,6 +130,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 	int oldwaterlevel;
 	int activationcount;
 	String head;
+	String charname;
 	bool climbing;
 	int enemycount;
 	int reloadcount;
@@ -153,6 +154,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 	Property Head:head;
 	Property HealParticle:healparticle;
 	Property HealPlayer:healplayer;
+	Property CharName:charname; // Name of follower
 
 	Default
 	{
@@ -946,7 +948,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			String classmsg = GetClassName() .. msg; // Try to use a class-specific message
 			if (StringTable.Localize(classmsg, false) ~== classmsg) { classmsg = "FOLLOWER" .. msg; } // Otherwise fall back to generic FOLLOWER* message
 
-			Message.Init(user, head, classmsg);
+			Message.InitWithName(user, head, classmsg, charname);
 		}
 
 		return false;
@@ -1256,6 +1258,7 @@ class PrisonerAgent : PlayerFollower
 		PlayerFollower.ChaseAttackChance 0;
 		PlayerFollower.CanBeCommanded 4096;
 		PlayerFollower.Head "MS_PRIB";
+		PlayerFollower.CharName "PRISONERAGENTNAME";
 	}
 
 	States
@@ -1295,6 +1298,7 @@ class AgentArmed : PlayerFollower
 		PlayerFollower.GrenadeChance 0;
 		PlayerFollower.CanBeCommanded True;
 		PlayerFollower.Head "MS_PRIS";
+		PlayerFollower.CharName "PRISONERAGENTNAME";
 	}
 
 	States
@@ -1314,6 +1318,7 @@ class AgentArmedMP40 : AgentArmed
 		//$Color 4
 
 		PlayerFollower.Weapon PWEAP_MP40;
+		PlayerFollower.CharName "PRISONERAGENTNAME";
 	}
 
 	States
@@ -1363,6 +1368,7 @@ class AscherArmed : PlayerFollower
 		PlayerFollower.CanBeCommanded True;
 		PlayerFollower.Head "MS_OFFC";
 		PlayerFollower.HealPlayer 40;
+		PlayerFollower.CharName "ASCHERNAME";
 	}
 
 	States
@@ -1408,6 +1414,7 @@ class SSAscherArmed : PlayerFollower2
 		PlayerFollower.GrenadeChance 0;
 		PlayerFollower.CanBeCommanded True;
 		PlayerFollower.Head "MS_OFFS";
+		PlayerFollower.CharName "ASCHERNAME";
 	}
 
 	States
@@ -1438,6 +1445,7 @@ class DouglasArmed : PlayerFollower2
 		PlayerFollower.ChaseAttackChance 96;
 		PlayerFollower.CanBeCommanded True;
 		PlayerFollower.Head "MS_DARR";
+		PlayerFollower.CharName "DARRENNAME";
 	}
 
 	States
