@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 AFADoomer
+ * Copyright (c) 2021 AFADoomer, Talon1024
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -38,8 +38,11 @@ class MessageBase : Thinker
 		MSG_DEFAULT = 0,
 		MSG_NOFADEIN = 1,
 		MSG_NOFADEOUT = 2,
-		MSG_FULLSCREEN = 4
+		MSG_FULLSCREEN = 4,
+		MSG_ALLOWREPLACE = 8
 	}
+
+	MessageHandler handler;
 
 	String text;
 	String msgname;
@@ -50,29 +53,46 @@ class MessageBase : Thinker
 	double alpha;
 	int ticker;
 
-	static MessageBase Init(Actor mo, String text, int intime, int outtime, class<MessageBase> type = "MessageBase")
+	// How far the message extends into the screen.  Negative value means bottom of screen.
+	ui double protrusion;
+
+	static MessageBase Init(Actor mo, String text, int intime, int outtime, class<MessageBase> type = "MessageBase", int flags = 0)
 	{
-		let handler = MessageHandler(EventHandler.Find("MessageHandler"));
+		let handler = MessageHandler.Get();
 		if (!handler) { return null; }
 
-		MessageBase msg = MessageBase(New(type));
+		MessageBase msg;
+
+		if (flags & MSG_ALLOWREPLACE)
+		{
+			// If a message with this name already exists, allow replacing it.
+			// Reset the ticker and  set the fade-in time to zero.
+			msg = handler.FindMessage(text);
+			if (msg)
+			{
+				msg.ticker = 0;
+				intime = 0;
+			}
+		}
+
+		if (!msg)
+		{
+			msg = MessageBase(New(type));
+			handler.messages.Push(msg);
+		}
+
+		msg.handler = handler;
 		msg.text = text;
 		msg.time = ZScriptTools.GetMessageTime(text) + intime + outtime;
 		msg.intime = intime;
 		msg.outtime = outtime;
+		msg.flags = flags;
 
 		PlayerInfo player;
-		if (mo && mo.player)
-		{
-			player = mo.player;
-		}
-		else
-		{
-			player = players[consoleplayer];
-		}
+		if (mo && mo.player) { player = mo.player; }
+		else { player = players[consoleplayer]; }
 		msg.player = player;
 
-		handler.messages.Push(msg);
 		if (handler.types.Find(type) == handler.types.Size()) { handler.types.Push(type); } // Add this type of message to the handler if it wasn't already aware of it
 
 		return msg;
@@ -83,11 +103,32 @@ class MessageBase : Thinker
 	{
 		ticker++;
 
-		if (ticker < intime) { alpha = ticker / double(intime); }
-		else if (ticker > time - outtime) { alpha = (time - ticker) / double(outtime); }
+		if (intime > 0 && ticker < intime) { alpha = ticker / double(intime); }
+		else if (ticker > time - outtime)
+		{
+			if (outtime > 0) { alpha = (time - ticker) / double(outtime); }
+			else { alpha = 0.0; }
+		}
 		else { alpha = 1.0; }
 
 		alpha = clamp(alpha, 0.0, 1.0);
+	}
+
+	// Stop drawing the message with a specific name (normally the message text value)
+	static void Clear(String msgname, int outtime = 0)
+	{
+		if (!msgname.length()) { return; }
+
+		let handler = MessageHandler.Get();
+		if (!handler) { return; }
+
+		MessageBase msg = handler.FindMessage(msgname);
+		if (msg)
+		{
+			// Set up the message to fade immediately with the passed in outtime in tics
+			msg.outtime = outtime;
+			msg.time = msg.ticker + outtime;
+		}
 	}
 
 	// Code to run at start of message fade-in
@@ -96,8 +137,11 @@ class MessageBase : Thinker
 	// Code to run at end of message fade-out
 	virtual void End() {}
 
+	// Return the duration of the message in tics; modified in other classes to accomodate type-on speed
+	virtual int GetTime() { return time; }
+
 	// Draw the message
-	virtual ui void DrawMessage() {}
+	virtual ui double DrawMessage() { return 0; }
 }
 
 // Standard top-of-screen NPC message
@@ -105,6 +149,7 @@ class Message : MessageBase
 {
 	ui int msgwidth, barwidth;
 	String icon;
+	double typespeed;
 
 	static int Init(Actor mo, String icon, String text, int intime = 35, int outtime = 35)
 	{
@@ -114,7 +159,7 @@ class Message : MessageBase
 			msg.msgname = icon; // Set the name to the icon string so that messages with the same icon don't fade in between
 			msg.icon = icon;
 		}
-		return msg.time;
+		return msg.GetTime();
 	}
 
 	override void Start()
@@ -130,7 +175,12 @@ class Message : MessageBase
 		player.mo.SetInventory("IncomingMessage", 0);
 	}
 
-	override void DrawMessage()
+	override int GetTime()
+	{
+		return int(time / (typespeed > 0 ? typespeed : 1.0));
+	}
+
+	override double DrawMessage()
 	{
 		if (flags & MSG_FULLSCREEN)
 		{
@@ -157,6 +207,8 @@ class Message : MessageBase
 		if (flags & MSG_NOFADEIN && ticker < 35) { staticalpha = 1.0; }
 		else if (flags & MSG_NOFADEOUT && ticker > time - 35) { staticalpha = 1.0; }
 
+		int typeticks = int((ticker - 35) * (typespeed > 0 ? typespeed : 1.0));
+
 		if (flags & MSG_FULLSCREEN)
 		{
 			String brokentext;
@@ -168,7 +220,7 @@ class Message : MessageBase
 			Vector2 size = (0, 0);
 
 			int x = int(Screen.GetWidth() / hudscale.x / 2 - barwidth / 2); // Position scaled relative to screen center
-			int y = 8;
+			int y = int(8 + handler.topoffset * Screen.GetHeight() / hudscale.y);
 			int margin = 8;
 
 			if (headtex) { size = TexMan.GetScaledSize(headtex) * 1.25; }
@@ -191,13 +243,17 @@ class Message : MessageBase
 
 			if (ticker > 35 && text.length())
 			{
-				ZScriptTools.TypeString(SmallFont, text, msgwidth, (x, y), ticker - 35, hudscale.y, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP);
+				ZScriptTools.TypeString(SmallFont, text, msgwidth, (x, y), typeticks, hudscale.y, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP);
 			}
+
+			protrusion = (y + boxheight) / (Screen.GetHeight() / hudscale.y);
 		}
 		else
 		{
-			Vector2 bgpos = (160.0, 24.0);
-			Vector2 headpos = (21.0, 16.0);
+			double y = handler.topoffset * 200;
+
+			Vector2 bgpos = (160.0, y + 24.0);
+			Vector2 headpos = (21.0, y + 16.0);
 
 			bgtex = TexMan.CheckForTexture("HEADBAR");
 			ovltex = TexMan.CheckForTexture("HEADBOVL");
@@ -206,11 +262,17 @@ class Message : MessageBase
 			if (headtex) { screen.DrawTexture(headtex, true, headpos.x, headpos.y, DTA_320x200, true, DTA_CenterOffset, true, DTA_Alpha, staticalpha); }
 			if (ovltex) { screen.DrawTexture(ovltex, true, bgpos.x, bgpos.y, DTA_320x200, true, DTA_CenterOffset, true, DTA_Alpha, staticalpha); }
 
+			y = handler.topoffset * destsize.y;
+
 			if (ticker > 35 && text.length())
 			{
-				ZScriptTools.TypeString(SmallFont, text, msgwidth, (100.0, 4.0), ticker - 35, 1.0, alpha, destsize, ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP | ZScriptTools.STR_FIXED);
+				ZScriptTools.TypeString(SmallFont, text, msgwidth, (100.0, y + 4.0), typeticks, 1.0, alpha, destsize, ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP | ZScriptTools.STR_FIXED);
 			}
+
+			protrusion = y + 32.0 / 200;
 		}
+
+		return protrusion;
 	}
 }
 
@@ -218,8 +280,6 @@ class Message : MessageBase
 // can also be replaced.
 class BriefingMessage : Message
 {
-	bool shouldEnd;
-
 	static int Init(Actor mo, String icon, String text, int intime = 35, int outtime = 35)
 	{
 		BriefingMessage msg = BriefingMessage(MessageBase.Init(mo, text, intime, outtime, "BriefingMessage"));
@@ -228,13 +288,15 @@ class BriefingMessage : Message
 			msg.msgname = icon;
 			msg.icon = icon;
 			msg.time = 2147483647;
+			msg.typespeed = 2.0;
 		}
-		return msg.time;
+
+		return msg.GetTime();
 	}
 
 	static BriefingMessage Get()
 	{
-		MessageHandler handler = MessageHandler(EventHandler.Find("MessageHandler"));
+		let handler = MessageHandler.Get();
 		MessageBase msg = handler.NextMessage("BriefingMessage");
 		if (msg)
 		{
@@ -248,73 +310,33 @@ class BriefingMessage : Message
 	{
 		BriefingMessage msg = BriefingMessage.Get();
 		if (!msg) { return; }
-		msg.shouldEnd = end;
-		if (end)
-		{
-			msg.time = msg.ticker + msg.outtime;
-		}
+
+		msg.time = msg.ticker;
+		msg.outtime = 0;
 	}
 
 	// Set the entry to use for the message text
-	static void SetEntry(String entry)
+	static int SetEntry(String entry)
 	{
 		BriefingMessage msg = BriefingMessage.Get();
-		if (!msg) { return; }
+		if (!msg) { return 0; }
 		msg.text = entry;
 		// Start typing the new text from the beginning, rather than having it appear all at once.
 		msg.ticker = 35;
+
+		return msg.GetTime();
 	}
 
 	override void Start()
 	{
-		// Console.Printf("BriefingMessage start");
 		player.mo.SetInventory("IncomingMessage", 1);
 
 		time = max(time, ZScriptTools.PlaySound(player.mo, text));
 	}
 
-	/*
-	override void End()
+	override int GetTime()
 	{
-		Console.Printf("BriefingMessage end");
-		Super.End();
-	}
-	*/
-
-	// Slightly modified from MessageBase.DoTick to account for the "end" variable
-	override void DoTick()
-	{
-		ticker++;
-		if (!shouldEnd)
-		{
-			ticker++;
-			time = ticker + intime + outtime;
-		}
-		if (ticker < intime)
-		{
-			if (intime > 0)
-			{
-				alpha = ticker / double(intime);
-			}
-			else
-			{
-				alpha = 1.0;
-			}
-		}
-		else if (ticker > time - outtime)
-		{
-			if (outtime > 0)
-			{
-				alpha = (time - ticker) / double(outtime);
-			}
-			else
-			{
-				alpha = 0.0;
-			}
-		}
-		else { alpha = 1.0; }
-
-		// alpha = clamp(alpha, 0.0, 1.0);
+		return int(ZScriptTools.GetMessageTime(text) / (typespeed > 0 ? typespeed : 1.0));
 	}
 }
 
@@ -332,104 +354,52 @@ class FadeIconMessage : Message
 			msg.icon = icon;
 			msg.icon2 = icon2;
 		}
-		return msg.time;
+		return msg.GetTime();
 	}
 
-	override void DrawMessage()
+	override double DrawMessage()
 	{
-		if (flags & MSG_FULLSCREEN)
-		{
-			Vector2 hudscale = StatusBar.GetHUDScale();
-			barwidth = int(min(Screen.GetHeight() / hudscale.y, Screen.GetWidth() / hudscale.x - 240));
-			msgwidth = barwidth - 64;
-		}
-		else { msgwidth = 540; }
+		double protrusion = Super.DrawMessage();
 
-		Vector2 destsize = (640, 400);
-		TextureID bgtex, ovltex, headtex, headtex2;
+		TextureID ovltex, headtex2;
 
-		if (ticker > 35 && ticker < time * 0.75) // Talk once faded in and through 3/4 of display time
-		{
-			headtex = TexMan.CheckForTexture(icon .. "1"); // ANIMDEFS-defined talking head
-			headtex2 = TexMan.CheckForTexture(icon2 .. "!");
-		}
-
-		if (!headtex.IsValid()) // Fall back to static face if not currently animated (or animated face not found)
-		{
-			headtex = TexMan.CheckForTexture(icon .. "0"); // Static head
-		}
-		if (!headtex2.IsValid())
-		{
-			headtex2 = TexMan.CheckForTexture(icon2 .. "0");
-		}
+		if (ticker > 35 && ticker < time * 0.75) { headtex2 = TexMan.CheckForTexture(icon2 .. "!"); }
+		if (!headtex2.IsValid()) { headtex2 = TexMan.CheckForTexture(icon2 .. "0"); }
 
 		double staticalpha = alpha;
-		double headalpha = staticalpha;
+		if (flags & MSG_NOFADEIN && ticker < 35) { staticalpha = 1.0; }
+		else if (flags & MSG_NOFADEOUT && ticker > time - 35) { staticalpha = 1.0; }
+
 		double head2alpha = ticker / double(time - outtime);
-		if (flags & MSG_NOFADEIN && ticker < intime) { staticalpha = 1.0; }
-		else if (flags & MSG_NOFADEOUT && ticker > time - outtime) { staticalpha = 1.0; }
-		if (ticker > time - outtime) { headalpha = 0.0; head2alpha = alpha; }
+		if (ticker > time - outtime) { head2alpha = alpha; }
 
 		if (flags & MSG_FULLSCREEN)
 		{
-			String brokentext;
-			BrokenString lines;
-			[brokentext, lines] = BrokenString.BreakString(StringTable.Localize(text, false), msgwidth, false, "C");
-			int lineheight = int(SmallFont.GetHeight());
-
 			Vector2 hudscale = StatusBar.GetHUDScale();
-			Vector2 size = (0, 0);
-
 			int x = int(Screen.GetWidth() / hudscale.x / 2 - barwidth / 2); // Position scaled relative to screen center
-			int y = 8;
+			int y = int(8 + handler.topoffset * Screen.GetHeight() / hudscale.y);
 			int margin = 8;
-
-			if (headtex) { size = TexMan.GetScaledSize(headtex) * 1.25; }
-
-			double boxheight = lines.Count() * lineheight + margin * 2;
-			boxheight = max(boxheight, size.y + margin);
-			boxheight += margin;
-
-			DrawToHUD.DrawFrame("FRAME_", x, y, msgwidth + size.x + margin * 4, boxheight, 0x1b1b1b, 1.0 * staticalpha, 0.5 * staticalpha);
 
 			y += margin;
 
-			if (headtex)
-			{
-				DrawToHUD.DrawFrame("INSET_", x + margin, y, size.x, size.y - 2, 0x404040, 0.5 * staticalpha);
-				DrawToHUD.DrawTexture(headtex, (x + margin, y), headalpha, 1.25, centered:false);
-				
-			}
 			if (headtex2)
 			{
 				DrawToHUD.DrawTexture(headtex2, (x + margin, y), head2alpha, 1.25, centered:false);
 			}
-
-			x += size.x ? int(size.x + margin * 2) : 0;
-
-			if (ticker > 35 && text.length())
-			{
-				ZScriptTools.TypeString(SmallFont, text, msgwidth, (x, y), ticker - 35, hudscale.y, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP);
-			}
 		}
 		else
 		{
-			Vector2 bgpos = (160.0, 24.0);
-			Vector2 headpos = (21.0, 16.0);
+			double y = handler.topoffset * 200;
+			Vector2 headpos = (21.0, y + 16.0);
+			Vector2 bgpos = (160.0, y + 24.0);
 
-			bgtex = TexMan.CheckForTexture("HEADBAR");
 			ovltex = TexMan.CheckForTexture("HEADBOVL");
 
-			if (bgtex) { screen.DrawTexture(bgtex, true, bgpos.x, bgpos.y, DTA_320x200, true, DTA_CenterOffset, true, DTA_Alpha, staticalpha); }
-			if (headtex) { screen.DrawTexture(headtex, true, headpos.x, headpos.y, DTA_320x200, true, DTA_CenterOffset, true, DTA_Alpha, headalpha); }
 			if (headtex2) { screen.DrawTexture(headtex2, true, headpos.x, headpos.y, DTA_320x200, true, DTA_CenterOffset, true, DTA_Alpha, head2alpha); }
 			if (ovltex) { screen.DrawTexture(ovltex, true, bgpos.x, bgpos.y, DTA_320x200, true, DTA_CenterOffset, true, DTA_Alpha, staticalpha); }
-
-			if (ticker > 35 && text.length())
-			{
-				ZScriptTools.TypeString(SmallFont, text, msgwidth, (100.0, 4.0), ticker - 35, 1.0, alpha, destsize, ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP | ZScriptTools.STR_FIXED);
-			}
 		}
+
+		return protrusion;
 	}
 }
 
@@ -443,7 +413,7 @@ class HintMessage : MessageBase
 	{
 		HintMessage msg = HintMessage(MessageBase.Init(mo, text, 20, 20, "HintMessage"));
 		if (msg) { msg.key = key; }
-		return msg.time;
+		return msg.GetTime();
 	}
 
 	override void Start()
@@ -451,7 +421,7 @@ class HintMessage : MessageBase
 		player.mo.A_StartSound("menu/change", CHAN_AUTO, CHANF_LOCAL, 0.75);
 	}
 
-	override void DrawMessage()
+	override double DrawMessage()
 	{
 		String brokentext;
 		BrokenString lines;
@@ -478,12 +448,12 @@ class HintMessage : MessageBase
 		Vector2 destsize = (640, 480);
 		double posx, posy;
 		
-		if (flags & MSG_FULLSCREEN)
+		if (flags & MSG_FULLSCREEN && screenblocks > 10)
 		{
 			Vector2 hudscale = StatusBar.GetHUDScale();
 
 			posx = Screen.GetWidth() / hudscale.x / 2;
-			posy = Screen.GetHeight() / hudscale.y;
+			posy = Screen.GetHeight() / hudscale.y - handler.bottomoffset * Screen.GetHeight() / hudscale.y;
 
 			if (player.mo.FindInventory("CutsceneEnabled"))
 			{
@@ -494,13 +464,13 @@ class HintMessage : MessageBase
 			{
 				posy -= 8 * Screen.GetHeight() / hudscale.y / destsize.y;
 
-				Vector2 hudscale = StatusBar.GetHUDScale();
-
 				ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2);
 				if (StealthBase(it.Next())) { posy -= 32.0; }
 
 				posy -= texth;
 			}
+
+			protrusion = -(1.0 - posy * hudscale.y / Screen.GetHeight());
 
 			for (int l = 0; l <= lines.Count(); l++)
 			{
@@ -512,7 +482,7 @@ class HintMessage : MessageBase
 		{
 			double uiscale = BoAStatusBar.GetUIScale(st_scale);
 			posx = destsize.x / 2;
-			posy = destsize.y * StatusBar.GetTopOfStatusBar() / Screen.GetHeight() - 8.0 * uiscale;
+			posy = destsize.y * StatusBar.GetTopOfStatusBar() / Screen.GetHeight() - 8.0 * uiscale - handler.bottomoffset *destsize.y;
 		
 			if (!player.mo.FindInventory("CutsceneEnabled"))
 			{
@@ -522,12 +492,16 @@ class HintMessage : MessageBase
 
 			posy -= texth;
 
+			protrusion = -(1.0 - posy / destsize.y);
+
 			for (int l = 0; l <= lines.Count(); l++)
 			{
 				screen.DrawText(SmallFont, Font.CR_GRAY, posx - lines.StringWidth(l) / 2, posy, lines.StringAt(l), DTA_VirtualWidth, int(destsize.x), DTA_VirtualHeight, int(destsize.y), DTA_Alpha, alpha);
 				posy += lineheight;
 			}
 		}
+
+		return protrusion;
 	}
 }
 
@@ -537,12 +511,9 @@ class ObjectiveMessage : MessageBase
 	double posx, posy;
 	Vector2 destsize;
 
-	static int Init(Actor mo, String text, String image = "", String snd = "", double posx = 400, double posy = 135, Vector2 destsize = (800, 600))
+	static int Init(Actor mo, String text, String image = "", String snd = "", int time = 0, bool hidetext = false, double posx = 400, double posy = 135, Vector2 destsize = (800, 600))
 	{
-		let handler = MessageHandler(EventHandler.Find("MessageHandler"));
-		if (!handler) { return 0; }
-
-		ObjectiveMessage msg = ObjectiveMessage(MessageBase.Init(mo, text, 18, 18, "ObjectiveMessage"));
+		ObjectiveMessage msg = ObjectiveMessage(MessageBase.Init(mo, text, 18, 18, "ObjectiveMessage", MSG_ALLOWREPLACE));
 		msg.msgname = text;
 		msg.image = image;
 		msg.snd = snd;
@@ -550,7 +521,12 @@ class ObjectiveMessage : MessageBase
 		msg.posy = posy;
 		msg.destsize = destsize;
 
-		return msg.time;
+		if (hidetext) { msg.text = ""; }
+
+		if (time > 0) { msg.time = time; }
+		else if (time < 0) { msg.time = 0x7FFFFFFF; }
+
+		return msg.GetTime();
 	}
 
 	override void Start()
@@ -558,20 +534,28 @@ class ObjectiveMessage : MessageBase
 		player.mo.A_StartSound(snd, CHAN_AUTO, CHANF_DEFAULT, 0.45);
 	}
 
-	override void DrawMessage()
+	override double DrawMessage()
 	{
 		TextureID tex = TexMan.CheckForTexture(image);
 		String msgstr = StringTable.Localize(text, false);
 
+		Vector2 hudscale = StatusBar.GetHUDScale();
+		double x = posx / destsize.x * Screen.GetWidth() / hudscale.x;
+		double y = posy / destsize.y * Screen.GetHeight() / hudscale.y;
+
 		if (tex.IsValid())
 		{
-			screen.DrawTexture(tex, true, posx, posy, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_CenterOffset, true, DTA_Alpha, alpha);
+//			screen.DrawTexture(tex, true, posx, posy, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_CenterOffset, true, DTA_Alpha, alpha);
+			screen.DrawTexture(tex, true, x, y, DTA_CenterOffset, true, DTA_Alpha, alpha);
 		}
 
 		if (msgstr.length())
 		{
-			screen.DrawText(SmallFont, Font.CR_GRAY, posx - SmallFont.StringWidth(msgstr) / 2, posy - SmallFont.GetHeight() / 2, msgstr, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_Alpha, alpha);
+//			screen.DrawText(SmallFont, Font.CR_GRAY, posx - SmallFont.StringWidth(msgstr) / 2, posy - SmallFont.GetHeight() / 2, msgstr, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_Alpha, alpha);
+			screen.DrawText(SmallFont, Font.CR_GRAY, x - SmallFont.StringWidth(msgstr) / 2, y - SmallFont.GetHeight() / 2, msgstr, DTA_Alpha, alpha);
 		}
+
+		return 0;
 	}
 }
 
@@ -579,6 +563,7 @@ class ObjectiveMessage : MessageBase
 class DevCommentary : MessageBase
 {
 	ui int msgwidth, barwidth;
+	double typespeed;
 	String image;
 
 	static int Init(Actor mo, String text, int intime = 18, int outtime = 18)
@@ -594,10 +579,15 @@ class DevCommentary : MessageBase
 
 		if (msg && input.Size() > 1) { msg.image = input[1]; }
 
-		return msg.time;
+		return msg.GetTime();
 	}
 
-	override void DrawMessage()
+	override int GetTime()
+	{
+		return int(time / (typespeed > 0 ? typespeed : 1.0));
+	}
+
+	override double DrawMessage()
 	{
 		if (flags & MSG_FULLSCREEN)
 		{
@@ -638,20 +628,22 @@ class DevCommentary : MessageBase
 		int margin = 4;
 		int y;
 
-		if (flags & MSG_FULLSCREEN)
+		if (flags & MSG_FULLSCREEN && screenblocks > 10)
 		{
-			y = int(Screen.GetHeight() / hudscale.y);
+			y = int(Screen.GetHeight() / hudscale.y - handler.bottomoffset * Screen.GetHeight() / hudscale.y);
 
 			if (player.mo.FindInventory("CutsceneEnabled")) { y -= int(64 * Screen.GetHeight() / hudscale.y / destsize.y); }
 			else { y -= int(16 * Screen.GetHeight() / hudscale.y / destsize.y); }
 		}
-		else { y = StatusBar.GetTopOfStatusBar() - 32; }
+		else { y = int(StatusBar.GetTopOfStatusBar() - 32 - handler.bottomoffset * destsize.y); }
 
 		double boxheight = lines.Count() * lineheight + margin;
 		boxheight = max(boxheight, size.y + margin);
 		boxheight += margin;
 
 		y -= int(boxheight);
+
+		protrusion = -(1.0 - (y - margin) * hudscale.y / Screen.GetHeight());
 
 		DrawToHUD.DrawFrame("DEV_", x, y, msgwidth + size.x + margin * 4, boxheight, 0x11273c, 1.0 * alpha, 0.8 * alpha);
 
@@ -665,6 +657,8 @@ class DevCommentary : MessageBase
 			if (title.length()) { ZScriptTools.TypeString(SmallFont, title, msgwidth, (x, y), int((ticker - 35) * 1.5), hudscale.y, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP); }
 			if (brokentext.length()) { ZScriptTools.TypeString(SmallFont, brokentext, msgwidth, (bodyx, y + lineheight * 2 + 4), int((ticker - 35) * 1.5), hudscale.y, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP); }
 		}
+
+		return protrusion;
 	}
 }
 
@@ -673,7 +667,16 @@ class DevCommentary : MessageBase
 class MessageHandler : EventHandler
 {
 	Array<MessageBase> messages; // Track all queued messages
-	Array<class<MessageBase> > types; // Track each unique type of message.  Classes are added here in MEssageBase.Init
+	Array<class<MessageBase> > types; // Track each unique type of message.  Classes are added here in MessageBase.Init
+
+	ui double topoffset, bottomoffset;
+
+	// Retrieve the message handler
+	static MessageHandler Get()
+	{
+		MessageHandler handler = MessageHandler(EventHandler.Find("MessageHandler"));
+		return handler;
+	}
 
 	override void WorldTick()
 	{
@@ -782,6 +785,10 @@ class MessageHandler : EventHandler
 	{
 		if (screenblocks > 11) { return; } // Don't show messages when no hud is visible (screenblocks 12)
 
+		// These are recalculated cumulatively every tick
+		topoffset = 0;
+		bottomoffset = 0;
+
 		for (int a = 0; a < messages.Size(); a++)
 		{
 			let m = messages[a];
@@ -792,7 +799,10 @@ class MessageHandler : EventHandler
 				e.camera && e.camera == m.player.camera // and that belong to the viewing player
 			)
 			{
-				m.DrawMessage(); // Call each message's internal drawing function
+				double protrusion = m.DrawMessage(); // Call each message's internal drawing function
+
+				if (protrusion < 0) { bottomoffset += -protrusion; }
+				else if (protrusion > 0) { topoffset += protrusion; }
 			}
 		}
 	}
