@@ -382,6 +382,16 @@ class DialogueIcon : DialogueComponent
 	// Frames are roughly: 0 - mouth closed, 1 - mouth open narrow, 2 - mouth open normal, 3 - mouth open wide, 4 - mouth open with teeth
 	String Animate(String input, String image)
 	{
+		int lastchar = image.ByteAt(min(image.length(), 7));
+		if (lastChar < 48 || lastChar > 57) { return image; }
+
+		String imagebase = image.Left(min(image.length(), 7));
+		if (tic < input.Length() * 4) { return imagebase .. "1"; } // Use the frame that's defined in ANIMDEFS
+		return imagebase .. "0";
+
+// This needs to be reworked if we want to keep it.  
+// For one, it's overkill, and two, it's not Unicode aware, and only really works for English.
+/*
 		int animduration = 4; //tics
 
 		int lastchar = image.CharCodeAt(image.Length() - 1);
@@ -508,12 +518,13 @@ class DialogueIcon : DialogueComponent
 
 			if (character > 128)
 			{
-				frame = Random(0, 4);
+				frame = 1;
 			}
 		}
 
 		if ((TexMan.CheckForTexture(imagebase .. frame, TexMan.Type_MiscPatch)).isValid()) { return imagebase .. frame; }
 		return image;
+*/
 	}
 
 	int UCase(int input)
