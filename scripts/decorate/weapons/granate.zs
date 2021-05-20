@@ -69,6 +69,8 @@ class GrenadePickup : IntervalUseItem
 			icon = TexMan.CheckForTexture("ASGNB0");
 		}
 		else { icon = Default.icon; }
+
+		Super.Tick();
 	}
 }
 
