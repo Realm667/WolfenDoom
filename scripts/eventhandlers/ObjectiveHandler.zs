@@ -3,7 +3,7 @@ class Objective : Thinker
 	String text;
 	int order;
 	bool secondary, complete;
-	Font Symbols;
+	transient Font Symbols;
 
 	// This is how to set up objectives directly via ZSCript calls:
 	//  ACS: ScriptCall("Objective", "Add", text, num, false, false, true);
