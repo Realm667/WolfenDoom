@@ -27,7 +27,10 @@ class MessageLogHandler : EventHandler
 
 	override void OnRegister()
 	{
-		images = Dictionary.Create();
+		if (!images)
+		{
+			images = Dictionary.Create();
+		}
 	}
 
 	static void Add(String message, String image = "")
