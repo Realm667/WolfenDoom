@@ -325,6 +325,7 @@ class MineCartEMoving : ModelBase
 		+NOTAUTOAIMED
 		+SHOOTABLE
 		+SOLID
+		+CullActorBase.DONTCULL
 
 		DistanceCheck "boa_scenelod";
 		Radius 34;
