@@ -20,7 +20,7 @@
  * SOFTWARE.
 **/
 
-class MessageLogHandler : StaticEventHandler
+class MessageLogHandler : EventHandler
 {
 	Array<String> messages;
 	Dictionary images; // In case a message should have an image appear beside it
@@ -32,7 +32,7 @@ class MessageLogHandler : StaticEventHandler
 
 	static void Add(String message, String image = "")
 	{
-		MessageLogHandler handler = MessageLogHandler(StaticEventHandler.Find("MessageLogHandler"));
+		MessageLogHandler handler = MessageLogHandler(EventHandler.Find("MessageLogHandler"));
 		if (!handler) { return; }
 		handler.messages.Push(message);
 		if (image.Length())
@@ -61,7 +61,7 @@ class MessageLogMenu : GenericMenu
 		msgWidth = min(Screen.GetWidth(), Screen.GetWidth() * (4./3) / Screen.GetAspectRatio()) - 20;
 		// How many lines, at most, should be displayed?
 		maxLines = int(floor(Screen.GetHeight() * .875 / (smallfont.GetHeight() * CleanYFac_1)));
-		MessageLogHandler log = MessageLogHandler(StaticEventHandler.Find("MessageLogHandler"));
+		MessageLogHandler log = MessageLogHandler(EventHandler.Find("MessageLogHandler"));
 		if (!log) { return; }
 		// Add all of the messages from the log handler to the "menu"
 		for(int i = 0; i < log.messages.Size(); i++)
@@ -102,7 +102,7 @@ class MessageLogMenu : GenericMenu
 		// Break text into lines
 		BrokenString breakInfo;
 		String textLines;
-		[textLines, breakInfo] = BrokenString.BreakString(fulltext, (msgWidth - imageWidth * CleanXFac_1) / CleanXFac_1, fnt: smallfont);
+		[textLines, breakInfo] = BrokenString.BreakString(fulltext, (msgWidth - (imageWidth ? 6 : 0) - imageWidth * CleanXFac_1) / CleanXFac_1, fnt: smallfont);
 		// Add lines
 		int firstLineNumber = lines.Size();
 		if (firstLineNumber)
@@ -115,7 +115,7 @@ class MessageLogMenu : GenericMenu
 		for (int i = 0; i <= breakInfo.Count(); i++)
 		{
 			lines.Push(breakInfo.StringAt(i));
-			xoffsets.Push(imageWidth);
+			xoffsets.Push(imageWidth ? imageWidth + 6 : 0);
 		}
 		if (imageWidth)
 		{
