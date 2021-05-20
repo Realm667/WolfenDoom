@@ -289,7 +289,7 @@ class Message : MessageBase
 				ZScriptTools.TypeString(SmallFont, fulltext, msgwidth, (100.0, y + 4.0), typeticks, 1.0, alpha, destsize, ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP | ZScriptTools.STR_FIXED);
 			}
 
-			protrusion = y + 32.0 / 200;
+			protrusion = handler.topoffset + 32.0 / 200;
 		}
 
 		return protrusion;
@@ -547,8 +547,15 @@ class ObjectiveMessage : MessageBase
 	String image, snd;
 	double posx, posy;
 	Vector2 destsize;
+	int objflags;
 
-	static int Init(Actor mo, String text, String image = "", String snd = "", int time = 0, bool hidetext = false, double posx = 400, double posy = 135, Vector2 destsize = (800, 600))
+	enum MessageFlags
+	{
+		OBJ_DEFAULT = 0,
+		OBJ_HIDETEXT = 1
+	}
+
+	static int Init(Actor mo, String text, String image = "", String snd = "", int time = 0, int objflags = 0, double posx = 400, double posy = 135, Vector2 destsize = (800, 600))
 	{
 		ObjectiveMessage msg = ObjectiveMessage(MessageBase.Init(mo, text, 18, 18, "ObjectiveMessage", MSG_ALLOWREPLACE));
 		msg.msgname = text;
@@ -558,10 +565,12 @@ class ObjectiveMessage : MessageBase
 		msg.posy = posy;
 		msg.destsize = destsize;
 
-		if (hidetext) { msg.text = ""; }
+		if (objflags & OBJ_HIDETEXT) { msg.text = ""; }
 
 		if (time > 0) { msg.time = time; }
 		else if (time < 0) { msg.time = 0x7FFFFFFF; }
+
+		msg.objflags = objflags;
 
 		return msg.GetTime();
 	}
@@ -713,6 +722,15 @@ class MessageHandler : EventHandler
 		return handler;
 	}
 
+	ui static double GetOffset(int which = 0) // 0 = top, 1 = bottom
+	{
+		MessageHandler handler = MessageHandler(EventHandler.Find("MessageHandler"));
+		if (!handler) { return 0; }
+
+		if (which == 1) { return handler.bottomoffset; }
+		return handler.topoffset;
+	}
+
 	override void WorldTick()
 	{
 		if (!messages.Size()) { return; }
@@ -836,8 +854,8 @@ class MessageHandler : EventHandler
 			{
 				double protrusion = m.DrawMessage(); // Call each message's internal drawing function
 
-				if (protrusion < 0) { bottomoffset += -protrusion; }
-				else if (protrusion > 0) { topoffset += protrusion; }
+				if (protrusion < 0 && -protrusion > bottomoffset) { bottomoffset = -protrusion; }
+				else if (protrusion > 0 && protrusion > topoffset) { topoffset = protrusion; }
 			}
 		}
 	}

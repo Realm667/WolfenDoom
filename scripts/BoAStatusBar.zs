@@ -338,7 +338,6 @@ class BoAStatusBar : BaseStatusBar
 
 		//Ammo
 		DrawString(mHUDFont, FormatNumber(GetAmount("Ammo9mm"), 3), (284, 172), DI_TEXT_ALIGN_RIGHT);
-		DrawString(mHUDFont, FormatNumber(GetAmount("Ammo9mm"), 3), (284, 172), DI_TEXT_ALIGN_RIGHT);
 		DrawString(mHUDFont, FormatNumber(GetAmount("Ammo12Gauge"), 3), (284, 178), DI_TEXT_ALIGN_RIGHT);
 		DrawString(mHUDFont, FormatNumber(GetAmount("MauserAmmo"), 3), (284, 184), DI_TEXT_ALIGN_RIGHT);
 		DrawString(mHUDFont, FormatNumber(GetAmount("FlameAmmo"), 3), (284, 190), DI_TEXT_ALIGN_RIGHT);
@@ -867,7 +866,9 @@ class BoAStatusBar : BaseStatusBar
 	virtual void DrawHealthBar(String tag, int health, int maxhealth, String icon = "")
 	{
 		int flags = DI_SCREEN_TOP | DI_SCREEN_HCENTER;
-		int basey = 20;
+
+		double screenoffset = MessageHandler.GetOffset();
+		int basey = 16 + (screenoffset > 0 ? int(screenoffset * 300) : 0);
 
 		DrawBarAlpha("HEALTHMX", "HEALTH00", health, maxhealth, (0, basey), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, 1.0 * healthbaralpha);
 		DrawBarAlpha("HEALTH_Y", "", health, maxhealth, (0, basey), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, ((maxhealth - health) / (maxhealth * 0.25)) * healthbaralpha);
