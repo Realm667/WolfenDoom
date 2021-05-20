@@ -109,6 +109,8 @@ class MessageLogMenu : GenericMenu
 		{
 			lines.Push(""); // Private use character - separator graphic in smallfont
 			xoffsets.Push(0);
+			firstLineNumber += 1; // So that images are drawn - the drawer
+			// checks the text line, not the separator line.
 		}
 		for (int i = 0; i <= breakInfo.Count(); i++)
 		{
@@ -118,8 +120,7 @@ class MessageLogMenu : GenericMenu
 		if (imageWidth)
 		{
 			String lineNumString = String.Format("%d", firstLineNumber);
-			String imageString = String.Format("%s", image);
-			images.Insert(lineNumString, imageString);
+			images.Insert(lineNumString, image);
 		}
 	}
 
