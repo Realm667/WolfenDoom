@@ -582,14 +582,12 @@ class ObjectiveMessage : MessageBase
 
 		if (tex.IsValid())
 		{
-//			screen.DrawTexture(tex, true, posx, posy, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_CenterOffset, true, DTA_Alpha, alpha);
-			screen.DrawTexture(tex, true, x, y, DTA_CenterOffset, true, DTA_Alpha, alpha);
+			screen.DrawTexture(tex, true, posx, posy, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_CenterOffset, true, DTA_Alpha, alpha);
 		}
 
 		if (msgstr.length())
 		{
-//			screen.DrawText(SmallFont, Font.CR_GRAY, posx - SmallFont.StringWidth(msgstr) / 2, posy - SmallFont.GetHeight() / 2, msgstr, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_Alpha, alpha);
-			screen.DrawText(SmallFont, Font.CR_GRAY, x - SmallFont.StringWidth(msgstr) / 2, y - SmallFont.GetHeight() / 2, msgstr, DTA_Alpha, alpha);
+			screen.DrawText(SmallFont, Font.CR_GRAY, posx - SmallFont.StringWidth(msgstr) / 2, posy - SmallFont.GetHeight() / 2, msgstr, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_Alpha, alpha);
 		}
 
 		return 0;
