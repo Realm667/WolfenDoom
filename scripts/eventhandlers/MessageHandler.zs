@@ -622,7 +622,7 @@ class DevCommentary : MessageBase
 		DevCommentary msg = DevCommentary(MessageBase.Init(mo, text, intime, outtime, "DevCommentary"));
 
 		if (msg && input.Size() > 1) { msg.image = input[1]; }
-		MessageLogHandler.Add(String.Format("MESSAGELOGTYPE_DEVCOM|%s", text));
+		MessageLogHandler.Add(String.Format("MESSAGELOGTYPE_DEVCOM|%s", text), msg.image);
 		return msg.GetTime();
 	}
 
