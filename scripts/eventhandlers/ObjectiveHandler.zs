@@ -3,6 +3,7 @@ class Objective : Thinker
 	String text;
 	int order;
 	bool secondary, complete;
+	Font Symbols;
 
 	// This is how to set up objectives directly via ZSCript calls:
 	//  ACS: ScriptCall("Objective", "Add", text, num, false, false, true);
@@ -47,6 +48,7 @@ class Objective : Thinker
 		obj.order = order;
 		obj.secondary = secondary;
 		if (complete >= 0) { obj.complete = complete; }
+		obj.Symbols = Font.GetFont("Symbols");
 	}
 
 	static void Completed(String text = "", int order = -1, bool quiet = false)
@@ -71,11 +73,13 @@ class Objective : Thinker
 	ui virtual void DrawObjective(Font fnt, int x, int y, int w = 800, int h = 600, double alpha = 1.0)
 	{
 		// Use unicode check mark characters; print untranslated because the check is green
-		String output = complete ? "☑" .. StringTable.Localize("MO_ICON_ACC", false) : "☐" .. StringTable.Localize("MO_ICON_OPN", false);
+		String status = complete ? "☑" : "☐";
+		String output = complete ? StringTable.Localize("MO_ICON_ACC", false) : StringTable.Localize("MO_ICON_OPN", false);
 
 		output = output .. StringTable.Localize(text, false);
 
-		screen.DrawText(SmallFont, Font.CR_UNTRANSLATED, x, y, output, DTA_VirtualWidthF, w, DTA_VirtualHeightF, h, DTA_Alpha, alpha);
+		screen.DrawText(Symbols, Font.CR_UNTRANSLATED, x, y, status, DTA_VirtualWidthF, w, DTA_VirtualHeightF, h, DTA_Alpha, alpha);
+		screen.DrawText(SmallFont, Font.CR_UNTRANSLATED, x + SmallFont.StringWidth("  "), y, output, DTA_VirtualWidthF, w, DTA_VirtualHeightF, h, DTA_Alpha, alpha);
 	}
 }
 
