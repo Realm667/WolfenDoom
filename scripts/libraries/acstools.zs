@@ -315,6 +315,7 @@ class ACSTools
 			if (actionname ~== "use grenadepickup") { actionname = "$CO_GREN"; }
 			else if (actionname ~== "pukename quickkick") { actionname = "$CO_KICK"; }
 			else if (actionname ~== "pukename boaobjectives") { actionname = "$CO_OBJS"; }
+			else if (actionname ~== "openmenu MessageLogMenu") { actionname = "$CO_MSGL"; }
 			else if (actionname ~== "speed") { actionname = "$CNTRLMNU_RUN"; }
 			else if (actionname ~== "toggle cl_run") { actionname = "$CNTRLMNU_TOGGLERUN"; }
 			else if (actionname ~== "weapnext") { actionname = "$CNTRLMNU_NEXTWEAPON"; }
