@@ -80,12 +80,15 @@ class MessageLogMenu : GenericMenu
 	{
 		// Prepare image
 		int imageWidth = 0;
+		int imageLines = 0;
 		if (image.Length())
 		{
 			TextureID imageTexture = TexMan.CheckForTexture(image);
 			if (imageTexture)
 			{
-				imageWidth = TexMan.GetSize(imageTexture);
+				int imageHeight;
+				[imageWidth, imageHeight] = TexMan.GetSize(imageTexture);
+				imageLines = int(ceil(double(imageHeight) / smallfont.GetHeight()));
 			}
 		}
 		String fulltext = "";
@@ -119,6 +122,14 @@ class MessageLogMenu : GenericMenu
 		{
 			lines.Push(breakInfo.StringAt(i));
 			xoffsets.Push(imageWidth ? imageWidth + 6 : 0);
+		}
+		if ((breakInfo.Count() + 1) < imageLines)
+		{
+			for (int i = (breakInfo.Count() + 1); i <= imageLines; i++)
+			{
+				lines.Push("");
+				xoffsets.Push(0); // Blank lines don't need to have offsets
+			}
 		}
 		if (imageWidth)
 		{
