@@ -216,3 +216,21 @@ class ObjectiveHandler : EventHandler
 		}
 	}
 }
+
+// Since the "Symbols" font is transient, it needs to be set up again after
+// re-loading a saved game. I wish I didn't have to do this.
+class ObjectiveFixer : StaticEventHandler
+{
+	override void WorldLoaded(WorldEvent e)
+	{
+		if (e.IsSaveGame)
+		{
+			ObjectiveHandler handler = ObjectiveHandler(EventHandler.Find("ObjectiveHandler"));
+			if (!handler) { return; }
+			for (int i = 0; i < handler.objectives.Size(); i++)
+			{
+				handler.objectives[i].Symbols = Font.GetFont("Symbols");
+			}
+		}
+	}
+}

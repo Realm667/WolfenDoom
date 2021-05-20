@@ -359,7 +359,7 @@ class BriefingMessage : Message
 		msg.text = entry;
 		// Start typing the new text from the beginning, rather than having it appear all at once.
 		msg.ticker = 35;
-
+		MessageLogHandler.Add(String.Format("%s|%s", msg.charname, msg.text));
 		return msg.GetTime();
 	}
 
