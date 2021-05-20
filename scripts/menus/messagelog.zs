@@ -102,7 +102,7 @@ class MessageLogMenu : GenericMenu
 		// Break text into lines
 		BrokenString breakInfo;
 		String textLines;
-		[textLines, breakInfo] = BrokenString.BreakString(fulltext, (msgWidth - imageWidth) / CleanXFac_1, fnt: smallfont);
+		[textLines, breakInfo] = BrokenString.BreakString(fulltext, (msgWidth - imageWidth * CleanXFac_1) / CleanXFac_1, fnt: smallfont);
 		// Add lines
 		int firstLineNumber = lines.Size();
 		if (firstLineNumber)
