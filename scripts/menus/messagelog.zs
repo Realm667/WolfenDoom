@@ -76,6 +76,13 @@ class MessageLogMenu : GenericMenu
 		minLine = max(0, maxLine - maxLines);
 	}
 
+	// Push to both arrays so that they are the same size
+	protected ui void addLine(String text, int offset = 0)
+	{
+		lines.Push(text);
+		xoffsets.Push(offset);
+	}
+
 	protected ui void addMessage(String message, String image = "")
 	{
 		// Prepare image
@@ -113,22 +120,19 @@ class MessageLogMenu : GenericMenu
 		int firstLineNumber = lines.Size();
 		if (firstLineNumber)
 		{
-			lines.Push(""); // Private use character - separator graphic in smallfont
-			xoffsets.Push(0);
+			addLine(""); // Private use character - separator graphic in smallfont
 			firstLineNumber += 1; // So that images are drawn - the drawer
 			// checks the text line, not the separator line.
 		}
 		for (int i = 0; i <= breakInfo.Count(); i++)
 		{
-			lines.Push(breakInfo.StringAt(i));
-			xoffsets.Push(imageWidth ? imageWidth + 6 : 0);
+			addLine(breakInfo.StringAt(i), imageWidth ? imageWidth + 6 : 0);
 		}
 		if ((breakInfo.Count() + 1) < imageLines)
 		{
 			for (int i = (breakInfo.Count() + 1); i <= imageLines; i++)
 			{
-				lines.Push("");
-				xoffsets.Push(0); // Blank lines don't need to have offsets
+				addLine(""); // Blank lines don't need to have offsets
 			}
 		}
 		if (imageWidth)
