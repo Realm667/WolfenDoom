@@ -68,7 +68,7 @@ class BoAStatusBar : BaseStatusBar
 		// Create the fonts used
 		mBigFont = HUDFont.Create("BIGFONT", 0);
 		mSmallFont = HUDFont.Create("SMALLFONT", 0);
-		mHUDFont = HUDFont.Create("THREEFIV", 1);
+		mHUDFont = HUDFont.Create("THREEFIV", 0);
 		KeenFont = HUDFont.Create("HUDFONT_KEEN", 0);
 		KeenSmallFont = HUDFont.Create("HUDFONT_KEEN_SMALL", 0);
 
