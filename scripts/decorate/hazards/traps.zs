@@ -126,7 +126,7 @@ class BossDagger : Nail
 	Default
 	{
 		Speed 32;
-		DamageFunction (8*random(1,8));
+		DamageFunction (3*random(1,8));
 		Scale 1.0;
 		-BRIGHT
 	}
