@@ -230,6 +230,41 @@ class MessageLogMenu : GenericMenu
 			Screen.DrawText(smallfont, Font.CR_GRAY, xpos, ypos, emptyLogText, DTA_CleanNoMove_1, true);
 		}
 	}
+
+	override bool MenuEvent(int mkey, bool fromcontroller)
+	{
+		bool res = Super.MenuEvent(mkey, fromcontroller);
+		int scale = 1;
+		switch (mkey)
+		{
+		case MKEY_PageUp:
+		case MKEY_PageDown:
+			scale = 10;
+		case MKEY_Up:
+		case MKEY_Down:
+			int direction = (mkey == MKEY_Up || mkey == MKEY_PageUp) ? -1 : 1;
+			return Scroll(direction * scale);
+		}
+		return res;
+	}
+
+	protected bool Scroll(int by)
+	{
+		int maxLine = minLine + maxLines;
+		bool allowMove = lines.Size() > maxLines && (
+			(by > 0 && maxLine < lines.Size()) || // Scroll down
+			(by < 0 && minLine > 0)); // Scroll up
+		if (allowMove)
+		{
+			minLine += by;
+			minLine = clamp(minLine, 0, lines.Size() - maxLines);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
 
 // openmenu MessageLogMenu
