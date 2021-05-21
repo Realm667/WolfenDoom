@@ -304,18 +304,18 @@ class MessageLogMenu : GenericMenu
 		return false;
 	}
 
-	override bool OnInputEvent(InputEvent e)
+	override bool OnUIEvent(UIEvent e)
 	{
 		// Handle mouse wheel
-		switch(e.KeyScan)
+		switch(e.type)
 		{
-		case InputEvent.Key_MWheelUp:
-		case InputEvent.Key_MWheelDown:
-			int direction = InputEvent.Key_MWheelUp ? -1 : 1;
+		case UIEvent.Type_WheelUp:
+		case UIEvent.Type_WheelDown:
+			int direction = (e.type == UIEvent.Type_WheelUp) ? -1 : 1;
 			Scroll(direction * 5);
 			return true;
 		}
-		return false;
+		return Super.OnUIEvent(e);
 	}
 
 	protected int percentToLine(double percent)
