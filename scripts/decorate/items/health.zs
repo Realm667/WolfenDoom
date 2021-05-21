@@ -363,6 +363,21 @@ class FastFood3 : Meal
 	}
 }
 
+class FastFood4 : Meal
+{
+	Default
+	{
+		//$Category Health (BoA)/Fast Food
+		//$Title Pepsi (+5 health)
+		Scale 0.37;
+	}
+	States
+	{
+	Spawn:
+		FFOD D -1;
+		Stop;
+	}
+}
 
 class FastFood5 : Meal
 {
@@ -473,22 +488,6 @@ class FastFood11 : Meal
 	{
 	Spawn:
 		FFOD E -1;
-		Stop;
-	}
-}
-
-class FastFood12 : Meal
-{
-	Default
-	{
-		//$Category Health (BoA)/Fast Food
-		//$Title Pepsi (+5 health)
-		Scale 0.37;
-	}
-	States
-	{
-	Spawn:
-		FFOD D -1;
 		Stop;
 	}
 }
