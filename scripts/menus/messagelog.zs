@@ -276,7 +276,7 @@ class MessageLogMenu : GenericMenu
 			else
 			{
 				double percent = clamp(my - scrollBarY, 0, scrollBarHeight) / double(scrollBarHeight);
-				minLine = percentToLine(percent);
+				SetLine(percentToLine(percent));
 			}
 			return true;
 		}
@@ -287,12 +287,12 @@ class MessageLogMenu : GenericMenu
 				// Clicked on one of the arrows
 				if (my - upArrowY < 32)
 				{
-					minLine = clamp(minLine - 1, 0, lines.Size() - maxLines);
+					SetLine(minLine, -1);
 					return true;
 				}
 				else if (my >= downArrowY && my - downArrowY < 32)
 				{
-					minLine = clamp(minLine + 1, 0, lines.Size() - maxLines);
+					SetLine(minLine, 1);
 					return true;
 				}
 				else
@@ -311,6 +311,11 @@ class MessageLogMenu : GenericMenu
 		return int(floor(maxLine * percent));
 	}
 
+	protected void SetLine(int line, int add = 0)
+	{
+		minLine = clamp(line + add, 0, lines.Size() - maxLines);
+	}
+
 	protected bool Scroll(int by)
 	{
 		int maxLine = minLine + maxLines;
@@ -319,8 +324,7 @@ class MessageLogMenu : GenericMenu
 			(by < 0 && minLine > 0)); // Scroll up
 		if (allowMove)
 		{
-			minLine += by;
-			minLine = clamp(minLine, 0, lines.Size() - maxLines);
+			SetLine(minLine, by);
 			return true;
 		}
 		else
