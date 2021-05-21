@@ -59,6 +59,7 @@ class MessageLogMenu : GenericMenu
 	TextureID scrollBot;
 	TextureID arrowUp;
 	TextureID arrowDown;
+	// bool dragging; // User is dragging the scroll bar?
 
 	override void Init(Menu parent)
 	{
@@ -210,13 +211,14 @@ class MessageLogMenu : GenericMenu
 				// .875. The height of each scrollbar graphic is 32. Two arrows
 				// at the top and bottom make 64.
 				double scrollBarHeight = Screen.GetHeight() * .875 - 64;
-				double scrollBarPct = double(minLine) / lines.Size();
+				double scrollBarPct = double(minLine) / (lines.Size() - maxLines);
+				double scrollBarYOffset = -scrollBarPct * 64;
 				ypos = ystart + 32 + scrollBarHeight * scrollBarPct;
-				Screen.DrawTexture(scrollTop, false, xpos, ypos);
+				Screen.DrawTexture(scrollTop, false, xpos, ypos + scrollBarYOffset);
 				ypos += 32;
-				Screen.DrawTexture(scrollMid, false, xpos, ypos);
+				Screen.DrawTexture(scrollMid, false, xpos, ypos + scrollBarYOffset);
 				ypos += 32;
-				Screen.DrawTexture(scrollBot, false, xpos, ypos);
+				Screen.DrawTexture(scrollBot, false, xpos, ypos + scrollBarYOffset);
 				// Max height for drawing text, plus height of first line
 				ypos = Screen.GetHeight() * .9375;
 				Screen.DrawTexture(arrowDown, false, xpos, ypos);
@@ -247,6 +249,13 @@ class MessageLogMenu : GenericMenu
 		}
 		return res;
 	}
+
+	/*
+	override bool MouseEvent(int type, int mx, int my)
+	{
+
+	}
+	*/
 
 	protected bool Scroll(int by)
 	{
