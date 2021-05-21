@@ -238,7 +238,6 @@ class MessageLogMenu : GenericMenu
 
 	override bool MenuEvent(int mkey, bool fromcontroller)
 	{
-		// TODO: Handle mouse scroll wheel (how?)
 		bool res = Super.MenuEvent(mkey, fromcontroller);
 		int scale = 1;
 		switch (mkey)
@@ -301,6 +300,20 @@ class MessageLogMenu : GenericMenu
 				}
 				return true;
 			}
+		}
+		return false;
+	}
+
+	override bool OnInputEvent(InputEvent e)
+	{
+		// Handle mouse wheel
+		switch(e.KeyScan)
+		{
+		case InputEvent.Key_MWheelUp:
+		case InputEvent.Key_MWheelDown:
+			int direction = InputEvent.Key_MWheelUp ? -1 : 1;
+			Scroll(direction * 5);
+			return true;
 		}
 		return false;
 	}
