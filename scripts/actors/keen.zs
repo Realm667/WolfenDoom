@@ -887,6 +887,9 @@ class Billy : PowerMorph
 			owner.TakeInventory("BoASprinting", 1);
 			owner.TakeInventory("BoAHeartBeat", 1);
 
+			let pain = owner.FindInventory("PainShaderControl");
+			if (pain) { pain.Destroy(); }
+
 			// Save the standard Doom-style armor values.  Doesn't support Hexen armor.
 			BasicArmor a = BasicArmor(owner.FindInventory("BasicArmor"));
 			if (a)
@@ -1459,7 +1462,7 @@ class CKLick : CKBaseEnemy
 			}
 			CKLC FGFEFGF 2;
 			CKLC F 0 { SetDamage(0); }
-			Goto See; // Original code sent actor back to thirds state (C frame), which is why Spawn and See are split the way they are above.
+			Goto See; // Original code sent actor back to third state (C frame), which is why Spawn and See are split the way they are above.
 	}
 
 	void CK_LickBounce()
@@ -3687,6 +3690,7 @@ class CKConfusion : Actor
 		Height 1;
 		RenderStyle "Translucent";
 		Scale 2.0;
+		+NOGRAVITY
 		-SOLID
 	}
 

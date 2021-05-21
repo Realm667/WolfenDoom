@@ -420,4 +420,13 @@ class PainShaderControl : ShaderControl
 			blendalpha = clamp((DamageToAlpha[clamp(value, 0, 113)] / 255.0) * blood_fade_scalar * alpha, 0.0, 1.0);
 		}
 	}
+
+	override void OnDestroy()
+	{
+		// Automatically disable the shader when the item is removed from a player's inventory
+		if (owner && owner.player)
+		{
+			Shader.SetEnabled(owner.player, shaderToControl, false);
+		}
+	}
 }
