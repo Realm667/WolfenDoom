@@ -386,7 +386,12 @@ class DialogueIcon : DialogueComponent
 		if (lastChar < 48 || lastChar > 57) { return image; }
 
 		String imagebase = image.Left(min(image.length(), 7));
-		if (tic < input.Length() * 4) { return imagebase .. "1"; } // Use the frame that's defined in ANIMDEFS
+		if (tic < input.Length() * 4)
+		{
+			TextureID tex = TexMan.CheckForTexture(imagebase .. "1");
+			if (tex && tex.IsValid()) { return imagebase .. "1"; } // Use the frame that's defined in ANIMDEFS
+		}
+
 		return imagebase .. "0";
 
 // This needs to be reworked if we want to keep it.  
