@@ -25,19 +25,26 @@ class TreeBase : TreesBase
 {
 	Default
 	{
-	Radius 16;
-	Height 128;
+		Radius 16;
+		Height 128;
 	}
+	
 	States
 	{
-	Spawn:
-		MDLA A 0 NODELAY A_JumpIf(boa_bidiswitch==1,"BidiSpawn");
-	TridiSpawn:
-		MDLA A -1 A_3DPitchFix;
-		Stop;
-	BidiSpawn:
-		UNKN A -1 A_2DPitchFix; //fix the pitch, also spawn the UNKN sprite if not set, thanks to inheritances
-		Stop;
+		Spawn:
+			MDLA A -1;
+			Stop;
+		BidiSpawn:
+			UNKN A -1; // spawn the UNKN sprite if not set, thanks to inheritances
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (boa_bidiswitch == 1) { A_2DPitchFix(); }
+		else { A_3DPitchFix(); }
 	}
 }
 
@@ -58,7 +65,7 @@ class Tree1 : TreeBase
 	States
 	{
 	BidiSpawn:
-		DTRE E -1 A_2DPitchFix;
+		DTRE E -1;
 		Stop;
 	}
 }
@@ -75,7 +82,7 @@ class Tree1_Plaza : Tree1
 	States
 	{
 	BidiSpawn:
-		DTRE E -1 A_2DPitchFix;
+		DTRE E -1;
 		Stop;
 	}
 }
@@ -90,7 +97,7 @@ class Tree2 : Tree1
 	States
 	{
 	BidiSpawn:
-		DTRE D -1 A_2DPitchFix;
+		DTRE D -1;
 		Stop;
 	}
 }
@@ -106,7 +113,7 @@ class Tree3 : Tree1
 	States
 	{
 	BidiSpawn:
-		DTRE C -1 A_2DPitchFix;
+		DTRE C -1;
 		Stop;
 	}
 }
@@ -122,7 +129,7 @@ class Tree4 : Tree1
 	States
 	{
 	BidiSpawn:
-		DTRE B -1 A_2DPitchFix;
+		DTRE B -1;
 		Stop;
 	}
 }
@@ -141,7 +148,7 @@ class Palm1 : TreeBase
 	States
 	{
 	BidiSpawn:
-		DTRE I -1 A_2DPitchFix;
+		DTRE I -1;
 		Stop;
 	}
 }
@@ -155,7 +162,7 @@ class Palm2 : Palm1
 	States
 	{
 	BidiSpawn:
-		DTRE J -1 A_2DPitchFix;
+		DTRE J -1;
 		Stop;
 	}
 }
@@ -169,7 +176,7 @@ class Palm3 : Palm1
 	States
 	{
 	BidiSpawn:
-		DTRE K -1 A_2DPitchFix;
+		DTRE K -1;
 		Stop;
 	}
 }
@@ -190,7 +197,7 @@ class Palm1NH : TreeBase //needed for INTERMAP - ozy81
 	States
 	{
 	BidiSpawn:
-		DTRE I -1 A_2DPitchFix;
+		DTRE I -1;
 		Stop;
 	}
 }
@@ -204,7 +211,7 @@ class Palm2NH : Palm1NH
 	States
 	{
 	BidiSpawn:
-		DTRE J -1 A_2DPitchFix;
+		DTRE J -1;
 		Stop;
 	}
 }
@@ -218,7 +225,7 @@ class Palm3NH : Palm1NH
 	States
 	{
 	BidiSpawn:
-		DTRE K -1 A_2DPitchFix;
+		DTRE K -1;
 		Stop;
 	}
 }
@@ -236,7 +243,7 @@ class JungleTree1 : TreeBase
 	States
 	{
 	BidiSpawn:
-		DTRE F -1 A_2DPitchFix;
+		DTRE F -1;
 		Stop;
 	}
 }
@@ -277,7 +284,7 @@ class WinterA : TreeBase
 	States
 	{
 	BidiSpawn:
-		DTRE L -1 A_2DPitchFix;
+		DTRE L -1;
 		Stop;
 	}
 }
@@ -293,7 +300,7 @@ class WinterB : WinterA
 	States
 	{
 	BidiSpawn:
-		DTRE M -1 A_2DPitchFix;
+		DTRE M -1;
 		Stop;
 	}
 }
@@ -308,7 +315,7 @@ class WinterC : WinterA
 	States
 	{
 	BidiSpawn:
-		DTRE O -1 A_2DPitchFix;
+		DTRE O -1;
 		Stop;
 	}
 }
@@ -324,7 +331,7 @@ class WinterD : TreeBase
 	States
 	{
 	BidiSpawn:
-		DTRE P -1 A_2DPitchFix;
+		DTRE P -1;
 		Stop;
 	}
 }
@@ -340,7 +347,7 @@ class WinterE : WinterA
 	States
 	{
 	BidiSpawn:
-		DTRE Q -1 A_2DPitchFix;
+		DTRE Q -1;
 		Stop;
 	}
 }
@@ -356,7 +363,7 @@ class WinterF : WinterA
 	States
 	{
 	BidiSpawn:
-		DTRE R -1 A_2DPitchFix;
+		DTRE R -1;
 		Stop;
 	}
 }
@@ -372,7 +379,7 @@ class WinterG : WinterA
 	States
 	{
 	BidiSpawn:
-		DTRE S -1 A_2DPitchFix;
+		DTRE S -1;
 		Stop;
 	}
 }
@@ -388,7 +395,7 @@ class WinterH : WinterA
 	States
 	{
 	BidiSpawn:
-		DTRE T -1 A_2DPitchFix;
+		DTRE T -1;
 		Stop;
 	}
 }
@@ -404,7 +411,7 @@ class WinterI : WinterA
 	States
 	{
 	BidiSpawn:
-		DTRE U -1 A_2DPitchFix;
+		DTRE U -1;
 		Stop;
 	}
 }
@@ -425,7 +432,7 @@ class SmallTree1 : TreeBase
 	States
 	{
 	BidiSpawn:
-		DTRE A -1 A_2DPitchFix;
+		DTRE A -1;
 		Stop;
 	}
 }
@@ -441,7 +448,7 @@ class SmallTree2 : SmallTree1
 	States
 	{
 	BidiSpawn:
-		DTRE H -1 A_2DPitchFix;
+		DTRE H -1;
 		Stop;
 	}
 }
@@ -459,7 +466,7 @@ class Tree1_Burnt : TreeBase // changes visible only with 3d trees, this actor i
 	States
 	{
 	BidiSpawn:
-		DTRE E -1 A_2DPitchFix;
+		DTRE E -1;
 		Stop;
 	}
 }
@@ -479,7 +486,7 @@ class Tree2_Burnt : TreeBase
 	States
 	{
 	BidiSpawn:
-		DBUR D -1 A_2DPitchFix;
+		DBUR D -1;
 		Stop;
 	}
 }
@@ -496,7 +503,7 @@ class Tree3_Burnt : Tree2_Burnt
 	States
 	{
 	BidiSpawn:
-		DBUR E -1 A_2DPitchFix;
+		DBUR E -1;
 		Stop;
 	}
 }
@@ -512,7 +519,7 @@ class Tree4_Burnt : Tree2_Burnt
 	States
 	{
 	BidiSpawn:
-		DBUR F -1 A_2DPitchFix;
+		DBUR F -1;
 		Stop;
 	}
 }
@@ -530,7 +537,7 @@ class JungleTree1_Burnt : TreeBase
 	States
 	{
 	BidiSpawn:
-		DBUR A -1 A_2DPitchFix;
+		DBUR A -1;
 		Stop;
 	}
 }
@@ -566,7 +573,7 @@ class SmallTree1_Burnt : TreeBase
 	States
 	{
 	BidiSpawn:
-		DBUR C -1 A_2DPitchFix;
+		DBUR C -1;
 		Stop;
 	}
 }
