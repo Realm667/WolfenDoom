@@ -47,22 +47,34 @@ class MessageLogHandler : EventHandler
 
 class MessageLogMenu : GenericMenu
 {
-	Array<String> lines;
-	Array<int> xoffsets;
+	Array<String> lines; // Text line strings
+	Array<int> xoffsets; // X offsets of text lines
 	Dictionary images; // Line number (Array index) to image
-	int msgWidth;
-	int maxLines;
-	int minLine;
+	int msgWidth; // Width available for drawing text
+	int maxLines; // Maximum number of lines which can be drawn
+	int minLine; // Minimum or "current" line
+	// Scroll bar graphics
+	TextureID scrollTop;
+	TextureID scrollMid;
+	TextureID scrollBot;
+	TextureID arrowUp;
+	TextureID arrowDown;
 
 	override void Init(Menu parent)
 	{
 		Super.Init(parent);
 		images = Dictionary.Create();
-		// Display messages in a 4:3 "space", with side padding. Also,
-		// there should be additional right side padding for the scroll bar.
-		msgWidth = min(Screen.GetWidth(), Screen.GetWidth() * (4./3) / Screen.GetAspectRatio()) - 20;
+		// Display messages in a 4:3 "space", with side padding.
+		// 20 px = 10px padding on both sides
+		// 32 px = width of the scroll bar graphics
+		msgWidth = min(Screen.GetWidth(), Screen.GetWidth() * (4./3) / Screen.GetAspectRatio()) - 52;
 		// How many lines, at most, should be displayed?
 		maxLines = int(ceil(Screen.GetHeight() * .875 / (smallfont.GetHeight() * CleanYFac_1)));
+		scrollTop = TexMan.CheckForTexture("graphics/conversation/Scroll_T.png");
+		scrollMid = TexMan.CheckForTexture("graphics/conversation/Scroll_M.png");
+		scrollBot = TexMan.CheckForTexture("graphics/conversation/Scroll_B.png");
+		arrowUp = TexMan.CheckForTexture("graphics/conversation/Arrow_Up.png");
+		arrowDown = TexMan.CheckForTexture("graphics/conversation/Arrow_Dn.png");
 		MessageLogHandler log = MessageLogHandler(EventHandler.Find("MessageLogHandler"));
 		if (!log) { return; }
 		// Add all of the messages from the log handler to the "menu"
@@ -144,9 +156,11 @@ class MessageLogMenu : GenericMenu
 	{
 		if (lines.Size())
 		{
+			// Left-hand edge of the 4:3 box, plus 10px for left-hand padding
 			double xpos = max(0, Screen.GetWidth() / 2 * (1 - (4./3) / Screen.GetAspectRatio())) + 10 * CleanXFac_1;
 			int maxLine = min(lines.Size(), minLine + maxLines);
-			double ypos = Screen.GetHeight() * .0625;
+			double ystart = Screen.GetHeight() * .0625;
+			double ypos = ystart;
 			// Draw the messages
 			for (int line = minLine; line < maxLine; line++)
 			{
@@ -183,6 +197,29 @@ class MessageLogMenu : GenericMenu
 					}
 				}
 				ypos += smallfont.GetHeight() * CleanYFac_1;
+			}
+			// Draw the scroll bar
+			if (lines.Size() > maxLines)
+			{
+				// xpos is at the left side of the lines, so move it to the
+				// right side to draw the scroll bar graphics.
+				xpos += msgWidth;
+				ypos = ystart;
+				Screen.DrawTexture(arrowUp, false, xpos, ypos);
+				// The total height of the scroll bar is the screen height *
+				// .875. The height of each scrollbar graphic is 32. Two arrows
+				// at the top and bottom make 64.
+				double scrollBarHeight = Screen.GetHeight() * .875 - 64;
+				double scrollBarPct = double(minLine) / lines.Size();
+				ypos = ystart + 32 + scrollBarHeight * scrollBarPct;
+				Screen.DrawTexture(scrollTop, false, xpos, ypos);
+				ypos += 32;
+				Screen.DrawTexture(scrollMid, false, xpos, ypos);
+				ypos += 32;
+				Screen.DrawTexture(scrollBot, false, xpos, ypos);
+				// Max height for drawing text, plus height of first line
+				ypos = Screen.GetHeight() * .9375;
+				Screen.DrawTexture(arrowDown, false, xpos, ypos);
 			}
 		}
 		else
