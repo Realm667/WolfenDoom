@@ -59,7 +59,9 @@ class MessageLogMenu : GenericMenu
 	TextureID scrollBot;
 	TextureID arrowUp;
 	TextureID arrowDown;
-	// bool dragging; // User is dragging the scroll bar?
+	bool dragging; // User is dragging the scroll bar?
+	// int prevMouseX; // Previous mouse position - used for scroll bar dragging
+	// int prevMouseY;
 
 	override void Init(Menu parent)
 	{
@@ -212,6 +214,7 @@ class MessageLogMenu : GenericMenu
 				// at the top and bottom make 64.
 				double scrollBarHeight = Screen.GetHeight() * .875 - 64;
 				double scrollBarPct = double(minLine) / (lines.Size() - maxLines);
+				// The middle and bottom parts of the scroll bar are 64px tall.
 				double scrollBarYOffset = -scrollBarPct * 64;
 				ypos = ystart + 32 + scrollBarHeight * scrollBarPct;
 				Screen.DrawTexture(scrollTop, false, xpos, ypos + scrollBarYOffset);
@@ -235,6 +238,7 @@ class MessageLogMenu : GenericMenu
 
 	override bool MenuEvent(int mkey, bool fromcontroller)
 	{
+		// TODO: Handle mouse scroll wheel (how?)
 		bool res = Super.MenuEvent(mkey, fromcontroller);
 		int scale = 1;
 		switch (mkey)
@@ -250,12 +254,62 @@ class MessageLogMenu : GenericMenu
 		return res;
 	}
 
-	/*
 	override bool MouseEvent(int type, int mx, int my)
 	{
-
+		int scrollBarX = max(0, Screen.GetWidth() / 2 * (1 - (4./3) / Screen.GetAspectRatio())) + 10 * CleanXFac_1 + msgWidth;
+		int upArrowY = Screen.GetHeight() * .0625;
+		int scrollBarY = upArrowY + 32;
+		int scrollBarWidth = 32;
+		int scrollBarHeight = int(Screen.GetHeight() * .875 - 32);
+		int downArrowY = scrollBarY + scrollBarHeight;
+		if (lines.Size() <= maxLines)
+		{
+			// No need to scroll the message log if all the lines fit
+			return false;
+		}
+		if (dragging)
+		{
+			if (type == MOUSE_Release)
+			{
+				dragging = false;
+			}
+			else
+			{
+				double percent = clamp(my - scrollBarY, 0, scrollBarHeight) / double(scrollBarHeight);
+				minLine = percentToLine(percent);
+			}
+			return true;
+		}
+		else if (mx >= scrollBarX && (mx - scrollBarX) < scrollBarWidth && my >= upArrowY && my < downArrowY + 32)
+		{
+			if (type == MOUSE_Click)
+			{
+				// Clicked on one of the arrows
+				if (my - upArrowY < 32)
+				{
+					minLine = clamp(minLine - 1, 0, lines.Size() - maxLines);
+					return true;
+				}
+				else if (my >= downArrowY && my - downArrowY < 32)
+				{
+					minLine = clamp(minLine + 1, 0, lines.Size() - maxLines);
+					return true;
+				}
+				else
+				{ // Clicked on the scroll bar
+					dragging = true;
+				}
+				return true;
+			}
+		}
+		return false;
 	}
-	*/
+
+	protected int percentToLine(double percent)
+	{
+		int maxLine = lines.Size() - maxLines;
+		return int(floor(maxLine * percent));
+	}
 
 	protected bool Scroll(int by)
 	{
