@@ -175,9 +175,11 @@ class MessageLogMenu : GenericMenu
 						TextureID imageTexture = TexMan.CheckForTexture(imageName);
 						Screen.DrawTexture(imageTexture, true, xpos, ypos, DTA_CleanNoMove_1, true);
 						// Draw border around image (debug)
+						/*
 						int imageWidth, imageHeight;
 						[imageWidth, imageHeight] = TexMan.GetSize(imageTexture);
 						Screen.DrawLineFrame(Color(255, 255, 0, 0), int(xpos), int(ypos), imageWidth * CleanXFac_1, imageHeight * CleanYFac_1);
+						*/
 					}
 				}
 				ypos += smallfont.GetHeight() * CleanYFac_1;
