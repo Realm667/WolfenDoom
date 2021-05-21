@@ -303,14 +303,13 @@ class FastFoodR : Meal //no empty stuff and menues
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7);
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6);
 		FFOD A -1;
 		FFOD C -1;
-		FFOD D -1;
-		FFOD E -1;
 		FFOD G -1;
 		FFOD H -1;
 		FFOD J -1;
+		FANT A -1;
 		Stop;
 	}
 }
@@ -364,34 +363,19 @@ class FastFood3 : Meal
 	}
 }
 
-class FastFood4 : Meal
-{
-	Default
-	{
-		//$Category Health (BoA)/Fast Food
-		//$Title Burger (+5 health)
-		Scale 0.37;
-	}
-	States
-	{
-	Spawn:
-		FFOD D -1;
-		Stop;
-	}
-}
 
 class FastFood5 : Meal
 {
 	Default
 	{
 		//$Category Health (BoA)/Fast Food
-		//$Title Burger (+5 health)
+		//$Title Fanta (+5 health)
 		Scale 0.37;
 	}
 	States
 	{
 	Spawn:
-		FFOD E -1;
+		FANT A -1;
 		Stop;
 	}
 }
@@ -473,6 +457,38 @@ class FastFood10 : Meal
 	{
 	Spawn:
 		FFOD J -1;
+		Stop;
+	}
+}
+
+class FastFood11 : Meal
+{
+	Default
+	{
+		//$Category Health (BoA)/Fast Food
+		//$Title Coca-Cola (+5 health)
+		Scale 0.37;
+	}
+	States
+	{
+	Spawn:
+		FFOD E -1;
+		Stop;
+	}
+}
+
+class FastFood12 : Meal
+{
+	Default
+	{
+		//$Category Health (BoA)/Fast Food
+		//$Title Pepsi (+5 health)
+		Scale 0.37;
+	}
+	States
+	{
+	Spawn:
+		FFOD D -1;
 		Stop;
 	}
 }
