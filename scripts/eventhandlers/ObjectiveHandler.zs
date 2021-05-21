@@ -3,7 +3,8 @@ class Objective : Thinker
 	String text;
 	int order;
 	bool secondary, complete;
-	transient Font Symbols;
+	String symbolfont;
+	transient ui Font Symbols;
 
 	// This is how to set up objectives directly via ZSCript calls:
 	//  ACS: ScriptCall("Objective", "Add", text, num, false, false, true);
@@ -48,7 +49,7 @@ class Objective : Thinker
 		obj.order = order;
 		obj.secondary = secondary;
 		if (complete >= 0) { obj.complete = complete; }
-		obj.Symbols = Font.GetFont("Symbols");
+		obj.symbolfont = "Symbols";
 	}
 
 	static void Completed(String text = "", int order = -1, bool quiet = false)
@@ -78,8 +79,10 @@ class Objective : Thinker
 
 		output = output .. StringTable.Localize(text, false);
 
+		if (!Symbols) { Symbols = Font.GetFont(symbolfont); }
 		screen.DrawText(Symbols, Font.CR_UNTRANSLATED, x, y, status, DTA_VirtualWidthF, w, DTA_VirtualHeightF, h, DTA_Alpha, alpha);
-		screen.DrawText(SmallFont, Font.CR_UNTRANSLATED, x + SmallFont.StringWidth("  "), y, output, DTA_VirtualWidthF, w, DTA_VirtualHeightF, h, DTA_Alpha, alpha);
+
+		screen.DrawText(fnt, Font.CR_UNTRANSLATED, x + fnt.StringWidth("  "), y, output, DTA_VirtualWidthF, w, DTA_VirtualHeightF, h, DTA_Alpha, alpha);
 	}
 }
 
@@ -213,24 +216,6 @@ class ObjectiveHandler : EventHandler
 			objectives[o].DrawObjective(SmallFont, int(posx), int(posy), int(destsize.x), int(destsize.y), alpha); // Call each objective's internal drawing function
 			posy += lineheight;
 			o = FindNext(true, count++);
-		}
-	}
-}
-
-// Since the "Symbols" font is transient, it needs to be set up again after
-// re-loading a saved game. I wish I didn't have to do this.
-class ObjectiveFixer : StaticEventHandler
-{
-	override void WorldLoaded(WorldEvent e)
-	{
-		if (e.IsSaveGame)
-		{
-			ObjectiveHandler handler = ObjectiveHandler(EventHandler.Find("ObjectiveHandler"));
-			if (!handler) { return; }
-			for (int i = 0; i < handler.objectives.Size(); i++)
-			{
-				handler.objectives[i].Symbols = Font.GetFont("Symbols");
-			}
 		}
 	}
 }
