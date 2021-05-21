@@ -250,56 +250,56 @@ class ZombieOfficer : ZombieBrain
 	Melee:
 		"####" E 12 A_FaceTarget;
 		"####" H 0 A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
-		"####" H 8 A_SpawnProjectile("EnemyStGTracer",30,6,30);
-		"####" H 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 8 A_SpawnProjectile("EnemySMGTracer",30,6,30);
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
 		"####" H 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" H 0 A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
-		"####" H 8 A_SpawnProjectile("EnemyStGTracer",30,4,15);
-		"####" H 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
+		"####" H 8 A_SpawnProjectile("EnemySMGTracer",30,4,15);
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
 		"####" H 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" H 0 A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
-		"####" H 8 A_SpawnProjectile("EnemyStGTracer",30,2,0);
-		"####" H 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
+		"####" H 8 A_SpawnProjectile("EnemySMGTracer",30,2,0);
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
 		"####" H 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		"####" E 4 A_FaceTarget;
 		Goto See;
 	Missile:
 		"####" E 10 A_FaceTarget;
-		"####" F 0 A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
-		"####" F 4 A_SpawnProjectile("EnemyStGTracer",30,18,90);
-		"####" F 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
+		"####" F 4 A_SpawnProjectile("EnemySMGTracer",30,18,90);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" F 0 A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
-		"####" F 4 A_SpawnProjectile("EnemyStGTracer",30,16,80);
-		"####" F 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
+		"####" F 4 A_SpawnProjectile("EnemySMGTracer",30,16,80);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" F 0 A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
-		"####" F 4 A_SpawnProjectile("EnemyStGTracer",30,14,70);
-		"####" F 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
+		"####" F 4 A_SpawnProjectile("EnemySMGTracer",30,14,70);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" G 0 A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
-		"####" G 4 A_SpawnProjectile("EnemyStGTracer",30,12,60);
-		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" G 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
+		"####" G 4 A_SpawnProjectile("EnemySMGTracer",30,12,60);
+		"####" G 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" G 0 A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
-		"####" G 4 A_SpawnProjectile("EnemyStGTracer",30,10,50);
-		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" G 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
+		"####" G 4 A_SpawnProjectile("EnemySMGTracer",30,10,50);
+		"####" G 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" G 0 A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
-		"####" G 4 A_SpawnProjectile("EnemyStGTracer",30,8,40);
-		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" G 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
+		"####" G 4 A_SpawnProjectile("EnemySMGTracer",30,8,40);
+		"####" G 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" H 0 A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
-		"####" H 4 A_SpawnProjectile("EnemyStGTracer",30,6,30);
-		"####" H 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
+		"####" H 4 A_SpawnProjectile("EnemySMGTracer",30,6,30);
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
 		"####" H 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" H 0 A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
-		"####" H 4 A_SpawnProjectile("EnemyStGTracer",30,4,15);
-		"####" H 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
+		"####" H 4 A_SpawnProjectile("EnemySMGTracer",30,4,15);
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
 		"####" H 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" H 0 A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
-		"####" H 4 A_SpawnProjectile("EnemyStGTracer",30,2,0);
-		"####" H 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
+		"####" H 4 A_SpawnProjectile("EnemySMGTracer",30,2,0);
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
 		"####" H 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		"####" E 8 A_MonsterRefire(96,"See");
 		"####" E 0 A_FaceTarget;
