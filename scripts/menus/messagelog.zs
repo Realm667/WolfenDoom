@@ -53,7 +53,6 @@ class MessageLogMenu : GenericMenu
 	int msgWidth;
 	int maxLines;
 	int minLine;
-	int maxLine;
 
 	override void Init(Menu parent)
 	{
@@ -63,7 +62,7 @@ class MessageLogMenu : GenericMenu
 		// there should be additional right side padding for the scroll bar.
 		msgWidth = min(Screen.GetWidth(), Screen.GetWidth() * (4./3) / Screen.GetAspectRatio()) - 20;
 		// How many lines, at most, should be displayed?
-		maxLines = int(floor(Screen.GetHeight() * .875 / (smallfont.GetHeight() * CleanYFac_1)));
+		maxLines = int(ceil(Screen.GetHeight() * .875 / (smallfont.GetHeight() * CleanYFac_1)));
 		MessageLogHandler log = MessageLogHandler(EventHandler.Find("MessageLogHandler"));
 		if (!log) { return; }
 		// Add all of the messages from the log handler to the "menu"
@@ -72,8 +71,7 @@ class MessageLogMenu : GenericMenu
 			String image = log.images.At(log.messages[i]);
 			addMessage(log.messages[i], image);
 		}
-		maxLine = lines.Size() - 1;
-		minLine = max(0, maxLine - maxLines);
+		minLine = max(0, lines.Size() - maxLines);
 	}
 
 	// Push to both arrays so that they are the same size
@@ -147,9 +145,10 @@ class MessageLogMenu : GenericMenu
 		if (lines.Size())
 		{
 			double xpos = max(0, Screen.GetWidth() / 2 * (1 - (4./3) / Screen.GetAspectRatio())) + 10 * CleanXFac_1;
-			double ypos = Screen.GetHeight() * .875 + Screen.GetHeight() * 0.0625;
+			int maxLine = min(lines.Size(), minLine + maxLines);
+			double ypos = Screen.GetHeight() * .0625;
 			// Draw the messages
-			for (int line = maxLine; line >= minLine; line--)
+			for (int line = minLine; line < maxLine; line++)
 			{
 				double textXpos = xpos + xoffsets[line] * CleanXFac_1;
 				if (lines[line] == "")
@@ -175,9 +174,13 @@ class MessageLogMenu : GenericMenu
 					{
 						TextureID imageTexture = TexMan.CheckForTexture(imageName);
 						Screen.DrawTexture(imageTexture, true, xpos, ypos, DTA_CleanNoMove_1, true);
+						// Draw border around image (debug)
+						int imageWidth, imageHeight;
+						[imageWidth, imageHeight] = TexMan.GetSize(imageTexture);
+						Screen.DrawLineFrame(Color(255, 255, 0, 0), int(xpos), int(ypos), imageWidth * CleanXFac_1, imageHeight * CleanYFac_1);
 					}
 				}
-				ypos -= smallfont.GetHeight() * CleanYFac_1;
+				ypos += smallfont.GetHeight() * CleanYFac_1;
 			}
 		}
 		else
