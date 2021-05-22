@@ -39,7 +39,8 @@ class MessageBase : Thinker
 		MSG_NOFADEIN = 1,
 		MSG_NOFADEOUT = 2,
 		MSG_FULLSCREEN = 4,
-		MSG_ALLOWREPLACE = 8
+		MSG_ALLOWREPLACE = 8,
+		MSG_ALLOWMULTIPLE = 16
 	}
 
 	MessageHandler handler;
@@ -716,10 +717,12 @@ class DevCommentary : MessageBase
 class CountdownMessage : MessageBase
 {
 	String bkg;
+	bool textfadein;
 
-	static int Init(Actor mo, String text, int clr = Font.CR_GRAY, int holdtime = 210, int intime = 35, int outtime = 35, String bkg = "HELTHBAR")
+	static int Init(Actor mo, String text = "", int clr = Font.CR_GRAY, int holdtime = 210, int intime = 35, int outtime = 35, String bkg = "HELTHBAR", String msgname = "")
 	{
-		CountdownMessage msg = CountdownMessage(MessageBase.Init(mo, bkg, text, intime, outtime, "CountdownMessage", 2, MSG_ALLOWREPLACE));
+		if (!msgname.length()) { msgname = bkg; }
+		CountdownMessage msg = CountdownMessage(MessageBase.Init(mo, msgname, text, intime, outtime, "CountdownMessage", 2, MSG_ALLOWREPLACE | MSG_ALLOWMULTIPLE));
 		if (msg)
 		{
 			msg.time = holdtime + intime + outtime;
@@ -797,12 +800,32 @@ class MessageHandler : EventHandler
 		{
 			if (!types[t]) { continue; }
 
-			MessageBase m = NextMessage(types[t]);
+			int current;
+			MessageBase m;
+			[m, current] = NextMessage(types[t]);
+
 			if (m)
 			{
 				if (fullscreen) { m.flags |= MessageBase.MSG_FULLSCREEN; }
 				else { m.flags &= ~MessageBase.MSG_FULLSCREEN; }
-				TickMessage(m);
+
+				if (m.flags & MessageBase.MSG_ALLOWMULTIPLE)
+				{
+					TickMessage(m);
+
+					MessageBase n;
+					[n, current] = NextMessage(types[t], current + 1);
+
+					while(n)
+					{
+						TickMessage(n);
+						[n, current] = NextMessage(types[t], current + 1);
+					}
+				}
+				else
+				{
+					TickMessage(m);
+				}
 			}
 		}
 	}
@@ -857,14 +880,14 @@ class MessageHandler : EventHandler
 	}
 
 	// Find the next message of a given class/type, optionally starting at a specific point in the array
-	MessageBase NextMessage(class<MessageBase> type, int start = 0)
+	MessageBase, int NextMessage(class<MessageBase> type, int start = 0)
 	{
 		for (int a = start; a < messages.Size(); a++)
 		{
-			if (messages[a].GetClass() == type) { return messages[a]; }
+			if (messages[a].GetClass() == type) { return messages[a], a; }
 		}
 
-		return null;
+		return null, 0;
 	}
 
 	// Find a message with a given name
