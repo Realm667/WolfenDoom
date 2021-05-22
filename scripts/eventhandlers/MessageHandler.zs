@@ -249,7 +249,7 @@ class Message : MessageBase
 			boxheight = max(boxheight, size.y + margin);
 			boxheight += margin;
 
-			DrawToHUD.DrawFrame("FRAME_", x, y, msgwidth + size.x + margin * 4, boxheight, 0x1b1b1b, 1.0 * staticalpha, 0.5 * staticalpha);
+			DrawToHUD.DrawFrame("FRAME_", x, y, msgwidth + size.x + margin * 4, boxheight, 0x1b1b1b, 1.0 * staticalpha, 0.53 * staticalpha);
 
 			y += margin;
 

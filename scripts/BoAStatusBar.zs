@@ -55,6 +55,8 @@ class BoAStatusBar : BaseStatusBar
 	int targettime;
 	int widthoffset;
 
+	ObjectiveHandler objhandler;
+
 	protected Le_GlScreen gl_proj;
 	protected Le_Viewport viewport;
 
@@ -112,6 +114,8 @@ class BoAStatusBar : BaseStatusBar
 
 	override void Tick()
 	{
+		if (!objhandler) { objhandler = ObjectiveHandler(EventHandler.Find("ObjectiveHandler")); }
+
 		maptop = CheckInventory("IncomingMessage", 1) ? int(48 / 200.0 * Screen.GetHeight() / BoAStatusBar.GetUIScale(hud_scale)) : 0;
 		if (maptexty > maptop) { maptexty = max(maptop, maptexty - 12); }
 		else if (maptexty < maptop) { maptexty = min(maptop, maptexty + 12); }
@@ -209,7 +213,7 @@ class BoAStatusBar : BaseStatusBar
 			else if (state == HUD_Fullscreen)
 			{
 				BeginHUD(1, False);
-				DrawFullScreenStuff ();
+				DrawFullScreenBar();
 			}
 		}
 		else
@@ -240,42 +244,13 @@ class BoAStatusBar : BaseStatusBar
 
 	virtual void DrawMainBar (double TicFrac)
 	{
-		int current, max;
-
 		DrawImage("HUDBAR", (-54, 152), DI_ITEM_OFFSETS);
 
 		bool disguisetag = DrawVisibilityBar((85, 162), scale: 0.5);
 
 		//Minesweeper & Lantern
-		if (CheckInventory("MineSweeper", 1))
-		{
-			int current, max;
-			current = mBatteryInterpolator.GetValue();
-			max = GetMaxAmount("Power");
-
-			MineSweeper ms = MineSweeper(CPlayer.mo.FindInventory("MineSweeper"));
-
-			if (ms && ms.active)
-			{
-				DrawImage("SWEP_BAK", (152, 138), DI_SCREEN_OFFSETS);
-				DrawBar("SWEP_ON", "SWEP_OFF", current, max, (152, 138), 0, SHADER_HORZ, DI_SCREEN_OFFSETS);
-			}
-		}
-
-		if (CheckInventory("LanternPickup", 1))
-		{
-			int current, max;
-			current = mOilInterpolator.GetValue();
-			max = GetMaxAmount("LanternOil");
-
-			LanternPickup l = LanternPickup(CPlayer.mo.FindInventory("LanternPickup"));
-
-			if (l && l.active)
-			{
-				DrawImage("LANT_BAK", (152, 138), DI_SCREEN_OFFSETS);
-				DrawBar("LANT_ON", "LANT_OFF", current, max, (152, 138), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_OFFSETS);
-			}
-		}
+		DrawMinesweeper(162, 138, DI_SCREEN_OFFSETS);
+		DrawLantern(162, 138, DI_SCREEN_OFFSETS);
 
 		//AirControl & Stamina
 		DrawBar("HORZAIRF", "HORZAIRE", mAirInterpolator.GetValue(), level.airsupply, (36, 160), 0, SHADER_HORZ, DI_ITEM_OFFSETS);
@@ -359,7 +334,12 @@ class BoAStatusBar : BaseStatusBar
 		{
 			BeginHUD(1, False);
 
-			DrawPuzzleItems(-(widthoffset + 16), 16, 20, 9, -1);
+			int y = 16;
+
+			ObjectiveHandler handler = ObjectiveHandler(EventHandler.Find("ObjectiveHandler"));
+			if (handler) { y += int(handler.height) + 16; }
+
+			DrawPuzzleItems(-(widthoffset + 16), y, 20, 9, -1);
 		}
 	}
 
@@ -490,54 +470,83 @@ class BoAStatusBar : BaseStatusBar
 		}
 	}
 
-	virtual void DrawFullScreenStuff()
+	virtual void DrawFullScreenBar()
 	{
-		int current, max;
+		DrawMoneyTime(widthoffset, 0); // Top left
+		
+		int troffset = 0;
+		if (objhandler && objhandler.active[CPlayer.mo.PlayerNumber()] == 2) { troffset = objhandler.height ? objhandler.height + 8 : 0; }
+		DrawKeys(-(widthoffset + 66), troffset); // Top right
+		
+		DrawHealthArmor(widthoffset, -53); // Bottom left
+		DrawWeaponAmmo(-(widthoffset + 116), -53); // Bottom right
 
+		// Stealth visibility bar
 		DrawVisibilityBar();
 
-		//Minesweeper & Lantern
-		if (CheckInventory("MineSweeper", 1))
+		// Minesweeper and Lantern power
+		DrawMinesweeper(widthoffset, -28);
+		DrawLantern(widthoffset, -28);
+
+		// Air Supply & Stamina
+		DrawBar("VERTAIRF", "VERTAIRE", mAirInterpolator.GetValue(), level.airsupply, (widthoffset + 4, -174), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
+		DrawBar("VERTSTMF", "VERTSTME", mStaminaInterpolator.GetValue(), 100, (-(widthoffset + 10), -174), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
+
+		// Inventory and puzzle items
+		if(!level.NoInventoryBar)
 		{
-			current = mBatteryInterpolator.GetValue();
-			max = GetMaxAmount("Power");
+			if (CPlayer.mo.InvSel != null) { DrawInventorySelection(widthoffset + 128, -22, 32); }
 
-			MineSweeper ms = MineSweeper(CPlayer.mo.FindInventory("MineSweeper"));
+			Vector2 hudscale = Statusbar.GetHudScale();
 
-			if (ms && ms.active)
+			int size = 20;
+			int topoffset = 48 + troffset;
+			int maxrows = int((Screen.GetHeight() / hudscale.y - (topoffset + 48)) / (size + 2));
 
-			{
-				DrawImage("SWEP_BAK", (widthoffset + 0, -28), DI_SCREEN_CENTER_BOTTOM);
-				DrawBar("SWEP_ON", "SWEP_OFF", current, max, (widthoffset + 0, -28), 0, SHADER_HORZ, DI_SCREEN_CENTER_BOTTOM);
-			}
+			DrawPuzzleItems(-(widthoffset + 28), topoffset, size, maxrows, -1);
 		}
+	}
 
+	void DrawLantern(int posx, int posy, int flags = DI_SCREEN_CENTER_BOTTOM)
+	{
 		if (CheckInventory("LanternPickup", 1))
 		{
-			current = mOilInterpolator.GetValue();
-			max = GetMaxAmount("LanternOil");
+			int current = mOilInterpolator.GetValue();
+			int max = GetMaxAmount("LanternOil");
 
 			LanternPickup l = LanternPickup(CPlayer.mo.FindInventory("LanternPickup"));
 
 			if (l && l.active)
 			{
-				//DrawImage("LANT_BAK", (-11, -144), DI_SCREEN_CENTER | DI_SCREEN_TOP);
-				//DrawBar("LANT_ON", "LANT_OFF", current, max, (-11, -144), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER | DI_SCREEN_TOP);
-				
-				//remove - comment following lines and set above if you don't want indicator on bottom zone in fullscreen - ozy81
-				DrawImage("LANT_BAK", (widthoffset + 0, -28), DI_SCREEN_CENTER_BOTTOM);
-				DrawBar("LANT_ON", "LANT_OFF", current, max, (widthoffset + 0, -28), 0, SHADER_VERT | SHADER_REVERSE, DI_SCREEN_CENTER_BOTTOM);
+				DrawImage("LANT_BAK", (posx, posy), flags);
+				DrawBar("LANT_ON", "LANT_OFF", current, max, (posx, posy), 0, SHADER_VERT | SHADER_REVERSE, flags);
 			}
 		}
+	}
 
-		//AirControl & Stamina
-		DrawBar("VERTAIRF", "VERTAIRE", mAirInterpolator.GetValue(), level.airsupply, (widthoffset + 4, -174), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
-		DrawBar("VERTSTMF", "VERTSTME", mStaminaInterpolator.GetValue(), 100, (-(widthoffset + 10), -174), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
+	void DrawMineSweeper(int posx, int posy, int flags = DI_SCREEN_CENTER_BOTTOM)
+	{
+		if (CheckInventory("MineSweeper", 1))
+		{
+			int current = mBatteryInterpolator.GetValue();
+			int max = GetMaxAmount("Power");
 
+			MineSweeper ms = MineSweeper(CPlayer.mo.FindInventory("MineSweeper"));
+
+			if (ms && ms.active)
+			{
+				DrawImage("SWEP_BAK", (posx, posy), flags);
+				DrawBar("SWEP_ON", "SWEP_OFF", current, max, (posx, posy), 0, SHADER_HORZ, flags);
+			}
+		}
+	}
+
+	void DrawMoneyTime(int posx, int posy)
+	{
 		//Top Left
-		DrawImage("HUD_UL", (widthoffset + 0, 0), DI_ITEM_OFFSETS);
+		DrawImage("HUD_UL", (posx, posy), DI_ITEM_OFFSETS);
 		//Money
-		DrawString(mBigFont, FormatNumber(GetAmount("CoinItem")), (widthoffset + 60, 7), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mBigFont, FormatNumber(GetAmount("CoinItem")), (posx + 68, posy + 7), DI_TEXT_ALIGN_RIGHT);
 		//Time
 		String time = level.TimeFormatted();
 
@@ -546,74 +555,71 @@ class BoAStatusBar : BaseStatusBar
 			time = FormatNumber(int(hour), 2, 2, FNF_FILLZEROS) .. ":" .. FormatNumber(int(minute), 2, 2, FNF_FILLZEROS) .. ":" .. FormatNumber(int(second), 2, 2, FNF_FILLZEROS);
 		}
 
-		DrawString(mHUDFont, time, (widthoffset + 20, 21), DI_TEXT_ALIGN_LEFT);
+		DrawString(mHUDFont, time, (posx + 24, posy + 21), DI_TEXT_ALIGN_LEFT);
+	}
 
+	void DrawKeys(int posx, int posy)
+	{
 		//Top Right
-		DrawImage("HUD_UR", (-(widthoffset + 66), 0), DI_ITEM_OFFSETS);
+		DrawImage("HUD_UR", (posx, posy), DI_ITEM_OFFSETS);
 		//Keys
-		if (GetAmount("BoABlueKey")) { DrawImage("STKEYS0", (-(widthoffset + 14), 9), DI_ITEM_OFFSETS); }
-		if (GetAmount("BoAGreenKey")) { DrawImage("STKEYS3", (-(widthoffset + 14), 19), DI_ITEM_OFFSETS); }
-		if (GetAmount("BoAYellowKey")) { DrawImage("STKEYS1", (-(widthoffset + 24), 9), DI_ITEM_OFFSETS); }
-		if (GetAmount("BoAPurpleKey")) { DrawImage("STKEYS4", (-(widthoffset + 24), 19), DI_ITEM_OFFSETS); }
-		if (GetAmount("BoARedKey")) { DrawImage("STKEYS2", (-(widthoffset + 34), 9), DI_ITEM_OFFSETS); }
-		if (GetAmount("BoACyanKey")) { DrawImage("STKEYS5", (-(widthoffset + 34), 19), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoABlueKey")) { DrawImage("STKEYS0", (posx + 52, posy + 8), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoAGreenKey")) { DrawImage("STKEYS3", (posx + 52, posy  + 18), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoAYellowKey")) { DrawImage("STKEYS1", (posx + 42, posy  + 8), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoAPurpleKey")) { DrawImage("STKEYS4", (posx + 42, posy  + 18), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoARedKey")) { DrawImage("STKEYS2", (posx + 32, posy  + 8), DI_ITEM_OFFSETS); }
+		if (GetAmount("BoACyanKey")) { DrawImage("STKEYS5", (posx + 32, posy  + 18), DI_ITEM_OFFSETS); }
 
-		if (GetAmount("AstroBlueKey")) { DrawImage("ATKEYS0", (-(widthoffset + 14), 9), DI_ITEM_OFFSETS); }
-		if (GetAmount("AstroYellowKey")) { DrawImage("ATKEYS1", (-(widthoffset + 24), 9), DI_ITEM_OFFSETS); }
-		if (GetAmount("AstroRedKey")) { DrawImage("ATKEYS2", (-(widthoffset + 34), 9), DI_ITEM_OFFSETS); }
+		if (GetAmount("AstroBlueKey")) { DrawImage("ATKEYS0", (posx + 52, posy  + 8), DI_ITEM_OFFSETS); }
+		if (GetAmount("AstroYellowKey")) { DrawImage("ATKEYS1", (posx + 42, posy  + 8), DI_ITEM_OFFSETS); }
+		if (GetAmount("AstroRedKey")) { DrawImage("ATKEYS2", (posx + 32, posy  + 8), DI_ITEM_OFFSETS); }
+	}
 
+	void DrawHealthArmor(int posx, int posy)
+	{
 		//Bottom Left
-		DrawImage("HUD_BL", (widthoffset + 0, -53), DI_ITEM_OFFSETS);
+		DrawImage("HUD_BL", (posx, posy), DI_ITEM_OFFSETS);
+		
+		//Mugshot
+		DrawMugShot((widthoffset + 7, -38));
+
 		//Health
-		DrawString(mBigFont, FormatNumber(CPlayer.health, 3), (widthoffset + 94, -36), DI_TEXT_ALIGN_RIGHT);
-		DrawString(mBigFont, "%", (widthoffset + 107, -36), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mBigFont, FormatNumber(CPlayer.health, 3), (posx + 94, posy + 17), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mBigFont, "%", (posx + 107, posy + 17), DI_TEXT_ALIGN_RIGHT);
 
 		//Armor
 		let armor = CPlayer.mo.FindInventory("BasicArmor");
 		if (armor != null && armor.Amount > 0)
 		{
-			DrawIcon(armor, widthoffset + 44, -20, 24, DI_ITEM_OFFSETS);
-			DrawString(mBigFont, FormatNumber(GetArmorAmount(), 3), (widthoffset + 94, -20), DI_TEXT_ALIGN_RIGHT);
-			DrawString(mBigFont, "%", (widthoffset + 107, -20), DI_TEXT_ALIGN_RIGHT);
+			DrawIcon(armor, posx + 44, posy + 33, 24, DI_ITEM_OFFSETS);
+			DrawString(mBigFont, FormatNumber(GetArmorAmount(), 3), (posx + 94, posy + 33), DI_TEXT_ALIGN_RIGHT);
+			DrawString(mBigFont, "%", (posx + 107, posy + 33), DI_TEXT_ALIGN_RIGHT);
 		}
+	}
 
-		//Mugshot + Inventory
-		if(!level.NoInventoryBar)
-		{
-			if (CPlayer.mo.InvSel != null) { DrawInventorySelection(widthoffset + 128, -22, 32); }
-
-			Vector2 hudscale = Statusbar.GetHudScale();
-
-			int size = 20;
-			int maxrows = int((Screen.GetHeight() / hudscale.y - 96) / (size + 2));
-
-			// Centered vertically on the right side of the screen
-			//DrawPuzzleItems(-28, int((Screen.GetHeight() / hudscale.y) / 2), size, maxrows, -1, true);
-
-			// Aligned under the key display
-			DrawPuzzleItems(-(widthoffset + 28), 48, size, maxrows, -1);
-		}
-
-		DrawMugShot((widthoffset + 7, -38));
-
+	void DrawWeaponAmmo(int posx, int posy)
+	{
 		//Bottom Right
-		DrawImage("HUD_BR", (-(widthoffset + 116), -53), DI_ITEM_OFFSETS);
+		String bkg = "HUD_BR";
+		if (CPlayer.mo.FindInventory("AstroGrenadeToken")) { bkg = "HUD_BR_A"; }
+
+		DrawImage(bkg, (posx, posy), DI_ITEM_OFFSETS);
 		//Weapon
-		DrawString(mHUDFont, GetWeaponTag(), (-(widthoffset + 55), -52), DI_TEXT_ALIGN_CENTER);
+		DrawString(mHUDFont, GetWeaponTag(), (posx + 61, posy + 1), DI_TEXT_ALIGN_CENTER);
 
 		//Ammo
 		Ammo ammo1, ammo2;
 		int ammocount1, ammocount2;
 		[ammo1, ammo2, ammocount1, ammocount2] = GetCurrentAmmo();
-		if (ammo1) { DrawString(mBigFont, FormatNumber(ammocount1, 3), (-(widthoffset + 10), -20), DI_TEXT_ALIGN_RIGHT); }
-		if (ammo2) { DrawString(mBigFont, FormatNumber(ammocount2, 3), (-(widthoffset + 10), -36), DI_TEXT_ALIGN_RIGHT); }
+		if (ammo1) { DrawString(mBigFont, FormatNumber(ammocount1, 3), (posx + 106, posy + 33), DI_TEXT_ALIGN_RIGHT); }
+		if (ammo2) { DrawString(mBigFont, FormatNumber(ammocount2, 3), (posx + 106, posy + 17), DI_TEXT_ALIGN_RIGHT); }
 
 		//Ammo Icons
-		DrawInventoryIcon(ammo1, (-(widthoffset + 61), -21), DI_ITEM_OFFSETS);
-		DrawInventoryIcon(ammo2, (-(widthoffset + 61), -37), DI_ITEM_OFFSETS);
+		DrawInventoryIcon(ammo1, (posx + 55, posy + 32), DI_ITEM_OFFSETS);
+		DrawInventoryIcon(ammo2, (posx + 55, posy + 16), DI_ITEM_OFFSETS);
 
 		//Grenade
-		DrawString(mBigFont, FormatNumber(GetAmount("GrenadePickup")), (-(widthoffset + 83), -20), DI_TEXT_ALIGN_LEFT);
+		DrawString(mBigFont, FormatNumber(GetAmount("GrenadePickup")), (posx + 33, posy + 33), DI_TEXT_ALIGN_LEFT);
 	}
 
 	void DrawDayNightState()

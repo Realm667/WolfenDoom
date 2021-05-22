@@ -84,7 +84,7 @@ class DrawToHUD
 		else if (flags & ZScriptTools.STR_MIDDLE) { screenpos.y -= texth / 2; }
 
 		// Draw the text
-		screen.DrawText(fnt, shade, screenpos.x, screenpos.y, text, DTA_KeepRatio, true, DTA_Alpha, alpha, DTA_VirtualWidth, int(width), DTA_VirtualHeight, int(height));
+		screen.DrawText(fnt, shade, screenpos.x, screenpos.y, text, DTA_KeepRatio, true, DTA_Alpha, alpha, DTA_VirtualWidthF, width, DTA_VirtualHeightF, height);
 	}
 
 	static ui void DrawTexture(TextureID tex, Vector2 pos, double alpha = 1.0, double scale = 1.0, color shade = -1, Vector2 destsize = (-1, -1), bool centered = true)
