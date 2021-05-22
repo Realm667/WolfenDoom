@@ -897,6 +897,9 @@ class MessageHandler : EventHandler
 			)
 			{
 				double protrusion = m.DrawMessage(); // Call each message's internal drawing function
+
+				if (protrusion < 0) { bottomoffset = -protrusion; }
+				else { topoffset = protrusion; }
 			}
 		}
 	}
