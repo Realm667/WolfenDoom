@@ -46,7 +46,7 @@ class MessageBase : Thinker
 
 	String text;
 	String msgname;
-	int time, intime, outtime;
+	int time, intime, outtime, priority;
 	PlayerInfo player;
 
 	int flags;
@@ -56,7 +56,7 @@ class MessageBase : Thinker
 	// How far the message extends into the screen.  Negative value means bottom of screen.
 	ui double protrusion;
 
-	static MessageBase Init(Actor mo, String text, int intime, int outtime, class<MessageBase> type = "MessageBase", int flags = 0)
+	static MessageBase Init(Actor mo, String msgname, String text, int intime, int outtime, class<MessageBase> type = "MessageBase", int priority = 0, int flags = 0)
 	{
 		let handler = MessageHandler.Get();
 		if (!handler) { return null; }
@@ -66,8 +66,8 @@ class MessageBase : Thinker
 		if (flags & MSG_ALLOWREPLACE)
 		{
 			// If a message with this name already exists, allow replacing it.
-			// Reset the ticker and  set the fade-in time to zero.
-			msg = handler.FindMessage(text);
+			// Reset the ticker and set the fade-in time to zero.
+			msg = handler.FindMessage(msgname);
 			if (msg)
 			{
 				msg.ticker = 0;
@@ -78,10 +78,22 @@ class MessageBase : Thinker
 		if (!msg)
 		{
 			msg = MessageBase(New(type));
-			handler.messages.Push(msg);
+			msg.msgname = msgname;
+			msg.handler = handler;
+			msg.priority = priority;
+
+			int insertat = handler.messages.Size();
+
+			for (int m = 0; m < insertat; m++)
+			{
+				if (handler.messages[m].priority <= priority) { continue; }
+
+				insertat = m;
+			}
+
+			handler.messages.Insert(insertat, msg);
 		}
 
-		msg.handler = handler;
 		msg.text = text;
 		msg.time = ZScriptTools.GetMessageTime(text) + intime + outtime;
 		msg.intime = intime;
@@ -93,7 +105,8 @@ class MessageBase : Thinker
 		else { player = players[consoleplayer]; }
 		msg.player = player;
 
-		if (handler.types.Find(type) == handler.types.Size()) { handler.types.Push(type); } // Add this type of message to the handler if it wasn't already aware of it
+		// Add this type of message to the handler if it wasn't already aware of it
+		if (handler.types.Find(type) == handler.types.Size()) { handler.types.Push(type); }
 
 		return msg;
 	}
@@ -114,7 +127,7 @@ class MessageBase : Thinker
 		alpha = clamp(alpha, 0.0, 1.0);
 	}
 
-	// Stop drawing the message with a specific name (normally the message text value)
+	// Stop drawing the message with a specific name
 	static void Clear(String msgname, int outtime = 0)
 	{
 		if (!msgname.length()) { return; }
@@ -154,10 +167,9 @@ class Message : MessageBase
 
 	static int Init(Actor mo, String icon, String text, int intime = 35, int outtime = 35)
 	{
-		Message msg = Message(MessageBase.Init(mo, text, intime, outtime, "Message"));
+		Message msg = Message(MessageBase.Init(mo, icon, text, intime, outtime, "Message", 1));
 		if (msg)
 		{
-			msg.msgname = icon; // Set the name to the icon string so that messages with the same icon don't fade in between
 			msg.icon = icon;
 		}
 		MessageLogHandler.Add(String.Format("|%s", msg.text));
@@ -167,11 +179,10 @@ class Message : MessageBase
 	// For player followers, briefings, and undercover allied spies
 	static int InitWithName(Actor mo, String icon, String text, String charname, int intime = 35, int outtime = 35)
 	{
-		Message msg = Message(MessageBase.Init(mo, text, intime, outtime, "Message"));
+		Message msg = Message(MessageBase.Init(mo, icon, text, intime, outtime, "Message", 1));
 		if (msg)
 		{
 			msg.charname = charname;
-			msg.msgname = icon; // Set the name to the icon string so that messages with the same icon don't fade in between
 			msg.icon = icon;
 		}
 		MessageLogHandler.Add(String.Format("%s|%s", msg.charname, msg.text));
@@ -296,16 +307,14 @@ class Message : MessageBase
 	}
 }
 
-// Message which stays on screen until "end" is set to true. The text content 
-// can also be replaced.
+// Message which stays on screen until removed. The text content can also be replaced.
 class BriefingMessage : Message
 {
 	static int Init(Actor mo, String icon, String text, int intime = 35, int outtime = 35)
 	{
-		BriefingMessage msg = BriefingMessage(MessageBase.Init(mo, text, intime, outtime, "BriefingMessage"));
+		BriefingMessage msg = BriefingMessage(MessageBase.Init(mo, icon, text, intime, outtime, "BriefingMessage"));
 		if (msg)
 		{
-			msg.msgname = icon;
 			msg.icon = icon;
 			msg.time = 2147483647;
 			msg.typespeed = 2.0;
@@ -317,11 +326,10 @@ class BriefingMessage : Message
 	// For player followers, briefings, and undercover allied spies
 	static int InitWithName(Actor mo, String icon, String text, String charname, int intime = 35, int outtime = 35)
 	{
-		BriefingMessage msg = BriefingMessage(MessageBase.Init(mo, text, intime, outtime, "BriefingMessage"));
+		BriefingMessage msg = BriefingMessage(MessageBase.Init(mo, icon, text, intime, outtime, "BriefingMessage"));
 		if (msg)
 		{
 			msg.charname = charname;
-			msg.msgname = icon; // Set the name to the icon string so that messages with the same icon don't fade in between
 			msg.icon = icon;
 			msg.time = 2147483647;
 			msg.typespeed = 2.0;
@@ -383,10 +391,9 @@ class FadeIconMessage : Message
 
 	static int Init(Actor mo, String icon, String icon2, String text, int intime = 35, int outtime = 35)
 	{
-		FadeIconMessage msg = FadeIconMessage(MessageBase.Init(mo, text, intime, outtime, "FadeIconMessage"));
+		FadeIconMessage msg = FadeIconMessage(MessageBase.Init(mo, icon, text, intime, outtime, "FadeIconMessage"));
 		if (msg)
 		{
-			msg.msgname = icon;
 			msg.icon = icon;
 			msg.icon2 = icon2;
 		}
@@ -396,7 +403,7 @@ class FadeIconMessage : Message
 
 	override double DrawMessage()
 	{
-		double protrusion = Super.DrawMessage();
+		protrusion = Super.DrawMessage();
 
 		TextureID ovltex, headtex2;
 
@@ -448,7 +455,7 @@ class HintMessage : MessageBase
 
 	static int Init(Actor mo, String text, String key)
 	{
-		HintMessage msg = HintMessage(MessageBase.Init(mo, text, 20, 20, "HintMessage"));
+		HintMessage msg = HintMessage(MessageBase.Init(mo, text, text, 20, 20, "HintMessage"));
 		if (msg) { msg.key = key; }
 		return msg.GetTime();
 	}
@@ -557,8 +564,7 @@ class ObjectiveMessage : MessageBase
 
 	static int Init(Actor mo, String text, String image = "", String snd = "", int time = 0, int objflags = 0, double posx = 400, double posy = 135, Vector2 destsize = (800, 600))
 	{
-		ObjectiveMessage msg = ObjectiveMessage(MessageBase.Init(mo, text, 18, 18, "ObjectiveMessage", MSG_ALLOWREPLACE));
-		msg.msgname = text;
+		ObjectiveMessage msg = ObjectiveMessage(MessageBase.Init(mo, text, text, 18, 18, "ObjectiveMessage", 0, MSG_ALLOWREPLACE));
 		msg.image = image;
 		msg.snd = snd;
 		msg.posx = posx;
@@ -619,7 +625,7 @@ class DevCommentary : MessageBase
 		text.Split(input, "|");
 
 		if (input.Size()) { text = input[0]; }
-		DevCommentary msg = DevCommentary(MessageBase.Init(mo, text, intime, outtime, "DevCommentary"));
+		DevCommentary msg = DevCommentary(MessageBase.Init(mo, text, text, intime, outtime, "DevCommentary", 1));
 
 		if (msg && input.Size() > 1) { msg.image = input[1]; }
 		MessageLogHandler.Add(String.Format("MESSAGELOGTYPE_DEVCOM|%s", text), msg.image);
@@ -701,6 +707,44 @@ class DevCommentary : MessageBase
 			if (title.length()) { ZScriptTools.TypeString(SmallFont, title, msgwidth, (x, y), int((ticker - 35) * 1.5), hudscale.y, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP); }
 			if (brokentext.length()) { ZScriptTools.TypeString(SmallFont, brokentext, msgwidth, (bodyx, y + lineheight * 2 + 4), int((ticker - 35) * 1.5), hudscale.y, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP); }
 		}
+
+		return protrusion;
+	}
+}
+
+// Countdowns, enemy counters, etc.
+class CountdownMessage : MessageBase
+{
+	String bkg;
+
+	static int Init(Actor mo, String text, int clr = Font.CR_GRAY, int holdtime = 210, int intime = 35, int outtime = 35, String bkg = "HELTHBAR")
+	{
+		CountdownMessage msg = CountdownMessage(MessageBase.Init(mo, bkg, text, intime, outtime, "CountdownMessage", 2, MSG_ALLOWREPLACE));
+		if (msg)
+		{
+			msg.time = holdtime + intime + outtime;
+			msg.bkg = bkg;
+		}
+
+		return msg.GetTime();
+	}
+
+	override double DrawMessage()
+	{
+		Vector2 destsize = (640, 480);
+		Vector2 pos = (320.0, handler.topoffset * destsize.y + 32.0);
+
+		TextureID bgtex = TexMan.CheckForTexture(bkg);
+		Vector2 size = (0, 0);
+		if (bgtex.IsValid())
+		{
+			size = TexMan.GetScaledSize(bgtex);
+			screen.DrawTexture(bgtex, true, pos.x, pos.y, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_CenterOffset, true, DTA_Alpha, alpha); 
+		}
+
+		screen.DrawText(BigFont, Font.CR_GRAY, pos.x - BigFont.StringWidth(text) / 2, pos.y - BigFont.GetHeight() / 2, text, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_Alpha, alpha); 
+
+		protrusion = handler.topoffset + size.y / destsize.y;
 
 		return protrusion;
 	}
@@ -789,7 +833,7 @@ class MessageHandler : EventHandler
 					}
 				}
 
-				if (i < messages.Size()) { messages.Delete(i); }
+				messages.Delete(i);
 			}
 			else
 			{
@@ -853,9 +897,6 @@ class MessageHandler : EventHandler
 			)
 			{
 				double protrusion = m.DrawMessage(); // Call each message's internal drawing function
-
-				if (protrusion < 0 && -protrusion > bottomoffset) { bottomoffset = -protrusion; }
-				else if (protrusion > 0 && protrusion > topoffset) { topoffset = protrusion; }
 			}
 		}
 	}
