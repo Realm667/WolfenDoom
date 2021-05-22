@@ -70,7 +70,7 @@ class MessageBase : Thinker
 			msg = handler.FindMessage(msgname);
 			if (msg)
 			{
-				msg.ticker = 0;
+				msg.ticker = !!msg.ticker; // Make sure an active message is set to 1 tick; inactive is still zero
 				intime = 0;
 			}
 		}
@@ -897,9 +897,10 @@ class MessageHandler : EventHandler
 			)
 			{
 				double protrusion = m.DrawMessage(); // Call each message's internal drawing function
+				if (!(m.flags & MessageBase.MSG_NOFADEOUT)) { protrusion *= m.alpha; }
 
-				if (protrusion < 0) { bottomoffset = -protrusion; }
-				else { topoffset = protrusion; }
+				if (protrusion < 0 && -protrusion > bottomoffset) { bottomoffset = -protrusion; }
+				else if (protrusion > 0 && protrusion > topoffset) { topoffset = protrusion; }
 			}
 		}
 	}
