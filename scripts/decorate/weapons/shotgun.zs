@@ -36,6 +36,7 @@ class TrenchShotgun : NaziWeapon
 	Weapon.UpSound "shotgun/select";
 	Inventory.PickupMessage "$TRENSSG";
 	+WEAPON.NOAUTOFIRE
+	+NaziWeapon.NORAMPAGE
 	Scale .5;
 	Tag "M1897 Trenchgun";
 	}

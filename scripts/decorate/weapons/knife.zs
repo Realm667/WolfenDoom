@@ -34,6 +34,7 @@ class KnifeSilent : NaziWeapon
 	+WEAPON.NOALERT
 	+WEAPON.NOAUTOFIRE
 	+WEAPON.WIMPY_WEAPON
+	+NaziWeapon.NORAMPAGE
 	Tag "$TAGKNIFE";
 	Weapon.BobStyle "Smooth";
 	Weapon.BobSpeed 1.5;

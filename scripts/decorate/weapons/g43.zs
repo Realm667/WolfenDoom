@@ -38,6 +38,7 @@ class G43 : NaziWeapon
 	Tag "Gewehr 43";
 	Weapon.UpSound "g43/select";
 	+WEAPON.NOAUTOFIRE;
+	+NaziWeapon.NORAMPAGE
 	}
 	States
 	{

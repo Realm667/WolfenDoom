@@ -720,22 +720,7 @@ class BoAStatusBar : BaseStatusBar
 		int flags = MugShot.STANDARD;
 		String face = CPlayer.mo.face;
 
-		if (
-			CheckWeaponSelected("Browning5") ||
-			CheckWeaponSelected("FakeID") ||
-			CheckWeaponSelected("Firebrand") ||
-			CheckWeaponSelected("G43") ||
-			CheckWeaponSelected("Kar98k") ||
-			CheckWeaponSelected("KnifeSilent") ||
-			CheckWeaponSelected("Luger9mm") ||
-			CheckWeaponSelected("NullWeapon") ||
-			CheckWeaponSelected("Panzerschreck") ||
-			CheckWeaponSelected("Shovel") ||
-			CheckWeaponSelected("TrenchShotgun")
-		)
-		{
-			flags |= MugShot.DISABLERAMPAGE;
-		}
+		if (NaziWeapon(CPlayer.readyweapon) && NaziWeapon(CPlayer.readyweapon).bNoRampage) { flags |= MugShot.DISABLERAMPAGE; }
 
 		let disguise = DisguiseToken(CPlayer.mo.FindInventory("DisguiseToken", True));
 		if (disguise)

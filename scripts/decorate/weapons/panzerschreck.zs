@@ -40,6 +40,7 @@ class Panzerschreck : NaziWeapon
 	Radius 18;
 	Height 12;
 	+WEAPON.NOAUTOFIRE
+	+NaziWeapon.NORAMPAGE
 	Scale .55;
 	}
 	States

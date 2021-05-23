@@ -32,6 +32,9 @@ class NaziWeapon : Weapon
 	double modifier;
 	uint oldbuttons;
 	bool reloading; // Weapon is reloading
+	int flags;
+
+	FlagDef NORAMPAGE:flags, 0;
 
 	Default
 	{
@@ -257,6 +260,7 @@ class NullWeapon : NaziWeapon
 		+WEAPON.NOALERT
 		Weapon.SelectionOrder 99999; // Make this absolutely last in weapon priority
 		Tag "$TAGCLOAK";
+		+NaziWeapon.NORAMPAGE
 	}
 
 	States
@@ -1332,6 +1336,7 @@ class Firebrand : NaziWeapon
 		-WEAPON.AMMO_CHECKBOTH
 		+WEAPON.NOALERT
 		+WEAPON.NOAUTOFIRE
+		+NaziWeapon.NORAMPAGE
 		Tag "$TAGBLAOA";
 	}
 	States

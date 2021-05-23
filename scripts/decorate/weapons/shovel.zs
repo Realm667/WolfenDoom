@@ -35,6 +35,7 @@ class Shovel : NaziWeapon
 	-WEAPON.AMMO_CHECKBOTH
 	+WEAPON.MELEEWEAPON
 	+WEAPON.NOAUTOFIRE
+	+NaziWeapon.NORAMPAGE
 	}
 	States
 	{

@@ -39,6 +39,7 @@ class Browning5 : NaziWeapon
 	Inventory.PickupMessage "$BROWNING";
 	Tag "Browning Auto-5";
 	+WEAPON.NOAUTOFIRE
+	+NaziWeapon.NORAMPAGE
 	}
 	States
 	{

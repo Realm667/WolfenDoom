@@ -38,6 +38,7 @@ class Luger9mm : NaziWeapon
 	Tag "Luger P08";
 	Inventory.PickupMessage "$P08LUG";
 	+WEAPON.NOAUTOFIRE
+	+NaziWeapon.NORAMPAGE
 	}
 	States
 	{

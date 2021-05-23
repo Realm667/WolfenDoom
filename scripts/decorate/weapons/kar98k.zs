@@ -37,6 +37,7 @@ class Kar98k : NaziWeapon
 	Inventory.PickupMessage "$KAR98K";
 	Weapon.SelectionOrder 750;
 	+WEAPON.NOAUTOFIRE
+	+NaziWeapon.NORAMPAGE
 	Tag "Karabiner 98k";
 	}
 	States
