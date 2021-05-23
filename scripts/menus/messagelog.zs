@@ -286,12 +286,12 @@ class MessageLogMenu : GenericMenu
 				// Clicked on one of the arrows
 				if (my - upArrowY < 32)
 				{
-					SetLine(minLine, -1);
+					SetLine(minLine - 1);
 					return true;
 				}
 				else if (my >= downArrowY && my - downArrowY < 32)
 				{
-					SetLine(minLine, 1);
+					SetLine(minLine + 1);
 					return true;
 				}
 				else
@@ -324,9 +324,9 @@ class MessageLogMenu : GenericMenu
 		return int(floor(maxLine * percent));
 	}
 
-	protected void SetLine(int line, int add = 0)
+	protected void SetLine(int line)
 	{
-		minLine = clamp(line + add, 0, lines.Size() - maxLines);
+		minLine = clamp(line, 0, lines.Size() - maxLines);
 	}
 
 	protected bool Scroll(int by)
@@ -337,7 +337,7 @@ class MessageLogMenu : GenericMenu
 			(by < 0 && minLine > 0)); // Scroll up
 		if (allowMove)
 		{
-			SetLine(minLine, by);
+			SetLine(minLine + by);
 			return true;
 		}
 		else
