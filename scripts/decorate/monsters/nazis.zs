@@ -2421,12 +2421,13 @@ class Mechanic : BasicGuard
 		Goto Look;
 	SurrenderSprite:
 		MNIS E 0;
-	See:
-		Goto See.Dodge;
-	Dodge:
-		MNID A 0;
-	Dodge.Resume:
+	See: //dodge code preserved for modders --ozy81
 		Goto See.Loop;
+			//	Goto See.Dodge;
+			//Dodge:
+			//	MNID A 0;
+			//Dodge.Resume:
+			//	Goto See.Loop;
 	See.Loop:
 		"####" "#" 0 {
 			if (!user_incombat) {
@@ -2472,27 +2473,32 @@ class Mechanic : BasicGuard
 		"####" G 8 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",54,1,random(-8,8));
 		"####" F 8 A_SpawnItemEx("Casing9mm", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 7) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" F 0 A_Jump(256,"See.Dodge");
+		"####" F 0 A_Jump(256, "See.Loop");
+		//"####" F 0 A_Jump(256,"See.Dodge");
 		Stop;
 	Reload:
 		"####" F 0 {bNoPain = TRUE;}
 		"####" F 30 A_StartSound("luger/reload", CHAN_ITEM, 0, frandom (0.3,0.6), ATTN_NORM);
 		"####" F 0 A_SpawnItemEx("Casing9mm", 1, 0, 56, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
 		"####" F 0 {bNoPain = FALSE;}
-		"####" "#" 0 A_Jump(256, "See.Dodge");
+		"####" "#" 0 A_Jump(256, "See.Loop");
+		//"####" "#" 0 A_Jump(256, "See.Dodge");
 	Pain:
 		"####" H 6 A_NaziPain(256);
-		"####" H 0 A_Jump(256,"See.Dodge");
+		"####" H 0 A_Jump(256, "See.Loop");
+		//"####" H 0 A_Jump(256, "See.Dodge");
 		Stop;
 	Pain.Silent:
 		"####" H 6 A_NaziPain(64, False);
 		"####" H 0 A_StartSound("Nazi1/Pain", CHAN_AUTO, 0, frandom (0.2,0.4), ATTN_NORM);
-		"####" H 0 A_Jump(256,"See.Dodge");
+		"####" H 0 A_Jump(256, "See.Loop");
+		//"####" H 0 A_Jump(256, "See.Dodge");
 		Stop;
 	Raise:
 		"####" M 35;
 		"####" LKJ 5;
-		"####" I 5 A_Jump(256,"See.Dodge");
+		"####" I 5 A_Jump(256, "See.Loop");
+		//"####" I 5 A_Jump(256, "See.Dodge");
 		Stop;
 	Death:
 		"####" I 5 A_RandomDeathAnim;
@@ -3447,12 +3453,13 @@ class Scientist : BasicGuard
 		Goto Look;
 	SurrenderSprite:
 		SC2S E 0;
-	See:
-		Goto See.Dodge;
-	Dodge:
-		SCD2 A 0;
-	Dodge.Resume:
+	See: //dodge code preserved for modders --ozy81
 		Goto See.Normal;
+			//	Goto See.Dodge;
+			//Dodge:
+			//	SCD2 A 0;
+			//Dodge.Resume:
+			//	Goto See.Normal;
 	Death.Back:
 	Death.Headshot:
 		Stop;
@@ -3488,12 +3495,13 @@ class Scientist2 : BasicGuard
 		Goto Look;
 	SurrenderSprite:
 		SCNS E 0;
-	See:
-		Goto See.Dodge;
-	Dodge:
-		SCND A 0;
-	Dodge.Resume:
+	See: //dodge code preserved for modders --ozy81
 		Goto See.Normal;
+			//	Goto See.Dodge;
+			//Dodge:
+			//	SCND A 0;
+			//Dodge.Resume:
+			//	Goto See.Normal;
 	Death.Back:
 	Death.Headshot:
 		Stop;

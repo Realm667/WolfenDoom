@@ -288,6 +288,7 @@ class PrisonerEnemyBoss_End : ZombieStandard
 	//$Category Monsters (BoA)/NPCs
 	//$Title Undead James Ryan (uniform, boss, hostile)
 	//$Color 4
+	Base.BossIcon "BOSSICO3";
 	Tag "$TAGZJRYAN";
 	Obituary "$ZRYAN";
 	Health 4000;

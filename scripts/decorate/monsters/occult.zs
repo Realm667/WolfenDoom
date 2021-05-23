@@ -682,12 +682,13 @@ class PlagueDoc : Guard
 		Goto Look;
 	SurrenderSprite:
 		PDCS E 0;
-	See:
-		Goto See.Dodge;
-	Dodge:
-		PDOD A 0;
-	Dodge.Resume:
+	See: //dodge code preserved for modders --ozy81
 		Goto See.Fast; //more fast now - ozy81
+	//	Goto See.Dodge;
+	//Dodge:
+	//	PDOD A 0;
+	//Dodge.Resume:
+	//	Goto See.Fast;
 	Death.Back:
 	Death.Headshot:
 		Stop;
