@@ -141,8 +141,10 @@ class MessageLogMenu : GenericMenu
 		int firstLineNumber = lines.Size();
 		if (firstLineNumber)
 		{
+			addLine(""); // Should make it less cluttered and easier to read
 			addLine(""); // Private use character - separator graphic in smallfont
-			firstLineNumber += 1; // So that images are drawn - the drawer
+			addLine("");
+			firstLineNumber += 3; // So that images are drawn - the drawer
 			// checks the text line, not the separator line.
 		}
 		for (int i = 0; i <= breakInfo.Count(); i++)
@@ -225,7 +227,7 @@ class MessageLogMenu : GenericMenu
 				double scrollBarPct = double(minLine) / (lines.Size() - maxLines);
 				// The scroll bar is 96px tall.
 				double scrollBarYOffset = -scrollBarPct * 96 * CleanYFac_1;
-				// ypos += 32 * CleanYFac_1;
+				// ypos += 32 * CleanYFac_1; // Debug
 				// Screen.DrawLineFrame(Color(255, 0, 255, 0), int(xpos), int(ypos), 32 * CleanXFac_1, int(scrollBarHeight)); // Debug
 				ypos = ystart + 32 * CleanYFac_1 + scrollBarHeight * scrollBarPct;
 				Screen.DrawTexture(scrollTop, false, xpos, ypos + scrollBarYOffset, DTA_CleanNoMove_1, true);
@@ -267,15 +269,15 @@ class MessageLogMenu : GenericMenu
 
 	override bool MouseEvent(int type, int mx, int my)
 	{
+		int totalHeight = Screen.GetHeight() * .875;
 		int scrollBarX = max(0, Screen.GetWidth() / 2 * (1 - (4./3) / Screen.GetAspectRatio())) + 10 * scaleX + msgWidth;
 		int upArrowY = Screen.GetHeight() * .0625;
 		int upArrowHeight = 32 * CleanYFac_1;
 		int scrollBarY = upArrowY + 32 * CleanYFac_1;
 		int scrollBarWidth = 32 * CleanXFac_1;
-		int scrollBarHeight = int(Screen.GetHeight() * .875 - 64 * CleanYFac_1);
+		int scrollBarHeight = totalHeight - 64 * CleanYFac_1;
 		int downArrowY = scrollBarY + scrollBarHeight;
 		int downArrowHeight = 32 * CleanYFac_1;
-		int totalHeight = upArrowHeight + scrollBarHeight + downArrowHeight;
 		if (lines.Size() <= maxLines)
 		{
 			// No need to scroll the message log if all the lines fit
