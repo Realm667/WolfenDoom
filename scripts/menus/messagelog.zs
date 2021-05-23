@@ -237,8 +237,8 @@ class MessageLogMenu : GenericMenu
 		else
 		{
 			String emptyLogText = StringTable.Localize("MESSAGELOGEMPTY", false);
-			double xpos = (Screen.GetWidth() * scaleX / 2) - (smallfont.StringWidth(emptyLogText) * scaleX / 2);
-			double ypos = (Screen.GetHeight() * scaleY / 2) - (smallfont.GetHeight() * scaleY / 2);
+			double xpos = (Screen.GetWidth() / 2) - (smallfont.StringWidth(emptyLogText) * scaleX / 2);
+			double ypos = (Screen.GetHeight() / 2) - (smallfont.GetHeight() * scaleY / 2);
 			Screen.DrawText(smallfont, Font.CR_GRAY, xpos, ypos, emptyLogText, DTA_ScaleX, scaleX, DTA_ScaleY, scaleY);
 		}
 		Super.Drawer(); // "Back" button
