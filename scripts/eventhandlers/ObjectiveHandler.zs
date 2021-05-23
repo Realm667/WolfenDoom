@@ -99,8 +99,8 @@ class Objective : Thinker
 				}
 			}
 
-			DrawToHud.DrawText(status, (x, y), Symbols, alpha, hudscale.y, (w, h), Font.CR_UNTRANSLATED);
-			DrawToHud.DrawText(output, (x + Symbols.StringWidth("  "), y + 1), fnt, alpha, hudscale.y, (w, h), clr);
+			DrawToHud.DrawText(status, (x, y), Symbols, alpha, 1.0, (w, h), Font.CR_UNTRANSLATED);
+			DrawToHud.DrawText(output, (x + Symbols.StringWidth("  "), y + 1), fnt, alpha, 1.0, (w, h), clr);
 		}
 		else
 		{
@@ -206,7 +206,7 @@ class ObjectiveHandler : EventHandler
 
 		if (active[consoleplayer] == 2 && alt.GetBool())
 		{
-			height = DrawMinimal(-4, 10);
+			height = DrawMinimal(-3, 10);
 		}
 		else
 		{
@@ -325,7 +325,7 @@ class ObjectiveHandler : EventHandler
 		if (posx < 0) { posx -= boxwidth; }
 		if (posy < 0) { posy -= boxheight; }
 
-		DrawToHUD.DrawFrame("FRAME_", int(posx - lineheight / 2), int(posy - lineheight / 2), boxwidth, boxheight, 0x1b1b1b, 1.0, 0.53);
+		DrawToHUD.DrawFrame("FRAME_", int(posx - lineheight / 2) - 4, int(posy - lineheight / 2) - 4, boxwidth + 8, boxheight + 8, 0x1b1b1b, 1.0, 0.53);
 
 		// Draw primary objectives
 		int count = 0, shown = 0;

@@ -65,6 +65,9 @@ class DrawToHUD
 	{
 		if (!fnt) { fnt = SmallFont; }
 
+		Vector2 hudscale = StatusBar.GetHudScale();
+		scale *= hudscale.y;
+
 		double width = Screen.GetWidth() / scale;
 		double height = Screen.GetHeight() / scale;
 

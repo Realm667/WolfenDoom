@@ -261,7 +261,7 @@ class Message : MessageBase
 			boxheight = max(boxheight, size.y + margin);
 			boxheight += margin;
 
-			DrawToHUD.DrawFrame("FRAME_", x, y, msgwidth + size.x + margin * 4, boxheight, 0x1b1b1b, 1.0 * staticalpha, 0.53 * staticalpha);
+			DrawToHUD.DrawFrame("FRAME_", x - 4, y - 4, msgwidth + size.x + margin * 4 + 8, boxheight + 8, 0x1b1b1b, 1.0 * staticalpha, 0.53 * staticalpha);
 
 			y += margin;
 
@@ -275,7 +275,7 @@ class Message : MessageBase
 
 			if (ticker > 35 && text.length())
 			{ // text.length() instead of fulltext.length() because there's no point in just showing the character's name
-				ZScriptTools.TypeString(SmallFont, fulltext, msgwidth, (x, y), typeticks, hudscale.y, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP);
+				ZScriptTools.TypeString(SmallFont, fulltext, msgwidth, (x, y), typeticks, 1.0, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP);
 			}
 
 			protrusion = (y + boxheight) / (Screen.GetHeight() / hudscale.y);
@@ -519,7 +519,7 @@ class HintMessage : MessageBase
 
 			for (int l = 0; l <= lines.Count(); l++)
 			{
-				DrawToHUD.DrawText(lines.StringAt(l), (posx, posy), SmallFont, alpha, 1.0 * hudscale.y, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
+				DrawToHUD.DrawText(lines.StringAt(l), (posx, posy), SmallFont, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
 				posy += lineheight;
 			}
 		}
@@ -705,8 +705,8 @@ class DevCommentary : MessageBase
 
 		if (ticker > 35)
 		{
-			if (title.length()) { ZScriptTools.TypeString(SmallFont, title, msgwidth, (x, y), int((ticker - 35) * 1.5), hudscale.y, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP); }
-			if (brokentext.length()) { ZScriptTools.TypeString(SmallFont, brokentext, msgwidth, (bodyx, y + lineheight * 2 + 4), int((ticker - 35) * 1.5), hudscale.y, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP); }
+			if (title.length()) { ZScriptTools.TypeString(SmallFont, title, msgwidth, (x, y), int((ticker - 35) * 1.5), 1.0, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP); }
+			if (brokentext.length()) { ZScriptTools.TypeString(SmallFont, brokentext, msgwidth, (bodyx, y + lineheight * 2 + 4), int((ticker - 35) * 1.5), 1.0, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP); }
 		}
 
 		return protrusion;
