@@ -195,8 +195,10 @@ class AngelOfDeath_End : AngelOfDeath
 	PainChance "Poison", 0;
 	PainChance "UndeadPoison", 0;
 	DamageFactor "MutantPoison", 0;
+	DamageFactor "MutantPoisonAmbience", 0;
 	DamageFactor "Poison", 0;
 	DamageFactor "UndeadPoison", 0;
+	DamageFactor "UndeadPoisonAmbience", 0;
 	DamageFactor "Rocket", 0;
 	DamageFactor "Normal", 0;
 	DamageFactor "Fire", 0;
@@ -803,8 +805,10 @@ class ZyklonMonster : Nazi
 	DamageFactor "Rocket", 0;
 	DamageFactor "Smoke", 0;
 	DamageFactor "MutantPoison", 0;
+	DamageFactor "MutantPoisonAmbience", 0;
 	DamageFactor "Poison", 0;
 	DamageFactor "UndeadPoison", 0;
+	DamageFactor "UndeadPoisonAmbience", 0;
 	PainChance "Electric", 0;
 	PainChance "Fire", 0;
 	PainChance "Normal", 0;
@@ -1402,9 +1406,11 @@ class HimmlerBoss : RocketMan
 	DamageFactor "Electric", 0.5;
 	DamageFactor "Fire", 0.5;
 	DamageFactor "MutantPoison", 0;
+	DamageFactor "MutantPoisonAmbience", 0;
 	DamageFactor "Normal", 0.5;
 	DamageFactor "Poison", 0;
 	DamageFactor "UndeadPoison", 0;
+	DamageFactor "UndeadPoisonAmbience", 0;
 	DropItem "DeployableMine", 128;
 	DropItem "NebAmmo", 128;
 	}
@@ -1465,9 +1471,11 @@ class GoebbelsBoss : RocketMan
 	DamageFactor "Electric", 0.7;
 	DamageFactor "Fire", 0.2;
 	DamageFactor "MutantPoison", 0;
+	DamageFactor "MutantPoisonAmbience", 0;
 	DamageFactor "Normal", 0.5;
 	DamageFactor "Poison", 0;
 	DamageFactor "UndeadPoison", 0;
+	DamageFactor "UndeadPoisonAmbience", 0;
 	DropItem "FlameAmmo", 128;
 	DropItem "NebAmmo", 64;
 	MaxTargetRange 1024;
@@ -1762,9 +1770,11 @@ class MadDoctor3 : MadDoctor
 	Health 1600;
 	PainChance 0;
 	DamageFactor "MutantPoison", 0;
+	DamageFactor "MutantPoisonAmbience", 0;
 	DamageFactor "Normal", 0.5;
 	DamageFactor "Poison", 0;
 	DamageFactor "UndeadPoison", 0;
+	DamageFactor "UndeadPoisonAmbience", 0;
 	+MISSILEMORE
 	-MISSILEEVENMORE
 	Obituary "$MENGELE";
@@ -1864,7 +1874,9 @@ class MadDoctor4 : MadDoctor
 	+MISSILEEVENMORE
 	Obituary "$MORELL";
 	DamageFactor "MutantPoison", 0;
+	DamageFactor "MutantPoisonAmbience", 0;
 	DamageFactor "UndeadPoison", 0;
+	DamageFactor "UndeadPoisonAmbience", 0;
 	DamageFactor "Poison", 0;
 	DropItem "Medikit_Large";
 	DropItem "AdrenalineKit";
@@ -2451,7 +2463,9 @@ class Totengraber_Healthy : RocketMan
 	Health 1000;
 	DamageFactor "Poison", 0;
 	DamageFactor "MutantPoison", 0;
+	DamageFactor "MutantPoisonAmbience", 0;
 	DamageFactor "UndeadPoison", 0;
+	DamageFactor "UndeadPoisonAmbience", 0;
 	PainChance 16;
 	+MISSILEMORE
 	Obituary "$TOTENS";
@@ -2518,7 +2532,9 @@ class Totengraber_Wounded : RocketMan
 	+MISSILEMORE
 	DamageFactor "Poison", 0;
 	DamageFactor "MutantPoison", 0;
+	DamageFactor "MutantPoisonAmbience", 0;
 	DamageFactor "UndeadPoison", 0;
+	DamageFactor "UndeadPoisonAmbience", 0;
 	Obituary "$TOTENS";
 	ActiveSound "toten/active";
 	SeeSound "toten/sight";
@@ -2600,7 +2616,9 @@ class Mengele_Healthy : RocketMan
 	Speed 4;
 	DamageFactor "Poison", 0;
 	DamageFactor "MutantPoison", 0;
+	DamageFactor "MutantPoisonAmbience", 0;
 	DamageFactor "UndeadPoison", 0;
+	DamageFactor "UndeadPoisonAmbience", 0;
 	PainChance 16;
 	+MISSILEMORE
 	Obituary "$MENGELE";
@@ -2666,7 +2684,9 @@ class Mengele_Wounded : RocketMan
 	+MISSILEMORE
 	DamageFactor "Poison", 0;
 	DamageFactor "MutantPoison", 0;
+	DamageFactor "MutantPoisonAmbience", 0;
 	DamageFactor "UndeadPoison", 0;
+	DamageFactor "UndeadPoisonAmbience", 0;
 	Obituary "$MENGELE";
 	Nazi.Healer 2;
 	Nazi.HealSound "creepy/born";
@@ -3954,9 +3974,11 @@ class PhantomBoss : RocketMan
 	DamageFactor "Electric", 0.8;
 	DamageFactor "Fire", 0.5;
 	DamageFactor "MutantPoison", 0;
+	DamageFactor "MutantPoisonAmbience", 0;
 	DamageFactor "Normal", 0.5;
 	DamageFactor "Poison", 0;
 	DamageFactor "UndeadPoison", 0;
+	DamageFactor "UndeadPoisonAmbience", 0;
 	DropItem "Medikit_Large", 96;
 	DropItem "Medikit_Small", 128;
 	Species "Phantom";

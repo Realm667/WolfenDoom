@@ -863,7 +863,7 @@ class FlyingNeedle : MiniRocket
 	Default
 	{
 	Speed 10;
-	DamageType "MutantPoison";
+	DamageType "MutantPoisonAmbience";
 	PoisonDamage 3, 4;
 	SeeSound "";
 	DeathSound "gshardnd";
@@ -902,7 +902,7 @@ class FlyingNeedleZ : MiniRocket
 	Default
 	{
 	Speed 12;
-	DamageType "UndeadPoison";
+	DamageType "UndeadPoisonAmbience";
 	PoisonDamage 1, 2;
 	SeeSound "";
 	DeathSound "gshardnd";
@@ -1398,7 +1398,7 @@ class ZyklonBCloud : ParticleBase
 	Scale 1.5;
 	DamageFunction (2*random(1,8));
 	PoisonDamage 2;
-	DamageType "UndeadPoison";
+	DamageType "UndeadPoisonAmbience";
 	Projectile;
 	+WINDTHRUST
 	RenderStyle "Translucent";
@@ -1483,7 +1483,7 @@ class ZyklonBBall: Actor
 	DamageFunction (10*random(1,8));
 	PoisonDamage 2;
 	Scale 1.0;
-	DamageType "UndeadPoison";
+	DamageType "UndeadPoisonAmbience";
 	Projectile;
 	+BRIGHT
 	+RANDOMIZE
@@ -1686,7 +1686,7 @@ class ZFlamebolt: Actor
 	+BLOODLESSIMPACT
 	+WINDTHRUST
 	+ROLLSPRITE
-	DamageType "UndeadPoison";
+	DamageType "UndeadPoisonAmbience";
 	RenderStyle "Add";
 	Decal "Scorch";
 	SeeSound "STEAM_BURST";
@@ -2387,7 +2387,7 @@ class ZBloodSpit : BloodSpit
 	{
 	Speed 24;
 	PoisonDamage 2;
-	DamageType "UndeadPoison";
+	DamageType "UndeadPoisonAmbience";
 	Decal "ZBloodSplat";
 	}
 	States

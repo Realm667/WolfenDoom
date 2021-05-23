@@ -223,7 +223,9 @@ class ZBatFamiliar : BatFamiliar
 	FloatSpeed 3.33333333;
 	Speed 4.33333334;
 	DamageFactor "MutantPoison", 0;
+	DamageFactor "MutantPoisonAmbience", 0;
 	DamageFactor "UndeadPoison", 0;
+	DamageFactor "UndeadPoisonAmbience", 0;
 	DamageFactor "Poison", 0;
 	BloodColor "00 A0 7D";
 	BloodType "ZombieBlood";

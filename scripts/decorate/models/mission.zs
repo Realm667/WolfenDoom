@@ -93,7 +93,9 @@ class Nebelwerfer3D : Base //MaxED
 		DamageFactor "Frag", 0;
 		DamageFactor "Poison", 0;
 		DamageFactor "MutantPoison", 0;
+		DamageFactor "MutantPoisonAmbience", 0;
 		DamageFactor "UndeadPoison", 0;
+		DamageFactor "UndeadPoisonAmbience", 0;
 	}
 	States
 	{

@@ -3338,7 +3338,9 @@ class MutantStandard : Nazi
 		GibHealth 30;
 		DamageFactor "Electric", 0.3; //Purple = less sensible - ozy81
 		DamageFactor "MutantPoison", 0;
+		DamageFactor "MutantPoisonAmbience", 0;
 		DamageFactor "UndeadPoison", 0;
+		DamageFactor "UndeadPoisonAmbience", 0;
 		DamageFactor "Poison", 0;
 		SeeSound "mutant/see";
 		PainSound "mutant/pain";
@@ -3447,6 +3449,7 @@ class ZombieStandard : Nazi
 		DamageFactor "Electric", 0.8;
 		DamageFactor "Fire", 1.2;
 		DamageFactor "MutantPoison", 0;
+		DamageFactor "MutantPoisonAmbience", 0;
 		DamageFactor "Normal", 0.5;
 		DamageFactor "Poison", 0;
 		DamageFactor "UndeadPoison", 0;

@@ -122,11 +122,12 @@ class BoAPlayer : PlayerPawn
 		Player.WeaponSlot 7, "Panzerschreck";
 		Player.WeaponSlot 8, "TeslaCannon", "UMG43";
 		Player.WeaponSlot 0, "NullWeapon";
-		Player.DamageScreenColor "ff 00 00", 0;
-		Player.DamageScreenColor "ff ff ff", 1, "IceWater";
-		Player.DamageScreenColor "64 00 C8", 1, "MutantPoison";
-		Player.DamageScreenColor "00 5A 40", 1, "UndeadPoison";
-		Player.DamageScreenColor "00 5A 40", 1, "UndeadPoisonAmbience";
+		Player.DamageScreenColor "ff 00 00", 0.0;
+		Player.DamageScreenColor "ff ff ff", 1.0, "IceWater";
+		Player.DamageScreenColor "64 00 C8", 0.0, "MutantPoison";
+		Player.DamageScreenColor "64 00 C8", 1.0, "MutantPoisonAmbience"; // Used for poison damage
+		Player.DamageScreenColor "00 5A 40", 0.0, "UndeadPoison";
+		Player.DamageScreenColor "00 5A 40", 1.0, "UndeadPoisonAmbience"; // Used for poison damage
 		DamageFactor "Creepy", 0.0;
 		DamageFactor "FriendlyFrag", 0.5;
 		Scale 0.65;

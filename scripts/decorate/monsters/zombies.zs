@@ -470,9 +470,11 @@ class ZombieGeneral : RocketMan
 	DamageFactor "Electric", 0.8;
 	DamageFactor "Fire", 1.2;
 	DamageFactor "MutantPoison", 0;
+	DamageFactor "MutantPoisonAmbience", 0;
 	DamageFactor "Normal", 0.5;
 	DamageFactor "Poison", 0;
 	DamageFactor "UndeadPoison", 0;
+	DamageFactor "UndeadPoisonAmbience", 0;
 	DropItem "NebAmmoBox", 128;
 	DropItem "NebAmmoBox", 128;
 	DropItem "Soul", 255, 5;
@@ -538,9 +540,11 @@ class ZombieZyklonstein : RocketMan
 	DamageFactor "Electric", 0.8;
 	DamageFactor "Fire", 1.2;
 	DamageFactor "MutantPoison", 0;
+	DamageFactor "MutantPoisonAmbience", 0;
 	DamageFactor "Normal", 0.5;
 	DamageFactor "Poison", 0;
 	DamageFactor "UndeadPoison", 0;
+	DamageFactor "UndeadPoisonAmbience", 0;
 	DropItem "FlameAmmo", 128;
 	DropItem "FlameAmmo", 128;
 	DropItem "SoulSuperBig", 255;
@@ -610,9 +614,11 @@ class ZombieButcher : RocketMan
 	DamageFactor "Electric", 0.8;
 	DamageFactor "Fire", 1.2;
 	DamageFactor "MutantPoison", 0;
+	DamageFactor "MutantPoisonAmbience", 0;
 	DamageFactor "Normal", 0.5;
 	DamageFactor "Poison", 0;
 	DamageFactor "UndeadPoison", 0;
+	DamageFactor "UndeadPoisonAmbience", 0;
 	DropItem "Medikit_Medium";
 	DropItem "SoulSuperBig", 255;
 	DropItem "Soul", 255, 5;
