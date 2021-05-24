@@ -101,6 +101,31 @@ class SSBJUniformToken : DisguiseToken
 	}
 }
 
+class PRBJUniformToken : DisguiseToken //used in C2M1
+{
+	Default
+	{
+		Inventory.Icon "UNFSA0";
+		Inventory.PickupMessage "$UNIFORM4";
+		Inventory.PickupSound "pickup/uniform";
+		Scale 0.7;
+		Tag "$TAGCOATP";
+	}
+	States
+	{
+		Spawn:
+			UNFL A -1;
+			Stop;
+		Pickup:
+			TNT1 A 0 A_SelectWeapon("NullWeapon");
+			Stop;
+		WalkSprite:
+			PLZP A 0;
+		CrouchSprite:
+			PLYZ A 0;
+	}
+}
+
 class BaseLineSpawner: Actor
 {
 	States

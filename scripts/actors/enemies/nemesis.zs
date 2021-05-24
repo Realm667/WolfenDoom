@@ -247,6 +247,8 @@ class RENemesis : NaziBoss
 		DefThreshold 64;
 		Base.BossIcon "BOSSICO2";
 		Nazi.TotaleGierDrop 0;
+		BloodColor "00 A0 7D";
+		BloodType "ZombieBlood";
 		+JUMPDOWN
 	}
 

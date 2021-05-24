@@ -305,7 +305,7 @@ class FastFoodR : Meal //no empty stuff and menues
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6);
 		FFOD A -1;
-		FFOD C -1;
+		HFHF B -1;
 		FFOD G -1;
 		FFOD H -1;
 		FFOD J -1;
@@ -335,14 +335,14 @@ class FastFood2 : Meal
 	Default
 	{
 		//$Category Health (BoA)/Fast Food
-		//$Title Empty Fried Potatoes (+1 health)
+		//$Title Empty HFH Fried Potatoes (+1 health)
 		Inventory.Amount 1;
 		Scale 0.37;
 	}
 	States
 	{
 	Spawn:
-		FFOD B -1;
+		HFHF A -1;
 		Stop;
 	}
 }
@@ -352,13 +352,13 @@ class FastFood3 : Meal
 	Default
 	{
 		//$Category Health (BoA)/Fast Food
-		//$Title Fried Potatoes (+5 health)
+		//$Title HFH Fried Potatoes (+5 health)
 		Scale 0.37;
 	}
 	States
 	{
 	Spawn:
-		FFOD C -1;
+		HFHF B -1;
 		Stop;
 	}
 }
@@ -488,6 +488,39 @@ class FastFood11 : Meal
 	{
 	Spawn:
 		FFOD E -1;
+		Stop;
+	}
+}
+
+class FastFood12 : Meal
+{
+	Default
+	{
+		//$Category Health (BoA)/Fast Food
+		//$Title Empty Mc Fried Potatoes (+1 health)
+		Inventory.Amount 1;
+		Scale 0.37;
+	}
+	States
+	{
+	Spawn:
+		FFOD B -1;
+		Stop;
+	}
+}
+
+class FastFood13 : Meal
+{
+	Default
+	{
+		//$Category Health (BoA)/Fast Food
+		//$Title Mc Fried Potatoes (+5 health)
+		Scale 0.37;
+	}
+	States
+	{
+	Spawn:
+		FFOD C -1;
 		Stop;
 	}
 }
