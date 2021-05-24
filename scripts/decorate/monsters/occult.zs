@@ -93,7 +93,9 @@ class ZyklonSkull : BloodSkull
 	//FloatSpeed 2
 	PainChance 50;
 	DamageFactor "MutantPoison", 0;
+	DamageFactor "MutantPoisonAmbience", 0;
 	DamageFactor "UndeadPoison", 0;
+	DamageFactor "UndeadPoisonAmbience", 0;
 	DamageFactor "Poison", 0;
 	BloodColor "00 A0 7D";
 	BloodType "ZombieBlood";
@@ -516,7 +518,9 @@ class ZyklonMonk : UndeadMonk
 	//$Title Zyklon Monk
 	Health 250;
 	DamageFactor "MutantPoison", 0.0;
+	DamageFactor "MutantPoisonAmbience", 0;
 	DamageFactor "UndeadPoison", 0.0;
+	DamageFactor "UndeadPoisonAmbience", 0;
 	DamageFactor "Poison", 0.0;
 	Obituary "$UNDEADZ";
 	}
