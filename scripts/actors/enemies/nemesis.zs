@@ -298,7 +298,6 @@ class RENemesis : NaziBoss
 		// 8400 tics - 3 seconds = 8400 - 105 = 8295 tics
 		// 3 seconds (105 tics) is easier to test with
 		NEMS N 8295 CanRaise;
-		Loop;
 	Sleep:
 		"####" "#" 35 CanRaise A_JumpIf(!control.sleeping, 1);
 		Wait;
