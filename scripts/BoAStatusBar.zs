@@ -468,6 +468,14 @@ class BoAStatusBar : BaseStatusBar
 				DrawString(mHUDFont, FormatNumber(amt) .. "%", (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
 			}
 		}
+		else if (item is "PowerupToggler")
+		{
+			int maxamt = PowerupToggler(item).Default.EffectTics;
+			int amt = int(100 * PowerupToggler(item).EffectTics / maxamt);
+
+			if (maxamt < 0x7FFFFFFF) { DrawString(mHUDFont, FormatNumber(amt) .. "%", (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD); }
+		}
+
 	}
 
 	virtual void DrawFullScreenBar()

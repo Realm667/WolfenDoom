@@ -90,6 +90,8 @@ class PowerupToggler : PowerupGiver
 
 	override bool Use(bool pickup)
 	{
+		PlayPickupSound(owner);
+
 		if (powerinv)
 		{
 			powerinv.Destroy();
@@ -174,8 +176,9 @@ class ZyklonMask : PowerupToggler
 		Tag "$TAGZMASK";
 		Inventory.Icon "ZASKB0";
 		Inventory.PickupMessage "$ZMASK";
+		Inventory.PickupSound "misc/gadget_pickup";
 		Inventory.MaxAmount 1;
-		Powerup.Duration -60;
+		Powerup.Duration 0x7FFFFFFF; // Never expire; status bar will not draw duration percentage (PowerZyklonMask also has code to never decrement tics)
 		Powerup.Type "PowerZyklonMask";
 		+INVENTORY.INVBAR
 		+INVENTORY.UNDROPPABLE
@@ -183,14 +186,27 @@ class ZyklonMask : PowerupToggler
 
 	States
 	{
-	Spawn:
-		ZASK A -1;
-		Stop;
+		Spawn:
+			ZASK A -1;
+			Stop;
+	}
+
+	override bool Use(bool pickup)
+	{
+		if (!powerinv)
+		{
+			// Override other masks - Only one can be active at a time!
+			let mask = owner.FindInventory("PowerMaskProtection", true);
+			if (mask) { mask.Destroy(); }
+		}
+
+		return Super.Use(pickup);
 	}
 
 	override void DoEffect()
 	{
 		if (globalfreeze || level.Frozen) { return; }
+
 		// Zyklon mask cannot be used underwater
 		if (powerinv && owner.waterlevel >= 3)
 		{
@@ -218,6 +234,14 @@ class PowerMaskProtection : PowerProtection
 		PowerMaskProtection.Channel CHAN_MASK;
 	}
 
+	// Any mask with duration of 0x7FFFFFFF should never expire
+	override void Tick()
+	{
+		if (owner && EffectTics == 0x7FFFFFFF) { return; }
+
+		Super.Tick();
+	}
+
 	override void InitEffect()
 	{
 		if (Owner)
@@ -241,16 +265,8 @@ class PowerZyklonMask : PowerMaskProtection
 {
 	Default
 	{
+		DamageFactor "MutantPoisonAmbience", 0;
 		DamageFactor "UndeadPoisonAmbience", 0;
-	}
-
-	// PowerZyklonMask shouldn't expire
-	override void Tick()
-	{
-		if (Owner == null || EffectTics == 0)
-		{
-			Destroy();
-		}
 	}
 
 	override void DoEffect()
@@ -277,7 +293,7 @@ class PowerSpaceSuit : PowerMaskProtection
 
 		if (owner)
 		{
-			Overlay.Init(owner.player, "STGMASK", EffectTics, 0, 0, 1.0, 0, Overlay.Force320x200 | Overlay.LightEffects, -(sin(level.time * 10) * owner.vel.xy.length()) / 10);
+			Overlay.Init(owner.player, "STGMASK", 2, 0, 0, 1.0, 0, Overlay.Force320x200 | Overlay.LightEffects, -(sin(level.time * 10) * owner.vel.xy.length()) / 10);
 		}
 	}
 }

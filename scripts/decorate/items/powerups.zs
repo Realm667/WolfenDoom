@@ -20,7 +20,31 @@
  * SOFTWARE.
 **/
 
-class ScubaGearGiver : RadSuit
+class PowerScuba : PowerMaskProtection
+{
+	Default
+	{
+		DamageFactor "Drowning", 0;
+		DamageFactor "MutantPoisonAmbience", 0;
+		DamageFactor "UndeadPoisonAmbience", 0;
+	}
+
+	override void DoEffect()
+	{
+		owner.player.mo.ResetAirSupply();
+		Overlay.Init(owner.player, "STSCUBA", 2, 0, 0, 1.0, 0, Overlay.Force320x200 | Overlay.LightEffects);
+
+		Super.DoEffect();
+	}
+
+	override double GetSpeedFactor() 
+	{ 
+		if (owner && owner.waterlevel < 2) { return 0.5; } // Slow speed due to limited mobility outside of water
+		return 2.0; // But much faster when in the water with fins
+	}
+}
+
+class ScubaGearGiver : PowerupToggler
 {
 	Default
 	{
@@ -28,17 +52,34 @@ class ScubaGearGiver : RadSuit
 		//$Title Scuba Gear ("Underwater" protection)
 		//$Color 6
 		Height 32;
+		Inventory.Icon "SCUBA0";
+		Inventory.MaxAmount 1;
 		Inventory.PickupMessage "$SCUBA2";
 		Inventory.PickupSound "pickup/uniform";
-		Powerup.Duration -60;
-		Powerup.Color "00 00 96", .125;
-		DamageFactor "MutantPoison", 0.0;
+		Powerup.Duration -600;
+		Powerup.Color "45 60 96", 0.125;
+		Powerup.Type "PowerScuba";
+		+INVENTORY.INVBAR
+		+INVENTORY.UNDROPPABLE
 	}
+
 	States
 	{
-	Spawn:
-		SCUB A -1;
-		Stop;
+		Spawn:
+			SCUB A -1;
+			Stop;
+	}
+
+	override bool Use(bool pickup)
+	{
+		if (!powerinv)
+		{
+			// Override other masks - Only one can be active at a time!
+			let mask = owner.FindInventory("PowerMaskProtection", true);
+			if (mask) { mask.Destroy(); }
+		}
+
+		return Super.Use(pickup);
 	}
 }
 
@@ -67,6 +108,15 @@ class SpaceSuit : PowerupGiver
 		Spawn:
 			SSUT A -1;
 			Stop;
+	}
+
+	override bool Use(bool pickup)
+	{
+		// Override other masks - Only one can be active at a time!
+		let mask = owner.FindInventory("PowerMaskProtection", true);
+		if (mask) { mask.Destroy(); }
+
+		return Super.Use(pickup);
 	}
 }
 
