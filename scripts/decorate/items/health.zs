@@ -400,14 +400,14 @@ class FastFood6 : Meal
 	Default
 	{
 		//$Category Health (BoA)/Fast Food
-		//$Title Fast Food Menu (+10 health)
+		//$Title HFH Menu (+10 health)
 		Scale 0.37;
 		Inventory.Amount 10;
 	}
 	States
 	{
 	Spawn:
-		FFOD F -1;
+		HFHF C -1;
 		Stop;
 	}
 }
@@ -521,6 +521,23 @@ class FastFood13 : Meal
 	{
 	Spawn:
 		FFOD C -1;
+		Stop;
+	}
+}
+
+class FastFood14 : Meal
+{
+	Default
+	{
+		//$Category Health (BoA)/Fast Food
+		//$Title Mc Menu (+10 health)
+		Scale 0.37;
+		Inventory.Amount 10;
+	}
+	States
+	{
+	Spawn:
+		FFOD F -1;
 		Stop;
 	}
 }
