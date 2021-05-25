@@ -181,8 +181,8 @@ class AngelOfDeath_End : AngelOfDeath
 	{
 	//$Title Angel Of Death, Final Battle (Boss)
 	//$Sprite AODEG0
-	Health 7000;
-	WoundHealth 2500;
+	Health 8000;
+	WoundHealth 3000;
 	Speed 10;
 	-REFLECTIVE
 	+INVULNERABLE
@@ -214,7 +214,7 @@ class AngelOfDeath_End : AngelOfDeath
 		Loop;
 	See:
 		"####" A 1 {A_UnsetReflective(); bAllowPain = TRUE; bVisibilityPulse = FALSE;}
-		"####" A 0 A_JumpIf(health<2500, "See.Wound");
+		"####" A 0 A_JumpIf(health<3000, "See.Wound");
 		"####" ABCDCB 2 A_FastChase;
 		Loop;
 	See.Wound:
@@ -290,7 +290,7 @@ class AngelOfDeath_End : AngelOfDeath
 		"####" G 5 A_CustomMeleeAttack(6,"aode/melee","","Melee",TRUE);
 		Goto See;
 	Missile:
-		"####" "#" 0 A_JumpIf(health<2500, "Missile.Wound");
+		"####" "#" 0 A_JumpIf(health<3000, "Missile.Wound");
 		"####" E 0 A_Jump(96, "SeekerBlast");
 		"####" E 0 A_JumpIfCloser(512, "CloseRange");
 		Goto LongRange;
@@ -360,14 +360,14 @@ class AngelOfDeath_End : AngelOfDeath
 		"####" E 4 A_FaceTarget;
 		Goto See;
 	Pain:
-		TNT1 A 0 A_JumpIf(health<2500, "Pain.Wound");
+		TNT1 A 0 A_JumpIf(health<3000, "Pain.Wound");
 		TNT1 A 0 A_Jump(50, "PainSpam");
 		AODE H 2;
 		AODE H 1 A_SpawnItemEx("Pain_Overlay", Scale.X+3, 0, Height-48, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR | SXF_TRANSFERSCALE);
 		"####" H 4 A_Pain;
 		Goto See;
 	PainSpam:
-		"####" "#" 0 A_JumpIf(health<2500, "PainSpam.Wound");
+		"####" "#" 0 A_JumpIf(health<3000, "PainSpam.Wound");
 		AODE H 2;
 		AODE H 1 A_SpawnItemEx("Pain_Overlay", Scale.X+3, 0, Height-48, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR | SXF_TRANSFERSCALE);
 		"####" F 0 A_SpawnProjectile("AODEPainPlasmaBlast", 75, 0, 5, CMF_CHECKTARGETDEAD|CMF_BADPITCH, 0);
@@ -3991,44 +3991,44 @@ class PhantomBoss : RocketMan
 	Missile:
 		PHAN E 0 A_Jump(96,"Missile3");
 		PHAN E 0 A_Jump(128,"Missile2");
-		PHAN E 6 A_FaceTarget;
-		"####" F 4 A_SpawnProjectile("BossDagger",32,12,random(-2,2),CMF_CHECKTARGETDEAD);
-		"####" C 4;
+		PHAN E 12 A_FaceTarget;
+		"####" F 8 A_SpawnProjectile("BossDagger",32,12,random(-2,2),CMF_CHECKTARGETDEAD);
+		"####" C 6;
 		Goto See;
 	Missile2:
-		PHAN U 6 A_FaceTarget;
-		"####" V 4 A_SpawnProjectile("BossDagger",32,-12,random(-2,2),CMF_CHECKTARGETDEAD);
-		"####" W 6 A_FaceTarget;
-		"####" X 4 A_SpawnProjectile("BossDagger",32,12,random(-2,2),CMF_CHECKTARGETDEAD);
-		"####" C 4;
+		PHAN U 12 A_FaceTarget;
+		"####" V 8 A_SpawnProjectile("BossDagger",32,-12,random(-2,2),CMF_CHECKTARGETDEAD);
+		"####" W 12 A_FaceTarget;
+		"####" X 8 A_SpawnProjectile("BossDagger",32,12,random(-2,2),CMF_CHECKTARGETDEAD);
+		"####" C 8;
 		Goto See;
 	Missile3:
-		PHAN U 6 A_FaceTarget;
-		"####" V 4 A_SpawnProjectile("BossDagger",32,-12,random(-2,2),CMF_CHECKTARGETDEAD);
-		"####" W 6 A_FaceTarget;
-		"####" X 4 A_SpawnProjectile("BossDagger",32,12,random(-2,2),CMF_CHECKTARGETDEAD);
-		"####" C 4;
-		"####" V 4 A_SpawnProjectile("BossDagger",32,-12,random(-2,2),CMF_CHECKTARGETDEAD);
-		"####" W 6 A_FaceTarget;
-		"####" X 4 A_SpawnProjectile("BossDagger",32,12,random(-2,2),CMF_CHECKTARGETDEAD);
-		"####" C 4;
-		"####" E 6 A_FaceTarget;
+		PHAN U 12 A_FaceTarget;
+		"####" V 8 A_SpawnProjectile("BossDagger",32,-12,random(-2,2),CMF_CHECKTARGETDEAD);
+		"####" W 12 A_FaceTarget;
+		"####" X 8 A_SpawnProjectile("BossDagger",32,12,random(-2,2),CMF_CHECKTARGETDEAD);
+		"####" C 8;
+		"####" V 8 A_SpawnProjectile("BossDagger",32,-12,random(-2,2),CMF_CHECKTARGETDEAD);
+		"####" W 12 A_FaceTarget;
+		"####" X 8 A_SpawnProjectile("BossDagger",32,12,random(-2,2),CMF_CHECKTARGETDEAD);
+		"####" C 8;
+		"####" E 12 A_FaceTarget;
 		"####" F 0 A_SpawnProjectile("BossDagger",32,-12,random(-2,2),CMF_CHECKTARGETDEAD);
-		"####" F 4 A_SpawnProjectile("BossDagger",32,12,random(-2,2),CMF_CHECKTARGETDEAD);
-		"####" C 4;
+		"####" F 8 A_SpawnProjectile("BossDagger",32,12,random(-2,2),CMF_CHECKTARGETDEAD);
+		"####" C 8;
 		Goto See;
 	Melee: //Drain power attack planned
-		"####" K 4 A_FaceTarget;
-		"####" L 4;
+		"####" K 12 A_FaceTarget;
+		"####" L 8;
 		"####" M 0 GiveBody(5);
 		"####" MN 4 A_CustomMeleeAttack(5, "Smoke/See", "");
 		"####" NMN 4;
 		Goto See;
 	Heal:
-		"####" P 3;
+		"####" P 6;
 		"####" O 3 A_SpawnAtGoal("CreepyRaiseFlat", random(10,-10), random(10,-10), 0, 0, 0, 0, 0);
 		"####" O 0 A_HealGoal;
-		"####" POP 6;
+		"####" POP 12;
 		Goto See;
 	Pain:
 		"####" G 6 A_NaziPain(256);

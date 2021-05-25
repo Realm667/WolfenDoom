@@ -628,7 +628,7 @@ class HimmlerMortar : GrenadeBase
 	Radius 4;
 	Height 4;
 	Speed 15;
-	DamageFunction (20*random(1,8));
+	DamageFunction (10*random(1,8));
 	Gravity 0.25;
 	Scale 0.8;
 	Projectile;
