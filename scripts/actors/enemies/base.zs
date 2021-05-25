@@ -1785,7 +1785,7 @@ class Nazi : Base
 			"####" "#" 1 {
 				int chunkx, chunky;
 				[chunkx, chunky] = EffectBlock.GetBlock(pos.x, pos.y);
-				if (level.time % max(1, pmanager.GetDelay(chunkx, chunky)) == 0) { A_SpawnItemEx("BaseLine", FRandom(0.8 * radius, -0.8 * radius), FRandom(0.8 * radius, -0.8 * radius), FRandom(0, 8), 0, 0, FRandom(1, 3), 0, 129, 0); }
+				if (!pmanager || level.time % max(1, pmanager.GetDelay(chunkx, chunky)) == 0) { A_SpawnItemEx("BaseLine", FRandom(0.8 * radius, -0.8 * radius), FRandom(0.8 * radius, -0.8 * radius), FRandom(0, 8), 0, 0, FRandom(1, 3), 0, 129, 0); }
 				A_FadeOut(0.02);
 			}
 			Loop;
