@@ -106,6 +106,27 @@ terrain BoA_Sizzle
 	splash	BoA_Sizzle
 }
 
+splash Keen_Water
+{
+	smallclass		BoA_WaterSplash
+	smallclip		0
+	smallsound		world/drip
+	baseclass		BoA_WaterSplash
+	chunkclass		BoA_WaterSplash_Chunk
+	chunkxvelshift	9
+	chunkyvelshift	9
+	chunkzvelshift	7
+	chunkbasezvel	2
+	sound			world/keensplash
+	noalert
+}
+
+terrain Keen_Water
+{
+	splash	Keen_Water
+	liquid
+}
+
 ////////////////////////////////////////////////////
 // Assignments of splashes to terrain //////////////
 ////////////////////////////////////////////////////
@@ -190,6 +211,8 @@ floor HIACID31 BoA_Water
 floor HIACID32 BoA_Water
 floor HIACID33 BoA_Water
 floor HIACID34 BoA_Water
+
+floor CK_WATR0 Keen_Water
 
 //Lava
 floor LAVA1 BoA_Lava
