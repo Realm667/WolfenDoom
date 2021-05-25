@@ -108,6 +108,7 @@ class PRBJUniformToken : DisguiseToken //used in C2M1
 		Inventory.Icon "UNFSA0";
 		Inventory.PickupMessage "$UNIFORM4";
 		Inventory.PickupSound "pickup/uniform";
+		-DisguiseToken.NoTarget;
 		Scale 0.7;
 		Tag "$TAGCOATP";
 	}
