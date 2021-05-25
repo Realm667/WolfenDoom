@@ -1050,7 +1050,24 @@ class BoAStatusBar : BaseStatusBar
 
 			if (crosshairtarget.bShootable && crosshairtarget.health > 0)
 			{
-				if (Base(crosshairtarget) && Base(crosshairtarget).user_targetcrosshair && CPlayer.ReadyWeapon.DamageType != "Melee")
+				if (CPlayer.ReadyWeapon is "KnifeSilent" && Nazi(crosshairtarget) && !Nazi(crosshairtarget).user_incombat && !(crosshairtarget is "WGuard_Wounded") && CPlayer.mo.Distance2D(crosshairtarget) < crosshairtarget.radius + 64.0)
+				{
+					if (crosshairtarget == currenttarget)
+					{
+						targettime++;
+
+						CrosshairOverlay = TexMan.CheckForTexture("KNFEA0", TexMan.Type_Any);
+						clr = 0xDD7700;
+						pulsespeed = 0;
+						crosshairalpha = clamp(targettime * 0.1, 0.0, 1.0);
+					}
+					else
+					{
+						currenttarget = crosshairtarget;
+						targettime = 0;
+					}
+				}
+				else if (Base(crosshairtarget) && Base(crosshairtarget).user_targetcrosshair)
 				{
 					size *= 1.25 - clamp(CPlayer.fov / 90.0 * CPlayer.mo.Distance3D(crosshairtarget) / 2048.0, 0.0, 0.75);
 
@@ -1076,23 +1093,6 @@ class BoAStatusBar : BaseStatusBar
 							CrosshairOverlay = TexMan.CheckForTexture("NOSHOT", TexMan.Type_Any);
 							pulsespeed = 20;
 						}
-					}
-					else
-					{
-						currenttarget = crosshairtarget;
-						targettime = 0;
-					}
-				}
-				else if (CPlayer.ReadyWeapon is "KnifeSilent" && Nazi(crosshairtarget) && !Nazi(crosshairtarget).user_incombat && !(crosshairtarget is "WGuard_Wounded") && CPlayer.mo.Distance2D(crosshairtarget) < crosshairtarget.radius + 64.0)
-				{
-					if (crosshairtarget == currenttarget)
-					{
-						targettime++;
-
-						CrosshairOverlay = TexMan.CheckForTexture("KNFEA0", TexMan.Type_Any);
-						clr = 0xDD7700;
-						pulsespeed = 0;
-						crosshairalpha = clamp(targettime * 0.1, 0.0, 1.0);
 					}
 					else
 					{
