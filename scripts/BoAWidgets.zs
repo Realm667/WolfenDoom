@@ -432,10 +432,6 @@ class CurrentAmmoWidget : Widget
 
 		Super.Draw();
 
-		let astro = player.mo.FindInventory("AstroGrenadeToken");
-		if (astro) { DrawToHud.DrawTexture(astrogrenadetex, (pos.x + 2, pos.y + 17), alpha, centered:false); }
-		else { DrawToHud.DrawTexture(grenadetex, (pos.x + 2, pos.y + 17), alpha, centered:false); }
-
 		//Ammo
 		Ammo ammo1, ammo2;
 		int ammocount1, ammocount2;
@@ -446,7 +442,8 @@ class CurrentAmmoWidget : Widget
 			DrawToHud.DrawTexture(ammo1.icon, (pos.x + 40, pos.y + 18), alpha, centered:false);
 			DrawToHud.DrawText(String.Format("%3i", ammocount1), (pos.x + 91, pos.y + 19), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_RIGHT);
 		}
-		if (ammo2)
+
+		if (ammo2 && ammo2 != ammo1)
 		{
 			DrawToHud.DrawTexture(ammo2.icon, (pos.x + 40, pos.y + 2), alpha, centered:false);
 			DrawToHud.DrawText(String.Format("%3i", ammocount2), (pos.x + 91, pos.y + 3), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_RIGHT);
@@ -454,7 +451,13 @@ class CurrentAmmoWidget : Widget
 
 		//Grenade
 		let grenades = player.mo.FindInventory("GrenadePickup");
-		if (grenades) { DrawToHud.DrawText(String.Format("%i", grenades.amount), (pos.x + 18, pos.y + 19), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT); }
+		if (grenades)
+		{
+			if (player.mo.FindInventory("AstroGrenadeToken")) { DrawToHud.DrawTexture(astrogrenadetex, (pos.x + 2, pos.y + 17), alpha, centered:false); }
+			else { DrawToHud.DrawTexture(grenadetex, (pos.x + 2, pos.y + 17), alpha, centered:false); }
+
+			DrawToHud.DrawText(String.Format("%i", grenades.amount), (pos.x + 18, pos.y + 19), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
+		}
 
 		return size;
 	}
