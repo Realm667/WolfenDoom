@@ -184,7 +184,7 @@ class PowerSlow : PowerSpeed
 	override void DoEffect()
 	{
 		Super.DoEffect();
-		Overlay.Init(owner.player, "M_ICED", EffectTics - 36, 18, 18, 0.75, 0, Overlay.Fit);
+		Overlay.Init(owner.player, "M_ICED", max(0, drugs.EffectTics - 36), 18, 18, 0.75, 0, Overlay.Fit);
 	}
 }
 
