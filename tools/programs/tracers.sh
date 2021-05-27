@@ -3,7 +3,7 @@
 
 # Find all subclasses of a given class
 get_subclasses_of(){
-	grep -Prio "[Cc][Ll][Aa][Ss][Ss]\s+\w[^\s:]+\s*:\s*${1}" ${2:-scripts} | sed -E 's/^[^:]+:class[[:space:]]+([[:alpha:]][^[:space:]:]+).+/\1/g'
+	grep -Prio "[Cc][Ll][Aa][Ss][Ss]\s+\w[^\s:]+\s*:\s*${1}" ${2:-scripts} | sed -E 's/^[^:]+:class[[:space:]]+([[:alpha:]][^[:space:]:]+).*$/\1/g'
 }
 
 tracerclasses=()
@@ -30,5 +30,5 @@ for tclass in $tracers; do
 done
 
 for tclass in $tracerclasses; do
-	grep -rin $tclass scripts
+	grep -rin "\b$tclass\b" scripts
 done
