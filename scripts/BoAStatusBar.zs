@@ -55,7 +55,7 @@ class BoAStatusBar : BaseStatusBar
 	int targettime;
 	int widthoffset;
 
-	ObjectiveHandler objhandler;
+	Array<widget> widgets;
 
 	protected Le_GlScreen gl_proj;
 	protected Le_Viewport viewport;
@@ -85,6 +85,27 @@ class BoAStatusBar : BaseStatusBar
 		mVisibilityInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
 
 		savetimertime = 70;
+
+		CountWidget.Init("Money and Time", (7, 7));
+
+		ObjectivesWidget.Init("Objectives", (11, 7), Widget.WDG_RIGHT, 0);
+		PositionWidget.Init("Position", (7, 7), Widget.WDG_RIGHT, 0);
+		KeyWidget.Init("Keys", (7, 7), Widget.WDG_RIGHT, 1);
+		PuzzleItemWidget.Init("Puzzle Items", (16, 7), Widget.WDG_RIGHT, 2);
+
+		AirSupplyWidget.Init("Air Supply", (4, -32), Widget.WDG_MIDDLE, 0);
+
+		HealthWidget.Init("Health and Armor", (7, 7), Widget.WDG_BOTTOM, 0);
+		InventoryWidget.Init("Selected Inventory", (7, 7), Widget.WDG_BOTTOM, 0);
+
+		StaminaWidget.Init("Stamina", (4, -32), Widget.WDG_MIDDLE | Widget.WDG_RIGHT, 0);
+		
+		CurrentAmmoWidget.Init("Current Ammo", (7, 7), Widget.WDG_BOTTOM | Widget.WDG_RIGHT, 0);
+		AmmoWidget.Init("Ammo Summary", (7, 7), Widget.WDG_BOTTOM | Widget.WDG_RIGHT, 0);
+		WeaponWidget.Init("Weapon", (7, 7), Widget.WDG_BOTTOM | Widget.WDG_RIGHT, 1);
+
+		StealthWidget.Init("Stealth Bar", (0, 12), Widget.WDG_BOTTOM | Widget.WDG_CENTER, 0);
+		PowerWidget.Init("Lantern and Minesweeper Power", (0, 16), Widget.WDG_BOTTOM | Widget.WDG_CENTER, 1);
 	}
 
 	override void NewGame ()
@@ -114,8 +135,6 @@ class BoAStatusBar : BaseStatusBar
 
 	override void Tick()
 	{
-		if (!objhandler) { objhandler = ObjectiveHandler(EventHandler.Find("ObjectiveHandler")); }
-
 		maptop = CheckInventory("IncomingMessage", 1) ? int(48 / 200.0 * Screen.GetHeight() / BoAStatusBar.GetUIScale(hud_scale)) : 0;
 		if (maptexty > maptop) { maptexty = max(maptop, maptexty - 12); }
 		else if (maptexty < maptop) { maptexty = min(maptop, maptexty + 12); }
@@ -150,6 +169,11 @@ class BoAStatusBar : BaseStatusBar
 
 		// This gets rid of needing to double-press useinv to immediately use a newly selected inventory item.
 		CPlayer.inventorytics = 0;
+
+		for (int w = 0; w < widgets.Size(); w++)
+		{
+			widgets[w].DoTick(w);
+		}
 	}
 
 	override void Draw (int state, double TicFrac)
@@ -210,15 +234,19 @@ class BoAStatusBar : BaseStatusBar
 				BeginStatusBar(False);
 				DrawMainBar(TicFrac);
 			}
-			else if (state == HUD_Fullscreen)
-			{
-				BeginHUD(1, False);
-				DrawFullScreenBar();
-			}
 		}
 		else
 		{
 			SetSize(0, 320, 200);
+		}
+
+		BeginHUD(1, False);
+		for (int w = 0; w < widgets.Size(); w++)
+		{
+			if (widgets[w].visible)
+			{
+				widgets[w].Draw();
+			}
 		}
 
 		DrawSaveIcon();
@@ -246,7 +274,7 @@ class BoAStatusBar : BaseStatusBar
 	{
 		DrawImage("HUDBAR", (-54, 152), DI_ITEM_OFFSETS);
 
-		bool disguisetag = DrawVisibilityBar((85, 162), scale: 0.5);
+		bool disguisetag = DrawVisibilityBar((85, 153), scale: 0.5);
 
 		//Minesweeper & Lantern
 		DrawMinesweeper(162, 138, DI_SCREEN_OFFSETS);
@@ -329,18 +357,6 @@ class BoAStatusBar : BaseStatusBar
 		}
 
 		DrawImage("HUDBROVL", (74, 168), DI_ITEM_OFFSETS);
-
-		if (!level.NoInventoryBar)
-		{
-			BeginHUD(1, False);
-
-			int y = 16;
-
-			ObjectiveHandler handler = ObjectiveHandler(EventHandler.Find("ObjectiveHandler"));
-			if (handler) { y += int(handler.height) + 16; }
-
-			DrawPuzzleItems(-(widthoffset + 16), y, 20, 9, -1);
-		}
 	}
 
 	virtual void DrawInventorySelection(int x, int y, int size = 32)
@@ -372,12 +388,13 @@ class BoAStatusBar : BaseStatusBar
 		return count;
 	}
 
-	virtual void DrawPuzzleItems(int x, int y, int size = 32, int maxrows = 6, int maxcols = 0, bool vcenter = false)
+	virtual int, int DrawPuzzleItems(int x, int y, int size = 32, int maxrows = 6, int maxcols = 0, bool vcenter = false, double alpha = 1.0)
 	{
-		if (!CPlayer.mo.Inv) { return; }
+		if (!CPlayer.mo.Inv) { return 0, 0; }
 
 		int starty = y;
 		int rows = 1;
+		int rowcount = 1;
 		int cols = 1;
 
 		Inventory nextinv = CPlayer.mo.Inv;
@@ -391,13 +408,14 @@ class BoAStatusBar : BaseStatusBar
 			// Draw puzzle items that are not already in the inventory bar, not drawn elsewhere, and not tied to Keen maps (and have an icon defined)
 			if (!nextinv.bInvBar && nextinv is "PuzzleItem" && !(nextinv is "CoinItem") && !(nextinv is "CKPuzzleItem") && nextinv.icon)
 			{
-				DrawIcon(nextinv, x, y, size);
+				DrawIcon(nextinv, x, y, size, alpha:alpha);
 
 				// Move down a block
 				if (maxrows <= 0 || rows < maxrows)
 				{
 					y += size + 2;
 					rows++;
+					rowcount = max(rowcount, rows);
 				}
 				else if (maxcols <= 0 || cols <= maxcols) // Wrap to the next column if we're too long
 				{
@@ -415,9 +433,11 @@ class BoAStatusBar : BaseStatusBar
 
 			nextinv = nextinv.Inv;
 		}
+
+		return cols, rowcount;
 	}
 
-	virtual void DrawIcon(Inventory item, int x, int y, int size, int flags = DI_ITEM_CENTER)
+	virtual void DrawIcon(Inventory item, int x, int y, int size, int flags = DI_ITEM_CENTER, double alpha = 1.0)
 	{
 		Vector2 texsize = TexMan.GetScaledSize(item.icon);
 		if (texsize.x > size || texsize.y > size)
@@ -435,11 +455,11 @@ class BoAStatusBar : BaseStatusBar
 		}
 		else { texsize = (1.0, 1.0); }
 
-		DrawInventoryIcon(item, (x, y), flags, item.alpha, scale:texsize);
+		DrawInventoryIcon(item, (x, y), flags, item.alpha * alpha, scale:texsize);
 
 		if (item is "RepairKit" && CPlayer.mo is "TankPlayer")
 		{
-			RepairKit(item).DrawIcon(x, y, size);
+			RepairKit(item).DrawIcon(x, y, size, alpha);
 		}
 		else if (item is "BasicArmor")
 		{
@@ -453,7 +473,7 @@ class BoAStatusBar : BaseStatusBar
 		}
 		else if (item.Amount > 1)
 		{
-			DrawString(mHUDFont, FormatNumber(item.Amount), (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
+			DrawString(mHUDFont, FormatNumber(item.Amount), (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD, alpha);
 		}
 		else if (item is "PoweredInventory") // For powered inventory items, show current fuel level as a percentage
 		{
@@ -465,7 +485,7 @@ class BoAStatusBar : BaseStatusBar
 			if (fuel)
 			{
 				int amt = int(100 * fuel.Amount / fuel.MaxAmount);
-				DrawString(mHUDFont, FormatNumber(amt) .. "%", (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD);
+				DrawString(mHUDFont, FormatNumber(amt) .. "%", (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD, alpha);
 			}
 		}
 		else if (item is "PowerupToggler")
@@ -473,49 +493,12 @@ class BoAStatusBar : BaseStatusBar
 			int maxamt = PowerupToggler(item).Default.EffectTics;
 			int amt = int(100 * PowerupToggler(item).EffectTics / maxamt);
 
-			if (maxamt < 0x7FFFFFFF) { DrawString(mHUDFont, FormatNumber(amt) .. "%", (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD); }
+			if (maxamt < 0x7FFFFFFF) { DrawString(mHUDFont, FormatNumber(amt) .. "%", (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD, alpha); }
 		}
 
 	}
 
-	virtual void DrawFullScreenBar()
-	{
-		DrawMoneyTime(widthoffset, 0); // Top left
-		
-		int troffset = 0;
-		if (objhandler && objhandler.active[CPlayer.mo.PlayerNumber()] == 2) { troffset = objhandler.height ? objhandler.height + 8 : 0; }
-		DrawKeys(-(widthoffset + 66), troffset); // Top right
-		
-		DrawHealthArmor(widthoffset, -53); // Bottom left
-		DrawWeaponAmmo(-(widthoffset + 116), -53); // Bottom right
-
-		// Stealth visibility bar
-		DrawVisibilityBar();
-
-		// Minesweeper and Lantern power
-		DrawMinesweeper(widthoffset, -28);
-		DrawLantern(widthoffset, -28);
-
-		// Air Supply & Stamina
-		DrawBar("VERTAIRF", "VERTAIRE", mAirInterpolator.GetValue(), level.airsupply, (widthoffset + 4, -174), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
-		DrawBar("VERTSTMF", "VERTSTME", mStaminaInterpolator.GetValue(), 100, (-(widthoffset + 10), -174), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS);
-
-		// Inventory and puzzle items
-		if(!level.NoInventoryBar)
-		{
-			if (CPlayer.mo.InvSel != null) { DrawInventorySelection(widthoffset + 128, -22, 32); }
-
-			Vector2 hudscale = Statusbar.GetHudScale();
-
-			int size = 20;
-			int topoffset = 48 + troffset;
-			int maxrows = int((Screen.GetHeight() / hudscale.y - (topoffset + 48)) / (size + 2));
-
-			DrawPuzzleItems(-(widthoffset + 28), topoffset, size, maxrows, -1);
-		}
-	}
-
-	void DrawLantern(int posx, int posy, int flags = DI_SCREEN_CENTER_BOTTOM)
+	bool DrawLantern(int posx, int posy, int flags = DI_SCREEN_CENTER_BOTTOM, double alpha = 1.0)
 	{
 		if (CheckInventory("LanternPickup", 1))
 		{
@@ -526,13 +509,17 @@ class BoAStatusBar : BaseStatusBar
 
 			if (l && l.active)
 			{
-				DrawImage("LANT_BAK", (posx, posy), flags);
-				DrawBar("LANT_ON", "LANT_OFF", current, max, (posx, posy), 0, SHADER_VERT | SHADER_REVERSE, flags);
+				DrawImage("LANT_BAK", (posx, posy), flags, alpha);
+				DrawBar("LANT_ON", "LANT_OFF", current, max, (posx, posy), 0, SHADER_VERT | SHADER_REVERSE, flags, alpha);
+
+				return true;
 			}
 		}
+
+		return false;
 	}
 
-	void DrawMineSweeper(int posx, int posy, int flags = DI_SCREEN_CENTER_BOTTOM)
+	bool DrawMineSweeper(int posx, int posy, int flags = DI_SCREEN_CENTER_BOTTOM, double alpha = 1.0)
 	{
 		if (CheckInventory("MineSweeper", 1))
 		{
@@ -543,10 +530,14 @@ class BoAStatusBar : BaseStatusBar
 
 			if (ms && ms.active)
 			{
-				DrawImage("SWEP_BAK", (posx, posy), flags);
-				DrawBar("SWEP_ON", "SWEP_OFF", current, max, (posx, posy), 0, SHADER_HORZ, flags);
+				DrawImage("SWEP_BAK", (posx, posy), flags, alpha);
+				DrawBar("SWEP_ON", "SWEP_OFF", current, max, (posx, posy), 0, SHADER_HORZ, flags, alpha);
+
+				return true;
 			}
 		}
+
+		return false;
 	}
 
 	void DrawMoneyTime(int posx, int posy)
@@ -740,7 +731,7 @@ class BoAStatusBar : BaseStatusBar
 		DrawTexture(GetMugShot(5, flags, face), position, DI_ITEM_OFFSETS);
 	}
 
-	virtual bool DrawVisibilityBar(Vector2 position = (0, 0), int flags = DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM, double scale = 1.)
+	virtual bool DrawVisibilityBar(Vector2 position = (0, -20), int flags = DI_SCREEN_HCENTER | DI_SCREEN_BOTTOM, double scale = 1.0, double alpha = 1.0)
 	{
 		Inventory disguise;
 
@@ -755,7 +746,9 @@ class BoAStatusBar : BaseStatusBar
 			{
 				if (basealpha < 1) { basealpha += 0.05; }
 
-				if (barstate == HUD_StatusBar) { DrawImage("VIS_BKG", (x - 4 * scale, y - 12 * scale), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (2 * scale, 2 * scale)); }
+				basealpha *= alpha;
+
+				if (barstate == HUD_StatusBar) { DrawImage("VIS_BKG", (x - 4 * scale, y + 6 * scale), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (2 * scale, 2 * scale)); }
 
 				// Scale visibility to show more useful granularity
 				current = Clamp(mVisibilityInterpolator.GetValue() - 50, 0, 50);
@@ -765,8 +758,8 @@ class BoAStatusBar : BaseStatusBar
 				{
 					if (barstate == HUD_Fullscreen)
 					{
-						DrawImage("EYE", (x + 112 * scale, y - 21 * scale), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (0.5 * scale, 0.5 * scale));
-						DrawString(mHUDFont, FormatNumber(alertedcount), (x + 124 * scale, y - 20 * scale - 2), flags | DI_TEXT_ALIGN_RIGHT, Font.CR_GRAY);
+						DrawImage("EYE", (x + 112 * scale, y - 1 * scale), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (0.5 * scale, 0.5 * scale));
+						DrawString(mHUDFont, FormatNumber(alertedcount), (x + 124 * scale, y * scale - 2), flags | DI_TEXT_ALIGN_RIGHT, Font.CR_GRAY);
 					}
 					else
 					{
@@ -779,22 +772,22 @@ class BoAStatusBar : BaseStatusBar
 
 				current = max(current, suspicion - 50);
 
-				DrawBarAlpha("VIS_BLK", barstate == HUD_StatusBar ? "VIS_BAC2" : "VIS_BACK", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, basealpha, scale);
+				DrawBarAlpha("VIS_BLK", barstate == HUD_StatusBar ? "VIS_BAC2" : "VIS_BACK", current, max, (x, y), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, basealpha, scale);
 
 				disguise = CPlayer.mo.FindInventory("DisguiseToken", True);
 
 				// If the player has an active disguise, a stealth weapon selected, and NoTarget enabled, grey out the visibility bar and show the disguise icon
 				if (disguise && DisguiseToken(disguise).notargettimeout && CPlayer.cheats & CF_NOTARGET)
 				{
-					DrawBarAlpha("VIS_RED", "", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, suspicion / 100., scale);
+					DrawBarAlpha("VIS_RED", "", current, max, (x, y), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, basealpha * suspicion / 100., scale);
 
 					if (barstate == HUD_Fullscreen)
 					{
 						String disguisetag = disguise.GetTag();
 						if (disguisetag != "") { disguisetag = " - " .. disguisetag; }
 
-						DrawInventoryIcon(disguise, (x - 104 * scale, y - 20 * scale), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (scale, scale));
-						DrawString(mHUDFont, StringTable.Localize("$DISGUISED") .. disguisetag, (x, y - 20 * scale - 4), flags | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, basealpha - (suspicion / 100.));
+						DrawInventoryIcon(disguise, (x - 104 * scale, y), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (scale, scale));
+						DrawString(mHUDFont, StringTable.Localize("$DISGUISED") .. disguisetag, (x, y - 4), flags | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, basealpha - (suspicion / 100.));
 					}
 					else
 					{
@@ -806,9 +799,9 @@ class BoAStatusBar : BaseStatusBar
 				{
 					disguise = null;
 
-					DrawBarAlpha("VIS_GRN", "", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, basealpha, scale);
-					DrawBarAlpha("VIS_YEL", "", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, current / (max * .8), scale);
-					DrawBarAlpha("VIS_RED", "", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, current / double(max), scale);
+					DrawBarAlpha("VIS_GRN", "", current, max, (x, y), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, basealpha, scale);
+					DrawBarAlpha("VIS_YEL", "", current, max, (x, y), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, basealpha * current / (max * .8), scale);
+					DrawBarAlpha("VIS_RED", "", current, max, (x, y), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, basealpha * current / double(max), scale);
 				}
 			}
 			else
@@ -817,7 +810,7 @@ class BoAStatusBar : BaseStatusBar
 				max = 100;
 
 				if (basealpha > 0) { basealpha -= 0.05; }
-				DrawBarAlpha("VIS_BLK", "VIS_BACK", current, max, (x, y - 20 * scale), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, basealpha, scale);
+				DrawBarAlpha("VIS_BLK", "VIS_BACK", current, max, (x, y), 0, SHADER_HORZ, flags | DI_ITEM_CENTER, basealpha, scale);
 			}
 		}
 
@@ -1371,63 +1364,7 @@ class BoAStatusBar : BaseStatusBar
 		}
 	}
 
-	override void DrawMyPos()
-	{
-		int headercolor = Font.CR_GRAY;
-		int infocolor = Font.FindFontColor("LightGray");
-
-		let scalevec = GetHUDScale();
-		double scale = int(scalevec.X);
-		int vwidth = int(screen.GetWidth() / scale);
-		int vheight = int(screen.GetHeight() / scale);
-
-		int height = SmallFont.GetHeight();
-		int width = SmallFont.StringWidth("X: -00000.00");
-
-		int x = vwidth - width - 10 - widthoffset;
-		int y = 10 + maptop + (vid_fps ? int(NewSmallFont.GetHeight() / GetConScale(con_scale) / scale) : 0);
-
-		if (screenblocks < 12)
-		{
-			if (screenblocks == 11) { if (!automapactive && !CPlayer.mo.FindInventory("CutsceneEnabled")) { x -= 54; } }
-			else { y = int(GetTopOfStatusBar() / scale) - 6 * height - 10; }
-		}
-
-		// Draw coordinates
-		Vector3 pos = CPlayer.mo.Pos;
-		String header, value;
-
-		// Draw map name
-		screen.DrawText (SmallFont, Font.CR_RED, x, y, level.mapname.MakeUpper(), DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
-
-		y += height;
-		
-		for (int i = 0; i < 3; y += height, ++i)
-		{
-			double v = i == 0 ? pos.X : i == 1 ? pos.Y : pos.Z;
-
-			header = String.Format("%c:", int("X") + i);
-			value = String.Format("%5.2f", v);
-
-			screen.DrawText (SmallFont, headercolor, x, y, header, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
-			screen.DrawText (SmallFont, infocolor, x + width - SmallFont.StringWidth(value), y, value, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
-		}
-
-		y += height;
-
-		// Draw player angle
-		screen.DrawText (SmallFont, headercolor, x, y, "A:", DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
-		value = String.Format("%0.2f", CPlayer.mo.angle);
-		screen.DrawText (SmallFont, infocolor, x + width - SmallFont.StringWidth(value), y, value, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
-
-		y += height;
-
-		// Draw player pitch
-		screen.DrawText (SmallFont, headercolor, x, y, "P:", DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
-		value = String.Format("%0.2f", CPlayer.mo.pitch);
-		screen.DrawText (SmallFont, infocolor, x + width - SmallFont.StringWidth(value), y, value, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
-
-	}
+	override void DrawMyPos() {} // Drawn via widget
 
 	// Original code from shared_sbar.cpp
 	override void DrawAutomapHUD(double ticFrac)
@@ -1563,8 +1500,6 @@ class BoAStatusBar : BaseStatusBar
 				y += fheight;
 			}
 		}
-
-		if (idmypos) { DrawMyPos(); } // If enabled, draw idmypos output again so that it's on top of the vignette...  Slightly wasteful to draw it twice, but it's minor (and I can't control the engine code that draws it before the automap hud).
 	}
 
 	// From v_draw.cpp

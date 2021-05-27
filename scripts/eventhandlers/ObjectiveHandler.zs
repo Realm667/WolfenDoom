@@ -39,7 +39,15 @@ class Objective : Thinker
 		if (o == handler.objectives.Size())
 		{
 			obj = New("Objective");
-			handler.objectives.Push(obj);
+
+			int insertat = o;
+			for (int l = 0; l < insertat; l++)
+			{
+				if (handler.objectives[l].order <= order) { continue; }
+				insertat = l;
+			}
+
+			handler.objectives.Insert(insertat, obj);
 		}
 		else
 		{
@@ -119,6 +127,7 @@ class ObjectiveHandler : EventHandler
 	double alpha;
 	ui int height;
 	transient CVar alt;
+	transient CVar stats;
 
 	override void OnRegister()
 	{
@@ -150,14 +159,11 @@ class ObjectiveHandler : EventHandler
 		return objectives.Size();
 	}
 
-	ui int FindNext(bool secondary = false, int order = 0)
+	ui int FindNext(bool secondary = false, int start = -1)
 	{
-		for (int a = 0; a < objectives.Size(); a++)
+		for (int a = start + 1; a < objectives.Size(); a++)
 		{
-			if (
-				objectives[a].secondary == secondary &&
-				objectives[a].order == order
-			) { return a; }
+			if (objectives[a].secondary == secondary) { return a; }
 		}
 
 		return objectives.Size();
@@ -181,6 +187,7 @@ class ObjectiveHandler : EventHandler
 		alpha = 1.0;
 
 		int incomplete;
+		stats = CVar.FindCVar("boa_hudstats");
 
 		for (int a = 0; a < objectives.Size(); a++)
 		{
@@ -188,8 +195,7 @@ class ObjectiveHandler : EventHandler
 			if (!objectives[a].complete || objectives[a].timer != 0) { incomplete++; }
 		}
 
-
-		if (active[consoleplayer] == 2 && !incomplete) { active[consoleplayer] = 0; }
+		if (active[consoleplayer] == 2 && !incomplete && (!stats || !stats.GetBool())) { active[consoleplayer] = 0; }
 	}
 
 	override void RenderOverlay(RenderEvent e)
@@ -204,11 +210,7 @@ class ObjectiveHandler : EventHandler
 			return;
 		} 
 
-		if (active[consoleplayer] == 2 && alt.GetBool())
-		{
-			height = DrawMinimal(-3, 10);
-		}
-		else
+		if (active[consoleplayer] == 1)
 		{
 			bool wide = false;
 
@@ -216,11 +218,11 @@ class ObjectiveHandler : EventHandler
 			if (datahandler) { wide = dataHandler.shouldUseWideObjectivesBox(); }
 
 			height = 0;
-			DrawChalkBoard(wide);
+			DrawChalkboard(wide);
 		}
 	}
 
-	ui void DrawChalkBoard(bool wide = false)
+	ui void DrawChalkboard(bool wide = false)
 	{
 		TextureID bgtex;
 
@@ -254,16 +256,18 @@ class ObjectiveHandler : EventHandler
 		screen.DrawText(SmallFont, Font.CR_UNTRANSLATED, posx, posy, primary, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_Alpha, alpha);
 		posy += lineheight;
 
-		int count = 0;
 		int o;
 		
 		//  Draw the objectives, in order
-		o = FindNext(false, count++);
+		o = FindNext(false);
 		while (o != objectives.Size())
 		{
-			objectives[o].DrawObjective(fnt, int(posx), int(posy), destsize.x, destsize.y, alpha); // Call each objective's internal drawing function
-			posy += lineheight;
-			o = FindNext(false, count++);
+			if (objectives[o].text.length())
+			{
+				objectives[o].DrawObjective(fnt, int(posx), int(posy), destsize.x, destsize.y, alpha); // Call each objective's internal drawing function
+				posy += lineheight;
+			}
+			o = FindNext(false, o);
 		}
 
 		// Draw secondary objectives
@@ -271,99 +275,210 @@ class ObjectiveHandler : EventHandler
 		screen.DrawText(SmallFont, Font.CR_UNTRANSLATED, posx, posy, secondary, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_Alpha, alpha);
 		posy += lineheight;
 
-		count--;
-
 		//  Draw the objectives, in order
-		o = FindNext(true, count++);
+		o = FindNext(true);
 		while (o != objectives.Size())
 		{
-			objectives[o].DrawObjective(fnt, posx, posy, destsize.x, destsize.y, alpha); // Call each objective's internal drawing function
-			posy += lineheight;
-			o = FindNext(true, count++);
+			if (objectives[o].text.length())
+			{
+				objectives[o].DrawObjective(fnt, posx, posy, destsize.x, destsize.y, alpha); // Call each objective's internal drawing function
+				posy += lineheight;
+			}
+			o = FindNext(true, o);
+		}
+	}
+}
+
+class ObjectivesWidget : Widget
+{
+	ObjectiveHandler handler;
+	transient CVar stats;
+
+	static void Init(String widgetname, Vector2 pos, int anchor = 0, int priority = 0)
+	{
+		ObjectivesWidget wdg = ObjectivesWidget(Widget.Init("ObjectivesWidget", widgetname, pos, anchor, WDG_DRAWFRAME, priority));
+		
+		if (wdg)
+		{
+			wdg.margin[0] = 8;
+			wdg.margin[1] = 4;
 		}
 	}
 
-	ui int DrawMinimal(double posx = 5, double posy = 11)
+	override bool SetVisibility()
 	{
+		if (!handler) { handler = ObjectiveHandler(EventHandler.Find("ObjectiveHandler")); }
+		if (
+				((!stats || !stats.GetBool()) && !handler.objectives.Size()) ||
+				handler.active[player.mo.PlayerNumber()] != 2 ||
+				automapactive ||
+				screenblocks > 11 ||
+				player.mo.FindInventory("CutsceneEnabled")
+		)
+		{
+			return false;
+		}
+		
+		return true;
+	}
+
+	override Vector2 Draw()
+	{
+		if (!handler) { handler = ObjectiveHandler(EventHandler.Find("ObjectiveHandler")); }
+
 		Vector2 destsize = (320, 200);
 
 		Font fnt = Font.GetFont("THREEFIV");
+		String monsters = StringTable.Localize("AM_MONSTERS", false);
+		String secrets = StringTable.Localize("AM_SECRETS", false);
+		String items = StringTable.Localize("AM_ITEMS", false);
+		stats = CVar.FindCVar("boa_hudstats");
+
 		int lineheight = fnt.GetHeight() + 2;
 		int boxheight = 0;
 		int boxwidth = 0;
 
 		bool drawspace = false;
+		int count = 0;
 
-		for (int l = 0; l < objectives.Size(); l++)
+		for (int l = 0; l < handler.objectives.Size(); l++)
 		{
-			String line = StringTable.Localize(objectives[l].text, false);
+			let o = handler.objectives[l];
+
+			String line = StringTable.Localize(o.text, false);
 			boxwidth = max(boxwidth, fnt.StringWidth(line));
 
-			if (!objectives[l].complete || objectives[l].timer > 0)
+			if (o.text.length() && (!o.complete || o.timer > 0))
 			{
 				double height = lineheight;
 
-				if (!drawspace && objectives[l].secondary)
+				if (!drawspace && o.secondary)
 				{
 					drawspace = true;
-					height *= 1.5 * (objectives[L].timer == -1 ? 1.0 : min(1.0, objectives[l].timer / 15.0));
+					height *= 1.5 * (o.timer == -1 ? 1.0 : min(1.0, o.timer / 15.0));
 				}
 				else
 				{
-					height *= objectives[L].timer == -1 ? 1.0 : min(1.0, objectives[l].timer / 15.0);
+					height *= o.timer == -1 ? 1.0 : min(1.0, o.timer / 15.0);
 				}
 
+				count++;
 				boxheight += int(height);
 			}
 		}
 
-		boxwidth += lineheight + SmallFont.StringWidth("  ");
+		boxwidth += SmallFont.StringWidth("  ");
+		
+		int linewidth = 0, printstats = 0;
+		String temp = "  : XXX/XXX";
 
-		if (boxheight == 0) { return 0; }
-		boxheight += lineheight;
+		if (stats && stats.GetBool())
+		{
+			if (am_showmonsters || am_showsecrets || am_showitems)
+			{
+				boxheight += int(lineheight * (!!count ? 1.5 : 1.0));
+				int strwidth = HUDFont.StringWidth(temp) + 5;
 
-		if (posx < 0) { posx -= boxwidth; }
-		if (posy < 0) { posy -= boxheight; }
+				if (am_showmonsters && level.total_monsters)
+				{
+					linewidth += strwidth;
+					printstats++;
+				}
+				if (am_showsecrets && level.total_secrets)
+				{
+					if (linewidth > 0) { linewidth += 1;}
+					linewidth += strwidth;
+					printstats++;
+				}
+				if (am_showitems && level.total_items)
+				{
+					if (linewidth > 0) { linewidth += 1;}
+					linewidth += strwidth;
+					printstats++;
+				}
 
-		DrawToHUD.DrawFrame("FRAME_", int(posx - lineheight / 2) - 4, int(posy - lineheight / 2) - 4, boxwidth + 8, boxheight + 8, 0x1b1b1b, 1.0, 0.53);
+				boxwidth = max(boxwidth, linewidth);
+			}
+		}
+
+		if (boxheight == 0) { return (0, 0); }
+		
+		size = (boxwidth, boxheight);
+		Super.Draw();
+
+		Vector2 drawpos = pos;
 
 		// Draw primary objectives
-		int count = 0, shown = 0;
 		int o;
 		
-		//  Draw the objectives, in order
-		o = FindNext(false, count++);
-		while (o != objectives.Size())
+		//  Draw the primary objectives
+		o = handler.FindNext(false);
+		while (o != handler.objectives.Size())
 		{
-			if (!objectives[o].complete || objectives[o].timer > 0)
+			let ob = handler.objectives[o];
+
+			if (ob.text.length() && (!ob.complete || ob.timer > 0))
 			{
-				objectives[o].DrawObjective(fnt, posx, posy, destsize.x, destsize.y, alpha, 1); // Call each objective's internal drawing function
-				double height = lineheight * (objectives[o].timer == -1 ? 1.0 : min(1.0, objectives[o].timer / 15.0));
-				posy += height;
-				shown++;
+				ob.DrawObjective(fnt, drawpos.x, drawpos.y, destsize.x, destsize.y, alpha, 1); // Call each objective's internal drawing function
+				double height = lineheight * (ob.timer == -1 ? 1.0 : min(1.0, ob.timer / 15.0));
+				drawpos.y += height;
 			}
-			o = FindNext(false, count++);
+			o = handler.FindNext(false, o);
 		}
 
 		// Draw secondary objectives
-		if (shown) { posy += lineheight / 2; }
-
-		count--;
+		if (drawspace) { drawpos.y += lineheight / 2; }
 
 		//  Draw the objectives, in order
-		o = FindNext(true, count++);
-		while (o != objectives.Size())
+		o = handler.FindNext(true);
+		while (o != handler.objectives.Size())
 		{
-			if (!objectives[o].complete || objectives[o].timer > 0)
+			let ob = handler.objectives[o];
+
+			if (ob.text.length() && (!ob.complete || ob.timer > 0))
 			{
-				objectives[o].DrawObjective(fnt, posx, posy, destsize.x, destsize.y, alpha, 1); // Call each objective's internal drawing function
-				double height = lineheight * (objectives[o].timer == -1 ? 1.0 : min(1.0, objectives[o].timer / 15.0));
-				posy += height;
-				shown++;
+				ob.DrawObjective(fnt, drawpos.x, drawpos.y, destsize.x, destsize.y, alpha, 1); // Call each objective's internal drawing function
+				double height = lineheight * (ob.timer == -1 ? 1.0 : min(1.0, ob.timer / 15.0));
+				drawpos.y += height;
 			}
-			o = FindNext(true, count++);
+			o = handler.FindNext(true, o);
 		}
 
-		return boxheight;
+		if (count) { drawpos.y += lineheight / 2.0; }
+
+		if (stats && stats.GetBool() && printstats)
+		{
+			Font Symbols = Font.GetFont("Symbols");
+
+			int step = int(boxwidth / printstats + 1);
+			double textpos = drawpos.x + step / 2;
+
+			DrawToHud.Dim(0x0, 0.2 * alpha, int(drawpos.x - margin[0] / 2), int(drawpos.y - 1), int(size.x + (margin[0] + margin[2]) / 2), HUDFont.GetHeight() + 3);
+			
+			if (am_showmonsters && level.total_monsters)
+			{
+				temp = String.Format("  : %i/%i", level.killed_monsters, level.total_monsters);
+				DrawToHud.DrawText("💀", (textpos - HUDFont.StringWidth(temp) / 2, drawpos.y - 1), Symbols, alpha, shade:Font.CR_UNTRANSLATED, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
+				DrawToHud.DrawText(temp, (textpos, drawpos.y), HUDFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
+				textpos += step;
+			}
+
+			if (am_showsecrets && level.total_secrets)
+			{
+				temp = String.Format("  : %i/%i", level.found_secrets, level.total_secrets);
+				DrawToHud.DrawText("⚑", (textpos - HUDFont.StringWidth(temp) / 2, drawpos.y - 1), Symbols, alpha, shade:Font.CR_UNTRANSLATED, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
+				DrawToHud.DrawText(temp, (textpos, drawpos.y), HUDFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
+				textpos += step;
+			}
+
+			if (am_showitems && level.total_items)
+			{
+				temp = String.Format("  : %i/%i", level.found_items, level.total_items);
+				DrawToHud.DrawText("🪙", (textpos - HUDFont.StringWidth(temp) / 2, drawpos.y - 1), Symbols, alpha, shade:Font.CR_UNTRANSLATED, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
+				DrawToHud.DrawText(temp, (textpos, drawpos.y), HUDFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
+			}
+		}
+
+		return size;
 	}
 }

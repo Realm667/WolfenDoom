@@ -192,7 +192,7 @@ class Message : MessageBase
 
 	override void Start()
 	{
-		player.mo.SetInventory("IncomingMessage", 1);
+		if (!handler.fullscreen) { player.mo.SetInventory("IncomingMessage", 1); }
 		player.mo.A_StartSound("RADIONOS", CHAN_AUTO, CHANF_LOCAL);
 
 		time = max(time, ZScriptTools.PlaySound(player.mo, text));
@@ -374,7 +374,7 @@ class BriefingMessage : Message
 
 	override void Start()
 	{
-		player.mo.SetInventory("IncomingMessage", 1);
+		if (!handler.fullscreen) { player.mo.SetInventory("IncomingMessage", 1); }
 
 		time = max(time, ZScriptTools.PlaySound(player.mo, text));
 	}
@@ -761,6 +761,7 @@ class MessageHandler : EventHandler
 	Array<class<MessageBase> > types; // Track each unique type of message.  Classes are added here in MessageBase.Init
 
 	ui double topoffset, bottomoffset;
+	bool fullscreen;
 
 	// Retrieve the message handler
 	static MessageHandler Get()
@@ -782,7 +783,7 @@ class MessageHandler : EventHandler
 	{
 		if (!messages.Size()) { return; }
 
-		bool fullscreen = false;
+		fullscreen = false;
 
 		CVar altstyle = CVar.FindCVar("boa_altmessagestyle"); // Allow forcing the new-style messages at all aspect ratios
 		double ratio = Screen.GetAspectRatio();

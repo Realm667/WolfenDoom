@@ -1235,7 +1235,7 @@ class RepairKit : CompassItem
 	}
 
 	// Called from status bar code when selected by a tank player
-	ui void DrawIcon(int x, int y, int size)
+	ui void DrawIcon(int x, int y, int size, double alpha = 1.0)
 	{
 		int drawx;
 		int drawy = y + size / 2 - 2;
@@ -1249,8 +1249,8 @@ class RepairKit : CompassItem
 
 			if (i == Amount) { height = int(height * repairtime * 1.0 / Default.repairtime); }
 
-			DrawToHUD.Dim("DDDD00", 0.25, drawx, drawy - fullheight, width, fullheight - height);
-			DrawToHUD.Dim("DDDD00", 0.65, drawx, drawy - height, width, height);
+			DrawToHUD.Dim("DDDD00", alpha * 0.25, drawx, drawy - fullheight, width, fullheight - height);
+			DrawToHUD.Dim("DDDD00", alpha * 0.65, drawx, drawy - height, width, height);
 		}
 	}
 }
