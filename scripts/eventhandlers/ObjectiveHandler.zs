@@ -132,7 +132,7 @@ class ObjectiveHandler : EventHandler
 	override void OnRegister()
 	{
 		SetOrder(-500); // Make sure other render overlays display on top of this one
-		alt = CVar.FindCVar("boa_altobjectivestyle");
+		alt = CVar.FindCVar("boa_hudobjectives");
 	}
 
 	// Search for an objective by either string value or index order
@@ -179,7 +179,7 @@ class ObjectiveHandler : EventHandler
 		ObjectiveHandler handler = ObjectiveHandler(EventHandler.Find("ObjectiveHandler"));
 		if (!handler) { return; }
 
-		handler.active[pnum] = ++handler.active[pnum] % (2 + handler.alt.GetBool());
+		handler.active[pnum] = ++handler.active[pnum] % (2 + (handler.alt.GetInt() == 1));
 	}
 
 	override void WorldTick()
@@ -308,9 +308,9 @@ class ObjectivesWidget : Widget
 	override bool SetVisibility()
 	{
 		if (!handler) { handler = ObjectiveHandler(EventHandler.Find("ObjectiveHandler")); }
+
 		if (
 				((!stats || !stats.GetBool()) && !handler.objectives.Size()) ||
-				handler.active[player.mo.PlayerNumber()] != 2 ||
 				automapactive ||
 				screenblocks > 11 ||
 				player.mo.FindInventory("CutsceneEnabled")
@@ -318,8 +318,10 @@ class ObjectivesWidget : Widget
 		{
 			return false;
 		}
+
+		if (handler.active[player.mo.PlayerNumber()] == 2 || (handler.alt && handler.alt.GetInt() > 1)) { return true; }
 		
-		return true;
+		return false;
 	}
 
 	override Vector2 Draw()
