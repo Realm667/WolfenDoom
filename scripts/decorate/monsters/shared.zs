@@ -2641,6 +2641,31 @@ class BigScorpionChunk : ScorpionChunk
 	}
 }
 
+class HugeScorpionChunk : ScorpionChunk
+{
+	Default
+	{
+	Scale 1.5;
+	Mass 70;
+	Gravity 0.9;
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_SetScale(Scale.X + frandom(-0.1,0.1),Scale.Y + frandom(-0.1,0.1));
+		TNT1 A 0 A_Jump(256,1,2,3,4,5,6,7);
+		SC2G ABCDEFG 0 A_Jump(256,"Chunk");
+		Stop;
+	Chunk:
+		SC2G "#" 6 A_SpawnItemEx("NashGore_FlyingBlood",random(-1,1),random(-1,1));
+		Loop;
+	Death:
+		SC2G "#" 0 A_SpawnItemEx("NashGore_Blood");
+		SC2G "#" 250 A_CheckSight("Vanish");
+		Wait;
+	}
+}
+
 //LOPER STUFF
 class LoperZap: Actor
 {
