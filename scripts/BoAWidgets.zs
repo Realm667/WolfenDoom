@@ -517,7 +517,7 @@ class PuzzleItemWidget : Widget
 
 	override bool SetVisibility()
 	{
-		if (level.NoInventoryBar || screenblocks > 11) { return false; }
+		if (level.NoInventoryBar || screenblocks > 11 || player.mo.FindInventory("CutsceneEnabled")) { return false; }
 
 		return true;
 	}

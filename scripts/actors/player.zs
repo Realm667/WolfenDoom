@@ -1208,7 +1208,7 @@ class BoAPlayer : PlayerPawn
 		}
 
 		// Blank out the actual crosshair if a custom one is being used - 0 reverts to the player or weapon's default
-		if (player.ReadyWeapon) { player.ReadyWeapon.Crosshair = (crosshair > 0 || crosshairstring) ? 99 : 0; }
+		if (player.ReadyWeapon) { player.ReadyWeapon.Crosshair = (crosshair > 0 || crosshairstring || player.mo.FindInventory("CutsceneEnabled")) ? 99 : 0; }
 	}
 
 	bool IsCorpse(Actor mo)

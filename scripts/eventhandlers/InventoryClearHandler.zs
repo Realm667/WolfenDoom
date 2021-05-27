@@ -168,10 +168,11 @@ class InventoryClearHandler : EventHandler
 	override void UITick()
 	{
 		bool beat = !BaseStatusBar.GetGlobalACSValue(5); // This is only accessible in ui context
+		bool cutscene = !!players[consoleplayer].mo.FindInventory("CutsceneEnabled");
 		
-		if (beat != heartbeat)
+		if (beat != heartbeat || cutscene)
 		{
-			EventHandler.SendNetworkEvent("heartbeat", beat);
+			EventHandler.SendNetworkEvent("heartbeat", cutscene ? false : beat);
 		}
 	}
 }
