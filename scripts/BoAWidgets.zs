@@ -110,7 +110,7 @@ class Widget ui
 		if (start == -1) { start = BoAStatusBar(StatusBar).widgets.Size() - 1; }
 		Widget s = BoAStatusBar(StatusBar).widgets[start];
 
-		for (int a = start; a > 0; a--)
+		for (int a = start; a >= 0; a--)
 		{
 			let w = BoAStatusBar(StatusBar).widgets[a];
 			if (w && w != s && w.visible && w.anchor == anchor)
@@ -198,7 +198,13 @@ class Widget ui
 
 	virtual bool SetVisibility()
 	{
-		if (BoAStatusBar(StatusBar) && BoAStatusBar(StatusBar).barstate == StatusBar.HUD_Fullscreen && !automapactive && !player.mo.FindInventory("CutsceneEnabled")) { return true; }
+		if (
+				BoAStatusBar(StatusBar) && 
+				BoAStatusBar(StatusBar).barstate == StatusBar.HUD_Fullscreen && 
+				!automapactive && 
+				!player.mo.FindInventory("CutsceneEnabled") &&
+				!player.morphtics
+			) { return true; }
 		
 		return false;
 	}
@@ -520,7 +526,12 @@ class PuzzleItemWidget : Widget
 
 	override bool SetVisibility()
 	{
-		if (level.NoInventoryBar || screenblocks > 11 || player.mo.FindInventory("CutsceneEnabled")) { return false; }
+		if (
+			level.NoInventoryBar ||
+			screenblocks > 11 ||
+			player.mo.FindInventory("CutsceneEnabled") ||
+			player.morphtics
+		) { return false; }
 
 		return true;
 	}
@@ -889,6 +900,163 @@ class PositionWidget : Widget
 		DrawToHud.DrawText("P:", (x, y), fnt, alpha, shade:headercolor, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
 		value = String.Format("%0.2f", player.mo.pitch);
 		DrawToHud.DrawText(value, (x + width - fnt.StringWidth(value), y), fnt, alpha, shade:infocolor, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
+
+		return size;
+	}
+}
+
+class Log ui
+{
+	PlayerInfo player;
+	String text;
+	double alpha, height;
+	int ticker;
+	Font fnt;
+
+	void Print(Font fnt, double x, double y, double logalpha = 1.0)
+	{
+		DrawToHud.DrawText(text, (x, y), fnt, alpha * logalpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);	
+	}
+
+	static void Add(PlayerInfo player, String text, String logname = "Log", int level = 0)
+	{
+		LogWidget w = LogWidget(Widget.Find(logname));
+
+		if (w)
+		{
+			int clr = 65;
+
+			switch (level)
+			{
+				case PRINT_LOW:
+				default:
+					clr += msg0color;
+					break;
+				case PRINT_MEDIUM:
+					clr += msg1color;
+					break;
+				case PRINT_HIGH:
+					clr += msg2color;
+					break;
+				case PRINT_CHAT:
+					clr += msg3color;
+					break;
+				case PRINT_TEAMCHAT:
+					clr += msg4color;
+					break;
+				case PRINT_BOLD:
+					clr += msgmidcolor;
+					break;
+			}
+
+			String temp;
+			BrokenString lines;
+			[temp, lines] = BrokenString.BreakString(text, int(w.size.x), false, String.Format("%c", clr), w.fnt);
+
+			for (int l = 0; l <= lines.Count(); l++)
+			{
+				String line = lines.StringAt(l);
+				String temp = ZScriptTools.StripColorCodes(line);
+
+				let m = New("Log");
+				if (m && temp.length())
+				{
+					m.fnt = w.fnt;
+					m.player = player;
+					m.text = line;
+					w.messages.Push(m);
+				}
+			}
+			/*
+			let m = New("Log");
+			if (m)
+			{
+				m.fnt = w.fnt;
+				m.player = player;
+				m.text = text;
+				w.messages.Push(m);
+			}
+			*/
+		}
+	}
+}
+
+class LogWidget : Widget
+{
+	Array<Log> messages;
+	int lineheight;
+	Font fnt;
+	bool ticked;
+
+	static void Init(String widgetname, Vector2 pos, int anchor = 0, int priority = 0)
+	{
+		LogWidget wdg = LogWidget(Widget.Init("LogWidget", widgetname, pos, anchor, 0, priority));
+
+		if (wdg)
+		{
+			wdg.margin[0] = 8;
+			wdg.margin[1] = 4;
+		}
+	}
+
+	virtual void SetFont()
+	{
+		fnt = SmallFont;
+	}
+
+	override void DoTick(int index)
+	{
+		SetFont();
+
+		int delta = max(0, messages.Size() - con_notifylines);
+		for (int d = 0; d < delta; d++) { messages.Delete(d); } // Delete oldest notifications off the top of the stack if we've hit the limit for number shown
+
+		for (int i = 0; i < min(con_notifylines, messages.Size()); i++)
+		{
+			let m = messages[i];
+
+			if (m)
+			{
+				m.ticker++;
+				if (m.ticker < 8) { m.alpha = m.ticker / 6.0; }
+				else if (m.ticker > 35 * con_notifytime - 6) { m.alpha = clamp(1.0 - (m.ticker - 35 * con_notifytime - 6) / 6.0, 0.0, 1.0); }
+
+				if (m.alpha == 0.0)
+				{
+					m.height = max(0, m.height - 1);
+					if (m.height == 0) { messages.Delete(i); }
+				}
+				else { m.height = lineheight; }
+			}
+		}
+	
+		Super.DoTick(index);
+	}
+
+	override Vector2 Draw()
+	{
+		lineheight = fnt.GetHeight();
+
+		double rightoffset = 0;
+		Widget topright = FindPrev(WDG_RIGHT, -1, 0, true);
+		if (topright) { rightoffset = -topright.pos.x + topright.margin[0] + margin[2] - 2; }
+
+		Vector2 hudscale = StatusBar.GetHudScale();
+		size = (Screen.GetWidth() / hudscale.x - pos.x - rightoffset, lineheight * con_notifylines);
+		Super.Draw();
+
+		double yoffset = 0;
+
+		for (int i = 0; i < messages.Size(); i++)
+		{
+			if (i < con_notifylines)
+			{
+				if (messages[i].player != players[consoleplayer]) { continue; }
+				if (i > 0) { yoffset += messages[i - 1].height; }
+			
+				messages[i].Print(fnt, pos.x, pos.y + yoffset, alpha);
+			}
+		}
 
 		return size;
 	}

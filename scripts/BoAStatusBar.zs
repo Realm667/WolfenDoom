@@ -87,6 +87,7 @@ class BoAStatusBar : BaseStatusBar
 		savetimertime = 70;
 
 		CountWidget.Init("Money and Time", (7, 7));
+		LogWidget.Init("Log", (11, 7));
 
 		ObjectivesWidget.Init("Objectives", (11, 7), Widget.WDG_RIGHT, 0);
 		PositionWidget.Init("Position", (7, 7), Widget.WDG_RIGHT, 0);
@@ -127,6 +128,12 @@ class BoAStatusBar : BaseStatusBar
 		{
 			// Don't print save messages
 			savetimer = savetimertime;
+			return true;
+		}
+
+		if (screenblocks == 11 && level.maptime > 5)
+		{
+			Log.Add(CPlayer, outline, "Log", printlevel & PRINT_TYPES); 
 			return true;
 		}
 
