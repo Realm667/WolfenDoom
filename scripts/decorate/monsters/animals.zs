@@ -610,8 +610,8 @@ class ScorpionMK : ScorpionBig
 	{
 	//$Title Scorpion MK (easteregg)
 	//$Color 4
-	Radius 64;
-	Height 96;
+	Radius 48;
+	Height 64;
 	Mass 1000;
 	Scale 1.5;
 	Speed 6;
@@ -620,44 +620,47 @@ class ScorpionMK : ScorpionBig
 	MaxStepHeight 64;
 	PainChance 195;
 	DamageFunction (3 * random(1,8)); //jumpattacks
-	Obituary "$SCORPHUG";
+	Obituary "$SCORPMK"; //but doesn't get applied as expected
+	DamageFactor "Electric", 1.2; //rayden
+	DamageFactor "Fire", 0.0; //himself
+	DamageFactor "Ice", 2.0; //subzero
 	}
 	States
 	{
 	Spawn:
-		SCR2 A 2;
+		SCRP A 2;
 	See:
-		SCR2 A 1 A_Chase;
-		SCR2 AA 1 A_Chase(null,null,CHF_NOPLAYACTIVE);
-		SCR2 A 1 A_Chase;
-		SCR2 AA 1 A_Chase(null,null,CHF_NOPLAYACTIVE);
-		SCR2 B 1 A_Chase;
-		SCR2 BB 1 A_Chase(null,null,CHF_NOPLAYACTIVE);
-		SCR2 B 1 A_Chase;
-		SCR2 BB 1 A_Chase(null,null,CHF_NOPLAYACTIVE);
-		SCR2 A 0 A_Jump(11,"TryJump");
+		SCRP A 1 A_Chase;
+		SCRP AA 1 A_Chase(null,null,CHF_NOPLAYACTIVE);
+		SCRP A 1 A_Chase;
+		SCRP AA 1 A_Chase(null,null,CHF_NOPLAYACTIVE);
+		SCRP B 1 A_Chase;
+		SCRP BB 1 A_Chase(null,null,CHF_NOPLAYACTIVE);
+		SCRP B 1 A_Chase;
+		SCRP BB 1 A_Chase(null,null,CHF_NOPLAYACTIVE);
+		SCRP A 0 A_Jump(11,"TryJump");
 		Loop;
 	Melee:
 		TNT1 A 0 A_FaceTarget;
-		SCR2 AB 6 A_CustomMeleeAttack(3*random(1,4),"scorpion/attacks","scorpion/attacks");
+		SCRP AB 6 A_CustomMeleeAttack(3*random(1,4),"scorpion/attacks","scorpion/attacks");
 		Goto See;
 	Missile:
-		SCR2 A 0 A_Jump(256,"Spit","Harpoon","Harpoon","Reach"); //more chances for harpoon
-	Spit:
-		SCR2 AB 4 A_FaceTarget;
-		SCR2 B 8 A_SpawnProjectile("ScorpionSpit",24,0,0,2,3);
+		SCRP A 0 A_Jump(256,"Flame","Harpoon","Harpoon","Reach"); //more chances for harpoon, doesn't spit instead flames
+	Flame:
+		SCRP AB 4 A_FaceTarget;
+		SCRP BBBBBBBB 1 A_SpawnProjectile("EnemyFlamerShot",32,0,0,CMF_AIMDIRECTION);
 		Goto See;
-	Harpoon:
-		SCR2 AB 4 A_FaceTarget;
-		SCR2 B 0; //scorpion sound here
-		SCR2 B 4 A_SpawnProjectile("Harpoon",48,0,frandom(-2,2),CMF_AIMDIRECTION);
+	Harpoon: //probably require distinct attack to trigger proper obituary
+		SCRP AB 4 A_FaceTarget;
+		SCRP B 0 A_StartSound("scorpion/mk", CHAN_ITEM, 0, 1.5);
+		SCRP B 4 A_SpawnProjectile("Harpoon",48,0,frandom(-2,2),CMF_AIMDIRECTION);
 		Goto See;
 	Reach:
-		SCR2 A 0 A_JumpIfCloser(224,2);
+		SCRP A 0 A_JumpIfCloser(224,2);
 		Goto See;
-		SCR2 AB 6 A_FaceTarget;
-		SCR2 A 6 A_SkullAttack;
-		SCR2 B 6 A_Gravity;
+		SCRP AB 6 A_FaceTarget;
+		SCRP A 6 A_SkullAttack;
+		SCRP B 6 A_Gravity;
 		Goto See;
 	TryJump:
 		TNT1 A 0 A_CheckFloor("Jump"); //don't jump if mid-air
@@ -665,14 +668,14 @@ class ScorpionMK : ScorpionBig
 	Jump:
 		TNT1 A 0 ThrustThing((int) (angle*256/360),random(4,6),0,0);
 		TNT1 A 0 ThrustThingZ(0,random(60,80),0,1);
-		SCR2 C 15 A_StartSound("scorpion/fall", CHAN_AUTO, 0, 1.5);
+		SCRP C 15 A_StartSound("scorpion/fall", CHAN_AUTO, 0, 1.5);
 		Goto See;
 	Pain:
-		SCR2 A 2 A_Pain;
+		SCRP A 2 A_Pain;
 		Goto See;
 	Death:
 		TNT1 A 0 A_ScreamAndUnblock;
-		TNT1 AAAAAAAA 0 A_SpawnItemEx("HugeScorpionChunk",0,0,4,random(-2,2),random(-2,2),random(5,10),random(0,256),0,100);
+		TNT1 AAAAAAAA 0 A_SpawnItemEx("MKScorpionChunk",0,0,4,random(-2,2),random(-2,2),random(5,10),random(0,256),0,100);
 		Stop;
 	}
 }
