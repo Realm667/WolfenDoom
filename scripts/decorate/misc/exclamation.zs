@@ -185,7 +185,7 @@ class InteractionIcon25Health : InteractionIcon
 	Spawn:
 		ICNI A 0 NODELAY {
 			PlayerPawn pmo = players[consoleplayer].mo;
-			if (pmo.health > 25 || Distance2D(pmo) > 128.0)
+			if (pmo.health >= 25 || Distance2D(pmo) > 128.0)
 			{
 				return ResolveState("FadeAway");
 			}
