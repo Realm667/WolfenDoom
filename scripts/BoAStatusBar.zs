@@ -1050,7 +1050,16 @@ class BoAStatusBar : BaseStatusBar
 
 			if (crosshairtarget.bShootable && crosshairtarget.health > 0)
 			{
-				if (CPlayer.ReadyWeapon is "KnifeSilent" && Nazi(crosshairtarget) && !Nazi(crosshairtarget).user_incombat && !(crosshairtarget is "WGuard_Wounded") && CPlayer.mo.Distance2D(crosshairtarget) < crosshairtarget.radius + 64.0)
+				if (crosshairtarget.bFriendly && (crosshairtarget.Species == "Ally" || crosshairtarget is "PlayerFollower"))
+				{ // In case the player is looking at a friendly
+					size *= 1.25 - clamp(CPlayer.fov / 90.0 * CPlayer.mo.Distance3D(crosshairtarget) / 2048.0, 0.0, 0.75);
+					CrosshairOverlay = TexMan.CheckForTexture("SHOT", TexMan.Type_Any);
+					dimensions = TexMan.GetScaledSize(CrosshairOverlay) * size;
+					screen.DrawTexture(CrosshairOverlay, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_CenterOffset, true, DTA_Alpha, crosshairalpha * 0.5);
+					CrosshairOverlay = TexMan.CheckForTexture("NOSHOT", TexMan.Type_Any);
+					pulsespeed = 20;
+				}
+				else if (CPlayer.ReadyWeapon is "KnifeSilent" && Nazi(crosshairtarget) && !Nazi(crosshairtarget).user_incombat && !(crosshairtarget is "WGuard_Wounded") && CPlayer.mo.Distance2D(crosshairtarget) < crosshairtarget.radius + 64.0)
 				{
 					if (crosshairtarget == currenttarget)
 					{
@@ -1102,7 +1111,7 @@ class BoAStatusBar : BaseStatusBar
 				}
 			}
 
-			if (CrosshairOverlay)
+			if (CrosshairOverlay.IsValid())
 			{
 				// Handle the scaling size multiplier here
 				dimensions = TexMan.GetScaledSize(CrosshairOverlay) * size * (1.0 + 0.125 * sin(level.time * pulsespeed)); // Pulse the size of the indicator
