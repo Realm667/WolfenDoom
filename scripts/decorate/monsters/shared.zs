@@ -870,7 +870,8 @@ class FlyingNeedle : MiniRocket
 	Default
 	{
 	Speed 10;
-	DamageType "MutantPoisonAmbience";
+	DamageType "MutantPoison";
+	PoisonDamageType "MutantPoisonAmbience";
 	PoisonDamage 3, 4;
 	SeeSound "";
 	DeathSound "gshardnd";
@@ -909,7 +910,8 @@ class FlyingNeedleZ : MiniRocket
 	Default
 	{
 	Speed 12;
-	DamageType "UndeadPoisonAmbience";
+	DamageType "UndeadPoison";
+	PoisonDamageType "UndeadPoisonAmbience";
 	PoisonDamage 1, 2;
 	SeeSound "";
 	DeathSound "gshardnd";

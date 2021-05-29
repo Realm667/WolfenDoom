@@ -1075,7 +1075,6 @@ class LogWidget : Widget
 
 class ActiveEffectWidget : Widget
 {
-	Font fnt;
 	int iconsize;
 
 	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
@@ -1105,8 +1104,6 @@ class ActiveEffectWidget : Widget
 
 	override void DoTick(int index)
 	{
-		fnt = HUDFont;
-
 		if (screenblocks < 11)
 		{
 			anchor = WDG_RIGHT;
@@ -1134,9 +1131,13 @@ class ActiveEffectWidget : Widget
 				if (icon.IsValid()) { count++; }
 			}
 		}
+		if (player.poisoncount) { count++; }
+		if (player.mo.poisondurationreceived) { count++; }
 
 		if (count) { size = (count * (iconsize + 2), iconsize + 1); }
 		Super.Draw();
+
+		if (!count) { return size; }
 
 		double drawposx = int(pos.x + iconsize / 2);
 		double drawposy = int(pos.y + iconsize / 2);
@@ -1146,6 +1147,11 @@ class ActiveEffectWidget : Widget
 		{
 			if (Powerup(item))
 			{
+				Color amtclr = Powerup(item).BlendColor;
+				if (amtclr == 0) { amtclr = 0xDDDDDD; }
+
+				DrawTimer(Powerup(item).EffectTics, Powerup(item).Default.EffectTics, amtclr, (drawposx, drawposy), 0.5);
+
 				let icon = Powerup(item).GetPowerupIcon();
 				if (icon.IsValid())
 				{
@@ -1165,16 +1171,23 @@ class ActiveEffectWidget : Widget
 					}
 					else { texsize = (1.0, 1.0); }
 
-					Color amtclr = Powerup(item).BlendColor;
-					if (amtclr == 0) { amtclr = 0xDDDDDD; }
-
-					DrawTimer(Powerup(item).EffectTics, Powerup(item).Default.EffectTics, amtclr, (drawposx, drawposy), 0.5);
-
 					BoAStatusBar(StatusBar).DrawIcon(item, int(drawposx), int(drawposy), int(iconsize * 3 / 4), StatusBar.DI_ITEM_CENTER, alpha * 0.85, false);
-
-					drawposx += spacing;
 				}
+
+				drawposx += spacing;
 			}
+		}
+
+		if (player.poisoncount)
+		{
+			DrawPoisonIcon(player.poisonpaintype, player.poisoncount, 100, (drawposx, drawposy));
+			drawposx += spacing;
+		}
+
+		if (player.mo.poisondurationreceived)
+		{
+			DrawPoisonIcon(player.mo.poisondamagetypereceived, player.mo.poisondurationreceived, int(player.mo.poisonperiodreceived ? 60.0 / player.mo.poisonperiodreceived : 60.0), (drawposx, drawposy));
+			drawposx += spacing;
 		}
 
 		return size;
@@ -1225,5 +1238,47 @@ class ActiveEffectWidget : Widget
 		}
 
 		if (border.IsValid()) { DrawToHud.DrawTexture(border, pos, alpha, scale); }
+	}
+
+	void DrawPoisonIcon(Name poisontype, int duration, int maxduration, Vector2 pos)
+	{
+		TextureID icon = TexMan.CheckForTexture("ICO_POIS");
+		Color clr;
+
+		if (poisontype == "MutantPoison" || poisontype == "MutantPoisonAmbience")
+		{
+			clr = 0xFF6400C8;
+		}
+		else if (poisontype == "UndeadPoison" || poisontype == "UndeadPoisonAmbience")
+		{
+			clr = 0xFF005A40;
+		}
+		else
+		{
+			clr = 0x0A6600;
+		}
+
+		DrawTimer(duration, maxduration, clr, (pos.x, pos.y), 0.5);
+
+		if (icon.IsValid())
+		{
+			Vector2 texsize = TexMan.GetScaledSize(icon);
+			if (texsize.x > iconsize || texsize.y > iconsize)
+			{
+				if (texsize.y > texsize.x)
+				{
+					texsize.y = iconsize * 1.0 / texsize.y;
+					texsize.x = texsize.y;
+				}
+				else
+				{
+					texsize.x = iconsize * 1.0 / texsize.x;
+					texsize.y = texsize.x;
+				}
+			}
+			else { texsize = (1.0, 1.0); }
+
+			StatusBar.DrawTexture(icon, (pos.x, pos.y), StatusBar.DI_ITEM_CENTER, alpha * 0.85, scale:0.75 * texsize);
+		}
 	}
 }
