@@ -22,13 +22,15 @@ add_subclasses(){
 	done
 }
 
-: ${(Af)tracers::="$(get_subclasses_of BulletTracer)"}
+: ${(Af)tracers::="$(get_subclasses_of ${1:-BulletTracer})"}
 
 for tclass in $tracers; do
 	add_tracer_class $tclass
 	add_subclasses $tclass
 done
 
+print -l "========== Classes ==========" ${tracerclasses[@]}
+print "========== Uses =========="
 for tclass in $tracerclasses; do
 	grep -rin "\b$tclass\b" scripts
 done
