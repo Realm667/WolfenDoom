@@ -17,7 +17,7 @@ class Widget ui
 	};
 
 	int ticker;
-	Vector2 setpos, pos, size, frameoffset;
+	Vector2 setpos, pos, size, offset;
 	String widgetname;
 	int flags, anchor, margin[4], priority, screenblocksval;
 	bool visible;
@@ -27,7 +27,7 @@ class Widget ui
 
 	PlayerInfo player;
 
-	static Widget Init(class<Widget> type, String widgetname, Vector2 pos = (0, 0), int anchor = WDG_TOP | WDG_LEFT, int flags = 0, int priority = 0)
+	static Widget Init(class<Widget> type, String widgetname, int anchor = WDG_TOP | WDG_LEFT, int flags = 0, int priority = 0, Vector2 offset = (0, 0))
 	{
 		if (!BoAStatusBar(StatusBar)) { return null; }
 
@@ -53,13 +53,15 @@ class Widget ui
 
 		w.anchor = anchor;
 		w.flags = flags;
-		w.setpos = pos;
+		w.offset = offset;
 		w.player = players[consoleplayer];
 		w.BigFont = Font.GetFont("BigFont");
 		w.HUDFont = Font.GetFont("ThreeFiv");
 
 		w.margin[0] = 4;
 		for (int i = 1; i < 4; i++) { w.margin[i] = -1; }
+
+		w.setpos = (7, 7);
 
 		return w;
 	}
@@ -170,6 +172,9 @@ class Widget ui
 			}
 		}
 
+		setpos.x = 3 + margin[0];
+		setpos.x = 3 + margin[1];
+
 		// If this wasn't offset at all, assume it's the first in the stack, and apply edge-of-screen offsets as necessary
 		if (relpos.y == 0)
 		{
@@ -212,17 +217,17 @@ class Widget ui
 	virtual void DoTick(int index = 0)
 	{
 		visible = SetVisibility();
-		if (!visible) { alpha = 0.0; }
+		if (!visible || size == (0, 0)) { alpha = 0.0; }
 
 		SetMargins();
 		CalcRelPos(pos, index);
 
 		Vector2 hudscale = StatusBar.GetHudScale();
 
-		if (anchor & WDG_BOTTOM) { pos.y = -(pos.y + frameoffset.y + size.y); }
+		if (anchor & WDG_BOTTOM) { pos.y = -(pos.y + offset.y + size.y); }
 		else if (anchor & WDG_MIDDLE) { pos.y += Screen.GetHeight() / hudscale.y / 2; }
 
-		if (anchor & WDG_RIGHT) { pos.x = -(pos.x + frameoffset.x + size.x); }
+		if (anchor & WDG_RIGHT) { pos.x = -(pos.x + offset.x + size.x); }
 		else if (anchor & WDG_CENTER)
 		{
 			int widthoffset = 0;
@@ -255,7 +260,7 @@ class Widget ui
 
 		if (flags & WDG_DRAWFRAME)
 		{
-			Vector2 framepos = pos + frameoffset;
+			Vector2 framepos = pos + offset;
 			if (flags & WDG_DRAWFRAME_CENTERED)
 			{
 				framepos.x -= size.x / 2;
@@ -275,9 +280,9 @@ class HealthWidget : Widget
 {
 	TextureID rctex;
 
-	static void Init(String widgetname, Vector2 pos, int anchor = 0, int priority = 0)
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
 	{
-		HealthWidget wdg = HealthWidget(Widget.Init("HealthWidget", widgetname, pos, anchor, WDG_DRAWFRAME));
+		HealthWidget wdg = HealthWidget(Widget.Init("HealthWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos));
 
 		if (wdg)
 		{
@@ -333,9 +338,9 @@ class CountWidget : Widget
 {
 	TextureID bagtex;
 
-	static void Init(String widgetname, Vector2 pos, int anchor = 0, int priority = 0)
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
 	{
-		CountWidget wdg = CountWidget(Widget.Init("CountWidget", widgetname, pos, anchor, WDG_DRAWFRAME, priority));
+		CountWidget wdg = CountWidget(Widget.Init("CountWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos));
 
 		if (wdg)
 		{
@@ -378,9 +383,9 @@ class KeyWidget : Widget
 
 	TextureID locktex;
 
-	static void Init(String widgetname, Vector2 pos, int anchor = 0, int priority = 0)
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
 	{
-		KeyWidget wdg = KeyWidget(Widget.Init("KeyWidget", widgetname, pos, anchor, WDG_DRAWFRAME, priority));
+		KeyWidget wdg = KeyWidget(Widget.Init("KeyWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos));
 
 		if (wdg)
 		{
@@ -421,9 +426,9 @@ class CurrentAmmoWidget : Widget
 {
 	TextureID grenadetex, astrogrenadetex;
 
-	static void Init(String widgetname, Vector2 pos, int anchor = 0, int priority = 0)
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
 	{
-		CurrentAmmoWidget wdg = CurrentAmmoWidget(Widget.Init("CurrentAmmoWidget", widgetname, pos, anchor, WDG_DRAWFRAME, priority));
+		CurrentAmmoWidget wdg = CurrentAmmoWidget(Widget.Init("CurrentAmmoWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos));
 
 		if (wdg)
 		{
@@ -471,9 +476,9 @@ class CurrentAmmoWidget : Widget
 
 class WeaponWidget : Widget
 {
-	static void Init(String widgetname, Vector2 pos, int anchor = 0, int priority = 0)
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
 	{
-		WeaponWidget wdg = WeaponWidget(Widget.Init("WeaponWidget", widgetname, pos, anchor, WDG_DRAWFRAME, priority));
+		WeaponWidget wdg = WeaponWidget(Widget.Init("WeaponWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos));
 	}
 
 	override Vector2 Draw()
@@ -490,9 +495,9 @@ class WeaponWidget : Widget
 
 class InventoryWidget : Widget
 {
-	static void Init(String widgetname, Vector2 pos, int anchor = 0, int priority = 0)
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
 	{
-		InventoryWidget wdg = InventoryWidget(Widget.Init("InventoryWidget", widgetname, pos, anchor, 0, priority));
+		InventoryWidget wdg = InventoryWidget(Widget.Init("InventoryWidget", widgetname, anchor, 0, priority, pos));
 	}
 
 	override Vector2 Draw()
@@ -513,14 +518,13 @@ class PuzzleItemWidget : Widget
 {
 	int rows, cols, iconsize, maxrows;
 
-	static void Init(String widgetname, Vector2 pos, int anchor = 0, int priority = 0)
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
 	{
-		PuzzleItemWidget wdg = PuzzleItemWidget(Widget.Init("PuzzleItemWidget", widgetname, pos, anchor, 0, priority));
+		PuzzleItemWidget wdg = PuzzleItemWidget(Widget.Init("PuzzleItemWidget", widgetname, anchor, 0, priority, pos));
 				
 		if (wdg)
 		{
 			wdg.iconsize = 20;
-			wdg.frameoffset = (wdg.iconsize + 2, 0);
 		}
 	}
 
@@ -540,8 +544,16 @@ class PuzzleItemWidget : Widget
 	{
 		Vector2 hudscale = Statusbar.GetHudScale();
 		
-		if (screenblocks < 11) { maxrows = 9; }
-		else { maxrows = int((Screen.GetHeight() / hudscale.y - 52 - pos.y) / (iconsize + 2)); }
+		if (screenblocks < 11)
+		{
+			maxrows = 9;
+			offset.x = 7;
+		}
+		else
+		{
+			maxrows = int((Screen.GetHeight() / hudscale.y - 52 - pos.y) / (iconsize + 2));
+			offset.x = 16;
+		}
 
 		Super.DoTick(index);
 	}
@@ -550,7 +562,7 @@ class PuzzleItemWidget : Widget
 	{
 		Super.Draw();
 
-		[cols, rows] = BoAStatusBar(StatusBar).DrawPuzzleItems(int(pos.x + 1 + size.x + iconsize / 2), int(pos.y + 1 + frameoffset.y + iconsize / 2), iconsize, maxrows, -1, alpha:alpha);
+		[cols, rows] = BoAStatusBar(StatusBar).DrawPuzzleItems(int(pos.x + (cols - 1) * (iconsize + 2) + 1), int(pos.y + 1), iconsize, maxrows, -1, false, StatusBar.DI_ITEM_LEFT_TOP, alpha);
 
 		size = ((iconsize + 2) * cols, (iconsize + 2) * rows);
 
@@ -560,9 +572,9 @@ class PuzzleItemWidget : Widget
 
 class StealthWidget : Widget
 {
-	static void Init(String widgetname, Vector2 pos, int anchor = 0, int priority = 0)
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
 	{
-		StealthWidget wdg = StealthWidget(Widget.Init("StealthWidget", widgetname, pos, anchor, 0, priority));
+		StealthWidget wdg = StealthWidget(Widget.Init("StealthWidget", widgetname, anchor, 0, priority, pos));
 
 		if (wdg && wdg.flags & WDG_DRAWFRAME) { wdg.flags |= WDG_DRAWFRAME_CENTERED; }
 	}
@@ -591,9 +603,9 @@ class PowerWidget : Widget
 {
 	bool active;
 
-	static void Init(String widgetname, Vector2 pos, int anchor = 0, int priority = 0)
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
 	{
-		PowerWidget wdg = PowerWidget(Widget.Init("PowerWidget", widgetname, pos, anchor, 0, priority));
+		PowerWidget wdg = PowerWidget(Widget.Init("PowerWidget", widgetname, anchor, 0, priority, pos));
 
 		if (wdg && wdg.flags & WDG_DRAWFRAME) { wdg.flags |= WDG_DRAWFRAME_CENTERED; }
 	}
@@ -614,9 +626,9 @@ class PowerWidget : Widget
 
 class AirSupplyWidget : Widget
 {
-	static void Init(String widgetname, Vector2 pos, int anchor = 0, int priority = 0)
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
 	{
-		AirSupplyWidget wdg = AirSupplyWidget(Widget.Init("AirSupplyWidget", widgetname, pos, anchor, 0, priority));
+		AirSupplyWidget wdg = AirSupplyWidget(Widget.Init("AirSupplyWidget", widgetname, anchor, 0, priority, pos));
 	}
 
 	override Vector2 Draw()
@@ -635,9 +647,9 @@ class AirSupplyWidget : Widget
 
 class StaminaWidget : Widget
 {
-	static void Init(String widgetname, Vector2 pos, int anchor = 0, int priority = 0)
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
 	{
-		StaminaWidget wdg = StaminaWidget(Widget.Init("StaminaWidget", widgetname, pos, anchor, 0, priority));
+		StaminaWidget wdg = StaminaWidget(Widget.Init("StaminaWidget", widgetname, anchor, 0, priority, pos));
 	}
 
 	override Vector2 Draw()
@@ -672,9 +684,9 @@ class AmmoWidget : Widget
 	Array<AmmoInfo> ammotypes;
 	transient CVar show;
 
-	static void Init(String widgetname, Vector2 pos, int anchor = 0, int priority = 0)
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
 	{
-		AmmoWidget wdg = AmmoWidget(Widget.Init("AmmoWidget", widgetname, pos, anchor, WDG_DRAWFRAME, priority));
+		AmmoWidget wdg = AmmoWidget(Widget.Init("AmmoWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos));
 
 		if (wdg)
 		{
@@ -822,9 +834,9 @@ class PositionWidget : Widget
 {
 	Font fnt;
 
-	static void Init(String widgetname, Vector2 pos, int anchor = 0, int priority = 0)
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
 	{
-		PositionWidget wdg = PositionWidget(Widget.Init("PositionWidget", widgetname, pos, anchor, 0, priority));
+		PositionWidget wdg = PositionWidget(Widget.Init("PositionWidget", widgetname, anchor, 0, priority, pos));
 	}
 
 	override bool SetVisibility()
@@ -986,11 +998,10 @@ class LogWidget : Widget
 	Array<Log> messages;
 	int lineheight;
 	Font fnt;
-	bool ticked;
 
-	static void Init(String widgetname, Vector2 pos, int anchor = 0, int priority = 0)
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
 	{
-		LogWidget wdg = LogWidget(Widget.Init("LogWidget", widgetname, pos, anchor, 0, priority));
+		LogWidget wdg = LogWidget(Widget.Init("LogWidget", widgetname, anchor, 0, priority, pos));
 
 		if (wdg)
 		{
@@ -1059,5 +1070,160 @@ class LogWidget : Widget
 		}
 
 		return size;
+	}
+}
+
+class ActiveEffectWidget : Widget
+{
+	Font fnt;
+	int iconsize;
+
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
+	{
+		ActiveEffectWidget wdg = ActiveEffectWidget(Widget.Init("ActiveEffectWidget", widgetname, anchor, 0, priority, pos));
+
+		if (wdg)
+		{
+			wdg.iconsize = 24;
+		}
+	}
+
+	override bool SetVisibility()
+	{
+		if (
+				automapactive ||
+				screenblocks > 11 ||
+				player.mo.FindInventory("CutsceneEnabled") ||
+				player.morphtics
+		)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	override void DoTick(int index)
+	{
+		fnt = HUDFont;
+
+		if (screenblocks < 11)
+		{
+			anchor = WDG_RIGHT;
+			priority = 0;
+		}
+		else
+		{
+			anchor = WDG_BOTTOM | WDG_LEFT;
+			priority = 1;
+		}
+
+		Super.DoTick(index);
+	}
+
+	override Vector2 Draw()
+	{
+		Inventory item;
+		int count = 0;
+
+		for (item = player.mo.Inv; item != null; item = item.Inv)
+		{
+			if (Powerup(item))
+			{
+				let icon = Powerup(item).GetPowerupIcon();
+				if (icon.IsValid()) { count++; }
+			}
+		}
+
+		if (count) { size = (count * (iconsize + 2), iconsize + 1); }
+		Super.Draw();
+
+		double drawposx = int(pos.x + iconsize / 2);
+		double drawposy = int(pos.y + iconsize / 2);
+		int spacing = iconsize + 2;
+
+		for (item = player.mo.Inv; item != null; item = item.Inv)
+		{
+			if (Powerup(item))
+			{
+				let icon = Powerup(item).GetPowerupIcon();
+				if (icon.IsValid())
+				{
+					Vector2 texsize = TexMan.GetScaledSize(icon);
+					if (texsize.x > iconsize || texsize.y > iconsize)
+					{
+						if (texsize.y > texsize.x)
+						{
+							texsize.y = iconsize * 1.0 / texsize.y;
+							texsize.x = texsize.y;
+						}
+						else
+						{
+							texsize.x = iconsize * 1.0 / texsize.x;
+							texsize.y = texsize.x;
+						}
+					}
+					else { texsize = (1.0, 1.0); }
+
+					Color amtclr = Powerup(item).BlendColor;
+					if (amtclr == 0) { amtclr = 0xDDDDDD; }
+
+					DrawTimer(Powerup(item).EffectTics, Powerup(item).Default.EffectTics, amtclr, (drawposx, drawposy), 0.5);
+
+					BoAStatusBar(StatusBar).DrawIcon(item, int(drawposx), int(drawposy), int(iconsize * 3 / 4), StatusBar.DI_ITEM_CENTER, alpha * 0.85, false);
+
+					drawposx += spacing;
+				}
+			}
+		}
+
+		return size;
+	}
+
+	void DrawTimer(int time, int maxtime, Color clr, Vector2 pos = (0, 0), double scale = 1.0)
+	{
+		TextureID fill = TexMan.CheckForTexture("STATUSF");
+		TextureID back = TexMan.CheckForTexture("STATUSB");
+		TextureID border = TexMan.CheckForTexture("STATUSO");
+
+		// Snap draw coordinates to integers for clean scaling;
+		pos.x = int(pos.x);
+		pos.y = int(pos.y);
+
+		if (back.IsValid()) { DrawToHud.DrawTexture(back, pos, alpha, scale); }
+
+		if (fill.IsValid() && time < 0x7FFFFFFF)  // Don't draw amount indicators for infinite powerups
+		{
+			double angle = 360.0 * time / maxtime;
+
+			int quads = int(angle / 90);
+
+			for (int q = quads; q > 0; q--)
+			{
+				DrawToHud.DrawTransformedTexture(fill, pos, alpha, (90 * q - 1) - 90, scale, clr);
+			}
+
+			int top = 0, left = 0, bottom = 0x7FFFFFFF, right = 0x7FFFFFFF;
+
+			switch (quads % 4)
+			{
+				case 3:
+					bottom = int(pos.y);
+					break;
+				case 2:
+					right = int(pos.x);
+					break;
+				case 1:
+					top = int(pos.y);
+					break;
+				default:
+					left = int(pos.x);
+					break;
+			}
+
+			DrawToHud.DrawTransformedTexture(fill, pos, alpha, angle - 90, scale, clr, top, left, bottom, right);
+		}
+
+		if (border.IsValid()) { DrawToHud.DrawTexture(border, pos, alpha, scale); }
 	}
 }

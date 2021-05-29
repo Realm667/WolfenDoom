@@ -111,7 +111,7 @@ class DrawToHUD
 		else { screen.DrawTexture(tex, true, screenpos.x, screenpos.y, DTA_DestWidth, int(screensize.x), DTA_DestHeight, int(screensize.y), DTA_Alpha, alpha, DTA_TopOffset, 0, DTA_LeftOffset, 0, DTA_AlphaChannel, alphachannel, DTA_FillColor, shade); }
 	}
 
-	static ui void DrawTransformedTexture(TextureID tex, Vector2 pos, double alpha = 1.0, double ang = 0, double scale = 1.0, color shade = -1)
+	static ui void DrawTransformedTexture(TextureID tex, Vector2 pos, double alpha = 1.0, double ang = 0, double scale = 1.0, color shade = -1, int cliptop = 0, int clipleft = 0, int clipbottom = 0x7FFFFFFF, int clipright = 0x7FFFFFFF)
 	{
 		// Scale the coordinates
 		Vector2 screenpos, screensize;
@@ -127,8 +127,19 @@ class DrawToHUD
 			fillcolor = shade & 0xFFFFFF;
 		}
 
+		// Scale the clipping coordinates
+		Vector2 hudscale = StatusBar.GetHudScale();
+		if (cliptop) { cliptop = int(cliptop * hudscale.y); }
+		if (cliptop < 0) { cliptop += Screen.GetHeight(); }
+		if (clipbottom < 0x7FFFFFFF) { clipbottom = int(clipbottom * hudscale.y); }
+		if (clipbottom < 0) { clipbottom += Screen.GetHeight(); }
+		if (clipleft) { clipleft = int(clipleft * hudscale.x); }
+		if (clipleft < 0) { clipleft += Screen.GetWidth(); }
+		if (clipright < 0x7FFFFFFF) { clipright = int(clipright * hudscale.x); }
+		if (clipright < 0) { clipright += Screen.GetWidth(); }
+
 		// Draw rotated texture
-		Screen.DrawTexture(tex, true, screenpos.x, screenpos.y, DTA_CenterOffset, true, DTA_Rotate, -ang, DTA_DestWidth, int(screensize.x), DTA_DestHeight, int(screensize.y), DTA_Alpha, alpha, DTA_AlphaChannel, alphachannel, DTA_FillColor, shade);
+		Screen.DrawTexture(tex, true, screenpos.x, screenpos.y, DTA_CenterOffset, true, DTA_Rotate, -ang, DTA_DestWidth, int(screensize.x), DTA_DestHeight, int(screensize.y), DTA_Alpha, alpha, DTA_AlphaChannel, alphachannel, DTA_FillColor, shade, DTA_ClipTop, cliptop, DTA_ClipLeft, clipleft, DTA_ClipBottom, clipbottom, DTA_ClipRight, clipright);
 	}
 
 	static ui void Dim(Color clr = 0x000000, double alpha = 0.5, int x = 0, int y = 0, int w = -1, int h = -1)

@@ -52,6 +52,7 @@ class ScubaGearGiver : PowerupToggler
 		//$Title Scuba Gear ("Underwater" protection)
 		//$Color 6
 		Height 32;
+		Scale 0.5;
 		Inventory.Icon "SCUBA0";
 		Inventory.MaxAmount 1;
 		Inventory.PickupMessage "$SCUBA2";
@@ -167,6 +168,7 @@ class PowerDrugs : PowerDoubleFiringSpeed
 {
 	Default
 	{
+		Inventory.Icon "ICO_FSPD";
 		Powerup.Duration -10;
 	}
 }
@@ -187,6 +189,7 @@ class PowerFactor : PowerDamage
 {
 	Default
 	{
+		Inventory.Icon "ICO_DFAC";
 		Powerup.Duration -10;
 		DamageFactor "Normal", 2.0;
 	}

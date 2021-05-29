@@ -294,9 +294,9 @@ class ObjectivesWidget : Widget
 	ObjectiveHandler handler;
 	transient CVar stats;
 
-	static void Init(String widgetname, Vector2 pos, int anchor = 0, int priority = 0)
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
 	{
-		ObjectivesWidget wdg = ObjectivesWidget(Widget.Init("ObjectivesWidget", widgetname, pos, anchor, WDG_DRAWFRAME, priority));
+		ObjectivesWidget wdg = ObjectivesWidget(Widget.Init("ObjectivesWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos));
 		
 		if (wdg)
 		{

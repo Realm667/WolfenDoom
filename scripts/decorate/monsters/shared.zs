@@ -446,7 +446,14 @@ class RumbleWaves: Actor
 	}
 }
 
-class PowerNumbness : PowerSpeed { Default { Speed 0.5; } }
+class PowerNumbness : PowerSpeed
+{
+	Default
+	{
+		Inventory.Icon "ICO_NUMB";
+		Speed 0.5;
+	}
+}
 
 class CurseNumbness : PowerupGiver
 {
@@ -3000,12 +3007,12 @@ class SleepEffect: Actor
 	}
 }
 
-class NaziMedPow : PowerRegeneration
+class NaziMedPow : RegenPowerup
 {
 	Default
 	{
-	Powerup.Duration -18;
-	Powerup.Strength 1;
+		Powerup.Duration -18;
+		Powerup.Strength 1;
 	}
 }
 

@@ -86,27 +86,28 @@ class BoAStatusBar : BaseStatusBar
 
 		savetimertime = 70;
 
-		CountWidget.Init("Money and Time", (7, 7));
-		LogWidget.Init("Log", (11, 7));
+		CountWidget.Init("Money and Time");
+		LogWidget.Init("Log");
 
-		ObjectivesWidget.Init("Objectives", (11, 7), Widget.WDG_RIGHT, 0);
-		PositionWidget.Init("Position", (7, 7), Widget.WDG_RIGHT, 0);
-		KeyWidget.Init("Keys", (7, 7), Widget.WDG_RIGHT, 1);
-		PuzzleItemWidget.Init("Puzzle Items", (16, 7), Widget.WDG_RIGHT, 2);
+		ObjectivesWidget.Init("Objectives", Widget.WDG_RIGHT, 0);
+		PositionWidget.Init("Position", Widget.WDG_RIGHT, 0);
+		KeyWidget.Init("Keys", Widget.WDG_RIGHT, 1);
+		PuzzleItemWidget.Init("Puzzle Items", Widget.WDG_RIGHT, 2, (16, 0));
 
-		AirSupplyWidget.Init("Air Supply", (4, -32), Widget.WDG_MIDDLE, 0);
+		AirSupplyWidget.Init("Air Supply", Widget.WDG_MIDDLE, 0, (0, -32));
 
-		HealthWidget.Init("Health and Armor", (7, 7), Widget.WDG_BOTTOM, 0);
-		InventoryWidget.Init("Selected Inventory", (7, 7), Widget.WDG_BOTTOM, 0);
+		HealthWidget.Init("Health and Armor", Widget.WDG_BOTTOM, 0);
+		InventoryWidget.Init("Selected Inventory", Widget.WDG_BOTTOM, 0);
+		ActiveEffectWidget.Init("Active Effects", Widget.WDG_BOTTOM, 1);
 
-		StaminaWidget.Init("Stamina", (4, -32), Widget.WDG_MIDDLE | Widget.WDG_RIGHT, 0);
+		StaminaWidget.Init("Stamina", Widget.WDG_MIDDLE | Widget.WDG_RIGHT, 0, (0, -32));
 		
-		CurrentAmmoWidget.Init("Current Ammo", (7, 7), Widget.WDG_BOTTOM | Widget.WDG_RIGHT, 0);
-		AmmoWidget.Init("Ammo Summary", (7, 7), Widget.WDG_BOTTOM | Widget.WDG_RIGHT, 0);
-		WeaponWidget.Init("Weapon", (7, 7), Widget.WDG_BOTTOM | Widget.WDG_RIGHT, 1);
+		CurrentAmmoWidget.Init("Current Ammo", Widget.WDG_BOTTOM | Widget.WDG_RIGHT, 0);
+		AmmoWidget.Init("Ammo Summary", Widget.WDG_BOTTOM | Widget.WDG_RIGHT, 0);
+		WeaponWidget.Init("Weapon", Widget.WDG_BOTTOM | Widget.WDG_RIGHT, 1);
 
-		StealthWidget.Init("Stealth Bar", (0, 12), Widget.WDG_BOTTOM | Widget.WDG_CENTER, 0);
-		PowerWidget.Init("Lantern and Minesweeper Power", (0, 16), Widget.WDG_BOTTOM | Widget.WDG_CENTER, 1);
+		StealthWidget.Init("Stealth Bar", Widget.WDG_BOTTOM | Widget.WDG_CENTER, 0, (0, 12));
+		PowerWidget.Init("Lantern and Minesweeper Power", Widget.WDG_BOTTOM | Widget.WDG_CENTER, 1, (0, 16));
 	}
 
 	override void NewGame ()
@@ -395,7 +396,7 @@ class BoAStatusBar : BaseStatusBar
 		return count;
 	}
 
-	virtual int, int DrawPuzzleItems(int x, int y, int size = 32, int maxrows = 6, int maxcols = 0, bool vcenter = false, double alpha = 1.0)
+	virtual int, int DrawPuzzleItems(int x, int y, int size = 32, int maxrows = 6, int maxcols = 0, bool vcenter = false, int flags = 0, double alpha = 1.0)
 	{
 		if (!CPlayer.mo.Inv) { return 0, 0; }
 
@@ -415,7 +416,7 @@ class BoAStatusBar : BaseStatusBar
 			// Draw puzzle items that are not already in the inventory bar, not drawn elsewhere, and not tied to Keen maps (and have an icon defined)
 			if (!nextinv.bInvBar && nextinv is "PuzzleItem" && !(nextinv is "CoinItem") && !(nextinv is "CKPuzzleItem") && nextinv.icon)
 			{
-				DrawIcon(nextinv, x, y, size, alpha:alpha);
+				DrawIcon(nextinv, x, y, size, flags, alpha);
 
 				// Move down a block
 				if (maxrows <= 0 || rows < maxrows)
@@ -444,9 +445,11 @@ class BoAStatusBar : BaseStatusBar
 		return cols, rowcount;
 	}
 
-	virtual void DrawIcon(Inventory item, int x, int y, int size, int flags = DI_ITEM_CENTER, double alpha = 1.0)
+	virtual void DrawIcon(Inventory item, int x, int y, int size, int flags = DI_ITEM_CENTER, double alpha = 1.0, bool amounts = true, int style = STYLE_Translucent, color clr = 0xFFFFFFFF)
 	{
 		Vector2 texsize = TexMan.GetScaledSize(item.icon);
+		Vector2 texratio = texsize.Unit();
+
 		if (texsize.x > size || texsize.y > size)
 		{
 			if (texsize.y > texsize.x)
@@ -462,11 +465,35 @@ class BoAStatusBar : BaseStatusBar
 		}
 		else { texsize = (1.0, 1.0); }
 
-		DrawInventoryIcon(item, (x, y), flags, item.alpha * alpha, scale:texsize);
+		Vector2 textpos = (x, y);
+		if (flags & DI_ITEM_LEFT)
+		{
+			x += int((size * (1.0 - texratio.x)) / 2); // Center the icon in the size-defined cell
+			textpos.x += size - 2;
+		}
+		else if (flags & DI_ITEM_RIGHT) {}
+		else
+		{
+			textpos.x += size / 2 - 2;
+		}
+
+		if (flags & DI_ITEM_VCENTER)
+		{
+			textpos.y += size / 2 - 2;
+		}
+		else if (flags & DI_ITEM_TOP)
+		{
+			y += int((size * (1.0 - texratio.y)) / 2); // Center the icon in the size-defined cell
+			textpos.y += size - 2;
+		}
+
+		DrawInventoryIcon(item, (x, y), flags, item.alpha * alpha, scale:texsize, style:style, clr:clr);
+
+		if (!amounts) { return; }
 
 		if (item is "RepairKit" && CPlayer.mo is "TankPlayer")
 		{
-			RepairKit(item).DrawIcon(x, y, size, alpha);
+			RepairKit(item).DrawStatus(int(textpos.x), int(textpos.y), size, alpha);
 		}
 		else if (item is "BasicArmor")
 		{
@@ -475,12 +502,12 @@ class BoAStatusBar : BaseStatusBar
 			if (!armor) { return; }
 
 			String value = FormatNumber(int(armor.SavePercent * 100)) .. "%";
-			DrawString(mHUDFont, value, (x + size / 2, y + size / 2 - mHUDFont.mFont.GetHeight() / 2), DI_TEXT_ALIGN_CENTER, Font.CR_GRAY);
+			DrawString(mHUDFont, value, (textpos.x, textpos.y - mHUDFont.mFont.GetHeight() / 2), DI_TEXT_ALIGN_CENTER, Font.CR_GRAY);
 */
 		}
 		else if (item.Amount > 1)
 		{
-			DrawString(mHUDFont, FormatNumber(item.Amount), (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD, alpha);
+			DrawString(mHUDFont, FormatNumber(item.Amount), (textpos.x, textpos.y - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD, alpha);
 		}
 		else if (item is "PoweredInventory") // For powered inventory items, show current fuel level as a percentage
 		{
@@ -492,7 +519,7 @@ class BoAStatusBar : BaseStatusBar
 			if (fuel)
 			{
 				int amt = int(100 * fuel.Amount / fuel.MaxAmount);
-				DrawString(mHUDFont, FormatNumber(amt) .. "%", (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD, alpha);
+				DrawString(mHUDFont, FormatNumber(amt) .. "%", (textpos.x, textpos.y - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD, alpha);
 			}
 		}
 		else if (item is "PowerupToggler")
@@ -500,7 +527,7 @@ class BoAStatusBar : BaseStatusBar
 			int maxamt = PowerupToggler(item).Default.EffectTics;
 			int amt = int(100 * PowerupToggler(item).EffectTics / maxamt);
 
-			if (maxamt < 0x7FFFFFFF) { DrawString(mHUDFont, FormatNumber(amt) .. "%", (x + size / 2 - 2, y + size / 2 - 2 - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD, alpha); }
+			if (maxamt < 0x7FFFFFFF) { DrawString(mHUDFont, FormatNumber(amt) .. "%", (textpos.x, textpos.y - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD, alpha); }
 		}
 
 	}
@@ -1608,5 +1635,26 @@ class BoAStatusBar : BaseStatusBar
 		double w = h * ratio;
 
 		widthoffset = int((Screen.GetWidth() / scale.x - w) / 2);
+	}
+
+	override void DrawPowerUps() {} // Drawn via screen widget
+
+	// Modified version of the internal function
+	void DrawInventoryIcon(Inventory item, Vector2 pos, int flags = 0, double alpha = 1.0, Vector2 boxsize = (-1, -1), Vector2 scale = (1.,1.), int style = STYLE_Translucent, Color clr = 0xFFFFFFFF)
+	{
+		TextureID texture;
+		Vector2 applyscale;
+		[texture, applyscale] = GetIcon(item, flags, false);
+		
+		if (texture.IsValid())
+		{
+			if ((flags & DI_DIMDEPLETED) && item.Amount <= 0) flags |= DI_DIM;
+			applyscale.X *= scale.X;
+			applyscale.Y *= scale.Y;
+
+			if (clr.a == 0) { clr += 0xFF000000; } // Make sure the color's alpha value is set
+
+			DrawTexture(texture, pos, flags, alpha, boxsize, applyscale, style, clr);
+		}
 	}
 }

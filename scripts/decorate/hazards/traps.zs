@@ -177,6 +177,7 @@ class PowerSlow : PowerSpeed
 {
 	Default
 	{
+		Inventory.Icon "ICO_FREZ";
 		Powerup.Duration -4;
 		Speed 0.33;
 	}

@@ -1235,16 +1235,16 @@ class RepairKit : CompassItem
 	}
 
 	// Called from status bar code when selected by a tank player
-	ui void DrawIcon(int x, int y, int size, double alpha = 1.0)
+	ui void DrawStatus(int x, int y, int size, double alpha = 1.0)
 	{
 		int drawx;
-		int drawy = y + size / 2 - 2;
+		int drawy = y;
 		int width = int(size / 16);
 		int height, fullheight;
 
 		for (int i = Amount; i > 0; i--)
 		{
-			drawx = x + size / 2 - i * (width + 2);
+			drawx = x - i * (width + 2);
 			fullheight = height = int(size * 0.75);
 
 			if (i == Amount) { height = int(height * repairtime * 1.0 / Default.repairtime); }
@@ -1298,6 +1298,8 @@ class RegenPowerup : PowerUp
 
 	Default
 	{
+		Inventory.Icon "ICO_HEAL";
+
 		Powerup.Duration -10;
 		Powerup.Strength 1;
 
@@ -1348,8 +1350,16 @@ class PowerZyklonResistance : PowerProtection
 {
 	Default
 	{
+		Inventory.Icon "ICO_ZYKR";
 		DamageFactor "UndeadPoison", 0.25;
 		DamageFactor "UndeadPoisonAmbience", 0.25;
+	}
+
+	override void Tick()
+	{
+		if (owner && EffectTics == 0x7FFFFFFF) { return; }
+
+		Super.Tick();
 	}
 }
 
@@ -1397,6 +1407,7 @@ class BerserkToken : PowerUp // Token is checked for in ACS-based sprint handlin
 {
 	Default
 	{
+		Inventory.Icon "ICO_SPRN";
 		Powerup.Duration -30;
 	}
 }
@@ -1409,6 +1420,8 @@ class BerserkRegen : RegenPowerUp
 
 	Default
 	{
+		Inventory.Icon "ICO_HEAZ";
+
 		Powerup.Duration -60;
 		Powerup.Color "00 7D 5C", 0.5; // Zyklon green
 		RegenPowerUp.RegenSound "";
@@ -1479,6 +1492,7 @@ class BerserkReflect : PowerUp
 {
 	Default
 	{
+		Inventory.Icon "ICO_REFL";
 		Powerup.Duration -10;
 	}
 
@@ -1542,6 +1556,7 @@ class GierToken : PowerUp // Token is checked for in Nazi class to cause enemies
 
 	Default
 	{
+		Inventory.Icon "ICO_GREE";
 		Powerup.Color "88 66 00", 0.65; // Gold flash
 		Powerup.Duration -60;
 	}
