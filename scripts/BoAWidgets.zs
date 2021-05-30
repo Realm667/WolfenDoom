@@ -1132,6 +1132,7 @@ class ActiveEffectWidget : Widget
 			}
 		}
 		if (player.poisoncount) { count++; }
+		if (player.hazardcount) { count++; }
 		if (player.mo.poisondurationreceived) { count++; }
 
 		if (count) { size = (count * (iconsize + 2), iconsize + 1); }
@@ -1150,43 +1151,26 @@ class ActiveEffectWidget : Widget
 				Color amtclr = Powerup(item).BlendColor;
 				if (amtclr == 0) { amtclr = 0xDDDDDD; }
 
-				DrawTimer(Powerup(item).EffectTics, Powerup(item).Default.EffectTics, amtclr, (drawposx, drawposy), 0.5);
-
-				let icon = Powerup(item).GetPowerupIcon();
-				if (icon.IsValid())
-				{
-					Vector2 texsize = TexMan.GetScaledSize(icon);
-					if (texsize.x > iconsize || texsize.y > iconsize)
-					{
-						if (texsize.y > texsize.x)
-						{
-							texsize.y = iconsize * 1.0 / texsize.y;
-							texsize.x = texsize.y;
-						}
-						else
-						{
-							texsize.x = iconsize * 1.0 / texsize.x;
-							texsize.y = texsize.x;
-						}
-					}
-					else { texsize = (1.0, 1.0); }
-
-					BoAStatusBar(StatusBar).DrawIcon(item, int(drawposx), int(drawposy), int(iconsize * 3 / 4), StatusBar.DI_ITEM_CENTER, alpha * 0.85, false);
-				}
-
+				if (item.icon) { DrawEffectIcon(item.icon, Powerup(item).EffectTics, Powerup(item).Default.EffectTics, (drawposx, drawposy), amtclr); }
 				drawposx += spacing;
 			}
 		}
 
 		if (player.poisoncount)
 		{
-			DrawPoisonIcon(player.poisonpaintype, player.poisoncount, 100, (drawposx, drawposy));
+			DrawEffectIcon(TexMan.CheckForTexture("ICO_POIS"), player.poisoncount, 100, (drawposx, drawposy), GetPoisonColor(player.poisonpaintype));
+			drawposx += spacing;
+		}
+
+		if (player.hazardcount)
+		{
+			DrawEffectIcon(TexMan.CheckForTexture("ICO_POIS"), min(1, player.hazardcount), 1, (drawposx, drawposy), GetPoisonColor(player.hazardtype));
 			drawposx += spacing;
 		}
 
 		if (player.mo.poisondurationreceived)
 		{
-			DrawPoisonIcon(player.mo.poisondamagetypereceived, player.mo.poisondurationreceived, int(player.mo.poisonperiodreceived ? 60.0 / player.mo.poisonperiodreceived : 60.0), (drawposx, drawposy));
+			DrawEffectIcon(TexMan.CheckForTexture("ICO_POIS"), player.mo.poisondurationreceived, int(player.mo.poisonperiodreceived ? 60.0 / player.mo.poisonperiodreceived : 60.0), (drawposx, drawposy), GetPoisonColor(player.mo.poisondamagetypereceived));
 			drawposx += spacing;
 		}
 
@@ -1240,24 +1224,22 @@ class ActiveEffectWidget : Widget
 		if (border.IsValid()) { DrawToHud.DrawTexture(border, pos, alpha, scale); }
 	}
 
-	void DrawPoisonIcon(Name poisontype, int duration, int maxduration, Vector2 pos)
+	virtual Color GetPoisonColor(Name poisontype)
 	{
-		TextureID icon = TexMan.CheckForTexture("ICO_POIS");
-		Color clr;
-
 		if (poisontype == "MutantPoison" || poisontype == "MutantPoisonAmbience")
 		{
-			clr = 0xFF6400C8;
+			return 0xFF6400C8;
 		}
 		else if (poisontype == "UndeadPoison" || poisontype == "UndeadPoisonAmbience")
 		{
-			clr = 0xFF005A40;
-		}
-		else
-		{
-			clr = 0x0A6600;
+			return 0xFF005A40;
 		}
 
+		return 0x0A6600;
+	}
+
+	void DrawEffectIcon(TextureID icon, int duration, int maxduration, Vector2 pos, Color clr = 0xDDDDDD)
+	{
 		DrawTimer(duration, maxduration, clr, (pos.x, pos.y), 0.5);
 
 		if (icon.IsValid())
@@ -1280,5 +1262,157 @@ class ActiveEffectWidget : Widget
 
 			StatusBar.DrawTexture(icon, (pos.x, pos.y), StatusBar.DI_ITEM_CENTER, alpha * 0.85, scale:0.75 * texsize);
 		}
+	}
+}
+
+class DamageInfo
+{
+	Actor attacker;
+	String infoname;
+	Vector3 attackerpos;
+	int distance;
+	int angle;
+	int timeout;
+	int nextupdate;
+	double alpha;
+	Color clr;
+}
+
+class DamageWidget : Widget
+{
+	Array<DamageInfo> indicators;
+	transient CVar enabled;
+	int damagecount;
+
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
+	{
+		DamageWidget wdg = DamageWidget(Widget.Init("DamageWidget", widgetname, anchor, 0, priority, pos));
+	}
+
+	override bool SetVisibility()
+	{
+		if (
+				automapactive ||
+				screenblocks > 11 ||
+				player.mo.FindInventory("CutsceneEnabled") ||
+				player.morphtics ||
+				(enabled && !enabled.GetBool())
+		)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	override void DoTick(int index)
+	{
+		if (!enabled) { enabled = CVar.FindCVar("boa_huddamageindicators"); }
+
+		if (player.mo && player.damagecount)
+		{
+			Actor attacker = null;
+			String infoname = "";
+
+			// If the attacker is still alive, use their data
+			if (player.attacker)
+			{
+				// Unless it's an internal damage effect
+				if (player.attacker != player.mo) { attacker = player.attacker; }
+			}
+			else // Otherwise, treat it as world-induced damage
+			{
+				infoname = "World";
+			}
+
+			DamageInfo info;
+
+			// Save information about a new attacker if it isn't already being tracked
+			int attackerindex = FindAttacker(attacker, infoname);
+			if (attackerindex == indicators.Size())
+			{
+				info = New("DamageInfo");
+				info.attacker = attacker;
+				info.infoname = infoname;
+				info.clr = player.mo.GetPainFlash();
+
+				indicators.Push(info);
+			}
+			else { info = indicators[attackerindex]; }
+
+			// And save additional information
+			if (info)
+			{
+				if (level.time > info.nextupdate)
+				{
+					if (player.attacker)
+					{
+						info.attackerpos = player.attacker.pos;
+						info.angle = int(360 - player.mo.deltaangle(player.mo.angle, player.mo.AngleTo(player.attacker)));
+					}
+					else  // If no attacker actor, assume it was something behind the player's current movement direction that caused the damage (e.g., explosion)
+					{
+						if (damagecount < player.damagecount) // Update/replace with any new damage to the player
+						{
+							info.attackerpos = player.mo.pos - player.mo.vel;
+							info.angle = int(360 - player.mo.deltaangle(player.mo.angle, atan2(-player.mo.vel.y, -player.mo.vel.x)));
+
+						}
+						damagecount = player.damagecount;
+					}
+
+					info.nextupdate = level.time + 18;
+					info.distance = clamp(int(56 - level.Vec3Diff(player.mo.pos, info.attackerpos).length() / 64), 0, 64);
+
+					info.timeout = level.time + min(70, player.damagecount * 4);
+				}
+			}
+		}
+
+		Super.DoTick(index);
+	}
+
+	override Vector2 Draw()
+	{
+		double anglestep = 2.5;
+
+		TextureID indicator = TexMan.CheckForTexture("HUD_DMG");
+		if (indicator.IsValid()) { size = TexMan.GetScaledSize(indicator); }
+
+		Super.Draw();
+
+		for (int i = 0; i < indicators.Size(); i++)
+		{
+			let current = indicators[i];
+
+			if (current.timeout < level.time)
+			{
+				indicators.Delete(i);
+				continue;
+			}
+
+			if (current.timeout - level.time < 35) { current.alpha = (current.timeout - level.time) / 35.0; }
+			else if (current.alpha < 1.0) { current.alpha += 0.125; }
+
+			double anglerange = anglestep * current.distance / 2.0;
+
+			for (double a = -anglerange; a <= anglerange; a += anglestep)
+			{
+				DrawToHud.DrawTransformedTexture(indicator, pos, alpha * current.alpha * (1.0 - (abs(a) / max(anglerange, 1))), current.angle + a, 1.0, current.clr);
+			}
+		}
+
+		return size;
+	}
+
+	int FindAttacker(Actor attacker, String infoname = "")
+	{
+		for (int i = 0; i < indicators.Size(); i++)
+		{
+			if (attacker && indicators[i].attacker == attacker) { return i; }
+			else if (infoname.length() && indicators[i].infoname ~== infoname) { return i; }
+		}
+
+		return indicators.Size();
 	}
 }
