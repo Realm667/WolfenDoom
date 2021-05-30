@@ -570,10 +570,16 @@ Texture FWATER3, 256, 256 { Patch watr_a01, 0, 0 }
 Texture FWATER4, 256, 256 { Patch watr_a01, 0, 0 }
 
 // Karabiner 98k scope
-Sprite SCO1A0, 480, 260 {
+Sprite SCO1A0, 960, 260
+{
 	YScale 1.2
-	Offset 80, 48
-	Patch K98SCOPE, 0, 0
+	Offset 320, 48
+	Patch K98SCOPE, 240, 0
+	Patch BLACK, -16, 0
+	Patch BLACK, 720, 0
+	Patch BLACK, -16, 128
+	Patch BLACK, 720, 128
+
 }
 
 // Boards
