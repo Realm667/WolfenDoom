@@ -307,13 +307,16 @@ class Finale : BoAMenu
 	{
 		if (!lines) { return; }
 
+		int height = int(Screen.GetHeight());
+		int width = int(Screen.GetWidth());
+
 		double backalpha = min(0.5, drawtic / 140.0) * alpha;
-		if (background) { screen.DrawTexture(background, false, 0, 0, DTA_FullScreenEx, 3, DTA_FlipX, swapsides, DTA_Alpha, backalpha); }
+		if (background) { screen.DrawTexture(background, true, 0, 0, DTA_DestWidth, width, DTA_DestHeight, height, DTA_Alpha, backalpha, DTA_FlipX, swapsides); }
 
 		if (drawtic > 140)
 		{
 			double stripalpha = min(1.0, (drawtic - 140) / 140.0) * alpha;
-			if (strips) { screen.DrawTexture(strips, false, 0, 0, DTA_FullScreenEx, 3, DTA_Alpha, stripalpha); }
+			if (strips) { screen.DrawTexture(strips, false, 0, 0, DTA_DestWidth, width, DTA_DestHeight, height, DTA_Alpha, stripalpha); }
 
 			int lw, lh;
 			int sw = 800;
@@ -338,7 +341,7 @@ class Finale : BoAMenu
 		if (drawtic > 70)
 		{
 			double framealpha = min(1.0, (drawtic - 70) / 140.0) * alpha * 0.5;
-			if (frame) { screen.DrawTexture(frame, false, 0, 0, DTA_FullScreenEx, 3, DTA_FlipX, swapsides, DTA_Alpha, framealpha); }
+			if (frame) { screen.DrawTexture(frame, false, width / 2, height / 2, DTA_CenterOffset, true, DTA_DestWidth, height * 960 / 400, DTA_DestHeight, height, DTA_FlipX, swapsides, DTA_Alpha, framealpha); }
 		}
 
 		if (drawtic > 175 && !nostats)
