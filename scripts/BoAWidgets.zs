@@ -1146,12 +1146,12 @@ class ActiveEffectWidget : Widget
 
 		for (item = player.mo.Inv; item != null; item = item.Inv)
 		{
-			if (Powerup(item))
+			if (Powerup(item) && item.icon)
 			{
 				Color amtclr = Powerup(item).BlendColor;
 				if (amtclr == 0) { amtclr = 0xDDDDDD; }
 
-				if (item.icon) { DrawEffectIcon(item.icon, Powerup(item).EffectTics, Powerup(item).Default.EffectTics, (drawposx, drawposy), amtclr); }
+				DrawEffectIcon(item.icon, Powerup(item).EffectTics, Powerup(item).Default.EffectTics, (drawposx, drawposy), amtclr);
 				drawposx += spacing;
 			}
 		}
