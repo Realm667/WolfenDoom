@@ -86,8 +86,9 @@ class BoAStatusBar : BaseStatusBar
 
 		savetimertime = 70;
 
-		CountWidget.Init("Money and Time");
-		LogWidget.Init("Log");
+		CountWidget.Init("Money and Time", Widget.WDG_TOP | Widget.WDG_LEFT, 0);
+		LogWidget.Init("Log", Widget.WDG_TOP | Widget.WDG_LEFT, 0), zindex:100;
+		CompassWidget.Init("Compass", Widget.WDG_TOP | Widget.WDG_LEFT, 1);
 
 		ObjectivesWidget.Init("Objectives", Widget.WDG_RIGHT, 0);
 		PositionWidget.Init("Position", Widget.WDG_RIGHT, 0);
@@ -180,10 +181,7 @@ class BoAStatusBar : BaseStatusBar
 		// This gets rid of needing to double-press useinv to immediately use a newly selected inventory item.
 		CPlayer.inventorytics = 0;
 
-		for (int w = 0; w < widgets.Size(); w++)
-		{
-			widgets[w].DoTick(w);
-		}
+		Widget.TickWidgets();
 	}
 
 	override void Draw (int state, double TicFrac)
@@ -250,14 +248,7 @@ class BoAStatusBar : BaseStatusBar
 			SetSize(0, 320, 200);
 		}
 
-		BeginHUD(1, False);
-		for (int w = 0; w < widgets.Size(); w++)
-		{
-			if (widgets[w].visible)
-			{
-				widgets[w].Draw();
-			}
-		}
+		Widget.DrawWidgets();
 
 		DrawSaveIcon();
 	}

@@ -19,15 +19,17 @@ class Widget ui
 	int ticker;
 	Vector2 setpos, pos, size, offset;
 	String widgetname;
-	int flags, anchor, margin[4], priority, screenblocksval;
+	int flags, anchor, priority, zindex;
+	int margin[4]; // top, right, bottom, left
 	bool visible;
 	double alpha;
+	private int screenblocksval;
 
 	Font BigFont, HUDFont;
 
 	PlayerInfo player;
 
-	static Widget Init(class<Widget> type, String widgetname, int anchor = WDG_TOP | WDG_LEFT, int flags = 0, int priority = 0, Vector2 offset = (0, 0))
+	static Widget Init(class<Widget> type, String widgetname, int anchor = WDG_TOP | WDG_LEFT, int flags = 0, int priority = 0, Vector2 offset = (0, 0), int zindex = 0)
 	{
 		if (!BoAStatusBar(StatusBar)) { return null; }
 
@@ -62,6 +64,7 @@ class Widget ui
 		for (int i = 1; i < 4; i++) { w.margin[i] = -1; }
 
 		w.setpos = (7, 7);
+		w.zindex = zindex;
 
 		return w;
 	}
@@ -146,12 +149,12 @@ class Widget ui
 			{
 				if (anchor & WDG_BOTTOM)
 				{
-					spacing = w.margin[1] + margin[3] - 2;
+					spacing = w.margin[0] + margin[2] - 2;
 					relpos.y = -w.pos.y + spacing;
 				}
 				else
 				{
-					spacing = w.margin[3] + margin[1] - 2;
+					spacing = w.margin[2] + margin[0] - 2;
 					relpos.y = w.pos.y + w.size.y + spacing;
 				}
 			}
@@ -161,19 +164,19 @@ class Widget ui
 			{
 				if (anchor & WDG_RIGHT)
 				{
-					spacing = p.margin[0] + margin[2] - 2;
+					spacing = p.margin[1] + margin[3] - 2;
 					relpos.x = -p.pos.x + spacing;
 				}
 				else
 				{
-					spacing = p.margin[2] + margin[0] - 2;
+					spacing = p.margin[3] + margin[1] - 2;
 					relpos.x = p.pos.x + p.size.x + spacing;
 				}
 			}
 		}
 
-		setpos.x = 3 + margin[0];
-		setpos.x = 3 + margin[1];
+		setpos.y = 3 + margin[0];
+		setpos.x = 3 + margin[3];
 
 		// If this wasn't offset at all, assume it's the first in the stack, and apply edge-of-screen offsets as necessary
 		if (relpos.y == 0)
@@ -239,6 +242,14 @@ class Widget ui
 		ticker++;
 	}
 
+	static void TickWidgets()
+	{
+		for (int w = 0; w < BoAStatusBar(Statusbar).widgets.Size(); w++)
+		{
+			BoAStatusBar(Statusbar).widgets[w].DoTick(w);
+		}
+	}
+
 	void SetMargins()
 	{
 		// Allow setting just one margin to set all of them, or set just two to also set the mirroring sides
@@ -267,12 +278,46 @@ class Widget ui
 				framepos.y -= size.y / 2;
 			}
 
-			DrawToHUD.DrawFrame("FRAME_", int(framepos.x - margin[0]), int(framepos.y - margin[1]), size.x + margin[0] + margin[2], size.y + margin[1] + margin[3], 0x1b1b1b, alpha, 0.53 * alpha);
+			DrawToHUD.DrawFrame("FRAME_", int(framepos.x - margin[1]), int(framepos.y - margin[0]), size.x + margin[1] + margin[3], size.y + margin[0] + margin[2], 0x1b1b1b, alpha, 0.53 * alpha);
 		}
 
 		screenblocksval = screenblocks;
 
 		return size;
+	}
+
+	static int, int GetZIndexRange()
+	{
+		int min = 0;
+		int max = 0;
+
+		for (int w = 0; w < BoAStatusBar(Statusbar).widgets.Size(); w++)
+		{
+			int z = BoAStatusBar(Statusbar).widgets[w].zindex;
+			if (z < min) { min = z; }
+			if (z > max) { max = z; }
+		}
+
+		return min, max;
+	}
+
+	static void DrawWidgets()
+	{
+		StatusBar.BeginHUD(1.0, false);
+
+		int zindex, max;
+		[zindex, max] = GetZIndexRange();
+
+		while (zindex <= max)
+		{
+			for (int w = 0; w < BoAStatusBar(Statusbar).widgets.Size(); w++)
+			{
+				let wdg = BoAStatusBar(Statusbar).widgets[w];
+				if (wdg && wdg.visible && wdg.zindex == zindex) { wdg.Draw(); }
+			}
+
+			zindex++;
+		}
 	}
 }
 
@@ -280,9 +325,9 @@ class HealthWidget : Widget
 {
 	TextureID rctex;
 
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
-		HealthWidget wdg = HealthWidget(Widget.Init("HealthWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos));
+		HealthWidget wdg = HealthWidget(Widget.Init("HealthWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos, zindex));
 
 		if (wdg)
 		{
@@ -338,9 +383,9 @@ class CountWidget : Widget
 {
 	TextureID bagtex;
 
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
-		CountWidget wdg = CountWidget(Widget.Init("CountWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos));
+		CountWidget wdg = CountWidget(Widget.Init("CountWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos, zindex));
 
 		if (wdg)
 		{
@@ -383,9 +428,9 @@ class KeyWidget : Widget
 
 	TextureID locktex;
 
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
-		KeyWidget wdg = KeyWidget(Widget.Init("KeyWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos));
+		KeyWidget wdg = KeyWidget(Widget.Init("KeyWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos, zindex));
 
 		if (wdg)
 		{
@@ -426,9 +471,9 @@ class CurrentAmmoWidget : Widget
 {
 	TextureID grenadetex, astrogrenadetex;
 
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
-		CurrentAmmoWidget wdg = CurrentAmmoWidget(Widget.Init("CurrentAmmoWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos));
+		CurrentAmmoWidget wdg = CurrentAmmoWidget(Widget.Init("CurrentAmmoWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos, zindex));
 
 		if (wdg)
 		{
@@ -476,9 +521,9 @@ class CurrentAmmoWidget : Widget
 
 class WeaponWidget : Widget
 {
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
-		WeaponWidget wdg = WeaponWidget(Widget.Init("WeaponWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos));
+		WeaponWidget wdg = WeaponWidget(Widget.Init("WeaponWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos, zindex));
 	}
 
 	override Vector2 Draw()
@@ -495,9 +540,9 @@ class WeaponWidget : Widget
 
 class InventoryWidget : Widget
 {
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
-		InventoryWidget wdg = InventoryWidget(Widget.Init("InventoryWidget", widgetname, anchor, 0, priority, pos));
+		InventoryWidget wdg = InventoryWidget(Widget.Init("InventoryWidget", widgetname, anchor, 0, priority, pos, zindex));
 	}
 
 	override Vector2 Draw()
@@ -518,9 +563,9 @@ class PuzzleItemWidget : Widget
 {
 	int rows, cols, iconsize, maxrows;
 
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
-		PuzzleItemWidget wdg = PuzzleItemWidget(Widget.Init("PuzzleItemWidget", widgetname, anchor, 0, priority, pos));
+		PuzzleItemWidget wdg = PuzzleItemWidget(Widget.Init("PuzzleItemWidget", widgetname, anchor, 0, priority, pos, zindex));
 				
 		if (wdg)
 		{
@@ -572,9 +617,9 @@ class PuzzleItemWidget : Widget
 
 class StealthWidget : Widget
 {
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
-		StealthWidget wdg = StealthWidget(Widget.Init("StealthWidget", widgetname, anchor, 0, priority, pos));
+		StealthWidget wdg = StealthWidget(Widget.Init("StealthWidget", widgetname, anchor, 0, priority, pos, zindex));
 
 		if (wdg && wdg.flags & WDG_DRAWFRAME) { wdg.flags |= WDG_DRAWFRAME_CENTERED; }
 	}
@@ -603,9 +648,9 @@ class PowerWidget : Widget
 {
 	bool active;
 
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
-		PowerWidget wdg = PowerWidget(Widget.Init("PowerWidget", widgetname, anchor, 0, priority, pos));
+		PowerWidget wdg = PowerWidget(Widget.Init("PowerWidget", widgetname, anchor, 0, priority, pos, zindex));
 
 		if (wdg && wdg.flags & WDG_DRAWFRAME) { wdg.flags |= WDG_DRAWFRAME_CENTERED; }
 	}
@@ -626,9 +671,9 @@ class PowerWidget : Widget
 
 class AirSupplyWidget : Widget
 {
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
-		AirSupplyWidget wdg = AirSupplyWidget(Widget.Init("AirSupplyWidget", widgetname, anchor, 0, priority, pos));
+		AirSupplyWidget wdg = AirSupplyWidget(Widget.Init("AirSupplyWidget", widgetname, anchor, 0, priority, pos, zindex));
 	}
 
 	override Vector2 Draw()
@@ -647,9 +692,9 @@ class AirSupplyWidget : Widget
 
 class StaminaWidget : Widget
 {
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
-		StaminaWidget wdg = StaminaWidget(Widget.Init("StaminaWidget", widgetname, anchor, 0, priority, pos));
+		StaminaWidget wdg = StaminaWidget(Widget.Init("StaminaWidget", widgetname, anchor, 0, priority, pos, zindex));
 	}
 
 	override Vector2 Draw()
@@ -684,14 +729,14 @@ class AmmoWidget : Widget
 	Array<AmmoInfo> ammotypes;
 	transient CVar show;
 
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
-		AmmoWidget wdg = AmmoWidget(Widget.Init("AmmoWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos));
+		AmmoWidget wdg = AmmoWidget(Widget.Init("AmmoWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos, zindex));
 
 		if (wdg)
 		{
-			wdg.margin[0] = 8;
-			wdg.margin[1] = 4;
+			wdg.margin[0] = 4;
+			wdg.margin[1] = 8;
 		}
 	}
 
@@ -834,9 +879,9 @@ class PositionWidget : Widget
 {
 	Font fnt;
 
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
-		PositionWidget wdg = PositionWidget(Widget.Init("PositionWidget", widgetname, anchor, 0, priority, pos));
+		PositionWidget wdg = PositionWidget(Widget.Init("PositionWidget", widgetname, anchor, 0, priority, pos, zindex));
 	}
 
 	override bool SetVisibility()
@@ -999,14 +1044,14 @@ class LogWidget : Widget
 	int lineheight;
 	Font fnt;
 
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
-		LogWidget wdg = LogWidget(Widget.Init("LogWidget", widgetname, anchor, 0, priority, pos));
+		LogWidget wdg = LogWidget(Widget.Init("LogWidget", widgetname, anchor, 0, priority, pos, zindex));
 
 		if (wdg)
 		{
-			wdg.margin[0] = 8;
-			wdg.margin[1] = 4;
+			wdg.margin[0] = 4;
+			wdg.margin[1] = 8;
 		}
 	}
 
@@ -1050,7 +1095,7 @@ class LogWidget : Widget
 
 		double rightoffset = 0;
 		Widget topright = FindPrev(WDG_RIGHT, -1, 0, true);
-		if (topright) { rightoffset = -topright.pos.x + topright.margin[0] + margin[2] - 2; }
+		if (topright) { rightoffset = -topright.pos.x + topright.margin[3] + margin[1] - 2; }
 
 		Vector2 hudscale = StatusBar.GetHudScale();
 		size = (Screen.GetWidth() / hudscale.x - pos.x - rightoffset, lineheight * con_notifylines);
@@ -1077,9 +1122,9 @@ class ActiveEffectWidget : Widget
 {
 	int iconsize;
 
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
-		ActiveEffectWidget wdg = ActiveEffectWidget(Widget.Init("ActiveEffectWidget", widgetname, anchor, 0, priority, pos));
+		ActiveEffectWidget wdg = ActiveEffectWidget(Widget.Init("ActiveEffectWidget", widgetname, anchor, 0, priority, pos, zindex));
 
 		if (wdg)
 		{
@@ -1284,9 +1329,9 @@ class DamageWidget : Widget
 	transient CVar enabled;
 	int damagecount;
 
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0))
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
-		DamageWidget wdg = DamageWidget(Widget.Init("DamageWidget", widgetname, anchor, 0, priority, pos));
+		DamageWidget wdg = DamageWidget(Widget.Init("DamageWidget", widgetname, anchor, 0, priority, pos, zindex));
 	}
 
 	override bool SetVisibility()

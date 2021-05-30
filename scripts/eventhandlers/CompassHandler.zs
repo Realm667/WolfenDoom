@@ -37,6 +37,7 @@ class CompassHandler : EventHandler
 	const distFactor = 0.1;
 
 	double drawflash;
+	transient ui CVar scalecvar;
 
 	uint FindCompassItem(Actor mo) // Helper function to find a thing in a child class (Used in place of CompassItems.Find(mo) since the mo is nested in a CompassIcon object
 	{
@@ -125,135 +126,183 @@ class CompassHandler : EventHandler
 			CompassItems.ShrinkToFit();
 		}		
 	}
+}
 
-	override void RenderOverlay( RenderEvent e )
+class CompassWidget : Widget
+{
+	CompassHandler handler;
+
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
-		PlayerInfo p = players[consoleplayer];
-
-		if (!p || !p.mo) { return; }
-
-		BoACompass cmps = BoACompass(p.mo.FindInventory("BoACompass"));
-
-		uint shapeIndex = 0;
-
-		if (cmps && cmps.active && screenblocks < 12 && !automapactive && !p.mo.FindInventory("CutsceneEnabled") && !p.mo.FindInventory("IncomingMessage") && (level.levelnum < 151 || level.levelnum > 153)) // Hide the compass when HUD is hidden and when cutscenes are active, when you are in a middle of a radio message or when automap is turned on
+		CompassWidget wdg = CompassWidget(Widget.Init("CompassWidget", widgetname, anchor, 0, priority, pos, zindex));
+		if (wdg)
 		{
-			// Find compass and background textures
-			TextureID cmpsbg = TexMan.CheckForTexture("COMPASS");
-			TextureID cmpsrose = TexMan.CheckForTexture("COMP_BKG");
-			TextureID cmpsflash = TexMan.CheckForTexture("COMP_FLS");
-
-			double compassalpha = (1.0 - p.BlendA); // Fade the compass if there's a screen blend/fade in effect
-
-			// Draw the compass itself
-			DrawToHUD.DrawTexture(cmpsbg, (compassX, compassY - 6.0), compassalpha);
-
-			// Draw the background compass directions
-			DrawToHUD.DrawTransformedTexture(cmpsrose, (compassX, compassY), compassalpha, e.ViewAngle - 90); // Use player angle, offset so that 90 degrees on the map is shown as north
-
-			// Draw icons
-			for (int i = 0; i < CompassItems.Size(); i++)
-			{
-				Actor mo = CompassItems[i].mo;
-				if (!mo) { continue; }
-				if (mo is "Inventory" && Inventory(mo).Owner) { continue; }
-				if (mo is "ScientistUniform" && !mo.bSolid) { continue; }
-				if (mo.bDormant || mo.health <= 0) { if (am_cheat % 4 < 1) { continue; } }
-
-				TextureID icon = TexMan.CheckForTexture(CompassItems[i].icon, TexMan.Type_Any);
-				Vector2 relativeLocation = level.Vec2Diff(e.ViewPos.xy, mo.pos.xy);
-
-				// Account for chasecam
-				if (p.cheats & CF_CHASECAM != 0)
-				{
-					CVar chaseDist = CVar.GetCVar("chase_dist", p);
-					Vector2 chaseDiff = Actor.AngleToVector(e.ViewAngle, chaseDist.GetFloat() * cos(e.ViewPitch));
-					relativeLocation -= chaseDiff;
-				}
-
-				relativeLocation.Y *= -1;
-
-				relativeLocation = Actor.RotateVector(relativeLocation, e.ViewAngle - 90);
-
-				double pointradius = compassRadius - compassIconSize;
-
-				if (relativeLocation.Length() * distFactor > pointRadius)
-				{
-					relativeLocation = relativeLocation.Unit() * pointRadius / distFactor;
-				}
-
-				double iconX = compassX + relativeLocation.X * distFactor;
-				double iconY = compassY + relativeLocation.Y * distFactor;
-
-				// Handle objects that need to know if the sprite changed
-				if (mo is "Exclamation")
-				{
-					icon = mo.CurState.GetSpriteTexture(0);
-				}
-
-				// Get the image size and scale it down if necessary
-				Vector2 size = TexMan.GetScaledSize(icon);
-				double maxsize = max(size.x, size.y);
-				double scale = 1.0;
-
-				// Scale the image down to the max icon size set in constant above.  Smaller images will stay as they are
-				if (maxsize > compassIconSize) { scale = compassIconSize / maxsize; }
-
-				// If it's the default 'dot' icon...
-				if (CompassItems[i].icon == "GOAL1")
-				{
-					// Scale the icon slightly based on size (radius) of the actor
-					scale *= clamp(mo.radius / 32.0, 0, 1.0) * 0.75 + 0.25;
-				}
-
-				// Fade the icon the farther away the thing is
-				double alpha = CompassItems[i].alpha * compassalpha * clamp(2048 / max(p.mo.Distance3D(mo), 0.1), 0.25, 0.95);
-
-				// Dark outline/shadow effect behind the icon
-				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * 1.25, 0x050505);
-
-				// Draw the icon
-				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale);
-
-				// If the actor has a forced health bar (e.g., the Nebelwerfer in C1M5), overlay the health color of the actor
-				if (Base(mo) && Base(mo).user_drawhealthbar)
-				{
-					double hlth = double(mo.health) / mo.SpawnHealth();
-
-					int r = int(255 * (1.0 - hlth));
-					int g = int(255 * hlth);
-
-					DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale, color(r, g, 0));
-				}
-				else if (PlayerFollower(mo) && mo.bFriendly)
-				{
-					DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale, color(0, 0, 200));
-					TextureID tex = TexMan.CheckForTexture("Arrow", TexMan.Type_Any);
-					if (tex)
-					{
-						DrawToHUD.DrawTransformedTexture(tex, (iconX, iconY), alpha / 2, e.ViewAngle - mo.angle, scale);
-					}
-				}
-
-			}
-
-			double flashduration = 35;
-
-			if (drawflash > level.time - flashduration - 35)
-			{
-				double phase = (level.time - drawflash) / flashduration;
-				double flashalpha;
-
-				if (phase < 0.25) { flashalpha = phase / 0.25; } // Fade in
-				else if (phase < 0.5) { flashalpha = 1.0; } // Hold
-				else { flashalpha = 1.0 - (phase - 0.5); } // Fade out
-
-				// Draw the gold flash around the perimeter of the compass
-				DrawToHUD.DrawTransformedTexture(cmpsflash, (compassX, compassY), compassalpha / 3 * flashalpha * 0.75, -105 + 360 * phase);
-			}
-
-			// Redraw the compass texture on top with a lower alpha so that the glass actually looks translucent
-			DrawToHUD.DrawTexture(cmpsbg, (compassX, compassY - 6.0), compassalpha / 2);
+			wdg.margin[0] = 16;
+			wdg.margin[2] = 4;
 		}
+	}
+
+	override bool SetVisibility()
+	{
+		BoACompass cmps = BoACompass(player.mo.FindInventory("BoACompass"));
+
+		if (
+				!cmps ||
+				!cmps.active ||
+				automapactive ||
+				screenblocks > 11 ||
+				player.mo.FindInventory("CutsceneEnabled") ||
+				player.mo.FindInventory("IncomingMessage") ||
+				(level.levelnum >= 151 && level.levelnum <= 153) || // Specifically disable on the Keen maps
+				player.morphtics ||
+				!handler
+		)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	override void DoTick(int index)
+	{
+		if (!handler) { handler = CompassHandler(EventHandler.Find("CompassHandler")); }
+
+		Super.DoTick(index);
+	}
+
+	override Vector2 Draw()
+	{
+		// Find compass and background textures
+		TextureID cmpsbg = TexMan.CheckForTexture("COMPASS");
+		TextureID cmpsrose = TexMan.CheckForTexture("COMP_BKG");
+		TextureID cmpsflash = TexMan.CheckForTexture("COMP_FLS");
+
+		double compassscale = 1.0;
+		if (!handler.scalecvar) { handler.scalecvar = CVar.FindCVar("boa_hudcompassscale"); }
+		if (handler.scalecvar && handler.scalecvar.GetFloat() > 0) { compassscale = handler.scalecvar.GetFloat(); }
+
+		size = TexMan.GetScaledSize(cmpsbg) * compassscale;
+		Super.Draw();
+
+		double compassalpha = (1.0 - player.BlendA) * alpha; // Fade the compass if there's a screen blend/fade in effect
+
+		double compassradius = handler.compassRadius;
+		double compassX = pos.x + size.x / 2;
+		double compassY = pos.y + size.y / 2;
+		double compassIconSize = handler.compassIconSize;
+		double distfactor = handler.distFactor;
+
+		// Draw the compass itself
+		DrawToHUD.DrawTexture(cmpsbg, (compassX, compassY - 6.0), compassalpha, compassScale);
+
+		// Draw the background compass directions
+		DrawToHUD.DrawTransformedTexture(cmpsrose, (compassX, compassY), compassalpha, player.camera.angle - 90, compassScale); // Use player angle, offset so that 90 degrees on the map is shown as north
+
+		// Draw icons
+		for (int i = 0; i < handler.CompassItems.Size(); i++)
+		{
+			Actor mo = handler.CompassItems[i].mo;
+			if (!mo) { continue; }
+			if (mo is "Inventory" && Inventory(mo).Owner) { continue; }
+			if (mo is "ScientistUniform" && !mo.bSolid) { continue; }
+			if (mo.bDormant || mo.health <= 0) { if (am_cheat % 4 < 1) { continue; } }
+
+			TextureID icon = TexMan.CheckForTexture(handler.CompassItems[i].icon, TexMan.Type_Any);
+			Vector2 relativeLocation = level.Vec2Diff(player.camera.pos.xy, mo.pos.xy);
+
+			// Account for chasecam
+			if (player.cheats & CF_CHASECAM != 0)
+			{
+				CVar chaseDist = CVar.GetCVar("chase_dist", player);
+				Vector2 chaseDiff = Actor.AngleToVector(player.camera.angle, chaseDist.GetFloat() * cos(player.camera.pitch));
+				relativeLocation -= chaseDiff;
+			}
+
+			relativeLocation.Y *= -1;
+
+			relativeLocation = Actor.RotateVector(relativeLocation, player.camera.angle - 90);
+
+			double pointradius = compassRadius * compassScale - compassIconSize * compassscale;
+
+			if (relativeLocation.Length() * distFactor > pointRadius)
+			{
+				relativeLocation = relativeLocation.Unit() * pointRadius / distFactor;
+			}
+
+			double iconX = compassX + relativeLocation.X * distFactor;
+			double iconY = compassY + relativeLocation.Y * distFactor;
+
+			// Handle objects that need to know if the sprite changed
+			if (mo is "Exclamation")
+			{
+				icon = mo.CurState.GetSpriteTexture(0);
+			}
+
+			// Get the image size and scale it down if necessary
+			Vector2 size = TexMan.GetScaledSize(icon);
+			double maxsize = max(size.x, size.y);
+			double scale = 1.0;
+
+			// Scale the image down to the max icon size set in constant above.  Smaller images will stay as they are
+			if (maxsize > compassIconSize) { scale = compassIconSize / maxsize; }
+
+			// If it's the default 'dot' icon...
+			if (handler.CompassItems[i].icon == "GOAL1")
+			{
+				// Scale the icon slightly based on size (radius) of the actor
+				scale *= clamp(mo.radius / 32.0, 0, 1.0) * 0.75 + 0.25;
+			}
+
+			// Fade the icon the farther away the thing is
+			double alpha = handler.CompassItems[i].alpha * compassalpha * clamp(2048 / max(player.mo.Distance3D(mo), 0.1), 0.25, 0.95);
+
+			// Dark outline/shadow effect behind the icon
+			DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * 1.25 * compassScale, 0x050505);
+
+			// Draw the icon
+			DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * compassScale);
+
+			// If the actor has a forced health bar (e.g., the Nebelwerfer in C1M5), overlay the health color of the actor
+			if (Base(mo) && Base(mo).user_drawhealthbar)
+			{
+				double hlth = double(mo.health) / mo.SpawnHealth();
+
+				int r = int(255 * (1.0 - hlth));
+				int g = int(255 * hlth);
+
+				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * compassScale, color(r, g, 0));
+			}
+			else if (PlayerFollower(mo) && mo.bFriendly)
+			{
+				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * compassScale, color(0, 0, 200));
+				TextureID tex = TexMan.CheckForTexture("Arrow", TexMan.Type_Any);
+				if (tex)
+				{
+					DrawToHUD.DrawTransformedTexture(tex, (iconX, iconY), alpha / 2, player.camera.angle - mo.angle, scale * compassScale);
+				}
+			}
+
+		}
+
+		double flashduration = 35;
+
+		if (handler.drawflash > level.time - flashduration - 35)
+		{
+			double phase = (level.time - handler.drawflash) / flashduration;
+			double flashalpha;
+
+			if (phase < 0.25) { flashalpha = phase / 0.25; } // Fade in
+			else if (phase < 0.5) { flashalpha = 1.0; } // Hold
+			else { flashalpha = 1.0 - (phase - 0.5); } // Fade out
+
+			// Draw the gold flash around the perimeter of the compass
+			DrawToHUD.DrawTransformedTexture(cmpsflash, (compassX, compassY), compassalpha / 3 * flashalpha * 0.75, -105 + 360 * phase, compassScale);
+		}
+
+		// Redraw the compass texture on top with a lower alpha so that the glass actually looks translucent
+		DrawToHUD.DrawTexture(cmpsbg, (compassX, compassY - 6.0), compassalpha / 2, compassScale);
+
+		return size;
 	}
 }
