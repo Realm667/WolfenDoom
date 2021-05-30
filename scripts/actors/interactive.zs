@@ -927,6 +927,7 @@ class CastleWolfensteinMap : InteractiveItem
 		Inventory.PickupMessage "$PAPERMAP";
 		InteractiveItem.DisplayImage "PAPER9";
 		InteractiveItem.DisplayScale 0.45;
+		Tag "$TAGCASTLEMAP";
 	}
 
 	States

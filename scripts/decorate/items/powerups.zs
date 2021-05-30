@@ -60,6 +60,7 @@ class ScubaGearGiver : PowerupToggler
 		Powerup.Duration -600;
 		Powerup.Color "45 60 96", 0.125;
 		Powerup.Type "PowerScuba";
+		Tag "$TAGSCUBA";
 		+INVENTORY.INVBAR
 		+INVENTORY.UNDROPPABLE
 	}

@@ -1336,6 +1336,7 @@ class ZyklonResistance : PowerupGiver
 		Inventory.PickupMessage "$ZRESIST";
 		Powerup.Duration 0x7FFFFFFF;
 		Powerup.Type "PowerZyklonResistance";
+		Tag "$TAGVIAL";
 	}
 
 	States
@@ -1381,7 +1382,7 @@ class NaziBerserk : SavingHealth
 		Inventory.MaxAmount 1;
 		Inventory.PickupSound "misc/p_pkup";
 		Inventory.PickupMessage "$SSBERSK";
-		Tag "$TAGBERSP";
+		Tag "$TAGMACHT";
 		SavingHealth.SaveMessage "$TMSAVE";
 	}
 
