@@ -598,6 +598,12 @@ class KeenPlayer : PlayerPawn
 	override void PostBeginPlay()
 	{
 		TakeInventory("BoATilt", 1);
+		TakeInventory("BoASprinting", 1);
+		TakeInventory("BoAHeartBeat", 1);
+
+		let pain = FindInventory("PainShaderControl");
+		if (pain) { pain.Destroy(); }
+
 		player.air_finished = int.max; // Set initial air capacity to max directly in case we start underwater (only gets set on water entry by default)
 
 		while (!povcamera) { povcamera = Spawn("SecurityCamera"); }
@@ -864,6 +870,7 @@ class KeenPlayer : PlayerPawn
 class Billy : PowerMorph
 {
 	int armor;
+	double hexenarmorslots[5];
 	int premorphhealth;
 	double savepercent;
 	class<Inventory> PreInvSel;
@@ -884,18 +891,20 @@ class Billy : PowerMorph
 // Should we default Keen to third-person view??
 //			owner.player.cheats |= CF_CHASECAM;
 
-			owner.TakeInventory("BoASprinting", 1);
-			owner.TakeInventory("BoAHeartBeat", 1);
-
-			let pain = owner.FindInventory("PainShaderControl");
-			if (pain) { pain.Destroy(); }
-
-			// Save the standard Doom-style armor values.  Doesn't support Hexen armor.
-			BasicArmor a = BasicArmor(owner.FindInventory("BasicArmor"));
-			if (a)
+			// Save the armor values.
+			for (Inventory i = owner.Inv; i != null; i = i.Inv)
 			{
-				armor = a.Amount;
-				savepercent = a.SavePercent;
+				if (i.GetClass() == "BasicArmor")
+				{
+					console.printf("Saved %i", armor);
+					armor = i.Amount;
+					savepercent = BasicArmor(i).SavePercent;
+				}
+				else if (i.GetClass() == "HexenArmor")
+				{
+					let h = HexenArmor(i);
+					for (int s = 0; s < 5; s++) { hexenarmorslots[s] = h.slots[s]; }
+				}
 			}
 
 			premorphhealth = owner.health;
@@ -924,11 +933,31 @@ class Billy : PowerMorph
 			// Reset the default inventory items (effects, shaders, etc.)
 			InventoryClearHandler.GiveDefaultInventory(MorphedPlayer.mo, true);
 
-			// Restore armor amount and savepercent
-			MorphedPlayer.mo.SetInventory("BasicArmor", armor);
-
+			// Restore armor values
 			BasicArmor a = BasicArmor(MorphedPlayer.mo.FindInventory("BasicArmor"));
-			if (a) { a.SavePercent = savepercent; }
+			if (!a)
+			{
+				MorphedPlayer.mo.GiveInventory("BasicArmor", 0);
+				a = BasicArmor(MorphedPlayer.mo.FindInventory("BasicArmor"));
+			}
+
+			if (a)
+			{ 
+				a.amount = armor;
+				a.SavePercent = savepercent;
+			}
+
+			HexenArmor h = HexenArmor(MorphedPlayer.mo.FindInventory("HexenArmor"));
+			if (!h)
+			{
+				MorphedPlayer.mo.GiveInventory("HexenArmor", 0);
+				h = HexenArmor(MorphedPlayer.mo.FindInventory("HexenArmor"));
+			}
+
+			if (h)
+			{
+				for (int s = 0; s < 5; s++) { h.slots[s] = hexenarmorslots[s]; }
+			}
 
 			MorphedPlayer.mo.InvSel = MorphedPlayer.mo.FindInventory(PreInvSel);
 			if (!MorphedPlayer.mo.InvSel)

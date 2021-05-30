@@ -656,6 +656,7 @@ class Nothing : Actor
 class TankMorph : PowerMorph
 {
 	int armor;
+	double hexenarmorslots[5];
 	int premorphhealth;
 	double savepercent;
 	class<TankPlayer> actorclass;
@@ -676,12 +677,20 @@ class TankMorph : PowerMorph
 			owner.TakeInventory("BoASprinting", 1);
 			owner.TakeInventory("BoAHeartbeat", 1);
 
-			// Save the standard Doom-style armor values.  Doesn't support Hexen armor.
-			BasicArmor a = BasicArmor(owner.FindInventory("BasicArmor"));
-			if (a)
+			// Save the armor values.
+			for (Inventory i = owner.Inv; i != null; i = i.Inv)
 			{
-				armor = a.Amount;
-				savepercent = a.SavePercent;
+				if (i.GetClass() == "BasicArmor")
+				{
+					console.printf("Saved %i", armor);
+					armor = i.Amount;
+					savepercent = BasicArmor(i).SavePercent;
+				}
+				else if (i.GetClass() == "HexenArmor")
+				{
+					let h = HexenArmor(i);
+					for (int s = 0; s < 5; s++) { hexenarmorslots[s] = h.slots[s]; }
+				}
 			}
 
 			premorphhealth = owner.health;
@@ -722,11 +731,31 @@ class TankMorph : PowerMorph
 				// Reset the default inventory items (effects, shaders, etc.)
 				InventoryClearHandler.GiveDefaultInventory(MorphedPlayer.mo, true);
 
-				// Restore armor amount and savepercent
-				MorphedPlayer.mo.SetInventory("BasicArmor", armor);
-
+				// Restore armor values
 				BasicArmor a = BasicArmor(MorphedPlayer.mo.FindInventory("BasicArmor"));
-				if (a) { a.SavePercent = savepercent; }
+				if (!a)
+				{
+					MorphedPlayer.mo.GiveInventory("BasicArmor", 0);
+					a = BasicArmor(MorphedPlayer.mo.FindInventory("BasicArmor"));
+				}
+
+				if (a)
+				{ 
+					a.amount = armor;
+					a.SavePercent = savepercent;
+				}
+
+				HexenArmor h = HexenArmor(MorphedPlayer.mo.FindInventory("HexenArmor"));
+				if (!h)
+				{
+					MorphedPlayer.mo.GiveInventory("HexenArmor", 0);
+					h = HexenArmor(MorphedPlayer.mo.FindInventory("HexenArmor"));
+				}
+
+				if (h)
+				{
+					for (int s = 0; s < 5; s++) { h.slots[s] = hexenarmorslots[s]; }
+				}
 
 				// Reposition the player so that it's not inside of the tank
 				Vector3 newpos = tank.pos + (0, 0, tank.height); // Dump the player on top of the body of the tank
