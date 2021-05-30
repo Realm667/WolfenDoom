@@ -87,7 +87,7 @@ class BoAStatusBar : BaseStatusBar
 		savetimertime = 70;
 
 		CountWidget.Init("Money and Time", Widget.WDG_TOP | Widget.WDG_LEFT, 0);
-		LogWidget.Init("Log", Widget.WDG_TOP | Widget.WDG_LEFT, 0), zindex:100;
+		LogWidget.Init("Log", Widget.WDG_TOP | Widget.WDG_LEFT, 0, zindex:100);
 		CompassWidget.Init("Compass", Widget.WDG_TOP | Widget.WDG_LEFT, 1);
 
 		ObjectivesWidget.Init("Objectives", Widget.WDG_RIGHT, 0);
