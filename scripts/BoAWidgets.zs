@@ -1314,11 +1314,14 @@ class DamageWidget : Widget
 			Actor attacker = null;
 			String infoname = "";
 
-			// If the attacker is still alive, use their data
+			// If the attacker is still alive (and not the player), use their data
 			if (player.attacker)
 			{
-				// Unless it's an internal damage effect
-				if (player.attacker != player.mo) { attacker = player.attacker; }
+				if (player.attacker == player.mo)
+				{
+					infoname = "Player" .. player.mo.PlayerNumber();
+				}
+				else { attacker = player.attacker; }
 			}
 			else // Otherwise, treat it as world-induced damage
 			{
@@ -1345,10 +1348,10 @@ class DamageWidget : Widget
 			{
 				if (level.time > info.nextupdate)
 				{
-					if (player.attacker)
+					if (attacker)
 					{
-						info.attackerpos = player.attacker.pos;
-						info.angle = int(360 - player.mo.deltaangle(player.mo.angle, player.mo.AngleTo(player.attacker)));
+						info.attackerpos = attacker.pos;
+						info.angle = int(360 - player.mo.deltaangle(player.mo.angle, player.mo.AngleTo(attacker)));
 					}
 					else  // If no attacker actor, assume it was something behind the player's current movement direction that caused the damage (e.g., explosion)
 					{
@@ -1356,7 +1359,6 @@ class DamageWidget : Widget
 						{
 							info.attackerpos = player.mo.pos - player.mo.vel;
 							info.angle = int(360 - player.mo.deltaangle(player.mo.angle, atan2(-player.mo.vel.y, -player.mo.vel.x)));
-
 						}
 						damagecount = player.damagecount;
 					}

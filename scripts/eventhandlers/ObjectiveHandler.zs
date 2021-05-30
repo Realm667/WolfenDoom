@@ -382,18 +382,18 @@ class ObjectivesWidget : Widget
 				boxheight += int(lineheight * (!!count ? 1.5 : 1.0));
 				int strwidth = HUDFont.StringWidth(temp) + 5;
 
-				if (am_showmonsters && level.total_monsters)
+				if (am_showmonsters && level.total_monsters > 0)
 				{
 					linewidth += strwidth;
 					printstats++;
 				}
-				if (am_showsecrets && level.total_secrets)
+				if (am_showsecrets && level.total_secrets > 0)
 				{
 					if (linewidth > 0) { linewidth += 1;}
 					linewidth += strwidth;
 					printstats++;
 				}
-				if (am_showitems && level.total_items)
+				if (am_showitems && level.total_items > 0)
 				{
 					if (linewidth > 0) { linewidth += 1;}
 					linewidth += strwidth;
@@ -458,7 +458,7 @@ class ObjectivesWidget : Widget
 
 			DrawToHud.Dim(0x0, 0.2 * alpha, int(drawpos.x - margin[0] / 2), int(drawpos.y - 1), int(size.x + (margin[0] + margin[2]) / 2), HUDFont.GetHeight() + 3);
 			
-			if (am_showmonsters && level.total_monsters)
+			if (am_showmonsters && level.total_monsters > 0)
 			{
 				temp = String.Format("  : %i/%i", level.killed_monsters, level.total_monsters);
 				DrawToHud.DrawText("💀", (textpos - HUDFont.StringWidth(temp) / 2, drawpos.y - 1), Symbols, alpha, shade:Font.CR_UNTRANSLATED, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
@@ -466,7 +466,7 @@ class ObjectivesWidget : Widget
 				textpos += step;
 			}
 
-			if (am_showsecrets && level.total_secrets)
+			if (am_showsecrets && level.total_secrets > 0)
 			{
 				temp = String.Format("  : %i/%i", level.found_secrets, level.total_secrets);
 				DrawToHud.DrawText("⚑", (textpos - HUDFont.StringWidth(temp) / 2, drawpos.y - 1), Symbols, alpha, shade:Font.CR_UNTRANSLATED, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
@@ -474,7 +474,7 @@ class ObjectivesWidget : Widget
 				textpos += step;
 			}
 
-			if (am_showitems && level.total_items)
+			if (am_showitems && level.total_items > 0)
 			{
 				temp = String.Format("  : %i/%i", level.found_items, level.total_items);
 				DrawToHud.DrawText("🪙", (textpos - HUDFont.StringWidth(temp) / 2, drawpos.y - 1), Symbols, alpha, shade:Font.CR_UNTRANSLATED, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
