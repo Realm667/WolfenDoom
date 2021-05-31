@@ -65,6 +65,47 @@ class DebugEventHandler : StaticEventHandler
 		Console.Printf("%d treasure items found", count);
 	}
 
+	protected String FormatLevelData(LevelData ld)
+	{
+		String info = String.Format("%s (%s, level %d)\n", ld.levelname, ld.mapname, ld.levelnum);
+		info.AppendFormat("Kills: %d/%d, Items: %d/%d, Secrets: %d/%d, Time: %d tics\n", ld.killcount, ld.totalkills, ld.itemcount, ld.totalitems, ld.secretcount, ld.totalsecrets, ld.leveltime);
+		return info;
+	}
+
+	void ShowStatsText()
+	{
+		PersistentMapStatsHandler pstats = PersistentMapStatsHandler(EventHandler.Find("PersistentMapStatsHandler"));
+		MapStatsHandler stats = MapStatsHandler(StaticEventHandler.Find("MapStatsHandler"));
+		if (!stats || !pstats) { return; }
+		Console.Printf("From MapStatsHandler:");
+		String Levels = "";
+		for (int i = 0; i < stats.Levels.Size(); i++)
+		{
+			Levels = Levels .. FormatLevelData(stats.Levels[i]);
+		}
+		Console.Printf(Levels);
+		String SpecialItemPickups = "";
+		for (int i = 0; i < stats.SpecialItemPickups.Size(); i++)
+		{
+			SpecialItemPickups.AppendFormat("%s ", stats.SpecialItemPickups[i]);
+		}
+		Console.Printf("SpecialItemPickups: %s", SpecialItemPickups);
+		Console.Printf("============================================");
+		Console.Printf("From PersistentMapStatsHandler:");
+		Levels = "";
+		for (int i = 0; i < stats.Levels.Size(); i++)
+		{
+			Levels = Levels .. FormatLevelData(stats.Levels[i]);
+		}
+		Console.Printf(Levels);
+		SpecialItemPickups = "";
+		for (int i = 0; i < pstats.SpecialItemPickups.Size(); i++)
+		{
+			SpecialItemPickups.AppendFormat("%s ", pstats.SpecialItemPickups[i]);
+		}
+		Console.Printf("SpecialItemPickups: %s", SpecialItemPickups);
+	}
+
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		// netevent showliveenemies
@@ -87,6 +128,10 @@ class DebugEventHandler : StaticEventHandler
 		else if (e.name ~== "showlightlevel")
 		{
 			showlightlevel = !showlightlevel;
+		}
+		else if (e.name ~== "showstats")
+		{
+			ShowStatsText();
 		}
 	}
 
