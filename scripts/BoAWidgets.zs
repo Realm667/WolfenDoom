@@ -993,7 +993,6 @@ class Log ui
 			switch (printlevel)
 			{
 				case PRINT_LOW:
-				default:
 					clr += msg0color;
 					break;
 				case PRINT_MEDIUM:
@@ -1008,15 +1007,15 @@ class Log ui
 				case PRINT_TEAMCHAT:
 					clr += msg4color;
 					break;
-				case PRINT_BOLD:
-					clr += msgmidcolor;
+				default:
+					clr = Font.CR_UNTRANSLATED;
 					break;
 			}
 
 			String temp;
 			BrokenString lines;
 
-			if (w.addtype == Log.APPENDLINE && w.messages.Size() && w.messages[w.messages.Size() - 1].printlevel == printlevel)
+			if (w.addtype == APPENDLINE && w.messages.Size() && w.messages[w.messages.Size() - 1].printlevel == printlevel)
 			{
 				[temp, lines] = BrokenString.BreakString(w.messages[w.messages.Size() - 1].text .. text, int(w.size.x), false, String.Format("%c", clr), w.fnt);
 			}
@@ -1026,7 +1025,7 @@ class Log ui
 				if (w.addtype == APPENDLINE) { w.addtype = NEWLINE; }
 			}
 
-			if (!lines.Count()) { return; }
+			if (lines.Count() < 0) { return; }
 
 			for (int l = 0; l <= lines.Count(); l++)
 			{
@@ -1037,7 +1036,7 @@ class Log ui
 
 				Log m;
 				
-				if (w.addtype == NEWLINE || !temp.Length())
+				if (w.addtype == NEWLINE || !w.messages.Size())
 				{
 					m = New("Log");
 					w.messages.Push(m);

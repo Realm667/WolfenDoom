@@ -135,9 +135,9 @@ class BoAStatusBar : BaseStatusBar
 			return true;
 		}
 
-		if (screenblocks == 11 && level.maptime > 5)
+		if (screenblocks == 11 && level.maptime > 0 && printlevel < 5)
 		{
-			Log.Add(CPlayer, outline, "Log", printlevel & PRINT_TYPES); 
+			Log.Add(CPlayer, outline, "Log", printlevel & PRINT_TYPES);
 			return true;
 		}
 
