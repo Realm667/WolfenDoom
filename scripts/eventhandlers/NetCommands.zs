@@ -93,9 +93,9 @@ class DebugEventHandler : StaticEventHandler
 		Console.Printf("============================================");
 		Console.Printf("From PersistentMapStatsHandler:");
 		Levels = "";
-		for (int i = 0; i < stats.Levels.Size(); i++)
+		for (int i = 0; i < pstats.Levels.Size(); i++)
 		{
-			Levels = Levels .. FormatLevelData(stats.Levels[i]);
+			Levels = Levels .. FormatLevelData(pstats.Levels[i]);
 		}
 		Console.Printf(Levels);
 		SpecialItemPickups = "";
