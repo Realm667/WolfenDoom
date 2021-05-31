@@ -39,7 +39,7 @@ class Soul : StackableInventory
 		+DONTSPLASH // Don't make footstep sounds
 		Inventory.Amount 1;
 		Inventory.MaxAmount 9999;
-		Inventory.Icon "AMM3I0";
+		Inventory.Icon "SOUL01";
 		Inventory.PickupMessage "$SOUL_SM";
 		Inventory.PickupSound "DSSLPU";
 		Gravity 0.5;

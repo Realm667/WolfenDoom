@@ -33,7 +33,9 @@ class NaziWeapon : Weapon
 	uint oldbuttons;
 	bool reloading; // Weapon is reloading
 	int flags;
+	Class<Inventory> ammoitem;
 
+	Property AmmoInventoryType:ammoitem;
 	FlagDef NORAMPAGE:flags, 0;
 
 	Default
@@ -1329,6 +1331,7 @@ class Firebrand : NaziWeapon
 		//$Title (1) Tyrfing
 		//$Color 14
 		Scale 0.5;
+		NaziWeapon.AmmoInventoryType "Soul"; // For inventory bar
 		Weapon.SelectionOrder 9999;
 		Inventory.PickupMessage "$TYRF";
 		Inventory.PickupSound "sword/draw";
@@ -1352,7 +1355,7 @@ class Firebrand : NaziWeapon
 		Loop;
 	Ready:
 		SRDG A 0 A_StopSound(CHAN_WEAPON);
-		TNT1 A 0 A_JumpIfInventory("PowerWeaponLevel2",1,"SoundLoop");
+		TNT1 A 0 A_JumpIfInventory("FirebrandCharged",1,"SoundLoop");
 		SRDG A 1 A_WeaponReady;
 		Loop;
 	SoundLoop:
@@ -1361,10 +1364,10 @@ class Firebrand : NaziWeapon
 	PowerLoop:
 		SRDF A 3 A_WeaponReady;
 		SRDI BC 3 A_WeaponReady;
-		TNT1 A 0 A_JumpIfInventory("PowerWeaponLevel2",1,"PowerLoop");
+		TNT1 A 0 A_JumpIfInventory("FirebrandCharged",1,"PowerLoop");
 		Goto Ready;
 	Fire:
-		TNT1 A 0 A_JumpIfInventory("PowerWeaponLevel2",1,"SuperFire");
+		TNT1 A 0 A_JumpIfInventory("FirebrandCharged",1,"SuperFire");
 		SRDG B 0 A_JumpIfInventory("SwordSeq",2,"Fire3");
 		"####" B 1 A_JumpIfInventory("SwordSeq",1,"Fire2");
 		"####" C 1 A_GiveInventory("SwordSeq");
@@ -1437,7 +1440,7 @@ class Firebrand : NaziWeapon
 		"####" B 1 A_TakeInventory("SwordSeq");
 		Goto Ready;
 	AltFire:
-		SRDG A 1 A_JumpIfInventory("PowerWeaponLevel2",1,"Altfire2");
+		SRDG A 1 A_JumpIfInventory("FirebrandCharged",1,"Altfire2");
 		"####" BC 1;
 		TNT1 A 7 {
 			Inventory soulAmmo = FindInventory("Soul");
@@ -1455,7 +1458,7 @@ class Firebrand : NaziWeapon
 		SRDG C 1
 		{
 			invoker.ticcount = 8;
-			A_GiveInventory("PowerWeaponLevel2");
+			A_GiveInventory("FirebrandCharged");
 		}
 		"####" BA 1;
 		Goto Ready;
@@ -1507,7 +1510,7 @@ class Firebrand : NaziWeapon
 	{
 		if (owner)
 		{
-			if (owner.CountInv("PowerWeaponLevel2") && owner.player && owner.player.ReadyWeapon == self)
+			if (owner.CountInv("FirebrandCharged") && owner.player && owner.player.ReadyWeapon == self)
 			{
 				if (ticcount > 4) { owner.A_AttachLight("FlameEffect", DynamicLight.FlickerLight , color(2, 212, 117), 24, 32, DYNAMICLIGHT.LF_ATTENUATE, (0, 0, 32), 0.2); }
 				else if (ticcount > 0) { owner.A_AttachLight("FlameEffect", DynamicLight.FlickerLight , color(26, 168, 105), 32, 36, DYNAMICLIGHT.LF_ATTENUATE, (0, 0, 32), 0.3); }
@@ -1516,6 +1519,17 @@ class Firebrand : NaziWeapon
 			else { owner.A_RemoveLight("FlameEffect"); }
 		}
 	}
+}
+
+class FirebrandCharged : PowerWeaponLevel2
+{
+	Default
+	{
+		Inventory.Icon "ICO_FBRD";
+		Powerup.Color "02 D4 75", 0.5;
+	}
+
+	override color GetBlend () { return 0; } // Don't actually flash, just use the blend color for the hud timer
 }
 
 ///////////////////////

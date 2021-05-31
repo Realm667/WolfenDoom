@@ -530,6 +530,28 @@ class ZScriptTools
 
 		return int(soundLength * 35);
 	}
+
+	// Returns the scale necessary to cleanly resize an image to fit into a box of a sepcific size
+	static Vector2 ScaleTextureTo(TextureID tex, int size = 16)
+	{
+		Vector2 texsize = TexMan.GetScaledSize(tex);
+		if (texsize.x > size || texsize.y > size)
+		{
+			if (texsize.y > texsize.x)
+			{
+				texsize.y = size * 1.0 / texsize.y;
+				texsize.x = texsize.y;
+			}
+			else
+			{
+				texsize.x = size * 1.0 / texsize.x;
+				texsize.y = texsize.x;
+			}
+		}
+		else { texsize = (1.0, 1.0); }
+
+		return texsize;
+	}
 }
 
 // Functions to identify the current IWAD and read info from the matching IWADINFO block

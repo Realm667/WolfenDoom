@@ -277,10 +277,6 @@ class MapStatsHandler : StaticEventHandler
 			// Draw 'Phase X' string or the 'No Missions Completed' string, as applicable
 			if (summary.Size()) { DrawChapter(chapter, width / 2, height / 5, center); }
 			else { DrawTextScaled(PhaseFont, Font.CR_WHITE, width / 2, height / 2 - height / 16, Stringtable.Localize("$STATS_NONE"), phasescale * 1.5, center); }
-
-			// Draw 'Phase X' string or the 'No Missions Completed' string, as applicable
-			if (summary.Size()) { DrawChapter(chapter, width / 2, height / 5, center); }
-			else { DrawTextScaled(PhaseFont, Font.CR_WHITE, width / 2, height / 2 - height / 16, Stringtable.Localize("$STATS_NONE"), phasescale * 1.5, center); }
 	
 			for (int i = 0; i < summary.Size(); i++)
 			{

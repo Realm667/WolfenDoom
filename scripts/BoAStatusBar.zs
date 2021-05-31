@@ -286,15 +286,25 @@ class BoAStatusBar : BaseStatusBar
 		DrawBar("HORZSTMF", "HORZSTME", mStaminaInterpolator.GetValue(), 100, (88, 160), 0, SHADER_HORZ, DI_ITEM_OFFSETS);
 
 		//Ammo
-		Ammo ammo1, ammo2;
+		Inventory ammo1, ammo2;
 		int ammocount1, ammocount2;
-		[ammo1, ammo2, ammocount1, ammocount2] = GetCurrentAmmo();
-		if (ammo1) { DrawString(mBigFont, FormatNumber(ammocount1, 3), (225, 171), DI_TEXT_ALIGN_RIGHT); }
-		if (ammo2 && ammo1 != ammo2) { DrawString(mBigFont, FormatNumber(ammocount2, 3), (225, 185), DI_TEXT_ALIGN_RIGHT); }
+		[ammo1, ammo2, ammocount1, ammocount2] = GetWeaponAmmo();
+		if (ammo1) { DrawString(mBigFont, FormatNumber(ammocount1, 3), (229, 171), DI_TEXT_ALIGN_RIGHT); }
+		if (ammo2 && ammo1 != ammo2) { DrawString(mBigFont, FormatNumber(ammocount2, 3), (229, 185), DI_TEXT_ALIGN_RIGHT); }
 
 		//Ammo Icons
-		DrawInventoryIcon(ammo1, (231, 170), DI_ITEM_OFFSETS);
-		if (ammo1 != ammo2) DrawInventoryIcon(ammo2, (231, 184), DI_ITEM_OFFSETS);
+		Vector2 texsize;
+		if (ammo1)
+		{
+		 	texsize = ZScriptTools.ScaleTextureTo(ammo1.icon, 16);
+			DrawInventoryIcon(ammo1, (231, 170), DI_ITEM_OFFSETS, scale:texsize);
+		}
+		
+		if (ammo2 && ammo2 != ammo1)
+		{
+			texsize = ZScriptTools.ScaleTextureTo(ammo2.icon, 16);
+			DrawInventoryIcon(ammo2, (231, 184), DI_ITEM_OFFSETS, scale:texsize);
+		}
 
 		//Weapon
 		if (!disguisetag) { DrawString(mHUDFont, GetWeaponTag(), (190, 159), DI_TEXT_ALIGN_CENTER); }
@@ -347,6 +357,7 @@ class BoAStatusBar : BaseStatusBar
 		DrawString(mHUDFont, FormatNumber(GetAmount("FlameAmmo"), 3), (284, 190), DI_TEXT_ALIGN_RIGHT);
 		DrawString(mHUDFont, FormatNumber(GetAmount("NebAmmo"), 3), (307, 172), DI_TEXT_ALIGN_RIGHT);
 		DrawString(mHUDFont, FormatNumber(GetAmount("PanzerAmmo"), 3), (307, 178), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mHUDFont, FormatNumber(GetAmount("TeslaCell"), 3), (307, 184), DI_TEXT_ALIGN_RIGHT);
 
 		if (CPlayer.mo.InvSel != null && !level.NoInventoryBar)
 		{
@@ -440,23 +451,8 @@ class BoAStatusBar : BaseStatusBar
 
 	virtual void DrawIcon(Inventory item, int x, int y, int size, int flags = DI_ITEM_CENTER, double alpha = 1.0, bool amounts = true, int style = STYLE_Translucent, color clr = 0xFFFFFFFF)
 	{
-		Vector2 texsize = TexMan.GetScaledSize(item.icon);
+		Vector2 texsize = ZScriptTools.ScaleTextureTo(item.icon, size);
 		Vector2 texratio = texsize.Unit();
-
-		if (texsize.x > size || texsize.y > size)
-		{
-			if (texsize.y > texsize.x)
-			{
-				texsize.y = size * 1.0 / texsize.y;
-				texsize.x = texsize.y;
-			}
-			else
-			{
-				texsize.x = size * 1.0 / texsize.x;
-				texsize.y = texsize.x;
-			}
-		}
-		else { texsize = (1.0, 1.0); }
 
 		Vector2 textpos = (x, y);
 		if (flags & DI_ITEM_LEFT)
@@ -565,87 +561,6 @@ class BoAStatusBar : BaseStatusBar
 		}
 
 		return false;
-	}
-
-	void DrawMoneyTime(int posx, int posy)
-	{
-		//Top Left
-		DrawImage("HUD_UL", (posx, posy), DI_ITEM_OFFSETS);
-		//Money
-		DrawString(mBigFont, FormatNumber(GetAmount("CoinItem")), (posx + 68, posy + 7), DI_TEXT_ALIGN_RIGHT);
-		//Time
-		String time = level.TimeFormatted();
-
-		if (hour || minute || second)
-		{
-			time = FormatNumber(int(hour), 2, 2, FNF_FILLZEROS) .. ":" .. FormatNumber(int(minute), 2, 2, FNF_FILLZEROS) .. ":" .. FormatNumber(int(second), 2, 2, FNF_FILLZEROS);
-		}
-
-		DrawString(mHUDFont, time, (posx + 24, posy + 21), DI_TEXT_ALIGN_LEFT);
-	}
-
-	void DrawKeys(int posx, int posy)
-	{
-		//Top Right
-		DrawImage("HUD_UR", (posx, posy), DI_ITEM_OFFSETS);
-		//Keys
-		if (GetAmount("BoABlueKey")) { DrawImage("STKEYS0", (posx + 52, posy + 8), DI_ITEM_OFFSETS); }
-		if (GetAmount("BoAGreenKey")) { DrawImage("STKEYS3", (posx + 52, posy  + 18), DI_ITEM_OFFSETS); }
-		if (GetAmount("BoAYellowKey")) { DrawImage("STKEYS1", (posx + 42, posy  + 8), DI_ITEM_OFFSETS); }
-		if (GetAmount("BoAPurpleKey")) { DrawImage("STKEYS4", (posx + 42, posy  + 18), DI_ITEM_OFFSETS); }
-		if (GetAmount("BoARedKey")) { DrawImage("STKEYS2", (posx + 32, posy  + 8), DI_ITEM_OFFSETS); }
-		if (GetAmount("BoACyanKey")) { DrawImage("STKEYS5", (posx + 32, posy  + 18), DI_ITEM_OFFSETS); }
-
-		if (GetAmount("AstroBlueKey")) { DrawImage("ATKEYS0", (posx + 52, posy  + 8), DI_ITEM_OFFSETS); }
-		if (GetAmount("AstroYellowKey")) { DrawImage("ATKEYS1", (posx + 42, posy  + 8), DI_ITEM_OFFSETS); }
-		if (GetAmount("AstroRedKey")) { DrawImage("ATKEYS2", (posx + 32, posy  + 8), DI_ITEM_OFFSETS); }
-	}
-
-	void DrawHealthArmor(int posx, int posy)
-	{
-		//Bottom Left
-		DrawImage("HUD_BL", (posx, posy), DI_ITEM_OFFSETS);
-		
-		//Mugshot
-		DrawMugShot((widthoffset + 7, -38));
-
-		//Health
-		DrawString(mBigFont, FormatNumber(CPlayer.health, 3), (posx + 94, posy + 17), DI_TEXT_ALIGN_RIGHT);
-		DrawString(mBigFont, "%", (posx + 107, posy + 17), DI_TEXT_ALIGN_RIGHT);
-
-		//Armor
-		let armor = CPlayer.mo.FindInventory("BasicArmor");
-		if (armor != null && armor.Amount > 0)
-		{
-			DrawIcon(armor, posx + 44, posy + 33, 24, DI_ITEM_OFFSETS);
-			DrawString(mBigFont, FormatNumber(GetArmorAmount(), 3), (posx + 94, posy + 33), DI_TEXT_ALIGN_RIGHT);
-			DrawString(mBigFont, "%", (posx + 107, posy + 33), DI_TEXT_ALIGN_RIGHT);
-		}
-	}
-
-	void DrawWeaponAmmo(int posx, int posy)
-	{
-		//Bottom Right
-		String bkg = "HUD_BR";
-		if (CPlayer.mo.FindInventory("AstroGrenadeToken")) { bkg = "HUD_BR_A"; }
-
-		DrawImage(bkg, (posx, posy), DI_ITEM_OFFSETS);
-		//Weapon
-		DrawString(mHUDFont, GetWeaponTag(), (posx + 61, posy + 1), DI_TEXT_ALIGN_CENTER);
-
-		//Ammo
-		Ammo ammo1, ammo2;
-		int ammocount1, ammocount2;
-		[ammo1, ammo2, ammocount1, ammocount2] = GetCurrentAmmo();
-		if (ammo1) { DrawString(mBigFont, FormatNumber(ammocount1, 3), (posx + 106, posy + 33), DI_TEXT_ALIGN_RIGHT); }
-		if (ammo2) { DrawString(mBigFont, FormatNumber(ammocount2, 3), (posx + 106, posy + 17), DI_TEXT_ALIGN_RIGHT); }
-
-		//Ammo Icons
-		DrawInventoryIcon(ammo1, (posx + 55, posy + 32), DI_ITEM_OFFSETS);
-		DrawInventoryIcon(ammo2, (posx + 55, posy + 16), DI_ITEM_OFFSETS);
-
-		//Grenade
-		DrawString(mBigFont, FormatNumber(GetAmount("GrenadePickup")), (posx + 33, posy + 33), DI_TEXT_ALIGN_LEFT);
 	}
 
 	void DrawDayNightState()
@@ -790,8 +705,8 @@ class BoAStatusBar : BaseStatusBar
 					}
 					else
 					{
-						DrawImage("EYE", (310, 190), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (0.25, 0.25));
-						DrawString(mHUDFont, FormatNumber(alertedcount), (318, 190), flags | DI_TEXT_ALIGN_RIGHT, Font.CR_GRAY);
+						DrawImage("EYE", (170, 190), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (0.25, 0.25));
+						DrawString(mHUDFont, FormatNumber(alertedcount), (178, 190), flags | DI_TEXT_ALIGN_RIGHT, Font.CR_GRAY);
 					}
 				}
 
@@ -1340,9 +1255,9 @@ class BoAStatusBar : BaseStatusBar
 		String score = FormatNumber(min(GetAmount("CKTreasure") * 100, 999999999));
 		DrawString(KeenFont, score, (84 - KeenFont.mFont.StringWidth(score), 8), DI_ITEM_LEFT_TOP);
 
-		Ammo ammo1, ammo2;
+		Inventory ammo1, ammo2;
 		int ammocount1, ammocount2;
-		[ammo1, ammo2, ammocount1, ammocount2] = GetCurrentAmmo();
+		[ammo1, ammo2, ammocount1, ammocount2] = GetWeaponAmmo();
 		if (ammo1)
 		{
 			String ammo = FormatNumber(min(99, ammocount1));
@@ -1375,21 +1290,7 @@ class BoAStatusBar : BaseStatusBar
 
 	void DrawKeenInventorySelection(int x, int y, int size = 32)
 	{
-		Vector2 texsize = TexMan.GetScaledSize(CPlayer.mo.InvSel.Icon);
-		if (texsize.x > size || texsize.y > size)
-		{
-			if (texsize.y > texsize.x)
-			{
-				texsize.y = size * 1.0 / texsize.y;
-				texsize.x = texsize.y;
-			}
-			else
-			{
-				texsize.x = size * 1.0 / texsize.x;
-				texsize.y = texsize.x;
-			}
-		}
-		else { texsize = (1.0, 1.0); }
+		Vector2 texsize = ZScriptTools.ScaleTextureTo(CPlayer.mo.InvSel.Icon, size);
 
 		DrawInventoryIcon(CPlayer.mo.InvSel, (x, y), DI_ITEM_CENTER, scale:texsize);
 
@@ -1649,5 +1550,40 @@ class BoAStatusBar : BaseStatusBar
 
 			DrawTexture(texture, pos, flags, alpha, boxsize, applyscale, style, clr);
 		}
+	}
+
+	// Modified from statusbar.zs that allows checking alternate inventory-based "ammo" for NaziWeapon class
+	Inventory, Inventory, int, int GetWeaponAmmo()
+	{
+		Inventory ammo1, ammo2;
+
+		if (CPlayer.ReadyWeapon)
+		{
+			ammo1 = Inventory(CPlayer.ReadyWeapon.Ammo1);
+			ammo2 = Inventory(CPlayer.ReadyWeapon.Ammo2);
+
+			if (!ammo1)
+			{
+				if (CPlayer.ReadyWeapon is "NaziWeapon" && NaziWeapon(CPlayer.ReadyWeapon).ammoitem)
+				{
+					ammo1 = CPlayer.mo.FindInventory(NaziWeapon(CPlayer.ReadyWeapon).ammoitem);
+				}
+
+				if (!ammo1)
+				{
+					ammo1 = ammo2;
+					ammo2 = null;
+				}
+			}
+		}
+		else
+		{
+			ammo1 = ammo2 = null;
+		}
+
+		let ammocount1 = !!ammo1 ? ammo1.Amount : 0;
+		let ammocount2 = !!ammo2 ? ammo2.Amount : 0;
+
+		return ammo1, ammo2, ammocount1, ammocount2;
 	}
 }

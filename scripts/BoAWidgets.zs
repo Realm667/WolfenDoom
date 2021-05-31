@@ -489,19 +489,23 @@ class CurrentAmmoWidget : Widget
 		Super.Draw();
 
 		//Ammo
-		Ammo ammo1, ammo2;
+		Inventory ammo1, ammo2;
 		int ammocount1, ammocount2;
-		[ammo1, ammo2, ammocount1, ammocount2] = StatusBar.GetCurrentAmmo();
+		[ammo1, ammo2, ammocount1, ammocount2] = BoAStatusBar(StatusBar).GetWeaponAmmo();
 
+		int iconsize = 14;
+		Vector2 texscale;
 		if (ammo1)
 		{
-			DrawToHud.DrawTexture(ammo1.icon, (pos.x + 40, pos.y + 18), alpha, centered:false);
+			texscale = ZScriptTools.ScaleTextureTo(ammo1.icon, iconsize);
+			DrawToHud.DrawTexture(ammo1.icon, (pos.x + 40, pos.y + 18), alpha, destsize:texscale * iconsize, centered:false);
 			DrawToHud.DrawText(String.Format("%3i", ammocount1), (pos.x + 91, pos.y + 19), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_RIGHT);
 		}
 
 		if (ammo2 && ammo2 != ammo1)
 		{
-			DrawToHud.DrawTexture(ammo2.icon, (pos.x + 40, pos.y + 2), alpha, centered:false);
+			texscale = ZScriptTools.ScaleTextureTo(ammo2.icon, iconsize);
+			DrawToHud.DrawTexture(ammo2.icon, (pos.x + 40, pos.y + 2), alpha, destsize:texscale * iconsize, centered:false);
 			DrawToHud.DrawText(String.Format("%3i", ammocount2), (pos.x + 91, pos.y + 3), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_RIGHT);
 		}
 
@@ -713,7 +717,7 @@ class StaminaWidget : Widget
 
 class AmmoInfo
 {
-	Class<Ammo> ammotype;
+	Class<Inventory> ammotype;
 	int chambered;
 	int carried;
 	TextureID icon;
@@ -763,39 +767,35 @@ class AmmoWidget : Widget
 				if (weap)
 				{
 					let wmo = Weapon(player.mo.FindInventory(weap));
-					// Only show ammo for weapons in the player's inventory
-					if (wmo && (wmo.AmmoType1 || wmo.AmmoType2))
+
+					if (wmo)
 					{
-						if (wmo is "NaziWeapon") // Special handling for Nazis magazine/loaded ammo setup
+						Inventory ammo1 = Inventory(wmo.Ammo1);
+						Inventory ammo2 = Inventory(wmo.Ammo2);
+
+						if (wmo is "NaziWeapon" && !ammo1 && !ammo2)
 						{
-							SetAmmo(wmo.AmmoType2, wmo.AmmoType1);
+							ammo1 = player.mo.FindInventory(NaziWeapon(wmo).ammoitem);
 						}
-						else
+
+						// Only show ammo for weapons in the player's inventory
+						if (ammo1 || ammo2)
 						{
-							SetAmmo(wmo.AmmoType1);
-							SetAmmo(wmo.AmmoType2);
+							class<Inventory> ammo1class, ammo2class;
+							if (ammo1) { ammo1class = ammo1.GetClass(); }
+							if (ammo2) { ammo2class = ammo2.GetClass(); }
+
+							if (wmo is "NaziWeapon") // Special handling for Nazis magazine/loaded ammo setup
+							{
+								SetAmmo(ammo2class, ammo1class);
+							}
+							else
+							{
+								SetAmmo(ammo1class);
+								SetAmmo(ammo2class);
+							}
 						}
 					}
-
-					// Show ammo for all weapons that are assigned to a player's weapon slots
-/*
-					let wpn = GetDefaultByType(weap);
-					if (wpn && (wpn.AmmoType1 || wpn.AmmoType2) && (!wpn.bCheatNotWeapon || wmo))
-					{
-						class<Object> type = (class<Object>)(weap);
-						while (type.GetParentClass() && type.GetParentClass() != "Weapon") { type = type.GetParentClass(); }
-
-						if (type == "NaziWeapon") // Special handling for Nazis magazine/loaded ammo setup
-						{
-							SetAmmo(wpn.AmmoType2, wpn.AmmoType1, !!wmo);
-						}
-						else
-						{
-							SetAmmo(wpn.AmmoType1);
-							SetAmmo(wpn.AmmoType2);
-						}
-					}
-*/
 				}
 			}
 		}
@@ -834,7 +834,7 @@ class AmmoWidget : Widget
 		return size;
 	}
 
-	int FindAmmo(class<ammo> ammotype)
+	int FindAmmo(class<Inventory> ammotype)
 	{
 		for (int a = 0; a < ammotypes.Size(); a++)
 		{
@@ -844,7 +844,7 @@ class AmmoWidget : Widget
 		return ammotypes.Size();
 	}
 
-	void SetAmmo(class<Ammo> ammotype, class<Ammo> ammotypeloaded = null, bool carried = true)
+	void SetAmmo(class<Inventory> ammotype, class<Inventory> ammotypeloaded = null, bool carried = true)
 	{
 		if (!ammotype && ammotypeloaded) { ammotype = ammotypeloaded; }
 		if (ammotype == ammotypeloaded) { ammotypeloaded = null; }
@@ -967,15 +967,22 @@ class Log ui
 	PlayerInfo player;
 	String text;
 	double alpha, height;
-	int ticker;
+	int ticker, printlevel;
 	Font fnt;
+
+	enum AddTypes
+	{
+		NEWLINE,
+		APPENDLINE,
+		REPLACELINE
+	}
 
 	void Print(Font fnt, double x, double y, double logalpha = 1.0)
 	{
 		DrawToHud.DrawText(text, (x, y), fnt, alpha * logalpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);	
 	}
 
-	static void Add(PlayerInfo player, String text, String logname = "Log", int level = 0)
+	static void Add(PlayerInfo player, String text, String logname = "Log", int printlevel = 0)
 	{
 		LogWidget w = LogWidget(Widget.Find(logname));
 
@@ -983,7 +990,7 @@ class Log ui
 		{
 			int clr = 65;
 
-			switch (level)
+			switch (printlevel)
 			{
 				case PRINT_LOW:
 				default:
@@ -1008,32 +1015,52 @@ class Log ui
 
 			String temp;
 			BrokenString lines;
-			[temp, lines] = BrokenString.BreakString(text, int(w.size.x), false, String.Format("%c", clr), w.fnt);
+
+			if (w.addtype == Log.APPENDLINE && w.messages.Size() && w.messages[w.messages.Size() - 1].printlevel == printlevel)
+			{
+				[temp, lines] = BrokenString.BreakString(w.messages[w.messages.Size() - 1].text .. text, int(w.size.x), false, String.Format("%c", clr), w.fnt);
+			}
+			else
+			{
+				[temp, lines] = BrokenString.BreakString(text, int(w.size.x), false, String.Format("%c", clr), w.fnt);
+				if (w.addtype == APPENDLINE) { w.addtype = NEWLINE; }
+			}
+
+			if (!lines.Count()) { return; }
 
 			for (int l = 0; l <= lines.Count(); l++)
 			{
 				String line = lines.StringAt(l);
 				String temp = ZScriptTools.StripColorCodes(line);
 
-				let m = New("Log");
-				if (m && temp.length())
+				if (l == lines.Count() && !temp.length()) { continue; }
+
+				Log m;
+				
+				if (w.addtype == NEWLINE || !temp.Length())
+				{
+					m = New("Log");
+					w.messages.Push(m);
+				}
+				else { m = w.messages[w.messages.Size() - 1]; }
+
+				if (m)
 				{
 					m.fnt = w.fnt;
 					m.player = player;
+					m.printlevel = printlevel;
 					m.text = line;
-					w.messages.Push(m);
 				}
+
+				w.addtype = NEWLINE;
 			}
-			/*
-			let m = New("Log");
-			if (m)
+
+			switch (text.ByteAt(text.length() - 1))
 			{
-				m.fnt = w.fnt;
-				m.player = player;
-				m.text = text;
-				w.messages.Push(m);
+				case 0x09:	w.addtype = REPLACELINE;	break;
+				case 0x0A:	w.addtype = NEWLINE;		break;
+				default:	w.addtype = APPENDLINE;		break;
 			}
-			*/
 		}
 	}
 }
@@ -1041,7 +1068,7 @@ class Log ui
 class LogWidget : Widget
 {
 	Array<Log> messages;
-	int lineheight;
+	int lineheight, addtype;
 	Font fnt;
 
 	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
@@ -1191,7 +1218,7 @@ class ActiveEffectWidget : Widget
 
 		for (item = player.mo.Inv; item != null; item = item.Inv)
 		{
-			if (Powerup(item) && item.icon)
+			if (Powerup(item) && item.icon && item.icon.IsValid())
 			{
 				Color amtclr = Powerup(item).BlendColor;
 				if (amtclr == 0) { amtclr = 0xDDDDDD; }
