@@ -173,16 +173,11 @@ class BoATilt : CustomInventory
 		{
 			double pitchoffset;
 			[pitchoffset, curLevelTilt] = CalcLevelTilt();
-			owner.A_SetViewPitch(owner.viewpitch + (pitchoffset - lastPitch), SPF_INTERPOLATE);
+			// A_SetViewPitch does not affect aim direction, so use A_SetPitch
+			owner.A_SetPitch(owner.pitch + (pitchoffset - lastPitch), SPF_INTERPOLATE);
 			lastPitch = pitchoffset;
-
-			if (!boa_tilteffects) // Do the roll adjustment even if other tilt effects are disabled
-			{
-				owner.A_SetViewRoll(owner.viewroll + (curLevelTilt - lastLevelTilt), SPF_INTERPOLATE);
-				lastLevelTilt = curLevelTilt;
-
-				return;
-			}
+			owner.A_SetViewRoll(owner.viewroll + (curLevelTilt - lastLevelTilt), SPF_INTERPOLATE);
+			lastLevelTilt = curLevelTilt;
 		}
 		else
 		{
@@ -210,7 +205,7 @@ class BoATilt : CustomInventory
 		if (abs(curRoll) > 0.000001) { curRoll *= 0.75; } // Stabilize tilt
 
 		// Apply the sum of all rolling routines (including after stabilization)
-		owner.A_SetViewRoll(owner.viewroll + (curRoll - lastRoll) + (curLevelTilt - lastLevelTilt), SPF_INTERPOLATE);
+		owner.A_SetViewRoll(owner.viewroll + (curRoll - lastRoll), SPF_INTERPOLATE);
 		lastLevelTilt = curLevelTilt;
 		lastRoll = curRoll;
 	}
