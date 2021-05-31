@@ -1113,7 +1113,7 @@ class LogWidget : Widget
 				else { m.height = lineheight; }
 			}
 		}
-	
+
 		Super.DoTick(index);
 	}
 
@@ -1121,6 +1121,7 @@ class LogWidget : Widget
 	{
 		if (!messages.Size()) { return (0, 0); }
 
+		/*
 		// Hacky check to see if the console is down or not; only works in single player,
 		// so anyone using the console in multiplayer may see some extra console output
 		// in the notification bar that normally would be cleared when the console closed.
@@ -1130,6 +1131,7 @@ class LogWidget : Widget
 			messages.Clear();
 			return (0, 0);
 		}
+		*/
 
 		lineheight = fnt.GetHeight();
 
