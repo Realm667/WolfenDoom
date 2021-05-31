@@ -586,11 +586,14 @@ class MapStatsHandler : StaticEventHandler
 	static bool AddSpecialPickup(String texName, int chapter) // Called from the CompassItem base class when a CompassItem is picked up and chapter is 3.
 	{
 		MapStatsHandler this = MapStatsHandler(StaticEventHandler.Find("MapStatsHandler"));
+		// There's no event handler for a game being saved, so it is necessary  to do this to keep Eisenmann files and Mayan artifacts across saved games.
+		PersistentMapStatsHandler pthis = PersistentMapStatsHandler(EventHandler.Find("PersistentMapStatsHandler"));
 		if (!this) { return false; }
 
 		if (chapter == this.chapter)
 		{
 			this.SpecialItemPickups.Push(texName);
+			pthis.SpecialItemPickups.Push(texName);
 			return true;
 		}
 
