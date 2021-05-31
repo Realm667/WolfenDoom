@@ -1070,6 +1070,8 @@ class LogWidget : Widget
 	int lineheight, addtype;
 	Font fnt;
 
+	int lasttick;
+
 	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
 		LogWidget wdg = LogWidget(Widget.Init("LogWidget", widgetname, anchor, 0, priority, pos, zindex));
@@ -1117,6 +1119,18 @@ class LogWidget : Widget
 
 	override Vector2 Draw()
 	{
+		if (!messages.Size()) { return (0, 0); }
+
+		// Hacky check to see if the console is down or not; only works in single player,
+		// so anyone using the console in multiplayer may see some extra console output
+		// in the notification bar that normally would be cleared when the console closed.
+		if (level.time != lasttick || menuactive != Menu.Off) { lasttick = level.time; }
+		else
+		{
+			messages.Clear();
+			return (0, 0);
+		}
+
 		lineheight = fnt.GetHeight();
 
 		double rightoffset = 0;
