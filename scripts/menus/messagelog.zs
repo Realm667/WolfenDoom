@@ -70,7 +70,7 @@ class MessageLogMenu : GenericMenu
 		Super.Init(parent);
 		images = Dictionary.Create();
 		// Virtual width of message log - used to calculate scaling
-		int vWidth = MessageLogVHeight * Screen.GetAspectRatio();
+		int vWidth = int(MessageLogVHeight * Screen.GetAspectRatio());
 		// Multiply by 1.0 to convert to double
 		scaleX = double(Screen.GetWidth()) / vWidth;
 		scaleY = double(Screen.GetHeight()) / MessageLogVHeight;
@@ -78,7 +78,7 @@ class MessageLogMenu : GenericMenu
 		// 20 px = 10px padding on both sides
 		// 32 px = width of the scroll bar graphics
 		// Scale scrollbar by Clean{X,Y}Fac_1
-		msgWidth = min(Screen.GetWidth(), Screen.GetHeight() * 4. / 3) - 20 - 32 * CleanXFac_1;
+		msgWidth = int(min(Screen.GetWidth(), Screen.GetHeight() * 4. / 3) - 20 - 32 * CleanXFac_1);
 		// How many lines, at most, should be displayed?
 		maxLines = int(ceil(MessageLogVHeight / smallfont.GetHeight() * .875));
 		scrollTop = TexMan.CheckForTexture("graphics/conversation/Scroll_T.png");
@@ -136,7 +136,7 @@ class MessageLogMenu : GenericMenu
 		// Break text into lines
 		BrokenString breakInfo;
 		String textLines;
-		[textLines, breakInfo] = BrokenString.BreakString(fulltext, (msgWidth - (imageWidth ? 6 : 0) - imageWidth * scaleX) / scaleX, fnt: smallfont);
+		[textLines, breakInfo] = BrokenString.BreakString(fulltext, int((msgWidth - (imageWidth ? 6 : 0) - imageWidth * scaleX) / scaleX), fnt: smallfont);
 		// Add lines
 		int firstLineNumber = lines.Size();
 		if (firstLineNumber)
@@ -182,7 +182,7 @@ class MessageLogMenu : GenericMenu
 				{ // Draw a separator
 					Screen.DrawText(smallfont, Font.CR_GRAY, textXpos, ypos, "", DTA_ScaleX, scaleX, DTA_ScaleY, scaleY);
 					textXpos += smallfont.GetCharWidth(0xE000) * scaleX;
-					int endSepWidth = smallfont.GetCharWidth(0xE002) * scaleX;
+					int endSepWidth = int(smallfont.GetCharWidth(0xE002) * scaleX);
 					while (textXpos < (msgWidth + xpos - endSepWidth))
 					{
 						Screen.DrawText(smallfont, Font.CR_GRAY, textXpos, ypos, "", DTA_ScaleX, scaleX, DTA_ScaleY, scaleY);
@@ -269,9 +269,9 @@ class MessageLogMenu : GenericMenu
 
 	override bool MouseEvent(int type, int mx, int my)
 	{
-		int totalHeight = Screen.GetHeight() * .875;
-		int scrollBarX = max(0, Screen.GetWidth() / 2 * (1 - (4./3) / Screen.GetAspectRatio())) + 10 * scaleX + msgWidth;
-		int upArrowY = Screen.GetHeight() * .0625;
+		int totalHeight = int(Screen.GetHeight() * .875);
+		int scrollBarX = int(max(0, Screen.GetWidth() / 2 * (1 - (4./3) / Screen.GetAspectRatio())) + 10 * scaleX + msgWidth);
+		int upArrowY = int(Screen.GetHeight() * .0625);
 		int upArrowHeight = 32 * CleanYFac_1;
 		int scrollBarY = upArrowY + 32 * CleanYFac_1;
 		int scrollBarWidth = 32 * CleanXFac_1;
