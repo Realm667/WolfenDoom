@@ -982,7 +982,13 @@ class Log ui
 		DrawToHud.DrawText(text, (x, y), fnt, alpha * logalpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);	
 	}
 
-	static void Add(PlayerInfo player, String text, String logname = "Log", int printlevel = 0)
+	static void Clear(String logname = "Log")
+	{
+		LogWidget w = LogWidget(Widget.Find(logname));
+		if (w) { w.messages.Clear(); }
+	}
+
+	static bool Add(PlayerInfo player, String text, String logname = "Log", int printlevel = 0)
 	{
 		LogWidget w = LogWidget(Widget.Find(logname));
 
@@ -1025,7 +1031,7 @@ class Log ui
 				if (w.addtype == APPENDLINE) { w.addtype = NEWLINE; }
 			}
 
-			if (lines.Count() < 0) { return; }
+			if (lines.Count() < 0) { return w.visible; }
 
 			for (int l = 0; l <= lines.Count(); l++)
 			{
@@ -1061,6 +1067,8 @@ class Log ui
 				default:	w.addtype = APPENDLINE;		break;
 			}
 		}
+
+		return w.visible;
 	}
 }
 
@@ -1086,6 +1094,16 @@ class LogWidget : Widget
 	virtual void SetFont()
 	{
 		fnt = SmallFont;
+	}
+
+	override bool SetVisibility()
+	{
+		if (screenblocks != 11)
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	override void DoTick(int index)
@@ -1121,18 +1139,6 @@ class LogWidget : Widget
 	{
 		if (!messages.Size()) { return (0, 0); }
 
-		/*
-		// Hacky check to see if the console is down or not; only works in single player,
-		// so anyone using the console in multiplayer may see some extra console output
-		// in the notification bar that normally would be cleared when the console closed.
-		if (level.time != lasttick || menuactive != Menu.Off) { lasttick = level.time; }
-		else
-		{
-			messages.Clear();
-			return (0, 0);
-		}
-		*/
-
 		lineheight = fnt.GetHeight();
 
 		double rightoffset = 0;
@@ -1150,9 +1156,10 @@ class LogWidget : Widget
 			if (i < con_notifylines)
 			{
 				if (messages[i].player != players[consoleplayer]) { continue; }
-				if (i > 0) { yoffset += messages[i - 1].height; }
-			
+				if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(messages[i].text)).length()) { continue; }
+		
 				messages[i].Print(fnt, pos.x, pos.y + yoffset, alpha);
+				yoffset += messages[i].height;
 			}
 		}
 

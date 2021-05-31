@@ -135,10 +135,9 @@ class BoAStatusBar : BaseStatusBar
 			return true;
 		}
 
-		if (screenblocks == 11 && level.maptime > 0 && printlevel < 5)
+		if (printlevel < 5)
 		{
-			Log.Add(CPlayer, outline, "Log", printlevel & PRINT_TYPES);
-			return true;
+			return Log.Add(CPlayer, outline, "Log", printlevel & PRINT_TYPES);
 		}
 
 		return false;
@@ -1585,5 +1584,10 @@ class BoAStatusBar : BaseStatusBar
 		let ammocount2 = !!ammo2 ? ammo2.Amount : 0;
 
 		return ammo1, ammo2, ammocount1, ammocount2;
+	}
+
+	override void FlushNotify()
+	{
+		Log.Clear();
 	}
 }
