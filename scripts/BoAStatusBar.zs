@@ -87,7 +87,7 @@ class BoAStatusBar : BaseStatusBar
 		savetimertime = 70;
 
 		CountWidget.Init("Money and Time", Widget.WDG_TOP | Widget.WDG_LEFT, 0);
-		LogWidget.Init("Log", Widget.WDG_TOP | Widget.WDG_LEFT, 0, zindex:100);
+		LogWidget.Init("Notifications", Widget.WDG_TOP | Widget.WDG_LEFT, 0, zindex:100);
 		CompassWidget.Init("Compass", Widget.WDG_TOP | Widget.WDG_LEFT, 1);
 
 		ObjectivesWidget.Init("Objectives", Widget.WDG_RIGHT, 0);
@@ -99,6 +99,7 @@ class BoAStatusBar : BaseStatusBar
 
 		HealthWidget.Init("Health and Armor", Widget.WDG_BOTTOM, 0);
 		InventoryWidget.Init("Selected Inventory", Widget.WDG_BOTTOM, 0);
+		LogWidget.Init("Chat", Widget.WDG_BOTTOM, 0, zindex:99);
 		ActiveEffectWidget.Init("Active Effects", Widget.WDG_BOTTOM, 1);
 
 		StaminaWidget.Init("Stamina", Widget.WDG_MIDDLE | Widget.WDG_RIGHT, 0, (0, -32));
@@ -135,10 +136,8 @@ class BoAStatusBar : BaseStatusBar
 			return true;
 		}
 
-		if (printlevel < 5)
-		{
-			return Log.Add(CPlayer, outline, "Log", printlevel & PRINT_TYPES);
-		}
+		if (printlevel < 3) { return Log.Add(CPlayer, outline, "Notifications", printlevel & PRINT_TYPES); }
+		else if (printlevel < 5) { return Log.Add(CPlayer, outline, "Chat", printlevel & PRINT_TYPES); }
 
 		return false;
 	}
@@ -1588,6 +1587,11 @@ class BoAStatusBar : BaseStatusBar
 
 	override void FlushNotify()
 	{
-		Log.Clear();
+		Log.Clear("Notifications");
+	}
+
+	override bool DrawChat(String txt)
+	{
+		return Log.DrawPrompt(txt .. " ", "Chat");
 	}
 }

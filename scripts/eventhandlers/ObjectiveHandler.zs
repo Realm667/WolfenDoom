@@ -456,7 +456,7 @@ class ObjectivesWidget : Widget
 			int step = int(boxwidth / printstats + 1);
 			double textpos = drawpos.x + step / 2;
 
-			DrawToHud.Dim(0x0, 0.2 * alpha, int(drawpos.x - margin[0] / 2), int(drawpos.y - 1), int(size.x + (margin[0] + margin[2]) / 2), HUDFont.GetHeight() + 3);
+			DrawToHud.Dim(0x0, 0.2 * alpha, int(drawpos.x - (margin[3] - 3)), int(drawpos.y - 1), int(size.x + (margin[3] + margin[1]) - 6), HUDFont.GetHeight() + 3);
 			
 			if (am_showmonsters && level.total_monsters > 0)
 			{
