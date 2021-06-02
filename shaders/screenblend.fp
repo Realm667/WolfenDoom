@@ -1,42 +1,26 @@
-/*
- * Copyright (c) 2015 Jamie Owen
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
-*/
+vec3 color = vec3(-1);
 
- //From https://github.com/jamieowen/glsl-blend/blob/master/darken.glsl
+// hsv functions from https://gist.github.com/patriciogonzalezvivo/114c1653de9e3da6e1e3
+vec3 rgb2hsv(vec3 c)
+{
+	vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+    	vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+    	vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
 
-float blendDarken(float base, float blend) {
-	return min(blend,base);
+    	float d = q.x - min(q.w, q.y);
+    	float e = 1.0e-10;
+    	return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
 }
 
-vec3 blendDarken(vec3 base, vec3 blend) {
-	return vec3(blendDarken(base.r,blend.r),blendDarken(base.g,blend.g),blendDarken(base.b,blend.b));
+vec3 hsv2rgb(vec3 c)
+{
+	vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+	vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+	return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
-vec3 blendDarken(vec3 base, vec3 blend, float opacity) {
-	return (blendDarken(base, blend) * opacity + base * (1.0 - opacity));
-}
-
-// Wrapping function by AFADoomer
 void main()
 {
-    vec3 image = texture(InputTexture, TexCoord).rgb;
-
-    FragColor = vec4(blendDarken(image, blendcolor, alpha), 1.0);
+    vec3 image = texture(InputTexture, TexCoord).rgb;   
+	FragColor = vec4(mix(image, min(blendcolor, hsv2rgb(image)), alpha), 1.0);
 }

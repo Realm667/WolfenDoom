@@ -1409,25 +1409,10 @@ class ActiveEffectWidget : Widget
 	}
 }
 
-class DamageInfo
-{
-	Actor attacker;
-	String infoname;
-	Vector3 attackerpos;
-	int distance;
-	int angle;
-	int timeout;
-	int nextupdate;
-	int amount;
-	double alpha;
-	Color clr;
-}
-
 class DamageWidget : Widget
 {
-	Array<DamageInfo> indicators;
 	transient CVar enabled;
-	int damagecount;
+	DamageTracker damagehandler;
 
 	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
@@ -1454,70 +1439,6 @@ class DamageWidget : Widget
 	{
 		if (!enabled) { enabled = CVar.FindCVar("boa_huddamageindicators"); }
 
-		if (player.mo && player.damagecount)
-		{
-			Actor attacker = null;
-			String infoname = "";
-
-			// If the attacker is still alive (and not the player), use their data
-			if (player.attacker)
-			{
-				if (player.attacker == player.mo)
-				{
-					infoname = "Player" .. player.mo.PlayerNumber();
-				}
-				else { attacker = player.attacker; }
-			}
-			else // Otherwise, treat it as world-induced damage
-			{
-				infoname = "World";
-			}
-
-			DamageInfo info;
-
-			// Save information about a new attacker if it isn't already being tracked
-			int attackerindex = FindAttacker(attacker, infoname);
-			if (attackerindex == indicators.Size())
-			{
-				info = New("DamageInfo");
-				info.attacker = attacker;
-				info.infoname = infoname;
-				info.clr = player.mo.GetPainFlash();
-
-				indicators.Push(info);
-			}
-			else { info = indicators[attackerindex]; }
-
-			// And save additional information
-			if (info)
-			{
-				if (level.time > info.nextupdate)
-				{
-					info.amount = player.damagecount - damagecount;
-
-					if (attacker)
-					{
-						info.attackerpos = attacker.pos;
-						info.angle = int(360 - player.mo.deltaangle(player.mo.angle, player.mo.AngleTo(attacker)));
-					}
-					else  // If no attacker actor, assume it was something behind the player's current movement direction that caused the damage (e.g., explosion)
-					{
-						if (damagecount < player.damagecount) // Update/replace with any new damage to the player
-						{
-							info.attackerpos = player.mo.pos - player.mo.vel;
-							info.angle = int(360 - player.mo.deltaangle(player.mo.angle, atan2(-player.mo.vel.y, -player.mo.vel.x)));
-						}
-						damagecount = player.damagecount;
-					}
-
-					info.nextupdate = level.time + 18;
-					info.distance = clamp(int(56 - level.Vec3Diff(player.mo.pos, info.attackerpos).length() / 64), 0, 64);
-
-					info.timeout = level.time + min(70, player.damagecount * 4);
-				}
-			}
-		}
-
 		Super.DoTick(index);
 	}
 
@@ -1530,18 +1451,12 @@ class DamageWidget : Widget
 
 		Super.Draw();
 
-		for (int i = 0; i < indicators.Size(); i++)
+		if (!damagehandler) { damagehandler = DamageTracker(EventHandler.Find("DamageTracker")); }
+		if (!damagehandler) { return size; }
+
+		for (int i = 0; i < damagehandler.events.Size(); i++)
 		{
-			let current = indicators[i];
-
-			if (current.timeout < level.time)
-			{
-				indicators.Delete(i);
-				continue;
-			}
-
-			if (current.timeout - level.time < 35) { current.alpha = (current.timeout - level.time) / 35.0; }
-			else if (current.alpha < 1.0) { current.alpha += 0.125; }
+			let current = damagehandler.events[i];
 
 			double anglerange = anglestep * current.distance / 2.0;
 
@@ -1552,16 +1467,5 @@ class DamageWidget : Widget
 		}
 
 		return size;
-	}
-
-	int FindAttacker(Actor attacker, String infoname = "")
-	{
-		for (int i = 0; i < indicators.Size(); i++)
-		{
-			if (attacker && indicators[i].attacker == attacker) { return i; }
-			else if (infoname.length() && indicators[i].infoname ~== infoname) { return i; }
-		}
-
-		return indicators.Size();
 	}
 }

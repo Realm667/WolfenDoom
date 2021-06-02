@@ -337,10 +337,8 @@ class DreamState : NauseaShaderControl
 
 class PainShaderControl : ShaderControl
 {
-	int timer, maxtimer, value;
-	double blendalpha;
-
 	color clr;
+	double blendalpha;
 
 	Default
 	{
@@ -363,61 +361,11 @@ class PainShaderControl : ShaderControl
 		Shader.SetUniform3f(p, ShaderToControl, "blendcolor", (clr.r, clr.g, clr.b));
 	}
 
-	// Lifted from https://github.com/coelckers/gzdoom/blob/4bcea0ab783c667940008a5cab6910b7a826f08c/src/rendering/2d/v_blend.cpp#L59
-	static const uint DamageToAlpha[] =
-	{
-		0,   8,  16,  23,  30,  36,  42,  47,  53,  58,  62,  67,  71,  75,  79,
-		83,  87,  90,  94,  97, 100, 103, 107, 109, 112, 115, 118, 120, 123, 125,
-		128, 130, 133, 135, 137, 139, 141, 143, 145, 147, 149, 151, 153, 155, 157,
-		159, 160, 162, 164, 165, 167, 169, 170, 172, 173, 175, 176, 178, 179, 181,
-		182, 183, 185, 186, 187, 189, 190, 191, 192, 194, 195, 196, 197, 198, 200,
-		201, 202, 203, 204, 205, 206, 207, 209, 210, 211, 212, 213, 214, 215, 216,
-		217, 218, 219, 220, 221, 221, 222, 223, 224, 225, 226, 227, 228, 229, 229,
-		230, 231, 232, 233, 234, 235, 235, 236, 237
-	};
-
-	override void Tick()
-	{
-		PlayerPawn(owner).damagefade.a = 0;
-
-		if (owner.player.damagecount)
-        {
-			// Only apply this effect to DamageScreenColors that have zero as their alpha value
-			// This allows poison effects and similar to act as normal
-			color newclr = PlayerPawn(owner).GetPainFlash();
-			if (newclr.a == 0) { clr = newclr; }
-
-            amount = owner.player.damagecount;
-			timer = min(350, timer + owner.player.damagecount);
-        }
-
-		Super.Tick();
-	}
-
 	override void DoEffect()
 	{
-		value = max(amount, value);
-		if (!maxtimer) { maxtimer = timer; }
-
-		timer--;
-
-		// If we've hit the countdown time, remove the effect
-		if (timer <= 0)
+		if (owner && owner.player)
 		{
-			amount = 1;
-			value = 0;
-			timer = 0;
-			maxtimer = 0;
-		}
-		else
-		{
-			amount = value-- - 1;
-
-			if (timer > maxtimer - 10) { alpha = 1.0 - (timer - (maxtimer - 10)) / 10.0; } // Fade in
-			if (timer <= 10) { alpha = timer / 10.0; } // Fade out
-			else { alpha = 1.0; }
-
-			blendalpha = clamp((DamageToAlpha[clamp(value, 0, 113)] / 255.0) * blood_fade_scalar * alpha, 0.0, 1.0);
+			[clr, blendalpha, amount] = DamageTracker.GetDamageBlend(owner.player);
 		}
 	}
 
