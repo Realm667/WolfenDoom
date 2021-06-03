@@ -658,26 +658,28 @@ class AstroHandGrenade : HandGrenade
 {
 	Default
 	{
-	BounceFactor 0.4;
-	WallBounceFactor 0.8;
-	Scale 0.25;
+		BounceFactor 0.4;
+		WallBounceFactor 0.8;
+		Scale 0.25;
+		GrenadeBase.Icon "HUD_GRAS";
 	}
+
 	States
 	{
-	Spawn:
-		ASGR A 2 A_Countdown;
-		ASGR ACDEFGH 2;
-		Loop;
-	Death:
-		ASGR I 35 A_SkipIfHit;
-		TNT1 A 0 A_SpawnGroundSplash;
-		TNT1 A 0 A_AlertMonsters;
-		TNT1 A 0 A_SetScale(1.75,1.75);
-		TNT1 A 0 A_SetTranslucent(0.75,1);
-		TNT1 A 0 A_StartSound("astrostein/explosion", CHAN_AUTO, 0, 1.0, 0.1);
-		TNT1 A 1 A_SpawnItemEx("AstrosteinExplosion_Medium");
-		TNT1 A 1 Radius_Quake(10,10,0,16,0);
-		Stop;
+		Spawn:
+			ASGR A 2 A_Countdown;
+			ASGR ACDEFGH 2;
+			Loop;
+		Death:
+			ASGR I 35 A_SkipIfHit;
+			TNT1 A 0 A_SpawnGroundSplash;
+			TNT1 A 0 A_AlertMonsters;
+			TNT1 A 0 A_SetScale(1.75,1.75);
+			TNT1 A 0 A_SetTranslucent(0.75,1);
+			TNT1 A 0 A_StartSound("astrostein/explosion", CHAN_AUTO, 0, 1.0, 0.1);
+			TNT1 A 1 A_SpawnItemEx("AstrosteinExplosion_Medium");
+			TNT1 A 1 Radius_Quake(10,10,0,16,0);
+			Stop;
 	}
 
 	override void PostBeginPlay()

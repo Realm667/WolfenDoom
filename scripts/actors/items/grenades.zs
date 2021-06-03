@@ -26,8 +26,13 @@ class GrenadeBase : Actor // Base actor for anything we want Nazis to run away f
 
 	int feardistance;
 	bool hasHitEnemy;
+	String iconname;
+	int grenadeflags;
 
 	Property FearDistance: feardistance;
+	Property Icon:iconname;
+
+	FlagDef DRAWINDICATOR:grenadeflags, 0;
 
 	Default
 	{

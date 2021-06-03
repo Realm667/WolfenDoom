@@ -2275,22 +2275,7 @@ class Nazi : Base
 	{
 		if (dodging || (!CheckIfSeen() && CheckRange(512.0, true))) { return; }
 
-		ThinkerIterator Finder = ThinkerIterator.Create("Actor", STAT_DEFAULT - 6); // Any actor with statnum of (STAT_DEFAULT - 6) gets treated as something to avoid
-		Actor mo, grenade;
-
-		while ( (mo = Actor(Finder.Next())) )
-		{
-			int feardistance = int(mo.radius + (GrenadeBase(mo) ? GrenadeBase(mo).feardistance : radius * 2));
-
-			if (bBoss) { continue; }
-			if (!CheckSight(mo)) { continue; }
-			if (mo.bMissile && (mo.target == self || (mo.target is "PlayerPawn" && absangle(mo.angle + 180, AngleTo(mo.target)) > 30))) { continue; } // Ignore missiles fired from self and any from a player that aren't aimed at you
-			if (Distance3d(mo) > (mo.bMissile ? feardistance * max(mo.Speed, mo.vel.length()) : feardistance)) { continue; }
-			if (mo.pos.z > pos.z + height || mo.pos.z + mo.height < pos.z) { continue; }
-			if (grenade && Distance3d(mo) > Distance3d(grenade)) { continue; }
-
-			grenade = mo;
-		}
+		Actor grenade = ThingTracker.LookForGrenades(self);
 
 		if (!grenade) { return; }
 

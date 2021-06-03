@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2021 AFADoomer
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+**/
 
 class DamageInfo
 {
@@ -200,5 +221,56 @@ class DamageTracker : EventHandler
 		if (events[i] && events[i].timeout) { return max(0, events[i].timeout - level.time); }
 		
 		return 0;
+	}
+}
+
+class ThingTracker : EventHandler
+{
+	Array<Actor> grenades;
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let grenade = GrenadeBase(e.thing);
+
+		if (!grenade) { return; }
+
+		grenades.Push(grenade);
+	}
+
+	override void WorldThingDestroyed(WorldEvent e)
+	{
+		let grenade = GrenadeBase(e.thing);
+
+		if (!grenade) { return; }
+
+		int g = grenades.Find(grenade);
+		grenades.Delete(g);
+	}
+
+	static Actor LookForGrenades(Actor mo)
+	{
+		if (mo.bBoss) { return null; }
+
+		ThingTracker tracker = ThingTracker(EventHandler.Find("ThingTracker"));
+		if (!tracker) { return null; }
+
+		Actor closest = null;
+
+		for (int g = 0; g < tracker.grenades.Size(); g++)
+		{
+			let grenade = tracker.grenades[g];
+
+			int feardistance = int(grenade.radius + (GrenadeBase(grenade) ? GrenadeBase(grenade).feardistance : mo.radius * 2));
+
+			if (!mo.CheckSight(grenade)) { continue; }
+			if (grenade.bMissile && (grenade.target == mo || (grenade.target is "PlayerPawn" && Actor.absangle(grenade.angle + 180, mo.AngleTo(grenade.target)) > 30))) { continue; } // Ignore missiles fired from self and any from a player that aren't aimed at you
+			if (mo.Distance3d(grenade) > (grenade.bMissile ? feardistance * max(grenade.Speed, grenade.vel.length()) : feardistance)) { continue; }
+			if (grenade.pos.z > mo.pos.z + mo.height || grenade.pos.z + grenade.height < mo.pos.z) { continue; }
+			if (closest && mo.Distance3d(grenade) > mo.Distance3d(closest)) { continue; }
+
+			closest = grenade;
+		}
+
+		return closest;
 	}
 }

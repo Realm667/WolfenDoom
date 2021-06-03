@@ -78,25 +78,27 @@ class HandGrenade : GrenadeBase //no hard variant since it is used also by playe
 {
 	Default
 	{
-	Radius 4;
-	Height 3;
-	Speed 40;
-	FastSpeed 45;
-	DamageFunction (1);
-	DamageType "Frag";
-	Scale 0.25;
-	Projectile;
-	-NOGRAVITY
-	-NOTELEPORT
-	+WINDTHRUST
-	+FORCEXYBILLBOARD
-	Obituary "$OBGRENADE";
-	BounceType "Doom";
-	BounceFactor 0.2;
-	WallBounceFactor 0.6;
-	BounceSound "grenade/bounce";
-	GrenadeBase.FearDistance 192;
-	GrenadeBase.SplashType "Missile";
+		Radius 4;
+		Height 3;
+		Speed 40;
+		FastSpeed 45;
+		DamageFunction (1);
+		DamageType "Frag";
+		Scale 0.25;
+		Projectile;
+		-NOGRAVITY
+		-NOTELEPORT
+		+WINDTHRUST
+		+FORCEXYBILLBOARD
+		+GrenadeBase.DRAWINDICATOR
+		Obituary "$OBGRENADE";
+		BounceType "Doom";
+		BounceFactor 0.2;
+		WallBounceFactor 0.6;
+		BounceSound "grenade/bounce";
+		GrenadeBase.FearDistance 192;
+		GrenadeBase.SplashType "Missile";
+		GrenadeBase.Icon "HUD_GREN";
 	}
 	States
 	{

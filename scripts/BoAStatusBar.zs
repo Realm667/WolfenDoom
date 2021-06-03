@@ -112,6 +112,7 @@ class BoAStatusBar : BaseStatusBar
 		PowerWidget.Init("Lantern and Minesweeper Power", Widget.WDG_BOTTOM | Widget.WDG_CENTER, 1, (0, 16));
 
 		DamageWidget.Init("Damage Indicator", Widget.WDG_MIDDLE | Widget.WDG_CENTER, 0);
+		GrenadeWidget.Init("Grenade Indicator", Widget.WDG_MIDDLE | Widget.WDG_CENTER, 0);
 	}
 
 	override void NewGame ()

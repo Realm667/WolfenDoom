@@ -561,12 +561,14 @@ class ClusterBomb : GrenadeBase
 	-NOGRAVITY
 	-NOTELEPORT
 	+WINDTHRUST
+	+GrenadeBase.DRAWINDICATOR
 	Obituary "$OBGRENADE";
 	BounceType "Doom";
 	BounceFactor 0.4;
 	WallBounceFactor 0.6;
 	SeeSound "clusterbomb/fire";
 	BounceSound "grenade/bounce";
+	GrenadeBase.Icon "HUD_TRGN";
 	}
 	States
 	{
@@ -641,8 +643,10 @@ class HimmlerMortar : GrenadeBase
 	Projectile;
 	-NOGRAVITY
 	+GRENADETRAIL
+	+GrenadeBase.DRAWINDICATOR
 	BounceSound "grenade/bounce";
 	GrenadeBase.FearDistance 192;
+	GrenadeBase.Icon "HUD_MORA";
 	}
 	States
 	{
@@ -1379,6 +1383,7 @@ class ZyklonBBomb : ClusterBomb
 	Obituary "$OBZYKLON";
 	DeathSound "mortard1";
 	SeeSound "mortarf1";
+	GrenadeBase.Icon "HUD_ZBGN";
 	}
 	States
 	{
@@ -1816,6 +1821,7 @@ class MengeleBomb : GrenadeBase
 	+WINDTHRUST
 	+ROLLSPRITE
 	+ROLLCENTER
+	+GrenadeBase.DRAWINDICATOR
 	Obituary "$OBGRENADE";
 	BounceType "Doom";
 	BounceFactor 0.6;
@@ -1823,6 +1829,7 @@ class MengeleBomb : GrenadeBase
 	Gravity 0.4;
 	SeeSound "clusterbomb/fire";
 	BounceSound "grenade/bounce";
+	GrenadeBase.Icon "HUD_THRM";
 	}
 	States
 	{
@@ -1937,7 +1944,9 @@ class ZyklonGrenadePacket : GrenadeBase
 	-NOGRAVITY
 	-NOTELEPORT
 	+WINDTHRUST
+	+GrenadeBase.DRAWINDICATOR
 	Obituary "$OBGRENADE";
+	GrenadeBase.Icon "HUD_ZTHW";
 	}
 	States
 	{

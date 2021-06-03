@@ -1,3 +1,25 @@
+/*
+ * Copyright (c) 2021 AFADoomer
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+**/
+
 class Widget ui
 {
 	enum WidgetPositions
@@ -134,13 +156,13 @@ class Widget ui
 		return null;
 	}
 
-	void CalcRelPos(in out Vector2 pos, int index)
+	void CalcRelPos(in out Vector2 pos, int index, bool simple = false)
 	{
 		Vector2 hudscale = StatusBar.GetHudScale();
 
 		Vector2 relpos = (0, 0);
 
-		if (index > -1)
+		if (index > -1 && !simple)
 		{
 			int spacing = 0;
 
@@ -220,10 +242,10 @@ class Widget ui
 	virtual void DoTick(int index = 0)
 	{
 		visible = SetVisibility();
-		if (!visible || size == (0, 0)) { alpha = 0.0; }
+		if (!visible) { alpha = 0.0; }
 
 		SetMargins();
-		CalcRelPos(pos, index);
+		CalcRelPos(pos, index, !size.length());
 
 		Vector2 hudscale = StatusBar.GetHudScale();
 
@@ -1447,12 +1469,11 @@ class DamageWidget : Widget
 		double anglestep = 2.5;
 
 		TextureID indicator = TexMan.CheckForTexture("HUD_DMG");
-		if (indicator.IsValid()) { size = TexMan.GetScaledSize(indicator); }
 
 		Super.Draw();
 
 		if (!damagehandler) { damagehandler = DamageTracker(EventHandler.Find("DamageTracker")); }
-		if (!damagehandler) { return size; }
+		if (!damagehandler) { return (0, 0); }
 
 		for (int i = 0; i < damagehandler.events.Size(); i++)
 		{
@@ -1466,6 +1487,113 @@ class DamageWidget : Widget
 			}
 		}
 
-		return size;
+		return (0, 0);
+	}
+}
+
+class GrenadeWidget : Widget
+{
+	transient CVar enabled;
+	ThingTracker tracker;
+
+	protected Le_GlScreen			gl_proj;
+	protected Le_Viewport			viewport;
+
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
+	{
+		GrenadeWidget wdg = GrenadeWidget(Widget.Init("GrenadeWidget", widgetname, anchor, 0, priority, pos, zindex));
+
+		if (wdg)
+		{
+			wdg.gl_proj = new("Le_GlScreen");
+		}
+	}
+
+	override bool SetVisibility()
+	{
+		if (
+				automapactive ||
+				screenblocks > 11 ||
+				player.mo.FindInventory("CutsceneEnabled") ||
+				player.morphtics ||
+				(enabled && !enabled.GetBool())
+		)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	override void DoTick(int index)
+	{
+		if (!enabled) { enabled = CVar.FindCVar("boa_hudgrenadeindicators"); }
+
+		Super.DoTick(index);
+	}
+
+	override Vector2 Draw()
+	{
+		TextureID indicator = TexMan.CheckForTexture("HUD_IND");
+
+		Super.Draw();
+
+		if (!tracker) { tracker = ThingTracker(EventHandler.Find("ThingTracker")); }
+		if (!tracker) { return (0, 0); }
+
+		viewport.FromHud();
+		gl_proj.CacheResolution();
+		gl_proj.CacheFov(player.fov);
+		gl_proj.OrientForPlayer(player);
+		gl_proj.BeginProjection();
+
+		let p = player.mo;
+
+		for (int i = 0; i < tracker.grenades.Size(); i++)
+		{
+			let current = GrenadeBase(tracker.grenades[i]);
+
+			if (current.target == player.mo && current.GetAge() < 35) { continue; } // Ignore the player's own grenades for the first second
+
+			double dist = p.Distance3D(current);
+			double maxdist = current.feardistance * 3;
+
+			if (dist > maxdist || !current.bDrawIndicator) { continue; }
+
+			Vector2 relativelocation = level.Vec2Diff(player.camera.pos.xy, current.pos.xy);
+			relativelocation.y *= -1;
+			relativelocation = Actor.RotateVector(relativelocation, player.camera.angle - 90);
+
+			gl_proj.ProjectWorldPos(current.pos);
+
+			Vector2 hudscale = StatusBar.GetHudScale();
+			Vector2 grenadescreenpos = viewport.SceneToWindow(gl_proj.ProjectToNormal());
+			grenadescreenpos.x /= hudscale.x;
+			grenadescreenpos.y /= hudscale.y;
+
+			Vector2 grenadepos = pos + relativelocation.Unit() * 128;
+
+			double angle = atan2(grenadepos.y - grenadescreenpos.y, grenadepos.x - grenadescreenpos.x) + 90;
+			if (!gl_proj.IsInFront()) { angle += 180; }
+
+			TextureID icon = TexMan.CheckForTexture(current.iconname); 
+
+			Color clr = 0xFF0000;
+
+			if (Actor.InStateSequence(current.CurState, current.FindState("Death")))
+			{
+				// Fade from yellow to red
+				int c = int(0xFF * clamp(current.tics * 1.0 / 35, 0, 1.0));
+				clr += c * 0x100;
+			}
+			else { clr += 0xFF00; }
+
+			double scale = 1.0 - clamp(dist / maxdist, 0.0, 1.0);
+			double alpha = scale;
+			DrawToHud.DrawTransformedTexture(indicator, grenadepos, 0.8 * alpha, angle, scale, clr);
+			if (icon.IsValid()) { DrawToHud.DrawTransformedTexture(icon, grenadepos, alpha, angle, scale * 1.5, 0xFFFFFF); }
+		}
+
+		return (0, 0);
 	}
 }
