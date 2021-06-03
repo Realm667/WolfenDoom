@@ -684,8 +684,8 @@ class EnigmaMachine : Obstacle3d
 		//$Title Enigma Machine
 		//$Color 3
 		DistanceCheck "boa_scenelod";
-		Radius 12;
-		Height 14;
+		Radius 16;
+		Height 8;
 	}
 }
 
