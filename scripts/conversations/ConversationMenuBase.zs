@@ -206,6 +206,7 @@ class ExtendedConversationMenuBase : ConversationMenu
 		}
 
 		mSelection = dialogue.Draw();
+		DrawGold();
 	}
 
 	//=============================================================================
@@ -313,5 +314,23 @@ class ExtendedConversationMenuBase : ConversationMenu
 	virtual void CloseMenu()
 	{
 		Close();
+	}
+
+	override void DrawGold()
+	{
+		if (mShowGold)
+		{
+			let coin = players[consoleplayer].ConversationPC.FindInventory("CoinItem");
+			let icon = TexMan.CheckForTexture("HUD_COIN");
+			let goldstr = String.Format("%d", coin != NULL ? coin.Amount : 0);
+
+			int x = 60;
+			int y = 440;
+			double scale = 0.5;
+
+			screen.DrawText(SmallFont, Font.CR_GRAY, x + 20, y + 1, goldstr, DTA_VirtualWidth, int(dialogue.targetscreenx / scale), DTA_VirtualHeight, int(dialogue.targetscreeny / scale), DTA_Alpha, dialogue.alpha);
+			screen.DrawTexture(icon, true, x, y, DTA_VirtualWidth, int(dialogue.targetscreenx / scale), DTA_VirtualHeight, int(dialogue.targetscreeny / scale), DTA_Alpha, dialogue.alpha);;
+		}
+
 	}
 }
