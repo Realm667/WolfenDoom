@@ -357,6 +357,7 @@ class BoAStatusBar : BaseStatusBar
 		DrawString(mHUDFont, FormatNumber(GetAmount("NebAmmo"), 3), (307, 172), DI_TEXT_ALIGN_RIGHT);
 		DrawString(mHUDFont, FormatNumber(GetAmount("PanzerAmmo"), 3), (307, 178), DI_TEXT_ALIGN_RIGHT);
 		DrawString(mHUDFont, FormatNumber(GetAmount("TeslaCell"), 3), (307, 184), DI_TEXT_ALIGN_RIGHT);
+		DrawString(mHUDFont, FormatNumber(GetAmount("Soul"), 3), (307, 190), DI_TEXT_ALIGN_RIGHT);
 
 		if (CPlayer.mo.InvSel != null && !level.NoInventoryBar)
 		{
