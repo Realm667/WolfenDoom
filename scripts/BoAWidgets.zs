@@ -1496,8 +1496,8 @@ class GrenadeWidget : Widget
 	transient CVar enabled;
 	ThingTracker tracker;
 
-	protected Le_GlScreen			gl_proj;
-	protected Le_Viewport			viewport;
+	protected Le_GlScreen gl_proj;
+	protected Le_Viewport viewport;
 
 	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{

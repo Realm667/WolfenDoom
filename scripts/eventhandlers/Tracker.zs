@@ -274,3 +274,45 @@ class ThingTracker : EventHandler
 		return closest;
 	}
 }
+
+class InventoryTracker : StaticEventHandler
+{
+	InventoryHolder[MAXPLAYERS] inventories;
+
+	static void Save(Actor mo)
+	{
+		int pnum = mo.PlayerNumber();
+		if (pnum < 0) { return; }
+
+		InventoryTracker tracker = InventoryTracker(EventHandler.Find("InventoryTracker"));
+		if (!tracker) { return; }
+
+		let inv = new("InventoryHolder");
+		inv.HoldInventory(mo.Inv);
+
+		tracker.inventories[pnum] = inv;
+	}
+
+	static void Restore(Actor mo)
+	{
+		int pnum = mo.PlayerNumber();
+		if (pnum < 0) { return; }
+
+		InventoryTracker tracker = InventoryTracker(EventHandler.Find("InventoryTracker"));
+		if (!tracker) { return; }
+
+		tracker.inventories[pnum].RestoreInventory(mo);
+		tracker.inventories[pnum].Destroy();
+	}
+
+	static void Clear(Actor mo)
+	{
+		int pnum = mo.PlayerNumber();
+		if (pnum < 0) { return; }
+
+		InventoryTracker tracker = InventoryTracker(EventHandler.Find("InventoryTracker"));
+		if (!tracker) { return; }
+
+		tracker.inventories[pnum].Destroy();
+	}
+}

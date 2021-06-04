@@ -682,7 +682,6 @@ class TankMorph : PowerMorph
 			{
 				if (i.GetClass() == "BasicArmor")
 				{
-					console.printf("Saved %i", armor);
 					armor = i.Amount;
 					savepercent = BasicArmor(i).SavePercent;
 				}
