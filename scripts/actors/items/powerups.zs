@@ -860,7 +860,8 @@ class InventoryHolder play
 		curItem.A_ChangeLinkFlags(1, 1); // Prevent players from picking it up.
 		curItem.SetStateLabel("Held");
 		heldItems.Push(curItem);
-		// Console.Printf("%s (%d/%d) (%d/%d)", curItem.GetClassName(), curItem.Amount, curItem.MaxAmount, prevAmount, prevMaxAmount);
+
+		if (boa_debugholdinventory) { Console.Printf("%s (%d/%d) (%d/%d)", curItem.GetClassName(), curItem.Amount, curItem.MaxAmount, prevAmount, prevMaxAmount); }
 	}
 
 	void RestoreInventory(Actor receiver)
@@ -883,24 +884,18 @@ class InventoryHolder play
 		for (int i = heldItems.Size() - 1; i; i--)
 		{
 			Inventory ii = heldItems[i];
-			if (boa_debugholdinventory)
-			{
-				Console.Printf("Attempting to restore %s...", itemTypeNames[i]);
-			}
+			if (boa_debugholdinventory) { Console.Printf("Attempting to restore %s...", itemTypeNames[i]); }
 			if (ii)
 			{
 				RestoreItem(ii, receiver);
 			}
-			else if (boa_debugholdinventory)
-			{
-				Console.Printf("Unable to restore %s because it is null!", itemTypeNames[i]);
-			}
+			else if (boa_debugholdinventory) { Console.Printf("Unable to restore %s because it is null!", itemTypeNames[i]); }
 		}
 	}
 
 	protected void RestoreItem(Inventory item, Actor receiver)
 	{
-		// Console.Printf("%s (%d/%d)", ii.GetClassName(), ii.Amount, ii.MaxAmount);
+		if (boa_debugholdinventory) { Console.Printf("%s (%d/%d)", item.GetClassName(), item.Amount, item.MaxAmount); }
 		// Fix ammo amounts if player had a backpack
 		Inventory existing = receiver.FindInventory(item.GetClass());
 		if (existing)

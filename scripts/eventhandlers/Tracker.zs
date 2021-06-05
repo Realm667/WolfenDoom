@@ -275,7 +275,7 @@ class ThingTracker : EventHandler
 	}
 }
 
-class InventoryTracker : StaticEventHandler
+class InventoryTracker : EventHandler
 {
 	InventoryHolder[MAXPLAYERS] inventories;
 
@@ -287,10 +287,8 @@ class InventoryTracker : StaticEventHandler
 		InventoryTracker tracker = InventoryTracker(EventHandler.Find("InventoryTracker"));
 		if (!tracker) { return; }
 
-		let inv = new("InventoryHolder");
-		inv.HoldInventory(mo.Inv);
-
-		tracker.inventories[pnum] = inv;
+		tracker.inventories[pnum] = New("InventoryHolder");
+		tracker.inventories[pnum].HoldInventory(mo.Inv);
 	}
 
 	static void Restore(Actor mo)
