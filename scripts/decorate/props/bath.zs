@@ -61,6 +61,28 @@ class Shit : BathBase
 	}
 }
 
+class Shitler : Shit
+{
+	Default
+	{
+	//$Category Props (BoA)/Bath
+	//$Title Shitler Pile (squeezable)
+	//$Color 3
+	Scale 0.35;
+	}
+	States
+	{
+	Spawn:
+		SHIT B -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		Stop;
+	Death:
+		"####" C 0 A_UnSetSolid;
+		"####" C 0 A_StartSound("SHITHPNS", CHAN_ITEM, 0, frandom(0.5,0.7), ATTN_NORM);
+		"####" CDE 4;
+		Stop;
+	}
+}
+
 class BucketMop : BathBase
 {
 	Default

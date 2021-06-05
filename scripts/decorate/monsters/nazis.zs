@@ -2865,9 +2865,10 @@ class MGTurret : MiniShip
 		"####" B 0 A_FaceTarget;
 		Goto Missile+3;
 	Death:
-		TNT1 A 0 A_SetFloorClip;
-		"####" A 0 A_Scream;
-		"####" A 0 A_SpawnItemEx("GeneralExplosion_Nazis",0,0,32);
+		GTUR G 0 A_SetFloorClip;
+		"####" G 0 A_Scream;
+		"####" G 0 A_SpawnItemEx("GeneralExplosion_Nazis",0,0,32);
+		"####" G -1;
 		Stop;
 	Idle:
 		Goto Look;
@@ -2903,9 +2904,10 @@ class MGTurretCeiling : MGTurret
 		"####" E 0 A_FaceTarget;
 		Goto Missile+3;
 	Death:
-		TNT1 A 0;
-		"####" A 0 A_Scream;
-		"####" A 0 A_SpawnItemEx("GeneralExplosion_Nazis",0,0,32);
+		GTUR H 0;
+		"####" H 0 A_Scream;
+		"####" H 0 A_SpawnItemEx("GeneralExplosion_Nazis",0,0,32);
+		"####" H -1;
 		Stop;
 	Idle:
 		Goto Look;
