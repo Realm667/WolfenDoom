@@ -497,23 +497,29 @@ class CKPoisonSlug : CKBaseEnemy
 		Obituary "$CK_SLUG";
 		CKBaseEnemy.StunFrames 2;
 	}
+
 	States
 	{
-	Spawn:
-		CKPS A 10 A_Look;
-		Loop;
-	See:
-		"####" AABB 4 A_Wander;
-		"####" A 0 A_Jump(16, "Pee");
-		Loop;
-	Pee:
-		TNT1 A 0 A_StartSound("ckeen/slugpoo");
-		CKPS C 30 A_SpawnItemEx("CKPoisonSlugPoison", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
-		Goto See;
-	Stunned:
-		CKPS E 1 A_ChangeVelocity(2, 0, 6, CVF_RELATIVE);
-		CKPS E -1;
-		Stop;
+		Spawn:
+			CKPS A 10 A_Look;
+			Loop;
+		See:
+			"####" AABB 4 A_Wander;
+			"####" C 0 DoSlime();
+			Loop;
+		Stunned:
+			CKPS E 1 A_ChangeVelocity(2, 0, 6, CVF_RELATIVE);
+			CKPS E -1;
+			Stop;
+	}
+
+	void DoSlime()
+	{
+		if (Random() > 16) { return; }
+
+		A_StartSound("ckeen/slugpoo");
+		Actor slime = Spawn("CKPoisonSlugPoison", pos);
+		tics = 30;
 	}
 }
 
@@ -526,17 +532,37 @@ class CKPoisonSlugPoison : CKBaseEnemy
 		Scale 3.0;
 		-CASTSPRITESHADOW
 		+FLATSPRITE
+		+ROLLSPRITE
 		+NOTAUTOAIMED
 		-COUNTKILL
 		-SHOOTABLE
 		CKBaseEnemy.StunTime 0;
 	}
+
 	States
 	{
-	Spawn:
-		CKSL Z 150;
-		CKSL Y 30 { SetDamage(0); } // No damage during fading frame
-		Stop;
+		Spawn:
+			CKSL Z 150;
+			CKSL Y 30 { SetDamage(0); } // No damage during fading frame
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (cursector.floorplane.IsSlope())
+		{
+			let normal = cursector.floorplane.normal;
+			Vector3 gradient;
+			gradient.x = normal.x * normal.z;
+			gradient.y = normal.y * normal.z;
+			gradient.z = (normal.x * normal.x) + (normal.y * normal.y);
+
+			roll = -angle;
+			angle = atan2(gradient.y, gradient.x);
+			pitch = atan2(gradient.z, gradient.xy.length());
+		}
 	}
 }
 
