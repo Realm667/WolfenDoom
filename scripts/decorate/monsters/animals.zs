@@ -263,12 +263,10 @@ class ZBatFamiliar : BatFamiliar
 		Goto See;
 	Death:
 		ZFAM D 5 A_ScreamAndUnblock;
-		ZFAM E 5 {bMThruSpecies = TRUE; bThruSpecies = TRUE; bNoGravity = FALSE;}
-		BFAM F 5;
-		ZFAM D 5;
+		"####" EFD 5 {bMThruSpecies = TRUE; bThruSpecies = TRUE; bNoGravity = FALSE;}
 		Goto Death+1;
 	Crash:
-		BFAM G 6 A_StartSound("batfam/crash");
+		ZFAM G 6 A_StartSound("batfam/crash");
 		"####" H 7;
 		"####" I 8;
 		"####" J -1 {bMThruSpecies = TRUE; bThruSpecies = TRUE; bNoGravity = FALSE;}

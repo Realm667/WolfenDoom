@@ -523,7 +523,7 @@ class AstroTurret : MGTurret
 	//$Category Astrostein (BoA)/Monsters
 	//$Title Astrostein Turret
 	//$Color 4
-	Scale 1.1;
+	Scale 0.65;
 	Speed 0;
 	Obituary "$MGTURRET";
 	Health 50;
@@ -547,7 +547,7 @@ class AstroTurret : MGTurret
 	Missile.Aimed:
 		"####" A 5 A_FaceTarget;
 		"####" B 0 A_StartSound("astrochaingun/fire");
-		"####" C 3 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",10,0,random(-8,8));
+		"####" C 3 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",4,0,random(-8,8));
 		"####" B 3 A_MonsterRefire(40,"See");
 		"####" B 0 A_FaceTarget;
 		Goto Missile+1;

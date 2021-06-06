@@ -598,12 +598,17 @@ class Camp_RandomBags : Camp_RandomUniform
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5);
+		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9,10);
 		CMPL A -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
 		CMPL B -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
 		CMPL C -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
 		CMPL D -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
 		CMPL E -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CMPL F -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CMPL G -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CMPL H -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CMPL I -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CMPL J -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
 		Stop;
 	}
 }
