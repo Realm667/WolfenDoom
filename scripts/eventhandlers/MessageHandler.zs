@@ -759,14 +759,12 @@ class AchievementMessage : MessageBase
 	String image, snd;
 	double posx, posy;
 	Vector2 destsize;
-	Font fnt;
 
 	static int Init(Actor mo, String text, String image = "", String snd = "")
 	{
 		AchievementMessage msg = AchievementMessage(MessageBase.Init(mo, text, text, 18, 18, "AchievementMessage", 5, MSG_ALLOWMULTIPLE));
 		msg.image = image;
 		msg.snd = snd;
-		msg.fnt = SmallFont;
 
 		return msg.GetTime();
 	}
@@ -789,8 +787,8 @@ class AchievementMessage : MessageBase
 
 		String brokentext;
 		BrokenString lines;
-		[brokentext, lines] = BrokenString.BreakString(text, width, false, "C", fnt);
-		int lineheight = int(fnt.GetHeight());
+		[brokentext, lines] = BrokenString.BreakString(text, width, false, "C", SmallFont);
+		int lineheight = int(SmallFont.GetHeight());
 
 		Vector2 hudscale = StatusBar.GetHUDScale();
 
@@ -805,7 +803,7 @@ class AchievementMessage : MessageBase
 
 		for (int l = 0; l <= lines.Count(); l++)
 		{
-			DrawToHUD.DrawText(lines.StringAt(l), (x + imgsize + margin * 3, y), fnt, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
+			DrawToHUD.DrawText(lines.StringAt(l), (x + imgsize + margin * 3, y), SmallFont, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
 			y += lineheight;
 		}
 

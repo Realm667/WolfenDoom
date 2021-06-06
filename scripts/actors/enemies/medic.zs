@@ -150,7 +150,7 @@ class NaziMedic : NaziStandard
 			"####" A 0 A_NoBlocking(true); // No weapon to drop, just the medical kit
 			"####" XYZ 6;
 			"####" A 0 {
-				DoSurrender();
+				DoSurrender(target);
 				bShootable = false;
 				bIsMonster = false; // Keep these from being re-killed by the massacre/kill monsters cheat
 			}
@@ -227,6 +227,7 @@ class NaziMedic : NaziStandard
 		{
 			if (!surrendered)
 			{
+				target = source;
 				surrendered = true;
 				SetStateLabel("Death");
 			}

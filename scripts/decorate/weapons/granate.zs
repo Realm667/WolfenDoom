@@ -100,30 +100,43 @@ class HandGrenade : GrenadeBase //no hard variant since it is used also by playe
 		GrenadeBase.SplashType "Missile";
 		GrenadeBase.Icon "HUD_GREN";
 	}
+
 	States
 	{
-	Spawn:
-		THRW A 2 A_CountDown;
-		THRW BCDEFGH 2;
-		TNT1 A 0 A_JumpIf(waterlevel == 3, "AdjustMass");
-		Loop;
-	AdjustMass:
-		"####" "#" 0 { A_SetMass(800); ClearBounce(); }
-		Goto Swim;
-	Swim:
-		THRW A 2 { A_CountDown(); A_ScaleVelocity(0.7); A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128); }
-		THRW BCDEFGH 2;
-		Loop;
-	Death:
-		THRW B 35 { floorclip -= 2; }
-		TNT1 A 0 A_SpawnGroundSplash;
-		TNT1 A 0 A_AlertMonsters;
-		TNT1 A 0 A_SetScale(1.75,1.75);
-		TNT1 A 0 A_SetTranslucent(0.75,1);
-		TNT1 A 0 A_StartSound("grenade/explode", CHAN_AUTO, 0, 1.0, 0.1);
-		TNT1 A 1 A_SpawnItemEx("GeneralExplosion_Medium");
-		TNT1 A 1 Radius_Quake(10,10,0,16,0);
-		Stop;
+		Spawn:
+			THRW A 2 A_CountDown;
+			THRW BCDEFGH 2;
+			TNT1 A 0 A_JumpIf(waterlevel == 3, "AdjustMass");
+			Loop;
+		AdjustMass:
+			"####" "#" 0 { A_SetMass(800); ClearBounce(); }
+			Goto Swim;
+		Swim:
+			THRW A 2 { A_CountDown(); A_ScaleVelocity(0.7); A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128); }
+			THRW BCDEFGH 2;
+			Loop;
+		Death:
+			THRW B 35 { floorclip -= 2; }
+			TNT1 A 0 A_SpawnGroundSplash;
+			TNT1 A 0 A_AlertMonsters;
+			TNT1 A 0 A_SetScale(1.75,1.75);
+			TNT1 A 0 A_SetTranslucent(0.75,1);
+			TNT1 A 0 A_StartSound("grenade/explode", CHAN_AUTO, 0, 1.0, 0.1);
+			TNT1 A 1 A_SpawnItemEx("GeneralExplosion_Medium");
+			TNT1 A 1 Radius_Quake(10,10,0,16,0);
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		if (target && target.player)
+		{
+			AchievementTracker.CheckAchievement(target.PlayerNumber(), AchievementTracker.ACH_BOOM);
+
+			AchievementTracker tracker = AchievementTracker(EventHandler.Find("AchievementTracker"));
+			if (tracker) { tracker.grenades[target.PlayerNumber()]++; }
+		}
+		Super.PostBeginPlay();
 	}
 }
 

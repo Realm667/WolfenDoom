@@ -128,7 +128,11 @@ class BoASprinting : Inventory
 			}
 		}
 
-		if (!stamina.amount) { cooldown = stamina.maxamount; }
+		if (!stamina.amount)
+		{
+			cooldown = stamina.maxamount;
+			AchievementTracker.CheckAchievement(owner.PlayerNumber(), AchievementTracker.ACH_SPRINT);
+		}
 	}
 
 	virtual void DoExhaustionCheck(void)

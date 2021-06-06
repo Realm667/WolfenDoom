@@ -2004,7 +2004,7 @@ class Nazi : Base
 				int nazicount = CanBeSeen(1);
 				if (!nazicount && Random[surrender](0, 255) < 2)
 				{
-					DoSurrender();
+					DoSurrender(closestplayer);
 				}
 			}
 			
@@ -2069,7 +2069,7 @@ class Nazi : Base
 		if (candodge && !crouchtimeout && !goal) { A_TryHide(); }
 	}
 
-	virtual void DoSurrender()
+	virtual void DoSurrender(Actor source)
 	{
 		if (bCountKill) { ClearCounters(); }
 		user_ForceWeaponDrop = true;
@@ -2087,6 +2087,8 @@ class Nazi : Base
 
 		State SurrenderSpriteState = FindState("SurrenderSprite");
 		if (SurrenderSpriteState) { sprite = SurrenderSpriteState.sprite; }
+
+		if (source) { AchievementTracker.CheckAchievement(source.PlayerNumber(), AchievementTracker.ACH_SURRENDERS); }
 
 		SetStateLabel("Death.Surrender");
 	}

@@ -330,22 +330,36 @@ class AchievementTracker : EventHandler
 	int knifekills[MAXPLAYERS];
 	int levelstats[MAXPLAYERS][3];
 	int damaged[MAXPLAYERS];
+	int reloads[MAXPLAYERS];
+	int manualreloads[MAXPLAYERS];
+	int surrenders[MAXPLAYERS];
+	int grenades[MAXPLAYERS];
+	int totalgrenades[MAXPLAYERS];
+	int saves[MAXPLAYERS];
+	int exhaustion[MAXPLAYERS];
 
 	enum Achievements
 	{
-		ACH_GUNSLINGER,		// Fire 1000 pistol shots
+		ACH_GUNSLINGER = 0,	// Fire 1000 pistol shots (total across all levels)
 		ACH_PERFECTIONIST,	// Finish a map with 100% kills/treasure/secrets
 		ACH_SPEEDRUNNER,
 		ACH_SLIKSTER,
 		ACH_IMPENETRABLE,	// Finish a map without taking damage
-		ACH_DISGRACE,		// Finish off a boss enemy with kicks
+		ACH_DISGRACE = 5,	// Finish off a boss enemy with kicks
 		ACH_PACIFIST,		// Finish a level without killing any enemies
 		ACH_CLEARSHOT,		// Use the Kar98k to snipe an enemy over 6000 units away
 		ACH_WATCHYOURSTEP,
 		ACH_CHEVALIER,		// Kill a loper with only the primary fire of the Firebrand
-		ACH_1915,			// Complete C3M4 with no gas mask
-		ACH_ASSASSIN,		// Stealth kill 10 enemies
+		ACH_1915 = 10,		// Complete C3M4 with no gas mask
+		ACH_ASSASSIN,		// Stealth kill 10 enemies (total across all levels)
 		ACH_NAUGHTY,		// Use the 'give' cheat
+		ACH_MINRELOADS,		// Fewer than 25 weapon reloads in a map
+		ACH_NORELOADS,		// Complete a map without manually reloading
+		ACH_SURRENDERS = 15,// Cause 5 enemies to surrender (total across all levels)
+		ACH_NOGRENADES,		// Complete a map without using grenades
+		ACH_BOOM,			// Use 40 grenades (total across all levels)
+		ACH_SPAM,			// Manually save 100 times (total across all levels)
+		ACH_SPRINT,			// Exhaust stamina 50 times (total across all levels)
 	};
 
 	override void OnRegister()
@@ -357,12 +371,12 @@ class AchievementTracker : EventHandler
 		if (value.length()) 
 		{
 			Array<String> parse;
-			value = Decode(value, 667);
+			value = Decode(value, 7);
 			value.Split(parse, "|");
 
 			for (int a = 0; a < parse.Size(); a++)
 			{
-				records.Push(parse[a] != "0");
+				records.Push(!(parse[a] == "0"));
 			}
 		}
 	}
@@ -370,6 +384,9 @@ class AchievementTracker : EventHandler
 	override void WorldTick()
 	{
 		CheckStats();
+		CheckButtons();
+
+		if (gameaction == ga_savegame) { CheckAchievement(consoleplayer, ACH_SPAM); }
 	}
 
 	override void WorldThingSpawned(WorldEvent e)
@@ -385,16 +402,7 @@ class AchievementTracker : EventHandler
 	{
 		let line = e.activatedline;
 
-		if ( // This doesn't cover all level exits due to scripting, unfortunately; more handling in the StatistBarkeeper Used function, but still not perfect
-			line.special == 243 || // Exit_Normal
-			line.special == 244 || // Exit_Secret
-			line.special == 74 // Teleport_NewMap
-		)
-		{
-			CheckAchievement(consoleplayer, ACH_IMPENETRABLE);
-			CheckAchievement(consoleplayer, ACH_PACIFIST);
-			CheckAchievement(consoleplayer, ACH_1915);
-		}
+		CheckSpecials(line.special);
 	}
 
 	override void NetworkProcess(ConsoleEvent e)
@@ -405,10 +413,7 @@ class AchievementTracker : EventHandler
 		}
 		else if (e.Name == "printachievements")
 		{
-			for (int a = 0; a < records.Size(); a++)
-			{
-				console.printf("%i %i", a, records[a]);
-			}
+			console.printf("%s", BitString());
 		}
 	}
 
@@ -428,6 +433,29 @@ class AchievementTracker : EventHandler
 		}
 	}
 
+	// Check for achievements on level exit
+	static void CheckSpecials(int special)
+	{
+		if (
+			special == 243 || // Exit_Normal
+			special == 244 || // Exit_Secret
+			special == 74 // Teleport_NewMap
+		)
+		{
+			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_IMPENETRABLE);
+			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_PACIFIST);
+			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_1915);
+			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_MINRELOADS);
+			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_NORELOADS);
+			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_NOGRENADES);
+		}
+	}
+
+	void CheckButtons()
+	{
+		if (players[consoleplayer].cmd.buttons & BT_RELOAD) { manualreloads[consoleplayer]++; }
+	}
+
 	static void CheckAchievement(int pnum, int a)
 	{
 		if (pnum < 0) { return; }
@@ -439,10 +467,10 @@ class AchievementTracker : EventHandler
 
 		switch (a)
 		{
-			case AchievementTracker.ACH_GUNSLINGER:
+			case AchievementTracker.ACH_GUNSLINGER:  // Checked here in WorldThingSpawned function
 				if (++achievements.pistolshots[pnum] >= 1000) { achievements.UpdateRecord(AchievementTracker.ACH_GUNSLINGER); }
 				break;
-			case AchievementTracker.ACH_PERFECTIONIST:
+			case AchievementTracker.ACH_PERFECTIONIST: // Checked here in CheckSpecials function
 				if (
 					players[pnum].killcount == level.total_monsters &&
 					players[pnum].itemcount == level.total_items &&
@@ -458,20 +486,41 @@ class AchievementTracker : EventHandler
 			case AchievementTracker.ACH_SLIKSTER:
 				// TODO
 				break;
-			case AchievementTracker.ACH_IMPENETRABLE:
+			case AchievementTracker.ACH_IMPENETRABLE:  // Checked here in CheckSpecials function
 				if (!achievements.damaged[consoleplayer]) { achievements.UpdateRecord(AchievementTracker.ACH_IMPENETRABLE); }
 				break;
-			case AchievementTracker.ACH_PACIFIST: // Currently includes all counted kills!
+			case AchievementTracker.ACH_PACIFIST:  // Checked here in CheckSpecials function. Currently includes all counted kills!
 				if (players[consoleplayer].killcount == 0) { achievements.UpdateRecord(AchievementTracker.ACH_PACIFIST); }
 				break;
 			case AchievementTracker.ACH_WATCHYOURSTEP:
 				// TODO
 				break;
-			case AchievementTracker.ACH_1915:
+			case AchievementTracker.ACH_1915: // Checked here in CheckSpecials function
 				if (level.mapname == "C3M4" && !players[consoleplayer].mo.FindInventory("ZyklonMask")) { achievements.UpdateRecord(AchievementTracker.ACH_1915); }
 				break;
 			case AchievementTracker.ACH_ASSASSIN: // Set up in the Nazi class's DamageMobj function
 				if (++achievements.knifekills[consoleplayer] >= 10) { achievements.UpdateRecord(AchievementTracker.ACH_ASSASSIN); }
+				break;
+			case AchievementTracker.ACH_MINRELOADS: // Reloads incremented in NaziWeapon class A_Reloading function
+				if (achievements.reloads[consoleplayer] <= 25) { achievements.UpdateRecord(AchievementTracker.ACH_MINRELOADS); }
+				break;
+			case AchievementTracker.ACH_NORELOADS: // Manual reloads incremented here in CheckButtons function
+				if (!achievements.manualreloads[consoleplayer]) { achievements.UpdateRecord(AchievementTracker.ACH_NORELOADS); }
+				break;
+			case Achievements.ACH_SURRENDERS: // Checked in Nazi class DoSurrender function
+				if (++achievements.surrenders[consoleplayer] >= 5) { achievements.UpdateRecord(AchievementTracker.ACH_SURRENDERS); }
+				break;
+			case Achievements.ACH_NOGRENADES: // Checked in HandGrenade PostBeginPlay
+				if (!achievements.grenades[consoleplayer]) { achievements.UpdateRecord(AchievementTracker.ACH_SURRENDERS); }
+				break;
+			case Achievements.ACH_BOOM: // Checked in HandGrenade PostBeginPlay
+				if (++achievements.totalgrenades[consoleplayer] >= 40) { achievements.UpdateRecord(AchievementTracker.ACH_SURRENDERS); }
+				break;
+			case Achievements.ACH_SPAM: // Checked here in WorldTick function
+				if (++achievements.saves[consoleplayer] >= 100) { achievements.UpdateRecord(AchievementTracker.ACH_SPAM); }
+				break;
+			case Achievements.ACH_SPRINT: // Checked from BoASprinting powerup
+				if (++achievements.exhaustion[consoleplayer] >= 50) { achievements.UpdateRecord(AchievementTracker.ACH_SPRINT); }
 				break;
 			case AchievementTracker.ACH_DISGRACE: // Set up in the Nazi class's Die function
 			case AchievementTracker.ACH_CLEARSHOT: // Set up in the Nazi class's Die function
@@ -485,10 +534,31 @@ class AchievementTracker : EventHandler
 
 	void UpdateRecord(int a)
 	{
-		if (a >= records.Size()) { records.Insert(a, true); } // Make the array bigger if it's not already big enough
-		else if (records[a]) { return; } // Only let the player get an achievement once
+		if (a >= records.Size()) { records.Resize(a + 1); } // Make the array bigger if it's not already big enough
+
+		if (records[a]) { return; } // Only let the player get an achievement once
 		else { records[a] = true; } // Set the achievement as complete
 
+		// Encode the value string
+		String bits = BitString();
+
+		// Save the value to the CVar
+		bits = Encode(bits, 7);
+		recordvar.SetString(bits);
+
+		// Look up the achievement description string
+		String lookup = String.Format("ACHIEVEMENT%i", a);
+		String text = StringTable.Localize(lookup, false);
+		if (lookup ~== text) { text = String.Format("Completed achievement %i", a); }
+
+		String image = String.Format("ACHVMT%02i", a);
+
+		// Display the message
+		AchievementMessage.Init(players[consoleplayer].mo, text, image, "menu/change");
+	}
+
+	String BitString()
+	{
 		String bits = "";
 		for (int b = 0; b < records.Size(); b++)
 		{
@@ -496,15 +566,7 @@ class AchievementTracker : EventHandler
 			bits = String.Format("%s%c", bits, records[b] + 0x30);
 		}
 
-		recordvar.SetString(Encode(bits, 667));
-
-		String lookup = String.Format("ACHIEVEMENT%i", a);
-		String text = StringTable.Localize(lookup, false);
-		if (lookup ~== text) { text = String.Format("Completed achievement %i", a); }
-
-		String image = String.Format("ACHVMT%02i", a);
-
-		AchievementMessage.Init(players[consoleplayer].mo, text, image, "menu/change");
+		return bits;
 	}
 
 	// Algorithms adapted from https://en.wikibooks.org/wiki/Algorithm_Implementation/Miscellaneous/Base64
@@ -555,5 +617,67 @@ class AchievementTracker : EventHandler
 		}
 
 		return r.Mid(0, r.Length() - p.Length());
+	}
+
+	void GetStats()
+	{
+		PersistentAchievementTracker ptracker = PersistentAchievementTracker(StaticEventHandler.Find("PersistentAchievementTracker"));
+		if (!ptracker) { return; }
+
+		for (int i = 0; i < MAXPLAYERS; i++)
+		{
+			pistolshots[i] = ptracker.pistolshots[i];
+			knifekills[i] = ptracker.knifekills[i];
+			surrenders[i] = ptracker.surrenders[i];
+			totalgrenades[i] = ptracker.totalgrenades[i];
+			saves[i] = ptracker.saves[i];
+			exhaustion[i] = ptracker.exhaustion[i];
+		}
+	}
+
+	void SaveStats()
+	{
+		PersistentAchievementTracker ptracker = PersistentAchievementTracker(StaticEventHandler.Find("PersistentAchievementTracker"));
+		if (!ptracker) { return; }
+
+		for (int i = 0; i < MAXPLAYERS; i++)
+		{
+			ptracker.pistolshots[i] = pistolshots[i];
+			ptracker.knifekills[i] = knifekills[i];
+			ptracker.surrenders[i] = surrenders[i];
+			ptracker.totalgrenades[i] = totalgrenades[i];
+			ptracker.saves[i] = saves[i];
+			ptracker.exhaustion[i] = exhaustion[i];
+		}
+	}
+}
+
+// Static tracker to allow tracking certain stats across level changes
+class PersistentAchievementTracker : StaticEventHandler
+{
+	int pistolshots[MAXPLAYERS];
+	int knifekills[MAXPLAYERS];
+	int surrenders[MAXPLAYERS];
+	int totalgrenades[MAXPLAYERS];
+	int saves[MAXPLAYERS];
+	int exhaustion[MAXPLAYERS];
+
+	override void WorldLoaded(WorldEvent e)
+	{
+		AchievementTracker tracker = AchievementTracker(EventHandler.Find("AchievementTracker"));
+		if (!tracker) { return; }
+
+		tracker.GetStats();
+	}
+
+	override void WorldUnloaded(WorldEvent e)
+	{
+		if (!e.IsSaveGame)
+		{
+			AchievementTracker tracker = AchievementTracker(EventHandler.Find("AchievementTracker"));
+			if (!tracker) { return; }
+
+			tracker.SaveStats();
+		}
 	}
 }

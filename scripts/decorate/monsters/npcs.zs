@@ -36,17 +36,7 @@ class StatistBarkeeper : Base
 
 	override bool Used(Actor user)
 	{
-		if (
-			special == 243 || // Exit_Normal
-			special == 244 || // Exit_Secret
-			special == 74 // Teleport_NewMap
-		)
-		{
-			AchievementTracker.CheckAchievement(user.PlayerNumber(), AchievementTracker.ACH_IMPENETRABLE);
-			AchievementTracker.CheckAchievement(user.PlayerNumber(), AchievementTracker.ACH_PACIFIST);
-			AchievementTracker.CheckAchievement(user.PlayerNumber(), AchievementTracker.ACH_1915);
-		}
-
+		AchievementTracker.CheckSpecials(special);
 		level.ExecuteSpecial(special, user, null, null, args[0], args[1], args[2], args[3], args[4]);
 
 		return true;

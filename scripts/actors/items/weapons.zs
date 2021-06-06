@@ -240,6 +240,11 @@ class NaziWeapon : Weapon
 		// was started automatically via the DryFire state
 		if (r && invoker.Owner.player) {
 			invoker.Owner.player.WeaponState &= ~(WF_WEAPONREADY | WF_WEAPONREADYALT);
+
+			AchievementTracker tracker = AchievementTracker(EventHandler.Find("AchievementTracker"));
+			if (tracker) { tracker.reloads[invoker.owner.PlayerNumber()]++; }
+
+			AchievementTracker.CheckAchievement(invoker.owner.PlayerNumber(), AchievementTracker.ACH_MINRELOADS);
 		}
 	}
 
