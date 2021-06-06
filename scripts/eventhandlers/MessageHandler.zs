@@ -463,7 +463,7 @@ class HintMessage : MessageBase
 
 	override void Start()
 	{
-		player.mo.A_StartSound("menu/change", CHAN_AUTO, CHANF_LOCAL, 0.75);
+		if (!player.mo.FindInventory("CutsceneEnabled")) { player.mo.A_StartSound("menu/change", CHAN_AUTO, CHANF_LOCAL, 0.75); }
 	}
 
 	override double DrawMessage()
@@ -750,6 +750,66 @@ class CountdownMessage : MessageBase
 		protrusion = handler.topoffset + size.y / destsize.y;
 
 		return protrusion;
+	}
+}
+
+// Message when achievements are awarded
+class AchievementMessage : MessageBase
+{
+	String image, snd;
+	double posx, posy;
+	Vector2 destsize;
+	Font fnt;
+
+	static int Init(Actor mo, String text, String image = "", String snd = "")
+	{
+		AchievementMessage msg = AchievementMessage(MessageBase.Init(mo, text, text, 18, 18, "AchievementMessage", 5, MSG_ALLOWMULTIPLE));
+		msg.image = image;
+		msg.snd = snd;
+		msg.fnt = SmallFont;
+
+		return msg.GetTime();
+	}
+
+	override void Start()
+	{
+		player.mo.A_StartSound(snd, CHAN_AUTO, CHANF_DEFAULT, 0.45);
+	}
+
+	override double DrawMessage()
+	{
+		TextureID tex = TexMan.CheckForTexture(image);
+		String msgstr = StringTable.Localize(text, false);
+		Vector2 destsize = (640, 400);
+
+		int width = 200;
+		int imgsize = 24;
+		int margin = 4;
+		int boxwidth = width + imgsize + margin * 2;
+
+		String brokentext;
+		BrokenString lines;
+		[brokentext, lines] = BrokenString.BreakString(text, width, false, "C", fnt);
+		int lineheight = int(fnt.GetHeight());
+
+		Vector2 hudscale = StatusBar.GetHUDScale();
+
+		int x = int(Screen.GetWidth() / hudscale.x / 2 - boxwidth / 2); // Position scaled relative to screen center
+		int y = int(16 + margin + handler.topoffset * Screen.GetHeight() / hudscale.y);
+
+		double boxheight = max(imgsize, lines.Count() * lineheight) + margin * 2;
+
+		DrawToHUD.DrawFrame("BG_", x - margin, y - margin, boxwidth + margin * 2, boxheight + margin * 2, 0x000000, alpha, alpha);
+
+		if (tex.IsValid()) { DrawToHUD.DrawTexture(tex, (x + margin + imgsize / 2, y + margin + imgsize / 2), alpha, 1.0); }
+
+		for (int l = 0; l <= lines.Count(); l++)
+		{
+			DrawToHUD.DrawText(lines.StringAt(l), (x + imgsize + margin * 3, y), fnt, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
+			y += lineheight;
+		}
+
+		return handler.topoffset + (boxheight + margin) / destsize.y;
 	}
 }
 

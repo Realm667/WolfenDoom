@@ -1046,148 +1046,152 @@ class ZyklonMonster : Nazi
 }
 
 class NaziLoper : Nazi
-{	Default
+{
+	bool noachievement[MAXPLAYERS];
+
+	Default
 	{
-	//$Category Monsters (BoA)/Occult
-	//$Title Nazi Loper
-	//$Color 4
-	Tag "$TAGLOPER";
-	Health 950;
-	Height 64;
-	Radius 24;
-	Mass 300;
-	Speed 7;
-	DamageFunction (8 * random(1,8)); //jump attacks
-	DefThreshold 32;
-	Scale 0.65;
-	PainChance 64;
-	DamageFactor "Rocket", 0.2;
-	DamageFactor "Electric", 0.0;
-	+BOSS
-	+MISSILEMORE
-	+NORADIUSDMG //or the ZTracer will kill the Loper :D
-	MaxStepHeight 16;
-	MaxDropOffHeight 128;
-	MaxTargetRange 1024;
-	Obituary "$LOPRHIT2";
-	HitObituary "$LOPRHIT1";
-	SeeSound "loper/wakeup";
-	DeathSound "loper/death";
+		//$Category Monsters (BoA)/Occult
+		//$Title Nazi Loper
+		//$Color 4
+		Tag "$TAGLOPER";
+		Health 950;
+		Height 64;
+		Radius 24;
+		Mass 300;
+		Speed 7;
+		DamageFunction (8 * random(1,8)); //jump attacks
+		DefThreshold 32;
+		Scale 0.65;
+		PainChance 64;
+		DamageFactor "Rocket", 0.2;
+		DamageFactor "Electric", 0.0;
+		+BOSS
+		+MISSILEMORE
+		+NORADIUSDMG //or the ZTracer will kill the Loper :D
+		MaxStepHeight 16;
+		MaxDropOffHeight 128;
+		MaxTargetRange 1024;
+		Obituary "$LOPRHIT2";
+		HitObituary "$LOPRHIT1";
+		SeeSound "loper/wakeup";
+		DeathSound "loper/death";
 	}
+
 	States
 	{
-	Spawn:
-		LOPR A 0 NODELAY A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, CMF_AIMDIRECTION, 0);
-		"####" A 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, CMF_AIMDIRECTION, 0);
-		"####" A 1;
-		Goto Look;
-	See:
-		Goto See.Boss3;
-	Melee:
-		"####" E 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, CMF_AIMDIRECTION, 0);
-		"####" E 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, CMF_AIMDIRECTION, 0);
-		"####" E 8 A_FaceTarget;
-		"####" E 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-		"####" FG 8 A_CustomMeleeAttack(2*random(2,10),"loper/attack","loper/attack","Melee",TRUE);
-		Goto Look;
-	Missile:
-		"####" E 0 A_Jump(160,"Missile3");  // Leap attack
-		"####" E 0 A_Jump(random(128,192),"Missile2");
-		"####" EE 2 LIGHT("LOPERLIT"){
-			A_StartSound("tesla/kill");
-			A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, CMF_AIMDIRECTION, 0);
-			A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, CMF_AIMDIRECTION, 0);
-			A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-			A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-			A_LightningAttack("LightningBeamZap2", 0, 0, random(4,8), 0, 0, false);
-		}
-		"####" EE 8 A_FaceTarget;
-		"####" EE 2 LIGHT("LOPERLIT"){
-			A_StartSound("tesla/kill");
-			A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, CMF_AIMDIRECTION, 0);
-			A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, CMF_AIMDIRECTION, 0);
-			A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-			A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-			A_LightningAttack("LightningBeamZap2", 0, 0, random(4,8), 0, 0, false);
-		}
-		"####" EE 8 A_FaceTarget;
-		Goto Look;
-	Missile2:
-		"####" A 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0);
-		"####" A 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0);
-		"####" A 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-		"####" A 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-		"####" A 0 ThrustThing((int) (angle*256/360),random(4,6),0,0);
-		"####" AE 6 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-		"####" H 8 ThrustThingZ(0,random(30,40),0,1);
-		"####" E 6 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-		"####" FG 17 LIGHT("LOPERLIT") A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-		"####" G 1 LIGHT("LOPERLIT") Radius_Quake(10,10,0,16,0);
-		"####" G 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-		"####" G 0 A_Jump(128,"Missile4");
-		"####" GF 4 LIGHT("LOPERLIT"){
-			A_StartSound("tesla/kill");
-			A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, CMF_AIMDIRECTION, 0);
-			A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, CMF_AIMDIRECTION, 0);
-			A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-			A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-			A_LightningAttack("LightningBeamZap2", 0, 0, 4, 0, 0, false);
-			A_LightningAttack("LightningBeamZap2", 0, 0, 4, 60, 0, false);
-			A_LightningAttack("LightningBeamZap2", 0, 0, 4, 120, 0, false);
-			A_LightningAttack("LightningBeamZap2", 0, 0, 4, 180, 0, false);
-			A_LightningAttack("LightningBeamZap2", 0, 0, 4, 240, 0, false);
-			A_LightningAttack("LightningBeamZap2", 0, 0, 4, 320, 0, false);
-		}
-		"####" G 8 A_FaceTarget;
-		Goto Look;
-	Missile3:
-		"####" A 0 A_JumpIfCloser(1024, 1);
-		Goto Look;
-		"####" CE 8 A_FaceTarget;
-		"####" H 8;
-		"####" F 1;
-		"####" G 1 A_JumpAttack(30, .5, JAF_ARC | (random(0, 1) ? JAF_INTERCEPT : 0));
-		"####" E 3;
-		"####" C 5;
-		Goto Look;
-	Missile4:
-		"####" GF 4 LIGHT("LOPERLIT");
-		"####" G 0 A_LightningAttack("LightningBeamPillarZap2", 0, 0, 8, 0, -90, true);
-		"####" G 0 LIGHT("LOPERLIT") A_SpawnProjectile("ZTracer",0,0,40,2,0);
-		"####" G 0 LIGHT("LOPERLIT") A_SpawnProjectile("ZTracer",0,0,80,2,0);
-		"####" G 0 LIGHT("LOPERLIT") A_SpawnProjectile("ZTracer",0,0,120,2,0);
-		"####" G 0 LIGHT("LOPERLIT") A_SpawnProjectile("ZTracer",0,0,160,2,0);
-		"####" G 0 LIGHT("LOPERLIT") A_SpawnProjectile("ZTracer",0,0,200,2,0);
-		"####" G 0 LIGHT("LOPERLIT") A_SpawnProjectile("ZTracer",0,0,240,2,0);
-		"####" G 0 LIGHT("LOPERLIT") A_SpawnProjectile("ZTracer",0,0,280,2,0);
-		"####" G 0 LIGHT("LOPERLIT") A_SpawnProjectile("ZTracer",0,0,320,2,0);
-		"####" G 0 LIGHT("LOPERLIT") A_SpawnProjectile("ZTracer",0,0,360,2,0);
-		"####" G 8 A_FaceTarget;
-		Goto Look;
-	Pain:
-		"####" I 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0);
-		"####" I 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0);
-		"####" I 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-		"####" I 6 A_NaziPain(256);
-		"####" I 0 A_Jump(256,"See");
-		Stop;
-	Death.Fire:
-	Death:
-	XDeath:
-		"####" I 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0);
-		"####" I 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0);
-		"####" I 6 A_Scream;
-		"####" I 1 LIGHT("LOPERLIT") A_SpawnItemEx("GeneralExplosion_Medium");
-		"####" I 1 LIGHT("LOPERLIT") Radius_Quake(10,10,0,16,0);
-		"####" J 8;
-		"####" K 1 {A_SpawnItemEx("Debris_Loper", random(8,-8), random(8,-8), random(54,64), frandom(0.5,0.7), frandom(0.5,0.7), frandom(0.5,0.7), random(0,360), SXF_CLIENTSIDE); A_NoBlocking();}
-		"####" K 6;
-		"####" LM 8;
-		"####" N -1;
-		Stop;
-	Raise:
-		"####" NMLKJIE 8;
-		Goto Look;
+		Spawn:
+			LOPR A 0 NODELAY A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, CMF_AIMDIRECTION, 0);
+			"####" A 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, CMF_AIMDIRECTION, 0);
+			"####" A 1;
+			Goto Look;
+		See:
+			Goto See.Boss3;
+		Melee:
+			"####" E 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, CMF_AIMDIRECTION, 0);
+			"####" E 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, CMF_AIMDIRECTION, 0);
+			"####" E 8 A_FaceTarget;
+			"####" E 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
+			"####" FG 8 A_CustomMeleeAttack(2*random(2,10),"loper/attack","loper/attack","Melee",TRUE);
+			Goto Look;
+		Missile:
+			"####" E 0 A_Jump(160,"Missile3");  // Leap attack
+			"####" E 0 A_Jump(random(128,192),"Missile2");
+			"####" EE 2 LIGHT("LOPERLIT"){
+				A_StartSound("tesla/kill");
+				A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, CMF_AIMDIRECTION, 0);
+				A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, CMF_AIMDIRECTION, 0);
+				A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
+				A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
+				A_LightningAttack("LightningBeamZap2", 0, 0, random(4,8), 0, 0, false);
+			}
+			"####" EE 8 A_FaceTarget;
+			"####" EE 2 LIGHT("LOPERLIT"){
+				A_StartSound("tesla/kill");
+				A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, CMF_AIMDIRECTION, 0);
+				A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, CMF_AIMDIRECTION, 0);
+				A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
+				A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
+				A_LightningAttack("LightningBeamZap2", 0, 0, random(4,8), 0, 0, false);
+			}
+			"####" EE 8 A_FaceTarget;
+			Goto Look;
+		Missile2:
+			"####" A 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0);
+			"####" A 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0);
+			"####" A 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
+			"####" A 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
+			"####" A 0 ThrustThing((int) (angle*256/360),random(4,6),0,0);
+			"####" AE 6 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
+			"####" H 8 ThrustThingZ(0,random(30,40),0,1);
+			"####" E 6 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
+			"####" FG 17 LIGHT("LOPERLIT") A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
+			"####" G 1 LIGHT("LOPERLIT") Radius_Quake(10,10,0,16,0);
+			"####" G 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
+			"####" G 0 A_Jump(128,"Missile4");
+			"####" GF 4 LIGHT("LOPERLIT"){
+				A_StartSound("tesla/kill");
+				A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, CMF_AIMDIRECTION, 0);
+				A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, CMF_AIMDIRECTION, 0);
+				A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
+				A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
+				A_LightningAttack("LightningBeamZap2", 0, 0, 4, 0, 0, false);
+				A_LightningAttack("LightningBeamZap2", 0, 0, 4, 60, 0, false);
+				A_LightningAttack("LightningBeamZap2", 0, 0, 4, 120, 0, false);
+				A_LightningAttack("LightningBeamZap2", 0, 0, 4, 180, 0, false);
+				A_LightningAttack("LightningBeamZap2", 0, 0, 4, 240, 0, false);
+				A_LightningAttack("LightningBeamZap2", 0, 0, 4, 320, 0, false);
+			}
+			"####" G 8 A_FaceTarget;
+			Goto Look;
+		Missile3:
+			"####" A 0 A_JumpIfCloser(1024, 1);
+			Goto Look;
+			"####" CE 8 A_FaceTarget;
+			"####" H 8;
+			"####" F 1;
+			"####" G 1 A_JumpAttack(30, .5, JAF_ARC | (random(0, 1) ? JAF_INTERCEPT : 0));
+			"####" E 3;
+			"####" C 5;
+			Goto Look;
+		Missile4:
+			"####" GF 4 LIGHT("LOPERLIT");
+			"####" G 0 A_LightningAttack("LightningBeamPillarZap2", 0, 0, 8, 0, -90, true);
+			"####" G 0 LIGHT("LOPERLIT") A_SpawnProjectile("ZTracer",0,0,40,2,0);
+			"####" G 0 LIGHT("LOPERLIT") A_SpawnProjectile("ZTracer",0,0,80,2,0);
+			"####" G 0 LIGHT("LOPERLIT") A_SpawnProjectile("ZTracer",0,0,120,2,0);
+			"####" G 0 LIGHT("LOPERLIT") A_SpawnProjectile("ZTracer",0,0,160,2,0);
+			"####" G 0 LIGHT("LOPERLIT") A_SpawnProjectile("ZTracer",0,0,200,2,0);
+			"####" G 0 LIGHT("LOPERLIT") A_SpawnProjectile("ZTracer",0,0,240,2,0);
+			"####" G 0 LIGHT("LOPERLIT") A_SpawnProjectile("ZTracer",0,0,280,2,0);
+			"####" G 0 LIGHT("LOPERLIT") A_SpawnProjectile("ZTracer",0,0,320,2,0);
+			"####" G 0 LIGHT("LOPERLIT") A_SpawnProjectile("ZTracer",0,0,360,2,0);
+			"####" G 8 A_FaceTarget;
+			Goto Look;
+		Pain:
+			"####" I 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0);
+			"####" I 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0);
+			"####" I 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
+			"####" I 6 A_NaziPain(256);
+			"####" I 0 A_Jump(256,"See");
+			Stop;
+		Death.Fire:
+		Death:
+		XDeath:
+			"####" I 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, 2, 0);
+			"####" I 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0);
+			"####" I 6 A_Scream;
+			"####" I 1 LIGHT("LOPERLIT") A_SpawnItemEx("GeneralExplosion_Medium");
+			"####" I 1 LIGHT("LOPERLIT") Radius_Quake(10,10,0,16,0);
+			"####" J 8;
+			"####" K 1 {A_SpawnItemEx("Debris_Loper", random(8,-8), random(8,-8), random(54,64), frandom(0.5,0.7), frandom(0.5,0.7), frandom(0.5,0.7), random(0,360), SXF_CLIENTSIDE); A_NoBlocking();}
+			"####" K 6;
+			"####" LM 8;
+			"####" N -1;
+			Stop;
+		Raise:
+			"####" NMLKJIE 8;
+			Goto Look;
 	}
 }
 

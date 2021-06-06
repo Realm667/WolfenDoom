@@ -2,36 +2,54 @@ class StatistBarkeeper : Base
 {
 	Default
 	{
-	//$Category Monsters (BoA)/NPCs
-	//$Title Juliette Bertrand, Barkeeper (NPC)
-	//$Color 4
-	Height 56;
-	Mass 100;
-	Scale 0.65;
-	+FRIENDLY
-	+NONSHOOTABLE
-	+SOLID
-	+USESPECIAL
-	+DONTTHRUST
-	-COUNTKILL //N00b
-	Monster;
+		//$Category Monsters (BoA)/NPCs
+		//$Title Juliette Bertrand, Barkeeper (NPC)
+		//$Color 4
+		Height 56;
+		Mass 100;
+		Scale 0.65;
+		+FRIENDLY
+		+NONSHOOTABLE
+		+SOLID
+		+DONTTHRUST
+		-COUNTKILL //N00b
+		Monster;
 	}
+
 	States
 	{
-	Spawn:
-		BDKP A 80;
-		"####" B 40;
-		"####" CB 40;
-		"####" D 80;
-		"####" DACB 40;
-		"####" E 40;
-		"####" F 40;
-		Loop;
-	Greet:
-		BDKP G 4;
-		BDKP HIHJHIHJH 7;
-		BDKP K 4;
-		Goto Spawn;
+		Spawn:
+			BDKP A 80;
+			"####" B 40;
+			"####" CB 40;
+			"####" D 80;
+			"####" DACB 40;
+			"####" E 40;
+			"####" F 40;
+			Loop;
+		Greet:
+			BDKP G 4;
+			BDKP HIHJHIHJH 7;
+			BDKP K 4;
+			Goto Spawn;
+	}
+
+	override bool Used(Actor user)
+	{
+		if (
+			special == 243 || // Exit_Normal
+			special == 244 || // Exit_Secret
+			special == 74 // Teleport_NewMap
+		)
+		{
+			AchievementTracker.CheckAchievement(user.PlayerNumber(), AchievementTracker.ACH_IMPENETRABLE);
+			AchievementTracker.CheckAchievement(user.PlayerNumber(), AchievementTracker.ACH_PACIFIST);
+			AchievementTracker.CheckAchievement(user.PlayerNumber(), AchievementTracker.ACH_1915);
+		}
+
+		level.ExecuteSpecial(special, user, null, null, args[0], args[1], args[2], args[3], args[4]);
+
+		return true;
 	}
 }
 

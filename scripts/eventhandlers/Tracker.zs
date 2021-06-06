@@ -39,6 +39,7 @@ class DamageTracker : EventHandler
 	Color blend[players.Size()];
 	Color oldblend[players.Size()];
 	int lasttick;
+	AchievementTracker achievements;
 
 	override void WorldThingDamaged(WorldEvent e)
 	{
@@ -102,11 +103,15 @@ class DamageTracker : EventHandler
 				info.distance = clamp(int(56 - level.Vec3Diff(player.mo.pos, info.attackerpos).length() / 64), 0, 64);
 				info.timeout = level.time + min(e.damage * 4, 100);
 			}
+
+			if (achievements) { achievements.damaged[player.mo.PlayerNumber()] = true; }
 		}
 	}
 
 	override void WorldTick()
 	{
+		if (!achievements) { achievements = AchievementTracker(EventHandler.Find("AchievementTracker")); }
+
 		for (int i = 0; i < events.Size(); i++)
 		{
 			if (events[i].timeout < level.time) { events.Delete(i); }
@@ -312,5 +317,243 @@ class InventoryTracker : EventHandler
 		if (!tracker) { return; }
 
 		tracker.inventories[pnum].Destroy();
+	}
+}
+
+class AchievementTracker : EventHandler
+{
+	transient CVar recordvar;
+	int record;
+	Array<bool> records;
+
+	int pistolshots[MAXPLAYERS];
+	int knifekills[MAXPLAYERS];
+	int levelstats[MAXPLAYERS][3];
+	int damaged[MAXPLAYERS];
+
+	enum Achievements
+	{
+		ACH_GUNSLINGER,		// Fire 1000 pistol shots
+		ACH_PERFECTIONIST,	// Finish a map with 100% kills/treasure/secrets
+		ACH_SPEEDRUNNER,
+		ACH_SLIKSTER,
+		ACH_IMPENETRABLE,	// Finish a map without taking damage
+		ACH_DISGRACE,		// Finish off a boss enemy with kicks
+		ACH_PACIFIST,		// Finish a level without killing any enemies
+		ACH_CLEARSHOT,		// Use the Kar98k to snipe an enemy over 6000 units away
+		ACH_WATCHYOURSTEP,
+		ACH_CHEVALIER,		// Kill a loper with only the primary fire of the Firebrand
+		ACH_1915,			// Complete C3M4 with no gas mask
+		ACH_ASSASSIN,		// Stealth kill 10 enemies
+		ACH_NAUGHTY,		// Use the 'give' cheat
+	};
+
+	override void OnRegister()
+	{
+		recordvar = CVar.FindCVar("boa_achievementrecord");
+
+		String value = recordvar.GetString();
+
+		if (value.length()) 
+		{
+			Array<String> parse;
+			value = Decode(value, 667);
+			value.Split(parse, "|");
+
+			for (int a = 0; a < parse.Size(); a++)
+			{
+				records.Push(parse[a] != "0");
+			}
+		}
+	}
+
+	override void WorldTick()
+	{
+		CheckStats();
+	}
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (e.Thing is "PlayerTracer" && PlayerTracer(e.Thing).target.player)
+		{
+			int pnum = PlayerTracer(e.Thing).target.PlayerNumber();
+			if (e.Thing is "LugerTracer") { CheckAchievement(pnum, ACH_GUNSLINGER); }
+		}
+	}
+
+	override void WorldLinePreActivated(WorldEvent e) 
+	{
+		let line = e.activatedline;
+
+		if ( // This doesn't cover all level exits due to scripting, unfortunately; more handling in the StatistBarkeeper Used function, but still not perfect
+			line.special == 243 || // Exit_Normal
+			line.special == 244 || // Exit_Secret
+			line.special == 74 // Teleport_NewMap
+		)
+		{
+			CheckAchievement(consoleplayer, ACH_IMPENETRABLE);
+			CheckAchievement(consoleplayer, ACH_PACIFIST);
+			CheckAchievement(consoleplayer, ACH_1915);
+		}
+	}
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Name == "achievement")
+		{
+			UpdateRecord(e.args[0]);
+		}
+		else if (e.Name == "printachievements")
+		{
+			for (int a = 0; a < records.Size(); a++)
+			{
+				console.printf("%i %i", a, records[a]);
+			}
+		}
+	}
+
+	void CheckStats()
+	{
+		if (
+			levelstats[consoleplayer][0] != players[consoleplayer].killcount ||
+			levelstats[consoleplayer][1] != players[consoleplayer].itemcount ||
+			levelstats[consoleplayer][2] != players[consoleplayer].secretcount
+		)
+		{
+			levelstats[consoleplayer][0] = players[consoleplayer].killcount;
+			levelstats[consoleplayer][1] = players[consoleplayer].itemcount;
+			levelstats[consoleplayer][2] = players[consoleplayer].secretcount;
+
+			CheckAchievement(consoleplayer, ACH_PERFECTIONIST);
+		}
+	}
+
+	static void CheckAchievement(int pnum, int a)
+	{
+		if (pnum < 0) { return; }
+
+		AchievementTracker achievements = AchievementTracker(EventHandler.Find("AchievementTracker"));
+		if (!achievements) { return; }
+
+		if (a < achievements.records.Size() && achievements.records[a]) { return; }
+
+		switch (a)
+		{
+			case AchievementTracker.ACH_GUNSLINGER:
+				if (++achievements.pistolshots[pnum] >= 1000) { achievements.UpdateRecord(AchievementTracker.ACH_GUNSLINGER); }
+				break;
+			case AchievementTracker.ACH_PERFECTIONIST:
+				if (
+					players[pnum].killcount == level.total_monsters &&
+					players[pnum].itemcount == level.total_items &&
+					players[pnum].secretcount == level.total_secrets
+				)
+				{
+					achievements.UpdateRecord(AchievementTracker.ACH_PERFECTIONIST);
+				}
+				break;
+			case AchievementTracker.ACH_SPEEDRUNNER:
+				// TODO
+				break;
+			case AchievementTracker.ACH_SLIKSTER:
+				// TODO
+				break;
+			case AchievementTracker.ACH_IMPENETRABLE:
+				if (!achievements.damaged[consoleplayer]) { achievements.UpdateRecord(AchievementTracker.ACH_IMPENETRABLE); }
+				break;
+			case AchievementTracker.ACH_PACIFIST: // Currently includes all counted kills!
+				if (players[consoleplayer].killcount == 0) { achievements.UpdateRecord(AchievementTracker.ACH_PACIFIST); }
+				break;
+			case AchievementTracker.ACH_WATCHYOURSTEP:
+				// TODO
+				break;
+			case AchievementTracker.ACH_1915:
+				if (level.mapname == "C3M4" && !players[consoleplayer].mo.FindInventory("ZyklonMask")) { achievements.UpdateRecord(AchievementTracker.ACH_1915); }
+				break;
+			case AchievementTracker.ACH_ASSASSIN: // Set up in the Nazi class's DamageMobj function
+				if (++achievements.knifekills[consoleplayer] >= 10) { achievements.UpdateRecord(AchievementTracker.ACH_ASSASSIN); }
+				break;
+			case AchievementTracker.ACH_DISGRACE: // Set up in the Nazi class's Die function
+			case AchievementTracker.ACH_CLEARSHOT: // Set up in the Nazi class's Die function
+			case AchievementTracker.ACH_CHEVALIER: // Set up in the Nazi class's Die function, with handling in DamageMobj to flag the enemy to not allow the achievement if any other weapon was used
+			case AchievementTracker.ACH_NAUGHTY: // Set up in the BoAPlayer class's give cheat handling
+			default:
+				achievements.UpdateRecord(a);
+				break;
+		}
+	}
+
+	void UpdateRecord(int a)
+	{
+		if (a >= records.Size()) { records.Insert(a, true); } // Make the array bigger if it's not already big enough
+		else if (records[a]) { return; } // Only let the player get an achievement once
+		else { records[a] = true; } // Set the achievement as complete
+
+		String bits = "";
+		for (int b = 0; b < records.Size(); b++)
+		{
+			if (b > 0) { bits = bits .. "|"; }
+			bits = String.Format("%s%c", bits, records[b] + 0x30);
+		}
+
+		recordvar.SetString(Encode(bits, 667));
+
+		String lookup = String.Format("ACHIEVEMENT%i", a);
+		String text = StringTable.Localize(lookup, false);
+		if (lookup ~== text) { text = String.Format("Completed achievement %i", a); }
+
+		String image = String.Format("ACHVMT%02i", a);
+
+		AchievementMessage.Init(players[consoleplayer].mo, text, image, "menu/change");
+	}
+
+	// Algorithms adapted from https://en.wikibooks.org/wiki/Algorithm_Implementation/Miscellaneous/Base64
+	// Pass in v value as an offset to slightly obfuscate the encoded value (added ROT cipher, effectively)
+	String Encode(String s, int v = 0)
+	{
+		String base64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+		String r = ""; 
+		String p = ""; 
+		int c = s.Length() % 3;
+
+		if (c)
+		{
+			for (; c < 3; c++)
+			{ 
+				p = p .. '='; 
+				s = s .. "\0"; 
+			} 
+		}
+
+		for (c = 0; c < s.Length(); c += 3)
+		{
+			int m = (s.ByteAt(c) + v << 16) + (s.ByteAt(c + 1) + v << 8) + s.ByteAt(c + 2) + v;
+			int n[] = { (m >>> 18) & 63, (m >>> 12) & 63, (m >>> 6) & 63, m & 63 };
+			r = r .. base64chars.Mid(n[0], 1) .. base64chars.Mid(n[1], 1) .. base64chars.Mid(n[2], 1) .. base64chars.Mid(n[3], 1);
+		}
+
+		return r.Mid(0, r.Length() - p.Length()) .. p;
+	}
+
+	String Decode(String s, int v = 0)
+	{
+		String base64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+		String p = (s.ByteAt(s.Length() - 1) == 0x3D ? (s.ByteAt(s.Length() - 2) == 0x3D ? "AA" : "A") : ""); 
+		String r = ""; 
+		s = s.Mid(0, s.Length() - p.Length()) .. p;
+
+		for (int c = 0; c < s.Length(); c += 4)
+		{
+			int c1 = base64chars.IndexOf(String.Format("%c", s.ByteAt(c))) << 18;
+			int c2 = base64chars.IndexOf(String.Format("%c", s.ByteAt(c + 1))) << 12;
+			int c3 = base64chars.IndexOf(String.Format("%c", s.ByteAt(c + 2))) << 6;
+			int c4 = base64chars.IndexOf(String.Format("%c", s.ByteAt(c + 3)));
+
+			int n = (c1 + c2 + c3 + c4);
+			r = r .. String.Format("%c%c%c", ((n >>> 16) - v) & 127, ((n >>> 8) - v) & 127, (n - v) & 127); // Sorry extened ASCII and Unicode...  No support for you here.
+		}
+
+		return r.Mid(0, r.Length() - p.Length());
 	}
 }

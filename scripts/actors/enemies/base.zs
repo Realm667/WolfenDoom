@@ -2474,6 +2474,20 @@ class Nazi : Base
 		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
 		DoGierDrops(); // AActor::Die sets target to killer
 
+		String mod = (inflictor && inflictor.paintype) ? inflictor.paintype : MeansOfDeath; // Get the damage type
+
+		if (source.player)
+		{
+			// Achievement for killing a boss with kicks
+			if (bBoss && inflictor is "KickPuff") { AchievementTracker.CheckAchievement(source.PlayerNumber(), AchievementTracker.ACH_DISGRACE); }
+
+			// Achievement for sniping over long range
+			if (inflictor && inflictor is "Kar98KTracer2" && Distance3D(source) >= 6000) { AchievementTracker.CheckAchievement(source.PlayerNumber(), AchievementTracker.ACH_CLEARSHOT); }
+//console.printf("%s  %s", inflictor.getclassname(), mod);
+			// Achievement for killing a loper only using the sword
+			if (NaziLoper(self) && inflictor is "SwordPuff" && !NaziLoper(self).noachievement[source.PlayerNumber()]) { AchievementTracker.CheckAchievement(source.PlayerNumber(), AchievementTracker.ACH_CHEVALIER); }
+		}
+
 		// Make sure the sneakable enemies that were killed without being alerted to the
 		// player still count as kills, since there is special handling to add them to
 		// the level's max kill count, and FRIENDLY monsters don't get counted as kills.
@@ -2510,6 +2524,9 @@ class Nazi : Base
 					damage = health;
 					flags |= DMG_FORCED;
 					user_noaltdeath = True;
+
+					// Achievement for knife sneak attacks
+					AchievementTracker.CheckAchievement(inflictor.PlayerNumber(), AchievementTracker.ACH_ASSASSIN);
 				}
 				else {} // Don't change behavior for Allied FRIENDLY actors
 			}
@@ -2527,6 +2544,9 @@ class Nazi : Base
 				damage = health;
 				flags |= DMG_FORCED;
 				user_noaltdeath = True;
+
+				// Achievement for knife sneak attacks
+				AchievementTracker.CheckAchievement(inflictor.PlayerNumber(), AchievementTracker.ACH_ASSASSIN);
 			}
 		}
 
@@ -2590,6 +2610,8 @@ class Nazi : Base
 			target = source; // Target the source if it wasn't friendly or of the same species
 			SoundAlert(source, false, 192);
 		}
+
+		if (source.player && NaziLoper(self) && !(inflictor is "SwordPuff")) { NaziLoper(self).noachievement[source.PlayerNumber()] = true; }
 
 		return damageamt; // Function returns amount of damage received by the actor
 	}

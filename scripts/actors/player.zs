@@ -457,6 +457,8 @@ class BoAPlayer : PlayerPawn
 			return;
 		}
 
+		AchievementTracker.CheckAchievement(PlayerNumber(), AchievementTracker.ACH_NAUGHTY);
+
 		int giveall = ALL_NO;
 		if (name ~== "all")
 		{
