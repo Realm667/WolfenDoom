@@ -465,7 +465,7 @@ class AchievementTracker : EventHandler
 		AchievementTracker achievements = AchievementTracker(EventHandler.Find("AchievementTracker"));
 		if (!achievements) { return; }
 
-		achievements.DoCheck(pnum, a);
+		achievements.DoChecks(pnum, a);
 	}
 
 	void DoChecks(int pnum, int a)
