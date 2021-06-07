@@ -94,7 +94,10 @@ class PlacedMine : Mine
 		"####" A 8 A_StartSound("MINEF");
 		"####" A 0 A_Scream;
 		"####" A 0 A_SpawnGroundSplash;
-		"####" A 0 A_SpawnItemEx("FriendlyExplosion_Medium");
+		"####" A 0 {
+				Actor mo = Spawn("FriendlyExplosion_Medium", pos);
+				if (master && mo) { mo.master = master; }
+			}
 		"####" A 0 A_SpawnItemEx("ZCrater");
 		Stop;
 	SpawnWait:

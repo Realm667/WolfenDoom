@@ -337,6 +337,8 @@ class AchievementTracker : EventHandler
 	int totalgrenades[MAXPLAYERS];
 	int saves[MAXPLAYERS];
 	int exhaustion[MAXPLAYERS];
+	int lastminedeath[MAXPLAYERS];
+	int minedeaths[MAXPLAYERS];
 
 	enum Achievements
 	{
@@ -409,7 +411,7 @@ class AchievementTracker : EventHandler
 	{
 		if (e.Name == "achievement")
 		{
-			UpdateRecord(e.args[0]);
+			UpdateRecord(consoleplayer, e.args[0]);
 		}
 		else if (e.Name == "printachievements")
 		{
@@ -463,76 +465,90 @@ class AchievementTracker : EventHandler
 		AchievementTracker achievements = AchievementTracker(EventHandler.Find("AchievementTracker"));
 		if (!achievements) { return; }
 
-		if (a < achievements.records.Size() && achievements.records[a]) { return; }
+		achievements.DoCheck(pnum, a);
+	}
+
+	void DoChecks(int pnum, int a)
+	{
+		if (a < records.Size() && records[a]) { return; } // Ignore this achievement if it was already completed
+
+		bool complete = false;
 
 		switch (a)
 		{
-			case AchievementTracker.ACH_GUNSLINGER:  // Checked here in WorldThingSpawned function
-				if (++achievements.pistolshots[pnum] >= 1000) { achievements.UpdateRecord(AchievementTracker.ACH_GUNSLINGER); }
+			case ACH_GUNSLINGER:  // Checked here in WorldThingSpawned function
+				if (++pistolshots[pnum] >= 1000) { complete = true; }
 				break;
-			case AchievementTracker.ACH_PERFECTIONIST: // Checked here in CheckSpecials function
+			case ACH_PERFECTIONIST: // Checked here in CheckSpecials function
 				if (
 					players[pnum].killcount == level.total_monsters &&
 					players[pnum].itemcount == level.total_items &&
 					players[pnum].secretcount == level.total_secrets
 				)
 				{
-					achievements.UpdateRecord(AchievementTracker.ACH_PERFECTIONIST);
+					complete = true;
 				}
 				break;
-			case AchievementTracker.ACH_SPEEDRUNNER:
+			case ACH_SPEEDRUNNER:
 				// TODO
 				break;
-			case AchievementTracker.ACH_SLIKSTER:
+			case ACH_SLIKSTER:
 				// TODO
 				break;
-			case AchievementTracker.ACH_IMPENETRABLE:  // Checked here in CheckSpecials function
-				if (!achievements.damaged[consoleplayer]) { achievements.UpdateRecord(AchievementTracker.ACH_IMPENETRABLE); }
+			case ACH_IMPENETRABLE:  // Checked here in CheckSpecials function
+				if (!damaged[pnum]) { complete = true; }
 				break;
-			case AchievementTracker.ACH_PACIFIST:  // Checked here in CheckSpecials function. Currently includes all counted kills!
-				if (players[consoleplayer].killcount == 0) { achievements.UpdateRecord(AchievementTracker.ACH_PACIFIST); }
+			case ACH_PACIFIST:  // Checked here in CheckSpecials function. Currently includes all counted kills!
+				if (players[pnum].killcount == 0) { complete = true; }
 				break;
-			case AchievementTracker.ACH_WATCHYOURSTEP:
-				// TODO
+			case ACH_WATCHYOURSTEP: // Set up in the Nazi class's Die function
+				if (lastminedeath[pnum] == 0 || lastminedeath[pnum] > level.time - 5)
+				{
+					if (++minedeaths[pnum] >= 3) { complete = true; }
+				}
+				else { minedeaths[pnum] = 1; }
+				lastminedeath[pnum] = level.time;
 				break;
-			case AchievementTracker.ACH_1915: // Checked here in CheckSpecials function
-				if (level.mapname == "C3M4" && !players[consoleplayer].mo.FindInventory("ZyklonMask")) { achievements.UpdateRecord(AchievementTracker.ACH_1915); }
+			case ACH_1915: // Checked here in CheckSpecials function
+				if (level.mapname == "C3M4" && !players[pnum].mo.FindInventory("ZyklonMask")) { complete = true; }
 				break;
-			case AchievementTracker.ACH_ASSASSIN: // Set up in the Nazi class's DamageMobj function
-				if (++achievements.knifekills[consoleplayer] >= 10) { achievements.UpdateRecord(AchievementTracker.ACH_ASSASSIN); }
+			case ACH_ASSASSIN: // Set up in the Nazi class's DamageMobj function
+				if (++knifekills[pnum] >= 10) { complete = true; }
 				break;
-			case AchievementTracker.ACH_MINRELOADS: // Reloads incremented in NaziWeapon class A_Reloading function
-				if (achievements.reloads[consoleplayer] <= 25) { achievements.UpdateRecord(AchievementTracker.ACH_MINRELOADS); }
+			case ACH_MINRELOADS: // Reloads incremented in NaziWeapon class A_Reloading function
+				if (reloads[pnum] <= 25) { complete = true; }
 				break;
-			case AchievementTracker.ACH_NORELOADS: // Manual reloads incremented here in CheckButtons function
-				if (!achievements.manualreloads[consoleplayer]) { achievements.UpdateRecord(AchievementTracker.ACH_NORELOADS); }
+			case ACH_NORELOADS: // Manual reloads incremented here in CheckButtons function
+				if (!manualreloads[pnum]) { complete = true; }
 				break;
-			case Achievements.ACH_SURRENDERS: // Checked in Nazi class DoSurrender function
-				if (++achievements.surrenders[consoleplayer] >= 5) { achievements.UpdateRecord(AchievementTracker.ACH_SURRENDERS); }
+			case ACH_SURRENDERS: // Checked in Nazi class DoSurrender function
+				if (++surrenders[pnum] >= 5) { complete = true; }
 				break;
-			case Achievements.ACH_NOGRENADES: // Checked in HandGrenade PostBeginPlay
-				if (!achievements.grenades[consoleplayer]) { achievements.UpdateRecord(AchievementTracker.ACH_SURRENDERS); }
+			case ACH_NOGRENADES: // Checked in HandGrenade PostBeginPlay
+				if (!grenades[pnum]) { complete = true; }
 				break;
-			case Achievements.ACH_BOOM: // Checked in HandGrenade PostBeginPlay
-				if (++achievements.totalgrenades[consoleplayer] >= 40) { achievements.UpdateRecord(AchievementTracker.ACH_SURRENDERS); }
+			case ACH_BOOM: // Checked in HandGrenade PostBeginPlay
+				if (++totalgrenades[pnum] >= 40) { complete = true; }
 				break;
-			case Achievements.ACH_SPAM: // Checked here in WorldTick function
-				if (++achievements.saves[consoleplayer] >= 100) { achievements.UpdateRecord(AchievementTracker.ACH_SPAM); }
+			case ACH_SPAM: // Checked here in WorldTick function
+				if (++saves[pnum] >= 100) { complete = true; }
 				break;
-			case Achievements.ACH_SPRINT: // Checked from BoASprinting powerup
-				if (++achievements.exhaustion[consoleplayer] >= 50) { achievements.UpdateRecord(AchievementTracker.ACH_SPRINT); }
+			case ACH_SPRINT: // Checked from BoASprinting powerup
+				if (++exhaustion[pnum] >= 50) { complete = true; }
 				break;
-			case AchievementTracker.ACH_DISGRACE: // Set up in the Nazi class's Die function
-			case AchievementTracker.ACH_CLEARSHOT: // Set up in the Nazi class's Die function
-			case AchievementTracker.ACH_CHEVALIER: // Set up in the Nazi class's Die function, with handling in DamageMobj to flag the enemy to not allow the achievement if any other weapon was used
-			case AchievementTracker.ACH_NAUGHTY: // Set up in the BoAPlayer class's give cheat handling
+			case ACH_DISGRACE: // Set up in the Nazi class's Die function
+			case ACH_CLEARSHOT: // Set up in the Nazi class's Die function
+			case ACH_CHEVALIER: // Set up in the Nazi class's Die function, with handling in DamageMobj to flag the enemy to not allow the achievement if any other weapon was used
+			case ACH_NAUGHTY: // Set up in the BoAPlayer class's give cheat handling
 			default:
-				achievements.UpdateRecord(a);
+				complete = true;
 				break;
 		}
+
+		if (complete) { UpdateRecord(pnum, a); }
 	}
 
-	void UpdateRecord(int a)
+	void UpdateRecord(int pnum, int a)
 	{
 		if (a >= records.Size()) { records.Resize(a + 1); } // Make the array bigger if it's not already big enough
 
@@ -554,7 +570,7 @@ class AchievementTracker : EventHandler
 		String image = String.Format("ACHVMT%02i", a);
 
 		// Display the message
-		AchievementMessage.Init(players[consoleplayer].mo, text, image, "menu/change");
+		AchievementMessage.Init(players[pnum].mo, text, image, "misc/achievement");
 	}
 
 	String BitString()

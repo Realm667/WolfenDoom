@@ -244,15 +244,22 @@ class DeployableMine : CustomInvBase
 		Inventory.PickupSound "misc/ammo_pkup";
 		+INVENTORY.INVBAR
 	}
+
 	States
 	{
-	Spawn:
-		BOAM A -1;
-		Stop;
-	Use:
-		"####" A 0 A_SpawnItemEx("PlacedMine",radius+32,0,0);
-		Stop;
-	}
+		Spawn:
+			BOAM A -1;
+			Stop;
+		Use:
+			"####" A 0 {
+				bool sp;
+				Actor mo;
+				[sp, mo] = A_SpawnItemEx("PlacedMine", radius + 32);
+
+				if (sp && mo) { mo.master = self; }
+			}
+			Stop;
+		}
 }
 
 class LanternOil : Inventory

@@ -40,7 +40,8 @@ class MessageBase : Thinker
 		MSG_NOFADEOUT = 2,
 		MSG_FULLSCREEN = 4,
 		MSG_ALLOWREPLACE = 8,
-		MSG_ALLOWMULTIPLE = 16
+		MSG_ALLOWMULTIPLE = 16,
+		MSG_PERSIST = 32
 	}
 
 	MessageHandler handler;
@@ -53,6 +54,7 @@ class MessageBase : Thinker
 	int flags;
 	double alpha;
 	int ticker;
+	int delay;
 
 	// How far the message extends into the screen.  Negative value means bottom of screen.
 	ui double protrusion;
@@ -115,17 +117,29 @@ class MessageBase : Thinker
 	// Tick the function and calculate fade in/out alpha values
 	virtual void DoTick()
 	{
-		ticker++;
-
-		if (intime > 0 && ticker < intime) { alpha = ticker / double(intime); }
-		else if (ticker > time - outtime)
+		delay = max(0, delay - 1);
+		
+		if (delay == 0)
 		{
-			if (outtime > 0) { alpha = (time - ticker) / double(outtime); }
-			else { alpha = 0.0; }
-		}
-		else { alpha = 1.0; }
+			if (!handler) { handler = MessageHandler.Get(); }
 
-		alpha = clamp(alpha, 0.0, 1.0);
+			ticker++;
+
+			if (intime > 0 && ticker < intime) { alpha = ticker / double(intime); }
+			else if (ticker > time - outtime)
+			{
+				if (outtime > 0) { alpha = (time - ticker) / double(outtime); }
+				else { alpha = 0.0; }
+			}
+			else { alpha = 1.0; }
+
+			alpha = clamp(alpha, 0.0, 1.0);
+		}
+		else
+		{
+			ticker = 0;
+			alpha = 0.0;
+		}
 	}
 
 	// Stop drawing the message with a specific name
@@ -762,9 +776,10 @@ class AchievementMessage : MessageBase
 
 	static int Init(Actor mo, String text, String image = "", String snd = "")
 	{
-		AchievementMessage msg = AchievementMessage(MessageBase.Init(mo, text, text, 18, 18, "AchievementMessage", 5, MSG_ALLOWMULTIPLE));
+		AchievementMessage msg = AchievementMessage(MessageBase.Init(mo, text, text, 18, 18, "AchievementMessage", 5, MSG_ALLOWMULTIPLE | MSG_PERSIST));
 		msg.image = image;
 		msg.snd = snd;
+		msg.delay = 2;
 
 		return msg.GetTime();
 	}
@@ -984,6 +999,58 @@ class MessageHandler : EventHandler
 				if (protrusion < 0 && -protrusion > bottomoffset) { bottomoffset = -protrusion; }
 				else if (protrusion > 0 && protrusion > topoffset) { topoffset = protrusion; }
 			}
+		}
+	}
+}
+
+class PersistentMessageHandler : StaticEventHandler
+{
+	Array<MessageBase> messages;
+
+	override void WorldLoaded(WorldEvent e)
+	{
+		MessageHandler handler = MessageHandler(EventHandler.Find("MessageHandler"));
+		if (!handler) { return; }
+
+		for (int m = 0; m < messages.Size(); m++)
+		{
+			if (messages[m])
+			{
+				messages[m].ChangeStatNum(Thinker.STAT_DEFAULT);
+				handler.messages.Insert(handler.messages.Size(), messages[m]);
+				if (handler.types.Find(messages[m].GetClass()) == handler.types.Size()) { handler.types.Push(messages[m].GetClass()); }
+
+				messages[m] = null;
+			}
+		}
+	}
+
+	override void WorldUnloaded(WorldEvent e)
+	{
+		MessageHandler handler = MessageHandler(EventHandler.Find("MessageHandler"));
+		if (!handler) { return; }
+
+		for (int m = 0; m < handler.messages.Size(); m++)
+		{
+			if (handler.messages[m] && handler.messages[m].flags & MessageBase.MSG_PERSIST)
+			{
+				handler.messages[m].ChangeStatNum(Thinker.STAT_STATIC);
+				handler.messages[m].delay += 35; // Let the initial level load pass
+				messages.Insert(messages.Size(), handler.messages[m]);
+			}
+		}
+	}
+
+	static void Add(int at, MessageBase msg)
+	{
+		PersistentMessageHandler handler = PersistentMessageHandler(StaticEventHandler.Find("PersistentMessageHandler"));
+		if (!handler) { return; }
+
+		if (msg.flags & MessageBase.MSG_PERSIST)
+		{
+			msg.ChangeStatNum(Thinker.STAT_TRAVELLING);
+			console.printf("Saved " .. msg.text);
+			handler.messages.Insert(at, msg);
 		}
 	}
 }

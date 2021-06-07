@@ -2485,10 +2485,13 @@ class Nazi : Base
 
 			// Achievement for sniping over long range
 			if (inflictor && inflictor is "Kar98KTracer2" && Distance3D(source) >= 6000) { AchievementTracker.CheckAchievement(source.PlayerNumber(), AchievementTracker.ACH_CLEARSHOT); }
-//console.printf("%s  %s", inflictor.getclassname(), mod);
+
 			// Achievement for killing a loper only using the sword
 			if (NaziLoper(self) && inflictor is "SwordPuff" && !NaziLoper(self).noachievement[source.PlayerNumber()]) { AchievementTracker.CheckAchievement(source.PlayerNumber(), AchievementTracker.ACH_CHEVALIER); }
 		}
+
+		// Achievement for killing three enemies with the same placeable mine
+		if (mod == "FriendlyFrag" && inflictor.master) { AchievementTracker.CheckAchievement(inflictor.master.PlayerNumber(), AchievementTracker.ACH_WATCHYOURSTEP); }
 
 		// Make sure the sneakable enemies that were killed without being alerted to the
 		// player still count as kills, since there is special handling to add them to
