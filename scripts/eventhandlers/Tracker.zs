@@ -341,6 +341,7 @@ class AchievementTracker : EventHandler
 	int minedeaths[MAXPLAYERS];
 	int liquiddeath[MAXPLAYERS];
 	int shots[MAXPLAYERS][2];
+	int zombies[MAXPLAYERS];
 
 	enum LiquidDeaths
 	{
@@ -374,6 +375,7 @@ class AchievementTracker : EventHandler
 		ACH_LIQUIDDEATH = 20,
 		ACH_PESTS,			// Die to spiders, bats, or rats
 		ACH_ACCURACY,		// 75% accuracy or higher when over 100 player bullet tracers have been fired
+		ACH_ZOMBIES,		// Kill 500 zombies
 	};
 
 	override void OnRegister()
@@ -412,6 +414,11 @@ class AchievementTracker : EventHandler
 			int pnum = PlayerTracer(e.Thing).target.PlayerNumber();
 			if (e.Thing is "LugerTracer") { CheckAchievement(pnum, ACH_GUNSLINGER); }
 		}
+	}
+
+	override void WorldThingDied(WorldEvent e)
+	{
+		if (e.Thing is "ZombieStandard" && e.Thing.target && e.Thing.target.player) { CheckAchievement(e.Thing.target.PlayerNumber(), ACH_ZOMBIES); }
 	}
 
 	override void WorldLinePreActivated(WorldEvent e) 
@@ -544,6 +551,9 @@ class AchievementTracker : EventHandler
 				break;
 			case ACH_SPRINT: // Checked from BoASprinting powerup
 				if (++exhaustion[pnum] >= 50) { complete = true; }
+				break;
+			case ACH_ZOMBIES:
+				if (++zombies[pnum] >= 500) { complete = true; }
 				break;
 			case ACH_DISGRACE: // Set up in the Nazi class's Die function
 			case ACH_CLEARSHOT: // Set up in the Nazi class's Die function
