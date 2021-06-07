@@ -243,8 +243,6 @@ class NaziWeapon : Weapon
 
 			AchievementTracker tracker = AchievementTracker(EventHandler.Find("AchievementTracker"));
 			if (tracker) { tracker.reloads[invoker.owner.PlayerNumber()]++; }
-
-			AchievementTracker.CheckAchievement(invoker.owner.PlayerNumber(), AchievementTracker.ACH_MINRELOADS);
 		}
 	}
 

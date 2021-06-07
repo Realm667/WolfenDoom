@@ -79,6 +79,7 @@ class BoAPlayer : PlayerPawn
 	int interactiontimeout;
 	int flinchfactor;
 	bool dodragging; // Set true to enable dragging of corpses and pushable actors (crouch and use)
+	AchievementTracker tracker;
 
 	Default
 	{
@@ -245,6 +246,8 @@ class BoAPlayer : PlayerPawn
 		dodragging = false;
 		int playerID = PLAYER_TAG_OFFSET + PlayerNumber();
 		Thing_ChangeTID(0, playerID);
+
+		tracker = AchievementTracker(EventHandler.Find("AchievementTracker"));
 
 		Super.PostBeginPlay();
 	}
@@ -1254,6 +1257,16 @@ class BoAPlayer : PlayerPawn
 				mo.player.SetPsprite(-10, wpn.FindState("KickOverlay"), true);
 			}
 		}
+	}
+
+	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
+	{
+		String mod = (inflictor && inflictor.paintype) ? inflictor.paintype : MeansOfDeath; // Get the damage type
+
+		console.printf(mod);
+		if (mod == "Pest") { AchievementTracker.CheckAchievement(PlayerNumber(), AchievementTracker.ACH_PESTS); }
+
+		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
 	}
 
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)

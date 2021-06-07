@@ -339,6 +339,15 @@ class AchievementTracker : EventHandler
 	int exhaustion[MAXPLAYERS];
 	int lastminedeath[MAXPLAYERS];
 	int minedeaths[MAXPLAYERS];
+	int liquiddeath[MAXPLAYERS];
+	int shots[MAXPLAYERS][2];
+
+	enum LiquidDeaths
+	{
+		DTH_POISON = 0x1,
+		DTH_LAVA = 0x10,
+		DTH_DROWNING = 0x100
+	}
 
 	enum Achievements
 	{
@@ -362,6 +371,9 @@ class AchievementTracker : EventHandler
 		ACH_BOOM,			// Use 40 grenades (total across all levels)
 		ACH_SPAM,			// Manually save 100 times (total across all levels)
 		ACH_SPRINT,			// Exhaust stamina 50 times (total across all levels)
+		ACH_LIQUIDDEATH = 20,
+		ACH_PESTS,			// Die to spiders, bats, or rats
+		ACH_ACCURACY,		// 75% accuracy or higher when over 100 player bullet tracers have been fired
 	};
 
 	override void OnRegister()
@@ -386,9 +398,11 @@ class AchievementTracker : EventHandler
 	override void WorldTick()
 	{
 		CheckStats();
-		CheckButtons();
-
+		
+		if (players[consoleplayer].cmd.buttons & BT_RELOAD) { manualreloads[consoleplayer]++; }
+	
 		if (gameaction == ga_savegame) { CheckAchievement(consoleplayer, ACH_SPAM); }
+		if (shots[consoleplayer][1] > 100 && shots[consoleplayer][0] * 100.0 / shots[consoleplayer][1] > 75) { CheckAchievement(consoleplayer, ACH_ACCURACY); }
 	}
 
 	override void WorldThingSpawned(WorldEvent e)
@@ -451,11 +465,6 @@ class AchievementTracker : EventHandler
 			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_NORELOADS);
 			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_NOGRENADES);
 		}
-	}
-
-	void CheckButtons()
-	{
-		if (players[consoleplayer].cmd.buttons & BT_RELOAD) { manualreloads[consoleplayer]++; }
 	}
 
 	static void CheckAchievement(int pnum, int a)
@@ -540,6 +549,8 @@ class AchievementTracker : EventHandler
 			case ACH_CLEARSHOT: // Set up in the Nazi class's Die function
 			case ACH_CHEVALIER: // Set up in the Nazi class's Die function, with handling in DamageMobj to flag the enemy to not allow the achievement if any other weapon was used
 			case ACH_NAUGHTY: // Set up in the BoAPlayer class's give cheat handling
+			case ACH_PESTS: // Set up in the BoAPlayer class's Die function
+			case ACH_ACCURACY: // Set up in the BulletTracer class's PosstBeginPlay function and actor states
 			default:
 				complete = true;
 				break;

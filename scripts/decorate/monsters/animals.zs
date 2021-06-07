@@ -192,7 +192,7 @@ class BatFamiliar : BatBase
 	Melee:
 		BFAM A 3 A_FaceTarget;
 		"####" A 0 A_Jump(64,"Missed");
-		"####" B 3 A_CustomMeleeAttack(random(1,4),"batfam/idle");
+		"####" B 3 A_CustomMeleeAttack(Random(1, 4), "batfam/idle", "", "Pest");
 		"####" CB 3 A_FaceTarget;
 		Goto See;
 	Missed: //here in order to avoid looping attacks, so the critter is less threatening
@@ -250,7 +250,7 @@ class ZBatFamiliar : BatFamiliar
 	Melee:
 		ZFAM A 3 A_FaceTarget;
 		"####" A 0 A_Jump(72,"Missed");
-		"####" B 3 A_CustomMeleeAttack(random(1,3),"batfam/idle","","PoisonDamage");
+		"####" B 3 A_CustomMeleeAttack(Random(1, 3), "batfam/idle", "", "UndeadPoison");
 		"####" CB 3 A_FaceTarget;
 		Goto See;
 	Missed: //here in order to avoid looping attacks, so the critter is less threatening
@@ -315,7 +315,7 @@ class RatFamiliar : Base
 	Melee:
 		MOUS A 3 A_FaceTarget;
 		"####" A 0 A_Jump(64,"Missed");
-		"####" B 3 A_CustomMeleeAttack(random(1,2)*1,"batfam/idle");
+		"####" B 3 A_CustomMeleeAttack(Random(1, 2), "batfam/idle", "", "Pest");
 		"####" BB 3 A_FaceTarget;
 		Goto See;
 	Missed: //here in order to avoid looping attacks, so the critter is less threatening
@@ -401,7 +401,7 @@ class BigSpider : Base
 		Goto See;
 	Melee:
 		GAYS A 4 A_FaceTarget;
-		"####" E 4 A_CustomMeleeAttack(1,"spider1/melee","","Melee",TRUE);
+		"####" E 4 A_CustomMeleeAttack(1, "spider1/melee", "", "Pest", TRUE);
 		"####" E 9 A_FaceTarget;
 		Goto See;
 	Pain:
@@ -440,7 +440,7 @@ class MiniSpider : BigSpider
 	{
 	Melee:
 		GAYS A 4 A_FaceTarget;
-		"####" E 4 A_CustomMeleeAttack(random(0,1),"spider1/melee","","Melee",TRUE);
+		"####" E 4 A_CustomMeleeAttack(Random(0, 1), "spider1/melee", "", "Pest", TRUE);
 		"####" E 9 A_FaceTarget;
 		Goto See;
 	}

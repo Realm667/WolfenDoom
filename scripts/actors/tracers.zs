@@ -40,6 +40,7 @@ class BulletTracer : FastProjectile
 		+NOEXTREMEDEATH
 		+WINDTHRUST
 		+THRUGHOST
+		+HITTRACER
 		-NOGRAVITY
 		Gravity 15.0;
 		Radius 2;
@@ -64,6 +65,8 @@ class BulletTracer : FastProjectile
 				bWindThrust = false;
 			}
 			PUFF B 3 BRIGHT LIGHT("BPUFF1") {
+				// If a non-bleeding actor was hit, count the shot as successful
+				if (BoAPlayer(target) && BoAPlayer(target).tracker && tracer && tracer.bIsMonster && tracer.bNoBlood) { BoAPlayer(target).tracker.shots[target.PlayerNumber()][0]++; }
 				if (!bNoRicochet)
 				{
 					A_StartSound("ricochet");
@@ -74,6 +77,8 @@ class BulletTracer : FastProjectile
 			Stop;
 		XDeath:
 			TNT1 A 1 {
+				// If a bleeding actor was hit, count the shot as successful
+				if (BoAPlayer(target) && BoAPlayer(target).tracker) { BoAPlayer(target).tracker.shots[target.PlayerNumber()][0]++; }
 				bWindThrust = false;
 				A_StartSound("hitflesh");
 			}
@@ -132,6 +137,9 @@ class BulletTracer : FastProjectile
 		{
 			bPortalAware = !!trace.NumPortals;
 		}
+
+		// Count the shot for stats if it was fired by a player
+		if (BoAPlayer(target) && BoAPlayer(target).tracker) { BoAPlayer(target).tracker.shots[target.PlayerNumber()][1]++; }
 	}
 
 	// Handling so that tracers won't hit actors that have the tracer's origin actor set as their master (or inherit from one that does)
