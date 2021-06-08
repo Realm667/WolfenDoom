@@ -810,9 +810,9 @@ class AstroHitler : NaziBoss
 	+NOBLOOD
 	Obituary "$AHITLER";
 	ActiveSound "astrostein/hitler_act";
-	DeathSound "astrostein/hitler_dth";
-	SeeSound "astrostein/hitler_act";
-	PainSound "astrostein/hitler_pai";
+	DeathSound "";
+	SeeSound "";
+	PainSound "";
 	}
 	States
 	{

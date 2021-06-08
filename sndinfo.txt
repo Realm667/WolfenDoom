@@ -48,14 +48,11 @@ astrostein/hitler_act1	ashtac01
 astrostein/hitler_act2	ashtac02
 astrostein/hitler_act3	ashtac03
 $rolloff astrostein/hitler_act 1280 1600
-astrostein/hitler_dth		null
-astrostein/hitler_pai		null
-astrostein/hitler_see		null
 astrowhiz				astrowz
 pickup/armorshard		AMRSHRD
-weapons/rezfull			dsrezful
-weapons/rezhit			dsrezhit
-weapons/rezidle			dsrezidl
+weapons/rezfull			DSREZFUL
+weapons/rezhit			DSREZHIT
+weapons/rezidle			DSREZIDL
 $pitchshift weapons/rezidle 0 //mxd
 weapons/rezup				dsrezup
 pickup/bandage DSBANDG
@@ -69,7 +66,7 @@ pickup/uniform DSUNIF
 pickup/item	DSITEMUP
 pickup/generic	pickup
 activate/gier	chaching
-activate/macht	spirdi3
+activate/macht	SPIRDI3
 
 //Commander Keen
 ckeen/blowgun	ckblowg
@@ -645,7 +642,6 @@ ZOMBVOM1 ZOMBVOM1
 ZOMBVOM2 ZOMBVOM2 
 ZOMBVOM3 ZOMBVOM3
 ZOMBVOM4 ZOMBVOM4
-scream2 	ZSCREAM2
 $random nazombie/die {zmdeath1 zmdeath2 zmdeath3 zmdeath4 zmdeath5 zmdeath6 zmdeath7 zmdeath8 zmdeath9 zmdeath0}
 zmdeath1 zmdeath1
 zmdeath2 zmdeath2
@@ -657,12 +653,13 @@ zmdeath7 zmdeath7
 zmdeath8 zmdeath8
 zmdeath9 zmdeath9
 zmdeath0 zmdeath0
-$random nazombie/act {zact01 zact02 zact03 zact04 zact05}
+$random nazombie/act {zact01 zact02 zact03 zact04 zact05 ZSCREAM}
 zact01 zact01
 zact02 zact02
 zact03 zact03
 zact04 zact04
 zact05 zact05
+ZSCREAM ZSCREAM
 
 //MechaNazi
 mech/wake		MECHWAKE
@@ -714,7 +711,7 @@ $limit	TANKDBRS 1
 
 //Some boss sounds are double defined in order to have more chances to reproduce them on top of others
 
-DONTSPAM null //use this to reduce sounds spamming - ozy81
+DONTSPAM NOSOUND //use this to reduce sounds spamming - ozy81
 
 //Smokemonster
 Smoke/See			SSee
@@ -937,7 +934,7 @@ SEETDIE2 SEETDIE2
 $random toten/active { TOTEROA1 DONTSPAM TOTEROA2 DONTSPAM TOTEROA3 DONTSPAM }
 TOTEROA1 TOTEROA1
 TOTEROA2 TOTEROA2
-TOTEROA3 TOTEROA3
+TOTEROA3 TOTEROA3 //not present
 $random toten/sight { TOTEALR1 TOTEALR2 }
 TOTEALR1 TOTEALR1
 TOTEALR2 TOTEALR2
@@ -1423,7 +1420,7 @@ eliteflamer/death5		ELTFDTH5
 eliteflamer/death6		ELTFDTH6
 eliteflamer/death7		ELTFDTH7
 eliteflamer/death8		ELTFDTH8
-eliteflamer/death9		ELTFDTH9
+eliteflamer/death9		ELTFDTH9 //not present, guess for blank sound? --ozy81
 
 //Bloodskull
 BSkull/See		BSKULSEE
@@ -1758,15 +1755,14 @@ $random nemesis/sight { nemesis/sight1 nemesis/sight2 nemesis/sight3 }
 //MUSIC AS SOUNDS//
 ///////////////////
 
-D_INTRMP D_INTRMP
-HORSTWOR HORSTWOR
-C3M6A_I2 C3M6A_I2
-C3M6B_VM C3M6B_VM
-CRDMP_HT CRDMP_HT
 C2M1_INT C2M1_INT
 C2M2_VIC C2M2_VIC
-C3M6_A_Z C3M6_A_Z
+C3M6A_I2 C3M6A_I2
+C3M6B_VM C3M6B_VM
 CMBT_HT  CMBT_HT
+CRDMP_HT CRDMP_HT
+D_INTRMP D_INTRMP //not present on sounds/music but music folder only --ozy81
+HORSTWOR HORSTWOR
 NZ_ERFUR NZ_ERFUR
 
 //Jumpscares
@@ -1851,12 +1847,14 @@ $random creepy/moans	{ DSDAMND1 DSDAMND2 DSDAMND3 DSDAMND4 }
 $limit creepy/moans 0
 
 //CreepyGhost
+creepy/born SPIRBORN
+
 SPIRDIE SPIRDIE
 SPIRDI2 SPIRDI2
 SPIRDI3 SPIRDI3
 
-creepy/dies { SPIRDIE SPIRDI2 SPIRDI3 }
-creepy/born SPIRBORN
+$random creepy/dies { SPIRDIE SPIRDI2 SPIRDI3 }
+$limit creepy/dies 0
 
 //CreepyScreams
 scrm1	scrm1

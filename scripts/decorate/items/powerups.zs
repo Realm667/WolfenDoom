@@ -52,7 +52,7 @@ class ScubaGearGiver : PowerupToggler
 		//$Title Scuba Gear ("Underwater" protection)
 		//$Color 6
 		Height 32;
-		Scale 0.5;
+		Scale 0.65;
 		Inventory.Icon "SCUBA0";
 		Inventory.MaxAmount 1;
 		Inventory.PickupMessage "$SCUBA2";
