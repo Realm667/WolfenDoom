@@ -65,9 +65,7 @@ class Shitler : Shit
 {
 	Default
 	{
-	//$Category Props (BoA)/Bath
 	//$Title Shitler Pile (squeezable)
-	//$Color 3
 	Scale 0.35;
 	}
 	States
@@ -79,6 +77,7 @@ class Shitler : Shit
 		"####" C 0 A_UnSetSolid;
 		"####" C 0 A_StartSound("SHITHPNS", CHAN_ITEM, 0, frandom(0.5,0.7), ATTN_NORM);
 		"####" CDE 4;
+		"####" E -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y / 2);
 		Stop;
 	}
 }

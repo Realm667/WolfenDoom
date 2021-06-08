@@ -248,7 +248,7 @@ class FlakVierling3D_War: SceneryBase
 	Death:
 		MDLA B 0 A_StartSound("weapons/explode", CHAN_AUTO, 0, 1.0, ATTN_NORM);
 		MDLA B 0 A_Scream;
-		MDLA B 0 A_NoBlocking;
+		MDLA B 0 A_NoBlocking; //neither editing this line changes its death behavior --ozy81
 		MDLA BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
 		MDLA B 1 A_SpawnItemEx("Nuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 	Destroyed:
