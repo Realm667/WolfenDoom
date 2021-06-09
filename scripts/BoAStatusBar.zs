@@ -25,8 +25,8 @@ class BoAStatusBar : BaseStatusBar
 	HUDFont mBigFont;
 	HUDFont mHUDFont;
 	HUDFont mSmallFont;
-	HUDFont KeenFont, KeenSmallFont;
-	InventoryBarState diparms;
+	Font ClassicFont;
+
 	DynamicValueInterpolator mAirInterpolator;
 	DynamicValueInterpolator mBatteryInterpolator;
 	DynamicValueInterpolator mOilInterpolator;
@@ -71,10 +71,8 @@ class BoAStatusBar : BaseStatusBar
 		mBigFont = HUDFont.Create("BIGFONT", 0);
 		mSmallFont = HUDFont.Create("SMALLFONT", 0);
 		mHUDFont = HUDFont.Create("THREEFIV", 0);
-		KeenFont = HUDFont.Create("HUDFONT_KEEN", 0);
-		KeenSmallFont = HUDFont.Create("HUDFONT_KEEN_SMALL", 0);
 
-		diparms = InventoryBarState.Create();
+		ClassicFont = Font.GetFont("Classic");
 
 		mAirInterpolator = DynamicValueInterpolator.Create(0, 1.25, 1, 40);
 		mBatteryInterpolator = DynamicValueInterpolator.Create(0, 1.25, 1, 40);
@@ -87,10 +85,12 @@ class BoAStatusBar : BaseStatusBar
 		savetimertime = 70;
 
 		CountWidget.Init("Money and Time", Widget.WDG_TOP | Widget.WDG_LEFT, 0);
+		KeenStatsWidget.Init("Keen HUD", Widget.WDG_TOP | Widget.WDG_LEFT, 0);
 		LogWidget.Init("Notifications", Widget.WDG_TOP | Widget.WDG_LEFT, 0, zindex:100);
 		CompassWidget.Init("Compass", Widget.WDG_TOP | Widget.WDG_LEFT, 1);
 
 		ObjectivesWidget.Init("Objectives", Widget.WDG_RIGHT, 0);
+		KeenInventoryWidget.Init("Keen Inventory", Widget.WDG_RIGHT, 0);
 		PositionWidget.Init("Position", Widget.WDG_RIGHT, 0);
 		KeyWidget.Init("Keys", Widget.WDG_RIGHT, 1);
 		PuzzleItemWidget.Init("Puzzle Items", Widget.WDG_RIGHT, 2, (16, 0));
@@ -137,8 +137,12 @@ class BoAStatusBar : BaseStatusBar
 			return true;
 		}
 
-		if (printlevel < 3) { return Log.Add(CPlayer, outline, "Notifications", printlevel & PRINT_TYPES); }
-		else if (printlevel < 5) { return Log.Add(CPlayer, outline, "Chat", printlevel & PRINT_TYPES); }
+		Font fnt;
+		if (CPlayer.mo is "KeenPlayer") { fnt = ClassicFont; }
+		else { fnt = SmallFont; }
+
+		if (printlevel < 3) { return Log.Add(CPlayer, outline, "Notifications", printlevel & PRINT_TYPES, fnt); }
+		else if (printlevel < 5) { return Log.Add(CPlayer, outline, "Chat", printlevel & PRINT_TYPES, fnt); }
 
 		return false;
 	}
@@ -563,7 +567,7 @@ class BoAStatusBar : BaseStatusBar
 		return false;
 	}
 
-	void DrawDayNightState()
+	virtual void DrawDayNightState()
 	{
 		double ACStime = GetGlobalACSValue(60) / 65536.0;
 
@@ -1224,7 +1228,7 @@ class BoAStatusBar : BaseStatusBar
 		return clr;
 	}
 
-	virtual void DrawKeenStatusBar()
+	virtual void DrawKeenStatusBar() // The bulk of this is handled via widgets
 	{
 		if (CPlayer.mo.CurState == CPlayer.mo.FindState("Pain"))
 		{
@@ -1243,62 +1247,9 @@ class BoAStatusBar : BaseStatusBar
 		}
 
 		let keen = KeenPlayer(CPlayer.mo);
-
 		if (keen && CPlayer.cheats & CF_CHASECAM) { DrawThirdPersonCrosshair(keen.CrosshairPos, keen.CrosshairDist, null, "XHAIRB1", "XHAIRB5"); }
 
-		if (screenblocks > 11) { return; }
-
-		BeginHUD(1, True);
-
-		DrawImage("CKHUDBKG", (4, 4), DI_ITEM_LEFT_TOP);
-
-		String score = FormatNumber(min(GetAmount("CKTreasure") * 100, 999999999));
-		DrawString(KeenFont, score, (84 - KeenFont.mFont.StringWidth(score), 8), DI_ITEM_LEFT_TOP);
-
-		Inventory ammo1, ammo2;
-		int ammocount1, ammocount2;
-		[ammo1, ammo2, ammocount1, ammocount2] = GetWeaponAmmo();
-		if (ammo1)
-		{
-			String ammo = FormatNumber(min(99, ammocount1));
-			DrawString(KeenFont, ammo, (84 - KeenFont.mFont.StringWidth(ammo), 24), DI_ITEM_LEFT_TOP);
-		}
-
-		// Draw a lifewater drop over the helmet - this is health percentage, not lives as in the original game
-		DrawImage("CKHLTHM", (12, 23), DI_ITEM_LEFT_TOP);
-		
-		String health = FormatNumber(min(999, CPlayer.health));
-		DrawString(KeenFont, health, (43 - KeenFont.mFont.StringWidth(health), 24), DI_ITEM_LEFT_TOP);
-
-		if (GetAmount("CKYellowKey") || GetAmount("CKBlueKey") || GetAmount("CKRedKey") || GetAmount("CKGreenKey"))
-		{
-			DrawImage("CKHUDKBG", (87, 4), DI_ITEM_LEFT_TOP);
-
-			if (GetAmount("CKYellowKey")) { DrawImage("CKKEYS0", (90, 7), DI_ITEM_LEFT_TOP); }
-			if (GetAmount("CKBlueKey")) { DrawImage("CKKEYS1", (90, 13), DI_ITEM_LEFT_TOP); }
-			if (GetAmount("CKRedKey")) { DrawImage("CKKEYS2", (90, 19), DI_ITEM_LEFT_TOP); }
-			if (GetAmount("CKGreenKey")) { DrawImage("CKKEYS3", (90, 25), DI_ITEM_LEFT_TOP); }
-		}
-
 		CPlayer.mo.InvSel = CPlayer.mo.FindInventory("CKPogoStick");
-
-		if (CPlayer.mo.InvSel)
-		{
-			DrawKeenInventorySelection(-12, 12, 16);
-		}
-	}
-
-	void DrawKeenInventorySelection(int x, int y, int size = 32)
-	{
-		Vector2 texsize = ZScriptTools.ScaleTextureTo(CPlayer.mo.InvSel.Icon, size);
-
-		DrawInventoryIcon(CPlayer.mo.InvSel, (x, y), DI_ITEM_CENTER, scale:texsize);
-
-		if (CPlayer.mo.InvSel is "CKPogoStick")
-		{
-			String status = CKPogoStick(CPlayer.mo.InvSel).active ? "ON" : "OFF";
-			DrawString(KeenSmallFont, status, (x, y + size / 3 + mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_CENTER, Font.CR_WHITE);
-		}
 	}
 
 	override void DrawMyPos() {} // Drawn via widget
@@ -1333,7 +1284,7 @@ class BoAStatusBar : BaseStatusBar
 		//textbuffer = level.FormatMapName(crdefault);
 		// Don't prepend the map name...  Just use the level's title.
 		textbuffer = level.LevelName;
-		if (idmypos) { textbuffer = textbuffer .. " (" .. level.mapname .. ")"; }
+		if (idmypos) { textbuffer = textbuffer .. " (" .. level.mapname.MakeUpper() .. ")"; }
 
 		if (!generic_ui)
 		{
@@ -1461,28 +1412,6 @@ class BoAStatusBar : BaseStatusBar
 		return MAX(1,MIN(scaleval, max));
 	}
 
-	// From v_draw.cpp
-	int GetConScale(int altval = 0)
-	{
-		int scaleval;
-
-		if (altval > 0) { scaleval = (altval+1) / 2; }
-		else if (uiscale == 0)
-		{
-			// Default should try to scale to 640x400
-			int vscale = screen.GetHeight() / 800;
-			int hscale = screen.GetWidth() / 1280;
-			scaleval = clamp(vscale, 1, hscale);
-		}
-		else { scaleval = (uiscale + 1) / 2; }
-
-		// block scales that result in something larger than the current screen.
-		int vmax = screen.GetHeight() / 400;
-		int hmax = screen.GetWidth() / 640;
-		int max = MAX(vmax, hmax);
-		return MAX(1, MIN(scaleval, max));
-	}
-
 	virtual void CalcOffsets()
 	{
 		CVar hudratio = CVar.FindCVar("boa_hudratio");
@@ -1594,6 +1523,30 @@ class BoAStatusBar : BaseStatusBar
 
 	override bool DrawChat(String txt)
 	{
-		return Log.DrawPrompt(txt .. " ", "Chat");
+		Font fnt = SmallFont;
+		if (CPlayer.mo is "KeenPlayer") { fnt = ClassicFont; }
+
+		return Log.DrawPrompt(txt .. " ", "Chat", fnt);
+	}
+
+	override void ScreenSizeChanged()
+	{
+		CalcOffsets();
+
+		Super.ScreenSizeChanged();
+	}
+
+	override bool ProcessMidPrint(Font fnt, String msg, bool bold)
+	{
+		// Classic-style popup for Keen
+		if (CPlayer.mo is "KeenPlayer")
+		{
+			ClassicMessageBox.PrintMessage("\c[TrueBlack]" .. ZScriptTools.StripColorCodes(msg), 2, "", 0, 70, 13, 6);
+
+			return true;
+		}
+
+		// Normal message for regular BoA play...
+		return false;
 	}
 }

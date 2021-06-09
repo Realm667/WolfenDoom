@@ -205,7 +205,7 @@ class Widget ui
 		{
 		 	if (BoAStatusBar(Statusbar))
 			{
-				if (anchor == WDG_RIGHT && vid_fps) { relpos.y += int(NewSmallFont.GetHeight() / BoAStatusBar(Statusbar).GetConScale(con_scale) / hudscale.y); }
+				if (anchor == WDG_RIGHT && vid_fps) { relpos.y += int(NewSmallFont.GetHeight() / GetConScale(con_scale) / hudscale.y); }
 				if (!(anchor & WDG_BOTTOM) && !(anchor & WDG_MIDDLE)) { relpos.y += BoAStatusBar(Statusbar).maptop; }
 			}
 
@@ -340,6 +340,28 @@ class Widget ui
 
 			zindex++;
 		}
+	}
+
+	// From v_draw.cpp
+	int GetConScale(int altval = 0)
+	{
+		int scaleval;
+
+		if (altval > 0) { scaleval = (altval+1) / 2; }
+		else if (uiscale == 0)
+		{
+			// Default should try to scale to 640x400
+			int vscale = screen.GetHeight() / 800;
+			int hscale = screen.GetWidth() / 1280;
+			scaleval = clamp(vscale, 1, hscale);
+		}
+		else { scaleval = (uiscale + 1) / 2; }
+
+		// block scales that result in something larger than the current screen.
+		int vmax = screen.GetHeight() / 400;
+		int hmax = screen.GetWidth() / 640;
+		int max = MAX(vmax, hmax);
+		return MAX(1, MIN(scaleval, max));
 	}
 }
 
@@ -999,9 +1021,10 @@ class Log ui
 		REPLACELINE
 	}
 
-	void Print(Font fnt, double x, double y, double logalpha = 1.0, string prepend = "")
+	void Print(double x, double y, double logalpha = 1.0, Font printfnt = null)
 	{
-		DrawToHud.DrawText(prepend..text, (x, y), fnt, alpha * logalpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);	
+		if (!printfnt) { printfnt = fnt; }
+		DrawToHud.DrawText(text, (x, y), printfnt, alpha * logalpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);	
 	}
 
 	static void Clear(String logname = "Notifications")
@@ -1010,22 +1033,25 @@ class Log ui
 		if (w) { w.messages.Clear(); }
 	}
 
-	static bool DrawPrompt(String txt, String logname = "Chat")
+	static bool DrawPrompt(String txt, String logname = "Chat", Font fnt = null)
 	{
+		if (!fnt) { fnt = SmallFont; }
+
 		LogWidget w = LogWidget(Widget.Find(logname));
 		if (w)
 		{
-			String cursor = SmallFont.GetCursor();
+			String cursor = fnt.GetCursor();
 			if (level.time % 20 < 10) { cursor = ""; }
 
 			w.prompt = String.Format("\c%c>\cC%s%s", 65 + msg4color, txt.Left(txt.Length() - 1), cursor);
+			w.promptfnt = fnt;
 			return w.visible;
 		}
 
 		return false;
 	}
 
-	static bool Add(PlayerInfo player, String text, String logname = "Notifications", int printlevel = 0)
+	static bool Add(PlayerInfo player, String text, String logname = "Notifications", int printlevel = 0, Font fnt = null)
 	{
 		LogWidget w = LogWidget(Widget.Find(logname));
 
@@ -1057,14 +1083,15 @@ class Log ui
 
 			String temp;
 			BrokenString lines;
+			if (!fnt) { fnt = w.fnt; }
 
 			if (w.addtype == APPENDLINE && w.messages.Size() && w.messages[w.messages.Size() - 1].printlevel == printlevel)
 			{
-				[temp, lines] = BrokenString.BreakString(w.messages[w.messages.Size() - 1].text .. text, int(w.size.x), false, String.Format("%c", clr), w.fnt);
+				[temp, lines] = BrokenString.BreakString(w.messages[w.messages.Size() - 1].text .. text, int(w.size.x), false, String.Format("%c", clr), fnt);
 			}
 			else
 			{
-				[temp, lines] = BrokenString.BreakString(text, int(w.size.x), false, String.Format("%c", clr), w.fnt);
+				[temp, lines] = BrokenString.BreakString(text, int(w.size.x), false, String.Format("%c", clr), fnt);
 				if (w.addtype == APPENDLINE) { w.addtype = NEWLINE; }
 			}
 
@@ -1088,7 +1115,7 @@ class Log ui
 
 				if (m)
 				{
-					m.fnt = w.fnt;
+					m.fnt = fnt;
 					m.player = player;
 					m.printlevel = printlevel;
 					m.text = line;
@@ -1113,7 +1140,7 @@ class LogWidget : Widget
 {
 	Array<Log> messages;
 	int addtype;
-	Font fnt;
+	Font fnt, promptfnt;
 	String prompt;
 
 	int lasttick;
@@ -1136,14 +1163,6 @@ class LogWidget : Widget
 
 	override bool SetVisibility()
 	{
-		if (
-			screenblocks != 11 ||
-			automapactive
-		)
-		{
-			return false;
-		}
-
 		return true;
 	}
 
@@ -1167,7 +1186,7 @@ class LogWidget : Widget
 				double outtime = 6.0;
 
 				m.ticker++;
-				if (m.ticker < intime) { m.alpha = m.ticker / intime; }
+				if (m.ticker <= intime) { m.alpha = m.ticker / intime; }
 				else if (m.ticker > holdtime - outtime) { m.alpha = clamp(1.0 - (m.ticker - holdtime - outtime) / outtime, 0.0, 1.0); }
 
 				if (m.alpha == 0.0)
@@ -1195,15 +1214,21 @@ class LogWidget : Widget
 			if (anchor & WDG_BOTTOM) { checkflags |= WDG_BOTTOM; }
 			Widget right = FindPrev(checkflags, -1, 0, true);
 			if (right) { rightoffset = -right.pos.x + right.margin[3] + margin[1] - 2; }
+			else if (BoAStatusbar(StatusBar)) { rightoffset = BoAStatusbar(StatusBar).widthoffset; }
 		}
 
 		double height = 0;
-		for (int i = 0; i < messages.Size(); i++)
-		{
-			if (messages[i].player != players[consoleplayer]) { continue; }
-			if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(messages[i].text)).length()) { continue ; }
 
-			height += messages[i].height;
+		if (anchor & WDG_BOTTOM) { height = con_notifylines * lineheight; }
+		else
+		{
+			for (int i = 0; i < messages.Size(); i++)
+			{
+				if (messages[i].player != players[consoleplayer]) { continue; }
+				if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(messages[i].text)).length()) { continue ; }
+
+				height += messages[i].height;
+			}
 		}
 
 		if (prompt) { height += lineheight; }
@@ -1214,25 +1239,50 @@ class LogWidget : Widget
 
 		double yoffset = 0;
 
-		for (int i = 0; i < messages.Size(); i++)
+		if (anchor & WDG_BOTTOM)
 		{
-			if (i < con_notifylines)
+			yoffset = -lineheight * 2;
+			for (int i = messages.Size() - 1; i >= 0; i--)
 			{
+				if (i > con_notifylines) { continue; }
 				if (messages[i].player != players[consoleplayer]) { continue; }
 				if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(messages[i].text)).length()) { continue ; }
 
-				messages[i].Print(fnt, pos.x, pos.y + yoffset, alpha);
+				messages[i].Print(pos.x, pos.y + height + yoffset, alpha);
 
-				if (anchor & WDG_BOTTOM && i > 1) { yoffset += messages[i - 1].height; }
-				else { yoffset += messages[i].height; }
+				yoffset -= lineheight;
+			}
+
+			yoffset = height - lineheight;
+
+			if (prompt.length())
+			{
+				DrawToHud.Dim(0x0, 0.2 * alpha, int(pos.x - (margin[3] - 3)), int(pos.y + yoffset - 1), int(size.x + (margin[3] + margin[1]) - 6), promptfnt.GetHeight() + 2);
+				DrawToHud.DrawText(prompt, (pos.x, pos.y + yoffset), promptfnt, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
+				prompt = "";
 			}
 		}
-
-		if (prompt.length())
+		else
 		{
-			DrawToHud.Dim(0x0, 0.2 * alpha, int(pos.x - (margin[3] - 3)), int(pos.y + height - lineheight - 1), int(size.x + (margin[3] + margin[1]) - 6), fnt.GetHeight() + 2);
-			DrawToHud.DrawText(prompt, (pos.x, pos.y + yoffset), fnt, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
-			prompt = "";
+			for (int i = 0; i < messages.Size(); i++)
+			{
+				if (i < con_notifylines)
+				{
+					if (messages[i].player != players[consoleplayer]) { continue; }
+					if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(messages[i].text)).length()) { continue ; }
+
+					messages[i].Print(pos.x, pos.y + yoffset, alpha);
+
+					yoffset += messages[i].height;
+				}
+			}
+
+			if (prompt.length())
+			{
+				DrawToHud.Dim(0x0, 0.2 * alpha, int(pos.x - (margin[3] - 3)), int(pos.y + height - lineheight - 1), int(size.x + (margin[3] + margin[1]) - 6), promptfnt.GetHeight() + 2);
+				DrawToHud.DrawText(prompt, (pos.x, pos.y + yoffset), promptfnt, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
+				prompt = "";
+			}
 		}
 
 		return size;
@@ -1595,5 +1645,124 @@ class GrenadeWidget : Widget
 		}
 
 		return (0, 0);
+	}
+}
+
+class KeenWidget : Widget
+{
+	override bool SetVisibility()
+	{
+		if (
+				BoAStatusBar(StatusBar) &&
+				!automapactive &&
+				screenblocks < 12 &&
+				!player.mo.FindInventory("CutsceneEnabled") &&
+				player.mo is "KeenPlayer"
+			) { return true; }
+		
+		return false;
+	}
+}
+
+class KeenStatsWidget : KeenWidget
+{
+	Font fnt;
+	TextureID bkg, health, keybkg;
+
+	static const String keys[] = { "CKYellowKey", "CKBlueKey", "CKRedKey", "CKGreenKey" };
+
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
+	{
+		KeenStatsWidget wdg = KeenStatsWidget(Widget.Init("KeenStatsWidget", widgetname, anchor, 0, priority, pos, zindex));
+		if (wdg)
+		{
+			wdg.fnt = Font.GetFont("HUDFont_Keen");
+			wdg.bkg = TexMan.CheckForTexture("CKHUDBKG");
+			wdg.health = TexMan.CheckForTexture("CKHLTHM");
+			wdg.keybkg = TexMan.CheckForTexture("CKHUDKBG");
+		}
+	}
+
+	override Vector2 Draw()
+	{
+		double scale = 2.0;
+
+		size = (172, 64);
+		if (player.mo.FindInventory("CKPuzzleItem", true)) { size.x = 202; }
+		Super.Draw();
+
+		alpha = 1.0;
+
+		DrawToHud.DrawTexture(bkg, pos, alpha, scale, centered:false);
+
+		Inventory treasure = player.mo.FindInventory("CKTreasure");
+		String score = String.Format("%i", min((treasure ? treasure.amount : 0) * 100, 999999999));
+		DrawToHud.DrawText(score, (pos.x + 160 - fnt.StringWidth(score) * scale, pos.y + 8), fnt, alpha, scale, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
+
+		Inventory ammo1, ammo2;
+		int ammocount1, ammocount2;
+		[ammo1, ammo2, ammocount1, ammocount2] = BoAStatusBar(StatusBar).GetWeaponAmmo();
+		if (ammo1)
+		{
+			String ammo = String.Format("%i", min(99, ammocount1));
+			DrawToHud.DrawText(ammo, (pos.x + 160 - fnt.StringWidth(ammo) * scale, pos.y + 40), fnt, alpha, scale, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
+		}
+
+		// Draw a lifewater drop over the helmet - this is health percentage, not lives as in the original game
+		DrawToHud.DrawTexture(health, (pos.x + 18, pos.y + 38), alpha, scale, centered:false);
+
+		String health = String.Format("%i", min(999, player.health));
+		DrawToHud.DrawText(health, (pos.x + 80 - fnt.StringWidth(health) * scale, pos.y + 40), fnt, alpha, scale, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
+
+		if (player.mo.FindInventory("CKPuzzleItem", true)) { DrawToHud.DrawTexture(keybkg, (pos.x + 166, pos.y), alpha, scale, centered:false); }
+
+		for (int k = 0; k < keys.Size(); k++)
+		{
+			let key = player.mo.FindInventory(keys[k]);
+			if (key)
+			{
+				int offsetx = 172;
+				int offsety = 6 + k * 12; // Space key slot rows 10 pixels apart
+
+				DrawToHud.DrawTexture(key.icon, (pos.x + offsetx, pos.y + offsety), alpha, scale, centered:false);
+			}
+		}
+
+		return size;
+	}
+}
+
+class KeenInventoryWidget : KeenWidget
+{
+	Font fnt;
+
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
+	{
+		KeenInventoryWidget wdg = KeenInventoryWidget(Widget.Init("KeenInventoryWidget", widgetname, anchor, 0, priority, pos, zindex));
+		if (wdg)
+		{
+			wdg.fnt = Font.GetFont("HUDFont_Keen_Small");
+		}
+	}
+
+	override Vector2 Draw()
+	{
+		if (player.mo.InvSel)
+		{
+			size = (32, 48);
+			Super.Draw();
+
+			Vector2 texsize = ZScriptTools.ScaleTextureTo(player.mo.InvSel.Icon, 32);
+			BoAStatusBar(StatusBar).DrawInventoryIcon(player.mo.InvSel, (pos.x + 16, pos.y), StatusBar.DI_ITEM_TOP | StatusBar.DI_ITEM_HCENTER, scale:texsize);
+		
+			if (player.mo.InvSel is "CKPogoStick")
+			{
+				String status = CKPogoStick(player.mo.InvSel).active ? "ON" : "OFF";
+				DrawToHud.DrawText(status, (pos.x + 16, pos.y + 16 + 8 + fnt.GetHeight() * 2), fnt, alpha, 2.0, shade:Font.CR_WHITE, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
+			}
+		}
+		else { size = (0, 0); }
+
+		return size;
 	}
 }

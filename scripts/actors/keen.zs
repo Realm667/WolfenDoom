@@ -865,6 +865,14 @@ class KeenPlayer : PlayerPawn
 		if (String.Format(item.GetClassName()).Left(2) ~== "CK") { return Super.UseInventory(item); }
 		else { return false; }
 	}
+
+	override bool OnGiveSecret(bool printmsg, bool playsound)
+	{
+		console.MidPrint(Font.GetFont("Classic"), StringTable.Localize("$SECRETMESSAGE"));
+		A_StartSound("ckeen/secret", CHAN_AUTO, CHANF_UI);
+
+		return false;
+	}
 }
 
 class Billy : PowerMorph
@@ -3268,6 +3276,7 @@ class CKBerkeloid : CKBaseEnemy
 		+BRIGHT
 		+NODROPOFF
 		+VISIBILITYPULSE
+		-CASTSPRITESHADOW
 		Obituary "$CK_BERKELOID";
 		CKBaseEnemy.StunTime 0;
 		CKBerkeloid.VSpeed 1.0;
