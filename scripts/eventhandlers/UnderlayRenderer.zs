@@ -336,7 +336,14 @@ class LoadScreen : StaticEventHandler
 			if (!players[consoleplayer].mo.FindInventory("CutsceneEnabled")) // Only draw letterbox and show map title if there's no cutscene.
 			{
 				screen.DrawTexture(FadeGraphic, false, 0, 0, DTA_FullScreenEx, 2, DTA_Alpha, alpha / 0.6);
-				screen.DrawText(fnt, Font.CR_GRAY, 65, 20 - fnt.GetHeight() / 2, level.levelname, DTA_Alpha, titlealpha, DTA_VirtualWidth, int(480 * Screen.GetAspectRatio()), DTA_VirtualHeight, 480, DTA_KeepRatio, true);
+
+				// Adjust position for screen widgets and forced hud ratio
+				int offset = 16;
+				Widget topleft = Widget.FindBase(Widget.WDG_TOP | Widget.WDG_LEFT, 0);
+				if (topleft) { offset = 8 + int(topleft.pos.x + topleft.size.x + topleft.margin[1]); }
+				else if (BoAStatusbar(StatusBar)) { offset += BoAStatusbar(StatusBar).widthoffset; }
+
+				DrawToHud.DrawText(level.levelname, (offset, 20 - fnt.GetHeight() / 2), fnt, titlealpha, 1.5, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
 			}
 
 			screen.DrawTexture(BackgroundGraphic, true, x, y, DTA_Alpha, alpha / 0.6, DTA_CenterOffset, true, DTA_DestWidth, int(bgsize.x * scale), DTA_DestHeight, int(bgsize.y * scale));
