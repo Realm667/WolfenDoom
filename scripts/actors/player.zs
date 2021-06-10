@@ -1263,7 +1263,6 @@ class BoAPlayer : PlayerPawn
 	{
 		String mod = (inflictor && inflictor.paintype) ? inflictor.paintype : MeansOfDeath; // Get the damage type
 
-		console.printf(mod);
 		if (mod == "Pest") { AchievementTracker.CheckAchievement(PlayerNumber(), AchievementTracker.ACH_PESTS); }
 
 		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
