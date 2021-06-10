@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2021 Ozymandias81, AFADoomer, Talon1024
+ * Copyright (c) 2018-2021 Ozymandias81, AFADoomer, Talon1024, m-x-d
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

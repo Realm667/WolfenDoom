@@ -636,7 +636,7 @@ class TMStatistBarkeeperMale : TMStatistBarkeeper
 {
 	Default
 	{
-		//$Title Randi Heit, Cutscenes
+		//$Title Haggis McMutton, Cutscenes
 	}
 	States
 	{
