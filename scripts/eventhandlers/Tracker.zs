@@ -322,7 +322,7 @@ class InventoryTracker : EventHandler
 
 class AchievementTracker : EventHandler
 {
-	transient CVar recordvar;
+	transient CVar recordvar[4];
 	int record;
 	Array<bool> records;
 
@@ -411,19 +411,25 @@ class AchievementTracker : EventHandler
 
 	override void OnRegister()
 	{
-		recordvar = CVar.FindCVar("boa_achievementrecord");
+		recordvar[0] = CVar.FindCVar("boa_achievementrecord0");
+		recordvar[1] = CVar.FindCVar("boa_achievementrecord1");
+		recordvar[2] = CVar.FindCVar("boa_achievementrecord2");
+		recordvar[3] = CVar.FindCVar("boa_achievementrecord3");
 
-		String value = recordvar.GetString();
-
-		if (value.length()) 
+		for (int i = 0; i < recordvar.Size(); i ++)
 		{
-			Array<String> parse;
-			value = Decode(value, 7);
-			value.Split(parse, "|");
+			String value = recordvar[i].GetString();
 
-			for (int a = 0; a < parse.Size(); a++)
+			if (value.length()) 
 			{
-				records.Push(!(parse[a] == String.Format("%c", 0x30 + a)));
+				Array<String> parse;
+				value = Decode(value, 7);
+				value.Split(parse, "|");
+
+				for (int a = 0; a < parse.Size(); a++)
+				{
+					records.Push(!(parse[a] == String.Format("%c", 0x30 + a)));
+				}
 			}
 		}
 	}
@@ -643,11 +649,12 @@ class AchievementTracker : EventHandler
 		else { records[a] = true; } // Set the achievement as complete
 
 		// Encode the value string
-		String bits = BitString();
+		int index = a / 16;
+		String bits = BitString(true, index * 16, index * 16 + 16);
 
 		// Save the value to the CVar
 		bits = Encode(bits, 7);
-		recordvar.SetString(bits);
+		recordvar[index].SetString(bits);
 
 		// Look up the achievement description string
 		String lookup = String.Format("ACHIEVEMENT%i", a);
@@ -660,10 +667,12 @@ class AchievementTracker : EventHandler
 		AchievementMessage.Init(players[pnum].mo, text, image, "misc/achievement");
 	}
 
-	String BitString(int encode = true)
+	String BitString(int encode = true, int start = 0, int end = -1)
 	{
 		String bits = "";
-		for (int b = 0; b < records.Size(); b++)
+		if (end == -1 || end > records.Size()) { end = records.Size(); }
+
+		for (int b = start; b < end; b++)
 		{
 			if (b > 0) { bits = bits .. "|"; }
 			int offset = 0x30;
