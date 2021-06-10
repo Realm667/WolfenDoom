@@ -342,25 +342,46 @@ class AchievementTracker : EventHandler
 	int liquiddeath[MAXPLAYERS];
 	int shots[MAXPLAYERS][2];
 	int zombies[MAXPLAYERS];
+	int playtime[MAXPLAYERS];
+	bool weapons[MAXPLAYERS][16];
+
+	static const Class<Weapon> weaponlist[] = { 
+		"KnifeSilent",
+		"Shovel",
+		"Firebrand",
+		"Luger9mm",
+		"Walther9mm",
+		"TrenchShotgun",
+		"Browning5",
+		"MP40",
+		"Sten",
+		"Kar98k",
+		"G43",
+		"Pyrolight",
+		"Nebelwerfer",
+		"Panzerschreck",
+		"TeslaCannon",
+		"UMG43"
+	};
 
 	enum LiquidDeaths
 	{
 		DTH_POISON = 0x1,
 		DTH_LAVA = 0x10,
-		DTH_DROWNING = 0x100
-	}
+		DTH_DROWNING = 0x100,
+	};
 
 	enum Achievements
 	{
 		ACH_GUNSLINGER = 0,	// Fire 1000 pistol shots (total across all levels)
 		ACH_PERFECTIONIST,	// Finish a map with 100% kills/treasure/secrets
 		ACH_SPEEDRUNNER,
-		ACH_SLIKSTER,
+		ACH_TRICKSTER,
 		ACH_IMPENETRABLE,	// Finish a map without taking damage
 		ACH_DISGRACE = 5,	// Finish off a boss enemy with kicks
 		ACH_PACIFIST,		// Finish a level without killing any enemies
 		ACH_CLEARSHOT,		// Use the Kar98k to snipe an enemy over 6000 units away
-		ACH_WATCHYOURSTEP,
+		ACH_WATCHYOURSTEP,	// Kill 3 Nazis with a single placed mine
 		ACH_CHEVALIER,		// Kill a loper with only the primary fire of the Firebrand
 		ACH_1915 = 10,		// Complete C3M4 with no gas mask
 		ACH_ASSASSIN,		// Stealth kill 10 enemies (total across all levels)
@@ -376,6 +397,16 @@ class AchievementTracker : EventHandler
 		ACH_PESTS,			// Die to spiders, bats, or rats
 		ACH_ACCURACY,		// 75% accuracy or higher when over 100 player bullet tracers have been fired
 		ACH_ZOMBIES,		// Kill 500 zombies
+		ACH_IRONMAN,		// Collect all Eisenmann files
+		ACH_BEAMMEUP = 25,	// Collect all Mayan artifacts
+		ACH_FULLARSENAL,	// Collect all  (non-Astrostein or Keen) weapons at least once
+		ACH_COMBATMEDIC,
+		ACH_TREASUREHUNTER,
+		ACH_GOLDDIGGER,
+		ACH_STAYDEAD = 30,
+		ACH_GIBEMALL,
+		ACH_NEAT,
+		ACH_ADDICTED,		// Play BoA for more than 10 hours
 	};
 
 	override void OnRegister()
@@ -392,7 +423,7 @@ class AchievementTracker : EventHandler
 
 			for (int a = 0; a < parse.Size(); a++)
 			{
-				records.Push(!(parse[a] == "0"));
+				records.Push(!(parse[a] == String.Format("%c", 0x30 + a)));
 			}
 		}
 	}
@@ -405,6 +436,12 @@ class AchievementTracker : EventHandler
 	
 		if (gameaction == ga_savegame) { CheckAchievement(consoleplayer, ACH_SPAM); }
 		if (shots[consoleplayer][1] > 100 && shots[consoleplayer][0] * 100.0 / shots[consoleplayer][1] > 75) { CheckAchievement(consoleplayer, ACH_ACCURACY); }
+		if (++playtime[consoleplayer] > 1260000) { CheckAchievement(consoleplayer, ACH_ADDICTED); }
+	}
+
+	override void WorldUnloaded(WorldEvent e)
+	{
+
 	}
 
 	override void WorldThingSpawned(WorldEvent e)
@@ -436,7 +473,7 @@ class AchievementTracker : EventHandler
 		}
 		else if (e.Name == "printachievements")
 		{
-			console.printf("%s", BitString());
+			console.printf("%s", BitString(false));
 		}
 	}
 
@@ -508,7 +545,7 @@ class AchievementTracker : EventHandler
 			case ACH_SPEEDRUNNER:
 				// TODO
 				break;
-			case ACH_SLIKSTER:
+			case ACH_TRICKSTER:
 				// TODO
 				break;
 			case ACH_IMPENETRABLE:  // Checked here in CheckSpecials function
@@ -555,12 +592,41 @@ class AchievementTracker : EventHandler
 			case ACH_ZOMBIES:
 				if (++zombies[pnum] >= 500) { complete = true; }
 				break;
+			case ACH_FULLARSENAL:
+				bool pass = true;
+
+				for (int w = 0; w < 16; w++)
+				{
+					if (weapons[pnum][w] == false) { pass = false; break; }
+				}
+
+				complete = pass;
+				break;
+			case ACH_COMBATMEDIC:
+				break;
+			case ACH_TREASUREHUNTER:
+				break;
+			case ACH_GOLDDIGGER:
+				break;
+			case ACH_STAYDEAD:
+				break;
+			case ACH_GIBEMALL:
+				break;
+			case ACH_NEAT:
+				break;
+			case ACH_NAUGHTY: // Set up in the BoAPlayer class's 'give' cheat handling
+				// Reset inventory-based achievements if you use 'give'
+				for (int w = 0; w < 16; w++) { weapons[pnum][w] == false; }
+				complete = true;
+				break;
 			case ACH_DISGRACE: // Set up in the Nazi class's Die function
 			case ACH_CLEARSHOT: // Set up in the Nazi class's Die function
 			case ACH_CHEVALIER: // Set up in the Nazi class's Die function, with handling in DamageMobj to flag the enemy to not allow the achievement if any other weapon was used
-			case ACH_NAUGHTY: // Set up in the BoAPlayer class's give cheat handling
 			case ACH_PESTS: // Set up in the BoAPlayer class's Die function
-			case ACH_ACCURACY: // Set up in the BulletTracer class's PosstBeginPlay function and actor states
+			case ACH_ACCURACY: // Set up in the BulletTracer class's PostBeginPlay function and actor states
+			case ACH_ADDICTED: // Incremented here in WorldUnloaded function
+			case ACH_IRONMAN: // Set in Gutenberg C1 conversation
+			case ACH_BEAMMEUP: // Set in Gutenberg C2 conversation
 			default:
 				complete = true;
 				break;
@@ -594,13 +660,15 @@ class AchievementTracker : EventHandler
 		AchievementMessage.Init(players[pnum].mo, text, image, "misc/achievement");
 	}
 
-	String BitString()
+	String BitString(int encode = true)
 	{
 		String bits = "";
 		for (int b = 0; b < records.Size(); b++)
 		{
 			if (b > 0) { bits = bits .. "|"; }
-			bits = String.Format("%s%c", bits, records[b] + 0x30);
+			int offset = 0x30;
+			if (encode) { offset += b; }
+			bits = String.Format("%s%c", bits, !!records[b] + offset);
 		}
 
 		return bits;
@@ -669,6 +737,14 @@ class AchievementTracker : EventHandler
 			totalgrenades[i] = ptracker.totalgrenades[i];
 			saves[i] = ptracker.saves[i];
 			exhaustion[i] = ptracker.exhaustion[i];
+			liquiddeath[i] = ptracker.liquiddeath[i];
+			zombies[i] = ptracker.zombies[i];
+			playtime[i] = ptracker.playtime[i];
+
+			for (int w = 0; w < 16; w++)
+			{
+				weapons[i][w] = ptracker.weapons[i][w];
+			}
 		}
 	}
 
@@ -685,6 +761,14 @@ class AchievementTracker : EventHandler
 			ptracker.totalgrenades[i] = totalgrenades[i];
 			ptracker.saves[i] = saves[i];
 			ptracker.exhaustion[i] = exhaustion[i];
+			ptracker.liquiddeath[i] = liquiddeath[i];
+			ptracker.zombies[i] = zombies[i];
+			ptracker.playtime[i] = playtime[i];
+
+			for (int w = 0; w < 16; w++)
+			{
+				ptracker.weapons[i][w] = weapons[i][w];
+			}
 		}
 	}
 }
@@ -698,6 +782,10 @@ class PersistentAchievementTracker : StaticEventHandler
 	int totalgrenades[MAXPLAYERS];
 	int saves[MAXPLAYERS];
 	int exhaustion[MAXPLAYERS];
+	int liquiddeath[MAXPLAYERS];
+	int zombies[MAXPLAYERS];
+	int playtime[MAXPLAYERS];
+	bool weapons[MAXPLAYERS][16];
 
 	override void WorldLoaded(WorldEvent e)
 	{

@@ -187,6 +187,31 @@ class NaziWeapon : Weapon
 		Super.Tick();
 	}
 
+	override bool TryPickup (in out Actor toucher)
+	{
+		bool ret = Super.TryPickup(toucher);
+
+		if (ret && toucher && toucher.player)
+		{
+			AchievementTracker achievements = AchievementTracker(EventHandler.Find("AchievementTracker"));
+			if (achievements)
+			{
+				for (int w = 0; w < achievements.weaponlist.Size(); w++)
+				{
+					if (achievements.weaponlist[w] == GetClass())
+					{
+						achievements.weapons[toucher.PlayerNumber()][w] = true;
+						AchievementTracker.CheckAchievement(toucher.PlayerNumber(), AchievementTracker.ACH_FULLARSENAL);
+
+						break;
+					}
+				}
+			}
+		}
+
+		return ret;
+	}
+
 	action void A_SpawnLightning(Class<LightningBeam> beam = "LightningBeam")
 	{
 		let p = player.mo;
@@ -1521,6 +1546,8 @@ class Firebrand : NaziWeapon
 			}
 			else { owner.A_RemoveLight("FlameEffect"); }
 		}
+
+		Super.Tick();
 	}
 }
 
