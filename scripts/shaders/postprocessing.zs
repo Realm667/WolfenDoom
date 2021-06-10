@@ -137,7 +137,7 @@ class TcPostProcessShaderHandler : StaticEventHandler
 	override void UiTick()
 	{
 		PlayerInfo	plr = players[ consoleplayer ];
-		if( plr )
+		if( plr && plr.mo )
 		{
 			if( plr.health > 0 && Cvar.GetCVar( "boa_mblur", plr ).GetBool() && !plr.mo.FindInventory("CutsceneEnabled") )//&& yaw && pitch )
 			{
