@@ -552,6 +552,13 @@ class ZScriptTools
 
 		return texsize;
 	}
+	
+	// Makes the game close the automap (use it for a scripted sequence that is not in the
+	// beginning of the level, such as in C3M0_B). Pauses the game for one tic as a side effect.
+	static void CloseAutomap()
+	{
+		level.StartIntermission('Automap_Hack', FSTATE_InLevel);
+	}
 }
 
 // Functions to identify the current IWAD and read info from the matching IWADINFO block
