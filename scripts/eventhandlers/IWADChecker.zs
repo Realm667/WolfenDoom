@@ -47,77 +47,21 @@ class IWADChecker : EventHandler
 		*/
 	}
 
+	void DisplayDisclaimer()
+	{
+		Menu.SetMenu("Disclaimer");
+		Level.setFrozen(true);
+	}
+
 	override void WorldTick()
 	{
 		if (level.time == 5)
 		{
-			CheckIWAD();
+			// List here in reverse order displayed (they logically open "on top" of each other)
+			DisplayDisclaimer();
 			CheckRenderer();
+			CheckIWAD();
 			Destroy();
 		}
 	}
 }
-
-class IWADNotice : BoAMenu
-{
-	override void Drawer()
-	{
-		String title = StringTable.Localize("IWADNOTICE1", false);
-		String text = StringTable.Localize("IWADNOTICE2", false);
-		TextureID tex = TexMan.CheckForTexture("CONBACK", TexMan.Type_MiscPatch);
-		if (tex) { screen.DrawTexture (tex, false, 0, 0, DTA_Fullscreen, true, DTA_Alpha, 1.0); }
-		// Display IWADNOTICE1 on one line, center justified, in BigFont
-		screen.DrawText(BigFont, Font.CR_GRAY,
-			Screen.GetWidth() / 2 - BigFont.StringWidth(title) * CleanXfac / 2,
-			Screen.GetHeight() / 2 - BigFont.GetHeight() * CleanYfac / 2,
-			title, DTA_CleanNoMove, true);
-		// Display IWADNOTICE2 on multiple lines, center justified, in SmallFont
-		String widthString = "a";
-		int widthChar = widthString.ByteAt(0);
-		BrokenLines textLines = SmallFont.BreakLines(text, SmallFont.GetCharWidth(widthChar) * 50);
-		for (int line = 0; line < textLines.Count(); line++)
-		{
-			double yadd = SmallFont.GetHeight() * (line + 1);
-			screen.DrawText (SmallFont, Font.CR_GRAY,
-				Screen.GetWidth() / 2 - textLines.StringWidth(line) * CleanXfac / 2,
-				Screen.GetHeight() / 2 + yadd * CleanYfac,
-				textLines.StringAt(line), DTA_CleanNoMove, true);
-		}
-	}
-
-	override bool MenuEvent(int mkey, bool fromcontroller)
-	{
-		MenuSound("menu/choose");
-		Close();
-		Level.setFrozen(false);
-
-		return true;
-	}
-
-	override bool MouseEvent(int type, int x, int y)
-	{
-		if (type == MOUSE_Click)
-		{
-			return MenuEvent(MKEY_Enter, true);
-		}
-		return false;
-	}
-
-	override bool OnUIEvent(UIEvent ev)
-	{
-		// Intercept key presses to see if we're pressing the strafe controls or use, 
-		// and redirect those to call the correct left/right/open movement menu event code.
-
-		if (ev.Type == UIEvent.Type_KeyDown)
-		{
-			CheckControl(ev, "+moveleft", MKEY_Left);
-			CheckControl(ev, "+moveright", MKEY_Right);
-			CheckControl(ev, "+use", MKEY_Enter);
-			CheckControl(ev, "+forward", MKEY_Up);
-			CheckControl(ev, "+back", MKEY_Down);
-		}
-
-		return Super.OnUIEvent(ev);
-	}
-}
-
