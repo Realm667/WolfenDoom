@@ -240,6 +240,8 @@ class Finale : BoAMenu
 
 	override void Init(Menu parent)
 	{
+		if (automapactive) { ZScriptTools.CloseAutomap(); }
+
 		GenericMenu.Init(parent);
 
 		if (!fnt) { fnt = SmallFont; }
