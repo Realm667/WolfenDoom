@@ -1962,7 +1962,7 @@ class CreepyCandlestick : CreepyCandle
 	//$Title 2d Creepy Candlestick (ON)
 	Radius 16;
 	Height 56;
-	Scale 1.0;
+	Scale 0.51;
 	+SOLID
 	}
 	States
