@@ -87,6 +87,12 @@ class LaserShooter : EffectSpawner
 
 		Laser.DoTrace(self, angle, beamdistance, pitch, 0, zoffset, hitpointtracer);
 		[beam, flare] = Laser.DrawLaser(self, beam, flare, hitpointtracer.Results, beamclass, puffclass, damage, zoffset, drawdecal, alpha, flareclass);
+
+		// Spawn line attacks above/below the main beam to keep the player from crouching underneath or jumping over
+		// Match the actual beam's distance, pitch, angle, and damage
+		int radius = 8;
+		LineAttack(angle, hitpointtracer.distance, pitch, damage, damagetype, "Nothing", offsetz:zoffset - 8 + radius);
+		LineAttack(angle, hitpointtracer.distance, pitch, damage, damagetype, "Nothing", offsetz:zoffset - 8 - radius);
 	}
 
 	override void Activate(Actor activator)
@@ -269,7 +275,7 @@ class Laser : Actor
 
 		//Laser beam
 		Vector3 beampos = beamoffset + traceresults.HitVector * (dist / 2);
-		if (!beam)
+		if (!beam && spawnclass != "")
 		{
 			beam = LaserBeam(Spawn(spawnclass, beampos, ALLOW_REPLACE));
 			if (beam)
