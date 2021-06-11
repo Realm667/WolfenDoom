@@ -114,7 +114,7 @@ class Stahlhelm : BasicArmorBonus
 	override String PickupMessage()
 	{
 		String msg = StringTable.Localize(Super.PickupMessage());
-		msg.Replace("%a", String.Format("%i", amount));
+		msg.Replace("%a", String.Format("%i", saveamount));
 
 		return msg;
 	}
