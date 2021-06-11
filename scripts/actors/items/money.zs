@@ -72,6 +72,14 @@ class CoinItem : StackableInventory
 		if (!bDormant) return Super.CanPickup(toucher);
 		return false;
 	}
+
+	override String PickupMessage()
+	{
+		String msg = StringTable.Localize(Super.PickupMessage());
+		msg.Replace("%a", String.Format("%i", amount));
+
+		return msg;
+	}
 }
 
 class CoinDrop : CoinItem

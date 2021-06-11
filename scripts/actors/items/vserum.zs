@@ -57,6 +57,14 @@ class VitalitySerum : Inventory
 		}
 		return false;
 	}
+
+	override String PickupMessage()
+	{
+		String msg = StringTable.Localize(Super.PickupMessage());
+		msg.Replace("%a", String.Format("%i", boost * amount));
+
+		return msg;
+	}
 }
 
 class VitalitySerum175: VitalitySerum { // Chapter 2

@@ -42,6 +42,14 @@ class Ammo9mm : Ammo
 		MCLP A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
 		Stop;
 	}
+
+	override String PickupMessage()
+	{
+		String msg = StringTable.Localize(Super.PickupMessage());
+		msg.Replace("%a", String.Format("%i", amount));
+
+		return msg;
+	}
 }
 
 class AmmoBox9mm : Ammo9mm
@@ -82,6 +90,14 @@ class Ammo12Gauge : Ammo
 	Spawn:
 		SHEL A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
 		Stop;
+	}
+
+	override String PickupMessage()
+	{
+		String msg = StringTable.Localize(Super.PickupMessage());
+		msg.Replace("%a", String.Format("%i", amount));
+
+		return msg;
 	}
 }
 
@@ -126,6 +142,14 @@ class MauserAmmo : Ammo
 		792A A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
 		Stop;
 	}
+
+	override String PickupMessage()
+	{
+		String msg = StringTable.Localize(Super.PickupMessage());
+		msg.Replace("%a", String.Format("%i", amount));
+
+		return msg;
+	}
 }
 
 class MauserAmmoBox : MauserAmmo
@@ -169,6 +193,14 @@ class FlameAmmo : Ammo
 		FAMO A -1;
 		Stop;
 	}
+
+	override String PickupMessage()
+	{
+		String msg = StringTable.Localize(Super.PickupMessage());
+		msg.Replace("%a", String.Format("%i", amount));
+
+		return msg;
+	}
 }
 
 class NebAmmo : Ammo
@@ -192,6 +224,14 @@ class NebAmmo : Ammo
 	Spawn:
 		MNRB A -1;
 		Stop;
+	}
+
+	override String PickupMessage()
+	{
+		String msg = StringTable.Localize(Super.PickupMessage());
+		msg.Replace("%a", String.Format("%i", amount));
+
+		return msg;
 	}
 }
 
@@ -257,6 +297,14 @@ class TeslaCell : Ammo
 	Spawn:
 		TCEL B -1;
 		Stop;
+	}
+
+	override String PickupMessage()
+	{
+		String msg = StringTable.Localize(Super.PickupMessage());
+		msg.Replace("%a", String.Format("%i", amount));
+
+		return msg;
 	}
 }
 

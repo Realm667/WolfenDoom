@@ -110,4 +110,12 @@ class Stahlhelm : BasicArmorBonus
 		STAL A -1;
 		Stop;
 	}
+
+	override String PickupMessage()
+	{
+		String msg = StringTable.Localize(Super.PickupMessage());
+		msg.Replace("%a", String.Format("%i", amount));
+
+		return msg;
+	}
 }

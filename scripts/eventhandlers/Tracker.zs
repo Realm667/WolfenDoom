@@ -236,10 +236,11 @@ class ThingTracker : EventHandler
 	override void WorldThingSpawned(WorldEvent e)
 	{
 		let grenade = GrenadeBase(e.thing);
-
-		if (!grenade) { return; }
-
-		grenades.Push(grenade);
+		if (grenade)
+		{
+			grenades.Push(grenade);
+			return;
+		}
 	}
 
 	override void WorldThingDestroyed(WorldEvent e)

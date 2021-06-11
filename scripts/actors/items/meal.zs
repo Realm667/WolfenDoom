@@ -43,4 +43,12 @@ class Meal : Health
 
 	// Meals must always give 5 health, regardless of whether or not they were dropped.
 	override void ModifyDropAmount(int dropamount) {}
+
+	override String PickupMessage()
+	{
+		String msg = StringTable.Localize(Super.PickupMessage());
+		msg.Replace("%a", String.Format("%i", amount));
+
+		return msg;
+	}
 }

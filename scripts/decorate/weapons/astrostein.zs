@@ -174,6 +174,14 @@ class AstroShotgunShell : Ammo
 		ASSL A -1 LIGHT("ASTRAMM1");
 		Stop;
 	}
+
+	override String PickupMessage()
+	{
+		String msg = StringTable.Localize(Super.PickupMessage());
+		msg.Replace("%a", String.Format("%i", amount));
+
+		return msg;
+	}
 }
 
 class AstroRocketlauncher : NaziAstroWeapon
@@ -326,6 +334,14 @@ class AstroRocketAmmo : Ammo
 		ASRK A -1 LIGHT("ASTRAMM1");
 		Stop;
 	}
+
+	override String PickupMessage()
+	{
+		String msg = StringTable.Localize(Super.PickupMessage());
+		msg.Replace("%a", String.Format("%i", amount));
+
+		return msg;
+	}
 }
 
 class AstroChaingun : NaziAstroWeapon
@@ -472,6 +488,14 @@ class AstroClipAmmo : Ammo
 	Spawn:
 		ASCL A -1 LIGHT("ASTRAMM3");
 		Stop;
+	}
+
+	override String PickupMessage()
+	{
+		String msg = StringTable.Localize(Super.PickupMessage());
+		msg.Replace("%a", String.Format("%i", amount));
+
+		return msg;
 	}
 }
 

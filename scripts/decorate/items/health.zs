@@ -795,6 +795,14 @@ class Dogfood : Health
 		DOGF G -1;
 		Stop;
 	}
+
+	override String PickupMessage()
+	{
+		String msg = StringTable.Localize(Super.PickupMessage());
+		msg.Replace("%a", String.Format("%i", amount));
+
+		return msg;
+	}
 }
 
 class Medikit_Small : Health
@@ -813,6 +821,14 @@ class Medikit_Small : Health
 	Spawn:
 		MEDI A -1;
 		Stop;
+	}
+
+	override String PickupMessage()
+	{
+		String msg = StringTable.Localize(Super.PickupMessage());
+		msg.Replace("%a", String.Format("%i", amount));
+
+		return msg;
 	}
 }
 
@@ -833,6 +849,14 @@ class Medikit_Medium : Health
 		MEDI B -1;
 		Stop;
 	}
+
+	override String PickupMessage()
+	{
+		String msg = StringTable.Localize(Super.PickupMessage());
+		msg.Replace("%a", String.Format("%i", amount));
+
+		return msg;
+	}
 }
 
 class Medikit_Large : Health
@@ -851,6 +875,14 @@ class Medikit_Large : Health
 	Spawn:
 		MEDI C -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
 		Stop;
+	}
+
+	override String PickupMessage()
+	{
+		String msg = StringTable.Localize(Super.PickupMessage());
+		msg.Replace("%a", String.Format("%i", amount));
+
+		return msg;
 	}
 }
 
@@ -892,5 +924,13 @@ class FieldKit : HealthPickup
 	Spawn:
 		FKIT AB 10;
 		Loop;
+	}
+
+	override String PickupMessage()
+	{
+		String msg = StringTable.Localize(Super.PickupMessage());
+		msg.Replace("%a", String.Format("%i", health));
+
+		return msg;
 	}
 }

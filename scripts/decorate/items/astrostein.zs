@@ -117,4 +117,12 @@ class ArmorShard : ArmorBonus
 		ARSD ABCDCB 6;
 		Loop;
 	}
+
+	override String PickupMessage()
+	{
+		String msg = StringTable.Localize(Super.PickupMessage());
+		msg.Replace("%a", String.Format("%i", amount));
+
+		return msg;
+	}
 }

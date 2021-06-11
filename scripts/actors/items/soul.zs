@@ -249,6 +249,9 @@ class Soul : StackableInventory
 
 	override String PickupMessage()
 	{
+		String msg = StringTable.Localize(msg);
+		msg.Replace("%a", String.Format("%i", amount));
+
 		return msg;
 	}
 
