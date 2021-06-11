@@ -91,8 +91,8 @@ class LaserShooter : EffectSpawner
 		// Spawn line attacks above/below the main beam to keep the player from crouching underneath or jumping over
 		// Match the actual beam's distance, pitch, angle, and damage
 		int radius = 8;
-		LineAttack(angle, hitpointtracer.distance, pitch, damage, damagetype, "Nothing", offsetz:zoffset - 8 + radius);
-		LineAttack(angle, hitpointtracer.distance, pitch, damage, damagetype, "Nothing", offsetz:zoffset - 8 - radius);
+		LineAttack(angle, hitpointtracer.Results.distance, pitch, damage, damagetype, "Nothing", offsetz:zoffset - 8 + radius);
+		LineAttack(angle, hitpointtracer.Results.distance, pitch, damage, damagetype, "Nothing", offsetz:zoffset - 8 - radius);
 	}
 
 	override void Activate(Actor activator)
