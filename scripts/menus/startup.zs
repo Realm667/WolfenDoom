@@ -95,7 +95,7 @@ class Disclaimer : NoticeMenu
 
 		text = StringTable.Localize("$DISCLAIMER");
 
-		maxwidth = BigFont.StringWidth(" ") * 45;
+		maxwidth = 500;
 		lineheight = BigFont.GetHeight();
 		lines = BigFont.BreakLines(text, maxwidth);
 
@@ -143,10 +143,81 @@ class Disclaimer : NoticeMenu
 	{
 		screen.Dim(0x000000, bgalpha, 0, 0, Screen.GetWidth(), screen.GetHeight());
 
-		for (int l = 0; l < lines.Count(); l++)
+		PrintFullJustified(lines, maxwidth);
+	}
+
+	void PrintFullJustified(BrokenLines lines, double width)
+	{
+		double spacing = 0;
+
+		for (int t = 0; t < lines.Count(); t++)
 		{
-			String line = lines.StringAt(l);
-			screen.DrawText (BigFont, Font.FindFontColor("Light Gray"), x, y + lineheight * l, line, DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, alpha);
+			String line = lines.StringAt(t);
+			double textwidth = lines.StringWidth(t);
+
+			if ( // Don't full justify if a line is the end of a paragraph and it's less than 80% of the desired width
+				!(
+					(
+						t == lines.Count() - 1 ||
+						lines.StringAt(t + 1) == ""
+					) &&
+					textwidth < width * 0.8
+				)
+			)
+			{
+				int spaces = 0;
+				int start = 0;
+				while (start > -1)
+				{
+					start = line.IndexOf(" ", start + 1);
+					if (start > 0) { spaces++; }
+				}
+
+				spacing = spaces ? (width - textwidth) / spaces : 0;
+			}
+
+			if (spacing != 0)
+			{
+				String temp = "";
+				int cur = 0;
+				double textx = 0;
+				while (cur <= line.length())
+				{
+					String curchar = line.Mid(cur, 1);
+					int charbyte = curchar.ByteAt(0);
+
+					if ( // Whitespace
+						ZScriptTools.IsWhiteSpace(charbyte) ||
+						charbyte == 0x0
+					)
+					{
+						screen.DrawText(BigFont, Font.FindFontColor("Light Gray"), x + textx, y + lineheight * t, temp, DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, alpha);
+
+						if (charbyte == 0x9) // Tab alignment
+						{
+							double tabwidth = w / 10;
+							int tabs = int(textx / tabwidth) + 1;
+							textx = tabs * tabwidth;
+						}
+						else // Normal printing
+						{
+							textx += BigFont.StringWidth(temp .. curchar) + spacing;
+						}
+
+						temp = "";
+					}
+					else
+					{
+						temp = temp .. curchar;
+					}
+
+					cur++;
+				}
+			}
+			else
+			{	
+				screen.DrawText (BigFont, Font.FindFontColor("Light Gray"), x, y + lineheight * t, line, DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, alpha);
+			}
 		}
 	}
 }

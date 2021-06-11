@@ -55,10 +55,16 @@ class IWADChecker : EventHandler
 
 	override void WorldTick()
 	{
+		CVar firstrun = CVar.FindCVar("boa_firstrun");
+
 		if (level.time == 5)
 		{
 			// List here in reverse order displayed (they logically open "on top" of each other)
-			DisplayDisclaimer();
+			if (firstrun && firstrun.GetBool())
+			{
+				DisplayDisclaimer();
+				firstrun.SetBool(false);
+			}
 			CheckRenderer();
 			CheckIWAD();
 			Destroy();
