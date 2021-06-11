@@ -401,7 +401,7 @@ class AchievementTracker : EventHandler
 		ACH_ZOMBIES,		// Kill 500 zombies
 		ACH_IRONMAN,		// Collect all Eisenmann files
 		ACH_BEAMMEUP = 25,	// Collect all Mayan artifacts
-		ACH_FULLARSENAL,	// Collect all  (non-Astrostein or Keen) weapons at least once
+		ACH_FULLARSENAL,	// Collect all (non-Astrostein or Keen) weapons at least once
 		ACH_COMBATMEDIC,
 		ACH_TREASUREHUNTER,
 		ACH_GOLDDIGGER,
@@ -441,7 +441,6 @@ class AchievementTracker : EventHandler
 		CheckStats();
 		
 		if (players[consoleplayer].cmd.buttons & BT_RELOAD) { manualreloads[consoleplayer]++; }
-	
 		if (gameaction == ga_savegame) { CheckAchievement(consoleplayer, ACH_SPAM); }
 		if (shots[consoleplayer][1] > 100 && shots[consoleplayer][0] * 100.0 / shots[consoleplayer][1] > 75) { CheckAchievement(consoleplayer, ACH_ACCURACY); }
 		if (++playtime[consoleplayer] > 1260000) { CheckAchievement(consoleplayer, ACH_ADDICTED); }
