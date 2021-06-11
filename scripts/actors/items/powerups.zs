@@ -783,7 +783,13 @@ class InventoryHolder play
 
 	Array<Inventory> heldItems;
 	Array<String> itemTypeNames; // For debugging only - Some items are apparently being lost in C3M0_B
+	Actor owner;
 	Inventory holder;
+	
+	int armor;
+	double savepercent;
+	double hexenarmorslots[5];
+	int health;
 
 	protected virtual EHold ShouldHoldItem(Inventory item)
 	{
@@ -847,6 +853,10 @@ class InventoryHolder play
 		{
 			HoldItem(deferredItemsToHold[i]);
 		}
+
+		// Save health amount
+		if (owner) { health = owner.health; }
+		else if (holder && holder.owner) { health = holder.owner.health; }
 	}
 
 	protected void HoldItem(Inventory curItem)
@@ -860,6 +870,18 @@ class InventoryHolder play
 		curItem.A_ChangeLinkFlags(1, 1); // Prevent players from picking it up.
 		curItem.SetStateLabel("Held");
 		heldItems.Push(curItem);
+
+		// Save armor values
+		if (curItem.GetClass() == "BasicArmor")
+		{
+			armor = curItem.Amount;
+			savepercent = BasicArmor(curItem).SavePercent;
+		}
+		else if (curItem.GetClass() == "HexenArmor")
+		{
+			let h = HexenArmor(curItem);
+			for (int s = 0; s < 5; s++) { hexenarmorslots[s] = h.slots[s]; }
+		}
 
 		if (boa_debugholdinventory) { Console.Printf("%s (%d/%d) (%d/%d)", curItem.GetClassName(), curItem.Amount, curItem.MaxAmount, prevAmount, prevMaxAmount); }
 	}
@@ -891,6 +913,36 @@ class InventoryHolder play
 			}
 			else if (boa_debugholdinventory) { Console.Printf("Unable to restore %s because it is null!", itemTypeNames[i]); }
 		}
+
+		// Restore armor values
+		BasicArmor a = BasicArmor(receiver.FindInventory("BasicArmor"));
+		if (!a)
+		{
+			receiver.GiveInventory("BasicArmor", 0);
+			a = BasicArmor(receiver.FindInventory("BasicArmor"));
+		}
+
+		if (a)
+		{ 
+			a.amount = armor;
+			a.SavePercent = savepercent;
+		}
+
+		HexenArmor h = HexenArmor(receiver.FindInventory("HexenArmor"));
+		if (!h)
+		{
+			receiver.GiveInventory("HexenArmor", 0);
+			h = HexenArmor(receiver.FindInventory("HexenArmor"));
+		}
+
+		if (h)
+		{
+			for (int s = 0; s < 5; s++) { h.slots[s] = hexenarmorslots[s]; }
+		}
+
+		// Restore health amount
+		receiver.health = health;
+		if (receiver.player) { receiver.player.health = health; }
 	}
 
 	protected void RestoreItem(Inventory item, Actor receiver)

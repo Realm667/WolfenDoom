@@ -294,6 +294,7 @@ class InventoryTracker : EventHandler
 		if (!tracker) { return; }
 
 		tracker.inventories[pnum] = New("InventoryHolder");
+		tracker.inventories[pnum].owner = mo;
 		tracker.inventories[pnum].HoldInventory(mo.Inv);
 	}
 
