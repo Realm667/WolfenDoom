@@ -603,6 +603,7 @@ class DisguiseToken : CustomInventory
 		DisguiseToken.HUDSprite "STF"; // Default to using the default mugshot
 		DropItem "NullWeapon"; // Misappropriate DropItem to list weapons that can be equipped without breaking disguise
 		DropItem "FakeID", 1; // Drop probability is used as a flag field; set to 1 to allow this weapon to be fired in disguise and to not alert enemies
+		+Inventory.NeverRespawn
 		+DisguiseToken.NoTarget; // If set, disguise hides player from Nazis.  If False, player just uses alternate skin but is fired at normally.
 		+DisguiseToken.AllowSprint; // If set, allows the player to sprint while disguised
 	}
@@ -788,6 +789,8 @@ class InventoryHolder play
 	
 	int armor;
 	double savepercent;
+	TextureID armorIcon;
+	bool armorHeld;
 	double hexenarmorslots[5];
 	int health;
 
@@ -819,16 +822,19 @@ class InventoryHolder play
 			// counts for all ammo types when taken away.
 			return HOLD_DEFERRED;
 		}
+		else if (armorHeld && (item is "BasicArmor" || item is "HexenArmor"))
+		{
+			// The player shouldn't have more than one set of armor, so this
+			// is just in case one sneaks into the player's inventory.
+			return DO_NOT_HOLD;
+		}
 		return HOLD;
 	}
 
 	void HoldInventory(Inventory head)
 	{
 		Inventory ii = head;
-		// Make sure all items are restored. Note that the first element in
-		// heldItems won't be reached in RestoreInventory.
-		itemTypeNames.Push(head.GetClassName());
-		heldItems.Push(head);
+		// Make sure all items, except those which should not be, are restored.
 		Array<Inventory> deferredItemsToHold;
 		while (ii != null)
 		{
@@ -857,6 +863,8 @@ class InventoryHolder play
 		// Save health amount
 		if (owner) { health = owner.health; }
 		else if (holder && holder.owner) { health = holder.owner.health; }
+
+		if (boa_debugholdinventory) { Console.Printf("Health: %d, Armor: %d %.3f", health, armor, savepercent); }
 	}
 
 	protected void HoldItem(Inventory curItem)
@@ -875,15 +883,21 @@ class InventoryHolder play
 		if (curItem.GetClass() == "BasicArmor")
 		{
 			armor = curItem.Amount;
+			armorIcon = curItem.Icon;
 			savepercent = BasicArmor(curItem).SavePercent;
+			armorHeld = true;
 		}
 		else if (curItem.GetClass() == "HexenArmor")
 		{
 			let h = HexenArmor(curItem);
+			armorIcon = curItem.Icon;
 			for (int s = 0; s < 5; s++) { hexenarmorslots[s] = h.slots[s]; }
+			armorHeld = true;
 		}
 
-		if (boa_debugholdinventory) { Console.Printf("%s (%d/%d) (%d/%d)", curItem.GetClassName(), curItem.Amount, curItem.MaxAmount, prevAmount, prevMaxAmount); }
+		if (boa_debugholdinventory) {
+			Console.Printf("%s (%d/%d) (%d/%d)", curItem.GetClassName(), curItem.Amount, curItem.MaxAmount, prevAmount, prevMaxAmount);
+		}
 	}
 
 	void RestoreInventory(Actor receiver)
@@ -903,7 +917,7 @@ class InventoryHolder play
 			curItem.DepleteOrDestroy();
 		}
 		// Iterate in reverse to put items in the same order they were before
-		for (int i = heldItems.Size() - 1; i; i--)
+		for (int i = heldItems.Size() - 1; i >= 0; i--)
 		{
 			Inventory ii = heldItems[i];
 			if (boa_debugholdinventory) { Console.Printf("Attempting to restore %s...", itemTypeNames[i]); }
@@ -916,28 +930,20 @@ class InventoryHolder play
 
 		// Restore armor values
 		BasicArmor a = BasicArmor(receiver.FindInventory("BasicArmor"));
-		if (!a)
-		{
-			receiver.GiveInventory("BasicArmor", 0);
-			a = BasicArmor(receiver.FindInventory("BasicArmor"));
-		}
-
 		if (a)
 		{ 
 			a.amount = armor;
 			a.SavePercent = savepercent;
+			a.Icon = armorIcon;
+			armorHeld = false;
 		}
 
 		HexenArmor h = HexenArmor(receiver.FindInventory("HexenArmor"));
-		if (!h)
-		{
-			receiver.GiveInventory("HexenArmor", 0);
-			h = HexenArmor(receiver.FindInventory("HexenArmor"));
-		}
-
 		if (h)
 		{
 			for (int s = 0; s < 5; s++) { h.slots[s] = hexenarmorslots[s]; }
+			a.Icon = armorIcon;
+			armorHeld = false;
 		}
 
 		// Restore health amount
@@ -994,6 +1000,7 @@ class RyanToken : DisguiseToken
 	{
 		if (toucher)
 		{
+			AttachToOwner(toucher); // So that health restoration works properly
 			let p = PlayerPawn(toucher);
 			if (p.InvSel)
 			{
@@ -1040,9 +1047,9 @@ class RyanToken : DisguiseToken
 					si = si.Next;
 				}
 			}
+			return true;
 		}
-
-		return Super.TryPickup(toucher);
+		return false;
 	}
 
 	override void DepleteOrDestroy()
@@ -1085,12 +1092,14 @@ class HQTrainingCourse : Inventory
 	Default
 	{
 		Inventory.MaxAmount 1;
+		+Inventory.NeverRespawn
 	}
 
 	override bool TryPickup(in out Actor toucher)
 	{
 		if (toucher)
 		{
+			AttachToOwner(toucher); // So that health restoration works properly
 			let p = PlayerPawn(toucher);
 			if (p.player && p.player.ReadyWeapon)
 			{
@@ -1125,8 +1134,9 @@ class HQTrainingCourse : Inventory
 					si = si.Next;
 				}
 			}
+			return true;
 		}
-		return Super.TryPickup(toucher);
+		return false;
 	}
 
 	override void DepleteOrDestroy()
