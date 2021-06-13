@@ -45,7 +45,8 @@ class BoAFootsteps : Inventory
 	{
 		Super.Tick();
 
-		if (!owner || owner.health <= 0) { Destroy(); return; }
+		if (!owner) { Destroy(); return; }
+		if (owner && owner.health <= 0) { return; }
 		if (!manager) { manager = EffectsManager.GetManager(); }
 
 		DoFootstepSounds();

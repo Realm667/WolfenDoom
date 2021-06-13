@@ -46,11 +46,11 @@ class BoAHeartBeat : Inventory
 	{
 		Super.Tick();
 
+		if (!owner) { Destroy(); return; }
+
  		// Don't let the heartbeat effect be visible/heard before it can be deactivated in maps where the ACS variable is set.
 		// Use the DORMANT flag to toggle the heartbeat effect on and off.  See InventoryClearHandler NetworkProcess and UITIck.
-		if (level.time < 35 || bDormant) { return; }
-
-		if (!owner || owner.health <= 0) { Destroy(); return; }
+		if (level.time < 35 || bDormant || owner.health <= 0) { return; }
 
 		DoHeartbeat();
 	}

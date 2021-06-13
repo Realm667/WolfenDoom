@@ -50,7 +50,8 @@ class BoASprinting : Inventory
 	{
 		Super.Tick();
 
-		if (!PlayerPawn(owner) || owner.health <= 0) { Destroy(); return; }
+		if (!PlayerPawn(owner)) { Destroy(); return; }
+		if (owner && owner.health <= 0) { return; }
 
 		DoSprintCheck();
 		DoExhaustionCheck();
