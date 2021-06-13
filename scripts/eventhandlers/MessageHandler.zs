@@ -1023,6 +1023,8 @@ class PersistentMessageHandler : StaticEventHandler
 		MessageHandler handler = MessageHandler(EventHandler.Find("MessageHandler"));
 		if (!handler) { return; }
 
+		handler.messages.Clear();
+
 		for (int m = 0; m < messages.Size(); m++)
 		{
 			if (messages[m])
