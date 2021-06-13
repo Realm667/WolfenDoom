@@ -873,6 +873,23 @@ class KeenPlayer : PlayerPawn
 
 		return false;
 	}
+
+	// Allow forcing the player to respawn in a map via ACS (equivalent to pressing 'use' when dead)
+	static void ForceRespawn(Actor mo)
+	{
+		console.printf(mo.getclassname());
+		if (!KeenPlayer(mo)) { return; }
+
+		KeenPlayer(mo).Respawn();
+	}
+
+	void Respawn()
+	{
+		console.printf("respawning?");
+		player.cls = null;
+		player.playerstate = (multiplayer || level.AllowRespawn || sv_singleplayerrespawn || G_SkillPropertyInt(SKILLP_PlayerRespawn)) ? PST_REBORN : PST_ENTER;
+		if (special1 > 2) { special1 = 0; }
+	}
 }
 
 class Billy : PowerMorph

@@ -33,8 +33,10 @@ class KeenMessage
 	int fadeintime, fadeouttime;
 	double fadealpha, fadetargetalpha;
 	int showtics;
+	String options;
+	bool active;
 
-	ui static void Init(ClassicMessageBox parent, String mtext, int malign = 0, String mgraphic = "", int mgraphicalign = 0, int mautoclose = -1, int mwidth = 26, int mheight = 8, double fadealpha = 0.0, double fadetargetalpha = 1.0, int fadeintime = 0, int fadeouttime = 0)
+	ui static void Init(ClassicMessageBox parent, String mtext, int malign = 0, String mgraphic = "", int mgraphicalign = 0, int mautoclose = -1, int mwidth = 26, int mheight = 8, double fadealpha = 0.0, double fadetargetalpha = 1.0, int fadeintime = 0, int fadeouttime = 0, String options = "", bool active = false)
 	{
 		KeenMessage msg = New("KeenMessage");
 
@@ -51,6 +53,8 @@ class KeenMessage
 		msg.fadeintime = fadeintime;
 		msg.fadeouttime = fadeouttime;
 		msg.showtics = 70;
+		msg.options = options;
+		msg.active = active;
 
 		parent.messages.Push(msg);
 	}
@@ -68,14 +72,14 @@ class ClassicMessageBox : MessageBoxMenu
 	String message, colorprefix;
 	int align;
 	int graphicalign;
-	String graphic;
+	String graphic, options;
 	TextureID tex;
 	int width, height;
 
 	String cursor;
 	int blinktime;
 
-	bool silent;
+	bool silent, active;
 	int autoclose;
 	int cmds;
 
@@ -83,11 +87,11 @@ class ClassicMessageBox : MessageBoxMenu
 	Array<KeenMessage> messages;
 
 	int curstate;
-	int fadetic, ticcount;
+	int fadetic, ticcount, ticks;
 	int fadeintime, fadeouttime;
 	double fadealpha, fadetargetalpha;
 
-	int showtics;
+	int showtics, optioncount, retval;
 
 	override void Init(Menu parent, String msg, int messagemode, bool StartSound, Name cmd, voidptr native_handler)
 	{
@@ -112,6 +116,7 @@ class ClassicMessageBox : MessageBoxMenu
 		bottomright = TexMan.CheckForTexture(prefix .. "BR", TexMan.Type_Any);
 
 		if (messagemode > 0) { blinktime = -1; }
+		retval = -1;
 
 		autoclose = -1;
 	}
@@ -126,7 +131,7 @@ class ClassicMessageBox : MessageBoxMenu
 		return input;
 	}
 
-	static ClassicMessageBox PrintMessage(String text, int align = 0, String graphic = "", int graphicalign = 0, int autoclose = -1, int width = 26, int height = 8, double fadealpha = 0.0, double fadetargetalpha = 1.0, int fadeintime = 0, int fadeouttime = 0)
+	static ClassicMessageBox PrintMessage(String text, int align = 0, String graphic = "", int graphicalign = 0, int autoclose = -1, int width = 26, int height = 8, double fadealpha = 0.0, double fadetargetalpha = 1.0, int fadeintime = 0, int fadeouttime = 0, String options = "", bool active = false)
 	{
 		ClassicMessageBox msg = ClassicMessageBox(GetCurrentMenu());
 
@@ -139,7 +144,7 @@ class ClassicMessageBox : MessageBoxMenu
 		msg.fnt = Font.GetFont("Classic");
 		msg.colorprefix = "\c[TrueBlack]";
 
-		KeenMessage.Init(msg, text, align, graphic, graphicalign, autoclose, width * 8 + 16, height * 8 + 16, fadealpha, fadetargetalpha, fadeintime, fadeouttime);
+		KeenMessage.Init(msg, text, align, graphic, graphicalign, autoclose, width * 8 + 16, height * 8 + 16, fadealpha, fadetargetalpha, fadeintime, fadeouttime, options, active);
 
 		msg.Init(null, text, true, false);
 
@@ -160,6 +165,12 @@ class ClassicMessageBox : MessageBoxMenu
 		msg.fadealpha = msg.messages[msg.index - 1].fadealpha;
 		msg.fadetargetalpha = msg.messages[msg.index - 1].fadetargetalpha;
 		msg.fadetic = (msg.messages[msg.index - 1].fadeintime || msg.messages[msg.index - 1].fadeouttime) ? gametic : 0;
+		msg.options = msg.messages[msg.index - 1].options;
+		msg.active = msg.messages[msg.index - 1].active;
+
+		msg.mMessageMode = !options.length();
+		if (msg.active) { menuactive = OnNoPause; }
+		else { menuactive = On; }
 
 		msg.DontDim = true;
 		msg.DontBlur = true;
@@ -182,6 +193,8 @@ class ClassicMessageBox : MessageBoxMenu
 
 	override void Ticker()
 	{
+		ticks++;
+
 		if (showtics > 0) { showtics--; }
 
 		if (autoclose > 0)
@@ -192,7 +205,12 @@ class ClassicMessageBox : MessageBoxMenu
 		{
 			index++;
 
-			if (index > messages.Size())
+			if (retval > -1)
+			{
+				if (menuactive == Menu.OnNoPause) { retval = -1; } // Clear the value on second pass
+				menuactive = Menu.OnNoPause; // Let scripts (e.g., Level exit) run in the background
+			}
+			else if (index > messages.Size())
 			{
 				if (!fadealpha)
 				{
@@ -223,6 +241,12 @@ class ClassicMessageBox : MessageBoxMenu
 				fadetargetalpha = messages[index - 1].fadetargetalpha;
 				fadetic = (messages[index - 1].fadeintime || messages[index - 1].fadeouttime) ? gametic : 0;
 				showtics = messages[index - 1].showtics;
+				options = messages[index - 1].options;
+				active = messages[index - 1].active;
+
+				mMessageMode = !options.length();
+				if (active) { menuactive = OnNoPause; }
+				else { menuactive = On; }
 
 				cmds = players[consoleplayer].cmd.buttons;
 			}
@@ -233,7 +257,7 @@ class ClassicMessageBox : MessageBoxMenu
 		if (fadetic) { TickFade(); }
 	}
 
-	void DrawMessage(String text, int size = 8, color clr = 0x0, String colorprefix = "")
+	virtual void DrawMessage(String text, int size = 8, color clr = 0x0, String colorprefix = "")
 	{
 		if (!top || !bottom || !left || !right || !topleft || !topright || !bottomleft || !bottomright) { return; }
 
@@ -253,11 +277,26 @@ class ClassicMessageBox : MessageBoxMenu
 		int c = message.Count();
 
 		int fontheight = fnt.GetHeight();
+		if (options.length()) { fontheight = fontheight * 4 / 3; }
 
 		for (int i = 0; i < c; i++)
 		{
 			w = max(w, message.StringWidth(i) + (i == (c - 1) ? blinktime > -1 ? fnt.StringWidth("_") : 0 : 0));
 			h += fontheight;
+		}
+
+		if (options.length())
+		{
+			int index = 1;
+			String lookup = options .. index;
+			while (!(StringTable.Localize(lookup, false) ~== lookup))
+			{
+				lookup = options .. ++index;
+			}
+
+			optioncount = index - 1;
+
+			h += fontheight * optioncount + fontheight / 3;
 		}
 
 		int textheight = h;
@@ -279,17 +318,7 @@ class ClassicMessageBox : MessageBoxMenu
 		ws -= int(2 * size * CleanXfac);
 		hs -= int(2 * size * CleanYfac);
 
-		screen.Dim(clr, 1.0, x, y, ws, hs);
-
-		screen.DrawTexture(top, true, x, y - int(size * CleanYfac), DTA_CleanNoMove, true, DTA_DestWidth, ws, DTA_DestHeight, int(size * CleanYfac));
-		screen.DrawTexture(bottom, true, x, y + hs, DTA_CleanNoMove, true, DTA_DestWidth, ws, DTA_DestHeight, int(size * CleanYfac));
-		screen.DrawTexture(left, true, x - int(size * CleanXfac), y, DTA_CleanNoMove, true, DTA_DestWidth, int(size * CleanXfac), DTA_DestHeight, hs);
-		screen.DrawTexture(right, true, x + ws, y, DTA_CleanNoMove, true, DTA_DestWidth, int(size * CleanXfac), DTA_DestHeight, hs);
-
-		screen.DrawTexture(topleft, true, x - int(size * CleanXfac), y - int(size * CleanYfac), DTA_CleanNoMove, true, DTA_DestWidth, int(size * CleanXfac), DTA_DestHeight, int(size * CleanYfac));
-		screen.DrawTexture(topright, true, x + ws, y - int(size * CleanYfac), DTA_CleanNoMove, true, DTA_DestWidth, int(size * CleanXfac), DTA_DestHeight, int(size * CleanYfac));
-		screen.DrawTexture(bottomleft, true, x - int(size * CleanXfac), y + hs, DTA_CleanNoMove, true, DTA_DestWidth, int(size * CleanXfac), DTA_DestHeight, int(size * CleanYfac));
-		screen.DrawTexture(bottomright, true, x + ws, y + hs, DTA_CleanNoMove, true, DTA_DestWidth, int(size * CleanXfac), DTA_DestHeight, int(size * CleanYfac));
+		DrawFrame(x, y, ws, hs, clr);
 
 		int xoffset = 0;
 
@@ -331,6 +360,57 @@ class ClassicMessageBox : MessageBoxMenu
 			drawx = 160 + xoffset;
 			drawy += fontheight;
 		}
+
+		if (options.length())
+		{
+			drawy += fontheight / 2;
+
+			int index = 1;
+			String lookup = options .. index;
+			String value = StringTable.Localize(lookup, false);
+			while (!(value ~== lookup))
+			{
+				screen.DrawText(fnt, 0, drawx - fnt.StringWidth(value) / 2, drawy, colorprefix .. value, DTA_Clean, true);
+
+				if (index == messageSelection + 1)
+				{
+					Color clr = (ticks % 36 < 18) ? 0xFF5555 : 0x0000AA;
+
+					int boxl = x + 8;
+					int boxt = int((drawy + 20) * CleanYFac);
+					int boxr = boxl + ws - 16;
+					int boxb = boxt + int(fontheight * CleanYFac - 2);
+					
+					screen.DrawThickLine(boxl, boxt, boxr, boxt, 6, clr);
+					screen.DrawThickLine(boxl, boxb, boxr, boxb, 6, clr);
+					screen.DrawThickLine(boxl + 3, boxt, boxl + 3, boxb, 6, clr);
+					screen.DrawThickLine(boxr - 3, boxt, boxr - 3, boxb, 6, clr);
+				}
+
+				drawy += fontheight;
+
+				lookup = options .. ++index;
+				value = StringTable.Localize(lookup, false);
+			}
+		}
+	}
+
+	void DrawFrame(int x, int y, int ws, int hs, int clr = 0xFFFFFF)
+	{
+		Vector2 texsize = TexMan.GetScaledSize(top);
+		int size = int(texsize.x);
+
+		screen.Dim(clr, 1.0, x, y, ws, hs);
+
+		screen.DrawTexture(top, true, x, y - int(size * CleanYfac), DTA_CleanNoMove, true, DTA_DestWidth, ws, DTA_DestHeight, int(size * CleanYfac));
+		screen.DrawTexture(bottom, true, x, y + hs, DTA_CleanNoMove, true, DTA_DestWidth, ws, DTA_DestHeight, int(size * CleanYfac));
+		screen.DrawTexture(left, true, x - int(size * CleanXfac), y, DTA_CleanNoMove, true, DTA_DestWidth, int(size * CleanXfac), DTA_DestHeight, hs);
+		screen.DrawTexture(right, true, x + ws, y, DTA_CleanNoMove, true, DTA_DestWidth, int(size * CleanXfac), DTA_DestHeight, hs);
+
+		screen.DrawTexture(topleft, true, x - int(size * CleanXfac), y - int(size * CleanYfac), DTA_CleanNoMove, true, DTA_DestWidth, int(size * CleanXfac), DTA_DestHeight, int(size * CleanYfac));
+		screen.DrawTexture(topright, true, x + ws, y - int(size * CleanYfac), DTA_CleanNoMove, true, DTA_DestWidth, int(size * CleanXfac), DTA_DestHeight, int(size * CleanYfac));
+		screen.DrawTexture(bottomleft, true, x - int(size * CleanXfac), y + hs, DTA_CleanNoMove, true, DTA_DestWidth, int(size * CleanXfac), DTA_DestHeight, int(size * CleanYfac));
+		screen.DrawTexture(bottomright, true, x + ws, y + hs, DTA_CleanNoMove, true, DTA_DestWidth, int(size * CleanXfac), DTA_DestHeight, int(size * CleanYfac));
 	}
 
 	override bool OnUIEvent(UIEvent ev)
@@ -385,20 +465,27 @@ class ClassicMessageBox : MessageBoxMenu
 	{
 		if (mMessageMode == 0)
 		{
-			if (mkey == MKEY_Up || mkey == MKEY_Down)
+			if (mkey == MKEY_Up)
 			{
 				if (!silent) { MenuSound("menu/cursor"); }
-				messageSelection = !messageSelection;
+				if (--messageSelection < 0) { messageSelection = optioncount - 1; }
+				return true;
+			}
+			else if (mkey == MKEY_Down)
+			{
+				if (!silent) { MenuSound("menu/cursor"); }
+				if (++messageSelection > optioncount - 1) { messageSelection = 0; }
 				return true;
 			}
 			else if (mkey == MKEY_Enter)
 			{
-				// 0 is yes, 1 is no
+				retval = messageSelection;
 				HandleResult(!messageSelection);
 				return true;
 			}
 			else if (mkey == MKEY_Back)
 			{
+				retval = 0;
 				HandleResult(false);
 				return true;
 			}
@@ -473,6 +560,11 @@ class ClassicMessageBox : MessageBoxMenu
 				if (!silent) { CloseSound(); }
 			}
 		}
+		else
+		{
+			autoclose = 2;
+			if (!silent) { CloseSound(); }
+		}
 	}
 
 	void DrawFade()
@@ -521,5 +613,14 @@ class ClassicMessageBox : MessageBoxMenu
 				}
 				break;
 		}
+	}
+
+	static int GetSelection()
+	{
+		ClassicMessageBox msg = ClassicMessageBox(GetCurrentMenu());
+
+		if (!msg) { return -1; }
+
+		return msg.retval;
 	}
 }
