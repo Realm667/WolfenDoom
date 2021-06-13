@@ -28,6 +28,7 @@ class DamageInfo
 	Vector3 attackerpos;
 	int distance;
 	int angle;
+	int damage;
 	int timeout;
 	double alpha;
 	Color clr;
@@ -101,7 +102,8 @@ class DamageTracker : EventHandler
 					info.angle = int(360 - player.mo.deltaangle(player.mo.angle, atan2(-player.mo.vel.y, -player.mo.vel.x)));
 				}
 				info.distance = clamp(int(56 - level.Vec3Diff(player.mo.pos, info.attackerpos).length() / 64), 0, 64);
-				info.timeout = level.time + min(e.damage * 4, 100);
+				info.damage = min(info.damage + e.damage * 4, 140);
+				info.timeout = level.time + info.damage;
 			}
 
 			if (achievements) { achievements.damaged[player.mo.PlayerNumber()] = true; }
@@ -114,6 +116,8 @@ class DamageTracker : EventHandler
 
 		for (int i = 0; i < events.Size(); i++)
 		{
+			if (events[i].damage > 0) { events[i].damage--; }
+
 			if (events[i].timeout < level.time) { events.Delete(i); }
 			else if (events[i].timeout < level.time + 35) { events[i].alpha = (events[i].timeout - level.time) / 35.0; }
 			else if (events[i].alpha < 1.0) { events[i].alpha = min(1.0, events[i].alpha + 0.1); }
