@@ -409,25 +409,25 @@ class AchievementTracker : EventHandler
 		ACH_SPRINT,			// Exhaust stamina 50 times (total across all levels)
 		ACH_LIQUIDDEATH = 20,
 		ACH_PESTS,			// Die to spiders, bats, or rats
-		ACH_ACCURACY,		// 75% accuracy or higher when over 100 player bullet tracers have been fired
-		ACH_ZOMBIES,		// Kill 500 zombies
-		ACH_IRONMAN,		// Collect all Eisenmann files
-		ACH_BEAMMEUP = 25,	// Collect all Mayan artifacts
-		ACH_FULLARSENAL,	// Collect all (non-Astrostein or Keen) weapons at least once
-		ACH_COMBATMEDIC,	// Use 20 field kits
-		ACH_TREASUREHUNTER,	// Open 20 supply chests
-		ACH_GOLDDIGGER,		// Pick up 1000 gold
-		ACH_STAYDEAD = 30,	// Kill 50 wounded enemies
-		ACH_GIBEMALL,		// Gib 100 Nazis
-		ACH_NEAT,			// Collect all 3 Keen cartridges
-		ACH_ADDICTED,		// Play BoA for more than 10 hours
+		ACH_ACCURACY,		// 75% accuracy or higher when over 100 player bullet tracers have been fired (total across all levels)
+		ACH_ZOMBIES,		// Kill 500 zombies (total across all levels)
+		ACH_IRONMAN,		// Collect all Eisenmann files (across all levels)
+		ACH_BEAMMEUP = 25,	// Collect all Mayan artifacts (across all levels)
+		ACH_FULLARSENAL,	// Collect all (non-Astrostein or Keen) weapons at least once (across all levels)
+		ACH_COMBATMEDIC,	// Use 20 field kits (total across all levels)
+		ACH_TREASUREHUNTER,	// Open 20 supply chests (total across all levels)
+		ACH_GOLDDIGGER,		// Pick up 1000 gold (total across all levels)
+		ACH_STAYDEAD = 30,	// Kill 50 wounded enemies (total across all levels)
+		ACH_GIBEMALL,		// Gib 100 Nazis (total across all levels)
+		ACH_NEAT,			// Collect all 3 Keen cartridges (total across all levels)
+		ACH_ADDICTED,		// Play BoA for more than 10 hours (total across all levels)
 
-		ACH_LASTACHIEVEMENT = 49, // Marker index for the end of the achievement list
+		ACH_LASTACHIEVEMENT, // Marker index for the end of the list of regular achievements
 
 		// These are tracked internally but not reported as achievements
 		// The INTERMAP display for awards in BJ's room uses these to dynamically
 		// spawn the awards if the player has picked them up at some point
-		ACH_KEENAWARD,		// Found the Keenaward
+		ACH_KEENAWARD = 50,		// Found the Keenaward
 		ACH_CACOWARD,		// Found the Cacoward
 		ACH_NAZIWARD,		// Found the Naziward
 	};
@@ -503,7 +503,17 @@ class AchievementTracker : EventHandler
 		}
 		else if (e.Name == "printachievements")
 		{
-			console.printf("%s", BitString(false));
+			for (int a = 0; a < ACH_LASTACHIEVEMENT; a++)
+			{
+				String title = ZScriptTools.StripColorCodes(GetTitle(a));
+				title.Replace(String.Format("%c", 0x0A), "\cC - ");
+
+				if (a < records.Size() && records[a]) { title = "\cJ" .. title; }
+				else { title = "\cR" .. title; }
+
+				console.printf(title);
+			}
+			
 		}
 	}
 
@@ -708,17 +718,22 @@ class AchievementTracker : EventHandler
 
 		if (!silent)
 		{
-			// Look up the achievement description string
-			String lookup = String.Format("ACHIEVEMENT%i", a);
-			String text = StringTable.Localize(lookup, false);
-			if (lookup ~== text) { text = String.Format("Completed achievement %i", a); }
-
 			String image = String.Format("ACHVMT%02i", a);
 
 			// Display the message
-			if (a == ACH_NEAT) { AchievementMessage.Init(players[pnum].mo, text, image, "ckeen/secret", "B_", 0xFFFFFF, "Classic", "M"); }
-			else { AchievementMessage.Init(players[pnum].mo, text, image, "misc/achievement"); }
+			if (a == ACH_NEAT) { AchievementMessage.Init(players[pnum].mo, GetTitle(a), image, "ckeen/secret", "B_", 0xFFFFFF, "Classic", "M"); }
+			else { AchievementMessage.Init(players[pnum].mo, GetTitle(a), image, "misc/achievement"); }
 		}
+	}
+
+	// Look up the achievement description string
+	String GetTitle(int a)
+	{
+		String lookup = String.Format("ACHIEVEMENT%i", a);
+		String text = StringTable.Localize(lookup, false);
+		if (lookup ~== text) { text = String.Format("Completed undefined achievement (%i)", a); }
+
+		return text;
 	}
 
 	String BitString(int encode = true, int start = 0, int end = -1)
