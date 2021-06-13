@@ -244,57 +244,82 @@ class GoldBar : SingleCoin
 	}
 }
 
-class Naziward : SingleCoin
+class Award : SingleCoin
+{
+	int number;
+
+	Property Number:number;
+
+	Default
+	{
+		Scale 0.12;
+		Inventory.Amount 10;
+		Inventory.PickupSound "treasure/chest";
+	}
+
+	override bool TryPickup (in out Actor toucher)
+	{
+		bool ret = Super.TryPickup(toucher);
+
+		if (ret && toucher && toucher.player)
+		{
+			AchievementTracker.CheckAchievement(toucher.PlayerNumber(), AchievementTracker.ACH_KEENAWARD + number);
+		}
+
+		return ret;
+	}
+}
+
+class Naziward : Award
 {
 	Default
 	{
 		//$Title Treasure (Easteregg, Naziward, 10pts)
 		Scale 0.2;
 		Inventory.PickupMessage "$GOLDWRD";
-		Inventory.Amount 10;
 		Inventory.PickupSound "treasure/cup";
+		Award.Number 2;
 	}
+
 	States
 	{
-	Spawn:
-		NZWR A -1 LIGHT("TRESLITE");
-		Stop;
+		Spawn:
+			NZWR A -1 LIGHT("TRESLITE");
+			Stop;
 	}
 }
 
-class Cacoward : SingleCoin
+class Cacoward : Award
 {
 	Default
 	{
 		//$Title Treasure (Easteregg, Cacoward, 10pts)
-		Scale 0.12;
-		Inventory.PickupMessage "$GOLDWRD";
-		Inventory.Amount 10;
-		Inventory.PickupSound "treasure/chest";
+		Inventory.PickupMessage "$CACOWARD";
+		Award.Number 1;
 	}
+
 	States
 	{
-	Spawn:
-		CACW A -1 LIGHT("TRESLITE");
-		Stop;
+		Spawn:
+			CACW A -1 LIGHT("TRESLITE");
+			Stop;
 	}
 }
 
-class Keenaward : SingleCoin
+class Keenaward : Award
 {
 	Default
 	{
 		//$Title Treasure (Easteregg, Keenaward, 10pts)
-		Scale 0.12;
-		Inventory.PickupMessage "$GOLDWRD";
-		Inventory.Amount 10;
-		Inventory.PickupSound "treasure/chest";
+		Inventory.PickupMessage "$KEENAWARD";
+		Award.Number 0;
 	}
+
 	States
 	{
-	Spawn:
-		CKWR A -1 LIGHT("TRESLITE");
-		Stop;
+		Spawn:
+			CKWR A -1 LIGHT("TRESLITE");
+			Stop;
 	}
 }
 

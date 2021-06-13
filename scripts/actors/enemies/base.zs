@@ -2488,6 +2488,8 @@ class Nazi : Base
 
 			// Achievement for killing a loper only using the sword
 			if (NaziLoper(self) && inflictor is "SwordPuff" && !NaziLoper(self).noachievement[source.PlayerNumber()]) { AchievementTracker.CheckAchievement(source.PlayerNumber(), AchievementTracker.ACH_CHEVALIER); }
+
+			if ((health < GetGibHealth() || bExtremeDeath) && !bNoExtremeDeath) {  AchievementTracker.CheckAchievement(source.PlayerNumber(), AchievementTracker.ACH_GIBEMALL); }
 		}
 
 		// Achievement for killing three enemies with the same placeable mine

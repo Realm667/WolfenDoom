@@ -2528,74 +2528,82 @@ class WGuard_Wounded : Nazi //ozy81
 {
 	Default
 	{
-	//$Category Monsters (BoA)/Wounded Soldiers
-	//$Title Wounded Guard (Pistol, Wehrmacht)
-	//$Color 4
-	Base.NoMedicHeal;
-	Nazi.ZombieVariant "";
-	Health 5;
-	Speed 0;
-	Obituary "$WNDWGUARD";
-	MONSTER;
-	-SOLID
-	+FLOORCLIP
-	+LOOKALLAROUND
-	+NOPAIN
+		//$Category Monsters (BoA)/Wounded Soldiers
+		//$Title Wounded Guard (Pistol, Wehrmacht)
+		//$Color 4
+		Base.NoMedicHeal;
+		Nazi.ZombieVariant "";
+		Health 5;
+		Speed 0;
+		Obituary "$WNDWGUARD";
+		MONSTER;
+		-SOLID
+		+FLOORCLIP
+		+LOOKALLAROUND
+		+NOPAIN
 	}
+
 	States
 	{
-	Spawn:
-		GRD2 O 0;
-		"####" "#" 0 A_RemoveMaster;
-		Goto Spawn.Loop;
-	Spawn.Loop:
-		"####" O 150 { A_Look(); user_count4 = 0; }
-		Loop;
-	See:
-		"####" O random(175, 350);
-		// Prevent wounded guards from blocking you
-		"####" O 7 A_CheckRange(64, 1, true);
-		Goto See;
-		"####" PQ 1 {A_SetTics(random(5,7)); bSolid = TRUE; bPushable = TRUE;}
-	SeeLoop:
-		"####" R 1 { A_Chase(); user_count4 += 1; if (user_count4 > 50) { A_Die(); } }
-		"####" R 1 A_SetTics(random(1,14));
-		Loop;
-	Idle:
-		// A_Chase sets this state if this guy doesn't have a target
-		// see src/playsim/p_enemy.cpp line 2343
-		// and src/playsim/p_mobj.cpp line 7253
-		"####" "#" 0 A_Jump(256, "Spawn");
-	Missile:
-		"####" S 7 A_FaceTarget;
-		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
-		"####" T 7 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",27,1,random(-8,8));
-		"####" T 0 A_SpawnItemEx("Casing9mm", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" S 14;
-		"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
-		"####" T 7 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",27,1,random(-16,16));
-		"####" T 0 A_SpawnItemEx("Casing9mm", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" T 0 {user_count++; if(user_count > 3) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" S 14;
-		Goto SeeLoop;
-	Reload:
-		"####" R 0 {bNoPain = TRUE;}
-		"####" R 30 A_StartSound("luger/reload", CHAN_ITEM, 0, frandom (0.3,0.6), ATTN_NORM);
-		"####" R 0 A_SpawnItemEx("Casing9mm", 1, 0, 56, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" R 0 {bNoPain = FALSE;}
-		"####" "#" 0 A_Jump(256, "SeeLoop");
-	Death:
-		"####" U 7;
-		"####" V 5 A_UnblockAndDrop;
-		"####" W 5;
-		"####" M -1 {A_DropItem("Ammo9mm",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
-		Stop;
-	Death_NoCount:
-		"####" U 7;
-		"####" V 5 A_UnblockAndDrop;
-		"####" W 5;
-		"####" M -1;
-		Stop;
+		Spawn:
+			GRD2 O 0;
+			"####" "#" 0 A_RemoveMaster;
+			Goto Spawn.Loop;
+		Spawn.Loop:
+			"####" O 150 { A_Look(); user_count4 = 0; }
+			Loop;
+		See:
+			"####" O random(175, 350);
+			// Prevent wounded guards from blocking you
+			"####" O 7 A_CheckRange(64, 1, true);
+			Goto See;
+			"####" PQ 1 {A_SetTics(random(5,7)); bSolid = TRUE; bPushable = TRUE;}
+		SeeLoop:
+			"####" R 1 { A_Chase(); user_count4 += 1; if (user_count4 > 50) { A_Die(); } }
+			"####" R 1 A_SetTics(random(1,14));
+			Loop;
+		Idle:
+			// A_Chase sets this state if this guy doesn't have a target
+			// see src/playsim/p_enemy.cpp line 2343
+			// and src/playsim/p_mobj.cpp line 7253
+			"####" "#" 0 A_Jump(256, "Spawn");
+		Missile:
+			"####" S 7 A_FaceTarget;
+			"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
+			"####" T 7 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",27,1,random(-8,8));
+			"####" T 0 A_SpawnItemEx("Casing9mm", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+			"####" S 14;
+			"####" T 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
+			"####" T 7 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",27,1,random(-16,16));
+			"####" T 0 A_SpawnItemEx("Casing9mm", 1,0,27, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+			"####" T 0 {user_count++; if(user_count > 3) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
+			"####" S 14;
+			Goto SeeLoop;
+		Reload:
+			"####" R 0 {bNoPain = TRUE;}
+			"####" R 30 A_StartSound("luger/reload", CHAN_ITEM, 0, frandom (0.3,0.6), ATTN_NORM);
+			"####" R 0 A_SpawnItemEx("Casing9mm", 1, 0, 56, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+			"####" R 0 {bNoPain = FALSE;}
+			"####" "#" 0 A_Jump(256, "SeeLoop");
+		Death:
+			"####" U 7;
+			"####" V 5 A_UnblockAndDrop;
+			"####" W 5;
+			"####" M -1 {A_DropItem("Ammo9mm",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
+			Stop;
+		Death_NoCount:
+			"####" U 7;
+			"####" V 5 A_UnblockAndDrop;
+			"####" W 5;
+			"####" M -1;
+			Stop;
+	}
+
+	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
+	{
+		AchievementTracker.CheckAchievement(source.PlayerNumber(), AchievementTracker.ACH_STAYDEAD);
+
+		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
 	}
 }
 

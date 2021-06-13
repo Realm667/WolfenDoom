@@ -770,16 +770,23 @@ class CountdownMessage : MessageBase
 // Message when achievements are awarded
 class AchievementMessage : MessageBase
 {
-	String image, snd;
+	String image, snd, bkg;
 	double posx, posy;
 	Vector2 destsize;
+	Font fnt;
+	Color clr;
+	String fontcolor;
 
-	static int Init(Actor mo, String text, String image = "", String snd = "")
+	static int Init(Actor mo, String text, String image = "", String snd = "", String bkg = "BG_", Color clr = 0x000000, String fnt = "", String fontcolor = "C")
 	{
 		AchievementMessage msg = AchievementMessage(MessageBase.Init(mo, text, text, 18, 18, "AchievementMessage", 5, MSG_ALLOWMULTIPLE | MSG_PERSIST));
 		msg.image = image;
 		msg.snd = snd;
 		msg.delay = 2;
+		msg.bkg = bkg;
+		msg.clr = clr;
+		msg.fnt = !fnt.length() ? SmallFont : Font.GetFont(fnt);
+		msg.fontcolor = fontcolor;
 
 		return msg.GetTime();
 	}
@@ -802,8 +809,8 @@ class AchievementMessage : MessageBase
 
 		String brokentext;
 		BrokenString lines;
-		[brokentext, lines] = BrokenString.BreakString(text, width, false, "C", SmallFont);
-		int lineheight = int(SmallFont.GetHeight());
+		[brokentext, lines] = BrokenString.BreakString(text, width, false, fontcolor, fnt);
+		int lineheight = int(fnt.GetHeight());
 
 		Vector2 hudscale = StatusBar.GetHUDScale();
 
@@ -812,13 +819,13 @@ class AchievementMessage : MessageBase
 
 		double boxheight = max(imgsize, lines.Count() * lineheight) + margin * 2;
 
-		DrawToHUD.DrawFrame("BG_", x - margin, y - margin, boxwidth + margin * 2, boxheight + margin * 2, 0x000000, alpha, alpha);
+		DrawToHUD.DrawFrame(bkg, x - margin, y - margin, boxwidth + margin * 2, boxheight + margin * 2, clr, alpha, alpha);
 
 		if (tex.IsValid()) { DrawToHUD.DrawTexture(tex, (x + margin + imgsize / 2, y + margin + imgsize / 2), alpha, 1.0); }
 
 		for (int l = 0; l <= lines.Count(); l++)
 		{
-			DrawToHUD.DrawText(lines.StringAt(l), (x + imgsize + margin * 3, y), SmallFont, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
+			DrawToHUD.DrawText(lines.StringAt(l), (x + imgsize + margin * 3, y), fnt, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
 			y += lineheight;
 		}
 

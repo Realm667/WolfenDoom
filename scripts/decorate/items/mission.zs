@@ -218,58 +218,90 @@ class ArtifactEgyptian_H2 : CompassItem
 	}
 }
 
-class Cartridge51 : CompassItem
+class Cartridge : CompassItem
+{
+	int number;
+
+	Property Number:number;
+
+	Default
+	{
+		Scale 0.25;
+		Inventory.PickupSound "ckeen/pickup";
+	}
+
+	override bool TryPickup (in out Actor toucher)
+	{
+		bool ret = Super.TryPickup(toucher);
+
+		if (ret && toucher && toucher.player)
+		{
+			AchievementTracker achievements = AchievementTracker(EventHandler.Find("AchievementTracker"));
+			if (achievements)
+			{
+				achievements.cartridges[toucher.PlayerNumber()][number] = true;
+				AchievementTracker.CheckAchievement(toucher.PlayerNumber(), AchievementTracker.ACH_NEAT);
+			}
+		}
+
+		return ret;
+	}
+}
+
+class Cartridge51 : Cartridge
 {
 	Default
 	{
 		//$Title Cartridge (for SM01)
 		Tag "$TAGCART1";
-		Scale 0.25;
 		Inventory.Icon "SNSCA0";
 		Inventory.PickupMessage "$KEENCART1";
-		Inventory.PickupSound "ckeen/pickup";
+		Cartridge.Number 0;
 	}
+
 	States
 	{
-	Spawn:
-		SNSC B -1 NODELAY;
-		Stop;
+		Spawn:
+			SNSC B -1 NODELAY;
+			Stop;
 	}
 }
 
-class Cartridge52 : CompassItem
+class Cartridge52 : Cartridge
 {
 	Default
 	{
 		//$Title Cartridge (for SM02)
 		Tag "$TAGCART2";
-		Scale 0.25;
 		Inventory.Icon "SNSCC0";
 		Inventory.PickupMessage "$KEENCART2";
+		Cartridge.Number 1;
 	}
+
 	States
 	{
-	Spawn:
-		SNSC D -1 NODELAY;
-		Stop;
+		Spawn:
+			SNSC D -1 NODELAY;
+			Stop;
 	}
 }
 
-class Cartridge53 : CompassItem
+class Cartridge53 : Cartridge
 {
 	Default
 	{
 		//$Title Cartridge (for SM03)
 		Tag "$TAGCART3";
-		Scale 0.25;
 		Inventory.Icon "SNSCE0";
 		Inventory.PickupMessage "$KEENCART3";
+		Cartridge.Number 2;
 	}
+
 	States
 	{
-	Spawn:
-		SNSC F -1 NODELAY;
-		Stop;
+		Spawn:
+			SNSC F -1 NODELAY;
+			Stop;
 	}
 }
 

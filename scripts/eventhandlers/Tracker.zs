@@ -350,6 +350,13 @@ class AchievementTracker : EventHandler
 	int zombies[MAXPLAYERS];
 	int playtime[MAXPLAYERS];
 	bool weapons[MAXPLAYERS][16];
+	int fieldkits[MAXPLAYERS];
+	int chests[MAXPLAYERS];
+	int deadwounded[MAXPLAYERS];
+	int gibs[MAXPLAYERS];
+	int coins[MAXPLAYERS];
+	int cartridges[MAXPLAYERS][3];
+	int awards[MAXPLAYERS][10];
 
 	static const Class<Weapon> weaponlist[] = { 
 		"KnifeSilent",
@@ -406,13 +413,18 @@ class AchievementTracker : EventHandler
 		ACH_IRONMAN,		// Collect all Eisenmann files
 		ACH_BEAMMEUP = 25,	// Collect all Mayan artifacts
 		ACH_FULLARSENAL,	// Collect all (non-Astrostein or Keen) weapons at least once
-		ACH_COMBATMEDIC,
-		ACH_TREASUREHUNTER,
-		ACH_GOLDDIGGER,
-		ACH_STAYDEAD = 30,
-		ACH_GIBEMALL,
-		ACH_NEAT,
+		ACH_COMBATMEDIC,	// Use 20 field kits
+		ACH_TREASUREHUNTER,	// Open 20 supply chests
+		ACH_GOLDDIGGER,		// Pick up 1000 gold
+		ACH_STAYDEAD = 30,	// Kill 50 wounded enemies
+		ACH_GIBEMALL,		// Gib 100 Nazis
+		ACH_NEAT,			// Collect all 3 Keen cartridges
 		ACH_ADDICTED,		// Play BoA for more than 10 hours
+
+		// These are tracked internally but not reported as achievements
+		ACH_KEENAWARD = 50,	// Found the Keenaward
+		ACH_CACOWARD,		// Found the Cacoward
+		ACH_NAZIWARD,		// Found the Naziward
 	};
 
 	override void OnRegister()
@@ -532,11 +544,23 @@ class AchievementTracker : EventHandler
 		achievements.DoChecks(pnum, a);
 	}
 
+	static bool IsComplete(int a)
+	{
+		AchievementTracker achievements = AchievementTracker(EventHandler.Find("AchievementTracker"));
+		if (!achievements) { return false; }
+
+		if (a >= achievements.records.Size()) { return false; }
+
+		return achievements.records[a];
+	}
+
 	void DoChecks(int pnum, int a)
 	{
 		if (a < records.Size() && records[a]) { return; } // Ignore this achievement if it was already completed
 
 		bool complete = false;
+		bool silent = false;
+		bool pass = true;
 
 		switch (a)
 		{
@@ -600,12 +624,10 @@ class AchievementTracker : EventHandler
 			case ACH_SPRINT: // Checked from BoASprinting powerup
 				if (++exhaustion[pnum] >= 50) { complete = true; }
 				break;
-			case ACH_ZOMBIES:
+			case ACH_ZOMBIES: // Set up in the Nazi Die function
 				if (++zombies[pnum] >= 500) { complete = true; }
 				break;
-			case ACH_FULLARSENAL:
-				bool pass = true;
-
+			case ACH_FULLARSENAL: // Set up in the NazieWeapon class
 				for (int w = 0; w < 16; w++)
 				{
 					if (weapons[pnum][w] == false) { pass = false; break; }
@@ -613,23 +635,39 @@ class AchievementTracker : EventHandler
 
 				complete = pass;
 				break;
-			case ACH_COMBATMEDIC:
+			case ACH_COMBATMEDIC: // Set up in the FieldKit class
+				if (++fieldkits[pnum] >= 20) { complete = true; }
 				break;
-			case ACH_TREASUREHUNTER:
+			case ACH_TREASUREHUNTER: // Set up in the SupplyChest class
+				if (++chests[pnum] >= 20) { complete = true; }
 				break;
-			case ACH_GOLDDIGGER:
+			case ACH_GOLDDIGGER: // Set up in the CoinItem class
+				if (coins[pnum] >= 1000) { complete = true; }
 				break;
 			case ACH_STAYDEAD:
+				if (++deadwounded[pnum] >= 50) { complete = true; }
 				break;
 			case ACH_GIBEMALL:
+				if (++gibs[pnum] >= 100) { complete = true; }
 				break;
 			case ACH_NEAT:
+				for (int c = 0; c < 3; c++)
+				{
+					if (cartridges[pnum][c] == false) { pass = false; break; }
+				}
+
+				complete = pass;
 				break;
 			case ACH_NAUGHTY: // Set up in the BoAPlayer class's 'give' cheat handling
 				// Reset inventory-based achievements if you use 'give'
+				coins[pnum] = 0;
 				for (int w = 0; w < 16; w++) { weapons[pnum][w] == false; }
 				complete = true;
 				break;
+			case ACH_KEENAWARD: // Triggered in the actor pickup functions
+			case ACH_CACOWARD:
+			case ACH_NAZIWARD:
+				silent = true;
 			case ACH_DISGRACE: // Set up in the Nazi class's Die function
 			case ACH_CLEARSHOT: // Set up in the Nazi class's Die function
 			case ACH_CHEVALIER: // Set up in the Nazi class's Die function, with handling in DamageMobj to flag the enemy to not allow the achievement if any other weapon was used
@@ -643,10 +681,10 @@ class AchievementTracker : EventHandler
 				break;
 		}
 
-		if (complete) { UpdateRecord(pnum, a); }
+		if (complete) { UpdateRecord(pnum, a, silent); }
 	}
 
-	void UpdateRecord(int pnum, int a)
+	void UpdateRecord(int pnum, int a, bool silent = false)
 	{
 		if (a >= records.Size()) { records.Resize(a + 1); } // Make the array bigger if it's not already big enough
 
@@ -661,15 +699,19 @@ class AchievementTracker : EventHandler
 		bits = Encode(bits, 7);
 		recordvar[index].SetString(bits);
 
-		// Look up the achievement description string
-		String lookup = String.Format("ACHIEVEMENT%i", a);
-		String text = StringTable.Localize(lookup, false);
-		if (lookup ~== text) { text = String.Format("Completed achievement %i", a); }
+		if (!silent)
+		{
+			// Look up the achievement description string
+			String lookup = String.Format("ACHIEVEMENT%i", a);
+			String text = StringTable.Localize(lookup, false);
+			if (lookup ~== text) { text = String.Format("Completed achievement %i", a); }
 
-		String image = String.Format("ACHVMT%02i", a);
+			String image = String.Format("ACHVMT%02i", a);
 
-		// Display the message
-		AchievementMessage.Init(players[pnum].mo, text, image, "misc/achievement");
+			// Display the message
+			if (a == ACH_NEAT) { AchievementMessage.Init(players[pnum].mo, text, image, "ckeen/secret", "B_", 0xFFFFFF, "Classic", "M"); }
+			else { AchievementMessage.Init(players[pnum].mo, text, image, "misc/achievement"); }
+		}
 	}
 
 	String BitString(int encode = true, int start = 0, int end = -1)
@@ -754,10 +796,25 @@ class AchievementTracker : EventHandler
 			liquiddeath[i] = ptracker.liquiddeath[i];
 			zombies[i] = ptracker.zombies[i];
 			playtime[i] = ptracker.playtime[i];
+			fieldkits[i] = ptracker.fieldkits[i];
+			chests[i] = ptracker.chests[i];
+			deadwounded[i] = ptracker.deadwounded[i];
+			gibs[i] = ptracker.gibs[i];
+			coins[i] = ptracker.coins[i];
 
 			for (int w = 0; w < 16; w++)
 			{
 				weapons[i][w] = ptracker.weapons[i][w];
+			}
+
+			for (int c = 0; c < 3; c++)
+			{
+				cartridges[i][c] = ptracker.cartridges[i][c];
+			}
+
+			for (int a = 0; a < 10; a++)
+			{
+				awards[i][a] = ptracker.awards[i][a];
 			}
 		}
 	}
@@ -778,10 +835,25 @@ class AchievementTracker : EventHandler
 			ptracker.liquiddeath[i] = liquiddeath[i];
 			ptracker.zombies[i] = zombies[i];
 			ptracker.playtime[i] = playtime[i];
+			ptracker.fieldkits[i] = fieldkits[i];
+			ptracker.chests[i] = chests[i];
+			ptracker.deadwounded[i] = deadwounded[i];
+			ptracker.gibs[i] = gibs[i];
+			ptracker.coins[i] = coins[i];
 
 			for (int w = 0; w < 16; w++)
 			{
 				ptracker.weapons[i][w] = weapons[i][w];
+			}
+
+			for (int c = 0; c < 3; c++)
+			{
+				ptracker.cartridges[i][c] = cartridges[i][c];
+			}
+
+			for (int a = 0; a < 10; a++)
+			{
+				ptracker.awards[i][a] = awards[i][a];
 			}
 		}
 	}
@@ -800,6 +872,13 @@ class PersistentAchievementTracker : StaticEventHandler
 	int zombies[MAXPLAYERS];
 	int playtime[MAXPLAYERS];
 	bool weapons[MAXPLAYERS][16];
+	int fieldkits[MAXPLAYERS];
+	int chests[MAXPLAYERS];
+	int deadwounded[MAXPLAYERS];
+	int gibs[MAXPLAYERS];
+	int coins[MAXPLAYERS];
+	int cartridges[MAXPLAYERS][3];
+	int awards[MAXPLAYERS][10];
 
 	override void WorldLoaded(WorldEvent e)
 	{

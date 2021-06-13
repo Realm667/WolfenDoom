@@ -80,6 +80,23 @@ class CoinItem : StackableInventory
 
 		return msg;
 	}
+	
+	override bool TryPickup (in out Actor toucher)
+	{
+		bool ret = Super.TryPickup(toucher);
+
+		if (ret && toucher && toucher.player)
+		{
+			AchievementTracker achievements = AchievementTracker(EventHandler.Find("AchievementTracker"));
+			if (achievements)
+			{
+				achievements.coins[toucher.PlayerNumber()] += Amount;
+				AchievementTracker.CheckAchievement(toucher.PlayerNumber(), AchievementTracker.ACH_GOLDDIGGER);
+			}
+		}
+
+		return ret;
+	}
 }
 
 class CoinDrop : CoinItem

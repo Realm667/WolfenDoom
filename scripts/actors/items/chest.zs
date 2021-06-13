@@ -179,6 +179,8 @@ class BoASupplyChest : Actor
 
 		BoACompass.Remove(self);
 
+		AchievementTracker.CheckAchievement(user.PlayerNumber(), AchievementTracker.ACH_TREASUREHUNTER);
+
 		return true;
 	}
 

@@ -919,11 +919,18 @@ class FieldKit : HealthPickup
 		Inventory.PickupSound "Misc/I_PkUp";
 		Inventory.UseSound "Misc/I_PkUp";
 	}
+
 	States
 	{
-	Spawn:
-		FKIT AB 10;
-		Loop;
+		Spawn:
+			FKIT AB 10;
+			Loop;
+	}
+
+	override bool Use(bool pickup)
+	{
+		AchievementTracker.CheckAchievement(owner.PlayerNumber(), AchievementTracker.ACH_COMBATMEDIC);
+		return Super.Use(pickup);
 	}
 
 	override String PickupMessage()
