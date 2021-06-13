@@ -95,10 +95,12 @@ class MessageBase : Thinker
 			}
 
 			handler.messages.Insert(insertat, msg);
+
+			if (insertat > 0 && handler.messages[insertat - 1].priority == priority) { msg.time = handler.messages[insertat - 1].time - handler.messages[insertat - 1].ticker; }
 		}
 
 		msg.text = text;
-		msg.time = ZScriptTools.GetMessageTime(text) + intime + outtime;
+		msg.time += ZScriptTools.GetMessageTime(text) + intime + outtime;
 		msg.intime = intime;
 		msg.outtime = outtime;
 		msg.flags = flags;
@@ -773,11 +775,11 @@ class AchievementMessage : MessageBase
 	String image, snd, bkg;
 	double posx, posy;
 	Vector2 destsize;
-	Font fnt;
 	Color clr;
+	String fontname;
 	String fontcolor;
 
-	static int Init(Actor mo, String text, String image = "", String snd = "", String bkg = "BG_", Color clr = 0x000000, String fnt = "", String fontcolor = "C")
+	static int Init(Actor mo, String text, String image = "", String snd = "", String bkg = "BG_", Color clr = 0x000000, String fontname = "", String fontcolor = "C")
 	{
 		AchievementMessage msg = AchievementMessage(MessageBase.Init(mo, text, text, 18, 18, "AchievementMessage", 5, MSG_ALLOWMULTIPLE | MSG_PERSIST));
 		msg.image = image;
@@ -785,7 +787,7 @@ class AchievementMessage : MessageBase
 		msg.delay = 2;
 		msg.bkg = bkg;
 		msg.clr = clr;
-		msg.fnt = !fnt.length() ? SmallFont : Font.GetFont(fnt);
+		msg.fontname = !fontname.length() ? "SmallFont" : fontname;
 		msg.fontcolor = fontcolor;
 
 		return msg.GetTime();
@@ -798,6 +800,8 @@ class AchievementMessage : MessageBase
 
 	override double DrawMessage()
 	{
+		Font fnt = Font.GetFont(fontname);
+
 		TextureID tex = TexMan.CheckForTexture(image);
 		String msgstr = StringTable.Localize(text, false);
 		Vector2 destsize = (640, 400);
