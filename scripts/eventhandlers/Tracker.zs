@@ -331,6 +331,7 @@ class AchievementTracker : EventHandler
 	transient CVar recordvar[4];
 	int record;
 	Array<bool> records;
+	bool allowed;
 
 	int pistolshots[MAXPLAYERS];
 	int knifekills[MAXPLAYERS];
@@ -421,8 +422,12 @@ class AchievementTracker : EventHandler
 		ACH_NEAT,			// Collect all 3 Keen cartridges
 		ACH_ADDICTED,		// Play BoA for more than 10 hours
 
+		ACH_LASTACHIEVEMENT = 49, // Marker index for the end of the achievement list
+
 		// These are tracked internally but not reported as achievements
-		ACH_KEENAWARD = 50,	// Found the Keenaward
+		// The INTERMAP display for awards in BJ's room uses these to dynamically
+		// spawn the awards if the player has picked them up at some point
+		ACH_KEENAWARD,		// Found the Keenaward
 		ACH_CACOWARD,		// Found the Cacoward
 		ACH_NAZIWARD,		// Found the Naziward
 	};
@@ -462,9 +467,11 @@ class AchievementTracker : EventHandler
 		if (++playtime[consoleplayer] > 1260000) { CheckAchievement(consoleplayer, ACH_ADDICTED); }
 	}
 
-	override void WorldUnloaded(WorldEvent e)
+	override void WorldLoaded(WorldEvent e)
 	{
-
+		// Achievements only work on CxMy and TEST_x named maps
+		if ((level.mapname.Left(1) ~== "C" && level.mapname.Mid(2, 1) ~== "M") || (level.mapname.Left(5) ~== "TEST_")) { allowed = true; }
+		else { allowed = false; }
 	}
 
 	override void WorldThingSpawned(WorldEvent e)
@@ -539,7 +546,7 @@ class AchievementTracker : EventHandler
 		if (pnum < 0) { return; }
 
 		AchievementTracker achievements = AchievementTracker(EventHandler.Find("AchievementTracker"));
-		if (!achievements) { return; }
+		if (!achievements || !achievements.allowed) { return; }
 
 		achievements.DoChecks(pnum, a);
 	}
