@@ -669,6 +669,43 @@ class HimmlerMortar : GrenadeBase
 	}
 }
 
+class ZMortar : HimmlerMortar
+{
+	Default
+	{
+	Speed 18;
+	DamageFunction (5*random(1,8));
+	DamageType "MutantPoison";
+	Gravity 0.20;
+	Obituary "$OBGASMORT";
+	+GrenadeBase.DRAWINDICATOR
+	GrenadeBase.FearDistance 192;
+	GrenadeBase.Icon "HUD_MORA";
+	}
+	States
+	{
+	Spawn:
+		ZORA A 20;
+		ZORB A 16;
+	GoDown:
+		ZORC A 13;
+		Loop;
+	Death:
+		ZORD A 1 { bNoGravity = FALSE; }
+		TNT1 A 0 A_AlertMonsters;
+		"####" A 0 A_StartSound("clusterbomb/explode", CHAN_AUTO, 0, 1.0, 0.1);
+		"####" A 0 A_SpawnItemEx("KD_HL2SmokeGenerator");
+		"####" A 0 A_SpawnItemEx("KD_HL2SparkGenerator");
+		"####" AAAAAAAAAAAAAAAAAAAA 0 A_SpawnitemEx("Mortar_Debris", 0, 0, 8, random(2,16), random(2,16), random(2,16), random(0,359), 0, 0);
+		"####" AAAAAAAAA 0 A_SpawnitemEx("ClusterBomb_Debris", 0, 0, 8, random(2,16), random(2,16), random(2,16), random(0,359), 0, 0);
+		"####" A 0 BRIGHT A_SpawnProjectile("PoisonCloudUndead",16,0,0,2,0);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("UndeadFartCloud",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("UndeadSmoke",random(-64,64),random(-64,64),random(-48,48),Vel.X,0,frandom(0.5,1),0,SXF_TRANSFERTRANSLATION,160);
+		"####" A 1 Radius_Quake(20,35,0,32,0);
+		Stop;
+	}
+}
+
 class Mortar_Debris : ClusterBomb_Debris
 {
 	Default

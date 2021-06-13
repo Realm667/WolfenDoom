@@ -1569,6 +1569,104 @@ class BattonBoss : RocketMan
 	}
 }
 
+class MaskedBoss : RocketMan
+{	Default
+	{
+	//$Title Masked (Boss)
+	Base.BossIcon "BOSSICO2";
+	Tag "$TAGMASKED";
+	Health 800;
+	PainChance 8;
+	Mass 200;
+	+LOOKALLAROUND
+	+MISSILEMORE
+	Obituary "$MASKED";
+	ActiveSound "masked/active";
+	SeeSound "masked/sight";
+	DeathSound "masked/die";
+	DamageFactor "MutantPoison", 0;
+	DamageFactor "MutantPoisonAmbience", 0;
+	DamageFactor "Normal", 0.5;
+	DamageFactor "Poison", 0;
+	DamageFactor "UndeadPoison", 0;
+	DamageFactor "UndeadPoisonAmbience", 0;
+	DropItem "Ammo9mm", 128;
+	DropItem "Ammo9mm", 128;
+	DropItem "AmmoBox9mm", 128;
+	DropItem "NebAmmo", 128;
+	}
+	States
+	{
+	Spawn:
+		MASZ A 0;
+		Goto Look;
+	Missile:
+		MASZ E 10 A_FaceTarget;
+		"####" E 0 A_Jump(128,"Mortar", "ZMortar");
+	Chaingun:
+		MASZ F 0 A_FaceTarget;
+		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
+		"####" FF 0 A_SpawnProjectile("EnemyChaingunTracer",54,30,random(-11,11));
+		"####" FF 0 A_SpawnProjectile("EnemyChaingunTracer",54,-30,random(-11,11));
+		"####" FF 0 A_SpawnItemEx("Casing9mm", 32,0,58, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" FF 0 A_SpawnItemEx("Casing9mm", 32,0,58, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" F 0 {user_count2++; if(user_count2 > 47) {user_count2 = 0; return ResolveState("Retreat");} return ResolveState(null);}
+		"####" F 2 LIGHT("DEKNBFIR");
+		"####" G 2 A_MonsterRefire(20,"See");
+		Loop;
+	Mortar:
+		MASZ H 4 A_ArcProjectile("HimmlerMortar",56,28,0,CMF_SAVEPITCH,random(-30,-45));
+		MASZ I 4 A_ArcProjectile("HimmlerMortar",56,-28,0,CMF_SAVEPITCH,random(-30,-45));
+		"####" L 6;
+		Goto See;
+	ZMortar:
+		MASZ J 4 A_ArcProjectile("ZMortar",56,28,0,CMF_SAVEPITCH,random(-30,-45));
+		MASZ K 4 A_ArcProjectile("ZMortar",56,-28,0,CMF_SAVEPITCH,random(-30,-45));
+		"####" L 6;
+		Goto See;
+	Retreat:
+		MASZ A 0 A_SetSpeed(7);
+		"####" A 0 {bFrightened = TRUE;}
+		"####" A 0 {user_count2++; if(user_count > 47) {user_count = 0; return ResolveState("Retreat2");} return ResolveState(null);}
+		"####" A 1 A_Chase;
+		"####" AAA 1 A_Chase(null,null,CHF_NOPLAYACTIVE);
+		"####" A 1 A_Chase;
+		"####" AAA 1 A_Chase(null,null,CHF_NOPLAYACTIVE);
+		"####" B 1 A_Chase;
+		"####" BBB 1 A_Chase(null,null,CHF_NOPLAYACTIVE);
+		"####" B 1 A_Chase;
+		"####" BBB 1 A_Chase(null,null,CHF_NOPLAYACTIVE);
+		"####" A 0 A_StartSound("hitler/walk");
+		"####" C 1 A_Chase;
+		"####" CCC 1 A_Chase(null,null,CHF_NOPLAYACTIVE);
+		"####" C 1 A_Chase;
+		"####" CCC 1 A_Chase(null,null,CHF_NOPLAYACTIVE);
+		"####" D 1 A_Chase;
+		"####" DDD 1 A_Chase(null,null,CHF_NOPLAYACTIVE);
+		"####" D 1 A_Chase;
+		"####" DDD 1 A_Chase(null,null,CHF_NOPLAYACTIVE);
+		"####" A 0 A_StartSound("hitler/walk");
+		"####" A 0 {bFrightened = FALSE;}
+		"####" A 0 A_SetSpeed(3.5);
+		Goto Missile;
+	Retreat2:
+		MASZ A 0 {user_count++; if(user_count > 15) {user_count = 0; return ResolveState("Retreat+3");} return ResolveState(null);}
+		Goto Retreat+4;
+	Pain:
+		MASZ M 6 A_NaziPain(256);
+		Goto See;
+	Raise:
+		MASZ PONM 5;
+		Goto See;
+	Death:
+		MASZ M 5;
+		"####" N 8 A_Scream;
+		"####" O 10;
+		"####" P -1 A_NoBlocking;
+		Stop;
+	}
+}
+
 class BattonBoss2 : BattonBoss
 {	Default
 	{
