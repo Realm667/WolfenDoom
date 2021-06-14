@@ -513,7 +513,6 @@ class AchievementTracker : EventHandler
 
 				console.printf(title);
 			}
-			
 		}
 	}
 
@@ -534,9 +533,10 @@ class AchievementTracker : EventHandler
 	}
 
 	// Check for achievements on level exit
-	static void CheckSpecials(int special)
+	static void CheckSpecials(int special = -1)
 	{
 		if (
+			special == -1 || // Force checking regardless of special if none was passed
 			special == 243 || // Exit_Normal
 			special == 244 || // Exit_Secret
 			special == 74 // Teleport_NewMap
