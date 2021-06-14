@@ -22,6 +22,24 @@
 
 class InteractionHandler : EventHandler
 {
+	ParsedValue texturesounds;
+
+	override void OnRegister()
+	{
+		texturesounds = FileReader.Parse("data/TextureSounds.txt");
+	}
+
+	static String GetSound(String texture)
+	{
+		InteractionHandler handler = InteractionHandler(EventHandler.Find("InteractionHandler"));
+		if (!handler) { return ""; }
+
+		String snd = FileReader.GetString(handler.texturesounds, "TextureSounds." .. texture, true);
+		if (!snd.length()) { snd = FileReader.GetString(handler.texturesounds, "TextureSounds.default", true); }
+
+		return snd;
+	}
+
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		if (e.Name == "opensafe")
@@ -45,6 +63,5 @@ class InteractionHandler : EventHandler
 		{
 			ZScriptTools.TestFontFallback();
 		}
-
 	}
 }

@@ -1,0 +1,34 @@
+// This can be expanded to include custom interaction sounds for any texture present in 
+// the game (e.g., Ion Maiden-style 'locked door' rattles).  This does *not* override
+// line specials that are present in the map...  If a texture with a sound set here
+// is also given a line special to be executed on player use, both actions will be run.
+
+TextureSounds
+{
+	// This is most of the 'unusable door' textures
+	DOOR_B09 = "picklock/locked";
+	DOOR_B89 = "picklock/locked";
+	DOOR_B32 = "picklock/locked";
+	DOOR_B52 = "picklock/locked";
+	DOOR_F00_X = "picklock/locked";
+	DOOR_G11 = "picklock/locked";
+	DOOR_G12 = "picklock/locked";
+	DOOR_G20 = "picklock/locked";
+	DOOR_G21 = "picklock/locked";
+	DOOR_G30 = "picklock/locked";
+	DOOR_L02 = "picklock/locked";
+	DOOR_M00 = "picklock/locked";
+	DOOR_M02 = "picklock/locked";
+	DOOR_M02D = "picklock/locked";
+	DOOR_M10 = "picklock/locked";
+	DOOR_SET1 = "picklock/locked";
+	DOOR_SET2 = "picklock/locked";
+	DOOR_SETW_CL = "picklock/locked";
+	DOOR_W40 = "picklock/locked";
+	MIDG_M89 = "picklock/locked";
+	DOOR_BRF = "picklock/locked";
+
+	// Use the standard usefail sound as the fallback
+	// Setting this here also makes the sound play on interaction with floors and ceilings!
+	default = "*usefail";
+}
