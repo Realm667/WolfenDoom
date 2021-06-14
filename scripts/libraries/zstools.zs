@@ -532,9 +532,10 @@ class ZScriptTools
 	}
 
 	// Returns the scale necessary to cleanly resize an image to fit into a box of a sepcific size
-	static Vector2 ScaleTextureTo(TextureID tex, int size = 16)
+	static Vector2, Vector2 ScaleTextureTo(TextureID tex, int size = 16)
 	{
 		Vector2 texsize = TexMan.GetScaledSize(tex);
+		Vector2 imagesize = texsize;
 		if (texsize.x > size || texsize.y > size)
 		{
 			if (texsize.y > texsize.x)
@@ -550,7 +551,10 @@ class ZScriptTools
 		}
 		else { texsize = (1.0, 1.0); }
 
-		return texsize;
+		imagesize.x *= texsize.x;
+		imagesize.y *= texsize.y;
+
+		return texsize, imagesize;
 	}
 	
 	// Makes the game close the automap (use it for a scripted sequence that is not in the

@@ -455,13 +455,13 @@ class BoAStatusBar : BaseStatusBar
 
 	virtual void DrawIcon(Inventory item, int x, int y, int size, int flags = DI_ITEM_CENTER, double alpha = 1.0, bool amounts = true, int style = STYLE_Translucent, color clr = 0xFFFFFFFF)
 	{
-		Vector2 texsize = ZScriptTools.ScaleTextureTo(item.icon, size);
-		Vector2 texratio = texsize.Unit();
-
+		Vector2 texsize, iconsize;
+		[texsize, iconsize] = ZScriptTools.ScaleTextureTo(item.icon, size);
 		Vector2 textpos = (x, y);
+
 		if (flags & DI_ITEM_LEFT)
 		{
-			x += int((size * (1.0 - texratio.x)) / 2); // Center the icon in the size-defined cell
+			x += int((size - iconsize.x) / 2); // Center the icon in the size-defined cell
 			textpos.x += size - 2;
 		}
 		else if (flags & DI_ITEM_RIGHT) {}
@@ -476,7 +476,7 @@ class BoAStatusBar : BaseStatusBar
 		}
 		else if (flags & DI_ITEM_TOP)
 		{
-			y += int((size * (1.0 - texratio.y)) / 2); // Center the icon in the size-defined cell
+			y += int((size - iconsize.y) / 2); // Center the icon in the size-defined cell
 			textpos.y += size - 2;
 		}
 
