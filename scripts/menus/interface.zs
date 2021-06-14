@@ -538,19 +538,6 @@ class ViewItem : BoAMenu
 
 		location = (320, 240);
 
-		// Hint message
-		String hintmessage = StringTable.Localize("PAPERTEXTHOLD", false);
-		hintlines = SmallFont.BreakLines(hintmessage, min(pagewidth + 50, 320));
-
-		hintx = 320;
-		hintlineheight = SmallFont.GetHeight();
-
-		double offset = hintlineheight * (hintlines.Count() - 0.5) - 10;
-
-		hinty = 460 - offset;
-		location.y -= offset;
-		maxy = int(maxy - (hintlineheight * (hintlines.Count() - 1.0) - 10));
-
 		if (!(text == "")) // Don't show any text if nothing was set up for display...
 		{
 			// Text content
@@ -579,6 +566,20 @@ class ViewItem : BoAMenu
 			maxpages = int(pages);  // maxpages is an integer, but make sure to always round up if there was even a small amount of overflow
 			if (maxpages < pages) { maxpages++; }
 		}
+
+		// Hint message
+		String hintmessage = StringTable.Localize("PAPERTEXTHOLD", false);
+		if (maxpages > 1) { hintmessage = StringTable.Localize("PAPERTEXTTURN", false) .. "\n" .. hintmessage; }
+		hintlines = SmallFont.BreakLines(hintmessage, min(pagewidth + 50, 320));
+
+		hintx = 320;
+		hintlineheight = SmallFont.GetHeight();
+
+		double offset = hintlineheight * (hintlines.Count() - 0.5) - 10;
+
+		hinty = 460 - offset;
+		location.y -= offset;
+		maxy = int(maxy - (hintlineheight * (hintlines.Count() - 1.0) - 10));
 
 		texty -= offset;
 
