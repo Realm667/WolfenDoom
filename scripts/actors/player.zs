@@ -963,11 +963,14 @@ class BoAPlayer : PlayerPawn
 
 	virtual void DoInteractions()
 	{
-
 		FLineTraceData trace;
 		LineTrace(angle, UseRange, pitch, TRF_THRUACTORS, player.viewheight, 0.0, 0.0, trace);
 		Line AimLine = trace.HitLine;
 		TextureID AimTexture = trace.HitTexture;
+
+		FLineTraceData actortrace;
+		LineTrace(angle, UseRange, pitch, TRF_ALLACTORS, player.viewheight, 0.0, 0.0, actortrace); // Corpse dragging needs to trace without TRF_THRUACTORS flag
+		Actor AimActor = actortrace.HitActor;
 
 		interactiontimeout = max(interactiontimeout - 1, 0);
 
@@ -1007,45 +1010,19 @@ class BoAPlayer : PlayerPawn
 						AimLine.Activate(self, trace.LineSide, SPAC_Impact); // Pretend it was shot
 					}
 				}
-				// This can be expanded to include custom interaction sounds for any texture present in 
-				// the game (e.g., Ion Maiden-style 'locked door' rattles).  This does *not* override
-				// line specials that are present in the map...  If a texture with an action set here
-				// is also given a line special to be executed on player use, both actions will be run.
-				else if ( // I think this is most of the 'unusable door' textures?
-					texname == "DOOR_B09" ||
-					texname == "DOOR_B89" ||
-					texname == "DOOR_B32" ||
-					texname == "DOOR_B52" ||
-					texname == "DOOR_F00_X" ||
-					texname == "DOOR_G11" ||
-					texname == "DOOR_G12" ||
-					texname == "DOOR_G20" ||
-					texname == "DOOR_G21" ||
-					texname == "DOOR_G30" ||
-					texname == "DOOR_L02" ||
-					texname == "DOOR_M00" ||
-					texname == "DOOR_M02" ||
-					texname == "DOOR_M02D" ||
-					texname == "DOOR_M10" ||
-					texname == "DOOR_SET1" ||
-					texname == "DOOR_SET2" ||
-					texname == "DOOR_SETW_CL" ||
-					texname == "DOOR_W40" ||
-					texname == "MIDG_M89" ||
-					texname == "DOOR_BRF"
-				)
+				else if (AimActor)
 				{
-					A_StartSound("picklock/locked", CHAN_VOICE, 0, 0.25);
+					A_StopSound(CHAN_VOICE);
+				}
+				else if (!AimLine || !(AimLine.activation & SPAC_Use) || (Aimline.locknumber && !CheckKeys(Aimline.locknumber, false, true)))
+				{
+					String snd = InteractionHandler.GetSound(texname);
+					if (snd.length())
+					{
+						A_StartSound(snd, CHAN_VOICE, 0, 0.25);
+					}
 				}
 			}
-		}
-
-		Actor AimActor;
-		if (dodragging)
-		{
-			FLineTraceData actortrace;
-			LineTrace(angle, UseRange, pitch, TRF_ALLACTORS, player.viewheight, 0.0, 0.0, actortrace); // Corpse dragging needs to trace without TRF_THRUACTORS flag
-			AimActor = actortrace.HitActor;
 		}
 
 		if (AimLine && !crosshair)
