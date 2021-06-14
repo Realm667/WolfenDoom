@@ -141,8 +141,8 @@ class BoAStatusBar : BaseStatusBar
 		if (CPlayer.mo is "KeenPlayer") { fnt = ClassicFont; }
 		else { fnt = SmallFont; }
 
-		if (printlevel < 3) { return Log.Add(CPlayer, outline, "Notifications", printlevel & PRINT_TYPES, fnt); }
-		else if (printlevel < 5) { return Log.Add(CPlayer, outline, "Chat", printlevel & PRINT_TYPES, fnt); }
+		if (printlevel < 3) { Log.Add(CPlayer, outline, "Notifications", printlevel & PRINT_TYPES, fnt); return true; }
+		else if (printlevel < 5) { Log.Add(CPlayer, outline, "Chat", printlevel & PRINT_TYPES, fnt); return true; }
 
 		return false;
 	}
