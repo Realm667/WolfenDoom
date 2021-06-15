@@ -341,6 +341,10 @@ class BoAStatusBar : BaseStatusBar
 		//Grenade
 		DrawString(mBigFont, FormatNumber(GetAmount("GrenadePickup")), (138, 185), DI_TEXT_ALIGN_LEFT);
 
+		String grenadetex = "HUD_GREN";
+		if (CPlayer.mo.FindInventory("AstroGrenadeToken")) { grenadetex = "HUD_GRAS"; }
+		DrawImage(grenadetex, (122, 184), DI_ITEM_OFFSETS);
+
 		//Keys
 		if (GetAmount("BoABlueKey")) { DrawImage("STKEYS0", (254, 171), DI_ITEM_OFFSETS); }
 		if (GetAmount("BoAGreenKey")) { DrawImage("STKEYS3", (260, 171), DI_ITEM_OFFSETS); }
