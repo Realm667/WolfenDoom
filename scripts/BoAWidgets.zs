@@ -1528,6 +1528,7 @@ class DamageWidget : Widget
 		for (int i = 0; i < damagehandler.events.Size(); i++)
 		{
 			let current = damagehandler.events[i];
+			if (current.player != player) { continue; }
 
 			double anglerange = anglestep * current.distance / 2.0;
 
