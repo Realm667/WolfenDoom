@@ -451,7 +451,7 @@ class AchievementTracker : EventHandler
 				value = Decode(value, 7);
 				value.Split(parse, "|");
 
-				for (int a = 0; a < 16; a++)
+				for (int a = 0; a < parse.Size(); a++)
 				{
 					records.Insert(i * 16 + a, !(parse[a] == String.Format("%c", 0x30 + a)));
 				}
