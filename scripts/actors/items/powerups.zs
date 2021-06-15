@@ -458,6 +458,16 @@ class MineSweeper : PoweredInventory
 			MSPU A -1;
 			Stop;
 	}
+
+	override void Tick()
+	{
+		if (globalfreeze || level.Frozen) { return; }
+
+		Super.Tick();
+
+		// Remove Minesweeper from inventory when depleted
+		if (owner && !owner.FindInventory(fuelclass)) { Destroy(); }
+	}
 }
 
 class BoACompass : CustomInventory
