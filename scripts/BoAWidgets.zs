@@ -1393,53 +1393,6 @@ class ActiveEffectWidget : Widget
 		return size;
 	}
 
-	void DrawTimer(int time, int maxtime, Color clr, Vector2 pos = (0, 0), double scale = 1.0)
-	{
-		TextureID fill = TexMan.CheckForTexture("STATUSF");
-		TextureID back = TexMan.CheckForTexture("STATUSB");
-		TextureID border = TexMan.CheckForTexture("STATUSO");
-
-		// Snap draw coordinates to integers for clean scaling;
-		pos.x = int(pos.x);
-		pos.y = int(pos.y);
-
-		if (back.IsValid()) { DrawToHud.DrawTexture(back, pos, alpha, scale); }
-
-		if (fill.IsValid() && time < 0x7FFFFFFF)  // Don't draw amount indicators for infinite powerups
-		{
-			double angle = 360.0 * time / maxtime;
-
-			int quads = int(angle / 90);
-
-			for (int q = quads; q > 0; q--)
-			{
-				DrawToHud.DrawTransformedTexture(fill, pos, alpha, (90 * q - 1) - 90, scale, clr);
-			}
-
-			int top = 0, left = 0, bottom = 0x7FFFFFFF, right = 0x7FFFFFFF;
-
-			switch (quads % 4)
-			{
-				case 3:
-					bottom = int(pos.y);
-					break;
-				case 2:
-					right = int(pos.x);
-					break;
-				case 1:
-					top = int(pos.y);
-					break;
-				default:
-					left = int(pos.x);
-					break;
-			}
-
-			DrawToHud.DrawTransformedTexture(fill, pos, alpha, angle - 90, scale, clr, top, left, bottom, right);
-		}
-
-		if (border.IsValid()) { DrawToHud.DrawTexture(border, pos, alpha, scale); }
-	}
-
 	virtual Color GetPoisonColor(Name poisontype)
 	{
 		if (poisontype == "MutantPoison" || poisontype == "MutantPoisonAmbience")
@@ -1456,7 +1409,7 @@ class ActiveEffectWidget : Widget
 
 	void DrawEffectIcon(TextureID icon, int duration, int maxduration, Vector2 pos, Color clr = 0xDDDDDD)
 	{
-		DrawTimer(duration, maxduration, clr, (pos.x, pos.y), 0.5);
+		DrawToHUD.DrawTimer(duration, maxduration, clr, (pos.x, pos.y), 0.5);
 
 		if (icon.IsValid())
 		{

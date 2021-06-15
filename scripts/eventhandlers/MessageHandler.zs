@@ -96,7 +96,9 @@ class MessageBase : Thinker
 
 			handler.messages.Insert(insertat, msg);
 
-			if (insertat > 0 && handler.messages[insertat - 1].priority == priority) { msg.time = handler.messages[insertat - 1].time - handler.messages[insertat - 1].ticker; }
+			// If multiple are allowed to be shown on screen at once, make sure they all stay 
+			// visible and can't disappear at once if they all are shown at the same time
+			if (msg.flags & MSG_ALLOWMULTIPLE && insertat > 0 && handler.messages[insertat - 1].priority == priority) { msg.time = handler.messages[insertat - 1].time - handler.messages[insertat - 1].ticker; }
 		}
 
 		msg.text = text;
@@ -646,6 +648,7 @@ class DevCommentary : MessageBase
 
 		if (msg && input.Size() > 1) { msg.image = input[1]; }
 		MessageLogHandler.Add(String.Format("MESSAGELOGTYPE_DEVCOM|%s", text), msg.image);
+
 		return msg.GetTime();
 	}
 
@@ -705,7 +708,7 @@ class DevCommentary : MessageBase
 		else { y = int(StatusBar.GetTopOfStatusBar() - 32 - handler.bottomoffset * destsize.y); }
 
 		double boxheight = lines.Count() * lineheight + margin;
-		boxheight = max(boxheight, size.y + margin);
+		boxheight = max(boxheight, size.y + margin * 2);
 		boxheight += margin;
 
 		y -= int(boxheight);
@@ -714,7 +717,9 @@ class DevCommentary : MessageBase
 
 		DrawToHUD.DrawFrame("DEV_", x, y, msgwidth + size.x + margin * 4, boxheight, 0x11273c, 1.0 * alpha, 0.8 * alpha);
 
-		if (imagetex) { DrawToHUD.DrawTexture(imagetex, (x + margin, y + 32.0 + (boxheight - 32.0) / 2 - size.y / 2), alpha, 1.0, centered:false); }
+		DrawToHUD.DrawTimer(time - ticker, time, 0x265380, (x + msgwidth + size.x + margin * 2, y + 1), 0.4, 0.99 * alpha, "", "");
+
+		if (imagetex) { DrawToHUD.DrawTexture(imagetex, (x + margin, y + 16 + margin), alpha, 1.0, centered:false); }
 
 		int bodyx = x + (size.x ? int(size.x + margin * 4) : 0);
 		y -= 5; 
