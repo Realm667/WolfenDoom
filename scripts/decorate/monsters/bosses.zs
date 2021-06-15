@@ -1581,9 +1581,9 @@ class MaskedBoss : RocketMan
 	+LOOKALLAROUND
 	+MISSILEMORE
 	Obituary "$MASKED";
-	ActiveSound "masked/active";
-	SeeSound "masked/sight";
-	DeathSound "masked/die";
+	ActiveSound "masked/active"; //not present
+	SeeSound "masked/sight"; //not present
+	DeathSound "masked/die"; //not present
 	DamageFactor "MutantPoison", 0;
 	DamageFactor "MutantPoisonAmbience", 0;
 	DamageFactor "Normal", 0.5;
@@ -1602,7 +1602,7 @@ class MaskedBoss : RocketMan
 		Goto Look;
 	Missile:
 		MASZ E 10 A_FaceTarget;
-		"####" E 0 A_Jump(128,"Mortar", "ZMortar");
+		"####" E 0 A_Jump(128,"Mortar","ZMortar");
 	Chaingun:
 		MASZ F 0 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
@@ -1615,13 +1615,13 @@ class MaskedBoss : RocketMan
 		"####" G 2 A_MonsterRefire(20,"See");
 		Loop;
 	Mortar:
-		MASZ H 4 A_ArcProjectile("HimmlerMortar",56,28,0,CMF_SAVEPITCH,random(-30,-45));
-		MASZ I 4 A_ArcProjectile("HimmlerMortar",56,-28,0,CMF_SAVEPITCH,random(-30,-45));
+		MASZ H 4 A_ArcProjectile("HimmlerMortar",72,30,0,CMF_SAVEPITCH,random(-45,-60));
+		MASZ I 4 A_ArcProjectile("HimmlerMortar",75,-30,0,CMF_SAVEPITCH,random(-45,-60));
 		"####" L 6;
 		Goto See;
 	ZMortar:
-		MASZ J 4 A_ArcProjectile("ZMortar",56,28,0,CMF_SAVEPITCH,random(-30,-45));
-		MASZ K 4 A_ArcProjectile("ZMortar",56,-28,0,CMF_SAVEPITCH,random(-30,-45));
+		MASZ J 4 A_ArcProjectile("ZMortar",72,30,0,CMF_SAVEPITCH,random(-45,-60));
+		MASZ K 4 A_ArcProjectile("ZMortar",72,-30,0,CMF_SAVEPITCH,random(-45,-60));
 		"####" L 6;
 		Goto See;
 	Retreat:
