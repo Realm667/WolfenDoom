@@ -326,12 +326,19 @@ class InventoryTracker : EventHandler
 	}
 }
 
+class Achievement
+{
+	bool complete;
+	int time;
+}
+
 class AchievementTracker : EventHandler
 {
 	transient CVar recordvar[4];
 	int record;
-	Array<bool> records;
+	Array<Achievement> records;
 	bool allowed;
+	int time;
 
 	int pistolshots[MAXPLAYERS];
 	int knifekills[MAXPLAYERS];
@@ -439,7 +446,15 @@ class AchievementTracker : EventHandler
 		recordvar[2] = CVar.FindCVar("boa_achievementrecord2");
 		recordvar[3] = CVar.FindCVar("boa_achievementrecord3");
 
-		for (int a = 0; a < 60; a++) { records.Push(false); }
+		for (int a = 0; a < 60; a++)
+		{
+			Achievement ach = New("Achievement");
+			if (ach)
+			{
+				ach.complete = false;
+				records.Push(ach);
+			}
+		}
 
 		for (int i = 0; i < recordvar.Size(); i++)
 		{
@@ -453,7 +468,13 @@ class AchievementTracker : EventHandler
 
 				for (int a = 0; a < parse.Size(); a++)
 				{
-					records.Insert(i * 16 + a, !(parse[a] == String.Format("%c", 0x30 + a)));
+					Achievement ach = New("Achievement");
+					if (ach)
+					{
+						ach.complete = !(parse[a] == String.Format("%c", 0x30 + a));
+						ach.time = parse[a].ToInt();
+						records.Insert(i * 15 + a, ach);
+					}
 				}
 			}
 		}
@@ -499,9 +520,9 @@ class AchievementTracker : EventHandler
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
-		if (e.Name == "achievement")
+		if (e.Name == "achievement" && e.args[0] > -1 && e.args[0] < 60)
 		{
-			UpdateRecord(consoleplayer, e.args[0]);
+			UpdateRecord(consoleplayer, e.args[0], false, true);
 		}
 		else if (e.Name == "printachievements")
 		{
@@ -510,12 +531,13 @@ class AchievementTracker : EventHandler
 				String title = ZScriptTools.StripColorCodes(GetTitle(a));
 				title.Replace(String.Format("%c", 0x0A), "\cC - ");
 
-				if (a < records.Size() && records[a]) { title = "\cJ" .. title; }
+				if (a < records.Size() && records[a].complete) { title = "\cJ" .. title .. " (" .. SystemTime.Format("%d %b %Y, %T", records[a].time) .. ")"; }
 				else { title = "\cR" .. title; }
 
 				console.printf(title);
 			}
 		}
+		else if (!e.IsManual && e.Name == "time" && e.player == consoleplayer) { time = e.args[0]; }
 	}
 
 	void CheckStats()
@@ -570,12 +592,26 @@ class AchievementTracker : EventHandler
 
 		if (a >= achievements.records.Size()) { return false; }
 
-		return achievements.records[a];
+		return achievements.records[a].complete;
 	}
 
 	void DoChecks(int pnum, int a)
 	{
-		if (a < records.Size() && records[a]) { return; } // Ignore this achievement if it was already completed
+		if (a < records.Size())
+		{
+			if (a == ACH_NAUGHTY) // Always apply this countermeasure, regardless of if the achievement was already awarded
+			{
+				// Reset inventory-based achievements if you use 'give'
+				coins[pnum] = 0;
+				for (int w = 0; w < 16; w++) { weapons[pnum][w] == false; }
+				for (int c = 0; c < 3; c++) { cartridges[pnum][c] == false; }
+
+				UpdateRecord(pnum, a, records[a].complete, true);
+
+				return;
+			}
+			else if (records[a].complete) { return; } // Ignore this achievement if it was already completed
+		}
 
 		bool complete = false;
 		bool silent = false;
@@ -646,7 +682,9 @@ class AchievementTracker : EventHandler
 			case ACH_ZOMBIES: // Set up in the Nazi Die function
 				if (++zombies[pnum] >= 500) { complete = true; }
 				break;
-			case ACH_FULLARSENAL: // Set up in the NazieWeapon class
+			case ACH_FULLARSENAL: // Set up in the NaziWeapon class
+				if (records[ACH_NAUGHTY].time == time) { break; }
+
 				for (int w = 0; w < 16; w++)
 				{
 					if (weapons[pnum][w] == false) { pass = false; break; }
@@ -661,6 +699,7 @@ class AchievementTracker : EventHandler
 				if (++chests[pnum] >= 20) { complete = true; }
 				break;
 			case ACH_GOLDDIGGER: // Set up in the CoinItem class
+				if (records[ACH_NAUGHTY].time == time) { break; }
 				if (coins[pnum] >= 1000) { complete = true; }
 				break;
 			case ACH_STAYDEAD:
@@ -670,6 +709,7 @@ class AchievementTracker : EventHandler
 				if (++gibs[pnum] >= 100) { complete = true; }
 				break;
 			case ACH_NEAT:
+				if (records[ACH_NAUGHTY].time == time) { break; }
 				for (int c = 0; c < 3; c++)
 				{
 					if (cartridges[pnum][c] == false) { pass = false; break; }
@@ -677,16 +717,11 @@ class AchievementTracker : EventHandler
 
 				complete = pass;
 				break;
-			case ACH_NAUGHTY: // Set up in the BoAPlayer class's 'give' cheat handling
-				// Reset inventory-based achievements if you use 'give'
-				coins[pnum] = 0;
-				for (int w = 0; w < 16; w++) { weapons[pnum][w] == false; }
-				complete = true;
-				break;
 			case ACH_KEENAWARD: // Triggered in the actor pickup functions
 			case ACH_CACOWARD:
 			case ACH_NAZIWARD:
 				silent = true;
+			case ACH_NAUGHTY: // Set up in the BoAPlayer class's 'give' cheat handling; redundant here, but listed for completion's sake
 			case ACH_DISGRACE: // Set up in the Nazi class's Die function
 			case ACH_CLEARSHOT: // Set up in the Nazi class's Die function
 			case ACH_CHEVALIER: // Set up in the Nazi class's Die function, with handling in DamageMobj to flag the enemy to not allow the achievement if any other weapon was used
@@ -703,16 +738,20 @@ class AchievementTracker : EventHandler
 		if (complete) { UpdateRecord(pnum, a, silent); }
 	}
 
-	void UpdateRecord(int pnum, int a, bool silent = false)
+	void UpdateRecord(int pnum, int a, bool silent = false, bool force = false)
 	{
 		if (a >= records.Size()) { records.Resize(a + 1); } // Make the array bigger if it's not already big enough
 
-		if (records[a]) { return; } // Only let the player get an achievement once
-		else { records[a] = true; } // Set the achievement as complete
+		if (!force && records[a].complete) { return; } // Only let the player get an achievement once
+		else // Set the achievement as complete
+		{
+			records[a].complete = true;
+			records[a].time = time;
+		}
 
 		// Encode the value string
-		int index = a / 16;
-		String bits = BitString(true, index * 16, index * 16 + 16);
+		int index = a / 15;
+		String bits = BitString(true, index * 15, index * 15 + 15);
 
 		// Save the value to the CVar
 		bits = Encode(bits, 7);
@@ -746,9 +785,14 @@ class AchievementTracker : EventHandler
 		for (int b = start; b < end; b++)
 		{
 			if (b - start > 0) { bits = bits .. "|"; }
-			int offset = 0x30;
-			if (encode) { offset += (b - start); }
-			bits = String.Format("%s%c", bits, !!records[b] + offset);
+
+			if (records[b].complete) { bits = String.Format("%s%i", bits, records[b].time); }
+			else
+			{
+				int offset = 0x30;
+				if (encode) { offset += (b - start); }
+				bits = String.Format("%s%c", bits, offset);
+			}
 		}
 
 		return bits;
@@ -880,6 +924,12 @@ class AchievementTracker : EventHandler
 				ptracker.awards[i][a] = awards[i][a];
 			}
 		}
+	}
+
+	// HACK // Pass system time to the eventhandler on the play side via a network event
+	override void RenderOverlay(RenderEvent e)
+	{
+		EventHandler.SendNetworkEvent("time", SystemTime.Now());
 	}
 }
 
