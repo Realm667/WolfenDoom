@@ -439,7 +439,9 @@ class AchievementTracker : EventHandler
 		recordvar[2] = CVar.FindCVar("boa_achievementrecord2");
 		recordvar[3] = CVar.FindCVar("boa_achievementrecord3");
 
-		for (int i = 0; i < recordvar.Size(); i ++)
+		for (int a = 0; a < 60; a++) { records.Push(false); }
+
+		for (int i = 0; i < recordvar.Size(); i++)
 		{
 			String value = recordvar[i].GetString();
 
@@ -449,9 +451,9 @@ class AchievementTracker : EventHandler
 				value = Decode(value, 7);
 				value.Split(parse, "|");
 
-				for (int a = 0; a < parse.Size(); a++)
+				for (int a = 0; a < 16; a++)
 				{
-					records.Push(!(parse[a] == String.Format("%c", 0x30 + a)));
+					records.Insert(i * 16 + a, !(parse[a] == String.Format("%c", 0x30 + a)));
 				}
 			}
 		}
@@ -743,9 +745,9 @@ class AchievementTracker : EventHandler
 
 		for (int b = start; b < end; b++)
 		{
-			if (b > 0) { bits = bits .. "|"; }
+			if (b - start > 0) { bits = bits .. "|"; }
 			int offset = 0x30;
-			if (encode) { offset += b; }
+			if (encode) { offset += (b - start); }
 			bits = String.Format("%s%c", bits, !!records[b] + offset);
 		}
 
