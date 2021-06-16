@@ -284,7 +284,7 @@ class ACSTools
 		return false;
 	}
 
-	static String GetKeyPressString(String bind, bool required = false, String keycolor = "Gold", String textcolor = "Untranslated", String errorcolor = "Dark Red")
+	static String, String GetKeyPressString(String bind, bool required = false, String keycolor = "Gold", String textcolor = "Untranslated", String errorcolor = "Dark Red")
 	{
 		keycolor = "\c[" .. keycolor .. "]";
 		textcolor = "\c[" .. textcolor .. "]";
@@ -307,39 +307,47 @@ class ACSTools
 
 		if (required && !keynames.length())
 		{
-			String actionname = bind;
+			String actionname = ACSTools.GetActionName(bind);
 
-			if (bind.Left(1) == "+") { actionname = bind.Mid(1); }
-
-			// Special handling for BoA-specific items, and native items that don't follow the naming pattern
-			if (actionname ~== "use grenadepickup") { actionname = "$CO_GREN"; }
-			else if (actionname ~== "pukename quickkick") { actionname = "$CO_KICK"; }
-			else if (actionname ~== "pukename boaobjectives") { actionname = "$CO_OBJS"; }
-			else if (actionname ~== "openmenu MessageLogMenu") { actionname = "$CO_MSGL"; }
-			else if (actionname ~== "speed") { actionname = "$CNTRLMNU_RUN"; }
-			else if (actionname ~== "toggle cl_run") { actionname = "$CNTRLMNU_TOGGLERUN"; }
-			else if (actionname ~== "weapnext") { actionname = "$CNTRLMNU_NEXTWEAPON"; }
-			else if (actionname ~== "weapprev") { actionname = "$CNTRLMNU_PREVIOUSWEAPON"; }
-			else if (actionname.Left(5) ~== "slot ") { actionname = "$CNTRLMNU_SLOT" .. actionname.Mid(5); }
-			else if (actionname ~== "invuse") { actionname = "$CNTRLMNU_USEITEM"; }
-			else if (actionname ~== "invnext") { actionname = "$CNTRLMNU_NEXTITEM"; }
-			else if (actionname ~== "invprev") { actionname = "$CNTRLMNU_PREVIOUSITEM"; }
-			else if (actionname ~== "togglemap") { actionname = "$CNTRLMNU_AUTOMAP"; }
-			else { actionname = "$CNTRLMNU_" .. actionname; }
-
-			actionname = StringTable.Localize(actionname);
-
-			// Fall back to displaying the bind information if no string was found.
-			if (actionname.left(9) ~== "CNTRLMNU_") { actionname = bind; }
-
-			return errorcolor .. "<" .. StringTable.Localize("$BINDKEY") .. " " .. actionname .. ">" .. textcolor .. suffix;
+			return errorcolor .. "<" .. StringTable.Localize("$BINDKEY") .. " " .. actionname .. ">" .. textcolor .. suffix, actionname;
 		}
 		else
 		{
 			if (keynames.length()) { keynames = keycolor .. "<" .. keynames .. ">" .. textcolor .. suffix; }
 		}
 
-		return keynames;
+		return keynames, keynames;
+	}
+
+	static String GetActionName(String actionname)
+	{
+		String output = "";
+		String rawactionname = actionname;
+
+		if (actionname.Left(1) == "+") { actionname = actionname.Mid(1); }
+
+		// Special handling for BoA-specific items, and native items that don't follow the naming pattern
+		if (actionname ~== "use grenadepickup") { output = "$CO_GREN"; }
+		else if (actionname ~== "pukename quickkick") { output = "$CO_KICK"; }
+		else if (actionname ~== "pukename boaobjectives") { output = "$CO_OBJS"; }
+		else if (actionname ~== "openmenu MessageLogMenu") { output = "$CO_MSGL"; }
+		else if (actionname ~== "speed") { output = "$CNTRLMNU_RUN"; }
+		else if (actionname ~== "toggle cl_run") { output = "$CNTRLMNU_TOGGLERUN"; }
+		else if (actionname ~== "weapnext") { output = "$CNTRLMNU_NEXTWEAPON"; }
+		else if (actionname ~== "weapprev") { output = "$CNTRLMNU_PREVIOUSWEAPON"; }
+		else if (actionname.Left(5) ~== "slot ") { output = "$CNTRLMNU_SLOT" .. actionname.Mid(5); }
+		else if (actionname ~== "invuse") { output = "$CNTRLMNU_USEITEM"; }
+		else if (actionname ~== "invnext") { output = "$CNTRLMNU_NEXTITEM"; }
+		else if (actionname ~== "invprev") { output = "$CNTRLMNU_PREVIOUSITEM"; }
+		else if (actionname ~== "togglemap") { output = "$CNTRLMNU_AUTOMAP"; }
+		else { output = "$CNTRLMNU_" .. actionname; }
+
+		output = StringTable.Localize(output);
+
+		// Fall back to displaying the bind information if no string was found.
+		if (output.left(9) ~== "CNTRLMNU_") { output = rawactionname; }
+
+		return output;
 	}
 }
 

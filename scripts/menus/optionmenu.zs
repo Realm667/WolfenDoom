@@ -360,6 +360,59 @@ class BoAOptionMenu : OptionMenu
 	}
 }
 
+class OptionMenuItemControlCheck : OptionMenuItemControl
+{
+	override bool MenuEvent(int mkey, bool fromcontroller)
+	{
+		if (mkey == Menu.MKEY_Input)
+		{
+			Prompt(mInput, mAction);
+		}
+		else if (mkey == Menu.MKEY_Clear)
+		{
+			mBindings.UnbindACommand(mAction);
+			return true;
+		}
+		else if (mkey == Menu.MKEY_Abort)
+		{
+			mWaiting = false;
+			return true;
+		}
+		else if (mkey == Menu.MKEY_MBYes)
+		{
+			mWaiting = false;
+			mBindings.SetBind(mInput, mAction);
+			return true;
+		}
+
+		return false;
+	}
+
+	void Prompt(int input, Name control)
+	{
+		String current = Bindings.GetBinding(input); // Check the bindings of the input key
+		if (
+			!current.length() || // If not already assigned elsewhere
+			current == control // Or if already assigned to this control
+		)
+		{
+			// Go ahead and allow the change without prompting
+			MenuEvent(Menu.MKEY_MBYes, false);
+			return;
+		}
+
+		//Otherwise ask the player to confirm the change
+		String inputkey = Bindings.NameKeys(input, 0);
+		String inputcontrolname = ACSTools.GetActionName(current);
+		String controlname = ACSTools.GetActionName(control);
+
+		String msg = StringTable.Localize("$KEYCHANGEPROMPT");
+		msg = String.Format(msg, inputkey, inputcontrolname, controlname);
+
+		Menu.StartMessage(msg, 0);
+	}
+}
+
 // Option Menu shim that opens just long enough for the GetMenu function above to copy the contents of the descriptor
 // Also skips the automated removal of empty lines at the end of the menu that is performed by normal menus, and 
 // doesn't draw anything on screen, so that the player can't even see that menu was opened.
