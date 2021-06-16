@@ -2077,7 +2077,7 @@ class AGrenadier : WGrenadier
 	{
 	//$Category Monsters (BoA)/Afrika Korps
 	//$Title Afrika Korps Grenadier
-	//$Sprite AGRNA0
+	//$Sprite AGRNA1
 	Obituary "$GRENADIER";
 	}
 	States
@@ -2409,6 +2409,7 @@ class Mechanic : BasicGuard
 	Obituary "$MECHANIC";
 	Nazi.FrightMultiplier 0.5;
 	Nazi.CanSurrender 1;
+	Nazi.CrouchChance 0;
 	}
 	States
 	{
@@ -2421,13 +2422,8 @@ class Mechanic : BasicGuard
 		Goto Look;
 	SurrenderSprite:
 		MNIS E 0;
-	See: //dodge code preserved for modders --ozy81
+	See:
 		Goto See.Loop;
-			//	Goto See.Dodge;
-			//Dodge:
-			//	MNID A 0;
-			//Dodge.Resume:
-			//	Goto See.Loop;
 	See.Loop:
 		"####" "#" 0 {
 			if (!user_incombat) {
@@ -3455,6 +3451,7 @@ class Scientist : BasicGuard
 	Obituary "$SCIENTIST";
 	Nazi.NoAltDeath 1;
 	Nazi.CanSurrender 1;
+	Nazi.CrouchChance 0;
 	}
 	States
 	{
@@ -3497,6 +3494,7 @@ class Scientist2 : BasicGuard
 	Obituary "$SCIENTIST";
 	Nazi.NoAltDeath 1;
 	Nazi.CanSurrender 1;
+	Nazi.CrouchChance 0;
 	}
 	States
 	{
@@ -3505,13 +3503,8 @@ class Scientist2 : BasicGuard
 		Goto Look;
 	SurrenderSprite:
 		SCNS E 0;
-	See: //dodge code preserved for modders --ozy81
+	See:
 		Goto See.Normal;
-			//	Goto See.Dodge;
-			//Dodge:
-			//	SCND A 0;
-			//Dodge.Resume:
-			//	Goto See.Normal;
 	Death.Back:
 	Death.Headshot:
 		Stop;
