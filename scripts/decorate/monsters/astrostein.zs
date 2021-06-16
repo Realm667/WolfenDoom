@@ -434,7 +434,10 @@ class AstroScientist : AstroGuard
 	{
 	//$Title Astro Scientist
 	Scale 0.67;
+	+FRIGHTENED
 	Obituary "$SCIENTIST";
+	Nazi.CanSurrender 1;
+	Nazi.CrouchChance 0;
 	}
 	States
 	{
@@ -442,10 +445,6 @@ class AstroScientist : AstroGuard
 		SCN2 N 0;
 		Goto Look;
 	See:
-		Goto See.Dodge;
-	Dodge:
-		SCD2 A 0;
-	Dodge.Resume:
 		Goto See.Normal;
 	Missile: //different brightmap & colors - ozy81
 		"####" E 5 A_FaceTarget;

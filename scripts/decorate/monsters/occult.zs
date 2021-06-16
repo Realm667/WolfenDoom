@@ -678,6 +678,7 @@ class PlagueDoc : Guard
 	//$Title Plague Doctor (young)
 	Nazi.NoAltDeath 1;
 	Nazi.CanSurrender 1;
+	Nazi.CrouchChance 0;
 	}
 	States
 	{
@@ -686,13 +687,8 @@ class PlagueDoc : Guard
 		Goto Look;
 	SurrenderSprite:
 		PDCS E 0;
-	See: //dodge code preserved for modders --ozy81
-		Goto See.Fast; //more fast now - ozy81
-	//	Goto See.Dodge;
-	//Dodge:
-	//	PDOD A 0;
-	//Dodge.Resume:
-	//	Goto See.Fast;
+	See:
+		Goto See.Fast;
 	Death.Back:
 	Death.Headshot:
 		Stop;
