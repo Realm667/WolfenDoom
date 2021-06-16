@@ -121,10 +121,18 @@ class BoAOptionMenu : OptionMenu
 						menu = menuname;
 						
 						let newitem = new("OptionMenuItemSubmenu");
-						newitem.Init(item.mLabel, menu, OptionMenuItemSubmenu(item).mParam, item.mCentered);
-
-						mDesc.mItems[i] = newitem;
+						mDesc.mItems[i] = newitem.Init(item.mLabel, menu, OptionMenuItemSubmenu(item).mParam, item.mCentered);
 					}
+				}
+				else if (item is "OptionMenuItemControl" && !(item is "BoAOptionMenuItemControl"))
+				{
+					let newitem = New("BoAOptionMenuItemControl");
+					mDesc.mItems[i] = newitem.Init(item.mLabel, item.GetAction());
+				}
+				else if (item is "OptionMenuItemMapControl" && !(item is "BoAOptionMenuItemMapControl"))
+				{
+					let newitem = New("BoAOptionMenuItemMapControl");
+					mDesc.mItems[i] = newitem.Init(item.mLabel, item.GetAction());
 				}
 			}
 
@@ -360,7 +368,7 @@ class BoAOptionMenu : OptionMenu
 	}
 }
 
-class OptionMenuItemControlCheck : OptionMenuItemControl
+class BoAOptionMenuItemControl : OptionMenuItemControl
 {
 	override bool MenuEvent(int mkey, bool fromcontroller)
 	{
@@ -405,6 +413,59 @@ class OptionMenuItemControlCheck : OptionMenuItemControl
 		String inputkey = Bindings.NameKeys(input, 0);
 		String inputcontrolname = ACSTools.GetActionName(current);
 		String controlname = ACSTools.GetActionName(control);
+
+		String msg = StringTable.Localize("$KEYCHANGEPROMPT");
+		msg = String.Format(msg, inputkey, inputcontrolname, controlname);
+
+		Menu.StartMessage(msg, 0);
+	}
+}
+
+class BoAOptionMenuItemMapControl : OptionMenuItemMapControl
+{
+	override bool MenuEvent(int mkey, bool fromcontroller)
+	{
+		if (mkey == Menu.MKEY_Input)
+		{
+			Prompt(mInput, mAction);
+		}
+		else if (mkey == Menu.MKEY_Clear)
+		{
+			mBindings.UnbindACommand(mAction);
+			return true;
+		}
+		else if (mkey == Menu.MKEY_Abort)
+		{
+			mWaiting = false;
+			return true;
+		}
+		else if (mkey == Menu.MKEY_MBYes)
+		{
+			mWaiting = false;
+			mBindings.SetBind(mInput, mAction);
+			return true;
+		}
+
+		return false;
+	}
+
+	void Prompt(int input, Name control)
+	{
+		String current = AutomapBindings.GetBinding(input); // Check the bindings of the input key
+		if (
+			!current.length() || // If not already assigned elsewhere
+			current == control // Or if already assigned to this control
+		)
+		{
+			// Go ahead and allow the change without prompting
+			MenuEvent(Menu.MKEY_MBYes, false);
+			return;
+		}
+
+		//Otherwise ask the player to confirm the change
+		String inputkey = AutomapBindings.NameKeys(input, 0);
+		String inputcontrolname = ACSTools.GetActionName(current, "$MAPCNTRLMNU_");
+		String controlname = ACSTools.GetActionName(control, "$MAPCNTRLMNU_");
 
 		String msg = StringTable.Localize("$KEYCHANGEPROMPT");
 		msg = String.Format(msg, inputkey, inputcontrolname, controlname);

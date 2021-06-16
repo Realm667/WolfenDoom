@@ -103,8 +103,17 @@ class ClassicMessageBox : MessageBoxMenu
 		message = CleanString(msg);
 		tex = TexMan.CheckForTexture(graphic, TexMan.Type_Any);
 
-		if (!prefix.Length()) { prefix = "BG_"; fillcolor = 0x0; }
-		if (!fnt) { fnt = BigFont; }
+		if (!prefix.Length())
+		{
+			if (parent is "OptionMenu") { prefix = "FRAME_"; fillcolor = 0xBB1b1b1b; }
+			else { prefix = "BG_"; fillcolor = 0x0; }
+		}
+
+		if (!fnt)
+		{
+			if (parent is "OptionMenu") { fnt = SmallFont; }
+			else { fnt = BigFont; }
+		}
 
 		top = TexMan.CheckForTexture(prefix .. "T", TexMan.Type_Any);
 		bottom = TexMan.CheckForTexture(prefix .. "B", TexMan.Type_Any);
@@ -301,7 +310,7 @@ class ClassicMessageBox : MessageBoxMenu
 
 		int textheight = h;
 
-		w += 24;
+		w += 32;
 		h += 24;
 
 		w = max(w, width);
@@ -395,12 +404,15 @@ class ClassicMessageBox : MessageBoxMenu
 		}
 	}
 
-	void DrawFrame(int x, int y, int ws, int hs, int clr = 0xFFFFFF)
+	void DrawFrame(int x, int y, int ws, int hs, Color clr = 0xFFFFFF)
 	{
 		Vector2 texsize = TexMan.GetScaledSize(top);
 		int size = int(texsize.x);
 
-		screen.Dim(clr, 1.0, x, y, ws, hs);
+		double dimalpha = 1.0;
+		if (clr.a) { dimalpha = clr.a / 255.0; }
+
+		screen.Dim(clr, dimalpha, x, y, ws, hs);
 
 		screen.DrawTexture(top, true, x, y - int(size * CleanYfac), DTA_CleanNoMove, true, DTA_DestWidth, ws, DTA_DestHeight, int(size * CleanYfac));
 		screen.DrawTexture(bottom, true, x, y + hs, DTA_CleanNoMove, true, DTA_DestWidth, ws, DTA_DestHeight, int(size * CleanYfac));

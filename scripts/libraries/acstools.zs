@@ -319,33 +319,67 @@ class ACSTools
 		return keynames, keynames;
 	}
 
-	static String GetActionName(String actionname)
+	static String GetActionName(String actionname, String prefix = "$CNTRLMNU_")
 	{
 		String output = "";
 		String rawactionname = actionname;
 
 		if (actionname.Left(1) == "+") { actionname = actionname.Mid(1); }
+		if (actionname.Left(3) == "am_") { actionname = actionname.Mid(3); }
 
 		// Special handling for BoA-specific items, and native items that don't follow the naming pattern
 		if (actionname ~== "use grenadepickup") { output = "$CO_GREN"; }
 		else if (actionname ~== "pukename quickkick") { output = "$CO_KICK"; }
 		else if (actionname ~== "pukename boaobjectives") { output = "$CO_OBJS"; }
 		else if (actionname ~== "openmenu MessageLogMenu") { output = "$CO_MSGL"; }
+		else if (actionname ~== "left") { output = "$CNTRLMNU_TURNLEFT"; }
+		else if (actionname ~== "right") { output = "$CNTRLMNU_TURNRIGHT"; }
+		else if (actionname ~== "mlook") { output = "$CNTRLMNU_MOUSELOOK"; }
+		else if (actionname ~== "klook") { output = "$CNTRLMNU_KEYBOARDLOOK"; }
 		else if (actionname ~== "speed") { output = "$CNTRLMNU_RUN"; }
 		else if (actionname ~== "toggle cl_run") { output = "$CNTRLMNU_TOGGLERUN"; }
+		else if (actionname ~== "showscores") { output = "$CNTRLMNU_SCOREBOARD"; }
+		else if (actionname ~== "messagemode") { output = "$CNTRLMNU_SAY"; }
+		else if (actionname ~== "messagemode2") { output = "$CNTRLMNU_TEAMSAY"; }
 		else if (actionname ~== "weapnext") { output = "$CNTRLMNU_NEXTWEAPON"; }
 		else if (actionname ~== "weapprev") { output = "$CNTRLMNU_PREVIOUSWEAPON"; }
 		else if (actionname.Left(5) ~== "slot ") { output = "$CNTRLMNU_SLOT" .. actionname.Mid(5); }
+		else if (actionname.Left(4) ~== "user") { output = "$CNTRLMNU_USER" .. actionname.Mid(4); }
 		else if (actionname ~== "invuse") { output = "$CNTRLMNU_USEITEM"; }
+		else if (actionname ~== "invuseall") { output = "$CNTRLMNU_USEALLITEMS"; }
 		else if (actionname ~== "invnext") { output = "$CNTRLMNU_NEXTITEM"; }
 		else if (actionname ~== "invprev") { output = "$CNTRLMNU_PREVIOUSITEM"; }
+		else if (actionname ~== "invdrop") { output = "$CNTRLMNU_DROPITEM"; }
+		else if (actionname ~== "invquery") { output = "$CNTRLMNU_QUERYITEM"; }
+		else if (actionname ~== "weapdrop") { output = "$CNTRLMNU_DROPWEAPON"; }
 		else if (actionname ~== "togglemap") { output = "$CNTRLMNU_AUTOMAP"; }
-		else { output = "$CNTRLMNU_" .. actionname; }
+		else if (actionname ~== "chase") { output = "$CNTRLMNU_CHASECAM"; }
+		else if (actionname ~== "spynext") { output = "$CNTRLMNU_COOPSPY"; }
+		else if (actionname ~== "toggleconsole") { output = "$CNTRLMNU_CONSOLE"; }
+		else if (actionname ~== "sizeup") { output = "$CNTRLMNU_DISPLAY_INC"; }
+		else if (actionname ~== "sizedown") { output = "$CNTRLMNU_DISPLAY_DEC"; }
+		else if (actionname ~== "togglemessages") { output = "$CNTRLMNU_TOGGLE_MESSAGES"; }
+		else if (actionname ~== "bumpgamma") { output = "$CNTRLMNU_ADJUST_GAMMA"; }
+		else if (actionname ~== "menu_help") { output = "$CNTRLMNU_OPEN_HELP"; }
+		else if (actionname ~== "menu_save") { output = "$CNTRLMNU_OPEN_SAVE"; }
+		else if (actionname ~== "menu_load") { output = "$CNTRLMNU_OPEN_LOAD"; }
+		else if (actionname ~== "menu_options") { output = "$CNTRLMNU_OPEN_OPTIONS"; }
+		else if (actionname ~== "menu_display") { output = "$CNTRLMNU_OPEN_DISPLAY"; }
+		else if (actionname ~== "menu_endgame") { output = "$CNTRLMNU_EXIT_TO_MAIN"; }
+		else if (actionname ~== "menu_quit") { output = "$CNTRLMNU_MENU_QUIT"; }
+		else if (actionname ~== "showpopup 1") { output = "$CNTRLMNU_MISSION"; }
+		else if (actionname ~== "showpopup 2") { output = "$CNTRLMNU_KEYS"; }
+		else if (actionname ~== "showpopup 3") { output = "$CNTRLMNU_STATS"; }
+		else if (actionname ~== "gobig") { output = "$MAPCNTRLMNU_TOGGLEZOOM"; }
+		else if (actionname ~== "toggle am_rotate") { output = "$MAPCNTRLMNU_ROTATE"; }
+		else if (actionname ~== "clearmarks") { output = "$MAPCNTRLMNU_CLEARMARK"; }
+		else if (rawactionname ~== "crouch") { output = "$CNTRLMNU_TOGGLECROUCH"; }
+		else { output = prefix .. actionname; }
 
 		output = StringTable.Localize(output);
 
 		// Fall back to displaying the bind information if no string was found.
-		if (output.left(9) ~== "CNTRLMNU_") { output = rawactionname; }
+		if (output.left(9) ~== prefix) { output = rawactionname; }
 
 		return output;
 	}
