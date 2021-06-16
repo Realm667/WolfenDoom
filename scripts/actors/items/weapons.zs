@@ -1643,7 +1643,7 @@ class NebelwerferTruck : NaziWeapon
 		{
 			double diff = absangle(owner.angle, owner.goal.angle); // Get the angle offset of the player from the truck
 
-			if (diff > 35) // And adjust the pitch accordingle
+			if (diff > 35) // And adjust the pitch accordingly
 			{
 				owner.player.maxpitch += (clamp(diff - 35, 0, 20) / 20.0) * 20; // Scale from 10 to 30 degrees down, over the course of a 20 degree diff
 			}

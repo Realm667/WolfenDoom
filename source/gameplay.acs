@@ -193,9 +193,11 @@ script "OhNoes!" DEATH
 	}
 
 	if (!generic)
-	{ 
-		SetFont("youdied");
-		HudMessage(s:"A"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1001, CR_UNTRANSLATED, 160.0, 120.0, 999999.0, 3.0, 1.0);
+	{
+        sethudsize(160,120,1);
+        setfont("BIGFONT");
+        hudmessage(l:"DEATH"; HUDMSG_FADEINOUT | HUDMSG_NOWRAP | HUDMSG_LAYER_OVERHUD, -1001, CR_RED, 80.0, 60.0, 999999.0, 3.0, 1.0);
+        SetHudSize(320, 240, true); //reset dimensions
 	}
 
 	// [ZK] Delay 1 tic instead of 35
