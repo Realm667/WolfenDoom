@@ -1242,6 +1242,37 @@ class BoAPlayer : PlayerPawn
 
 		if (mod == "Pest") { AchievementTracker.CheckAchievement(PlayerNumber(), AchievementTracker.ACH_PESTS); }
 
+		double waterlevel;
+		bool underwater;
+		Sector watersector;
+		[waterlevel, underwater, watersector] = Buoyancy.GetWaterHeight(self);
+		if (underwater)
+		{
+			AchievementTracker tracker = AchievementTracker(EventHandler.Find("AchievementTracker"));
+			if (tracker)
+			{
+				if (mod == "None")
+				{
+					String texture = TexMan.GetName(watersector.GetTexture(Sector.ceiling)); 
+					if (texture ~== "WATR_X98") { mod = "MutantPoison"; }
+					else if (
+						texture.Left(5) ~== "WATR_" || 
+						texture.Left(5) ~== "SLDG_" || 
+						texture.Left(6) ~== "HIACID" || 
+						texture.Left(6) ~== "HIWATR" || 
+						texture ~== "AZTC_WTR"
+					) { mod = "Drowning"; }
+					else if (texture.Left(5) ~== "LAVA_") { mod = "Lava"; }
+				}
+
+				if (mod == "Drowning") { tracker.liquiddeath[PlayerNumber()][0] = true; }
+				else if (mod == "Lava") { tracker.liquiddeath[PlayerNumber()][1] = true; }
+				else if (mod == "MutantPoison") { tracker.liquiddeath[PlayerNumber()][2] = true; }
+
+				AchievementTracker.CheckAchievement(PlayerNumber(), AchievementTracker.ACH_LIQUIDDEATH);
+			}
+		}
+
 		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
 	}
 

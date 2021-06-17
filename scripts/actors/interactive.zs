@@ -1039,11 +1039,11 @@ class Buoyancy : Actor
 {
 	// Modified from AActor::UpdateWaterLevel in p_mobj.cpp (waterlevel variable setting function)
 	// Updated to return actual water height value
-	static double, bool GetWaterHeight(Actor mo)
+	static double, bool, Sector GetWaterHeight(Actor mo)
 	{
 		if (mo.curSector.MoreFlags & Sector.SECMF_UNDERWATER)
 		{
-			return mo.ceilingz, true;
+			return mo.ceilingz, true, mo.curSector;
 		}
 		else
 		{
@@ -1058,11 +1058,11 @@ class Buoyancy : Actor
 
 					if (mo.pos.z < fh)
 					{
-						return fh, true;
+						return fh, true, hsec;
 					}
 					else if (!(hsec.MoreFlags & Sector.SECMF_FAKEFLOORONLY) && (mo.pos.z + mo.height > ch))
 					{
-						return ch, true;
+						return ch, true, hsec;
 					}
 				}
 			}
@@ -1081,12 +1081,12 @@ class Buoyancy : Actor
 
 					if (ff_bottom > mo.pos.z + mo.height) continue;
 
-					return ff_top, true;
+					return ff_top, true, f.model;
 				}
 			}
 		}
 
-		return 0, false;
+		return 0, false, null;
 	}
 }
 

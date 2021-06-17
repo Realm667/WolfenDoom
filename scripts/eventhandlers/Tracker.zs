@@ -353,7 +353,7 @@ class AchievementTracker : EventHandler
 	int exhaustion[MAXPLAYERS];
 	int lastminedeath[MAXPLAYERS];
 	int minedeaths[MAXPLAYERS];
-	int liquiddeath[MAXPLAYERS];
+	bool liquiddeath[MAXPLAYERS][3];
 	int shots[MAXPLAYERS][2];
 	int zombies[MAXPLAYERS];
 	int playtime[MAXPLAYERS];
@@ -385,13 +385,6 @@ class AchievementTracker : EventHandler
 		"UMG43"
 	};
 
-	enum LiquidDeaths
-	{
-		DTH_POISON = 0x1,
-		DTH_LAVA = 0x10,
-		DTH_DROWNING = 0x100,
-	};
-
 	enum Achievements
 	{
 		ACH_GUNSLINGER = 0,	// Fire 1000 pistol shots (total across all levels)
@@ -414,7 +407,7 @@ class AchievementTracker : EventHandler
 		ACH_BOOM,			// Use 40 grenades (total across all levels)
 		ACH_SPAM,			// Manually save 100 times (total across all levels)
 		ACH_SPRINT,			// Exhaust stamina 50 times (total across all levels)
-		ACH_LIQUIDDEATH = 20,
+		ACH_LIQUIDDEATH = 20, // Die from lava, drowning, and mutant poison pools
 		ACH_PESTS,			// Die to spiders, bats, or rats
 		ACH_ACCURACY,		// 75% accuracy or higher when over 100 player bullet tracers have been fired (total across all levels)
 		ACH_ZOMBIES,		// Kill 500 zombies (total across all levels)
@@ -702,6 +695,14 @@ class AchievementTracker : EventHandler
 			case ACH_SPRINT: // Checked from BoASprinting powerup
 				if (++exhaustion[pnum] >= 50) { complete = true; }
 				break;
+			case ACH_LIQUIDDEATH:
+				for (int l = 0; l < 3; l++)
+				{
+					if (liquiddeath[pnum][l] == false) { pass = false; break; }
+				}
+
+				complete = pass;
+				break;
 			case ACH_ZOMBIES: // Set up in the Nazi Die function
 				if (++zombies[pnum] >= 500) { complete = true; }
 				break;
@@ -895,7 +896,12 @@ class AchievementTracker : EventHandler
 			totalgrenades[i] = ptracker.totalgrenades[i];
 			saves[i] = ptracker.saves[i];
 			exhaustion[i] = ptracker.exhaustion[i];
-			liquiddeath[i] = ptracker.liquiddeath[i];
+			
+			for (int l = 0; l < 3; l++)
+			{
+				liquiddeath[i][l] = ptracker.liquiddeath[i][l];
+			}
+			
 			zombies[i] = ptracker.zombies[i];
 			fieldkits[i] = ptracker.fieldkits[i];
 			chests[i] = ptracker.chests[i];
@@ -933,7 +939,12 @@ class AchievementTracker : EventHandler
 			ptracker.totalgrenades[i] = totalgrenades[i];
 			ptracker.saves[i] = saves[i];
 			ptracker.exhaustion[i] = exhaustion[i];
-			ptracker.liquiddeath[i] = liquiddeath[i];
+
+			for (int l = 0; l < 3; l++)
+			{
+				ptracker.liquiddeath[i][l] = liquiddeath[i][l];
+			}
+
 			ptracker.zombies[i] = zombies[i];
 			ptracker.fieldkits[i] = fieldkits[i];
 			ptracker.chests[i] = chests[i];
@@ -974,7 +985,7 @@ class PersistentAchievementTracker : StaticEventHandler
 	int totalgrenades[MAXPLAYERS];
 	int saves[MAXPLAYERS];
 	int exhaustion[MAXPLAYERS];
-	int liquiddeath[MAXPLAYERS];
+	bool liquiddeath[MAXPLAYERS][3];
 	int zombies[MAXPLAYERS];
 	bool weapons[MAXPLAYERS][16];
 	int fieldkits[MAXPLAYERS];
