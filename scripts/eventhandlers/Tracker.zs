@@ -434,9 +434,11 @@ class AchievementTracker : EventHandler
 		// These are tracked internally but not reported as achievements
 		// The INTERMAP display for awards in BJ's room uses these to dynamically
 		// spawn the awards if the player has picked them up at some point
-		ACH_KEENAWARD = 50,		// Found the Keenaward
+		ACH_KEENAWARD = 50,	// Found the Keenaward
 		ACH_CACOWARD,		// Found the Cacoward
 		ACH_NAZIWARD,		// Found the Naziward
+
+		PLAY_TIME = 59,		// Save the total play time value across games
 	};
 
 	override void OnRegister()
@@ -468,12 +470,19 @@ class AchievementTracker : EventHandler
 
 				for (int a = 0; a < parse.Size(); a++)
 				{
-					Achievement ach = New("Achievement");
-					if (ach)
+					if (i * 15 + a == PLAY_TIME)
 					{
-						ach.complete = !(parse[a] == String.Format("%c", 0x30 + a));
-						ach.time = parse[a].ToInt();
-						records.Insert(i * 15 + a, ach);
+						records[PLAY_TIME].time = playtime[consoleplayer] = parse[a].ToInt();
+					}
+					else
+					{
+						Achievement ach = New("Achievement");
+						if (ach)
+						{
+							ach.complete = !(parse[a] == String.Format("%c", 0x30 + a));
+							ach.time = parse[a].ToInt();
+							records.Insert(i * 15 + a, ach);
+						}
 					}
 				}
 			}
@@ -487,7 +496,16 @@ class AchievementTracker : EventHandler
 		if (players[consoleplayer].cmd.buttons & BT_RELOAD) { manualreloads[consoleplayer]++; }
 		if (gameaction == ga_savegame) { CheckAchievement(consoleplayer, ACH_SPAM); }
 		if (shots[consoleplayer][1] > 100 && shots[consoleplayer][0] * 100.0 / shots[consoleplayer][1] > 75) { CheckAchievement(consoleplayer, ACH_ACCURACY); }
-		if (++playtime[consoleplayer] > 1260000) { CheckAchievement(consoleplayer, ACH_ADDICTED); }
+		
+		if (level.time % 35 == 0)
+		{
+			if (++playtime[consoleplayer] > 36000) { CheckAchievement(consoleplayer, ACH_ADDICTED); }
+
+			// Update the saved play time values
+			records[PLAY_TIME].complete = true;
+			records[PLAY_TIME].time = playtime[consoleplayer];
+			SaveEncoded(3); // Save the 4th CVar, which includes the time measure
+		}
 	}
 
 	override void WorldLoaded(WorldEvent e)
@@ -522,7 +540,8 @@ class AchievementTracker : EventHandler
 	{
 		if (e.Name == "achievement" && e.args[0] > -1 && e.args[0] < 60)
 		{
-			UpdateRecord(consoleplayer, e.args[0], false, true);
+			if (e.args[1]) { UpdateRecord(consoleplayer, e.args[0], e.args[1] > 0, false, true); }
+			else { UpdateRecord(consoleplayer, e.args[0], true, false, true); }
 		}
 		else if (e.Name == "printachievements")
 		{
@@ -536,6 +555,9 @@ class AchievementTracker : EventHandler
 
 				console.printf(title);
 			}
+
+			int sec = playtime[consoleplayer];
+			console.printf("Total play time: \cF%02d:%02d:%02d", sec / 3600, (sec % 3600) / 60, sec % 60);
 		}
 		else if (!e.IsManual && e.Name == "time" && e.player == consoleplayer) { time = e.args[0]; }
 	}
@@ -606,7 +628,7 @@ class AchievementTracker : EventHandler
 				for (int w = 0; w < 16; w++) { weapons[pnum][w] == false; }
 				for (int c = 0; c < 3; c++) { cartridges[pnum][c] == false; }
 
-				UpdateRecord(pnum, a, records[a].complete, true);
+				UpdateRecord(pnum, a, true, records[a].complete, true);
 
 				return;
 			}
@@ -717,9 +739,9 @@ class AchievementTracker : EventHandler
 
 				complete = pass;
 				break;
-			case ACH_KEENAWARD: // Triggered in the actor pickup functions
-			case ACH_CACOWARD:
-			case ACH_NAZIWARD:
+			case ACH_KEENAWARD: // Triggered in the actor pickup function
+			case ACH_CACOWARD:  // Triggered in the actor pickup function
+			case ACH_NAZIWARD:  // Triggered in the actor pickup function
 				silent = true;
 			case ACH_NAUGHTY: // Set up in the BoAPlayer class's 'give' cheat handling; redundant here, but listed for completion's sake
 			case ACH_DISGRACE: // Set up in the Nazi class's Die function
@@ -735,29 +757,23 @@ class AchievementTracker : EventHandler
 				break;
 		}
 
-		if (complete) { UpdateRecord(pnum, a, silent); }
+		if (complete) { UpdateRecord(pnum, a, true, silent); }
 	}
 
-	void UpdateRecord(int pnum, int a, bool silent = false, bool force = false)
+	void UpdateRecord(int pnum, int a, bool complete, bool silent = false, bool force = false)
 	{
 		if (a >= records.Size()) { records.Resize(a + 1); } // Make the array bigger if it's not already big enough
 
-		if (!force && records[a].complete) { return; } // Only let the player get an achievement once
+		if (!force && records[a].complete == complete) { return; } // Only let the player get an achievement once
 		else // Set the achievement as complete
 		{
-			records[a].complete = true;
-			records[a].time = time;
+			records[a].complete = complete;
+			records[a].time = complete ? time : 0;
 		}
 
-		// Encode the value string
-		int index = a / 15;
-		String bits = BitString(true, index * 15, index * 15 + 15);
+		SaveEncoded(a / 15);
 
-		// Save the value to the CVar
-		bits = Encode(bits, 7);
-		recordvar[index].SetString(bits);
-
-		if (!silent)
+		if (!silent && complete)
 		{
 			String image = String.Format("ACHVMT%02i", a);
 
@@ -765,6 +781,16 @@ class AchievementTracker : EventHandler
 			if (a == ACH_NEAT) { AchievementMessage.Init(players[pnum].mo, GetTitle(a), image, "ckeen/secret", "B_", 0xFFFFFF, "Classic", "M"); }
 			else { AchievementMessage.Init(players[pnum].mo, GetTitle(a), image, "misc/achievement"); }
 		}
+	}
+
+	// Encode the value string
+	void SaveEncoded(int index)
+	{
+		String bits = BitString(true, index * 15, index * 15 + 15);
+
+		// Save the value to the CVar
+		bits = Encode(bits, 7);
+		recordvar[index].SetString(bits);
 	}
 
 	// Look up the achievement description string
@@ -863,7 +889,6 @@ class AchievementTracker : EventHandler
 			exhaustion[i] = ptracker.exhaustion[i];
 			liquiddeath[i] = ptracker.liquiddeath[i];
 			zombies[i] = ptracker.zombies[i];
-			playtime[i] = ptracker.playtime[i];
 			fieldkits[i] = ptracker.fieldkits[i];
 			chests[i] = ptracker.chests[i];
 			deadwounded[i] = ptracker.deadwounded[i];
@@ -902,7 +927,6 @@ class AchievementTracker : EventHandler
 			ptracker.exhaustion[i] = exhaustion[i];
 			ptracker.liquiddeath[i] = liquiddeath[i];
 			ptracker.zombies[i] = zombies[i];
-			ptracker.playtime[i] = playtime[i];
 			ptracker.fieldkits[i] = fieldkits[i];
 			ptracker.chests[i] = chests[i];
 			ptracker.deadwounded[i] = deadwounded[i];
@@ -944,7 +968,6 @@ class PersistentAchievementTracker : StaticEventHandler
 	int exhaustion[MAXPLAYERS];
 	int liquiddeath[MAXPLAYERS];
 	int zombies[MAXPLAYERS];
-	int playtime[MAXPLAYERS];
 	bool weapons[MAXPLAYERS][16];
 	int fieldkits[MAXPLAYERS];
 	int chests[MAXPLAYERS];
