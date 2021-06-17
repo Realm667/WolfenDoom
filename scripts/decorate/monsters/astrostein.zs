@@ -798,10 +798,10 @@ class AstroUrsel : AstroCyborg1
 	+LOOKALLAROUND
 	-NOBLOOD
 	Obituary "$AURSEL";
-	SeeSound "astrostein/ursel_sight"; //not present
-	PainSound "astrostein/ursel_pain"; //not present
-	DeathSound "astrostein/ursel_death"; //not present
-	ActiveSound "astrostein/ursel_act"; //not present
+	SeeSound "BossGirl/Sighted";
+	PainSound "BossGirl/Pain";
+	DeathSound "BossGirl/Death";
+	ActiveSound "";
 	DropItem "AstroRocketAmmo", 160;
 	}
 	States

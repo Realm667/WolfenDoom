@@ -3749,7 +3749,7 @@ class SuperSoldier_Girl : SuperSoldier
 	+MISSILEEVENMORE
 	+MISSILEMORE
 	SeeSound "BossGirl/Sighted";
-	PainSound "bossGirl/pain";
+	PainSound "BossGirl/Pain";
 	DeathSound "BossGirl/Death";
 	DropItem "Ammo9mm", 128;
 	DropItem "AmmoBox9mm", 128;
