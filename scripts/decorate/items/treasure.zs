@@ -264,6 +264,7 @@ class Award : SingleCoin
 		if (ret && toucher && toucher.player)
 		{
 			AchievementTracker.CheckAchievement(toucher.PlayerNumber(), AchievementTracker.ACH_KEENAWARD + number);
+			AchievementTracker.CheckAchievement(toucher.PlayerNumber(), AchievementTracker.ACH_TROPHYHUNTER);
 		}
 
 		return ret;

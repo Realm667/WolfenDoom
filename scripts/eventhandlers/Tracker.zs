@@ -428,6 +428,7 @@ class AchievementTracker : EventHandler
 		ACH_GIBEMALL,		// Gib 100 Nazis (total across all levels)
 		ACH_NEAT,			// Collect all 3 Keen cartridges (total across all levels)
 		ACH_ADDICTED,		// Play BoA for more than 10 hours (total across all levels)
+		ACH_TROPHYHUNTER,	// Collect all three award trophies
 
 		ACH_LASTACHIEVEMENT, // Marker index for the end of the list of regular achievements
 
@@ -738,6 +739,13 @@ class AchievementTracker : EventHandler
 				}
 
 				complete = pass;
+				break;
+			case ACH_TROPHYHUNTER:
+				if (
+					records[ACH_CACOWARD].complete &&
+					records[ACH_NAZIWARD].complete &&
+					records[ACH_KEENAWARD].complete
+				) { complete = true; }
 				break;
 			case ACH_KEENAWARD: // Triggered in the actor pickup function
 			case ACH_CACOWARD:  // Triggered in the actor pickup function
