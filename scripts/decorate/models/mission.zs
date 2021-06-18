@@ -205,7 +205,6 @@ class FlakVierling3D : SwitchableDecoration
 		MDLA B 0 {bDormant = TRUE;} //update manually on GZDB
 		MDLA B 0 A_StartSound("weapons/explode", CHAN_AUTO, 0, 1.0, ATTN_NORM);
 		MDLA B 0 A_Scream;
-		MDLA B 0 A_NoBlocking;
 		MDLA BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
 		MDLA B 1 A_SpawnItemEx("Nuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 	Destroyed:
@@ -229,6 +228,7 @@ class FlakVierling3D_War: SceneryBase
 		DistanceCheck "boa_scenelod";
 		Radius 80;
 		Height 88;
+		DeathHeight 88;
 		Health 350;
 		+CANPASS
 		+DONTSPLASH
@@ -240,19 +240,19 @@ class FlakVierling3D_War: SceneryBase
 		BloodType "TankSpark";
 		CullActorBase.CullLevel 1;
 	}
+
 	States
 	{
-	Spawn:
-		MDLA A -1;
-		Stop;
-	Death:
-		MDLA B 0 A_StartSound("weapons/explode", CHAN_AUTO, 0, 1.0, ATTN_NORM);
-		MDLA B 0 A_Scream;
-		MDLA B 0 A_NoBlocking; //neither editing this line changes its death behavior --ozy81
-		MDLA BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		MDLA B 1 A_SpawnItemEx("Nuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
-	Destroyed:
-		MDLA B 8 A_SpawnProjectile("DarkSmoke2",32,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(70,130));
-		Loop;
+		Spawn:
+			MDLA A -1;
+			Stop;
+		Death:
+			MDLA B 0 A_StartSound("weapons/explode", CHAN_AUTO, 0, 1.0, ATTN_NORM);
+			MDLA B 0 A_Scream;
+			MDLA BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+			MDLA B 1 A_SpawnItemEx("Nuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
+		Destroyed:
+			MDLA B 8 A_SpawnProjectile("DarkSmoke2",32,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(70,130));
+			Loop;
 	}
 }
