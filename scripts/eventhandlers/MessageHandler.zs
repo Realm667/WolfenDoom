@@ -953,7 +953,7 @@ class MessageHandler : EventHandler
 				int flags = 0;
 
 				// Do message start functions
-				if (m.ticker == 0 && m.player == players[consoleplayer]) { m.Start(); }
+				if (m.ticker == 1 && m.delay == 0 && m.player == players[consoleplayer]) { m.Start(); }
 
 				if (m.msgname && !(flags & MessageBase.MSG_NOFADEOUT) && i < messages.Size())
 				{

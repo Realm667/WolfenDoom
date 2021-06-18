@@ -365,6 +365,7 @@ class AchievementTracker : EventHandler
 	int coins[MAXPLAYERS];
 	int cartridges[MAXPLAYERS][3];
 	int awards[MAXPLAYERS][10];
+	int keycount;
 
 	static const Class<Weapon> weaponlist[] = { 
 		"KnifeSilent",
@@ -490,7 +491,7 @@ class AchievementTracker : EventHandler
 		if (players[consoleplayer].cmd.buttons & BT_RELOAD) { manualreloads[consoleplayer]++; }
 		if (gameaction == ga_savegame) { CheckAchievement(consoleplayer, ACH_SPAM); }
 		if (shots[consoleplayer][1] > 100 && shots[consoleplayer][0] * 100.0 / shots[consoleplayer][1] > 75) { CheckAchievement(consoleplayer, ACH_ACCURACY); }
-		
+
 		if (level.time % 35 == 0)
 		{
 			if (++playtime[consoleplayer] > 36000) { CheckAchievement(consoleplayer, ACH_ADDICTED); }
@@ -516,6 +517,7 @@ class AchievementTracker : EventHandler
 			int pnum = PlayerTracer(e.Thing).target.PlayerNumber();
 			if (e.Thing is "LugerTracer") { CheckAchievement(pnum, ACH_GUNSLINGER); }
 		}
+		else if (e.Thing is "KeyBase") { keycount++; }
 	}
 
 	override void WorldThingDied(WorldEvent e)
@@ -583,6 +585,7 @@ class AchievementTracker : EventHandler
 		)
 		{
 			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_IMPENETRABLE);
+			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_TRICKSTER);
 			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_PACIFIST);
 			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_1915);
 			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_MINRELOADS);
@@ -652,7 +655,20 @@ class AchievementTracker : EventHandler
 				// TODO
 				break;
 			case ACH_TRICKSTER:
-				// TODO
+				if (!keycount) { break; }
+
+				ThinkerIterator keys = ThinkerIterator.Create("KeyBase", Thinker.STAT_DEFAULT);
+				Actor key;
+				
+				while (key = Actor(keys.Next()))
+				{
+					if (!key.bDormant)
+					{
+						complete = true;
+						break;
+					}
+				}
+
 				break;
 			case ACH_IMPENETRABLE:  // Checked here in CheckSpecials function
 				if (!damaged[pnum]) { complete = true; }
