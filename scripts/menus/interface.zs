@@ -569,7 +569,8 @@ class ViewItem : BoAMenu
 
 		// Hint message
 		String hintmessage = StringTable.Localize("PAPERTEXTHOLD", false);
-		if (maxpages > 1) { hintmessage = StringTable.Localize("PAPERTEXTTURN", false) .. "\n" .. hintmessage; }
+
+		if (maxpages > 0) { hintmessage = StringTable.Localize("PAPERTEXTTURN", false) .. "\n" .. hintmessage; }
 		hintlines = SmallFont.BreakLines(hintmessage, min(pagewidth + 50, 320));
 
 		hintx = 320;
