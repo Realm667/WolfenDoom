@@ -73,6 +73,7 @@ class Boulder : Actor
 				A_StopSound(CHAN_5);
 
 				bPushable = true;
+				bSolid = true;
 			}
 			Loop;
 	}
