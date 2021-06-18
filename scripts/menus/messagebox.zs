@@ -373,6 +373,11 @@ class ClassicMessageBox : MessageBoxMenu
 		if (options.length())
 		{
 			drawy += fontheight / 2;
+			int selectory = (fontheight - 1) * CleanYFac * 3;
+
+			int weight = int(max(1, Round(Screen.GetHeight() / 200)));
+			if (weight > 1 && weight % 2 == 1) { weight++; }
+			int weightoffset = weight / 2;
 
 			int index = 1;
 			String lookup = options .. index;
@@ -386,17 +391,18 @@ class ClassicMessageBox : MessageBoxMenu
 					Color clr = (ticks % 36 < 18) ? 0xFF5555 : 0x0000AA;
 
 					int boxl = x + 8;
-					int boxt = int((drawy + 20) * CleanYFac);
+					int boxt = y + selectory;
 					int boxr = boxl + ws - 16;
 					int boxb = boxt + int(fontheight * CleanYFac - 2);
 					
-					screen.DrawThickLine(boxl, boxt, boxr, boxt, 6, clr);
-					screen.DrawThickLine(boxl, boxb, boxr, boxb, 6, clr);
-					screen.DrawThickLine(boxl + 3, boxt, boxl + 3, boxb, 6, clr);
-					screen.DrawThickLine(boxr - 3, boxt, boxr - 3, boxb, 6, clr);
+					screen.DrawThickLine(boxl, boxt, boxr, boxt, weight, clr);
+					screen.DrawThickLine(boxl, boxb, boxr, boxb, weight, clr);
+					screen.DrawThickLine(boxl + weightoffset, boxt, boxl + weightoffset, boxb + 1, weight, clr);
+					screen.DrawThickLine(boxr - weightoffset, boxt, boxr - weightoffset, boxb + 1, weight, clr);
 				}
 
 				drawy += fontheight;
+				selectory += fontheight * CleanYFac;
 
 				lookup = options .. ++index;
 				value = StringTable.Localize(lookup, false);
