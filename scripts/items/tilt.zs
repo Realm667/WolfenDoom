@@ -166,7 +166,7 @@ class BoATilt : CustomInventory
 	{
 		if (!owner) { return; }
 
-		double curLevelTilt;
+		double curLevelTilt = 0;
 
 		// Level tilt processing is required for C3M5_C, so dont allow deactivating it
 		if (BoAPlayer(owner) && BoAPlayer(owner).leveltilt) // But also only run this if the level tilt value is set!
@@ -176,8 +176,13 @@ class BoATilt : CustomInventory
 			// A_SetViewPitch does not affect aim direction, so use A_SetPitch
 			owner.A_SetPitch(owner.pitch + (pitchoffset - lastPitch), SPF_INTERPOLATE);
 			lastPitch = pitchoffset;
-			owner.A_SetViewRoll(owner.viewroll + (curLevelTilt - lastLevelTilt), SPF_INTERPOLATE);
-			lastLevelTilt = curLevelTilt;
+			// So that A_SetViewRoll is called only once
+			if (!boa_tilteffects)
+			{
+				owner.A_SetViewRoll(owner.viewroll + (curLevelTilt - lastLevelTilt), SPF_INTERPOLATE);
+				lastLevelTilt = curLevelTilt;
+			}
+			
 		}
 		else
 		{
@@ -205,7 +210,7 @@ class BoATilt : CustomInventory
 		if (abs(curRoll) > 0.000001) { curRoll *= 0.75; } // Stabilize tilt
 
 		// Apply the sum of all rolling routines (including after stabilization)
-		owner.A_SetViewRoll(owner.viewroll + (curRoll - lastRoll), SPF_INTERPOLATE);
+		owner.A_SetViewRoll(owner.viewroll + (curRoll - lastRoll) + (curLevelTilt - lastLevelTilt), SPF_INTERPOLATE);
 		lastLevelTilt = curLevelTilt;
 		lastRoll = curRoll;
 	}
