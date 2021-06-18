@@ -877,16 +877,21 @@ class KeenPlayer : PlayerPawn
 	// Allow forcing the player to respawn in a map via ACS (equivalent to pressing 'use' when dead)
 	static void ForceRespawn(Actor mo)
 	{
-		if (!KeenPlayer(mo)) { return; }
+		let player = mo.player;
 
-		KeenPlayer(mo).Respawn();
-	}
+		if (!player) { return; }
 
-	void Respawn()
-	{
 		player.cls = null;
 		player.playerstate = (multiplayer || level.AllowRespawn || sv_singleplayerrespawn || G_SkillPropertyInt(SKILLP_PlayerRespawn)) ? PST_REBORN : PST_ENTER;
-		if (special1 > 2) { special1 = 0; }
+		if (mo.special1 > 2) { mo.special1 = 0; }
+	}
+
+	static void ExitLevel(Actor mo, int position)
+	{
+		let player = mo.player;
+
+		if (player) { player.Resurrect(); }
+		Level.ChangeLevel(level.nextmap, position);
 	}
 }
 
