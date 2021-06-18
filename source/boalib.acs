@@ -125,6 +125,11 @@ function void StartMessage(void)
 	ACS_NamedExecute("HintMessage", 0, "INTROTEXGEN01", "+use");
 }
 
+function void ClearMessage(void)
+{
+	ScriptCall("MessageBase", "Clear", "INTROTEXGEN01", 20);
+}
+
 function void FadeToBlack(int holdtime, int intime, int outtime)
 {
 	// This stays as a HUDMessage for layering purposes with existing code;
@@ -139,7 +144,11 @@ function void FadeToBlack(int holdtime, int intime, int outtime)
 
 function void HideMap(bool onoff)
 {
-	if (onoff) { ScriptCall("Overlay", "ACSInit", "BLACKBG", 0, 0, 0, 1.0, 1, 2 | 4 | 64); }
+	if (onoff)
+	{
+		ScriptCall("Overlay", "ACSInit", "BLACKBG", 0, 0, 0, 1.0, 1, 2 | 4 | 64);
+		SCriptCall("ZScriptTools", "CloseAutomap");
+	}
 	else { ScriptCall("Overlay", "ACSInit", "BLACKBG", 1, 0, 0, 1.0, 1, 2 | 4 | 64); }
 }
 
