@@ -79,6 +79,7 @@ class PlacedMine : Mine
 		//$Title Friendly Mine (from Deployable item)
 		Health 10;
 		Mass 500;
+		GrenadeBase.FearDistance 24;
 		Obituary "$OBDMINE";
 		-TOUCHY
 	}
@@ -92,6 +93,7 @@ class PlacedMine : Mine
 		Loop;
 	Death:
 		"####" A 8 A_StartSound("MINEF");
+		"####" A 35;
 		"####" A 0 A_Scream;
 		"####" A 0 A_SpawnGroundSplash;
 		"####" A 0 {
