@@ -444,10 +444,12 @@ class AstroScientist : AstroGuard
 	Spawn:
 		SCN2 N 0;
 		Goto Look;
+	SurrenderSprite:
+		SC2S E 0;
 	See:
 		Goto See.Normal;
 	Missile: //different brightmap & colors - ozy81
-		"####" E 5 A_FaceTarget;
+		SCN2 E 5 A_FaceTarget;
 	Missile.Aimed:
 		"####" F 5 A_FaceTarget;
 		"####" O 0 A_StartSound("astrochaingun/fire");
@@ -550,6 +552,7 @@ class AstroTurret : MGTurret
 		"####" B 3 A_MonsterRefire(40,"See");
 		"####" B 0 A_FaceTarget;
 		Goto Missile+1;
+	Disintegrate: //do not disappear unlike other enemies, doesn't make sense --ozy81
 	Death:
 		TNT1 A 0 A_StartSound("astrostein/explosion", CHAN_AUTO, 0, 1.0, 0.1);
 		TNT1 A 0 A_SpawnItemEx("AstrosteinExplosion_Small");
