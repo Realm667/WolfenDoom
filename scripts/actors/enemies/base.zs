@@ -2748,7 +2748,7 @@ class Nazi : Base
 				}
 			}
 		}
-		else if (user_sneakable)
+		else if (user_sneakable && surrendered < 2)
 		{
 			DropItem drops = GetDropItems();
 			DropItem item;
