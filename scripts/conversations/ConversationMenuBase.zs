@@ -294,19 +294,22 @@ class ExtendedConversationMenuBase : ConversationMenu
 		}
 
 		let goodbyestr = mCurNode.Goodbye;
-		if (goodbyestr.Length() == 0)
+		if (!(goodbyestr ~== "None"))
 		{
-			goodbyestr = String.Format("$TXT_RANDOMGOODBYE_%d", Random[RandomSpeech](1, NUM_RANDOM_GOODBYES));
-		}
-		else if (goodbyestr.Left(7) == "RANDOM_")
-		{
-			goodbyestr = String.Format("$TXT_%s_%02d", goodbyestr, Random[RandomSpeech](1, NUM_RANDOM_LINES));
-		}
-		goodbyestr = Stringtable.Localize(goodbyestr);
-		if (goodbyestr.Length() == 0 || goodbyestr.CharAt(0) == "$") goodbyestr = "Bye.";
+			if (goodbyestr.Length() == 0)
+			{
+				goodbyestr = String.Format("$TXT_RANDOMGOODBYE_%d", Random[RandomSpeech](1, NUM_RANDOM_GOODBYES));
+			}
+			else if (goodbyestr.Left(7) == "RANDOM_")
+			{
+				goodbyestr = String.Format("$TXT_%s_%02d", goodbyestr, Random[RandomSpeech](1, NUM_RANDOM_LINES));
+			}
+			goodbyestr = Stringtable.Localize(goodbyestr);
+			if (goodbyestr.Length() == 0 || goodbyestr.CharAt(0) == "$") goodbyestr = "Bye.";
 
-		mResponses.Push(mResponseLines.Size());
-		mResponseLines.Push(goodbyestr);
+			mResponses.Push(mResponseLines.Size());
+			mResponseLines.Push(goodbyestr);
+		}
 
 		return mResponseLines.Size();
 	}
