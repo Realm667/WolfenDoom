@@ -509,6 +509,9 @@ class AchievementTracker : EventHandler
 			records[PLAY_TIME].time = playtime[consoleplayer];
 			SaveEncoded(3); // Save the 4th CVar, which includes the time measure
 		}
+
+		let cheats = players[consoleplayer].cheats;
+		if (cheats & (CF_NOCLIP | CF_NOCLIP2 | CF_GODMODE | CF_GODMODE2 | CF_BUDDHA | CF_BUDDHA2)) { CheckAchievement(consoleplayer, ACH_NAUGHTY); }
 	}
 
 	override void WorldLoaded(WorldEvent e)
