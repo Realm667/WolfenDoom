@@ -328,6 +328,8 @@ class InventoryTracker : EventHandler
 
 class Achievement
 {
+	String icon;
+	String title;
 	bool complete;
 	int time;
 }
@@ -448,6 +450,11 @@ class AchievementTracker : EventHandler
 			Achievement ach = New("Achievement");
 			if (ach)
 			{
+				if (a < ACH_LASTACHIEVEMENT)
+				{
+					ach.icon = String.Format("ACHVMT%02i", a);
+					ach.title = GetTitle(a);
+				}
 				ach.complete = false;
 				records.Push(ach);
 			}
@@ -465,18 +472,19 @@ class AchievementTracker : EventHandler
 
 				for (int a = 0; a < parse.Size(); a++)
 				{
-					if (i * 15 + a == PLAY_TIME)
+					int index = i * 15 + a;
+
+					if (index == PLAY_TIME)
 					{
 						records[PLAY_TIME].time = playtime[consoleplayer] = parse[a].ToInt();
 					}
 					else
 					{
-						Achievement ach = New("Achievement");
+						Achievement ach = records[index];
 						if (ach)
 						{
 							ach.complete = !(parse[a] == String.Format("%c", 0x30 + a));
 							ach.time = parse[a].ToInt();
-							records.Insert(i * 15 + a, ach);
 						}
 					}
 				}
@@ -543,7 +551,7 @@ class AchievementTracker : EventHandler
 		{
 			for (int a = 0; a < ACH_LASTACHIEVEMENT; a++)
 			{
-				String title = ZScriptTools.StripColorCodes(GetTitle(a));
+				String title = ZScriptTools.StripColorCodes(records[a].title);
 				title.Replace(String.Format("%c", 0x0A), "\cC - ");
 
 				if (a < records.Size() && records[a].complete) { title = "\cJ" .. title .. " (" .. SystemTime.Format("%d %b %Y, %T", records[a].time) .. ")"; }
@@ -599,7 +607,7 @@ class AchievementTracker : EventHandler
 		if (pnum < 0) { return; }
 
 		AchievementTracker achievements = AchievementTracker(EventHandler.Find("AchievementTracker"));
-		if (!achievements || !achievements.allowed) { return; }
+		if (!achievements || (!achievements.allowed && a != AchievementTracker.ACH_ADDICTED)) { return; }
 
 		achievements.DoChecks(pnum, a);
 	}
@@ -800,11 +808,9 @@ class AchievementTracker : EventHandler
 
 		if (!silent && complete)
 		{
-			String image = String.Format("ACHVMT%02i", a);
-
 			// Display the message
-			if (a == ACH_NEAT) { AchievementMessage.Init(players[pnum].mo, GetTitle(a), image, "ckeen/secret", "B_", 0xFFFFFF, "Classic", "M"); }
-			else { AchievementMessage.Init(players[pnum].mo, GetTitle(a), image, "misc/achievement"); }
+			if (a == ACH_NEAT) { AchievementMessage.Init(players[pnum].mo, records[a].title, records[a].icon, "ckeen/secret", "B_", 0xFFFFFF, "Classic", "M"); }
+			else { AchievementMessage.Init(players[pnum].mo, records[a].title, records[a].icon, "misc/achievement"); }
 		}
 	}
 
@@ -823,7 +829,7 @@ class AchievementTracker : EventHandler
 	{
 		String lookup = String.Format("ACHIEVEMENT%i", a);
 		String text = StringTable.Localize(lookup, false);
-		if (lookup ~== text) { text = String.Format("Completed undefined achievement (%i)", a); }
+		if (lookup ~== text) { text = String.Format("Completed undefined achievement #%i", a); }
 
 		return text;
 	}
