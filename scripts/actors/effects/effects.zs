@@ -622,6 +622,7 @@ class CullActorBase : Actor
 	double targetalpha;
 	int culllevel;
 	int flags;
+	int user_dontcull;
 
 	FlagDef WASCULLED:flags, 0;
 	FlagDef DONTCULL:flags, 1;
@@ -637,6 +638,8 @@ class CullActorBase : Actor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
+
+		if (user_dontcull) { bDontCull = true; }
 
 		if (bWasCulled)
 		{

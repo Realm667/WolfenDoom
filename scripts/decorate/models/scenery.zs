@@ -1722,7 +1722,6 @@ class CODSignal_Light : Obstacle3d
 		DistanceCheck "boa_scenelod";
 		Radius 8;
 		Height 128;
-		-CANPASS
 		+MOVEWITHSECTOR
 		+NOGRAVITY
 		+RELATIVETOFLOOR
