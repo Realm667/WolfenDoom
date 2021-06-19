@@ -1585,78 +1585,79 @@ class Sniper : NaziStandard
 {
 	Default
 	{
-	//$Category Monsters (BoA)/Afrika Korps
-	//$Title Afrika Korps Sniper
-	//$Color 4
-	Base.NoMedicHeal;
-	Health 50;
-	Speed 0;
-	Mass 1000;
-	SeeSound "";
-	Obituary "$SNIPER";
-	DropItem "Kar98k", 72;
-	DropItem "MauserAmmo", 192, 5;
-	MaxTargetRange 0;
-	+LOOKALLAROUND
+		//$Category Monsters (BoA)/Afrika Korps
+		//$Title Afrika Korps Sniper
+		//$Color 4
+		Base.NoMedicHeal;
+		Health 50;
+		Speed 0;
+		Mass 1000;
+		SeeSound "";
+		Obituary "$SNIPER";
+		DropItem "Kar98k", 72;
+		DropItem "MauserAmmo", 192, 5;
+		MaxTargetRange 0;
+		+LOOKALLAROUND
+		+Nazi.IGNOREFOG;
 	}
 	States
 	{
-	Spawn:
-		SNIA F 0;
-		Goto Look;
-	See:
-		SNIA F 0;
-		Goto See.Sniper;
-	Pain:
-		SNIA I 9 A_NaziPain(256);
-		Goto See;
-	Melee:
-	Missile:
-		SNIA F 32 A_FaceTarget;
-		"####" G 0 { A_StartSound("browning/fire", CHAN_WEAPON); A_AlertMonsters(1536); }
-		"####" G 0 A_FaceTarget;
-		"####" G 8 LIGHT("NAZIFIRE")A_SpawnProjectile("EnemyRifleTracer",44,5);
-		"####" G 0 A_SpawnItemEx("EnfieldRifleCasing", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION);
-		"####" F 32;
-		"####" F 0 {user_count++; if(user_count > 9) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" F 0 A_StartSound("browning/cock", CHAN_AUTO, 0, 0.25);
-		Goto See;
-	Reload: //ozy81
-		SNIA E 0 {bNoPain = TRUE;}
-		"####" E 20 A_StartSound("mauser/open", CHAN_ITEM, 0, frandom (0.6,0.9), ATTN_NORM);
-		"####" F 20 A_StartSound("mauser/insert", CHAN_ITEM, 0, frandom (0.3,0.6), ATTN_NORM);
-		"####" F 0 A_SpawnItemEx("EnfieldRifleCasing", 8,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" F 0 {bNoPain = FALSE;}
-		Goto See;
-	Death:
-		"####" # 0 { mass = 70; }
-		SNIA I 5 A_RandomDeathAnim;
-		"####" J 5 A_Scream;
-		"####" K 5 A_UnblockAndDrop;
-		"####" L 5;
-		"####" M -1;
-		Stop;
-	Death.Front:
-		SNA1 I 0 A_CheckFadeDeath;
-		SNA1 I 5 A_Scream;
-		"####" J 5 A_UnblockAndDrop;
-		"####" K 20 A_SpawnItemEx("ThroatSpill", 0, 0, 0);
-		"####" L 5;
-		"####" M 5;
-		"####" N 5;
-		"####" O -1;
-		Stop;
-	Death.Back:
-		SNB1 I 0 A_CheckFadeDeath;
-		SNB1 I 5 A_Scream;
-		"####" J 5 A_UnblockAndDrop;
-		"####" KLM 5;
-		"####" N -1;
-		Stop;
-	Raise: //raise is forced here due to inheritances
-		SNIA MLKJI 5;
-	Idle:
-		Goto Look;
+		Spawn:
+			SNIA F 0;
+			Goto Look;
+		See:
+			SNIA F 0;
+			Goto See.Sniper;
+		Pain:
+			SNIA I 9 A_NaziPain(256);
+			Goto See;
+		Melee:
+		Missile:
+			SNIA F 32 A_FaceTarget;
+			"####" G 0 { A_StartSound("browning/fire", CHAN_WEAPON); A_AlertMonsters(1536); }
+			"####" G 0 A_FaceTarget;
+			"####" G 8 LIGHT("NAZIFIRE")A_SpawnProjectile("EnemyRifleTracer",44,5);
+			"####" G 0 A_SpawnItemEx("EnfieldRifleCasing", 1, 0, 56, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION);
+			"####" F 32;
+			"####" F 0 {user_count++; if(user_count > 9) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
+			"####" F 0 A_StartSound("browning/cock", CHAN_AUTO, 0, 0.25);
+			Goto See;
+		Reload: //ozy81
+			SNIA E 0 {bNoPain = TRUE;}
+			"####" E 20 A_StartSound("mauser/open", CHAN_ITEM, 0, frandom (0.6,0.9), ATTN_NORM);
+			"####" F 20 A_StartSound("mauser/insert", CHAN_ITEM, 0, frandom (0.3,0.6), ATTN_NORM);
+			"####" F 0 A_SpawnItemEx("EnfieldRifleCasing", 8,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+			"####" F 0 {bNoPain = FALSE;}
+			Goto See;
+		Death:
+			"####" # 0 { mass = 70; }
+			SNIA I 5 A_RandomDeathAnim;
+			"####" J 5 A_Scream;
+			"####" K 5 A_UnblockAndDrop;
+			"####" L 5;
+			"####" M -1;
+			Stop;
+		Death.Front:
+			SNA1 I 0 A_CheckFadeDeath;
+			SNA1 I 5 A_Scream;
+			"####" J 5 A_UnblockAndDrop;
+			"####" K 20 A_SpawnItemEx("ThroatSpill", 0, 0, 0);
+			"####" L 5;
+			"####" M 5;
+			"####" N 5;
+			"####" O -1;
+			Stop;
+		Death.Back:
+			SNB1 I 0 A_CheckFadeDeath;
+			SNB1 I 5 A_Scream;
+			"####" J 5 A_UnblockAndDrop;
+			"####" KLM 5;
+			"####" N -1;
+			Stop;
+		Raise: //raise is forced here due to inheritances
+			SNIA MLKJI 5;
+		Idle:
+			Goto Look;
 	}
 }
 

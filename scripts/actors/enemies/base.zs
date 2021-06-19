@@ -1287,6 +1287,7 @@ class Nazi : Base
 	int naziflags;
 
 	FlagDef CHASEONLY:naziflags, 0;
+	FlagDef IGNOREFOG:naziflags, 1;
 
 	Property Healer:healflags;
 	Property PerceptionFOV:perceptionfov; // FOV used for NOTARGET sight checks (i.e., Gestapo and others who can see through scientist/gestapo uniforms)
@@ -2055,7 +2056,7 @@ class Nazi : Base
 					if (vis) { vis.CheckVisibility(self); }
 				}
 
-				if (bChaseOnly)
+				if (bChaseOnly && !bIgnoreFog)
 				{
 					A_Chase(null, null, flags);
 				}
