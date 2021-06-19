@@ -592,6 +592,7 @@ class AchievementTracker : EventHandler
 			special == 74 // Teleport_NewMap
 		)
 		{
+			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_SPEEDRUNNER);
 			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_IMPENETRABLE);
 			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_TRICKSTER);
 			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_PACIFIST);
@@ -659,7 +660,7 @@ class AchievementTracker : EventHandler
 				}
 				break;
 			case ACH_SPEEDRUNNER:
-				// TODO
+				if (level.partime && (level.maptime / 35) < level.partime / 2) { complete = true; }
 				break;
 			case ACH_TRICKSTER:
 				if (!keycount) { break; }

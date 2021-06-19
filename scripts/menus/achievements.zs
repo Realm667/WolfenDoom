@@ -148,6 +148,15 @@ class AchievementSummary : BoAMenu
 			case AchievementTracker.ACH_GUNSLINGER:
 				value = String.Format("%i/%i", tracker.pistolshots[consoleplayer], 1000);
 				break;
+			case AchievementTracker.ACH_SPEEDRUNNER:
+				if (!level.partime) { break; }
+
+				int cur = level.maptime / 35;
+				int par = level.partime / 2;
+				String curstr = String.Format("%02d:%02d", cur / 60, cur % 60);
+				String parstr = String.Format("%02d:%02d", par / 60, par % 60);
+				value = String.Format("%s/%s", curstr, parstr);
+				break;
 			case AchievementTracker.ACH_ASSASSIN:
 				value = String.Format("%i/%i", tracker.knifekills[consoleplayer], 10);
 				break;
