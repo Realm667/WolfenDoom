@@ -637,7 +637,6 @@ class AchievementTracker : EventHandler
 
 				return;
 			}
-			else if (records[a].complete) { return; } // Ignore this achievement if it was already completed
 		}
 
 		bool complete = false;
@@ -1028,12 +1027,9 @@ class PersistentAchievementTracker : StaticEventHandler
 
 	override void WorldUnloaded(WorldEvent e)
 	{
-		if (!e.IsSaveGame)
-		{
-			AchievementTracker tracker = AchievementTracker(EventHandler.Find("AchievementTracker"));
-			if (!tracker) { return; }
+		AchievementTracker tracker = AchievementTracker(EventHandler.Find("AchievementTracker"));
+		if (!tracker) { return; }
 
-			tracker.SaveStats();
-		}
+		tracker.SaveStats();
 	}
 }

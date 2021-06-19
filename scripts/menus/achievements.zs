@@ -47,7 +47,7 @@ class AchievementSummary : BoAMenu
 		if (cols < tracker.ACH_LASTACHIEVEMENT / rows) { cols++; }
 
 		titlefont = BigFont;
-		textfont = Font.GetFont("ThreeFiv");
+		textfont = SmallFont;
 		captionfont = Font.GetFont("ThreeFiv");
 
 		background = TexMan.CheckForTexture("graphics/hud/general/convback.png", TexMan.Type_Any);
@@ -82,7 +82,7 @@ class AchievementSummary : BoAMenu
 		int colwidth = int((w - spacing * 2) / (cols + 1));
 		int iconwidth = 40;
 
-		double scale = (Screen.GetHeight() * iconwidth / h) / iconwidth;
+		double scale = max(0.01, (Screen.GetHeight() * iconwidth / h) / iconwidth);
 
 		int yoffset = (h - rowheight * rows) / 2;
 
@@ -90,6 +90,7 @@ class AchievementSummary : BoAMenu
 
 		Vector2 size;
 		[pos, size] = Screen.VirtualToRealCoords(pos, (colwidth - spacing, rowheight - spacing), (w, h));
+		double bottom = pos.y + size.y;
 
 		Screen.Dim(0x0, 0.75, int(pos.x - 4 * scale), int(pos.y - 4 * scale), int(size.x + 8 * scale), int(size.y + 8 * scale));
 
@@ -114,7 +115,7 @@ class AchievementSummary : BoAMenu
 			}
 		}
 
-		screen.DrawText(titlefont, ach.complete ? Font.CR_GOLD : Font.CR_DARKGRAY, pos.x, pos.y, ZScriptTools.StripColorCodes(title), DTA_Alpha, alpha, DTA_ScaleX, scale * titlescale, DTA_ScaleY, scale * titlescale);
+		screen.DrawText(titlefont, ach.complete ? Font.CR_GOLD : Font.CR_DARKGRAY, int(pos.x), int(pos.y), ZScriptTools.StripColorCodes(title), DTA_Alpha, alpha, DTA_ScaleX, scale * titlescale, DTA_ScaleY, scale * titlescale);
 		pos.y += int(titlefont.GetHeight() * scale * titlescale);
 
 		TextureID icon = TexMan.CheckForTexture(ach.icon);
@@ -123,21 +124,108 @@ class AchievementSummary : BoAMenu
 			screen.DrawTexture(icon, true, pos.x + 2 * scale, pos.y + 3 * scale, DTA_Alpha, alpha, DTA_AlphaChannel, !ach.complete, DTA_FillColor, ach.complete ? -1 : 0xBBBBCC, DTA_ScaleX, scale, DTA_ScaleY, scale);
 		}
 
-		double textscale = 1.5;
-		[text, lines] = BrokenString.BreakString(text, int((size.x - iconwidth * scale) / (scale * textscale)), false, "L", textfont);
+		double textscale = 1.0;
+
+		String temp;
+		while (textscale == 1.0 || (lines.Count() + 1) * textfont.GetHeight() * scale * textscale > size.y * 0.65)
+		{
+			textscale *= 0.9;
+			[temp, lines] = BrokenString.BreakString(text, int((size.x - iconwidth * scale) / (scale * textscale)), false, "L", textfont);
+		}
+
 		int lineheight = int(textfont.GetHeight() * scale * textscale);
 
 		for (int l = 0; l <= lines.Count(); l++)
 		{
 			int clr = (ach.complete) ? Font.CR_GRAY : Font.CR_DARKGRAY;
-			screen.DrawText(textfont, clr, pos.x + iconwidth * scale, pos.y + lineheight * l, ZScriptTools.StripColorCodes(lines.StringAt(l)), DTA_Alpha, alpha, DTA_ScaleX, scale * textscale, DTA_ScaleY, scale * textscale);
+			screen.DrawText(textfont, clr, int(pos.x + iconwidth * scale), int(pos.y + lineheight * l), ZScriptTools.StripColorCodes(lines.StringAt(l)), DTA_Alpha, alpha, DTA_ScaleX, scale * textscale, DTA_ScaleY, scale * textscale);
 		}
 
-		if (index == 33)
+		double captionscale = 1.0;
+		String value = "";
+		switch (index)
 		{
-			int sec = tracker.records[AchievementTracker.PLAY_TIME].time;
-			String playtime = String.Format("%02d:%02d:%02d", sec / 3600, (sec % 3600) / 60, sec % 60);
-			screen.DrawText(textfont, Font.CR_DARKGRAY, pos.x + size.x - textfont.StringWidth(playtime) * scale * textscale, pos.y + lineheight * 3, playtime, DTA_Alpha, alpha, DTA_ScaleX, scale * textscale, DTA_ScaleY, scale * textscale);
+			case AchievementTracker.ACH_GUNSLINGER:
+				value = String.Format("%i/%i", tracker.pistolshots[consoleplayer], 1000);
+				break;
+			case AchievementTracker.ACH_ASSASSIN:
+				value = String.Format("%i/%i", tracker.knifekills[consoleplayer], 10);
+				break;
+			case AchievementTracker.ACH_SURRENDERS:
+				value = String.Format("%i/%i", tracker.surrenders[consoleplayer], 5);
+				break;
+			case AchievementTracker.ACH_BOOM:
+				value = String.Format("%i/%i", tracker.totalgrenades[consoleplayer], 40);
+				break;
+			case AchievementTracker.ACH_SPAM:
+				value = String.Format("%i/%i", tracker.saves[consoleplayer], 100);
+				break;
+			case AchievementTracker.ACH_SPRINT:
+				value = String.Format("%i/%i", tracker.exhaustion[consoleplayer], 50);
+				break;
+			case AchievementTracker.ACH_LIQUIDDEATH:
+				if (tracker.liquiddeath[consoleplayer][0]) { value = "\cH"; }
+				value = value .. "⬛\cU";
+				if (tracker.liquiddeath[consoleplayer][1]) { value = value .. "\cI"; }
+				value = value .. "⬛\cU";
+				if (tracker.liquiddeath[consoleplayer][2]) { value = value .. "\cT"; }
+				value = value .. "⬛";
+				break;
+			case AchievementTracker.ACH_ZOMBIES:
+				value = String.Format("%i/%i", tracker.zombies[consoleplayer], 500);
+				break;
+			case AchievementTracker.ACH_FULLARSENAL:
+				int val = 0;
+				for (int w = 0; w < 16; w++)
+				{
+					if (tracker.weapons[consoleplayer][w]) { val++; }
+				}
+				value = String.Format("%i/%i", val, 16);
+				break;
+			case AchievementTracker.ACH_COMBATMEDIC:
+				value = String.Format("%i/%i", tracker.fieldkits[consoleplayer], 20);
+				break;
+			case AchievementTracker.ACH_TREASUREHUNTER:
+				value = String.Format("%i/%i", tracker.chests[consoleplayer], 20);
+				break;
+			case AchievementTracker.ACH_STAYDEAD:
+				value = String.Format("%i/%i", tracker.deadwounded[consoleplayer], 50);
+				break;
+			case AchievementTracker.ACH_GIBEMALL:
+				value = String.Format("%i/%i", tracker.gibs[consoleplayer], 100);
+				break;
+			case AchievementTracker.ACH_GOLDDIGGER:
+				value = String.Format("%i/%i", tracker.coins[consoleplayer], 1000);
+				break;
+			case AchievementTracker.ACH_NEAT:
+				if (tracker.cartridges[consoleplayer][0]) { value = "\cG"; }
+				value = value .. "⬛\cU";
+				if (tracker.cartridges[consoleplayer][1]) { value = value .. "\cD"; }
+				value = value .. "⬛\cU";
+				if (tracker.cartridges[consoleplayer][2]) { value = value .. "\cY"; }
+				value = value .. "⬛";
+				break;
+			case AchievementTracker.ACH_TROPHYHUNTER:
+				if (tracker.records[AchievementTracker.ACH_KEENAWARD]) { value = "\cF"; }
+				value = value .. "🅺\cU";
+				if (tracker.records[AchievementTracker.ACH_CACOWARD]) { value = value .. "\cF"; }
+				value = value .. "🅲\cU";
+				if (tracker.records[AchievementTracker.ACH_NAZIWARD]) { value = value .. "\cF"; }
+				value = value .. "🅽";
+				break;
+			case AchievementTracker.ACH_ADDICTED:
+				int sec = tracker.playtime[consoleplayer];
+				value = String.Format("%02d:%02d:%02d", sec / 3600, (sec % 3600) / 60, sec % 60);
+				break;
 		}
+
+		pos.y = bottom - captionfont.GetHeight() * scale * captionscale;
+
+		if (ach.time && ach.time > 100)
+		{
+			screen.DrawText(captionfont, Font.CR_GOLD, int(pos.x + iconwidth * scale), int(pos.y), SystemTime.Format("%d %b %Y, %T", ach.time), DTA_Alpha, alpha, DTA_ScaleX, scale * captionscale, DTA_ScaleY, scale * captionscale);
+		}
+
+		if (value.length()) { screen.DrawText(captionfont, Font.CR_DARKGRAY, int(pos.x + size.x - captionfont.StringWidth(value) * scale * captionscale), int(pos.y), value, DTA_Alpha, alpha, DTA_ScaleX, scale * captionscale, DTA_ScaleY, scale * captionscale); }
 	}
 }
