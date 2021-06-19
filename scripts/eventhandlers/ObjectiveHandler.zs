@@ -310,7 +310,10 @@ class ObjectivesWidget : Widget
 		if (!handler) { handler = ObjectiveHandler(EventHandler.Find("ObjectiveHandler")); }
 
 		if (
-				((!stats || !stats.GetBool()) && !handler.objectives.Size()) ||
+				(
+					(!stats || !stats.GetBool()) && 
+					(!handler.objectives.Size() && !level.total_monsters && !level.total_secrets && !level.total_items)
+				) ||
 				automapactive ||
 				screenblocks > 11 ||
 				player.mo.FindInventory("CutsceneEnabled") ||
