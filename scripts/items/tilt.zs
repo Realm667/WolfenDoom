@@ -176,25 +176,17 @@ class BoATilt : CustomInventory
 			// A_SetViewPitch does not affect aim direction, so use A_SetPitch
 			owner.A_SetPitch(owner.pitch + (pitchoffset - lastPitch), SPF_INTERPOLATE);
 			lastPitch = pitchoffset;
-			// So that A_SetViewRoll is called only once
-			if (!boa_tilteffects)
-			{
-				owner.A_SetViewRoll(owner.viewroll + (curLevelTilt - lastLevelTilt), SPF_INTERPOLATE);
-				lastLevelTilt = curLevelTilt;
-			}
-			
-		}
-		else
-		{
-			// Make sure everything was reset if we were previously on a level that had tilt
-			if (owner.viewroll || owner.viewpitch)
-			{
-				owner.viewroll = owner.viewpitch = 0;
-			}
 		}
 
-		// Allow all other effects to be disabled via CVar
-		if (!boa_tilteffects) { return; }
+		// Call A_SetViewRoll here with the level tilt, so that it is only
+		// called once, but allow all other effects to be disabled via their
+		// respective CVars
+		if (!boa_tilteffects)
+		{
+			owner.A_SetViewRoll(owner.viewroll + (curLevelTilt - lastLevelTilt), SPF_INTERPOLATE);
+			lastLevelTilt = curLevelTilt;
+			return;
+		}
 
 		double curRoll = 0;
 
