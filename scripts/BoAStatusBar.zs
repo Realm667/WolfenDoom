@@ -130,21 +130,26 @@ class BoAStatusBar : BaseStatusBar
 
 	override bool ProcessNotify(EPrintLevel printlevel, String outline)
 	{
+		bool processed = false;
+
 		if (gameaction == ga_savegame || gameaction == ga_autosave)
 		{
 			// Don't print save messages
 			savetimer = savetimertime;
-			return true;
+			processed = true;
 		}
 
-		Font fnt;
-		if (CPlayer.mo is "KeenPlayer") { fnt = ClassicFont; }
-		else { fnt = SmallFont; }
+		if (!processed && printlevel <= PRINT_TEAMCHAT)
+		{
+			Font fnt = (CPlayer.mo is "KeenPlayer") ? ClassicFont : SmallFont;
 
-		if (printlevel < 3) { Log.Add(CPlayer, outline, "Notifications", printlevel & PRINT_TYPES, fnt); return true; }
-		else if (printlevel < 5) { Log.Add(CPlayer, outline, "Chat", printlevel & PRINT_TYPES, fnt); return true; }
+			if (printlevel <= PRINT_HIGH) { Log.Add(CPlayer, outline, "Notifications", printlevel & PRINT_TYPES, fnt); }
+			else { Log.Add(CPlayer, outline, "Chat", printlevel & PRINT_TYPES, fnt); }
 
-		return false;
+			processed = true; 
+		}
+
+		return processed;
 	}
 
 	override void Tick()
