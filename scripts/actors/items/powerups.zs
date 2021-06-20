@@ -1771,15 +1771,22 @@ class SuperShield : BasicArmorPickup
 			}
 		}
 
-		// Always override whatever old armor was there
-		armor.SavePercent = clamp(SavePercent, 0, 100) / 100.0;
-		armor.Amount = min(armor.Amount + SaveAmount + armor.BonusCount, MaxAmount);
-		armor.MaxAmount = max(armor.Amount, armor.MaxAmount);
-		armor.Icon = Icon;
-		armor.MaxAbsorb = max(armor.MaxAbsorb, MaxAbsorb);
-		armor.MaxFullAbsorb = max(armor.MaxFullAbsorb, MaxFullAbsorb);
-		armor.ArmorType = GetClassName();
-		armor.ActualSaveAmount = max(armor.ActualSaveAmount, SaveAmount);
+		// If you already had a Tesla armor, then add to it
+		if (armor.ArmorType == GetClassName())
+		{
+			armor.Amount = min(armor.Amount + SaveAmount + armor.BonusCount, MaxAmount);
+		}
+		else // Otherwise, override whatever old armor was there - note that this
+		{    // disregards BonusAmount when giving, and can *decrease* armor percentage to 100
+			armor.SavePercent = clamp(SavePercent, 0, 100) / 100.0;
+			armor.Amount = SaveAmount;
+			armor.MaxAmount = max(armor.Amount, armor.MaxAmount);
+			armor.Icon = Icon;
+			armor.MaxAbsorb = max(armor.MaxAbsorb, MaxAbsorb);
+			armor.MaxFullAbsorb = max(armor.MaxFullAbsorb, MaxFullAbsorb);
+			armor.ArmorType = GetClassName();
+			armor.ActualSaveAmount = max(armor.ActualSaveAmount, SaveAmount);
+		}
 
 		return true;
 	}
