@@ -638,7 +638,6 @@ class InteractiveItem : PuzzleItem
 		Super.PostBeginPlay();
 	}
 
-
 	override bool HandlePickup (Inventory item)
 	{
 		return false; // Never stack these items together
@@ -712,11 +711,6 @@ class InteractiveItem : PuzzleItem
 			viewer.player.ConversationNPC = null;
 		}
 
-	}
-
-	override bool ShouldStay ()
-	{
-		return !(maxamount > 1);
 	}
 }
 

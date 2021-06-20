@@ -109,9 +109,4 @@ class CompassItem : PuzzleItem
 			if (item) { item.Destroy(); }
 		}
 	}
-
-	override bool ShouldStay ()
-	{
-		return !(maxamount > 1);
-	}
 }
