@@ -26,6 +26,7 @@ class AchievementSummary : BoAMenu
 
 	double alpha;
 	int h, w, cols, rows;
+	Achievement selected;
 
 	TextureID background, board;
 	Font titlefont, textfont, captionfont;
@@ -37,6 +38,7 @@ class AchievementSummary : BoAMenu
 		DontDim = true;
 		DontBlur = true;
 		menuactive = OnNoPause;
+		mMouseCapture = true;
 
 		h = 600;
 		w = int(h * 4 / 3);
@@ -68,11 +70,11 @@ class AchievementSummary : BoAMenu
 
 		for (int a = 0; a < tracker.ACH_LASTACHIEVEMENT; a++)
 		{
-			DrawAchievement(a, tracker.records[a]);
+			DrawAchievement(a, tracker.records[a], tracker.records[a] == selected);
 		}
 	}
 
-	virtual void DrawAchievement(int index, Achievement ach)
+	virtual void DrawAchievement(int index, Achievement ach, bool selected = false)
 	{
 		int column = index / rows;
 		int row = index % rows;
@@ -90,9 +92,14 @@ class AchievementSummary : BoAMenu
 
 		Vector2 size;
 		[pos, size] = Screen.VirtualToRealCoords(pos, (colwidth - spacing, rowheight - spacing), (w, h));
+
+		ach.pos = pos - (4, 4) * scale;
+		ach.size = size + (8, 8) * scale;;
+
 		double bottom = pos.y + size.y;
 
-		Screen.Dim(0x0, 0.75, int(pos.x - 4 * scale), int(pos.y - 4 * scale), int(size.x + 8 * scale), int(size.y + 8 * scale));
+		if (selected) { Screen.DrawLineFrame(0xFFDD0000, int(ach.pos.x), int(ach.pos.y), int(ach.size.x), int(ach.size.y), 2); }
+		Screen.Dim(0x0, 0.75, int(ach.pos.x), int(ach.pos.y), int(ach.size.x), int(ach.size.y));
 
 		String text = ach.title;
 		BrokenString lines;
@@ -236,5 +243,28 @@ class AchievementSummary : BoAMenu
 		}
 
 		if (value.length()) { screen.DrawText(captionfont, Font.CR_DARKGRAY, int(pos.x + size.x - captionfont.StringWidth(value) * scale * captionscale), int(pos.y), value, DTA_Alpha, alpha, DTA_ScaleX, scale * captionscale, DTA_ScaleY, scale * captionscale); }
+	}
+
+	override bool MouseEvent(int type, int mx, int my)
+	{
+		for (int a = 0; a < tracker.ACH_LASTACHIEVEMENT; a++)
+		{
+			let ach = tracker.records[a];
+			if (!ach) { continue; }
+
+			if (
+				mx >= ach.pos.x &&
+				mx <= ach.pos.x + ach.size.x &&
+				my >= ach.pos.y &&
+				my <= ach.pos.y + ach.size.y
+			)
+			{
+				selected = ach;
+				return true;
+			}
+		}
+
+		selected = null;
+		return true;
 	}
 }

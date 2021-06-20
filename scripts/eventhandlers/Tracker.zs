@@ -332,6 +332,8 @@ class Achievement
 	String title;
 	bool complete;
 	int time;
+	Vector2 pos;
+	Vector2 size;
 }
 
 class AchievementTracker : EventHandler
@@ -435,7 +437,8 @@ class AchievementTracker : EventHandler
 		ACH_CACOWARD,		// Found the Cacoward
 		ACH_NAZIWARD,		// Found the Naziward
 
-		PLAY_TIME = 59,		// Save the total play time value across games
+		STAT_SAVES = 58,	// Save the number of saves across all games
+		STAT_PLAYTIME,		// Save the total play time value across games
 	};
 
 	override void OnRegister()
@@ -474,9 +477,13 @@ class AchievementTracker : EventHandler
 				{
 					int index = i * 15 + a;
 
-					if (index == PLAY_TIME)
+					if (index == STAT_PLAYTIME)
 					{
-						records[PLAY_TIME].time = playtime[consoleplayer] = parse[a].ToInt();
+						records[STAT_PLAYTIME].time = playtime[consoleplayer] = parse[a].ToInt();
+					}
+					else if (index == STAT_SAVES)
+					{
+						records[STAT_SAVES].time = saves[consoleplayer] = parse[a].ToInt();
 					}
 					else
 					{
@@ -496,17 +503,25 @@ class AchievementTracker : EventHandler
 	{
 		CheckStats();
 		
-		if (players[consoleplayer].cmd.buttons & BT_RELOAD) { manualreloads[consoleplayer]++; }
-		if (gameaction == ga_savegame) { CheckAchievement(consoleplayer, ACH_SPAM); }
 		if (shots[consoleplayer][1] > 100 && shots[consoleplayer][0] * 100.0 / shots[consoleplayer][1] > 75) { CheckAchievement(consoleplayer, ACH_ACCURACY); }
+		if (players[consoleplayer].cmd.buttons & BT_RELOAD) { manualreloads[consoleplayer]++; }
+
+		if (gameaction == ga_savegame)
+		{
+			CheckAchievement(consoleplayer, ACH_SPAM);
+
+			records[STAT_SAVES].complete = true;
+			records[STAT_SAVES].time = saves[consoleplayer];
+			SaveEncoded(3);
+		}
 
 		if (level.time % 35 == 0)
 		{
 			if (++playtime[consoleplayer] > 36000) { CheckAchievement(consoleplayer, ACH_ADDICTED); }
 
 			// Update the saved play time values
-			records[PLAY_TIME].complete = true;
-			records[PLAY_TIME].time = playtime[consoleplayer];
+			records[STAT_PLAYTIME].complete = true;
+			records[STAT_PLAYTIME].time = playtime[consoleplayer];
 			SaveEncoded(3); // Save the 4th CVar, which includes the time measure
 		}
 
@@ -632,7 +647,7 @@ class AchievementTracker : EventHandler
 		{
 			if (a == ACH_NAUGHTY) // Always apply this countermeasure, regardless of if the achievement was already awarded
 			{
-				// Reset inventory-based achievements if you use 'give'
+				// Reset inventory-based achievements if you use 'give' or another major cheat
 				coins[pnum] = 0;
 				for (int w = 0; w < 16; w++) { weapons[pnum][w] == false; }
 				for (int c = 0; c < 3; c++) { cartridges[pnum][c] == false; }
@@ -919,7 +934,6 @@ class AchievementTracker : EventHandler
 			knifekills[i] = ptracker.knifekills[i];
 			surrenders[i] = ptracker.surrenders[i];
 			totalgrenades[i] = ptracker.totalgrenades[i];
-			saves[i] = ptracker.saves[i];
 			exhaustion[i] = ptracker.exhaustion[i];
 			
 			for (int l = 0; l < 3; l++)
@@ -962,7 +976,6 @@ class AchievementTracker : EventHandler
 			ptracker.knifekills[i] = knifekills[i];
 			ptracker.surrenders[i] = surrenders[i];
 			ptracker.totalgrenades[i] = totalgrenades[i];
-			ptracker.saves[i] = saves[i];
 			ptracker.exhaustion[i] = exhaustion[i];
 
 			for (int l = 0; l < 3; l++)
@@ -1008,7 +1021,6 @@ class PersistentAchievementTracker : StaticEventHandler
 	int knifekills[MAXPLAYERS];
 	int surrenders[MAXPLAYERS];
 	int totalgrenades[MAXPLAYERS];
-	int saves[MAXPLAYERS];
 	int exhaustion[MAXPLAYERS];
 	bool liquiddeath[MAXPLAYERS][3];
 	int zombies[MAXPLAYERS];
