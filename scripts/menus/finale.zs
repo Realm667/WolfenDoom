@@ -343,7 +343,7 @@ class Finale : BoAMenu
 		if (drawtic > 70)
 		{
 			double framealpha = min(1.0, (drawtic - 70) / 140.0) * alpha * 0.5;
-			if (frame) { screen.DrawTexture(frame, false, width / 2, height / 2, DTA_CenterOffset, true, DTA_DestWidth, height * 960 / 400, DTA_DestHeight, height, DTA_FlipX, swapsides, DTA_Alpha, framealpha); }
+			if (frame) { screen.DrawTexture(frame, false, width / 2 - (swapsides ? 370 : 0), height / 2, DTA_CenterOffset, true, DTA_DestWidth, height * 960 / 400, DTA_DestHeight, height, DTA_Alpha, framealpha); }
 		}
 
 		if (drawtic > 175 && !nostats)
