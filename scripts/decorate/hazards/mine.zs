@@ -77,10 +77,11 @@ class PlacedMine : Mine
 	Default
 	{
 		//$Title Friendly Mine (from Deployable item)
-		Health 10;
+		Health 1;
 		Mass 500;
 		GrenadeBase.FearDistance 24;
 		Obituary "$OBDMINE";
+		DeathSound "clusterbomb/explode";
 		-TOUCHY
 	}
 	States
@@ -92,15 +93,20 @@ class PlacedMine : Mine
 		"####" A 35 {A_Chase(); bTouchy = TRUE; A_CheckProximity("SpawnWait", "BoaPlayer", radius+64, 1, CPXF_SETTARGET);}
 		Loop;
 	Death:
-		"####" A 8 A_StartSound("MINEF");
-		"####" A 35;
-		"####" A 0 A_Scream;
-		"####" A 0 A_SpawnGroundSplash;
+		"####" A 8 { Actor mo = Spawn("Smoke_Small", pos); if (mo) { mo.vel.z = 0.25; } A_StartSound("MINEF"); }
+        "####" A 35;
+        "####" A 3 A_StartSound("nebelwerfer/xplode"); 
+		"####" A 0 { A_SpawnGroundSplash(); A_SpawnItemEx("ZCrater"); vel.z += 8.0; }
+		"####" A 8;
 		"####" A 0 {
-				Actor mo = Spawn("FriendlyExplosion_Medium", pos);
-				if (master && mo) { mo.master = master; }
-			}
-		"####" A 0 A_SpawnItemEx("ZCrater");
+			A_Scream();
+			Actor mo = Spawn("FriendlyExplosion_Medium", pos);
+			if (master && mo) { mo.master = master; }
+			Spawn("KD_HL2SmokeGenerator", pos);
+			Spawn("KD_HL2SparkGenerator", pos);
+			for (int i = 0; i < 20; ++i) { A_SpawnItemEx("ClusterBomb_Debris", 0, 0, 8, random(2,16), random(2,16), random(2,16), random(0,359), 0, 0); }
+			Radius_Quake(10,10,0,16,0);
+		}
 		Stop;
 	SpawnWait:
 		"####" A 1 {bTouchy = FALSE;}
