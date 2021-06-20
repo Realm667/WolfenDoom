@@ -349,6 +349,7 @@ class StatistNWSmuggler : StatistBarkeeper
 	//$Title Mikkel, Norwegian Smuggler (NPC)
 	Scale 0.67;
 	-USESPECIAL
+	+NODAMAGE
 	}
 	States
 	{

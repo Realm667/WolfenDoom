@@ -3271,6 +3271,7 @@ class ChairGuy : Nazi
 	//$Color 4
 	Base.BossIcon "BOSSICO2";
 	Tag "$TAGHOLZBEIN";
+	Height 64;
 	Health 1000;
 	Mass 100000;
 	PainChance 64;
