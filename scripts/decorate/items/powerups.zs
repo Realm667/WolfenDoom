@@ -256,7 +256,7 @@ class DeployableMine : CustomInvBase
 				Actor mo;
 				[sp, mo] = A_SpawnItemEx("PlacedMine", radius + 32);
 
-				if (sp && mo) { mo.master = self; }
+				if (sp && mo) { mo.tracer = self; }
 			}
 			Stop;
 		}

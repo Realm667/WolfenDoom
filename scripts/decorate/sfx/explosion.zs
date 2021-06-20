@@ -45,6 +45,7 @@ class GeneralExplosion_Medium : SwitchableDecoration
 	//$Arg1Type 11
 	//$Arg1Enum { 0 = "Yes"; 1 = "No"; }
 	+NOINTERACTION
+	DamageType "Explosion";
 	}
 	States
 	{
