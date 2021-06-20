@@ -110,4 +110,9 @@ class StackableInventory : PuzzleItem
 		}
 		return copy;
 	}
+
+	override bool ShouldStay ()
+	{
+		return false;
+	}
 }

@@ -713,6 +713,11 @@ class InteractiveItem : PuzzleItem
 		}
 
 	}
+
+	override bool ShouldStay ()
+	{
+		return !(maxamount > 1);
+	}
 }
 
 class TextPaper : InteractiveItem
