@@ -485,6 +485,19 @@ class Typewriter : Obstacle3d
 	}
 }
 
+class TypewriterSmall : Obstacle3d
+{
+	Default
+	{
+		//$Category Models (BoA)/Scenery
+		//$Title Typewriter (small)
+		//$Color 3
+		DistanceCheck "boa_scenelod";
+		Radius 8;
+		Height 7;
+	}
+}
+
 class RadioModern: SceneryBase
 {
 	Default
