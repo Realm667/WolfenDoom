@@ -1606,10 +1606,8 @@ class MaskedBoss : RocketMan
 	Chaingun:
 		MASZ F 0 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" FF 0 A_SpawnProjectile("EnemyChaingunTracer",54,30,random(-11,11));
-		"####" FF 0 A_SpawnProjectile("EnemyChaingunTracer",54,-30,random(-11,11));
-		"####" FF 0 A_SpawnItemEx("Casing9mm", 32,0,58, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" FF 0 A_SpawnItemEx("Casing9mm", 32,0,58, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" FF 0 A_SpawnProjectile("GoeringBall",54,30,random(-11,11));
+		"####" FF 0 A_SpawnProjectile("GoeringBall",54,-30,random(-11,11));
 		"####" F 0 {user_count2++; if(user_count2 > 47) {user_count2 = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" F 2 LIGHT("DEKNBFIR");
 		"####" G 2 A_MonsterRefire(20,"See");
