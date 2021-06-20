@@ -31,9 +31,9 @@ class Mine : GrenadeBase
 		Radius 30;
 		Height 12;
 		Health 1000;
-		Mass 9999999;
 		+ACTIVATEMCROSS
 		+DONTGIB
+		+DONTTHRUST
 		+LOOKALLAROUND
 		+NOBLOOD
 		+NOICEDEATH
@@ -44,6 +44,7 @@ class Mine : GrenadeBase
 		Obituary "$OBMINE";
 		GrenadeBase.FearDistance 128;
 		GrenadeBase.SplashType "Mine";
+		DamageFactor "Explosion", 0;
 	}
 	States
 	{
@@ -78,40 +79,66 @@ class PlacedMine : Mine
 	{
 		//$Title Friendly Mine (from Deployable item)
 		Health 1;
-		Mass 500;
 		GrenadeBase.FearDistance 24;
 		Obituary "$OBDMINE";
 		DeathSound "clusterbomb/explode";
 		-TOUCHY
 	}
+
 	States
 	{
-	Spawn:
-		BOAM A 35 NODELAY A_CheckProximity("SpawnWait", "BoaPlayer", radius+64, 1, CPXF_SETTARGET); //wait 1 sec
-	See:
-		"####" A 0 A_CheckProximity("SpawnWait", "BoaPlayer", radius+64, 1, CPXF_SETTARGET);
-		"####" A 35 {A_Chase(); bTouchy = TRUE; A_CheckProximity("SpawnWait", "BoaPlayer", radius+64, 1, CPXF_SETTARGET);}
-		Loop;
-	Death:
-		"####" A 8 { Actor mo = Spawn("Smoke_Small", pos); if (mo) { mo.vel.z = 0.25; } A_StartSound("MINEF"); }
-        "####" A 35;
-        "####" A 3 A_StartSound("nebelwerfer/xplode"); 
-		"####" A 0 { A_SpawnGroundSplash(); A_SpawnItemEx("ZCrater"); vel.z += 8.0; }
-		"####" A 8;
-		"####" A 0 {
-			A_Scream();
-			Actor mo = Spawn("FriendlyExplosion_Medium", pos);
-			if (master && mo) { mo.master = master; }
-			Spawn("KD_HL2SmokeGenerator", pos);
-			Spawn("KD_HL2SparkGenerator", pos);
-			for (int i = 0; i < 20; ++i) { A_SpawnItemEx("ClusterBomb_Debris", 0, 0, 8, random(2,16), random(2,16), random(2,16), random(0,359), 0, 0); }
-			Radius_Quake(10,10,0,16,0);
+		Spawn:
+			BOAM A -1;
+			Wait;
+		Death:
+			"####" A 8
+			{
+				Actor mo = Spawn("Smoke_Small", pos);
+				if (mo) { mo.vel.z = 0.25; }
+				
+				A_StartSound("MINEF");
+			}
+			"####" A 35;
+			"####" A 3
+			{
+				A_StartSound("mine/player/launch", CHAN_AUTO);
+				A_StartSound("EXPLOSION_SOUND", CHAN_AUTO, 0, 0.25);
+			}
+			"####" A 8
+			{
+				A_SpawnGroundSplash();
+
+				Actor crater = Spawn("ZCrater", pos);
+				if (crater) { crater.scale /= 2; }
+
+				vel.z += 8.0;
+			}
+			"####" A 0
+			{
+				A_Scream();
+				A_StartSound("nebelwerfer/xplode", CHAN_AUTO);
+
+				Actor mo = Spawn("FriendlyExplosion_Medium", pos);
+				if (tracer && mo) { mo.master = tracer; }
+
+				Spawn("KD_HL2SmokeGenerator", pos);
+				Spawn("KD_HL2SparkGenerator", pos);
+
+				for (int i = 0; i < 20; ++i) { A_SpawnItemEx("ClusterBomb_Debris", 0, 0, 8, random(2,16), random(2,16), random(2,16), random(0,359), 0, 0); }
+
+				Radius_Quake(10,10,0,16,0);
+			}
+			Stop;
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (!bTouchy && tracer)
+		{
+			bTouchy = !!(Distance3D(tracer) > radius + 64.0);
 		}
-		Stop;
-	SpawnWait:
-		"####" A 1 {bTouchy = FALSE;}
-		"####" A 34;
-		Goto Spawn;
 	}
 }
 
