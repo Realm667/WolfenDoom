@@ -77,7 +77,7 @@ class EffectsManager : Thinker
 	enum ForceLevel
 	{
 		FORCE_SOLID = 1,
-		FORCE_TID,
+		FORCE_TID =   2,
 	}
 
 	const cycletime = 35;
@@ -96,8 +96,8 @@ class EffectsManager : Thinker
 	{
 		if (!effect) { return; }
 		if (effect is "CullActorBase" && CullActorBase(effect).culllevel > boa_culllevel) { return; }
-		if (force < FORCE_TID && (effect.tid || effect.master)) { return; } // Don't add effects with a tid or a master, because we can't guarantee they'll be spawned back in when they are activated/deactivated
-		if (force < FORCE_SOLID && (!effect.bNoDamage && effect.bSolid && !effect.bNoInteraction)) { return; } // Only add non-solid or non-interactive objects
+		if (!(force & FORCE_TID) && (effect.tid || effect.master)) { return; } // Don't add effects with a tid or a master, because we can't guarantee they'll be spawned back in when they are activated/deactivated
+		if (!(force & FORCE_SOLID) && (!effect.bNoDamage && effect.bSolid && !effect.bNoInteraction)) { return; } // Only add non-solid or non-interactive objects
 
 		EffectsManager manager = EffectsManager.GetManager();
 		if (!manager) { return; }
@@ -736,7 +736,7 @@ class TreesBase : CullActorBase
 	{
 		Super.PostBeginPlay();
 		origPitch = pitch;
-		if (!bDontCull && !bWasCulled) { EffectsManager.Add(self, boa_treeslod, EffectsManager.FORCE_TID); }
+		if (!bDontCull && !bWasCulled) { EffectsManager.Add(self, boa_treeslod, EffectsManager.FORCE_SOLID | EffectsManager.FORCE_TID); }
 	}
 
 	void A_3DPitchFix()
