@@ -154,7 +154,7 @@ class CompassWidget : Widget
 				player.mo.FindInventory("CutsceneEnabled") ||
 				player.mo.FindInventory("IncomingMessage") ||
 				(level.levelnum >= 151 && level.levelnum <= 153) || // Specifically disable on the Keen maps
-				player.morphtics ||
+				(player.mo is "BoAPlayer" || player.mo is "TankPlayer") ||
 				!handler
 		)
 		{

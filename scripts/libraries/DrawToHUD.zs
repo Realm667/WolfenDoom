@@ -90,7 +90,15 @@ class DrawToHUD
 		screen.DrawText(fnt, shade, screenpos.x, screenpos.y, text, DTA_KeepRatio, true, DTA_Alpha, alpha, DTA_VirtualWidthF, width, DTA_VirtualHeightF, height);
 	}
 
-	static ui void DrawTexture(TextureID tex, Vector2 pos, double alpha = 1.0, double scale = 1.0, color shade = -1, Vector2 destsize = (-1, -1), bool centered = true)
+	enum DrawTex
+	{
+		TEX_DEFAULT, // Draw with normal offset (from top left)
+		TEX_USEOFFSETS = 0, // "
+		TEX_CENTERED, // Draw with centered offsets (default)
+		TEX_COLOROVERLAY, // Overlay color instead of using the texture as an alpha channel
+	};
+
+	static ui void DrawTexture(TextureID tex, Vector2 pos, double alpha = 1.0, double scale = 1.0, color shade = -1, Vector2 destsize = (-1, -1), int flags = TEX_CENTERED)
 	{
 		// Scale the coordinates
 		Vector2 screenpos, screensize;
@@ -102,12 +110,12 @@ class DrawToHUD
 
 		if (shade > 0)
 		{
-			alphachannel = true;
+			if (!(flags & TEX_COLOROVERLAY)) { alphachannel = true; }
 			fillcolor = shade & 0xFFFFFF;
 		}
 
 		// Draw the texture
-		if (centered) { screen.DrawTexture(tex, true, screenpos.x, screenpos.y, DTA_DestWidth, int(screensize.x), DTA_DestHeight, int(screensize.y), DTA_Alpha, alpha, DTA_CenterOffset, true, DTA_AlphaChannel, alphachannel, DTA_FillColor, shade); }
+		if (flags & TEX_CENTERED) { screen.DrawTexture(tex, true, screenpos.x, screenpos.y, DTA_DestWidth, int(screensize.x), DTA_DestHeight, int(screensize.y), DTA_Alpha, alpha, DTA_CenterOffset, true, DTA_AlphaChannel, alphachannel, DTA_FillColor, shade); }
 		else { screen.DrawTexture(tex, true, screenpos.x, screenpos.y, DTA_DestWidth, int(screensize.x), DTA_DestHeight, int(screensize.y), DTA_Alpha, alpha, DTA_TopOffset, 0, DTA_LeftOffset, 0, DTA_AlphaChannel, alphachannel, DTA_FillColor, shade); }
 	}
 

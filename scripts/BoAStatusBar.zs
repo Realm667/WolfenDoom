@@ -98,6 +98,7 @@ class BoAStatusBar : BaseStatusBar
 		AirSupplyWidget.Init("Air Supply", Widget.WDG_MIDDLE, 0, (0, -32));
 
 		HealthWidget.Init("Health and Armor", Widget.WDG_BOTTOM, 0);
+		TankHealthWidget.Init("Tank Health", Widget.WDG_BOTTOM, 0);
 		InventoryWidget.Init("Selected Inventory", Widget.WDG_BOTTOM, 0);
 		LogWidget.Init("Chat", Widget.WDG_BOTTOM, 0, zindex:99);
 		ActiveEffectWidget.Init("Active Effects", Widget.WDG_BOTTOM, 1);
@@ -279,7 +280,7 @@ class BoAStatusBar : BaseStatusBar
 		}
 	}
 
-	virtual void DrawMainBar (double TicFrac)
+	virtual void DrawMainBar(double TicFrac)
 	{
 		DrawImage("HUDBAR", (-54, 152), DI_ITEM_OFFSETS);
 
@@ -1096,54 +1097,10 @@ class BoAStatusBar : BaseStatusBar
 
 		DrawThirdPersonCrosshair(tankplayer.CrosshairPos, tankplayer.CrosshairDist, targetactor, scale:dotscale, clr:shellclr);
 
-		BeginHUD(1, False);
-
 		if (CPlayer.cheats & CF_CHASECAM)
 		{
 			TextureID image = TexMan.CheckForTexture("TANKVIEW", TexMan.Type_MiscPatch);
 			screen.DrawTexture(image, false, 0, 0, DTA_FullscreenEx, 1, DTA_KeepRatio, true);
-		}
-
-		Vector2 hudscale = GetHUDScale();
-		double ratio = Screen.GetAspectRatio();
-
-		double sheight = Screen.GetHeight() / hudscale.y;
-		double swidth = Screen.GetWidth() / hudscale.x;
-
-		Color tankclr = GetHealthColor(0.5);
-		Color glowclr = GetHealthColor(0.95);
-
-		double healthpercent = CPlayer.health * 100. / CPlayer.mo.Default.health;
-		String healthstring = int(healthpercent) .. "%";
-
-		double pulse = healthpercent < 25 ? (sin(level.time * (26 - healthpercent)) + 1.0) / 2 : 0.5; // Start blinking at less than 25% health, faster as health decreases
-
-		TextureID back = TexMan.CheckForTexture("TANKBACK", TexMan.Type_Any);
-		Vector2 dimensions = TexMan.GetScaledSize(back) / 4;
-
-		double x = dimensions.x / 2 + 4;
-		double y = sheight - dimensions.y / 2 - 4;
-
-		screen.DrawTexture(back, false, x, y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_CenterOffset, true, DTA_Alpha, 0.85, DTA_VirtualWidth, int(swidth), DTA_VirtualHeight, int(sheight), DTA_KeepRatio, true);
-
-		TextureID tank = TexMan.CheckForTexture("TANKSTAT", TexMan.Type_Any);
-		TextureID glow = TexMan.CheckForTexture("TANKGLOW", TexMan.Type_Any);
-		dimensions = TexMan.GetScaledSize(tank) / 4;
-
-		x = dimensions.x / 2 + 16;
-		y = sheight - dimensions.y / 2 - 24;
-
-		screen.DrawTexture(tank, false, x, y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_FillColor, tankclr & 0xFFFFFF, DTA_CenterOffset, true, DTA_Alpha, 0.85, DTA_VirtualWidth, int(swidth), DTA_VirtualHeight, int(sheight), DTA_KeepRatio, true);
-		screen.DrawTexture(glow, false, x, y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_FillColor, glowclr & 0xFFFFFF, DTA_CenterOffset, true, DTA_Alpha, pulse, DTA_VirtualWidth, int(swidth), DTA_VirtualHeight, int(sheight), DTA_KeepRatio, true);
-
-		x = dimensions.x / 2 + 16 - mBigFont.mFont.StringWidth(healthstring) / 2;
-		y = sheight - mBigFont.mFont.GetHeight() / 2 - 16;
-
-		screen.DrawText(mBigFont.mFont, Font.CR_GRAY, x, y, healthstring, DTA_Alpha, 0.8, DTA_VirtualWidth, int(swidth), DTA_VirtualHeight, int(sheight), DTA_KeepRatio, true);
-
-		if (CPlayer.mo.InvSel != null && !level.NoInventoryBar)
-		{
-			DrawInventorySelection(80, -22, 32);
 		}
 	}
 
@@ -1151,7 +1108,6 @@ class BoAStatusBar : BaseStatusBar
 	{
 		gl_proj.CacheResolution();
 		gl_proj.CacheFov(CPlayer.fov);
-		//gl_proj.OrientForPlayer(CPlayer);
 		gl_proj.Reorient(CPlayer.camera.pos,(
 						CPlayer.camera.angle,
 						CPlayer.camera.pitch,
@@ -1202,39 +1158,6 @@ class BoAStatusBar : BaseStatusBar
 
 			screen.DrawTexture(image2, false, drawpos.x, drawpos.y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF);
 		}
-	}
-
-	int GetHealthColor(double shade = 1.0)
-	{
-		color clr;
-		int red, green, blue;
-		int health = int(CPlayer.health * 100. / CPlayer.mo.Default.health);
-
-		if (CPlayer.cheats & CF_GODMODE || CPlayer.cheats & CF_GODMODE2)
-		{ // Gold for god mode...
-			red = 255;
-			green = 255;
-			blue = 64;
-		} 
-		else
-		{
-			health = clamp(health, 0, 100);
-
-			if (health < 50)
-			{
-				red = 255;
-				green = health * 255 / 50;
-			}
-			else
-			{
-				red = (100 - health) * 255 / 50;
-				green = 255;
-			}
-		}
-
-		clr = (int(red * shade) << 16) | (int(green * shade) << 8) | int(blue * shade);
-
-		return clr;
 	}
 
 	virtual void DrawKeenStatusBar() // The bulk of this is handled via widgets

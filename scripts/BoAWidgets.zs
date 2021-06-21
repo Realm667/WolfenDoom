@@ -233,7 +233,7 @@ class Widget ui
 				BoAStatusBar(StatusBar).barstate == StatusBar.HUD_Fullscreen && 
 				!automapactive && 
 				!player.mo.FindInventory("CutsceneEnabled") &&
-				!player.morphtics
+				player.mo is "BoAPlayer"
 			) { return true; }
 		
 		return false;
@@ -363,6 +363,39 @@ class Widget ui
 		int max = MAX(vmax, hmax);
 		return MAX(1, MIN(scaleval, max));
 	}
+
+	static int GetHealthColor(Actor mo, double shade = 1.0)
+	{
+		color clr;
+		int red, green, blue;
+		int health = int(mo.health * 100. / mo.Default.health);
+
+		if (mo.player && (mo.player.cheats & CF_GODMODE || mo.player.cheats & CF_GODMODE2))
+		{ // Gold for god mode...
+			red = 255;
+			green = 255;
+			blue = 64;
+		} 
+		else
+		{
+			health = clamp(health, 0, 100);
+
+			if (health < 50)
+			{
+				red = 255;
+				green = health * 255 / 50;
+			}
+			else
+			{
+				red = (100 - health) * 255 / 50;
+				green = 255;
+			}
+		}
+
+		clr = (int(red * shade) << 16) | (int(green * shade) << 8) | int(blue * shade);
+
+		return clr;
+	}
 }
 
 class HealthWidget : Widget
@@ -419,7 +452,7 @@ class HealthWidget : Widget
 			face = disguise.HUDSprite; 
 		}
 
-		DrawToHud.DrawTexture(StatusBar.GetMugShot(5, flags, face), position, alpha, centered:false);
+		DrawToHud.DrawTexture(StatusBar.GetMugShot(5, flags, face), position, alpha, flags:DrawToHUD.TEX_DEFAULT);
 	}
 }
 
@@ -448,7 +481,7 @@ class CountWidget : Widget
 		let money = player.mo.FindInventory("CoinItem");
 		if (money) { amt = money.amount; }
 
-		DrawToHud.DrawTexture(bagtex, (pos.x - 1, pos.y - 1), alpha, centered:false);
+		DrawToHud.DrawTexture(bagtex, (pos.x - 1, pos.y - 1), alpha, flags:DrawToHUD.TEX_DEFAULT);
 		DrawToHud.DrawText(String.Format("%3i", amt), (pos.x + 61, pos.y), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_RIGHT);
 
 		//Time
@@ -488,7 +521,7 @@ class KeyWidget : Widget
 
 		Super.Draw();
 
-		DrawToHud.DrawTexture(locktex, (pos.x + 1, pos.y + 3), alpha, centered:false);
+		DrawToHud.DrawTexture(locktex, (pos.x + 1, pos.y + 3), alpha, flags:DrawToHUD.TEX_DEFAULT);
 
 		//Keys
 		for (int k = 0; k < keys.Size(); k++)
@@ -503,7 +536,7 @@ class KeyWidget : Widget
 				int offsetx = 39 - (slot / 2) * 10; // Space key slot columns 10 pixels apart
 				int offsety = 1 + (slot % 2) * 10; // Space key slot rows 10 pixels apart
 
-				DrawToHud.DrawTexture(key.icon, (pos.x + offsetx, pos.y + offsety), alpha, centered:false);
+				DrawToHud.DrawTexture(key.icon, (pos.x + offsetx, pos.y + offsety), alpha, flags:DrawToHUD.TEX_DEFAULT);
 			}
 		}
 
@@ -542,14 +575,14 @@ class CurrentAmmoWidget : Widget
 		if (ammo1)
 		{
 			texscale = ZScriptTools.ScaleTextureTo(ammo1.icon, iconsize);
-			DrawToHud.DrawTexture(ammo1.icon, (pos.x + 40, pos.y + 18), alpha, destsize:texscale * iconsize, centered:false);
+			DrawToHud.DrawTexture(ammo1.icon, (pos.x + 40, pos.y + 18), alpha, destsize:texscale * iconsize, flags:DrawToHUD.TEX_DEFAULT);
 			DrawToHud.DrawText(String.Format("%3i", ammocount1), (pos.x + 91, pos.y + 19), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_RIGHT);
 		}
 
 		if (ammo2 && ammo2 != ammo1)
 		{
 			texscale = ZScriptTools.ScaleTextureTo(ammo2.icon, iconsize);
-			DrawToHud.DrawTexture(ammo2.icon, (pos.x + 40, pos.y + 2), alpha, destsize:texscale * iconsize, centered:false);
+			DrawToHud.DrawTexture(ammo2.icon, (pos.x + 40, pos.y + 2), alpha, destsize:texscale * iconsize, flags:DrawToHUD.TEX_DEFAULT);
 			DrawToHud.DrawText(String.Format("%3i", ammocount2), (pos.x + 91, pos.y + 3), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_RIGHT);
 		}
 
@@ -557,8 +590,8 @@ class CurrentAmmoWidget : Widget
 		let grenades = player.mo.FindInventory("GrenadePickup");
 		if (grenades)
 		{
-			if (player.mo.FindInventory("AstroGrenadeToken")) { DrawToHud.DrawTexture(astrogrenadetex, (pos.x + 2, pos.y + 17), alpha, centered:false); }
-			else { DrawToHud.DrawTexture(grenadetex, (pos.x + 2, pos.y + 17), alpha, centered:false); }
+			if (player.mo.FindInventory("AstroGrenadeToken")) { DrawToHud.DrawTexture(astrogrenadetex, (pos.x + 2, pos.y + 17), alpha, flags:DrawToHUD.TEX_DEFAULT); }
+			else { DrawToHud.DrawTexture(grenadetex, (pos.x + 2, pos.y + 17), alpha, flags:DrawToHUD.TEX_DEFAULT); }
 
 			DrawToHud.DrawText(String.Format("%i", grenades.amount), (pos.x + 18, pos.y + 19), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
 		}
@@ -591,6 +624,19 @@ class InventoryWidget : Widget
 	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
 		InventoryWidget wdg = InventoryWidget(Widget.Init("InventoryWidget", widgetname, anchor, 0, priority, pos, zindex));
+	}
+
+	override bool SetVisibility()
+	{
+		if (
+				BoAStatusBar(StatusBar) && 
+				BoAStatusBar(StatusBar).barstate == StatusBar.HUD_Fullscreen && 
+				!automapactive && 
+				!player.mo.FindInventory("CutsceneEnabled") &&
+				(player.mo is "BoAPlayer" || player.mo is "TankPlayer")
+			) { return true; }
+		
+		return false;
 	}
 
 	override Vector2 Draw()
@@ -1647,7 +1693,7 @@ class KeenStatsWidget : KeenWidget
 
 		alpha = 1.0;
 
-		DrawToHud.DrawTexture(bkg, pos, alpha, scale, centered:false);
+		DrawToHud.DrawTexture(bkg, pos, alpha, scale, flags:DrawToHUD.TEX_DEFAULT);
 
 		Inventory treasure = player.mo.FindInventory("CKTreasure");
 		String score = String.Format("%i", min((treasure ? treasure.amount : 0) * 100, 999999999));
@@ -1663,12 +1709,12 @@ class KeenStatsWidget : KeenWidget
 		}
 
 		// Draw a lifewater drop over the helmet - this is health percentage, not lives as in the original game
-		DrawToHud.DrawTexture(health, (pos.x + 18, pos.y + 38), alpha, scale, centered:false);
+		DrawToHud.DrawTexture(health, (pos.x + 18, pos.y + 38), alpha, scale, flags:DrawToHUD.TEX_DEFAULT);
 
 		String health = String.Format("%i", min(999, player.health));
 		DrawToHud.DrawText(health, (pos.x + 80 - fnt.StringWidth(health) * scale, pos.y + 40), fnt, alpha, scale, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
 
-		if (player.mo.FindInventory("CKPuzzleItem", true)) { DrawToHud.DrawTexture(keybkg, (pos.x + 166, pos.y), alpha, scale, centered:false); }
+		if (player.mo.FindInventory("CKPuzzleItem", true)) { DrawToHud.DrawTexture(keybkg, (pos.x + 166, pos.y), alpha, scale, flags:DrawToHUD.TEX_DEFAULT); }
 
 		for (int k = 0; k < keys.Size(); k++)
 		{
@@ -1678,7 +1724,7 @@ class KeenStatsWidget : KeenWidget
 				int offsetx = 172;
 				int offsety = 6 + k * 12; // Space key slot rows 10 pixels apart
 
-				DrawToHud.DrawTexture(key.icon, (pos.x + offsetx, pos.y + offsety), alpha, scale, centered:false);
+				DrawToHud.DrawTexture(key.icon, (pos.x + offsetx, pos.y + offsety), alpha, scale, flags:DrawToHUD.TEX_DEFAULT);
 			}
 		}
 
@@ -1716,6 +1762,61 @@ class KeenInventoryWidget : KeenWidget
 			}
 		}
 		else { size = (0, 0); }
+
+		return size;
+	}
+}
+
+class TankHealthWidget : Widget
+{
+	TextureID back, tank, glow;
+
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
+	{
+		TankHealthWidget wdg = TankHealthWidget(Widget.Init("TankHealthWidget", widgetname, anchor, 0, priority, pos, zindex));
+		if (wdg)
+		{
+			wdg.back = TexMan.CheckForTexture("TANKBACK", TexMan.Type_Any);
+			wdg.tank = TexMan.CheckForTexture("TANKSTAT", TexMan.Type_Any);
+			wdg.glow = TexMan.CheckForTexture("TANKGLOW", TexMan.Type_Any);
+		}
+	}
+
+
+	override bool SetVisibility()
+	{
+		if (
+				BoAStatusBar(StatusBar) &&
+				!automapactive &&
+				screenblocks < 12 &&
+				!player.mo.FindInventory("CutsceneEnabled") &&
+				player.mo is "TankPlayer"
+			) { return true; }
+		
+		return false;
+	}
+
+	override Vector2 Draw()
+	{
+		double scale = 1.0;
+		Color tankclr = Widget.GetHealthColor(player.mo, 0.5);
+		Color glowclr = Widget.GetHealthColor(player.mo, 0.95);
+
+		double healthpercent = player.health * 100. / player.mo.Default.health;
+		String healthstring = int(healthpercent) .. "%";
+
+		double pulse = healthpercent < 25 ? (sin(level.time * (26 - healthpercent)) + 1.0) / 2 : 0.5; // Start blinking at less than 25% health, faster as health decreases
+
+		size = TexMan.GetScaledSize(back) / 4;
+		Super.Draw();
+
+		Vector2 drawpos = pos + size / 2;
+
+		DrawToHud.DrawTexture(back, drawpos, alpha * 0.85, scale / 4);
+		DrawToHud.DrawTexture(tank, drawpos - (0, 8), alpha * 0.85, scale / 4, tankclr, flags:DrawToHud.TEX_COLOROVERLAY | DrawToHUD.TEX_CENTERED);
+		DrawToHud.DrawTexture(glow, drawpos - (0, 8), alpha * pulse, scale / 4, glowclr, flags:DrawToHud.TEX_COLOROVERLAY | DrawToHUD.TEX_CENTERED);
+
+		DrawToHud.DrawText(healthstring, (drawpos.x, pos.y + size.y - 16), BigFont, alpha * 0.8, scale, shade:Font.CR_GRAY, flags:ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED);
 
 		return size;
 	}

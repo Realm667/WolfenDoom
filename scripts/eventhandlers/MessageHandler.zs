@@ -286,7 +286,7 @@ class Message : MessageBase
 			if (headtex)
 			{
 				DrawToHUD.DrawFrame("INSET_", x + margin, y, size.x, size.y - 2, 0x404040, 0.5 * staticalpha);
-				DrawToHUD.DrawTexture(headtex, (x + margin, y), staticalpha, 1.25, centered:false);
+				DrawToHUD.DrawTexture(headtex, (x + margin, y), staticalpha, 1.25, flags:DrawToHUD.TEX_DEFAULT);
 			}
 
 			x += size.x ? int(size.x + margin * 2) : 0;
@@ -447,7 +447,7 @@ class FadeIconMessage : Message
 
 			if (headtex2)
 			{
-				DrawToHUD.DrawTexture(headtex2, (x + margin, y), head2alpha, 1.25, centered:false);
+				DrawToHUD.DrawTexture(headtex2, (x + margin, y), head2alpha, 1.25, flags:DrawToHUD.TEX_DEFAULT);
 			}
 		}
 		else
@@ -719,7 +719,7 @@ class DevCommentary : MessageBase
 
 		DrawToHUD.DrawTimer(time - ticker, time, 0x265380, (x + msgwidth + size.x + margin * 2, y + 1), 0.4, 0.99 * alpha, "", "");
 
-		if (imagetex) { DrawToHUD.DrawTexture(imagetex, (x + margin, y + 16 + margin), alpha, 1.0, centered:false); }
+		if (imagetex) { DrawToHUD.DrawTexture(imagetex, (x + margin, y + 16 + margin), alpha, 1.0, flags:DrawToHUD.TEX_DEFAULT); }
 
 		int bodyx = x + (size.x ? int(size.x + margin * 4) : 0);
 		y -= 5; 
