@@ -35,6 +35,7 @@ class EisenhimmelHangarDoors : MapObject
 		//$Category Models (BoA)/Map Objects
 		//$Title Eisenhimmel hangar doors (Animated, Set state "Close")
 		//$Color 3
+		+CullActorBase.DONTCULL
 	}
     States
     {
