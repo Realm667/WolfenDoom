@@ -470,19 +470,42 @@ class CountWidget : Widget
 		}
 	}
 
+	override bool SetVisibility()
+	{
+		if (
+				BoAStatusBar(StatusBar) && 
+				BoAStatusBar(StatusBar).barstate == StatusBar.HUD_Fullscreen && 
+				!automapactive && 
+				!player.mo.FindInventory("CutsceneEnabled") &&
+				!(player.mo is "KeenPlayer")
+			) { return true; }
+		
+		return false;
+	}
+
 	override Vector2 Draw()
 	{
-		size = (64, 21);
+		int timey = 13;
 
-		Super.Draw();
+		if (player.mo is "TankPlayer")
+		{
+			size = (64, HUDFont.GetHeight() + 3);
+			timey = 0;
+			Super.Draw();
+		}
+		else
+		{
+			size = (64, 21);
+			Super.Draw();
 
-		//Money
-		int amt = 0;
-		let money = player.mo.FindInventory("CoinItem");
-		if (money) { amt = money.amount; }
+			//Money
+			int amt = 0;
+			let money = player.mo.FindInventory("CoinItem");
+			if (money) { amt = money.amount; }
 
-		DrawToHud.DrawTexture(bagtex, (pos.x - 1, pos.y - 1), alpha, flags:DrawToHUD.TEX_DEFAULT);
-		DrawToHud.DrawText(String.Format("%3i", amt), (pos.x + 61, pos.y), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_RIGHT);
+			DrawToHud.DrawTexture(bagtex, (pos.x - 1, pos.y - 1), alpha, flags:DrawToHUD.TEX_DEFAULT);
+			DrawToHud.DrawText(String.Format("%3i", amt), (pos.x + 61, pos.y), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_RIGHT);
+		}
 
 		//Time
 		String time = level.TimeFormatted();
@@ -492,8 +515,8 @@ class CountWidget : Widget
 			time = String.Format("%02i", BoAStatusBar(StatusBar).hour) .. ":" .. String.Format("%02i", BoAStatusBar(StatusBar).minute) .. ":" .. String.Format("%02i", BoAStatusBar(StatusBar).second);
 		}
 
-		DrawToHud.Dim(0x0, 0.2 * alpha, int(pos.x - (margin[3] - 3)), int(pos.y + 13), int(size.x + (margin[3] + margin[1]) - 6), HUDFont.GetHeight() + 3);
-		StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, time, (pos.x + 17, pos.y + 14), alpha:alpha);
+		DrawToHud.Dim(0x0, 0.2 * alpha, int(pos.x - (margin[3] - 3)), int(pos.y + timey), int(size.x + (margin[3] + margin[1]) - 6), HUDFont.GetHeight() + 3);
+		StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, time, (pos.x + 17, pos.y + timey + 1), alpha:alpha);
 
 		return size;
 	}
@@ -1769,14 +1792,13 @@ class KeenInventoryWidget : KeenWidget
 
 class TankHealthWidget : Widget
 {
-	TextureID back, tank, glow;
+	TextureID tank, glow;
 
 	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
-		TankHealthWidget wdg = TankHealthWidget(Widget.Init("TankHealthWidget", widgetname, anchor, 0, priority, pos, zindex));
+		TankHealthWidget wdg = TankHealthWidget(Widget.Init("TankHealthWidget", widgetname, anchor, WDG_DRAWFRAME, priority, pos, zindex));
 		if (wdg)
 		{
-			wdg.back = TexMan.CheckForTexture("TANKBACK", TexMan.Type_Any);
 			wdg.tank = TexMan.CheckForTexture("TANKSTAT", TexMan.Type_Any);
 			wdg.glow = TexMan.CheckForTexture("TANKGLOW", TexMan.Type_Any);
 		}
@@ -1806,12 +1828,11 @@ class TankHealthWidget : Widget
 
 		double pulse = healthpercent < 25 ? (sin(level.time * (26 - healthpercent)) + 1.0) / 2 : 0.5; // Start blinking at less than 25% health, faster as health decreases
 
-		size = TexMan.GetScaledSize(back) / 4;
+		size = (56, 94);
 		Super.Draw();
 
 		Vector2 drawpos = pos + size / 2;
 
-		DrawToHud.DrawTexture(back, drawpos, alpha * 0.85, scale / 4);
 		DrawToHud.DrawTexture(tank, drawpos - (0, 8), alpha * 0.85, scale / 4, tankclr, flags:DrawToHud.TEX_COLOROVERLAY | DrawToHUD.TEX_CENTERED);
 		DrawToHud.DrawTexture(glow, drawpos - (0, 8), alpha * pulse, scale / 4, glowclr, flags:DrawToHud.TEX_COLOROVERLAY | DrawToHUD.TEX_CENTERED);
 
