@@ -233,7 +233,7 @@ class Widget ui
 				BoAStatusBar(StatusBar).barstate == StatusBar.HUD_Fullscreen && 
 				!automapactive && 
 				!player.mo.FindInventory("CutsceneEnabled") &&
-				player.mo is "BoAPlayer"
+				!(player.mo is "TankPlayer" || player.mo is "KeenPlayer")
 			) { return true; }
 		
 		return false;
@@ -633,7 +633,7 @@ class InventoryWidget : Widget
 				BoAStatusBar(StatusBar).barstate == StatusBar.HUD_Fullscreen && 
 				!automapactive && 
 				!player.mo.FindInventory("CutsceneEnabled") &&
-				(player.mo is "BoAPlayer" || player.mo is "TankPlayer")
+				!(player.mo is "KeenPlayer")
 			) { return true; }
 		
 		return false;
@@ -1781,7 +1781,6 @@ class TankHealthWidget : Widget
 			wdg.glow = TexMan.CheckForTexture("TANKGLOW", TexMan.Type_Any);
 		}
 	}
-
 
 	override bool SetVisibility()
 	{
