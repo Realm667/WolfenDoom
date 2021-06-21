@@ -74,6 +74,12 @@ class EffectsManager : Thinker
 	EffectBlock[MAPMAX * 2 / CHUNKSIZE][MAPMAX * 2 / CHUNKSIZE] effectblocks; // Grid of blocks across the entire map
 	Vector2 playerpos[MAXPLAYERS];
 
+	enum ForceLevel
+	{
+		FORCE_SOLID = 1,
+		FORCE_TID,
+	}
+
 	const cycletime = 35;
 
 	static EffectsManager GetManager()
@@ -86,15 +92,12 @@ class EffectsManager : Thinker
 		return manager;
 	}
 
-	static void Add(Actor effect, double range = -1, bool force = false)
+	static void Add(Actor effect, double range = -1, int force = 0)
 	{
 		if (!effect) { return; }
 		if (effect is "CullActorBase" && CullActorBase(effect).culllevel > boa_culllevel) { return; }
-		if (!force)
-		{
-			if (effect.tid || effect.master) { return; } // Don't add effects with a tid or a master, because we can't guarantee they'll be spawned back in when they are activated/deactivated
-			if (!effect.bNoDamage && effect.bSolid && !effect.bNoInteraction) { return; } // Only add non-solid or non-interactive objects
-		}
+		if (force < FORCE_TID && (effect.tid || effect.master)) { return; } // Don't add effects with a tid or a master, because we can't guarantee they'll be spawned back in when they are activated/deactivated
+		if (force < FORCE_SOLID && (!effect.bNoDamage && effect.bSolid && !effect.bNoInteraction)) { return; } // Only add non-solid or non-interactive objects
 
 		EffectsManager manager = EffectsManager.GetManager();
 		if (!manager) { return; }
@@ -112,7 +115,7 @@ class EffectsManager : Thinker
 		manager.RemoveEffect(effect);
 	}
 
-	uint FindEffect(Actor effect)
+	protected uint FindEffect(Actor effect)
 	{
 		for (int i = 0; i < effects.Size(); i++)
 		{
@@ -121,7 +124,7 @@ class EffectsManager : Thinker
 		return effects.Size();
 	}
 
-	void AddEffect(Actor effect, double range = -1)
+	protected void AddEffect(Actor effect, double range = -1)
 	{
 		if (!effect) { return; }
 
@@ -150,7 +153,7 @@ class EffectsManager : Thinker
 		}
 	}
 
-	void SaveEffectInfo(Actor mo, EffectInfo info, double range = -1)
+	protected void SaveEffectInfo(Actor mo, EffectInfo info, double range = -1)
 	{
 		info.position = mo.pos;
 		info.angle = mo.angle;
@@ -191,7 +194,7 @@ class EffectsManager : Thinker
 		info.bshootable = mo.bShootable;
 	}
 
-	void RemoveEffect(Actor effect)
+	protected void RemoveEffect(Actor effect)
 	{
 		if (!effect) { return; }
 
@@ -272,7 +275,7 @@ class EffectsManager : Thinker
 		return true;
 	}
 
-	bool, int, int CullEffects()
+	protected bool, int, int CullEffects()
 	{
 		bool ret = true;
 		int retx = 0, rety = 0;
@@ -334,7 +337,7 @@ class EffectsManager : Thinker
 		return ret, retx, rety;
 	}
 
-	int CullChunk(Array<int> indices, bool forceremove = false)
+	protected int CullChunk(Array<int> indices, bool forceremove = false)
 	{
 		if (!indices) { return 0; }
 
@@ -348,7 +351,7 @@ class EffectsManager : Thinker
 		return count;
 	}
 
-	void DestroyEffect(EffectInfo e)
+	protected void DestroyEffect(EffectInfo e)
 	{
 		if (!e.effect || !e.ingame || e.effect.bDormant) { return; }
 
@@ -365,7 +368,7 @@ class EffectsManager : Thinker
 		}
 	}
 
-	bool CullEffect(int i, bool forceremove = false)
+	protected bool CullEffect(int i, bool forceremove = false)
 	{
 		if (i >= effects.Size()) { return false; }
 		if (!effects[i]) { return false; }
@@ -496,7 +499,7 @@ class EffectsManager : Thinker
 		return ret;
 	}
 
-	void CullAllEffects()
+	protected void CullAllEffects()
 	{
 		for (int i = 0; i < effects.Size(); i++)
 		{
@@ -721,7 +724,7 @@ class SceneryBase : CullActorBase
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		if (!bDontCull && !bWasCulled) { EffectsManager.Add(self, boa_scenelod, true); }
+		if (!bDontCull && !bWasCulled) { EffectsManager.Add(self, boa_scenelod, EffectsManager.FORCE_SOLID); }
 	}
 }
 
@@ -733,7 +736,7 @@ class TreesBase : CullActorBase
 	{
 		Super.PostBeginPlay();
 		origPitch = pitch;
-		if (!bDontCull && !bWasCulled) { EffectsManager.Add(self, boa_treeslod, true); }
+		if (!bDontCull && !bWasCulled) { EffectsManager.Add(self, boa_treeslod, EffectsManager.FORCE_TID); }
 	}
 
 	void A_3DPitchFix()
