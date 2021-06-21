@@ -929,6 +929,7 @@ class FieldKit : HealthPickup
 
 	override bool Use(bool pickup)
 	{
+		if (owner.FindInventory("HQ_Checker", true)) { return false; }
 		AchievementTracker.CheckAchievement(owner.PlayerNumber(), AchievementTracker.ACH_COMBATMEDIC);
 		return Super.Use(pickup);
 	}

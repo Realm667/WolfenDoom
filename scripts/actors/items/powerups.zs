@@ -1349,6 +1349,7 @@ class Bandages : PowerupGiver
 	// Don't let the player use bandages when they are at full health!
 	override bool Use(bool pickup)
 	{
+		if (owner.FindInventory("HQ_Checker", true)) { return false; }
 		if (owner && (owner.health >= owner.GetMaxHealth(true) || owner.FindInventory("RegenPowerup"))) { return false; }
 
 		return Super.Use(pickup);
