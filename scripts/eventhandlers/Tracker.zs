@@ -342,6 +342,7 @@ class AchievementTracker : EventHandler
 	int record;
 	Array<Achievement> records;
 	bool allowed;
+	const cheats_allowed = 1;
 	int time;
 
 	int pistolshots[MAXPLAYERS];
@@ -653,7 +654,9 @@ class AchievementTracker : EventHandler
 				for (int c = 0; c < 3; c++) { cartridges[pnum][c] == false; }
 
 				UpdateRecord(pnum, a, true, records[a].complete, true);
-
+				
+				if (self && !cheats_allowed) { self.Destroy(); } //a new handler will open on next level
+				
 				return;
 			}
 		}

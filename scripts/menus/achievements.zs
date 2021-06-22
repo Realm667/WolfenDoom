@@ -30,6 +30,12 @@ class AchievementSummary : BoAMenu
 
 	TextureID background, board;
 	Font titlefont, textfont, captionfont;
+	
+	double msgalpha;
+	bool initial;
+	int ticcount;
+	BrokenLines hintlines;
+	double hintx, hinty, hintlineheight;
 
 	override void Init(Menu parent)
 	{
@@ -55,6 +61,16 @@ class AchievementSummary : BoAMenu
 		background = TexMan.CheckForTexture("graphics/hud/general/convback.png", TexMan.Type_Any);
 		board = TexMan.CheckForTexture("graphics/hud/hud_achievements/ach_bkg.png", TexMan.Type_Any);
 
+		// Hint message
+		String hintmessage = StringTable.Localize("ACHIEVEMENTINFO", false);
+		hintlines = SmallFont.BreakLines(hintmessage, 320);
+		hintx = 320;
+		hintlineheight = SmallFont.GetHeight();
+		double offset = hintlineheight * (hintlines.Count() - 0.5) - 10;
+		hinty = 460 - offset;
+		
+		initial = true;
+
 		tracker = AchievementTracker(EventHandler.Find("AchievementTracker"));
 	}
 
@@ -71,6 +87,14 @@ class AchievementSummary : BoAMenu
 		for (int a = 0; a < tracker.ACH_LASTACHIEVEMENT; a++)
 		{
 			DrawAchievement(a, tracker.records[a], tracker.records[a] == selected);
+		}
+		
+		if (msgalpha > 0)
+		{
+			for (int i = 0; i < hintlines.Count(); i++)
+			{
+				screen.DrawText(SmallFont, Font.CR_GRAY, hintx - hintlines.StringWidth(i) / 2, hinty + hintlineheight * i, hintlines.StringAt(i), DTA_VirtualWidth, 640, DTA_VirtualHeight, 480, DTA_Alpha, msgalpha);
+			}
 		}
 	}
 
@@ -266,5 +290,37 @@ class AchievementSummary : BoAMenu
 
 		selected = null;
 		return true;
+	}
+	
+	override void Ticker()
+	{
+		ticcount++;
+
+		if (initial)
+		{
+			if (ticcount >= 245)
+			{
+				msgalpha = 0;
+				ticcount = 0;
+				initial = false;
+			}
+			else if (ticcount <= 175)
+			{
+				if (ticcount >= 105)
+				{
+					msgalpha = 0.5 + sin(((ticcount - 70) * 360 / 70 - 90) / 2);
+				}
+				else if (ticcount >= 35 && ticcount < 105)
+				{
+					msgalpha = 1.0;
+				}
+				else
+				{
+					msgalpha = 0.5 + sin((ticcount * 360 / 70 - 90) / 2);
+				}
+			}
+		}
+		
+		Super.Ticker();
 	}
 }
