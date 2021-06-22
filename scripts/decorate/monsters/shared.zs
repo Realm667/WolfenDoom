@@ -3059,7 +3059,7 @@ class NaziMedPow : RegenPowerup
 {
 	Default
 	{
-		Powerup.Duration -18;
+		Powerup.Duration -20;
 		Powerup.Strength 1;
 	}
 }
