@@ -43,8 +43,15 @@ class TreeBase : TreesBase
 	{
 		Super.PostBeginPlay();
 
-		if (boa_bidiswitch == 1) { A_2DPitchFix(); }
-		else { A_3DPitchFix(); }
+		if (boa_bidiswitch == 1)
+		{
+			SetStateLabel("BidiSpawn");
+			A_2DPitchFix();
+		}
+		else
+		{
+			A_3DPitchFix();
+		}
 	}
 }
 
