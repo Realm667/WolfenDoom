@@ -1868,6 +1868,7 @@ class Nazi : Base
 
 		if (level.time > 35)
 		{
+			bool didnothavetarget = !target; // Do not call SoundAlert every 10 tics
 			A_LookEx((user_sneakable || bFrightened || (bFriendly && !user_sneakable && Default.Species == "Nazi")) ? LOF_NOSEESOUND : 0); // Don't play see sound if you are a sneakable enemy - Their sound alert is handled elsewhere.
 
 			if (bStandStill) { LookForPlayers(bLookAllAround); }
@@ -1879,7 +1880,7 @@ class Nazi : Base
 			}
 
 			if (target && target.species == species || HitFriend()) { target = null; } // Ignore the target if it's the same species (normally "Nazi")
-			if (target && SeeSound && !user_sneakable) { SoundAlert(target, false, 256); } // If the Nazi yells after seeing a target, actually alert enemies around him
+			if (target && didnothavetarget && user_incombat && SeeSound && !user_sneakable) { SoundAlert(target, false, 256); } // If the Nazi yells after seeing a target, actually alert enemies around him
 
 			if (bStandStill) { SetStateLabel("See"); }
 		}
