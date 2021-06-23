@@ -627,7 +627,10 @@ class AchievementTracker : EventHandler
 		if (pnum < 0) { return; }
 
 		AchievementTracker achievements = AchievementTracker(EventHandler.Find("AchievementTracker"));
-		if (!achievements || (!achievements.allowed && a != AchievementTracker.ACH_ADDICTED)) { return; }
+		if (!achievements || (!achievements.allowed &&
+			a != AchievementTracker.ACH_ADDICTED &&
+			a != AchievementTracker.ACH_IRONMAN &&
+			a != AchievementTracker.ACH_BEAMMEUP)) { return; }
 
 		achievements.DoChecks(pnum, a);
 	}
