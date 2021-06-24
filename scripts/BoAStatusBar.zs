@@ -114,6 +114,8 @@ class BoAStatusBar : BaseStatusBar
 
 		DamageWidget.Init("Damage Indicator", Widget.WDG_MIDDLE | Widget.WDG_CENTER, 0);
 		GrenadeWidget.Init("Grenade Indicator", Widget.WDG_MIDDLE | Widget.WDG_CENTER, 0);
+
+		CalcOffsets();
 	}
 
 	override void NewGame ()

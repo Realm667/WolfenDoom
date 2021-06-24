@@ -613,6 +613,8 @@ class KeenPlayer : PlayerPawn
 
 		GiveInventory("CKLedgeGrab", 1);
 
+		Level.MakeAutoSave(); // Force a save when you morph so that the death menu works properly and doesn't reset hub progress/state
+
 		Super.PostBeginPlay();
 	}
 
@@ -888,10 +890,8 @@ class KeenPlayer : PlayerPawn
 
 	static void ExitLevel(Actor mo, int position)
 	{
-		let player = mo.player;
-
-		if (player) { player.Resurrect(); }
-		Level.ChangeLevel(level.nextmap, position);
+		if (mo.player) { mo.player.Resurrect(); }
+		Level.ExitLevel(position, false);
 	}
 }
 
