@@ -206,7 +206,11 @@ class Widget ui
 		 	if (BoAStatusBar(Statusbar))
 			{
 				if (anchor == WDG_RIGHT && vid_fps) { relpos.y += int(NewSmallFont.GetHeight() / GetConScale(con_scale) / hudscale.y); }
-				if (!(anchor & WDG_BOTTOM) && !(anchor & WDG_MIDDLE)) { relpos.y += BoAStatusBar(Statusbar).maptop; }
+				if (!(anchor & WDG_BOTTOM) && !(anchor & WDG_MIDDLE))
+				{
+					if (pos.y > BoAStatusBar(Statusbar).maptop) { relpos.y = max(BoAStatusBar(Statusbar).maptop, pos.y - 12); }
+					else if (pos.y < BoAStatusBar(Statusbar).maptop) { relpos.y = min(BoAStatusBar(Statusbar).maptop, pos.y + 12); }
+				}
 			}
 
 			if (anchor & WDG_BOTTOM && screenblocks < 11) { relpos.y += 32;	}
@@ -1023,11 +1027,6 @@ class PositionWidget : Widget
 		int headercolor = Font.CR_GRAY;
 		int infocolor = Font.FindFontColor("LightGray");
 
-		let scalevec = StatusBar.GetHUDScale();
-		double scale = int(scalevec.X);
-		int vwidth = int(screen.GetWidth() / scale);
-		int vheight = int(screen.GetHeight() / scale);
-
 		int height = fnt.GetHeight();
 		int width = fnt.StringWidth("X: -00000.00");
 
@@ -1807,7 +1806,6 @@ class TankHealthWidget : Widget
 	override bool SetVisibility()
 	{
 		if (
-				BoAStatusBar(StatusBar) &&
 				!automapactive &&
 				screenblocks < 12 &&
 				!player.mo.FindInventory("CutsceneEnabled") &&
@@ -1839,5 +1837,148 @@ class TankHealthWidget : Widget
 		DrawToHud.DrawText(healthstring, (drawpos.x, pos.y + size.y - 16), BigFont, alpha * 0.8, scale, shade:Font.CR_GRAY, flags:ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED);
 
 		return size;
+	}
+}
+
+class AutomapWidget : Widget
+{
+	int titleheight, lineheight;
+
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
+	{
+		AutomapWidget wdg = AutomapWidget(Widget.Init("AutomapWidget", widgetname, anchor, 0, priority, pos, zindex));
+		if (wdg)
+		{
+			wdg.titleheight = BigFont.GetHeight();
+			wdg.lineheight = SmallFont.GetHeight();
+		}
+	}
+
+	override bool SetVisibility()
+	{
+		if (
+				automapactive
+			) { return true; }
+		
+		return false;
+	}
+
+	// Original code from shared_sbar.cpp
+	override Vector2 Draw()
+	{
+		let fnt = SmallFont;
+		let titlefnt = BigFont;
+
+		if (player.mo is "KeenPlayer")
+		{
+			fnt = Font.GetFont("Classic");
+			titlefnt = fnt;
+		}
+
+		int clr = Font.CR_GRAY;
+		int titleclr = Font.FindFontColor("LightGray");
+
+		String monsters = StringTable.Localize("AM_MONSTERS", false);
+		String secrets = StringTable.Localize("AM_SECRETS", false);
+		String items = StringTable.Localize("AM_ITEMS", false);
+
+		double height = titleheight + lineheight / 2 + (am_showtime || am_showtotaltime) * lineheight * 1.5 + !deathmatch * ((am_showmonsters && level.total_monsters > 0) + (am_showsecrets && level.total_secrets > 0) + (am_showitems && level.total_items > 0)) * lineheight;
+		double width = 0, labelwidth = 0;
+
+		for (int i = 0; i < 3; i++)
+		{
+			String label;
+			int curwidth;
+
+			Switch (i)
+			{
+				case 0:
+					label = monsters;
+					break;
+				case 1:
+					label = secrets;
+					break;
+				case 2:
+					label = items;
+					break;
+			}
+
+			curwidth = fnt.StringWidth(label .. "   ");
+
+			if (curwidth > labelwidth) { labelwidth = curwidth; }
+		}
+
+		String levelname = level.LevelName;
+		if (idmypos) { levelname = levelname .. " (" .. level.mapname.MakeUpper() .. ")"; }
+
+		width = max(labelwidth + fnt.StringWidth("0000/0000"), titlefnt.StringWidth(levelname));
+
+		size = (width, height);
+		Super.Draw();
+
+		double y = pos.y;
+
+		DrawToHud.DrawText(levelname, pos, titlefnt, alpha, 1.0, shade:titleclr);
+		y += titleheight;
+
+		y += int(lineheight / 2);
+
+		String time;
+
+		if (am_showtime) { time = level.TimeFormatted(); }
+
+		if (am_showtotaltime)
+		{
+			if (am_showtime) { time = time .. " / " .. level.TimeFormatted(true); }
+			else { time = level.TimeFormatted(true); }
+		}
+
+		if (am_showtime || am_showtotaltime)
+		{
+			let scale = BoAStatusBar.GetUIScale(hud_scale);
+			let vwidth = screen.GetWidth() / scale;
+			let vheight = screen.GetHeight() / scale;
+
+			screen.DrawText(fnt, clr, pos.x, y, time, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight, DTA_Monospace, 2, DTA_Spacing, fnt.GetCharWidth("0"), DTA_KeepRatio, true, DTA_Alpha, alpha);
+			y += int(lineheight * 3 / 2);
+		}
+
+		if (!deathmatch)
+		{
+			String value;
+
+			if (am_showmonsters && level.total_monsters > 0)
+			{
+				DrawToHud.DrawText(monsters, (pos.x, y), fnt, alpha, 1.0, shade:clr);
+
+				value = value.Format("%d/%d", level.killed_monsters, level.total_monsters);
+				DrawToHud.DrawText(value, (pos.x + labelwidth, y), fnt, alpha, 1.0, shade:Font.CR_RED);
+
+				y += lineheight;
+			}
+
+			if (am_showsecrets && level.total_secrets > 0)
+			{
+				DrawToHud.DrawText(secrets, (pos.x, y), fnt, alpha, 1.0, shade:clr);
+
+				value = value.Format("%d/%d", level.found_secrets, level.total_secrets);
+				DrawToHud.DrawText(value, (pos.x + labelwidth, y), fnt, alpha, 1.0, shade:Font.CR_GOLD);
+
+				y += lineheight;
+			}
+
+			// Draw item count
+			if (am_showitems && level.total_items > 0)
+			{
+				DrawToHud.DrawText(items, (pos.x, y), fnt, alpha, 1.0, shade:clr);
+
+				value = value.Format("%d/%d", level.found_items, level.total_items);
+				DrawToHud.DrawText(value, (pos.x + labelwidth, y), fnt, alpha, 1.0, shade:Font.CR_YELLOW);
+
+				y += lineheight;
+			}
+		}
+
+		return (size.x, y);
 	}
 }

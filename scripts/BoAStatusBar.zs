@@ -84,8 +84,9 @@ class BoAStatusBar : BaseStatusBar
 
 		savetimertime = 70;
 
-		CountWidget.Init("Money and Time", Widget.WDG_TOP | Widget.WDG_LEFT, 0);
+		AutomapWidget.Init("Automap Info", Widget.WDG_TOP | Widget.WDG_LEFT, 0);
 		KeenStatsWidget.Init("Keen HUD", Widget.WDG_TOP | Widget.WDG_LEFT, 0);
+		CountWidget.Init("Money and Time", Widget.WDG_TOP | Widget.WDG_LEFT, 0);
 		LogWidget.Init("Notifications", Widget.WDG_TOP | Widget.WDG_LEFT, 0, zindex:100);
 		CompassWidget.Init("Compass", Widget.WDG_TOP | Widget.WDG_LEFT, 1);
 
@@ -1188,139 +1189,14 @@ class BoAStatusBar : BaseStatusBar
 
 	override void DrawMyPos() {} // Drawn via widget
 
-	// Original code from shared_sbar.cpp
 	override void DrawAutomapHUD(double ticFrac)
 	{
-		int crdefault = Font.CR_GRAY;
-		int highlight = Font.FindFontColor("LightGray");
-
-		let scale = BoAStatusBar.GetUIScale(hud_scale);
-		let font = generic_ui ? NewSmallFont : SmallFont;
-		let font2 = font;
-		let vwidth = screen.GetWidth() / scale;
-		let vheight = screen.GetHeight() / scale;
-		let fheight = font.GetHeight();
-		String textbuffer;
-		int sec;
-		int textdist = 4;
-		int zerowidth = font.GetCharWidth("0");
-
-		int y = textdist + maptexty;
-
-		// Vignette the edges...
+		// Vignette the edges...  The rest is handled in the widget code
 		let tex = TexMan.CheckForTexture ("CONVBACK", TexMan.Type_MiscPatch);
 		if (tex.isValid())
 		{
 			Vector2 size = TexMan.GetScaledSize(tex);
 			screen.DrawTexture(tex, false, 0, 0, DTA_DestWidth, screen.GetWidth(), DTA_DestHeight, Screen.GetHeight(), DTA_Alpha, 0.75);
-		}
-
-		//textbuffer = level.FormatMapName(crdefault);
-		// Don't prepend the map name...  Just use the level's title.
-		textbuffer = level.LevelName;
-		if (idmypos) { textbuffer = textbuffer .. " (" .. level.mapname.MakeUpper() .. ")"; }
-
-		if (!generic_ui)
-		{
-			if (!font.CanPrint(textbuffer)) font = OriginalSmallFont;
-		}
-
-		let lines = font.BreakLines(textbuffer, vwidth - 32);
-		let numlines = lines.Count();
-		let finalwidth = lines.StringWidth(numlines - 1);
-
-		// Draw the text
-		for (int i = 0; i < numlines; i++)
-		{
-			screen.DrawText(BigFont, highlight, textdist, y, lines.StringAt(i), DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
-			y += BigFont.GetHeight();
-		}
-
-		y+= int(fheight / 2);
-
-		String time;
-
-		if (am_showtime) { time = level.TimeFormatted(); }
-
-		if (am_showtotaltime)
-		{
-			if (am_showtime) { time = time .. " / " .. level.TimeFormatted(true); }
-			else { time = level.TimeFormatted(true); }
-		}
-
-		if (am_showtime || am_showtotaltime)
-		{
-			screen.DrawText(font, crdefault, textdist, y, time, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight, DTA_Monospace, 2, DTA_Spacing, zerowidth, DTA_KeepRatio, true);
-			y += int(fheight * 3 / 2);
-		}
-
-		String monsters = StringTable.Localize("AM_MONSTERS", false);
-		String secrets = StringTable.Localize("AM_SECRETS", false);
-		String items = StringTable.Localize("AM_ITEMS", false);
-
-		double labelwidth = 0;
-
-		for (int i = 0; i < 3; i++)
-		{
-			String label;
-			int size;
-
-			Switch (i)
-			{
-				case 0:
-					label = monsters;
-					break;
-				case 1:
-					label = secrets;
-					break;
-				case 2:
-					label = items;
-					break;
-			}
-
-			size = font2.StringWidth(label .. "   ");
-
-			if (size > labelwidth) { labelwidth = size; }
-		}
-
-		if (!generic_ui)
-		{
-			// If the original font does not have accents this will strip them - but a fallback to the VGA font is not desirable here for such cases.
-			if (!font.CanPrint(monsters) || !font.CanPrint(secrets) || !font.CanPrint(items)) { font2 = OriginalSmallFont; }
-		}
-
-		if (!deathmatch)
-		{
-			if (am_showmonsters && level.total_monsters > 0)
-			{
-				screen.DrawText(font2, crdefault, textdist, y, monsters, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
-
-				textbuffer = textbuffer.Format("%d/%d", level.killed_monsters, level.total_monsters);
-				screen.DrawText(font2, Font.CR_RED, textdist + labelwidth, y, textbuffer, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
-
-				y += fheight;
-			}
-
-			if (am_showsecrets && level.total_secrets > 0)
-			{
-				screen.DrawText(font2, crdefault, textdist, y, secrets, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
-
-				textbuffer = textbuffer.Format("%d/%d", level.found_secrets, level.total_secrets);
-				screen.DrawText(font2, Font.CR_GOLD, textdist + labelwidth, y, textbuffer, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
-
-				y += fheight;
-			}
-
-			// Draw item count
-			if (am_showitems && level.total_items > 0)
-			{
-				screen.DrawText(font2, crdefault, textdist, y, items, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
-
-				textbuffer = textbuffer.Format("%d/%d", level.found_items, level.total_items);
-				screen.DrawText(font2, Font.CR_YELLOW, textdist + labelwidth, y, textbuffer, DTA_KeepRatio, true, DTA_VirtualWidth, vwidth, DTA_VirtualHeight, vheight);
-
-				y += fheight;
-			}
 		}
 	}
 
