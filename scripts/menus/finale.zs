@@ -226,7 +226,7 @@ class Finale : BoAMenu
 	Font fnt, titlefnt;
 	String text;
 
-	double alpha, widthratio, textscale;
+	double alpha, textscale;
 	int w, h, textwidth, textheight;
 	int drawtic;
 	double texttic, lineheight;
@@ -237,6 +237,8 @@ class Finale : BoAMenu
 	LevelData totals;
 
 	bool finished, nostats, swapsides;
+
+	double textXOffsetScale;
 
 	override void Init(Menu parent)
 	{
@@ -252,11 +254,8 @@ class Finale : BoAMenu
 		menuactive = OnNoPause;
 
 		h = 400;
-		w = int(h * screen.GetAspectRatio());
-		widthratio = 640 / (h * screen.GetAspectRatio());
+		w = 640;
 		alpha = 1.0;
-
-		w = int(w * widthratio);
 
 		textwidth = 270;
 		textheight = 260;
@@ -269,6 +268,13 @@ class Finale : BoAMenu
 		label_l = TexMan.CheckForTexture("graphics/finale/finale_label_l.png", TexMan.Type_Any);
 		label_r = TexMan.CheckForTexture("graphics/finale/finale_label_r.png", TexMan.Type_Any);
 		frame = TexMan.CheckForTexture("graphics/finale/finale_frame.png", TexMan.Type_Any);
+
+		/*
+		double frameToScreen = Screen.GetWidth() / 960;
+		double textToScreen = Screen.GetWidth() / double(w);
+		textXOffsetScale = frameToScreen / textToScreen;
+		*/
+		textXOffsetScale = double(w) / Screen.GetWidth() * textscale;
 
 		InitText(text);
 
@@ -390,7 +396,7 @@ class Finale : BoAMenu
 
 		int chars;
 
-		int textx = swapsides ? 72 : 296;
+		int textx = (w / 2) - (swapsides ? (370 * textXOffsetScale) : 0) - 20;
 		int texty = 100;
 		int lineoffset = 0;
 
@@ -400,7 +406,7 @@ class Finale : BoAMenu
 
 			if (l == start && lines.StringWidth(l) == 0) { lineoffset++; } // Skip printing blank lines at the beginning of a page
 
-			int xoffset = 0;
+			// int xoffset = 0;
 
 			String line = "";
 			int nextchar = 0, i = 0;
@@ -413,7 +419,7 @@ class Finale : BoAMenu
 				i++;
 			}
 
-			screen.DrawText(fnt, Font.CR_DARKGRAY, (textx + xoffset) / textscale, (texty + (l - start - lineoffset) * lineheight) / textscale, line, DTA_VirtualWidthF, w / textscale, DTA_VirtualHeightF, h / textscale, DTA_Alpha, textalpha);
+			screen.DrawText(fnt, Font.CR_DARKGRAY, textx / textscale, (texty + (l - start - lineoffset) * lineheight) / textscale, line, DTA_VirtualWidthF, w / textscale, DTA_VirtualHeightF, h / textscale, DTA_Alpha, textalpha);
 			chars += len;
 		}
 	}
