@@ -800,7 +800,6 @@ class InventoryHolder play
 	int armor;
 	double savepercent;
 	TextureID armorIcon;
-	bool armorHeld;
 	double hexenarmorslots[5];
 	int health;
 
@@ -832,12 +831,7 @@ class InventoryHolder play
 			// counts for all ammo types when taken away.
 			return HOLD_DEFERRED;
 		}
-		else if (armorHeld && (item is "BasicArmor" || item is "HexenArmor"))
-		{
-			// The player shouldn't have more than one set of armor, so this
-			// is just in case one sneaks into the player's inventory.
-			return DO_NOT_HOLD;
-		}
+
 		return HOLD;
 	}
 
@@ -895,14 +889,12 @@ class InventoryHolder play
 			armor = curItem.Amount;
 			armorIcon = curItem.Icon;
 			savepercent = BasicArmor(curItem).SavePercent;
-			armorHeld = true;
 		}
 		else if (curItem.GetClass() == "HexenArmor")
 		{
 			let h = HexenArmor(curItem);
 			armorIcon = curItem.Icon;
 			for (int s = 0; s < 5; s++) { hexenarmorslots[s] = h.slots[s]; }
-			armorHeld = true;
 		}
 
 		if (boa_debugholdinventory) {
@@ -938,24 +930,6 @@ class InventoryHolder play
 			else if (boa_debugholdinventory) { Console.Printf("Unable to restore %s because it is null!", itemTypeNames[i]); }
 		}
 
-		// Restore armor values
-		BasicArmor a = BasicArmor(receiver.FindInventory("BasicArmor"));
-		if (a)
-		{ 
-			a.amount = armor;
-			a.SavePercent = savepercent;
-			a.Icon = armorIcon;
-			armorHeld = false;
-		}
-
-		HexenArmor h = HexenArmor(receiver.FindInventory("HexenArmor"));
-		if (h)
-		{
-			for (int s = 0; s < 5; s++) { h.slots[s] = hexenarmorslots[s]; }
-			a.Icon = armorIcon;
-			armorHeld = false;
-		}
-
 		// Restore health amount
 		receiver.health = health;
 		if (receiver.player) { receiver.player.health = health; }
@@ -968,8 +942,24 @@ class InventoryHolder play
 		Inventory existing = receiver.FindInventory(item.GetClass());
 		if (existing)
 		{
-			existing.MaxAmount = item.MaxAmount;
-			existing.Amount = item.Amount;
+			if (existing is "BasicArmor")
+			{
+				let a = BasicArmor(existing);
+				a.amount = armor;
+				a.SavePercent = savepercent;
+				a.Icon = armorIcon;
+			}
+			else if (existing is "HexenArmor")
+			{
+				let h = HexenArmor(existing);
+				for (int s = 0; s < 5; s++) { h.slots[s] = hexenarmorslots[s]; }
+				h.Icon = armorIcon;
+			}
+			else
+			{
+				existing.MaxAmount = item.MaxAmount;
+				existing.Amount = item.Amount;
+			}
 		}
 		else
 		{
