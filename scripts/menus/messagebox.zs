@@ -373,7 +373,7 @@ class ClassicMessageBox : MessageBoxMenu
 		if (options.length())
 		{
 			drawy += fontheight / 2;
-			int selectory = (fontheight - 1) * CleanYFac * 3;
+			int selectory = (fontheight * (1 + message.Count()) - 3) * CleanYFac;
 
 			int weight = int(max(1, Round(Screen.GetHeight() / 200)));
 			if (weight > 1 && weight % 2 == 1) { weight++; }
