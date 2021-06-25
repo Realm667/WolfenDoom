@@ -71,7 +71,7 @@ class AchievementSummary : BoAMenu
 		
 		initial = true;
 
-		tracker = AchievementTracker(EventHandler.Find("AchievementTracker"));
+		tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
 	}
 
 	override void Drawer()

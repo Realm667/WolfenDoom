@@ -236,7 +236,7 @@ class Cartridge : CompassItem
 
 		if (ret && toucher && toucher.player)
 		{
-			AchievementTracker achievements = AchievementTracker(EventHandler.Find("AchievementTracker"));
+			AchievementTracker achievements = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
 			if (achievements)
 			{
 				achievements.cartridges[toucher.PlayerNumber()][number] = true;

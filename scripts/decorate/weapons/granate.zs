@@ -133,7 +133,7 @@ class HandGrenade : GrenadeBase //no hard variant since it is used also by playe
 		{
 			AchievementTracker.CheckAchievement(target.PlayerNumber(), AchievementTracker.ACH_BOOM);
 
-			AchievementTracker tracker = AchievementTracker(EventHandler.Find("AchievementTracker"));
+			AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
 			if (tracker) { tracker.grenades[target.PlayerNumber()]++; }
 		}
 		Super.PostBeginPlay();

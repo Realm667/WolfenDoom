@@ -247,7 +247,7 @@ class BoAPlayer : PlayerPawn
 		int playerID = PLAYER_TAG_OFFSET + PlayerNumber();
 		Thing_ChangeTID(0, playerID);
 
-		tracker = AchievementTracker(EventHandler.Find("AchievementTracker"));
+		tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
 
 		Super.PostBeginPlay();
 	}
@@ -1248,7 +1248,7 @@ class BoAPlayer : PlayerPawn
 		[waterlevel, underwater, watersector] = Buoyancy.GetWaterHeight(self);
 		if (underwater)
 		{
-			AchievementTracker tracker = AchievementTracker(EventHandler.Find("AchievementTracker"));
+			AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
 			if (tracker)
 			{
 				if (mod == "None")

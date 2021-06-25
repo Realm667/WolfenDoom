@@ -112,7 +112,7 @@ class DamageTracker : EventHandler
 
 	override void WorldTick()
 	{
-		if (!achievements) { achievements = AchievementTracker(EventHandler.Find("AchievementTracker")); }
+		if (!achievements) { achievements = AchievementTracker(StaticEventHandler.Find("AchievementTracker")); }
 
 		for (int i = 0; i < events.Size(); i++)
 		{
@@ -626,7 +626,7 @@ class AchievementTracker : StaticEventHandler
 	{
 		if (pnum < 0) { return; }
 
-		AchievementTracker achievements = AchievementTracker(EventHandler.Find("AchievementTracker"));
+		AchievementTracker achievements = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
 		if (!achievements || (!achievements.allowed &&
 			a != AchievementTracker.ACH_ADDICTED &&
 			a != AchievementTracker.ACH_IRONMAN &&
@@ -637,7 +637,7 @@ class AchievementTracker : StaticEventHandler
 
 	static bool IsComplete(int a)
 	{
-		AchievementTracker achievements = AchievementTracker(EventHandler.Find("AchievementTracker"));
+		AchievementTracker achievements = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
 		if (!achievements) { return false; }
 
 		if (a >= achievements.records.Size()) { return false; }
@@ -931,7 +931,7 @@ class AchievementTracker : StaticEventHandler
 
 	void GetStats()
 	{
-		PersistentAchievementTracker ptracker = PersistentAchievementTracker(StaticEventHandler.Find("PersistentAchievementTracker"));
+		PersistentAchievementTracker ptracker = PersistentAchievementTracker(EventHandler.Find("PersistentAchievementTracker"));
 		if (!ptracker) { return; }
 
 		for (int i = 0; i < MAXPLAYERS; i++)

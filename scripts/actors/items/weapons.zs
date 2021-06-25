@@ -193,7 +193,7 @@ class NaziWeapon : Weapon
 
 		if (ret && toucher && toucher.player)
 		{
-			AchievementTracker achievements = AchievementTracker(EventHandler.Find("AchievementTracker"));
+			AchievementTracker achievements = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
 			if (achievements)
 			{
 				for (int w = 0; w < achievements.weaponlist.Size(); w++)
@@ -266,7 +266,7 @@ class NaziWeapon : Weapon
 		if (r && invoker.Owner.player) {
 			invoker.Owner.player.WeaponState &= ~(WF_WEAPONREADY | WF_WEAPONREADYALT);
 
-			AchievementTracker tracker = AchievementTracker(EventHandler.Find("AchievementTracker"));
+			AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
 			if (tracker) { tracker.reloads[invoker.owner.PlayerNumber()]++; }
 		}
 	}

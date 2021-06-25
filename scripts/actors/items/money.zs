@@ -87,7 +87,7 @@ class CoinItem : StackableInventory
 
 		if (ret && toucher && toucher.player)
 		{
-			AchievementTracker achievements = AchievementTracker(EventHandler.Find("AchievementTracker"));
+			AchievementTracker achievements = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
 			if (achievements)
 			{
 				achievements.coins[toucher.PlayerNumber()] += Amount;
