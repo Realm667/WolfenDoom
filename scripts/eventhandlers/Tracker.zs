@@ -336,7 +336,7 @@ class Achievement
 	Vector2 size;
 }
 
-class AchievementTracker : EventHandler
+class AchievementTracker : StaticEventHandler
 {
 	transient CVar recordvar[4];
 	int record;
@@ -1020,8 +1020,8 @@ class AchievementTracker : EventHandler
 	}
 }
 
-// Static tracker to allow tracking certain stats across level changes
-class PersistentAchievementTracker : StaticEventHandler
+// Persistent tracker to allow tracking certain stats across level changes
+class PersistentAchievementTracker : EventHandler
 {
 	int pistolshots[MAXPLAYERS];
 	int knifekills[MAXPLAYERS];
@@ -1041,7 +1041,7 @@ class PersistentAchievementTracker : StaticEventHandler
 
 	override void WorldLoaded(WorldEvent e)
 	{
-		AchievementTracker tracker = AchievementTracker(EventHandler.Find("AchievementTracker"));
+		AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
 		if (!tracker) { return; }
 
 		tracker.GetStats();
@@ -1049,7 +1049,7 @@ class PersistentAchievementTracker : StaticEventHandler
 
 	override void WorldUnloaded(WorldEvent e)
 	{
-		AchievementTracker tracker = AchievementTracker(EventHandler.Find("AchievementTracker"));
+		AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
 		if (!tracker) { return; }
 
 		tracker.SaveStats();
