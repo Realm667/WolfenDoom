@@ -530,8 +530,15 @@ class AchievementTracker : StaticEventHandler
 		if (cheats & (CF_NOCLIP | CF_NOCLIP2 | CF_GODMODE | CF_GODMODE2 | CF_BUDDHA | CF_BUDDHA2)) { CheckAchievement(consoleplayer, ACH_NAUGHTY); }
 	}
 
+	override void WorldUnloaded(WorldEvent e)
+	{
+		SaveStatsToPersistent();
+	}
+
 	override void WorldLoaded(WorldEvent e)
 	{
+		GetStatsFromPersistent();
+
 		// Achievements only work on CxMy and TEST_x named maps
 		if ((level.mapname.Left(1) ~== "C" && level.mapname.Mid(2, 1) ~== "M") || (level.mapname.Left(5) ~== "TEST_")) { allowed = true; }
 		else { allowed = false; }
@@ -806,7 +813,7 @@ class AchievementTracker : StaticEventHandler
 			case ACH_CHEVALIER: // Set up in the Nazi class's Die function, with handling in DamageMobj to flag the enemy to not allow the achievement if any other weapon was used
 			case ACH_PESTS: // Set up in the BoAPlayer class's Die function
 			case ACH_ACCURACY: // Set up in the BulletTracer class's PostBeginPlay function and actor states
-			case ACH_ADDICTED: // Incremented here in WorldUnloaded function
+			case ACH_ADDICTED: // Incremented here in WorldTick function
 			case ACH_IRONMAN: // Set in Gutenberg C1 conversation
 			case ACH_BEAMMEUP: // Set in Gutenberg C2 conversation
 			default:
@@ -815,6 +822,8 @@ class AchievementTracker : StaticEventHandler
 		}
 
 		if (complete) { UpdateRecord(pnum, a, true, silent); }
+
+		SaveStatsToPersistent();
 	}
 
 	void UpdateRecord(int pnum, int a, bool complete, bool silent = false, bool force = false)
@@ -929,7 +938,7 @@ class AchievementTracker : StaticEventHandler
 		return r.Mid(0, r.Length() - p.Length());
 	}
 
-	void GetStats()
+	void GetStatsFromPersistent()
 	{
 		PersistentAchievementTracker ptracker = PersistentAchievementTracker(EventHandler.Find("PersistentAchievementTracker"));
 		if (!ptracker) { return; }
@@ -971,9 +980,9 @@ class AchievementTracker : StaticEventHandler
 		}
 	}
 
-	void SaveStats()
+	void SaveStatsToPersistent()
 	{
-		PersistentAchievementTracker ptracker = PersistentAchievementTracker(StaticEventHandler.Find("PersistentAchievementTracker"));
+		PersistentAchievementTracker ptracker = PersistentAchievementTracker(EventHandler.Find("PersistentAchievementTracker"));
 		if (!ptracker) { return; }
 
 		for (int i = 0; i < MAXPLAYERS; i++)
@@ -1038,20 +1047,4 @@ class PersistentAchievementTracker : EventHandler
 	int coins[MAXPLAYERS];
 	int cartridges[MAXPLAYERS][3];
 	int awards[MAXPLAYERS][10];
-
-	override void WorldLoaded(WorldEvent e)
-	{
-		AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
-		if (!tracker) { return; }
-
-		tracker.GetStats();
-	}
-
-	override void WorldUnloaded(WorldEvent e)
-	{
-		AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
-		if (!tracker) { return; }
-
-		tracker.SaveStats();
-	}
 }
