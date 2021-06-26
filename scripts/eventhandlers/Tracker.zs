@@ -328,6 +328,7 @@ class InventoryTracker : EventHandler
 
 class Achievement
 {
+	int index;
 	String icon;
 	String title;
 	bool complete;
@@ -456,6 +457,7 @@ class AchievementTracker : StaticEventHandler
 			{
 				if (a < ACH_LASTACHIEVEMENT)
 				{
+					ach.index = a;
 					ach.icon = String.Format("ACHVMT%02i", a);
 					ach.title = GetTitle(a);
 				}
