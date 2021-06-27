@@ -328,13 +328,12 @@ class InventoryTracker : EventHandler
 
 class Achievement
 {
-	int index;
 	String icon;
 	String title;
 	bool complete;
 	int time;
 	Vector2 pos;
-	Vector2 size;
+	Vector2 size, fullsize;
 }
 
 class AchievementTracker : StaticEventHandler
@@ -457,9 +456,8 @@ class AchievementTracker : StaticEventHandler
 			{
 				if (a < ACH_LASTACHIEVEMENT)
 				{
-					ach.index = a;
 					ach.icon = String.Format("ACHVMT%02i", a);
-					ach.title = GetTitle(a);
+					ach.title = String.Format("ACHIEVEMENT%i", a);
 				}
 				ach.complete = false;
 				records.Push(ach);
@@ -636,10 +634,22 @@ class AchievementTracker : StaticEventHandler
 		if (pnum < 0) { return; }
 
 		AchievementTracker achievements = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
-		if (!achievements || (!achievements.allowed &&
-			a != AchievementTracker.ACH_ADDICTED &&
-			a != AchievementTracker.ACH_IRONMAN &&
-			a != AchievementTracker.ACH_BEAMMEUP)) { return; }
+		if (
+			!achievements ||
+			(
+				!achievements.allowed &&
+				// Allow these achievements on any map, including INTERMAP
+				a != AchievementTracker.ACH_ADDICTED &&
+				a != AchievementTracker.ACH_TREASUREHUNTER &&
+				a != AchievementTracker.ACH_GOLDDIGGER &&
+				// These are only attainable in INTERMAP
+				a != AchievementTracker.ACH_IRONMAN &&
+				a != AchievementTracker.ACH_BEAMMEUP
+			)
+		)
+		{
+			return;
+		}
 
 		achievements.DoChecks(pnum, a);
 	}
@@ -844,8 +854,8 @@ class AchievementTracker : StaticEventHandler
 		if (!silent && complete)
 		{
 			// Display the message
-			if (a == ACH_NEAT) { AchievementMessage.Init(players[pnum].mo, records[a].title, records[a].icon, "ckeen/secret", "B_", 0xFFFFFF, "Classic", "M"); }
-			else { AchievementMessage.Init(players[pnum].mo, records[a].title, records[a].icon, "misc/achievement"); }
+			if (a == ACH_NEAT) { AchievementMessage.Init(players[pnum].mo, GetTitle(a), records[a].icon, "ckeen/secret", "B_", 0xFFFFFF, "Classic", "M"); }
+			else { AchievementMessage.Init(players[pnum].mo, GetTitle(a), records[a].icon, "misc/achievement"); }
 		}
 	}
 

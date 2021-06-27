@@ -32,7 +32,7 @@ class BrokenString : Object
 	int StringWidth(int line)
 	{
 		if (line < 0 || line >= lines.Size()) { return 0; }
-		return fnt.StringWidth(ZScriptTools.Trim(lines[line]));
+		return fnt.StringWidth(ZScriptTools.Trim(ZScriptTools.StripColorCodes(lines[line])));
 	}
 
 	String StringAt(int line)

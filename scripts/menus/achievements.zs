@@ -25,17 +25,19 @@ class AchievementSummary : BoAMenu
 	AchievementTracker tracker;
 
 	double alpha;
-	int h, w, cols, rows;
-	Achievement selected;
+	int h, w;
+	int selected;
 
 	TextureID background, board;
 	Font titlefont, textfont, captionfont;
 	
-	double msgalpha;
-	bool initial;
-	int ticcount;
-	BrokenLines hintlines;
-	double hintx, hinty, hintlineheight;
+	int drawtop, drawbottom, drawright, drawheightscaled;
+	int scrollpos, maxscroll, scrollamt;
+	int spacing, cellheight, cellwidth, iconwidth;
+
+	double scale;
+
+	ScrollBar scroll;
 
 	override void Init(Menu parent)
 	{
@@ -46,13 +48,25 @@ class AchievementSummary : BoAMenu
 		menuactive = OnNoPause;
 		mMouseCapture = true;
 
-		h = 600;
-		w = int(h * 4 / 3);
+		h = 480;
+		w = 640;
+
+		drawtop = int(Screen.GetHeight() * 0.125);
+		drawbottom = int(Screen.GetHeight() * 0.875);
+		drawright = int(Screen.GetWidth() / 2 + (Screen.GetHeight() * 4 / 3) / 2);
+		drawheightscaled = h * (drawbottom - drawtop) / Screen.GetHeight();
 
 		alpha = 1.0;
-		rows = 9;
-		cols = tracker.ACH_LASTACHIEVEMENT / rows;
-		if (cols < tracker.ACH_LASTACHIEVEMENT / rows) { cols++; }
+		scale = max(0.01, Screen.GetHeight() / h);
+		spacing = 10;
+		cellheight = 48;
+		cellwidth = w / 2 - 16;
+		iconwidth = 32;
+		maxscroll = cellheight * tracker.ACH_LASTACHIEVEMENT - drawheightscaled;
+		scrollamt = 10;
+
+		selected = 0;
+		scrollpos = 0;
 
 		titlefont = BigFont;
 		textfont = SmallFont;
@@ -61,17 +75,10 @@ class AchievementSummary : BoAMenu
 		background = TexMan.CheckForTexture("graphics/hud/general/convback.png", TexMan.Type_Any);
 		board = TexMan.CheckForTexture("graphics/hud/hud_achievements/ach_bkg.png", TexMan.Type_Any);
 
-		// Hint message
-		String hintmessage = StringTable.Localize("ACHIEVEMENTINFO", false);
-		hintlines = SmallFont.BreakLines(hintmessage, 320);
-		hintx = 320;
-		hintlineheight = SmallFont.GetHeight();
-		double offset = hintlineheight * (hintlines.Count() - 0.5) - 10;
-		hinty = 460 - offset;
-		
-		initial = true;
-
 		tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
+
+		double scale = max(0.01, Screen.GetHeight() / h);
+		scroll = Scroll.Init(int(drawright - 12 * scale), drawtop, int(12 * scale), drawbottom - drawtop, maxscroll);
 	}
 
 	override void Drawer()
@@ -84,95 +91,83 @@ class AchievementSummary : BoAMenu
 		if (background) { screen.DrawTexture(background, true, 0, 0, DTA_DestWidth, width, DTA_DestHeight, height, DTA_Alpha, alpha); }
 		if (board) { Screen.DrawTexture(board, true, width / 2, height / 2, DTA_DestWidth, int(height * 16 / 9), DTA_DestHeight, height, DTA_CenterOffset, true); }
 
+		if (selected == -1) { selected = int(ceil(double(scrollpos) / cellheight)); }
+
+		int dimx = Screen.GetWidth() / 2;
+		Screen.Dim(0x0, 0.75, dimx, drawtop, drawright - dimx - int(12 * scale), drawbottom - drawtop);
+
 		for (int a = 0; a < tracker.ACH_LASTACHIEVEMENT; a++)
 		{
-			DrawAchievement(a, tracker.records[a], tracker.records[a] == selected);
+			DrawAchievement(a, tracker.records[a], a == selected);
 		}
-		
-		if (msgalpha > 0)
-		{
-			for (int i = 0; i < hintlines.Count(); i++)
-			{
-				screen.DrawText(SmallFont, Font.CR_GRAY, hintx - hintlines.StringWidth(i) / 2, hinty + hintlineheight * i, hintlines.StringAt(i), DTA_VirtualWidth, 640, DTA_VirtualHeight, 480, DTA_Alpha, msgalpha);
-			}
-		}
+
+		scroll.scrollpos = scrollpos;
+		scroll.alpha = alpha;
+		scroll.Draw();
 	}
 
-	virtual void DrawAchievement(int index, Achievement ach, bool selected = false)
+	virtual void DrawAchievement(int index, Achievement ach, bool isselected = false)
 	{
-		int column = index / rows;
-		int row = index % rows;
-		int spacing = 10;
+		double titlescale = 1.0 * scale;
+		double textscale = 1.0 * scale;
+		double captionscale = 1.0 * scale;
 
-		int rowheight = 48;
-		int colwidth = int((w - spacing * 2) / (cols + 1));
-		int iconwidth = 40;
+		String text = StringTable.Localize(ach.title, false);
+		BrokenString lines;
 
-		double scale = max(0.01, (Screen.GetHeight() * iconwidth / h) / iconwidth);
+		Vector2 size, pos = (spacing, spacing - scrollpos + index * cellheight);
+		[pos, size] = Screen.VirtualToRealCoords(pos, (cellwidth - spacing, cellheight - spacing), (w, h));
 
-		int yoffset = (h - rowheight * rows) / 2;
-
-		Vector2 pos = (spacing + column * colwidth, yoffset + row * rowheight);
-
-		Vector2 size;
-		[pos, size] = Screen.VirtualToRealCoords(pos, (colwidth - spacing, rowheight - spacing), (w, h));
+ 		pos.y += drawtop - spacing / 2;
 
 		ach.pos = pos - (4, 4) * scale;
-		ach.size = size + (8, 8) * scale;;
+		ach.fullsize = size;
+		ach.size = size + (8, 8) * scale;
+
+		ach.size.y = min(ach.size.y, ach.pos.y + ach.size.y - drawtop);
+		ach.size.y = min(ach.size.y, drawbottom - ach.pos.y);
+		ach.pos.y = max(ach.pos.y, drawtop);
+		ach.pos.y = min(ach.pos.y, drawbottom);
+
+		if (ach.size.y < cellheight && isselected) { selected = -1; }
+		if (ach.pos.y + ach.size.y <= drawtop || ach.pos.y >= drawbottom) { return; }
 
 		double bottom = pos.y + size.y;
 
-		if (selected) { Screen.DrawLineFrame(0xFFDD0000, int(ach.pos.x), int(ach.pos.y), int(ach.size.x), int(ach.size.y), 2); }
-		Screen.Dim(0x0, 0.75, int(ach.pos.x), int(ach.pos.y), int(ach.size.x), int(ach.size.y));
+		Screen.Dim(0x0, isselected ? 0.75 : 0.6, int(ach.pos.x), int(ach.pos.y), isselected ? int(ceil(Screen.GetWidth() / 2 - ach.pos.x)): int(ach.size.x), int(ach.size.y));
 
-		String text = ach.title;
-		BrokenString lines;
-		
+		// Split the title and content text
+		// Assumes that the first line up to a line break is the title.
 		int endline = text.IndexOf("\n");
 		String title = text.Left(endline);
 		text = text.Mid(endline + 1);
 
-		double titlescale = 0.8;
-		[title, lines] = BrokenString.BreakString(title, int(size.x / (scale * titlescale)), false, "L", titlefont);
+		// Draw the title string, with handling for adding ellipses on overflow
+		int titlewidth = int((size.x - (iconwidth + spacing * 2) * scale) / titlescale);
+		[title, lines] = BrokenString.BreakString(title, titlewidth, false, "L", titlefont);
 
-		title = lines.StringAt(0);
+		String shorttitle = lines.StringAt(0);
 		if (lines.Count() > 0)
 		{
-			title = title .. "...";
+			shorttitle = shorttitle .. "...";
 
-			if (titlefont.StringWidth(title) > size.x / (scale * titlescale))
+			if (titlefont.StringWidth(shorttitle) > titlewidth)
 			{
-				title = title.Left(title.RightIndexOf(" ") - 1) .. "...";
+				shorttitle = shorttitle.Left(shorttitle.RightIndexOf(" ") - 1) .. "...";
 			}
 		}
+		screen.DrawText(titlefont, ach.complete ? Font.CR_GOLD : Font.CR_DARKGRAY, int(pos.x + (spacing * 2 + iconwidth) * scale), int(pos.y + (size.y - titlefont.GetHeight() * titlescale) / 2), ZScriptTools.StripColorCodes(shorttitle), DTA_Alpha, alpha, DTA_ScaleX, titlescale, DTA_ScaleY, titlescale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);
 
-		screen.DrawText(titlefont, ach.complete ? Font.CR_GOLD : Font.CR_DARKGRAY, int(pos.x), int(pos.y), ZScriptTools.StripColorCodes(title), DTA_Alpha, alpha, DTA_ScaleX, scale * titlescale, DTA_ScaleY, scale * titlescale);
-		pos.y += int(titlefont.GetHeight() * scale * titlescale);
-
+		// Get and draw icon
 		TextureID icon = TexMan.CheckForTexture(ach.icon);
 		if (icon.IsValid())
 		{
-			screen.DrawTexture(icon, true, pos.x + 2 * scale, pos.y + 3 * scale, DTA_Alpha, alpha, DTA_AlphaChannel, !ach.complete, DTA_FillColor, ach.complete ? -1 : 0xBBBBCC, DTA_ScaleX, scale, DTA_ScaleY, scale);
+			screen.DrawTexture(icon, true, pos.x + (spacing / 2 + iconwidth / 2) * scale, pos.y + size.y / 2, DTA_Alpha, alpha, DTA_AlphaChannel, !ach.complete, DTA_FillColor, ach.complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(iconwidth * scale), DTA_DestHeight, int(iconwidth * scale), DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom, DTA_CenterOffset, true);
 		}
 
-		double textscale = 1.0;
+		// Print the current status or completion timestamp
+		pos.y = bottom - captionfont.GetHeight() * captionscale;
 
-		String temp;
-		while (textscale == 1.0 || (lines.Count() + 1) * textfont.GetHeight() * scale * textscale > size.y * 0.65)
-		{
-			textscale *= 0.9;
-			[temp, lines] = BrokenString.BreakString(text, int((size.x - iconwidth * scale) / (scale * textscale)), false, "L", textfont);
-		}
-
-		int lineheight = int(textfont.GetHeight() * scale * textscale);
-
-		for (int l = 0; l <= lines.Count(); l++)
-		{
-			int clr = (ach.complete) ? Font.CR_GRAY : Font.CR_DARKGRAY;
-			screen.DrawText(textfont, clr, int(pos.x + iconwidth * scale), int(pos.y + lineheight * l), ZScriptTools.StripColorCodes(lines.StringAt(l)), DTA_Alpha, alpha, DTA_ScaleX, scale * textscale, DTA_ScaleY, scale * textscale);
-		}
-
-		double captionscale = 1.0;
 		String value = "";
 		switch (index)
 		{
@@ -259,68 +254,300 @@ class AchievementSummary : BoAMenu
 				break;
 		}
 
-		pos.y = bottom - captionfont.GetHeight() * scale * captionscale;
-
+		String timevalue;
 		if (ach.time && ach.time > 100)
 		{
-			screen.DrawText(captionfont, Font.CR_GOLD, int(pos.x + iconwidth * scale), int(pos.y), SystemTime.Format("%d %b %Y, %T", ach.time), DTA_Alpha, alpha, DTA_ScaleX, scale * captionscale, DTA_ScaleY, scale * captionscale);
+			timevalue = SystemTime.Format("%d %b %Y, %T", ach.time);
+			screen.DrawText(captionfont, Font.CR_GOLD, int(pos.x + size.x - captionfont.StringWidth(timevalue) * captionscale), int(pos.y), timevalue, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);
+		}
+		else
+		{
+			if (value.length()) { screen.DrawText(captionfont, Font.CR_DARKGRAY, int(pos.x + size.x - captionfont.StringWidth(value) * captionscale), int(pos.y), value, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom); }
 		}
 
-		if (value.length()) { screen.DrawText(captionfont, Font.CR_DARKGRAY, int(pos.x + size.x - captionfont.StringWidth(value) * scale * captionscale), int(pos.y), value, DTA_Alpha, alpha, DTA_ScaleX, scale * captionscale, DTA_ScaleY, scale * captionscale); }
+		// If this isn't the active selection, stop here
+		if (!isselected) { return; }
+
+		pos.x = Screen.GetWidth() / 2 + spacing * scale;
+		pos.y = drawtop + spacing * scale;
+
+		int lineheight;
+
+		[title, lines] = BrokenString.BreakString(title, int((drawright - Screen.GetWidth() / 2 - spacing * 2 * scale) / textscale), false, "L", textfont);
+		lineheight = int(titlefont.GetHeight() * textscale);
+
+		for (int l = 0; l <= lines.Count(); l++)
+		{
+			screen.DrawText(titlefont, Font.CR_GOLD, int(pos.x), int(pos.y), ZScriptTools.StripColorCodes(lines.StringAt(l)), DTA_Alpha, alpha, DTA_ScaleX, titlescale, DTA_ScaleY, titlescale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);
+			pos.y += lineheight;
+		}
+
+		pos.y += spacing * scale;
+
+		int textwidth = int((drawright - Screen.GetWidth() / 2 - spacing * 3 * scale) / textscale);
+		[text, lines] = BrokenString.BreakString(text, textwidth, false, "L", textfont);
+		lineheight = int(textfont.GetHeight() * textscale);
+
+		for (int l = 0; l <= lines.Count(); l++)
+		{
+			screen.DrawText(textfont, Font.CR_GRAY, int(pos.x), int(pos.y), ZScriptTools.StripColorCodes(lines.StringAt(l)), DTA_Alpha, alpha, DTA_ScaleX, textscale, DTA_ScaleY, textscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);
+			pos.y += lineheight;
+		}
+
+		pos.y += spacing * scale;
+
+		if (value.length()) { screen.DrawText(captionfont, Font.CR_DARKGRAY, int(drawright - captionfont.StringWidth(value) * captionscale - spacing * 2 * scale), int(pos.y), value, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom); }
+		screen.DrawText(captionfont, Font.CR_GOLD, int(pos.x), int(pos.y), timevalue, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);
+
+		// Cheat warning message
+		[text, lines] = BrokenString.BreakString(StringTable.Localize("ACHIEVEMENTINFO", false), textwidth, false, "L", textfont);
+
+		pos.y = drawbottom - (lines.Count() + 2) * lineheight;
+
+		for (int l = 0; l <= lines.Count(); l++)
+		{
+			screen.DrawText(textfont, Font.CR_GRAY, int(pos.x + textwidth * scale / 2 - lines.StringWidth(l) * scale / 2), int(pos.y), lines.StringAt(l), DTA_Alpha, alpha, DTA_ScaleX, textscale, DTA_ScaleY, textscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);
+			pos.y += lineheight;
+		}
 	}
 
 	override bool MouseEvent(int type, int mx, int my)
 	{
-		for (int a = 0; a < tracker.ACH_LASTACHIEVEMENT; a++)
+		if (type == MOUSE_CLICK)
 		{
-			let ach = tracker.records[a];
-			if (!ach) { continue; }
-
-			if (
-				mx >= ach.pos.x &&
-				mx <= ach.pos.x + ach.size.x &&
-				my >= ach.pos.y &&
-				my <= ach.pos.y + ach.size.y
-			)
+			for (int a = 0; a < tracker.ACH_LASTACHIEVEMENT; a++)
 			{
-				selected = ach;
-				return true;
+				let ach = tracker.records[a];
+				if (!ach) { continue; }
+
+				if (
+					mx >= ach.pos.x &&
+					mx <= ach.pos.x + ach.size.x &&
+					my >= ach.pos.y &&
+					my <= ach.pos.y + ach.size.y
+				)
+				{
+					selected = a;
+
+					if (ach.size.y < ach.fullsize.y)
+					{
+						if (ach.pos.y < Screen.GetHeight() / 2) { scrollpos -= int(ach.fullsize.y - ach.size.y); }
+						else { scrollpos += int(ach.fullsize.y - ach.size.y); }
+					}
+					return true;
+				}
+			}
+
+			int scrollclick = scroll.CheckClick(mx, my);
+
+			switch (scrollclick)
+			{
+				case ScrollBar.SCROLL_SLIDER:
+					scroll.capture = true;
+					break;
+				case ScrollBar.SCROLL_UP:
+					scrollpos = max(0, scrollpos - cellheight);
+					break;
+				case ScrollBar.SCROLL_DOWN:
+					scrollpos = min(maxscroll, scrollpos + cellheight);
+					break;
+				case ScrollBar.SCROLL_PGUP:
+					scrollpos = max(0, scrollpos - cellheight * 5);
+					break;
+				case ScrollBar.SCROLL_PGDOWN:
+					scrollpos = min(maxscroll, scrollpos + cellheight * 5);
+					break;
+				default:
+					break;
 			}
 		}
+		else if (type == MOUSE_MOVE && scroll.capture)
+		{
+			int ypos = clamp(my - (scroll.y + scroll.elementsize), 0, scroll.h - (scroll.elementsize * 2));
+			scrollpos = maxscroll * ypos / (scroll.h - (scroll.elementsize * 2));
+		}
+		else
+		{
+			if (scroll.capture) { scroll.capture = false; }
+		}
 
-		selected = null;
 		return true;
 	}
-	
-	override void Ticker()
-	{
-		ticcount++;
 
-		if (initial)
+	override bool OnUIEvent(UIEvent ev)
+	{
+		if (ev.type == UIEvent.Type_WheelUp)
 		{
-			if (ticcount >= 245)
-			{
-				msgalpha = 0;
-				ticcount = 0;
-				initial = false;
-			}
-			else if (ticcount <= 175)
-			{
-				if (ticcount >= 105)
+			scrollpos = max(0, scrollpos - scrollamt);
+			return true;
+		}
+		else if (ev.type == UIEvent.Type_WheelDown)
+		{
+			scrollpos = min(maxscroll, scrollpos + scrollamt);
+			return true;
+		}
+		return Super.OnUIEvent(ev);
+	}
+
+	override bool MenuEvent (int mkey, bool fromcontroller)
+	{
+		int startedAt = selected;
+		int lastselection = AchievementTracker.ACH_LASTACHIEVEMENT - 1;
+		int pageamt = drawheightscaled / cellheight;
+
+		switch (mkey)
+		{
+			case MKEY_Up:
+				--selected;
+				if (selected < 0)
 				{
-					msgalpha = 0.5 + sin(((ticcount - 70) * 360 / 70 - 90) / 2);
+					selected = lastselection;
+					scrollpos = maxscroll;
 				}
-				else if (ticcount >= 35 && ticcount < 105)
+				else if (selected == 0)
 				{
-					msgalpha = 1.0;
+					scrollpos = 0;
 				}
-				else
+				else if (selected * cellheight < scrollpos)
 				{
-					msgalpha = 0.5 + sin((ticcount * 360 / 70 - 90) / 2);
+					scrollpos -= cellheight;
+				}
+				break;
+			case MKEY_Down:
+				++selected;
+				if (selected > lastselection)
+				{
+					selected = 0;
+					scrollpos = 0;
+				}
+				else if (selected == lastselection)
+				{
+					scrollpos = maxscroll;
+				}
+				else if ((selected + 1) * cellheight > scrollpos + drawheightscaled)
+				{
+					scrollpos += cellheight;
+				}
+				break;
+			case MKEY_PageUp:
+				selected = max(0, selected - pageamt);
+				scrollpos = max(0, selected * cellheight);
+				break;
+			case MKEY_PageDown:
+				selected = min(lastselection, selected + pageamt);
+				scrollpos = min(maxscroll, selected * cellheight);
+				break;
+			default:
+				return Super.MenuEvent(mkey, fromcontroller);
+		}
+
+		if (selected != startedAt)
+		{
+			MenuSound ("menu/cursor");
+		}
+
+		return true;
+	}
+}
+
+class ScrollBar ui
+{
+	int x, y, w, h;
+	int scrollpos, maxscroll;
+	int elementsize;
+	int blocktop, blockbottom;
+	bool capture;
+
+	double alpha;
+
+	TextureID up, down, scroll_t, scroll_m, scroll_b, scroll_s;
+
+	ScrollBar Init(int x, int y, int w, int h, int maxscroll)
+	{
+		ScrollBar s = New("ScrollBar");
+
+		if (s)
+		{
+			s.up = TexMan.CheckForTexture("graphics/conversation/arrow_up.png", TexMan.Type_Any);
+			s.down = TexMan.CheckForTexture("graphics/conversation/arrow_dn.png", TexMan.Type_Any);
+			s.scroll_t = TexMan.CheckForTexture("graphics/conversation/scroll_t.png", TexMan.Type_Any);
+			s.scroll_m = TexMan.CheckForTexture("graphics/conversation/scroll_m.png", TexMan.Type_Any);
+			s.scroll_b = TexMan.CheckForTexture("graphics/conversation/scroll_b.png", TexMan.Type_Any);
+			s.scroll_s = TexMan.CheckForTexture("graphics/conversation/scroll_s.png", TexMan.Type_Any);
+	
+			s.x = x;
+			s.y = y;
+			s.w = w;
+			s.h = h;
+			s.maxscroll = maxscroll;
+			s.elementsize = s.w;
+		}
+
+		return s;
+	}
+
+	void Draw()
+	{
+		double scrollblocksize = double(h - elementsize * 2.75) / maxscroll;
+		int scrollbarsize = int(scrollblocksize / 16);
+
+		Screen.Dim(0x0, 0.5, x, y, w, h);
+
+		Color clr = g_activecolor;
+		Color disabled = g_inactivecolor;
+
+		if (scrollBarSize < 1)
+		{
+				blocktop = y + elementsize + int(scrollblocksize * scrollpos);
+				blockbottom = blocktop + elementsize;
+				screen.DrawTexture(scroll_s, true, x, blocktop, DTA_Alpha, alpha, DTA_AlphaChannel, true, DTA_FillColor, clr, DTA_DestHeight, elementsize, DTA_DestWidth, elementsize);
+		}
+		else
+		{
+			blocktop = y + elementsize + min(int(scrollblocksize * scrollpos), h - elementsize * (2 + scrollbarsize));
+			blockbottom = blocktop + elementsize * scrollbarsize;
+			for (int b = 0; b < scrollbarsize; b++)
+			{
+				if (b == 0)
+				{
+					screen.DrawTexture(scroll_t, true, x, blocktop, DTA_Alpha, alpha, DTA_AlphaChannel, true, DTA_FillColor, clr, DTA_DestHeight, elementsize, DTA_DestWidth, elementsize);
+				}
+				else if (b == scrollbarsize - 1)
+				{
+					screen.DrawTexture(scroll_b, true, x, blocktop + b * elementsize, DTA_Alpha, alpha, DTA_AlphaChannel, true, DTA_FillColor, clr, DTA_DestHeight, elementsize, DTA_DestWidth, elementsize);
+				}
+				else if (scrollbarsize > 2)
+				{
+					screen.DrawTexture(scroll_m, true, x, blocktop + b * elementsize, DTA_Alpha, alpha, DTA_AlphaChannel, true, DTA_FillColor, clr, DTA_DestHeight, elementsize, DTA_DestWidth, elementsize);
 				}
 			}
 		}
-		
-		Super.Ticker();
+
+		screen.DrawTexture(up, true, x, y, DTA_Alpha, alpha, DTA_AlphaChannel, true, DTA_FillColor, scrollpos == 0 ? disabled : clr, DTA_DestHeight, elementsize, DTA_DestWidth, elementsize);
+		screen.DrawTexture(down, true, x, y + h - elementsize, DTA_Alpha, alpha, DTA_AlphaChannel, true, DTA_FillColor, scrollpos == maxscroll ? disabled : clr, DTA_DestHeight, elementsize, DTA_DestWidth, elementsize);
+	}
+
+	enum Clicks
+	{
+		NONE,
+		SCROLL_UP,
+		SCROLL_DOWN,
+		SCROLL_SLIDER,
+		SCROLL_PGUP,
+		SCROLL_PGDOWN,
+	};
+
+	int CheckClick(int mousex, int mousey)
+	{
+		if (mousex < x || mousex > x + elementsize) { return NONE; }
+		if (mousey < y && mousey > y + h) { return NONE; }
+
+		if (mousey <= y + elementsize) { return SCROLL_UP; }
+		if (mousey >= y + h - elementsize) { return SCROLL_DOWN; }
+		if (mousey >= blocktop && mousey <= blockbottom) { return SCROLL_SLIDER; }
+		if (mousey < blocktop) { return SCROLL_PGUP; }
+		if (mousey > blockbottom) { return SCROLL_PGDOWN; }
+
+		return NONE;
 	}
 }
