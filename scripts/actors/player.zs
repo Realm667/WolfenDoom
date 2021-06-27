@@ -1364,6 +1364,17 @@ class BoAPlayer : PlayerPawn
 			A_StartSound(PainSound, CHAN_VOICE, CHANF_NOSTOP, 1, ATTN_NORM);
 		}
 	}
+	
+	override void OnRespawn()
+	{
+		if (deathmatch || alwaysapplydmflags) //only do this in deathmatch (but could be useful in single player...)
+		{
+			//reset inventory for deathmatch
+			InventoryClearHandler invclearhandler = InventoryClearHandler(EventHandler.Find("InventoryClearHandler"));
+			invclearhandler.ResetPlayerInventory(self);
+		}
+		Super.OnRespawn();
+	}
 }
 
 // for bypassing DoSprinting from sprint.acs when dragging an object
