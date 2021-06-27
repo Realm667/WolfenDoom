@@ -115,6 +115,14 @@ class MessageBase : Thinker
 		// Add this type of message to the handler if it wasn't already aware of it
 		if (handler.types.Find(type) == handler.types.Size()) { handler.types.Push(type); }
 
+		// Log the message to the console, emulating built-in message printing
+		if (player && text.length())
+		{
+			player.SetLogText("\cL----------------------------------------");
+			player.SetLogText("$" .. text);
+			player.SetLogText("\cL----------------------------------------");
+		}
+
 		return msg;
 	}
 

@@ -1127,7 +1127,7 @@ class Log ui
 		{
 			int clr = 65;
 
-			switch (printlevel)
+			switch (printlevel & PRINT_TYPES)
 			{
 				case PRINT_LOW:
 					clr += msg0color;

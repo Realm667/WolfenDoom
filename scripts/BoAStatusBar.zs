@@ -143,12 +143,12 @@ class BoAStatusBar : BaseStatusBar
 			processed = true;
 		}
 
-		if (!processed && printlevel <= PRINT_TEAMCHAT)
+		if (!processed && printlevel & PRINT_TYPES <= PRINT_TEAMCHAT)
 		{
 			Font fnt = (CPlayer.mo is "KeenPlayer") ? ClassicFont : SmallFont;
 
-			if (printlevel <= PRINT_HIGH) { Log.Add(CPlayer, outline, "Notifications", printlevel & PRINT_TYPES, fnt); }
-			else { Log.Add(CPlayer, outline, "Chat", printlevel & PRINT_TYPES, fnt); }
+			if (printlevel <= PRINT_HIGH) { Log.Add(CPlayer, outline, "Notifications", printlevel, fnt); }
+			else { Log.Add(CPlayer, outline, "Chat", printlevel, fnt); }
 
 			processed = true; 
 		}
