@@ -478,22 +478,22 @@ class AchievementTracker : StaticEventHandler
 				{
 					int index = i * 15 + a;
 
-					if (index == STAT_PLAYTIME)
+					switch (index)
 					{
-						records[STAT_PLAYTIME].time = playtime[consoleplayer] = parse[a].ToInt();
-					}
-					else if (index == STAT_SAVES)
-					{
-						records[STAT_SAVES].time = saves[consoleplayer] = parse[a].ToInt();
-					}
-					else
-					{
-						Achievement ach = records[index];
-						if (ach)
-						{
-							ach.complete = !(parse[a] == String.Format("%c", 0x30 + a));
-							ach.time = parse[a].ToInt();
-						}
+						case STAT_PLAYTIME:
+							records[STAT_PLAYTIME].time = playtime[consoleplayer] = parse[a].ToInt();
+							break;
+						case STAT_SAVES:
+							records[STAT_SAVES].time = saves[consoleplayer] = parse[a].ToInt();
+							break;
+						default:
+							Achievement ach = records[index];
+							if (ach)
+							{
+								ach.complete = !(parse[a] == String.Format("%c", 0x30 + a));
+								ach.time = parse[a].ToInt();
+							}
+							break;
 					}
 				}
 			}
@@ -526,8 +526,12 @@ class AchievementTracker : StaticEventHandler
 			SaveEncoded(3); // Save the 4th CVar, which includes the time measure
 		}
 
-		let cheats = players[consoleplayer].cheats;
-		if (cheats & (CF_NOCLIP | CF_NOCLIP2 | CF_GODMODE | CF_GODMODE2 | CF_BUDDHA | CF_BUDDHA2)) { CheckAchievement(consoleplayer, ACH_NAUGHTY); }
+		CVar debug = CVar.GetCVar("boa_debugachievements");
+		if (!debug || !debug.GetInt())
+		{
+			let cheats = players[consoleplayer].cheats;
+			if (cheats & (CF_NOCLIP | CF_NOCLIP2 | CF_GODMODE | CF_GODMODE2 | CF_BUDDHA | CF_BUDDHA2)) { CheckAchievement(consoleplayer, ACH_NAUGHTY); }
+		}
 	}
 
 	override void WorldUnloaded(WorldEvent e)
@@ -537,7 +541,7 @@ class AchievementTracker : StaticEventHandler
 
 	override void WorldLoaded(WorldEvent e)
 	{
-		GetStatsFromPersistent();
+		if (e.IsSaveGame) { GetStatsFromPersistent(); } // Only restore from saved values if a save game was loaded
 
 		// Achievements only work on CxMy and TEST_x named maps
 		if ((level.mapname.Left(1) ~== "C" && level.mapname.Mid(2, 1) ~== "M") || (level.mapname.Left(5) ~== "TEST_")) { allowed = true; }
@@ -577,7 +581,7 @@ class AchievementTracker : StaticEventHandler
 		{
 			for (int a = 0; a < ACH_LASTACHIEVEMENT; a++)
 			{
-				String title = ZScriptTools.StripColorCodes(records[a].title);
+				String title = ZScriptTools.StripColorCodes(StringTable.Localize(records[a].title));
 				title.Replace(String.Format("%c", 0x0A), "\cC - ");
 
 				if (a < records.Size() && records[a].complete) { title = "\cJ" .. title .. " (" .. SystemTime.Format("%d %b %Y, %T", records[a].time) .. ")"; }
