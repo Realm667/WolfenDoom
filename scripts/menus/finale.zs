@@ -396,7 +396,7 @@ class Finale : BoAMenu
 
 		int chars;
 
-		int textx = (w / 2) - (swapsides ? (370 * textXOffsetScale) : 0) - 20;
+		int textx = int((w / 2) - (swapsides ? (370 * textXOffsetScale) : 0) - 20);
 		int texty = 100;
 		int lineoffset = 0;
 
