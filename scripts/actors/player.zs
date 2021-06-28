@@ -1251,18 +1251,10 @@ class BoAPlayer : PlayerPawn
 			AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
 			if (tracker)
 			{
-				if (mod == "None")
+				if (mod == "None" || mod == "Drowning")
 				{
 					String texture = TexMan.GetName(watersector.GetTexture(Sector.ceiling)); 
-					if (texture ~== "WATR_X98") { mod = "MutantPoison"; }
-					else if (
-						texture.Left(5) ~== "WATR_" || 
-						texture.Left(5) ~== "SLDG_" || 
-						texture.Left(6) ~== "HIACID" || 
-						texture.Left(6) ~== "HIWATR" || 
-						texture ~== "AZTC_WTR"
-					) { mod = "Drowning"; }
-					else if (texture.Left(5) ~== "LAVA_") { mod = "Lava"; }
+					mod = GetTextureMod(texture, mod);
 				}
 
 				if (mod == "Drowning") { tracker.liquiddeath[PlayerNumber()][0] = true; }
@@ -1272,8 +1264,40 @@ class BoAPlayer : PlayerPawn
 				AchievementTracker.CheckAchievement(PlayerNumber(), AchievementTracker.ACH_LIQUIDDEATH);
 			}
 		}
+		else
+		{
+			if (mod == "None")
+			{
+				AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
+				if (tracker)
+				{
+					mod = GetTextureMod(TexMan.GetName(floorpic), mod);
+
+					if (mod == "Drowning") { tracker.liquiddeath[PlayerNumber()][0] = true; }
+					else if (mod == "Lava") { tracker.liquiddeath[PlayerNumber()][1] = true; }
+					else if (mod == "MutantPoison") { tracker.liquiddeath[PlayerNumber()][2] = true; }
+
+					AchievementTracker.CheckAchievement(PlayerNumber(), AchievementTracker.ACH_LIQUIDDEATH);
+				}
+			}
+		}
 
 		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
+	}
+
+	Name GetTextureMod(String texture, Name default = "None")
+	{
+		if (texture ~== "WATR_X98") { return "MutantPoison"; }
+		else if (
+			texture.Left(5) ~== "WATR_" || 
+			texture.Left(5) ~== "SLDG_" || 
+			texture.Left(6) ~== "HIACID" || 
+			texture.Left(6) ~== "HIWATR" || 
+			texture ~== "AZTC_WTR"
+		) { return "Drowning"; }
+		else if (texture.Left(5) ~== "LAVA_") { return "Lava"; }
+
+		return default;
 	}
 
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
