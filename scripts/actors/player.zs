@@ -1259,7 +1259,7 @@ class BoAPlayer : PlayerPawn
 
 				if (mod == "Drowning") { tracker.liquiddeath[PlayerNumber()][0] = true; }
 				else if (mod == "Lava") { tracker.liquiddeath[PlayerNumber()][1] = true; }
-				else if (mod == "MutantPoison") { tracker.liquiddeath[PlayerNumber()][2] = true; }
+				else if (mod == "MutantPoisonAmbience") { tracker.liquiddeath[PlayerNumber()][2] = true; }
 
 				AchievementTracker.CheckAchievement(PlayerNumber(), AchievementTracker.ACH_LIQUIDDEATH);
 			}
@@ -1275,7 +1275,7 @@ class BoAPlayer : PlayerPawn
 
 					if (mod == "Drowning") { tracker.liquiddeath[PlayerNumber()][0] = true; }
 					else if (mod == "Lava") { tracker.liquiddeath[PlayerNumber()][1] = true; }
-					else if (mod == "MutantPoison") { tracker.liquiddeath[PlayerNumber()][2] = true; }
+					else if (mod == "MutantPoisonAmbience") { tracker.liquiddeath[PlayerNumber()][2] = true; }
 
 					AchievementTracker.CheckAchievement(PlayerNumber(), AchievementTracker.ACH_LIQUIDDEATH);
 				}
@@ -1287,7 +1287,7 @@ class BoAPlayer : PlayerPawn
 
 	Name GetTextureMod(String texture, Name default = "None")
 	{
-		if (texture ~== "WATR_X98") { return "MutantPoison"; }
+		if (texture ~== "WATR_X98") { return "MutantPoisonAmbience"; }
 		else if (
 			texture.Left(5) ~== "WATR_" || 
 			texture.Left(5) ~== "SLDG_" || 

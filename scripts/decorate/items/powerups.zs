@@ -27,6 +27,7 @@ class PowerScuba : PowerMaskProtection
 		DamageFactor "Drowning", 0;
 		DamageFactor "MutantPoisonAmbience", 0;
 		DamageFactor "UndeadPoisonAmbience", 0;
+		DamageFactor "IceWater", 0;
 	}
 
 	override void DoEffect()
