@@ -53,11 +53,11 @@ class AchievementSummary : BoAMenu
 
 		drawtop = int(Screen.GetHeight() * 0.125);
 		drawbottom = int(Screen.GetHeight() * 0.875);
-		drawright = int(Screen.GetWidth() / 2 + (Screen.GetHeight() * 4 / 3) / 2);
-		drawheightscaled = h * (drawbottom - drawtop) / Screen.GetHeight();
+		drawright = int(Screen.GetWidth() / 2 + (Screen.GetHeight() * 4.0 / 3) / 2);
+		drawheightscaled = int(h * double(drawbottom - drawtop) / Screen.GetHeight());
 
 		alpha = 1.0;
-		scale = max(0.01, Screen.GetHeight() / h);
+		scale = max(0.01, Screen.GetHeight() * 1.0 / h);
 		spacing = 10;
 		cellheight = 48;
 		cellwidth = w / 2 - 16;
@@ -77,7 +77,6 @@ class AchievementSummary : BoAMenu
 
 		tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
 
-		double scale = max(0.01, Screen.GetHeight() / h);
 		scroll = Scroll.Init(int(drawright - 12 * scale), drawtop, int(12 * scale), drawbottom - drawtop, maxscroll);
 	}
 
@@ -120,6 +119,9 @@ class AchievementSummary : BoAMenu
 
  		pos.y += drawtop - spacing / 2;
 
+		pos.x = int(pos.x);
+		pos.y = int(pos.y);
+
 		ach.pos = pos - (4, 4) * scale;
 		ach.fullsize = size;
 		ach.size = size + (8, 8) * scale;
@@ -129,7 +131,11 @@ class AchievementSummary : BoAMenu
 		ach.pos.y = max(ach.pos.y, drawtop);
 		ach.pos.y = min(ach.pos.y, drawbottom);
 
-		if (ach.size.y < cellheight && isselected) { selected = -1; }
+		if (ach.size.y < cellheight && isselected)
+		{
+			if (pos.y < Screen.GetHeight() / 2) { selected++; }
+			else { selected--; }
+		}
 		if (ach.pos.y + ach.size.y <= drawtop || ach.pos.y >= drawbottom) { return; }
 
 		double bottom = pos.y + size.y;
@@ -241,12 +247,12 @@ class AchievementSummary : BoAMenu
 				value = value .. "⬛";
 				break;
 			case AchievementTracker.ACH_TROPHYHUNTER:
-				if (tracker.records[AchievementTracker.ACH_KEENAWARD]) { value = "\cF"; }
-				value = value .. "🅺\cU";
-				if (tracker.records[AchievementTracker.ACH_CACOWARD]) { value = value .. "\cF"; }
+				if (tracker.records[AchievementTracker.ACH_CACOWARD].complete) { value = "\cF"; }
 				value = value .. "🅲\cU";
-				if (tracker.records[AchievementTracker.ACH_NAZIWARD]) { value = value .. "\cF"; }
-				value = value .. "🅽";
+				if (tracker.records[AchievementTracker.ACH_NAZIWARD].complete) { value = value .. "\cF"; }
+				value = value .. "🅽\cU";
+				if (tracker.records[AchievementTracker.ACH_KEENAWARD].complete) { value = value .. "\cF"; }
+				value = value .. "🅺";
 				break;
 			case AchievementTracker.ACH_ADDICTED:
 				int sec = tracker.playtime[consoleplayer];
@@ -255,14 +261,34 @@ class AchievementSummary : BoAMenu
 		}
 
 		String timevalue;
+		int charsize = captionfont.StringWidth(" ");
+		int valuewidth, timewidth;
+
 		if (ach.time && ach.time > 100)
 		{
 			timevalue = SystemTime.Format("%d %b %Y, %T", ach.time);
-			screen.DrawText(captionfont, Font.CR_GOLD, int(pos.x + size.x - captionfont.StringWidth(timevalue) * captionscale), int(pos.y), timevalue, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);
+			timewidth = timevalue.length() * charsize;
+			screen.DrawText(captionfont, Font.CR_GOLD, int(pos.x + size.x - timewidth * captionscale), int(pos.y), timevalue, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom, DTA_Monospace, 2, DTA_Spacing, charsize);
 		}
 		else
 		{
-			if (value.length()) { screen.DrawText(captionfont, Font.CR_DARKGRAY, int(pos.x + size.x - captionfont.StringWidth(value) * captionscale), int(pos.y), value, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom); }
+			if (value.length())
+			{
+				if (
+					index == AchievementTracker.ACH_LIQUIDDEATH ||
+					index == AchievementTracker.ACH_NEAT ||
+					index == AchievementTracker.ACH_TROPHYHUNTER
+				)
+				{
+					valuewidth = captionfont.StringWidth(value);
+					screen.DrawText(captionfont, Font.CR_DARKGRAY, int(pos.x + size.x - valuewidth * captionscale), int(pos.y), value, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);	
+				}
+				else
+				{
+					valuewidth = value.length() * charsize;
+					screen.DrawText(captionfont, Font.CR_DARKGRAY, int(pos.x + size.x - valuewidth * captionscale), int(pos.y), value, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom, DTA_Monospace, 2, DTA_Spacing, charsize);
+				}
+			}
 		}
 
 		// If this isn't the active selection, stop here
@@ -296,8 +322,24 @@ class AchievementSummary : BoAMenu
 
 		pos.y += spacing * scale;
 
-		if (value.length()) { screen.DrawText(captionfont, Font.CR_DARKGRAY, int(drawright - captionfont.StringWidth(value) * captionscale - spacing * 2 * scale), int(pos.y), value, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom); }
-		screen.DrawText(captionfont, Font.CR_GOLD, int(pos.x), int(pos.y), timevalue, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);
+		if (value.length())
+		{
+			if (
+				index == AchievementTracker.ACH_LIQUIDDEATH ||
+				index == AchievementTracker.ACH_NEAT ||
+				index == AchievementTracker.ACH_TROPHYHUNTER
+			)
+			{
+				valuewidth = captionfont.StringWidth(value);
+				screen.DrawText(captionfont, Font.CR_DARKGRAY, int(drawright - valuewidth * captionscale - spacing * 2 * scale), int(pos.y), value, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);
+			}
+			else
+			{
+				valuewidth = value.length() * charsize;
+				screen.DrawText(captionfont, Font.CR_DARKGRAY, int(drawright - valuewidth * captionscale - spacing * 2 * scale), int(pos.y), value, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom, DTA_Monospace, 2, DTA_Spacing, charsize);
+			}
+		}
+		screen.DrawText(captionfont, Font.CR_GOLD, int(pos.x), int(pos.y), timevalue, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom, DTA_Monospace, 2, DTA_Spacing, charsize);
 
 		// Cheat warning message
 		[text, lines] = BrokenString.BreakString(StringTable.Localize("ACHIEVEMENTINFO", false), textwidth, false, "L", textfont);
