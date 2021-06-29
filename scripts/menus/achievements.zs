@@ -329,19 +329,59 @@ class AchievementSummary : BoAMenu
 
 		if (value.length())
 		{
-			if (
-				index == AchievementTracker.ACH_LIQUIDDEATH ||
-				index == AchievementTracker.ACH_NEAT ||
-				index == AchievementTracker.ACH_TROPHYHUNTER
-			)
+			bool complete;
+			Vector2 drawpos = (drawright - spacing * scale, pos.y);
+			Vector2 size;
+
+			switch(index)
 			{
-				valuewidth = captionfont.StringWidth(value);
-				screen.DrawText(captionfont, Font.CR_DARKGRAY, int(drawright - valuewidth * captionscale - spacing * 2 * scale), int(pos.y), value, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);
-			}
-			else
-			{
-				valuewidth = value.length() * charsize;
-				screen.DrawText(captionfont, Font.CR_DARKGRAY, int(drawright - valuewidth * captionscale - spacing * 2 * scale), int(pos.y), value, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom, DTA_Monospace, 2, DTA_Spacing, charsize);
+				case AchievementTracker.ACH_TROPHYHUNTER:
+					TextureID caco = TexMan.CheckForTexture("CACWA0");
+					TextureID nazi = TexMan.CheckForTexture("NZWRA0");
+					TextureID keen = TexMan.CheckForTexture("CKWRA0");
+
+					drawpos.y += 64;
+
+					complete = tracker.records[AchievementTracker.STAT_AWARDS].value & 2;
+					size = TexMan.GetScaledSize(caco).Unit();
+					size *= (24 / size.x);
+					screen.DrawTexture(caco, true, drawpos.x - 36 * 3, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
+
+					complete = tracker.records[AchievementTracker.STAT_AWARDS].value & 4;
+					size = TexMan.GetScaledSize(nazi).Unit();
+					size *= (24 / size.x);
+					screen.DrawTexture(nazi, true, drawpos.x - 36 * 2, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
+
+					complete = tracker.records[AchievementTracker.STAT_AWARDS].value & 1;
+					size = TexMan.GetScaledSize(keen).Unit();
+					size *= (24 / size.x);
+					screen.DrawTexture(keen, true, drawpos.x - 36, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
+					break;
+				case AchievementTracker.ACH_NEAT:
+					TextureID cart51 = TexMan.CheckForTexture("SNSCA0");
+					TextureID cart52 = TexMan.CheckForTexture("SNSCC0");
+					TextureID cart53 = TexMan.CheckForTexture("SNSCE0");
+
+					size = TexMan.GetScaledSize(cart51);
+					drawpos.y += size.y;
+					
+					complete = tracker.records[AchievementTracker.STAT_CARTRIDGES].value & 1;
+					screen.DrawTexture(cart51, true,drawpos.x - 36 * 3, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
+
+					complete = tracker.records[AchievementTracker.STAT_CARTRIDGES].value & 2;
+					screen.DrawTexture(cart52, true, drawpos.x - 36 * 2, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
+
+					complete = tracker.records[AchievementTracker.STAT_CARTRIDGES].value & 4;
+					screen.DrawTexture(cart53, true, drawpos.x - 36, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
+					break;
+				case AchievementTracker.ACH_LIQUIDDEATH:
+					valuewidth = captionfont.StringWidth(value);
+					screen.DrawText(captionfont, Font.CR_DARKGRAY, int(drawright - valuewidth * captionscale - spacing * 2 * scale), int(pos.y), value, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);
+					break;
+				default:
+					valuewidth = value.length() * charsize;
+					screen.DrawText(captionfont, Font.CR_DARKGRAY, int(drawright - valuewidth * captionscale - spacing * 2 * scale), int(pos.y), value, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom, DTA_Monospace, 2, DTA_Spacing, charsize);
+					break;
 			}
 		}
 		screen.DrawText(captionfont, Font.CR_GOLD, int(pos.x), int(pos.y), timevalue, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom, DTA_Monospace, 2, DTA_Spacing, charsize);

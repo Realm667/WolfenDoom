@@ -390,11 +390,11 @@ class AchievementTracker : StaticEventHandler
 	{
 		ACH_GUNSLINGER = 0,	// Fire 1000 pistol shots (total across all levels)
 		ACH_PERFECTIONIST,	// Finish a map with 100% kills/treasure/secrets
-		ACH_SPEEDRUNNER,
-		ACH_TRICKSTER,
+		ACH_SPEEDRUNNER,	// Finish a map in under half the par time
+		ACH_TRICKSTER,		// Finish a map while leaving at least one key behind
 		ACH_IMPENETRABLE,	// Finish a map without taking damage
 		ACH_DISGRACE = 5,	// Finish off a boss enemy with kicks
-		ACH_PACIFIST,		// Finish a level without killing any enemies
+		ACH_PACIFIST,		// Finish a map without killing any enemies
 		ACH_CLEARSHOT,		// Use the Kar98k to snipe an enemy over 6000 units away
 		ACH_WATCHYOURSTEP,	// Kill 3 Nazis with a single placed mine
 		ACH_CHEVALIER,		// Kill a loper with only the primary fire of the Firebrand
