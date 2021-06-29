@@ -302,7 +302,6 @@ class Base : Actor
 	bool step;
 
 	FlagDef CANSQUISH:flags, 0;
-	FlagDef STOMP:flags, 1;
 
 	Property AlwaysDrawHealthBar:user_DrawHealthBar;
 	Property BossIcon:BossIcon;
@@ -1207,9 +1206,9 @@ class Base : Actor
 		{
 			if (other.player && pos.z == floorz)
 			{
-				if (bStomp)
+				if (bCanSquish)
 				{
-					if (other.player.ReadyWeapon && other.player.ReadyWeapon is "NaziWeapon")
+					if (other.player.ReadyWeapon && other.player.ReadyWeapon is "NaziWeapon" && boa_peststomp)
 					{
 						let kick = other.player.FindPSprite(-10);
 						if (!kick)
@@ -1218,9 +1217,9 @@ class Base : Actor
 							other.player.SetPsprite(-10, other.player.ReadyWeapon.FindState("KickOverlay"), true);
 						}
 					}
-				}
 
-				if (bCanSquish) { DamageMobj(other, other, health, "Squish", 0, other.angle); }
+					DamageMobj(other, other, health, "Squish", 0, other.angle);
+				}
 			}
 		}
 		else
