@@ -199,17 +199,18 @@ class AchievementSummary : BoAMenu
 				value = String.Format("%i/%i", tracker.totalgrenades[consoleplayer], 40);
 				break;
 			case AchievementTracker.ACH_SPAM:
-				value = String.Format("%i/%i", tracker.saves[consoleplayer], 100);
+				value = String.Format("%i/%i", tracker.records[AchievementTracker.STAT_SAVES].value, 100);
 				break;
 			case AchievementTracker.ACH_SPRINT:
 				value = String.Format("%i/%i", tracker.exhaustion[consoleplayer], 50);
 				break;
 			case AchievementTracker.ACH_LIQUIDDEATH:
-				if (tracker.liquiddeath[consoleplayer][0]) { value = "\cH"; }
+				int deathbits = tracker.records[AchievementTracker.STAT_LIQUIDDEATH].value;
+				if (deathbits & 1) { value = "\cH"; }
 				value = value .. "⬛\cU";
-				if (tracker.liquiddeath[consoleplayer][1]) { value = value .. "\cI"; }
+				if (deathbits & 2) { value = value .. "\cI"; }
 				value = value .. "⬛\cU";
-				if (tracker.liquiddeath[consoleplayer][2]) { value = value .. "\cT"; }
+				if (deathbits & 4) { value = value .. "\cT"; }
 				value = value .. "⬛";
 				break;
 			case AchievementTracker.ACH_ZOMBIES:
@@ -239,23 +240,27 @@ class AchievementSummary : BoAMenu
 				value = String.Format("%i/%i", tracker.coins[consoleplayer], 1000);
 				break;
 			case AchievementTracker.ACH_NEAT:
-				if (tracker.cartridges[consoleplayer][0]) { value = "\cG"; }
+				int neatbits = tracker.records[AchievementTracker.STAT_CARTRIDGES].value;
+
+				if (neatbits & 1) { value = "\cG"; }
 				value = value .. "⬛\cU";
-				if (tracker.cartridges[consoleplayer][1]) { value = value .. "\cD"; }
+				if (neatbits & 2) { value = value .. "\cD"; }
 				value = value .. "⬛\cU";
-				if (tracker.cartridges[consoleplayer][2]) { value = value .. "\cY"; }
+				if (neatbits & 4) { value = value .. "\cY"; }
 				value = value .. "⬛";
 				break;
 			case AchievementTracker.ACH_TROPHYHUNTER:
-				if (tracker.records[AchievementTracker.ACH_CACOWARD].complete) { value = "\cF"; }
+				int trophybits = tracker.records[AchievementTracker.STAT_AWARDS].value;
+
+				if (trophybits & 2) { value = "\cF"; }
 				value = value .. "🅲\cU";
-				if (tracker.records[AchievementTracker.ACH_NAZIWARD].complete) { value = value .. "\cF"; }
+				if (trophybits & 4) { value = value .. "\cF"; }
 				value = value .. "🅽\cU";
-				if (tracker.records[AchievementTracker.ACH_KEENAWARD].complete) { value = value .. "\cF"; }
+				if (trophybits & 1) { value = value .. "\cF"; }
 				value = value .. "🅺";
 				break;
 			case AchievementTracker.ACH_ADDICTED:
-				int sec = tracker.playtime[consoleplayer];
+				int sec = tracker.records[AchievementTracker.STAT_PLAYTIME].value;
 				value = String.Format("%02d:%02d:%02d", sec / 3600, (sec % 3600) / 60, sec % 60);
 				break;
 		}
@@ -264,9 +269,9 @@ class AchievementSummary : BoAMenu
 		int charsize = captionfont.StringWidth(" ");
 		int valuewidth, timewidth;
 
-		if (ach.time && ach.time > 100)
+		if (ach.value && ach.value > 1 << 16)
 		{
-			timevalue = SystemTime.Format("%d %b %Y, %T", ach.time);
+			timevalue = SystemTime.Format("%d %b %Y, %T", ach.value);
 			timewidth = timevalue.length() * charsize;
 			screen.DrawText(captionfont, Font.CR_GOLD, int(pos.x + size.x - timewidth * captionscale), int(pos.y), timevalue, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom, DTA_Monospace, 2, DTA_Spacing, charsize);
 		}

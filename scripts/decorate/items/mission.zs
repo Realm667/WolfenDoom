@@ -236,12 +236,10 @@ class Cartridge : CompassItem
 
 		if (ret && toucher && toucher.player)
 		{
-			AchievementTracker achievements = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
-			if (achievements)
-			{
-				achievements.cartridges[toucher.PlayerNumber()][number] = true;
-				AchievementTracker.CheckAchievement(toucher.PlayerNumber(), AchievementTracker.ACH_NEAT);
-			}
+			AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
+			if (tracker) { tracker.SetBit(tracker.records[tracker.STAT_CARTRIDGES].value, number); }
+			
+			AchievementTracker.CheckAchievement(toucher.PlayerNumber(), AchievementTracker.ACH_NEAT);
 		}
 
 		return ret;

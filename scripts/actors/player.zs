@@ -1246,40 +1246,21 @@ class BoAPlayer : PlayerPawn
 		bool underwater;
 		Sector watersector;
 		[waterlevel, underwater, watersector] = Buoyancy.GetWaterHeight(self);
-		if (underwater)
+		if (underwater && (mod == "None" || mod == "Drowning"))
 		{
-			AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
-			if (tracker)
-			{
-				if (mod == "None" || mod == "Drowning")
-				{
-					String texture = TexMan.GetName(watersector.GetTexture(Sector.ceiling)); 
-					mod = GetTextureMod(texture, mod);
-				}
-
-				if (mod == "Drowning") { tracker.liquiddeath[PlayerNumber()][0] = true; }
-				else if (mod == "Lava") { tracker.liquiddeath[PlayerNumber()][1] = true; }
-				else if (mod == "MutantPoisonAmbience") { tracker.liquiddeath[PlayerNumber()][2] = true; }
-
-				AchievementTracker.CheckAchievement(PlayerNumber(), AchievementTracker.ACH_LIQUIDDEATH);
-			}
+			String texture = TexMan.GetName(watersector.GetTexture(Sector.ceiling)); 
+			mod = GetTextureMod(texture, mod);
 		}
-		else
+		else if (mod == "None") { mod = GetTextureMod(TexMan.GetName(floorpic), mod); }
+
+		AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
+		if (tracker)
 		{
-			if (mod == "None")
-			{
-				AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
-				if (tracker)
-				{
-					mod = GetTextureMod(TexMan.GetName(floorpic), mod);
+			if (mod == "Drowning") { tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value, 0); }
+			else if (mod == "Lava") { tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value, 1); }
+			else if (mod == "MutantPoisonAmbience") { tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value, 2); }
 
-					if (mod == "Drowning") { tracker.liquiddeath[PlayerNumber()][0] = true; }
-					else if (mod == "Lava") { tracker.liquiddeath[PlayerNumber()][1] = true; }
-					else if (mod == "MutantPoisonAmbience") { tracker.liquiddeath[PlayerNumber()][2] = true; }
-
-					AchievementTracker.CheckAchievement(PlayerNumber(), AchievementTracker.ACH_LIQUIDDEATH);
-				}
-			}
+			AchievementTracker.CheckAchievement(PlayerNumber(), AchievementTracker.ACH_LIQUIDDEATH);
 		}
 
 		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
