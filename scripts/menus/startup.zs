@@ -86,7 +86,7 @@ class Disclaimer : NoticeMenu
 	double x, y;
 	double alpha, bgalpha;
 	String text;
-	BrokenLines lines;
+	BrokenString lines;
 
 	override void Init(Menu parent)
 	{
@@ -97,7 +97,7 @@ class Disclaimer : NoticeMenu
 
 		maxwidth = 500;
 		lineheight = BigFont.GetHeight();
-		lines = BigFont.BreakLines(text, maxwidth);
+		[text, lines] = BrokenString.BreakString(text, maxwidth, false, "L", BigFont);
 
 		alpha = 0.0;
 		bgalpha = 1.0;
@@ -146,7 +146,7 @@ class Disclaimer : NoticeMenu
 		PrintFullJustified(lines, maxwidth);
 	}
 
-	void PrintFullJustified(BrokenLines lines, double width)
+	void PrintFullJustified(BrokenString lines, double width)
 	{
 		double spacing = 0;
 
@@ -179,21 +179,21 @@ class Disclaimer : NoticeMenu
 			if (spacing != 0)
 			{
 				String temp = "";
-				int cur = 0;
+				int c = -1;
+				int i = 0;
 				double textx = 0;
-				while (cur <= line.length())
+				while (c != 0)
 				{
-					String curchar = line.Mid(cur, 1);
-					int charbyte = curchar.ByteAt(0);
+					[c, i] = line.GetNextCodePoint(i);
 
 					if ( // Whitespace
-						ZScriptTools.IsWhiteSpace(charbyte) ||
-						charbyte == 0x0
+						ZScriptTools.IsWhiteSpace(c) ||
+						c == 0x0
 					)
 					{
 						screen.DrawText(BigFont, Font.FindFontColor("Light Gray"), x + textx, y + lineheight * t, temp, DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, alpha);
 
-						if (charbyte == 0x9) // Tab alignment
+						if (c == 0x9) // Tab alignment
 						{
 							double tabwidth = w / 10;
 							int tabs = int(textx / tabwidth) + 1;
@@ -201,17 +201,15 @@ class Disclaimer : NoticeMenu
 						}
 						else // Normal printing
 						{
-							textx += BigFont.StringWidth(temp .. curchar) + spacing;
+							textx += BigFont.StringWidth(String.Format("%s%c", temp, c)) + spacing;
 						}
 
 						temp = "";
 					}
 					else
 					{
-						temp = temp .. curchar;
+						temp.AppendCharacter(c);
 					}
-
-					cur++;
 				}
 			}
 			else

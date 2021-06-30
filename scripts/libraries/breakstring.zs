@@ -77,10 +77,7 @@ class BrokenString : Object
 		if (flow) // Flow the text to fill most of the lines that it would take up at the the passed-in maxwidth value
 		{
 			double w = fnt.StringWidth(input);
-			double linecount = w / maxwidth;
-
-			if (linecount > int(linecount)) { linecount++; }
-			linecount = int(linecount);
+			int linecount = int(ceil(w / maxwidth));
 
 			maxwidth = int(min(fnt.StringWidth(input) * 1.25 / linecount, maxwidth));
 		}
@@ -124,9 +121,9 @@ class BrokenString : Object
 				continue;
 			}
 
-			if (fnt.StringWidth(line) + fnt.StringWidth(word) > maxwidth || c == 0x0A || c == 0)
+			if (fnt.StringWidth(ZScriptTools.StripColorCodes(line)) + fnt.StringWidth(ZScriptTools.StripColorCodes(word)) > maxwidth || c == 0x0A || c == 0)
 			{
-				if ((c == 0x0A || c == 0) && fnt.StringWidth(line) + fnt.StringWidth(word) < maxwidth)
+				if ((c == 0x0A || c == 0) && fnt.StringWidth(ZScriptTools.StripColorCodes(line)) + fnt.StringWidth(ZScriptTools.StripColorCodes(word)) < maxwidth)
 				{
 					line = line .. word;
 					wordindex = i;
