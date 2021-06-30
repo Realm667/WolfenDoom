@@ -219,7 +219,7 @@ class Message : MessageBase
 			return msg.GetTime();
 		}
 
-		return 0
+		return 0;
 	}
 
 	override void Start()
