@@ -433,8 +433,8 @@ class TankCannonWeapon : NaziWeapon // Weapon used when morphed into a tank.
 		else if (owner && owner.player && !(owner.player.cmd.buttons & BT_ATTACK)) { owner.player.refire = 0; }
 	}
 
-	//to modders: you can add your own customizable action functions for attacks
-	action void DoCannon(string sound, class<Actor> missiletype)
+	//to modders: you can use this or add your own custom action functions for attacks
+	action void DoCannon(string sound = "tanks/75mmm3", class<Actor> missiletype = "TankMissile", int reloadtime = 130, class<Actor> flashtype = "NebNukeHarmless")
 	{
 		if (invoker.cannontimeout)  { return; }
 
@@ -445,7 +445,7 @@ class TankCannonWeapon : NaziWeapon // Weapon used when morphed into a tank.
 		double pitchdelta = deltaangle(pitch, origin.pitch);
 
 		A_GunFlash();
-		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
+		Actor muzzleflash = Spawn(flashtype, origin.Pos, ALLOW_REPLACE);
 		A_StartSound(sound, CHAN_WEAPON);
 		Actor mo = A_FireProjectile(missiletype, angledelta, False, 0, 0, FPF_NOAUTOAIM, pitchdelta);
 		if (mo && origin != self)
@@ -459,7 +459,7 @@ class TankCannonWeapon : NaziWeapon // Weapon used when morphed into a tank.
 			mo.SetOrigin(origin.pos, false); // Move the missile so that it flies from the model's gun
 		}
 
-		invoker.prevtimeout = random(120, 140);
+		invoker.prevtimeout = random(int(reloadtime * 0.9), int(reloadtime * 1.1));
 		invoker.cannontimeout = invoker.prevtimeout;
 	}
 
@@ -499,7 +499,7 @@ class Cannon75mm: TankCannonWeapon
 	States
 	{
 		Fire:
-			TNT1 A 2 DoCannon("tanks/75mmm3", "TankMissile");
+			TNT1 A 2 { DoCannon("tanks/75mmm3"); A_Quake(4, 11, 0, 384); }
 			TNT1 A 0 A_TankRefire();
 			Goto Ready;
 		AltFire:
@@ -514,42 +514,12 @@ class Cannon75mmKwK: TankCannonWeapon // Pz. Kpfw. IV
 	States
 	{
 		Fire:
-			TNT1 A 2 DoCannon("tanks/75mmkwk40", "TankMissile");
+			TNT1 A 2 { DoCannon("tanks/75mmkwk40"); A_Quake(4, 11, 0, 256); }
 			TNT1 A 0 A_TankRefire();
 			Goto Ready;
 		AltFire:
 			TNT1 A 3 DoMachineGun("chaingun/fire", "ChaingunTracer");
 			TNT1 A 20 A_TankRefire();
-			Goto Ready;
-	}
-}
-
-class Cannon88mm: TankCannonWeapon // Pz. Kpfw. VI E
-{
-	States
-	{
-		Fire:
-			TNT1 A 2 DoCannon("tanks/88mmkwk36", "TankMissile");
-			TNT1 A 0 A_TankRefire();
-			Goto Ready;
-		AltFire:
-			TNT1 A 3 DoMachineGun("chaingun/fire", "ChaingunTracer");
-			TNT1 A 20 A_TankRefire();
-			Goto Ready;
-	}
-}
-
-class CannonMG34: TankCannonWeapon // Sd. Kfz. 223
-{
-	States
-	{
-		Fire:
-			TNT1 A 1;
-			TNT1 A 1;
-			Goto Ready;
-		AltFire:
-			TNT1 A 3 DoMachineGun("chaingun/fire", "ChaingunTracer");
-			TNT1 A 10 A_TankRefire();
 			Goto Ready;
 	}
 }
@@ -636,16 +606,7 @@ class TankMissile : TankRocket
 			Wait;
 	}
 }
-/*
-class TankMissilePlayer: TankMissile
-{
-	Default
-	{
-		-NOGRAVITY
-		Gravity 0.33;
-	}
-}
-*/
+
 class TurretSwivel : ActorPositionable
 {
 	Default

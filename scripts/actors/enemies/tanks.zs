@@ -1434,6 +1434,7 @@ class FriendlySherman : TankBase
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/75mmm3", CHAN_WEAPON);
+		A_Quake(4, 11, 0, 384);
 		//Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 		Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 32, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:-32);
 
@@ -1556,6 +1557,7 @@ class SSTank1 : TankBase
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/75mmkwk40", CHAN_WEAPON);
+		A_Quake(4, 11, 0, 384);
 		//Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 		Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 32, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:-32);
 
@@ -1688,7 +1690,7 @@ class SSTank2 : TankBase
 
 		origin.A_Face(target, 0, 0, flags:FAF_MIDDLE);
 		origin.angle = turret.angle;
-
+		A_Quake(2, 7, 0, 256);
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		//no sound; it is a rocket
 		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
@@ -1789,6 +1791,7 @@ class SSTank3 : TankBase
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/88mmkwk36", CHAN_WEAPON);
+		A_Quake(7, 15, 0, 512);
 		//Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 		Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 32, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:-32);
 
@@ -1976,6 +1979,7 @@ class T34Tank : TankBase
 
 		Actor muzzleflash = Spawn("NebNukeHarmless", origin.Pos, ALLOW_REPLACE);
 		A_StartSound("tanks/85mmziss53", CHAN_WEAPON);
+		A_Quake(6, 13, 0, 512);
 		//Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle, CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, origin.pitch);
 		Actor mo = Base(origin).A_ArcProjectile(TurretProjectile, 32, 0, origin.angle, CMF_ABSOLUTEANGLE, additionalHeight:-32);
 		if (mo)
