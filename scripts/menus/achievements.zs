@@ -155,12 +155,14 @@ class AchievementSummary : BoAMenu
 		String shorttitle = lines.StringAt(0);
 		if (lines.Count() > 0)
 		{
-			shorttitle = shorttitle .. "...";
-
-			if (titlefont.StringWidth(shorttitle) > titlewidth)
+			int last = 0x20;
+			while (titlefont.StringWidth(shorttitle) > titlewidth - titlefont.StringWidth("...") || last != 0x20)
 			{
-				shorttitle = shorttitle.Left(shorttitle.RightIndexOf(" ") - 1) .. "...";
+				shorttitle.DeleteLastCharacter();
+				last = shorttitle.GetNextCodePoint(shorttitle.CodePointCount() - 1);
 			}
+
+			shorttitle = shorttitle .. "...";
 		}
 		screen.DrawText(titlefont, ach.complete ? Font.CR_GOLD : Font.CR_DARKGRAY, int(pos.x + (spacing * 2 + iconwidth) * scale), int(pos.y + (size.y - titlefont.GetHeight() * titlescale) / 2), ZScriptTools.StripColorCodes(shorttitle), DTA_Alpha, alpha, DTA_ScaleX, titlescale, DTA_ScaleY, titlescale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);
 
