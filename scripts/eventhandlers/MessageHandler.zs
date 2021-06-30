@@ -198,9 +198,12 @@ class Message : MessageBase
 		if (msg)
 		{
 			msg.icon = icon;
+			MessageLogHandler.Add(String.Format("|%s", msg.text));
+
+			return msg.GetTime();
 		}
-		MessageLogHandler.Add(String.Format("|%s", msg.text));
-		return msg.GetTime();
+
+		return 0;
 	}
 
 	// For player followers, briefings, and undercover allied spies
@@ -211,9 +214,12 @@ class Message : MessageBase
 		{
 			msg.charname = charname;
 			msg.icon = icon;
+			MessageLogHandler.Add(String.Format("%s|%s", msg.charname, msg.text));
+
+			return msg.GetTime();
 		}
-		MessageLogHandler.Add(String.Format("%s|%s", msg.charname, msg.text));
-		return msg.GetTime();
+
+		return 0
 	}
 
 	override void Start()
@@ -345,9 +351,12 @@ class BriefingMessage : Message
 			msg.icon = icon;
 			msg.time = 2147483647;
 			msg.typespeed = 2.0;
+			MessageLogHandler.Add(String.Format("|%s", msg.text));
+		
+			return msg.GetTime();
 		}
-		MessageLogHandler.Add(String.Format("|%s", msg.text));
-		return msg.GetTime();
+
+		return 0;
 	}
 
 	// For player followers, briefings, and undercover allied spies
@@ -360,9 +369,12 @@ class BriefingMessage : Message
 			msg.icon = icon;
 			msg.time = 2147483647;
 			msg.typespeed = 2.0;
+			MessageLogHandler.Add(String.Format("%s|%s", msg.charname, msg.text));
+
+			return msg.GetTime();
 		}
-		MessageLogHandler.Add(String.Format("%s|%s", msg.charname, msg.text));
-		return msg.GetTime();
+
+		return 0;
 	}
 
 	static BriefingMessage Get()
@@ -423,9 +435,12 @@ class FadeIconMessage : Message
 		{
 			msg.icon = icon;
 			msg.icon2 = icon2;
+			MessageLogHandler.Add(String.Format("|%s", msg.text));
+		
+			return msg.GetTime();
 		}
-		MessageLogHandler.Add(String.Format("|%s", msg.text));
-		return msg.GetTime();
+
+		return 0;
 	}
 
 	override double DrawMessage()
@@ -483,8 +498,14 @@ class HintMessage : MessageBase
 	static int Init(Actor mo, String text, String key)
 	{
 		HintMessage msg = HintMessage(MessageBase.Init(mo, text, text, 20, 20, "HintMessage"));
-		if (msg) { msg.key = key; }
-		return msg.GetTime();
+		if (msg)
+		{
+			msg.key = key;
+
+			return msg.GetTime();
+		}
+
+		return 0;
 	}
 
 	override void Start()
@@ -592,20 +613,25 @@ class ObjectiveMessage : MessageBase
 	static int Init(Actor mo, String text, String image = "", String snd = "", int time = 0, int objflags = 0, double posx = 400, double posy = 135, Vector2 destsize = (800, 600))
 	{
 		ObjectiveMessage msg = ObjectiveMessage(MessageBase.Init(mo, text, text, 18, 18, "ObjectiveMessage", 0, MSG_ALLOWREPLACE));
-		msg.image = image;
-		msg.snd = snd;
-		msg.posx = posx;
-		msg.posy = posy;
-		msg.destsize = destsize;
+		if (msg)
+		{
+			msg.image = image;
+			msg.snd = snd;
+			msg.posx = posx;
+			msg.posy = posy;
+			msg.destsize = destsize;
 
-		if (objflags & OBJ_HIDETEXT) { msg.text = ""; }
+			if (objflags & OBJ_HIDETEXT) { msg.text = ""; }
 
-		if (time > 0) { msg.time = time; }
-		else if (time < 0) { msg.time = 0x7FFFFFFF; }
+			if (time > 0) { msg.time = time; }
+			else if (time < 0) { msg.time = 0x7FFFFFFF; }
 
-		msg.objflags = objflags;
+			msg.objflags = objflags;
 
-		return msg.GetTime();
+			return msg.GetTime();
+		}
+
+		return 0;
 	}
 
 	override void Start()
@@ -653,11 +679,15 @@ class DevCommentary : MessageBase
 
 		if (input.Size()) { text = input[0]; }
 		DevCommentary msg = DevCommentary(MessageBase.Init(mo, text, text, intime, outtime, "DevCommentary", 1));
+		if (msg)
+		{
+			if (msg && input.Size() > 1) { msg.image = input[1]; }
+			MessageLogHandler.Add(String.Format("MESSAGELOGTYPE_DEVCOM|%s", text), msg.image);
 
-		if (msg && input.Size() > 1) { msg.image = input[1]; }
-		MessageLogHandler.Add(String.Format("MESSAGELOGTYPE_DEVCOM|%s", text), msg.image);
+			return msg.GetTime();
+		}
 
-		return msg.GetTime();
+		return 0;
 	}
 
 	override int GetTime()
@@ -756,9 +786,11 @@ class CountdownMessage : MessageBase
 		{
 			msg.time = holdtime + intime + outtime;
 			msg.bkg = bkg;
+
+			return msg.GetTime();
 		}
 
-		return msg.GetTime();
+		return 0;
 	}
 
 	override double DrawMessage()
@@ -795,15 +827,20 @@ class AchievementMessage : MessageBase
 	static int Init(Actor mo, String text, String image = "", String snd = "", String bkg = "BG_", Color clr = 0x000000, String fontname = "", String fontcolor = "C")
 	{
 		AchievementMessage msg = AchievementMessage(MessageBase.Init(mo, text, text, 18, 18, "AchievementMessage", 5, MSG_ALLOWMULTIPLE | MSG_PERSIST));
-		msg.image = image;
-		msg.snd = snd;
-		msg.delay = 2;
-		msg.bkg = bkg;
-		msg.clr = clr;
-		msg.fontname = !fontname.length() ? "SmallFont" : fontname;
-		msg.fontcolor = fontcolor;
+		if (msg)
+		{
+			msg.image = image;
+			msg.snd = snd;
+			msg.delay = 2;
+			msg.bkg = bkg;
+			msg.clr = clr;
+			msg.fontname = !fontname.length() ? "SmallFont" : fontname;
+			msg.fontcolor = fontcolor;
 
-		return msg.GetTime();
+			return msg.GetTime();
+		}
+
+		return 0;
 	}
 
 	override void Start()
