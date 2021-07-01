@@ -27,7 +27,7 @@ class BrokenString : Object
 	Array<String> lines;
 	private Font fnt;
 
-	int Count() { return lines.Size() - 1; }
+	int Count() { return lines.Size(); }
 
 	int StringWidth(int line)
 	{

@@ -102,7 +102,7 @@ class Disclaimer : NoticeMenu
 		alpha = 0.0;
 		bgalpha = 1.0;
 		x = w  / 2 - maxwidth / 2;
-		y = h / 2 - lineheight * lines.Count() / 2;
+		y = h / 2 - lineheight * (lines.Count() - 1) / 2;
 
 		delay = 35;
 
@@ -150,7 +150,7 @@ class Disclaimer : NoticeMenu
 	{
 		double spacing = 0;
 
-		for (int t = 0; t <= lines.Count(); t++)
+		for (int t = 0; t < lines.Count(); t++)
 		{
 			String line = lines.StringAt(t);
 			double textwidth = lines.StringWidth(t);

@@ -147,13 +147,13 @@ class MessageLogMenu : GenericMenu
 			firstLineNumber += 3; // So that images are drawn - the drawer
 			// checks the text line, not the separator line.
 		}
-		for (int i = 0; i <= breakInfo.Count(); i++)
+		for (int i = 0; i < breakInfo.Count(); i++)
 		{
 			addLine(breakInfo.StringAt(i), imageWidth ? imageWidth + 6 : 0);
 		}
-		if ((breakInfo.Count() + 1) < imageLines)
+		if (breakInfo.Count() < imageLines)
 		{
-			for (int i = (breakInfo.Count() + 1); i <= imageLines; i++)
+			for (int i = breakInfo.Count(); i <= imageLines; i++)
 			{
 				addLine(""); // Blank lines don't need to have offsets
 			}

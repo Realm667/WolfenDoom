@@ -289,7 +289,7 @@ class Message : MessageBase
 
 			if (headtex) { size = TexMan.GetScaledSize(headtex) * 1.25; }
 
-			double boxheight = lines.Count() * lineheight + margin * 2;
+			double boxheight = (lines.Count() - 1) * lineheight + margin * 2;
 			boxheight = max(boxheight, size.y + margin);
 			boxheight += margin;
 
@@ -529,7 +529,7 @@ class HintMessage : MessageBase
 
 		double textw = 0;
 		double texth = 0;
-		for (int lw = 0; lw <= lines.Count(); lw++)
+		for (int lw = 0; lw < lines.Count(); lw++)
 		{
 			int width = lines.StringWidth(lw);
 			if (width > textw) { textw = width; }
@@ -564,7 +564,7 @@ class HintMessage : MessageBase
 
 			protrusion = -(1.0 - posy * hudscale.y / Screen.GetHeight());
 
-			for (int l = 0; l <= lines.Count(); l++)
+			for (int l = 0; l < lines.Count(); l++)
 			{
 				DrawToHUD.DrawText(lines.StringAt(l), (posx, posy), SmallFont, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
 				posy += lineheight;
@@ -586,7 +586,7 @@ class HintMessage : MessageBase
 
 			protrusion = -(1.0 - posy / destsize.y);
 
-			for (int l = 0; l <= lines.Count(); l++)
+			for (int l = 0; l < lines.Count(); l++)
 			{
 				screen.DrawText(SmallFont, Font.CR_GRAY, posx - lines.StringWidth(l) / 2, posy, lines.StringAt(l), DTA_VirtualWidth, int(destsize.x), DTA_VirtualHeight, int(destsize.y), DTA_Alpha, alpha);
 				posy += lineheight;
@@ -724,10 +724,10 @@ class DevCommentary : MessageBase
 		String title = lines.StringAt(0);
 		brokentext = "";
 
-		for (int b = 2; b <= lines.Count(); b++)
+		for (int b = 2; b < lines.Count(); b++)
 		{
 			brokentext = brokentext .. lines.StringAt(b);
-			if (b < lines.Count()) { brokentext = brokentext .. "\n"; }
+			if (b < lines.Count() - 1) { brokentext = brokentext .. "\n"; }
 		}
 
 		Vector2 hudscale = StatusBar.GetHUDScale();
@@ -745,7 +745,7 @@ class DevCommentary : MessageBase
 		}
 		else { y = int(StatusBar.GetTopOfStatusBar() - 32 - handler.bottomoffset * destsize.y); }
 
-		double boxheight = lines.Count() * lineheight + margin;
+		double boxheight = (lines.Count() - 1) * lineheight + margin;
 		boxheight = max(boxheight, size.y + margin * 2);
 		boxheight += margin;
 
@@ -871,13 +871,13 @@ class AchievementMessage : MessageBase
 		int x = int(Screen.GetWidth() / hudscale.x / 2 - boxwidth / 2); // Position scaled relative to screen center
 		int y = int(16 + margin + handler.topoffset * Screen.GetHeight() / hudscale.y);
 
-		double boxheight = max(imgsize, lines.Count() * lineheight) + margin * 2;
+		double boxheight = max(imgsize, (lines.Count() - 1) * lineheight) + margin * 2;
 
 		DrawToHUD.DrawFrame(bkg, x - margin, y - margin, boxwidth + margin * 2, boxheight + margin * 2, clr, alpha, alpha);
 
 		if (tex.IsValid()) { DrawToHUD.DrawTexture(tex, (x + margin + imgsize / 2, y + margin + imgsize / 2), alpha, 1.0); }
 
-		for (int l = 0; l <= lines.Count(); l++)
+		for (int l = 0; l < lines.Count(); l++)
 		{
 			DrawToHUD.DrawText(lines.StringAt(l), (x + imgsize + margin * 3, y), fnt, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
 			y += lineheight;

@@ -289,7 +289,7 @@ class Finale : BoAMenu
 		maxlines = int(textheight / lineheight);
 
 		int count = lines.Count();
-		for (int c = count; c > 0; c--)
+		for (int c = count - 1; c >= 0; c--)
 		{
 			if (lines.StringWidth(c) <= 0) { count--; } // Don't count empty lines at the end
 			else { break; }
@@ -400,7 +400,7 @@ class Finale : BoAMenu
 		int texty = 100;
 		int lineoffset = 0;
 
-		for (int l = start; l < min(start + lineoffset + maxlines, lines.Count() + 1) || chars > texttic; l++)
+		for (int l = start; l < min(start + lineoffset + maxlines, lines.Count()) || chars > texttic; l++)
 		{
 			int len = min(int(texttic) - chars, lines.StringAt(l).CodePointCount());
 

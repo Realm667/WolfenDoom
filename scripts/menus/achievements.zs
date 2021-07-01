@@ -153,7 +153,7 @@ class AchievementSummary : BoAMenu
 		[title, lines] = BrokenString.BreakString(title, titlewidth, false, "L", titlefont);
 
 		String shorttitle = lines.StringAt(0);
-		if (lines.Count() > 0)
+		if (lines.Count() > 1)
 		{
 			int last = 0x20;
 			while (titlefont.StringWidth(shorttitle) > titlewidth - titlefont.StringWidth("...") || last != 0x20)
@@ -309,7 +309,7 @@ class AchievementSummary : BoAMenu
 		[title, lines] = BrokenString.BreakString(title, int((drawright - Screen.GetWidth() / 2 - spacing * 2 * scale) / textscale), false, "L", textfont);
 		lineheight = int(titlefont.GetHeight() * textscale);
 
-		for (int l = 0; l <= lines.Count(); l++)
+		for (int l = 0; l < lines.Count(); l++)
 		{
 			screen.DrawText(titlefont, Font.CR_GOLD, int(pos.x), int(pos.y), ZScriptTools.StripColorCodes(lines.StringAt(l)), DTA_Alpha, alpha, DTA_ScaleX, titlescale, DTA_ScaleY, titlescale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);
 			pos.y += lineheight;
@@ -321,7 +321,7 @@ class AchievementSummary : BoAMenu
 		[text, lines] = BrokenString.BreakString(text, textwidth, false, "L", textfont);
 		lineheight = int(textfont.GetHeight() * textscale);
 
-		for (int l = 0; l <= lines.Count(); l++)
+		for (int l = 0; l < lines.Count(); l++)
 		{
 			screen.DrawText(textfont, Font.CR_GRAY, int(pos.x), int(pos.y), ZScriptTools.StripColorCodes(lines.StringAt(l)), DTA_Alpha, alpha, DTA_ScaleX, textscale, DTA_ScaleY, textscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);
 			pos.y += lineheight;
@@ -391,9 +391,9 @@ class AchievementSummary : BoAMenu
 		// Cheat warning message
 		[text, lines] = BrokenString.BreakString(StringTable.Localize("ACHIEVEMENTINFO", false), textwidth, false, "L", textfont);
 
-		pos.y = drawbottom - (lines.Count() + 2) * lineheight;
+		pos.y = drawbottom - (lines.Count() + 1) * lineheight;
 
-		for (int l = 0; l <= lines.Count(); l++)
+		for (int l = 0; l < lines.Count(); l++)
 		{
 			screen.DrawText(textfont, Font.CR_GRAY, int(pos.x + textwidth * scale / 2 - lines.StringWidth(l) * scale / 2), int(pos.y), lines.StringAt(l), DTA_Alpha, alpha, DTA_ScaleX, textscale, DTA_ScaleY, textscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);
 			pos.y += lineheight;

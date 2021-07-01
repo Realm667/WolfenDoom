@@ -555,7 +555,7 @@ class ViewItem : BoAMenu
 			maxlines = int((maxy - texty) / textlineheight);
 
 			int count = textlines.Count();
-			for (int c = count; c > 0; c--)
+			for (int c = count - 1; c >= 0; c--)
 			{
 				if (textlines.StringWidth(c) <= 0) { count--; } // Don't count empty lines at the end
 				else { break; }

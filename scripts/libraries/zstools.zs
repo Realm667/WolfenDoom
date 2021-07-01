@@ -436,7 +436,7 @@ class ZScriptTools
 
 		double textw = 0;
 		double texth = 0;
-		for (int lw = 0; lw <= lines.Count(); lw++)
+		for (int lw = 0; lw < lines.Count(); lw++)
 		{
 			int width = lines.StringWidth(lw);
 			if (width > textw) { textw = width; }
@@ -450,7 +450,7 @@ class ZScriptTools
 		if (flags & STR_BOTTOM) { textpos.y -= texth; }
 		else if (flags & STR_MIDDLE) { textpos.y -= texth / 2; }
 
-		for (int l = 0; l <= lines.Count() || chars > texttic; l++)
+		for (int l = 0; l < lines.Count() || chars > texttic; l++)
 		{
 			int len = min(texttic - chars, lines.StringAt(l).CodePointCount());
 

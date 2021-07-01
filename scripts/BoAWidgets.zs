@@ -1163,14 +1163,14 @@ class Log ui
 				if (w.addtype == APPENDLINE) { w.addtype = NEWLINE; }
 			}
 
-			if (lines.Count() < 0) { return w.visible; }
+			if (lines.Count() == 0) { return w.visible; }
 
-			for (int l = 0; l <= lines.Count(); l++)
+			for (int l = 0; l < lines.Count(); l++)
 			{
 				String line = lines.StringAt(l);
 				String temp = ZScriptTools.StripColorCodes(line);
 
-				if (l == lines.Count() && !temp.length()) { continue; }
+				if (l == lines.Count() - 1 && !temp.length()) { continue; }
 
 				Log m;
 				
