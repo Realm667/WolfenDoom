@@ -150,7 +150,7 @@ class Disclaimer : NoticeMenu
 	{
 		double spacing = 0;
 
-		for (int t = 0; t < lines.Count(); t++)
+		for (int t = 0; t <= lines.Count(); t++)
 		{
 			String line = lines.StringAt(t);
 			double textwidth = lines.StringWidth(t);
