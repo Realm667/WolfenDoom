@@ -696,8 +696,8 @@ class DialogueTextBox : DialogueComponent
 		caption = Stringtable.Localize(caption);
 
 		if (w <= 0) { w = dialogue.targetscreenx - pos.x; }
-
-		let captionLines = SetFont.BreakLines (caption, int(w / scale));
+		String temp; BrokenString captionLines;
+		[temp, captionLines] = BrokenString.BreakString(caption, int(w / scale), fnt:SetFont);
 		int count = captionLines.Count();
 
 		if (h <= 0) { h = lineheight / scale * (count - 1) + SetFont.GetHeight(); }

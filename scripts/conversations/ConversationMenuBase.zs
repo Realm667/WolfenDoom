@@ -281,7 +281,8 @@ class ExtendedConversationMenuBase : ConversationMenu
 				let amount = String.Format("%u", reply.PrintAmount);
 				ReplyText.Replace("%u", amount);
 			}
-			let ReplyLines = thisfont.BreakLines(ReplyText, w);
+			String temp; BrokenString ReplyLines;
+			[temp, ReplyLines] = BrokenString.BreakString(ReplyText, w, fnt:thisfont);
 
 			mResponses.Push(mResponseLines.Size());
 			for (int j = 0; j < ReplyLines.Count(); ++j)

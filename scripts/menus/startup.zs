@@ -59,7 +59,8 @@ class IWADNotice : NoticeMenu
 		// Display IWADNOTICE2 on multiple lines, center justified, in SmallFont
 		String widthString = "a";
 		int widthChar = widthString.ByteAt(0);
-		BrokenLines textLines = SmallFont.BreakLines(text, SmallFont.GetCharWidth(widthChar) * 50);
+		String temp; BrokenString textlines;
+		[temp, textLines] = BrokenString.BreakString(text, SmallFont.GetCharWidth(widthChar) * 50, fnt:SmallFont);
 		for (int line = 0; line < textLines.Count(); line++)
 		{
 			double yadd = SmallFont.GetHeight() * (line + 1);

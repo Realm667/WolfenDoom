@@ -281,7 +281,8 @@ class ClassicMessageBox : MessageBoxMenu
 			gw = int(graphicsize.x * CleanXFac);
 		}
 
-		BrokenLines message = fnt.BreakLines(text, (width > 0 ? width : 316) - int(graphicsize.x) - 20);
+		String temp; BrokenString message;
+		[temp, message] = BrokenString.BreakString(text, (width > 0 ? width : 316) - int(graphicsize.x) - 20, fnt:fnt);
 
 		int c = message.Count();
 

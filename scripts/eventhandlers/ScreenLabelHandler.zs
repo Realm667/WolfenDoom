@@ -157,7 +157,8 @@ class ScreenLabelHandler : EventHandler
 
 			// Get text content in order to calculate frame size
 			String text = StringTable.Localize(ScreenLabelItems[i].text);
-			BrokenLines lines = SmallFont.BreakLines(text, int(48 * SmallFont.StringWidth(" ")));
+			String temp; BrokenString lines;
+			[temp, lines] = BrokenString.BreakString(text, int(48 * SmallFont.StringWidth(" ")), fnt:SmallFont);
 
 			double textscale = 1 / fovscale;
 			double lineheight = int(SmallFont.GetHeight() * textscale);

@@ -72,7 +72,7 @@ class CombinationSafe : BoAMenu
 	Safe s;
 	int initial;
 	int ticcount;
-	BrokenLines hintlines;
+	BrokenString hintlines;
 	double hintx, hinty, hintlineheight;
 	int freespin;
 
@@ -129,7 +129,8 @@ class CombinationSafe : BoAMenu
 		initial = 1;
 
 		String hintmessage = StringTable.Localize("SAFEHINT", false);
-		hintlines = SmallFont.BreakLines(hintmessage, 400);
+		String temp;
+		[temp, hintlines] = BrokenString.BreakString(hintmessage, 400, fnt:SmallFont);
 
 		hintx = 320;
 		hintlineheight = SmallFont.GetHeight();
@@ -419,10 +420,10 @@ class ViewItem : BoAMenu
 	bool initial;
 	int ticcount, closetime, maxy, maxlines, pagewidth, page, maxpages;
 
-	BrokenLines hintlines;
+	BrokenString hintlines;
 	double hintx, hinty, hintlineheight;
 
-	BrokenLines textlines;
+	BrokenString textlines;
 	double textx, texty, textlineheight;
 
 	Font msgfont;
@@ -548,7 +549,8 @@ class ViewItem : BoAMenu
 
 			ZScriptTools.DebugFontGlyphs(fnt, textmessage);
 
-			textlines = msgfont.BreakLines(textmessage, int(pagewidth / fontscale));
+			String temp;
+			[temp, textlines] = BrokenString.BreakString(textmessage, int(pagewidth / fontscale), fnt:msgfont);
 
 			textx = 320 - pagewidth / 2;
 			textlineheight = msgfont.GetHeight() * linespacing * fontscale;
@@ -571,7 +573,8 @@ class ViewItem : BoAMenu
 		String hintmessage = StringTable.Localize("PAPERTEXTHOLD", false);
 
 		if (maxpages > 0) { hintmessage = StringTable.Localize("PAPERTEXTTURN", false) .. "\n" .. hintmessage; }
-		hintlines = SmallFont.BreakLines(hintmessage, min(pagewidth + 50, 320));
+		String temp;
+		[temp, hintlines] = BrokenString.BreakString(hintmessage, min(pagewidth + 50, 320), fnt:SmallFont);
 
 		hintx = 320;
 		hintlineheight = SmallFont.GetHeight();

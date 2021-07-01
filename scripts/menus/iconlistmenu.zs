@@ -160,8 +160,9 @@ class ExtendedListMenu : ListMenu
 				// Default position is essentially centered on the screen (offset slightly toward the bottom so the graphic can have a title and still be centered)
 				double x = (width / 2);
 				double y = (height / 2) + 10 * scale;
-
-				BrokenLines message = BigFont.BreakLines(overlaytext, int(240 / scale));
+				
+				String temp; BrokenString message;
+				[temp, message] = BrokenString.BreakString(overlaytext, int(240 / scale), fnt:BigFont);
 
 				int c = message.Count();
 
@@ -195,7 +196,8 @@ class ExtendedListMenu : ListMenu
 		String text = StringTable.Localize("$" .. lookupBase .. "DESCRIPTION"..index);
 		if (text == lookupBase .. "DESCRIPTION"..index) { return; }
 
-		BrokenLines message = SmallFont.BreakLines(text, int(breakWidth / scale));
+		String temp; BrokenString message;
+		[temp, message] = BrokenString.BreakString(text, int(breakWidth / scale), fnt:SmallFont);
 
 		int c = message.Count();
 
