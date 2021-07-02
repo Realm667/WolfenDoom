@@ -679,6 +679,7 @@ class PlagueDoc : Guard
 	Nazi.NoAltDeath 1;
 	Nazi.CanSurrender 1;
 	Nazi.CrouchChance 0;
+	Obituary "$SCIENTIST";
 	}
 	States
 	{
