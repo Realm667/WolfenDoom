@@ -387,7 +387,7 @@ class BriefingMessage : Message
 			msg.icon = icon;
 			msg.time = 2147483647;
 			msg.typespeed = 2.0;
-			msg.change = new("MessageChange");
+			msg.change = new("MessageChangeManager");
 			MessageLogHandler.Add(String.Format("|%s", msg.text));
 		
 			return msg.GetTime();
@@ -406,7 +406,7 @@ class BriefingMessage : Message
 			msg.icon = icon;
 			msg.time = 2147483647;
 			msg.typespeed = 2.0;
-			msg.change = new("MessageChange");
+			msg.change = new("MessageChangeManager");
 			MessageLogHandler.Add(String.Format("%s|%s", msg.charname, msg.text));
 
 			return msg.GetTime();
