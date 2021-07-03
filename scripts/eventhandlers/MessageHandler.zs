@@ -357,6 +357,8 @@ class Message : MessageBase
 // Message which stays on screen until removed. The text content can also be replaced.
 class BriefingMessage : Message
 {
+	bool change;
+
 	static int Init(Actor mo, String icon, String text, int intime = 35, int outtime = 35)
 	{
 		BriefingMessage msg = BriefingMessage(MessageBase.Init(mo, icon, text, intime, outtime, "BriefingMessage"));
@@ -418,6 +420,8 @@ class BriefingMessage : Message
 		BriefingMessage msg = BriefingMessage.Get();
 		if (!msg) { return 0; }
 		msg.text = entry;
+		// So that briefings work properly
+		msg.change = true;
 		// Start typing the new text from the beginning, rather than having it appear all at once.
 		msg.ticker = 35;
 		MessageLogHandler.Add(String.Format("%s|%s", msg.charname, msg.text));
@@ -434,6 +438,27 @@ class BriefingMessage : Message
 	override int GetTime()
 	{
 		return int(ZScriptTools.GetMessageTime(text) / (typespeed > 0 ? typespeed : 1.0));
+	}
+
+	override void DoTick()
+	{
+		// The mutual exclusivity between play and data scopes is really
+		// pissing me off. Doing it this way means that, for briefings to work
+		// properly, the framerate has to be 35fps or greater, since ticks are
+		// processed even if the GPU is the bottleneck.
+		change = false;
+		Super.DoTick();
+	}
+
+	override double DrawMessage()
+	{
+		if (change)
+		{
+			lines.Destroy();
+			lines = null;
+			width = 0;
+		}
+		return Super.DrawMessage();
 	}
 }
 
