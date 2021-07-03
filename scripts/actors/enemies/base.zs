@@ -3059,6 +3059,8 @@ class Nazi : Base
 
 		if (item is "CoinItem")
 		{ // CoinItem is invisible, so drop something that's visible instead
+			delta = DropDelta(recipient, "TreasureChest2", amountToDrop);
+			delta = DropDelta(recipient, "TreasureChest", amountToDrop);
 			delta = DropDelta(recipient, "GoldBar", amountToDrop);
 			delta = DropDelta(recipient, "BagOfCoins", delta);
 			DropDelta(recipient, "SingleCoin", delta);
@@ -3067,6 +3069,11 @@ class Nazi : Base
 		{
 			delta = DropDelta(recipient, "AmmoBox9mm", amountToDrop);
 			DropDelta(recipient, "Ammo9mm", delta);
+		}
+		else if (item is "Ammo12Gauge")
+		{
+			delta = DropDelta(recipient, "AmmoBox12Gauge", amountToDrop);
+			DropDelta(recipient, "Ammo12Gauge", delta);
 		}
 		else if (item is "NebAmmo")
 		{

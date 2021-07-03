@@ -59,6 +59,7 @@ class ParsedValue
 				if (++count == instance)
 				{
 					index = i;
+					children[i].Init();
 					return children[i];
 				}
 			}
