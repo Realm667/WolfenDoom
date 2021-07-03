@@ -283,15 +283,14 @@ class Message : MessageBase
 
 		int typeticks = int((ticker - 35) * (typespeed > 0 ? typespeed : 1.0));
 
+		if (width != msgwidth)
+		{
+			[brokentext, lines] = BrokenString.BreakString(fulltext, msgwidth, false, "C");
+
+			width = msgwidth;
+		}
 		if (flags & MSG_FULLSCREEN)
 		{
-			if (width != msgwidth)
-			{
-				[brokentext, lines] = BrokenString.BreakString(fulltext, msgwidth, false, "C");
-
-				width = msgwidth;
-			}
-
 			int lineheight = int(SmallFont.GetHeight());
 
 			Vector2 hudscale = StatusBar.GetHUDScale();
