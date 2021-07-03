@@ -423,10 +423,8 @@ class ZScriptTools
 		STR_FIXED = 32 // Print directly on screen, not in hud coordinate space
 	}
 
-	static ui void TypeString(Font fnt, String text, int msgwidth, Vector2 textpos, int texttic, double textscale = 1.0, double alpha = 1.0, Vector2 screensize = (640, 400), int flags = STR_CENTERED | STR_MIDDLE)
+	static ui void TypeString(Font fnt, BrokenString lines, int msgwidth, Vector2 textpos, int texttic, double textscale = 1.0, double alpha = 1.0, Vector2 screensize = (640, 400), int flags = STR_CENTERED | STR_MIDDLE)
 	{
-		BrokenString lines;
-		[text, lines] = BrokenString.BreakString(StringTable.Localize(text, false), msgwidth, false, "U");
 		int lineheight = int(SmallFont.GetHeight());
 
 		int chars;
@@ -436,6 +434,7 @@ class ZScriptTools
 
 		double textw = 0;
 		double texth = 0;
+
 		for (int lw = 0; lw < lines.Count(); lw++)
 		{
 			int width = lines.StringWidth(lw);

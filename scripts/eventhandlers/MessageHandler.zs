@@ -59,6 +59,11 @@ class MessageBase : Thinker
 	// How far the message extends into the screen.  Negative value means bottom of screen.
 	ui double protrusion;
 
+	// Broken string handling
+	ui double width;
+	ui String brokentext;
+	ui BrokenString lines;
+
 	static MessageBase Init(Actor mo, String msgname, String text, int intime, int outtime, class<MessageBase> type = "MessageBase", int priority = 0, int flags = 0)
 	{
 		let handler = MessageHandler.Get();
@@ -191,6 +196,7 @@ class Message : MessageBase
 	String icon;
 	double typespeed;
 	String charname; // Name of NPC - useful for player follower and spy messages
+	ui String fulltext;
 
 	static int Init(Actor mo, String icon, String text, int intime = 35, int outtime = 35)
 	{
@@ -242,10 +248,14 @@ class Message : MessageBase
 
 	override double DrawMessage()
 	{
-		String fulltext = StringTable.Localize(charname, false);
-		// Character name is given
-		if (fulltext.Length()) { fulltext = fulltext .. "\cC"; }
-		fulltext = fulltext .. StringTable.Localize(text, false);
+		if (width == 0)
+		{
+			fulltext = StringTable.Localize(charname, false);
+			// Character name is given
+			if (fulltext.Length()) { fulltext = fulltext .. "\cC"; }
+			fulltext = fulltext .. StringTable.Localize(text, false);
+		}
+
 		if (flags & MSG_FULLSCREEN)
 		{
 			Vector2 hudscale = StatusBar.GetHUDScale();
@@ -275,9 +285,13 @@ class Message : MessageBase
 
 		if (flags & MSG_FULLSCREEN)
 		{
-			String brokentext;
-			BrokenString lines;
-			[brokentext, lines] = BrokenString.BreakString(fulltext, msgwidth, false, "C");
+			if (width != msgwidth)
+			{
+				[brokentext, lines] = BrokenString.BreakString(fulltext, msgwidth, false, "C");
+
+				width = msgwidth;
+			}
+
 			int lineheight = int(SmallFont.GetHeight());
 
 			Vector2 hudscale = StatusBar.GetHUDScale();
@@ -307,7 +321,7 @@ class Message : MessageBase
 
 			if (ticker > 35 && text.length())
 			{ // text.length() instead of fulltext.length() because there's no point in just showing the character's name
-				ZScriptTools.TypeString(SmallFont, fulltext, msgwidth, (x, y), typeticks, 1.0, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP);
+				ZScriptTools.TypeString(SmallFont, lines, msgwidth, (x, y), typeticks, 1.0, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP);
 			}
 
 			protrusion = (y + boxheight) / (Screen.GetHeight() / hudscale.y);
@@ -330,7 +344,7 @@ class Message : MessageBase
 
 			if (ticker > 35 && text.length())
 			{ // text.length() instead of fulltext.length() because there's no point in just showing the character's name
-				ZScriptTools.TypeString(SmallFont, fulltext, msgwidth, (100.0, y + 4.0), typeticks, 1.0, alpha, destsize, ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP | ZScriptTools.STR_FIXED);
+				ZScriptTools.TypeString(SmallFont, lines, msgwidth, (100.0, y + 4.0), typeticks, 1.0, alpha, destsize, ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP | ZScriptTools.STR_FIXED);
 			}
 
 			protrusion = handler.topoffset + 32.0 / 200;
@@ -494,6 +508,8 @@ class HintMessage : MessageBase
 {
 	ui int msgwidth;
 	String key;
+	ui double textw;
+	ui double texth;
 
 	static int Init(Actor mo, String text, String key)
 	{
@@ -515,26 +531,29 @@ class HintMessage : MessageBase
 
 	override double DrawMessage()
 	{
-		String brokentext;
-		BrokenString lines;
-		[brokentext, lines] = BrokenString.BreakString(StringTable.Localize(text, false), 300, true, "C");
+		int msgwidth = 300;
 		int lineheight = int(SmallFont.GetHeight());
 
-		if (key && key.length())
+		if (width != msgwidth)
 		{
-			String keystring = ACSTools.GetKeyPressString(key, true, "Dark Gray", "Gray");
-			lines.lines.Push(keystring);
-			brokentext = brokentext .. "\n" .. keystring;
-		}
+			[brokentext, lines] = BrokenString.BreakString(StringTable.Localize(text, false), msgwidth, true, "C");
 
-		double textw = 0;
-		double texth = 0;
-		for (int lw = 0; lw < lines.Count(); lw++)
-		{
-			int width = lines.StringWidth(lw);
-			if (width > textw) { textw = width; }
+			if (key && key.length())
+			{
+				String keystring = ACSTools.GetKeyPressString(key, true, "Dark Gray", "Gray");
+				lines.lines.Push(keystring);
+				brokentext = brokentext .. "\n" .. keystring;
+			}
 
-			texth += lineheight;
+			for (int lw = 0; lw < lines.Count(); lw++)
+			{
+				int linewidth = lines.StringWidth(lw);
+				if (linewidth > textw) { textw = linewidth; }
+
+				texth += lineheight;
+			}
+
+			width = msgwidth;
 		}
 
 		Vector2 destsize = (640, 480);
@@ -668,6 +687,8 @@ class DevCommentary : MessageBase
 	ui int msgwidth, barwidth;
 	double typespeed;
 	String image;
+	ui String title;
+	ui BrokenString titlelines, textlines;
 
 	static int Init(Actor mo, String text, int intime = 18, int outtime = 18)
 	{
@@ -716,19 +737,27 @@ class DevCommentary : MessageBase
 
 		msgwidth = int(barwidth - size.x);
 
-		String brokentext;
-		BrokenString lines;
-		[brokentext, lines] = BrokenString.BreakString(StringTable.Localize(text, false), msgwidth, false, "C");
-		int lineheight = int(SmallFont.GetHeight());
 
-		String title = lines.StringAt(0);
-		brokentext = "";
-
-		for (int b = 2; b < lines.Count(); b++)
+		if (width != msgwidth)
 		{
-			brokentext = brokentext .. lines.StringAt(b);
-			if (b < lines.Count() - 1) { brokentext = brokentext .. "\n"; }
+			[brokentext, lines] = BrokenString.BreakString(StringTable.Localize(text, false), msgwidth, false, "C");
+			[title, titlelines] = BrokenString.BreakString(lines.StringAt(0), msgwidth, false, "C");
+
+			brokentext = "";
+			textlines = BrokenString.Init(SmallFont);
+
+			for (int b = 2; b < lines.Count(); b++)
+			{
+				brokentext = brokentext .. lines.StringAt(b);
+				if (b < lines.Count() - 1) { brokentext = brokentext .. "\n"; }
+
+				textlines.lines.Push(lines.lines[b]);
+			}
+
+			width = msgwidth;
 		}
+
+		int lineheight = int(SmallFont.GetHeight());
 
 		Vector2 hudscale = StatusBar.GetHUDScale();
 
@@ -764,8 +793,8 @@ class DevCommentary : MessageBase
 
 		if (ticker > 35)
 		{
-			if (title.length()) { ZScriptTools.TypeString(SmallFont, title, msgwidth, (x, y), int((ticker - 35) * 1.5), 1.0, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP); }
-			if (brokentext.length()) { ZScriptTools.TypeString(SmallFont, brokentext, msgwidth, (bodyx, y + lineheight * 2 + 4), int((ticker - 35) * 1.5), 1.0, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP); }
+			if (titlelines.Count()) { ZScriptTools.TypeString(SmallFont, titlelines, msgwidth, (x, y), int((ticker - 35) * 1.5), 1.0, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP); }
+			if (textlines.Count()) { ZScriptTools.TypeString(SmallFont, textlines, msgwidth, (bodyx, y + lineheight * 2 + 4), int((ticker - 35) * 1.5), 1.0, alpha, (destsize.x / 2 * hudscale.x, destsize.y / 2 * hudscale.y), ZScriptTools.STR_LEFT | ZScriptTools.STR_TOP); }
 		}
 
 		return protrusion;
@@ -856,16 +885,19 @@ class AchievementMessage : MessageBase
 		String msgstr = StringTable.Localize(text, false);
 		Vector2 destsize = (640, 400);
 
-		int width = 200;
+		int msgwidth = 200;
 		int imgsize = 24;
 		int margin = 4;
-		int boxwidth = width + imgsize + margin * 2;
+		int boxwidth = msgwidth + imgsize + margin * 2;
 
-		String brokentext;
-		BrokenString lines;
-		[brokentext, lines] = BrokenString.BreakString(text, width, false, fontcolor, fnt);
+		if (width != msgwidth)
+		{
+			[brokentext, lines] = BrokenString.BreakString(StringTable.Localize(text, false), msgwidth, false, "C");
+
+			width = msgwidth;
+		}
+
 		int lineheight = int(fnt.GetHeight());
-
 		Vector2 hudscale = StatusBar.GetHUDScale();
 
 		int x = int(Screen.GetWidth() / hudscale.x / 2 - boxwidth / 2); // Position scaled relative to screen center
