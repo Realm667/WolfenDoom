@@ -60,9 +60,9 @@ class MessageBase : Thinker
 	ui double protrusion;
 
 	// Broken string handling
-	ui double width;
+	transient ui double width;
 	ui String brokentext;
-	ui BrokenString lines;
+	transient ui BrokenString lines;
 
 	static MessageBase Init(Actor mo, String msgname, String text, int intime, int outtime, class<MessageBase> type = "MessageBase", int priority = 0, int flags = 0)
 	{
@@ -688,7 +688,7 @@ class DevCommentary : MessageBase
 	double typespeed;
 	String image;
 	ui String title;
-	ui BrokenString titlelines, textlines;
+	transient ui BrokenString titlelines, textlines;
 
 	static int Init(Actor mo, String text, int intime = 18, int outtime = 18)
 	{
@@ -1102,6 +1102,7 @@ class PersistentMessageHandler : StaticEventHandler
 
 	override void WorldLoaded(WorldEvent e)
 	{
+		if (e.IsSaveGame) { return; } // Only handle transitions between levels
 		MessageHandler handler = MessageHandler(EventHandler.Find("MessageHandler"));
 		if (!handler) { return; }
 
@@ -1122,6 +1123,7 @@ class PersistentMessageHandler : StaticEventHandler
 
 	override void WorldUnloaded(WorldEvent e)
 	{
+		if (e.IsSaveGame) { return; }
 		MessageHandler handler = MessageHandler(EventHandler.Find("MessageHandler"));
 		if (!handler) { return; }
 
