@@ -366,6 +366,7 @@ class AchievementTracker : StaticEventHandler
 	int gibs[MAXPLAYERS];
 	int coins[MAXPLAYERS];
 	int keycount;
+	int shovelkills[MAXPLAYERS];
 
 	static const Class<Weapon> weaponlist[] = { 
 		"KnifeSilent",
@@ -423,6 +424,7 @@ class AchievementTracker : StaticEventHandler
 		ACH_NEAT,			// Collect all 3 Keen cartridges (total across all levels)
 		ACH_ADDICTED,		// Play BoA for more than 10 hours (total across all levels)
 		ACH_TROPHYHUNTER,	// Collect all three award trophies
+		ACH_SHOVEL = 35,	// Kill 100 enemies with the shovel
 
 		ACH_LASTACHIEVEMENT, // Marker index for the end of the list of regular achievements
 
@@ -846,6 +848,9 @@ class AchievementTracker : StaticEventHandler
 				if (++records[STAT_PLAYTIME].value > 36000) { complete = true; }
 				SaveEncoded(3);
 				break;
+			case ACH_SHOVEL:
+				if (++shovelkills[pnum] >= 100) { complete = true; }
+				break;
 			case ACH_NAUGHTY: // Set up in the BoAPlayer class's 'give' cheat handling; redundant here, but listed for completion's sake
 			case ACH_DISGRACE: // Set up in the Nazi class's Die function
 			case ACH_CLEARSHOT: // Set up in the Nazi class's Die function
@@ -993,6 +998,7 @@ class AchievementTracker : StaticEventHandler
 			deadwounded[i] = ptracker.deadwounded[i];
 			gibs[i] = ptracker.gibs[i];
 			coins[i] = ptracker.coins[i];
+			shovelkills[i] = ptracker.shovelkills[i];
 
 			for (int w = 0; w < 16; w++)
 			{
@@ -1019,6 +1025,7 @@ class AchievementTracker : StaticEventHandler
 			ptracker.deadwounded[i] = deadwounded[i];
 			ptracker.gibs[i] = gibs[i];
 			ptracker.coins[i] = coins[i];
+			ptracker.shovelkills[i] = shovelkills[i];
 
 			for (int w = 0; w < 16; w++)
 			{
@@ -1049,4 +1056,5 @@ class PersistentAchievementTracker : EventHandler
 	int deadwounded[MAXPLAYERS];
 	int gibs[MAXPLAYERS];
 	int coins[MAXPLAYERS];
+	int shovelkills[MAXPLAYERS];
 }

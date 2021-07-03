@@ -265,6 +265,9 @@ class AchievementSummary : BoAMenu
 				int sec = tracker.records[AchievementTracker.STAT_PLAYTIME].value;
 				value = String.Format("%02d:%02d:%02d", sec / 3600, (sec % 3600) / 60, sec % 60);
 				break;
+			case AchievementTracker.ACH_SHOVEL:
+				value = String.Format("%i/%i", tracker.shovelkills[consoleplayer], 100);
+				break;
 		}
 
 		String timevalue;
