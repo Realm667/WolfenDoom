@@ -2485,7 +2485,7 @@ class Nazi : Base
 			if (bBoss && inflictor is "KickPuff") { AchievementTracker.CheckAchievement(source.PlayerNumber(), AchievementTracker.ACH_DISGRACE); }
 
 			// Achievement for killing enemies with the shovel
-			if (inflictor is "ShovelPuff") { AchievementTracker.CheckAchievement(source.PlayerNumber(), AchievementTracker.ACH_SHOVEL); }
+			if (inflictor is "ShovelPuff" && Default.species == "Nazi" && !(self is "MutantStandard")) { AchievementTracker.CheckAchievement(source.PlayerNumber(), AchievementTracker.ACH_SHOVEL); }
 
 			// Achievement for sniping over long range
 			if (inflictor && inflictor is "Kar98KTracer2" && Distance3D(source) >= 6000) { AchievementTracker.CheckAchievement(source.PlayerNumber(), AchievementTracker.ACH_CLEARSHOT); }
