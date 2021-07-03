@@ -2841,12 +2841,6 @@ class Nazi : Base
 			goal.master = self;
 			goal.target = null;
 			goal.CopyFriendliness(self, false);
-
-			// And make the actor not count as having been killed anymore
-			if (goal.bCountKill && !goal.bFriendly)
-			{
-				level.killed_monsters--;
-			}
 		}
 
 		body = null;
