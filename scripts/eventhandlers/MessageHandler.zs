@@ -354,10 +354,30 @@ class Message : MessageBase
 	}
 }
 
+// This may be overkill, but it is in data scope, which is the default for
+// objects, and accessible by both the play and ui contexts
+class MessageChangeManager
+{
+	bool pending;
+	clearscope bool Apply()
+	{
+		if (pending)
+		{
+			pending = false;
+			return true;
+		}
+		return false;
+	}
+	clearscope void Pend(bool set)
+	{
+		pending = set;
+	}
+}
+
 // Message which stays on screen until removed. The text content can also be replaced.
 class BriefingMessage : Message
 {
-	bool change;
+	MessageChangeManager change;
 
 	static int Init(Actor mo, String icon, String text, int intime = 35, int outtime = 35)
 	{
@@ -367,6 +387,7 @@ class BriefingMessage : Message
 			msg.icon = icon;
 			msg.time = 2147483647;
 			msg.typespeed = 2.0;
+			msg.change = new("MessageChange");
 			MessageLogHandler.Add(String.Format("|%s", msg.text));
 		
 			return msg.GetTime();
@@ -385,6 +406,7 @@ class BriefingMessage : Message
 			msg.icon = icon;
 			msg.time = 2147483647;
 			msg.typespeed = 2.0;
+			msg.change = new("MessageChange");
 			MessageLogHandler.Add(String.Format("%s|%s", msg.charname, msg.text));
 
 			return msg.GetTime();
@@ -421,7 +443,7 @@ class BriefingMessage : Message
 		if (!msg) { return 0; }
 		msg.text = entry;
 		// So that briefings work properly
-		msg.change = true;
+		msg.change.Pend(true);
 		// Start typing the new text from the beginning, rather than having it appear all at once.
 		msg.ticker = 35;
 		MessageLogHandler.Add(String.Format("%s|%s", msg.charname, msg.text));
@@ -440,19 +462,9 @@ class BriefingMessage : Message
 		return int(ZScriptTools.GetMessageTime(text) / (typespeed > 0 ? typespeed : 1.0));
 	}
 
-	override void DoTick()
-	{
-		// The mutual exclusivity between play and data scopes is really
-		// pissing me off. Doing it this way means that, for briefings to work
-		// properly, the framerate has to be 35fps or greater, since ticks are
-		// processed even if the GPU is the bottleneck.
-		change = false;
-		Super.DoTick();
-	}
-
 	override double DrawMessage()
 	{
-		if (change)
+		if (change.Apply())
 		{
 			lines.Destroy();
 			lines = null;
