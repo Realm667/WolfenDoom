@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2021 Tormentor667, Ozymandias81, Ed the Bat, m-x-d, Talon1024,
+ * Copyright (c) 2017-2021 Tormentor667, Ozymandias81, Ed the Bat, MaxED, Talon1024,
  *                         AFADoomer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy

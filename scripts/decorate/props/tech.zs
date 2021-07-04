@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2021 Tormentor667, Ozymandias81, Ed the Bat, m-x-d, Guardsoul,
+ * Copyright (c) 2015-2021 Tormentor667, Ozymandias81, Ed the Bat, MaxED, Guardsoul,
  *                         AFADoomer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2021 Ed the Bat, Ozymandias81, m-x-d, Nash Muhandes,
+ * Copyright (c) 2015-2021 Ed the Bat, Ozymandias81, MaxED, Nash Muhandes,
  *                         AFADoomer, Talon1024
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
