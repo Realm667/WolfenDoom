@@ -1233,6 +1233,12 @@ class Base : Actor
 
 		return true;
 	}
+
+	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
+	{
+		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
+		bCastSpriteShadow = false;
+	}
 }
 
 enum EDisableDeathFlags
