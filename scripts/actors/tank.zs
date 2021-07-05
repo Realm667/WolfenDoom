@@ -61,6 +61,7 @@ class TankPlayer : PlayerPawn
 		DamageFactor "Rocket2", 10.0; //enemypanzerrocket only, for panzerguards  - ozy81 //1.5->10.0 --N00b
 		DamageFactor "UndeadPoison", 0.1;
 		DamageFactor "UndeadPoisonAmbience", 0.1;
+		DamageFactor "Frag", 0.75;
 		MaxStepHeight 48;
 		MaxDropoffHeight 48;
 		Species "Tank";

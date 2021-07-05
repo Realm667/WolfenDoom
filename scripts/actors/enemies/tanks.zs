@@ -289,6 +289,7 @@ class TankBase : VehicleBase
 		DamageFactor "Rifle", 0.5;	// Kar98, sniper rifle, chaingun
 		DamageFactor "Fire", 0.5;	// Flamer
 		DamageFactor "Trample", 0.1;	// Collision with another Tank/Vehicle
+		DamageFactor "Frag", 0.25; // Cluster bombs
 		Monster;
 		MaxDropoffHeight 48;
 		MaxStepHeight 32;
