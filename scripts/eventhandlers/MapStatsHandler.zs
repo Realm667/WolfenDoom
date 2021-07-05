@@ -71,7 +71,7 @@ class MapStatsHandler : StaticEventHandler
 	static void SaveLevelData()
 	{
 		MapStatsHandler this = MapStatsHandler(StaticEventHandler.Find("MapStatsHandler"));
-		if (!this) { return; }
+		if (!this || !level) { return; }
 
 		int i = this.FindLevel(level.mapname);
 
@@ -544,9 +544,10 @@ class MapStatsHandler : StaticEventHandler
 	{
 		SaveLevelData(); // Save data before toggling so that the current map gets included in the tallies
 
+		if (!activator) { return; }
+
 		MapStatsHandler this = MapStatsHandler(StaticEventHandler.Find("MapStatsHandler"));
 		let p = activator.player;
-
 		if (!this || !p) { return; }
 
 		if (status > -1) { this.active[activator.PlayerNumber()] = status; }
