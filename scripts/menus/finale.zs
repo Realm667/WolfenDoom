@@ -73,7 +73,7 @@ class TextScroll : BoAMenu
 			textwidth = backwidth - margin * 2;
 		}
 		
-		String temp; BrokenString lines;
+		String temp;
 		[temp, lines] = BrokenString.BreakString(StringTable.Localize(text), int(textwidth), fnt:fnt);
 
 		mapnum = level.levelnum; // Remember what map we're on so that we can close this scroller if the map changes
@@ -82,7 +82,6 @@ class TextScroll : BoAMenu
 	override void Drawer()
 	{
 		if (background) { screen.DrawTexture(background, false, 0, 0, DTA_FullScreenEx, 2); }
-
 		if (scrollback) { screen.DrawTexture(scrollback, false, scrollx - backwidth / 2, scrolly, DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, alpha); }
 
 		for (int l = 0; l < lines.Count(); l++)
@@ -193,7 +192,6 @@ class IntroScroll : TextScroll
 	override void Drawer()
 	{
 		if (background) { screen.DrawTexture(background, false, 0, 0, DTA_FullScreenEx, 2); }
-
 		if (scrollback) { screen.DrawTexture(scrollback, false, scrollx - backwidth / 2, scrolly, DTA_VirtualWidth, w, DTA_VirtualHeight, h, DTA_Alpha, alpha); }
 
 		for (int l = 0; l < lines.Count(); l++)
