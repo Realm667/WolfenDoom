@@ -347,7 +347,8 @@ class BoAInfo : BoAMenu
 
 			TextureID pic = TexMan.CheckForTexture(GetString(content, "pic"), TexMan.Type_Any);
 
-			BrokenLines lines = fnt.BreakLines(text, int((bw - margin * 2) / textscale));
+			String temp; BrokenString lines;
+			[temp, lines] = BrokenString.BreakString(text, int((bw - margin * 2) / textscale), false, "C", fnt);
 
 			int cliptop = int(pos.y + marginsize.y);
 			int clipbottom = int(pos.y + size.y - marginsize.y);

@@ -27,7 +27,10 @@ class BrokenString : Object
 	Array<String> lines;
 	private Font fnt;
 
-	int Count() { return lines.Size(); }
+	int Count()
+	{
+		return lines.Size();
+	}
 
 	int StringWidth(int line)
 	{
@@ -60,12 +63,13 @@ class BrokenString : Object
 	//  Some logic taken from https://github.com/coelckers/gzdoom/blob/master/src/common/fonts/v_text.cpp
 	ui static String, BrokenString BreakString(String input, int maxwidth, bool flow = false, String defaultcolor = "L", Font fnt = null)
 	{
-		if (!input.length()) { return "", null; }
 		if (fnt == null) { fnt = SmallFont; }
 
 		BrokenString brokenlines = BrokenString.Init(fnt);
+
+		if (!input.length()) { return "", brokenlines; }
 		input = StringTable.Localize(input, false);
-		
+
 		int c = -1, colorindex, wordindex;
 		String output;
 		String currentcolor = defaultcolor, lastcolor = defaultcolor;
