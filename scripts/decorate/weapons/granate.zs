@@ -118,7 +118,7 @@ class HandGrenade : GrenadeBase //no hard variant since it is used also by playe
 		Death:
 			THRW B 35 { floorclip -= 2; }
 			TNT1 A 0 A_SpawnGroundSplash;
-			TNT1 A 0 A_AlertMonsters;
+			TNT1 A 0 A_AlertMonsters(512);
 			TNT1 A 0 A_SetScale(1.75,1.75);
 			TNT1 A 0 A_SetTranslucent(0.75,1);
 			TNT1 A 0 A_StartSound("grenade/explode", CHAN_AUTO, 0, 1.0, 0.1);
@@ -154,7 +154,7 @@ class HansGrenade : HandGrenade //Fast version for Afrika Boss
 	Death:
 		THRW B 10 { floorclip -= 2; }
 		TNT1 A 0 A_SpawnGroundSplash;
-		TNT1 A 0 A_AlertMonsters;
+		TNT1 A 0 A_AlertMonsters(512);
 		TNT1 A 0 A_SetScale(1.75,1.75);
 		TNT1 A 0 A_SetTranslucent(0.75,1);
 		TNT1 A 0 A_StartSound("grenade/explode", CHAN_AUTO, 0, 1.0, 0.1);
@@ -187,7 +187,7 @@ class VeryFastGrenade : HandGrenade //Very fast version for Grenadeers
 	Death:
 		THRW B 35 { floorclip -= 2; }
 		TNT1 A 0 A_SpawnGroundSplash;
-		TNT1 A 0 A_AlertMonsters;
+		TNT1 A 0 A_AlertMonsters(512);
 		TNT1 A 0 A_SetScale(1.75,1.75);
 		TNT1 A 0 A_SetTranslucent(0.75,1);
 		TNT1 A 0 A_StartSound("grenade/explode", CHAN_AUTO, 0, 1.0, 0.1);
@@ -220,7 +220,7 @@ class SlowGrenade : HandGrenade //Slow version for Grenadeers
 	Death:
 		THRW B 45 { floorclip -= 2; }
 		TNT1 A 0 A_SpawnGroundSplash;
-		TNT1 A 0 A_AlertMonsters;
+		TNT1 A 0 A_AlertMonsters(512);
 		TNT1 A 0 A_SetScale(1.75,1.75);
 		TNT1 A 0 A_SetTranslucent(0.75,1);
 		TNT1 A 0 A_StartSound("grenade/explode", CHAN_AUTO, 0, 1.0, 0.1);
@@ -253,7 +253,7 @@ class VerySlowGrenade : HandGrenade //Very slow version for Grenadeers
 	Death:
 		THRW B 70 { floorclip -= 2; }
 		TNT1 A 0 A_SpawnGroundSplash;
-		TNT1 A 0 A_AlertMonsters;
+		TNT1 A 0 A_AlertMonsters(512);
 		TNT1 A 0 A_SetScale(1.75,1.75);
 		TNT1 A 0 A_SetTranslucent(0.75,1);
 		TNT1 A 0 A_StartSound("grenade/explode", CHAN_AUTO, 0, 1.0, 0.1);
