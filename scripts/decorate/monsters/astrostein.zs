@@ -508,9 +508,11 @@ class AstroDrone : Nazi
 		"####" H 3 A_Pain;
 		"####" H 6;
 		Goto See;
+	Disintegrate:
 	Death:
 		DRON M 0 A_Scream;
 		"####" M 0 A_SpawnItemEx("AstrosteinExplosion_Medium", 0, 0, 48);
+		"####" M 0 A_SpawnItemEx("GeneralExplosion_ShockwaveGreen", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE); //so an effect is spawn even with boomswitch at 0 --ozy81
 		"####" M 0 {A_NoBlocking(); bNoGravity = FALSE;}
 		"####" M -1;
 		Stop;
