@@ -1,0 +1,239 @@
+/*=======================================
+ *
+ *       BoA Simple Options menu
+ *
+ *=======================================*/
+
+OptionMenu "OptionsMenuSimple" Protected
+{
+	Title "$SMP_OPTIONS"
+	Submenu "$SMP_PERFORMANCE","SimpleBoAPerformanceMenu"
+	Submenu "$SMP_CONTROLS","SimpleBoAControlsMenu"
+    Submenu "$SMP_GAMEPLAY","SimpleBoAGameplayMenu"
+    Submenu "$SMP_AUDIOVIDEO","SimpleBoAAudioVideoMenu"
+    Option "$OPTMNU_LANGUAGE", "language", "BoALanguageOptions"
+	Option "$OPT_DEVC","boa_devcomswitch","OnOff"
+    StaticText " "
+    Submenu "$SMP_MOREOPTIONS", "OptionsMenu"
+}
+
+OptionMenu "SimpleBoAPerformanceMenu"
+{
+	Title "$SMP_PERFORMANCE"
+	Submenu "$SMP_SHADERS","SimpleBoAPerformanceShaderOptions"
+	Submenu "$SMP_ACTORS","SimpleBoAPerformanceActorOptions"
+	Submenu "$SMP_EFFECTS","SimpleBoAPerformanceEffectOptions"
+	Submenu "$SMP_PARTICLES","SimpleBoAPerformanceParticleOptions"
+    Submenu "$SMP_ENGINE","SimpleBoAPerformanceEngineOptions"
+    StaticText " "
+    Submenu "$PREDOPT","BoAPredefinedOptions"
+}
+
+OptionMenu "SimpleBoAPerformanceShaderOptions"
+{
+	Position -15
+	Title "$SMP_SHADERS"
+	Command "$SMP_PERFORMANCE_ON","boa_s_p_shaders_ON"
+    Command "$SMP_PERFORMANCE_OFF","boa_s_p_shaders_OFF"
+    StaticText "$SMP_SHADERSDESC"
+}
+
+OptionMenu "SimpleBoAPerformanceActorOptions"
+{
+	Position -15
+	Title "$SMP_ACTORS"
+    Command "$SMP_PERFORMANCE_ON","boa_s_p_actors_ON"
+    Command "$SMP_PERFORMANCE_OFF","boa_s_p_actors_OFF"
+    StaticText "$SMP_ACTORSDESC"
+}
+
+OptionMenu "SimpleBoAPerformanceEffectOptions"
+{
+	Position -15
+	Title "$SMP_EFFECTS"
+    StaticText "$WARNING1"
+	StaticText " "
+	Command "$SMP_PERFORMANCE_ON","boa_s_p_effects_ON"
+    Command "$SMP_PERFORMANCE_OFF","boa_s_p_effects_OFF"
+    StaticText "$SMP_EFFECTSDESC"
+}
+
+OptionMenu "SimpleBoAPerformanceParticleOptions"
+{
+	Position -15
+	Title "$SMP_PARTICLES"
+    StaticText "$WARNING1"
+	StaticText " "
+	Command "$SMP_PERFORMANCE_ON","boa_s_p_particles_ON"
+    Command "$SMP_PERFORMANCE_OFF","boa_s_p_particles_OFF"
+    StaticText "$SMP_PARTICLESDESC"
+}
+
+OptionMenu "SimpleBoAPerformanceEngineOptions"
+{
+	Position -15
+	Title "$SMP_ENGINE"
+    StaticText "$WARNING1"
+	StaticText " "
+	Command "$SMP_PERFORMANCE_ON","boa_s_p_engine_ON"
+    Command "$SMP_PERFORMANCE_OFF","boa_s_p_engine_OFF"
+    StaticText "$SMP_ENGINEDESC"
+}
+
+OptionMenu "SimpleBoAControlsMenu"
+{
+	Title "$SMP_CONTROLS"
+    Submenu "$SMP_CUSTOMIZECONTROLS","SimpleBoAControlsCustomize"
+    Submenu "$SMP_CUSTOMIZEOTHER","SimpleBoAControlsOther"
+    Submenu "$OPTMNU_MOUSE","MouseOptions" //simplify???
+	Submenu "$OPTMNU_JOYSTICK","JoystickOptions" //simplify???
+}
+
+OptionMenu "SimpleBoAControlsCustomize"
+{
+	Title "$SMP_CUSTOMIZECONTROLS"
+	ScrollTop 2
+	StaticTextSwitchable "$CNTRLMNU_SWITCHTEXT1", "$CNTRLMNU_SWITCHTEXT2", "ControlMessage"
+
+	StaticText " " //newdefs on top? - ozy81
+	Control		"$CO_OBJS"		, "pukename boaobjectives"
+	Control		"$CO_MSGL"		, "openmenu MessageLogMenu"
+
+	StaticText " "
+	Control    "$CNTRLMNU_ATTACK"           , "+attack"
+	Control    "$CNTRLMNU_ALTATTACK"        , "+altattack"
+	Control    "$CNTRLMNU_RELOAD"           , "+reload"
+	Control	   "$CO_KICK"			, "pukename QuickKick"
+	Control	   "$CO_GREN"			, "use GrenadePickup"
+
+	StaticText " "
+	Control    "$CNTRLMNU_USE"              , "+use"
+
+	StaticText " "
+	Control    "$CNTRLMNU_FORWARD"          , "+forward"
+	Control    "$CNTRLMNU_BACK"             , "+back"
+	Control    "$CNTRLMNU_MOVELEFT"         , "+moveleft"
+	Control    "$CNTRLMNU_MOVERIGHT"        , "+moveright"
+
+	StaticText " "
+	Control    "$CNTRLMNU_JUMP"             , "+jump"
+	Control    "$CNTRLMNU_CROUCH"           , "+crouch"
+	Control    "$CNTRLMNU_TOGGLECROUCH"     , "crouch"
+
+	StaticText " "
+	Control    "$CNTRLMNU_RUN"              , "+speed"
+	Control    "$CNTRLMNU_TOGGLERUN"        , "toggle cl_run"
+	Control    "$CNTRLMNU_STRAFE"           , "+strafe"
+
+	StaticText " " //kept for oldschool duke alike pals - ozy81
+	Control    "$CNTRLMNU_TURNLEFT"         , "+left"
+	Control    "$CNTRLMNU_TURNRIGHT"        , "+right"
+	Control    "$CNTRLMNU_TURN180"          , "turn180"
+	Control    "$CNTRLMNU_LOOKUP"           , "+lookup"
+	Control    "$CNTRLMNU_LOOKDOWN"         , "+lookdown"
+	Control    "$CNTRLMNU_CENTERVIEW"       , "centerview"
+
+	StaticText " " //here for ideal swimming controls - ozy81
+	Control    "$CNTRLMNU_MOVEUP"           , "+moveup"
+	Control    "$CNTRLMNU_MOVEDOWN"         , "+movedown"
+
+	StaticText " "
+	Control    "$CNTRLMNU_NEXTWEAPON"     , "weapnext"
+	Control    "$CNTRLMNU_PREVIOUSWEAPON" , "weapprev"
+
+	StaticText " "
+	Control    "$CNTRLMNU_SLOT1"          , "slot 1"
+	Control    "$CNTRLMNU_SLOT2"          , "slot 2"
+	Control    "$CNTRLMNU_SLOT3"          , "slot 3"
+	Control    "$CNTRLMNU_SLOT4"          , "slot 4"
+	Control    "$CNTRLMNU_SLOT5"          , "slot 5"
+	Control    "$CNTRLMNU_SLOT6"          , "slot 6"
+	Control    "$CNTRLMNU_SLOT7"          , "slot 7"
+	Control    "$CNTRLMNU_SLOT8"          , "slot 8"
+	Control    "$CNTRLMNU_SLOT9"          , "slot 9"
+	Control    "$CNTRLMNU_SLOT0"          , "slot 0"
+
+	StaticText " "
+	Control    "$CNTRLMNU_USEITEM"      , "invuse"
+
+	StaticText " "
+	Control    "$CNTRLMNU_NEXTITEM"     , "invnext"
+	Control    "$CNTRLMNU_PREVIOUSITEM" , "invprev"
+}
+
+OptionMenu "SimpleBoAControlsOther"
+{
+	Title "$SMP_CUSTOMIZEOTHER"
+    Submenu    "$MAPCNTRLMNU_CONTROLS" , "MapControlsMenu"
+	Submenu    "$CNTRLMNU_OTHER"       , "OtherControlsMenu"
+}
+
+OptionMenu "SimpleBoAGameplayMenu"
+{
+	Title "$SMP_GAMEPLAY"
+    Slider "$FOV","fov",80,110,2,0
+	Submenu "$SMP_CHEATS","SimpleBoAGameplayCheatsOptions"
+    Option "$HUDMNU_CROSSHAIRON","crosshairon","OnOff"
+    StaticText "[HUD OPTIONS???]"
+    //what HUD options could be added?
+    StaticText "[MISC OPTIONS???]"
+    //what do we need from Misc. Options?
+}
+
+OptionMenu "SimpleBoAGameplayCheatsOptions"
+{
+	Title  "$OPT_CHEAT"
+	StaticText "$WARNING3"
+	StaticText "$WARNING2"
+	StaticText "$WARNING1"
+	StaticText " "
+	Option "$CH_OPT1","boa_sprintswitch","OnOff"
+	Option "$SMP_FLINCH","boa_flinchamount","OnOff"
+	StaticText " "
+	Option "$MISCMNU_NOCHEATS","nocheats","OnOff" //moved here from miscellaneous - ozy81
+	Option "$MISCMNU_ALLCHEATS","allcheats","OnOff"
+}
+
+OptionMenu "SimpleBoAAudioVideoMenu"
+{
+	Title  "$SMP_AUDIOVIDEO"
+    StaticText "$DSPLYMNU_TITLE"
+    StaticText ""
+
+    Option "$VIDMNU_PREFERBACKEND","vid_preferbackend","PreferBackend"
+    Option "$VIDMNU_FULLSCREEN","vid_fullscreen","YesNo"
+    IfOption(Windows)
+	{
+		Option "$DSPLYMNU_GPUSWITCH",vid_gpuswitch,"GPUSwitch"
+	}
+	StaticText "$VIDMNU_CUSTOMRES"
+    SubMenu "$VIDMNU_RESPRESET", CustomResolutionMenu
+	TextField "$VIDMNU_CUSTOMX", menu_resolution_custom_width
+	TextField "$VIDMNU_CUSTOMY", menu_resolution_custom_height
+	Option "$VIDMNU_USELINEAR", "vid_scale_linear", "YesNo"
+    Command "$VIDMNU_APPLYW", "menu_resolution_commit_changes 0"
+	Command "$VIDMNU_APPLYFS", "menu_resolution_commit_changes 1"
+
+    StaticText "[TEXTURE OPTIONS???]"
+    //do we really need to include texture options?
+
+    StaticText "[DYNAMIC LIGHTS???]"
+    //what to include from dynamic lights?
+
+    StaticText " "
+	Slider "$DSPLYMNU_SCREENSIZE",				"screenblocks", 				3.0, 12.0, 1.0, 0
+	Slider "$DSPLYMNU_GAMMA",					"vid_gamma",					0.75, 3.0, 0.05, 2
+	Slider "$DSPLYMNU_BRIGHTNESS",				"vid_brightness",				-0.8,0.8, 0.05,2
+	Slider "$DSPLYMNU_CONTRAST",				"vid_contrast",	   				0.1, 3.0, 0.1
+
+    StaticText ""
+
+    StaticText "$SNDMNU_TITLE"
+    StaticText ""
+	Slider "$MODMNU_MASTERVOLUME",		"snd_mastervolume", 0, 1, 0.05, 2
+	Slider "$SNDMNU_SFXVOLUME",			"snd_sfxvolume", 0, 1, 0.05, 2
+	Slider "$SNDMNU_MUSICVOLUME",		"snd_musicvolume", 0, 1, 0.05, 2
+	Slider "$SNDMNU_MENUVOLUME",		"snd_menuvolume", 0, 1, 0.05, 2
+	Option "$SNDMNU_MIDIDEVICE",		"snd_mididevice", "MidiDevices"
+	Command "$SNDMNU_RESTART",			"snd_reset"
+}
