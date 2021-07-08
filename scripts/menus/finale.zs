@@ -38,7 +38,7 @@ class TextScroll : BoAMenu
 
 	bool noskip, finished;
 
-	BrokenString lines;
+	BrokenLines lines;
 
 	override void Init(Menu parent)
 	{
@@ -73,8 +73,7 @@ class TextScroll : BoAMenu
 			textwidth = backwidth - margin * 2;
 		}
 		
-		String temp;
-		[temp, lines] = BrokenString.BreakString(StringTable.Localize(text), int(textwidth), fnt:fnt);
+		lines = fnt.BreakLines(StringTable.Localize(text), int(textwidth));
 
 		mapnum = level.levelnum; // Remember what map we're on so that we can close this scroller if the map changes
 	}
