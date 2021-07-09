@@ -395,16 +395,6 @@ OptionMenu "BoAEffectsOptions"
 	Option "$SF_GPLM",							"boa_groundplume","OnOff"
 }
 
-OptionValue "ShadowDist" //rework these once nashshadows will be merged into gzdoom - ozy81
-{
-	0, "$SH_NONE"
-	512, "$SH_NEAR"
-	1024, "$SH_DEFA"
-	4096, "$SH_FAR"
-	8192, "$SH_VFAR"
-	16384, "$SH_ULTR"
-}
-
 OptionValue "ParticlesAmt"
 {
 	0, "$AM_NONE"
@@ -618,7 +608,7 @@ OptionMenu "BoAMiscOptions" //move boa cheats here? - ozy81
 	IfOption(Windows)
 	{
 		StaticText " "
-		Option	"$DSPLYMNU_SHOWENDOOM",			"showendoom", "Endoom" //set 1.0 On per default in BoA
+		Option	"$DSPLYMNU_SHOWENDOOM",			"showendoom", "Endoom"
 	}
 }
 
