@@ -835,7 +835,7 @@ class InventoryHolder play
 		return HOLD;
 	}
 
-	void HoldInventory(Inventory head)
+	void HoldInventory(Inventory head, bool holdHealth = true)
 	{
 		Inventory ii = head;
 		// Make sure all items, except those which should not be, are restored.
@@ -865,8 +865,8 @@ class InventoryHolder play
 		}
 
 		// Save health amount
-		if (owner) { health = owner.health; }
-		else if (holder && holder.owner) { health = holder.owner.health; }
+		if (holdHealth && owner) { health = owner.health; }
+		else if (holdHealth && holder && holder.owner) { health = holder.owner.health; }
 
 		if (boa_debugholdinventory) { Console.Printf("Health: %d, Armor: %d %.3f", health, armor, savepercent); }
 	}
@@ -902,7 +902,7 @@ class InventoryHolder play
 		}
 	}
 
-	void RestoreInventory(Actor receiver)
+	void RestoreInventory(Actor receiver, bool restoreHealth = true)
 	{
 		// Clear out receiver's previous inventory
 		Inventory ii = receiver.Inv;
@@ -931,8 +931,11 @@ class InventoryHolder play
 		}
 
 		// Restore health amount
-		receiver.health = health;
-		if (receiver.player) { receiver.player.health = health; }
+		if (restoreHealth)
+		{
+			receiver.health = health;
+			if (receiver.player) { receiver.player.health = health; }
+		}
 	}
 
 	protected void RestoreItem(Inventory item, Actor receiver)
@@ -1111,7 +1114,7 @@ class HQTrainingCourse : Inventory
 			}
 			holder = new("InventoryHolder");
 			holder.holder = self;
-			holder.HoldInventory(toucher.Inv);
+			holder.HoldInventory(toucher.Inv, false);
 
 			if (p && p.player)
 			{
@@ -1143,7 +1146,7 @@ class HQTrainingCourse : Inventory
 	{
 		if (owner)
 		{
-			holder.RestoreInventory(owner);
+			holder.RestoreInventory(owner, false);
 			holder.Destroy();
 
 			let p = PlayerPawn(owner);
