@@ -598,11 +598,13 @@ class AsterixObelix : Dogse
 	}
 }
 
-class NaziCakeBabe : Dogse
+class NaziCakeBabe : Actor
 {
 	Default
 	{
-		//$Title Nazi Birthday Cake Babe
+		//$Category EasterEgg (BoA)
+		//$Title Dogse (Easteregg)
+		//$Color 3
 		Radius 4;
 		Height 32;
 		Health 20;
@@ -613,6 +615,7 @@ class NaziCakeBabe : Dogse
 		+DONTFALL
 		+NOTAUTOAIMED
 		+SHOOTABLE
+		+SOLID
 		PainSound "BossGirl/pain";
 		DeathSound "BossGirl/Death";
 	}
@@ -628,6 +631,10 @@ class NaziCakeBabe : Dogse
 		"####" EF 8;
 		"####" B 8;
 		Loop;
+	Pain:
+		"####" G 2;
+		"####" G 4 A_Pain;
+		Goto Spawn;
 	Death:
 		"####" G 6;
 		"####" H 6 A_Scream;
@@ -638,10 +645,6 @@ class NaziCakeBabe : Dogse
 		"####" J 0 A_SpawnItemEx("CupCake4", random(16,-16), random(16,-16), random(4,8), frandom(2.5,4.5), frandom(2.5,4.5), frandom(1.0,4.0), random(0,360));
 		"####" K -1;
 		Stop;
-	Pain:
-		"####" G 2;
-		"####" G 4 A_Pain;
-		Goto Spawn;
 	}
 }
 
