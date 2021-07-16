@@ -86,13 +86,48 @@ class Wire3D : Obstacle3d
 	}
 }
 
-class FuelDrum : Obstacle3d //MaxED
+class FuelDrumSpawner : RandomSpawner
 {
 	Default
 	{
 		//$Category Models (BoA)/Obstacles
 		//$Title Fuel Drum
 		//$Color 3
+	}
+
+	override Name ChooseSpawn()
+	{
+		if (pitch == 90 || pitch == -90)
+		{
+			pitch = 0;
+			return 'FuelDrumSide';
+		}
+		return 'FuelDrum';
+	}
+}
+
+class FuelDrumFixSpawner : FuelDrumSpawner
+{
+	Default
+	{
+		//$Title Fuel Drum, non-solid for players
+	}
+
+	override Name ChooseSpawn()
+	{
+		if (pitch == 90 || pitch == -90)
+		{
+			pitch = 0;
+			return 'FuelDrumSide';
+		}
+		return 'FuelDrumFix';
+	}
+}
+
+class FuelDrum : Obstacle3d //MaxED
+{
+	Default
+	{
 		DistanceCheck "boa_scenelod";
 		Radius 16;
 		Height 43;
@@ -105,9 +140,7 @@ class FuelDrum : Obstacle3d //MaxED
 class FuelDrumFix : FuelDrum
 {
 	Default
-	{
-		//$Title Fuel Drum, non-solid for players
-		
+	{		
 		+THRUSPECIES
 		Species "Player";
 	}
