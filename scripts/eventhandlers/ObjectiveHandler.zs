@@ -79,7 +79,7 @@ class Objective : Thinker
 		if (o == handler.objectives.Size()) { return; }
 
 		handler.objectives[o].complete = true;
-		handler.objectives[o].timer = 70;
+		handler.objectives[o].timer = 140;
 	}
 
 	ui virtual void DrawObjective(Font fnt, double x, double y, double w = 800, double h = 600, double alpha = 1.0, bool mode = 0)
