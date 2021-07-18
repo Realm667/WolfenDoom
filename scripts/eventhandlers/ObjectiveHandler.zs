@@ -465,7 +465,7 @@ class ObjectivesWidget : Widget
 			{
 				temp = String.Format("  : %i/%i", level.killed_monsters, level.total_monsters);
 				DrawToHud.DrawText("💀", (textpos - HUDFont.StringWidth(temp) / 2, drawpos.y - 1), Symbols, alpha, shade:Font.CR_UNTRANSLATED, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
-				StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, temp, (textpos, drawpos.y), StatusBar.DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, alpha);
+				DrawToHud.DrawText(temp, (textpos, drawpos.y), HUDFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
 				textpos += step;
 			}
 
@@ -473,7 +473,7 @@ class ObjectivesWidget : Widget
 			{
 				temp = String.Format("  : %i/%i", level.found_secrets, level.total_secrets);
 				DrawToHud.DrawText("⚑", (textpos - HUDFont.StringWidth(temp) / 2, drawpos.y - 1), Symbols, alpha, shade:Font.CR_UNTRANSLATED, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
-				StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, temp, (textpos, drawpos.y), StatusBar.DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, alpha);
+				DrawToHud.DrawText(temp, (textpos, drawpos.y), HUDFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
 				textpos += step;
 			}
 
@@ -481,7 +481,7 @@ class ObjectivesWidget : Widget
 			{
 				temp = String.Format("  : %i/%i", level.found_items, level.total_items);
 				DrawToHud.DrawText("🪙", (textpos - HUDFont.StringWidth(temp) / 2, drawpos.y - 1), Symbols, alpha, shade:Font.CR_UNTRANSLATED, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
-				StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, temp, (textpos, drawpos.y), StatusBar.DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, alpha);
+				DrawToHud.DrawText(temp, (textpos, drawpos.y), HUDFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
 			}
 		}
 

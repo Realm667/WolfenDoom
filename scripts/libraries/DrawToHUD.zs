@@ -87,7 +87,7 @@ class DrawToHUD
 		else if (flags & ZScriptTools.STR_MIDDLE) { screenpos.y -= texth / 2; }
 
 		// Draw the text
-		screen.DrawText(fnt, shade, screenpos.x, screenpos.y, text, DTA_KeepRatio, true, DTA_Alpha, alpha, DTA_VirtualWidthF, width, DTA_VirtualHeightF, height);
+		screen.DrawText(fnt, shade, int(screenpos.x), int(screenpos.y), text, DTA_KeepRatio, true, DTA_Alpha, alpha, DTA_VirtualWidth, int(width), DTA_VirtualHeight, int(height));
 	}
 
 	enum DrawTex
