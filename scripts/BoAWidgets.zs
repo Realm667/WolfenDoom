@@ -1419,7 +1419,7 @@ class ActiveEffectWidget : Widget
 		if (
 			player.mo.pos.z == player.mo.floorz && 
 			!player.mo.waterlevel &&
-			player.mo.cursector.damagetype != ""
+			player.mo.cursector.damagetype != "" &&
 			(
 				player.mo.cursector.damagetype == "UndeadPoisonAmbience" ||
 				player.mo.cursector.damagetype == "MutantPoisonAmbience"
@@ -1454,7 +1454,7 @@ class ActiveEffectWidget : Widget
 		if (
 			player.mo.pos.z == player.mo.floorz && 
 			!player.mo.waterlevel &&
-			player.mo.cursector.damagetype != ""
+			player.mo.cursector.damagetype != "" &&
 			(
 				player.mo.cursector.damagetype == "UndeadPoisonAmbience" ||
 				player.mo.cursector.damagetype == "MutantPoisonAmbience"
