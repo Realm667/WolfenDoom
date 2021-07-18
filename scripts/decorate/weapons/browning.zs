@@ -95,7 +95,7 @@ class Browning5 : NaziWeapon
 		TNT1 A 0 A_CheckReload;
 		Goto Ready;
 	Reload:
-		BA5G E 1 Offset(-1,33) A_Reloading;
+		BA5G E 1 Offset(-1,33) A_Reloading(true);
 		BA5G E 1 Offset(-4,41);
 		BA5G E 1 Offset(-6,46);
 		BA5G E 1 Offset(-7,55);
@@ -129,7 +129,7 @@ class Browning5 : NaziWeapon
 		BA5G E 1 Offset(-6,58);
 		BA5G E 1 Offset(-4,46);
 		BA5G E 1 Offset(-2,33);
-		BA5G E 1 Offset(-1,32) A_Reloading(0);
+		BA5G E 1 Offset(-1,32) A_Reloading(false);
 		Goto Ready;
 	Flash:
 		BA5G B 1 A_Light2;

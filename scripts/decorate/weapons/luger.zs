@@ -78,7 +78,7 @@ class Luger9mm : NaziWeapon
 		Goto Ready;
 	Reload:
 		LUGG H 1 Offset(0,35) A_StartSound("luger/reload", CHAN_5);
-		LUGG H 1 Offset(0,38);
+		LUGG H 1 Offset(0,38) A_Reloading(true);
 		LUGG J 1 Offset(0,44);
 		LUGG J 1 Offset(0,52);
 		LUGG I 1 Offset(0,62);
@@ -98,7 +98,7 @@ class Luger9mm : NaziWeapon
 		LUGG H 1 Offset(0,44);
 		LUGG H 1 Offset(0,38);
 		LUGG A 1 Offset(0,35);
-		LUGG A 1 Offset(0,32);
+		LUGG A 1 Offset(0,32) A_Reloading(false);
 		Goto Ready;
 	Flash:
 		LUGF A 1 A_Light2;

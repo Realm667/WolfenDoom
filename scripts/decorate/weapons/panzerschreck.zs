@@ -134,7 +134,7 @@ class Panzerschreck : NaziWeapon
 		Goto Ready;
 	Reload:
 		PANZ A 1 Offset(1,33) A_StartSound("panzer/load", CHAN_WEAPON);
-		PANZ A 1 Offset(2,34);
+		PANZ A 1 Offset(2,34) A_Reloading(true);
 		PANZ A 1 Offset(3,35);
 		PANZ A 1 Offset(4,36);
 		PANZ A 1 Offset(4,43);
@@ -178,7 +178,7 @@ class Panzerschreck : NaziWeapon
 		PANZ A 1 Offset(-6,32);
 		PANZ A 1 Offset(-2,28);
 		PANZ A 1 Offset(1,27);
-		PANZ A 1 Offset(-1,29);
+		PANZ A 1 Offset(-1,29) A_Reloading(false);
 		Goto Ready;
 	Spawn:
 		PANP A -1;

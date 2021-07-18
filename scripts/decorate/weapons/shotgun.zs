@@ -109,7 +109,7 @@ class TrenchShotgun : NaziWeapon
 		TNT1 A 0 A_CheckReload;
 		Goto Ready;
 	Reload:
-		SHTG A 1 Offset(-1,33) A_Reloading;
+		SHTG A 1 Offset(-1,33) A_Reloading(true);
 		SHTG B 1 Offset(5,34);
 		SHTG B 1 Offset(2,36);
 		SHTG B 1 Offset(-1,38);
@@ -147,7 +147,7 @@ class TrenchShotgun : NaziWeapon
 		SHTG C 1 Offset(3,35);
 		SHTG B 1 Offset(-1,38);
 		SHTG B 1 Offset(2,36);
-		SHTG B 1 Offset(5,34) A_Reloading(0);
+		SHTG B 1 Offset(5,34) A_Reloading(false);
 		Goto Ready;
 	Flash:
 		SHTF A 1 A_Light2;

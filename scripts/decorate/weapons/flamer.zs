@@ -101,7 +101,7 @@ class Pyrolight : NaziWeapon
 		Goto Ready;
 	Reload:
 		FFTR B 1 Offset(0,35) A_StartSound("flamer/reload",CHAN_5);
-		FFTR B 1 Offset(0,38);
+		FFTR B 1 Offset(0,38) A_Reloading(true);
 		FFTR B 1 Offset(0,40);
 		FFTR B 1 Offset(0,42);
 		FFTR B 1 Offset(0,44);
@@ -194,7 +194,7 @@ class Pyrolight : NaziWeapon
 		FFTR A 1 Offset(4,40);
 		FFTR A 1 Offset(3,35);
 		FFTR A 1 Offset(2,34);
-		FFTR A 1 Offset(1,33);
+		FFTR A 1 Offset(1,33) A_Reloading(false);
 		Goto Ready;
 	Spawn:
 		FLMT A -1;

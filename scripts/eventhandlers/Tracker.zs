@@ -780,10 +780,10 @@ class AchievementTracker : StaticEventHandler
 			case ACH_ASSASSIN: // Set up in the Nazi class's DamageMobj function
 				if (++knifekills[pnum] >= 10) { complete = true; }
 				break;
-			case ACH_MINRELOADS: // Reloads incremented in NaziWeapon class A_Reloading function
+			case ACH_MINRELOADS: // Total reloads incremented in NaziWeapon class A_Reloading function
 				if (reloads[pnum] <= 25) { complete = true; }
 				break;
-			case ACH_NORELOADS: // Manual reloads incremented here in CheckButtons function
+			case ACH_NORELOADS: // Manual reloads incremented here in WorldTick function
 				if (!manualreloads[pnum]) { complete = true; }
 				break;
 			case ACH_SURRENDERS: // Checked in Nazi class DoSurrender function

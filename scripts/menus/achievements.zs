@@ -194,6 +194,9 @@ class AchievementSummary : BoAMenu
 			case AchievementTracker.ACH_ASSASSIN:
 				value = String.Format("%i/%i", tracker.knifekills[consoleplayer], 10);
 				break;
+			case AchievementTracker.ACH_MINRELOADS:
+				value = String.Format("%i must be less than %i", tracker.reloads[consoleplayer], 25);
+				break;
 			case AchievementTracker.ACH_SURRENDERS:
 				value = String.Format("%i/%i", tracker.surrenders[consoleplayer], 5);
 				break;

@@ -76,7 +76,7 @@ class Walther9mm : NaziWeapon
 		Goto Ready;
 	Reload:
 		WALG A 1 Offset(0,35) A_StartSound("walther/reload", CHAN_5);
-		WALG A 1 Offset(0,38);
+		WALG A 1 Offset(0,38) A_Reloading(true);
 		WALG A 1 Offset(0,44);
 		WALG A 1 Offset(0,52);
 		WALG B 1 Offset(0,62);
@@ -96,7 +96,7 @@ class Walther9mm : NaziWeapon
 		WALG A 1 Offset(0,44);
 		WALG A 1 Offset(0,38);
 		WALG A 1 Offset(0,35);
-		WALG A 1 Offset(0,32);
+		WALG A 1 Offset(0,32) A_Reloading(false);
 		Goto Ready;
 	Flash:
 		WALF A 1 A_Light2;

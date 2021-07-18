@@ -175,7 +175,7 @@ class TeslaCannon : NaziAstroWeapon
 		PULS H 1 Offset(0,35) A_StartSound("weapon/dryfire", CHAN_WEAPON);
 		Goto Ready;
 		PULS H 1 Offset(0,35) A_StartSound("mp40/reload", CHAN_WEAPON);
-		PULS H 1 Offset(0,38);
+		PULS H 1 Offset(0,38) A_Reloading(true);
 		PULS H 1 Offset(0,44);
 		PULS H 1 Offset(0,52);
 		PULS H 1 Offset(-1,54);
@@ -208,7 +208,7 @@ class TeslaCannon : NaziAstroWeapon
 		PULS H 1 Offset(-2,45);
 		PULS H 1 Offset(-1,44);
 		PULS H 1 Offset(-1,46);
-		PULS H 1 Offset(-1,47);
+		PULS H 1 Offset(-1,47) A_Reloading(false);
 		PULS B 1 Offset(0,49) A_WeaponReady(WRF_NOBOB);
 		PULS C 1 Offset(0,44) A_WeaponReady(WRF_NOBOB);
 		PULS D 1 Offset(0,38) A_WeaponReady(WRF_NOBOB);

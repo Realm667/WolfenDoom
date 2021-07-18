@@ -148,7 +148,7 @@ class Kar98k : NaziWeapon
 		SCO1 A 3 A_ZoomFactor(1.0);
 		Goto Ready;
 	Reload:
-		SCO1 A 0 A_Reloading;
+		SCO1 A 0 A_Reloading(true);
 		SCO1 A 0 A_JumpIfInventory("SniperZoom",1,2);
 		SCO1 A 0 A_Jump(256,4);
 		SCO1 A 0 A_TakeInventory("SniperZoom");
@@ -187,7 +187,7 @@ class Kar98k : NaziWeapon
 		KAR9 A 2 Offset(-8,36);
 		KAR9 A 1 Offset(-6,35);
 		KAR9 A 1 Offset(-4,34);
-		KAR9 A 2 Offset(-2,33) A_Reloading(0);
+		KAR9 A 2 Offset(-2,33) A_Reloading(false);
 		Goto Ready;
 	Spawn:
 		K98K A -1;

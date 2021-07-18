@@ -74,7 +74,7 @@ class G43 : NaziWeapon
 		Goto Ready;
 	Reload:
 		M1GG A 1 Offset(0,35) A_StartSound("g43/reload",CHAN_5);
-		M1GG A 1 Offset(-2,38);
+		M1GG A 1 Offset(-2,38) A_Reloading(true);
 		M1GG A 1 Offset(-4,44);
 		M1GG A 1 Offset(-6,52);
 		M1GG A 1 Offset(-7,57);
@@ -103,7 +103,7 @@ class G43 : NaziWeapon
 		M1GG A 1 Offset(-2,60);
 		M1GG A 1 Offset(0,50);
 		M1GG A 1 Offset(0,40);
-		M1GG A 1 Offset(0,32);
+		M1GG A 1 Offset(0,32) A_Reloading(false);
 		Goto Ready;
 	Flash:
 		M1GF A 1 A_Light2;

@@ -98,7 +98,7 @@ class Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 		Goto Ready;
 	Reload:
 		STEN A 1 Offset(0,38) A_StartSound("sten/reload", CHAN_5);
-		STEN A 1 Offset(0,44);
+		STEN A 1 Offset(0,44) A_Reloading(true);
 		STEN A 1 Offset(0,56);
 		STEN A 1 Offset(-2,60);
 		STEN A 1 Offset(-4,72);
@@ -126,7 +126,7 @@ class Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 		STEN A 1 Offset(-5,48);
 		STEN A 1 Offset(-3,42);
 		STEN A 1 Offset(-1,36);
-		STEN A 1 Offset(0,32);
+		STEN A 1 Offset(0,32) A_Reloading(false);
 		TNT1 A 0 A_Refire; // to compensate the effect of +NOAUTOFIRE --N00b
 		Goto Ready;
 	Spawn:

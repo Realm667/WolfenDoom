@@ -95,7 +95,7 @@ class AstroShotgun : NaziAstroWeapon
 		ASSG B 1 Offset(0,35) A_StartSound("weapon/dryfire", CHAN_WEAPON);	//replace this sound?
 		Goto Ready;
 		ASSG B 1 Offset(0,35) A_StartSound("mp40/reload", CHAN_WEAPON);	//replace this sound?
-		ASSG B 1 Offset(0,38);
+		ASSG B 1 Offset(0,38) A_Reloading(true);
 		ASSG B 1 Offset(0,44);
 		ASSG B 1 Offset(0,52);
 		ASSG B 1 Offset(-1,54);
@@ -128,7 +128,7 @@ class AstroShotgun : NaziAstroWeapon
 		ASSG B 1 Offset(-2,45);
 		ASSG B 1 Offset(-1,44);
 		ASSG B 1 Offset(-1,46);
-		ASSG B 1 Offset(-1,47);
+		ASSG B 1 Offset(-1,47) A_Reloading(false);
 		ASSG B 1 Offset(0,49) A_WeaponReady(WRF_NOBOB);
 		ASSG B 1 Offset(0,44) A_WeaponReady(WRF_NOBOB);
 		ASSG B 1 Offset(0,38) A_WeaponReady(WRF_NOBOB);
@@ -245,7 +245,7 @@ class AstroRocketlauncher : NaziAstroWeapon
 		ASRL B 1 Offset(0,35) A_StartSound("weapon/dryfire", CHAN_WEAPON);	//replace this sound?
 		Goto Ready;
 		ASRL B 1 Offset(0,35) A_StartSound("mp40/reload", CHAN_WEAPON);
-		ASRL B 1 Offset(0,38);
+		ASRL B 1 Offset(0,38) A_Reloading(true);
 		ASRL B 1 Offset(0,44);
 		ASRL B 1 Offset(0,52);
 		ASRL B 1 Offset(-1,54);
@@ -278,7 +278,7 @@ class AstroRocketlauncher : NaziAstroWeapon
 		ASRL B 1 Offset(-2,45);
 		ASRL B 1 Offset(-1,44);
 		ASRL B 1 Offset(-1,46);
-		ASRL B 1 Offset(-1,47);
+		ASRL B 1 Offset(-1,47) A_Reloading(false);
 		ASRL B 1 Offset(0,49) A_WeaponReady(WRF_NOBOB);
 		ASRL B 1 Offset(0,44) A_WeaponReady(WRF_NOBOB);
 		ASRL B 1 Offset(0,38) A_WeaponReady(WRF_NOBOB);
@@ -410,7 +410,7 @@ class AstroChaingun : NaziAstroWeapon
 		ASCG B 1 Offset(0,35) A_StartSound("weapon/dryfire", CHAN_WEAPON);	//replace this sound?
 		Goto Ready;
 		ASCG B 1 Offset(0,35) A_StartSound("mp40/reload", CHAN_WEAPON);	//replace this sound?
-		ASCG B 1 Offset(0,38);
+		ASCG B 1 Offset(0,38) A_Reloading(true);
 		ASCG B 1 Offset(0,44);
 		ASCG B 1 Offset(0,52);
 		ASCG B 1 Offset(-1,54);
@@ -443,7 +443,7 @@ class AstroChaingun : NaziAstroWeapon
 		ASCG B 1 Offset(-2,45);
 		ASCG B 1 Offset(-1,44);
 		ASCG B 1 Offset(-1,46);
-		ASCG B 1 Offset(-1,47);
+		ASCG B 1 Offset(-1,47) A_Reloading(false);
 		ASCG B 1 Offset(0,49) A_WeaponReady(WRF_NOBOB);
 		ASCG B 1 Offset(0,44) A_WeaponReady(WRF_NOBOB);
 		ASCG B 1 Offset(0,38) A_WeaponReady(WRF_NOBOB);
@@ -639,7 +639,7 @@ class AstroLuger : NaziAstroWeapon //quite the same code from Luger P08 - ozy81
 		Goto Ready;
 	Reload:
 		PLPI A 1 Offset(0,35) A_StartSound("luger/reload", CHAN_5);
-		PLPI A 1 Offset(0,38);
+		PLPI A 1 Offset(0,38) A_Reloading(true);
 		PLPI A 1 Offset(0,44);
 		PLPI A 1 Offset(0,52);
 		PLPI A 1 Offset(0,62);
@@ -659,7 +659,7 @@ class AstroLuger : NaziAstroWeapon //quite the same code from Luger P08 - ozy81
 		PLPI A 1 Offset(0,44);
 		PLPI A 1 Offset(0,38);
 		PLPI A 1 Offset(0,35);
-		PLPI A 1 Offset(0,32);
+		PLPI A 1 Offset(0,32) A_Reloading(false);
 		Goto Ready;
 	Flash:
 		PLPI A 1 BRIGHT A_Light2;

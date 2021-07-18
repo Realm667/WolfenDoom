@@ -79,7 +79,7 @@ class MP40 : NaziWeapon
 		Goto Ready;
 	Reload:
 		RIFG A 1 Offset(0,35) A_StartSound("mp40/reload", CHAN_5, 0, frandom(0.6, 0.8));
-		RIFG A 1 Offset(0,38);
+		RIFG A 1 Offset(0,38) A_Reloading(true);
 		RIFG A 1 Offset(0,44);
 		RIFG B 1 Offset(0,52);
 		RIFG B 1 Offset(-1,54);
@@ -112,7 +112,7 @@ class MP40 : NaziWeapon
 		RIFG B 1 Offset(-2,45);
 		RIFG B 1 Offset(-1,44);
 		RIFG B 1 Offset(-1,46);
-		RIFG B 1 Offset(-1,47);
+		RIFG B 1 Offset(-1,47) A_Reloading(false);
 		RIFG B 1 Offset(0,49) A_WeaponReady(WRF_NOBOB);
 		RIFG A 1 Offset(0,44) A_WeaponReady(WRF_NOBOB);
 		RIFG A 1 Offset(0,38) A_WeaponReady(WRF_NOBOB);
