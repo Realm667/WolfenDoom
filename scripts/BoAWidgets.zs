@@ -1415,7 +1415,18 @@ class ActiveEffectWidget : Widget
 				if (icon.IsValid()) { count++; }
 			}
 		}
-		if (player.poisoncount) { count++; }
+
+		if (
+			player.mo.pos.z == player.mo.floorz && 
+			!player.mo.waterlevel &&
+			player.mo.cursector.damagetype != ""
+			(
+				player.mo.cursector.damagetype == "UndeadPoisonAmbience" ||
+				player.mo.cursector.damagetype == "MutantPoisonAmbience"
+			)
+		) { count++; }
+		else if (player.poisoncount) { count++; }
+
 		if (player.hazardcount) { count++; }
 		if (player.mo.poisondurationreceived) { count++; }
 
@@ -1440,7 +1451,20 @@ class ActiveEffectWidget : Widget
 			}
 		}
 
-		if (player.poisoncount)
+		if (
+			player.mo.pos.z == player.mo.floorz && 
+			!player.mo.waterlevel &&
+			player.mo.cursector.damagetype != ""
+			(
+				player.mo.cursector.damagetype == "UndeadPoisonAmbience" ||
+				player.mo.cursector.damagetype == "MutantPoisonAmbience"
+			)
+		)
+		{
+			DrawEffectIcon(TexMan.CheckForTexture("ICO_POIS"), 1, 1, (drawposx, drawposy), GetPoisonColor(player.mo.cursector.damagetype));
+			drawposx += spacing;
+		}
+		else if (player.poisoncount)
 		{
 			DrawEffectIcon(TexMan.CheckForTexture("ICO_POIS"), player.poisoncount, 100, (drawposx, drawposy), GetPoisonColor(player.poisonpaintype));
 			drawposx += spacing;
