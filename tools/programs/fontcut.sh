@@ -25,7 +25,7 @@ process_char(){
     lastbtmrow=0
     for ((rownum=1; rownum <= ${#chardata}; rownum++)) {
         rowdata=${chardata[$rownum]}
-        if [[$rowdata == $blankrow]]; then
+        if [[ "$rowdata" == "$blankrow" ]]; then
             ((cuttoprows += 1))
         else
             lasttoprow=$rownum
@@ -34,15 +34,16 @@ process_char(){
     }
     for ((rownum=${#chardata}; rownum > 0; rownum--)) {
         rowdata=${chardata[$rownum]}
-        if [[$rowdata == $blankrow]]; then
+        if [[ "$rowdata" == "$blankrow" ]]; then
             ((cutbtmrows += 1))
         else
             lastbtmrow=$rownum
             break
         fi
     }
-    charheight=$((lastbtmrow - lasttoprow))
+    charheight=$((lastbtmrow - lasttoprow + 1))
     offsety=$(( yoffset - (charheight - baseheight) ))
+    convert $fontchar -chop 0x${cutbtmrows}+0+$((lastbtmrow+1)) -chop 0x${cuttoprows} $fontchar
     python3 grab_inject.py $fontchar 0 $offsety
 }
 

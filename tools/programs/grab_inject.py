@@ -72,10 +72,10 @@ if __name__ == "__main__":
                                      "into the given PNG file")
     parser.add_argument('png', help="The PNG file to inject the grAb chunk "
                                     "into")
-    parser.add_argument('x', help="X (horizontal) offset")
-    parser.add_argument('y', help="Y (vertical) offset")
+    parser.add_argument('x', type=int, help="X (horizontal) offset")
+    parser.add_argument('y', type=int, help="Y (vertical) offset")
     args = parser.parse_args()
-    grabs = get_grab_bytes(**vars(args))
+    grabs = get_grab_bytes(args.x, args.y)
     grab_chunk = PNGChunk(b"grAb", grabs)
     png = PNGFile()
     png.read(args.png)
