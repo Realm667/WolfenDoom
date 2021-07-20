@@ -76,15 +76,16 @@ if __name__ == "__main__":
     parser.add_argument('y', type=int, help="Y (vertical) offset")
     args = parser.parse_args()
     grabs = get_grab_bytes(args.x, args.y)
-    grab_chunk = PNGChunk(b"grAb", grabs)
     png = PNGFile()
     png.read(args.png)
-    png_ihdr_index = png.chunk_index(b"IHDR")
-    png_grab_index = png.chunk_index(b"grAb")
-    if png_grab_index != -1:
-        # Replace existing grAb chunk
-        png.chunks[png_grab_index] = grab_chunk
-    else:
-        # Inject grAb chunk
-        png.chunks.insert(png_ihdr_index, grab_chunk)
+    if grabs is not None:
+        grab_chunk = PNGChunk(b"grAb", grabs)
+        png_ihdr_index = png.chunk_index(b"IHDR")
+        png_grab_index = png.chunk_index(b"grAb")
+        if png_grab_index != -1:
+            # Replace existing grAb chunk
+            png.chunks[png_grab_index] = grab_chunk
+        else:
+            # Inject grAb chunk
+            png.chunks.insert(png_ihdr_index + 1, grab_chunk)
     png.write(args.png)

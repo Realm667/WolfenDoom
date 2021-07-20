@@ -6,7 +6,6 @@ fontdir=${1:?Please specify a font directory}
 process_char(){
     fontchar=$1
     yoffset=${2:=0}
-    baseheight=${3:=0}
     pcre_compile -im '\s(\d+)x(\d+)\s'
     charinfo="$(identify $fontchar 2>/dev/null)" || continue
     pcre_match -a chardims $charinfo
@@ -41,12 +40,13 @@ process_char(){
             break
         fi
     }
-    charheight=$((lastbtmrow - lasttoprow + 1))
-    offsety=$(( yoffset - (charheight - baseheight) ))
-    convert $fontchar -chop 0x${cutbtmrows}+0+$((lastbtmrow+1)) -chop 0x${cuttoprows} $fontchar
+    charheight=$((lastbtmrow - lasttoprow))
+    offsety=$(( -yoffset - (lasttoprow - 1) ))
+    convert $fontchar -chop 0x${cutbtmrows}+0+$((lastbtmrow)) -chop 0x${cuttoprows} $fontchar
+    pngcrush -ow -rem alla $fontchar
     python3 grab_inject.py $fontchar 0 $offsety
 }
 
 for fontchar in ${fontdir}/*(.); do
-    process_char $fontchar $2 $3
+    process_char $fontchar $2
 done

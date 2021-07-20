@@ -19,6 +19,8 @@ def get_bytes(x=0, y=0):
     x - The X (horizontal) offset
     y - The Y (vertical) offset
     """
+    if x == 0 and y == 0:
+        return None
     return struct.pack("!ii", x, y)
 
 
@@ -29,11 +31,14 @@ def get_grabs(x=0, y=0, bad=False):
     y - The Y (vertical) offset
     bad - Whether or not to calculate the chunk's CRC incorrectly
     """
+    grabytes = get_bytes(x, y)
+    if grabytes is None:
+        return None
     # Convert to binary
     if bad:
-        grabs = get_bytes(x, y)
+        grabs = grabytes
     else:
-        grabs = b"grAb" + get_bytes(x, y)
+        grabs = b"grAb" + grabytes
 
     crc = struct.pack("!I", zlib.crc32(grabs))
     size = struct.pack("!i", 8)
@@ -55,5 +60,6 @@ if __name__ == "__main__":
     offsets = parser.parse_args()
     output = get_grabs(**vars(offsets))
 
-    # Write to stdout
-    sys.stdout.buffer.write(output)
+    if output is not None:
+        # Write to stdout
+        sys.stdout.buffer.write(output)
