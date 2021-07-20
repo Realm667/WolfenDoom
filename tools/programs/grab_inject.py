@@ -79,6 +79,12 @@ if __name__ == "__main__":
     grab_chunk = PNGChunk(b"grAb", grabs)
     png = PNGFile()
     png.read(args.png)
-    png_ihdr_index = png.chunk_index("IHDR")
-    png.chunks.insert(png_ihdr_index, grab_chunk)
+    png_ihdr_index = png.chunk_index(b"IHDR")
+    png_grab_index = png.chunk_index(b"grAb")
+    if png_grab_index != -1:
+        # Replace existing grAb chunk
+        png.chunks[png_grab_index] = grab_chunk
+    else:
+        # Inject grAb chunk
+        png.chunks.insert(png_ihdr_index, grab_chunk)
     png.write(args.png)
