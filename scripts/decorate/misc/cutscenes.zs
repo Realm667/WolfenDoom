@@ -813,7 +813,7 @@ class TMMarine1: Actor
 	States
 	{
 	Spawn:
-		FIN1 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIN1 A 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FIN1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose17","Pose17");
 	Pose1:
@@ -890,7 +890,7 @@ class TMMarine1B : TMMarine1
 	States
 	{
 	Spawn:
-		FIB1 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIB1 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FIB1 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -935,7 +935,7 @@ class TMMarine1G : TMMarine1B
 	States
 	{
 	Spawn:
-		FIG1 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIG1 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FIG1 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -951,7 +951,7 @@ class TMMarine1R : TMMarine1B
 	States
 	{
 	Spawn:
-		FSR1 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FSR1 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FSR1 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -967,7 +967,7 @@ class TMMarine1Y : TMMarine1B
 	States
 	{
 	Spawn:
-		FIY1 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIY1 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FIY1 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -983,7 +983,7 @@ class TMMarine2 : TMMarine1
 	States
 	{
 	Spawn:
-		FIN2 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIN2 A 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FIN2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose17","Pose17");
 		Stop;
@@ -1003,7 +1003,7 @@ class TMMarine2B : TMMarine1B
 	States
 	{
 	Spawn:
-		FIB2 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIB2 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FIB2 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1019,7 +1019,7 @@ class TMMarine2G : TMMarine1B
 	States
 	{
 	Spawn:
-		FIG2 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIG2 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FIG2 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1035,7 +1035,7 @@ class TMMarine2R : TMMarine1B
 	States
 	{
 	Spawn:
-		FSR2 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FSR2 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FSR2 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1051,7 +1051,7 @@ class TMMarine2Y : TMMarine1B
 	States
 	{
 	Spawn:
-		FIY2 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIY2 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FIY2 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1067,7 +1067,7 @@ class TMMarine3 : TMMarine1
 	States
 	{
 	Spawn:
-		FIN3 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIN3 A 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FIN3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose17","Pose17");
 		Stop;
@@ -1087,7 +1087,7 @@ class TMMarine3B : TMMarine1B
 	States
 	{
 	Spawn:
-		FIB3 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIB3 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FIB3 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1103,7 +1103,7 @@ class TMMarine3G : TMMarine1B
 	States
 	{
 	Spawn:
-		FIG3 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIG3 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FIG3 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1119,7 +1119,7 @@ class TMMarine3R : TMMarine1B
 	States
 	{
 	Spawn:
-		FSR3 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FSR3 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FSR3 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1156,7 +1156,7 @@ class TMMarine4: Actor
 	States
 	{
 	Spawn:
-		FIN4 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIN4 A 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FIN4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose17","Pose17");
 		Stop;
@@ -1234,7 +1234,7 @@ class TMMarine4B : TMMarine4
 	States
 	{
 	Spawn:
-		FIB4 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIB4 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FIB4 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 	Pose1:
@@ -1277,7 +1277,7 @@ class TMMarine4G : TMMarine4B
 	States
 	{
 	Spawn:
-		FIG4 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIG4 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FIG4 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1293,7 +1293,7 @@ class TMMarine4R : TMMarine4B
 	States
 	{
 	Spawn:
-		FSR4 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FSR4 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FSR4 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1309,7 +1309,7 @@ class TMMarine4Y : TMMarine4B
 	States
 	{
 	Spawn:
-		FIY4 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIY4 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FIY4 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1330,7 +1330,7 @@ class TMWound1: Actor
 	States
 	{
 	Spawn:
-		FIN5 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIN5 A 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FIN5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4");
 		Stop;
@@ -1361,7 +1361,7 @@ class TMWound2 : TMWound1
 	States
 	{
 	Spawn:
-		FIB5 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIB5 A 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FIB5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4");
 		Stop;
@@ -1392,7 +1392,7 @@ class TMWound3 : TMWound1
 	States
 	{
 	Spawn:
-		FIG5 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIG5 A 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FIG5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4");
 		Stop;
@@ -1423,7 +1423,7 @@ class TMWound4 : TMWound1
 	States
 	{
 	Spawn:
-		FSR5 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FSR5 A 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FSR5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4");
 		Stop;
@@ -1454,7 +1454,7 @@ class TMWound5 : TMWound1
 	States
 	{
 	Spawn:
-		FIY5 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIY5 A 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
 	Randomize:
 		FIY5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4");
 		Stop;
