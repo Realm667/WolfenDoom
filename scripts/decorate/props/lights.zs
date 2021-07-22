@@ -2172,6 +2172,39 @@ class Red_Light : SceneryBase
 	}
 }
 
+class Red_LightOff : Red_Light //needed for c2m3 boss battle --ozy81
+{
+	Default
+	{
+		//$Title 2d Light, Red (OFF, SWITCHABLE)
+	}
+	States
+	{
+	Spawn:
+		STRR A 0;
+		Goto CheckDormant;
+	CheckDormant:
+		"####" "#" 0  {
+			if (bDormant) {
+				return ResolveState("Off");
+			}
+			return ResolveState("On");
+		}
+	On:
+		"####" "#" -1;
+		Stop;
+	Off:
+		"####" "#" -1 LIGHT("FIXEDRED");
+		Stop;
+	Active: // These are just used to toggle the dormant state whenever 'used' by the player, regardless of starting value
+	Inactive:
+		"####" "#"0 {
+			bDormant = !bDormant;
+			return ResolveState("CheckDormant");
+		}
+	}
+}
+
 class Blue_Light : Red_Light
 {
 	Default

@@ -229,10 +229,12 @@ class EmptyCage: SceneryBase
 		//$Title Cage (empty)
 		//$Color 4
 		Radius 16;
-		Height 64;
+		Height 48;
 		Scale 0.5;
 		+NOGRAVITY
+		+SOLID
 		+SPAWNCEILING
+		ProjectilePassHeight 0.01; //not perfect but works
 		CullActorBase.CullLevel 1;
 	}
 	States
