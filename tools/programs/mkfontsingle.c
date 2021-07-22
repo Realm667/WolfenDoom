@@ -176,16 +176,21 @@ int32_t draw_glyph( struct image_data* idata, FT_Bitmap *bmp, uint8_t v, uint32_
 	return drawn;
 }
 
-void write_inf(int32_t kerning, int32_t height, int32_t spacewidth)
+void write_inf(char* fontName, int32_t kerning, int32_t height, int32_t spacewidth)
 {
-	int32_t length = snprintf(NULL, 0, "Kerning %d\nFontHeight %d\n", kerning, height);
+	int32_t length = 0;
+	if (fontName) {
+		length += snprintf(NULL, 0, "// %s\n", fontName);
+	}
+	length += snprintf(NULL, 0, "Kerning %d\nFontHeight %d\n", kerning, height);
 	if ( spacewidth > 0 )
 	{
 		length += snprintf(NULL, 0, "SpaceWidth %d\n", spacewidth);
 	}
 	int8_t* data = malloc(length);
 	int8_t* cur = data;
-	cur += sprintf(data, "Kerning %d\nFontHeight %d\n", kerning, height);
+	cur += sprintf(cur, "// %s\n", fontName);
+	cur += sprintf(cur, "Kerning %d\nFontHeight %d\n", kerning, height);
 	if ( spacewidth > 0 )
 	{
 		sprintf(cur, "SpaceWidth %d\n", spacewidth);
@@ -196,10 +201,17 @@ void write_inf(int32_t kerning, int32_t height, int32_t spacewidth)
 	free(data);
 }
 
-void render_glyphset(FT_Face fnt, uint32_t low, uint32_t high, int32_t gradient, int32_t upshift, uint8_t padding)
+void render_glyphset(FT_Face fnt, char* fontName, uint32_t low, uint32_t high, int32_t gradient, int32_t upshift, uint8_t padding)
 {
 	int32_t channels = 2; // Gray/alpha
 	struct image_data idata;
+	int32_t minHeight = 0, maxHeight = 0, spaceWidth = 0;
+	// Get space width
+	FT_UInt glyph = FT_Get_Char_Index(fnt,' ');
+	if ( !FT_Load_Glyph(fnt,glyph,FT_LOAD_DEFAULT) && glyph )
+	{
+		spaceWidth = (int32_t)roundf((float)fnt->glyph->linearHoriAdvance / 65536.0);
+	}
 	for ( uint32_t i=low; i<=high; i++ )
 	{
 		FT_UInt glyph = FT_Get_Char_Index(fnt,i);
@@ -215,6 +227,8 @@ void render_glyphset(FT_Face fnt, uint32_t low, uint32_t high, int32_t gradient,
 			// printf("Glyph %d linearHoriAdvance: %.3f\n", i, (float) fnt->glyph->linearHoriAdvance / 65536.0);
 			// printf("Glyph %d linearVertAdvance: %.3f\n", i, (float) fnt->glyph->linearVertAdvance / 65536.0);
 			int32_t glyphHeight = (int32_t)roundf((float) fnt->glyph->linearVertAdvance / 65536.0);
+			minHeight = minHeight == 0 ? glyphHeight : minHeight < glyphHeight ? minHeight : glyphHeight;
+			maxHeight = maxHeight == 0 ? glyphHeight : maxHeight > glyphHeight ? maxHeight : glyphHeight;
 			int32_t glyphWidth = (int32_t)roundf((float) fnt->glyph->linearHoriAdvance / 65536.0);
 			int32_t xoffset = -fnt->glyph->bitmap_left;
 			int32_t yoffset = fnt->glyph->bitmap_top - glyphHeight + upshift;
@@ -228,13 +242,20 @@ void render_glyphset(FT_Face fnt, uint32_t low, uint32_t high, int32_t gradient,
 			free(idata.data);
 		}
 	}
+	write_inf(fontName, 1, minHeight + maxHeight / 2, spaceWidth);
 }
 
-void write_inf_monospace(int32_t width, int32_t height)
+void write_inf_monospace(char* fontName, int32_t width, int32_t height)
 {
-	int32_t length = snprintf(NULL, 0, "CellSize %d, %d\n", width, height);
+	int32_t length = 0;
+	if (fontName) {
+		length += snprintf(NULL, 0, "// %s\n", fontName);
+	}
+	length += snprintf(NULL, 0, "CellSize %d, %d\n", width, height);
 	int8_t* data = malloc(length);
-	sprintf(data, "CellSize %d, %d\n", width, height);
+	int8_t* cur = data;
+	cur += sprintf(cur, "// %s\n", fontName);
+	cur += sprintf(cur, "CellSize %d, %d\n", width, height);
 	FILE* f = fopen("font.inf", "w");
 	fwrite(data, sizeof(int8_t), length, f);
 	fclose(f);
@@ -242,7 +263,7 @@ void write_inf_monospace(int32_t width, int32_t height)
 }
 
 // For monospace fonts
-void render_glyphsheet(FT_Face fnt, int32_t charwidth, int32_t charheight, uint32_t low, uint32_t high, int32_t gradient, int32_t upshift, int32_t maxtop, uint8_t padding)
+void render_glyphsheet(FT_Face fnt, char* fontName, int32_t charwidth, int32_t charheight, uint32_t low, uint32_t high, int32_t gradient, int32_t upshift, int32_t maxtop, uint8_t padding)
 {
 	// Render a glyph sheet for monospace fonts
 	int32_t channels = 2; // Gray/alpha
@@ -280,7 +301,7 @@ void render_glyphsheet(FT_Face fnt, int32_t charwidth, int32_t charheight, uint3
 		}
 	}
 	writepng(&idata, fname, 0, 0);
-	write_inf_monospace(charwidth, charheight);
+	write_inf_monospace(fontName, charwidth, charheight);
 }
 
 int32_t main( int32_t argc, int8_t **argv )
@@ -313,13 +334,21 @@ int32_t main( int32_t argc, int8_t **argv )
 		return 2;
 	// Parse positional arguments
 	uint32_t range[2] = {0x0021,0x00FF};
-	if (range[0] > range[1])
-	{
-		uint32_t high = range[0];
-		range[0] = range[1];
-		range[1] = high;
-	}
 	int32_t pxsiz;
+	// Crude implementation of basename
+	char* baseNameStart = argv[1];
+	char* baseNameEnd = NULL;
+	for (uint32_t i = strlen(argv[1]) - 1; i > 0; i--) {
+		if (baseNameStart == argv[1] && argv[1][i] == '/') {
+			baseNameStart = argv[1] + i + 1;
+		}
+		if (baseNameStart == argv[1] && argv[1][i] == '.') {
+			baseNameEnd = argv[1] + i;
+		}
+	}
+	if (!baseNameEnd) baseNameEnd = baseNameStart + strlen(baseNameStart);
+	char* fontName = malloc(baseNameEnd - baseNameStart + 1);
+	memcpy(fontName, baseNameStart, baseNameEnd - baseNameStart);
 	sscanf(argv[2],"%d",&pxsiz);
 	// Parse options
 	int32_t gradient = 0;
@@ -330,8 +359,15 @@ int32_t main( int32_t argc, int8_t **argv )
 	{
 		if (!strcmp(argv[i], "--range") && argc > i)
 		{
-			sscanf(argv[i+1], "%x-%x", &range[0], &range[1]);
-			// sscanf(argv[++i], "%x-%x", range); // Does this work?
+			int rangeresult = sscanf(argv[i+1], "%x-%x", &range[0], &range[1]);
+			/*
+			if (rangeresult == EOF)
+			{
+				sscanf(argv[i+1], "%x", &range[0]);
+				range[1] = range[0];
+			}
+			*/
+			// sscanf(argv[i+1], "%x-%x", range); // Does this work?
 		}
 		else if (!strcmp(argv[i], "--gradient") && argc > i)
 		{
@@ -349,6 +385,12 @@ int32_t main( int32_t argc, int8_t **argv )
 		{
 			sscanf(argv[++i], "%hhu", &padding);
 		}
+	}
+	if (range[0] > range[1])
+	{
+		uint32_t high = range[0];
+		range[0] = range[1];
+		range[1] = high;
 	}
 	// Set up font and font size
 	if ( FT_New_Face(ftlib,argv[1],0,&fnt) )
@@ -391,12 +433,12 @@ int32_t main( int32_t argc, int8_t **argv )
 	}
 	if ( monospace == 0 )
 	{
-		render_glyphset(fnt,range[0],range[1],gradient,upshift,padding);
+		render_glyphset(fnt,fontName,range[0],range[1],gradient,upshift,padding);
 	}
 	else
 	{
 		monospace = (uint32_t) round((double)monospace / 64.0);
-		render_glyphsheet(fnt,monospace,mincharheight,range[0],range[1],gradient,upshift,maxtop,padding);
+		render_glyphsheet(fnt,fontName,monospace,mincharheight,range[0],range[1],gradient,upshift,maxtop,padding);
 	}
 	FT_Done_Face(fnt);
 	FT_Done_FreeType(ftlib);
