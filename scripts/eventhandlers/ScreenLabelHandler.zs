@@ -174,25 +174,43 @@ class ScreenLabelHandler : EventHandler
 			switch (ScreenLabelItems[i].type)
 			{
 				case LBL_ColorMarker:
-					if (multiplayer && ScreenLabelItems[i].icon)
+					if (multiplayer)
 					{
 						double lightlevel, fogfactor;
 						[lightlevel, fogfactor] = ZScriptTools.GetLightLevel(mo.CurSector);
 						alpha *= (lightlevel - fogfactor) / 255.0;
 						alpha = clamp(alpha, 0.0, 1.0);
 
-						TextureID icon = TexMan.CheckForTexture(ScreenLabelItems[i].icon, TexMan.Type_Any);
+ 						// Hide nametags when crouched
+						if (mo.player) { alpha *= (mo.player.crouchfactor - 0.5) / 0.5; }
 
-						if (icon)
+						if (alpha == 0.0) { continue; }
+
+						double scale = vid_scalefactor * (256 / dist) / fovscale;
+						Color clr = mo.player ? mo.player.GetColor() : 0x0;
+						drawpos = startpos;
+
+						if (ScreenLabelItems[i].icon)
 						{
-							Vector2 icondimensions = TexMan.GetScaledSize(icon) * vid_scalefactor * (512 / dist) / fovscale;
+							TextureID icon = TexMan.CheckForTexture(ScreenLabelItems[i].icon, TexMan.Type_Any);
 
-							drawpos = startpos;
-							drawpos.y -= icondimensions.y / 2;
+							if (icon)
+							{
+								Vector2 icondimensions = TexMan.GetScaledSize(icon) * scale;
+								drawpos.y -= icondimensions.y / 2;
 
-							Color clr = mo.player ? mo.player.GetColor() : 0x0;
+								screen.DrawTexture(icon, true, drawpos.x, drawpos.y, DTA_DestWidthF, icondimensions.x, DTA_DestHeightF, icondimensions.y, DTA_CenterOffset, true, DTA_Alpha, alpha, DTA_AlphaChannel, true, DTA_FillColor, clr);
+							}
+						}
 
-							screen.DrawTexture(icon, true, drawpos.x, drawpos.y, DTA_DestWidthF, icondimensions.x, DTA_DestHeightF, icondimensions.y, DTA_CenterOffset, true, DTA_Alpha, alpha, DTA_AlphaChannel, true, DTA_FillColor, clr);
+						if (mo.player)
+						{
+							dist *= fovscale;
+							if (dist > 768) { continue; }
+							if (dist > 256) { alpha *= 1.0 - (dist - 256) / 512; }
+
+							String playername = mo.player.GetUserName();
+							screen.DrawText(BigFont, Font.FindFontColor("RedandWhite"), drawpos.x - BigFont.StringWidth(playername) * scale / 2, drawpos.y, playername, DTA_ScaleX, scale, DTA_ScaleY, scale, DTA_Alpha, alpha * 1.25);
 						}
 					}
 					break;
@@ -294,16 +312,5 @@ class ScreenLabelHandler : EventHandler
 					break;
 			}
 		}
-	}
-
-	ui double PitchTo(Actor mo, Actor source = null, double zoffset = 0.0)
-	{
-		if (!source) { source = Actor(self); }
-		if (!source) { return 0; }
-
-		double distxy = max(source.Distance2D(mo), 1);
-		double distz = source.pos.z + zoffset - mo.pos.z;
-
-		return atan(distz / distxy);
 	}
 }
