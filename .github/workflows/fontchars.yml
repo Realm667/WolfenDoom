@@ -10,7 +10,7 @@ on:
 jobs:
   scan_fonts:
     name: Scan fonts
-    if: ${{ github.event_name == 'workflow_dispatch' || github.repository_owner == 'Realm667' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.repository_owner == 'Realm667' && github.ref == 'refs/heads/master') }}
     runs-on: ubuntu-20.04
     env:
       REPO_ROOT: ${{github.workspace}}
@@ -44,6 +44,9 @@ jobs:
           U = Unfinished
           Updated by GitHub Actions
           COMMENTS
+      - name: Commit updated font character table
+       #if: ${{ github.actor }}
+        run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add fonts/fontchars.csv
