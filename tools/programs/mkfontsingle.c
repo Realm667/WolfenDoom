@@ -53,7 +53,7 @@ void swap32(int32_t* toSwap)
 		(temp & 0xFF000000) >> 24);
 }
 
-int32_t writepng( struct image_data* idata, const int8_t *filename, int32_t ox, int32_t oy )
+int32_t writepng( struct image_data* idata, const char *filename, int32_t ox, int32_t oy )
 {
 	if ( !filename ) return 0;
 	png_structp pngp;
@@ -178,22 +178,18 @@ int32_t draw_glyph( struct image_data* idata, FT_Bitmap *bmp, uint8_t v, uint32_
 
 void write_inf(char* fontName, int32_t kerning, int32_t height, int32_t spacewidth)
 {
-	int32_t length = 0;
-	if (fontName) {
-		length += snprintf(NULL, 0, "// %s\n", fontName);
-	}
-	length += snprintf(NULL, 0, "Kerning %d\nFontHeight %d\n", kerning, height);
+	char* template = "// %s\nKerning %d\nFontHeight %d\n";
+	int32_t length = snprintf(NULL, 0, template, fontName, kerning, height);
 	if ( spacewidth > 0 )
 	{
 		length += snprintf(NULL, 0, "SpaceWidth %d\n", spacewidth);
 	}
-	int8_t* data = malloc(length);
-	int8_t* cur = data;
-	cur += sprintf(cur, "// %s\n", fontName);
-	cur += sprintf(cur, "Kerning %d\nFontHeight %d\n", kerning, height);
+	char* data = malloc(length);
+	char* cur = data;
+	cur += sprintf(cur, template, fontName, kerning, height);
 	if ( spacewidth > 0 )
 	{
-		sprintf(cur, "SpaceWidth %d\n", spacewidth);
+		cur += sprintf(cur, "SpaceWidth %d\n", spacewidth);
 	}
 	FILE* f = fopen("font.inf", "w");
 	fwrite(data, sizeof(int8_t), length, f);
@@ -229,13 +225,13 @@ void render_glyphset(FT_Face fnt, char* fontName, uint32_t low, uint32_t high, i
 			int32_t glyphHeight = (int32_t)roundf((float) fnt->glyph->linearVertAdvance / 65536.0);
 			minHeight = minHeight == 0 ? glyphHeight : minHeight < glyphHeight ? minHeight : glyphHeight;
 			maxHeight = maxHeight == 0 ? glyphHeight : maxHeight > glyphHeight ? maxHeight : glyphHeight;
-			int32_t glyphWidth = (int32_t)roundf((float) fnt->glyph->linearHoriAdvance / 65536.0);
+			// int32_t glyphWidth = (int32_t)roundf((float) fnt->glyph->linearHoriAdvance / 65536.0);
 			int32_t xoffset = -fnt->glyph->bitmap_left;
 			int32_t yoffset = fnt->glyph->bitmap_top - glyphHeight + upshift;
 			int32_t valid = draw_glyph(&idata, &fnt->glyph->bitmap,255,padding,padding,gradient);
 			if ( valid )
 			{
-				int8_t fname[256];
+				char fname[256];
 				snprintf(fname,256,"%04X.png",i);
 				writepng(&idata, fname, xoffset, yoffset);
 			}
@@ -247,15 +243,11 @@ void render_glyphset(FT_Face fnt, char* fontName, uint32_t low, uint32_t high, i
 
 void write_inf_monospace(char* fontName, int32_t width, int32_t height)
 {
-	int32_t length = 0;
-	if (fontName) {
-		length += snprintf(NULL, 0, "// %s\n", fontName);
-	}
-	length += snprintf(NULL, 0, "CellSize %d, %d\n", width, height);
-	int8_t* data = malloc(length);
-	int8_t* cur = data;
-	cur += sprintf(cur, "// %s\n", fontName);
-	cur += sprintf(cur, "CellSize %d, %d\n", width, height);
+	char* template = "// %s\nCellSize %d, %d\n";
+	int32_t length = snprintf(NULL, 0, template, fontName, width, height);
+	char* data = malloc(length);
+	char* cur = data;
+	cur += sprintf(cur, template, fontName, width, height);
 	FILE* f = fopen("font.inf", "w");
 	fwrite(data, sizeof(int8_t), length, f);
 	fclose(f);
@@ -271,7 +263,7 @@ void render_glyphsheet(FT_Face fnt, char* fontName, int32_t charwidth, int32_t c
 	uint32_t count = high - low + 1;
 	uint32_t rows = (uint32_t) floor(sqrt((double)count));
 	uint32_t columns = (uint32_t) ceil((double)count / (double)rows);
-	int8_t fname[9];
+	char fname[9];
 	sprintf(fname, "%04x.png", low);
 	// Set up image data
 	charwidth += padding * 2; // Add cell padding
@@ -297,14 +289,18 @@ void render_glyphsheet(FT_Face fnt, char* fontName, int32_t charwidth, int32_t c
 			int32_t cellyoffset = maxtop - fnt->glyph->bitmap_top - upshift + padding;
 			int32_t xoffset = column * charwidth + cellxoffset;
 			int32_t yoffset = row * charheight + cellyoffset;
-			int32_t valid = draw_glyph(&idata, &fnt->glyph->bitmap,255,xoffset,yoffset,gradient);
+			draw_glyph(&idata, &fnt->glyph->bitmap,255,xoffset,yoffset,gradient);
 		}
 	}
 	writepng(&idata, fname, 0, 0);
+	free(idata.data);
 	write_inf_monospace(fontName, charwidth, charheight);
 }
 
-int32_t main( int32_t argc, int8_t **argv )
+char* crude_basename(char* path);
+int8_t test_byte_order();
+
+int32_t main( int32_t argc, char **argv )
 {
 	if ( argc < 3 )
 	{
@@ -320,13 +316,7 @@ int32_t main( int32_t argc, int8_t **argv )
 		);
 		return 1;
 	}
-	// Test endianness (byte ordering) of CPU
-	int8_t endie[4] = {1, 0, 0, 0};
-	int32_t* enda = (int32_t*) endie;
-	if ( *enda != 1 )
-	{
-		littleEndian = 0;
-	}
+	littleEndian = test_byte_order();
 	// Init FreeType
 	FT_Library ftlib;
 	FT_Face fnt;
@@ -334,21 +324,8 @@ int32_t main( int32_t argc, int8_t **argv )
 		return 2;
 	// Parse positional arguments
 	uint32_t range[2] = {0x0021,0x00FF};
+	char* fontName = crude_basename(argv[1]);
 	int32_t pxsiz;
-	// Crude implementation of basename
-	char* baseNameStart = argv[1];
-	char* baseNameEnd = NULL;
-	for (uint32_t i = strlen(argv[1]) - 1; i > 0; i--) {
-		if (baseNameStart == argv[1] && argv[1][i] == '/') {
-			baseNameStart = argv[1] + i + 1;
-		}
-		if (baseNameStart == argv[1] && argv[1][i] == '.') {
-			baseNameEnd = argv[1] + i;
-		}
-	}
-	if (!baseNameEnd) baseNameEnd = baseNameStart + strlen(baseNameStart);
-	char* fontName = malloc(baseNameEnd - baseNameStart + 1);
-	memcpy(fontName, baseNameStart, baseNameEnd - baseNameStart);
 	sscanf(argv[2],"%d",&pxsiz);
 	// Parse options
 	int32_t gradient = 0;
@@ -360,14 +337,10 @@ int32_t main( int32_t argc, int8_t **argv )
 		if (!strcmp(argv[i], "--range") && argc > i)
 		{
 			int rangeresult = sscanf(argv[i+1], "%x-%x", &range[0], &range[1]);
-			/*
-			if (rangeresult == EOF)
+			if (rangeresult == 1)
 			{
-				sscanf(argv[i+1], "%x", &range[0]);
 				range[1] = range[0];
 			}
-			*/
-			// sscanf(argv[i+1], "%x-%x", range); // Does this work?
 		}
 		else if (!strcmp(argv[i], "--gradient") && argc > i)
 		{
@@ -440,7 +413,35 @@ int32_t main( int32_t argc, int8_t **argv )
 		monospace = (uint32_t) round((double)monospace / 64.0);
 		render_glyphsheet(fnt,fontName,monospace,mincharheight,range[0],range[1],gradient,upshift,maxtop,padding);
 	}
+	free(fontName);
 	FT_Done_Face(fnt);
 	FT_Done_FreeType(ftlib);
 	return 0;
+}
+
+int8_t test_byte_order()
+{
+	// Test endianness (byte ordering) of CPU
+	int8_t endie[4] = {1, 0, 0, 0};
+	int32_t* enda = (int32_t*) endie;
+	return *enda == 1;
+}
+
+char* crude_basename(char* path)
+{
+	// Crude implementation of basename
+	char* baseNameStart = path;
+	char* baseNameEnd = NULL;
+	for (uint32_t i = strlen(path) - 1; i > 0; i--) {
+		if (baseNameStart == path && path[i] == '/') {
+			baseNameStart = path + i + 1;
+		}
+		if (baseNameStart == path && path[i] == '.') {
+			baseNameEnd = path + i;
+		}
+	}
+	if (!baseNameEnd) baseNameEnd = baseNameStart + strlen(baseNameStart);
+	char* fontName = malloc(baseNameEnd - baseNameStart + 1);
+	memcpy(fontName, baseNameStart, baseNameEnd - baseNameStart);
+	return fontName;
 }
