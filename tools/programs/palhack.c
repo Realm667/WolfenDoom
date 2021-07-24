@@ -186,7 +186,7 @@ palette_t* read_bin_palette(const char* fname){
 }
 
 int process_unknown_chunk(png_structp png_ptr, png_unknown_chunkp chunk_ptr){
-    if(strncmp(chunk_ptr->name, "grAb", 4) == 0){
+    if(strncmp((const char*)chunk_ptr->name, "grAb", 4) == 0){
         // Process grAb chunk - get offsets
         byte* offsets = png_get_user_chunk_ptr(png_ptr);
         memcpy(offsets, chunk_ptr->data, 8);
@@ -237,7 +237,7 @@ bool process_png(const char* fname, palette_t* pal){
     png_init_io(png_ptr, f);
     // Already checked PNG header
     png_set_sig_bytes(png_ptr, 8);
-    png_byte* grab_name = "grAb"; // Keep grAb chunk, it contains X and Y offsets
+    char* grab_name = "grAb"; // Keep grAb chunk, it contains X and Y offsets
     // png_set_keep_unknown_chunks(png_ptr, PNG_HANDLE_CHUNK_IF_SAFE, grab_name, 1);
     unsigned int width, height;
     byte offsets[8]; // Information for Doom PNG files
