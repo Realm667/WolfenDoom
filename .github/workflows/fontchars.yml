@@ -45,7 +45,7 @@ jobs:
           Updated by GitHub Actions
           COMMENTS
       - name: Commit updated font character table
-       #if: ${{ github.actor }}
+        if: ${{ github.actor != 'nektos/act' }}
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
