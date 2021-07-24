@@ -513,7 +513,7 @@ class BoAStatusBar : BaseStatusBar
 		}
 		else if (item.Amount > 1)
 		{
-			DrawString(mHUDFont, FormatNumber(item.Amount), (textpos.x, textpos.y - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD, alpha);
+			DrawString(mHUDFont, FormatNumber(item.Amount), (int(textpos.x), int(textpos.y - mHUDFont.mFont.GetHeight())), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD, alpha);
 		}
 		else if (item is "PoweredInventory") // For powered inventory items, show current fuel level as a percentage
 		{
@@ -525,7 +525,7 @@ class BoAStatusBar : BaseStatusBar
 			if (fuel)
 			{
 				int amt = int(100 * fuel.Amount / fuel.MaxAmount);
-				DrawString(mHUDFont, FormatNumber(amt) .. "%", (textpos.x, textpos.y - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD, alpha);
+				DrawString(mHUDFont, FormatNumber(amt) .. "%", (int(textpos.x), int(textpos.y - mHUDFont.mFont.GetHeight())), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD, alpha);
 			}
 		}
 		else if (item is "PowerupToggler")
@@ -533,7 +533,7 @@ class BoAStatusBar : BaseStatusBar
 			int maxamt = PowerupToggler(item).Default.EffectTics;
 			int amt = int(100 * PowerupToggler(item).EffectTics / maxamt);
 
-			if (maxamt < 0x7FFFFFFF) { DrawString(mHUDFont, FormatNumber(amt) .. "%", (textpos.x, textpos.y - mHUDFont.mFont.GetHeight()), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD, alpha); }
+			if (maxamt < 0x7FFFFFFF) { DrawString(mHUDFont, FormatNumber(amt) .. "%", (int(textpos.x), int(textpos.y - mHUDFont.mFont.GetHeight())), DI_TEXT_ALIGN_RIGHT, Font.CR_GOLD, alpha); }
 		}
 
 	}
@@ -718,7 +718,7 @@ class BoAStatusBar : BaseStatusBar
 					if (barstate == HUD_Fullscreen)
 					{
 						DrawImage("EYE", (x + 112 * scale, y - 1 * scale), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (0.5 * scale, 0.5 * scale));
-						DrawString(mHUDFont, FormatNumber(alertedcount), (x + 124 * scale, y * scale - 2), flags | DI_TEXT_ALIGN_RIGHT, Font.CR_GRAY);
+						DrawString(mHUDFont, FormatNumber(alertedcount), (int(x + 124 * scale), int(y * scale - 2)), flags | DI_TEXT_ALIGN_RIGHT, Font.CR_GRAY);
 					}
 					else
 					{
@@ -746,7 +746,7 @@ class BoAStatusBar : BaseStatusBar
 						if (disguisetag != "") { disguisetag = " - " .. disguisetag; }
 
 						DrawInventoryIcon(disguise, (x - 104 * scale, y), flags | DI_ITEM_CENTER, basealpha, (-1, -1), (scale, scale));
-						DrawString(mHUDFont, StringTable.Localize("$DISGUISED") .. disguisetag, (x, y - 4), flags | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, basealpha - (suspicion / 100.));
+						DrawString(mHUDFont, StringTable.Localize("$DISGUISED") .. disguisetag, (int(x), int(y - 4)), flags | DI_TEXT_ALIGN_CENTER, Font.CR_GRAY, basealpha - (suspicion / 100.));
 					}
 					else
 					{
