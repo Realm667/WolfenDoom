@@ -32,7 +32,18 @@ class PowerScuba : PowerMaskProtection
 
 	override void DoEffect()
 	{
-		owner.player.mo.ResetAirSupply();
+		// air_finished is the tic when the player starts drowning. Adding 1
+		// to it will "freeze" the player's air supply, so add 2 to it to
+		// gradually replenish the air supply.
+		PlayerPawn pOwner = PlayerPawn(Owner);
+		if (pOwner && pOwner.waterlevel == 3) {
+			// Some code copied and modified from the ResetAirSupply method of
+			// PlayerPawn in GZDoom's ZScript sources: zscript/actors/player/player.zs:2458
+			int maxAir = (Level.airsupply > 0 && pOwner.AirCapacity > 0) ?
+				Level.maptime + int(Level.airsupply * pOwner.AirCapacity) :
+				int.max;
+			owner.player.air_finished = min(owner.player.air_finished + 2, maxAir);
+		}
 		Overlay.Init(owner.player, "STSCUBA", 2, 0, 0, 1.0, 0, Overlay.Force320x200 | Overlay.LightEffects);
 
 		Super.DoEffect();
@@ -58,7 +69,7 @@ class ScubaGearGiver : PowerupToggler
 		Inventory.MaxAmount 1;
 		Inventory.PickupMessage "$SCUBA2";
 		Inventory.PickupSound "pickup/uniform";
-		Powerup.Duration -600;
+		Powerup.Duration -120;
 		Powerup.Color "45 60 96", 0.125;
 		Powerup.Type "PowerScuba";
 		Tag "$TAGSCUBA";
