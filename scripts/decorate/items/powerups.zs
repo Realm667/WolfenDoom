@@ -36,13 +36,18 @@ class PowerScuba : PowerMaskProtection
 		// to it will "freeze" the player's air supply, so add 2 to it to
 		// gradually replenish the air supply.
 		PlayerPawn pOwner = PlayerPawn(Owner);
-		if (pOwner && pOwner.waterlevel == 3) {
+		if (pOwner && pOwner.player && pOwner.waterlevel == 3) {
 			// Some code copied and modified from the ResetAirSupply method of
-			// PlayerPawn in GZDoom's ZScript sources: zscript/actors/player/player.zs:2458
-			int maxAir = (Level.airsupply > 0 && pOwner.AirCapacity > 0) ?
-				Level.maptime + int(Level.airsupply * pOwner.AirCapacity) :
-				int.max;
-			owner.player.air_finished = min(owner.player.air_finished + 2, maxAir);
+			// PlayerPawn in GZDoom's ZScript sources:
+			// gzdoom.pk3:zscript/actors/player/player.zs Line 2458
+			bool canDrown = Level.airsupply > 0 && pOwner.AirCapacity > 0;
+			int airTime = int(Level.airsupply * pOwner.AirCapacity);
+			int minAir = canDrown ? Level.maptime : int.max;
+			int maxAir = canDrown ? Level.maptime + airTime : int.max;
+			pOwner.player.air_finished = clamp(
+				pOwner.player.air_finished + 2,
+				minAir, maxAir
+			);
 		}
 		Overlay.Init(owner.player, "STSCUBA", 2, 0, 0, 1.0, 0, Overlay.Force320x200 | Overlay.LightEffects);
 
