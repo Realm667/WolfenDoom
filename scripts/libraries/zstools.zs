@@ -87,7 +87,7 @@ class ZScriptTools
 	// Get Z velocity for a falling projectile such that it hits a target at
 	// the given distance and height.
 	//
-	// time is the 2D distance between the shooter and target, divided by the
+	// time is the 3D distance between the shooter and target, divided by the
 	// speed. In other words, the amount of time (in tics) the projectile would
 	// take to reach the target if it didn't fall.
 	//
