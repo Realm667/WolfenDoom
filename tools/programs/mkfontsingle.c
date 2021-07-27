@@ -84,7 +84,7 @@ int32_t writepng( struct image_data* idata, const char *filename, int32_t ox, in
 		PNG_INTERLACE_NONE,PNG_COMPRESSION_TYPE_BASE,
 		PNG_FILTER_TYPE_BASE);
 	// Set up grAb chunk (offsets). If x and y offset is 0, grAb chunk is not needed.
-	if (ox > 0 || oy > 0)
+	if (ox || oy)
 	{
 		uint8_t* grab_name = (uint8_t*) "grAb";
 		int32_t offsets[2];
@@ -197,11 +197,11 @@ void write_inf(char* fontName, int32_t kerning, int32_t height, int32_t spacewid
 	free(data);
 }
 
-void render_glyphset(FT_Face fnt, char* fontName, uint32_t low, uint32_t high, int32_t gradient, int32_t upshift, uint8_t padding)
+void render_glyphset(FT_Face fnt, char* fontName, uint32_t low, uint32_t high, int32_t gradient, int32_t upshift, uint8_t padding, int32_t maxtop)
 {
 	int32_t channels = 2; // Gray/alpha
 	struct image_data idata;
-	int32_t minHeight = 0, maxHeight = 0, spaceWidth = 0;
+	int32_t spaceWidth = 0, lineHeight = 0;
 	// Get space width
 	FT_UInt glyph = FT_Get_Char_Index(fnt,' ');
 	if ( !FT_Load_Glyph(fnt,glyph,FT_LOAD_DEFAULT) && glyph )
@@ -216,18 +216,16 @@ void render_glyphset(FT_Face fnt, char* fontName, uint32_t low, uint32_t high, i
 			FT_Render_Glyph(fnt->glyph,FT_RENDER_MODE_NORMAL);
 			idata.width = fnt->glyph->bitmap.width + padding * 2;
 			idata.height = fnt->glyph->bitmap.rows + padding * 2;
+			lineHeight = fnt->glyph->bitmap.rows > lineHeight ? fnt->glyph->bitmap.rows : lineHeight;
 			idata.channels = channels;
 			idata.data = malloc(idata.width * idata.height * channels);
 			memset(idata.data, 0, idata.width * idata.height * channels);
 			// Calculate glyph X and Y offsets
 			// printf("Glyph %d linearHoriAdvance: %.3f\n", i, (float) fnt->glyph->linearHoriAdvance / 65536.0);
 			// printf("Glyph %d linearVertAdvance: %.3f\n", i, (float) fnt->glyph->linearVertAdvance / 65536.0);
-			int32_t glyphHeight = (int32_t)roundf((float) fnt->glyph->linearVertAdvance / 65536.0);
-			minHeight = minHeight == 0 ? glyphHeight : minHeight < glyphHeight ? minHeight : glyphHeight;
-			maxHeight = maxHeight == 0 ? glyphHeight : maxHeight > glyphHeight ? maxHeight : glyphHeight;
 			// int32_t glyphWidth = (int32_t)roundf((float) fnt->glyph->linearHoriAdvance / 65536.0);
-			int32_t xoffset = -fnt->glyph->bitmap_left;
-			int32_t yoffset = fnt->glyph->bitmap_top - glyphHeight + upshift;
+			int32_t xoffset = 0; // -fnt->glyph->bitmap_left;
+			int32_t yoffset = fnt->glyph->bitmap_top - maxtop + upshift;
 			int32_t valid = draw_glyph(&idata, &fnt->glyph->bitmap,255,padding,padding,gradient);
 			if ( valid )
 			{
@@ -238,7 +236,7 @@ void render_glyphset(FT_Face fnt, char* fontName, uint32_t low, uint32_t high, i
 			free(idata.data);
 		}
 	}
-	write_inf(fontName, 1, minHeight + maxHeight / 2, spaceWidth);
+	write_inf(fontName, 1, lineHeight, spaceWidth);
 }
 
 void write_inf_monospace(char* fontName, int32_t width, int32_t height)
@@ -390,7 +388,6 @@ int32_t main( int32_t argc, char **argv )
 			{
 				// Not a monospace font
 				monospace = 0;
-				break;
 			}
 			int32_t charheight = fnt->glyph->bitmap.rows + (fnt->glyph->bitmap.rows - fnt->glyph->bitmap_top);
 			if (charheight > mincharheight)
@@ -406,7 +403,7 @@ int32_t main( int32_t argc, char **argv )
 	}
 	if ( monospace == 0 )
 	{
-		render_glyphset(fnt,fontName,range[0],range[1],gradient,upshift,padding);
+		render_glyphset(fnt,fontName,range[0],range[1],gradient,upshift,padding,maxtop);
 	}
 	else
 	{
