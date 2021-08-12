@@ -267,7 +267,6 @@ class NaziWeapon : Weapon
 			invoker.Owner.player.WeaponState &= ~(WF_WEAPONREADY | WF_WEAPONREADYALT);
 
 			AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
-			console.printf("%i", invoker.owner.PlayerNumber());
 			if (tracker) { tracker.reloads[invoker.owner.PlayerNumber()]++; }
 		}
 	}
