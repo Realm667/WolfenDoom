@@ -97,35 +97,42 @@ class Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 		STEN A 3; // balance the DPS --N00b
 		Goto Ready;
 	Reload:
-		STEN A 1 Offset(0,38) A_StartSound("sten/reload", CHAN_5);
-		STEN A 1 Offset(0,44) A_Reloading(true);
-		STEN A 1 Offset(0,56);
-		STEN A 1 Offset(-2,60);
-		STEN A 1 Offset(-4,72);
-		STEN A 1 Offset(-7,80);
-		STEN A 1 Offset(-10,82);
-		STEN A 20 Offset(-11,84);
+		STEN C 1 Offset(0,29) A_StartSound("sten/reload", CHAN_5); //needs splitting
+		STEN C 1 Offset(0,30);
+		STEN D 1 Offset(0,31) A_Reloading(true);
+		STEN D 1 Offset(0,32);
+		STEN E 1 Offset(0,33);
+		STEN E 1 Offset(0,30);
+		STEN F 1 Offset(-1,34);
+		STEN G 1 Offset(-3,35);
+		STEN G 1 Offset(-5,36);
+		STEN G 1 Offset(-7,37);
+		STEN G 1 Offset(-8,38);
+		STEN H 1 Offset(-10,39);
+		STEN H 1 Offset(-11,39);
+		STEN I 1 Offset(-11,39);
+		STEN I 1 Offset(-11,39);
+		STEN J 1 Offset(-11,39);
+		STEN J 1 Offset(-11,39);
+		STEN K 1 Offset(-11,39);
+		STEN K 1 Offset(-11,39);
+		STEN L 16 Offset(-11,39);
 	ReloadLoop:
 		TNT1 A 0 A_TakeInventory("Ammo9mm",1,TIF_NOTAKEINFINITE);
 		TNT1 A 0 A_GiveInventory("StenLoaded");
 		TNT1 A 0 A_JumpIfInventory("StenLoaded",0,"ReloadFinish");
 		TNT1 A 0 A_JumpIfInventory("Ammo9mm",1,"ReloadLoop");
 	ReloadFinish:
-		STEN A 1 Offset(-10,84);
-		STEN A 1 Offset(-10,90);
-		STEN A 1 Offset(-10,98);
-		STEN A 1 Offset(-10,110);
-		STEN A 1 Offset(-10,98);
-		STEN A 1 Offset(-10,88);
-		STEN A 1 Offset(-10,78);
-		STEN A 1 Offset(-10,74);
-		STEN A 1 Offset(-10,70);
-		STEN A 1 Offset(-9,68);
-		STEN A 1 Offset(-8,60);
-		STEN A 1 Offset(-7,54);
-		STEN A 1 Offset(-5,48);
-		STEN A 1 Offset(-3,42);
-		STEN A 1 Offset(-1,36);
+		STEN K 1 Offset(-11,39);
+		STEN K 1 Offset(-10,37);
+		STEN J 1 Offset(-8,34);
+		STEN J 1 Offset(-6,32);
+		STEN I 1 Offset(-4,30);
+		STEN I 1 Offset(-3,29);
+		STEN I 1 Offset(-2,28);
+		STEN I 1 Offset(-2,28);
+		STEN H 1 Offset(-2,27);
+		STEN H 1 Offset(-1,27);
 		STEN A 1 Offset(0,32) A_Reloading(false);
 		TNT1 A 0 A_Refire; // to compensate the effect of +NOAUTOFIRE --N00b
 		Goto Ready;
