@@ -208,6 +208,18 @@ void render_glyphset(FT_Face fnt, char* fontName, uint32_t low, uint32_t high, i
 	{
 		spaceWidth = (int32_t)roundf((float)fnt->glyph->linearHoriAdvance / 65536.0);
 	}
+#ifdef X_POS_INFO
+	printf("code,width,left,linearHoriAdvance,\"advance x\"");
+#endif
+#if defined(X_POS_INFO) && defined(Y_POS_INFO)
+			printf(",");
+#endif
+#ifdef Y_POS_INFO
+			printf("linearVertAdvance");
+#endif
+#if defined(X_POS_INFO) || defined(Y_POS_INFO)
+			printf("\n");
+#endif
 	for ( uint32_t i=low; i<=high; i++ )
 	{
 		FT_UInt glyph = FT_Get_Char_Index(fnt,i);
@@ -221,9 +233,18 @@ void render_glyphset(FT_Face fnt, char* fontName, uint32_t low, uint32_t high, i
 			idata.data = malloc(idata.width * idata.height * channels);
 			memset(idata.data, 0, idata.width * idata.height * channels);
 			// Calculate glyph X and Y offsets
-			// printf("Glyph %d linearHoriAdvance: %.3f\n", i, (float) fnt->glyph->linearHoriAdvance / 65536.0);
-			// printf("Glyph %d linearVertAdvance: %.3f\n", i, (float) fnt->glyph->linearVertAdvance / 65536.0);
-			// int32_t glyphWidth = (int32_t)roundf((float) fnt->glyph->linearHoriAdvance / 65536.0);
+#ifdef X_POS_INFO
+			printf("%04X,%d,%d,%.3f,%.3f", i, fnt->glyph->bitmap.width, fnt->glyph->bitmap_left, (float) fnt->glyph->linearHoriAdvance / 65536.0, (float) fnt->glyph->advance.x / 64.0);
+#endif
+#if defined(X_POS_INFO) && defined(Y_POS_INFO)
+			printf(",");
+#endif
+#ifdef Y_POS_INFO
+			printf("%.3f", (float) fnt->glyph->linearVertAdvance / 65536.0);
+#endif
+#if defined(X_POS_INFO) || defined(Y_POS_INFO)
+			printf("\n");
+#endif
 			int32_t xoffset = 0; // -fnt->glyph->bitmap_left;
 			int32_t yoffset = fnt->glyph->bitmap_top - maxtop + upshift;
 			int32_t valid = draw_glyph(&idata, &fnt->glyph->bitmap,255,padding,padding,gradient);
