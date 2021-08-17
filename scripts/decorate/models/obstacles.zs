@@ -97,9 +97,31 @@ class FuelDrumSpawner : RandomSpawner
 
 	override Name ChooseSpawn()
 	{
-		if (pitch == 90 || pitch == -90)
+		double sidePitch = pitch % 180;
+		double sideRoll = roll % 180;
+		bool onSidePitch = (
+			(sidePitch >= 88 && sidePitch <= 92) ||
+			(sidePitch >= -92 && sidePitch <= -88));
+		bool onSideRoll = (
+			(sideRoll >= 88 && sideRoll <= 92) ||
+			(sideRoll >= -92 && sideRoll <= -88));
+		// 90 degrees with 2 degrees for error
+		if (onSidePitch || onSideRoll)
 		{
+			if (onSideRoll)
+			{
+				SetXYZ(Vec3Angle(20, Angle + 90));
+			}
+			else if (onSidePitch)
+			{
+				SetXYZ(Vec3Angle(-12, Angle));
+			}
+			if (onSidePitch)
+			{
+				angle += 90;
+			}
 			pitch = 0;
+			roll = 0;
 			return 'FuelDrumSide';
 		}
 		return 'FuelDrum';
@@ -115,12 +137,12 @@ class FuelDrumFixSpawner : FuelDrumSpawner
 
 	override Name ChooseSpawn()
 	{
-		if (pitch == 90 || pitch == -90)
+		Name spawn = Super.ChooseSpawn();
+		if (spawn == 'FuelDrum')
 		{
-			pitch = 0;
-			return 'FuelDrumSide';
+			return 'FuelDrumFix';
 		}
-		return 'FuelDrumFix';
+		return spawn;
 	}
 }
 
