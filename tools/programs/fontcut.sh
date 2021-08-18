@@ -16,31 +16,36 @@ process_char(){
     pixelstride=$((channels * hexdigitsperoctet))
     charrowstride=$((charwidth * pixelstride))
     charcolstride=$((charheight * pixelstride))
-    sedscript="s/([[:alnum:]]{${charrowstride}})/\1\n/g"
-    : ${(Af)chardata::="$(convert $fontchar -depth 8 rgb:- | \
-        xxd -p -g 0 | tr -d '\n' | sed -E $sedscript)"}
+    rowbreak="s/([[:alnum:]]{${charrowstride}})/\1\n/g"
+    colbreak="s/([[:alnum:]]{${charcolstride}})/\1\n/g"
+    : ${(Af)charrow::="$(convert $fontchar -depth 8 rgb:- | \
+        xxd -p -g 0 | tr -d '\n' | sed -E $rowbreak)"}
+    : ${(Af)charcol::="$(convert $fontchar -depth 8 -rotate 90 rgb:- | \
+        xxd -p -g 0 | tr -d '\n' | sed -E $colbreak)"}
     blankrow=""
     repeat $charrowstride blankrow+="0"
     blankcol=""
     repeat $charcolstride blankcol+="0"
     cutleftcols=0
+    lastleftcol=0
     cutrightcols=0
+    lastrightcol=0
     cuttoprows=0
     cutbtmrows=0
     lasttoprow=0
     lastbtmrow=0
     # Find first and last non-blank rows
-    for ((rownum=1; rownum <= ${#chardata}; rownum++)) {
-        rowdata=${chardata[$rownum]}
+    for ((rownum=1; rownum <= ${#charrow}; rownum++)) {
+        rowdata=${charrow[$rownum]}
         if [[ "$rowdata" == "$blankrow" ]]; then
-            ((cuttoprows += 1))
+            cuttoprows=$rownum
         else
             lasttoprow=$rownum
             break
         fi
     }
-    for ((rownum=${#chardata}; rownum > 0; rownum--)) {
-        rowdata=${chardata[$rownum]}
+    for ((rownum=${#charrow}; rownum > 0; rownum--)) {
+        rowdata=${charrow[$rownum]}
         if [[ "$rowdata" == "$blankrow" ]]; then
             ((cutbtmrows += 1))
         else
@@ -49,30 +54,27 @@ process_char(){
         fi
     }
     # Find first and last non-blank columns
-    for ((colnum=1; colnum <= ${charwidth}; colnum++)) {
-        coldata=""
-        for ((rownum=1; rownum <= ${charheight}; rownum++)) {
-            coldata+=${chardata[$rownum][colnum,colnum + pixelstride]}
-        }
+    for ((colnum=1; colnum <= ${#charcol}; colnum++)) {
+        coldata=${charcol[$colnum]}
         if [[ "$coldata" == "$blankcol" ]]; then
-            ((cuttoprows += 1))
+            cutleftcols=$colnum
         else
-            lasttoprow=$rownum
+            lastleftcol=$colnum
             break
         fi
     }
-    for ((rownum=${#chardata}; rownum > 0; rownum--)) {
-        rowdata=${chardata[$rownum]}
-        if [[ "$rowdata" == "$blankrow" ]]; then
-            ((cutbtmrows += 1))
+    for ((colnum=${#charcol}; colnum > 0; colnum--)) {
+        coldata=${charcol[$colnum]}
+        if [[ "$coldata" == "$blankcol" ]]; then
+            ((cutrightcols += 1))
         else
-            lastbtmrow=$rownum
+            lastrightcol=$colnum
             break
         fi
     }
-    #charheight=$((lastbtmrow - lasttoprow))
-    offsety=$(( -yoffset - (lasttoprow - 1) ))
-    convert $fontchar -chop 0x${cutbtmrows}+0+$((lastbtmrow)) -chop 0x${cuttoprows} $fontchar
+    : ${(As: :)origoffsets::="$(python3 grab_get.py $fontchar)"}
+    offsety=$(( origoffsets[2] - yoffset - (lasttoprow - 1) ))
+    convert $fontchar -chop ${cutrightcols}x${cutbtmrows}+${lastrightcol}+${lastbtmrow} -chop ${cutleftcols}x${cuttoprows} $fontchar
     pngcrush -ow -rem alla $fontchar
     python3 grab_inject.py $fontchar 0 $offsety
 }
