@@ -106,11 +106,16 @@ class FuelDrumSpawner : RandomSpawner
 			(sideRoll >= 88 && sideRoll <= 92) ||
 			(sideRoll >= -92 && sideRoll <= -88));
 		// 90 degrees with 2 degrees for error
+		if (boa_debugbarrelspawns && (onSidePitch || onSideRoll) && Pos.Z > floorz)
+		{
+			Console.Printf("Pitch: %.3f, Roll: %.3f, floorz difference: %.3f, Scale: %.3f %.3f, Position: %.3f %.3f %.3f", Pitch, Roll, Pos.Z - floorz, Scale, Pos);
+		}
 		if (onSidePitch || onSideRoll)
 		{
 			if (onSideRoll)
 			{
-				SetXYZ(Vec3Angle(20, Angle + 90));
+				double angleToMoveBy = Normalize180(Roll) < 0 ? Angle + 90 : Angle - 90;
+				SetXYZ(Vec3Angle(24, angleToMoveBy));
 			}
 			else if (onSidePitch)
 			{
@@ -122,6 +127,7 @@ class FuelDrumSpawner : RandomSpawner
 			}
 			pitch = 0;
 			roll = 0;
+			AddZ(-17);
 			return 'FuelDrumSide';
 		}
 		return 'FuelDrum';
