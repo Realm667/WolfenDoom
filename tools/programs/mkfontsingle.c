@@ -104,7 +104,7 @@ void swap32(int32_t* toSwap)
 		(temp & 0xFF000000) >> 24);
 }
 
-int32_t writepng( struct image_data* idata, const char *filename, int32_t ox, int32_t oy )
+int32_t writepng(image_data_t* idata, const char *filename, int32_t ox, int32_t oy )
 {
 	if ( !filename ) return 0;
 	png_structp pngp;
@@ -169,7 +169,7 @@ int32_t writepng( struct image_data* idata, const char *filename, int32_t ox, in
 	return 1;
 }
 
-void putpixel( struct image_data* idata, uint8_t v, uint8_t a, uint32_t x, uint32_t y )
+void putpixel(image_data_t* idata, uint8_t v, uint8_t a, uint32_t x, uint32_t y )
 {
 	if ( (x >= idata->width) || (y >= idata->height) ) return;
 	uint32_t tpos = (x+y*idata->width) * idata->channels;
@@ -191,7 +191,7 @@ uint8_t lerpg( float a )
 	return (uint8_t)(a*191+64);
 }
 
-int32_t draw_glyph( struct image_data* idata, FT_Bitmap *bmp, uint8_t v, uint32_t px, uint32_t py, uint8_t gradient )
+int32_t draw_glyph(image_data_t* idata, FT_Bitmap *bmp, uint8_t v, uint32_t px, uint32_t py, uint8_t gradient )
 {
 	int32_t drawn = 0;
 	uint32_t col, row;
@@ -230,7 +230,7 @@ int32_t draw_glyph( struct image_data* idata, FT_Bitmap *bmp, uint8_t v, uint32_
 void render_glyphset(FT_Face fnt, font_data_t* font_info, uint32_t low, uint32_t high, int32_t gradient, int32_t upshift, uint8_t padding, int32_t maxtop)
 {
 	int32_t channels = 2; // Gray/alpha
-	struct image_data idata;
+	image_data_t idata;
 	int32_t lineHeight = 0;
 	// Get space width
 	FT_UInt glyph = FT_Get_Char_Index(fnt,' ');
@@ -296,7 +296,7 @@ void render_glyphsheet(FT_Face fnt, font_data_t* font_info, int32_t charwidth, u
 {
 	// Render a glyph sheet for monospace fonts
 	int32_t channels = 2; // Gray/alpha
-	struct image_data idata;
+	image_data_t idata;
 	uint32_t count = high - low + 1;
 	uint32_t rows = (uint32_t) floor(sqrt((double)count));
 	uint32_t columns = (uint32_t) ceil((double)count / (double)rows);
