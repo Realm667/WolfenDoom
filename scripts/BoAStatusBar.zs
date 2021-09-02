@@ -801,6 +801,15 @@ class BoAStatusBar : BaseStatusBar
 				LastIcon = Base(mo).BossIcon;
 				LastMaxHealth = mo.GetSpawnHealth();
 			}
+			if (Nazi(mo))
+			{
+				Nazi nmo = Nazi(mo);
+				// Fix for un-alerted sneakable enemies showing less than full health on lower skill settings because they are "friendly".
+				if (nmo.bFriendly && nmo.user_sneakable)
+				{
+					LastMaxHealth = mo.Default.Health * G_SkillPropertyFloat(SKILLP_MonsterHealth);
+				}
+			}
 			else { LastIcon = ""; }
 
 			if (healthbaralpha < 1) { healthbaralpha += 0.2; }
