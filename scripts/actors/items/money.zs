@@ -31,6 +31,7 @@ class CoinItem : StackableInventory
 		+COUNTITEM
 		+INVENTORY.UNDROPPABLE
 		+INVENTORY.IGNORESKILL
+		+INVENTORY.ALWAYSPICKUP
 	}
 
 	override void Activate(Actor activator)
