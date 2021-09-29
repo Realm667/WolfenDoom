@@ -31,7 +31,6 @@ class CoinItem : StackableInventory
 		+COUNTITEM
 		+INVENTORY.UNDROPPABLE
 		+INVENTORY.IGNORESKILL
-		+INVENTORY.ALWAYSPICKUP
 	}
 
 	override void Activate(Actor activator)
@@ -80,6 +79,18 @@ class CoinItem : StackableInventory
 		msg.Replace("%a", String.Format("%i", amount));
 
 		return msg;
+	}
+
+	override bool HandlePickup(Inventory item)
+	{
+		// Allow important money items to be picked up regardless of whether or
+		// not the player's wallet is full.
+		bool res = Super.HandlePickup(item);
+		if (res && item.Special && Amount == MaxAmount)
+		{
+			item.bPickupGood = true;
+		}
+		return res;
 	}
 	
 	override bool TryPickup (in out Actor toucher)
