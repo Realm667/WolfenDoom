@@ -251,7 +251,9 @@ class DirectionIndicator : ActorPositionable
 		Super.Tick();
 		// Stencil colour
 		int intensity = int(floor((sin(level.Time * 10) + 1) * 64 + 127));
-		SetShade(Color(255, intensity, intensity, intensity)); // Stencil color
+		int r = Default.bFriendly ? intensity >> 2 : intensity;
+		int g = Default.bFriendly ? intensity : intensity >> 2;
+		SetShade(Color(255, r, g, intensity >> 2)); // Stencil color
 		if (master.Health <= 0 && Health > 0)
 		{
 			Health = 0;
