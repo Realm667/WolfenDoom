@@ -215,6 +215,51 @@ class ActorPositionable : Base
 	}
 }
 
+class DirectionIndicator : ActorPositionable
+{
+	Default
+	{
+		+NOINTERACTION
+		+FLATSPRITE
+		RenderStyle "Stencil";
+	}
+
+	States
+	{
+	Spawn:
+		DIRC A -1;
+	Death:
+		DIRC A 1 A_FadeOut(0.03125, FTF_REMOVE);
+		Loop;
+	}
+
+	static Actor AddFor(Actor thingToAddFor)
+	{
+		Actor thing = Actor.Spawn("DirectionIndicator", thingToAddFor.Pos, NO_REPLACE);
+		thing.master = thingToAddFor;
+		return thing;
+	}
+
+	override void PostBeginPlay()
+	{
+		SpriteOffset = (-13, -16);
+		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+		// Stencil colour
+		int intensity = int(floor((sin(level.Time * 10) + 1) * 64 + 127));
+		SetShade(Color(255, intensity, intensity, intensity)); // Stencil color
+		if (master.Health <= 0 && Health > 0)
+		{
+			Health = 0;
+			SetStateLabel("Death");
+		}
+	}
+}
+
 class StaticActor : Actor
 {
 	bool nostatic;

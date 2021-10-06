@@ -2409,6 +2409,10 @@ class Nazi : Base
 			if (footsteps) { footsteps.stepdistance = 36; }
 		}
 */
+		if (bBoss)
+		{ // Because most bosses don't have rotation sprites
+			DirectionIndicator.AddFor(self);
+		}
 		Super.PostBeginPlay();
 	}
 
