@@ -15,26 +15,24 @@ float Triangular(float f)
 
 vec4 BiCubic(vec2 TexCoord)
 {
-	ivec2 texsize = textureSize(tex, 0);
-
-	float texelSizeX = 1.0 / texsize.x; //size of one texel 
-	float texelSizeY = 1.0 / texsize.y; //size of one texel 
+	ivec2 texSize = textureSize(tex, 0);
+	vec2 pixelUv = (floor(TexCoord * texSize) + .5) / texSize;
+	vec2 pixelSize = 1. / texSize;
 
 	vec4 nSum = vec4( 0.0, 0.0, 0.0, 0.0 );
 	vec4 nDenom = vec4( 0.0, 0.0, 0.0, 0.0 );
 
-	float a = fract( TexCoord.x * texsize.x ); // get the decimal part
-	float b = fract( TexCoord.y * texsize.y ); // get the decimal part
+	vec2 ab = fract(TexCoord * texSize); // get the decimal part
 
-	vec2 offset = vec2(texelSizeX / 2., texelSizeY / 2.);
 	for( int m = -1; m <= 2; m++ )
 	{
 		for( int n =-1; n <= 2; n++)
 		{
-			vec4 vecData = getTexel(TexCoord + offset + vec2(offset.x * float( m ), offset.y * float( n )));
-			float f  = Triangular( float( m ) - a );
+			vec2 pixelOffset = vec2(m, n);
+			vec4 vecData = getTexel(pixelUv + pixelOffset * pixelSize);
+			float f  = Triangular( float( m ) - ab[0] );
 			vec4 vecCoeff1 = vec4(f);
-			float f1 = Triangular ( -( float( n ) - b ) );
+			float f1 = Triangular ( -( float( n ) - ab[1] ) );
 			vec4 vecCoeff2 = vec4(f1);
 
 			nSum = nSum + ( vecData * vecCoeff2 * vecCoeff1  );
@@ -44,7 +42,7 @@ vec4 BiCubic(vec2 TexCoord)
 	return nSum / nDenom;
 }
 
-vec4 ProcessTexel()
+vec4 Process(vec4 color)
 {
 	return BiCubic(vTexCoord.st);
 }
