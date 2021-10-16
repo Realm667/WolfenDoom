@@ -81,18 +81,6 @@ class CoinItem : StackableInventory
 		return msg;
 	}
 
-	override bool HandlePickup(Inventory item)
-	{
-		// Allow important money items to be picked up regardless of whether or
-		// not the player's wallet is full.
-		bool res = Super.HandlePickup(item);
-		if (res && item.Special && Amount == MaxAmount)
-		{
-			item.bPickupGood = true;
-		}
-		return res;
-	}
-	
 	override bool TryPickup (in out Actor toucher)
 	{
 		bool ret = Super.TryPickup(toucher);
