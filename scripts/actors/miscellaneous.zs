@@ -254,7 +254,7 @@ class DirectionIndicator : ActorPositionable
 		int r = Default.bFriendly ? intensity >> 2 : intensity;
 		int g = Default.bFriendly ? intensity : intensity >> 2;
 		SetShade(Color(255, r, g, intensity >> 2)); // Stencil color
-		if (master.Health <= 0 && Health > 0)
+		if (!master || (master.Health <= 0 && Health > 0))
 		{
 			Health = 0;
 			SetStateLabel("Death");
