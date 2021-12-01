@@ -148,6 +148,12 @@ class BoASprinting : Inventory
 			staminasoundtimeout = level.time + 50;
 		}
 	}
+	
+	override void Travelled()
+	{
+		// Called after level transition
+		staminarecoverytimeout = 0;
+	}
 }
 
 class Stamina : Inventory
