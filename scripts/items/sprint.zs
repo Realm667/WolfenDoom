@@ -155,7 +155,7 @@ class BoASprinting : Inventory
 		staminarecoverytimeout = 0;
 		cooldown = 0;
 		staminasoundtimeout = 0;
-		Stamina stamina = Stamina(owner.FindInventory("Stamina"));
+		Inventory stamina = owner.FindInventory("Stamina");
 		if (stamina) {
 			stamina.Amount = stamina.MaxAmount;
 		}
