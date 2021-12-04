@@ -148,11 +148,17 @@ class BoASprinting : Inventory
 			staminasoundtimeout = level.time + 50;
 		}
 	}
-	
+
 	override void Travelled()
 	{
 		// Called after level transition
 		staminarecoverytimeout = 0;
+		cooldown = 0;
+		staminasoundtimeout = 0;
+		Stamina stamina = Stamina(owner.FindInventory("Stamina"));
+		if (stamina) {
+			stamina.Amount = stamina.MaxAmount;
+		}
 	}
 }
 
