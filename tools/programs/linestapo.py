@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # Check for cells in a CSV file which end in a newline
-import csv
 import argparse
+import csv
 import io
+from sys import platform
 
 parser = argparse.ArgumentParser(
     description="Check for cells in a CSV file which end in a newline"
@@ -10,18 +11,23 @@ parser = argparse.ArgumentParser(
 parser.add_argument("csv_file", type=str)
 args = parser.parse_args()
 
-
-with open(args.csv_file, "r") as csvdata:
+with open(args.csv_file) as csvdata:
     reader = csv.DictReader(csvdata)
     for lineno, row in enumerate(reader):
-        rowid = str(lineno + 1) + " " + row["Identifier"]
+        # Add 2 because the first row is not counted, and because "enumerate"
+        # starts at 0.
+        rowid = "{} {}".format(lineno + 2, row["Identifier"])
         for lang in row:
             content = row[lang]
             if content.endswith("\n") or content.endswith("\r"):
                 preview = content[:15] + "..." \
                     if len(content) > 15 \
                     else content
-                preview = preview.replace("\n", "\x1B[31m\\n\x1B[39m")
+                if platform == "linux":
+                    # Linux-only text colour codes (see console_codes(4))
+                    preview = preview.replace("\n", "\x1B[31m\\n\x1B[39m")
+                else:
+                    preview = preview.replace("\n", "\\n")
                 print("{}[{}] ({}) ends with a newline!".format(
                     rowid, lang, preview
                 ))
