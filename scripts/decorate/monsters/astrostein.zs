@@ -850,7 +850,7 @@ class AstroUrsel : AstroCyborg1
 		"####" E 5 A_Jump(256,"See");
 		Stop;
 	Missile2: //3
-		"####" F 0 A_StartSound("astrochaingun/fire");
+		URSE F 0 A_StartSound("astrochaingun/fire");
 		"####" F 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,10,random(2,-2));
 		"####" G 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,4,random(2,-2));
 		"####" E 5 A_FaceTarget;
@@ -863,8 +863,8 @@ class AstroUrsel : AstroCyborg1
 		"####" G 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,4,random(2,-2));
 		"####" E 5 A_Jump(256,"See");
 		Stop;
-	Missile2: //5
-		"####" F 0 A_StartSound("astrochaingun/fire");
+	Missile3: //5
+		URSE F 0 A_StartSound("astrochaingun/fire");
 		"####" F 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,10,random(2,-2));
 		"####" G 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,4,random(2,-2));
 		"####" E 5 A_FaceTarget;
