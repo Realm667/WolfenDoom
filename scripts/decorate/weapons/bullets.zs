@@ -296,7 +296,7 @@ class MutantTracer : BulletTracer
 	}
 }
 
-class MutantTrail: TracerTrail {}
+class MutantTrail : TracerTrail {}
 
 /////////////////////////////////////////////////////////////
 /////////////////// ASTROSTEIN PROJECTILES //////////////////
@@ -338,7 +338,7 @@ class AstroTracer : BulletTracer
 
 class EnemyAstroTracer : AstroTracer { Default { DamageFunction (random(2,4)); } }
 
-class AstroWhizzer: Actor
+class AstroWhizzer : Actor
 {
 	States
 	{
@@ -348,7 +348,7 @@ class AstroWhizzer: Actor
 	}
 }
 
-class AstroTrail: TracerTrail { Default { TracerTrail.FadeRate 0.0; } } // Don't fade the laser beams
+class AstroTrail : TracerTrail { Default { TracerTrail.FadeRate 0.0; } } // Don't fade the laser beams
 
 //Variant for Players
 class AstroTracerPlayer : AstroTracer
