@@ -1395,6 +1395,16 @@ class CODPipe4 : MuseumBase
 	Default
 	{
 	//$Title Decorative Pipe 4
+	RenderRadius 256.0;
+	}
+}
+
+class CODPipe4b : MuseumBase
+{
+	Default
+	{
+	//$Title Decorative Pipe 4 (Variant)
+	RenderRadius 256.0;
 	}
 }
 
