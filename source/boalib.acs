@@ -161,7 +161,7 @@ function void Overlay(str graphic, bool onoff)
 // Standard script to set up a standard start-of-level cutscene
 script "CinematicStart" (void)
 {
-	GiveInventory("CutsceneEnabled", 1);
+	GiveActorInventory(0, "CutsceneEnabled", 1);
 	FadeToBlack(0, 0, 70);
 	HideMap(true);
 	SetPlayerProperty(1, 1, PROP_FROZEN);
@@ -176,5 +176,5 @@ script "CinematicEnd" (void)
 	Overlay("MOVIEHD5", false);
 	HideMap(false);
 	SetPlayerProperty(1, 0, PROP_FROZEN);
-	TakeInventory("CutsceneEnabled", 1);
+	TakeActorInventory(0, "CutsceneEnabled", 1);
 }

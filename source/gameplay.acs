@@ -139,7 +139,7 @@ script "CLEAR INVENTORY"(void)
 	TakeInventory("Akten",1);
 	TakeInventory("AktenV2",1);
 	TakeInventory("RepairKit",9999); //make sure that more than 1 is taken to not fool objectives between HQs and missions --Ozy81
-	TakeInventory("CutsceneEnabled", 1);
+	TakeActorInventory(0, "CutsceneEnabled", 1);
 }
 
 Script "QuickKick" (void)
