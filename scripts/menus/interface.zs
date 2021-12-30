@@ -96,6 +96,8 @@ class CombinationSafe : BoAMenu
 
 		s = Safe(players[consoleplayer].ConversationNPC);
 
+		if (!s) { return; }
+
 		steps = 24;
 		speed = 360.0 / steps;
 		keytime = max(2, int(speed / 5));
@@ -379,6 +381,8 @@ class CombinationSafe : BoAMenu
 
 	void TryOpen()
 	{
+		if (!s) { return; }
+
 		int match = true;
 
 		for (int i = 0; i < 3; i++)
