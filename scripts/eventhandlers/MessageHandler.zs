@@ -41,7 +41,9 @@ class MessageBase : Thinker
 		MSG_FULLSCREEN = 4,
 		MSG_ALLOWREPLACE = 8,
 		MSG_ALLOWMULTIPLE = 16,
-		MSG_PERSIST = 32
+		MSG_PERSIST = 32,
+		MSG_ALLPLAYERS = 64,
+		MSG_NOLOG = 128
 	}
 
 	MessageHandler handler;
@@ -113,7 +115,7 @@ class MessageBase : Thinker
 		msg.flags = flags;
 
 		PlayerInfo player;
-		if (mo && mo.player) { player = mo.player; }
+		if (mo && mo.player && (deathmatch || !multiplayer) && !(flags & MSG_ALLPLAYERS)) { player = mo.player; }
 		else { player = players[consoleplayer]; }
 		msg.player = player;
 
@@ -121,7 +123,7 @@ class MessageBase : Thinker
 		if (handler.types.Find(type) == handler.types.Size()) { handler.types.Push(type); }
 
 		// Log the message to the console, emulating built-in message printing
-		if (player && text.length())
+		if (player && text.length() && !(flags & MSG_NOLOG))
 		{
 			player.SetLogText("\cL----------------------------------------");
 			player.SetLogText("$" .. text);
@@ -200,7 +202,7 @@ class Message : MessageBase
 
 	static int Init(Actor mo, String icon, String text, int intime = 35, int outtime = 35)
 	{
-		Message msg = Message(MessageBase.Init(mo, icon, text, intime, outtime, "Message", 1));
+		Message msg = Message(MessageBase.Init(mo, icon, text, intime, outtime, "Message", 1, (multiplayer && !deathmatch) ? MSG_ALLPLAYERS : 0));
 		if (msg)
 		{
 			msg.icon = icon;
@@ -380,7 +382,7 @@ class BriefingMessage : Message
 
 	static int Init(Actor mo, String icon, String text, int intime = 35, int outtime = 35)
 	{
-		BriefingMessage msg = BriefingMessage(MessageBase.Init(mo, icon, text, intime, outtime, "BriefingMessage"));
+		BriefingMessage msg = BriefingMessage(MessageBase.Init(mo, icon, text, intime, outtime, "BriefingMessage", 0, MSG_ALLPLAYERS));
 		if (msg)
 		{
 			msg.icon = icon;
@@ -480,7 +482,7 @@ class FadeIconMessage : Message
 
 	static int Init(Actor mo, String icon, String icon2, String text, int intime = 35, int outtime = 35)
 	{
-		FadeIconMessage msg = FadeIconMessage(MessageBase.Init(mo, icon, text, intime, outtime, "FadeIconMessage"));
+		FadeIconMessage msg = FadeIconMessage(MessageBase.Init(mo, icon, text, intime, outtime, "FadeIconMessage", 0, (multiplayer && !deathmatch) ? MSG_ALLPLAYERS : 0));
 		if (msg)
 		{
 			msg.icon = icon;
@@ -549,7 +551,7 @@ class HintMessage : MessageBase
 
 	static int Init(Actor mo, String text, String key)
 	{
-		HintMessage msg = HintMessage(MessageBase.Init(mo, text, text, 20, 20, "HintMessage"));
+		HintMessage msg = HintMessage(MessageBase.Init(mo, text, text, 20, 20, "HintMessage", 0, (multiplayer && !deathmatch) ? MSG_ALLPLAYERS : 0));
 		if (msg)
 		{
 			msg.key = key;
@@ -846,7 +848,7 @@ class CountdownMessage : MessageBase
 	static int Init(Actor mo, String text = "", int clr = Font.CR_GRAY, int holdtime = 210, int intime = 35, int outtime = 35, String bkg = "HELTHBAR", String msgname = "")
 	{
 		if (!msgname.length()) { msgname = bkg; }
-		CountdownMessage msg = CountdownMessage(MessageBase.Init(mo, msgname, text, intime, outtime, "CountdownMessage", 2, MSG_ALLOWREPLACE | MSG_ALLOWMULTIPLE));
+		CountdownMessage msg = CountdownMessage(MessageBase.Init(mo, msgname, text, intime, outtime, "CountdownMessage", 2, MSG_ALLOWREPLACE | MSG_ALLOWMULTIPLE | MSG_ALLPLAYERS | MSG_NOLOG));
 		if (msg)
 		{
 			msg.time = holdtime + intime + outtime;
