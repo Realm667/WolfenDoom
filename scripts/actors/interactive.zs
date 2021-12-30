@@ -675,9 +675,22 @@ class InteractiveItem : PuzzleItem
 	{
 		if (bAllowPickup)
 		{
-			Inventory.TryPickup(user);
-			PrintPickupMessage(user.CheckLocalView(), PickupMessage());
-			if (!bAutoActivate) { S_StartSound(PickupSound, CHAN_ITEM, CHANF_UI | CHANF_NOSTOP, 1.0); }
+			Actor p =  players[consoleplayer].mo;
+
+			if (multiplayer && !deathmatch && user != p)
+			{
+				bAutoActivate = false;
+				Inventory.TryPickup(p);
+				String msg = "\034+" .. user.player.GetUserName() .. ":\034L " .. StringTable.Localize(PickupMessage());
+				PrintPickupMessage(p.CheckLocalView(), msg);
+				S_StartSound(PickupSound, CHAN_ITEM, CHANF_UI | CHANF_NOSTOP, 0.5);
+			}
+			else
+			{
+				Inventory.TryPickup(user);
+				PrintPickupMessage(user.CheckLocalView(), PickupMessage());
+				if (!bAutoActivate) { S_StartSound(PickupSound, CHAN_ITEM, CHANF_UI | CHANF_NOSTOP, 1.0); }
+			}
 		}
 		else
 		{
@@ -711,6 +724,11 @@ class InteractiveItem : PuzzleItem
 			viewer.player.ConversationNPC = null;
 		}
 
+	}
+
+	override bool ShouldStay ()
+	{
+		return false;
 	}
 }
 

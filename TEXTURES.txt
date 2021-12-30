@@ -886,14 +886,19 @@ Graphic "AMMNUM8", 32, 32
 	Patch "patches/mapnums/num9.png", 0, 0 { Overlay }
 }
 
+Graphic "AMMNUM10", 32, 32
+{
+	Patch "patches/mapnums/num1.png", -7, 0 { Overlay }
+	Patch "patches/mapnums/num0.png", 5, 0 { Overlay }
+}
+
 Graphic "AMMNUM9", 32, 32
 {
 	XScale 4.0
 	YScale 4.0
 	Offset 16, 16
-	Patch "patches/mapnums/numback.png", 0, 0 	
-	Patch "patches/mapnums/num1.png", -5, 0 { Overlay }
-	Patch "patches/mapnums/num0.png", 6, 0 { Overlay }
+	Patch "patches/mapnums/numback.png", 0, 0
+	Patch AMMNUM10, 0, 0 { Overlay }	
 }
 
 Texture "textures/BUILD_M01.jpg", 256, 256 {

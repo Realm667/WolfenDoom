@@ -807,7 +807,7 @@ class BoAStatusBar : BaseStatusBar
 				// Fix for un-alerted sneakable enemies showing less than full health on lower skill settings because they are "friendly".
 				if (nmo.bFriendly && nmo.user_sneakable)
 				{
-					LastMaxHealth = mo.Default.Health * G_SkillPropertyFloat(SKILLP_MonsterHealth);
+					LastMaxHealth = int(mo.Default.Health * G_SkillPropertyFloat(SKILLP_MonsterHealth));
 				}
 			}
 			else { LastIcon = ""; }

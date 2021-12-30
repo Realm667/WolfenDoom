@@ -132,6 +132,8 @@ class BoAPlayer : PlayerPawn
 		DamageFactor "Creepy", 0.0;
 		DamageFactor "FriendlyFrag", 0.5;
 		Scale 0.65;
+		TeleFogSourceType "Nothing";
+		TeleFogDestType "Nothing";
 	}
 
 	States

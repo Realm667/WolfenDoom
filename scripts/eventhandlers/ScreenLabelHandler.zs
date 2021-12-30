@@ -215,13 +215,21 @@ class ScreenLabelHandler : EventHandler
 						if (ScreenLabelItems[i].icon)
 						{
 							TextureID icon = TexMan.CheckForTexture(ScreenLabelItems[i].icon, TexMan.Type_Any);
+							TextureID border = TexMan.CheckForTexture("MP_MARK2", TexMan.Type_Any);
+							TextureID bkg = TexMan.CheckForTexture("MP_MARK3", TexMan.Type_Any);
+							TextureID iconbkg = TexMan.CheckForTexture("MP_MARK4", TexMan.Type_Any);
 
 							if (icon)
 							{
-								Vector2 icondimensions = TexMan.GetScaledSize(icon) * scale;
+								Vector2 icondimensions = TexMan.GetScaledSize(icon);
+								double picscale = 112.0 / icondimensions.x;
+								icondimensions *= picscale * scale;
 								drawpos.y -= icondimensions.y / 2;
 
-								screen.DrawTexture(icon, true, drawpos.x, drawpos.y, DTA_DestWidthF, icondimensions.x, DTA_DestHeightF, icondimensions.y, DTA_CenterOffset, true, DTA_Alpha, alpha, DTA_AlphaChannel, true, DTA_FillColor, clr);
+								if (bkg) { screen.DrawTexture(bkg, true, drawpos.x, drawpos.y, DTA_DestWidthF, icondimensions.x, DTA_DestHeightF, icondimensions.y, DTA_CenterOffset, true, DTA_Alpha, alpha, DTA_AlphaChannel, true, DTA_FillColor, clr); }
+								if (border) { screen.DrawTexture(border, true, drawpos.x, drawpos.y, DTA_DestWidthF, icondimensions.x, DTA_DestHeightF, icondimensions.y, DTA_CenterOffset, true, DTA_Alpha, alpha); }
+								if (iconbkg) { screen.DrawTexture(iconbkg, true, drawpos.x, drawpos.y, DTA_DestWidthF, icondimensions.x, DTA_DestHeightF, icondimensions.y, DTA_CenterOffset, true, DTA_Alpha, alpha, DTA_AlphaChannel, true, DTA_FillColor, clr); }
+								screen.DrawTexture(icon, true, drawpos.x, drawpos.y, DTA_DestWidthF, icondimensions.x, DTA_DestHeightF, icondimensions.y, DTA_CenterOffset, true, DTA_Alpha, alpha);
 							}
 						}
 
