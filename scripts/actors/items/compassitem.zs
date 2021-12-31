@@ -75,7 +75,7 @@ class CompassItem : PuzzleItem
 			}
 		}
 
-		bool pickup = Super.TryPickup(toucher);
+		bool pickup = PickupChecks(toucher);
 
 		if (pickup && specialclue == 3)
 		{
@@ -84,6 +84,29 @@ class CompassItem : PuzzleItem
 
 			// If it belongs to this chapter and gets added, autosave on pickup so we don't have to deal with clearing the entries if we die.
 			if (MapStatsHandler.AddSpecialPickup(texName, specialclue)) { level.MakeAutoSave(); }
+		}
+
+		return pickup;
+	}
+
+	bool PickupChecks(in out Actor toucher)
+	{
+		Actor p =  players[consoleplayer].mo;
+		bool pickup = false;
+
+		if (toucher.player && multiplayer && !deathmatch && toucher != p)
+		{
+			bAutoActivate = false;
+			pickup = Inventory.TryPickup(p);
+			String msg = "\034+" .. toucher.player.GetUserName() .. ":\034L " .. StringTable.Localize(PickupMessage());
+			PrintPickupMessage(p.CheckLocalView(), msg);
+			S_StartSound(PickupSound, CHAN_ITEM, CHANF_UI | CHANF_NOSTOP, 0.5);
+		}
+		else
+		{
+			pickup = Inventory.TryPickup(toucher);
+			PrintPickupMessage(toucher.CheckLocalView(), PickupMessage());
+			if (!bAutoActivate) { S_StartSound(PickupSound, CHAN_ITEM, CHANF_UI | CHANF_NOSTOP, 1.0); }
 		}
 
 		return pickup;
@@ -108,5 +131,10 @@ class CompassItem : PuzzleItem
 			item = owner.FindInventory(alternate1);
 			if (item) { item.Destroy(); }
 		}
+	}
+
+	override bool ShouldStay ()
+	{
+		return false;
 	}
 }
