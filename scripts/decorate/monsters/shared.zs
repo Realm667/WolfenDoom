@@ -3055,36 +3055,6 @@ class SleepEffect: Actor
 	}
 }
 
-class NaziMedPow : RegenPowerup
-{
-	Default
-	{
-		Powerup.Duration -20;
-		Powerup.Strength 1;
-	}
-}
-
-class NaziMedicBox : PowerupGiver
-{
-	Default
-	{
-	Scale 0.65;
-	Inventory.MaxAmount 1;
-	Inventory.PickupMessage "$NMBOX";
-	Powerup.Type "NaziMedPow";
-	-COUNTITEM
-	-INVENTORY.INVBAR
-	+INVENTORY.ALWAYSPICKUP
-	+INVENTORY.AUTOACTIVATE
-	}
-	States
-	{
-	Spawn:
-		MBOX A -1;
-		Stop;
-	}
-}
-
 class ToolBox: Actor
 {
 	Default

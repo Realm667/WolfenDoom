@@ -1611,7 +1611,6 @@ class TotaleGier : CustomInvBase // Checked within Nazi class to drop coins on d
 	}
 }
 
-
 class GierToken : PowerUp // Token is checked for in Nazi class to cause enemies that are killed by the owner to drop coins on death
 {
 	double blendstep;
@@ -1798,5 +1797,43 @@ class SuperShield : BasicArmorPickup
 		}
 
 		return BasicArmorPickup.CanPickup(toucher);
+	}
+}
+
+class NaziMedicBox : PowerupGiver
+{
+	Default
+	{
+		Scale 0.65;
+		Inventory.MaxAmount 1;
+		Inventory.PickupMessage "$NMBOX";
+		Powerup.Type "RegenPowerup";
+		Powerup.Duration -20;
+		Powerup.Strength 1;
+		-COUNTITEM
+		-INVENTORY.INVBAR
+		+INVENTORY.AUTOACTIVATE
+	}
+
+	States
+	{
+		Spawn:
+			MBOX A -1;
+			Stop;
+	}
+
+	// Don't let the player pick up the medic box when they are at full health or already regenerating
+	override bool TryPickup (in out Actor toucher)
+	{
+		if (toucher)
+		{
+			if (
+				toucher.FindInventory("HQ_Checker", true) ||
+				toucher.health >= toucher.GetMaxHealth(true) || 
+				toucher.FindInventory("RegenPowerup")
+			) { return false; }
+		}
+
+		return Super.TryPickup(toucher);
 	}
 }
