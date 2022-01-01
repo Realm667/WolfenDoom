@@ -27,7 +27,7 @@ class Objective : Thinker
 	bool secondary, complete;
 	String symbolfont;
 	transient ui Font Symbols;
-	int timer;
+	int time, settime, fadetime;
 
 	// This is how to set up objectives directly via ZSCript calls:
 	//  ACS: ScriptCall("Objective", "Add", text, num, false, false, true);
@@ -61,12 +61,13 @@ class Objective : Thinker
 		if (o == handler.objectives.Size())
 		{
 			obj = New("Objective");
+			obj.time = level.time;
 
 			int insertat = o;
 			for (int l = 0; l < insertat; l++)
 			{
 				if (handler.objectives[l].order <= order) { continue; }
-				insertat = l;
+ 				insertat = l;
 			}
 
 			handler.objectives.Insert(insertat, obj);
@@ -81,7 +82,8 @@ class Objective : Thinker
 		obj.secondary = secondary;
 		if (complete >= 0) { obj.complete = complete; }
 		obj.symbolfont = "Symbols";
-		obj.timer = -1;
+		obj.settime = level.time;
+		obj.fadetime = -1;
 	}
 
 	static void Completed(String text = "", int order = -1, bool quiet = false)
@@ -101,7 +103,7 @@ class Objective : Thinker
 		if (o == handler.objectives.Size()) { return; }
 
 		handler.objectives[o].complete = true;
-		handler.objectives[o].timer = 140;
+		handler.objectives[o].fadetime = 140;
 	}
 
 	ui virtual void DrawObjective(Font fnt, double x, double y, double w = 800, double h = 600, double alpha = 1.0, bool mode = 0)
@@ -115,22 +117,31 @@ class Objective : Thinker
 
 		if (mode == 1)
 		{
-			Vector2 hudscale = StatusBar.GetHudScale();
-
 			int clr = Font.CR_WHITE;
+			int msgtime = level.time - settime;
+			int lifetime = level.time - time;
+
 			if (complete)
 			{
 				clr = Font.CR_GOLD;
-
-				if (timer <= 50)
-				{
-					alpha *= (timer - 15) / 35.0;
-					alpha = clamp(alpha, 0.0, 1.0);
-				}
+				if (fadetime <= 50) { alpha *= (fadetime - 15) / 35.0; } // Fade out
 			}
+			else if (lifetime <= 35) { alpha *= lifetime / 35.0; } // Fade in when added
+
+			alpha = clamp(alpha, 0.0, 1.0);
 
 			DrawToHud.DrawText(status, (x, y), Symbols, alpha, 1.0, (w, h), Font.CR_UNTRANSLATED);
 			DrawToHud.DrawText(output, (x + Symbols.StringWidth("  "), y + 1), fnt, alpha, 1.0, (w, h), clr);
+
+			// Draw the objective over again to highlight if the objective was just set or changed
+			if (!complete && level.time > 175) // Don't highlight when initial map objectives are added
+			{
+				if (msgtime <= 35) { alpha *= msgtime / 35.0; }
+				if (msgtime > 140) { alpha *= 1.0 - (msgtime - 140) / 35.0; }
+				alpha = clamp(alpha, 0.0, 1.0);
+
+				if (alpha > 0.0) { DrawToHud.DrawText(output, (x + Symbols.StringWidth("  "), y + 1), fnt, alpha, 1.0, (w, h), Font.CR_DARKRED); }
+			}
 		}
 		else
 		{
@@ -213,8 +224,8 @@ class ObjectiveHandler : EventHandler
 
 		for (int a = 0; a < objectives.Size(); a++)
 		{
-			if (objectives[a].timer > 0) { objectives[a].timer = max(0, objectives[a].timer - 1); }
-			if (!objectives[a].complete || objectives[a].timer != 0) { incomplete++; }
+			if (objectives[a].fadetime > 0) { objectives[a].fadetime = max(0, objectives[a].fadetime - 1); }
+			if (!objectives[a].complete || objectives[a].fadetime != 0) { incomplete++; }
 		}
 
 		if (active[consoleplayer] == 2 && !incomplete && (!stats || !stats.GetBool())) { active[consoleplayer] = 0; }
@@ -376,18 +387,18 @@ class ObjectivesWidget : Widget
 			String line = StringTable.Localize(o.text, false);
 			boxwidth = max(boxwidth, fnt.StringWidth(line));
 
-			if (o.text.length() && (!o.complete || o.timer > 0))
+			if (o.text.length() && (!o.complete || o.fadetime > 0))
 			{
 				double height = lineheight;
 
 				if (!drawspace && o.secondary)
 				{
 					drawspace = true;
-					height *= 1.5 * (o.timer == -1 ? 1.0 : min(1.0, o.timer / 15.0));
+					height *= 1.5 * (o.fadetime == -1 ? 1.0 : min(1.0, o.fadetime / 15.0));
 				}
 				else
 				{
-					height *= o.timer == -1 ? 1.0 : min(1.0, o.timer / 15.0);
+					height *= o.fadetime == -1 ? 1.0 : min(1.0, o.fadetime / 15.0);
 				}
 
 				count++;
@@ -445,10 +456,10 @@ class ObjectivesWidget : Widget
 		{
 			let ob = handler.objectives[o];
 
-			if (ob.text.length() && (!ob.complete || ob.timer > 0))
+			if (ob.text.length() && (!ob.complete || ob.fadetime > 0))
 			{
 				ob.DrawObjective(fnt, drawpos.x, drawpos.y, destsize.x, destsize.y, alpha, 1); // Call each objective's internal drawing function
-				double height = lineheight * (ob.timer == -1 ? 1.0 : min(1.0, ob.timer / 15.0));
+				double height = lineheight * (ob.fadetime == -1 ? 1.0 : min(1.0, ob.fadetime / 15.0));
 				drawpos.y += height;
 			}
 			o = handler.FindNext(false, o);
@@ -463,10 +474,10 @@ class ObjectivesWidget : Widget
 		{
 			let ob = handler.objectives[o];
 
-			if (ob.text.length() && (!ob.complete || ob.timer > 0))
+			if (ob.text.length() && (!ob.complete || ob.fadetime > 0))
 			{
 				ob.DrawObjective(fnt, drawpos.x, drawpos.y, destsize.x, destsize.y, alpha, 1); // Call each objective's internal drawing function
-				double height = lineheight * (ob.timer == -1 ? 1.0 : min(1.0, ob.timer / 15.0));
+				double height = lineheight * (ob.fadetime == -1 ? 1.0 : min(1.0, ob.fadetime / 15.0));
 				drawpos.y += height;
 			}
 			o = handler.FindNext(true, o);
