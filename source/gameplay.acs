@@ -67,7 +67,7 @@ script "MissionNumber" OPEN
 script "Maplaunch" ENTER
 {
 	FadeRange(0,0,0,1.0,0,0,0,0.0,1.5);
-	TakeInventory("IncomingMessage", 999999);
+	TakeActorInventory(0, "IncomingMessage", 999999);
 }
 
 //autosaves
@@ -86,10 +86,10 @@ script "ChangeMap" (void)
 //see https://github.com/Realm667/WolfenDoom/issues/281#issuecomment-687553459
 script "FixTokens" (void)
 {
-	TakeInventory("DisguiseFailToken",9999);
-	TakeInventory("RadioPickup",9999);
-	TakeInventory("TurretHeatAmmo",9999);
-	TakeInventory("TurretBulletAmmo",9999);
+	TakeActorInventory(0, "DisguiseFailToken",9999);
+	TakeActorInventory(0, "RadioPickup",9999);
+	TakeActorInventory(0, "TurretHeatAmmo",9999);
+	TakeActorInventory(0, "TurretBulletAmmo",9999);
 }
 
 //mxd. Mutants despawn checks
@@ -126,19 +126,19 @@ script "ExGetPlayerZ" (void)
 //Clear Inventory - now added Astrostein stuff (Ozy81)
 script "CLEAR INVENTORY"(void)
 {
-	TakeInventory("KnifeSilent", 9999); //All ammo and weapons (aside from the knife) should now be handled by my EventHandler - Ed
-	TakeInventory("BoABlueKey",1);
-	TakeInventory("BoAYellowKey",1);
-	TakeInventory("BoARedKey",1);
-	TakeInventory("BoACyanKey",1);
-	TakeInventory("BoAGreenKey",1);
-	TakeInventory("BoAPurpleKey",1);
-	TakeInventory("AstroBlueKey",1); //Astros
-	TakeInventory("AstroYellowKey",1); //Astros
-	TakeInventory("AstroRedKey",1); //Astros
-	TakeInventory("Akten",1);
-	TakeInventory("AktenV2",1);
-	TakeInventory("RepairKit",9999); //make sure that more than 1 is taken to not fool objectives between HQs and missions --Ozy81
+	TakeActorInventory(0, "KnifeSilent", 9999); //All ammo and weapons (aside from the knife) should now be handled by my EventHandler - Ed
+	TakeActorInventory(0, "BoABlueKey",1);
+	TakeActorInventory(0, "BoAYellowKey",1);
+	TakeActorInventory(0, "BoARedKey",1);
+	TakeActorInventory(0, "BoACyanKey",1);
+	TakeActorInventory(0, "BoAGreenKey",1);
+	TakeActorInventory(0, "BoAPurpleKey",1);
+	TakeActorInventory(0, "AstroBlueKey",1); //Astros
+	TakeActorInventory(0, "AstroYellowKey",1); //Astros
+	TakeActorInventory(0, "AstroRedKey",1); //Astros
+	TakeActorInventory(0, "Akten",1);
+	TakeActorInventory(0, "AktenV2",1);
+	TakeActorInventory(0, "RepairKit",9999); //make sure that more than 1 is taken to not fool objectives between HQs and missions --Ozy81
 	TakeActorInventory(0, "CutsceneEnabled", 1);
 }
 
