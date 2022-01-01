@@ -1142,6 +1142,7 @@ mixin class GiveBuoyancy
 			else
 			{
 				SetOrigin((pos.xy, max(waterheight - waterclip, floorz)), true);
+				vel.z = 0;
 			}
 		}
 		else if (inwater)

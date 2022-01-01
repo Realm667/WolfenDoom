@@ -251,6 +251,8 @@ class ZBatFamiliar : BatFamiliar
 
 class RatFamiliar : Base
 {
+	mixin GiveBuoyancy;
+
 	Default
 	{
 		//$Category Monsters (BoA)/Critters
@@ -276,6 +278,7 @@ class RatFamiliar : Base
 		ActiveSound "rat/active";
 		HitObituary "$RAT";
 		+Base.CANSQUISH
+		RatFamiliar.Buoyancy 0.8;
 	}
 
 	States
@@ -309,11 +312,19 @@ class RatFamiliar : Base
 			"####" M -1;
 			Stop;
 	}
+
+	override void Tick()
+	{
+		DoBuoyancy();
+		Super.Tick();
+	}
 }
 
 //SPIDERS
 class BigSpider : Base
 {
+	mixin GiveBuoyancy;
+
 	Default
 	{
 		//$Category Monsters (BoA)/Critters
@@ -351,6 +362,7 @@ class BigSpider : Base
 		Species "Spiders";
 		+Base.CANSQUISH
 		DamageFactor "Squish", 5.0;
+		BigSpider.Buoyancy 0.85;
 	}
 
 	States
@@ -398,6 +410,12 @@ class BigSpider : Base
 			"####" A 5;
 			"####" A -1 {bMThruSpecies = TRUE; bThruSpecies = TRUE;}
 			Stop;
+	}
+
+	override void Tick()
+	{
+		DoBuoyancy();
+		Super.Tick();
 	}
 }
 
