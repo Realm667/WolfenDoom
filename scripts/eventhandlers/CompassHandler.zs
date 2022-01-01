@@ -142,7 +142,7 @@ class CompassWidget : Widget
 		}
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		BoACompass cmps = BoACompass(player.mo.FindInventory("BoACompass"));
 

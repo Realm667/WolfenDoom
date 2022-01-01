@@ -44,7 +44,7 @@ class Widget ui
 	int flags, anchor, priority, zindex;
 	int margin[4]; // top, right, bottom, left
 	bool visible;
-	double alpha;
+	double alpha, fade;
 	private int screenblocksval;
 
 	Font BigFont, HUDFont;
@@ -88,6 +88,8 @@ class Widget ui
 		w.setpos = (7, 7);
 		w.zindex = zindex;
 
+		w.fade = -1;
+
 		return w;
 	}
 
@@ -124,7 +126,7 @@ class Widget ui
 		for (int a = 0; a < BoAStatusBar(StatusBar).widgets.Size(); a++)
 		{
 			let w = BoAStatusBar(StatusBar).widgets[a];
-			if (w && w.anchor == anchor && w.priority == priority && w.visible) { return w; }
+			if (w && w.anchor == anchor && w.priority == priority && (w.visible || w.alpha > 0.0 || w.fade > -1)) { return w; }
 		}
 
 		return null;
@@ -140,7 +142,7 @@ class Widget ui
 		for (int a = start; a >= 0; a--)
 		{
 			let w = BoAStatusBar(StatusBar).widgets[a];
-			if (w && w != s && w.visible && w.anchor == anchor)
+			if (w && w != s && (w.visible || w.alpha > 0.0 || w.fade > -1) && w.anchor == anchor)
 			{
 				if (peer)
 				{
@@ -230,7 +232,7 @@ class Widget ui
 		else { pos.x = relpos.x; }
 	}
 
-	virtual bool SetVisibility()
+	virtual bool IsVisible()
 	{
 		if (
 				BoAStatusBar(StatusBar) && 
@@ -245,8 +247,7 @@ class Widget ui
 
 	virtual void DoTick(int index = 0)
 	{
-		visible = SetVisibility();
-		if (!visible) { alpha = 0.0; }
+		visible = IsVisible();
 
 		SetMargins();
 		CalcRelPos(pos, index, !size.length());
@@ -286,14 +287,29 @@ class Widget ui
 
 	virtual Vector2 Draw()
 	{
-		visible = SetVisibility();
+		double low = clamp(fade, 0.0, 1.0);
+		if (!IsVisible()) { low = 0.0; }
 
-		if (
-			!visible ||
-			(screenblocksval > screenblocks && screenblocks > 9) ||
-			(screenblocksval < screenblocks && screenblocks > 10)
-		) { alpha = 0.0; }
-		if (alpha < 1.0) { alpha = min(1.0, alpha + 1.0 / 18); }
+		if (visible)
+		{
+			if (alpha < 1.0) { alpha = min(1.0, alpha + 1.0 / 18); }
+			alpha = clamp(alpha, low, 1.0);
+		}
+		else
+		{
+			if (
+				(screenblocksval > screenblocks && screenblocks > 9) ||
+				(screenblocksval < screenblocks && screenblocks > 10)
+			)
+			{
+				alpha = 0.0;
+			}
+			else
+			{
+				if (alpha > low) { alpha = max(low, alpha - 1.0 / 18); }
+				alpha = clamp(alpha, low, 1.0);
+			}
+		}
 
 		if (flags & WDG_DRAWFRAME)
 		{
@@ -339,7 +355,7 @@ class Widget ui
 			for (int w = 0; w < BoAStatusBar(Statusbar).widgets.Size(); w++)
 			{
 				let wdg = BoAStatusBar(Statusbar).widgets[w];
-				if (wdg && wdg.visible && wdg.zindex == zindex) { wdg.Draw(); }
+				if (wdg && (wdg.visible || wdg.alpha > 0.0 || wdg.fade > -1) && wdg.zindex == zindex) { wdg.Draw(); }
 			}
 
 			zindex++;
@@ -474,7 +490,7 @@ class CountWidget : Widget
 		}
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		if (
 				BoAStatusBar(StatusBar) && 
@@ -653,7 +669,7 @@ class InventoryWidget : Widget
 		InventoryWidget wdg = InventoryWidget(Widget.Init("InventoryWidget", widgetname, anchor, 0, priority, pos, zindex));
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		if (
 				BoAStatusBar(StatusBar) && 
@@ -694,7 +710,7 @@ class PuzzleItemWidget : Widget
 		}
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		if (
 			level.NoInventoryBar ||
@@ -745,9 +761,9 @@ class StealthWidget : Widget
 		if (wdg && wdg.flags & WDG_DRAWFRAME) { wdg.flags |= WDG_DRAWFRAME_CENTERED; }
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
-		if (Super.SetVisibility()) { return !!BoAStatusBar(StatusBar).LivingSneakableActors(); }
+		if (Super.IsVisible()) { return !!BoAStatusBar(StatusBar).LivingSneakableActors(); }
 		return false;
 	}
 
@@ -773,7 +789,11 @@ class PowerWidget : Widget
 	{
 		PowerWidget wdg = PowerWidget(Widget.Init("PowerWidget", widgetname, anchor, 0, priority, pos, zindex));
 
-		if (wdg && wdg.flags & WDG_DRAWFRAME) { wdg.flags |= WDG_DRAWFRAME_CENTERED; }
+		if (wdg)
+		{
+			wdg.fade = 1.0;
+			if (wdg.flags & WDG_DRAWFRAME) { wdg.flags |= WDG_DRAWFRAME_CENTERED; }
+		}
 	}
 
 	override Vector2 Draw()
@@ -792,14 +812,34 @@ class PowerWidget : Widget
 
 class AirSupplyWidget : Widget
 {
+	transient CVar show;
+
 	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
 		AirSupplyWidget wdg = AirSupplyWidget(Widget.Init("AirSupplyWidget", widgetname, anchor, 0, priority, pos, zindex));
+	}
+	
+	override void DoTick(int index)
+	{
+		show = CVar.FindCVar("boa_hudmeterfade");
+		if (show) { fade = clamp(show.GetFloat(), 0.0, 1.0); }
+
+		Super.DoTick();
 	}
 
 	override Vector2 Draw()
 	{
 		if (!BoAStatusBar(StatusBar)) { return (0, 0); }
+
+		if (fade > -1 && fade < 1.0)
+		{
+			if (
+				players[consoleplayer].mo.waterlevel < 2 ||
+				players[consoleplayer].mo.FindInventory("PowerScuba") ||
+				players[consoleplayer].cheats & CF_GODMODE ||
+				players[consoleplayer].cheats & CF_GODMODE2
+			 ) { visible = false; }
+		}
 
 		size = (8, 97);
 
@@ -813,20 +853,41 @@ class AirSupplyWidget : Widget
 
 class StaminaWidget : Widget
 {
+	transient CVar show;
+
 	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
 		StaminaWidget wdg = StaminaWidget(Widget.Init("StaminaWidget", widgetname, anchor, 0, priority, pos, zindex));
+	}
+
+	override void DoTick(int index)
+	{
+		show = CVar.FindCVar("boa_hudmeterfade");
+		if (show) { fade = clamp(show.GetFloat(), 0.0, 1.0); }
+
+		Super.DoTick();
 	}
 
 	override Vector2 Draw()
 	{
 		if (!BoAStatusBar(StatusBar)) { return (0, 0); }
 
+		int val = BoAStatusBar(StatusBar).mStaminaInterpolator.GetValue();
+
+		if (fade > -1 && fade < 1.0)
+		{
+			if (
+				val >= 100 ||
+				players[consoleplayer].cheats & CF_NOCLIP ||
+				players[consoleplayer].cheats & CF_NOCLIP2
+			) { visible = false; }
+		}
+
 		size = (8, 97);
 
 		Super.Draw();
 
-		StatusBar.DrawBar("VERTSTMF", "VERTSTME", BoAStatusBar(StatusBar).mStaminaInterpolator.GetValue(), 100, (pos.x, pos.y), 0, StatusBar.SHADER_VERT | StatusBar.SHADER_REVERSE, StatusBar.DI_ITEM_OFFSETS, alpha);
+		StatusBar.DrawBar("VERTSTMF", "VERTSTME", val, 100, (pos.x, pos.y), 0, StatusBar.SHADER_VERT | StatusBar.SHADER_REVERSE, StatusBar.DI_ITEM_OFFSETS, alpha);
 
 		return size;
 	}
@@ -861,12 +922,12 @@ class AmmoWidget : Widget
 		}
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		show = CVar.FindCVar("boa_hudammostats");
 		if (show && !show.GetBool()) { return false; }
 
-		return Super.SetVisibility();
+		return Super.IsVisible();
 	}
 
 	override Vector2 Draw()
@@ -1001,7 +1062,7 @@ class PositionWidget : Widget
 		PositionWidget wdg = PositionWidget(Widget.Init("PositionWidget", widgetname, anchor, 0, priority, pos, zindex));
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		return !!idmypos;
 	}
@@ -1229,7 +1290,7 @@ class LogWidget : Widget
 		fnt = SmallFont;
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		return true;
 	}
@@ -1371,7 +1432,7 @@ class ActiveEffectWidget : Widget
 		}
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		if (
 				automapactive ||
@@ -1536,7 +1597,7 @@ class DamageWidget : Widget
 		DamageWidget wdg = DamageWidget(Widget.Init("DamageWidget", widgetname, anchor, 0, priority, pos, zindex));
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		if (
 				automapactive ||
@@ -1605,7 +1666,7 @@ class GrenadeWidget : Widget
 		}
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		if (
 				automapactive ||
@@ -1696,7 +1757,7 @@ class GrenadeWidget : Widget
 
 class KeenWidget : Widget
 {
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		if (
 				BoAStatusBar(StatusBar) &&
@@ -1827,7 +1888,7 @@ class TankHealthWidget : Widget
 		}
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		if (
 				!automapactive &&
@@ -1878,7 +1939,7 @@ class AutomapWidget : Widget
 		}
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		if (
 				automapactive

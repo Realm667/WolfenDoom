@@ -338,7 +338,7 @@ class ObjectivesWidget : Widget
 		}
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		if (!handler) { handler = ObjectiveHandler(EventHandler.Find("ObjectiveHandler")); }
 
