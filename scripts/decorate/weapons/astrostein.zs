@@ -549,22 +549,27 @@ class ElektroshockerPuff : BulletPuff
 {
 	Default
 	{
-	+BLOODLESSIMPACT
-	+PUFFONACTORS
-	DamageType "Reznator";
-	RenderStyle "Add";
-	Alpha 0.8;
-	VSpeed 0;
-	DamageType "Melee";
+		+BLOODLESSIMPACT
+		+PUFFONACTORS
+		DamageType "Reznator";
+		RenderStyle "Add";
+		Alpha 0.8;
+		VSpeed 0;
+		DamageType "Melee";
+		Decal "ScorchSmall";
 	}
+
 	States
 	{
-	Spawn:
-	Melee:
-		TNT1 AAAAA 0 A_SpawnItemEx("SparkG", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE);
-		TNT1 A 0 A_SpawnItemEx("SparkFlareG");
-		RZAP ACEGH 2 BRIGHT;
-		Stop;
+		Spawn:
+		Melee:
+			TNT1 AAAAA 0 A_SpawnItemEx("SparkG", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE);
+			TNT1 A 0 {
+				A_SpawnItemEx("SparkFlareG");
+				A_SpawnItemEx("ZScorchSmall");
+			}
+			RZAP ACEGH 2 BRIGHT;
+			Stop;
 	}
 }
 

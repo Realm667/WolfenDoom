@@ -117,6 +117,11 @@ class ParticleManager : EventHandler
 			// Debug output: particle queue size and current tick delay
 			if (boa_debugparticles && level.time % 35 == 0) { console.printf("%i of %i particles, %i tick delay", size, maxparticles, tickdelay); }
 		}
+		else if (e.thing is "BulletTracer")
+		{
+			if (!effectmanager) { effectmanager = EffectsManager.GetManager(); }
+			BulletTracer(e.thing).manager = effectmanager;
+		}
 	}
 
 	static ParticleManager GetManager()
