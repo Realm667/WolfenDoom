@@ -115,31 +115,34 @@ class AstroRobotDropper : RandomSpawner { Default { DropItem "Destroyed_AstroRob
 ////////////////
 
 class BaseLine : ParticleBase
-{	Default
+{
+	Default
 	{
-	+BRIGHT
-	+MISSILE
-	+NOBLOCKMAP
-	+NOGRAVITY
-	+NOINTERACTION
-	Radius 0;
-	Height 0;
-	RenderStyle "Add";
-	Alpha 0.01;
+		+BRIGHT
+		+MISSILE
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+NOINTERACTION
+		Radius 0;
+		Height 0;
+		RenderStyle "Add";
+		Alpha 0.01;
 	}
+
 	States
 	{
-	Spawn:
-		SPFX AAAAA 1 LIGHT("AstrosteinDeathLight") A_FadeIn(0.2);
-		"####" A 1 LIGHT("AstrosteinDeathLight") A_FadeOut(0.06);
-		Wait;
+		Spawn:
+			SPFX AAAAA 1 LIGHT("AstrosteinDeathLight") A_FadeIn(0.2);
+			"####" A 1 LIGHT("AstrosteinDeathLight") A_FadeOut(0.06);
+			Wait;
 	}
 }
 
 class BaseLineXL : BaseLine
-{	Default
+{
+	Default
 	{
-	Scale 5.0;
+		Scale 5.0;
 	}
 }
 
@@ -862,10 +865,12 @@ class AstroUrsel : AstroCyborg1
 			URSE H 8 {
 				A_Scream();
 				A_NoBlocking();
-				A_SpawnItemEx("BaseLine", random(32, -32), random(32, -32), random(0, 24), 0, 0, random(1,3), 0, 129, 0);
 			}
 		DeathFade:
-			URSE H 1 A_FadeOut(0.05);
+			URSE H 1 {
+				A_SpawnItemEx("BaseLine", random(32, -32), random(32, -32), random(0, 24), 0, 0, random(1,3), 0, 129, 0);
+				A_FadeOut(0.05);
+			}
 			Loop;
 	}
 }
