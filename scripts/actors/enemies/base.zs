@@ -3759,7 +3759,9 @@ class BatBase : Base
 		Roost:
 			"####" K Random(35, 350); // 'Sleep' on roost for 1-10 seconds
 		RoostLoop:
-			"####" K 5 A_LookThroughDisguise(LOF_NOSIGHTCHECK); // Then only go after the player again if they make a noise
+			"####" K 5 {
+				if (!bDormant) { A_LookThroughDisguise(LOF_NOSIGHTCHECK); } // Then only go after the player again if they make a noise
+			}
 			Loop;
 	}
 
@@ -3768,8 +3770,17 @@ class BatBase : Base
 		Super.PostBeginPlay();
 
 		ResetCountDown();
-
 		SpawnRoost();
+
+		if (bDormant)
+		{
+			if (roostgoal)
+			{
+				A_SetSize(-1, Default.height / 2);
+				SetOrigin(roostgoal.pos, true);
+				SetStateLabel("Roost");
+			}
+		}
 	}
 
 	override void Tick()
@@ -3805,7 +3816,7 @@ class BatBase : Base
 				if (roostgoal)
 				{
 					double dist = Distance2D(roostgoal);
-					if (dist < radius && roostgoal.pos.z <= pos.z + 16) // At roost, roost.
+					if (dist < radius && roostgoal.pos.z <= pos.z + height / 2) // At roost, roost.
 					{
 						SetOrigin(roostgoal.pos, true);
 						vel *= 0; // Make sure to remove any externally-applied velocity, or you can (rarely) end up with sliding roosted bats
@@ -3816,7 +3827,7 @@ class BatBase : Base
 					}
 					else if (dist < radius * 3)
 					{
-						A_SetSize(-1, 16); // Make the bat shorter so that the sprite can move closer to the ceiling to roost more smoothly
+						A_SetSize(-1, Default.height / 2); // Make the bat shorter so that the sprite can move closer to the ceiling to roost more smoothly
 					}
 				}
 			}
@@ -3856,8 +3867,22 @@ class BatBase : Base
 		{
 			if (roostgoal) { roostgoal.Destroy(); } // If this gets called twice, destroy the old roost
 
-			roostgoal = Spawn("MapSpot", (pos.xy, ceilingz - 16)); // Convenient actor re-use
+			roostgoal = Spawn("MapSpot", (pos.xy, ceilingz - Default.height / 2)); // Convenient actor re-use
 			roostgoal.bShootable = true; // Must be set so that A_Chase will keep the map spot as a target
 		}
+	}
+
+	override void Activate (Actor activator)
+	{
+		if (bDormant) { A_LookThroughDisguise(); } // If being activated from dormant, look for players immediately
+
+		Super.Activate(activator);
+	}
+
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
+	{
+		if (bDormant && source && source.player) { bDormant = false; } // Wake up dormant bats that are shot by a player
+
+		return Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
 	}
 }
