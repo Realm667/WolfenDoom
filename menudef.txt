@@ -215,9 +215,18 @@ OptionMenu "BoAHudScaleOptionsInsert"
 	class "MenuShim"
 }
 
+OptionValue "HUDParTime"
+{
+	0, "$TXT_NO"
+	1, "$TXT_YES"
+	2, "$OPTVAL_HUD_REPLACETIME"
+}
+
 OptionMenu "BoAHudOptionsInsert"
 {
+	StaticText " "
 	PercentSlider "$OPT_HUDMETERFADE",		"boa_hudmeterfade", 0.0, 1.0, 0.05, "$OPT_HUDMETERFADE_HIDE", "$OPT_HUDMETERFADE_SHOW"
+	Option "$OPT_HUDPARTIME", 			"boa_hudshowpartime", "HUDParTime"
 	StaticText " "
 
 	class "MenuShim"

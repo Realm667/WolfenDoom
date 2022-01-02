@@ -479,6 +479,8 @@ class HealthWidget : Widget
 class CountWidget : Widget
 {
 	TextureID bagtex;
+	transient CVar showpartimesvar;
+	int showpartimes;
 
 	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
@@ -503,19 +505,32 @@ class CountWidget : Widget
 		return false;
 	}
 
+	override void DoTick()
+	{
+		Super.DoTick();
+
+		if (!showpartimesvar) { showpartimesvar = CVar.FindCVar("boa_hudshowpartime"); }
+
+		if (showpartimesvar && level.partime > 0) { showpartimes = showpartimesvar.GetInt(); }
+		else { showpartimes = 0; }
+	}
+
 	override Vector2 Draw()
 	{
 		int timey = 13;
+		int rowheight = HUDFont.GetHeight() + 3;
 
 		if (player.mo is "TankPlayer")
 		{
-			size = (64, HUDFont.GetHeight() + 3);
+			size = (64, rowheight);
+			if (showpartimes == 1) { size.y += rowheight; }
 			timey = 0;
 			Super.Draw();
 		}
 		else
 		{
 			size = (64, 21);
+			if (showpartimes == 1) { size.y += rowheight; }
 			Super.Draw();
 
 			//Money
@@ -528,17 +543,72 @@ class CountWidget : Widget
 		}
 
 		//Time
-		String time = level.TimeFormatted();
+		String time = TimeFormatted(level.totaltime);
 
 		if (BoAStatusBar(StatusBar).hour || BoAStatusBar(StatusBar).minute || BoAStatusBar(StatusBar).second)
 		{
 			time = String.Format("%02i", BoAStatusBar(StatusBar).hour) .. ":" .. String.Format("%02i", BoAStatusBar(StatusBar).minute) .. ":" .. String.Format("%02i", BoAStatusBar(StatusBar).second);
 		}
 
-		DrawToHud.Dim(0x0, 0.2 * alpha, int(pos.x - (margin[3] - 3)), int(pos.y + timey), int(size.x + (margin[3] + margin[1]) - 6), HUDFont.GetHeight() + 3);
+		if (showpartimes)
+		{ 
+			DrawToHud.Dim(0x0, 0.2 * alpha, int(pos.x - (margin[3] - 3)), int(pos.y + timey), int(size.x + (margin[3] + margin[1]) - 6), rowheight);
+
+			int segments;
+			String partime;
+			[partime, segments] = TimeFormatted(level.partime, true, 3); // Format both times to the same segment width
+
+			StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, TimeFormatted(level.maptime, false, segments), (pos.x + size.x / 2 - 2, pos.y + timey + 1), StatusBar.DI_TEXT_ALIGN_RIGHT, alpha:alpha);
+			StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, String.Format("\c[Dark Gray]%s", "/"), (pos.x + size.x / 2, pos.y + timey + 1), StatusBar.DI_TEXT_ALIGN_CENTER, alpha:alpha);
+			StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, partime, (pos.x + size.x / 2 + 2, pos.y + timey + 1), 0, alpha:alpha);
+
+			if (showpartimes == 2) { return size; }
+
+			timey += rowheight;
+		}
+
+		DrawToHud.Dim(0x0, 0.2 * alpha, int(pos.x - (margin[3] - 3)), int(pos.y + timey), int(size.x + (margin[3] + margin[1]) - 6), rowheight);
 		StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, time, (pos.x + 17, pos.y + timey + 1), alpha:alpha);
 
 		return size;
+	}
+
+	String, int TimeFormatted(int input, bool secs = false, int minsegments = -1)
+	{
+		int segments;
+		int sec = input;
+		if (!secs) { sec = Thinker.Tics2Seconds(input); }
+
+		String output = "";
+
+		// Shorten the return value to the desired minimum length
+		// by passing in the corresponding minsegments value:
+		//   0 = just seconds (1, 2, 3)
+		//   1 = full block of seconds (01, 02, 03)
+		//   2 = just minutes (0:01, 0:02, 0:03)
+		//   3 = full block of minutes (00:01, 00:02, 00:03)
+		//   4 = allow just hours (0:00:01, 0:00:02, 0:00:03)
+		if (minsegments > -1 && minsegments < 5)
+		{
+			int h = sec / 3600;
+			if (h > 9) { output.AppendFormat("%02d:", h); segments += 2; }
+			else if (h > 0 || minsegments > 3) { output = String.Format("%i:", h);  segments++; }
+
+			int m = (sec % 3600) / 60;
+			if (output.length() || m > 9 || minsegments > 2) { output.AppendFormat("%02d:", m); segments += 2; }
+			else if (m > 0 || minsegments > 1) { output = String.Format("%i:", m);  segments++; }
+
+			int s = sec % 60;
+			if (output.length() || minsegments > 0) { output.AppendFormat("%02d", s); segments++; }
+			else { output = String.Format("%i", s); }
+		}
+		else // Otherwise, use the standard full-width return (00:00:01, 00:00:02, 00:00:03)
+		{
+			output = String.Format("%02d:%02d:%02d", sec / 3600, (sec % 3600) / 60, sec % 60);
+			segments = 5;
+		}
+
+		return output, segments;
 	}
 }
 
