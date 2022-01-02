@@ -604,8 +604,7 @@ class BloodPool2 : ParticleBase
 	{
 		if (waterlevel)
 		{
-			String fogactor = "BloodFog"; // Actor is still in DECORATE
-			A_SpawnItemEx(fogactor, 0, 0, 0, FRandom(-2.0, 2.0), FRandom(-2.0, 2.0), 0, 0, SXF_TRANSFERTRANSLATION);
+			A_SpawnItemEx("BloodFog", 0, 0, 0, FRandom(-2.0, 2.0), FRandom(-2.0, 2.0), 0, 0, SXF_TRANSFERTRANSLATION);
 
 			Destroy();
 		}
@@ -618,6 +617,7 @@ class BloodPool2 : ParticleBase
 		if (master) // Offset the pool from the current player camera in order to avoid overlapping sprites - modified from Nash sprite shadow code
 		{
 			if (!players[consoleplayer].camera) return;
+			if (master.player && master.health > 0) { master = null; return; }
 
 			Vector3 sPos = (
 				master.Pos.X + cos(players[consoleplayer].camera.Angle) * 0.01,

@@ -401,7 +401,7 @@ class AchievementTracker : StaticEventHandler
 		ACH_CHEVALIER,		// Kill a loper with only the primary fire of the Firebrand
 		ACH_1915 = 10,		// Complete C3M4 with no gas mask
 		ACH_ASSASSIN,		// Stealth kill 10 enemies (total across all levels)
-		ACH_NAUGHTY,		// Use the 'give' cheat
+		ACH_NAUGHTY,		// Use the 'give', 'noclip', or 'god' cheat
 		ACH_MINRELOADS,		// Fewer than 25 weapon reloads in a map
 		ACH_NORELOADS,		// Complete a map without manually reloading
 		ACH_SURRENDERS = 15,// Cause 5 enemies to surrender (total across all levels)
@@ -502,7 +502,6 @@ class AchievementTracker : StaticEventHandler
 							if (ach)
 							{
 								ach.value = parse[a].ToInt();
-								if (ach.value < 100) { ach.value = 0; } // Backward compatibility with old test code; remove before 3.1 release
 								if (ach.value > 1 << 16) { ach.complete = true; } // Allow 16 bits for data 
 							}
 							break;
