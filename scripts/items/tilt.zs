@@ -166,6 +166,18 @@ class BoATilt : CustomInventory
 	{
 		if (!owner) { return; }
 
+		// Reset all tilt values on spawn or multiplayer respawn
+		if (owner.spawntime == level.maptime)
+		{
+			owner.A_SetViewPitch(0);
+			owner.A_SetViewRoll(0);
+			lastLevelTilt = 0;
+			lastRoll = 0;
+			lastPitch = 0;
+
+			return;
+		}
+
 		double curLevelTilt = 0;
 
 		// Level tilt processing is required for C3M5_C, so dont allow deactivating it
