@@ -208,9 +208,17 @@ OptionMenu "BoAOptionsMiddle" // Added in the middle of the default Options menu
 	class "MenuShim"
 }
 
-OptionMenu "BoAHudOptionsInsert"
+OptionMenu "BoAHudScaleOptionsInsert"
 {
 	Option "$OPT_HUDRATIO",				"boa_hudratio", "ForceRatios"
+
+	class "MenuShim"
+}
+
+OptionMenu "BoAHudOptionsInsert"
+{
+	PercentSlider "$OPT_HUDMETERFADE",		"boa_hudmeterfade", 0.0, 1.0, 0.05, "$OPT_HUDMETERFADE_HIDE", "$OPT_HUDMETERFADE_SHOW"
+	StaticText " "
 
 	class "MenuShim"
 }
