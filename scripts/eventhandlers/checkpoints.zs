@@ -50,21 +50,117 @@ class PlayerCheckpointManager : StaticEventHandler {
 	override void PlayerEntered(PlayerEvent e) {
 		// Teleport player to their new start
 		if (!activeCheckpoint) return;
+		Vector3 newPos; double newAngle;
+		[newPos, newAngle] = GetNewPosition(e.PlayerNumber, activeCheckpoint);
+		players[e.PlayerNumber].mo.Teleport(newPos, newAngle, 0);
+	}
+
+	clearscope Vector3, double GetNewPosition(int playerNumber, Actor checkpoint = null) {
 		// Calculate position difference
 		Vector3 pos; double angle;
-		[pos, angle] = level.PickPlayerStart(e.PlayerNumber);
+		[pos, angle] = level.PickPlayerStart(playerNumber);
+		if (!checkpoint) return pos, angle;
 		Vector3 posDiff = pos - averageStart;
 		double angleDiff = angle - averageAngle;
+		// Apply differences relative to active checkpoint
+		/*
+		Vector2 posXYDiffRotated = Actor.RotateVector(posDiff.xy, angleDiff);
+		posDiff.xy = posXYDiffRotated;
+		*/
+		posDiff.xy = Actor.RotateVector(posDiff.xy, angleDiff);
+		Vector3 newPos = checkpoint.Pos + posDiff;
+		double newAngle = Actor.Normalize180(checkpoint.Angle + angleDiff);
+		// Fix newPos.Z, since the destination will be in another sector
+		Sector destSector = level.PointInSector(newPos.xy);
+		double floorz = destSector.floorplane.ZAtPoint(newPos.xy);
+		double ceilz = destSector.ceilingplane.ZAtPoint(newPos.xy);
+		if (newPos.z < floorz || newPos.z > ceilz) {
+			newPos.z = floorz;
+		}
+		return newPos, newAngle;
 	}
 }
 
 class BoACoopCheckpoint : MapSpot {
+	Default {
+		//$Icon CHKPT0
+		//$Category Multiplayer (BoA)
+		//$Title Co-op Checkpoint
+		//$Color 2
+		+FLATSPRITE
+	}
+
+	States {
+	Spawn:
+		CHKP T -1;
+		Stop;
+	}
+
 	override void Activate(Actor activator) {
+		// Set active level checkpoint to self
 		PlayerCheckpointManager pcm = PlayerCheckpointManager(StaticEventHandler.Find("PlayerCheckpointManager"));
 		pcm.activeCheckpoint = self;
 	}
+
 	override void Deactivate(Actor activator) {
+		// Unset active level checkpoint
 		PlayerCheckpointManager pcm = PlayerCheckpointManager(StaticEventHandler.Find("PlayerCheckpointManager"));
 		pcm.activeCheckpoint = null;
+	}
+
+	// Purely for debugging - can be commented out
+	Array<Actor> newCoopStarts;
+	override void PostBeginPlay() {
+		PlayerCheckpointManager pcm = PlayerCheckpointManager(StaticEventHandler.Find("PlayerCheckpointManager"));
+		for (int pn = 0; pn < MAXPLAYERS; pn++) {
+			Vector3 pos; double pangle;
+			[pos, pangle] = pcm.GetNewPosition(pn, self);
+			Actor silhouette = Actor.Spawn("BoACoopCheckpointDebug", pos, NO_REPLACE);
+			silhouette.angle = pangle;
+			newCoopStarts.Push(silhouette);
+		}
+	}
+
+	override void Tick() {
+		// If only there were CVar change events...
+		if (boa_debugcoopcheckpoints) {
+			bInvisible = false;
+			for (int pn = 0; pn < newCoopStarts.Size(); pn++) {
+				newCoopStarts[pn].bInvisible = false;
+			}
+		} else {
+			bInvisible = true;
+			for (int pn = 0; pn < newCoopStarts.Size(); pn++) {
+				newCoopStarts[pn].bInvisible = true;
+			}
+		}
+	}
+}
+
+// Purely for debugging - can be commented out
+class BoACoopCheckpointDebug : Actor {
+	DirectionIndicator di;
+
+	Default {
+		RenderStyle "Stencil";
+		StencilColor "961f1f";
+		+NOINTERACTION
+		+INVISIBLE
+	}
+
+	States {
+	Spawn:
+		PLAY A -1;
+		Stop;
+	}
+
+	override void PostBeginPlay() {
+		di = DirectionIndicator(DirectionIndicator.AddFor(self));
+		di.bInvisible = self.bInvisible;
+		Scale = GetDefaultByType("BoAPlayer").Scale;
+	}
+
+	override void Tick() {
+		di.bInvisible = self.bInvisible;
 	}
 }
