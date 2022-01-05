@@ -29,6 +29,7 @@ class PlayerCheckpointManager : StaticEventHandler {
 		// Get all player starts, average them and their angle
 		Vector3 pos;
 		int angle;
+		bool firstAngle = false;
 		int players = 0;
 		for (int pn = 0; pn < MAXPLAYERS; pn++) {
 			[pos, angle] = level.PickPlayerStart(pn);
@@ -36,11 +37,13 @@ class PlayerCheckpointManager : StaticEventHandler {
 				continue; // Player start does not exist
 			}
 			averageStart += pos;
-			averageAngle += angle;
+			if (!firstAngle) {
+				averageAngle = angle;
+				firstAngle = true;
+			}
 			players++;
 		}
 		averageStart = averageStart / players;
-		averageAngle = averageAngle / players;
 	}
 
 	override void WorldUnloaded(WorldEvent e) {
