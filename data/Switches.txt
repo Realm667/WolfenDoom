@@ -1,0 +1,284 @@
+// Configuration file for textures that can be used for repeat-use switches 
+// that visually retain their flipped state until used again by a player
+//
+// Supplements ANIMDEFS-defined switches - those definitions are still used
+// for single-use switches and other non "use" activation types.
+//
+// There is no change in in-editor switch implementation; just set the 
+// switch up as normal, and if the line is tagged as repeatable and the 
+// switch textures are defined in this file, the switch will become a on/off
+// toggle in-game instead of resetting to the starting texture as is normal
+
+// Default values if none are provided in the definitions below
+default
+{
+	sounds
+	{
+		// Default Doom switch sound names
+		on = "switches/normbutn";
+		off = "switches/normbutn";
+	}
+
+	// Number of tics to wait after activation before executing line special
+	// Must be 1 or higher in order for the action to run *after* the texture change
+	actiondelay = 1;
+}
+
+// Definitions for BoA switch textures that make sense to be repeatable use
+switch
+{
+	textures
+	{
+		// Valid textures for "on" and "off" states.  Toggled between when found.
+		on = "CK_SWON", "textures/METL_B12.png";
+		off = "CK_SWOFF", "textures/METL_B09.png";
+	}
+
+	sounds
+	{
+		// Sounds can be specified per-switch, with fallback to defaults specified above
+		on = "ckeen/switch";
+		off = "ckeen/switch";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "METL_B12", "textures/METL_B12.png";
+		off = "METL_B09", "textures/METL_B09.png";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_01", "textures/SW_ON_01.png";
+		off = "SW_OF_01", "textures/SW_OF_01.png";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_02", "textures/SW_ON_02.png";
+		off = "SW_OF_02", "textures/SW_OF_02.png";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_03", "textures/SW_ON_03.png";
+		off = "SW_OF_03", "textures/SW_OF_03.png";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_04", "textures/SW_ON_04.png";
+		off = "SW_OF_04", "textures/SW_OF_04.png";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_06", "textures/SW_ON_06.png";
+		off = "SW_OF_06", "textures/SW_OF_06.png";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_07", "textures/SW_ON_07.png";
+		off = "SW_OF_07", "textures/SW_OF_07.png";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_08", "textures/SW_ON_08.png";
+		off = "SW_OF_08", "textures/SW_OF_08.png";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_09", "textures/SW_ON_09.png";
+		off = "SW_OF_09", "textures/SW_OF_09.png";
+	}
+
+	sounds
+	{
+		on = "SMSWITCH";
+		off = "SMSWITCH";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_10", "textures/SW_ON_10.png";
+		off = "SW_OF_10", "textures/SW_OF_10.png";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_11", "textures/SW_ON_11.png";
+		off = "SW_OF_11", "textures/SW_OF_11.png";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_13", "textures/SW_ON_13.png";
+		off = "SW_OF_13", "textures/SW_OF_13.png";
+	}
+
+	sounds
+	{
+		on = "SMSWITCH";
+		off = "SMSWITCH";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_OF_14", "textures/SW_OF_14.png";
+		off = "SW_ON_14", "textures/SW_ON_14.png";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_16", "textures/SW_ON_16.png";
+		off = "SW_OF_16", "textures/SW_OF_16.png";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_17", "textures/SW_ON_17.png";
+		off = "SW_OF_17", "textures/SW_OF_17.png";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_18", "textures/SW_ON_18.png";
+		off = "SW_OF_18", "textures/SW_OF_18.png";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_34", "textures/SW_ON_34.png";
+		off = "SW_OF_34", "textures/SW_OF_34.png";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_59", "textures/astrostein/SW_ON_59.png";
+		off = "SW_OF_59", "textures/astrostein/SW_OF_59.png";
+	}
+
+	sounds
+	{
+		on = "DSSPSWIT";
+		off = "DSSPSWIT";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_94", "textures/SW_ON_94.png";
+		off = "SW_OF_94", "textures/SW_OF_94.png";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_B3", "textures/SW_ON_B3.png";
+		off = "SW_OF_B3", "textures/SW_OF_B3.png";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_G3", "textures/SW_ON_G3.png";
+		off = "SW_OF_G3", "textures/SW_OF_G3.png";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_P3", "textures/SW_ON_P3.png";
+		off = "SW_OF_P3", "textures/SW_OF_P3.png";
+	}
+}
+
+
+switch
+{
+	textures
+	{
+		on = "SW_ON_R3", "textures/SW_ON_R3.png";
+		off = "SW_OF_R3", "textures/SW_OF_R3.png";
+	}
+}
+
+switch
+{
+	textures
+	{
+		on = "ROOM_T63", "textures/ROOM_T63.png";
+		off = "ROOM_T50", "textures/ROOM_T50.png";
+	}
+
+	sounds
+	{
+		on = "SMSWITCH";
+		off = "SMSWITCH";
+	}
+}
