@@ -148,20 +148,32 @@ class FlattenableProp : GrassBase // Tall grass/rye, etc. that can be trampled d
 
 class ActorPositionable : Base
 {
+	Vector3 spawnoffset;
+	Vector3 offset;
+	int layer;
+	double rotationspeed;
+
 	enum RotationFlags
 	{
 		ROT_MatchAngle = 1,
 		ROT_MatchPitch = 2,
 		ROT_MatchRoll = 4,
+	}
+
+	enum RotationLayers
+	{
+		ROT_Front = 0,
+		ROT_Back = 1,
 	};
+
+	Property Layer:layer;
+	Property RotationSpeed:rotationspeed;
 
 	Default
 	{
 		-CASTSPRITESHADOW
+		ActorPositionable.RotationSpeed 0.0;
 	}
-
-	Vector3 spawnoffset;
-	Vector3 offset;
 
 	override void PostBeginPlay()
 	{
@@ -198,7 +210,14 @@ class ActorPositionable : Base
 
 			SetOrigin(master.pos + offset, true);
 
-			if (flags & ROT_MatchAngle) { angle = master.angle; }
+			if (flags & ROT_MatchAngle)
+			{
+				if (rotationspeed > 0)
+				{
+					angle = clamp(angle + deltaangle(angle, master.angle), angle - rotationspeed, angle + rotationspeed);
+				}
+				else { angle = master.angle; }
+			}
 
 			double delta = deltaangle(master.angle, angle);
 
@@ -207,9 +226,26 @@ class ActorPositionable : Base
 		}
 	}
 
+	void SetLayer(int layer = ROT_Front)
+	{
+		if (master && layer == ROT_Back) // Offset the actor from the current player camera in order to avoid overlapping sprites - modified from Nash's old sprite shadow code
+		{
+			if (!players[consoleplayer].camera) return;
+
+			Vector3 sPos = (
+				master.Pos.X + cos(players[consoleplayer].camera.Angle) * 0.01,
+				master.Pos.Y + sin(players[consoleplayer].camera.Angle) * 0.01,
+				master.Pos.Z
+				);
+			
+			SetOrigin(sPos, true);
+		}
+	}
+
 	override void Tick()
 	{
 		RotateWithMaster();
+		if (layer) { SetLayer(layer); }
 
 		Super.Tick();
 	}
@@ -222,6 +258,8 @@ class DirectionIndicator : ActorPositionable
 		+NOINTERACTION
 		+FLATSPRITE
 		RenderStyle "Stencil";
+		ActorPositionable.Layer ROT_Back;
+		ActorPositionable.RotationSpeed 8;
 	}
 
 	States
