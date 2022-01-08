@@ -50,7 +50,7 @@ class PlayerCheckpointManager : StaticEventHandler {
 		activeCheckpoint = null;
 	}
 
-	override void PlayerEntered(PlayerEvent e) {
+	override void PlayerRespawned(PlayerEvent e) {
 		// Teleport player to their new start
 		if (!activeCheckpoint) return;
 		Vector3 newPos; double newAngle;
