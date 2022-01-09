@@ -40,45 +40,59 @@
 class DrawToHUD
 {
 	// Scale coordinates and size to screen space, using rules simliar to the hud sizing/scaling rules
-	static ui Vector2, Vector2 TranslatetoHUDCoordinates(Vector2 pos, Vector2 size = (0, 0))
+	static ui Vector2, Vector2, Vector2 TranslatetoHUDCoordinates(Vector2 pos, Vector2 tosize = (0, 0), Vector2 fromsize = (-1, -1))
 	{
-		// Get the scale being used by the HUD code
-		Vector2 hudscale = Statusbar.GetHudScale();
-
 		// Scale the texture and coordinates to match the HUD elements
 		Vector2 screenpos, screensize;
+		Vector2 scale = Statusbar.GetHudScale();
 
-		screenpos.x = pos.x * hudscale.x;
-		screenpos.y = pos.y * hudscale.y;
+		if (fromsize == (-1, -1))
+		{
+			fromsize = (Screen.GetWidth(), Screen.GetHeight());
 
-		screensize.x = size.x * hudscale.x;
-		screensize.y = size.y * hudscale.y;
+			// Get the scale being used by the HUD code
+			scale = Statusbar.GetHudScale();
+			screensize.x = tosize.x * scale.x;
+			screensize.y = tosize.y * scale.y;
+		}
+		else if (fromsize == (0, 0))
+		{
+			double uiscale = BoAStatusBar.GetUIScale(st_scale);
+			fromsize = (Screen.GetWidth(), Screen.GetHeight());
+			scale.x = fromsize.x / tosize.x;
+			scale.y = fromsize.y / tosize.y;
+			screensize = tosize * uiscale;
+		}
+		else
+		{
+			double uiscale = BoAStatusBar.GetUIScale(st_scale);
+			scale.x = fromsize.x / tosize.x;
+			scale.y = fromsize.y / tosize.y;
+			screensize = tosize * uiscale;
+		}
+
+		screenpos.x = pos.x * scale.x;
+		screenpos.y = pos.y * scale.y;
 
 		// Allow HUD coordinate-style positioning (not the decimal part, just that negatives mean offset from right/bottom)
-		if (pos.x < 0) { screenpos.x += Screen.GetWidth(); }
-		if (pos.y < 0) { screenpos.y += Screen.GetHeight(); }
+		if (pos.x < 0) { screenpos.x += fromsize.x; }
+		if (pos.y < 0) { screenpos.y += fromsize.y; }
 
-		return screenpos, screensize;
+		return screenpos, screensize, scale;
 	}
 
-	static ui void DrawText(String text, Vector2 pos, Font fnt = null, double alpha = 1.0, double scale = 1.0, Vector2 size = (640, 480), color shade = -1, int flags = ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT)
+	static ui void DrawText(String text, Vector2 pos, Font fnt = null, double alpha = 1.0, double textscale = 1.0, Vector2 destsize = (640, 480), color shade = -1, int flags = ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT)
 	{
 		if (!fnt) { fnt = SmallFont; }
 
-		Vector2 hudscale = StatusBar.GetHudScale();
-		scale *= hudscale.y;
-
-		double width = Screen.GetWidth() / scale;
-		double height = Screen.GetHeight() / scale;
+		bool fullscreen = !(flags & ZScriptTools.STR_FIXED);
 
 		// Scale the coordinates
-		Vector2 screenpos, screensize;
-		[screenpos, screensize] = TranslatetoHUDCoordinates(pos, size * scale);
+		Vector2 screenpos, screensize, scale;
+		[screenpos, screensize, scale] = TranslatetoHUDCoordinates(pos, destsize * textscale, (fullscreen ? (-1, -1) : (0, 0)));
 
-		screenpos /= scale;
-
-		double textw = fnt.StringWidth(text);
-		double texth = fnt.GetHeight();
+		double textw = fnt.StringWidth(text) * scale.x;
+		double texth = fnt.GetHeight() * scale.y;
 
 		if (flags & ZScriptTools.STR_RIGHT) { screenpos.x -= textw; }
 		else if (flags & ZScriptTools.STR_CENTERED) { screenpos.x -= textw / 2; }
@@ -87,23 +101,28 @@ class DrawToHUD
 		else if (flags & ZScriptTools.STR_MIDDLE) { screenpos.y -= texth / 2; }
 
 		// Draw the text
-		screen.DrawText(fnt, shade, int(screenpos.x), int(screenpos.y), text, DTA_KeepRatio, true, DTA_Alpha, alpha, DTA_VirtualWidth, int(width), DTA_VirtualHeight, int(height));
+		screen.DrawText(fnt, shade, int(screenpos.x), int(screenpos.y), text, DTA_KeepRatio, true, DTA_Alpha, alpha, DTA_ScaleX, scale.x, DTA_ScaleY, scale.y);
 	}
 
 	enum DrawTex
 	{
-		TEX_DEFAULT, // Draw with normal offset (from top left)
+		TEX_DEFAULT = 0, // Draw with normal offset (from top left)
 		TEX_USEOFFSETS = 0, // "
-		TEX_CENTERED, // Draw with centered offsets (default)
-		TEX_COLOROVERLAY, // Overlay color instead of using the texture as an alpha channel
+		TEX_CENTERED = 1, // Draw with centered offsets (default)
+		TEX_COLOROVERLAY = 2, // Overlay color instead of using the texture as an alpha channel
+		TEX_FIXED = 4, // Draw in status bar coordinates
 	};
 
-	static ui void DrawTexture(TextureID tex, Vector2 pos, double alpha = 1.0, double scale = 1.0, color shade = -1, Vector2 destsize = (-1, -1), int flags = TEX_CENTERED)
+	static ui void DrawTexture(TextureID tex, Vector2 pos, double alpha = 1.0, double texscale = 1.0, color shade = -1, Vector2 desttexsize = (-1, -1), int flags = TEX_CENTERED, Vector2 destsize = (-1, -1))
 	{
+		bool fullscreen = !(flags & TEX_FIXED);
+
 		// Scale the coordinates
-		Vector2 screenpos, screensize;
-		if (destsize == (-1, -1)) { destsize = TexMan.GetScaledSize(tex); }
-		[screenpos, screensize] = TranslatetoHUDCoordinates(pos, destsize * scale);
+		Vector2 screenpos, screensize, scale;
+		[screenpos, screensize, scale] = TranslatetoHUDCoordinates(pos, destsize, (fullscreen ? (-1, -1) : (0, 0)));
+
+		if (desttexsize == (-1, -1)) { desttexsize = TexMan.GetScaledSize(tex); }
+		desttexsize *= texscale;
 
 		bool alphachannel;
 		color fillcolor;
@@ -115,8 +134,8 @@ class DrawToHUD
 		}
 
 		// Draw the texture
-		if (flags & TEX_CENTERED) { screen.DrawTexture(tex, true, screenpos.x, screenpos.y, DTA_DestWidth, int(screensize.x), DTA_DestHeight, int(screensize.y), DTA_Alpha, alpha, DTA_CenterOffset, true, DTA_AlphaChannel, alphachannel, DTA_FillColor, shade); }
-		else { screen.DrawTexture(tex, true, screenpos.x, screenpos.y, DTA_DestWidth, int(screensize.x), DTA_DestHeight, int(screensize.y), DTA_Alpha, alpha, DTA_TopOffset, 0, DTA_LeftOffset, 0, DTA_AlphaChannel, alphachannel, DTA_FillColor, shade); }
+		if (flags & TEX_CENTERED) { screen.DrawTexture(tex, true, screenpos.x, screenpos.y, DTA_DestWidth, int(desttexsize.x), DTA_DestHeight, int(desttexsize.y), DTA_Alpha, alpha, DTA_CenterOffset, true, DTA_AlphaChannel, alphachannel, DTA_FillColor, shade, DTA_ScaleX, scale.x, DTA_ScaleY, scale.y); }
+		else { screen.DrawTexture(tex, true, screenpos.x, screenpos.y, DTA_DestWidth, int(desttexsize.x), DTA_DestHeight, int(desttexsize.y), DTA_Alpha, alpha, DTA_TopOffset, 0, DTA_LeftOffset, 0, DTA_AlphaChannel, alphachannel, DTA_FillColor, shade, DTA_ScaleX, scale.x, DTA_ScaleY, scale.y); }
 	}
 
 	static ui void DrawTransformedTexture(TextureID tex, Vector2 pos, double alpha = 1.0, double ang = 0, double scale = 1.0, color shade = -1, int cliptop = 0, int clipleft = 0, int clipbottom = 0x7FFFFFFF, int clipright = 0x7FFFFFFF)
@@ -150,16 +169,21 @@ class DrawToHUD
 		Screen.DrawTexture(tex, true, screenpos.x, screenpos.y, DTA_CenterOffset, true, DTA_Rotate, -ang, DTA_DestWidth, int(screensize.x), DTA_DestHeight, int(screensize.y), DTA_Alpha, alpha, DTA_AlphaChannel, alphachannel, DTA_FillColor, shade, DTA_ClipTop, cliptop, DTA_ClipLeft, clipleft, DTA_ClipBottom, clipbottom, DTA_ClipRight, clipright);
 	}
 
-	static ui void Dim(Color clr = 0x000000, double alpha = 0.5, int x = 0, int y = 0, int w = -1, int h = -1)
+	static ui void Dim(Color clr = 0x000000, double alpha = 0.5, double x = 0, double y = 0, double w = -1, double h = -1, Vector2 destsize = (-1, -1))
 	{
 		if (w == -1) { w = Screen.GetWidth(); }
 		if (h == -1) { h = Screen.GetHeight(); }
 
-		// Scale the coordinates
-		Vector2 screenpos, screensize;
-		[screenpos, screensize] = TranslatetoHUDCoordinates((x, y), (w, h));
+		bool fullscreen = (destsize == (-1, -1));
 
-		Screen.Dim(clr, alpha, int(screenpos.x), int(screenpos.y), int(screensize.x), int(screensize.y));
+		// Scale the coordinates
+		Vector2 screenpos, screensize, scale;
+		[screenpos, screensize, scale] = TranslatetoHUDCoordinates((x, y), destsize, (fullscreen ? (-1, -1) : (0, 0)));
+
+		w *= scale.x;
+		h *= scale.y;
+
+		Screen.Dim(clr, alpha, int(round(screenpos.x)), int(round(screenpos.y)), int(round(w)), int(round(h)));
 	}
 
 	static ui void DrawThickLine(int x0, int y0, int x1, int y1, double thickness, Color clr, double alpha = 1.0)
@@ -198,7 +222,7 @@ class DrawToHUD
 		Screen.DrawThickLine(left, top - offset, left, bottom + offset, thickness, clr, int(alpha * 255));
 	}
 
-	static ui void DrawFrame(String prefix, int x, int y, double w, double h, color fillclr = 0x0, double alpha = 1.0, double fillalpha = -1)
+	static ui void DrawFrame(String prefix, int x, int y, double w, double h, color fillclr = 0x0, double alpha = 1.0, double fillalpha = -1, Vector2 destsize = (-1, -1))
 	{
 		TextureID top = TexMan.CheckForTexture(prefix .. "T");
 		TextureID bottom = TexMan.CheckForTexture(prefix .. "B");
@@ -211,28 +235,25 @@ class DrawToHUD
 
 		if (!top || !bottom || !left || !right || !topleft || !topright || !bottomleft || !bottomright) { return; }
 
-		Vector2 size = TexMan.GetScaledSize(top);
-		int cellsize = int(size.x);
+		bool fullscreen = (destsize == (-1, -1));
 
-		// Make sure all cells will touch...  No floating point positioning!
-		x = int(x);
-		y = int(y);
-		w = int(w);
-		h = int(h);
+		Vector2 size = TexMan.GetScaledSize(top);
+		int cellwidth = int(size.x);
+		int cellheight = int(size.y);
 
 		if (fillalpha == -1) { fillalpha = alpha; }
 
-		DrawToHUD.Dim(fillclr, fillalpha, x + cellsize / 2, y + cellsize / 2, int(w - cellsize), int(h - cellsize));
+		DrawToHUD.Dim(fillclr, fillalpha, x + cellwidth / 2.0, y + cellheight / 2.0, w - cellwidth, h - cellheight, destsize);
 
-		DrawToHUD.DrawTexture(top, (x + w / 2, y), alpha, destsize:(w - cellsize, cellsize));
-		DrawToHUD.DrawTexture(bottom, (x + w / 2, y + h), alpha, destsize:(w - cellsize, cellsize));
-		DrawToHUD.DrawTexture(left, (x, y + h / 2), alpha, destsize:(cellsize, h - cellsize));
-		DrawToHUD.DrawTexture(right, (x + w, y + h / 2), alpha, destsize:(cellsize, h - cellsize));
+		DrawToHUD.DrawTexture(top, (x + w / 2, y), alpha, 1.0, -1, (w - cellwidth, cellheight), TEX_CENTERED | (fullscreen ? 0 : TEX_FIXED), destsize);
+		DrawToHUD.DrawTexture(bottom, (x + w / 2, y + h), alpha, 1.0, -1, (w - cellwidth, cellheight), TEX_CENTERED | (fullscreen ? 0 : TEX_FIXED), destsize);
+		DrawToHUD.DrawTexture(left, (x, y + h / 2), alpha, 1.0, -1, (cellwidth, h - cellheight), TEX_CENTERED | (fullscreen ? 0 : TEX_FIXED), destsize);
+		DrawToHUD.DrawTexture(right, (x + w, y + h / 2), alpha, 1.0, -1, (cellwidth, h - cellheight), TEX_CENTERED | (fullscreen ? 0 : TEX_FIXED), destsize);
 
-		DrawToHUD.DrawTexture(topleft, (x, y), alpha);
-		DrawToHUD.DrawTexture(topright, (x + w, y), alpha);
-		DrawToHUD.DrawTexture(bottomleft, (x, y + h), alpha);
-		DrawToHUD.DrawTexture(bottomright, (x + w, y + h), alpha);
+		DrawToHUD.DrawTexture(topleft, (x, y), alpha, 1.0, -1, (cellwidth, cellheight), TEX_CENTERED | (fullscreen ? 0 : TEX_FIXED), destsize);
+		DrawToHUD.DrawTexture(topright, (x + w, y), alpha, 1.0, -1, (cellwidth, cellheight), TEX_CENTERED | (fullscreen ? 0 : TEX_FIXED), destsize);
+		DrawToHUD.DrawTexture(bottomleft, (x, y + h), alpha, 1.0, -1, (cellwidth, cellheight), TEX_CENTERED | (fullscreen ? 0 : TEX_FIXED), destsize);
+		DrawToHUD.DrawTexture(bottomright, (x + w, y + h), alpha, 1.0, -1, (cellwidth, cellheight), TEX_CENTERED | (fullscreen ? 0 : TEX_FIXED), destsize);
 	}
 
 	static ui void DrawTimer(int time, int maxtime, Color clr, Vector2 pos = (0, 0), double scale = 1.0, double alpha = 1.0, String bkg = "STATUSB", String border = "STATUSO")
@@ -280,5 +301,36 @@ class DrawToHUD
 		}
 
 		if (border.IsValid()) { DrawToHud.DrawTexture(border, pos, alpha, scale); }
+	}
+
+	static ui void DrawButton(Vector2 pos, String label, double alpha, Vector2 destsize, TextureID icon, double buttonscale = 1.0, bool fullscreen = true)
+	{
+		double labelx = pos.x;
+		double iconwidth;
+
+		Font KeyLabelFont = Font.GetFont("THREEFIV");
+
+		Vector2 scale = (1.0, 1.0) * buttonscale;
+
+		scale = scale * buttonscale;
+
+		int height = max(int(16 * scale.y), int(KeyLabelFont.GetHeight() * scale.y + 8 * scale.y));
+		int width = max(height, int(KeyLabelFont.StringWidth(label) * scale.x + 12 * scale.x));
+
+		labelx += width / 2;
+
+		if (icon.IsValid())
+		{
+			Vector2 iconsize = TexMan.GetScaledSize(icon);
+			iconwidth = iconsize.x * 0.5 * scale.x;
+			width += int(iconwidth);
+			labelx += iconwidth;
+		}
+
+		DrawToHUD.DrawFrame("BU_", int(pos.x), int(pos.y), width, height, 0x989898, alpha, alpha, (fullscreen ? (-1, -1) : destsize));
+
+		if (icon.IsValid()) { DrawToHud.DrawTexture(icon, (pos.x + 12, pos.y + height / 2), alpha, 0.5 * scale.x, -1, (-1, -1), TEX_CENTERED | (fullscreen ? 0 : TEX_FIXED), (fullscreen ? (-1, -1) : destsize)); }
+
+		DrawToHUD.DrawText(label, (labelx, pos.y + height / 2), KeyLabelFont, alpha, scale.x, destsize, Font.FindFontColor("TrueBlack"), ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED | (fullscreen ? 0 : ZScriptTools.STR_FIXED));
 	}
 }

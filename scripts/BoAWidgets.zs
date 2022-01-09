@@ -450,7 +450,7 @@ class HealthWidget : Widget
 		let armor = player.mo.FindInventory("BasicArmor");
 		if (armor != null && armor.Amount > 0)
 		{
-			DrawToHud.DrawTexture(armor.icon, (pos.x + 44, pos.y + 25), alpha, destsize:(12, 12));
+			DrawToHud.DrawTexture(armor.icon, (pos.x + 44, pos.y + 25), alpha, desttexsize:(12, 12));
 			DrawToHud.DrawText(String.Format("%3i", StatusBar.GetArmorAmount()), (pos.x + 87, pos.y + 19), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_RIGHT);
 			DrawToHud.DrawText("%", (pos.x + 100, pos.y + 19), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_RIGHT);
 		}
@@ -688,14 +688,14 @@ class CurrentAmmoWidget : Widget
 		if (ammo1)
 		{
 			texscale = ZScriptTools.ScaleTextureTo(ammo1.icon, iconsize);
-			DrawToHud.DrawTexture(ammo1.icon, (pos.x + 40, pos.y + 18), alpha, destsize:texscale * iconsize, flags:DrawToHUD.TEX_DEFAULT);
+			DrawToHud.DrawTexture(ammo1.icon, (pos.x + 40, pos.y + 18), alpha, desttexsize:texscale * iconsize, flags:DrawToHUD.TEX_DEFAULT);
 			DrawToHud.DrawText(String.Format("%3i", ammocount1), (pos.x + 91, pos.y + 19), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_RIGHT);
 		}
 
 		if (ammo2 && ammo2 != ammo1)
 		{
 			texscale = ZScriptTools.ScaleTextureTo(ammo2.icon, iconsize);
-			DrawToHud.DrawTexture(ammo2.icon, (pos.x + 40, pos.y + 2), alpha, destsize:texscale * iconsize, flags:DrawToHUD.TEX_DEFAULT);
+			DrawToHud.DrawTexture(ammo2.icon, (pos.x + 40, pos.y + 2), alpha, desttexsize:texscale * iconsize, flags:DrawToHUD.TEX_DEFAULT);
 			DrawToHud.DrawText(String.Format("%3i", ammocount2), (pos.x + 91, pos.y + 3), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_RIGHT);
 		}
 
@@ -1074,7 +1074,7 @@ class AmmoWidget : Widget
 				Vector2 iconsize = TexMan.GetScaledSize(ammotypes[t].icon);
 				double ratio = iconsize.y / iconsize.x;
 
-				DrawToHud.DrawTexture(ammotypes[t].icon, (drawpos.x + 3, drawpos.y + 3), alpha, destsize:(6 / ratio, 6));
+				DrawToHud.DrawTexture(ammotypes[t].icon, (drawpos.x + 3, drawpos.y + 3), alpha, desttexsize:(6 / ratio, 6));
 				DrawToHud.DrawText(String.Format("%i", ammotypes[t].GetAmount()), (drawpos.x + typewidth, drawpos.y), HUDFont, alpha, shade:Font.CR_WHITE, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_RIGHT);
 			}
 		}

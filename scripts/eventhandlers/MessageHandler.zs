@@ -291,6 +291,7 @@ class Message : MessageBase
 
 			width = msgwidth;
 		}
+
 		if (flags & MSG_FULLSCREEN)
 		{
 			int lineheight = int(SmallFont.GetHeight());
@@ -546,12 +547,15 @@ class HintMessage : MessageBase
 {
 	ui int msgwidth;
 	String key;
+	ui bool drawkey;
+	ui Array<String> keys;
 	ui double textw;
 	ui double texth;
+	ui int c1, c2;
 
-	static int Init(Actor mo, String text, String key)
+	static int Init(Actor mo, String text, String key, int priority = 0)
 	{
-		HintMessage msg = HintMessage(MessageBase.Init(mo, text, text, 20, 20, "HintMessage", 0, (multiplayer && !deathmatch) ? MSG_ALLPLAYERS : 0));
+		HintMessage msg = HintMessage(MessageBase.Init(mo, text, text, 20, 20, "HintMessage", priority, (multiplayer && !deathmatch) ? MSG_ALLPLAYERS : 0));
 		if (msg)
 		{
 			msg.key = key;
@@ -569,8 +573,21 @@ class HintMessage : MessageBase
 
 	override double DrawMessage()
 	{
+		Vector2 destsize = (640, 480);
+		double screenratio = Screen.GetAspectRatio();
+
+		if (destsize.y < destsize.x) { destsize.x = destsize.y * screenratio; }
+		else if (destsize.x < destsize.y) { destsize.y = destsize.x / screenratio; }
+
+		bool fullscreen = !!(flags & MSG_FULLSCREEN && screenblocks > 10);
+
+		Vector2 scale = (1.0, 1.0);
+
 		int msgwidth = 300;
 		int lineheight = int(SmallFont.GetHeight());
+
+		double posx, posy;
+		double buttonscale = 1.0;
 
 		if (width != msgwidth)
 		{
@@ -578,9 +595,22 @@ class HintMessage : MessageBase
 
 			if (key && key.length())
 			{
-				String keystring = ACSTools.GetKeyPressString(key, true, "Dark Gray", "Gray");
+				String keystring;
+				[keystring, drawkey] = ACSTools.GetKeyPressString(key, true, "Dark Gray", "Gray");
+
 				lines.lines.Push(keystring);
 				brokentext = brokentext .. "\n" .. keystring;
+
+				if (drawkey)
+				{
+					[c1, c2] = Bindings.GetKeysForCommand(key);
+
+					String keynames = Bindings.NameKeys(c1, c2);
+					keynames = ZScriptTools.StripColorCodes(keynames);
+					keynames.Split(keys, ", ");
+
+					texth += 16 * buttonscale;
+				}
 			}
 
 			for (int lw = 0; lw < lines.Count(); lw++)
@@ -594,10 +624,7 @@ class HintMessage : MessageBase
 			width = msgwidth;
 		}
 
-		Vector2 destsize = (640, 480);
-		double posx, posy;
-		
-		if (flags & MSG_FULLSCREEN && screenblocks > 10)
+		if (fullscreen)
 		{
 			Vector2 hudscale = StatusBar.GetHUDScale();
 
@@ -606,51 +633,104 @@ class HintMessage : MessageBase
 
 			if (player.mo.FindInventory("CutsceneEnabled"))
 			{
-				posy -= 20 * Screen.GetHeight() / hudscale.y / destsize.y;
+				posy -= 18 * Screen.GetHeight() / hudscale.y / destsize.y;
 				posy -= texth / 2;
 			}
 			else		
 			{
-				posy -= 8 * Screen.GetHeight() / hudscale.y / destsize.y;
+				posy -= (8 * Screen.GetHeight() / hudscale.y / destsize.y);
 
 				ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2);
-				if (StealthBase(it.Next())) { posy -= 32.0; }
+				if (StealthBase(it.Next())) { posy -= 40.0; }
 
 				posy -= texth;
 			}
 
 			protrusion = -(1.0 - posy * hudscale.y / Screen.GetHeight());
-
-			for (int l = 0; l < lines.Count(); l++)
-			{
-				DrawToHUD.DrawText(lines.StringAt(l), (posx, posy), SmallFont, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
-				posy += lineheight;
-			}
 		}
 		else
 		{
 			double uiscale = BoAStatusBar.GetUIScale(st_scale);
+
 			posx = destsize.x / 2;
-			posy = destsize.y * StatusBar.GetTopOfStatusBar() / Screen.GetHeight() - 8.0 * uiscale - handler.bottomoffset *destsize.y;
+			posy = destsize.y * StatusBar.GetTopOfStatusBar() / Screen.GetHeight() - 8.0 * uiscale - handler.bottomoffset * destsize.y;
 		
 			if (!player.mo.FindInventory("CutsceneEnabled"))
 			{
 				ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2);
-				if (StealthBase(it.Next())) { posy -= 8.0 * uiscale; }
+				if (StealthBase(it.Next())) { posy -= 16.0 * uiscale; }
 			}
 
 			posy -= texth;
 
 			protrusion = -(1.0 - posy / destsize.y);
+		}
 
-			for (int l = 0; l < lines.Count(); l++)
+		for (int l = 0; l < lines.Count(); l++)
+		{
+			if (drawkey && l == lines.Count() - 1)
 			{
-				screen.DrawText(SmallFont, Font.CR_GRAY, posx - lines.StringWidth(l) / 2, posy, lines.StringAt(l), DTA_VirtualWidth, int(destsize.x), DTA_VirtualHeight, int(destsize.y), DTA_Alpha, alpha);
-				posy += lineheight;
+				DrawButtons(int(posx), int(posy), alpha, destsize, buttonscale, fullscreen);
 			}
+			else
+			{
+				DrawToHUD.DrawText(lines.StringAt(l), (posx, posy), SmallFont, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED | (fullscreen ? 0 : ZScriptTools.STR_FIXED));
+			}
+			posy += lineheight;
 		}
 
 		return protrusion;
+	}
+
+	ui void DrawButtons(int posx, int posy, double alpha, Vector2 destsize = (-1, -1), double buttonscale = 1.0, bool fullscreen = true)
+	{
+		Font KeyLabelFont = Font.GetFont("ThreeFiv");
+
+		double buttonx = posx;
+		double button0width = 0;
+		double button1width = 0;
+
+		Vector2 scale = (1.0, 1.0) * buttonscale;
+
+		String divider = StringTable.Localize("$WORD_OR");
+		int dividersize = int(SmallFont.StringWidth(divider) * scale.x);
+
+		if (keys.Size())
+		{
+			button0width = KeyLabelFont.StringWidth(keys[0]) + 8 * scale.x;
+			if (c1 >= 0x100) { button0width += 10 + scale.x; }
+		}
+
+		if (keys.Size() > 1)
+		{
+			button1width = KeyLabelFont.StringWidth(keys[1]) + 8 * scale.x;
+			if (c2 >= 0x100) { button1width += 10 * scale.x; }
+		}
+
+		buttonx -= (button0width + (button1width ? button1width + dividersize + 12 * scale.x : 0)) / 2;
+
+		posy += int(8 * scale.y);
+
+		if (c1)
+		{
+			String icon0;
+			if (c1 >= 0x100 && c1 < 0x108) { icon0 = "BU_MOUSE"; }
+			if (c1 >= 0x108) { icon0 = "BU_JOY"; }
+
+			DrawToHUD.DrawButton((buttonx, posy), keys[0], alpha, destsize, TexMan.CheckForTexture(icon0), buttonscale, fullscreen);
+		}
+
+		if (c2)
+		{
+			String icon1;
+			if (c2 >= 0x100 && c2 < 0x108) { icon1 = "BU_MOUSE"; }
+			if (c2 >= 0x108) { icon1 = "BU_JOY"; }
+
+			buttonx += button0width + 8 * scale.x + dividersize / 2;
+			DrawToHUD.DrawText(divider, (buttonx, posy + 8 * scale.y), SmallFont, alpha, scale.x, destsize, Font.CR_GRAY, ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED | (fullscreen ? 0 : ZScriptTools.STR_FIXED));
+			buttonx += dividersize / 2 + 4 * scale.x;
+			DrawToHUD.DrawButton((buttonx, posy), keys[1], alpha, destsize, TexMan.CheckForTexture(icon1), buttonscale, fullscreen);
+		}
 	}
 }
 
@@ -1023,7 +1103,11 @@ class MessageHandler : EventHandler
 
 					while(n)
 					{
+						if (fullscreen) { n.flags |= MessageBase.MSG_FULLSCREEN; }
+						else { n.flags &= ~MessageBase.MSG_FULLSCREEN; }
+
 						TickMessage(n);
+
 						[n, current] = NextMessage(types[t], current + 1);
 					}
 				}

@@ -284,7 +284,7 @@ class ACSTools
 		return false;
 	}
 
-	static String, String GetKeyPressString(String bind, bool required = false, String keycolor = "Gold", String textcolor = "Untranslated", String errorcolor = "Dark Red")
+	static String, bool GetKeyPressString(String bind, bool required = false, String keycolor = "Gold", String textcolor = "Untranslated", String errorcolor = "Dark Red")
 	{
 		keycolor = "\c[" .. keycolor .. "]";
 		textcolor = "\c[" .. textcolor .. "]";
@@ -309,14 +309,14 @@ class ACSTools
 		{
 			String actionname = ACSTools.GetActionName(bind);
 
-			return errorcolor .. "<" .. StringTable.Localize("$BINDKEY") .. " " .. actionname .. ">" .. textcolor .. suffix, actionname;
+			return errorcolor .. "<" .. StringTable.Localize("$BINDKEY") .. " " .. actionname .. ">" .. textcolor .. suffix, false;
 		}
 		else
 		{
 			if (keynames.length()) { keynames = keycolor .. "<" .. keynames .. ">" .. textcolor .. suffix; }
 		}
 
-		return keynames, keynames;
+		return keynames, true;
 	}
 
 	static String GetActionName(String actionname, String prefix = "$CNTRLMNU_")
