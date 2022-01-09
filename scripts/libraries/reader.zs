@@ -236,6 +236,40 @@ class FileReader
 		return strip ? StripQuotes(current.value) : current.value;
 	}
 
+	static void GetStrings(in out Array<String> output, ParsedValue data, String path, bool Uppercase = false)
+	{
+		ParsedValue current = data;
+		Array<String> temp;
+
+		path.Split(temp, ".");
+
+		for (int i = 0; i < temp.Size(); i++)
+		{
+			for (int j = 0; j < current.Children.Size(); j++)
+			{
+				if (current.children[j].keyname ~== temp[i])
+				{
+					current = current.Children[j];
+					break;
+				}
+			}
+		}
+
+		if (current.value)
+		{
+			String current = StripQuotes(current.value);
+			current.Split(output, "\", \"");
+
+			if (uppercase)
+			{
+				for (int i = 0; i < output.Size(); i++)
+				{
+					output[i] = output[i].MakeUpper();
+				}
+			}
+		}
+	}
+
 	static String StripQuotes(String input)
 	{
 		if (input.Length() < 1) { return ""; }
