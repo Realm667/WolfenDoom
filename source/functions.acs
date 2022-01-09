@@ -82,7 +82,7 @@ function int _sin(int a)
 int intSetVolume = 1.0;
 Script "SetMusicVolumeFactor" (int intTargetVolume, int intDelay)
 {
-	intTargetVolume *= 256;
+	intTargetVolume = intTargetVolume * 1.0 / 256;
 
 	If (intDelay > 0)
 	{

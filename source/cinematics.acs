@@ -1,0 +1,57 @@
+// Standard script to set up a standard start-of-level cutscene
+script "CinematicStart" (void)
+{
+	GiveActorInventory(0, "CutsceneEnabled", 1);
+	FadeToBlack(0, 0, 70);
+	HideMap(true);
+	SetPlayerProperty(0, 1, PROP_FROZEN);
+	StartMessage();
+	ACS_NamedExecute("CinematicSkipCheck", 0);
+}
+
+// Standard script to restore normal play after a cutscene
+// Also calls the "CUTSCENE_STOP" script to allow the local level to run actions on cutscene completion
+script "CinematicEnd" (void)
+{
+	FadeToBlack(140, 70, 70);
+
+	Delay(2 * 35);
+
+	ClearMessage();
+	Overlay("MOVIEHUD", false); // Disable the two commonly used overlays automatically
+	Overlay("MOVIEHD5", false);
+	HideMap(false);
+	SetPlayerProperty(1, 0, PROP_FROZEN);
+	TakeActorInventory(0, "CutsceneEnabled", 1);
+	ChangeCamera(0, 1, 0);	//Restore all player's views if they were changed
+
+	ACS_NamedExecute("CUTSCENE_STOP", 0); // Run map-specific cinematic end code
+
+	Delay(2 * 35);
+	Autosave();
+}
+
+// Standard script to check for a keypress to skip a cutscene
+script "CinematicSkipCheck" (void)
+{
+	// Prevent player from accidentally skipping the beginning cutscene.
+	// A very short tap on the "use" key did not trigger the accidental skip, but a normal press did trigger the accidental skip.
+	// NOTE: Only do this if the cutscene is at the very start of the level, and if the level starts after INTERMAP, or is part of a map sequence, a la C2M6.
+	//
+	// - Talon1024
+	Delay(2);
+
+	// Skip it?
+
+	int buttons;
+	While (true)
+	{
+		buttons = GetPlayerInput(-1, INPUT_BUTTONS);
+		If (buttons & BT_USE)
+		{
+			ACS_NamedExecute("CinematicEnd", 0);
+			ACS_NamedTerminate("CinematicSkipCheck", 0);
+		}
+		Delay(1);
+	}
+}
