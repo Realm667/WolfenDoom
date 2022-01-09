@@ -105,7 +105,7 @@ class BoACoopCheckpoint : MapSpot {
 		PlayerCheckpointManager pcm = PlayerCheckpointManager(StaticEventHandler.Find("PlayerCheckpointManager"));
 		pcm.activeCheckpoint = self;
 		// See https://github.com/Realm667/WolfenDoom/commit/5fe30fa8e5a5268420402fd2313991a76cd0fdce#commitcomment-63170874
-		ObjectiveMessage.Init(null, "CHK_REACHED", "OBJADD");
+		ObjectiveMessage.Init(null, "CHK_REACHED", "OBJCKPNT");
 	}
 
 	override void Deactivate(Actor activator) {
