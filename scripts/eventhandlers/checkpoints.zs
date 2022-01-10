@@ -62,7 +62,7 @@ class PlayerCheckpointManager : StaticEventHandler {
 		// Calculate position difference
 		Vector3 pos; double angle;
 		[pos, angle] = level.PickPlayerStart(playerNumber);
-		if (!checkpoint) return pos, angle;
+		if (!checkpoint) { return pos, angle; }
 		Vector3 posDiff = pos - averageStart;
 		double angleDiff = angle - averageAngle;
 		// Apply differences relative to active checkpoint
@@ -103,7 +103,11 @@ class PlayerCheckpointManager : StaticEventHandler {
 				continue;
 			}
 			// Check position using a dummy player mobj
-			Actor pmo = Actor.Spawn(PlayerClasses[0].Type, newPos, NO_REPLACE);
+			class<Actor> testDummyType = PlayerClasses[0].Type;
+			if (playeringame[playerNumber]) {
+				testDummyType = players[playerNumber].mo.GetClass();
+			}
+			Actor pmo = Actor.Spawn(testDummyType, newPos, NO_REPLACE);
 			if (!pmo.TestMobjLocation()) {
 				posDist -= 16.0;
 				newPos = checkpoint.Pos + posDiff * posDist;
@@ -162,9 +166,17 @@ class BoACoopCheckpoint : MapSpot {
 		}
 	}
 
+	bool cur_debugcoopcheckpoints;
 	override void Tick() {
+		if (cur_debugcoopcheckpoints != boa_debugcoopcheckpoints) {
+			cur_debugcoopcheckpoints = boa_debugcoopcheckpoints;
+			ShowOrHide(cur_debugcoopcheckpoints);
+		}
+	}
+
+	void ShowOrHide(bool debugcoopcheckpoints) {
 		// If only there were CVar change events...
-		if (boa_debugcoopcheckpoints) {
+		if (debugcoopcheckpoints) {
 			bInvisible = false;
 			for (int pn = 0; pn < newCoopStarts.Size(); pn++) {
 				newCoopStarts[pn].bInvisible = false;
