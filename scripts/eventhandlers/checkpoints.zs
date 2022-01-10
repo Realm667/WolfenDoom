@@ -58,7 +58,7 @@ class PlayerCheckpointManager : StaticEventHandler {
 		players[e.PlayerNumber].mo.Teleport(newPos, newAngle, 0);
 	}
 
-	clearscope Vector3, double GetNewPosition(int playerNumber, Actor checkpoint = null) {
+	play Vector3, double GetNewPosition(int playerNumber, Actor checkpoint = null) {
 		// Calculate position difference
 		Vector3 pos; double angle;
 		[pos, angle] = level.PickPlayerStart(playerNumber);
@@ -71,14 +71,47 @@ class PlayerCheckpointManager : StaticEventHandler {
 		posDiff.xy = posXYDiffRotated;
 		*/
 		posDiff.xy = Actor.RotateVector(posDiff.xy, angleDiff);
-		Vector3 newPos = checkpoint.Pos + posDiff;
+		double posDist = posDiff.xy.Length();
+		posDiff = posDiff.Unit();
+		Vector3 newPos = checkpoint.Pos + posDiff * posDist;
 		double newAngle = Actor.Normalize180(checkpoint.Angle + angleDiff);
-		// Fix newPos.Z, since the destination will be in another sector
-		Sector destSector = level.PointInSector(newPos.xy);
-		double floorz = destSector.floorplane.ZAtPoint(newPos.xy);
-		double ceilz = destSector.ceilingplane.ZAtPoint(newPos.xy);
-		if (newPos.z < floorz || newPos.z > ceilz) {
-			newPos.z = floorz;
+		// Ensure newPos is "good": Not below the ground or above the ceiling,
+		// not too far above the floor, and not too far above or below the
+		// checkpoint spot.
+		bool newPosGood = false;
+		double minBadZDistance = 64.0;
+		while (!newPosGood && posDist > 0) {
+			// Fix newPos.Z, since the destination will be in another sector
+			Sector destSector = level.PointInSector(newPos.xy);
+			double floorz = destSector.floorplane.ZAtPoint(newPos.xy);
+			double ceilz = destSector.ceilingplane.ZAtPoint(newPos.xy);
+			// Confine to floorz if newPos is above the ceiling or below the
+			// floor.
+			if (newPos.z < floorz || newPos.z > ceilz) {
+				newPos.z = floorz;
+			} else
+			// Check vertical distance to floor
+			if ((newPos.z - floorz) > minBadZDistance) {
+				posDist -= 16.0;
+				newPos = checkpoint.Pos + posDiff * posDist;
+				continue;
+			}
+			// Check vertical distance to checkpoint
+			if (abs(newPos.z - checkpoint.Pos.z) > minBadZDistance) {
+				posDist -= 16.0;
+				newPos = checkpoint.Pos + posDiff * posDist;
+				continue;
+			}
+			// Check position using a dummy player mobj
+			Actor pmo = Actor.Spawn(PlayerClasses[0].Type, newPos, NO_REPLACE);
+			if (!pmo.TestMobjLocation()) {
+				posDist -= 16.0;
+				newPos = checkpoint.Pos + posDiff * posDist;
+				pmo.Destroy();
+				continue;
+			}
+			pmo.Destroy();
+			newPosGood = true;
 		}
 		return newPos, newAngle;
 	}
@@ -116,6 +149,7 @@ class BoACoopCheckpoint : MapSpot {
 	}
 
 	// Purely for debugging - can be commented out
+	/*
 	Array<Actor> newCoopStarts;
 	override void PostBeginPlay() {
 		PlayerCheckpointManager pcm = PlayerCheckpointManager(StaticEventHandler.Find("PlayerCheckpointManager"));
@@ -142,9 +176,11 @@ class BoACoopCheckpoint : MapSpot {
 			}
 		}
 	}
+	*/
 }
 
 // Purely for debugging - can be commented out
+/*
 class BoACoopCheckpointDebug : Actor {
 	DirectionIndicator di;
 
@@ -171,3 +207,4 @@ class BoACoopCheckpointDebug : Actor {
 		di.bInvisible = self.bInvisible;
 	}
 }
+*/
