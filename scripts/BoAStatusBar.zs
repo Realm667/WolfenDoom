@@ -147,7 +147,23 @@ class BoAStatusBar : BaseStatusBar
 		{
 			Font fnt = (CPlayer.mo is "KeenPlayer") ? ClassicFont : SmallFont;
 
-			if (printlevel <= PRINT_HIGH) { Log.Add(CPlayer, outline, "Notifications", printlevel, fnt); }
+			if (printlevel <= PRINT_HIGH)
+			{
+				if (printlevel == PRINT_HIGH) // Default level if no printlevel specified in printf call
+				{
+					// HACK: Intercept map marker messages and increment the marker number by 1
+					// so that the numbers in the message range from 1-10 instead of from 0-9
+					// Note that this only affects on-screen messages, not console buffer or log files
+					String mapmarker = StringTable.Localize("$AMSTR_MARKEDSPOT");
+					if (!outline.indexof(mapmarker)) // If message string begins with marked spot string...
+					{
+						int num = outline.mid(mapmarker.length()).ToInt();
+						outline = String.Format("%s %i\n", mapmarker, num + 1);
+					}
+				}
+
+				Log.Add(CPlayer, outline, "Notifications", printlevel, fnt);
+			}
 			else { Log.Add(CPlayer, outline, "Chat", printlevel, fnt); }
 
 			processed = true; 
