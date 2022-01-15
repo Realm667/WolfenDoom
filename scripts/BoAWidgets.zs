@@ -734,9 +734,21 @@ class WeaponWidget : Widget
 
 class InventoryWidget : Widget
 {
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
+	Array<Inventory> items;
+	Inventory lastselection;
+	int movetick;
+	int movedir;
+	int movespeed;
+	int numitems;
+
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0, int numitems = 3)
 	{
 		InventoryWidget wdg = InventoryWidget(Widget.Init("InventoryWidget", widgetname, anchor, 0, priority, pos, zindex));
+		if (wdg)
+		{
+			wdg.movespeed = 5;
+			wdg.numitems = 2 + int(numitems / 2) * 2 + 1; // Always an odd number so that selected item is in center
+		}
 	}
 
 	override bool IsVisible()
@@ -756,13 +768,140 @@ class InventoryWidget : Widget
 	{
 		if (level.NoInventoryBar) { return (0, 0); }
 
-		size = (33, 33);
+		int iconsize = 32;
+		int spacing = 24;
+		double smallscale = 0.65;
+		double smallalpha = 0.5;
+
+		size = (max(33, spacing * (numitems - 3) + iconsize * smallscale + 1), 33);
 
 		Super.Draw();
 
-		if (player.mo.InvSel) { BoAStatusBar(StatusBar).DrawIcon(player.mo.InvSel, int(pos.x + 16), int(pos.y + 16), 32, alpha:alpha); }
+		if (player.mo.InvSel)
+		{
+			double mod = movetick / 35.0;
+			double dirmod = 0;
+
+			double leftoffset = iconsize * smallscale / 2;
+			double midoffset = leftoffset + spacing;
+			double rightoffset = midoffset + spacing * (numitems - 4);
+
+			double leftscale = smallscale;
+			double rightscale = smallscale;
+
+			switch(movedir)
+			{
+				case -1:
+					if (items[numitems - 1]) { BoAStatusBar(StatusBar).DrawIcon(items[numitems - 1], int(pos.x + rightoffset), int(pos.y + iconsize / 2), int(iconsize * smallscale * (1.0 - mod)), StatusBar.DI_ITEM_CENTER, alpha * smallalpha * (1.0 - mod), false); }
+
+					rightoffset += -spacing + spacing * mod;
+					midoffset += -spacing + spacing * mod;
+					leftscale = smallscale * mod;
+					rightscale = smallscale + smallscale * (1.0 - mod);
+					dirmod = 1.0 - mod;
+				break;
+				case 1:
+					if (items[0]) { BoAStatusBar(StatusBar).DrawIcon(items[0], int(pos.x + leftoffset), int(pos.y + iconsize / 2), int(iconsize * smallscale * (1.0 - mod)), StatusBar.DI_ITEM_CENTER, alpha * smallalpha * (1.0 - mod), false); }
+
+					leftoffset += spacing - spacing * mod;
+					midoffset += spacing - spacing * mod;
+					leftscale = smallscale + smallscale * (1.0 - mod);
+					rightscale = smallscale * mod;
+				break;
+			}
+
+			double midscale = smallscale + (1.0 - smallscale) * (1.0 - dirmod);
+
+			// Left
+			if (items[1]) { BoAStatusBar(StatusBar).DrawIcon(items[1], int(pos.x + leftoffset), int(pos.y + iconsize / 2), int(iconsize * leftscale), StatusBar.DI_ITEM_CENTER, alpha * (smallalpha + (1.0 - smallalpha) * dirmod), false); }
+
+			// Right
+			if (items[numitems - 2]) { BoAStatusBar(StatusBar).DrawIcon(items[numitems - 2], int(pos.x + rightoffset), int(pos.y + iconsize / 2), int(iconsize * rightscale), StatusBar.DI_ITEM_CENTER, alpha * (smallalpha + (1.0 - smallalpha) * dirmod), false); }
+
+			for (int i = 2; i < numitems - 2; i++)
+			{
+				if (items[i]) { BoAStatusBar(StatusBar).DrawIcon(items[i], int(pos.x + midoffset + spacing * (i - 2)), int(pos.y + iconsize / 2), int(iconsize * midscale), StatusBar.DI_ITEM_CENTER, alpha * (smallalpha + (1.0 - smallalpha) * mod), items[i] == player.mo.InvSel); }
+			}
+		}
 
 		return size;
+	}
+
+	override void DoTick(int index)
+	{
+		int invindex = PopulateList(items, numitems);
+
+		if (player.mo.InvSel && player.mo.InvSel != lastselection)
+		{
+			if (lastselection)
+			{
+				if (lastselection == items[invindex - 1]) { movedir = 1; }
+				else if (lastselection == items[invindex + 1]) { movedir = -1; }
+			}
+
+			lastselection = player.mo.InvSel;
+			movetick = 0;
+		}
+		else { movetick = min(35, movetick + movespeed); }
+
+		if (movetick == 35) { movedir = 0; }
+
+		Super.DoTick(index);
+	}
+
+	int PopulateList(in out Array<Inventory> items, int count)
+	{
+		items.Clear();
+		items.Resize(count);
+
+		int start = count / 2;
+		items[start] = player.mo.InvSel;
+
+		int index;
+		for (index = 0; index <= start; index++)
+		{
+			let prev = GetPrev(items[start + index]);
+			if (!prev) { continue; }
+			else if (items.Find(prev) == items.Size()) { items[start + index - 1] = prev; }
+
+			let next = GetNext(items[start - index]);
+			if (!next) { continue; }
+			else if (items.Find(next) == items.Size()) { items[start + index + 1] = next; }
+		}
+
+		return start;
+	}
+
+	Inventory GetNext(Inventory current)
+	{
+		if (!current) { return null; }
+
+		Inventory next = current.NextInv();
+		if (!next)
+		{
+			next = player.mo.Inv;
+			if (next && !next.bInvBar) { next = next.NextInv(); }
+		}
+
+		if (next == current) { next = null; }
+
+		return next;
+	}
+
+	Inventory GetPrev(Inventory current)
+	{
+		if (!current) { return null; }
+
+		Inventory prev = current.PrevInv();
+		if (!prev)
+		{
+			prev = player.mo.InvSel;
+			while (prev.NextInv()) { prev = prev.NextInv(); } // Iterate to find the last inventory item
+		}
+
+		if (prev == current) { prev = null; }
+
+		return prev;
 	}
 }
 
