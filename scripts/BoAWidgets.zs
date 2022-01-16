@@ -736,7 +736,7 @@ class InventoryWidget : Widget
 {
 	Array<Inventory> items;
 	Inventory lastselection;
-	int movetick;
+	int movetick, selectortick;
 	int movedir;
 	int movespeed;
 	int numitems;
@@ -771,7 +771,7 @@ class InventoryWidget : Widget
 		int iconsize = 32;
 		int spacing = 24;
 		double smallscale = 0.65;
-		double smallalpha = 0.5;
+		double smallalpha = 0.4;
 
 		size = (max(33, spacing * (numitems - 3) + iconsize * smallscale + 1), 33);
 
@@ -820,7 +820,29 @@ class InventoryWidget : Widget
 
 			for (int i = 2; i < numitems - 2; i++)
 			{
-				if (items[i]) { BoAStatusBar(StatusBar).DrawIcon(items[i], int(pos.x + midoffset + spacing * (i - 2)), int(pos.y + iconsize / 2), int(iconsize * midscale), StatusBar.DI_ITEM_CENTER, alpha * (smallalpha + (1.0 - smallalpha) * mod), items[i] == player.mo.InvSel); }
+				if (items[i])
+				{
+					double posx = pos.x + midoffset + spacing * (i - 2);
+					double boxalpha = 0.25 + sin(180.0 * selectortick / 70) * 0.75;
+
+					if (items[i] == player.mo.InvSel)
+					{
+						TextureID box = TexMan.CheckForTexture("INVBKG");
+						if (box.IsValid() && selectortick)
+						{
+							StatusBar.DrawTexture(box, (int(posx), int(pos.y + iconsize / 2)), StatusBar.DI_ITEM_CENTER, alpha * boxalpha, (-1, -1), (0.5, 0.5) * midscale);
+						}
+
+						BoAStatusBar(StatusBar).DrawIcon(items[i], int(posx + 1), int(pos.y + iconsize / 2 + 2), int(iconsize * midscale * 1.0), StatusBar.DI_ITEM_CENTER, alpha * (smallalpha + (1.0 - smallalpha) * mod), false, STYLE_Shadow);
+					}
+
+					BoAStatusBar(StatusBar).DrawIcon(items[i], int(posx), int(pos.y + iconsize / 2), int(iconsize * midscale), StatusBar.DI_ITEM_CENTER, alpha * (smallalpha + (1.0 - smallalpha) * mod), items[i] == player.mo.InvSel);
+
+					if (items[i] == player.mo.InvSel && selectortick)
+					{
+						BoAStatusBar(StatusBar).DrawIcon(items[i], int(posx), int(pos.y + iconsize / 2), int(iconsize * midscale * 1.0), StatusBar.DI_ITEM_CENTER, alpha * boxalpha * 0.5, false, STYLE_Add);
+					}
+				}
 			}
 		}
 
@@ -841,10 +863,13 @@ class InventoryWidget : Widget
 
 			lastselection = player.mo.InvSel;
 			movetick = 0;
+			selectortick = 70;
 		}
 		else { movetick = min(35, movetick + movespeed); }
 
 		if (movetick == 35) { movedir = 0; }
+
+		selectortick = max(0, selectortick - 2);
 
 		Super.DoTick(index);
 	}
