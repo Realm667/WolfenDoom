@@ -63,14 +63,16 @@ class CompassItem : PuzzleItem
 
 	override bool TryPickup(in out Actor toucher)
 	{
-		// Handling so that conversation-given items properly check the max amount before giving items to the player and taking money
-		if (bDropped && maxamount > 0) // If given/dropped by another actor, and there is a max amount set...
+		// Handling so that items properly check the max amount before giving items to the player
+		// and taking money or items - but always pick up specialclue items or script-running items.
+		if (specialclue || special) { bAlwaysPickup = true; }
+		else if (maxamount > 0) // If there is a max amount set...
 		{
 			let current = toucher.FindInventory(GetClass()); // and it's already in player inventory...
 			if (current && current.Amount + Amount > maxamount) // don't pick it up if you already have max amount
 			{
 				bAlwaysPickup = false;	// Don't force pickup in excess of MaxAmount if the item was spawned by another actor after map load
-							// This flag is checked in the internal Inventory pickup logic, regardless of the return value here.
+										// This flag is checked in the internal Inventory pickup logic, regardless of the return value here.
 				return false;
 			}
 		}
