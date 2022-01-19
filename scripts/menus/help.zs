@@ -414,12 +414,19 @@ class BoAInfo : BoAMenu
 					{
 						double textwidth = lines.StringWidth(t) * textscale;
 
+						String nextline;
+						if (t < lines.Count() - 1)
+						{
+							nextline = lines.StringAt(t + 1);
+							nextline = ZScriptTools.StripColorCodes(nextline);
+						}
+
 						if ( // Don't full justify if a line is the end of a paragraph and it's less than 80% of the block width
 							!(
 								screenscale < 1.0 ||
 								(
 									t == lines.Count() - 1 ||
-									lines.StringAt(t + 1) == ""
+									nextline.length() == 0
 								) &&
 								textwidth < (bw - margin * 2) * 0.8
 							)
