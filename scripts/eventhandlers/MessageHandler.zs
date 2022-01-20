@@ -546,19 +546,17 @@ class FadeIconMessage : Message
 class HintMessage : MessageBase
 {
 	ui int msgwidth;
-	String key;
+	String command;
 	ui bool drawkey;
-	ui Array<String> keys;
 	ui double textw;
 	ui double texth;
-	ui int c1, c2;
 
-	static int Init(Actor mo, String text, String key, int priority = 0)
+	static int Init(Actor mo, String text, String command, int priority = 0)
 	{
 		HintMessage msg = HintMessage(MessageBase.Init(mo, text, text, 20, 20, "HintMessage", priority, (multiplayer && !deathmatch) ? MSG_ALLPLAYERS : 0));
 		if (msg)
 		{
-			msg.key = key;
+			msg.command = command;
 
 			return msg.GetTime();
 		}
@@ -593,22 +591,16 @@ class HintMessage : MessageBase
 		{
 			[brokentext, lines] = BrokenString.BreakString(StringTable.Localize(text, false), msgwidth, true, "C");
 
-			if (key && key.length())
+			if (command && command.length())
 			{
 				String keystring;
-				[keystring, drawkey] = ACSTools.GetKeyPressString(key, true, "Dark Gray", "Gray");
+				[keystring, drawkey] = ACSTools.GetKeyPressString(command, true, "Dark Gray", "Gray");
 
 				lines.lines.Push(keystring);
 				brokentext = brokentext .. "\n" .. keystring;
 
 				if (drawkey)
 				{
-					[c1, c2] = Bindings.GetKeysForCommand(key);
-
-					String keynames = Bindings.NameKeys(c1, c2);
-					keynames = ZScriptTools.StripColorCodes(keynames);
-					keynames.Split(keys, ", ");
-
 					texth += 16 * buttonscale;
 				}
 			}
@@ -670,7 +662,7 @@ class HintMessage : MessageBase
 		{
 			if (drawkey && l == lines.Count() - 1)
 			{
-				DrawButtons(int(posx), int(posy), alpha, destsize, buttonscale, fullscreen);
+				DrawToHUD.DrawCommandButtons((posx, posy + SmallFont.GetHeight() / 2), command, alpha, destsize, buttonscale, Button.BTN_CENTERED | (fullscreen ? 0 : Button.BTN_FIXED));
 			}
 			else
 			{
@@ -681,57 +673,6 @@ class HintMessage : MessageBase
 
 		return protrusion;
 	}
-
-	ui void DrawButtons(int posx, int posy, double alpha, Vector2 destsize = (-1, -1), double buttonscale = 1.0, bool fullscreen = true)
-	{
-		Font KeyLabelFont = Font.GetFont("ThreeFiv");
-
-		double buttonx = posx;
-		double button0width = 0;
-		double button1width = 0;
-
-		Vector2 scale = (1.0, 1.0) * buttonscale;
-
-		String divider = StringTable.Localize("$WORD_OR");
-		int dividersize = int(SmallFont.StringWidth(divider) * scale.x);
-
-		if (keys.Size())
-		{
-			button0width = KeyLabelFont.StringWidth(keys[0]) + 8 * scale.x;
-			if (c1 >= 0x100) { button0width += 10 + scale.x; }
-		}
-
-		if (keys.Size() > 1)
-		{
-			button1width = KeyLabelFont.StringWidth(keys[1]) + 8 * scale.x;
-			if (c2 >= 0x100) { button1width += 10 * scale.x; }
-		}
-
-		buttonx -= (button0width + (button1width ? button1width + dividersize + 12 * scale.x : 0)) / 2;
-
-		posy += int(8 * scale.y);
-
-		if (c1)
-		{
-			String icon0;
-			if (c1 >= 0x100 && c1 < 0x108) { icon0 = "BU_MOUSE"; }
-			if (c1 >= 0x108) { icon0 = "BU_JOY"; }
-
-			DrawToHUD.DrawButton((buttonx, posy), keys[0], alpha, destsize, TexMan.CheckForTexture(icon0), buttonscale, fullscreen);
-		}
-
-		if (c2)
-		{
-			String icon1;
-			if (c2 >= 0x100 && c2 < 0x108) { icon1 = "BU_MOUSE"; }
-			if (c2 >= 0x108) { icon1 = "BU_JOY"; }
-
-			buttonx += button0width + 8 * scale.x + dividersize / 2;
-			DrawToHUD.DrawText(divider, (buttonx, posy + 8 * scale.y), SmallFont, alpha, scale.x, destsize, Font.CR_GRAY, ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED | (fullscreen ? 0 : ZScriptTools.STR_FIXED));
-			buttonx += dividersize / 2 + 4 * scale.x;
-			DrawToHUD.DrawButton((buttonx, posy), keys[1], alpha, destsize, TexMan.CheckForTexture(icon1), buttonscale, fullscreen);
-		}
-	}
 }
 
 class ObjectiveMessage : MessageBase
@@ -740,6 +681,7 @@ class ObjectiveMessage : MessageBase
 	double posx, posy;
 	Vector2 destsize;
 	int objflags;
+	String command;
 
 	enum MessageFlags
 	{
@@ -747,7 +689,7 @@ class ObjectiveMessage : MessageBase
 		OBJ_HIDETEXT = 1
 	}
 
-	static int Init(Actor mo, String text, String image = "", String snd = "", int time = 0, int objflags = 0, double posx = 400, double posy = 135, Vector2 destsize = (800, 600))
+	static int Init(Actor mo, String text, String image = "", String snd = "", String command = "", int time = 0, int objflags = 0, double posx = 400, double posy = 135, Vector2 destsize = (800, 600))
 	{
 		ObjectiveMessage msg = ObjectiveMessage(MessageBase.Init(mo, text, text, 18, 18, "ObjectiveMessage", 0, MSG_ALLOWREPLACE));
 		if (msg)
@@ -757,6 +699,7 @@ class ObjectiveMessage : MessageBase
 			msg.posx = posx;
 			msg.posy = posy;
 			msg.destsize = destsize;
+			msg.command = command;
 
 			if (objflags & OBJ_HIDETEXT) { msg.text = ""; }
 
@@ -793,6 +736,11 @@ class ObjectiveMessage : MessageBase
 		if (msgstr.length())
 		{
 			screen.DrawText(SmallFont, Font.CR_GRAY, posx - SmallFont.StringWidth(msgstr) / 2, posy - SmallFont.GetHeight() / 2, msgstr, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_Alpha, alpha);
+		}
+
+		if (command.length())
+		{
+			DrawToHUD.DrawCommandButtons((x, y + SmallFont.GetHeight() * 3 / 2), command, alpha, destsize, 1.0, Button.BTN_CENTERED);
 		}
 
 		return 0;

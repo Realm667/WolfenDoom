@@ -303,34 +303,148 @@ class DrawToHUD
 		if (border.IsValid()) { DrawToHud.DrawTexture(border, pos, alpha, scale); }
 	}
 
-	static ui void DrawButton(Vector2 pos, String label, double alpha, Vector2 destsize, TextureID icon, double buttonscale = 1.0, bool fullscreen = true)
+	static ui void DrawCommandButtons(Vector2 pos, String command, double alpha, Vector2 destsize = (-1, -1), double buttonscale = 1.0, int flags = Button.BTN_DEFAULT)
 	{
-		double labelx = pos.x;
-		double iconwidth;
+		if (!command.length()) { return; }
 
-		Font KeyLabelFont = Font.GetFont("THREEFIV");
+		Font KeyLabelFont = Font.GetFont("ThreeFiv");
+
+		String comma = ",";
+		String or = StringTable.Localize("$WORD_OR");
+		int commasize =  int(SmallFont.StringWidth(comma) * buttonscale);
+		int orsize = int(SmallFont.StringWidth(or) * buttonscale);
+
+		int width, totalwidth, maxheight;
+
+		Array<int> keycodes;
+		Array<String> keys;
+		Array<Button> buttons;
+
+		Bindings.GetAllKeysForCommand(keycodes, command);
+
+		String keynames = Bindings.NameAllKeys(keycodes);
+		keynames = ZScriptTools.StripColorCodes(keynames);
+		keynames.Split(keys, ", ");
+
+		for (int k = 0; k < keys.Size(); k++)
+		{
+			String icon;
+			if (keycodes[k] >= 0x100 && keycodes[k] < 0x108) { icon = "BU_MOUSE"; }
+			if (keycodes[k] >= 0x108) { icon = "BU_JOY"; }
+
+			// Alow key names to be translated by prefixing them with KEY_ (e.g., "KEY_Mouse2", "KEY_Ctrl")
+			// and defining the appropriate entry in the LANGUAGE lump
+			String label = StringTable.Localize("$KEY_" .. keys[k]);
+			if (label == "KEY_" .. keys[k]) { label = keys[k]; }
+
+			if (keys[k] == "Enter") { label = label .. " ⏎"; }
+			
+			Button b = Button.Create(label, KeyLabelFont, icon, buttonscale);
+			buttons.Push(b);
+
+			totalwidth += b.width;
+			if (k < keys.Size() - 2) { totalwidth += commasize + int(6 * b.scale.x); }
+			else if (k == keys.Size() - 2) { totalwidth += orsize + int(12 * b.scale.x); }
+
+			maxheight = max(maxheight, b.height);
+		}
+
+		pos.x -= totalwidth / 2;
+
+		for (int i = 0; i < buttons.Size(); i++)
+		{
+			Button b = buttons[i];
+
+			Button.Draw(pos, b, alpha, destsize, flags & ~Button.BTN_CENTERED);
+
+			pos.x += b.width + int(6 * b.scale.x);
+
+			if (i < buttons.Size() - 2) // ","
+			{
+				pos.x += commasize / 2 - int(6 * b.scale.x);
+				DrawToHUD.DrawText(comma, (pos.x, pos.y + maxheight / 2), SmallFont, alpha, buttonscale, destsize, Font.CR_GRAY, ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED | (flags & Button.BTN_FIXED ? ZScriptTools.STR_FIXED : 0));
+				pos.x += commasize / 2 + int(6 * b.scale.x);
+			}
+			else if (i == buttons.Size() - 2) // "or"
+			{
+				pos.x += orsize / 2;
+				DrawToHUD.DrawText(or, (pos.x, pos.y + maxheight / 2), SmallFont, alpha, buttonscale, destsize, Font.CR_GRAY, ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED | (flags & Button.BTN_FIXED ? ZScriptTools.STR_FIXED : 0));
+				pos.x += orsize / 2 + int(6 * b.scale.x);
+			}
+
+		}
+	}
+}
+
+class Button
+{
+	String label;
+	Font fnt;
+	TextureID icon;
+	int width;
+	int height;
+	int labeloffset;
+	Vector2 scale;
+
+	static ui Button Create(String label, Font fnt, String icon = "", double buttonscale = 1.0)
+	{
+		if (!label.length() && !icon.length()) { return null; }
 
 		Vector2 scale = (1.0, 1.0) * buttonscale;
 
-		scale = scale * buttonscale;
+		int height = max(int(16 * scale.y), int(fnt.GetHeight() * scale.y + 8 * scale.y));
+		int width = max(height, int(fnt.StringWidth(label) * scale.x + 12 * scale.x));
 
-		int height = max(int(16 * scale.y), int(KeyLabelFont.GetHeight() * scale.y + 8 * scale.y));
-		int width = max(height, int(KeyLabelFont.StringWidth(label) * scale.x + 12 * scale.x));
+		int labeloffset = width / 2;
 
-		labelx += width / 2;
-
-		if (icon.IsValid())
+		TextureID icontex = TexMan.CheckForTexture(icon);
+		if (icontex && icontex.IsValid())
 		{
-			Vector2 iconsize = TexMan.GetScaledSize(icon);
-			iconwidth = iconsize.x * 0.5 * scale.x;
-			width += int(iconwidth);
-			labelx += iconwidth;
+			Vector2 iconsize = TexMan.GetScaledSize(icontex);
+			int iconwidth = int(iconsize.x * 0.5 * scale.x);
+			width += iconwidth;
+			labeloffset += iconwidth;
 		}
 
-		DrawToHUD.DrawFrame("BU_", int(pos.x), int(pos.y), width, height, 0x989898, alpha, alpha, (fullscreen ? (-1, -1) : destsize));
+		Button b = New("Button");
 
-		if (icon.IsValid()) { DrawToHud.DrawTexture(icon, (pos.x + 12, pos.y + height / 2), alpha, 0.5 * scale.x, -1, (-1, -1), TEX_CENTERED | (fullscreen ? 0 : TEX_FIXED), (fullscreen ? (-1, -1) : destsize)); }
+		if (b)
+		{
+			b.label = label;
+			b.fnt = fnt;
+			b.icon = icontex;
+			b.width = width;
+			b.height = height;
+			b.labeloffset = labeloffset;
+			b.scale = scale;
+		}
 
-		DrawToHUD.DrawText(label, (labelx, pos.y + height / 2), KeyLabelFont, alpha, scale.x, destsize, Font.FindFontColor("TrueBlack"), ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED | (fullscreen ? 0 : ZScriptTools.STR_FIXED));
+		return b;
+	}
+
+	enum DrawButtons
+	{
+		BTN_DEFAULT = 0,
+		BTN_CENTERED = 1, // Draw centered at coords
+		BTN_FIXED = 2, // Draw in status bar coordinates
+	};
+
+	static ui void Draw(Vector2 pos, Button b, double alpha = 1.0, Vector2 destsize = (-1, -1), int flags = BTN_DEFAULT)
+	{
+		if (!b) { return; }
+
+		if (flags & BTN_CENTERED)
+		{
+			pos.x -= b.width / 2;
+			pos.y -= b.height / 2;
+		}
+
+		Font KeyLabelFont = Font.GetFont("THREEFIV");
+
+		DrawToHUD.DrawFrame("BU_", int(pos.x), int(pos.y), b.width, b.height, 0x989898, alpha, alpha, (flags & BTN_FIXED ? destsize : (-1, -1)));
+
+		if (b.icon.IsValid()) { DrawToHud.DrawTexture(b.icon, (pos.x + 12, pos.y + b.height / 2), alpha, 0.5 * b.scale.x, -1, (-1, -1), DrawToHUD.TEX_CENTERED | (flags & BTN_FIXED ? DrawToHUD.TEX_FIXED : 0), (flags & BTN_FIXED ? destsize : (-1, -1))); }
+
+		DrawToHUD.DrawText(b.label, (pos.x + b.labeloffset, pos.y + b.height / 2), KeyLabelFont, alpha, b.scale.x, destsize, Font.FindFontColor("TrueBlack"), ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED | (flags & BTN_FIXED ? ZScriptTools.STR_FIXED : 0));
 	}
 }
