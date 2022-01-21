@@ -419,6 +419,19 @@ class BoAOptionMenuItemControl : OptionMenuItemControl
 
 		Menu.StartMessage(msg, 0);
 	}
+
+	override int Draw(OptionMenuDescriptor desc, int y, int indent, bool selected)
+	{
+		drawLabel(indent, y, mWaiting ? OptionMenuSettings.mFontColorHighlight :
+			(selected ? OptionMenuSettings.mFontColorSelection : OptionMenuSettings.mFontColor));
+
+		if (!DrawToHUD.DrawCommandButtons((indent + 16, y), mAction))
+		{
+			drawValue(indent, y, Font.CR_BLACK, "---");
+		}
+
+		return indent;
+	}
 }
 
 class BoAOptionMenuItemMapControl : OptionMenuItemMapControl
@@ -471,6 +484,19 @@ class BoAOptionMenuItemMapControl : OptionMenuItemMapControl
 		msg = String.Format(msg, inputkey, inputcontrolname, controlname);
 
 		Menu.StartMessage(msg, 0);
+	}
+
+	override int Draw(OptionMenuDescriptor desc, int y, int indent, bool selected)
+	{
+		drawLabel(indent, y, mWaiting ? OptionMenuSettings.mFontColorHighlight :
+			(selected ? OptionMenuSettings.mFontColorSelection : OptionMenuSettings.mFontColor));
+
+		if (!DrawToHUD.DrawCommandButtons((indent + 16, y), mAction, binds:AutomapBindings))
+		{
+			drawValue(indent, y, Font.CR_BLACK, "---");
+		}
+
+		return indent;
 	}
 }
 

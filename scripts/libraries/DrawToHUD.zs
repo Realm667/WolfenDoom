@@ -303,11 +303,13 @@ class DrawToHUD
 		if (border.IsValid()) { DrawToHud.DrawTexture(border, pos, alpha, scale); }
 	}
 
-	static ui void DrawCommandButtons(Vector2 pos, String command, double alpha, Vector2 destsize = (-1, -1), double buttonscale = 1.0, int flags = Button.BTN_DEFAULT)
+	static ui bool DrawCommandButtons(Vector2 pos, String command, double alpha = 1.0, Vector2 destsize = (-1, -1), double buttonscale = 1.0, int flags = Button.BTN_MIDDLE, KeyBindings binds = null)
 	{
-		if (!command.length()) { return; }
+		if (!command.length()) { return false; }
+		if (!binds) { binds = Bindings; }
 
 		Font KeyLabelFont = Font.GetFont("ThreeFiv");
+		Font KeyPromptFont = Font.GetFont("KeyPrompts");
 
 		String comma = ",";
 		String or = StringTable.Localize("$WORD_OR");
@@ -320,9 +322,11 @@ class DrawToHUD
 		Array<String> keys;
 		Array<Button> buttons;
 
-		Bindings.GetAllKeysForCommand(keycodes, command);
+		binds.GetAllKeysForCommand(keycodes, command);
 
-		String keynames = Bindings.NameAllKeys(keycodes);
+		if (!keycodes.Size()) { return false; }
+
+		String keynames = binds.NameAllKeys(keycodes);
 		keynames = ZScriptTools.StripColorCodes(keynames);
 		keynames.Split(keys, ", ");
 
@@ -338,9 +342,41 @@ class DrawToHUD
 			if (label == "KEY_" .. keys[k]) { label = keys[k]; }
 
 			if (keys[k] == "Enter") { label = label .. " ⏎"; }
-			
-			Button b = Button.Create(label, KeyLabelFont, icon, buttonscale);
+			else if (keys[k] == "Tab") { label = label .. " ⭾"; }
+			else if (keys[k] == "Shift" || keys[k] == "RShift") { label = "⇧ " .. label; }
+			else if (keys[k] == "Backspace") { label = "← " .. label; }
+			else if (keys[k] == "LWin" || keys[k] == "RWin") { label = "⊞"; }
+			else if (keys[k] == "Command") { label = "⌘"; }
+			else if (keys[k] == "LeftArrow") { label = "◂"; }
+			else if (keys[k] == "RightArrow") { label = "▸"; }
+			else if (keys[k] == "UpArrow") { label = "▴"; }
+			else if (keys[k] == "DownArrow") { label = "▾"; }
+
+			Button b;
+			if (
+				(keycodes[k] >= 0x100 && keycodes[k] <= 0x107) ||
+				(keycodes[k] >= 0x198 && keycodes[k] <= 0x19B) ||
+				(keycodes[k] >= 0x1AC && keycodes[k] <= 0x1B7) ||
+				keycodes[k] >= 0x1BA
+			)
+			{
+				b = Button.Create(String.Format("%c", keycodes[k]), KeyPromptFont, "", buttonscale, false);
+				b.width = int(16 * buttonscale);
+				b.height = int(16 * buttonscale);
+				b.labeloffset = b.width / 2;
+			}
+			else
+			{
+				b = Button.Create(label, KeyLabelFont, icon, buttonscale);
+			}
+
 			buttons.Push(b);
+
+			if (keys[k] == "Space")
+			{
+				b.width = max(96, b.width);
+				b.labeloffset = b.width / 2;
+			}
 
 			totalwidth += b.width;
 			if (k < keys.Size() - 2) { totalwidth += commasize + int(6 * b.scale.x); }
@@ -349,30 +385,35 @@ class DrawToHUD
 			maxheight = max(maxheight, b.height);
 		}
 
-		pos.x -= totalwidth / 2;
+		if (flags & Button.BTN_CENTERED) { pos.x -= totalwidth / 2; }
+		if (flags & Button.BTN_MIDDLE)  { pos.y += maxheight / 2; }
+
+		flags &= ~Button.BTN_CENTERED;
 
 		for (int i = 0; i < buttons.Size(); i++)
 		{
 			Button b = buttons[i];
 
-			Button.Draw(pos, b, alpha, destsize, flags & ~Button.BTN_CENTERED);
+			Button.Draw(pos, b, alpha, destsize, flags);
 
 			pos.x += b.width + int(6 * b.scale.x);
 
 			if (i < buttons.Size() - 2) // ","
 			{
 				pos.x += commasize / 2 - int(6 * b.scale.x);
-				DrawToHUD.DrawText(comma, (pos.x, pos.y + maxheight / 2), SmallFont, alpha, buttonscale, destsize, Font.CR_GRAY, ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED | (flags & Button.BTN_FIXED ? ZScriptTools.STR_FIXED : 0));
+				DrawToHUD.DrawText(comma, pos, SmallFont, alpha, buttonscale, destsize, Font.CR_GRAY, ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED | (flags & Button.BTN_FIXED ? ZScriptTools.STR_FIXED : 0));
 				pos.x += commasize / 2 + int(6 * b.scale.x);
 			}
 			else if (i == buttons.Size() - 2) // "or"
 			{
 				pos.x += orsize / 2;
-				DrawToHUD.DrawText(or, (pos.x, pos.y + maxheight / 2), SmallFont, alpha, buttonscale, destsize, Font.CR_GRAY, ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED | (flags & Button.BTN_FIXED ? ZScriptTools.STR_FIXED : 0));
+				DrawToHUD.DrawText(or, pos, SmallFont, alpha, buttonscale, destsize, Font.CR_GRAY, ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED | (flags & Button.BTN_FIXED ? ZScriptTools.STR_FIXED : 0));
 				pos.x += orsize / 2 + int(6 * b.scale.x);
 			}
 
 		}
+
+		return true;
 	}
 }
 
@@ -385,15 +426,18 @@ class Button
 	int height;
 	int labeloffset;
 	Vector2 scale;
+	bool drawbackground;
 
-	static ui Button Create(String label, Font fnt, String icon = "", double buttonscale = 1.0)
+	static ui Button Create(String label, Font fnt, String icon = "", double buttonscale = 1.0, bool drawbackground = true)
 	{
 		if (!label.length() && !icon.length()) { return null; }
 
 		Vector2 scale = (1.0, 1.0) * buttonscale;
 
 		int height = max(int(16 * scale.y), int(fnt.GetHeight() * scale.y + 8 * scale.y));
-		int width = max(height, int(fnt.StringWidth(label) * scale.x + 12 * scale.x));
+
+		int width = height;
+		if (label.length() > 1) { width = max(height, int(fnt.StringWidth(label) * scale.x + 12 * scale.x) + 1); }
 
 		int labeloffset = width / 2;
 
@@ -417,6 +461,7 @@ class Button
 			b.height = height;
 			b.labeloffset = labeloffset;
 			b.scale = scale;
+			b.drawbackground = drawbackground;
 		}
 
 		return b;
@@ -426,25 +471,19 @@ class Button
 	{
 		BTN_DEFAULT = 0,
 		BTN_CENTERED = 1, // Draw centered at coords
-		BTN_FIXED = 2, // Draw in status bar coordinates
+		BTN_MIDDLE = 2, // Draw centered vertically at coords
+		BTN_FIXED = 4, // Draw in status bar coordinates
 	};
 
 	static ui void Draw(Vector2 pos, Button b, double alpha = 1.0, Vector2 destsize = (-1, -1), int flags = BTN_DEFAULT)
 	{
 		if (!b) { return; }
 
-		if (flags & BTN_CENTERED)
-		{
-			pos.x -= b.width / 2;
-			pos.y -= b.height / 2;
-		}
+		if (flags & BTN_CENTERED) { pos.x -= b.width / 2; }
+		if (flags & BTN_MIDDLE) { pos.y -= b.height / 2; }
 
-		Font KeyLabelFont = Font.GetFont("THREEFIV");
-
-		DrawToHUD.DrawFrame("BU_", int(pos.x), int(pos.y), b.width, b.height, 0x989898, alpha, alpha, (flags & BTN_FIXED ? destsize : (-1, -1)));
-
+		if (b.drawbackground) { DrawToHUD.DrawFrame("BU_", int(pos.x), int(pos.y), b.width, b.height, 0x989898, alpha, alpha, (flags & BTN_FIXED ? destsize : (-1, -1))); }
 		if (b.icon.IsValid()) { DrawToHud.DrawTexture(b.icon, (pos.x + 12, pos.y + b.height / 2), alpha, 0.5 * b.scale.x, -1, (-1, -1), DrawToHUD.TEX_CENTERED | (flags & BTN_FIXED ? DrawToHUD.TEX_FIXED : 0), (flags & BTN_FIXED ? destsize : (-1, -1))); }
-
-		DrawToHUD.DrawText(b.label, (pos.x + b.labeloffset, pos.y + b.height / 2), KeyLabelFont, alpha, b.scale.x, destsize, Font.FindFontColor("TrueBlack"), ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED | (flags & BTN_FIXED ? ZScriptTools.STR_FIXED : 0));
+		DrawToHUD.DrawText(b.label, (pos.x + b.labeloffset, pos.y + b.height / 2), b.fnt, alpha, b.scale.x, destsize, b.drawbackground ? Font.FindFontColor("TrueBlack") : Font.CR_UNTRANSLATED, ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED | (flags & BTN_FIXED ? ZScriptTools.STR_FIXED : 0));
 	}
 }
