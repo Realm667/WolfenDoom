@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 AFADoomer
+ * Copyright (c) 2018-2022 AFADoomer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -338,9 +338,10 @@ class DrawToHUD
 		if (!command.length()) { return false; }
 		if (!binds) { binds = Bindings; }
 
-		Font KeyLabelFont = Font.GetFont("ThreeFiv");
+		Font KeyLabelFont = Font.GetFont("Minifont");
 		Font KeyPromptFont = Font.GetFont("KeyPrompts");
 
+		// Define separator strings
 		String comma = ",";
 		String or = StringTable.Localize("$WORD_OR");
 		int commasize =  SmallFont.StringWidth(comma);
@@ -352,50 +353,68 @@ class DrawToHUD
 		Array<String> keys;
 		Array<Button> buttons;
 
+		// Look up key binds for the passed-in commad
 		binds.GetAllKeysForCommand(keycodes, command);
 
 		if (!keycodes.Size()) { return false; }
 
+		// Get the key names for each bound key, and parse them into a lookup array
 		String keynames = binds.NameAllKeys(keycodes);
 		keynames = ZScriptTools.StripColorCodes(keynames);
 		keynames.Split(keys, ", ");
 
-		String bkg = "BU_";
-		int fntcolor = Font.FindFontColor("TrueBlack");
-		color fillcolor = 0x989898;
-		int margin = int(4 * buttonscale);
-
+		// Iterate through the keys in the array to generate button data and handle key-specific
+		// visual tweaks (label lookups, size changes, icon selection, etc.)
 		for (int k = 0; k < keys.Size(); k++)
 		{
-			// Alow key names to be translated by prefixing them with KEY_ (e.g., "KEY_Mouse2", "KEY_Ctrl")
-			// and defining the appropriate entry in the LANGUAGE lump
-			String label = StringTable.Localize("$KEY_" .. keys[k]);
-			if (label == "KEY_" .. keys[k]) { label = keys[k]; }
-
-			// Use alternate style for non-keyboard keys
-			if (keycodes[k] >= 0x100)
-			{
-				bkg = "BU_D_";
-				fntcolor = Font.CR_WHITE;
-				fillcolor = 0x78809A;
-				margin = 0;
-			}
-
+			// Set the default frame/button background to look like a pixel-art physical key
+			String bkg = "BU_";
+			int fntcolor = Font.FindFontColor("TrueBlack");
+			color fillcolor = 0x989898;
+			int margin = int(4 * buttonscale);
+			String label = keys[k];
 			String icon = "";
-			if (
+
+			// Dynamically build "pretty" label strings for non-keyboard binds and assign device-
+			// specific icons as appropriate for each input type
+			if ( // Mouse
 				(keycodes[k] >= 0x100 && keycodes[k] < 0x108) ||
 				(keycodes[k] >= 0x198 && keycodes[k] < 0x19B)
 			)
 			{
 				icon = "BU_MOUSE";
 
-				if (keycodes[k] >= 0x100 && keycodes[k] < 0x108)
+				if (keycodes[k] >= 0x100 && keycodes[k] < 0x108) // Standard buttons
 				{
 					// Generate the label from the "Mouse Button" string and the number of the button
 					label = StringTable.Localize("$KEY_Mouse") .. " " .. keycodes[k] - 0x0FF;
 				}
+				else if (keycodes[k] >= 0x198 && keycodes[k] < 0x19B) // Wheel
+				{
+					// Generate the label from the "Mouse Wheel" string and the number of the button
+					int index = keycodes[k] - 0x198;
+
+					String direction = "";
+					switch(index)
+					{
+						case 0:
+							direction = StringTable.Localize("$WORD_UP");
+						break;
+						case 1:
+							direction = StringTable.Localize("$WORD_DOWN");
+						break;
+						case 2:
+							direction = StringTable.Localize("$WORD_RIGHT");
+						break;
+						case 3:
+							direction = StringTable.Localize("$WORD_LEFT");
+						break;
+					}
+
+					label = StringTable.Localize("$KEY_MouseWheel") .. " " .. direction;
+				}
 			}
-			else if (
+			else if ( // Joystick
 				(keycodes[k] >= 0x108 && keycodes[k] <= 0x197) ||
 				(keycodes[k] >= 0x19C && keycodes[k] <= 0x1AB)
 			)
@@ -408,7 +427,7 @@ class DrawToHUD
 					// Generate the label from the "Joystick Button" string and the number of the button
 					label = StringTable.Localize("$KEY_Joystick") .. " " .. keycodes[k] - 0x107;
 				}
-				else if (keycodes[k] >= 0x188 && keycodes[k] <= 0x197)
+				else if (keycodes[k] >= 0x188 && keycodes[k] <= 0x197) // Joystick POV Hat
 				{
 					// Generate the label from the "Joystick POV Hat" string and the number and direction of the button
 					int index = keycodes[k] - 0x188;
@@ -434,7 +453,7 @@ class DrawToHUD
 
 					label = StringTable.Localize("$KEY_JoystickHat") .. " " .. hat .. " " .. direction;
 				}
-				else if (keycodes[k] >= 0x19C && keycodes[k] <= 0x1AB)
+				else if (keycodes[k] >= 0x19C && keycodes[k] <= 0x1AB) // Joystick Axis
 				{
 					// Generate the label from the "Joystick Axis" string and the number and direction of the button
 					int index = keycodes[k] - 0x19C;
@@ -455,56 +474,82 @@ class DrawToHUD
 					label = StringTable.Localize("$KEY_JoystickAxis") .. " " .. axis .. " " .. direction;
 				}
 			}
-			else if (keycodes[k] >= 0x108)
+			else if (keycodes[k] >= 0x108) // Game pad
 			{
 				icon = "BU_PAD";
 			}
 
-			if (keys[k] == "Enter") { label = label .. " ⏎"; }
-			else if (keys[k] == "Tab") { label = label .. " ⭾"; }
-			else if (keys[k] == "Shift" || keys[k] == "RShift") { label = "⇧ " .. label; }
-			else if (keys[k] == "Backspace") { label = "← " .. label; }
-			else if (keys[k] == "LWin" || keys[k] == "RWin") { label = "⊞"; }
-			else if (keys[k] == "Command") { label = "⌘"; }
-			else if (keys[k] == "LeftArrow") { label = "◂"; }
-			else if (keys[k] == "RightArrow") { label = "▸"; }
-			else if (keys[k] == "UpArrow") { label = "▴"; }
-			else if (keys[k] == "DownArrow") { label = "▾"; }
+			// Allow key names to be translated by prefixing them with KEY_ (e.g., "KEY_Mouse2", "KEY_Ctrl")
+			// and defining the appropriate entry in the LANGUAGE lump.  This also allows defining more
+			// aesthetic names for keys (e.g., in BoA KEY_PAD_START will show "Start" instead of "Pad_Start")
+			// These override generated names 
+			String prettylabel = StringTable.Localize("$KEY_" .. keys[k]);
+			if (!(prettylabel == "KEY_" .. keys[k])) { label = prettylabel; }
 
+			// Use alternate background style for non-keyboard key binds (mouse, joystick, gamepad)
+			if (keycodes[k] >= 0x100)
+			{
+				bkg = "BU_D_";
+				fntcolor = Font.CR_WHITE;
+				fillcolor = 0x78809A;
+				margin = 0;
+			}
+
+			// Create the button object for the key bind
 			Button b;
-			if (
-				(keycodes[k] >= 0x100 && keycodes[k] <= 0x107) || // Mouse
-				(keycodes[k] >= 0x198 && keycodes[k] <= 0x19B) || // Mouse Wheel
-				(keycodes[k] >= 0x1AC && keycodes[k] <= 0x1B7) || // Joystick
-				keycodes[k] >= 0x1BA // Gamepad
-			)
+			if (KeyPromptFont.GetGlyphHeight(keycodes[k])) // If there's a dedicated key prompt graphic, use it
 			{
 				b = Button.Create(String.Format("%c", keycodes[k]), KeyPromptFont, "", buttonscale, "");
-				b.width = int(16 * buttonscale);
-				b.height = int(16 * buttonscale);
-				b.labeloffset = b.width / 2;
+				if (b)
+				{
+					b.width = int(16 * buttonscale);
+					b.height = int(16 * buttonscale);
+					b.labeloffset = b.width / 2;
+				}
 			}
 			else
 			{
+				// Add characters to the label names for some key binds so that they better reflect
+				// the physical key that they are meant to represent
+				if (keys[k] == "Enter") { label = label .. " ⏎"; }
+				else if (keys[k] == "Tab") { label = label .. " ⭾"; }
+				else if (keys[k] == "Shift" || keys[k] == "RShift") { label = "⇧ " .. label; }
+				else if (keys[k] == "Backspace") { label = "← " .. label; }
+				else if (keys[k] == "LWin" || keys[k] == "RWin") { label = "⊞"; }
+				else if (keys[k] == "Command") { label = "⌘"; }
+				else if (keys[k] == "LeftArrow") { label = "◂"; }
+				else if (keys[k] == "RightArrow") { label = "▸"; }
+				else if (keys[k] == "UpArrow") { label = "▴"; }
+				else if (keys[k] == "DownArrow") { label = "▾"; }
+				
 				b = Button.Create(label, KeyLabelFont, icon, buttonscale, bkg, fntcolor, fillcolor, margin);
+
+				// Make the space bar wide so that it closer matches actual space bar width
+				if (b && keys[k] == "Space")
+				{
+					b.width = max(int(96 * buttonscale), b.width);
+					b.labeloffset = b.width / 2;
+				}
 			}
 
-			buttons.Push(b);
-
-			if (keys[k] == "Space")
+			if (b)
 			{
-				b.width = max(int(96 * buttonscale), b.width);
-				b.labeloffset = b.width / 2;
-			}
+				// Add the generated button to the array of buttons for this key bind
+				buttons.Push(b);
 
-			totalwidth += b.width;
-			if (k < keys.Size() - 2) { totalwidth += int((commasize + 6) * b.scale.x); }
-			else if (k == keys.Size() - 2) { totalwidth += int((orsize + 12) * b.scale.x); }
+				// Calculate total width of the drawn buttons, including separators ("," and "or")
+				totalwidth += b.width;
+				if (k < keys.Size() - 2) { totalwidth += int((commasize + 6) * b.scale.x); }
+				else if (k == keys.Size() - 2) { totalwidth += int((orsize + 12) * b.scale.x); }
+			}
 		}
 
+ 		// Allow the BTN_CENTERED flag to be passed to center the whole set of buttons, but strip
+		// it so it doesn't pass on to the individual buttons and try to center them as well.
 		if (flags & Button.BTN_CENTERED) { pos.x -= totalwidth / 2; }
 		flags &= ~Button.BTN_CENTERED;
 
+		// Iterate through buttons and draw each one, as well as separators as appropriate
 		for (int i = 0; i < buttons.Size(); i++)
 		{
 			Button b = buttons[i];
@@ -515,6 +560,7 @@ class DrawToHUD
 
 			int textflags = ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED | (flags & Button.BTN_FIXED ? ZScriptTools.STR_FIXED : 0) | (flags & Button.BTN_MENU ? ZScriptTools.STR_MENU : 0);
 
+			// Use "," to separate all but the final button, then use "or" for the last one
 			if (i < buttons.Size() - 2) // ","
 			{
 				pos.x += int((commasize / 2 - 6) * b.scale.x);
@@ -527,7 +573,6 @@ class DrawToHUD
 				DrawToHUD.DrawText(or, pos, SmallFont, alpha, b.scale.x, destsize, Font.CR_GRAY, textflags);
 				pos.x += int((orsize / 2 + 6) * b.scale.x);
 			}
-
 		}
 
 		return true;
