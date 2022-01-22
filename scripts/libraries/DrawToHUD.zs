@@ -197,6 +197,25 @@ class DrawToHUD
 		w *= scale.x;
 		h *= scale.y;
 
+		// If positioned via a negative coordinate, but full width of dim would extend off of the
+		// screen, assume that the dimmed area was supposed to be located on the opposite site
+		// of the screen and recalculate values to crop the dim to the left or top side of the screen
+		if (x < 0 && screenpos.x + w > Screen.GetWidth())
+		{
+			w = screenpos.x + w - Screen.GetWidth();
+			screenpos.x = 0;
+		}
+
+		if (y < 0 && screenpos.y + h > Screen.GetHeight())
+		{
+			h = screenpos.y + h - Screen.GetHeight();
+			screenpos.y = 0;
+		}
+
+		// Crop to the screen size
+		if (screenpos.x + w > Screen.GetWidth()) { w = screenpos.x + w - Screen.GetWidth(); }
+		if (screenpos.y + h > Screen.GetHeight()) { h = screenpos.y + h - Screen.GetHeight(); }
+
 		Screen.Dim(clr, alpha, int(round(screenpos.x)), int(round(screenpos.y)), int(round(w)), int(round(h)));
 	}
 
