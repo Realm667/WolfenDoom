@@ -425,7 +425,7 @@ class BoAOptionMenuItemControl : OptionMenuItemControl
 		drawLabel(indent, y, mWaiting ? OptionMenuSettings.mFontColorHighlight :
 			(selected ? OptionMenuSettings.mFontColorSelection : OptionMenuSettings.mFontColor));
 
-		if (!DrawToHUD.DrawCommandButtons((indent + 16, y), mAction))
+		if (!DrawToHUD.DrawCommandButtons((indent + 12 * CleanXfac_1, y + (OptionMenu.OptionHeight() * CleanYfac_1 / 2)), mAction, 1.0, (CleanWidth_1, CleanHeight_1), 1.0, Button.BTN_MIDDLE | Button.BTN_MENU))
 		{
 			drawValue(indent, y, Font.CR_BLACK, "---");
 		}
@@ -491,7 +491,7 @@ class BoAOptionMenuItemMapControl : OptionMenuItemMapControl
 		drawLabel(indent, y, mWaiting ? OptionMenuSettings.mFontColorHighlight :
 			(selected ? OptionMenuSettings.mFontColorSelection : OptionMenuSettings.mFontColor));
 
-		if (!DrawToHUD.DrawCommandButtons((indent + 16, y), mAction, binds:AutomapBindings))
+		if (!DrawToHUD.DrawCommandButtons((indent + 12 * CleanXfac_1, y + (OptionMenu.OptionHeight() * CleanYfac_1/ 2)), mAction, 1.0, (CleanWidth_1, CleanHeight_1), 1.0, Button.BTN_MIDDLE | Button.BTN_MENU, AutomapBindings))
 		{
 			drawValue(indent, y, Font.CR_BLACK, "---");
 		}

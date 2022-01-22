@@ -662,7 +662,7 @@ class HintMessage : MessageBase
 		{
 			if (drawkey && l == lines.Count() - 1)
 			{
-				DrawToHUD.DrawCommandButtons((posx, posy + SmallFont.GetHeight() / 2), command, alpha, destsize, buttonscale, Button.BTN_CENTERED | Button.BTN_MIDDLE | (fullscreen ? 0 : Button.BTN_FIXED));
+				DrawToHUD.DrawCommandButtons((posx, posy + SmallFont.GetHeight() * 3 / 2), command, alpha, destsize, 1.0, Button.BTN_CENTERED | Button.BTN_MIDDLE | (fullscreen ? 0 : Button.BTN_FIXED));
 			}
 			else
 			{
