@@ -73,6 +73,7 @@ class EffectsManager : Thinker
 	int interval, renderchunks;
 	EffectBlock[MAPMAX * 2 / CHUNKSIZE][MAPMAX * 2 / CHUNKSIZE] effectblocks; // Grid of blocks across the entire map
 	Vector2 playerpos[MAXPLAYERS];
+	Vector2 lastplayerpos[MAXPLAYERS];
 
 	enum ForceLevel
 	{
@@ -217,6 +218,7 @@ class EffectsManager : Thinker
 		else if (level.maptime > 2)
 		{
 			bool cull = false;
+			bool newview = false;
 			int x, y;
 
 			for (int p = 0; p < MAXPLAYERS; p++)
@@ -233,6 +235,12 @@ class EffectsManager : Thinker
 				{
 					cull = true;
 					playerpos[p] = (x, y);
+
+					// Recalculate view if the player has moved a more than a single chunk at once (teleportation or camera change)
+					newview = !!(abs(playerpos[p].x - lastplayerpos[p].x) > 1 || abs(playerpos[p].y - lastplayerpos[p].y) > 1);
+					if (newview) { interval = 0; }
+
+					lastplayerpos[p] = playerpos[p];
 				}
 			}
 
@@ -240,7 +248,7 @@ class EffectsManager : Thinker
 			{
 				bool culled;
 				int cx, cy;
-				[culled, cx, cy] = CullEffects();
+				[culled, cx, cy] = CullEffects(newview);
 
 				if (boa_debugculling && !culled)
 				{
@@ -275,7 +283,7 @@ class EffectsManager : Thinker
 		return true;
 	}
 
-	protected bool, int, int CullEffects()
+	protected bool, int, int CullEffects(bool recalculate = false)
 	{
 		bool ret = true;
 		int retx = 0, rety = 0;
@@ -308,19 +316,21 @@ class EffectsManager : Thinker
 					bool forceremove = boa_culling && (!multiplayer && (interval >  range / CHUNKSIZE)); // Force removal if outside of the cull range (and not multiplayer)
 
 					// Delay culling if this chunk was force culled last time and is still outside of culling range
-					if (effectblocks[x][y].forceculled && forceremove)
+					if (!recalculate && effectblocks[x][y].forceculled && forceremove)
 					{
 						effectblocks[x][y].cullinterval = interval;
 						continue;
 					}
 
-					// Don't cull chunks that are the same distance away as last time, or if our camera is outside of our body
-					if (players[p].camera != players[p].mo || effectblocks[x][y].cullinterval != interval || effectblocks[x][y].forceculled || forceremove)
+					// Don't cull chunks that are the same distance away as last time, and force culling if our camera is 
+					// outside of our body or if we moved more than CHUNKSIZE distance in one tick (teleport or camera change)
+					if (recalculate || effectblocks[x][y].cullinterval != interval || effectblocks[x][y].forceculled || forceremove)
 					{
 						count += CullChunk(effectblocks[x][y].indices, forceremove);
 					}
+					
 					effectblocks[x][y].forceculled = forceremove;
-					effectblocks[x][y].cullinterval = !boa_culling ? 0 : interval;
+					effectblocks[x][y].cullinterval = (!boa_culling || recalculate) ? 0 : interval;
 
 					if (boa_cullactorlimit > 0 && count > boa_cullactorlimit && !retx && !rety)
 					{
@@ -644,7 +654,7 @@ class CullActorBase : Actor
 
 		if (user_dontcull) { bDontCull = true; }
 
-		if (bWasCulled)
+		if (bWasCulled && culllevel > 0)
 		{
 			if (GetRenderStyle() == STYLE_Normal) { A_SetRenderStyle(alpha, STYLE_Translucent); }
 			alpha = 0;

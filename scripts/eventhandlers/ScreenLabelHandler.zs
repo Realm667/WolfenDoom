@@ -37,6 +37,7 @@ class ScreenLabelHandler : EventHandler
 	{
 		LBL_Default,
 		LBL_ColorMarker,
+		LBL_Discreet,
 	};
 
 	Array<ScreenLabelItem> ScreenLabelItems;
@@ -244,6 +245,55 @@ class ScreenLabelHandler : EventHandler
 						}
 					}
 					break;
+				case LBL_Discreet:
+					if (true)
+					{
+						if (dist > 768) { continue; }
+						if (dist > 256) { alpha = 1.0 - (dist - 256) / 512; }
+
+						Font tinyfont = Font.FindFont("THREEFIV");
+
+						String text = StringTable.Localize(ScreenLabelItems[i].text);
+						String temp; BrokenString lines;
+						[temp, lines] = BrokenString.BreakString(text, int(48 * tinyfont.StringWidth(" ")), fnt:tinyfont);
+
+						double textscale = 0.5 / fovscale;
+						double lineheight = int(tinyfont.GetHeight() * textscale) + 1;
+
+						textscale /= dist / 512;
+						lineheight /= dist / 512;
+						
+						color clr = ScreenLabelItems[i].clr;
+						double bgalpha = alpha * 0.5;
+
+						double textheight = lines.Count() * lineheight;
+						double textwidth = 100 * textscale;
+
+						for (int l = 0; l < lines.Count(); l++)
+						{
+							double w = lines.StringWidth(l) * textscale;
+							if (w > textwidth) { textwidth = w; }
+						}
+
+						double boxwidth = textwidth;
+
+						drawpos.x -= boxwidth / 2;
+						drawpos.y -= textheight;
+
+						// Draw the text
+						if (lines.Count())
+						{
+							drawpos = startpos;
+							drawpos.y -= textheight / 2 + lines.Count() * lineheight / 2;
+
+							for (int s = 0; s < lines.Count(); s++)
+							{
+								String line = lines.StringAt(s);
+								screen.DrawText(tinyfont, Font.CR_WHITE, drawpos.x, drawpos.y + s * lineheight, line, DTA_ScaleX, textscale, DTA_ScaleY, textscale, DTA_Alpha, alpha);
+							}
+						}
+					}
+					break;
 				case LBL_Default:
 				default:
 					if (dist > 768) { continue; }
@@ -258,13 +308,15 @@ class ScreenLabelHandler : EventHandler
 						if (image) { imagedimensions = TexMan.GetScaledSize(image) * vid_scalefactor; }
 					}
 
+					Font fnt = SmallFont;
+
 					// Get text content in order to calculate frame size
 					String text = StringTable.Localize(ScreenLabelItems[i].text);
 					String temp; BrokenString lines;
-					[temp, lines] = BrokenString.BreakString(text, int(48 * SmallFont.StringWidth(" ")), fnt:SmallFont);
+					[temp, lines] = BrokenString.BreakString(text, int(48 * fnt.StringWidth(" ")), fnt:fnt);
 
 					double textscale = 1 / fovscale;
-					double lineheight = int(SmallFont.GetHeight() * textscale);
+					double lineheight = int(fnt.GetHeight() * textscale);
 
 					// Draw the frame
 					TextureID tl, tm, tr, ml, mm, mr, bl, bm, br;
@@ -336,7 +388,7 @@ class ScreenLabelHandler : EventHandler
 						for (int s = 0; s < lines.Count(); s++)
 						{
 							String line = lines.StringAt(s);
-							screen.DrawText(SmallFont, Font.CR_WHITE, drawpos.x - SmallFont.StringWidth(line) * textscale / 2, drawpos.y + s * lineheight, line, DTA_ScaleX, textscale, DTA_ScaleY, textscale, DTA_Alpha, alpha);
+							screen.DrawText(fnt, Font.CR_WHITE, drawpos.x - fnt.StringWidth(line) * textscale / 2, drawpos.y + s * lineheight, line, DTA_ScaleX, textscale, DTA_ScaleY, textscale, DTA_Alpha, alpha);
 						}
 					}
 					break;
