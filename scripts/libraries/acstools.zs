@@ -379,7 +379,7 @@ class ACSTools
 		output = StringTable.Localize(output);
 
 		// Fall back to displaying the bind information if no string was found.
-		if (output.left(9) ~== prefix) { output = rawactionname; }
+		if (output.left(prefix.length() - 1) ~== prefix.Mid(1)) { output = rawactionname; }
 
 		return output;
 	}
