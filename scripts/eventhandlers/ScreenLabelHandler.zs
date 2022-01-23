@@ -20,7 +20,7 @@
  * SOFTWARE.
 **/
 
-class ScreenLabelItem
+class ScreenLabelItem : Thinker
 {
 	Actor mo;
 	String icon;
@@ -31,21 +31,34 @@ class ScreenLabelItem
 	bool draw[MAXPLAYERS];
 }
 
+class ScreenLabelCull : ScreenLabelItem
+{
+	override void Tick()
+	{
+		if (mo)
+		{
+			text = String.Format("%s\nAlpha: %2f", mo.GetClassName(), mo.alpha);
+		}
+
+		Super.Tick();
+	}
+}
+
 class ScreenLabelHandler : EventHandler
 {
 	enum Types
 	{
 		LBL_Default,
 		LBL_ColorMarker,
-		LBL_Discreet,
+		LBL_Discrete,
 	};
 
 	Array<ScreenLabelItem> ScreenLabelItems;
 
-	protected Le_GlScreen			gl_proj;
-	protected Le_Viewport			viewport;
+	protected Le_GlScreen gl_proj;
+	protected Le_Viewport viewport;
 
-	override void OnRegister ()
+	override void OnRegister()
 	{
 		gl_proj = new("Le_GlScreen");
 	}
@@ -70,7 +83,7 @@ class ScreenLabelHandler : EventHandler
 		return ScreenLabelItems.Size();
 	}
 
-	void AddItem(Actor thing, String iconName = "", String text = "", color clr = 0xFFFFFF, double alpha = 1.0, int type = LBL_Default)
+	void AddItem(class<ScreenLabelItem> cls, Actor thing, String iconName = "", String text = "", color clr = 0xFFFFFF, double alpha = 1.0, int type = LBL_Default)
 	{
 		if (!thing) { return; }
 
@@ -79,7 +92,7 @@ class ScreenLabelHandler : EventHandler
 		ScreenLabelItem item;
 		if (i == ScreenLabelItems.Size())
 		{
-			item = New("ScreenLabelItem");
+			item = ScreenLabelItem(New(cls));
 			item.mo = thing;
 			ScreenLabelItems.Push(item);
 		}
@@ -108,7 +121,7 @@ class ScreenLabelHandler : EventHandler
 
 			while (mo = Actor(it.Next()))
 			{
-				handler.AddItem(mo, iconName, text, clr, alpha, type);
+				handler.AddItem("ScreenLabelItem", mo, iconName, text, clr, alpha, type);
 			}
 		} 
 	}
@@ -132,7 +145,8 @@ class ScreenLabelHandler : EventHandler
 
 	override void WorldThingSpawned(WorldEvent e)
 	{
-		if (e.thing is "PlayerPawn") { AddItem(e.thing, "MP_MARK", "", 0x0, 0.8, LBL_ColorMarker); }
+		if (e.thing is "PlayerPawn") { AddItem("ScreenLabelItem", e.thing, "MP_MARK", "", 0x0, 0.8, LBL_ColorMarker); }
+		//else if (e.thing is "CullActorBase") { AddItem("ScreenLabelCull", e.thing, type:LBL_Discrete); }
 	}
 
 	override void WorldTick()
@@ -154,7 +168,7 @@ class ScreenLabelHandler : EventHandler
 		}
 	}
 
-	override void RenderUnderlay( RenderEvent e )
+	override void RenderUnderlay(RenderEvent e)
 	{
 		PlayerInfo p = players[consoleplayer];
 
@@ -245,7 +259,7 @@ class ScreenLabelHandler : EventHandler
 						}
 					}
 					break;
-				case LBL_Discreet:
+				case LBL_Discrete:
 					if (true)
 					{
 						if (dist > 768) { continue; }

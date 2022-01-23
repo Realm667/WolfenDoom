@@ -84,6 +84,8 @@ class MineSweeperHandler : EventHandler
 				double dist = p.mo.Distance3D(mo);
 				if (dist > 512 ) { continue; }
 
+				dist = max(dist, p.mo.height);
+
 				Vector3 worldpos = e.viewpos + level.Vec3Diff(e.viewpos, mo.pos); // World position of object, offset from viewpoint
 				gl_proj.ProjectWorldPos(worldpos); // Translate that to the screen, using the viewpoint's info
 
@@ -93,10 +95,11 @@ class MineSweeperHandler : EventHandler
 
 				TextureID image = mo.SpawnState.GetSpriteTexture(0);
 
-				Vector2 dimensions = TexMan.GetScaledSize(image);
+				Vector2 dimensions = TexMan.GetScaledSize(image) * vid_scalefactor;
 				dimensions.x *= mo.scale.x;
 				dimensions.y *= mo.scale.y;
-				dimensions /= dist / 320 * p.fov / 90; // Scale with fov to account for zooming
+				dimensions *= 768.0 / dist;
+				dimensions *= 90.0 / p.fov; // Scale with fov to account for zooming
 
 				color clr = 0xDE1B15;
 				double alpha = max(1.0 - (dist - 256) / 256, 0);

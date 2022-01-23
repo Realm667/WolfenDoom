@@ -496,6 +496,6 @@ class ScreenLabel : SimpleActor
 		ScreenLabelHandler handler = ScreenLabelHandler(EventHandler.Find("ScreenLabelHandler"));
 		if (!handler) { return; }
 
-		handler.AddItem(self, user_icon, user_text, 0xFFFFFF, 0.8);
+		handler.AddItem("ScreenLabelItem", self, user_icon, user_text, 0xFFFFFF, 0.8);
 	}
 }
