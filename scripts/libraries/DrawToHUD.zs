@@ -99,14 +99,83 @@ class DrawToHUD
 		double textw = fnt.StringWidth(text) * scale.x;
 		double texth = fnt.GetHeight() * scale.y;
 
+		if (text.IndexOf("[[") > -1 && text.IndexOf("]]") > -1)
+		{
+			String line = text;
+			int totalwidth = 0;
+
+			while (line.length())
+			{
+				int buttonstart = line.IndexOf("[[");
+				int buttonend = line.IndexOf("]]", buttonstart);
+
+				if (buttonend > -1 && buttonstart > -1)
+				{
+					String cmd = line.Mid(buttonstart + 2, buttonend - buttonstart - 2);
+					bool valid = true;
+					int buttonwidth;
+					[buttonwidth, valid] = DrawCommandButtons((0, 0), cmd, 0.0, destsize, 1.0, Button.BTN_CALC | (fullscreen ? 0 : Button.BTN_FIXED));
+
+					String keystring = "";
+					if (!valid)
+					{
+						keystring = ACSTools.GetKeyPressString(cmd, true, "Dark Gray", "Gray", "Red");
+						text.Replace("[[" .. cmd .. "]]", "[[" .. cmd .. "]] " .. keystring);
+					}
+
+					totalwidth += int(SmallFont.StringWidth(line.left(buttonstart) .. keystring) + buttonwidth);
+
+					line = line.mid(buttonend + 2);
+				}
+				else
+				{
+					totalwidth += SmallFont.StringWidth(line);
+					line = "";
+				}
+			}
+
+			textw = totalwidth * scale.x;
+			texth = max(20, fnt.GetHeight()) * scale.y;
+		}
+
 		if (flags & ZScriptTools.STR_RIGHT) { screenpos.x -= textw; }
 		else if (flags & ZScriptTools.STR_CENTERED) { screenpos.x -= textw / 2; }
 
 		if (flags & ZScriptTools.STR_BOTTOM) { screenpos.y -= texth; }
 		else if (flags & ZScriptTools.STR_MIDDLE) { screenpos.y -= texth / 2; }
 
-		// Draw the text
-		screen.DrawText(fnt, shade, int(screenpos.x), int(screenpos.y), text, DTA_KeepRatio, true, DTA_Alpha, alpha, DTA_ScaleX, scale.x, DTA_ScaleY, scale.y);
+		if (text.IndexOf("[[") > -1 && text.IndexOf("]]") > -1)
+		{
+			int linex = int(screenpos.x);
+
+			String line = text;
+			while (line.length())
+			{
+				int buttonstart = line.IndexOf("[[");
+				int buttonend = line.IndexOf("]]", buttonstart);
+
+				if (buttonend > -1 && buttonstart > -1)
+				{
+					String segment = line.left(buttonstart);
+					DrawText(segment, (linex, screenpos.y), fnt, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | (fullscreen ? 0 : ZScriptTools.STR_FIXED));
+					linex += SmallFont.StringWidth(segment);
+
+					String cmd = line.Mid(buttonstart + 2, buttonend - buttonstart - 2);
+					linex += DrawCommandButtons((linex, screenpos.y + SmallFont.GetHeight() / 2), cmd, alpha, destsize, 1.0, Button.BTN_MIDDLE | (fullscreen ? 0 : Button.BTN_FIXED));
+
+					line = line.mid(buttonend + 2);
+				}
+				else
+				{
+					DrawText(line, (linex, screenpos.y), fnt, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | (fullscreen ? 0 : ZScriptTools.STR_FIXED));
+					line = "";
+				}
+			}
+		}
+		else
+		{
+			screen.DrawText(fnt, shade, int(screenpos.x), int(screenpos.y), text, DTA_KeepRatio, true, DTA_Alpha, alpha, DTA_ScaleX, scale.x, DTA_ScaleY, scale.y);
+		}
 	}
 
 	enum DrawTex
@@ -352,9 +421,9 @@ class DrawToHUD
 		if (border.IsValid()) { DrawToHud.DrawTexture(border, pos, alpha, scale); }
 	}
 
-	static ui bool DrawCommandButtons(Vector2 pos, String command, double alpha = 1.0, Vector2 destsize = (-1, -1), double buttonscale = 1.0, int flags = Button.BTN_MIDDLE, KeyBindings binds = null)
+	static ui int, bool DrawCommandButtons(Vector2 pos, String command, double alpha = 1.0, Vector2 destsize = (-1, -1), double buttonscale = 1.0, int flags = Button.BTN_MIDDLE, KeyBindings binds = null)
 	{
-		if (!command.length()) { return false; }
+		if (!command.length()) { return 0, false; }
 		if (!binds) { binds = Bindings; }
 
 		Font KeyLabelFont = Font.GetFont("Minifont");
@@ -372,15 +441,24 @@ class DrawToHUD
 		Array<String> keys;
 		Array<Button> buttons;
 
-		// Look up key binds for the passed-in commad
+		bool ret = true;
+
+		// Look up key binds for the passed-in command
 		binds.GetAllKeysForCommand(keycodes, command);
 
-		if (!keycodes.Size()) { return false; }
-
-		// Get the key names for each bound key, and parse them into a lookup array
-		String keynames = binds.NameAllKeys(keycodes);
-		keynames = ZScriptTools.StripColorCodes(keynames);
-		keynames.Split(keys, ", ");
+		if (!keycodes.Size())
+		{
+			keycodes.Push(-1);
+			keys.Push("?");	
+			ret = false;
+		}
+		else
+		{
+			// Get the key names for each bound key, and parse them into a lookup array
+			String keynames = binds.NameAllKeys(keycodes);
+			keynames = ZScriptTools.StripColorCodes(keynames);
+			keynames.Split(keys, ", ");
+		}
 
 		// Iterate through the keys in the array to generate button data and handle key-specific
 		// visual tweaks (label lookups, size changes, icon selection, etc.)
@@ -513,6 +591,12 @@ class DrawToHUD
 				fillcolor = 0x78809A;
 				margin = 0;
 			}
+			else if (keycodes[k] == -1) // and for errors
+			{
+				bkg = "BU_R_";
+				fntcolor = Font.CR_WHITE;
+				fillcolor = 0x722626;
+			}
 
 			// Create the button object for the key bind
 			Button b;
@@ -563,6 +647,9 @@ class DrawToHUD
 			}
 		}
 
+		// Return early if we're just getting the width
+		if (flags & Button.BTN_CALC) { return totalwidth, ret; }
+
  		// Allow the BTN_CENTERED flag to be passed to center the whole set of buttons, but strip
 		// it so it doesn't pass on to the individual buttons and try to center them as well.
 		if (flags & Button.BTN_CENTERED) { pos.x -= totalwidth / 2; }
@@ -594,7 +681,7 @@ class DrawToHUD
 			}
 		}
 
-		return true;
+		return totalwidth, ret;
 	}
 }
 
@@ -618,7 +705,7 @@ class Button
 
 		Vector2 scale = (1.0, 1.0) * buttonscale;
 
-		int height = max(int(16 * scale.y), int(fnt.GetHeight() * scale.y + margin * 2 * scale.y));
+		int height = Button.GetHeight(fnt, buttonscale, margin);
 
 		int width = height;
 		if (label.length() > 1) { width = max(height, int(fnt.StringWidth(label) * scale.x + (margin * 2 + 4) * scale.x) + 1); }
@@ -656,6 +743,14 @@ class Button
 		return b;
 	}
 
+	static ui int GetHeight(Font fnt = null, double scale = 1.0, int margin = 4)
+	{
+		if (!fnt) { fnt = Font.GetFont("MiniFont"); }
+		if (!fnt) { fnt = SmallFont; }
+		
+		return max(int(16 * scale), int(fnt.GetHeight() * scale + margin * 2 * scale));
+	}
+
 	enum DrawButtons
 	{
 		BTN_DEFAULT = 0,
@@ -663,6 +758,7 @@ class Button
 		BTN_MIDDLE = 2, // Draw centered vertically at coords
 		BTN_FIXED = 4, // Draw in status bar coordinates
 		BTN_MENU = 8, // Draw in menu coordinates
+		BTN_CALC = 16, // For command button lists; calculate size, but don't draw
 	};
 
 	static ui void Draw(Vector2 pos, Button b, double alpha = 1.0, Vector2 destsize = (-1, -1), int flags = BTN_DEFAULT)

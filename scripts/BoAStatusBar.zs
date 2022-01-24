@@ -88,6 +88,7 @@ class BoAStatusBar : BaseStatusBar
 		KeenStatsWidget.Init("Keen HUD", Widget.WDG_TOP | Widget.WDG_LEFT, 0);
 		CountWidget.Init("Money and Time", Widget.WDG_TOP | Widget.WDG_LEFT, 0);
 		LogWidget.Init("Notifications", Widget.WDG_TOP | Widget.WDG_LEFT, 0, zindex:100);
+		LogWidget.Init("MidPrint", Widget.WDG_MIDDLE | Widget.WDG_CENTER, 0, (-3, -82), 99, 1);
 		CompassWidget.Init("Compass", Widget.WDG_TOP | Widget.WDG_LEFT, 1);
 
 		ObjectivesWidget.Init("Objectives", Widget.WDG_RIGHT, 0);
@@ -1377,11 +1378,12 @@ class BoAStatusBar : BaseStatusBar
 		if (CPlayer.mo is "KeenPlayer")
 		{
 			ClassicMessageBox.PrintMessage("\c[TrueBlack]" .. ZScriptTools.StripColorCodes(msg), 2, "", 0, 70, 13, 6);
-
-			return true;
+		}
+		else
+		{
+			Log.Add(CPlayer, msg .. "\n", "MidPrint", PRINT_BOLD, fnt);
 		}
 
-		// Normal message for regular BoA play...
-		return false;
+		return true;
 	}
 }

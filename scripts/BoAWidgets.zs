@@ -255,7 +255,8 @@ class Widget ui
 		Vector2 hudscale = StatusBar.GetHudScale();
 
 		if (anchor & WDG_BOTTOM) { pos.y = -(pos.y + offset.y + size.y); }
-		else if (anchor & WDG_MIDDLE) { pos.y += Screen.GetHeight() / hudscale.y / 2; }
+		else if (anchor & WDG_MIDDLE) { pos.y += Screen.GetHeight() / hudscale.y / 2 + offset.y; }
+		else { pos.y += offset.y; }
 
 		if (anchor & WDG_RIGHT) { pos.x = -(pos.x + offset.x + size.x); }
 		else if (anchor & WDG_CENTER)
@@ -263,8 +264,9 @@ class Widget ui
 			int widthoffset = 0;
 			if (BoAStatusbar(StatusBar)) { widthoffset = BoAStatusbar(StatusBar).widthoffset; }
 
-			pos.x += (Screen.GetWidth() / hudscale.x) / 2 - widthoffset;
+			pos.x += (Screen.GetWidth() / hudscale.x) / 2 - widthoffset + offset.x;
 		}
+		else { pos.x += offset.x; }
 
 		ticker++;
 	}
@@ -1502,13 +1504,13 @@ class Log ui
 class LogWidget : Widget
 {
 	Array<Log> messages;
-	int addtype;
+	int addtype, inputmaxlines, maxlines;
 	Font fnt, promptfnt;
 	String prompt;
 
 	int lasttick;
 
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0, int maxlines = 0)
 	{
 		LogWidget wdg = LogWidget(Widget.Init("LogWidget", widgetname, anchor, 0, priority, pos, zindex));
 
@@ -1516,6 +1518,7 @@ class LogWidget : Widget
 		{
 			wdg.margin[0] = 4;
 			wdg.margin[1] = 8;
+			wdg.inputmaxlines = maxlines;
 		}
 	}
 
@@ -1532,11 +1535,16 @@ class LogWidget : Widget
 	override void DoTick(int index)
 	{
 		SetFont();
+		if (inputmaxlines < 1) { maxlines = con_notifylines; }
+		else { maxlines = inputmaxlines; }
 
-		int delta = max(0, messages.Size() - con_notifylines);
-		for (int d = 0; d < delta; d++) { messages.Delete(d); } // Delete oldest notifications off the top of the stack if we've hit the limit for number shown
+		if (messages.Size() > maxlines)
+		{
+			int delta = max(0, messages.Size() - maxlines);
+			for (int d = 0; d < delta; d++) { messages.Delete(0); } // Delete oldest notifications off the top of the stack if we've hit the limit for number shown
+		}
 
-		for (int i = 0; i < min(con_notifylines, messages.Size()); i++)
+		for (int i = 0; i < min(maxlines, messages.Size()); i++)
 		{
 			let m = messages[i];
 
@@ -1582,7 +1590,7 @@ class LogWidget : Widget
 
 		double height = 0;
 
-		if (anchor & WDG_BOTTOM) { height = con_notifylines * lineheight; }
+		if (anchor & WDG_BOTTOM) { height = maxlines * lineheight; }
 		else
 		{
 			for (int i = 0; i < messages.Size(); i++)
@@ -1607,7 +1615,7 @@ class LogWidget : Widget
 			yoffset = -lineheight * 2;
 			for (int i = messages.Size() - 1; i >= 0; i--)
 			{
-				if (i > con_notifylines) { continue; }
+				if (i > maxlines) { continue; }
 				if (messages[i].player != players[consoleplayer]) { continue; }
 				if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(messages[i].text)).length()) { continue ; }
 
@@ -1629,12 +1637,21 @@ class LogWidget : Widget
 		{
 			for (int i = 0; i < messages.Size(); i++)
 			{
-				if (i < con_notifylines)
+				double posx = pos.x;
+
+				if (i < maxlines)
 				{
 					if (messages[i].player != players[consoleplayer]) { continue; }
-					if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(messages[i].text)).length()) { continue ; }
 
-					messages[i].Print(pos.x, pos.y + yoffset, alpha);
+					String chars = ZScriptTools.StripColorCodes(ZScriptTools.Trim(messages[i].text));
+					if (!chars.length()) { continue ; }
+
+					if (messages[i].printlevel == PRINT_BOLD)
+					{
+						posx -= margin[1] + fnt.StringWidth(chars) / 2;
+					}
+
+					messages[i].Print(posx, pos.y + yoffset, alpha);
 
 					yoffset += messages[i].height;
 				}

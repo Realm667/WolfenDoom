@@ -125,8 +125,40 @@ class MessageBase : Thinker
 		// Log the message to the console, emulating built-in message printing
 		if (player && text.length() && !(flags & MSG_NOLOG))
 		{
+			String logmessage = StringTable.Localize("$" .. text);
+
+			if (logmessage.IndexOf("[[") > -1 && logmessage.IndexOf("]]") > -1)
+			{
+				String line = logmessage;
+				int totalwidth = 0;
+
+				while (line.length())
+				{
+					int buttonstart = line.IndexOf("[[");
+					int buttonend = line.IndexOf("]]", buttonstart);
+
+					if (buttonend > -1 && buttonstart > -1)
+					{
+						String cmd = line.Mid(buttonstart + 2, buttonend - buttonstart - 2);
+
+						bool valid;
+						String keystring;
+						[keystring, valid] = ACSTools.GetKeyPressString(cmd, true);
+
+						logmessage.Replace("[[" .. cmd .. "]]", keystring);
+
+						line = line.mid(buttonend + 2);
+					}
+					else
+					{
+						line = "";
+					}
+				}
+			}
+
+			// Emulating the engine's built-in ugly line...  Why isn't console_bar externalized?
 			player.SetLogText("\cL----------------------------------------");
-			player.SetLogText("$" .. text);
+			player.SetLogText("\cL" .. logmessage);
 			player.SetLogText("\cL----------------------------------------");
 		}
 
@@ -550,6 +582,7 @@ class HintMessage : MessageBase
 	ui bool drawkey;
 	ui double textw;
 	ui double texth;
+	ui int lineheight;
 
 	static int Init(Actor mo, String text, String command, int priority = 0)
 	{
@@ -581,15 +614,22 @@ class HintMessage : MessageBase
 
 		Vector2 scale = (1.0, 1.0);
 
-		int msgwidth = 300;
-		int lineheight = int(SmallFont.GetHeight());
+		int msgwidth = int(max(300, Screen.GetWidth() / 2));
+		if (!lineheight) { lineheight = int(SmallFont.GetHeight()); }
 
 		double posx, posy;
-		double buttonscale = 1.0;
 
 		if (width != msgwidth)
 		{
+			int buttonheight = Button.GetHeight();
+
 			[brokentext, lines] = BrokenString.BreakString(StringTable.Localize(text, false), msgwidth, true, "C");
+
+			// Increase line height if there are inline buttons.
+			if ((brokentext.IndexOf("[[") > -1 && brokentext.IndexOf("]]") > -1))
+			{
+				lineheight = max(buttonheight, lineheight);
+			}
 
 			if (command && command.length())
 			{
@@ -601,7 +641,7 @@ class HintMessage : MessageBase
 
 				if (drawkey)
 				{
-					texth += 16 * buttonscale;
+					texth += buttonheight;
 				}
 			}
 
@@ -625,7 +665,7 @@ class HintMessage : MessageBase
 
 			if (player.mo.FindInventory("CutsceneEnabled"))
 			{
-				posy -= 18 * Screen.GetHeight() / hudscale.y / destsize.y;
+				posy -= 16 * Screen.GetHeight() / hudscale.y / destsize.y;
 				posy -= texth / 2;
 			}
 			else		
@@ -730,12 +770,12 @@ class ObjectiveMessage : MessageBase
 
 		if (tex.IsValid())
 		{
-			screen.DrawTexture(tex, true, posx, posy, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_CenterOffset, true, DTA_Alpha, alpha);
+			DrawToHUD.DrawTexture(tex, (x, y), alpha);
 		}
 
 		if (msgstr.length())
 		{
-			screen.DrawText(SmallFont, Font.CR_GRAY, posx - SmallFont.StringWidth(msgstr) / 2, posy - SmallFont.GetHeight() / 2, msgstr, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_Alpha, alpha);
+			DrawToHUD.DrawText(msgstr, (x, y), SmallFont, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED);
 		}
 
 		if (command.length())
@@ -893,15 +933,19 @@ class CountdownMessage : MessageBase
 		Vector2 destsize = (640, 480);
 		Vector2 pos = (320.0, handler.topoffset * destsize.y + 32.0);
 
+		Vector2 hudscale = StatusBar.GetHUDScale();
+		double x = Screen.GetWidth() / 2;
+		double y = pos.y / destsize.y * Screen.GetHeight() / hudscale.y;
+
 		TextureID bgtex = TexMan.CheckForTexture(bkg);
 		Vector2 size = (0, 0);
 		if (bgtex.IsValid())
 		{
 			size = TexMan.GetScaledSize(bgtex);
-			screen.DrawTexture(bgtex, true, pos.x, pos.y, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_CenterOffset, true, DTA_Alpha, alpha); 
+			DrawToHUD.DrawTexture(bgtex, (x, y), alpha);
 		}
 
-		screen.DrawText(BigFont, Font.CR_GRAY, pos.x - BigFont.StringWidth(text) / 2, pos.y - BigFont.GetHeight() / 2, text, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_Alpha, alpha); 
+		DrawToHUD.DrawText(text, (x, y), BigFont, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED);
 
 		protrusion = handler.topoffset + size.y / destsize.y;
 

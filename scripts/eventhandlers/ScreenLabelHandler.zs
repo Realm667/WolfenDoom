@@ -265,7 +265,7 @@ class ScreenLabelHandler : EventHandler
 						if (dist > 768) { continue; }
 						if (dist > 256) { alpha = 1.0 - (dist - 256) / 512; }
 
-						Font tinyfont = Font.FindFont("THREEFIV");
+						Font tinyfont = Font.GetFont("THREEFIV");
 
 						String text = StringTable.Localize(ScreenLabelItems[i].text);
 						String temp; BrokenString lines;
