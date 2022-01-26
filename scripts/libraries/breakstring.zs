@@ -77,6 +77,7 @@ class BrokenString : Object
 
 		int i = 0;
 		String line = "", word = "";
+		int buttonwidth;
 
 		if (flow) // Flow the text to fill most of the lines that it would take up at the the passed-in maxwidth value
 		{
@@ -124,10 +125,36 @@ class BrokenString : Object
 
 				continue;
 			}
-
-			if (fnt.StringWidth(ZScriptTools.StripColorCodes(line)) + fnt.StringWidth(ZScriptTools.StripColorCodes(word)) > maxwidth || c == 0x0A || c == 0)
+			/* Preliminary implementation of button/key prompt-aware line splitting; has some issues, so commented out
+			else if (c == 0x5B) // [
 			{
-				if ((c == 0x0A || c == 0) && fnt.StringWidth(ZScriptTools.StripColorCodes(line)) + fnt.StringWidth(ZScriptTools.StripColorCodes(word)) < maxwidth)
+				String label = "";
+				[c, i] = input.GetNextCodePoint(i);
+				word.AppendCharacter(c);
+				label.AppendCharacter(c);
+
+				if (c == 0x5B) // [ (double brackets surround inline key binds)
+				{
+					String binding = "";
+					while (c && c != 0x5D) // ]
+					{
+						[c, i] = input.GetNextCodePoint(i);
+						word.AppendCharacter(c);
+						label.AppendCharacter(c);
+						if (c != 0x5D) { binding.AppendCharacter(c); }
+					}
+					[c, i] = input.GetNextCodePoint(i);
+					word.AppendCharacter(c);
+					label.AppendCharacter(c);
+
+					buttonwidth += DrawToHUD.DrawCommandButtons((0, 0), binding, flags:Button.BTN_CALC) - fnt.StringWidth(ZScriptTools.StripColorCodes(label));
+				}
+			}
+			*/
+
+			if (fnt.StringWidth(ZScriptTools.StripColorCodes(line)) + fnt.StringWidth(ZScriptTools.StripColorCodes(word)) + buttonwidth > maxwidth || c == 0x0A || c == 0)
+			{
+				if ((c == 0x0A || c == 0) && fnt.StringWidth(ZScriptTools.StripColorCodes(line)) + fnt.StringWidth(ZScriptTools.StripColorCodes(word)) + buttonwidth < maxwidth)
 				{
 					line = line .. word;
 					wordindex = i;
@@ -149,6 +176,7 @@ class BrokenString : Object
 				output.AppendFormat("%s%c\c%s", line, 0x0A, printcolor);
 
 				line = "";
+				buttonwidth = 0;
 			}
 			else if (ZScriptTools.IsWhiteSpace(c))
 			{

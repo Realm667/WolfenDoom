@@ -96,8 +96,8 @@ class DrawToHUD
 
 		scale *= textscale;
 
-		double textw = fnt.StringWidth(text) * scale.x;
-		double texth = fnt.GetHeight() * scale.y;
+		double textw = fnt.StringWidth(text);
+		double texth = fnt.GetHeight();
 
 		if (text.IndexOf("[[") > -1 && text.IndexOf("]]") > -1)
 		{
@@ -113,7 +113,7 @@ class DrawToHUD
 				{
 					String cmd = line.Mid(buttonstart + 2, buttonend - buttonstart - 2);
 					bool valid = true;
-					int buttonwidth;
+					int buttonwidth = 0;
 					[buttonwidth, valid] = DrawCommandButtons((0, 0), cmd, 0.0, destsize, 1.0, Button.BTN_CALC | (fullscreen ? 0 : Button.BTN_FIXED));
 
 					String keystring = "";
@@ -134,19 +134,35 @@ class DrawToHUD
 				}
 			}
 
-			textw = totalwidth * scale.x;
-			texth = max(20, fnt.GetHeight()) * scale.y;
+			textw = totalwidth;
+			texth = max(20, fnt.GetHeight());
 		}
 
-		if (flags & ZScriptTools.STR_RIGHT) { screenpos.x -= textw; }
-		else if (flags & ZScriptTools.STR_CENTERED) { screenpos.x -= textw / 2; }
+		if (flags & ZScriptTools.STR_RIGHT)
+		{
+			pos.x -= textw;
+			screenpos.x -= textw * scale.x;
+		}
+		else if (flags & ZScriptTools.STR_CENTERED)
+		{
+			pos.x -= textw / 2;
+			screenpos.x -= textw * scale.x / 2;
+		}
 
-		if (flags & ZScriptTools.STR_BOTTOM) { screenpos.y -= texth; }
-		else if (flags & ZScriptTools.STR_MIDDLE) { screenpos.y -= texth / 2; }
+		if (flags & ZScriptTools.STR_BOTTOM)
+		{
+			pos.y -= texth;
+			screenpos.y -= texth * scale.y;
+		}
+		else if (flags & ZScriptTools.STR_MIDDLE)
+		{
+			pos.y -= texth / 2;
+			screenpos.y -= texth * scale.y / 2;
+		}
 
 		if (text.IndexOf("[[") > -1 && text.IndexOf("]]") > -1)
 		{
-			int linex = int(screenpos.x);
+			int lineoffset = 0;
 
 			String line = text;
 			while (line.length())
@@ -157,17 +173,17 @@ class DrawToHUD
 				if (buttonend > -1 && buttonstart > -1)
 				{
 					String segment = line.left(buttonstart);
-					DrawText(segment, (linex, screenpos.y), fnt, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | (fullscreen ? 0 : ZScriptTools.STR_FIXED));
-					linex += SmallFont.StringWidth(segment);
+					screen.DrawText(fnt, shade, int(screenpos.x + lineoffset * scale.x), int(screenpos.y), segment, DTA_KeepRatio, true, DTA_Alpha, alpha, DTA_ScaleX, scale.x, DTA_ScaleY, scale.y);
+					lineoffset += SmallFont.StringWidth(segment);
 
 					String cmd = line.Mid(buttonstart + 2, buttonend - buttonstart - 2);
-					linex += DrawCommandButtons((linex, screenpos.y + SmallFont.GetHeight() / 2), cmd, alpha, destsize, 1.0, Button.BTN_MIDDLE | (fullscreen ? 0 : Button.BTN_FIXED));
+					lineoffset += DrawCommandButtons((pos.x + lineoffset, pos.y + SmallFont.GetHeight() / 2), cmd, alpha, destsize, textscale, Button.BTN_MIDDLE | (fullscreen ? 0 : Button.BTN_FIXED));
 
 					line = line.mid(buttonend + 2);
 				}
 				else
 				{
-					DrawText(line, (linex, screenpos.y), fnt, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | (fullscreen ? 0 : ZScriptTools.STR_FIXED));
+					screen.DrawText(fnt, shade, int(screenpos.x + lineoffset * scale.x), int(screenpos.y), line, DTA_KeepRatio, true, DTA_Alpha, alpha, DTA_ScaleX, scale.x, DTA_ScaleY, scale.y);
 					line = "";
 				}
 			}
@@ -449,7 +465,7 @@ class DrawToHUD
 		if (!keycodes.Size())
 		{
 			keycodes.Push(-1);
-			keys.Push("?");	
+			keys.Push("?");
 			ret = false;
 		}
 		else
@@ -705,7 +721,7 @@ class Button
 
 		Vector2 scale = (1.0, 1.0) * buttonscale;
 
-		int height = Button.GetHeight(fnt, buttonscale, margin);
+		int height = Button.GetHeight(fnt, buttonscale, margin, 16);
 
 		int width = height;
 		if (label.length() > 1) { width = max(height, int(fnt.StringWidth(label) * scale.x + (margin * 2 + 4) * scale.x) + 1); }
@@ -743,12 +759,12 @@ class Button
 		return b;
 	}
 
-	static ui int GetHeight(Font fnt = null, double scale = 1.0, int margin = 4)
+	static ui int GetHeight(Font fnt = null, double scale = 1.0, int margin = 4, int minheight = 16)
 	{
 		if (!fnt) { fnt = Font.GetFont("MiniFont"); }
 		if (!fnt) { fnt = SmallFont; }
 		
-		return max(int(16 * scale), int(fnt.GetHeight() * scale + margin * 2 * scale));
+		return max(int(minheight * scale), int(fnt.GetHeight() * scale + margin * 2 * scale));
 	}
 
 	enum DrawButtons

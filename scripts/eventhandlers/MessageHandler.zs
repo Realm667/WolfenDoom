@@ -579,10 +579,10 @@ class HintMessage : MessageBase
 {
 	ui int msgwidth;
 	String command;
+	ui double texth, textw;
 	ui bool drawkey;
-	ui double textw;
-	ui double texth;
 	ui int lineheight;
+	ui int lastblocks;
 
 	static int Init(Actor mo, String text, String command, int priority = 0)
 	{
@@ -604,23 +604,25 @@ class HintMessage : MessageBase
 
 	override double DrawMessage()
 	{
-		Vector2 destsize = (640, 480);
-		double screenratio = Screen.GetAspectRatio();
-
-		if (destsize.y < destsize.x) { destsize.x = destsize.y * screenratio; }
-		else if (destsize.x < destsize.y) { destsize.y = destsize.x / screenratio; }
-
 		bool fullscreen = !!(flags & MSG_FULLSCREEN && screenblocks > 10);
 
-		Vector2 scale = (1.0, 1.0);
+		Vector2 scale;
+		if (fullscreen) { scale = StatusBar.GetHUDScale(); }
+		else { scale = (1.0, 1.0) * BoAStatusBar.GetUIScale(st_scale); }
 
-		int msgwidth = int(max(300, Screen.GetWidth() / 2));
+		int msgwidth;
+		
+		if (player.mo.FindInventory("CutsceneEnabled")) { msgwidth = int(Screen.GetWidth() / scale.x); }
+		else { msgwidth = int(max(300, Screen.GetWidth() / scale.x / 2)); }
 		if (!lineheight) { lineheight = int(SmallFont.GetHeight()); }
 
-		double posx, posy;
+		Vector2 destsize = (Screen.GetWidth() / scale.x, Screen.GetHeight() / scale.y);
+		Vector2 pos = (destsize.x / 2, 0);
 
-		if (width != msgwidth)
+		if (screenblocks != lastblocks)
 		{
+			lastblocks = screenblocks;
+			
 			int buttonheight = Button.GetHeight();
 
 			[brokentext, lines] = BrokenString.BreakString(StringTable.Localize(text, false), msgwidth, true, "C");
@@ -656,59 +658,44 @@ class HintMessage : MessageBase
 			width = msgwidth;
 		}
 
+		pos.y -= texth;
+
 		if (fullscreen)
 		{
-			Vector2 hudscale = StatusBar.GetHUDScale();
-
-			posx = Screen.GetWidth() / hudscale.x / 2;
-			posy = Screen.GetHeight() / hudscale.y - handler.bottomoffset * Screen.GetHeight() / hudscale.y;
+			pos.y -= destsize.y * handler.bottomoffset + 12;
 
 			if (player.mo.FindInventory("CutsceneEnabled"))
 			{
-				posy -= 16 * Screen.GetHeight() / hudscale.y / destsize.y;
-				posy -= texth / 2;
+				pos.y -= texth / 2 - 8;
 			}
-			else		
+			else
 			{
-				posy -= (8 * Screen.GetHeight() / hudscale.y / destsize.y);
-
 				ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2);
-				if (StealthBase(it.Next())) { posy -= 40.0; }
-
-				posy -= texth;
+				if (StealthBase(it.Next())) { pos.y -= 52; }
 			}
-
-			protrusion = -(1.0 - posy * hudscale.y / Screen.GetHeight());
 		}
 		else
 		{
-			double uiscale = BoAStatusBar.GetUIScale(st_scale);
+			pos.y += destsize.y * StatusBar.GetTopOfStatusBar() / Screen.GetHeight() - 12;
 
-			posx = destsize.x / 2;
-			posy = destsize.y * StatusBar.GetTopOfStatusBar() / Screen.GetHeight() - 8.0 * uiscale - handler.bottomoffset * destsize.y;
-		
 			if (!player.mo.FindInventory("CutsceneEnabled"))
 			{
 				ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2);
-				if (StealthBase(it.Next())) { posy -= 16.0 * uiscale; }
+				if (StealthBase(it.Next())) { pos.y -= 12; }
 			}
-
-			posy -= texth;
-
-			protrusion = -(1.0 - posy / destsize.y);
 		}
 
 		for (int l = 0; l < lines.Count(); l++)
 		{
 			if (drawkey && l == lines.Count() - 1)
 			{
-				DrawToHUD.DrawCommandButtons((posx, posy + SmallFont.GetHeight() * 3 / 2), command, alpha, destsize, 1.0, Button.BTN_CENTERED | Button.BTN_MIDDLE | (fullscreen ? 0 : Button.BTN_FIXED));
+				DrawToHUD.DrawCommandButtons((pos.x, pos.y + SmallFont.GetHeight() * 3 / 2), command, alpha, destsize, 1.0, Button.BTN_CENTERED | Button.BTN_MIDDLE | (fullscreen ? 0 : Button.BTN_FIXED));
 			}
 			else
 			{
-				DrawToHUD.DrawText(lines.StringAt(l), (posx, posy), SmallFont, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED | (fullscreen ? 0 : ZScriptTools.STR_FIXED));
+				DrawToHUD.DrawText(lines.StringAt(l), pos, SmallFont, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED | (fullscreen ? 0 : ZScriptTools.STR_FIXED));
 			}
-			posy += lineheight;
+			pos.y += lineheight;
 		}
 
 		return protrusion;
@@ -718,7 +705,7 @@ class HintMessage : MessageBase
 class ObjectiveMessage : MessageBase
 {
 	String image, snd;
-	double posx, posy;
+	Vector2 pos;
 	Vector2 destsize;
 	int objflags;
 	String command;
@@ -736,8 +723,8 @@ class ObjectiveMessage : MessageBase
 		{
 			msg.image = image;
 			msg.snd = snd;
-			msg.posx = posx;
-			msg.posy = posy;
+			msg.pos.x = posx;
+			msg.pos.y = posy;
 			msg.destsize = destsize;
 			msg.command = command;
 
@@ -765,8 +752,8 @@ class ObjectiveMessage : MessageBase
 		String msgstr = StringTable.Localize(text, false);
 
 		Vector2 hudscale = StatusBar.GetHUDScale();
-		double x = posx / destsize.x * Screen.GetWidth() / hudscale.x;
-		double y = posy / destsize.y * Screen.GetHeight() / hudscale.y;
+		double x = pos.x / destsize.x * Screen.GetWidth() / hudscale.x;
+		double y = pos.y / destsize.y * Screen.GetHeight() / hudscale.y;
 
 		if (tex.IsValid())
 		{
@@ -931,10 +918,10 @@ class CountdownMessage : MessageBase
 	override double DrawMessage()
 	{
 		Vector2 destsize = (640, 480);
-		Vector2 pos = (320.0, handler.topoffset * destsize.y + 32.0);
+		Vector2 pos = (320, handler.topoffset * destsize.y + 32.0);
 
 		Vector2 hudscale = StatusBar.GetHUDScale();
-		double x = Screen.GetWidth() / 2;
+		double x = (Screen.GetWidth() / hudscale.x) / 2;
 		double y = pos.y / destsize.y * Screen.GetHeight() / hudscale.y;
 
 		TextureID bgtex = TexMan.CheckForTexture(bkg);
@@ -957,7 +944,6 @@ class CountdownMessage : MessageBase
 class AchievementMessage : MessageBase
 {
 	String image, snd, bkg;
-	double posx, posy;
 	Vector2 destsize;
 	Color clr;
 	String fontname;
