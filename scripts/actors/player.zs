@@ -485,7 +485,10 @@ class BoAPlayer : PlayerPawn
 			{
 				player.health = health = GetMaxHealth(true);
 			}
+		}
 
+		if (giveall || name ~== "health" || name ~== "stamina")
+		{
 			let def = GetDefaultByType("Stamina");
 			GiveInventory("Stamina", def.MaxAmount);
 		}
@@ -682,15 +685,18 @@ class BoAPlayer : PlayerPawn
 		
 		if (name ~== "astrostein")
 		{
-			GiveInventory("AstrosteinMelee", 1);
-			GiveInventory("AstroLuger", 1);
-			GiveInventory("AstroClipAmmo", GetDefaultByType("AstroClipAmmo").MaxAmount);
-			GiveInventory("AstroShotgun", 1);
-			GiveInventory("AstroShotgunShell", GetDefaultByType("AstroShotgunShell").MaxAmount);
-			GiveInventory("AstroChaingun", 1);
-			GiveInventory("AstroRocketLauncher", 1);
-			GiveInventory("AstroRocketAmmo", GetDefaultByType("AstroRocketAmmo").MaxAmount);
-			GiveInventory("AstroGrenadePickup", GetDefaultByType("GrenadePickup").MaxAmount);
+			GiveInventory("AstrosteinMelee", 1, true);
+			GiveInventory("AstroLuger", 1, true);
+			GiveInventory("AstroClipAmmo", GetDefaultByType("AstroClipAmmo").MaxAmount, true);
+			GiveInventory("AstroShotgun", 1, true);
+			GiveInventory("AstroShotgunShell", GetDefaultByType("AstroShotgunShell").MaxAmount, true);
+			GiveInventory("AstroChaingun", 1, true);
+			GiveInventory("AstroRocketLauncher", 1, true);
+			GiveInventory("AstroRocketAmmo", GetDefaultByType("AstroRocketAmmo").MaxAmount, true);
+			GiveInventory("AstroGrenadePickup", GetDefaultByType("GrenadePickup").MaxAmount, true);
+			GiveInventory("AstroRedKey", 1, true);
+			GiveInventory("AstroYellowKey", 1, true);
+			GiveInventory("AstroBlueKey", 1, true);
 
 			return;
 		}

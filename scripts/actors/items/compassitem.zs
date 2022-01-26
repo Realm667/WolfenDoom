@@ -63,16 +63,17 @@ class CompassItem : PuzzleItem
 
 	override bool TryPickup(in out Actor toucher)
 	{
+		let current = toucher.FindInventory(GetClass()); // Check if it's already in player inventory...
+
 		// Handling so that items properly check the max amount before giving items to the player
 		// and taking money or items - but always pick up specialclue items or script-running items.
 		if (specialclue || special) { bAlwaysPickup = true; }
-		else if (maxamount > 0) // If there is a max amount set...
+		else if (current)
 		{
-			let current = toucher.FindInventory(GetClass()); // and it's already in player inventory...
-			if (current && current.Amount + Amount > maxamount) // don't pick it up if you already have max amount
+			// Don't force pickup in excess of MaxAmount
+			if (maxamount <= 1 || (maxamount > 0 && current.Amount + Amount > maxamount))
 			{
-				bAlwaysPickup = false;	// Don't force pickup in excess of MaxAmount if the item was spawned by another actor after map load
-										// This flag is checked in the internal Inventory pickup logic, regardless of the return value here.
+				bAlwaysPickup = false; // This flag is checked in the internal Inventory pickup logic, regardless of the return value here.
 				return false;
 			}
 		}
@@ -102,13 +103,10 @@ class CompassItem : PuzzleItem
 			pickup = Inventory.TryPickup(p);
 			String msg = "\034+" .. toucher.player.GetUserName() .. ":\034L " .. StringTable.Localize(PickupMessage());
 			PrintPickupMessage(p.CheckLocalView(), msg);
-			S_StartSound(PickupSound, CHAN_ITEM, CHANF_UI | CHANF_NOSTOP, 0.5);
 		}
 		else
 		{
 			pickup = Inventory.TryPickup(toucher);
-			PrintPickupMessage(toucher.CheckLocalView(), PickupMessage());
-			if (!bAutoActivate) { S_StartSound(PickupSound, CHAN_ITEM, CHANF_UI | CHANF_NOSTOP, 1.0); }
 		}
 
 		return pickup;
