@@ -24,6 +24,7 @@ Script "Activate" (int lineid, int repairtime)
 		if (step < 80) { step = 80; } // Clamp between 80 and 90
 		else if (step > 90) { step = 90; } 
 
+		SetUserVariable(0, "crosshairstatus", repairstate[lineid] * 1.0 / (repairtime * 35));
 		SetUserVariable(0, "crosshair", step);  // Show progress by changing the crosshair based on hold time
 		repairstate[lineid] += increment; // Increment the repair amount
 	}
@@ -36,6 +37,7 @@ Script "Activate" (int lineid, int repairtime)
 
 		Delay(35); // Wait a second before clearing the crosshair (so you have a chance to see the full meter)
 
+		SetUserVariable(0, "crosshairstatus", 0x7FFFFFFF);
 		SetUserVariable(0, "crosshair", 0); // Clear the crosshair
 		SetUserVariable(0, "crosshairstring", "");
 

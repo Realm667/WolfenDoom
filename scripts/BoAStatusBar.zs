@@ -878,6 +878,7 @@ class BoAStatusBar : BaseStatusBar
 		int crosshair = 0;
 		String crosshairstring;
 		Actor crosshairtarget;
+		int crosshairstatus;
 		color clr = 0x000000;
 		TextureID CrosshairImage;
 		double chscale = max(0.35, crosshairscale); // Scale with crosshair, down to a certain point
@@ -892,6 +893,7 @@ class BoAStatusBar : BaseStatusBar
 			crosshair = BoAPlayer(CPlayer.mo).crosshair;
 			crosshairstring = BoAPlayer(CPlayer.mo).crosshairstring;
 			crosshairtarget = BoAPlayer(CPlayer.mo).crosshairtarget;
+			crosshairstatus = BoAPlayer(CPlayer.mo).crosshairstatus;
 		}
 
 		// Don't continue if there's no crosshair, we're in titlemap, or the player is dead
@@ -1015,9 +1017,24 @@ class BoAStatusBar : BaseStatusBar
 			// Handle the scaling size multiplier here
 			dimensions *= size;
 
-			// Draw centered on screen, with offsets forced to center of the icon
-			if (clr > 0) { screen.DrawTexture (CrosshairImage, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true); }
-			else { screen.DrawTexture (CrosshairImage, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_CenterOffset, true); }
+			if (crosshair >= 80 && crosshair <= 90)
+			{
+				int y = int(screen.GetHeight() / 2 + dimensions.y / 5);
+
+				int angle;
+				if (crosshairstatus == 0x7FFFFFFF) { angle = 180 - (crosshair - 80) * 18; }
+				else { angle = 180 - crosshairstatus * 180 / 65536; }
+
+				TextureID fill = TexMan.CheckForTexture("COMPFILL");
+				if (fill) { screen.DrawTexture (fill, false, screen.GetWidth() / 2, y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, clr != 0x0, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true, DTA_Rotate, angle, DTA_ClipBottom, y); }
+
+				TextureID border = TexMan.CheckForTexture("COMPBORD");
+				if (border) { screen.DrawTexture (border, false, screen.GetWidth() / 2, y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, clr != 0x0, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true); }
+			}
+			else
+			{
+				screen.DrawTexture (CrosshairImage, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, clr != 0x0, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true);
+			}
 		}
 
 		if (crosshairtarget && crosshairtarget != CPlayer.mo && CPlayer.ReadyWeapon && CPlayer.ReadyWeapon != Weapon(CPlayer.mo.FindInventory("NullWeapon")))

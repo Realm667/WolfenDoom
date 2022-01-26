@@ -73,7 +73,7 @@ class BoAPlayer : PlayerPawn
 	SpriteID baseSprite;
 	Weapon LastWeapon;
 	Line UseTarget;
-	int crosshair;
+	int crosshair, crosshairstatus;
 	String crosshairstring;
 	Actor climbing;
 	int interactiontimeout;
