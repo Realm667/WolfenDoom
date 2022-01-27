@@ -23,7 +23,7 @@
 class CompassItem : PuzzleItem
 {
 	String iconName;
-	int specialclue;
+	int specialclue, savetime;
 	class<Inventory> alternate0, alternate1;
 
 	Property SpecialClue:specialclue;
@@ -86,7 +86,7 @@ class CompassItem : PuzzleItem
 			String texName = TexMan.GetName(tex);
 
 			// If it belongs to this chapter and gets added, autosave on pickup so we don't have to deal with clearing the entries if we die.
-			if (MapStatsHandler.AddSpecialPickup(texName, specialclue)) { level.MakeAutoSave(); }
+			if (MapStatsHandler.AddSpecialPickup(texName, specialclue)) { savetime = level.maptime + 1; }
 		}
 
 		return pickup;
@@ -117,6 +117,7 @@ class CompassItem : PuzzleItem
 		Super.Tick();
 
 		if (owner) { RemoveAlternates(); }
+		if (savetime > 0 && savetime == level.maptime) { level.MakeAutoSave(); }
 	}
 
 	void RemoveAlternates()
