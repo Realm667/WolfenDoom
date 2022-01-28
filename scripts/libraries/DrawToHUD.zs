@@ -464,9 +464,30 @@ class DrawToHUD
 
 		if (!keycodes.Size())
 		{
-			keycodes.Push(-1);
-			keys.Push("?");
-			ret = false;
+			if (command.left(4) ~== "key:")
+			{
+				command = command.mid(4);
+				
+				// Special name to print left and right arrow keys
+				if (command ~== "LeftRightArrows")
+				{
+					keycodes.Push(0);
+					keys.Push("LeftArrow");
+					keycodes.Push(0);
+					keys.Push("RightArrow");
+				}
+				else
+				{
+					keycodes.Push(0);
+					keys.Push(command);
+				}
+			}
+			else
+			{
+				keycodes.Push(-1);
+				keys.Push("?");
+				ret = false;
+			}
 		}
 		else
 		{
@@ -678,7 +699,7 @@ class DrawToHUD
 		{
 			Button b = buttons[i];
 
-			Button.Draw(pos, b, alpha, destsize, flags);
+			b.Draw(pos, alpha, destsize, flags);
 
 			pos.x += b.width + int(6 * b.scale.x);
 
@@ -783,35 +804,33 @@ class Button
 		BTN_CALC = 16, // For command button lists; calculate size, but don't draw
 	};
 
-	static ui void Draw(Vector2 pos, Button b, double alpha = 1.0, Vector2 destsize = (-1, -1), int flags = BTN_DEFAULT)
+	ui void Draw(Vector2 pos, double alpha = 1.0, Vector2 destsize = (-1, -1), int flags = BTN_DEFAULT)
 	{
-		if (!b) { return; }
-
 		if (destsize != (-1, -1) && (flags & BTN_MENU))
 		{
 			Vector2 screenscale = (CleanXfac_1, CleanYfac_1);
 
-			if (flags & BTN_CENTERED) { pos.x -= b.width * screenscale.x / 2; }
-			if (flags & BTN_MIDDLE) { pos.y -= b.height * screenscale.y / 2; }
+			if (flags & BTN_CENTERED) { pos.x -= width * screenscale.x / 2; }
+			if (flags & BTN_MIDDLE) { pos.y -= height * screenscale.y / 2; }
 
-			b.width = int(b.width * screenscale.x);
-			b.height = int(b.height * screenscale.y);
-			b.scale.x *= screenscale.x;
-			b.scale.y *= screenscale.y;
-			b.labeloffset = int(b.labeloffset * screenscale.x);
-			b.iconoffset = int(b.iconoffset * screenscale.x);
+			width = int(width * screenscale.x);
+			height = int(height * screenscale.y);
+			scale.x *= screenscale.x;
+			scale.y *= screenscale.y;
+			labeloffset = int(labeloffset * screenscale.x);
+			iconoffset = int(iconoffset * screenscale.x);
 		}
 		else
 		{
-			if (flags & BTN_CENTERED) { pos.x -= b.width / 2; }
-			if (flags & BTN_MIDDLE) { pos.y -= b.height / 2; }
+			if (flags & BTN_CENTERED) { pos.x -= width / 2; }
+			if (flags & BTN_MIDDLE) { pos.y -= height / 2; }
 		}
 
-		b.bkgalpha *= alpha;
-		b.bkgfillalpha *= b.bkgalpha;
+		bkgalpha *= alpha;
+		bkgfillalpha *= bkgalpha;
 
-		if (b.bkg.length()) { DrawToHUD.DrawFrame(b.bkg, int(pos.x), int(pos.y), b.width, b.height, b.fillcolor, b.bkgalpha, b.bkgfillalpha, destsize, (flags & BTN_FIXED ? DrawToHUD.TEX_FIXED : 0) | (flags & BTN_MENU ? DrawToHUD.TEX_MENU : 0)); }
-		if (b.icon && b.icon.IsValid()) { DrawToHud.DrawTexture(b.icon, (pos.x + b.iconoffset, pos.y + b.height / 2), alpha, 0.5 * b.scale.x, -1, (-1, -1), DrawToHUD.TEX_CENTERED | (flags & BTN_FIXED ? DrawToHUD.TEX_FIXED : 0) | (flags & BTN_MENU ? DrawToHUD.TEX_MENU : 0), destsize); }
-		DrawToHUD.DrawText(b.label, (pos.x + b.labeloffset, pos.y + b.height / 2), b.fnt, alpha, b.scale.x, destsize, b.fntcolor, ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED | (flags & BTN_FIXED ? ZScriptTools.STR_FIXED : 0) | (flags & BTN_MENU ? ZScriptTools.STR_MENU : 0));
+		if (bkg.length()) { DrawToHUD.DrawFrame(bkg, int(pos.x), int(pos.y), width, height, fillcolor, bkgalpha, bkgfillalpha, destsize, (flags & BTN_FIXED ? DrawToHUD.TEX_FIXED : 0) | (flags & BTN_MENU ? DrawToHUD.TEX_MENU : 0)); }
+		if (icon && icon.IsValid()) { DrawToHud.DrawTexture(icon, (pos.x + iconoffset, pos.y + height / 2), alpha, 0.5 * scale.x, -1, (-1, -1), DrawToHUD.TEX_CENTERED | (flags & BTN_FIXED ? DrawToHUD.TEX_FIXED : 0) | (flags & BTN_MENU ? DrawToHUD.TEX_MENU : 0), destsize); }
+		DrawToHUD.DrawText(label, (pos.x + labeloffset, pos.y + height / 2), fnt, alpha, scale.x, destsize, fntcolor, ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED | (flags & BTN_FIXED ? ZScriptTools.STR_FIXED : 0) | (flags & BTN_MENU ? ZScriptTools.STR_MENU : 0));
 	}
 }

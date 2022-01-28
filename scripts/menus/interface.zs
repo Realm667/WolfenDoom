@@ -61,7 +61,7 @@ class BoAMenu : GenericMenu
 class CombinationSafe : BoAMenu
 {
 	TextureID spinner, spinnerfront, spinnerback, background, turn;
-	Vector2 location, size, bgsize, screendimensions;
+	Vector2 location, size, bgsize, hintpos;
 	double scale, bgscale;
 	int dir, olddir, set, count;
 	double angle, destangle;
@@ -73,7 +73,7 @@ class CombinationSafe : BoAMenu
 	int initial;
 	int ticcount;
 	BrokenString hintlines;
-	double hintx, hinty, hintlineheight;
+	double hintlineheight;
 	int freespin;
 
 	override void Init(Menu parent)
@@ -87,7 +87,7 @@ class CombinationSafe : BoAMenu
 		turn = TexMan.CheckForTexture("DIAL_DIR", TexMan.Type_Any);
 
 		location = (427, 240);
-		[location, screendimensions] = Screen.VirtualToRealCoords(location, (screen.GetWidth(), screen.GetHeight()), (640, 480));
+		location = Screen.VirtualToRealCoords(location, (screen.GetWidth(), screen.GetHeight()), (640, 480));
 
 		size = TexMan.GetScaledSize(spinner);
 		bgsize = TexMan.GetScaledSize(background);
@@ -134,9 +134,16 @@ class CombinationSafe : BoAMenu
 		String temp;
 		[temp, hintlines] = BrokenString.BreakString(hintmessage, 400, fnt:SmallFont);
 
-		hintx = 320;
 		hintlineheight = SmallFont.GetHeight();
-		hinty = 470 - hintlineheight * (hintlines.Count() - 0.5);
+
+		// Increase line height if there are inline buttons.
+		if ((temp.IndexOf("[[") > -1 && temp.IndexOf("]]") > -1))
+		{
+			hintlineheight = max(Button.GetHeight(), hintlineheight);
+		}
+
+		hintpos = (320, 480 - hintlineheight * (hintlines.Count() + 0.5));
+		hintpos = Screen.VirtualToRealCoords(hintpos, (screen.GetWidth(), screen.GetHeight()), (640, 480));
 	}
 
 	override void Drawer()
@@ -189,7 +196,7 @@ class CombinationSafe : BoAMenu
 
 					for (int i = 0; i < hintlines.Count(); i++)
 					{
-						screen.DrawText(SmallFont, Font.CR_GRAY, hintx - hintlines.StringWidth(i) / 2, hinty + hintlineheight * i, hintlines.StringAt(i), DTA_VirtualWidth, 640, DTA_VirtualHeight, 480, DTA_Alpha, alpha);
+						DrawToHUD.DrawText(hintlines.StringAt(i), (hintpos.x, hintpos.y + hintlineheight * i), SmallFont, alpha, 1.0, (Screen.GetWidth(), Screen.GetHeight()), Font.CR_GRAY, ZScriptTools.STR_CENTERED);
 					}
 				}
 				
@@ -418,14 +425,14 @@ class CombinationSafe : BoAMenu
 class ViewItem : BoAMenu
 {
 	TextureID background;
-	Vector2 location, size, bgsize, screendimensions;
+	Vector2 location, size, bgsize, hintpos;
 	double scale, fontscale, linespacing, alpha, msgalpha;
 
 	bool initial;
 	int ticcount, closetime, maxy, maxlines, pagewidth, page, maxpages;
 
 	BrokenString hintlines;
-	double hintx, hinty, hintlineheight;
+	double hintlineheight;
 
 	BrokenString textlines;
 	double textx, texty, textlineheight;
@@ -580,14 +587,20 @@ class ViewItem : BoAMenu
 		String temp;
 		[temp, hintlines] = BrokenString.BreakString(hintmessage, min(pagewidth + 50, 320), fnt:SmallFont);
 
-		hintx = 320;
 		hintlineheight = SmallFont.GetHeight();
 
-		double offset = hintlineheight * (hintlines.Count() - 0.5) - 10;
+		// Increase line height if there are inline buttons.
+		if ((temp.IndexOf("[[") > -1 && temp.IndexOf("]]") > -1))
+		{
+			hintlineheight = max(Button.GetHeight(), hintlineheight);
+		}
 
-		hinty = 460 - offset;
+		hintpos = (320, 480 - hintlineheight * (hintlines.Count() + 0.5));
+		hintpos = Screen.VirtualToRealCoords(hintpos, (screen.GetWidth(), screen.GetHeight()), (640, 480));
+
+		double offset = hintlineheight * hintlines.Count();
 		location.y -= offset;
-		maxy = int(maxy - (hintlineheight * (hintlines.Count() - 1.0) - 10));
+		maxy = int(maxy - offset);
 
 		texty -= offset;
 
@@ -633,7 +646,7 @@ class ViewItem : BoAMenu
 		{
 			for (int i = 0; i < hintlines.Count(); i++)
 			{
-				screen.DrawText(SmallFont, Font.CR_GRAY, hintx - hintlines.StringWidth(i) / 2, hinty + hintlineheight * i, hintlines.StringAt(i), DTA_VirtualWidth, 640, DTA_VirtualHeight, 480, DTA_Alpha, msgalpha);
+				DrawToHUD.DrawText(hintlines.StringAt(i), (hintpos.x, hintpos.y + hintlineheight * i), SmallFont, alpha, 1.0, (Screen.GetWidth(), Screen.GetHeight()), Font.CR_GRAY, ZScriptTools.STR_CENTERED);
 			}
 		}
 	}
