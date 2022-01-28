@@ -13,6 +13,8 @@ script "CinematicStart" (void)
 // Also calls the "CUTSCENE_STOP" script to allow the local level to run actions on cutscene completion
 script "CinematicEnd" (void)
 {
+	ACS_NamedTerminate("CinematicSkipCheck", 0);		
+
 	FadeToBlack(140, 70, 70);
 
 	Delay(2 * 35);
@@ -50,7 +52,6 @@ script "CinematicSkipCheck" (void)
 		If (buttons & BT_USE)
 		{
 			ACS_NamedExecute("CinematicEnd", 0);
-			ACS_NamedTerminate("CinematicSkipCheck", 0);
 		}
 		Delay(1);
 	}
