@@ -482,6 +482,8 @@ class DrawToHUD
 		{
 			// Set the default frame/button background to look like a pixel-art physical key
 			String bkg = "BU_";
+			double bkgalpha = 1.0;
+			double bkgfillalpha = 1.0;
 			int fntcolor = Font.FindFontColor("TrueBlack");
 			color fillcolor = 0x989898;
 			int margin = int(4 * buttonscale);
@@ -603,9 +605,9 @@ class DrawToHUD
 			if (keycodes[k] >= 0x100)
 			{
 				bkg = "BU_D_";
-				fntcolor = Font.CR_WHITE;
+				fntcolor = Font.CR_GRAY;
 				fillcolor = 0x78809A;
-				margin = 0;
+				margin = int(2 * buttonscale);
 			}
 			else if (keycodes[k] == -1) // and for errors
 			{
@@ -641,7 +643,7 @@ class DrawToHUD
 				else if (keys[k] == "UpArrow") { label = "▴"; }
 				else if (keys[k] == "DownArrow") { label = "▾"; }
 				
-				b = Button.Create(label, KeyLabelFont, icon, buttonscale, bkg, fntcolor, fillcolor, margin);
+				b = Button.Create(label, KeyLabelFont, icon, buttonscale, bkg, fntcolor, fillcolor, margin, bkgalpha, bkgfillalpha);
 
 				// Make the space bar wide so that it closer matches actual space bar width
 				if (b && keys[k] == "Space")
@@ -712,10 +714,12 @@ class Button
 	int labeloffset;
 	Vector2 scale;
 	String bkg;
+	double bkgalpha;
+	double bkgfillalpha;
 	int fntcolor;
 	color fillcolor;
 
-	static ui Button Create(String label, Font fnt, String icon = "", double buttonscale = 1.0, String bkg = "BU_", int fntcolor = Font.CR_UNTRANSLATED, color fillcolor = 0x989898, int margin = 4)
+	static ui Button Create(String label, Font fnt, String icon = "", double buttonscale = 1.0, String bkg = "BU_", int fntcolor = Font.CR_UNTRANSLATED, color fillcolor = 0x989898, int margin = 4, double bkgalpha = 1.0, double bkgfillalpha = 1.0)
 	{
 		if (!label.length() && !icon.length()) { return null; }
 
@@ -752,6 +756,8 @@ class Button
 			b.iconoffset = iconoffset;
 			b.scale = scale;
 			b.bkg = bkg;
+			b.bkgalpha = bkgalpha;
+			b.bkgfillalpha = bkgfillalpha;
 			b.fntcolor = fntcolor;
 			b.fillcolor = fillcolor;
 		}
@@ -801,7 +807,10 @@ class Button
 			if (flags & BTN_MIDDLE) { pos.y -= b.height / 2; }
 		}
 
-		if (b.bkg.length()) { DrawToHUD.DrawFrame(b.bkg, int(pos.x), int(pos.y), b.width, b.height, b.fillcolor, alpha, alpha, destsize, (flags & BTN_FIXED ? DrawToHUD.TEX_FIXED : 0) | (flags & BTN_MENU ? DrawToHUD.TEX_MENU : 0)); }
+		b.bkgalpha *= alpha;
+		b.bkgfillalpha *= b.bkgalpha;
+
+		if (b.bkg.length()) { DrawToHUD.DrawFrame(b.bkg, int(pos.x), int(pos.y), b.width, b.height, b.fillcolor, b.bkgalpha, b.bkgfillalpha, destsize, (flags & BTN_FIXED ? DrawToHUD.TEX_FIXED : 0) | (flags & BTN_MENU ? DrawToHUD.TEX_MENU : 0)); }
 		if (b.icon && b.icon.IsValid()) { DrawToHud.DrawTexture(b.icon, (pos.x + b.iconoffset, pos.y + b.height / 2), alpha, 0.5 * b.scale.x, -1, (-1, -1), DrawToHUD.TEX_CENTERED | (flags & BTN_FIXED ? DrawToHUD.TEX_FIXED : 0) | (flags & BTN_MENU ? DrawToHUD.TEX_MENU : 0), destsize); }
 		DrawToHUD.DrawText(b.label, (pos.x + b.labeloffset, pos.y + b.height / 2), b.fnt, alpha, b.scale.x, destsize, b.fntcolor, ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED | (flags & BTN_FIXED ? ZScriptTools.STR_FIXED : 0) | (flags & BTN_MENU ? ZScriptTools.STR_MENU : 0));
 	}

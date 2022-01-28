@@ -295,7 +295,7 @@ class BoAStatusBar : BaseStatusBar
 				if (savetimer > (savetimertime - 15)) { savealpha = (savetimertime - savetimer) / 15.0; }
 				else if (savetimer <= 15) { savealpha = savetimer / 15.0; }
 
-				int width = 400 * Screen.GetAspectRatio();
+				int width = int(400 * Screen.GetAspectRatio());
 				screen.DrawTexture(save, true, width - 20, 20, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidth, width, DTA_VirtualHeight, 400, DTA_Alpha, savealpha);
 			}
 		}
