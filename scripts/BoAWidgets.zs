@@ -657,6 +657,11 @@ class KeyWidget : Widget
 
 		return size;
 	}
+
+	override bool IsVisible()
+	{
+		return !player.mo.FindInventory("HQ_Checker") && Super.IsVisible();
+	}
 }
 
 class CurrentAmmoWidget : Widget
@@ -713,6 +718,11 @@ class CurrentAmmoWidget : Widget
 
 		return size;
 	}
+
+	override bool IsVisible()
+	{
+		return !player.mo.FindInventory("HQ_Checker") && Super.IsVisible();
+	}
 }
 
 class WeaponWidget : Widget
@@ -731,6 +741,11 @@ class WeaponWidget : Widget
 		StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, StatusBar.GetWeaponTag(), (pos.x + 46, pos.y), StatusBar.DI_TEXT_ALIGN_CENTER, alpha:alpha);
 
 		return size;
+	}
+
+	override bool IsVisible()
+	{
+		return !player.mo.FindInventory("HQ_Checker") && Super.IsVisible();
 	}
 }
 
@@ -999,7 +1014,7 @@ class StealthWidget : Widget
 
 	override bool IsVisible()
 	{
-		if (Super.IsVisible()) { return !!BoAStatusBar(StatusBar).LivingSneakableActors(); }
+		if (!player.mo.FindInventory("HQ_Checker") && Super.IsVisible()) { return !!BoAStatusBar(StatusBar).LivingSneakableActors(); }
 		return false;
 	}
 
@@ -1163,7 +1178,7 @@ class AmmoWidget : Widget
 		show = CVar.FindCVar("boa_hudammostats");
 		if (show && !show.GetBool()) { return false; }
 
-		return Super.IsVisible();
+		return (!player.mo.FindInventory("HQ_Checker") && Super.IsVisible());
 	}
 
 	override Vector2 Draw()
