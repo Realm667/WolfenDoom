@@ -221,7 +221,7 @@ class IntroScroll : TextScroll
 // Wait for completion from within ACS with: 'While (!ScriptCall("Finale", "Ready")) { Delay(35); }' (checks if the currently open finale is closing)
 class Finale : BoAMenu
 {
-	TextureID background, strips, label_l, label_r, frame;
+	TextureID background, strips, epiloguestrips, label_l, label_r, frame;
 	Font fnt, titlefnt;
 	String text;
 
@@ -235,7 +235,7 @@ class Finale : BoAMenu
 
 	LevelData totals;
 
-	bool finished, nostats, swapsides;
+	bool finished, nostats, swapsides, epilogue;
 
 	double textXOffsetScale;
 
@@ -264,15 +264,11 @@ class Finale : BoAMenu
 
 		background = TexMan.CheckForTexture("graphics/finale/finale_background.png", TexMan.Type_Any);
 		strips = TexMan.CheckForTexture("graphics/finale/finale_strips.png", TexMan.Type_Any);
+		epiloguestrips = TexMan.CheckForTexture("graphics/finale/finale_epilogue.png", TexMan.Type_Any);
 		label_l = TexMan.CheckForTexture("graphics/finale/finale_label_l.png", TexMan.Type_Any);
 		label_r = TexMan.CheckForTexture("graphics/finale/finale_label_r.png", TexMan.Type_Any);
 		frame = TexMan.CheckForTexture("graphics/finale/finale_frame.png", TexMan.Type_Any);
 
-		/*
-		double frameToScreen = Screen.GetWidth() / 960;
-		double textToScreen = Screen.GetWidth() / double(w);
-		textXOffsetScale = frameToScreen / textToScreen;
-		*/
 		textXOffsetScale = double(w) / Screen.GetWidth() * textscale;
 
 		InitText(text);
@@ -323,7 +319,9 @@ class Finale : BoAMenu
 		if (drawtic > 140)
 		{
 			double stripalpha = min(1.0, (drawtic - 140) / 140.0) * alpha;
-			if (strips) { screen.DrawTexture(strips, false, 0, 0, DTA_DestWidth, width, DTA_DestHeight, height, DTA_Alpha, stripalpha); }
+
+			if (epilogue && epiloguestrips) { strips = epiloguestrips; }
+			if (strips) { screen.DrawTexture(strips, false, Screen.GetWidth() / 2, Screen.GetHeight() / 2, DTA_DestWidth, width, DTA_DestHeight, height, DTA_Alpha, stripalpha, DTA_CenterOffset, true); }
 
 			int lw, lh;
 			int sw = 800;
@@ -561,7 +559,11 @@ class Finale : BoAMenu
 		}
 
 		if (str.length()) { current.InitText(str); }
-		if (stats > -1) { current.nostats = !stats; }
+		if (stats > -1)
+		{
+			current.nostats = !stats;
+			current.epilogue = stats; // Assume that all screens with stats should be titled epilogues
+		}
 		if (swap > -1) { current.swapsides = swap; }
 	}
 }
