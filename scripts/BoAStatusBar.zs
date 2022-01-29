@@ -207,8 +207,16 @@ class BoAStatusBar : BaseStatusBar
 			}
 		}
 
-		// This gets rid of needing to double-press useinv to immediately use a newly selected inventory item.
-		CPlayer.inventorytics = 0;
+		if (CheckInventory("HQ_Checker"))
+		{
+			// Don't allow inventory use in the INTERMAP
+			CPlayer.inventorytics = 1;
+		}
+		else
+		{
+			// This gets rid of needing to double-press useinv to immediately use a newly selected inventory item.
+			CPlayer.inventorytics = 0;
+		}
 
 		Widget.TickWidgets();
 	}
