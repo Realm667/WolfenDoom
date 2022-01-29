@@ -632,8 +632,7 @@ class HintMessage : MessageBase
 			{
 				lineheight = max(buttonheight, lineheight);
 			}
-
-			if (command && command.length())
+			else if (command && command.length()) // Don't draw key below if there are in-line prompts
 			{
 				String keystring;
 				[keystring, drawkey] = ACSTools.GetKeyPressString(command, true, "Dark Gray", "Gray");
