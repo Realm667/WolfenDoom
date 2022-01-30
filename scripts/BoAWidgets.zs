@@ -545,7 +545,7 @@ class CountWidget : Widget
 		}
 
 		//Time
-		String time = TimeFormatted(level.totaltime);
+		String time = CountWidget.TimeFormatted(level.totaltime);
 
 		if (BoAStatusBar(StatusBar).hour || BoAStatusBar(StatusBar).minute || BoAStatusBar(StatusBar).second)
 		{
@@ -558,9 +558,9 @@ class CountWidget : Widget
 
 			int segments;
 			String partime;
-			[partime, segments] = TimeFormatted(level.partime, true, 3); // Format both times to the same segment width
+			[partime, segments] = CountWidget.TimeFormatted(level.partime, true, 3); // Format both times to the same segment width
 
-			StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, TimeFormatted(level.maptime, false, segments), (pos.x + size.x / 2 - 2, pos.y + timey + 1), StatusBar.DI_TEXT_ALIGN_RIGHT, alpha:alpha);
+			StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, CountWidget.TimeFormatted(level.maptime, false, segments), (pos.x + size.x / 2 - 2, pos.y + timey + 1), StatusBar.DI_TEXT_ALIGN_RIGHT, alpha:alpha);
 			StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, String.Format("\c[Dark Gray]%s", "/"), (pos.x + size.x / 2, pos.y + timey + 1), StatusBar.DI_TEXT_ALIGN_CENTER, alpha:alpha);
 			StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, partime, (pos.x + size.x / 2 + 2, pos.y + timey + 1), 0, alpha:alpha);
 
@@ -575,7 +575,7 @@ class CountWidget : Widget
 		return size;
 	}
 
-	String, int TimeFormatted(int input, bool secs = false, int minsegments = -1)
+	static String, int TimeFormatted(int input, bool secs = false, int minsegments = -1)
 	{
 		int segments;
 		int sec = input;

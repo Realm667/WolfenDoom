@@ -1412,4 +1412,155 @@ class BoAStatusBar : BaseStatusBar
 
 		return true;
 	}
+
+	override bool DrawPaused(int player)
+	{
+		/*
+		// ZScript version of the built-in pause screen
+		TextureID pause = TexMan.CheckForTexture("PAUSED"); // gameinfo.PauseSign is not exposed to ZScript
+		Vector2 size = TexMan.GetScaledSize(pause);
+		Vector2 offsets = TexMan.GetScaledOffset(pause);
+
+		double x = (Screen.GetWidth() - size.x * CleanXfac) / 2 + offsets.x * CleanXfac;
+
+		Screen.DrawTexture(pause, true, x, 4, DTA_CleanNoMove, true);
+
+		if (paused && multiplayer)
+		{
+			String pstring = StringTable.Localize("$TXT_BY");
+			pstring.Substitute("%s", players[paused - 1].GetUserName());
+			Screen.DrawText(SmallFont, Font.CR_RED, ((Screen.GetWidth() - SmallFont.StringWidth(pstring)) * CleanXfac) / 2, Screen.GetHeight() * CleanYfac + 4, pstring, DTA_CleanNoMove, true);
+		}
+		*/
+
+		Font fnt = BigFont;
+		Font fnt2 = SmallFont;
+		Font fnt3 = Font.GetFont("THREEFIV");
+
+		String text = StringTable.Localize("$PAUSED");
+		String monsters = StringTable.Localize("AM_MONSTERS", false);
+		String secrets = StringTable.Localize("AM_SECRETS", false);
+		String items = StringTable.Localize("AM_ITEMS", false);
+
+		int clr = Font.CR_GRAY;
+		int titleclr = Font.FindFontColor("LightGray");
+
+		Vector2 hudscale = StatusBar.GetHudScale();
+		double scale = 2.0;
+		double textscale = 0.5 * scale;
+		double texscale = 0.125 * scale;
+
+		Vector2 texsize = (0, 0);
+		TextureID pause = TexMan.CheckForTexture("PAUSEBG");
+		if (pause) { texsize = TexMan.GetScaledSize(pause) * texscale; }
+
+		int x = int(Screen.GetWidth() / hudscale.x / 2);
+		int y = int(Screen.GetHeight() / hudscale.y / 3);
+
+		int marginleft = int(4 * scale);
+		int margintop = int(4 * scale);
+
+		String levelname = level.LevelName;
+		if (idmypos) { levelname = levelname .. " - " .. level.mapname.MakeUpper(); }
+
+		int titleheight = int(fnt.GetHeight() * textscale);
+		int lineheight = int(fnt2.GetHeight() * textscale);
+		int subtitleheight = int(fnt3.GetHeight() * textscale);
+
+		int width = int(max(96 * scale, texsize.x)); // Original graphic was 96 pixels wide
+		width = max(width, int(fnt.StringWidth(text) * scale + marginleft * 2));
+		width = max(width, int(fnt.StringWidth(levelname) * textscale + marginleft * 2));
+		int innerwidth = width - marginleft * 2;
+
+		int height = int(margintop * 2 + subtitleheight + titleheight + int(8 * textscale));
+
+		if (pause) { height += int(max(fnt.GetHeight() * scale, texsize.y)); }
+		else { height += int(fnt.GetHeight() * scale); }
+
+		height += lineheight;
+
+		int detailheight = 0;
+		if (!deathmatch)
+		{
+			if (level.total_items > 0) { detailheight += lineheight; }
+			if (level.total_secrets > 0) { detailheight += lineheight; }
+			if (level.total_monsters > 0) { detailheight += lineheight; }
+		}
+
+		if (detailheight) { height += detailheight + lineheight / 2; }
+
+		y -= height / 2;
+
+		Vector2 startpos = (x, y);
+		Vector2 size = (width, height);
+
+		DrawToHUD.DrawFrame("FRAME_", x - width / 2, y - margintop, width, height, 0x1b1b1b, alpha, 0.53 * alpha);
+		if (pause) { DrawToHUD.DrawTexture(pause, (x, y + texsize.y / 2), alpha, texscale); }
+		DrawToHUD.DrawText(text, (x, y + texsize.y / 2), fnt, alpha, scale, (-1, -1), Font.FindFontColor("RedandWhite"), ZScriptTools.STR_CENTERED);
+
+		x -= width / 2 - marginleft;
+		y += int(max(fnt.GetHeight() * scale, texsize.y));
+
+		int segments;
+		String time, partime;
+		[partime, segments] = CountWidget.TimeFormatted(level.partime, true, 3);
+		time = CountWidget.TimeFormatted(level.maptime, false, segments);
+
+		if (level.partime) { time = time ..  String.Format(" \c[Dark Gray]%s \c[Gold]", "/") .. partime; }
+
+		if (multiplayer)
+		{
+			String pstring = StringTable.Localize("$TXT_BY");
+			pstring.ToLower();
+			pstring.Substitute("%s", players[paused - 1].GetUserName());
+
+			DrawToHUD.DrawText(pstring, (x + innerwidth, y), fnt3, alpha, textscale, (-1, -1), clr, ZScriptTools.STR_RIGHT);
+		}
+
+		y += subtitleheight + int(4 * textscale);
+
+		DrawToHud.DrawText(levelname, (x, y), fnt, alpha, textscale, shade:titleclr);
+		y += titleheight + int(4 * textscale);
+
+		DrawToHUD.Dim(0x0, 0.2, x - 3 * scale, y - 2 * scale, innerwidth + 6 * scale, height - margintop * 2 - (y - startpos.y) + 4 * scale);
+
+		DrawToHUD.DrawText(time, (x + innerwidth, y), fnt2, alpha, textscale, (-1, -1), clr, ZScriptTools.STR_RIGHT);
+		y += lineheight * 3 / 2;
+
+		if (!deathmatch)
+		{
+			String value;
+
+			if (level.total_monsters > 0)
+			{
+				DrawToHud.DrawText(monsters, (x, y), fnt2, alpha, textscale, shade:clr);
+
+				value = value.Format("%d/%d", level.killed_monsters, level.total_monsters);
+				DrawToHud.DrawText(value, (x + innerwidth, y), fnt2, alpha, textscale, shade:Font.CR_RED, flags: ZScriptTools.STR_RIGHT);
+
+				y += lineheight;
+			}
+
+			if (level.total_secrets > 0)
+			{
+				DrawToHud.DrawText(secrets, (x, y), fnt2, alpha, textscale, shade:clr);
+
+				value = value.Format("%d/%d", level.found_secrets, level.total_secrets);
+				DrawToHud.DrawText(value, (x + innerwidth, y), fnt2, alpha, textscale, shade:Font.CR_GOLD, flags: ZScriptTools.STR_RIGHT);
+
+				y += lineheight;
+			}
+
+			// Draw item count
+			if (level.total_items > 0)
+			{
+				DrawToHud.DrawText(items, (x, y), fnt2, alpha, textscale, shade:clr);
+
+				value = value.Format("%d/%d", level.found_items, level.total_items);
+				DrawToHud.DrawText(value, (x + innerwidth, y), fnt2, alpha, textscale, shade:Font.CR_YELLOW, flags: ZScriptTools.STR_RIGHT);
+			}
+		}
+
+		return true;
+	}
 }
