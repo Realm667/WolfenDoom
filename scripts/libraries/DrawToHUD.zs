@@ -522,6 +522,17 @@ class DrawToHUD
 
 				if (keycodes[k] >= 0x100 && keycodes[k] < 0x108) // Standard buttons
 				{
+					if (keycodes[k] < 0x102)
+					{
+						CVar swapbuttons = CVar.FindCvar("m_swapbuttons");
+						if (swapbuttons && swapbuttons.GetBool())
+						{
+							// Handle button swapping via cvar
+							if (keycodes[k] == 0x100) { keycodes[k] = 0x101; }
+							else if (keycodes[k] == 0x101) { keycodes[k] = 0x100; }
+						}
+					}
+
 					// Generate the label from the "Mouse Button" string and the number of the button
 					label = StringTable.Localize("$KEY_Mouse") .. " " .. keycodes[k] - 0x0FF;
 				}
