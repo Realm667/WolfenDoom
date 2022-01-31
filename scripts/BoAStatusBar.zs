@@ -942,6 +942,15 @@ class BoAStatusBar : BaseStatusBar
 			}
 		}
 
+		if (!CrosshairImage && !crosshairstring && crosshairtarget)
+		{
+			let chest = BoASupplyChest(crosshairtarget);
+			if (chest && !chest.open && CPlayer.mo.Distance3d(chest) <= PlayerPawn(CPlayer.mo).UseRange)
+			{
+				crosshairstring = chest.keyclass;
+			}
+		}
+
 		if (!CrosshairImage && crosshairstring)
 		{
 			Class<Inventory> item = crosshairstring;

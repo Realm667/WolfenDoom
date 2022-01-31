@@ -1415,6 +1415,7 @@ class PowerZyklonResistance : PowerProtection
 		Inventory.Icon "ICO_ZYKR";
 		DamageFactor "UndeadPoison", 0.25;
 		DamageFactor "UndeadPoisonAmbience", 0.25;
+		+INVENTORY.PERSISTENTPOWER
 	}
 
 	override void Tick()

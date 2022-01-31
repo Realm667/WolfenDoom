@@ -193,3 +193,29 @@ class SkullKeyForSale : SkullKey //C3M6_A
 		Stop;
 	}
 }
+
+
+class Key_RE : CompassItem // C3M0_A
+{
+	Default
+	{
+		//$Category Keys (BoA)
+		//$Title Heart Key from C3M0_A
+		//$Color 4
+		Scale 0.17;
+		Inventory.MaxAmount 1;
+		Inventory.Icon "SKLKH0";
+		Inventory.PickupSound "key/skullkey";
+		PuzzleItem.FailMessage "";
+		Inventory.PickupMessage "";
+		-FLOATBOB
+		-NOGRAVITY
+	}
+
+	States
+	{
+		Spawn:
+			SKLK G -1;
+			Stop;
+	}
+}

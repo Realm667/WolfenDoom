@@ -589,6 +589,27 @@ class Gem : CompassItem
 	}
 }
 
+class StatueKey : CompassItem
+{
+	Default
+	{
+		//$Category Props (BoA)/Interactive Items
+		Radius 16;
+		Height 32;
+		Inventory.Icon "STATA0";
+		Inventory.PickupSound "misc/k_pkup";
+		Inventory.PickupMessage "$PUSTAT";
+		+NOGRAVITY
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1 NoDelay A_AttachLight("Glow", DynamicLight.PulseLight, 0x194b4b, int(radius * 1.5), int(radius * 2), DYNAMICLIGHT.LF_ATTENUATE, (sin(pitch) * height / 2, 0, cos(pitch) * height / 2), 2.0);
+			Stop;
+	}
+}
+
 class InteractiveItem : PuzzleItem
 {
 	String user_displaystring, user_displayimage;
