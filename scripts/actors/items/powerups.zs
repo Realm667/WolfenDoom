@@ -1420,9 +1420,10 @@ class PowerZyklonResistance : PowerProtection
 
 	override void Tick()
 	{
-		if (owner && EffectTics == 0x7FFFFFFF) { return; }
-
-		Super.Tick();
+		// This powerup lasts forever, so prevent it from being removed so
+		// that it can be given back if it is "held". Also, Powerup.Tick()
+		// does not call Super.Tick().
+		return;
 	}
 }
 
