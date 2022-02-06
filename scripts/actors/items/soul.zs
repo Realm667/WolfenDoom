@@ -165,10 +165,10 @@ class Soul : StackableInventory
 
 	void A_SoulSeek(int distance = 256)
 	{
+		bool nearbySouls = false;
+
 		if (Amount && bSpecial) // If we're still a valid pickup (not absorbed by another soul and disappearing), look for a new seek target...
 		{
-			bSolid = true; // Needed for collision detection handling while flying
-
 			target = FindClosestPlayer(target, distance); // Prefer to target a player
 
 			BlockThingsIterator it = BlockThingsIterator.Create(self, 64); // But also move toward other souls
@@ -179,7 +179,10 @@ class Soul : StackableInventory
 				if (it.thing.GetClassName() == "Soul")
 				{
 					let s = Soul(it.thing);
-					if (!target || (s.target == target && s.Distance3D(target) < Distance3D(target))) { target = s; } // Merge with souls heading to the same target
+					if (!target || (s.target == target && s.Distance3D(target) < Distance3D(target))) {
+						target = s; // Merge with souls heading to the same target
+						nearbySouls = true;
+					}
 
 					break;
 				}
@@ -195,6 +198,7 @@ class Soul : StackableInventory
 			let s = Soul(target); // Move much more slowly toward other souls
 			if (s)
 			{
+				nearbySouls = true;
 				if (bSpecial)
 				{
 					if ( Amount + s.Amount > 25 ) { sp = -0.12; } // If at max amount, move away from other souls
@@ -208,16 +212,18 @@ class Soul : StackableInventory
 
 			// Original targeting algorithm by Talon1024 / Kevin Caccamo
 			Vector2 posDiff = Vec2To(target);
-			double distance = posDiff.Length();
-			Vel.XY = posDiff / max(1, distance) * sp;
+			double distance = max(1, posDiff.Length());
+			Vel.XY = posDiff / distance * sp;
 			double middle = target.Pos.Z + max(0, target.Height / 2 - height); // Account for the soul actor height when aiming at target
-			Vel.Z = sp / max(1, distance) * (middle - Pos.Z);
+			Vel.Z = sp / distance * (middle - Pos.Z);
 		}
 		else
 		{
 			vel.z = min(vel.z, -0.1);
 			bNoGravity = false;
 		}
+
+		bSolid = nearbySouls; // To merge with other soul pickups
 	}
 
 	override bool CanCollideWith(Actor other, bool passive)
