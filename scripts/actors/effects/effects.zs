@@ -513,7 +513,7 @@ class EffectsManager : Thinker
 	{
 		for (int i = 0; i < effects.Size(); i++)
 		{
-			CullEffect(i);
+			CullEffect(i, true);
 		}
 	}
 
