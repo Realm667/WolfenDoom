@@ -23,12 +23,57 @@
 class ScreenLabelItem : Thinker
 {
 	Actor mo;
+	Line ln;
+	int linespecial, activation;
+	Array<uint> lines;
 	String icon;
 	String text;
 	double alpha;
 	color clr;
-	int type;
+	int type, fade[MAXPLAYERS];
 	bool draw[MAXPLAYERS];
+
+	EffectsManager manager;
+
+	override void Tick()
+	{
+		if (mo)
+		{
+			if (manager)
+			{
+				int interval;
+				bool forceculled;
+
+				[interval, forceculled] = manager.Culled(mo.pos.xy);
+				if (forceculled || interval > 2) { return; }
+			}
+			else { manager = EffectsManager.GetManager(); }
+		}
+
+		Super.Tick();
+
+		if (type == ScreenLabelHandler.LBL_Item)
+		{
+			if (!mo) { Destroy(); }
+			else if (
+				mo.bSpecial != mo.Default.bSpecial ||
+				mo.bShootable != mo.Default.bShootable ||
+				mo.bSolid != mo.Default.bSolid ||
+				mo.bUseSpecial != mo.Default.bUseSpecial ||
+				Safe(mo) && Safe(mo).isopen ||
+				BoASupplyChest(mo) && BoASupplyChest(mo).open ||
+				mo.master
+			) { ScreenLabelHandler.Remove(mo); }
+
+			if (ln)
+			{
+				if (
+					ln.special != linespecial ||
+					ln.activation != activation
+				) { ScreenLabelHandler.Remove(mo); }
+			}
+		}
+	}
 }
 
 class ScreenLabelCull : ScreenLabelItem
@@ -51,9 +96,11 @@ class ScreenLabelHandler : EventHandler
 		LBL_Default,
 		LBL_ColorMarker,
 		LBL_Discrete,
+		LBL_Item,
 	};
 
 	Array<ScreenLabelItem> ScreenLabelItems;
+	CVar revar;
 
 	protected Le_GlScreen gl_proj;
 	protected Le_Viewport viewport;
@@ -61,6 +108,7 @@ class ScreenLabelHandler : EventHandler
 	override void OnRegister()
 	{
 		gl_proj = new("Le_GlScreen");
+		revar = CVar.FindCVar("boa_remode");
 	}
 
 	override void WorldThingDestroyed(WorldEvent e)
@@ -83,9 +131,51 @@ class ScreenLabelHandler : EventHandler
 		return ScreenLabelItems.Size();
 	}
 
-	void AddItem(class<ScreenLabelItem> cls, Actor thing, String iconName = "", String text = "", color clr = 0xFFFFFF, double alpha = 1.0, int type = LBL_Default)
+	uint FindLine(Line ln) // Helper function to find a thing in a child class since the mo is nested in an object
 	{
-		if (!thing) { return; }
+		for (int i = 0; i < ScreenLabelItems.Size(); i++)
+		{
+			if (ScreenLabelItems[i] && ScreenLabelItems[i].ln == ln) { return i; }
+		}
+		return ScreenLabelItems.Size();
+	}
+
+	bool, ScreenLabelItem FindEquivalentLines(Line ln, in out Array<uint> lines)
+	{
+		if (!ln) { return false, null; }
+
+		bool ret = false;
+		ScreenLabelItem output = null;
+
+		for (int i = 0; i < level.lines.Size(); i++)
+		{
+			if (
+				level.lines[i].special == ln.special &&
+				level.lines[i].args[0] == ln.args[0] &&
+				level.lines[i].args[1] == ln.args[1] &&
+				level.lines[i].args[2] == ln.args[2] &&
+				level.lines[i].args[3] == ln.args[3] &&
+				level.lines[i].args[4] == ln.args[4] &&
+				level.vec2diff((level.lines[i].v1.p + level.lines[i].v1.p) / 2, (ln.v1.p + ln.v2.p) / 2).length() < 48
+			)
+			{
+				ret = true;
+				lines.Push(i);
+
+				if (!output)
+				{
+					int j = FindLine(level.lines[i]);
+					if (j != ScreenLabelItems.Size()) { output = ScreenLabelItems[j]; }
+				}
+			}
+		}
+
+		return ret, output;
+	}
+
+	ScreenLabelItem AddItem(class<ScreenLabelItem> cls, Actor thing, String iconName = "", String text = "", color clr = 0x0, double alpha = 1.0, int type = LBL_Default)
+	{
+		if (!thing) { return null; }
 
 		int i = FindItem(thing);
 
@@ -106,6 +196,8 @@ class ScreenLabelHandler : EventHandler
 			item.clr = clr;
 			item.type = type;
 		}
+
+		return item;
 	}
 
 	// Static call for adding via ACS by actor TID
@@ -146,7 +238,35 @@ class ScreenLabelHandler : EventHandler
 	override void WorldThingSpawned(WorldEvent e)
 	{
 		if (e.thing is "PlayerPawn") { AddItem("ScreenLabelItem", e.thing, "MP_MARK", "", 0x0, 0.8, LBL_ColorMarker); }
-		//else if (e.thing is "CullActorBase") { AddItem("ScreenLabelCull", e.thing, type:LBL_Discrete); }
+
+		if (revar && !revar.GetBool()) { return; } // Add additional markers only if special mode is engaged via CVar
+
+		if (e.thing is "AlarmPanel") { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", StringTable.Localize("$CNTRLMNU_USE") .. " / " .. StringTable.Localize("$CNTRLMNU_ATTACK") .. "\n[[+use:1]]    [[+attack:1]]", 0x0, 1.0, LBL_Item); }
+		else if (
+			e.thing is "InteractiveItem" || 
+			e.thing is "Safe" || 
+			e.thing is "TurretStand" ||
+			e.thing is "BoASupplyChest"
+		)
+		{ AddItem("ScreenLabelItem", e.thing, "ITEMMARK", StringTable.Localize("$CNTRLMNU_USE") .. "\n[[+use:1]]", 0x0, 1.0, LBL_Item); }
+		else if (
+			e.thing.bSpecial ||
+			e.thing.bUseSpecial ||
+			e.thing.bPushable ||
+			(e.thing.health > 0 && e.thing.bShootable && e.thing.bSolid && !e.thing.bIsMonster && !e.thing.bNoDamage && !e.Thing.bInvulnerable && !(e.Thing is "PlayerPawn"))
+		)
+		{
+			ScreenLabelItem label = AddItem("ScreenLabelItem", e.thing, "ITEMMARK", "", 0x0, 1.0, LBL_Item);
+			if (label)
+			{
+				bool destroyable = e.thing.bShootable && e.thing.health > 0 && !e.thing.bNoDamage && !e.Thing.bInvulnerable;
+
+				if (e.thing.bUseSpecial) { label.text = StringTable.Localize("$CNTRLMNU_USE") .. "\n[[+use:1]]"; }
+				else if (e.thing.bPushable && destroyable && e.thing.special) { label.text = StringTable.Localize("$CNTRLMNU_FORWARD") .. " / " .. StringTable.Localize("$CNTRLMNU_ATTACK") .. "\n[[+forward:1]]    [[+attack:1]]"; }
+				else if (e.thing.bPushable) { label.text = StringTable.Localize("$CNTRLMNU_FORWARD") .. "\n[[+forward:1]]"; }
+				else if (destroyable && e.thing.special) { label.text = StringTable.Localize("$CNTRLMNU_ATTACK") .. "\n[[+attack:1]]"; }
+			}
+		}
 	}
 
 	override void WorldTick()
@@ -157,13 +277,201 @@ class ScreenLabelHandler : EventHandler
 			{
 				if (!playeringame[p]) { continue; }
 
-				if (ScreenLabelItems[i].mo && ScreenLabelItems[i].mo.radius == 0 && ScreenLabelItems[i].mo.height == 0)
+				if (ScreenLabelItems[i].mo is "ScreenLabel") { ScreenLabelItems[i].draw[p] = true; }
+				else { ScreenLabelItems[i].draw[p] = !!(players[p].mo && ScreenLabelItems[i].mo && players[p].mo.CheckSight(ScreenLabelItems[i].mo, SF_IGNOREVISIBILITY && SF_IGNOREWATERBOUNDARY)); }
+
+				let pp = BoAPlayer(players[p].mo);
+				if (!pp) { continue; }
+
+				if (ScreenLabelItems[i].ln)
 				{
-					ScreenLabelItems[i].draw[p] = true;
-					continue;
+					bool undercrosshair = !!(ScreenLabelItems[i].ln == pp.CrosshairLine);
+
+					if (!undercrosshair && ScreenLabelItems[i].lines.size())
+					{
+						for (int n = 0; n < ScreenLabelItems[i].lines.size() && !undercrosshair; n++)
+						{
+							if (level.lines[ScreenLabelItems[i].lines[n]] == pp.CrosshairLine) { undercrosshair = true; }
+						}
+					}
+
+					if (undercrosshair) { ScreenLabelItems[i].fade[p] = min(ScreenLabelItems[i].fade[p] + 1, 16); }
+					else if (ScreenLabelItems[i].fade[p]) { ScreenLabelItems[i].fade[p] = max(ScreenLabelItems[i].fade[p] - 1, 0); }
+				}
+				else if (ScreenLabelItems[i].mo)
+				{
+					if (ScreenLabelItems[i].mo == pp.CrosshairTarget) { ScreenLabelItems[i].fade[p] = min(ScreenLabelItems[i].fade[p] + 1, 16); }
+					else if (ScreenLabelItems[i].fade[p]) { ScreenLabelItems[i].fade[p] = max(ScreenLabelItems[i].fade[p] - 1, 0); }
 				}
 
-				ScreenLabelItems[i].draw[p] = !!(players[p].mo && ScreenLabelItems[i].mo && players[p].mo.CheckSight(ScreenLabelItems[i].mo, SF_IGNOREVISIBILITY && SF_IGNOREWATERBOUNDARY));
+				if (ScreenLabelItems[i].text)
+				{
+					int rangeindex = ScreenLabelItems[i].text.RightIndexOf(":") + 1;
+					if (rangeindex > 0)
+					{
+						int endrangeindex = ScreenLabelItems[i].text.RightIndexOf("]]") - rangeindex;
+						String range = ScreenLabelItems[i].text.Mid(rangeindex, endrangeindex);
+
+						if (range.IndexOf("-") == -1)
+						{
+							ScreenLabelItems[i].text.Substitute(range, String.Format("%i", level.time / 70));
+						}
+					}
+				}
+			}
+		}
+	}
+
+	override void WorldLoaded (WorldEvent e)
+	{
+		for (int l = 0; l < level.lines.Size(); l++)
+		{
+			line ln = level.lines[l];
+			if (
+				(ln.activation & SPAC_Use || ln.activation & SPAC_Push || ln.activation & SPAC_Impact) &&
+				(
+					(ln.special > 14 && ln.special < 86) ||
+					(ln.special > 93 && ln.special < 105) ||
+					(ln.special > 106)
+				)
+			)
+			{
+				ScreenLabel label;
+
+				// Collapse indicators for nearby lines with the same special and args
+				Array<uint> lines;
+				bool other;
+				ScreenLabelItem current;
+				[other, current] = FindEquivalentLines(ln, lines);
+				if (other && current)
+				{
+					double xmin = min(ln.v1.p.x, ln.v2.p.x);
+					double xmax = max(ln.v1.p.x, ln.v2.p.x);
+					double ymin = min(ln.v1.p.y, ln.v2.p.y);
+					double ymax = max(ln.v1.p.y, ln.v2.p.y);
+
+					for (int m = 0; m < lines.Size(); m++)
+					{
+						Line nextline = level.lines[lines[m]];
+						xmin = min(xmin, nextline.v1.p.x, nextline.v2.p.x);
+						xmax = max(xmax, nextline.v1.p.x, nextline.v2.p.x);
+
+						ymin = min(ymin, nextline.v1.p.y, nextline.v2.p.y);
+						ymax = max(ymax, nextline.v1.p.y, nextline.v2.p.y);
+					}
+
+					label = ScreenLabel(current.mo);
+					if (label)
+					{
+						Vector3 centerpos = (xmin + (xmax - xmin) / 2, ymin + (ymax - ymin) / 2, label.pos.z);
+						label.SetXYZ(centerpos);
+					}
+
+					current.lines.Move(lines);
+				}
+				else // Place a new marker on the line
+				{
+					Vector2 pos = (ln.v1.p + ln.v2.p) / 2;
+
+					double floorz = ln.frontsector.floorplane.ZAtPoint(pos);
+					double ceilingz = ln.frontsector.ceilingplane.ZAtPoint(pos);
+
+					Side frontside = ln.sidedef[line.front];
+
+					double floordiff = 0;
+					double ceildiff = 0;
+					double z = 0;
+					double scale = 1.0;
+
+					if (ln.backsector)
+					{
+						floordiff = ln.backsector.floorplane.ZAtPoint(pos) - floorz;
+						ceildiff = ceilingz - ln.backsector.ceilingplane.ZAtPoint(pos);
+					}
+
+					TextureID tex;
+					Vector2 texsize;
+					if (!ln.backsector || (floordiff == 0 && ceildiff == 0))
+					{
+						scale = frontside.GetTextureYScale(Side.mid);
+						z = frontside.GetTextureYOffset(Side.mid);
+
+						tex = frontside.GetTexture(Side.mid);
+						texsize = TexMan.GetScaledSize(tex) * scale;
+
+						if (ln.flags & line.ML_DONTPEGBOTTOM)
+						{
+							z += ln.frontsector.GetPlaneTexZ(Sector.floor);
+							z += texsize.y * 3 / 4;
+						}
+						else
+						{
+							z += ln.frontsector.GetPlaneTexZ(Sector.ceiling);
+							z -= texsize.y / 4;
+						}
+
+						z = clamp(z, floorz + 16, min(floorz + 96, ceilingz - 16));
+					}
+					else if (floordiff > 0)
+					{
+						scale = frontside.GetTextureYScale(Side.bottom);
+						z = frontside.GetTextureYOffset(Side.bottom);
+
+						tex = frontside.GetTexture(Side.bottom);
+						texsize = TexMan.GetScaledSize(tex);
+
+						if (ln.flags & line.ML_DONTPEGBOTTOM)
+						{
+							z += ln.frontsector.GetPlaneTexZ(Sector.ceiling);
+							z -= texsize.y * 3 / 4;
+						}
+						else
+						{
+							z += ln.backsector.GetPlaneTexZ(Sector.floor);
+							z -= texsize.y / 4;
+						}
+
+						z = min(z, floorz + floordiff * 5 / 4);
+					}
+					else if (ceildiff > 0)
+					{
+						scale = frontside.GetTextureYScale(Side.top);
+						z = frontside.GetTextureYOffset(Side.top);
+
+						tex = frontside.GetTexture(Side.top);
+						texsize = TexMan.GetScaledSize(tex) * scale;
+
+						if (ln.flags & line.ML_DONTPEGTOP)
+						{
+							z += ln.frontsector.GetPlaneTexZ(Sector.ceiling);
+							z += texsize.y * 3 / 4;
+						}
+						else
+						{
+							z += ln.backsector.GetPlaneTexZ(Sector.ceiling);
+							z += texsize.y * 3 / 4;
+						}
+
+						z = max(z, ceilingz - ceildiff / 4);
+					}
+
+					label = ScreenLabel(Actor.Spawn("ScreenLabel", (pos, z)));
+					if (label)
+					{
+						String text = "";
+						if (ln.activation & SPAC_Use) { text = StringTable.Localize("$CNTRLMNU_USE") .. "\n[[+use:1]]"; }
+						else if (ln.activation & SPAC_Push) { text = StringTable.Localize("$CNTRLMNU_FORWARD") .. "\n[[+forward:1]]"; }
+						else if (ln.activation & SPAC_Impact) { text = StringTable.Localize("$CNTRLMNU_ATTACK") .. "\n[[+attack:1]]"; }
+ 
+						ScreenLabelItem new = AddItem("ScreenLabelItem", label, "ITEMMARK", text, 0x0, 1.0, LBL_Item);
+						if (new)
+						{
+							new.ln = ln;
+							new.linespecial = ln.special;
+							new.activation = ln.activation;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -185,7 +493,6 @@ class ScreenLabelHandler : EventHandler
 			if (
 				!ScreenLabelItems[i] || 
 				!ScreenLabelItems[i].mo || 
-				ScreenLabelItems[i].mo.bDormant ||
 				ScreenLabelItems[i].mo == p.mo ||
 				(
 					Inventory(ScreenLabelItems[i].mo) && 
@@ -194,13 +501,41 @@ class ScreenLabelHandler : EventHandler
 				!ScreenLabelItems[i].draw[consoleplayer]
 			) { continue; }
 
+			if (
+				(
+					ScreenLabelItems[i].type == LBL_Default ||
+					ScreenLabelItems[i].mo.bSpecial
+				) && 
+				ScreenLabelItems[i].mo.bDormant // Only turn labels off on dormant items that can normally be picked up.
+			) { continue; }
+
 			Actor mo = ScreenLabelItems[i].mo;
 
 			double dist = Level.Vec3Diff(e.viewpos, mo.pos).Length();
 			double alpha = ScreenLabelItems[i].alpha;
 			double fovscale = p.fov / 90;
 
-			Vector3 worldpos = e.viewpos + level.Vec3Diff(e.viewpos, mo.pos + (0, 0, mo.height + 16 + mo.GetBobOffset())); // World position of object, offset from viewpoint
+			double top = mo.height;
+
+			// Get the sprite height and use that as top draw height if possible
+			TextureID spritetex = mo.SpawnState.GetSpriteTexture(0);
+			if (spritetex)
+			{
+				String sname = TexMan.GetName(spritetex);
+				if (!(sname == "MDLAA0" || sname == "MDLSA0" || sname == "TNT1A0" || sname == "UNKNA0" || sname == "AMRKA0"))
+				{
+					Vector2 size = TexMan.GetScaledSize(spritetex);
+					Vector2 offset = TexMan.GetScaledOffset(spritetex);
+
+					top = offset.y * mo.scale.y + 4;
+				}
+			}
+
+			Vector3 offset = (0, 0, mo.GetBobOffset());
+			if (ScreenLabelItems[i].type == LBL_Item) { offset.z += top; }
+			else { offset.z += top + 16; }
+
+			Vector3 worldpos = e.viewpos + level.Vec3Diff(e.viewpos, mo.pos + offset); // World position of object, offset from viewpoint
 			gl_proj.ProjectWorldPos(worldpos); // Translate that to the screen, using the viewpoint's info
 
 			if (!gl_proj.IsInScreen()) { continue; } // If the coordinates are off the screen, then skip drawing this item
@@ -304,6 +639,66 @@ class ScreenLabelHandler : EventHandler
 							{
 								String line = lines.StringAt(s);
 								screen.DrawText(tinyfont, Font.CR_WHITE, drawpos.x, drawpos.y + s * lineheight, line, DTA_ScaleX, textscale, DTA_ScaleY, textscale, DTA_Alpha, alpha);
+							}
+						}
+					}
+					break;
+				case LBL_Item:
+					if (revar && revar.GetBool())
+					{
+						if (dist > 256) { continue; }
+						else if (dist > 160) { alpha = 1.0 - (dist - 160) / 64; }
+
+						TextureID image;
+						Vector2 imagedimensions = (0, 0);
+						if (ScreenLabelItems[i].icon)
+						{
+							image = TexMan.CheckForTexture(ScreenLabelItems[i].icon, TexMan.Type_Any);
+							if (image) { imagedimensions = TexMan.GetScaledSize(image); }
+						}
+
+						Font fnt = Font.GetFont("MiniFont");
+
+						String text = StringTable.Localize(ScreenLabelItems[i].text);
+						String temp; BrokenString lines;
+						[temp, lines] = BrokenString.BreakString(text, int(48 * fnt.StringWidth(" ")), fnt:fnt);
+
+						double textscale = 2 * vid_scalefactor / (fovscale * dist / 256);
+						double imagescale = 0.5 * textscale;
+						double lineheight = int(fnt.GetHeight() * textscale);
+						double buttonheight = int(Button.GetHeight(null, textscale));
+						imagedimensions *= imagescale;
+
+						// Draw the icon
+						if (image)
+						{
+							drawpos.y -= imagedimensions.y / 2;
+							DrawToHUD.DrawTexture(image, drawpos, alpha, imagescale, ScreenLabelItems[i].clr ? ScreenLabelItems[i].clr : -1, (-1, -1), DrawToHud.TEX_CENTERED | DrawToHUD.TEX_NOSCALE | (ScreenLabelItems[i].clr ? DrawtoHUD.TEX_COLOROVERLAY : 0));
+						}
+
+						let p = players[consoleplayer].mo;
+						if (!p || !lines.Count()) { continue; }
+
+						double range = p.UseRange * 3;
+						if (dist > range * 1.25) { alpha *= 1.0 - (dist - range) / range; }
+
+						if (ScreenLabelItems[i].fade[consoleplayer] == 0 || alpha == 0.0) { continue; }
+
+						double cmdalpha = clamp(ScreenLabelItems[i].fade[consoleplayer] / 16.0, 0.0, 1.0);
+						
+						if (lines.Count())
+						{
+							drawpos.y -= imagedimensions.y / 2 + 8 * textscale;
+
+							for (int s = lines.Count() - 1; s > -1; s--)
+							{
+								String line = lines.StringAt(s);
+								if ((line.IndexOf("[[") > -1 && line.IndexOf("]]") > -1)) { drawpos.y -= buttonheight - lineheight; }
+
+								DrawToHUD.DrawText(line, drawpos, fnt, alpha * cmdalpha, textscale, (-1, -1), 0xFFFFFF, ZScriptTools.STR_CENTERED | ZScriptTools.STR_NOSCALE);
+								drawpos.y -= lineheight;
+
+								if ((line.IndexOf("[[") > -1 && line.IndexOf("]]") > -1)) { drawpos.y -= 12 * textscale; }
 							}
 						}
 					}

@@ -894,7 +894,7 @@ class BoAStatusBar : BaseStatusBar
 		double size = (vid_scalefactor > 0 ? vid_scalefactor : 1.0) * clamp(Screen.GetWidth() / 1920.0, 0.25, 1.0) * 3.5 * chscale; // Smaller screen widths get smaller overlays
 		Vector2 dimensions;
 		double w, h;
-		double maxwidth = chscale * 128.0 / min(1.0, vid_scalefactor);
+		double maxwidth = chscale * 64.0 / min(1.0, vid_scalefactor);
 
 		if (BoAPlayer(CPlayer.mo))
 		{
