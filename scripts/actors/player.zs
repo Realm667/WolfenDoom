@@ -68,6 +68,7 @@ class BoAPlayer : PlayerPawn
 {
 	double leveltilt, oldtilt, leveltiltangle;
 	Actor CrosshairTarget;
+	Line CrosshairLine;
 	Actor ForcedHealthBar;
 	Actor DragTarget;
 	SpriteID baseSprite;
@@ -972,6 +973,10 @@ class BoAPlayer : PlayerPawn
 	virtual void DoInteractions()
 	{
 		FLineTraceData trace;
+
+		LineTrace(angle, UseRange * 3, pitch, TRF_THRUACTORS, player.viewheight, 0.0, 0.0, trace);
+		CrosshairLine = trace.HitLine;
+
 		LineTrace(angle, UseRange, pitch, TRF_THRUACTORS, player.viewheight, 0.0, 0.0, trace);
 		Line AimLine = trace.HitLine;
 		TextureID AimTexture = trace.HitTexture;
@@ -1033,26 +1038,37 @@ class BoAPlayer : PlayerPawn
 			}
 		}
 
-		if (AimLine && !crosshair)
+		if (!crosshair)
 		{
-			// Only show custom crosshair if the line is running a script, is a locked door or puzzle item use line, or has a UDMF lock number
-			//  Otherwise - Why?  It's not an activation line, so what's the point of showing a hint?
-			if ( 	
-				AimLine.special == 13 || // Door_LockedRaise
-				AimLine.special == 80 || // ACS_Execute 
-				(AimLine.special >= 83 && AimLine.special <= 85) || // ACS_LockedExecute, ACS_ExecuteWithResult, ACS_LockedExecuteDoor
-				Aimline.special == 129 || // UsePuzzleItem
-				AimLine.special == 226 || // ACS_ExecuteAlways
-				Aimline.locknumber
-			)
+			if (AimLine)
 			{
-				crosshair = AimLine.GetUDMFInt("user_crosshair"); // Use the line's user_crosshair property if it has a value
-				crosshairstring = AimLine.GetUDMFString("user_crosshair"); // Or try looking for a class name as a string value
+				// Only show custom crosshair if the line is running a script, is a locked door or puzzle item use line, or has a UDMF lock number
+				//  Otherwise - Why?  It's not an activation line, so what's the point of showing a hint?
+				if ( 	
+					AimLine.special == 13 || // Door_LockedRaise
+					AimLine.special == 80 || // ACS_Execute 
+					(AimLine.special >= 83 && AimLine.special <= 85) || // ACS_LockedExecute, ACS_ExecuteWithResult, ACS_LockedExecuteDoor
+					Aimline.special == 129 || // UsePuzzleItem
+					AimLine.special == 226 || // ACS_ExecuteAlways
+					Aimline.locknumber
+				)
+				{
+					crosshair = AimLine.GetUDMFInt("user_crosshair"); // Use the line's user_crosshair property if it has a value
+					crosshairstring = AimLine.GetUDMFString("user_crosshair"); // Or try looking for a class name as a string value
+				}
+				else
+				{
+					crosshair = 0;
+					crosshairstring = "";
+				}
 			}
-			else
+
+			if (AimActor && !crosshair && !crosshairstring.length())
 			{
-				crosshair = 0;
-				crosshairstring = "";
+				if (AimActor is "BoASupplyChest" && !BoASupplyChest(AimActor).open && Distance3d(AimActor) <= UseRange)
+				{
+					crosshairstring = BoASupplyChest(AimActor).keyclass;
+				}
 			}
 		}
 
@@ -1165,7 +1181,7 @@ class BoAPlayer : PlayerPawn
 				}
 			}
 		}
-		else
+		else if (!AimLine && !AimActor)
 		{
 			if (LastWeapon)
 			{
