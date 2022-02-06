@@ -1418,13 +1418,10 @@ class PowerZyklonResistance : PowerProtection
 		+INVENTORY.PERSISTENTPOWER
 	}
 
-	override void Tick()
-	{
-		// This powerup lasts forever, so prevent it from being removed so
-		// that it can be given back if it is "held". Also, Powerup.Tick()
-		// does not call Super.Tick().
-		return;
-	}
+	// This powerup lasts forever, so prevent it from being removed so
+	// that it can be given back if it is "held". Also, Powerup.Tick()
+	// does not call Super.Tick().
+	override void Tick() {}
 }
 
 class SavingHealth : CustomInvBase

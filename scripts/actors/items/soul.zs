@@ -165,7 +165,7 @@ class Soul : StackableInventory
 
 	void A_SoulSeek(int distance = 256)
 	{
-		bool nearbySouls = false;
+		bool merging = false;
 
 		if (Amount && bSpecial) // If we're still a valid pickup (not absorbed by another soul and disappearing), look for a new seek target...
 		{
@@ -181,7 +181,7 @@ class Soul : StackableInventory
 					let s = Soul(it.thing);
 					if (!target || (s.target == target && s.Distance3D(target) < Distance3D(target))) {
 						target = s; // Merge with souls heading to the same target
-						nearbySouls = true;
+						merging = true;
 					}
 
 					break;
@@ -198,7 +198,7 @@ class Soul : StackableInventory
 			let s = Soul(target); // Move much more slowly toward other souls
 			if (s)
 			{
-				nearbySouls = true;
+				merging = true;
 				if (bSpecial)
 				{
 					if ( Amount + s.Amount > 25 ) { sp = -0.12; } // If at max amount, move away from other souls
@@ -223,7 +223,7 @@ class Soul : StackableInventory
 			bNoGravity = false;
 		}
 
-		bSolid = nearbySouls; // To merge with other soul pickups
+		bSolid = merging; // To merge with other soul pickups
 	}
 
 	override bool CanCollideWith(Actor other, bool passive)
